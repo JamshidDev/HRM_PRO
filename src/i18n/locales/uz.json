@@ -1,0 +1,16 @@
+{
+    "loginPage":{
+        "title":"Xush kelibsiz!",
+        "email": "Email",
+        "password": "Parol",
+        "doYouHaveAccount": "Sizda hisob yo'qmi?",
+        "singUp": "Ro'yhatdan o'tish",
+        "login": "Kirish"
+    },
+    "content": {
+        "requiredField": "Maydon to'ldirilishi shart!",
+        "save": "Saqlash",
+        "cancel": "Bekor qilish"
+
+    }
+}
