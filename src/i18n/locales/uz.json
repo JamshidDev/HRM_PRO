@@ -10,7 +10,20 @@
     "content": {
         "requiredField": "Maydon to'ldirilishi shart!",
         "save": "Saqlash",
-        "cancel": "Bekor qilish"
+        "cancel": "Bekor qilish",
+        "help": "Yordam"
+    },
+    "rules": {
+        "login": "Email kiritilishi shart!",
+        "password": "Parol kiritilishi shart!"
+    },
+    "service": {
+        "step": {
+            "one": "Market yaratish",
+            "two": "Marketni sozlash",
+            "three": "Kategoriya qo'shish",
+            "four": "Mahsulot qo'shish"
+        }
 
     }
 }

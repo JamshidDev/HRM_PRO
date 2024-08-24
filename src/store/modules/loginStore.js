@@ -12,5 +12,19 @@ export const useLoginStore = defineStore("loginStore", {
     },
     actions:{
 
+        _auth(){
+            $ApiService.authService._login({data:{
+                    username:this.login,
+                    password:this.password,
+                }}).then((res)=>{
+                console.log(res.data)
+            }).catch((err)=>{
+                console.log(err)
+            })
+        }
+
+
+
+
     }
 })
