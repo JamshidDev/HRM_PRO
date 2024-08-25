@@ -1,7 +1,10 @@
 <script setup>
-import { PlayCircle28Regular, ChatHelp20Regular } from '@vicons/fluent'
+import { PlayCircle28Regular, ChatHelp20Regular, IosArrowRtl24Filled, IosArrowLtr24Filled} from '@vicons/fluent'
+import {useServiceStore} from "@/store/modules/serviceStore.js";
 import ServiceSteper from "@/pages/service/ServiceSteper.vue";
+import CreateMarket from "@/pages/service/CreateMarket.vue";
 import { Icon } from '@vicons/utils'
+const store = useServiceStore()
 
 </script>
 
@@ -35,13 +38,48 @@ import { Icon } from '@vicons/utils'
     </div>
 
 
-    <div class="w-[800px] h-[600px] border border-surface-line bg-surface-section mx-auto mt-[120px]">
+    <div class="w-[800px] border border-surface-line bg-surface-section mx-auto mt-[60px]">
+      <n-tabs class="hidden-tab-header" type="segment" animated v-model:value="store.activeTab">
+        <n-tab-pane :name="store.tabList[0]">
+          <CreateMarket/>
+        </n-tab-pane>
+        <n-tab-pane :name="store.tabList[1]">
+          <CreateMarket/>
+        </n-tab-pane>
+        <n-tab-pane :name="store.tabList[2]">
+          <CreateMarket/>
+        </n-tab-pane>
+        <n-tab-pane :name="store.tabList[3]">
+          <CreateMarket/>
+        </n-tab-pane>
+      </n-tabs>
+      <div class="flex justify-between items-center m-[20px]">
+        <n-button
+            :disabled="store.activeTab===1"
+            ghost
+            type="error"
+            @click="store.previousTab()"
+        >
 
+          {{$t(`service.previous`)}}
+          <template #icon>
+            <n-icon><IosArrowLtr24Filled/></n-icon>
+          </template>
+        </n-button>
+        <n-button
+            icon-placement="right"
+            @click="store.nextTab()"
+            :disabled="store.activeTab===4"
+            type="primary">
+          <template #icon>
+            <n-icon><IosArrowRtl24Filled/></n-icon>
+          </template>
+          {{$t(`service.next`)}}
+
+        </n-button>
+
+      </div>
     </div>
     
   </div>
 </template>
-
-<style scoped>
-
-</style>
