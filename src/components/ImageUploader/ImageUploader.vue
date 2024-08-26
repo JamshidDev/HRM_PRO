@@ -3,12 +3,24 @@ import { ImageAdd24Regular, ArrowSyncDismiss20Filled} from '@vicons/fluent'
 import { v4 as uuidv4 } from 'uuid';
 import Utils from "@/utils/Utils.js";
 const fileRef = ref(null)
-const imageList = ref([])
+
+const model = defineModel({
+  required:true,
+  default:[],
+})
+
+const props = defineProps({
+  maxCount: {
+    type: Number,
+    default: 1
+  }
+
+})
 
 const uploadImage = async(e)=>{
   const file = e.target.files[0]
   const base64 = await Utils.fileToBase64(file)
-  imageList.value.push({
+  model.value.push({
     id:uuidv4(),
     file:file,
     base64:base64
@@ -16,13 +28,14 @@ const uploadImage = async(e)=>{
 }
 
 const removeImage = (id)=>{
-  imageList.value = imageList.value.filter((v)=>v.id !== id)
+  model.value = model.value.filter((v)=>v.id !== id)
 }
+
 </script>
 
 <template>
 <div class="w-full flex gap-2">
-  <template v-for="(item, idx) in imageList" :key="idx">
+  <template v-for="(item, idx) in model" :key="idx">
     <div
         class="w-[100px] h-[100px] border border-surface-line rounded overflow-hidden relative"
     >
@@ -38,13 +51,16 @@ const removeImage = (id)=>{
       <img class="w-full h-full object-cover" :src="item.base64" alt="">
     </div>
   </template>
-  <div
-      @click="fileRef.click"
-      class="w-[100px] h-[100px] border border-dashed rounded flex justify-center items-center border-surface-line cursor-pointer">
-    <n-icon class="text-6xl text-surface-400 font-normal">
-      <ImageAdd24Regular/>
-    </n-icon>
-  </div>
+  <template v-if="maxCount>model.length">
+    <div
+        @click="fileRef.click"
+        class="w-[100px] h-[100px] border border-dashed rounded flex justify-center items-center border-surface-line cursor-pointer">
+      <n-icon class="text-6xl text-surface-400 font-normal">
+        <ImageAdd24Regular/>
+      </n-icon>
+    </div>
+  </template>
+
     <input @change="uploadImage" ref="fileRef" class="hidden" type="file"/>
 </div>
 </template>

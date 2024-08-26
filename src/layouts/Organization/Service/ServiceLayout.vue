@@ -6,6 +6,11 @@ import CreateMarket from "@/pages/service/CreateMarket.vue";
 import { Icon } from '@vicons/utils'
 const store = useServiceStore()
 
+
+const nextTab =()=>{
+
+}
+
 </script>
 
 <template>

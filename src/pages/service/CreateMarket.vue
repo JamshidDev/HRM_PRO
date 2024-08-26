@@ -10,7 +10,9 @@ const store = useServiceStore()
       <n-form>
         <label>{{$t(`service.createMarket.logo`)}}</label>
         <div class="flex flex-col mt-2">
-          <ImageUploader/>
+          <ImageUploader
+              v-model="store.market.image"
+          />
           <div class="block text-xs text-warning mt mb-4">{{$t(`service.createMarket.imageRequired`)}}</div>
         </div>
         <n-form-item :label="$t(`service.createMarket.name`)">
@@ -22,13 +24,13 @@ const store = useServiceStore()
         <n-form-item :label="$t(`service.createMarket.description`)">
           <n-input
               type="textarea"
-              v-model:value="store.market.name"
+              v-model:value="store.market.description"
               :placeholder="$t('content.enterField')" />
         </n-form-item>
         <n-form-item :label="$t(`service.createMarket.token`)">
           <n-input
               type="text"
-              v-model:value="store.market.name"
+              v-model:value="store.market.bot_token"
               :placeholder="$t('content.enterField')" />
         </n-form-item>
         <span class="text-xs text-primary">{{$t(`service.createMarket.tokenDescription`)}}</span>

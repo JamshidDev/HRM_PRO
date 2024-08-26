@@ -8,7 +8,7 @@ export const useServiceStore = defineStore('servcieStore',{
             name:null,
             description:null,
             bot_token:null,
-            image:null,
+            image:[],
         },
         activeTab:1,
         tabList:[1,2,3,4]
