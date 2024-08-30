@@ -13,5 +13,18 @@ export default {
             message: t(`rules.password`),
             trigger: ['input', 'blur']
         },
+    },
+    createMarket:{
+        name:{
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: ['input', 'blur']
+        },
+        bot_token:{
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: ['input', 'blur']
+        },
+
     }
 }

@@ -5,9 +5,15 @@ import ServiceSteper from "@/pages/service/ServiceSteper.vue";
 import CreateMarket from "@/pages/service/CreateMarket.vue";
 import { Icon } from '@vicons/utils'
 const store = useServiceStore()
+const marketRef = ref(null)
 
+const nextTab =async ()=>{
+  if(store.activeTab === 1){
+    const error =await marketRef.value.onSubmit()
+    store.activeTab += Boolean(!error)
+  }else if(store.activeTab === 12){
 
-const nextTab =()=>{
+  }
 
 }
 
@@ -46,7 +52,7 @@ const nextTab =()=>{
     <div class="w-[800px] border border-surface-line bg-surface-section mx-auto mt-[60px]">
       <n-tabs class="hidden-tab-header" type="segment" animated v-model:value="store.activeTab">
         <n-tab-pane :name="store.tabList[0]">
-          <CreateMarket/>
+          <CreateMarket ref="marketRef" />
         </n-tab-pane>
         <n-tab-pane :name="store.tabList[1]">
           <CreateMarket/>
@@ -73,7 +79,7 @@ const nextTab =()=>{
         </n-button>
         <n-button
             icon-placement="right"
-            @click="store.nextTab()"
+            @click="nextTab()"
             :disabled="store.activeTab===4"
             type="primary">
           <template #icon>

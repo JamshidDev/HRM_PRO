@@ -16,7 +16,8 @@
     },
     "rules": {
         "login": "Email kiritilishi shart!",
-        "password": "Parol kiritilishi shart!"
+        "password": "Parol kiritilishi shart!",
+        "requiredField": "Maydon to'ldirilishi shart!"
     },
     "service": {
         "step": {
