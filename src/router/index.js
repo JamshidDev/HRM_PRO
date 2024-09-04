@@ -5,15 +5,15 @@ import LoginPage from "@/pages/login/LoginPage.vue"
 import NotFoundPage from "@/pages/notFound/NotFoundPage.vue"
 import RegisterPage from "@/pages/register/RegisterPage.vue";
 import ServiceLayout from "@/layouts/Organization/Service/ServiceLayout.vue";
+import MainLayout from "@/layouts/Main/MainLayout.vue";
 
 
 
 const routes = [
     {
-        path:"/",
+        path:"/admin",
         name:"mainLayout",
-        component:LoginPage,
-        children:[]
+        component:MainLayout,
     },
     {
         path:"/authentication",
@@ -26,6 +26,11 @@ const routes = [
         name:"register-service",
         component:ServiceLayout,
         children:[]
+    },
+    {
+        path:"/login",
+        name:"login",
+        component:LoginPage,
     },
     {
         path: "/:pathMatch(.*)*",

@@ -5,7 +5,8 @@ const store = useServiceStore()
 </script>
 
 <template>
-  <n-steps :current="store.currentStep" :status="store.stepStatus">
+  <n-steps
+      :current="store.currentStep" :status="store.stepStatus" >
     <n-step
         :title="$t(`service.step.one`)"
     >

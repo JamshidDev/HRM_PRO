@@ -11,7 +11,8 @@ export const useServiceStore = defineStore('servcieStore',{
             image:[],
         },
         activeTab:1,
-        tabList:[1,2,3,4]
+        tabList:[1,2,3,4],
+        loading:false,
     }),
     getters:{
 
@@ -22,6 +23,10 @@ export const useServiceStore = defineStore('servcieStore',{
         },
         previousTab(){
             this.activeTab--
+        },
+        createStore(){
+            this.loading = true
+            console.log(this.market)
         }
 
     }

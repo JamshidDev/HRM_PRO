@@ -9,6 +9,7 @@ const marketRef = ref(null)
 
 const nextTab =async ()=>{
   if(store.activeTab === 1){
+    store.createStore()
     const error =await marketRef.value.onSubmit()
     store.activeTab += Boolean(!error)
   }else if(store.activeTab === 12){
@@ -67,6 +68,7 @@ const nextTab =async ()=>{
       <div class="flex justify-between items-center m-[20px]">
         <n-button
             :disabled="store.activeTab===1"
+            :loading="store.loading"
             ghost
             type="error"
             @click="store.previousTab()"
@@ -81,6 +83,7 @@ const nextTab =async ()=>{
             icon-placement="right"
             @click="nextTab()"
             :disabled="store.activeTab===4"
+            :loading="store.loading"
             type="primary">
           <template #icon>
             <n-icon><IosArrowRtl24Filled/></n-icon>
