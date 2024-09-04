@@ -4,8 +4,18 @@ const _login =async (payload)=>{
     return await axios.post(`/auth/pair`, payload.data)
 }
 
+const _register = async (payload)=>{
+    return await axios.post(`/auth/account`, payload.data)
+}
+
+const _refreshToken = async (payload)=>{
+    return await axios.post('/auth/refresh', payload.data)
+}
+
 
 
 export default {
-    _login
+    _login,
+    _register,
+    _refreshToken,
 }

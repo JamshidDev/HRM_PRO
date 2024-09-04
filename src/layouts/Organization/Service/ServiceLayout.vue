@@ -26,7 +26,7 @@ const nextTab =async ()=>{
       <div class="border border-surface-line p-[4px] rounded-[50%] bg-surface-ground">
         <img
             class="w-[40px] h-[40px]"
-            src="@/assets/images/logo/logo.png"
+            src="../../../../public/logo.png"
             alt="">
       </div>
       <div>

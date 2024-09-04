@@ -16,9 +16,15 @@ const routes = [
         component:MainLayout,
     },
     {
-        path:"/authentication",
-        name:"authentication",
+        path:"/register",
+        name:"register",
         component:RegisterPage,
+        children:[]
+    },
+    {
+        path:"/login",
+        name:"login",
+        component:LoginPage,
         children:[]
     },
     {

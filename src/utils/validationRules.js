@@ -14,6 +14,28 @@ export default {
             trigger: ['input', 'blur']
         },
     },
+    register:{
+        first_name:{
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: ['input', 'blur']
+        },
+        last_name:{
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: ['input', 'blur']
+        },
+        email:{
+            required: true,
+            message: t(`rules.login`),
+            trigger: ['input', 'blur']
+        },
+        password:{
+            required: true,
+            message: t(`rules.password`),
+            trigger: ['input', 'blur']
+        },
+    },
     createMarket:{
         name:{
             required: true,
