@@ -9,7 +9,7 @@ const formRef = ref(null)
 const onSubmit = ()=>{
   formRef.value?.validate((error)=>{
     if(!error){
-
+      store._register()
     }
   })
 }
@@ -22,7 +22,7 @@ const onSubmit = ()=>{
       <n-form
           ref="formRef"
           :rules="validationRules.register"
-          :model="store"
+          :model="store.payload"
           class="w-[400px] p-[20px] flex flex-col"
       >
         <div class="w-full">

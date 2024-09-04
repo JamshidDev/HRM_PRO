@@ -15,7 +15,10 @@ export const useRegisterStore = defineStore('registerStore', {
     }),
     actions:{
         _register(){
-
+            console.log(this.payload)
+            $ApiService.authService._register({data:this.payload}).then((res)=>{
+                console.log(res.data)
+            })
         }
     }
 
