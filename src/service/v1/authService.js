@@ -5,7 +5,7 @@ const _login =async (payload)=>{
 }
 
 const _register = async (payload)=>{
-    return await axios.post(`/auth/account`, payload.data)
+    return await axios.post(`/account`, payload.data)
 }
 
 const _refreshToken = async (payload)=>{
