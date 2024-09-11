@@ -1,5 +1,6 @@
 <script setup>
 import navigation from "@/layouts/Main/data/navigation.js"
+import AppHeader from "@/layouts/Main/AppHeader.vue";
 import {ChatVideo20Regular} from "@vicons/fluent"
 
 const sidebar = ref(true)
@@ -36,6 +37,7 @@ const layoutClass = computed(()=>({
 
 
   <div class="main__section">
+      <AppHeader class="mb-20"/>
     <n-button @click="sidebar=!sidebar">Button</n-button>
   </div>
 </div>

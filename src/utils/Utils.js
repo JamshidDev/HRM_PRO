@@ -9,6 +9,8 @@ const fileToBase64 = (file)=>{
         })
 }
 
+const onlyAllowNumber = (value) => !value || /^\d+$/.test(value)
+
 
 
 
@@ -17,5 +19,6 @@ const fileToBase64 = (file)=>{
 
 
 export default {
-    fileToBase64
+    fileToBase64,
+    onlyAllowNumber,
 }

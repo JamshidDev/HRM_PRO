@@ -1,4 +1,17 @@
 {
+    "content": {
+        "requiredField": "Maydon to'ldirilishi shart!",
+        "save": "Saqlash",
+        "cancel": "Bekor qilish",
+        "help": "Yordam",
+        "enterField": "Kiriting"
+    },
+    "rules": {
+        "login": "Email kiritilishi shart!",
+        "password": "Parol kiritilishi shart!",
+        "requiredField": "Maydon to'ldirilishi shart!"
+    },
+
     "loginPage":{
         "title":"Xush kelibsiz!",
         "email": "Email",
@@ -12,18 +25,13 @@
         "firstName": "Ism",
         "lastName": "Familiya"
     },
-    "content": {
-        "requiredField": "Maydon to'ldirilishi shart!",
-        "save": "Saqlash",
-        "cancel": "Bekor qilish",
-        "help": "Yordam",
-        "enterField": "Kiriting"
+    "verificationEmail": {
+        "title": "Hisobni tadiqlash",
+        "subtitle": "Biz sizning pochta manzilingizga tasdiqlash kodini yubordik {email}",
+        "placeholder": "Bu yerga kodni yozing",
+        "verification": "Tasdiqlash"
     },
-    "rules": {
-        "login": "Email kiritilishi shart!",
-        "password": "Parol kiritilishi shart!",
-        "requiredField": "Maydon to'ldirilishi shart!"
-    },
+
     "service": {
         "step": {
             "one": "Market yaratish",

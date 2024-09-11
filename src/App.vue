@@ -1,7 +1,12 @@
 <script setup>
+import ToastProvider from "@/components/Toast/ToastProvider.vue";
 </script>
 
 <template>
-  <router-view />
+  <n-message-provider placement="top-right">
+    <router-view />
+    <ToastProvider/>
+  </n-message-provider>
+
 </template>
 

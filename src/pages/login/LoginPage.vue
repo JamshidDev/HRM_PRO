@@ -1,8 +1,9 @@
 <script setup>
-
+import {useRoute, useRouter} from "vue-router";
 import {useLoginStore} from "@/store/modules/loginStore.js"
 import validationRules from "@/utils/validationRules.js";
 const store = useLoginStore()
+const router = useRouter()
 
 const formRef = ref(null)
 
@@ -16,6 +17,7 @@ const onSubmit = ()=>{
   })
 }
 
+
 </script>
 
 <template>
@@ -28,7 +30,7 @@ const onSubmit = ()=>{
   >
     <div class="grid grid-cols-1">
       <div class="flex justify-center">
-        <img class="w-[80px] h-[80px]" src="../../../public/logo.png" alt="">
+        <img class="w-[80px] h-[80px]" src="/public/logo.png" alt="">
       </div>
       <span class="text-center font-bold text-3xl mb-[20px]">{{$t(`loginPage.title`)}}</span>
     </div>
@@ -53,7 +55,7 @@ const onSubmit = ()=>{
     >{{$t(`loginPage.login`)}}</n-button>
 
     <span class="text-sm mt-[20px]">{{$t(`loginPage.doYouHaveAccount`)}}
-      <span class="text-primary">{{$t(`loginPage.singUp`)}}</span>
+      <span @click="router.push('/register')" class="text-primary cursor-pointer" >{{$t(`loginPage.singUp`)}}</span>
     </span>
 
   </n-form>

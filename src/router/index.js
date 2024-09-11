@@ -6,6 +6,7 @@ import NotFoundPage from "@/pages/notFound/NotFoundPage.vue"
 import RegisterPage from "@/pages/register/RegisterPage.vue";
 import ServiceLayout from "@/layouts/Organization/Service/ServiceLayout.vue";
 import MainLayout from "@/layouts/Main/MainLayout.vue";
+import VerificationEmailPage from "@/pages/verificationEmail/VerificationEmailPage.vue"
 
 
 
@@ -19,6 +20,12 @@ const routes = [
         path:"/register",
         name:"register",
         component:RegisterPage,
+        children:[]
+    },
+    {
+        path:"/verification-email",
+        name:"verificationEmail",
+        component:VerificationEmailPage,
         children:[]
     },
     {

@@ -36,6 +36,13 @@ export default {
             trigger: ['input', 'blur']
         },
     },
+    verificationEmail:{
+        verificationCode:{
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: ['input', 'blur']
+        },
+    },
     createMarket:{
         name:{
             required: true,
@@ -47,6 +54,5 @@ export default {
             message: t(`rules.requiredField`),
             trigger: ['input', 'blur']
         },
-
     }
 }

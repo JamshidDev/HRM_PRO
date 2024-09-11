@@ -21,7 +21,15 @@ instance.interceptors.response.use(
     error => {
         if(error.response?.status==401){
             router.push("/login")
+        }else if(error.response?.status==422){
+            if(Array.isArray(error.response.data.detail)){
+                error.response.data.detail.forEach((msg, index) => {
+                    $Toast.error(msg)
+                })
+            }
+
         }
+
         return Promise.reject(error)
     }
 );

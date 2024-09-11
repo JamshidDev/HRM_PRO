@@ -1,6 +1,6 @@
 
 import {defineStore} from "pinia";
-
+import router from "@/router"
 export const useRegisterStore = defineStore('registerStore', {
     state:()=>({
         payload:{
@@ -17,7 +17,7 @@ export const useRegisterStore = defineStore('registerStore', {
         _register(){
             console.log(this.payload)
             $ApiService.authService._register({data:this.payload}).then((res)=>{
-                console.log(res.data)
+                router.push('/verification-email')
             })
         }
     }
