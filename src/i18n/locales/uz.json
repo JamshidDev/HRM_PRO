@@ -4,7 +4,10 @@
         "save": "Saqlash",
         "cancel": "Bekor qilish",
         "help": "Yordam",
-        "enterField": "Kiriting"
+        "enterField": "Kiriting",
+        "langUz": "Uzbek",
+        "langRu": "Rus",
+        "langEn": "Ingliz"
     },
     "rules": {
         "login": "Email kiritilishi shart!",
