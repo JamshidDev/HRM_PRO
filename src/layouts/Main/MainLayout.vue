@@ -1,32 +1,33 @@
 <script setup>
-import navigation from "@/layouts/Main/data/navigation.js"
+import {computed, ref} from "vue";
+import AppSidebar from "@/layouts/Main/AppSidebar.vue";
 import AppHeader from "@/layouts/Main/AppHeader.vue";
-import {ChatVideo20Regular} from "@vicons/fluent"
 
 const sidebar = ref(true)
 const layoutClass = computed(()=>({
   open__sidebar:sidebar.value,
   close__sidebar:!sidebar.value,
 }))
+
+const controlSidebar=(v)=>sidebar.value =v
 </script>
 
 <template>
-<div
-    class="main__layout"
-    :class="layoutClass"
->
-  <div class="sidebar__section">
-  </div>
-
-
-  <div class="main__section">
-    <div class="page__content">
-      <AppHeader/>
+  <div
+      class="layout__v4"
+      :class="layoutClass"
+  >
+    <div class="sidebar__section">
+      <!--    Sidebar section-->
+      <AppSidebar/>
     </div>
+
+    <div class="main__section">
+      <!--    Main page section-->
+      <AppHeader/>
+      <button @click="sidebar=!sidebar">Control sidebar</button>
+    </div>
+
+    <div v-if="sidebar" @click="controlSidebar(false)" class="mobile_overall"></div>
   </div>
-</div>
 </template>
-
-<style scoped>
-
-</style>

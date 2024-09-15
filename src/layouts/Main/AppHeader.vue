@@ -102,7 +102,7 @@ const {t} = i18n.global
 
 <template>
   <div class="app__header-container
-     w-full h-[50px]  border-surface-line rounded
+     w-full h-[58px] bg-surface-section border-b  border-surface-line
      flex justify-between items-center px-[20px]
 "
   >

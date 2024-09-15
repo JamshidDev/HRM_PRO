@@ -24,4 +24,7 @@ export default defineConfig({
       dts: false,
     }),
   ],
+  server:{
+    port:5000
+  }
 })
