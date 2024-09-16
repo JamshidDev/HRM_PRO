@@ -3,6 +3,7 @@ import { PlayCircle28Regular, ChatHelp20Regular, IosArrowRtl24Filled, IosArrowLt
 import {useServiceStore} from "@/store/modules/serviceStore.js";
 import ServiceSteper from "@/pages/service/ServiceSteper.vue";
 import CreateMarket from "@/pages/service/CreateMarket.vue";
+import MarketSetting from "@/pages/service/MarketSetting.vue";
 import { Icon } from '@vicons/utils'
 const store = useServiceStore()
 const marketRef = ref(null)
@@ -56,7 +57,7 @@ const nextTab =async ()=>{
           <CreateMarket ref="marketRef" />
         </n-tab-pane>
         <n-tab-pane :name="store.tabList[1]">
-          <CreateMarket/>
+          <MarketSetting/>
         </n-tab-pane>
         <n-tab-pane :name="store.tabList[2]">
           <CreateMarket/>

@@ -5,6 +5,7 @@
         "cancel": "Bekor qilish",
         "help": "Yordam",
         "enterField": "Kiriting",
+        "phone":"Telefon raqam",
         "langUz": "Uzbek",
         "langRu": "Rus",
         "langEn": "Ingliz"
@@ -49,6 +50,11 @@
             "imageRequired": "Yuklanayotgan rasm (.png) fromatda yuklashi kerak va uning o'lchami 2MB dan katta bo'lmasligi kerak.",
             "token": "Telegram bot token",
             "tokenDescription": "Qanday qilib telegram bot token olish?"
+        },
+        "marketSetting": {
+            "language": "Dasturning foydalanish tillari tanlang",
+            "contactPhone": "Bo'g'lanish uchun telefon raqam",
+            "address": "To'liq manzil"
         },
         "next": "Keyingi",
         "previous": "Oldingi"

@@ -3,14 +3,21 @@ import {defineStore} from "pinia"
 export const useServiceStore = defineStore('servcieStore',{
     state:()=>({
         stepStatus:'process',
-        currentStep:1,
+        currentStep:2,
         market:{
             name:null,
             description:null,
             bot_token:null,
             image:[],
         },
-        activeTab:1,
+        marketSetting:{
+            languages:['en'],
+            contactPhone:null,
+            address:null,
+        },
+
+
+        activeTab:2,
         tabList:[1,2,3,4],
         loading:false,
     }),
@@ -25,7 +32,7 @@ export const useServiceStore = defineStore('servcieStore',{
             this.activeTab--
         },
         createStore(){
-            this.loading = true
+            // this.loading = true
             console.log(this.market)
         }
 
