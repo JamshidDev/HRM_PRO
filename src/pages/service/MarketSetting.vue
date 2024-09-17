@@ -7,7 +7,7 @@ const store = useServiceStore()
 </script>
 
 <template>
-  <div class="w-[500px] mx-auto p-5 rounded border border-surface-line mt-5">
+  <div class="w-[600px] mx-auto p-5 rounded border border-surface-line mt-5">
     <n-form>
       <n-form-item  :label="$t(`service.marketSetting.language`)">
         <n-checkbox-group
@@ -44,8 +44,7 @@ const store = useServiceStore()
 
         />
       </n-form-item>
-      <h3>Map</h3>
-      <Map/>
+      <Map class="border-surface-line border rounded" />
     </n-form>
   </div>
 

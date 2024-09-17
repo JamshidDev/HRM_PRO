@@ -1,35 +1,38 @@
-<!-- YandexMap.vue -->
-<template>
-  <div ref="mapContainer" style="width: 100%; height: 400px;"></div>
-</template>
 
-<script setup lang="ts">
-import { ref, onMounted } from 'vue';
-import ymaps from 'yandex-maps'; // Import the Yandex Maps library
-
-const mapContainer = ref<HTMLElement | null>(null); // Reference to the map container div
-
-onMounted(() => {
-  // Ensure the map is loaded before initializing
-  ymaps
-      .load()
-      .then((ymapsInstance) => {
-        const map = new ymapsInstance.Map(mapContainer.value!, {
-          center: [55.751244, 37.618423], // Default coordinates: Moscow
-          zoom: 10,
-          controls: ['zoomControl', 'geolocationControl'],
-        });
-
-        // Add a placemark
-        const placemark = new ymapsInstance.Placemark([55.751244, 37.618423], {
-          balloonContent: 'Moscow',
-        });
-        map.geoObjects.add(placemark);
-      })
-      .catch((error) => console.error('Failed to load Yandex Maps:', error));
-});
+<script setup>
+import { yandexMap, ymapMarker } from "vue-yandex-maps"
+import { ref, watch } from 'vue'
+const coords = ref([40.3842, 71.7843])
+const marker_cords = ref([40.3842,71.7843])
+const lat = ref(40.3842)
+const long = ref(71.7843)
+const markerIcon = {
+  imageHref: "https://cdn-icons-png.flaticon.com/512/2555/2555572.png",
+  imageSize: [43, 43],
+  imageOffset: [0, 0],
+}
+const controls =  ['zoomControl','geolocationControl','fullscreenControl','searchControl']
+// watch(lat, (val) => {
+//   map.lat = val
+// })
+// watch(long, (val) => {
+//   map.long = val
+// })
+const onClick = (e) => {
+  marker_cords.value = e.get('coords')
+  lat.value = e.get('coords')[0]
+  long.value = e.get('coords')[1]
+}
 </script>
 
-<style scoped>
-/* Optional styling for the map container */
-</style>
+<template>
+  <yandex-map
+      :coords="coords"
+      zoom="9"
+      style="height: 200px"
+      :controls="controls"
+      @click="onClick"
+  >
+    <ymap-marker marker-id="123" :coords="marker_cords" :icon="markerIcon"/>
+  </yandex-map>
+</template>
