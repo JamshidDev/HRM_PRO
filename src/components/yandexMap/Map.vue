@@ -1,38 +1,110 @@
-
-<script setup>
-import { yandexMap, ymapMarker } from "vue-yandex-maps"
-import { ref, watch } from 'vue'
-const coords = ref([40.3842, 71.7843])
-const marker_cords = ref([40.3842,71.7843])
-const lat = ref(40.3842)
-const long = ref(71.7843)
-const markerIcon = {
-  imageHref: "https://cdn-icons-png.flaticon.com/512/2555/2555572.png",
-  imageSize: [43, 43],
-  imageOffset: [0, 0],
-}
-const controls =  ['zoomControl','geolocationControl','fullscreenControl','searchControl']
-// watch(lat, (val) => {
-//   map.lat = val
-// })
-// watch(long, (val) => {
-//   map.long = val
-// })
-const onClick = (e) => {
-  marker_cords.value = e.get('coords')
-  lat.value = e.get('coords')[0]
-  long.value = e.get('coords')[1]
-}
-</script>
-
 <template>
   <yandex-map
-      :coords="coords"
-      zoom="9"
-      style="height: 200px"
-      :controls="controls"
-      @click="onClick"
+      v-model="map"
+      :settings="{
+        location: {
+          center: [69.240562,41.311081],
+          zoom: 16,
+        },
+      }"
+      width="100%"
+      height="500px"
   >
-    <ymap-marker marker-id="123" :coords="marker_cords" :icon="markerIcon"/>
+    <yandex-map-default-scheme-layer/>
+    <yandex-map-default-features-layer/>
+    <yandex-map-default-marker
+        v-model="defaultMarker"
+        :settings="{
+            coordinates:[69.240562,41.311081],
+            title: `Долгота: 23`,
+            draggable: true,
+            onDragMove,
+        }"
+    />
+    <yandex-map-controls :settings="{ position: 'bottom right' }">
+      <yandex-map-geolocation-control/>
+    </yandex-map-controls>
+    <yandex-map-listener
+        :settings="{
+             onClick: createEvent('dom', 'click'),
+        }"
+    />
   </yandex-map>
 </template>
+
+<script setup lang="ts">
+import { shallowRef } from 'vue';
+import { YandexMap,
+  YandexMapDefaultSchemeLayer,
+  YandexMapDefaultMarker,
+  YandexMapDefaultFeaturesLayer,
+  YandexMapGeolocationControl,
+  YandexMapControls,YandexMapListener
+} from 'vue-yandex-maps';
+import type { BehaviorMapEventHandler, BehaviorType, DomEvent } from '@yandex/ymaps3-types';
+//Можно использовать для различных преобразований
+const map = shallowRef(null);
+const defaultMarker = shallowRef(null);
+const onDragMove = () => {
+  console.log(defaultMarker.value)
+  triggerRef(defaultMarker);
+};
+function debounce<T extends Function>(func: T, delay: number): (...args: any[]) => void {
+  let timeoutId: ReturnType<typeof setTimeout>;
+
+return function _(this: any, ...args: any[]): void {
+  clearTimeout(timeoutId);
+
+  timeoutId = setTimeout(() => {
+    func.apply(this, args);
+  }, delay);
+};
+}
+const events = reactive({
+  map: {
+    update: false,
+    resize: false,
+  },
+  dom: {
+    click: false,
+    fastClick: false,
+    dblClick: false,
+    contextMenu: false,
+    rightDblClick: false,
+    mouseMove: false,
+    mouseEnter: false,
+    mouseLeave: false,
+    mouseUp: false,
+    mouseDown: false,
+  },
+  behavior: {
+    scrollZoom: false,
+    drag: false,
+    mouseRotate: false,
+    mouseTilt: false,
+  },
+});
+const createEvent = <T extends keyof typeof events, E = keyof typeof events[T]>(category: T, type: E | boolean): any => {
+  const eventState = events[category] as any;
+
+  if (typeof type !== 'boolean') {
+    const endEvent = debounce(() => {
+      eventState[type] = false;
+    }, 250);
+
+    return (object: Record<string, any>, event?: DomEvent) => {
+      console.log(`${ type } Object: `, object, `\n`, `${ type } Event: `, event);
+
+      eventState[type] = true;
+      endEvent();
+    };
+  }
+  return (object: Parameters<BehaviorMapEventHandler>[0]) => {
+    console.log(`${ type ? 'actionStart' : 'actionEnd' } Object:`, object);
+    if (!(object.type in events.behavior)) return;
+
+    eventState[object.type] = type;
+  };
+};
+
+</script>
