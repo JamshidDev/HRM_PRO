@@ -19,16 +19,16 @@ const onSubmit = () => {
 
 </script>
 <template>
-  <div class="w-full min-h-screen flex justify-center items-center">
+  <div class="w-full min-h-screen flex justify-center items-center bg-surface-ground">
     <n-form
         :rules="ValidationRules.verificationEmail"
         v-model="formValue"
         ref="formRef"
-        class="flex flex-col border border-surface-line xl:w-[440px] rounded w-[360px] px-[30px] py-[40px]"
+        class="flex flex-col border border-surface-line xl:w-[440px] rounded w-[360px] px-[30px] py-[40px] bg-surface-section"
     >
       <div class="w-full">
         <span class="font-bold text-3xl block text-center uppercase">{{ $t('verificationEmail.title') }}</span>
-        <span class="block mt-5 text-sm text-center bg-green-100 p-[10px] text-green-600 rounded">{{ $t('verificationEmail.subtitle', {email: 'raximovj662@gamil.com'}) }}</span>
+        <span class="block mt-5 text-sm text-center bg-green-100 border border-green-300 p-[10px] text-green-600 rounded">{{ $t('verificationEmail.subtitle', {email: 'raximovj662@gamil.com'}) }}</span>
       </div>
       <n-form-item class="mb-5" path="verificationCode">
         <n-input

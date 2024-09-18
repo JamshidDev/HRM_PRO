@@ -54,5 +54,23 @@ export default {
             message: t(`rules.requiredField`),
             trigger: ['input', 'blur']
         },
+    },
+    marketSetting:{
+        languages:{
+            type: "array",
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: ['input', 'blur']
+        },
+        contactPhone:{
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: ['input', 'blur']
+        },
+        address:{
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: ['input', 'blur']
+        },
     }
 }

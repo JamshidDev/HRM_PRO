@@ -17,8 +17,8 @@ const onSubmit = ()=>{
 </script>
 
 <template>
-  <div class="w-full min-h-screen flex justify-center items-center">
-    <div class="w-[1000px] border border-surface-line flex rounded overflow-hidden">
+  <div class="w-full min-h-screen flex justify-center items-center bg-surface-ground">
+    <div class="w-[1000px] flex overflow-hidden border border-surface-line rounded shadow-sm bg-surface-section">
       <n-form
           ref="formRef"
           :rules="validationRules.register"
@@ -67,8 +67,13 @@ const onSubmit = ()=>{
           >{{$t(`registerPage.title`)}}</n-button>
         </n-form-item>
       </n-form>
-      <div class="min-h-full bg-green-200" style="width: calc(100% - 400px)">
-
+      <div
+          class="min-h-full
+          bg-cover bg-right relative
+          before:content-[''] before:w-full before:absolute
+          before:top-0 before:bottom-0 before:left-0 before:bg-[#00000057]
+          bg-[url('/public/register.webp')]"
+          style="width: calc(100% - 400px);">
       </div>
     </div>
   </div>

@@ -169,7 +169,9 @@ module.exports = {
       'orange-800': 'var(--orange-800)',
       'orange-900': 'var(--orange-900)',
     },
-    extend: {},
+    extend: {
+
+      },
   },
   plugins: [],
 }

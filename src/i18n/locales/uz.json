@@ -54,7 +54,8 @@
         "marketSetting": {
             "language": "Dasturning foydalanish tillari tanlang",
             "contactPhone": "Bo'g'lanish uchun telefon raqam",
-            "address": "To'liq manzil"
+            "address": "To'liq manzil",
+            "mapAddress": "Xaritadan market adressini belgilang"
         },
         "next": "Keyingi",
         "previous": "Oldingi"

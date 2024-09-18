@@ -21,12 +21,12 @@ const onSubmit = ()=>{
 </script>
 
 <template>
-<div class="flex justify-center items-center h-screen w-full">
+<div class="flex justify-center items-center h-screen w-full bg-surface-ground">
   <n-form
       ref="formRef"
       :rules="validationRules.login"
       :model="store"
-      class="flex flex-col border-surface-line xl:w-[400px]  w-[360px]"
+      class="flex flex-col border border-surface-line xl:w-[440px]  w-[360px] bg-surface-section p-[40px] rounded shadow-sm"
   >
     <div class="grid grid-cols-1">
       <div class="flex justify-center">

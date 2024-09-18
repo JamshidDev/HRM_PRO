@@ -7,14 +7,16 @@ import MarketSetting from "@/pages/service/MarketSetting.vue";
 import { Icon } from '@vicons/utils'
 const store = useServiceStore()
 const marketRef = ref(null)
+const marketSettingRef = ref(null)
 
 const nextTab =async ()=>{
   if(store.activeTab === 1){
     store.createStore()
     const error =await marketRef.value.onSubmit()
     store.activeTab += Boolean(!error)
-  }else if(store.activeTab === 12){
-
+  }else if(store.activeTab === 2){
+    const error =await marketSettingRef.value.onSubmit()
+    store.activeTab += Boolean(!error)
   }
 
 }
@@ -57,7 +59,7 @@ const nextTab =async ()=>{
           <CreateMarket ref="marketRef" />
         </n-tab-pane>
         <n-tab-pane :name="store.tabList[1]">
-          <MarketSetting/>
+          <MarketSetting ref="marketSettingRef" />
         </n-tab-pane>
         <n-tab-pane :name="store.tabList[2]">
           <CreateMarket/>
