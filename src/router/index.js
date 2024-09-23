@@ -7,6 +7,8 @@ import RegisterPage from "@/pages/register/RegisterPage.vue";
 import ServiceLayout from "@/layouts/Organization/Service/ServiceLayout.vue";
 import MainLayout from "@/layouts/Main/MainLayout.vue";
 import VerificationEmailPage from "@/pages/verificationEmail/VerificationEmailPage.vue"
+import DashboardPage from "@/pages/dashboard/DashboardPage.vue";
+import CategoryPage from "@/pages/product/category/CategoryPage.vue";
 
 
 
@@ -15,6 +17,18 @@ const routes = [
         path:"/admin",
         name:"mainLayout",
         component:MainLayout,
+        children: [
+            {
+                path:"/admin/dashboard",
+                name:"dashboard",
+                component:DashboardPage,
+            },
+            {
+                path:"/admin/product/category",
+                name:"product-category",
+                component:CategoryPage,
+            }
+        ]
     },
     {
         path:"/register",

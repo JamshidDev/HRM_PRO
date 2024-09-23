@@ -4,6 +4,7 @@ import uzFlag from "../../assets/images/content/uz.png"
 import ruFlag from "../../assets/images/content/ru.png"
 import enFlag from "../../assets/images/content/en.png"
 import i18n from "../../i18n/index.js"
+import { Navigation16Regular } from '@vicons/fluent'
 const {t} = i18n.global
  const options= [
     {
@@ -97,6 +98,13 @@ const {t} = i18n.global
    },
 ]
 
+const emits = defineEmits(['onClick'])
+const props = defineProps(['sidebarOption'])
+
+const changeSidebarEmit = ()=>{
+  emits('onClick', !props.sidebarOption)
+}
+
 
 </script>
 
@@ -106,9 +114,16 @@ const {t} = i18n.global
      flex justify-between items-center px-[20px]
 "
   >
-    <div></div>
+    <div class="flex items-center">
+      <div
+          @click="changeSidebarEmit"
+          class="text-surface-300 border border-surface-300 p-1 flex justify-center items-center cursor-pointer rounded">
+        <n-icon size="18">
+          <Navigation16Regular />
+        </n-icon>
+      </div>
+    </div>
     <div class="flex gap-2 justify-end items-center">
-
       <n-dropdown trigger="click" :options="options">
         <div class="flex items-center gap-2  border-surface-line p-1 rounded cursor-pointer">
           <n-avatar

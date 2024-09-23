@@ -24,8 +24,11 @@ const controlSidebar=(v)=>sidebar.value =v
 
     <div class="main__section">
       <!--    Main page section-->
-      <AppHeader/>
-      <button @click="sidebar=!sidebar">Control sidebar</button>
+      <AppHeader
+          :sidebarOption="sidebar"
+          @on-click="controlSidebar"
+      />
+      <router-view />
     </div>
 
     <div v-if="sidebar" @click="controlSidebar(false)" class="mobile_overall"></div>
