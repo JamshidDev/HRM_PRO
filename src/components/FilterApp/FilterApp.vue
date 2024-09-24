@@ -4,20 +4,50 @@ const search = ref(null)
 
 
 const props = defineProps({
-  showSearch:{
+  title:{
+    type:String,
+    default:null,
+  },
+  showSearchInput:{
     type:Boolean,
     default:true,
+  },
+  showAddButton:{
+    type:Boolean,
+    default:true,
+  },
+  showFilterButton:{
+    type:Boolean,
+    default:true,
+  },
+  filterCount:{
+    type:Number,
+    default:0
+  },
+  popoverStyle:{
+    type:Object,
+    default:{
+      width:'300px',
+      height:'300px'
+    }
   }
 })
+
+const emits = defineEmits(['onAdd', 'onSearch'])
+
+
+const addEvent = ()=>{
+  emits('onAdd')
+}
 </script>
 
 <template>
     <div class="grid grid-cols-1">
-      <div><span class="text-lg font-semibold inline-block mb-2 text-surface-600">Kategoriyalar ro'yhati</span></div>
+      <div v-if="title"><span class="text-lg font-semibold inline-block mb-2 text-surface-600">{{title}}</span></div>
       <div class="grid grid-cols-2 gap-4">
         <div class="flex items-center gap-4">
           <n-input
-              v-if="showSearch"
+              v-if="showSearchInput"
               style="max-width: 200px; width: 100%"
               v-model:value="search"
               type="text"
@@ -33,6 +63,7 @@ const props = defineProps({
         <div class="flex items-center justify-end gap-4">
           <slot name="filterAction"></slot>
           <n-button
+              v-if="showAddButton"
               type="success"
               icon-placement="right"
           >
@@ -44,20 +75,20 @@ const props = defineProps({
             {{$t('content.add')}}
           </n-button>
           <n-popover
-              style="
-            width:300px;
-            height:300px"
+              v-if="showFilterButton"
+              v-bind:style="popoverStyle"
               trigger="click"
               scrollable
               placement="bottom"
           >
             <template #trigger>
               <n-badge
-                  :value="2"
+                  :value="filterCount"
                   :max="15"
                   :type="'success'"
               >
                 <n-button
+                    @click="addEvent"
                     type="success"
                     ghost
                     icon-placement="right"
