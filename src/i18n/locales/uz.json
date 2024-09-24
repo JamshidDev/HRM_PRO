@@ -8,7 +8,10 @@
         "phone":"Telefon raqam",
         "langUz": "Uzbek",
         "langRu": "Rus",
-        "langEn": "Ingliz"
+        "langEn": "Ingliz",
+        "search": "Qidiruv",
+        "add": "Qo'shish",
+        "filterSetting": "Filter sozlamalar"
     },
     "rules": {
         "login": "Email kiritilishi shart!",

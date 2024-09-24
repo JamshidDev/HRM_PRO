@@ -111,7 +111,7 @@ const changeSidebarEmit = ()=>{
 <template>
   <div class="app__header-container
      w-full h-[58px] bg-surface-section border-b  border-surface-line
-     flex justify-between items-center px-[20px]
+     flex justify-between items-center px-[10px]
 "
   >
     <div class="flex items-center">
