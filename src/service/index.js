@@ -7,7 +7,7 @@ const instance = axios.create({
 });
 
 instance.interceptors.request.use(function (config) {
-    let token = localStorage.getItem('access_token') ? localStorage.getItem('access_token') : null;
+    let token = localStorage.getItem('token') ? localStorage.getItem('token') : null;
     if (token) {
         config.headers['Access-Control-Allow-Origin'] = '*'
         config.headers['Authorization'] = 'Bearer ' + token
@@ -19,9 +19,10 @@ instance.interceptors.request.use(function (config) {
 instance.interceptors.response.use(
     response => response,
     error => {
-        if(error.response?.status==401){
+        if(error.response?.status===401){
+            $Toast.error(error.response.data.detail)
             router.push("/login")
-        }else if(error.response?.status==422){
+        }else if(error.response?.status===422){
             if(Array.isArray(error.response.data.detail)){
                 error.response.data.detail.forEach((msg, index) => {
                     $Toast.error(msg)

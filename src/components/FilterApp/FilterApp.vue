@@ -64,7 +64,7 @@ const addEvent = ()=>{
           <slot name="filterAction"></slot>
           <n-button
               v-if="showAddButton"
-              type="success"
+              type="primary"
               icon-placement="right"
           >
             <template #icon>

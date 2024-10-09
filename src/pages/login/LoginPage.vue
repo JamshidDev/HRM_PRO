@@ -26,7 +26,7 @@ const onSubmit = ()=>{
       ref="formRef"
       :rules="validationRules.login"
       :model="store"
-      class="flex flex-col border border-surface-line xl:w-[440px]  w-[360px] bg-surface-section p-[40px] rounded shadow-sm"
+      class="flex flex-col border border-surface-line xl:w-[400px]  w-[360px] bg-surface-section p-[40px] rounded shadow-md"
   >
     <div class="grid grid-cols-1">
       <div class="flex justify-center">

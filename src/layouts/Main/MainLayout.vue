@@ -2,6 +2,10 @@
 import {computed, ref} from "vue";
 import AppSidebar from "@/layouts/Main/AppSidebar.vue";
 import AppHeader from "@/layouts/Main/AppHeader.vue";
+import {useAccountStore} from "@/store/modules/accountStore.js";
+const store = useAccountStore()
+
+
 
 const sidebar = ref(true)
 const layoutClass = computed(()=>({
@@ -10,6 +14,10 @@ const layoutClass = computed(()=>({
 }))
 
 const controlSidebar=(v)=>sidebar.value =v
+
+onMounted(()=>{
+  store._account()
+})
 </script>
 
 <template>

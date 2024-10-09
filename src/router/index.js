@@ -9,54 +9,67 @@ import MainLayout from "@/layouts/Main/MainLayout.vue";
 import VerificationEmailPage from "@/pages/verificationEmail/VerificationEmailPage.vue"
 import DashboardPage from "@/pages/dashboard/DashboardPage.vue";
 import CategoryPage from "@/pages/product/category/CategoryPage.vue";
+import {AppPaths} from "@/utils/index.js";
+
+const beforeLogin = (to, from, next) => {
+    const token = localStorage.getItem("token");
+    if (token) {
+        next()
+    }else {
+        localStorage.removeItem("token");
+        localStorage.removeItem("refresh_token");
+        next(AppPaths.Login);
+    }
+};
 
 
 
 const routes = [
     {
-        path:"/admin",
-        name:"mainLayout",
+        path:AppPaths.Main,
         component:MainLayout,
+        beforeEnter: beforeLogin,
+        redirect: AppPaths.Admin,
+    },
+    {
+        path:AppPaths.Admin,
+        name:AppPaths.Admin.substring(1),
+        component:MainLayout,
+        beforeEnter: beforeLogin,
         children: [
             {
-                path:"/admin/dashboard",
-                name:"dashboard",
+                path:`${AppPaths.Admin}${AppPaths.Dashboard}`,
+                name:AppPaths.Dashboard.substring(1),
                 component:DashboardPage,
             },
             {
-                path:"/admin/product/category",
-                name:"product-category",
+                path:`${AppPaths.Admin}${AppPaths.Category}`,
+                name:AppPaths.Category.substring(1),
                 component:CategoryPage,
             }
         ]
     },
     {
-        path:"/register",
-        name:"register",
+        path:AppPaths.Register,
+        name:AppPaths.Register.substring(1),
         component:RegisterPage,
         children:[]
     },
     {
-        path:"/verification-email",
-        name:"verificationEmail",
+        path:AppPaths.VerificationEmail,
+        name:AppPaths.VerificationEmail.substring(1),
         component:VerificationEmailPage,
         children:[]
     },
     {
-        path:"/login",
-        name:"login",
-        component:LoginPage,
-        children:[]
-    },
-    {
-        path:"/register-service",
-        name:"register-service",
+        path:AppPaths.RegisterService,
+        name:AppPaths.RegisterService.substring(1),
         component:ServiceLayout,
         children:[]
     },
     {
-        path:"/login",
-        name:"login",
+        path:AppPaths.Login,
+        name:AppPaths.Login.substring(1),
         component:LoginPage,
     },
     {
