@@ -1,5 +1,6 @@
 <script setup>
 import {Search48Filled, AddCircle24Regular, Filter20Filled} from '@vicons/fluent'
+import { useDebounceFn } from '@vueuse/core'
 const search = ref(null)
 
 
@@ -35,6 +36,10 @@ const props = defineProps({
 
 const emits = defineEmits(['onAdd', 'onSearch'])
 
+const searchEvent = useDebounceFn(() => {
+  emits('onSearch', search.value )
+}, 300, )
+
 
 const addEvent = ()=>{
   emits('onAdd')
@@ -52,6 +57,7 @@ const addEvent = ()=>{
               v-model:value="search"
               type="text"
               :placeholder="$t('content.search')"
+              :on-keyup="searchEvent"
 
           >
             <template #suffix>

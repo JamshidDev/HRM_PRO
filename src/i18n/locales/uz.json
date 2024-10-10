@@ -11,12 +11,24 @@
         "langEn": "Ingliz",
         "search": "Qidiruv",
         "add": "Qo'shish",
-        "filterSetting": "Filter sozlamalar"
+        "filterSetting": "Filter sozlamalar",
+        "news": "Yangi",
+        "action": "Amallar",
+        "fullName": "Ism",
+        "number": "№",
+        "photo": "Rasm",
+        "platform": "Platforma",
+        "date": "Sana"
     },
     "rules": {
         "login": "Email kiritilishi shart!",
         "password": "Parol kiritilishi shart!",
         "requiredField": "Maydon to'ldirilishi shart!"
+    },
+    "navigation": {
+        "client": "Mijozlar",
+        "product": "Mahsulotlar",
+        "category": "Kategoriyalar"
     },
 
     "loginPage":{

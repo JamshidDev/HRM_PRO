@@ -4,12 +4,14 @@ import {onMounted, ref} from "vue";
 
 const panelPath = ref(null)
 const path = ref(null)
-
-const collapse = ref(false)
+import {useRouter, useRoute} from "vue-router";
+const router = useRouter()
+const routes = useRoute()
 
 const selectRoot =(mainPath, v=null)=>{
   panelPath.value = v
   path.value = mainPath
+  router.push(mainPath)
   saveRoot(mainPath,v)
 }
 
@@ -18,10 +20,10 @@ const saveRoot = (path, panelPath)=>{
 }
 
 const rememberSidebar = ()=>{
+  path.value = routes.path
   let store = localStorage.getItem('sidebarStore')?JSON.parse(localStorage.getItem('sidebarStore')) : null
   if(store){
     panelPath.value = store.panelPath
-    path.value = store.path
   }
 }
 
@@ -51,7 +53,7 @@ onMounted(()=>{
             <span :class="item.icon"></span>
           </div>
           <div class="item__label">
-            <span>{{item.label}}</span>
+            <span>{{$t(item.label)}}</span>
             <span class="bx bx-chevron-down arrow__icon"></span>
           </div>
         </div>
@@ -85,8 +87,8 @@ onMounted(()=>{
           <span :class="item.icon"></span>
         </div>
         <div class="item-label">
-          <span>{{item.label}}</span>
-          <span class="item-tooltip">Yangi</span>
+          <span>{{$t(item.label)}}</span>
+          <span class="item-tooltip">{{$t('content.news')}}</span>
         </div>
       </div>
     </template>

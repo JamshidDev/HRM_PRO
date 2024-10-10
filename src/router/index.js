@@ -9,6 +9,7 @@ import MainLayout from "@/layouts/Main/MainLayout.vue";
 import VerificationEmailPage from "@/pages/verificationEmail/VerificationEmailPage.vue"
 import DashboardPage from "@/pages/dashboard/DashboardPage.vue";
 import CategoryPage from "@/pages/product/category/CategoryPage.vue";
+import ClientPage from "@/pages/client/clientPage.vue";
 import {AppPaths} from "@/utils/index.js";
 
 const beforeLogin = (to, from, next) => {
@@ -46,6 +47,11 @@ const routes = [
                 path:`${AppPaths.Admin}${AppPaths.Category}`,
                 name:AppPaths.Category.substring(1),
                 component:CategoryPage,
+            },
+            {
+                path:`${AppPaths.Admin}${AppPaths.Client}`,
+                name:AppPaths.Client.substring(1),
+                component:ClientPage,
             }
         ]
     },

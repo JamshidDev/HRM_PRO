@@ -11,7 +11,9 @@
   },
   "dependencies": {
     "@vicons/utils": "^0.1.4",
+    "@vueuse/core": "^11.1.0",
     "axios": "^1.7.5",
+    "dayjs": "^1.11.13",
     "maska": "^3.0.2",
     "naive-ui": "^2.39.0",
     "pinia": "^2.2.2",
