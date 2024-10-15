@@ -19,9 +19,15 @@ instance.interceptors.request.use(function (config) {
 instance.interceptors.response.use(
     response => response,
     error => {
-        if(error.response?.status==401){
+        console.log(error.response)
+        if(error.response?.status===401){
+            if(Array.isArray(error.response.data.detail)){
+                error.response.data.detail.forEach((msg, index) => {
+                    $Toast.error(msg)
+                })
+            }
             router.push("/login")
-        }else if(error.response?.status==422){
+        }else if(error.response?.status===422){
             if(Array.isArray(error.response.data.detail)){
                 error.response.data.detail.forEach((msg, index) => {
                     $Toast.error(msg)
