@@ -1,3 +1,6 @@
+import {AppPaths} from "@/utils/index.js";
+import {PersonTag28Regular} from '@vicons/fluent'
+
 export default [
     {
         label:'Dashboard',
@@ -50,17 +53,25 @@ export default [
         flag:'New',
     },
     {
-        label:'Invoices',
+        label:'navigation.client',
         icon:'bx bx-folder',
-        path:'/profile-2',
+        path:`${AppPaths.Admin}${AppPaths.Client}`,
         visible:true,
         isNew:false,
         flag:'New',
     },
     {
-        label:'My tasks',
+        label:'navigation.product',
         icon:'bx bx-folder',
-        path:'/profile-3',
+        path:`${AppPaths.Admin}${AppPaths.Product}`,
+        visible:true,
+        isNew:false,
+        flag:'New',
+    },
+    {
+        label:'navigation.category',
+        icon:'bx bx-folder',
+        path:`${AppPaths.Admin}${AppPaths.Category}`,
         visible:true,
         isNew:false,
         flag:'New',

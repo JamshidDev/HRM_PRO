@@ -6,17 +6,29 @@
         "help": "Yordam",
         "enterField": "Kiriting",
         "phone":"Telefon raqam",
-        "langUz": "Uzbek",
+        "langUz": "O'zbek",
         "langRu": "Rus",
         "langEn": "Ingliz",
         "search": "Qidiruv",
         "add": "Qo'shish",
-        "filterSetting": "Filter sozlamalar"
+        "filterSetting": "Filter sozlamalar",
+        "news": "Yangi",
+        "action": "Amallar",
+        "fullName": "Ism",
+        "number": "№",
+        "photo": "Rasm",
+        "platform": "Platforma",
+        "date": "Sana"
     },
     "rules": {
         "login": "Email kiritilishi shart!",
         "password": "Parol kiritilishi shart!",
         "requiredField": "Maydon to'ldirilishi shart!"
+    },
+    "navigation": {
+        "client": "Mijozlar",
+        "product": "Mahsulotlar",
+        "category": "Kategoriyalar"
     },
 
     "loginPage":{
@@ -37,6 +49,13 @@
         "subtitle": "Biz sizning pochta manzilingizga tasdiqlash kodini yubordik {email}",
         "placeholder": "Bu yerga kodni yozing",
         "verification": "Tasdiqlash"
+    },
+    "categoryPage": {
+        "form": {
+            "name": "Kategoriya nomi",
+            "category": "Kategoriyani tanlang",
+            "photo": "Kategoriya uchun rasm yuklang. Rasm o'lchami 128x128 px bo'lishi tavsiya qilinadi."
+        }
     },
 
     "service": {

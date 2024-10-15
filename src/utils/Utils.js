@@ -1,4 +1,5 @@
 
+import dayjs from "dayjs";
 
 const fileToBase64 = (file)=>{
         return new Promise((resolve, reject)=>{
@@ -29,6 +30,17 @@ const getMyLocation =()=>{
 
 }
 
+const timeToZone = (time)=>{
+    return time? dayjs(time).format('YYYY-MM-DDTHH:mm:ssZ') : null
+}
+
+const timeWithMonth = (time)=>{
+    return time? dayjs(time).format('MMMM D, YYYY') : null
+}
+
+
+
+
 
 
 
@@ -40,4 +52,6 @@ export default {
     fileToBase64,
     onlyAllowNumber,
     getMyLocation,
+    timeToZone,
+    timeWithMonth,
 }

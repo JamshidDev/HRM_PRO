@@ -6,9 +6,9 @@
     "help": "Yordam",
     "enterField": "Kiriting",
     "phone":"Telefon raqam",
-    "langUz": "Uzbek",
-    "langRu": "Russian",
-    "langEn": "English",
+    "langUz": "Узбекский",
+    "langRu": "Русский",
+    "langEn": "Английский",
     "search": "Qidiruv",
     "add": "Qo'shish",
     "filterSetting": "Filter sozlamalar",
@@ -26,9 +26,9 @@
     "requiredField": "Maydon to'ldirilishi shart!"
   },
   "navigation": {
-    "client": "Clients",
-    "product": "Products",
-    "category": "Categories"
+    "client": "Клиенты",
+    "product": "Продукты",
+    "category": "Категории"
   },
 
   "loginPage":{
