@@ -4,3 +4,12 @@
     display: none !important;
   }
 }
+
+.ui-drawer{
+  .n-drawer-header{
+    width: 0 !important;
+    height: 0 !important;
+    overflow: hidden;
+    padding: 0 !important;
+  }
+}
