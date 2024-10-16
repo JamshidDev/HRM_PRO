@@ -72,5 +72,18 @@ export default {
             message: t(`rules.requiredField`),
             trigger: ['input', 'blur']
         },
+    },
+    category:{
+        name:{
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: ['input', 'blur']
+        },
+        image:{
+            required: true,
+            message: t(`rules.requiredImageField`),
+            trigger: ['input', 'blur']
+        },
     }
+
 }

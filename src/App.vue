@@ -1,5 +1,6 @@
 <script setup>
 import ToastProvider from "@/components/Toast/ToastProvider.vue";
+
 </script>
 
 <template>

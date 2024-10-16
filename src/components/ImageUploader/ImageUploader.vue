@@ -25,7 +25,6 @@ const uploadImage = async(e)=>{
     file:file,
     base64:base64
   })
-  console.log(model.value)
 }
 
 const removeImage = (id)=>{

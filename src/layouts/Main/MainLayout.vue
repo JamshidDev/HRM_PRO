@@ -21,7 +21,7 @@ const initialApp = ()=>{
   store._account()
 }
 
-onMounted(()=>{
+onBeforeMount(()=>{
   initialApp()
 
 })

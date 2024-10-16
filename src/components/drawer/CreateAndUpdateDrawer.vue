@@ -8,6 +8,7 @@ const props = defineProps({
 })
 
 const visible = defineModel('visible', {type:Boolean, default:false })
+
 </script>
 
 <template>
@@ -20,11 +21,13 @@ const visible = defineModel('visible', {type:Boolean, default:false })
   >
     <n-drawer-content>
       <template #default>
-        <div class="w-full flex justify-between
+        <div class="w-full flex justify-between items-center
         border-b border-surface-line px-[20px] py-[6px]">
           <span class="text-lg font-medium">{{title}}</span>
           <span>
-            <n-icon class="text-[34px] text-red-500 cursor-pointer">
+            <n-icon
+                @click="visible=false"
+                class="text-[34px] text-red-500 cursor-pointer">
               <ArrowSyncDismiss24Filled/>
             </n-icon>
           </span>
@@ -32,12 +35,6 @@ const visible = defineModel('visible', {type:Boolean, default:false })
         <div class="ui-drawer-content px-[20px] py-[10px]">
           <slot name="content"></slot>
         </div>
-        <div class="ui-drawer-footer">
-          <slot name="footer">
-
-          </slot>
-        </div>
-
 
       </template>
     </n-drawer-content>

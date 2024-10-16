@@ -3,6 +3,7 @@ import FilterApp from "@/components/FilterApp/FilterApp.vue";
 import {UIDrawer} from "@/components/index.js";
 import {useCategoriesStore} from "@/store/modules/categoriesStore.js";
 import createForm from "./ui/createForm.vue"
+import Table from "./ui/Table.vue"
 
 const store = useCategoriesStore()
 
@@ -20,13 +21,14 @@ onMounted(()=>{
     <UIDrawer
         :visible="store.visible"
         @update:visible="(v)=>store.visible = v"
-        :title="`Kategoriya qo'shish`"
+        :title="store.visibleType? $t('categoryPage.form.create') : $t('categoryPage.form.update')"
 
     >
       <template #content>
         <createForm/>
       </template>
     </UIDrawer>
+    <Table/>
 
   </div>
 

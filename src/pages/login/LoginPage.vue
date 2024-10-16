@@ -4,7 +4,6 @@ import {useLoginStore} from "@/store/modules/loginStore.js"
 import validationRules from "@/utils/validationRules.js";
 const store = useLoginStore()
 const router = useRouter()
-import loginContent from "../../../public/login-content.webp"
 
 const formRef = ref(null)
 

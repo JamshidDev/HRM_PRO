@@ -95,7 +95,6 @@ const addEvent = ()=>{
                   :type="'success'"
               >
                 <n-button
-                    @click="addEvent"
                     type="success"
                     ghost
                     icon-placement="right"

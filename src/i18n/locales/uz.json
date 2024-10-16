@@ -18,12 +18,16 @@
         "number": "№",
         "photo": "Rasm",
         "platform": "Platforma",
-        "date": "Sana"
+        "date": "Sana",
+        "name": "Nomi",
+        "description": "Tavsif"
+
     },
     "rules": {
         "login": "Email kiritilishi shart!",
         "password": "Parol kiritilishi shart!",
-        "requiredField": "Maydon to'ldirilishi shart!"
+        "requiredField": "Maydon to'ldirilishi shart!",
+        "requiredImageField": "Rasm yuklanishi shart!"
     },
     "navigation": {
         "client": "Mijozlar",
@@ -54,7 +58,13 @@
         "form": {
             "name": "Kategoriya nomi",
             "category": "Kategoriyani tanlang",
-            "photo": "Kategoriya uchun rasm yuklang. Rasm o'lchami 128x128 px bo'lishi tavsiya qilinadi."
+            "photo": "Kategoriya uchun rasm yuklang. Rasm o'lchami 128x128 px bo'lishi tavsiya qilinadi.",
+            "description": "Tavsif yozing",
+            "create": "Yangi kategoriya qo'shish",
+            "update": "Kategoriyani tahrirlash"
+        },
+        "toast": {
+            "successCreate": "Yangi kategoriya qo'shildi"
         }
     },
 
