@@ -109,7 +109,6 @@ const initialLang = ()=>{
 
 
 const  changeLang=(lang)=>{
-  console.log(lang)
   localStorage.setItem('applicationLang', lang)
   i18n.global.locale = lang
   if(lang ==='uz'){

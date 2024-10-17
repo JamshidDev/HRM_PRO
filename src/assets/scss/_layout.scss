@@ -166,6 +166,12 @@ $transition:width 0.2s ease;
     background-color: var(--surface-ground);
     display: flex;
     flex-direction: column;
+    .page-content{
+      width: 100%;
+      min-height:calc(100vh - 58px);
+      height: 100%;
+      overflow-y: auto;
+    }
   }
 
 

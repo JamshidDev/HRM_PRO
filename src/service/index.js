@@ -24,8 +24,8 @@ instance.interceptors.response.use(
             router.push("/login")
         }else if(error.response?.status===422){
             if(Array.isArray(error.response.data.detail)){
-                error.response.data.detail.forEach((msg, index) => {
-                    $Toast.error(msg)
+                error.response.data.detail.forEach((item, index) => {
+                    $Toast.error(item?.msg || "No message")
                 })
             }
 

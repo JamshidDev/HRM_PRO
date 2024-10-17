@@ -1,12 +1,7 @@
 <script setup>
-import {NAvatar, NText} from "naive-ui";
-import uzFlag from "../../assets/images/content/uz.png"
-import ruFlag from "../../assets/images/content/ru.png"
-import enFlag from "../../assets/images/content/en.png"
-import i18n from "../../i18n/index.js"
 import { Navigation16Regular } from '@vicons/fluent'
 import LangDropdown from "@/components/general/LangDropdown.vue";
-const {t} = i18n.global
+
 
 const emits = defineEmits(['onClick'])
 const props = defineProps(['sidebarOption'])

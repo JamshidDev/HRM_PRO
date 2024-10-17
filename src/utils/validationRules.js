@@ -80,8 +80,9 @@ export default {
             trigger: ['input', 'blur']
         },
         image:{
+            type: "array",
             required: true,
-            message: t(`rules.requiredImageField`),
+            message: t(`rules.requiredField`),
             trigger: ['input', 'blur']
         },
     }

@@ -23,7 +23,8 @@ const uploadImage = async(e)=>{
   model.value.push({
     id:uuidv4(),
     file:file,
-    base64:base64
+    base64:base64,
+    url:null,
   })
 }
 
@@ -48,7 +49,7 @@ const removeImage = (id)=>{
       </n-icon>
       </span>
 
-      <img class="w-full h-full object-cover" :src="item.base64" alt="">
+      <img class="w-full h-full object-cover" :src="item.url || item.base64" alt="">
     </div>
   </template>
   <template v-if="maxCount>model.length">

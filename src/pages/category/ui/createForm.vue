@@ -6,7 +6,6 @@ const store = useCategoriesStore()
 
 
 const formRef = ref(null)
-const images = ref([])
 const options = [
   {
     name:"Category 1",
@@ -26,19 +25,32 @@ const onSubmit = ()=>{
   formRef.value?.validate((error)=>{
     if(!error){
       store.saveLoading = true
-      const files = images.value.map((v)=>v.file)
-      console.log(files)
-      $ApiService.generalService._uploadImage({files}).then((res)=>{
-        store.payload.image = res.data[0].image
-        store.createItem(store.payload)
-      })
+
+      if(store.visibleType){
+        // create data
+        const files = store.payload.image.map((v)=>v.file)
+        $ApiService.generalService._uploadImage({files}).then((res)=>{
+          let data = {...store.payload, image:res.data[0].image}
+          store.createItem(data)
+        })
+      }else{
+      //   edit data
+        store.saveLoading = true
+        if(store.payload.image[0].url){
+          let data = {...store.payload, image:store.payload.image[0].url}
+          store.updateItem(data)
+        }else{
+          const files = store.payload.image.map((v)=>v.file)
+          $ApiService.generalService._uploadImage({files}).then((res)=>{
+            let data = {...store.payload, image:res.data[0].image}
+            store.updateItem(data)
+          })
+        }
+      }
+
     }
   })
 }
-
-watchEffect(()=>{
-  store.payload.image = images.value.length>0? images.value[0].id : null
-})
 </script>
 
 <template>
@@ -50,7 +62,7 @@ watchEffect(()=>{
 
   <n-form-item class="mt-5" :label="$t(`categoryPage.form.photo`)" path="image">
     <ImageUploader
-        v-model="images"
+        v-model="store.payload.image"
     />
     <n-input
         class="!hidden"

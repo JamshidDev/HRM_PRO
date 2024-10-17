@@ -5,6 +5,7 @@ const search = ref(null)
 
 
 const props = defineProps({
+
   title:{
     type:String,
     default:null,
@@ -31,13 +32,19 @@ const props = defineProps({
       width:'300px',
       height:'300px'
     }
+  },
+  searchLoading:{
+    type:Boolean,
+    default:false
   }
 })
+
+const searchModel = defineModel("search",{type:String,default:null })
 
 const emits = defineEmits(['onAdd', 'onSearch'])
 
 const searchEvent = useDebounceFn(() => {
-  emits('onSearch', search.value )
+  emits('onSearch', searchModel.value )
 }, 300, )
 
 
@@ -54,10 +61,11 @@ const addEvent = ()=>{
           <n-input
               v-if="showSearchInput"
               style="max-width: 200px; width: 100%"
-              v-model:value="search"
+              v-model:value="searchModel"
               type="text"
               :placeholder="$t('content.search')"
               :on-keyup="searchEvent"
+              :loading="searchLoading"
 
           >
             <template #suffix>

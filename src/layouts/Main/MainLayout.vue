@@ -8,22 +8,41 @@ const store = useAccountStore()
 
 
 
-const sidebar = ref(true)
-const layoutClass = computed(()=>({
-  open__sidebar:sidebar.value,
-  close__sidebar:!sidebar.value,
-}))
+const sidebar = ref(false)
 
-const controlSidebar=(v)=>sidebar.value =v
+const controlSidebar=(v)=>{
+  localStorage.setItem('appSidebar', JSON.stringify(v))
+  sidebar.value =v
+}
 
 const initialApp = ()=>{
   i18n.global.locale = localStorage.getItem('applicationLang') || 'uz'
   store._account()
 }
 
+const initialMountApp = ()=>{
+  const appSidebar = localStorage.getItem('appSidebar')
+  sidebar.value = JSON.parse(appSidebar)
+  console.log(sidebar.value)
+}
+
+const layoutClass = computed(()=>{
+  let data = {
+    open__sidebar:sidebar.value,
+    close__sidebar:!sidebar.value,
+  }
+
+  console.log(data)
+
+
+  return data
+})
+
 onBeforeMount(()=>{
   initialApp()
-
+})
+onMounted(()=>{
+  initialMountApp()
 })
 </script>
 
@@ -42,12 +61,15 @@ onBeforeMount(()=>{
           :sidebarOption="sidebar"
           @on-click="controlSidebar"
       />
+      <div class="page-content">
+        <router-view v-slot="{ Component }">
+          <transition name="slide-right" mode="out-in">
+            <component :is="Component" />
+          </transition>
+        </router-view>
+      </div>
 
-      <router-view v-slot="{ Component }">
-        <transition name="slide-right" mode="out-in">
-          <component :is="Component" />
-        </transition>
-      </router-view>
+
     </div>
     <div v-if="sidebar" @click="controlSidebar(false)" class="mobile_overall"></div>
   </div>

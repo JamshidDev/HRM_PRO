@@ -4,9 +4,13 @@ const {t} = i18n.global
 export const useCategoriesStore = defineStore('categoriesStore',{
     state:()=>({
         list:[],
+        totalItems:0,
         loading:false,
         saveLoading:false,
+        deleteLoading:false,
+        categoryId:null,
         params:{
+            search:null,
             page:1,
             size:10,
         },
@@ -27,7 +31,8 @@ export const useCategoriesStore = defineStore('categoriesStore',{
         _index(){
             this.loading = true
             $ApiService.categoryService._getCategories({params:this.params}).then((res)=>{
-                this.list = res.data
+                this.list = res.data.items
+                this.totalItems = res.data.total
             }).finally(()=>{
                 this.loading = false
             })
@@ -35,16 +40,43 @@ export const useCategoriesStore = defineStore('categoriesStore',{
 
         createItem(data){
             $ApiService.categoryService._createCategory({data}).then((res)=>{
+                this.visible = false
                 $Toast.success(t('categoryPage.toast.successCreate'))
+                this._index()
             }).finally(()=>{
-
+                this.saveLoading = false
+            })
+        },
+        updateItem(data){
+            const categoryId = this.categoryId
+            $ApiService.categoryService._updateCategory({categoryId,data}).then((res)=>{
+                $Toast.success(t('categoryPage.toast.successUpdate'))
+                this._index()
+            }).finally(()=>{
                 this.saveLoading = false
                 this.visible = false
+
+            })
+        },
+        deleteItem(){
+            this.deleteLoading = true
+            const categoryId = this.categoryId
+            $ApiService.categoryService._deleteCategory({categoryId}).then((res)=>{
+                $Toast.success(t('categoryPage.toast.successUpdate'))
                 this._index()
+            }).finally(()=>{
+                this.deleteLoading = false
             })
         },
         openVisible(v){
             this.visible = v
+        },
+
+        resetPayload(){
+            this.payload.parent_id = null
+            this.payload.name = null
+            this.payload.description = null
+            this.payload.image = []
         }
     }
 })

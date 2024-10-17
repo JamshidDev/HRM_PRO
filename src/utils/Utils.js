@@ -37,6 +37,7 @@ const timeToZone = (time)=>{
 const timeWithMonth = (time)=>{
     return time? dayjs(time).format('MMMM D, YYYY') : null
 }
+const noAvailableImage = "/public/fail-image.png"
 
 
 
@@ -54,4 +55,5 @@ export default {
     getMyLocation,
     timeToZone,
     timeWithMonth,
+    noAvailableImage,
 }

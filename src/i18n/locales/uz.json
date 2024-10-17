@@ -20,8 +20,12 @@
         "platform": "Platforma",
         "date": "Sana",
         "name": "Nomi",
-        "description": "Tavsif"
-
+        "description": "Tavsif",
+        "confirmDelete": "Haqiqattan ham o'chirmoqchimisiz?",
+        "yes": "Ha",
+        "no": "Yo'q",
+        "notFoundData": "Ma'lumot topilmadi!",
+        "noResultYourRequest": "Sizning so‘rovingiz bo‘yicha xech qanday ma'lumot topilmadi..."
     },
     "rules": {
         "login": "Email kiritilishi shart!",
@@ -64,7 +68,8 @@
             "update": "Kategoriyani tahrirlash"
         },
         "toast": {
-            "successCreate": "Yangi kategoriya qo'shildi"
+            "successCreate": "Yangi kategoriya qo'shildi",
+            "successUpdate": "Kategoriya yangilandi"
         }
     },
 
