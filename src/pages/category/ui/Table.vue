@@ -9,6 +9,7 @@ const onEdit = (v)=>{
   store.categoryId = v.id
   store.payload.name = v.name
   store.payload.description = v.description
+  store.payload.parent_id = v.description
   store.payload.image = [{
     id:uuidv4(),
     file:null,

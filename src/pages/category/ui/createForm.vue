@@ -31,6 +31,7 @@ const onSubmit = ()=>{
         const files = store.payload.image.map((v)=>v.file)
         $ApiService.generalService._uploadImage({files}).then((res)=>{
           let data = {...store.payload, image:res.data[0].image}
+
           store.createItem(data)
         })
       }else{
@@ -84,9 +85,10 @@ const onSubmit = ()=>{
         v-model:value="store.payload.parent_id"
         filterable
         :placeholder="$t(`categoryPage.form.category`)"
-        :options="options"
+        :options="store.allList"
         label-field="name"
         value-field="id"
+        :loading="store.allLoading"
     />
   </n-form-item>
   <n-form-item :label="$t(`categoryPage.form.description`)" path="description">

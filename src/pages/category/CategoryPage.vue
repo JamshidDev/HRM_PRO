@@ -10,11 +10,13 @@ const store = useCategoriesStore()
 
 const openForm = ()=>{
   store.resetPayload()
+  store.visibleType = true
   store.openVisible(true)
 }
 
 onMounted(()=>{
   store._index()
+  store._getAll()
 })
 </script>
 

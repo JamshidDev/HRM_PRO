@@ -10,6 +10,7 @@ import VerificationEmailPage from "@/pages/verificationEmail/VerificationEmailPa
 import DashboardPage from "@/pages/dashboard/DashboardPage.vue";
 import CategoryPage from "@/pages/category/CategoryPage.vue";
 import ClientPage from "@/pages/client/clientPage.vue";
+import ProductPage from "@/pages/product/ProductPage.vue";
 import {AppPaths} from "@/utils/index.js";
 
 const beforeLogin = (to, from, next) => {
@@ -52,6 +53,11 @@ const routes = [
                 path:`${AppPaths.Admin}${AppPaths.Client}`,
                 name:AppPaths.Client.substring(1),
                 component:ClientPage,
+            },
+            {
+                path:`${AppPaths.Admin}${AppPaths.Product}`,
+                name:AppPaths.Product.substring(1),
+                component:ProductPage,
             }
         ]
     },

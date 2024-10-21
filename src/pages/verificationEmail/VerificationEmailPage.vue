@@ -28,7 +28,7 @@ const onSubmit = () => {
     >
       <div class="w-full">
         <span class="font-bold text-3xl block text-center uppercase">{{ $t('verificationEmail.title') }}</span>
-        <span class="block mt-5 text-sm text-center bg-green-100 border border-green-300 p-[10px] text-green-600 rounded">{{ $t('verificationEmail.subtitle', {email: 'raximovj662@gamil.com'}) }}</span>
+        <span class="block mt-5 text-sm text-center bg-blue-100 border border-blue-300 p-[10px] text-blue-600 rounded">{{ $t('verificationEmail.subtitle', {email: 'raximovj662@gamil.com'}) }}</span>
       </div>
       <n-form-item class="mb-5" path="verificationCode">
         <n-input
@@ -41,7 +41,7 @@ const onSubmit = () => {
         />
       </n-form-item>
       <n-button
-          type="success"
+          type="primary"
           :loading="loading"
           @click="onSubmit"
       >{{ $t(`verificationEmail.verification`) }}

@@ -41,7 +41,7 @@
 
     "loginPage":{
         "title":"BOT NEXUS",
-        "subtitle":"Tizimga kirish uchun davom eting! Tizimga kirish",
+        "subtitle":"Xush kelibsiz! Tizimga kirish uchun davom eting. Qisqa muddatda o'z telegram botingizni yarating.",
         "email": "Email",
         "password": "Parol",
         "doYouHaveAccount": "Sizda hisob yo'qmi?",

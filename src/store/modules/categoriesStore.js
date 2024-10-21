@@ -4,10 +4,12 @@ const {t} = i18n.global
 export const useCategoriesStore = defineStore('categoriesStore',{
     state:()=>({
         list:[],
+        allList:[],
         totalItems:0,
         loading:false,
         saveLoading:false,
         deleteLoading:false,
+        allLoading:false,
         categoryId:null,
         params:{
             search:null,
@@ -37,12 +39,21 @@ export const useCategoriesStore = defineStore('categoriesStore',{
                 this.loading = false
             })
         },
+        _getAll(){
+            this.allLoading = true
+            $ApiService.categoryService._getCategories({params:{page:1, size:1000}}).then((res)=>{
+                this.allList = res.data.items
+            }).finally(()=>{
+                this.allLoading = false
+            })
+        },
 
         createItem(data){
             $ApiService.categoryService._createCategory({data}).then((res)=>{
                 this.visible = false
                 $Toast.success(t('categoryPage.toast.successCreate'))
                 this._index()
+                this._getAll()
             }).finally(()=>{
                 this.saveLoading = false
             })
@@ -64,6 +75,7 @@ export const useCategoriesStore = defineStore('categoriesStore',{
             $ApiService.categoryService._deleteCategory({categoryId}).then((res)=>{
                 $Toast.success(t('categoryPage.toast.successUpdate'))
                 this._index()
+                this._getAll()
             }).finally(()=>{
                 this.deleteLoading = false
             })

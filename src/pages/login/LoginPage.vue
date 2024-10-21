@@ -2,7 +2,7 @@
 import {useRouter} from "vue-router";
 import {useLoginStore} from "@/store/modules/loginStore.js"
 import validationRules from "@/utils/validationRules.js";
-import {Mail28Regular, LockClosed16Regular} from '@vicons/fluent'
+import {Mail28Regular, LockClosed16Regular, Eye24Regular, EyeOff20Filled} from '@vicons/fluent'
 
 const store = useLoginStore()
 const router = useRouter()
@@ -29,7 +29,7 @@ const onSubmit = () => {
 
 
     <div class="bg-surface-section relative z-10 rounded-xl
-  flex justify-between p-[20px] border border-surface-line
+  flex justify-between xl:p-[20px] border border-surface-line
 ">
 
       <n-form
@@ -62,13 +62,23 @@ const onSubmit = () => {
           <n-input
               name="password"
               id="password"
-              type="text"
+              type="password"
+              show-password-on="click"
               :placeholder="$t(`loginPage.password`)"
               v-model:value="store.password"
           >
             <template #prefix>
               <n-icon :component="LockClosed16Regular" />
             </template>
+
+            <template #password-visible-icon>
+              <n-icon :size="16" :component="EyeOff20Filled" />
+            </template>
+            <template #password-invisible-icon>
+              <n-icon :size="16" :component="Eye24Regular" />
+            </template>
+
+
           </n-input>
         </n-form-item>
         <n-button
