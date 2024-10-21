@@ -40,12 +40,15 @@
     },
 
     "loginPage":{
-        "title":"Xush kelibsiz!",
+        "title":"BOT NEXUS",
+        "subtitle":"Tizimga kirish uchun davom eting! Tizimga kirish",
         "email": "Email",
         "password": "Parol",
         "doYouHaveAccount": "Sizda hisob yo'qmi?",
         "singUp": "Ro'yhatdan o'tish",
-        "login": "Kirish"
+        "login": "Kirish",
+        "byGoogle": "Google orqali kirish",
+        "byFacebook": "Facebook orqali kirish"
     },
     "registerPage": {
         "title": "Ro'yhatdan o'tish",

@@ -1,17 +1,17 @@
 <script setup>
-import {useRoute, useRouter} from "vue-router";
+import {useRouter} from "vue-router";
 import {useLoginStore} from "@/store/modules/loginStore.js"
 import validationRules from "@/utils/validationRules.js";
+
 const store = useLoginStore()
 const router = useRouter()
 
 const formRef = ref(null)
 
 
-
-const onSubmit = ()=>{
-  formRef.value?.validate((error)=>{
-    if(!error){
+const onSubmit = () => {
+  formRef.value?.validate((error) => {
+    if (!error) {
       store._auth()
     }
   })
@@ -21,62 +21,95 @@ const onSubmit = ()=>{
 </script>
 
 <template>
-<div class="flex justify-center items-center h-screen
+  <div class="flex justify-center items-center h-screen
   bg-no-repeat bg-cover bg-center bg-surface-ground
+  login-page-bg
 ">
 
 
-
-  <div class="w-[90%] h-[500px] bg-surface-section relative z-10 rounded-3xl
+    <div class="bg-surface-section relative z-10 rounded-xl
   flex justify-between p-[20px] border border-surface-line
 ">
-    <n-form
-        ref="formRef"
-        :rules="validationRules.login"
-        :model="store"
-        class="flex flex-col border border-surface-line xl:w-[400px]  w-[360px] bg-surface-section p-[40px] !rounded-3xl"
-    >
-      <div class="grid grid-cols-1">
+
+      <n-form
+          ref="formRef"
+          :rules="validationRules.login"
+          :model="store"
+          class="flex flex-col xl:w-[400px]  w-[360px] p-[20px] !rounded-3xl"
+      >
         <div class="flex justify-center">
           <img class="w-[80px] h-[80px]" src="/public/logo.png" alt="">
         </div>
-        <span class="text-center font-bold text-3xl mb-[20px]">{{$t(`loginPage.title`)}}</span>
-      </div>
-      <n-form-item :label="$t(`loginPage.email`)" path="login">
-        <n-input
-            type="text"
-            :placeholder="$t(`loginPage.email`)"
-            v-model:value="store.login"
-        />
-      </n-form-item>
-      <n-form-item :label="$t(`loginPage.password`)" path="password">
-        <n-input
-            type="text"
-            :placeholder="$t(`loginPage.password`)"
-            v-model:value="store.password"
-        />
-      </n-form-item>
-      <n-button
-          type="info"
-          :loading="store.loading"
-          @click="onSubmit"
-      >{{$t(`loginPage.login`)}}</n-button>
+        <span class="text-center font-bold text-3xl">{{ $t(`loginPage.title`) }}</span>
+        <span class="text-center text-sm mb-[20px] text-gray-500">{{ $t(`loginPage.subtitle`) }}</span>
 
-      <span class="text-sm mt-[20px]">{{$t(`loginPage.doYouHaveAccount`)}}
-      <span @click="router.push('/register')" class="text-primary cursor-pointer" >{{$t(`loginPage.singUp`)}}</span>
-    </span>
 
-    </n-form>
+        <n-form-item :label="$t(`loginPage.email`)" path="login">
+          <n-input
+              type="text"
+              :placeholder="$t(`loginPage.email`)"
+              v-model:value="store.login"
+          />
+        </n-form-item>
+        <n-form-item :label="$t(`loginPage.password`)" path="password" class="mb-8">
+          <n-input
+              type="text"
+              :placeholder="$t(`loginPage.password`)"
+              v-model:value="store.password"
+          />
+        </n-form-item>
+        <n-button
+            type="primary"
+            :loading="store.loading"
+            @click="onSubmit"
+        >{{ $t(`loginPage.login`) }}
+        </n-button>
 
-    <div class="bg-[url('/public/login-wlp.webp')] w-[600px] h-full rounded-3xl bg-no-repeat bg-cover bg-center">
+        <span class="text-xs mt-3 text-gray-500">{{ $t(`loginPage.doYouHaveAccount`) }}
+        <span @click="router.push('/register')" class="text-primary cursor-pointer ">{{ $t(`loginPage.singUp`) }}</span>
+        </span>
+
+        <n-divider title-placement="center" dashed ><span class="text-xs text-gray-500 font-normal">Yoki</span></n-divider>
+        <div class="grid grid-cols-1 gap-y-6">
+          <n-button strong secondary type="error">
+            {{ $t('loginPage.byGoogle') }}
+            <template #icon>
+              <i class='bx bxl-google'></i>
+            </template>
+          </n-button>
+          <n-button strong secondary type="primary">
+            {{ $t('loginPage.byFacebook') }}
+            <template #icon>
+              <i class='bx bxl-facebook'></i>
+            </template>
+          </n-button>
+        </div>
+
+      </n-form>
 
     </div>
 
+
   </div>
-
-
-
-
-
-</div>
 </template>
+<style lang="scss">
+.login-page-bg {
+  background: radial-gradient(
+          farthest-side at top left,
+          rgba(113, 239, 229, 0.7),
+          transparent
+  ),
+  radial-gradient(
+          farthest-side at bottom right,
+          rgba(113, 239, 229, 0.7),
+          transparent
+  ),
+  radial-gradient(
+          farthest-corner at center center,
+          rgba(0, 89, 255, 0.75),
+          transparent
+  );
+
+
+}
+</style>
