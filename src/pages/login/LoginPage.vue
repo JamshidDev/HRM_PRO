@@ -2,6 +2,7 @@
 import {useRouter} from "vue-router";
 import {useLoginStore} from "@/store/modules/loginStore.js"
 import validationRules from "@/utils/validationRules.js";
+import {Mail28Regular, LockClosed16Regular} from '@vicons/fluent'
 
 const store = useLoginStore()
 const router = useRouter()
@@ -46,17 +47,29 @@ const onSubmit = () => {
 
         <n-form-item :label="$t(`loginPage.email`)" path="login">
           <n-input
+              name="login"
+              id="login"
               type="text"
               :placeholder="$t(`loginPage.email`)"
               v-model:value="store.login"
-          />
+          >
+            <template #prefix>
+              <n-icon :component="Mail28Regular" />
+            </template>
+          </n-input>
         </n-form-item>
         <n-form-item :label="$t(`loginPage.password`)" path="password" class="mb-8">
           <n-input
+              name="password"
+              id="password"
               type="text"
               :placeholder="$t(`loginPage.password`)"
               v-model:value="store.password"
-          />
+          >
+            <template #prefix>
+              <n-icon :component="LockClosed16Regular" />
+            </template>
+          </n-input>
         </n-form-item>
         <n-button
             type="primary"
