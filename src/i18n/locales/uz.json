@@ -25,7 +25,8 @@
         "yes": "Ha",
         "no": "Yo'q",
         "notFoundData": "Ma'lumot topilmadi!",
-        "noResultYourRequest": "Sizning so‘rovingiz bo‘yicha xech qanday ma'lumot topilmadi..."
+        "noResultYourRequest": "Sizning so‘rovingiz bo‘yicha xech qanday ma'lumot topilmadi...",
+        "back": "Orqaga"
     },
     "rules": {
         "login": "Email kiritilishi shart!",
@@ -40,9 +41,9 @@
     },
 
     "loginPage":{
-        "title":"BOT NEXUS",
-        "subtitle":"Xush kelibsiz! Tizimga kirish uchun davom eting. Qisqa muddatda o'z telegram botingizni yarating.",
-        "email": "Email",
+        "title":"HRM PRO",
+        "subtitle":"O'zbekiston temir yo'llari AJning HRM platformasi",
+        "phone": "Telefon raqam",
         "password": "Parol",
         "doYouHaveAccount": "Sizda hisob yo'qmi?",
         "singUp": "Ro'yhatdan o'tish",
@@ -52,8 +53,15 @@
     },
     "registerPage": {
         "title": "Ro'yhatdan o'tish",
+        "subtitle": "Tasdiqlash",
         "firstName": "Ism",
-        "lastName": "Familiya"
+        "lastName": "Familiya",
+        "middleName": "Sharif",
+        "pin": "Pasport JSHSHIR",
+        "doYouHaveAccount": "Sizda hisob bormi?",
+        "loginToSystem": "Tizimga kirish!",
+        "otp": "Kod",
+        "verification": "Sizning telefon raqamingizga +998(**)***6004 tasdiqlash kodini sms tarzda yubordik."
     },
     "verificationEmail": {
         "title": "Hisobni tadiqlash",

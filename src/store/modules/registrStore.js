@@ -4,12 +4,23 @@ import router from "@/router"
 export const useRegisterStore = defineStore('registerStore', {
     state:()=>({
         payload:{
-            email:null,
-            password:null,
+            phone:"+998",
             first_name:null,
             last_name:null,
+            middle_name:null,
+            pin:null,
+        },
+        create:{
+            phone:null,
+            pin:null,
+            password:null,
+            otp:null,
+            user:null,
+            photo:null,
         },
         loading:false,
+        tabList:[1,2],
+        activeTab:2,
 
 
     }),

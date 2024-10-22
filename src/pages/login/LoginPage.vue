@@ -2,7 +2,9 @@
 import {useRouter} from "vue-router";
 import {useLoginStore} from "@/store/modules/loginStore.js"
 import validationRules from "@/utils/validationRules.js";
-import {Mail28Regular, LockClosed16Regular, Eye24Regular, EyeOff20Filled} from '@vicons/fluent'
+import {Call28Regular, LockClosed16Regular, Eye24Regular, EyeOff20Filled} from '@vicons/fluent'
+import LangDropdown from "@/components/general/LangDropdown.vue";
+import {AppPaths} from "@/utils/index.js";
 
 const store = useLoginStore()
 const router = useRouter()
@@ -24,8 +26,13 @@ const onSubmit = () => {
 <template>
   <div class="flex justify-center items-center h-screen
   bg-no-repeat bg-cover bg-center bg-surface-ground
-  login-page-bg
+  bg-gradient--v1 relative
 ">
+    <div class="fixed top-[20px] right-[20px]">
+      <LangDropdown/>
+    </div>
+
+
 
 
     <div class="bg-surface-section relative z-10 rounded-xl
@@ -39,22 +46,23 @@ const onSubmit = () => {
           class="flex flex-col xl:w-[400px]  w-[360px] p-[20px] !rounded-3xl"
       >
         <div class="flex justify-center">
-          <img class="w-[80px] h-[80px]" src="/public/logo.png" alt="">
+          <img class="w-[60px]" src="/public/organization-logo.webp" alt="">
         </div>
         <span class="text-center font-bold text-3xl">{{ $t(`loginPage.title`) }}</span>
         <span class="text-center text-sm mb-[20px] text-gray-500">{{ $t(`loginPage.subtitle`) }}</span>
 
 
-        <n-form-item :label="$t(`loginPage.email`)" path="login">
+        <n-form-item :label="$t(`loginPage.phone`)" path="login">
           <n-input
               name="login"
               id="login"
               type="text"
-              :placeholder="$t(`loginPage.email`)"
+              v-mask="'+998(##)########'"
+              :placeholder="'+998'"
               v-model:value="store.login"
           >
             <template #prefix>
-              <n-icon :component="Mail28Regular" />
+              <n-icon :component="Call28Regular" />
             </template>
           </n-input>
         </n-form-item>
@@ -64,6 +72,7 @@ const onSubmit = () => {
               id="password"
               type="password"
               show-password-on="click"
+              :maxlength="16"
               :placeholder="$t(`loginPage.password`)"
               v-model:value="store.password"
           >
@@ -77,8 +86,6 @@ const onSubmit = () => {
             <template #password-invisible-icon>
               <n-icon :size="16" :component="Eye24Regular" />
             </template>
-
-
           </n-input>
         </n-form-item>
         <n-button
@@ -89,24 +96,8 @@ const onSubmit = () => {
         </n-button>
 
         <span class="text-xs mt-3 text-gray-500">{{ $t(`loginPage.doYouHaveAccount`) }}
-        <span @click="router.push('/register')" class="text-primary cursor-pointer ">{{ $t(`loginPage.singUp`) }}</span>
+        <span @click="router.push(AppPaths.Register)" class="text-primary cursor-pointer ">{{ $t(`loginPage.singUp`) }}</span>
         </span>
-
-        <n-divider title-placement="center" dashed ><span class="text-xs text-gray-500 font-normal">Yoki</span></n-divider>
-        <div class="grid grid-cols-1 gap-y-6">
-          <n-button strong secondary type="error">
-            {{ $t('loginPage.byGoogle') }}
-            <template #icon>
-              <i class='bx bxl-google'></i>
-            </template>
-          </n-button>
-          <n-button strong secondary type="primary">
-            {{ $t('loginPage.byFacebook') }}
-            <template #icon>
-              <i class='bx bxl-facebook'></i>
-            </template>
-          </n-button>
-        </div>
 
       </n-form>
 
@@ -115,24 +106,3 @@ const onSubmit = () => {
 
   </div>
 </template>
-<style lang="scss">
-.login-page-bg {
-  background: radial-gradient(
-          farthest-side at top left,
-          rgba(113, 239, 229, 0.7),
-          transparent
-  ),
-  radial-gradient(
-          farthest-side at bottom right,
-          rgba(113, 239, 229, 0.7),
-          transparent
-  ),
-  radial-gradient(
-          farthest-corner at center center,
-          rgba(0, 89, 255, 0.75),
-          transparent
-  );
-
-
-}
-</style>

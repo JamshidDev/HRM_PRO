@@ -1,0 +1,37 @@
+
+.bg-gradient--v1 {
+  background:radial-gradient(
+                  farthest-side at top left,
+                  rgba(113, 239, 229, 0.7),
+                  transparent
+  ),
+  radial-gradient(
+                  farthest-side at bottom right,
+                  rgba(113, 239, 229, 0.7),
+                  transparent
+  ),
+  radial-gradient(
+                  farthest-corner at center center,
+                  rgba(0, 89, 255, 0.75),
+                  transparent
+  )
+}
+
+
+.bg-gradient--v2 {
+  background:radial-gradient(
+                  farthest-side at top left,
+                  rgba(113, 239, 229, 0.7),
+                  transparent
+  ),
+  radial-gradient(
+                  farthest-side at bottom right,
+                  rgba(113, 239, 229, 0.7),
+                  transparent
+  ),
+  radial-gradient(
+                  farthest-corner at center center,
+                  rgba(0, 89, 255, 0.75),
+                  transparent
+  )
+}

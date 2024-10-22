@@ -25,12 +25,17 @@ export default {
             message: t(`rules.requiredField`),
             trigger: ['input', 'blur']
         },
-        email:{
+        middle_name:{
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: ['input', 'blur']
+        },
+        phone:{
             required: true,
             message: t(`rules.login`),
             trigger: ['input', 'blur']
         },
-        password:{
+        pin:{
             required: true,
             message: t(`rules.password`),
             trigger: ['input', 'blur']
