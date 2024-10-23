@@ -12,10 +12,10 @@ const store = useRegisterStore()
     <div class="flex overflow-hidden border border-surface-line rounded-xl shadow-sm bg-surface-section">
       <n-tabs animated v-model:value="store.activeTab" class="hidden-tab-header" type="segment">
         <n-tab-pane :name="store.tabList[0]">
-          <OtpForm/>
+          <createForm/>
         </n-tab-pane>
         <n-tab-pane :name="store.tabList[1]">
-         <createForm/>
+          <OtpForm/>
         </n-tab-pane>
       </n-tabs>
     </div>

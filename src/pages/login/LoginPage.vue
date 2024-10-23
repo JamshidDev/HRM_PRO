@@ -52,22 +52,24 @@ const onSubmit = () => {
         <span class="text-center text-sm mb-[20px] text-gray-500">{{ $t(`loginPage.subtitle`) }}</span>
 
 
-        <n-form-item :label="$t(`loginPage.phone`)" path="login">
+        <n-form-item :label="$t(`loginPage.phone`)" path="phone">
           <n-input
-              name="login"
-              id="login"
+              size="large"
+              name="phone"
+              id="phone"
               type="text"
-              v-mask="'+998(##)########'"
+              v-mask="'+998(##)#######'"
               :placeholder="'+998'"
-              v-model:value="store.login"
+              v-model:value="store.phone"
           >
             <template #prefix>
-              <n-icon :component="Call28Regular" />
+              <n-icon size="24" :component="Call28Regular" />
             </template>
           </n-input>
         </n-form-item>
         <n-form-item :label="$t(`loginPage.password`)" path="password" class="mb-8">
           <n-input
+              size="large"
               name="password"
               id="password"
               type="password"
@@ -77,18 +79,19 @@ const onSubmit = () => {
               v-model:value="store.password"
           >
             <template #prefix>
-              <n-icon :component="LockClosed16Regular" />
+              <n-icon size="24" :component="LockClosed16Regular" />
             </template>
 
             <template #password-visible-icon>
-              <n-icon :size="16" :component="EyeOff20Filled" />
+              <n-icon :size="20" :component="EyeOff20Filled" />
             </template>
             <template #password-invisible-icon>
-              <n-icon :size="16" :component="Eye24Regular" />
+              <n-icon :size="20" :component="Eye24Regular" />
             </template>
           </n-input>
         </n-form-item>
         <n-button
+            size="large"
             type="primary"
             :loading="store.loading"
             @click="onSubmit"

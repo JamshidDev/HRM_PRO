@@ -1,20 +1,16 @@
 <script setup>
 
 import validationRules from "@/utils/validationRules.js";
-import {Call28Regular, Password20Regular, Person24Regular} from "@vicons/fluent";
-import {AppPaths} from "@/utils/index.js";
+import {Eye24Regular, EyeOff20Filled, ChevronLeft20Filled,QrCode20Filled, LockClosed16Regular, ErrorCircle12Filled} from "@vicons/fluent";
 import {useRegisterStore} from "@/store/modules/registrStore.js";
-import {useRouter} from "vue-router";
 
 const store = useRegisterStore()
 const formRef = ref(null)
-const router = useRouter()
 
 const onSubmit = ()=>{
   formRef.value?.validate((error)=>{
     if(!error){
-      // store._register()
-      store.activeTab=2
+      store.registerUser()
     }
   })
 }
@@ -23,70 +19,43 @@ const onSubmit = ()=>{
 <template>
   <n-form
       ref="formRef"
-      :rules="validationRules.register"
-      :model="store.payload"
+      :rules="validationRules.verificationEmail"
+      :model="store.create"
       class="xl:w-[400px] w-[360px] p-[20px] flex flex-col"
   >
-    <div class="w-full">
-      <span class="text-2xl font-bold text-center block uppercase">{{ $t(`registerPage.title`) }}</span>
+    <div>
+      <n-button @click="store.activeTab=1" quaternary class="!px-0">
+        <span class="text-gray-400">{{$t('content.back')}}</span>
+        <template #icon>
+          <n-icon class="font-bold" size="24"><ChevronLeft20Filled /></n-icon>
+        </template>
+      </n-button>
     </div>
-    <n-form-item :label="$t(`registerPage.firstName`)" path="first_name">
+    <div class="w-full my-5">
+      <span class="text-2xl font-bold text-center block uppercase text-primary">{{ $t(`registerPage.subtitle`) }}</span>
+      <span class="text-xs text-center block text-gray-500">{{ $t(`registerPage.verification`) }}</span>
+    </div>
+    <div
+        v-if="store.otpErrorMessage"
+        class="border border-red-200 bg-red-50 text-sm p-2 rounded-[6px] text-red-500 flex items-center gap-2 mb-4">
+      <n-icon size="20">
+        <ErrorCircle12Filled/>
+      </n-icon>
+      {{store.otpErrorMessage}}
+    </div>
+    <n-form-item :label="$t(`registerPage.otp`)" path="otp">
       <n-input
           type="text"
-          :placeholder="$t(`registerPage.firstName`)"
-          v-model:value="store.payload.first_name"
+          maxlength="6"
+          size="large"
+          name="password"
+          id="password"
+          v-mask="'######'"
+          :placeholder="$t(`registerPage.otp`)"
+          v-model:value="store.create.otp"
       >
         <template #prefix>
-          <n-icon :component="Person24Regular" />
-        </template>
-      </n-input>
-    </n-form-item>
-    <n-form-item :label="$t(`registerPage.lastName`)" path="last_name">
-      <n-input
-          type="text"
-          :placeholder="$t(`registerPage.lastName`)"
-          v-model:value="store.payload.last_name"
-      >
-        <template #prefix>
-          <n-icon :component="Person24Regular" />
-        </template>
-      </n-input>
-    </n-form-item>
-    <n-form-item :label="$t(`registerPage.middleName`)" path="middle_name">
-      <n-input
-          type="text"
-          :placeholder="$t(`registerPage.middleName`)"
-          v-model:value="store.payload.middle_name"
-      >
-        <template #prefix>
-          <n-icon :component="Person24Regular" />
-        </template>
-      </n-input>
-    </n-form-item>
-    <n-form-item :label="$t(`loginPage.phone`)" path="phone">
-      <n-input
-          name="login"
-          id="login"
-          type="text"
-          v-mask="'+998(##)########'"
-          :placeholder="'+998'"
-          v-model:value="store.payload.phone"
-      >
-        <template #prefix>
-          <n-icon :component="Call28Regular" />
-        </template>
-      </n-input>
-    </n-form-item>
-    <n-form-item :label="$t(`registerPage.pin`)" path="pin">
-      <n-input
-          type="text"
-          :maxlength="17"
-          :placeholder="$t(`registerPage.pin`)"
-          v-model:value="store.payload.pin"
-          v-mask="'####-####-####-##'"
-      >
-        <template #prefix>
-          <n-icon :component="Password20Regular" />
+          <n-icon size="24" :component="QrCode20Filled" />
         </template>
       </n-input>
     </n-form-item>
@@ -94,16 +63,28 @@ const onSubmit = ()=>{
         :show-feedback="false"
     >
       <n-button
+          size="large"
           class="mt-4 flex !w-full"
-          type="info"
-          :loading="store.loading"
+          type="primary"
+          :loading="store.otpLoading"
           @click="onSubmit"
-      >{{$t(`registerPage.title`)}}</n-button>
+      >{{$t(`registerPage.subtitle`)}}</n-button>
     </n-form-item>
-    <span class="text-xs mt-3">{{$t('registerPage.doYouHaveAccount')}} <span class="text-primary" @click="router.push(AppPaths.Login)" >{{$t('registerPage.loginToSystem')}}</span> </span>
+    <div class="flex justify-between w-full text-xs text-gray-500 mt-10">
+      <span class="text-xs ">{{$t('registerPage.reSendOtp')}}</span>
+      <n-countdown
+          v-if="!store.showReSendButton"
+          :duration="Number(store.otpExpireTime)"
+          :active="!store.showReSendButton"
+          @finish="store.onFinish"
+      />
+      <n-button
+          @click="store.reSendOtp()"
+          v-if="store.showReSendButton"
+          size="tiny"
+          type="success"
+      >{{$t(`registerPage.getOtp`)}}</n-button>
+
+    </div>
   </n-form>
 </template>
-
-<style scoped>
-
-</style>

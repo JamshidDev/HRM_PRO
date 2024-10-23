@@ -4,7 +4,7 @@ import router from "@/router"
 
 export const useLoginStore = defineStore("loginStore", {
     state:()=>({
-        login:'+998',
+        phone:'+998',
         password:null,
         loading:false,
     }),
@@ -15,14 +15,15 @@ export const useLoginStore = defineStore("loginStore", {
 
         _auth(){
             this.loading = true
-            $ApiService.authService._login({data:{
-                    username:this.login,
-                    password:this.password,
-                }}).then((res)=>{
+            let data = {
+                phone:this.phone.slice(4).replace('(','').replace(')',''),
+                password:this.password,
+            }
+            $ApiService.authService._login({data}).then((res)=>{
+                console.log(res.data)
                 localStorage.setItem('token',res.data.access)
                 localStorage.setItem('refresh_token',res.data.refresh)
                 router.push('/admin')
-
             }).catch((err)=>{
                 console.log(err)
             }).finally(()=>{

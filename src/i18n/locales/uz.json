@@ -30,9 +30,13 @@
     },
     "rules": {
         "login": "Email kiritilishi shart!",
+        "phone": "Telefon raqam kiritilishi shart!",
         "password": "Parol kiritilishi shart!",
         "requiredField": "Maydon to'ldirilishi shart!",
-        "requiredImageField": "Rasm yuklanishi shart!"
+        "requiredImageField": "Rasm yuklanishi shart!",
+        "requiredMinLength": "{n} ta belgidan kam bo'lmasligi kerak",
+        "requiredMaxLength": "{n} ta belgidan ko'p bo'lmasligi kerak",
+        "requiredJSHSHIR": "Pasport jshshir kiritilishi shart!"
     },
     "navigation": {
         "client": "Mijozlar",
@@ -61,7 +65,9 @@
         "doYouHaveAccount": "Sizda hisob bormi?",
         "loginToSystem": "Tizimga kirish!",
         "otp": "Kod",
-        "verification": "Sizning telefon raqamingizga +998(**)***6004 tasdiqlash kodini sms tarzda yubordik."
+        "verification": "Sizning telefon raqamingizga +998(**)***6004 tasdiqlash kodini sms tarzda yubordik.",
+        "reSendOtp": "Yangi tasdiqlash kodini olish",
+        "getOtp": "Kodni olish"
     },
     "verificationEmail": {
         "title": "Hisobni tadiqlash",
