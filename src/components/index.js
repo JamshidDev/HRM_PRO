@@ -1,5 +1,6 @@
 export {default as UIDrawer} from "./drawer/CreateAndUpdateDrawer.vue"
-export {default as UIDropdownLang} from "./general/LangDropdown.vue"
+export {default as UILanguage} from "./general/LangDropdown.vue"
 export {default as ActionButton} from "./buttons/ActionButtons.vue"
 export {default as NoDataPicture} from "./no-data/NoDataPicture.vue"
 export {default as UIPagination} from "./pagination/Pagination.vue"
+export {default as UIProfile} from "./ui/UIProfile.vue"

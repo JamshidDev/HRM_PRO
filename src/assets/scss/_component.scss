@@ -35,3 +35,25 @@
                   transparent
   )
 }
+.bg-gradient--v3 {
+  background:radial-gradient(
+                  farthest-side at top left,
+                  #0F172A,
+                  transparent
+  ),
+  radial-gradient(
+                  farthest-side at top right,
+                  #0F172A,
+                  transparent
+  ),
+  radial-gradient(
+                  farthest-corner at bottom left,
+                  #0F172A,
+                  transparent
+  ),
+  radial-gradient(
+                  farthest-corner at bottom right,
+                  #0448e6,
+                  transparent
+  )
+}

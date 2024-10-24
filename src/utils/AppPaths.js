@@ -1,5 +1,6 @@
 export const AppPaths = {
     Main:'/',
+    OrganizationLayout:'/organization-layout',
     Admin:"/admin",
     Dashboard:'/dashboard',
     Product:"/product",

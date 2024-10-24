@@ -13,6 +13,8 @@ import ClientPage from "@/pages/client/clientPage.vue";
 import ProductPage from "@/pages/product/ProductPage.vue";
 import {AppPaths} from "@/utils/index.js";
 
+import organization from "@/router/modules/organization.js";
+
 const beforeLogin = (to, from, next) => {
     const token = localStorage.getItem("token");
     if (token) {
@@ -27,12 +29,14 @@ const beforeLogin = (to, from, next) => {
 
 
 const routes = [
+    ...organization,
     {
         path:AppPaths.Main,
         component:MainLayout,
         beforeEnter: beforeLogin,
         redirect: AppPaths.Admin,
     },
+
     {
         path:AppPaths.Admin,
         name:AppPaths.Admin.substring(1),

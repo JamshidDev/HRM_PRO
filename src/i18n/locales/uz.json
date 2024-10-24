@@ -26,7 +26,10 @@
         "no": "Yo'q",
         "notFoundData": "Ma'lumot topilmadi!",
         "noResultYourRequest": "Sizning so‘rovingiz bo‘yicha xech qanday ma'lumot topilmadi...",
-        "back": "Orqaga"
+        "back": "Orqaga",
+        "profile": "Kabinet",
+        "setting": "Sozlamalar",
+        "logOutSystem": "Tizmdan chiqish"
     },
     "rules": {
         "login": "Email kiritilishi shart!",
