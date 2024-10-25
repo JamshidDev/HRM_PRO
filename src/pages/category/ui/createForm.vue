@@ -98,6 +98,7 @@ const onSubmit = ()=>{
         v-model:value="store.payload.description"
     />
   </n-form-item>
+
   <div class="grid grid-cols-2 gap-2">
     <n-button @click="store.openVisible(false)" type="error" ghost>
       {{$t('content.cancel')}}

@@ -13,6 +13,13 @@ const onClick = ()=>{
 <AppHeader
     @on-change="onClick"
 />
+  <div class="main-content">
+    <router-view v-slot="{ Component }">
+      <transition name="slide-right" mode="out-in">
+        <component :is="Component" />
+      </transition>
+    </router-view>
+  </div>
 </div>
 </template>
 

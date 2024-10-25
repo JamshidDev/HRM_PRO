@@ -1,36 +1,30 @@
 <script setup>
-import {UIActionButton, NoDataPicture, UIPagination} from "@/components/index.js";
-import {useCategoriesStore} from "@/store/modules/categoriesStore.js";
-import Utils from "@/utils/Utils.js";
-import {v4 as uuidv4} from "uuid";
+import Utils from "@/utils/Utils.js"
+import IconTextChip from "@/components/chip/IconTextChip.vue"
+import {NoDataPicture, UIActionButton, UIPagination} from "@/components/index.js"
+import {useUserStore} from "@/store/modules/index.js"
+
+const store = useUserStore()
+
+
+
+
+
+const onSearch = (v)=>{
+  console.log(v)
+}
 
 const onEdit = (v)=>{
-  store.visibleType = false
-  store.categoryId = v.id
-  store.payload.name = v.name
-  store.payload.description = v.description
-  store.payload.parent_id = v.description
-  store.payload.image = [{
-    id:uuidv4(),
-    file:null,
-    base64:null,
-    url:v.image,
-  }]
-  store.openVisible(true)
+
 }
 
 const onDelete = (v)=>{
-  store.categoryId = v.id
-  store.deleteItem()
+
 }
 
 const changePage = (v)=>{
-  store.params.page = v.page
-  store.params.size = v.per_page
-  store._index()
-}
 
-const store = useCategoriesStore()
+}
 </script>
 
 <template>
@@ -46,7 +40,7 @@ const store = useCategoriesStore()
           <th class="!text-center min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
           <th class="min-w-[60px] w-[60px]">{{$t('content.photo')}}</th>
           <th class="min-w-[200px]">{{$t('content.name')}}</th>
-          <th class="min-w-[120px] w-[500px]">{{$t('content.description')}}</th>
+          <th class="min-w-[120px] w-[500px]">{{$t('content.phone')}}</th>
           <th class="min-w-[90px] w-[90px]">{{$t('content.action')}}</th>
         </tr>
         </thead>
@@ -87,7 +81,6 @@ const store = useCategoriesStore()
     </div>
     <NoDataPicture v-if="store.list.length===0 && !store.loading" />
   </n-spin>
-
 </template>
 
 <style scoped>

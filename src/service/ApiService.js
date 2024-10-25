@@ -3,10 +3,16 @@ import authService from "@/service/v1/authService.js";
 import accountService from "@/service/v1/accountService.js";
 import categoryService from "@/service/v1/categoryService.js";
 import generalService from "@/service/v1/generalService.js";
+import userService from "@/service/v1/userService.js";
+import userPermissionService from "@/service/v1/userPermissionService.js";
+import userRoleService from "@/service/v1/userRoleService.js";
 
 export default {
     authService,
     accountService,
     categoryService,
     generalService,
+    userService,
+    userPermissionService,
+    userRoleService,
 }

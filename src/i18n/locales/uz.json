@@ -46,7 +46,6 @@
         "product": "Mahsulotlar",
         "category": "Kategoriyalar"
     },
-
     "loginPage":{
         "title":"HRM PRO",
         "subtitle":"O'zbekiston temir yo'llari AJning HRM platformasi",
@@ -117,5 +116,20 @@
         "next": "Keyingi",
         "previous": "Oldingi"
 
+    },
+    "userPermission": {
+        "createTitle": "Permission qo'shish",
+        "updateTitle": "Permission tahrirlash",
+        "form": {
+            "name": "Permission nomi"
+        }
+    },
+    "userRole": {
+        "createTitle": "Role qo'shish",
+        "updateTitle": "Role tahrirlash",
+        "form": {
+            "name": "Role nomi",
+            "permissions": "Permission"
+        }
     }
 }

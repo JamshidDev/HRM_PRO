@@ -20,9 +20,7 @@ export const useLoginStore = defineStore("loginStore", {
                 password:this.password,
             }
             $ApiService.authService._login({data}).then((res)=>{
-                console.log(res.data)
-                localStorage.setItem('token',res.data.access)
-                localStorage.setItem('refresh_token',res.data.refresh)
+                localStorage.setItem('token',res.data.access_token)
                 router.push('/admin')
             }).catch((err)=>{
                 console.log(err)

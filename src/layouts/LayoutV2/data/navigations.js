@@ -10,30 +10,46 @@ export const navigations = [
             {
                 parentIndex:1,
                 label:'Korxonalar',
-                path:'/chat-1',
+                path:'/hrm/organizations',
                 icon:'bx bx-message-rounded-dots',
                 children:[]
             },
             {
                 parentIndex:1,
                 label:'Dashboard',
-                path:'/personal-chat',
+                path:'/hrm/dashboard',
                 icon:'bx bx-message-rounded-dots',
                 children:[]
             },
             {
                 parentIndex:1,
                 label:"Xodimlar",
-                path:'/group-chat',
+                path:'/hrm/worker',
                 icon:'bx bx-message-rounded-dots',
                 children:[]
             },
             {
                 parentIndex:1,
-                label:"Bo'limlar",
-                path:'/channel-chat',
+                label:"Struktura",
+                path:'/hrm/structure',
                 icon:'bx bx-message-rounded-dots',
-                children:[]
+                children:[
+                    {
+                        label:"Viloyatlar",
+                        path:'/hrm/structure/regions',
+                        icon:'bx bx-git-commit',
+                    },
+                    {
+                        label:"Tumanlar",
+                        path:'/hrm/structure/districts',
+                        icon:'bx bx-git-commit',
+                    },
+                    {
+                        label:"Davlatlar",
+                        path:'/hrm/structure/country',
+                        icon:'bx bx-git-commit',
+                    },
+                ]
             },
             {
                 parentIndex:1,
@@ -176,9 +192,9 @@ export const navigations = [
     },
     {
         index:6,
-        label:'HRM',
+        label:'Admin',
         path:'/cadry',
-        icon:'bx bx-message-rounded-dots',
+        icon:'bx bx-shield-quarter',
         children:[
             {
                 parentIndex:6,

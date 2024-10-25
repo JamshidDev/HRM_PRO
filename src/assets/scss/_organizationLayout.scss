@@ -72,7 +72,7 @@ $mobile_device_screen_size:900px;
         backdrop-filter: blur(12px);
         background-color: rgba(255, 255, 255, 0.50);
         filter: drop-shadow(0px 10px 15px rgba(203, 213, 224, 0.36));
-        .item--icon{
+        .item-icon{
           width: 30px;
           height: 30px;
           display: flex;
@@ -100,6 +100,84 @@ $mobile_device_screen_size:900px;
         .item--icon>i{
           color: white;
         }
+      }
+
+      .panel-item-multiple{
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        cursor: pointer;
+        .panel-header{
+          width: 100%;
+          display: flex;
+          align-items: center;
+          position: relative;
+          border-radius: 6px;
+          border: 1px solid var(--blue-300);
+          backdrop-filter: blur(12px);
+          background-color: rgba(255, 255, 255, 0.50);
+          margin-bottom: 6px;
+          .item-icon{
+            width: 30px;
+            height: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            i{
+              color: var(--blue-400);
+              font-size: 20px;
+            }
+          }
+          .item-title{
+            width: calc(100% - 30px);
+            font-size: 14px;
+            text-wrap: nowrap;
+            overflow: hidden;
+            color: var(--blue-900);
+
+            .n-icon{
+              position: absolute;
+              right: 6px;
+              top: 6px;
+              color: var(--blue-400);
+            }
+          }
+
+        }
+        .panel-body{
+          display: flex;
+          flex-direction: column;
+          overflow: hidden;
+          transition: all 0.225s ease;
+          .panel-item{
+            display: flex;
+            align-items: center;
+            border-radius:6px;
+            border: 1px solid var(--blue-300);
+            backdrop-filter: blur(12px);
+            background-color: rgba(255, 255, 255, 0.50);
+            margin-bottom: 6px;
+            .item-icon{
+              width: 30px;
+              height: 30px;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              i{
+                color: var(--blue-400);
+                font-size: 20px;
+              }
+            }
+            .item-title{
+              width: calc(100% - 30px);
+              font-size: 14px;
+              text-wrap: nowrap;
+              overflow: hidden;
+              color: var(--blue-900);
+            }
+          }
+        }
+
       }
 
       .image-content{
@@ -153,6 +231,12 @@ $mobile_device_screen_size:900px;
       height: 56px;
       background: var(--gray-50);
       border-bottom:1px solid var(--surface-line);
+    }
+
+    .main-content{
+      overflow-x: hidden;
+      overflow-y: auto;
+      height: calc(100vh - 60px);
     }
   }
 }

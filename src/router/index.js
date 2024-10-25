@@ -11,9 +11,13 @@ import DashboardPage from "@/pages/dashboard/DashboardPage.vue";
 import CategoryPage from "@/pages/category/CategoryPage.vue";
 import ClientPage from "@/pages/client/clientPage.vue";
 import ProductPage from "@/pages/product/ProductPage.vue";
+import OrganizationLayout from "@/layouts/LayoutV2/OrganizationLayout.vue";
 import {AppPaths} from "@/utils/index.js";
 
+
+// routes
 import organization from "@/router/modules/organization.js";
+import adminRoute from "@/router/modules/adminRoute.js";
 
 const beforeLogin = (to, from, next) => {
     const token = localStorage.getItem("token");
@@ -32,7 +36,7 @@ const routes = [
     ...organization,
     {
         path:AppPaths.Main,
-        component:MainLayout,
+        component:OrganizationLayout,
         beforeEnter: beforeLogin,
         redirect: AppPaths.Admin,
     },
@@ -40,7 +44,7 @@ const routes = [
     {
         path:AppPaths.Admin,
         name:AppPaths.Admin.substring(1),
-        component:MainLayout,
+        component:OrganizationLayout,
         beforeEnter: beforeLogin,
         children: [
             {
@@ -62,7 +66,8 @@ const routes = [
                 path:`${AppPaths.Admin}${AppPaths.Product}`,
                 name:AppPaths.Product.substring(1),
                 component:ProductPage,
-            }
+            },
+            ...adminRoute,
         ]
     },
     {

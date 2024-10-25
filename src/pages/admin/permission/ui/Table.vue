@@ -1,36 +1,29 @@
 <script setup>
-import {UIActionButton, NoDataPicture, UIPagination} from "@/components/index.js";
-import {useCategoriesStore} from "@/store/modules/categoriesStore.js";
-import Utils from "@/utils/Utils.js";
-import {v4 as uuidv4} from "uuid";
+import {NoDataPicture, UIActionButton, UIPagination} from "@/components/index.js"
+import {useUserPermissionStore} from "@/store/modules/index.js"
+
+const store = useUserPermissionStore()
+
+
+
 
 const onEdit = (v)=>{
   store.visibleType = false
-  store.categoryId = v.id
+  store.elementId = v.id
   store.payload.name = v.name
-  store.payload.description = v.description
-  store.payload.parent_id = v.description
-  store.payload.image = [{
-    id:uuidv4(),
-    file:null,
-    base64:null,
-    url:v.image,
-  }]
-  store.openVisible(true)
+  store.visible = true
 }
 
 const onDelete = (v)=>{
-  store.categoryId = v.id
-  store.deleteItem()
+  store.elementId = v.id
+  store._delete()
 }
 
 const changePage = (v)=>{
   store.params.page = v.page
-  store.params.size = v.per_page
+  store.params.per_page = v.per_page
   store._index()
 }
-
-const store = useCategoriesStore()
 </script>
 
 <template>
@@ -44,33 +37,18 @@ const store = useCategoriesStore()
         <thead>
         <tr>
           <th class="!text-center min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
-          <th class="min-w-[60px] w-[60px]">{{$t('content.photo')}}</th>
           <th class="min-w-[200px]">{{$t('content.name')}}</th>
-          <th class="min-w-[120px] w-[500px]">{{$t('content.description')}}</th>
           <th class="min-w-[90px] w-[90px]">{{$t('content.action')}}</th>
         </tr>
         </thead>
         <tbody>
         <tr v-for="(item, idx) in store.list" :key="idx">
-          <td><span class="text-center text-[12px] text-gray-600 block">{{ (store.params.page - 1) * store.params.size + idx + 1 }}</span></td>
-          <td>
-            <div
-                class="flex justify-center items-center"
-            >
-              <n-avatar
-                  size="large"
-                  :src="item.image"
-                  :fallback-src="Utils.noAvailableImage"
-              />
-            </div>
-
-          </td>
+          <td><span class="text-center text-[12px] text-gray-600 block">{{ (store.params.page - 1) * store.params.per_page + idx + 1 }}</span></td>
           <td>{{item.name}}</td>
-          <td>{{item.description}}</td>
           <td>
             <UIActionButton
                 :data="item"
-                :loading-delete="item.id === store.categoryId && store.deleteLoading"
+                :loading-delete="item.id === store.elementId && store.deleteLoading"
                 @on-edit="onEdit"
                 @on-delete="onDelete"
             />
@@ -87,7 +65,6 @@ const store = useCategoriesStore()
     </div>
     <NoDataPicture v-if="store.list.length===0 && !store.loading" />
   </n-spin>
-
 </template>
 
 <style scoped>

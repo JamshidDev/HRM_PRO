@@ -1,5 +1,6 @@
 <script setup>
 import {navigations} from "../data/navigations"
+import {ChevronDown12Regular} from "@vicons/fluent"
 
 const emits = defineEmits(['onChange', 'onOpen'])
 
@@ -12,6 +13,11 @@ const showPanel = ref(true)
 const navigationData = ref([])
 const menuIndex = ref(1)
 const currentPath = ref(null)
+const collapse = ref(false)
+
+const controlCollapse = ()=>{
+  collapse.value = !collapse.value
+}
 
 const nextPanel = (idx)=>{
   menuIndex.value = idx
@@ -78,18 +84,62 @@ onMounted(()=>{
             <img class="image_element" src="/public/hrm.png" alt="">
           </div>
           <template v-for="item in panelMenu" :key="item">
-            <div
-                @click="onChangePath(item.path)"
-                class="panel-item-single"
-                :class="[item.path === currentPath && 'active-panel-item-single']"
-            >
-              <div class="item--icon">
-                <i :class="item.icon"></i>
+
+
+
+
+
+
+            <template v-if="item?.children && item.children.length>0">
+              <div class="panel-item-multiple">
+                  <div class="panel-header" @click="controlCollapse">
+                    <div class="item-icon">
+                      <i :class="item.icon"></i>
+                    </div>
+                    <div class="item-title">
+                      <span>{{item.label}}</span>
+                      <n-icon size="18">
+                        <ChevronDown12Regular/>
+                      </n-icon>
+                    </div>
+                  </div>
+                  <div class="panel-body pl-2"
+                       :style="{height:collapse? (item.children.length * 38)+'px' : '0px'}"
+                  >
+                    <div v-for="subMenu in item.children"
+                        class="panel-item">
+                      <div class="item-icon">
+                        <i :class="subMenu.icon"></i>
+                      </div>
+                      <div class="item-title">{{subMenu.label}}</div>
+                    </div>
+
+                  </div>
               </div>
-              <div class="item-title">
-                <span>{{item.label}}</span>
+            </template>
+
+
+
+
+
+
+
+            <template v-else>
+              <div
+                  @click="onChangePath(item.path)"
+                  class="panel-item-single"
+                  :class="[item.path === currentPath && 'active-panel-item-single']"
+              >
+                <div class="item-icon">
+                  <i :class="item.icon"></i>
+                </div>
+                <div class="item-title">
+                  <span>{{item.label}}</span>
+                </div>
               </div>
-            </div>
+            </template>
+
+
           </template>
         </div>
       </transition>

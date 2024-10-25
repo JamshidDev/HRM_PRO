@@ -217,6 +217,26 @@ export default {
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
+    },
+    userPermission:{
+        name:{
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+    },
+    userRole:{
+        name:{
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        permissions:{
+            type:"array",
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
     }
 
 }

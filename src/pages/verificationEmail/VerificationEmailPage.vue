@@ -1,5 +1,5 @@
 <script setup>
-import Utils from "@/utils/Utils.js"
+import Utils from "@/utils/Utils.js";
 import ValidationRules from "@/utils/validationRules.js"
 
 const formRef = ref(null)

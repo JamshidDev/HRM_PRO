@@ -1,5 +1,6 @@
 
 import dayjs from "dayjs";
+import {AppPaths} from "@/utils/AppPaths.js";
 
 const fileToBase64 = (file)=>{
         return new Promise((resolve, reject)=>{
@@ -37,8 +38,9 @@ const timeToZone = (time)=>{
 const timeWithMonth = (time)=>{
     return time? dayjs(time).format('MMMM D, YYYY') : null
 }
-const noAvailableImage = "/public/fail-image.png"
+const noAvailableImage = "/public/default-user.png"
 
+const routePathMaker = (mainPath)=>(`${AppPaths.Admin}${mainPath}`)
 
 
 
@@ -56,4 +58,5 @@ export default {
     timeToZone,
     timeWithMonth,
     noAvailableImage,
+    routePathMaker,
 }
