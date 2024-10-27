@@ -5,6 +5,11 @@ import Table from "./ui/Table.vue"
 const store = useUserStore()
 
 
+const onSearch = (v)=>{
+  store.params.page = 1
+  store._index()
+}
+
 onMounted(()=>{
   store._index()
 })
@@ -12,7 +17,12 @@ onMounted(()=>{
 
 <template>
 <UIPageContent>
-  <UIPageFilter/>
+  <UIPageFilter
+  v-model:search="store.params.search"
+  @on-search="onSearch"
+  :search-loading="store.loading"
+  :show-filter-button="false"
+  />
   <Table/>
 </UIPageContent>
 </template>

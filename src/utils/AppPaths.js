@@ -2,6 +2,7 @@ export const AppPaths = {
     Main:'/',
     OrganizationLayout:'/organization-layout',
     Admin:"/admin",
+    Home:"/home",
     Dashboard:'/dashboard',
     Product:"/product",
     Category:"/category",
@@ -13,5 +14,13 @@ export const AppPaths = {
     UserPermission:"/user-permission",
     User:"/user",
     UserRole:"/user-role",
+    Country:"/country",
+    Region:"/region",
+    District:"/district",
 
+}
+
+export const AppLayouts ={
+    empty:"empty",
+    main:"main",
 }

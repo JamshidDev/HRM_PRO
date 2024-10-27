@@ -237,6 +237,19 @@ export default {
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
+    },
+    regionPage:{
+        name:{
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        country_id:{
+            type:'number',
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
     }
 
 }

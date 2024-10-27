@@ -1,7 +1,7 @@
 import axios from "../index.js"
 
 const _index =async (payload)=>{
-    return await axios.get(`/v1/admin/users`, payload.data)
+    return await axios.get(`/v1/admin/users`, {params:payload.params})
 }
 
 const _create = async (payload)=>{

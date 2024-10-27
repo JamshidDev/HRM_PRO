@@ -1,11 +1,11 @@
 <script setup>
 import {UIDrawer, UIPageContent, UIPageFilter} from "@/components/index.js";
 import Table from "./ui/Table.vue"
-import {useUserPermissionStore} from "@/store/modules/index.js";
+import {useCountryStore} from "@/store/modules/index.js";
 import createFrom from "./ui/createForm.vue"
 import i18n from "@/i18n/index.js"
 const {t} = i18n.global
-const store = useUserPermissionStore();
+const store = useCountryStore();
 
 const onSearch = (v)=>{
   store.params.page = 1
@@ -38,7 +38,7 @@ onMounted(()=>{
     <UIDrawer
         :visible="store.visible"
         @update:visible="(v)=>store.visible = v"
-        :title="store.visibleType? t('userPermission.createTitle') : t('userPermission.updateTitle')"
+        :title="store.visibleType? t('countryPage.createTitle') : t('countryPage.updateTitle')"
 
     >
       <template #content>

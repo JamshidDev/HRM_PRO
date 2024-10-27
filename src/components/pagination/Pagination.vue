@@ -20,7 +20,8 @@
 </template>
 
 <script setup>
-
+import i18n from "@/i18n/index.js"
+const {t} = i18n.global
 import {ref, onMounted, watch } from "vue";
 const props = defineProps({
   total:{
@@ -44,23 +45,23 @@ const page = ref(1)
 const pageSize = ref(10)
 const pageSizes = [
   {
-    label: "10 tadan ko'rsatish",
+    label: t('content.paginationSize',{n:10}),
     value: 10
   },
   {
-    label: "20 tadan ko'rsatish",
+    label:  t('content.paginationSize',{n:20}),
     value: 20
   },
   {
-    label: "30 tadan ko'rsatish",
+    label:  t('content.paginationSize',{n:30}),
     value: 30
   },
   {
-    label: "50 tadan ko'rsatish",
+    label:  t('content.paginationSize',{n:50}),
     value: 50
   },
   {
-    label: "100 tadan ko'rsatish",
+    label:  t('content.paginationSize',{n:100}),
     value: 100
   }
 ];

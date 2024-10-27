@@ -11,8 +11,10 @@ import DashboardPage from "@/pages/dashboard/DashboardPage.vue";
 import CategoryPage from "@/pages/category/CategoryPage.vue";
 import ClientPage from "@/pages/client/clientPage.vue";
 import ProductPage from "@/pages/product/ProductPage.vue";
-import OrganizationLayout from "@/layouts/LayoutV2/OrganizationLayout.vue";
-import {AppPaths} from "@/utils/index.js";
+import LayoutV2 from "@/layouts/LayoutV2/LayoutV2.vue";
+import HomePage from "@/pages/home/HomePage.vue";
+import {AppPaths, AppLayouts} from "@/utils/index.js";
+
 
 
 // routes
@@ -36,45 +38,57 @@ const routes = [
     ...organization,
     {
         path:AppPaths.Main,
-        component:OrganizationLayout,
         beforeEnter: beforeLogin,
-        redirect: AppPaths.Admin,
-    },
-
-    {
-        path:AppPaths.Admin,
-        name:AppPaths.Admin.substring(1),
-        component:OrganizationLayout,
-        beforeEnter: beforeLogin,
+        redirect: AppPaths.Home,
         children: [
             {
-                path:`${AppPaths.Admin}${AppPaths.Dashboard}`,
-                name:AppPaths.Dashboard.substring(1),
-                component:DashboardPage,
+                path:AppPaths.Home,
+                name:AppPaths.Home.substring(1),
+                component:HomePage,
+                beforeEnter: beforeLogin,
+                children: []
             },
             {
-                path:`${AppPaths.Admin}${AppPaths.Category}`,
-                name:AppPaths.Category.substring(1),
-                component:CategoryPage,
+                path:AppPaths.Admin,
+                name:AppPaths.Admin.substring(1),
+                beforeEnter: beforeLogin,
+                redirect: AppPaths.Home,
+                children: [
+                    {
+                        path:`${AppPaths.Admin}${AppPaths.Dashboard}`,
+                        name:AppPaths.Dashboard.substring(1),
+                        component:DashboardPage,
+                    },
+                    {
+                        path:`${AppPaths.Admin}${AppPaths.Category}`,
+                        name:AppPaths.Category.substring(1),
+                        component:CategoryPage,
+                    },
+                    {
+                        path:`${AppPaths.Admin}${AppPaths.Client}`,
+                        name:AppPaths.Client.substring(1),
+                        component:ClientPage,
+                    },
+                    {
+                        path:`${AppPaths.Admin}${AppPaths.Product}`,
+                        name:AppPaths.Product.substring(1),
+                        component:ProductPage,
+                    },
+                    ...adminRoute,
+                ]
             },
-            {
-                path:`${AppPaths.Admin}${AppPaths.Client}`,
-                name:AppPaths.Client.substring(1),
-                component:ClientPage,
-            },
-            {
-                path:`${AppPaths.Admin}${AppPaths.Product}`,
-                name:AppPaths.Product.substring(1),
-                component:ProductPage,
-            },
-            ...adminRoute,
+
         ]
     },
+
+
     {
         path:AppPaths.Register,
         name:AppPaths.Register.substring(1),
         component:RegisterPage,
-        children:[]
+        meta:{
+            layout:AppLayouts.empty
+        }
     },
     {
         path:AppPaths.VerificationEmail,
@@ -92,11 +106,17 @@ const routes = [
         path:AppPaths.Login,
         name:AppPaths.Login.substring(1),
         component:LoginPage,
+        meta:{
+            layout:AppLayouts.empty
+        }
     },
     {
         path: "/:pathMatch(.*)*",
         name: "NotFound",
         component: NotFoundPage,
+        meta:{
+            layout:AppLayouts.empty
+        }
     },
 
 ]

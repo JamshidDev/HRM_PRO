@@ -3,18 +3,17 @@
       v-model="map"
       :settings="{
         location: {
-          center: [69.240562,41.311081],
-          zoom: 12,
+          center:defaultCenter,
+          zoom:zoom
         },
       }"
       width="100%"
-      height="500px"
+      :height="height"
   >
     <yandex-map-default-scheme-layer/>
     <yandex-map-default-features-layer/>
     <template v-for="(marker, idx) in markerList" :key="idx">
       <yandex-map-default-marker
-          v-model="markerModel"
           :settings="{
             coordinates:marker.coords,
             title: marker.name,
@@ -23,8 +22,6 @@
         }"
       />
     </template>
-
-
     <yandex-map-controls :settings="{ position: 'bottom right' }">
       <yandex-map-geolocation-control/>
     </yandex-map-controls>
@@ -39,30 +36,51 @@
 
 <script setup>
 import { shallowRef, ref } from 'vue';
-import { YandexMap,
+import {
+  YandexMap,
   YandexMapDefaultSchemeLayer,
   YandexMapDefaultMarker,
   YandexMapDefaultFeaturesLayer,
   YandexMapGeolocationControl,
-  YandexMapControls,YandexMapListener
+  YandexMapControls, YandexMapListener, YandexMapMarker
 } from 'vue-yandex-maps';
 
 
+const props = defineProps({
+  defaultMarkers:{
+    type:Array,
+   required:true,
+  },
+  defaultCenter:{
+    type:Array,
+    required:true,
+  },
+  zoom:{
+    type:Number,
+    default:12,
+  },
+  height:{
+    type:String,
+    default:'500px'
+  }
+})
+
+const emits = defineEmits(['onChange'])
 
 const map = shallowRef(null);
 const markerList = ref([])
-const markerModel = ref(null)
-
+const markerName =ref(null)
 
 
 const onDragMove = (e) => {
-  // console.log(e)
+  onChange(e)
 }
 
 
 const createEvent =(category,type)=> {
   return (object,event) => {
     if(object && event === undefined){
+      onChange(object.location.center)
       addMarker(object.location.center)
     }
 
@@ -73,10 +91,23 @@ const createEvent =(category,type)=> {
 const addMarker=(coords)=>{
   markerList.value =[]
   markerList.value.push({
-    name:"Me",
+    name:markerName.value,
     coords:coords
   })
-
 }
+
+const onChange = (coords)=>{
+  emits('onChange', coords)
+}
+
+
+onMounted(()=>{
+  props.defaultMarkers.forEach((v)=>{
+    markerName.value = v.name
+    addMarker(v.coords)
+  })
+  onChange(props.defaultMarkers[0].coords)
+
+})
 
 </script>

@@ -1,8 +1,8 @@
 <script setup>
 import {NoDataPicture, UIActionButton, UIPagination} from "@/components/index.js"
-import {useUserRoleStore} from "@/store/modules/index.js"
+import {useCountryStore} from "@/store/modules/index.js"
 
-const store = useUserRoleStore()
+const store = useCountryStore()
 
 
 
@@ -11,7 +11,8 @@ const onEdit = (v)=>{
   store.visibleType = false
   store.elementId = v.id
   store.payload.name = v.name
-  store.payload.permissions = v.permissions.map(x=>x.id)
+  store.payload.marker.coords = [v.long, v.lat]
+  store.payload.marker.name = v.name
   store.visible = true
 }
 
@@ -38,7 +39,7 @@ const changePage = (v)=>{
         <thead>
         <tr>
           <th class="!text-center min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
-          <th class="min-w-[200px]">{{$t('content.name')}}</th>
+          <th class="min-w-[200px]">{{$t('countryPage.form.name')}}</th>
           <th class="min-w-[90px] w-[90px]">{{$t('content.action')}}</th>
         </tr>
         </thead>

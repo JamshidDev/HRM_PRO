@@ -1,8 +1,8 @@
 <script setup>
 import {NoDataPicture, UIActionButton, UIPagination} from "@/components/index.js"
-import {useUserRoleStore} from "@/store/modules/index.js"
+import {useRegionStore} from "@/store/modules/index.js"
 
-const store = useUserRoleStore()
+const store = useRegionStore()
 
 
 
@@ -11,7 +11,9 @@ const onEdit = (v)=>{
   store.visibleType = false
   store.elementId = v.id
   store.payload.name = v.name
-  store.payload.permissions = v.permissions.map(x=>x.id)
+  store.payload.marker.coords = [v.long, v.lat]
+  store.payload.marker.name = v.name
+  store.payload.country_id = v.country.id
   store.visible = true
 }
 
@@ -38,7 +40,8 @@ const changePage = (v)=>{
         <thead>
         <tr>
           <th class="!text-center min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
-          <th class="min-w-[200px]">{{$t('content.name')}}</th>
+          <th class="min-w-[200px]">{{$t('regionPage.form.name')}}</th>
+          <th class="min-w-[120px] w-[300px]">{{$t('regionPage.form.country')}}</th>
           <th class="min-w-[90px] w-[90px]">{{$t('content.action')}}</th>
         </tr>
         </thead>
@@ -46,6 +49,7 @@ const changePage = (v)=>{
         <tr v-for="(item, idx) in store.list" :key="idx">
           <td><span class="text-center text-[12px] text-gray-600 block">{{ (store.params.page - 1) * store.params.per_page + idx + 1 }}</span></td>
           <td>{{item.name}}</td>
+          <td>{{item?.country?.name}}</td>
           <td>
             <UIActionButton
                 :data="item"

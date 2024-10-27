@@ -8,7 +8,6 @@ const {t} = i18n.global
 const store = useUserRoleStore();
 
 const onSearch = (v)=>{
-  store.params.search = v
   store.params.page = 1
   store._index()
 }
@@ -30,6 +29,7 @@ onMounted(()=>{
 <template>
   <UIPageContent>
     <UIPageFilter
+        v-model:search="store.params.search"
         @on-search="onSearch"
         :search-loading="store.loading"
         @on-add="onAdd"

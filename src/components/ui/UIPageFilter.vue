@@ -5,7 +5,6 @@ const search = ref(null)
 
 
 const props = defineProps({
-
   title:{
     type:String,
     default:null,

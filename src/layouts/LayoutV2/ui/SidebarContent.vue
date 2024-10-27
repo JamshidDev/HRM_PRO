@@ -1,6 +1,9 @@
 <script setup>
 import {navigations} from "../data/navigations"
 import {ChevronDown12Regular} from "@vicons/fluent"
+import {useRoute, useRouter} from "vue-router";
+const router = useRouter()
+const route = useRoute()
 
 const emits = defineEmits(['onChange', 'onOpen'])
 
@@ -10,8 +13,7 @@ const onClick = () => {
 
 
 const showPanel = ref(true)
-const navigationData = ref([])
-const menuIndex = ref(1)
+const menuPath = ref(null)
 const currentPath = ref(null)
 const collapse = ref(false)
 
@@ -19,8 +21,9 @@ const controlCollapse = ()=>{
   collapse.value = !collapse.value
 }
 
-const nextPanel = (idx)=>{
-  menuIndex.value = idx
+const nextPanel = (path)=>{
+  pushFirstMenu(path)
+  menuPath.value = path
   emits('onOpen')
   showPanel.value =false
   setTimeout(()=>{
@@ -29,7 +32,7 @@ const nextPanel = (idx)=>{
 }
 
 const onChangePath = (path)=>{
-  currentPath.value =path
+  router.push(path)
 }
 
 
@@ -37,7 +40,7 @@ const onChangePath = (path)=>{
 
 
 const miniMenu = computed(()=>{
-  return navigationData.value.map((v)=>({
+  return navigations.map((v)=>({
     index:v.index,
     label:v.label,
     path:v.path,
@@ -46,15 +49,26 @@ const miniMenu = computed(()=>{
 })
 
 const panelMenu = computed(()=>{
-  let index = navigationData.value.findIndex((v=>v.index === menuIndex.value))
-  return (index === -1)? [] : navigationData.value[index].children
+  let index = navigations.findIndex((v=>v.path === menuPath.value))
+  return (index === -1)? navigations[0].children : navigations[index].children
 })
 
+const isComboxMenu =(path)=>{
+  if(route.path.includes(path)){
+    menuPath.value = path
+  }
+  return route.path.includes(path)
+}
 
+const isCurrentPath = (path)=>{
+  return route.path===path
+}
 
-onMounted(()=>{
-  navigationData.value = navigations
-})
+const pushFirstMenu = (path)=>{
+  let index = navigations.findIndex((v=>v.path === path))
+  router.push(navigations[index].children[0].path)
+}
+
 
 </script>
 
@@ -68,9 +82,9 @@ onMounted(()=>{
       
       <template v-for="item in miniMenu" :key="item">
           <div
-              :class="[item.index === menuIndex && 'active-mini-content']"
+              :class="[isComboxMenu(item.path) && 'active-mini-content']"
               class="main-menu-item"
-              @click="nextPanel(item.index)">
+              @click="nextPanel(item.path)">
             <i :class="item.icon"></i>
           </div>
       </template>
@@ -128,7 +142,7 @@ onMounted(()=>{
               <div
                   @click="onChangePath(item.path)"
                   class="panel-item-single"
-                  :class="[item.path === currentPath && 'active-panel-item-single']"
+                  :class="[isCurrentPath(item.path) && 'active-panel-item-single']"
               >
                 <div class="item-icon">
                   <i :class="item.icon"></i>

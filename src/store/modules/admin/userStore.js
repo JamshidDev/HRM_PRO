@@ -22,7 +22,8 @@ export const useUserStore = defineStore('user', {
         _index(){
             this.loading= true
             $ApiService.userService._index({params:this.params}).then((res)=>{
-                console.log(res.data)
+                this.list = res.data.data.data
+                this.totalItems = res.data.data.total
             }).finally(()=>{
                 this.loading= false
             })

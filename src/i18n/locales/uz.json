@@ -29,7 +29,8 @@
         "back": "Orqaga",
         "profile": "Kabinet",
         "setting": "Sozlamalar",
-        "logOutSystem": "Tizmdan chiqish"
+        "logOutSystem": "Tizmdan chiqish",
+        "paginationSize": "{n} tadan ko'rsatish"
     },
     "rules": {
         "login": "Email kiritilishi shart!",
@@ -40,6 +41,9 @@
         "requiredMinLength": "{n} ta belgidan kam bo'lmasligi kerak",
         "requiredMaxLength": "{n} ta belgidan ko'p bo'lmasligi kerak",
         "requiredJSHSHIR": "Pasport jshshir kiritilishi shart!"
+    },
+    "message": {
+        "successDone": "Muvofaqqiyatli bajarildi"
     },
     "navigation": {
         "client": "Mijozlar",
@@ -118,6 +122,7 @@
 
     },
     "userPermission": {
+        "name": "Huquqlar",
         "createTitle": "Permission qo'shish",
         "updateTitle": "Permission tahrirlash",
         "form": {
@@ -125,11 +130,34 @@
         }
     },
     "userRole": {
+        "name": "Rollar",
         "createTitle": "Role qo'shish",
         "updateTitle": "Role tahrirlash",
         "form": {
             "name": "Role nomi",
             "permissions": "Permission"
+        }
+    },
+    "userPage": {
+        "name": "Foydalanuvchilar"
+    },
+    "countryPage": {
+        "name": "Davlatlar",
+        "createTitle": "Davlat qo'shish",
+        "updateTitle": "Davlat tahrirlash",
+        "form": {
+            "name": "Davlat nomi",
+            "coordinates": "Davlat markazi tanlang"
+        }
+    },
+    "regionPage": {
+        "name": "Viloyatlar",
+        "createTitle": "Viloyat qo'shish",
+        "updateTitle": "Viloyat tahrirlash",
+        "form": {
+            "name": "Viloyat",
+            "coordinates": "Viloyat markazi tanlang",
+            "country": "Davlat"
         }
     }
 }

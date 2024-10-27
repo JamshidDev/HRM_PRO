@@ -4,7 +4,7 @@ import router from "@/router"
 
 export const useLoginStore = defineStore("loginStore", {
     state:()=>({
-        phone:'+998',
+        phone:null,
         password:null,
         loading:false,
     }),
