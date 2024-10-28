@@ -8,6 +8,8 @@ import userPermissionService from "@/service/v1/userPermissionService.js";
 import userRoleService from "@/service/v1/userRoleService.js";
 import countryService from "@/service/v1/admin/countryService.js";
 import regionService from "@/service/v1/admin/regionService.js";
+import districtService from "@/service/v1/admin/districtService.js";
+import nationalityService from "@/service/v1/admin/nationalityService.js";
 
 export default {
     authService,
@@ -19,4 +21,6 @@ export default {
     userRoleService,
     countryService,
     regionService,
+    districtService,
+    nationalityService,
 }

@@ -204,33 +204,45 @@ export const navigations = [
                 parentIndex:6,
                 label:t('userPage.name'),
                 path:Utils.routePathMaker(AppPaths.User),
-                icon:'bx bx-message-rounded-dots',
+                icon:'bx bxs-folder',
                 children:[]
             },
             {
                 parentIndex:6,
                 label:t('userRole.name'),
                 path:Utils.routePathMaker(AppPaths.UserRole),
-                icon:'bx bx-message-rounded-dots',
+                icon:'bx bxs-folder',
                 children:[]
             },
             {
                 parentIndex:6,
                 label:t('userPermission.name'),
                 path:Utils.routePathMaker(AppPaths.UserPermission),
-                icon:'bx bx-message-rounded-dots',
+                icon:'bx bxs-folder',
             },
             {
                 parentIndex:6,
                 label:t('countryPage.name'),
                 path:Utils.routePathMaker(AppPaths.Country),
-                icon:'bx bx-message-rounded-dots',
+                icon:'bx bxs-folder',
             },
             {
                 parentIndex:6,
                 label:t('regionPage.name'),
                 path:Utils.routePathMaker(AppPaths.Region),
-                icon:'bx bx-message-rounded-dots',
+                icon:'bx bxs-folder',
+            },
+            {
+                parentIndex:6,
+                label:t('districtPage.name'),
+                path:Utils.routePathMaker(AppPaths.District),
+                icon:'bx bxs-folder',
+            },
+            {
+                parentIndex:6,
+                label:t('nationalityPage.name'),
+                path:Utils.routePathMaker(AppPaths.Nationality),
+                icon:'bx bxs-folder',
             },
         ]
     },

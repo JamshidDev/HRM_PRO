@@ -250,6 +250,19 @@ export default {
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
+    },
+    districtPage:{
+        name:{
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        region_id:{
+            type:'number',
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
     }
 
 }

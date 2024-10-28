@@ -5,6 +5,8 @@ import UserPage from "@/pages/admin/user/UserPage.vue";
 import RolePage from "@/pages/admin/role/RolePage.vue";
 import CountryPage from "@/pages/admin/country/CountryPage.vue";
 import RegionPage from "@/pages/admin/region/RegionPage.vue";
+import DistrictPage from "@/pages/admin/district/DistrictPage.vue";
+import NationalityPage from "@/pages/admin/nationality/NationalityPage.vue";
 
 
 export default  [
@@ -36,6 +38,18 @@ export default  [
         path:Utils.routePathMaker(AppPaths.Region),
         name:AppPaths.Region.substring(1),
         component:RegionPage,
+        children:[],
+    },
+    {
+        path:Utils.routePathMaker(AppPaths.District),
+        name:AppPaths.District.substring(1),
+        component:DistrictPage,
+        children:[],
+    },
+    {
+        path:Utils.routePathMaker(AppPaths.Nationality),
+        name:AppPaths.Nationality.substring(1),
+        component:NationalityPage,
         children:[],
     },
 ]

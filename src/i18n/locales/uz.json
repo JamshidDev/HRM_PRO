@@ -147,7 +147,7 @@
         "updateTitle": "Davlat tahrirlash",
         "form": {
             "name": "Davlat nomi",
-            "coordinates": "Davlat markazi tanlang"
+            "coordinates": "Davlat markazini tanlang"
         }
     },
     "regionPage": {
@@ -156,8 +156,26 @@
         "updateTitle": "Viloyat tahrirlash",
         "form": {
             "name": "Viloyat",
-            "coordinates": "Viloyat markazi tanlang",
+            "coordinates": "Viloyat markazini tanlang",
             "country": "Davlat"
+        }
+    },
+    "districtPage": {
+        "name": "Tumanlar",
+        "createTitle": "Tuman qo'shish",
+        "updateTitle": "Tuman tahrirlash",
+        "form": {
+            "name": "Tuman",
+            "coordinates": "Tuman markazini tanlang",
+            "region": "Viloyat"
+        }
+    },
+    "nationalityPage": {
+        "name": "Millatlar",
+        "createTitle": "Millat qo'shish",
+        "updateTitle": "Millat tahrirlash",
+        "form": {
+            "name": "Millat"
         }
     }
 }

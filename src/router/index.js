@@ -20,6 +20,7 @@ import {AppPaths, AppLayouts} from "@/utils/index.js";
 // routes
 import organization from "@/router/modules/organization.js";
 import adminRoute from "@/router/modules/adminRoute.js";
+import ProfilePage from "@/pages/profile/ProfilePage.vue";
 
 const beforeLogin = (to, from, next) => {
     const token = localStorage.getItem("token");
@@ -77,6 +78,11 @@ const routes = [
                     ...adminRoute,
                 ]
             },
+            {
+                path:AppPaths.Profile,
+                name:AppPaths.Profile.substring(1),
+                component: ProfilePage,
+            }
 
         ]
     },
