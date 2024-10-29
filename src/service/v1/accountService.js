@@ -1,9 +1,17 @@
 import axios from "../index.js"
 
-const _getAccount =async (payload)=>{
-    return await axios.get(`/user/profile`)
+const _index =async (payload)=>{
+    return await axios.get(`/v1/user/profile`)
+}
+const _update =async (payload)=>{
+    return await axios.put(`/v1/user/update`, payload?.data)
+}
+const _logOut =async (payload)=>{
+    return await axios.get(`/v1/user/logout`)
 }
 
 export default {
-    _getAccount
+    _index,
+    _update,
+    _logOut,
 }

@@ -17,7 +17,7 @@ const controlSidebar=(v)=>{
 
 const initialApp = ()=>{
   i18n.global.locale = localStorage.getItem('applicationLang') || 'uz'
-  store._account()
+  store._index()
 }
 
 const initialMountApp = ()=>{

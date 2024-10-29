@@ -263,6 +263,28 @@ export default {
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
+    },
+    profilePage:{
+        first_name:{
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        last_name:{
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        middle_name:{
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        password:{
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
     }
 
 }
