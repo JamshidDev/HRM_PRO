@@ -244,6 +244,18 @@ export const navigations = [
                 path:Utils.routePathMaker(AppPaths.Nationality),
                 icon:'bx bxs-folder',
             },
+            {
+                parentIndex:6,
+                label:t('positionPage.name'),
+                path:Utils.routePathMaker(AppPaths.Position),
+                icon:'bx bxs-folder',
+            },
+            {
+                parentIndex:6,
+                label:t('organizationPage.name'),
+                path:Utils.routePathMaker(AppPaths.Organizations),
+                icon:'bx bxs-folder',
+            },
         ]
     },
 ]

@@ -192,5 +192,27 @@
             "password": "Parol",
             "confirmPassword": "Parolni takrorlang"
         }
+    },
+    "positionPage": {
+        "name": "Lavozimlar",
+        "createTitle": "Lavozim qo'shish",
+        "updateTitle": "Lavozimni tahrirlash",
+        "form": {
+            "name": "Lavozim nomi (uz)",
+            "name_ru": "Lavozim nomi (ru)",
+            "classification_index": "Klassifikator indeksi",
+            "classification_code": "Klassifikator kodi"
+        }
+    },
+    "organizationPage": {
+        "name": "Tashkilotlar",
+        "createTitle": "Tashkilot qo'shish",
+        "updateTitle": "Tashkilotni tahrirlash",
+        "form": {
+            "parent_id": "Tashkilot tanlang",
+            "name": "Tashkilot nomi",
+            "full_name": "Tashkilotning to'liq nomi",
+            "level": "Tashkilot turi"
+        }
     }
 }

@@ -8,6 +8,7 @@ const {t} = i18n.global
 const router = useRouter()
 import {AppPaths} from "@/utils/index.js";
 
+
 const renderIcon = (icon)=> {
   return () => {
     return h(NIcon, null, {
@@ -50,7 +51,7 @@ const changeOption = (v)=>{
         class="cursor-pointer"
         round
         size="large"
-        src="empty.png"
+        :src="'user/one.png'"
         fallback-src="/public/default-user.png"
     />
   </n-dropdown>

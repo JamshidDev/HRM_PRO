@@ -16,7 +16,6 @@ meta.name = 'naive-ui-style'
 document.head.appendChild(meta)
 const pinia =  createPinia()
 
-
 app.use(i18n)
 app.use(naive)
 app.use(router)

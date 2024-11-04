@@ -285,6 +285,40 @@ export default {
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
-    }
+    },
+    positionPage:{
+        name:{
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        name_ru:{
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        classification_index:{
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        classification_code:{
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+    },
+    organizationPage:{
+        name:{
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        full_name:{
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+    },
 
 }

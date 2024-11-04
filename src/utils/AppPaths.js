@@ -19,6 +19,8 @@ export const AppPaths = {
     District:"/district",
     Nationality:"/nationality",
     Profile:"/profile",
+    Position:"/position",
+    Organizations:"/organizations",
 
 }
 

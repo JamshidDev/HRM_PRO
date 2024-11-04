@@ -10,6 +10,8 @@ import countryService from "@/service/v1/admin/countryService.js";
 import regionService from "@/service/v1/admin/regionService.js";
 import districtService from "@/service/v1/admin/districtService.js";
 import nationalityService from "@/service/v1/admin/nationalityService.js";
+import positionService from "@/service/v1/admin/positionService.js";
+import organizationService from "@/service/v1/admin/organizationService.js";
 
 export default {
     authService,
@@ -23,4 +25,6 @@ export default {
     regionService,
     districtService,
     nationalityService,
+    positionService,
+    organizationService,
 }
