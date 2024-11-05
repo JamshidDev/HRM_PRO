@@ -11,14 +11,17 @@ export const useComponentStore = defineStore('componentStore', {
         _organizationLevel(){
             this.organizationLevelLoading= true
             $ApiService.organizationService._level().then((res)=>{
-                this.organizationLevelList = res.data.data.data
+                this.organizationLevelList = res.data.data
             }).finally(()=>{
                 this.organizationLevelLoading= false
             })
         },
         _organizations(){
             this.organizationLoading= true
-            $ApiService.organizationService._level().then((res)=>{
+            $ApiService.organizationService._index({
+                page:1,
+                size:1000
+            }).then((res)=>{
                 this.organizationList = res.data.data.data
             }).finally(()=>{
                 this.organizationLoading= false

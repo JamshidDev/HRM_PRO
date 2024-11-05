@@ -1,6 +1,7 @@
 <script setup>
 import {UIDrawer, UIPageContent, UIPageFilter} from "@/components/index.js"
 import createForm from "./ui/createForm.vue"
+import Table from "./ui/Table.vue"
 import {useOrganizationStore, useComponentStore} from "@/store/modules/index.js"
 
 const store = useOrganizationStore()
@@ -17,6 +18,10 @@ const onAdd = ()=>{
   store.visible = true
   store.visibleType = true
 }
+
+onMounted(()=>{
+  store._index()
+})
 </script>
 
 <template>
@@ -25,7 +30,9 @@ const onAdd = ()=>{
       v-model:search="store.params.search"
       @on-search="onSearch"
       @on-add="onAdd"
+      class="mb-4"
   />
+  <Table/>
   <UIDrawer
       :visible="store.visible"
       @update:visible="(v)=>store.visible = v"

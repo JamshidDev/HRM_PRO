@@ -11,8 +11,6 @@ export const useOrganizationStore = defineStore('organizationStore', {
         visibleType:true,
         elementId:null,
         totalItems:0,
-        allCountryList:[],
-        allLoading:false,
         payload:{
             parent_id:null,
             level:null,
@@ -29,13 +27,22 @@ export const useOrganizationStore = defineStore('organizationStore', {
         levelLoading:false,
         levelList:[],
         showLoading:false,
+        indexPath:null,
+        nestedElement:false,
+        nestedPath:null,
 
     }),
     actions:{
         _index(){
             this.loading= true
             $ApiService.organizationService._index({params:this.params}).then((res)=>{
-                this.list = res.data.data.data
+                this.list = res.data.data.data.map((v)=>({
+                    name:v.name,
+                    fullName:'No fullname',
+                    id:v.id,
+                    children:[],
+                    isHaveChild:Boolean(v?.descendants)
+                }))
                 this.totalItems = res.data.data.total
             }).finally(()=>{
                 this.loading= false
@@ -50,11 +57,19 @@ export const useOrganizationStore = defineStore('organizationStore', {
             })
         },
         _show(){
-            this.showLoading= true
+
             $ApiService.organizationService._show({id:this.elementId}).then((res)=>{
-                this.levelList = res.data.data.data
-            }).finally(()=>{
-                this.showLoading= false
+                let node = res.data.data.data.map((v)=>({
+                    name:v.name,
+                    fullName:'No fullname',
+                    id:v.id,
+                    children:[],
+                    isHaveChild:Boolean(v?.descendants)
+                }))
+
+                this.nestedElement(this.list, this.indexPath.slice(2).split('-'),node )
+
+
             })
         },
         _create(){
@@ -111,7 +126,21 @@ export const useOrganizationStore = defineStore('organizationStore', {
             this.payload.full_name = null
             this.payload.lat = null
             this.payload.long = null
-        }
+        },
+        nestedElement(node, indexPath, newNode){
+            let currentNode = node
+            for(const index of indexPath){
+                const childIndex = parseInt(index, 10);
+                if(Array.isArray(currentNode)){
+                    currentNode = currentNode[childIndex]
+                }else{
+                    currentNode = currentNode.children[childIndex]
+                }
+            }
+            currentNode.children = newNode
+            this.indexPath = null
+            return currentNode
+        },
 
     }
 

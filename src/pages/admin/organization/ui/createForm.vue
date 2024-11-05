@@ -53,7 +53,9 @@ const onSubmit = ()=>{
             :loading="componentStore.organizationLevelLoading"
         />
       </n-form-item>
-      <n-form-item :label="$t(`organizationPage.form.parent_id`)" path="parent_id">
+      <n-form-item
+          v-if="store.nestedElement"
+          :label="$t(`organizationPage.form.parent_id`)" path="parent_id">
         <n-select
             v-model:value="store.payload.parent_id"
             filterable
