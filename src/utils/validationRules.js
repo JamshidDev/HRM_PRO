@@ -1,4 +1,4 @@
-import i18n from "../i18n/index.js"
+import i18n from "@/i18n/index.js"
 const {t} = i18n.global
 const triggerEvents =  ['input', 'blur']
 

@@ -15,8 +15,11 @@ const onSearch = ()=>{
 const onAdd = ()=>{
   componentStore._organizationLevel()
   componentStore._organizations()
-  store.visible = true
+  store.resetForm()
+  store.parentElement = null
   store.visibleType = true
+  store.visible = true
+
 }
 
 onMounted(()=>{
@@ -37,7 +40,6 @@ onMounted(()=>{
       :visible="store.visible"
       @update:visible="(v)=>store.visible = v"
       :title="store.visibleType? $t('organizationPage.createTitle') : $t('organizationPage.updateTitle')"
-
   >
     <template #content>
       <createForm/>
@@ -45,7 +47,3 @@ onMounted(()=>{
   </UIDrawer>
 </UIPageContent>
 </template>
-
-<style scoped>
-
-</style>

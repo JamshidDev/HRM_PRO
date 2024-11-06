@@ -46,7 +46,7 @@ const onSubmit = () => {
           class="flex flex-col xl:w-[400px]  w-[360px] p-[20px] !rounded-3xl"
       >
         <div class="flex justify-center">
-          <img class="w-[60px]" src="/public/organization-logo.webp" alt="">
+          <img class="w-[60px]" src="/organization-logo.webp" alt="">
         </div>
         <span class="text-center font-bold text-3xl">{{ $t(`loginPage.title`) }}</span>
         <span class="text-center text-sm mb-[20px] text-gray-500">{{ $t(`loginPage.subtitle`) }}</span>

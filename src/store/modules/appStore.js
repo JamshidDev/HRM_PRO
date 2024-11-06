@@ -1,5 +1,6 @@
 import {defineStore} from "pinia";
 import router from "@/router"
+import {AppPaths} from "@/utils/index.js"
 export const useAppStore = defineStore('appStore', {
     state:()=>({
         mapLocation:{
@@ -12,12 +13,12 @@ export const useAppStore = defineStore('appStore', {
                 name:"Tashkent"
             }
         ]
-
-
     }),
     actions:{
         _logOutApp(){
             localStorage.removeItem('appSidebar')
+            localStorage.removeItem('token')
+            router.push(AppPaths.Login)
         }
 
     }

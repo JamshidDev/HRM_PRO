@@ -30,7 +30,8 @@
         "profile": "Kabinet",
         "setting": "Sozlamalar",
         "logOutSystem": "Tizmdan chiqish",
-        "paginationSize": "{n} tadan ko'rsatish"
+        "paginationSize": "{n} tadan ko'rsatish",
+        "confirm": "Tasdiqlash"
     },
     "rules": {
         "login": "Email kiritilishi shart!",
@@ -213,6 +214,20 @@
             "name": "Tashkilot nomi",
             "full_name": "Tashkilotning to'liq nomi",
             "level": "Tashkilot turi"
-        }
+        },
+        "selectedOrg": "Tanlangan tashkilot",
+        "deleteContent": "Haqiqattan ham bu tashkilotni o'chirmoqchimisiz? "
+    },
+    "workerPage": {
+        "name": "Xodimlar"
+    },
+    "contactPage": {
+        "name": "Kontaktlar"
+    },
+    "documentHistoryPage": {
+        "name": "Hujjatlar tarixi"
+    },
+    "examPage": {
+        "name": "Imtixonlar"
     }
 }

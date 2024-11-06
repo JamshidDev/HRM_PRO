@@ -1,26 +1,20 @@
 
 import {createRouter, createWebHistory} from "vue-router"
 
-import LoginPage from "@/pages/login/LoginPage.vue"
-import NotFoundPage from "@/pages/notFound/NotFoundPage.vue"
-import RegisterPage from "@/pages/register/RegisterPage.vue";
-import ServiceLayout from "@/layouts/Organization/Service/ServiceLayout.vue";
-import MainLayout from "@/layouts/Main/MainLayout.vue";
-import VerificationEmailPage from "@/pages/verificationEmail/VerificationEmailPage.vue"
-import DashboardPage from "@/pages/dashboard/DashboardPage.vue";
-import CategoryPage from "@/pages/category/CategoryPage.vue";
-import ClientPage from "@/pages/client/clientPage.vue";
-import ProductPage from "@/pages/product/ProductPage.vue";
-import LayoutV2 from "@/layouts/LayoutV2/LayoutV2.vue";
-import HomePage from "@/pages/home/HomePage.vue";
+import LoginPage from "@/pages/app/login/LoginPage.vue"
+import NotFoundPage from "@/pages/app/notFound/NotFoundPage.vue"
+import RegisterPage from "@/pages/app/register/RegisterPage.vue";
+import HomePage from "@/pages/app/home/HomePage.vue";
 import {AppPaths, AppLayouts} from "@/utils/index.js";
-
-
+import ProfilePage from "@/pages/app/profile/ProfilePage.vue";
 
 // routes
-import organization from "@/router/modules/organization.js";
 import adminRoute from "@/router/modules/adminRoute.js";
-import ProfilePage from "@/pages/profile/ProfilePage.vue";
+import hrmRoute from "@/router/modules/hrmRoute.js"
+import chatRoute from "@/router/modules/chatRoute.js"
+import lmsRoute from "@/router/modules/lmsRoute.js"
+import docflowRoute from "@/router/modules/docflowRoute.js"
+
 
 const beforeLogin = (to, from, next) => {
     const token = localStorage.getItem("token");
@@ -36,7 +30,6 @@ const beforeLogin = (to, from, next) => {
 
 
 const routes = [
-    ...organization,
     {
         path:AppPaths.Main,
         beforeEnter: beforeLogin,
@@ -54,30 +47,38 @@ const routes = [
                 name:AppPaths.Admin.substring(1),
                 beforeEnter: beforeLogin,
                 redirect: AppPaths.Home,
-                children: [
-                    {
-                        path:`${AppPaths.Admin}${AppPaths.Dashboard}`,
-                        name:AppPaths.Dashboard.substring(1),
-                        component:DashboardPage,
-                    },
-                    {
-                        path:`${AppPaths.Admin}${AppPaths.Category}`,
-                        name:AppPaths.Category.substring(1),
-                        component:CategoryPage,
-                    },
-                    {
-                        path:`${AppPaths.Admin}${AppPaths.Client}`,
-                        name:AppPaths.Client.substring(1),
-                        component:ClientPage,
-                    },
-                    {
-                        path:`${AppPaths.Admin}${AppPaths.Product}`,
-                        name:AppPaths.Product.substring(1),
-                        component:ProductPage,
-                    },
-                    ...adminRoute,
-                ]
+                children: [...adminRoute]
             },
+            {
+                path:AppPaths.Hrm,
+                name:AppPaths.Hrm.substring(1),
+                beforeEnter: beforeLogin,
+                redirect: AppPaths.Home,
+                children: [...hrmRoute]
+            },
+            {
+                path:AppPaths.Chat,
+                name:AppPaths.Chat.substring(1),
+                beforeEnter: beforeLogin,
+                redirect: AppPaths.Home,
+                children: [...chatRoute]
+            },
+            {
+                path:AppPaths.Lms,
+                name:AppPaths.Lms.substring(1),
+                beforeEnter: beforeLogin,
+                redirect: AppPaths.Home,
+                children: [...lmsRoute]
+            },
+            {
+                path:AppPaths.DocFlow,
+                name:AppPaths.DocFlow.substring(1),
+                beforeEnter: beforeLogin,
+                redirect: AppPaths.Home,
+                children: [...docflowRoute]
+            },
+
+
             {
                 path:AppPaths.Profile,
                 name:AppPaths.Profile.substring(1),
@@ -95,18 +96,6 @@ const routes = [
         meta:{
             layout:AppLayouts.empty
         }
-    },
-    {
-        path:AppPaths.VerificationEmail,
-        name:AppPaths.VerificationEmail.substring(1),
-        component:VerificationEmailPage,
-        children:[]
-    },
-    {
-        path:AppPaths.RegisterService,
-        name:AppPaths.RegisterService.substring(1),
-        component:ServiceLayout,
-        children:[]
     },
     {
         path:AppPaths.Login,

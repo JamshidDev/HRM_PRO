@@ -1,7 +1,11 @@
 export const AppPaths = {
     Main:'/',
-    OrganizationLayout:'/organization-layout',
     Admin:"/admin",
+    Chat:"/chat",
+    Lms:"/lms",
+    DocFlow:"/docflow",
+    Hrm:"/hrm",
+    OrganizationLayout:'/organization-layout',
     Home:"/home",
     Dashboard:'/dashboard',
     Product:"/product",
@@ -21,7 +25,10 @@ export const AppPaths = {
     Profile:"/profile",
     Position:"/position",
     Organizations:"/organizations",
-
+    Worker:"/worker",
+    Contact:"/contact",
+    DocumentHistory:"/document-history",
+    Exam:"/exam",
 }
 
 export const AppLayouts ={

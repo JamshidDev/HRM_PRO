@@ -1,9 +1,14 @@
 <script setup>
-import {useOrganizationStore} from "@/store/modules/index.js"
+import {useOrganizationStore, useComponentStore} from "@/store/modules/index.js"
 import {UITree} from "@/components/index.js"
+import { useDialog, useMessage } from 'naive-ui'
+import i18n from "@/i18n/index.js"
 
 const store = useOrganizationStore()
-
+const componentStore = useComponentStore()
+const dialog = useDialog()
+const message = useMessage()
+const {t} = i18n.global
 
 
 
@@ -18,20 +23,40 @@ const onLoad = (v)=>{
 }
 
 const onChange = (v)=>{
-  console.log(v)
   if(v.type === 'create'){
     createNested(v)
+  }else if(v.type === 'delete'){
+    onDelete(v)
   }
 }
 
 const createNested = (v)=>{
+  componentStore._organizationLevel()
   store.resetForm()
   store.elementId =v.id
+  store.payload.parent_id =v.id
   store.nestedPath = v.index
-  store.payload.parent_id = v.id
   store.visibleType = true
-  store.nestedElement = true
+  store.parentElement = {
+    id:v.id,
+    name:v.name
+  }
   store.visible = true
+}
+
+const onDelete = (v)=>{
+  store.elementId =v.id
+  dialog.info({
+    title: t('content.confirm'),
+    content: t('organizationPage.deleteContent'),
+    positiveText: t('content.yes'),
+    negativeText: t('content.no'),
+    onPositiveClick: () => {
+      store._delete()
+    },
+    onNegativeClick: () => {
+    }
+  })
 }
 
 

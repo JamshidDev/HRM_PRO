@@ -41,6 +41,10 @@ const timeWithMonth = (time)=>{
 const noAvailableImage = "/public/default-user.png"
 
 const routePathMaker = (mainPath)=>(`${AppPaths.Admin}${mainPath}`)
+const routeHrmPathMaker = (mainPath)=>(`${AppPaths.Hrm}${mainPath}`)
+const routeLmsPathMaker = (mainPath)=>(`${AppPaths.Lms}${mainPath}`)
+const routeChatPathMaker = (mainPath)=>(`${AppPaths.Chat}${mainPath}`)
+const routeDocFlowPathMaker = (mainPath)=>(`${AppPaths.DocFlow}${mainPath}`)
 
 
 
@@ -59,4 +63,8 @@ export default {
     timeWithMonth,
     noAvailableImage,
     routePathMaker,
+    routeHrmPathMaker,
+    routeLmsPathMaker,
+    routeChatPathMaker,
+    routeDocFlowPathMaker,
 }

@@ -3,7 +3,7 @@
 </script>
 
 <template>
-<h4>Dashboard Page</h4>
+<h4>Document History</h4>
 </template>
 
 <style scoped>

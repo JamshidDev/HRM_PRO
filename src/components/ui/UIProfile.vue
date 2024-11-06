@@ -3,10 +3,17 @@ import {h} from "vue";
 import {NIcon} from "naive-ui";
 import {useRouter} from "vue-router";
 import {Person24Regular, Settings16Regular, SignOut20Regular} from "@vicons/fluent";
+import {useAppStore, useAccountStore} from "@/store/modules/index.js"
 import i18n from "@/i18n/index.js"
+import {AppPaths} from "@/utils/index.js";
+
 const {t} = i18n.global
 const router = useRouter()
-import {AppPaths} from "@/utils/index.js";
+const store = useAppStore()
+const accountStore = useAccountStore()
+
+
+
 
 
 const renderIcon = (icon)=> {
@@ -40,7 +47,7 @@ const changeOption = (v)=>{
   if(v==='profile'){
     router.push(AppPaths.Profile)
   }else if(v==='logout'){
-    router.push(AppPaths.Login)
+    store._logOutApp()
   }
 }
 </script>
@@ -51,7 +58,7 @@ const changeOption = (v)=>{
         class="cursor-pointer"
         round
         size="large"
-        :src="'user/one.png'"
+        :src="accountStore.account?.photo"
         fallback-src="/public/default-user.png"
     />
   </n-dropdown>

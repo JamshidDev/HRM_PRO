@@ -7,8 +7,10 @@ import AppLayout from "@/layouts/AppLayout.vue";
 <template>
   <n-config-provider :theme-overrides="themeOverrides">
     <n-message-provider placement="top-right">
-      <AppLayout/>
-      <ToastProvider/>
+      <n-dialog-provider>
+        <AppLayout/>
+        <ToastProvider/>
+      </n-dialog-provider>
     </n-message-provider>
   </n-config-provider>
 </template>

@@ -28,7 +28,7 @@ export const useOrganizationStore = defineStore('organizationStore', {
         levelList:[],
         showLoading:false,
         indexPath:null,
-        nestedElement:false,
+        parentElement:null,
         nestedPath:null,
 
     }),
