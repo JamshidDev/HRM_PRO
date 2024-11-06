@@ -1,11 +1,6 @@
 
 import {createRouter, createWebHistory} from "vue-router"
-
-import LoginPage from "@/pages/app/login/LoginPage.vue"
-import NotFoundPage from "@/pages/app/notFound/NotFoundPage.vue"
-import RegisterPage from "@/pages/app/register/RegisterPage.vue";
-import HomePage from "@/pages/app/home/HomePage.vue";
-import {AppPaths, AppLayouts} from "@/utils/index.js";
+import {AppPaths} from "@/utils/index.js";
 import ProfilePage from "@/pages/app/profile/ProfilePage.vue";
 
 // routes
@@ -13,8 +8,8 @@ import adminRoute from "@/router/modules/adminRoute.js";
 import hrmRoute from "@/router/modules/hrmRoute.js"
 import chatRoute from "@/router/modules/chatRoute.js"
 import lmsRoute from "@/router/modules/lmsRoute.js"
+import appRoute from "@/router/modules/appRoute.js"
 import docflowRoute from "@/router/modules/docflowRoute.js"
-
 
 const beforeLogin = (to, from, next) => {
     const token = localStorage.getItem("token");
@@ -30,18 +25,12 @@ const beforeLogin = (to, from, next) => {
 
 
 const routes = [
+    ...appRoute,
     {
         path:AppPaths.Main,
         beforeEnter: beforeLogin,
         redirect: AppPaths.Home,
         children: [
-            {
-                path:AppPaths.Home,
-                name:AppPaths.Home.substring(1),
-                component:HomePage,
-                beforeEnter: beforeLogin,
-                children: []
-            },
             {
                 path:AppPaths.Admin,
                 name:AppPaths.Admin.substring(1),
@@ -87,33 +76,6 @@ const routes = [
 
         ]
     },
-
-
-    {
-        path:AppPaths.Register,
-        name:AppPaths.Register.substring(1),
-        component:RegisterPage,
-        meta:{
-            layout:AppLayouts.empty
-        }
-    },
-    {
-        path:AppPaths.Login,
-        name:AppPaths.Login.substring(1),
-        component:LoginPage,
-        meta:{
-            layout:AppLayouts.empty
-        }
-    },
-    {
-        path: "/:pathMatch(.*)*",
-        name: "NotFound",
-        component: NotFoundPage,
-        meta:{
-            layout:AppLayouts.empty
-        }
-    },
-
 ]
 
 const router = createRouter({

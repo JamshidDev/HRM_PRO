@@ -59,7 +59,8 @@ export const useOrganizationStore = defineStore('organizationStore', {
         _show(){
 
             $ApiService.organizationService._show({id:this.elementId}).then((res)=>{
-                let node = res.data.data.data.map((v)=>({
+                console.log(res.data.data)
+                let node = res.data.data.children.data.map((v)=>({
                     name:v.name,
                     fullName:'No fullname',
                     id:v.id,
