@@ -1,6 +1,6 @@
 <script setup>
 import {useOrganizationStore, useComponentStore} from "@/store/modules/index.js"
-import {UITree} from "@/components/index.js"
+import {UITree, UIPagination} from "@/components/index.js"
 import { useDialog, useMessage } from 'naive-ui'
 import i18n from "@/i18n/index.js"
 
@@ -19,6 +19,7 @@ const {t} = i18n.global
 const onLoad = (v)=>{
   store.elementId = v.id
   store.indexPath = v.index
+  store.visibleType = true
   store._show()
 }
 
@@ -27,6 +28,8 @@ const onChange = (v)=>{
     createNested(v)
   }else if(v.type === 'delete'){
     onDelete(v)
+  }else if(v.type === 'update'){
+    onEdit(v)
   }
 }
 
@@ -54,11 +57,24 @@ const onDelete = (v)=>{
     onPositiveClick: () => {
       store._delete()
     },
-    onNegativeClick: () => {
-    }
+    onNegativeClick: () => {}
   })
 }
 
+const onEdit =(v)=>{
+  store.visibleType=false
+  store.elementId = v.id
+  store.parentElement = null
+  componentStore._organizationLevel()
+  componentStore._organizations()
+  store._show()
+}
+
+const changePage =(v)=>{
+  store.params.page = v.page
+  store.params.per_page = v.per_page
+  store._index()
+}
 
 
 
@@ -73,4 +89,11 @@ const onDelete = (v)=>{
         @on-change="onChange"
         :element-id="store.indexPath"
     />
+  <UIPagination
+      :page="store.params.page"
+      :per_page="store.params.size"
+      :total="store.totalItems"
+      @change-page="changePage"
+  />
+
 </template>

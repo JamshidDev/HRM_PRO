@@ -6,6 +6,14 @@ export const useComponentStore = defineStore('componentStore', {
 
         organizationList:[],
         organizationLoading:false,
+
+        enumLoading:false,
+        academicDegreeList:[],
+        academicTitleList:[],
+        contractTypeList:[],
+        educationList:[],
+        partyList:[],
+
     }),
     actions:{
         _organizationLevel(){
@@ -18,15 +26,27 @@ export const useComponentStore = defineStore('componentStore', {
         },
         _organizations(){
             this.organizationLoading= true
-            $ApiService.organizationService._index({
+            $ApiService.componentService._organization({
                 page:1,
                 size:1000
             }).then((res)=>{
-                this.organizationList = res.data.data.data
+                this.organizationList = res.data.data
             }).finally(()=>{
                 this.organizationLoading= false
             })
         },
+        _enums(){
+            this.enumLoading= true
+            $ApiService.componentService._enums().then((res)=>{
+                this.academicDegreeList = res.data.data.academic_degrees
+                this.academicTitleList = res.data.data.academic_titles
+                this.contractTypeList = res.data.data.contract_types
+                this.educationList = res.data.data.educations
+                this.partyList = res.data.data.parties
+            }).finally(()=>{
+                this.enumLoading= false
+            })
+        }
 
     }
 

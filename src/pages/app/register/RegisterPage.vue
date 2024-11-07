@@ -9,7 +9,7 @@ const store = useRegisterStore()
 
 <template>
   <div class="w-full min-h-screen flex justify-center items-center bg-gradient--v2">
-    <div class="flex overflow-hidden border border-surface-line rounded-xl shadow-sm bg-surface-section">
+    <div class="flex overflow-hidden border border-surface-line rounded-xl shadow-sm bg-surface-section bg-[url('./public/world.png')] bg-bottom bg-cover">
       <n-tabs animated v-model:value="store.activeTab" class="hidden-tab-header" type="segment">
         <n-tab-pane :name="store.tabList[0]">
           <createForm/>

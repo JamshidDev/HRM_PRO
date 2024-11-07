@@ -38,7 +38,7 @@ export const useOrganizationStore = defineStore('organizationStore', {
             $ApiService.organizationService._index({params:this.params}).then((res)=>{
                 this.list = res.data.data.data.map((v)=>({
                     name:v.name,
-                    fullName:'No fullname',
+                    fullName:v.full_name,
                     id:v.id,
                     children:[],
                     isHaveChild:Boolean(v?.descendants)
@@ -59,17 +59,26 @@ export const useOrganizationStore = defineStore('organizationStore', {
         _show(){
 
             $ApiService.organizationService._show({id:this.elementId}).then((res)=>{
-                console.log(res.data.data)
-                let node = res.data.data.children.data.map((v)=>({
+                let node = res.data.data.children.map((v)=>({
                     name:v.name,
-                    fullName:'No fullname',
+                    fullName:v?.full_name,
                     id:v.id,
                     children:[],
                     isHaveChild:Boolean(v?.descendants)
                 }))
 
-                this.nestedElement(this.list, this.indexPath.slice(2).split('-'),node )
+                if(this.visibleType){
+                    this.nestedElement(this.list, this.indexPath.slice(2).split('-'),node )
+                }else{
+                    let {organization} = res.data.data
+                    this.elementId = organization.id
+                    this.payload.name = organization.name
+                    this.payload.full_name = organization.full_name
+                    this.payload.level = organization.level
+                    this.payload.parent_id = organization.parent_id
+                    this.visible = true
 
+                }
 
             })
         },
