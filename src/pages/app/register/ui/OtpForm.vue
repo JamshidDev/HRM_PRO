@@ -2,7 +2,7 @@
 
 import validationRules from "@/utils/validationRules.js";
 import {Eye24Regular, EyeOff20Filled, ChevronLeft20Filled,QrCode20Filled, LockClosed16Regular, ErrorCircle12Filled} from "@vicons/fluent";
-import {useRegisterStore} from "@/store/modules/registrStore.js";
+import {useRegisterStore} from "@/store/modules/app/registrStore.js";
 
 const store = useRegisterStore()
 const formRef = ref(null)

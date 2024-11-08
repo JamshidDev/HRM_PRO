@@ -229,5 +229,17 @@
     },
     "examPage": {
         "name": "Imtixonlar"
+    },
+    "departmentPage": {
+        "name": "Bo'linmalar",
+        "createTitle": "Bo'linma qo'shish",
+        "updateTitle": "Bo'linmani tahrirlash",
+        "form": {
+            "parent_id": "Bo'linma tanlang",
+            "name": "Bo'linma nomi",
+            "level": "Bo'linma turi"
+        },
+        "selectedOrg": "Tanlangan tashkilot",
+        "deleteContent": "Haqiqattan ham bu tashkilotni o'chirmoqchimisiz? "
     }
 }

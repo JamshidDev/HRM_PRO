@@ -29,6 +29,7 @@ export const AppPaths = {
     Contact:"/contact",
     DocumentHistory:"/document-history",
     Exam:"/exam",
+    Department:"/department",
 }
 
 export const AppLayouts ={

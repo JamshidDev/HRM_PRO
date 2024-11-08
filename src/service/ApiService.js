@@ -12,7 +12,8 @@ import districtService from "@/service/v1/admin/districtService.js";
 import nationalityService from "@/service/v1/admin/nationalityService.js";
 import positionService from "@/service/v1/admin/positionService.js";
 import organizationService from "@/service/v1/admin/organizationService.js";
-import componentService from "@/service/v1/admin/componentService.js";
+import componentService from "@/service/v1/app/componentService.js";
+import departmentService from "@/service/v1/hrm/departmentService.js";
 
 export default {
     authService,
@@ -29,4 +30,5 @@ export default {
     positionService,
     organizationService,
     componentService,
+    departmentService,
 }

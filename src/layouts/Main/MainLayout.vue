@@ -2,7 +2,7 @@
 import {computed, ref} from "vue";
 import AppSidebar from "@/layouts/Main/AppSidebar.vue";
 import AppHeader from "@/layouts/Main/AppHeader.vue";
-import {useAccountStore} from "@/store/modules/accountStore.js";
+import {useAccountStore} from "@/store/modules/app/accountStore.js";
 import i18n from "@/i18n/index.js";
 const store = useAccountStore()
 

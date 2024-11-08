@@ -50,7 +50,7 @@ const onChange = (v)=>{
             :disabled="elementId != null"
         >
           <template #icon>
-            <n-icon size="24" class="text-purple-600 -rotate-90">
+            <n-icon size="24" class="text-purple-600">
               <Organization48Regular/>
             </n-icon>
           </template>

@@ -1,5 +1,5 @@
 import {defineStore} from "pinia";
-import router from "@/router"
+import router from "@/router/index.js"
 export const useAccountStore = defineStore('accountStore', {
     state:()=>({
         account:null,

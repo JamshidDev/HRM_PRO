@@ -326,5 +326,18 @@ export default {
             trigger: triggerEvents
         }
     },
+    departmentPage:{
+        name:{
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        level:{
+            type:'number',
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        }
+    },
 
 }

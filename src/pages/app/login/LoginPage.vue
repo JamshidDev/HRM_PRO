@@ -1,6 +1,6 @@
 <script setup>
 import {useRouter} from "vue-router";
-import {useLoginStore} from "@/store/modules/loginStore.js"
+import {useLoginStore} from "@/store/modules/app/loginStore.js"
 import validationRules from "@/utils/validationRules.js";
 import {Call28Regular, LockClosed16Regular, Eye24Regular, EyeOff20Filled} from '@vicons/fluent'
 import LangDropdown from "@/components/general/LangDropdown.vue";

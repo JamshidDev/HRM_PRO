@@ -1,5 +1,5 @@
 <script setup>
-import {useAccountStore} from "@/store/modules/accountStore.js";
+import {useAccountStore} from "@/store/modules/app/accountStore.js";
 import Form from "./Form.vue"
 const store = useAccountStore()
 </script>

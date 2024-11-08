@@ -6,6 +6,9 @@ const _enums =async (payload)=>{
 const _organization =async (payload)=>{
     return await axios.get(`/v1/structure/organization-list`, {params:payload.params})
 }
+const _departments =async (payload)=>{
+    return await axios.get(`/v1/hr/department-list`, {params:payload?.params})
+}
 
 
 
@@ -14,4 +17,5 @@ const _organization =async (payload)=>{
 export default {
     _enums,
     _organization,
+    _departments,
 }

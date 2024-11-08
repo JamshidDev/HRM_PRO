@@ -14,6 +14,9 @@ export const useComponentStore = defineStore('componentStore', {
         educationList:[],
         partyList:[],
 
+        departmentList:[],
+        departmentLoading:false,
+
     }),
     actions:{
         _organizationLevel(){
@@ -46,7 +49,18 @@ export const useComponentStore = defineStore('componentStore', {
             }).finally(()=>{
                 this.enumLoading= false
             })
-        }
+        },
+        _departments(){
+            this.departmentLoading= true
+            $ApiService.componentService._departments({
+                page:1,
+                per_page:1000
+            }).then((res)=>{
+                this.departmentList = res.data.data
+            }).finally(()=>{
+                this.departmentLoading= false
+            })
+        },
 
     }
 

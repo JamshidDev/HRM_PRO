@@ -1,7 +1,7 @@
 <script setup>
 import OtpForm from "./ui/OtpForm.vue";
 import createForm from "./ui/createForm.vue"
-import {useRegisterStore} from "@/store/modules/registrStore.js";
+import {useRegisterStore} from "@/store/modules/app/registrStore.js";
 const store = useRegisterStore()
 
 

@@ -1,5 +1,5 @@
 import {defineStore} from "pinia";
-import router from "@/router"
+import router from "@/router/index.js"
 import {AppPaths} from "@/utils/index.js"
 export const useAppStore = defineStore('appStore', {
     state:()=>({

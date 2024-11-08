@@ -12,9 +12,14 @@ export const navigations = [
         icon:'bx bx-id-card',
         children:[
             {
-                parentIndex:1,
                 label:t('workerPage.name'),
                 path:Utils.routeHrmPathMaker(AppPaths.Worker),
+                icon:'bx bxs-folder',
+                children:[]
+            },
+            {
+                label:t('departmentPage.name'),
+                path:Utils.routeHrmPathMaker(AppPaths.Department),
                 icon:'bx bxs-folder',
                 children:[]
             },

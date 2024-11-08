@@ -11,7 +11,7 @@ import {
   Person24Regular
 } from "@vicons/fluent";
 import {AppPaths} from "@/utils/index.js";
-import {useRegisterStore} from "@/store/modules/registrStore.js";
+import {useRegisterStore} from "@/store/modules/app/registrStore.js";
 import {useRouter} from "vue-router";
 
 const store = useRegisterStore()
