@@ -25,7 +25,7 @@ const props = defineProps({
 
 })
 
-const emits = defineEmits(['onDeep', 'onEdit', 'onDelete', 'onChangePage'])
+const emits = defineEmits(['onDeep', 'onEdit', 'onDelete', 'onChangePage', 'onAdd'])
 
 
 const onDeep =(id)=>{
@@ -36,6 +36,7 @@ const onEdit = (v)=>{
   store.activeDeep =props.deep
   store.activeParentId =props.parentId
 
+
   emits('onEdit', v)
 }
 
@@ -43,6 +44,12 @@ const onDelete = (v)=>{
   store.activeDeep =props.deep
   store.activeParentId =props.parentId
   emits('onDelete', v)
+}
+
+const onAdd = (v)=>{
+  store.activeDeep =props.deep
+  store.activeParentId =props.parentId
+  emits('onAdd', v)
 }
 
 const changePage = (v)=>{
@@ -96,10 +103,12 @@ const changePage = (v)=>{
           <td>{{item.level.name}}</td>
           <td>
             <UIActionButton
+                visible-add-btn
                 :data="item"
                 :loading-delete="item.id === store.elementId && store.deleteLoading"
                 @on-edit="onEdit"
                 @on-delete="onDelete"
+                @on-add="onAdd"
             />
           </td>
         </tr>

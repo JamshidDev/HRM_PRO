@@ -1,5 +1,8 @@
 import {defineStore} from "pinia";
-import router from "@/router/index.js"
+import i18n from "@/i18n/index.js"
+const {t} = i18n.global
+import router from '@/router/index.js'
+import {AppPaths} from "@/utils/index.js"
 export const useAccountStore = defineStore('accountStore', {
     state:()=>({
         account:null,
@@ -15,6 +18,10 @@ export const useAccountStore = defineStore('accountStore', {
             photo:null,
         },
         accountImage:null,
+        organizationVisible:false,
+        activeRole:null,
+        roleLoading:false,
+        roleList:[],
     }),
     actions:{
         _index(){
@@ -46,6 +53,33 @@ export const useAccountStore = defineStore('accountStore', {
                 this.saveLoading = false
             })
         },
+        _roles(){
+            this.roleLoading = true
+            $ApiService.accountService._roles().then((res)=>{
+                this.roleList = []
+                res.data.data.map((v)=>{
+                    v.organizations.forEach((x)=>{
+                        if(x.current){
+                            this.activeRole = x.id
+                        }
+                        this.roleList.push({...x, role:v.name})
+                    })
+                })
+            }).finally(()=>{
+                this.roleLoading = false
+            })
+        },
+        _changeRole(id){
+            let data = {
+                organization_id:id
+            }
+            $ApiService.accountService._changeRole({data}).then((res)=>{
+                $Toast.success(t('message.successDone'))
+                this._index()
+                router.push(AppPaths.Home)
+            })
+
+        },
         resetForm(){
             this.payload.password = null
             this.payload.first_name = null
@@ -53,6 +87,16 @@ export const useAccountStore = defineStore('accountStore', {
             this.payload.middle_name = null
             this.payload.user = null
             this.payload.photo = null
+        },
+        openRoleModal(){
+            this.organizationVisible = true
+            this._roles()
+        },
+        changeAccount(id){
+            if(id !== this.activeRole){
+                this.activeRole = id
+                this._changeRole(id)
+            }
         }
     }
 

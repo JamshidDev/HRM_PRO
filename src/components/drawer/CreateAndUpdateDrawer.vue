@@ -5,6 +5,10 @@ const props = defineProps({
     type:String,
     default:null,
   },
+  width:{
+    type:Number,
+    default:500,
+  }
 })
 
 const visible = defineModel('visible', {type:Boolean, default:false })
@@ -14,7 +18,7 @@ const visible = defineModel('visible', {type:Boolean, default:false })
 <template>
   <n-drawer
       v-model:show="visible"
-      :default-width="502"
+      :default-width="width"
       placement="right"
       resizable
       class="ui-drawer"

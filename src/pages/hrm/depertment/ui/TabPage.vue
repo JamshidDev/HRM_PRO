@@ -15,13 +15,27 @@ const onDelete = (v)=>{
   store._delete()
 }
 
-const onEdit = (v)=>{
+const onAdd = (v)=>{
   componentStore._departments()
   store._level()
+  store.resetForm()
+  store.elementId = v.id
+  store.parentElement ={
+    name:v.name,
+    id:v.id
+  }
+  store.payload.parent_id = v.id
+  store.visibleType = true
+  store.visible = true
+}
 
+const onEdit = (v)=>{
+  store.elementId = v.id
+  componentStore._departments()
+  store._level()
   store.payload.name = v.name
   store.payload.level = v.level.id
-  store.payload.parent_id = v.parent_id
+  store.payload.parent_id = v.parent?.id
 
   store.visibleType = false
   store.visible = true
@@ -47,6 +61,7 @@ const onEdit = (v)=>{
             @on-deep="deepEv"
             @on-delete="onDelete"
             @on-edit="onEdit"
+            @on-add="onAdd"
         />
 
       </n-tab-pane>

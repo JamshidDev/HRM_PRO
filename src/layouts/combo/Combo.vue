@@ -1,6 +1,7 @@
 <script setup>
 import SidebarContent from "./ui/SidebarContent.vue";
 import PageContent from "./ui/PageContent.vue";
+import HelperLayout from "./ui/HelperLayout.vue"
 
 
 const open = ref(true)
@@ -36,5 +37,6 @@ onMounted(()=>{
   <div :class="layoutClass" class="organization-layout">
     <SidebarContent @on-change="controlSidebar" @on-open="openSidebar"/>
     <PageContent @on-open="openSidebar" />
+    <HelperLayout/>
   </div>
 </template>

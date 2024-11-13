@@ -30,6 +30,10 @@ const onSubmit = ()=>{
       :model="store.payload"
   >
     <div style="min-height:calc(100vh - 120px)">
+      <div v-if="store.parentElement" class="w-full text-sm px-2 py-2 border rounded-xl border-surface-line mb-4 flex flex-col cursor-pointer">
+        <span class="text-xs text-gray-500">{{$t(`organizationPage.selectedOrg`)}}</span>
+        <span class="text-primary font-bold">{{store.parentElement?.name}}</span>
+      </div>
       <n-form-item :label="$t(`departmentPage.form.name`)" path="name">
         <n-input
             type="text"
@@ -43,13 +47,13 @@ const onSubmit = ()=>{
             filterable
             :placeholder="$t(`departmentPage.form.level`)"
             :options="store.levelList"
-            label-field="value"
-            value-field="key"
+            label-field="name"
+            value-field="id"
             :loading="store.levelLoading"
         />
       </n-form-item>
       <n-form-item
-          v-if="Boolean(store.parentElement)"
+          v-if="!Boolean(store.parentElement)"
           :label="$t(`departmentPage.form.parent_id`)" path="parent_id">
         <n-select
             v-model:value="store.payload.parent_id"

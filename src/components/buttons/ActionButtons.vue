@@ -1,7 +1,11 @@
 <script setup>
-import {Edit16Regular, Delete28Regular, AppRecent24Regular} from "@vicons/fluent"
+import {Edit16Regular, Delete28Regular, AppRecent24Regular, AddCircle32Regular} from "@vicons/fluent"
 
 const props = defineProps({
+  visibleAddBtn:{
+    type: Boolean,
+    default:false,
+  },
   visibleViewBtn:{
     type: Boolean,
     default:false,
@@ -18,6 +22,10 @@ const props = defineProps({
     type: Object,
     default:null,
   },
+  loadingAdd:{
+    type: Boolean,
+    default:false,
+  },
   loadingDelete:{
     type: Boolean,
     default:false,
@@ -33,8 +41,12 @@ const props = defineProps({
 
 })
 
-const emits = defineEmits(["onEdit", "onDelete", "onView", "onNegDelete" ])
+const emits = defineEmits(["onEdit", "onDelete", "onView", "onNegDelete", "onAdd" ])
 
+
+const onAdd = ()=>{
+  emits("onAdd", props.data)
+}
 
 const onEdit = ()=>{
   emits("onEdit", props.data)
@@ -57,6 +69,20 @@ const handleNegativeClick = ()=>{
 <div class="flex gap-2 items-center">
 
   <slot name="first"></slot>
+
+  <n-button
+      @click="onAdd"
+      v-if="visibleAddBtn"
+      :loading="loadingAdd"
+      strong
+      secondary
+      circle
+      type="success"
+  >
+    <template #icon>
+      <n-icon><AddCircle32Regular /></n-icon>
+    </template>
+  </n-button>
 
   <n-button
       @click="onView"

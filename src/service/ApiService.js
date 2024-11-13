@@ -1,6 +1,6 @@
 
 import authService from "@/service/v1/authService.js";
-import accountService from "@/service/v1/accountService.js";
+import accountService from "@/service/v1/app/accountService.js";
 import categoryService from "@/service/v1/categoryService.js";
 import generalService from "@/service/v1/generalService.js";
 import userService from "@/service/v1/userService.js";
@@ -14,7 +14,7 @@ import positionService from "@/service/v1/admin/positionService.js";
 import organizationService from "@/service/v1/admin/organizationService.js";
 import componentService from "@/service/v1/app/componentService.js";
 import departmentService from "@/service/v1/hrm/departmentService.js";
-
+import departmentPositionService from "@/service/v1/hrm/departmentPositionService.js"
 export default {
     authService,
     accountService,
@@ -31,4 +31,5 @@ export default {
     organizationService,
     componentService,
     departmentService,
+    departmentPositionService,
 }

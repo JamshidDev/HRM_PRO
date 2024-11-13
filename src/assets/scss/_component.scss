@@ -14,7 +14,7 @@
                   farthest-corner at center center,
                   rgba(0, 89, 255, 0.75),
                   transparent
-  )
+  ) !important;
 }
 
 
@@ -33,7 +33,7 @@
                   farthest-corner at center center,
                   rgba(0, 89, 255, 0.75),
                   transparent
-  )
+  ) !important
 }
 .bg-gradient--v3 {
   background:radial-gradient(

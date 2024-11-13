@@ -30,6 +30,7 @@ export const AppPaths = {
     DocumentHistory:"/document-history",
     Exam:"/exam",
     Department:"/department",
+    DepartmentPosition:"/department-position",
 }
 
 export const AppLayouts ={

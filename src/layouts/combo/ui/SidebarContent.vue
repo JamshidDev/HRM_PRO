@@ -1,10 +1,12 @@
 <script setup>
-import {navigations} from "../data/navigations"
+import {navigations} from "../../data/navigations.js"
 import {ChevronDown12Regular} from "@vicons/fluent"
+import {useAccountStore} from "@/store/modules/index.js"
 import {useRoute, useRouter} from "vue-router";
 const router = useRouter()
 const route = useRoute()
 
+const store = useAccountStore()
 const emits = defineEmits(['onChange', 'onOpen'])
 
 const onClick = () => {
@@ -14,7 +16,6 @@ const onClick = () => {
 
 const showPanel = ref(true)
 const menuPath = ref(null)
-const currentPath = ref(null)
 const collapse = ref(false)
 
 const controlCollapse = ()=>{
@@ -28,7 +29,7 @@ const nextPanel = (path)=>{
   showPanel.value =false
   setTimeout(()=>{
     showPanel.value = true
-  },350)
+  },150)
 }
 
 const onChangePath = (path)=>{
@@ -76,7 +77,7 @@ const pushFirstMenu = (path)=>{
   <div class="sidebar-content">
     <div class="mini-content">
       
-      <div class="logo-content">
+      <div class="logo-content cursor-pointer" @click="store.openRoleModal()">
         <img src="/public/logo.png" alt="">
       </div>
       
@@ -172,11 +173,11 @@ const pushFirstMenu = (path)=>{
 <style scoped>
 
 .slide-right-enter-active {
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
 }
 
 .slide-right-leave-active {
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
 }
 
 .slide-right-enter-from {

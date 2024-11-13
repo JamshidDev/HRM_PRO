@@ -15,13 +15,16 @@ export const navigations = [
                 label:t('workerPage.name'),
                 path:Utils.routeHrmPathMaker(AppPaths.Worker),
                 icon:'bx bxs-folder',
-                children:[]
             },
             {
                 label:t('departmentPage.name'),
                 path:Utils.routeHrmPathMaker(AppPaths.Department),
                 icon:'bx bxs-folder',
-                children:[]
+            },
+            {
+                label:t('departmentPositionPage.name'),
+                path:Utils.routeHrmPathMaker(AppPaths.DepartmentPosition),
+                icon:'bx bxs-folder',
             },
         ]
     },

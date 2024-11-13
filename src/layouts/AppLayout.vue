@@ -1,18 +1,20 @@
 <script setup>
 import {useRoute} from "vue-router";
 import {AppLayouts} from "@/utils/index.js";
-import LayoutV2 from "./LayoutV2/LayoutV2.vue";
-import LayoutEmpty from "@/layouts/empty/LayoutEmpty.vue";
+import Combo from "./combo/Combo.vue";
+import Empty from "./empty/Empty.vue";
 import {useAccountStore} from "@/store/modules/app/accountStore.js";
+
+
 const route = useRoute()
 const store = useAccountStore()
 
 const layout = computed(() => {
   switch (route?.meta?.layout) {
     case AppLayouts.empty:
-      return LayoutEmpty
+      return Empty
     default:
-      return LayoutV2
+      return Combo
   }
 })
 

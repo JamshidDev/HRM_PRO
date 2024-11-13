@@ -31,7 +31,9 @@
         "setting": "Sozlamalar",
         "logOutSystem": "Tizmdan chiqish",
         "paginationSize": "{n} tadan ko'rsatish",
-        "confirm": "Tasdiqlash"
+        "confirm": "Tasdiqlash",
+        "month": "Oy",
+        "sum": "So'm"
     },
     "rules": {
         "login": "Email kiritilishi shart!",
@@ -46,10 +48,8 @@
     "message": {
         "successDone": "Muvofaqqiyatli bajarildi"
     },
-    "navigation": {
-        "client": "Mijozlar",
-        "product": "Mahsulotlar",
-        "category": "Kategoriyalar"
+    "account": {
+        "changeRoleConfirm":"Bu hisobdan chiqib boshqa hisobga kirish uchun kerakli hisobni tanlang va 20 soniya kuting"
     },
     "loginPage":{
         "title":"HRM PRO",
@@ -141,6 +141,7 @@
     },
     "userPage": {
         "name": "Foydalanuvchilar"
+
     },
     "countryPage": {
         "name": "Davlatlar",
@@ -238,6 +239,23 @@
             "parent_id": "Bo'linma tanlang",
             "name": "Bo'linma nomi",
             "level": "Bo'linma turi"
+        },
+        "selectedOrg": "Tanlangan tashkilot",
+        "deleteContent": "Haqiqattan ham bu tashkilotni o'chirmoqchimisiz? "
+    },
+    "departmentPositionPage": {
+        "name": "Lavozimlar",
+        "createTitle": "Bo'linmaga lavozim biriktirish",
+        "updateTitle": "Lavozimni tahrirlash",
+        "form": {
+            "position_id": "Lavozimni tanlang",
+            "department_id": "Bo'limni tanlang",
+            "group": "Lavozim guruxi",
+            "rank": "Lavozim uchun razryad",
+            "rate": "Lavozim kontingenti",
+            "salary": "Oylik maosh",
+            "experience": "Ish tajbibasi (oy)",
+            "educations": "Talab qilinadigan minimal ma'lumot"
         },
         "selectedOrg": "Tanlangan tashkilot",
         "deleteContent": "Haqiqattan ham bu tashkilotni o'chirmoqchimisiz? "

@@ -66,8 +66,6 @@ const routes = [
                 redirect: AppPaths.Home,
                 children: [...docflowRoute]
             },
-
-
             {
                 path:AppPaths.Profile,
                 name:AppPaths.Profile.substring(1),

@@ -23,10 +23,7 @@ export const useDepartmentStore = defineStore('departmentStore', {
         },
         levelLoading:false,
         levelList:[],
-        showLoading:false,
-        indexPath:null,
         parentElement:null,
-        nestedPath:null,
         tabList:[
             {
                 name:'Asosiy',
@@ -61,18 +58,14 @@ export const useDepartmentStore = defineStore('departmentStore', {
                 this.levelLoading= false
             })
         },
-        _show(){
-            $ApiService.departmentService._show({id:this.elementId}).then((res)=>{
-                console.log(res.data)
-            })
-        },
         _create(){
             this.saveLoading = true
             let data = {...this.payload}
             $ApiService.departmentService._create({data}).then((res)=>{
-                this.visible = false
-                this._index()
                 $Toast.success(t('message.successDone'))
+                this.visible = false
+                this.updateList()
+
             }).finally(()=>{
                 this.saveLoading = false
             })
@@ -81,25 +74,30 @@ export const useDepartmentStore = defineStore('departmentStore', {
         _update(){
             this.saveLoading = true
             let data = {...this.payload}
-            $ApiService.organizationService._update({data, id:this.elementId}).then((res)=>{
-                this.visible = false
-                this._index()
+            $ApiService.departmentService._update({data, id:this.elementId}).then((res)=>{
                 $Toast.success(t('message.successDone'))
+                this.visible = false
+                this.updateList()
+
             }).finally(()=>{
                 this.saveLoading = false
             })
         },
         _delete(){
+            let deep = this.activeDeep
             this.deleteLoading = true
+
+            this.tabList = this.tabList.filter((x, idx)=>idx<deep)
+            this.tabDataList =  this.tabDataList.filter((x,idx)=>idx<deep)
+
             $ApiService.departmentService._delete({id:this.elementId}).then((res)=>{
-                this.activeTab = 1
-                this.tabList = this.tabList.filter((v,idx)=>idx === 0)
-                this.tabDataList = this.tabDataList.filter((v,idx)=>idx === 0)
-                this._index()
                 $Toast.success(t('message.successDone'))
+                this.updateList()
             }).finally(()=>{
                 this.deleteLoading = false
             })
+
+
         },
 
         openVisible(data){
@@ -114,9 +112,8 @@ export const useDepartmentStore = defineStore('departmentStore', {
         goDeep(v){
             this.id = v.id
             const currentTab = v.deep
-
             $ApiService.departmentService._show({id:v.id}).then((res)=>{
-                this.tabList = this.tabList.filter((x)=>x.key<=currentTab)
+                this.tabList = this.tabList.filter((x, idx)=>idx<currentTab)
                 this.tabDataList =  this.tabDataList.filter((x,idx)=>idx<currentTab)
                 this.tabList.push({
                     name:res.data.data.department.name,
@@ -125,6 +122,7 @@ export const useDepartmentStore = defineStore('departmentStore', {
                 })
                 this.tabDataList.push(res.data.data.children)
                 this.activeTab = currentTab+1
+
             }).finally(()=>{
                 this.id = null
             })
@@ -134,9 +132,39 @@ export const useDepartmentStore = defineStore('departmentStore', {
                 this.tabList =this.tabList.filter((a, idx)=>idx !== (Number(deep)-1))
                 this.tabDataList =  this.tabDataList.filter((v, idx)=>idx !==(Number(deep)-1))
                 this.activeTab = Number(deep)-1
+                console.log(this.tabList)
             }
 
         },
+        updateList() {
+            let deep = this.activeDeep
+            if (deep !== 1) {
+                $ApiService.departmentService._show({id: this.activeParentId}).then((res) => {
+                    if (res.data.data.children.length === 0 && deep !==2) {
+                        this.activeTab = this.activeTab - 1
+                        this.tabDataList.pop()
+                        this.tabList.pop()
+
+                        let parentId = this.tabList[this.tabList.length - 1].parentId
+                        $ApiService.departmentService._show({id: parentId}).then((res) => {
+                            this.tabDataList[this.tabDataList.length - 1] = res.data.data.children
+                        })
+                    } else if(res.data.data.children.length === 0 && deep===2) {
+                        this.activeTab = this.activeTab - 1
+                        this.tabDataList.pop()
+                        this.tabList.pop()
+                        this._index()
+                    }else{
+                        this.tabDataList[deep - 1] = res.data.data.children
+                    }
+                })
+                this.tabList = this.tabList.filter((x, idx)=>idx<deep)
+                this.tabDataList =  this.tabDataList.filter((x,idx)=>idx<deep)
+            } else {
+                this._index()
+            }
+        },
+
 
 
     }

@@ -1,51 +1,48 @@
 <script setup>
 import {UIDrawer, UIPageContent, UIPageFilter} from "@/components/index.js"
-import TabPage from "./ui/TabPage.vue"
-import createForm from "./ui/createForm.vue"
-import {useDepartmentStore, useComponentStore} from "@/store/modules/index.js"
+import {useDepartmentPositionStore, useComponentStore} from "@/store/modules/index.js"
+import createFrom from "./ui/createForm.vue"
 
-const store = useDepartmentStore()
+const store = useDepartmentPositionStore()
 const componentStore = useComponentStore()
 
 const onAdd = ()=>{
-  store.resetForm()
-  store._level()
+  componentStore._enums()
   componentStore._departments()
-  store.activeDeep = 1
-
-  store.parentElement = null
+  componentStore._positions()
+  store.resetForm()
   store.visibleType = true
   store.visible = true
 }
 
 const onSearch = ()=>{
-  store.params.page =1
+  store.params.page = 1
   store._index()
 }
-
-onMounted(()=>{
-  store._index()
-})
 </script>
 
 <template>
 <UIPageContent>
   <UIPageFilter
-      @onSearch="onSearch"
       v-model:search="store.params.search"
-      @on-add="onAdd"
       :show-filter-button="false"
+      @on-add="onAdd"
+      @on-search="onSearch"
   />
- <TabPage/>
   <UIDrawer
+      :width="800"
       :visible="store.visible"
       @update:visible="(v)=>store.visible = v"
-      :title="store.visibleType? $t('departmentPage.createTitle') : $t('departmentPage.updateTitle')"
+      :title="store.visibleType? $t('departmentPositionPage.createTitle') : $t('departmentPositionPage.updateTitle')"
 
   >
     <template #content>
-      <createForm/>
+      <createFrom/>
     </template>
   </UIDrawer>
 </UIPageContent>
 </template>
+
+<style scoped>
+
+</style>

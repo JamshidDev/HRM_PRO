@@ -68,8 +68,6 @@ onMounted(()=>{
           </transition>
         </router-view>
       </div>
-
-
     </div>
     <div v-if="sidebar" @click="controlSidebar(false)" class="mobile_overall"></div>
   </div>
