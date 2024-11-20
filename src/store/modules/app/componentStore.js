@@ -25,7 +25,27 @@ export const useComponentStore = defineStore('componentStore', {
         params:{
             page:1,
             per_page:1000
-        }
+        },
+
+        checkUserVisible:false,
+        userPinfl:null,
+        results:[
+            {
+                fullName:"Jamshid Raximov",
+                photo:"",
+                position:"Lavozim nomi"
+            }
+        ],
+        pinLoading:false,
+
+        regionList:[],
+        regionLoading:false,
+
+        countryList:[],
+        countryLoading:false,
+
+        nationalityList:[],
+        nationalityLoading:false,
 
     }),
     actions:{
@@ -74,7 +94,47 @@ export const useComponentStore = defineStore('componentStore', {
             }).finally(()=>{
                 this.positionLoading = false
             })
+        },
+        _checkWorker(pin){
+            this.pinLoading = true
+            $ApiService.workerService._checkWorker({params:{pin}}).then((res)=>{
+                let data = res.data.data
+                this.results = [
+                    {
+                        fullName:`${data.last_name} ${data.first_name} ${data.middle_name}`,
+                        photo:"",
+                        position:"Lavozim nomi"
+                    }
+                ]
+            }).finally(()=>{
+                this.pinLoading = false
+            })
+        },
+        _regions(){
+            this.regionLoading = true
+            $ApiService.regionService._index(this.params).then((res)=>{
+                this.regionList = res.data.data.data
+            }).finally(()=>{
+                this.regionLoading = false
+            })
+        },
+        _countries(){
+            this.countryLoading = true
+            $ApiService.countryService._index(this.params).then((res)=>{
+                this.countryList = res.data.data.data
+            }).finally(()=>{
+                this.countryLoading = false
+            })
+        },
+        _nationality(){
+            this.nationalityLoading = true
+            $ApiService.nationalityService._index(this.params).then((res)=>{
+                this.nationalityList = res.data.data.data
+            }).finally(()=>{
+                this.nationalityLoading = false
+            })
         }
+
 
     }
 

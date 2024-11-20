@@ -31,6 +31,7 @@ export const AppPaths = {
     Exam:"/exam",
     Department:"/department",
     DepartmentPosition:"/department-position",
+    Create:"/create",
 }
 
 export const AppLayouts ={

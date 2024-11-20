@@ -2,6 +2,7 @@
 import {UIDrawer, UIPageContent, UIPageFilter} from "@/components/index.js"
 import {useDepartmentPositionStore, useComponentStore} from "@/store/modules/index.js"
 import createFrom from "./ui/createForm.vue"
+import Table from "./ui/Table.vue"
 
 const store = useDepartmentPositionStore()
 const componentStore = useComponentStore()
@@ -19,16 +20,20 @@ const onSearch = ()=>{
   store.params.page = 1
   store._index()
 }
+
+onMounted(()=>{
+  store._index()
+})
 </script>
 
 <template>
 <UIPageContent>
   <UIPageFilter
       v-model:search="store.params.search"
-      :show-filter-button="false"
       @on-add="onAdd"
       @on-search="onSearch"
   />
+  <Table/>
   <UIDrawer
       :width="800"
       :visible="store.visible"

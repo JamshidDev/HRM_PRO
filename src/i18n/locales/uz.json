@@ -220,7 +220,15 @@
         "deleteContent": "Haqiqattan ham bu tashkilotni o'chirmoqchimisiz? "
     },
     "workerPage": {
-        "name": "Xodimlar"
+        "name": "Xodimlar",
+        "filter": {
+            "contract": "Shartnoma tuzish"
+
+        },
+        "checkWorker": {
+            "title": "Xodim izlash butun tizim orqali",
+            "jshshir": "Pasport jshshirni kiriting"
+        }
     },
     "contactPage": {
         "name": "Kontaktlar"
@@ -257,7 +265,50 @@
             "experience": "Ish tajbibasi (oy)",
             "educations": "Talab qilinadigan minimal ma'lumot"
         },
-        "selectedOrg": "Tanlangan tashkilot",
-        "deleteContent": "Haqiqattan ham bu tashkilotni o'chirmoqchimisiz? "
+        "table": {
+            "position": "Lavozim",
+            "group": "Gurux",
+            "rank": "Razryad",
+            "rate": "Kontingent",
+            "salary": "Oylik maosh",
+            "department": "Bo'lim",
+            "education": "Ma'lumot",
+            "experience": "Tajriba"
+        }
+    },
+    "createWorkerPage": {
+        "name": "Xodim ma'lumotlarini qo'shish",
+        "ui": {
+            "image": "Kandidat uchun 3 ta rasm qo'shish tavsiya qilinadi. Rasmlar oxirgi 3 oy davomida suratga olingan bo'ishi shart."
+        },
+        "form": {
+            "lastName": "Familiya",
+            "firstName": "Ism",
+            "middleName": "Sharif",
+            "country": "Tug'ilgan davlati",
+            "region": "Tug'ilgan viloyati",
+            "city": "Tug'ilgan tumani",
+            "currentRegion": "Yashash viloyati",
+            "currentCity": "Yashash tumani",
+            "birthday": "Tug'ulgan sanasi",
+            "academicTitle": "Ilmiy unvoni",
+            "academicDegree": "Ilmiy darajasi",
+            "nationality_id": "Millati",
+            "party": "Partiyaviyligi",
+            "pin": "Pasport Jshshr",
+            "serial_number": "Seriyasi va raqami",
+            "from_date": "Berilgan sanasi",
+            "to_date": "Amal qilish muddati",
+            "passport_address": "Berilgan joyi",
+            "passport_file": "Passport nusxasi (.pdf)",
+
+            "address": "Yashash manzili"
+        },
+        "step": {
+            "personal": "Kandidatning shaxsiy ma'lumotlari",
+            "photo": "Kandidatning fotosurati",
+            "pasport": "Kandidatning passport ma'lumotlari",
+            "phone": "Kandidatning telefon raqam ma'lumotlari"
+        }
     }
 }

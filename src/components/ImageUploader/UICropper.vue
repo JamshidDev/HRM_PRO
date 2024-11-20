@@ -34,7 +34,6 @@ const onSave = ()=>{
  let imgUrl = cropperRef.value.getResult().canvas.toDataURL()
   cropperRef.value.getResult().canvas.toBlob((blob) => {
     emits('onResult', {blob, imgUrl})
-    console.log({blob, imgUrl})
   });
 
 }

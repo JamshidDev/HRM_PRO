@@ -10,7 +10,6 @@ const componentStore = useComponentStore()
 const onSubmit = ()=>{
   formRef.value?.validate((error)=>{
     if(!error) {
-      store.saveLoading = true
       if (store.visibleType) {
         store._create()
       } else {
@@ -115,7 +114,7 @@ const onSubmit = ()=>{
         </n-form-item>
         <n-form-item class="col-span-1" :label="$t(`departmentPositionPage.form.educations`)" path="educations">
           <n-select
-              v-model:value="store.payload.educations"
+              v-model:value="store.payload.education"
               filterable
               clearable
               :placeholder="$t(`departmentPositionPage.form.educations`)"

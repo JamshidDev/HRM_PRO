@@ -21,7 +21,7 @@ export const useDepartmentPositionStore = defineStore('departmentPositionStore',
             rate:null,
             salary:null,
             experience:null,
-            educations:null,
+            education:null,
         },
         params:{
             page:1,
@@ -33,7 +33,7 @@ export const useDepartmentPositionStore = defineStore('departmentPositionStore',
     actions:{
         _index(){
             this.loading= true
-            $ApiService.regionService._index({params:this.params}).then((res)=>{
+            $ApiService.departmentPositionService._index({params:this.params}).then((res)=>{
                 this.list = res.data.data.data
                 this.totalItems = res.data.data.total
             }).finally(()=>{
@@ -42,13 +42,8 @@ export const useDepartmentPositionStore = defineStore('departmentPositionStore',
         },
         _create(){
             this.saveLoading = true
-            let data = {
-                name:this.payload.name,
-                long:this.payload.marker.coords[0],
-                lat:this.payload.marker.coords[1],
-                country_id:this.payload.country_id,
-            }
-            $ApiService.regionService._create({data}).then((res)=>{
+            let data = {...this.payload}
+            $ApiService.departmentPositionService._create({data}).then((res)=>{
                 this.visible = false
                 this._index()
                 $Toast.success(t('message.successDone'))
@@ -59,13 +54,8 @@ export const useDepartmentPositionStore = defineStore('departmentPositionStore',
         },
         _update(){
             this.saveLoading = true
-            let data = {
-                name:this.payload.name,
-                long:this.payload.marker.coords[0],
-                lat:this.payload.marker.coords[1],
-                country_id:this.payload.country_id,
-            }
-            $ApiService.regionService._update({data, id:this.elementId}).then((res)=>{
+            let data = {...this.payload}
+            $ApiService.departmentPositionService._update({data, id:this.elementId}).then((res)=>{
                 this.visible = false
                 this._index()
                 $Toast.success(t('message.successDone'))
@@ -75,22 +65,11 @@ export const useDepartmentPositionStore = defineStore('departmentPositionStore',
         },
         _delete(){
             this.deleteLoading = true
-            $ApiService.regionService._delete({id:this.elementId}).then((res)=>{
+            $ApiService.departmentPositionService._delete({id:this.elementId}).then((res)=>{
                 this._index()
                 $Toast.success(t('message.successDone'))
             }).finally(()=>{
                 this.deleteLoading = false
-            })
-        },
-        _getCountryList(){
-            this.allLoading= true
-            $ApiService.countryService._index({params:{
-                    page:1,
-                    per_page:1000,
-                }}).then((res)=>{
-                this.allCountryList = res.data.data.data
-            }).finally(()=>{
-                this.allLoading= false
             })
         },
         openVisible(data){
@@ -98,8 +77,14 @@ export const useDepartmentPositionStore = defineStore('departmentPositionStore',
         },
         resetForm(){
             this.elementId = null
-            this.payload.name = null
-            this.payload.country_id = null
+            this.payload.position_id = null
+            this.payload.department_id = null
+            this.payload.group = null
+            this.payload.rank = null
+            this.payload.rate = null
+            this.payload.salary = null
+            this.payload.experience = null
+            this.payload.educations = null
         }
 
     }

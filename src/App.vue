@@ -2,6 +2,8 @@
 import ToastProvider from "@/components/Toast/ToastProvider.vue";
 import themeOverrides from "./assets/theme/theme.js"
 import AppLayout from "@/layouts/AppLayout.vue";
+import {UIMainLoading} from "@/components/index.js"
+import SignatureInstance from "@/pages/app/e-imzo/SignatureInstance.vue"
 </script>
 
 <template>
@@ -10,6 +12,9 @@ import AppLayout from "@/layouts/AppLayout.vue";
       <n-dialog-provider>
         <AppLayout/>
         <ToastProvider/>
+        <UIMainLoading/>
+        <SignatureInstance/>
+
       </n-dialog-provider>
     </n-message-provider>
   </n-config-provider>

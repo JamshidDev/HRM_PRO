@@ -10,6 +10,13 @@ import naive from 'naive-ui'
 import { createYmaps } from 'vue-yandex-maps';
 import mask from "./directives/mask.js"
 
+// import '@/pages/app/e-imzo/app/e-imzo-init.js'
+// import '@/pages/app/e-imzo/app/e-imzo.js'
+// import '@/pages/app/e-imzo/app/e-imzo-client.js'
+
+
+
+
 const app = createApp(App);
 const meta = document.createElement('meta')
 meta.name = 'naive-ui-style'
