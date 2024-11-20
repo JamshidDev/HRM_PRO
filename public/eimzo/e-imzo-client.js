@@ -106,7 +106,7 @@ String.prototype.splitKeep = function (splitter, ahead) {
 };
 
 var EIMZOClient = {
-    NEW_API: false,
+    NEW_API: true,
     NEW_API2: false,
     API_KEYS: [
         'localhost', '96D0C1491615C82B9A54D9989779DF825B690748224C2B04F500F370D51827CE2644D8D4A82C18184D73AB8530BB8ED537269603F61DB0D03D2104ABF789970B',
@@ -115,10 +115,12 @@ var EIMZOClient = {
     ],
     checkVersion: function (success, fail) {
         CAPIWS.version(function (event, data) {
+            console.log(data)
             if (data.success === true) {
                 if (data.major && data.minor) {
                     var installedVersion = parseInt(data.major) * 100 + parseInt(data.minor);
                     EIMZOClient.NEW_API = installedVersion >= 336;
+                    console.log(installedVersion >= 336)
                     EIMZOClient.NEW_API2 = installedVersion >= 412;
                     success(data.major, data.minor);
                 } else {
@@ -130,6 +132,7 @@ var EIMZOClient = {
         }, function (e) {
             fail(e, null);
         });
+
     },
     installApiKeys: function (success, fail) {
         CAPIWS.apikey(EIMZOClient.API_KEYS, function (event, data) {
