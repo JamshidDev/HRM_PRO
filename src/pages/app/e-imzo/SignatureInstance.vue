@@ -12,14 +12,26 @@ const initialSignature = ()=>{
     return uiCreateItem(itemId, v);
   }, function (items, firstId) {
     console.log(items)
+    console.log(firstId)
   }, function (e, r) {
-    console.log(e)
     if (e) {
       uiShowMessage(errorCAPIWS + " : " + e);
     } else {
       console.log(r);
     }
-  });
+  })
+
+
+  EIMZOClient.idCardIsPLuggedIn(function (yes) {
+    console.log(yes)
+    // document.getElementById('plugged').innerHTML = yes ? 'подключена' : 'не подключена';
+  }, function (e, r) {
+    if (e) {
+      uiShowMessage(errorCAPIWS + " : " + e);
+    } else {
+      console.log(r);
+    }
+  })
 }
 onMounted(()=>{
   initialSignature()
