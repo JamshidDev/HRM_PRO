@@ -37,25 +37,33 @@ const onSelect = (v)=>{
 <template>
   <n-modal v-model:show="store.checkUserVisible">
     <n-card
-        style="width:400px"
+        style="width:600px"
         :bordered="false"
         size="huge"
         role="dialog"
         aria-modal="true"
-        class="grid grid-cols-1"
+        class="grid grid-cols-1 card-p-none"
     >
-    <span class="text-xs text-gray-400">{{$t('workerPage.checkWorker.title')}}</span>
-      <n-auto-complete
-          v-mask="`####-####-####-##`"
-          v-model:value="store.userPinfl"
-          @update:value="onChange"
-          :options="store.results"
-          :placeholder="$t('workerPage.checkWorker.jshshir')"
-          :loading="store.pinLoading"
-          clearable
-          :render-option="renderOption"
-      >
-      </n-auto-complete>
+     <div class="pb-6">
+       <div class="w-full p-4">
+         <span class="text-lg font-medium">{{$t('workerPage.checkWorker.title')}}</span>
+       </div>
+       <div class="px-4 mt-6">
+
+         <n-auto-complete
+             v-mask="`####-####-####-##`"
+             v-model:value="store.userPinfl"
+             @update:value="onChange"
+             :options="store.results"
+             :placeholder="$t('workerPage.checkWorker.jshshir')"
+             :loading="store.pinLoading"
+             clearable
+             :render-option="renderOption"
+         >
+         </n-auto-complete>
+       </div>
+     </div>
+
     </n-card>
   </n-modal>
 </template>

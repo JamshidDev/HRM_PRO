@@ -33,6 +33,8 @@
         "paginationSize": "{n} tadan ko'rsatish",
         "confirm": "Tasdiqlash",
         "month": "Oy",
+        "or": "Yoki",
+        "signatureLogin": "E-imzo orqali kirish",
         "sum": "So'm"
     },
     "rules": {
@@ -310,5 +312,36 @@
             "pasport": "Kandidatning passport ma'lumotlari",
             "phone": "Kandidatning telefon raqam ma'lumotlari"
         }
+    },
+    "signature": {
+        "keyType": "Foydalanuvchi turi",
+        "inn": "STIR",
+        "certificate": "Sertifikat raqami",
+        "validDate": "Muddati",
+        "expiredKey": "Kalit muddati tugagan!",
+        "legalPerson": "Yuridik shaxs",
+        "naturalPerson": "Jismoniy shaxs",
+        "connectionError": "E-imzo o'rnatilmagan yoki to'g'ri sozlanmagan!",
+        "pinfl": "JSHSHR"
+
+
+    },
+    "documentPage": {
+        "name": "Hujjatlar",
+        "tabs": {
+            "contract": "Shartnomalar",
+            "order": "Buyruqlar"
+        }
+    },
+    "contractPage": {
+        "name": "Shartnomalar",
+        "table": {
+            "number": "Shartnoma raqami",
+            "status": "Holati"
+        },
+        "statuses": {
+            "confirm": "Tasdiqlash"
+        }
+
     }
 }

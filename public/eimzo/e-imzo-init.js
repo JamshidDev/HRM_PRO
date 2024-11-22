@@ -52,10 +52,7 @@ function uiLoaded() {
 }
 
 function uiShowMessage(message) {
-    Toastify({
-        text: message,
-        duration: 3000
-    }).showToast();
+    $Toast.error(message)
 }
 
 function uiUpdateApp() {
@@ -113,6 +110,7 @@ function uiAppLoad() {
 }
 
 function uiHandleError(e, r) {
+    console.log('error')
     uiHideProgress();
     if (r) {
         if (r.indexOf("BadPaddingException") !== -1) {

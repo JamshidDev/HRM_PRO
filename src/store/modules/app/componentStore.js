@@ -29,13 +29,7 @@ export const useComponentStore = defineStore('componentStore', {
 
         checkUserVisible:false,
         userPinfl:null,
-        results:[
-            {
-                fullName:"Jamshid Raximov",
-                photo:"",
-                position:"Lavozim nomi"
-            }
-        ],
+        results:[],
         pinLoading:false,
 
         regionList:[],

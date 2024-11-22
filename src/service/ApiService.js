@@ -1,11 +1,9 @@
 
-import authService from "@/service/v1/authService.js";
+import authService from "@/service/v1/app/authService.js";
 import accountService from "@/service/v1/app/accountService.js";
-import categoryService from "@/service/v1/categoryService.js";
-import generalService from "@/service/v1/generalService.js";
-import userService from "@/service/v1/userService.js";
-import userPermissionService from "@/service/v1/userPermissionService.js";
-import userRoleService from "@/service/v1/userRoleService.js";
+import userService from "@/service/v1/app/userService.js";
+import userPermissionService from "@/service/v1/app/userPermissionService.js";
+import userRoleService from "@/service/v1/app/userRoleService.js";
 import countryService from "@/service/v1/admin/countryService.js";
 import regionService from "@/service/v1/admin/regionService.js";
 import districtService from "@/service/v1/admin/districtService.js";
@@ -16,11 +14,11 @@ import componentService from "@/service/v1/app/componentService.js";
 import departmentService from "@/service/v1/hrm/departmentService.js";
 import departmentPositionService from "@/service/v1/hrm/departmentPositionService.js"
 import workerService from "@/service/v1/hrm/workerService.js"
+import documentService from "@/service/v1/docFlow/documentService.js"
+import contractService from "@/service/v1/docFlow/contractService.js"
 export default {
     authService,
     accountService,
-    categoryService,
-    generalService,
     userService,
     userPermissionService,
     userRoleService,
@@ -34,4 +32,6 @@ export default {
     departmentService,
     departmentPositionService,
     workerService,
+    documentService,
+    contractService,
 }

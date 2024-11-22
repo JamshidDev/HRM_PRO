@@ -32,6 +32,7 @@ export const AppPaths = {
     Department:"/department",
     DepartmentPosition:"/department-position",
     Create:"/create",
+    Document:"/document",
 }
 
 export const AppLayouts ={

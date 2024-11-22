@@ -26,6 +26,11 @@ export const navigations = [
                 path:Utils.routeHrmPathMaker(AppPaths.DepartmentPosition),
                 icon:'bx bxs-folder',
             },
+            {
+                label:t('documentPage.name'),
+                path:Utils.routeHrmPathMaker(AppPaths.Document),
+                icon:'bx bxs-folder',
+            },
         ]
     },
     {
@@ -46,7 +51,7 @@ export const navigations = [
     {
         index:3,
         label:'Doc Flow',
-        path:'/document',
+        path:'/docflow',
         icon:'bx bx-message-rounded-dots',
         children:[
             {

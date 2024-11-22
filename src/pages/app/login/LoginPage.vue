@@ -1,13 +1,19 @@
 <script setup>
 import {useRouter} from "vue-router";
-import {useLoginStore} from "@/store/modules/app/loginStore.js"
+import {useLoginStore, useAppStore, useSignatureStore} from "@/store/modules/index.js"
 import validationRules from "@/utils/validationRules.js";
-import {Call28Regular, LockClosed16Regular, Eye24Regular, EyeOff20Filled} from '@vicons/fluent'
+import {Call28Regular, LockClosed16Regular, Eye24Regular, EyeOff20Filled, Key24Regular} from '@vicons/fluent'
 import LangDropdown from "@/components/general/LangDropdown.vue";
 import {AppPaths} from "@/utils/index.js";
+import i18n from "@/i18n/index.js"
+
+const {t} = i18n.global
 
 const store = useLoginStore()
+const appStore = useAppStore()
+const signatureStore = useSignatureStore()
 const router = useRouter()
+
 
 const formRef = ref(null)
 
@@ -18,6 +24,18 @@ const onSubmit = () => {
       store._auth()
     }
   })
+}
+
+const onSignatureLogin =async ()=>{
+  try{
+    await signatureStore._initialSignature(signatureStore.signatureTypes.contract, onSuccess)
+  }catch (err){
+    $Toast.error(t('signature.connectionError'))
+  }
+
+}
+const onSuccess = (data)=>{
+  console.log(data)
 }
 
 
@@ -91,13 +109,27 @@ const onSubmit = () => {
             </template>
           </n-input>
         </n-form-item>
-        <n-button
-            size="large"
-            type="primary"
-            :loading="store.loading"
-            @click="onSubmit"
-        >{{ $t(`loginPage.login`) }}
-        </n-button>
+        <div class="grid">
+          <n-button
+              size="large"
+              type="primary"
+              :loading="store.loading"
+              @click="onSubmit"
+          >{{ $t(`loginPage.login`) }}
+          </n-button>
+          <template v-if="appStore.appConfig.signatureLogin">
+            <n-divider title-placement="center">{{$t('content.or')}}</n-divider>
+            <n-button
+                size="large"
+                type="warning"
+                @click="onSignatureLogin"
+            >{{ $t(`content.signatureLogin`) }}
+              <template #icon>
+                <Key24Regular/>
+              </template>
+            </n-button>
+          </template>
+        </div>
 
         <span class="text-xs mt-3 text-gray-500">{{ $t(`loginPage.doYouHaveAccount`) }}
         <span @click="router.push(AppPaths.Register)" class="text-primary cursor-pointer ">{{ $t(`loginPage.singUp`) }}</span>

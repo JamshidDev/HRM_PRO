@@ -1,4 +1,4 @@
-import axios from "../index.js"
+import axios from "../../index.js"
 
 const _index =async (payload)=>{
     return await axios.get(`/v1/admin/permissions`, {params:payload.params})

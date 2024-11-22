@@ -5,6 +5,7 @@ import WorkerPage from "@/pages/hrm/worker/WorkerPage.vue"
 import DepartmentPage from "@/pages/hrm/depertment/DepartmentPage.vue"
 import DepartmentPositionPage from "@/pages/hrm/departmentPosition/departmentPositionPage.vue"
 import CandidatePage from "@/pages/hrm/condidate/CandidatePage.vue"
+import DocumentPage from "@/pages/docFlow/document/DocumentPage.vue"
 
 
 export default [
@@ -27,5 +28,10 @@ export default [
         path:Utils.routeHrmPathMaker(`${AppPaths.Worker}${AppPaths.Create}`),
         name:`${AppPaths.Worker.substring(1)}-${AppPaths.Create.substring(1)}`,
         component:CandidatePage,
+    },
+    {
+        path:Utils.routeHrmPathMaker(AppPaths.Document),
+        name:AppPaths.Document.substring(1),
+        component:DocumentPage,
     },
 ]

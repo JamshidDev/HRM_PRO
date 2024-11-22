@@ -21,7 +21,7 @@ function microAjax(B, A) {
             }
         } return false
     };
-    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    // const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
     this.postBody = (arguments[2] || "");
     this.callbackFunction = A;
     this.url = B;
@@ -37,7 +37,7 @@ function microAjax(B, A) {
         } else {
             C.open("GET", B, true)
         }
-        C.setRequestHeader("X-CSRF-TOKEN", csrfToken);
+        // C.setRequestHeader("X-CSRF-TOKEN", csrfToken);
         C.send(this.postBody)
     }
 }

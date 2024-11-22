@@ -1,4 +1,4 @@
-import axios from "../index.js"
+import axios from "../../index.js"
 
 const _login =async (payload)=>{
     return await axios.post(`/auth/login`, payload.data)
