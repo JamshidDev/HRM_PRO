@@ -131,6 +131,11 @@ export const navigations = [
                 path:Utils.routePathMaker(AppPaths.Organizations),
                 icon:'bx bxs-folder',
             },
+            {
+                label:t('actionLog.name'),
+                path:Utils.routePathMaker(AppPaths.ActionLog),
+                icon:'bx bxs-folder',
+            },
         ]
     },
 ]

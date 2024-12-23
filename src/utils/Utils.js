@@ -36,7 +36,7 @@ const timeToZone = (time)=>{
 }
 
 const timeWithMonth = (time)=>{
-    return time? dayjs(time).format('MMMM D, YYYY | HH:mm') : null
+    return time? dayjs(time).format('DD.MM.YYYY') : null
 }
 const noAvailableImage = "/public/default-user.png"
 

@@ -9,6 +9,7 @@ import DistrictPage from "@/pages/admin/district/DistrictPage.vue";
 import NationalityPage from "@/pages/admin/nationality/NationalityPage.vue";
 import PositionPage from "@/pages/admin/position/PositionPage.vue"
 import OrganizationPage from "@/pages/admin/organization/OrganizationPage.vue"
+import ActionLogPage from "@/pages/admin/actionLog/ActionLogPage.vue"
 
 
 export default  [
@@ -62,5 +63,10 @@ export default  [
         path:Utils.routePathMaker(AppPaths.Organizations),
         name:AppPaths.Organizations.substring(1),
         component:OrganizationPage,
+    },
+    {
+        path:Utils.routePathMaker(AppPaths.ActionLog),
+        name:AppPaths.ActionLog.substring(1),
+        component:ActionLogPage,
     },
 ]

@@ -16,6 +16,7 @@ import departmentPositionService from "@/service/v1/hrm/departmentPositionServic
 import workerService from "@/service/v1/hrm/workerService.js"
 import documentService from "@/service/v1/docFlow/documentService.js"
 import contractService from "@/service/v1/docFlow/contractService.js"
+import logService from "@/service/v1/admin/logService.js"
 export default {
     authService,
     accountService,
@@ -34,4 +35,5 @@ export default {
     workerService,
     documentService,
     contractService,
+    logService,
 }

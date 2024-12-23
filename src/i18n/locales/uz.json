@@ -343,5 +343,26 @@
             "confirm": "Tasdiqlash"
         }
 
+    },
+    "actionLog": {
+        "name": "Amallar tarixi",
+        "tab": {
+            "action": "Amallar tarixi",
+            "auth": "Kirishlar tarixi"
+        },
+        "table": {
+            "status": "Amal turi",
+            "owner": "Egasi",
+            "detail": "Batafsil",
+            "ip": "IP manzil",
+            "agent": "Agent",
+            "department": "Bo'lim",
+            "education": "Ma'lumot",
+            "experience": "Tajriba"
+        },
+        "status": {
+            "created": "Yangi yaratildi",
+            "sign-in": "Tizimga kirish"
+        }
     }
 }

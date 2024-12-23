@@ -102,7 +102,7 @@ const addEvent = ()=>{
                 :type="'success'"
             >
               <n-button
-                  type="success"
+                  type="primary"
                   ghost
                   icon-placement="right"
               >
