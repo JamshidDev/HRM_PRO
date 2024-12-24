@@ -37,10 +37,9 @@ onMounted(()=>{
           <th class="!text-center min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
           <th class="w-[200px]">{{$t('actionLog.table.owner')}}</th>
           <th class="min-w-[200px] ">{{$t('actionLog.table.detail')}}</th>
-          <th class="w-[200px] min-w-[200px]">{{$t('actionLog.table.status')}}</th>
-          <th class="w-[120px]">{{$t('content.date')}}</th>
+          <th class="w-[160px]">{{$t('actionLog.table.loginAt')}}</th>
+          <th class="w-[200px]">{{$t('actionLog.table.logoutAt')}}</th>
           <th class="w-[120px]">{{$t('actionLog.table.ip')}}</th>
-          <th class="w-[200px]">{{$t('actionLog.table.agent')}}</th>
         </tr>
         </thead>
         <tbody>
@@ -76,12 +75,9 @@ onMounted(()=>{
               </pre>
             </n-collapse-transition>
           </td>
-          <td><UIStatus
-              :color="`success`"
-              :text="$t(`actionLog.status.sign-in`)"/></td>
           <td><div class="w-full text-center">{{Utils.timeWithMonth(item?.login_at)}}</div></td>
+          <td><div class="w-full text-center text-sm">{{item?.logout_at? Utils.timeWithMonth(item?.logout_at) : ''}}</div></td>
           <td><div class="w-full text-center uppercase font-medium">{{item?.ip_address}}</div></td>
-          <td><div class="w-full text-center font-medium text-xs">{{item?.user_agent}}</div></td>
         </tr>
         </tbody>
       </n-table>

@@ -356,8 +356,8 @@
             "detail": "Batafsil",
             "ip": "IP manzil",
             "agent": "Agent",
-            "department": "Bo'lim",
-            "education": "Ma'lumot",
+            "loginAt": "Kirish vaqti",
+            "logoutAt": "Chiqish vaqti",
             "experience": "Tajriba"
         },
         "status": {
