@@ -1,30 +1,101 @@
 <script setup>
-import {ChevronRight16Filled} from "@vicons/fluent"
-
+import {Search48Filled} from "@vicons/fluent"
+import TreeOrg from "@/components/tree/TreeOrg.vue"
+import {useDebounceFn} from "@vueuse/core"
+import {useComponentStore} from "@/store/modules/index.js"
+const store = useComponentStore()
 
 const props = defineProps({
-  data:{
-    type:Array,
-    default:[],
-  },
-  deep:{
-    type:Number,
-    default:1,
-  },
-  modelV:{type:Array,default:[]}
+  modelV:{type:Array,default:[]},
 })
 
-const emits = defineEmits(["onSelect"])
-
-
-const checkedVal = ref([])
+const inputVal = ref([])
 const radioVal = ref([])
+const checkedVal = ref([])
+
+const searchModel = defineModel("search",{type:String,default:null })
+const emits = defineEmits(["onSearch", "onSubmit","updateModel"])
 
 const onSelect = (v)=>{
-  emits('onSelect',v)
+  let list = []
+  if(props.modelV.includes(v.id)){
+    list = props.modelV.filter((x)=>x !== v.id)
+  }else{
+    list = props.modelV
+    list.push(v.id)
+  }
+  emits('updateModel',list)
+
+  if(inputVal.value.includes(v.name)){
+    inputVal.value = inputVal.value.filter((x)=>x !== v.name)
+  }else{
+    inputVal.value.push(v.name)
+  }
 }
 
-const onOpen = (v)=>{
+const onSelectAll = (v)=>{
+
+  const idList = getChildIds(store.structureList, v.id)
+  let list = []
+  if(radioVal.value.includes(v.id)){
+    // Remove elements
+    radioVal.value =radioVal.value.filter((x)=>x !== v.id)
+
+    list = props.modelV.filter((x)=>!(idList.includes(x)))
+
+  }
+  else{
+    // Add elements
+    radioVal.value.push(v.id)
+    idList.forEach((id)=>{
+      if(!(props.modelV.includes(id))){
+        list.push(id)
+      }
+    })
+    list = [...props.modelV, ...list]
+  }
+  emits('updateModel',list)
+}
+
+
+const searchEvent = useDebounceFn(() => {
+  emits('onSearch', searchModel.value )
+  store.structureParams.search = searchModel.value
+  store._structures()
+}, 300,)
+
+
+const getChildIds = (tree, elementId)=>{
+    const result = []
+
+    const findAndCollect = (node)=>{
+      if(node.id === elementId){
+        collectChildIds(node)
+        return true
+      }
+      for(const child of node.children){
+        if(findAndCollect(child)) return true
+      }
+      return false
+   }
+
+   const collectChildIds = (node)=>{
+     result.push(node.id)
+     for (const child of node.children){
+       collectChildIds(child)
+     }
+  }
+
+  for(const items of tree){
+    findAndCollect(items)
+  }
+
+
+  return result
+}
+
+
+const changeCheckVal = (v)=>{
   if(checkedVal.value?.includes(v.id)){
     checkedVal.value = checkedVal.value.filter((x)=>x !== v.id)
   }else{
@@ -32,50 +103,65 @@ const onOpen = (v)=>{
   }
 }
 
-const onSelectRadio = (v)=>{
-  radioVal.value.push(v.id)
-}
 
+
+
+onMounted(()=>{
+  store._structures()
+})
 </script>
 
 <template>
-  <div>
-    <template v-for="(item, idx) in data" :key="idx">
-      <div :style="{width:`calc(100% - ${deep*20}px)`, marginLeft:deep*20+'px' }"  class="w-full flex gap-x-1 cursor-pointer hover:bg-blue-50 rounded">
-        <div class="w-[20px] flex justify-center items-center">
-          <n-icon @click="onOpen(item)" size="18" class="text-gray-400" v-if="Array.isArray(item?.children) && item?.children.length>0" >
-            <ChevronRight16Filled/>
-          </n-icon>
-        </div>
-        <div @click="onSelect(item)" style="width: calc(100% - 40px)">
-          <n-checkbox :checked="modelV.includes(item.id)"></n-checkbox>
-          <span class="text-xs ml-2">{{item.name}}</span>
-        </div>
-        <div class="w-[20px] lex justify-center items-center">
-          <n-radio
-              v-if="Array.isArray(item?.children) && item?.children.length>0"
-              @click="onSelectRadio(item)"
-              :checked="radioVal.includes(item.id)"
-              :value="item.id"
-              name="basic-demo"
-          />
-        </div>
-      </div>
-      <n-collapse-transition :show="checkedVal.includes(item.id)">
-        <UIStructure
-            :deep="deep+1"
-            :data="item?.children"
-            :modelV="modelV"
-            @onSelect="onSelect"
-        />
-      </n-collapse-transition>
-
+  <n-popover
+      placement="bottom"
+      trigger="click"
+      width="460px"
+      class="h-[400px] !py-0"
+  >
+    <template #trigger>
+      <n-badge :value="modelV.length" type="info">
+        <n-input class="ui__structure-input"  type="text" :value="inputVal?.toString()" :placeholder="$t('content.choose')" />
+      </n-badge>
     </template>
-  </div>
+    <div class="w-full h-[10px]"></div>
+    <div class="w-full h-[344px] overflow-y-auto">
+      <n-spin :show="store.structureLoading" class="w-full h-full">
+        <TreeOrg
+            :data="store.structureList"
+            :modelV="modelV"
+            :radioVal="radioVal"
+            :checkedVal="checkedVal"
+            :getChildIds="getChildIds"
+            :changeCheckVal="changeCheckVal"
+            @onSelect="onSelect"
+            @onSelectAll="onSelectAll"
+        />
+      </n-spin>
+    </div>
+    <div class="w-full h-[40px] flex items-center">
+      <n-input-group>
+        <n-input
+            size="small"
+            v-model:value="searchModel"
+            round :placeholder="$t('content.search')"
+            :on-keyup="searchEvent"
+            :loading="store.structureLoading"
+        >
+          <template #prefix>
+            <n-icon :component="Search48Filled" />
+          </template>
+        </n-input>
+        <n-button
+            @click="emits('onSubmit')"
+            type="primary"
+            size="small"
+            :loading="store.structureLoading"
+        >
+          {{$t("content.search")}}
+        </n-button>
+      </n-input-group>
+    </div>
+  </n-popover>
 
 
 </template>
-
-<style scoped>
-
-</style>

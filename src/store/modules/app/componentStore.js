@@ -41,6 +41,14 @@ export const useComponentStore = defineStore('componentStore', {
         nationalityList:[],
         nationalityLoading:false,
 
+        structureList:[],
+        structureLoading:false,
+        structureParams:{
+            page:1,
+            per_page:1000,
+            search:null,
+        },
+
     }),
     actions:{
         _organizationLevel(){
@@ -126,6 +134,14 @@ export const useComponentStore = defineStore('componentStore', {
                 this.nationalityList = res.data.data.data
             }).finally(()=>{
                 this.nationalityLoading = false
+            })
+        },
+        _structures(){
+            this.structureLoading= true
+            $ApiService.componentService._structure({params:this.structureParams}).then((res)=>{
+                this.structureList = res.data.data
+            }).finally(()=>{
+                this.structureLoading= false
             })
         }
 
