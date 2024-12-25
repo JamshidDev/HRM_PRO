@@ -12,7 +12,6 @@ const props = defineProps({
     default:1,
   },
   modelV:{type:Array,default:[]},
-  radioVal:{type:Array,default:[]},
   checkedVal:{type:Array,default:[]},
   getChildIds:{
     type:Function,
@@ -44,9 +43,10 @@ const onSelectRadio = (v)=>{
 }
 
 const isCheck =(id)=>{
-  let idList = props.getChildIds(props.data, id)
+  let idList = props.getChildIds(props.data, id).map(e=>e.id)
+  const valList =props.modelV.map((a)=>a.id)
   for(const id of idList){
-    if(!(props.modelV.includes(id))){
+    if(!(valList.includes(id))){
       return false
     }
   }
@@ -59,14 +59,24 @@ const isCheck =(id)=>{
 <template>
   <div>
     <template v-for="(item, idx) in data" :key="idx">
-      <div :style="{width:`calc(100% - ${(deep-1)*20}px)`, marginLeft:(deep-1)*20+'px' }"  class="w-full flex gap-x-1 cursor-pointer hover:bg-blue-50">
-        <div class="w-[20px] flex justify-center items-center">
-          <n-icon @click="onOpen(item)" size="18" class="text-gray-400" v-if="Array.isArray(item?.children) && item?.children.length>0" >
-            <ChevronRight16Filled/>
+      <div class="w-full flex cursor-pointer hover:bg-blue-50">
+<!--        :style="{width:`calc(100% - ${(deep-1)*20}px)`, marginLeft:(deep-1)*20+'px' }"-->
+
+        <template v-if="deep>1">
+          <div v-for="(item,idx) in (deep-1)" :key="idx" class="w-[20px] h-[20px] border__center-line"></div>
+        </template>
+
+        <div v-if="Array.isArray(item?.children) && item?.children.length>0" class="w-[20px] max-w-[20px] overflow-hidden flex justify-center items-center">
+          <n-icon @click="onOpen(item)" size="18" class="text-gray-400" >
+            <ChevronRight16Filled class="transition" :class="checkedVal.includes(item.id) && 'rotate-90'"/>
           </n-icon>
         </div>
-        <div @click="onSelect(item)" style="width: calc(100% - 40px)">
-          <n-checkbox :checked="modelV.includes(item.id)"></n-checkbox>
+        <div v-else class="w-[20px] h-[20px] border__center-line border__center-content"></div>
+
+
+
+        <div @click="onSelect(item)" :style="{width:`calc(100% - ${deep>1? (deep*20) : 40}px)`}" class="leading-4 flex items-center truncate">
+          <n-checkbox :checked="modelV.map((a)=>a.id).includes(item.id)"></n-checkbox>
           <span class="text-xs ml-2">{{item.name}}</span>
         </div>
         <div class="w-[20px] lex justify-center items-center">
@@ -84,7 +94,6 @@ const isCheck =(id)=>{
             :deep="deep+1"
             :data="item?.children"
             :modelV="modelV"
-            :radioVal="radioVal"
             :checkedVal="checkedVal"
             :getChildIds="getChildIds"
             :changeCheckVal="changeCheckVal"

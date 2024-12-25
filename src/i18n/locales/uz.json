@@ -36,6 +36,7 @@
         "or": "Yoki",
         "choose": "Tanlang",
         "signatureLogin": "E-imzo orqali kirish",
+        "clear": "Tozalash",
         "sum": "So'm"
     },
     "rules": {
@@ -351,6 +352,7 @@
             "action": "Amallar tarixi",
             "auth": "Kirishlar tarixi"
         },
+
         "table": {
             "status": "Amal turi",
             "owner": "Egasi",
@@ -363,6 +365,9 @@
         },
         "status": {
             "created": "Yangi yaratildi",
+            "updated": "Tahrirlangan",
+            "deleted": "O'chirilgan",
+            "subject_type": "Model",
             "sign-in": "Tizimga kirish"
         }
     }

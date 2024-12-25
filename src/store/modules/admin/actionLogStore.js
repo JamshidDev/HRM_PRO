@@ -19,12 +19,18 @@ export const useActionLogStore = defineStore('actionLog', {
             page:1,
             per_page:10,
             search:null,
+            organizations:[],
+            created_at:null,
+            subject_type:null,
+            description:null,
         },
         authParams:{
             page:1,
             per_page:10,
             search:null,
         },
+        structureCheck:[],
+
     }),
     actions:{
         _getActionLog(){

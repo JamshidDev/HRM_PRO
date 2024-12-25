@@ -1,4 +1,6 @@
 import {defineStore} from "pinia";
+import i18n from "@/i18n/index.js"
+const {t} = i18n.global
 export const useComponentStore = defineStore('componentStore', {
     state:()=>({
         organizationLevelList:[],
@@ -48,6 +50,20 @@ export const useComponentStore = defineStore('componentStore', {
             per_page:1000,
             search:null,
         },
+        logStatusList:[
+            {
+                name:t('actionLog.status.created'),
+                id:'created'
+            },
+            {
+                name:t('actionLog.status.updated'),
+                id:'updated'
+            },
+            {
+                name:t('actionLog.status.deleted'),
+                id:'deleted'
+            },
+        ]
 
     }),
     actions:{

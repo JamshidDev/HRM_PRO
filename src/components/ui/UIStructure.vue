@@ -7,49 +7,48 @@ const store = useComponentStore()
 
 const props = defineProps({
   modelV:{type:Array,default:[]},
+  checkedVal:{type:Array,default:[]},
+
 })
 
-const inputVal = ref([])
-const radioVal = ref([])
-const checkedVal = ref([])
 
 const searchModel = defineModel("search",{type:String,default:null })
-const emits = defineEmits(["onSearch", "onSubmit","updateModel"])
+const emits = defineEmits(["onSearch", "onSubmit","updateModel", "updateCheck"])
 
 const onSelect = (v)=>{
   let list = []
-  if(props.modelV.includes(v.id)){
-    list = props.modelV.filter((x)=>x !== v.id)
+  if(props.modelV.map((a)=>a.id).includes(v.id)){
+    list = props.modelV.filter((x)=>x.id !== v.id)
   }else{
     list = props.modelV
-    list.push(v.id)
+    list.push(v)
   }
   emits('updateModel',list)
-
-  if(inputVal.value.includes(v.name)){
-    inputVal.value = inputVal.value.filter((x)=>x !== v.name)
-  }else{
-    inputVal.value.push(v.name)
-  }
 }
 
 const onSelectAll = (v)=>{
 
   const idList = getChildIds(store.structureList, v.id)
   let list = []
-  if(radioVal.value.includes(v.id)){
+
+  const checkRadio = (valList=[], idList=[])=>{
+    for(const id of idList){
+      if(!(valList.includes(id))){
+        return false
+      }
+    }
+    return  true
+  }
+
+  if(checkRadio(props.modelV.map((a)=>a.id),idList.map(e=>e.id) )){
     // Remove elements
-    radioVal.value =radioVal.value.filter((x)=>x !== v.id)
-
-    list = props.modelV.filter((x)=>!(idList.includes(x)))
-
+    list = props.modelV.filter((x)=>!(idList.map((a)=>a.id).includes(x.id)))
   }
   else{
     // Add elements
-    radioVal.value.push(v.id)
-    idList.forEach((id)=>{
-      if(!(props.modelV.includes(id))){
-        list.push(id)
+    idList.forEach((y)=>{
+      if(!(props.modelV.map((a)=>a.id).includes(y.id))){
+        list.push(y)
       }
     })
     list = [...props.modelV, ...list]
@@ -57,13 +56,11 @@ const onSelectAll = (v)=>{
   emits('updateModel',list)
 }
 
-
 const searchEvent = useDebounceFn(() => {
   emits('onSearch', searchModel.value )
   store.structureParams.search = searchModel.value
   store._structures()
 }, 300,)
-
 
 const getChildIds = (tree, elementId)=>{
     const result = []
@@ -80,7 +77,7 @@ const getChildIds = (tree, elementId)=>{
    }
 
    const collectChildIds = (node)=>{
-     result.push(node.id)
+     result.push(node)
      for (const child of node.children){
        collectChildIds(child)
      }
@@ -94,15 +91,19 @@ const getChildIds = (tree, elementId)=>{
   return result
 }
 
-
 const changeCheckVal = (v)=>{
-  if(checkedVal.value?.includes(v.id)){
-    checkedVal.value = checkedVal.value.filter((x)=>x !== v.id)
+  let list = []
+  if(props.checkedVal?.includes(v.id)){
+    list = props.checkedVal.filter((x)=>x !== v.id)
   }else{
-    checkedVal.value.push(v.id)
+    list = props.checkedVal
+    list.push(v.id)
   }
+
+  emits('updateCheck',list)
 }
 
+const inputVal = computed(()=>props.modelV.map((a)=>a.name).toString())
 
 
 
@@ -115,8 +116,8 @@ onMounted(()=>{
   <n-popover
       placement="bottom"
       trigger="click"
-      width="460px"
-      class="h-[400px] !py-0"
+      width="540px"
+      class="h-[460px] !p-0"
   >
     <template #trigger>
       <n-badge :value="modelV.length" type="info">
@@ -124,12 +125,11 @@ onMounted(()=>{
       </n-badge>
     </template>
     <div class="w-full h-[10px]"></div>
-    <div class="w-full h-[344px] overflow-y-auto">
+    <div class="w-full h-[404px] overflow-y-auto">
       <n-spin :show="store.structureLoading" class="w-full h-full">
         <TreeOrg
             :data="store.structureList"
             :modelV="modelV"
-            :radioVal="radioVal"
             :checkedVal="checkedVal"
             :getChildIds="getChildIds"
             :changeCheckVal="changeCheckVal"

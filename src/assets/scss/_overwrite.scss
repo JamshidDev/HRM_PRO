@@ -22,9 +22,34 @@
   }
 
 }
-//
-//.ui__structure-input{
-//  .n-input__input-el{
-//    pointer-events: none;
-//  }
-//}
+.border__center-line{
+  position: relative;
+  &::before{
+    content: '';
+    width: 1px;
+    height:100%;
+    background: rgba(177, 177, 177, 0.36);
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+.border__center-line:first-child{
+  &::before{
+    background: transparent;
+  }
+}
+.border__center-content{
+  position: relative;
+  &::after{
+    content: '';
+    width:50%;
+    height:1px;
+    background: rgba(177, 177, 177, 0.36);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(0%,50%);
+  }
+}

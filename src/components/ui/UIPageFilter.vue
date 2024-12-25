@@ -1,5 +1,5 @@
 <script setup>
-import {Search48Filled, AddCircle24Regular, Filter20Filled} from '@vicons/fluent'
+import {Search48Filled, AddCircle24Regular, Filter20Filled, DeleteArrowBack20Regular} from '@vicons/fluent'
 import { useDebounceFn } from '@vueuse/core'
 const search = ref(null)
 
@@ -28,7 +28,7 @@ const props = defineProps({
   popoverStyle:{
     type:Object,
     default:{
-      width:'300px',
+      width:'360px',
       height:'300px'
     }
   },
@@ -40,7 +40,7 @@ const props = defineProps({
 
 const searchModel = defineModel("search",{type:String,default:null })
 
-const emits = defineEmits(['onAdd', 'onSearch'])
+const emits = defineEmits(['onAdd', 'onSearch', 'onClear'])
 
 const searchEvent = useDebounceFn(() => {
   emits('onSearch', searchModel.value )
@@ -98,8 +98,9 @@ const addEvent = ()=>{
           <template #trigger>
             <n-badge
                 :value="filterCount"
-                :max="15"
-                :type="'success'"
+                processing
+                type="info"
+                class="cursor-pointer"
             >
               <n-button
                   type="primary"
@@ -115,7 +116,21 @@ const addEvent = ()=>{
             </n-badge>
           </template>
           <div class="flex flex-col">
-            <span class="text-sm text-surface-400">{{$t('content.filterSetting')}}</span>
+            <div class="flex justify-between">
+              <span class="text-sm text-surface-400">{{$t('content.filterSetting')}}</span>
+              <n-button
+                  @click="emits('onClear')"
+                  strong
+                  secondary
+                  type="error"
+                  size="tiny"
+                  class="shadow">
+                {{$t('content.clear')}}
+                <template #icon>
+                  <DeleteArrowBack20Regular/>
+                </template>
+              </n-button>
+            </div>
             <slot name="filterContent"></slot>
           </div>
         </n-popover>
