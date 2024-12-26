@@ -1,10 +1,13 @@
 import {defineStore} from "pinia";
 import i18n from "@/i18n/index.js"
+import Utils from "@/utils/Utils.js"
 const {t} = i18n.global
 export const useCreateWorkerStore = defineStore('createWorkerStore', {
     state:()=>({
         loading:false,
+        saveLoading:false,
         elementId:null,
+        passportFileName:null,
         payload:{
             first_name:null,
             last_name:null,
@@ -27,7 +30,7 @@ export const useCreateWorkerStore = defineStore('createWorkerStore', {
             from_date:null,
             to_date:null,
             address:null,
-            file:null,
+            c:null,
         },
         params:{
             page:1,
@@ -79,11 +82,43 @@ export const useCreateWorkerStore = defineStore('createWorkerStore', {
             })
         },
         save(){
-            this.saveWorkerPhoto()
+            let uid = '89a8700c-119f-4411-89ea-8db477b28a1c'
+            this.saveLoading = true
+            let data = {...this.payload}
+            data.pin = this.payload.pin.split('-').join("")
+            data.birthday = Utils.timeToZone(this.payload.birthday)
+            data.phones = this.candidatePhones.map((v)=>v.phone)
+            data.photos = this.candidatePhotos.length>0? this.candidatePhotos.map((v)=>({
+                photo:v.base64,
+                current:v.id === this.mainImageId
+            })) : []
+
+            $ApiService.workerService._create({data}).then((res)=>{
+                console.log(res.data)
+            })
         },
-        saveWorkerPhoto(id){
-            console.log(this.candidatePhotos)
+        _passportFormData(uuid){
+            if(this.passport.serial_number && this.passport.from_date &&  this.passport.to_date && this.passport.address){
+                let formData = new FormData()
+                formData.append('uuid', uuid)
+                formData.append('serial_number', this.passport.serial_number)
+                formData.append('from_date', Utils.timeToZone(this.passport.from_date))
+                formData.append('to_date', Utils.timeToZone(this.passport.to_date))
+                formData.append('address', Utils.timeToZone(this.passport.address))
+                formData.append('file', Utils.timeToZone(this.passport.file))
+                $ApiService.passportService._create({data:formData}).then((res)=>{
+                    console.log(res.data)
+                }).finally(()=>{
+                    this.saveLoading = false
+                })
+
+            }else{
+                this.saveLoading = false
+            }
+
         },
+
+
 
 
 

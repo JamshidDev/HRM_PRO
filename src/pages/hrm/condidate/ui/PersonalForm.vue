@@ -8,7 +8,7 @@ const formRef = ref(null)
 const onSubmit = ()=>{
   formRef.value?.validate((error)=>{
     if(!error) {
-      console.log(store.payload)
+      store.save()
     }
   })
 }

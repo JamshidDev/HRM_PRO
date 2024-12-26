@@ -33,8 +33,8 @@ const openCode = (id)=>{
         <tr>
           <th class="!text-center min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
           <th class="w-[200px]">{{$t('actionLog.table.owner')}}</th>
-          <th class="min-w-[200px] ">{{$t('actionLog.table.detail')}}</th>
           <th class="w-[200px] min-w-[200px]">{{$t('actionLog.table.status')}}</th>
+          <th class="min-w-[200px] ">{{$t('actionLog.table.detail')}}</th>
           <th class="w-[120px]">{{$t('content.date')}}</th>
         </tr>
         </thead>
@@ -52,6 +52,10 @@ const openCode = (id)=>{
                 }"
             />
           </td>
+          <td><UIStatus
+              :color="`success`"
+              :text="$t(`actionLog.status.${item.description}`)"
+          /></td>
           <td>
             <div class="flex items-center justify-between">
                <span class="truncate w-full max-w-[400px] pb-1">
@@ -71,10 +75,7 @@ const openCode = (id)=>{
               </pre>
             </n-collapse-transition>
           </td>
-          <td><UIStatus
-              :color="`success`"
-              :text="$t(`actionLog.status.${item.description}`)"
-          /></td>
+
           <td>
             <div class="w-full text-center">{{Utils.timeWithMonth(item?.created_at)}}</div>
           </td>

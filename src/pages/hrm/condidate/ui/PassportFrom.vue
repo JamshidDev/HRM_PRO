@@ -1,13 +1,19 @@
 <script setup>
-import validationRules from "@/utils/validationRules.js"
 import {useComponentStore, useCreateWorkerStore} from "@/store/modules/index.js"
 import {CloudArrowUp24Regular} from "@vicons/fluent"
 const store = useCreateWorkerStore()
 const componentStore = useComponentStore()
+const inputFileRef = ref(null)
 const formRef = ref(null)
 
 const onSubmit = ()=>{
 
+}
+
+const onUpload = async (v)=>{
+  const file =v.target.files[0]
+  store.passportFileName =file.name
+  store.passport.file =file
 }
 
 defineExpose({
@@ -72,13 +78,15 @@ defineExpose({
         :label="$t(`createWorkerPage.form.passport_file`)"
         path="file">
       <n-button
-          class="w-full"
+          @click="$refs.inputFileRef.click()"
+          class="w-full truncate"
           quaternary>
-        {{ $t(`createWorkerPage.form.passport_file`) }}
+        {{ store.passportFileName || $t('content.no-data')}}
         <template #icon>
           <CloudArrowUp24Regular/>
         </template>
       </n-button>
+      <input @change="onUpload" type="file" accept=".pdf" v-show="false" ref="inputFileRef" />
     </n-form-item>
   </n-form>
 </template>

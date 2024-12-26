@@ -1,6 +1,7 @@
 <script setup>
 import { Navigation16Regular } from '@vicons/fluent'
 import LangDropdown from "@/components/general/LangDropdown.vue";
+import Utils from "@/utils/Utils.js"
 
 
 const emits = defineEmits(['onClick'])
@@ -34,7 +35,8 @@ const changeSidebarEmit = ()=>{
           class="cursor-pointer"
           round
           size="medium"
-          src="/public/default-user.png"
+          src="/pub.pmg"
+          :fallback-src="Utils.noAvailableImage"
       />
     </div>
   </div>

@@ -38,7 +38,11 @@ const timeToZone = (time)=>{
 const timeWithMonth = (time)=>{
     return time? dayjs(time).format('DD.MM.YYYY HH:mm') : null
 }
-const noAvailableImage = "/public/default-user.png"
+const timeOnlyDate = (time)=>{
+    return time? dayjs(time).format('DD.MM.YYYY') : null
+}
+
+const noAvailableImage = "/public/no-picture.jpg"
 
 const routePathMaker = (mainPath)=>(`${AppPaths.Admin}${mainPath}`)
 const routeHrmPathMaker = (mainPath)=>(`${AppPaths.Hrm}${mainPath}`)
@@ -61,6 +65,7 @@ export default {
     getMyLocation,
     timeToZone,
     timeWithMonth,
+    timeOnlyDate,
     noAvailableImage,
     routePathMaker,
     routeHrmPathMaker,

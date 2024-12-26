@@ -39,7 +39,7 @@ const onRemove = (id)=>{
           <n-input
               class="w-full"
               type="text"
-              :placeholder="$t(`createWorkerPage.form.lastName`)"
+              :placeholder="$t(`content.phone`)"
               v-model:value="item.phone"
               v-mask="`+998##-###-##-##`"
           />

@@ -1,6 +1,7 @@
 import {defineStore} from "pinia";
 import i18n from "@/i18n/index.js"
 const {t} = i18n.global
+import Utils from "@/utils/Utils.js"
 export const useComponentStore = defineStore('componentStore', {
     state:()=>({
         organizationLevelList:[],
@@ -30,9 +31,10 @@ export const useComponentStore = defineStore('componentStore', {
         },
 
         checkUserVisible:false,
-        userPinfl:null,
-        results:[],
+        pin:null,
+        worker:null,
         pinLoading:false,
+        submitted:false,
 
         regionList:[],
         regionLoading:false,
@@ -116,15 +118,20 @@ export const useComponentStore = defineStore('componentStore', {
         _checkWorker(pin){
             this.pinLoading = true
             $ApiService.workerService._checkWorker({params:{pin}}).then((res)=>{
-                let data = res.data.data
-                this.results = [
-                    {
-                        fullName:`${data.last_name} ${data.first_name} ${data.middle_name}`,
-                        photo:"",
-                        position:"Lavozim nomi"
+                this.worker = null
+                if(res.data.data){
+                    let data = res.data.data
+                    this.worker =  {
+                        lastName:data?.last_name,
+                        firstName:data?.first_name,
+                        middleName:data?.middle_name,
+                        position:`${t('workerPage.checkWorker.born')} ${Utils.timeOnlyDate(data?.birthday)}`,
+                        photos:data.photos.length>0? data.photos[0] : Utils.noAvailableImage ,
                     }
-                ]
+                }
+
             }).finally(()=>{
+                this.submitted = true
                 this.pinLoading = false
             })
         },

@@ -19,9 +19,6 @@ const changePage = (v)=>{
 const openCode = (id)=>{
   store.authActiveCol =id
 }
-onMounted(()=>{
-  store._getAuthLog()
-})
 </script>
 
 <template>
@@ -88,7 +85,7 @@ onMounted(()=>{
           @change-page="changePage"
       />
     </div>
-    <NoDataPicture v-if="store.list.length===0 && !store.loading" />
+    <NoDataPicture v-if="store.authList.length===0 && !store.loading" />
   </n-spin>
 </template>
 

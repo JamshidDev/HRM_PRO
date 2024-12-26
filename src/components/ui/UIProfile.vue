@@ -6,6 +6,7 @@ import {Person24Regular, Settings16Regular, SignOut20Regular} from "@vicons/flue
 import {useAppStore, useAccountStore} from "@/store/modules/index.js"
 import i18n from "@/i18n/index.js"
 import {AppPaths} from "@/utils/index.js";
+import Utils from "@/utils/Utils.js"
 
 const {t} = i18n.global
 const router = useRouter()
@@ -59,7 +60,7 @@ const changeOption = (v)=>{
         round
         size="large"
         :src="accountStore.account?.photo"
-        fallback-src="/public/default-user.png"
+        :fallback-src="Utils.noAvailableImage"
     />
   </n-dropdown>
 </template>

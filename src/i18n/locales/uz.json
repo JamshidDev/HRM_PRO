@@ -2,6 +2,7 @@
     "content": {
         "requiredField": "Maydon to'ldirilishi shart!",
         "save": "Saqlash",
+        "no-data": "Ma'lumot yo'q",
         "cancel": "Bekor qilish",
         "help": "Yordam",
         "enterField": "Kiriting",
@@ -37,6 +38,7 @@
         "choose": "Tanlang",
         "signatureLogin": "E-imzo orqali kirish",
         "clear": "Tozalash",
+        "continue": "Davom etish",
         "sum": "So'm"
     },
     "rules": {
@@ -230,8 +232,13 @@
 
         },
         "checkWorker": {
-            "title": "Xodim izlash butun tizim orqali",
-            "jshshir": "Pasport jshshirni kiriting"
+            "title": "Xodim izlash",
+            "defaultText": "Izlashni boshlang...",
+            "no-worker": "Tizimda xodim topilmadi!",
+            "born": "Tug'ilgan sana",
+            "addCandidate": "Kandidat qo'shish",
+            "add-worker": "Tizimda mavjud bo'lmagan xodimning ma'lumotlarini kandidat qo'shish tugamasi orqali qo'shing ",
+            "jshshir": "Jshshirni kiriting"
         }
     },
     "contactPage": {
@@ -352,7 +359,6 @@
             "action": "Amallar tarixi",
             "auth": "Kirishlar tarixi"
         },
-
         "table": {
             "status": "Amal turi",
             "owner": "Egasi",
@@ -364,7 +370,7 @@
             "structure": "Korxonalar"
         },
         "status": {
-            "created": "Yangi yaratildi",
+            "created": "Yangi yaratilgan",
             "updated": "Tahrirlangan",
             "deleted": "O'chirilgan",
             "subject_type": "Model",

@@ -1,4 +1,5 @@
 import {defineStore} from "pinia";
+import Utils from "@/utils/Utils.js"
 export const useActionLogStore = defineStore('actionLog', {
     state:()=>({
         list:[],
@@ -23,6 +24,9 @@ export const useActionLogStore = defineStore('actionLog', {
             created_at:null,
             subject_type:null,
             description:null,
+            login_at:null,
+            ip_address:null,
+
         },
         authParams:{
             page:1,
@@ -35,7 +39,14 @@ export const useActionLogStore = defineStore('actionLog', {
     actions:{
         _getActionLog(){
             this.loading= true
-            $ApiService.logService._actionLog({params:this.params}).then((res)=>{
+            let params = {
+                search:this.params.search,
+                description:this.params.description,
+                subject_type:this.params.subject_type,
+                created_at:Utils.timeToZone(this.params.created_at),
+                organizations:this.params.organizations.map((v)=>v.id).toString() || null,
+            }
+            $ApiService.logService._actionLog({params}).then((res)=>{
                 this.list = res.data.data.data
                 this.totalItems = res.data.data.total
             }).finally(()=>{
@@ -44,13 +55,26 @@ export const useActionLogStore = defineStore('actionLog', {
         },
         _getAuthLog(){
             this.authLoading= true
-            $ApiService.logService._authLog({params:this.authParams}).then((res)=>{
+            let params = {
+                search:this.params.search,
+                ip_address:this.params.ip_address,
+                login_at:Utils.timeToZone(this.params.login_at),
+                organizations:this.params.organizations.map((v)=>v.id).toString() || null,
+            }
+            $ApiService.logService._authLog({params}).then((res)=>{
                 this.authList = res.data.data.data
                 this.authTotalItems = res.data.data.total
             }).finally(()=>{
                 this.authLoading= false
             })
         },
+        _filterEvent(){
+            if(this.activeTab === 1){
+                this._getActionLog()
+            }else{
+                this._getAuthLog()
+            }
+        }
 
     }
 

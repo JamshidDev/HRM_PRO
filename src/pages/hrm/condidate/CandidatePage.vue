@@ -6,6 +6,7 @@ import PhotoForm from "./ui/PhotoForm.vue"
 import PhoneForm from "./ui/PhoneForm.vue"
 import {useComponentStore, useCreateWorkerStore} from "@/store/modules/index.js"
 import {ArrowLeft12Regular, Save16Regular} from "@vicons/fluent"
+import router from "@/router/index.js"
 
 const store = useCreateWorkerStore()
 const componentStore = useComponentStore()
@@ -13,7 +14,6 @@ const personalFormRef = ref(null)
 
 const save = ()=>{
   personalFormRef.value.onSubmit()
-  console.log(store.passport)
 }
 
 const currentStatus = ref('process')
@@ -25,6 +25,7 @@ const current = ref(1)
   <UIPageContent>
     <div class="col-span-12 flex mb-4">
       <n-button
+          @click="router.go(-1)"
           quaternary
           icon-placement="left"
           class="bg-[transparent]"
