@@ -22,7 +22,7 @@ instance.interceptors.response.use(
     response => response,
     error => {
         if(error.response?.status===401){
-            $Toast.error(error.response.data.message)
+            // $Toast.error(error.response.data.message)
             router.push("/login")
         }else if(error.response?.status===422){
             if(Array.isArray(error.response.data.detail)){

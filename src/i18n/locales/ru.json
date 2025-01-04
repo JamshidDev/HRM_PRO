@@ -5,7 +5,7 @@
     "cancel": "Bekor qilish",
     "help": "Yordam",
     "enterField": "Kiriting",
-    "phone":"Telefon raqam",
+    "phone":"Номер телефона",
     "langUz": "Узбекский",
     "langRu": "Русский",
     "langEn": "Английский",
@@ -18,62 +18,33 @@
     "number": "№",
     "photo": "Rasm",
     "platform": "Platforma",
-    "date": "Sana"
+    "date": "Sana",
+    "or": "Или",
+    "signatureLogin": "Вход через Э-имзо"
   },
   "rules": {
     "login": "Email kiritilishi shart!",
-    "password": "Parol kiritilishi shart!",
-    "requiredField": "Maydon to'ldirilishi shart!"
+    "phone": "Ввод номера телефона обязателен!",
+    "password": "Ввод пароля обязателен!",
+    "requiredField": "Maydon to'ldirilishi shart!",
+    "requiredWorker": "Xodim tanlash shart!",
+    "requiredImageField": "Rasm yuklanishi shart!",
+    "requiredMinLength": "{n} ta belgidan kam bo'lmasligi kerak",
+    "requiredMaxLength": "{n} ta belgidan ko'p bo'lmasligi kerak",
+    "requiredJSHSHIR": "Pasport jshshir kiritilishi shart!"
   },
-  "navigation": {
-    "client": "Клиенты",
-    "product": "Продукты",
-    "category": "Категории"
-  },
-
   "loginPage":{
-    "title":"Xush kelibsiz!",
-    "email": "Email",
-    "password": "Parol",
-    "doYouHaveAccount": "Sizda hisob yo'qmi?",
-    "singUp": "Ro'yhatdan o'tish",
-    "login": "Kirish"
+    "title":"Добро пожаловать!",
+    "subtitle":"HRM-платформа АО «Узбекские железные дороги»",
+    "phone": "Номер телефона",
+    "password": "Пароль",
+    "doYouHaveAccount": "У вас нет аккаунта?",
+    "singUp": "Регистрация",
+    "login": "Вход"
   },
   "registerPage": {
     "title": "Ro'yhatdan o'tish",
     "firstName": "Ism",
     "lastName": "Familiya"
-  },
-  "verificationEmail": {
-    "title": "Hisobni tadiqlash",
-    "subtitle": "Biz sizning pochta manzilingizga tasdiqlash kodini yubordik {email}",
-    "placeholder": "Bu yerga kodni yozing",
-    "verification": "Tasdiqlash"
-  },
-
-  "service": {
-    "step": {
-      "one": "Market yaratish",
-      "two": "Marketni sozlash",
-      "three": "Kategoriya qo'shish",
-      "four": "Mahsulot qo'shish"
-    },
-    "createMarket": {
-      "logo": "Kompaniya logosi",
-      "name": "Kompaniya nomi",
-      "description": "Kompaniya haqida qisqacha ma'lumot",
-      "imageRequired": "Yuklanayotgan rasm (.png) fromatda yuklashi kerak va uning o'lchami 2MB dan katta bo'lmasligi kerak.",
-      "token": "Telegram bot token",
-      "tokenDescription": "Qanday qilib telegram bot token olish?"
-    },
-    "marketSetting": {
-      "language": "Dasturning foydalanish tillari tanlang",
-      "contactPhone": "Bo'g'lanish uchun telefon raqam",
-      "address": "To'liq manzil",
-      "mapAddress": "Xaritadan market adressini belgilang"
-    },
-    "next": "Keyingi",
-    "previous": "Oldingi"
-
   }
 }

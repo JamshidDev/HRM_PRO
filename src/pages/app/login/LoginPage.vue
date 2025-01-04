@@ -1,6 +1,6 @@
 <script setup>
 import {useRouter} from "vue-router";
-import {useLoginStore, useAppStore, useSignatureStore} from "@/store/modules/index.js"
+import {useLoginStore, useAppStore, useSignatureStore, useAccountStore} from "@/store/modules/index.js"
 import validationRules from "@/utils/validationRules.js";
 import {Call28Regular, LockClosed16Regular, Eye24Regular, EyeOff20Filled, Key24Regular} from '@vicons/fluent'
 import LangDropdown from "@/components/general/LangDropdown.vue";
@@ -10,6 +10,7 @@ import i18n from "@/i18n/index.js"
 const {t} = i18n.global
 
 const store = useLoginStore()
+const accountStore = useAccountStore()
 const appStore = useAppStore()
 const signatureStore = useSignatureStore()
 const router = useRouter()
@@ -28,14 +29,30 @@ const onSubmit = () => {
 
 const onSignatureLogin =async ()=>{
   try{
-    await signatureStore._initialSignature(signatureStore.signatureTypes.contract, onSuccess)
+    await signatureStore._initialSignature(signatureStore.signatureTypes.auth, onSuccess)
   }catch (err){
     $Toast.error(t('signature.connectionError'))
   }
 
 }
 const onSuccess = (data)=>{
-  console.log(data)
+  new Promise((resolve, reject)=>{
+    try{
+      localStorage.setItem('token',data?.access_token)
+      accountStore._index()
+      resolve(true)
+    }catch (error){
+      console.log(error)
+      reject(false)
+    }
+  }).then((data)=>{
+    if(data){
+      signatureStore.visible = false
+      router.push(AppPaths.Main)
+    }
+  })
+
+
 }
 
 

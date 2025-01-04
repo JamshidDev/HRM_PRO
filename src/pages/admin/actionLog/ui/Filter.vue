@@ -31,6 +31,7 @@ const onSearchEv = useDebounceFn(() => {
 
 const filterEvent = ()=>{
   if(store.activeTab === 1){
+    store.params.page = 1
     store._getActionLog()
   }else{
     store._getAuthLog()

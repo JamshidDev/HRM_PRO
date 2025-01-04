@@ -1,5 +1,4 @@
-$sidebar-max-width:260px;
-$sidebar-mini-width:60px;
+@use "variables" as *;
 
 $transitionWidth: width 0.3s linear;
 $transitionMargin: margin-left 0.3s linear;

@@ -6,6 +6,7 @@ import DepartmentPage from "@/pages/hrm/depertment/DepartmentPage.vue"
 import DepartmentPositionPage from "@/pages/hrm/departmentPosition/departmentPositionPage.vue"
 import CandidatePage from "@/pages/hrm/condidate/CandidatePage.vue"
 import DocumentPage from "@/pages/docFlow/document/DocumentPage.vue"
+import ConfirmationPage from "@/pages/hrm/confirmation/ConfirmationPage.vue"
 
 
 export default [
@@ -33,5 +34,10 @@ export default [
         path:Utils.routeHrmPathMaker(AppPaths.Document),
         name:AppPaths.Document.substring(1),
         component:DocumentPage,
+    },
+    {
+        path:Utils.routeHrmPathMaker(AppPaths.Confirmation),
+        name:AppPaths.Confirmation.substring(1),
+        component:ConfirmationPage,
     },
 ]

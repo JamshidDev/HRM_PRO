@@ -10,10 +10,6 @@ import naive from 'naive-ui'
 import { createYmaps } from 'vue-yandex-maps';
 import mask from "./directives/mask.js"
 
-// import '@/pages/app/e-imzo/app/e-imzo-init.js'
-// import '@/pages/app/e-imzo/app/e-imzo.js'
-// import '@/pages/app/e-imzo/app/e-imzo-client.js'
-
 
 
 
@@ -23,7 +19,6 @@ meta.name = 'naive-ui-style'
 document.head.appendChild(meta)
 const pinia =  createPinia()
 
-app.use(i18n)
 app.use(naive)
 app.use(router)
 app.use(pinia)
@@ -34,4 +29,5 @@ app.directive('mask',mask)
 app.use(createYmaps({
     apikey: 'cd743c3b-f0bf-4f2e-b9ec-0240b9d87646',
 }));
+app.use(i18n)
 app.mount('#app')

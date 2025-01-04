@@ -11,8 +11,8 @@ const store = useActionLogStore()
 
 
 const changePage = (v)=>{
-  store.authParams.page = v.page
-  store.authParams.per_page = v.per_page
+  store.params.page = v.page
+  store.params.per_page = v.per_page
   store._getAuthLog()
 }
 
@@ -81,7 +81,7 @@ const openCode = (id)=>{
       <UIPagination
           :page="store.params.page"
           :per_page="store.params.size"
-          :total="store.totalItems"
+          :total="store.authTotalItems"
           @change-page="changePage"
       />
     </div>

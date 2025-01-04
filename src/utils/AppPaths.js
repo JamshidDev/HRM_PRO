@@ -34,6 +34,8 @@ export const AppPaths = {
     Create:"/create",
     Document:"/document",
     ActionLog:"/action-logs",
+    Confirmation:"/confirmation",
+    DocumentSetting:"/document-setting",
 }
 
 export const AppLayouts ={

@@ -1,7 +1,5 @@
+@use "variables" as *;
 
-
-$sidebar_max_width:260px;
-$sidebar_min_width:60px;
 $transition:width 0.2s ease;
 
 .layout__v4 {
@@ -192,7 +190,7 @@ $transition:width 0.2s ease;
   }
   .close__sidebar{
     .sidebar__section{
-      width: $sidebar_min_width;
+      width: $sidebar-mini-width;
 
       .single__item{
         justify-content: center;
@@ -255,8 +253,8 @@ $transition:width 0.2s ease;
       }
     }
     .main__section{
-      width: calc(100% - $sidebar_min_width);
-      margin-left: $sidebar_min_width;
+      width: calc(100% - $sidebar-mini-width);
+      margin-left: $sidebar-mini-width;
     }
   }
   .mobile_overall{
@@ -280,8 +278,8 @@ $transition:width 0.2s ease;
   }
   .close__sidebar{
     .sidebar__section{
-      width: $sidebar_min_width;
-      left: -$sidebar_min_width !important;
+      width: $sidebar-mini-width;
+      left: -$sidebar-mini-width !important;
       .single__item{
         justify-content: center;
         &:hover{

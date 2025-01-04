@@ -39,19 +39,18 @@ export const useCreateWorkerStore = defineStore('createWorkerStore', {
         },
         candidatePhotos:[],
         mainImageId:null,
-
         candidatePhones:[
             {
                 id:1,
                 phone:'+998'
             }
         ],
-
         districtList:[],
         districtLoading:false,
-
         currentDistrictList:[],
         currentDistrictLoading:false,
+        warningVisible:false,
+        successVisible:false,
 
 
     }),
@@ -94,7 +93,13 @@ export const useCreateWorkerStore = defineStore('createWorkerStore', {
             })) : []
 
             $ApiService.workerService._create({data}).then((res)=>{
-                console.log(res.data)
+                if(res.data?.errorMsg === 'Ok'){
+                    const uuid = res.data.data.uuid
+                    this._passportFormData(uuid)
+                }else{
+                    this.warningVisible = true
+                    this.saveLoading = false
+                }
             })
         },
         _passportFormData(uuid){
@@ -104,26 +109,20 @@ export const useCreateWorkerStore = defineStore('createWorkerStore', {
                 formData.append('serial_number', this.passport.serial_number)
                 formData.append('from_date', Utils.timeToZone(this.passport.from_date))
                 formData.append('to_date', Utils.timeToZone(this.passport.to_date))
-                formData.append('address', Utils.timeToZone(this.passport.address))
-                formData.append('file', Utils.timeToZone(this.passport.file))
+                formData.append('address', this.passport.address)
+                formData.append('file', this.passport.file)
                 $ApiService.passportService._create({data:formData}).then((res)=>{
                     console.log(res.data)
                 }).finally(()=>{
                     this.saveLoading = false
+                    this.successVisible = true
                 })
 
             }else{
                 this.saveLoading = false
+                this.successVisible = true
             }
-
         },
-
-
-
-
-
-
-
 
     }
 

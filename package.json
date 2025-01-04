@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@vicons/utils": "^0.1.4",
+    "@vueuse/components": "^12.3.0",
     "@vueuse/core": "^11.1.0",
     "axios": "^1.7.5",
     "dayjs": "^1.11.13",

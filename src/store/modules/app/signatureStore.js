@@ -101,6 +101,7 @@ export const useSignatureStore = defineStore('signatureStore', {
                 uiShowMessage(errorCAPIWS + " : " + e)
             } else {
                 console.log(r)
+                uiShowMessage(r)
             }
         },
         _accepted(idx, callback) {
@@ -148,7 +149,6 @@ export const useSignatureStore = defineStore('signatureStore', {
                 }
             })
         },
-
         _auth(keyId, challenge) {
             const callback = this.successCallback
             EIMZOClient.createPkcs7(keyId, challenge, null, function (pkcs7) {
@@ -185,8 +185,6 @@ export const useSignatureStore = defineStore('signatureStore', {
             })
 
         },
-
-
         uiCreateItem(itemKey, vo) {
             let now = new Date()
             vo.expired = dates.compare(now, vo.validTo) > 0
@@ -210,7 +208,6 @@ export const useSignatureStore = defineStore('signatureStore', {
             itm.validDate = vo.validTo
             return itm
         },
-
     }
 
 })

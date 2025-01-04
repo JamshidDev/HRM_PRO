@@ -59,8 +59,7 @@ const isCheck =(id)=>{
 <template>
   <div>
     <template v-for="(item, idx) in data" :key="idx">
-      <div class="w-full flex cursor-pointer hover:bg-blue-50">
-<!--        :style="{width:`calc(100% - ${(deep-1)*20}px)`, marginLeft:(deep-1)*20+'px' }"-->
+      <div class="w-full flex cursor-pointer hover:bg-blue-50 ui__tree-hover">
 
         <template v-if="deep>1">
           <div v-for="(item,idx) in (deep-1)" :key="idx" class="w-[20px] h-[20px] border__center-line"></div>

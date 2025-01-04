@@ -1,0 +1,126 @@
+<script setup>
+import {Search48Filled} from "@vicons/fluent"
+import TreeOrg from "@/components/tree/TreeOrg.vue"
+import {useDebounceFn} from "@vueuse/core"
+import {useComponentStore} from "@/store/modules/index.js"
+const store = useComponentStore()
+
+const props = defineProps({
+  modelV:{type:Array,default:[]},
+  checkedVal:{type:Array,default:[]},
+
+})
+
+
+const searchModel = defineModel("search",{type:String,default:null })
+const emits = defineEmits(["onSearch", "onSubmit","updateModel", "updateCheck"])
+
+const onSelect = (v)=>{
+  let list = []
+  if(props.modelV.map((a)=>a.id).includes(v.id)){
+    list = props.modelV.filter((x)=>x.id !== v.id)
+  }else{
+    list = props.modelV
+    list.push(v)
+  }
+  emits('updateModel',list)
+}
+
+const onSelectAll = (v)=>{
+
+  const idList = getChildIds(store.structureList, v.id)
+  let list = []
+
+  const checkRadio = (valList=[], idList=[])=>{
+    for(const id of idList){
+      if(!(valList.includes(id))){
+        return false
+      }
+    }
+    return  true
+  }
+
+  if(checkRadio(props.modelV.map((a)=>a.id),idList.map(e=>e.id) )){
+    // Remove elements
+    list = props.modelV.filter((x)=>!(idList.map((a)=>a.id).includes(x.id)))
+  }
+  else{
+    // Add elements
+    idList.forEach((y)=>{
+      if(!(props.modelV.map((a)=>a.id).includes(y.id))){
+        list.push(y)
+      }
+    })
+    list = [...props.modelV, ...list]
+  }
+  emits('updateModel',list)
+}
+
+const searchEvent = useDebounceFn(() => {
+  emits('onSearch', searchModel.value )
+  store.structureParams.search = searchModel.value
+  store._structures()
+}, 300,)
+
+const getChildIds = (tree, elementId)=>{
+  const result = []
+
+  const findAndCollect = (node)=>{
+    if(node.id === elementId){
+      collectChildIds(node)
+      return true
+    }
+    for(const child of node.children){
+      if(findAndCollect(child)) return true
+    }
+    return false
+  }
+
+  const collectChildIds = (node)=>{
+    result.push(node)
+    for (const child of node.children){
+      collectChildIds(child)
+    }
+  }
+
+  for(const items of tree){
+    findAndCollect(items)
+  }
+
+
+  return result
+}
+
+const changeCheckVal = (v)=>{
+  let list = []
+  if(props.checkedVal?.includes(v.id)){
+    list = props.checkedVal.filter((x)=>x !== v.id)
+  }else{
+    list = props.checkedVal
+    list.push(v.id)
+  }
+
+  emits('updateCheck',list)
+}
+
+const inputVal = computed(()=>props.modelV.map((a)=>a.name).toString())
+
+
+
+onMounted(()=>{
+  store._structures()
+})
+</script>
+
+<template>
+  <TreeOrg
+      :data="store.structureList"
+      :modelV="modelV"
+      :checkedVal="checkedVal"
+      :getChildIds="getChildIds"
+      :changeCheckVal="changeCheckVal"
+      @onSelect="onSelect"
+      @onSelectAll="onSelectAll"
+  />
+
+</template>

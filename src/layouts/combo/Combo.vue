@@ -2,6 +2,8 @@
 import SidebarContent from "./ui/SidebarContent.vue";
 import PageContent from "./ui/PageContent.vue";
 import HelperLayout from "./ui/HelperLayout.vue"
+import {useAccountStore} from "@/store/modules/index.js"
+const store = useAccountStore()
 
 
 const open = ref(true)
@@ -30,6 +32,7 @@ const openSidebar = ()=>{
 
 onMounted(()=>{
   open.value = JSON.parse(localStorage.getItem('appSidebar'))
+  store._index()
 })
 </script>
 

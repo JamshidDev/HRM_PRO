@@ -10,6 +10,7 @@ import NationalityPage from "@/pages/admin/nationality/NationalityPage.vue";
 import PositionPage from "@/pages/admin/position/PositionPage.vue"
 import OrganizationPage from "@/pages/admin/organization/OrganizationPage.vue"
 import ActionLogPage from "@/pages/admin/actionLog/ActionLogPage.vue"
+import DocSettingPage from "@/pages/admin/document/DocSettingPage.vue"
 
 
 export default  [
@@ -68,5 +69,10 @@ export default  [
         path:Utils.routePathMaker(AppPaths.ActionLog),
         name:AppPaths.ActionLog.substring(1),
         component:ActionLogPage,
+    },
+    {
+        path:Utils.routePathMaker(AppPaths.DocumentSetting),
+        name:AppPaths.DocumentSetting.substring(1),
+        component:DocSettingPage,
     },
 ]

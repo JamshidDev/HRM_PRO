@@ -36,9 +36,14 @@
         "month": "Oy",
         "or": "Yoki",
         "choose": "Tanlang",
+        "chooseFile": "Fayl tanlang",
         "signatureLogin": "E-imzo orqali kirish",
         "clear": "Tozalash",
         "continue": "Davom etish",
+        "close": "Yopish",
+        "closeAndClear": "Yopish va tozalash",
+        "notWorker": "Xodim topilmadi",
+        "worker": "Xodim",
         "sum": "So'm"
     },
     "rules": {
@@ -46,6 +51,7 @@
         "phone": "Telefon raqam kiritilishi shart!",
         "password": "Parol kiritilishi shart!",
         "requiredField": "Maydon to'ldirilishi shart!",
+        "requiredWorker": "Xodim tanlash shart!",
         "requiredImageField": "Rasm yuklanishi shart!",
         "requiredMinLength": "{n} ta belgidan kam bo'lmasligi kerak",
         "requiredMaxLength": "{n} ta belgidan ko'p bo'lmasligi kerak",
@@ -64,9 +70,7 @@
         "password": "Parol",
         "doYouHaveAccount": "Sizda hisob yo'qmi?",
         "singUp": "Ro'yhatdan o'tish",
-        "login": "Kirish",
-        "byGoogle": "Google orqali kirish",
-        "byFacebook": "Facebook orqali kirish"
+        "login": "Kirish"
     },
     "registerPage": {
         "title": "Ro'yhatdan o'tish",
@@ -320,6 +324,16 @@
             "photo": "Kandidatning fotosurati",
             "pasport": "Kandidatning passport ma'lumotlari",
             "phone": "Kandidatning telefon raqam ma'lumotlari"
+        },
+        "toast": {
+            "warning":{
+                "title": "Tizimda mavjud xodim",
+                "subtitle": "No comment"
+            },
+            "success":{
+                "title": "Kandidat tizimga qo'shildi",
+                "subtitle": "Kandidat bilan mehnat shartnomasi tuzish uchun davom etish tugmasini bosing."
+            }
         }
     },
     "signature": {
@@ -332,8 +346,6 @@
         "naturalPerson": "Jismoniy shaxs",
         "connectionError": "E-imzo o'rnatilmagan yoki to'g'ri sozlanmagan!",
         "pinfl": "JSHSHR"
-
-
     },
     "documentPage": {
         "name": "Hujjatlar",
@@ -342,16 +354,37 @@
             "order": "Buyruqlar"
         }
     },
+    "confirmationPage": {
+        "name": "Tasdiqlovchilar",
+        "createTitle": "Tasdiqlovchi qo'shish",
+        "updateTitle": "Tasdiqlovchini tahrirlash",
+        "table": {
+            "worker": "Xodim",
+            "position": "Lavozim"
+        }
+    },
     "contractPage": {
         "name": "Shartnomalar",
         "table": {
             "number": "Shartnoma raqami",
             "status": "Holati"
-        },
-        "statuses": {
-            "confirm": "Tasdiqlash"
         }
-
+    },
+    "documentSetting": {
+        "name": "Hujjat sozlamalari",
+        "createTitle": "Andoza yuklash",
+        "updateTitle": "Andozani tahrirlash",
+        "tabs": {
+            "example": "Andoza yuklash"
+        },
+        "form": {
+            "count": "{n} ta",
+            "organization": "Korxonalar soni",
+            "organizations": "Korxonalar",
+            "type": "Shartnoma turi",
+            "file": "Andoza fayli",
+            "name": "Hujjat nomi"
+        }
     },
     "actionLog": {
         "name": "Amallar tarixi",

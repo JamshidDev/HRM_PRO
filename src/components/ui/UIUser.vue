@@ -38,7 +38,7 @@ const fullName = computed(()=> {
       :fallback-src="Utils.noAvailableImage"
   />
   <div class="flex flex-col" style="width: calc(100% - 50px)">
-    <span class="leading-3 text-sm text-gray-700 truncate w-full ">{{fullName}}</span>
+    <span class="leading-2 text-sm text-gray-700 truncate w-full ">{{fullName}}</span>
     <span class="leading-1 text-xs text-gray-400 truncate w-full">{{data?.position || ''}}</span>
   </div>
 </div>

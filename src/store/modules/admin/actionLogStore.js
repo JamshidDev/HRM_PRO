@@ -40,6 +40,8 @@ export const useActionLogStore = defineStore('actionLog', {
         _getActionLog(){
             this.loading= true
             let params = {
+                page:this.params.page,
+                per_page:this.params.per_page,
                 search:this.params.search,
                 description:this.params.description,
                 subject_type:this.params.subject_type,
@@ -56,6 +58,8 @@ export const useActionLogStore = defineStore('actionLog', {
         _getAuthLog(){
             this.authLoading= true
             let params = {
+                page:this.params.page,
+                per_page:this.params.per_page,
                 search:this.params.search,
                 ip_address:this.params.ip_address,
                 login_at:Utils.timeToZone(this.params.login_at),
@@ -69,6 +73,8 @@ export const useActionLogStore = defineStore('actionLog', {
             })
         },
         _filterEvent(){
+            this.params.page = 1
+            this.params.per_page = 10
             if(this.activeTab === 1){
                 this._getActionLog()
             }else{

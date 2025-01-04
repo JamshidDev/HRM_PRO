@@ -18,12 +18,6 @@ const layout = computed(() => {
   }
 })
 
-const initialApp = ()=>{
-  store._index()
-}
-onMounted(()=>{
-  initialApp()
-})
 
 </script>
 

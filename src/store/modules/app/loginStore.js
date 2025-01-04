@@ -12,7 +12,6 @@ export const useLoginStore = defineStore("loginStore", {
 
     },
     actions:{
-
         _auth(){
             this.loading = true
             let data = {
@@ -28,9 +27,5 @@ export const useLoginStore = defineStore("loginStore", {
                 this.loading = false
             })
         }
-
-
-
-
     }
 })

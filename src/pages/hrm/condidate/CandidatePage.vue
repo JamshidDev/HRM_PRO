@@ -1,5 +1,5 @@
 <script setup>
-import {UIPageContent} from "@/components/index.js"
+import {UIPageContent, UIDConfirm} from "@/components/index.js"
 import PersonalForm from "./ui/PersonalForm.vue"
 import PassportFrom from "./ui/PassportFrom.vue"
 import PhotoForm from "./ui/PhotoForm.vue"
@@ -16,8 +16,15 @@ const save = ()=>{
   personalFormRef.value.onSubmit()
 }
 
-const currentStatus = ref('process')
-const current = ref(1)
+const onClose = ()=>{
+  store.warningVisible = false
+  store.successVisible = false
+}
+
+const onSave = ()=>{
+    store.successVisible = false
+}
+
 
 </script>
 
@@ -26,6 +33,7 @@ const current = ref(1)
     <div class="col-span-12 flex mb-4">
       <n-button
           @click="router.go(-1)"
+          :loading="store.saveLoading"
           quaternary
           icon-placement="left"
           class="bg-[transparent]"
@@ -75,6 +83,31 @@ const current = ref(1)
       </n-step>
 
     </n-steps>
+    <UIDConfirm
+        v-model:visible="store.warningVisible"
+        type="warning"
+        @onClose="onClose"
+    >
+      <div>
+        <h3 class="text-center text-2xl font-semibold uppercase">{{$t('createWorkerPage.toast.warning.title')}}</h3>
+        <p class="text-gray-400 text-center">{{$t('createWorkerPage.toast.warning.subtitle')}}</p>
+
+      </div>
+    </UIDConfirm>
+    <UIDConfirm
+        v-model:visible="store.successVisible"
+        type="success"
+        @onClose="onClose"
+        @onSave="onSave"
+        :submit-btn-text="'content.continue'"
+        :close-btn-text="'content.closeAndClear'"
+    >
+      <div>
+        <h3 class="text-center text-2xl font-semibold uppercase">{{$t('createWorkerPage.toast.success.title')}}</h3>
+        <p class="text-gray-400 text-center mt-2 text-xs leading-3">{{$t('createWorkerPage.toast.success.subtitle')}}</p>
+
+      </div>
+    </UIDConfirm>
 
 
     <div class="col-span-12 flex justify-end">
@@ -82,6 +115,7 @@ const current = ref(1)
           type="primary"
           icon-placement="right"
           @click="save"
+          :loading="store.saveLoading"
       >
         <template #icon>
           <n-icon>

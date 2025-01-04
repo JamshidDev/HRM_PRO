@@ -21,6 +21,8 @@ import languageService from "@/service/v1/hrm/languageService.js"
 import documentService from "@/service/v1/docFlow/documentService.js"
 import contractService from "@/service/v1/docFlow/contractService.js"
 import logService from "@/service/v1/admin/logService.js"
+import confirmationService from "@/service/v1/hrm/confirmationService.js"
+import docSettingService from "@/service/v1/admin/docSettingService.js"
 export default {
     authService,
     accountService,
@@ -44,4 +46,6 @@ export default {
     photoService,
     phoneService,
     languageService,
+    confirmationService,
+    docSettingService,
 }

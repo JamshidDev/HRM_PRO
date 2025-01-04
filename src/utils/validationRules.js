@@ -2,6 +2,8 @@ import i18n from "@/i18n/index.js"
 const {t} = i18n.global
 const triggerEvents =  ['input', 'blur']
 
+const lang = localStorage.getItem('applicationLang') || 'uz'
+i18n.global.locale = lang
 
 export default {
     login:{
@@ -224,6 +226,19 @@ export default {
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
+    },
+    confirmation:{
+        pin:{
+            required: true,
+            message: t(`rules.requiredWorker`),
+            trigger: triggerEvents
+        },
+        position:{
+
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        }
     },
     userRole:{
         name:{

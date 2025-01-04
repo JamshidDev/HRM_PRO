@@ -18,7 +18,6 @@ export const useComponentStore = defineStore('componentStore', {
         partyList:[],
         rankList:[],
         groupList:[],
-
         departmentList:[],
         departmentLoading:false,
 
@@ -33,6 +32,7 @@ export const useComponentStore = defineStore('componentStore', {
         checkUserVisible:false,
         pin:null,
         worker:null,
+        selectedWorker:null,
         pinLoading:false,
         submitted:false,
 
@@ -65,7 +65,10 @@ export const useComponentStore = defineStore('componentStore', {
                 name:t('actionLog.status.deleted'),
                 id:'deleted'
             },
-        ]
+        ],
+
+        documentExampleTypes:[],
+        documentExampleTypeLoading:false,
 
     }),
     actions:{
@@ -99,6 +102,14 @@ export const useComponentStore = defineStore('componentStore', {
                 this.enumLoading= false
             })
         },
+        _enumsAdmin(){
+            this.documentExampleTypeLoading= true
+            $ApiService.componentService._enumAdmin().then((res)=>{
+                this.documentExampleTypes = res.data.data.documentExampleTypes
+            }).finally(()=>{
+                this.documentExampleTypeLoading= false
+            })
+        },
         _departments(){
             this.departmentLoading= true
             $ApiService.componentService._departments(this.params).then((res)=>{
@@ -117,16 +128,17 @@ export const useComponentStore = defineStore('componentStore', {
         },
         _checkWorker(pin){
             this.pinLoading = true
+            this.worker = null
             $ApiService.workerService._checkWorker({params:{pin}}).then((res)=>{
-                this.worker = null
-                if(res.data.data){
+                if(res.data.errorMsg === 'Ok'){
                     let data = res.data.data
                     this.worker =  {
                         lastName:data?.last_name,
                         firstName:data?.first_name,
                         middleName:data?.middle_name,
                         position:`${t('workerPage.checkWorker.born')} ${Utils.timeOnlyDate(data?.birthday)}`,
-                        photos:data.photos.length>0? data.photos[0] : Utils.noAvailableImage ,
+                        photos:data.photos || Utils.noAvailableImage,
+                        pin:data.uuid
                     }
                 }
 
