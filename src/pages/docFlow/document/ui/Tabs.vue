@@ -1,5 +1,6 @@
 <script setup>
 import ContractList from "./ContractList.vue"
+import CreateContractPage from "./CreateContractPage.vue"
 import {useDocumentStore} from "@/store/modules/index.js"
 
 const store = useDocumentStore()
@@ -12,10 +13,12 @@ const store = useDocumentStore()
       class="hidden-tab-header1 mt-10"
       type="card"
   >
-    <template v-for="(deep, idx) in store.tabList" :key="idx">
-      <n-tab-pane :name="(idx+1)" :tab="$t(deep.name)">
-       <ContractList/>
-      </n-tab-pane>
-    </template>
+    <n-tab-pane :name="store.tabList[0].key" :tab="$t(store.tabList[0].name)">
+      <CreateContractPage/>
+    </n-tab-pane>
+    <n-tab-pane :name="store.tabList[1].key" :tab="$t(store.tabList[1].name)">
+      <ContractList/>
+    </n-tab-pane>
+
   </n-tabs>
 </template>

@@ -70,6 +70,15 @@ export const useComponentStore = defineStore('componentStore', {
         documentExampleTypes:[],
         documentExampleTypeLoading:false,
 
+        docExampleList:[],
+        docExampleLoading:false,
+
+        departmentPositionList:[],
+        departmentPositionLoading:false,
+
+        confirmationList:[],
+        confirmationLoading:false,
+
     }),
     actions:{
         _organizationLevel(){
@@ -108,6 +117,17 @@ export const useComponentStore = defineStore('componentStore', {
                 this.documentExampleTypes = res.data.data.documentExampleTypes
             }).finally(()=>{
                 this.documentExampleTypeLoading= false
+            })
+        },
+        _docExample(){
+            this.docExampleLoading = true
+            $ApiService.componentService._docExample({params:this.params}).then((res)=>{
+                this.docExampleList = res.data.data.map((v)=>({
+                    name:v.name,
+                    id:v.id
+                }))
+            }).finally(()=>{
+                this.docExampleLoading = false
             })
         },
         _departments(){
@@ -177,6 +197,30 @@ export const useComponentStore = defineStore('componentStore', {
                 this.structureList = res.data.data
             }).finally(()=>{
                 this.structureLoading= false
+            })
+        },
+        _departmentPosition(id){
+            const params = {
+                page:1,
+                per_page:1000,
+                department_id:id
+            }
+            this.departmentPositionLoading = true
+            $ApiService.departmentPositionService._index({params}).then((res)=>{
+                this.departmentPositionList = res.data.data.data.map((v)=>({
+                    name:v.position.name,
+                    id:v.id,
+                }))
+            }).finally(()=>{
+                this.departmentPositionLoading = false
+            })
+        },
+        _confirmations(){
+            this.confirmationLoading = true
+            $ApiService.confirmationService._index({params:this.params}).then((res)=>{
+                this.confirmationList = res.data.data.data
+            }).finally(()=>{
+                this.confirmationLoading = false
             })
         }
 

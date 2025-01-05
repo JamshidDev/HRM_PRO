@@ -120,8 +120,8 @@ onMounted(()=>{
       class="h-[460px] !p-0"
   >
     <template #trigger>
-      <n-badge :value="modelV.length" type="info">
-        <n-input class="ui__structure-input"  type="text" :value="inputVal?.toString()" :placeholder="$t('content.choose')" />
+      <n-badge class="w-full" :value="modelV.length" type="info">
+        <n-input class="ui__structure-input w-full"  type="text" :value="inputVal?.toString()" :placeholder="$t('content.choose')" />
       </n-badge>
     </template>
     <div class="w-full h-[10px]"></div>

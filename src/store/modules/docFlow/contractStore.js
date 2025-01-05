@@ -9,14 +9,30 @@ export const useContractStore = defineStore('contractStore', {
         visibleType:true,
         elementId:null,
         totalItems:0,
+        structureCheck:[],
         payload:{
-            name:null,
+            uuid:null,
+            organization_id:[],
+            contract_date:null,
+            number:null,
+            table_number:null,
+            type:null,
+            document_example_id:null,
+            director_uuid:null,
+            department_id:null,
+            department_position_id:null,
+            position_status:null,
+            salary:null,
+            position_id:null,
+            group:null,
+            rank:null,
+            post_name:null,
         },
         params:{
             page:1,
             per_page:10,
             search:null,
-        }
+        },
     }),
     actions:{
         _index(){

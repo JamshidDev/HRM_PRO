@@ -43,7 +43,7 @@ const feedback = computed(()=>!Boolean(pin.value))
 
 <template>
   <div class="ui__autocomplete flex flex-col">
-    <label class="text-surface-500 p-1">{{$t(`content.worker`)}}</label>
+    <label class="text-surface-500 p-1 pt-0">{{$t(`content.worker`)}}</label>
     <n-input
         v-model:value="searchModel"
         :on-keyup="searchEvent"

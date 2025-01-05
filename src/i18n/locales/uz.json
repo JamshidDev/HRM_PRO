@@ -349,9 +349,29 @@
     },
     "documentPage": {
         "name": "Hujjatlar",
+        "createTitle": "Shartnoma tuzish",
+        "updateTitle": "Shartnomani tahrirlash",
         "tabs": {
             "contract": "Shartnomalar",
             "order": "Buyruqlar"
+        },
+        "form": {
+            "candidate": "Xodim",
+            "contractDate": "Shartnoma sanasi",
+            "contractNumber": "Shartnoma raqami",
+            "tableNumber": "Tabel raqami",
+            "type": "Shartnoma turi",
+            "documentExampleId": "Hujjat andozasi",
+            "department": "Bo'lim",
+            "position": "Lavozim",
+            "positionStatus": "Bo'limga ishga qabul qilish",
+            "salary": "Oylik maosh",
+            "group": "Gurux",
+            "rank": "Lavozim razryad",
+            "postName": "To'liq lavozim nomi",
+            "director": "Direktor",
+            "organization": "Korxona"
+
         }
     },
     "confirmationPage": {

@@ -9,6 +9,11 @@ const onSelect = (v)=>{
   store._index()
 }
 
+const onClearEv = ()=>{
+  store.payload.organizations = []
+  store._index()
+}
+
 
 </script>
 
@@ -19,7 +24,7 @@ const onSelect = (v)=>{
       <span class="text-sm">{{$t('documentSetting.form.organization')}}</span>
       <span class="text-primary font-medium">
         <template v-if="store.payload.organizations.length">
-          <n-button size="tiny" type="error" secondary>{{$t("content.clear")}}</n-button>
+          <n-button @click="onClearEv" size="tiny" type="error" secondary>{{$t("content.clear")}}</n-button>
         </template>
 
          {{$t('documentSetting.form.count', {n:store.payload.organizations.length})}}
