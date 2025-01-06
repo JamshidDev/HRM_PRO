@@ -21,6 +21,7 @@ const props = defineProps({
     type:Function,
     required:true,
   },
+  multiple:{type:Boolean,default:false},
 
 })
 
@@ -70,7 +71,7 @@ const isCheck =(id)=>{
             <ChevronRight16Filled class="transition" :class="checkedVal.includes(item.id) && 'rotate-90'"/>
           </n-icon>
         </div>
-        <div v-else class="w-[20px] h-[20px] border__center-line border__center-content"></div>
+        <div v-else :class="'deep-'+deep" class="w-[20px] h-[20px] border__center-line border__center-content"></div>
 
 
 
@@ -80,7 +81,7 @@ const isCheck =(id)=>{
         </div>
         <div class="w-[20px] lex justify-center items-center">
           <n-radio
-              v-if="Array.isArray(item?.children) && item?.children.length>0"
+              v-if="Array.isArray(item?.children) && item?.children.length>0 && multiple"
               @click="onSelectRadio(item)"
               :checked="isCheck(item.id)"
               :value="item.id"
@@ -96,6 +97,7 @@ const isCheck =(id)=>{
             :checkedVal="checkedVal"
             :getChildIds="getChildIds"
             :changeCheckVal="changeCheckVal"
+            :multiple="multiple"
             @onSelect="onSelect"
             @onSelectAll="onSelectRadio"
         />

@@ -53,6 +53,14 @@
     transform: translate(0%,50%);
   }
 }
+.deep-1{
+  &::before{
+    content: none !important;
+  }
+  &::after{
+    content: none !important;
+  }
+}
 
 .ui__autocomplete{
   width: 100%;
@@ -78,5 +86,13 @@
       @apply border-surface-line
     }
     @apply border border-[transparent] transition-all rounded
+  }
+}
+.ui__modal-element{
+  .n-card-header{
+    display: none !important;
+  }
+  .n-card__content{
+    padding: 0 !important;
   }
 }

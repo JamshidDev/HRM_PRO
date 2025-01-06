@@ -1,4 +1,5 @@
 import {defineStore} from "pinia";
+import Utils from "@/utils/Utils.js"
 export const useContractStore = defineStore('contractStore', {
     state:()=>({
         list:[],
@@ -10,16 +11,17 @@ export const useContractStore = defineStore('contractStore', {
         elementId:null,
         totalItems:0,
         structureCheck:[],
+        departmentCheck:[],
         payload:{
-            uuid:null,
+            pin:null,
             organization_id:[],
             contract_date:null,
             number:null,
             table_number:null,
             type:null,
             document_example_id:null,
-            director_uuid:null,
-            department_id:null,
+            director_id:[],
+            department_id:[],
             department_position_id:null,
             position_status:null,
             salary:null,
@@ -46,7 +48,16 @@ export const useContractStore = defineStore('contractStore', {
         },
         _create(){
             this.saveLoading = true
-            $ApiService.nationalityService._create({data:this.payload}).then((res)=>{
+            let data = {
+                ...this.payload,
+               ...{
+                   contract_date:Utils.timeToZone(this.payload.contract_date),
+                   organization_id:this.payload.organization_id[0].id,
+                   worker_id:this.payload.pin,
+                   director_id:this.payload.director_id[0],
+               }
+            }
+            $ApiService.contractService._create({data}).then((res)=>{
                 this.visible = false
                 this._index()
             }).finally(()=>{
@@ -75,8 +86,22 @@ export const useContractStore = defineStore('contractStore', {
             this.visible = data
         },
         resetForm(){
-            this.elementId = null
-            this.payload.name = null
+            this.payload.pin = null
+            this.payload.organization_id = []
+            this.payload.contract_date = null
+            this.payload.number = null
+            this.payload.table_number = null
+            this.payload.type = null
+            this.payload.document_example_id = null
+            this.payload.director_id = []
+            this.payload.department_id = null
+            this.payload.department_position_id = null
+            this.payload.position_status = null
+            this.payload.salary = null
+            this.payload.position_id = null
+            this.payload.group = null
+            this.payload.rank = null
+            this.payload.post_name = null
         }
 
     }

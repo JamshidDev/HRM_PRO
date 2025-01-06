@@ -10,10 +10,12 @@
     "host": "vite --host"
   },
   "dependencies": {
+    "@onlyoffice/document-editor-vue": "^1.4.0",
     "@vicons/utils": "^0.1.4",
     "@vueuse/components": "^12.3.0",
     "@vueuse/core": "^11.1.0",
     "axios": "^1.7.5",
+    "crypto-js": "^4.2.0",
     "dayjs": "^1.11.13",
     "maska": "^3.0.2",
     "naive-ui": "^2.39.0",

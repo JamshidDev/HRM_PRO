@@ -18,7 +18,14 @@ export const useComponentStore = defineStore('componentStore', {
         partyList:[],
         rankList:[],
         groupList:[],
+
         departmentList:[],
+        depParams:{
+            page:1,
+            per_page:1000,
+            search:null,
+            organizations:null,
+        },
         departmentLoading:false,
 
         positionList:[],
@@ -79,6 +86,9 @@ export const useComponentStore = defineStore('componentStore', {
         confirmationList:[],
         confirmationLoading:false,
 
+        contractPanel:false,
+
+
     }),
     actions:{
         _organizationLevel(){
@@ -130,9 +140,12 @@ export const useComponentStore = defineStore('componentStore', {
                 this.docExampleLoading = false
             })
         },
-        _departments(){
+        _departments(id){
             this.departmentLoading= true
-            $ApiService.componentService._departments(this.params).then((res)=>{
+            let params = {...this.params}
+            params.organization_id = id
+            console.log(params)
+            $ApiService.componentService._departments({params}).then((res)=>{
                 this.departmentList = res.data.data
             }).finally(()=>{
                 this.departmentLoading= false
@@ -158,7 +171,7 @@ export const useComponentStore = defineStore('componentStore', {
                         middleName:data?.middle_name,
                         position:`${t('workerPage.checkWorker.born')} ${Utils.timeOnlyDate(data?.birthday)}`,
                         photos:data.photos || Utils.noAvailableImage,
-                        pin:data.uuid
+                        pin:data.id.toString()
                     }
                 }
 
@@ -218,9 +231,18 @@ export const useComponentStore = defineStore('componentStore', {
         _confirmations(){
             this.confirmationLoading = true
             $ApiService.confirmationService._index({params:this.params}).then((res)=>{
-                this.confirmationList = res.data.data.data
+                this.confirmationList = res.data.data.data.map((v)=>({position:v.position, ...v.worker, id:v.id}))
             }).finally(()=>{
                 this.confirmationLoading = false
+            })
+        },
+        _departmentTree(id){
+            this.departmentLoading = true
+            let params = {...this.depParams}
+            $ApiService.componentService._departmentTree({params}).then((res)=>{
+                this.departmentList = res.data.data
+            }).finally(()=>{
+                this.departmentLoading= false
             })
         }
 

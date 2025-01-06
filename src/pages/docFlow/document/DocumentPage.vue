@@ -1,7 +1,7 @@
 <script setup>
-import {UIDrawer, UIPageContent, UIPageFilter} from "@/components/index.js"
+import {UIPageContent, UIPageFilter, UIModal, UIOnlyOfficeDrawer} from "@/components/index.js"
 import Tabs from "./ui/Tabs.vue"
-import createForm from "./ui/createForm.vue"
+import contractForm from "./ui/contractForm.vue"
 import {useDocumentStore, useContractStore, useComponentStore} from "@/store/modules/index.js"
 const store = useDocumentStore()
 const contractStore = useContractStore()
@@ -11,16 +11,14 @@ const componentStore = useComponentStore()
 const onAdd = ()=>{
   store.visible = true
   store.visibleType = true
+  componentStore.contractPanel=false
+  componentStore.selectedWorker=null
+  store.resetForm()
 }
 
 onMounted(()=>{
   if(store.activeTab ===1){
     contractStore._index()
-    componentStore._enums()
-    componentStore._docExample()
-    componentStore._departments()
-    componentStore._positions()
-    componentStore._confirmations()
   }
 })
 
@@ -29,18 +27,15 @@ onMounted(()=>{
 <template>
 <UIPageContent>
   <UIPageFilter
-  @onAdd="onAdd"
-  />
+   @onAdd="onAdd"/>
   <Tabs/>
-  <UIDrawer
-      :width="800"
-      :visible="store.visible"
-      @update:visible="(v)=>store.visible = v"
-      :title="store.visibleType? $t('documentPage.createTitle') : $t('documentPage.updateTitle')"
+  <UIModal
+      :title="$t('documentPage.createTitle')"
+      :width="1000"
+      v-model:visible="store.visible"
   >
-    <template #content>
-      <createForm/>
-    </template>
-  </UIDrawer>
+    <contractForm/>
+  </UIModal>
+  <UIOnlyOfficeDrawer/>
 </UIPageContent>
 </template>

@@ -12,6 +12,9 @@ const _organization =async (payload)=>{
 const _departments =async (payload)=>{
     return await axios.get(`/v1/hr/department-list`, {params:payload?.params})
 }
+const _departmentTree =async (payload)=>{
+    return await axios.get(`/v1/hr/departments-tree`, {params:payload?.params})
+}
 
 const _docExample =async (payload)=>{
     return await axios.get(`/v1/hr/document-examples`, {params:payload?.params})
@@ -28,4 +31,5 @@ export default {
     _structure,
     _enumAdmin,
     _docExample,
+    _departmentTree,
 }

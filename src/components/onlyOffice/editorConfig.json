@@ -1,0 +1,25 @@
+{
+  "customization": {
+    "toolbar": true,
+    "anonymous": {
+      "request": false,
+      "label": ""
+    },
+    "openLeftSidePanel": false,
+    "openRightSidePanel": false,
+    "autosave": false,
+    "comments": false,
+    "compactHeader": false ,
+    "compactToolbar": false,
+    "compatibleFeatures": true,
+    "forcesave": true,
+    "help": false,
+    "hideRightMenu": false,
+    "hideRulers": false,
+    "plugins": false,
+    "toolbarHideFileName": true,
+    "uiTheme": "theme-classic-light",
+    "unit": "cm",
+    "zoom": 100
+  }
+}
