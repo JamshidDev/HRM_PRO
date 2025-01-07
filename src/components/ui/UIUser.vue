@@ -34,7 +34,7 @@ const fullName = computed(()=> {
 <div class="flex items-center gap-x-2" :class="short? 'w-[200px]' : 'w-full'">
   <n-avatar
       size="large"
-      :src="data?.photo || 'avatar.png'"
+      :src="data?.photo"
       :fallback-src="Utils.noAvailableImage"
   />
   <div class="flex flex-col" style="width: calc(100% - 50px)">

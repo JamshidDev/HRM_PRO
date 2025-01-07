@@ -204,17 +204,6 @@ onMounted(()=>{
             <template v-else>
               <div class="col-span-6">
                 <n-form-item :label="$t(`documentPage.form.department`)" path="department_id">
-<!--                  <n-select-->
-<!--                      :disabled="store.payload.organization_id.length===0"-->
-<!--                      v-model:value="store.payload.department_id"-->
-<!--                      filterable-->
-<!--                      :placeholder="$t(`content.choose`)"-->
-<!--                      :options="componentStore.departmentList"-->
-<!--                      label-field="name"-->
-<!--                      value-field="id"-->
-<!--                      :loading="componentStore.departmentLoading"-->
-<!--                      @update:value="onChangeDepartment"-->
-<!--                  />-->
                   <UIDepartment
                       :modelV="store.payload.department_id"
                       @updateModel="onChangeDepartment"

@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "print": false,
+    "chat": false
+  },
+  "customization":{
+    "anonymous": {
+      "request": false,
+      "label": ""
+    },
+    "compactHeader": true,
+    "compactToolbar": true,
+    "compatibleFeatures": true,
+    "autosave": false,
+    "comments": false,
+    "forcesave": true,
+    "plugins": false
+
+
+  }
+}

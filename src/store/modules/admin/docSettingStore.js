@@ -28,11 +28,11 @@ export const useDocSettingStore = defineStore('docSettingStore', {
                 id:1,
             },
             {
-                name:'documentSetting.tabs.example',
+                name:'documentSetting.tabs.organizationService',
                 id:2,
             },
         ],
-        activeTab:1,
+        activeTab:2,
         checkedVal:[],
         selectedFileName:null,
 

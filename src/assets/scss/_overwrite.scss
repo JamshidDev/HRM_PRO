@@ -96,3 +96,21 @@
     padding: 0 !important;
   }
 }
+.ui__onlyOffice-drawer{
+  .n-drawer-header{
+    display: none !important;
+  }
+  .n-drawer-body-content-wrapper{
+    padding: 0 !important;
+  }
+}
+
+input:-webkit-autofill {
+  animation: autofill-detected 0s forwards;
+}
+
+@keyframes autofill-detected {
+  to {
+    /* Nothing to change, just triggering the animation */
+  }
+}

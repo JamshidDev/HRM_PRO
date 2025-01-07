@@ -23,6 +23,7 @@ import contractService from "@/service/v1/docFlow/contractService.js"
 import logService from "@/service/v1/admin/logService.js"
 import confirmationService from "@/service/v1/hrm/confirmationService.js"
 import docSettingService from "@/service/v1/admin/docSettingService.js"
+import serviceOrgService from "@/service/v1/admin/serviceOrgService.js"
 export default {
     authService,
     accountService,
@@ -48,4 +49,5 @@ export default {
     languageService,
     confirmationService,
     docSettingService,
+    serviceOrgService,
 }

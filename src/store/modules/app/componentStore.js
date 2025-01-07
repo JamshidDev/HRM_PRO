@@ -84,9 +84,12 @@ export const useComponentStore = defineStore('componentStore', {
         departmentPositionLoading:false,
 
         confirmationList:[],
-        confirmationLoading:false,
 
         contractPanel:false,
+
+        organizationServiceList:[],
+        enumAdminLoading:false,
+
 
 
     }),
@@ -122,11 +125,12 @@ export const useComponentStore = defineStore('componentStore', {
             })
         },
         _enumsAdmin(){
-            this.documentExampleTypeLoading= true
+            this.enumAdminLoading= true
             $ApiService.componentService._enumAdmin().then((res)=>{
                 this.documentExampleTypes = res.data.data.documentExampleTypes
+                this.organizationServiceList = res.data.data?.organization_services
             }).finally(()=>{
-                this.documentExampleTypeLoading= false
+                this.enumAdminLoading= false
             })
         },
         _docExample(){
@@ -170,7 +174,7 @@ export const useComponentStore = defineStore('componentStore', {
                         firstName:data?.first_name,
                         middleName:data?.middle_name,
                         position:`${t('workerPage.checkWorker.born')} ${Utils.timeOnlyDate(data?.birthday)}`,
-                        photos:data.photos || Utils.noAvailableImage,
+                        photos:data.photo,
                         pin:data.id.toString()
                     }
                 }

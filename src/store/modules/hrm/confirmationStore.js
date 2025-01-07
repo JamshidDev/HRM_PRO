@@ -36,7 +36,7 @@ export const useConfirmationStore = defineStore('confirmationStore', {
         _create(){
             this.saveLoading = true
             let data = {
-                uuid:this.payload.pin,
+                worker_id:this.payload.pin,
                 position:this.payload.position,
             }
             $ApiService.confirmationService._create({data}).then((res)=>{
@@ -51,7 +51,7 @@ export const useConfirmationStore = defineStore('confirmationStore', {
         _update(){
             this.saveLoading = true
             let data = {
-                uuid:this.payload.pin,
+                worker_id:this.payload.pin,
                 position:this.payload.position,
             }
             $ApiService.confirmationService._update({data, id:this.elementId}).then((res)=>{

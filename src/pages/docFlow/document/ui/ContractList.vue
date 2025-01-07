@@ -1,9 +1,12 @@
 <script setup>
-import {NoDataPicture, UIActionButton, UIPagination} from "@/components/index.js"
-import {useContractStore, useSignatureStore} from "@/store/modules/index.js"
+import {Screenshot20Regular} from "@vicons/fluent"
+import {NoDataPicture, UIActionButton, UIPagination, UIUser} from "@/components/index.js"
+import {useContractStore, useSignatureStore, useOnlyOfficeStore} from "@/store/modules/index.js"
+import Utils from "@/utils/Utils.js"
 
 const store = useContractStore()
 const signature = useSignatureStore()
+const onlyOfficeStore = useOnlyOfficeStore()
 
 const props = defineProps({
   data:{
@@ -28,23 +31,7 @@ const props = defineProps({
 const emits = defineEmits(['onDeep', 'onEdit', 'onDelete', 'onChangePage', 'onAdd'])
 
 
-const onDeep =(id)=>{
-  emits('onDeep', {deep:props.deep,id})
-}
 
-const onEdit = (v)=>{
-  store.activeDeep =props.deep
-  store.activeParentId =props.parentId
-
-
-  emits('onEdit', v)
-}
-
-const onDelete = (v)=>{
-  store.activeDeep =props.deep
-  store.activeParentId =props.parentId
-  emits('onDelete', v)
-}
 
 const onAdd = (v)=>{
   store.activeDeep =props.deep
@@ -57,16 +44,23 @@ const changePage = (v)=>{
 }
 
 const onSignature = (v)=>{
-  signature._signatureDocument(
-      signature.signatureTypes.contract,
-      v.id,
-      onSuccess
-  )
+  // signature._signatureDocument(
+  //     signature.signatureTypes.contract,
+  //     v.id,
+  //     onSuccess
+  // )
 }
 
 const onSuccess = (data)=>{
-
   console.log(data)
+}
+
+const onOpenFile = (v)=>{
+  // onlyOfficeStore._setOnlyOffice({
+  //   url:v.file
+  // })
+  onlyOfficeStore.config.document.url = v.file
+  onlyOfficeStore._setOnlyOfficeVisible(true)
 }
 </script>
 
@@ -82,35 +76,51 @@ const onSuccess = (data)=>{
         <thead>
         <tr>
           <th class="!text-center min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
-          <th class="min-w-[200px]">{{$t('contractPage.table.number')}}</th>
-          <th class="min-w-[100px] w-[160px]">{{$t('contractPage.table.status')}}</th>
+          <th class="min-w-[120px]">{{$t('contractPage.table.worker')}}</th>
+          <th class="w-[300px]">{{$t('contractPage.table.organization')}}</th>
+          <th class="min-w-[100px] w-[100px]">{{$t('contractPage.table.type')}}</th>
+          <th class="w-[80px]">{{$t('contractPage.table.number')}}</th>
+          <th class="w-[140px]">{{$t('contractPage.table.date')}}</th>
           <th class="min-w-[90px] w-[90px]">{{$t('content.action')}}</th>
         </tr>
         </thead>
         <tbody>
         <tr v-for="(item, idx) in store.list" :key="idx">
           <td><span class="text-center text-[12px] text-gray-600 block">{{ (store.params.page - 1) * store.params.per_page + idx + 1 }}</span></td>
-          <td>{{item.contract?.number}}</td>
           <td>
-            <div class="flex justify-center">
+            <UIUser
+                :data="{
+                  photo:item.worker.photo,
+                  position:item.worker.birthday,
+                  lastName:item.worker.last_name,
+                  firstName:item.worker.first_name,
+                  middleName:item.worker.middle_name,
+                }"
+            />
+          </td>
+          <td><span class="text-sm text-gray-500">{{item?.organization.name}}</span></td>
+          <td>{{item?.type}}</td>
+          <td>{{item?.number}}</td>
+          <td>
+            <span class="text-sm text-gray-500">{{Utils.timeWithMonth(item?.contract_date)}}</span>
+          </td>
+          <td>
+            <div class="flex gap-2">
               <n-button
-                  ghost
+                  secondary
                   type="success"
                   @click="onSignature(item)"
                   :loading="signature.loading"
               >{{$t('contractPage.statuses.confirm')}}
               </n-button>
+              <n-button @click="onOpenFile(item)"  type="info" secondary circle class="cursor-pointer">
+                <template #icon>
+                  <n-icon size="24">
+                    <Screenshot20Regular />
+                  </n-icon>
+                </template>
+              </n-button>
             </div>
-          </td>
-          <td>
-            <UIActionButton
-                visible-add-btn
-                :data="item"
-                :loading-delete="item.id === store.elementId && store.deleteLoading"
-                @on-edit="onEdit"
-                @on-delete="onDelete"
-                @on-add="onAdd"
-            />
           </td>
         </tr>
         </tbody>

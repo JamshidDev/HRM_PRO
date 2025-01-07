@@ -55,7 +55,13 @@ const onSuccess = (data)=>{
 
 }
 
-
+onMounted(()=>{
+  document.addEventListener('animationstart', function (e) {
+    if (e.animationName === 'autofill-detected') {
+      onSubmit()
+    }
+  });
+})
 </script>
 
 <template>
@@ -113,6 +119,7 @@ const onSuccess = (data)=>{
               :maxlength="16"
               :placeholder="$t(`loginPage.password`)"
               v-model:value="store.password"
+              @keyup.enter ="onSubmit"
           >
             <template #prefix>
               <n-icon size="24" :component="LockClosed16Regular" />

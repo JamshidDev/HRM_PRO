@@ -1,11 +1,11 @@
 <script setup>
-import {Search48Filled} from "@vicons/fluent"
 import TreeOrg from "@/components/tree/TreeOrg.vue"
 import {useDebounceFn} from "@vueuse/core"
 import {useComponentStore} from "@/store/modules/index.js"
 const store = useComponentStore()
 
 const props = defineProps({
+  multiple:{type:Boolean,default:true},
   modelV:{type:Array,default:[]},
   checkedVal:{type:Array,default:[]},
 
@@ -20,8 +20,13 @@ const onSelect = (v)=>{
   if(props.modelV.map((a)=>a.id).includes(v.id)){
     list = props.modelV.filter((x)=>x.id !== v.id)
   }else{
-    list = props.modelV
-    list.push(v)
+    if(props.multiple){
+      list = props.modelV
+      list.push(v)
+
+    }else{
+      list = [v]
+    }
   }
   emits('updateModel',list)
 }

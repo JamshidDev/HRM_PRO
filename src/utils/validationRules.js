@@ -518,7 +518,7 @@ export default {
             trigger: triggerEvents
         },
         department_id:{
-            type:'number',
+            type:'array',
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
