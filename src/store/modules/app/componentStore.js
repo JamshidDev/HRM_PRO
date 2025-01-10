@@ -174,7 +174,7 @@ export const useComponentStore = defineStore('componentStore', {
                         firstName:data?.first_name,
                         middleName:data?.middle_name,
                         position:`${t('workerPage.checkWorker.born')} ${Utils.timeOnlyDate(data?.birthday)}`,
-                        photos:data.photo,
+                        photo:data.photo,
                         pin:data.id.toString()
                     }
                 }

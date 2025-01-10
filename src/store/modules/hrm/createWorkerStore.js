@@ -24,6 +24,11 @@ export const useCreateWorkerStore = defineStore('createWorkerStore', {
             party:null,
             address:null,
             pin:null,
+            phones:[{
+                id:1,
+                phone:'+998',
+                main:true,
+            }],
         },
         passport:{
             serial_number:null,
@@ -39,12 +44,6 @@ export const useCreateWorkerStore = defineStore('createWorkerStore', {
         },
         candidatePhotos:[],
         mainImageId:null,
-        candidatePhones:[
-            {
-                id:1,
-                phone:'+998'
-            }
-        ],
         districtList:[],
         districtLoading:false,
         currentDistrictList:[],
@@ -81,16 +80,16 @@ export const useCreateWorkerStore = defineStore('createWorkerStore', {
             })
         },
         save(){
-            let uid = '89a8700c-119f-4411-89ea-8db477b28a1c'
             this.saveLoading = true
             let data = {...this.payload}
             data.pin = this.payload.pin.split('-').join("")
             data.birthday = Utils.timeToZone(this.payload.birthday)
-            data.phones = this.candidatePhones.map((v)=>v.phone)
+            data.phones = this.payload.phones.map((v)=>v.phone.split('-').join('').slice(4))
             data.photos = this.candidatePhotos.length>0? this.candidatePhotos.map((v)=>({
                 photo:v.base64,
                 current:v.id === this.mainImageId
             })) : []
+            data.user_phone = this.payload.phones.filter((v)=>v.main)[0].phone.split('-').join('').slice(4)
 
             $ApiService.workerService._create({data}).then((res)=>{
                 if(res.data?.errorMsg === 'Ok'){
@@ -100,6 +99,8 @@ export const useCreateWorkerStore = defineStore('createWorkerStore', {
                     this.warningVisible = true
                     this.saveLoading = false
                 }
+            }).catch(()=>{
+                this.saveLoading = false
             })
         },
         _passportFormData(uuid){

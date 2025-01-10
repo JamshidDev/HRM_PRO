@@ -31,14 +31,14 @@ const fullName = computed(()=> {
 </script>
 
 <template>
-<div class="flex items-center gap-x-2" :class="short? 'w-[200px]' : 'w-full'">
+<div class="ui__user-component flex items-center gap-x-2" :class="short? 'w-[200px]' : 'w-full'">
   <n-avatar
       size="large"
       :src="data?.photo"
       :fallback-src="Utils.noAvailableImage"
   />
   <div class="flex flex-col" style="width: calc(100% - 50px)">
-    <span class="leading-2 text-sm text-gray-700 truncate w-full ">{{fullName}}</span>
+    <span class="leading-2 text-sm text-gray-600 truncate w-full ">{{fullName}}</span>
     <span class="leading-1 text-xs text-gray-400 truncate w-full">{{data?.position || ''}}</span>
   </div>
 </div>

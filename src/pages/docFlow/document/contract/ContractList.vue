@@ -1,6 +1,6 @@
 <script setup>
 import {Screenshot20Regular} from "@vicons/fluent"
-import {NoDataPicture, UIActionButton, UIPagination, UIUser} from "@/components/index.js"
+import {NoDataPicture, UIOfficeApp, UIPagination, UIUser} from "@/components/index.js"
 import {useContractStore, useSignatureStore, useOnlyOfficeStore} from "@/store/modules/index.js"
 import Utils from "@/utils/Utils.js"
 
@@ -28,8 +28,7 @@ const props = defineProps({
 
 })
 
-const emits = defineEmits(['onDeep', 'onEdit', 'onDelete', 'onChangePage', 'onAdd'])
-
+const emits = defineEmits([ 'openOffice',])
 
 
 
@@ -56,11 +55,7 @@ const onSuccess = (data)=>{
 }
 
 const onOpenFile = (v)=>{
-  // onlyOfficeStore._setOnlyOffice({
-  //   url:v.file
-  // })
-  onlyOfficeStore.config.document.url = v.file
-  onlyOfficeStore._setOnlyOfficeVisible(true)
+  emits('openOffice', v.id)
 }
 </script>
 

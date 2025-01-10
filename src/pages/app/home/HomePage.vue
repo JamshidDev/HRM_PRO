@@ -1,10 +1,9 @@
 <script setup>
-import PdfSignature from "@/components/pdfSignature/PdfSignature.vue"
+import {UIPdfSignatureDrawer} from "@/components/index.js"
 </script>
 
 <template>
-    <h3>Home Page</h3>
-<!--    <PdfSignature/>-->
+    <UIPdfSignatureDrawer/>
 </template>
 
 <style scoped>

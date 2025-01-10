@@ -23,7 +23,7 @@ export const useContractStore = defineStore('contractStore', {
             director_id:[],
             department_id:[],
             department_position_id:null,
-            position_status:null,
+            position_status:false,
             salary:null,
             position_id:null,
             group:null,
@@ -55,8 +55,11 @@ export const useContractStore = defineStore('contractStore', {
                    organization_id:this.payload.organization_id[0].id,
                    worker_id:this.payload.pin,
                    director_id:this.payload.director_id[0],
+                   department_id:this.payload.department_id[0].id,
                }
             }
+            delete data.pin
+            console.log(data)
             $ApiService.contractService._create({data}).then((res)=>{
                 this.visible = false
                 this._index()

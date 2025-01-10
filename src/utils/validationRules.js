@@ -227,6 +227,13 @@ export default {
             trigger: triggerEvents
         },
     },
+    languageAdminPage:{
+        name:{
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+    },
     confirmation:{
         pin:{
             required: true,
@@ -487,6 +494,18 @@ export default {
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
+        phones:[
+            {
+                validator: (rule, value) => {
+                    console.log(value)
+                    if (!value || value[0].phone.length <16) {
+                        return new Error( t(`rules.requiredField`));
+                    }
+                    return true;
+                },
+                trigger: 'blur',
+            },
+        ],
     },
     contractFrom: {
         pin:{

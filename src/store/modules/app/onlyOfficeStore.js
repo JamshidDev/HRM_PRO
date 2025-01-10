@@ -1,29 +1,37 @@
 import {defineStore} from "pinia";
 import { v4 as uuidv4 } from 'uuid'
 import config from "@/utils/onlyOfficeConfig.json"
+const _CallBackUrl = import.meta.env.VITE_CALLBACK_URL;
+const _ServerUrl = import.meta.env.VITE_OFFICE_SERVER;
 export const useOnlyOfficeStore = defineStore('onlyOfficeStore', {
     state:()=>({
-        visible:true,
-        serverUrl:'http://192.168.82.107/',
+        visible:false,
+        serverUrl:_ServerUrl,
         secret:'mGOBFcXBRMjEpJV8OLjtRhGxuT347l7a',
         config:{
             document:{
                 fileType:'docx',
-                title:'Hr title',
-                url:'http://192.168.82.90:9000/docflow/contracts/b2131cbbd55c3a6f970ad71f44ceb97e.docx',
+                title:'Document title here...',
+                url:"",
                 key:uuidv4(),
                 permissions: config.permissions,
             },
             documentType:'word',
             editorConfig:{
-                callbackUrl:"http://192.168.136.78:8004/api/v1/hr/contract/update-document?file_url=http://192.168.82.90:9000/docflow/contracts/b2131cbbd55c3a6f970ad71f44ceb97e.docx",
+                callbackUrl:'',
                 customization:config.customization,
             },
-
-
         },
+        model:null,
+        document_id:null,
+        user_uuid:null,
 
     }),
+    getters:{
+        callBackUrl:(state)=>{
+            return `${_CallBackUrl}?file_url=${state?.config.document.url}&model=${state.model}&document_id=${state.document_id}&user_uuid=${state.user_uuid}`
+        }
+    },
     actions:{
         _setOnlyOffice(data){
             this.config = {
@@ -57,6 +65,7 @@ export const useOnlyOfficeStore = defineStore('onlyOfficeStore', {
         _onDocumentReady(){
             console.log("Document is loaded")
         },
+
 
 
     }

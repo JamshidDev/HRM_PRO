@@ -141,6 +141,11 @@ export const navigations = [
                 path:Utils.routePathMaker(AppPaths.DocumentSetting),
                 icon:'bx bxs-folder',
             },
+            {
+                label:t('othersPage.name'),
+                path:Utils.routePathMaker(AppPaths.AdminOther),
+                icon:'bx bxs-folder',
+            },
         ]
     },
 ]

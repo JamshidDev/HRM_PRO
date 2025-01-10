@@ -26,12 +26,7 @@ onMounted(()=>{
 </script>
 
 <template>
-  <n-form
-      class="grid grid-cols-12 gap-x-4"
-      ref="formRef"
-      :rules="validationRules.personalForm"
-      :model="store.payload"
-  >
+  <div class="grid-cols-12 grid w-full gap-x-2">
     <n-form-item
         class="col-span-4"
         :label="$t(`createWorkerPage.form.lastName`)"
@@ -229,7 +224,8 @@ onMounted(()=>{
           v-mask="`####-####-####-##`"
       />
     </n-form-item>
-  </n-form>
+  </div>
+
 </template>
 
 <style scoped>

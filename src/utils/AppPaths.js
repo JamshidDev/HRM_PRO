@@ -36,6 +36,7 @@ export const AppPaths = {
     ActionLog:"/action-logs",
     Confirmation:"/confirmation",
     DocumentSetting:"/document-setting",
+    AdminOther:"/admin-others",
 }
 
 export const AppLayouts ={

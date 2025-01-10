@@ -24,6 +24,8 @@ import logService from "@/service/v1/admin/logService.js"
 import confirmationService from "@/service/v1/hrm/confirmationService.js"
 import docSettingService from "@/service/v1/admin/docSettingService.js"
 import serviceOrgService from "@/service/v1/admin/serviceOrgService.js"
+import languageServiceAdmin from "@/service/v1/admin/languageService.js"
+import universityServiceAdmin from "@/service/v1/admin/universityService.js"
 export default {
     authService,
     accountService,
@@ -50,4 +52,6 @@ export default {
     confirmationService,
     docSettingService,
     serviceOrgService,
+    languageServiceAdmin,
+    universityServiceAdmin,
 }

@@ -7,13 +7,19 @@ import PhoneForm from "./ui/PhoneForm.vue"
 import {useComponentStore, useCreateWorkerStore} from "@/store/modules/index.js"
 import {ArrowLeft12Regular, Save16Regular} from "@vicons/fluent"
 import router from "@/router/index.js"
-
+import validationRules from "@/utils/validationRules.js"
+const formRef = ref(null)
 const store = useCreateWorkerStore()
 const componentStore = useComponentStore()
 const personalFormRef = ref(null)
 
 const save = ()=>{
-  personalFormRef.value.onSubmit()
+  // personalFormRef.value.onSubmit()
+  formRef.value?.validate((error)=>{
+    if(!error) {
+      store.save()
+    }
+  })
 }
 
 const onClose = ()=>{
@@ -47,42 +53,50 @@ const onSave = ()=>{
         {{$t('content.back')}}
       </n-button>
     </div>
-    <n-steps vertical>
-      <n-step
-          :title="$t('createWorkerPage.step.personal')"
-      >
-        <template #default>
-          <PersonalForm ref="personalFormRef" />
-        </template>
+    <n-form
+        class="w-full"
+        ref="formRef"
+        :rules="validationRules.personalForm"
+        :model="store.payload"
+    >
+      <n-steps vertical>
+        <n-step
+            :title="$t('createWorkerPage.step.personal')"
+        >
+          <template #default>
+            <PersonalForm ref="personalFormRef" />
+          </template>
 
-      </n-step>
-      <n-step
-          :title="$t('createWorkerPage.step.pasport')"
-      >
-        <template #default>
-          <PassportFrom/>
-        </template>
-      </n-step>
-      <n-step
-          :title="$t('createWorkerPage.step.photo')"
-      >
-        <template #default>
-          <PhotoForm
-              v-model:images="store.candidatePhotos"
-              v-model:main-image-id="store.mainImageId"
-          />
-          <span class="text-xs text-gray-400">{{$t('createWorkerPage.ui.image')}}</span>
-        </template>
-      </n-step>
-      <n-step :title="$t('createWorkerPage.step.phone')">
-        <template #default>
-          <PhoneForm
-              v-model:phones="store.candidatePhones"
-          />
-        </template>
-      </n-step>
+        </n-step>
+        <n-step
+            :title="$t('createWorkerPage.step.pasport')"
+        >
+          <template #default>
+            <PassportFrom/>
+          </template>
+        </n-step>
+        <n-step
+            :title="$t('createWorkerPage.step.photo')"
+        >
+          <template #default>
+            <PhotoForm
+                v-model:images="store.candidatePhotos"
+                v-model:main-image-id="store.mainImageId"
+            />
+            <span class="text-xs text-gray-400">{{$t('createWorkerPage.ui.image')}}</span>
+          </template>
+        </n-step>
+        <n-step :title="$t('createWorkerPage.step.phone')">
+          <template #default>
+            <PhoneForm
+                v-model:phones="store.payload.phones"
+            />
+          </template>
+        </n-step>
 
-    </n-steps>
+      </n-steps>
+    </n-form>
+
     <UIDConfirm
         v-model:visible="store.warningVisible"
         type="warning"

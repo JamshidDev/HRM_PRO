@@ -1,7 +1,7 @@
 <script setup>
-import {UIPageContent, UIPageFilter, UIModal, UIOnlyOfficeDrawer} from "@/components/index.js"
+import {UIPageContent, UIPageFilter, UIModal, UIOnlyOfficeDrawer, UIPdfSignatureDrawer} from "@/components/index.js"
 import Tabs from "./ui/Tabs.vue"
-import contractForm from "./ui/contractForm.vue"
+import contractForm from "./confirmation/contractForm.vue"
 import {useDocumentStore, useContractStore, useComponentStore} from "@/store/modules/index.js"
 const store = useContractStore()
 const componentStore = useComponentStore()
@@ -17,9 +17,7 @@ const onAdd = ()=>{
 }
 
 onMounted(()=>{
-  if(documentStore.activeTab ===1){
-    store._index()
-  }
+  store._index()
 })
 
 </script>
@@ -36,6 +34,5 @@ onMounted(()=>{
   >
     <contractForm/>
   </UIModal>
-  <UIOnlyOfficeDrawer/>
 </UIPageContent>
 </template>

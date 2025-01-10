@@ -1,48 +1,56 @@
 <script setup>
-import fs from 'fs'
 import {PDFDocument} from 'pdf-lib'
 import QRCode from 'qrcode'
 
-const createQRCode = async (data)=>{
-  const qrCodeDataUrl = await QRCode.toDataURL(data); // QR kodni DataURL formatida yaratish
-  return qrCodeDataUrl;
+const createQRCode  = async(data)=>{
+  return new Promise((resolve, reject)=>{
+    QRCode.toDataURL(data,(err, url)=>{
+        if(err) reject(err)
+        else resolve(url)
+    })
+  })
 }
 
-const createPDFWithQRCode = async(existingPdfPath, outputPdfPath, qrCodeData)=>{
-  const existingPdfBytes = fs.readFileSync(existingPdfPath)
-  const pdfDoc = await PDFDocument.load(existingPdfBytes)
-
-  // QR kodni yaratish
+const addQRCodeToPDF = async (pdfUrl, qrCodeData, pageIndex, cordY, cordX )=>{
+  const response = await fetch(pdfUrl)
+  const existingPdfBytes = await response.arrayBuffer()
+  const pdfDoc = await PDFDocument.load(existingPdfBytes);
   const qrCodeDataUrl = await createQRCode(qrCodeData);
-  const qrCodeImage = await pdfDoc.embedJpg(qrCodeDataUrl); // QR kodni PDFga JPG sifatida kiritish
-  const qrCodeDims = qrCodeImage.scale(0.5); // QR kodning o'lchamini sozlash
-
-  // Birinchi sahifaga QR kodni joylashtirish
-  const page = pdfDoc.getPages()[0]; // Birinchi sahifani olish
+  const qrCodeImage = await pdfDoc.embedPng(qrCodeDataUrl);
+  const qrCodeDims = qrCodeImage.scale(0.5);
+  const page = pdfDoc.getPages()[pageIndex];
   page.drawImage(qrCodeImage, {
-    x: 50, // X koordinatasi
-    y: page.getHeight() - qrCodeDims.height - 50, // Y koordinatasi
+    x: cordX,
+    y: page.getHeight() - qrCodeDims.height - cordY,
     width: qrCodeDims.width,
     height: qrCodeDims.height,
   });
-
-  // Yangi PDFni saqlash
   const pdfBytes = await pdfDoc.save();
-  fs.writeFileSync(outputPdfPath, pdfBytes);
+  const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'signed_document.pdf';
+  a.click();
+  URL.revokeObjectURL(url);
+  console.log("success")
 }
 
-onMounted(async ()=>{
+defineExpose({
+  addQRCodeToPDF
+})
 
-  const existingPdfPath = 'existing_document.pdf'; // Mavjud PDF fayl yo'li
-  const outputPdfPath = 'signed_document.pdf'; // Yangi PDF fayl yo'li
-  const qrCodeData = 'https://example.com/signature';
-  await createPDFWithQRCode(existingPdfPath, outputPdfPath, qrCodeData);
+
+onMounted(async()=>{
+  // const pdfUrl = 'https://cabinet.dasuty.com/s3/media/document/AT94325743.pdf';
+  // const qrCodeData = 'https://example.com/signature';
+  // await addQRCodeToPDF(pdfUrl, qrCodeData);
 
 })
 </script>
 
 <template>
-
+<div></div>
 </template>
 
 <style scoped>

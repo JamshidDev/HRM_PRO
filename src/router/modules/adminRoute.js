@@ -11,6 +11,7 @@ import PositionPage from "@/pages/admin/position/PositionPage.vue"
 import OrganizationPage from "@/pages/admin/organization/OrganizationPage.vue"
 import ActionLogPage from "@/pages/admin/actionLog/ActionLogPage.vue"
 import DocSettingPage from "@/pages/admin/document/DocSettingPage.vue"
+import OthersPage from "@/pages/admin/others/OthersPage.vue"
 
 
 export default  [
@@ -74,5 +75,10 @@ export default  [
         path:Utils.routePathMaker(AppPaths.DocumentSetting),
         name:AppPaths.DocumentSetting.substring(1),
         component:DocSettingPage,
+    },
+    {
+        path:Utils.routePathMaker(AppPaths.AdminOther),
+        name:AppPaths.AdminOther.substring(1),
+        component:OthersPage,
     },
 ]
