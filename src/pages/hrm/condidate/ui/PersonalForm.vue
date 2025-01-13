@@ -1,6 +1,7 @@
 <script setup>
 import {useComponentStore, useCreateWorkerStore} from "@/store/modules/index.js"
 import validationRules from "@/utils/validationRules.js"
+import Utils from "@/utils/Utils.js"
 const store = useCreateWorkerStore()
 const componentStore = useComponentStore()
 const formRef = ref(null)
@@ -34,7 +35,7 @@ onMounted(()=>{
       <n-input
           class="w-full"
           type="text"
-          :placeholder="$t(`createWorkerPage.form.lastName`)"
+          :placeholder="$t(`content.enterField`)"
           v-model:value="store.payload.last_name"
       />
     </n-form-item>
@@ -45,7 +46,7 @@ onMounted(()=>{
       <n-input
           class="w-full"
           type="text"
-          :placeholder="$t(`createWorkerPage.form.firstName`)"
+          :placeholder="$t(`content.enterField`)"
           v-model:value="store.payload.first_name"
       />
     </n-form-item>
@@ -56,7 +57,7 @@ onMounted(()=>{
       <n-input
           class="w-full"
           type="text"
-          :placeholder="$t(`createWorkerPage.form.middleName`)"
+          :placeholder="$t(`content.enterField`)"
           v-model:value="store.payload.middle_name"
       />
     </n-form-item>
@@ -67,7 +68,7 @@ onMounted(()=>{
       <n-select
           v-model:value="store.payload.country_id"
           filterable
-          :placeholder="$t(`createWorkerPage.form.country`)"
+          :placeholder="$t(`content.choose`)"
           :options="componentStore.countryList"
           label-field="name"
           value-field="id"
@@ -82,7 +83,7 @@ onMounted(()=>{
           v-model:value="store.payload.region_id"
           @update:value="store.changeRegion"
           filterable
-          :placeholder="$t(`createWorkerPage.form.region`)"
+          :placeholder="$t(`content.choose`)"
           :options="componentStore.regionList"
           label-field="name"
           value-field="id"
@@ -97,7 +98,7 @@ onMounted(()=>{
           :disabled="!store.payload.region_id"
           v-model:value="store.payload.city_id"
           filterable
-          :placeholder="$t(`createWorkerPage.form.city`)"
+          :placeholder="$t(`content.choose`)"
           :options="store.districtList"
           label-field="name"
           value-field="id"
@@ -112,7 +113,7 @@ onMounted(()=>{
           v-model:value="store.payload.current_region_id"
           @update:value="store.changeCurrentRegion"
           filterable
-          :placeholder="$t(`createWorkerPage.form.currentRegion`)"
+          :placeholder="$t(`content.choose`)"
           :options="componentStore.regionList"
           label-field="name"
           value-field="id"
@@ -127,7 +128,7 @@ onMounted(()=>{
           :disabled="!store.payload.current_region_id"
           v-model:value="store.payload.current_city_id"
           filterable
-          :placeholder="$t(`createWorkerPage.form.currentCity`)"
+          :placeholder="$t(`content.choose`)"
           :options="store.currentDistrictList"
           label-field="name"
           value-field="id"
@@ -142,7 +143,7 @@ onMounted(()=>{
           class="w-full"
           v-model:value="store.payload.birthday"
           type="date"
-          :placeholder="$t(`createWorkerPage.form.birthday`)"
+          :placeholder="$t(`content.choose`)"
       />
     </n-form-item>
     <n-form-item
@@ -152,7 +153,7 @@ onMounted(()=>{
       <n-input
           class="w-full"
           type="text"
-          :placeholder="$t(`createWorkerPage.form.address`)"
+          :placeholder="$t(`content.enterField`)"
           v-model:value="store.payload.address"
       />
     </n-form-item>
@@ -163,7 +164,7 @@ onMounted(()=>{
       <n-select
           v-model:value="store.payload.academic_title"
           filterable
-          :placeholder="$t(`createWorkerPage.form.academicTitle`)"
+          :placeholder="$t(`content.choose`)"
           :options="componentStore.academicTitleList"
           label-field="name"
           value-field="id"
@@ -177,7 +178,7 @@ onMounted(()=>{
       <n-select
           v-model:value="store.payload.academic_degree"
           filterable
-          :placeholder="$t(`createWorkerPage.form.academicDegree`)"
+          :placeholder="$t(`content.choose`)"
           :options="componentStore.academicDegreeList"
           label-field="name"
           value-field="id"
@@ -191,7 +192,7 @@ onMounted(()=>{
       <n-select
           v-model:value="store.payload.nationality_id"
           filterable
-          :placeholder="$t(`createWorkerPage.form.nationality_id`)"
+          :placeholder="$t(`content.choose`)"
           :options="componentStore.nationalityList"
           label-field="name"
           value-field="id"
@@ -205,7 +206,7 @@ onMounted(()=>{
       <n-select
           v-model:value="store.payload.party"
           filterable
-          :placeholder="$t(`createWorkerPage.form.party`)"
+          :placeholder="$t(`content.choose`)"
           :options="componentStore.partyList"
           label-field="name"
           value-field="id"
@@ -219,9 +220,21 @@ onMounted(()=>{
       <n-input
           class="w-full"
           type="text"
-          :placeholder="$t(`createWorkerPage.form.pin`)"
+          :placeholder="$t(`content.enterField`)"
           v-model:value="store.payload.pin"
           v-mask="`####-####-####-##`"
+      />
+    </n-form-item>
+    <n-form-item
+        class="col-span-4"
+        :label="$t(`createWorkerPage.form.inn`)"
+        path="inn">
+      <n-input
+          class="w-full"
+          type="text"
+          :placeholder="$t(`content.enterField`)"
+          v-model:value="store.payload.inn"
+          :allow-input="Utils.onlyAllowNumber"
       />
     </n-form-item>
   </div>

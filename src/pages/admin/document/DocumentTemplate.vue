@@ -1,7 +1,7 @@
 <script setup>
 import {UIDrawer, UIPageContent, UIPageFilter} from "@/components/index.js"
 import Tabs from "./ui/Tabs.vue"
-import createForm from "./ui/createForm.vue"
+import ContractForm  from "./contractTemplate/ui/createForm.vue"
 import {useDocSettingStore, useComponentStore} from "@/store/modules/index.js"
 const store = useDocSettingStore()
 const compStore = useComponentStore()
@@ -42,10 +42,9 @@ onMounted(()=>{
       :visible="store.visible"
       @update:visible="(v)=>store.visible = v"
       :title="store.visibleType? $t('documentSetting.createTitle') : $t('documentSetting.updateTitle')"
-
   >
     <template #content>
-      <createForm/>
+      <ContractForm/>
     </template>
   </UIDrawer>
 </UIPageContent>

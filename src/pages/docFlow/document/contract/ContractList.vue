@@ -63,7 +63,7 @@ const onOpenFile = (v)=>{
 
 <template>
   <n-spin :show="store.loading" style="min-height: 200px">
-    <div class="w-full overflow-x-auto"  v-if="store.list.length>0">
+    <div class="w-full overflow-x-auto"  v-if="store.list?.length>0">
       <n-table
           :single-line="false"
           size="small"
@@ -128,7 +128,7 @@ const onOpenFile = (v)=>{
           @change-page="changePage"
       />
     </div>
-    <NoDataPicture v-if="store.list.length===0 && !store.loading" />
+    <NoDataPicture v-if="store.list?.length===0 && !store.loading" />
   </n-spin>
 </template>
 

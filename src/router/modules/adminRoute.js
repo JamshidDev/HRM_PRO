@@ -10,8 +10,10 @@ import NationalityPage from "@/pages/admin/nationality/NationalityPage.vue";
 import PositionPage from "@/pages/admin/position/PositionPage.vue"
 import OrganizationPage from "@/pages/admin/organization/OrganizationPage.vue"
 import ActionLogPage from "@/pages/admin/actionLog/ActionLogPage.vue"
-import DocSettingPage from "@/pages/admin/document/DocSettingPage.vue"
 import OthersPage from "@/pages/admin/others/OthersPage.vue"
+import SchedulePage from "@/pages/admin/schedule/SchedulePage.vue"
+import WorkdayPage from "@/pages/admin/workday/WorkdayPage.vue"
+import DocumentTemplate from "@/pages/admin/document/DocumentTemplate.vue"
 
 
 export default  [
@@ -74,11 +76,21 @@ export default  [
     {
         path:Utils.routePathMaker(AppPaths.DocumentSetting),
         name:AppPaths.DocumentSetting.substring(1),
-        component:DocSettingPage,
+        component:DocumentTemplate,
     },
     {
         path:Utils.routePathMaker(AppPaths.AdminOther),
         name:AppPaths.AdminOther.substring(1),
         component:OthersPage,
+    },
+    {
+        path:Utils.routePathMaker(AppPaths.Schedule),
+        name:AppPaths.Schedule.substring(1),
+        component:SchedulePage,
+    },
+    {
+        path:Utils.routePathMaker(AppPaths.Workday),
+        name:AppPaths.Workday.substring(1),
+        component:WorkdayPage,
     },
 ]

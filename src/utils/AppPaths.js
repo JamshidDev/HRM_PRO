@@ -37,6 +37,8 @@ export const AppPaths = {
     Confirmation:"/confirmation",
     DocumentSetting:"/document-setting",
     AdminOther:"/admin-others",
+    Schedule:"/schedule",
+    Workday:"/workday",
 }
 
 export const AppLayouts ={

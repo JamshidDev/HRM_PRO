@@ -26,6 +26,9 @@ import docSettingService from "@/service/v1/admin/docSettingService.js"
 import serviceOrgService from "@/service/v1/admin/serviceOrgService.js"
 import languageServiceAdmin from "@/service/v1/admin/languageService.js"
 import universityServiceAdmin from "@/service/v1/admin/universityService.js"
+import scheduleService from "@/service/v1/admin/scheduleService.js"
+import workdayService from "@/service/v1/admin/workdayService.js"
+import commandTempService from "@/service/v1/admin/commandTempService.js"
 export default {
     authService,
     accountService,
@@ -54,4 +57,7 @@ export default {
     serviceOrgService,
     languageServiceAdmin,
     universityServiceAdmin,
+    scheduleService,
+    workdayService,
+    commandTempService,
 }

@@ -1,7 +1,7 @@
 <script setup>
 import {useServiceOrgStore} from "@/store/modules/index.js"
 import {UITreeData} from "@/components/index.js"
-import ServiceTable from "./ServiceTable.vue"
+import Table from "./ui/Table.vue"
 const store = useServiceOrgStore()
 
 const onSelect = (v)=>{
@@ -42,7 +42,7 @@ const onClearEv = ()=>{
       />
     </div>
     <div class="col-span-6 p-4">
-      <ServiceTable/>
+      <Table/>
     </div>
   </div>
 </template>

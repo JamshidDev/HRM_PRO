@@ -165,6 +165,59 @@ onMounted(()=>{
                 />
               </n-form-item>
             </div>
+            <div class="col-span-3">
+              <n-form-item :label="$t(`documentPage.form.contract_to_date`)" path="contract_to_date">
+                <n-date-picker
+                    class="w-full"
+                    v-model:value="store.payload.contract_to_date"
+                    type="date"
+                    :placeholder="$t(`content.choose`)"
+                />
+              </n-form-item>
+            </div>
+            <div class="col-span-3">
+              <n-form-item :label="$t(`documentPage.form.position_date`)" path="position_date">
+                <n-date-picker
+                    class="w-full"
+                    v-model:value="store.payload.position_date"
+                    type="date"
+                    :placeholder="$t(`content.choose`)"
+                />
+              </n-form-item>
+            </div>
+            <div class="col-span-3">
+              <n-form-item :label="$t(`documentPage.form.vacation_main_day`)" path="vacation_main_day">
+                <n-select
+                    @focus="onFocusDoc"
+                    v-model:value="store.payload.vacation_main_day"
+                    filterable
+                    :placeholder="$t(`content.choose`)"
+                    :options="componentStore.vacationList"
+                    label-field="name"
+                    value-field="id"
+                    :loading="componentStore.enumLoading"
+                />
+              </n-form-item>
+            </div>
+            <div class="col-span-3">
+              <n-form-item :label="$t(`documentPage.form.additional_vacation_day`)" path="additional_vacation_day">
+                <n-select
+                    @focus="onFocusDoc"
+                    v-model:value="store.payload.additional_vacation_day"
+                    filterable
+                    :placeholder="$t(`content.choose`)"
+                    :options="componentStore.vacationList"
+                    label-field="name"
+                    value-field="id"
+                    :loading="componentStore.enumLoading"
+                />
+              </n-form-item>
+            </div>
+
+
+
+
+
           </div>
         </div>
         <div class="col-span-12 border border-dashed p-2 rounded-xl border-gray-200 bg-gray-50 mt-4">
@@ -185,7 +238,6 @@ onMounted(()=>{
                 <span class="text-xs text-gray-500">{{$t(`documentPage.form.positionStatus`)}}</span>
               </n-checkbox>
             </div>
-
             <template v-if="store.payload.position_status && (store.payload.type === 2)">
               <div class="col-span-4">
                 <n-form-item :label="$t(`documentPage.form.position`)" path="position_id">

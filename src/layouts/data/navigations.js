@@ -127,6 +127,16 @@ export const navigations = [
                 icon:'bx bxs-folder',
             },
             {
+                label:t('schedulePage.name'),
+                path:Utils.routePathMaker(AppPaths.Schedule),
+                icon:'bx bxs-folder',
+            },
+            {
+                label:t('workdayPage.name'),
+                path:Utils.routePathMaker(AppPaths.Workday),
+                icon:'bx bxs-folder',
+            },
+            {
                 label:t('organizationPage.name'),
                 path:Utils.routePathMaker(AppPaths.Organizations),
                 icon:'bx bxs-folder',

@@ -43,6 +43,10 @@ const timeOnlyDate = (time)=>{
     return time? dayjs(time).format('DD.MM.YYYY') : null
 }
 
+const timeOnlyHour = (time)=>{
+    return time? dayjs(time).format('HH:mm') : null
+}
+
 const base64UrlEncode = (obj)=>{
     return btoa(JSON.stringify(obj))
         .replace(/=+$/, '')
@@ -93,6 +97,7 @@ export default {
     timeToZone,
     timeWithMonth,
     timeOnlyDate,
+    timeOnlyHour,
     noAvailableImage,
     routePathMaker,
     routeHrmPathMaker,

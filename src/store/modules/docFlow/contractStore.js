@@ -29,6 +29,12 @@ export const useContractStore = defineStore('contractStore', {
             group:null,
             rank:null,
             post_name:null,
+            contract_to_date:null,
+            probation:null,
+            position_date:null,
+            vacation_main_day:null,
+            additional_vacation_day:null,
+            schedule_id:null,
         },
         params:{
             page:1,

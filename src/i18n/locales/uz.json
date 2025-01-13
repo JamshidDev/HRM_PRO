@@ -290,7 +290,7 @@
             "to_date": "Amal qilish muddati",
             "passport_address": "Berilgan joyi",
             "passport_file": "Passport nusxasi (.pdf)",
-
+            "inn": "Inn",
             "address": "Yashash manzili"
         },
         "step": {
@@ -345,6 +345,10 @@
             "rank": "Lavozim razryad",
             "postName": "To'liq lavozim nomi",
             "director": "Direktor",
+            "contract_to_date": "Shartnoma muddati",
+            "position_date": "Ishga chiqish sanasi",
+            "vacation_main_day": "Asosit ta'til kuni",
+            "additional_vacation_day": "Qo'shimcha ta'til kuni",
             "organization": "Korxona"
 
         }
@@ -377,8 +381,9 @@
         "createTitle": "Andoza yuklash",
         "updateTitle": "Andozani tahrirlash",
         "tabs": {
-            "example": "Andoza yuklash",
-            "organizationService": "Servislar"
+            "contract": "Kontrakt andozasi",
+            "command": "Buyruq andozasi",
+            "service": "Servislar"
         },
         "form": {
             "count": "{n} ta",
@@ -387,6 +392,28 @@
             "type": "Shartnoma turi",
             "file": "Andoza fayli",
             "name": "Hujjat nomi"
+        }
+    },
+    "schedulePage": {
+        "name": "Ish jadvali",
+        "createTitle": "Jadval qo'shish",
+        "updateTitle": "Jadvalni tahrirlash",
+        "form": {
+            "type": "Jadval turi",
+            "name_ru": "Nomi(ru)",
+            "name": "Nomi"
+        }
+    },
+    "workdayPage": {
+        "name": "Ish kunlari",
+        "createTitle": "Ish kunini qo'shish",
+        "updateTitle": "Ish kunini tahrirlash",
+        "form": {
+            "schedule_id": "Ish jadvali",
+            "day_of_week": "Hafta kuni",
+            "start_time": "Boshlash vaqti",
+            "end_time": "Tugash vaqti",
+            "type": "Turi"
         }
     },
     "othersPage": {

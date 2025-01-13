@@ -1,7 +1,8 @@
 <script setup>
 import {useDocSettingStore} from "@/store/modules/index.js"
-import DocumentExample from "./DocumentExample.vue"
-import ServiceOrgPage from "./ServiceOrgPage.vue"
+import ServicePage from "../service/OrgServicePage.vue"
+import ContractTemplate from "../contractTemplate/ContractTemplate.vue"
+import CommandTemplate from "../commandTemplate/CommandTemplate.vue"
 const store = useDocSettingStore()
 </script>
 
@@ -15,12 +16,14 @@ const store = useDocSettingStore()
     <template v-for="(tab, idx) in store.tabList" :key="idx">
       <n-tab-pane :name="tab.id" :tab="$t(tab.name)">
         <template v-if="tab.id === 1">
-          <DocumentExample/>
+          <ContractTemplate/>
         </template>
         <template v-if="tab.id === 2">
-          <ServiceOrgPage/>
+          <CommandTemplate/>
         </template>
-
+        <template v-if="tab.id === 3">
+          <ServicePage/>
+        </template>
       </n-tab-pane>
     </template>
   </n-tabs>

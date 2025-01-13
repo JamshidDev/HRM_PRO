@@ -1,19 +1,19 @@
 import axios from "@/service/index.js"
 
 const _index =async (payload)=>{
-    return await axios.get(`/v1/structure/document-examples`, {params:payload.params})
+    return await axios.get(`/v1/structure/contract-types`, {params:payload.params})
 }
 
 const _create = async (payload)=>{
-    return await axios.post(`/v1/structure/document-examples`, payload.data)
+    return await axios.post(`/v1/structure/contract-types`, payload.data)
 }
 
 const _update = async (payload)=>{
-    return await axios.put(`/v1/structure/document-examples/${payload.id}`, payload.data)
+    return await axios.put(`/v1/structure/contract-types/${payload.id}`, payload.data)
 }
 
 const _delete = async (payload)=>{
-    return await axios.delete(`/v1/structure/document-examples/${payload.id}`)
+    return await axios.delete(`/v1/structure/contract-types/${payload.id}`)
 }
 
 

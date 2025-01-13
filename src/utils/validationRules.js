@@ -177,18 +177,6 @@ export default {
             },
         ],
     },
-    createMarket:{
-        name:{
-            required: true,
-            message: t(`rules.requiredField`),
-            trigger: triggerEvents
-        },
-        bot_token:{
-            required: true,
-            message: t(`rules.requiredField`),
-            trigger: triggerEvents
-        },
-    },
     marketSetting:{
         languages:{
             type: "array",
@@ -494,6 +482,11 @@ export default {
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
+        inn:{
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
         phones:[
             {
                 validator: (rule, value) => {
@@ -506,6 +499,55 @@ export default {
                 trigger: 'blur',
             },
         ],
+    },
+    schedulePage:{
+        name:{
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        name_ru:{
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        type:{
+            type: 'number',
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+    },
+    workdayPage:{
+        schedule_id:{
+            type: 'number',
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        type:{
+            type: 'number',
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        end_time:{
+            type: 'number',
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        start_time:{
+            type: 'number',
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        day_of_week:{
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
     },
     contractFrom: {
         pin:{

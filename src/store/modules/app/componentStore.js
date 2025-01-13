@@ -75,7 +75,8 @@ export const useComponentStore = defineStore('componentStore', {
         ],
 
         documentExampleTypes:[],
-        documentExampleTypeLoading:false,
+        scheduleTypes:[],
+        workDayTypes:[],
 
         docExampleList:[],
         docExampleLoading:false,
@@ -89,6 +90,11 @@ export const useComponentStore = defineStore('componentStore', {
 
         organizationServiceList:[],
         enumAdminLoading:false,
+
+        vacationList:[],
+
+        scheduleList:[],
+        scheduleLoading:false,
 
 
 
@@ -127,7 +133,9 @@ export const useComponentStore = defineStore('componentStore', {
         _enumsAdmin(){
             this.enumAdminLoading= true
             $ApiService.componentService._enumAdmin().then((res)=>{
-                this.documentExampleTypes = res.data.data.documentExampleTypes
+                this.documentExampleTypes = res.data.data?.contract_types
+                this.scheduleTypes = res.data.data?.schedules
+                this.workDayTypes = res.data.data?.work_day_types
                 this.organizationServiceList = res.data.data?.organization_services
             }).finally(()=>{
                 this.enumAdminLoading= false
@@ -247,6 +255,14 @@ export const useComponentStore = defineStore('componentStore', {
                 this.departmentList = res.data.data
             }).finally(()=>{
                 this.departmentLoading= false
+            })
+        },
+        _scheduleList(){
+            this.scheduleLoading = true
+            $ApiService.scheduleService._index(this.params).then((res)=>{
+                this.scheduleList = res.data.data.data
+            }).finally(()=>{
+                this.scheduleLoading = false
             })
         }
 

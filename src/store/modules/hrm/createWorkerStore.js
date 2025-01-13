@@ -24,6 +24,7 @@ export const useCreateWorkerStore = defineStore('createWorkerStore', {
             party:null,
             address:null,
             pin:null,
+            inn:null,
             phones:[{
                 id:1,
                 phone:'+998',

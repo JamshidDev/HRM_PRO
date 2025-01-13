@@ -29,7 +29,7 @@ onMounted(()=>{
   <Tabs/>
   <UIModal
       :title="$t('documentPage.createTitle')"
-      :width="1000"
+      :width="1200"
       v-model:visible="store.visible"
   >
     <contractForm/>

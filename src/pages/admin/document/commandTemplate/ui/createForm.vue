@@ -1,5 +1,4 @@
 <script setup>
-import validationRules from "@/utils/validationRules.js";
 const formRef = ref(null)
 import {useDocSettingStore, useComponentStore} from "@/store/modules/index.js";
 const store = useDocSettingStore()
@@ -28,6 +27,10 @@ const onUploadEv = (v)=>{
   store.selectedFileName = file?.name
   store.payload.file = file
 }
+onMounted(()=>{
+  compStore._enumsAdmin()
+})
+
 
 </script>
 
@@ -52,15 +55,15 @@ const onUploadEv = (v)=>{
             :options="compStore.documentExampleTypes"
             label-field="name"
             value-field="id"
-            :loading="compStore.documentExampleTypeLoading"
+            :loading="compStore.enumAdminLoading"
         />
       </n-form-item>
       <n-form-item :label="$t(`documentSetting.form.type`)" path="type">
-       <div class="grid grid-cols-1 w-full">
-         <n-button @click="$refs.fileRef.click()" class="block" tertiary>
-           {{store.selectedFileName || $t('content.chooseFile')}}</n-button>
-         <input @change="onUploadEv" v-show="false" type="file" ref="fileRef" accept=".doc,.docx"/>
-       </div>
+        <div class="grid grid-cols-1 w-full">
+          <n-button @click="$refs.fileRef.click()" class="block" tertiary>
+            {{store.selectedFileName || $t('content.chooseFile')}}</n-button>
+          <input @change="onUploadEv" v-show="false" type="file" ref="fileRef" accept=".doc,.docx"/>
+        </div>
       </n-form-item>
       <div class="flex-wrap w-full flex gap-2 mb-4">
         <template v-for="(item, idx) in store.payload.organizations" :key="idx" >

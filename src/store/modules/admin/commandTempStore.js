@@ -1,7 +1,7 @@
 import {defineStore} from "pinia";
 import i18n from "@/i18n/index.js"
 const {t} = i18n.global
-export const useDocSettingStore = defineStore('docSettingStore', {
+export const useCommandTempStore = defineStore('commandTempStore', {
     state:()=>({
         list:[],
         loading:false,
@@ -22,21 +22,6 @@ export const useDocSettingStore = defineStore('docSettingStore', {
             per_page:10,
             search:null,
         },
-        tabList:[
-            {
-                name:'documentSetting.tabs.contract',
-                id:1,
-            },
-            {
-                name:'documentSetting.tabs.command',
-                id:2,
-            },
-            {
-                name:'documentSetting.tabs.service',
-                id:3,
-            },
-        ],
-        activeTab:1,
         checkedVal:[],
         selectedFileName:null,
 
@@ -46,7 +31,7 @@ export const useDocSettingStore = defineStore('docSettingStore', {
             this.loading= true
             let params = {...this.params}
             params.organizations=this.payload.organizations.map((v)=>v.id).toString()
-            $ApiService.docSettingService._index({params}).then((res)=>{
+            $ApiService.commandTempService._index({params}).then((res)=>{
                 this.list = res.data.data.data
                 this.totalItems = res.data.data.total
             }).finally(()=>{
@@ -61,7 +46,7 @@ export const useDocSettingStore = defineStore('docSettingStore', {
             formData.append('organizations', this.payload.organizations.map((v)=>v.id).toString())
             formData.append('file', this.payload.file)
 
-            $ApiService.docSettingService._create({data:formData}).then((res)=>{
+            $ApiService.commandTempService._create({data:formData}).then((res)=>{
                 this.visible = false
                 this._index()
                 $Toast.success(t('message.successDone'))
@@ -78,7 +63,7 @@ export const useDocSettingStore = defineStore('docSettingStore', {
                 lat:this.payload.marker.coords[1],
                 region_id:this.payload.region_id,
             }
-            $ApiService.docSettingService._update({data, id:this.elementId}).then((res)=>{
+            $ApiService.commandTempService._update({data, id:this.elementId}).then((res)=>{
                 this.visible = false
                 this._index()
                 $Toast.success(t('message.successDone'))
@@ -88,7 +73,7 @@ export const useDocSettingStore = defineStore('docSettingStore', {
         },
         _delete(){
             this.deleteLoading = true
-            $ApiService.docSettingService._delete({id:this.elementId}).then((res)=>{
+            $ApiService.commandTempService._delete({id:this.elementId}).then((res)=>{
                 this._index()
                 $Toast.success(t('message.successDone'))
             }).finally(()=>{
