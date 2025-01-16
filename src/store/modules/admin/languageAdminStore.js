@@ -83,8 +83,8 @@ export const useLanguageAdminStore = defineStore('languageAdminStore', {
                 this.deleteLoading = false
             })
         },
-        openVisible(data){
-            this.visible = data
+        openVisible(v){
+            this.visible = v
         },
         resetForm(){
             this.elementId = null

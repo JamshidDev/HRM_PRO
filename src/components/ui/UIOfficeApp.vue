@@ -16,7 +16,7 @@ const openWord = (document_id, model)=>{
   payload.value = {document_id,model}
   $ApiService.documentService._openDocument({params:{model,document_id}}).then((res)=>{
     const v = res.data.data
-    onlyOfficeStore.config.document.url = v.doc_url
+    onlyOfficeStore.config.document.url = v.document.doc_url
     onlyOfficeStore.model = model
     onlyOfficeStore.document_id = document_id
     onlyOfficeStore.user_uuid = accountStore.account?.uuid

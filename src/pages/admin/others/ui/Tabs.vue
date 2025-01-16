@@ -2,6 +2,7 @@
 import {useLanguageAdminStore} from "@/store/modules/admin/languageAdminStore.js"
 import LanguagePage from "../languages/LanguagePage.vue"
 import UniversityPage from "../university/UniversityPage.vue"
+import SpecialtyPage from "../speciality/SpecialityPage.vue"
 
 const store = useLanguageAdminStore()
 
@@ -29,7 +30,7 @@ const onChange = ()=>{
           <UniversityPage/>
         </template>
         <template v-else-if="item.id === 2">
-          <LanguagePage/>
+          <SpecialtyPage/>
         </template>
         <template v-else-if="item.id === 3">
           <LanguagePage/>

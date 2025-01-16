@@ -222,6 +222,42 @@ export default {
             trigger: triggerEvents
         },
     },
+    universityAdmin:{
+        name:{
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        name_ru:{
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        region_id:{
+            type: 'number',
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        education:{
+            type: 'number',
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+    },
+    specialityAdmin:{
+        name:{
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        name_ru:{
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+    },
     confirmation:{
         pin:{
             required: true,
@@ -566,12 +602,6 @@ export default {
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
-        document_example_id:{
-            type:'number',
-            required: true,
-            message: t(`rules.requiredField`),
-            trigger: triggerEvents
-        },
         type:{
             type:'number',
             required: true,
@@ -628,6 +658,28 @@ export default {
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
+        schedule_id:{
+            type:'number',
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        vacation_main_day:{
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        additional_vacation_day:{
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        position_date:{
+            type:'number',
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
     },
     contractFromV2: {
         pin:{
@@ -641,12 +693,6 @@ export default {
             trigger: triggerEvents
         },
         contract_date:{
-            type:'number',
-            required: true,
-            message: t(`rules.requiredField`),
-            trigger: triggerEvents
-        },
-        document_example_id:{
             type:'number',
             required: true,
             message: t(`rules.requiredField`),
@@ -698,6 +744,28 @@ export default {
         },
         organization_id:{
             type:'array',
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        schedule_id:{
+            type:'number',
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        vacation_main_day:{
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        additional_vacation_day:{
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        position_date:{
+            type:'number',
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents

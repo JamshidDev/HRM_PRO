@@ -2,15 +2,18 @@
 import {UIPageContent, UIPageFilter} from "@/components/index.js"
 import Tabs from "./ui/Tabs.vue"
 
-import {useLanguageAdminStore, useUniversityAdminStore} from "@/store/modules/index.js"
+import {useLanguageAdminStore, useUniversityAdminStore, useSpecialityStore} from "@/store/modules/index.js"
 const store = useLanguageAdminStore()
 const universityStore = useUniversityAdminStore()
+const specialtyStore = useSpecialityStore()
 
 const onAdd = ()=>{
   if(store.activeTab === 3){
     addLanguage()
-  }else if(store.activeTab === 3){
+  }else if(store.activeTab === 1){
     addUniversity()
+  }else if(store.activeTab === 2){
+    addSpecialty()
   }
 }
 
@@ -24,6 +27,12 @@ const addUniversity =()=>{
   universityStore.resetForm()
   universityStore.visibleType = true
   universityStore.visible = true
+}
+
+const addSpecialty =()=>{
+  specialtyStore.resetForm()
+  specialtyStore.visibleType = true
+  specialtyStore.visible = true
 }
 
 onMounted(()=>{

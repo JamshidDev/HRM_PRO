@@ -1,9 +1,10 @@
 <script setup>
 import validationRules from "@/utils/validationRules.js";
 const formRef = ref(null)
-import {useUniversityAdminStore} from "@/store/modules/index.js"
+import {useUniversityAdminStore, useComponentStore} from "@/store/modules/index.js"
 
 const store = useUniversityAdminStore()
+const compStore = useComponentStore()
 
 const onSubmit = ()=>{
   formRef.value?.validate((error)=>{
@@ -19,12 +20,26 @@ const onSubmit = ()=>{
   })
 }
 
+const onFocus = ()=>{
+  if(compStore.educationList.length ===0){
+    compStore._enums()
+  }
+}
+
+const onFocusRegion = ()=>{
+  if(compStore.regionList.length === 0){
+    compStore._regions()
+  }
+
+}
+
+
 </script>
 
 <template>
   <n-form
       ref="formRef"
-      :rules="validationRules.languageAdminPage"
+      :rules="validationRules.universityAdmin"
       :model="store.payload"
   >
     <div style="min-height:calc(100vh - 120px)">
@@ -40,6 +55,30 @@ const onSubmit = ()=>{
             type="text"
             :placeholder="$t(`content.enterField`)"
             v-model:value="store.payload.name_ru"
+        />
+      </n-form-item>
+      <n-form-item :label="$t(`othersPage.university.form.region_id`)" path="region_id">
+        <n-select
+            @focus="onFocusRegion"
+            v-model:value="store.payload.region_id"
+            filterable
+            :placeholder="$t(`content.choose`)"
+            :options="compStore.regionList"
+            label-field="name"
+            value-field="id"
+            :loading="compStore.regionLoading"
+        />
+      </n-form-item>
+      <n-form-item :label="$t(`othersPage.university.form.education`)" path="education">
+        <n-select
+            @focus="onFocus"
+            v-model:value="store.payload.education"
+            filterable
+            :placeholder="$t(`content.choose`)"
+            :options="compStore.educationList"
+            label-field="name"
+            value-field="id"
+            :loading="compStore.enumLoading"
         />
       </n-form-item>
     </div>

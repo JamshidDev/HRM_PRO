@@ -1,8 +1,8 @@
 <script setup>
-import {useDocSettingStore} from "@/store/modules/index.js"
+import {useCommandTempStore} from "@/store/modules/index.js"
 import {UITreeData} from "@/components/index.js"
 import Table from "./ui/Table.vue"
-const store = useDocSettingStore()
+const store = useCommandTempStore()
 
 const onSelect = (v)=>{
   store.payload.organizations = v
@@ -12,7 +12,13 @@ const onSelect = (v)=>{
 const onClearEv = ()=>{
   store.payload.organizations = []
   store._index()
+
 }
+
+onMounted(()=>{
+  store._index()
+})
+
 </script>
 
 <template>

@@ -36,6 +36,7 @@ const onSignatureLogin =async ()=>{
 
 }
 const onSuccess = (data)=>{
+  console.log(data)
   new Promise((resolve, reject)=>{
     try{
       localStorage.setItem('token',data?.access_token)

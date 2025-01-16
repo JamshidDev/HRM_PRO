@@ -52,13 +52,13 @@ onMounted(()=>{
             v-model:value="store.payload.type"
             filterable
             :placeholder="$t(`content.choose`)"
-            :options="compStore.documentExampleTypes"
+            :options="compStore.contractTypes"
             label-field="name"
             value-field="id"
             :loading="compStore.enumAdminLoading"
         />
       </n-form-item>
-      <n-form-item :label="$t(`documentSetting.form.type`)" path="type">
+      <n-form-item :label="$t(`documentSetting.form.file`)" path="type">
         <div class="grid grid-cols-1 w-full">
           <n-button @click="$refs.fileRef.click()" class="block" tertiary>
             {{store.selectedFileName || $t('content.chooseFile')}}</n-button>

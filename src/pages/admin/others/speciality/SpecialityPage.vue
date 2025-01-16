@@ -1,6 +1,6 @@
 <script setup>
-import {useUniversityAdminStore} from "@/store/modules/index.js"
-const store = useUniversityAdminStore()
+import {useSpecialityStore} from "@/store/modules/index.js"
+const store = useSpecialityStore()
 import {UIDrawer} from "@/components/index.js"
 import Table from "./ui/Table.vue"
 import createForm from "./ui/createForm.vue"
@@ -17,7 +17,7 @@ onMounted(()=>{
     <UIDrawer
         :visible="store.visible"
         @update:visible="(v)=>store.visible = v"
-        :title="store.visibleType? $t('othersPage.university.createTitle') : $t('othersPage.university.updateTitle')"
+        :title="store.visibleType? $t('othersPage.speciality.createTitle') : $t('othersPage.speciality.updateTitle')"
     >
       <template #content>
         <createForm/>

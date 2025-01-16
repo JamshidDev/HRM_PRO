@@ -74,7 +74,8 @@ export const useComponentStore = defineStore('componentStore', {
             },
         ],
 
-        documentExampleTypes:[],
+        contractTypes:[],
+        commandTypes:[],
         scheduleTypes:[],
         workDayTypes:[],
 
@@ -95,6 +96,8 @@ export const useComponentStore = defineStore('componentStore', {
 
         scheduleList:[],
         scheduleLoading:false,
+
+        probationList:[],
 
 
 
@@ -126,6 +129,7 @@ export const useComponentStore = defineStore('componentStore', {
                 this.partyList = res.data.data.parties
                 this.groupList = res.data.data.groups
                 this.rankList = res.data.data.ranks
+                this.probationList = res.data.data.probation_list
             }).finally(()=>{
                 this.enumLoading= false
             })
@@ -133,7 +137,8 @@ export const useComponentStore = defineStore('componentStore', {
         _enumsAdmin(){
             this.enumAdminLoading= true
             $ApiService.componentService._enumAdmin().then((res)=>{
-                this.documentExampleTypes = res.data.data?.contract_types
+                this.contractTypes = res.data.data?.contract_types
+                this.commandTypes = res.data.data?.command_types
                 this.scheduleTypes = res.data.data?.schedules
                 this.workDayTypes = res.data.data?.work_day_types
                 this.organizationServiceList = res.data.data?.organization_services

@@ -29,6 +29,7 @@ import universityServiceAdmin from "@/service/v1/admin/universityService.js"
 import scheduleService from "@/service/v1/admin/scheduleService.js"
 import workdayService from "@/service/v1/admin/workdayService.js"
 import commandTempService from "@/service/v1/admin/commandTempService.js"
+import specialityService from "@/service/v1/admin/specialityService.js"
 export default {
     authService,
     accountService,
@@ -60,4 +61,5 @@ export default {
     scheduleService,
     workdayService,
     commandTempService,
+    specialityService,
 }

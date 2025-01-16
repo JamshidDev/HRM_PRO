@@ -14,22 +14,21 @@ const { x, y, style } = useDraggable(dragElementRef, {
   initialValue: { x: 110, y:window.innerHeight - 105},
 })
 
-const totalPages = ref(0)
-
 const {y:scrollY} = useScroll(scrollElementRef)
 
 watchEffect(()=>{
-
+  const zoom = Number(store.scale)
   const height =y.value + Number(scrollY.value) - store.paddingTop
   const page = Math.floor(height/store.pdfHeight) + 1
 
   if(scrollElementRef.value){
     const rect = scrollElementRef.value.getBoundingClientRect()
-    store.qrCodeX = x.value - rect.x
+    store.qrCodeX = ((x.value - Number(rect.x))/zoom)
   }
 
-  const cordY = (height - (page-1)*store.pdfHeight).toFixed(2)
+  const cordY = (((height - (page-1)*store.pdfHeight))/zoom).toFixed(2)
   store.qrCodeY = Number(cordY)
+  console.log(`y:${cordY} x:${store.qrCodeX}`)
 
   store.pageIndex = page - 1
 
@@ -39,30 +38,32 @@ watchEffect(()=>{
 
 
 const loadPdf = async(url)=>{
-  const pdfUrl = url+`?_=${new Date().getTime()}`
-  try{
-    const pdf = await pdfjsLib.getDocument(pdfUrl).promise
-    totalPages.value = pdf.numPages
-    for (let pageNumber = 1; pageNumber <= totalPages.value; pageNumber++) {
-      const page = await pdf.getPage(pageNumber);
-      const scale = 1.5;
-      const viewport = page.getViewport({ scale });
-
-      const canvas = document.querySelector(`#pdfCanvas${pageNumber}`);
-      const context = canvas.getContext('2d');
-      canvas.height = viewport.height;
-      canvas.width = viewport.width;
-
-      const renderContext = {
-        canvasContext: context,
-        viewport: viewport,
-      };
-      await page.render(renderContext).promise
-    }
-
-  }catch (err){
-    console.error('Error loading PDF:', err);
-  }
+  await store.loadPdf(url)
+  // store.pdfUrl = url
+  // const pdfUrl = url+`?_=${new Date().getTime()}`
+  // try{
+  //   const pdf = await pdfjsLib.getDocument(pdfUrl).promise
+  //   totalPages.value = pdf.numPages
+  //   for (let pageNumber = 1; pageNumber <= totalPages.value; pageNumber++) {
+  //     const page = await pdf.getPage(pageNumber);
+  //     const scale = 1.2;
+  //     const viewport = page.getViewport({ scale });
+  //
+  //     const canvas = document.querySelector(`#pdfCanvas${pageNumber}`);
+  //     const context = canvas.getContext('2d');
+  //     canvas.height = viewport.height;
+  //     canvas.width = viewport.width;
+  //
+  //     const renderContext = {
+  //       canvasContext: context,
+  //       viewport: viewport,
+  //     };
+  //     await page.render(renderContext).promise
+  //   }
+  //
+  // }catch (err){
+  //   console.error('Error loading PDF:', err);
+  // }
 }
 
 
@@ -73,6 +74,8 @@ defineExpose({
 })
 
 onMounted(()=>{
+  store.qrCodeData = "http://localhost:8000/hrm/document"
+  store.createQRCode()
   console.log("Canvas rendered...")
 })
 
@@ -91,12 +94,11 @@ onMounted(()=>{
           <img class="w-full h-full object-cover object-center pointer-events-none" :src="store.qrCodeUrl" alt="Not fount QRCode image">
         </template>
       </div>
-      <div v-for="idx in totalPages" :key="idx">
-        <canvas class="border border-surface-line h-[841px] w-[595px]" :id="`pdfCanvas${idx}`"></canvas>
+      <div v-for="idx in store.totalPdfPage" :key="idx">
+        <canvas class="border border-surface-line " :id="`pdfCanvas${idx}`"></canvas>
       </div>
     </div>
     <PdfSignature ref="pdfSignatureRef" />
-
     <div class="flex flex-col w-[200px] fixed top-[70px] left-[10px] bg-yellow-300 p-4 rounded-xl font-medium text-xs">
       <span>CordX:{{store.qrCodeX}}</span>
       <span>CordY:{{store.qrCodeY}}</span>

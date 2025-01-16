@@ -349,9 +349,17 @@
             "position_date": "Ishga chiqish sanasi",
             "vacation_main_day": "Asosit ta'til kuni",
             "additional_vacation_day": "Qo'shimcha ta'til kuni",
+            "probation": "Sinov muddati",
+            "schedule_id": "Ish jadvali",
             "organization": "Korxona"
-
+        },
+        "signature": {
+            "viewer": "Hujjat bilan tanishuvchilar",
+            "status": {
+                "Process": "Jarayonda"
+            }
         }
+
     },
     "confirmationPage": {
         "name": "Tasdiqlovchilar",
@@ -378,8 +386,12 @@
     },
     "documentSetting": {
         "name": "Hujjat sozlamalari",
-        "createTitle": "Andoza yuklash",
-        "updateTitle": "Andozani tahrirlash",
+        "createTitle": "Kontrakt andozasini yuklash",
+        "updateTitle": "Kontrakt andozasini tahrirlash",
+        "command": {
+            "createTitle": "Buyruq andozasini yuklash",
+            "updateTitle": "Buyruq andozasini tahrirlash"
+        },
         "tabs": {
             "contract": "Kontrakt andozasi",
             "command": "Buyruq andozasi",
@@ -390,6 +402,7 @@
             "organization": "Korxonalar soni",
             "organizations": "Korxonalar",
             "type": "Shartnoma turi",
+            "commandType": "Buyruq turi",
             "file": "Andoza fayli",
             "name": "Hujjat nomi"
         }
@@ -430,9 +443,20 @@
             "updateTitle": "Oligoh tahrirlash",
             "form": {
                 "name_ru": "Oligoh nomi (ru)",
-                "name": "Oligoh nomi (uz)"
+                "region_id": "Joylashgan viloyat",
+                "education": "Ma'lumot turi",
+                "name": "Oligoh nomi"
             }
         },
+        "speciality": {
+            "createTitle": "Mutaxasislik qo'shish",
+            "updateTitle": "Mutaxasislikni tahrirlash",
+            "form": {
+                "name_ru": "Mutaxasislik nomi (ru)",
+                "name": "Mutaxasislik nomi "
+            }
+        },
+
 
         "tabs": {
             "university": "Oligohlar",

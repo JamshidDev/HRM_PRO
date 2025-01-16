@@ -1,6 +1,6 @@
 <script setup>
 import {UIModal, UIPageContent} from "@/components/index.js"
-import contractForm from "@/pages/docFlow/document/confirmation/contractForm.vue"
+import contractForm from "@/pages/docFlow/document/contract/contractForm.vue"
 import Table from "./ui/Table.vue"
 import Filter from "./ui/Filter.vue"
 import CheckWorker from "./ui/CheckWorker.vue"

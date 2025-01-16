@@ -23,18 +23,15 @@ const onSubmit = ()=>{
     }
   })
 }
-
 const onChangeDepartment = (v)=>{
   store.payload.department_id = v
   componentStore.departmentPositionList = []
   store.payload.department_position_id = null
   componentStore._departmentPosition(v[0].id)
 }
-
 const onSelectDirector = (v)=>{
   store.payload.director_id =v.length === 2? [v[1]]: v
 }
-
 const onChangeStatus = (v)=>{
   if(v){
     componentStore._positions()
@@ -49,16 +46,9 @@ const onChangeStructure = (v)=>{
     componentStore._departmentTree()
   }
 }
-const onFocusDoc = ()=>{
-  componentStore._docExample()
-}
 const onFocusConf = ()=>{
   componentStore._confirmations()
 }
-
-
-
-
 const renderLabel = (option)=>{
   return [
     h(
@@ -81,15 +71,32 @@ const renderLabel = (option)=>{
   ];
 }
 
+
+const scheduleLabel = (option)=>{
+  return [
+    h(
+        'div',
+        {
+          class:'flex gap-2 items-center'
+        },[
+          h('div',{ class:'flex flex-col'}, [
+            h('div',{ class:'text-xs font-medium text-gray-500 leading-[0.9]'},`${option.name}`),
+            h('div',{ class:'text-[10px] text-gray-400 leading-[0.9]'},option.work_days[0].type.name),
+            h('div',{ class:'text-[10px] text-gray-400 leading-[0.9] flex justify-end'},`${option.work_days[0].start_time} - ${option.work_days[0].end_time}`),
+          ])
+        ]
+    ),
+  ];
+}
+
 const rules = computed(()=>(store.payload.position_status && store.payload.type === 2)? validationRules.contractFromV2 :validationRules.contractFrom)
 
 onMounted(()=>{
   if(componentStore.groupList.length===0){
     componentStore._enums()
   }
-
+  componentStore._scheduleList()
 })
-
 
 </script>
 
@@ -99,7 +106,7 @@ onMounted(()=>{
       :rules="rules"
       :model="store.payload"
   >
-    <div style="height:calc(100vh - 120px)" class="overflow-y-auto">
+    <div style="height:calc(100vh - 120px)" class="overflow-y-auto ">
       <div class="grid grid-cols-12 gap-x-4">
         <div class="col-span-12 flex justify-center">
           <div class="w-[600px]">
@@ -141,27 +148,13 @@ onMounted(()=>{
                 />
               </n-form-item>
             </div>
-            <div class="col-span-2">
+            <div class="col-span-3">
               <n-form-item :label="$t(`documentPage.form.contractDate`)" path="contract_date">
                 <n-date-picker
                     class="w-full"
                     v-model:value="store.payload.contract_date"
                     type="date"
                     :placeholder="$t(`content.choose`)"
-                />
-              </n-form-item>
-            </div>
-            <div class="col-span-4">
-              <n-form-item :label="$t(`documentPage.form.documentExampleId`)" path="document_example_id">
-                <n-select
-                    @focus="onFocusDoc"
-                    v-model:value="store.payload.document_example_id"
-                    filterable
-                    :placeholder="$t(`content.choose`)"
-                    :options="componentStore.docExampleList"
-                    label-field="name"
-                    value-field="id"
-                    :loading="componentStore.docExampleLoading"
                 />
               </n-form-item>
             </div>
@@ -185,41 +178,10 @@ onMounted(()=>{
                 />
               </n-form-item>
             </div>
-            <div class="col-span-3">
-              <n-form-item :label="$t(`documentPage.form.vacation_main_day`)" path="vacation_main_day">
-                <n-select
-                    @focus="onFocusDoc"
-                    v-model:value="store.payload.vacation_main_day"
-                    filterable
-                    :placeholder="$t(`content.choose`)"
-                    :options="componentStore.vacationList"
-                    label-field="name"
-                    value-field="id"
-                    :loading="componentStore.enumLoading"
-                />
-              </n-form-item>
-            </div>
-            <div class="col-span-3">
-              <n-form-item :label="$t(`documentPage.form.additional_vacation_day`)" path="additional_vacation_day">
-                <n-select
-                    @focus="onFocusDoc"
-                    v-model:value="store.payload.additional_vacation_day"
-                    filterable
-                    :placeholder="$t(`content.choose`)"
-                    :options="componentStore.vacationList"
-                    label-field="name"
-                    value-field="id"
-                    :loading="componentStore.enumLoading"
-                />
-              </n-form-item>
-            </div>
-
-
-
-
 
           </div>
         </div>
+
         <div class="col-span-12 border border-dashed p-2 rounded-xl border-gray-200 bg-gray-50 mt-4">
           <div class="grid grid-cols-12 gap-x-4">
             <div class="col-span-12">
@@ -346,6 +308,63 @@ onMounted(()=>{
 
           </div>
         </div>
+
+        <div class="col-span-12 border border-dashed p-2 rounded-xl border-gray-200 bg-gray-50 mt-4">
+          <div class="grid grid-cols-12 gap-x-4">
+            <div class="col-span-3">
+              <n-form-item :label="$t(`documentPage.form.vacation_main_day`)" path="vacation_main_day">
+                <n-input
+                    class="w-full"
+                    type="text"
+                    :placeholder="$t(`content.enterField`)"
+                    v-model:value="store.payload.vacation_main_day"
+                    :allow-input="Utils.onlyAllowNumber"
+                />
+              </n-form-item>
+            </div>
+            <div class="col-span-3">
+              <n-form-item :label="$t(`documentPage.form.additional_vacation_day`)" path="additional_vacation_day">
+                <n-input
+                    class="w-full"
+                    type="text"
+                    :placeholder="$t(`content.enterField`)"
+                    v-model:value="store.payload.additional_vacation_day"
+                    :allow-input="Utils.onlyAllowNumber"
+                />
+              </n-form-item>
+            </div>
+            <div class="col-span-3">
+              <n-form-item :label="$t(`documentPage.form.probation`)" path="probation">
+                <n-select
+                    v-model:value="store.payload.probation"
+                    filterable
+                    :placeholder="$t(`content.choose`)"
+                    :options="componentStore.probationList"
+                    label-field="name"
+                    value-field="id"
+                    :loading="componentStore.enumLoading"
+                    clearable
+                />
+              </n-form-item>
+            </div>
+            <div class="col-span-3">
+              <n-form-item :label="$t(`documentPage.form.schedule_id`)" path="schedule_id">
+                <n-select
+                    v-model:value="store.payload.schedule_id"
+                    filterable
+                    :placeholder="$t(`content.choose`)"
+                    :options="componentStore.scheduleList"
+                    value-field="id"
+                    :loading="componentStore.scheduleLoading"
+                    :render-label="scheduleLabel"
+                    clearable
+                />
+              </n-form-item>
+            </div>
+          </div>
+        </div>
+
+
         <div class="col-span-12 mt-4">
           <n-form-item :label="$t(`documentPage.form.director`)" path="director_id">
             <n-select

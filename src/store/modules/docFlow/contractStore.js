@@ -19,7 +19,6 @@ export const useContractStore = defineStore('contractStore', {
             number:null,
             table_number:null,
             type:null,
-            document_example_id:null,
             director_id:[],
             department_id:[],
             department_position_id:null,
@@ -58,6 +57,8 @@ export const useContractStore = defineStore('contractStore', {
                 ...this.payload,
                ...{
                    contract_date:Utils.timeToZone(this.payload.contract_date),
+                   contract_to_date:Utils.timeToZone(this.payload.contract_to_date),
+                   position_date:Utils.timeToZone(this.payload.position_date),
                    organization_id:this.payload.organization_id[0].id,
                    worker_id:this.payload.pin,
                    director_id:this.payload.director_id[0],
@@ -101,16 +102,21 @@ export const useContractStore = defineStore('contractStore', {
             this.payload.number = null
             this.payload.table_number = null
             this.payload.type = null
-            this.payload.document_example_id = null
             this.payload.director_id = []
             this.payload.department_id = []
             this.payload.department_position_id = null
-            this.payload.position_status = null
+            this.payload.position_status = false
             this.payload.salary = null
             this.payload.position_id = null
             this.payload.group = null
             this.payload.rank = null
             this.payload.post_name = null
+            this.payload.probation = null
+            this.payload.position_date = null
+            this.payload.vacation_main_day = null
+            this.payload.additional_vacation_day = null
+            this.payload.schedule_id = null
+            this.payload.contract_to_date = null
         }
 
     }

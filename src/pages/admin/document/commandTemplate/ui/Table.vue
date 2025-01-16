@@ -1,8 +1,8 @@
 <script setup>
 import {NoDataPicture, UIActionButton, UIPagination} from "@/components/index.js"
-import {useDocSettingStore} from "@/store/modules/index.js"
+import {useCommandTempStore} from "@/store/modules/index.js"
 
-const store = useDocSettingStore()
+const store = useCommandTempStore()
 
 
 

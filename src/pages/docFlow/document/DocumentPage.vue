@@ -1,7 +1,7 @@
 <script setup>
 import {UIPageContent, UIPageFilter, UIModal, UIOnlyOfficeDrawer, UIPdfSignatureDrawer} from "@/components/index.js"
 import Tabs from "./ui/Tabs.vue"
-import contractForm from "./confirmation/contractForm.vue"
+import contractForm from "./contract/contractForm.vue"
 import {useDocumentStore, useContractStore, useComponentStore} from "@/store/modules/index.js"
 const store = useContractStore()
 const componentStore = useComponentStore()

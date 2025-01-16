@@ -10,15 +10,13 @@ window.pdfjsWorker = PdfWorker
 pdfjsLib.GlobalWorkerOptions.workerSrc = PdfWorker
 
 
-
-// pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`
 export const usePdfViewerStore = defineStore('pdfViewerStore', {
     state:()=>({
         visible:false,
         isSignature:false,
         paddingTop:60,
-        pdfHeight:841,
-        pdfWidth:595,
+        pdfHeight:0,
+        pdfWidth:0,
         qrCodeUrl:null,
         qrCodeData:null,
         pdfUrl:null,
@@ -28,6 +26,9 @@ export const usePdfViewerStore = defineStore('pdfViewerStore', {
         totalPdfPage:0,
         loading:false,
         confirmations:[],
+        document:null,
+        scale:1,
+
 
 
 
@@ -42,7 +43,8 @@ export const usePdfViewerStore = defineStore('pdfViewerStore', {
            catch (err){console.log(err)}
         },
        async addQRCodeToPDF(){
-           const response = await fetch(this.pdfUrl)
+           console.log(this.pdfUrl)
+           const response = await fetch('http://192.168.82.90:9000/docflow/documents/contracts/d61e6f4e6e7817fc61b293944fcb0605.pdf')
            const existingPdfBytes = await response.arrayBuffer()
            const pdfDoc = await PDFDocument.load(existingPdfBytes);
            const qrCodeDataUrl = await this.createQRCode();
@@ -63,6 +65,34 @@ export const usePdfViewerStore = defineStore('pdfViewerStore', {
            a.download = 'signed_document.pdf';
            a.click();
            URL.revokeObjectURL(url);
+       },
+       async loadPdf(){
+           const pdfUrl = this.pdfUrl+`?_=${new Date().getTime()}`
+           try{
+               const pdf = await pdfjsLib.getDocument(pdfUrl).promise
+               this.totalPdfPage = pdf.numPages
+               for (let pageNumber = 1; pageNumber <= this.totalPdfPage; pageNumber++) {
+                   const page = await pdf.getPage(pageNumber);
+                   const scale = this.scale;
+                   const viewport = page.getViewport({ scale });
+
+                   const canvas = document.querySelector(`#pdfCanvas${pageNumber}`);
+                   const context = canvas.getContext('2d');
+                   canvas.height = viewport.height;
+                   canvas.width = viewport.width;
+                   this.pdfHeight = viewport.height
+                   this.pdfWidth = viewport.width
+
+                   const renderContext = {
+                       canvasContext: context,
+                       viewport: viewport,
+                   };
+                   await page.render(renderContext).promise
+               }
+
+           }catch (err){
+               console.error('Error loading PDF:', err);
+           }
        },
     }
 

@@ -1,5 +1,6 @@
 import {defineStore} from "pinia"
 import i18n from "@/i18n/index.js"
+const apiUrl = import.meta.env.VITE_API_URL;
 
 const {t} = i18n.global
 export const useSignatureStore = defineStore('signatureStore', {
@@ -123,7 +124,7 @@ export const useSignatureStore = defineStore('signatureStore', {
 
         },
         getChallenge(callback) {
-            microAjax('http://192.168.136.78:8004/api/v1/signature/challenge?_uc=' + (Date.now() + "_" + Math.random()), function (data, s) {
+            microAjax(`${apiUrl}/api/v1/signature/challenge?_uc=` + (Date.now() + "_" + Math.random()), function (data, s) {
                 data = JSON.parse(data)
                 let status = s.status
                 data = data.data

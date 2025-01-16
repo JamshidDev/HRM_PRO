@@ -1,5 +1,5 @@
 <script setup>
-import {Signature20Filled, HandRight16Filled, Handshake20Filled,
+import {Signature20Filled,
   PanelLeftContract20Filled, DocumentEdit24Regular,
   CloudArrowDown16Filled} from "@vicons/fluent"
 import PdfViewer from "./PdfViewer.vue"
@@ -28,13 +28,21 @@ const onEdit = ()=>{
   emits('onEdit')
 }
 
+const onZoom = async ()=>{
+  await store.loadPdf()
+}
+
+
 const getDocument =async (document_id, model)=>{
   store.visible = true
   store.loading = true
   $ApiService.documentService._openDocument({params:{model,document_id}}).then((res)=>{
     const v = res.data.data
     store.confirmations = v.confirmations
-     pdfViewerRef.value.loadPdf(v.url)
+    store.document = v
+    store.pdfUrl = v.document.url
+    store.loadPdf()
+     // pdfViewerRef.value.loadPdf(v.document.url)
   }).finally(()=>{
     store.loading = false
   })
@@ -66,8 +74,19 @@ defineExpose({
 
                 </n-button>
               </div>
-              <div></div>
+              <div>
+                <div class="text-gray-600 text-sm uppercase font-medium">{{store.document?.document?.file_name}}</div>
+                <div class="text-xs text-gray-400">15.01.2025</div>
+              </div>
               <div class="flex gap-6">
+                <n-input-number
+                    class="w-[100px]"
+                    v-model:value="store.scale"
+                    min="1"
+                    max="1.6"
+                    step="0.1"
+                    @update:value="onZoom"
+                />
                 <n-button type="success" secondary circle>
                   <template #icon>
                     <n-icon size="24">
@@ -95,7 +114,7 @@ defineExpose({
               </div>
               <div class="flex flex-col w-[300px] h-full bg-surface-ground border-l border-surface-line px-2 py-4">
                 <div class="w-full" style="height: calc(100% - 110px)">
-                  <h3 class="mb-1 text-gray-400 text-xs font-medium uppercase pl-2">Hujjat bilan tanishgan xodimlar</h3>
+                  <h3 class="mb-1 text-gray-400 text-xs font-medium uppercase pl-2">{{$t('documentPage.signature.viewer')}}</h3>
                   <ConfirmationList/>
                 </div>
 

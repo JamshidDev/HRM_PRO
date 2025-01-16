@@ -1,7 +1,7 @@
 <script setup>
 const formRef = ref(null)
-import {useDocSettingStore, useComponentStore} from "@/store/modules/index.js";
-const store = useDocSettingStore()
+import {useCommandTempStore, useComponentStore} from "@/store/modules/index.js";
+const store = useCommandTempStore()
 const compStore = useComponentStore()
 const fileRef = ref(null)
 const onSubmit = ()=>{
@@ -13,7 +13,6 @@ const onSubmit = ()=>{
       }else{
         store._update()
       }
-
     }
   })
 }
@@ -47,18 +46,18 @@ onMounted(()=>{
             v-model:value="store.payload.name"
         />
       </n-form-item>
-      <n-form-item :label="$t(`documentSetting.form.type`)" path="type">
+      <n-form-item :label="$t(`documentSetting.form.commandType`)" path="type">
         <n-select
             v-model:value="store.payload.type"
             filterable
             :placeholder="$t(`content.choose`)"
-            :options="compStore.documentExampleTypes"
+            :options="compStore.commandTypes"
             label-field="name"
             value-field="id"
             :loading="compStore.enumAdminLoading"
         />
       </n-form-item>
-      <n-form-item :label="$t(`documentSetting.form.type`)" path="type">
+      <n-form-item :label="$t(`documentSetting.form.file`)" path="type">
         <div class="grid grid-cols-1 w-full">
           <n-button @click="$refs.fileRef.click()" class="block" tertiary>
             {{store.selectedFileName || $t('content.chooseFile')}}</n-button>
