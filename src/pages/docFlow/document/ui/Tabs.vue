@@ -33,7 +33,7 @@ const openOffice = (id)=>{
       <ContractList @openOffice="openOffice"/>
     </n-tab-pane>
     <n-tab-pane :name="store.tabList[1].key" :tab="$t(store.tabList[1].name)">
-      <ConfirmationTable/>
+      <ConfirmationTable @openOffice="openOffice"/>
     </n-tab-pane>
   </n-tabs>
   <UIOfficeApp ref="officeAppRef"/>

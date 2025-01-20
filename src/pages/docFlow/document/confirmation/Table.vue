@@ -4,9 +4,8 @@ import {useConfirmationContractStore} from "@/store/modules/index.js"
 import Utils from "@/utils/Utils.js"
 
 const store = useConfirmationContractStore()
-const signatureDrawer = ref(null)
 
-
+const emits = defineEmits([ 'openOffice',])
 
 
 const onEdit = (v)=>{
@@ -18,9 +17,9 @@ const onDelete = (v)=>{
 const onAdd = (v)=>{
 }
 
-const onView = (v)=>{
-  // pdfStore.getDocument(v.id, 'contracts')
-  signatureDrawer.value.getDocument(v.contract.id, 'contracts')
+
+const onOpenFile = (v)=>{
+  emits('openOffice', v)
 }
 
 
@@ -76,7 +75,7 @@ const changePage = (v)=>{
                 @on-edit="onEdit"
                 @on-delete="onDelete"
                 @on-add="onAdd"
-                @onView="onView"
+                @onView="onOpenFile(item?.contract.id)"
             />
           </td>
         </tr>

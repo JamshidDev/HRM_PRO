@@ -96,14 +96,9 @@ const pushFirstMenu = (path)=>{
       <transition name="slide-right" mode="out-in">
         <div v-if="showPanel">
           <div class="image-content">
-            <img class="image_element" src="/public/hrm.png" alt="">
+            <img class="image_element" src="/public/app/hrm.png" alt="">
           </div>
           <template v-for="item in panelMenu" :key="item">
-
-
-
-
-
 
             <template v-if="item?.children && item.children.length>0">
               <div class="panel-item-multiple">

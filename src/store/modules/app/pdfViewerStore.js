@@ -27,7 +27,8 @@ export const usePdfViewerStore = defineStore('pdfViewerStore', {
         loading:false,
         confirmations:[],
         document:null,
-        scale:1,
+        scale:1.4,
+        permissions:null,
 
 
 

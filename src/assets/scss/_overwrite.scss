@@ -124,3 +124,11 @@ input:-webkit-autofill {
     /* Nothing to change, just triggering the animation */
   }
 }
+
+.active__tab-menu {
+  background-image: linear-gradient(to right bottom, rgb(44, 116, 248), rgb(9, 5, 125));
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  span{
+    color: var(--white-color) !important;
+  }
+}

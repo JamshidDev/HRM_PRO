@@ -182,9 +182,11 @@ $mobile_device_screen_size:900px;
       .image-content{
         width: 100%;
         margin-bottom: 20px;
+        border-radius: 12px;
+        overflow: hidden;
         .image_element{
           width: 100%;
-          opacity: 0.7;
+          opacity: 0.8;
         }
       }
     }

@@ -39,6 +39,7 @@ export const AppPaths = {
     AdminOther:"/admin-others",
     Schedule:"/schedule",
     Workday:"/workday",
+    WorkerProfile:"/worker-profile",
 }
 
 export const AppLayouts ={

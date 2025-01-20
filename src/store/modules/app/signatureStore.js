@@ -10,7 +10,7 @@ export const useSignatureStore = defineStore('signatureStore', {
         signatureType:null,
         signatureTypes:{
             auth:'auth',
-            contract:'contract',
+            contract:'contracts',
         },
 
         successCallback:null,
@@ -52,11 +52,12 @@ export const useSignatureStore = defineStore('signatureStore', {
             this.loading = true
             $ApiService.documentService._documentBase64({
                 params:{
-                    type:signatureType,
-                    documentId:documentId,
+                    model:signatureType,
+                    document_id:documentId,
                 }
             }).then(async(res)=>{
                 this.documentBase64 = res.data.data
+                console.log(res.data.data)
                 try{
                     await this._checkVersion()
                     EIMZOClient.listAllUserKeys(
@@ -175,8 +176,8 @@ export const useSignatureStore = defineStore('signatureStore', {
             const callback = this.successCallback
             const data = {
                 code:pkcs7,
-                documentId:this.documentId,
-                type: this.signatureType,
+                confirmation_id:1,
+                model: this.signatureType,
                 pin:this.workerPin,
             }
             $ApiService.documentService._confirmationDocument({data}).then((res)=>{

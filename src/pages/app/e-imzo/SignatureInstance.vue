@@ -9,7 +9,6 @@ const store = useSignatureStore()
 const activeCallback = computed(()=>{
   if(store.signatureType === store.signatureTypes.auth) return store._auth
   if(store.signatureType === store.signatureTypes.contract) return store._contract
-
 })
 
 

@@ -227,6 +227,15 @@
     "examPage": {
         "name": "Imtixonlar"
     },
+    "workerProfile": {
+        "tabs": {
+            "personal": "Shaxsiy",
+            "education": "Ma'lumoti",
+            "career": "Faoliyati",
+            "relative": "Qarindoshlari",
+            "others": "Boshqalar"
+        }
+    },
     "departmentPage": {
         "name": "Bo'linmalar",
         "createTitle": "Bo'linma qo'shish",

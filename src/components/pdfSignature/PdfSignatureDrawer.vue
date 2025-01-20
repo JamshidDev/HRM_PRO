@@ -4,7 +4,7 @@ import {Signature20Filled,
   CloudArrowDown16Filled} from "@vicons/fluent"
 import PdfViewer from "./PdfViewer.vue"
 import {UIUser} from "@/components/index.js"
-import {usePdfViewerStore} from "@/store/modules/index.js"
+import {usePdfViewerStore, useSignatureStore} from "@/store/modules/index.js"
 import ConfirmationList from "./ui/ConfirmationList.vue"
 
 const pdfViewerRef = ref(null)
@@ -13,9 +13,15 @@ const pdfViewerRef = ref(null)
 const emits = defineEmits(["onClose", "onEdit"])
 
 const store = usePdfViewerStore()
+const signatureStore = useSignatureStore()
 
 const onSaveSignature = ()=>{
-  store.addQRCodeToPDF()
+  // store.addQRCodeToPDF()
+  signatureStore._signatureDocument(signatureStore.signatureTypes.contract,11,onSuccess)
+}
+
+const onSuccess = (v)=>{
+  console.log(v)
 }
 
 const onClose = ()=>{
@@ -41,6 +47,7 @@ const getDocument =async (document_id, model)=>{
     store.confirmations = v.confirmations
     store.document = v
     store.pdfUrl = v.document.url
+    store.permissions = v.signature
     store.loadPdf()
      // pdfViewerRef.value.loadPdf(v.document.url)
   }).finally(()=>{
@@ -62,7 +69,7 @@ defineExpose({
         <n-spin v-model:show="store.loading">
           <div class="w-full h-screen overflow-hidden flex flex-col">
             <div class="w-full h-[60px] border-b border-gray-300 flex items-center justify-between px-4">
-              <div>
+              <div class="flex gap-x-4">
                 <n-button @click="onClose()" type="error" secondary>
                   {{$t('content.close')}}
                   <template #icon>
@@ -73,10 +80,12 @@ defineExpose({
                   </template>
 
                 </n-button>
+                <div>
+                  <div class="text-gray-600 text-sm uppercase font-medium">{{store.document?.document?.file_name}}</div>
+                  <div class="text-xs text-gray-400">15.01.2025</div>
+                </div>
               </div>
               <div>
-                <div class="text-gray-600 text-sm uppercase font-medium">{{store.document?.document?.file_name}}</div>
-                <div class="text-xs text-gray-400">15.01.2025</div>
               </div>
               <div class="flex gap-6">
                 <n-input-number
@@ -107,7 +116,7 @@ defineExpose({
 
             <div class="w-full flex justify-between" style="height: calc(100vh - 60px)">
               <div class="flex flex-col-reverse w-[300px] h-full bg-surface-ground border-r border-surface-line px-2 py-4">
-                <div class="bg-gray-300 rounded-xl border border-gray-400 h-[100px]"></div>
+                <div v-if="store.permissions?.qrcode" class="bg-gray-300 rounded-xl border border-gray-400 h-[100px]"></div>
               </div>
               <div class="w-[860px] h-full flex">
                 <PdfViewer ref="pdfViewerRef"/>
@@ -119,7 +128,7 @@ defineExpose({
                 </div>
 
 
-                <div class="w-full bg-gray-300 rounded-xl border border-gray-400 flex flex-col p-1">
+                <div v-if="store.permissions?.signature" class="w-full bg-gray-300 rounded-xl border border-gray-400 flex flex-col p-1">
                   <div class="bg-white rounded-xl p-1 mb-4 shadow">
                     <UIUser
                         :short="false"
@@ -132,7 +141,12 @@ defineExpose({
                       }"
                     />
                   </div>
-                  <n-button @click="onSaveSignature" class="shadow cursor-pointer" type="primary">{{$t('content.signatureDocument')}}
+                  <n-button
+                      :disabled="!store.permissions?.signature"
+                      @click="onSaveSignature"
+                      class="shadow cursor-pointer"
+                      :type="Boolean(store.permissions?.signature)? 'primary' : 'default'"
+                  >{{$t('content.signatureDocument')}}
                     <template #icon>
                       <Signature20Filled/>
                     </template>

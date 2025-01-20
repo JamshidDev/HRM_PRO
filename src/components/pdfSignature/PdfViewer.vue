@@ -86,6 +86,7 @@ onMounted(()=>{
   <div class="w-full flex">
     <div ref="scrollElementRef" class="flex flex-col mx-auto overflow-y-auto relative pb-8" style="height: calc(100vh - 200px);)">
       <div
+          v-if="store.permissions?.qrcode"
           ref="dragElementRef"
           :style="style"
           style="position: fixed"
@@ -99,11 +100,11 @@ onMounted(()=>{
       </div>
     </div>
     <PdfSignature ref="pdfSignatureRef" />
-    <div class="flex flex-col w-[200px] fixed top-[70px] left-[10px] bg-yellow-300 p-4 rounded-xl font-medium text-xs">
-      <span>CordX:{{store.qrCodeX}}</span>
-      <span>CordY:{{store.qrCodeY}}</span>
-      <span>Page:{{store.pageIndex}}</span>
-      <n-button @click="store.addQRCodeToPDF()" type="info" size="tiny">Generate pdf</n-button>
-    </div>
+<!--    <div class="flex flex-col w-[200px] fixed top-[70px] left-[10px] bg-yellow-300 p-4 rounded-xl font-medium text-xs">-->
+<!--      <span>CordX:{{store.qrCodeX}}</span>-->
+<!--      <span>CordY:{{store.qrCodeY}}</span>-->
+<!--      <span>Page:{{store.pageIndex}}</span>-->
+<!--      <n-button @click="store.addQRCodeToPDF()" type="info" size="tiny">Generate pdf</n-button>-->
+<!--    </div>-->
   </div>
 </template>

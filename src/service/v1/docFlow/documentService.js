@@ -1,7 +1,5 @@
 import axios from "@/service/index.js"
 
-
-
 const _confirmationDocument = async (payload)=>{
     return await axios.post(`/v1/confirmation/document/signature`, payload.data)
 }

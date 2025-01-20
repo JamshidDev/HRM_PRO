@@ -1,0 +1,245 @@
+<script setup>
+import {useWorkerProfileStore, useComponentStore} from "@/store/modules/index.js"
+import validationRules from "@/utils/validationRules.js"
+import Utils from "@/utils/Utils.js"
+
+const store = useWorkerProfileStore()
+const componentStore = useComponentStore()
+
+onMounted(()=>{
+  componentStore._enums()
+})
+
+</script>
+
+<template>
+  <n-form
+      class="w-full grid grid-cols-12 gap-x-4 px-2"
+      ref="formRef"
+      :rules="validationRules.personalForm"
+      :model="store.payload"
+  >
+    <n-form-item
+        class="w-full col-span-4"
+        :label="$t(`createWorkerPage.form.lastName`)"
+        path="last_name">
+      <n-input
+          class="w-full"
+          type="text"
+          :placeholder="$t(`content.enterField`)"
+          v-model:value="store.payload.name"
+      />
+    </n-form-item>
+    <n-form-item
+        class="w-full col-span-4"
+        :label="$t(`createWorkerPage.form.firstName`)"
+        path="last_name">
+      <n-input
+          class="w-full"
+          type="text"
+          :placeholder="$t(`content.enterField`)"
+          v-model:value="store.payload.name"
+      />
+    </n-form-item>
+    <n-form-item
+        class="w-full col-span-4"
+        :label="$t(`createWorkerPage.form.middleName`)"
+        path="last_name">
+      <n-input
+          class="w-full"
+          type="text"
+          :placeholder="$t(`content.enterField`)"
+          v-model:value="store.payload.name"
+      />
+    </n-form-item>
+    <n-form-item
+        class="col-span-4"
+        :label="$t(`createWorkerPage.form.birthday`)"
+        path="birthday">
+      <n-date-picker
+          class="w-full"
+          v-model:value="store.payload.name"
+          type="date"
+          :placeholder="$t(`content.choose`)"
+      />
+    </n-form-item>
+    <n-form-item
+        class="col-span-4"
+        :label="$t(`createWorkerPage.form.country`)"
+        path="country_id">
+      <n-select
+          v-model:value="store.payload.country_id"
+          filterable
+          :placeholder="$t(`content.choose`)"
+          :options="componentStore.countryList"
+          label-field="name"
+          value-field="id"
+          :loading="componentStore.countryLoading"
+      />
+    </n-form-item>
+    <n-form-item
+        class="col-span-4"
+        :label="$t(`createWorkerPage.form.region`)"
+        path="region_id">
+      <n-select
+          v-model:value="store.payload.region_id"
+          @update:value="store.changeRegion"
+          filterable
+          :placeholder="$t(`content.choose`)"
+          :options="componentStore.regionList"
+          label-field="name"
+          value-field="id"
+          :loading="componentStore.regionLoading"
+      />
+    </n-form-item>
+    <n-form-item
+        class="col-span-4"
+        :label="$t(`createWorkerPage.form.city`)"
+        path="city_id">
+      <n-select
+          :disabled="!store.payload.region_id"
+          v-model:value="store.payload.city_id"
+          filterable
+          :placeholder="$t(`content.choose`)"
+          :options="store.districtList"
+          label-field="name"
+          value-field="id"
+          :loading="store.districtLoading"
+      />
+    </n-form-item>
+    <n-form-item
+        class="col-span-4"
+        :label="$t(`createWorkerPage.form.currentRegion`)"
+        path="current_region_id">
+      <n-select
+          v-model:value="store.payload.current_region_id"
+          @update:value="store.changeCurrentRegion"
+          filterable
+          :placeholder="$t(`content.choose`)"
+          :options="componentStore.regionList"
+          label-field="name"
+          value-field="id"
+          :loading="componentStore.regionLoading"
+      />
+    </n-form-item>
+    <n-form-item
+        class="col-span-4"
+        :label="$t(`createWorkerPage.form.currentCity`)"
+        path="current_city_id">
+      <n-select
+          :disabled="!store.payload.current_region_id"
+          v-model:value="store.payload.current_city_id"
+          filterable
+          :placeholder="$t(`content.choose`)"
+          :options="store.currentDistrictList"
+          label-field="name"
+          value-field="id"
+          :loading="store.currentDistrictLoading"
+      />
+    </n-form-item>
+    <n-form-item
+        class="col-span-4"
+        :label="$t(`createWorkerPage.form.address`)"
+        path="address">
+      <n-input
+          class="w-full"
+          type="text"
+          :placeholder="$t(`content.enterField`)"
+          v-model:value="store.payload.address"
+      />
+    </n-form-item>
+    <n-form-item
+        class="col-span-4"
+        :label="$t(`createWorkerPage.form.academicTitle`)"
+        path="academic_title">
+      <n-select
+          v-model:value="store.payload.academic_title"
+          filterable
+          :placeholder="$t(`content.choose`)"
+          :options="componentStore.academicTitleList"
+          label-field="name"
+          value-field="id"
+          :loading="componentStore.enumLoading"
+      />
+    </n-form-item>
+    <n-form-item
+        class="col-span-4"
+        :label="$t(`createWorkerPage.form.academicDegree`)"
+        path="academic_degree">
+      <n-select
+          v-model:value="store.payload.academic_degree"
+          filterable
+          :placeholder="$t(`content.choose`)"
+          :options="componentStore.academicDegreeList"
+          label-field="name"
+          value-field="id"
+          :loading="componentStore.enumLoading"
+      />
+    </n-form-item>
+    <n-form-item
+        class="col-span-4"
+        :label="$t(`createWorkerPage.form.nationality_id`)"
+        path="nationality_id">
+      <n-select
+          v-model:value="store.payload.nationality_id"
+          filterable
+          :placeholder="$t(`content.choose`)"
+          :options="componentStore.nationalityList"
+          label-field="name"
+          value-field="id"
+          :loading="componentStore.nationalityLoading"
+      />
+    </n-form-item>
+    <n-form-item
+        class="col-span-4"
+        :label="$t(`createWorkerPage.form.party`)"
+        path="party">
+      <n-select
+          v-model:value="store.payload.party"
+          filterable
+          :placeholder="$t(`content.choose`)"
+          :options="componentStore.partyList"
+          label-field="name"
+          value-field="id"
+          :loading="componentStore.enumLoading"
+      />
+    </n-form-item>
+    <n-form-item
+        class="col-span-4"
+        :label="$t(`createWorkerPage.form.pin`)"
+        path="pin">
+      <n-input
+          class="w-full"
+          type="text"
+          :placeholder="$t(`content.enterField`)"
+          v-model:value="store.payload.pin"
+          v-mask="`####-####-####-##`"
+      />
+    </n-form-item>
+    <n-form-item
+        class="col-span-4"
+        :label="$t(`createWorkerPage.form.inn`)"
+        path="inn">
+      <n-input
+          class="w-full"
+          type="text"
+          :placeholder="$t(`content.enterField`)"
+          v-model:value="store.payload.inn"
+          :allow-input="Utils.onlyAllowNumber"
+      />
+    </n-form-item>
+    <div class="col-span-12">
+      <n-button
+          ghost
+          style="width:100%"
+          class="w-full block"
+          :loading="store.loading"
+      >{{$t(`content.save`)}}</n-button>
+    </div>
+
+
+  </n-form>
+<div class="grid grid-cols-12">
+
+</div>
+</template>
