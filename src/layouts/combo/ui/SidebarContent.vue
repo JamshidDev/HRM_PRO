@@ -50,8 +50,18 @@ const miniMenu = computed(()=>{
 })
 
 const panelMenu = computed(()=>{
+  console.log(menuPath.value)
   let index = navigations.findIndex((v=>v.path === menuPath.value))
   return (index === -1)? navigations[0].children : navigations[index].children
+})
+
+const imgSrc = computed(()=>{
+  if(menuPath.value === '/hrm') return '/public/app/hrm.png'
+  else if (menuPath.value === '/lms') return '/public/app/lms.png'
+  else if (menuPath.value === '/admin') return '/public/app/admin.png'
+  else if (menuPath.value === '/chat') return '/public/app/chat.png'
+  else if (menuPath.value === '/docflow') return '/public/app/docflow.png'
+  else return '/public/app/hrm.png'
 })
 
 const isComboxMenu =(path)=>{
@@ -96,7 +106,7 @@ const pushFirstMenu = (path)=>{
       <transition name="slide-right" mode="out-in">
         <div v-if="showPanel">
           <div class="image-content">
-            <img class="image_element" src="/public/app/hrm.png" alt="">
+            <img class="image_element" :src="imgSrc" alt="">
           </div>
           <template v-for="item in panelMenu" :key="item">
 
