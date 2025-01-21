@@ -20,10 +20,6 @@ export const useDocumentStore = defineStore('documentStore', {
                 name:'documentPage.tabs.contract',
                 key:1,
             },
-            {
-                name:'documentPage.tabs.confirmation',
-                key:2,
-            },
         ],
         activeTab:1,
     }),

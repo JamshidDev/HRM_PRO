@@ -17,7 +17,7 @@ const onEdit = (v)=>{
     firstName:v.worker.first_name,
     middleName:v.worker.middle_name,
     position:v.position,
-    photos:v.worker.photo || Utils.noAvailableImage,
+    photo:v.worker.photo || Utils.noAvailableImage,
     pin:v.worker.uuid
   }
   store.visibleType = false
@@ -85,6 +85,7 @@ const changePage = (v)=>{
         </tbody>
       </n-table>
       <UIPagination
+          v-show="store.list.length>10"
           :page="store.params.page"
           :per_page="store.params.size"
           :total="store.totalItems"

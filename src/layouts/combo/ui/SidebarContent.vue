@@ -50,7 +50,6 @@ const miniMenu = computed(()=>{
 })
 
 const panelMenu = computed(()=>{
-  console.log(menuPath.value)
   let index = navigations.findIndex((v=>v.path === menuPath.value))
   return (index === -1)? navigations[0].children : navigations[index].children
 })

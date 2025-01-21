@@ -117,6 +117,7 @@
 
     },
     "confirmation": {
+        "name": "Shartnomalar",
         "contract": {
             "form": {
                 "number": "Raqami",
@@ -125,6 +126,7 @@
                 "worker": "Xodim"
             }
         }
+
     },
     "countryPage": {
         "name": "Davlatlar",
@@ -363,6 +365,7 @@
             "organization": "Korxona"
         },
         "signature": {
+            "history": "O'zgarishlar tarixi",
             "viewer": "Hujjat bilan tanishuvchilar",
             "status": {
                 "Process": "Jarayonda"

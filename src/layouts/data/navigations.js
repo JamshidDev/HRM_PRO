@@ -31,6 +31,11 @@ export const navigations = [
                 path:Utils.routeHrmPathMaker(AppPaths.Document),
                 icon:'bx bxs-folder',
             },
+            {
+                label:t('confirmationPage.name'),
+                path:Utils.routeHrmPathMaker(AppPaths.Confirmation),
+                icon:'bx bxs-folder',
+            },
         ]
     },
     {
@@ -55,9 +60,14 @@ export const navigations = [
         icon:'bx bx-message-rounded-dots',
         children:[
             {
-                parentIndex:1,
                 label:t('documentHistoryPage.name'),
                 path:Utils.routeDocFlowPathMaker(AppPaths.DocumentHistory),
+                icon:'bx bxs-folder',
+                children:[]
+            },
+            {
+                label:t('confirmation.name'),
+                path:Utils.routeDocFlowPathMaker(AppPaths.Confirmation),
                 icon:'bx bxs-folder',
                 children:[]
             },

@@ -100,14 +100,7 @@ const onOpenFile = (v)=>{
             <span class="text-sm text-gray-500">{{Utils.timeWithMonth(item?.contract_date)}}</span>
           </td>
           <td>
-            <div class="flex gap-2">
-              <n-button
-                  secondary
-                  type="success"
-                  @click="onSignature(item)"
-                  :loading="signature.loading"
-              >{{$t('contractPage.statuses.confirm')}}
-              </n-button>
+            <div class="flex gap-2 justify-center">
               <n-button @click="onOpenFile(item)"  type="info" secondary circle class="cursor-pointer">
                 <template #icon>
                   <n-icon size="24">

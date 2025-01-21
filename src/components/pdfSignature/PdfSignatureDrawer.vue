@@ -1,7 +1,7 @@
 <script setup>
 import {Signature20Filled,
   PanelLeftContract20Filled, DocumentEdit24Regular,
-  CloudArrowDown16Filled} from "@vicons/fluent"
+  CloudArrowDown16Filled, History20Regular} from "@vicons/fluent"
 import PdfViewer from "./PdfViewer.vue"
 import {UIUser} from "@/components/index.js"
 import {usePdfViewerStore, useSignatureStore} from "@/store/modules/index.js"
@@ -115,7 +115,19 @@ defineExpose({
             </div>
 
             <div class="w-full flex justify-between" style="height: calc(100vh - 60px)">
-              <div class="flex flex-col-reverse w-[300px] h-full bg-surface-ground border-r border-surface-line px-2 py-4">
+              <div class="flex flex-col w-[300px] h-full bg-surface-ground border-r border-surface-line px-2 py-4">
+                <div class="w-full" style="height: calc(100% - 100px)">
+                  <n-badge type="info" :value="store.document?.histories" class="w-full">
+                    <n-button  style="width:100%">
+                      <template #icon>
+                        <History20Regular/>
+                      </template>
+                      {{$t('documentPage.signature.history')}}
+                    </n-button>
+                  </n-badge>
+
+                </div>
+
                 <div v-if="store.permissions?.qrcode" class="bg-gray-300 rounded-xl border border-gray-400 h-[100px]"></div>
               </div>
               <div class="w-[860px] h-full flex">
