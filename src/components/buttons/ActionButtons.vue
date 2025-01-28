@@ -1,5 +1,5 @@
 <script setup>
-import {Edit16Regular, Delete28Regular, AppRecent24Regular, AddCircle32Regular} from "@vicons/fluent"
+import {Edit16Regular, Delete28Regular, Screenshot20Regular, AddCircle32Regular} from "@vicons/fluent"
 
 const props = defineProps({
   visibleAddBtn:{
@@ -80,7 +80,7 @@ const handleNegativeClick = ()=>{
       type="success"
   >
     <template #icon>
-      <n-icon><AddCircle32Regular /></n-icon>
+      <n-icon size="26"><AddCircle32Regular /></n-icon>
     </template>
   </n-button>
 
@@ -94,7 +94,7 @@ const handleNegativeClick = ()=>{
       type="success"
   >
     <template #icon>
-      <n-icon><AppRecent24Regular /></n-icon>
+      <n-icon size="22"><Screenshot20Regular /></n-icon>
     </template>
   </n-button>
 
@@ -112,6 +112,7 @@ const handleNegativeClick = ()=>{
   </n-button>
 
   <n-popconfirm
+      v-if="visibleDeleteBtn"
       @positive-click="handlePositiveClick"
       @negative-click="handleNegativeClick"
       :negative-text="$t('content.no')"
@@ -119,7 +120,6 @@ const handleNegativeClick = ()=>{
   >    <template #trigger>
     <n-button
         ref="confirm_btn"
-        v-if="visibleDeleteBtn"
         :loading="loadingDelete"
         strong
         secondary
@@ -132,8 +132,6 @@ const handleNegativeClick = ()=>{
   </template>
     {{$t('content.confirmDelete')}}
   </n-popconfirm>
-
-
 
   <slot name="last"></slot>
 

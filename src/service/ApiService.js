@@ -30,6 +30,7 @@ import scheduleService from "@/service/v1/admin/scheduleService.js"
 import workdayService from "@/service/v1/admin/workdayService.js"
 import commandTempService from "@/service/v1/admin/commandTempService.js"
 import specialityService from "@/service/v1/admin/specialityService.js"
+import commandService from "@/service/v1/docFlow/commandService.js"
 export default {
     authService,
     accountService,
@@ -62,4 +63,5 @@ export default {
     workdayService,
     commandTempService,
     specialityService,
+    commandService,
 }

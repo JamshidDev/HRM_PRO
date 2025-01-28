@@ -1,19 +1,17 @@
 import {AppPaths} from "@/utils/index.js"
 import Utils from "@/utils/Utils.js"
-import DocumentHistory from "@/pages/docFlow/documentHistory/DocumentHistory.vue"
-import ConfirmationPage from "@/pages/hrm/confirmation/ConfirmationPage.vue"
-import ConfirmationOrder from "@/pages/docFlow/document/confirmation/ConfirmationOrder.vue"
+import ConfirmationContract from "@/pages/docFlow/confirmation/contract/ConfirmationContract.vue"
+import ConfirmCommand from "@/pages/docFlow/confirmation/command/ConfirmCommand.vue"
 
 export default [
     {
-        path:Utils.routeDocFlowPathMaker(AppPaths.DocumentHistory),
-        name:AppPaths.DocumentHistory.substring(1),
-        component:DocumentHistory,
+        path:Utils.routeDocFlowPathMaker(AppPaths.ConfContract),
+        component:ConfirmationContract,
         children:[],
     },
     {
-        path:Utils.routeDocFlowPathMaker(AppPaths.Confirmation),
-        component:ConfirmationOrder,
+        path:Utils.routeDocFlowPathMaker(AppPaths.ConfCommand),
+        component:ConfirmCommand,
         children:[],
     }
 

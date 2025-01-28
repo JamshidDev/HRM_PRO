@@ -40,6 +40,8 @@ export const AppPaths = {
     Schedule:"/schedule",
     Workday:"/workday",
     WorkerProfile:"/worker-profile",
+    ConfContract:"/conf-contract",
+    ConfCommand:"/conf-command",
 }
 
 export const AppLayouts ={

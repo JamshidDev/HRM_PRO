@@ -43,10 +43,17 @@
         "clear": "Tozalash",
         "continue": "Davom etish",
         "close": "Yopish",
+        "hide": "Yashirish",
         "closeAndClear": "Yopish va tozalash",
         "notWorker": "Xodim topilmadi",
         "worker": "Xodim",
         "edit": "Tahrirlash",
+        "status": "Holati",
+        "Process": "Jarayaonda",
+        "Read": "Tanishgan",
+        "Success": "Kelishilgan",
+        "Rejected": "Rad etilgan",
+        "Deleted": "O'chirilgan",
         "sum": "So'm"
     },
     "rules": {
@@ -339,7 +346,22 @@
         "updateTitle": "Shartnomani tahrirlash",
         "tabs": {
             "contract": "Shartnomalar",
-            "confirmation": "Tasdiqlashlar"
+            "command": "Buyruqlar"
+        },
+        "command": {
+            "createTitle": "Buyruq yaratish",
+            "updateTitle": "Buyruqni tahrirlash",
+            "form": {
+                "command_date": "Buyruq sanasi",
+                "type": "Buyruq turi",
+                "byContract": "{n} - raqamli shartnoma asosida",
+                "confirm": "Tasdiqlovchilar",
+                "command_number": "Buyruq raqami"
+            },
+            "table": {
+
+            }
+
         },
         "form": {
             "candidate": "Xodim",
@@ -365,7 +387,7 @@
             "organization": "Korxona"
         },
         "signature": {
-            "history": "O'zgarishlar tarixi",
+            "history": "O'zgarishlar tarixini ko'rish",
             "viewer": "Hujjat bilan tanishuvchilar",
             "status": {
                 "Process": "Jarayonda"
@@ -390,11 +412,13 @@
             "worker": "Xodim",
             "date": "Sana",
             "organization": "Korxona",
+            "command": "Buyruq",
             "status": "Holati"
         },
         "statuses": {
             "confirm": "Tasdiqlash"
-        }
+        },
+        "confirmText": "{n} raqamli shartnoma asosida buyruq yaratasizmi?"
     },
     "documentSetting": {
         "name": "Hujjat sozlamalari",

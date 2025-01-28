@@ -22,7 +22,7 @@ const onEdit = (v)=>{
   }
   store.visibleType = false
   store.elementId = v.id
-  store.payload.pin = v.worker.uuid
+  store.payload.pin = v.worker.id.toString()
   store.visible = true
 
 }

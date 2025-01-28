@@ -31,6 +31,13 @@ export const usePdfViewerStore = defineStore('pdfViewerStore', {
         permissions:null,
 
 
+        model:null,
+        document_id:null,
+        historyLoading:false,
+        historyList:[],
+        show:false,
+
+
 
 
     }),
@@ -95,6 +102,26 @@ export const usePdfViewerStore = defineStore('pdfViewerStore', {
                console.error('Error loading PDF:', err);
            }
        },
+        _history(){
+            this.historyList = []
+           this.historyLoading = true
+           let params = {
+               document_id:this.document_id,
+               model:this.model,
+           }
+           $ApiService.documentService._history({params}).then((res)=>{
+               this.historyList = res.data.data
+           }).finally(()=>{
+               this.show = true
+               this.historyLoading = false
+           })
+        },
+        _resetForm(){
+           this.confirmations = []
+           this.document = null
+           this.historyList = []
+            this.show = false
+        }
     }
 
 })

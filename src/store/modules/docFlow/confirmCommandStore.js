@@ -1,7 +1,7 @@
 import {defineStore} from "pinia";
 import i18n from "@/i18n/index.js"
 const {t} = i18n.global
-export const useDocumentStore = defineStore('documentStore', {
+export const useConfirmCommandStore = defineStore('confirmCommandStore', {
     state:()=>({
         list:[],
         loading:false,
@@ -12,34 +12,28 @@ export const useDocumentStore = defineStore('documentStore', {
         elementId:null,
         totalItems:0,
         params:{
-            document_id:null,
-            model:null,
+            page:1,
+            per_page:10,
+            search:null,
         },
-        tabList:[
-            {
-                name:'documentPage.tabs.contract',
-                key:1,
-            },
-            {
-                name:'documentPage.tabs.command',
-                key:2,
-            },
-        ],
-        activeTab:1,
     }),
     actions:{
-        _openDocument(){
-            $ApiService.documentService._openDocument({params:this.params}).then((res)=>{
+        _index(){
+            this.loading= true
+            $ApiService.documentService._confirmationCommand({params:this.params}).then((res)=>{
+                this.list= res.data.data.data
                 this.totalItems = res.data.data.total
             }).finally(()=>{
                 this.loading= false
             })
         },
 
-
-
-
-
+        openVisible(data){
+            this.visible = data
+        },
+        resetForm(){
+            this.elementId = null
+        },
     }
 
 })

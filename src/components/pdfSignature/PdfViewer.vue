@@ -28,7 +28,6 @@ watchEffect(()=>{
 
   const cordY = (((height - (page-1)*store.pdfHeight))/zoom).toFixed(2)
   store.qrCodeY = Number(cordY)
-  console.log(`y:${cordY} x:${store.qrCodeX}`)
 
   store.pageIndex = page - 1
 

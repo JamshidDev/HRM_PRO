@@ -12,6 +12,8 @@ export const useContractStore = defineStore('contractStore', {
         totalItems:0,
         structureCheck:[],
         departmentCheck:[],
+        confirmationVisible:false,
+        number:null,
         payload:{
             pin:null,
             organization_id:[],
@@ -86,11 +88,24 @@ export const useContractStore = defineStore('contractStore', {
         },
         _delete(){
             this.deleteLoading = true
-            $ApiService.nationalityService._delete({id:this.elementId}).then((res)=>{
+            $ApiService.contractService._delete({id:this.elementId}).then((res)=>{
                 this._index()
             }).finally(()=>{
                 this.deleteLoading = false
             })
+        },
+        _finishContract(id){
+            this.loading = true
+            const data = {
+                command_status:false,
+                contract_id:id
+            }
+            $ApiService.commandService._create({data}).then(()=>{
+                this._index()
+            }).finally(()=>{
+                this.loading = false
+            })
+
         },
         openVisible(data){
             this.visible = data

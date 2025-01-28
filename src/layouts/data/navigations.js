@@ -60,14 +60,14 @@ export const navigations = [
         icon:'bx bx-message-rounded-dots',
         children:[
             {
-                label:t('documentHistoryPage.name'),
-                path:Utils.routeDocFlowPathMaker(AppPaths.DocumentHistory),
+                label:t('confirmation.name'),
+                path:Utils.routeDocFlowPathMaker(AppPaths.ConfContract),
                 icon:'bx bxs-folder',
                 children:[]
             },
             {
-                label:t('confirmation.name'),
-                path:Utils.routeDocFlowPathMaker(AppPaths.Confirmation),
+                label:t('documentPage.tabs.command'),
+                path:Utils.routeDocFlowPathMaker(AppPaths.ConfCommand),
                 icon:'bx bxs-folder',
                 children:[]
             },

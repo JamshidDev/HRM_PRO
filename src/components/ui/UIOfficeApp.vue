@@ -7,6 +7,8 @@ const accountStore = useAccountStore()
 const pdfSignatureRef = ref(null)
 const payload = ref(null)
 
+const emits = defineEmits(['signatureEv'])
+
 const openPdf = (document_id, model)=>{
   payload.value = {document_id,model}
   pdfSignatureRef.value.getDocument(document_id, model)
@@ -54,7 +56,7 @@ defineExpose({
 
 <template>
   <div>
-    <UIPdfSignatureDrawer ref="pdfSignatureRef" @onEdit="onEditPdf"/>
+    <UIPdfSignatureDrawer ref="pdfSignatureRef" @onEdit="onEditPdf" @signatureEv="emits('signatureEv')"/>
     <UIOnlyOfficeDrawer @onBack="onBackWord"/>
   </div>
 </template>

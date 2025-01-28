@@ -4,23 +4,29 @@ import {Signature20Filled,
   CloudArrowDown16Filled, History20Regular} from "@vicons/fluent"
 import PdfViewer from "./PdfViewer.vue"
 import {UIUser} from "@/components/index.js"
-import {usePdfViewerStore, useSignatureStore} from "@/store/modules/index.js"
+import {usePdfViewerStore, useSignatureStore, useAccountStore} from "@/store/modules/index.js"
 import ConfirmationList from "./ui/ConfirmationList.vue"
+import LeftContent from "./ui/LeftContent.vue"
+import Utils from "../../utils/Utils.js"
 
 const pdfViewerRef = ref(null)
 
 
-const emits = defineEmits(["onClose", "onEdit"])
+const emits = defineEmits(["onClose", "onEdit", 'signatureEv'])
 
 const store = usePdfViewerStore()
 const signatureStore = useSignatureStore()
+const accountStore = useAccountStore()
 
 const onSaveSignature = ()=>{
+  console.log(accountStore.account)
   // store.addQRCodeToPDF()
-  signatureStore._signatureDocument(signatureStore.signatureTypes.contract,11,onSuccess)
+  signatureStore._signatureDocument(signatureStore.signatureTypes.contract,store.document_id,onSuccess)
 }
 
 const onSuccess = (v)=>{
+  signatureStore.visible = false
+  emits('signatureEv')
   console.log(v)
 }
 
@@ -38,13 +44,30 @@ const onZoom = async ()=>{
   await store.loadPdf()
 }
 
+const signatureMan = computed(()=>{
+   const {worker} = store.permissions?.current_user
+    if(worker){
+      return {
+        photo:worker.photo,
+        lastName:worker.last_name,
+        firstName:worker.first_name,
+        middleName:worker.middle_name,
+        position:store.permissions?.current_user?.position
+      }
+    }else return  null
+})
+
 
 const getDocument =async (document_id, model)=>{
+  store.document_id = document_id
+  store.model = model
+  store._resetForm()
+
   store.visible = true
   store.loading = true
   $ApiService.documentService._openDocument({params:{model,document_id}}).then((res)=>{
     const v = res.data.data
-    store.confirmations = v.confirmations
+    store.confirmations = v.confirmations.filter(x=>x.type !== 'w')
     store.document = v
     store.pdfUrl = v.document.url
     store.permissions = v.signature
@@ -82,27 +105,27 @@ defineExpose({
                 </n-button>
                 <div>
                   <div class="text-gray-600 text-sm uppercase font-medium">{{store.document?.document?.file_name}}</div>
-                  <div class="text-xs text-gray-400">15.01.2025</div>
+                  <div class="text-xs text-gray-400">{{Utils.timeOnlyDate(store?.document?.document?.created)}}</div>
                 </div>
               </div>
               <div>
               </div>
               <div class="flex gap-6">
-                <n-input-number
-                    class="w-[100px]"
-                    v-model:value="store.scale"
-                    min="1"
-                    max="1.6"
-                    step="0.1"
-                    @update:value="onZoom"
-                />
-                <n-button type="success" secondary circle>
-                  <template #icon>
-                    <n-icon size="24">
-                      <CloudArrowDown16Filled/>
-                    </n-icon>
-                  </template>
-                </n-button>
+<!--                <n-input-number-->
+<!--                    class="w-[100px]"-->
+<!--                    v-model:value="store.scale"-->
+<!--                    min="1"-->
+<!--                    max="1.6"-->
+<!--                    step="0.1"-->
+<!--                    @update:value="onZoom"-->
+<!--                />-->
+<!--                <n-button type="success" secondary circle>-->
+<!--                  <template #icon>-->
+<!--                    <n-icon size="24">-->
+<!--                      <CloudArrowDown16Filled/>-->
+<!--                    </n-icon>-->
+<!--                  </template>-->
+<!--                </n-button>-->
                 <n-button @click="onEdit" type="info" secondary>
                   {{$t('content.edit')}}
                   <template #icon>
@@ -117,15 +140,7 @@ defineExpose({
             <div class="w-full flex justify-between" style="height: calc(100vh - 60px)">
               <div class="flex flex-col w-[300px] h-full bg-surface-ground border-r border-surface-line px-2 py-4">
                 <div class="w-full" style="height: calc(100% - 100px)">
-                  <n-badge type="info" :value="store.document?.histories" class="w-full">
-                    <n-button  style="width:100%">
-                      <template #icon>
-                        <History20Regular/>
-                      </template>
-                      {{$t('documentPage.signature.history')}}
-                    </n-button>
-                  </n-badge>
-
+                  <LeftContent/>
                 </div>
 
                 <div v-if="store.permissions?.qrcode" class="bg-gray-300 rounded-xl border border-gray-400 h-[100px]"></div>
@@ -144,13 +159,7 @@ defineExpose({
                   <div class="bg-white rounded-xl p-1 mb-4 shadow">
                     <UIUser
                         :short="false"
-                        :data="{
-                          photo:'dfsdf.pmg',
-                           lastName:'Raximov',
-                           firstName:'Jamshid',
-                           middleName:'Shuxrat ogli',
-                           position:'Bosh bugalter'
-                      }"
+                        :data="signatureMan"
                     />
                   </div>
                   <n-button

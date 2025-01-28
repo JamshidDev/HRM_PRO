@@ -1,62 +1,42 @@
 <script setup>
-import {Screenshot20Regular} from "@vicons/fluent"
-import {NoDataPicture, UIOfficeApp, UIPagination, UIUser} from "@/components/index.js"
-import {useContractStore, useSignatureStore, useOnlyOfficeStore} from "@/store/modules/index.js"
+import {ReceiptAdd24Regular, DocumentCheckmark24Regular, ArrowSyncCheckmark20Filled} from "@vicons/fluent"
+import {NoDataPicture, UIActionButton, UIPagination, UIUser, UIStatus} from "@/components/index.js"
+import {useContractStore} from "@/store/modules/index.js"
 import Utils from "@/utils/Utils.js"
 
 const store = useContractStore()
-const signature = useSignatureStore()
-const onlyOfficeStore = useOnlyOfficeStore()
-
-const props = defineProps({
-  data:{
-    type:Array,
-    default:[],
-  },
-  deep:{
-    type:Number,
-    default:null,
-  },
-  loading:{
-    type:Number,
-    default:null,
-  },
-  parentId:{
-    type:Number,
-    default:null,
-  },
-
-})
-
-const emits = defineEmits([ 'openOffice',])
 
 
 
-const onAdd = (v)=>{
-  store.activeDeep =props.deep
-  store.activeParentId =props.parentId
-  emits('onAdd', v)
-}
+const emits = defineEmits([ 'openOffice','commandEv'])
 
 const changePage = (v)=>{
   emits('onChangePage', v)
 }
 
-const onSignature = (v)=>{
-  // signature._signatureDocument(
-  //     signature.signatureTypes.contract,
-  //     v.id,
-  //     onSuccess
-  // )
-}
-
-const onSuccess = (data)=>{
-  console.log(data)
-}
-
 const onOpenFile = (v)=>{
   emits('openOffice', v.id)
 }
+
+const onEdit = (v)=>{
+  store.visibleType = false
+  store.visible = true
+  console.log(v)
+
+}
+
+const onDelete = (v)=>{
+  store.elementId = v.id
+  store._delete()
+}
+
+const openContract = (v, statusId)=>{
+  if(statusId === 1){
+    emits('commandEv',v)
+  }
+
+}
+
 </script>
 
 
@@ -73,10 +53,12 @@ const onOpenFile = (v)=>{
           <th class="!text-center min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
           <th class="min-w-[120px]">{{$t('contractPage.table.worker')}}</th>
           <th class="w-[300px]">{{$t('contractPage.table.organization')}}</th>
-          <th class="min-w-[100px] w-[100px]">{{$t('contractPage.table.type')}}</th>
+          <th class="min-w-[200px] w-[200px]">{{$t('contractPage.table.type')}}</th>
+          <th class="min-w-[100px] w-[100px]">{{$t('contractPage.table.command')}}</th>
           <th class="w-[80px]">{{$t('contractPage.table.number')}}</th>
-          <th class="w-[140px]">{{$t('contractPage.table.date')}}</th>
-          <th class="min-w-[90px] w-[90px]">{{$t('content.action')}}</th>
+          <th class="w-[140px]">{{$t('contractPage.table.status')}}</th>
+          <th class="w-[100px]">{{$t('contractPage.table.date')}}</th>
+          <th class="min-w-[120px] w-[120px]">{{$t('content.action')}}</th>
         </tr>
         </thead>
         <tbody>
@@ -93,22 +75,33 @@ const onOpenFile = (v)=>{
                 }"
             />
           </td>
-          <td><span class="text-sm text-gray-500">{{item?.organization.name}}</span></td>
-          <td>{{item?.type}}</td>
+          <td><span class="text-sm">{{item?.organization.name}}</span></td>
+          <td><span class="text-sm">{{item?.type?.name}}</span></td>
+          <td><n-button
+              :type="item?.command_status.id === 1? 'primary' : 'default'"
+              @click="openContract(item, item?.command_status.id)"
+              size="small">
+            <template #icon>
+              <ReceiptAdd24Regular v-if="item?.command_status.id === 1" />
+              <ArrowSyncCheckmark20Filled v-else-if="item?.command_status.id === 2"/>
+              <DocumentCheckmark24Regular v-else-if="item?.command_status.id === 3"/>
+            </template>
+            {{item?.command_status?.name}}</n-button></td>
           <td>{{item?.number}}</td>
+          <td><UIStatus :status="item?.status?.name"/></td>
           <td>
-            <span class="text-sm text-gray-500">{{Utils.timeWithMonth(item?.contract_date)}}</span>
+            <span class="text-sm">{{Utils.timeOnlyDate(item?.contract_date)}}</span>
           </td>
           <td>
-            <div class="flex gap-2 justify-center">
-              <n-button @click="onOpenFile(item)"  type="info" secondary circle class="cursor-pointer">
-                <template #icon>
-                  <n-icon size="24">
-                    <Screenshot20Regular />
-                  </n-icon>
-                </template>
-              </n-button>
-            </div>
+            <UIActionButton
+                :visible-view-btn="true"
+                :data="item"
+                :loading-delete="item.id === store.elementId && store.deleteLoading"
+                @onView="onOpenFile(item)"
+                @onDelete="onDelete"
+                @onEdit="onEdit"
+
+            />
           </td>
         </tr>
         </tbody>

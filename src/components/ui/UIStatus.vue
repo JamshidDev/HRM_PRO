@@ -1,30 +1,61 @@
 <script setup>
-import {CheckmarkCircle24Filled} from "@vicons/fluent"
+import {Timer16Regular, Eye16Filled, CheckmarkCircle24Filled, Checkmark28Filled} from "@vicons/fluent"
 const props = defineProps({
-  color:String,
-  text:String,
+  status:String,
+  size:String,
 })
+
+const statusList = [
+  {
+    name:"Process",
+    type:'warning',
+    icon:Timer16Regular,
+  },
+  {
+    name:"Read",
+    type:'default',
+    icon:Checkmark28Filled,
+  },
+  {
+    name:"Success",
+    type:'success',
+    icon:CheckmarkCircle24Filled,
+  },
+  {
+    name:"Rejected",
+    type:'error',
+    icon:Eye16Filled,
+  },
+  {
+    name:"Deleted",
+    type:'error',
+    icon:Eye16Filled,
+  },
+]
+
+const type = computed(()=>{
+  const v = statusList.filter((x)=>x.name === props.status)
+  if(Boolean(v.length)) return v[0].type
+  else return 'primary'
+})
+
+const icon = computed(()=>{
+  const v = statusList.filter((x)=>x.name === props.status)
+  if(Boolean(v.length)) return v[0].icon
+  else return Eye16Filled
+})
+
 </script>
 
 <template>
-<div class="flex justify-center" :class="`status-color-${color}`">
-  <div class="status-box flex items-center gap-x-1 border rounded-2xl p-1 shadow w-auto cursor-pointer" >
-    <n-icon size="18" class="status__icon">
-      <CheckmarkCircle24Filled/>
-    </n-icon>
-    <span class="text-xs status__text">{{text}}</span>
-  </div>
+<div class="w-full flex justify-center items-center">
+  <n-button :type="type" size="tiny">
+    <template #icon>
+      <component :is="icon" />
+    </template>
+    {{$t(`content.${status}`)}}
+  </n-button>
 </div>
 </template>
 
-<style scoped lang="scss">
-.status-color-success{
-  .status-box{
-    .status__text, .status__icon{
-      @apply text-success
-    }
-    @apply border-success
-  }
-}
-</style>
 

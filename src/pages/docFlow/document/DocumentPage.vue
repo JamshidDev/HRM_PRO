@@ -1,23 +1,38 @@
 <script setup>
-import {UIPageContent, UIPageFilter, UIModal, UIOnlyOfficeDrawer, UIPdfSignatureDrawer} from "@/components/index.js"
+import {UIPageContent, UIPageFilter, UIModal} from "@/components/index.js"
 import Tabs from "./ui/Tabs.vue"
-import contractForm from "./contract/contractForm.vue"
-import {useDocumentStore, useContractStore, useComponentStore} from "@/store/modules/index.js"
-const store = useContractStore()
+import {useContractStore, useComponentStore, useCommandStore, useDocumentStore} from "@/store/modules/index.js"
+const contractStore = useContractStore()
 const componentStore = useComponentStore()
-const documentStore = useDocumentStore()
+const commandStore = useCommandStore()
+const store = useDocumentStore()
 
 
 const onAdd = ()=>{
-  store.visible = true
-  store.visibleType = true
+  if(store.activeTab === store.tabList[0].key){
+    addContract()
+  }else if(store.activeTab === store.tabList[1].key){
+    addCommand()
+  }
+}
+
+const addCommand = ()=>{
+  commandStore.visibleType = true
+  commandStore.elementId = null
+  commandStore.resetForm()
+  commandStore.visible = true
+}
+
+const addContract = ()=>{
+  contractStore.visibleType = true
   componentStore.contractPanel=false
   componentStore.selectedWorker=null
-  store.resetForm()
+  contractStore.resetForm()
+  contractStore.visible = true
 }
 
 onMounted(()=>{
-  store._index()
+  contractStore._index()
 })
 
 </script>
@@ -25,14 +40,8 @@ onMounted(()=>{
 <template>
 <UIPageContent>
   <UIPageFilter
-   @onAdd="onAdd"/>
+      :show-filter-button="false"
+      @onAdd="onAdd"/>
   <Tabs/>
-  <UIModal
-      :title="$t('documentPage.createTitle')"
-      :width="1200"
-      v-model:visible="store.visible"
-  >
-    <contractForm/>
-  </UIModal>
 </UIPageContent>
 </template>

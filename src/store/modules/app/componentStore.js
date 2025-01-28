@@ -86,6 +86,7 @@ export const useComponentStore = defineStore('componentStore', {
         departmentPositionLoading:false,
 
         confirmationList:[],
+        confirmationLoading:false,
 
         contractPanel:false,
 

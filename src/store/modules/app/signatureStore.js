@@ -16,7 +16,7 @@ export const useSignatureStore = defineStore('signatureStore', {
         successCallback:null,
         documentBase64:null,
         documentId:null,
-        workerPin:31604965320012,
+        workerPin:null,
         loading:false,
     }),
     actions: {
@@ -108,6 +108,7 @@ export const useSignatureStore = defineStore('signatureStore', {
         },
         _accepted(idx, callback) {
             const key = this.allKeys[idx]
+            this.workerPin = key.pinfl
             if (key.expired) {
                 $Toast.error(t('signature.expiredKey'))
                 return ''
