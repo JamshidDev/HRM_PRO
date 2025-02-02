@@ -51,12 +51,13 @@ const openContract = (v, statusId)=>{
         <thead>
         <tr>
           <th class="!text-center min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
-          <th class="min-w-[120px]">{{$t('contractPage.table.worker')}}</th>
+          <th class="min-w-[200px]">{{$t('contractPage.table.type')}}</th>
+          <th class="min-w-[120px] w-[200px]">{{$t('contractPage.table.worker')}}</th>
           <th class="w-[300px]">{{$t('contractPage.table.organization')}}</th>
-          <th class="min-w-[200px] w-[200px]">{{$t('contractPage.table.type')}}</th>
+
           <th class="min-w-[100px] w-[100px]">{{$t('contractPage.table.command')}}</th>
           <th class="w-[80px]">{{$t('contractPage.table.number')}}</th>
-          <th class="w-[140px]">{{$t('contractPage.table.status')}}</th>
+          <th class="w-[120px]">{{$t('contractPage.table.status')}}</th>
           <th class="w-[100px]">{{$t('contractPage.table.date')}}</th>
           <th class="min-w-[120px] w-[120px]">{{$t('content.action')}}</th>
         </tr>
@@ -64,6 +65,7 @@ const openContract = (v, statusId)=>{
         <tbody>
         <tr v-for="(item, idx) in store.list" :key="idx">
           <td><span class="text-center text-[12px] text-gray-600 block">{{ (store.params.page - 1) * store.params.per_page + idx + 1 }}</span></td>
+          <td><span class="text-sm">{{item?.type?.name}}</span></td>
           <td>
             <UIUser
                 :data="{
@@ -76,18 +78,20 @@ const openContract = (v, statusId)=>{
             />
           </td>
           <td><span class="text-sm">{{item?.organization.name}}</span></td>
-          <td><span class="text-sm">{{item?.type?.name}}</span></td>
-          <td><n-button
-              :type="item?.command_status.id === 1? 'primary' : 'default'"
-              @click="openContract(item, item?.command_status.id)"
-              size="small">
-            <template #icon>
-              <ReceiptAdd24Regular v-if="item?.command_status.id === 1" />
-              <ArrowSyncCheckmark20Filled v-else-if="item?.command_status.id === 2"/>
-              <DocumentCheckmark24Regular v-else-if="item?.command_status.id === 3"/>
-            </template>
-            {{item?.command_status?.name}}</n-button></td>
-          <td>{{item?.number}}</td>
+          <td><div class="flex justify-center">
+            <n-button
+                :type="item?.command_status.id === 1? 'primary' : 'default'"
+                @click="openContract(item, item?.command_status.id)"
+                size="small">
+              <template #icon>
+                <ReceiptAdd24Regular v-if="item?.command_status.id === 1" />
+                <ArrowSyncCheckmark20Filled v-else-if="item?.command_status.id === 2"/>
+                <DocumentCheckmark24Regular v-else-if="item?.command_status.id === 3"/>
+              </template>
+              {{item?.command_status?.name}}</n-button>
+          </div>
+          </td>
+          <td><div class="flex justify-center"><n-button class="font-medium" round type="error" size="tiny">{{item?.number}}</n-button></div></td>
           <td><UIStatus :status="item?.status?.name"/></td>
           <td>
             <span class="text-sm">{{Utils.timeOnlyDate(item?.contract_date)}}</span>
@@ -117,7 +121,3 @@ const openContract = (v, statusId)=>{
     <NoDataPicture v-if="store.list?.length===0 && !store.loading" />
   </n-spin>
 </template>
-
-<style scoped>
-
-</style>

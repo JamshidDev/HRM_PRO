@@ -8,8 +8,8 @@ const store = useConfirmCommandStore()
 const emits = defineEmits([ 'openOffice', 'onChangePage'])
 
 
-const onOpenFile = (v)=>{
-  emits('openOffice', v)
+const onOpenFile = (documentId, signatureId)=>{
+  emits('openOffice', {documentId, signatureId})
 }
 
 
@@ -32,8 +32,7 @@ const changePage = (v)=>{
         <thead>
         <tr>
           <th class="!text-center min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
-          <th class="min-w-[140px] w-[300px]">{{$t('confirmation.contract.form.type')}}</th>
-          <th class="min-w-[100px]">{{$t('confirmation.contract.form.worker')}}</th>
+          <th class="min-w-[140px]">{{$t('confirmation.contract.form.type')}}</th>
           <th class="min-w-[60px] w-[400px]">{{$t('confirmation.contract.form.organization')}}</th>
           <th class="min-w-[60px] w-[60px]">{{$t('confirmation.contract.form.number')}}</th>
           <th class="min-w-[80px] w-[80px]">{{$t('content.status')}}</th>
@@ -44,29 +43,20 @@ const changePage = (v)=>{
         <tbody>
         <tr v-for="(item, idx) in store.list" :key="idx">
           <td><span class="text-center text-[12px] text-gray-600 block">{{ (store.params.page - 1) * store.params.per_page + idx + 1 }}</span></td>
-          <td>{{item?.contract?.type.name}}</td>
+          <td>{{item?.command?.type.name}}</td>
+          <td>{{item?.command?.organization?.name}}</td>
           <td>
-            <UIUser
-                :data="{
-                    photo:item?.contract.worker.photo,
-                    lastName:item?.contract.worker.last_name,
-                    firstName:item?.contract.worker.first_name,
-                    middleName:item?.contract.worker.middle_name,
-                    position:$t('content.no-data'),
-                }"
-            />
+            <div class="flex justify-center"><n-button class="font-medium" round type="error" size="tiny">{{item?.command.command_number}}</n-button></div>
           </td>
-          <td>{{item?.contract?.organization?.name}}</td>
-          <td>{{item?.contract?.number}}</td>
-          <td><UIStatus :status="item?.contract?.status?.name"/></td>
-          <td>{{ Utils.timeOnlyDate(item?.contract?.contract_date) }}</td>
+          <td><UIStatus :status="item?.status?.name"/></td>
+          <td>{{ Utils.timeOnlyDate(item?.command?.command_date) }}</td>
           <td>
             <UIActionButton
                 :visible-delete-btn="false"
                 :visible-edit-btn="false"
                 :visible-view-btn="true"
                 :data="item"
-                @onView="onOpenFile(item?.contract.id)"
+                @onView="onOpenFile(item?.command.id, item.id)"
             />
           </td>
         </tr>

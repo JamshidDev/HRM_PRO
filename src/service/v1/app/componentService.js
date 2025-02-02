@@ -6,6 +6,9 @@ const _enums =async (payload)=>{
 const _enumAdmin =async (payload)=>{
     return await axios.get(`/v1/structure/enums`, {params:payload?.params})
 }
+const _enumExam =async (payload)=>{
+    return await axios.get(`/v1/exam/enums`, {params:payload?.params})
+}
 const _organization =async (payload)=>{
     return await axios.get(`/v1/structure/organization-list`, {params:payload.params})
 }
@@ -32,4 +35,5 @@ export default {
     _enumAdmin,
     _docExample,
     _departmentTree,
+    _enumExam,
 }

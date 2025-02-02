@@ -36,6 +36,7 @@ export const useContractStore = defineStore('contractStore', {
             vacation_main_day:null,
             additional_vacation_day:null,
             schedule_id:null,
+            command_type:2,
         },
         params:{
             page:1,
@@ -64,7 +65,7 @@ export const useContractStore = defineStore('contractStore', {
                    organization_id:this.payload.organization_id[0].id,
                    worker_id:this.payload.pin,
                    director_id:this.payload.director_id[0],
-                   department_id:this.payload.department_id[0].id,
+                   department_id:this.payload.department_id.length>0? this.payload.department_id[0].id : null,
                }
             }
             delete data.pin
@@ -113,7 +114,7 @@ export const useContractStore = defineStore('contractStore', {
         resetForm(){
             this.payload.pin = null
             this.payload.organization_id = []
-            this.payload.contract_date = null
+            this.payload.contract_date = new Date()
             this.payload.number = null
             this.payload.table_number = null
             this.payload.type = null
@@ -127,11 +128,11 @@ export const useContractStore = defineStore('contractStore', {
             this.payload.rank = null
             this.payload.post_name = null
             this.payload.probation = null
-            this.payload.position_date = null
+            this.payload.position_date = new Date()
             this.payload.vacation_main_day = null
             this.payload.additional_vacation_day = null
             this.payload.schedule_id = null
-            this.payload.contract_to_date = null
+            this.payload.contract_to_date = new Date()
         }
 
     }

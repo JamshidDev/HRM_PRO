@@ -177,37 +177,6 @@ export default {
             },
         ],
     },
-    marketSetting:{
-        languages:{
-            type: "array",
-            required: true,
-            message: t(`rules.requiredField`),
-            trigger: triggerEvents
-        },
-        contactPhone:{
-            required: true,
-            message: t(`rules.requiredField`),
-            trigger: triggerEvents
-        },
-        address:{
-            required: true,
-            message: t(`rules.requiredField`),
-            trigger: triggerEvents
-        },
-    },
-    category:{
-        name:{
-            required: true,
-            message: t(`rules.requiredField`),
-            trigger: triggerEvents
-        },
-        image:{
-            type: "array",
-            required: true,
-            message: t(`rules.requiredField`),
-            trigger: triggerEvents
-        },
-    },
     userPermission:{
         name:{
             required: true,
@@ -620,28 +589,12 @@ export default {
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
-        group:{
-            type:'number',
-            required: true,
-            message: t(`rules.requiredField`),
-            trigger: triggerEvents
-        },
-        rank:{
-            required: true,
-            message: t(`rules.requiredField`),
-            trigger: triggerEvents
-        },
         post_name:{
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
         salary:{
-            required: true,
-            message: t(`rules.requiredField`),
-            trigger: triggerEvents
-        },
-        table_number:{
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
@@ -710,28 +663,12 @@ export default {
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
-        group:{
-            type:'number',
-            required: true,
-            message: t(`rules.requiredField`),
-            trigger: triggerEvents
-        },
-        rank:{
-            required: true,
-            message: t(`rules.requiredField`),
-            trigger: triggerEvents
-        },
         post_name:{
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
         salary:{
-            required: true,
-            message: t(`rules.requiredField`),
-            trigger: triggerEvents
-        },
-        table_number:{
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
@@ -771,5 +708,24 @@ export default {
             trigger: triggerEvents
         },
     },
+    topicPage:{
+        name:{
+            required: true,
+            message: t(`rules.requiredWorker`),
+            trigger: triggerEvents
+        },
+        type:{
+            type:'number',
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        organizations:{
+            type:'array',
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+    }
 
 }

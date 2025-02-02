@@ -1,8 +1,8 @@
 <script setup>
-import {NoDataPicture, UIActionButton, UIPagination} from "@/components/index.js"
-import {useRegionStore} from "@/store/modules/index.js"
+import {NoDataPicture, UIActionButton, UIPagination, UIUser} from "@/components/index.js"
+import {useWorkerStore} from "@/store/modules/index.js"
 
-const store = useRegionStore()
+const store = useWorkerStore()
 
 
 
@@ -10,10 +10,7 @@ const store = useRegionStore()
 const onEdit = (v)=>{
   store.visibleType = false
   store.elementId = v.id
-  store.payload.name = v.name
-  store.payload.marker.coords = [v.long, v.lat]
-  store.payload.marker.name = v.name
-  store.payload.country_id = v.country.id
+
   store.visible = true
 }
 
@@ -40,16 +37,29 @@ const changePage = (v)=>{
         <thead>
         <tr>
           <th class="!text-center min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
-          <th class="min-w-[200px]">{{$t('regionPage.form.name')}}</th>
-          <th class="min-w-[120px] w-[300px]">{{$t('regionPage.form.country')}}</th>
+          <th class="min-w-[200px]">{{$t('content.worker')}}</th>
+          <th class="min-w-[120px] w-[300px]">{{$t('workerPage.table.department')}}</th>
+          <th class="min-w-[120px] w-[300px]">{{$t('workerPage.table.position')}}</th>
           <th class="min-w-[90px] w-[90px]">{{$t('content.action')}}</th>
         </tr>
         </thead>
         <tbody>
         <tr v-for="(item, idx) in store.list" :key="idx">
           <td><span class="text-center text-[12px] text-gray-600 block">{{ (store.params.page - 1) * store.params.per_page + idx + 1 }}</span></td>
-          <td>{{item.name}}</td>
-          <td>{{item?.country?.name}}</td>
+          <td>
+            <UIUser
+                :short="false"
+                :data="{
+                    photo:item?.worker.photo,
+                    firstName:item?.worker.first_name,
+                    middleName:item?.worker.middle_name,
+                    lastName:item?.worker.last_name,
+                    position:item?.post_name,
+                  }"
+            />
+          </td>
+          <td>{{item?.department?.name}}</td>
+          <td>{{item?.position?.name}}</td>
           <td>
             <UIActionButton
                 :data="item"
@@ -62,6 +72,7 @@ const changePage = (v)=>{
         </tbody>
       </n-table>
       <UIPagination
+          v-show="store.list.length>10"
           :page="store.params.page"
           :per_page="store.params.size"
           :total="store.totalItems"

@@ -100,6 +100,11 @@ export const useComponentStore = defineStore('componentStore', {
 
         probationList:[],
 
+        enumExamLoading:false,
+        topicTypes:[],
+        topicWhomList:[],
+        TopicFileTypes:[],
+
 
 
     }),
@@ -145,6 +150,16 @@ export const useComponentStore = defineStore('componentStore', {
                 this.organizationServiceList = res.data.data?.organization_services
             }).finally(()=>{
                 this.enumAdminLoading= false
+            })
+        },
+        _enumExam(){
+            this.enumExamLoading= true
+            $ApiService.componentService._enumExam().then((res)=>{
+                this.topicTypes = res.data.data?.topic_types
+                this.topicWhomList = res.data.data?.topic_whom
+                this.TopicFileTypes = res.data.data?.topic_file_types
+            }).finally(()=>{
+                this.enumExamLoading= false
             })
         },
         _docExample(){

@@ -14,7 +14,7 @@ const statusList = [
   {
     name:"Read",
     type:'default',
-    icon:Checkmark28Filled,
+    icon:Eye16Filled,
   },
   {
     name:"Success",
@@ -49,7 +49,7 @@ const icon = computed(()=>{
 
 <template>
 <div class="w-full flex justify-center items-center">
-  <n-button :type="type" size="tiny">
+  <n-button :type="type" size="tiny" dashed>
     <template #icon>
       <component :is="icon" />
     </template>

@@ -16,6 +16,8 @@ const emitEv = (v)=>{
 
 const openCommand = (v)=>{
   commandStore.payload.contract_id = v.id
+  commandStore.contractNumber= v.number
+  commandStore.payload.workers= [v.worker.id]
   store.number = v.number
   store.confirmationVisible=true
 }

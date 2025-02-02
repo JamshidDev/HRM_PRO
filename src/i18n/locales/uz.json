@@ -54,6 +54,10 @@
         "Success": "Kelishilgan",
         "Rejected": "Rad etilgan",
         "Deleted": "O'chirilgan",
+        "message": "Xabar yozing...",
+        "no-message": "Hozircha suhbatlar yo'q",
+        "type": "Turi",
+        "organization": "Korxona",
         "sum": "So'm"
     },
     "rules": {
@@ -215,7 +219,6 @@
         "name": "Xodimlar",
         "filter": {
             "contract": "Shartnoma tuzish"
-
         },
         "checkWorker": {
             "title": "Xodim izlash",
@@ -225,6 +228,10 @@
             "addCandidate": "Kandidat qo'shish",
             "add-worker": "Tizimda mavjud bo'lmagan xodimning ma'lumotlarini kandidat qo'shish tugamasi orqali qo'shing ",
             "jshshir": "Jshshirni kiriting"
+        },
+        "table": {
+            "department": "Bo'lim",
+            "position": "Lavozim"
         }
     },
     "contactPage": {
@@ -356,6 +363,7 @@
                 "type": "Buyruq turi",
                 "byContract": "{n} - raqamli shartnoma asosida",
                 "confirm": "Tasdiqlovchilar",
+                "director_id": "Direktor",
                 "command_number": "Buyruq raqami"
             },
             "table": {
@@ -537,6 +545,33 @@
             "deleted": "O'chirilgan",
             "subject_type": "Model",
             "sign-in": "Tizimga kirish"
+        }
+    },
+
+    "topicPage": {
+        "name": "Topiklar",
+        "createTitle": "Topik qo'shish",
+        "updateTitle": "Topikni tahrirlash"
+    },
+    "topicDetailsPage": {
+        "categories": {
+            "name": "Kategoriyalar",
+            "createTitle": "Kategoriya qo'shish",
+            "updateTitle": "Kategoriyani tahrirlash",
+            "form": {
+                "attach": "Biriktirish"
+            }
+
+        },
+        "files": {
+            "name": "Fayillar",
+            "createTitle": "Fayl qo'shish",
+            "updateTitle": "Faylni tahrirlash"
+        },
+        "questions": {
+            "name": "Savollar",
+            "createTitle": "Savol qo'shish",
+            "updateTitle": "Savolni tahrirlash"
         }
     }
 }

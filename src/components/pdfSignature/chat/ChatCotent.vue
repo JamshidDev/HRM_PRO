@@ -1,0 +1,89 @@
+<script setup>
+import ChatInput from "./ChatInput.vue"
+import MessageContent from "./MessageContent.vue"
+import ChatDate from "./ChatDate.vue"
+import {usePdfViewerStore, useAccountStore} from "@/store/modules/index.js"
+import Utils from "@/utils/Utils.js"
+const store = usePdfViewerStore()
+const accountStore = useAccountStore()
+
+const currentDate = ref(null)
+
+onMounted(()=>{
+  store._messages()
+  store._chatUsers()
+})
+
+const users = computed(()=>{
+  const list = store.userList.filter(v=>v.id !== accountStore.account?.id)
+  if(list.length>0){
+    store.payload.recipient_id = list[0].id
+  }
+  return list
+})
+
+const messages = computed(()=>{
+  return store.messageList.filter((v)=>(store.payload.recipient_id === v.recipient.id || store.payload.recipient_id === v.sender.id)).map((v)=>({
+    msg:v.message,
+    author:v.sender.id === accountStore.account.id,
+    fullName:v.sender.last_name +" "+v.sender.first_name,
+    avatar:v.sender.photo,
+    time:Utils.timeOnlyHour(v.created_at),
+    date:Utils.timeOnlyDate(v.created_at),
+  }))
+})
+
+
+const checkTime = (time)=>{
+  if(time !== currentDate.value){
+    currentDate.value = time
+    return true
+  }else return  false
+}
+
+</script>
+
+<template>
+<div class="flex flex-col w-full h-[500px]">
+  <n-select
+      class="mb-1"
+      size="small"
+      v-model:value="store.payload.recipient_id"
+      filterable
+      :placeholder="$t(`content.choose`)"
+      :options="users"
+      label-field="name"
+      value-field="id"
+      :loading="store.userLoading"
+  />
+    <div class="flex flex-col-reverse w-full border border-surface-line rounded-lg mb-1 bg-surface-ground overflow-x-hidden overflow-y-auto" style="height: calc(100vh - 530px)">
+      <template v-for="(item, idx) in messages" :key="idx">
+        <MessageContent
+            :message="item.msg"
+            :author="item.author"
+            :full-name="item.fullName"
+            :avatar="item.avatar"
+            :time="item.time"
+        />
+        <ChatDate v-if="idx+1 === messages.length || checkTime(item.date)" :date="item.date" />
+      </template>
+      <n-spin :show="store.chatLoading" class="h-full flex justify-center items-center">
+        <div v-if="messages.length === 0" class="text-surface-300">{{$t('content.no-message')}}</div>
+      </n-spin>
+    </div>
+
+
+  <ChatInput/>
+</div>
+</template>
+
+<style scoped>
+textarea {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+textarea::-webkit-scrollbar {
+  display: none;
+}
+</style>

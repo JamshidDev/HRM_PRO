@@ -10,6 +10,7 @@ export const useCommandStore = defineStore('commandStore', {
         visibleType:true,
         elementId:null,
         totalItems:0,
+        contractNumber:null,
         payload:{
             command_status:true,
             contract_id:null,
@@ -17,6 +18,7 @@ export const useCommandStore = defineStore('commandStore', {
             command_number:null,
             type:null,
             confirmations:[],
+            director_id:[],
             workers:[],
         },
         params:{
@@ -41,6 +43,7 @@ export const useCommandStore = defineStore('commandStore', {
                 ...this.payload,
                 ...{
                     command_date:Utils.timeToZone(this.payload.command_date),
+                    director_id:this.payload.director_id[0],
                 }
             }
             console.log(data)

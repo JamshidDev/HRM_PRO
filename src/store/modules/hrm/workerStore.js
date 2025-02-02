@@ -26,9 +26,17 @@ export const useWorkerStore = defineStore('workerStore', {
     actions:{
         _index(){
             this.loading= true
-            $ApiService.confirmationService._index({params:this.params}).then((res)=>{
+            $ApiService.workerService._index({params:this.params}).then((res)=>{
                 this.list = res.data.data.data
                 this.totalItems = res.data.data.total
+            }).finally(()=>{
+                this.loading= false
+            })
+        },
+        _show(){
+            this.loading= true
+            $ApiService.workerService._index({id:this.elementId}).then((res)=>{
+                console.log(res.data.data)
             }).finally(()=>{
                 this.loading= false
             })

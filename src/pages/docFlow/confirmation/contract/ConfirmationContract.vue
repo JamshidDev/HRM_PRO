@@ -10,8 +10,12 @@ const onSearchEv = ()=>{
 }
 
 const officeAppRef = ref(null)
-const openOffice = (id)=>{
-  officeAppRef.value.openPdf(id, 'contracts')
+const openOffice = (v)=>{
+  officeAppRef.value.openPdf(v.documentId, 'contracts', v.signatureId)
+}
+
+const onSignatureEv = (v)=>{
+  store._index()
 }
 
 
@@ -31,6 +35,6 @@ onMounted(()=>{
       @onSearch="onSearchEv" />
 
   <Table @openOffice="openOffice" />
-  <UIOfficeApp ref="officeAppRef" />
+  <UIOfficeApp ref="officeAppRef" @signatureEv="onSignatureEv" />
 </UIPageContent>
 </template>

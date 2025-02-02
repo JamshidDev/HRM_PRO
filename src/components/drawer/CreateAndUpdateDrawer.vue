@@ -8,6 +8,14 @@ const props = defineProps({
   width:{
     type:Number,
     default:500,
+  },
+  showMask:{
+    type:Boolean,
+    default:true,
+  },
+  maskClosable:{
+    type:Boolean,
+    default:true,
   }
 })
 
@@ -22,6 +30,8 @@ const visible = defineModel('visible', {type:Boolean, default:false })
       placement="right"
       resizable
       class="ui-drawer"
+      :show-mask="showMask"
+      :mask-closable="maskClosable"
   >
     <n-drawer-content>
       <template #default>

@@ -80,9 +80,14 @@ export const navigations = [
         icon: 'bx bxs-graduation',
         children:[
             {
-                parentIndex:1,
                 label:t('examPage.name'),
                 path:Utils.routeLmsPathMaker(AppPaths.Exam),
+                icon:'bx bxs-folder',
+                children:[]
+            },
+            {
+                label:t('topicPage.name'),
+                path:Utils.routeLmsPathMaker(AppPaths.Topic),
                 icon:'bx bxs-folder',
                 children:[]
             },

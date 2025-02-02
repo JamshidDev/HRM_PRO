@@ -1,33 +1,32 @@
 <script setup>
 import {Signature20Filled,
-  PanelLeftContract20Filled, DocumentEdit24Regular,
-  CloudArrowDown16Filled, History20Regular} from "@vicons/fluent"
+  PanelLeftContract20Filled, DocumentEdit24Regular, Chat24Filled} from "@vicons/fluent"
 import PdfViewer from "./PdfViewer.vue"
 import {UIUser} from "@/components/index.js"
-import {usePdfViewerStore, useSignatureStore, useAccountStore} from "@/store/modules/index.js"
+import {usePdfViewerStore, useSignatureStore} from "@/store/modules/index.js"
 import ConfirmationList from "./ui/ConfirmationList.vue"
 import LeftContent from "./ui/LeftContent.vue"
+import ChatDrawer from "./ui/ChatDrawer.vue"
 import Utils from "../../utils/Utils.js"
 
 const pdfViewerRef = ref(null)
+const route = useRoute()
 
 
 const emits = defineEmits(["onClose", "onEdit", 'signatureEv'])
 
 const store = usePdfViewerStore()
 const signatureStore = useSignatureStore()
-const accountStore = useAccountStore()
 
 const onSaveSignature = ()=>{
-  console.log(accountStore.account)
-  // store.addQRCodeToPDF()
+  signatureStore.confirmationId = store.signatureId
+  signatureStore.documentType = store.model
   signatureStore._signatureDocument(signatureStore.signatureTypes.contract,store.document_id,onSuccess)
 }
 
 const onSuccess = (v)=>{
   signatureStore.visible = false
   emits('signatureEv')
-  console.log(v)
 }
 
 const onClose = ()=>{
@@ -43,6 +42,11 @@ const onEdit = ()=>{
 const onZoom = async ()=>{
   await store.loadPdf()
 }
+
+const showSignature = computed(()=>{
+  const rejects = ['/hrm/document',]
+  return !rejects.includes(route.path)
+})
 
 const signatureMan = computed(()=>{
    const {worker} = store.permissions?.current_user
@@ -67,10 +71,12 @@ const getDocument =async (document_id, model)=>{
   store.loading = true
   $ApiService.documentService._openDocument({params:{model,document_id}}).then((res)=>{
     const v = res.data.data
-    store.confirmations = v.confirmations.filter(x=>x.type !== 'w')
+    store.confirmations = v.confirmations
     store.document = v
     store.pdfUrl = v.document.url
+    store.docxUrl = v.document?.doc_url
     store.permissions = v.signature
+    store.permissions.qrcode = false
     store.loadPdf()
      // pdfViewerRef.value.loadPdf(v.document.url)
   }).finally(()=>{
@@ -126,7 +132,7 @@ defineExpose({
 <!--                    </n-icon>-->
 <!--                  </template>-->
 <!--                </n-button>-->
-                <n-button @click="onEdit" type="info" secondary>
+                <n-button v-if="store.permissions?.current_user"  @click="onEdit" type="info" secondary>
                   {{$t('content.edit')}}
                   <template #icon>
                     <n-icon size="24">
@@ -138,10 +144,11 @@ defineExpose({
             </div>
 
             <div class="w-full flex justify-between" style="height: calc(100vh - 60px)">
-              <div class="flex flex-col w-[300px] h-full bg-surface-ground border-r border-surface-line px-2 py-4">
+              <div class="flex flex-col w-[300px] h-full bg-surface-ground border-r border-surface-line px-2 py-4 relative">
                 <div class="w-full" style="height: calc(100% - 100px)">
                   <LeftContent/>
                 </div>
+                <ChatDrawer/>
 
                 <div v-if="store.permissions?.qrcode" class="bg-gray-300 rounded-xl border border-gray-400 h-[100px]"></div>
               </div>
@@ -155,7 +162,7 @@ defineExpose({
                 </div>
 
 
-                <div v-if="store.permissions?.signature" class="w-full bg-gray-300 rounded-xl border border-gray-400 flex flex-col p-1">
+                <div v-if="store.permissions?.signature && showSignature" class="w-full bg-gray-300 rounded-xl border border-gray-400 flex flex-col p-1">
                   <div class="bg-white rounded-xl p-1 mb-4 shadow">
                     <UIUser
                         :short="false"

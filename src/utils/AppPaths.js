@@ -42,6 +42,7 @@ export const AppPaths = {
     WorkerProfile:"/worker-profile",
     ConfContract:"/conf-contract",
     ConfCommand:"/conf-command",
+    Topic:"/topic",
 }
 
 export const AppLayouts ={

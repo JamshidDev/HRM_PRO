@@ -29,13 +29,25 @@ export const usePdfViewerStore = defineStore('pdfViewerStore', {
         document:null,
         scale:1.4,
         permissions:null,
-
+        docxUrl:null,
 
         model:null,
         document_id:null,
+        signatureId:null,
         historyLoading:false,
         historyList:[],
         show:false,
+
+        chatVisible:false,
+        msg:null,
+        messageList:[],
+        chatLoading:false,
+        userList:[],
+        userLoading:false,
+        payload:{
+            recipient_id:null,
+            message:null,
+        }
 
 
 
@@ -75,6 +87,7 @@ export const usePdfViewerStore = defineStore('pdfViewerStore', {
            URL.revokeObjectURL(url);
        },
        async loadPdf(){
+           this.totalPdfPage = 0
            const pdfUrl = this.pdfUrl+`?_=${new Date().getTime()}`
            try{
                const pdf = await pdfjsLib.getDocument(pdfUrl).promise
@@ -121,6 +134,53 @@ export const usePdfViewerStore = defineStore('pdfViewerStore', {
            this.document = null
            this.historyList = []
             this.show = false
+        },
+        _addMessage(msg){
+           if(msg.trim().length > 0){
+               this._sendMessage()
+               this.msg = ''
+
+           }
+
+
+        },
+        _messages(){
+           this.chatLoading = true
+            $ApiService.documentChatService._messages({params:{
+                    document_id:this.document_id,
+                    model:this.model,
+                }}).then((res)=>{
+                this.messageList = res.data.data.data
+            }).finally(()=>{
+                this.chatLoading = false
+            })
+
+        },
+        _chatUsers(){
+            this.userLoading = true
+            $ApiService.documentChatService._users({params:{
+                    document_id:this.document_id,
+                    model:this.model,
+                }}).then((res)=>{
+                this.userList = res.data.data.map(v=>({
+                    name:v.last_name +' '+v.first_name,
+                    id:v.id
+                }))
+            }).finally(()=>{
+                this.userLoading = false
+            })
+        },
+        _sendMessage(){
+           this.chatLoading = true
+            let data = {...this.payload}
+            data.document_id = this.document_id
+            data.model = this.model
+            data.message = this.msg.trim()
+            $ApiService.documentChatService._sendMessage({data}).then((res)=>{
+                this._messages()
+            }).finally(()=>{
+                this.chatLoading = false
+            })
         }
     }
 

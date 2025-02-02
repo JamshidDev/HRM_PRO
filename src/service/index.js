@@ -19,10 +19,17 @@ instance.interceptors.request.use(function (config) {
 })
 
 instance.interceptors.response.use(
-    response => response,
+    response => {
+        if(response.data?.errorMsg === 'Yes'){
+            $Toast.error(error.response.data.message)
+        }
+        return Promise.resolve(response)
+    },
     error => {
+        if(error.response.data?.errorMsg === 'Yes'){
+            $Toast.error(error.response.data.message)
+        }
         if(error.response?.status===401){
-            console.log()
             if(!(error.response.request.responseURL.includes('/profile'))){
                 $Toast.error(error.response.data.message)
             }

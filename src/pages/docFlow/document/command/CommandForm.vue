@@ -6,6 +6,7 @@ import Utils from "@/utils/Utils.js"
 const store = useCommandStore()
 const componentStore = useComponentStore()
 const formRef = ref(null)
+const confirmationList = ref([])
 
 const onFocusConf = ()=>{
   componentStore._confirmations()
@@ -32,6 +33,10 @@ const renderLabel = (option)=>{
   ];
 }
 
+const onSelectDirector = (v)=>{
+  store.payload.director_id =v.length === 2? [v[1]]: v
+}
+
 const onSubmit = ()=>{
   store._create()
   // formRef.value?.validate((error)=>{
@@ -46,6 +51,13 @@ const onSubmit = ()=>{
   //   }
   // })
 }
+
+watchEffect(()=>{
+  if(store.payload.director_id.length>0){
+    store.payload.confirmations = store.payload.confirmations.filter(v=>v !==store.payload.director_id[0])
+    confirmationList.value = componentStore.confirmationList.filter(v=>v.id !==store.payload.director_id[0])
+  }
+})
 
 onMounted(()=>{
   componentStore._enumsAdmin()
@@ -65,7 +77,7 @@ onMounted(()=>{
             <template #icon>
               <DocumentTableCheckmark20Regular/>
             </template>
-            {{$t('documentPage.command.form.byContract',{n:store.payload.contract_id})}}
+            {{$t('documentPage.command.form.byContract',{n:store.contractNumber})}}
           </n-button>
         </div>
       </template>
@@ -105,15 +117,30 @@ onMounted(()=>{
         </n-form-item>
       </div>
       <div class="col-span-12 mt-4">
-        <n-form-item :label="$t(`documentPage.command.form.confirm`)" path="director_id">
+        <n-form-item :label="$t(`documentPage.command.form.director_id`)" path="director_id">
           <n-select
               @focus="onFocusConf"
               size="large"
               value-field="id"
               multiple
-              v-model:value="store.payload.confirmations"
+              v-model:value="store.payload.director_id"
+              @update:value="onSelectDirector"
               :placeholder="$t(`content.choose`)"
               :options="componentStore.confirmationList"
+              :loading="componentStore.confirmationLoading"
+              :render-label="renderLabel" />
+        </n-form-item>
+      </div>
+      <div class="col-span-12 mt-4">
+        <n-form-item :label="$t(`documentPage.command.form.confirm`)" path="director_id">
+          <n-select
+              :disabled="store.payload.director_id.length===0"
+              size="large"
+              value-field="id"
+              multiple
+              v-model:value="store.payload.confirmations"
+              :placeholder="$t(`content.choose`)"
+              :options="confirmationList"
               :loading="componentStore.confirmationLoading"
               :render-label="renderLabel" />
         </n-form-item>

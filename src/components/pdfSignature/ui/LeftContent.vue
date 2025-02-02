@@ -5,7 +5,7 @@ import Utils from "../../../utils/Utils.js"
 const store = usePdfViewerStore()
 
 const getHistory = ()=>{
-  if(!store.show){
+  if(!store.show && store.document?.histories>0){
     store._history()
   }else{
     store.show = false
@@ -28,10 +28,15 @@ const getHistory = ()=>{
     <n-collapse-transition :show="store.show" class="bg-surface-section p-2 rounded">
       <template v-for="(item, idx) in store.historyList" :key="idx">
         <div class="flex justify-between w-full py-1">
-          <n-avatar round :src="item.user.photo"/>
+          <div class="flex gap-2">
+            <n-avatar size="small" round :src="item.user.photo"/>
+            <div class="flex items-center">
+              <span class="text-[10px] text-gray-600">{{`${item.user.last_name}.${item.user.first_name[0]}`}}</span>
+            </div>
+          </div>
           <div class="flex flex-col justify-end">
             <span class="text-sm text-end">{{item.status.name}}</span>
-            <span class="text-xs text-gray-400">{{Utils.timeOnlyDate(item.created_at)}}</span>
+            <span class="text-xs text-gray-500">{{Utils.timeWithMonth(item.created_at)}}</span>
           </div>
         </div>
       </template>

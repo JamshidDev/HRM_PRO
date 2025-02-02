@@ -18,6 +18,8 @@ export const useSignatureStore = defineStore('signatureStore', {
         documentId:null,
         workerPin:null,
         loading:false,
+        confirmationId:null,
+        documentType:null,
     }),
     actions: {
         async _checkVersion() {
@@ -57,7 +59,6 @@ export const useSignatureStore = defineStore('signatureStore', {
                 }
             }).then(async(res)=>{
                 this.documentBase64 = res.data.data
-                console.log(res.data.data)
                 try{
                     await this._checkVersion()
                     EIMZOClient.listAllUserKeys(
@@ -177,8 +178,8 @@ export const useSignatureStore = defineStore('signatureStore', {
             const callback = this.successCallback
             const data = {
                 code:pkcs7,
-                confirmation_id:1,
-                model: this.signatureType,
+                confirmation_id:this.confirmationId,
+                model: this.documentType,
                 pin:this.workerPin,
             }
             $ApiService.documentService._confirmationDocument({data}).then((res)=>{

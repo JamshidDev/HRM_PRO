@@ -253,6 +253,7 @@ onMounted(()=>{
                     label-field="name"
                     value-field="id"
                     :loading="componentStore.enumLoading"
+                    clearable
                 />
               </n-form-item>
             </div>
@@ -266,6 +267,7 @@ onMounted(()=>{
                     label-field="name"
                     value-field="id"
                     :loading="componentStore.enumLoading"
+                    clearable
                 />
               </n-form-item>
             </div>

@@ -7,6 +7,10 @@ import CheckWorker from "./ui/CheckWorker.vue"
 import {useWorkerStore} from "@/store/modules/index.js"
 
 const store = useWorkerStore()
+
+onMounted(()=>{
+  store._index()
+})
 </script>
 
 <template>
