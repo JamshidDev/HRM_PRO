@@ -2,9 +2,75 @@
 import {useWorkerProfileStore, useComponentStore} from "@/store/modules/index.js"
 import validationRules from "@/utils/validationRules.js"
 import Utils from "@/utils/Utils.js"
-
+import PhotoForm from "@/pages/hrm/condidate/ui/PhotoForm.vue"
+import PhoneForm from "@/pages/hrm/condidate/ui/PhoneForm.vue"
+import PassportForm from "../ui/PasportList.vue"
+import {useRoute} from "vue-router"
+const route = useRoute()
 const store = useWorkerProfileStore()
 const componentStore = useComponentStore()
+const formRef = ref(null)
+
+const onDelete = (v)=>{
+  if(v.id.toString().length>10){
+    store.photos = store.photos.filter((x)=>x.id !== v.id )
+  }else{
+    store._deletePhoto(v.id)
+  }
+}
+
+const onDeletePhone = (v)=>{
+  if(v.exist){
+    store._deletePhone(v.id)
+  }
+}
+
+const onCountry = ()=>{
+  if(componentStore.countryList.length<2){
+    componentStore._countries()
+  }
+}
+
+const onRegion = ()=>{
+  if(componentStore.regionList.length<3){
+    componentStore._regions()
+  }
+}
+
+const onDistrict = ()=>{
+  if(store.districts.length<2){
+    store._district()
+  }
+}
+
+const changeDistrict = ()=>{
+  store.payload.city_id = null
+  store.districts = []
+  store._district()
+}
+
+const onCurrentDistrict = ()=>{
+  if(store.currentDistricts.length<2){
+    store._currentDistrict()
+  }
+}
+
+const changeCurrentDistrict = ()=>{
+  store.payload.current_city_id = null
+  store.currentDistricts = []
+}
+
+const onNationality = ()=>{
+  componentStore._nationality()
+}
+
+const onSubmit = ()=>{
+  formRef.value?.validate((error)=>{
+    if(!error) {
+      store.savePersonalInfo()
+    }
+  })
+}
 
 onMounted(()=>{
   componentStore._enums()
@@ -19,6 +85,25 @@ onMounted(()=>{
       :rules="validationRules.personalForm"
       :model="store.payload"
   >
+    <div class="col-span-12">
+      <PhotoForm
+          v-model:images="store.photos"
+          v-model:main-image-id="store.mainImgId"
+          @onDelete="onDelete"
+      />
+    </div>
+    <div class="col-span-12 flex flex-col">
+      <div class="flex justify-between items-end">
+        <span class="text-xs text-gray-400">{{$t('createWorkerPage.ui.image')}}</span>
+        <n-button
+            type="info"
+            class="ml-auto px-10"
+            @click="store.savePhoto(route.query.id)"
+            :loading="store.loading"
+        >{{$t(`content.save`)}}</n-button>
+      </div>
+      <div class="w-full border-b mt-2 mb-10 border-dashed border-surface-line"></div>
+    </div>
     <n-form-item
         class="w-full col-span-4"
         :label="$t(`createWorkerPage.form.lastName`)"
@@ -27,29 +112,29 @@ onMounted(()=>{
           class="w-full"
           type="text"
           :placeholder="$t(`content.enterField`)"
-          v-model:value="store.payload.name"
+          v-model:value="store.payload.last_name"
       />
     </n-form-item>
     <n-form-item
         class="w-full col-span-4"
         :label="$t(`createWorkerPage.form.firstName`)"
-        path="last_name">
+        path="first_name">
       <n-input
           class="w-full"
           type="text"
           :placeholder="$t(`content.enterField`)"
-          v-model:value="store.payload.name"
+          v-model:value="store.payload.first_name"
       />
     </n-form-item>
     <n-form-item
         class="w-full col-span-4"
         :label="$t(`createWorkerPage.form.middleName`)"
-        path="last_name">
+        path="middle_name">
       <n-input
           class="w-full"
           type="text"
           :placeholder="$t(`content.enterField`)"
-          v-model:value="store.payload.name"
+          v-model:value="store.payload.middle_name"
       />
     </n-form-item>
     <n-form-item
@@ -58,7 +143,7 @@ onMounted(()=>{
         path="birthday">
       <n-date-picker
           class="w-full"
-          v-model:value="store.payload.name"
+          v-model:value="store.payload.birthday"
           type="date"
           :placeholder="$t(`content.choose`)"
       />
@@ -69,6 +154,7 @@ onMounted(()=>{
         path="country_id">
       <n-select
           v-model:value="store.payload.country_id"
+          @focus="onCountry"
           filterable
           :placeholder="$t(`content.choose`)"
           :options="componentStore.countryList"
@@ -82,8 +168,9 @@ onMounted(()=>{
         :label="$t(`createWorkerPage.form.region`)"
         path="region_id">
       <n-select
+          @focus="onRegion"
           v-model:value="store.payload.region_id"
-          @update:value="store.changeRegion"
+          @updateValue="changeDistrict"
           filterable
           :placeholder="$t(`content.choose`)"
           :options="componentStore.regionList"
@@ -97,11 +184,11 @@ onMounted(()=>{
         :label="$t(`createWorkerPage.form.city`)"
         path="city_id">
       <n-select
-          :disabled="!store.payload.region_id"
+          @focus="onDistrict"
           v-model:value="store.payload.city_id"
           filterable
           :placeholder="$t(`content.choose`)"
-          :options="store.districtList"
+          :options="store.districts"
           label-field="name"
           value-field="id"
           :loading="store.districtLoading"
@@ -112,8 +199,9 @@ onMounted(()=>{
         :label="$t(`createWorkerPage.form.currentRegion`)"
         path="current_region_id">
       <n-select
+          @focus="onRegion"
           v-model:value="store.payload.current_region_id"
-          @update:value="store.changeCurrentRegion"
+          @updateValue="changeCurrentDistrict"
           filterable
           :placeholder="$t(`content.choose`)"
           :options="componentStore.regionList"
@@ -127,11 +215,11 @@ onMounted(()=>{
         :label="$t(`createWorkerPage.form.currentCity`)"
         path="current_city_id">
       <n-select
-          :disabled="!store.payload.current_region_id"
+          @focus="onCurrentDistrict"
           v-model:value="store.payload.current_city_id"
           filterable
           :placeholder="$t(`content.choose`)"
-          :options="store.currentDistrictList"
+          :options="store.currentDistricts"
           label-field="name"
           value-field="id"
           :loading="store.currentDistrictLoading"
@@ -181,6 +269,7 @@ onMounted(()=>{
         :label="$t(`createWorkerPage.form.nationality_id`)"
         path="nationality_id">
       <n-select
+          @focus="onNationality"
           v-model:value="store.payload.nationality_id"
           filterable
           :placeholder="$t(`content.choose`)"
@@ -228,14 +317,29 @@ onMounted(()=>{
           :allow-input="Utils.onlyAllowNumber"
       />
     </n-form-item>
-    <div class="col-span-12">
-      <n-button
-          ghost
-          style="width:100%"
-          class="w-full block"
-          :loading="store.loading"
-      >{{$t(`content.save`)}}</n-button>
+
+
+    <div class="col-span-12 mt-10">
+      <PhoneForm
+          @onDelete="onDeletePhone"
+          v-model:phones="store.payload.phones"/>
     </div>
+    <div class="col-span-12 flex flex-col">
+      <div class="flex justify-between items-end">
+        <span class="text-xs text-gray-400">{{$t('createWorkerPage.ui.phone')}}</span>
+        <n-button
+            type="info"
+            class="ml-auto px-10"
+            @click="onSubmit"
+            :loading="store.loading"
+        >{{$t(`content.save`)}}</n-button>
+      </div>
+      <div class="w-full border-b mt-2 mb-10 border-dashed border-surface-line"></div>
+    </div>
+    <div class="col-span-12">
+      <PassportForm/>
+    </div>
+
 
 
   </n-form>

@@ -91,6 +91,9 @@ const onSave = ()=>{
             <PhoneForm
                 v-model:phones="store.payload.phones"
             />
+            <div class="col-span-12">
+              <span class="text-xs text-gray-400">{{$t('createWorkerPage.ui.phone')}}</span>
+            </div>
           </template>
         </n-step>
 

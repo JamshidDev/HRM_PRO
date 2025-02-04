@@ -2,6 +2,9 @@
 import {Delete28Regular, AddCircle28Regular} from "@vicons/fluent"
 import { v4 as uuidv4 } from 'uuid';
 
+
+const emits = defineEmits(['onDelete'])
+
 const phones = defineModel('phones', {
   type:Array,
   required:true,
@@ -13,6 +16,7 @@ const onAdd = ()=>{
     id:uuidv4(),
     phone:'+998',
     main:false,
+    exist:false,
   })
 }
 
@@ -31,12 +35,16 @@ watchEffect(()=>{
     phones.value[0].main = true
   }
   if(!phones.value.some((x)=>x.main)){
-    phones.value[0].main = true
+    if(phones.value[0]){
+      phones.value[0].main = true
+    }
+
   }
 })
 
-const onRemove = (id)=>{
-  phones.value = phones.value.filter((v)=>v.id !== id)
+const onRemove = (v)=>{
+  emits('onDelete',v)
+  phones.value = phones.value.filter((x)=>x.id !== v.id)
 
 }
 </script>
@@ -84,7 +92,7 @@ const onRemove = (id)=>{
           <n-input-group>
             <n-button
                 v-if="idx>0"
-                @click="onRemove(item.id)"
+                @click="onRemove(item)"
                 type="error">
               <template #icon>
                 <Delete28Regular/>
@@ -116,9 +124,6 @@ const onRemove = (id)=>{
 
       </div>
     </template>
-    <div class="col-span-12">
-      <span class="text-xs text-gray-400">{{$t('createWorkerPage.ui.phone')}}</span>
-    </div>
   </div>
 </template>
 

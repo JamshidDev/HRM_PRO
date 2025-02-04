@@ -2,6 +2,9 @@
     "content": {
         "requiredField": "Maydon to'ldirilishi shart!",
         "save": "Saqlash",
+        "edit": "Tahrirlash",
+        "delete": "O'chirish",
+        "download": "Yuklash",
         "no-data": "Ma'lumot yo'q",
         "cancel": "Bekor qilish",
         "help": "Yordam",
@@ -47,7 +50,6 @@
         "closeAndClear": "Yopish va tozalash",
         "notWorker": "Xodim topilmadi",
         "worker": "Xodim",
-        "edit": "Tahrirlash",
         "status": "Holati",
         "Process": "Jarayaonda",
         "Read": "Tanishgan",
@@ -72,7 +74,8 @@
         "requiredJSHSHIR": "Pasport jshshir kiritilishi shart!"
     },
     "message": {
-        "successDone": "Muvofaqqiyatli bajarildi"
+        "successDone": "Muvofaqqiyatli bajarildi",
+        "warning-data": "Ma'lumotlar yetarli emas!"
     },
     "account": {
         "changeRoleConfirm":"Bu hisobdan chiqib boshqa hisobga kirish uchun kerakli hisobni tanlang va 20 soniya kuting"
@@ -250,6 +253,9 @@
             "career": "Faoliyati",
             "relative": "Qarindoshlari",
             "others": "Boshqalar"
+        },
+        "personal": {
+            "no-passport": "Passport ma'lumotlar yuklanmagan!"
         }
     },
     "departmentPage": {

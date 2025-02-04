@@ -10,9 +10,13 @@ const _index =async (payload)=>{
 const _show =async (payload)=>{
     return await axios.get(`/v1/hr/worker-positions/${payload.id}`, {params:payload.params})
 }
+const _create = async (payload)=>{
+    return await axios.post(`/v1/hr/workers`, payload.data)
+}
 
-
-
+const _update = async (payload)=>{
+    return await axios.put(`/v1/hr/workers/${payload.id}`, payload.data)
+}
 
 
 
@@ -21,4 +25,6 @@ export default {
     _checkWorker,
     _index,
     _show,
+    _create,
+    _update,
 }

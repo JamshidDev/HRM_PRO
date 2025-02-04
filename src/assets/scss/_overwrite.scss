@@ -149,3 +149,10 @@ input:-webkit-autofill {
     box-shadow: none !important;
   }
 }
+.show__delete-image{
+  &:hover{
+    .photo__delete-btn{
+      bottom: 4px;
+    }
+  }
+}

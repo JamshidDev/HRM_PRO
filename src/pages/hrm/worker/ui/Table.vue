@@ -1,9 +1,11 @@
 <script setup>
 import {NoDataPicture, UIActionButton, UIPagination, UIUser} from "@/components/index.js"
 import {useWorkerStore} from "@/store/modules/index.js"
+import {useRouter} from "vue-router"
+import {AppPaths} from "@/utils/index.js"
 
 const store = useWorkerStore()
-
+const router = useRouter()
 
 
 
@@ -17,6 +19,13 @@ const onEdit = (v)=>{
 const onDelete = (v)=>{
   store.elementId = v.id
   store._delete()
+}
+
+const goPush =(v)=>{
+  router.push({
+    path:`${AppPaths.Hrm}${AppPaths.WorkerProfile}`,
+    query:{id:v.worker.uuid},
+  })
 }
 
 const changePage = (v)=>{
@@ -48,6 +57,8 @@ const changePage = (v)=>{
           <td><span class="text-center text-[12px] text-gray-600 block">{{ (store.params.page - 1) * store.params.per_page + idx + 1 }}</span></td>
           <td>
             <UIUser
+                @click="goPush(item)"
+                class="cursor-pointer"
                 :short="false"
                 :data="{
                     photo:item?.worker.photo,

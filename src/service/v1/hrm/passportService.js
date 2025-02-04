@@ -9,7 +9,7 @@ const _create = async (payload)=>{
 }
 
 const _update = async (payload)=>{
-    return await axios.post(`/v1/hr/worker-passports/${payload.id}`, payload.data)
+    return await axios.post(`/v1/hr/worker-passports/${payload.id}`, payload.data, {params:payload.params})
 }
 
 const _delete = async (payload)=>{

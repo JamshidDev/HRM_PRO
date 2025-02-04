@@ -495,7 +495,6 @@ export default {
         phones:[
             {
                 validator: (rule, value) => {
-                    console.log(value)
                     if (!value || value[0].phone.length <16) {
                         return new Error( t(`rules.requiredField`));
                     }

@@ -1,7 +1,8 @@
 <script setup>
-import {CameraAdd48Filled} from "@vicons/fluent"
+import {CameraAdd48Filled, DismissCircle48Regular} from "@vicons/fluent"
 import {UICropper} from "@/components/index.js"
 import { v4 as uuidv4 } from 'uuid';
+
 const images = defineModel('images',{
   required:true,
   default:[],
@@ -14,6 +15,7 @@ const mainImageId = defineModel('mainImageId',{
 
 const cropper_ref = ref(null)
 
+const emits = defineEmits(['onDelete'])
 
 const onOpenFile = ()=>{
   cropper_ref.value.openFile()
@@ -30,6 +32,10 @@ const onResult = (v)=>{
   })
 }
 
+const deleteEv = (v)=>{
+  emits('onDelete',v)
+}
+
 const onchangeMain = (id)=>{
   mainImageId.value = id
 }
@@ -41,7 +47,7 @@ const onchangeMain = (id)=>{
   <template v-for="(img,idx) in images" :key="idx">
     <div
         @click="onchangeMain(img.id)"
-        class="w-[120px] h-[160px] overflow-hidden rounded  cursor-pointer transition-all"
+        class="w-[120px] h-[160px] overflow-hidden rounded  cursor-pointer transition-all relative show__delete-image"
         :class="[img.id === mainImageId? 'border-4 border-primary' : 'border border-gray-300']"
     >
       <img
@@ -49,11 +55,18 @@ const onchangeMain = (id)=>{
           :src="img.base64"
           alt=""
       >
+      <div v-if="images.length>1" class="photo__delete-btn w-[30px] h-[30px] rounded-full bg-danger flex justify-center items-center absolute bottom-[-30px] transition-all z-10 left-1/2 translate-x-[-50%]">
+        <n-icon @click="deleteEv(img)" size="26" class="text-white">
+          <DismissCircle48Regular/>
+        </n-icon>
+      </div>
+
     </div>
   </template>
   <div
+      v-if="images.length<8"
       @click="onOpenFile"
-      class="w-[120px] h-[160px] border border-dashed border-gray-500 flex justify-center items-center cursor-pointer rounded">
+      class="w-[120px] h-[160px] border border-dashed border-gray-300 flex justify-center items-center cursor-pointer rounded">
       <n-icon size="80" class="text-gray-500">
         <CameraAdd48Filled/>
       </n-icon>
