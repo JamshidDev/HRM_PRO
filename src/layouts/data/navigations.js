@@ -9,32 +9,32 @@ export const navigations = [
         index:1,
         label:'HRM',
         path:AppPaths.Hrm,
-        icon:'bx bx-id-card',
+        icon:'bx bxs-dashboard',
         children:[
             {
                 label:t('workerPage.name'),
                 path:Utils.routeHrmPathMaker(AppPaths.Worker),
-                icon:'bx bxs-folder',
+                icon:'bx bxs-user-circle',
             },
             {
                 label:t('departmentPage.name'),
                 path:Utils.routeHrmPathMaker(AppPaths.Department),
-                icon:'bx bxs-folder',
+                icon:'bx bxs-dashboard',
             },
             {
                 label:t('departmentPositionPage.name'),
                 path:Utils.routeHrmPathMaker(AppPaths.DepartmentPosition),
-                icon:'bx bxs-folder',
+                icon:'bx bx-sitemap',
             },
             {
                 label:t('documentPage.name'),
                 path:Utils.routeHrmPathMaker(AppPaths.Document),
-                icon:'bx bxs-folder',
+                icon:'bx bxs-file-archive',
             },
             {
                 label:t('confirmationPage.name'),
                 path:Utils.routeHrmPathMaker(AppPaths.Confirmation),
-                icon:'bx bxs-folder',
+                icon:'bx bxs-user-account',
             },
         ]
     },
@@ -57,18 +57,18 @@ export const navigations = [
         index:3,
         label:'Doc Flow',
         path:'/docflow',
-        icon:'bx bx-message-rounded-dots',
+        icon:'bx bx-command',
         children:[
             {
                 label:t('confirmation.name'),
                 path:Utils.routeDocFlowPathMaker(AppPaths.ConfContract),
-                icon:'bx bxs-folder',
+                icon:'bx bxs-receipt',
                 children:[]
             },
             {
                 label:t('documentPage.tabs.command'),
                 path:Utils.routeDocFlowPathMaker(AppPaths.ConfCommand),
-                icon:'bx bxs-folder',
+                icon:'bx bxs-file',
                 children:[]
             },
         ]
@@ -80,15 +80,9 @@ export const navigations = [
         icon: 'bx bxs-graduation',
         children:[
             {
-                label:t('examPage.name'),
-                path:Utils.routeLmsPathMaker(AppPaths.Exam),
-                icon:'bx bxs-folder',
-                children:[]
-            },
-            {
                 label:t('topicPage.name'),
                 path:Utils.routeLmsPathMaker(AppPaths.Topic),
-                icon:'bx bxs-folder',
+                icon:'bx bxs-archive',
                 children:[]
             },
         ]

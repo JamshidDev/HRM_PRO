@@ -104,9 +104,11 @@ const pushFirstMenu = (path)=>{
 
       <transition name="slide-right" mode="out-in">
         <div v-if="showPanel">
-          <div class="image-content">
-            <img class="image_element" :src="imgSrc" alt="">
-          </div>
+<!--          <div class="image-content">-->
+<!--&lt;!&ndash;            <img class="image_element" :src="imgSrc" alt="">&ndash;&gt;-->
+<!--            -->
+<!--          </div>-->
+<!--          <span class="text-lg font-bold text-center block text-primary mb-7">Xodimlar</span>-->
           <template v-for="item in panelMenu" :key="item">
 
             <template v-if="item?.children && item.children.length>0">
