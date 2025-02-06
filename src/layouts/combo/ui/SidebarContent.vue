@@ -1,5 +1,5 @@
 <script setup>
-import {navigations} from "../../data/navigations.js"
+import {navigations, otherNavigations} from "../../data/navigations.js"
 import {ChevronDown12Regular} from "@vicons/fluent"
 import {useAccountStore} from "@/store/modules/index.js"
 import {useRoute, useRouter} from "vue-router";
@@ -40,6 +40,7 @@ const onChangePath = (path)=>{
 
 
 
+
 const miniMenu = computed(()=>{
   return navigations.map((v)=>({
     index:v.index,
@@ -54,14 +55,14 @@ const panelMenu = computed(()=>{
   return (index === -1)? navigations[0].children : navigations[index].children
 })
 
-const imgSrc = computed(()=>{
-  if(menuPath.value === '/hrm') return '/public/app/hrm.png'
-  else if (menuPath.value === '/lms') return '/public/app/lms.png'
-  else if (menuPath.value === '/admin') return '/public/app/admin.png'
-  else if (menuPath.value === '/chat') return '/public/app/chat.png'
-  else if (menuPath.value === '/docflow') return '/public/app/docflow.png'
-  else return '/public/app/hrm.png'
-})
+// const imgSrc = computed(()=>{
+//   if(menuPath.value === '/hrm') return '/public/app/hrm.png'
+//   else if (menuPath.value === '/lms') return '/public/app/lms.png'
+//   else if (menuPath.value === '/admin') return '/public/app/admin.png'
+//   else if (menuPath.value === '/chat') return '/public/app/chat.png'
+//   else if (menuPath.value === '/docflow') return '/public/app/docflow.png'
+//   else return '/public/app/hrm.png'
+// })
 
 const isComboxMenu =(path)=>{
   if(route.path.includes(path)){
@@ -80,6 +81,7 @@ const pushFirstMenu = (path)=>{
 }
 
 
+
 </script>
 
 <template>
@@ -87,7 +89,7 @@ const pushFirstMenu = (path)=>{
     <div class="mini-content">
       
       <div class="logo-content cursor-pointer" @click="store.openRoleModal()">
-        <img src="/public/logo.png" alt="">
+        <img src="/public/logo.svg" alt=" " class="object-center animation-logo" />
       </div>
       
       <template v-for="item in miniMenu" :key="item">
@@ -164,9 +166,6 @@ const pushFirstMenu = (path)=>{
           </template>
         </div>
       </transition>
-
-
-
     </div>
 
 

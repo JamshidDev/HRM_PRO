@@ -109,7 +109,9 @@ const onDownload = (v)=>{
                   class="w-full"
                   ghost
               >
-                <span class="line-clamp-1"> {{ item.file?.name || $t('content.no-data')}}</span>
+                <span class="line-clamp-1">
+                  {{item.file?.name? item.file?.size? item.file?.name :  Utils.fileNameFromUrl(item.file?.name) : $t('universityPage.form.file')}}
+                </span>
 
                 <template #icon>
                   <CloudArrowUp24Regular/>

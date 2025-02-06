@@ -1,13 +1,12 @@
 <script setup>
-import {useRelativeStore} from "@/store/modules/index.js"
-import Table from "./ui/Table.vue"
 import createForm from "./ui/createForm.vue"
+import Table from "./ui/Table.vue"
 import {UIDrawer} from "@/components/index.js"
+import {useUniversityStore} from "@/store/modules/index.js"
 import {useRoute} from "vue-router"
 
 
-
-const store = useRelativeStore()
+const store = useUniversityStore()
 const route = useRoute()
 
 
@@ -23,7 +22,7 @@ onMounted(()=>{
   <UIDrawer
       :visible="store.visible"
       @update:visible="(v)=>store.visible = v"
-      :title="store.visibleType? $t('relativePage.createTitle') : $t('relativePage.updateTitle')"
+      :title="store.visibleType? $t('universityPage.createTitle') : $t('universityPage.updateTitle')"
   >
     <template #content>
       <createForm/>

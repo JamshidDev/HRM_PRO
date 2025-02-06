@@ -1,15 +1,12 @@
 <script setup>
-import {useRelativeStore} from "@/store/modules/index.js"
+import {useLanguageStore} from "@/store/modules/index.js"
 import Table from "./ui/Table.vue"
 import createForm from "./ui/createForm.vue"
 import {UIDrawer} from "@/components/index.js"
 import {useRoute} from "vue-router"
 
-
-
-const store = useRelativeStore()
+const store = useLanguageStore()
 const route = useRoute()
-
 
 onMounted(()=>{
   store.uuid = route.query.id
@@ -23,7 +20,7 @@ onMounted(()=>{
   <UIDrawer
       :visible="store.visible"
       @update:visible="(v)=>store.visible = v"
-      :title="store.visibleType? $t('relativePage.createTitle') : $t('relativePage.updateTitle')"
+      :title="store.visibleType? $t('languagePage.createTitle') : $t('languagePage.updateTitle')"
   >
     <template #content>
       <createForm/>

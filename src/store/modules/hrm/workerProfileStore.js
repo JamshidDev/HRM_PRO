@@ -12,7 +12,6 @@ export const useWorkerProfileStore = defineStore('workerProfileStore', {
         visibleType:true,
         elementId:null,
         totalItems:0,
-        allPermissionList:[],
         payload:{
             first_name:null,
             last_name:null,
@@ -31,6 +30,7 @@ export const useWorkerProfileStore = defineStore('workerProfileStore', {
             pin:null,
             inn:null,
             phones:[],
+            marital_status:null,
         },
         params:{
             page:1,
@@ -74,6 +74,8 @@ export const useWorkerProfileStore = defineStore('workerProfileStore', {
         passportLoading:false,
         passportList:[],
 
+        positionList:[],
+
 
 
     }),
@@ -103,7 +105,7 @@ export const useWorkerProfileStore = defineStore('workerProfileStore', {
                 this.payload.party = this.data.party.id
 
 
-
+                this.positionList = this.data.positions
                 this.districts =[this.data.city]
                 this.currentDistricts = [this.data.current_city]
                 componentStore.countryList = [this.data.country]

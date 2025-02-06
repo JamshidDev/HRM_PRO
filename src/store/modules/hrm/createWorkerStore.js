@@ -30,6 +30,7 @@ export const useCreateWorkerStore = defineStore('createWorkerStore', {
                 phone:'+998',
                 main:true,
             }],
+            marital_status:null,
         },
         passport:{
             serial_number:null,

@@ -168,3 +168,16 @@ export const navigations = [
         ]
     },
 ]
+
+export const otherNavigations = [
+    {
+        label:t('loginPage.name'),
+        path:AppPaths.Login,
+        icon:'bx bxs-user-circle',
+    },
+    {
+        label:t('registerPage.name'),
+        path:AppPaths.Register,
+        icon:'bx bxs-user-circle',
+    },
+]

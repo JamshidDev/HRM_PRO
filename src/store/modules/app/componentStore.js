@@ -52,6 +52,10 @@ export const useComponentStore = defineStore('componentStore', {
         nationalityList:[],
         nationalityLoading:false,
 
+        relativesList:[],
+        maritalList:[],
+        languageList:[],
+
         structureList:[],
         structureLoading:false,
         structureParams:{
@@ -136,6 +140,9 @@ export const useComponentStore = defineStore('componentStore', {
                 this.groupList = res.data.data.groups
                 this.rankList = res.data.data.ranks
                 this.probationList = res.data.data.probation_list
+                this.relativesList = res.data.data.relatives
+                this.maritalList = res.data.data.marital_statuses
+                this.languageList = res.data.data.languages
             }).finally(()=>{
                 this.enumLoading= false
             })

@@ -14,7 +14,6 @@ import SignatureInstance from "@/pages/app/e-imzo/SignatureInstance.vue"
         <ToastProvider/>
         <UIMainLoading/>
         <SignatureInstance/>
-
       </n-dialog-provider>
     </n-message-provider>
   </n-config-provider>

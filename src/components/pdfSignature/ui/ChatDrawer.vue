@@ -2,7 +2,6 @@
 import {usePdfViewerStore} from "@/store/modules/index.js"
 const store = usePdfViewerStore()
 import {Chat24Filled} from "@vicons/fluent"
-import {UIDrawer} from "@/components/index.js"
 import ChatContent from "../chat/ChatCotent.vue"
 
 const openChat = ()=>{
@@ -19,14 +18,17 @@ const openChat = ()=>{
 
     >
       <template #trigger>
-        <div class="absolute bottom-[30px] right-[20px]">
-          <n-button circle class="!bg-white shadow-3d " size="large">
-            <template #icon>
-              <n-icon size="28" class="text-primary">
-                <Chat24Filled/>
-              </n-icon>
-            </template>
-          </n-button>
+        <div class="absolute bottom-[100px] right-[20px]">
+          <n-badge :value="3" :max="15">
+            <n-button circle text size="large">
+              <template #icon>
+                <n-icon size="32" class="text-surface-900">
+                  <Chat24Filled/>
+                </n-icon>
+              </template>
+            </n-button>
+          </n-badge>
+
         </div>
 
       </template>

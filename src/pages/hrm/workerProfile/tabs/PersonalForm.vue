@@ -5,6 +5,7 @@ import Utils from "@/utils/Utils.js"
 import PhotoForm from "@/pages/hrm/condidate/ui/PhotoForm.vue"
 import PhoneForm from "@/pages/hrm/condidate/ui/PhoneForm.vue"
 import PassportForm from "../ui/PasportList.vue"
+import PositionList from "../ui/PositionList.vue"
 import {useRoute} from "vue-router"
 const route = useRoute()
 const store = useWorkerProfileStore()
@@ -73,6 +74,9 @@ const onSubmit = ()=>{
 }
 
 onMounted(()=>{
+  store.elementId = route.query.id
+  store._index()
+  store._indexPassport()
   componentStore._enums()
 })
 
@@ -317,8 +321,20 @@ onMounted(()=>{
           :allow-input="Utils.onlyAllowNumber"
       />
     </n-form-item>
-
-
+    <n-form-item
+        class="col-span-4"
+        :label="$t(`createWorkerPage.form.marital_status`)"
+        path="marital_status">
+      <n-select
+          v-model:value="store.payload.marital_status"
+          filterable
+          :placeholder="$t(`content.choose`)"
+          :options="componentStore.maritalList"
+          label-field="name"
+          value-field="id"
+          :loading="componentStore.enumLoading"
+      />
+    </n-form-item>
     <div class="col-span-12 mt-10">
       <PhoneForm
           @onDelete="onDeletePhone"
@@ -335,6 +351,9 @@ onMounted(()=>{
         >{{$t(`content.save`)}}</n-button>
       </div>
       <div class="w-full border-b mt-2 mb-10 border-dashed border-surface-line"></div>
+    </div>
+    <div class="col-span-12 mb-4 mt-16">
+      <PositionList/>
     </div>
     <div class="col-span-12">
       <PassportForm/>

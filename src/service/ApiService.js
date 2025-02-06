@@ -30,6 +30,8 @@ import passportService from "@/service/v1/hrm/passportService.js"
 import photoService from "@/service/v1/hrm/photoService.js"
 import phoneService from "@/service/v1/hrm/phoneService.js"
 import languageService from "@/service/v1/hrm/languageService.js"
+import relativeService from "@/service/v1/hrm/relativeService.js"
+import universityService from "@/service/v1/hrm/universityService.js"
 
 import documentService from "@/service/v1/docFlow/documentService.js"
 import contractService from "@/service/v1/docFlow/contractService.js"
@@ -78,4 +80,6 @@ export default {
     topicFilesService,
     topicCategoryService,
     topicQuestionService,
+    relativeService,
+    universityService,
 }

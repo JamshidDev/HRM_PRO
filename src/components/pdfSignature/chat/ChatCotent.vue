@@ -56,7 +56,9 @@ const checkTime = (time)=>{
       value-field="id"
       :loading="store.userLoading"
   />
-    <div class="flex flex-col-reverse w-full border border-surface-line rounded-lg mb-1 bg-surface-ground overflow-x-hidden overflow-y-auto" style="height: calc(100vh - 530px)">
+    <div
+        style="height: calc(100vh - 230px)"
+        class="flex flex-col-reverse w-full border border-surface-line rounded-lg mb-1 bg-surface-ground overflow-x-hidden overflow-y-auto">
       <template v-for="(item, idx) in messages" :key="idx">
         <MessageContent
             :message="item.msg"

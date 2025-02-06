@@ -75,6 +75,10 @@ const generateJwtToken =(payload,secret)=>{
 
 const noAvailableImage = "/public/no-picture.jpg"
 
+const fileNameFromUrl = (url)=>{
+    return url.split('/').pop()?.split('?')[0].split('#')[0] || '';
+}
+
 const routePathMaker = (mainPath)=>(`${AppPaths.Admin}${mainPath}`)
 const routeHrmPathMaker = (mainPath)=>(`${AppPaths.Hrm}${mainPath}`)
 const routeLmsPathMaker = (mainPath)=>(`${AppPaths.Lms}${mainPath}`)
@@ -105,4 +109,5 @@ export default {
     routeChatPathMaker,
     routeDocFlowPathMaker,
     generateJwtToken,
+    fileNameFromUrl,
 }

@@ -38,6 +38,7 @@
         "confirm": "Tasdiqlash",
         "month": "Oy",
         "or": "Yoki",
+        "file": "Fayl",
         "choose": "Tanlang",
         "chooseFile": "Fayl tanlang",
         "signatureLogin": "E-imzo orqali kirish",
@@ -81,6 +82,7 @@
         "changeRoleConfirm":"Bu hisobdan chiqib boshqa hisobga kirish uchun kerakli hisobni tanlang va 20 soniya kuting"
     },
     "loginPage":{
+        "name": "Xush kelibsiz",
         "title":"HRM PRO",
         "subtitle":"O'zbekiston temir yo'llari AJning HRM platformasi",
         "phone": "Telefon raqam",
@@ -90,6 +92,7 @@
         "login": "Kirish"
     },
     "registerPage": {
+        "name": "Ro'yhatdan o'tish",
         "title": "Ro'yhatdan o'tish",
         "subtitle": "Tasdiqlash",
         "firstName": "Ism",
@@ -255,7 +258,19 @@
             "others": "Boshqalar"
         },
         "personal": {
+            "additionalContract": "Qo'shimcha kelishuv tuzish",
+            "createOrder": "Buyruq tuzish",
+            "positionGroup": "Lavozim guruxi",
+            "positionRank": "Lavozim razryadi",
+            "positionRate": "Lavozim stavkasi",
             "no-passport": "Passport ma'lumotlar yuklanmagan!"
+        },
+        "position": {
+            "contractType": "Shartnoma turi",
+            "contractNumber": "Shartnoma raqami",
+            "contractDate": "Shartnoma sanasi",
+            "contractToDate": "Shartnoma muddati",
+            "title": "Lavozim ma'lumotlari"
         }
     },
     "departmentPage": {
@@ -322,6 +337,7 @@
             "passport_address": "Berilgan joyi",
             "passport_file": "Passport nusxasi (.pdf)",
             "inn": "Inn",
+            "marital_status": "Oilaviy holati",
             "address": "Yashash manzili"
         },
         "step": {
@@ -553,11 +569,50 @@
             "sign-in": "Tizimga kirish"
         }
     },
+    "relativePage": {
+        "createTitle": "Qarindosh ma'umotini qo'shish",
+        "updateTitle": "Qarindosh ma'umotini tahrirlash",
+        "tab": {
+            "worker": "Temir yo'lchi",
+            "notWorker": "Boshqa kasb"
+        },
+        "form": {
+            "birth_place": "Tug'ilgan manzili",
+            "post_name": "Lavozimi",
+            "marital_status": "Oilaviy holati",
+            "birthdayPlace": "Tug'ilgan yili va joyi",
 
+            "relative": "Qarindoshligi"
+        },
+        "title": "Yaqin qarindosh ma'lumotlari",
+        "no-data": "Yaqin qarindoshlar qo'shilmagan!"
+    },
     "topicPage": {
         "name": "Topiklar",
         "createTitle": "Topik qo'shish",
         "updateTitle": "Topikni tahrirlash"
+    },
+    "languagePage": {
+        "createTitle": "Til ma'lumotini qo'shish",
+        "updateTitle": "Til ma'lumotini tahrirlash",
+        "form": {
+            "certificateFile": "Sertifikat fayli"
+        },
+        "title": "Til ma'lumotlari",
+        "no-language": "Til ma'lumotlari yo'q!"
+    },
+    "universityPage": {
+        "createTitle": "Oliygoh ma'lumotini qo'shish",
+        "updateTitle": "Oliygoh ma'lumotini tahrirlash",
+        "form": {
+            "university_id": "Universititet",
+            "speciality_id": "Mutaxasislik",
+            "from_date": "Qachondan",
+            "to_date": "Qachongacha",
+            "file": "Yuklash uchun bosing"
+        },
+        "title": "Oliygoh ma'lumotlari",
+        "no-language": "Oliygoh ma'lumotlari yo'q!"
     },
     "topicDetailsPage": {
         "categories": {

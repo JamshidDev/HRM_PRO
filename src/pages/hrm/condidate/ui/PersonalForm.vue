@@ -237,6 +237,20 @@ onMounted(()=>{
           :allow-input="Utils.onlyAllowNumber"
       />
     </n-form-item>
+    <n-form-item
+        class="col-span-4"
+        :label="$t(`createWorkerPage.form.marital_status`)"
+        path="marital_status">
+      <n-select
+          v-model:value="store.payload.marital_status"
+          filterable
+          :placeholder="$t(`content.choose`)"
+          :options="componentStore.maritalList"
+          label-field="name"
+          value-field="id"
+          :loading="componentStore.enumLoading"
+      />
+    </n-form-item>
   </div>
 
 </template>

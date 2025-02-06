@@ -4,6 +4,7 @@ import {AppLayouts} from "@/utils/index.js";
 import Combo from "./combo/Combo.vue";
 import Empty from "./empty/Empty.vue";
 import {useAccountStore} from "@/store/modules/app/accountStore.js";
+import {navigations, otherNavigations} from "@/layouts/data/navigations.js"
 
 
 const route = useRoute()
@@ -16,6 +17,15 @@ const layout = computed(() => {
     default:
       return Combo
   }
+})
+
+watchEffect(()=>{
+  const list = navigations.flatMap((v)=>(v.children))
+  const currentItem = [...list, ...otherNavigations].filter((v)=>v.path === route.path)
+  if(currentItem.length>0){
+    window.document.title ="HRM PRO | " + currentItem[0].label
+  }
+
 })
 
 
