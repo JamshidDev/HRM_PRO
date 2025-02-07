@@ -37,6 +37,7 @@ import documentService from "@/service/v1/docFlow/documentService.js"
 import contractService from "@/service/v1/docFlow/contractService.js"
 import commandService from "@/service/v1/docFlow/commandService.js"
 import documentChatService from "@/service/v1/docFlow/documentChatService.js"
+import documentFileService from "@/service/v1/docFlow/documentFileService.js"
 
 import topicService from "@/service/v1/lms/topicService.js"
 import topicFilesService from "@/service/v1/lms/topicFilesService.js"
@@ -82,4 +83,5 @@ export default {
     topicQuestionService,
     relativeService,
     universityService,
+    documentFileService,
 }

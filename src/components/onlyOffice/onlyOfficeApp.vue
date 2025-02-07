@@ -11,6 +11,10 @@ baseConfig.editorConfig.callbackUrl = store.callBackUrl
 const token = Utils.generateJwtToken(store.config, store.secret)
 const config = { ...baseConfig, token}
 
+watchEffect(()=>{
+  console.log(store.config)
+})
+
 onMounted(()=>{
   const docEditor = new DocsAPI.DocEditor("placeholder", config)
 })

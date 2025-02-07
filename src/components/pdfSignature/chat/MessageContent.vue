@@ -1,4 +1,8 @@
 <script setup>
+import i18n from "@/i18n/index.js"
+import {NIcon} from "naive-ui"
+import {Delete16Regular, Edit16Regular} from "@vicons/fluent"
+const {t} = i18n.global
 const props = defineProps({
   message:{
     type:String,
@@ -19,8 +23,55 @@ const props = defineProps({
   time:{
     type:String,
     default:''
-  }
+  },
 })
+
+const emits = defineEmits(['onDelete'])
+
+const showDropdown = ref(false)
+const x = ref(0)
+const y = ref(0)
+const options = [
+  // {
+  //   icon: renderIcon(Edit16Regular),
+  //   label:t('content.edit'),
+  //   key: "edit"
+  // },
+  {
+    icon: renderIcon(Delete16Regular),
+    label:t('content.delete'),
+    key: "delete"
+  },
+];
+
+function renderIcon(icon) {
+  return () => {
+    return h(NIcon, null, {
+      default: () => h(icon)
+    })
+  }
+}
+
+const handleContextMenu=(e)=> {
+  e.preventDefault();
+  showDropdown.value = false;
+  nextTick().then(() => {
+    showDropdown.value = true;
+    x.value = e.clientX;
+    y.value = e.clientY;
+  });
+}
+const onClickOutside =()=> {
+  showDropdown.value = false;
+}
+
+const handleSelect =(key)=>{
+  showDropdown.value = false;
+  if(options[0].key === key){
+    emits('onDelete')
+  }
+}
+
 
 
 </script>
@@ -34,7 +85,7 @@ const props = defineProps({
       <div>
         <div class="text-xs font-medium text-surface-600 flex justify-end"><span class="text-[12px] font-normal text-surface-400 mr-1"> {{time}} </span> {{fullName}}</div>
         <div class="w-full flex justify-end">
-          <div class="border  max-w-[280px] text-surface-600 rounded-lg text-sm px-2 py-1 border-surface-line inline-block bg-surface-section">
+          <div @contextmenu="handleContextMenu($event)" class="border  max-w-[280px] text-surface-600 rounded-lg text-sm px-2 py-1 border-surface-line inline-block bg-surface-section">
             <pre class="font-poppins text-wrap">{{message}}</pre>
           </div>
         </div>
@@ -66,6 +117,16 @@ const props = defineProps({
       </div>
     </div>
   </template>
+  <n-dropdown
+      placement="bottom-start"
+      trigger="manual"
+      :x="x"
+      :y="y"
+      :options="options"
+      :show="showDropdown"
+      :on-clickoutside="onClickOutside"
+      @select="handleSelect"
+  />
 
 </div>
 </template>

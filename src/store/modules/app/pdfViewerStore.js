@@ -181,6 +181,12 @@ export const usePdfViewerStore = defineStore('pdfViewerStore', {
             }).finally(()=>{
                 this.chatLoading = false
             })
+        },
+        _deleteMessage(id){
+           this.chatLoading = true
+            $ApiService.documentChatService._delete({id}).then((res)=>{
+                    this._messages()
+            })
         }
     }
 

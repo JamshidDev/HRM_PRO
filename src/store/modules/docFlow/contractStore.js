@@ -37,6 +37,7 @@ export const useContractStore = defineStore('contractStore', {
             additional_vacation_day:null,
             schedule_id:null,
             command_type:2,
+            files:[],
         },
         params:{
             page:1,
@@ -69,10 +70,14 @@ export const useContractStore = defineStore('contractStore', {
                }
             }
             delete data.pin
-            console.log(data)
             $ApiService.contractService._create({data}).then((res)=>{
-                this.visible = false
-                this._index()
+                if(this.payload.files.length>0){
+                    this._attachFile(res.data.data.contract_id)
+                }else{
+                    this.visible = false
+                    this._index()
+                }
+
             }).finally(()=>{
                 this.saveLoading = false
             })
@@ -108,13 +113,28 @@ export const useContractStore = defineStore('contractStore', {
             })
 
         },
+        _attachFile(id){
+            this.saveLoading = true
+            const formData = new FormData()
+            formData.append('document_id',id)
+            formData.append('model','contracts')
+            this.payload.files.forEach(v=>{
+                formData.append('file',v.file)
+            })
+            $ApiService.documentFileService._create({data:formData}).then((res)=>{
+                console.log(res.data)
+                this.visible = false
+            }).finally(()=>{
+                this.saveLoading = false
+            })
+        },
         openVisible(data){
             this.visible = data
         },
         resetForm(){
             this.payload.pin = null
             this.payload.organization_id = []
-            this.payload.contract_date = new Date()
+            this.payload.contract_date = new Date().getTime()
             this.payload.number = null
             this.payload.table_number = null
             this.payload.type = null
@@ -128,11 +148,12 @@ export const useContractStore = defineStore('contractStore', {
             this.payload.rank = null
             this.payload.post_name = null
             this.payload.probation = null
-            this.payload.position_date = new Date()
+            this.payload.position_date = new Date().getTime()
             this.payload.vacation_main_day = null
             this.payload.additional_vacation_day = null
             this.payload.schedule_id = null
-            this.payload.contract_to_date = new Date()
+            this.payload.files = []
+            this.payload.contract_to_date = new Date().getTime()
         }
 
     }

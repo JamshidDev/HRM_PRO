@@ -33,6 +33,8 @@ const onSave = ()=>{
   commandStore.visible = true
 }
 
+const files = ref([])
+
 </script>
 
 <template>

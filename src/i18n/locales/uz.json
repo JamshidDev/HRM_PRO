@@ -61,6 +61,8 @@
         "no-message": "Hozircha suhbatlar yo'q",
         "type": "Turi",
         "organization": "Korxona",
+        "upload": "Fayl yuklash",
+        "attachFile": "Fayl biriktirish",
         "sum": "So'm"
     },
     "rules": {

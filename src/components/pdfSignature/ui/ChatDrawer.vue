@@ -7,6 +7,11 @@ import ChatContent from "../chat/ChatCotent.vue"
 const openChat = ()=>{
   store.chatVisible = !store.chatVisible
 }
+
+const chatCount = computed(()=>{
+  return  store.document?.chats || 0
+})
+
 </script>
 
 <template>
@@ -18,11 +23,11 @@ const openChat = ()=>{
 
     >
       <template #trigger>
-        <div class="absolute bottom-[100px] right-[20px]">
-          <n-badge :value="3" :max="15">
+        <div class="absolute bottom-[50px] right-[20px]" :class="chatCount>0 && 'shake-button'">
+          <n-badge :value="chatCount">
             <n-button circle text size="large">
               <template #icon>
-                <n-icon size="32" class="text-surface-900">
+                <n-icon size="32" class="text-primary">
                   <Chat24Filled/>
                 </n-icon>
               </template>
@@ -36,22 +41,40 @@ const openChat = ()=>{
         <ChatContent/>
       </div>
     </n-popover>
-
-
-<!--    <UIDrawer-->
-<!--        :visible="store.chatVisible"-->
-<!--        @update:visible="(v)=>store.chatVisible = v"-->
-<!--        :mask-closable="false"-->
-<!--        title="Muxokama uchun chat"-->
-<!--    >-->
-<!--      <template #content>-->
-<!--        <ChatContent/>-->
-<!--      </template>-->
-<!--    </UIDrawer>-->
   </div>
 
 </template>
 
-<style scoped>
+<style scoped lang="scss">
+.shake-button {
+  animation: shake-lr 1s cubic-bezier(0.455, 0.030, 0.515, 0.955) infinite;
+}
+@keyframes shake-lr {
+  0%,
+  100% {
+    transform: rotate(0deg);
+    -webkit-transform-origin: 50% 50%;
+    transform-origin: 50% 50%;
+  }
+  10% {
+    transform: rotate(8deg);
+  }
+  20%,
+  40%,
+  60% {
+    transform: rotate(-20deg);
+  }
+  30%,
+  50%,
+  70% {
+    transform: rotate(0deg);
+  }
+  80% {
+    transform: rotate(0deg);
+  }
+  90% {
+    transform: rotate(deg);
+  }
+}
 
 </style>

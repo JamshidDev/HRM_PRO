@@ -3,11 +3,12 @@ import {Signature20Filled,
   PanelLeftContract20Filled, DocumentEdit24Regular, Chat24Filled} from "@vicons/fluent"
 import PdfViewer from "./PdfViewer.vue"
 import {UIUser} from "@/components/index.js"
-import {usePdfViewerStore, useSignatureStore} from "@/store/modules/index.js"
+import {usePdfViewerStore, useSignatureStore, useOnlyOfficeStore} from "@/store/modules/index.js"
 import ConfirmationList from "./ui/ConfirmationList.vue"
 import LeftContent from "./ui/LeftContent.vue"
 import ChatDrawer from "./ui/ChatDrawer.vue"
 import Utils from "../../utils/Utils.js"
+import {useRoute} from "vue-router"
 
 const pdfViewerRef = ref(null)
 const route = useRoute()
@@ -16,6 +17,7 @@ const route = useRoute()
 const emits = defineEmits(["onClose", "onEdit", 'signatureEv'])
 
 const store = usePdfViewerStore()
+const onlyOfficeStore = useOnlyOfficeStore()
 const signatureStore = useSignatureStore()
 
 const onSaveSignature = ()=>{
@@ -77,6 +79,14 @@ const getDocument =async (document_id, model)=>{
     store.docxUrl = v.document?.doc_url
     store.permissions = v.signature
     store.permissions.qrcode = false
+    // if(v.signature.office_config){
+    //   onlyOfficeStore._setOnlyOffice(v.signature.office_config)
+    // }
+
+
+
+
+
     store.loadPdf()
      // pdfViewerRef.value.loadPdf(v.document.url)
   }).finally(()=>{

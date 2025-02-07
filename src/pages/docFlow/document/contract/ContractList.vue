@@ -20,8 +20,14 @@ const onOpenFile = (v)=>{
 
 const onEdit = (v)=>{
   store.visibleType = false
-  store.visible = true
+  store.payload.number = v.number.toString()
+  store.payload.type = v.type.id
+  store.payload.contract_date = new Date(v.contract_date).getTime()
+  store.payload.contract_to_date = new Date(v.contract_date).getTime()
+  store.payload.position_date = new Date(v.contract_date).getTime()
+
   console.log(v)
+  store.visible = true
 
 }
 

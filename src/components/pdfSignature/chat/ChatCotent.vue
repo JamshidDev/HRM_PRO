@@ -30,6 +30,7 @@ const messages = computed(()=>{
     avatar:v.sender.photo,
     time:Utils.timeOnlyHour(v.created_at),
     date:Utils.timeOnlyDate(v.created_at),
+    id:v.id
   }))
 })
 
@@ -39,6 +40,10 @@ const checkTime = (time)=>{
     currentDate.value = time
     return true
   }else return  false
+}
+
+const onDelete = (v)=>{
+  store._deleteMessage(v.id)
 }
 
 </script>
@@ -66,6 +71,7 @@ const checkTime = (time)=>{
             :full-name="item.fullName"
             :avatar="item.avatar"
             :time="item.time"
+            @onDelete="onDelete(item)"
         />
         <ChatDate v-if="idx+1 === messages.length || checkTime(item.date)" :date="item.date" />
       </template>

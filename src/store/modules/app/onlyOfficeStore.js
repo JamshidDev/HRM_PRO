@@ -7,7 +7,7 @@ export const useOnlyOfficeStore = defineStore('onlyOfficeStore', {
     state:()=>({
         visible:false,
         serverUrl:_ServerUrl,
-        secret:'mGOBFcXBRMjEpJV8OLjtRhGxuT347l7a',
+        secret:'Bi0gE1TTai3i5bNeMkLyxZEFrsweLWFxfot6mrVWQc',
         config:{
             document:{
                 fileType:'docx',
@@ -34,15 +34,18 @@ export const useOnlyOfficeStore = defineStore('onlyOfficeStore', {
     },
     actions:{
         _setOnlyOffice(data){
-            this.config = {
-                document:{
-                    fileType:data.fileType || this.config.document.fileType,
-                    title:data.title || this.config.document.title,
-                    url:data.url || this.config.document.url,
-                },
-                documentType:data.documentType || this.config.documentType,
-            }
-            console.log(this.config)
+            // console.log(data)
+            // this.config = {
+            //     document:{
+            //         fileType:data.fileType || this.config.document.fileType,
+            //         title:data.title || this.config.document.title,
+            //         url:data.url || this.config.document.url,
+            //     },
+            //     documentType:data.documentType || this.config.documentType,
+            // }
+
+            this.config = data
+
         },
         _setOnlyOfficeVisible(v){
             this.visible = v

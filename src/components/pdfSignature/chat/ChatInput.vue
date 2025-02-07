@@ -26,7 +26,7 @@ const onMessageEv = ()=>{
     <div class="w-[36px]  flex justify-center items-center h-full rotate-[-45deg]">
       <n-button text @click="onMessageEv" :loading="store.chatLoading">
         <template #icon>
-          <n-icon  size="24" class="text-surface-400 cursor-pointer rotate-[-45deg]">
+          <n-icon  size="24" class="text-primary cursor-pointer rotate-[-45deg]">
             <Send24Filled/>
           </n-icon>
         </template>

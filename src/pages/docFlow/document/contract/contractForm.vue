@@ -1,5 +1,5 @@
 <script setup>
-import {UIAutoComplete, UIStructure, UIUser} from "@/components/index.js"
+import {UIAutoComplete, UIStructure, UIUpload, UIUser} from "@/components/index.js"
 import validationRules from "@/utils/validationRules.js";
 const formRef = ref(null)
 import {useContractStore, useComponentStore} from "@/store/modules/index.js";
@@ -362,6 +362,9 @@ onMounted(()=>{
                     clearable
                 />
               </n-form-item>
+            </div>
+            <div class="col-span-12">
+              <UIUpload v-model:files="store.payload.files" />
             </div>
           </div>
         </div>
