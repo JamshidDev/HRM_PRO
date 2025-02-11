@@ -614,11 +614,6 @@
         "title": "Yaqin qarindosh ma'lumotlari",
         "no-data": "Yaqin qarindoshlar qo'shilmagan!"
     },
-    "topicPage": {
-        "name": "Topiklar",
-        "createTitle": "Topik qo'shish",
-        "updateTitle": "Topikni tahrirlash"
-    },
     "languagePage": {
         "createTitle": "Til ma'lumotini qo'shish",
         "updateTitle": "Til ma'lumotini tahrirlash",
@@ -643,23 +638,39 @@
     },
     "topicDetailsPage": {
         "categories": {
-            "name": "Kategoriyalar",
             "createTitle": "Kategoriya qo'shish",
-            "updateTitle": "Kategoriyani tahrirlash",
             "form": {
                 "attach": "Biriktirish"
-            }
-
+            },
+            "name": "Kategoriyalar",
+            "updateTitle": "Kategoriyani tahrirlash"
+        },
+        "exams": {
+            "name": "Imtihonlar"
         },
         "files": {
-            "name": "Fayillar",
             "createTitle": "Fayl qo'shish",
+            "name": "Fayllar",
             "updateTitle": "Faylni tahrirlash"
         },
         "questions": {
-            "name": "Savollar",
             "createTitle": "Savol qo'shish",
+            "name": "Savollar",
             "updateTitle": "Savolni tahrirlash"
         }
+    },
+    "topicFiles": {
+        "addFile": "Fayl qo'shish",
+        "editFile": "Faylni tahrirlash",
+        "header": {
+            "active": "Aktivlik holati",
+            "file": "Fayl nomi",
+            "fileType": "Fayl turi"
+        }
+    },
+    "topicPage": {
+        "createTitle": "Topik qo'shish",
+        "name": "Topiklar",
+        "updateTitle": "Topikni tahrirlash"
     }
 }
