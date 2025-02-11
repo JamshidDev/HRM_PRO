@@ -1,10 +1,10 @@
 <script setup>
 import {ReceiptAdd24Regular, DocumentCheckmark24Regular, ArrowSyncCheckmark20Filled} from "@vicons/fluent"
-import {NoDataPicture, UIActionButton, UIPagination, UIUser, UIStatus, UIMenuButton} from "@/components/index.js"
-import {useContractStore} from "@/store/modules/index.js"
+import {NoDataPicture, UIPagination, UIUser, UIStatus, UIMenuButton} from "@/components/index.js"
+import {useAdContractStore} from "@/store/modules/index.js"
 import Utils from "@/utils/Utils.js"
 
-const store = useContractStore()
+const store = useAdContractStore()
 
 
 
@@ -40,12 +40,12 @@ const openContract = (v, statusId)=>{
 }
 
 const onSelect =(v)=>{
-    if(v.key === 'view'){
-      emits('openOffice', v.data.id)
-    }else if(v.key === 'delete'){
-      store.elementId = v.data.id
-      store._delete()
-    }
+  if(v.key === 'view'){
+    emits('openOffice', v.data.id)
+  }else if(v.key === 'delete'){
+    store.elementId = v.data.id
+    store._delete()
+  }
 }
 
 </script>

@@ -1,33 +1,22 @@
 <script setup>
-import {useComponentStore, useCreateWorkerStore} from "@/store/modules/index.js"
 import {CloudArrowUp24Regular} from "@vicons/fluent"
+import {useCreateWorkerStore} from "@/store/modules/index.js"
 const store = useCreateWorkerStore()
-const componentStore = useComponentStore()
 const inputFileRef = ref(null)
-const formRef = ref(null)
 
-const onSubmit = ()=>{
-
-}
 
 const onUpload = async (v)=>{
   const file =v.target.files[0]
   store.passportFileName =file.name
-  store.passport.file =file
+  store.payload.file =file
 }
 
-defineExpose({
-  onSubmit,
-})
+
 
 </script>
 
 <template>
-  <n-form
-      class="grid grid-cols-12 gap-x-4"
-      ref="formRef"
-      :model="store.passport"
-  >
+  <div class="grid grid-cols-12 gap-x-4">
     <n-form-item
         class="col-span-4"
         :label="$t(`createWorkerPage.form.serial_number`)"
@@ -37,7 +26,7 @@ defineExpose({
           type="text"
           v-mask="`AA ######`"
           :placeholder="$t(`createWorkerPage.form.serial_number`)"
-          v-model:value="store.passport.serial_number"
+          v-model:value="store.payload.serial_number"
       />
     </n-form-item>
     <n-form-item
@@ -46,7 +35,7 @@ defineExpose({
         path="from_date">
       <n-date-picker
           class="w-full"
-          v-model:value="store.passport.from_date"
+          v-model:value="store.payload.from_date"
           type="date"
           :placeholder="$t(`createWorkerPage.form.from_date`)"
       />
@@ -57,7 +46,7 @@ defineExpose({
         path="to_date">
       <n-date-picker
           class="w-full"
-          v-model:value="store.passport.to_date"
+          v-model:value="store.payload.to_date"
           type="date"
           :placeholder="$t(`createWorkerPage.form.to_date`)"
       />
@@ -70,7 +59,7 @@ defineExpose({
           class="w-full"
           type="text"
           :placeholder="$t(`createWorkerPage.form.passport_address`)"
-          v-model:value="store.passport.address"
+          v-model:value="store.payload.passport_address"
       />
     </n-form-item>
     <n-form-item
@@ -88,5 +77,5 @@ defineExpose({
       </n-button>
       <input @change="onUpload" type="file" accept=".pdf" v-show="false" ref="inputFileRef" />
     </n-form-item>
-  </n-form>
+  </div>
 </template>

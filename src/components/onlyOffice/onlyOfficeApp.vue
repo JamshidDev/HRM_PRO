@@ -16,7 +16,8 @@ watchEffect(()=>{
 })
 
 onMounted(()=>{
-  const docEditor = new DocsAPI.DocEditor("placeholder", config)
+  const docEditor = new DocsAPI.DocEditor("docEditor", config)
+  console.log(officeRef.value)
 })
 
 </script>
@@ -31,6 +32,7 @@ onMounted(()=>{
       :config="config"
       :events_onDocumentReady="store._onDocumentReady"
       :onLoadComponentError="store._onLoadComponentError"
+
   />
 </div>
 </template>

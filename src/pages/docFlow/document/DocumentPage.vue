@@ -1,10 +1,11 @@
 <script setup>
 import {UIPageContent, UIPageFilter, UIModal} from "@/components/index.js"
 import Tabs from "./ui/Tabs.vue"
-import {useContractStore, useComponentStore, useCommandStore, useDocumentStore} from "@/store/modules/index.js"
+import {useContractStore, useComponentStore, useCommandStore, useDocumentStore, useAdContractStore} from "@/store/modules/index.js"
 const contractStore = useContractStore()
 const componentStore = useComponentStore()
 const commandStore = useCommandStore()
+const adContractStore = useAdContractStore()
 const store = useDocumentStore()
 
 
@@ -13,6 +14,9 @@ const onAdd = ()=>{
     addContract()
   }else if(store.activeTab === store.tabList[1].key){
     addCommand()
+  }
+  else if(store.activeTab === store.tabList[2].key){
+    addAdContract()
   }
 }
 
@@ -25,15 +29,20 @@ const addCommand = ()=>{
 
 const addContract = ()=>{
   contractStore.visibleType = true
-  componentStore.contractPanel=false
+  componentStore.isSelectedWorker=false
   componentStore.selectedWorker=null
   contractStore.resetForm()
   contractStore.visible = true
 }
 
-onMounted(()=>{
-  contractStore._index()
-})
+const addAdContract = ()=>{
+  adContractStore.visibleType = true
+  adContractStore.elementId = true
+  adContractStore.resetForm()
+  adContractStore.visible = true
+}
+
+
 
 </script>
 

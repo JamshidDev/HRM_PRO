@@ -70,10 +70,10 @@ const renderLabel = (option)=>{
                 src:option.photo,
                 'fallback-src':Utils.noAvailableImage,
               },),
-            h('div',{ class:'flex flex-col'}, [
-              h('div',{ class:'text-xs font-medium text-gray-500'},`${option.last_name}.${option.last_name[0]}.${option.middle_name[0]}`),
-              h('div',{ class:'text-xs text-gray-400'},option.position),
-            ])
+          h('div',{ class:'flex flex-col'}, [
+            h('div',{ class:'text-xs font-medium text-gray-500'},`${option.last_name}.${option.last_name[0]}.${option.middle_name[0]}`),
+            h('div',{ class:'text-xs text-gray-400'},option.position),
+          ])
         ]
     ),
   ];
@@ -99,9 +99,9 @@ const scheduleLabel = (option)=>{
 
 const scheduleValue = ({option})=>{
   return h('div', {
-    class:'flex',
-  }, [
-      h('div', {class:'text-sm font-medium'},option.name)
+        class:'flex',
+      }, [
+        h('div', {class:'text-sm font-medium'},option.name)
       ]
   )
 }

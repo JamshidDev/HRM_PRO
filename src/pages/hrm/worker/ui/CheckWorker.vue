@@ -18,7 +18,7 @@ const searchEvent = useDebounceFn(() => {
     let pin = store.pin.split('-').join("")
     store._checkWorker(pin)
   }
-}, 300, )
+}, 300)
 
 
 const onAddCandidate = ()=>{
@@ -27,7 +27,7 @@ const onAddCandidate = ()=>{
 
 const onContinue = ()=>{
   store.checkUserVisible = false
-  store.contractPanel = true
+  store.isSelectedWorker = true
   setTimeout(()=>{
     workerStore.visible = true
   },200)

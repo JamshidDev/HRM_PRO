@@ -18,7 +18,9 @@ const onDelete = (v)=>{
 }
 
 const changePage = (v)=>{
-
+  store.params.page = v.page
+  store.params.per_page = v.per_page
+  store._index()
 }
 </script>
 
@@ -68,6 +70,7 @@ const changePage = (v)=>{
         </tbody>
       </n-table>
       <UIPagination
+          v-show="store.totalItems>10"
           :page="store.params.page"
           :per_page="store.params.size"
           :total="store.totalItems"

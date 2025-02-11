@@ -92,7 +92,7 @@ export const useComponentStore = defineStore('componentStore', {
         confirmationList:[],
         confirmationLoading:false,
 
-        contractPanel:false,
+        isSelectedWorker:false,
 
         organizationServiceList:[],
         enumAdminLoading:false,

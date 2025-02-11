@@ -1,5 +1,5 @@
 <script setup>
-import {NoDataPicture, UIActionButton, UIPagination, UIStatus, UIUser,} from "@/components/index.js"
+import {NoDataPicture, UIActionButton, UIMenuButton, UIPagination, UIStatus, UIUser,} from "@/components/index.js"
 import {useConfirmationContractStore} from "@/store/modules/index.js"
 import Utils from "@/utils/Utils.js"
 
@@ -15,6 +15,12 @@ const onOpenFile = (documentId, signatureId)=>{
 
 const changePage = (v)=>{
   emits('onChangePage', v)
+}
+
+const onSelect = (v) =>{
+  if(v.key === "view"){
+    onOpenFile(v.data?.contract.id, v.data.id)
+  }
 }
 
 </script>
@@ -38,13 +44,15 @@ const changePage = (v)=>{
           <th class="min-w-[60px] w-[60px]">{{$t('confirmation.contract.form.number')}}</th>
           <th class="min-w-[80px] w-[80px]">{{$t('content.status')}}</th>
           <th class="min-w-[80px] w-[80px]">{{$t('content.date')}}</th>
-          <th class="min-w-[60px] w-[60px]">{{$t('content.action')}}</th>
+          <th class="min-w-[40px] w-[40px]"></th>
         </tr>
         </thead>
         <tbody>
         <tr v-for="(item, idx) in store.list" :key="idx">
           <td><span class="text-center text-[12px] text-gray-600 block">{{ (store.params.page - 1) * store.params.per_page + idx + 1 }}</span></td>
-          <td>{{item?.contract?.type.name}}</td>
+          <td>
+            <span @click="onOpenFile(item?.contract.id,item.id)" class="hover:text-primary hover:underline cursor-pointer">{{item?.contract?.type.name}}</span>
+          </td>
           <td>
             <UIUser
                 :data="{
@@ -63,12 +71,10 @@ const changePage = (v)=>{
           <td><UIStatus :status="item?.status?.name"/></td>
           <td>{{ Utils.timeOnlyDate(item?.contract?.contract_date) }}</td>
           <td>
-            <UIActionButton
-                :visible-delete-btn="false"
-                :visible-edit-btn="false"
-                :visible-view-btn="true"
+            <UIMenuButton
+                :show-view="true"
                 :data="item"
-                @onView="onOpenFile(item?.contract.id,item.id)"
+                @selectEv="onSelect"
             />
           </td>
         </tr>

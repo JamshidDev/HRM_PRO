@@ -9,7 +9,7 @@
       "label": ""
     },
     "compactHeader": true,
-    "compactToolbar": true,
+    "compactToolbar": false,
     "compatibleFeatures": true,
     "autosave": false,
     "comments": false,

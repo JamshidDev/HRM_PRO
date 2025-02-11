@@ -38,6 +38,7 @@ import contractService from "@/service/v1/docFlow/contractService.js"
 import commandService from "@/service/v1/docFlow/commandService.js"
 import documentChatService from "@/service/v1/docFlow/documentChatService.js"
 import documentFileService from "@/service/v1/docFlow/documentFileService.js"
+import adContractService from "@/service/v1/docFlow/adContractService.js"
 
 import topicService from "@/service/v1/lms/topicService.js"
 import topicFilesService from "@/service/v1/lms/topicFilesService.js"

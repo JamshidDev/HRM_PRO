@@ -134,6 +134,7 @@ export const usePdfViewerStore = defineStore('pdfViewerStore', {
            this.document = null
            this.historyList = []
             this.show = false
+            this.totalPdfPage = 0
         },
         _addMessage(msg){
            if(msg.trim().length > 0){

@@ -1,6 +1,7 @@
 <script setup>
 import {UIPdfSignatureDrawer, UIOnlyOfficeDrawer} from "@/components/index.js"
 import {useOnlyOfficeStore, useAccountStore, usePdfViewerStore} from "@/store/modules/index.js"
+import {v4 as uuidv4} from "uuid"
 const onlyOfficeStore = useOnlyOfficeStore()
 const accountStore = useAccountStore()
 const pdfViewerStore = usePdfViewerStore()
@@ -33,7 +34,14 @@ const openEv = (document_id, model)=>{
   onlyOfficeStore.model = model
   onlyOfficeStore.document_id = document_id
   onlyOfficeStore.config.document.url = pdfViewerStore.docxUrl
+  onlyOfficeStore.config.document.title = pdfViewerStore.document.document.file_name
+  onlyOfficeStore.config.editorConfig.user = {
+    name:`${accountStore.account?.last_name} ${accountStore.account?.first_name}`,
+    id:accountStore.account.id,
+  }
+  onlyOfficeStore.config.document.key = uuidv4()
   onlyOfficeStore.user_uuid = accountStore.account?.uuid
+
   onlyOfficeStore._setOnlyOfficeVisible(true)
 }
 

@@ -10,7 +10,7 @@ const store = useWorkerProfileStore()
 <template>
 <div>
   <span class=" font-medium block mb-2">{{$t('workerProfile.position.title')}}</span>
-  <div v-for="(item, idx) in store.positionList" :key="idx" class="grid grid-cols-12 w-full border border-dashed border-surface-line">
+  <div v-for="(item, idx) in store.positionList" :key="idx" class="grid grid-cols-12 w-full border border-dashed border-surface-line mb-4">
     <div class="col-span-9 flex-col flex">
       <div class="grid grid-cols-12">
         <div class="col-span-12 p-2 border-b border-r border-dashed border-surface-line">
@@ -19,10 +19,12 @@ const store = useWorkerProfileStore()
             {{$t('workerProfile.position.contractNumber')}} -  <span class="font-medium text-gray-600 mr-4">{{item.contract.number}}</span>
             {{$t('workerProfile.position.contractDate')}} -  <span class="font-medium text-gray-600 mr-4">{{Utils.timeOnlyDate(item.contract.contract_date)}}</span>
             {{$t('workerProfile.position.contractToDate')}} -  <span class="font-medium text-gray-600 mr-4">{{Utils.timeOnlyDate(item.contract.contract_to_date)}}</span>
+            {{$t('workerProfile.position.positionDate')}} -  <span class="font-medium text-gray-600 mr-4">{{Utils.timeOnlyDate(item.position_date)}}</span>
+
+
           </div>
-          <div class="block">
-            <span class="text-gray-400">{{item.position_date}} dan </span>
-            <span class="font-semibold text-sm">{{item.post_name}}</span>
+          <div class="block text-gray-400">
+            {{$t('workerProfile.position.position')}} -  <span class="font-medium text-gray-600 mr-4">{{item.post_name}}</span>
           </div>
 
         </div>
