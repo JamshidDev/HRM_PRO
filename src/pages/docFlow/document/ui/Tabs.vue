@@ -28,6 +28,10 @@ const openCommand = (id)=>{
   officeAppRef.value.openPdf(id, 'commands')
 }
 
+const openContract = (id)=>{
+  officeAppRef.value.openPdf(id, 'contract-additional')
+}
+
 const onChangeQuery = (tab)=>{
   store.activeTab = Number(tab)
   router.push({
@@ -69,7 +73,7 @@ onMounted(()=>{
        <CommandPage @openOffice="openCommand"/>
       </template>
       <template v-if="item.key === store.tabList[2].key">
-        <AdContractPage/>
+        <AdContractPage @openOffice="openContract" />
       </template>
     </n-tab-pane>
   </n-tabs>

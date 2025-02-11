@@ -12,11 +12,14 @@ const componentStore = useComponentStore()
 
 const props = defineProps({
   callBack:{
-    type:Function,
+    type: Function,
     default:null,
   },
+  workers:{
+    type:Array,
+    default:[]
+  }
 })
-
 
 const onSubmit = ()=>{
   formRef.value?.validate((error)=>{
@@ -78,8 +81,21 @@ const renderLabel = (option)=>{
     ),
   ];
 }
-
-
+const workerRenderLabel = (option)=>{
+  return [
+    h('div',{ class:'flex flex-col'}, [
+      h('div',{ class:'text-xs font-medium text-gray-500'},option.name),
+      h('div',{ class:'text-xs text-gray-400'},option.position),
+    ])
+  ];
+}
+const workerRenderValue = ({option})=>{
+  return [
+    h('div',{ class:'flex flex-col'}, [
+      h('div',{ class:'text-sm font-medium text-gray-500'},option.name),
+    ])
+  ];
+}
 const scheduleLabel = (option)=>{
   return [
     h(
@@ -96,7 +112,6 @@ const scheduleLabel = (option)=>{
     ),
   ];
 }
-
 const scheduleValue = ({option})=>{
   return h('div', {
         class:'flex',
@@ -105,14 +120,41 @@ const scheduleValue = ({option})=>{
       ]
   )
 }
+const onChangeWorker = ()=>{
+  const typeId = componentStore.workerList.filter((v)=>v.id === store.payload.worker_position_id)[0].typeId
+  componentStore._adContractType(1)
 
-const rules = computed(()=>(store.payload.position_status && store.payload.type === 2)? validationRules.contractFromV2 :validationRules.contractFrom)
+}
+
+watchEffect(()=>{
+  if(store.payload.type){
+    store.payload.command_type = null
+    const data = {
+      status:'contract-additional',
+      type:store.payload.type
+    }
+    componentStore._commandTypes(data)
+  }
+})
+
+
 
 onMounted(()=>{
   if(componentStore.groupList.length===0){
     componentStore._enums()
   }
-  componentStore._scheduleList()
+  if(componentStore.scheduleList.length === 0){
+    componentStore._scheduleList()
+  }
+
+ if( props.workers.length === 0){
+   componentStore._workers()
+ }else{
+   componentStore.workerList = props.workers
+   store.payload.worker_position_id = componentStore.workerList[0].id
+   componentStore._adContractType(1)
+ }
+
 })
 
 </script>
@@ -120,21 +162,28 @@ onMounted(()=>{
 <template>
   <n-form
       ref="formRef"
-      :rules="rules"
+      :rules="validationRules.adContractFrom"
       :model="store.payload"
   >
     <div style="height:calc(100vh - 120px)" class="overflow-y-auto ">
       <div class="grid grid-cols-12 gap-x-4">
         <div class="col-span-12 flex justify-center">
           <div class="w-[600px]">
-            <template v-if="componentStore.isSelectedWorker">
-              <div class="w-full rounded-xl border-surface-line border mb-4 p-1">
-                <UIUser :data="componentStore.worker" :short="false"/>
-              </div>
-            </template>
-            <template v-else>
-              <UIAutoComplete v-model:pin="store.payload.pin" />
-            </template>
+            <n-form-item :label="$t(`documentPage.form.worker`)" path="worker_position_id">
+              <n-select
+                  :disabled="workers.length>0"
+                  v-model:value="store.payload.worker_position_id"
+                  filterable
+                  :placeholder="$t(`content.choose`)"
+                  :options="componentStore.workerList"
+                  label-field="name"
+                  value-field="id"
+                  :render-label="workerRenderLabel"
+                  :render-tag="workerRenderValue"
+                  @update:value="onChangeWorker"
+                  :loading="componentStore.workerLoading"
+              />
+            </n-form-item>
           </div>
         </div>
 
@@ -157,10 +206,10 @@ onMounted(()=>{
                     v-model:value="store.payload.type"
                     filterable
                     :placeholder="$t(`content.choose`)"
-                    :options="componentStore.contractTypeList"
+                    :options="componentStore.adContractTypes"
                     label-field="name"
                     value-field="id"
-                    :loading="componentStore.enumLoading"
+                    :loading="componentStore.adContractTypeLoading"
                 />
               </n-form-item>
             </div>
@@ -174,25 +223,40 @@ onMounted(()=>{
                 />
               </n-form-item>
             </div>
+
             <div class="col-span-3">
-              <n-form-item :label="$t(`documentPage.form.contract_to_date`)" path="contract_to_date">
-                <n-date-picker
-                    class="w-full"
-                    v-model:value="store.payload.contract_to_date"
-                    type="date"
+              <n-form-item :label="$t(`documentPage.form.schedule_id`)" path="schedule_id">
+                <n-select
+                    v-model:value="store.payload.schedule_id"
+                    filterable
                     :placeholder="$t(`content.choose`)"
+                    :options="componentStore.scheduleList"
+                    value-field="id"
+                    :loading="componentStore.scheduleLoading"
+                    :render-label="scheduleLabel"
+                    :render-tag="scheduleValue"
+                    clearable
                 />
               </n-form-item>
             </div>
             <div class="col-span-3">
-              <n-form-item :label="$t(`documentPage.form.position_date`)" path="position_date">
-                <n-date-picker
-                    class="w-full"
-                    v-model:value="store.payload.position_date"
-                    type="date"
+              <n-form-item :label="$t(`documentPage.form.command_type`)" path="command_type">
+                <n-select
+                    :disabled="!Boolean(store.payload.type)"
+                    v-model:value="store.payload.command_type"
+                    filterable
                     :placeholder="$t(`content.choose`)"
+                    :options="componentStore.commandTypeList"
+                    label-field="name"
+                    value-field="id"
+                    :loading="componentStore.commandTypeLoading"
+                    clearable
                 />
               </n-form-item>
+            </div>
+            <div class="col-span-3 pt-10">
+              <n-checkbox v-model:checked="store.payload.command_status" />
+              {{$t(`documentPage.form.command_status`)}}
             </div>
 
           </div>
@@ -302,17 +366,6 @@ onMounted(()=>{
                 </n-input>
               </n-form-item>
             </div>
-            <div class="col-span-2">
-              <n-form-item :label="$t(`documentPage.form.tableNumber`)" path="table_number">
-                <n-input
-                    class="w-full"
-                    type="text"
-                    :placeholder="$t(`content.enterField`)"
-                    :allow-input="Utils.onlyAllowNumber"
-                    v-model:value="store.payload.table_number"
-                />
-              </n-form-item>
-            </div>
             <div class="col-span-12">
               <n-form-item :label="$t(`documentPage.form.postName`)" path="post_name">
                 <n-input
@@ -326,66 +379,6 @@ onMounted(()=>{
 
           </div>
         </div>
-
-        <div class="col-span-12 border border-dashed p-2 rounded-xl border-gray-200 bg-gray-50 mt-4">
-          <div class="grid grid-cols-12 gap-x-4">
-            <div class="col-span-3">
-              <n-form-item :label="$t(`documentPage.form.vacation_main_day`)" path="vacation_main_day">
-                <n-input
-                    class="w-full"
-                    type="text"
-                    :placeholder="$t(`content.enterField`)"
-                    v-model:value="store.payload.vacation_main_day"
-                    :allow-input="Utils.onlyAllowNumber"
-                />
-              </n-form-item>
-            </div>
-            <div class="col-span-3">
-              <n-form-item :label="$t(`documentPage.form.additional_vacation_day`)" path="additional_vacation_day">
-                <n-input
-                    class="w-full"
-                    type="text"
-                    :placeholder="$t(`content.enterField`)"
-                    v-model:value="store.payload.additional_vacation_day"
-                    :allow-input="Utils.onlyAllowNumber"
-                />
-              </n-form-item>
-            </div>
-            <div class="col-span-3">
-              <n-form-item :label="$t(`documentPage.form.probation`)" path="probation">
-                <n-select
-                    v-model:value="store.payload.probation"
-                    filterable
-                    :placeholder="$t(`content.choose`)"
-                    :options="componentStore.probationList"
-                    label-field="name"
-                    value-field="id"
-                    :loading="componentStore.enumLoading"
-                    clearable
-                />
-              </n-form-item>
-            </div>
-            <div class="col-span-3">
-              <n-form-item :label="$t(`documentPage.form.schedule_id`)" path="schedule_id">
-                <n-select
-                    v-model:value="store.payload.schedule_id"
-                    filterable
-                    :placeholder="$t(`content.choose`)"
-                    :options="componentStore.scheduleList"
-                    value-field="id"
-                    :loading="componentStore.scheduleLoading"
-                    :render-label="scheduleLabel"
-                    :render-tag="scheduleValue"
-                    clearable
-                />
-              </n-form-item>
-            </div>
-            <div class="col-span-12">
-              <UIUpload v-model:files="store.payload.files" />
-            </div>
-          </div>
-        </div>
-
 
         <div class="col-span-12 mt-10 pb-10">
           <n-form-item :label="$t(`documentPage.form.director`)" path="director_id">

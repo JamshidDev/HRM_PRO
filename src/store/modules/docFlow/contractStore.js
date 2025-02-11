@@ -38,8 +38,8 @@ export const useContractStore = defineStore('contractStore', {
             vacation_main_day:null,
             additional_vacation_day:null,
             schedule_id:null,
-            command_type:2,
             files:[],
+            command_type:null,
         },
         params:{
             page:1,
@@ -159,6 +159,7 @@ export const useContractStore = defineStore('contractStore', {
             this.payload.vacation_main_day = null
             this.payload.additional_vacation_day = null
             this.payload.schedule_id = null
+            this.payload.command_type = null
             this.payload.files = []
             this.payload.contract_to_date = new Date().getTime()
         }

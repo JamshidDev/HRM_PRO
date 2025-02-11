@@ -112,6 +112,11 @@ export const useComponentStore = defineStore('componentStore', {
         commandTypeList:[],
         commandTypeLoading:false,
 
+        workerList:[],
+        workerLoading:false,
+
+        adContractTypes:[],
+        adContractTypeLoading:false,
 
 
     }),
@@ -299,11 +304,33 @@ export const useComponentStore = defineStore('componentStore', {
         _commandTypes(data){
             this.commandTypeLoading = true
             $ApiService.componentService._commandTypes({params:data}).then((res)=>{
-                console.log(res.data)
+                this.commandTypeList = res.data.data
             }).finally(()=>{
                 this.commandTypeLoading = false
             })
+        },
+        _workers(){
+            this.workerLoading = true
+            $ApiService.workerService._index({page:1, per_page: 10000}).then((res)=>{
+                this.workerList = res.data.data.data.map((v)=>({
+                    name:v.worker.last_name + ' '+v.worker.first_name+' '+v.worker.middle_name,
+                    position:v.position.name,
+                    id:v.position.id,
+                    typeId:v.contract.type.id
+                }))
+            }).finally(()=>{
+                this.workerLoading = false
+            })
+        },
+        _adContractType(id){
+            this.adContractTypeLoading = true
+            $ApiService.componentService._contractAddition({params:{contract_type:id}}).then((res)=>{
+                this.adContractTypes = res.data.data
+            }).finally(()=>{
+                this.adContractTypeLoading = false
+            })
         }
+
 
 
     }

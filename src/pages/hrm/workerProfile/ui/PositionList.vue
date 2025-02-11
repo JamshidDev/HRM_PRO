@@ -2,8 +2,32 @@
 import {Edit20Regular} from "@vicons/fluent"
 import {useWorkerProfileStore} from "@/store/modules/index.js"
 import Utils from "../../../../utils/Utils.js"
+import {UIModal} from "@/components/index.js"
+import AdContractForm from "@/pages/docFlow/document/adContract/adContractForm.vue"
 
 const store = useWorkerProfileStore()
+const workers = ref([])
+
+const onSuccessEv = (v)=>{
+  store.positionVisible = false
+}
+
+const onOpen = (v)=>{
+  const worker = v.contract.worker
+
+  workers.value = [
+    {
+      name:worker.last_name + ' '+worker.first_name+' '+worker.middle_name,
+      position:v.position.name,
+      id:v.position.id,
+      typeId:v.contract.type.id
+    }
+  ]
+
+  store.positionVisible = true
+
+
+}
 
 </script>
 
@@ -41,6 +65,7 @@ const store = useWorkerProfileStore()
     </div>
     <div class="col-span-3 flex flex-col-reverse gap-y-2 p-2 ">
       <n-button
+          @click="onOpen(item)"
           size="small"
           type="info"
           secondary
@@ -62,7 +87,16 @@ const store = useWorkerProfileStore()
       </n-button>
     </div>
   </div>
-
+  <UIModal
+      :title="$t('adContractPage.createTitle')"
+      :width="1200"
+      v-model:visible="store.positionVisible"
+  >
+    <adContractForm
+        :workers="workers"
+        :call-back="onSuccessEv"
+    />
+  </UIModal>
 </div>
 </template>
 

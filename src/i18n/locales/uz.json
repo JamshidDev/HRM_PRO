@@ -409,11 +409,7 @@
                 "confirm": "Tasdiqlovchilar",
                 "director_id": "Direktor",
                 "command_number": "Buyruq raqami"
-            },
-            "table": {
-
             }
-
         },
         "form": {
             "candidate": "Xodim",
@@ -436,6 +432,9 @@
             "additional_vacation_day": "Qo'shimcha ta'til kuni",
             "probation": "Sinov muddati",
             "schedule_id": "Ish jadvali",
+            "command_type": "Buyruq turi",
+            "worker": "Xodimni tanlang",
+            "command_status": "command status",
             "organization": "Korxona"
         },
         "signature": {

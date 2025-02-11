@@ -24,6 +24,7 @@ export const useAdContractStore = defineStore('adContractStore', {
             command_type:null,
             type:null,
             director_id:[],
+            organization_id:[],
             department_id:[],
             department_position_id:null,
             position_status:false,
@@ -50,33 +51,25 @@ export const useAdContractStore = defineStore('adContractStore', {
                 this.loading= false
             })
         },
-        _create(callback){
+        _create(callBack){
             const compStore = useComponentStore()
             this.saveLoading = true
             let data = {
                 ...this.payload,
                 ...{
                     contract_date:Utils.timeToZone(this.payload.contract_date),
-                    contract_to_date:Utils.timeToZone(this.payload.contract_to_date),
-                    position_date:Utils.timeToZone(this.payload.position_date),
                     organization_id:this.payload.organization_id[0].id,
-                    worker_id:compStore.isSelectedWorker? Number(compStore.worker.pin) : this.payload.pin,
+                    worker_position_id: this.payload.worker_position_id,
                     director_id:this.payload.director_id[0],
                     department_id:this.payload.department_id.length>0? this.payload.department_id[0].id : null,
                 }
             }
-            delete data.pin
             $ApiService.adContractService._create({data}).then((res)=>{
-                if(this.payload.files.length>0){
-                    this._attachFile(res.data.data.contract_id, callback)
-                }else{
-                    this.visible = false
-                    if(callback === null){
-                        this._index()
-                    }
-
-                    callback?.(res.data.data.contract_id)
+                this.visible = false
+                if(callBack === null){
+                    this._index()
                 }
+                callBack?.()
 
             }).finally(()=>{
                 this.saveLoading = false
@@ -139,6 +132,7 @@ export const useAdContractStore = defineStore('adContractStore', {
             this.payload.command_status = true
             this.payload.command_type = null
             this.payload.director_id = []
+            this.payload.organization_id = []
             this.payload.department_id = []
             this.payload.department_position_id = null
             this.payload.position_status = false

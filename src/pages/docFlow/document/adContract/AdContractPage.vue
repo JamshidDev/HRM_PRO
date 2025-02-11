@@ -6,11 +6,17 @@ import {useAdContractStore} from "@/store/modules/index.js"
 
 const store = useAdContractStore()
 
+const emits = defineEmits([ 'openOffice',])
+
+const emitEv = (v)=>{
+  emits('openOffice',v)
+}
+
 </script>
 
 <template>
 <div>
-  <Table/>
+  <Table @openOffice="emitEv" />
   <UIModal
       :title="store.visibleType? $t('adContractPage.createTitle') : $t('adContractPage.updateTitle')"
       :width="1200"

@@ -106,6 +106,17 @@ const scheduleValue = ({option})=>{
   )
 }
 
+watchEffect(()=>{
+  if(store.payload.type){
+    store.payload.command_type = null
+    const data = {
+      status:'contracts',
+      type:store.payload.type
+    }
+    componentStore._commandTypes(data)
+  }
+})
+
 const rules = computed(()=>(store.payload.position_status && store.payload.type === 2)? validationRules.contractFromV2 :validationRules.contractFrom)
 
 onMounted(()=>{
@@ -246,7 +257,21 @@ onMounted(()=>{
                 />
               </n-form-item>
             </div>
-
+            <div class="col-span-3">
+              <n-form-item :label="$t(`documentPage.form.command_type`)" path="command_type">
+                <n-select
+                    :disabled="!Boolean(store.payload.type)"
+                    v-model:value="store.payload.command_type"
+                    filterable
+                    :placeholder="$t(`content.choose`)"
+                    :options="componentStore.commandTypeList"
+                    label-field="name"
+                    value-field="id"
+                    :loading="componentStore.commandTypeLoading"
+                    clearable
+                />
+              </n-form-item>
+            </div>
           </div>
         </div>
 

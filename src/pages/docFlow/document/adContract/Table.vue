@@ -69,7 +69,6 @@ const onSelect =(v)=>{
           <th class="w-[120px]">{{$t('contractPage.table.status')}}</th>
           <th class="w-[300px]">{{$t('contractPage.table.organization')}}</th>
           <th class="w-[100px]">{{$t('contractPage.table.date')}}</th>
-          <th class="w-[120px]">{{$t('content.document')}}</th>
           <th class="min-w-[40px] w-[40px]"></th>
         </tr>
         </thead>
@@ -111,7 +110,6 @@ const onSelect =(v)=>{
           <td>
             <span class="text-sm">{{Utils.timeOnlyDate(item?.contract_date)}}</span>
           </td>
-          <td><UIStatus :status="item?.status?.name"/></td>
           <td>
             <UIMenuButton
                 :show-view="true"
