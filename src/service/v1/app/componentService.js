@@ -27,6 +27,13 @@ const _structure =async (payload)=>{
     return await axios.get(`/v1/structure`, {params:payload?.params})
 }
 
+const _commandTypes =async (payload)=>{
+    return await axios.get(`/v1/hr/enums/command-types`, {params:payload?.params})
+}
+const _contractAddition =async (payload)=>{
+    return await axios.get(`/v1/hr/enums/contract-additional-types`, {params:payload?.params})
+}
+
 export default {
     _enums,
     _organization,
@@ -36,4 +43,6 @@ export default {
     _docExample,
     _departmentTree,
     _enumExam,
+    _commandTypes,
+    _contractAddition,
 }

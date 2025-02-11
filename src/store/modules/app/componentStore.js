@@ -109,6 +109,9 @@ export const useComponentStore = defineStore('componentStore', {
         topicWhomList:[],
         TopicFileTypes:[],
 
+        commandTypeList:[],
+        commandTypeLoading:false,
+
 
 
     }),
@@ -291,6 +294,14 @@ export const useComponentStore = defineStore('componentStore', {
                 this.scheduleList = res.data.data.data
             }).finally(()=>{
                 this.scheduleLoading = false
+            })
+        },
+        _commandTypes(data){
+            this.commandTypeLoading = true
+            $ApiService.componentService._commandTypes({params:data}).then((res)=>{
+                console.log(res.data)
+            }).finally(()=>{
+                this.commandTypeLoading = false
             })
         }
 

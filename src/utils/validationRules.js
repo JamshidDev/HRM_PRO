@@ -809,7 +809,6 @@ export default {
             trigger: triggerEvents
         },
     },
-
     topicPage:{
         name:{
             required: true,
@@ -829,5 +828,4 @@ export default {
             trigger: triggerEvents
         },
     }
-
 }

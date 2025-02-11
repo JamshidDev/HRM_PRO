@@ -2,12 +2,12 @@
 import {UIAutoComplete, UIStructure, UIUpload, UIUser} from "@/components/index.js"
 import validationRules from "@/utils/validationRules.js";
 const formRef = ref(null)
-import {useContractStore, useComponentStore} from "@/store/modules/index.js";
+import {useAdContractStore, useComponentStore} from "@/store/modules/index.js";
 import { NAvatar } from "naive-ui"
 import Utils from "@/utils/Utils.js"
 import UIDepartment from "@/components/ui/UIDepartment.vue"
 
-const store = useContractStore()
+const store = useAdContractStore()
 const componentStore = useComponentStore()
 
 const props = defineProps({
@@ -131,7 +131,6 @@ onMounted(()=>{
               <div class="w-full rounded-xl border-surface-line border mb-4 p-1">
                 <UIUser :data="componentStore.worker" :short="false"/>
               </div>
-
             </template>
             <template v-else>
               <UIAutoComplete v-model:pin="store.payload.pin" />
