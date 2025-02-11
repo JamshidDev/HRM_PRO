@@ -484,11 +484,20 @@ export default {
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
-        birthday:{
-            type:'number',
-            required: true,
-            message: t(`rules.requiredField`),
-            trigger: triggerEvents
+        birthday: {
+            validator: (rule, value) => {
+                const isValidDate = (text) => {
+                    const date = new Date(text);
+                    return date instanceof Date && !isNaN(date.getTime());
+                };
+                if(value === null){
+                    return new Error( t(`rules.requiredField`));
+                }else if (!isValidDate(value)) {
+                    return new Error( t(`rules.unExpectedFormat`));
+                }
+                return true
+            },
+            trigger: triggerEvents,
         },
         address:{
             required: true,
@@ -525,6 +534,34 @@ export default {
             trigger: triggerEvents
         },
         inn:{
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        passport_address:{
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        serial_number:{
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        from_date:{
+            type:'number',
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        to_date:{
+            type:'number',
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        marital_status:{
+            type:'number',
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents

@@ -1,5 +1,5 @@
 <script setup>
-import {NoDataPicture, UIActionButton, UIPagination, UIStatus, UIUser,} from "@/components/index.js"
+import {NoDataPicture, UIActionButton, UIMenuButton, UIPagination, UIStatus, UIUser,} from "@/components/index.js"
 import {useCommandStore} from "@/store/modules/index.js"
 import Utils from "@/utils/Utils.js"
 
@@ -8,23 +8,21 @@ const store = useCommandStore()
 const emits = defineEmits([ 'openOffice',])
 
 
-const onEdit = (v)=>{
-}
-
-const onDelete = (v)=>{
-}
-
-const onAdd = (v)=>{
-}
-
-
 const onOpenFile = (v)=>{
   emits('openOffice', v)
 }
 
 
 const changePage = (v)=>{
-  emits('onChangePage', v)
+  store.params.page = v.page
+  store.params.per_page = v.per_page
+  store._index()
+}
+
+const onSelect = (v)=>{
+  if(v.key === 'view'){
+    emits('openOffice', v.data.id)
+  }
 }
 
 </script>
@@ -41,36 +39,39 @@ const changePage = (v)=>{
         <thead>
         <tr>
           <th class="!text-center min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
-          <th class="min-w-[60px]">{{$t('confirmation.contract.form.organization')}}</th>
+          <th class="min-w-[60px]">{{$t('content.type')}}</th>
           <th class="min-w-[60px] w-[60px]">{{$t('confirmation.contract.form.number')}}</th>
+          <th class="min-w-[100px] w-[300px]">{{$t('confirmation.contract.form.organization')}}</th>
           <th class="min-w-[100px] w-[100px]">{{$t('content.status')}}</th>
           <th class="min-w-[100px] w-[100px]">{{$t('content.date')}}</th>
-          <th class="min-w-[90px] w-[90px]">{{$t('content.action')}}</th>
+          <th class="min-w-[40px] w-[40px]"></th>
         </tr>
         </thead>
         <tbody>
         <tr v-for="(item, idx) in store.list" :key="idx">
           <td><span class="text-center text-[12px] text-gray-600 block">{{ (store.params.page - 1) * store.params.per_page + idx + 1 }}</span></td>
+          <td>
+            <span @click="onOpenFile(item.id)" class="hover:text-primary hover:underline cursor-pointer">{{item?.type?.name}}</span>
+          </td>
+          <td>
+           <div class="flex justify-center"> <n-button class="font-medium" round type="error" size="tiny">{{item?.command_number}}</n-button></div>
+          </td>
           <td>{{item?.organization?.name}}</td>
-          <td>{{item?.command_number}}<span v-if="item?.contract"> / {{item?.contract?.number}}</span></td>
           <td><UIStatus :status="item?.contract?.status?.name"/> </td>
           <td>{{ Utils.timeOnlyDate(item?.command_date) }}</td>
           <td>
-            <UIActionButton
-                visible-view-btn
+            <UIMenuButton
+                :show-view="true"
+                :show-edit="true"
                 :data="item"
-                :loading-delete="item.id === store.elementId && store.deleteLoading"
-                @on-edit="onEdit"
-                @on-delete="onDelete"
-                @on-add="onAdd"
-                @onView="onOpenFile(item.id)"
+                @selectEv="onSelect"
             />
           </td>
         </tr>
         </tbody>
       </n-table>
       <UIPagination
-          v-show="store.list.length>10"
+          v-show="store.totalItems>10"
           :page="store.params.page"
           :per_page="store.params.size"
           :total="store.totalItems"

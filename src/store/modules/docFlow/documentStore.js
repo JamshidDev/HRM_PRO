@@ -24,6 +24,10 @@ export const useDocumentStore = defineStore('documentStore', {
                 name:'documentPage.tabs.command',
                 key:2,
             },
+            {
+                name:'documentPage.tabs.adContract',
+                key:3,
+            },
         ],
         activeTab:1,
     }),

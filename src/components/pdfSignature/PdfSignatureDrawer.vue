@@ -17,7 +17,6 @@ const route = useRoute()
 const emits = defineEmits(["onClose", "onEdit", 'signatureEv'])
 
 const store = usePdfViewerStore()
-const onlyOfficeStore = useOnlyOfficeStore()
 const signatureStore = useSignatureStore()
 
 const onSaveSignature = ()=>{
@@ -79,16 +78,7 @@ const getDocument =async (document_id, model)=>{
     store.docxUrl = v.document?.doc_url
     store.permissions = v.signature
     store.permissions.qrcode = false
-    // if(v.signature.office_config){
-    //   onlyOfficeStore._setOnlyOffice(v.signature.office_config)
-    // }
-
-
-
-
-
     store.loadPdf()
-     // pdfViewerRef.value.loadPdf(v.document.url)
   }).finally(()=>{
     store.loading = false
   })

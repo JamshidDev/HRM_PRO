@@ -8,6 +8,7 @@ const emits = defineEmits([ 'openOffice',])
 const emitEv = (v)=>{
   emits('openOffice',v)
 }
+
 </script>
 
 <template>

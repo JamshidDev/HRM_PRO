@@ -1,17 +1,22 @@
 <script setup>
 import ContractPage from "../contract/ContractPage.vue"
 import CommandPage from "../command/CommandPage.vue"
-import {useDocumentStore, useCommandStore} from "@/store/modules/index.js"
+import AdContractPage from "../adContract/AdContractPage.vue"
+import {useDocumentStore, useCommandStore, useContractStore} from "@/store/modules/index.js"
 import {UIOfficeApp} from "@/components/index.js"
+import {useRoute, useRouter} from "vue-router"
+import {AppPaths} from "@/utils/index.js"
 
 const store = useDocumentStore()
 const commandStore = useCommandStore()
+const contractStore = useContractStore()
 const officeAppRef = ref(null)
 
+const route = useRoute()
+const router = useRouter()
+
 const onChange = ()=>{
- if(store.activeTab === 2){
-   commandStore._index()
- }
+  onChangeQuery(store.activeTab)
 }
 
 const openOffice = (id)=>{
@@ -21,6 +26,28 @@ const openOffice = (id)=>{
 const openCommand = (id)=>{
   officeAppRef.value.openPdf(id, 'commands')
 }
+
+const onChangeQuery = (tab)=>{
+  store.activeTab = Number(tab)
+  router.push({
+    path:`${AppPaths.Hrm}${AppPaths.Document}`,
+    query:{
+      tab,
+    }
+  })
+
+  if(store.activeTab === store.tabList[0].key){
+    contractStore._index()
+  }else if(store.activeTab === store.tabList[1].key){
+    commandStore._index()
+  }
+}
+
+onMounted(()=>{
+  onChangeQuery( route.query?.tab || store.activeTab)
+})
+
+
 </script>
 
 <template>
@@ -37,6 +64,9 @@ const openCommand = (id)=>{
       </template>
       <template v-if="item.key === store.tabList[1].key">
        <CommandPage @openOffice="openCommand"/>
+      </template>
+      <template v-if="item.key === store.tabList[2].key">
+        <AdContractPage/>
       </template>
     </n-tab-pane>
   </n-tabs>

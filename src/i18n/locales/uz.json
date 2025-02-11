@@ -4,6 +4,8 @@
         "save": "Saqlash",
         "edit": "Tahrirlash",
         "delete": "O'chirish",
+        "view": "Ko'rish",
+        "open": "Ochish",
         "download": "Yuklash",
         "no-data": "Ma'lumot yo'q",
         "cancel": "Bekor qilish",
@@ -57,12 +59,17 @@
         "Success": "Kelishilgan",
         "Rejected": "Rad etilgan",
         "Deleted": "O'chirilgan",
+        "Active": "Faol",
+        "DeActive": "Faol emas",
         "message": "Xabar yozing...",
         "no-message": "Hozircha suhbatlar yo'q",
         "type": "Turi",
         "organization": "Korxona",
         "upload": "Fayl yuklash",
         "attachFile": "Fayl biriktirish",
+        "document": "Hujjat",
+        "checking": "Tekshirilmoqda...",
+        "deleteWarning": "Haqiqattan ham o'chirmoqchimisz?",
         "sum": "So'm"
     },
     "rules": {
@@ -74,14 +81,24 @@
         "requiredImageField": "Rasm yuklanishi shart!",
         "requiredMinLength": "{n} ta belgidan kam bo'lmasligi kerak",
         "requiredMaxLength": "{n} ta belgidan ko'p bo'lmasligi kerak",
+        "unExpectedFormat": "Noto'g'ri turdagi ma'lumot!",
         "requiredJSHSHIR": "Pasport jshshir kiritilishi shart!"
     },
     "message": {
         "successDone": "Muvofaqqiyatli bajarildi",
+        "clearedFields": "Maydonlar tozalandi!",
         "warning-data": "Ma'lumotlar yetarli emas!"
     },
     "account": {
+        "changeAccount": "Hisobni o'zgartirish!",
         "changeRoleConfirm":"Bu hisobdan chiqib boshqa hisobga kirish uchun kerakli hisobni tanlang va 20 soniya kuting"
+    },
+    "sidebar": {
+        "hrm": "Xodimlar menyusi",
+        "admin": "Admin menyusi",
+        "chat": "Chat menyusi",
+        "docflow": "Huttatlar menyusi",
+        "lms": "Attestatsiya menyusi"
     },
     "loginPage":{
         "name": "Xush kelibsiz",
@@ -272,6 +289,8 @@
             "contractNumber": "Shartnoma raqami",
             "contractDate": "Shartnoma sanasi",
             "contractToDate": "Shartnoma muddati",
+            "positionDate": "Lavozim sanasi",
+            "position": "Lavozimi",
             "title": "Lavozim ma'lumotlari"
         }
     },
@@ -377,6 +396,7 @@
         "updateTitle": "Shartnomani tahrirlash",
         "tabs": {
             "contract": "Shartnomalar",
+            "adContract": "Qo'shimcha kelishuv",
             "command": "Buyruqlar"
         },
         "command": {
@@ -451,6 +471,11 @@
             "confirm": "Tasdiqlash"
         },
         "confirmText": "{n} raqamli shartnoma asosida buyruq yaratasizmi?"
+    },
+    "adContractPage": {
+        "createTitle": "Qo'shimcha kelishuv tuzish",
+        "updateTitle": "Qo'shimcha kelishuvni tahrirlash",
+        "name": "Qo'shimcha kelishuv"
     },
     "documentSetting": {
         "name": "Hujjat sozlamalari",

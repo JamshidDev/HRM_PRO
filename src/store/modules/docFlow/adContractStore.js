@@ -2,7 +2,7 @@ import {defineStore} from "pinia";
 import Utils from "@/utils/Utils.js"
 import {useComponentStore} from "@/store/modules/index.js"
 
-export const useContractStore = defineStore('contractStore', {
+export const useAdContractStore = defineStore('adContractStore', {
     state:()=>({
         list:[],
         loading:false,
@@ -62,15 +62,15 @@ export const useContractStore = defineStore('contractStore', {
             this.saveLoading = true
             let data = {
                 ...this.payload,
-               ...{
-                   contract_date:Utils.timeToZone(this.payload.contract_date),
-                   contract_to_date:Utils.timeToZone(this.payload.contract_to_date),
-                   position_date:Utils.timeToZone(this.payload.position_date),
-                   organization_id:this.payload.organization_id[0].id,
-                   worker_id:compStore.isSelectedWorker? Number(compStore.worker.pin) : this.payload.pin,
-                   director_id:this.payload.director_id[0],
-                   department_id:this.payload.department_id.length>0? this.payload.department_id[0].id : null,
-               }
+                ...{
+                    contract_date:Utils.timeToZone(this.payload.contract_date),
+                    contract_to_date:Utils.timeToZone(this.payload.contract_to_date),
+                    position_date:Utils.timeToZone(this.payload.position_date),
+                    organization_id:this.payload.organization_id[0].id,
+                    worker_id:compStore.isSelectedWorker? Number(compStore.worker.pin) : this.payload.pin,
+                    director_id:this.payload.director_id[0],
+                    department_id:this.payload.department_id.length>0? this.payload.department_id[0].id : null,
+                }
             }
             delete data.pin
             $ApiService.contractService._create({data}).then((res)=>{

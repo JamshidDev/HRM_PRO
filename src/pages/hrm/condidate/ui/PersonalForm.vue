@@ -144,6 +144,7 @@ onMounted(()=>{
           v-model:value="store.payload.birthday"
           type="date"
           :placeholder="$t(`content.choose`)"
+          format="yyyy/MM/dd"
       />
     </n-form-item>
     <n-form-item

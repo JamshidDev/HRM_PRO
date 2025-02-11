@@ -31,13 +31,11 @@ export const useCreateWorkerStore = defineStore('createWorkerStore', {
                 main:true,
             }],
             marital_status:null,
-        },
-        passport:{
             serial_number:null,
             from_date:null,
             to_date:null,
-            address:null,
-            c:null,
+            passport_address:null,
+            file:null,
         },
         params:{
             page:1,
@@ -52,6 +50,8 @@ export const useCreateWorkerStore = defineStore('createWorkerStore', {
         currentDistrictLoading:false,
         warningVisible:false,
         successVisible:false,
+        visible:false,
+        savedWorker:null,
 
 
     }),
@@ -95,8 +95,18 @@ export const useCreateWorkerStore = defineStore('createWorkerStore', {
 
             $ApiService.workerService._create({data}).then((res)=>{
                 if(res.data?.errorMsg === 'Ok'){
-                    const uuid = res.data.data.uuid
-                    this._passportFormData(uuid)
+                    const v = res.data.data
+
+                    this.savedWorker = {
+                        lastName:v?.last_name,
+                        firstName:v?.first_name,
+                        middleName:v?.middle_name,
+                        position:`${t('workerPage.checkWorker.born')} ${Utils.timeOnlyDate(v?.birthday)}`,
+                        photo:v.photo,
+                        pin:v.id.toString()
+                    }
+
+                    this._passportFormData(v.id)
                 }else{
                     this.warningVisible = true
                     this.saveLoading = false
@@ -105,26 +115,55 @@ export const useCreateWorkerStore = defineStore('createWorkerStore', {
                 this.saveLoading = false
             })
         },
-        _passportFormData(uuid){
-            if(this.passport.serial_number && this.passport.from_date &&  this.passport.to_date && this.passport.address){
-                let formData = new FormData()
-                formData.append('uuid', uuid)
-                formData.append('serial_number', this.passport.serial_number)
-                formData.append('from_date', Utils.timeToZone(this.passport.from_date))
-                formData.append('to_date', Utils.timeToZone(this.passport.to_date))
-                formData.append('address', this.passport.address)
-                formData.append('file', this.passport.file)
-                $ApiService.passportService._create({data:formData}).then((res)=>{
-                    console.log(res.data)
-                }).finally(()=>{
-                    this.saveLoading = false
-                    this.successVisible = true
-                })
-
-            }else{
+        _successEv(){
+            this.visible = false
+        },
+        _passportFormData(id){
+            let formData = new FormData()
+            formData.append('worker_id', id)
+            formData.append('serial_number', this.payload.serial_number)
+            formData.append('from_date', Utils.timeToZone(this.payload.from_date))
+            formData.append('to_date', Utils.timeToZone(this.payload.to_date))
+            formData.append('address', this.payload.address)
+            formData.append('file', this.payload.passport_address ?? '')
+            $ApiService.passportService._create({data:formData}).then((res)=>{
+            }).finally(()=>{
                 this.saveLoading = false
                 this.successVisible = true
-            }
+            })
+        },
+        _resetForm(){
+            this.payload.first_name = null
+            this.payload.last_name = null
+            this.payload.middle_name = null
+            this.payload.birthday = null
+            this.payload.country_id = null
+            this.payload.region_id = null
+            this.payload.city_id = null
+            this.payload.current_region_id = null
+            this.payload.current_city_id = null
+            this.payload.nationality_id = null
+            this.payload.academic_title = null
+            this.payload.academic_degree = null
+            this.payload.party = null
+            this.payload.address = null
+            this.payload.pin = null
+            this.payload.inn = null
+            this.payload.phones = [{
+                id:1,
+                phone:'+998',
+                main:true,
+            }]
+            this.payload.marital_status = null
+            this.payload.serial_number = null
+            this.payload.from_date = null
+            this.payload.to_date = null
+            this.payload.passport_address = null
+            this.payload.file = null
+
+            this.passportFileName = null
+            this.candidatePhotos = []
+            this.mainImageId = null
         },
 
     }

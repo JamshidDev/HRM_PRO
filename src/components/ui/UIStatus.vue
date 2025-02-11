@@ -1,5 +1,5 @@
 <script setup>
-import {Timer16Regular, Eye16Filled, CheckmarkCircle24Filled, Checkmark28Filled} from "@vicons/fluent"
+import {Timer16Regular, Eye16Filled, CheckmarkCircle24Filled, Circle20Filled} from "@vicons/fluent"
 const props = defineProps({
   status:String,
   size:String,
@@ -30,6 +30,16 @@ const statusList = [
     name:"Deleted",
     type:'error',
     icon:Eye16Filled,
+  },
+  {
+    name:"Active",
+    type:'success',
+    icon:Circle20Filled,
+  },
+  {
+    name:"DeActive",
+    type:'error',
+    icon:Circle20Filled,
   },
 ]
 

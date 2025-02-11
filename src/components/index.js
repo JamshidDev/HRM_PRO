@@ -22,3 +22,4 @@ export {default as UIPdfSignatureDrawer} from "./pdfSignature/PdfSignatureDrawer
 export {default as UIOfficeApp} from "./ui/UIOfficeApp.vue"
 export {default as UIUserGroup} from "./ui/UIUserGroup.vue"
 export {default as UIUpload} from "./ui/UIUpload.vue"
+export {default as UIMenuButton} from "./buttons/MenuButton.vue"
