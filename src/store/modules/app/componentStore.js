@@ -107,7 +107,7 @@ export const useComponentStore = defineStore('componentStore', {
         enumExamLoading:false,
         topicTypes:[],
         topicWhomList:[],
-        TopicFileTypes:[],
+        topicFileTypes:[],
 
 
 
@@ -164,7 +164,7 @@ export const useComponentStore = defineStore('componentStore', {
             $ApiService.componentService._enumExam().then((res)=>{
                 this.topicTypes = res.data.data?.topic_types
                 this.topicWhomList = res.data.data?.topic_whom
-                this.TopicFileTypes = res.data.data?.topic_file_types
+                this.topicFileTypes = res.data.data?.topic_file_types
             }).finally(()=>{
                 this.enumExamLoading= false
             })

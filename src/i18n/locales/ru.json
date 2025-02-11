@@ -1,50 +1,64 @@
 {
   "content": {
-    "requiredField": "Maydon to'ldirilishi shart!",
-    "save": "Saqlash",
-    "cancel": "Bekor qilish",
-    "help": "Yordam",
-    "enterField": "Kiriting",
-    "phone":"Номер телефона",
-    "langUz": "Узбекский",
-    "langRu": "Русский",
-    "langEn": "Английский",
-    "search": "Qidiruv",
-    "add": "Qo'shish",
-    "filterSetting": "Filter sozlamalar",
-    "news": "Yangi",
     "action": "Amallar",
+    "add": "Qo'shish",
+    "cancel": "Bekor qilish",
+    "date": "Sana",
+    "enterField": "Kiriting",
+    "filterSetting": "Filter sozlamalar",
     "fullName": "Ism",
+    "help": "Yordam",
+    "langEn": "Английский",
+    "langRu": "Русский",
+    "langUz": "Узбекский",
+    "news": "Yangi",
     "number": "№",
+    "or": "Или",
+    "phone": "Номер телефона",
     "photo": "Rasm",
     "platform": "Platforma",
-    "date": "Sana",
-    "or": "Или",
+    "requiredField": "Maydon to'ldirilishi shart!",
+    "save": "Saqlash",
+    "search": "Qidiruv",
     "signatureLogin": "Вход через Э-имзо"
+  },
+  "loginPage": {
+    "doYouHaveAccount": "У вас нет аккаунта?",
+    "login": "Вход",
+    "password": "Пароль",
+    "phone": "Номер телефона",
+    "singUp": "Регистрация",
+    "subtitle": "HRM-платформа АО «Узбекские железные дороги»",
+    "title": "Добро пожаловать!"
+  },
+  "registerPage": {
+    "firstName": "Ism",
+    "lastName": "Familiya",
+    "title": "Ro'yhatdan o'tish"
   },
   "rules": {
     "login": "Email kiritilishi shart!",
-    "phone": "Ввод номера телефона обязателен!",
     "password": "Ввод пароля обязателен!",
+    "phone": "Ввод номера телефона обязателен!",
     "requiredField": "Maydon to'ldirilishi shart!",
-    "requiredWorker": "Xodim tanlash shart!",
     "requiredImageField": "Rasm yuklanishi shart!",
-    "requiredMinLength": "{n} ta belgidan kam bo'lmasligi kerak",
+    "requiredJSHSHIR": "Pasport jshshir kiritilishi shart!",
     "requiredMaxLength": "{n} ta belgidan ko'p bo'lmasligi kerak",
-    "requiredJSHSHIR": "Pasport jshshir kiritilishi shart!"
+    "requiredMinLength": "{n} ta belgidan kam bo'lmasligi kerak",
+    "requiredWorker": "Xodim tanlash shart!"
   },
-  "loginPage":{
-    "title":"Добро пожаловать!",
-    "subtitle":"HRM-платформа АО «Узбекские железные дороги»",
-    "phone": "Номер телефона",
-    "password": "Пароль",
-    "doYouHaveAccount": "У вас нет аккаунта?",
-    "singUp": "Регистрация",
-    "login": "Вход"
+  "topicDetailsPage": {
+    "exams": {
+      "name": ""
+    }
   },
-  "registerPage": {
-    "title": "Ro'yhatdan o'tish",
-    "firstName": "Ism",
-    "lastName": "Familiya"
+  "topicFiles": {
+    "addFile": "",
+    "editFile": "",
+    "header": {
+      "active": "",
+      "file": "",
+      "fileType": ""
+    }
   }
 }

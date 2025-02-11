@@ -1,4 +1,3 @@
-
 import "./assets/index.scss"
 import { createApp } from 'vue'
 import App from './App.vue'
@@ -9,9 +8,6 @@ import ApiService from "@/service/ApiService.js";
 import naive from 'naive-ui'
 import { createYmaps } from 'vue-yandex-maps';
 import mask from "./directives/mask.js"
-
-
-
 
 const app = createApp(App);
 const meta = document.createElement('meta')

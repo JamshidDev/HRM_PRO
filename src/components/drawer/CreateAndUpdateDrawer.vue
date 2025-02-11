@@ -56,5 +56,7 @@ const visible = defineModel('visible', {type:Boolean, default:false })
 </template>
 
 <style scoped>
-
+.ui-drawer-content{
+  flex-grow: 1;
+}
 </style>
