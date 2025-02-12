@@ -45,3 +45,4 @@ export * from "./docFlow/adContractStore.js"
 
 export * from "./lms/topicStore.js"
 export * from "./lms/topicCategoryStore.js"
+export * from './lms/topicFilesStore.js'

@@ -21,22 +21,6 @@ export const useTopicCategoryStore = defineStore('topicCategoryStore', {
             per_page:10,
             search:null,
         },
-        tabList:[
-            {
-                name:'topicDetailsPage.categories.name',
-                id:1,
-            },
-            {
-                name:'topicDetailsPage.files.name',
-                id:2,
-            },
-            {
-                name:'topicDetailsPage.questions.name',
-                id:3,
-            },
-        ],
-        activeTab:1,
-
     }),
     actions:{
         _index(){
@@ -96,7 +80,5 @@ export const useTopicCategoryStore = defineStore('topicCategoryStore', {
             this.payload.type = null
             this.payload.organizations = []
         }
-
     }
-
 })

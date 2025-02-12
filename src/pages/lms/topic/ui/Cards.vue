@@ -80,7 +80,7 @@ const goPush = (v)=>{
           </div>
           <div class="w-full flex gap-1 p-2 border-t border-surface-line">
             <n-button
-                @click="onEdit(item)"
+                @click.stop="onEdit(item)"
                 style="width: 50%"
                 size="tiny"
                 type="info"

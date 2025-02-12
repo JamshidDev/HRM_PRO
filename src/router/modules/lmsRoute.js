@@ -1,4 +1,3 @@
-
 import {AppPaths} from "@/utils/index.js"
 import Utils from "@/utils/Utils.js"
 import TopicPage from "@/pages/lms/topic/TopicPage.vue"
