@@ -19,7 +19,7 @@ const onOpen = (v)=>{
     {
       name:worker.last_name + ' '+worker.first_name+' '+worker.middle_name,
       position:v.position.name,
-      id:v.position.id,
+      id:v.id,
       typeId:v.contract.type.id
     }
   ]

@@ -2,7 +2,7 @@
 import {AppPaths} from "@/utils/index.js"
 import Utils from "@/utils/Utils.js"
 import TopicPage from "@/pages/lms/topic/TopicPage.vue"
-import topicDetailPage from "@/pages/lms/topicDetail/topicDetailPage.vue"
+// import topicDetailPage from "@/pages/lms/topicDetail/topicDetailPage.vue"
 
 export default [
     {
@@ -11,9 +11,9 @@ export default [
         component:TopicPage,
         children:[],
     },
-    {
-        path:Utils.routeLmsPathMaker(AppPaths.Topic+'/:id'),
-        component:topicDetailPage,
-        children:[],
-    },
+    // {
+    //     path:Utils.routeLmsPathMaker(AppPaths.Topic+'/:id'),
+    //     component:topicDetailPage,
+    //     children:[],
+    // },
 ]
