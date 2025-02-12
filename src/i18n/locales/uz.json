@@ -672,5 +672,10 @@
     "createTitle": "Mavzu qo'shish",
     "name": "Mavzular",
     "updateTitle": "Mavzuni tahrirlash"
+  },
+  "topicCategoryPage": {
+    "createCategory": "Kategoriya yaratish",
+    "editCategory": "Kategoriyani tahrirlash",
+    "name": "Kategoriyalar"
   }
 }
