@@ -664,6 +664,12 @@ export default {
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
+        command_type:{
+            type:'number',
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
         department_position_id:{
             type:'number',
             required: true,
@@ -732,6 +738,12 @@ export default {
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
+        command_type:{
+            type:'number',
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
         type:{
             type:'number',
             required: true,
@@ -789,6 +801,65 @@ export default {
             trigger: triggerEvents
         },
     },
+    adContractFrom: {
+        number:{
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        contract_date:{
+            type:'number',
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        type:{
+            type:'number',
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        department_id:{
+            type:'array',
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        command_type:{
+            type:'number',
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        department_position_id:{
+            type:'number',
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        post_name:{
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        salary:{
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        director_id:{
+            type:'array',
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        schedule_id:{
+            type:'number',
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+    },
     languagePage:{
         language_id:{
             type:'number',
@@ -817,7 +888,6 @@ export default {
             trigger: triggerEvents
         },
     },
-
     topicPage:{
         name:{
             required: true,

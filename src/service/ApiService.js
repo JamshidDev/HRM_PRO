@@ -86,4 +86,5 @@ export default {
     relativeService,
     universityService,
     documentFileService,
+    adContractService,
 }

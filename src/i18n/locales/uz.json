@@ -378,73 +378,72 @@
       }
     }
 
-  },
-  "signature": {
-    "keyType": "Foydalanuvchi turi",
-    "inn": "STIR",
-    "certificate": "Sertifikat raqami",
-    "validDate": "Muddati",
-    "expiredKey": "Kalit muddati tugagan!",
-    "legalPerson": "Yuridik shaxs",
-    "naturalPerson": "Jismoniy shaxs",
-    "connectionError": "E-imzo o'rnatilmagan yoki to'g'ri sozlanmagan!",
-    "pinfl": "JSHSHR"
-  },
-  "documentPage": {
-    "name": "Hujjatlar",
-    "createTitle": "Shartnoma tuzish",
-    "updateTitle": "Shartnomani tahrirlash",
-    "tabs": {
-      "contract": "Shartnomalar",
-      "adContract": "Qo'shimcha kelishuv",
-      "command": "Buyruqlar"
-    },
-    "command": {
-      "createTitle": "Buyruq yaratish",
-      "updateTitle": "Buyruqni tahrirlash",
-      "form": {
-        "command_date": "Buyruq sanasi",
-        "type": "Buyruq turi",
-        "byContract": "{n} - raqamli shartnoma asosida",
-        "confirm": "Tasdiqlovchilar",
-        "director_id": "Direktor",
-        "command_number": "Buyruq raqami"
-      },
-      "table": {
-
-      }
-
-    },
-    "form": {
-      "candidate": "Xodim",
-      "contractDate": "Shartnoma sanasi",
-      "contractNumber": "Shartnoma raqami",
-      "tableNumber": "Tabel raqami",
-      "type": "Shartnoma turi",
-      "documentExampleId": "Hujjat andozasi",
-      "department": "Bo'lim",
-      "position": "Lavozim",
-      "positionStatus": "Bo'limni ko'rsatmaslik",
-      "salary": "Oylik maosh",
-      "group": "Gurux",
-      "rank": "Lavozim razryad",
-      "postName": "To'liq lavozim nomi",
-      "director": "Direktor",
-      "contract_to_date": "Shartnoma muddati",
-      "position_date": "Ishga chiqish sanasi",
-      "vacation_main_day": "Asosit ta'til kuni",
-      "additional_vacation_day": "Qo'shimcha ta'til kuni",
-      "probation": "Sinov muddati",
-      "schedule_id": "Ish jadvali",
-      "organization": "Korxona"
     },
     "signature": {
-      "history": "O'zgarishlar tarixini ko'rish",
-      "viewer": "Hujjat bilan tanishuvchilar",
-      "status": {
-        "Process": "Jarayonda"
-      }
-    }
+        "keyType": "Foydalanuvchi turi",
+        "inn": "STIR",
+        "certificate": "Sertifikat raqami",
+        "validDate": "Muddati",
+        "expiredKey": "Kalit muddati tugagan!",
+        "legalPerson": "Yuridik shaxs",
+        "naturalPerson": "Jismoniy shaxs",
+        "connectionError": "E-imzo o'rnatilmagan yoki to'g'ri sozlanmagan!",
+        "pinfl": "JSHSHR"
+    },
+    "documentPage": {
+        "name": "Hujjatlar",
+        "createTitle": "Shartnoma tuzish",
+        "updateTitle": "Shartnomani tahrirlash",
+        "tabs": {
+            "contract": "Shartnomalar",
+            "adContract": "Qo'shimcha kelishuv",
+            "command": "Buyruqlar"
+        },
+        "command": {
+            "createTitle": "Buyruq yaratish",
+            "updateTitle": "Buyruqni tahrirlash",
+            "form": {
+                "command_date": "Buyruq sanasi",
+                "type": "Buyruq turi",
+                "byContract": "{n} - raqamli shartnoma asosida",
+                "confirm": "Tasdiqlovchilar",
+                "director_id": "Direktor",
+                "command_number": "Buyruq raqami"
+            }
+        },
+        "form": {
+            "candidate": "Xodim",
+            "contractDate": "Shartnoma sanasi",
+            "contractNumber": "Shartnoma raqami",
+            "tableNumber": "Tabel raqami",
+            "type": "Shartnoma turi",
+            "documentExampleId": "Hujjat andozasi",
+            "department": "Bo'lim",
+            "position": "Lavozim",
+            "positionStatus": "Bo'limni ko'rsatmaslik",
+            "salary": "Oylik maosh",
+            "group": "Gurux",
+            "rank": "Lavozim razryad",
+            "postName": "To'liq lavozim nomi",
+            "director": "Direktor",
+            "contract_to_date": "Shartnoma muddati",
+            "position_date": "Ishga chiqish sanasi",
+            "vacation_main_day": "Asosit ta'til kuni",
+            "additional_vacation_day": "Qo'shimcha ta'til kuni",
+            "probation": "Sinov muddati",
+            "schedule_id": "Ish jadvali",
+            "command_type": "Buyruq turi",
+            "worker": "Xodimni tanlang",
+            "command_status": "command status",
+            "organization": "Korxona"
+        },
+        "signature": {
+            "history": "O'zgarishlar tarixini ko'rish",
+            "viewer": "Hujjat bilan tanishuvchilar",
+            "status": {
+                "Process": "Jarayonda"
+            }
+        }
 
   },
   "confirmationPage": {

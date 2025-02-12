@@ -17,13 +17,14 @@ export const useAdContractStore = defineStore('adContractStore', {
         confirmationVisible:false,
         number:null,
         payload:{
-            pin:null,
-            organization_id:[],
+            worker_position_id:null,
             contract_date:null,
             number:null,
-            table_number:null,
+            command_status:true,
+            command_type:null,
             type:null,
             director_id:[],
+            organization_id:[],
             department_id:[],
             department_position_id:null,
             position_status:false,
@@ -32,14 +33,7 @@ export const useAdContractStore = defineStore('adContractStore', {
             group:null,
             rank:null,
             post_name:null,
-            contract_to_date:null,
-            probation:null,
-            position_date:null,
-            vacation_main_day:null,
-            additional_vacation_day:null,
             schedule_id:null,
-            command_type:2,
-            files:[],
         },
         params:{
             page:1,
@@ -50,40 +44,32 @@ export const useAdContractStore = defineStore('adContractStore', {
     actions:{
         _index(){
             this.loading= true
-            $ApiService.contractService._index({params:this.params}).then((res)=>{
+            $ApiService.adContractService._index({params:this.params}).then((res)=>{
                 this.list = res.data.data.data
                 this.totalItems = res.data.data.total
             }).finally(()=>{
                 this.loading= false
             })
         },
-        _create(callback){
+        _create(callBack){
             const compStore = useComponentStore()
             this.saveLoading = true
             let data = {
                 ...this.payload,
                 ...{
                     contract_date:Utils.timeToZone(this.payload.contract_date),
-                    contract_to_date:Utils.timeToZone(this.payload.contract_to_date),
-                    position_date:Utils.timeToZone(this.payload.position_date),
                     organization_id:this.payload.organization_id[0].id,
-                    worker_id:compStore.isSelectedWorker? Number(compStore.worker.pin) : this.payload.pin,
+                    worker_position_id: this.payload.worker_position_id,
                     director_id:this.payload.director_id[0],
                     department_id:this.payload.department_id.length>0? this.payload.department_id[0].id : null,
                 }
             }
-            delete data.pin
-            $ApiService.contractService._create({data}).then((res)=>{
-                if(this.payload.files.length>0){
-                    this._attachFile(res.data.data.contract_id, callback)
-                }else{
-                    this.visible = false
-                    if(callback === null){
-                        this._index()
-                    }
-
-                    callback?.(res.data.data.contract_id)
+            $ApiService.adContractService._create({data}).then((res)=>{
+                this.visible = false
+                if(callBack === null){
+                    this._index()
                 }
+                callBack?.()
 
             }).finally(()=>{
                 this.saveLoading = false
@@ -92,7 +78,7 @@ export const useAdContractStore = defineStore('adContractStore', {
         },
         _update(){
             this.saveLoading = true
-            $ApiService.nationalityService._update({data:this.payload, id:this.elementId}).then((res)=>{
+            $ApiService.adContractService._update({data:this.payload, id:this.elementId}).then((res)=>{
                 this.visible = false
                 this._index()
             }).finally(()=>{
@@ -101,7 +87,7 @@ export const useAdContractStore = defineStore('adContractStore', {
         },
         _delete(){
             this.deleteLoading = true
-            $ApiService.contractService._delete({id:this.elementId}).then((res)=>{
+            $ApiService.adContractService._delete({id:this.elementId}).then((res)=>{
                 this._index()
             }).finally(()=>{
                 this.deleteLoading = false
@@ -113,7 +99,7 @@ export const useAdContractStore = defineStore('adContractStore', {
                 command_status:false,
                 contract_id:id
             }
-            $ApiService.commandService._create({data}).then(()=>{
+            $ApiService.adContractService._create({data}).then(()=>{
                 this._index()
             }).finally(()=>{
                 this.loading = false
@@ -128,7 +114,7 @@ export const useAdContractStore = defineStore('adContractStore', {
             this.payload.files.forEach(v=>{
                 formData.append('file',v.file)
             })
-            $ApiService.documentFileService._create({data:formData}).then((res)=>{
+            $ApiService.adContractService._create({data:formData}).then((res)=>{
                 this.visible = false
                 callback?.()
             }).finally(()=>{
@@ -139,13 +125,14 @@ export const useAdContractStore = defineStore('adContractStore', {
             this.visible = data
         },
         resetForm(){
-            this.payload.pin = null
-            this.payload.organization_id = []
+            this.payload.worker_position_id = null
             this.payload.contract_date = new Date().getTime()
             this.payload.number = null
-            this.payload.table_number = null
             this.payload.type = null
+            this.payload.command_status = true
+            this.payload.command_type = null
             this.payload.director_id = []
+            this.payload.organization_id = []
             this.payload.department_id = []
             this.payload.department_position_id = null
             this.payload.position_status = false
@@ -154,13 +141,7 @@ export const useAdContractStore = defineStore('adContractStore', {
             this.payload.group = null
             this.payload.rank = null
             this.payload.post_name = null
-            this.payload.probation = null
-            this.payload.position_date = new Date().getTime()
-            this.payload.vacation_main_day = null
-            this.payload.additional_vacation_day = null
             this.payload.schedule_id = null
-            this.payload.files = []
-            this.payload.contract_to_date = new Date().getTime()
         }
 
     }

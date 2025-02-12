@@ -106,6 +106,17 @@ const scheduleValue = ({option})=>{
   )
 }
 
+watchEffect(()=>{
+  if(store.payload.type){
+    store.payload.command_type = null
+    const data = {
+      status:'contracts',
+      type:store.payload.type
+    }
+    componentStore._commandTypes(data)
+  }
+})
+
 const rules = computed(()=>(store.payload.position_status && store.payload.type === 2)? validationRules.contractFromV2 :validationRules.contractFrom)
 
 onMounted(()=>{
@@ -195,7 +206,72 @@ onMounted(()=>{
                 />
               </n-form-item>
             </div>
-
+            <div class="col-span-3">
+              <n-form-item :label="$t(`documentPage.form.vacation_main_day`)" path="vacation_main_day">
+                <n-input
+                    class="w-full"
+                    type="text"
+                    :placeholder="$t(`content.enterField`)"
+                    v-model:value="store.payload.vacation_main_day"
+                    :allow-input="Utils.onlyAllowNumber"
+                />
+              </n-form-item>
+            </div>
+            <div class="col-span-3">
+              <n-form-item :label="$t(`documentPage.form.additional_vacation_day`)" path="additional_vacation_day">
+                <n-input
+                    class="w-full"
+                    type="text"
+                    :placeholder="$t(`content.enterField`)"
+                    v-model:value="store.payload.additional_vacation_day"
+                    :allow-input="Utils.onlyAllowNumber"
+                />
+              </n-form-item>
+            </div>
+            <div class="col-span-3">
+              <n-form-item :label="$t(`documentPage.form.probation`)" path="probation">
+                <n-select
+                    v-model:value="store.payload.probation"
+                    filterable
+                    :placeholder="$t(`content.choose`)"
+                    :options="componentStore.probationList"
+                    label-field="name"
+                    value-field="id"
+                    :loading="componentStore.enumLoading"
+                    clearable
+                />
+              </n-form-item>
+            </div>
+            <div class="col-span-3">
+              <n-form-item :label="$t(`documentPage.form.schedule_id`)" path="schedule_id">
+                <n-select
+                    v-model:value="store.payload.schedule_id"
+                    filterable
+                    :placeholder="$t(`content.choose`)"
+                    :options="componentStore.scheduleList"
+                    value-field="id"
+                    :loading="componentStore.scheduleLoading"
+                    :render-label="scheduleLabel"
+                    :render-tag="scheduleValue"
+                    clearable
+                />
+              </n-form-item>
+            </div>
+            <div class="col-span-3">
+              <n-form-item :label="$t(`documentPage.form.command_type`)" path="command_type">
+                <n-select
+                    :disabled="!Boolean(store.payload.type)"
+                    v-model:value="store.payload.command_type"
+                    filterable
+                    :placeholder="$t(`content.choose`)"
+                    :options="componentStore.commandTypeList"
+                    label-field="name"
+                    value-field="id"
+                    :loading="componentStore.commandTypeLoading"
+                    clearable
+                />
+              </n-form-item>
+            </div>
           </div>
         </div>
 
@@ -330,57 +406,6 @@ onMounted(()=>{
 
         <div class="col-span-12 border border-dashed p-2 rounded-xl border-gray-200 bg-gray-50 mt-4">
           <div class="grid grid-cols-12 gap-x-4">
-            <div class="col-span-3">
-              <n-form-item :label="$t(`documentPage.form.vacation_main_day`)" path="vacation_main_day">
-                <n-input
-                    class="w-full"
-                    type="text"
-                    :placeholder="$t(`content.enterField`)"
-                    v-model:value="store.payload.vacation_main_day"
-                    :allow-input="Utils.onlyAllowNumber"
-                />
-              </n-form-item>
-            </div>
-            <div class="col-span-3">
-              <n-form-item :label="$t(`documentPage.form.additional_vacation_day`)" path="additional_vacation_day">
-                <n-input
-                    class="w-full"
-                    type="text"
-                    :placeholder="$t(`content.enterField`)"
-                    v-model:value="store.payload.additional_vacation_day"
-                    :allow-input="Utils.onlyAllowNumber"
-                />
-              </n-form-item>
-            </div>
-            <div class="col-span-3">
-              <n-form-item :label="$t(`documentPage.form.probation`)" path="probation">
-                <n-select
-                    v-model:value="store.payload.probation"
-                    filterable
-                    :placeholder="$t(`content.choose`)"
-                    :options="componentStore.probationList"
-                    label-field="name"
-                    value-field="id"
-                    :loading="componentStore.enumLoading"
-                    clearable
-                />
-              </n-form-item>
-            </div>
-            <div class="col-span-3">
-              <n-form-item :label="$t(`documentPage.form.schedule_id`)" path="schedule_id">
-                <n-select
-                    v-model:value="store.payload.schedule_id"
-                    filterable
-                    :placeholder="$t(`content.choose`)"
-                    :options="componentStore.scheduleList"
-                    value-field="id"
-                    :loading="componentStore.scheduleLoading"
-                    :render-label="scheduleLabel"
-                    :render-tag="scheduleValue"
-                    clearable
-                />
-              </n-form-item>
-            </div>
             <div class="col-span-12">
               <UIUpload v-model:files="store.payload.files" />
             </div>

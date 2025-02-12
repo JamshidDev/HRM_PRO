@@ -6,12 +6,6 @@ import {TopicPage, TopicCategoryPage} from "@/pages/lms";
 
 export default [
     {
-        path:Utils.routeLmsPathMaker(AppPaths.Exam),
-        name:AppPaths.Exam.substring(1),
-        component:ExamPage,
-        children:[],
-    },
-    {
         path:Utils.routeLmsPathMaker(AppPaths.Topic),
         name:AppPaths.Topic.substring(1),
         component:()=>TopicPage,

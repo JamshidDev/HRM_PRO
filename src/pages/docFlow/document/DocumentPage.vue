@@ -1,5 +1,5 @@
 <script setup>
-import {UIPageContent, UIPageFilter, UIModal} from "@/components/index.js"
+import {UIPageContent, UIPageFilter} from "@/components/index.js"
 import Tabs from "./ui/Tabs.vue"
 import {useContractStore, useComponentStore, useCommandStore, useDocumentStore, useAdContractStore} from "@/store/modules/index.js"
 const contractStore = useContractStore()
@@ -41,9 +41,6 @@ const addAdContract = ()=>{
   adContractStore.resetForm()
   adContractStore.visible = true
 }
-
-
-
 </script>
 
 <template>
