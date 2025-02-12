@@ -9,11 +9,12 @@ const _create = async (payload)=>{
 }
 
 const _update = async (payload)=>{
-    return await axios.post(`/v1/exam/topics/${payload.id}/files/${payload.id}`, payload.data)
+    payload.data.append('_method', 'PUT')
+    return await axios.post(`/v1/exam/topics/${payload.id}/files/${payload.file_id}`, payload.data)
 }
 
 const _delete = async (payload)=>{
-    return await axios.delete(`/v1/exam/topics/${payload.id}/files/${payload.id}`)
+    return await axios.delete(`/v1/exam/topics/${payload.id}/files/${payload.file_id}`)
 }
 
 

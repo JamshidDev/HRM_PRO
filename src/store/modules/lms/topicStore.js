@@ -37,7 +37,10 @@ export const useTopicStore = defineStore('topicStore', {
         _show(){
             this.loading= true
             $ApiService.topicService._show({id:this.elementId}).then((res)=>{
-                console.log(res.data.data)
+                const {type, organizations, name} = res.data.data
+                this.payload.type = type.id
+                this.payload.organizations = organizations
+                this.payload.name = name
             }).finally(()=>{
                 this.loading= false
             })
@@ -61,8 +64,8 @@ export const useTopicStore = defineStore('topicStore', {
         _update(){
             this.saveLoading = true
             let data = {
-                uuid:this.payload.pin,
-                position:this.payload.position,
+                ...this.payload,
+                organizations:this.payload.organizations.map(v=>v.id),
             }
             $ApiService.topicService._update({data, id:this.elementId}).then((res)=>{
                 this.visible = false

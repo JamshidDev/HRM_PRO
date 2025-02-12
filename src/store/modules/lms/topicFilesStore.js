@@ -15,8 +15,7 @@ export const useTopicFileStore = defineStore('topicFileStore', {
         allPermissionList:[],
         structureCheck:[],
         payload:{
-            topic_id: null,
-            files: [],
+            fileObjects: [],
             type: null,
             active: false
         },
@@ -29,7 +28,7 @@ export const useTopicFileStore = defineStore('topicFileStore', {
     actions:{
         _index(){
             this.loading= true
-            $ApiService.topicFilesService._index({params:this.params}).then((res)=>{
+            $ApiService.topicFilesService._index({params:this.params, id: this.topicId}).then((res)=>{
                 this.list = res.data.data.data
                 this.totalItems = res.data.data.total
             }).finally(()=>{
@@ -38,14 +37,14 @@ export const useTopicFileStore = defineStore('topicFileStore', {
         },
         _create(){
             this.saveLoading = true
-            let data = {
-                ...this.payload,
-                organizations:this.payload.organizations.map(v=>v.id),
-
-            }
-            $ApiService.topicCategoryService._create({data}).then((res)=>{
+            const formData = new FormData()
+            formData.append('active', Number(this.payload.active))
+            formData.append('file', this.payload.fileObjects[0].file)
+            formData.append('type', this.payload.type)
+            $ApiService.topicFilesService._create({data: formData, id: this.topicId}).then((res)=>{
                 this.visible = false
                 this._index()
+                this.resetForm()
                 $Toast.success(t('message.successDone'))
             }).finally(()=>{
                 this.saveLoading = false
@@ -54,13 +53,17 @@ export const useTopicFileStore = defineStore('topicFileStore', {
         },
         _update(){
             this.saveLoading = true
-            let data = {
-                uuid:this.payload.pin,
-                position:this.payload.position,
+            const formData = new FormData()
+            formData.append('active', Number(this.payload.active))
+            if(this.payload.fileObjects[0].file){
+                formData.append('file', this.payload.fileObjects[0].file)
             }
-            $ApiService.topicCategoryService._update({data, id:this.elementId}).then((res)=>{
+            formData.append('type', this.payload.type)
+
+            $ApiService.topicFilesService._update({data: formData, id:this.topicId, file_id: this.elementId}).then((res)=>{
                 this.visible = false
                 this._index()
+                this.resetForm()
                 $Toast.success(t('message.successDone'))
             }).finally(()=>{
                 this.saveLoading = false
@@ -68,7 +71,7 @@ export const useTopicFileStore = defineStore('topicFileStore', {
         },
         _delete(){
             this.deleteLoading = true
-            $ApiService.topicCategoryService._delete({id:this.elementId}).then((res)=>{
+            $ApiService.topicFilesService._delete({id:this.topicId, file_id: this.elementId}).then((res)=>{
                 this._index()
                 $Toast.success(t('message.successDone'))
             }).finally(()=>{
@@ -80,8 +83,7 @@ export const useTopicFileStore = defineStore('topicFileStore', {
         },
         resetForm(){
             this.elementId = null
-            this.payload.topic_id = null,
-            this.payload.files = [],
+            this.payload.fileObjects = [],
             this.payload.type = null,
             this.payload.active = false
         }

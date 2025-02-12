@@ -36,8 +36,6 @@ export const useTopicCategoryStore = defineStore('topicCategoryStore', {
             this.saveLoading = true
             let data = {
                 ...this.payload,
-                organizations:this.payload.organizations.map(v=>v.id),
-
             }
             $ApiService.topicCategoryService._create({data}).then((res)=>{
                 this.visible = false
@@ -51,8 +49,7 @@ export const useTopicCategoryStore = defineStore('topicCategoryStore', {
         _update(){
             this.saveLoading = true
             let data = {
-                uuid:this.payload.pin,
-                position:this.payload.position,
+                ...this.payload,
             }
             $ApiService.topicCategoryService._update({data, id:this.elementId}).then((res)=>{
                 this.visible = false
@@ -75,10 +72,7 @@ export const useTopicCategoryStore = defineStore('topicCategoryStore', {
             this.visible = data
         },
         resetForm(){
-            this.elementId = null
             this.payload.name = null
-            this.payload.type = null
-            this.payload.organizations = []
         }
     }
 })
