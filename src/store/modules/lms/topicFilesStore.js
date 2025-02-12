@@ -1,7 +1,7 @@
 import {defineStore} from "pinia";
 import i18n from "@/i18n/index.js"
 const {t} = i18n.global
-export const useTopicStore = defineStore('topicStore', {
+export const useTopicFileStore = defineStore('topicFileStore', {
     state:()=>({
         list:[],
         loading:false,
@@ -10,13 +10,15 @@ export const useTopicStore = defineStore('topicStore', {
         visible:false,
         visibleType:true,
         elementId:null,
+        topicId: null,
         totalItems:0,
         allPermissionList:[],
         structureCheck:[],
         payload:{
-            name:null,
-            type:null,
-            organizations:[],
+            topic_id: null,
+            files: [],
+            type: null,
+            active: false
         },
         params:{
             page:1,
@@ -27,17 +29,9 @@ export const useTopicStore = defineStore('topicStore', {
     actions:{
         _index(){
             this.loading= true
-            $ApiService.topicService._index({params:this.params}).then((res)=>{
+            $ApiService.topicFilesService._index({params:this.params}).then((res)=>{
                 this.list = res.data.data.data
                 this.totalItems = res.data.data.total
-            }).finally(()=>{
-                this.loading= false
-            })
-        },
-        _show(){
-            this.loading= true
-            $ApiService.topicService._show({id:this.elementId}).then((res)=>{
-                console.log(res.data.data)
             }).finally(()=>{
                 this.loading= false
             })
@@ -49,7 +43,7 @@ export const useTopicStore = defineStore('topicStore', {
                 organizations:this.payload.organizations.map(v=>v.id),
 
             }
-            $ApiService.topicService._create({data}).then((res)=>{
+            $ApiService.topicCategoryService._create({data}).then((res)=>{
                 this.visible = false
                 this._index()
                 $Toast.success(t('message.successDone'))
@@ -64,7 +58,7 @@ export const useTopicStore = defineStore('topicStore', {
                 uuid:this.payload.pin,
                 position:this.payload.position,
             }
-            $ApiService.topicService._update({data, id:this.elementId}).then((res)=>{
+            $ApiService.topicCategoryService._update({data, id:this.elementId}).then((res)=>{
                 this.visible = false
                 this._index()
                 $Toast.success(t('message.successDone'))
@@ -74,7 +68,7 @@ export const useTopicStore = defineStore('topicStore', {
         },
         _delete(){
             this.deleteLoading = true
-            $ApiService.topicService._delete({id:this.elementId}).then((res)=>{
+            $ApiService.topicCategoryService._delete({id:this.elementId}).then((res)=>{
                 this._index()
                 $Toast.success(t('message.successDone'))
             }).finally(()=>{
@@ -86,11 +80,10 @@ export const useTopicStore = defineStore('topicStore', {
         },
         resetForm(){
             this.elementId = null
-            this.payload.name = null
-            this.payload.type = null
-            this.payload.organizations = []
+            this.payload.topic_id = null,
+            this.payload.files = [],
+            this.payload.type = null,
+            this.payload.active = false
         }
-
     }
-
 })

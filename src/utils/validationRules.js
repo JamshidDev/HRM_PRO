@@ -898,5 +898,12 @@ export default {
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
+    },
+    topicFilePage: {
+        requiredField: {
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        }
     }
 }
