@@ -32,10 +32,16 @@ const renderLabel = (option)=>{
     ),
   ];
 }
-
-const onSelectDirector = (v)=>{
-  store.payload.director_id =v.length === 2? [v[1]]: v
+const renderValue = ({option})=>{
+  return [
+    h(
+        'div',
+        {
+          class:'flex gap-2 my-1 items-center'
+        },`${option?.last_name} ${option?.first_name} ${option?.middle_name}`),
+  ];
 }
+
 
 const onSubmit = ()=>{
   store._create()
@@ -53,9 +59,9 @@ const onSubmit = ()=>{
 }
 
 watchEffect(()=>{
-  if(store.payload.director_id.length>0){
-    store.payload.confirmations = store.payload.confirmations.filter(v=>v !==store.payload.director_id[0])
-    confirmationList.value = componentStore.confirmationList.filter(v=>v.id !==store.payload.director_id[0])
+  if(store.payload.director_id){
+    store.payload.confirmations = store.payload.confirmations.filter(v=>v !==store.payload.director_id)
+    confirmationList.value = componentStore.confirmationList.filter(v=>v.id !==store.payload.director_id)
   }
 })
 
@@ -65,7 +71,7 @@ onMounted(()=>{
 </script>
 
 <template>
-  <div style="height:calc(100vh - 120px)" class="overflow-y-auto ">
+  <div style="height:calc(100vh - 120px)" class="overflow-y-auto overflow-x-hidden ">
     <n-form
         ref="formRef"
         :model="store.payload"
@@ -122,19 +128,20 @@ onMounted(()=>{
               @focus="onFocusConf"
               size="large"
               value-field="id"
-              multiple
+              label-field="last_name"
               v-model:value="store.payload.director_id"
-              @update:value="onSelectDirector"
               :placeholder="$t(`content.choose`)"
               :options="componentStore.confirmationList"
               :loading="componentStore.confirmationLoading"
-              :render-label="renderLabel" />
+              :render-label="renderLabel"
+              :render-tag="renderValue"
+          />
         </n-form-item>
       </div>
       <div class="col-span-12 mt-4">
         <n-form-item :label="$t(`documentPage.command.form.confirm`)" path="director_id">
           <n-select
-              :disabled="store.payload.director_id.length===0"
+              :disabled="!store.payload.director_id"
               size="large"
               value-field="id"
               multiple

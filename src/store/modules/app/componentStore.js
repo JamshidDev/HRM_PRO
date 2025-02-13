@@ -118,6 +118,9 @@ export const useComponentStore = defineStore('componentStore', {
         adContractTypes:[],
         adContractTypeLoading:false,
 
+        allCityList:[],
+        allCityLoading:false,
+
 
     }),
     actions:{
@@ -328,6 +331,16 @@ export const useComponentStore = defineStore('componentStore', {
                 this.adContractTypes = res.data.data
             }).finally(()=>{
                 this.adContractTypeLoading = false
+            })
+        },
+        _allCities(){
+            this.allCityLoading = true
+            $ApiService.districtService._index({params:{
+                page:1, per_page:1000
+                }}).then((res)=>{
+                this.allCityList = res.data.data.data
+            }).finally(()=>{
+                this.allCityLoading = false
             })
         }
 

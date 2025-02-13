@@ -149,7 +149,6 @@ defineExpose({
                   <LeftContent/>
                 </div>
                 <ChatDrawer/>
-
                 <div v-if="store.permissions?.qrcode" class="bg-gray-300 rounded-xl border border-gray-400 h-[100px]"></div>
               </div>
               <div class="w-[860px] h-full flex">

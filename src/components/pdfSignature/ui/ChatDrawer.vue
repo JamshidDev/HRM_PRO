@@ -23,7 +23,7 @@ const chatCount = computed(()=>{
 
     >
       <template #trigger>
-        <div class="absolute bottom-[50px] right-[20px]" :class="chatCount>0 && 'shake-button'">
+        <div class="absolute bottom-[50px] right-[20px]" :class="chatCount>0 && !store.chatVisible && 'shake-button'">
           <n-badge :value="chatCount">
             <n-button circle text size="large">
               <template #icon>

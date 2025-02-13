@@ -26,6 +26,11 @@ export const useOnlyOfficeStore = defineStore('onlyOfficeStore', {
                     name:null,
                 }
             },
+            events:{
+                onSubmit:function onSubmit(v){
+                    console.log(v)
+                },
+            }
         },
         model:null,
         document_id:null,

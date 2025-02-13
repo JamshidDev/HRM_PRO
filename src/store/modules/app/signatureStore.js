@@ -54,7 +54,7 @@ export const useSignatureStore = defineStore('signatureStore', {
             this.loading = true
             $ApiService.documentService._documentBase64({
                 params:{
-                    model:signatureType,
+                    model:this.documentType,
                     document_id:documentId,
                 }
             }).then(async(res)=>{

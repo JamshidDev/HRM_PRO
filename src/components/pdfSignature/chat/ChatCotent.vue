@@ -46,6 +46,9 @@ const onDelete = (v)=>{
   store._deleteMessage(v.id)
 }
 
+
+
+
 </script>
 
 <template>

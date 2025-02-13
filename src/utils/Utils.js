@@ -86,7 +86,11 @@ const routeChatPathMaker = (mainPath)=>(`${AppPaths.Chat}${mainPath}`)
 const routeDocFlowPathMaker = (mainPath)=>(`${AppPaths.DocFlow}${mainPath}`)
 
 
-
+const documentModels = {
+    contract:'contracts',
+    command:'commands',
+    adContract:'contract-additional',
+}
 
 
 
@@ -110,4 +114,5 @@ export default {
     routeDocFlowPathMaker,
     generateJwtToken,
     fileNameFromUrl,
+    documentModels,
 }
