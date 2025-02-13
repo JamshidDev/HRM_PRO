@@ -9,6 +9,7 @@ import {navigations, otherNavigations} from "@/layouts/data/navigations.js"
 
 const route = useRoute()
 const store = useAccountStore()
+const isLoadApp = ref(false)
 
 const layout = computed(() => {
   switch (route?.meta?.layout) {
@@ -25,6 +26,17 @@ watchEffect(()=>{
   if(currentItem.length>0){
     window.document.title ="HRM PRO | " + currentItem[0].label
   }
+})
+
+watch(route, (value)=>{
+ if(value.meta.layout !== AppLayouts.empty && isLoadApp.value){
+    isLoadApp.value = false
+    store._index()
+  }
+})
+
+onMounted(()=>{
+  isLoadApp.value = true
 
 })
 

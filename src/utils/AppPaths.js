@@ -45,6 +45,8 @@ export const AppPaths = {
     ConfCommand:"/conf-command",
     ConfAdContract:"/conf-ad-contract",
     Topic:"/topic",
+    DrawingSignature:"/drawing-signature",
+    DocViewer:"/doc-viewer",
 }
 
 export const AppLayouts ={

@@ -8,6 +8,7 @@ import ApiService from "@/service/ApiService.js";
 import naive from 'naive-ui'
 import { createYmaps } from 'vue-yandex-maps';
 import mask from "./directives/mask.js"
+import VueSignature from "vue-signature-pad";
 
 const app = createApp(App);
 const meta = document.createElement('meta')
@@ -15,6 +16,7 @@ meta.name = 'naive-ui-style'
 document.head.appendChild(meta)
 const pinia =  createPinia()
 
+app.use(VueSignature)
 app.use(naive)
 app.use(router)
 app.use(pinia)

@@ -4,18 +4,44 @@ import HomePage from "@/pages/app/home/HomePage.vue"
 import RegisterPage from "@/pages/app/register/RegisterPage.vue"
 import LoginPage from "@/pages/app/login/LoginPage.vue"
 import NotFoundPage from "@/pages/app/notFound/NotFoundPage.vue"
+import DrawSignaturePage from "@/pages/app/drawSignature/DrawSignaturePage.vue"
+import DocViewer from "@/pages/app/docViewer/DocViewer.vue"
 
 export default [
     {
         path:AppPaths.Dashboard,
         name:AppPaths.Dashboard.substring(1),
         component:DashboardPage,
+        meta:{
+            layout:AppLayouts.main
+        },
+        children:[],
+    },
+    {
+        path:AppPaths.DrawingSignature,
+        name:AppPaths.DrawingSignature.substring(1),
+        component:DrawSignaturePage,
+        meta:{
+            layout:AppLayouts.empty
+        },
+        children:[],
+    },
+    {
+        path:AppPaths.DocViewer,
+        name:AppPaths.DocViewer.substring(1),
+        component:DocViewer,
+        meta:{
+            layout:AppLayouts.empty
+        },
         children:[],
     },
     {
         path:AppPaths.Home,
         name:AppPaths.Home.substring(1),
         component:HomePage,
+        meta:{
+            layout:AppLayouts.main
+        },
         children: []
     },
     {

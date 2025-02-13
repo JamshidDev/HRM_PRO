@@ -32,7 +32,6 @@ const openSidebar = ()=>{
 
 onMounted(()=>{
   open.value = JSON.parse(localStorage.getItem('appSidebar'))
-  store._index()
 })
 </script>
 
