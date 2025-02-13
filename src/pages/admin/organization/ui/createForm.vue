@@ -19,6 +19,12 @@ const onSubmit = ()=>{
   })
 }
 
+const onFocusCity = ()=>{
+  if(componentStore.allCityList.length === 0){
+    componentStore._allCities()
+  }
+}
+
 </script>
 
 <template>
@@ -53,9 +59,22 @@ const onSubmit = ()=>{
             filterable
             :placeholder="$t(`organizationPage.form.level`)"
             :options="componentStore.organizationLevelList"
-            label-field="value"
-            value-field="key"
+            label-field="name"
+            value-field="id"
             :loading="componentStore.organizationLevelLoading"
+        />
+      </n-form-item>
+      <n-form-item :label="$t(`organizationPage.form.city_id`)" path="city_id">
+        <n-select
+            v-model:value="store.payload.city_id"
+            clearable
+            filterable
+            @focus="onFocusCity"
+            :placeholder="$t(`content.choose`)"
+            :options="componentStore.allCityList"
+            label-field="name"
+            value-field="id"
+            :loading="componentStore.allCityLoading"
         />
       </n-form-item>
       <n-form-item

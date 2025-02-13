@@ -46,8 +46,8 @@ export const navigations = [
         children:[
             {
                 parentIndex:1,
-                label:t('contactPage.name'),
-                path:Utils.routeChatPathMaker(AppPaths.Contact),
+                label:t('chatWindow.name'),
+                path:Utils.routeChatPathMaker(AppPaths.ChatWindow),
                 icon:'bx bxs-folder',
                 children:[]
             },
@@ -68,6 +68,12 @@ export const navigations = [
             {
                 label:t('documentPage.tabs.command'),
                 path:Utils.routeDocFlowPathMaker(AppPaths.ConfCommand),
+                icon:'bx bxs-file',
+                children:[]
+            },
+            {
+                label:t('documentPage.tabs.adContract'),
+                path:Utils.routeDocFlowPathMaker(AppPaths.ConfAdContract),
                 icon:'bx bxs-file',
                 children:[]
             },

@@ -37,9 +37,6 @@ const onChangeDepartment = (v)=>{
   store.payload.department_position_id = null
   componentStore._departmentPosition(v[0].id)
 }
-const onSelectDirector = (v)=>{
-  store.payload.director_id =v.length === 2? [v[1]]: v
-}
 const onChangeStatus = (v)=>{
   if(v){
     componentStore._positions()
@@ -76,6 +73,15 @@ const renderLabel = (option)=>{
             ])
         ]
     ),
+  ];
+}
+const renderValue = ({option})=>{
+  return [
+    h(
+        'div',
+        {
+          class:'flex gap-2 my-1 items-center'
+        },`${option?.last_name} ${option?.first_name} ${option?.middle_name}`),
   ];
 }
 
@@ -134,7 +140,7 @@ onMounted(()=>{
       :rules="rules"
       :model="store.payload"
   >
-    <div style="height:calc(100vh - 120px)" class="overflow-y-auto ">
+    <div style="height:calc(100vh - 120px)" class="overflow-y-auto overflow-x-hidden ">
       <div class="grid grid-cols-12 gap-x-4">
         <div class="col-span-12 flex justify-center">
           <div class="w-[600px]">
@@ -257,7 +263,11 @@ onMounted(()=>{
                 />
               </n-form-item>
             </div>
-            <div class="col-span-3">
+            <div class="col-span-3 pt-10">
+              <n-checkbox v-model:checked="store.payload.command_status" />
+              {{$t(`documentPage.form.command_status`)}}
+            </div>
+            <div class="col-span-3" v-if="store.payload.command_status">
               <n-form-item :label="$t(`documentPage.form.command_type`)" path="command_type">
                 <n-select
                     :disabled="!Boolean(store.payload.type)"
@@ -418,14 +428,15 @@ onMounted(()=>{
             <n-select
                 @focus="onFocusConf"
                 size="large"
-                value-field="id"
-                multiple
                 v-model:value="store.payload.director_id"
-                @update:value="onSelectDirector"
                 :placeholder="$t(`content.choose`)"
                 :options="componentStore.confirmationList"
                 :loading="componentStore.confirmationLoading"
-                :render-label="renderLabel" />
+                :render-label="renderLabel"
+                :render-tag="renderValue"
+                label-field="last_name"
+                value-field="id"
+            />
           </n-form-item>
         </div>
       </div>

@@ -34,9 +34,14 @@ export const usePdfViewerStore = defineStore('pdfViewerStore', {
         model:null,
         document_id:null,
         signatureId:null,
+
         historyLoading:false,
         historyList:[],
         show:false,
+
+        fileList:[],
+        fileLoading:false,
+        fileShow:false,
 
         chatVisible:false,
         msg:null,
@@ -128,6 +133,19 @@ export const usePdfViewerStore = defineStore('pdfViewerStore', {
                this.show = true
                this.historyLoading = false
            })
+        },
+        _files(){
+           this.fileLoading = true
+            let params = {
+                document_id:this.document_id,
+                model:this.model,
+            }
+            $ApiService.documentFileService._index({params}).then((res)=>{
+                this.fileList = res.data.data
+            }).finally(()=>{
+                this.fileShow = true
+                this.fileLoading = false
+            })
         },
         _resetForm(){
            this.confirmations = []

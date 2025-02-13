@@ -12,6 +12,7 @@ const payload = ref(null)
 const emits = defineEmits(['signatureEv'])
 
 const openPdf = (document_id, model, signatureId)=>{
+  pdfViewerStore.model = model
   pdfViewerStore.signatureId = signatureId
   payload.value = {document_id,model}
   pdfSignatureRef.value.getDocument(document_id, model)

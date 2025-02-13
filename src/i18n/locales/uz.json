@@ -97,7 +97,7 @@
         "hrm": "Xodimlar menyusi",
         "admin": "Admin menyusi",
         "chat": "Chat menyusi",
-        "docflow": "Huttatlar menyusi",
+        "docflow": "Hujjatlar menyusi",
         "lms": "Attestatsiya menyusi"
     },
     "loginPage":{
@@ -232,6 +232,7 @@
         "createTitle": "Tashkilot qo'shish",
         "updateTitle": "Tashkilotni tahrirlash",
         "form": {
+            "city_id": "Joylashgan tuman",
             "parent_id": "Tashkilot tanlang",
             "name": "Tashkilot nomi",
             "full_name": "Tashkilotning to'liq nomi",
@@ -259,8 +260,8 @@
             "position": "Lavozim"
         }
     },
-    "contactPage": {
-        "name": "Kontaktlar"
+    "chatWindow": {
+        "name": "Chat oynasi"
     },
     "documentHistoryPage": {
         "name": "Hujjatlar tarixi"
@@ -434,12 +435,13 @@
             "schedule_id": "Ish jadvali",
             "command_type": "Buyruq turi",
             "worker": "Xodimni tanlang",
-            "command_status": "command status",
+            "command_status": "Buyruq yaratish",
             "organization": "Korxona"
         },
         "signature": {
             "history": "O'zgarishlar tarixini ko'rish",
             "viewer": "Hujjat bilan tanishuvchilar",
+            "files": "Hujjat fayillari",
             "status": {
                 "Process": "Jarayonda"
             }

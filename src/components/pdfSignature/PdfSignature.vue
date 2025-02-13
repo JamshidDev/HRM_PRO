@@ -40,13 +40,6 @@ defineExpose({
   addQRCodeToPDF
 })
 
-
-onMounted(async()=>{
-  // const pdfUrl = 'https://cabinet.dasuty.com/s3/media/document/AT94325743.pdf';
-  // const qrCodeData = 'https://example.com/signature';
-  // await addQRCodeToPDF(pdfUrl, qrCodeData);
-
-})
 </script>
 
 <template>

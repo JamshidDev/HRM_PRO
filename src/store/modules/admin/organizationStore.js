@@ -13,6 +13,7 @@ export const useOrganizationStore = defineStore('organizationStore', {
         totalItems:0,
         payload:{
             parent_id:null,
+            city_id:null,
             level:null,
             name:null,
             full_name:null,
@@ -76,6 +77,7 @@ export const useOrganizationStore = defineStore('organizationStore', {
                     this.payload.full_name = organization.full_name
                     this.payload.level = organization.level
                     this.payload.parent_id = organization.parent_id
+                    this.payload.city_id  = organization.city.id
                     this.visible = true
 
                 }
@@ -136,6 +138,7 @@ export const useOrganizationStore = defineStore('organizationStore', {
             this.payload.full_name = null
             this.payload.lat = null
             this.payload.long = null
+            this.payload.city_id = null
         },
         nestedElement(node, indexPath, newNode){
             let currentNode = node

@@ -72,7 +72,24 @@ const handleSelect =(key)=>{
   }
 }
 
+const initialObserver = ()=>{
+  const options = {
+    threshold: 0.9,
+  }
+  const callBack = (entries, observer)=>{
+    entries.forEach((v)=>{
+      // const index = v.target.getAttribute("data-index");
+      console.log((Number(index)+1) + ' - '+  v.isIntersecting )
+    })
+  }
+  const observer = new IntersectionObserver(callBack, options)
+  document.querySelectorAll(".chat-message-element").forEach((el) => observer.observe(el))
+}
 
+
+onMounted(()=>{
+  initialObserver()
+})
 
 </script>
 
@@ -99,6 +116,8 @@ const handleSelect =(key)=>{
       </div>
     </div>
   </template>
+
+
   <template v-else>
     <div class="flex gap-x-2">
       <div class="w-[40px] ui__avatar-border">
@@ -112,7 +131,6 @@ const handleSelect =(key)=>{
         <div class="text-xs font-medium text-surface-600"> {{fullName}} <span class="text-[12px] font-normal text-surface-400">{{time}}</span></div>
         <div class="border  max-w-[280px] text-surface-600 rounded-lg text-sm px-2 py-1 border-surface-line inline-block bg-surface-section">
           <pre class="font-poppins text-wrap">{{message}}</pre>
-          <!--          {{message}}-->
         </div>
       </div>
     </div>
