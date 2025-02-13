@@ -91,6 +91,12 @@ export const navigations = [
                 icon:'bx bxs-archive',
                 children:[]
             },
+            {
+                label:t('topicCategoryPage.name'),
+                path:Utils.routeLmsPathMaker(AppPaths.Category),
+                icon:'bx bxs-archive',
+                children:[]
+            },
         ]
     },
     {

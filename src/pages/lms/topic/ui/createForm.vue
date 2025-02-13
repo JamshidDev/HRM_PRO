@@ -16,7 +16,6 @@ const onSubmit = ()=>{
       }else{
         store._update()
       }
-
     }
   })
 }
@@ -51,6 +50,7 @@ onMounted(()=>{
             :options="componentStore.topicTypes"
             label-field="name"
             value-field="id"
+
             :loading="componentStore.enumExamLoading"
         />
       </n-form-item>

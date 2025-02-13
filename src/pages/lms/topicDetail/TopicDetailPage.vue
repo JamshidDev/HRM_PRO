@@ -12,7 +12,7 @@ const store = useTopicCategoryStore()
 const tabs = [{
   name: 'topicDetailsPage.categories.name',
   id: 1,
-  component: TopicCategoryPage
+  component: ExamPage
 },
   {
     name: 'topicDetailsPage.files.name',
@@ -23,11 +23,6 @@ const tabs = [{
     name: 'topicDetailsPage.questions.name',
     id: 3,
     component: TopicQuestionPage
-  },
-  {
-    name: 'topicDetailsPage.exams.name',
-    id: 4,
-    component: ExamPage
   }]
 
 const activeTab = ref(1)

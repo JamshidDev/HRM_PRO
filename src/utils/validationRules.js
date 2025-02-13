@@ -6,6 +6,14 @@ const lang = localStorage.getItem('applicationLang') || 'uz'
 i18n.global.locale = lang
 
 export default {
+    common: {
+        requiredStringField: {
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+
+    },
     login:{
         phone:[
             {
@@ -886,10 +894,17 @@ export default {
         },
     },
     topicFilePage: {
-        requiredField: {
+        type: {
+            type: 'number',
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
-        }
+        },
+        filesField: {
+            type: 'array',
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
     }
 }
