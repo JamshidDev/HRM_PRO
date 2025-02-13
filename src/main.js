@@ -9,6 +9,8 @@ import naive from 'naive-ui'
 import { createYmaps } from 'vue-yandex-maps';
 import mask from "./directives/mask.js"
 
+import '@wangeditor/editor/dist/css/style.css'
+
 const app = createApp(App);
 const meta = document.createElement('meta')
 meta.name = 'naive-ui-style'

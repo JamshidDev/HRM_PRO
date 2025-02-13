@@ -1,13 +1,12 @@
 <script setup>
-import {useTopicCategoryStore} from "@/store/modules/index.js"
+import {useCategoryStore} from "@/store/modules/index.js"
 import {UIPageContent} from "@/components/index.js"
-import TopicCategoryPage from "@/pages/lms/topicCategory/TopicCategoryPage.vue"
 import TopicFilePage from "@/pages/lms/topicFile/TopicFilePage.vue";
 import ExamPage from "@/pages/lms/exam/ExamPage.vue";
 import TopicQuestionPage from "@/pages/lms/topicQuestion/TopicQuestionPage.vue";
 
 
-const store = useTopicCategoryStore()
+const store = useCategoryStore()
 
 const tabs = [{
   name: 'topicDetailsPage.categories.name',

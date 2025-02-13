@@ -1,2 +1,4 @@
-export const TopicCategoryPage = import("./topicCategory/TopicCategoryPage.vue");
+export const CategoryQuestionPage = import("./categoryQuestion/CategoryQuestionPage.vue")
+export const CategoryPage = import("./category/TopicCategoryPage.vue");
 export const TopicPage = import("./topic/TopicPage.vue");
+export const AddQuestionPage = import('./categoryQuestion/ui/AddQuestionPage.vue')

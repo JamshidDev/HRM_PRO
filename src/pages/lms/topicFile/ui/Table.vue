@@ -1,30 +1,43 @@
 <script setup>
 import {useTopicFileStore} from "@/store/modules/index.js"
-import {AppPaths} from "@/utils/index.js"
-import {NoDataPicture, UIActionButton, UIPagination} from "@/components/index.js";
+import {NoDataPicture, UIMenuButton, UIPagination} from "@/components/index.js";
+import {AppPaths} from "@/utils/index.js";
+import {useRouter} from "vue-router";
 
+const router = useRouter()
 const store = useTopicFileStore()
-const onEdit = (v)=>{
-  store.payload.active = !!v.active
-  store.payload.type = Number(v.type.id)
-  store.payload.fileObjects = [{
-    id: v.id,
-    name: v.file_name+'.'+v.file_extension
-  }]
-  store.elementId = v.id
-  store.visibleType = false
-  store.visible= true
-}
-
-const onDelete = (v)=>{
-  store.elementId = v.id
-  store._delete()
-}
 
 const changePage = (v)=>{
   store.params.page = v.page
   store.params.per_page = v.per_page
   store._index()
+}
+
+const onSelect = (v)=>{
+  if(v.key === 'view'){
+    router.push({
+      path:`${AppPaths.Lms}${AppPaths.Category}`,
+      query:{id:v.data.id},
+    })
+  }else if(v.key === 'delete'){
+    store.elementId = v.data.id
+    store._delete()
+  }else if(v.key==='edit'){
+    store.payload.active = !!v.data.active
+    store.payload.type = Number(v.data.type.id)
+    store.payload.fileObjects = [{
+      id: v.data.id,
+      name: v.data.file_name+'.'+v.data.file_extension
+    }]
+    store.elementId = v.data.id
+    store.visibleType = false
+    store.visible= true
+  }else if(v.key==='download'){
+    let a = document.createElement('a')
+    a.href=v.data.file
+    a.click()
+    a.remove()
+  }
 }
 
 </script>
@@ -53,11 +66,12 @@ const changePage = (v)=>{
           <td>{{item.type.name}}</td>
           <td><n-switch :value="!!item.active" disabled /></td>
           <td>
-            <UIActionButton
+            <UIMenuButton
+                :show-edit="true"
+                :show-download="true"
+                :show-delete="true"
                 :data="item"
-                :loading-delete="item.id === store.elementId && store.deleteLoading"
-                @on-edit="onEdit"
-                @on-delete="onDelete"
+                @select-ev="onSelect"
             />
           </td>
         </tr>
@@ -68,7 +82,6 @@ const changePage = (v)=>{
           :per_page="store.params.size"
           :total="store.totalItems"
           @change-page="changePage"
-
       />
     </div>
     <NoDataPicture v-if="store.list.length===0 && !store.loading" />

@@ -43,6 +43,7 @@ export const AppPaths = {
     ConfContract:"/conf-contract",
     ConfCommand:"/conf-command",
     Topic:"/topic",
+    Questions:"/questions"
 }
 
 export const AppLayouts ={

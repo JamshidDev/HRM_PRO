@@ -1,7 +1,7 @@
 import {defineStore} from "pinia";
 import i18n from "@/i18n/index.js"
 const {t} = i18n.global
-export const useTopicCategoryStore = defineStore('topicCategoryStore', {
+export const useCategoryStore = defineStore('topicCategoryStore', {
     state:()=>({
         list:[],
         loading:false,

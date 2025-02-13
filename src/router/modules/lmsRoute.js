@@ -2,7 +2,7 @@ import {AppPaths} from "@/utils/index.js"
 import Utils from "@/utils/Utils.js"
 import ExamPage from "@/pages/lms/exam/ExamPage.vue"
 import TopicDetailPage from "@/pages/lms/topicDetail/topicDetailPage.vue"
-import {TopicPage, TopicCategoryPage} from "@/pages/lms";
+import {TopicPage, CategoryPage, CategoryQuestionPage, AddQuestionPage} from "@/pages/lms";
 
 export default [
     {
@@ -14,7 +14,17 @@ export default [
     {
         path:Utils.routeLmsPathMaker(AppPaths.Category),
         name:AppPaths.Category.substring(1),
-        component:()=>TopicCategoryPage,
+        component:()=>CategoryPage,
+        children:[],
+    },
+    {
+        path:Utils.routeLmsPathMaker(`${AppPaths.Category}/:category_id${AppPaths.Questions}`),
+        component:()=>CategoryQuestionPage,
+        children:[],
+    },
+    {
+        path:Utils.routeLmsPathMaker(`${AppPaths.Category}/:category_id${AppPaths.Questions}${AppPaths.Create}`),
+        component:()=>AddQuestionPage,
         children:[],
     },
     {
