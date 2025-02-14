@@ -2,35 +2,43 @@
 import {Editor, Toolbar} from '@wangeditor/editor-for-vue'
 import {i18nChangeLanguage} from '@wangeditor/editor'
 import i18n from "@/i18n/index.js"
+import {NFormItem} from "naive-ui";
 
-const emit = defineEmits(['onRemove'])
+const t = i18n.global.t
+
+const emit = defineEmits(['onRemove', 'update:model-value'])
+const props = defineProps({
+  placeholder: String,
+  withValidation: {
+    type: Boolean,
+    default: false
+  },
+  extraRules: {
+    type: Array,
+    default: []
+  },
+  path: String,
+  modelValue: {
+    type: String,
+    required: true
+  }
+})
 
 const editorRef = shallowRef()
-const text = defineModel("text", {
-  required: true,
-  type: String
-})
-const isValid = defineModel("isValid", {
-  type: Boolean,
-  default: false,
-})
 
-watch(text, ()=>{
-  isValid.value = editorRef.value?.isEmpty()
-})
 
 onBeforeMount(() => {
   i18nChangeLanguage('en')
 })
 
-const toolbarConfig= {
+const toolbarConfig = {
   toolbarKeys: [
     'uploadImage', 'menu1',
   ],
 }
 
 const editorConfig = {
-  placeholder: i18n.global.t('content.enterField'),
+  placeholder: props?.placeholder || t('content.enterField'),
   MENU_CONF: {
     uploadImage: {
       base64LimitSize: 0,
@@ -38,11 +46,13 @@ const editorConfig = {
       allowedFileTypes: ['image/*'],
       async customUpload(file, insertFn) {
         const formData = new FormData()
-        formData.append('files', file)
-        // await uploadBaseApi.uploadFile(formData)
-        //     .then(({data}) => {
-        //       insertFn(data[0].url, data[0].fileName, data[0].url)
-        //     })
+        formData.append('file', file)
+        await $ApiService.uploadService._create(formData)
+            .then((res) => {
+              const {data} = res.data
+              console.log(data)
+              insertFn(data,data,data)
+            })
       },
     },
   },
@@ -72,83 +82,50 @@ const handleCreated = (editor) => {
   editor.on('delete-event', () => {
     emit('onRemove')
   })
+  console.log(editor.getMenuConfig('menu1'))
+}
+
+const text = ref('')
+
+const onChange = (editor)=>{
+  emit('update:model-value', editor.getHtml())
 }
 </script>
 
 <template>
-  <div
-      class="test-option-editor cursor-pointer">
-    <div>
-      <Editor
-          v-model="text"
-          :defaultConfig="editorConfig"
-          :mode="'default'"
-          class="editor"
-          @onCreated="handleCreated"
-      />
+  <component
+      :is="withValidation ? NFormItem : 'div'"
+      :path="path"
+      :rule="[{
+          trigger: ['input', 'blur'],
+          validator() {
+            console.log('validator working')
+            return (editorRef?.isEmpty() || editorRef?.getText()?.trim()==='') ? new Error( $t('rules.requiredField')) : true
+          },
+        },
+         ...extraRules
+        ]"
+      :show-label="false"
+  >
+    <div class="w-full flex">
+        <Editor
+            v-model="text"
+            :defaultConfig="editorConfig"
+            :mode="'default'"
+            class="grow"
+            @onCreated="handleCreated"
+            @onChange="onChange"
+        />
+
+      <div class="flex items-center bg-white">
+        <Toolbar
+            :defaultConfig="toolbarConfig"
+            :editor="editorRef"
+            :mode="'default'"
+        />
+      </div>
     </div>
-    <div class="d-flex justify-end ma-2">
-      <Toolbar
-          :defaultConfig="toolbarConfig"
-          :editor="editorRef"
-          :mode="'default'"
-          class="toolbar"
-      />
-    </div>
-  </div>
+  </component>
 </template>
 <style lang="scss">
-.test-option-editor {
-
-  .editor {
-    .w-e-text-container {
-      background-color: transparent;
-    }
-  }
-
-  .toolbar {
-    .w-e-bar {
-      background-color: transparent;
-    }
-  }
-
-  //.radio-input {
-  //  height: 17px;
-  //  width: 17px;
-  //  display: flex;
-  //  justify-content: center;
-  //  align-items: center;
-  //  cursor: pointer;
-  //  position: relative;
-  //
-  //  &:after {
-  //    position: absolute;
-  //    content: '';
-  //    height: 15px;
-  //    width: 15px;
-  //    border-radius: 50%;
-  //    border: 1px solid rgba(var(--v-theme-secondary), 0.3);
-  //  }
-  //}
-
-  //&-active {
-  //  border-color: rgba(var(--v-theme-success), 0.2);
-  //  background-color: rgba(var(--v-theme-success), 0.1);
-  //
-  //  .radio-input {
-  //    &:before {
-  //      content: '';
-  //      height: 9px;
-  //      width: 9px;
-  //      border-radius: 50%;
-  //      border: rgba(var(--v-theme-success), 1);
-  //      background-color: rgba(var(--v-theme-success), 1);
-  //      position: absolute;
-  //    }
-  //
-  //    &:after {
-  //      border: 1px solid rgba(var(--v-theme-secondary), 0.3);
-  //    }
-  //  }
-}
 </style>

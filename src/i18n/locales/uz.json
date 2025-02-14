@@ -673,10 +673,25 @@
     "name": "Mavzular",
     "updateTitle": "Mavzuni tahrirlash"
   },
-  "topicCategoryPage": {
+  "categoryPage": {
     "createCategory": "Kategoriya yaratish",
     "editCategory": "Kategoriyani tahrirlash",
-    "name": "Kategoriyalar"
+    "name": "Kategoriyalar",
+    "addQuestion": "Savol qo'shish"
+  },
+  "questionPage": {
+    "form": {
+      "question": "Savol",
+      "options": "Variantlar",
+      "enterQuestion": "Savolni kiriting",
+      "enterOption": "Variantni kiriting",
+      "addOption": "Variant qo'shish"
+    },
+    "rules": {
+      "minOptions": "Kamida 3ta variant bo'lishi lozim",
+      "chooseCorrectAnswer": "To'g'ri javobni tanlang"
+    }
+
   },
   "next": "Keyingi"
 }

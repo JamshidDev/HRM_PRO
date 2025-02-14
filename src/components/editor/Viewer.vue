@@ -10,78 +10,58 @@ defineProps({
 </script>
 
 <template>
-  <span :class="className" class="wang-wysiwyg-editor">
+  <div>
     <span
       class="editor-content-view"
       v-html="html"
     />
-  </span>
+  </div>
 </template>
 
 <style lang="scss">
-.wang-wysiwyg-editor {
-  p, p * {
-    color: rgb(var(--v-theme-on-surface));
-  }
 
-  .editor-content-view {
-    height: 100%;
-    overflow-x: auto;
+.editor-content-view p,
+.editor-content-view li {
+  white-space: pre-wrap; /* 保留空格 */
+}
 
-    img {
-      max-height: 100%;
-      max-width: 100%;
-    }
+.editor-content-view blockquote {
+  border-left: 8px solid #d0e5f2;
+  padding: 10px 10px;
+  margin: 10px 0;
+  background-color: #f1f1f1;
+}
 
-    p,
-    li {
-      white-space: pre-wrap;
-    }
+.editor-content-view code {
+  font-family: monospace;
+  background-color: #eee;
+  padding: 3px;
+  border-radius: 3px;
+}
+.editor-content-view pre>code {
+  display: block;
+  padding: 10px;
+}
 
-    blockquote {
-      border-left: 8px solid rgba(var(--v-theme-primary), 0.4);
-      padding: 10px 10px;
-      margin: 10px 0;
-      background-color: rgba(var(--v-theme-success), 0.1);
-    }
+.editor-content-view table {
+  border-collapse: collapse;
+}
+.editor-content-view td,
+.editor-content-view th {
+  border: 1px solid #ccc;
+  min-width: 50px;
+  height: 20px;
+}
+.editor-content-view th {
+  background-color: #f1f1f1;
+}
 
-    code {
-      font-family: monospace;
-      background-color: rgba(var(--v-theme-surface), 1);
-      padding: 3px;
-      border-radius: 3px;
-      overflow-x: auto;
-    }
+.editor-content-view ul,
+.editor-content-view ol {
+  padding-left: 20px;
+}
 
-    pre > code {
-      display: block;
-      padding: 10px;
-      overflow-x: auto;
-    }
-
-    table {
-      border-collapse: collapse;
-    }
-
-    td,
-    th {
-      border: 1px solid rgba(var(--v-theme-success), 0.4);
-      min-width: 50px;
-      height: 20px;
-    }
-
-    th {
-      background-color: rgba(var(--v-theme-success), 0.2);
-    }
-
-    ul,
-    ol {
-      padding-left: 20px;
-    }
-
-    input[type="checkbox"] {
-      margin-right: 5px;
-    }
-  }
+.editor-content-view input[type="checkbox"] {
+  margin-right: 5px;
 }
 </style>

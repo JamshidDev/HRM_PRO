@@ -86,7 +86,7 @@ export const navigations = [
                 children:[]
             },
             {
-                label:t('topicCategoryPage.name'),
+                label:t('categoryPage.name'),
                 path:Utils.routeLmsPathMaker(AppPaths.Category),
                 icon:'bx bxs-archive',
                 children:[]

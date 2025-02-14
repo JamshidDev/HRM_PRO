@@ -2,32 +2,29 @@
 import { Editor, Toolbar } from '@wangeditor/editor-for-vue'
 import { i18nChangeLanguage } from '@wangeditor/editor'
 import i18n from "@/i18n/index.js"
+import {NFormItem} from "naive-ui";
 
 const {t} = i18n.global
 
 const props = defineProps({
   showToolbar: Boolean,
-  height: [Number, String],
-  maxHeight: {
-    type: String,
-    default: 'auto'
+  placeholder: String,
+  withValidation: {
+    type: Boolean,
+    default: false
   },
-  border: Boolean,
-  placeholder: String
+  extraRules: {
+    type: Array,
+    default: []
+  },
+  label: String,
+  path: String
 })
 
 const editorRef = shallowRef()
 const text = defineModel("text", {
   required: true,
   type: String
-})
-const isValid = defineModel("isValid", {
-  type: Boolean,
-  default: false,
-})
-
-watch(text, ()=>{
-  isValid.value = editorRef.value?.isEmpty()
 })
 
 onBeforeMount(() => {
@@ -62,11 +59,13 @@ const editorConfig = ref({
       allowedFileTypes: ['image/*'],
       async customUpload(file, insertFn) {
         const formData = new FormData()
-        formData.append('files', file)
-        // await uploadBaseApi.uploadFile(formData)
-        //   .then(({ data }) => {
-        //     insertFn(data[0].url, data[0].fileName, data[0].url)
-        //   })
+        formData.append('file', file)
+        await $ApiService.uploadService._create(formData)
+          .then((res) => {
+            const {data} = res.data
+            console.log(data)
+            insertFn(data,data,data)
+          })
       },
     },
   },
@@ -98,30 +97,36 @@ const handleCreated = (editor) => {
 </script>
 
 <template>
-  <div class="wang-wysiwyg-editor">
-    <div>
-      <Toolbar
-          v-if="showToolbar"
-          :defaultConfig="toolbarConfig"
-          :editor="editorRef"
-          :mode="'default'"
-          class="toolbar border-b-sm"
-      />
-      <Editor
-          v-model="text"
-          :class="{border}"
-          :defaultConfig="editorConfig"
-          :mode="'default'"
-          class="editor"
-          @onCreated="handleCreated"
-      />
-    </div>
-  </div>
+    <component
+        :is="withValidation ? NFormItem : 'div'"
+        :label="label"
+        :rule="[{
+          trigger: ['input', 'blur'],
+          validator() {
+            return (editorRef?.isEmpty() || editorRef?.getText()?.trim()==='') ? new Error( t('rules.requiredField')) : true
+          },
+        },
+         ...extraRules
+        ]"
+        :path="path"
+    >
+      <div class="w-full border border-secondary drop-shadow-sm">
+        <Toolbar
+            v-if="showToolbar"
+            :defaultConfig="toolbarConfig"
+            :editor="editorRef"
+            :mode="'default'"
+            class="toolbar border-b border-secondary"
+        />
+        <Editor
+            v-model="text"
+            :defaultConfig="editorConfig"
+            :mode="'default'"
+            class="editor"
+            @onCreated="handleCreated"
+        />
+      </div>
+    </component>
 </template>
 <style lang="scss">
-.wang-wysiwyg-editor {
-  p, p * {
-    color: rgb(var(--v-theme-on-surface));
-  }
-}
 </style>

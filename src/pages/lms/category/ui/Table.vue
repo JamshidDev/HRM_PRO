@@ -40,7 +40,7 @@ const onSelect = (v)=>{
         <thead>
         <tr>
           <th class="!text-center w-[30px] min-w-[30px] flex-grow-0">{{$t('content.number')}}</th>
-          <th class="!text-center min-w-[500px] w-[90%]">{{$t('topicCategoryPage.name')}}</th>
+          <th class="!text-center min-w-[500px] w-[90%]">{{$t('categoryPage.name')}}</th>
           <th class="max-w-[40px] w-[40px]">{{$t('content.action')}}</th>
         </tr>
         </thead>

@@ -35,7 +35,7 @@ onMounted(()=>{
         :width="300"
         :visible="store.visible"
         @update:visible="(v)=>store.visible = v"
-        :title="store.visibleType? $t('topicCategoryPage.createCategory') : $t('topicCategoryPage.editCategory')"
+        :title="store.visibleType? $t('categoryPage.createCategory') : $t('topicCategoryPage.editCategory')"
     >
       <template #content>
         <Form/>

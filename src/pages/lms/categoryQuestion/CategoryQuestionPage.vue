@@ -1,7 +1,7 @@
 <script setup>
 import QuestionList from './ui/QuestionList.vue'
 import {useRoute, useRouter} from "vue-router";
-import {useCategoryQuestionStore} from "@/store/modules/lms/topicQuestionStore.js";
+import {useCategoryQuestionStore} from "@/store/modules";
 import {UIPageContent, UIPageFilter} from "@/components/index.js";
 import {AppPaths} from "@/utils/index.js";
 
@@ -32,7 +32,8 @@ const onAdd=()=>{
         @onSearch="onSearch"
         :show-filter-button="false"
         @on-add="onAdd"
+        :show-search-input="false"
     />
-    <QuestionList />
+    <QuestionList class="mt-2" />
   </UIPageContent>
 </template>
