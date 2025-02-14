@@ -5,7 +5,7 @@
         "edit": "Tahrirlash",
         "delete": "O'chirish",
         "view": "Ko'rish",
-        "open": "Ochish",
+        "copy": "Nusxalash",
         "download": "Yuklash",
         "no-data": "Ma'lumot yo'q",
         "cancel": "Bekor qilish",
@@ -49,6 +49,7 @@
         "clear": "Tozalash",
         "continue": "Davom etish",
         "close": "Yopish",
+        "open": "Ko'rish",
         "hide": "Yashirish",
         "closeAndClear": "Yopish va tozalash",
         "notWorker": "Xodim topilmadi",
@@ -85,7 +86,8 @@
         "requiredJSHSHIR": "Pasport jshshir kiritilishi shart!"
     },
     "message": {
-        "successDone": "Muvofaqqiyatli bajarildi",
+      "successDone": "Muvofaqqiyatli bajarildi",
+      "requiredSignature": "Imzo maydoni bo'sh bo'lmasligi kerak!",
         "clearedFields": "Maydonlar tozalandi!",
         "warning-data": "Ma'lumotlar yetarli emas!"
     },
@@ -151,244 +153,250 @@
     "userPage": {
         "name": "Foydalanuvchilar"
 
-    },
-    "confirmation": {
-        "name": "Shartnomalar",
-        "contract": {
-            "form": {
-                "number": "Raqami",
-                "type": "Turi",
-                "organization": "Korxona",
-                "worker": "Xodim"
-            }
-        }
+  },
+  "confirmation": {
+    "name": "Shartnomalar",
+    "contract": {
+      "form": {
+        "number": "Raqami",
+        "type": "Turi",
+        "organization": "Korxona",
+        "worker": "Xodim"
+      }
+    }
 
+  },
+  "countryPage": {
+    "name": "Davlatlar",
+    "createTitle": "Davlat qo'shish",
+    "updateTitle": "Davlat tahrirlash",
+    "form": {
+      "name": "Davlat nomi",
+      "coordinates": "Davlat markazini tanlang"
+    }
+  },
+  "regionPage": {
+    "name": "Viloyatlar",
+    "createTitle": "Viloyat qo'shish",
+    "updateTitle": "Viloyat tahrirlash",
+    "form": {
+      "name": "Viloyat",
+      "coordinates": "Viloyat markazini tanlang",
+      "country": "Davlat"
+    }
+  },
+  "districtPage": {
+    "name": "Tumanlar",
+    "createTitle": "Tuman qo'shish",
+    "updateTitle": "Tuman tahrirlash",
+    "form": {
+      "name": "Tuman",
+      "coordinates": "Tuman markazini tanlang",
+      "region": "Viloyat"
+    }
+  },
+  "nationalityPage": {
+    "name": "Millatlar",
+    "createTitle": "Millat qo'shish",
+    "updateTitle": "Millat tahrirlash",
+    "form": {
+      "name": "Millat"
+    }
+  },
+  "profilePage": {
+    "tabs": {
+      "profileInfo": "Hisob ma'lumotlar",
+      "notification": "Bildirishnomalar",
+      "secure": "Xavsizlik",
+      "actionHistory": "Amallar tarixi"
     },
-    "countryPage": {
-        "name": "Davlatlar",
-        "createTitle": "Davlat qo'shish",
-        "updateTitle": "Davlat tahrirlash",
-        "form": {
-            "name": "Davlat nomi",
-            "coordinates": "Davlat markazini tanlang"
-        }
+    "form": {
+      "lastName": "Familiya",
+      "fistName": "Ism",
+      "middleName": "Sharif",
+      "password": "Parol",
+      "confirmPassword": "Parolni takrorlang"
+    }
+  },
+  "positionPage": {
+    "name": "Lavozimlar",
+    "createTitle": "Lavozim qo'shish",
+    "updateTitle": "Lavozimni tahrirlash",
+    "form": {
+      "name": "Lavozim nomi (uz)",
+      "name_ru": "Lavozim nomi (ru)",
+      "classification_index": "Klassifikator indeksi",
+      "classification_code": "Klassifikator kodi"
+    }
+  },
+  "organizationPage": {
+    "name": "Tashkilotlar",
+    "createTitle": "Tashkilot qo'shish",
+    "updateTitle": "Tashkilotni tahrirlash",
+    "form": {
+      "parent_id": "Tashkilot tanlang",
+      "name": "Tashkilot nomi",
+      "full_name": "Tashkilotning to'liq nomi",
+      "level": "Tashkilot turi"
     },
-    "regionPage": {
-        "name": "Viloyatlar",
-        "createTitle": "Viloyat qo'shish",
-        "updateTitle": "Viloyat tahrirlash",
-        "form": {
-            "name": "Viloyat",
-            "coordinates": "Viloyat markazini tanlang",
-            "country": "Davlat"
-        }
+    "selectedOrg": "Tanlangan tashkilot",
+    "deleteContent": "Haqiqattan ham bu tashkilotni o'chirmoqchimisiz? "
+  },
+  "workerPage": {
+    "name": "Xodimlar",
+    "filter": {
+      "contract": "Shartnoma tuzish"
     },
-    "districtPage": {
-        "name": "Tumanlar",
-        "createTitle": "Tuman qo'shish",
-        "updateTitle": "Tuman tahrirlash",
-        "form": {
-            "name": "Tuman",
-            "coordinates": "Tuman markazini tanlang",
-            "region": "Viloyat"
-        }
+    "checkWorker": {
+      "title": "Xodim izlash",
+      "defaultText": "Izlashni boshlang...",
+      "no-worker": "Tizimda xodim topilmadi!",
+      "born": "Tug'ilgan sana",
+      "addCandidate": "Kandidat qo'shish",
+      "add-worker": "Tizimda mavjud bo'lmagan xodimning ma'lumotlarini kandidat qo'shish tugamasi orqali qo'shing ",
+      "jshshir": "Jshshirni kiriting"
     },
-    "nationalityPage": {
-        "name": "Millatlar",
-        "createTitle": "Millat qo'shish",
-        "updateTitle": "Millat tahrirlash",
-        "form": {
-            "name": "Millat"
-        }
+    "table": {
+      "department": "Bo'lim",
+      "position": "Lavozim"
+    }
+  },
+  "contactPage": {
+    "name": "Kontaktlar"
+  },
+  "documentHistoryPage": {
+    "name": "Hujjatlar tarixi"
+  },
+  "examPage": {
+    "name": "Imtixonlar"
+  },
+  "workerProfile": {
+    "tabs": {
+      "personal": "Shaxsiy",
+      "education": "Ma'lumoti",
+      "career": "Faoliyati",
+      "relative": "Qarindoshlari",
+      "others": "Boshqalar"
     },
-    "profilePage": {
-        "tabs": {
-            "profileInfo": "Hisob ma'lumotlar",
-            "notification": "Bildirishnomalar",
-            "secure": "Xavsizlik",
-            "actionHistory": "Amallar tarixi"
-        },
-        "form": {
-            "lastName": "Familiya",
-            "fistName": "Ism",
-            "middleName": "Sharif",
-            "password": "Parol",
-            "confirmPassword": "Parolni takrorlang"
-        }
+    "personal": {
+      "additionalContract": "Qo'shimcha kelishuv tuzish",
+      "createOrder": "Buyruq tuzish",
+      "positionGroup": "Lavozim guruxi",
+      "positionRank": "Lavozim razryadi",
+      "positionRate": "Lavozim stavkasi",
+      "no-passport": "Passport ma'lumotlar yuklanmagan!"
     },
-    "positionPage": {
-        "name": "Lavozimlar",
-        "createTitle": "Lavozim qo'shish",
-        "updateTitle": "Lavozimni tahrirlash",
-        "form": {
-            "name": "Lavozim nomi (uz)",
-            "name_ru": "Lavozim nomi (ru)",
-            "classification_index": "Klassifikator indeksi",
-            "classification_code": "Klassifikator kodi"
-        }
+    "position": {
+      "contractType": "Shartnoma turi",
+      "contractNumber": "Shartnoma raqami",
+      "contractDate": "Shartnoma sanasi",
+      "contractToDate": "Shartnoma muddati",
+      "positionDate": "Lavozim sanasi",
+      "position": "Lavozimi",
+      "title": "Lavozim ma'lumotlari"
+    }
+  },
+  "departmentPage": {
+    "name": "Bo'linmalar",
+    "createTitle": "Bo'linma qo'shish",
+    "updateTitle": "Bo'linmani tahrirlash",
+    "form": {
+      "parent_id": "Bo'linma tanlang",
+      "name": "Bo'linma nomi",
+      "level": "Bo'linma turi"
     },
-    "organizationPage": {
-        "name": "Tashkilotlar",
-        "createTitle": "Tashkilot qo'shish",
-        "updateTitle": "Tashkilotni tahrirlash",
-        "form": {
-            "city_id": "Joylashgan tuman",
-            "parent_id": "Tashkilot tanlang",
-            "name": "Tashkilot nomi",
-            "full_name": "Tashkilotning to'liq nomi",
-            "level": "Tashkilot turi"
-        },
-        "selectedOrg": "Tanlangan tashkilot",
-        "deleteContent": "Haqiqattan ham bu tashkilotni o'chirmoqchimisiz? "
+    "selectedOrg": "Tanlangan tashkilot",
+    "deleteContent": "Haqiqattan ham bu tashkilotni o'chirmoqchimisiz? "
+  },
+  "departmentPositionPage": {
+    "name": "Lavozimlar",
+    "createTitle": "Bo'linmaga lavozim biriktirish",
+    "updateTitle": "Lavozimni tahrirlash",
+    "form": {
+      "position_id": "Lavozimni tanlang",
+      "department_id": "Bo'limni tanlang",
+      "group": "Lavozim guruxi",
+      "rank": "Lavozim uchun razryad",
+      "rate": "Lavozim kontingenti",
+      "salary": "Oylik maosh",
+      "experience": "Ish tajbibasi (oy)",
+      "educations": "Talab qilinadigan minimal ma'lumot"
     },
-    "workerPage": {
-        "name": "Xodimlar",
-        "filter": {
-            "contract": "Shartnoma tuzish"
-        },
-        "checkWorker": {
-            "title": "Xodim izlash",
-            "defaultText": "Izlashni boshlang...",
-            "no-worker": "Tizimda xodim topilmadi!",
-            "born": "Tug'ilgan sana",
-            "addCandidate": "Kandidat qo'shish",
-            "add-worker": "Tizimda mavjud bo'lmagan xodimning ma'lumotlarini kandidat qo'shish tugamasi orqali qo'shing ",
-            "jshshir": "Jshshirni kiriting"
-        },
-        "table": {
-            "department": "Bo'lim",
-            "position": "Lavozim"
-        }
+    "table": {
+      "position": "Lavozim",
+      "group": "Gurux",
+      "rank": "Razryad",
+      "rate": "Kontingent",
+      "salary": "Oylik maosh",
+      "department": "Bo'lim",
+      "education": "Ma'lumot",
+      "experience": "Tajriba"
+    }
+  },
+  "createWorkerPage": {
+    "name": "Xodim ma'lumotlarini qo'shish",
+    "ui": {
+      "image": "Kandidat uchun 3 ta rasm qo'shish tavsiya qilinadi. Rasmlar oxirgi 3 oy davomida suratga olingan bo'ishi shart.",
+      "phone": "Kandidatning asosiy raqamini belgilang va bu raqam kandidatning xodim sifatida tizimga kirish uchun login vazifasini bajaradi."
     },
-    "chatWindow": {
-        "name": "Chat oynasi"
+    "form": {
+      "lastName": "Familiya",
+      "firstName": "Ism",
+      "middleName": "Sharif",
+      "country": "Tug'ilgan davlati",
+      "region": "Tug'ilgan viloyati",
+      "city": "Tug'ilgan tumani",
+      "currentRegion": "Yashash viloyati",
+      "currentCity": "Yashash tumani",
+      "birthday": "Tug'ulgan sanasi",
+      "academicTitle": "Ilmiy unvoni",
+      "academicDegree": "Ilmiy darajasi",
+      "nationality_id": "Millati",
+      "party": "Partiyaviyligi",
+      "pin": "Pasport Jshshr",
+      "serial_number": "Seriyasi va raqami",
+      "from_date": "Berilgan sanasi",
+      "to_date": "Amal qilish muddati",
+      "passport_address": "Berilgan joyi",
+      "passport_file": "Passport nusxasi (.pdf)",
+      "inn": "Inn",
+      "marital_status": "Oilaviy holati",
+      "address": "Yashash manzili"
     },
-    "documentHistoryPage": {
-        "name": "Hujjatlar tarixi"
+    "step": {
+      "personal": "Kandidatning shaxsiy ma'lumotlari",
+      "photo": "Kandidatning fotosurati",
+      "pasport": "Kandidatning passport ma'lumotlari",
+      "phone": "Kandidatning telefon raqam ma'lumotlari"
     },
-    "examPage": {
-        "name": "Imtixonlar"
-    },
-    "workerProfile": {
-        "tabs": {
-            "personal": "Shaxsiy",
-            "education": "Ma'lumoti",
-            "career": "Faoliyati",
-            "relative": "Qarindoshlari",
-            "others": "Boshqalar"
-        },
-        "personal": {
-            "additionalContract": "Qo'shimcha kelishuv tuzish",
-            "createOrder": "Buyruq tuzish",
-            "positionGroup": "Lavozim guruxi",
-            "positionRank": "Lavozim razryadi",
-            "positionRate": "Lavozim stavkasi",
-            "no-passport": "Passport ma'lumotlar yuklanmagan!"
-        },
-        "position": {
-            "contractType": "Shartnoma turi",
-            "contractNumber": "Shartnoma raqami",
-            "contractDate": "Shartnoma sanasi",
-            "contractToDate": "Shartnoma muddati",
-            "positionDate": "Lavozim sanasi",
-            "position": "Lavozimi",
-            "title": "Lavozim ma'lumotlari"
-        }
-    },
-    "departmentPage": {
-        "name": "Bo'linmalar",
-        "createTitle": "Bo'linma qo'shish",
-        "updateTitle": "Bo'linmani tahrirlash",
-        "form": {
-            "parent_id": "Bo'linma tanlang",
-            "name": "Bo'linma nomi",
-            "level": "Bo'linma turi"
-        },
-        "selectedOrg": "Tanlangan tashkilot",
-        "deleteContent": "Haqiqattan ham bu tashkilotni o'chirmoqchimisiz? "
-    },
-    "departmentPositionPage": {
-        "name": "Lavozimlar",
-        "createTitle": "Bo'linmaga lavozim biriktirish",
-        "updateTitle": "Lavozimni tahrirlash",
-        "form": {
-            "position_id": "Lavozimni tanlang",
-            "department_id": "Bo'limni tanlang",
-            "group": "Lavozim guruxi",
-            "rank": "Lavozim uchun razryad",
-            "rate": "Lavozim kontingenti",
-            "salary": "Oylik maosh",
-            "experience": "Ish tajbibasi (oy)",
-            "educations": "Talab qilinadigan minimal ma'lumot"
-        },
-        "table": {
-            "position": "Lavozim",
-            "group": "Gurux",
-            "rank": "Razryad",
-            "rate": "Kontingent",
-            "salary": "Oylik maosh",
-            "department": "Bo'lim",
-            "education": "Ma'lumot",
-            "experience": "Tajriba"
-        }
-    },
-    "createWorkerPage": {
-        "name": "Xodim ma'lumotlarini qo'shish",
-        "ui": {
-            "image": "Kandidat uchun 3 ta rasm qo'shish tavsiya qilinadi. Rasmlar oxirgi 3 oy davomida suratga olingan bo'ishi shart.",
-            "phone": "Kandidatning asosiy raqamini belgilang va bu raqam kandidatning xodim sifatida tizimga kirish uchun login vazifasini bajaradi."
-        },
-        "form": {
-            "lastName": "Familiya",
-            "firstName": "Ism",
-            "middleName": "Sharif",
-            "country": "Tug'ilgan davlati",
-            "region": "Tug'ilgan viloyati",
-            "city": "Tug'ilgan tumani",
-            "currentRegion": "Yashash viloyati",
-            "currentCity": "Yashash tumani",
-            "birthday": "Tug'ulgan sanasi",
-            "academicTitle": "Ilmiy unvoni",
-            "academicDegree": "Ilmiy darajasi",
-            "nationality_id": "Millati",
-            "party": "Partiyaviyligi",
-            "pin": "Pasport Jshshr",
-            "serial_number": "Seriyasi va raqami",
-            "from_date": "Berilgan sanasi",
-            "to_date": "Amal qilish muddati",
-            "passport_address": "Berilgan joyi",
-            "passport_file": "Passport nusxasi (.pdf)",
-            "inn": "Inn",
-            "marital_status": "Oilaviy holati",
-            "address": "Yashash manzili"
-        },
-        "step": {
-            "personal": "Kandidatning shaxsiy ma'lumotlari",
-            "photo": "Kandidatning fotosurati",
-            "pasport": "Kandidatning passport ma'lumotlari",
-            "phone": "Kandidatning telefon raqam ma'lumotlari"
-        },
-        "toast": {
-            "warning":{
-                "title": "Tizimda mavjud xodim",
-                "subtitle": "No comment"
-            },
-            "success":{
-                "title": "Kandidat tizimga qo'shildi",
-                "subtitle": "Kandidat bilan mehnat shartnomasi tuzish uchun davom etish tugmasini bosing."
-            }
-        }
+    "toast": {
+      "warning":{
+        "title": "Tizimda mavjud xodim",
+        "subtitle": "No comment"
+      },
+      "success":{
+        "title": "Kandidat tizimga qo'shildi",
+        "subtitle": "Kandidat bilan mehnat shartnomasi tuzish uchun davom etish tugmasini bosing."
+      }
+    }
 
     },
     "signature": {
         "keyType": "Foydalanuvchi turi",
         "inn": "STIR",
+        "undo": "Orqaga",
         "certificate": "Sertifikat raqami",
         "validDate": "Muddati",
         "expiredKey": "Kalit muddati tugagan!",
         "legalPerson": "Yuridik shaxs",
         "naturalPerson": "Jismoniy shaxs",
         "connectionError": "E-imzo o'rnatilmagan yoki to'g'ri sozlanmagan!",
+        "copyLink": "Havolani nusxalash",
+        "copied": "Havola nusxalandi",
+        "goSignature": "Imzolash",
+       "signatureTitle": "Hujjatni elektron yozuv orqali imzolash!",
+       "signatureWorker": "Imzolash havolasi {name} uchun yaratilgan. Elektron imzo {name} tomonidan imzolangan holatdagina hujjat haqiqiy hisoblanadi.",
+        "linkText": "Hujjatni imzolash uchun havola yaratildi. Havoladan 2 daqiqa davomida foydalanishingiz mumkin.",
         "pinfl": "JSHSHR"
     },
     "documentPage": {
@@ -552,126 +560,167 @@
         },
 
 
-        "tabs": {
-            "university": "Oligohlar",
-            "speciality": "Mutaxasisliklar",
-            "language": "Tillar"
-        },
-        "form": {
-            "name": "Til"
-        }
+    "tabs": {
+      "university": "Oligohlar",
+      "speciality": "Mutaxasisliklar",
+      "language": "Tillar"
     },
-    "serviceOrgPage": {
-        "createTitle": "Andoza yuklash",
-        "updateTitle": "Andozani tahrirlash",
-        "form": {
-            "signature": "Elektron imzo",
-            "organization": "Korxonalar soni",
-            "organizations": "Korxonalar",
-            "type": "Shartnoma turi",
-            "file": "Andoza fayli",
-            "name": "Hujjat nomi"
-        }
-    },
-    "actionLog": {
-        "name": "Amallar tarixi",
-        "tab": {
-            "action": "Amallar tarixi",
-            "auth": "Kirishlar tarixi"
-        },
-        "table": {
-            "status": "Amal turi",
-            "owner": "Egasi",
-            "detail": "Batafsil",
-            "ip": "IP manzil",
-            "agent": "Agent",
-            "loginAt": "Kirish vaqti",
-            "logoutAt": "Chiqish vaqti",
-            "structure": "Korxonalar"
-        },
-        "status": {
-            "created": "Yangi yaratilgan",
-            "updated": "Tahrirlangan",
-            "deleted": "O'chirilgan",
-            "subject_type": "Model",
-            "sign-in": "Tizimga kirish"
-        }
-    },
-    "relativePage": {
-        "createTitle": "Qarindosh ma'umotini qo'shish",
-        "updateTitle": "Qarindosh ma'umotini tahrirlash",
-        "tab": {
-            "worker": "Temir yo'lchi",
-            "notWorker": "Boshqa kasb"
-        },
-        "form": {
-            "birth_place": "Tug'ilgan manzili",
-            "post_name": "Lavozimi",
-            "marital_status": "Oilaviy holati",
-            "birthdayPlace": "Tug'ilgan yili va joyi",
-
-            "relative": "Qarindoshligi"
-        },
-        "title": "Yaqin qarindosh ma'lumotlari",
-        "no-data": "Yaqin qarindoshlar qo'shilmagan!"
-    },
-    "languagePage": {
-        "createTitle": "Til ma'lumotini qo'shish",
-        "updateTitle": "Til ma'lumotini tahrirlash",
-        "form": {
-            "certificateFile": "Sertifikat fayli"
-        },
-        "title": "Til ma'lumotlari",
-        "no-language": "Til ma'lumotlari yo'q!"
-    },
-    "universityPage": {
-        "createTitle": "Oliygoh ma'lumotini qo'shish",
-        "updateTitle": "Oliygoh ma'lumotini tahrirlash",
-        "form": {
-            "university_id": "Universititet",
-            "speciality_id": "Mutaxasislik",
-            "from_date": "Qachondan",
-            "to_date": "Qachongacha",
-            "file": "Yuklash uchun bosing"
-        },
-        "title": "Oliygoh ma'lumotlari",
-        "no-language": "Oliygoh ma'lumotlari yo'q!"
-    },
-    "topicDetailsPage": {
-        "categories": {
-            "createTitle": "Kategoriya qo'shish",
-            "form": {
-                "attach": "Biriktirish"
-            },
-            "name": "Kategoriyalar",
-            "updateTitle": "Kategoriyani tahrirlash"
-        },
-        "exams": {
-            "name": "Imtihonlar"
-        },
-        "files": {
-            "createTitle": "Fayl qo'shish",
-            "name": "Fayllar",
-            "updateTitle": "Faylni tahrirlash"
-        },
-        "questions": {
-            "createTitle": "Savol qo'shish",
-            "name": "Savollar",
-            "updateTitle": "Savolni tahrirlash"
-        }
-    },
-    "topicFiles": {
-        "addFile": "Fayl qo'shish",
-        "editFile": "Faylni tahrirlash",
-        "header": {
-            "active": "Aktivlik holati",
-            "file": "Fayl nomi",
-            "fileType": "Fayl turi"
-        }
-    },
-    "topicPage": {
-        "createTitle": "Topik qo'shish",
-        "name": "Topiklar",
-        "updateTitle": "Topikni tahrirlash"
+    "form": {
+      "name": "Til"
     }
+  },
+  "serviceOrgPage": {
+    "createTitle": "Andoza yuklash",
+    "updateTitle": "Andozani tahrirlash",
+    "form": {
+      "signature": "Elektron imzo",
+      "organization": "Korxonalar soni",
+      "organizations": "Korxonalar",
+      "type": "Shartnoma turi",
+      "file": "Andoza fayli",
+      "name": "Hujjat nomi"
+    }
+  },
+  "actionLog": {
+    "name": "Amallar tarixi",
+    "tab": {
+      "action": "Amallar tarixi",
+      "auth": "Kirishlar tarixi"
+    },
+    "table": {
+      "status": "Amal turi",
+      "owner": "Egasi",
+      "detail": "Batafsil",
+      "ip": "IP manzil",
+      "agent": "Agent",
+      "loginAt": "Kirish vaqti",
+      "logoutAt": "Chiqish vaqti",
+      "structure": "Korxonalar"
+    },
+    "status": {
+      "created": "Yangi yaratilgan",
+      "updated": "Tahrirlangan",
+      "deleted": "O'chirilgan",
+      "subject_type": "Model",
+      "sign-in": "Tizimga kirish"
+    }
+  },
+  "relativePage": {
+    "createTitle": "Qarindosh ma'umotini qo'shish",
+    "updateTitle": "Qarindosh ma'umotini tahrirlash",
+    "tab": {
+      "worker": "Temir yo'lchi",
+      "notWorker": "Boshqa kasb"
+    },
+    "form": {
+      "birth_place": "Tug'ilgan manzili",
+      "post_name": "Lavozimi",
+      "marital_status": "Oilaviy holati",
+      "birthdayPlace": "Tug'ilgan yili va joyi",
+
+      "relative": "Qarindoshligi"
+    },
+    "title": "Yaqin qarindosh ma'lumotlari",
+    "no-data": "Yaqin qarindoshlar qo'shilmagan!"
+  },
+  "languagePage": {
+    "createTitle": "Til ma'lumotini qo'shish",
+    "updateTitle": "Til ma'lumotini tahrirlash",
+    "form": {
+      "certificateFile": "Sertifikat fayli"
+    },
+    "title": "Til ma'lumotlari",
+    "no-language": "Til ma'lumotlari yo'q!"
+  },
+  "universityPage": {
+    "createTitle": "Oliygoh ma'lumotini qo'shish",
+    "updateTitle": "Oliygoh ma'lumotini tahrirlash",
+    "form": {
+      "university_id": "Universititet",
+      "speciality_id": "Mutaxasislik",
+      "from_date": "Qachondan",
+      "to_date": "Qachongacha",
+      "file": "Yuklash uchun bosing"
+    },
+    "title": "Oliygoh ma'lumotlari",
+    "no-language": "Oliygoh ma'lumotlari yo'q!"
+  },
+  "topicDetailsPage": {
+    "categories": {
+      "createTitle": "Kategoriya qo'shish",
+      "form": {
+        "attach": "Biriktirish"
+      },
+      "name": "Kategoriyalar",
+      "updateTitle": "Kategoriyani tahrirlash"
+    },
+    "exams": {
+      "name": "Imtihonlar"
+    },
+    "files": {
+      "createTitle": "Fayl qo'shish",
+      "name": "Fayllar",
+      "updateTitle": "Faylni tahrirlash"
+    },
+    "questions": {
+      "createTitle": "Savol qo'shish",
+      "name": "Savollar",
+      "updateTitle": "Savolni tahrirlash"
+    }
+  },
+  "topicFiles": {
+    "addFile": "Fayl qo'shish",
+    "editFile": "Faylni tahrirlash",
+    "header": {
+      "active": "Aktivlik holati",
+      "file": "Fayl nomi",
+      "fileType": "Fayl turi"
+    },
+    "isActive": "Aktivlik holati"
+  },
+  "topicPage": {
+    "createTitle": "Mavzu qo'shish",
+    "name": "Mavzular",
+    "updateTitle": "Mavzuni tahrirlash"
+  },
+  "workerView": {
+    "general": {
+      "name": "Umimiy ma'lumotlari",
+      "fullName": "F.I.SH",
+      "passportNumber": "Pasport (ID karta) seriya va raqami",
+      "passportJSHSHIR": "JSHSHIR",
+      "fromDate": "Berilgan sana",
+      "toDate": "Muddati tugash sanasi",
+      "who": "Kim tomonidan berilgan",
+      "phone": "Telefon raqami",
+      "birthday": "Tug'ilgan sana",
+      "maritalStatus": "Oilaviy holati",
+      "address": "Yashash manzili",
+      "birthdayRegion": "Tug'ilgan viloyati",
+      "birthdayCity": "Tug'ilgan tumani",
+      "liveRegion": "Yashash viloyati",
+      "liveCity": "Yashash tumani",
+      "academicTitle": "Ilmiy unvoni",
+      "academicDegree": "Ilmiy darajasi",
+      "part": "Partiyaviyligi",
+      "inn": "INN",
+      "nationality": "Millati",
+      "country": "Tug'ilgan davlati"
+    },
+    "tabs": {
+      "general": "Umimiy ma'lumotlari",
+      "career": "Mehnat faoliayi",
+      "relative": "Yaqin qarindoshlari",
+      "med": "Tibbiy ko'rik ma'lumoti",
+      "vacation": "Ta'til ma'lumoti",
+      "incentive": "Rag'batlantirishlari",
+      "attestation": "Attestatsiya",
+      "punishment": "Intizomiy jazolari"
+    }
+  },
+  "topicCategoryPage": {
+    "createCategory": "Kategoriya yaratish",
+    "editCategory": "Kategoriyani tahrirlash",
+    "name": "Kategoriyalar"
+  }
 }

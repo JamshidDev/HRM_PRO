@@ -6,6 +6,7 @@ import LoginPage from "@/pages/app/login/LoginPage.vue"
 import NotFoundPage from "@/pages/app/notFound/NotFoundPage.vue"
 import DrawSignaturePage from "@/pages/app/drawSignature/DrawSignaturePage.vue"
 import DocViewer from "@/pages/app/docViewer/DocViewer.vue"
+import DocumentSignature from "@/pages/app/documentSignature/DocumentSignature.vue"
 
 export default [
     {
@@ -30,6 +31,15 @@ export default [
         path:AppPaths.DocViewer,
         name:AppPaths.DocViewer.substring(1),
         component:DocViewer,
+        meta:{
+            layout:AppLayouts.empty
+        },
+        children:[],
+    },
+    {
+        path:AppPaths.DocumentSignature,
+        name:AppPaths.DocumentSignature.substring(1),
+        component:DocumentSignature,
         meta:{
             layout:AppLayouts.empty
         },

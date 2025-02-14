@@ -79,7 +79,7 @@ const getDocument =async (document_id, model)=>{
     store.permissions = v.signature
     store.permissions.qrcode = false
     docxViewerRef.value.openWord(v.document?.doc_url)
-    store.loadPdf()
+    // store.loadPdf()
   }).finally(()=>{
     store.loading = false
   })

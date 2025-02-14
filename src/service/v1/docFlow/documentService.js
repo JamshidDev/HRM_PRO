@@ -24,6 +24,13 @@ const _openDocument =async (payload)=>{
 const _history =async (payload)=>{
     return await axios.get(`/v1/document/history`, {params:payload.params})
 }
+const _generateLink =async (payload)=>{
+    return await axios.get(`/v1/document/generate-url`, {params:payload.params})
+}
+
+const _signature =async (payload)=>{
+    return await axios.post(`/v1/document/signature`, payload.data, {params:payload.params})
+}
 
 
 
@@ -35,5 +42,7 @@ export default {
     _history,
     _confirmationContract,
     _confirmationCommand,
-    _confirmationAdContract
+    _confirmationAdContract,
+    _generateLink,
+    _signature,
 }

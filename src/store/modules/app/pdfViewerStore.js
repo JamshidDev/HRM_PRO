@@ -52,7 +52,18 @@ export const usePdfViewerStore = defineStore('pdfViewerStore', {
         payload:{
             recipient_id:null,
             message:null,
-        }
+        },
+
+        linkLoading:false,
+        link:null,
+
+        checkLoading:false,
+        expiredLink:false,
+        documentUrl:null,
+        signatureWorker:null,
+        errorMessage:null,
+        isSigned:false,
+        saveLoading:false,
 
 
 
@@ -201,11 +212,45 @@ export const usePdfViewerStore = defineStore('pdfViewerStore', {
                 this.chatLoading = false
             })
         },
+        _generateLink(data){
+            this.link = null
+            this.linkLoading = true
+            $ApiService.documentService._generateLink({params:data}).then((res)=>{
+                const query = res.data.data.url.split('?')[1]
+                this.link =`${window.location.origin}/document-signature?${query}`
+            }).finally(()=>{
+                this.linkLoading = false
+            })
+        },
         _deleteMessage(id){
            this.chatLoading = true
             $ApiService.documentChatService._delete({id}).then((res)=>{
                     this._messages()
             })
+        },
+        _checkSignature(params){
+           this.errorMessage = null
+           this.documentUrl = null
+           this.checkLoading = true
+            $ApiService.documentService._signature({params,data:{status:'check'}}).then((res)=>{
+                    this.documentUrl = res.data.data.url
+                    this.signatureWorker = `${res.data.data?.worker.last_name} ${res.data.data?.worker.first_name} ${res.data.data?.worker.middle_name}`
+                    this.isSigned =  res.data.data.status === 3
+            }).catch((err)=>{
+                this.errorMessage = err.response.data.message
+            }).finally(()=>{
+                this.checkLoading = false
+            })
+        },
+        _confirmSignature(params, data){
+           this.saveLoading = true
+           $ApiService.documentService._signature({params, data}).then((res)=>{
+               console.log(res.data)
+               this._checkSignature(params)
+           }).finally(()=>{
+               this.saveLoading = false
+           })
+
         }
     }
 

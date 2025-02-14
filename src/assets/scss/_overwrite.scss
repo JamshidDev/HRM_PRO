@@ -136,7 +136,7 @@ input:-webkit-autofill {
 
 .active__tab-menu {
   background-image: linear-gradient(to right bottom, rgb(44, 116, 248), rgb(9, 5, 125));
-  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  box-shadow: rgba(99, 99, 99, 0.2) 0 2px 8px 0;
   span{
     color: var(--white-color) !important;
   }
@@ -157,4 +157,27 @@ input:-webkit-autofill {
       bottom: 4px;
     }
   }
+}
+
+.ui__worker-table {
+  border-spacing:2px 0px;
+  border-collapse: separate;
+  tbody{
+    tr:nth-child(2n+1){
+      &> td{
+        @apply bg-[#8cc4fd32] overflow-hidden border border-[transparent]
+      }
+    }
+    tr:nth-child(2n){
+      &> td{
+        @apply bg-white overflow-hidden border border-[transparent]
+      }
+    }
+  }
+
+  @apply border border-[transparent]
+}
+
+.bg-effect-wing{
+  background-image: url("/public/wing.png");
 }

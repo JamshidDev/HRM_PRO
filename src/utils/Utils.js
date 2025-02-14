@@ -92,6 +92,14 @@ const documentModels = {
     adContract:'contract-additional',
 }
 
+const copyToClipboard = async (text)=>{
+    try {
+        await navigator.clipboard.writeText(text);
+    } catch (err) {
+        console.warn('Failed to copy text:', err);
+    }
+}
+
 
 
 
@@ -115,4 +123,5 @@ export default {
     generateJwtToken,
     fileNameFromUrl,
     documentModels,
+    copyToClipboard,
 }

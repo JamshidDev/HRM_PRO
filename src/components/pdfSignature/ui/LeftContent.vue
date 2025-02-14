@@ -38,16 +38,6 @@ const onDownload = (v)=>{
         {{store.show? $t('content.hide') : $t('documentPage.signature.history')}}
       </n-button>
     </n-badge>
-
-    <n-badge type="success" :value="store.fileShow? 0 :store.document?.files" class="w-full">
-      <n-button  style="width:100%" @click="getFiles" :loading="store.fileLoading">
-        <template #icon>
-          <ChevronUp48Filled v-if="store.fileShow" />
-          <DocumentTextLink24Regular v-else/>
-        </template>
-        {{store.fileShow? $t('content.hide') : $t('documentPage.signature.files')}}
-      </n-button>
-    </n-badge>
     <n-collapse-transition :show="store.show" class="bg-surface-section p-2 rounded">
       <template v-for="(item, idx) in store.historyList" :key="idx">
         <div class="flex justify-between w-full py-1">
@@ -65,6 +55,15 @@ const onDownload = (v)=>{
       </template>
     </n-collapse-transition>
 
+    <n-badge type="success" :value="store.fileShow? 0 :store.document?.files" class="w-full">
+      <n-button  style="width:100%" @click="getFiles" :loading="store.fileLoading">
+        <template #icon>
+          <ChevronUp48Filled v-if="store.fileShow" />
+          <DocumentTextLink24Regular v-else/>
+        </template>
+        {{store.fileShow? $t('content.hide') : $t('documentPage.signature.files')}}
+      </n-button>
+    </n-badge>
     <n-collapse-transition :show="store.fileShow" class="bg-surface-section p-2 rounded">
       <template v-for="(item, idx) in store.fileList" :key="idx">
         <div class="flex justify-between py-1 px-2 border-b border-surface-line cursor-pointer">

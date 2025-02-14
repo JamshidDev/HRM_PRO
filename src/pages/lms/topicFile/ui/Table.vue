@@ -1,14 +1,17 @@
 <script setup>
 import {useTopicFileStore} from "@/store/modules/index.js"
-import {useRouter} from "vue-router"
 import {AppPaths} from "@/utils/index.js"
 import {NoDataPicture, UIActionButton, UIPagination} from "@/components/index.js";
 
 const store = useTopicFileStore()
-const router = useRouter()
 const onEdit = (v)=>{
-  // store.payload.name = v.name
-  // store.payload.type = v.type.id
+  store.payload.active = !!v.active
+  store.payload.type = Number(v.type.id)
+  store.payload.fileObjects = [{
+    id: v.id,
+    name: v.file_name+'.'+v.file_extension
+  }]
+  store.elementId = v.id
   store.visibleType = false
   store.visible= true
 }
@@ -19,11 +22,9 @@ const onDelete = (v)=>{
 }
 
 const changePage = (v)=>{
-  emits('onChangePage', v)
-}
-
-const goPush = (v)=>{
-  router.push(`${AppPaths.Lms}${AppPaths.Topic}/${v.id}`)
+  store.params.page = v.page
+  store.params.per_page = v.per_page
+  store._index()
 }
 
 </script>
@@ -38,7 +39,8 @@ const goPush = (v)=>{
       >
         <thead>
         <tr>
-          <th class="!text-center min-w-[40px] w-[40px]">{{$t('topicFiles.header.file')}}</th>
+          <th class="!text-center min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
+          <th class="!text-center min-w-[150px] w-[200px]">{{$t('topicFiles.header.file')}}</th>
           <th class="min-w-[200px]">{{$t('topicFiles.header.fileType')}}</th>
           <th class="min-w-[200px]">{{$t('topicFiles.header.active')}}</th>
           <th class="min-w-[90px] w-[90px]">{{$t('content.action')}}</th>
@@ -46,16 +48,18 @@ const goPush = (v)=>{
         </thead>
         <tbody>
         <tr v-for="(item, idx) in store.list" :key="idx">
-<!--          <td><span class="text-center text-[12px] text-gray-600 block">{{ (store.params.page - 1) * store.params.per_page + idx + 1 }}</span></td>-->
-<!--          <td>{{item.name}}</td>-->
-<!--          <td>-->
-<!--            <UIActionButton-->
-<!--                :data="item"-->
-<!--                :loading-delete="item.id === store.elementId && store.deleteLoading"-->
-<!--                @on-edit="onEdit"-->
-<!--                @on-delete="onDelete"-->
-<!--            />-->
-<!--          </td>-->
+          <td><span class="text-center text-[12px] text-gray-600 block">{{ (store.params.page - 1) * store.params.per_page + idx + 1 }}</span></td>
+          <td>{{item.file_name+'.'+ item.file_extension}}</td>
+          <td>{{item.type.name}}</td>
+          <td><n-switch :value="!!item.active" disabled /></td>
+          <td>
+            <UIActionButton
+                :data="item"
+                :loading-delete="item.id === store.elementId && store.deleteLoading"
+                @on-edit="onEdit"
+                @on-delete="onDelete"
+            />
+          </td>
         </tr>
         </tbody>
       </n-table>
@@ -64,6 +68,7 @@ const goPush = (v)=>{
           :per_page="store.params.size"
           :total="store.totalItems"
           @change-page="changePage"
+
       />
     </div>
     <NoDataPicture v-if="store.list.length===0 && !store.loading" />
