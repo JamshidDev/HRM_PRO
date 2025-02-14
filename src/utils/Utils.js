@@ -100,6 +100,14 @@ const copyToClipboard = async (text)=>{
     }
 }
 
+const ActionTypes = {
+    open:"open",
+    view:"view",
+    edit:"edit",
+    download:"download",
+    delete:"delete",
+}
+
 
 
 
@@ -124,4 +132,5 @@ export default {
     fileNameFromUrl,
     documentModels,
     copyToClipboard,
+    ActionTypes,
 }

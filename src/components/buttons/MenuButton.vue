@@ -4,6 +4,7 @@ const {t} = i18n.global
 import {UIDConfirm} from "@/components/index.js"
 import {NIcon} from "naive-ui"
 import i18n from "@/i18n/index.js"
+import Utils from "@/utils/Utils.js"
 const visible = ref(false)
 const props = defineProps({
   showDelete:{
@@ -52,31 +53,31 @@ const options = computed(()=>{
   return [
     {
       label: t('content.open'),
-      key: 'open',
+      key: Utils.ActionTypes.open,
       icon: renderIcon(OpenFolder24Filled),
       visible:props.showOpen
     },
     {
       label: t('content.view'),
-      key: 'view',
+      key: Utils.ActionTypes.view,
       icon: renderIcon(Eye16Regular),
       visible:props.showView
     },
     {
       label: t('content.edit'),
-      key: 'edit',
+      key: Utils.ActionTypes.edit,
       icon: renderIcon(Edit32Regular),
       visible:props.showEdit,
     },
     {
       label: t('content.download'),
-      key: 'download',
+      key: Utils.ActionTypes.download,
       icon: renderIcon(ArrowCircleDown48Regular),
       visible:props.showDownload,
     },
     {
       label: t('content.delete'),
-      key: 'delete',
+      key: Utils.ActionTypes.delete,
       icon: renderIcon(Delete20Regular),
       visible:props.showDelete,
     }
@@ -84,7 +85,7 @@ const options = computed(()=>{
 })
 
 const onSelect = (v)=>{
-  if(v === 'delete'){
+  if(v === Utils.ActionTypes.delete){
     visible.value = true
   }else{
     emits('selectEv', {
@@ -98,7 +99,7 @@ const onDelete = ()=>{
   visible.value = false
   emits('selectEv', {
     data:props.data,
-    key:'delete',
+    key:Utils.ActionTypes.delete,
   })
 }
 </script>
