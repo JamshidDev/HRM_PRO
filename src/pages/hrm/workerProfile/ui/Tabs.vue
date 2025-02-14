@@ -3,6 +3,7 @@ import PersonalForm from "../tabs/PersonalForm.vue"
 import RelativesPage from "@/pages/hrm/relative/RelativesPage.vue"
 import LanguagePage from "@/pages/hrm/language/LanguagePage.vue"
 import UniversityPage from "@/pages/hrm/university/UniversityPage.vue"
+import OldCareerPage from "@/pages/hrm/oldCareer/OldCareerPage.vue"
 import {useWorkerProfileStore} from "@/store/modules/index.js"
 
 const store = useWorkerProfileStore()
@@ -20,6 +21,9 @@ const store = useWorkerProfileStore()
       </template>
       <template v-if="store.tabs[3].id === item.id">
         <RelativesPage/>
+      </template>
+      <template v-if="store.tabs[2].id === item.id">
+        <OldCareerPage/>
       </template>
     </n-tab-pane>
   </n-tabs>

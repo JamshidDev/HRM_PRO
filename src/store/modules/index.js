@@ -35,6 +35,7 @@ export * from "./hrm/workerProfileStore.js"
 export * from "./hrm/relativeStore.js"
 export * from "./hrm/languageStore.js"
 export * from "./hrm/universityStore.js"
+export * from "./hrm/oldCareerStore.js"
 
 export * from "./docFlow/contractStore.js"
 export * from "./docFlow/documentStore.js"

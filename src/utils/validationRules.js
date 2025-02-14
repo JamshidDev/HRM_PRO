@@ -906,5 +906,24 @@ export default {
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
-    }
+    },
+    oldCareerPage:{
+        from_date:{
+            type:'number',
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        to_date:{
+            type:'number',
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        post_name:{
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+    },
 }

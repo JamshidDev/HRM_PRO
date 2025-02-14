@@ -381,7 +381,7 @@
     }
 
     },
-    "signature": {
+  "signature": {
         "keyType": "Foydalanuvchi turi",
         "inn": "STIR",
         "undo": "Orqaga",
@@ -399,7 +399,7 @@
         "linkText": "Hujjatni imzolash uchun havola yaratildi. Havoladan 2 daqiqa davomida foydalanishingiz mumkin.",
         "pinfl": "JSHSHR"
     },
-    "documentPage": {
+  "documentPage": {
         "name": "Hujjatlar",
         "createTitle": "Shartnoma tuzish",
         "updateTitle": "Shartnomani tahrirlash",
@@ -456,7 +456,7 @@
         }
 
     },
-    "confirmationPage": {
+  "confirmationPage": {
         "name": "Tasdiqlovchilar",
         "createTitle": "Tasdiqlovchi qo'shish",
         "updateTitle": "Tasdiqlovchini tahrirlash",
@@ -465,7 +465,7 @@
             "position": "Lavozim"
         }
     },
-    "contractPage": {
+  "contractPage": {
         "name": "Shartnomalar",
         "table": {
             "number": "Raqami",
@@ -481,12 +481,12 @@
         },
         "confirmText": "{n} raqamli shartnoma asosida buyruq yaratasizmi?"
     },
-    "adContractPage": {
+  "adContractPage": {
         "createTitle": "Qo'shimcha kelishuv tuzish",
         "updateTitle": "Qo'shimcha kelishuvni tahrirlash",
         "name": "Qo'shimcha kelishuv"
     },
-    "documentSetting": {
+  "documentSetting": {
         "name": "Hujjat sozlamalari",
         "createTitle": "Kontrakt andozasini yuklash",
         "updateTitle": "Kontrakt andozasini tahrirlash",
@@ -509,7 +509,7 @@
             "name": "Hujjat nomi"
         }
     },
-    "schedulePage": {
+  "schedulePage": {
         "name": "Ish jadvali",
         "createTitle": "Jadval qo'shish",
         "updateTitle": "Jadvalni tahrirlash",
@@ -519,7 +519,7 @@
             "name": "Nomi"
         }
     },
-    "workdayPage": {
+  "workdayPage": {
         "name": "Ish kunlari",
         "createTitle": "Ish kunini qo'shish",
         "updateTitle": "Ish kunini tahrirlash",
@@ -531,7 +531,7 @@
             "type": "Turi"
         }
     },
-    "othersPage": {
+  "othersPage": {
         "name": "Boshqalar",
         "language": {
             "createTitle": "Til qo'shish",
@@ -622,6 +622,17 @@
     },
     "title": "Yaqin qarindosh ma'lumotlari",
     "no-data": "Yaqin qarindoshlar qo'shilmagan!"
+  },
+  "oldCareerPage": {
+    "createTitle": "Mehnat faoliyatini qo'shish",
+    "updateTitle": "Mehnat faoliyatini tahrirlash",
+    "form": {
+      "from_date": "Qachondan",
+      "post_name": "Lavozimi",
+      "to_date": "Qachongacha"
+    },
+    "title": "Eski mehnat faoliyati ma'lumotlari",
+    "no-data": "Eski mehnat faoliyati qo'shilmagan!"
   },
   "languagePage": {
     "createTitle": "Til ma'lumotini qo'shish",

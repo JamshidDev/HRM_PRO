@@ -32,6 +32,7 @@ import phoneService from "@/service/v1/hrm/phoneService.js"
 import languageService from "@/service/v1/hrm/languageService.js"
 import relativeService from "@/service/v1/hrm/relativeService.js"
 import universityService from "@/service/v1/hrm/universityService.js"
+import olCareerService from "@/service/v1/hrm/olCareerService.js"
 
 import documentService from "@/service/v1/docFlow/documentService.js"
 import contractService from "@/service/v1/docFlow/contractService.js"
@@ -87,4 +88,5 @@ export default {
     universityService,
     documentFileService,
     adContractService,
+    olCareerService,
 }
