@@ -86,7 +86,7 @@ export const useWorkerProfileStore = defineStore('workerProfileStore', {
             this.loading= true
             $ApiService.workerService._show({id:this.elementId}).then((res)=>{
                 this.data = res.data.data
-                this.workerId = this.data.profile.id
+                this.workerId = this.data.profile?.id
 
                 this.payload.last_name = this.data.last_name
                 this.payload.first_name = this.data.first_name

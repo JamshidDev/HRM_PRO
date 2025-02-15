@@ -1,5 +1,5 @@
 <script setup>
-import {NoDataPicture, UIActionButton, UIPagination, UIUser} from "@/components/index.js"
+import {NoDataPicture, UIActionButton, UIPagination, UIUser, UIMenuButton, UIWorkerView} from "@/components/index.js"
 import {useWorkerStore} from "@/store/modules/index.js"
 import {useRouter} from "vue-router"
 import {AppPaths} from "@/utils/index.js"
@@ -49,7 +49,7 @@ const changePage = (v)=>{
           <th class="min-w-[200px]">{{$t('content.worker')}}</th>
           <th class="min-w-[120px] w-[300px]">{{$t('workerPage.table.department')}}</th>
           <th class="min-w-[120px] w-[300px]">{{$t('workerPage.table.position')}}</th>
-          <th class="min-w-[90px] w-[90px]">{{$t('content.action')}}</th>
+          <th class="min-w-[40px] w-[40px]"></th>
         </tr>
         </thead>
         <tbody>
@@ -72,11 +72,10 @@ const changePage = (v)=>{
           <td>{{item?.department?.name}}</td>
           <td>{{item?.position?.name}}</td>
           <td>
-            <UIActionButton
+            <UIMenuButton
                 :data="item"
-                :loading-delete="item.id === store.elementId && store.deleteLoading"
-                @on-edit="onEdit"
-                @on-delete="onDelete"
+                :show-open="true"
+                :show-delete="false"
             />
           </td>
         </tr>
@@ -92,6 +91,7 @@ const changePage = (v)=>{
     </div>
     <NoDataPicture v-if="store.list.length===0 && !store.loading" />
   </n-spin>
+  <UIWorkerView v-model:visible="store.workerVisible"   />
 </template>
 
 <style scoped>

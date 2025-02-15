@@ -19,6 +19,7 @@
     "axios": "^1.7.5",
     "crypto-js": "^4.2.0",
     "dayjs": "^1.11.13",
+    "docx-preview": "^0.3.4",
     "install": "^0.13.0",
     "maska": "^3.0.2",
     "naive-ui": "^2.39.0",
@@ -32,8 +33,10 @@
     "vue": "^3.4.37",
     "vue-advanced-cropper": "^2.8.9",
     "vue-draggable-plus": "^0.5.3",
+    "vue-drawing-canvas": "^1.0.14",
     "vue-i18n": "^9.14.0",
     "vue-router": "^4.4.3",
+    "vue-signature-pad": "^3.0.2",
     "vue-the-mask": "^0.11.1",
     "vue-yandex-maps": "^2.1.4"
   },

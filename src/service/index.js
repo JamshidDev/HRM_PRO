@@ -1,6 +1,5 @@
 import axios from 'axios';
 const apiUrl = import.meta.env.VITE_API_URL;
-const appMode = import.meta.env.VITE_APP_MODE;
 
 import router from '../router/index';
 
@@ -11,7 +10,6 @@ const instance = axios.create({
 instance.interceptors.request.use(function (config) {
     let token = localStorage.getItem('token') ? localStorage.getItem('token') : null;
     if (token) {
-        // config.headers['Access-Control-Allow-Origin'] = '*'
         config.headers['Authorization'] = 'Bearer ' + token
     }
 

@@ -20,10 +20,10 @@ export const useAdContractStore = defineStore('adContractStore', {
             worker_position_id:null,
             contract_date:null,
             number:null,
-            command_status:true,
+            command_status:false,
             command_type:null,
             type:null,
-            director_id:[],
+            director_id:null,
             organization_id:[],
             department_id:[],
             department_position_id:null,
@@ -60,7 +60,7 @@ export const useAdContractStore = defineStore('adContractStore', {
                     contract_date:Utils.timeToZone(this.payload.contract_date),
                     organization_id:this.payload.organization_id[0].id,
                     worker_position_id: this.payload.worker_position_id,
-                    director_id:this.payload.director_id[0],
+                    director_id:this.payload.director_id,
                     department_id:this.payload.department_id.length>0? this.payload.department_id[0].id : null,
                 }
             }
@@ -129,9 +129,9 @@ export const useAdContractStore = defineStore('adContractStore', {
             this.payload.contract_date = new Date().getTime()
             this.payload.number = null
             this.payload.type = null
-            this.payload.command_status = true
+            this.payload.command_status = false
             this.payload.command_type = null
-            this.payload.director_id = []
+            this.payload.director_id = null
             this.payload.organization_id = []
             this.payload.department_id = []
             this.payload.department_position_id = null

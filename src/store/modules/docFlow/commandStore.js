@@ -18,7 +18,7 @@ export const useCommandStore = defineStore('commandStore', {
             command_number:null,
             type:null,
             confirmations:[],
-            director_id:[],
+            director_id:null,
             workers:[],
         },
         params:{
@@ -43,7 +43,7 @@ export const useCommandStore = defineStore('commandStore', {
                 ...this.payload,
                 ...{
                     command_date:Utils.timeToZone(this.payload.command_date),
-                    director_id:this.payload.director_id[0],
+                    director_id:this.payload.director_id,
                 }
             }
             console.log(data)

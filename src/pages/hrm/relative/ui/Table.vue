@@ -1,7 +1,8 @@
 <script setup>
-import {UIActionButton, UIPagination} from "@/components/index.js"
+import {UIMenuButton} from "@/components/index.js"
 import {useRelativeStore} from "@/store/modules/index.js"
 import {AddCircle28Regular} from "@vicons/fluent"
+import Utils from "@/utils/Utils.js"
 
 const store = useRelativeStore()
 
@@ -18,7 +19,6 @@ const onEdit = (v)=>{
   store.visibleType = false
   store.elementId = v.id
   store.payload.relative = v.relative.id
-  store.payload.marital_status = v.marital_status.id
   store.payload.last_name = v.last_name
   store.payload.first_name = v.first_name
   store.payload.middle_name = v.middle_name
@@ -29,6 +29,14 @@ const onEdit = (v)=>{
   store.payload.sort = v.sort
 
   store.visible = true
+}
+
+const onSelectEv = (v)=>{
+    if(v.key === Utils.ActionTypes.edit){
+      onEdit(v.data)
+    }else if(v.key === Utils.ActionTypes.delete){
+      onDelete(v.data)
+    }
 }
 
 const onDelete = (v)=>{
@@ -70,7 +78,7 @@ const onDelete = (v)=>{
           <th class="min-w-[100px] w-[200px]">{{$t('relativePage.form.post_name')}}</th>
           <th class="min-w-[150px] w-[200px]">{{$t('relativePage.form.birthdayPlace')}}</th>
           <th class="min-w-[150px] w-[200px]">{{$t('createWorkerPage.form.address')}}</th>
-          <th class="min-w-[90px] w-[90px]">{{$t('content.action')}}</th>
+          <th class="min-w-[40px] w-[40px]"></th>
         </tr>
         </thead>
         <tbody>
@@ -82,11 +90,10 @@ const onDelete = (v)=>{
           <td>{{item.birth_place +', '+item.birthday}}</td>
           <td>{{item.address}}</td>
           <td>
-            <UIActionButton
+            <UIMenuButton
                 :data="item"
-                :loading-delete="item.id === store.elementId && store.deleteLoading"
-                @on-edit="onEdit"
-                @on-delete="onDelete"
+                :show-edit="true"
+                @selectEv="onSelectEv"
             />
           </td>
         </tr>

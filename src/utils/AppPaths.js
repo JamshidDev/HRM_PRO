@@ -27,6 +27,7 @@ export const AppPaths = {
     Organizations:"/organizations",
     Worker:"/worker",
     Contact:"/contact",
+    ChatWindow:"/chat-window",
     DocumentHistory:"/document-history",
     Exam:"/exam",
     Department:"/department",
@@ -43,7 +44,11 @@ export const AppPaths = {
     WorkerProfile:"/worker-profile",
     ConfContract:"/conf-contract",
     ConfCommand:"/conf-command",
+    ConfAdContract:"/conf-ad-contract",
     Topic:"/topic",
+    DrawingSignature:"/drawing-signature",
+    DocViewer:"/doc-viewer",
+    DocumentSignature:"/document-signature",
     Questions:"/questions"
 }
 

@@ -1,7 +1,6 @@
 <script setup>
 import {Signature20Filled,
   PanelLeftContract20Filled, DocumentEdit24Regular, Chat24Filled} from "@vicons/fluent"
-import PdfViewer from "./PdfViewer.vue"
 import {UIUser} from "@/components/index.js"
 import {usePdfViewerStore, useSignatureStore, useOnlyOfficeStore} from "@/store/modules/index.js"
 import ConfirmationList from "./ui/ConfirmationList.vue"
@@ -9,8 +8,9 @@ import LeftContent from "./ui/LeftContent.vue"
 import ChatDrawer from "./ui/ChatDrawer.vue"
 import Utils from "../../utils/Utils.js"
 import {useRoute} from "vue-router"
+import DocxViewer from "./ui/DocxViewer.vue"
 
-const pdfViewerRef = ref(null)
+const docxViewerRef = ref(null)
 const route = useRoute()
 
 
@@ -78,7 +78,8 @@ const getDocument =async (document_id, model)=>{
     store.docxUrl = v.document?.doc_url
     store.permissions = v.signature
     store.permissions.qrcode = false
-    store.loadPdf()
+    docxViewerRef.value.openWord(v.document?.doc_url)
+    // store.loadPdf()
   }).finally(()=>{
     store.loading = false
   })
@@ -117,21 +118,6 @@ defineExpose({
               <div>
               </div>
               <div class="flex gap-6">
-<!--                <n-input-number-->
-<!--                    class="w-[100px]"-->
-<!--                    v-model:value="store.scale"-->
-<!--                    min="1"-->
-<!--                    max="1.6"-->
-<!--                    step="0.1"-->
-<!--                    @update:value="onZoom"-->
-<!--                />-->
-<!--                <n-button type="success" secondary circle>-->
-<!--                  <template #icon>-->
-<!--                    <n-icon size="24">-->
-<!--                      <CloudArrowDown16Filled/>-->
-<!--                    </n-icon>-->
-<!--                  </template>-->
-<!--                </n-button>-->
                 <n-button v-if="store.permissions?.current_user"  @click="onEdit" type="info" secondary>
                   {{$t('content.edit')}}
                   <template #icon>
@@ -149,11 +135,11 @@ defineExpose({
                   <LeftContent/>
                 </div>
                 <ChatDrawer/>
-
                 <div v-if="store.permissions?.qrcode" class="bg-gray-300 rounded-xl border border-gray-400 h-[100px]"></div>
               </div>
               <div class="w-[860px] h-full flex">
-                <PdfViewer ref="pdfViewerRef"/>
+<!--                <PdfViewer ref="pdfViewerRef"/>-->
+                <DocxViewer ref="docxViewerRef" />
               </div>
               <div class="flex flex-col w-[300px] h-full bg-surface-ground border-l border-surface-line px-2 py-4">
                 <div class="w-full" style="height: calc(100% - 110px)">

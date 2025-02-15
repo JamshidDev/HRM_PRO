@@ -86,7 +86,27 @@ const routeChatPathMaker = (mainPath)=>(`${AppPaths.Chat}${mainPath}`)
 const routeDocFlowPathMaker = (mainPath)=>(`${AppPaths.DocFlow}${mainPath}`)
 
 
+const documentModels = {
+    contract:'contracts',
+    command:'commands',
+    adContract:'contract-additional',
+}
 
+const copyToClipboard = async (text)=>{
+    try {
+        await navigator.clipboard.writeText(text);
+    } catch (err) {
+        console.warn('Failed to copy text:', err);
+    }
+}
+
+const ActionTypes = {
+    open:"open",
+    view:"view",
+    edit:"edit",
+    download:"download",
+    delete:"delete",
+}
 
 
 
@@ -110,4 +130,7 @@ export default {
     routeDocFlowPathMaker,
     generateJwtToken,
     fileNameFromUrl,
+    documentModels,
+    copyToClipboard,
+    ActionTypes,
 }

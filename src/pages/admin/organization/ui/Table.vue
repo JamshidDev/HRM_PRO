@@ -67,6 +67,7 @@ const onEdit =(v)=>{
   store.parentElement = null
   componentStore._organizationLevel()
   componentStore._organizations()
+  componentStore._allCities()
   store._show()
 }
 

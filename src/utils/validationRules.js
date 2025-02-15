@@ -347,6 +347,12 @@ export default {
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
+        },
+        city_id:{
+            type:'number',
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
         }
     },
     departmentPage:{
@@ -687,7 +693,7 @@ export default {
             trigger: triggerEvents
         },
         director_id:{
-            type:'array',
+            type:'number',
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
@@ -700,16 +706,6 @@ export default {
         },
         schedule_id:{
             type:'number',
-            required: true,
-            message: t(`rules.requiredField`),
-            trigger: triggerEvents
-        },
-        vacation_main_day:{
-            required: true,
-            message: t(`rules.requiredField`),
-            trigger: triggerEvents
-        },
-        additional_vacation_day:{
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
@@ -767,7 +763,7 @@ export default {
             trigger: triggerEvents
         },
         director_id:{
-            type:'array',
+            type:'number',
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
@@ -780,16 +776,6 @@ export default {
         },
         schedule_id:{
             type:'number',
-            required: true,
-            message: t(`rules.requiredField`),
-            trigger: triggerEvents
-        },
-        vacation_main_day:{
-            required: true,
-            message: t(`rules.requiredField`),
-            trigger: triggerEvents
-        },
-        additional_vacation_day:{
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
@@ -848,7 +834,7 @@ export default {
             trigger: triggerEvents
         },
         director_id:{
-            type:'array',
+            type:'number',
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
@@ -920,5 +906,24 @@ export default {
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
-    }
+    },
+    oldCareerPage:{
+        from_date:{
+            type:'number',
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        to_date:{
+            type:'number',
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        post_name:{
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+    },
 }

@@ -2,6 +2,7 @@
 import Table from "./Table.vue"
 import {UIOfficeApp, UIPageContent, UIPageFilter} from "@/components/index.js"
 import {useConfirmCommandStore} from "@/store/modules/index.js"
+import Utils from "@/utils/Utils.js"
 
 const store = useConfirmCommandStore()
 const officeAppRef = ref(null)
@@ -11,7 +12,7 @@ const onSearch = ()=>{
 }
 
 const openOffice = (v)=>{
-  officeAppRef.value.openPdf(v.documentId, 'commands', v.signatureId)
+  officeAppRef.value.openPdf(v.documentId, Utils.documentModels.command, v.signatureId)
 }
 
 const onSignatureEv = (v)=>{

@@ -40,7 +40,6 @@ onMounted(()=>{
         :visible="store.visible"
         @update:visible="(v)=>store.visible = v"
         :title="store.visibleType? t('districtPage.createTitle') : t('districtPage.updateTitle')"
-
     >
       <template #content>
         <createFrom/>
@@ -49,7 +48,3 @@ onMounted(()=>{
   </UIPageContent>
 
 </template>
-
-<style scoped>
-
-</style>
