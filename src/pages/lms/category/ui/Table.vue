@@ -40,7 +40,8 @@ const onSelect = (v)=>{
         <thead>
         <tr>
           <th class="!text-center w-[30px] min-w-[30px] flex-grow-0">{{$t('content.number')}}</th>
-          <th class="!text-center min-w-[500px] w-[90%]">{{$t('categoryPage.name')}}</th>
+          <th class="!text-center min-w-[500px]">{{$t('categoryPage.name')}}</th>
+          <th class="!text-center w-[140px] min-w-[120px]">{{$t('categoryPage.questionCount')}}</th>
           <th class="max-w-[40px] w-[40px]">{{$t('content.action')}}</th>
         </tr>
         </thead>
@@ -48,6 +49,7 @@ const onSelect = (v)=>{
         <tr v-for="(item, idx) in store.list" :key="idx">
           <td class="w-[20px] max-w-[20px]"><span class="text-center text-[12px] text-gray-600 block">{{ (store.params.page - 1) * store.params.per_page + idx + 1 }}</span></td>
           <td>{{item.name}}</td>
+          <td class="!text-center">{{item.questions_count}}</td>
           <td>
             <UIMenuButton
                 :show-view="true"
@@ -60,6 +62,7 @@ const onSelect = (v)=>{
         </tbody>
       </n-table>
       <UIPagination
+          v-if="store.totalItems>store.params.per_page"
           :page="store.params.page"
           :per_page="store.params.size"
           :total="store.totalItems"

@@ -891,7 +891,7 @@ export default {
     topicPage:{
         name:{
             required: true,
-            message: t(`rules.requiredWorker`),
+            message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
         type:{

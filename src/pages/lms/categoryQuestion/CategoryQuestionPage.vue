@@ -10,6 +10,7 @@ const router = useRouter()
 const store = useCategoryQuestionStore()
 
 onMounted(()=>{
+  store.resetData()
   store.category_id = route.params.category_id
   store._index()
 })
@@ -21,7 +22,13 @@ const onSearch = ()=>{
 }
 
 const onAdd=()=>{
-  router.push(`${route.fullPath}${AppPaths.Create}`)
+  store.isModeEdit = false
+  router.push({
+    name:"add_question",
+    params: {
+      category_id: route.params.category_id,
+    }
+  })
 }
 
 </script>

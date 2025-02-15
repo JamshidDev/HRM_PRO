@@ -9,18 +9,13 @@ import TopicQuestionPage from "@/pages/lms/topicQuestion/TopicQuestionPage.vue";
 const store = useCategoryStore()
 
 const tabs = [{
-  name: 'topicDetailsPage.categories.name',
-  id: 1,
-  component: ExamPage
-},
-  {
     name: 'topicDetailsPage.files.name',
-    id: 2,
+    id: 1,
     component: TopicFilePage
   },
   {
     name: 'topicDetailsPage.questions.name',
-    id: 3,
+    id: 2,
     component: TopicQuestionPage
   }]
 

@@ -677,7 +677,8 @@
     "createCategory": "Kategoriya yaratish",
     "editCategory": "Kategoriyani tahrirlash",
     "name": "Kategoriyalar",
-    "addQuestion": "Savol qo'shish"
+    "addQuestion": "Savol qo'shish",
+    "questionCount": "Savollar soni"
   },
   "questionPage": {
     "form": {

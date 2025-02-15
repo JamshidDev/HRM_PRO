@@ -1,9 +1,11 @@
 <script setup>
-
 import {useCategoryQuestionStore} from "@/store/modules";
 import {UIEditorViewer, UIMenuButton} from "@/components/index.js";
+import {useRoute, useRouter} from "vue-router";
 
 const store = useCategoryQuestionStore()
+const route = useRoute()
+const router = useRouter()
 const handleLoad = () => {
   if (store.list.length < store.totalItems && !store.loading) {
     store.params.page++;
@@ -11,16 +13,34 @@ const handleLoad = () => {
   }
 }
 
+const onClickAction = (v)=>{
+  if(v.key==='edit'){
+    router.push({
+      name: "edit_question",
+      params: {
+        category_id: route.params.category_id,
+        question_id: v.data.id,
+      }
+    })
+  }else if(v.key==='delete'){
+    store.elementId = v.data.id
+    store._delete()
+  }
+}
+
 </script>
 <template>
-  <n-infinite-scroll class="questions-list" @load="handleLoad">
+  <n-infinite-scroll :distance="10" class="questions-list" @load="handleLoad">
     <div class="questions-list">
       <div
           v-for="i in store.list"
           :key="i"
           class="border group mb-3 rounded-lg overflow-hidden border-secondary p-2 shadow-blue-50 drop-shadow-sm relative"
       >
-        <UIMenuButton class="absolute top-3 right-3 opacity-0 group-hover:opacity-100" />
+        <div class="absolute top-3 right-3 opacity-0 group-hover:opacity-100" :class="{'opacity-100': (i.id===store.elementId && store.deleteLoading)}">
+          <n-spin size="small" v-if="i.id===store.elementId && store.deleteLoading" />
+          <UIMenuButton v-else :data="i" @select-ev="onClickAction" show-edit />
+        </div>
         <UIEditorViewer :html="i.ques"></UIEditorViewer>
         <n-divider/>
         <template

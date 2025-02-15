@@ -8,8 +8,7 @@ export const useCategoryQuestionStore = defineStore('categoryQuestionStore', {
         loading:false,
         saveLoading:false,
         deleteLoading:false,
-        visible:false,
-        visibleType:true,
+        isModeEdit:false,
         elementId:null,
         category_id:null,
         totalItems:0,
@@ -18,11 +17,10 @@ export const useCategoryQuestionStore = defineStore('categoryQuestionStore', {
         payload:{
             ques: '',
             options: [],
-            correct_option: null,
         },
         params:{
             page:1,
-            per_page:10,
+            per_page:2,
             search:null,
         },
     }),
@@ -30,8 +28,9 @@ export const useCategoryQuestionStore = defineStore('categoryQuestionStore', {
         _index(){
             this.loading= true
             $ApiService.categoryQuestionService._index({id: this.category_id, params:this.params}).then((res)=>{
-                this.list = res.data.data.data
-                this.totalItems = res.data.data.total
+                const {data, total} = res.data.data
+                this.list = [...this.list, ...data]
+                this.totalItems = total
             }).finally(()=>{
                 this.loading= false
             })
@@ -39,68 +38,68 @@ export const useCategoryQuestionStore = defineStore('categoryQuestionStore', {
         _create(){
             this.saveLoading = true
             let data = {
-                ques: this.payload.ques,
-                options: this.payload.options.map((i, idx)=>{
-                    let is_correct = false
-                    if(idx===this.payload.correct_option){
-                        is_correct = true
-                    }
-                    return {
-                        is_correct,
-                        text: i,
-                    }
-                })
+                ...this.payload
             }
-            $ApiService.categoryQuestionService._create({data, id: this.category_id}).then((res)=>{
+            $ApiService.categoryQuestionService._create({data, category_id: this.category_id}).then((res)=>{
                 $Toast.success(t('message.successDone'))
                 this.resetForm()
             }).finally(()=>{
                 this.saveLoading = false
             })
         },
-        _update(){
+        _update(func){
             this.saveLoading = true
             let data = {
-                ...this.payload,
+                ...this.payload
             }
-            $ApiService.categoryService._update({data, id:this.elementId}).then((res)=>{
-                this.visible = false
-                this._index()
+            $ApiService.categoryQuestionService._update({data, category_id: this.category_id, question_id:this.elementId}).then((res)=>{
                 $Toast.success(t('message.successDone'))
+                func()
             }).finally(()=>{
                 this.saveLoading = false
             })
         },
         _delete(){
             this.deleteLoading = true
-            $ApiService.categoryService._delete({id:this.elementId}).then((res)=>{
-                this._index()
+            $ApiService.categoryQuestionService._delete({id:this.elementId}).then((res)=>{
+                this.list = this.list.filter((i) => i.id!==this.elementId)
+                this.totalItems--
                 $Toast.success(t('message.successDone'))
             }).finally(()=>{
                 this.deleteLoading = false
             })
         },
-        openVisible(data){
-            this.visible = data
+        _show(){
+            this.loading = true
+            $ApiService.categoryQuestionService._show({category_id: this.category_id, question_id:this.elementId}).then((res)=>{
+                const {options, ques} = res.data.data
+                this.payload.ques = ques
+                this.payload.options = options.map(i=>({
+                    is_correct: !!i.is_correct,
+                    text: i.text
+                }))
+                console.log(options)
+                console.log(this.payload.options)
+            }).finally(()=>{
+                this.loading = false
+            })
         },
         resetForm(){
             this.payload.ques = ''
             this.payload.options = []
-            this.correct_option = null
         },
         resetData(){
             this.list = []
             this.totalItems=0
-
         },
         addOption(){
-            this.payload.options.push('')
+            this.payload.options.push({
+                text: '',
+                is_correct: false
+            })
         },
         removeOption(v){
             this.payload.options.splice(v,1)
-            if(this.payload.correct_option===v){
-                this.payload.correct_option = null
-            }
         }
     }
 })

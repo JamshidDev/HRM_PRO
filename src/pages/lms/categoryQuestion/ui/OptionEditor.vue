@@ -20,7 +20,6 @@ const props = defineProps({
   path: String,
   modelValue: {
     type: String,
-    required: true
   }
 })
 
@@ -85,7 +84,10 @@ const handleCreated = (editor) => {
   console.log(editor.getMenuConfig('menu1'))
 }
 
-const text = ref('')
+const text = defineModel('text', {
+  type: String,
+  default: ''
+})
 
 const onChange = (editor)=>{
   emit('update:model-value', editor.getHtml())

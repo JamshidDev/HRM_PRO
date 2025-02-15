@@ -1,5 +1,4 @@
 <script setup>
-
 import {useCategoryQuestionStore} from "@/store/modules";
 import {UIEditor} from "@/components/index.js";
 import OptionEditor from './OptionEditor.vue'
@@ -13,20 +12,35 @@ const formRef = ref(null)
 const route = useRoute()
 const router = useRouter()
 
-const onSubmit = () => {
-  formRef.value?.validate((error) => {
-    if (!error) {
-      store._create()
+const goBack = ()=>{
+  router.push({
+    name: 'category_question',
+    params: {
+      category_id: store.category_id
     }
   })
 }
 
-const onCancel = ()=>{
-  router.push(`${route.fullPath.replace(AppPaths.Create, '')}`)
+const onSubmit = () => {
+  formRef.value?.validate((error) => {
+    if (!error) {
+      if(!store.isModeEdit){
+        store._create()
+      }else{
+        store._update(goBack)
+      }
+    }
+  })
 }
+
 
 onMounted(()=>{
   store.category_id = route.params.category_id
+  if(route.params.question_id){
+    store.elementId = route.params.question_id
+    store.isModeEdit = true
+    store._show()
+  }
 })
 
 </script>
@@ -41,7 +55,7 @@ onMounted(()=>{
       <n-button
           icon-placement="right"
           type="error"
-          @click="onCancel"
+          @click="goBack"
       >
         {{ $t('content.cancel') }}
         <template #icon>
@@ -67,7 +81,7 @@ onMounted(()=>{
           :extra-rules="[{
             trigger: ['input', 'blur'],
             validator() {
-              return (store.payload.options.length<2) ? new Error( $t('questionPage.rules.minOptions')) : true
+              return (store.payload.options.length<3) ? new Error( $t('questionPage.rules.minOptions')) : true
             },
           }]"
           path="ques"
@@ -79,28 +93,39 @@ onMounted(()=>{
     <n-form-item :rule="[{
       trigger: ['input'],
       validator() {
-        return (store.payload.correct_option===null && store.payload.options.length>1) ? new Error( $t('questionPage.rules.chooseCorrectAnswer')) : true
+        let check = false
+        store.payload.options.forEach(i=>{
+          if(i.is_correct){
+            check = true
+          }
+        })
+        return (store.payload.options.length>2 && !check) ? new Error( $t('questionPage.rules.chooseCorrectAnswer')) : true
       },
     }]" path="correct_option">
-      <n-radio-group v-model:value="store.payload.correct_option" class="w-full">
+      <div class="w-full">
         <template v-for="(option, idx) in store.payload.options" :key="idx">
           <div class="flex gap-2 bg-white my-2 px-2 pb-2 rounded-lg">
-            <n-radio :value="idx" class="mt-4"></n-radio>
+            <n-radio
+                @click="()=>{
+                  store.payload.options.forEach(i=>{
+                    i.is_correct=false
+                  })
+                  store.payload.options[idx].is_correct=true
+                }"
+                :checked="option.is_correct"
+                class="mt-4"></n-radio>
             <div class="grow">
               <OptionEditor
                   :placeholder="$t('questionPage.form.enterOption')"
-                  :model-value="option"
-                  :path="`${idx}`"
+                  v-model:text="option.text"
+                  :path="`${idx}.text`"
                   with-validation
-                  @update:model-value="(v)=>{
-                    store.payload.options[idx]=v
-                  }"
                   @on-remove="store.removeOption(idx)"
               />
             </div>
           </div>
         </template>
-      </n-radio-group>
+      </div>
     </n-form-item>
 
 

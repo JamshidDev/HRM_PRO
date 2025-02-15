@@ -32,6 +32,7 @@ export const AppPaths = {
     Department:"/department",
     DepartmentPosition:"/department-position",
     Create:"/create",
+    Edit: "/edit",
     Document:"/document",
     ActionLog:"/action-logs",
     Confirmation:"/confirmation",

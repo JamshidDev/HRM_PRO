@@ -40,18 +40,12 @@ const goPush = (v)=>{
       <template v-for="(item, idx) in store.list" :key="idx">
         <div
             @click="goPush(item)"
-            class="cursor-pointer col-span-3 border rounded-lg border-surface-line relative overflow-hidden">
-          <div class="text-lg font-medium text-gray-600 line-clamp-1 p-3 pb-0">
+            class="cursor-pointer col-span-3 border rounded-lg border-surface-line relative overflow-hidden p-2 group">
+          <div class="text-lg font-medium text-gray-600 line-clamp-1">
             {{item.name}}
           </div>
-          <div class="text-xs font-medium text-primary px-3">
-            <n-icon size="10">
-              <CircleSmall24Filled/>
-            </n-icon>
-            {{item.type.name}}
-          </div>
 
-          <div class="flex flex-wrap gap-1 justify-center p-3 mt-6">
+          <div class="flex flex-wrap gap-1 mt-3">
             <n-button size="tiny">
               <template #icon>
                 <Image20Filled/>
@@ -78,31 +72,47 @@ const goPush = (v)=>{
               </template> 0 ta
             </n-button>
           </div>
-          <div class="w-full flex gap-1 p-2 border-t border-surface-line">
-            <n-button
-                @click.stop="onEdit(item)"
-                style="width: 50%"
-                size="tiny"
-                type="info"
-                secondary>
-              <template #icon>
-                <Edit20Filled/>
-              </template>
-            </n-button>
-
-            <n-popconfirm
-                @positive-click="onDelete(item)"
-                :negative-text="$t('content.no')"
-                :positive-text="$t('content.yes')"
-            >    <template #trigger>
-              <n-button :loading="store.deleteLoading && store.elementId === item.id" style="width: 50%" size="tiny" type="error" secondary @click.stop>
+          <n-divider class="!my-2" />
+          <div class="flex justify-between items-center">
+            <div class="text-xs font-medium text-primary">
+<!--              <n-icon size="10">-->
+<!--                <CircleSmall24Filled/>-->
+<!--              </n-icon>-->
+              <span class="underline">{{item.type.name}}</span>
+            </div>
+            <div class="flex gap-1 opacity-0 group-hover:opacity-100 transition duration-300" :class="{'opacity-100': store.elementId === item.id}">
+              <n-button
+                  @click.stop="onEdit(item)"
+                  style="width: 50%"
+                  size="tiny"
+                  type="info"
+                  secondary>
                 <template #icon>
-                  <Delete16Filled/>
+                  <Edit20Filled/>
                 </template>
               </n-button>
-            </template>
-              {{$t('content.confirmDelete')}}
-            </n-popconfirm>
+
+              <n-popconfirm
+                  @positive-click="onDelete(item)"
+                  @negativeClick="store.elementId=null"
+                  @clickoutside="store.elementId=null"
+                  :negative-text="$t('content.no')"
+                  :positive-text="$t('content.yes')"
+              >    <template #trigger>
+                <n-button
+                    :loading="store.deleteLoading && store.elementId === item.id"
+                    style="width: 50%"
+                    size="tiny"
+                    type="error"
+                    secondary @click.stop="store.elementId=item.id">
+                  <template #icon>
+                    <Delete16Filled/>
+                  </template>
+                </n-button>
+              </template>
+                {{$t('content.confirmDelete')}}
+              </n-popconfirm>
+            </div>
           </div>
         </div>
       </template>
