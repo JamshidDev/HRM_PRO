@@ -162,10 +162,17 @@ input:-webkit-autofill {
 .ui__worker-table {
   border-spacing:2px 0px;
   border-collapse: separate;
+  thead{
+    tr{
+      th{
+        @apply bg-[#3165CB] text-left font-medium text-white px-2 py-1
+      }
+    }
+  }
   tbody{
     tr:nth-child(2n+1){
       &> td{
-        @apply bg-[#8cc4fd32] overflow-hidden border border-[transparent]
+        @apply bg-[#b6d1ff1c] overflow-hidden border border-[transparent]
       }
     }
     tr:nth-child(2n){

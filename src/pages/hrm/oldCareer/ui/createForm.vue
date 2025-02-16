@@ -54,7 +54,6 @@ const onSubmit = ()=>{
         <n-input
             type="textarea"
             autosize
-            maxlength="6"
             :placeholder="$t(`content.enterField`)"
             v-model:value="store.payload.post_name"
         />

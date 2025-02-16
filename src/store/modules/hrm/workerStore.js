@@ -21,7 +21,7 @@ export const useWorkerStore = defineStore('workerStore', {
             per_page:10,
             search:null,
         },
-        workerVisible:false,
+        workerVisible:true,
 
     }),
     actions:{

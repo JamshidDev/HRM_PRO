@@ -46,7 +46,6 @@ export const useCommandStore = defineStore('commandStore', {
                     director_id:this.payload.director_id,
                 }
             }
-            console.log(data)
             $ApiService.commandService._create({data}).then((res)=>{
                 this.visible = false
                 this._index()

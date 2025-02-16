@@ -346,7 +346,7 @@ onMounted(()=>{
               </div>
             </template>
 
-            <div class="col-span-4">
+            <div class="col-span-3">
               <n-form-item :label="$t(`documentPage.form.group`)" path="group">
                 <n-select
                     v-model:value="store.payload.group"
@@ -360,7 +360,7 @@ onMounted(()=>{
                 />
               </n-form-item>
             </div>
-            <div class="col-span-4">
+            <div class="col-span-3">
               <n-form-item :label="$t(`documentPage.form.rank`)" path="rank">
                 <n-select
                     v-model:value="store.payload.rank"
@@ -371,6 +371,20 @@ onMounted(()=>{
                     value-field="id"
                     :loading="componentStore.enumLoading"
                     clearable
+                />
+              </n-form-item>
+            </div>
+            <div class="col-span-2">
+              <n-form-item
+                  :label="$t(`documentPage.form.rate`)"
+                  :path="(store.payload.position_status && (store.payload.type === 2))? 'rate_no':'rate'"
+              >
+                <n-input
+                    class="w-full"
+                    type="text"
+                    :placeholder="$t(`content.enterField`)"
+                    :allow-input="Utils.onlyAllowNumber"
+                    v-model:value="store.payload.rate"
                 />
               </n-form-item>
             </div>
@@ -400,6 +414,7 @@ onMounted(()=>{
                 />
               </n-form-item>
             </div>
+
             <div class="col-span-12">
               <n-form-item :label="$t(`documentPage.form.postName`)" path="post_name">
                 <n-input

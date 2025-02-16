@@ -10,15 +10,19 @@ const store = useContractStore()
 const commandStore = useCommandStore()
 const emits = defineEmits([ 'openOffice',])
 
+const contractData = ref(null)
+
 const emitEv = (v)=>{
   emits('openOffice',v)
 }
 
 const openCommand = (v)=>{
-  commandStore.payload.contract_id = v.id
-  commandStore.contractNumber= v.number
-  commandStore.payload.workers= [v.worker.id]
-  store.number = v.number
+  contractData.value = {
+    id:v.id,
+    number:v.number,
+    type:v.type,
+    workers:[v.worker.id]
+  }
   store.confirmationVisible=true
 }
 
@@ -32,8 +36,6 @@ const onSave = ()=>{
   commandStore.visibleType = true
   commandStore.visible = true
 }
-
-const files = ref([])
 
 
 </script>
@@ -55,7 +57,9 @@ const files = ref([])
       :width="1200"
       v-model:visible="commandStore.visible"
   >
-    <CommandForm/>
+    <CommandForm
+        :data="contractData"
+    />
   </UIModal>
   <UIDConfirm
       @onClose="onClose"
@@ -72,7 +76,7 @@ const files = ref([])
      </div>
     </template>
     <template #default>
-      <span class="w-full text-xl font-medium text-center py-4 inline-block">{{$t('contractPage.confirmText', {n: store.number})}}</span>
+      <span class="w-full text-xl font-medium text-center py-4 inline-block">{{$t('contractPage.confirmText', {n: contractData.number})}}</span>
     </template>
   </UIDConfirm>
 </template>

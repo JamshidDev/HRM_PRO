@@ -76,6 +76,8 @@ export const useWorkerProfileStore = defineStore('workerProfileStore', {
         passportList:[],
 
         positionList:[],
+        previewLoading:false,
+        workerPreview:false,
 
 
 
@@ -218,7 +220,6 @@ export const useWorkerProfileStore = defineStore('workerProfileStore', {
                 this.currentDistrictLoading = false
             })
         },
-
         _indexPassport(){
             this.passportLoading = true
             const params ={
@@ -277,10 +278,18 @@ export const useWorkerProfileStore = defineStore('workerProfileStore', {
             })
 
         },
-
+        _workerPreview(id){
+            this.previewLoading = true
+            $ApiService.workerService._preview({id}).then((res)=>{
+                this.workerPreview = res.data.data
+            }).finally(()=>{
+                this.previewLoading = false
+            })
+        },
         openVisible(data){
             this.visible = data
         },
+
         resetForm(){
             this.elementId = null
             this.payload.pin = null

@@ -682,6 +682,11 @@ export default {
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
+        rate:{
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
         post_name:{
             required: true,
             message: t(`rules.requiredField`),

@@ -432,7 +432,8 @@
             "positionStatus": "Bo'limni ko'rsatmaslik",
             "salary": "Oylik maosh",
             "group": "Gurux",
-            "rank": "Lavozim razryad",
+          "rank": "Lavozim razryad",
+          "rate": "Stavka",
             "postName": "To'liq lavozim nomi",
             "director": "Direktor",
             "contract_to_date": "Shartnoma muddati",
@@ -615,9 +616,7 @@
     "form": {
       "birth_place": "Tug'ilgan manzili",
       "post_name": "Lavozimi",
-      "marital_status": "Oilaviy holati",
-      "birthdayPlace": "Tug'ilgan yili va joyi",
-
+      "birthdayPlace": "Tug'ilgan sana va joyi",
       "relative": "Qarindoshligi"
     },
     "title": "Yaqin qarindosh ma'lumotlari",
@@ -696,9 +695,10 @@
   },
   "workerView": {
     "general": {
-      "name": "Umimiy ma'lumotlari",
+      "name": "Shaxsiy ma'lumotlari",
+      "passportName": "Pasport ma'lumotlari",
       "fullName": "F.I.SH",
-      "passportNumber": "Pasport (ID karta) seriya va raqami",
+      "passportNumber": "Pasport seriya va raqami",
       "passportJSHSHIR": "JSHSHIR",
       "fromDate": "Berilgan sana",
       "toDate": "Muddati tugash sanasi",
@@ -716,11 +716,14 @@
       "part": "Partiyaviyligi",
       "inn": "INN",
       "nationality": "Millati",
+      "position": "Lavozim",
+      "department": "Bo'limi",
+      "salary": "Oylik maosh",
       "country": "Tug'ilgan davlati"
     },
     "tabs": {
       "general": "Umimiy ma'lumotlari",
-      "career": "Mehnat faoliayi",
+      "career": "Mehnat faoliyati",
       "relative": "Yaqin qarindoshlari",
       "med": "Tibbiy ko'rik ma'lumoti",
       "vacation": "Ta'til ma'lumoti",

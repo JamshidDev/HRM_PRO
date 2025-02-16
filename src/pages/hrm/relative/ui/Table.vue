@@ -74,10 +74,10 @@ const onDelete = (v)=>{
         <tr>
           <th class="!text-center min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
           <th class="w-[100px]">{{$t('relativePage.form.relative')}}</th>
-          <th class="min-w-[100px] w-[500px]">{{$t('content.fullName')}}</th>
+          <th class="min-w-[100px]">{{$t('content.fullName')}}</th>
           <th class="min-w-[100px] w-[200px]">{{$t('relativePage.form.post_name')}}</th>
           <th class="min-w-[150px] w-[200px]">{{$t('relativePage.form.birthdayPlace')}}</th>
-          <th class="min-w-[150px] w-[200px]">{{$t('createWorkerPage.form.address')}}</th>
+          <th class="min-w-[150px] w-[300px]">{{$t('createWorkerPage.form.address')}}</th>
           <th class="min-w-[40px] w-[40px]"></th>
         </tr>
         </thead>
@@ -87,7 +87,7 @@ const onDelete = (v)=>{
           <td><span class="text-sm">{{item.relative.name}}</span></td>
           <td>{{item.last_name+' '+item.first_name+' '+item.middle_name}}</td>
           <td>{{item.post_name}}</td>
-          <td>{{item.birth_place +', '+item.birthday}}</td>
+          <td>{{item.birthday + ', ' + item.birth_place}}</td>
           <td>{{item.address}}</td>
           <td>
             <UIMenuButton

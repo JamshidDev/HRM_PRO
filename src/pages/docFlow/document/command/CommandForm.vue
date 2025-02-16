@@ -3,10 +3,22 @@ import {DocumentTableCheckmark20Regular} from "@vicons/fluent"
 import {useCommandStore, useComponentStore} from "@/store/modules/index.js"
 import {NAvatar} from "naive-ui"
 import Utils from "@/utils/Utils.js"
+
+const props = defineProps({
+  data:{
+    type:Object,
+    default:null,
+  }
+})
+
+
 const store = useCommandStore()
 const componentStore = useComponentStore()
 const formRef = ref(null)
 const confirmationList = ref([])
+
+
+
 
 const onFocusConf = ()=>{
   componentStore._confirmations()
@@ -66,7 +78,15 @@ watchEffect(()=>{
 })
 
 onMounted(()=>{
-  componentStore._enumsAdmin()
+  if(props.data){
+    const params = {
+      status:Utils.documentModels.contract,
+      type:props.data?.type?.id
+    }
+    store.payload.workers = props.data?.workers,
+    store.payload.contract_id = props.data?.id,
+    componentStore._commandTypes(params)
+  }
 })
 </script>
 
@@ -77,13 +97,13 @@ onMounted(()=>{
         :model="store.payload"
         class="grid grid-cols-12 gap-x-4"
     >
-      <template v-if="Boolean(store.payload.contract_id)">
+      <template v-if="Boolean(data)">
         <div class="col-span-12 justify-center items-center flex pb-8">
           <n-button icon-placement="right" type="default">
             <template #icon>
               <DocumentTableCheckmark20Regular/>
             </template>
-            {{$t('documentPage.command.form.byContract',{n:store.contractNumber})}}
+            {{$t('documentPage.command.form.byContract',{n:data?.number})}}
           </n-button>
         </div>
       </template>
@@ -115,10 +135,10 @@ onMounted(()=>{
               v-model:value="store.payload.type"
               filterable
               :placeholder="$t(`content.choose`)"
-              :options="componentStore.commandTypes"
+              :options="componentStore.commandTypeList"
               label-field="name"
               value-field="id"
-              :loading="componentStore.enumLoading"
+              :loading="componentStore.commandTypeLoading"
           />
         </n-form-item>
       </div>
