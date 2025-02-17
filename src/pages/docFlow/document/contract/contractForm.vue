@@ -152,7 +152,7 @@ onMounted(()=>{
       :rules="rules"
       :model="store.payload"
   >
-    <div style="height:calc(100vh - 120px)" class="overflow-y-auto overflow-x-hidden ">
+    <div style="height:calc(100vh - 120px)" class="overflow-y-auto overflow-x-hidden pb-12">
       <div class="grid grid-cols-12 gap-x-4">
         <div class="col-span-12 flex justify-center">
           <div class="w-[600px]">
@@ -429,13 +429,34 @@ onMounted(()=>{
             </div>
           </div>
         </div>
-        <div class="col-span-12 pt-10 flex justify-end gap-2 items-center">
-          <n-checkbox v-model:checked="store.payload.command_status" />
-          {{$t(`documentPage.form.command_status`)}}
+        <div class="col-span-12 mt-10">
+          <n-form-item :label="$t(`documentPage.form.director`)" path="director_id">
+            <n-select
+                @focus="onFocusConf"
+                size="large"
+                v-model:value="store.payload.director_id"
+                :placeholder="$t(`content.choose`)"
+                :options="componentStore.confirmationList"
+                :loading="componentStore.confirmationLoading"
+                :render-label="renderLabel"
+                :render-tag="renderValue"
+                label-field="last_name"
+                value-field="id"
+            />
+          </n-form-item>
         </div>
-        <div v-if="store.payload.command_status" class="col-span-12 border border-dashed p-2 rounded-xl border-gray-200 bg-gray-50 mt-4">
+        <div class="col-span-12 pt-4 flex justify-center gap-2 items-center relative">
+          <n-divider dashed title-placement="left" class="w-full">
+            <div class="flex items-center gap-3">
+              <n-switch v-model:value="store.payload.command_status" />
+              <span class="text-primary font-medium">{{$t(`documentPage.form.command_status`)}}</span>
+            </div>
+
+          </n-divider>
+        </div>
+        <div v-if="store.payload.command_status" class="col-span-12 border border-dashed p-2 bg-indigo-50 rounded-xl border-gray-200">
           <div class="grid grid-cols-12 gap-x-4">
-            <div class="col-span-3" >
+            <div class="col-span-6" >
               <n-form-item :label="$t(`documentPage.form.command_type`)" path="command_type">
                 <n-select
                     :disabled="!Boolean(store.payload.type)"
@@ -486,24 +507,6 @@ onMounted(()=>{
               </n-form-item>
             </div>
           </div>
-        </div>
-
-
-        <div class="col-span-12 mt-10 pb-10">
-          <n-form-item :label="$t(`documentPage.form.director`)" path="director_id">
-            <n-select
-                @focus="onFocusConf"
-                size="large"
-                v-model:value="store.payload.director_id"
-                :placeholder="$t(`content.choose`)"
-                :options="componentStore.confirmationList"
-                :loading="componentStore.confirmationLoading"
-                :render-label="renderLabel"
-                :render-tag="renderValue"
-                label-field="last_name"
-                value-field="id"
-            />
-          </n-form-item>
         </div>
       </div>
 

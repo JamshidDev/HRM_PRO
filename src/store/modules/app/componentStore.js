@@ -322,10 +322,12 @@ export const useComponentStore = defineStore('componentStore', {
             this.workerLoading = true
             $ApiService.workerService._index({page:1, per_page: 10000}).then((res)=>{
                 this.workerList = res.data.data.data.map((v)=>({
+                    ...v,
                     name:v.worker.last_name + ' '+v.worker.first_name+' '+v.worker.middle_name,
                     position:v.position.name,
                     id:v.id,
-                    typeId:v.contract.type.id
+                    typeId:v.contract.type.id,
+
                 }))
             }).finally(()=>{
                 this.workerLoading = false

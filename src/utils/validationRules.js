@@ -703,6 +703,17 @@ export default {
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
+        command_date:{
+            type:'number',
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        command_number:{
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
     },
     contractFromV2: {
         pin:{
@@ -773,6 +784,17 @@ export default {
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
+        command_date:{
+            type:'number',
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        command_number:{
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
     },
     adContractFrom: {
         number:{
@@ -828,6 +850,17 @@ export default {
         },
         schedule_id:{
             type:'number',
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        command_date:{
+            type:'number',
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        command_number:{
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents

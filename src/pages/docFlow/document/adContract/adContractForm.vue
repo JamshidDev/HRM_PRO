@@ -130,10 +130,14 @@ const scheduleValue = ({option})=>{
   )
 }
 const onChangeWorker = ()=>{
-  const typeId = componentStore.workerList.filter((v)=>v.id === store.payload.worker_position_id)[0].typeId
+  const worker = componentStore.workerList.filter((v)=>v.id === store.payload.worker_position_id)[0]
+  const typeId = worker.typeId
   store.payload.type = null
   componentStore._adContractType(typeId)
-  showCheckBox.value = [2, 4, 5].includes(typeId);
+  showCheckBox.value = [2, 4, 5].includes(typeId)
+  store.payload.group = worker.group
+  store.payload.rank = worker.rank
+  store.payload.salary = worker.salary.toString()
 }
 
 watchEffect(()=>{
@@ -384,11 +388,32 @@ onMounted(()=>{
             </template>
           </div>
         </div>
-        <div class="col-span-3 pt-10">
-          <n-checkbox v-model:checked="store.payload.command_status" />
-          {{$t(`documentPage.form.command_status`)}}
+        <div class="col-span-12 mt-4">
+          <n-form-item :label="$t(`documentPage.form.director`)" path="director_id">
+            <n-select
+                @focus="onFocusConf"
+                size="large"
+                value-field="id"
+                label-field="last_name"
+                v-model:value="store.payload.director_id"
+                :placeholder="$t(`content.choose`)"
+                :options="componentStore.confirmationList"
+                :loading="componentStore.confirmationLoading"
+                :render-label="renderLabel"
+                :render-tag="renderValue"
+            />
+          </n-form-item>
         </div>
-        <div v-if="store.payload.command_status" class="col-span-12 border border-dashed p-2 rounded-xl border-gray-200 bg-gray-50 mt-4">
+        <div class="col-span-12 pt-4 flex justify-center gap-2 items-center relative">
+          <n-divider dashed title-placement="left" class="w-full">
+            <div class="flex items-center gap-3">
+              <n-switch v-model:value="store.payload.command_status" />
+              <span class="text-primary font-medium">{{$t(`documentPage.form.command_status`)}}</span>
+            </div>
+
+          </n-divider>
+        </div>
+        <div v-if="store.payload.command_status" class="col-span-12 border border-dashed p-2 rounded-xl border-gray-200 bg-indigo-50 mt-4">
           <div class="grid grid-cols-12 gap-x-4">
             <div class="col-span-3" >
               <n-form-item :label="$t(`documentPage.form.command_type`)" path="command_type">
@@ -441,23 +466,6 @@ onMounted(()=>{
               </n-form-item>
             </div>
           </div>
-        </div>
-
-        <div class="col-span-12 mt-10 pb-10">
-          <n-form-item :label="$t(`documentPage.form.director`)" path="director_id">
-            <n-select
-                @focus="onFocusConf"
-                size="large"
-                value-field="id"
-                label-field="last_name"
-                v-model:value="store.payload.director_id"
-                :placeholder="$t(`content.choose`)"
-                :options="componentStore.confirmationList"
-                :loading="componentStore.confirmationLoading"
-                :render-label="renderLabel"
-                :render-tag="renderValue"
-            />
-          </n-form-item>
         </div>
       </div>
 

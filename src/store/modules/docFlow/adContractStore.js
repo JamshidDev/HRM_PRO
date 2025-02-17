@@ -149,7 +149,7 @@ export const useAdContractStore = defineStore('adContractStore', {
             this.payload.post_name = null
             this.payload.schedule_id = null
 
-            this.payload.command_date = null
+            this.payload.command_date =  new Date().getTime()
             this.payload.command_number = null
             this.payload.confirmations = []
         }
