@@ -40,7 +40,15 @@ const onAdd=()=>{
         :show-filter-button="false"
         @on-add="onAdd"
         :show-search-input="false"
-    />
+    >
+      <template #filterSearch>
+        <div class="flex flex-col">
+          <p class="font-semibold inline-block text-surface-600">{{$t('questionPage.title')}}</p>
+          <span class="text-xs text-primary">{{$t('content.total', {n: store.totalItems})}}</span>
+        </div>
+      </template>
+
+    </UIPageFilter>
     <QuestionList class="mt-2" />
   </UIPageContent>
 </template>

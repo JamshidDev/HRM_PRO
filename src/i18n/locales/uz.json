@@ -71,7 +71,8 @@
         "document": "Hujjat",
         "checking": "Tekshirilmoqda...",
         "deleteWarning": "Haqiqattan ham o'chirmoqchimisz?",
-        "sum": "So'm"
+        "sum": "So'm",
+        "total": "Umumiy: {n}ta"
     },
     "rules": {
         "login": "Email kiritilishi shart!",
@@ -665,13 +666,23 @@
       "name": "Kategoriyalar",
       "updateTitle": "Kategoriyani tahrirlash"
     },
-    "exams": {
-      "name": "Imtihonlar"
-    },
     "files": {
       "createTitle": "Fayl qo'shish",
-      "name": "Fayllar",
+      "name": "Resurslar",
       "updateTitle": "Faylni tahrirlash"
+    },
+    "exams": {
+      "createTitle": "Imtihon yaratish qo'shish",
+      "name": "Imtihonlar",
+      "updateTitle": "Imtihonni tahrirlash",
+      "deadline": "Yakunlanish sanasi",
+      "toWhom": "Kimlarga",
+      "minute": "Davomiylik daqiqasi",
+      "variants": "Variantlar soni",
+      "isActive": "Aktivlik holati",
+      "positions": "Lavozimlar",
+      "organizations": "Tashkilotlar",
+      "workers": "Xodimlar"
     },
     "questions": {
       "createTitle": "Savol qo'shish",
@@ -744,6 +755,7 @@
       "enterOption": "Variantni kiriting",
       "addOption": "Variant qo'shish"
     },
+    "title": "Savollar",
     "rules": {
       "minOptions": "Kamida 3ta variant bo'lishi lozim",
       "chooseCorrectAnswer": "To'g'ri javobni tanlang"

@@ -46,6 +46,7 @@ import topicService from "@/service/v1/lms/topicService.js"
 import topicFilesService from "@/service/v1/lms/topicFilesService.js"
 import categoryService from "@/service/v1/lms/categoryService.js"
 import categoryQuestionService from "@/service/v1/lms/categoryQuestionService.js"
+import topicExamService from "@/service/v1/lms/topicExamService.js";
 
 export default {
     authService,
@@ -83,6 +84,7 @@ export default {
     commandService,
     documentChatService,
     topicService,
+    topicExamService,
     topicFilesService,
     categoryService,
     categoryQuestionService,

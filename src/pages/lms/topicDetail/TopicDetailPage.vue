@@ -2,8 +2,7 @@
 import {useCategoryStore} from "@/store/modules/index.js"
 import {UIPageContent} from "@/components/index.js"
 import TopicFilePage from "@/pages/lms/topicFile/TopicFilePage.vue";
-import ExamPage from "@/pages/lms/exam/ExamPage.vue";
-import TopicQuestionPage from "@/pages/lms/topicQuestion/TopicQuestionPage.vue";
+import TopicExamPage from "@/pages/lms/topicExam/TopicExamPage.vue";
 
 
 const store = useCategoryStore()
@@ -14,9 +13,9 @@ const tabs = [{
     component: TopicFilePage
   },
   {
-    name: 'topicDetailsPage.questions.name',
+    name: 'topicDetailsPage.exams.name',
     id: 2,
-    component: TopicQuestionPage
+    component: TopicExamPage
   }]
 
 const activeTab = ref(1)

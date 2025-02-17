@@ -1,6 +1,6 @@
 <script setup>
 import {useCategoryQuestionStore} from "@/store/modules";
-import {UIEditorViewer, UIMenuButton} from "@/components/index.js";
+import {NoDataPicture, UIEditorViewer, UIMenuButton} from "@/components/index.js";
 import {useRoute, useRouter} from "vue-router";
 
 const store = useCategoryQuestionStore()
@@ -58,6 +58,7 @@ const onClickAction = (v)=>{
       <div v-if="store.loading" class="flex justify-center">
         <n-spin size="medium"/>
       </div>
+      <NoDataPicture v-if="store.list.length===0 && !store.loading" />
     </div>
   </n-infinite-scroll>
 </template>

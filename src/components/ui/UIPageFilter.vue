@@ -65,7 +65,6 @@ const addEvent = ()=>{
             :placeholder="$t('content.search')"
             :on-keyup="searchEvent"
             :loading="searchLoading"
-
         >
           <template #suffix>
             <n-icon :component="Search48Filled" />

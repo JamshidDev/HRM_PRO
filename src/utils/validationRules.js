@@ -1,6 +1,7 @@
 import i18n from "@/i18n/index.js"
+
 const {t} = i18n.global
-const triggerEvents =  ['input', 'blur']
+const triggerEvents = ['input', 'blur']
 
 const lang = localStorage.getItem('applicationLang') || 'uz'
 i18n.global.locale = lang
@@ -10,490 +11,507 @@ export default {
         requiredStringField: {
             required: true,
             message: t(`rules.requiredField`),
-            trigger: triggerEvents
+            trigger: [...triggerEvents, 'change']
         },
-
+        requiredDateTimeField: {
+            type: 'number',
+            required: true,
+            trigger: [...triggerEvents, 'change'],
+            message: t(`rules.requiredField`)
+        },
+        requiredNumberField: {
+            type: 'number',
+            required: true,
+            trigger: [...triggerEvents, 'change'],
+            message: t(`rules.requiredField`)
+        },
+        requiredMultiSelectField: {
+            type: 'array',
+            required: true,
+            trigger: [...triggerEvents, 'change'],
+            message: t(`rules.requiredField`)
+        }
     },
-    login:{
-        phone:[
+    login: {
+        phone: [
             {
                 required: true,
                 message: t(`rules.phone`),
                 trigger: triggerEvents
             },
             {
-                min:15,
-                message: t(`rules.requiredMinLength`, {n:15}),
+                min: 15,
+                message: t(`rules.requiredMinLength`, {n: 15}),
                 trigger: triggerEvents
             },
             {
-                max:15,
-                message: t(`rules.requiredMaxLength`, {n:15}),
+                max: 15,
+                message: t(`rules.requiredMaxLength`, {n: 15}),
                 trigger: triggerEvents
             },
         ],
-        password:[
+        password: [
             {
                 required: true,
                 message: t(`rules.password`),
                 trigger: triggerEvents
             },
             {
-                min:8,
-                message: t(`rules.requiredMinLength`, {n:8}),
+                min: 8,
+                message: t(`rules.requiredMinLength`, {n: 8}),
                 trigger: triggerEvents
             },
             {
-                max:16,
-                message: t(`rules.requiredMaxLength`, {n:16}),
+                max: 16,
+                message: t(`rules.requiredMaxLength`, {n: 16}),
                 trigger: triggerEvents
             },
         ],
     },
-    register:{
-        first_name:[
+    register: {
+        first_name: [
             {
                 required: true,
                 message: t(`rules.requiredField`),
                 trigger: triggerEvents
             },
             {
-                min:3,
-                message: t(`rules.requiredMinLength`, {n:3}),
+                min: 3,
+                message: t(`rules.requiredMinLength`, {n: 3}),
                 trigger: triggerEvents
             },
             {
-                max:20,
-                message: t(`rules.requiredMaxLength`, {n:20}),
+                max: 20,
+                message: t(`rules.requiredMaxLength`, {n: 20}),
                 trigger: triggerEvents
             },
         ],
-        last_name:[
+        last_name: [
             {
                 required: true,
                 message: t(`rules.requiredField`),
                 trigger: triggerEvents
             },
             {
-                min:3,
-                message: t(`rules.requiredMinLength`, {n:3}),
+                min: 3,
+                message: t(`rules.requiredMinLength`, {n: 3}),
                 trigger: triggerEvents
             },
             {
-                max:20,
-                message: t(`rules.requiredMaxLength`, {n:20}),
+                max: 20,
+                message: t(`rules.requiredMaxLength`, {n: 20}),
                 trigger: triggerEvents
             },
         ],
-        middle_name:[
+        middle_name: [
             {
                 required: true,
                 message: t(`rules.requiredField`),
                 trigger: triggerEvents
             },
             {
-                min:3,
-                message: t(`rules.requiredMinLength`, {n:3}),
+                min: 3,
+                message: t(`rules.requiredMinLength`, {n: 3}),
                 trigger: triggerEvents
             },
             {
-                max:20,
-                message: t(`rules.requiredMaxLength`, {n:20}),
+                max: 20,
+                message: t(`rules.requiredMaxLength`, {n: 20}),
                 trigger: triggerEvents
             },
         ],
-        phone:[
+        phone: [
             {
                 required: true,
                 message: t(`rules.phone`),
                 trigger: triggerEvents
             },
             {
-                min:15,
-                message: t(`rules.requiredMinLength`, {n:15}),
+                min: 15,
+                message: t(`rules.requiredMinLength`, {n: 15}),
                 trigger: triggerEvents
             },
             {
-                max:15,
-                message: t(`rules.requiredMaxLength`, {n:15}),
+                max: 15,
+                message: t(`rules.requiredMaxLength`, {n: 15}),
                 trigger: triggerEvents
             },
         ],
-        pin:[
+        pin: [
             {
                 required: true,
                 message: t(`rules.requiredJSHSHIR`),
                 trigger: triggerEvents
             },
             {
-                min:17,
-                message: t(`rules.requiredMinLength`, {n:14}),
+                min: 17,
+                message: t(`rules.requiredMinLength`, {n: 14}),
                 trigger: triggerEvents
             },
         ],
-        password:[
+        password: [
             {
                 required: true,
                 message: t(`rules.password`),
                 trigger: triggerEvents
             },
             {
-                min:8,
-                message: t(`rules.requiredMinLength`, {n:8}),
+                min: 8,
+                message: t(`rules.requiredMinLength`, {n: 8}),
                 trigger: triggerEvents
             },
             {
-                max:16,
-                message: t(`rules.requiredMaxLength`, {n:16}),
+                max: 16,
+                message: t(`rules.requiredMaxLength`, {n: 16}),
                 trigger: triggerEvents
             },
         ],
     },
-    verificationEmail:{
-        otp:[
+    verificationEmail: {
+        otp: [
             {
                 required: true,
                 message: t(`rules.phone`),
                 trigger: triggerEvents
             },
             {
-                min:6,
-                message: t(`rules.requiredMinLength`, {n:6}),
+                min: 6,
+                message: t(`rules.requiredMinLength`, {n: 6}),
                 trigger: triggerEvents
             },
             {
-                max:6,
-                message: t(`rules.requiredMaxLength`, {n:6}),
+                max: 6,
+                message: t(`rules.requiredMaxLength`, {n: 6}),
                 trigger: triggerEvents
             },
         ],
-        password:[
+        password: [
             {
                 required: true,
                 message: t(`rules.password`),
                 trigger: triggerEvents
             },
             {
-                min:8,
-                message: t(`rules.requiredMinLength`, {n:8}),
+                min: 8,
+                message: t(`rules.requiredMinLength`, {n: 8}),
                 trigger: triggerEvents
             },
             {
-                max:16,
-                message: t(`rules.requiredMaxLength`, {n:16}),
+                max: 16,
+                message: t(`rules.requiredMaxLength`, {n: 16}),
                 trigger: triggerEvents
             },
         ],
     },
-    userPermission:{
-        name:{
+    userPermission: {
+        name: {
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
     },
-    languageAdminPage:{
-        name:{
+    languageAdminPage: {
+        name: {
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
     },
-    universityAdmin:{
-        name:{
+    universityAdmin: {
+        name: {
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
-        name_ru:{
+        name_ru: {
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
-        region_id:{
+        region_id: {
             type: 'number',
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
-        education:{
+        education: {
             type: 'number',
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
     },
-    specialityAdmin:{
-        name:{
+    specialityAdmin: {
+        name: {
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
-        name_ru:{
+        name_ru: {
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
     },
-    confirmation:{
-        pin:{
+    confirmation: {
+        pin: {
             required: true,
             message: t(`rules.requiredWorker`),
             trigger: triggerEvents
         },
-        position:{
+        position: {
 
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         }
     },
-    userRole:{
-        name:{
+    userRole: {
+        name: {
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
-        permissions:{
-            type:"array",
-            required: true,
-            message: t(`rules.requiredField`),
-            trigger: triggerEvents
-        },
-    },
-    regionPage:{
-        name:{
-            required: true,
-            message: t(`rules.requiredField`),
-            trigger: triggerEvents
-        },
-        country_id:{
-            type:'number',
+        permissions: {
+            type: "array",
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
     },
-    districtPage:{
-        name:{
+    regionPage: {
+        name: {
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
-        region_id:{
-            type:'number',
-            required: true,
-            message: t(`rules.requiredField`),
-            trigger: triggerEvents
-        },
-    },
-    profilePage:{
-        first_name:{
-            required: true,
-            message: t(`rules.requiredField`),
-            trigger: triggerEvents
-        },
-        last_name:{
-            required: true,
-            message: t(`rules.requiredField`),
-            trigger: triggerEvents
-        },
-        middle_name:{
-            required: true,
-            message: t(`rules.requiredField`),
-            trigger: triggerEvents
-        },
-        password:{
+        country_id: {
+            type: 'number',
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
     },
-    positionPage:{
-        name:{
+    districtPage: {
+        name: {
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
-        name_ru:{
-            required: true,
-            message: t(`rules.requiredField`),
-            trigger: triggerEvents
-        },
-        classification_index:{
-            required: true,
-            message: t(`rules.requiredField`),
-            trigger: triggerEvents
-        },
-        classification_code:{
+        region_id: {
+            type: 'number',
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
     },
-    organizationPage:{
-        name:{
+    profilePage: {
+        first_name: {
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
-        full_name:{
+        last_name: {
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
-        level:{
-            type:'number',
+        middle_name: {
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
-        city_id:{
-            type:'number',
+        password: {
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+    },
+    positionPage: {
+        name: {
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        name_ru: {
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        classification_index: {
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        classification_code: {
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+    },
+    organizationPage: {
+        name: {
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        full_name: {
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        level: {
+            type: 'number',
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        city_id: {
+            type: 'number',
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         }
     },
-    departmentPage:{
-        name:{
+    departmentPage: {
+        name: {
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
-        level:{
-            type:'number',
+        level: {
+            type: 'number',
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         }
     },
-    departmentPositionPage:{
-        position_id:{
-            type:'number',
+    departmentPositionPage: {
+        position_id: {
+            type: 'number',
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
-        department_id:{
-            type:'number',
+        department_id: {
+            type: 'number',
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
-        group:{
-            type:'number',
+        group: {
+            type: 'number',
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
-        rank:{
-            type:'string',
+        rank: {
+            type: 'string',
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
-        rate:{
+        rate: {
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
-        salary:{
+        salary: {
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
-        experience:{
+        experience: {
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
-        education:{
-            type:'number',
-            required: true,
-            message: t(`rules.requiredField`),
-            trigger: triggerEvents
-        },
-    },
-    relativePage:{
-        last_name:{
-            required: true,
-            message: t(`rules.requiredField`),
-            trigger: triggerEvents
-        },
-        first_name:{
-            required: true,
-            message: t(`rules.requiredField`),
-            trigger: triggerEvents
-        },
-        birthday:{
-            type:'number',
-            required: true,
-            message: t(`rules.requiredField`),
-            trigger: triggerEvents
-        },
-        relative:{
-            type:'number',
+        education: {
+            type: 'number',
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
     },
-    relativePageV2:{
-        relative:{
-            type:'number',
+    relativePage: {
+        last_name: {
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
-        pin:{
+        first_name: {
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        birthday: {
+            type: 'number',
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        relative: {
+            type: 'number',
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
     },
-    personalForm:{
-        last_name:{
+    relativePageV2: {
+        relative: {
+            type: 'number',
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
-        first_name:{
+        pin: {
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
-        middle_name:{
+    },
+    personalForm: {
+        last_name: {
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
-        country_id:{
-            type:'number',
+        first_name: {
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
-        region_id:{
-            type:'number',
+        middle_name: {
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
-        city_id:{
-            type:'number',
+        country_id: {
+            type: 'number',
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
-        current_region_id:{
-            type:'number',
+        region_id: {
+            type: 'number',
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
-        current_city_id:{
-            type:'number',
+        city_id: {
+            type: 'number',
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        current_region_id: {
+            type: 'number',
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        current_city_id: {
+            type: 'number',
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
@@ -504,87 +522,87 @@ export default {
                     const date = new Date(text);
                     return date instanceof Date && !isNaN(date.getTime());
                 };
-                if(value === null){
-                    return new Error( t(`rules.requiredField`));
-                }else if (!isValidDate(value)) {
-                    return new Error( t(`rules.unExpectedFormat`));
+                if (value === null) {
+                    return new Error(t(`rules.requiredField`));
+                } else if (!isValidDate(value)) {
+                    return new Error(t(`rules.unExpectedFormat`));
                 }
                 return true
             },
             trigger: triggerEvents,
         },
-        address:{
+        address: {
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
-        academic_title:{
-            type:'number',
+        academic_title: {
+            type: 'number',
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
-        academic_degree:{
-            type:'number',
+        academic_degree: {
+            type: 'number',
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
-        nationality_id:{
-            type:'number',
+        nationality_id: {
+            type: 'number',
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
-        party:{
-            type:'number',
+        party: {
+            type: 'number',
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
-        pin:{
+        pin: {
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
-        inn:{
+        inn: {
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
-        passport_address:{
+        passport_address: {
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
-        serial_number:{
+        serial_number: {
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
-        from_date:{
-            type:'number',
+        from_date: {
+            type: 'number',
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
-        to_date:{
-            type:'number',
+        to_date: {
+            type: 'number',
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
-        marital_status:{
-            type:'number',
+        marital_status: {
+            type: 'number',
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
-        phones:[
+        phones: [
             {
                 validator: (rule, value) => {
-                    if (!value || value[0].phone.length <16) {
-                        return new Error( t(`rules.requiredField`));
+                    if (!value || value[0].phone.length < 16) {
+                        return new Error(t(`rules.requiredField`));
                     }
                     return true;
                 },
@@ -592,302 +610,302 @@ export default {
             },
         ],
     },
-    schedulePage:{
-        name:{
+    schedulePage: {
+        name: {
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
-        name_ru:{
+        name_ru: {
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
-        type:{
+        type: {
             type: 'number',
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
     },
-    workdayPage:{
-        schedule_id:{
+    workdayPage: {
+        schedule_id: {
             type: 'number',
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
-        type:{
+        type: {
             type: 'number',
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
-        end_time:{
+        end_time: {
             type: 'number',
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
-        start_time:{
+        start_time: {
             type: 'number',
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
-        day_of_week:{
+        day_of_week: {
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
     },
     contractFrom: {
-        pin:{
+        pin: {
             required: true,
             message: t(`rules.requiredWorker`),
             trigger: triggerEvents
         },
-        number:{
+        number: {
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
-        contract_date:{
-            type:'number',
+        contract_date: {
+            type: 'number',
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
-        type:{
-            type:'number',
+        type: {
+            type: 'number',
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
-        department_id:{
-            type:'array',
+        department_id: {
+            type: 'array',
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
-        command_type:{
-            type:'number',
+        command_type: {
+            type: 'number',
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
-        department_position_id:{
-            type:'number',
+        department_position_id: {
+            type: 'number',
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
-        post_name:{
+        post_name: {
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
-        salary:{
+        salary: {
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
-        director_id:{
-            type:'number',
+        director_id: {
+            type: 'number',
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
-        organization_id:{
-            type:'array',
+        organization_id: {
+            type: 'array',
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
-        schedule_id:{
-            type:'number',
+        schedule_id: {
+            type: 'number',
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
-        position_date:{
-            type:'number',
+        position_date: {
+            type: 'number',
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
     },
     contractFromV2: {
-        pin:{
+        pin: {
             required: true,
             message: t(`rules.requiredWorker`),
             trigger: triggerEvents
         },
-        number:{
+        number: {
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
-        contract_date:{
-            type:'number',
+        contract_date: {
+            type: 'number',
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
-        command_type:{
-            type:'number',
+        command_type: {
+            type: 'number',
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
-        type:{
-            type:'number',
+        type: {
+            type: 'number',
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
-        position_id:{
-            type:'number',
+        position_id: {
+            type: 'number',
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
-        post_name:{
+        post_name: {
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
-        salary:{
+        salary: {
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
-        director_id:{
-            type:'number',
+        director_id: {
+            type: 'number',
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
-        organization_id:{
-            type:'array',
+        organization_id: {
+            type: 'array',
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
-        schedule_id:{
-            type:'number',
+        schedule_id: {
+            type: 'number',
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
-        position_date:{
-            type:'number',
+        position_date: {
+            type: 'number',
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
     },
     adContractFrom: {
-        number:{
+        number: {
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
-        contract_date:{
-            type:'number',
+        contract_date: {
+            type: 'number',
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
-        type:{
-            type:'number',
+        type: {
+            type: 'number',
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
-        department_id:{
-            type:'array',
+        department_id: {
+            type: 'array',
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
-        command_type:{
-            type:'number',
+        command_type: {
+            type: 'number',
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
-        department_position_id:{
-            type:'number',
+        department_position_id: {
+            type: 'number',
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
-        post_name:{
+        post_name: {
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
-        salary:{
+        salary: {
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
-        director_id:{
-            type:'number',
+        director_id: {
+            type: 'number',
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
-        schedule_id:{
-            type:'number',
-            required: true,
-            message: t(`rules.requiredField`),
-            trigger: triggerEvents
-        },
-    },
-    languagePage:{
-        language_id:{
-            type:'number',
+        schedule_id: {
+            type: 'number',
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
     },
-    universityPage:{
-        university_id:{
-            type:'number',
-            required: true,
-            message: t(`rules.requiredField`),
-            trigger: triggerEvents
-        },
-        speciality_id:{
-            type:'number',
-            required: true,
-            message: t(`rules.requiredField`),
-            trigger: triggerEvents
-        },
-        to_date:{
-            type:'number',
+    languagePage: {
+        language_id: {
+            type: 'number',
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
     },
-    topicPage:{
-        name:{
+    universityPage: {
+        university_id: {
+            type: 'number',
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
-        type:{
-            type:'number',
+        speciality_id: {
+            type: 'number',
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
-        organizations:{
-            type:'array',
+        to_date: {
+            type: 'number',
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+    },
+    topicPage: {
+        name: {
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        type: {
+            type: 'number',
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        organizations: {
+            type: 'array',
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
@@ -907,20 +925,20 @@ export default {
             trigger: triggerEvents
         },
     },
-    oldCareerPage:{
-        from_date:{
-            type:'number',
+    oldCareerPage: {
+        from_date: {
+            type: 'number',
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
-        to_date:{
-            type:'number',
+        to_date: {
+            type: 'number',
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
-        post_name:{
+        post_name: {
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
