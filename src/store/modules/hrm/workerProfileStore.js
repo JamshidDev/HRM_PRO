@@ -24,9 +24,6 @@ export const useWorkerProfileStore = defineStore('workerProfileStore', {
             current_region_id:null,
             current_city_id:null,
             nationality_id:null,
-            academic_title:null,
-            academic_degree:null,
-            party:null,
             address:null,
             pin:null,
             inn:null,
@@ -100,12 +97,9 @@ export const useWorkerProfileStore = defineStore('workerProfileStore', {
                 this.payload.current_region_id = this.data.current_region.id
                 this.payload.current_city_id = this.data.current_city.id
                 this.payload.address = this.data.address
-                this.payload.academic_title = this.data.academic_title.id
-                this.payload.academic_degree = this.data.academic_degree.id
                 this.payload.nationality_id = this.data.nationality.name.id
                 this.payload.pin = this.data.pin?.toString()
                 this.payload.inn = this.data.inn?.toString()
-                this.payload.party = this.data.party.id
 
 
                 this.positionList = this.data.positions
@@ -277,14 +271,6 @@ export const useWorkerProfileStore = defineStore('workerProfileStore', {
 
             })
 
-        },
-        _workerPreview(id){
-            this.previewLoading = true
-            $ApiService.workerService._preview({id}).then((res)=>{
-                this.workerPreview = res.data.data
-            }).finally(()=>{
-                this.previewLoading = false
-            })
         },
         openVisible(data){
             this.visible = data

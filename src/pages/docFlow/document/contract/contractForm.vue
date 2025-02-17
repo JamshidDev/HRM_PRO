@@ -9,6 +9,7 @@ import UIDepartment from "@/components/ui/UIDepartment.vue"
 
 const store = useContractStore()
 const componentStore = useComponentStore()
+const confirmationList = ref([])
 
 const props = defineProps({
   callBack:{
@@ -38,7 +39,7 @@ const onChangeDepartment = (v)=>{
   componentStore._departmentPosition(v[0].id)
 }
 const onChangeStatus = (v)=>{
-  if(v){
+  if(!v){
     componentStore._positions()
   }
 }
@@ -125,6 +126,17 @@ watchEffect(()=>{
 
 const rules = computed(()=>(store.payload.position_status && store.payload.type === 2)? validationRules.contractFromV2 :validationRules.contractFrom)
 
+const showCheckBox = computed(()=>{
+  return [2,4,5].includes(store.payload.type)
+})
+
+watchEffect(()=>{
+  if(store.payload.director_id){
+    store.payload.confirmations = store.payload.confirmations.filter(v=>v !==store.payload.director_id)
+    confirmationList.value = componentStore.confirmationList.filter(v=>v.id !==store.payload.director_id)
+  }
+})
+
 onMounted(()=>{
   if(componentStore.groupList.length===0){
     componentStore._enums()
@@ -192,7 +204,7 @@ onMounted(()=>{
                 />
               </n-form-item>
             </div>
-            <div class="col-span-3">
+            <div class="col-span-3" v-if="store.payload.type !== 1">
               <n-form-item :label="$t(`documentPage.form.contract_to_date`)" path="contract_to_date">
                 <n-date-picker
                     class="w-full"
@@ -263,25 +275,6 @@ onMounted(()=>{
                 />
               </n-form-item>
             </div>
-            <div class="col-span-3 pt-10">
-              <n-checkbox v-model:checked="store.payload.command_status" />
-              {{$t(`documentPage.form.command_status`)}}
-            </div>
-            <div class="col-span-3" v-if="store.payload.command_status">
-              <n-form-item :label="$t(`documentPage.form.command_type`)" path="command_type">
-                <n-select
-                    :disabled="!Boolean(store.payload.type)"
-                    v-model:value="store.payload.command_type"
-                    filterable
-                    :placeholder="$t(`content.choose`)"
-                    :options="componentStore.commandTypeList"
-                    label-field="name"
-                    value-field="id"
-                    :loading="componentStore.commandTypeLoading"
-                    clearable
-                />
-              </n-form-item>
-            </div>
           </div>
         </div>
 
@@ -298,12 +291,12 @@ onMounted(()=>{
                 />
               </n-form-item>
             </div>
-            <div v-if="store.payload.type === 2" class="col-span-12 flex justify-end">
+            <div v-if="showCheckBox" class="col-span-12 flex justify-end">
               <n-checkbox v-model:checked="store.payload.position_status" @update:checked="onChangeStatus">
                 <span class="text-xs text-gray-500">{{$t(`documentPage.form.positionStatus`)}}</span>
               </n-checkbox>
             </div>
-            <template v-if="store.payload.position_status && (store.payload.type === 2)">
+            <template v-if="!store.payload.position_status && showCheckBox">
               <div class="col-span-4">
                 <n-form-item :label="$t(`documentPage.form.position`)" path="position_id">
                   <n-select
@@ -433,6 +426,64 @@ onMounted(()=>{
           <div class="grid grid-cols-12 gap-x-4">
             <div class="col-span-12">
               <UIUpload v-model:files="store.payload.files" />
+            </div>
+          </div>
+        </div>
+        <div class="col-span-12 pt-10 flex justify-end gap-2 items-center">
+          <n-checkbox v-model:checked="store.payload.command_status" />
+          {{$t(`documentPage.form.command_status`)}}
+        </div>
+        <div v-if="store.payload.command_status" class="col-span-12 border border-dashed p-2 rounded-xl border-gray-200 bg-gray-50 mt-4">
+          <div class="grid grid-cols-12 gap-x-4">
+            <div class="col-span-3" >
+              <n-form-item :label="$t(`documentPage.form.command_type`)" path="command_type">
+                <n-select
+                    :disabled="!Boolean(store.payload.type)"
+                    v-model:value="store.payload.command_type"
+                    filterable
+                    :placeholder="$t(`content.choose`)"
+                    :options="componentStore.commandTypeList"
+                    label-field="name"
+                    value-field="id"
+                    :loading="componentStore.commandTypeLoading"
+                    clearable
+                />
+              </n-form-item>
+            </div>
+            <div class="col-span-3">
+              <n-form-item :label="$t(`documentPage.command.form.command_number`)" path="command_number">
+                <n-input
+                    class="w-full"
+                    type="text"
+                    :placeholder="$t(`content.enterField`)"
+                    v-model:value="store.payload.command_number"
+                />
+              </n-form-item>
+
+            </div>
+            <div class="col-span-3">
+              <n-form-item :label="$t(`documentPage.command.form.command_date`)" path="command_date">
+                <n-date-picker
+                    class="w-full"
+                    v-model:value="store.payload.command_date"
+                    type="date"
+                    :placeholder="$t(`content.choose`)"
+                />
+              </n-form-item>
+            </div>
+            <div class="col-span-12">
+              <n-form-item :label="$t(`documentPage.command.form.confirm`)" path="director_id">
+                <n-select
+                    :disabled="!store.payload.director_id"
+                    size="large"
+                    value-field="id"
+                    multiple
+                    v-model:value="store.payload.confirmations"
+                    :placeholder="$t(`content.choose`)"
+                    :options="confirmationList"
+                    :loading="componentStore.confirmationLoading"
+                    :render-label="renderLabel" />
+              </n-form-item>
             </div>
           </div>
         </div>

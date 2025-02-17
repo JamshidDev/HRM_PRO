@@ -32,7 +32,6 @@ const onEdit = (v)=>{
 
 
 const openContract = (v, statusId)=>{
-  console.log(statusId)
   if(statusId !== 2){
     emits('commandEv',v)
   }

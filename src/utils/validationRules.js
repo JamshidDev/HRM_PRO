@@ -518,25 +518,7 @@ export default {
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
-        academic_title:{
-            type:'number',
-            required: true,
-            message: t(`rules.requiredField`),
-            trigger: triggerEvents
-        },
-        academic_degree:{
-            type:'number',
-            required: true,
-            message: t(`rules.requiredField`),
-            trigger: triggerEvents
-        },
         nationality_id:{
-            type:'number',
-            required: true,
-            message: t(`rules.requiredField`),
-            trigger: triggerEvents
-        },
-        party:{
             type:'number',
             required: true,
             message: t(`rules.requiredField`),
@@ -926,6 +908,42 @@ export default {
             trigger: triggerEvents
         },
         post_name:{
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+    },
+    partyPage:{
+        from_date:{
+            type:'number',
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        to_date:{
+            type:'number',
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        party:{
+            type:'number',
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+    },
+    militaryPage:{
+        status:{
+            type:'number',
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+    },
+    academicTitlePage:{
+        type:{
+            type:'number',
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents

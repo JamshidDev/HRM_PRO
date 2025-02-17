@@ -1,7 +1,16 @@
 <script setup>
-import {ArrowCircleDown16Regular, StarEmphasis32Filled, EyeOff20Filled} from "@vicons/fluent"
-import {useWorkerProfileStore} from "@/store/modules/index.js"
-const store = useWorkerProfileStore()
+import {ArrowCircleDown16Regular,Eye24Filled, StarEmphasis32Filled, EyeOff20Filled, DismissCircle32Filled} from "@vicons/fluent"
+import {useComponentStore} from "@/store/modules/index.js"
+const store = useComponentStore()
+const isHide = ref(true)
+
+
+const maskString = (v)=>{
+    const str = v.toString()
+  if(str.length<2) return str
+  return '*'.repeat(str.length - 2) + str.slice(-2);
+}
+
 </script>
 
 <template>
@@ -14,28 +23,37 @@ const store = useWorkerProfileStore()
         </template>
         4.67</n-button>
       <div class="flex items-center gap-2">
-        <n-button type="primary" secondary icon-placement="right">
+        <n-button @click="isHide=!isHide" type="primary" secondary icon-placement="right">
           <template #icon>
-            <EyeOff20Filled/>
+            <EyeOff20Filled v-if="isHide"/>
+            <Eye24Filled v-else/>
           </template>
         </n-button>
         <n-button type="primary" icon-placement="right">
           <template #icon>
             <ArrowCircleDown16Regular/>
           </template>
-          Ma'lumotnoma yuklash
+          {{$t('content.downloadCV')}}
+        </n-button>
+        <n-button
+            @click="store.previewVisible = false"
+            secondary type="error" icon-placement="right">
+          <template #icon>
+            <DismissCircle32Filled/>
+          </template>
+          {{$t('content.close')}}
         </n-button>
       </div>
     </div>
     <template v-if="store.workerPreview">
-      <div class="col-span-12 text-2xl text-primary font-semibold mb-2 uppercase">
+      <div class="col-span-12 text-2xl text-primary font-bold mb-2 uppercase">
         {{store.workerPreview?.worker.last_name+ ' '+store.workerPreview?.worker.first_name+' '+store.workerPreview?.worker.middle_name}}
       </div>
-      <div class="col-span-12"><span class="font-medium">{{$t('workerView.general.passportJSHSHIR')}}</span>: {{store.workerPreview?.worker.pin}}</div>
-      <div class="col-span-12"> <span class="font-medium">{{$t('workerView.general.phone')}}</span>: {{store.workerPreview?.worker.phones[0].phone}}	</div>
-      <div class="col-span-12"> <span class="font-medium">{{$t('workerView.general.position')}}</span>: {{store.workerPreview?.post_name}}	</div>
-      <div class="col-span-12"><span class="font-medium">{{$t('workerView.general.department')}}</span>: {{store.workerPreview?.department?.name}}	</div>
-      <div class="col-span-12"><span class="font-medium">{{$t('workerView.general.salary')}}</span>: {{store.workerPreview?.salary}} {{$t('content.sum')}}</div>
+      <div class="col-span-6 font-bold"><span class="font-normal text-gray-400">{{$t('workerView.general.passportJSHSHIR')}}</span>: {{isHide? maskString(store.workerPreview?.worker.pin) : store.workerPreview?.worker.pin}}</div>
+      <div class="col-span-6 font-bold"> <span class="font-normal text-gray-400">{{$t('workerView.general.phone')}}</span>: {{isHide? maskString(store.workerPreview?.worker.phones[0].phone) : store.workerPreview?.worker.phones[0].phone}}	</div>
+      <div class="col-span-6 font-bold"><span class="font-normal text-gray-400">{{$t('workerView.general.department')}}</span>: {{store.workerPreview?.department?.name}}	</div>
+      <div class="col-span-6 font-bold"><span class="font-normal text-gray-400">{{$t('workerView.general.salary')}}</span>: {{isHide? maskString(store.workerPreview?.salary) : store.workerPreview?.salary}} {{$t('content.sum')}}</div>
+      <div class="col-span-12 font-bold"> <span class="font-normal text-gray-400">{{$t('workerView.general.position')}}</span>: {{store.workerPreview?.post_name}}	</div>
     </template>
 
 

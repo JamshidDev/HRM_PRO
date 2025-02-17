@@ -19,14 +19,14 @@ const initialObserver = ()=>{
 
 
 
-const scrollEv = ()=>{
-  const element = document.querySelector('.chat-panel-container')
-  if(element.scrollHeight -  element.clientHeight === element.scrollTop){
-    console.log('scroll bottom 0 px')
-  }else if (element.scrollTop === 0){
-    console.log('scroll top 0 px')
-  }
-}
+// const scrollEv = ()=>{
+//   const element = document.querySelector('.chat-panel-container')
+//   if(element.scrollHeight -  element.clientHeight === element.scrollTop){
+//     console.log('scroll bottom 0 px')
+//   }else if (element.scrollTop === 0){
+//     console.log('scroll top 0 px')
+//   }
+// }
 
 // onMounted(()=>{
 //   initialObserver()
@@ -48,4 +48,7 @@ const scrollEv = ()=>{
 <!--        </template>-->
 <!--      </div>-->
 <!--  </div>-->
+  <div>
+    <h3>Chat content</h3>
+  </div>
 </template>

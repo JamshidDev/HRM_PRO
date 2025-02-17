@@ -34,6 +34,10 @@ export const useAdContractStore = defineStore('adContractStore', {
             rank:null,
             post_name:null,
             schedule_id:null,
+
+            command_date:null,
+            command_number:null,
+            confirmations:[],
         },
         params:{
             page:1,
@@ -57,8 +61,9 @@ export const useAdContractStore = defineStore('adContractStore', {
             let data = {
                 ...this.payload,
                 ...{
+                    command_date:Utils.timeToZone(this.payload.command_date),
                     contract_date:Utils.timeToZone(this.payload.contract_date),
-                    organization_id:this.payload.organization_id[0].id,
+                    organization_id:this.payload.organization_id.length>0? this.payload.organization_id[0].id : null,
                     worker_position_id: this.payload.worker_position_id,
                     director_id:this.payload.director_id,
                     department_id:this.payload.department_id.length>0? this.payload.department_id[0].id : null,
@@ -96,10 +101,11 @@ export const useAdContractStore = defineStore('adContractStore', {
         _finishContract(id){
             this.loading = true
             const data = {
+                model:Utils.documentModels.adContract,
                 command_status:false,
                 contract_id:id
             }
-            $ApiService.adContractService._create({data}).then(()=>{
+            $ApiService.commandService._create({data}).then(()=>{
                 this._index()
             }).finally(()=>{
                 this.loading = false
@@ -142,6 +148,10 @@ export const useAdContractStore = defineStore('adContractStore', {
             this.payload.rank = null
             this.payload.post_name = null
             this.payload.schedule_id = null
+
+            this.payload.command_date = null
+            this.payload.command_number = null
+            this.payload.confirmations = []
         }
 
     }

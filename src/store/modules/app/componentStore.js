@@ -18,6 +18,7 @@ export const useComponentStore = defineStore('componentStore', {
         partyList:[],
         rankList:[],
         groupList:[],
+        militaryStatuses:[],
 
         departmentList:[],
         depParams:{
@@ -121,6 +122,10 @@ export const useComponentStore = defineStore('componentStore', {
         allCityList:[],
         allCityLoading:false,
 
+        previewVisible:false,
+        previewLoading:false,
+        workerPreview:null,
+
 
     }),
     actions:{
@@ -154,6 +159,7 @@ export const useComponentStore = defineStore('componentStore', {
                 this.relativesList = res.data.data.relatives
                 this.maritalList = res.data.data.marital_statuses
                 this.languageList = res.data.data.languages
+                this.militaryStatuses = res.data.data.military_statuses
             }).finally(()=>{
                 this.enumLoading= false
             })
@@ -342,7 +348,15 @@ export const useComponentStore = defineStore('componentStore', {
             }).finally(()=>{
                 this.allCityLoading = false
             })
-        }
+        },
+        _workerPreview(id){
+            this.previewLoading = true
+            $ApiService.workerService._preview({id}).then((res)=>{
+                this.workerPreview = res.data.data
+            }).finally(()=>{
+                this.previewLoading = false
+            })
+        },
 
 
 

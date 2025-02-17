@@ -26,7 +26,7 @@ export const useContractStore = defineStore('contractStore', {
             director_id:null,
             department_id:[],
             department_position_id:null,
-            position_status:false,
+            position_status:true,
             salary:null,
             position_id:null,
             group:null,
@@ -42,6 +42,12 @@ export const useContractStore = defineStore('contractStore', {
             files:[],
             command_type:null,
             command_status:false,
+
+            command_date:null,
+            command_number:null,
+            confirmations:[],
+
+
         },
         params:{
             page:1,
@@ -65,6 +71,7 @@ export const useContractStore = defineStore('contractStore', {
             let data = {
                 ...this.payload,
                ...{
+                   command_date:Utils.timeToZone(this.payload.command_date),
                    contract_date:Utils.timeToZone(this.payload.contract_date),
                    contract_to_date:Utils.timeToZone(this.payload.contract_to_date),
                    position_date:Utils.timeToZone(this.payload.position_date),
@@ -111,7 +118,9 @@ export const useContractStore = defineStore('contractStore', {
         },
         _finishContract(id){
             this.loading = true
+
             const data = {
+                model:Utils.documentModels.contract,
                 command_status:false,
                 contract_id:id
             }
@@ -150,7 +159,7 @@ export const useContractStore = defineStore('contractStore', {
             this.payload.director_id = null
             this.payload.department_id = []
             this.payload.department_position_id = null
-            this.payload.position_status = false
+            this.payload.position_status = true
             this.payload.salary = null
             this.payload.position_id = null
             this.payload.group = null
@@ -159,12 +168,16 @@ export const useContractStore = defineStore('contractStore', {
             this.payload.post_name = null
             this.payload.probation = null
             this.payload.position_date = new Date().getTime()
-            this.payload.vacation_main_day = null
-            this.payload.additional_vacation_day = null
+            this.payload.vacation_main_day = '21'
+            this.payload.additional_vacation_day = '4'
             this.payload.schedule_id = null
             this.payload.command_type = null
             this.payload.files = []
-            this.payload.contract_to_date = new Date().getTime()
+            this.payload.contract_to_date = null
+
+            this.payload.command_date = null
+            this.payload.command_number = null
+            this.payload.confirmations = []
         }
 
     }

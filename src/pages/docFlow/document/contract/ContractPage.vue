@@ -5,6 +5,7 @@ import ContractList from "./ContractList.vue"
 import { FlowchartCircle20Filled} from "@vicons/fluent"
 import {UIModal, UIDConfirm} from "@/components/index.js"
 import {useContractStore, useCommandStore} from "@/store/modules/index.js"
+import Utils from "@/utils/Utils.js"
 
 const store = useContractStore()
 const commandStore = useCommandStore()
@@ -20,15 +21,16 @@ const openCommand = (v)=>{
   contractData.value = {
     id:v.id,
     number:v.number,
-    type:v.type,
-    workers:[v.worker.id]
+    type:v.type.id,
+    workers:[v.worker.id],
+    model:Utils.documentModels.contract
   }
   store.confirmationVisible=true
 }
 
 const onClose = ()=>{
   store.confirmationVisible=false
-  store._finishContract(commandStore.payload.contract_id)
+  store._finishContract(contractData.value?.id)
 }
 
 const onSave = ()=>{

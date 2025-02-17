@@ -78,14 +78,18 @@ watchEffect(()=>{
 })
 
 onMounted(()=>{
+
   if(props.data){
     const params = {
       status:Utils.documentModels.contract,
       type:props.data?.type?.id
     }
+    store.payload.model = props.data?.model
     store.payload.workers = props.data?.workers,
     store.payload.contract_id = props.data?.id,
     componentStore._commandTypes(params)
+  }else {
+    componentStore._commandTypes()
   }
 })
 </script>
@@ -172,6 +176,8 @@ onMounted(()=>{
               :render-label="renderLabel" />
         </n-form-item>
       </div>
+
+
 
     </n-form>
   </div>

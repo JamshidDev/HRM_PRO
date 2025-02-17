@@ -19,6 +19,7 @@ export const useCommandStore = defineStore('commandStore', {
             type:null,
             confirmations:[],
             director_id:null,
+            model:Utils.documentModels.command,
             workers:[],
         },
         params:{
@@ -75,6 +76,14 @@ export const useCommandStore = defineStore('commandStore', {
             this.visible = data
         },
         resetForm(){
+                this.payload.command_status = false
+                this.payload.contract_id = null
+                this.payload.command_date = null
+                this.payload.comtypemand_number = null
+                this.payload.confirmations = []
+                this.payload.director_id = null
+                this.payload.model = Utils.documentModels.command
+                this.payload.workers = []
 
         }
 

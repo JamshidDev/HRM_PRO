@@ -165,7 +165,7 @@ input:-webkit-autofill {
   thead{
     tr{
       th{
-        @apply bg-[#3165CB] text-left font-medium text-white px-2 py-1
+        @apply bg-[#757a83] text-left font-medium text-white px-2 py-1
       }
     }
   }
@@ -187,4 +187,7 @@ input:-webkit-autofill {
 
 .bg-effect-wing{
   background-image: url("/public/wing.png");
+}
+.n-spin-content{
+  height: 100%;
 }

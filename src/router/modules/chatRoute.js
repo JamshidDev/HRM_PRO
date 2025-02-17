@@ -7,7 +7,7 @@ export default [
     {
         path:Utils.routeChatPathMaker(AppPaths.ChatWindow),
         name:AppPaths.ChatWindow.substring(1),
-        component:ChatContainerPage,
+        component:ContactPage,
         children:[],
     }
 

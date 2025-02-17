@@ -1,32 +1,40 @@
 <script setup>
-
+import {CheckmarkCircle32Filled} from "@vicons/fluent"
+import {useComponentStore} from "@/store/modules/index.js"
+import Utils from "../../../utils/Utils.js"
+const store = useComponentStore()
 </script>
 
 <template>
-  <div class="w-full grid grid-cols-12">
+  <h3 class="text-sm uppercase mb-2 font-semibold mt-12 text-primary">{{$t('oldCareerPage.title')}}</h3>
+  <div class="w-full grid grid-cols-12 border p-6 rounded border-surface-line border-dashed">
     <div class="col-span-12">
-      <h3 class="text-xl text-surface-800 font-semibold mb-3">{{$t('oldCareerPage.title')}}</h3>
-      <table class="w-full ui__worker-table">
-        <thead>
-        <tr>
-          <th style="min-width: 200px">{{$t('oldCareerPage.form.post_name')}}</th>
-          <th style="min-width:100px; width: 160px">{{$t('oldCareerPage.form.from_date')}}</th>
-          <th style="min-width:100px; width: 160px">{{$t('oldCareerPage.form.to_date')}}</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr v-for="item in 10" :key="item">
-          <td class="p-2 font-semibold">«O'zbekiston temir yo'llari» aktsiyadorlik jamiyati «O'zbekiston» lokomotiv deposi 3-darajali elektrovoz mashinisti	</td>
-          <td class="p-2 text-blue-900">12.03.2028</td>
-          <td class="p-2 text-blue-900">12.03.2028</td>
-        </tr>
-        </tbody>
-      </table>
     </div>
+    <template v-if="store.workerPreview?.worker && store.workerPreview?.worker?.old_careers">
+
+      <n-timeline class="w-full col-span-12">
+        <template
+            v-for="(item, idx) in store.workerPreview?.worker?.old_careers" :key="idx"
+        >
+          <n-timeline-item
+              class="w-full"
+              type="info"
+              :title="Utils.timeOnlyYear(item.from_date) + ' - ' + Utils.timeOnlyYear(item.to_date)"
+              line-type="dashed"
+          >
+            <div class="w-full pb-4">
+              {{item.post_name}}
+            </div>
+            <template #icon>
+              <n-icon size="24" class="text-primary">
+                <CheckmarkCircle32Filled/>
+              </n-icon>
+            </template>
+          </n-timeline-item>
+        </template>
+
+      </n-timeline>
+    </template>
 
   </div>
 </template>
-
-<style scoped>
-
-</style>

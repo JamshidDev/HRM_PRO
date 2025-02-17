@@ -160,34 +160,6 @@ onMounted(()=>{
     </n-form-item>
     <n-form-item
         class="col-span-4"
-        :label="$t(`createWorkerPage.form.academicTitle`)"
-        path="academic_title">
-      <n-select
-          v-model:value="store.payload.academic_title"
-          filterable
-          :placeholder="$t(`content.choose`)"
-          :options="componentStore.academicTitleList"
-          label-field="name"
-          value-field="id"
-          :loading="componentStore.enumLoading"
-      />
-    </n-form-item>
-    <n-form-item
-        class="col-span-4"
-        :label="$t(`createWorkerPage.form.academicDegree`)"
-        path="academic_degree">
-      <n-select
-          v-model:value="store.payload.academic_degree"
-          filterable
-          :placeholder="$t(`content.choose`)"
-          :options="componentStore.academicDegreeList"
-          label-field="name"
-          value-field="id"
-          :loading="componentStore.enumLoading"
-      />
-    </n-form-item>
-    <n-form-item
-        class="col-span-4"
         :label="$t(`createWorkerPage.form.nationality_id`)"
         path="nationality_id">
       <n-select
@@ -198,20 +170,6 @@ onMounted(()=>{
           label-field="name"
           value-field="id"
           :loading="componentStore.nationalityLoading"
-      />
-    </n-form-item>
-    <n-form-item
-        class="col-span-4"
-        :label="$t(`createWorkerPage.form.party`)"
-        path="party">
-      <n-select
-          v-model:value="store.payload.party"
-          filterable
-          :placeholder="$t(`content.choose`)"
-          :options="componentStore.partyList"
-          label-field="name"
-          value-field="id"
-          :loading="componentStore.enumLoading"
       />
     </n-form-item>
     <n-form-item
