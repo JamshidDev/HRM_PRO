@@ -47,7 +47,7 @@
     "requiredMinLength": "{n} ta belgidan kam bo'lmasligi kerak",
     "requiredWorker": "Xodim tanlash shart!"
   },
-  "topicCategoryPage": {
+  "categoryPage": {
     "createCategory": "",
     "editCategory": "",
     "name": ""

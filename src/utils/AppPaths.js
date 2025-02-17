@@ -33,6 +33,7 @@ export const AppPaths = {
     Department:"/department",
     DepartmentPosition:"/department-position",
     Create:"/create",
+    Edit: "/edit",
     Document:"/document",
     ActionLog:"/action-logs",
     Confirmation:"/confirmation",
@@ -48,6 +49,7 @@ export const AppPaths = {
     DrawingSignature:"/drawing-signature",
     DocViewer:"/doc-viewer",
     DocumentSignature:"/document-signature",
+    Questions:"/questions"
 }
 
 export const AppLayouts ={

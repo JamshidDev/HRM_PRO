@@ -1,10 +1,10 @@
 <script setup>
 import {UIDrawer, UIPageContent, UIPageFilter} from "@/components/index.js"
-import Cards from "./ui/Cards.vue"
+import Table from "./ui/Table.vue"
 import Form from "./ui/Form.vue"
-import {useTopicCategoryStore} from "@/store/modules/index.js"
+import {useCategoryStore} from "@/store/modules/index.js"
 
-const store = useTopicCategoryStore()
+const store = useCategoryStore()
 
 const onAdd = ()=>{
   store.resetForm()
@@ -18,6 +18,7 @@ const onSearch = ()=>{
 }
 
 onMounted(()=>{
+  store.params.page = 1
   store._index()
 })
 </script>
@@ -29,12 +30,12 @@ onMounted(()=>{
         @onSearch="onSearch"
         @onAdd="onAdd"
     />
-    <Cards/>
+    <Table/>
     <UIDrawer
         :width="300"
         :visible="store.visible"
         @update:visible="(v)=>store.visible = v"
-        :title="store.visibleType? $t('topicCategoryPage.createCategory') : $t('topicCategoryPage.editCategory')"
+        :title="store.visibleType? $t('categoryPage.createCategory') : $t('topicCategoryPage.editCategory')"
     >
       <template #content>
         <Form/>

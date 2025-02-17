@@ -25,3 +25,5 @@ export {default as UIUpload} from "./ui/UIUpload.vue"
 export {default as UIMenuButton} from "./buttons/MenuButton.vue"
 export {default as UIDrawSignature} from "./ui/UIDrawSignature.vue"
 export {default as UIWorkerView} from "./worker/UIWorkerView.vue"
+
+export * from './editor'

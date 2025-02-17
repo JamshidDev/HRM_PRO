@@ -1,10 +1,10 @@
 <script setup>
 import validationRules from "@/utils/validationRules.js";
 const formRef = ref(null)
-import {useTopicCategoryStore} from "@/store/modules/index.js";
+import {useCategoryStore} from "@/store/modules/index.js";
 
 
-const store = useTopicCategoryStore()
+const store = useCategoryStore()
 
 const onSubmit = ()=>{
   formRef.value?.validate((error)=>{

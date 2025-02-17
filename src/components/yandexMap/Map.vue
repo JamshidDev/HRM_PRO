@@ -107,7 +107,6 @@ onMounted(()=>{
     addMarker(v.coords)
   })
   onChange(props.defaultMarkers[0].coords)
-
 })
 
 </script>
