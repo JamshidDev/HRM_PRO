@@ -109,6 +109,9 @@ export const useComponentStore = defineStore('componentStore', {
         topicWhomList:[],
         topicFileTypes:[],
 
+        examCategoryLoading: false,
+        examCategoryList: [],
+
         commandTypeList:[],
         commandTypeLoading:false,
 
@@ -176,6 +179,14 @@ export const useComponentStore = defineStore('componentStore', {
                 this.topicTypes = res.data.data?.topic_types
                 this.topicWhomList = res.data.data?.topic_whom
                 this.topicFileTypes = res.data.data?.topic_file_types
+            }).finally(()=>{
+                this.enumExamLoading= false
+            })
+        },
+        _examCategory(){
+            this.examCategoryLoading = true
+            $ApiService.componentService._examCategory({params: {...this.params}}).then((res)=>{
+                this.examCategoryList = res.data.data
             }).finally(()=>{
                 this.enumExamLoading= false
             })

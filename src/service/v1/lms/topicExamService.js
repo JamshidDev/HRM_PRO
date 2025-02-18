@@ -20,10 +20,14 @@ const _show = async (payload)=>{
     return await axios.get(`/v1/exam/topics/${payload.id}/exams/${payload.exam_id}`)
 }
 
+const _attach_question = async (payload)=>{
+    return await axios.post(`/v1/exam/topics/${payload.id}/exams/${payload.exam_id}/attach-question`, payload.data)
+}
 export default {
     _index,
     _create,
     _update,
     _delete,
-    _show
+    _show,
+    _attach_question
 }
