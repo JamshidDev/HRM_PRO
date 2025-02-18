@@ -12,6 +12,7 @@ export const useWorkerProfileStore = defineStore('workerProfileStore', {
         visibleType:true,
         elementId:null,
         positionVisible:false,
+        commandVisible:false,
         totalItems:0,
         payload:{
             first_name:null,

@@ -87,10 +87,11 @@
         "requiredJSHSHIR": "Pasport jshshir kiritilishi shart!"
     },
     "message": {
-      "successDone": "Muvofaqqiyatli bajarildi",
-      "requiredSignature": "Imzo maydoni bo'sh bo'lmasligi kerak!",
-        "clearedFields": "Maydonlar tozalandi!",
-        "warning-data": "Ma'lumotlar yetarli emas!"
+       "successDone": "Muvofaqqiyatli bajarildi",
+       "requiredSignature": "Imzo maydoni bo'sh bo'lmasligi kerak!",
+      "clearedFields": "Maydonlar tozalandi!",
+      "unExpectedError": "Kutilmagan xatolik yuz berdi!",
+       "warning-data": "Ma'lumotlar yetarli emas!"
     },
     "account": {
         "changeAccount": "Hisobni o'zgartirish!",

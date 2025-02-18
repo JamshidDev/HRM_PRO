@@ -170,11 +170,11 @@ onMounted(()=>{
 
  if( props.workers.length === 0){
    componentStore._workers()
-
  }else{
+   store.resetForm()
    componentStore.workerList = props.workers
    store.payload.worker_position_id = componentStore.workerList[0].id
-   componentStore._adContractType(1)
+   componentStore._adContractType(componentStore.workerList[0].contractTypeId)
  }
 
 })
@@ -187,7 +187,7 @@ onMounted(()=>{
       :rules="validationRules.adContractFrom"
       :model="store.payload"
   >
-    <div style="height:calc(100vh - 120px)" class="overflow-y-auto overflow-x-hidden">
+    <div style="height:calc(100vh - 120px)" class="overflow-y-auto overflow-x-hidden pb-12">
       <div class="grid grid-cols-12 gap-x-4">
         <div class="col-span-12 flex justify-center">
           <div class="w-[600px]">
@@ -222,7 +222,7 @@ onMounted(()=>{
                 />
               </n-form-item>
             </div>
-            <div class="col-span-4">
+            <div class="col-span-6">
               <n-form-item :label="$t(`documentPage.form.type`)" path="type">
                 <n-select
                     v-model:value="store.payload.type"
@@ -415,7 +415,7 @@ onMounted(()=>{
         </div>
         <div v-if="store.payload.command_status" class="col-span-12 border border-dashed p-2 rounded-xl border-gray-200 bg-indigo-50 mt-4">
           <div class="grid grid-cols-12 gap-x-4">
-            <div class="col-span-3" >
+            <div class="col-span-6" >
               <n-form-item :label="$t(`documentPage.form.command_type`)" path="command_type">
                 <n-select
                     :disabled="!Boolean(store.payload.type)"
@@ -484,7 +484,3 @@ onMounted(()=>{
     </div>
   </n-form>
 </template>
-
-<style scoped>
-
-</style>

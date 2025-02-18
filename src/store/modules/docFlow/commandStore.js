@@ -16,11 +16,18 @@ export const useCommandStore = defineStore('commandStore', {
             contract_id:null,
             command_date:null,
             command_number:null,
-            type:null,
+            command_type:null,
             confirmations:[],
             director_id:null,
             model:Utils.documentModels.command,
             workers:[],
+
+            group:null,
+            rank:null,
+            rate:null,
+            salary:null,
+            schedule_id:null,
+            contract_to_date:null,
         },
         params:{
             page:1,
@@ -44,6 +51,7 @@ export const useCommandStore = defineStore('commandStore', {
                 ...this.payload,
                 ...{
                     command_date:Utils.timeToZone(this.payload.command_date),
+                    contract_to_date:Utils.timeToZone(this.payload.contract_to_date),
                     director_id:this.payload.director_id,
                 }
             }
@@ -78,12 +86,20 @@ export const useCommandStore = defineStore('commandStore', {
         resetForm(){
                 this.payload.command_status = false
                 this.payload.contract_id = null
-                this.payload.command_date = null
-                this.payload.comtypemand_number = null
+                 this.payload.command_date = null
+                 this.payload.command_type = null
+                this.payload.command_number = null
                 this.payload.confirmations = []
                 this.payload.director_id = null
                 this.payload.model = Utils.documentModels.command
                 this.payload.workers = []
+
+                this.payload.group = null
+                this.payload.rank = null
+                this.payload.rate = null
+                this.payload.salary = null
+                this.payload.schedule_id = null
+                this.payload.contract_to_date = null
 
         }
 

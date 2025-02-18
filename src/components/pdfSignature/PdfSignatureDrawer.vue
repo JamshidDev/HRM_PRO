@@ -9,6 +9,8 @@ import ChatDrawer from "./ui/ChatDrawer.vue"
 import Utils from "../../utils/Utils.js"
 import {useRoute} from "vue-router"
 import DocxViewer from "./ui/DocxViewer.vue"
+import IFrameViewer from "./ui/IFrameViewer.vue"
+import PdfViewer from "@/components/pdfSignature/PdfViewer.vue"
 
 const docxViewerRef = ref(null)
 const route = useRoute()
@@ -18,7 +20,6 @@ const emits = defineEmits(["onClose", "onEdit", 'signatureEv'])
 
 const store = usePdfViewerStore()
 const signatureStore = useSignatureStore()
-
 const onSaveSignature = ()=>{
   signatureStore.confirmationId = store.signatureId
   signatureStore.documentType = store.model
@@ -74,6 +75,7 @@ const getDocument =async (document_id, model)=>{
     const v = res.data.data
     store.confirmations = v.confirmations
     store.document = v
+    store.document.document.file_name = Utils.fileNameFromUrl(v.document?.doc_url)
     store.pdfUrl = v.document.url
     store.docxUrl = v.document?.doc_url
     store.permissions = v.signature
@@ -84,6 +86,12 @@ const getDocument =async (document_id, model)=>{
     store.loading = false
   })
 }
+
+const documentUrl = computed(()=>{
+  const fileUrl = store.document?.document?.doc_url
+  const baseUrl = `https://view.officeapps.live.com/op/embed.aspx?src=`
+  return fileUrl? baseUrl+fileUrl : null
+})
 
 defineExpose({
   getDocument
@@ -98,7 +106,7 @@ defineExpose({
       <n-drawer-content title="Stoner" class="h-screen" >
         <n-spin v-model:show="store.loading">
           <div class="w-full h-screen overflow-hidden flex flex-col">
-            <div class="w-full h-[60px] border-b border-gray-300 flex items-center justify-between px-4">
+            <div class="w-full h-[60px] border-b border-gray-300 flex items-center justify-between px-4 fixed top-0 left-0 z-20 bg-white">
               <div class="flex gap-x-4">
                 <n-button @click="onClose()" type="error" secondary>
                   {{$t('content.close')}}
@@ -129,19 +137,21 @@ defineExpose({
               </div>
             </div>
 
-            <div class="w-full flex justify-between" style="height: calc(100vh - 60px)">
-              <div class="flex flex-col w-[300px] h-full bg-surface-ground border-r border-surface-line px-2 py-4 relative">
+
+            <div class="w-full flex justify-between" style="height: calc(100vh - 0px)">
+              <div class="flex flex-col w-[300px] h-full bg-surface-ground border-r border-surface-line px-2 py-4 relative pt-[70px]">
                 <div class="w-full" style="height: calc(100% - 100px)">
                   <LeftContent/>
                 </div>
                 <ChatDrawer/>
                 <div v-if="store.permissions?.qrcode" class="bg-gray-300 rounded-xl border border-gray-400 h-[100px]"></div>
               </div>
-              <div class="w-[860px] h-full flex">
+              <div style="width: calc(100% - 600px)" class=" h-full flex pt-[50px]">
 <!--                <PdfViewer ref="pdfViewerRef"/>-->
                 <DocxViewer ref="docxViewerRef" />
+<!--                <IFrameViewer v-if="documentUrl" :url="documentUrl" />-->
               </div>
-              <div class="flex flex-col w-[300px] h-full bg-surface-ground border-l border-surface-line px-2 py-4">
+              <div class="flex flex-col w-[300px] h-full bg-surface-ground border-l border-surface-line px-2 py-4 pt-[70px]">
                 <div class="w-full" style="height: calc(100% - 110px)">
                   <h3 class="mb-1 text-gray-400 text-xs font-medium uppercase pl-2">{{$t('documentPage.signature.viewer')}}</h3>
                   <ConfirmationList/>

@@ -2,7 +2,10 @@
 import {Timer16Regular, Eye16Filled, CheckmarkCircle24Filled, Circle20Filled} from "@vicons/fluent"
 const props = defineProps({
   status:String,
-  size:String,
+  size:{
+    type:String,
+    default:'tiny'
+  },
 })
 
 const statusList = [
@@ -59,7 +62,7 @@ const icon = computed(()=>{
 
 <template>
 <div class="w-full flex justify-center items-center">
-  <n-button :type="type" size="tiny" dashed>
+  <n-button :type="type" :size="size" dashed>
     <template #icon>
       <component :is="icon" />
     </template>

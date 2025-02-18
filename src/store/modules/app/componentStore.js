@@ -324,7 +324,7 @@ export const useComponentStore = defineStore('componentStore', {
                 this.workerList = res.data.data.data.map((v)=>({
                     ...v,
                     name:v.worker.last_name + ' '+v.worker.first_name+' '+v.worker.middle_name,
-                    position:v.position.name,
+                    position:v.position?.name || t('content.no-data'),
                     id:v.id,
                     typeId:v.contract.type.id,
 

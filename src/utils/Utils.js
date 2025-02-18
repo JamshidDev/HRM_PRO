@@ -2,6 +2,8 @@
 import dayjs from "dayjs";
 import {AppPaths} from "@/utils/AppPaths.js";
 import CryptoJS from "crypto-js"
+import i18n from "@/i18n/index.js"
+const {t} = i18n.global
 
 const fileToBase64 = (file)=>{
         return new Promise((resolve, reject)=>{
@@ -94,11 +96,13 @@ const documentModels = {
     adContract:'contract-additional',
 }
 
-const copyToClipboard = async (text)=>{
+const copyToClipboard = async (text, callback)=>{
     try {
-        await navigator.clipboard.writeText(text);
+        await navigator.clipboard.writeText(text)
+        callback?.()
     } catch (err) {
-        console.warn('Failed to copy text:', err);
+        console.warn(err)
+        $Toast.error(t('message.unExpectedError'))
     }
 }
 

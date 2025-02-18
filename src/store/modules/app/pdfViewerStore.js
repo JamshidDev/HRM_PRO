@@ -218,6 +218,7 @@ export const usePdfViewerStore = defineStore('pdfViewerStore', {
             $ApiService.documentService._generateLink({params:data}).then((res)=>{
                 const query = res.data.data.url.split('?')[1]
                 this.link =`${window.location.origin}/document-signature?${query}`
+                console.log(this.link )
             }).finally(()=>{
                 this.linkLoading = false
             })
