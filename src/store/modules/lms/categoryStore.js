@@ -1,7 +1,7 @@
 import {defineStore} from "pinia";
 import i18n from "@/i18n/index.js"
 const {t} = i18n.global
-export const useTopicCategoryStore = defineStore('topicCategoryStore', {
+export const useCategoryStore = defineStore('categoryStore', {
     state:()=>({
         list:[],
         loading:false,
@@ -25,7 +25,7 @@ export const useTopicCategoryStore = defineStore('topicCategoryStore', {
     actions:{
         _index(){
             this.loading= true
-            $ApiService.topicCategoryService._index({params:this.params}).then((res)=>{
+            $ApiService.categoryService._index({params:this.params}).then((res)=>{
                 this.list = res.data.data.data
                 this.totalItems = res.data.data.total
             }).finally(()=>{
@@ -37,21 +37,20 @@ export const useTopicCategoryStore = defineStore('topicCategoryStore', {
             let data = {
                 ...this.payload,
             }
-            $ApiService.topicCategoryService._create({data}).then((res)=>{
+            $ApiService.categoryService._create({data}).then((res)=>{
                 this.visible = false
                 this._index()
                 $Toast.success(t('message.successDone'))
             }).finally(()=>{
                 this.saveLoading = false
             })
-
         },
         _update(){
             this.saveLoading = true
             let data = {
                 ...this.payload,
             }
-            $ApiService.topicCategoryService._update({data, id:this.elementId}).then((res)=>{
+            $ApiService.categoryService._update({data, id:this.elementId}).then((res)=>{
                 this.visible = false
                 this._index()
                 $Toast.success(t('message.successDone'))
@@ -61,7 +60,7 @@ export const useTopicCategoryStore = defineStore('topicCategoryStore', {
         },
         _delete(){
             this.deleteLoading = true
-            $ApiService.topicCategoryService._delete({id:this.elementId}).then((res)=>{
+            $ApiService.categoryService._delete({id:this.elementId}).then((res)=>{
                 this._index()
                 $Toast.success(t('message.successDone'))
             }).finally(()=>{

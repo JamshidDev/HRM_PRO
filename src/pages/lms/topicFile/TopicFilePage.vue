@@ -14,6 +14,7 @@ const onSearch = (v)=>{
 }
 
 const onAdd = ()=>{
+  store.resetForm()
   store.visibleType = true
   store.visible = true
 }
@@ -26,6 +27,7 @@ onMounted(()=>{
 </script>
 <template>
   <UIPageFilter
+      :show-search-input="false"
       v-model:search="store.params.search"
       @onSearch="onSearch"
       @onAdd="onAdd"

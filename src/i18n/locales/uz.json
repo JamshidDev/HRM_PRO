@@ -72,7 +72,8 @@
       "checking": "Tekshirilmoqda...",
       "downloadCV": "Ma'lumotnoma yuklash",
         "deleteWarning": "Haqiqattan ham o'chirmoqchimisz?",
-        "sum": "So'm"
+        "sum": "So'm",
+        "total": "Umumiy: {n}ta"
     },
     "rules": {
         "login": "Email kiritilishi shart!",
@@ -84,7 +85,8 @@
         "requiredMinLength": "{n} ta belgidan kam bo'lmasligi kerak",
         "requiredMaxLength": "{n} ta belgidan ko'p bo'lmasligi kerak",
         "unExpectedFormat": "Noto'g'ri turdagi ma'lumot!",
-        "requiredJSHSHIR": "Pasport jshshir kiritilishi shart!"
+        "requiredJSHSHIR": "Pasport jshshir kiritilishi shart!",
+        "enterOverNumber": "{n}dan katta son kiriting"
     },
     "message": {
        "successDone": "Muvofaqqiyatli bajarildi",
@@ -711,13 +713,27 @@
       "name": "Kategoriyalar",
       "updateTitle": "Kategoriyani tahrirlash"
     },
-    "exams": {
-      "name": "Imtihonlar"
-    },
     "files": {
       "createTitle": "Fayl qo'shish",
-      "name": "Fayllar",
+      "name": "Resurslar",
       "updateTitle": "Faylni tahrirlash"
+    },
+    "exams": {
+      "createTitle": "Imtihon yaratish qo'shish",
+      "name": "Imtihonlar",
+      "updateTitle": "Imtihonni tahrirlash",
+      "deadline": "Yakunlanish sanasi",
+      "toWhom": "Kimlarga",
+      "minute": "Davomiylik daqiqasi",
+      "variants": "Variantlar soni",
+      "isActive": "Aktivlik holati",
+      "positions": "Lavozimlar",
+      "organizations": "Tashkilotlar",
+      "workers": "Xodimlar",
+      "categories": "Kategoriyalar",
+      "questionCount": "Savollar soni: ({n})",
+      "attachQuestion": "Savol biriktirish",
+      "count": "Barcha imtihonlar: {n}ta"
     },
     "questions": {
       "createTitle": "Savol qo'shish",
@@ -781,9 +797,27 @@
       "punishment": "Intizomiy jazolari"
     }
   },
-  "topicCategoryPage": {
+  "categoryPage": {
     "createCategory": "Kategoriya yaratish",
     "editCategory": "Kategoriyani tahrirlash",
-    "name": "Kategoriyalar"
-  }
+    "name": "Kategoriyalar",
+    "addQuestion": "Savol qo'shish",
+    "questionCount": "Savollar soni"
+  },
+  "questionPage": {
+    "form": {
+      "question": "Savol",
+      "options": "Variantlar",
+      "enterQuestion": "Savolni kiriting",
+      "enterOption": "Variantni kiriting",
+      "addOption": "Variant qo'shish"
+    },
+    "title": "Savollar",
+    "rules": {
+      "minOptions": "Kamida 3ta variant bo'lishi lozim!",
+      "chooseCorrectAnswer": "To'g'ri javobni tanlang!"
+    }
+
+  },
+  "next": "Keyingi"
 }

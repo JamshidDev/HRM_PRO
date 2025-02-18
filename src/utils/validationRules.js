@@ -10,9 +10,26 @@ export default {
         requiredStringField: {
             required: true,
             message: t(`rules.requiredField`),
-            trigger: triggerEvents
+            trigger: [...triggerEvents, 'change']
         },
-
+        requiredDateTimeField: {
+            type: 'number',
+            required: true,
+            trigger: [...triggerEvents, 'change'],
+            message: t(`rules.requiredField`)
+        },
+        requiredNumberField: {
+            type: 'number',
+            required: true,
+            trigger: [...triggerEvents, 'change'],
+            message: t(`rules.requiredField`)
+        },
+        requiredMultiSelectField: {
+            type: 'array',
+            required: true,
+            trigger: [...triggerEvents, 'change'],
+            message: t(`rules.requiredField`)
+        }
     },
     login:{
         phone:[

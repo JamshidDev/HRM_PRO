@@ -50,15 +50,15 @@ onMounted(()=>{
             :options="componentStore.topicTypes"
             label-field="name"
             value-field="id"
-
             :loading="componentStore.enumExamLoading"
         />
       </n-form-item>
-      <n-form-item :label="$t(`content.organization`)" path="type">
+      <n-form-item :label="$t(`content.organization`)" path="organizations">
         <UIStructure
             :modelV="store.payload.organizations"
             :checkedVal="store.structureCheck"
             @updateCheck="(v)=>store.structureCheck=v"
+            @updateModel="(v)=>store.payload.organizations=v"
         />
       </n-form-item>
     </div>
