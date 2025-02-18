@@ -1,7 +1,7 @@
 <script setup>
 import {UIUser, UIStatus, UIDConfirm} from "@/components/index.js"
 import {usePdfViewerStore} from "@/store/modules/index.js"
-import {Copy20Regular} from "@vicons/fluent"
+import {Copy20Regular, LinkSquare24Regular} from "@vicons/fluent"
 import i18 from "@/i18n/index.js"
 import Utils from "@/utils/Utils.js"
 const {t} = i18.global
@@ -23,8 +23,10 @@ const generateLink = (v)=>{
 }
 
 const copyLink = ()=>{
-  Utils.copyToClipboard(store.link)
-  $Toast.info(t('signature.copied'))
+  Utils.copyToClipboard(store.link, ()=>{
+    $Toast.info(t('signature.copied'))
+  })
+
 }
 
 </script>
@@ -33,15 +35,25 @@ const copyLink = ()=>{
   <div>
     <template v-for="(item, idx) in store.confirmations" :key="idx">
       <div
-          @click="generateLink(item)"
-          class="w-full rounded-xl cursor-pointer bg-white mb-1 shadow p-2 relative border border-gray-300 h-[60px]">
-        <div class=" absolute bottom-[4px] right-[4px] flex justify-center items-center">
-          <UIStatus :status="item.status.name" />
+          class="w-full rounded-xl cursor-pointer bg-white mb-1 shadow p-2 relative border border-gray-300 h-[80px]">
+        <div class=" absolute bottom-[4px] right-[4px] flex justify-center gap-2 items-center">
+
+          <n-button
+              v-if="item.type === 'w'"
+              @click="generateLink(item)"
+              type="primary"
+              size="small"
+          >
+            <template #icon>
+              <LinkSquare24Regular/>
+            </template>
+          </n-button>
+          <UIStatus size="small" :status="item.status.name" />
         </div>
         <UIUser
             :short="false"
             :data="{
-                           photo:item.worker.photo,
+                           photo:item.worker?.photo,
                            lastName:item.worker.last_name,
                            firstName:item.worker.first_name,
                            middleName:item.worker.middle_name,
@@ -50,6 +62,8 @@ const copyLink = ()=>{
         />
       </div>
     </template>
+
+
     <UIDConfirm v-model:visible="visible" type="warning">
 
       <n-spin :show="store.linkLoading">

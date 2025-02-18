@@ -4,6 +4,7 @@ import {useWorkerProfileStore} from "@/store/modules/index.js"
 import Utils from "../../../../utils/Utils.js"
 import {UIModal} from "@/components/index.js"
 import AdContractForm from "@/pages/docFlow/document/adContract/adContractForm.vue"
+import CommandForm from "@/pages/docFlow/document/command/CommandForm.vue"
 
 const store = useWorkerProfileStore()
 const workers = ref([])
@@ -14,19 +15,31 @@ const onSuccessEv = (v)=>{
 
 const onOpen = (v)=>{
   const worker = v.contract.worker
-
   workers.value = [
     {
       name:worker.last_name + ' '+worker.first_name+' '+worker.middle_name,
-      position:v.position.name,
+      position:v.position?.name,
       id:v.id,
-      typeId:v.contract.type.id
+      contractTypeId:v.contract.type.id,
+      model:Utils.documentModels.adContract,
     }
   ]
-
   store.positionVisible = true
+}
 
 
+const onOpenCommand = (v)=>{
+  const worker = v.contract.worker
+  workers.value = [
+    {
+      name:worker.last_name + ' '+worker.first_name+' '+worker.middle_name,
+      position:v.position?.name,
+      id:v.id,
+      contractTypeId:v.contract.type.id,
+      model:Utils.documentModels.adContract,
+    }
+  ]
+  store.commandVisible = true
 }
 
 </script>
@@ -76,6 +89,7 @@ const onOpen = (v)=>{
         {{$t('workerProfile.personal.additionalContract')}}
       </n-button>
       <n-button
+          @click="onOpenCommand(item)"
           size="small"
           type="warning"
           secondary
@@ -95,6 +109,15 @@ const onOpen = (v)=>{
     <adContractForm
         :workers="workers"
         :call-back="onSuccessEv"
+    />
+  </UIModal>
+  <UIModal
+      :title="$t('documentPage.command.createTitle')"
+      :width="1200"
+      v-model:visible="store.commandVisible"
+  >
+    <CommandForm
+        :workers="workers"
     />
   </UIModal>
 </div>
