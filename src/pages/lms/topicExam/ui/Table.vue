@@ -1,11 +1,10 @@
 <script setup>
 import {useTopicExamStore} from "@/store/modules/index.js"
 import {NoDataPicture, UIMenuButton, UIPagination} from "@/components/index.js";
-import {AppPaths} from "@/utils/index.js";
 import {useRouter} from "vue-router";
 import Utils from "@/utils/Utils.js"
+import {BookQuestionMark20Filled} from "@vicons/fluent";
 
-const router = useRouter()
 const store = useTopicExamStore()
 
 const changePage = (v)=>{
@@ -23,6 +22,10 @@ const onSelect = (v)=>{
     store._show()
     store.visibleType = false
     store.visible= true
+  }else if(v.key==='attach_question'){
+    store.elementId = v.data.id
+    store.attachQuestionVisible = true
+    store.attachQuestionVisibleType = true
   }
 }
 
@@ -63,6 +66,14 @@ const onSelect = (v)=>{
                 :show-delete="true"
                 :data="item"
                 @select-ev="onSelect"
+                :extra-options="[
+                    {
+                      label: $t('topicDetailsPage.questions.name'),
+                      key: 'attach_question',
+                      icon: BookQuestionMark20Filled,
+                      visible:true,
+                    },
+                ]"
             />
           </td>
         </tr>

@@ -3,6 +3,7 @@
 import {UIDrawer, UIPageFilter} from "@/components/index.js";
 import {useTopicExamStore} from "@/store/modules/index.js";
 import Form from "./ui/Form.vue";
+import AttachQuestionForm from './ui/AttachQuestionForm.vue'
 import Table from './ui/Table.vue'
 
 const store = useTopicExamStore()
@@ -30,6 +31,7 @@ onMounted(() => {
       v-model:search="store.params.search"
       @onAdd="onAdd"
       @onSearch="onSearch"
+      :show-search-input="false"
   />
   <Table/>
   <UIDrawer
@@ -39,6 +41,15 @@ onMounted(() => {
   >
     <template #content>
       <Form/>
+    </template>
+  </UIDrawer>
+  <UIDrawer
+      :title="$t('topicDetailsPage.exams.attachQuestion')"
+      :visible="store.attachQuestionVisible"
+      @update:visible="(v)=>store.attachQuestionVisible = v"
+  >
+    <template #content>
+      <AttachQuestionForm/>
     </template>
   </UIDrawer>
 

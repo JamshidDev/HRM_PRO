@@ -13,8 +13,8 @@ const onSubmit = ()=>{
   formRef.value?.validate((error)=>{
     if(!error){
       store.saveLoading = true
-      if(store.visibleType){
-        store._create()
+      if(store.attachQuestionVisibleType){
+        store._attach_question()
       }else{
         store._update()
       }
@@ -27,116 +27,87 @@ onMounted(()=>{
   componentStore._examCategory()
 })
 
+const toggleQuestionCategory = (v)=>{
+  const newVal = v.map((i)=>{
+    const old = store.questionPayload.questions.find(j=>j.exam.id === i.id)
+    if(old){
+      return old
+    }else{
+      return {
+        exam: i,
+        count: 0
+      }
+    }
+  })
+  store.questionPayload.questions = newVal
+}
 
+const count = computed(()=>store.questionPayload.questions.reduce((a,b)=>{
+  return a+b.count
+}, 0))
 </script>
 
 <template>
   <n-form
       ref="formRef"
       :rules="validationRules.common"
-      :model="store.payload"
+      :model="store.questionPayload"
   >
     <div style="min-height:calc(100vh - 120px)">
-      <n-form-item>
-        <div class="border-surface-line border flex w-full items-center px-3 justify-between rounded-md h-[34px] ">
-          <p>{{$t('topicDetailsPage.exams.isActive')}}</p>
-          <n-switch v-model:value="store.payload.active"/>
-        </div>
-      </n-form-item>
-
-      <n-form-item :label="$t(`content.name`)" path="name" rule-path="requiredStringField">
-        <n-input
-            type="text"
-            :placeholder="$t(`content.enterField`)"
-            v-model:value="store.payload.name"
-        />
-      </n-form-item>
-
-      <n-form-item :label="$t(`topicDetailsPage.exams.deadline`)" path="deadline" rule-path="requiredDateTimeField">
-        <n-date-picker
-            class="w-full"
-            :placeholder="$t(`content.choose`)"
-            v-model:value="store.payload.deadline"
-            type="datetime"
-            update-value-on-close
-            :actions="null"
-            clearable />
-      </n-form-item>
-      <n-form-item path="minute" rule-path="requiredNumberField" :label="$t(`topicDetailsPage.exams.minute`)">
-        <n-input-number
-            class="w-full"
-            :placeholder="$t(`content.enterField`)"
-            v-model:value="store.payload.minute"
-        />
-      </n-form-item>
-      <n-form-item path="variant" rule-path="requiredNumberField" :label="$t(`topicDetailsPage.exams.variants`)">
-        <n-input-number
-            class="w-full"
-            :min="1"
-            :placeholder="$t(`content.enterField`)"
-            v-model:value="store.payload.variant"
-        />
-      </n-form-item>
-
       <n-form-item
-          :label="$t(`topicDetailsPage.exams.toWhom`)"
-          path="whom"
-          rule-path="requiredNumberField"
-      >
-        <n-select
-            v-model:value="store.payload.whom"
-            filterable
-            @update:value="store.payload.whom_ids = []"
-            :placeholder="$t(`content.choose`)"
-            :options="componentStore.topicWhomList"
-            label-field="name"
-            value-field="id"
-            :loading="componentStore.enumExamLoading"
-        />
-      </n-form-item>
-      <n-form-item
-          v-if="store.payload.whom===2"
-          :label="$t(`topicDetailsPage.exams.positions`)"
-          path="whom_ids"
+          :label="$t(`topicDetailsPage.exams.categories`)"
+          path="question_ids"
           rule-path="requiredMultiSelectField"
       >
         <n-select
-            v-model:value="store.payload.whom_ids"
+            v-model:value="store.questionPayload.question_ids"
             filterable
             :placeholder="$t(`content.choose`)"
-            :options="componentStore.departmentPositionList"
+            :options="componentStore.examCategoryList"
             label-field="name"
             value-field="id"
+            @update:value="(_, v)=>toggleQuestionCategory(v)"
             multiple
             max-tag-count="responsive"
-            :loading="componentStore.departmentPositionLoading"
+            :loading="componentStore.examCategoryLoading"
         />
       </n-form-item>
       <n-form-item
-          v-else-if="store.payload.whom===3"
-          :label="$t(`topicDetailsPage.exams.workers`)"
-          path="whom_ids"
+          :label="$t(`topicDetailsPage.exams.questionCount`, {n: count})"
+          path="questions"
           rule-path="requiredMultiSelectField"
+          v-if="store.questionPayload.questions.length"
       >
-        <n-select
-            v-model:value="store.payload.whom_ids"
-            filterable
-            :placeholder="$t(`content.choose`)"
-            :options="componentStore.workerList"
-            label-field="name"
-            value-field="id"
-            :loading="componentStore.workerLoading"
-            multiple
-        />
+
+        <div class="w-full p-2 border rounded-lg border-surface-line">
+          <template
+              v-for="(item, idx) in store.questionPayload.questions"
+              :key="idx"
+          >
+            <n-form-item
+                :path="`questions.${idx}.count`"
+                class="w-full"
+                :show-label="false"
+                :rule="{
+                  trigger: ['input', 'blur', 'change'],
+                  validator() {
+                    return item.count===0 ? new Error( $t('rules.enterOverNumber', {n: 0})) : true
+                  },
+                }"
+            >
+              <div class="flex items-center justify-between w-full border border-surface-line rounded-md p-1">
+                <span>{{item.exam.name}}</span>
+                <n-input-number
+                    v-model:value="item.count"
+                    :max="item.exam.questions_count"
+                    :placeholder="$t('content.enterField')"
+                    :min="0"
+                    class="flex-shrink-0 max-w-[120px]" />
+              </div>
+            </n-form-item>
+          </template>
+        </div>
       </n-form-item>
-      <!--      <n-form-item :label="$t(`content.organization`)" path="organizations">-->
-      <!--        <UIStructure-->
-      <!--            :modelV="store.payload.organizations"-->
-      <!--            :checkedVal="store.structureCheck"-->
-      <!--            @updateCheck="(v)=>store.structureCheck=v"-->
-      <!--            @updateModel="(v)=>store.payload.organizations=v"-->
-      <!--        />-->
-      <!--      </n-form-item>-->
     </div>
 
     <div class="grid grid-cols-2 gap-2">

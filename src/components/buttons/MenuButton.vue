@@ -35,7 +35,10 @@ const props = defineProps({
     type: String,
     default:null,
   },
-
+  extraOptions:{
+    type: Array,
+    default: [],
+  }
 })
 
 const emits = defineEmits(["selectEv"])
@@ -108,7 +111,10 @@ const onDelete = ()=>{
   <div class="flex gap-2 items-center justify-center">
     <n-dropdown
         size="small"
-        :options="options"
+        :options="[
+          ...options,
+          ...extraOptions.map(i=>({...i, icon: renderIcon(i.icon)}))
+        ]"
         trigger="click"
         @select="onSelect"
     >

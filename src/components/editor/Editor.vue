@@ -8,6 +8,10 @@ const {t} = i18n.global
 
 const props = defineProps({
   showToolbar: Boolean,
+  showValidationMessage: {
+    type: Boolean,
+    default: true
+  },
   placeholder: String,
   withValidation: {
     type: Boolean,
@@ -109,6 +113,7 @@ const handleCreated = (editor) => {
          ...extraRules
         ]"
         :path="path"
+        :show-feedback="showValidationMessage"
     >
       <div class="w-full border border-secondary drop-shadow-sm">
         <Toolbar

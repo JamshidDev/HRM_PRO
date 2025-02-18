@@ -11,6 +11,7 @@ export const useTopicExamStore = defineStore('topicExamStore', {
         deleteLoading:false,
         visible:false,
         attachQuestionVisible: false,
+        attachQuestionVisibleType: true,
         visibleType:true,
         elementId:null,
         topicId: null,
@@ -18,6 +19,7 @@ export const useTopicExamStore = defineStore('topicExamStore', {
         allPermissionList:[],
         structureCheck:[],
         questionPayload: {
+            question_ids: [],
             questions: []
         },
         payload:{
@@ -100,18 +102,21 @@ export const useTopicExamStore = defineStore('topicExamStore', {
         _attach_question(){
             this.saveLoading = true
             $ApiService.topicExamService._attach_question({
-                    data: this.questionPayload,
+                    data: {
+                        questions: this.questionPayload.questions.map(i=>({
+                            count: i.count,
+                            exam_category_id: i.exam.id
+                        }))
+                    },
                     id: this.topicId,
                     exam_id: this.elementId
                 }
             ).then((res)=>{
                 this.attachQuestionVisible = false
-                this._index()
-                this.resetForm()
                 $Toast.success(t('message.successDone'))
             }).finally(()=>{
                 this.saveLoading = false
-                this.questionPayload.questions = []
+                this.resetQuestionPayload()
             })
         },
         openVisible(data){
@@ -125,6 +130,10 @@ export const useTopicExamStore = defineStore('topicExamStore', {
             this.payload.variant = null,
             this.payload.active = false,
             this.payload.whom_ids = []
+        },
+        resetQuestionPayload(){
+            this.questionPayload.questions = []
+            this.questionPayload.question_ids = []
         }
     }
 })
