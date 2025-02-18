@@ -23,7 +23,7 @@ const activeTab = ref(1)
 
 <template>
   <UIPageContent>
-    <n-tabs v-model:value="activeTab" animated type="segment">
+    <n-tabs v-model:value="activeTab" animated type="line">
       <n-tab-pane v-for="(item) in tabs" :name="item.id" :tab="$t(item.name)">
         <component :is="item.component"/>
       </n-tab-pane>

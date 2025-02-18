@@ -29,6 +29,12 @@ const onSubmit = () => {
       }else{
         store._update(goBack)
       }
+    }else{
+      let message = ''
+      error.forEach(i=>{
+        message+=(i.map(j=>j.message).join('\n')+'\n')
+      })
+      $Toast.error(message)
     }
   })
 }
@@ -87,6 +93,7 @@ onMounted(()=>{
           path="ques"
           show-toolbar
           with-validation
+          :showValidationMessage="false"
       />
 
     </div>
@@ -101,7 +108,9 @@ onMounted(()=>{
         })
         return (store.payload.options.length>2 && !check) ? new Error( $t('questionPage.rules.chooseCorrectAnswer')) : true
       },
-    }]" path="correct_option">
+    }]" path="correct_option"
+      :show-feedback="false"
+    >
       <div class="w-full">
         <template v-for="(option, idx) in store.payload.options" :key="idx">
           <div class="flex gap-2 bg-white my-2 px-2 pb-2 rounded-lg">

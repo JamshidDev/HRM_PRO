@@ -108,6 +108,7 @@ const onChange = (editor)=>{
          ...extraRules
         ]"
       :show-label="false"
+      :show-feedback="false"
   >
     <div class="w-full flex">
         <Editor

@@ -3,6 +3,7 @@ import {
   Edit20Filled, Delete16Filled, VideoClip16Filled, Book20Filled,
   Image20Filled, HeadphonesSoundWave32Filled, CircleSmall24Filled,
   NotebookQuestionMark24Filled, Delete28Regular,
+  HatGraduation12Filled
 } from "@vicons/fluent"
 import {UIPagination} from "@/components/index.js"
 import {useTopicStore} from "@/store/modules/index.js"
@@ -36,49 +37,32 @@ const goPush = (v)=>{
 <template>
 
   <n-spin :show="store.loading">
-    <div class="grid grid-cols-12 mt-10 gap-3 mb-4">
+    <div class="grid mt-10 gap-3 mb-4 grid-cols-[repeat(auto-fill,minmax(320px,1fr))]">
       <template v-for="(item, idx) in store.list" :key="idx">
         <div
             @click="goPush(item)"
-            class="cursor-pointer col-span-3 border rounded-lg border-surface-line relative overflow-hidden p-2 group">
-          <div class="text-lg font-medium text-gray-600 line-clamp-1">
-            {{item.name}}
-          </div>
-
-          <div class="flex flex-wrap gap-1 mt-3">
-            <n-button size="tiny">
-              <template #icon>
-                <Image20Filled/>
-              </template> 0 ta
-            </n-button>
-            <n-button size="tiny">
-              <template #icon>
-                <Book20Filled/>
-              </template> 0 ta
-            </n-button>
-            <n-button size="tiny">
-              <template #icon>
-                <VideoClip16Filled/>
-              </template> 0 ta
-            </n-button>
-            <n-button size="tiny">
-              <template #icon>
-                <HeadphonesSoundWave32Filled/>
-              </template> 0 ta
-            </n-button>
-            <n-button size="tiny">
-              <template #icon>
-                <NotebookQuestionMark24Filled/>
-              </template> 0 ta
-            </n-button>
-          </div>
+            class="cursor-pointer border rounded-lg border-surface-line relative overflow-hidden p-2 group">
+            <n-tooltip trigger="hover">
+              <template #trigger>
+                <div class="text-lg font-medium text-gray-600 line-clamp-1">
+                {{item.name}}
+              </div>
+              </template>
+              {{item.name}}
+            </n-tooltip>
+          <p class="text-xs text-primary">{{$t('topicDetailsPage.exams.count', {n: item.exams_count})}}</p>
           <n-divider class="!my-2" />
           <div class="flex justify-between items-center">
             <div class="text-xs font-medium text-primary">
 <!--              <n-icon size="10">-->
 <!--                <CircleSmall24Filled/>-->
 <!--              </n-icon>-->
-              <span class="underline">{{item.type.name}}</span>
+              <n-button size="tiny" dashed :type="item.type.id ==1 ? 'primary' : 'success'">
+                <template #icon>
+                  <n-icon :component="HatGraduation12Filled" />
+                </template>
+                {{item.type.name}}
+              </n-button>
             </div>
             <div class="flex gap-1 opacity-0 group-hover:opacity-100 transition duration-300" :class="{'opacity-100': store.elementId === item.id}">
               <n-button
@@ -117,16 +101,14 @@ const goPush = (v)=>{
         </div>
       </template>
 
-      <div class="col-span-12"   v-show="store.list.length>10">
-        <UIPagination
-            :page="store.params.page"
-            :per_page="store.params.size"
-            :total="store.totalItems"
-            @change-page="changePage"
-        />
-      </div>
-
     </div>
+    <UIPagination
+        v-if="store.totalItems>store.params.per_page"
+        :page="store.params.page"
+        :per_page="store.params.size"
+        :total="store.totalItems"
+        @change-page="changePage"
+    />
   </n-spin>
 
 </template>

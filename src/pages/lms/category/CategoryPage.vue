@@ -26,6 +26,7 @@ onMounted(()=>{
 <template>
   <UIPageContent>
     <UIPageFilter
+        :show-search-input="false"
         v-model:search="store.params.search"
         @onSearch="onSearch"
         @onAdd="onAdd"

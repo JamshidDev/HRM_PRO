@@ -192,9 +192,9 @@ export const useComponentStore = defineStore('componentStore', {
         _examCategory(){
             this.examCategoryLoading = true
             $ApiService.componentService._examCategory({params: {...this.params}}).then((res)=>{
-                this.examCategoryList = res.data.data
+                this.examCategoryList = res.data.data.data
             }).finally(()=>{
-                this.enumExamLoading= false
+                this.examCategoryLoading = false
             })
         },
         _docExample(){
@@ -335,7 +335,7 @@ export const useComponentStore = defineStore('componentStore', {
                 this.workerList = res.data.data.data.map((v)=>({
                     ...v,
                     name:v.worker.last_name + ' '+v.worker.first_name+' '+v.worker.middle_name,
-                    position:v.position.name,
+                    position:v.position?.name || v?.post_name,
                     id:v.id,
                     typeId:v.contract.type.id,
 

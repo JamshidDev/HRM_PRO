@@ -49,6 +49,6 @@ const onAdd=()=>{
       </template>
 
     </UIPageFilter>
-    <QuestionList class="mt-2" />
+    <QuestionList class="mt-1" />
   </UIPageContent>
 </template>

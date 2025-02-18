@@ -85,7 +85,8 @@
         "requiredMinLength": "{n} ta belgidan kam bo'lmasligi kerak",
         "requiredMaxLength": "{n} ta belgidan ko'p bo'lmasligi kerak",
         "unExpectedFormat": "Noto'g'ri turdagi ma'lumot!",
-        "requiredJSHSHIR": "Pasport jshshir kiritilishi shart!"
+        "requiredJSHSHIR": "Pasport jshshir kiritilishi shart!",
+        "enterOverNumber": "{n}dan katta son kiriting"
     },
     "message": {
       "successDone": "Muvofaqqiyatli bajarildi",
@@ -727,7 +728,11 @@
       "isActive": "Aktivlik holati",
       "positions": "Lavozimlar",
       "organizations": "Tashkilotlar",
-      "workers": "Xodimlar"
+      "workers": "Xodimlar",
+      "categories": "Kategoriyalar",
+      "questionCount": "Savollar soni: ({n})",
+      "attachQuestion": "Savol biriktirish",
+      "count": "Barcha imtihonlar: {n}ta"
     },
     "questions": {
       "createTitle": "Savol qo'shish",
@@ -808,8 +813,8 @@
     },
     "title": "Savollar",
     "rules": {
-      "minOptions": "Kamida 3ta variant bo'lishi lozim",
-      "chooseCorrectAnswer": "To'g'ri javobni tanlang"
+      "minOptions": "Kamida 3ta variant bo'lishi lozim!",
+      "chooseCorrectAnswer": "To'g'ri javobni tanlang!"
     }
 
   },
