@@ -21,6 +21,7 @@ import scheduleService from "@/service/v1/admin/scheduleService.js"
 import workdayService from "@/service/v1/admin/workdayService.js"
 import commandTempService from "@/service/v1/admin/commandTempService.js"
 import specialityService from "@/service/v1/admin/specialityService.js"
+import uploadService from '@/service/v1/admin/uploadService.js'
 
 import confirmationService from "@/service/v1/hrm/confirmationService.js"
 import departmentService from "@/service/v1/hrm/departmentService.js";
@@ -47,8 +48,9 @@ import adContractService from "@/service/v1/docFlow/adContractService.js"
 
 import topicService from "@/service/v1/lms/topicService.js"
 import topicFilesService from "@/service/v1/lms/topicFilesService.js"
-import topicCategoryService from "@/service/v1/lms/topicCategoryService.js"
-import topicQuestionService from "@/service/v1/lms/topicQuestionService.js"
+import categoryService from "@/service/v1/lms/categoryService.js"
+import categoryQuestionService from "@/service/v1/lms/categoryQuestionService.js"
+import topicExamService from "@/service/v1/lms/topicExamService.js";
 
 export default {
     authService,
@@ -78,6 +80,7 @@ export default {
     serviceOrgService,
     languageServiceAdmin,
     universityServiceAdmin,
+    uploadService,
     scheduleService,
     workdayService,
     commandTempService,
@@ -85,9 +88,10 @@ export default {
     commandService,
     documentChatService,
     topicService,
+    topicExamService,
     topicFilesService,
-    topicCategoryService,
-    topicQuestionService,
+    categoryService,
+    categoryQuestionService,
     relativeService,
     universityService,
     documentFileService,

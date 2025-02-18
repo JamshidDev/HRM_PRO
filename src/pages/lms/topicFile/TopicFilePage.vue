@@ -14,6 +14,7 @@ const onSearch = (v)=>{
 }
 
 const onAdd = ()=>{
+  store.resetForm()
   store.visibleType = true
   store.visible = true
 }

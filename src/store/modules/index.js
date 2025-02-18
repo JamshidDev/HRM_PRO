@@ -50,5 +50,7 @@ export * from "./docFlow/adContractStore.js"
 export * from "./docFlow/confirmationAdCommandStore.js"
 
 export * from "./lms/topicStore.js"
-export * from "./lms/topicCategoryStore.js"
+export * from "./lms/categoryStore.js"
+export * from './lms/categoryQuestionStore.js'
 export * from './lms/topicFilesStore.js'
+export * from './lms/topicExamStore.js'

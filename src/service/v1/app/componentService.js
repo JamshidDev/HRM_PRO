@@ -9,6 +9,11 @@ const _enumAdmin =async (payload)=>{
 const _enumExam =async (payload)=>{
     return await axios.get(`/v1/exam/enums`, {params:payload?.params})
 }
+
+const _examCategory =async (payload)=>{
+    return await axios.get(`/v1/exam/categories`, {params:payload?.params})
+}
+
 const _organization =async (payload)=>{
     return await axios.get(`/v1/structure/organization-list`, {params:payload.params})
 }
@@ -45,4 +50,5 @@ export default {
     _enumExam,
     _commandTypes,
     _contractAddition,
+    _examCategory
 }
