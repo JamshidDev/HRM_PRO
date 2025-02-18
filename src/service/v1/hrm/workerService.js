@@ -10,6 +10,10 @@ const _index =async (payload)=>{
 const _show =async (payload)=>{
     return await axios.get(`/v1/hr/worker-positions/${payload.id}/edit`, {params:payload.params})
 }
+
+const _preview =async (payload)=>{
+    return await axios.get(`/v1/hr/worker-positions/${payload.id}`, {params:payload.params})
+}
 const _create = async (payload)=>{
     return await axios.post(`/v1/hr/workers`, payload.data)
 }
@@ -27,4 +31,5 @@ export default {
     _show,
     _create,
     _update,
+    _preview,
 }

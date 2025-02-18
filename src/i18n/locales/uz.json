@@ -49,7 +49,7 @@
         "clear": "Tozalash",
         "continue": "Davom etish",
         "close": "Yopish",
-        "open": "Ko'rish",
+        "open": "Ochish",
         "hide": "Yashirish",
         "closeAndClear": "Yopish va tozalash",
         "notWorker": "Xodim topilmadi",
@@ -69,7 +69,8 @@
         "upload": "Fayl yuklash",
         "attachFile": "Fayl biriktirish",
         "document": "Hujjat",
-        "checking": "Tekshirilmoqda...",
+      "checking": "Tekshirilmoqda...",
+      "downloadCV": "Ma'lumotnoma yuklash",
         "deleteWarning": "Haqiqattan ham o'chirmoqchimisz?",
         "sum": "So'm",
         "total": "Umumiy: {n}ta"
@@ -430,10 +431,11 @@
             "documentExampleId": "Hujjat andozasi",
             "department": "Bo'lim",
             "position": "Lavozim",
-            "positionStatus": "Bo'limni ko'rsatmaslik",
+            "positionStatus": "Aosiy shtatga qabul qilish",
             "salary": "Oylik maosh",
             "group": "Gurux",
-            "rank": "Lavozim razryad",
+          "rank": "Lavozim razryad",
+          "rate": "Stavka",
             "postName": "To'liq lavozim nomi",
             "director": "Direktor",
             "contract_to_date": "Shartnoma muddati",
@@ -444,7 +446,7 @@
             "schedule_id": "Ish jadvali",
             "command_type": "Buyruq turi",
             "worker": "Xodimni tanlang",
-            "command_status": "Buyruq yaratish",
+            "command_status": "Shartnoma asosida buyruq yaratish uchun belgilang",
             "organization": "Korxona"
         },
         "signature": {
@@ -480,7 +482,8 @@
         "statuses": {
             "confirm": "Tasdiqlash"
         },
-        "confirmText": "{n} raqamli shartnoma asosida buyruq yaratasizmi?"
+    "confirmText": "{n} raqamli shartnoma asosida buyruq yaratasizmi?",
+    "confirmAdText": "{n} raqamli qo'shimcha kelishuv shartnoma asosida buyruq yaratasizmi?"
     },
   "adContractPage": {
         "createTitle": "Qo'shimcha kelishuv tuzish",
@@ -616,13 +619,55 @@
     "form": {
       "birth_place": "Tug'ilgan manzili",
       "post_name": "Lavozimi",
-      "marital_status": "Oilaviy holati",
-      "birthdayPlace": "Tug'ilgan yili va joyi",
-
+      "birthdayPlace": "Tug'ilgan sana va joyi",
       "relative": "Qarindoshligi"
     },
     "title": "Yaqin qarindosh ma'lumotlari",
     "no-data": "Yaqin qarindoshlar qo'shilmagan!"
+  },
+  "partyPage": {
+    "createTitle": "Partiyaviylik ma'umotini qo'shish",
+    "updateTitle": "Partiyaviylik ma'umotini tahrirlash",
+    "form": {
+      "to_date": "Qachongacha",
+      "from_date": "Qachondan",
+      "party": "Partiyaviyligi"
+    },
+    "title": "Partiyaviylik ma'lumotlari",
+    "no-data": "Partiyaviylik qo'shilmagan!"
+  },
+  "militaryPage": {
+    "createTitle": "Harbiy hisob ma'umotini qo'shish",
+    "updateTitle": "Harbiy hisob ma'umotini tahrirlash",
+    "form": {
+      "status": "Holati",
+      "name": "Nomi",
+      "speciality": "Harbiy hisobdagi mutaxassisligi",
+      "commissariat": "Yashash joyi bo'yicha komissariyat nomi",
+      "number": "Raqami"
+    },
+    "title": "Harbiy hisob ma'lumotlari",
+    "no-data": "Harbiy hisob qo'shilmagan!"
+  },
+  "academicTitlePage": {
+    "createTitle": "Ilmiy unvon ma'umotini qo'shish",
+    "updateTitle": "Ilmiy unvon ma'umotini tahrirlash",
+    "form": {
+      "type": "Turi",
+      "file": "Ilmiy unvon hujjati"
+    },
+    "title": "Ilmiy unvon ma'lumotlari",
+    "no-data": "Ilmiy unvon qo'shilmagan!"
+  },
+  "academicDegreePage": {
+    "createTitle": "Ilmiy daraja ma'umotini qo'shish",
+    "updateTitle": "Ilmiy daraja ma'umotini tahrirlash",
+    "form": {
+      "type": "Turi",
+      "file": "Ilmiy daraja hujjati"
+    },
+    "title": "Ilmiy daraja ma'lumotlari",
+    "no-data": "Ilmiy daraja qo'shilmagan!"
   },
   "oldCareerPage": {
     "createTitle": "Mehnat faoliyatini qo'shish",
@@ -632,8 +677,8 @@
       "post_name": "Lavozimi",
       "to_date": "Qachongacha"
     },
-    "title": "Eski mehnat faoliyati ma'lumotlari",
-    "no-data": "Eski mehnat faoliyati qo'shilmagan!"
+    "title": "Mehnat faoliyati ma'lumotlari",
+    "no-data": "Mehnat faoliyati qo'shilmagan!"
   },
   "languagePage": {
     "createTitle": "Til ma'lumotini qo'shish",
@@ -707,13 +752,14 @@
   },
   "workerView": {
     "general": {
-      "name": "Umimiy ma'lumotlari",
+      "name": "Shaxsiy ma'lumotlari",
+      "passportName": "Pasport ma'lumotlari",
       "fullName": "F.I.SH",
-      "passportNumber": "Pasport (ID karta) seriya va raqami",
+      "passportNumber": "Pasport seriyasi",
       "passportJSHSHIR": "JSHSHIR",
       "fromDate": "Berilgan sana",
-      "toDate": "Muddati tugash sanasi",
-      "who": "Kim tomonidan berilgan",
+      "toDate": "Tugash sanasi",
+      "who": "Berilgan joyi",
       "phone": "Telefon raqami",
       "birthday": "Tug'ilgan sana",
       "maritalStatus": "Oilaviy holati",
@@ -727,16 +773,21 @@
       "part": "Partiyaviyligi",
       "inn": "INN",
       "nationality": "Millati",
+      "position": "Lavozim",
+      "department": "Bo'limi",
+      "salary": "Oylik maosh",
       "country": "Tug'ilgan davlati"
     },
     "tabs": {
       "general": "Umimiy ma'lumotlari",
-      "career": "Mehnat faoliayi",
+      "career": "Mehnat faoliyati",
       "relative": "Yaqin qarindoshlari",
       "med": "Tibbiy ko'rik ma'lumoti",
       "vacation": "Ta'til ma'lumoti",
       "incentive": "Rag'batlantirishlari",
       "attestation": "Attestatsiya",
+      "checkSkill": "Malaka sinovi",
+      "checkKnowledge": "Bilim sinovi",
       "punishment": "Intizomiy jazolari"
     }
   },

@@ -6,7 +6,12 @@ const props = defineProps({
   multiple:{
     type: Boolean,
     default: true
-  }
+  },
+  showDelete:{
+    type: Boolean,
+    default: true
+  },
+
 })
 
 const inputFileRef = ref(null)
@@ -16,17 +21,26 @@ const onFile = ()=>{
   inputFileRef.value.click()
 }
 const onUpload =async (v)=> {
-
   const list = v.target.files
-  for(let i=0;i<list.length;i++){
-    let file = list[i]
-    files.value.push({
-      id: uuidv4(),
-      name: file.name,
-      file,
-    })
+  if(props.multiple){
+    for(let i=0;i<list.length;i++){
+      let file = list[i]
+      files.value.push({
+        id: uuidv4(),
+        name: file.name,
+        file,
+      })
+    }
+  }else{
+    files.value = [
+      {
+        id: uuidv4(),
+        name: v.target.files[0].name,
+        file:v.target.files[0],
+      }
+    ]
   }
-  console.log(files.value)
+
 }
 
 const onDelete = (v)=> {
@@ -43,7 +57,7 @@ const onDelete = (v)=> {
 <template>
   <div class="flex w-full flex-col">
     <div>
-      <n-button style="width: 100%" @click="onFile" type="default" secondary :disabled="!!(!multiple && files.length)">
+      <n-button style="width: 100%" @click="onFile" type="default" secondary>
         <template #icon>
           <CloudArrowUp24Regular/>
         </template>
@@ -63,7 +77,7 @@ const onDelete = (v)=> {
           </n-icon>
           <span class="text-xs line-clamp-1">{{item.name}}</span>
           <span class="inline-block absolute right-[4px] top-[6px] opacity-0 ui__upload-icon transition-all duration-300 ">
-            <n-icon size="20" class="text-danger" @click="onDelete(item)">
+            <n-icon v-if="showDelete" size="20" class="text-danger"  @click="onDelete(item)">
               <Delete48Filled/>
             </n-icon>
           </span>

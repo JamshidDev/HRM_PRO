@@ -18,6 +18,7 @@ export const useComponentStore = defineStore('componentStore', {
         partyList:[],
         rankList:[],
         groupList:[],
+        militaryStatuses:[],
 
         departmentList:[],
         depParams:{
@@ -124,6 +125,10 @@ export const useComponentStore = defineStore('componentStore', {
         allCityList:[],
         allCityLoading:false,
 
+        previewVisible:false,
+        previewLoading:false,
+        workerPreview:null,
+
 
     }),
     actions:{
@@ -157,6 +162,7 @@ export const useComponentStore = defineStore('componentStore', {
                 this.relativesList = res.data.data.relatives
                 this.maritalList = res.data.data.marital_statuses
                 this.languageList = res.data.data.languages
+                this.militaryStatuses = res.data.data.military_statuses
             }).finally(()=>{
                 this.enumLoading= false
             })
@@ -327,10 +333,12 @@ export const useComponentStore = defineStore('componentStore', {
             this.workerLoading = true
             $ApiService.workerService._index({page:1, per_page: 10000}).then((res)=>{
                 this.workerList = res.data.data.data.map((v)=>({
+                    ...v,
                     name:v.worker.last_name + ' '+v.worker.first_name+' '+v.worker.middle_name,
                     position:v.position.name,
                     id:v.id,
-                    typeId:v.contract.type.id
+                    typeId:v.contract.type.id,
+
                 }))
             }).finally(()=>{
                 this.workerLoading = false
@@ -353,7 +361,15 @@ export const useComponentStore = defineStore('componentStore', {
             }).finally(()=>{
                 this.allCityLoading = false
             })
-        }
+        },
+        _workerPreview(id){
+            this.previewLoading = true
+            $ApiService.workerService._preview({id}).then((res)=>{
+                this.workerPreview = res.data.data
+            }).finally(()=>{
+                this.previewLoading = false
+            })
+        },
 
 
 

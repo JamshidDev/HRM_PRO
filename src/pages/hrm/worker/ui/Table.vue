@@ -3,23 +3,13 @@ import {NoDataPicture, UIActionButton, UIPagination, UIUser, UIMenuButton, UIWor
 import {useWorkerStore} from "@/store/modules/index.js"
 import {useRouter} from "vue-router"
 import {AppPaths} from "@/utils/index.js"
+import Utils from "@/utils/Utils.js"
 
 const store = useWorkerStore()
 const router = useRouter()
+const previewRef = ref(null)
 
 
-
-const onEdit = (v)=>{
-  store.visibleType = false
-  store.elementId = v.id
-
-  store.visible = true
-}
-
-const onDelete = (v)=>{
-  store.elementId = v.id
-  store._delete()
-}
 
 const goPush =(v)=>{
   router.push({
@@ -32,6 +22,12 @@ const changePage = (v)=>{
   store.params.page = v.page
   store.params.per_page = v.per_page
   store._index()
+}
+
+const onSelectEv = (v)=>{
+  if(v.key === Utils.ActionTypes.view){
+    previewRef.value.openPreview(v.data.uuid)
+  }
 }
 </script>
 
@@ -74,8 +70,10 @@ const changePage = (v)=>{
           <td>
             <UIMenuButton
                 :data="item"
-                :show-open="true"
+                show-view
+                show-edit
                 :show-delete="false"
+                @selectEv="onSelectEv"
             />
           </td>
         </tr>
@@ -91,7 +89,7 @@ const changePage = (v)=>{
     </div>
     <NoDataPicture v-if="store.list.length===0 && !store.loading" />
   </n-spin>
-  <UIWorkerView v-model:visible="store.workerVisible"   />
+  <UIWorkerView ref="previewRef"/>
 </template>
 
 <style scoped>

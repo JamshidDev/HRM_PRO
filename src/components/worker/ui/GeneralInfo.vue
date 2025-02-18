@@ -1,90 +1,136 @@
 <script setup>
+import {useComponentStore} from "@/store/modules/index.js"
+import Utils from "../../../utils/Utils.js"
 
+const store = useComponentStore()
 </script>
 
 <template>
-  <div class="flex flex-col w-full">
-    <h3 class="text-2xl text-blue-900 font-semibold mb-4">{{$t('workerView.general.name')}}</h3>
-    <table class="w-full ui__worker-table">
-      <tbody>
-        <tr>
-          <td class="p-2 font-semibold" style="width:50%">{{$t('workerView.general.fullName')}}</td>
-          <td class="p-2 text-blue-900" style="width:50%">Raximov Jamshid Shuxrat o'g'li</td>
-        </tr>
-        <tr>
-          <td class="p-2 font-semibold" style="width:50%">{{$t('workerView.general.birthday')}}</td>
-          <td class="p-2 text-blue-900" style="width:50%"></td>
-        </tr>
-        <tr>
-          <td class="p-2 font-semibold" style="width:50%">{{$t('workerView.general.passportNumber')}}</td>
-          <td class="p-2 text-blue-900" style="width:50%"></td>
-        </tr>
-        <tr>
-          <td class="p-2 font-semibold" style="width:50%">{{$t('workerView.general.passportJSHSHIR')}}</td>
-          <td class="p-2 text-blue-900" style="width:50%"></td>
-        </tr>
-        <tr>
-          <td class="p-2 font-semibold" style="width:50%">{{$t('workerView.general.fromDate')}}</td>
-          <td class="p-2 text-blue-900" style="width:50%"></td>
-        </tr>
-        <tr>
-          <td class="p-2 font-semibold" style="width:50%">{{$t('workerView.general.toDate')}}</td>
-          <td class="p-2 text-blue-900" style="width:50%"></td>
-        </tr>
-        <tr>
-          <td class="p-2 font-semibold" style="width:50%">{{$t('workerView.general.who')}}</td>
-          <td class="p-2 text-blue-900" style="width:50%"></td>
-        </tr>
-        <tr>
-          <td class="p-2 font-semibold" style="width:50%">{{$t('workerView.general.phone')}}</td>
-          <td class="p-2 text-blue-900" style="width:50%"></td>
-        </tr>
+  <div v-if="store.workerPreview" class="w-full grid grid-cols-12">
+    <div class="col-span-12 mt-12">
+      <div class="text-sm uppercase mb-2 font-semibold text-primary">{{$t('workerView.general.name')}}</div>
+      <div class="grid grid-cols-12 border border-dashed rounded-md border-surface-line p-2">
+        <div class="col-span-6">
+          <span class="block p-1 leading-4 font-normal text-gray-400">{{$t('workerView.general.fullName')}}: <span class="font-semibold pl-2 text-gray-700">{{store.workerPreview?.worker.last_name+ ' '+store.workerPreview?.worker.first_name+' '+store.workerPreview?.worker.middle_name}}</span></span>
+          <span class="block p-1 leading-4 text-gray-400">{{$t('workerView.general.birthday')}}: <span class="font-semibold pl-2 text-gray-700">{{Utils.timeOnlyDate(store.workerPreview?.worker?.birthday)}}</span></span>
+          <span class="block p-1 leading-4 text-gray-400">{{$t('workerView.general.birthdayRegion')}}: <span class="font-semibold pl-2 text-gray-700">{{store.workerPreview?.worker.region.name}}</span></span>
+          <span class="block p-1 leading-4 text-gray-400">{{$t('workerView.general.birthdayCity')}}: <span class="font-semibold pl-2 text-gray-700"> {{store.workerPreview?.worker.city.name}}</span></span>
+          <span class="block p-1 leading-4 text-gray-400">{{$t('workerView.general.maritalStatus')}}: <span class="font-semibold pl-2 text-gray-700"></span></span>
 
-        <tr>
-          <td class="p-2 font-semibold" style="width:50%">{{$t('workerView.general.nationality')}}</td>
-          <td class="p-2 text-blue-900" style="width:50%"></td>
-        </tr>
-        <tr>
-          <td class="p-2 font-semibold" style="width:50%">{{$t('workerView.general.maritalStatus')}}</td>
-          <td class="p-2 text-blue-900" style="width:50%"></td>
-        </tr>
-        <tr>
-          <td class="p-2 font-semibold" style="width:50%">{{$t('workerView.general.birthdayRegion')}}</td>
-          <td class="p-2 text-blue-900" style="width:50%"></td>
-        </tr>
-        <tr>
-          <td class="p-2 font-semibold" style="width:50%">{{$t('workerView.general.birthdayCity')}}</td>
-          <td class="p-2 text-blue-900" style="width:50%"></td>
-        </tr>
-        <tr>
-          <td class="p-2 font-semibold" style="width:50%">{{$t('workerView.general.liveRegion')}}</td>
-          <td class="p-2 text-blue-900" style="width:50%"></td>
-        </tr>
-        <tr>
-          <td class="p-2 font-semibold" style="width:50%">{{$t('workerView.general.liveCity')}}</td>
-          <td class="p-2 text-blue-900" style="width:50%"></td>
-        </tr>
-        <tr>
-          <td class="p-2 font-semibold" style="width:50%">{{$t('workerView.general.academicTitle')}}</td>
-          <td class="p-2 text-blue-900" style="width:50%"></td>
-        </tr>
-        <tr>
-          <td class="p-2 font-semibold" style="width:50%">{{$t('workerView.general.academicDegree')}}</td>
-          <td class="p-2 text-blue-900" style="width:50%"></td>
-        </tr>
-        <tr>
-          <td class="p-2 font-semibold" style="width:50%">{{$t('workerView.general.part')}}</td>
-          <td class="p-2 text-blue-900" style="width:50%"></td>
-        </tr>
-        <tr>
-          <td class="p-2 font-semibold" style="width:50%">{{$t('workerView.general.inn')}}</td>
-          <td class="p-2 text-blue-900" style="width:50%"></td>
-        </tr>
-        <tr>
-          <td class="p-2 font-semibold" style="width:50%">{{$t('workerView.general.country')}}</td>
-          <td class="p-2 text-blue-900" style="width:50%"></td>
-        </tr>
-      </tbody>
-    </table>
+        </div>
+        <div class="col-span-6">
+
+          <span class="block p-1 leading-4 text-gray-400">{{$t('workerView.general.inn')}}: <span class="font-semibold pl-2 text-gray-700">{{store.workerPreview?.worker.inn}}</span></span>
+          <span class="block p-1 leading-4 text-gray-400">{{$t('workerView.general.nationality')}}: <span class="font-semibold pl-2 text-gray-700">{{store.workerPreview?.worker.nationality.name.name}}</span></span>
+          <span class="block p-1 leading-4 text-gray-400">{{$t('workerView.general.country')}}: <span class="font-semibold pl-2 text-gray-700">{{store.workerPreview?.worker.country.name}}</span></span>
+          <span class="block p-1 leading-4 text-gray-400">{{$t('workerView.general.address')}}: <span class="font-semibold pl-2 text-gray-700">{{store.workerPreview?.worker.address}}</span></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-span-12 mt-12">
+      <div class="text-sm uppercase mb-2 font-semibold text-primary">{{$t('workerView.general.passportName')}}</div>
+      <div v-for="(item, idx) in store.workerPreview?.worker.passports" :key="idx" class="grid grid-cols-12 border border-dashed rounded-md border-surface-line p-2">
+        <div class="col-span-6">
+          <span class="block p-1 leading-4 text-gray-400">{{$t('workerView.general.passportNumber')}}: <span class="font-semibold pl-2 text-gray-700">{{item.serial_number}}</span></span>
+          <span class="block p-1 leading-4 text-gray-400">{{$t('workerView.general.fromDate')}}: <span class="font-semibold pl-2 text-gray-700">{{Utils.timeOnlyDate(item.from_date)}}</span></span>
+
+        </div>
+        <div class="col-span-6">
+          <span class="block p-1 leading-4 text-gray-400">{{$t('workerView.general.toDate')}}: <span class="font-semibold pl-2 text-gray-700">{{Utils.timeOnlyDate(item.to_date)}}</span></span>
+          <span class="block p-1 leading-4 text-gray-400">{{$t('workerView.general.who')}}: <span class="font-semibold pl-2 text-gray-700">{{item.address}}</span></span>
+        </div>
+      </div>
+    </div>
+
+
+
+
+
+    <div class="col-span-12">
+<!--      <h3 class="text-xl text-surface-800 font-semibold mb-3">{{$t('workerView.general.name')}}</h3>-->
+<!--      <table class="w-full ui__worker-table">-->
+<!--        <tbody>-->
+<!--        <tr>-->
+<!--          <td class="p-2 font-semibold" style="width:50%">{{$t('workerView.general.fullName')}}</td>-->
+<!--          <td class="p-2 text-blue-900" style="width:50%">Raximov Jamshid Shuxrat o'g'li</td>-->
+<!--        </tr>-->
+<!--        <tr>-->
+<!--          <td class="p-2 font-semibold" style="width:50%">{{$t('workerView.general.birthday')}}</td>-->
+<!--          <td class="p-2 text-blue-900" style="width:50%"></td>-->
+<!--        </tr>-->
+<!--        <tr>-->
+<!--          <td class="p-2 font-semibold" style="width:50%">{{$t('workerView.general.passportNumber')}}</td>-->
+<!--          <td class="p-2 text-blue-900" style="width:50%"></td>-->
+<!--        </tr>-->
+<!--        <tr>-->
+<!--          <td class="p-2 font-semibold" style="width:50%">{{$t('workerView.general.passportJSHSHIR')}}</td>-->
+<!--          <td class="p-2 text-blue-900" style="width:50%"></td>-->
+<!--        </tr>-->
+<!--        <tr>-->
+<!--          <td class="p-2 font-semibold" style="width:50%">{{$t('workerView.general.fromDate')}}</td>-->
+<!--          <td class="p-2 text-blue-900" style="width:50%"></td>-->
+<!--        </tr>-->
+<!--        <tr>-->
+<!--          <td class="p-2 font-semibold" style="width:50%">{{$t('workerView.general.toDate')}}</td>-->
+<!--          <td class="p-2 text-blue-900" style="width:50%"></td>-->
+<!--        </tr>-->
+<!--        <tr>-->
+<!--          <td class="p-2 font-semibold" style="width:50%">{{$t('workerView.general.who')}}</td>-->
+<!--          <td class="p-2 text-blue-900" style="width:50%"></td>-->
+<!--        </tr>-->
+<!--        <tr>-->
+<!--          <td class="p-2 font-semibold" style="width:50%">{{$t('workerView.general.phone')}}</td>-->
+<!--          <td class="p-2 text-blue-900" style="width:50%"></td>-->
+<!--        </tr>-->
+
+<!--        <tr>-->
+<!--          <td class="p-2 font-semibold" style="width:50%">{{$t('workerView.general.nationality')}}</td>-->
+<!--          <td class="p-2 text-blue-900" style="width:50%"></td>-->
+<!--        </tr>-->
+<!--        <tr>-->
+<!--          <td class="p-2 font-semibold" style="width:50%">{{$t('workerView.general.maritalStatus')}}</td>-->
+<!--          <td class="p-2 text-blue-900" style="width:50%"></td>-->
+<!--        </tr>-->
+<!--        <tr>-->
+<!--          <td class="p-2 font-semibold" style="width:50%">{{$t('workerView.general.birthdayRegion')}}</td>-->
+<!--          <td class="p-2 text-blue-900" style="width:50%"></td>-->
+<!--        </tr>-->
+<!--        <tr>-->
+<!--          <td class="p-2 font-semibold" style="width:50%">{{$t('workerView.general.birthdayCity')}}</td>-->
+<!--          <td class="p-2 text-blue-900" style="width:50%"></td>-->
+<!--        </tr>-->
+<!--        <tr>-->
+<!--          <td class="p-2 font-semibold" style="width:50%">{{$t('workerView.general.liveRegion')}}</td>-->
+<!--          <td class="p-2 text-blue-900" style="width:50%"></td>-->
+<!--        </tr>-->
+<!--        <tr>-->
+<!--          <td class="p-2 font-semibold" style="width:50%">{{$t('workerView.general.liveCity')}}</td>-->
+<!--          <td class="p-2 text-blue-900" style="width:50%"></td>-->
+<!--        </tr>-->
+<!--        <tr>-->
+<!--          <td class="p-2 font-semibold" style="width:50%">{{$t('workerView.general.academicTitle')}}</td>-->
+<!--          <td class="p-2 text-blue-900" style="width:50%"></td>-->
+<!--        </tr>-->
+<!--        <tr>-->
+<!--          <td class="p-2 font-semibold" style="width:50%">{{$t('workerView.general.academicDegree')}}</td>-->
+<!--          <td class="p-2 text-blue-900" style="width:50%"></td>-->
+<!--        </tr>-->
+<!--        <tr>-->
+<!--          <td class="p-2 font-semibold" style="width:50%">{{$t('workerView.general.part')}}</td>-->
+<!--          <td class="p-2 text-blue-900" style="width:50%"></td>-->
+<!--        </tr>-->
+<!--        <tr>-->
+<!--          <td class="p-2 font-semibold" style="width:50%">{{$t('workerView.general.inn')}}</td>-->
+<!--          <td class="p-2 text-blue-900" style="width:50%"></td>-->
+<!--        </tr>-->
+<!--        <tr>-->
+<!--          <td class="p-2 font-semibold" style="width:50%">{{$t('workerView.general.country')}}</td>-->
+<!--          <td class="p-2 text-blue-900" style="width:50%"></td>-->
+<!--        </tr>-->
+<!--        </tbody>-->
+<!--      </table>-->
+    </div>
+
   </div>
 </template>

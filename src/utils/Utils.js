@@ -46,7 +46,9 @@ const timeOnlyDate = (time)=>{
 const timeOnlyHour = (time)=>{
     return time? dayjs(time).format('HH:mm') : null
 }
-
+const timeOnlyYear = (time)=>{
+    return time? dayjs(time).format('YYYY') : null
+}
 const base64UrlEncode = (obj)=>{
     return btoa(JSON.stringify(obj))
         .replace(/=+$/, '')
@@ -108,6 +110,10 @@ const ActionTypes = {
     delete:"delete",
 }
 
+const combineFullName = (user)=>{
+    return `${user.last_name} ${user.first_name} ${user.middle_name}`
+}
+
 
 
 
@@ -133,4 +139,6 @@ export default {
     documentModels,
     copyToClipboard,
     ActionTypes,
+    timeOnlyYear,
+    combineFullName
 }

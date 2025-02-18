@@ -34,6 +34,10 @@ import languageService from "@/service/v1/hrm/languageService.js"
 import relativeService from "@/service/v1/hrm/relativeService.js"
 import universityService from "@/service/v1/hrm/universityService.js"
 import olCareerService from "@/service/v1/hrm/olCareerService.js"
+import partyService from "@/service/v1/hrm/partyService.js"
+import militaryService from "@/service/v1/hrm/militaryService.js"
+import academicTitleService from "@/service/v1/hrm/academicTitleService.js"
+import academicDegreeService from "@/service/v1/hrm/academicDegreeService.js"
 
 import documentService from "@/service/v1/docFlow/documentService.js"
 import contractService from "@/service/v1/docFlow/contractService.js"
@@ -93,4 +97,8 @@ export default {
     documentFileService,
     adContractService,
     olCareerService,
+    partyService,
+    militaryService,
+    academicTitleService,
+    academicDegreeService,
 }

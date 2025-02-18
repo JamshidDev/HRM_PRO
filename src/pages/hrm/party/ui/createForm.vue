@@ -1,9 +1,10 @@
 <script setup>
-import validationRules from "@/utils/validationRules.js"
+import validationRules from "@/utils/validationRules.js";
 const formRef = ref(null)
-import {useOldCareerStore} from "@/store/modules/index.js";
+import {usePartyStore, useComponentStore} from "@/store/modules/index.js";
 
-const store = useOldCareerStore()
+const store = usePartyStore()
+const componentStore = useComponentStore()
 
 const onSubmit = ()=>{
   formRef.value?.validate((error)=>{
@@ -20,6 +21,12 @@ const onSubmit = ()=>{
 
 
 
+onMounted(()=>{
+  if(componentStore.partyList.length === 0){
+    componentStore._enums()
+  }
+})
+
 
 </script>
 
@@ -27,11 +34,23 @@ const onSubmit = ()=>{
   <div style="height:calc(100vh - 120px)" class="overflow-y-auto">
     <n-form
         ref="formRef"
-        :rules="validationRules.oldCareerPage"
+        :rules="validationRules.partyPage"
         :model="store.payload"
     >
+
+      <n-form-item :label="$t(`partyPage.form.party`)" path="party">
+        <n-select
+            v-model:value="store.payload.party"
+            filterable
+            :placeholder="$t(`content.choose`)"
+            :options="componentStore.partyList"
+            label-field="name"
+            value-field="id"
+            :loading="componentStore.enumLoading"
+        />
+      </n-form-item>
       <n-form-item
-          :label="$t(`oldCareerPage.form.from_date`)"
+          :label="$t(`partyPage.form.from_date`)"
           path="from_date">
         <n-date-picker
             class="w-full"
@@ -41,21 +60,13 @@ const onSubmit = ()=>{
         />
       </n-form-item>
       <n-form-item
-          :label="$t(`oldCareerPage.form.to_date`)"
+          :label="$t(`partyPage.form.to_date`)"
           path="to_date">
         <n-date-picker
             class="w-full"
             v-model:value="store.payload.to_date"
             type="date"
             :placeholder="$t(`content.choose`)"
-        />
-      </n-form-item>
-      <n-form-item :label="$t(`oldCareerPage.form.post_name`)" path="post_name">
-        <n-input
-            type="textarea"
-            autosize
-            :placeholder="$t(`content.enterField`)"
-            v-model:value="store.payload.post_name"
         />
       </n-form-item>
     </n-form>
