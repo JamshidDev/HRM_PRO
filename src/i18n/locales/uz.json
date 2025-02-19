@@ -1,5 +1,6 @@
 {
     "content": {
+        "deadline": "Yakunlanish vaqti",
         "requiredField": "Maydon to'ldirilishi shart!",
         "save": "Saqlash",
         "edit": "Tahrirlash",
@@ -803,6 +804,15 @@
     "name": "Kategoriyalar",
     "addQuestion": "Savol qo'shish",
     "questionCount": "Savollar soni"
+  },
+  "examPage": {
+    "name": "Imtihonlar",
+    "topic": "Mavzu",
+    "exam": "Imtihon",
+    "variants": "Variantlar",
+    "totalTime": "Berilgan vaqt",
+    "totalMinute": "{n} daqiqa",
+    "resources": "Resurslar"
   },
   "questionPage": {
     "form": {

@@ -97,6 +97,12 @@ export const navigations = [
                 icon:'bx bxs-archive',
                 children:[]
             },
+            {
+                label:t('examPage.name'),
+                path:Utils.routeLmsPathMaker(AppPaths.Exam),
+                icon:'bx bxs-archive',
+                children:[]
+            },
         ]
     },
     {

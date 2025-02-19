@@ -54,3 +54,4 @@ export * from "./lms/categoryStore.js"
 export * from './lms/categoryQuestionStore.js'
 export * from './lms/topicFilesStore.js'
 export * from './lms/topicExamStore.js'
+export * from './lms/workerExamStore.js'
