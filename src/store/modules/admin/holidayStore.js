@@ -1,8 +1,11 @@
 import {defineStore} from "pinia";
 import i18n from "@/i18n/index.js"
+import Utils from "@/utils/Utils.js"
 const {t} = i18n.global
-export const useConfirmationStore = defineStore('confirmationStore', {
+export const useHolidayStore = defineStore('holidayStore', {
     state:()=>({
+        currentDate:null,
+        defaultDate:null,
         list:[],
         loading:false,
         saveLoading:false,
@@ -13,23 +16,27 @@ export const useConfirmationStore = defineStore('confirmationStore', {
         totalItems:0,
         allPermissionList:[],
         payload:{
-            pin:null,
-            position:null,
-            full_position:null,
-            level:null,
+            name:null,
+            holiday_date:null,
+            type:null,
         },
         params:{
             page:1,
             per_page:10,
             search:null,
+            month:null,
+            year:null,
         },
 
     }),
     actions:{
         _index(){
             this.loading= true
-            $ApiService.confirmationService._index({params:this.params}).then((res)=>{
-                this.list = res.data.data.data
+            $ApiService.holidayService._index({params:this.params}).then((res)=>{
+                this.list = res.data.data.data.map((v)=>({
+                    ...v,
+                    holiday_date:Utils.timeOnlyDate(v.holiday_date)
+                }))
                 this.totalItems = res.data.data.total
             }).finally(()=>{
                 this.loading= false
@@ -38,11 +45,10 @@ export const useConfirmationStore = defineStore('confirmationStore', {
         _create(){
             this.saveLoading = true
             let data = {
-                ...this.payload,
-                worker_id:this.payload.pin,
-                position:this.payload.position,
+               ...this.payload,
+                holiday_date:Utils.timeToZone(this.payload.holiday_date)
             }
-            $ApiService.confirmationService._create({data}).then((res)=>{
+            $ApiService.holidayService._create({data}).then((res)=>{
                 this.visible = false
                 this._index()
                 $Toast.success(t('message.successDone'))
@@ -55,10 +61,9 @@ export const useConfirmationStore = defineStore('confirmationStore', {
             this.saveLoading = true
             let data = {
                 ...this.payload,
-                worker_id:this.payload.pin,
-                position:this.payload.position,
+                holiday_date:Utils.timeToZone(this.payload.holiday_date)
             }
-            $ApiService.confirmationService._update({data, id:this.elementId}).then((res)=>{
+            $ApiService.holidayService._update({data, id:this.elementId}).then((res)=>{
                 this.visible = false
                 this._index()
                 $Toast.success(t('message.successDone'))
@@ -68,22 +73,21 @@ export const useConfirmationStore = defineStore('confirmationStore', {
         },
         _delete(){
             this.deleteLoading = true
-            $ApiService.confirmationService._delete({id:this.elementId}).then((res)=>{
+            $ApiService.holidayService._delete({id:this.elementId}).then((res)=>{
                 this._index()
                 $Toast.success(t('message.successDone'))
             }).finally(()=>{
                 this.deleteLoading = false
             })
         },
-        openVisible(data){
-            this.visible = data
+        openVisible(v){
+            this.visible = v
         },
         resetForm(){
             this.elementId = null
-            this.payload.pin = null
-            this.payload.position = null
-            this.payload.full_position = null
-            this.payload.level = null
+            this.payload.name = null
+            this.payload.holiday_date = null
+            this.payload.type = null
         }
 
     }

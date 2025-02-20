@@ -191,6 +191,7 @@ onMounted(()=>{
       <n-input
           class="w-full"
           type="text"
+          v-mask="`#########`"
           :placeholder="$t(`content.enterField`)"
           v-model:value="store.payload.inn"
           :allow-input="Utils.onlyAllowNumber"

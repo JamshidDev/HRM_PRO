@@ -591,6 +591,100 @@ export default {
             },
         ],
     },
+    workerProfileForm:{
+        last_name:{
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        first_name:{
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        middle_name:{
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        country_id:{
+            type:'number',
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        region_id:{
+            type:'number',
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        city_id:{
+            type:'number',
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        current_region_id:{
+            type:'number',
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        current_city_id:{
+            type:'number',
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        birthday: {
+            validator: (rule, value) => {
+                const isValidDate = (text) => {
+                    const date = new Date(text);
+                    return date instanceof Date && !isNaN(date.getTime());
+                };
+                if(value === null){
+                    return new Error( t(`rules.requiredField`));
+                }else if (!isValidDate(value)) {
+                    return new Error( t(`rules.unExpectedFormat`));
+                }
+                return true
+            },
+            trigger: triggerEvents,
+        },
+        address:{
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        nationality_id:{
+            type:'number',
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        pin:{
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        inn:{
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        passport_address:{
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        marital_status:{
+            type:'number',
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+    },
     schedulePage:{
         name:{
             required: true,
@@ -603,6 +697,25 @@ export default {
             trigger: triggerEvents
         },
         type:{
+            type: 'number',
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+    },
+    holidayPage:{
+        name:{
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        type:{
+            type: 'number',
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        holiday_date:{
             type: 'number',
             required: true,
             message: t(`rules.requiredField`),

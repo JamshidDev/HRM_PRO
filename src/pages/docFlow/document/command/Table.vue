@@ -57,7 +57,7 @@ const onSelect = (v)=>{
            <div class="flex justify-center"> <n-button class="font-medium" round type="error" size="tiny">{{item?.command_number}}</n-button></div>
           </td>
           <td>{{item?.organization?.name}}</td>
-          <td><UIStatus :status="item?.contract?.status?.name"/> </td>
+          <td><UIStatus :status="item?.confirmation"/> </td>
           <td>{{ Utils.timeOnlyDate(item?.command_date) }}</td>
           <td>
             <UIMenuButton

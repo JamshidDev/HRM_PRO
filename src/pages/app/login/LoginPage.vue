@@ -156,9 +156,9 @@ onMounted(()=>{
           </template>
         </div>
 
-        <span class="text-xs mt-3 text-gray-500">{{ $t(`loginPage.doYouHaveAccount`) }}
-        <span @click="router.push(AppPaths.Register)" class="text-primary cursor-pointer ">{{ $t(`loginPage.singUp`) }}</span>
-        </span>
+<!--        <span class="text-xs mt-3 text-gray-500">{{ $t(`loginPage.doYouHaveAccount`) }}-->
+<!--        <span @click="router.push(AppPaths.Register)" class="text-primary cursor-pointer ">{{ $t(`loginPage.singUp`) }}</span>-->
+<!--        </span>-->
 
       </n-form>
 

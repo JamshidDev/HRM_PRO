@@ -36,6 +36,11 @@ export const navigations = [
                 path:Utils.routeHrmPathMaker(AppPaths.Confirmation),
                 icon:'bx bxs-user-account',
             },
+            {
+                label:t('applicationPage.name'),
+                path:Utils.routeHrmPathMaker(AppPaths.Application),
+                icon:'bx bxs-user-account',
+            },
         ]
     },
     {
@@ -170,6 +175,11 @@ export const navigations = [
             {
                 label:t('documentSetting.name'),
                 path:Utils.routePathMaker(AppPaths.DocumentSetting),
+                icon:'bx bxs-folder',
+            },
+            {
+                label:t('holidayPage.name'),
+                path:Utils.routePathMaker(AppPaths.Holiday),
                 icon:'bx bxs-folder',
             },
             {

@@ -22,6 +22,7 @@ import workdayService from "@/service/v1/admin/workdayService.js"
 import commandTempService from "@/service/v1/admin/commandTempService.js"
 import specialityService from "@/service/v1/admin/specialityService.js"
 import uploadService from '@/service/v1/admin/uploadService.js'
+import holidayService from "@/service/v1/admin/holidayService.js"
 
 import confirmationService from "@/service/v1/hrm/confirmationService.js"
 import departmentService from "@/service/v1/hrm/departmentService.js";
@@ -45,6 +46,7 @@ import commandService from "@/service/v1/docFlow/commandService.js"
 import documentChatService from "@/service/v1/docFlow/documentChatService.js"
 import documentFileService from "@/service/v1/docFlow/documentFileService.js"
 import adContractService from "@/service/v1/docFlow/adContractService.js"
+import applicationService from "@/service/v1/docFlow/applicationService.js"
 
 import topicService from "@/service/v1/lms/topicService.js"
 import topicFilesService from "@/service/v1/lms/topicFilesService.js"
@@ -101,4 +103,6 @@ export default {
     militaryService,
     academicTitleService,
     academicDegreeService,
+    holidayService,
+    applicationService,
 }

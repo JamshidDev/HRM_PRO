@@ -86,7 +86,7 @@ onMounted(()=>{
   <n-form
       class="w-full grid grid-cols-12 gap-x-4 px-2"
       ref="formRef"
-      :rules="validationRules.personalForm"
+      :rules="validationRules.workerProfileForm"
       :model="store.payload"
   >
     <div class="col-span-12">

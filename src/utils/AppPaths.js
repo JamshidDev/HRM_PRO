@@ -49,7 +49,9 @@ export const AppPaths = {
     DrawingSignature:"/drawing-signature",
     DocViewer:"/doc-viewer",
     DocumentSignature:"/document-signature",
-    Questions:"/questions"
+    Holiday:"/holiday",
+    Questions:"/questions",
+    Application:"/application"
 }
 
 export const AppLayouts ={

@@ -105,12 +105,12 @@ const onSelect =(v)=>{
               {{item?.command_status?.name}}</n-button>
           </div>
           </td>
-          <td><UIStatus :status="item?.confirmation?.name"/></td>
+          <td><UIStatus :status="item?.confirmation"/></td>
           <td><span class="text-sm">{{item?.organization.name}}</span></td>
           <td>
             <span class="text-sm">{{Utils.timeOnlyDate(item?.contract_date)}}</span>
           </td>
-          <td><UIStatus :status="item?.status?.name"/></td>
+          <td><UIStatus :status="item?.status"/></td>
           <td>
             <UIMenuButton
                 :show-view="true"

@@ -8,7 +8,8 @@ import ApiService from "@/service/ApiService.js";
 import naive from 'naive-ui'
 import { createYmaps } from 'vue-yandex-maps';
 import mask from "./directives/mask.js"
-import VueSignature from "vue-signature-pad";
+import VueSignature from "vue-signature-pad"
+import inputFormatter from "@/plugins/inputFormatter.js"
 
 import '@wangeditor/editor/dist/css/style.css'
 
@@ -20,6 +21,7 @@ const pinia =  createPinia()
 
 app.use(VueSignature)
 app.use(naive)
+app.use(inputFormatter)
 app.use(router)
 app.use(pinia)
 window.$ApiService = ApiService

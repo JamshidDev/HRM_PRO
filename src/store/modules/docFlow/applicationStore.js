@@ -1,7 +1,6 @@
 import {defineStore} from "pinia";
-import i18n from "@/i18n/index.js"
-const {t} = i18n.global
-export const useConfirmationStore = defineStore('confirmationStore', {
+import Utils from "@/utils/Utils.js"
+export const useApplicationStore = defineStore('applicationStore', {
     state:()=>({
         list:[],
         loading:false,
@@ -11,24 +10,24 @@ export const useConfirmationStore = defineStore('confirmationStore', {
         visibleType:true,
         elementId:null,
         totalItems:0,
-        allPermissionList:[],
+        contractNumber:null,
         payload:{
-            pin:null,
-            position:null,
-            full_position:null,
-            level:null,
+            director_id:true,
+            type:null,
+            from_date:null,
+            work_type:null,
+            status:null,
         },
         params:{
             page:1,
             per_page:10,
             search:null,
         },
-
     }),
     actions:{
         _index(){
             this.loading= true
-            $ApiService.confirmationService._index({params:this.params}).then((res)=>{
+            $ApiService.commandService._index({params:this.params}).then((res)=>{
                 this.list = res.data.data.data
                 this.totalItems = res.data.data.total
             }).finally(()=>{
@@ -39,13 +38,13 @@ export const useConfirmationStore = defineStore('confirmationStore', {
             this.saveLoading = true
             let data = {
                 ...this.payload,
-                worker_id:this.payload.pin,
-                position:this.payload.position,
+                ...{
+                    from_date:Utils.timeToZone(this.payload.from_date),
+                }
             }
-            $ApiService.confirmationService._create({data}).then((res)=>{
+            $ApiService.applicationService._generateUrl({data}).then((res)=>{
                 this.visible = false
                 this._index()
-                $Toast.success(t('message.successDone'))
             }).finally(()=>{
                 this.saveLoading = false
             })
@@ -53,24 +52,17 @@ export const useConfirmationStore = defineStore('confirmationStore', {
         },
         _update(){
             this.saveLoading = true
-            let data = {
-                ...this.payload,
-                worker_id:this.payload.pin,
-                position:this.payload.position,
-            }
-            $ApiService.confirmationService._update({data, id:this.elementId}).then((res)=>{
+            $ApiService.nationalityService._update({data:this.payload, id:this.elementId}).then((res)=>{
                 this.visible = false
                 this._index()
-                $Toast.success(t('message.successDone'))
             }).finally(()=>{
                 this.saveLoading = false
             })
         },
         _delete(){
             this.deleteLoading = true
-            $ApiService.confirmationService._delete({id:this.elementId}).then((res)=>{
+            $ApiService.commandService._delete({id:this.elementId}).then((res)=>{
                 this._index()
-                $Toast.success(t('message.successDone'))
             }).finally(()=>{
                 this.deleteLoading = false
             })
@@ -79,11 +71,11 @@ export const useConfirmationStore = defineStore('confirmationStore', {
             this.visible = data
         },
         resetForm(){
-            this.elementId = null
-            this.payload.pin = null
-            this.payload.position = null
-            this.payload.full_position = null
-            this.payload.level = null
+            this.payload.director_id = null
+            this.payload.type = null
+            this.payload.work_type = null
+            this.payload.from_date = null
+            this.payload.status = null
         }
 
     }

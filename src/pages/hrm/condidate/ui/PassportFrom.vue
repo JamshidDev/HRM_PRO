@@ -24,7 +24,7 @@ const onUpload = async (v)=>{
       <n-input
           class="w-full"
           type="text"
-          v-mask="`AA ######`"
+          v-mask="`AA #######`"
           :placeholder="$t(`createWorkerPage.form.serial_number`)"
           v-model:value="store.payload.serial_number"
       />
