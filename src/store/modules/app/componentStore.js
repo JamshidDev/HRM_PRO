@@ -19,6 +19,8 @@ export const useComponentStore = defineStore('componentStore', {
         rankList:[],
         groupList:[],
         militaryStatuses:[],
+        applicationTypes:[],
+        workTypes:[],
 
         departmentList:[],
         depParams:{
@@ -166,6 +168,8 @@ export const useComponentStore = defineStore('componentStore', {
                 this.languageList = res.data.data.languages
                 this.militaryStatuses = res.data.data.military_statuses
                 this.confirmationLevels = res.data.data.confirmation_worker
+                this.applicationTypes = res.data.data.contract_application_types
+                this.workTypes =res.data.data.create_application_types
             }).finally(()=>{
                 this.enumLoading= false
             })

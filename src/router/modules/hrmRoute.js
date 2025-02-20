@@ -8,6 +8,7 @@ import CandidatePage from "@/pages/hrm/condidate/CandidatePage.vue"
 import DocumentPage from "@/pages/docFlow/document/DocumentPage.vue"
 import ConfirmationPage from "@/pages/hrm/confirmation/ConfirmationPage.vue"
 import ProfilePage from "@/pages/hrm/workerProfile/ProfilePage.vue"
+import ApplicationPage from "@/pages/docFlow/document/aplication/ApplicationPage.vue"
 
 
 export default [
@@ -45,5 +46,10 @@ export default [
         path:Utils.routeHrmPathMaker(AppPaths.WorkerProfile),
         name:AppPaths.WorkerProfile.substring(1),
         component: ProfilePage,
+    },
+    {
+        path:Utils.routeHrmPathMaker(AppPaths.Application),
+        name:AppPaths.Application.substring(1),
+        component: ApplicationPage,
     },
 ]

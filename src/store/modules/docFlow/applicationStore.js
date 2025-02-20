@@ -10,19 +10,23 @@ export const useApplicationStore = defineStore('applicationStore', {
         visibleType:true,
         elementId:null,
         totalItems:0,
-        contractNumber:null,
+        departmentCheck:[],
         payload:{
             director_id:true,
             type:null,
             from_date:null,
-            work_type:null,
             status:null,
+            department_id:[],
+            department_position_id:null,
         },
         params:{
             page:1,
             per_page:10,
             search:null,
         },
+        tabList:[1,2,3],
+        activeTab:1,
+        applicationLink:null,
     }),
     actions:{
         _index(){
@@ -39,11 +43,13 @@ export const useApplicationStore = defineStore('applicationStore', {
             let data = {
                 ...this.payload,
                 ...{
+                    department_id:this.payload.department_id?.[0]?.id || null,
                     from_date:Utils.timeToZone(this.payload.from_date),
                 }
             }
             $ApiService.applicationService._generateUrl({data}).then((res)=>{
-                this.visible = false
+                this.applicationLink = res.data.data.url
+                this.activeTab = 2
                 this._index()
             }).finally(()=>{
                 this.saveLoading = false

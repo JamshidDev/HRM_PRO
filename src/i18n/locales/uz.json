@@ -841,12 +841,14 @@
   },
   "applicationPage": {
     "name": "Arizalar",
-    "createTitle": "Ariza havola yaratish",
+    "createTitle": "Ariza uchun havola yaratish",
     "updateTitle": "Bayram kunini tahrirlash",
     "form": {
-      "name": "Bayram nomi",
-      "holiday_date": "Bayram sanasi",
-      "type": "Bayram turi"
+      "director_id": "Direktor",
+      "type": "Ariza turi",
+      "work_type": "Ish turi",
+      "generateLink": "Havola yaratish",
+      "from_date": "Qachondan"
     }
   }
 }
