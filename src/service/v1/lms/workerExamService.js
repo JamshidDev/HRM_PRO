@@ -3,6 +3,10 @@ import axios from "@/service/index.js"
 const _index =async (payload)=>{
     return await axios.get(`/v1/exam/worker-exams`, {params:payload.params})
 }
+
+const _start_exam = async (payload)=>{
+    return await axios.post(`/v1/exam/worker-exams/${payload.id}/start`)
+}
 //
 // const _create = async (payload)=>{
 //     return await axios.post(`/v1/exam/categories/${payload.category_id}/questions`, payload.data)
@@ -25,6 +29,7 @@ const _index =async (payload)=>{
 
 export default {
     _index,
+    _start_exam
     // _create,
     // _update,
     // _delete,

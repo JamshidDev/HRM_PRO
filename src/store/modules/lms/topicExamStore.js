@@ -29,6 +29,8 @@ export const useTopicExamStore = defineStore('topicExamStore', {
             minute: null,
             variant: null,
             active: false,
+            chances: null,
+            description: null,
             whom_ids: []
         },
         params:{

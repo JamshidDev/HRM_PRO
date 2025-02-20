@@ -32,41 +32,7 @@ export const useWorkerExamStore = defineStore('workerExamStore', {
                 this.loading= false
             })
         },
-        _create(){
-            this.saveLoading = true
-            let data = {
-                ...this.payload,
-            }
-            $ApiService.categoryService._create({data}).then((res)=>{
-                this.visible = false
-                this._index()
-                $Toast.success(t('message.successDone'))
-            }).finally(()=>{
-                this.saveLoading = false
-            })
-        },
-        _update(){
-            this.saveLoading = true
-            let data = {
-                ...this.payload,
-            }
-            $ApiService.categoryService._update({data, id:this.elementId}).then((res)=>{
-                this.visible = false
-                this._index()
-                $Toast.success(t('message.successDone'))
-            }).finally(()=>{
-                this.saveLoading = false
-            })
-        },
-        _delete(){
-            this.deleteLoading = true
-            $ApiService.categoryService._delete({id:this.elementId}).then((res)=>{
-                this._index()
-                $Toast.success(t('message.successDone'))
-            }).finally(()=>{
-                this.deleteLoading = false
-            })
-        },
+
         openVisible(data){
             this.visible = data
         },

@@ -49,6 +49,7 @@
         "closeSignatureModal": "Imzolash oynasini yopish",
         "clear": "Tozalash",
         "continue": "Davom etish",
+        "restart": "Qayta boshlash",
         "close": "Yopish",
         "open": "Ochish",
         "hide": "Yashirish",
@@ -730,6 +731,8 @@
       "isActive": "Aktivlik holati",
       "positions": "Lavozimlar",
       "organizations": "Tashkilotlar",
+      "chances": "Imkoniyatlar",
+
       "workers": "Xodimlar",
       "categories": "Kategoriyalar",
       "questionCount": "Savollar soni: ({n})",
@@ -812,7 +815,16 @@
     "variants": "Variantlar",
     "totalTime": "Berilgan vaqt",
     "totalMinute": "{n} daqiqa",
-    "resources": "Resurslar"
+    "resources": "Resurslar",
+    "examPage": "Imtihonlar",
+    "examBrief": "Imtihonda savollarida {variant}ta variantlar mavjud. Yechish uchun {chances}ta imkoniyat berilgan. Imtihonni {minute} daqiqa ichida yakunlash kerak. Imtihon {deadline}da yopiladi",
+    "extra": "Qo'shimcha: {n}",
+    "start": "Boshlash",
+    "attempts": "Urinishlar"
+  },
+  "solveExamPage": {
+    "alreadyStarted": "Siz bu imtihonni oldin boshlagansiz!!!",
+    "restartWarning": "Qayta boshlash oldingi imkoniyatni yakunlaydi!!!"
   },
   "questionPage": {
     "form": {

@@ -5,7 +5,9 @@ import {useTopicExamStore} from "@/store/modules/index.js";
 import Form from "./ui/Form.vue";
 import AttachQuestionForm from './ui/AttachQuestionForm.vue'
 import Table from './ui/Table.vue'
+import {useRoute} from "vue-router";
 
+const route = useRoute()
 const store = useTopicExamStore()
 
 const onSearch = () => {
@@ -22,6 +24,8 @@ const onAdd = () => {
 onMounted(() => {
   store.params.page = 1
   store.params.search = null
+  console.log(route)
+  store.topicId = route.params.id
   store._index()
 })
 
