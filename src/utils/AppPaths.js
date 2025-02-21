@@ -48,7 +48,7 @@ export const AppPaths = {
     Topic:"/topic",
     DrawingSignature:"/drawing-signature",
     DocViewer:"/doc-viewer",
-    DocumentSignature:"/document-signature",
+    DocumentViewer:"/document-viewer",
     Holiday:"/holiday",
     Questions:"/questions",
     Application:"/application"

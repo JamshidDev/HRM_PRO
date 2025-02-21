@@ -114,31 +114,34 @@ onMounted(()=>{
               />
             </n-form-item>
           </div>
-          <div class="col-span-12">
-            <n-form-item :label="$t(`documentPage.form.department`)" path="department_id">
-              <UIDepartment
-                  :modelV="store.payload.department_id"
-                  @updateModel="onChangeDepartment"
-                  :checkedVal="store.departmentCheck"
-                  @updateCheck="(v)=>store.departmentCheck=v"
-                  :multiple="false"
-              />
-            </n-form-item>
-          </div>
-          <div class="col-span-12">
-            <n-form-item :label="$t(`documentPage.form.position`)" path="department_position_id">
-              <n-select
-                  :disabled="!Boolean(store.payload.department_id.length>0)"
-                  v-model:value="store.payload.department_position_id"
-                  filterable
-                  :placeholder="$t(`content.choose`)"
-                  :options="componentStore.departmentPositionList"
-                  label-field="name"
-                  value-field="id"
-                  :loading="componentStore.departmentPositionLoading"
-              />
-            </n-form-item>
-          </div>
+          <template v-if="store.payload.type === 1">
+            <div class="col-span-12">
+              <n-form-item :label="$t(`documentPage.form.department`)" path="department_id">
+                <UIDepartment
+                    :modelV="store.payload.department_id"
+                    @updateModel="onChangeDepartment"
+                    :checkedVal="store.departmentCheck"
+                    @updateCheck="(v)=>store.departmentCheck=v"
+                    :multiple="false"
+                />
+              </n-form-item>
+            </div>
+            <div class="col-span-12">
+              <n-form-item :label="$t(`documentPage.form.position`)" path="department_position_id">
+                <n-select
+                    :disabled="!Boolean(store.payload.department_id.length>0)"
+                    v-model:value="store.payload.department_position_id"
+                    filterable
+                    :placeholder="$t(`content.choose`)"
+                    :options="componentStore.departmentPositionList"
+                    label-field="name"
+                    value-field="id"
+                    :loading="componentStore.departmentPositionLoading"
+                />
+              </n-form-item>
+            </div>
+          </template>
+
           <div class="col-span-12">
             <n-form-item :label="$t(`applicationPage.form.director_id`)" path="director_id">
               <n-select
@@ -157,9 +160,10 @@ onMounted(()=>{
 
           <div class="col-span-12 flex justify-center mb-4 mt-10">
             <n-button
+                :loading="store.saveLoading"
                 style="width: 100%"
                 @click="onSubmit"
-                type="success">
+                type="primary">
               <template #icon>
                 <QrCode20Regular/>
               </template>

@@ -1,5 +1,6 @@
 import {defineStore} from "pinia";
 import Utils from "@/utils/Utils.js"
+import {AppPaths} from "@/utils/index.js"
 export const useApplicationStore = defineStore('applicationStore', {
     state:()=>({
         list:[],
@@ -27,11 +28,28 @@ export const useApplicationStore = defineStore('applicationStore', {
         tabList:[1,2,3],
         activeTab:1,
         applicationLink:null,
+
+        form:{
+            first_name:null,
+            last_name:null,
+            middle_name:null,
+            birthday:null,
+            country_id:null,
+            region_id:null,
+            city_id:null,
+            current_region_id:null,
+            current_city_id:null,
+            nationality_id:null,
+            address:null,
+            pin:null,
+            inn:null,
+            marital_status:null,
+        },
     }),
     actions:{
         _index(){
             this.loading= true
-            $ApiService.commandService._index({params:this.params}).then((res)=>{
+            $ApiService.applicationService._index({params:this.params}).then((res)=>{
                 this.list = res.data.data.data
                 this.totalItems = res.data.data.total
             }).finally(()=>{
@@ -48,7 +66,7 @@ export const useApplicationStore = defineStore('applicationStore', {
                 }
             }
             $ApiService.applicationService._generateUrl({data}).then((res)=>{
-                this.applicationLink = res.data.data.url
+                this.applicationLink = Utils.convertFromUrlToQuery(res.data.data.url, Utils.viewerStatus.applicationDocument)
                 this.activeTab = 2
                 this._index()
             }).finally(()=>{

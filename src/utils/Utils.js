@@ -98,7 +98,6 @@ const documentModels = {
     command:'commands',
     adContract:'contract-additional',
 }
-
 const copyToClipboard = async (text, callback)=>{
     try {
         await navigator.clipboard.writeText(text)
@@ -108,7 +107,11 @@ const copyToClipboard = async (text, callback)=>{
         $Toast.error(t('message.unExpectedError'))
     }
 }
-
+const convertFromUrlToQuery = (url, status=0)=>{
+    if(!url) return url
+    const query = url.split('?')[1]
+    return `${window.location.origin}${AppPaths.DocumentViewer}/${status}?${query}`
+}
 const ActionTypes = {
     open:"open",
     view:"view",
@@ -116,11 +119,9 @@ const ActionTypes = {
     download:"download",
     delete:"delete",
 }
-
 const combineFullName = (user)=>{
     return `${user.last_name} ${user.first_name} ${user.middle_name}`
 }
-
 const monthList = [
     {
         name: t('month.january'),
@@ -189,9 +190,7 @@ const getMonthNameById = (id)=>{
 const getMonthNameByKey = (key)=>{
     return monthList.filter((v)=>v.key === key)?.[0]?.name
 }
-
-
-function maskText(text, start, end) {
+const maskText =(text, start, end) =>{
     const str = text.toString()
     if (str.length <= start + end) return str;
     let startText = str.slice(0, start)
@@ -199,8 +198,10 @@ function maskText(text, start, end) {
     let masked = "*".repeat(str.length - (start + end))
     return startText + masked + endText;
 }
-
-
+const viewerStatus = {
+    signatureDocument:'document-signature',
+    applicationDocument:"application-document"
+}
 
 
 export default {
@@ -229,4 +230,6 @@ export default {
     getMonthNameById,
     getMonthNameByKey,
     maskText,
+    convertFromUrlToQuery,
+    viewerStatus,
 }

@@ -1,6 +1,8 @@
 
 import {defineStore} from "pinia"
 import router from "@/router/index.js"
+import {AppPaths} from "@/utils/index.js"
+import {useAccountStore} from "@/store/modules/index.js"
 
 export const useLoginStore = defineStore("loginStore", {
     state:()=>({
@@ -13,6 +15,7 @@ export const useLoginStore = defineStore("loginStore", {
     },
     actions:{
         _auth(){
+            const accountStore = useAccountStore()
             this.loading = true
             let data = {
                 phone:this.phone.slice(4).replace('(','').replace(')',''),
@@ -20,9 +23,8 @@ export const useLoginStore = defineStore("loginStore", {
             }
             $ApiService.authService._login({data}).then((res)=>{
                 localStorage.setItem('token',res.data.access_token)
-                router.push('/admin')
-            }).catch((err)=>{
-                console.log(err)
+                accountStore._index()
+                router.push(AppPaths.Admin)
             }).finally(()=>{
                 this.loading = false
             })

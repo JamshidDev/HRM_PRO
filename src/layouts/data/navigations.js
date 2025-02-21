@@ -1,4 +1,7 @@
-
+import {Folder48Filled,LockClosed16Filled, PersonChat20Filled, Person32Filled,
+    DocumentPerson16Filled, PersonNote24Filled,Person12Filled,
+    TextBulletListSquare20Filled, ChannelShare20Filled, DocumentTextExtract24Filled,
+    PeopleCheckmark24Filled, DocumentArrowDown20Filled} from "@vicons/fluent"
 import {AppPaths} from "@/utils/index.js";
 import Utils from "@/utils/Utils.js";
 import i18n from "@/i18n/index.js"
@@ -9,37 +12,37 @@ export const navigations = [
         index:1,
         label:'HRM',
         path:AppPaths.Hrm,
-        icon:'bx bxs-dashboard',
+        icon:Person32Filled,
         children:[
             {
                 label:t('workerPage.name'),
                 path:Utils.routeHrmPathMaker(AppPaths.Worker),
-                icon:'bx bxs-user-circle',
+                icon:Person12Filled,
             },
             {
                 label:t('departmentPage.name'),
                 path:Utils.routeHrmPathMaker(AppPaths.Department),
-                icon:'bx bxs-dashboard',
+                icon:ChannelShare20Filled,
             },
             {
                 label:t('departmentPositionPage.name'),
                 path:Utils.routeHrmPathMaker(AppPaths.DepartmentPosition),
-                icon:'bx bx-sitemap',
+                icon:TextBulletListSquare20Filled,
             },
             {
                 label:t('documentPage.name'),
                 path:Utils.routeHrmPathMaker(AppPaths.Document),
-                icon:'bx bxs-file-archive',
+                icon:DocumentTextExtract24Filled,
             },
             {
                 label:t('confirmationPage.name'),
                 path:Utils.routeHrmPathMaker(AppPaths.Confirmation),
-                icon:'bx bxs-user-account',
+                icon:PeopleCheckmark24Filled,
             },
             {
                 label:t('applicationPage.name'),
                 path:Utils.routeHrmPathMaker(AppPaths.Application),
-                icon:'bx bxs-user-account',
+                icon:DocumentArrowDown20Filled,
             },
         ]
     },
@@ -47,13 +50,13 @@ export const navigations = [
         index:2,
         label:'Chat',
         path:AppPaths.Chat,
-        icon:'bx bx-message-dots',
+        icon:PersonChat20Filled,
         children:[
             {
                 parentIndex:1,
                 label:t('chatWindow.name'),
                 path:Utils.routeChatPathMaker(AppPaths.ChatWindow),
-                icon:'bx bxs-folder',
+                icon:Folder48Filled,
                 children:[]
             },
         ]
@@ -62,24 +65,24 @@ export const navigations = [
         index:3,
         label:'Doc Flow',
         path:'/docflow',
-        icon:'bx bx-command',
+        icon:DocumentPerson16Filled,
         children:[
             {
                 label:t('confirmation.name'),
                 path:Utils.routeDocFlowPathMaker(AppPaths.ConfContract),
-                icon:'bx bxs-receipt',
+                icon:DocumentTextExtract24Filled,
                 children:[]
             },
             {
                 label:t('documentPage.tabs.command'),
                 path:Utils.routeDocFlowPathMaker(AppPaths.ConfCommand),
-                icon:'bx bxs-file',
+                icon:DocumentTextExtract24Filled,
                 children:[]
             },
             {
                 label:t('documentPage.tabs.adContract'),
                 path:Utils.routeDocFlowPathMaker(AppPaths.ConfAdContract),
-                icon:'bx bxs-file',
+                icon:DocumentTextExtract24Filled,
                 children:[]
             },
         ]
@@ -88,18 +91,18 @@ export const navigations = [
         index:4,
         label: 'LMS',
         path:AppPaths.Lms,
-        icon: 'bx bxs-graduation',
+        icon:PersonNote24Filled,
         children:[
             {
                 label:t('topicPage.name'),
                 path:Utils.routeLmsPathMaker(AppPaths.Topic),
-                icon:'bx bxs-archive',
+                icon:Folder48Filled,
                 children:[]
             },
             {
                 label:t('categoryPage.name'),
                 path:Utils.routeLmsPathMaker(AppPaths.Category),
-                icon:'bx bxs-archive',
+                icon:Folder48Filled,
                 children:[]
             },
         ]
@@ -108,84 +111,84 @@ export const navigations = [
         index:6,
         label:'Admin',
         path:AppPaths.Admin,
-        icon:'bx bx-shield-quarter',
+        icon:LockClosed16Filled,
         children:[
             {
                 label:t('userPage.name'),
                 path:Utils.routePathMaker(AppPaths.User),
-                icon:'bx bxs-folder',
+                icon:Folder48Filled,
                 children:[]
             },
             {
                 label:t('userRole.name'),
                 path:Utils.routePathMaker(AppPaths.UserRole),
-                icon:'bx bxs-folder',
+                icon:Folder48Filled,
                 children:[]
             },
             {
                 label:t('userPermission.name'),
                 path:Utils.routePathMaker(AppPaths.UserPermission),
-                icon:'bx bxs-folder',
+                icon:Folder48Filled,
             },
             {
                 label:t('countryPage.name'),
                 path:Utils.routePathMaker(AppPaths.Country),
-                icon:'bx bxs-folder',
+                icon:Folder48Filled,
             },
             {
                 label:t('regionPage.name'),
                 path:Utils.routePathMaker(AppPaths.Region),
-                icon:'bx bxs-folder',
+                icon:Folder48Filled,
             },
             {
                 label:t('districtPage.name'),
                 path:Utils.routePathMaker(AppPaths.District),
-                icon:'bx bxs-folder',
+                icon:Folder48Filled,
             },
             {
                 label:t('nationalityPage.name'),
                 path:Utils.routePathMaker(AppPaths.Nationality),
-                icon:'bx bxs-folder',
+                icon:Folder48Filled,
             },
             {
                 label:t('positionPage.name'),
                 path:Utils.routePathMaker(AppPaths.Position),
-                icon:'bx bxs-folder',
+                icon:Folder48Filled,
             },
             {
                 label:t('schedulePage.name'),
                 path:Utils.routePathMaker(AppPaths.Schedule),
-                icon:'bx bxs-folder',
+                icon:Folder48Filled,
             },
             {
                 label:t('workdayPage.name'),
                 path:Utils.routePathMaker(AppPaths.Workday),
-                icon:'bx bxs-folder',
+                icon:Folder48Filled,
             },
             {
                 label:t('organizationPage.name'),
                 path:Utils.routePathMaker(AppPaths.Organizations),
-                icon:'bx bxs-folder',
+                icon:Folder48Filled,
             },
             {
                 label:t('actionLog.name'),
                 path:Utils.routePathMaker(AppPaths.ActionLog),
-                icon:'bx bxs-folder',
+                icon:Folder48Filled,
             },
             {
                 label:t('documentSetting.name'),
                 path:Utils.routePathMaker(AppPaths.DocumentSetting),
-                icon:'bx bxs-folder',
+                icon:Folder48Filled,
             },
             {
                 label:t('holidayPage.name'),
                 path:Utils.routePathMaker(AppPaths.Holiday),
-                icon:'bx bxs-folder',
+                icon:Folder48Filled,
             },
             {
                 label:t('othersPage.name'),
                 path:Utils.routePathMaker(AppPaths.AdminOther),
-                icon:'bx bxs-folder',
+                icon:Folder48Filled,
             },
         ]
     },

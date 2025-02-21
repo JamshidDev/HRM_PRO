@@ -57,7 +57,8 @@ const onSuccess = (data)=>{
 }
 
 onMounted(()=>{
-  document.addEventListener('animationstart', function (e) {
+  const inputElement = document.querySelector('input[type="password"].n-input__input-el');
+  inputElement.addEventListener('animationstart', function (e) {
     if (e.animationName === 'autofill-detected') {
       onSubmit()
     }

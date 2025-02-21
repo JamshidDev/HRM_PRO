@@ -11,9 +11,6 @@ const onEdit = (v)=>{
   store.visibleType = false
   store.elementId = v.id
   store.payload.name = v.name
-  store.payload.marker.coords = [v.long, v.lat]
-  store.payload.marker.name = v.name
-  store.payload.country_id = v.country.id
   store.visible = true
 }
 
