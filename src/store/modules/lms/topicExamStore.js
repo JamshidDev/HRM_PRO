@@ -28,6 +28,7 @@ export const useTopicExamStore = defineStore('topicExamStore', {
             deadline: null,
             minute: null,
             variant: null,
+            tests_count: null,
             active: false,
             chances: null,
             description: null,

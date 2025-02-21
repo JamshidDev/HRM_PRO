@@ -24,7 +24,6 @@ const onAdd = () => {
 onMounted(() => {
   store.params.page = 1
   store.params.search = null
-  console.log(route)
   store.topicId = route.params.id
   store._index()
 })

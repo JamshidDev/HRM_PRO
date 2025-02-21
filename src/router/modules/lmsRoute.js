@@ -6,10 +6,10 @@ import {
     CategoryPage,
     CategoryQuestionPage,
     QuestionFormPage,
-    WorkerExamPage,
-    SolveExamPage, ExamDetailPage
+    WorkerTopicPage,
+    SolveExamPage
 } from "@/pages/lms";
-import WorkerExam from "@/pages/lms/workerExam/WorkerExam.vue";
+
 
 export default [
     {
@@ -49,13 +49,7 @@ export default [
     },
     {
         path:Utils.routeLmsPathMaker(AppPaths.Exam),
-        component:()=>WorkerExamPage,
-        children:[],
-    },
-    {
-        path:Utils.routeLmsPathMaker(`${AppPaths.Exam}/:exam_id`),
-        name: 'exam_detail',
-        component: ()=>ExamDetailPage,
+        component:()=>WorkerTopicPage,
         children:[],
     },
     {

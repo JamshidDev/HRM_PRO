@@ -75,7 +75,11 @@
       "downloadCV": "Ma'lumotnoma yuklash",
         "deleteWarning": "Haqiqattan ham o'chirmoqchimisz?",
         "sum": "So'm",
-        "total": "Umumiy: {n}ta"
+        "total": "Umumiy: {n}ta",
+      "warning": "Ogohlantirish",
+      "error": "Xatolik",
+      "return": "Ortga qaytish",
+      "finish": "Yakunlash"
     },
     "rules": {
         "login": "Email kiritilishi shart!",
@@ -272,9 +276,6 @@
   },
   "documentHistoryPage": {
     "name": "Hujjatlar tarixi"
-  },
-  "examPage": {
-    "name": "Imtixonlar"
   },
   "workerProfile": {
     "tabs": {
@@ -732,7 +733,7 @@
       "positions": "Lavozimlar",
       "organizations": "Tashkilotlar",
       "chances": "Imkoniyatlar",
-
+      "tests_count": "Savollar soni",
       "workers": "Xodimlar",
       "categories": "Kategoriyalar",
       "questionCount": "Savollar soni: ({n})",
@@ -812,19 +813,36 @@
     "name": "Imtihonlar",
     "topic": "Mavzu",
     "exam": "Imtihon",
-    "variants": "Variantlar",
-    "totalTime": "Berilgan vaqt",
+    "variant": "Variantlar: {n}ta",
+    "totalTime": "Berilgan vaqt: {n} daqiqa",
     "totalMinute": "{n} daqiqa",
     "resources": "Resurslar",
-    "examPage": "Imtihonlar",
+    "exams": "Imtihonlar",
+    "deadline": "Yopilish vaqti: {n}",
     "examBrief": "Imtihonda savollarida {variant}ta variantlar mavjud. Yechish uchun {chances}ta imkoniyat berilgan. Imtihonni {minute} daqiqa ichida yakunlash kerak. Imtihon {deadline}da yopiladi",
     "extra": "Qo'shimcha: {n}",
     "start": "Boshlash",
-    "attempts": "Urinishlar"
+    "attempts": "Urinishlar: {n}",
+    "questions": "Savollar: {n}ta",
+    "attemptHistory": "Urinishlar tarixi",
+    "startTime": "Boshlangan vaqt",
+    "result": "Natija",
+    "endTime": "Yakunlangan vaqt"
   },
   "solveExamPage": {
-    "alreadyStarted": "Siz bu imtihonni oldin boshlagansiz!!!",
-    "restartWarning": "Qayta boshlash oldingi imkoniyatni yakunlaydi!!!"
+    "alreadyStarted": "Siz bu imtihonni oldin boshlagansiz. Davom etishni xohlaysizmi?",
+    "restartWarning": "Qayta boshlash oldingi imkoniyatni yakunlaydi!!!",
+    "notAllowed": "Imtihonni boshlashingiz mumkin emas",
+    "startedAt": "Boshlangan vaqt",
+    "firstName": "Ism",
+    "lastName": "Familiya",
+    "middleName": "Sharif",
+    "exam": "Imtihon",
+    "variant": "Variantlar",
+    "totalTime": "Berilgan vaqt(daqiqa)",
+    "deadline": "Yopilish vaqti",
+    "attempts": "Umumiy urinishlar",
+    "questions": "Savollar soni"
   },
   "questionPage": {
     "form": {

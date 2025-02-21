@@ -7,6 +7,15 @@ const _index =async (payload)=>{
 const _start_exam = async (payload)=>{
     return await axios.post(`/v1/exam/worker-exams/${payload.id}/start`)
 }
+
+const _finish_exam = async (payload)=>{
+    return await axios.get(`/v1/exam/worker-exams/${payload.id}/finished`, {},{headers: {'active_token': payload.token}})
+}
+
+const _continue_exam = async (payload)=>{
+    console.log(payload)
+    return await axios.get(`/v1/exam/worker-exams/${payload.id}/continue`, {headers: {'active_token': payload.token}})
+}
 //
 // const _create = async (payload)=>{
 //     return await axios.post(`/v1/exam/categories/${payload.category_id}/questions`, payload.data)
@@ -29,7 +38,9 @@ const _start_exam = async (payload)=>{
 
 export default {
     _index,
-    _start_exam
+    _start_exam,
+    _finish_exam,
+    _continue_exam
     // _create,
     // _update,
     // _delete,

@@ -1,6 +1,5 @@
 <script setup>
-import {UIPageContent} from "@/components/index.js"
-import Table from "./ui/Table.vue"
+import List from "./ui/List.vue"
 import {useWorkerExamStore} from "@/store/modules/index.js";
 const store = useWorkerExamStore()
 
@@ -24,6 +23,6 @@ onMounted(()=>{
 <!--        @onSearch="onSearch"-->
 <!--        @onAdd="onAdd"-->
 <!--    />-->
-    <Table/>
+    <List/>
   </div>
 </template>

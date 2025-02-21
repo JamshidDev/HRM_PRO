@@ -65,7 +65,23 @@ onMounted(()=>{
               :actions="null"
               clearable />
         </n-form-item-gi>
-        <n-form-item-gi :span="2" path="chances" rule-path="requiredNumberField" :label="$t(`topicDetailsPage.exams.chances`)">
+        <n-form-item-gi :span="1" path="tests_count" rule-path="requiredNumberField" :label="$t(`topicDetailsPage.exams.tests_count`)">
+          <n-input-number
+              class="w-full"
+              :min="1"
+              :placeholder="$t(`content.enterField`)"
+              v-model:value="store.payload.tests_count"
+          />
+        </n-form-item-gi>
+        <n-form-item-gi :span="1" path="variant" rule-path="requiredNumberField" :label="$t(`topicDetailsPage.exams.variants`)">
+          <n-input-number
+              class="w-full"
+              :min="1"
+              :placeholder="$t(`content.enterField`)"
+              v-model:value="store.payload.variant"
+          />
+        </n-form-item-gi>
+        <n-form-item-gi :span="1" path="chances" rule-path="requiredNumberField" :label="$t(`topicDetailsPage.exams.chances`)">
           <n-input-number
               :min="1"
               class="w-full"
@@ -81,14 +97,7 @@ onMounted(()=>{
               v-model:value="store.payload.minute"
           />
         </n-form-item-gi>
-        <n-form-item-gi :span="1" path="variant" rule-path="requiredNumberField" :label="$t(`topicDetailsPage.exams.variants`)">
-          <n-input-number
-              class="w-full"
-              :min="1"
-              :placeholder="$t(`content.enterField`)"
-              v-model:value="store.payload.variant"
-          />
-        </n-form-item-gi>
+
   
         <n-form-item-gi :span="2"
             :label="$t(`topicDetailsPage.exams.toWhom`)"

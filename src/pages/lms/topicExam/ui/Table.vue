@@ -44,8 +44,9 @@ const onSelect = (v)=>{
           <th class="!text-center min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
           <th class="!text-center min-w-[150px] w-[200px]">{{$t('content.name')}}</th>
           <th>{{$t('topicDetailsPage.exams.toWhom')}}</th>
-          <th>{{$t('topicDetailsPage.exams.minute')}}</th>
+          <th>{{$t('topicDetailsPage.exams.tests_count')}}</th>
           <th>{{$t('topicDetailsPage.exams.variants')}}</th>
+          <th>{{$t('topicDetailsPage.exams.minute')}}</th>
           <th>{{$t('topicDetailsPage.exams.deadline')}}</th>
           <th>{{$t('topicDetailsPage.exams.isActive')}}</th>
           <th>{{$t('content.action')}}</th>
@@ -56,8 +57,9 @@ const onSelect = (v)=>{
           <td><span class="text-center text-[12px] text-gray-600 block">{{ (store.params.page - 1) * store.params.per_page + idx + 1 }}</span></td>
           <td>{{item.name}}</td>
           <td>{{item.whom.name}}</td>
-          <td>{{item.minute}}</td>
+          <td>{{item.tests_count}}</td>
           <td>{{item.variant}}</td>
+          <td>{{item.minute}}</td>
           <td>{{Utils.timeWithMonth(item.deadline)}}</td>
           <td><n-switch :value="!!item.active" disabled /></td>
           <td>
