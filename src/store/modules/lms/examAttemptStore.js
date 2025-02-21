@@ -4,11 +4,13 @@ const {t} = i18n.global
 export const useExamAttemptStore = defineStore('examAttemptStore', {
     state:()=>({
         questions:[],
-        exam_data: null,
+        exam_token: null,
         exam_detail: null,
         loading:false,
         saveLoading:false,
         deleteLoading:false,
+        continueVisible: false,
+        notPermittedVisible: false,
         visible:false,
         visibleType:true,
         elementId:null,
@@ -20,11 +22,12 @@ export const useExamAttemptStore = defineStore('examAttemptStore', {
         },
     }),
     actions:{
-        _check_attempt(){
+        _config_localstorage(){
             let data = localStorage.getItem('exam_data')
-            this.exam_data = data && JSON.parse(data)
-            this.visible = !!data
-
+            data = data && JSON.parse(data)
+            console.log(data)
+            this.exam_token = data && data[this.elementId]
+            console.log(this.exam_token)
         },
         _start_attempt(){
             this.loading= true
@@ -32,12 +35,16 @@ export const useExamAttemptStore = defineStore('examAttemptStore', {
                 const {active_token, questions, worker_exam_details} = res.data.data
                 this.questions = questions
                 this.exam_detail = worker_exam_details
-                this.exam_data = {token: active_token, id: this.elementId}
-                localStorage.setItem('exam_data', JSON.stringify(this.exam_data))
+                this.exam_token =  active_token
+                let data = localStorage.getItem('exam_data')
+                data = data ? JSON.parse(data) : {}
+                localStorage.setItem('exam_data', JSON.stringify({...data, [this.elementId]: active_token}))
             }).catch((res)=>{
-                // let data = localStorage.getItem('exam_data')
-                // this.exam_data = data && JSON.parse(data)
-                // this.visible = true
+                if(this.exam_token){
+                    this.continueVisible = true    
+                }else{
+                    this.notPermittedVisible = true
+                }                
             }).finally(()=>{
                 this.loading = false
             })
