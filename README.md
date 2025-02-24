@@ -1,3 +1,4 @@
-# HRM PRO Version
+## HRM (Human Resource Management) — bu inson resurslarini boshqarish va tashkilotdagi xodimlarni samarali boshqarish va ulardan maksimal foyda olish uchun mo‘ljallangan tizimdir.
 
-![](https://pandao.github.io/editor.md/images/logos/editormd-logo-180x180.png)
+![](https://github.com/JamshidDev/HRM_PRO/blob/main/public/resourses/login-page.png)
+
