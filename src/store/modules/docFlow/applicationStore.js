@@ -1,6 +1,7 @@
 import {defineStore} from "pinia";
 import Utils from "@/utils/Utils.js"
-import {AppPaths} from "@/utils/index.js"
+import {usePdfViewerStore} from "@/store/modules/index.js"
+
 export const useApplicationStore = defineStore('applicationStore', {
     state:()=>({
         list:[],
@@ -44,6 +45,14 @@ export const useApplicationStore = defineStore('applicationStore', {
             pin:null,
             inn:null,
             marital_status:null,
+            key:null,
+            phones:[
+                {
+                    id:1,
+                    phone:'+998',
+                    main:true,
+                }
+            ],
         },
 
         cityLoading:false,
@@ -53,6 +62,7 @@ export const useApplicationStore = defineStore('applicationStore', {
         liveCityList:[],
 
         checkLoading:false,
+        applicationData:null,
 
     }),
     actions:{
@@ -127,13 +137,36 @@ export const useApplicationStore = defineStore('applicationStore', {
         },
 
         _checkApplication(params){
-            this.checkLoading = true
-            $ApiService.applicationService._generateUrl({params, data:{status:"check"}}).then((res)=>{
-                console.log(res.data.data)
-            }).finally(()=>{
-            this.checkLoading = false
+            const store = usePdfViewerStore()
+            store.errorMessage = null
+            store.checkLoading = true
+            $ApiService.applicationService._checkApplication({params, data:{status:"check"}}).then((res)=>{
+                this.applicationData = res.data.data
+            }).catch((err)=>{
+                store.errorMessage = err.response.data.message
             })
+                .finally(()=>{
+            store.checkLoading = false
+            })
+        },
+        _sendApp(params){
+            const store = usePdfViewerStore()
+            this.saveLoading = true
 
+            let data = {
+                ...this.form,
+                ...{
+                    pin:this.form.pin.split('-').join(""),
+                    birthday:Utils.timeToZone(this.form.birthday),
+                    phones:this.form.phones.map((v)=>v.phone.split('-').join('').slice(4)),
+                    user_phone:this.form.phones.filter((v)=>v.main)[0].phone.split('-').join('').slice(4)
+                }
+            }
+            $ApiService.applicationService._checkApplication({params, data}).then((res)=>{
+                console.log(res.data)
+            }).finally(()=>{
+                this.saveLoading = false
+            })
         },
 
         openVisible(data){

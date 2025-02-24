@@ -11,6 +11,15 @@ const signatureRef = ref(null)
 const route = useRoute()
 const {t} = i18n.global
 
+const props = defineProps({
+  isCheck:{
+    type: Boolean,
+    default: false
+  }
+})
+
+const emits = defineEmits(["onSubmit"])
+
 const clearSignature = () => {
   signatureRef.value.clearSignature()
 }
@@ -25,11 +34,30 @@ const confirmSignature = ()=>{
     const payload = {
       key:data
     }
+    if(props.isCheck){
+      emits("onSubmit", data)
+      return ''
+    }
+
     store._confirmSignature(route.query,payload)
   }else{
     $Toast.warning(t('message.requiredSignature'))
   }
 }
+
+const checkSignature = () => {
+  const {isEmpty, data} = signatureRef.value.saveSignature()
+  if(!isEmpty){
+    return data
+  }else{
+    $Toast.warning(t('message.requiredSignature'))
+    return null
+  }
+}
+
+defineExpose({
+  checkSignature
+})
 </script>
 
 <template>

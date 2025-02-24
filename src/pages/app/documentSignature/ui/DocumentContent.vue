@@ -10,7 +10,6 @@ const openFile = (url)=>{
 }
 
 onMounted(()=>{
-  const url = "http://192.168.82.90:9000/docflow/contracts/ec433403ab843de34c4e8839632c10ff.docx"
   openFile(store.documentUrl)
 })
 

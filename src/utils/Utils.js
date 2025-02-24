@@ -97,6 +97,7 @@ const documentModels = {
     contract:'contracts',
     command:'commands',
     adContract:'contract-additional',
+    workerApplication:'worker-application'
 }
 const copyToClipboard = async (text, callback)=>{
     try {
@@ -111,6 +112,12 @@ const convertFromUrlToQuery = (url, status=0)=>{
     if(!url) return url
     const query = url.split('?')[1]
     return `${window.location.origin}${AppPaths.DocumentViewer}/${status}?${query}`
+}
+const methodTypes = {
+    PUT:'put',
+    DELETE:'delete',
+    POST:'post',
+    GET:'get',
 }
 const ActionTypes = {
     open:"open",
@@ -232,4 +239,5 @@ export default {
     maskText,
     convertFromUrlToQuery,
     viewerStatus,
+    methodTypes,
 }

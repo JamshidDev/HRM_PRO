@@ -46,7 +46,7 @@ const onEdit = (v)=>{
   <n-tabs
       animated
       v-model:value="store.activeTab"
-      class="hidden-tab-header1 mt-10"
+      class="hidden-tab-header1 mt-4"
       type="card"
       closable
       @close="store.closeTab"

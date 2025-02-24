@@ -1,6 +1,8 @@
 <script setup>
-import {NoDataPicture, UIActionButton, UIPagination} from "@/components/index.js"
+import {NoDataPicture, UIMenuButton, UIPagination, UIStatus} from "@/components/index.js"
 import {useApplicationStore} from "@/store/modules/index.js"
+import Utils from "../../../../../utils/Utils.js"
+import {DocumentBulletList20Regular} from '@vicons/fluent'
 
 const store = useApplicationStore()
 
@@ -24,36 +26,57 @@ const changePage = (v)=>{
   store.params.per_page = v.per_page
   store._index()
 }
+
+const onOpen = (url)=>{
+  window.open(url, '_blank')
+}
 </script>
 
 <template>
   <n-spin :show="store.loading" style="min-height: 200px">
     <div class="w-full overflow-x-auto"  v-if="store.list.length>0">
       <n-table
-          class="mt-10"
+          class="mt-4"
           :single-line="false"
           size="small"
       >
         <thead>
         <tr>
           <th class="!text-center min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
-          <th class="min-w-[200px]">{{$t('regionPage.form.name')}}</th>
-          <th class="min-w-[120px] w-[300px]">{{$t('regionPage.form.country')}}</th>
-          <th class="min-w-[90px] w-[90px]">{{$t('content.action')}}</th>
+          <th class="min-w-[200px]">{{$t('applicationPage.form.type')}}</th>
+          <th class="min-w-[120px] w-[200px]">{{$t('applicationPage.form.number')}}</th>
+          <th class="min-w-[120px] w-[120px]">{{$t('content.status')}}</th>
+          <th class="min-w-[90px] w-[90px]">{{$t('content.date')}}</th>
+          <th class="min-w-[90px] w-[90px]">{{$t('content.open')}}</th>
+          <th class="min-w-[40px] w-[40px]"></th>
         </tr>
         </thead>
         <tbody>
         <tr v-for="(item, idx) in store.list" :key="idx">
           <td><span class="text-center text-[12px] text-gray-600 block">{{ (store.params.page - 1) * store.params.per_page + idx + 1 }}</span></td>
-          <td>{{item.name}}</td>
-          <td>{{item?.country?.name}}</td>
+          <td>{{item.type?.name}}</td>
+          <td><span class="font-medium">{{item?.number}}</span></td>
           <td>
-            <UIActionButton
-                :data="item"
-                :loading-delete="item.id === store.elementId && store.deleteLoading"
-                @on-edit="onEdit"
-                @on-delete="onDelete"
+            <UIStatus
+                :status="item.confirmation"
             />
+          </td>
+          <td>{{Utils.timeOnlyDate(item?.created_at)}}</td>
+          <td>
+            <n-button
+                @click="onOpen(item.file)"
+            >
+              {{$t('content.open')}}
+              <template #icon>
+                <DocumentBulletList20Regular/>
+              </template>
+            </n-button>
+          </td>
+          <td>
+           <UIMenuButton
+               :show-edit="true"
+               :show-view="true"
+           />
           </td>
         </tr>
         </tbody>

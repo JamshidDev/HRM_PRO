@@ -1,6 +1,7 @@
 <script setup>
-import {NoDataPicture, UIActionButton, UIPagination} from "@/components/index.js"
+import {NoDataPicture, UIActionButton, UIPagination, UIMenuButton} from "@/components/index.js"
 import {useComponentStore, useDepartmentPositionStore} from "@/store/modules/index.js"
+import Utils from "@/utils/Utils.js"
 
 const store = useDepartmentPositionStore()
 const componentStore = useComponentStore()
@@ -18,6 +19,7 @@ const onEdit = (v)=>{
   store.payload.department_id = v.department?.id
   store.payload.group = v.group?.id
   store.payload.rank = v.rank?.id
+  store.payload.max_rank = v?.max_rank?.id
   store.payload.education = v.education?.id
   store.payload.rate =v.rate.toString()
   store.payload.salary = v.salary.toString()
@@ -36,13 +38,21 @@ const changePage = (v)=>{
   store.params.per_page = v.per_page
   store._index()
 }
+
+const onSelectEv = (v)=>{
+  if(Utils.ActionTypes.edit === v.key){
+    onEdit(v.data)
+  }else if(Utils.ActionTypes.delete === v.key){
+    onDelete(v.data)
+  }
+}
 </script>
 
 <template>
   <n-spin :show="store.loading" style="min-height: 200px">
     <div class="w-full overflow-x-auto"  v-if="store.list.length>0">
       <n-table
-          class="mt-10"
+          class="mt-4"
           :single-line="false"
           size="small"
       >
@@ -57,7 +67,7 @@ const changePage = (v)=>{
           <th class="min-w-[60px] w-[60px]">{{$t('departmentPositionPage.table.salary')}}</th>
           <th class="min-w-[120px] w-[120px]">{{$t('departmentPositionPage.table.education')}}</th>
           <th class="min-w-[60px] w-[60px]">{{$t('departmentPositionPage.table.experience')}}</th>
-          <th class="min-w-[90px] w-[90px]">{{$t('content.action')}}</th>
+          <th class="min-w-[40px] w-[40px]"></th>
         </tr>
         </thead>
         <tbody>
@@ -72,11 +82,10 @@ const changePage = (v)=>{
           <td>{{item.education?.name}}</td>
           <td>{{item.experience}} {{$t('content.month')}}</td>
           <td>
-            <UIActionButton
+            <UIMenuButton
                 :data="item"
-                :loading-delete="item.id === store.elementId && store.deleteLoading"
-                @on-edit="onEdit"
-                @on-delete="onDelete"
+                :show-edit="true"
+                @selectEv="onSelectEv"
             />
           </td>
         </tr>

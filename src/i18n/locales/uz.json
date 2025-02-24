@@ -40,6 +40,7 @@
     "confirm": "Tasdiqlash",
     "month": "Oy",
     "or": "Yoki",
+    "send": "Yuborish",
     "file": "Fayl",
     "choose": "Tanlang",
     "chooseFile": "Fayl tanlang",
@@ -275,6 +276,12 @@
     },
     "table": {
       "department": "Bo'lim",
+      "contractType": "Shartnoma turi",
+      "group": "Guruh",
+      "rank": "Razryad",
+      "rate": "Stavka",
+      "position_date": "Lavozim sanasi",
+      "birthday": "Tug'ilgan sanasi",
       "position": "Lavozim"
     }
   },
@@ -334,6 +341,7 @@
       "department_id": "Bo'limni tanlang",
       "group": "Lavozim guruxi",
       "rank": "Lavozim uchun razryad",
+      "max_rank": "Lavozim uchun maksimal razryad",
       "rate": "Lavozim kontingenti",
       "salary": "Oylik maosh",
       "experience": "Ish tajbibasi (oy)",
@@ -851,7 +859,15 @@
       "type": "Ariza turi",
       "work_type": "Ish turi",
       "generateLink": "Havola yaratish",
+      "phones": "Tefefon raqam",
+      "number": "Raqami",
       "from_date": "Qachondan"
+    },
+    "client": {
+      "name": "Ariza yozish",
+      "user": "Arizani qabul qiluvchi shaxs",
+      "sendApp": "Arizani yuborish",
+      "type": "Ariza turi"
     }
   }
 }

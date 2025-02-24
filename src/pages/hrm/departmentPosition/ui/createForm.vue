@@ -30,7 +30,7 @@ const onSubmit = ()=>{
       :model="store.payload"
   >
     <div style="min-height:calc(100vh - 120px)">
-      <div class="grid grid-cols-3 gap-x-4">
+      <div class="grid grid-cols-3 gap-x-4 overflow-x-hidden">
         <n-form-item class="col-span-3" :label="$t(`departmentPositionPage.form.position_id`)" path="position_id">
           <n-select
               v-model:value="store.payload.position_id"
@@ -74,6 +74,18 @@ const onSubmit = ()=>{
               filterable
               clearable
               :placeholder="$t(`departmentPositionPage.form.rank`)"
+              :options="componentStore.rankList"
+              label-field="name"
+              value-field="id"
+              :loading="componentStore.enumLoading"
+          />
+        </n-form-item>
+        <n-form-item :label="$t(`departmentPositionPage.form.max_rank`)" path="max_rank">
+          <n-select
+              v-model:value="store.payload.max_rank"
+              filterable
+              clearable
+              :placeholder="$t(`departmentPositionPage.form.max_rank`)"
               :options="componentStore.rankList"
               label-field="name"
               value-field="id"

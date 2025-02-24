@@ -115,7 +115,7 @@ onMounted(()=>{
             </n-form-item>
           </div>
           <template v-if="store.payload.type === 1">
-            <div class="col-span-12">
+            <div class="col-span-12 mr-3">
               <n-form-item :label="$t(`documentPage.form.department`)" path="department_id">
                 <UIDepartment
                     :modelV="store.payload.department_id"

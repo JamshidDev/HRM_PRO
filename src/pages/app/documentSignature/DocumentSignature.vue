@@ -25,7 +25,7 @@ onMounted(()=>{
 
 <template>
 <div class="w-full flex-col bg-blue-50 pt-[64px] min-h-screen">
-  <n-spin class="w-full" :show="store.checkLoading">
+  <n-spin class="w-full min-h-[400px]" :show="store.checkLoading">
     <ToolBar/>
 
     <template v-if="store.viewerStatus === Utils.viewerStatus.signatureDocument">

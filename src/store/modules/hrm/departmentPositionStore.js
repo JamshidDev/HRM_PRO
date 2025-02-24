@@ -18,6 +18,7 @@ export const useDepartmentPositionStore = defineStore('departmentPositionStore',
             department_id:null,
             group:null,
             rank:null,
+            max_rank:null,
             rate:null,
             salary:null,
             experience:null,
@@ -81,10 +82,11 @@ export const useDepartmentPositionStore = defineStore('departmentPositionStore',
             this.payload.department_id = null
             this.payload.group = null
             this.payload.rank = null
+            this.payload.max_rank = null
             this.payload.rate = null
             this.payload.salary = null
             this.payload.experience = null
-            this.payload.educations = null
+            this.payload.education = null
         }
 
     }

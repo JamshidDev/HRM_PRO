@@ -62,7 +62,7 @@ onMounted(()=>{
       animated
       v-model:value="store.activeTab"
       @update:value="onChange"
-      class="hidden-tab-header1 mt-10"
+      class="hidden-tab-header1 mt-4"
       type="card"
   >
     <n-tab-pane v-for="(item, idx) in store.tabList" :key="idx" :name="item.key" :tab="$t(item.name)">
