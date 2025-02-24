@@ -8,7 +8,7 @@ import CandidatePage from "@/pages/hrm/condidate/CandidatePage.vue"
 import DocumentPage from "@/pages/docFlow/document/DocumentPage.vue"
 import ConfirmationPage from "@/pages/hrm/confirmation/ConfirmationPage.vue"
 import ProfilePage from "@/pages/hrm/workerProfile/ProfilePage.vue"
-import ApplicationPage from "@/pages/docFlow/document/aplication/ApplicationPage.vue"
+import ApplicationPage from "@/pages/docFlow/document/application/ApplicationPage.vue"
 
 
 export default [

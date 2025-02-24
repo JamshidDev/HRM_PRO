@@ -1,7 +1,7 @@
 import {Folder48Filled,LockClosed16Filled, PersonChat20Filled, Person32Filled,
     DocumentPerson16Filled, PersonNote24Filled,Person12Filled,
     TextBulletListSquare20Filled, ChannelShare20Filled, DocumentTextExtract24Filled,
-    PeopleCheckmark24Filled, DocumentArrowDown20Filled} from "@vicons/fluent"
+    PeopleCheckmark24Filled, DocumentArrowDown20Filled, Archive24Filled} from "@vicons/fluent"
 import {AppPaths} from "@/utils/index.js";
 import Utils from "@/utils/Utils.js";
 import i18n from "@/i18n/index.js"
@@ -85,6 +85,11 @@ export const navigations = [
                 icon:DocumentTextExtract24Filled,
                 children:[]
             },
+            {
+                label:t('applicationPage.name'),
+                path:Utils.routeDocFlowPathMaker(AppPaths.ConfApplication),
+                icon:DocumentArrowDown20Filled,
+            },
         ]
     },
     {
@@ -96,13 +101,13 @@ export const navigations = [
             {
                 label:t('topicPage.name'),
                 path:Utils.routeLmsPathMaker(AppPaths.Topic),
-                icon:Folder48Filled,
+                icon:Archive24Filled,
                 children:[]
             },
             {
                 label:t('categoryPage.name'),
                 path:Utils.routeLmsPathMaker(AppPaths.Category),
-                icon:Folder48Filled,
+                icon:Archive24Filled,
                 children:[]
             },
         ]

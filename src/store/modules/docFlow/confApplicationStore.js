@@ -1,7 +1,7 @@
 import {defineStore} from "pinia";
 import Utils from "@/utils/Utils.js"
 import {AppPaths} from "@/utils/index.js"
-export const useApplicationStore = defineStore('applicationStore', {
+export const useConfApplicationStore = defineStore('confApplicationStore', {
     state:()=>({
         list:[],
         loading:false,
@@ -11,7 +11,6 @@ export const useApplicationStore = defineStore('applicationStore', {
         visibleType:true,
         elementId:null,
         totalItems:0,
-        departmentCheck:[],
         payload:{
             director_id:true,
             type:null,
@@ -25,40 +24,12 @@ export const useApplicationStore = defineStore('applicationStore', {
             per_page:10,
             search:null,
         },
-        tabList:[1,2,3],
-        activeTab:1,
-        applicationLink:null,
-
-        form:{
-            first_name:null,
-            last_name:null,
-            middle_name:null,
-            birthday:null,
-            country_id:null,
-            region_id:null,
-            city_id:null,
-            current_region_id:null,
-            current_city_id:null,
-            nationality_id:null,
-            address:null,
-            pin:null,
-            inn:null,
-            marital_status:null,
-        },
-
-        cityLoading:false,
-        cityList:[],
-
-        liveCityLoading:false,
-        liveCityList:[],
-
-        checkLoading:false,
 
     }),
     actions:{
         _index(){
             this.loading= true
-            $ApiService.applicationService._index({params:this.params}).then((res)=>{
+            $ApiService.applicationService._confIndex({params:this.params}).then((res)=>{
                 this.list = res.data.data.data
                 this.totalItems = res.data.data.total
             }).finally(()=>{
@@ -102,40 +73,6 @@ export const useApplicationStore = defineStore('applicationStore', {
                 this.deleteLoading = false
             })
         },
-
-        _getCity(){
-            this.cityList = []
-            this.form.city_id = null
-            const id  = this.form.region_id
-            this.cityLoading = true
-            $ApiService.districtService._index({params:{page:1,per_page:1000, region_id:id}}).then((res)=>{
-                this.cityList = res.data.data.data
-            }).finally(()=>{
-                this.cityLoading = false
-            })
-        },
-        _getLiveCity(){
-            this.liveCityList = []
-            this.form.current_city_id = null
-            const id  = this.form.current_region_id
-            this.liveCityLoading = true
-            $ApiService.districtService._index({params:{page:1,per_page:1000, region_id:id}}).then((res)=>{
-                this.liveCityList = res.data.data.data
-            }).finally(()=>{
-                this.liveCityLoading = false
-            })
-        },
-
-        _checkApplication(params){
-            this.checkLoading = true
-            $ApiService.applicationService._generateUrl({params, data:{status:"check"}}).then((res)=>{
-                console.log(res.data.data)
-            }).finally(()=>{
-            this.checkLoading = false
-            })
-
-        },
-
         openVisible(data){
             this.visible = data
         },

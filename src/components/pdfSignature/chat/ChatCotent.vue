@@ -66,7 +66,10 @@ const onDelete = (v)=>{
   />
     <div
         style="height: calc(100vh - 230px)"
-        class="flex flex-col-reverse w-full border border-surface-line rounded-lg mb-1 bg-surface-ground overflow-x-hidden overflow-y-auto">
+        class="flex flex-col-reverse w-full border
+        w-full h-full
+        border-surface-line rounded-lg mb-1 bg-surface-ground
+         overflow-x-hidden overflow-y-auto">
       <template v-for="(item, idx) in messages" :key="idx">
         <MessageContent
             :message="item.msg"
@@ -79,7 +82,9 @@ const onDelete = (v)=>{
         <ChatDate v-if="idx+1 === messages.length || checkTime(item.date)" :date="item.date" />
       </template>
       <n-spin :show="store.chatLoading" class="h-full flex justify-center items-center">
-        <div v-if="messages.length === 0" class="text-surface-300">{{$t('content.no-message')}}</div>
+        <div v-if="messages.length === 0" class="h-full text-surface-300 flex justify-center items-center">
+          <span>{{$t('content.no-message')}}</span>
+        </div>
       </n-spin>
     </div>
 

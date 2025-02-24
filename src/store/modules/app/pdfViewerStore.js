@@ -67,6 +67,8 @@ export const usePdfViewerStore = defineStore('pdfViewerStore', {
         saveLoading:false,
         viewerStatus:null,
 
+        linkVisible:false,
+
 
 
 
@@ -218,6 +220,7 @@ export const usePdfViewerStore = defineStore('pdfViewerStore', {
             this.link = null
             this.linkLoading = true
             $ApiService.documentService._generateLink({params:data}).then((res)=>{
+                this.linkVisible = true
                 this.link =Utils.convertFromUrlToQuery(res.data.data.url, Utils.viewerStatus.signatureDocument)
             }).finally(()=>{
                 this.linkLoading = false

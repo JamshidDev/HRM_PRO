@@ -1,7 +1,7 @@
 <script setup>
 import {Timer16Regular, Eye16Filled, CheckmarkCircle24Filled, Circle20Filled} from "@vicons/fluent"
 const props = defineProps({
-  status:String,
+  status:Object,
   size:{
     type:String,
     default:'tiny'
@@ -68,7 +68,7 @@ const icon = computed(()=>{
 </script>
 
 <template>
-<div class="w-full flex justify-center items-center">
+<div class="flex justify-center items-center">
   <n-button :type="type" :size="size" dashed>
     <template #icon>
       <component :is="icon" />

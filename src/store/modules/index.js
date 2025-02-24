@@ -50,6 +50,7 @@ export * from "./docFlow/confirmationContractStore.js"
 export * from "./docFlow/adContractStore.js"
 export * from "./docFlow/confirmationAdCommandStore.js"
 export * from "./docFlow/applicationStore.js"
+export * from "./docFlow/confApplicationStore.js"
 
 export * from "./lms/topicStore.js"
 export * from "./lms/categoryStore.js"

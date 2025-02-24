@@ -44,6 +44,7 @@ export const AppPaths = {
     WorkerProfile:"/worker-profile",
     ConfContract:"/conf-contract",
     ConfCommand:"/conf-command",
+    ConfApplication:"/conf-application",
     ConfAdContract:"/conf-ad-contract",
     Topic:"/topic",
     DrawingSignature:"/drawing-signature",

@@ -1,7 +1,7 @@
 <script setup>
 import ToolBar from "./ui/ToolBar.vue"
 import Document from "./ui/Document.vue"
-import PersonalForm from "./ui/PersonalForm.vue"
+import PersonalForm from "./application/PersonalForm.vue"
 import {usePdfViewerStore} from "@/store/modules/index.js"
 import {useRoute} from "vue-router"
 import Utils from "@/utils/Utils.js"
@@ -24,10 +24,9 @@ onMounted(()=>{
 
 
 <template>
-<div class="w-full flex-col bg-blue-50 pt-[100px] min-h-screen">
+<div class="w-full flex-col bg-blue-50 pt-[64px] min-h-screen">
   <n-spin class="w-full" :show="store.checkLoading">
     <ToolBar/>
-
 
     <template v-if="store.viewerStatus === Utils.viewerStatus.signatureDocument">
       <Document/>
@@ -35,10 +34,6 @@ onMounted(()=>{
     <template v-if="store.viewerStatus === Utils.viewerStatus.applicationDocument">
       <PersonalForm/>
     </template>
-
-
-
-
 
     <template v-if="!store.checkLoading && store.errorMessage">
       <ErrorMessage/>

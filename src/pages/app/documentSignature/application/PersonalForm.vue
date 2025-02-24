@@ -1,14 +1,39 @@
 <script setup>
 import {useApplicationStore, useComponentStore} from "@/store/modules/index.js"
 import Utils from "@/utils/Utils.js"
+import Signature from "./Signature.vue"
+import {useRoute} from "vue-router"
 
 const store = useApplicationStore()
 const componentStore = useComponentStore()
+const route = useRoute()
+
+const onCountry = ()=>{
+  if(componentStore.countryList.length === 0){
+    componentStore._countries()
+  }
+}
+
+const onNationality= ()=>{
+  if(componentStore.nationalityList.length === 0){
+    componentStore._nationality()
+  }
+}
+
+const onRegion= ()=>{
+  if(componentStore.regionList.length === 0){
+    componentStore._regions()
+  }
+}
+onMounted(()=>{
+componentStore._enums()
+  store._checkApplication(route.query)
+})
 </script>
 
 <template>
-  <div class="w-full flex flex-col">
-    <div class="max-w-[] grid grid-cols-12 gap-x-4 bg-white p-6 rounded-lg">
+  <div class="w-full max-w-[1440px] mx-auto overflow-auto flex flex-col">
+    <div class="grid grid-cols-12 gap-x-4 bg-white p-6 rounded-lg">
       <n-form-item
           class="col-span-4"
           :label="$t(`createWorkerPage.form.lastName`)"
@@ -47,6 +72,7 @@ const componentStore = useComponentStore()
           :label="$t(`createWorkerPage.form.country`)"
           path="country_id">
         <n-select
+            @focus="onCountry"
             v-model:value="store.form.country_id"
             filterable
             :placeholder="$t(`content.choose`)"
@@ -61,8 +87,9 @@ const componentStore = useComponentStore()
           :label="$t(`createWorkerPage.form.region`)"
           path="region_id">
         <n-select
+            @focus="onRegion"
             v-model:value="store.form.region_id"
-            @update:value="store.changeRegion"
+            @update:value="store._getCity"
             filterable
             :placeholder="$t(`content.choose`)"
             :options="componentStore.regionList"
@@ -80,10 +107,10 @@ const componentStore = useComponentStore()
             v-model:value="store.form.city_id"
             filterable
             :placeholder="$t(`content.choose`)"
-            :options="store.districtList"
+            :options="store.cityList"
             label-field="name"
             value-field="id"
-            :loading="store.districtLoading"
+            :loading="store.cityLoading"
         />
       </n-form-item>
       <n-form-item
@@ -91,8 +118,9 @@ const componentStore = useComponentStore()
           :label="$t(`createWorkerPage.form.currentRegion`)"
           path="current_region_id">
         <n-select
+            @focus="onRegion"
             v-model:value="store.form.current_region_id"
-            @update:value="store.changeCurrentRegion"
+            @update:value="store._getLiveCity"
             filterable
             :placeholder="$t(`content.choose`)"
             :options="componentStore.regionList"
@@ -110,10 +138,10 @@ const componentStore = useComponentStore()
             v-model:value="store.form.current_city_id"
             filterable
             :placeholder="$t(`content.choose`)"
-            :options="store.currentDistrictList"
+            :options="store.liveCityList"
             label-field="name"
             value-field="id"
-            :loading="store.currentDistrictLoading"
+            :loading="store.liveCityLoading"
         />
       </n-form-item>
       <n-form-item
@@ -144,6 +172,7 @@ const componentStore = useComponentStore()
           :label="$t(`createWorkerPage.form.nationality_id`)"
           path="nationality_id">
         <n-select
+            @focus="onNationality"
             v-model:value="store.form.nationality_id"
             filterable
             :placeholder="$t(`content.choose`)"
@@ -193,6 +222,13 @@ const componentStore = useComponentStore()
         />
       </n-form-item>
     </div>
+    <div class="grid grid-cols-12 bg-white p-6 rounded-lg">
+      <div class="col-span-12">
+        <Signature/>
+      </div>
+
+    </div>
+
   </div>
 
 </template>

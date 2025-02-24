@@ -412,7 +412,7 @@
     "goSignature": "Imzolash",
     "signatureTitle": "Hujjatni elektron yozuv orqali imzolash!",
     "signatureWorker": "Imzolash havolasi {name} uchun yaratilgan. Elektron imzo {name} tomonidan imzolangan holatdagina hujjat haqiqiy hisoblanadi.",
-    "linkText": "Hujjatni imzolash uchun havola yaratildi. Havoladan 2 daqiqa davomida foydalanishingiz mumkin.",
+    "linkText": "Hujjat uchun havola",
     "pinfl": "JSHSHR"
   },
   "documentPage": {
@@ -499,6 +499,9 @@
     },
     "confirmText": "{n} raqamli shartnoma asosida buyruq yaratasizmi?",
     "confirmAdText": "{n} raqamli qo'shimcha kelishuv shartnoma asosida buyruq yaratasizmi?"
+  },
+  "chatWindow": {
+    "name": "Chat"
   },
   "adContractPage": {
     "createTitle": "Qo'shimcha kelishuv tuzish",
