@@ -1,15 +1,15 @@
 <script setup>
-
 import {
-  AppsList20Filled, ArrowCircleDown24Regular, ArrowRepeatAll16Filled,
+  AppsList20Filled, ArrowRepeatAll16Filled,
   CalendarClock20Filled, ChevronDown12Filled, ClipboardBulletListLtr20Filled,
   DocumentBulletListClock20Filled,
-  HatGraduation12Filled
+  HatGraduation12Filled,
+  Eye12Filled,
+  ArrowSyncCheckmark24Filled
 } from "@vicons/fluent";
 import Utils from "@/utils/Utils.js";
 import {useRouter} from "vue-router";
-import {useExamAttemptStore} from "@/store/modules/index.js";
-import {UIActionButton} from "@/components/index.js";
+import {useExamAttemptStore} from "@/store/modules";
 
 const router = useRouter()
 const examStore = useExamAttemptStore()
@@ -23,8 +23,7 @@ defineProps({
 
 const showHistory = ref(false)
 
-const goPush = (v, isNewAttempt) => {
-  examStore.isNewAttempt = isNewAttempt
+const goPush = (v) => {
   router.push({
     name: 'solve_exam',
     params: {
@@ -32,9 +31,20 @@ const goPush = (v, isNewAttempt) => {
     }
   })
 }
+
+
+const startAttempt = (v)=>{
+  examStore.elementId = v.id
+  if(v.results.findIndex(i=>!i.result) !== -1){
+    examStore.continueVisible = true
+  }else{
+    examStore._start_attempt(goPush)
+  }
+}
+
 </script>
 <template>
-    <div class="exam__card">
+    <div class="bg-surface-section p-2 rounded-md">
       <div class="flex justify-between">
         <n-button
             text
@@ -47,7 +57,9 @@ const goPush = (v, isNewAttempt) => {
         </n-button>
         <n-button
             type="primary"
-            @click="goPush(exam, true)"
+            :loading="examStore.loading && examStore.elementId===exam.id"
+            :disabled="exam.results.findIndex(i=>!i.result)!==-1 && !examStore.exam_storage?.[exam.id]"
+            @click="startAttempt(exam)"
         >
           {{$t('examPage.start')}}
         </n-button>
@@ -98,16 +110,37 @@ const goPush = (v, isNewAttempt) => {
             <th>{{$t('examPage.startTime')}}</th>
             <th>{{$t('examPage.endTime')}}</th>
             <th>{{$t('examPage.result')}}</th>
-            <th>{{$t('content.action')}}</th>
+            <th class="max-w-[150px] !text-center w-[150px]">{{$t('content.action')}}</th>
           </tr>
           </thead>
           <tbody>
           <tr v-for="(item, idx) in exam.results" :key="idx">
             <td>{{idx+1}}</td>
             <td>{{Utils.timeWithMonth(item.created)}}</td>
-            <td></td>
-            <td></td>
-            <td></td>
+            <td>{{item.ended && Utils.timeWithMonth(item.ended)}}</td>
+            <td>{{item?.result && item?.result}}</td>
+            <td class="!text-center">
+              <n-button size="small" tertiary type="info" v-if="item.result">
+                {{$t('content.view')}}
+                <template #icon>
+                  <n-icon :component="Eye12Filled" />
+                </template>
+              </n-button>
+              <n-button
+                  size="small"
+                  tertiary
+                  type="warning"
+                  v-else
+                  :disabled="!examStore.exam_storage?.[item.id]"
+                  @click="goPush(item)"
+              >
+                {{$t('content.continue')}}
+                <template #icon>
+                  <n-icon :component="ArrowSyncCheckmark24Filled" />
+                </template>
+              </n-button>
+
+            </td>
           </tr>
           </tbody>
         </n-table>

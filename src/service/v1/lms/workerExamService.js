@@ -9,13 +9,18 @@ const _start_exam = async (payload)=>{
 }
 
 const _finish_exam = async (payload)=>{
-    return await axios.get(`/v1/exam/worker-exams/${payload.id}/finished`, {},{headers: {'active_token': payload.token}})
+    return await axios.get(`/v1/exam/worker-exams/${payload.id}/finished`, {headers: {'active_token': payload.token}})
 }
 
 const _continue_exam = async (payload)=>{
-    console.log(payload)
     return await axios.get(`/v1/exam/worker-exams/${payload.id}/continue`, {headers: {'active_token': payload.token}})
 }
+
+const _send_result = async (payload)=>{
+    return await axios.post(`/v1/exam/worker-exams/${payload.id}/send-result/${payload.questionId}`,payload.data, {headers: {'active_token': payload.token}})
+}
+
+
 //
 // const _create = async (payload)=>{
 //     return await axios.post(`/v1/exam/categories/${payload.category_id}/questions`, payload.data)
@@ -40,7 +45,8 @@ export default {
     _index,
     _start_exam,
     _finish_exam,
-    _continue_exam
+    _continue_exam,
+    _send_result
     // _create,
     // _update,
     // _delete,

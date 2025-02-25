@@ -832,7 +832,7 @@
   "solveExamPage": {
     "alreadyStarted": "Siz bu imtihonni oldin boshlagansiz. Davom etishni xohlaysizmi?",
     "restartWarning": "Qayta boshlash oldingi imkoniyatni yakunlaydi!!!",
-    "notAllowed": "Imtihonni boshlashingiz mumkin emas",
+    "notAllowed": "Imtihonni yechishingiz mumkin emas!",
     "startedAt": "Boshlangan vaqt",
     "firstName": "Ism",
     "lastName": "Familiya",
@@ -842,7 +842,10 @@
     "totalTime": "Berilgan vaqt(daqiqa)",
     "deadline": "Yopilish vaqti",
     "attempts": "Umumiy urinishlar",
-    "questions": "Savollar soni"
+    "questions": "Savollar soni",
+    "removeAnswer": "Javobni olib tashlash",
+    "notAnswered": "{n}ta savolga javob bermagansiz!!!",
+    "endWarning": "Imtihonni yakunlashga ishonchingiz komilmi?"
   },
   "questionPage": {
     "form": {

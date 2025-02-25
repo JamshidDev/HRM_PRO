@@ -1,22 +1,24 @@
 <script setup>
 import {NoDataPicture, UIPagination} from "@/components/index.js"
-import {useExamAttemptStore, useWorkerExamStore} from "@/store/modules/index.js"
-import {useRouter} from "vue-router"
+import {useWorkerExamStore} from "@/store/modules/index.js"
 import {
   Book24Filled,
   Image48Filled,
   MusicNote224Filled,
   VideoClip24Filled,
+  HatGraduation12Filled,
 } from "@vicons/fluent";
 
-import LessonCard from './LessonCard.vue'
+import ExamCard from './ExamCard.vue'
 const store = useWorkerExamStore()
 
 
-const changePage = (v) => {
-  store.params.page = v.page
-  store.params.per_page = v.per_page
-  store._index()
+const downloadFile = (file) => {
+  let a = document.createElement('a')
+  a.href = file.file
+  a.target = '_blank'
+  a.click()
+  a.remove()
 }
 
 
@@ -48,23 +50,63 @@ const getMediaProperty = (v) => {
   }
 }
 
-
-
-const downloadFile = (file) => {
-  let a = document.createElement('a')
-  a.href = file.file
-  a.target = '_blank'
-  a.click()
-  a.remove()
+const changePage = (v) => {
+  store.params.page = v.page
+  store.params.per_page = v.per_page
+  store._index()
 }
+
+
+
+
+
 
 </script>
 
 <template>
   <n-spin :show="store.loading" style="min-height: 200px">
     <div v-if="store.list.length>0" class="w-full overflow-x-auto flex flex-col gap-5">
-      <template v-for="(item, idx) in store.list" :key="idx">
-        <LessonCard :lesson="item" />
+      <template v-for="(lesson, idx) in store.list" :key="idx">
+        <div class="flex flex-col gap-2 rounded-lg p-4  shrink-0">
+          <div class="flex items-center gap-3">
+            <n-button size="large" text type="info">
+              <template #icon>
+                <n-icon :component="HatGraduation12Filled"/>
+              </template>
+              <span>{{ $t('examPage.topic') }}: {{ lesson.name }}</span>
+            </n-button>
+            <n-button dashed size="tiny" type="success">
+              {{ lesson.type.name }}
+            </n-button>
+          </div>
+          <n-collapse v-if="lesson.files.length">
+            <n-collapse-item :title="$t('examPage.resources')">
+
+              <div v-for="(file, idx) in lesson.files" :key="idx">
+                <n-button
+                    text
+                    @click="downloadFile(file)">
+                  <template #icon>
+                    <n-icon :component="getMediaProperty(file.type.id).icon"></n-icon>
+                  </template>
+                  {{ file.file_name }}
+                </n-button>
+              </div>
+
+            </n-collapse-item>
+          </n-collapse>
+          <n-collapse v-if="lesson.exams.length">
+            <n-collapse-item :title="$t('examPage.exams')">
+              <div class="flex flex-col gap-2">
+                <ExamCard
+                    v-for="(exam, idx) in lesson.exams"
+                    :key="idx"
+                    :exam="exam"
+                />
+              </div>
+            </n-collapse-item>
+          </n-collapse>
+        </div>
       </template>
       <UIPagination
           v-if="store.totalItems>store.params.per_page"
