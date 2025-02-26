@@ -1,5 +1,6 @@
 
 import {defineStore} from "pinia";
+import {useRouter} from "vue-router"
 const otpExpireTime = import.meta.env.VITE_OTP_EXPIRE_TIME
 
 export const useRegisterStore = defineStore('registerStore', {
@@ -61,6 +62,7 @@ export const useRegisterStore = defineStore('registerStore', {
             }
             $ApiService.authService._register({data}).then((res)=>{
                 console.log(res.data.message)
+
 
             }).catch((error)=>{
                 this.otpErrorMessage = error.response?.data?.message

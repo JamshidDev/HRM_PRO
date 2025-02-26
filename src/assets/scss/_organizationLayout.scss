@@ -25,14 +25,14 @@ $mobile_device_screen_size:900px;
       background: #181A20;
       border-right: 1px solid var(--surface-line);
       box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
-      padding: 0px 6px;
+      padding: 0 6px;
       .main-menu-item{
         display: flex;
         justify-content: center;
         align-items: center;
-        width: 36px;
-        height: 36px;
-        margin:6px auto;
+        width: 44px;
+        height: 40px;
+        margin:16px auto;
         cursor: pointer;
         border-radius: 6px;
         //border: 1px solid var(--gray-600);
@@ -220,8 +220,8 @@ $mobile_device_screen_size:900px;
     }
 
     .active-mini-content {
-      background-image: linear-gradient(to right bottom, rgb(44, 116, 248), rgb(9, 5, 125));
-      border: 1px solid #2C74F8FF !important;
+      background-image: linear-gradient(to right bottom, #1870ff4d, rgb(24 26 31));
+      border: 1px solid #455470 !important;
       i{
         color: white !important;
       }

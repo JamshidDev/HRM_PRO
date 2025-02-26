@@ -33,7 +33,7 @@ function microAjax(B, A) {
             C.open("POST", B, true);
             C.setRequestHeader("X-Requested-With", "XMLHttpRequest");
             C.setRequestHeader("Content-type", "application/x-www-form-urlencoded; charset=UTF-8");
-            C.setRequestHeader("Connection", "close")
+            // C.setRequestHeader("Connection", "close")
         } else {
             C.open("GET", B, true)
         }

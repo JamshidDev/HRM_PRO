@@ -35,14 +35,15 @@ const getMyLocation =()=>{
 }
 
 const timeToZone = (time)=>{
-    return time? dayjs(time).format('YYYY-MM-DDTHH:mm:ssZ') : null
+    // return time? dayjs(time).format('YYYY-MM-DDTHH:mm:ssZ') : null
+    return time? dayjs(time).format('YYYY-MM-DD') : null
 }
 
 const timeWithMonth = (time)=>{
     return time? dayjs(time).format('DD.MM.YYYY HH:mm') : null
 }
 const timeOnlyDate = (time)=>{
-    return time? dayjs(time).format('DD.MM.YYYY') : null
+    return time? dayjs(time).format('YYYY.MM.DD') : null
 }
 
 const timeOnlyHour = (time)=>{
@@ -50,6 +51,9 @@ const timeOnlyHour = (time)=>{
 }
 const timeOnlyYear = (time)=>{
     return time? dayjs(time).format('YYYY') : null
+}
+const timeOnlyMonth = (time)=>{
+    return time? dayjs(time).format('M') : null
 }
 const base64UrlEncode = (obj)=>{
     return btoa(JSON.stringify(obj))
@@ -94,8 +98,8 @@ const documentModels = {
     contract:'contracts',
     command:'commands',
     adContract:'contract-additional',
+    workerApplication:'worker-application'
 }
-
 const copyToClipboard = async (text, callback)=>{
     try {
         await navigator.clipboard.writeText(text)
@@ -105,7 +109,17 @@ const copyToClipboard = async (text, callback)=>{
         $Toast.error(t('message.unExpectedError'))
     }
 }
-
+const convertFromUrlToQuery = (url, status=0)=>{
+    if(!url) return url
+    const query = url.split('?')[1]
+    return `${window.location.origin}${AppPaths.DocumentViewer}/${status}?${query}`
+}
+const methodTypes = {
+    PUT:'put',
+    DELETE:'delete',
+    POST:'post',
+    GET:'get',
+}
 const ActionTypes = {
     open:"open",
     view:"view",
@@ -113,15 +127,89 @@ const ActionTypes = {
     download:"download",
     delete:"delete",
 }
-
 const combineFullName = (user)=>{
     return `${user.last_name} ${user.first_name} ${user.middle_name}`
 }
-
-
-
-
-
+const monthList = [
+    {
+        name: t('month.january'),
+        key: '01',
+        id: 1,
+    },
+    {
+        name: t('month.february'),
+        key: '02',
+        id: 2,
+    },
+    {
+        name: t('month.march'),
+        key: '03',
+        id: 3,
+    },
+    {
+        name: t('month.april'),
+        key: '04',
+        id: 4,
+    },
+    {
+        name: t('month.may'),
+        key: '05',
+        id: 5,
+    },
+    {
+        name: t('month.june'),
+        key: '06',
+        id: 6,
+    },
+    {
+        name: t('month.july'),
+        key: '07',
+        id: 7,
+    },
+    {
+        name: t('month.august'),
+        key: '08',
+        id: 8,
+    },
+    {
+        name: t('month.september'),
+        key: '09',
+        id: 9,
+    },
+    {
+        name: t('month.october'),
+        key: '10',
+        id: 10,
+    },
+    {
+        name: t('month.november'),
+        key: '11',
+        id: 11,
+    },
+    {
+        name: t('month.december'),
+        key: '12',
+        id: 12,
+    },
+]
+const getMonthNameById = (id)=>{
+    return monthList.filter((v)=>v.id === id)?.[0]?.name
+}
+const getMonthNameByKey = (key)=>{
+    return monthList.filter((v)=>v.key === key)?.[0]?.name
+}
+const maskText =(text, start, end) =>{
+    const str = text.toString()
+    if (str.length <= start + end) return str;
+    let startText = str.slice(0, start)
+    let endText = str.slice(-end)
+    let masked = "*".repeat(str.length - (start + end))
+    return startText + masked + endText;
+}
+const viewerStatus = {
+    signatureDocument:'document-signature',
+    applicationDocument:"application-document"
+}
 
 
 export default {
@@ -132,6 +220,7 @@ export default {
     timeWithMonth,
     timeOnlyDate,
     timeOnlyHour,
+    timeOnlyMonth,
     noAvailableImage,
     routePathMaker,
     routeHrmPathMaker,
@@ -144,5 +233,12 @@ export default {
     copyToClipboard,
     ActionTypes,
     timeOnlyYear,
-    combineFullName
+    combineFullName,
+    monthList,
+    getMonthNameById,
+    getMonthNameByKey,
+    maskText,
+    convertFromUrlToQuery,
+    viewerStatus,
+    methodTypes,
 }

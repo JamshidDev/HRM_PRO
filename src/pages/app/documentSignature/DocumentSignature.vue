@@ -1,16 +1,21 @@
 <script setup>
 import ToolBar from "./ui/ToolBar.vue"
-import DocumentContent from "./ui/DocumentContent.vue"
-import SignatureBox from "./ui/SignatureBox.vue"
-import ErrorMessage from "./ui/ErrorMessage.vue"
+import Document from "./ui/Document.vue"
+import PersonalForm from "./application/PersonalForm.vue"
 import {usePdfViewerStore} from "@/store/modules/index.js"
 import {useRoute} from "vue-router"
+import Utils from "@/utils/Utils.js"
+import ErrorMessage from "@/pages/app/documentSignature/ui/ErrorMessage.vue"
 
 const store = usePdfViewerStore()
 const route = useRoute()
 
 onMounted(()=>{
-  store._checkSignature(route.query)
+  store.viewerStatus = route?.params?.status
+  if(store.viewerStatus === Utils.viewerStatus.signatureDocument){
+    store._checkSignature(route.query)
+  }
+
 })
 
 </script>
@@ -19,17 +24,20 @@ onMounted(()=>{
 
 
 <template>
-<div class="w-full flex-col bg-blue-50 pt-[100px] min-h-screen">
-  <n-spin class="w-full" :show="store.checkLoading">
+<div class="w-full flex-col bg-blue-50 pt-[64px] min-h-screen">
+  <n-spin class="w-full min-h-[400px]" :show="store.checkLoading">
     <ToolBar/>
-    <template v-if="store.documentUrl && !store.checkLoading">
-      <DocumentContent/>
-      <SignatureBox v-if="!store.isSigned"/>
+
+    <template v-if="store.viewerStatus === Utils.viewerStatus.signatureDocument">
+      <Document/>
     </template>
-    <template v-else>
-      <ErrorMessage v-if="!store.checkLoading"/>
+    <template v-if="store.viewerStatus === Utils.viewerStatus.applicationDocument">
+      <PersonalForm/>
     </template>
 
+    <template v-if="!store.checkLoading && store.errorMessage">
+      <ErrorMessage/>
+    </template>
     <template #description>
       {{$t('content.checking')}}
     </template>

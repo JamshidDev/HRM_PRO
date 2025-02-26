@@ -5,6 +5,7 @@ import QRCode from "qrcode"
 import {PDFDocument} from "pdf-lib"
 import * as pdfjsLib from 'pdfjs-dist';
 import * as PdfWorker from "pdfjs-dist/build/pdf.worker.min.js"
+import Utils from "@/utils/Utils.js"
 window.pdfjsWorker = PdfWorker
 
 pdfjsLib.GlobalWorkerOptions.workerSrc = PdfWorker
@@ -64,6 +65,9 @@ export const usePdfViewerStore = defineStore('pdfViewerStore', {
         errorMessage:null,
         isSigned:false,
         saveLoading:false,
+        viewerStatus:null,
+
+        linkVisible:false,
 
 
 
@@ -216,9 +220,8 @@ export const usePdfViewerStore = defineStore('pdfViewerStore', {
             this.link = null
             this.linkLoading = true
             $ApiService.documentService._generateLink({params:data}).then((res)=>{
-                const query = res.data.data.url.split('?')[1]
-                this.link =`${window.location.origin}/document-signature?${query}`
-                console.log(this.link )
+                this.linkVisible = true
+                this.link =Utils.convertFromUrlToQuery(res.data.data.url, Utils.viewerStatus.signatureDocument)
             }).finally(()=>{
                 this.linkLoading = false
             })

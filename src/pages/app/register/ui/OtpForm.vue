@@ -1,8 +1,9 @@
 <script setup>
 
 import validationRules from "@/utils/validationRules.js";
-import {Eye24Regular, EyeOff20Filled, ChevronLeft20Filled,QrCode20Filled, LockClosed16Regular, ErrorCircle12Filled} from "@vicons/fluent";
+import {ChevronLeft20Filled,QrCode20Filled,ErrorCircle12Filled} from "@vicons/fluent";
 import {useRegisterStore} from "@/store/modules/app/registrStore.js";
+import Utils from "../../../../utils/Utils.js"
 
 const store = useRegisterStore()
 const formRef = ref(null)
@@ -33,7 +34,7 @@ const onSubmit = ()=>{
     </div>
     <div class="w-full my-5">
       <span class="text-2xl font-bold text-center block uppercase text-primary">{{ $t(`registerPage.subtitle`) }}</span>
-      <span class="text-xs text-center block text-gray-500">{{ $t(`registerPage.verification`) }}</span>
+      <span class="text-xs text-center block text-gray-500">{{ $t(`registerPage.verification`,{n:Utils.maskText(store.payload.phone || '', 0, 4)}) }}</span>
     </div>
     <div
         v-if="store.otpErrorMessage"

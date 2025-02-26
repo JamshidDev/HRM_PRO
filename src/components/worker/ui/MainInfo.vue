@@ -1,6 +1,7 @@
 <script setup>
 import {ArrowCircleDown16Regular,Eye24Filled, StarEmphasis32Filled, EyeOff20Filled, DismissCircle32Filled} from "@vicons/fluent"
 import {useComponentStore} from "@/store/modules/index.js"
+import Utils from "../../../utils/Utils.js"
 const store = useComponentStore()
 const isHide = ref(true)
 
@@ -47,12 +48,12 @@ const maskString = (v)=>{
     </div>
     <template v-if="store.workerPreview">
       <div class="col-span-12 text-2xl text-primary font-bold mb-2 uppercase">
-        {{store.workerPreview?.worker.last_name+ ' '+store.workerPreview?.worker.first_name+' '+store.workerPreview?.worker.middle_name}}
+        {{Utils.combineFullName(store.workerPreview?.worker)}}
       </div>
-      <div class="col-span-6 font-bold"><span class="font-normal text-gray-400">{{$t('workerView.general.passportJSHSHIR')}}</span>: {{isHide? maskString(store.workerPreview?.worker.pin) : store.workerPreview?.worker.pin}}</div>
-      <div class="col-span-6 font-bold"> <span class="font-normal text-gray-400">{{$t('workerView.general.phone')}}</span>: {{isHide? maskString(store.workerPreview?.worker.phones[0].phone) : store.workerPreview?.worker.phones[0].phone}}	</div>
+      <div class="col-span-6 font-bold"><span class="font-normal text-gray-400">{{$t('workerView.general.passportJSHSHIR')}}</span>: {{isHide? Utils.maskText(store.workerPreview?.worker.pin, 3,4) : store.workerPreview?.worker.pin}}</div>
+      <div class="col-span-6 font-bold"> <span class="font-normal text-gray-400">{{$t('workerView.general.phone')}}</span>: {{isHide? Utils.maskText(store.workerPreview?.worker.phones[0].phone, 2,2) : store.workerPreview?.worker.phones[0].phone}}	</div>
       <div class="col-span-6 font-bold"><span class="font-normal text-gray-400">{{$t('workerView.general.department')}}</span>: {{store.workerPreview?.department?.name}}	</div>
-      <div class="col-span-6 font-bold"><span class="font-normal text-gray-400">{{$t('workerView.general.salary')}}</span>: {{isHide? maskString(store.workerPreview?.salary) : store.workerPreview?.salary}} {{$t('content.sum')}}</div>
+      <div class="col-span-6 font-bold"><span class="font-normal text-gray-400">{{$t('workerView.general.salary')}}</span>: {{isHide? Utils.maskText(store.workerPreview?.salary, 0,2) : store.workerPreview?.salary}} {{$t('content.sum')}}</div>
       <div class="col-span-12 font-bold"> <span class="font-normal text-gray-400">{{$t('workerView.general.position')}}</span>: {{store.workerPreview?.post_name}}	</div>
     </template>
 

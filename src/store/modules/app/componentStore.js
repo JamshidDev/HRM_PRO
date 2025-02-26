@@ -19,6 +19,9 @@ export const useComponentStore = defineStore('componentStore', {
         rankList:[],
         groupList:[],
         militaryStatuses:[],
+        applicationTypes:[],
+        workTypes:[],
+        vacationAdditional:[],
 
         departmentList:[],
         depParams:{
@@ -56,6 +59,7 @@ export const useComponentStore = defineStore('componentStore', {
         relativesList:[],
         maritalList:[],
         languageList:[],
+        confirmationLevels:[],
 
         structureList:[],
         structureLoading:false,
@@ -83,6 +87,7 @@ export const useComponentStore = defineStore('componentStore', {
         commandTypes:[],
         scheduleTypes:[],
         workDayTypes:[],
+        holidayTypes:[],
 
         docExampleList:[],
         docExampleLoading:false,
@@ -163,6 +168,10 @@ export const useComponentStore = defineStore('componentStore', {
                 this.maritalList = res.data.data.marital_statuses
                 this.languageList = res.data.data.languages
                 this.militaryStatuses = res.data.data.military_statuses
+                this.confirmationLevels = res.data.data.confirmation_worker
+                this.applicationTypes = res.data.data.contract_application_types
+                this.workTypes =res.data.data.create_application_types
+                this.vacationAdditional = res.data.data.vacation_additional
             }).finally(()=>{
                 this.enumLoading= false
             })
@@ -174,6 +183,7 @@ export const useComponentStore = defineStore('componentStore', {
                 this.commandTypes = res.data.data?.command_types
                 this.scheduleTypes = res.data.data?.schedules
                 this.workDayTypes = res.data.data?.work_day_types
+                this.holidayTypes=res.data.data?.holiday_types
                 this.organizationServiceList = res.data.data?.organization_services
             }).finally(()=>{
                 this.enumAdminLoading= false
@@ -231,7 +241,7 @@ export const useComponentStore = defineStore('componentStore', {
             this.pinLoading = true
             this.worker = null
             $ApiService.workerService._checkWorker({params:{pin}}).then((res)=>{
-                if(res.data.errorMsg === 'Ok'){
+                if(!res.data.error){
                     let data = res.data.data
                     this.worker =  {
                         lastName:data?.last_name,
@@ -329,9 +339,9 @@ export const useComponentStore = defineStore('componentStore', {
                 this.commandTypeLoading = false
             })
         },
-        _workers(){
+        _workers(id=undefined){
             this.workerLoading = true
-            $ApiService.workerService._index({page:1, per_page: 10000}).then((res)=>{
+            $ApiService.workerService._index({params:{page:1, per_page: 10000, organization_id:id}}).then((res)=>{
                 this.workerList = res.data.data.data.map((v)=>({
                     ...v,
                     name:v.worker.last_name + ' '+v.worker.first_name+' '+v.worker.middle_name,

@@ -64,7 +64,7 @@ const menuName = computed(()=>{
   else if (menuPath.value === '/admin') return t('sidebar.admin')
   else if (menuPath.value === '/chat') return t('sidebar.chat')
   else if (menuPath.value === '/docflow') return t('sidebar.docflow')
-  else return t('content.checking')
+  else return t('sidebar.hrm')
 })
 
 
@@ -115,7 +115,12 @@ const accountPhoto = computed(()=>{
               :class="[isComboxMenu(item.path) && 'active-mini-content']"
               class="main-menu-item"
               @click="nextPanel(item.path)">
-            <i :class="item.icon"></i>
+<!--            <i :class="item.icon"></i>-->
+
+            <n-icon
+            >
+              <component :is="item.icon" />
+            </n-icon>
           </div>
       </template>
 
@@ -194,7 +199,10 @@ const accountPhoto = computed(()=>{
                   :class="[isCurrentPath(item.path) && 'active-panel-item-single']"
               >
                 <div class="item-icon">
-                  <i :class="item.icon"></i>
+<!--                  <i :class="item.icon"></i>-->
+                  <n-icon size="22">
+                    <component :is="item.icon" />
+                  </n-icon>
                 </div>
                 <div class="item-title">
                   <span>{{item.label}}</span>

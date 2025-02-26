@@ -1,5 +1,5 @@
 <script setup>
-import {NoDataPicture, UIActionButton, UIPagination, UIUser} from "@/components/index.js"
+import {NoDataPicture, UIActionButton, UIPagination, UIUser, UIMenuButton} from "@/components/index.js"
 import {useConfirmationStore, useComponentStore} from "@/store/modules/index.js"
 import Utils from "@/utils/Utils.js"
 
@@ -23,6 +23,8 @@ const onEdit = (v)=>{
   store.visibleType = false
   store.elementId = v.id
   store.payload.pin = v.worker.id.toString()
+  store.payload.full_position = v.full_position
+  store.payload.level = v.level.id
   store.visible = true
 
 }
@@ -37,13 +39,21 @@ const changePage = (v)=>{
   store.params.per_page = v.per_page
   store._index()
 }
+
+const onSelectEv = (v)=>{
+  if(Utils.ActionTypes.edit === v.key){
+    onEdit(v.data)
+  }else if(Utils.ActionTypes.delete === v.key){
+    onDelete(v.data)
+  }
+}
 </script>
 
 <template>
   <n-spin :show="store.loading" style="min-height: 200px">
     <div class="w-full overflow-x-auto"  v-if="store.list.length>0">
       <n-table
-          class="mt-10"
+          class="mt-4"
           :single-line="false"
           size="small"
       >
@@ -52,7 +62,9 @@ const changePage = (v)=>{
           <th class="!text-center min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
           <th class="min-w-[200px]">{{$t('confirmationPage.table.worker')}}</th>
           <th class="min-w-[200px]">{{$t('confirmationPage.table.position')}}</th>
-          <th class="min-w-[90px] w-[90px]">{{$t('content.action')}}</th>
+          <th class="min-w-[200px]">{{$t('confirmationPage.table.level')}}</th>
+          <th class="min-w-[200px]">{{$t('confirmationPage.table.full_position')}}</th>
+          <th class="min-w-[40px] w-[40px]"></th>
         </tr>
         </thead>
         <tbody>
@@ -73,12 +85,13 @@ const changePage = (v)=>{
             </div>
           </td>
           <td>{{item.position}}</td>
+          <td>{{item.level?.name}}</td>
+          <td>{{item.full_position}}</td>
           <td>
-            <UIActionButton
+            <UIMenuButton
                 :data="item"
-                :loading-delete="item.id === store.elementId && store.deleteLoading"
-                @on-edit="onEdit"
-                @on-delete="onDelete"
+                :show-edit="true"
+                @selectEv="onSelectEv"
             />
           </td>
         </tr>

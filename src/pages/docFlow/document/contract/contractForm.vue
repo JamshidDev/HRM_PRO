@@ -204,7 +204,7 @@ onMounted(()=>{
                 />
               </n-form-item>
             </div>
-            <div class="col-span-3" v-if="store.payload.command_type !== 1">
+            <div class="col-span-3" v-if="store.payload.type !== 1">
               <n-form-item :label="$t(`documentPage.form.contract_to_date`)" path="contract_to_date">
                 <n-date-picker
                     class="w-full"

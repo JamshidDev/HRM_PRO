@@ -6,11 +6,11 @@ import AutoImport from 'unplugin-auto-import/vite';
 export default defineConfig({
   resolve:{
     alias:{
-      '@' : path.resolve(__dirname, './src')
+      "@": path.resolve(__dirname, 'src')
     },
   },
   plugins: [
-      vue(),
+    vue(),
     AutoImport({
       imports: [
         'vue',

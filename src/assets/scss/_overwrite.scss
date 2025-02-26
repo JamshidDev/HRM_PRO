@@ -191,3 +191,10 @@ input:-webkit-autofill {
 .n-spin-content{
   height: 100%;
 }
+
+
+.n-calendar-dates{
+  &> .n-calendar-cell:nth-child(7n+1){
+    @apply bg-gray-50
+  }
+}

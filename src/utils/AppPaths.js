@@ -44,12 +44,18 @@ export const AppPaths = {
     WorkerProfile:"/worker-profile",
     ConfContract:"/conf-contract",
     ConfCommand:"/conf-command",
+    ConfApplication:"/conf-application",
     ConfAdContract:"/conf-ad-contract",
     Topic:"/topic",
     DrawingSignature:"/drawing-signature",
     DocViewer:"/doc-viewer",
-    DocumentSignature:"/document-signature",
-    Questions:"/questions"
+    DocumentViewer:"/document-viewer",
+    Holiday:"/holiday",
+    Questions:"/questions",
+    Command:"/command",
+    AdContract:"/ad-contract",
+    Contract:"/contract",
+    Application:"/application"
 }
 
 export const AppLayouts ={

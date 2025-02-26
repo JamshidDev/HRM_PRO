@@ -14,6 +14,7 @@ import OthersPage from "@/pages/admin/others/OthersPage.vue"
 import SchedulePage from "@/pages/admin/schedule/SchedulePage.vue"
 import WorkdayPage from "@/pages/admin/workday/WorkdayPage.vue"
 import DocumentTemplate from "@/pages/admin/document/DocumentTemplate.vue"
+import HolidayPage from "@/pages/admin/holiday/HolidayPage.vue"
 
 
 export default  [
@@ -92,5 +93,10 @@ export default  [
         path:Utils.routePathMaker(AppPaths.Workday),
         name:AppPaths.Workday.substring(1),
         component:WorkdayPage,
+    },
+    {
+        path:Utils.routePathMaker(AppPaths.Holiday),
+        name:AppPaths.Holiday.substring(1),
+        component:HolidayPage,
     },
 ]

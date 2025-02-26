@@ -156,7 +156,7 @@ export const useSignatureStore = defineStore('signatureStore', {
         _auth(keyId, challenge) {
             const callback = this.successCallback
             EIMZOClient.createPkcs7(keyId, challenge, null, function (pkcs7) {
-                microAjax('http://192.168.136.78:8004/api/v1/signature/auth', function (response, s) {
+                microAjax(`${apiUrl}/api/v1/signature/auth`, function (response, s) {
                     response = JSON.parse(response)
                     if (s.status === 200) {
                         callback(response)

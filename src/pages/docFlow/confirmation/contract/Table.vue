@@ -68,7 +68,7 @@ const onSelect = (v) =>{
           <td>
             <div class="flex justify-center"><n-button class="font-medium" round type="error" size="tiny">{{item?.contract?.number}}</n-button></div>
           </td>
-          <td><UIStatus :status="item?.status?.name"/></td>
+          <td><UIStatus :status="item?.status"/></td>
           <td>{{ Utils.timeOnlyDate(item?.contract?.contract_date) }}</td>
           <td>
             <UIMenuButton

@@ -32,17 +32,12 @@ const showDropdown = ref(false)
 const x = ref(0)
 const y = ref(0)
 const options = [
-  // {
-  //   icon: renderIcon(Edit16Regular),
-  //   label:t('content.edit'),
-  //   key: "edit"
-  // },
   {
     icon: renderIcon(Delete16Regular),
     label:t('content.delete'),
     key: "delete"
   },
-];
+]
 
 function renderIcon(icon) {
   return () => {

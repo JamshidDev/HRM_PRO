@@ -1,168 +1,183 @@
 {
-    "content": {
-        "deadline": "Yakunlanish vaqti",
-        "requiredField": "Maydon to'ldirilishi shart!",
-        "save": "Saqlash",
-        "edit": "Tahrirlash",
-        "delete": "O'chirish",
-        "view": "Ko'rish",
-        "copy": "Nusxalash",
-        "download": "Yuklash",
-        "no-data": "Ma'lumot yo'q",
-        "cancel": "Bekor qilish",
-        "help": "Yordam",
-        "enterField": "Kiriting",
-        "phone":"Telefon raqam",
-        "langUz": "O'zbek",
-        "langRu": "Rus",
-        "langEn": "Ingliz",
-        "search": "Qidiruv",
-        "add": "Qo'shish",
-        "filterSetting": "Filter sozlamalar",
-        "news": "Yangi",
-        "action": "Amallar",
-        "fullName": "Ism",
-        "number": "№",
-        "photo": "Rasm",
-        "platform": "Platforma",
-        "date": "Sana",
-        "name": "Nomi",
-        "description": "Tavsif",
-        "confirmDelete": "Haqiqattan ham o'chirmoqchimisiz?",
-        "yes": "Ha",
-        "no": "Yo'q",
-        "notFoundData": "Ma'lumot topilmadi!",
-        "noResultYourRequest": "Sizning so‘rovingiz bo‘yicha xech qanday ma'lumot topilmadi...",
-        "back": "Orqaga",
-        "profile": "Kabinet",
-        "setting": "Sozlamalar",
-        "logOutSystem": "Tizmdan chiqish",
-        "paginationSize": "{n} tadan ko'rsatish",
-        "confirm": "Tasdiqlash",
-        "month": "Oy",
-        "or": "Yoki",
-        "file": "Fayl",
-        "choose": "Tanlang",
-        "chooseFile": "Fayl tanlang",
-        "signatureLogin": "E-imzo orqali kirish",
-        "signatureDocument": "Imzolash va saqlash",
-        "closeSignatureModal": "Imzolash oynasini yopish",
-        "clear": "Tozalash",
-        "continue": "Davom etish",
-        "restart": "Qayta boshlash",
-        "close": "Yopish",
-        "open": "Ochish",
-        "hide": "Yashirish",
-        "closeAndClear": "Yopish va tozalash",
-        "notWorker": "Xodim topilmadi",
-        "worker": "Xodim",
-        "status": "Holati",
-        "Process": "Jarayaonda",
-        "Read": "Tanishgan",
-        "Success": "Kelishilgan",
-        "Rejected": "Rad etilgan",
-        "Deleted": "O'chirilgan",
-        "Active": "Faol",
-        "DeActive": "Faol emas",
-        "message": "Xabar yozing...",
-        "no-message": "Hozircha suhbatlar yo'q",
-        "type": "Turi",
-        "organization": "Korxona",
-        "upload": "Fayl yuklash",
-        "attachFile": "Fayl biriktirish",
-        "document": "Hujjat",
-      "checking": "Tekshirilmoqda...",
-      "downloadCV": "Ma'lumotnoma yuklash",
-        "deleteWarning": "Haqiqattan ham o'chirmoqchimisz?",
-        "sum": "So'm",
-        "total": "Umumiy: {n}ta",
-      "warning": "Ogohlantirish",
-      "error": "Xatolik",
-      "return": "Ortga qaytish",
-      "finish": "Yakunlash"
-    },
-    "rules": {
-        "login": "Email kiritilishi shart!",
-        "phone": "Telefon raqam kiritilishi shart!",
-        "password": "Parol kiritilishi shart!",
-        "requiredField": "Maydon to'ldirilishi shart!",
-        "requiredWorker": "Xodim tanlash shart!",
-        "requiredImageField": "Rasm yuklanishi shart!",
-        "requiredMinLength": "{n} ta belgidan kam bo'lmasligi kerak",
-        "requiredMaxLength": "{n} ta belgidan ko'p bo'lmasligi kerak",
-        "unExpectedFormat": "Noto'g'ri turdagi ma'lumot!",
-        "requiredJSHSHIR": "Pasport jshshir kiritilishi shart!",
-        "enterOverNumber": "{n}dan katta son kiriting"
-    },
-    "message": {
-       "successDone": "Muvofaqqiyatli bajarildi",
-       "requiredSignature": "Imzo maydoni bo'sh bo'lmasligi kerak!",
-      "clearedFields": "Maydonlar tozalandi!",
-      "unExpectedError": "Kutilmagan xatolik yuz berdi!",
-       "warning-data": "Ma'lumotlar yetarli emas!"
-    },
-    "account": {
-        "changeAccount": "Hisobni o'zgartirish!",
-        "changeRoleConfirm":"Bu hisobdan chiqib boshqa hisobga kirish uchun kerakli hisobni tanlang va 20 soniya kuting"
-    },
-    "sidebar": {
-        "hrm": "Xodimlar menyusi",
-        "admin": "Admin menyusi",
-        "chat": "Chat menyusi",
-        "docflow": "Hujjatlar menyusi",
-        "lms": "Attestatsiya menyusi"
-    },
-    "loginPage":{
-        "name": "Xush kelibsiz",
-        "title":"HRM PRO",
-        "subtitle":"O'zbekiston temir yo'llari AJning HRM platformasi",
-        "phone": "Telefon raqam",
-        "password": "Parol",
-        "doYouHaveAccount": "Sizda hisob yo'qmi?",
-        "singUp": "Ro'yhatdan o'tish",
-        "login": "Kirish"
-    },
-    "registerPage": {
-        "name": "Ro'yhatdan o'tish",
-        "title": "Ro'yhatdan o'tish",
-        "subtitle": "Tasdiqlash",
-        "firstName": "Ism",
-        "lastName": "Familiya",
-        "middleName": "Sharif",
-        "pin": "Pasport JSHSHIR",
-        "doYouHaveAccount": "Sizda hisob bormi?",
-        "loginToSystem": "Tizimga kirish!",
-        "otp": "Kod",
-        "verification": "Sizning telefon raqamingizga +998(**)***6004 tasdiqlash kodini sms tarzda yubordik.",
-        "reSendOtp": "Yangi tasdiqlash kodini olish",
-        "getOtp": "Kodni olish"
-    },
-    "verificationEmail": {
-        "title": "Hisobni tadiqlash",
-        "subtitle": "Biz sizning pochta manzilingizga tasdiqlash kodini yubordik {email}",
-        "placeholder": "Bu yerga kodni yozing",
-        "verification": "Tasdiqlash"
-    },
-    "userPermission": {
-        "name": "Huquqlar",
-        "createTitle": "Permission qo'shish",
-        "updateTitle": "Permission tahrirlash",
-        "form": {
-            "name": "Permission nomi"
-        }
-    },
-    "userRole": {
-        "name": "Rollar",
-        "createTitle": "Role qo'shish",
-        "updateTitle": "Role tahrirlash",
-        "form": {
-            "name": "Role nomi",
-            "permissions": "Permission"
-        }
-    },
-    "userPage": {
-        "name": "Foydalanuvchilar"
-
+  "content": {
+    "deadline": "Yakunlanish vaqti",
+    "requiredField": "Maydon to'ldirilishi shart!",
+    "save": "Saqlash",
+    "edit": "Tahrirlash",
+    "delete": "O'chirish",
+    "view": "Ko'rish",
+    "copy": "Nusxalash",
+    "download": "Yuklash",
+    "no-data": "Ma'lumot yo'q",
+    "cancel": "Bekor qilish",
+    "help": "Yordam",
+    "enterField": "Kiriting",
+    "phone": "Telefon raqam",
+    "langUz": "O'zbek",
+    "langRu": "Rus",
+    "langEn": "Ingliz",
+    "search": "Qidiruv",
+    "add": "Qo'shish",
+    "filterSetting": "Filter sozlamalar",
+    "news": "Yangi",
+    "action": "Amallar",
+    "fullName": "Ism",
+    "number": "№",
+    "photo": "Rasm",
+    "platform": "Platforma",
+    "date": "Sana",
+    "name": "Nomi",
+    "description": "Tavsif",
+    "confirmDelete": "Haqiqattan ham o'chirmoqchimisiz?",
+    "yes": "Ha",
+    "no": "Yo'q",
+    "notFoundData": "Ma'lumot topilmadi!",
+    "noResultYourRequest": "Sizning so‘rovingiz bo‘yicha xech qanday ma'lumot topilmadi...",
+    "back": "Orqaga",
+    "profile": "Kabinet",
+    "setting": "Sozlamalar",
+    "logOutSystem": "Tizmdan chiqish",
+    "paginationSize": "{n} tadan ko'rsatish",
+    "confirm": "Tasdiqlash",
+    "month": "Oy",
+    "or": "Yoki",
+    "send": "Yuborish",
+    "file": "Fayl",
+    "choose": "Tanlang",
+    "chooseFile": "Fayl tanlang",
+    "signatureLogin": "E-imzo orqali kirish",
+    "signatureDocument": "Imzolash va saqlash",
+    "closeSignatureModal": "Imzolash oynasini yopish",
+    "clear": "Tozalash",
+    "continue": "Davom etish",
+    "restart": "Qayta boshlash",
+    "close": "Yopish",
+    "open": "Ochish",
+    "hide": "Yashirish",
+    "closeAndClear": "Yopish va tozalash",
+    "notWorker": "Xodim topilmadi",
+    "worker": "Xodim",
+    "status": "Holati",
+    "Process": "Jarayaonda",
+    "Read": "Tanishgan",
+    "Success": "Kelishilgan",
+    "Rejected": "Rad etilgan",
+    "Deleted": "O'chirilgan",
+    "Active": "Faol",
+    "DeActive": "Faol emas",
+    "message": "Xabar yozing...",
+    "no-message": "Hozircha suhbatlar yo'q",
+    "type": "Turi",
+    "organization": "Korxona",
+    "upload": "Fayl yuklash",
+    "attachFile": "Fayl biriktirish",
+    "document": "Hujjat",
+    "checking": "Tekshirilmoqda...",
+    "downloadCV": "Ma'lumotnoma yuklash",
+    "deleteWarning": "Haqiqattan ham o'chirmoqchimisz?",
+    "sum": "So'm",
+    "total": "Umumiy: {n}ta",
+    "next": "Keyingi",
+    "warning": "Ogohlantirish",
+    "error": "Xatolik",
+    "return": "Ortga qaytish",
+    "finish": "Yakunlash"
+  },
+  "month": {
+    "january": "Yanvar",
+    "february": "Fevral",
+    "march": "Mart",
+    "april": "Aprel",
+    "may": "May",
+    "june": "Iyun",
+    "july": "Iyul",
+    "august": "Avgust",
+    "september": "Sentyabr",
+    "october": "Oktyabr",
+    "november": "Noyabr",
+    "december": "Dekabr"
+  },
+  "rules": {
+    "login": "Email kiritilishi shart!",
+    "phone": "Telefon raqam kiritilishi shart!",
+    "password": "Parol kiritilishi shart!",
+    "requiredField": "Maydon to'ldirilishi shart!",
+    "requiredWorker": "Xodim tanlash shart!",
+    "requiredImageField": "Rasm yuklanishi shart!",
+    "requiredMinLength": "{n} ta belgidan kam bo'lmasligi kerak",
+    "requiredMaxLength": "{n} ta belgidan ko'p bo'lmasligi kerak",
+    "unExpectedFormat": "Noto'g'ri turdagi ma'lumot!",
+    "requiredJSHSHIR": "Pasport jshshir kiritilishi shart!",
+    "enterOverNumber": "{n}dan katta son kiriting"
+  },
+  "message": {
+    "successDone": "Muvofaqqiyatli bajarildi",
+    "requiredSignature": "Imzo maydoni bo'sh bo'lmasligi kerak!",
+    "clearedFields": "Maydonlar tozalandi!",
+    "unExpectedError": "Kutilmagan xatolik yuz berdi!",
+    "warning-data": "Ma'lumotlar yetarli emas!"
+  },
+  "account": {
+    "changeAccount": "Hisobni o'zgartirish!",
+    "changeRoleConfirm": "Bu hisobdan chiqib boshqa hisobga kirish uchun kerakli hisobni tanlang va 20 soniya kuting"
+  },
+  "sidebar": {
+    "hrm": "Xodimlar menyusi",
+    "admin": "Admin menyusi",
+    "chat": "Chat menyusi",
+    "docflow": "Hujjatlar menyusi",
+    "lms": "Attestatsiya menyusi"
+  },
+  "loginPage": {
+    "name": "Xush kelibsiz",
+    "title": "HRM PRO",
+    "subtitle": "O'zbekiston temir yo'llari AJning HRM platformasi",
+    "phone": "Telefon raqam",
+    "password": "Parol",
+    "doYouHaveAccount": "Sizda hisob yo'qmi?",
+    "singUp": "Ro'yhatdan o'tish",
+    "login": "Kirish"
+  },
+  "registerPage": {
+    "name": "Ro'yhatdan o'tish",
+    "title": "Ro'yhatdan o'tish",
+    "subtitle": "Tasdiqlash",
+    "firstName": "Ism",
+    "lastName": "Familiya",
+    "middleName": "Sharif",
+    "pin": "Pasport JSHSHIR",
+    "doYouHaveAccount": "Sizda hisob bormi?",
+    "loginToSystem": "Tizimga kirish!",
+    "otp": "Kod",
+    "verification": "Sizning telefon raqamingizga {n} tasdiqlash kodini sms tarzda yubordik.",
+    "reSendOtp": "Yangi tasdiqlash kodini olish",
+    "getOtp": "Kodni olish"
+  },
+  "verificationEmail": {
+    "title": "Hisobni tadiqlash",
+    "subtitle": "Biz sizning pochta manzilingizga tasdiqlash kodini yubordik {email}",
+    "placeholder": "Bu yerga kodni yozing",
+    "verification": "Tasdiqlash"
+  },
+  "userPermission": {
+    "name": "Huquqlar",
+    "createTitle": "Permission qo'shish",
+    "updateTitle": "Permission tahrirlash",
+    "form": {
+      "name": "Permission nomi"
+    }
+  },
+  "userRole": {
+    "name": "Rollar",
+    "createTitle": "Role qo'shish",
+    "updateTitle": "Role tahrirlash",
+    "form": {
+      "name": "Role nomi",
+      "permissions": "Permission"
+    }
+  },
+  "userPage": {
+    "name": "Foydalanuvchilar"
   },
   "confirmation": {
     "name": "Shartnomalar",
@@ -174,7 +189,6 @@
         "worker": "Xodim"
       }
     }
-
   },
   "countryPage": {
     "name": "Davlatlar",
@@ -268,6 +282,12 @@
     },
     "table": {
       "department": "Bo'lim",
+      "contractType": "Shartnoma turi",
+      "group": "Guruh",
+      "rank": "Razryad",
+      "rate": "Stavka",
+      "position_date": "Lavozim sanasi",
+      "birthday": "Tug'ilgan sanasi",
       "position": "Lavozim"
     }
   },
@@ -324,6 +344,7 @@
       "department_id": "Bo'limni tanlang",
       "group": "Lavozim guruxi",
       "rank": "Lavozim uchun razryad",
+      "max_rank": "Lavozim uchun maksimal razryad",
       "rate": "Lavozim kontingenti",
       "salary": "Oylik maosh",
       "experience": "Ish tajbibasi (oy)",
@@ -377,198 +398,215 @@
       "phone": "Kandidatning telefon raqam ma'lumotlari"
     },
     "toast": {
-      "warning":{
+      "warning": {
         "title": "Tizimda mavjud xodim",
         "subtitle": "No comment"
       },
-      "success":{
+      "success": {
         "title": "Kandidat tizimga qo'shildi",
         "subtitle": "Kandidat bilan mehnat shartnomasi tuzish uchun davom etish tugmasini bosing."
       }
     }
-
-    },
+  },
   "signature": {
-        "keyType": "Foydalanuvchi turi",
-        "inn": "STIR",
-        "undo": "Orqaga",
-        "certificate": "Sertifikat raqami",
-        "validDate": "Muddati",
-        "expiredKey": "Kalit muddati tugagan!",
-        "legalPerson": "Yuridik shaxs",
-        "naturalPerson": "Jismoniy shaxs",
-        "connectionError": "E-imzo o'rnatilmagan yoki to'g'ri sozlanmagan!",
-        "copyLink": "Havolani nusxalash",
-        "copied": "Havola nusxalandi",
-        "goSignature": "Imzolash",
-       "signatureTitle": "Hujjatni elektron yozuv orqali imzolash!",
-       "signatureWorker": "Imzolash havolasi {name} uchun yaratilgan. Elektron imzo {name} tomonidan imzolangan holatdagina hujjat haqiqiy hisoblanadi.",
-        "linkText": "Hujjatni imzolash uchun havola yaratildi. Havoladan 2 daqiqa davomida foydalanishingiz mumkin.",
-        "pinfl": "JSHSHR"
-    },
+    "keyType": "Foydalanuvchi turi",
+    "inn": "STIR",
+    "undo": "Orqaga",
+    "certificate": "Sertifikat raqami",
+    "validDate": "Muddati",
+    "expiredKey": "Kalit muddati tugagan!",
+    "legalPerson": "Yuridik shaxs",
+    "naturalPerson": "Jismoniy shaxs",
+    "connectionError": "E-imzo o'rnatilmagan yoki to'g'ri sozlanmagan!",
+    "copyLink": "Havolani nusxalash",
+    "copied": "Havola nusxalandi",
+    "goSignature": "Imzolash",
+    "signatureTitle": "Hujjatni elektron yozuv orqali imzolash!",
+    "signatureWorker": "Imzolash havolasi {name} uchun yaratilgan. Elektron imzo {name} tomonidan imzolangan holatdagina hujjat haqiqiy hisoblanadi.",
+    "linkText": "Hujjat uchun havola",
+    "pinfl": "JSHSHR"
+  },
   "documentPage": {
-        "name": "Hujjatlar",
-        "createTitle": "Shartnoma tuzish",
-        "updateTitle": "Shartnomani tahrirlash",
-        "tabs": {
-            "contract": "Shartnomalar",
-            "adContract": "Qo'shimcha kelishuv",
-            "command": "Buyruqlar"
-        },
-        "command": {
-            "createTitle": "Buyruq yaratish",
-            "updateTitle": "Buyruqni tahrirlash",
-            "form": {
-                "command_date": "Buyruq sanasi",
-                "type": "Buyruq turi",
-                "byContract": "{n} - raqamli shartnoma asosida",
-                "confirm": "Tasdiqlovchilar",
-                "director_id": "Direktor",
-                "command_number": "Buyruq raqami"
-            }
-        },
-        "form": {
-            "candidate": "Xodim",
-            "contractDate": "Shartnoma sanasi",
-            "contractNumber": "Shartnoma raqami",
-            "tableNumber": "Tabel raqami",
-            "type": "Shartnoma turi",
-            "documentExampleId": "Hujjat andozasi",
-            "department": "Bo'lim",
-            "position": "Lavozim",
-            "positionStatus": "Aosiy shtatga qabul qilish",
-            "salary": "Oylik maosh",
-            "group": "Gurux",
-          "rank": "Lavozim razryad",
-          "rate": "Stavka",
-            "postName": "To'liq lavozim nomi",
-            "director": "Direktor",
-            "contract_to_date": "Shartnoma muddati",
-            "position_date": "Ishga chiqish sanasi",
-            "vacation_main_day": "Asosit ta'til kuni",
-            "additional_vacation_day": "Qo'shimcha ta'til kuni",
-            "probation": "Sinov muddati",
-            "schedule_id": "Ish jadvali",
-            "command_type": "Buyruq turi",
-            "worker": "Xodimni tanlang",
-            "command_status": "Shartnoma asosida buyruq yaratish uchun belgilang",
-            "organization": "Korxona"
-        },
-        "signature": {
-            "history": "O'zgarishlar tarixini ko'rish",
-            "viewer": "Hujjat bilan tanishuvchilar",
-            "files": "Hujjat fayillari",
-            "status": {
-                "Process": "Jarayonda"
-            }
-        }
+    "name": "Hujjatlar",
+    "createTitle": "Shartnoma tuzish",
+    "updateTitle": "Shartnomani tahrirlash",
+    "tabs": {
+      "contract": "Shartnomalar",
+      "adContract": "Qo'shimcha kelishuv",
+      "command": "Buyruqlar"
+    },
+    "command": {
+      "createTitle": "Buyruq yaratish",
+      "updateTitle": "Buyruqni tahrirlash",
+      "form": {
+        "command_date": "Buyruq sanasi",
+        "type": "Buyruq turi",
+        "byContract": "{n} - raqamli shartnoma asosida",
+        "confirm": "Tasdiqlovchilar",
+        "director_id": "Direktor",
 
+        "day": "Kun",
+        "from": "Ta'tilga chiqish sanasi",
+        "period_from": "Ta'til davri (dan)",
+        "period_to": "Ta'til davri (gacha)",
+        "to": "Ta'til tugash sanasi",
+        "work_day": "Ishga chiqish sanasi",
+        "main_day": "Asosiy ta'til kuni",
+        "second_day": "Qo'shimcha ta'til kuni",
+        "additionals": "Qo'chimchalar",
+        "calculateVacation": "Ta'tilni hisoblash",
+        "no-calculate": "Ta'tilni kuni hisoblanmagan!",
+        "all_day": "Ta'til kuni",
+        "isNotValid": "Ta'tilni hisoblash uchun ma'lumotlar yetarli emas!",
+        "isNotCalculate": "Xodimlarning ta'til ma'lumotlari hisoblanmagan!",
+        "calculateTitle": "Hisoblangan ta'til ma'lumotlari. Agarda ularni noto'g'ri deb bilsangiz tahrirlashingiz mumkin",
+        "command_number": "Buyruq raqami"
+      }
     },
+    "form": {
+      "candidate": "Xodim",
+      "contractDate": "Shartnoma sanasi",
+      "contractNumber": "Shartnoma raqami",
+      "tableNumber": "Tabel raqami",
+      "type": "Shartnoma turi",
+      "documentExampleId": "Hujjat andozasi",
+      "department": "Bo'lim",
+      "position": "Lavozim",
+      "positionStatus": "Aosiy shtatga qabul qilish",
+      "salary": "Oylik maosh",
+      "group": "Gurux",
+      "rank": "Lavozim razryad",
+      "rate": "Stavka",
+      "postName": "To'liq lavozim nomi",
+      "director": "Direktor",
+      "contract_to_date": "Shartnoma muddati",
+      "position_date": "Ishga chiqish sanasi",
+      "vacation_main_day": "Asosit ta'til kuni",
+      "additional_vacation_day": "Qo'shimcha ta'til kuni",
+      "probation": "Sinov muddati",
+      "schedule_id": "Ish jadvali",
+      "command_type": "Buyruq turi",
+      "worker": "Xodimni tanlang",
+      "command_status": "Shartnoma asosida buyruq yaratish uchun belgilang",
+      "organization": "Korxona"
+    },
+    "signature": {
+      "history": "O'zgarishlar tarixini ko'rish",
+      "viewer": "Hujjat bilan tanishuvchilar",
+      "files": "Hujjat fayillari",
+      "status": {
+        "Process": "Jarayonda"
+      }
+    }
+  },
   "confirmationPage": {
-        "name": "Tasdiqlovchilar",
-        "createTitle": "Tasdiqlovchi qo'shish",
-        "updateTitle": "Tasdiqlovchini tahrirlash",
-        "table": {
-            "worker": "Xodim",
-            "position": "Lavozim"
-        }
-    },
+    "name": "Tasdiqlovchilar",
+    "createTitle": "Tasdiqlovchi qo'shish",
+    "updateTitle": "Tasdiqlovchini tahrirlash",
+    "table": {
+      "worker": "Xodim",
+      "full_position": "Lavozim to'liq nomi (Tashkilot nomi bilan to'liq nomi)",
+      "level": "Turi",
+      "position": "Lavozim"
+    }
+  },
   "contractPage": {
-        "name": "Shartnomalar",
-        "table": {
-            "number": "Raqami",
-            "type": "Turi",
-            "worker": "Xodim",
-            "date": "Sana",
-            "organization": "Korxona",
-            "command": "Buyruq",
-            "status": "Holati"
-        },
-        "statuses": {
-            "confirm": "Tasdiqlash"
-        },
+    "name": "Shartnomalar",
+    "table": {
+      "number": "Raqami",
+      "type": "Turi",
+      "worker": "Xodim",
+      "date": "Sana",
+      "organization": "Korxona",
+      "command": "Buyruq",
+      "status": "Holati"
+    },
+    "statuses": {
+      "confirm": "Tasdiqlash"
+    },
     "confirmText": "{n} raqamli shartnoma asosida buyruq yaratasizmi?",
     "confirmAdText": "{n} raqamli qo'shimcha kelishuv shartnoma asosida buyruq yaratasizmi?"
-    },
+  },
+  "chatWindow": {
+    "name": "Chat"
+  },
   "adContractPage": {
-        "createTitle": "Qo'shimcha kelishuv tuzish",
-        "updateTitle": "Qo'shimcha kelishuvni tahrirlash",
-        "name": "Qo'shimcha kelishuv"
-    },
+    "createTitle": "Qo'shimcha kelishuv tuzish",
+    "updateTitle": "Qo'shimcha kelishuvni tahrirlash",
+    "name": "Qo'shimcha kelishuv"
+  },
   "documentSetting": {
-        "name": "Hujjat sozlamalari",
-        "createTitle": "Kontrakt andozasini yuklash",
-        "updateTitle": "Kontrakt andozasini tahrirlash",
-        "command": {
-            "createTitle": "Buyruq andozasini yuklash",
-            "updateTitle": "Buyruq andozasini tahrirlash"
-        },
-        "tabs": {
-            "contract": "Kontrakt andozasi",
-            "command": "Buyruq andozasi",
-            "service": "Servislar"
-        },
-        "form": {
-            "count": "{n} ta",
-            "organization": "Korxonalar soni",
-            "organizations": "Korxonalar",
-            "type": "Shartnoma turi",
-            "commandType": "Buyruq turi",
-            "file": "Andoza fayli",
-            "name": "Hujjat nomi"
-        }
+    "name": "Hujjat sozlamalari",
+    "createTitle": "Kontrakt andozasini yuklash",
+    "updateTitle": "Kontrakt andozasini tahrirlash",
+    "command": {
+      "createTitle": "Buyruq andozasini yuklash",
+      "updateTitle": "Buyruq andozasini tahrirlash"
     },
+    "tabs": {
+      "contract": "Kontrakt andozasi",
+      "command": "Buyruq andozasi",
+      "service": "Servislar"
+    },
+    "form": {
+      "count": "{n} ta",
+      "organization": "Korxonalar soni",
+      "organizations": "Korxonalar",
+      "type": "Shartnoma turi",
+      "commandType": "Buyruq turi",
+      "file": "Andoza fayli",
+      "name": "Hujjat nomi"
+    }
+  },
   "schedulePage": {
-        "name": "Ish jadvali",
-        "createTitle": "Jadval qo'shish",
-        "updateTitle": "Jadvalni tahrirlash",
-        "form": {
-            "type": "Jadval turi",
-            "name_ru": "Nomi(ru)",
-            "name": "Nomi"
-        }
-    },
+    "name": "Ish jadvali",
+    "createTitle": "Jadval qo'shish",
+    "updateTitle": "Jadvalni tahrirlash",
+    "form": {
+      "type": "Jadval turi",
+      "name_ru": "Nomi(ru)",
+      "name": "Nomi"
+    }
+  },
   "workdayPage": {
-        "name": "Ish kunlari",
-        "createTitle": "Ish kunini qo'shish",
-        "updateTitle": "Ish kunini tahrirlash",
-        "form": {
-            "schedule_id": "Ish jadvali",
-            "day_of_week": "Hafta kuni",
-            "start_time": "Boshlash vaqti",
-            "end_time": "Tugash vaqti",
-            "type": "Turi"
-        }
-    },
+    "name": "Ish kunlari",
+    "createTitle": "Ish kunini qo'shish",
+    "updateTitle": "Ish kunini tahrirlash",
+    "form": {
+      "schedule_id": "Ish jadvali",
+      "day_of_week": "Hafta kuni",
+      "start_time": "Boshlash vaqti",
+      "end_time": "Tugash vaqti",
+      "type": "Turi"
+    }
+  },
   "othersPage": {
-        "name": "Boshqalar",
-        "language": {
-            "createTitle": "Til qo'shish",
-            "updateTitle": "Tilni tahrirlash",
-            "form": {
-                "name": "Til nomi"
-            }
-        },
-        "university": {
-            "createTitle": "Oligoh qo'shish",
-            "updateTitle": "Oligoh tahrirlash",
-            "form": {
-                "name_ru": "Oligoh nomi (ru)",
-                "region_id": "Joylashgan viloyat",
-                "education": "Ma'lumot turi",
-                "name": "Oligoh nomi"
-            }
-        },
-        "speciality": {
-            "createTitle": "Mutaxasislik qo'shish",
-            "updateTitle": "Mutaxasislikni tahrirlash",
-            "form": {
-                "name_ru": "Mutaxasislik nomi (ru)",
-                "name": "Mutaxasislik nomi "
-            }
-        },
-
-
+    "name": "Boshqalar",
+    "language": {
+      "createTitle": "Til qo'shish",
+      "updateTitle": "Tilni tahrirlash",
+      "form": {
+        "name": "Til nomi"
+      }
+    },
+    "university": {
+      "createTitle": "Oligoh qo'shish",
+      "updateTitle": "Oligoh tahrirlash",
+      "form": {
+        "name_ru": "Oligoh nomi (ru)",
+        "region_id": "Joylashgan viloyat",
+        "education": "Ma'lumot turi",
+        "name": "Oligoh nomi"
+      }
+    },
+    "speciality": {
+      "createTitle": "Mutaxasislik qo'shish",
+      "updateTitle": "Mutaxasislikni tahrirlash",
+      "form": {
+        "name_ru": "Mutaxasislik nomi (ru)",
+        "name": "Mutaxasislik nomi "
+      }
+    },
     "tabs": {
       "university": "Oligohlar",
       "speciality": "Mutaxasisliklar",
@@ -860,7 +898,35 @@
       "minOptions": "Kamida 3ta variant bo'lishi lozim!",
       "chooseCorrectAnswer": "To'g'ri javobni tanlang!"
     }
-
   },
-  "next": "Keyingi"
+  "holidayPage": {
+    "name": "Bayram kunlari",
+    "createTitle": "Bayram kunini qo'shish",
+    "updateTitle": "Bayram kunini tahrirlash",
+    "form": {
+      "name": "Bayram nomi",
+      "holiday_date": "Bayram sanasi",
+      "type": "Bayram turi"
+    }
+  },
+  "applicationPage": {
+    "name": "Arizalar",
+    "createTitle": "Ariza uchun havola yaratish",
+    "updateTitle": "Bayram kunini tahrirlash",
+    "form": {
+      "director_id": "Direktor",
+      "type": "Ariza turi",
+      "work_type": "Ish turi",
+      "generateLink": "Havola yaratish",
+      "phones": "Tefefon raqam",
+      "number": "Raqami",
+      "from_date": "Qachondan"
+    },
+    "client": {
+      "name": "Ariza yozish",
+      "user": "Arizani qabul qiluvchi shaxs",
+      "sendApp": "Arizani yuborish",
+      "type": "Ariza turi"
+    }
+  }
 }

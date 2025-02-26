@@ -33,6 +33,7 @@ const onSelect = (v)=>{
   <n-spin :show="store.loading" style="min-height: 200px">
     <div class="w-full overflow-x-auto"  v-if="store.list.length>0">
       <n-table
+          class="mt-4"
           :single-line="false"
           size="small"
       >
@@ -57,7 +58,7 @@ const onSelect = (v)=>{
            <div class="flex justify-center"> <n-button class="font-medium" round type="error" size="tiny">{{item?.command_number}}</n-button></div>
           </td>
           <td>{{item?.organization?.name}}</td>
-          <td><UIStatus :status="item?.contract?.status?.name"/> </td>
+          <td><UIStatus :status="item?.confirmation"/> </td>
           <td>{{ Utils.timeOnlyDate(item?.command_date) }}</td>
           <td>
             <UIMenuButton

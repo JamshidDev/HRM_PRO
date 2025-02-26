@@ -15,6 +15,8 @@ export const useConfirmationStore = defineStore('confirmationStore', {
         payload:{
             pin:null,
             position:null,
+            full_position:null,
+            level:null,
         },
         params:{
             page:1,
@@ -36,6 +38,7 @@ export const useConfirmationStore = defineStore('confirmationStore', {
         _create(){
             this.saveLoading = true
             let data = {
+                ...this.payload,
                 worker_id:this.payload.pin,
                 position:this.payload.position,
             }
@@ -51,6 +54,7 @@ export const useConfirmationStore = defineStore('confirmationStore', {
         _update(){
             this.saveLoading = true
             let data = {
+                ...this.payload,
                 worker_id:this.payload.pin,
                 position:this.payload.position,
             }
@@ -78,6 +82,8 @@ export const useConfirmationStore = defineStore('confirmationStore', {
             this.elementId = null
             this.payload.pin = null
             this.payload.position = null
+            this.payload.full_position = null
+            this.payload.level = null
         }
 
     }

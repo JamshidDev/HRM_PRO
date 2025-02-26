@@ -5,9 +5,12 @@ import WorkerPage from "@/pages/hrm/worker/WorkerPage.vue"
 import DepartmentPage from "@/pages/hrm/depertment/DepartmentPage.vue"
 import DepartmentPositionPage from "@/pages/hrm/departmentPosition/departmentPositionPage.vue"
 import CandidatePage from "@/pages/hrm/condidate/CandidatePage.vue"
-import DocumentPage from "@/pages/docFlow/document/DocumentPage.vue"
 import ConfirmationPage from "@/pages/hrm/confirmation/ConfirmationPage.vue"
 import ProfilePage from "@/pages/hrm/workerProfile/ProfilePage.vue"
+import ApplicationPage from "@/pages/docFlow/document/application/ApplicationPage.vue"
+import CommandPage from "../../pages/docFlow/document/command/CommandPage.vue"
+import AdContractPage from "@/pages/docFlow/document/adContract/AdContractPage.vue"
+import ContractPage from "@/pages/docFlow/document/contract/ContractPage.vue"
 
 
 export default [
@@ -32,11 +35,6 @@ export default [
         component:CandidatePage,
     },
     {
-        path:Utils.routeHrmPathMaker(AppPaths.Document),
-        name:AppPaths.Document.substring(1),
-        component:DocumentPage,
-    },
-    {
         path:Utils.routeHrmPathMaker(AppPaths.Confirmation),
         name:AppPaths.Confirmation.substring(1),
         component:ConfirmationPage,
@@ -45,5 +43,25 @@ export default [
         path:Utils.routeHrmPathMaker(AppPaths.WorkerProfile),
         name:AppPaths.WorkerProfile.substring(1),
         component: ProfilePage,
+    },
+    {
+        path:Utils.routeHrmPathMaker(AppPaths.Application),
+        name:AppPaths.Application.substring(1),
+        component: ApplicationPage,
+    },
+    {
+        path:Utils.routeHrmPathMaker(AppPaths.Command),
+        name:AppPaths.Command.substring(1),
+        component:CommandPage,
+    },
+    {
+        path:Utils.routeHrmPathMaker(AppPaths.AdContract),
+        name:AppPaths.AdContract.substring(1),
+        component:AdContractPage,
+    },
+    {
+        path:Utils.routeHrmPathMaker(AppPaths.Contract),
+        name:AppPaths.Contract.substring(1),
+        component:ContractPage,
     },
 ]

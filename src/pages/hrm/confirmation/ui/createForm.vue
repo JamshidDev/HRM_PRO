@@ -2,9 +2,10 @@
 import {UIAutoComplete} from "@/components/index.js"
 import validationRules from "@/utils/validationRules.js";
 const formRef = ref(null)
-import {useConfirmationStore} from "@/store/modules/index.js";
+import {useConfirmationStore, useComponentStore} from "@/store/modules/index.js";
 
 const store = useConfirmationStore()
+const componentStore = useComponentStore()
 
 const onSubmit = ()=>{
   formRef.value?.validate((error)=>{
@@ -20,6 +21,11 @@ const onSubmit = ()=>{
   })
 }
 
+onMounted(()=>{
+  if(componentStore.confirmationLevels.length === 0){
+    componentStore._enums()
+  }
+})
 </script>
 
 <template>
@@ -30,11 +36,31 @@ const onSubmit = ()=>{
   >
     <div style="min-height:calc(100vh - 120px)">
       <UIAutoComplete v-model:pin="store.payload.pin" />
+      <n-form-item :label="$t(`confirmationPage.table.level`)" path="level">
+        <n-select
+            v-model:value="store.payload.level"
+            filterable
+            clearable
+            :placeholder="$t(`content.choose`)"
+            :options="componentStore.confirmationLevels"
+            label-field="name"
+            value-field="id"
+            :loading="componentStore.enumLoading"
+        />
+      </n-form-item>
       <n-form-item :label="$t(`confirmationPage.table.position`)" path="position">
         <n-input
             type="text"
             :placeholder="$t(`content.enterField`)"
             v-model:value="store.payload.position"
+        />
+      </n-form-item>
+      <n-form-item :label="$t(`confirmationPage.table.full_position`)" path="full_position">
+        <n-input
+            rows="4"
+            type="textarea"
+            :placeholder="$t(`content.enterField`)"
+            v-model:value="store.payload.full_position"
         />
       </n-form-item>
     </div>

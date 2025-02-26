@@ -57,7 +57,8 @@ const onSuccess = (data)=>{
 }
 
 onMounted(()=>{
-  document.addEventListener('animationstart', function (e) {
+  const inputElement = document.querySelector('input[type="password"].n-input__input-el');
+  inputElement.addEventListener('animationstart', function (e) {
     if (e.animationName === 'autofill-detected') {
       onSubmit()
     }
@@ -156,9 +157,9 @@ onMounted(()=>{
           </template>
         </div>
 
-        <span class="text-xs mt-3 text-gray-500">{{ $t(`loginPage.doYouHaveAccount`) }}
-        <span @click="router.push(AppPaths.Register)" class="text-primary cursor-pointer ">{{ $t(`loginPage.singUp`) }}</span>
-        </span>
+<!--        <span class="text-xs mt-3 text-gray-500">{{ $t(`loginPage.doYouHaveAccount`) }}-->
+<!--        <span @click="router.push(AppPaths.Register)" class="text-primary cursor-pointer ">{{ $t(`loginPage.singUp`) }}</span>-->
+<!--        </span>-->
 
       </n-form>
 
