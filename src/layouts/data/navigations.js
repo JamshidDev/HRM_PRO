@@ -124,7 +124,7 @@ export const navigations = [
             {
                 label:t('examPage.name'),
                 path:Utils.routeLmsPathMaker(AppPaths.Exam),
-                icon:'bx bxs-archive',
+                icon:Archive24Filled,
                 children:[]
             },
         ]

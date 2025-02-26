@@ -5,7 +5,7 @@ import {
   NotebookQuestionMark24Filled, Delete28Regular,
   HatGraduation12Filled
 } from "@vicons/fluent"
-import {UIPagination} from "@/components/index.js"
+import {NoDataPicture, UIPagination} from "@/components/index.js"
 import {useTopicStore} from "@/store/modules/index.js"
 import {useRouter} from "vue-router"
 import {AppPaths} from "@/utils/index.js"
@@ -37,11 +37,11 @@ const goPush = (v)=>{
 <template>
 
   <n-spin :show="store.loading">
-    <div class="grid mt-10 gap-3 mb-4 grid-cols-[repeat(auto-fill,minmax(320px,1fr))]">
+    <div class="grid  mt-10 gap-3 mb-4 grid-cols-[repeat(auto-fill,minmax(320px,1fr))]">
       <template v-for="(item, idx) in store.list" :key="idx">
         <div
             @click="goPush(item)"
-            class="cursor-pointer border rounded-lg border-surface-line relative overflow-hidden p-2 group">
+            class="cursor-pointer bg-surface-section border rounded-lg border-surface-line  relative overflow-hidden p-2 group">
             <n-tooltip trigger="hover">
               <template #trigger>
                 <div class="text-lg font-medium text-gray-600 line-clamp-1">
@@ -100,7 +100,6 @@ const goPush = (v)=>{
           </div>
         </div>
       </template>
-
     </div>
     <UIPagination
         v-if="store.totalItems>store.params.per_page"
@@ -109,6 +108,8 @@ const goPush = (v)=>{
         :total="store.totalItems"
         @change-page="changePage"
     />
+    <NoDataPicture v-if="store.list.length===0 && !store.loading" />
+
   </n-spin>
 
 </template>
