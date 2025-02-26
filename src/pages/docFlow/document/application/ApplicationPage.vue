@@ -1,10 +1,11 @@
 <script setup>
-import { UIModal, UIPageContent, UIPageFilter} from "@/components/index.js"
+import {UIModal, UIOfficeApp, UIPageContent, UIPageFilter} from "@/components/index.js"
 import createForm from "./ui/createForm.vue"
 import Table from "./ui/Table.vue"
 import {useApplicationStore,} from "@/store/modules/index.js"
+import Utils from "@/utils/Utils.js"
 const store = useApplicationStore()
-
+const officeAppRef = ref(null)
 
 const onAdd = ()=>{
   store.resetForm()
@@ -13,7 +14,12 @@ const onAdd = ()=>{
 }
 
 const onSearch = ()=>{
+  store.params.page = 1
+  store._index()
+}
 
+const openApplication = (id)=>{
+  officeAppRef.value.openPdf(id, Utils.documentModels.workerApplication)
 }
 
 onMounted(()=>{
@@ -39,7 +45,8 @@ onMounted(()=>{
         <createForm/>
       </template>
     </UIModal>
-    <Table/>
+    <Table @openOffice="openApplication" />
+    <UIOfficeApp ref="officeAppRef"/>
   </UIPageContent>
 
 </template>

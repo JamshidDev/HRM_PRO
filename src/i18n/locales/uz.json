@@ -441,6 +441,22 @@
         "byContract": "{n} - raqamli shartnoma asosida",
         "confirm": "Tasdiqlovchilar",
         "director_id": "Direktor",
+
+        "day": "Kun",
+        "from": "Ta'tilga chiqish sanasi",
+        "period_from": "Ta'til davri (dan)",
+        "period_to": "Ta'til davri (gacha)",
+        "to": "Ta'til tugash sanasi",
+        "work_day": "Ishga chiqish sanasi",
+        "main_day": "Asosiy ta'til kuni",
+        "second_day": "Qo'shimcha ta'til kuni",
+        "additionals": "Qo'chimchalar",
+        "calculateVacation": "Ta'tilni hisoblash",
+        "no-calculate": "Ta'tilni kuni hisoblanmagan!",
+        "all_day": "Ta'til kuni",
+        "isNotValid": "Ta'tilni hisoblash uchun ma'lumotlar yetarli emas!",
+        "isNotCalculate": "Xodimlarning ta'til ma'lumotlari hisoblanmagan!",
+        "calculateTitle": "Hisoblangan ta'til ma'lumotlari. Agarda ularni noto'g'ri deb bilsangiz tahrirlashingiz mumkin",
         "command_number": "Buyruq raqami"
       }
     },

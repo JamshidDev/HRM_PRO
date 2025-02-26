@@ -52,6 +52,9 @@ export const AppPaths = {
     DocumentViewer:"/document-viewer",
     Holiday:"/holiday",
     Questions:"/questions",
+    Command:"/command",
+    AdContract:"/ad-contract",
+    Contract:"/contract",
     Application:"/application"
 }
 

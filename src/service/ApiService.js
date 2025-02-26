@@ -39,6 +39,7 @@ import partyService from "@/service/v1/hrm/partyService.js"
 import militaryService from "@/service/v1/hrm/militaryService.js"
 import academicTitleService from "@/service/v1/hrm/academicTitleService.js"
 import academicDegreeService from "@/service/v1/hrm/academicDegreeService.js"
+import vacationService from "@/service/v1/hrm/vacationService.js"
 
 import documentService from "@/service/v1/docFlow/documentService.js"
 import contractService from "@/service/v1/docFlow/contractService.js"
@@ -105,4 +106,5 @@ export default {
     academicDegreeService,
     holidayService,
     applicationService,
+    vacationService,
 }

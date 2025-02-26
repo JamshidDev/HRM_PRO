@@ -1,7 +1,7 @@
 <script setup>
 import Table from "./Table.vue"
 import adContractForm from "./adContractForm.vue"
-import {UIDConfirm, UIModal} from "@/components/index.js"
+import {UIDConfirm, UIModal, UIPageFilter, UIPageContent, UIOfficeApp} from "@/components/index.js"
 import {useAdContractStore, useCommandStore} from "@/store/modules/index.js"
 import {FlowchartCircle20Filled} from "@vicons/fluent"
 import CommandForm from "@/pages/docFlow/document/command/CommandForm.vue"
@@ -9,6 +9,7 @@ import Utils from "@/utils/Utils.js"
 
 const store = useAdContractStore()
 const commandStore = useCommandStore()
+const officeAppRef = ref(null)
 
 const emits = defineEmits([ 'openOffice',])
 const contractData = ref(null)
@@ -38,11 +39,36 @@ const onSave = ()=>{
   commandStore.visible = true
 }
 
+const onSearchEv = ()=>{
+  store.params.page = 1
+  store._index()
+}
+
+const onAdd = ()=>{
+  store.visibleType = true
+  store.resetForm()
+  store.visible = true
+}
+
+const openContract = (id)=>{
+  officeAppRef.value.openPdf(id, Utils.documentModels.adContract)
+}
+
+onMounted(()=>{
+  store._index()
+})
+
 </script>
 
 <template>
-<div>
-  <Table @openOffice="emitEv"
+<UIPageContent>
+  <UIPageFilter
+      @onSearch="onSearchEv"
+      @onAdd="onAdd"
+      v-model:search="store.params.search"
+      :search-loading="store.loading"
+  />
+  <Table @openOffice="openContract"
          @commandEv="openCommand"
   />
   <UIModal
@@ -79,5 +105,6 @@ const onSave = ()=>{
       <span class="w-full text-xl font-medium text-center py-4 inline-block">{{$t('contractPage.confirmAdText', {n: contractData?.number})}}</span>
     </template>
   </UIDConfirm>
-</div>
+  <UIOfficeApp ref="officeAppRef"/>
+</UIPageContent>
 </template>

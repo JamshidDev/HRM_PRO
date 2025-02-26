@@ -91,9 +91,8 @@ export const useCreateWorkerStore = defineStore('createWorkerStore', {
             data.user_phone = this.payload.phones.filter((v)=>v.main)[0].phone.split('-').join('').slice(4)
 
             $ApiService.workerService._create({data}).then((res)=>{
-                if(res.data?.errorMsg === 'Ok'){
+                if(!res.data?.error){
                     const v = res.data.data
-
                     this.savedWorker = {
                         lastName:v?.last_name,
                         firstName:v?.first_name,

@@ -35,7 +35,8 @@ const getMyLocation =()=>{
 }
 
 const timeToZone = (time)=>{
-    return time? dayjs(time).format('YYYY-MM-DDTHH:mm:ssZ') : null
+    // return time? dayjs(time).format('YYYY-MM-DDTHH:mm:ssZ') : null
+    return time? dayjs(time).format('YYYY-MM-DD') : null
 }
 
 const timeWithMonth = (time)=>{

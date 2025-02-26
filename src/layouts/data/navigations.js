@@ -3,7 +3,8 @@ import {Folder48Filled,LockClosed16Filled, PersonChat20Filled, Person32Filled,
     TextBulletListSquare20Filled, ChannelShare20Filled, DocumentTextExtract24Filled,
     PeopleCheckmark24Filled, DocumentArrowDown20Filled, Archive24Filled} from "@vicons/fluent"
 import {AppPaths} from "@/utils/index.js";
-import Utils from "@/utils/Utils.js";
+
+import Utils from "../../utils/Utils.js"
 import i18n from "@/i18n/index.js"
 const {t} = i18n.global
 
@@ -30,19 +31,29 @@ export const navigations = [
                 icon:TextBulletListSquare20Filled,
             },
             {
-                label:t('documentPage.name'),
-                path:Utils.routeHrmPathMaker(AppPaths.Document),
+                label:t('confirmation.name'),
+                path:Utils.routeHrmPathMaker(AppPaths.Contract),
                 icon:DocumentTextExtract24Filled,
             },
             {
-                label:t('confirmationPage.name'),
-                path:Utils.routeHrmPathMaker(AppPaths.Confirmation),
-                icon:PeopleCheckmark24Filled,
+                label:t('documentPage.tabs.command'),
+                path:Utils.routeHrmPathMaker(AppPaths.Command),
+                icon:DocumentTextExtract24Filled,
+            },
+            {
+                label:t('documentPage.tabs.adContract'),
+                path:Utils.routeHrmPathMaker(AppPaths.AdContract),
+                icon:DocumentTextExtract24Filled,
             },
             {
                 label:t('applicationPage.name'),
                 path:Utils.routeHrmPathMaker(AppPaths.Application),
                 icon:DocumentArrowDown20Filled,
+            },
+            {
+                label:t('confirmationPage.name'),
+                path:Utils.routeHrmPathMaker(AppPaths.Confirmation),
+                icon:PeopleCheckmark24Filled,
             },
         ]
     },

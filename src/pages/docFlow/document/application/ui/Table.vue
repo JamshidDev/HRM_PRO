@@ -8,7 +8,7 @@ const store = useApplicationStore()
 
 
 
-
+const emits = defineEmits([ 'openOffice'])
 const onEdit = (v)=>{
   store.visibleType = false
   store.elementId = v.id
@@ -27,8 +27,14 @@ const changePage = (v)=>{
   store._index()
 }
 
-const onOpen = (url)=>{
-  window.open(url, '_blank')
+const onSelectEv = (v)=>{
+  if(Utils.ActionTypes.view === v.key){
+    onOpenFile(v.data)
+  }
+}
+
+const onOpenFile = (v)=>{
+  emits('openOffice', v.id)
 }
 </script>
 
@@ -47,14 +53,15 @@ const onOpen = (url)=>{
           <th class="min-w-[120px] w-[200px]">{{$t('applicationPage.form.number')}}</th>
           <th class="min-w-[120px] w-[120px]">{{$t('content.status')}}</th>
           <th class="min-w-[90px] w-[90px]">{{$t('content.date')}}</th>
-          <th class="min-w-[90px] w-[90px]">{{$t('content.open')}}</th>
           <th class="min-w-[40px] w-[40px]"></th>
         </tr>
         </thead>
         <tbody>
         <tr v-for="(item, idx) in store.list" :key="idx">
           <td><span class="text-center text-[12px] text-gray-600 block">{{ (store.params.page - 1) * store.params.per_page + idx + 1 }}</span></td>
-          <td>{{item.type?.name}}</td>
+          <td
+              @click="onOpenFile(item)"
+              class="text-sm hover:text-primary hover:underline cursor-pointer">{{item.type?.name}}</td>
           <td><span class="font-medium">{{item?.number}}</span></td>
           <td>
             <UIStatus
@@ -63,19 +70,11 @@ const onOpen = (url)=>{
           </td>
           <td>{{Utils.timeOnlyDate(item?.created_at)}}</td>
           <td>
-            <n-button
-                @click="onOpen(item.file)"
-            >
-              {{$t('content.open')}}
-              <template #icon>
-                <DocumentBulletList20Regular/>
-              </template>
-            </n-button>
-          </td>
-          <td>
            <UIMenuButton
+               :data="item"
                :show-edit="true"
                :show-view="true"
+               @selectEv="onSelectEv"
            />
           </td>
         </tr>
@@ -91,7 +90,3 @@ const onOpen = (url)=>{
     <NoDataPicture v-if="store.list.length===0 && !store.loading" />
   </n-spin>
 </template>
-
-<style scoped>
-
-</style>

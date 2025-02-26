@@ -1008,18 +1008,7 @@ export default {
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
-        salary:{
-            required: true,
-            message: t(`rules.requiredField`),
-            trigger: triggerEvents
-        },
         director_id:{
-            type:'number',
-            required: true,
-            message: t(`rules.requiredField`),
-            trigger: triggerEvents
-        },
-        schedule_id:{
             type:'number',
             required: true,
             message: t(`rules.requiredField`),
@@ -1031,30 +1020,14 @@ export default {
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
-        contract_to_date:{
-            type:'number',
-            required: true,
-            message: t(`rules.requiredField`),
-            trigger: triggerEvents
-        },
-        group:{
-            type:'number',
-            required: true,
-            message: t(`rules.requiredField`),
-            trigger: triggerEvents
-        },
-        rank:{
-            type:'number',
-            required: true,
-            message: t(`rules.requiredField`),
-            trigger: triggerEvents
-        },
-        rate:{
-            required: true,
-            message: t(`rules.requiredField`),
-            trigger: triggerEvents
-        },
+
         workers:{
+            type:'array',
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        organization_id:{
             type:'array',
             required: true,
             message: t(`rules.requiredField`),

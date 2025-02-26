@@ -21,6 +21,7 @@ export const useComponentStore = defineStore('componentStore', {
         militaryStatuses:[],
         applicationTypes:[],
         workTypes:[],
+        vacationAdditional:[],
 
         departmentList:[],
         depParams:{
@@ -170,6 +171,7 @@ export const useComponentStore = defineStore('componentStore', {
                 this.confirmationLevels = res.data.data.confirmation_worker
                 this.applicationTypes = res.data.data.contract_application_types
                 this.workTypes =res.data.data.create_application_types
+                this.vacationAdditional = res.data.data.vacation_additional
             }).finally(()=>{
                 this.enumLoading= false
             })
@@ -239,7 +241,7 @@ export const useComponentStore = defineStore('componentStore', {
             this.pinLoading = true
             this.worker = null
             $ApiService.workerService._checkWorker({params:{pin}}).then((res)=>{
-                if(res.data.errorMsg === 'Ok'){
+                if(!res.data.error){
                     let data = res.data.data
                     this.worker =  {
                         lastName:data?.last_name,
@@ -337,9 +339,9 @@ export const useComponentStore = defineStore('componentStore', {
                 this.commandTypeLoading = false
             })
         },
-        _workers(){
+        _workers(id=undefined){
             this.workerLoading = true
-            $ApiService.workerService._index({page:1, per_page: 10000}).then((res)=>{
+            $ApiService.workerService._index({params:{page:1, per_page: 10000, organization_id:id}}).then((res)=>{
                 this.workerList = res.data.data.data.map((v)=>({
                     ...v,
                     name:v.worker.last_name + ' '+v.worker.first_name+' '+v.worker.middle_name,
