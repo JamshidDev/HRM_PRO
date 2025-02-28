@@ -38,7 +38,7 @@ const startAttempt = (v)=>{
   if(v.results.findIndex(i=>!i.result) !== -1){
     examStore.continueVisible = true
   }else{
-    examStore._start_attempt(goPush)
+    examStore._start_attempt()
   }
 }
 
@@ -146,7 +146,7 @@ const startAttempt = (v)=>{
         </n-table>
       </n-collapse-transition>
       <div class="flex justify-center mt-3" v-if="exam.results.length">
-        <n-button quaternary @click="showHistory=!showHistory">
+        <n-button size="small" quaternary @click="showHistory=!showHistory">
           <template #icon>
             <div class="transition-all" :class="{'rotate-180': showHistory}">
               <n-icon :component="ChevronDown12Filled"/>

@@ -187,7 +187,7 @@ const endAttempt = ()=>{
           </div>
         </div>
       </div>
-      <div class="h-full w-full flex justify-center items-center">
+      <div v-else class="h-full w-full flex justify-center items-center">
         <div class="bg-surface-section rounded-md p-3 flex flex-col items-center gap-3 border border-secondary">
           <n-icon class="text-red-700" :component="ShieldError16Filled" :size="100" />
           <p class="text-xl font-bold text-center">{{$t('solveExamPage.notAllowed')}}</p>

@@ -29,7 +29,7 @@ export const useExamAttemptStore = defineStore('examAttemptStore', {
             this.exam_storage = data || {}
             this.exam_token = data && data[this.elementId]
         },
-        _start_attempt(redirect) {
+        _start_attempt() {
             this.loading = true
             $ApiService.workerExamService._start_exam({id: this.elementId}).then((res) => {
                 const {active_token, questions, worker_exam_details, exam} = res.data.data
@@ -39,8 +39,14 @@ export const useExamAttemptStore = defineStore('examAttemptStore', {
                 this.exam_token = active_token
                 let data = localStorage.getItem('exam_data')
                 data = data ? JSON.parse(data) : {}
-                localStorage.setItem('exam_data', JSON.stringify({...data, [exam.id]: active_token}))
-                redirect(this.exam_detail)
+                localStorage.setItem('exam_data', JSON.stringify({...data, [worker_exam_details.id]: active_token}))
+                router.push({
+                    name: 'solve_exam',
+                    params: {
+                        exam_id: worker_exam_details.id
+                    }
+                })
+
             }).catch((res) => {
                 this.notPermittedVisible = true
             }).finally(() => {
