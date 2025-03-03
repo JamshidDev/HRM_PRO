@@ -3,15 +3,18 @@ const apiUrl = import.meta.env.VITE_API_URL;
 
 import router from '../router/index';
 import Utils from "@/utils/Utils.js"
+import i18n from "@/i18n/index.js";
 
 const instance = axios.create({
-    baseURL: `${apiUrl}/api`
+    baseURL: `${apiUrl}/api`,
 });
 
 instance.interceptors.request.use(function (config) {
+    const locale = i18n.global.locale
     let token = localStorage.getItem('token') ? localStorage.getItem('token') : null;
     if (token) {
         config.headers['Authorization'] = 'Bearer ' + token
+        config.headers['Accept-Language'] = locale
     }
 
     return config;

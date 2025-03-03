@@ -23,13 +23,6 @@ const onClickClose = ()=>{
   emit('click:close')
 }
 
-const onClickMask = ()=>{
-  if(props.persistent){
-    return
-  }
-  visible.value=false
-}
-
 </script>
 
 <template>

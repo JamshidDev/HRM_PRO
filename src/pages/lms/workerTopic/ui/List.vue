@@ -13,12 +13,8 @@ import ExamCard from './ExamCard.vue'
 const store = useWorkerExamStore()
 
 
-const downloadFile = (file) => {
-  let a = document.createElement('a')
-  a.href = file.file
-  a.target = '_blank'
-  a.click()
-  a.remove()
+const showFile = (file) => {
+  $MediaViewer.showMediaViewer(file.file, file.file_extension)
 }
 
 
@@ -65,9 +61,10 @@ const changePage = (v) => {
 
 <template>
   <n-spin :show="store.loading" style="min-height: 200px">
-    <div v-if="store.list.length>0" class="w-full overflow-x-auto flex flex-col gap-5">
+    <div v-if="store.list.length>0" class="w-full overflow-x-auto bg-surface-section flex flex-col gap-5 p-4">
       <template v-for="(lesson, idx) in store.list" :key="idx">
-        <div class="flex flex-col gap-2 rounded-lg p-4  shrink-0">
+        <n-divider v-if="idx!==0" />
+        <div class="flex flex-col gap-2 rounded-lg   shrink-0">
           <div class="flex items-center gap-3">
             <n-button size="large" text type="info">
               <template #icon>
@@ -79,13 +76,12 @@ const changePage = (v) => {
               {{ lesson.type.name }}
             </n-button>
           </div>
-          <n-collapse v-if="lesson.files.length">
-            <n-collapse-item :title="$t('examPage.resources')">
-
+          <n-collapse v-if="lesson.files.length" default-expanded-names="1">
+            <n-collapse-item :title="$t('examPage.resources')" name="1">
               <div v-for="(file, idx) in lesson.files" :key="idx">
                 <n-button
                     text
-                    @click="downloadFile(file)">
+                    @click="showFile(file)">
                   <template #icon>
                     <n-icon :component="getMediaProperty(file.type.id).icon"></n-icon>
                   </template>
@@ -95,8 +91,8 @@ const changePage = (v) => {
 
             </n-collapse-item>
           </n-collapse>
-          <n-collapse v-if="lesson.exams.length">
-            <n-collapse-item :title="$t('examPage.exams')">
+          <n-collapse v-if="lesson.exams.length" default-expanded-names="1">
+            <n-collapse-item :title="$t('examPage.exams')" name="1">
               <div class="flex flex-col gap-2">
                 <ExamCard
                     v-for="(exam, idx) in lesson.exams"

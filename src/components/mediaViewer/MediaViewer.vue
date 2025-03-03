@@ -5,27 +5,35 @@ import DocumentViewer from "./DocumentViewer.vue";
 import ImageViewer from "./ImageViewer.vue";
 
 const mediaUrl = ref("");
-const mediaType = ref("pdf");
-const isVisible = ref(true);
+const isVisible = ref(false);
+const extension = ref('')
+const FileExtensions = {
+  IMAGE: ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg'],
+  PDF: ['pdf', 'djvu'],
+  DOCUMENT: ['doc', 'docx'],
+  SPREADSHEET: ['xls', 'xlsx'],
+  PRESENTATION: ['ppt', 'pptx'],
+  VIDEO: ['mp4', 'mpeg', 'webm', 'mov'],
+  AUDIO: ['mp3', 'wav', 'ogg'],
+  ARCHIVE: ['zip', 'rar', '7z'],
+  TEXT: ['txt', 'csv', 'json'],
+}
 
 const mediaViewer = {
-  showMediaViewer(url, type) {
+  showMediaViewer(url, ext) {
     mediaUrl.value = url;
-    if (type.startsWith("audio/")) {
-      mediaType.value = "audio"
-    } else if (type.startsWith("video/")) {
-      mediaType.value = "video"
-    } else if (type.startsWith("image/")) {
-      mediaType.value = "image"
-    } else if (type === "application/pdf") {
-      mediaType.value = "pdf"
-    } else {
-      mediaType.value = ""
+    if(!ext){
+      let extPos = url.match(/./g).length || 1
+      extension.value = url.split('.')?.[extPos-1]
+    }else{
+      extension.value = ext
     }
-    isVisible.value = !!mediaType.value;
+    isVisible.value = true;
   },
   hideMediaViewer() {
+    mediaUrl.value = '';
     isVisible.value = false;
+    extension.value = '';
   },
 };
 
@@ -34,10 +42,24 @@ window.$MediaViewer = mediaViewer;
 
 <template>
   <div>
-    <AudioPlayer v-if="mediaType === 'audio'" :src="mediaUrl" />
-    <VideoPlayer v-if="mediaType === 'video'" :src="mediaUrl" />
-    <ImageViewer v-if="mediaType === 'image'" :src="mediaUrl" />
-    <DocumentViewer v-if="mediaType === 'pdf'"  />
+    <template v-if="isVisible">
+
+      <AudioPlayer
+          v-if="FileExtensions.AUDIO.includes(extension)"
+          :src="mediaUrl"
+          @close="mediaViewer.hideMediaViewer()"
+      />
+      <VideoPlayer
+          v-if="FileExtensions.VIDEO.includes(extension)"
+          :src="mediaUrl"
+          @close="mediaViewer.hideMediaViewer()" />
+      <ImageViewer
+          v-if="FileExtensions.IMAGE.includes(extension)"
+          :src="mediaUrl"
+          @close="mediaViewer.hideMediaViewer()"
+      />
+      <DocumentViewer v-if="FileExtensions.PDF.includes(extension)" :src="mediaUrl" />
+    </template>
   </div>
 </template>
 

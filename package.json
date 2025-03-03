@@ -11,7 +11,6 @@
   },
   "dependencies": {
     "@chenfengyuan/vue-countdown": "^2.1.2",
-    "@liripeng/vue-audio-player": "^2.0.4",
     "@onlyoffice/document-editor-vue": "^1.4.0",
     "@vicons/utils": "^0.1.4",
     "@videojs-player/vue": "^1.0.0",
@@ -31,6 +30,7 @@
     "pdf-vue3": "^1.0.12",
     "pdfjs-dist": "2.9.359",
     "pinia": "^2.2.2",
+    "player.style": "^0.1.4",
     "qrcode": "^1.5.4",
     "uuid": "^10.0.0",
     "vue": "^3.4.37",
