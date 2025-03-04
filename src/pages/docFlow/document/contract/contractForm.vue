@@ -55,6 +55,7 @@ const onChangeStructure = (v)=>{
 const onFocusConf = ()=>{
   componentStore._confirmations()
 }
+
 const renderLabel = (option)=>{
   return [
     h(
@@ -130,6 +131,18 @@ const showCheckBox = computed(()=>{
   return [2,4,5].includes(store.payload.type)
 })
 
+const showVacationDay = computed(()=>{
+  return ![2].includes(store.payload.type)
+})
+
+const onChangeType = ()=>{
+  if(store.payload.type ===2){
+    store.payload.command_status = false
+    store.payload.vacation_main_day = null
+    store.payload.additional_vacation_day = null
+  }
+}
+
 watchEffect(()=>{
   if(store.payload.director_id){
     store.payload.confirmations = store.payload.confirmations.filter(v=>v !==store.payload.director_id)
@@ -191,6 +204,7 @@ onMounted(()=>{
                     label-field="name"
                     value-field="id"
                     :loading="componentStore.enumLoading"
+                    @update:value="onChangeType"
                 />
               </n-form-item>
             </div>
@@ -224,28 +238,31 @@ onMounted(()=>{
                 />
               </n-form-item>
             </div>
-            <div class="col-span-3">
-              <n-form-item :label="$t(`documentPage.form.vacation_main_day`)" path="vacation_main_day">
-                <n-input
-                    class="w-full"
-                    type="text"
-                    :placeholder="$t(`content.enterField`)"
-                    v-model:value="store.payload.vacation_main_day"
-                    :allow-input="Utils.onlyAllowNumber"
-                />
-              </n-form-item>
-            </div>
-            <div class="col-span-3">
-              <n-form-item :label="$t(`documentPage.form.additional_vacation_day`)" path="additional_vacation_day">
-                <n-input
-                    class="w-full"
-                    type="text"
-                    :placeholder="$t(`content.enterField`)"
-                    v-model:value="store.payload.additional_vacation_day"
-                    :allow-input="Utils.onlyAllowNumber"
-                />
-              </n-form-item>
-            </div>
+            <template v-if="showVacationDay">
+              <div class="col-span-3">
+                <n-form-item :label="$t(`documentPage.form.vacation_main_day`)" path="vacation_main_day">
+                  <n-input
+                      class="w-full"
+                      type="text"
+                      :placeholder="$t(`content.enterField`)"
+                      v-model:value="store.payload.vacation_main_day"
+                      :allow-input="Utils.onlyAllowNumber"
+                  />
+                </n-form-item>
+              </div>
+              <div class="col-span-3">
+                <n-form-item :label="$t(`documentPage.form.additional_vacation_day`)" path="additional_vacation_day">
+                  <n-input
+                      class="w-full"
+                      type="text"
+                      :placeholder="$t(`content.enterField`)"
+                      v-model:value="store.payload.additional_vacation_day"
+                      :allow-input="Utils.onlyAllowNumber"
+                  />
+                </n-form-item>
+              </div>
+            </template>
+
             <div class="col-span-3">
               <n-form-item :label="$t(`documentPage.form.probation`)" path="probation">
                 <n-select
@@ -445,7 +462,7 @@ onMounted(()=>{
             />
           </n-form-item>
         </div>
-        <div class="col-span-12 pt-4 flex justify-center gap-2 items-center relative">
+        <div v-if="showVacationDay" class="col-span-12 pt-4 flex justify-center gap-2 items-center relative">
           <n-divider dashed title-placement="left" class="w-full">
             <div class="flex items-center gap-3">
               <n-switch v-model:value="store.payload.command_status" />

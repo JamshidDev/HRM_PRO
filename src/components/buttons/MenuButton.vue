@@ -1,5 +1,5 @@
 <script setup>
-import {Edit32Regular, Delete20Regular, OpenFolder24Filled, Eye16Regular, ArrowCircleDown48Regular} from "@vicons/fluent"
+import {Edit32Regular, Delete20Regular, OpenFolder24Filled, Eye16Regular, ArrowCircleDown48Regular, MoreHorizontal48Filled } from "@vicons/fluent"
 const {t} = i18n.global
 import {UIDConfirm} from "@/components/index.js"
 import {NIcon} from "naive-ui"
@@ -20,6 +20,10 @@ const props = defineProps({
     default:false,
   },
   showOpen:{
+    type: Boolean,
+    default:false,
+  },
+  showAttachment:{
     type: Boolean,
     default:false,
   },
@@ -59,6 +63,12 @@ const options = computed(()=>{
       key: Utils.ActionTypes.open,
       icon: renderIcon(OpenFolder24Filled),
       visible:props.showOpen
+    },
+    {
+      label: t('content.attachment'),
+      key: Utils.ActionTypes.attachment,
+      icon: renderIcon(OpenFolder24Filled),
+      visible:props.showAttachment
     },
     {
       label: t('content.view'),
@@ -124,7 +134,8 @@ const onDelete = ()=>{
           style="width: 30px"
       >
         <template #icon>
-          <i class='bx bx-dots-vertical-rounded text-2xl'></i>
+<!--          <i class='bx bx-dots-vertical-rounded text-2xl'></i>-->
+          <MoreHorizontal48Filled class="!text-4xl"/>
         </template>
       </n-button>
     </n-dropdown>

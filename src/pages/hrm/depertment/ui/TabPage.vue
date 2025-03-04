@@ -46,10 +46,11 @@ const onEdit = (v)=>{
   <n-tabs
       animated
       v-model:value="store.activeTab"
-      class="hidden-tab-header1 mt-4"
+      class="hidden-tab-header1 mt-4 white-tab-header"
       type="card"
       closable
       @close="store.closeTab"
+      :tab-class="'bg-white'"
   >
     <template v-for="(deep, idx) in store.tabList" :key="idx">
       <n-tab-pane :name="(idx+1)" :tab="deep.name">

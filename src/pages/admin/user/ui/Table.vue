@@ -50,13 +50,13 @@ const changePage = (v)=>{
             >
               <n-avatar
                   size="large"
-                  :src="item.photo"
+                  :src="item?.worker?.photo"
                   :fallback-src="Utils.noAvailableImage"
               />
             </div>
 
           </td>
-          <td>{{item.last_name +' ' +item.first_name +' '+item.middle_name }}</td>
+          <td>{{Utils.combineFullName(item.worker) }}</td>
           <td>{{item?.phone}}</td>
           <td>
             <UIActionButton

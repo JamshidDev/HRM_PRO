@@ -1,6 +1,6 @@
 
 import {createRouter, createWebHistory} from "vue-router"
-import {AppPaths} from "@/utils/index.js";
+import {AppPaths, useAppSetting} from "@/utils/index.js"
 import ProfilePage from "@/pages/app/profile/ProfilePage.vue";
 
 // routes
@@ -12,12 +12,11 @@ import appRoute from "@/router/modules/appRoute.js"
 import docflowRoute from "@/router/modules/docflowRoute.js"
 
 const beforeLogin = (to, from, next) => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem(useAppSetting.tokenKey);
     if (token) {
         next()
     }else {
-        localStorage.removeItem("token");
-        localStorage.removeItem("refresh_token");
+        localStorage.removeItem(useAppSetting.tokenKey);
         next(AppPaths.Login);
     }
 };

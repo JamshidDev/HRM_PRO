@@ -122,6 +122,7 @@ const methodTypes = {
 }
 const ActionTypes = {
     open:"open",
+    attachment:"attachment",
     view:"view",
     edit:"edit",
     download:"download",

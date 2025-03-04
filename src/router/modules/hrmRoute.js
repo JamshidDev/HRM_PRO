@@ -11,6 +11,7 @@ import ApplicationPage from "@/pages/docFlow/document/application/ApplicationPag
 import CommandPage from "../../pages/docFlow/document/command/CommandPage.vue"
 import AdContractPage from "@/pages/docFlow/document/adContract/AdContractPage.vue"
 import ContractPage from "@/pages/docFlow/document/contract/ContractPage.vue"
+import VacationPage from "@/pages/hrm/vacation/VacationPage.vue"
 
 
 export default [
@@ -63,5 +64,10 @@ export default [
         path:Utils.routeHrmPathMaker(AppPaths.Contract),
         name:AppPaths.Contract.substring(1),
         component:ContractPage,
+    },
+    {
+        path:Utils.routeHrmPathMaker(AppPaths.Vacation),
+        name:AppPaths.Vacation.substring(1),
+        component:VacationPage,
     },
 ]

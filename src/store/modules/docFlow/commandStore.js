@@ -14,6 +14,7 @@ export const useCommandStore = defineStore('commandStore', {
 
         payload:{
             workers:[],
+            worker:null,
             organization_id:[],
             command_date:null,
             command_number:null,
@@ -27,12 +28,43 @@ export const useCommandStore = defineStore('commandStore', {
             second_day:null,
             additional:null,
         },
+        form_32:{
+            contract_to_date:null,
+        },
+        form_43:{
+            new_date:null,
+            work_day:null,
+            reason:null,
+        },
+        form_44:{
+            new_date:null,
+            rest_day:null,
+            reason:null,
+        },
+        form_45:{
+            from:null,
+            to:null,
+            work_day:null,
+        },
+        form_48:{
+            from:null,
+            to:null,
+            work_day:null,
+            all_day:null,
+            reason:null,
+        },
+        form_49:{
+            from:null,
+            to:null,
+            work_day:null,
+        },
         params:{
             page:1,
             per_page:10,
             search:null,
         },
         vacations:[],
+        vacations55:[],
         calculateLoading:false,
     }),
     actions:{
@@ -45,16 +77,8 @@ export const useCommandStore = defineStore('commandStore', {
                 this.loading= false
             })
         },
-        _create(form){
+        _create(data){
             this.saveLoading = true
-            let data = {
-                ...this.payload,
-                ...{
-                    command_date:Utils.timeToZone(this.payload.command_date),
-                    director_id:this.payload.director_id,
-                    worker_positions:form,
-                }
-            }
             $ApiService.commandService._create({data}).then((res)=>{
                 this.visible = false
                 this._index()
@@ -106,7 +130,15 @@ export const useCommandStore = defineStore('commandStore', {
                 this.payload.confirmations = []
                 this.payload.director_id = null
                 this.payload.workers = []
+                this.payload.worker = null
                 this.payload.organization_id = []
+                this.vacations = []
+
+                this.form_32.contract_to_date = null
+
+                this.form_44.new_date = null
+                this.form_44.rest_day = null
+                this.form_44.reason = null
 
         }
 

@@ -26,6 +26,7 @@ export const useAccountStore = defineStore('accountStore', {
     actions:{
         _index(){
             $ApiService.accountService._index({data:this.payload}).then((res)=>{
+                console.log(res.data.data)
                 this.payload = {...res.data.data, password:null}
                 this.account = {...res.data.data}
             })

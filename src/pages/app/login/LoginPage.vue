@@ -4,7 +4,7 @@ import {useLoginStore, useAppStore, useSignatureStore, useAccountStore} from "@/
 import validationRules from "@/utils/validationRules.js";
 import {Call28Regular, LockClosed16Regular, Eye24Regular, EyeOff20Filled, Key24Regular} from '@vicons/fluent'
 import LangDropdown from "@/components/general/LangDropdown.vue";
-import {AppPaths} from "@/utils/index.js";
+import {AppPaths, useAppSetting} from "@/utils/index.js"
 import i18n from "@/i18n/index.js"
 
 const {t} = i18n.global
@@ -36,10 +36,9 @@ const onSignatureLogin =async ()=>{
 
 }
 const onSuccess = (data)=>{
-  console.log(data)
   new Promise((resolve, reject)=>{
     try{
-      localStorage.setItem('token',data?.access_token)
+      localStorage.setItem(useAppSetting.tokenKey,data?.access_token)
       accountStore._index()
       resolve(true)
     }catch (error){

@@ -1,6 +1,6 @@
 <script setup>
 import {useCommandStore, useComponentStore} from "@/store/modules/index.js"
-import {DismissCircle20Filled, Calculator24Regular, Person12Filled} from "@vicons/fluent"
+import {DismissCircle20Filled, Calculator24Regular, PersonNote20Regular, DismissCircle16Regular} from "@vicons/fluent"
 import Utils from "../../../../../utils/Utils.js"
 import i18n from "@/i18n/index.js"
 
@@ -19,11 +19,13 @@ const onChange = (id, idx)=>{
     })
   }
 }
-
 const onRemove = (id, idx)=>{
   store.vacations[idx].addList = store.vacations[idx].addList.filter((x)=>x.id !== id)
 }
-
+const onRemoveWorker = (id)=>{
+  store.vacations =  store.vacations.filter((v)=>v.id !== id)
+  store.payload.workers = store.payload.workers.filter((workerId)=>workerId !== id)
+}
 const onCalculate = (idx)=>{
   const details = store.vacations[idx]
   if(details.main_day && details.second_day && details.from){
@@ -43,8 +45,7 @@ const onCalculate = (idx)=>{
   }
 
 }
-
-const onSubmit = ()=>{
+const onSubmit = (mainData)=>{
   const checkForm = store.vacations.every((v)=>v.result !== null)
   if(checkForm){
     const data = store.vacations.map(v=>({
@@ -62,7 +63,10 @@ const onSubmit = ()=>{
     }))
 
     return {
-      data:data,
+      data:{
+        ...mainData,
+        worker_positions:data,
+      },
       isValid:true,
     }
   }else{
@@ -75,6 +79,8 @@ const onSubmit = ()=>{
 
 
 }
+
+
 
 defineExpose({
   onSubmit
@@ -90,16 +96,29 @@ onMounted(()=>{
 
 <template>
   <div v-for="(item, idx) in store.vacations" :key="idx"
-       class="grid grid-cols-12 mb-8 gap-x-4 border border-surface-line border-dashed p-2 rounded-md bg-gray-50">
-    <div class="col-span-12">
+       class="grid grid-cols-12 mb-8 gap-x-4 border border-gray-300 border-dashed p-2 rounded-md bg-gray-200">
+    <div class="col-span-12 flex justify-between">
       <n-button type="info" secondary size="tiny">
         <template #icon>
-          <Person12Filled/>
+          <PersonNote20Regular/>
         </template>
         {{Utils.combineFullName(item.worker.worker)}}</n-button>
+
+      <n-button
+          type="error"
+          secondary
+          size="tiny"
+          @click="onRemoveWorker(item.id)"
+      >
+        <template #icon>
+          <DismissCircle16Regular/>
+        </template>
+        {{$t('documentPage.command.form.removeWorker')}}</n-button>
     </div>
       <div class="col-span-2">
-        <n-form-item :label="$t(`documentPage.command.form.from`)" path="from">
+        <n-form-item
+            :show-feedback="false"
+            :label="$t(`documentPage.command.form.from`)" path="from">
           <n-date-picker
               class="w-full"
               v-model:value="item.from"
@@ -109,7 +128,9 @@ onMounted(()=>{
         </n-form-item>
       </div>
       <div class="col-span-2">
-        <n-form-item :label="$t(`documentPage.command.form.main_day`)" path="main_day">
+        <n-form-item
+            :show-feedback="false"
+            :label="$t(`documentPage.command.form.main_day`)" path="main_day">
           <n-input
               class="w-full"
               type="text"
@@ -119,7 +140,9 @@ onMounted(()=>{
         </n-form-item>
       </div>
       <div class="col-span-2">
-        <n-form-item :label="$t(`documentPage.command.form.second_day`)" path="second_day">
+        <n-form-item
+            :show-feedback="false"
+            :label="$t(`documentPage.command.form.second_day`)" path="second_day">
           <n-input
               class="w-full"
               type="text"
@@ -129,7 +152,9 @@ onMounted(()=>{
         </n-form-item>
       </div>
       <div class="col-span-6">
-        <n-form-item :label="$t(`documentPage.command.form.additionals`)" path="additionals">
+        <n-form-item
+            :show-feedback="false"
+            :label="$t(`documentPage.command.form.additionals`)" path="additionals">
           <n-select
               v-model:value="item.additionals"
               filterable
@@ -159,21 +184,26 @@ onMounted(()=>{
           </div>
         </template>
       </div>
-      <div class="col-span-2 flex justify-center">
+      <div class="col-span-2 flex justify-center pt-11">
         <n-button
             :loading="store.calculateLoading"
             @click="onCalculate(idx)"
-            type="success">
+            type="success"
+            secondary
+        >
           <template #icon>
             <Calculator24Regular/>
           </template>
           {{$t('documentPage.command.form.calculateVacation')}}</n-button>
       </div>
-      <div class="col-span-10 flex items-center">
+      <div class="col-span-10 flex items-end">
         <template v-if="item.result">
-          <div class="grid mt-2 grid-cols-12 gap-x-4 w-full border border-dashed border-green-200 bg-green-100 rounded-md p-2">
+          <div class="grid mt-2 grid-cols-12 gap-x-4 w-full border border-dashed border-surface-400 bg-surface-300 rounded-md p-2">
             <div class="col-span-3">
-              <n-form-item :label="$t(`documentPage.command.form.to`)" path="to">
+              <n-form-item
+                  :show-feedback="false"
+                  :label="$t(`documentPage.command.form.to`)"
+                  path="to">
                 <n-date-picker
                     class="w-full"
                     v-model:value="item.result.to"
@@ -183,7 +213,9 @@ onMounted(()=>{
               </n-form-item>
             </div>
             <div  class="col-span-3">
-              <n-form-item :label="$t(`documentPage.command.form.work_day`)" path="work_day">
+              <n-form-item
+                  :show-feedback="false"
+                  :label="$t(`documentPage.command.form.work_day`)" path="work_day">
                 <n-date-picker
                     class="w-full"
                     v-model:value="item.result.work_day"
@@ -193,7 +225,9 @@ onMounted(()=>{
               </n-form-item>
             </div>
             <div  class="col-span-2">
-              <n-form-item :label="$t(`documentPage.command.form.period_from`)" path="period_from">
+              <n-form-item
+                  :show-feedback="false"
+                  :label="$t(`documentPage.command.form.period_from`)" path="period_from">
                 <n-date-picker
                     class="w-full"
                     v-model:value="item.result.period_from"
@@ -203,7 +237,9 @@ onMounted(()=>{
               </n-form-item>
             </div>
             <div  class="col-span-2">
-              <n-form-item :label="$t(`documentPage.command.form.period_to`)" path="period_to">
+              <n-form-item
+                  :show-feedback="false"
+                  :label="$t(`documentPage.command.form.period_to`)" path="period_to">
                 <n-date-picker
                     class="w-full"
                     v-model:value="item.result.period_to"
@@ -213,7 +249,9 @@ onMounted(()=>{
               </n-form-item>
             </div>
             <div class="col-span-2">
-              <n-form-item :label="$t(`documentPage.command.form.all_day`)" path="all_day">
+              <n-form-item
+                  :show-feedback="false"
+                  :label="$t(`documentPage.command.form.all_day`)" path="all_day">
                 <n-input
                     class="w-full"
                     type="text"
@@ -223,7 +261,6 @@ onMounted(()=>{
               </n-form-item>
             </div>
           </div>
-
         </template>
         <template v-else>
           <span class="w-full text-center block text-xs font-medium text-danger mt-4">{{$t('documentPage.command.form.no-calculate')}}</span>

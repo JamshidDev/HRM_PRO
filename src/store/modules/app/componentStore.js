@@ -134,6 +134,9 @@ export const useComponentStore = defineStore('componentStore', {
         previewLoading:false,
         workerPreview:null,
 
+        reasonTypes:[],
+        reasonTypeLoading:false,
+
 
     }),
     actions:{
@@ -334,7 +337,7 @@ export const useComponentStore = defineStore('componentStore', {
         _commandTypes(data){
             this.commandTypeLoading = true
             $ApiService.componentService._commandTypes({params:data}).then((res)=>{
-                this.commandTypeList = res.data.data
+                this.commandTypeList = res.data.data.map((v)=>({...v, name:v.id+' - '+v.name}))
             }).finally(()=>{
                 this.commandTypeLoading = false
             })
@@ -380,6 +383,15 @@ export const useComponentStore = defineStore('componentStore', {
                 this.previewLoading = false
             })
         },
+        _reasonTypes(id){
+            this.reasonTypeLoading = true
+            $ApiService.vacationService._reasonTypes({params:{type:id}})
+                .then((res)=>{
+                this.reasonTypes = res.data.data
+            }).finally(()=>{
+                this.reasonTypeLoading = false
+            })
+        }
 
 
 

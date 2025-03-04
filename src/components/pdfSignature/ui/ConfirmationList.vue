@@ -54,7 +54,7 @@ const isDocFlow = computed(()=>{
           <n-button
               :loading="store.linkLoading"
               secondary
-              v-if="item.type === 'w' && isDocFlow"
+              v-if="item.type === 'w' && isDocFlow && item.status.id !== 3"
               @click="generateLink(item)"
               type="primary"
               size="tiny"

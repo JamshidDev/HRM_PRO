@@ -5,16 +5,37 @@ import {NAvatar} from "naive-ui"
 import Utils from "@/utils/Utils.js"
 import VacationForm_41 from "@/pages/docFlow/document/command/ui/VacationForm_41.vue"
 import {UIStructure} from "@/components/index.js"
+import EmptyForm from "@/pages/docFlow/document/command/ui/EmptyForm.vue"
+import CancelForm_32 from "@/pages/docFlow/document/command/ui/CancelForm_32.vue"
+import VacationForm_44 from "@/pages/docFlow/document/command/ui/VacationForm_44.vue"
+import VacationForm_43 from "@/pages/docFlow/document/command/ui/VacationForm_43.vue"
+import VacationForm_45 from "@/pages/docFlow/document/command/ui/VacationForm_45.vue"
+import VacationForm_49 from "@/pages/docFlow/document/command/ui/VacationForm49.vue"
+import VacationForm_48 from "@/pages/docFlow/document/command/ui/VacationForm_48.vue"
+import VacationForm_55 from "@/pages/docFlow/document/command/ui/VacationForm_55.vue"
 
 
-
-
-const vacationForm = ref(null)
 
 const store = useCommandStore()
 const componentStore = useComponentStore()
+
+
+// command ids of only single select
+const commandIdList = [32,33,34,35,36,37,38,39]
+const singleSelectCommands = [32,33,34,35,36,37,38,39, 44,43,45,49,48]
+
 const formRef = ref(null)
 const confirmationList = ref([])
+
+const cancelForm_32 = ref(null)
+const vacationForm_41 = ref(null)
+const vacationForm_43 = ref(null)
+const vacationForm_44 = ref(null)
+const vacationForm_45 = ref(null)
+const vacationForm_48 = ref(null)
+const vacationForm_49 = ref(null)
+const vacationForm_55 = ref(null)
+
 
 const onFocusConf = ()=>{
   componentStore._confirmations()
@@ -49,7 +70,6 @@ const renderValue = ({option})=>{
         },`${option?.last_name} ${option?.first_name} ${option?.middle_name}`),
   ];
 }
-
 const workerRenderLabel = (option)=>{
   return [
     h('div',{ class:'flex flex-col pt-2'}, [
@@ -65,33 +85,63 @@ const workerRenderValue = ({option})=>{
     ])
   ];
 }
-const onChangeWorker = ()=>{
-  if(store.payload.workers.length>0){
-    store.vacations = store.payload.workers.map((id)=>{
-      const worker = componentStore.workerList.filter(v=>v.id === id)[0]
-      return {
-        worker,
-        id,
-        from:null,
-        main_day:'21',
-        second_day:'0',
-        additional:null,
-        addList:[],
-        result:null,
-      }
-    })
-  }
+const onChangeWorkers = ()=>{
+  generationVacation55()
+  generationVacation()
 }
 
+const onChangeWorker = ()=>{}
 
 const onSubmit = ()=>{
-  formRef.value?.validate((error)=>{
+  formRef.value?.validate( async (error)=>{
+    validationComponent()
     if(!error){
-      const validate = vacationForm.value?.onSubmit()
+      const mainData = {
+        command_date:Utils.timeToZone(store.payload.command_date),
+        director_id:store.payload.director_id,
+        confirmations:store.payload.confirmations,
+        command_number:store.payload.command_number,
+        command_type:store.payload.command_type,
+        workers:store.payload.worker? [store.payload.worker] : store.payload.workers,
+      }
+      let validate = null
+
+
+
+      if(commandIdList.includes(store.payload.command_type)){
+        validate =await cancelForm_32.value?.onSubmit(mainData)
+      }
+      else if(store.payload.command_type === 41){
+        validate = vacationForm_41.value?.onSubmit(mainData)
+      }
+      else if(store.payload.command_type === 44){
+        validate =await vacationForm_44.value?.onSubmit(mainData)
+      }
+      else if(store.payload.command_type === 43){
+        validate =await vacationForm_43.value?.onSubmit(mainData)
+      }
+      else if(store.payload.command_type === 45){
+        validate =await vacationForm_45.value?.onSubmit(mainData)
+      }
+      else if(store.payload.command_type === 49){
+        validate =await vacationForm_49.value?.onSubmit(mainData)
+      }
+      else if(store.payload.command_type === 48){
+        validate =await vacationForm_48.value?.onSubmit(mainData)
+      }
+      else if(store.payload.command_type === 55){
+        validate =await vacationForm_55.value?.onSubmit(mainData)
+      }
+
+
+
+
+
+
       if(validate?.isValid){
         store.saveLoading = true
         if(store.visibleType){
-          store._create(validate.data)
+          store._create(validate?.data)
         }else{
           store._update()
         }
@@ -99,16 +149,23 @@ const onSubmit = ()=>{
     }
   })
 }
-
-watchEffect(()=>{
-  if(store.payload.director_id){
-    store.payload.confirmations = store.payload.confirmations.filter(v=>v !==store.payload.director_id)
-    confirmationList.value = componentStore.confirmationList.filter(v=>v.id !==store.payload.director_id)
+const validationComponent = ()=>{
+  if(store.payload.command_type === 44){
+    vacationForm_44.value?.validateForm()
   }
-
-
-})
-
+  else if(store.payload.command_type === 43){
+    vacationForm_43.value?.validateForm()
+  }
+  else if(store.payload.command_type === 45){
+    vacationForm_45.value?.validateForm()
+  }
+  else if(store.payload.command_type === 48){
+    vacationForm_48.value?.validateForm()
+  }
+  else if(store.payload.command_type === 49){
+    vacationForm_49.value?.validateForm()
+  }
+}
 
 
 const onChangeStructure = (v)=>{
@@ -119,6 +176,122 @@ const onChangeStructure = (v)=>{
     componentStore._workers(v[0].id)
   }
 }
+const onChangeCommandType = ()=>{
+
+
+  const commandId = store.payload.command_type
+  if(commandIdList.includes(commandId)){
+    if(store.payload.workers.length>0){
+      const val = componentStore.workerList.filter(v=>v.id === store.payload.workers[0])[0]
+      store.payload.worker = val?.id
+      store.payload.workers = []
+    }
+  }
+  else{
+    if(store.payload.worker){
+      store.payload.workers = [store.payload.worker]
+      store.payload.worker = null
+    }
+  }
+
+  if(store.payload.command_type === 41) {
+    fillVacation()
+  }
+  else if(store.payload.command_type === 55){
+    fillVacation55()
+  }
+
+  if([44, 43, 48].includes(store.payload.command_type)){
+    componentStore.reasonTypes = []
+    componentStore._reasonTypes(store.payload.command_type)
+  }
+}
+
+const isSingleSelect = computed(()=>{
+  return singleSelectCommands.includes(store.payload.command_type)
+})
+
+// vacation 41
+const generationVacation = ()=>{
+  const oldValues = store.vacations.map((v)=>v.id)
+  const id = store.payload.workers[store.payload.workers?.length-1]
+  const worker = componentStore.workerList.filter(x=>x.id === id)[0]
+  if(!oldValues.includes(id) &&  store.payload.workers.length > store.vacations.length){
+    store.vacations.push({
+      worker,
+      id,
+      from:null,
+      main_day:'21',
+      second_day:'0',
+      additional:null,
+      addList:[],
+      result:null,
+    })
+  }
+  else if(store.payload.workers.length < store.vacations.length){
+    store.vacations = store.vacations.filter((a)=>store.payload.workers.includes(a.id))
+  }
+}
+const fillVacation = ()=>{
+  store.vacations = []
+  store.vacations = store.payload.workers.map((id)=>{
+    const worker = componentStore.workerList.filter(v=>v.id === id)[0]
+    return {
+      worker,
+      id,
+      from:null,
+      main_day:'21',
+      second_day:'0',
+      additional:null,
+      addList:[],
+      result:null,
+    }
+  })
+}
+
+// vacation 55
+const generationVacation55 = ()=>{
+  const oldValues = store.vacations55.map((v)=>v.id)
+  const id = store.payload.workers[store.payload.workers?.length-1]
+  const worker = componentStore.workerList.filter(x=>x.id === id)[0]
+  if(!oldValues.includes(id) &&  store.payload.workers.length > store.vacations55.length){
+    store.vacations55.push({
+      worker,
+      id,
+      from:null,
+      to:null,
+      from_time:null,
+      to_time:null,
+    })
+  }
+  else if(store.payload.workers.length < store.vacations55.length){
+    store.vacations55 = store.vacations55.filter((a)=>store.payload.workers.includes(a.id))
+  }
+}
+const fillVacation55 = ()=>{
+  store.vacations55 = []
+  store.vacations55 = store.payload.workers.map((id)=>{
+    const worker = componentStore.workerList.filter(v=>v.id === id)[0]
+    return {
+      worker,
+      id,
+      from:null,
+      to:null,
+      from_time:null,
+      to_time:null,
+    }
+  })
+}
+
+watchEffect(()=>{
+  if(store.payload.director_id){
+    store.payload.confirmations = store.payload.confirmations.filter(v=>v !==store.payload.director_id)
+    confirmationList.value = componentStore.confirmationList.filter(v=>v.id !==store.payload.director_id)
+  }
+})
+
+
+
 onMounted(()=>{
   componentStore._commandTypes()
   store.resetForm()
@@ -168,6 +341,7 @@ onMounted(()=>{
                   label-field="name"
                   value-field="id"
                   :loading="componentStore.commandTypeLoading"
+                  @update:value="onChangeCommandType"
               />
             </n-form-item>
           </div>
@@ -177,7 +351,7 @@ onMounted(()=>{
 
 
       <div class="col-span-12">
-        <div class="grid grid-cols-12 gap-x-4 mt-6">
+        <div class="grid grid-cols-12 gap-x-4 border border-surface-line border-dashed p-2 rounded-md bg-gray-50 mt-6">
           <div class="col-span-6 flex">
             <n-form-item class="w-full" :label="$t(`documentPage.form.organization`)" path="organization_id">
               <UIStructure
@@ -190,22 +364,42 @@ onMounted(()=>{
             </n-form-item>
           </div>
           <div class="col-span-6 flex">
-            <n-form-item class="w-full" :label="$t(`documentPage.form.worker`)" path="workers">
-              <n-select
-                  :disabled="store.payload.organization_id.length === 0"
-                  multiple
-                  v-model:value="store.payload.workers"
-                  filterable
-                  :placeholder="$t(`content.choose`)"
-                  :options="componentStore.workerList"
-                  label-field="name"
-                  value-field="id"
-                  :render-label="workerRenderLabel"
-                  :render-tag="workerRenderValue"
-                  @update:value="onChangeWorker"
-                  :loading="componentStore.workerLoading"
-              />
-            </n-form-item>
+            <template v-if="isSingleSelect">
+              <n-form-item class="w-full" :label="$t(`documentPage.form.worker`)" path="worker">
+                <n-select
+                    :disabled="store.payload.organization_id.length === 0"
+                    v-model:value="store.payload.worker"
+                    filterable
+                    :placeholder="$t(`content.choose`)"
+                    :options="componentStore.workerList"
+                    label-field="name"
+                    value-field="id"
+                    :render-label="workerRenderLabel"
+                    :render-tag="workerRenderValue"
+                    @update:value="onChangeWorker"
+                    :loading="componentStore.workerLoading"
+                />
+              </n-form-item>
+            </template>
+            <template v-else>
+              <n-form-item class="w-full" :label="$t(`documentPage.form.worker`)" path="workers">
+                <n-select
+                    :disabled="store.payload.organization_id.length === 0"
+                    multiple
+                    v-model:value="store.payload.workers"
+                    filterable
+                    :placeholder="$t(`content.choose`)"
+                    :options="componentStore.workerList"
+                    label-field="name"
+                    value-field="id"
+                    :render-label="workerRenderLabel"
+                    :render-tag="workerRenderValue"
+                    @update:value="onChangeWorkers"
+                    :loading="componentStore.workerLoading"
+                />
+              </n-form-item>
+            </template>
+
           </div>
         </div>
       </div>
@@ -214,16 +408,39 @@ onMounted(()=>{
       <div class="col-span-12 mt-4">
 
         <template v-if="store.payload.command_type === 41">
-          <VacationForm_41 ref="vacationForm"/>
+          <VacationForm_41 ref="vacationForm_41"/>
+        </template>
+        <template v-else-if="commandIdList.includes(store.payload.command_type )">
+          <CancelForm_32 ref="cancelForm_32" />
+        </template>
+        <template v-else-if="store.payload.command_type === 44">
+          <VacationForm_44 ref="vacationForm_44" />
+        </template>
+        <template v-else-if="store.payload.command_type === 43">
+          <VacationForm_43 ref="vacationForm_43" />
+        </template>
+        <template v-else-if="store.payload.command_type === 45">
+          <VacationForm_45 ref="vacationForm_45" />
+        </template>
+        <template v-else-if="store.payload.command_type === 48">
+          <VacationForm_48 ref="vacationForm_48" />
+        </template>
+        <template v-else-if="store.payload.command_type === 49">
+          <VacationForm_49 ref="vacationForm_49" />
+        </template>
+        <template v-else-if="store.payload.command_type === 55">
+          <VacationForm_55 ref="vacationForm_55" />
+        </template>
+
+        <template v-else>
+          <EmptyForm/>
         </template>
 
       </div>
 
 
-      <div class="col-span-12 mt-10">
+      <div class="col-span-12 mt-6 mb-6">
         <div class="grid grid-cols-12 gap-x-4 border border-surface-line border-dashed p-2 rounded-md bg-gray-50">
-
-
           <div class="col-span-12 mt-4">
             <n-form-item :label="$t(`documentPage.command.form.director_id`)" path="director_id">
               <n-select

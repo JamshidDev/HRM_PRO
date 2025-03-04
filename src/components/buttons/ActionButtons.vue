@@ -71,12 +71,12 @@ const handleNegativeClick = ()=>{
   <slot name="first"></slot>
 
   <n-button
+      size="small"
       @click="onAdd"
       v-if="visibleAddBtn"
       :loading="loadingAdd"
       strong
-      secondary
-      circle
+      ghost
       type="success"
   >
     <template #icon>
@@ -85,12 +85,12 @@ const handleNegativeClick = ()=>{
   </n-button>
 
   <n-button
+      size="small"
       @click="onView"
       v-if="visibleViewBtn"
       :loading="loadingView"
       strong
-      secondary
-      circle
+      ghost
       type="success"
   >
     <template #icon>
@@ -99,12 +99,12 @@ const handleNegativeClick = ()=>{
   </n-button>
 
   <n-button
+      size="small"
       @click="onEdit"
       :loading="loadingEdit"
       v-if="visibleEditBtn"
       strong
-      secondary
-      circle
+      ghost
       type="info">
     <template #icon>
       <n-icon><Edit16Regular /></n-icon>
@@ -119,11 +119,10 @@ const handleNegativeClick = ()=>{
       :positive-text="$t('content.yes')"
   >    <template #trigger>
     <n-button
+        size="small"
         ref="confirm_btn"
         :loading="loadingDelete"
-        strong
-        secondary
-        circle
+        ghost
         type="error">
       <template #icon>
         <n-icon><Delete28Regular /></n-icon>

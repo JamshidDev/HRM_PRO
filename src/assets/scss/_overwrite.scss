@@ -198,3 +198,12 @@ input:-webkit-autofill {
     @apply bg-gray-50
   }
 }
+
+.bg-gradient-card {
+  background-image: linear-gradient(135deg, #e4feff 4%, #ffffff 10%, #daffff 89%);
+}
+.white-tab-header{
+  .n-tabs-tab{
+    background-color: var(--white-color) !important;
+  }
+}

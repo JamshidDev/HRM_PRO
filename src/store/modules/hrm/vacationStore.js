@@ -1,7 +1,8 @@
 import {defineStore} from "pinia";
 import i18n from "@/i18n/index.js"
+import Utils from "@/utils/Utils.js"
 const {t} = i18n.global
-export const useConfirmationStore = defineStore('confirmationStore', {
+export const useVacationStore = defineStore('vacationStore', {
     state:()=>({
         list:[],
         loading:false,
@@ -11,41 +12,39 @@ export const useConfirmationStore = defineStore('confirmationStore', {
         visibleType:true,
         elementId:null,
         totalItems:0,
-        allPermissionList:[],
         payload:{
-            pin:null,
-            position:null,
-            full_position:null,
-            level:null,
+            uuid:null,
+            status:null,
+            name:null,
+            number:null,
+            speciality:null,
+            commissariat:null,
         },
         params:{
             page:1,
             per_page:10,
             search:null,
         },
-
+        uuid:null,
     }),
     actions:{
         _index(){
             this.loading= true
-            $ApiService.confirmationService._index({params:this.params}).then((res)=>{
+            $ApiService.vacationService._index({params:{uuid:this.uuid}}).then((res)=>{
                 this.list = res.data.data.data
-                this.totalItems = res.data.data.total
             }).finally(()=>{
                 this.loading= false
             })
         },
         _create(){
             this.saveLoading = true
-            let data = {
+            const data = {
                 ...this.payload,
-                worker_id:this.payload.pin,
-                position:this.payload.position,
+                uuid:this.uuid,
             }
-            $ApiService.confirmationService._create({data}).then((res)=>{
+            $ApiService.militaryService._create({data}).then((res)=>{
                 this.visible = false
                 this._index()
-               
             }).finally(()=>{
                 this.saveLoading = false
             })
@@ -53,12 +52,11 @@ export const useConfirmationStore = defineStore('confirmationStore', {
         },
         _update(){
             this.saveLoading = true
-            let data = {
+            const data = {
                 ...this.payload,
-                worker_id:this.payload.pin,
-                position:this.payload.position,
+                uuid:this.uuid,
             }
-            $ApiService.confirmationService._update({data, id:this.elementId}).then((res)=>{
+            $ApiService.militaryService._update({data, id:this.elementId}).then((res)=>{
                 this.visible = false
                 this._index()
                
@@ -68,7 +66,7 @@ export const useConfirmationStore = defineStore('confirmationStore', {
         },
         _delete(){
             this.deleteLoading = true
-            $ApiService.confirmationService._delete({id:this.elementId}).then((res)=>{
+            $ApiService.militaryService._delete({id:this.elementId}).then((res)=>{
                 this._index()
                
             }).finally(()=>{
@@ -78,13 +76,15 @@ export const useConfirmationStore = defineStore('confirmationStore', {
         openVisible(data){
             this.visible = data
         },
-        resetForm(){
+        resetForm() {
             this.elementId = null
-            this.payload.pin = null
-            this.payload.position = null
-            this.payload.full_position = null
-            this.payload.level = null
-        }
+            this.payload.uuid = null
+            this.payload.status = null
+            this.payload.name = null
+            this.payload.number = null
+            this.payload.speciality = null
+            this.payload.commissariat = null
+        },
 
     }
 

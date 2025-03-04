@@ -41,6 +41,7 @@ export * from "./hrm/partyStore.js"
 export * from "./hrm/militaryStore.js"
 export * from "./hrm/academicTitleStore.js"
 export * from "./hrm/academicDegreeStore.js"
+export * from "./hrm/vacationStore.js"
 
 export * from "./docFlow/contractStore.js"
 export * from "./docFlow/documentStore.js"

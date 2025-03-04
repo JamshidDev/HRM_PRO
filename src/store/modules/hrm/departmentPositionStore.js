@@ -47,7 +47,7 @@ export const useDepartmentPositionStore = defineStore('departmentPositionStore',
             $ApiService.departmentPositionService._create({data}).then((res)=>{
                 this.visible = false
                 this._index()
-                $Toast.success(t('message.successDone'))
+               
             }).finally(()=>{
                 this.saveLoading = false
             })
@@ -59,7 +59,7 @@ export const useDepartmentPositionStore = defineStore('departmentPositionStore',
             $ApiService.departmentPositionService._update({data, id:this.elementId}).then((res)=>{
                 this.visible = false
                 this._index()
-                $Toast.success(t('message.successDone'))
+               
             }).finally(()=>{
                 this.saveLoading = false
             })
@@ -68,7 +68,7 @@ export const useDepartmentPositionStore = defineStore('departmentPositionStore',
             this.deleteLoading = true
             $ApiService.departmentPositionService._delete({id:this.elementId}).then((res)=>{
                 this._index()
-                $Toast.success(t('message.successDone'))
+               
             }).finally(()=>{
                 this.deleteLoading = false
             })

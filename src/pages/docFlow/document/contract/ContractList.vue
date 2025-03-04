@@ -32,9 +32,9 @@ const onEdit = (v)=>{
 
 
 const openContract = (v, statusId)=>{
-  if(statusId !== 2){
-    emits('commandEv',v)
-  }
+  // if(statusId !== 2){
+  //   emits('commandEv',v)
+  // }
 
 }
 
@@ -124,7 +124,6 @@ const onSelect =(v)=>{
         </tbody>
       </n-table>
       <UIPagination
-          v-if="store.totalItems>10"
           :page="store.params.page"
           :per_page="store.params.size"
           :total="store.totalItems"

@@ -6,10 +6,10 @@ import ruFlag from "@/assets/images/content/ru.png";
 import enFlag from "@/assets/images/content/en.png";
 import i18n from "@/i18n/index.js";
 import {ChevronDown24Filled} from '@vicons/fluent'
+import {useAppSetting} from "@/utils/index.js"
 const {t} = i18n.global
 
 const currentLang = ref('uz')
-const currentLangText = ref('content.langUz')
 const options= [
   {
     key: "header1",
@@ -102,50 +102,40 @@ const options= [
   },
 ]
 
-const initialLang = ()=>{
-  const lang = localStorage.getItem('applicationLang') || 'uz'
-  changeLang(lang)
-}
 
 
 const  changeLang=(lang)=>{
-  localStorage.setItem('applicationLang', lang)
-  i18n.global.locale = lang
-  if(lang ==='uz'){
-    currentLangText.value = 'content.langUz'
-    currentLang.value = uzFlag
-  }else if(lang ==='ru'){
-    currentLangText.value = 'content.langRu'
-    currentLang.value = ruFlag
-  }else if(lang ==='en'){
-    currentLangText.value = 'content.langEn'
-    currentLang.value = enFlag
-  }
+  localStorage.setItem(useAppSetting.languageKey, lang)
+  window.location.reload()
+  currentLang.value = lang
+
 }
+
+const dropdown = computed(()=>{
+  if(currentLang.value === 'en') return {icon:enFlag, text:'content.langEn'}
+  else if(currentLang.value === 'ru') return {icon:ruFlag, text:'content.langRu'}
+  else return {icon:uzFlag, text:'content.langUz'}
+})
 
 
 onMounted(()=>{
-  initialLang()
+  currentLang.value = localStorage.getItem(useAppSetting.languageKey)
 })
 </script>
 
 <template>
   <n-dropdown trigger="click" :options="options">
-    <div class="flex items-center gap-2  border-surface-line py-1 px-2 rounded-md cursor-pointer border w-[140px]">
+    <div class="flex items-center gap-2  border-surface-line py-1 px-1 rounded-md border w-[100px] cursor-pointer h-[32px] overflow-hidden">
       <n-avatar
           class="!w-[24px] !h-[24px]"
           round
           size="small"
-          :src="currentLang"
+          :src="dropdown.icon"
       />
-      <span class="text-[14px] text-surface-500 whitespace-nowrap" style="width: calc(100% - 60px)">{{$t(currentLangText)}}</span>
-      <n-icon color="#0e7a0d" class="text-[16px]">
+      <span class="text-sm text-surface-500 whitespace-nowrap font-semibold" style="width: calc(100% - 60px)">{{$t(dropdown.text)}}</span>
+      <n-icon class="text-[18px] text-surface-500">
         <ChevronDown24Filled />
       </n-icon>
     </div>
   </n-dropdown>
 </template>
-
-<style scoped>
-
-</style>

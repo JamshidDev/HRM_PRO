@@ -51,7 +51,7 @@ export const useAcademicTitleStore = defineStore('academicTitleStore', {
             $ApiService.academicTitleService._update({data, id:this.elementId, params}).then((res)=>{
                 this.visible = false
                 this._index()
-                $Toast.success(t('message.successDone'))
+               
             }).finally(()=>{
                 this.saveLoading = false
             })
@@ -60,7 +60,7 @@ export const useAcademicTitleStore = defineStore('academicTitleStore', {
             this.deleteLoading = true
             $ApiService.academicTitleService._delete({id:this.elementId}).then((res)=>{
                 this._index()
-                $Toast.success(t('message.successDone'))
+               
             }).finally(()=>{
                 this.deleteLoading = false
             })

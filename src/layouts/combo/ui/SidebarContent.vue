@@ -1,6 +1,6 @@
 <script setup>
 import {navigations} from "../../data/navigations.js"
-import {ChevronDown12Regular, PeopleSwap20Regular} from "@vicons/fluent"
+import {ChevronDown12Regular, PeopleSwap20Regular, ChevronDoubleLeft16Filled} from "@vicons/fluent"
 import {useAccountStore} from "@/store/modules/index.js"
 import {useRoute, useRouter} from "vue-router";
 import i18n from "@/i18n/index.js"
@@ -86,7 +86,7 @@ const pushFirstMenu = (path)=>{
 }
 
 const accountFullName = computed(()=>{
-  return store.account? `${store.account?.last_name} ${store.account?.first_name}`
+  return store.account? `${store.account?.worker?.last_name} ${store.account?.worker?.first_name}`
       : t('content.checking')
 })
 
@@ -95,7 +95,7 @@ const accountRole = computed(()=>{
 })
 
 const accountPhoto = computed(()=>{
-  return store.account? store.account.photo : Utils.noAvailableImage
+  return store.account? store.account?.worker?.photo : Utils.noAvailableImage
 })
 
 
@@ -165,7 +165,7 @@ const accountPhoto = computed(()=>{
                       <i :class="item.icon"></i>
                     </div>
                     <div class="item-title">
-                      <span>{{item.label}}</span>
+                      <span>{{ $t(item.label) }}</span>
                       <n-icon size="18">
                         <ChevronDown12Regular/>
                       </n-icon>
@@ -179,7 +179,7 @@ const accountPhoto = computed(()=>{
                       <div class="item-icon">
                         <i :class="subMenu.icon"></i>
                       </div>
-                      <div class="item-title">{{subMenu.label}}</div>
+                      <div class="item-title">{{$t(subMenu.label)}}</div>
                     </div>
 
                   </div>
@@ -204,8 +204,8 @@ const accountPhoto = computed(()=>{
                     <component :is="item.icon" />
                   </n-icon>
                 </div>
-                <div class="item-title">
-                  <span>{{item.label}}</span>
+                <div class="item-title truncate">
+                  <span>{{ $t(item.label)}}</span>
                 </div>
               </div>
             </template>
@@ -218,7 +218,10 @@ const accountPhoto = computed(()=>{
 
 
     <div @click="onClick" class="control-btn">
-      <i class='bx bx-chevrons-left'></i>
+<!--      <i class='bx bx-chevrons-left'></i>-->
+      <n-icon>
+        <ChevronDoubleLeft16Filled/>
+      </n-icon>
     </div>
   </div>
 </template>

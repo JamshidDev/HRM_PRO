@@ -7,14 +7,15 @@
     "view": "Ko'rish",
     "copy": "Nusxalash",
     "download": "Yuklash",
+    "attachment": "Biriktirish",
     "no-data": "Ma'lumot yo'q",
     "cancel": "Bekor qilish",
     "help": "Yordam",
     "enterField": "Kiriting",
     "phone": "Telefon raqam",
-    "langUz": "O'zbek",
-    "langRu": "Rus",
-    "langEn": "Ingliz",
+    "langUz": "O’ZB",
+    "langRu": "RUS",
+    "langEn": "ENG",
     "search": "Qidiruv",
     "add": "Qo'shish",
     "filterSetting": "Filter sozlamalar",
@@ -75,6 +76,9 @@
     "deleteWarning": "Haqiqattan ham o'chirmoqchimisz?",
     "sum": "So'm",
     "total": "Umumiy: {n}ta",
+    "fromTa": "tadan",
+    "main": "Asosiy",
+    "untilShow": " gacha ko'rsatilmoqda",
     "next": "Keyingi"
   },
   "month": {
@@ -454,9 +458,13 @@
         "calculateVacation": "Ta'tilni hisoblash",
         "no-calculate": "Ta'tilni kuni hisoblanmagan!",
         "all_day": "Ta'til kuni",
+        "contract_to_date": "Shartnomani tugash sanasi",
         "isNotValid": "Ta'tilni hisoblash uchun ma'lumotlar yetarli emas!",
         "isNotCalculate": "Xodimlarning ta'til ma'lumotlari hisoblanmagan!",
+        "notSelectCommand": "Buyruq turini tanlang va davom eting!",
+        "removeWorker": "Ro'yhatdan olib tashlash",
         "calculateTitle": "Hisoblangan ta'til ma'lumotlari. Agarda ularni noto'g'ri deb bilsangiz tahrirlashingiz mumkin",
+        "requiredVacationData": "Xodimlarning ta'til ma'lumotlarini kiring!",
         "command_number": "Buyruq raqami"
       }
     },
@@ -469,7 +477,7 @@
       "documentExampleId": "Hujjat andozasi",
       "department": "Bo'lim",
       "position": "Lavozim",
-      "positionStatus": "Aosiy shtatga qabul qilish",
+      "positionStatus": "Bo'linmadagi lavozimga qabul qilish",
       "salary": "Oylik maosh",
       "group": "Gurux",
       "rank": "Lavozim razryad",
@@ -494,6 +502,41 @@
       "status": {
         "Process": "Jarayonda"
       }
+    }
+  },
+  "commandPage": {
+    "form_43": {
+      "new_date": "Ta'til tugash sanasi",
+      "work_day": "Ishga chiqish sanasi",
+      "reason": "Sababi"
+    },
+    "form_44": {
+      "new_date": "Ishga chiqish sanasi",
+      "rest_day": "Foydalanilmagan ta'til kuni",
+      "reason": "Sababi"
+    },
+    "form_45": {
+      "from": "Qachondan",
+      "to": "Qachongacha",
+      "work_day": "Ishga chiqish sanasi"
+    },
+    "form_48": {
+      "from": "Qachondan",
+      "to": "Qachongacha",
+      "work_day": "Ishga chiqish sanasi",
+      "all_day": "Ta'til kuni",
+      "reason": "Sababi"
+    },
+    "form_49": {
+      "from": "Qachondan",
+      "to": "Qachongacha",
+      "work_day": "Ishga chiqish sanasi"
+    },
+    "form_55": {
+      "from": "Qachondan",
+      "to": "Qachongacha",
+      "from_time": "Qachondan (soat)",
+      "to_time": "Qachongacha (soat)"
     }
   },
   "confirmationPage": {
@@ -865,6 +908,9 @@
       "holiday_date": "Bayram sanasi",
       "type": "Bayram turi"
     }
+  },
+  "vacationPage": {
+    "name": "Ta'tildagi xodimlar"
   },
   "applicationPage": {
     "name": "Arizalar",

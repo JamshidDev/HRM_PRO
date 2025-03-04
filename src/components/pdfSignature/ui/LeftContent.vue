@@ -71,7 +71,7 @@ const onDownload = (v)=>{
                       }"
             >
               <template #position>
-                <span @click="onDownload(item)" class="text-sm text-end text-yellow-400 underline flex items-center cursor-pointer hover:text-primary">
+                <span @click="onDownload(item)" class="text-[10px] text-end text-primary underline flex items-center cursor-pointer hover:text-primary">
                   <n-icon class="mr-1" size="16"><DocumentArrowDown16Regular/></n-icon>
                   {{item.status.name}}
                 </span>

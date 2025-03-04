@@ -1,9 +1,9 @@
 <script setup>
-import {NoDataPicture, UIActionButton, UIPagination, UIUser, UIMenuButton} from "@/components/index.js"
-import {useConfirmationStore, useComponentStore} from "@/store/modules/index.js"
+import {NoDataPicture,UIPagination, UIUser, UIMenuButton} from "@/components/index.js"
+import {useVacationStore, useComponentStore} from "@/store/modules/index.js"
 import Utils from "@/utils/Utils.js"
 
-const store = useConfirmationStore()
+const store = useVacationStore()
 const compStore = useComponentStore()
 
 
