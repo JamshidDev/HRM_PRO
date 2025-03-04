@@ -18,7 +18,6 @@ const visible = ref(true);
 
 <template>
   <UIModal :width="1000" title="" @update:visible="$emit('close')" v-model:visible="visible">
-    <PDF :src="src" style="height: 90vh" />
+    <PDF :src="src" style="height: 90vh; max-height: 90vh" />
   </UIModal>
-
 </template>

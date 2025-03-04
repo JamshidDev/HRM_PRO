@@ -19,14 +19,18 @@ onMounted(()=>{
 
 <template>
   <UIModal :width="1000" title="" @update:visible="$emit('close')" v-model:visible="visible">
-    <media-theme-yt class="w-full">
-      <video
-          slot="media"
-          :src="src"
-          playsinline
-          crossorigin
-      ></video>
-    </media-theme-yt>
+    <div style="max-height: 90vh; height: 90vh;" class="flex justify-center">
+      <media-theme-yt>
+        <video
+            slot="media"
+            :src="src"
+            playsinline
+            crossorigin
+            height="100"
+            class="!h-full"
+        ></video>
+      </media-theme-yt>
+    </div>
   </UIModal>
 
 </template>

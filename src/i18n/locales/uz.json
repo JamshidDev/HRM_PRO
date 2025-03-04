@@ -444,7 +444,6 @@
         "byContract": "{n} - raqamli shartnoma asosida",
         "confirm": "Tasdiqlovchilar",
         "director_id": "Direktor",
-
         "day": "Kun",
         "from": "Ta'tilga chiqish sanasi",
         "period_from": "Ta'til davri (dan)",
@@ -865,7 +864,8 @@
     "attemptHistory": "Urinishlar tarixi",
     "startTime": "Boshlangan vaqt",
     "result": "Natija",
-    "endTime": "Yakunlangan vaqt"
+    "endTime": "Yakunlangan vaqt",
+    "leftAttempts": "Qolgan urunishlar"
   },
   "solveExamPage": {
     "alreadyStarted": "Siz bu imtihonni oldin boshlagansiz. Davom etishni xohlaysizmi?",
@@ -883,7 +883,9 @@
     "questions": "Savollar soni",
     "removeAnswer": "Javobni olib tashlash",
     "notAnswered": "{n}ta savolga javob bermagansiz!!!",
-    "endWarning": "Imtihonni yakunlashga ishonchingiz komilmi?"
+    "endWarning": "Imtihonni yakunlashga ishonchingiz komilmi?",
+    "leftAttempts": "Qolgan urunishlar"
+
   },
   "questionPage": {
     "form": {
