@@ -35,11 +35,7 @@ const goPush = (v) => {
 
 const startAttempt = (v)=>{
   examStore.elementId = v.id
-  if(v.results.findIndex(i=>!i.result) !== -1){
-    examStore.continueVisible = true
-  }else{
-    examStore._start_attempt()
-  }
+  examStore._start_attempt()
 }
 
 </script>

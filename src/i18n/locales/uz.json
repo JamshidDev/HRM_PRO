@@ -859,13 +859,18 @@
     "examBrief": "Imtihonda savollarida {variant}ta variantlar mavjud. Yechish uchun {chances}ta imkoniyat berilgan. Imtihonni {minute} daqiqa ichida yakunlash kerak. Imtihon {deadline}da yopiladi",
     "extra": "Qo'shimcha: {n}",
     "start": "Boshlash",
-    "attempts": "Urinishlar: {n}",
+    "attempts": "Urinishlar",
     "questions": "Savollar: {n}ta",
     "attemptHistory": "Urinishlar tarixi",
     "startTime": "Boshlangan vaqt",
     "result": "Natija",
     "endTime": "Yakunlangan vaqt",
-    "leftAttempts": "Qolgan urunishlar"
+    "leftAttempts": "Qolgan urunishlar",
+    "endHead": "Imtihon yakunlandi!",
+    "endSub": "Siz {n} ball oldingiz.",
+    "ip": "Ip manzil",
+    "wrongAnswer": "Javob noto'g'ri",
+    "notChosen": "Javob belgilanmagan"
   },
   "solveExamPage": {
     "alreadyStarted": "Siz bu imtihonni oldin boshlagansiz. Davom etishni xohlaysizmi?",
@@ -885,7 +890,6 @@
     "notAnswered": "{n}ta savolga javob bermagansiz!!!",
     "endWarning": "Imtihonni yakunlashga ishonchingiz komilmi?",
     "leftAttempts": "Qolgan urunishlar"
-
   },
   "questionPage": {
     "form": {

@@ -1,5 +1,6 @@
 import {defineStore} from "pinia";
 import i18n from "@/i18n/index.js"
+import router from "@/router/index.js";
 
 const {t} = i18n.global
 export const useExamAttemptStore = defineStore('examAttemptStore', {
@@ -10,9 +11,6 @@ export const useExamAttemptStore = defineStore('examAttemptStore', {
         worker_detail: null,
         exam_detail:  null,
         loading: false,
-        continueVisible: false,
-        notPermittedVisible: false,
-        visibleType: true,
         elementId: null,
         questionId: null,
         allPermissionList: [],
@@ -20,7 +18,8 @@ export const useExamAttemptStore = defineStore('examAttemptStore', {
         payload: {
             result: null,
         },
-        finishLoading: false
+        finishLoading: false,
+        result: null
     }),
     actions: {
         _config_localstorage() {
@@ -48,7 +47,7 @@ export const useExamAttemptStore = defineStore('examAttemptStore', {
                 })
 
             }).catch((res) => {
-                this.notPermittedVisible = true
+
             }).finally(() => {
                 this.loading = false
             })
@@ -74,6 +73,8 @@ export const useExamAttemptStore = defineStore('examAttemptStore', {
                 data = data ? JSON.parse(data) : {}
                 delete data?.[this.elementId]
                 localStorage.setItem('exam_data', JSON.stringify({...data}))
+                this.result = res.data.data
+                console.log(res.data.data)
             }).catch((res) => {
 
             }).finally(() => {
@@ -93,6 +94,17 @@ export const useExamAttemptStore = defineStore('examAttemptStore', {
                 console.log(res)
             }).finally(() => {
                 this.sendResultLoading = false
+            })
+        },
+        _get_attempt(){
+            this.loading = true
+            $ApiService.workerExamService._get_attempt({id: this.elementId}).then((res) => {
+                this.questions = res.data.data
+
+            }).catch((res) => {
+                console.log(res)
+            }).finally(() => {
+                this.loading = false
             })
         },
         openVisible(data) {

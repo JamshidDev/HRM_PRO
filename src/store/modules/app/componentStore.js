@@ -347,7 +347,7 @@ export const useComponentStore = defineStore('componentStore', {
                     name:v.worker.last_name + ' '+v.worker.first_name+' '+v.worker.middle_name,
                     position:v.position?.name || v?.post_name,
                     id:v.id,
-                    typeId:v.contract.type.id,
+                    typeId:v.contract?.type?.id,
 
                 }))
             }).finally(()=>{

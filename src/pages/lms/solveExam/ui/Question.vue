@@ -11,10 +11,11 @@ defineProps({
 })
 
 const sendResult = (question_id, option_id) => {
-  console.log(question_id, option_id)
-  store.questionId = question_id
-  store.payload.result = option_id
-  store._send_result()
+  if(!store.result){
+    store.questionId = question_id
+    store.payload.result = option_id
+    store._send_result()
+  }
 }
 
 </script>
@@ -46,6 +47,7 @@ const sendResult = (question_id, option_id) => {
       </div>
     </template>
     <div
+        v-if="!store.result"
         class="transition-all h-0 overflow-hidden"
         :class="{'h-6': !!question.result}"
     >
