@@ -35,16 +35,12 @@ const goPush = (v) => {
 
 const startAttempt = (v)=>{
   examStore.elementId = v.id
-  if(v.results.findIndex(i=>!i.result) !== -1){
-    examStore.continueVisible = true
-  }else{
-    examStore._start_attempt(goPush)
-  }
+  examStore._start_attempt()
 }
 
 </script>
 <template>
-    <div class="bg-surface-section p-2 rounded-md">
+    <div class="p-2 rounded-md">
       <div class="flex justify-between">
         <n-button
             text
@@ -67,36 +63,38 @@ const startAttempt = (v)=>{
       <div>
         <p v-if="exam?.description" class="text-sm text-gray-500">{{ exam.description }}</p>
         <div class="flex gap-3 flex-wrap mt-2">
-          <n-button size="small" dashed type="primary">
-            {{$t('examPage.variant', {n: exam.variant})}}
-            <template #icon>
-              <n-icon :component="AppsList20Filled" />
-            </template>
-          </n-button>
-          <n-button size="small" dashed type="warning">
-            {{$t('examPage.totalTime', {n: exam.minute})}}
-            <template #icon>
-              <n-icon :component="DocumentBulletListClock20Filled" />
-            </template>
-          </n-button>
-          <n-button size="small" dashed type="error">
-            {{$t('examPage.deadline', {n: Utils.timeWithMonth(exam.deadline)})}}
-            <template #icon>
-              <n-icon :component="CalendarClock20Filled" />
-            </template>
-          </n-button>
-          <n-button size="small" dashed type="info">
-            {{$t('examPage.attempts', {n: exam.chances})}}
-            <template #icon>
-              <n-icon :component="ArrowRepeatAll16Filled" />
-            </template>
-          </n-button>
-          <n-button size="small" dashed type="success">
-            {{$t('examPage.questions', {n: exam.questions_count})}}
-            <template #icon>
-              <n-icon :component="ClipboardBulletListLtr20Filled" />
-            </template>
-          </n-button>
+          <n-button-group>
+            <n-button size="tiny"  ghost  type="primary">
+              {{$t('examPage.variant', {n: exam.variant})}}
+              <template #icon>
+                <n-icon :component="AppsList20Filled" />
+              </template>
+            </n-button>
+            <n-button size="tiny" ghost  type="warning">
+              {{$t('examPage.totalTime', {n: exam.minute})}}
+              <template #icon>
+                <n-icon :component="DocumentBulletListClock20Filled" />
+              </template>
+            </n-button>
+            <n-button size="tiny" ghost  type="error">
+              {{$t('examPage.deadline', {n: Utils.timeWithMonth(exam.deadline)})}}
+              <template #icon>
+                <n-icon :component="CalendarClock20Filled" />
+              </template>
+            </n-button>
+            <n-button size="tiny" ghost  type="info">
+              {{$t('examPage.attempts', {n: exam.chances})}}
+              <template #icon>
+                <n-icon :component="ArrowRepeatAll16Filled" />
+              </template>
+            </n-button>
+            <n-button size="tiny" ghost  type="success">
+              {{$t('examPage.questions', {n: exam.questions_count})}}
+              <template #icon>
+                <n-icon :component="ClipboardBulletListLtr20Filled" />
+              </template>
+            </n-button>
+          </n-button-group>
         </div>
       </div>
       <n-collapse-transition v-if="exam.results.length" class="mt-3 overflow-y-auto" :show="showHistory">
@@ -139,14 +137,13 @@ const startAttempt = (v)=>{
                   <n-icon :component="ArrowSyncCheckmark24Filled" />
                 </template>
               </n-button>
-
             </td>
           </tr>
           </tbody>
         </n-table>
       </n-collapse-transition>
       <div class="flex justify-center mt-3" v-if="exam.results.length">
-        <n-button quaternary @click="showHistory=!showHistory">
+        <n-button size="small" quaternary @click="showHistory=!showHistory">
           <template #icon>
             <div class="transition-all" :class="{'rotate-180': showHistory}">
               <n-icon :component="ChevronDown12Filled"/>

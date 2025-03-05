@@ -20,6 +20,10 @@ const _send_result = async (payload)=>{
     return await axios.post(`/v1/exam/worker-exams/${payload.id}/send-result/${payload.questionId}`,payload.data, {headers: {'active_token': payload.token}})
 }
 
+const _get_attempt = async (payload)=>{
+    return await axios.get(`/v1/exam/worker-exams/${payload.id}/result`)
+}
+
 
 //
 // const _create = async (payload)=>{
@@ -46,7 +50,8 @@ export default {
     _start_exam,
     _finish_exam,
     _continue_exam,
-    _send_result
+    _send_result,
+    _get_attempt
     // _create,
     // _update,
     // _delete,

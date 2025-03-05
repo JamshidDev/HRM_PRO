@@ -73,7 +73,12 @@ onMounted(()=>{
               v-model:value="store.payload.tests_count"
           />
         </n-form-item-gi>
-        <n-form-item-gi :span="1" path="variant" rule-path="requiredNumberField" :label="$t(`topicDetailsPage.exams.variants`)">
+        <n-form-item-gi
+            :span="1"
+            path="variant"
+            rule-path="requiredNumberField"
+            :label="$t(`topicDetailsPage.exams.variants`)"
+        >
           <n-input-number
               class="w-full"
               :min="1"

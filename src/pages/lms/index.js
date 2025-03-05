@@ -4,3 +4,4 @@ export const TopicPage = import("./topic/TopicPage.vue");
 export const QuestionFormPage = import('./categoryQuestion/ui/QuestionFormPage.vue')
 export const WorkerTopicPage = import('./workerTopic/WorkerTopic.vue')
 export const SolveExamPage = import('./solveExam/SolveExamPage.vue')
+export const ViewExamPage = import('./solveExam/ViewExamPage.vue')

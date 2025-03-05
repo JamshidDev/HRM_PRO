@@ -26,11 +26,11 @@ export const useTopicExamStore = defineStore('topicExamStore', {
             name: null,
             whom: null,
             deadline: null,
-            minute: null,
-            variant: null,
-            tests_count: null,
             active: false,
-            chances: null,
+            minute: 45,
+            variant: 3,
+            tests_count: 36,
+            chances: 3,
             description: null,
             whom_ids: []
         },
@@ -59,7 +59,6 @@ export const useTopicExamStore = defineStore('topicExamStore', {
                 this.visible = false
                 this._index()
                 this.resetForm()
-                $Toast.success(t('message.successDone'))
             }).finally(()=>{
                 this.saveLoading = false
             })
@@ -73,7 +72,6 @@ export const useTopicExamStore = defineStore('topicExamStore', {
                 this.visible = false
                 this._index()
                 this.resetForm()
-                $Toast.success(t('message.successDone'))
             }).finally(()=>{
                 this.saveLoading = false
             })
@@ -82,7 +80,6 @@ export const useTopicExamStore = defineStore('topicExamStore', {
             this.deleteLoading = true
             $ApiService.topicExamService._delete({id:this.topicId, exam_id: this.elementId}).then((res)=>{
                 this._index()
-                $Toast.success(t('message.successDone'))
             }).finally(()=>{
                 this.deleteLoading = false
             })
@@ -116,7 +113,6 @@ export const useTopicExamStore = defineStore('topicExamStore', {
                 }
             ).then((res)=>{
                 this.attachQuestionVisible = false
-                $Toast.success(t('message.successDone'))
             }).finally(()=>{
                 this.saveLoading = false
                 this.resetQuestionPayload()
@@ -126,13 +122,15 @@ export const useTopicExamStore = defineStore('topicExamStore', {
             this.visible = data
         },
         resetForm(){
-            this.payload.name = null,
-            this.payload.whom = null,
-            this.payload.deadline = null,
-            this.payload.minute = null,
-            this.payload.variant = null,
-            this.payload.active = false,
+            this.payload.name = null
+            this.payload.whom = null
+            this.payload.deadline = null
+            this.payload.minute = 45
+            this.payload.variant = 3
+            this.payload.active = false
             this.payload.whom_ids = []
+            this.payload.chances = 3
+            this.payload.tests_count = 36
         },
         resetQuestionPayload(){
             this.questionPayload.questions = []

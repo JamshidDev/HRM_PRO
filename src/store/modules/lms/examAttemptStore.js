@@ -1,5 +1,6 @@
 import {defineStore} from "pinia";
 import i18n from "@/i18n/index.js"
+import router from "@/router/index.js";
 
 const {t} = i18n.global
 export const useExamAttemptStore = defineStore('examAttemptStore', {
@@ -10,9 +11,6 @@ export const useExamAttemptStore = defineStore('examAttemptStore', {
         worker_detail: null,
         exam_detail:  null,
         loading: false,
-        continueVisible: false,
-        notPermittedVisible: false,
-        visibleType: true,
         elementId: null,
         questionId: null,
         allPermissionList: [],
@@ -20,7 +18,8 @@ export const useExamAttemptStore = defineStore('examAttemptStore', {
         payload: {
             result: null,
         },
-        finishLoading: false
+        finishLoading: false,
+        result: null
     }),
     actions: {
         _config_localstorage() {
@@ -29,7 +28,7 @@ export const useExamAttemptStore = defineStore('examAttemptStore', {
             this.exam_storage = data || {}
             this.exam_token = data && data[this.elementId]
         },
-        _start_attempt(redirect) {
+        _start_attempt() {
             this.loading = true
             $ApiService.workerExamService._start_exam({id: this.elementId}).then((res) => {
                 const {active_token, questions, worker_exam_details, exam} = res.data.data
@@ -39,10 +38,16 @@ export const useExamAttemptStore = defineStore('examAttemptStore', {
                 this.exam_token = active_token
                 let data = localStorage.getItem('exam_data')
                 data = data ? JSON.parse(data) : {}
-                localStorage.setItem('exam_data', JSON.stringify({...data, [exam.id]: active_token}))
-                redirect(this.exam_detail)
+                localStorage.setItem('exam_data', JSON.stringify({...data, [worker_exam_details.id]: active_token}))
+                router.push({
+                    name: 'solve_exam',
+                    params: {
+                        exam_id: worker_exam_details.id
+                    }
+                })
+
             }).catch((res) => {
-                this.notPermittedVisible = true
+
             }).finally(() => {
                 this.loading = false
             })
@@ -68,6 +73,8 @@ export const useExamAttemptStore = defineStore('examAttemptStore', {
                 data = data ? JSON.parse(data) : {}
                 delete data?.[this.elementId]
                 localStorage.setItem('exam_data', JSON.stringify({...data}))
+                this.result = res.data.data
+                console.log(res.data.data)
             }).catch((res) => {
 
             }).finally(() => {
@@ -87,6 +94,17 @@ export const useExamAttemptStore = defineStore('examAttemptStore', {
                 console.log(res)
             }).finally(() => {
                 this.sendResultLoading = false
+            })
+        },
+        _get_attempt(){
+            this.loading = true
+            $ApiService.workerExamService._get_attempt({id: this.elementId}).then((res) => {
+                this.questions = res.data.data
+
+            }).catch((res) => {
+                console.log(res)
+            }).finally(() => {
+                this.loading = false
             })
         },
         openVisible(data) {
