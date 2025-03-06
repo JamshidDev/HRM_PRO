@@ -130,6 +130,20 @@ export const navigations = [
         ]
     },
     {
+        index:5,
+        label: 'Labor',
+        path:AppPaths.Labor,
+        icon:PersonNote24Filled,
+        children:[
+            {
+                label:t('userDepartmentPage.name'),
+                path:Utils.routeLaborPathMaker(AppPaths.Department),
+                icon:Archive24Filled,
+                children:[]
+            },
+        ]
+    },
+    {
         index:6,
         label:'Admin',
         path:AppPaths.Admin,

@@ -56,6 +56,8 @@ import categoryQuestionService from "@/service/v1/lms/categoryQuestionService.js
 import topicExamService from "@/service/v1/lms/topicExamService.js";
 import workerExamService from '@/service/v1/lms/workerExamService.js'
 
+import userDepartmentService from '@/service/v1/labor/userDepartmentService.js'
+
 export default {
     authService,
     accountService,
@@ -109,4 +111,6 @@ export default {
     holidayService,
     applicationService,
     vacationService,
+
+    userDepartmentService,
 }

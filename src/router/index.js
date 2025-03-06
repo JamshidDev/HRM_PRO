@@ -10,6 +10,7 @@ import chatRoute from "@/router/modules/chatRoute.js"
 import lmsRoute from "@/router/modules/lmsRoute.js"
 import appRoute from "@/router/modules/appRoute.js"
 import docflowRoute from "@/router/modules/docflowRoute.js"
+import laborRoute from '@/router/modules/laborRoutes.js'
 
 const beforeLogin = (to, from, next) => {
     const token = localStorage.getItem("token");
@@ -65,6 +66,13 @@ const routes = [
                 beforeEnter: beforeLogin,
                 redirect: AppPaths.Home,
                 children: [...docflowRoute]
+            },
+            {
+                path:AppPaths.Labor,
+                name:AppPaths.Labor.substring(1),
+                beforeEnter: beforeLogin,
+                redirect: AppPaths.Home,
+                children: [...laborRoute]
             },
             {
                 path:AppPaths.Profile,

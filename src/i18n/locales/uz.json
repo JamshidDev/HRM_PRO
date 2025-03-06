@@ -126,7 +126,8 @@
     "admin": "Admin menyusi",
     "chat": "Chat menyusi",
     "docflow": "Hujjatlar menyusi",
-    "lms": "Attestatsiya menyusi"
+    "lms": "Attestatsiya menyusi",
+    "labor": "Tabel"
   },
   "loginPage": {
     "name": "Xush kelibsiz",
@@ -934,5 +935,11 @@
       "sendApp": "Arizani yuborish",
       "type": "Ariza turi"
     }
+  },
+  "userDepartmentPage": {
+    "name": "Tabelchilar",
+    "level_name": "Daraja",
+    "user_count": "Xodimlar soni",
+    "attached_users": "Biriktirilgan xodimlar"
   }
 }

@@ -55,7 +55,8 @@ export const AppPaths = {
     Command:"/command",
     AdContract:"/ad-contract",
     Contract:"/contract",
-    Application:"/application"
+    Application:"/application",
+    Labor: "/labor",
 }
 
 export const AppLayouts ={
