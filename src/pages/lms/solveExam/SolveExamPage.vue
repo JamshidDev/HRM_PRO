@@ -4,10 +4,10 @@ import {UIModal} from "@/components/index.js";
 import {useExamAttemptStore} from "@/store/modules";
 import QuestionCard from './ui/Question.vue'
 import Utils from "@/utils/Utils.js";
-import {AppPaths} from "@/utils/index.js";
 import VueCountdown from '@chenfengyuan/vue-countdown'
-import {Flag20Filled, Warning20Filled, ShieldError16Filled, ArrowStepBack16Regular} from "@vicons/fluent";
+import {Flag20Filled, ShieldError16Filled, ArrowStepBack16Regular, DocumentRibbon20Regular} from "@vicons/fluent";
 import dayjs from "dayjs";
+import {AppPaths} from "@/utils/index.js";
 
 const store = useExamAttemptStore()
 const router = useRouter()
@@ -21,8 +21,6 @@ onMounted(() => {
 
 const leftTime = computed(()=>{
   const endTime = dayjs(store.worker_detail.created).add(store.exam_detail.minute, 'minutes')
-  console.log( dayjs(store.worker_detail.created).toDate())
-  console.log(endTime.toDate())
   const diff = endTime.diff(dayjs(), 'seconds')
   return diff>0 ? diff : 0;
 })
@@ -32,36 +30,57 @@ const countDown = ref(null)
 const endWarningVisible = ref(false)
 
 const endAttempt = ()=>{
-  endWarningVisible.value = false
+  // countDown.value?.pause()
   countDown.value?.abort()
   store._finish_attempt()
 }
 
+const goBack = ()=>{
+  router.push(Utils.routeLmsPathMaker(AppPaths.Exam))
+}
+
+onUnmounted(()=>{
+  store.result=null
+})
 
 </script>
 <template>
   <div class="h-full">
     <UIModal
-        :title="$t('content.warning')"
+        :title="store?.result ? $t('examPage.result') : $t('content.warning')"
         :width="500"
         v-model:visible="endWarningVisible"
     >
-      <div class="flex flex-col gap-3">
-        <p>{{$t('solveExamPage.endWarning')}}</p>
-        <n-alert type="warning" v-if="store.questions.findIndex(i=>!i.result)!==-1">
-          <p>{{$t('solveExamPage.notAnswered', {n: (()=>{
-              let k = 0;
-              for(let i of store.questions){
+      <n-spin :show="store.finishLoading">
+        <div class="flex flex-col gap-3" v-if="!store.result">
+          <p>{{$t('solveExamPage.endWarning')}}</p>
+          <n-alert type="warning" v-if="store.questions.findIndex(i=>!i.result)!==-1">
+            <p>{{$t('solveExamPage.notAnswered', {n: (()=>{
+                let k = 0;
+                for(let i of store.questions){
                   k+=!i.result
-              }
-              return k
-            })()})}}</p>
-        </n-alert>
-        <n-space justify="end">
-          <n-button @click="endAttempt" type="primary">{{$t('content.yes')}}</n-button>
-          <n-button @click="endWarningVisible=false" type="warning">{{$t('content.no')}}</n-button>
-        </n-space>
-      </div>
+                }
+                return k
+              })()})}}</p>
+          </n-alert>
+          <n-space justify="end">
+            <n-button @click="endAttempt" type="primary">{{$t('content.yes')}}</n-button>
+            <n-button @click="endWarningVisible=false" type="warning">{{$t('content.no')}}</n-button>
+          </n-space>
+        </div>
+        <div
+            v-else
+            class="flex items-center flex-col gap-2"
+        >
+          <n-button size="large" circle type="info" dashed>
+            <template #icon>
+              <n-icon :component="DocumentRibbon20Regular" />
+            </template>
+          </n-button>
+          <h3 class="text-xl font-bold">{{$t('examPage.endSub', {n: store.result.result})}}</h3>
+          <p class="text-primary">{{$t('examPage.endHead')}}</p>
+        </div>
+      </n-spin>
     </UIModal>
     <n-spin :show="store.loading" class="h-full">
       <div v-if="store.exam_detail && store.exam_token" class="h-full flex flex-col-reverse sm:flex-row gap-3">
@@ -69,6 +88,7 @@ const endAttempt = ()=>{
           <div class="shrink-0 flex gap-3 flex-wrap">
             <div class="shrink-0 flex items-center justify-center basis-[200px] grow md:grow-0">
               <img :src="store.worker_detail.user.photo" alt="img" class="h-[200px] object-contain rounded-md">
+<!--              <img src="https://media.npr.org/assets/img/2017/09/12/macaca_nigra_self-portrait-fd5e770d3e129efe4b0ed6c19271ed29afc807dc.jpg?s=1100&c=50&f=jpeg" alt="img" class="h-[200px] object-contain rounded-md">-->
             </div>
             <n-table class="flex-grow shrink-0 basis-[230px]" size="small">
               <tr>
@@ -91,6 +111,16 @@ const endAttempt = ()=>{
                 <th>{{ $t('solveExamPage.middleName') }}</th>
                 <td>{{ store.worker_detail.user.middle_name }}</td>
               </tr>
+              <template v-if="store.result">
+                <tr>
+                  <th>{{ $t('examPage.result') }}</th>
+                  <td>{{ store.result.result }}</td>
+                </tr>
+                <tr>
+                  <th>{{ $t('examPage.endTime') }}</th>
+                  <td>{{ Utils.timeWithMonth(store.result.ended) }}</td>
+                </tr>
+              </template>
             </n-table>
 
             <n-table class="flex-grow shrink-0 basis-[230px]" size="small">
@@ -178,16 +208,31 @@ const endAttempt = ()=>{
                 tertiary
                 type="primary"
                 :loading="store.finishLoading"
+                v-if="!store.result"
             >
-              {{ $t('content.finish') }}
+                {{  $t('content.finish') }}
+                <template #icon>
+                  <n-icon :component="Flag20Filled"/>
+                </template>
+            </n-button>
+            <n-button
+                @click="goBack()"
+                class="md:!h-14 md:!text-xl"
+                block
+                size="large"
+                tertiary
+                type="success"
+                v-else
+            >
+              {{$t('content.return')}}
               <template #icon>
-                <n-icon :component="Flag20Filled"/>
+                <n-icon :component="ArrowStepBack16Regular" />
               </template>
             </n-button>
           </div>
         </div>
       </div>
-      <div class="h-full w-full flex justify-center items-center">
+      <div v-else-if="!store.loading" class="h-full w-full flex justify-center items-center">
         <div class="bg-surface-section rounded-md p-3 flex flex-col items-center gap-3 border border-secondary">
           <n-icon class="text-red-700" :component="ShieldError16Filled" :size="100" />
           <p class="text-xl font-bold text-center">{{$t('solveExamPage.notAllowed')}}</p>

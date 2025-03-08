@@ -30,7 +30,6 @@ instance.interceptors.response.use(
         return Promise.resolve(response)
     },
     error => {
-        console.dir(error)
         if(error.response.data?.error){
             $Toast.error(error.response.data.message)
         }

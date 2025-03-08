@@ -4,7 +4,7 @@ import validationRules from "@/utils/validationRules.js";
 import {UIUpload} from "@/components/index.js";
 import {Delete48Filled, DocumentLink24Regular} from "@vicons/fluent";
 import {useRoute} from "vue-router";
-
+import {TopicUtils} from '@/pages/lms/Utils'
 const formRef = ref(null)
 const store = useTopicFileStore()
 const componentStore = useComponentStore()
@@ -27,6 +27,7 @@ const onSubmit = () => {
   })
 }
 const formValue = ref({ html: '', someOtherField: '' })
+
 </script>
 
 <template>
@@ -38,6 +39,7 @@ const formValue = ref({ html: '', someOtherField: '' })
   >
     <n-form-item :label="$t(`topicFiles.header.fileType`)" path="type" rule-path="type">
       <n-select
+          @update:value="store.payload.fileObjects = []"
           v-model:value="store.payload.type"
           :loading="componentStore.enumExamLoading"
           :options="componentStore.topicFileTypes"
@@ -54,7 +56,7 @@ const formValue = ref({ html: '', someOtherField: '' })
       </div>
     </n-form-item>
     <n-form-item path="fileObjects" rule-path="filesField">
-      <UIUpload v-model:files="store.payload.fileObjects" :multiple="false" @on-delete="store.payload.fileObjects=[]">
+      <UIUpload :accept="TopicUtils.getFileAccepts(store.payload.type)" :disabled="!store.payload.type" v-model:files="store.payload.fileObjects" :multiple="false" @on-delete="store.payload.fileObjects=[]">
         <template v-slot:content="{files, onDelete}">
           <div class="mt-3">
             <div v-for="(item, idx) in files" class="flex items-center gap-2 p-2 border

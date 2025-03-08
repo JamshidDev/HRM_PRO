@@ -1,5 +1,6 @@
 <script setup>
 import ToastProvider from "@/components/Toast/ToastProvider.vue";
+import MediaViewer from '@/components/mediaViewer/MediaViewer.vue'
 import themeOverrides from "./assets/theme/theme.js"
 import AppLayout from "@/layouts/AppLayout.vue";
 import {UIMainLoading} from "@/components/index.js"
@@ -20,6 +21,7 @@ onMounted(()=>{
       <n-dialog-provider>
         <AppLayout/>
         <ToastProvider/>
+        <MediaViewer />
         <UIMainLoading/>
         <SignatureInstance/>
       </n-dialog-provider>

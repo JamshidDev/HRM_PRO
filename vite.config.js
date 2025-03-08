@@ -10,7 +10,13 @@ export default defineConfig({
     },
   },
   plugins: [
-    vue(),
+    vue({
+      template: {
+        compilerOptions: {
+          isCustomElement: (tag) => ['media-theme-tailwind-audio', 'media-theme-yt'].includes(tag),
+        }
+      }
+    }),
     AutoImport({
       imports: [
         'vue',

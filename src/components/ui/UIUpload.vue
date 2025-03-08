@@ -11,7 +11,13 @@ const props = defineProps({
     type: Boolean,
     default: true
   },
-
+  accept: {
+    type: String,
+  },
+  disabled: {
+    type: Boolean,
+    default: false
+  }
 })
 
 const inputFileRef = ref(null)
@@ -57,13 +63,13 @@ const onDelete = (v)=> {
 <template>
   <div class="flex w-full flex-col">
     <div>
-      <n-button style="width: 100%" @click="onFile" type="default" secondary>
+      <n-button :disabled="disabled" style="width: 100%" @click="onFile" type="default" secondary>
         <template #icon>
           <CloudArrowUp24Regular/>
         </template>
         {{$t('content.attachFile')}}
       </n-button>
-      <input @change="onUpload" v-show="false" type="file" ref="inputFileRef" :multiple="multiple" />
+      <input :accept="accept" @change="onUpload" v-show="false" type="file" ref="inputFileRef" :multiple="multiple" />
     </div>
     <template v-if="$slots.content">
       <slot name="content" :files="files" :onDelete="onDelete" />
