@@ -15,7 +15,7 @@ const onClick = ()=>{
 </script>
 
 <template>
-<div class="app_header flex justify-between items-center p-4">
+<div class="app_header bg-surface-section flex justify-between items-center p-4">
   <div class="flex">
     <div
         @click="onClick"

@@ -1,7 +1,7 @@
 <template>
   <div class="grid xl:grid-cols-2 lg:grid-cols-2 grid-cols-1   gap-4 py-4 w-full">
-    <div class="flex xl:justify-start lg:justify-start md:justify-start justify-center">
-      <span class="text-grey-color font-normal"><span class="font-semibold  primary-text">{{total }}</span> {{$t('content.fromTa')}} <span class="font-semibold primary-text ml-4">{{(page -1)*pageSize}} - {{page*pageSize}} </span>{{$t('content.untilShow')}}</span>
+    <div class="flex xl:justify-start lg:justify-start md:justify-start justify-center text-surface-text">
+      <span class="font-normal"><span class="font-semibold  text-surface-text">{{total }}</span> {{$t('content.fromTa')}} <span class="font-semibold primary-text ml-4">{{(page -1)*pageSize}} - {{page*pageSize}} </span>{{$t('content.untilShow')}}</span>
     </div>
     <div class="flex xl:justify-end lg:justify-end md:justify-end justify-center">
       <n-pagination

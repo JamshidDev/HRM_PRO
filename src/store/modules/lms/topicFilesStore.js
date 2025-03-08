@@ -45,7 +45,7 @@ export const useTopicFileStore = defineStore('topicFileStore', {
                 this.visible = false
                 this._index()
                 this.resetForm()
-                $Toast.success(t('message.successDone'))
+                
             }).finally(()=>{
                 this.saveLoading = false
             })
@@ -64,7 +64,7 @@ export const useTopicFileStore = defineStore('topicFileStore', {
                 this.visible = false
                 this._index()
                 this.resetForm()
-                $Toast.success(t('message.successDone'))
+                
             }).finally(()=>{
                 this.saveLoading = false
             })
@@ -73,7 +73,7 @@ export const useTopicFileStore = defineStore('topicFileStore', {
             this.deleteLoading = true
             $ApiService.topicFilesService._delete({id:this.topicId, file_id: this.elementId}).then((res)=>{
                 this._index()
-                $Toast.success(t('message.successDone'))
+                
             }).finally(()=>{
                 this.deleteLoading = false
             })

@@ -13,6 +13,7 @@ const instance = axios.create({
 instance.interceptors.request.use(function (config) {
     let token = localStorage.getItem(useAppSetting.tokenKey) || null;
     config.headers['Accept-Language'] = localStorage.getItem(useAppSetting.languageKey) || useAppSetting.defaultLanguage
+    config.headers['Access-Control-Allow-Origin'] = '*'
     if (token) {
         config.headers['Authorization'] = 'Bearer ' + token
     }

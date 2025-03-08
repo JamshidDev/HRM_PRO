@@ -55,7 +55,7 @@ export const useConfirmationContractStore = defineStore('confirmationContractSto
             this.saveLoading = true
             let data = {...this.payload}
             $ApiService.departmentService._create({data}).then((res)=>{
-                $Toast.success(t('message.successDone'))
+                
                 this.visible = false
                 this.updateList()
 
@@ -68,7 +68,7 @@ export const useConfirmationContractStore = defineStore('confirmationContractSto
             this.saveLoading = true
             let data = {...this.payload}
             $ApiService.departmentService._update({data, id:this.elementId}).then((res)=>{
-                $Toast.success(t('message.successDone'))
+                
                 this.visible = false
                 this.updateList()
 
@@ -84,7 +84,7 @@ export const useConfirmationContractStore = defineStore('confirmationContractSto
             this.tabDataList =  this.tabDataList.filter((x,idx)=>idx<deep)
 
             $ApiService.departmentService._delete({id:this.elementId}).then((res)=>{
-                $Toast.success(t('message.successDone'))
+                
                 this.updateList()
             }).finally(()=>{
                 this.deleteLoading = false

@@ -2,6 +2,7 @@
 import {ArrowSyncDismiss24Filled} from "@vicons/fluent"
 
 const visible = defineModel("visible", {type:Boolean,default:false })
+const emit = defineEmits(["click:close"])
 const props = defineProps({
   width:{
       type:Number,
@@ -10,15 +11,32 @@ const props = defineProps({
   title:{
     type:String,
     default:'no-title'
+  },
+  persistent: {
+    type: Boolean,
+    default: false
   }
 })
 
+const onClickClose = ()=>{
+  visible.value=false
+  emit('click:close')
+}
+
+const onClickMask = ()=>{
+  if(props.persistent){
+    return
+  }
+  visible.value=false
+}
 
 </script>
 
 <template>
   <n-modal
       v-model:show="visible"
+      :close-on-esc="!persistent"
+      :mask-closable="!persistent"
       class="ui__modal-element"
   >
     <n-card
@@ -37,7 +55,7 @@ const props = defineProps({
               <div class="flex justify-between px-4 py-2">
                 <h3 class="text-lg font-medium">{{title}}</h3>
                 <n-icon
-                    @click="visible=false"
+                    @click="onClickClose"
                     class="text-[34px] text-red-500 cursor-pointer">
                   <ArrowSyncDismiss24Filled/>
                 </n-icon>

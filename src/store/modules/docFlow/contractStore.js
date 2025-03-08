@@ -46,14 +46,33 @@ export const useContractStore = defineStore('contractStore', {
             command_date:null,
             command_number:null,
             confirmations:[],
-
-
         },
         params:{
             page:1,
             per_page:10,
             search:null,
         },
+        tabList:[
+            {
+                id:1,
+                name:"contractType"
+            },
+            {
+                id:2,
+                name:"contractData"
+            },
+            {
+                id:3,
+                name:"commandDate"
+            },
+            {
+                id:4,
+                name:"result"
+            },
+        ],
+        activeTab:1,
+        stepStatus:"process",
+        stepNumber:1,
     }),
     actions:{
         _index(){
@@ -65,7 +84,7 @@ export const useContractStore = defineStore('contractStore', {
                 this.loading= false
             })
         },
-        _create(callback){
+        _create(){
             const compStore = useComponentStore()
             this.saveLoading = true
             let data = {
@@ -84,14 +103,11 @@ export const useContractStore = defineStore('contractStore', {
             delete data.pin
             $ApiService.contractService._create({data}).then((res)=>{
                 if(this.payload.files.length>0){
-                    this._attachFile(res.data.data.contract_id, callback)
+                    this._attachFile(res.data.data.contract_id)
                 }else{
-                    this.visible = false
-                    if(callback === null){
-                        this._index()
-                    }
-
-                    callback?.(res.data.data.contract_id)
+                    this.activeTab = 4
+                    this.stepNumber = 4
+                    this._index()
                 }
 
             }).finally(()=>{
@@ -131,7 +147,7 @@ export const useContractStore = defineStore('contractStore', {
             })
 
         },
-        _attachFile(id, callback){
+        _attachFile(id){
             this.saveLoading = true
             const formData = new FormData()
             formData.append('document_id',id)
@@ -140,8 +156,8 @@ export const useContractStore = defineStore('contractStore', {
                 formData.append('file',v.file)
             })
             $ApiService.documentFileService._create({data:formData}).then((res)=>{
-                this.visible = false
-                callback?.()
+                this.activeTab = 4
+                this.stepNumber = 4
             }).finally(()=>{
                 this.saveLoading = false
             })

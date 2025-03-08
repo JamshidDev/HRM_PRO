@@ -5,7 +5,7 @@ import {useRouter} from "vue-router";
 import {Person24Regular, Settings16Regular, SignOut20Regular} from "@vicons/fluent";
 import {useAppStore, useAccountStore} from "@/store/modules/index.js"
 import i18n from "@/i18n/index.js"
-import {AppPaths} from "@/utils/index.js";
+import {AppPaths, useAppSetting} from "@/utils/index.js"
 import Utils from "@/utils/Utils.js"
 
 const {t} = i18n.global
@@ -59,8 +59,8 @@ const changeOption = (v)=>{
         class="cursor-pointer"
         round
         size="large"
-        :src="accountStore.account?.photo"
-        :fallback-src="Utils.noAvailableImage"
+        :src="accountStore.account?.worker?.photo"
+        :fallback-src="useAppSetting.noAvailableImage"
     />
   </n-dropdown>
 </template>

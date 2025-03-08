@@ -41,7 +41,7 @@ export const useCategoryQuestionStore = defineStore('categoryQuestionStore', {
                 ...this.payload
             }
             $ApiService.categoryQuestionService._create({data, category_id: this.category_id}).then((res)=>{
-                $Toast.success(t('message.successDone'))
+                
                 this.resetForm()
             }).finally(()=>{
                 this.saveLoading = false
@@ -53,7 +53,7 @@ export const useCategoryQuestionStore = defineStore('categoryQuestionStore', {
                 ...this.payload
             }
             $ApiService.categoryQuestionService._update({data, category_id: this.category_id, question_id:this.elementId}).then((res)=>{
-                $Toast.success(t('message.successDone'))
+                
                 func()
             }).finally(()=>{
                 this.saveLoading = false
@@ -64,7 +64,7 @@ export const useCategoryQuestionStore = defineStore('categoryQuestionStore', {
             $ApiService.categoryQuestionService._delete({id:this.elementId}).then((res)=>{
                 this.list = this.list.filter((i) => i.id!==this.elementId)
                 this.totalItems--
-                $Toast.success(t('message.successDone'))
+                
             }).finally(()=>{
                 this.deleteLoading = false
             })

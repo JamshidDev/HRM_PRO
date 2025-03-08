@@ -137,6 +137,13 @@ export const useComponentStore = defineStore('componentStore', {
         reasonTypes:[],
         reasonTypeLoading:false,
 
+        workerApplicationTypes:[],
+        educationTypes:[],
+        workerApplicationLoading:false,
+
+        directorList:[],
+        directorLoading:false,
+
 
     }),
     actions:{
@@ -345,6 +352,7 @@ export const useComponentStore = defineStore('componentStore', {
         _workers(id=undefined){
             this.workerLoading = true
             $ApiService.workerService._index({params:{page:1, per_page: 10000, organization_id:id}}).then((res)=>{
+                console.log(res.data.data.data)
                 this.workerList = res.data.data.data.map((v)=>({
                     ...v,
                     name:v.worker.last_name + ' '+v.worker.first_name+' '+v.worker.middle_name,
@@ -391,10 +399,30 @@ export const useComponentStore = defineStore('componentStore', {
             }).finally(()=>{
                 this.reasonTypeLoading = false
             })
+        },
+        _workerApplicationEnums(){
+            this.workerApplicationLoading = true
+            $ApiService.componentService._workerApplicationEnum()
+                .then((res)=>{
+                    this.workerApplicationTypes = res.data.data.application_types.map((v)=>({...v, name:v.id+' - '+v.name}))
+                    this.educationTypes = res.data.data.education_types
+                }).finally(()=>{
+                this.workerApplicationLoading = false
+            })
+        },
+        _directors(id=undefined){
+            this.directorLoading = true
+            $ApiService.componentService._directors({
+                params:{
+                    organizations:id
+                }
+            })
+                .then((res)=>{
+                    this.directorList = res.data.data
+                }).finally(()=>{
+                this.directorLoading = false
+            })
         }
-
-
-
     }
 
 })

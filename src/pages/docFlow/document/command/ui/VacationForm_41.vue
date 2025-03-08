@@ -11,8 +11,8 @@ const {t} = i18n.global
 
 
 const onChange = (id, idx)=>{
-  if(store.vacations[idx].additionals){
-    const v = componentStore.vacationAdditional.filter((v)=>v.id === store.vacations[idx].additionals)[0]
+  if(store.vacations[idx].additional){
+    const v = componentStore.vacationAdditional.filter((v)=>v.id === store.vacations[idx].additional)[0]
     store.vacations[idx].addList.push({
       ...v,
       day:0,
@@ -34,7 +34,7 @@ const onCalculate = (idx)=>{
       from:Utils.timeToZone(details.from),
       main_day:details.main_day,
       second_day:details.second_day,
-      additionals:details.addList.map((v)=>({
+      additional:details.addList.map((v)=>({
         id:v.id,
         value:v.day
       })),
@@ -154,9 +154,9 @@ onMounted(()=>{
       <div class="col-span-6">
         <n-form-item
             :show-feedback="false"
-            :label="$t(`documentPage.command.form.additionals`)" path="additionals">
+            :label="$t(`documentPage.command.form.additionals`)" path="additional">
           <n-select
-              v-model:value="item.additionals"
+              v-model:value="item.additional"
               filterable
               :placeholder="$t(`content.choose`)"
               :options="componentStore.vacationAdditional"

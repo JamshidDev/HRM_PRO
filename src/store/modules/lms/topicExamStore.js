@@ -28,7 +28,10 @@ export const useTopicExamStore = defineStore('topicExamStore', {
             deadline: null,
             minute: null,
             variant: null,
+            tests_count: null,
             active: false,
+            chances: null,
+            description: null,
             whom_ids: []
         },
         params:{
@@ -56,7 +59,7 @@ export const useTopicExamStore = defineStore('topicExamStore', {
                 this.visible = false
                 this._index()
                 this.resetForm()
-                $Toast.success(t('message.successDone'))
+                
             }).finally(()=>{
                 this.saveLoading = false
             })
@@ -70,7 +73,7 @@ export const useTopicExamStore = defineStore('topicExamStore', {
                 this.visible = false
                 this._index()
                 this.resetForm()
-                $Toast.success(t('message.successDone'))
+                
             }).finally(()=>{
                 this.saveLoading = false
             })
@@ -79,7 +82,7 @@ export const useTopicExamStore = defineStore('topicExamStore', {
             this.deleteLoading = true
             $ApiService.topicExamService._delete({id:this.topicId, exam_id: this.elementId}).then((res)=>{
                 this._index()
-                $Toast.success(t('message.successDone'))
+                
             }).finally(()=>{
                 this.deleteLoading = false
             })
@@ -113,7 +116,7 @@ export const useTopicExamStore = defineStore('topicExamStore', {
                 }
             ).then((res)=>{
                 this.attachQuestionVisible = false
-                $Toast.success(t('message.successDone'))
+                
             }).finally(()=>{
                 this.saveLoading = false
                 this.resetQuestionPayload()

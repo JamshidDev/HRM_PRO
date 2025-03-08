@@ -118,7 +118,7 @@ watchEffect(()=>{
   if(store.payload.type){
     store.payload.command_type = null
     const data = {
-      status:'contracts',
+      status:Utils.documentModels.contract,
       type:store.payload.type
     }
     componentStore._commandTypes(data)
@@ -138,8 +138,8 @@ const showVacationDay = computed(()=>{
 const onChangeType = ()=>{
   if(store.payload.type ===2){
     store.payload.command_status = false
-    store.payload.vacation_main_day = null
-    store.payload.additional_vacation_day = null
+    store.payload.vacation_main_day = 0
+    store.payload.additional_vacation_day = 0
   }
 }
 

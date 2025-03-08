@@ -126,6 +126,12 @@ export const navigations = [
                 icon:Archive24Filled,
                 children:[]
             },
+            {
+                label:t('examPage.name'),
+                path:Utils.routeLmsPathMaker(AppPaths.Exam),
+                icon:Archive24Filled,
+                children:[]
+            },
         ]
     },
     {

@@ -49,7 +49,7 @@ export const useRegionStore = defineStore('regionStore', {
             $ApiService.regionService._create({data}).then((res)=>{
                 this.visible = false
                 this._index()
-                $Toast.success(t('message.successDone'))
+                
             }).finally(()=>{
                 this.saveLoading = false
             })
@@ -66,7 +66,7 @@ export const useRegionStore = defineStore('regionStore', {
             $ApiService.regionService._update({data, id:this.elementId}).then((res)=>{
                 this.visible = false
                 this._index()
-                $Toast.success(t('message.successDone'))
+                
             }).finally(()=>{
                 this.saveLoading = false
             })
@@ -75,7 +75,7 @@ export const useRegionStore = defineStore('regionStore', {
             this.deleteLoading = true
             $ApiService.regionService._delete({id:this.elementId}).then((res)=>{
                 this._index()
-                $Toast.success(t('message.successDone'))
+                
             }).finally(()=>{
                 this.deleteLoading = false
             })

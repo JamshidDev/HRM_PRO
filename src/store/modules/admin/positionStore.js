@@ -42,7 +42,7 @@ export const usePositionStore = defineStore('positionStore', {
             $ApiService.positionService._create({data}).then((res)=>{
                 this.visible = false
                 this._index()
-                $Toast.success(t('message.successDone'))
+                
             }).finally(()=>{
                 this.saveLoading = false
             })
@@ -54,7 +54,7 @@ export const usePositionStore = defineStore('positionStore', {
             $ApiService.positionService._update({data, id:this.elementId}).then((res)=>{
                 this.visible = false
                 this._index()
-                $Toast.success(t('message.successDone'))
+                
             }).finally(()=>{
                 this.saveLoading = false
             })
@@ -63,7 +63,7 @@ export const usePositionStore = defineStore('positionStore', {
             this.deleteLoading = true
             $ApiService.positionService._delete({id:this.elementId}).then((res)=>{
                 this._index()
-                $Toast.success(t('message.successDone'))
+                
             }).finally(()=>{
                 this.deleteLoading = false
             })

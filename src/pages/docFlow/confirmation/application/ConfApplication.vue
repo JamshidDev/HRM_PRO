@@ -1,11 +1,12 @@
 <script setup>
-import { UIModal, UIPageContent, UIPageFilter} from "@/components/index.js"
+import {UIModal, UIOfficeApp, UIPageContent, UIPageFilter} from "@/components/index.js"
 import createForm from "./ui/createForm.vue"
 import Table from "./ui/Table.vue"
 import {useConfApplicationStore} from "@/store/modules/index.js"
+import Utils from "@/utils/Utils.js"
 const store = useConfApplicationStore()
 
-
+const officeAppRef = ref(null)
 const onAdd = ()=>{
   store.resetForm()
   store.visibleType = true
@@ -14,6 +15,10 @@ const onAdd = ()=>{
 
 const onSearch = ()=>{
 
+}
+
+const openOffice = (v)=>{
+  officeAppRef.value.openPdf(v.documentId, Utils.documentModels.workerApplication, v.signatureId)
 }
 
 onMounted(()=>{
@@ -33,13 +38,14 @@ onMounted(()=>{
         :width="600"
         :visible="store.visible"
         @update:visible="(v)=>store.visible = v"
-        :title="store.visibleType? $t('applicationPage.createTitle') : $t('applicationPage.updateTitle')"
+        :title="$t('applicationPage.workerApplication')"
     >
       <template #default>
         <createForm/>
       </template>
     </UIModal>
-    <Table/>
+    <Table @openOffice="openOffice" />
+    <UIOfficeApp ref="officeAppRef"/>
   </UIPageContent>
 
 </template>

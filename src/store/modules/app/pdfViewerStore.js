@@ -197,8 +197,8 @@ export const usePdfViewerStore = defineStore('pdfViewerStore', {
                     model:this.model,
                 }}).then((res)=>{
                 this.userList = res.data.data.map(v=>({
-                    name:v.last_name +' '+v.first_name,
-                    id:v.id
+                    name:v.worker.last_name +' '+v.worker.first_name,
+                    id:v.worker.id
                 }))
             }).finally(()=>{
                 this.userLoading = false

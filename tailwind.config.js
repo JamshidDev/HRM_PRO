@@ -1,5 +1,5 @@
 /** @type {import('tailwindcss').Config} */
-module.exports = {
+export default {
   content: [
     './index.html',
     './src/**/*.{vue,js,ts,jsx,tsx}',
@@ -24,6 +24,7 @@ module.exports = {
       'surface-ground': 'var(--surface-ground)',
       'surface-section': 'var(--surface-section)',
       'surface-line': 'var(--surface-line)',
+      'surface-text': 'var(--surface-text)',
 
 
       'surface-50': 'var(--surface-50)',

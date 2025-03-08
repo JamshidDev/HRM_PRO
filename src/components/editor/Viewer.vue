@@ -4,7 +4,7 @@ defineProps({
     type: String,
     required: true
   },
-  className: String
+  className: String,
 })
 
 </script>

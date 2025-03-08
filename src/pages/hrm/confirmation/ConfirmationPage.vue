@@ -36,6 +36,7 @@ onMounted(()=>{
       :show-filter-button="false"
       v-model:search="store.params.search"
       @on-search="onSearch"
+      :search-loading="store.loading"
   />
   <Table/>
   <UIDrawer

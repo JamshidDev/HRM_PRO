@@ -90,7 +90,7 @@ export const useOrganizationStore = defineStore('organizationStore', {
             $ApiService.organizationService._create({data}).then((res)=>{
                 this.visible = false
                 this._index()
-                $Toast.success(t('message.successDone'))
+                
             }).finally(()=>{
                 this.saveLoading = false
             })
@@ -102,7 +102,7 @@ export const useOrganizationStore = defineStore('organizationStore', {
             $ApiService.organizationService._update({data, id:this.elementId}).then((res)=>{
                 this.visible = false
                 this._index()
-                $Toast.success(t('message.successDone'))
+                
             }).finally(()=>{
                 this.saveLoading = false
             })
@@ -111,7 +111,7 @@ export const useOrganizationStore = defineStore('organizationStore', {
             this.deleteLoading = true
             $ApiService.organizationService._delete({id:this.elementId}).then((res)=>{
                 this._index()
-                $Toast.success(t('message.successDone'))
+                
             }).finally(()=>{
                 this.deleteLoading = false
             })

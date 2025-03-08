@@ -788,6 +788,12 @@ export default {
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
+        position_id:{
+            type:'number',
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
         department_position_id:{
             type:'number',
             required: true,
@@ -795,87 +801,6 @@ export default {
             trigger: triggerEvents
         },
         rate:{
-            required: true,
-            message: t(`rules.requiredField`),
-            trigger: triggerEvents
-        },
-        post_name:{
-            required: true,
-            message: t(`rules.requiredField`),
-            trigger: triggerEvents
-        },
-        salary:{
-            required: true,
-            message: t(`rules.requiredField`),
-            trigger: triggerEvents
-        },
-        director_id:{
-            type:'number',
-            required: true,
-            message: t(`rules.requiredField`),
-            trigger: triggerEvents
-        },
-        organization_id:{
-            type:'array',
-            required: true,
-            message: t(`rules.requiredField`),
-            trigger: triggerEvents
-        },
-        schedule_id:{
-            type:'number',
-            required: true,
-            message: t(`rules.requiredField`),
-            trigger: triggerEvents
-        },
-        position_date:{
-            type:'number',
-            required: true,
-            message: t(`rules.requiredField`),
-            trigger: triggerEvents
-        },
-        command_date:{
-            type:'number',
-            required: true,
-            message: t(`rules.requiredField`),
-            trigger: triggerEvents
-        },
-        command_number:{
-            required: true,
-            message: t(`rules.requiredField`),
-            trigger: triggerEvents
-        },
-    },
-    contractFromV2: {
-        pin:{
-            required: true,
-            message: t(`rules.requiredWorker`),
-            trigger: triggerEvents
-        },
-        number:{
-            required: true,
-            message: t(`rules.requiredField`),
-            trigger: triggerEvents
-        },
-        contract_date:{
-            type:'number',
-            required: true,
-            message: t(`rules.requiredField`),
-            trigger: triggerEvents
-        },
-        command_type:{
-            type:'number',
-            required: true,
-            message: t(`rules.requiredField`),
-            trigger: triggerEvents
-        },
-        type:{
-            type:'number',
-            required: true,
-            message: t(`rules.requiredField`),
-            trigger: triggerEvents
-        },
-        position_id:{
-            type:'number',
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
@@ -1287,18 +1212,71 @@ export default {
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
+        confirmations:{
+            type:'array',
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
         type:{
             type:'number',
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
-        from_date:{
+        from:{
             type:'number',
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
+        to:{
+            type:'number',
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        period_from:{
+            type:'number',
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        period_to:{
+            type:'number',
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        worker_position_id:{
+            type:'number',
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        education_type:{
+            type:'number',
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        univer_number:{
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        contract_to_date:{
+            type:'number',
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        univer_date:{
+            type:'number',
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        }
     },
     applicationForm:{
         last_name:{

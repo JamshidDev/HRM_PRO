@@ -89,7 +89,7 @@ onMounted(()=>{
 "
       >
         <div class="flex justify-center">
-          <img class="w-[60px] rounded-xl shadow mb-2" src="/public/logo.png" alt="">
+          <img class="w-[60px] rounded-xl shadow mb-2" :src="useAppSetting.appLogoUrl" alt="">
         </div>
         <span class="text-center font-bold text-3xl">{{ $t(`loginPage.title`) }}</span>
         <span class="text-center text-sm mb-[20px] text-gray-500">{{ $t(`loginPage.subtitle`) }}</span>

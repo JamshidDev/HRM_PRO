@@ -55,7 +55,7 @@ export const useTopicStore = defineStore('topicStore', {
             $ApiService.topicService._create({data}).then((res)=>{
                 this.visible = false
                 this._index()
-                $Toast.success(t('message.successDone'))
+                
             }).finally(()=>{
                 this.saveLoading = false
             })
@@ -70,7 +70,7 @@ export const useTopicStore = defineStore('topicStore', {
             $ApiService.topicService._update({data, id:this.elementId}).then((res)=>{
                 this.visible = false
                 this._index()
-                $Toast.success(t('message.successDone'))
+                
             }).finally(()=>{
                 this.saveLoading = false
             })
@@ -79,7 +79,7 @@ export const useTopicStore = defineStore('topicStore', {
             this.deleteLoading = true
             $ApiService.topicService._delete({id:this.elementId}).then((res)=>{
                 this._index()
-                $Toast.success(t('message.successDone'))
+                
             }).finally(()=>{
                 this.deleteLoading = false
             })

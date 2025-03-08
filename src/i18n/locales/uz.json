@@ -1,5 +1,6 @@
 {
   "content": {
+    "deadline": "Yakunlanish vaqti",
     "requiredField": "Maydon to'ldirilishi shart!",
     "save": "Saqlash",
     "edit": "Tahrirlash",
@@ -50,6 +51,7 @@
     "closeSignatureModal": "Imzolash oynasini yopish",
     "clear": "Tozalash",
     "continue": "Davom etish",
+    "restart": "Qayta boshlash",
     "close": "Yopish",
     "open": "Ochish",
     "hide": "Yashirish",
@@ -79,7 +81,11 @@
     "fromTa": "tadan",
     "main": "Asosiy",
     "untilShow": " gacha ko'rsatilmoqda",
-    "next": "Keyingi"
+    "next": "Keyingi",
+    "warning": "Ogohlantirish",
+    "error": "Xatolik",
+    "return": "Ortga qaytish",
+    "finish": "Yakunlash"
   },
   "month": {
     "january": "Yanvar",
@@ -294,9 +300,6 @@
   },
   "documentHistoryPage": {
     "name": "Hujjatlar tarixi"
-  },
-  "examPage": {
-    "name": "Imtixonlar"
   },
   "workerProfile": {
     "tabs": {
@@ -552,6 +555,7 @@
   },
   "contractPage": {
     "name": "Shartnomalar",
+    "succeedText": "Shartnoma muvofaqiyatli ravishda yaratildi!",
     "table": {
       "number": "Raqami",
       "type": "Turi",
@@ -563,6 +567,12 @@
     },
     "statuses": {
       "confirm": "Tasdiqlash"
+    },
+    "step": {
+      "stepOne": "Shartnoma turi",
+      "stepTwo": "Shartnoma ma'lumoti",
+      "stepThree": "Buyruk biriktirish",
+      "stepFour": "Hotali"
     },
     "confirmText": "{n} raqamli shartnoma asosida buyruq yaratasizmi?",
     "confirmAdText": "{n} raqamli qo'shimcha kelishuv shartnoma asosida buyruq yaratasizmi?"
@@ -810,6 +820,8 @@
       "isActive": "Aktivlik holati",
       "positions": "Lavozimlar",
       "organizations": "Tashkilotlar",
+      "chances": "Imkoniyatlar",
+      "tests_count": "Savollar soni",
       "workers": "Xodimlar",
       "categories": "Kategoriyalar",
       "questionCount": "Savollar soni: ({n})",
@@ -885,6 +897,44 @@
     "addQuestion": "Savol qo'shish",
     "questionCount": "Savollar soni"
   },
+  "examPage": {
+    "name": "Imtihonlar",
+    "topic": "Mavzu",
+    "exam": "Imtihon",
+    "variant": "Variantlar: {n}ta",
+    "totalTime": "Berilgan vaqt: {n} daqiqa",
+    "totalMinute": "{n} daqiqa",
+    "resources": "Resurslar",
+    "exams": "Imtihonlar",
+    "deadline": "Yopilish vaqti: {n}",
+    "examBrief": "Imtihonda savollarida {variant}ta variantlar mavjud. Yechish uchun {chances}ta imkoniyat berilgan. Imtihonni {minute} daqiqa ichida yakunlash kerak. Imtihon {deadline}da yopiladi",
+    "extra": "Qo'shimcha: {n}",
+    "start": "Boshlash",
+    "attempts": "Urinishlar: {n}",
+    "questions": "Savollar: {n}ta",
+    "attemptHistory": "Urinishlar tarixi",
+    "startTime": "Boshlangan vaqt",
+    "result": "Natija",
+    "endTime": "Yakunlangan vaqt"
+  },
+  "solveExamPage": {
+    "alreadyStarted": "Siz bu imtihonni oldin boshlagansiz. Davom etishni xohlaysizmi?",
+    "restartWarning": "Qayta boshlash oldingi imkoniyatni yakunlaydi!!!",
+    "notAllowed": "Imtihonni yechishingiz mumkin emas!",
+    "startedAt": "Boshlangan vaqt",
+    "firstName": "Ism",
+    "lastName": "Familiya",
+    "middleName": "Sharif",
+    "exam": "Imtihon",
+    "variant": "Variantlar",
+    "totalTime": "Berilgan vaqt(daqiqa)",
+    "deadline": "Yopilish vaqti",
+    "attempts": "Umumiy urinishlar",
+    "questions": "Savollar soni",
+    "removeAnswer": "Javobni olib tashlash",
+    "notAnswered": "{n}ta savolga javob bermagansiz!!!",
+    "endWarning": "Imtihonni yakunlashga ishonchingiz komilmi?"
+  },
   "questionPage": {
     "form": {
       "question": "Savol",
@@ -914,6 +964,12 @@
   },
   "applicationPage": {
     "name": "Arizalar",
+    "workerApplication": "Ariza yaratish",
+    "lastVacationTitle": "Oxirgi ta'til ma'lumotlari",
+    "lastPeriod": "Ta'til davri : ",
+    "lastPDate": "Tatil sanasi : ",
+
+
     "createTitle": "Ariza uchun havola yaratish",
     "updateTitle": "Bayram kunini tahrirlash",
     "form": {
@@ -923,8 +979,23 @@
       "generateLink": "Havola yaratish",
       "phones": "Tefefon raqam",
       "number": "Raqami",
+      "worker_position_id": "Lavozim",
+      "confirmations": "Tasdiqlovchilar",
+      "period_from": "Ta'til davri (dan)",
+      "period_to": "Ta'til davri (gacha)",
+      "from": "Ta'tilga chiqish sanasi",
+      "to": "Ta'tildan qaytish sanasi",
+      "temporarily_absent": "Ta'tildagi xodimlar",
+      "reason": "Sabab",
       "from_date": "Qachondan"
     },
+    "step": {
+      "stepOne": "Ariza turi",
+      "stepTwo": "Ariza ma'lumotlari",
+      "stepThree": "Holati"
+    },
+    "succeedApplication": "Ariza muvofaqiyatli yuborildi!",
+    "applicationTime": "Arizangiz 15 kalendar ish kuni davomida ko'rib chiqiladi!",
     "client": {
       "name": "Ariza yozish",
       "user": "Arizani qabul qiluvchi shaxs",

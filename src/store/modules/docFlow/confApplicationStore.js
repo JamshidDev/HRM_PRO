@@ -11,19 +11,103 @@ export const useConfApplicationStore = defineStore('confApplicationStore', {
         visibleType:true,
         elementId:null,
         totalItems:0,
+        stepStatus:'process',
+        stepNumber:1,
+        department_id:[],
+        departmentCheck:[],
+        organization_id:[],
+        structureCheck:[],
+        myPositionList:[],
+        positionLoading:false,
+        confirmationList:[],
+        confirmLoading:false,
+        vacationShow:false,
+
+        vacationList:[],
+        vacationLoading:false,
+
+        vacationWorkerList:[],
+        vacationWorkerLoading:false,
         payload:{
-            director_id:true,
+            director_id:null,
+            worker_position_id:null,
             type:null,
+            confirmations:[],
+            period_from:null,
+            period_to:null,
+            from:null,
+            to:null,
+            reason:null,
             from_date:null,
-            status:null,
-            department_id:[],
             department_position_id:null,
+            temporarily_absent:null,
+            from_time:null,
+            to_time:null,
+            contract_to_date:null,
+            education_type:null,
+            univer_date:null,
+            univer_number:null,
         },
         params:{
             page:1,
             per_page:10,
             search:null,
         },
+        confirmParams:{
+            director_id:null,
+            search:null,
+        },
+        tabList:[
+            {
+                id:101,
+                name:""
+            },
+            {
+                id:100,
+                name:"applicationFinish"
+            },
+            {
+                id:3,
+                name:"applicationForm3"
+            },
+            {
+                id:4,
+                name:"applicationForm4"
+            },
+            {
+                id:1,
+                name:"applicationForm1"
+            },
+            {
+                id:2,
+                name:"applicationForm2"
+            },
+            {
+                id:5,
+                name:"applicationForm5"
+            },
+            {
+                id:6,
+                name:"applicationForm6"
+            },
+            {
+                id:7,
+                name:"applicationForm7"
+            },
+            {
+                id:9,
+                name:"applicationForm9"
+            },
+            {
+                id:10,
+                name:"applicationForm10"
+            },
+            {
+                id:8,
+                name:"applicationForm8"
+            },
+        ],
+        activeTab:101,
 
     }),
     actions:{
@@ -40,21 +124,61 @@ export const useConfApplicationStore = defineStore('confApplicationStore', {
             this.saveLoading = true
             let data = {
                 ...this.payload,
-                ...{
-                    department_id:this.payload.department_id?.[0]?.id || null,
-                    from_date:Utils.timeToZone(this.payload.from_date),
-                }
+                period_from:Utils.timeToZone(this.payload.period_from),
+                period_to:Utils.timeToZone(this.payload.period_to),
+                from:Utils.timeToZone(this.payload.from),
+                to:Utils.timeToZone(this.payload.to),
+                from_date:Utils.timeToZone(this.payload.from_date),
+                from_time:Utils.timeToZone(this.payload.from_time),
+                to_time:Utils.timeToZone(this.payload.to_time),
+                contract_to_date:Utils.timeToZone(this.payload.contract_to_date),
+                univer_date:Utils.timeToZone(this.payload.univer_date),
             }
-            $ApiService.applicationService._generateUrl({data}).then((res)=>{
-                this.applicationLink = Utils.convertFromUrlToQuery(res.data.data.url, Utils.viewerStatus.applicationDocument)
-                this.activeTab = 2
+            $ApiService.applicationService._workerApplication({data}).then((res)=>{
+                this.activeTab = 100
+                this.stepNumber = 3
                 this._index()
             }).finally(()=>{
                 this.saveLoading = false
             })
 
         },
-
+        _myPositions(){
+            this.positionLoading= true
+            $ApiService.applicationService._myPositions( ).then((res)=>{
+                this.myPositionList = res.data.data
+                if(res.data.data.length === 1){
+                    this.payload.worker_position_id = res.data.data[0].id
+                }
+            }).finally(()=>{
+                this.positionLoading= false
+            })
+        },
+        _confirmation(){
+            this.confirmLoading = true
+            const params = this.confirmParams
+            $ApiService.applicationService._confirmation({params}).then((res)=>{
+                this.confirmationList = res.data.data.data
+            }).finally(()=>{
+                this.confirmLoading= false
+            })
+        },
+        _vacationWorker(id){
+            this.vacationWorkerLoading = true
+            $ApiService.applicationService._vacationWorker({params:{organizations:id}}).then((res)=>{
+                this.vacationWorkerList = res.data.data.data
+            }).finally(()=>{
+                this.vacationWorkerLoading= false
+            })
+        },
+        _onActiveVacation(id){
+                this.vacationLoading = true
+            $ApiService.applicationService._workerVacation({data:{worker_positions:[id]}}).then((res)=>{
+                this.vacationList = res.data.data
+            }).finally(()=>{
+                this.vacationLoading= false
+            })
+        },
 
         _update(){
             this.saveLoading = true
@@ -79,9 +203,25 @@ export const useConfApplicationStore = defineStore('confApplicationStore', {
         resetForm(){
             this.payload.director_id = null
             this.payload.type = null
-            this.payload.work_type = null
+            this.payload.confirmations = []
+            this.payload.worker_position_id = null
+
+
+            this.payload.period_from = null
+            this.payload.period_to = null
+            this.payload.from = null
+            this.payload.to = null
+            this.payload.reason = null
             this.payload.from_date = null
-            this.payload.status = null
+            this.payload.department_position_id = null
+            this.payload.temporarily_absent = null
+
+            // this.activeTab = 101
+            this.stepNumber = 1
+            this.department_id = []
+            this.departmentCheck = []
+            this.organization_id = []
+            this.structureCheck = []
         }
 
     }
