@@ -6,7 +6,6 @@ import {UIStructure} from "@/components/index.js"
 
 const store = useConfApplicationStore()
 const componentStore = useComponentStore()
-const typeList= [1,2,6,7]
 
 
 const onFocusDirector = ()=>{
@@ -37,7 +36,7 @@ const renderLabel = (option)=>{
                 'fallback-src':Utils.noAvailableImage,
               },),
           h('div',{ class:'flex flex-col'}, [
-            h('div',{ class:'text-xs font-medium text-gray-500'},`${option.worker.last_name}.${option.worker.last_name[0]}.${option.worker.middle_name[0]}`),
+            h('div',{ class:'text-xs font-medium text-gray-500'},`${option.worker.last_name}.${option.worker.first_name[0]}.${option.worker.middle_name[0]}`),
             h('div',{ class:'text-xs text-gray-400'},option.position),
           ])
         ]
@@ -68,7 +67,7 @@ const renderLabel2 = (option)=>{
                 'fallback-src':Utils.noAvailableImage,
               },),
           h('div',{ class:'flex flex-col'}, [
-            h('div',{ class:'text-xs font-medium text-gray-500'},`${option.worker.last_name}.${option.worker.last_name[0]}.${option.worker.middle_name[0]}`),
+            h('div',{ class:'text-xs font-medium text-gray-500'},`${option.worker.last_name}.${option.worker.first_name[0]}.${option.worker.middle_name[0]}`),
             h('div',{ class:'text-xs text-gray-400'},option.post_name),
           ])
         ]
@@ -111,11 +110,11 @@ const onChangeStructure = (v)=>{
 }
 
 const showOrganization = computed(()=>{
-  return typeList.includes(store.payload.type)
+  return store.typeList.includes(store.payload.type)
 })
 
 const disabledDirector = computed(()=>{
-  return typeList.includes(store.payload.type)?  !Boolean(store.organization_id.length>0) : !Boolean(store.payload.type)
+  return store.typeList.includes(store.payload.type)?  !Boolean(store.organization_id.length>0) : !Boolean(store.payload.type)
 })
 
 

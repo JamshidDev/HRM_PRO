@@ -12,9 +12,11 @@ const onChangeDepartment = (v)=>{
   componentStore._departmentPosition(v[0].id)
 }
 
+
 onMounted(()=>{
-  componentStore.depParams.organizations = store.organization_id[0].id
+  componentStore.depParams.organizations = store.organization_id?.[0]?.id
   componentStore._departmentTree()
+  console.log('dep')
 })
 </script>
 

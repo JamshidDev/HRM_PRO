@@ -28,6 +28,8 @@ export const useConfApplicationStore = defineStore('confApplicationStore', {
 
         vacationWorkerList:[],
         vacationWorkerLoading:false,
+        editLoading:false,
+        typeList:[1,2,6,7],
         payload:{
             director_id:null,
             worker_position_id:null,
@@ -133,6 +135,8 @@ export const useConfApplicationStore = defineStore('confApplicationStore', {
                 to_time:Utils.timeToZone(this.payload.to_time),
                 contract_to_date:Utils.timeToZone(this.payload.contract_to_date),
                 univer_date:Utils.timeToZone(this.payload.univer_date),
+                organization_id:this.organization_id,
+                department_id:this.department_id,
             }
             $ApiService.applicationService._workerApplication({data}).then((res)=>{
                 this.activeTab = 100
@@ -179,10 +183,32 @@ export const useConfApplicationStore = defineStore('confApplicationStore', {
                 this.vacationLoading= false
             })
         },
-
+        _getEdit(callBack){
+            const id = this.elementId
+                this.editLoading = true
+            $ApiService.applicationService._details({id}).then((res)=>{
+                callBack(res.data.data)
+            }).finally(()=>{
+                this.editLoading = false
+            })
+        },
         _update(){
             this.saveLoading = true
-            $ApiService.nationalityService._update({data:this.payload, id:this.elementId}).then((res)=>{
+            let data = {
+                ...this.payload,
+                period_from:Utils.timeToZone(this.payload.period_from),
+                period_to:Utils.timeToZone(this.payload.period_to),
+                from:Utils.timeToZone(this.payload.from),
+                to:Utils.timeToZone(this.payload.to),
+                from_date:Utils.timeToZone(this.payload.from_date),
+                from_time:Utils.timeToZone(this.payload.from_time),
+                to_time:Utils.timeToZone(this.payload.to_time),
+                contract_to_date:Utils.timeToZone(this.payload.contract_to_date),
+                univer_date:Utils.timeToZone(this.payload.univer_date),
+                organization_id:this.organization_id,
+                department_id:this.department_id,
+            }
+            $ApiService.applicationService._updateWorkerApplication({data, id:this.elementId}).then((res)=>{
                 this.visible = false
                 this._index()
             }).finally(()=>{

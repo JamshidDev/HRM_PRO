@@ -1,19 +1,58 @@
 <script setup>
-import {NoDataPicture, UIActionButton, UIPagination, UIStatus, UIUser} from "@/components/index.js"
-import {useConfApplicationStore} from "@/store/modules/index.js"
+import {NoDataPicture, UIPagination, UIStatus, UIUser} from "@/components/index.js"
+import {useConfApplicationStore, useComponentStore} from "@/store/modules/index.js"
 import Utils from "../../../../../utils/Utils.js"
 import MenuButton from "@/components/buttons/MenuButton.vue"
 
 const store = useConfApplicationStore()
+const componentStore = useComponentStore()
 
 
 const emits = defineEmits([ 'openOffice',])
 
+
+const editResponse = (v)=>{
+
+  const dateFormatter = (date)=>{
+    return date? new Date(date).getTime() : null
+  }
+
+  store.payload.director_id = v.director_id
+  store.payload.worker_position_id = v.worker_position_id
+  store.payload.type = v.type
+  store.payload.confirmations = v.confirmations
+  store.payload.period_from =dateFormatter(v.period_from)
+  store.payload.period_to =dateFormatter(v.period_to)
+  store.payload.from =dateFormatter(v.from)
+  store.payload.to =dateFormatter(v.to)
+  store.payload.from_date =dateFormatter(v.from_date)
+  store.payload.from_time =dateFormatter(v.from_time)
+  store.payload.to_time =dateFormatter(v.to_time)
+  store.payload.contract_to_date =dateFormatter(v.contract_to_date)
+  store.payload.univer_date =dateFormatter(v.univer_date)
+  store.payload.reason = v.reason
+  store.payload.department_position_id = v.department_position_id
+  store.payload.temporarily_absent = v.temporarily_absent
+  store.payload.education_type = v.education_type
+  store.payload.univer_number = v.univer_number
+  store.organization_id = v?.organization_id
+  store.department_id = v?.department_id
+  componentStore._directors(store.organization_id?.[0]?.id || undefined)
+
+  store.confirmParams.director_id = v.director_id
+  store.confirmParams.search = null
+  store.confirmationList = []
+  store._confirmation()
+
+}
+
 const onEdit = (v)=>{
   store.visibleType = false
   store.elementId = v.id
-  store.payload.name = v.name
   store.visible = true
+  store.activeTab = 101
+  store.stepNumber = 1
+  store._getEdit(editResponse)
 }
 
 const onDelete = (v)=>{
@@ -30,6 +69,13 @@ const changePage = (v)=>{
   store.params.per_page = v.per_page
   store._index()
 }
+
+const onSelectEv = (v)=>{
+  if(v.key === Utils.ActionTypes.edit){
+    onEdit(v.data)
+  }
+}
+
 </script>
 
 <template>
@@ -72,7 +118,11 @@ const changePage = (v)=>{
           <td><UIStatus :status="item.confirmation" /></td>
           <td>{{Utils.timeOnlyDate(item.created_at)}}</td>
           <td>
-           <MenuButton/>
+           <MenuButton
+               :data="item"
+               :show-edit="true"
+               @selectEv="onSelectEv"
+           />
           </td>
         </tr>
         </tbody>

@@ -23,9 +23,17 @@ const onSubmit = ()=>{
     if(!error){
       if(store.activeTab === 101){
         store.activeTab = store.payload.type
+        if(store.typeList.includes(store.payload.type) && !store.visibleType){
+          componentStore._departmentPosition(store.department_id?.[0]?.id)
+        }
         store.stepNumber = 2
       }else{
-        store._create()
+
+        if(store.visibleType){
+          store._create()
+        }else{
+          store._update()
+        }
 
       }
     }

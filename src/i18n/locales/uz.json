@@ -970,7 +970,8 @@
   },
   "applicationPage": {
     "name": "Arizalar",
-    "workerApplication": "Ariza yaratish",
+    "createWorkerApplication": "Ariza yaratish",
+    "updateWorkerApplication": "Ariza tahrirlash",
     "lastVacationTitle": "Oxirgi ta'til ma'lumotlari",
     "lastPeriod": "Ta'til davri : ",
     "lastPDate": "Tatil sanasi : ",

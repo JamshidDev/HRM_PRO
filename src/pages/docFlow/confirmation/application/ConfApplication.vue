@@ -38,7 +38,7 @@ onMounted(()=>{
         :width="600"
         :visible="store.visible"
         @update:visible="(v)=>store.visible = v"
-        :title="$t('applicationPage.workerApplication')"
+        :title="store.visibleType? $t('applicationPage.createWorkerApplication') : $t('applicationPage.updateWorkerApplication')"
     >
       <template #default>
         <createForm/>

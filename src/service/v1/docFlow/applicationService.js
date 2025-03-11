@@ -15,6 +15,9 @@ const _checkApplication =async (payload)=>{
 const _workerApplication =async (payload)=>{
     return await axios.post(`v1/worker-application/applications`,payload.data, {params:payload.params})
 }
+const _updateWorkerApplication =async (payload)=>{
+    return await axios.put(`v1/worker-application/applications/${payload.id}/update`,payload.data )
+}
 const _myPositions =async (payload)=>{
     return await axios.get(`v1/worker-application/positions`, {params:payload?.params})
 }
@@ -28,6 +31,10 @@ const _vacationWorker =async (payload)=>{
 const _workerVacation =async (payload)=>{
     return await axios.post(`v1/hr/vacations/create`,payload?.data, {params:payload?.params})
 }
+const _details =async (payload)=>{
+    return await axios.get(`v1/worker-application/applications/${payload.id}/edit`, {params:payload?.params})
+}
+
 
 
 
@@ -42,4 +49,6 @@ export default {
     _confirmation,
     _vacationWorker,
     _workerVacation,
+    _details,
+    _updateWorkerApplication,
 }
