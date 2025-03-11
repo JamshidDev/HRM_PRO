@@ -290,18 +290,20 @@ export const useComponentStore = defineStore('componentStore', {
                 this.structureLoading= false
             })
         },
-        _departmentPosition(id){
+        _departmentPosition(id = undefined){
             const params = {
                 page:1,
                 per_page:1000,
-                department_id:id
+                department_id:id,
             }
             this.departmentPositionLoading = true
             $ApiService.departmentPositionService._index({params}).then((res)=>{
+
                 this.departmentPositionList = res.data.data.data.map((v)=>({
                     name:v.position.name,
                     id:v.id,
                 }))
+                console.log(this.departmentPositionList)
             }).finally(()=>{
                 this.departmentPositionLoading = false
             })
@@ -339,16 +341,16 @@ export const useComponentStore = defineStore('componentStore', {
                 this.commandTypeLoading = false
             })
         },
-        _workers(id=undefined){
+        _workers({id, org_ids} = {}){
             this.workerLoading = true
-            $ApiService.workerService._index({params:{page:1, per_page: 10000, organization_id:id}}).then((res)=>{
+            $ApiService.workerService._index({params:{page:1, per_page: 10000, organization_id:id, organizations: org_ids}}).then((res)=>{
                 this.workerList = res.data.data.data.map((v)=>({
                     ...v,
                     name:v.worker.last_name + ' '+v.worker.first_name+' '+v.worker.middle_name,
                     position:v.position?.name || v?.post_name,
                     id:v.id,
                     typeId:v.contract?.type?.id,
-
+                    photo: v.worker?.photo
                 }))
             }).finally(()=>{
                 this.workerLoading = false

@@ -31,6 +31,7 @@ export const AppPaths = {
     DocumentHistory:"/document-history",
     Exam:"/exam",
     Department:"/department",
+    TimeSheet: "/timesheet",
     DepartmentPosition:"/department-position",
     Create:"/create",
     Edit: "/edit",

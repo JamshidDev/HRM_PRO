@@ -17,6 +17,7 @@ export const useUserDepartmentStore = defineStore('userDepartmentStore', {
         detail: null,
         payload:{
             worker_positions:[],
+            organizations: []
         },
         params:{
             page:1,
@@ -51,7 +52,7 @@ export const useUserDepartmentStore = defineStore('userDepartmentStore', {
         _show(){
             this.visibleLoading = true
             $ApiService.userDepartmentService._show({id:this.elementId}).then((res)=>{
-                console.log(res)
+
                 this.payload.worker_positions = res.data.data.users.map(i=>i.id)
                 this.visible = true
             }).finally(()=>{

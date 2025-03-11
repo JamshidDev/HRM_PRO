@@ -940,6 +940,18 @@
     "name": "Tabelchilar",
     "level_name": "Daraja",
     "user_count": "Xodimlar soni",
-    "attached_users": "Biriktirilgan xodimlar"
+    "attached_users": "Biriktirilgan xodimlar",
+    "position": "Lavozim",
+    "staff": "Xodimlar",
+    "timeTable": "Navbatchilik grafigi"
+  },
+  "shortWeek": {
+    "Mon": "Du",
+    "Tue": "Se",
+    "Wed": "Cho",
+    "Thu": "Pa",
+    "Fri": "Ju",
+    "Sat": "Sha",
+    "Sun": "Ya"
   }
 }

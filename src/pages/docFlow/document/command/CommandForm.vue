@@ -116,7 +116,7 @@ const onChangeStructure = (v)=>{
   if(v.length>0){
     componentStore.workerList = []
     store.workers = []
-    componentStore._workers(v[0].id)
+    componentStore._workers({id: v[0].id})
   }
 }
 onMounted(()=>{

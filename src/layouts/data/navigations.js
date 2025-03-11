@@ -141,6 +141,12 @@ export const navigations = [
                 icon:Archive24Filled,
                 children:[]
             },
+            {
+                label:t('userDepartmentPage.timeTable'),
+                path:Utils.routeLaborPathMaker(AppPaths.TimeSheet),
+                icon:Archive24Filled,
+                children:[]
+            },
         ]
     },
     {
