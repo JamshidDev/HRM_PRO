@@ -136,6 +136,7 @@ const goBack = ()=>{
         <div>
           <n-button
               v-if="store.activeTab !== 101 && store.activeTab !== 100"
+              :loading="store.saveLoading"
               style="width: 100%"
               @click="goBack()"
               type="warning">

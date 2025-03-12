@@ -131,8 +131,8 @@ export const useConfApplicationStore = defineStore('confApplicationStore', {
                 from:Utils.timeToZone(this.payload.from),
                 to:Utils.timeToZone(this.payload.to),
                 from_date:Utils.timeToZone(this.payload.from_date),
-                from_time:Utils.timeToZone(this.payload.from_time),
-                to_time:Utils.timeToZone(this.payload.to_time),
+                from_time:Utils.timeOnlyHour(this.payload.from_time),
+                to_time:Utils.timeOnlyHour(this.payload.to_time),
                 contract_to_date:Utils.timeToZone(this.payload.contract_to_date),
                 univer_date:Utils.timeToZone(this.payload.univer_date),
                 organization_id:this.organization_id,
@@ -201,8 +201,8 @@ export const useConfApplicationStore = defineStore('confApplicationStore', {
                 from:Utils.timeToZone(this.payload.from),
                 to:Utils.timeToZone(this.payload.to),
                 from_date:Utils.timeToZone(this.payload.from_date),
-                from_time:Utils.timeToZone(this.payload.from_time),
-                to_time:Utils.timeToZone(this.payload.to_time),
+                from_time:Utils.timeOnlyHour(this.payload.from_time),
+                to_time:Utils.timeOnlyHour(this.payload.to_time),
                 contract_to_date:Utils.timeToZone(this.payload.contract_to_date),
                 univer_date:Utils.timeToZone(this.payload.univer_date),
                 organization_id:this.organization_id,
@@ -242,7 +242,7 @@ export const useConfApplicationStore = defineStore('confApplicationStore', {
             this.payload.department_position_id = null
             this.payload.temporarily_absent = null
 
-            // this.activeTab = 101
+            this.activeTab = 101
             this.stepNumber = 1
             this.department_id = []
             this.departmentCheck = []

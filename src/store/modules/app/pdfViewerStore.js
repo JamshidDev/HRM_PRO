@@ -6,7 +6,7 @@ import {PDFDocument} from "pdf-lib"
 import * as pdfjsLib from 'pdfjs-dist';
 import * as PdfWorker from "pdfjs-dist/build/pdf.worker.min.js"
 import Utils from "@/utils/Utils.js"
-// window.pdfjsWorker = PdfWorker
+window.pdfjsWorker = PdfWorker
 
 pdfjsLib.GlobalWorkerOptions.workerSrc = PdfWorker
 
@@ -75,7 +75,6 @@ export const usePdfViewerStore = defineStore('pdfViewerStore', {
     }),
     actions:{
        async createQRCode(){
-           console.log(this.qrCodeData)
            try{
                this.qrCodeUrl = await QRCode.toDataURL(this.qrCodeData)
                return  this.qrCodeUrl

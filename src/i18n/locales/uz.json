@@ -994,6 +994,12 @@
       "to": "Ta'tildan qaytish sanasi",
       "temporarily_absent": "Ta'tildagi xodimlar",
       "reason": "Sabab",
+      "from_time": "Vaqt (dan)",
+      "to_time": "Vaqt (gacha)",
+      "education_type": "Ta'lim shakli",
+      "univer_number": "Xat raqami",
+      "univer_date": "Xat sanasi",
+      "contract_to_date": "Bekor qilish sanasi",
       "from_date": "Qachondan"
     },
     "step": {

@@ -49,7 +49,7 @@ const onZoom = async ()=>{
 }
 
 const showSignature = computed(()=>{
-  const rejects = ['/hrm/contract', '/hrm/command','/hrm/ad-contract']
+  const rejects = ['/hrm/contract', '/hrm/command','/hrm/ad-contract', '/hrm/application']
   return !rejects.includes(route.path)
 })
 

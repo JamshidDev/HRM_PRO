@@ -13,23 +13,19 @@ const emits = defineEmits([ 'openOffice',])
 
 const editResponse = (v)=>{
 
-  const dateFormatter = (date)=>{
-    return date? new Date(date).getTime() : null
-  }
-
   store.payload.director_id = v.director_id
   store.payload.worker_position_id = v.worker_position_id
   store.payload.type = v.type
   store.payload.confirmations = v.confirmations
-  store.payload.period_from =dateFormatter(v.period_from)
-  store.payload.period_to =dateFormatter(v.period_to)
-  store.payload.from =dateFormatter(v.from)
-  store.payload.to =dateFormatter(v.to)
-  store.payload.from_date =dateFormatter(v.from_date)
-  store.payload.from_time =dateFormatter(v.from_time)
-  store.payload.to_time =dateFormatter(v.to_time)
-  store.payload.contract_to_date =dateFormatter(v.contract_to_date)
-  store.payload.univer_date =dateFormatter(v.univer_date)
+  store.payload.period_from = Utils.datePickerFormatter(v.period_from)
+  store.payload.period_to = Utils.datePickerFormatter(v.period_to)
+  store.payload.from = Utils.datePickerFormatter(v.from)
+  store.payload.to = Utils.datePickerFormatter(v.to)
+  store.payload.from_date = Utils.datePickerFormatter(v.from_date)
+  store.payload.from_time = Utils.timePickerFormatter(v.from_time)
+  store.payload.to_time = Utils.timePickerFormatter(v.to_time)
+  store.payload.contract_to_date = Utils.datePickerFormatter(v.contract_to_date)
+  store.payload.univer_date = Utils.datePickerFormatter(v.univer_date)
   store.payload.reason = v.reason
   store.payload.department_position_id = v.department_position_id
   store.payload.temporarily_absent = v.temporarily_absent
@@ -121,6 +117,7 @@ const onSelectEv = (v)=>{
            <MenuButton
                :data="item"
                :show-edit="true"
+               :show-delete="false"
                @selectEv="onSelectEv"
            />
           </td>

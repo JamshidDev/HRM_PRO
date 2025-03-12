@@ -1212,12 +1212,6 @@ export default {
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
-        confirmations:{
-            type:'array',
-            required: true,
-            message: t(`rules.requiredField`),
-            trigger: triggerEvents
-        },
         type:{
             type:'number',
             required: true,
@@ -1276,7 +1270,24 @@ export default {
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
-        }
+        },
+        department_position_id:{
+            type:'number',
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        from_date:{
+            type:'number',
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        reason:{
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
     },
     applicationForm:{
         last_name:{
