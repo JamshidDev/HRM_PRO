@@ -943,7 +943,7 @@
     "attached_users": "Biriktirilgan xodimlar",
     "position": "Lavozim",
     "staff": "Xodimlar",
-    "timeTable": "Navbatchilik grafigi"
+    "timeTable": "Tabellar"
   },
   "shortWeek": {
     "Mon": "Du",
@@ -953,5 +953,10 @@
     "Fri": "Ju",
     "Sat": "Sha",
     "Sun": "Ya"
+  },
+  "timeSheetPage": {
+    "create": "Tabel yaratish",
+    "update": "Tabelni tahrirlash",
+    "department": "Bo'lim"
   }
 }

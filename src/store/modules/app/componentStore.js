@@ -134,7 +134,8 @@ export const useComponentStore = defineStore('componentStore', {
         previewLoading:false,
         workerPreview:null,
 
-
+        timesheetDepartmentList: [],
+        timesheetDepartmentLoading: false
     }),
     actions:{
         _organizationLevel(){
@@ -382,7 +383,14 @@ export const useComponentStore = defineStore('componentStore', {
                 this.previewLoading = false
             })
         },
-
+        _timesheetDepartment(){
+            this.timesheetDepartmentLoading = true
+            $ApiService.timeSheetService._index_departments().then((res)=>{
+                this.timesheetDepartmentList = res.data.data
+            }).finally(()=>{
+                this.timesheetDepartmentLoading = false
+            })
+        },
 
 
     }
