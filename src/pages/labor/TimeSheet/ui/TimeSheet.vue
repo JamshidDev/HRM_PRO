@@ -108,13 +108,14 @@ const changePage = (v)=>{
                   v-model:value="store.payload.status"
                   label-field="name"
                   value-field="id"
+                  @update-value="console.log(compStore.timesheetTypes[store.payload.status]?.hours)"
               />
 
             </n-form-item-gi>
             <n-form-item-gi :span="1" :show-label="false" :show-feedback="false">
               <n-input-number
                   :min="0"
-
+                  :disabled="!(store.payload.status && compStore.timesheetTypes[store.payload.status-1]?.hours)"
                   v-model:value="store.payload.hours"
                   :placeholder="$t('timeSheetPage.hours')"
               />
