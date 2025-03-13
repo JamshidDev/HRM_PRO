@@ -1,9 +1,10 @@
 <script setup>
 import validationRules from "@/utils/validationRules.js";
-const formRef = ref(null)
 import {useComponentStore, useUserDepartmentStore} from "@/store/modules/index.js";
-import {UIStructure} from "@/components/index.js";
+import {UIStructure, UIUser} from "@/components/index.js";
+import { Delete20Filled, ArrowUndo16Filled} from '@vicons/fluent'
 
+const formRef = ref(null)
 const store = useUserDepartmentStore()
 const componentStore = useComponentStore()
 
@@ -18,9 +19,7 @@ const onSubmit = ()=>{
 
 
 onMounted(()=>{
-  if(componentStore.workerList.length === 0){
-    componentStore._workers()
-  }
+  componentStore._workers()
   if(componentStore.structureList.length === 0){
     componentStore._structures()
   }
@@ -53,7 +52,6 @@ const workerRenderValue = ({option})=>{
 <template>
     <n-form
         ref="formRef"
-        :rules="validationRules.common"
         :model="store.payload"
         class="h-full flex flex-col"
     >
@@ -65,10 +63,11 @@ const workerRenderValue = ({option})=>{
             @updateModel="changeOrgs"
         />
       </n-form-item>
-      <n-form-item :label="$t(`userDepartmentPage.staff`)" path="worker_positions" rule-path="requiredMultiSelectField">
+      <n-form-item :label="$t(`userDepartmentPage.staff`)" path="worker_positions">
         <n-select
             multiple
             v-model:value="store.payload.worker_positions"
+            @update-value="console.log"
             filterable
             :placeholder="$t(`content.choose`)"
             :options="componentStore.workerList"
@@ -78,8 +77,31 @@ const workerRenderValue = ({option})=>{
             :render-tag="workerRenderValue"
             :loading="componentStore.workerLoading"
         />
-<!--            @update:value="onChangeWorker"-->
       </n-form-item>
+      <div class="grid gap-2 grid-cols-[repeat(auto-fill,minmax(260px,1fr))]">
+        <div class="flex justify-between items-center border border-surface-line p-1 rounded-md" v-for="(worker, idx) in store.prev_workers" :key="idx">
+          <UIUser
+              :round-avatar="false"
+              :data="{
+                  photo: worker.photo,
+                  lastName: worker.last_name,
+                  firstName: worker.first_name,
+                  middleName: worker.middle_name,
+                }"
+              :short="false"
+          />
+          <n-button round size="small" tertiary v-if="!store.payload.deattach_workers.includes(worker.id)" type="error" @click="store.payload.deattach_workers.push(worker.id)">
+            <template #icon>
+              <n-icon :component="Delete20Filled" />
+            </template>
+          </n-button>
+          <n-button round size="small" v-else type="warning" tertiary @click="store.payload.deattach_workers = store.payload.deattach_workers.filter(i=>i!=worker.id)">
+            <template #icon>
+              <n-icon :component="ArrowUndo16Filled" />
+            </template>
+          </n-button>
+        </div>
+      </div>
       <div class="mt-auto">
         <n-button
             block

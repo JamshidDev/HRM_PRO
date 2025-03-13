@@ -957,6 +957,8 @@
   "timeSheetPage": {
     "create": "Tabel yaratish",
     "update": "Tabelni tahrirlash",
-    "department": "Bo'lim"
+    "department": "Bo'lim",
+    "total": "Umumiy",
+    "hours": "Soat"
   }
 }

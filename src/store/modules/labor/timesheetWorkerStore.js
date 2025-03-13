@@ -6,6 +6,7 @@ export const useTimesheetWorkerStore = defineStore('timesheetWorkerStore', {
     state:()=>({
         list:[],
         days: [],
+        totalItems:0,
         loading:false,
         saveLoading:false,
         visible:false,
@@ -20,19 +21,29 @@ export const useTimesheetWorkerStore = defineStore('timesheetWorkerStore', {
             hours: null,
             workers: []
         },
+        params:{
+            page:1,
+            per_page:10,
+            search:null,
+        },
     }),
     actions:{
         _index(){
             this.loading = true
             let promises = []
-
-            promises.push($ApiService.timeSheetWorkerService._index({id: this.elementId}).then((res)=>{
-                this.list = res.data.data.data
+            let params = {
+                ...this.params
+            }
+            promises.push($ApiService.timeSheetWorkerService._index({id: this.elementId, params}).then((res)=>{
+                this.list = res.data.data.data.map(i=>({
+                    ...i,
+                    total: i.days.reduce((acc, cur) => acc+cur?.hours || 0, 0)
+                }))
                 this.totalItems = res.data.data.total
             }))
             promises.push($ApiService.timeSheetWorkerService._get_days({id: this.elementId}).then((res)=>{
                 this.days = res.data.data.days
-                this.month = res.data.data.month
+                this.month = res.data.data.month-1
                 this.year = res.data.data.year
                 this.department = res.data.data.department
             }))

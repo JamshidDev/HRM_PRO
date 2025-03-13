@@ -14,17 +14,24 @@ const props = defineProps({
     lastName:String,
     firstName:String,
     middleName:String,
+    fullName:String,
     position:{
       type:String,
       default:null
     }
+  },
+  roundAvatar: {
+    type: Boolean,
+    default: true
   }
 })
 
 const fullName = computed(()=> {
   if(props.short){
+    if(props.data.fullName) return props.data.fullName
     return `${props.data.lastName}.${props.data.firstName[0]}.${props.data.middleName[0]} `
   }else{
+    if(props.data.fullName) return props.data.fullName
     return `${props.data.lastName} ${props.data.firstName} ${props.data.middleName} `
   }
 })
@@ -35,7 +42,7 @@ const fullName = computed(()=> {
   <n-avatar
       lazy
       size="large"
-      round
+      :round="roundAvatar"
       :src="data?.photo"
       :fallback-src="Utils.noAvailableImage"
   />

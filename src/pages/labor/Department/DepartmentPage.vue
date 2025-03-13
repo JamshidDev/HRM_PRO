@@ -30,7 +30,7 @@ onMounted(()=>{
     />
     <Table/>
     <UIDrawer
-        :width="600"
+        :width="500"
         :visible="store.visible"
         @update:visible="(v)=>store.visible = v"
         :title="$t('userDepartmentPage.attached_users')"

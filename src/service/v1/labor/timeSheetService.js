@@ -20,10 +20,15 @@ const _update = async (payload)=>{
     return await axios.put(`/v1/timesheet/${payload.id}`, payload.data)
 }
 
+const _enumTimesheet = async ()=>{
+    return await axios.get(`/v1/timesheet/enums`)
+}
+
 export default {
     _index,
     _show,
     _create,
     _update,
-    _index_departments
+    _index_departments,
+    _enumTimesheet
 }

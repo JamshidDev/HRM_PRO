@@ -14,10 +14,11 @@ export const useUserDepartmentStore = defineStore('userDepartmentStore', {
         totalItems:0,
         allPermissionList:[],
         structureCheck:[],
-        detail: null,
+        prev_workers: [],
         payload:{
             worker_positions:[],
-            organizations: []
+            organizations: [],
+            deattach_workers: []
         },
         params:{
             page:1,
@@ -35,25 +36,36 @@ export const useUserDepartmentStore = defineStore('userDepartmentStore', {
                 this.loading= false
             })
         },
-        _attach(){
+        async _attach () {
             this.saveLoading = true
-            let data = {
-                ...this.payload,
-            }
-            $ApiService.userDepartmentService._attach_user({data, id: this.elementId}).then((res)=>{
+            try {
+                if(this.payload.deattach_workers.length){
+                    await $ApiService.userDepartmentService._deattach_user({
+                        data: {
+                            worker_positions: this.payload.deattach_workers,
+                        },
+                        id: this.elementId
+                    })
+                }
+                if(this.payload.worker_positions.length){
+                    await $ApiService.userDepartmentService._attach_user({data:{
+                            worker_positions: this.payload.worker_positions,
+                        }, id: this.elementId})
+                }
                 this.visible = false
                 this._index()
                 this.resetForm()
-                // $Toast.success(t('message.successDone'))
-            }).finally(()=>{
+            }catch (e) {
+                console.log(e)
+            }finally {
                 this.saveLoading = false
-            })
+            }
         },
         _show(){
             this.visibleLoading = true
             $ApiService.userDepartmentService._show({id:this.elementId}).then((res)=>{
 
-                this.payload.worker_positions = res.data.data.users.map(i=>i.id)
+                this.prev_workers = res.data.data.workers
                 this.visible = true
             }).finally(()=>{
                 this.visibleLoading = false
@@ -65,6 +77,8 @@ export const useUserDepartmentStore = defineStore('userDepartmentStore', {
         },
         resetForm(){
             this.payload.worker_positions = []
+            this.payload.deattach_workers = []
+            this.prev_workers = []
         }
     }
 })

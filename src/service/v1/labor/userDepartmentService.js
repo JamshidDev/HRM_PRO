@@ -9,7 +9,11 @@ const _show = async (payload)=>{
 }
 
 const _attach_user = async (payload)=>{
-    return await axios.post(`/v1/timesheet/user-departments/${payload.id}`, payload.data)
+    return await axios.post(`/v1/timesheet/user-departments/${payload.id}/attach`, payload.data)
+}
+
+const _deattach_user = async (payload)=>{
+    return await axios.post(`/v1/timesheet/user-departments/${payload.id}/deattach`, payload.data)
 }
 
 
@@ -17,5 +21,6 @@ const _attach_user = async (payload)=>{
 export default {
     _index,
     _show,
-    _attach_user
+    _attach_user,
+    _deattach_user
 }

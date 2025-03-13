@@ -41,7 +41,7 @@ const onSelect = (v)=>{
           <td class="w-[20px] max-w-[20px]"><span class="text-center text-[12px] text-gray-600 block">{{ (store.params.page - 1) * store.params.per_page + idx + 1 }}</span></td>
           <td>{{item.name}}</td>
           <td class="!text-center">{{item.level.name}}</td>
-          <td class="!text-center">{{item.users_count}}</td>
+          <td class="!text-center">{{item.workers_count}}</td>
           <td>
             <UIMenuButton
                 :loading="store.visibleLoading && store.elementId===item.id"

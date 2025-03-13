@@ -135,7 +135,10 @@ export const useComponentStore = defineStore('componentStore', {
         workerPreview:null,
 
         timesheetDepartmentList: [],
-        timesheetDepartmentLoading: false
+        timesheetDepartmentLoading: false,
+        timesheetTypes: [],
+        timesheetEnumsLoading: false
+
     }),
     actions:{
         _organizationLevel(){
@@ -391,7 +394,14 @@ export const useComponentStore = defineStore('componentStore', {
                 this.timesheetDepartmentLoading = false
             })
         },
-
+        _timesheetEnums(){
+            this.timesheetEnumsLoading = true
+            $ApiService.timeSheetService._enumTimesheet().then((res)=>{
+                this.timesheetTypes = res.data.data.timesheet_types
+            }).finally(()=>{
+                this.timesheetEnumsLoading = false
+            })
+        },
 
     }
 
