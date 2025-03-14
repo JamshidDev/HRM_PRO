@@ -2,19 +2,23 @@
 import {onMounted, ref, computed} from 'vue';
 import {VueDraggable} from 'vue-draggable-plus';
 import {LineHorizontal320Filled} from "@vicons/fluent";
-import {vOnClickOutside} from "@vueuse/components"
 import {useComponentStore, useTimesheetWorkerStore} from "@/store/modules/index.js";
 import {UIPagination, UIUser} from "@/components/index.js";
-import {Dismiss12Regular, Save20Filled} from '@vicons/fluent'
+import {Dismiss12Regular, Broom16Filled} from '@vicons/fluent'
+import {vScroll} from '@vueuse/components'
 import dayjs from "dayjs";
+
 
 const store = useTimesheetWorkerStore()
 const compStore = useComponentStore()
 const isDragging = ref(false);
+const form = ref(null)
+
 onMounted(() => {
   if(compStore.timesheetTypes.length === 0){
     compStore._timesheetEnums()
   }
+  store.resetAll()
 });
 
 const isCellSelected = (row, col) => {
@@ -28,40 +32,48 @@ const isCellSelected = (row, col) => {
   return row >= rowStart && row <= rowEnd && col >= colStart && col <= colEnd;
 };
 
-const resetSelection = () => {
-  store.payload.start= null; 
-  store.payload.end = null;    
-  console.log("reset")
-};
-
 const handleMouseDown = (e) => {
+  if(!store.payload.isClearing && store.payload.status==null){
+    return
+  }
+
+  if(store.payload.status!=null && compStore.timesheetTypes?.[store.payload.status-1]?.hours && store.payload.hours==null ){
+    return
+  }
   isDragging.value = true;
-  const {col, row} = e.target.dataset;
+  const {col, row} = e.currentTarget.dataset;
   const cell = {row: Number(row), col: Number(col)};
 
-  resetSelection();
+  store.resetSelection();
   store.payload.start = cell;
   store.payload.end = cell;
 };
 
 const handleMouseMove = (e) => {
   if (!isDragging.value) return;
-  const {col, row} = e.target.dataset;
+  const {col, row} = e.currentTarget.dataset;
   store.payload.end = {row: Number(row), col: Number(col)};
+
 };
 
 const handleMouseUp = () => {
   isDragging.value = false;
+  form.value?.validate((error) => {
+    if (!error) {
+      store._create()
+    }
+  })
+
 };
 
 const handleMouseLeave = () => {
   isDragging.value = false;
-  resetSelection()
+  store.resetSelection()
 };
 
 
 const changePage = (v)=>{
-  resetSelection()
+  store.resetSelection()
   store.params.page = v.page
   store.params.per_page = v.per_page
   store._index()
@@ -73,15 +85,29 @@ const changePage = (v)=>{
   <div class="h-full flex flex-col  p-8">
     <div class="flex my-2 justify-between  items-center shrink-0 gap-2">
       <div class="flex gap-2">
-        <n-button tertiary v-if="!store.loading">
+        <n-button tertiary v-if="store?.month && store?.year">
           {{dayjs().month(store.month).year(store.year).format("YYYY MMMM")}}
         </n-button>
-        <n-button dashed v-if="!store.loading">
+        <n-button dashed v-if="store?.department">
           {{store.department}}
         </n-button>
       </div>
       <div class="flex gap-2">
-        <n-form class="flex gap-2 max-w-[450px]">
+        <n-button
+            :type="store.payload.isClearing ? 'primary' : 'tertiary'"
+            @click="()=>{
+              store.payload.isClearing=!store.payload.isClearing
+              store.payload.status = null
+              store.payload.hours = null
+            }"
+
+        >
+          {{$t('content.clear')}}
+          <template #icon>
+            <n-icon :component="Broom16Filled" />
+          </template>
+        </n-button>
+        <n-form ref="form" class="flex gap-2 max-w-[450px]">
           <n-grid :cols="4" :x-gap="10">
             <n-form-item-gi :span="3" :show-label="false" :show-feedback="false">
               <n-select
@@ -90,9 +116,11 @@ const changePage = (v)=>{
                   v-model:value="store.payload.status"
                   label-field="name"
                   value-field="id"
-                  @update-value="console.log(compStore.timesheetTypes[store.payload.status]?.hours)"
+                  @update-value="(_,v)=>{
+                    store.payload.isClearing = false
+                    if(!v?.hours) store.payload.hours=null
+                  }"
               />
-
             </n-form-item-gi>
             <n-form-item-gi :span="1" :show-label="false" :show-feedback="false">
               <n-input-number
@@ -105,25 +133,26 @@ const changePage = (v)=>{
           </n-grid>
         </n-form>
         <n-button type="error" @click="store.visible = false">
+          {{$t('content.close')}}
           <template #icon>
             <n-icon :component="Dismiss12Regular" />
           </template>
         </n-button>
       </div>
     </div>
-    <n-spin :show="store.loading" class="flex-grow ">
-      <div class="overflow-x-auto">
+    <n-spin :show="store.loading || store.saveLoading" class="flex-grow">
+      <div class="overflow-x-auto" v-scroll="[()=>{}, { behavior: 'smooth' }]">
           <VueDraggable
                 v-model="store.list"
                 :animation="150"
-                :onStart="resetSelection"
+                :onStart="store.resetSelection"
                 handle=".handle"
                 target=".sort-target"
-
             >
               <table
                   class="relative"
-                  @mouseleave="handleMouseLeave">
+                  @mouseleave="handleMouseLeave"
+              >
                 <thead>
                 <tr>
                   <th></th>
@@ -183,9 +212,16 @@ const changePage = (v)=>{
                       @mousedown="handleMouseDown"
                       @mousemove="handleMouseMove"
                       @mouseup="handleMouseUp"
-                      class="h-[35px] w-[35px] max-h-[35px] min-w-[35px]"
+                      class="h-[40px] w-[40px] max-h-[40px] min-w-[40px]"
                   >
-                    {{ day?.hours}}
+                    <div v-if="day?.status && day?.hours" class="w-full h-full  relative overflow-hidden ">
+                      <span class="absolute left-1 top-[2px]">{{day?.hours}}</span>
+                      <div class="absolute border-l border-[#e5e7eb] h-[100px] rotate-45 origin-center left-[50%] translate-x-[-50%] top-[50%] translate-y-[-50%]  bottom-0"></div>
+                      <span class="absolute bottom-[2px] right-1 text-xs">{{day?.status?.key}}</span>
+                    </div>
+                    <span v-else>
+                      {{ day?.status?.key}}
+                    </span>
                   </td>
                   <td class="sticky right-0">{{ item.total }}</td>
                 </tr>
@@ -209,13 +245,18 @@ const changePage = (v)=>{
 table {
   width: 100%;
   background: #fff;
-  user-select: none;
   border: 1px solid #d1d5db;
   border-collapse: separate;
   border-spacing: 0;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  user-select: none;
 }
-
+/*
+table::selection {
+  background: rgba(0, 0, 0, 0.01);
+  color: inherit;
+}
+*/
 /* Table Header */
 th {
   background: #f3f4f6; /* Light gray background */

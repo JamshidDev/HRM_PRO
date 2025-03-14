@@ -20,7 +20,8 @@ export const useTimesheetWorkerStore = defineStore('timesheetWorkerStore', {
             status: null,
             hours: null,
             start: null,
-            end: null
+            end: null,
+            isClearing: false
         },
         params:{
             page:1,
@@ -52,38 +53,71 @@ export const useTimesheetWorkerStore = defineStore('timesheetWorkerStore', {
                 this.loading = false
             })
         },
+        _index_workers(){
+            this.loading = true
+            let params = {
+                ...this.params
+            }
+            $ApiService.timeSheetWorkerService._index({id: this.elementId, params}).then((res)=>{
+                this.list = res.data.data.data.map(i=>({
+                    ...i,
+                    total: i.days.reduce((acc, cur) => acc+cur?.hours || 0, 0)
+                }))
+                this.totalItems = res.data.data.total
+            }).finally(()=>{
+                this.loading = false
+            })
+        },
         _create(){
+            if (!this.payload.start || !this.payload.end) return;
+            let rowStart = Math.min(this.payload.start.row, this.payload.end.row);
+            let rowEnd = Math.max(this.payload.start.row, this.payload.end.row);
+            let colStart = Math.min(this.payload.start.col, this.payload.end.col);
+            let colEnd = Math.max(this.payload.start.col, this.payload.end.col);
             this.saveLoading = true
-            const date = dayjs(this.payload.timestamp)
             let data = {
-                ...this.payload,
-                month: date.month()+1,
-                year: date.year(),
+                status: this.payload.status,
+                hours: this.payload.hours || 0,
+                workers: (()=>{
+                    let arr = []
+                    while(rowStart<=rowEnd){
+                        let start = colStart
+                        let end = colEnd
+                        while(start<=end){
+                            arr.push({
+                                id: this.list[rowStart].id,
+                                day: dayjs().year(this.year).month(this.month).date(start+1).format("YYYY-MM-DD")
+                            })
+                            start++
+                        }
+                        rowStart++
+                    }
+                    return arr
+                })()
             }
-            $ApiService.timeSheetService._create({data}).then((res)=>{
-                this.visible = false
-                this._index()
-                this.resetForm()
+            $ApiService.timeSheetWorkerService._create({data, id: this.elementId}).then((res)=>{
+                this._index_workers()
+                this.resetSelection()
             }).finally(()=>{
                 this.saveLoading = false
             })
         },
-        _update(){
-            this.saveLoading = true
-            const date = dayjs(this.payload.timestamp)
-            let data = {
-                ...this.payload,
-                month: date.month()+1,
-                year: date.year(),
-            }
-            $ApiService.timeSheetService._update({data, id: this.elementId}).then((res)=>{
-                this.visible = false
-                this._index()
-                this.resetForm()
-            }).finally(()=>{
-                this.saveLoading = false
-            })
-        },
+        // _update(){
+        //     this.saveLoading = true
+        //     const date = dayjs(this.payload.timestamp)
+        //     let data = {
+        //         ...this.payload,
+        //         month: date.month()+1,
+        //         year: date.year(),
+        //     }
+        //     $ApiService.timeSheetService._update({data, id: this.elementId}).then((res)=>{
+        //         this.visible = false
+        //         this._index()
+        //         this.resetForm()
+        //     }).finally(()=>{
+        //         this.saveLoading = false
+        //     })
+        // },
         // _show(){
         //     this.visibleLoading = true
         //     $ApiService.userDepartmentService._show({id:this.elementId}).then((res)=>{
@@ -98,11 +132,16 @@ export const useTimesheetWorkerStore = defineStore('timesheetWorkerStore', {
         openVisible(data){
             this.visible = data
         },
-        resetForm(){
+        resetSelection(){
+            this.payload.start = null
+            this.payload.end = null
+        },
+        resetAll(){
             this.payload.status = null
             this.payload.hours = null
             this.payload.start = null
             this.payload.end = null
+            this.payload.isClearing = false
         }
     }
 })
