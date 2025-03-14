@@ -104,7 +104,7 @@ const routeHrmPathMaker = (mainPath)=>(`${AppPaths.Hrm}${mainPath}`)
 const routeLmsPathMaker = (mainPath)=>(`${AppPaths.Lms}${mainPath}`)
 const routeChatPathMaker = (mainPath)=>(`${AppPaths.Chat}${mainPath}`)
 const routeDocFlowPathMaker = (mainPath)=>(`${AppPaths.DocFlow}${mainPath}`)
-
+const routeLaborPathMaker = (mainPath)=>(`${AppPaths.Labor}${mainPath}`)
 
 const documentModels = {
     contract:'contracts',
@@ -256,4 +256,5 @@ export default {
     convertFromUrlToQuery,
     viewerStatus,
     methodTypes,
+    routeLaborPathMaker
 }
