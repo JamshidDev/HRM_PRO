@@ -1,5 +1,5 @@
 <script setup>
-import {NoDataPicture, UIMenuButton, UIPagination, UIStatus} from "@/components/index.js"
+import {NoDataPicture, UIMenuButton, UIPagination, UIStatus, UIUser} from "@/components/index.js"
 import {useApplicationStore} from "@/store/modules/index.js"
 import Utils from "../../../../../utils/Utils.js"
 import {DocumentBulletList20Regular} from '@vicons/fluent'
@@ -49,8 +49,10 @@ const onOpenFile = (v)=>{
         <thead>
         <tr>
           <th class="!text-center min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
-          <th class="min-w-[200px]">{{$t('applicationPage.form.type')}}</th>
           <th class="min-w-[120px] w-[200px]">{{$t('applicationPage.form.number')}}</th>
+          <th class="min-w-[200px]">{{$t('applicationPage.form.type')}}</th>
+          <th class="min-w-[200px] w-[200px]">{{$t('content.worker')}}</th>
+
           <th class="min-w-[120px] w-[120px]">{{$t('content.status')}}</th>
           <th class="min-w-[90px] w-[90px]">{{$t('content.date')}}</th>
           <th class="min-w-[40px] w-[40px]"></th>
@@ -59,10 +61,23 @@ const onOpenFile = (v)=>{
         <tbody>
         <tr v-for="(item, idx) in store.list" :key="idx">
           <td><span class="text-center text-[12px] text-gray-600 block">{{ (store.params.page - 1) * store.params.per_page + idx + 1 }}</span></td>
+          <td><span class="font-medium">{{item?.number}}</span></td>
           <td
               @click="onOpenFile(item)"
               class="text-sm hover:text-primary hover:underline cursor-pointer">{{item.type?.name}}</td>
-          <td><span class="font-medium">{{item?.number}}</span></td>
+          <td>
+            <UIUser
+                class="cursor-pointer"
+                :data="{
+                    photo:item?.worker.photo,
+                    firstName:item?.worker.first_name,
+                    middleName:item?.worker.middle_name,
+                    lastName:item?.worker.last_name,
+                    position:item?.worker?.birthday,
+                  }"
+            />
+          </td>
+
           <td>
             <UIStatus
                 :status="item.confirmation"

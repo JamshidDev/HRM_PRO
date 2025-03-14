@@ -1,6 +1,5 @@
 import {defineStore} from "pinia";
 import i18n from "@/i18n/index.js"
-const {t} = i18n.global
 import router from '@/router/index.js'
 import {AppPaths} from "@/utils/index.js"
 export const useAccountStore = defineStore('accountStore', {
@@ -74,7 +73,6 @@ export const useAccountStore = defineStore('accountStore', {
                 organization_id:id
             }
             $ApiService.accountService._changeRole({data}).then((res)=>{
-                $Toast.success(t('message.successDone'))
                 this._index()
                 router.push(AppPaths.Home)
             })

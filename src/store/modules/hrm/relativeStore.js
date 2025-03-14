@@ -82,7 +82,7 @@ export const useRelativeStore = defineStore('relativeStore', {
             $ApiService.relativeService._update({data, id:this.elementId}).then((res)=>{
                 this.visible = false
                 this._index()
-                $Toast.success(t('message.successDone'))
+               
             }).finally(()=>{
                 this.saveLoading = false
             })
@@ -91,7 +91,7 @@ export const useRelativeStore = defineStore('relativeStore', {
             this.deleteLoading = true
             $ApiService.relativeService._delete({id:this.elementId}).then((res)=>{
                 this._index()
-                $Toast.success(t('message.successDone'))
+               
             }).finally(()=>{
                 this.deleteLoading = false
             })

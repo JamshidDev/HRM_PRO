@@ -62,7 +62,7 @@ export const useUniversityStore = defineStore('universityStore', {
             $ApiService.universityService._update({data, id:this.elementId, params}).then((res)=>{
                 this.visible = false
                 this._index()
-                $Toast.success(t('message.successDone'))
+               
             }).finally(()=>{
                 this.saveLoading = false
             })
@@ -71,7 +71,7 @@ export const useUniversityStore = defineStore('universityStore', {
             this.deleteLoading = true
             $ApiService.universityService._delete({id:this.elementId}).then((res)=>{
                 this._index()
-                $Toast.success(t('message.successDone'))
+               
             }).finally(()=>{
                 this.deleteLoading = false
             })

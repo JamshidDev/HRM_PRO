@@ -79,6 +79,7 @@ export const useTopicStore = defineStore('topicStore', {
             this.deleteLoading = true
             $ApiService.topicService._delete({id:this.elementId}).then((res)=>{
                 this._index()
+                $Toast.success(t('message.successDone'))
             }).finally(()=>{
                 this.deleteLoading = false
             })

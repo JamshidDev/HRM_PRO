@@ -52,7 +52,7 @@ export const useAcademicDegreeStore = defineStore('academicDegreeStore', {
             $ApiService.academicDegreeService._update({data, id:this.elementId, params}).then((res)=>{
                 this.visible = false
                 this._index()
-                $Toast.success(t('message.successDone'))
+               
             }).finally(()=>{
                 this.saveLoading = false
             })
@@ -61,7 +61,7 @@ export const useAcademicDegreeStore = defineStore('academicDegreeStore', {
             this.deleteLoading = true
             $ApiService.academicDegreeService._delete({id:this.elementId}).then((res)=>{
                 this._index()
-                $Toast.success(t('message.successDone'))
+               
             }).finally(()=>{
                 this.deleteLoading = false
             })

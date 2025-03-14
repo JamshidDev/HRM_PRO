@@ -64,7 +64,6 @@ export const useDocSettingStore = defineStore('docSettingStore', {
             $ApiService.docSettingService._create({data:formData}).then((res)=>{
                 this.visible = false
                 this._index()
-                $Toast.success(t('message.successDone'))
             }).finally(()=>{
                 this.saveLoading = false
             })
@@ -81,7 +80,6 @@ export const useDocSettingStore = defineStore('docSettingStore', {
             $ApiService.docSettingService._update({data, id:this.elementId}).then((res)=>{
                 this.visible = false
                 this._index()
-                $Toast.success(t('message.successDone'))
             }).finally(()=>{
                 this.saveLoading = false
             })
@@ -90,7 +88,6 @@ export const useDocSettingStore = defineStore('docSettingStore', {
             this.deleteLoading = true
             $ApiService.docSettingService._delete({id:this.elementId}).then((res)=>{
                 this._index()
-                $Toast.success(t('message.successDone'))
             }).finally(()=>{
                 this.deleteLoading = false
             })

@@ -4,6 +4,60 @@
     "chat": false
   },
   "customization":{
+    "about": false,
+    "features": {
+      "spellcheck": {
+        "change": false
+      }
+    },
+    "font": {
+      "name": "Arial",
+      "size": "11px"
+    },
+    "layout": {
+      "header": {
+        "editMode": false,
+        "save": false,
+        "users": false
+      },
+      "leftMenu": {
+        "mode": false,
+        "navigation": false,
+        "spellcheck": false
+      },
+      "rightMenu": {
+        "mode": false
+      },
+      "statusBar": {
+        "actionStatus": false,
+        "docLang": false,
+        "textLang": false
+      },
+      "toolbar": {
+        "collaboration": {
+          "mailmerge": false
+        },
+        "draw": false,
+        "file": {
+          "close": false,
+          "info": false,
+          "save": false,
+          "settings": false
+        },
+        "home": {},
+        "layout": false,
+        "plugins": false,
+        "protect": false,
+        "references": false,
+        "save": false,
+        "view": {
+          "navigation": false
+        }
+      }
+    },
+    "loaderLogo": "https://example.com/loader-logo.png",
+    "loaderName": "Yuklnmoqda...",
+
     "anonymous": {
       "request": false,
       "label": ""
@@ -17,5 +71,16 @@
     "plugins": false
 
 
-  }
+
+
+
+
+
+
+
+
+
+
+
+}
 }

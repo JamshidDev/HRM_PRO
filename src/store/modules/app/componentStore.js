@@ -137,7 +137,18 @@ export const useComponentStore = defineStore('componentStore', {
         timesheetDepartmentList: [],
         timesheetDepartmentLoading: false,
         timesheetTypes: [],
-        timesheetEnumsLoading: false
+        timesheetEnumsLoading: false,
+
+        reasonTypes:[],
+        reasonTypeLoading:false,
+
+        workerApplicationTypes:[],
+        educationTypes:[],
+        workerApplicationLoading:false,
+
+        directorList:[],
+        directorLoading:false,
+
 
     }),
     actions:{
@@ -307,7 +318,6 @@ export const useComponentStore = defineStore('componentStore', {
                     name:v.position.name,
                     id:v.id,
                 }))
-                console.log(this.departmentPositionList)
             }).finally(()=>{
                 this.departmentPositionLoading = false
             })
@@ -340,7 +350,7 @@ export const useComponentStore = defineStore('componentStore', {
         _commandTypes(data){
             this.commandTypeLoading = true
             $ApiService.componentService._commandTypes({params:data}).then((res)=>{
-                this.commandTypeList = res.data.data
+                this.commandTypeList = res.data.data.map((v)=>({...v, name:v.id+' - '+v.name}))
             }).finally(()=>{
                 this.commandTypeLoading = false
             })
@@ -403,6 +413,38 @@ export const useComponentStore = defineStore('componentStore', {
             })
         },
 
+        _reasonTypes(id){
+            this.reasonTypeLoading = true
+            $ApiService.vacationService._reasonTypes({params:{type:id}})
+                .then((res)=>{
+                this.reasonTypes = res.data.data
+            }).finally(()=>{
+                this.reasonTypeLoading = false
+            })
+        },
+        _workerApplicationEnums(){
+            this.workerApplicationLoading = true
+            $ApiService.componentService._workerApplicationEnum()
+                .then((res)=>{
+                    this.workerApplicationTypes = res.data.data.application_types.map((v)=>({...v, name:v.id+' - '+v.name}))
+                    this.educationTypes = res.data.data.education_types
+                }).finally(()=>{
+                this.workerApplicationLoading = false
+            })
+        },
+        _directors(id=undefined){
+            this.directorLoading = true
+            $ApiService.componentService._directors({
+                params:{
+                    organizations:id
+                }
+            })
+                .then((res)=>{
+                    this.directorList = res.data.data
+                }).finally(()=>{
+                this.directorLoading = false
+            })
+        }
     }
 
 })

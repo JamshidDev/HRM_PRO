@@ -59,7 +59,7 @@ export const useMilitaryStore = defineStore('militaryStore', {
             $ApiService.militaryService._update({data, id:this.elementId}).then((res)=>{
                 this.visible = false
                 this._index()
-                $Toast.success(t('message.successDone'))
+               
             }).finally(()=>{
                 this.saveLoading = false
             })
@@ -68,7 +68,7 @@ export const useMilitaryStore = defineStore('militaryStore', {
             this.deleteLoading = true
             $ApiService.militaryService._delete({id:this.elementId}).then((res)=>{
                 this._index()
-                $Toast.success(t('message.successDone'))
+               
             }).finally(()=>{
                 this.deleteLoading = false
             })

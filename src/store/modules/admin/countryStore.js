@@ -46,7 +46,6 @@ export const useCountryStore = defineStore('country', {
             $ApiService.countryService._create({data}).then((res)=>{
                 this.visible = false
                 this._index()
-                $Toast.success(t('message.successDone'))
             }).finally(()=>{
                 this.saveLoading = false
             })
@@ -62,7 +61,6 @@ export const useCountryStore = defineStore('country', {
             $ApiService.countryService._update({data, id:this.elementId}).then((res)=>{
                 this.visible = false
                 this._index()
-                $Toast.success(t('message.successDone'))
             }).finally(()=>{
                 this.saveLoading = false
             })
@@ -71,7 +69,6 @@ export const useCountryStore = defineStore('country', {
             this.deleteLoading = true
             $ApiService.countryService._delete({id:this.elementId}).then((res)=>{
                 this._index()
-                $Toast.success(t('message.successDone'))
             }).finally(()=>{
                 this.deleteLoading = false
             })

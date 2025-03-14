@@ -9,6 +9,7 @@ import dayjs from "dayjs";
 import 'dayjs/locale/uz.js'
 import 'dayjs/locale/ru.js'
 import i18n from "@/i18n/index.js"
+import {useAppSetting} from "@/utils/index.js"
 import updateLocale from 'dayjs/plugin/updateLocale'
 import { uzUZ, dateUzUZ, ruRU, dateRuRU, enUS, dateEnUS } from 'naive-ui'
 
@@ -44,6 +45,10 @@ const localProvider = computed(()=>{
 
 watchEffect(()=>{
   dayjs.locale(i18n.global.locale)
+})
+
+onMounted(()=>{
+  i18n.global.locale = localStorage.getItem(useAppSetting.languageKey) || useAppSetting.defaultLanguage
 })
 </script>
 

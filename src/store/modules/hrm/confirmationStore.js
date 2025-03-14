@@ -45,7 +45,7 @@ export const useConfirmationStore = defineStore('confirmationStore', {
             $ApiService.confirmationService._create({data}).then((res)=>{
                 this.visible = false
                 this._index()
-                $Toast.success(t('message.successDone'))
+               
             }).finally(()=>{
                 this.saveLoading = false
             })
@@ -61,7 +61,7 @@ export const useConfirmationStore = defineStore('confirmationStore', {
             $ApiService.confirmationService._update({data, id:this.elementId}).then((res)=>{
                 this.visible = false
                 this._index()
-                $Toast.success(t('message.successDone'))
+               
             }).finally(()=>{
                 this.saveLoading = false
             })
@@ -70,7 +70,7 @@ export const useConfirmationStore = defineStore('confirmationStore', {
             this.deleteLoading = true
             $ApiService.confirmationService._delete({id:this.elementId}).then((res)=>{
                 this._index()
-                $Toast.success(t('message.successDone'))
+               
             }).finally(()=>{
                 this.deleteLoading = false
             })

@@ -59,6 +59,7 @@ export const useTopicExamStore = defineStore('topicExamStore', {
                 this.visible = false
                 this._index()
                 this.resetForm()
+
             }).finally(()=>{
                 this.saveLoading = false
             })
@@ -72,6 +73,7 @@ export const useTopicExamStore = defineStore('topicExamStore', {
                 this.visible = false
                 this._index()
                 this.resetForm()
+
             }).finally(()=>{
                 this.saveLoading = false
             })
@@ -80,6 +82,7 @@ export const useTopicExamStore = defineStore('topicExamStore', {
             this.deleteLoading = true
             $ApiService.topicExamService._delete({id:this.topicId, exam_id: this.elementId}).then((res)=>{
                 this._index()
+
             }).finally(()=>{
                 this.deleteLoading = false
             })

@@ -1,7 +1,7 @@
 import {Folder48Filled,LockClosed16Filled, PersonChat20Filled, Person32Filled,
     DocumentPerson16Filled, PersonNote24Filled,Person12Filled,
     TextBulletListSquare20Filled, ChannelShare20Filled, DocumentTextExtract24Filled,
-    PeopleCheckmark24Filled, DocumentArrowDown20Filled, Archive24Filled} from "@vicons/fluent"
+    PeopleCheckmark24Filled, DocumentArrowDown20Filled, Archive24Filled, WeatherSunnyLow20Filled} from "@vicons/fluent"
 import {AppPaths} from "@/utils/index.js";
 
 import Utils from "../../utils/Utils.js"
@@ -16,44 +16,49 @@ export const navigations = [
         icon:Person32Filled,
         children:[
             {
-                label:t('workerPage.name'),
+                label:'workerPage.name',
                 path:Utils.routeHrmPathMaker(AppPaths.Worker),
                 icon:Person12Filled,
             },
             {
-                label:t('departmentPage.name'),
+                label:'departmentPage.name',
                 path:Utils.routeHrmPathMaker(AppPaths.Department),
                 icon:ChannelShare20Filled,
             },
             {
-                label:t('departmentPositionPage.name'),
+                label:'departmentPositionPage.name',
                 path:Utils.routeHrmPathMaker(AppPaths.DepartmentPosition),
                 icon:TextBulletListSquare20Filled,
             },
             {
-                label:t('confirmation.name'),
+                label:'confirmation.name',
                 path:Utils.routeHrmPathMaker(AppPaths.Contract),
                 icon:DocumentTextExtract24Filled,
             },
             {
-                label:t('documentPage.tabs.command'),
+                label:'documentPage.tabs.command',
                 path:Utils.routeHrmPathMaker(AppPaths.Command),
                 icon:DocumentTextExtract24Filled,
             },
             {
-                label:t('documentPage.tabs.adContract'),
+                label:'documentPage.tabs.adContract',
                 path:Utils.routeHrmPathMaker(AppPaths.AdContract),
                 icon:DocumentTextExtract24Filled,
             },
             {
-                label:t('applicationPage.name'),
+                label:'applicationPage.name',
                 path:Utils.routeHrmPathMaker(AppPaths.Application),
                 icon:DocumentArrowDown20Filled,
             },
             {
-                label:t('confirmationPage.name'),
+                label:'confirmationPage.name',
                 path:Utils.routeHrmPathMaker(AppPaths.Confirmation),
                 icon:PeopleCheckmark24Filled,
+            },
+            {
+                label:'vacationPage.name',
+                path:Utils.routeHrmPathMaker(AppPaths.Vacation),
+                icon:WeatherSunnyLow20Filled,
             },
         ]
     },
@@ -65,7 +70,7 @@ export const navigations = [
         children:[
             {
                 parentIndex:1,
-                label:t('chatWindow.name'),
+                label:'chatWindow.name',
                 path:Utils.routeChatPathMaker(AppPaths.ChatWindow),
                 icon:Folder48Filled,
                 children:[]
@@ -79,25 +84,25 @@ export const navigations = [
         icon:DocumentPerson16Filled,
         children:[
             {
-                label:t('confirmation.name'),
+                label:'confirmation.name',
                 path:Utils.routeDocFlowPathMaker(AppPaths.ConfContract),
                 icon:DocumentTextExtract24Filled,
                 children:[]
             },
             {
-                label:t('documentPage.tabs.command'),
+                label:'documentPage.tabs.command',
                 path:Utils.routeDocFlowPathMaker(AppPaths.ConfCommand),
                 icon:DocumentTextExtract24Filled,
                 children:[]
             },
             {
-                label:t('documentPage.tabs.adContract'),
+                label:'documentPage.tabs.adContract',
                 path:Utils.routeDocFlowPathMaker(AppPaths.ConfAdContract),
                 icon:DocumentTextExtract24Filled,
                 children:[]
             },
             {
-                label:t('applicationPage.name'),
+                label:'applicationPage.name',
                 path:Utils.routeDocFlowPathMaker(AppPaths.ConfApplication),
                 icon:DocumentArrowDown20Filled,
             },
@@ -110,13 +115,13 @@ export const navigations = [
         icon:PersonNote24Filled,
         children:[
             {
-                label:t('topicPage.name'),
+                label:'topicPage.name',
                 path:Utils.routeLmsPathMaker(AppPaths.Topic),
                 icon:Archive24Filled,
                 children:[]
             },
             {
-                label:t('categoryPage.name'),
+                label:'categoryPage.name',
                 path:Utils.routeLmsPathMaker(AppPaths.Category),
                 icon:Archive24Filled,
                 children:[]
@@ -156,79 +161,79 @@ export const navigations = [
         icon:LockClosed16Filled,
         children:[
             {
-                label:t('userPage.name'),
+                label:'userPage.name',
                 path:Utils.routePathMaker(AppPaths.User),
                 icon:Folder48Filled,
                 children:[]
             },
             {
-                label:t('userRole.name'),
+                label:'userRole.name',
                 path:Utils.routePathMaker(AppPaths.UserRole),
                 icon:Folder48Filled,
                 children:[]
             },
             {
-                label:t('userPermission.name'),
+                label:'userPermission.name',
                 path:Utils.routePathMaker(AppPaths.UserPermission),
                 icon:Folder48Filled,
             },
             {
-                label:t('countryPage.name'),
+                label:'countryPage.name',
                 path:Utils.routePathMaker(AppPaths.Country),
                 icon:Folder48Filled,
             },
             {
-                label:t('regionPage.name'),
+                label:'regionPage.name',
                 path:Utils.routePathMaker(AppPaths.Region),
                 icon:Folder48Filled,
             },
             {
-                label:t('districtPage.name'),
+                label:'districtPage.name',
                 path:Utils.routePathMaker(AppPaths.District),
                 icon:Folder48Filled,
             },
             {
-                label:t('nationalityPage.name'),
+                label:'nationalityPage.name',
                 path:Utils.routePathMaker(AppPaths.Nationality),
                 icon:Folder48Filled,
             },
             {
-                label:t('positionPage.name'),
+                label:'positionPage.name',
                 path:Utils.routePathMaker(AppPaths.Position),
                 icon:Folder48Filled,
             },
             {
-                label:t('schedulePage.name'),
+                label:'schedulePage.name',
                 path:Utils.routePathMaker(AppPaths.Schedule),
                 icon:Folder48Filled,
             },
             {
-                label:t('workdayPage.name'),
+                label:'workdayPage.name',
                 path:Utils.routePathMaker(AppPaths.Workday),
                 icon:Folder48Filled,
             },
             {
-                label:t('organizationPage.name'),
+                label:'organizationPage.name',
                 path:Utils.routePathMaker(AppPaths.Organizations),
                 icon:Folder48Filled,
             },
             {
-                label:t('actionLog.name'),
+                label:'actionLog.name',
                 path:Utils.routePathMaker(AppPaths.ActionLog),
                 icon:Folder48Filled,
             },
             {
-                label:t('documentSetting.name'),
+                label:'documentSetting.name',
                 path:Utils.routePathMaker(AppPaths.DocumentSetting),
                 icon:Folder48Filled,
             },
             {
-                label:t('holidayPage.name'),
+                label:'holidayPage.name',
                 path:Utils.routePathMaker(AppPaths.Holiday),
                 icon:Folder48Filled,
             },
             {
-                label:t('othersPage.name'),
+                label:'othersPage.name',
                 path:Utils.routePathMaker(AppPaths.AdminOther),
                 icon:Folder48Filled,
             },
@@ -238,12 +243,12 @@ export const navigations = [
 
 export const otherNavigations = [
     {
-        label:t('loginPage.name'),
+        label:'loginPage.name',
         path:AppPaths.Login,
         icon:'bx bxs-user-circle',
     },
     {
-        label:t('registerPage.name'),
+        label:'registerPage.name',
         path:AppPaths.Register,
         icon:'bx bxs-user-circle',
     },

@@ -6,7 +6,7 @@ import {PDFDocument} from "pdf-lib"
 import * as pdfjsLib from 'pdfjs-dist';
 import * as PdfWorker from "pdfjs-dist/build/pdf.worker.min.js"
 import Utils from "@/utils/Utils.js"
-// window.pdfjsWorker = PdfWorker
+window.pdfjsWorker = PdfWorker
 
 pdfjsLib.GlobalWorkerOptions.workerSrc = PdfWorker
 
@@ -28,7 +28,7 @@ export const usePdfViewerStore = defineStore('pdfViewerStore', {
         loading:false,
         confirmations:[],
         document:null,
-        scale:1.4,
+        scale:1.2,
         permissions:null,
         docxUrl:null,
 
@@ -75,7 +75,6 @@ export const usePdfViewerStore = defineStore('pdfViewerStore', {
     }),
     actions:{
        async createQRCode(){
-           console.log(this.qrCodeData)
            try{
                this.qrCodeUrl = await QRCode.toDataURL(this.qrCodeData)
                return  this.qrCodeUrl
@@ -197,8 +196,8 @@ export const usePdfViewerStore = defineStore('pdfViewerStore', {
                     model:this.model,
                 }}).then((res)=>{
                 this.userList = res.data.data.map(v=>({
-                    name:v.last_name +' '+v.first_name,
-                    id:v.id
+                    name:v.worker.last_name +' '+v.worker.first_name,
+                    id:v.worker.id
                 }))
             }).finally(()=>{
                 this.userLoading = false

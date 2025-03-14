@@ -8,14 +8,15 @@
     "view": "Ko'rish",
     "copy": "Nusxalash",
     "download": "Yuklash",
+    "attachment": "Biriktirish",
     "no-data": "Ma'lumot yo'q",
     "cancel": "Bekor qilish",
     "help": "Yordam",
     "enterField": "Kiriting",
     "phone": "Telefon raqam",
-    "langUz": "O'zbek",
-    "langRu": "Rus",
-    "langEn": "Ingliz",
+    "langUz": "O’ZB",
+    "langRu": "RUS",
+    "langEn": "ENG",
     "search": "Qidiruv",
     "add": "Qo'shish",
     "filterSetting": "Filter sozlamalar",
@@ -77,6 +78,9 @@
     "deleteWarning": "Haqiqattan ham o'chirmoqchimisz?",
     "sum": "So'm",
     "total": "Umumiy: {n}ta",
+    "fromTa": "tadan",
+    "main": "Asosiy",
+    "untilShow": " gacha ko'rsatilmoqda",
     "next": "Keyingi",
     "warning": "Ogohlantirish",
     "error": "Xatolik",
@@ -457,9 +461,13 @@
         "calculateVacation": "Ta'tilni hisoblash",
         "no-calculate": "Ta'tilni kuni hisoblanmagan!",
         "all_day": "Ta'til kuni",
+        "contract_to_date": "Shartnomani tugash sanasi",
         "isNotValid": "Ta'tilni hisoblash uchun ma'lumotlar yetarli emas!",
         "isNotCalculate": "Xodimlarning ta'til ma'lumotlari hisoblanmagan!",
+        "notSelectCommand": "Buyruq turini tanlang va davom eting!",
+        "removeWorker": "Ro'yhatdan olib tashlash",
         "calculateTitle": "Hisoblangan ta'til ma'lumotlari. Agarda ularni noto'g'ri deb bilsangiz tahrirlashingiz mumkin",
+        "requiredVacationData": "Xodimlarning ta'til ma'lumotlarini kiring!",
         "command_number": "Buyruq raqami"
       }
     },
@@ -472,7 +480,7 @@
       "documentExampleId": "Hujjat andozasi",
       "department": "Bo'lim",
       "position": "Lavozim",
-      "positionStatus": "Aosiy shtatga qabul qilish",
+      "positionStatus": "Bo'linmadagi lavozimga qabul qilish",
       "salary": "Oylik maosh",
       "group": "Gurux",
       "rank": "Lavozim razryad",
@@ -499,6 +507,41 @@
       }
     }
   },
+  "commandPage": {
+    "form_43": {
+      "new_date": "Ta'til tugash sanasi",
+      "work_day": "Ishga chiqish sanasi",
+      "reason": "Sababi"
+    },
+    "form_44": {
+      "new_date": "Ishga chiqish sanasi",
+      "rest_day": "Foydalanilmagan ta'til kuni",
+      "reason": "Sababi"
+    },
+    "form_45": {
+      "from": "Qachondan",
+      "to": "Qachongacha",
+      "work_day": "Ishga chiqish sanasi"
+    },
+    "form_48": {
+      "from": "Qachondan",
+      "to": "Qachongacha",
+      "work_day": "Ishga chiqish sanasi",
+      "all_day": "Ta'til kuni",
+      "reason": "Sababi"
+    },
+    "form_49": {
+      "from": "Qachondan",
+      "to": "Qachongacha",
+      "work_day": "Ishga chiqish sanasi"
+    },
+    "form_55": {
+      "from": "Qachondan",
+      "to": "Qachongacha",
+      "from_time": "Qachondan (soat)",
+      "to_time": "Qachongacha (soat)"
+    }
+  },
   "confirmationPage": {
     "name": "Tasdiqlovchilar",
     "createTitle": "Tasdiqlovchi qo'shish",
@@ -512,6 +555,7 @@
   },
   "contractPage": {
     "name": "Shartnomalar",
+    "succeedText": "Shartnoma muvofaqiyatli ravishda yaratildi!",
     "table": {
       "number": "Raqami",
       "type": "Turi",
@@ -523,6 +567,12 @@
     },
     "statuses": {
       "confirm": "Tasdiqlash"
+    },
+    "step": {
+      "stepOne": "Shartnoma turi",
+      "stepTwo": "Shartnoma ma'lumoti",
+      "stepThree": "Buyruk biriktirish",
+      "stepFour": "Hotali"
     },
     "confirmText": "{n} raqamli shartnoma asosida buyruq yaratasizmi?",
     "confirmAdText": "{n} raqamli qo'shimcha kelishuv shartnoma asosida buyruq yaratasizmi?"
@@ -916,8 +966,18 @@
       "type": "Bayram turi"
     }
   },
+  "vacationPage": {
+    "name": "Ta'tildagi xodimlar"
+  },
   "applicationPage": {
     "name": "Arizalar",
+    "createWorkerApplication": "Ariza yaratish",
+    "updateWorkerApplication": "Ariza tahrirlash",
+    "lastVacationTitle": "Oxirgi ta'til ma'lumotlari",
+    "lastPeriod": "Ta'til davri : ",
+    "lastPDate": "Tatil sanasi : ",
+
+
     "createTitle": "Ariza uchun havola yaratish",
     "updateTitle": "Bayram kunini tahrirlash",
     "form": {
@@ -927,8 +987,29 @@
       "generateLink": "Havola yaratish",
       "phones": "Tefefon raqam",
       "number": "Raqami",
+      "worker_position_id": "Lavozim",
+      "confirmations": "Tasdiqlovchilar",
+      "period_from": "Ta'til davri (dan)",
+      "period_to": "Ta'til davri (gacha)",
+      "from": "Ta'tilga chiqish sanasi",
+      "to": "Ta'tildan qaytish sanasi",
+      "temporarily_absent": "Ta'tildagi xodimlar",
+      "reason": "Sabab",
+      "from_time": "Vaqt (dan)",
+      "to_time": "Vaqt (gacha)",
+      "education_type": "Ta'lim shakli",
+      "univer_number": "Xat raqami",
+      "univer_date": "Xat sanasi",
+      "contract_to_date": "Bekor qilish sanasi",
       "from_date": "Qachondan"
     },
+    "step": {
+      "stepOne": "Ariza turi",
+      "stepTwo": "Ariza ma'lumotlari",
+      "stepThree": "Holati"
+    },
+    "succeedApplication": "Ariza muvofaqiyatli yuborildi!",
+    "applicationTime": "Arizangiz 15 kalendar ish kuni davomida ko'rib chiqiladi!",
     "client": {
       "name": "Ariza yozish",
       "user": "Arizani qabul qiluvchi shaxs",

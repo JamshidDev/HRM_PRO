@@ -1,22 +1,22 @@
-import axios from 'axios';
+import axios from 'axios'
+import {AppPaths, useAppSetting} from "@/utils/index.js"
+import router from '../router/index'
+import Utils from "@/utils/Utils.js"
+
 const apiUrl = import.meta.env.VITE_API_URL;
 
-import router from '../router/index';
-import Utils from "@/utils/Utils.js"
-import i18n from "@/i18n/index.js";
 
 const instance = axios.create({
-    baseURL: `${apiUrl}/api`,
+    baseURL: `${apiUrl}/api`
 });
 
 instance.interceptors.request.use(function (config) {
-    const locale = i18n.global.locale
-    let token = localStorage.getItem('token') ? localStorage.getItem('token') : null;
+    let token = localStorage.getItem(useAppSetting.tokenKey) || null;
+    config.headers['Accept-Language'] = localStorage.getItem(useAppSetting.languageKey) || useAppSetting.defaultLanguage
+    config.headers['Access-Control-Allow-Origin'] = '*'
     if (token) {
         config.headers['Authorization'] = 'Bearer ' + token
-        config.headers['Accept-Language'] = locale
     }
-
     return config;
 })
 
@@ -34,11 +34,11 @@ instance.interceptors.response.use(
             $Toast.error(error.response.data.message)
         }
         if(error.response?.status===401){
-            if(!(error.response.request.responseURL.includes('/profile'))){
+            if(!(error.response.request.responseURL.includes(AppPaths.Profile))){
                 $Toast.error(error.response.data.message)
             }
 
-            router.push("/login")
+            router.push(AppPaths.Login)
         }else if(error.response?.status===422){
             if(Array.isArray(error.response.data.detail)){
                 error.response.data.detail.forEach((item, index) => {

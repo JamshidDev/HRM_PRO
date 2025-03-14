@@ -98,7 +98,6 @@ const onSelectEv = (v)=>{
         </tbody>
       </n-table>
       <UIPagination
-          v-show="store.list.length>10"
           :page="store.params.page"
           :per_page="store.params.size"
           :total="store.totalItems"

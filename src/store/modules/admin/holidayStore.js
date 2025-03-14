@@ -51,7 +51,6 @@ export const useHolidayStore = defineStore('holidayStore', {
             $ApiService.holidayService._create({data}).then((res)=>{
                 this.visible = false
                 this._index()
-                $Toast.success(t('message.successDone'))
             }).finally(()=>{
                 this.saveLoading = false
             })
@@ -66,7 +65,6 @@ export const useHolidayStore = defineStore('holidayStore', {
             $ApiService.holidayService._update({data, id:this.elementId}).then((res)=>{
                 this.visible = false
                 this._index()
-                $Toast.success(t('message.successDone'))
             }).finally(()=>{
                 this.saveLoading = false
             })
@@ -75,7 +73,6 @@ export const useHolidayStore = defineStore('holidayStore', {
             this.deleteLoading = true
             $ApiService.holidayService._delete({id:this.elementId}).then((res)=>{
                 this._index()
-                $Toast.success(t('message.successDone'))
             }).finally(()=>{
                 this.deleteLoading = false
             })

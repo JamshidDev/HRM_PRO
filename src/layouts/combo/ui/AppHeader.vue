@@ -15,7 +15,7 @@ const onClick = ()=>{
 </script>
 
 <template>
-<div class="app_header flex justify-between items-center p-4">
+<div class="app_header bg-surface-section flex justify-between items-center p-4">
   <div class="flex">
     <div
         @click="onClick"
@@ -23,7 +23,7 @@ const onClick = ()=>{
       <i class='bx bx-chevrons-left text-surface-section text-xl rotate-180'></i>
     </div>
   </div>
-  <div class="flex justify-end gap-4">
+  <div class="flex justify-end items-center gap-4">
     <LangDropdown/>
     <UIProfile/>
   </div>

@@ -1,7 +1,7 @@
 
 import {defineStore} from "pinia"
 import router from "@/router/index.js"
-import {AppPaths} from "@/utils/index.js"
+import {AppPaths, useAppSetting} from "@/utils/index.js"
 import {useAccountStore} from "@/store/modules/index.js"
 
 export const useLoginStore = defineStore("loginStore", {
@@ -22,7 +22,7 @@ export const useLoginStore = defineStore("loginStore", {
                 password:this.password,
             }
             $ApiService.authService._login({data}).then((res)=>{
-                localStorage.setItem('token',res.data.access_token)
+                localStorage.setItem(useAppSetting.tokenKey,res.data.access_token)
                 accountStore._index()
                 router.push(AppPaths.Admin)
             }).finally(()=>{

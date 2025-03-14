@@ -1,84 +1,892 @@
 {
   "content": {
-    "action": "Amallar",
-    "add": "Qo'shish",
-    "cancel": "Bekor qilish",
-    "date": "Sana",
-    "enterField": "Kiriting",
-    "filterSetting": "Filter sozlamalar",
-    "fullName": "Ism",
-    "help": "Yordam",
-    "langEn": "English",
-    "langRu": "Russian",
-    "langUz": "Uzbek",
-    "news": "Yangi",
+    "requiredField": "Field is required!",
+    "save": "Save",
+    "edit": "Edit",
+    "delete": "Delete",
+    "view": "View",
+    "copy": "Copy",
+    "download": "Download",
+    "attachment": "Attach",
+    "no-data": "No data",
+    "cancel": "Cancel",
+    "help": "Help",
+    "enterField": "Enter",
+    "phone": "Phone number",
+    "langUz": "UZB",
+    "langRu": "RUS",
+    "langEn": "ENG",
+    "search": "Search",
+    "add": "Add",
+    "filterSetting": "Filter settings",
+    "news": "New",
+    "action": "Actions",
+    "fullName": "Full name",
     "number": "№",
-    "phone": "Telefon raqam",
-    "photo": "Rasm",
-    "platform": "Platforma",
-    "requiredField": "Maydon to'ldirilishi shart!",
-    "save": "Saqlash",
-    "search": "Qidiruv"
+    "photo": "Photo",
+    "platform": "Platform",
+    "date": "Date",
+    "name": "Name",
+    "description": "Description",
+    "confirmDelete": "Are you sure you want to delete?",
+    "yes": "Yes",
+    "no": "No",
+    "notFoundData": "Data not found!",
+    "noResultYourRequest": "No results found for your request...",
+    "back": "Back",
+    "profile": "Profile",
+    "setting": "Settings",
+    "logOutSystem": "Log out",
+    "paginationSize": "Show {n} items",
+    "confirm": "Confirm",
+    "month": "Month",
+    "or": "Or",
+    "send": "Send",
+    "file": "File",
+    "choose": "Choose",
+    "chooseFile": "Choose file",
+    "signatureLogin": "Login via e-signature",
+    "signatureDocument": "Sign and save",
+    "closeSignatureModal": "Close signature window",
+    "clear": "Clear",
+    "continue": "Continue",
+    "close": "Close",
+    "open": "Open",
+    "hide": "Hide",
+    "closeAndClear": "Close and clear",
+    "notWorker": "Employee not found",
+    "worker": "Employee",
+    "status": "Status",
+    "Process": "In process",
+    "Read": "Reviewed",
+    "Success": "Approved",
+    "Rejected": "Rejected",
+    "Deleted": "Deleted",
+    "Active": "Active",
+    "DeActive": "Inactive",
+    "message": "Write a message...",
+    "no-message": "No conversations yet",
+    "type": "Type",
+    "organization": "Organization",
+    "upload": "Upload file",
+    "attachFile": "Attach file",
+    "document": "Document",
+    "checking": "Checking...",
+    "downloadCV": "Download CV",
+    "deleteWarning": "Are you sure you want to delete?",
+    "sum": "Sum",
+    "total": "Total: {n}",
+    "next": "Next"
   },
-  "loginPage": {
-    "doYouHaveAccount": "Sizda hisob yo'qmi?",
-    "email": "Email",
-    "login": "Kirish",
-    "password": "Parol",
-    "singUp": "Ro'yhatdan o'tish",
-    "title": "Xush kelibsiz!"
-  },
-  "navigation": {
-    "category": "Categories",
-    "client": "Clients",
-    "product": "Products"
-  },
-  "registerPage": {
-    "firstName": "Ism",
-    "lastName": "Familiya",
-    "title": "Ro'yhatdan o'tish"
+  "month": {
+    "january": "January",
+    "february": "February",
+    "march": "March",
+    "april": "April",
+    "may": "May",
+    "june": "June",
+    "july": "July",
+    "august": "August",
+    "september": "September",
+    "october": "October",
+    "november": "November",
+    "december": "December"
   },
   "rules": {
-    "login": "Email kiritilishi shart!",
-    "password": "Parol kiritilishi shart!",
-    "requiredField": "Maydon to'ldirilishi shart!"
+    "login": "Email is required!",
+    "phone": "Phone number is required!",
+    "password": "Password is required!",
+    "requiredField": "Field is required!",
+    "requiredWorker": "Employee selection is required!",
+    "requiredImageField": "Image upload is required!",
+    "requiredMinLength": "Must be at least {n} characters",
+    "requiredMaxLength": "Must not exceed {n} characters",
+    "unExpectedFormat": "Invalid data format!",
+    "requiredJSHSHIR": "Passport JSHSHIR is required!",
+    "enterOverNumber": "Enter a number greater than {n}"
   },
-  "service": {
-    "createMarket": {
-      "description": "Kompaniya haqida qisqacha ma'lumot",
-      "imageRequired": "Yuklanayotgan rasm (.png) fromatda yuklashi kerak va uning o'lchami 2MB dan katta bo'lmasligi kerak.",
-      "logo": "Kompaniya logosi",
-      "name": "Kompaniya nomi",
-      "token": "Telegram bot token",
-      "tokenDescription": "Qanday qilib telegram bot token olish?"
+  "message": {
+    "successDone": "Successfully completed",
+    "requiredSignature": "Signature field must not be empty!",
+    "clearedFields": "Fields cleared!",
+    "unExpectedError": "An unexpected error occurred!",
+    "warning-data": "Insufficient data!"
+  },
+  "account": {
+    "changeAccount": "Change account!",
+    "changeRoleConfirm": "To log out of this account and switch to another, select the desired account and wait 20 seconds"
+  },
+  "sidebar": {
+    "hrm": "Employee menu",
+    "admin": "Admin menu",
+    "chat": "Chat menu",
+    "docflow": "Document menu",
+    "lms": "Certification menu"
+  },
+  "loginPage": {
+    "name": "Welcome",
+    "title": "HRM PRO",
+    "subtitle": "HRM platform of Uzbekistan Railways JSC",
+    "phone": "Phone number",
+    "password": "Password",
+    "doYouHaveAccount": "Don't have an account?",
+    "singUp": "Sign up",
+    "login": "Login"
+  },
+  "registerPage": {
+    "name": "Registration",
+    "title": "Registration",
+    "subtitle": "Verification",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "middleName": "Middle name",
+    "pin": "Passport JSHSHIR",
+    "doYouHaveAccount": "Already have an account?",
+    "loginToSystem": "Log in to the system!",
+    "otp": "Code",
+    "verification": "We have sent a verification code to your phone number {n} via SMS.",
+    "reSendOtp": "Get a new verification code",
+    "getOtp": "Get code"
+  },
+  "verificationEmail": {
+    "title": "Account verification",
+    "subtitle": "We have sent a verification code to your email address {email}",
+    "placeholder": "Enter the code here",
+    "verification": "Verify"
+  },
+  "userPermission": {
+    "name": "Permissions",
+    "createTitle": "Add permission",
+    "updateTitle": "Edit permission",
+    "form": {
+      "name": "Permission name"
+    }
+  },
+  "userRole": {
+    "name": "Roles",
+    "createTitle": "Add role",
+    "updateTitle": "Edit role",
+    "form": {
+      "name": "Role name",
+      "permissions": "Permissions"
+    }
+  },
+  "userPage": {
+    "name": "Users"
+  },
+  "confirmation": {
+    "name": "Contracts",
+    "contract": {
+      "form": {
+        "number": "Number",
+        "type": "Type",
+        "organization": "Organization",
+        "worker": "Employee"
+      }
+    }
+  },
+  "countryPage": {
+    "name": "Countries",
+    "createTitle": "Add country",
+    "updateTitle": "Edit country",
+    "form": {
+      "name": "Country name",
+      "coordinates": "Select country center"
+    }
+  },
+  "regionPage": {
+    "name": "Regions",
+    "createTitle": "Add region",
+    "updateTitle": "Edit region",
+    "form": {
+      "name": "Region",
+      "coordinates": "Select region center",
+      "country": "Country"
+    }
+  },
+  "districtPage": {
+    "name": "Districts",
+    "createTitle": "Add district",
+    "updateTitle": "Edit district",
+    "form": {
+      "name": "District",
+      "coordinates": "Select district center",
+      "region": "Region"
+    }
+  },
+  "nationalityPage": {
+    "name": "Nationalities",
+    "createTitle": "Add nationality",
+    "updateTitle": "Edit nationality",
+    "form": {
+      "name": "Nationality"
+    }
+  },
+  "profilePage": {
+    "tabs": {
+      "profileInfo": "Account details",
+      "notification": "Notifications",
+      "secure": "Security",
+      "actionHistory": "Action history"
     },
-    "marketSetting": {
-      "address": "To'liq manzil",
-      "contactPhone": "Bo'g'lanish uchun telefon raqam",
-      "language": "Dasturning foydalanish tillari tanlang",
-      "mapAddress": "Xaritadan market adressini belgilang"
+    "form": {
+      "lastName": "Last name",
+      "fistName": "First name",
+      "middleName": "Middle name",
+      "password": "Password",
+      "confirmPassword": "Confirm password"
+    }
+  },
+  "positionPage": {
+    "name": "Positions",
+    "createTitle": "Add position",
+    "updateTitle": "Edit position",
+    "form": {
+      "name": "Position name (uz)",
+      "name_ru": "Position name (ru)",
+      "classification_index": "Classification index",
+      "classification_code": "Classification code"
+    }
+  },
+  "organizationPage": {
+    "name": "Organizations",
+    "createTitle": "Add organization",
+    "updateTitle": "Edit organization",
+    "form": {
+      "parent_id": "Select organization",
+      "name": "Organization name",
+      "full_name": "Full organization name",
+      "level": "Organization type"
     },
-    "next": "Keyingi",
-    "previous": "Oldingi",
+    "selectedOrg": "Selected organization",
+    "deleteContent": "Are you sure you want to delete this organization?"
+  },
+  "workerPage": {
+    "name": "Employees",
+    "filter": {
+      "contract": "Create contract"
+    },
+    "checkWorker": {
+      "title": "Search employee",
+      "defaultText": "Start searching...",
+      "no-worker": "Employee not found in the system!",
+      "born": "Date of birth",
+      "addCandidate": "Add candidate",
+      "add-worker": "Add details of an employee not in the system via the candidate addition button",
+      "jshshir": "Enter JSHSHIR"
+    },
+    "table": {
+      "department": "Department",
+      "contractType": "Contract type",
+      "group": "Group",
+      "rank": "Rank",
+      "rate": "Rate",
+      "position_date": "Position date",
+      "birthday": "Date of birth",
+      "position": "Position"
+    }
+  },
+  "contactPage": {
+    "name": "Contacts"
+  },
+  "documentHistoryPage": {
+    "name": "Document history"
+  },
+  "examPage": {
+    "name": "Exams"
+  },
+  "workerProfile": {
+    "tabs": {
+      "personal": "Personal",
+      "education": "Education",
+      "career": "Career",
+      "relative": "Relatives",
+      "others": "Others"
+    },
+    "personal": {
+      "additionalContract": "Create additional agreement",
+      "createOrder": "Create order",
+      "positionGroup": "Position group",
+      "positionRank": "Position rank",
+      "positionRate": "Position rate",
+      "no-passport": "Passport details not uploaded!"
+    },
+    "position": {
+      "contractType": "Contract type",
+      "contractNumber": "Contract number",
+      "contractDate": "Contract date",
+      "contractToDate": "Contract duration",
+      "positionDate": "Position date",
+      "position": "Position",
+      "title": "Position details"
+    }
+  },
+  "departmentPage": {
+    "name": "Departments",
+    "createTitle": "Add department",
+    "updateTitle": "Edit department",
+    "form": {
+      "parent_id": "Select department",
+      "name": "Department name",
+      "level": "Department type"
+    },
+    "selectedOrg": "Selected organization",
+    "deleteContent": "Are you sure you want to delete this organization?"
+  },
+  "departmentPositionPage": {
+    "name": "Positions",
+    "createTitle": "Assign position to department",
+    "updateTitle": "Edit position",
+    "form": {
+      "position_id": "Select position",
+      "department_id": "Select department",
+      "group": "Position group",
+      "rank": "Rank for position",
+      "max_rank": "Maximum rank for position",
+      "rate": "Position contingent",
+      "salary": "Monthly salary",
+      "experience": "Work experience (months)",
+      "educations": "Minimum required education"
+    },
+    "table": {
+      "position": "Position",
+      "group": "Group",
+      "rank": "Rank",
+      "rate": "Contingent",
+      "salary": "Monthly salary",
+      "department": "Department",
+      "education": "Education",
+      "experience": "Experience"
+    }
+  },
+  "createWorkerPage": {
+    "name": "Add employee details",
+    "ui": {
+      "image": "It is recommended to add 3 photos of the candidate. Photos must be taken within the last 3 months.",
+      "phone": "Specify the candidate's primary number, which will serve as the login for system access as an employee."
+    },
+    "form": {
+      "lastName": "Last name",
+      "firstName": "First name",
+      "middleName": "Middle name",
+      "country": "Country of birth",
+      "region": "Region of birth",
+      "city": "District of birth",
+      "currentRegion": "Region of residence",
+      "currentCity": "District of residence",
+      "birthday": "Date of birth",
+      "academicTitle": "Academic title",
+      "academicDegree": "Academic degree",
+      "nationality_id": "Nationality",
+      "party": "Party affiliation",
+      "pin": "Passport JSHSHIR",
+      "serial_number": "Serial and number",
+      "from_date": "Issue date",
+      "to_date": "Expiration date",
+      "passport_address": "Place of issue",
+      "passport_file": "Passport copy (.pdf)",
+      "inn": "TIN",
+      "marital_status": "Marital status",
+      "address": "Address of residence"
+    },
     "step": {
-      "four": "Mahsulot qo'shish",
-      "one": "Market yaratish",
-      "three": "Kategoriya qo'shish",
-      "two": "Marketni sozlash"
+      "personal": "Candidate's personal details",
+      "photo": "Candidate's photo",
+      "pasport": "Candidate's passport details",
+      "phone": "Candidate's phone details"
+    },
+    "toast": {
+      "warning": {
+        "title": "Employee already exists in the system",
+        "subtitle": "No comment"
+      },
+      "success": {
+        "title": "Candidate added to the system",
+        "subtitle": "Click the 'Continue' button to conclude an employment contract with the candidate."
+      }
+    }
+  },
+  "signature": {
+    "keyType": "User type",
+    "inn": "TIN",
+    "undo": "Back",
+    "certificate": "Certificate number",
+    "validDate": "Validity period",
+    "expiredKey": "Key has expired!",
+    "legalPerson": "Legal entity",
+    "naturalPerson": "Individual",
+    "connectionError": "E-signature not installed or configured incorrectly!",
+    "copyLink": "Copy link",
+    "copied": "Link copied",
+    "goSignature": "Sign",
+    "signatureTitle": "Sign document electronically!",
+    "signatureWorker": "Signature link created for {name}. The document is valid only if signed electronically by {name}.",
+    "linkText": "Document link",
+    "pinfl": "JSHSHIR"
+  },
+  "documentPage": {
+    "name": "Documents",
+    "createTitle": "Create contract",
+    "updateTitle": "Edit contract",
+    "tabs": {
+      "contract": "Contracts",
+      "adContract": "Additional agreement",
+      "command": "Orders"
+    },
+    "command": {
+      "createTitle": "Create order",
+      "updateTitle": "Edit order",
+      "form": {
+        "command_date": "Order date",
+        "type": "Order type",
+        "byContract": "Based on contract № {n}",
+        "confirm": "Approvers",
+        "director_id": "Director",
+        "day": "Day",
+        "from": "Vacation start date",
+        "period_from": "Vacation period (from)",
+        "period_to": "Vacation period (to)",
+        "to": "Vacation end date",
+        "work_day": "Work start date",
+        "main_day": "Main vacation day",
+        "second_day": "Additional vacation day",
+        "additionals": "Additions",
+        "calculateVacation": "Calculate vacation",
+        "no-calculate": "Vacation days not calculated!",
+        "all_day": "Vacation day",
+        "contract_to_date": "Contract end date",
+        "isNotValid": "Insufficient data to calculate vacation!",
+        "isNotCalculate": "Employee vacation data not calculated!",
+        "notSelectCommand": "Select order type and proceed!",
+        "removeWorker": "Remove from list",
+        "calculateTitle": "Calculated vacation data. You can edit if you find them incorrect",
+        "command_number": "Order number"
+      }
+    },
+    "form": {
+      "candidate": "Employee",
+      "contractDate": "Contract date",
+      "contractNumber": "Contract number",
+      "tableNumber": "Table number",
+      "type": "Contract type",
+      "documentExampleId": "Document template",
+      "department": "Department",
+      "position": "Position",
+      "positionStatus": "Hiring to main staff",
+      "salary": "Monthly salary",
+      "group": "Group",
+      "rank": "Position rank",
+      "rate": "Rate",
+      "postName": "Full position name",
+      "director": "Director",
+      "contract_to_date": "Contract duration",
+      "position_date": "Work start date",
+      "vacation_main_day": "Main vacation day",
+      "additional_vacation_day": "Additional vacation day",
+      "probation": "Probation period",
+      "schedule_id": "Work schedule",
+      "command_type": "Order type",
+      "worker": "Select employee",
+      "command_status": "Mark to create an order based on the contract",
+      "organization": "Organization"
+    },
+    "signature": {
+      "history": "View change history",
+      "viewer": "Document reviewers",
+      "files": "Document files",
+      "status": {
+        "Process": "In process"
+      }
+    }
+  },
+  "confirmationPage": {
+    "name": "Approvers",
+    "createTitle": "Add approver",
+    "updateTitle": "Edit approver",
+    "table": {
+      "worker": "Employee",
+      "full_position": "Full position name (with organization name)",
+      "level": "Type",
+      "position": "Position"
+    }
+  },
+  "contractPage": {
+    "name": "Contracts",
+    "table": {
+      "number": "Number",
+      "type": "Type",
+      "worker": "Employee",
+      "date": "Date",
+      "organization": "Organization",
+      "command": "Order",
+      "status": "Status"
+    },
+    "statuses": {
+      "confirm": "Confirm"
+    },
+    "confirmText": "Create an order based on contract № {n}?",
+    "confirmAdText": "Create an order based on additional agreement № {n}?"
+  },
+  "chatWindow": {
+    "name": "Chat"
+  },
+  "adContractPage": {
+    "createTitle": "Create additional agreement",
+    "updateTitle": "Edit additional agreement",
+    "name": "Additional agreement"
+  },
+  "documentSetting": {
+    "name": "Document settings",
+    "createTitle": "Upload contract template",
+    "updateTitle": "Edit contract template",
+    "command": {
+      "createTitle": "Upload order template",
+      "updateTitle": "Edit order template"
+    },
+    "tabs": {
+      "contract": "Contract template",
+      "command": "Order template",
+      "service": "Services"
+    },
+    "form": {
+      "count": "{n} items",
+      "organization": "Number of organizations",
+      "organizations": "Organizations",
+      "type": "Contract type",
+      "commandType": "Order type",
+      "file": "Template file",
+      "name": "Document name"
+    }
+  },
+  "schedulePage": {
+    "name": "Work schedule",
+    "createTitle": "Add schedule",
+    "updateTitle": "Edit schedule",
+    "form": {
+      "type": "Schedule type",
+      "name_ru": "Name (ru)",
+      "name": "Name"
+    }
+  },
+  "workdayPage": {
+    "name": "Workdays",
+    "createTitle": "Add workday",
+    "updateTitle": "Edit workday",
+    "form": {
+      "schedule_id": "Work schedule",
+      "day_of_week": "Day of the week",
+      "start_time": "Start time",
+      "end_time": "End time",
+      "type": "Type"
+    }
+  },
+  "othersPage": {
+    "name": "Others",
+    "language": {
+      "createTitle": "Add language",
+      "updateTitle": "Edit language",
+      "form": {
+        "name": "Language name"
+      }
+    },
+    "university": {
+      "createTitle": "Add university",
+      "updateTitle": "Edit university",
+      "form": {
+        "name_ru": "University name (ru)",
+        "region_id": "Located region",
+        "education": "Education type",
+        "name": "University name"
+      }
+    },
+    "speciality": {
+      "createTitle": "Add specialty",
+      "updateTitle": "Edit specialty",
+      "form": {
+        "name_ru": "Specialty name (ru)",
+        "name": "Specialty name"
+      }
+    },
+    "tabs": {
+      "university": "Universities",
+      "speciality": "Specialties",
+      "language": "Languages"
+    },
+    "form": {
+      "name": "Language"
+    }
+  },
+  "serviceOrgPage": {
+    "createTitle": "Upload template",
+    "updateTitle": "Edit template",
+    "form": {
+      "signature": "Electronic signature",
+      "organization": "Number of organizations",
+      "organizations": "Organizations",
+      "type": "Contract type",
+      "file": "Template file",
+      "name": "Document name"
+    }
+  },
+  "actionLog": {
+    "name": "Action history",
+    "tab": {
+      "action": "Action history",
+      "auth": "Login history"
+    },
+    "table": {
+      "status": "Action type",
+      "owner": "Owner",
+      "detail": "Details",
+      "ip": "IP address",
+      "agent": "Agent",
+      "loginAt": "Login time",
+      "logoutAt": "Logout time",
+      "structure": "Organizations"
+    },
+    "status": {
+      "created": "Created",
+      "updated": "Updated",
+      "deleted": "Deleted",
+      "subject_type": "Model",
+      "sign-in": "System login"
+    }
+  },
+  "relativePage": {
+    "createTitle": "Add relative details",
+    "updateTitle": "Edit relative details",
+    "tab": {
+      "worker": "Railway worker",
+      "notWorker": "Other profession"
+    },
+    "form": {
+      "birth_place": "Place of birth",
+      "post_name": "Position",
+      "birthdayPlace": "Date and place of birth",
+      "relative": "Relationship"
+    },
+    "title": "Close relative details",
+    "no-data": "No close relatives added!"
+  },
+  "partyPage": {
+    "createTitle": "Add party affiliation details",
+    "updateTitle": "Edit party affiliation details",
+    "form": {
+      "to_date": "Until when",
+      "from_date": "From when",
+      "party": "Party affiliation"
+    },
+    "title": "Party affiliation details",
+    "no-data": "Party affiliation not added!"
+  },
+  "militaryPage": {
+    "createTitle": "Add military record details",
+    "updateTitle": "Edit military record details",
+    "form": {
+      "status": "Status",
+      "name": "Name",
+      "speciality": "Military specialty",
+      "commissariat": "Commissariat name by residence",
+      "number": "Number"
+    },
+    "title": "Military record details",
+    "no-data": "Military record not added!"
+  },
+  "academicTitlePage": {
+    "createTitle": "Add academic title details",
+    "updateTitle": "Edit academic title details",
+    "form": {
+      "type": "Type",
+      "file": "Academic title document"
+    },
+    "title": "Academic title details",
+    "no-data": "Academic title not added!"
+  },
+  "academicDegreePage": {
+    "createTitle": "Add academic degree details",
+    "updateTitle": "Edit academic degree details",
+    "form": {
+      "type": "Type",
+      "file": "Academic degree document"
+    },
+    "title": "Academic degree details",
+    "no-data": "Academic degree not added!"
+  },
+  "oldCareerPage": {
+    "createTitle": "Add work experience",
+    "updateTitle": "Edit work experience",
+    "form": {
+      "from_date": "From when",
+      "post_name": "Position",
+      "to_date": "Until when"
+    },
+    "title": "Work experience details",
+    "no-data": "Work experience not added!"
+  },
+  "languagePage": {
+    "createTitle": "Add language details",
+    "updateTitle": "Edit language details",
+    "form": {
+      "certificateFile": "Certificate file"
+    },
+    "title": "Language details",
+    "no-language": "No language details available!"
+  },
+  "universityPage": {
+    "createTitle": "Add university details",
+    "updateTitle": "Edit university details",
+    "form": {
+      "university_id": "University",
+      "speciality_id": "Specialty",
+      "from_date": "From when",
+      "to_date": "Until when",
+      "file": "Click to upload"
+    },
+    "title": "University details",
+    "no-language": "No university details available!"
+  },
+  "topicDetailsPage": {
+    "categories": {
+      "createTitle": "Add category",
+      "form": {
+        "attach": "Attach"
+      },
+      "name": "Categories",
+      "updateTitle": "Edit category"
+    },
+    "files": {
+      "createTitle": "Add file",
+      "name": "Resources",
+      "updateTitle": "Edit file"
+    },
+    "exams": {
+      "createTitle": "Add exam creation",
+      "name": "Exams",
+      "updateTitle": "Edit exam",
+      "deadline": "Completion date",
+      "toWhom": "To whom",
+      "minute": "Duration in minutes",
+      "variants": "Number of variants",
+      "isActive": "Activity status",
+      "positions": "Positions",
+      "organizations": "Organizations",
+      "workers": "Employees",
+      "categories": "Categories",
+      "questionCount": "Number of questions: ({n})",
+      "attachQuestion": "Attach question",
+      "count": "Total exams: {n}"
+    },
+    "questions": {
+      "createTitle": "Add question",
+      "name": "Questions",
+      "updateTitle": "Edit question"
+    }
+  },
+  "topicFiles": {
+    "addFile": "Add file",
+    "editFile": "Edit file",
+    "header": {
+      "active": "Activity status",
+      "file": "File name",
+      "fileType": "File type"
+    },
+    "isActive": "Activity status"
+  },
+  "topicPage": {
+    "createTitle": "Add topic",
+    "name": "Topics",
+    "updateTitle": "Edit topic"
+  },
+  "workerView": {
+    "general": {
+      "name": "Personal details",
+      "passportName": "Passport details",
+      "fullName": "Full name",
+      "passportNumber": "Passport series",
+      "passportJSHSHIR": "JSHSHIR",
+      "fromDate": "Issue date",
+      "toDate": "Expiration date",
+      "who": "Place of issue",
+      "phone": "Phone number",
+      "birthday": "Date of birth",
+      "maritalStatus": "Marital status",
+      "address": "Address of residence",
+      "birthdayRegion": "Region of birth",
+      "birthdayCity": "District of birth",
+      "liveRegion": "Region of residence",
+      "liveCity": "District of residence",
+      "academicTitle": "Academic title",
+      "academicDegree": "Academic degree",
+      "part": "Party affiliation",
+      "inn": "TIN",
+      "nationality": "Nationality",
+      "position": "Position",
+      "department": "Department",
+      "salary": "Monthly salary",
+      "country": "Country of birth"
+    },
+    "tabs": {
+      "general": "General details",
+      "career": "Work experience",
+      "relative": "Close relatives",
+      "med": "Medical examination details",
+      "vacation": "Vacation details",
+      "incentive": "Incentives",
+      "attestation": "Certification",
+      "checkSkill": "Skill assessment",
+      "checkKnowledge": "Knowledge assessment",
+      "punishment": "Disciplinary penalties"
     }
   },
   "categoryPage": {
-    "createCategory": "",
-    "editCategory": "",
-    "name": ""
+    "createCategory": "Create category",
+    "editCategory": "Edit category",
+    "name": "Categories",
+    "addQuestion": "Add question",
+    "questionCount": "Number of questions"
   },
-  "topicFiles": {
-    "isActive": ""
+  "questionPage": {
+    "form": {
+      "question": "Question",
+      "options": "Options",
+      "enterQuestion": "Enter question",
+      "enterOption": "Enter option",
+      "addOption": "Add option"
+    },
+    "title": "Questions",
+    "rules": {
+      "minOptions": "At least 3 options are required!",
+      "chooseCorrectAnswer": "Select the correct answer!"
+    }
   },
-  "verificationEmail": {
-    "placeholder": "Bu yerga kodni yozing",
-    "subtitle": "Biz sizning pochta manzilingizga tasdiqlash kodini yubordik {email}",
-    "title": "Hisobni tadiqlash",
-    "verification": "Tasdiqlash"
+  "holidayPage": {
+    "name": "Holidays",
+    "createTitle": "Add holiday",
+    "updateTitle": "Edit holiday",
+    "form": {
+      "name": "Holiday name",
+      "holiday_date": "Holiday date",
+      "type": "Holiday type"
+    }
+  },
+  "applicationPage": {
+    "name": "Applications",
+    "createTitle": "Create application link",
+    "updateTitle": "Edit holiday",
+    "form": {
+      "director_id": "Director",
+      "type": "Application type",
+      "work_type": "Work type",
+      "generateLink": "Generate link",
+      "phones": "Phone number",
+      "number": "Number",
+      "from_date": "From when"
+    },
+    "client": {
+      "name": "Write application",
+      "user": "Application recipient",
+      "sendApp": "Send application",
+      "type": "Application type"
+    }
   }
 }

@@ -35,7 +35,6 @@ const getMyLocation =()=>{
 }
 
 const timeToZone = (time)=>{
-    // return time? dayjs(time).format('YYYY-MM-DDTHH:mm:ssZ') : null
     return time? dayjs(time).format('YYYY-MM-DD') : null
 }
 
@@ -52,6 +51,19 @@ const timeOnlyHour = (time)=>{
 const timeOnlyYear = (time)=>{
     return time? dayjs(time).format('YYYY') : null
 }
+
+const datePickerFormatter = (time)=>{
+    return time? new Date(time).getTime() : null
+}
+
+const timePickerFormatter = (time)=>{
+    if(!time) return null
+    let date = new Date()
+    let [hour, min] = time.toString().split(":")
+    date.setHours(Number(hour), Number(min), 0)
+    return  date.getTime()
+}
+
 const timeOnlyMonth = (time)=>{
     return time? dayjs(time).format('M') : null
 }
@@ -122,6 +134,7 @@ const methodTypes = {
 }
 const ActionTypes = {
     open:"open",
+    attachment:"attachment",
     view:"view",
     edit:"edit",
     download:"download",
@@ -221,6 +234,8 @@ export default {
     timeOnlyDate,
     timeOnlyHour,
     timeOnlyMonth,
+    datePickerFormatter,
+    timePickerFormatter,
     noAvailableImage,
     routePathMaker,
     routeHrmPathMaker,

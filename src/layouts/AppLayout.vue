@@ -5,8 +5,10 @@ import Combo from "./combo/Combo.vue";
 import Empty from "./empty/Empty.vue";
 import {useAccountStore} from "@/store/modules/app/accountStore.js";
 import {navigations, otherNavigations} from "@/layouts/data/navigations.js"
+import i18n from "@/i18n/index.js"
 
 
+const {t} = i18n.global
 const route = useRoute()
 const store = useAccountStore()
 const isLoadApp = ref(false)
@@ -24,7 +26,7 @@ watchEffect(()=>{
   const list = navigations.flatMap((v)=>(v.children))
   const currentItem = [...list, ...otherNavigations].filter((v)=>v.path === route.path)
   if(currentItem.length>0){
-    window.document.title ="HRM PRO | " + currentItem[0].label
+    window.document.title ="HRM PRO | " + t(currentItem[0].label)
   }
 })
 

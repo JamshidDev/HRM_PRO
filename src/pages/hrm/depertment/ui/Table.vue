@@ -2,6 +2,8 @@
 import {NoDataPicture, UIActionButton, UIPagination} from "@/components/index.js"
 import {useDepartmentStore} from "@/store/modules/index.js"
 import {FlowchartCircle24Regular, Circle48Regular} from "@vicons/fluent"
+import MenuButton from "@/components/buttons/MenuButton.vue"
+import Utils from "@/utils/Utils.js"
 
 const store = useDepartmentStore()
 
@@ -55,6 +57,16 @@ const onAdd = (v)=>{
 const changePage = (v)=>{
   emits('onChangePage', v)
 }
+
+const onSelectEv = (v)=>{
+  if(v.key === Utils.ActionTypes.edit){
+    onEdit(v.data)
+  }else if (v.key === Utils.ActionTypes.delete){
+    onDelete(v.data)
+  }else if(v.key === Utils.ActionTypes.attachment){
+    onAdd(v.data)
+  }
+}
 </script>
 
 
@@ -72,7 +84,7 @@ const changePage = (v)=>{
           <th class="min-w-[30px] w-[30px]"></th>
           <th class="min-w-[200px]">{{$t('departmentPage.form.name')}}</th>
           <th class="min-w-[100px] w-[200px]">{{$t('departmentPage.form.level')}}</th>
-          <th class="min-w-[90px] w-[90px]">{{$t('content.action')}}</th>
+          <th class="min-w-[40px] w-[40px]"></th>
         </tr>
         </thead>
         <tbody>
@@ -102,13 +114,11 @@ const changePage = (v)=>{
           <td>{{item.name}}</td>
           <td>{{item.level.name}}</td>
           <td>
-            <UIActionButton
-                visible-add-btn
+            <MenuButton
                 :data="item"
-                :loading-delete="item.id === store.elementId && store.deleteLoading"
-                @on-edit="onEdit"
-                @on-delete="onDelete"
-                @on-add="onAdd"
+                :show-edit="true"
+                :show-attachment="true"
+                @selectEv="onSelectEv"
             />
           </td>
         </tr>

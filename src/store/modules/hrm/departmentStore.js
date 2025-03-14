@@ -26,7 +26,7 @@ export const useDepartmentStore = defineStore('departmentStore', {
         parentElement:null,
         tabList:[
             {
-                name:'Asosiy',
+                name:t('content.main'),
                 key:1,
                 parentId:null,
             }
@@ -62,7 +62,6 @@ export const useDepartmentStore = defineStore('departmentStore', {
             this.saveLoading = true
             let data = {...this.payload}
             $ApiService.departmentService._create({data}).then((res)=>{
-                $Toast.success(t('message.successDone'))
                 this.visible = false
                 this.updateList()
 
@@ -75,7 +74,6 @@ export const useDepartmentStore = defineStore('departmentStore', {
             this.saveLoading = true
             let data = {...this.payload}
             $ApiService.departmentService._update({data, id:this.elementId}).then((res)=>{
-                $Toast.success(t('message.successDone'))
                 this.visible = false
                 this.updateList()
 
@@ -91,7 +89,6 @@ export const useDepartmentStore = defineStore('departmentStore', {
             this.tabDataList =  this.tabDataList.filter((x,idx)=>idx<deep)
 
             $ApiService.departmentService._delete({id:this.elementId}).then((res)=>{
-                $Toast.success(t('message.successDone'))
                 this.updateList()
             }).finally(()=>{
                 this.deleteLoading = false

@@ -38,6 +38,12 @@ const _commandTypes =async (payload)=>{
 const _contractAddition =async (payload)=>{
     return await axios.get(`/v1/hr/enums/contract-additional-types`, {params:payload?.params})
 }
+const _directors =async (payload)=>{
+    return await axios.get(`/v1/worker-application/directors`, {params:payload?.params})
+}
+const _workerApplicationEnum =async (payload)=>{
+    return await axios.get(`/v1/worker-application/enums`, {params:payload?.params})
+}
 
 export default {
     _enums,
@@ -50,5 +56,7 @@ export default {
     _enumExam,
     _commandTypes,
     _contractAddition,
-    _examCategory
+    _examCategory,
+    _directors,
+    _workerApplicationEnum,
 }

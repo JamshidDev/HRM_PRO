@@ -38,7 +38,7 @@ export const useSpecialityStore = defineStore('specialityStore', {
             $ApiService.specialityService._create({data}).then((res)=>{
                 this.visible = false
                 this._index()
-                $Toast.success(t('message.successDone'))
+                
             }).finally(()=>{
                 this.saveLoading = false
             })
@@ -50,7 +50,7 @@ export const useSpecialityStore = defineStore('specialityStore', {
             $ApiService.specialityService._update({data, id:this.elementId}).then((res)=>{
                 this.visible = false
                 this._index()
-                $Toast.success(t('message.successDone'))
+                
             }).finally(()=>{
                 this.saveLoading = false
             })
@@ -59,7 +59,7 @@ export const useSpecialityStore = defineStore('specialityStore', {
             this.deleteLoading = true
             $ApiService.specialityService._delete({id:this.elementId}).then((res)=>{
                 this._index()
-                $Toast.success(t('message.successDone'))
+                
             }).finally(()=>{
                 this.deleteLoading = false
             })

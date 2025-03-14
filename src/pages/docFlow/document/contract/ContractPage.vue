@@ -6,6 +6,7 @@ import { FlowchartCircle20Filled} from "@vicons/fluent"
 import {UIModal, UIDConfirm, UIPageContent, UIPageFilter, UIOfficeApp} from "@/components/index.js"
 import {useContractStore, useCommandStore} from "@/store/modules/index.js"
 import Utils from "@/utils/Utils.js"
+import ContractForm2 from "@/pages/docFlow/document/contract/contractForm2.vue"
 
 const store = useContractStore()
 const commandStore = useCommandStore()
@@ -76,7 +77,7 @@ onMounted(()=>{
         :width="1200"
         v-model:visible="store.visible"
     >
-      <contractForm/>
+      <contractForm2 />
     </UIModal>
     <UIModal
         :title="commandStore.visibleType? $t('documentPage.command.createTitle') : $t('documentPage.command.updateTitle')"
