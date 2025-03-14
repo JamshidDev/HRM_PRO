@@ -11,9 +11,6 @@ import dayjs from "dayjs";
 const store = useTimesheetWorkerStore()
 const compStore = useComponentStore()
 const isDragging = ref(false);
-const start = ref(null);
-const end = ref(null);
-const selectedCells = ref([]);
 onMounted(() => {
   if(compStore.timesheetTypes.length === 0){
     compStore._timesheetEnums()
@@ -21,29 +18,20 @@ onMounted(() => {
 });
 
 const isCellSelected = (row, col) => {
-  return selectedCells.value.some(cell => cell.row === row && cell.col === col);
+  if (!store.payload.start || !store.payload.end) return false;
+
+  const rowStart = Math.min(store.payload.start.row, store.payload.end.row);
+  const rowEnd = Math.max(store.payload.start.row, store.payload.end.row);
+  const colStart = Math.min(store.payload.start.col, store.payload.end.col);
+  const colEnd = Math.max(store.payload.start.col, store.payload.end.col);
+
+  return row >= rowStart && row <= rowEnd && col >= colStart && col <= colEnd;
 };
 
 const resetSelection = () => {
-  selectedCells.value = [];
-  start.value = null;  // Reset start
-  end.value = null;    // Reset end
+  store.payload.start= null; 
+  store.payload.end = null;    
   console.log("reset")
-};
-
-const generator = (start, end) => {
-  const res = [];
-  const rowStart = Math.min(start.row, end.row);
-  const rowEnd = Math.max(start.row, end.row);
-  const colStart = Math.min(start.col, end.col);
-  const colEnd = Math.max(start.col, end.col);
-
-  for (let row = rowStart; row <= rowEnd; row++) {
-    for (let col = colStart; col <= colEnd; col++) {
-      res.push({row, col});
-    }
-  }
-  return res;
 };
 
 const handleMouseDown = (e) => {
@@ -52,34 +40,28 @@ const handleMouseDown = (e) => {
   const cell = {row: Number(row), col: Number(col)};
 
   resetSelection();
-  selectedCells.value = [cell];
-
-  start.value = cell;
-  end.value = cell;
+  store.payload.start = cell;
+  store.payload.end = cell;
 };
 
 const handleMouseMove = (e) => {
   if (!isDragging.value) return;
   const {col, row} = e.target.dataset;
-  end.value = {row: Number(row), col: Number(col)};
-
-  selectedCells.value = generator(start.value, end.value);
+  store.payload.end = {row: Number(row), col: Number(col)};
 };
 
 const handleMouseUp = () => {
   isDragging.value = false;
-  start.value = null;  // Reset start
-  end.value = null;    // Reset end
 };
 
 const handleMouseLeave = () => {
   isDragging.value = false;
-  start.value = null;  // Reset start
-  end.value = null;    // Reset end
+  resetSelection()
 };
 
 
 const changePage = (v)=>{
+  resetSelection()
   store.params.page = v.page
   store.params.per_page = v.per_page
   store._index()
@@ -121,10 +103,6 @@ const changePage = (v)=>{
               />
             </n-form-item-gi>
           </n-grid>
-<!--          <n-button type="primary" >-->
-<!--            {{$t('content.save')}}-->
-<!--            <n-icon class="ml-2" :component="Save20Filled"/>-->
-<!--          </n-button>-->
         </n-form>
         <n-button type="error" @click="store.visible = false">
           <template #icon>
@@ -198,7 +176,6 @@ const changePage = (v)=>{
                       v-for="(day, col) in item.days"
                       :key="col"
                       :class="{
-                        start: start?.row === row && start?.col === col,
                         selected: isCellSelected(row, col)
                       }"
                       :data-col="col"

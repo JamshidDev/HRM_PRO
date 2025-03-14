@@ -19,7 +19,8 @@ export const useTimesheetWorkerStore = defineStore('timesheetWorkerStore', {
         payload:{
             status: null,
             hours: null,
-            workers: []
+            start: null,
+            end: null
         },
         params:{
             page:1,
@@ -98,8 +99,10 @@ export const useTimesheetWorkerStore = defineStore('timesheetWorkerStore', {
             this.visible = data
         },
         resetForm(){
-            this.payload.timestamp = null
-            this.payload.department_id = null
+            this.payload.status = null
+            this.payload.hours = null
+            this.payload.start = null
+            this.payload.end = null
         }
     }
 })
