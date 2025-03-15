@@ -210,7 +210,7 @@ onMounted(()=>{
         </div>
 
 
-        <div class="col-span-12 border border-dashed p-2 rounded-xl border-gray-200 bg-gray-50">
+        <div class="col-span-12 border border-dashed p-2 rounded-xl border-surface-line bg-surface-ground">
           <div class="grid grid-cols-12 gap-x-4">
             <div class="col-span-2">
               <n-form-item :label="$t(`documentPage.form.contractNumber`)" path="number">
@@ -252,7 +252,7 @@ onMounted(()=>{
 
         <div
 
-            class="col-span-12 border border-dashed p-2 rounded-xl border-gray-200 bg-gray-50 mt-4">
+            class="col-span-12 border border-dashed p-2 rounded-xl border-surface-line bg-surface-ground mt-4">
           <div class="grid grid-cols-12 gap-x-4">
             <template  v-if="store.payload.type === 8">
               <div class="col-span-12">
@@ -413,7 +413,7 @@ onMounted(()=>{
 
           </n-divider>
         </div>
-        <div v-if="store.payload.command_status" class="col-span-12 border border-dashed p-2 rounded-xl border-gray-200 bg-indigo-50 mt-4">
+        <div v-if="store.payload.command_status" class="col-span-12 border border-dashed p-2 rounded-xl border-surface-line bg-surface-ground mt-4">
           <div class="grid grid-cols-12 gap-x-4">
             <div class="col-span-6" >
               <n-form-item :label="$t(`documentPage.form.command_type`)" path="command_type">

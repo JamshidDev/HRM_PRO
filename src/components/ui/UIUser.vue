@@ -40,9 +40,9 @@ const fullName = computed(()=> {
       :fallback-src="Utils.noAvailableImage"
   />
   <div class="flex flex-col" style="width: calc(100% - 50px)">
-    <span class="leading-2 text-sm text-gray-800 truncate w-full ">{{fullName}}</span>
+    <span class="leading-2 text-sm text-textColor2 truncate w-full ">{{fullName}}</span>
     <slot name="position">
-      <span class="leading-1 text-xs text-gray-500 truncate w-full">{{data?.position || ''}}</span>
+      <span class="leading-1 text-xs text-textColor1 truncate w-full">{{data?.position || ''}}</span>
     </slot>
 
   </div>

@@ -1,17 +1,14 @@
 <script setup>
 import LangDropdown from "@/components/general/LangDropdown.vue";
 import {UIProfile} from "@/components/index.js";
+import {useAppSetting} from "@/utils/index.js"
 const emits = defineEmits(["onChange"])
-
-
-
-
-
 
 
 const onClick = ()=>{
   emits('onChange')
 }
+
 </script>
 
 <template>

@@ -64,6 +64,8 @@ export const useApplicationStore = defineStore('applicationStore', {
         checkLoading:false,
         applicationData:null,
 
+        acceptLoading:false,
+
     }),
     actions:{
         _index(){
@@ -92,6 +94,14 @@ export const useApplicationStore = defineStore('applicationStore', {
                 this.saveLoading = false
             })
 
+        },
+        _accept(data, id){
+            this.acceptLoading= true
+            $ApiService.applicationService._accept({data,id}).then((res)=>{
+                console.log(res.data)
+            }).finally(()=>{
+                this.acceptLoading= false
+            })
         },
 
 

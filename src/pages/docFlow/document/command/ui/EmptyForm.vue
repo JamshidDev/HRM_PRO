@@ -3,7 +3,7 @@ import {Warning24Filled} from "@vicons/fluent"
 </script>
 
 <template>
-<div class="grid grid-cols-12 w-full justify-center border border-warning border-dashed bg-yellow-50 rounded-md p-10">
+<div class="grid grid-cols-12 w-full justify-center border border-warning border-dashed bg-surface-ground rounded-md p-10">
       <div class="col-span-12 flex items-center gap-4 mx-auto">
         <n-icon size="30" class="text-warning">
           <Warning24Filled/>

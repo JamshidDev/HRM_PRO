@@ -2,11 +2,11 @@
 import contractForm from "./contractForm.vue"
 import CommandForm from "../command/CommandForm.vue"
 import ContractList from "./ContractList.vue"
-import { FlowchartCircle20Filled} from "@vicons/fluent"
-import {UIModal, UIDConfirm, UIPageContent, UIPageFilter, UIOfficeApp} from "@/components/index.js"
+import {UIModal,UIPageContent,UIOfficeApp} from "@/components/index.js"
 import {useContractStore, useCommandStore} from "@/store/modules/index.js"
 import Utils from "@/utils/Utils.js"
 import ContractForm2 from "@/pages/docFlow/document/contract/contractForm2.vue"
+import Filter from "./ui/Filter.vue"
 
 const store = useContractStore()
 const commandStore = useCommandStore()
@@ -36,16 +36,6 @@ const onSave = ()=>{
   commandStore.visible = true
 }
 
-const onSearchEv = ()=>{
-  store.params.page = 1
-  store._index()
-}
-
-const onAdd = ()=>{
-  store.visibleType = true
-  store.resetForm()
-  store.visible = true
-}
 
 const openOffice = (id)=>{
   officeAppRef.value.openPdf(id, Utils.documentModels.contract)
@@ -62,12 +52,7 @@ onMounted(()=>{
 <template>
 
   <UIPageContent>
-    <UIPageFilter
-        @onAdd="onAdd"
-        @onSearch="onSearchEv"
-        v-model:search="store.params.search"
-        :search-loading="store.loading"
-    />
+   <Filter/>
     <ContractList
         @openOffice="openOffice"
         @commandEv="openCommand"
@@ -79,33 +64,6 @@ onMounted(()=>{
     >
       <contractForm2 />
     </UIModal>
-    <UIModal
-        :title="commandStore.visibleType? $t('documentPage.command.createTitle') : $t('documentPage.command.updateTitle')"
-        :width="1200"
-        v-model:visible="commandStore.visible"
-    >
-      <CommandForm
-          :data="contractData"
-      />
-    </UIModal>
-    <UIDConfirm
-        @onClose="onClose"
-        @onSave="onSave"
-        v-model:visible="store.confirmationVisible"
-        :submit-btn-text="$t('content.yes')"
-        :close-btn-text="$t('content.no')"
-    >
-      <template #icon>
-        <div class="flex justify-center p-4">
-          <n-icon size="86" class="text-primary mx-auto">
-            <FlowchartCircle20Filled/>
-          </n-icon>
-        </div>
-      </template>
-      <template #default>
-        <span class="w-full text-xl font-medium text-center py-4 inline-block">{{$t('contractPage.confirmText', {n: contractData.number})}}</span>
-      </template>
-    </UIDConfirm>
     <UIOfficeApp ref="officeAppRef"/>
   </UIPageContent>
 </template>

@@ -108,7 +108,7 @@ watchEffect(()=>{
     </div>
 
 
-    <div class="col-span-12 border border-dashed p-2 rounded-xl border-gray-200 bg-gray-50">
+    <div class="col-span-12 border border-dashed p-2 rounded-xl border-surface-line bg-surface-ground">
       <div class="grid grid-cols-12 gap-x-4">
         <div class="col-span-2">
           <n-form-item :label="$t(`documentPage.form.contractNumber`)" path="number">

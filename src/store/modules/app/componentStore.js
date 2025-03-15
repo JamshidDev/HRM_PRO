@@ -101,6 +101,7 @@ export const useComponentStore = defineStore('componentStore', {
         isSelectedWorker:false,
 
         organizationServiceList:[],
+        confirmationStatusList:[],
         enumAdminLoading:false,
 
         vacationList:[],
@@ -195,6 +196,7 @@ export const useComponentStore = defineStore('componentStore', {
                 this.workDayTypes = res.data.data?.work_day_types
                 this.holidayTypes=res.data.data?.holiday_types
                 this.organizationServiceList = res.data.data?.organization_services
+                this.confirmationStatusList = res.data.data?.confirmation_statuses
             }).finally(()=>{
                 this.enumAdminLoading= false
             })

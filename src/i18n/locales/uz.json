@@ -11,6 +11,7 @@
     "attachment": "Biriktirish",
     "no-data": "Ma'lumot yo'q",
     "cancel": "Bekor qilish",
+    "reject": "Rad qilish",
     "help": "Yordam",
     "enterField": "Kiriting",
     "phone": "Telefon raqam",
@@ -428,6 +429,9 @@
     "signatureTitle": "Hujjatni elektron yozuv orqali imzolash!",
     "signatureWorker": "Imzolash havolasi {name} uchun yaratilgan. Elektron imzo {name} tomonidan imzolangan holatdagina hujjat haqiqiy hisoblanadi.",
     "linkText": "Hujjat uchun havola",
+    "acceptApplication":"Arizani tasdiqlash",
+    "comment":"Izoh",
+    "rejectApplication":"Arizani rad qilish",
     "pinfl": "JSHSHR"
   },
   "documentPage": {

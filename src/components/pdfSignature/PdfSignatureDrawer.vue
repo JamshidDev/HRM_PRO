@@ -1,8 +1,8 @@
 <script setup>
 import {Signature20Filled,
-  PanelLeftContract20Filled, DocumentEdit24Regular, Chat24Filled} from "@vicons/fluent"
+  PanelLeftContract20Filled, DocumentEdit24Regular, ClipboardCheckmark20Regular, CalendarCancel20Regular} from "@vicons/fluent"
 import {UIUser} from "@/components/index.js"
-import {usePdfViewerStore, useSignatureStore, useOnlyOfficeStore, useAccountStore} from "@/store/modules/index.js"
+import {usePdfViewerStore, useSignatureStore, useOnlyOfficeStore, useApplicationStore} from "@/store/modules/index.js"
 import ConfirmationList from "./ui/ConfirmationList.vue"
 import LeftContent from "./ui/LeftContent.vue"
 import ChatDrawer from "./ui/ChatDrawer.vue"
@@ -11,6 +11,7 @@ import {useRoute} from "vue-router"
 import DocxViewer from "./ui/DocxViewer.vue"
 import IFrameViewer from "./ui/IFrameViewer.vue"
 import PdfViewer from "@/components/pdfSignature/PdfViewer.vue"
+import ConformAndRejectModal from "@/components/pdfSignature/ui/ConformAndRejectModal.vue"
 
 const docxViewerRef = ref(null)
 const pdfViewerRef = ref(null)
@@ -22,6 +23,7 @@ const emits = defineEmits(["onClose", "onEdit", 'signatureEv'])
 
 const store = usePdfViewerStore()
 const signatureStore = useSignatureStore()
+const applicationStore = useApplicationStore()
 
 const onSaveSignature = ()=>{
   signatureStore.confirmationId = store.signatureId
@@ -51,6 +53,10 @@ const onZoom = async ()=>{
 const showSignature = computed(()=>{
   const rejects = ['/hrm/contract', '/hrm/command','/hrm/ad-contract', '/hrm/application']
   return !rejects.includes(route.path)
+})
+
+const showConfirmButtons = computed(()=>{
+  return route.path === "/hrm/application"
 })
 
 const signatureMan = computed(()=>{
@@ -96,6 +102,22 @@ const documentUrl = computed(()=>{
   const baseUrl = `https://view.officeapps.live.com/op/embed.aspx?src=`
   return fileUrl? baseUrl+fileUrl : null
 })
+
+const openConfirmModal = (v)=>{
+  store.appButtonType = v
+  store.applicationComment = null
+  store.applicationVisible = !v
+  if(v){
+    const data = {
+      status:v,
+      comment:null,
+    }
+    const id = store.document_id
+    applicationStore._accept(data,id)
+  }
+
+
+}
 
 defineExpose({
   getDocument
@@ -181,11 +203,35 @@ defineExpose({
                     </template>
                   </n-button>
                 </div>
-              </div>
+<!--                Confirm buttons-->
+                <div v-if="showConfirmButtons" class="w-full  rounded-lg border border-gray-300 flex flex-col gap-3 p-1">
+                  <n-button
+                      :loading="applicationStore.acceptLoading"
+                      @click="openConfirmModal(true)"
+                      class="shadow cursor-pointer"
+                      type="primary"
+                  >{{$t('content.confirm')}}
+                    <template #icon>
+                      <ClipboardCheckmark20Regular/>
+                    </template>
+                  </n-button>
+                  <n-button
+                      :loading="applicationStore.acceptLoading"
+                      @click="openConfirmModal(false)"
+                      class="shadow cursor-pointer"
+                      type="error"
+                  >{{$t('content.reject')}}
+                    <template #icon>
+                      <CalendarCancel20Regular/>
+                    </template>
+                  </n-button>
+                </div>
+              </div>w
             </div>
           </div>
         </n-spin>
       </n-drawer-content>
     </n-drawer>
+    <ConformAndRejectModal/>
   </div>
 </template>
