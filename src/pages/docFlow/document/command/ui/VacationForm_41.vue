@@ -54,6 +54,7 @@ const onSubmit = (mainData)=>{
       period_to:Utils.timeToZone(v.result?.period_to),
       from:Utils.timeToZone(v.from),
       to:Utils.timeToZone(v.result?.to),
+      work_day:Utils.timeToZone(v.result?.work_day),
       all_day:v.result?.all_day,
       main_day:v.main_day,
       additional:v.addList.map(x=>({

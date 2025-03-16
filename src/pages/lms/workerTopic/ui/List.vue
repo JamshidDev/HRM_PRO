@@ -90,10 +90,9 @@ onMounted(()=>{
 
 <template>
   <n-spin :show="store.loading" style="min-height: 200px">
-    <div v-if="store.list.length>0" class="w-full bg-surface-section flex flex-col gap-5 p-4 h-full overflow-hidden" >
+    <div v-if="store.list.length>0" class="flex flex-col gap-5 h-full overflow-hidden" >
       <template v-for="(lesson, idx) in store.list" :key="idx">
-        <n-divider v-if="idx!==0" />
-        <div class="flex flex-col gap-2 rounded-lg   shrink-0">
+        <div class="flex flex-col gap-2 rounded-lg bg-surface-section shrink-0 p-2">
           <div class="flex items-center gap-3">
             <n-button size="large" text type="info">
               <template #icon>

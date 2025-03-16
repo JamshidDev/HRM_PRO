@@ -42,6 +42,10 @@ const props = defineProps({
   extraOptions:{
     type: Array,
     default: [],
+  },
+  loading:{
+    type: Boolean,
+    default: false
   }
 })
 
@@ -118,7 +122,8 @@ const onDelete = ()=>{
 </script>
 
 <template>
-  <div class="flex gap-2 items-center justify-center">
+  <div class="flex gap-2 items-center justify-center relative">
+    <n-spin v-if="loading" size="small" />
     <n-dropdown
         size="small"
         :options="[
@@ -126,9 +131,12 @@ const onDelete = ()=>{
           ...extraOptions.map(i=>({...i, icon: renderIcon(i.icon)}))
         ]"
         trigger="click"
+
         @select="onSelect"
     >
       <n-button
+          :style="{opacity: loading ? 0 : 1}"
+          :disabled="loading"
           tertiary
           size="small"
           style="width: 30px"
