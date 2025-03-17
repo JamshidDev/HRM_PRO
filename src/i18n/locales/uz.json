@@ -1040,6 +1040,7 @@
     "update": "Tabelni tahrirlash",
     "department": "Bo'lim",
     "total": "Umumiy",
-    "hours": "Soat"
+    "hours": "Soat",
+    "verifiers": "Tasdiqlovchilar"
   }
 }

@@ -1,10 +1,13 @@
 <script setup>
 import {NoDataPicture, UIMenuButton, UIPagination} from "@/components/index.js"
-import {useTimeSheetStore, useTimesheetWorkerStore} from "@/store/modules/index.js"
+import {useTimeSheetConfirmStore, useTimeSheetStore, useTimesheetWorkerStore} from "@/store/modules/index.js"
+import {Checkmark16Filled} from "@vicons/fluent";
+
 import dayjs from "dayjs";
 
 const store = useTimeSheetStore()
 const workerStore = useTimesheetWorkerStore()
+const timesheetConfirmStore = useTimeSheetConfirmStore()
 
 const changePage = (v)=>{
   store.params.page = v.page
@@ -23,8 +26,9 @@ const onSelect = (v)=>{
     store.payload.timestamp = dayjs().month(v.data.month-1).year(v.data.year).valueOf()
     store.visibleType = false
     store.visible = true
-  }else if(v.key==='view'){
-
+  }else if(v.key==='verifiers'){
+    timesheetConfirmStore.elementId = v.data.id
+    timesheetConfirmStore.visible = true
   }
 }
 
@@ -60,6 +64,12 @@ const onSelect = (v)=>{
                 @select-ev="onSelect"
                 show-edit
                 :show-delete="false"
+                :extra-options="[{
+                  label: $t('timeSheetPage.verifiers'),
+                  key: 'verifiers',
+                  icon: Checkmark16Filled,
+                  visible:true,
+                }]"
             />
           </td>
         </tr>

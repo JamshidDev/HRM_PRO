@@ -59,6 +59,7 @@ import workerExamService from '@/service/v1/lms/workerExamService.js'
 import userDepartmentService from '@/service/v1/labor/userDepartmentService.js'
 import timeSheetWorkerService from '@/service/v1/labor/timeSheetWorkerService.js'
 import timeSheetService from '@/service/v1/labor/timeSheetService.js'
+import timesheetConfirmService from "@/service/v1/labor/timesheetConfirmService.js";
 
 export default {
     authService,
@@ -116,5 +117,6 @@ export default {
 
     userDepartmentService,
     timeSheetService,
-    timeSheetWorkerService
+    timeSheetWorkerService,
+    timesheetConfirmService
 }

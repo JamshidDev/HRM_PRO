@@ -3,10 +3,14 @@ import { UIPageContent, UIPageFilter, UIDrawer} from "@/components/index.js"
 import Table from "./ui/Table.vue"
 import Form from "./ui/Form.vue"
 import TimeSheet from "./ui/TimeSheet.vue"
-import {useTimeSheetStore, useTimesheetWorkerStore} from "@/store/modules";
+import ConfirmationForm from './ui/ConfirmationForm.vue'
+
+import {useTimeSheetConfirmStore, useTimeSheetStore, useTimesheetWorkerStore} from "@/store/modules";
 
 const store = useTimeSheetStore()
 const workerStore = useTimesheetWorkerStore()
+const confirmationStore = useTimeSheetConfirmStore()
+
 
 const onSearch = ()=>{
   store.params.page = 1
@@ -47,6 +51,15 @@ const onAdd = ()=>{
         <Form/>
       </template>
     </UIDrawer>
+    <UIDrawer
+        :width="400"
+        v-model:visible="confirmationStore.visible"
+        :title="$t('timeSheetPage.verifiers')"
+    >
+      <template #content>
+        <ConfirmationForm/>
+      </template>
+    </UIDrawer>
     <n-drawer
         height="100vh"
         v-model:show="workerStore.visible"
@@ -54,5 +67,6 @@ const onAdd = ()=>{
     >
       <TimeSheet />
     </n-drawer>
+
   </UIPageContent>
 </template>
