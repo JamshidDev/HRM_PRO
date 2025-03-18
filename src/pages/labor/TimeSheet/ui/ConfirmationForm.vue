@@ -53,29 +53,40 @@ const onSubmit = ()=>{
         :rules="validationRules.common"
         class="flex flex-col h-full"
     >
-      <n-form-item :label="$t('timeSheetPage.verifiers')" path="confirmations">
-        <n-select
-            :loading="componentStore.confirmationLoading"
-            :max-tag-count="1"
-            :options="componentStore.confirmationList"
-            :placeholder="$t(`content.choose`)"
-            :render-label="renderLabel"
-            :render-tag="renderValue"
-            :value="store.payload.confirmationObjects.map(i=>i.id)"
-            filterable
-            label-field="last_name"
-            multiple
-            value-field="id"
-            @update-value="(_, objects)=>store.payload.confirmationObjects = objects"
-        />
-      </n-form-item>
+      <n-grid :cols="12" x-gap="10px">
+        <n-form-item-gi :span="10" :label="$t('timeSheetPage.verifiers')" path="confirmations">
+          <n-select
+              :loading="componentStore.confirmationLoading"
+              :max-tag-count="1"
+              :options="componentStore.confirmationList"
+              :placeholder="$t(`content.choose`)"
+              :render-label="renderLabel"
+              :render-tag="renderValue"
+              v-model:value="store.payload.confirmationObjects"
+              filterable
+              label-field="last_name"
+              multiple
+              value-field="id"
+          />
+        </n-form-item-gi>
+        <n-form-item-gi :span="2">
+          <n-button
+              :loading="store.saveLoading"
+              type="primary"
+              @click="onSubmit"
+          >
+            {{ $t('content.save') }}
+          </n-button>
+        </n-form-item-gi>
+      </n-grid>
+
       <VueDraggable
-          v-model="store.payload.confirmationObjects"
+          v-model="store.list"
           :animation="150"
           class="flex flex-col gap-2"
           handle=".handle"
       >
-        <div v-for="(item, idx) in store.payload.confirmationObjects" :key="idx"
+        <div v-for="(item, idx) in store.list" :key="idx"
              class="flex gap-2 border border-surface-line rounded-md p-1 ">
           <n-button class="handle !cursor-move flex-shrink-0" size="small" text type="primary">
             <template #icon>
@@ -96,7 +107,7 @@ const onSubmit = ()=>{
               </div>
             </div>
             <div class="flex gap-1">
-              <n-button
+                <n-button
                   circle
                   quaternary
                   type="error"
@@ -138,17 +149,6 @@ const onSubmit = ()=>{
 
         </div>
       </VueDraggable>
-
-        <n-button
-            :loading="store.saveLoading"
-            type="primary"
-            @click="onSubmit"
-            class="!mt-auto"
-            block
-        >
-          {{ $t('content.save') }}
-        </n-button>
-
     </n-form>
   </n-spin>
 

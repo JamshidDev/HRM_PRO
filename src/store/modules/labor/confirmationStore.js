@@ -15,7 +15,6 @@ export const useTimeSheetConfirmStore = defineStore('timesheetConfirmStore', {
         structureCheck:[],
         payload:{
             confirmationObjects: [],
-            main: null
         }
     }),
     actions:{
@@ -23,14 +22,6 @@ export const useTimeSheetConfirmStore = defineStore('timesheetConfirmStore', {
             this.loading= true
             $ApiService.timesheetConfirmService._index({id: this.elementId}).then((res)=>{
                 this.list = res.data.data.confirmations
-                this.payload.confirmationObjects = this.list.map(i=>{
-                    if(i.main) this.payload.main = i.worker.id
-                    return {
-                    ...i.worker,
-                        position: i.position,
-                    }
-                })
-
             }).finally(()=>{
                 this.loading= false
             })
@@ -47,8 +38,8 @@ export const useTimeSheetConfirmStore = defineStore('timesheetConfirmStore', {
             }
 
             $ApiService.timesheetConfirmService._create({data, id: this.elementId}).then((res)=>{
-                this.visible = false
                 this.resetForm()
+                this._index()
             }).finally(()=>{
                 this.saveLoading = false
             })
@@ -71,7 +62,6 @@ export const useTimeSheetConfirmStore = defineStore('timesheetConfirmStore', {
         // },
         resetForm(){
             this.payload.confirmationObjects = []
-            this.payload.main = null
         }
     }
 })
