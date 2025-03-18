@@ -1,5 +1,6 @@
 import resolveConfig from 'tailwindcss/resolveConfig'
 import tailwindConfig from '../../../tailwind.config.js';
+import {log} from "qrcode/lib/core/galois-field.js"
 
 const fullConfig = resolveConfig(tailwindConfig)
 const tailwindColors = fullConfig.theme.colors
@@ -28,32 +29,58 @@ const superColor = (cr, opacity=1)=>{
     return toRgba(color, opacity)
 }
 
-console.log(parseColor(tailwindColors.primary))
- export default  {
-     common: {
-         primaryColor: superColor(tailwindColors.primary),
-         primaryColorHover: superColor(tailwindColors.primary,0.9),
-         primaryColorPressed: superColor(tailwindColors.primary),
+ export const customTheme = ()=> {
+     console.log("change Theme")
+    return  {
+        common: {
+            primaryColor: superColor(tailwindColors.primary),
+            primaryColorHover: superColor(tailwindColors.primary,0.9),
+            primaryColorPressed: superColor(tailwindColors.primary),
 
-         errorColor: '#E53935',
-         errorColorHover: '#E53935',
-         errorColorPressed: '#D32F2F',
+            errorColor: '#E53935',
+            errorColorHover: '#E53935',
+            errorColorPressed: '#D32F2F',
 
-         borderRadius: '8px',
-     },
-     Button: {
-         fontSize: '10px',
-     },
-     Form: {
-         labelFontSize: '10px',
-         labelTextColor: 'rgb(121,121,121)'
-     },
-     Table: {
-         thColor: superColor(tailwindColors["surface-section"]),
-         tdColor: superColor(tailwindColors["surface-section"]),
-         borderColor: superColor(tailwindColors["surface-line"]),
-         thTextColor:superColor(tailwindColors["surface-text"]),
-         tdTextColor:superColor(tailwindColors["surface-text"]),
-     },
+            textColorBase:superColor(tailwindColors.textColor0),  //Standart matn rangi
+            textColor1:superColor(tailwindColors.textColor1),  // Birlamchi matn rangi (muhim matnlar)
+            textColor2:superColor(tailwindColors.textColor2),  // Ikkinchi darajali matn rangi (tavsiflar)
+            textColor3:superColor(tailwindColors.textColor3),  // Uchinchi darajali matn rangi (maslahatlar)
+            textColorDisabled:superColor(tailwindColors.primary), // Nogiron holatdagi matn rangi
 
+            cardColor: superColor(tailwindColors["surface-section"]), // Karta tipidagi komponentlar uchun fon rangi (masalan, <n-card>)
+            modalColor: superColor(tailwindColors["surface-section"]), // Modal oynalar uchun fon rangi
+            popoverColor: superColor(tailwindColors["surface-section"]), // Qalqib chiquvchi oynalar uchun fon rangi
+            tableColor: superColor(tailwindColors["surface-section"]), // Jadvallar uchun fon rangi
+            tableColorHover: '#f5f5f5',
+
+            // Joylashtiruvchi va kiritish ranglari
+            placeholderColor: superColor(tailwindColors["surface-text"]),// Kiritish maydonlaridagi joylashtiruvchi matn rangi
+            inputColor: superColor(tailwindColors["surface-section"]), // Kiritish maydonlari uchun fon rangi
+            inputColorDisabled: superColor(tailwindColors["surface-section"]), // Nogiron kiritish maydonlari uchun fon rangi
+
+            borderRadius: '8px',
+
+            borderColor: superColor(tailwindColors["surface-line"]), // Komponentlar uchun standart chegara rangi
+            dividerColor: superColor(tailwindColors["surface-line"]),
+
+            hoverColor: superColor(tailwindColors.primary,0.2), // Hover holati uchun fon rangi
+            activeColor: "rgba(0, 0, 0, 0.1)", // Aktiv holat uchun fon rangi
+        },
+        Table: {
+            thColor: superColor(tailwindColors["surface-ground"]),
+            tdColor: superColor(tailwindColors["surface-section"]),
+            borderColor: superColor(tailwindColors["surface-line"]),
+            thTextColor:superColor(tailwindColors.textColor2),
+            tdTextColor:superColor(tailwindColors.textColor2),
+        },
+        Checkbox: {
+            color: superColor(tailwindColors["surface-ground"]),
+            colorHover: superColor(tailwindColors["surface-line"]),
+        },
+        Radio: {
+            color: superColor(tailwindColors["surface-ground"]),
+            border: '1px solid' + superColor(tailwindColors["surface-line"]),
+        }
+
+    }
  }

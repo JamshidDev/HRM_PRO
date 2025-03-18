@@ -54,6 +54,7 @@ const onSubmit = (mainData)=>{
       period_to:Utils.timeToZone(v.result?.period_to),
       from:Utils.timeToZone(v.from),
       to:Utils.timeToZone(v.result?.to),
+      work_day:Utils.timeToZone(v.result?.work_day),
       all_day:v.result?.all_day,
       main_day:v.main_day,
       additional:v.addList.map(x=>({
@@ -96,7 +97,7 @@ onMounted(()=>{
 
 <template>
   <div v-for="(item, idx) in store.vacations" :key="idx"
-       class="grid grid-cols-12 mb-8 gap-x-4 border border-gray-300 border-dashed p-2 rounded-md bg-gray-200">
+       class="grid grid-cols-12 mb-8 gap-x-4 border border-gray-300 border-surface-line p-2 rounded-md bg-surface-ground">
     <div class="col-span-12 flex justify-between">
       <n-button type="info" secondary size="tiny">
         <template #icon>
@@ -169,7 +170,7 @@ onMounted(()=>{
       </div>
       <div class="col-span-12">
         <template v-for="(subItem,index) in item.addList" :key="index">
-          <div class="flex justify-between items-center w-full bg-white border border-surface-line mb-2 px-2 py-1 rounded-md">
+          <div class="flex justify-between items-center w-full bg-surface-section border border-surface-line mt-2 px-2 py-1 rounded-md">
             <span class="text-xs font-semibold">{{subItem.name}}</span>
             <span class="w-[150px] flex gap-4">
            <n-input-number v-model:value="subItem.day"></n-input-number>
@@ -198,7 +199,7 @@ onMounted(()=>{
       </div>
       <div class="col-span-10 flex items-end">
         <template v-if="item.result">
-          <div class="grid mt-2 grid-cols-12 gap-x-4 w-full border border-dashed border-surface-400 bg-surface-300 rounded-md p-2">
+          <div class="grid mt-2 grid-cols-12 gap-x-4 w-full border border-dashed border-surface-line bg-surface-section rounded-md p-2">
             <div class="col-span-3">
               <n-form-item
                   :show-feedback="false"

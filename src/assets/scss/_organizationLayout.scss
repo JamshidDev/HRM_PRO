@@ -9,6 +9,7 @@ $mobile_device_screen_size:900px;
   height: 100vh;
   display: flex;
   position: relative;
+  background: var(--surface-section);
 
   .sidebar-content{
     width: $sidebar-max-width;
@@ -72,12 +73,12 @@ $mobile_device_screen_size:900px;
         display: flex;
         align-items: center;
         border-radius: 6px;
-        border: 1px solid var(--blue-300);
+        border: 1px solid var(--surface-line);
         margin-bottom: 6px;
         cursor: pointer;
         backdrop-filter: blur(12px);
-        background-color: rgba(255, 255, 255, 0.50);
-        filter: drop-shadow(0px 10px 15px rgba(203, 213, 224, 0.36));
+        //background-color: rgba(255, 255, 255, 0.50);
+        //filter: drop-shadow(0px 10px 15px rgba(203, 213, 224, 0.36));
         .item-icon{
           width: 30px;
           height: 30px;
@@ -85,7 +86,7 @@ $mobile_device_screen_size:900px;
           justify-content: center;
           align-items: center;
           i{
-            color: var(--blue-400);
+            color: var(--primary-color);
             font-size: 20px;
           }
         }
@@ -94,17 +95,21 @@ $mobile_device_screen_size:900px;
           font-size: 14px;
           text-wrap: nowrap;
           overflow: hidden;
-          color: var(--blue-900);
+          color: var(--textColor1);
         }
       }
       .active-panel-item-single{
-        background-image: linear-gradient(to right bottom, rgb(44, 116, 248), rgb(9, 5, 125));
+        //background-image: linear-gradient(to right bottom, rgb(44, 116, 248), rgb(9, 5, 125));
+        background-color: var(--primary-color);
         box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+        color: var(--white-color) !important;
         .item-title{
-          color: white;
+          color: var(--white-color) !important;
         }
-        .item--icon>i{
-          color: white;
+        .item-icon {
+          i{
+            color: var(--white-color) !important;
+          }
         }
       }
 

@@ -95,6 +95,7 @@ const addEvent = ()=>{
               trigger="click"
               scrollable
               placement="bottom"
+
           >
             <template #trigger>
               <n-badge

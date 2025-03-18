@@ -30,7 +30,7 @@
     content: '';
     width: 1px;
     height:100%;
-    background: rgba(177, 177, 177, 0.36);
+    background: var(--surface-line);
     position: absolute;
     top: 0;
     left: 50%;
@@ -48,7 +48,7 @@
     content: '';
     width:50%;
     height:1px;
-    background: rgba(177, 177, 177, 0.36);
+    background: var(--surface-line);
     position: absolute;
     top: 50%;
     left: 50%;
@@ -204,6 +204,8 @@ input:-webkit-autofill {
 }
 .white-tab-header{
   .n-tabs-tab{
-    background-color: var(--white-color) !important;
+    background-color: var(--surface-section) !important;
   }
 }
+
+

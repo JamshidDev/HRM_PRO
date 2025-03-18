@@ -11,6 +11,7 @@
     "attachment": "Biriktirish",
     "no-data": "Ma'lumot yo'q",
     "cancel": "Bekor qilish",
+    "reject": "Rad qilish",
     "help": "Yordam",
     "enterField": "Kiriting",
     "phone": "Telefon raqam",
@@ -429,6 +430,9 @@
     "signatureTitle": "Hujjatni elektron yozuv orqali imzolash!",
     "signatureWorker": "Imzolash havolasi {name} uchun yaratilgan. Elektron imzo {name} tomonidan imzolangan holatdagina hujjat haqiqiy hisoblanadi.",
     "linkText": "Hujjat uchun havola",
+    "acceptApplication":"Arizani tasdiqlash",
+    "comment":"Izoh",
+    "rejectApplication":"Arizani rad qilish",
     "pinfl": "JSHSHR"
   },
   "documentPage": {
@@ -967,7 +971,22 @@
     }
   },
   "vacationPage": {
-    "name": "Ta'tildagi xodimlar"
+    "name": "Ta'tildagi xodimlar",
+    "table": {
+      "type": "Ta'til turi",
+      "durationDay": "Ta'til davomiyligi {n} kun",
+      "workDay": "Ishga chiqish sanasi",
+      "duration": "Ta'til davri"
+    }
+  },
+  "dashboardPage": {
+    "name": "Dashboard",
+    "card": {
+      "type": "Ta'til turi",
+      "durationDay": "Ta'til davomiyligi {n} kun",
+      "workDay": "Ishga chiqish sanasi",
+      "duration": "Ta'til davri"
+    }
   },
   "applicationPage": {
     "name": "Arizalar",

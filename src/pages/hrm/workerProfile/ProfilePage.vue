@@ -20,7 +20,7 @@ const onChange = (v)=>{
         <n-button
             v-for="(item, idx) in store.tabs"
             :key="idx"
-            type="info"
+            type="primary"
             :secondary="item.id === store.activeTab? undefined : true"
             @click="onChange(item.id)"
             round>

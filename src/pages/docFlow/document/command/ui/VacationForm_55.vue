@@ -58,7 +58,7 @@ onMounted(()=>{
 
 <template>
   <div v-for="(item, idx) in store.vacations55" :key="idx"
-       class="grid grid-cols-12 mb-8 gap-x-4 border border-gray-300 border-dashed p-2 rounded-md bg-gray-200">
+       class="grid grid-cols-12 mb-8 gap-x-4 border border-surface-line border-dashed p-2 rounded-md bg-surface-ground">
     <div class="col-span-12 flex justify-between mb-2">
       <n-button type="info" secondary size="tiny">
         <template #icon>

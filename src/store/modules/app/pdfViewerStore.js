@@ -68,6 +68,9 @@ export const usePdfViewerStore = defineStore('pdfViewerStore', {
         viewerStatus:null,
 
         linkVisible:false,
+        applicationVisible:false,
+        appButtonType:false,
+        applicationComment:null,
 
 
 

@@ -53,7 +53,7 @@ watchEffect(()=>{
 
       </n-divider>
     </div>
-    <div v-if="store.payload.command_status" class="col-span-12 border border-dashed p-2 bg-gray-50 rounded-xl border-gray-200">
+    <div v-if="store.payload.command_status" class="col-span-12 border border-dashed p-2 bg-surface-ground rounded-xl border-surface-line">
       <div class="grid grid-cols-12 gap-x-4">
         <div class="col-span-6" >
           <n-form-item :label="$t(`documentPage.form.command_type`)" path="command_type">

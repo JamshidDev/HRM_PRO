@@ -13,6 +13,7 @@ export const useContractStore = defineStore('contractStore', {
         elementId:null,
         totalItems:0,
         structureCheck:[],
+        structureCheck2:[],
         departmentCheck:[],
         confirmationVisible:false,
         number:null,
@@ -51,6 +52,9 @@ export const useContractStore = defineStore('contractStore', {
             page:1,
             per_page:10,
             search:null,
+            organizations:[],
+            confirmation:null,
+            status:null,
         },
         tabList:[
             {
@@ -77,7 +81,11 @@ export const useContractStore = defineStore('contractStore', {
     actions:{
         _index(){
             this.loading= true
-            $ApiService.contractService._index({params:this.params}).then((res)=>{
+            const params = {
+                ...this.params,
+                organizations:this.params.organizations.map(v=>v.id).toString(),
+            }
+            $ApiService.contractService._index({params}).then((res)=>{
                 this.list = res.data.data.data
                 this.totalItems = res.data.data.total
             }).finally(()=>{

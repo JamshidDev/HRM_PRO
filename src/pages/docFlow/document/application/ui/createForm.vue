@@ -175,8 +175,8 @@ onMounted(()=>{
       <n-tab-pane :name="store.tabList[1]">
         <div class="grid grid-cols-12 gap-x-4">
           <div class="col-span-12">
-            <div class="w-full border border-dashed border-surface-300
-             rounded-md bg-surface-50 min-h-[100px] p-2 flex justify-center items-center text-gray-400
+            <div class="w-full border border-dashed border-surface-line
+             rounded-md bg-surface-ground min-h-[100px] p-2 flex justify-center items-center text-gray-400
 ">
                 {{store.applicationLink || $t('content.no-data')}}
             </div>

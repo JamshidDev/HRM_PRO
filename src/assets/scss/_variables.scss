@@ -1,6 +1,5 @@
 
 
-
 :root {
   --primary-color: #1A84FF;
   --info-color: #4ab0c1;
@@ -19,10 +18,68 @@
 
   --sidebar-color:#1e293b;
 
+  --textColor0:#434349;
+  --textColor1:#74788d;
+  --textColor2:#434349;
+  --textColor3:#9a9cae;
+
   //fonts
   --public-sans:"Public Sans", sans-serif;
   --poppins:"Poppins", sans-serif;
 
+  // specific colors
+  --primary-card:linear-gradient(to right bottom, rgb(14, 165, 233), rgb(2, 132, 199));
+  --sidebar-panel:radial-gradient(
+                  farthest-side at top left,
+                  rgba(113, 239, 229, 0.7),
+                  transparent
+  ),
+  radial-gradient(
+                  farthest-side at bottom right,
+                  rgba(113, 239, 229, 0.7),
+                  transparent
+  ),
+  radial-gradient(
+                  farthest-corner at center center,
+                  rgba(0, 89, 255, 0.75),
+                  transparent
+  );
+
+
+
+}
+
+[data-theme="dark"] {
+  --primary-color: #7239EA;
+  --info-color: #4ab0c1;
+  --success-color: #2dcb73;
+  --success-color-rgb: 45, 203, 115;
+  --warning-color: #f6b749;
+  --danger-color: #ff6c6c;
+  --dark-color: #0f1114;
+  --secondary-color: #eef0f7;
+  --white-color: #ffffff;
+
+  --surface-ground:#18181B;
+  --surface-section:#242427;
+
+  --surface-line: #373737;
+
+  --textColor0: #ffffff;
+  --textColor1: #878787;
+  --textColor2: #b4b4c0;
+  --textColor3: #9f9fa9;
+
+
+  --sidebar-color:#1e293b;
+
+  // specific colors
+  --primary-card:transparent;
+  --sidebar-panel:#242427;
+}
+
+
+:root{
 
   //  <<colors system>>
   --surface-50: #f8fafc;
@@ -156,6 +213,9 @@
   --pink-800: #822854;
   --pink-900: #5e1d3d;
 
+
+
+
   --orange-50: #fff8f3;
   --orange-100: #feddc7;
   --orange-200: #fcc39b;
@@ -166,28 +226,8 @@
   --orange-700: #ae510f;
   --orange-800: #893f0c;
   --orange-900: #642e09;
-
 }
 
-[data-theme="dark"] {
-  --primary-color: #7239EA;
-  --info-color: #4ab0c1;
-  --success-color: #2dcb73;
-  --success-color-rgb: 45, 203, 115;
-  --warning-color: #f6b749;
-  --danger-color: #ff6c6c;
-  --dark-color: #0f1114;
-  --secondary-color: #eef0f7;
-  --white-color: #ffffff;
-
-  --surface-ground:#0F1015;
-  --surface-section:#15171C;
-  --surface-line:#26272f;
-  --surface-text:#9a9cae;
-
-
-  --sidebar-color:#1e293b;
-}
 
 $primary-color:var(--primary-color);
 $info-color:var(--info-color);

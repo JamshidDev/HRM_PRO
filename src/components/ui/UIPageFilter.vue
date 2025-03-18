@@ -40,7 +40,7 @@ const props = defineProps({
 
 const searchModel = defineModel("search",{type:String,default:null })
 
-const emits = defineEmits(['onAdd', 'onSearch', 'onClear'])
+const emits = defineEmits(['onAdd', 'onSearch', 'onClear', 'show',])
 
 const searchEvent = useDebounceFn(() => {
   emits('onSearch', searchModel.value )
@@ -50,6 +50,8 @@ const searchEvent = useDebounceFn(() => {
 const addEvent = ()=>{
   emits('onAdd')
 }
+
+
 </script>
 
 <template>
@@ -88,6 +90,7 @@ const addEvent = ()=>{
           {{$t('content.add')}}
         </n-button>
         <n-popover
+            @update:show="(v)=>emits('show',v)"
             v-if="showFilterButton"
             v-bind:style="popoverStyle"
             trigger="click"
@@ -138,7 +141,3 @@ const addEvent = ()=>{
 
   </div>
 </template>
-
-<style scoped>
-
-</style>

@@ -44,7 +44,7 @@ defineExpose({
       :model="store.form_44"
       :rules="validationRules.form_44"
 
-      class="grid grid-cols-12 mb-8 gap-x-4 border border-surface-line border-dashed p-2 rounded-md bg-gray-200">
+      class="grid grid-cols-12 mb-8 gap-x-4 border border-surface-line border-dashed p-2 rounded-md bg-surface-ground">
     <div class="col-span-3">
       <n-form-item :label="$t(`commandPage.form_44.new_date`)" path="new_date">
         <n-date-picker

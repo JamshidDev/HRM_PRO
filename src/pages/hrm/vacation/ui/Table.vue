@@ -61,39 +61,39 @@ const onSelectEv = (v)=>{
         <tr>
           <th class="!text-center min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
           <th class="min-w-[200px]">{{$t('confirmationPage.table.worker')}}</th>
-          <th class="min-w-[200px]">{{$t('confirmationPage.table.position')}}</th>
-          <th class="min-w-[200px]">{{$t('confirmationPage.table.level')}}</th>
-          <th class="min-w-[200px]">{{$t('confirmationPage.table.full_position')}}</th>
-          <th class="min-w-[40px] w-[40px]"></th>
+          <th class="min-w-[100px] w-[200px]">{{$t('vacationPage.table.type')}}</th>
+          <th class="min-w-[100px] w-[200px]">{{$t('vacationPage.table.duration')}}</th>
+          <th class="min-w-[100px] w-[120px]">{{$t('vacationPage.table.workDay')}}</th>
+<!--          <th class="min-w-[40px] w-[40px]"></th>-->
         </tr>
         </thead>
         <tbody>
         <tr v-for="(item, idx) in store.list" :key="idx">
-          <td><span class="text-center text-[12px] text-gray-600 block">{{ (store.params.page - 1) * store.params.per_page + idx + 1 }}</span></td>
+          <td><span class="text-center block">{{ (store.params.page - 1) * store.params.per_page + idx + 1 }}</span></td>
           <td>
             <div>
               <UIUser
-                  :short="false"
+                  :short="true"
                   :data="{
                     photo:item?.worker.photo,
                     firstName:item?.worker.first_name,
                     middleName:item?.worker.middle_name,
                     lastName:item?.worker.last_name,
-                    position:item?.position,
+                    position:$t('vacationPage.table.durationDay',{n:item?.all_day}),
                   }"
               />
             </div>
           </td>
-          <td>{{item.position}}</td>
-          <td>{{item.level?.name}}</td>
-          <td>{{item.full_position}}</td>
-          <td>
-            <UIMenuButton
-                :data="item"
-                :show-edit="true"
-                @selectEv="onSelectEv"
-            />
-          </td>
+          <td>{{item.type?.name}}</td>
+          <td>{{Utils.timeOnlyDate(item.from) + ' - ' + Utils.timeOnlyDate(item.to)}}</td>
+          <td>{{Utils.timeOnlyDate(item.work_day)}}</td>
+<!--          <td>-->
+<!--            <UIMenuButton-->
+<!--                :data="item"-->
+<!--                :show-edit="true"-->
+<!--                @selectEv="onSelectEv"-->
+<!--            />-->
+<!--          </td>-->
         </tr>
         </tbody>
       </n-table>

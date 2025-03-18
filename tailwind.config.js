@@ -24,7 +24,12 @@ export default {
       'surface-ground': 'var(--surface-ground)',
       'surface-section': 'var(--surface-section)',
       'surface-line': 'var(--surface-line)',
-      'surface-text': 'var(--surface-text)',
+
+      'textColor0': 'var(--textColor0)',
+      'textColor1': 'var(--textColor1)',
+      'textColor2': 'var(--textColor2)',
+      'textColor3': 'var(--textColor3)',
+      'surface-text': 'var(--textColor3)',
 
 
       'surface-50': 'var(--surface-50)',
