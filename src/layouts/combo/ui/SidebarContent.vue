@@ -126,7 +126,7 @@ const accountPhoto = computed(()=>{
       </template>
 
     </div>
-    <div class="panel-content bg-surface-section">
+    <div class="panel-content sidebar-panel">
 
       <transition name="slide-right" mode="out-in">
         <div v-if="showPanel">
@@ -199,12 +199,12 @@ const accountPhoto = computed(()=>{
                   class="panel-item-single"
                   :class="[isCurrentPath(item.path) && 'active-panel-item-single']"
               >
-                <div class="item-icon">
-                  <n-icon size="22">
+                <div :class="[item?.color]" class="item-icon rounded-md ml-[-2px]">
+                  <n-icon size="20">
                     <component :is="item.icon" />
                   </n-icon>
                 </div>
-                <div class="item-title truncate">
+                <div class="item-title truncate pl-2">
                   <span>{{ $t(item.label)}}</span>
                 </div>
               </div>
