@@ -979,6 +979,15 @@
       "duration": "Ta'til davri"
     }
   },
+  "dashboardPage": {
+    "name": "Dashboard",
+    "card": {
+      "type": "Ta'til turi",
+      "durationDay": "Ta'til davomiyligi {n} kun",
+      "workDay": "Ishga chiqish sanasi",
+      "duration": "Ta'til davri"
+    }
+  },
   "applicationPage": {
     "name": "Arizalar",
     "createWorkerApplication": "Ariza yaratish",

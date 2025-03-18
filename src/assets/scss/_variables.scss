@@ -27,6 +27,24 @@
   --public-sans:"Public Sans", sans-serif;
   --poppins:"Poppins", sans-serif;
 
+  // specific colors
+  --primary-card:linear-gradient(to right bottom, rgb(14, 165, 233), rgb(2, 132, 199));
+  --sidebar-panel:radial-gradient(
+                  farthest-side at top left,
+                  rgba(113, 239, 229, 0.7),
+                  transparent
+  ),
+  radial-gradient(
+                  farthest-side at bottom right,
+                  rgba(113, 239, 229, 0.7),
+                  transparent
+  ),
+  radial-gradient(
+                  farthest-corner at center center,
+                  rgba(0, 89, 255, 0.75),
+                  transparent
+  );
+
 
 
 }
@@ -54,6 +72,10 @@
 
 
   --sidebar-color:#1e293b;
+
+  // specific colors
+  --primary-card:transparent;
+  --sidebar-panel:#242427;
 }
 
 

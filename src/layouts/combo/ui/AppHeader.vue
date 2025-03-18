@@ -2,8 +2,11 @@
 import LangDropdown from "@/components/general/LangDropdown.vue";
 import {UIProfile} from "@/components/index.js";
 import {useAppSetting} from "@/utils/index.js"
-const emits = defineEmits(["onChange"])
+import {WeatherSunny32Filled, WeatherMoon28Filled} from "@vicons/fluent"
+import {useAppStore} from "@/store/modules/index.js"
 
+const emits = defineEmits(["onChange"])
+const store = useAppStore()
 
 const onClick = ()=>{
   emits('onChange')
@@ -21,6 +24,18 @@ const onClick = ()=>{
     </div>
   </div>
   <div class="flex justify-end items-center gap-4">
+    <n-switch v-model:value="store.themeSwitch" size="large" @update:value="store.changeTheme">
+      <template #checked-icon>
+        <n-icon class="text-primary">
+          <WeatherMoon28Filled/>
+        </n-icon>
+      </template>
+      <template #unchecked-icon>
+        <n-icon class="text-warning">
+          <WeatherSunny32Filled/>
+        </n-icon>
+      </template>
+    </n-switch>
     <LangDropdown/>
     <UIProfile/>
   </div>

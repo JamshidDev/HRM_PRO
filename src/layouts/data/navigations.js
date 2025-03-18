@@ -16,6 +16,11 @@ export const navigations = [
         icon:Person32Filled,
         children:[
             {
+                label:'dashboardPage.name',
+                path:Utils.routeHrmPathMaker(AppPaths.Dashboard),
+                icon:Person12Filled,
+            },
+            {
                 label:'workerPage.name',
                 path:Utils.routeHrmPathMaker(AppPaths.Worker),
                 icon:Person12Filled,

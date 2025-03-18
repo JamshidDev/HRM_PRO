@@ -126,7 +126,7 @@ const accountPhoto = computed(()=>{
       </template>
 
     </div>
-    <div class="panel-content bg-gradient--v2">
+    <div class="panel-content bg-surface-section">
 
       <transition name="slide-right" mode="out-in">
         <div v-if="showPanel">
@@ -143,8 +143,8 @@ const accountPhoto = computed(()=>{
                     :src="accountPhoto"
                 />
                 <div class="flex flex-col w-[120px] pl-1">
-                  <span class="leading-3 text-xs text-gray-800 truncate w-full">{{accountFullName}}</span>
-                  <span class="text-xs font-medium leading-3 truncate">{{accountRole}}</span>
+                  <span class="leading-3 text-xs text-textColor2 truncate w-full">{{accountFullName}}</span>
+                  <span class="text-xs font-medium leading-3 truncate text-textColor1">{{accountRole}}</span>
                 </div>
                 <n-icon size="20" class="text-blue-800">
                   <PeopleSwap20Regular/>
@@ -156,7 +156,7 @@ const accountPhoto = computed(()=>{
           </n-tooltip>
 
 
-          <span class="text-sm block text-gray-600 truncate font-semibold pl-4 mb-3">{{menuName}}</span>
+          <span class="text-sm block text-textColor2 truncate font-semibold pl-4 mb-3">{{menuName}}</span>
           <template v-for="item in panelMenu" :key="item">
 
             <template v-if="item?.children && item.children.length>0">
@@ -218,7 +218,7 @@ const accountPhoto = computed(()=>{
     </div>
 
 
-    <div @click="onClick" class="control-btn">
+    <div @click="onClick" class="control-btn border border-surface-line">
 <!--      <i class='bx bx-chevrons-left'></i>-->
       <n-icon>
         <ChevronDoubleLeft16Filled/>
