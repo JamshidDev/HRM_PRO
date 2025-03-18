@@ -2,7 +2,7 @@
 import {onMounted, ref, computed} from 'vue';
 import {VueDraggable} from 'vue-draggable-plus';
 import {LineHorizontal320Filled} from "@vicons/fluent";
-import {useComponentStore, useTimesheetWorkerStore} from "@/store/modules/index.js";
+import {useComponentStore, useTimesheetDepartmentStore, useTimesheetWorkerStore} from "@/store/modules/index.js";
 import {UIPagination, UIUser} from "@/components/index.js";
 import {Dismiss12Regular, Broom16Filled} from '@vicons/fluent'
 import {vScroll} from '@vueuse/components'

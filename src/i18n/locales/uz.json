@@ -132,7 +132,7 @@
     "chat": "Chat menyusi",
     "docflow": "Hujjatlar menyusi",
     "lms": "Attestatsiya menyusi",
-    "labor": "Tabel"
+    "timesheet": "Tabel"
   },
   "loginPage": {
     "name": "Xush kelibsiz",
@@ -271,6 +271,18 @@
     },
     "selectedOrg": "Tanlangan tashkilot",
     "deleteContent": "Haqiqattan ham bu tashkilotni o'chirmoqchimisiz? "
+  },
+  "timesheet": {
+    "name": "Tabel",
+    "assignUser": "Tabelga biriktirish",
+    "type": {
+      "organization": "Tashkilot",
+      "department": "Bo'lim"
+    }
+  },
+  "timesheetWorkerPage": {
+    "name": "Tabelchilar",
+    "work_place": "Tashkilot/Bo'lim"
   },
   "workerPage": {
     "name": "Xodimlar",
@@ -1055,6 +1067,7 @@
     "Sun": "Ya"
   },
   "timeSheetPage": {
+    "name": "Tabel",
     "create": "Tabel yaratish",
     "update": "Tabelni tahrirlash",
     "department": "Bo'lim",

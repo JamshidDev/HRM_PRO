@@ -5,10 +5,15 @@ import Form from "./ui/Form.vue"
 import TimeSheet from "./ui/TimeSheet.vue"
 import ConfirmationForm from './ui/ConfirmationForm.vue'
 
-import {useTimeSheetConfirmStore, useTimeSheetStore, useTimesheetWorkerStore} from "@/store/modules";
+import {
+  useTimeSheetConfirmStore,
+  useTimeSheetStore,
+  useTimesheetDepartmentStore,
+  useTimesheetWorkerStore
+} from "@/store/modules";
 
 const store = useTimeSheetStore()
-const workerStore = useTimesheetWorkerStore()
+const timesheetDepartmentStore = useTimesheetWorkerStore()
 const confirmationStore = useTimeSheetConfirmStore()
 
 
@@ -62,7 +67,7 @@ const onAdd = ()=>{
     </UIDrawer>
     <n-drawer
         height="100vh"
-        v-model:show="workerStore.visible"
+        v-model:show="timesheetDepartmentStore.visible"
         placement="bottom"
     >
       <TimeSheet />

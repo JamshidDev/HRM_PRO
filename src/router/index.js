@@ -10,7 +10,7 @@ import chatRoute from "@/router/modules/chatRoute.js"
 import lmsRoute from "@/router/modules/lmsRoute.js"
 import appRoute from "@/router/modules/appRoute.js"
 import docflowRoute from "@/router/modules/docflowRoute.js"
-import laborRoute from '@/router/modules/laborRoutes.js'
+import timesheetRoute from '@/router/modules/timesheetRoutes.js'
 
 const beforeLogin = (to, from, next) => {
     const token = localStorage.getItem(useAppSetting.tokenKey);
@@ -67,11 +67,11 @@ const routes = [
                 children: [...docflowRoute]
             },
             {
-                path:AppPaths.Labor,
-                name:AppPaths.Labor.substring(1),
+                path:AppPaths.TimeSheet,
+                name:AppPaths.TimeSheet.substring(1),
                 beforeEnter: beforeLogin,
                 redirect: AppPaths.Home,
-                children: [...laborRoute]
+                children: [...timesheetRoute]
             },
             {
                 path:AppPaths.Profile,

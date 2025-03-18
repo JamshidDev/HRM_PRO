@@ -1,12 +1,17 @@
 <script setup>
-import {NoDataPicture, UIMenuButton, UIPagination} from "@/components/index.js"
-import {useTimeSheetConfirmStore, useTimeSheetStore, useTimesheetWorkerStore} from "@/store/modules/index.js"
+import {NoDataPicture, UIMenuButton, UIPagination, UIStatus} from "@/components/index.js"
+import {
+  useTimeSheetConfirmStore,
+  useTimeSheetStore,
+  useTimesheetDepartmentStore,
+  useTimesheetWorkerStore
+} from "@/store/modules/index.js"
 import {Checkmark16Filled} from "@vicons/fluent";
 
 import dayjs from "dayjs";
 
 const store = useTimeSheetStore()
-const workerStore = useTimesheetWorkerStore()
+const timesheetDepartmentStore = useTimesheetWorkerStore()
 const timesheetConfirmStore = useTimeSheetConfirmStore()
 
 const changePage = (v)=>{
@@ -17,12 +22,13 @@ const changePage = (v)=>{
 
 const onSelect = (v)=>{
   if(v.key === 'view'){
-    workerStore.elementId = v.data.id
-    workerStore.visible = true
-    workerStore._index()
+    timesheetDepartmentStore.elementId = v.data.id
+    timesheetDepartmentStore.visible = true
+    timesheetDepartmentStore._index()
   }else if(v.key === 'edit'){
     store.elementId = v.data.id
-    store.payload.department_id = v.data.department.id
+    store.payload.department_id = v.data.department?.id
+    store.payload.work_place_id = v.data.work_place?.id
     store.payload.timestamp = dayjs().month(v.data.month-1).year(v.data.year).valueOf()
     store.visibleType = false
     store.visible = true
@@ -56,7 +62,7 @@ const onSelect = (v)=>{
           <td class="w-[20px] max-w-[20px]"><span class="text-center text-[12px] text-gray-600 block">{{ (store.params.page - 1) * store.params.per_page + idx + 1 }}</span></td>
           <td>{{item.department.name}}</td>
           <td class="!text-center">{{dayjs().year(item.year).month(item.month-1).format('YYYY MMMM')}}</td>
-          <td class="!text-center">{{item.confirmation.name}}</td>
+          <td class="!text-center"><UIStatus :status="item.confirmation"/></td>
           <td>
             <UIMenuButton
                 :show-view="true"

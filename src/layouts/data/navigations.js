@@ -1,7 +1,7 @@
 import {Folder48Filled,LockClosed16Filled, PersonChat20Filled, Person32Filled,
     DocumentPerson16Filled, PersonNote24Filled,Person12Filled,
     TextBulletListSquare20Filled, ChannelShare20Filled, DocumentTextExtract24Filled,
-    PeopleCheckmark24Filled, DocumentArrowDown20Filled, Archive24Filled, WeatherSunnyLow20Filled} from "@vicons/fluent"
+    PeopleCheckmark24Filled, DocumentArrowDown20Filled, Archive24Filled, WeatherSunnyLow20Filled, Table28Filled, Table16Filled} from "@vicons/fluent"
 import {AppPaths} from "@/utils/index.js";
 
 import Utils from "../../utils/Utils.js"
@@ -64,6 +64,11 @@ export const navigations = [
                 label:'vacationPage.name',
                 path:Utils.routeHrmPathMaker(AppPaths.Vacation),
                 icon:WeatherSunnyLow20Filled,
+            },
+            {
+                label:'timesheetWorkerPage.name',
+                path:Utils.routeHrmPathMaker(AppPaths.TimesheetDepartment),
+                icon:Table28Filled,
             },
         ]
     },
@@ -141,19 +146,19 @@ export const navigations = [
     },
     {
         index:5,
-        label: 'Labor',
-        path:AppPaths.Labor,
-        icon:PersonNote24Filled,
+        label: 'timesheet',
+        path:AppPaths.TimeSheet,
+        icon:Table16Filled,
         children:[
+    //         {
+    //             label:t('userDepartmentPage.name'),
+    //             path:Utils.routeTimesheetPathMaker(AppPaths.Department),
+    //             icon:Archive24Filled,
+    //             children:[]
+    //         },
             {
-                label:t('userDepartmentPage.name'),
-                path:Utils.routeLaborPathMaker(AppPaths.Department),
-                icon:Archive24Filled,
-                children:[]
-            },
-            {
-                label:t('userDepartmentPage.timeTable'),
-                path:Utils.routeLaborPathMaker(AppPaths.TimeSheet),
+                label:t('timeSheetPage.name'),
+                path:Utils.routeTimesheetPathMaker(AppPaths.TimeSheet),
                 icon:Archive24Filled,
                 children:[]
             },
