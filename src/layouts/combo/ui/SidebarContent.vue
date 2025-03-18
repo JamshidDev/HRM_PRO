@@ -200,7 +200,6 @@ const accountPhoto = computed(()=>{
                   :class="[isCurrentPath(item.path) && 'active-panel-item-single']"
               >
                 <div class="item-icon">
-<!--                  <i :class="item.icon"></i>-->
                   <n-icon size="22">
                     <component :is="item.icon" />
                   </n-icon>

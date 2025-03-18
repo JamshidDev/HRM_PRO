@@ -30,7 +30,6 @@ const superColor = (cr, opacity=1)=>{
 }
 
  export const customTheme = ()=> {
-     console.log("change Theme")
     return  {
         common: {
             primaryColor: superColor(tailwindColors.primary),

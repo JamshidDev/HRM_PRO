@@ -2,7 +2,7 @@
 import {UIPageContent} from "@/components/index.js"
 import { ChartMultiple20Regular, People32Filled, ExpandUpRight32Filled} from "@vicons/fluent"
 
-const cardList = [
+const mainCardList = [
   {
     name:"01 jadval",
     label:"Ishga qabul qilinishi va bo'shaganligi",
@@ -17,6 +17,51 @@ const cardList = [
       },
     ]
   },
+  {
+    name:"08 jadval",
+    label:"Ish o'rinlari kesimida",
+    data:[
+      {
+        label:"Bosh shtat birliklari",
+        count:1067
+      },
+      {
+        label:"Ortiqcha shtat birliklari",
+        count:1067
+      },
+    ]
+  },
+  {
+    name:"12 jadval",
+    label:"Intizomiy jazolangan xodimlar",
+    data:[
+      {
+        label:"Hayfsan",
+        count:1067
+      },
+      {
+        label:"Ishdan bo'shatish",
+        count:1067
+      },
+    ]
+  },
+  {
+    name:"09 jadval",
+    label:"Mukofotlangan xodimlar kesimida",
+    data:[
+      {
+        label:"Faxriy temiryo'lchi faxriy unvoni",
+        count:1067
+      },
+      {
+        label:"Boshqa mukofatlar",
+        count:1067
+      },
+    ]
+  },
+]
+
+const cardList = [
   {
     name:"02 jadval",
     label:"Xodimlarning yosh kesimida",
@@ -108,40 +153,8 @@ const cardList = [
     ]
   },
   {
-    name:"08 jadval",
-    label:"Ish o'rinlari kesimida",
-    data:[
-      {
-        label:"Bosh shtat birliklari",
-        count:1067
-      },
-      {
-        label:"Ortiqcha shtat birliklari",
-        count:1067
-      },
-    ]
-  },
-  {
-    name:"09 jadval",
-    label:"Mukofotlangan xodimlar kesimida",
-    data:[
-      {
-        label:"Davlat mukofotlari",
-        count:1067
-      },
-      {
-        label:"Faxriy temiryo'lchi faxriy unvoni",
-        count:1067
-      },
-      {
-        label:"Kasb a'lochisi faxriy yorlig'i",
-        count:1067
-      },
-    ]
-  },
-  {
     name:"10 jadval",
-    label:"IXodimlar kesimida",
+    label:"Xodimlar kesimida",
     data:[
       {
         label:"Xodimlar soni",
@@ -171,20 +184,7 @@ const cardList = [
       },
     ]
   },
-  {
-    name:"12 jadval",
-    label:"Intizomiy jazolangan xodimlar",
-    data:[
-      {
-        label:"Hayfsan",
-        count:1067
-      },
-      {
-        label:"Ishdan bo'shatish",
-        count:1067
-      },
-    ]
-  },
+
   {
     name:"13 jadval",
     label:"Malaka oshirganligi to'g'risida",
@@ -220,20 +220,24 @@ const cardList = [
 <template>
 <UIPageContent>
   <div class="grid grid-cols-12 gap-4">
-    <template v-for="item in 4" :key="item">
+    <template v-for="(card, idx) in mainCardList" :key="idx">
       <div class="col-span-3">
-        <div class="dashboard-primary-card border border-surface-line p-4 pt-6 rounded-xl relative overflow-hidden drop-shadow-sm">
-          <span class="absolute top-0 right-0 w-[100px] h-full opacity-30"  style="background-image:url('https://html.phoenixcoded.net/light-able/bootstrap/assets/images/widget/img-status-9.svg')"></span>
-          <p class="text-white font-medium">Yearly Sales</p>
-          <h2 class="text-2xl font-semibold text-white mt-3">$249.95</h2>
-          <p class="text-xs text-white mt-2">You made an extra 35,000 this Daily</p>
+        <div class="bg-surface-section border border-surface-line p-4 pt-6 rounded-xl relative overflow-hidden drop-shadow-sm">
+          <span class="absolute top-0 right-0 w-[100px] h-full opacity-60 bg-no-repeat"  style="background-image:url('/public/effect/primary-card.svg')"></span>
+          <p class="text-textColor2 font-semibold">{{card.label}}</p>
+          <template v-for="(data, index) in card.data" :key="index">
+            <h2 class="text-2xl font-semibold text-textColor2 mt-3">{{data.count}}</h2>
+            <p class="text-textColor1 leading-[1.2]">{{data.label}}</p>
+          </template>
+          <p class="relative z-[2] text-textColor1 flex justify-end mt-2 items-center gap-2 hover:text-primary cursor-pointer transition-all">Batafsil ko'rish <n-icon size="16"><ExpandUpRight32Filled/></n-icon></p>
+
         </div>
       </div>
     </template>
     <template v-for="item in 4" :key="item">
       <div class="col-span-3">
         <div class="bg-surface-section rounded-xl p-4 pt-6 relative overflow-hidden border border-surface-line">
-          <span class="z-[1] opacity-30 absolute top-0 right-0 w-[160px] h-full bg-no-repeat bg-[url(https://html.phoenixcoded.net/light-able/bootstrap/assets/images/widget/img-status-8.svg)]" ></span>
+          <span class="z-[1] opacity-30 absolute top-0 right-0 w-[160px] h-full bg-no-repeat bg-[url(/public/effect/effect-card-1.svg)]" ></span>
 
           <p class="text-textColor2 font-semibold">Users From United States</p>
 
@@ -279,7 +283,7 @@ const cardList = [
     <template v-for="item in 2" :key="item">
       <div class="col-span-6">
         <div class="bg-surface-section rounded-xl p-4 pt-6 relative overflow-hidden border border-surface-line">
-          <span class="z-[1] opacity-40 absolute top-0 right-0 w-[160px] h-full bg-no-repeat bg-[url(https://html.phoenixcoded.net/light-able/bootstrap/assets/images/widget/img-status-7.svg)]" ></span>
+          <span class="z-[1] opacity-40 absolute top-0 right-0 w-[160px] h-full bg-no-repeat bg-[url(/public/effect/effect-card-2.svg)]" ></span>
           <div class="flex items-center justify-between gap-3">
             <p class="text-textColor2 font-medium whitespace-nowrap">Users From United States</p>
             <hr class="w-[100%] h-[2px] text-surface-line" />
