@@ -2,6 +2,7 @@
 import {UIPdfSignatureDrawer, UIOnlyOfficeDrawer} from "@/components/index.js"
 import {useOnlyOfficeStore, useAccountStore, usePdfViewerStore} from "@/store/modules/index.js"
 import {v4 as uuidv4} from "uuid"
+import RejectModal from "@/components/pdfSignature/ui/RejectModal.vue"
 const onlyOfficeStore = useOnlyOfficeStore()
 const accountStore = useAccountStore()
 const pdfViewerStore = usePdfViewerStore()
@@ -65,6 +66,11 @@ const onSignatureEv = ()=>{
   emits('signatureEv')
 }
 
+const onRejectEv = ()=>{
+  openPdf(pdfViewerStore.document_id, pdfViewerStore.model,pdfViewerStore.signatureId)
+  emits('signatureEv')
+}
+
 
 defineExpose({
   openPdf,
@@ -79,5 +85,6 @@ defineExpose({
   <div>
     <UIPdfSignatureDrawer ref="pdfSignatureRef" @onEdit="onEditPdf" @signatureEv="onSignatureEv"/>
     <UIOnlyOfficeDrawer @onBack="onBackWord"/>
+    <RejectModal @onSuccessEv="onRejectEv" />
   </div>
 </template>

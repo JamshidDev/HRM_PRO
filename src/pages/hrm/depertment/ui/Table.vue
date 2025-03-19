@@ -1,7 +1,7 @@
 <script setup>
-import {NoDataPicture, UIActionButton, UIPagination} from "@/components/index.js"
+import {NoDataPicture, UIPagination} from "@/components/index.js"
 import {useDepartmentStore} from "@/store/modules/index.js"
-import {FlowchartCircle24Regular, Circle48Regular} from "@vicons/fluent"
+import {FlowchartCircle24Regular, Circle48Regular, ChevronRight12Regular} from "@vicons/fluent"
 import MenuButton from "@/components/buttons/MenuButton.vue"
 import Utils from "@/utils/Utils.js"
 
@@ -101,14 +101,9 @@ const onSelectEv = (v)=>{
             >
               <template #icon>
                 <n-icon size="24">
-                  <FlowchartCircle24Regular/>
+                  <ChevronRight12Regular/>
                 </n-icon>
               </template>
-            </n-button>
-            <n-button quaternary circle type="primary" v-else>
-              <n-icon size="20">
-                <Circle48Regular/>
-              </n-icon>
             </n-button>
           </td>
           <td>{{item.name}}</td>

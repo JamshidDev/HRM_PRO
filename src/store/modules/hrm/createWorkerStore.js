@@ -20,6 +20,8 @@ export const useCreateWorkerStore = defineStore('createWorkerStore', {
             current_city_id:null,
             nationality_id:null,
             address:null,
+            work_experience:null,
+            experience_date:null,
             pin:null,
             inn:null,
             phones:[{
@@ -80,15 +82,18 @@ export const useCreateWorkerStore = defineStore('createWorkerStore', {
         },
         save(){
             this.saveLoading = true
-            let data = {...this.payload}
-            data.pin = this.payload.pin.split('-').join("")
-            data.birthday = Utils.timeToZone(this.payload.birthday)
-            data.phones = this.payload.phones.map((v)=>v.phone.split('-').join('').slice(4))
-            data.photos = this.candidatePhotos.length>0? this.candidatePhotos.map((v)=>({
-                photo:v.base64,
-                current:v.id === this.mainImageId
-            })) : []
-            data.user_phone = this.payload.phones.filter((v)=>v.main)[0].phone.split('-').join('').slice(4)
+            let data = {
+                ...this.payload,
+                pin:this.payload.pin.split('-').join(""),
+                birthday:Utils.timeToZone(this.payload.birthday),
+                experience_date:Utils.timeToZone(this.payload.experience_date),
+                phones:this.payload.phones.map((v)=>v.phone.split('-').join('').slice(4)),
+                photos:this.candidatePhotos.length>0? this.candidatePhotos.map((v)=>({
+                    photo:v.base64,
+                    current:v.id === this.mainImageId
+                })) : [],
+                user_phone:this.payload.phones.filter((v)=>v.main)[0].phone.split('-').join('').slice(4),
+            }
 
             $ApiService.workerService._create({data}).then((res)=>{
                 if(!res.data?.error){

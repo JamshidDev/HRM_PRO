@@ -1,7 +1,8 @@
 import {Folder48Filled,LockClosed16Filled, PersonChat20Filled, Person32Filled,
     DocumentPerson16Filled, PersonNote24Filled,Person12Filled,
     TextBulletListSquare20Filled, ChannelShare20Filled, DocumentTextExtract24Filled,
-    PeopleCheckmark24Filled, DocumentArrowDown20Filled, Archive24Filled, WeatherSunnyLow20Filled, Table28Filled, Table16Filled} from "@vicons/fluent"
+    PeopleCheckmark24Filled, DocumentArrowDown20Filled, Archive24Filled, WeatherSunnyLow20Filled,
+    Grid20Filled, Document32Filled, Table28Filled} from "@vicons/fluent"
 import {AppPaths} from "@/utils/index.js";
 
 import Utils from "../../utils/Utils.js"
@@ -18,52 +19,62 @@ export const navigations = [
             {
                 label:'dashboardPage.name',
                 path:Utils.routeHrmPathMaker(AppPaths.Dashboard),
-                icon:Person12Filled,
+                icon:Grid20Filled,
+                color:'bg-dark',
             },
             {
                 label:'workerPage.name',
                 path:Utils.routeHrmPathMaker(AppPaths.Worker),
                 icon:Person12Filled,
+                color:'bg-primary',
             },
             {
                 label:'departmentPage.name',
                 path:Utils.routeHrmPathMaker(AppPaths.Department),
                 icon:ChannelShare20Filled,
+                color:'bg-warning',
             },
             {
                 label:'departmentPositionPage.name',
                 path:Utils.routeHrmPathMaker(AppPaths.DepartmentPosition),
                 icon:TextBulletListSquare20Filled,
+                color:'bg-secondary',
             },
             {
                 label:'confirmation.name',
                 path:Utils.routeHrmPathMaker(AppPaths.Contract),
-                icon:DocumentTextExtract24Filled,
+                icon:Document32Filled,
+                color:'bg-success',
             },
             {
                 label:'documentPage.tabs.command',
                 path:Utils.routeHrmPathMaker(AppPaths.Command),
-                icon:DocumentTextExtract24Filled,
+                icon:Document32Filled,
+                color:'bg-secondary',
             },
             {
                 label:'documentPage.tabs.adContract',
                 path:Utils.routeHrmPathMaker(AppPaths.AdContract),
-                icon:DocumentTextExtract24Filled,
+                icon:Document32Filled,
+                color:'bg-warning',
             },
             {
                 label:'applicationPage.name',
                 path:Utils.routeHrmPathMaker(AppPaths.Application),
                 icon:DocumentArrowDown20Filled,
+                color:'bg-success',
             },
             {
                 label:'confirmationPage.name',
                 path:Utils.routeHrmPathMaker(AppPaths.Confirmation),
                 icon:PeopleCheckmark24Filled,
+                color:'bg-dark',
             },
             {
                 label:'vacationPage.name',
                 path:Utils.routeHrmPathMaker(AppPaths.Vacation),
                 icon:WeatherSunnyLow20Filled,
+                color:'bg-primary',
             },
         ]
     },
@@ -78,7 +89,7 @@ export const navigations = [
                 label:'chatWindow.name',
                 path:Utils.routeChatPathMaker(AppPaths.ChatWindow),
                 icon:Folder48Filled,
-                children:[]
+                color:'bg-dark',
             },
         ]
     },
@@ -92,24 +103,25 @@ export const navigations = [
                 label:'confirmation.name',
                 path:Utils.routeDocFlowPathMaker(AppPaths.ConfContract),
                 icon:DocumentTextExtract24Filled,
-                children:[]
+                color:'bg-dark',
             },
             {
                 label:'documentPage.tabs.command',
                 path:Utils.routeDocFlowPathMaker(AppPaths.ConfCommand),
                 icon:DocumentTextExtract24Filled,
-                children:[]
+                color:'bg-dark',
             },
             {
                 label:'documentPage.tabs.adContract',
                 path:Utils.routeDocFlowPathMaker(AppPaths.ConfAdContract),
                 icon:DocumentTextExtract24Filled,
-                children:[]
+                color:'bg-dark',
             },
             {
                 label:'applicationPage.name',
                 path:Utils.routeDocFlowPathMaker(AppPaths.ConfApplication),
                 icon:DocumentArrowDown20Filled,
+                color:'bg-dark',
             },
             {
                 label:'timesheetWorkerPage.name',
@@ -134,19 +146,19 @@ export const navigations = [
                 label:'topicPage.name',
                 path:Utils.routeLmsPathMaker(AppPaths.Topic),
                 icon:Archive24Filled,
-                children:[]
+                color:'bg-dark',
             },
             {
                 label:'categoryPage.name',
                 path:Utils.routeLmsPathMaker(AppPaths.Category),
                 icon:Archive24Filled,
-                children:[]
+                color:'bg-dark',
             },
             {
                 label:t('examPage.name'),
                 path:Utils.routeLmsPathMaker(AppPaths.Exam),
                 icon:Archive24Filled,
-                children:[]
+                color:'bg-dark',
             },
         ]
     },
@@ -160,78 +172,91 @@ export const navigations = [
                 label:'userPage.name',
                 path:Utils.routePathMaker(AppPaths.User),
                 icon:Folder48Filled,
-                children:[]
+                color:'bg-dark',
             },
             {
                 label:'userRole.name',
                 path:Utils.routePathMaker(AppPaths.UserRole),
                 icon:Folder48Filled,
-                children:[]
+                color:'bg-dark',
             },
             {
                 label:'userPermission.name',
                 path:Utils.routePathMaker(AppPaths.UserPermission),
                 icon:Folder48Filled,
+                color:'bg-dark',
             },
             {
                 label:'countryPage.name',
                 path:Utils.routePathMaker(AppPaths.Country),
                 icon:Folder48Filled,
+                color:'bg-dark',
             },
             {
                 label:'regionPage.name',
                 path:Utils.routePathMaker(AppPaths.Region),
                 icon:Folder48Filled,
+                color:'bg-dark',
             },
             {
                 label:'districtPage.name',
                 path:Utils.routePathMaker(AppPaths.District),
                 icon:Folder48Filled,
+                color:'bg-dark',
             },
             {
                 label:'nationalityPage.name',
                 path:Utils.routePathMaker(AppPaths.Nationality),
                 icon:Folder48Filled,
+                color:'bg-dark',
             },
             {
                 label:'positionPage.name',
                 path:Utils.routePathMaker(AppPaths.Position),
                 icon:Folder48Filled,
+                color:'bg-dark',
             },
             {
                 label:'schedulePage.name',
                 path:Utils.routePathMaker(AppPaths.Schedule),
                 icon:Folder48Filled,
+                color:'bg-dark',
             },
             {
                 label:'workdayPage.name',
                 path:Utils.routePathMaker(AppPaths.Workday),
                 icon:Folder48Filled,
+                color:'bg-dark',
             },
             {
                 label:'organizationPage.name',
                 path:Utils.routePathMaker(AppPaths.Organizations),
                 icon:Folder48Filled,
+                color:'bg-dark',
             },
             {
                 label:'actionLog.name',
                 path:Utils.routePathMaker(AppPaths.ActionLog),
                 icon:Folder48Filled,
+                color:'bg-dark',
             },
             {
                 label:'documentSetting.name',
                 path:Utils.routePathMaker(AppPaths.DocumentSetting),
                 icon:Folder48Filled,
+                color:'bg-dark',
             },
             {
                 label:'holidayPage.name',
                 path:Utils.routePathMaker(AppPaths.Holiday),
                 icon:Folder48Filled,
+                color:'bg-dark',
             },
             {
                 label:'othersPage.name',
                 path:Utils.routePathMaker(AppPaths.AdminOther),
                 icon:Folder48Filled,
+                color:'bg-dark',
             },
         ]
     },

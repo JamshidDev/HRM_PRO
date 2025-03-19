@@ -126,37 +126,13 @@ const accountPhoto = computed(()=>{
       </template>
 
     </div>
-    <div class="panel-content bg-surface-section">
+    <div class="panel-content sidebar-panel">
 
       <transition name="slide-right" mode="out-in">
         <div v-if="showPanel">
 
-          <n-tooltip trigger="hover" :delay="900">
-            <template #trigger>
-              <div
-                  @click="store.openRoleModal()"
-                  class="w-full whitespace-nowrap overflow-hidden flex items-center gap-[2px] px-1 py-1 border border-[transparent]
-          rounded-md  mb-5 cursor-pointer hover:shadow-sm transition-all hover:rounded-xl hover:border-blue-300 ">
-                <n-avatar
-                    round
-                    size="small"
-                    :src="accountPhoto"
-                />
-                <div class="flex flex-col w-[120px] pl-1">
-                  <span class="leading-3 text-xs text-textColor2 truncate w-full">{{accountFullName}}</span>
-                  <span class="text-xs font-medium leading-3 truncate text-textColor1">{{accountRole}}</span>
-                </div>
-                <n-icon size="20" class="text-blue-800">
-                  <PeopleSwap20Regular/>
-                </n-icon>
 
-              </div>
-            </template>
-            {{$t('account.changeAccount')}}
-          </n-tooltip>
-
-
-          <span class="text-sm block text-textColor2 truncate font-semibold pl-4 mb-3">{{menuName}}</span>
+          <span class="text-sm block text-textColor2 truncate font-semibold pl-4 mb-3 mt-3">{{menuName}}</span>
           <template v-for="item in panelMenu" :key="item">
 
             <template v-if="item?.children && item.children.length>0">
@@ -199,13 +175,12 @@ const accountPhoto = computed(()=>{
                   class="panel-item-single"
                   :class="[isCurrentPath(item.path) && 'active-panel-item-single']"
               >
-                <div class="item-icon">
-<!--                  <i :class="item.icon"></i>-->
-                  <n-icon size="22">
+                <div :class="[item?.color]" class="item-icon rounded-md ml-[-2px]">
+                  <n-icon size="20">
                     <component :is="item.icon" />
                   </n-icon>
                 </div>
-                <div class="item-title truncate">
+                <div class="item-title truncate pl-2">
                   <span>{{ $t(item.label)}}</span>
                 </div>
               </div>

@@ -30,6 +30,8 @@ export const useWorkerProfileStore = defineStore('workerProfileStore', {
             inn:null,
             phones:[],
             marital_status:null,
+            work_experience:null,
+            experience_date:null,
         },
         params:{
             page:1,
@@ -91,7 +93,9 @@ export const useWorkerProfileStore = defineStore('workerProfileStore', {
                 this.payload.last_name = this.data.last_name
                 this.payload.first_name = this.data.first_name
                 this.payload.middle_name = this.data.middle_name
+                this.payload.work_experience = this.data.work_experience.toString()
                 this.payload.birthday = new Date(this.data.birthday).getTime()
+                this.payload.experience_date = new Date(this.data.experience_date).getTime()
                 this.payload.country_id = this.data.country.id
                 this.payload.region_id = this.data.region.id
                 this.payload.city_id = this.data.city.id
@@ -101,6 +105,7 @@ export const useWorkerProfileStore = defineStore('workerProfileStore', {
                 this.payload.nationality_id = this.data.nationality.name.id
                 this.payload.pin = this.data.pin?.toString()
                 this.payload.inn = this.data.inn?.toString()
+                this.payload.marital_status = this.data.marital_status?.id
 
 
                 this.positionList = this.data.positions
@@ -143,6 +148,7 @@ export const useWorkerProfileStore = defineStore('workerProfileStore', {
                 ...this.payload,
                 pin:this.payload.pin.split('-').join(""),
                 birthday:Utils.timeToZone(this.payload.birthday),
+                experience_date:Utils.timeToZone(this.payload.experience_date),
                 user_phone:this.payload.phones.filter(v=>v.main)[0].phone.split('-').join('').slice(4),
                 phones:this.payload.phones.map((v)=>v.phone.split('-').join('').slice(4)),
             }

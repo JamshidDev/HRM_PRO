@@ -20,6 +20,7 @@ export const useSignatureStore = defineStore('signatureStore', {
         loading:false,
         confirmationId:null,
         documentType:null,
+        rejectLoading:null,
     }),
     actions: {
         async _checkVersion() {
@@ -211,6 +212,14 @@ export const useSignatureStore = defineStore('signatureStore', {
 
             itm.validDate = vo.validTo
             return itm
+        },
+        _rejectDocument(data, callBack){
+            this.rejectLoading = true
+            $ApiService.documentService._confirmationDocument({data}).then((res)=>{
+                callBack?.()
+            }).finally(()=>{
+                this.rejectLoading = false
+            })
         },
     }
 
