@@ -19,6 +19,8 @@ export const useTimesheetWorkerStore = defineStore('timesheetWorkerStore', {
         payload:{
             status: null,
             hours: null,
+            status2: null,
+            hours2: null,
             start: null,
             end: null,
             isClearing: false
@@ -39,7 +41,7 @@ export const useTimesheetWorkerStore = defineStore('timesheetWorkerStore', {
             promises.push($ApiService.timeSheetWorkerService._index({id: this.elementId, params}).then((res)=>{
                 this.list = res.data.data.data.map(i=>({
                     ...i,
-                    total: i.days.reduce((acc, cur) => acc+cur?.hours || 0, 0)
+                    days: Object.fromEntries(i.days.map(i=>[i.day, i.details]))
                 }))
                 this.totalItems = res.data.data.total
             }))
@@ -53,51 +55,61 @@ export const useTimesheetWorkerStore = defineStore('timesheetWorkerStore', {
                 this.loading = false
             })
         },
-        _index_workers(){
-            this.loading = true
-            let params = {
-                ...this.params
-            }
-            $ApiService.timeSheetWorkerService._index({id: this.elementId, params}).then((res)=>{
-                this.list = res.data.data.data.map(i=>({
-                    ...i,
-                    total: i.days.reduce((acc, cur) => acc+cur?.hours || 0, 0)
-                }))
-                this.totalItems = res.data.data.total
-            }).finally(()=>{
-                this.loading = false
-            })
-        },
+        // _index_workers(){
+        //     this.loading = true
+        //     let params = {
+        //         ...this.params
+        //     }
+        //     $ApiService.timeSheetWorkerService._index({id: this.elementId, params}).then((res)=>{
+        //         this.list = res.data.data.data.map(i=>({
+        //             ...i,
+        //             days: Object.fromEntries(i.days.map(i=>[i.day, i.details]))
+        //         }))
+        //         this.totalItems = res.data.data.total
+        //     }).finally(()=>{
+        //         this.loading = false
+        //     })
+        // },
         _create(){
             if (!this.payload.start || !this.payload.end) return;
+            this.saveLoading = true
             let rowStart = Math.min(this.payload.start.row, this.payload.end.row);
             let rowEnd = Math.max(this.payload.start.row, this.payload.end.row);
             let colStart = Math.min(this.payload.start.col, this.payload.end.col);
             let colEnd = Math.max(this.payload.start.col, this.payload.end.col);
-            this.saveLoading = true
+
+            let workers = []
+            while(rowStart<=rowEnd){
+                let start = colStart
+                let end = colEnd
+                while(start<=end){
+                    workers.push({
+                        id: this.list[rowStart].id,
+                        day: dayjs().year(this.year).month(this.month).date(start+1).format("YYYY-MM-DD")
+                    })
+                    start++
+                }
+                rowStart++
+            }
+
             let data = {
                 status: this.payload.status,
                 hours: this.payload.hours || 0,
-                workers: (()=>{
-                    let arr = []
-                    while(rowStart<=rowEnd){
-                        let start = colStart
-                        let end = colEnd
-                        while(start<=end){
-                            arr.push({
-                                id: this.list[rowStart].id,
-                                day: dayjs().year(this.year).month(this.month).date(start+1).format("YYYY-MM-DD")
-                            })
-                            start++
-                        }
-                        rowStart++
-                    }
-                    return arr
-                })()
+                workers
             }
-            $ApiService.timeSheetWorkerService._create({data, id: this.elementId}).then((res)=>{
-                this._index_workers()
-                this.resetSelection()
+            let promises = []
+            promises.push($ApiService.timeSheetWorkerService._create({data, id: this.elementId}))
+            if(this.payload.status2){
+                let data2 = {
+                    status: this.payload.status2,
+                    hours: this.payload.hours2 || 0,
+                    workers
+                }
+                promises.push($ApiService.timeSheetWorkerService._create({data: data2, id: this.elementId}))
+            }
+            Promise.all(promises).then(()=>{
+                this._index()
+                this.resetAll()
             }).finally(()=>{
                 this.saveLoading = false
             })
@@ -136,9 +148,17 @@ export const useTimesheetWorkerStore = defineStore('timesheetWorkerStore', {
             this.payload.start = null
             this.payload.end = null
         },
+        resetStatuses(){
+            this.payload.status = null
+            this.payload.hours = null
+            this.payload.status2 = null
+            this.payload.hours2 = null
+        },
         resetAll(){
             this.payload.status = null
             this.payload.hours = null
+            this.payload.status2 = null
+            this.payload.hours2 = null
             this.payload.start = null
             this.payload.end = null
             this.payload.isClearing = false

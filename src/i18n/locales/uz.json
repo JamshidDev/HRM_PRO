@@ -88,6 +88,10 @@
     "return": "Ortga qaytish",
     "finish": "Yakunlash"
   },
+  "date": {
+    "day": "Kun",
+    "hour": "Soat"
+  },
   "month": {
     "january": "Yanvar",
     "february": "Fevral",
@@ -1067,12 +1071,15 @@
     "Sun": "Ya"
   },
   "timeSheetPage": {
-    "name": "Tabel",
+    "name": "Tabellar",
     "create": "Tabel yaratish",
     "update": "Tabelni tahrirlash",
     "department": "Bo'lim",
     "total": "Umumiy",
     "hours": "Soat",
-    "verifiers": "Tasdiqlovchilar"
+    "verifiers": "Tasdiqlovchilar",
+    "worked": "Ishlagan",
+    "tableTitle": "Oy kuni bo'yicha ishda qatnashish va yo'qligi haqida eslatmalar",
+    "halfMonth": "Oy yarmigacha"
   }
 }

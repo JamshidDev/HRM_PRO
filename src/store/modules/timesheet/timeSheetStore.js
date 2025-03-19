@@ -19,7 +19,8 @@ export const useTimeSheetStore = defineStore('timeSheetStore', {
         payload:{
             department_id: undefined,
             work_place_id: undefined,
-            timestamp: null
+            timestamp: null,
+            active_tab: 'organization'
         },
         params:{
             page:1,

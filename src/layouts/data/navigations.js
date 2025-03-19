@@ -65,11 +65,6 @@ export const navigations = [
                 path:Utils.routeHrmPathMaker(AppPaths.Vacation),
                 icon:WeatherSunnyLow20Filled,
             },
-            {
-                label:'timesheetWorkerPage.name',
-                path:Utils.routeHrmPathMaker(AppPaths.TimesheetDepartment),
-                icon:Table28Filled,
-            },
         ]
     },
     {
@@ -116,6 +111,17 @@ export const navigations = [
                 path:Utils.routeDocFlowPathMaker(AppPaths.ConfApplication),
                 icon:DocumentArrowDown20Filled,
             },
+            {
+                label:'timesheetWorkerPage.name',
+                path:Utils.routeDocFlowPathMaker(AppPaths.TimesheetDepartment),
+                icon:Table28Filled,
+            },
+            {
+                label:'timeSheetPage.name',
+                path:Utils.routeDocFlowPathMaker(AppPaths.TimeSheet),
+                icon:Table28Filled,
+            },
+
         ]
     },
     {
@@ -146,26 +152,6 @@ export const navigations = [
     },
     {
         index:5,
-        label: 'timesheet',
-        path:AppPaths.TimeSheet,
-        icon:Table16Filled,
-        children:[
-    //         {
-    //             label:t('userDepartmentPage.name'),
-    //             path:Utils.routeTimesheetPathMaker(AppPaths.Department),
-    //             icon:Archive24Filled,
-    //             children:[]
-    //         },
-            {
-                label:t('timeSheetPage.name'),
-                path:Utils.routeTimesheetPathMaker(AppPaths.TimeSheet),
-                icon:Archive24Filled,
-                children:[]
-            },
-        ]
-    },
-    {
-        index:6,
         label:'Admin',
         path:AppPaths.Admin,
         icon:LockClosed16Filled,

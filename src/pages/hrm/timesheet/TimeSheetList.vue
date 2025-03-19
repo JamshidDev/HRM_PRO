@@ -8,6 +8,7 @@ import ConfirmationForm from './ui/ConfirmationForm.vue'
 import {
   useTimeSheetConfirmStore,
   useTimeSheetStore,
+  useTimesheetDepartmentStore,
   useTimesheetWorkerStore
 } from "@/store/modules";
 

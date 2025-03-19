@@ -31,9 +31,9 @@ export const useTimeSheetConfirmStore = defineStore('timesheetConfirmStore', {
             let data = {
                 confirmations: this.payload.confirmationObjects.map((i, idx)=>({
                     attach: true,
-                    id: i.id,
+                    id: i,
                     order: idx+1,
-                    main: this.main===i.id
+                    main: false
                 })),
             }
 
@@ -42,6 +42,17 @@ export const useTimeSheetConfirmStore = defineStore('timesheetConfirmStore', {
                 this._index()
             }).finally(()=>{
                 this.saveLoading = false
+            })
+        },
+        _update(v){
+            this.loading = true
+            $ApiService.timesheetConfirmService._create({
+                data: {
+                    confirmations: [v]
+                }, id: this.elementId}).then((res)=>{
+                this._index()
+            }).finally(()=>{
+                this.loading = false
             })
         },
         // _update(){

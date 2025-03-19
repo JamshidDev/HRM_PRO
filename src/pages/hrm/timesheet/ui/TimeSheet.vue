@@ -33,21 +33,30 @@ const isCellSelected = (row, col) => {
   return row >= rowStart && row <= rowEnd && col >= colStart && col <= colEnd;
 };
 
-const handleMouseDown = (e) => {
+const canSelectRange = ()=>{
   if(!store.payload.isClearing && store.payload.status==null){
-    return
+    return false
+  }
+  if(store.payload.status!=null && compStore.timesheetTypes?.[store.payload.status-1]?.hours && store.payload.hours==null){
+    return false
+  }
+  if(store.payload.status2!=null && compStore.timesheetTypes?.[store.payload.status2-1]?.hours && store.payload.hours2==null){
+    return false
   }
 
-  if(store.payload.status!=null && compStore.timesheetTypes?.[store.payload.status-1]?.hours && store.payload.hours==null ){
-    return
-  }
-  isDragging.value = true;
-  const {col, row} = e.currentTarget.dataset;
-  const cell = {row: Number(row), col: Number(col)};
+  return true
+}
 
-  store.resetSelection();
-  store.payload.start = cell;
-  store.payload.end = cell;
+const handleMouseDown = (e) => {
+  if(canSelectRange()){
+    isDragging.value = true;
+    const {col, row} = e.currentTarget.dataset;
+    const cell = {row: Number(row), col: Number(col)};
+
+    store.resetSelection();
+    store.payload.start = cell;
+    store.payload.end = cell;
+  }
 };
 
 const handleMouseMove = (e) => {
@@ -114,8 +123,7 @@ const renderLabel = (option)=>{
             :type="store.payload.isClearing ? 'primary' : 'tertiary'"
             @click="()=>{
               store.payload.isClearing=!store.payload.isClearing
-              store.payload.status = null
-              store.payload.hours = null
+              store.resetStatuses()
             }"
 
         >
@@ -124,33 +132,6 @@ const renderLabel = (option)=>{
             <n-icon :component="Broom16Filled" />
           </template>
         </n-button>
-        <n-form ref="form" class="flex gap-2 max-w-[450px]">
-          <n-grid :cols="4" :x-gap="10">
-            <n-form-item-gi :span="3" :show-label="false" :show-feedback="false">
-              <n-select
-                  :loading="compStore.timesheetEnumsLoading"
-                  :options="compStore.timesheetTypes"
-                  v-model:value="store.payload.status"
-                  :render-label="renderLabel"
-                  label-field="name"
-                  value-field="id"
-                  :render-option="renderOption"
-                  @update-value="(_,v)=>{
-                    store.payload.isClearing = false
-                    if(!v?.hours) store.payload.hours=null
-                  }"
-              />
-            </n-form-item-gi>
-            <n-form-item-gi :span="1" :show-label="false" :show-feedback="false">
-              <n-input-number
-                  :min="0"
-                  :disabled="!(store.payload.status && compStore.timesheetTypes[store.payload.status-1]?.hours)"
-                  v-model:value="store.payload.hours"
-                  :placeholder="$t('timeSheetPage.hours')"
-              />
-            </n-form-item-gi>
-          </n-grid>
-        </n-form>
         <n-button type="error" @click="store.visible = false">
           {{$t('content.close')}}
           <template #icon>
@@ -174,9 +155,14 @@ const renderLabel = (option)=>{
               >
                 <thead>
                 <tr>
-                  <th></th>
-                  <th>{{$t('content.worker')}}</th>
+                  <th rowspan="3"></th>
+                  <th rowspan="3">{{$t('content.worker')}}</th>
+                  <th rowspan="1" v-if="store.days.length" :colspan="store.days.length">{{$t('timeSheetPage.tableTitle')}}</th>
+                  <th colspan="4" class="sticky right-[-1px]">{{$t('timeSheetPage.worked')}}</th>
+                </tr>
+                <tr>
                   <th
+                      rowspan="2"
                       v-for="day in store.days" :key="day.day"
                       :class="{'weekend': day.weekDay === 0 || day.weekDay === 6}"
                   >
@@ -186,9 +172,30 @@ const renderLabel = (option)=>{
                         {{dayjs().day(day.weekDay).format('ddd').substring(0, 2)}}
                       </span>
                     </div>
-                    </th>
-                  <th class="sticky right-[-1px]">{{$t('timeSheetPage.total')}}</th>
+                  </th>
+                  <th colspan="2">
+                    {{$t('timeSheetPage.halfMonth')}}
+                  </th>
+                  <th colspan=2>
+                    {{$t('timeSheetPage.total')}}
+                  </th>
                 </tr>
+                <tr>
+                  <th>{{$t('date.day')}}</th>
+                  <th>{{$t('date.hour')}}</th>
+                  <th>{{$t('date.day')}}</th>
+                  <th>{{$t('date.hour')}}</th>
+                </tr>
+<!--                <tr>-->
+<!--                  <th></th>-->
+<!--                  <th>Name</th>-->
+<!--                  <th-->
+<!--                      v-for="day in store.days"-->
+<!--                      :key="day.day"-->
+<!--                      :class="{'weekend': day.weekDay === 0 || day.weekDay === 6}"-->
+<!--                  >{{   }}</th>-->
+<!--                  <th class="sticky right-0 h-full">{{$t('timeSheetPage.total')}}</th>-->
+<!--                </tr>-->
                 </thead>
                 <tbody class="sort-target">
                 <tr v-for="(item, row) in store.list" :key="row">
@@ -203,7 +210,8 @@ const renderLabel = (option)=>{
                         :roundAvatar="false"
                         :short="false"
                         :data="{
-                          fullName: item.worker,
+                          fullName: item.name,
+                          photo: item.photo,
                           position: item.position
                         }"
                           class="mx-auto"
@@ -222,19 +230,78 @@ const renderLabel = (option)=>{
                       @mouseup="handleMouseUp"
                       class="h-[40px] w-[45px] max-h-[40px] min-w-[45px]"
                   >
-                    <div>
-                      <template v-if="item.days[day.day]">
-                        <p v-for="(work, idx) in item.days[day.day]" :key="idx">{{work.name}}/{{work.hours}}</p>
-                      </template>
+                    <div class="flex flex-col">
+                      <div class="flex-grow border-b border-surface-line shrink-0">
+                        <p v-if="item.days[day.day]?.length">{{item.days[day.day]?.length > 1 ? item.days[day.day].map(i=>i.status.name).join('/') : item.days[day.day][0].status}}</p>
+                      </div>
+                      <div class="flex-grow shrink-0">
+                        <p v-if="item.days[day.day]?.length">{{item.days[day.day]?.filter(i=>i?.hours).length > 1 ? item.days[day.day].map(i=>i?.hours).join('/') : item.days[day.day][0].hours}}</p>
+                      </div>
                     </div>
                   </td>
-                  <td class="sticky right-0">{{ item.allMonth.hours }}</td>
+                  <td class="sticky right-0 min-w-[50px]"></td>
+                  <td class="sticky right-0 min-w-[50px]"></td>
+                  <td class="sticky right-0 min-w-[50px]"></td>
+                  <td class="sticky right-0 min-w-[50px]"></td>
                 </tr>
 
                 </tbody>
               </table>
             </VueDraggable>
       </div>
+      <n-form ref="form" class="flex gap-2 fixed bottom-8 right-8 left-8">
+          <n-grid :cols="8" :x-gap="10">
+            <n-form-item-gi :span="3" :show-label="false" :show-feedback="false">
+              <n-select
+                  :loading="compStore.timesheetEnumsLoading"
+                  :options="compStore.timesheetTypes"
+                  v-model:value="store.payload.status"
+                  :render-label="renderLabel"
+                  label-field="name"
+                  value-field="id"
+                  :render-option="renderOption"
+                  :disabled="store.payload.isClearing"
+                  @update-value="(_,v)=>{
+                      if(!v?.hours) store.payload.hours=null
+                    }"
+              />
+            </n-form-item-gi>
+            <n-form-item-gi :span="1" :show-label="false" :show-feedback="false">
+              <n-input-number
+                  :min="0"
+                  :disabled="!(store.payload.status && compStore.timesheetTypes[store.payload.status-1]?.hours)"
+                  v-model:value="store.payload.hours"
+                  :placeholder="$t('timeSheetPage.hours')"
+              />
+            </n-form-item-gi>
+            <n-divider />
+            <n-form-item-gi :span="3" :show-label="false" :show-feedback="false">
+              <n-select
+                  clearable
+                  :loading="compStore.timesheetEnumsLoading"
+                  :options="compStore.timesheetTypes"
+                  v-model:value="store.payload.status2"
+                  :render-label="renderLabel"
+                  label-field="name"
+                  value-field="id"
+                  :render-option="renderOption"
+                  :disabled="store.payload.isClearing || !store.payload.status"
+                  @update-value="(_,v)=>{
+                      if(!v?.hours) store.payload.hours2=null
+                    }"
+              />
+            </n-form-item-gi>
+            <n-form-item-gi :span="1" :show-label="false" :show-feedback="false">
+              <n-input-number
+                  :min="0"
+                  :disabled="!(store.payload.status2 && compStore.timesheetTypes[store.payload.status2-1]?.hours)"
+                  v-model:value="store.payload.hours2"
+                  :placeholder="$t('timeSheetPage.hours')"
+              />
+            </n-form-item-gi>
+          </n-grid>
+        </n-form>
+
       <UIPagination
           v-if="store.totalItems>store.params.per_page"
           :page="store.params.page"
