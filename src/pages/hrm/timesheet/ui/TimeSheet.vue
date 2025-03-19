@@ -232,17 +232,17 @@ const renderLabel = (option)=>{
                   >
                     <div class="flex flex-col">
                       <div class="flex-grow border-b border-surface-line shrink-0">
-                        <p v-if="item.days[day.day]?.length">{{item.days[day.day]?.length > 1 ? item.days[day.day].map(i=>i.status.name).join('/') : item.days[day.day][0].status}}</p>
+                        <p v-if="item.days[day.day]?.length">{{item.days[day.day]?.length > 1 ? item.days[day.day].map(i=>i.status).join('/') : item.days[day.day][0].status}}</p>
                       </div>
                       <div class="flex-grow shrink-0">
-                        <p v-if="item.days[day.day]?.length">{{item.days[day.day]?.filter(i=>i?.hours).length > 1 ? item.days[day.day].map(i=>i?.hours).join('/') : item.days[day.day][0].hours}}</p>
+                        <p class="font-bold" v-if="item.days[day.day]?.length">{{item.days[day.day]?.filter(i=>i?.hours).length > 1 ? item.days[day.day].map(i=>i?.hours).join('/') : item.days[day.day][0].hours}}</p>
                       </div>
                     </div>
                   </td>
-                  <td class="sticky right-0 min-w-[50px]"></td>
-                  <td class="sticky right-0 min-w-[50px]"></td>
-                  <td class="sticky right-0 min-w-[50px]"></td>
-                  <td class="sticky right-0 min-w-[50px]"></td>
+                  <td class="min-w-[50px] total">{{item.halfMonth.days}}</td>
+                  <td class="min-w-[50px] total">{{item.halfMonth.hours}}</td>
+                  <td class="min-w-[50px] total">{{item.allMonth.days}}</td>
+                  <td class="min-w-[50px] total">{{item.allMonth.hours}}</td>
                 </tr>
 
                 </tbody>
@@ -359,7 +359,7 @@ tr:hover td {
   border: none;
 }
 
-td:last-child {
+.total {
   font-weight: 600;
   background: #f8fafc;
   outline: 1px solid #e5e7eb;

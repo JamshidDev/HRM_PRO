@@ -127,11 +127,13 @@ export const navigations = [
                 label:'timesheetWorkerPage.name',
                 path:Utils.routeDocFlowPathMaker(AppPaths.TimesheetDepartment),
                 icon:Table28Filled,
+                color:'bg-dark'
             },
             {
                 label:'timeSheetPage.name',
                 path:Utils.routeDocFlowPathMaker(AppPaths.TimeSheet),
                 icon:Table28Filled,
+                color:'bg-dark'
             },
 
         ]
