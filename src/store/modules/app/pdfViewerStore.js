@@ -91,6 +91,7 @@ export const usePdfViewerStore = defineStore('pdfViewerStore', {
        async loadPdf(){
            this.totalPdfPage = 0
            const pdfUrl = this.pdfUrl+`?_=${new Date().getTime()}`
+           // const pdfUrl = "https://s3.dasuty.com/docflow/documents/timesheets/c4ca4238a0b923820dcc509a6f75849b.pdf"
            try{
                const pdf = await pdfjsLib.getDocument(pdfUrl).promise
                this.totalPdfPage = pdf.numPages

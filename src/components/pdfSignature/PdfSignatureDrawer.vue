@@ -168,9 +168,7 @@ defineExpose({
                 <ChatDrawer/>
                 <div v-if="store.permissions?.qrcode" class="bg-gray-300 rounded-xl border border-gray-400 h-[100px]"></div>
               </div>
-              <div style="width: calc(100% - 600px)" class=" h-full flex pt-[50px]">
-
-
+              <div style="width: calc(100% - 600px)" class=" h-full flex pt-[50px] overflow-auto">
                 <PdfViewer ref="pdfViewerRef"/>
               </div>
 

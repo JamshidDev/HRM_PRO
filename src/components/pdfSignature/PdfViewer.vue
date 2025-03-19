@@ -37,7 +37,7 @@ watchEffect(()=>{
 
 
 const loadPdf = async(url)=>{
-  await store.loadPdf(url)
+  await store.loadPdf()
   // store.pdfUrl = url
   // const pdfUrl = url+`?_=${new Date().getTime()}`
   // try{
@@ -70,12 +70,6 @@ const loadPdf = async(url)=>{
 
 defineExpose({
   loadPdf
-})
-
-onMounted(()=>{
-  store.qrCodeData = "http://localhost:8000/hrm/document"
-  store.createQRCode()
-  console.log("Canvas rendered...")
 })
 
 
