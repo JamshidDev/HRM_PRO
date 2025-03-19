@@ -293,6 +293,33 @@ onMounted(()=>{
           :loading="componentStore.enumLoading"
       />
     </n-form-item>
+    <n-form-item
+        class="col-span-4"
+        :label="$t(`createWorkerPage.form.work_experience`)"
+        path="inn">
+      <n-input
+          class="w-full"
+          type="text"
+          :placeholder="$t(`content.enterField`)"
+          v-model:value="store.payload.work_experience"
+          :allow-input="Utils.onlyAllowNumber"
+      />
+    </n-form-item>
+    <n-form-item
+        class="col-span-4"
+        :label="$t(`createWorkerPage.form.experience_date`)"
+        path="birthday">
+      <n-date-picker
+          class="w-full"
+          v-model:value="store.payload.experience_date"
+          type="date"
+          :placeholder="$t(`content.choose`)"
+      />
+    </n-form-item>
+
+
+
+
     <div class="col-span-12 mt-10">
       <PhoneForm
           @onDelete="onDeletePhone"

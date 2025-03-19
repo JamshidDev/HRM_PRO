@@ -72,6 +72,10 @@ export const usePdfViewerStore = defineStore('pdfViewerStore', {
         appButtonType:false,
         applicationComment:null,
 
+        documentVisible:false,
+        documentComment:null,
+        rejectLoading:false,
+
 
 
 
@@ -84,30 +88,6 @@ export const usePdfViewerStore = defineStore('pdfViewerStore', {
            }
            catch (err){console.log(err)}
         },
-       async addQRCodeToPDF(){
-           console.log(this.pdfUrl)
-           const response = await fetch('http://192.168.82.90:9000/docflow/documents/contracts/d61e6f4e6e7817fc61b293944fcb0605.pdf')
-           const existingPdfBytes = await response.arrayBuffer()
-           const pdfDoc = await PDFDocument.load(existingPdfBytes);
-           const qrCodeDataUrl = await this.createQRCode();
-           const qrCodeImage = await pdfDoc.embedPng(qrCodeDataUrl);
-           const qrCodeDims = qrCodeImage.scale(0.5);
-           const page = pdfDoc.getPages()[this.pageIndex];
-           page.drawImage(qrCodeImage, {
-               x: this.qrCodeX,
-               y: page.getHeight() - qrCodeDims.height - this.qrCodeY,
-               width: qrCodeDims.width,
-               height: qrCodeDims.height,
-           });
-           const pdfBytes = await pdfDoc.save();
-           const blob = new Blob([pdfBytes], { type: 'application/pdf' });
-           const url = URL.createObjectURL(blob);
-           const a = document.createElement('a');
-           a.href = url;
-           a.download = 'signed_document.pdf';
-           a.click();
-           URL.revokeObjectURL(url);
-       },
        async loadPdf(){
            this.totalPdfPage = 0
            const pdfUrl = this.pdfUrl+`?_=${new Date().getTime()}`
@@ -257,7 +237,15 @@ export const usePdfViewerStore = defineStore('pdfViewerStore', {
                this.saveLoading = false
            })
 
-        }
+        },
+        _rejectDocument(data){
+            this.rejectLoading = true
+            $ApiService.documentService._confirmationDocument({data}).then((res)=>{
+
+            }).finally(()=>{
+                this.rejectLoading = false
+            })
+        },
     }
 
 })

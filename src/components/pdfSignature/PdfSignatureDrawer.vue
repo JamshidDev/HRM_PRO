@@ -8,12 +8,9 @@ import LeftContent from "./ui/LeftContent.vue"
 import ChatDrawer from "./ui/ChatDrawer.vue"
 import Utils from "../../utils/Utils.js"
 import {useRoute} from "vue-router"
-import DocxViewer from "./ui/DocxViewer.vue"
-import IFrameViewer from "./ui/IFrameViewer.vue"
 import PdfViewer from "@/components/pdfSignature/PdfViewer.vue"
 import ConformAndRejectModal from "@/components/pdfSignature/ui/ConformAndRejectModal.vue"
-
-const docxViewerRef = ref(null)
+import RejectModal from "@/components/pdfSignature/ui/RejectModal.vue"
 const pdfViewerRef = ref(null)
 
 const route = useRoute()
@@ -71,7 +68,10 @@ const signatureMan = computed(()=>{
       }
     }else return  null
 })
-
+const openRejectModal = ()=>{
+  store.documentComment = null
+  store.documentVisible = true
+}
 
 const getDocument =async (document_id, model)=>{
   store.document_id = document_id
@@ -97,11 +97,6 @@ const getDocument =async (document_id, model)=>{
   })
 }
 
-const documentUrl = computed(()=>{
-  const fileUrl = store.document?.document?.doc_url
-  const baseUrl = `https://view.officeapps.live.com/op/embed.aspx?src=`
-  return fileUrl? baseUrl+fileUrl : null
-})
 
 const openConfirmModal = (v)=>{
   store.appButtonType = v
@@ -129,9 +124,10 @@ defineExpose({
 <template>
   <div>
     <n-drawer :close-on-esc="false" class="ui__onlyOffice-drawer" height="100vh" v-model:show="store.visible"  placement="bottom">
-      <n-drawer-content title="Stoner" class="h-screen" >
+      <n-drawer-content class="h-screen" >
         <n-spin v-model:show="store.loading">
           <div class="w-full h-screen overflow-hidden flex flex-col">
+
             <div class="w-full h-[60px] border-b border-gray-300 flex items-center justify-between px-4 fixed top-0 left-0 z-20 bg-white">
               <div class="flex gap-x-4">
                 <n-button @click="onClose()" type="error" secondary>
@@ -173,11 +169,14 @@ defineExpose({
                 <div v-if="store.permissions?.qrcode" class="bg-gray-300 rounded-xl border border-gray-400 h-[100px]"></div>
               </div>
               <div style="width: calc(100% - 600px)" class=" h-full flex pt-[50px]">
+
+
                 <PdfViewer ref="pdfViewerRef"/>
-<!--                <DocxViewer ref="docxViewerRef" />-->
-<!--                <IFrameViewer v-if="documentUrl" :url="documentUrl" />-->
-<!--                <onlyOfficeApp class="pt-1" v-if="showOffice"/>-->
               </div>
+
+
+
+
               <div class="flex flex-col w-[300px] h-full bg-surface-ground border-l border-surface-line px-2 py-4 pt-[70px]">
                 <div class="w-full" style="height: calc(100% - 110px)">
                   <h3 class="mb-1 text-gray-400 text-xs font-medium uppercase pl-2">{{$t('documentPage.signature.viewer')}}</h3>
@@ -185,7 +184,7 @@ defineExpose({
                 </div>
 
 
-                <div v-if="store.permissions?.signature && showSignature" class="w-full bg-gray-300 rounded-xl border border-gray-400 flex flex-col p-1">
+                <div v-if="store.permissions?.signature && showSignature" class="w-full bg-gray-300 rounded-xl border border-gray-400 flex flex-col p-1 gap-2">
                   <div class="bg-white rounded-xl p-1 mb-4 shadow">
                     <UIUser
                         :short="false"
@@ -198,6 +197,15 @@ defineExpose({
                       class="shadow cursor-pointer"
                       :type="Boolean(store.permissions?.signature)? 'primary' : 'default'"
                   >{{$t('content.signatureDocument')}}
+                    <template #icon>
+                      <Signature20Filled/>
+                    </template>
+                  </n-button>
+                  <n-button
+                      @click="openRejectModal"
+                      class="shadow cursor-pointer"
+                      :type="Boolean(store.permissions?.signature)? 'error' : 'default'"
+                  >{{$t('content.reject')}}
                     <template #icon>
                       <Signature20Filled/>
                     </template>

@@ -38,6 +38,7 @@
     "back": "Orqaga",
     "profile": "Kabinet",
     "setting": "Sozlamalar",
+    "changeAccount": "Hisoblarim",
     "logOutSystem": "Tizmdan chiqish",
     "paginationSize": "{n} tadan ko'rsatish",
     "confirm": "Tasdiqlash",
@@ -395,7 +396,9 @@
       "passport_file": "Passport nusxasi (.pdf)",
       "inn": "Inn",
       "marital_status": "Oilaviy holati",
-      "address": "Yashash manzili"
+      "address": "Yashash manzili",
+      "experience_date": "Uzliksiz ish staji",
+      "work_experience": "Umumiy ish staji"
     },
     "step": {
       "personal": "Kandidatning shaxsiy ma'lumotlari",
