@@ -76,48 +76,68 @@ export const usePdfViewerStore = defineStore('pdfViewerStore', {
         documentComment:null,
         rejectLoading:false,
 
+        pdfDocument:null,
+        isMouseDown:false,
+        renderTasks:{}
+
 
 
 
     }),
     actions:{
-       async createQRCode(){
-           try{
-               this.qrCodeUrl = await QRCode.toDataURL(this.qrCodeData)
-               return  this.qrCodeUrl
-           }
-           catch (err){console.log(err)}
-        },
        async loadPdf(){
            this.totalPdfPage = 0
            const pdfUrl = this.pdfUrl+`?_=${new Date().getTime()}`
            // const pdfUrl = "https://s3.dasuty.com/docflow/documents/timesheets/c4ca4238a0b923820dcc509a6f75849b.pdf"
            try{
-               const pdf = await pdfjsLib.getDocument(pdfUrl).promise
-               this.totalPdfPage = pdf.numPages
+               this.pdfDocument = await pdfjsLib.getDocument(pdfUrl).promise
+               this.totalPdfPage = this.pdfDocument.numPages
                for (let pageNumber = 1; pageNumber <= this.totalPdfPage; pageNumber++) {
-                   const page = await pdf.getPage(pageNumber);
-                   const scale = this.scale;
-                   const viewport = page.getViewport({ scale });
-
-                   const canvas = document.querySelector(`#pdfCanvas${pageNumber}`);
-                   const context = canvas.getContext('2d');
-                   canvas.height = viewport.height;
-                   canvas.width = viewport.width;
-                   this.pdfHeight = viewport.height
-                   this.pdfWidth = viewport.width
-
-                   const renderContext = {
-                       canvasContext: context,
-                       viewport: viewport,
-                   };
-                   await page.render(renderContext).promise
+                   await this.renderPdf(pageNumber)
                }
 
            }catch (err){
                console.error('Error loading PDF:', err);
            }
        },
+        async renderPdf(pageNumber){
+            const page = await this.pdfDocument.getPage(pageNumber);
+            const scale = this.scale;
+            const viewport = page.getViewport({ scale });
+            const canvas = document.querySelector(`#pdfCanvas${pageNumber}`);
+            const context = canvas.getContext('2d');
+            canvas.height = viewport.height;
+            canvas.width = viewport.width;
+            this.pdfHeight = viewport.height
+            this.pdfWidth = viewport.width
+
+            if (this.renderTasks[pageNumber]) {
+                this.renderTasks[pageNumber].cancel();
+            }
+
+            const renderContext = {
+                canvasContext: context,
+                viewport: viewport,
+            };
+
+
+            const task = page.render(renderContext);
+            this.renderTasks[pageNumber] = task;
+
+            try {
+                await task.promise;
+            } catch (err) {
+                if (err.name === 'RenderingCancelledException') {
+                    return;
+                }
+                console.error('Render error:', err);
+            }
+
+            // await page.render(renderContext).promise
+        },
+
+
+
         _history(){
             this.historyList = []
            this.historyLoading = true

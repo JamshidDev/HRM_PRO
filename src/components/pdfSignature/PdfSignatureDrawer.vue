@@ -10,7 +10,6 @@ import Utils from "../../utils/Utils.js"
 import {useRoute} from "vue-router"
 import PdfViewer from "@/components/pdfSignature/PdfViewer.vue"
 import ConformAndRejectModal from "@/components/pdfSignature/ui/ConformAndRejectModal.vue"
-import RejectModal from "@/components/pdfSignature/ui/RejectModal.vue"
 const pdfViewerRef = ref(null)
 
 const route = useRoute()
@@ -98,6 +97,21 @@ const getDocument =async (document_id, model)=>{
 }
 
 
+const onWheelEv = async(event)=>{
+  event.preventDefault()
+  console.log(store.isMouseDown)
+  if(!store.isMouseDown) return
+
+
+  const delta =event.deltaY
+  const step = 0.1
+  if(delta<0){
+    store.scale = Math.min(3, store.scale + step)
+  }else if(delta>0){
+    store.scale = Math.max(1.2, store.scale - step)
+  }
+}
+
 const openConfirmModal = (v)=>{
   store.appButtonType = v
   store.applicationComment = null
@@ -168,7 +182,14 @@ defineExpose({
                 <ChatDrawer/>
                 <div v-if="store.permissions?.qrcode" class="bg-gray-300 rounded-xl border border-gray-400 h-[100px]"></div>
               </div>
-              <div style="width: calc(100% - 600px)" class=" h-full flex pt-[50px] overflow-auto">
+              <div
+                  @wheel="onWheelEv"
+                  @mousedown="store.isMouseDown = true"
+                  @mouseup="store.isMouseDown = false"
+                  @mouseout="store.isMouseDown = false"
+                  style="width: calc(100% - 600px)"
+                  class=" h-full flex pt-[50px] overflow-auto"
+              >
                 <PdfViewer ref="pdfViewerRef"/>
               </div>
 
