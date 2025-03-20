@@ -65,7 +65,7 @@ const menuName = computed(()=>{
   else if (menuPath.value === '/admin') return t('sidebar.admin')
   else if (menuPath.value === '/chat') return t('sidebar.chat')
   else if (menuPath.value === '/docflow') return t('sidebar.docflow')
-  else if (menuPath.value === '/labor') return t('sidebar.labor')
+  else if (menuPath.value === '/timesheet') return t('sidebar.timesheet')
   else return t('sidebar.hrm')
 })
 

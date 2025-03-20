@@ -161,7 +161,7 @@ onUnmounted(()=>{
         <n-spin v-model:show="store.loading">
           <div class="w-full h-screen overflow-hidden flex flex-col">
 
-            <div class="w-full h-[60px] border-b border-gray-300 flex items-center justify-between px-4 fixed top-0 left-0 z-20 bg-white">
+            <div class="w-full h-[60px] border-b border-surface-line flex items-center justify-between px-4 fixed top-0 left-0 z-20 bg-surface-section">
               <div class="flex gap-x-4">
                 <n-button @click="onClose()" type="error" secondary>
                   {{$t('content.close')}}
@@ -219,8 +219,8 @@ onUnmounted(()=>{
                 </div>
 
 
-                <div v-if="store.permissions?.signature && showSignature" class="w-full bg-gray-300 rounded-xl border border-gray-400 flex flex-col p-1 gap-2">
-                  <div class="bg-white rounded-xl p-1 mb-4 shadow">
+                <div v-if="store.permissions?.signature && showSignature" class="w-full bg-surface-section rounded-xl border border-surface-line flex flex-col p-1 gap-2">
+                  <div class="bg-surface-section rounded-xl p-1 mb-4 shadow">
                     <UIUser
                         :short="false"
                         :data="signatureMan"

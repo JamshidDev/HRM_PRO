@@ -39,7 +39,7 @@ const isDocFlow = computed(()=>{
   <div>
     <template v-for="(item, idx) in store.confirmations" :key="idx">
       <div
-          class="w-full rounded-xl cursor-pointer bg-white mb-1 shadow p-2 relative border border-gray-300">
+          class="w-full rounded-xl cursor-pointer bg-surface-section mb-1 shadow p-2 relative border border-surface-line">
         <UIUser
             :short="false"
             :data="{

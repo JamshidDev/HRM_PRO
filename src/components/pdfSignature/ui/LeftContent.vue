@@ -1,6 +1,7 @@
 <script setup>
 import {usePdfViewerStore} from "@/store/modules/index.js"
-import {History20Regular, ChevronUp48Filled, DocumentArrowDown16Regular, DocumentTextLink24Regular, FolderLink48Filled} from "@vicons/fluent"
+import {History20Regular, ChevronUp48Filled, DocumentArrowDown16Regular,
+  TextBulletListLtr16Regular, FolderLink48Filled, AttachText20Regular} from "@vicons/fluent"
 import Utils from "../../../utils/Utils.js"
 import {UIUser} from "@/components/index.js"
 const store = usePdfViewerStore()
@@ -30,24 +31,44 @@ const onDownload = (v)=>{
 
 <template>
   <div class="flex flex-col gap-2">
-    <n-badge type="info" :value="store.show? 0 :store.document?.histories" class="w-full">
-      <n-button type="info" secondary  style="width:100%" @click="getHistory" :loading="store.historyLoading">
+    <n-badge :value="store.show? 0 :store.document?.histories" class="w-full">
+      <n-button type="tertiary" secondary  style="width:100%" @click="getHistory" :loading="store.historyLoading">
         <template #icon>
-          <ChevronUp48Filled v-if="store.show" />
-          <History20Regular v-else/>
+          <n-icon size="20">
+            <ChevronUp48Filled v-if="store.show" />
+            <History20Regular v-else/>
+          </n-icon>
         </template>
         {{store.show? $t('content.hide') : $t('documentPage.signature.history')}}
       </n-button>
     </n-badge>
-    <n-badge type="success" :value="store.fileShow? 0 :store.document?.files" class="w-full">
-      <n-button type="success" secondary  style="width:100%" @click="getFiles" :loading="store.fileLoading">
+
+    <n-input-group>
+      <n-badge type="success" :value="store.fileShow? 0 :store.document?.files" class="w-full">
+        <n-button type="primary" secondary  style="width:100%" @click="getFiles" :loading="store.fileLoading">
+          <template #icon>
+            <n-icon size="20">
+              <ChevronUp48Filled v-if="store.fileShow" />
+              <TextBulletListLtr16Regular v-else/>
+            </n-icon>
+
+          </template>
+          {{store.fileShow? $t('content.hide') : $t('documentPage.signature.files')}}
+        </n-button>
+      </n-badge>
+      <n-button type="primary">
         <template #icon>
-          <ChevronUp48Filled v-if="store.fileShow" />
-          <DocumentTextLink24Regular v-else/>
+          <n-icon size="26">
+            <AttachText20Regular/>
+          </n-icon>
+
         </template>
-        {{store.fileShow? $t('content.hide') : $t('documentPage.signature.files')}}
       </n-button>
-    </n-badge>
+    </n-input-group>
+
+
+
+
     <n-collapse-transition :show="store.fileShow" class="bg-surface-section p-2 rounded overflow-hidden">
       <template v-for="(item, idx) in store.fileList" :key="idx">
         <div class="flex justify-between py-1 px-2 border-b border-surface-line cursor-pointer">

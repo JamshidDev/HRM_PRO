@@ -1,6 +1,5 @@
 
 import {defineStore} from "pinia";
-import QRCode from "qrcode"
 
 import {PDFDocument} from "pdf-lib"
 import * as pdfjsLib from 'pdfjs-dist';
@@ -101,11 +100,12 @@ export const usePdfViewerStore = defineStore('pdfViewerStore', {
            }
        },
         async renderPdf(pageNumber){
-            const page = await this.pdfDocument.getPage(pageNumber);
+            const page = await this.pdfDocument?.getPage(pageNumber);
             const scale = this.scale;
             const viewport = page.getViewport({ scale });
             const canvas = document.querySelector(`#pdfCanvas${pageNumber}`);
             const context = canvas.getContext('2d');
+
             canvas.height = viewport.height;
             canvas.width = viewport.width;
             this.pdfHeight = viewport.height

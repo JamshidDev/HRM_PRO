@@ -3,7 +3,11 @@ import dayjs from "dayjs";
 import {AppPaths} from "@/utils/AppPaths.js";
 import CryptoJS from "crypto-js"
 import i18n from "@/i18n/index.js"
+import {useAppSetting} from "@/utils/AppSetting.js"
 const {t} = i18n.global
+
+const lang = localStorage.getItem(useAppSetting.languageKey) || useAppSetting.defaultLanguage
+i18n.global.locale = lang
 
 const fileToBase64 = (file)=>{
         return new Promise((resolve, reject)=>{
@@ -104,13 +108,14 @@ const routeHrmPathMaker = (mainPath)=>(`${AppPaths.Hrm}${mainPath}`)
 const routeLmsPathMaker = (mainPath)=>(`${AppPaths.Lms}${mainPath}`)
 const routeChatPathMaker = (mainPath)=>(`${AppPaths.Chat}${mainPath}`)
 const routeDocFlowPathMaker = (mainPath)=>(`${AppPaths.DocFlow}${mainPath}`)
-const routeLaborPathMaker = (mainPath)=>(`${AppPaths.Labor}${mainPath}`)
+const routeTimesheetPathMaker = (mainPath)=>(`${AppPaths.TimeSheet}${mainPath}`)
 
 const documentModels = {
     contract:'contracts',
     command:'commands',
     adContract:'contract-additional',
-    workerApplication:'worker-application'
+    workerApplication:'worker-application',
+    timesheet:'timesheet',
 }
 const copyToClipboard = async (text, callback)=>{
     try {
@@ -256,5 +261,5 @@ export default {
     convertFromUrlToQuery,
     viewerStatus,
     methodTypes,
-    routeLaborPathMaker
+    routeTimesheetPathMaker
 }

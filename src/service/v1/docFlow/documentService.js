@@ -31,6 +31,9 @@ const _generateLink =async (payload)=>{
 const _signature =async (payload)=>{
     return await axios.post(`/v1/document/signature`, payload.data, {params:payload.params})
 }
+const _confirmationTimesheet = async (payload)=>{
+    return await axios.get(`/v1/confirmation/timesheet`, {params:payload.params})
+}
 
 
 
@@ -45,4 +48,5 @@ export default {
     _confirmationAdContract,
     _generateLink,
     _signature,
+    _confirmationTimesheet,
 }

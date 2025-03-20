@@ -32,6 +32,7 @@ export const AppPaths = {
     Exam:"/exam",
     Department:"/department",
     TimeSheet: "/timesheet",
+    TimesheetDepartment: "/timesheet-department",
     DepartmentPosition:"/department-position",
     Create:"/create",
     Edit: "/edit",
@@ -58,7 +59,6 @@ export const AppPaths = {
     Contract:"/contract",
     Vacation:"/vacation",
     Application:"/application",
-    Labor: "/labor",
 }
 
 export const AppLayouts ={

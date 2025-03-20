@@ -4,6 +4,7 @@ import ConfirmationContract from "@/pages/docFlow/confirmation/contract/Confirma
 import ConfirmCommand from "@/pages/docFlow/confirmation/command/ConfirmCommand.vue"
 import AdContractPage from "@/pages/docFlow/confirmation/adContract/AdContractPage.vue"
 import ConfApplication from "@/pages/docFlow/confirmation/application/ConfApplication.vue"
+import TimeSheetPage from "@/pages/docFlow/confirmation/timesheet/TimeSheetPage.vue"
 
 export default [
     {
@@ -25,6 +26,10 @@ export default [
         path:Utils.routeDocFlowPathMaker(AppPaths.ConfApplication),
         component:ConfApplication,
         children:[],
-    }
-
+    },
+    {
+        path:Utils.routeDocFlowPathMaker(AppPaths.TimeSheet),
+        component:TimeSheetPage,
+        children:[],
+    },
 ]
