@@ -529,6 +529,11 @@
       "status": {
         "Process": "Jarayonda"
       }
+    },
+    "attach": {
+      "title": "Biriktirsh",
+      "attachFile": "Fayl biriktirish",
+      "attachApplication": "Ariza biriktirish"
     }
   },
   "commandPage": {

@@ -1,7 +1,5 @@
 
 import {defineStore} from "pinia";
-
-import {PDFDocument} from "pdf-lib"
 import * as pdfjsLib from 'pdfjs-dist';
 import * as PdfWorker from "pdfjs-dist/build/pdf.worker.min.js"
 import Utils from "@/utils/Utils.js"
@@ -77,7 +75,31 @@ export const usePdfViewerStore = defineStore('pdfViewerStore', {
 
         pdfDocument:null,
         isCtrlPressed:false,
-        renderTasks:{}
+        renderTasks:{},
+
+        attachVisible:false,
+
+        attachActiveTab:1,
+        attachTabs:[
+            {
+                name:'tab1',
+                id:1,
+            },
+            {
+                name:'tab2',
+                id:2,
+            },
+        ],
+        typeAttach:1,
+        attachFiles:[],
+        attachLoading:false,
+
+        documentApplications:[],
+        docApplicationLoading:false,
+        workerApplications:[],
+
+
+
 
 
 
@@ -267,6 +289,28 @@ export const usePdfViewerStore = defineStore('pdfViewerStore', {
                 this.rejectLoading = false
             })
         },
+        _attachFile(data, callBack){
+            this.attachLoading = true
+            $ApiService.documentFileService._create({data}).then((res)=>{
+                this.attachFiles = []
+                this.workerApplications = []
+                callBack?.()
+            }).finally(()=>{
+                this.attachLoading = false
+            })
+        },
+        _documentApplications(params){
+            this.docApplicationLoading = true
+            $ApiService.applicationService._documentApplication({params}).then((res)=>{
+                this.documentApplications = res.data.data.data.map(v=>({
+                    name:v.number,
+                    id:v.id,
+                }))
+            }).finally(()=>{
+                this.docApplicationLoading = false
+            })
+        }
+
     }
 
 })

@@ -39,6 +39,10 @@ const _accept = async (payload)=>{
     return await axios.put(`v1/hr/applications/${payload.id}/accept`,payload.data)
 }
 
+const _documentApplication = async (payload)=>{
+    return await axios.get(`v1/document/applications`, {params:payload?.params})
+}
+
 
 
 
@@ -56,4 +60,5 @@ export default {
     _details,
     _updateWorkerApplication,
     _accept,
+    _documentApplication,
 }
