@@ -77,7 +77,7 @@ export const usePdfViewerStore = defineStore('pdfViewerStore', {
         rejectLoading:false,
 
         pdfDocument:null,
-        isMouseDown:false,
+        isCtrlPressed:false,
         renderTasks:{}
 
 

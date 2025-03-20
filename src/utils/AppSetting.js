@@ -4,6 +4,6 @@ export const  useAppSetting = {
     themeKey:'app-theme',
     defaultThemeKey:'light',
     tokenKey:'app-token',
-    noAvailableImage: "/public/no-picture.jpg",
-    appLogoUrl:'/public/logo.png'
+    noAvailableImage: "/no-picture.jpg",
+    appLogoUrl:'/logo.png'
 }

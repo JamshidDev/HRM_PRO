@@ -61,7 +61,7 @@ defineExpose({
 
 <template>
   <div class="w-full flex">
-    <div ref="scrollElementRef" class="flex flex-col mx-auto overflow-y-auto relative pb-8" style="height: calc(100vh - 200px)">
+    <div ref="scrollElementRef" class="flex flex-col mx-auto overflow-y-auto relative pb-8" style="height: calc(100vh - 50px)">
       <div
           v-if="store.permissions?.qrcode"
           ref="dragElementRef"

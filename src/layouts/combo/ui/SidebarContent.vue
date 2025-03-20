@@ -5,6 +5,7 @@ import {useAccountStore} from "@/store/modules/index.js"
 import {useRoute, useRouter} from "vue-router";
 import i18n from "@/i18n/index.js"
 import Utils from "@/utils/Utils.js"
+import {useAppSetting} from "@/utils/index.js"
 const {t} = i18n.global
 const router = useRouter()
 const route = useRoute()
@@ -108,7 +109,7 @@ const accountPhoto = computed(()=>{
     <div class="mini-content">
       
       <div class="logo-content cursor-pointer">
-        <img src="/public/logo.svg" alt=" " class="object-center animation-logo" />
+        <img :src="useAppSetting.appLogoUrl" alt=" " class="object-center animation-logo" />
       </div>
       
       <template v-for="item in miniMenu" :key="item">

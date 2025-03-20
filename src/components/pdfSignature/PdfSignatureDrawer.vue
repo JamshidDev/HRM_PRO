@@ -98,16 +98,26 @@ const getDocument =async (document_id, model)=>{
 
 
 const onWheelEv = async(event)=>{
-  if(!store.isMouseDown) return
+  if(!store.isCtrlPressed) return
   event.preventDefault()
-
-
   const delta =event.deltaY
   const step = 0.1
   if(delta<0){
     store.scale = Math.min(3, store.scale + step)
   }else if(delta>0){
     store.scale = Math.max(1.2, store.scale - step)
+  }
+}
+
+const handleKeyDown = (event)=>{
+  if (event.key === 'Control') {
+    store.isCtrlPressed = true
+  }
+}
+
+const handleKeyUp = (event)=>{
+  if (event.key === 'Control') {
+    store.isCtrlPressed = false
   }
 }
 
@@ -131,6 +141,16 @@ defineExpose({
   getDocument
 })
 
+
+onMounted(()=>{
+  window.addEventListener('keydown', handleKeyDown)
+  window.addEventListener('keyup', handleKeyUp)
+})
+
+onUnmounted(()=>{
+  window.removeEventListener('keydown', handleKeyDown)
+  window.removeEventListener('keyup', handleKeyUp)
+})
 
 </script>
 
@@ -183,9 +203,6 @@ defineExpose({
               </div>
               <div
                   @wheel="onWheelEv"
-                  @mousedown="store.isMouseDown = true"
-                  @mouseup="store.isMouseDown = false"
-                  @mouseout="store.isMouseDown = false"
                   style="width: calc(100% - 600px)"
                   class=" h-full flex pt-[50px] overflow-auto"
               >
