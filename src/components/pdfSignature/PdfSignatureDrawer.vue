@@ -98,9 +98,8 @@ const getDocument =async (document_id, model)=>{
 
 
 const onWheelEv = async(event)=>{
-  event.preventDefault()
-  console.log(store.isMouseDown)
   if(!store.isMouseDown) return
+  event.preventDefault()
 
 
   const delta =event.deltaY
