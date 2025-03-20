@@ -2,7 +2,7 @@
 import {Signature20Filled,
   PanelLeftContract20Filled, DocumentEdit24Regular, ClipboardCheckmark20Regular, CalendarCancel20Regular} from "@vicons/fluent"
 import {UIUser} from "@/components/index.js"
-import {usePdfViewerStore, useSignatureStore, useOnlyOfficeStore, useApplicationStore} from "@/store/modules/index.js"
+import {usePdfViewerStore, useSignatureStore, useApplicationStore} from "@/store/modules/index.js"
 import ConfirmationList from "./ui/ConfirmationList.vue"
 import LeftContent from "./ui/LeftContent.vue"
 import ChatDrawer from "./ui/ChatDrawer.vue"
@@ -10,12 +10,13 @@ import Utils from "../../utils/Utils.js"
 import {useRoute} from "vue-router"
 import PdfViewer from "@/components/pdfSignature/PdfViewer.vue"
 import ConformAndRejectModal from "@/components/pdfSignature/ui/ConformAndRejectModal.vue"
+import DocumentFileModal from "@/components/pdfSignature/ui/DocumentFileModal.vue"
 const pdfViewerRef = ref(null)
 
 const route = useRoute()
 
 
-const emits = defineEmits(["onClose", "onEdit", 'signatureEv'])
+const emits = defineEmits(["onClose", "onEdit", 'signatureEv', 'onUpdate'])
 
 const store = usePdfViewerStore()
 const signatureStore = useSignatureStore()
@@ -42,9 +43,6 @@ const onEdit = ()=>{
   emits('onEdit')
 }
 
-const onZoom = async ()=>{
-  await store.loadPdf()
-}
 
 const showSignature = computed(()=>{
   const rejects = ['/hrm/contract', '/hrm/command','/hrm/ad-contract', '/hrm/application']
@@ -276,5 +274,6 @@ onUnmounted(()=>{
       </n-drawer-content>
     </n-drawer>
     <ConformAndRejectModal/>
+    <DocumentFileModal @onUpdate="emits('onUpdate')" />
   </div>
 </template>

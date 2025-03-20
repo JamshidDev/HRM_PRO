@@ -1,9 +1,11 @@
 <script setup>
 import {usePdfViewerStore} from "@/store/modules/index.js"
 import {History20Regular, ChevronUp48Filled, DocumentArrowDown16Regular,
-  TextBulletListLtr16Regular, FolderLink48Filled, AttachText20Regular} from "@vicons/fluent"
+  TextBulletListLtr16Regular, AttachText20Regular, MailAttach16Regular} from "@vicons/fluent"
 import Utils from "../../../utils/Utils.js"
 import {UIUser} from "@/components/index.js"
+import DocumentFileModal from "@/components/pdfSignature/ui/DocumentFileModal.vue"
+
 const store = usePdfViewerStore()
 
 const getHistory = ()=>{
@@ -24,9 +26,20 @@ const getFiles = ()=>{
   }
 }
 
-const onDownload = (v)=>{
-  window.open(v.file, "_blank")
+const onOpenAttach = ()=> {
+  store.workerApplications = []
+  store.attachFiles = []
+  store.attachVisible = true
 }
+
+const onDownload = (url)=>{
+  window.open(url, "_blank")
+}
+
+onMounted(()=>{
+  store.fileShow = false
+  store.show = false
+})
 </script>
 
 <template>
@@ -42,7 +55,6 @@ const onDownload = (v)=>{
         {{store.show? $t('content.hide') : $t('documentPage.signature.history')}}
       </n-button>
     </n-badge>
-
     <n-input-group>
       <n-badge type="success" :value="store.fileShow? 0 :store.document?.files" class="w-full">
         <n-button type="primary" secondary  style="width:100%" @click="getFiles" :loading="store.fileLoading">
@@ -56,7 +68,10 @@ const onDownload = (v)=>{
           {{store.fileShow? $t('content.hide') : $t('documentPage.signature.files')}}
         </n-button>
       </n-badge>
-      <n-button type="primary">
+      <n-button
+          @click="onOpenAttach"
+          type="primary"
+      >
         <template #icon>
           <n-icon size="26">
             <AttachText20Regular/>
@@ -65,16 +80,22 @@ const onDownload = (v)=>{
         </template>
       </n-button>
     </n-input-group>
-
-
-
-
     <n-collapse-transition :show="store.fileShow" class="bg-surface-section p-2 rounded overflow-hidden">
       <template v-for="(item, idx) in store.fileList" :key="idx">
-        <div class="flex justify-between py-1 px-2 border-b border-surface-line cursor-pointer">
-          <n-icon size="18" class="text-surface-500"><FolderLink48Filled/></n-icon>
-          <span @click="onDownload(item)" class="w-[200px] truncate hover:text-primary">{{Utils.fileNameFromUrl(item.file)}}</span>
-        </div>
+
+        <template v-if="item?.file">
+          <div class="flex justify-between py-1 px-2 border-b border-surface-line cursor-pointer">
+            <n-icon size="20" class="text-surface-500"><AttachText20Regular/></n-icon>
+            <span @click="onDownload(item.file)" class="w-[220px] truncate hover:text-primary">{{item.original_name}}</span>
+          </div>
+        </template>
+        <template v-else>
+          <div class="flex justify-between py-1 px-2 border-b border-surface-line cursor-pointer">
+            <n-icon size="20" class="text-surface-500"><MailAttach16Regular/></n-icon>
+            <span @click="onDownload(item?.worker_application?.confirmation_file)" class="w-[220px] truncate hover:text-primary">{{item?.worker_application?.number}}</span>
+          </div>
+        </template>
+
       </template>
     </n-collapse-transition>
     <n-collapse-transition :show="store.show" class="bg-surface-section p-2 rounded overflow-hidden">

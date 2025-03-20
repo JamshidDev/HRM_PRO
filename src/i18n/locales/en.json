@@ -529,6 +529,9 @@
       "status": {
         "Process": "In progress"
       }
+    },
+    "attach": {
+      "title": "Biriktirsh"
     }
   },
   "commandPage": {

@@ -71,6 +71,10 @@ const onRejectEv = ()=>{
   emits('signatureEv')
 }
 
+const onUpdate = ()=>{
+  openPdf(pdfViewerStore.document_id, pdfViewerStore.model,pdfViewerStore.signatureId)
+}
+
 
 defineExpose({
   openPdf,
@@ -83,7 +87,7 @@ defineExpose({
 
 <template>
   <div>
-    <UIPdfSignatureDrawer ref="pdfSignatureRef" @onEdit="onEditPdf" @signatureEv="onSignatureEv"/>
+    <UIPdfSignatureDrawer ref="pdfSignatureRef" @onEdit="onEditPdf" @signatureEv="onSignatureEv" @onUpdate="onUpdate" />
     <UIOnlyOfficeDrawer @onBack="onBackWord"/>
     <RejectModal @onSuccessEv="onRejectEv" />
   </div>
