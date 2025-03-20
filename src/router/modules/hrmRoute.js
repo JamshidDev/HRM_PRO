@@ -13,7 +13,7 @@ import ContractPage from "@/pages/docFlow/document/contract/ContractPage.vue"
 import VacationPage from "@/pages/hrm/vacation/VacationPage.vue"
 import DashboardPage from "@/pages/hrm/dashboard/DashboardPage.vue"
 import TimesheetDepartmentPage from "@/pages/hrm/timesheetDepartment/TimesheetDepartmentPage.vue"
-import TimeSheetListPage from "@/pages/hrm/timesheet/TimeSheetList.vue"
+import TimesheetListPage from "@/pages/hrm/timesheet/TimesheetList.vue"
 
 export default [
     {
@@ -84,7 +84,7 @@ export default [
     {
         path:Utils.routeHrmPathMaker(AppPaths.TimeSheet),
         name:AppPaths.TimeSheet.substring(1),
-        component:TimeSheetListPage,
+        component:TimesheetListPage,
     }
 
 ]

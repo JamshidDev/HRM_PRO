@@ -2,7 +2,7 @@ import {defineStore} from "pinia";
 import i18n from "@/i18n/index.js"
 import dayjs from "dayjs";
 
-export const useTimeSheetConfirmStore = defineStore('timesheetConfirmStore', {
+export const useTimesheetConfirmStore = defineStore('timesheetConfirmStore', {
     state:()=>({
         list:[],
         loading:false,
@@ -15,6 +15,7 @@ export const useTimeSheetConfirmStore = defineStore('timesheetConfirmStore', {
         structureCheck:[],
         payload:{
             confirmationObjects: [],
+            mainUser: null
         }
     }),
     actions:{

@@ -9,6 +9,8 @@ export const useTimesheetWorkerStore = defineStore('timesheetWorkerStore', {
         totalItems:0,
         loading:false,
         saveLoading:false,
+        pinLoading: false,
+        pinWorkers: [],
         visible:false,
         elementId:null,
         allPermissionList:[],
@@ -38,8 +40,7 @@ export const useTimesheetWorkerStore = defineStore('timesheetWorkerStore', {
             let params = {
                 ...this.params
             }
-            promises.push($ApiService.timeSheetWorkerService._index({id: this.elementId, params}).then((res)=>{
-
+            promises.push($ApiService.timesheetWorkerService._index({id: this.elementId, params}).then((res)=>{
                 this.list = res.data.data.data.map(i=>({
                     ...i,
                     days: Object.fromEntries(i.days.map(i=>[i.day, i.details])),
@@ -65,7 +66,7 @@ export const useTimesheetWorkerStore = defineStore('timesheetWorkerStore', {
                 }))
                 this.totalItems = res.data.data.total
             }))
-            promises.push($ApiService.timeSheetWorkerService._get_days({id: this.elementId}).then((res)=>{
+            promises.push($ApiService.timesheetWorkerService._get_days({id: this.elementId}).then((res)=>{
                 this.days = res.data.data.days
                 this.month = res.data.data.month-1
                 this.year = res.data.data.year
@@ -77,7 +78,7 @@ export const useTimesheetWorkerStore = defineStore('timesheetWorkerStore', {
         },
         _create(){
             if (!this.payload.start || !this.payload.end) return;
-            this.saveLoading = true
+
             let rowStart = Math.min(this.payload.start.row, this.payload.end.row);
             let rowEnd = Math.max(this.payload.start.row, this.payload.end.row);
             let colStart = Math.min(this.payload.start.col, this.payload.end.col);
@@ -88,64 +89,67 @@ export const useTimesheetWorkerStore = defineStore('timesheetWorkerStore', {
                 let start = colStart
                 let end = colEnd
                 while(start<=end){
-                    workers.push({
-                        id: this.list[rowStart].id,
-                        day: dayjs().year(this.year).month(this.month).date(start+1).format("YYYY-MM-DD")
-                    })
+                    if(!this.list[rowStart].days?.[start+1] || this.payload.isClearing){
+                        workers.push({
+                            id: this.list[rowStart].id,
+                            day: dayjs().year(this.year).month(this.month).date(start+1).format("YYYY-MM-DD")
+                        })
+                    }
                     start++
                 }
                 rowStart++
             }
+            if(!workers.length) {
+                this.resetSelection()
+                return
+            }
 
+            this.saveLoading = true
             let data = {
                 status: this.payload.status,
                 hours: this.payload.hours || 0,
                 workers
             }
             let promises = []
-            promises.push($ApiService.timeSheetWorkerService._create({data, id: this.elementId}))
+            promises.push($ApiService.timesheetWorkerService._create({data, id: this.elementId}))
             if(this.payload.status2){
                 let data2 = {
                     status: this.payload.status2,
                     hours: this.payload.hours2 || 0,
                     workers
                 }
-                promises.push($ApiService.timeSheetWorkerService._create({data: data2, id: this.elementId}))
+                promises.push($ApiService.timesheetWorkerService._create({data: data2, id: this.elementId}))
             }
             Promise.all(promises).then(()=>{
                 this._index()
-                this.resetAll()
+                this.resetSelection()
             }).finally(()=>{
                 this.saveLoading = false
             })
         },
-        // _update(){
-        //     this.saveLoading = true
-        //     const date = dayjs(this.payload.timestamp)
-        //     let data = {
-        //         ...this.payload,
-        //         month: date.month()+1,
-        //         year: date.year(),
-        //     }
-        //     $ApiService.timeSheetService._update({data, id: this.elementId}).then((res)=>{
-        //         this.visible = false
-        //         this._index()
-        //         this.resetForm()
-        //     }).finally(()=>{
-        //         this.saveLoading = false
-        //     })
-        // },
-        // _show(){
-        //     this.visibleLoading = true
-        //     $ApiService.userDepartmentService._show({id:this.elementId}).then((res)=>{
-        //
-        //         this.payload.worker_positions = res.data.data.users.map(i=>i.id)
-        //         this.visible = true
-        //     }).finally(()=>{
-        //         this.visibleLoading = false
-        //     })
-        // },
-
+        _check_pin(v){
+            this.pinLoading = true
+            $ApiService.timesheetWorkerService._check_worker(v).then((res)=>{
+                this.pinWorkers = res.data.data.map(i=>({
+                        ...i,
+                        disabled: !!this.list.find(j=>j.id===i.id)
+                }))
+            }).finally(()=>{
+                this.pinLoading = false
+            })
+        },
+        _prepend_workers(v){
+            this.list.unshift({
+                days: {},
+                allMonth: {},
+                halfMonth: {},
+                id: v.id,
+                name: `${v.worker.last_name[0]}.${v.worker.middle_name[0]}.${v.worker.first_name}`,
+                photo: v.worker?.photo,
+                position: v.post_name
+            })
+            this.pinWorkers = []
+        },
         openVisible(data){
             this.visible = data
         },

@@ -1072,7 +1072,7 @@
     "Sat": "Сб",
     "Sun": "Вс"
   },
-  "timeSheetPage": {
+  "timesheetPage": {
     "name": "Табели",
     "create": "Создать табель",
     "update": "Редактировать табель",

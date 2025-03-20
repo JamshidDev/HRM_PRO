@@ -83,7 +83,7 @@ export const navigations = [
                 color:'bg-warning',
             },
             {
-                label:'timeSheetPage.name',
+                label:'timesheetPage.name',
                 path:Utils.routeHrmPathMaker(AppPaths.TimeSheet),
                 icon:GridKanban20Filled,
                 color:'bg-secondary',
@@ -136,7 +136,7 @@ export const navigations = [
                 color:'bg-dark',
             },
             {
-                label:'timeSheetPage.name',
+                label:'timesheetPage.name',
                 path:Utils.routeDocFlowPathMaker(AppPaths.TimeSheet),
                 icon:GridKanban20Filled,
                 color:'bg-secondary',

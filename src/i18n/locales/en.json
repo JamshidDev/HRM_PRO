@@ -1072,7 +1072,7 @@
     "Sat": "Sat",
     "Sun": "Sun"
   },
-  "timeSheetPage": {
+  "timesheetPage": {
     "name": "Timesheets",
     "create": "Create timesheet",
     "update": "Edit timesheet",

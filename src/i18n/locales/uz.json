@@ -88,7 +88,8 @@
     "warning": "Ogohlantirish",
     "error": "Xatolik",
     "return": "Ortga qaytish",
-    "finish": "Yakunlash"
+    "finish": "Yakunlash",
+    "move": "Siljitish"
   },
   "date": {
     "day": "Kun",
@@ -1074,7 +1075,7 @@
     "Sat": "Sha",
     "Sun": "Ya"
   },
-  "timeSheetPage": {
+  "timesheetPage": {
     "name": "Tabellar",
     "create": "Tabel yaratish",
     "update": "Tabelni tahrirlash",
@@ -1082,8 +1083,11 @@
     "total": "Umumiy",
     "hours": "Soat",
     "verifiers": "Tasdiqlovchilar",
+    "mainVerifier": "Asosiy tasdiqlovchi",
     "worked": "Ishlagan",
     "tableTitle": "Oy kuni bo'yicha ishda qatnashish va yo'qligi haqida eslatmalar",
-    "halfMonth": "Oy yarmigacha"
+    "halfMonth": "Oy yarmigacha",
+    "pin": "Pasport JSHSHIR",
+    "addNewWorker": "Yangi xodim qo'shish"
   }
 }

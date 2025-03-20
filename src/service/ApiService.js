@@ -41,6 +41,9 @@ import academicTitleService from "@/service/v1/hrm/academicTitleService.js"
 import academicDegreeService from "@/service/v1/hrm/academicDegreeService.js"
 import vacationService from "@/service/v1/hrm/vacationService.js"
 import timesheetDepartmentService from "@/service/v1/hrm/timesheetDepartmentService.js";
+import timesheetService from '@/service/v1/hrm/timesheetService.js'
+import timesheetWorkerService from '@/service/v1/hrm/timesheetWorkerService.js'
+
 
 import documentService from "@/service/v1/docFlow/documentService.js"
 import contractService from "@/service/v1/docFlow/contractService.js"
@@ -56,11 +59,8 @@ import categoryService from "@/service/v1/lms/categoryService.js"
 import categoryQuestionService from "@/service/v1/lms/categoryQuestionService.js"
 import topicExamService from "@/service/v1/lms/topicExamService.js";
 import workerExamService from '@/service/v1/lms/workerExamService.js'
+import timesheetConfirmService from "@/service/v1/hrm/timesheetConfirmService.js";
 
-import userDepartmentService from '@/service/v1/timesheet/userDepartmentService.js'
-import timeSheetWorkerService from '@/service/v1/timesheet/timeSheetWorkerService.js'
-import timeSheetService from '@/service/v1/timesheet/timeSheetService.js'
-import timesheetConfirmService from "@/service/v1/timesheet/timesheetConfirmService.js";
 
 export default {
     authService,
@@ -116,9 +116,8 @@ export default {
     applicationService,
     vacationService,
     timesheetDepartmentService,
-
-    userDepartmentService,
-    timeSheetService,
-    timeSheetWorkerService,
+    timesheetService,
+    timesheetWorkerService,
     timesheetConfirmService
+
 }
