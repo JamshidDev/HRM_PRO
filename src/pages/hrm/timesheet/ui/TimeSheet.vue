@@ -2,11 +2,12 @@
 import {onMounted, ref, computed} from 'vue';
 import {VueDraggable} from 'vue-draggable-plus';
 import {LineHorizontal320Filled} from "@vicons/fluent";
-import {useComponentStore, useTimesheetWorkerStore} from "@/store/modules/index.js";
+import {useComponentStore, useTimesheetDepartmentStore, useTimesheetWorkerStore} from "@/store/modules/index.js";
 import {UIPagination, UIUser} from "@/components/index.js";
 import {Dismiss12Regular, Broom16Filled} from '@vicons/fluent'
 import {vScroll} from '@vueuse/components'
 import dayjs from "dayjs";
+import {NTooltip} from 'naive-ui'
 
 
 const store = useTimesheetWorkerStore()
@@ -32,21 +33,30 @@ const isCellSelected = (row, col) => {
   return row >= rowStart && row <= rowEnd && col >= colStart && col <= colEnd;
 };
 
-const handleMouseDown = (e) => {
+const canSelectRange = ()=>{
   if(!store.payload.isClearing && store.payload.status==null){
-    return
+    return false
+  }
+  if(store.payload.status!=null && compStore.timesheetTypes?.[store.payload.status-1]?.hours && store.payload.hours==null){
+    return false
+  }
+  if(store.payload.status2!=null && compStore.timesheetTypes?.[store.payload.status2-1]?.hours && store.payload.hours2==null){
+    return false
   }
 
-  if(store.payload.status!=null && compStore.timesheetTypes?.[store.payload.status-1]?.hours && store.payload.hours==null ){
-    return
-  }
-  isDragging.value = true;
-  const {col, row} = e.currentTarget.dataset;
-  const cell = {row: Number(row), col: Number(col)};
+  return true
+}
 
-  store.resetSelection();
-  store.payload.start = cell;
-  store.payload.end = cell;
+const handleMouseDown = (e) => {
+  if(canSelectRange()){
+    isDragging.value = true;
+    const {col, row} = e.currentTarget.dataset;
+    const cell = {row: Number(row), col: Number(col)};
+
+    store.resetSelection();
+    store.payload.start = cell;
+    store.payload.end = cell;
+  }
 };
 
 const handleMouseMove = (e) => {
@@ -79,6 +89,22 @@ const changePage = (v)=>{
   store._index()
 }
 
+const renderOption = ({ node, option }) =>{
+  return [h(NTooltip, {
+    delay: 300
+  }, {
+    trigger: () => node,
+    default: () => `${option.name} (${option.key})`
+  })]
+}
+
+
+const renderLabel = (option)=>{
+  return [
+    h('div',{ class:'font-medium text-gray-500'},`${option.name} (${option.key})`),
+  ];
+}
+
 </script>
 
 <template>
@@ -97,8 +123,7 @@ const changePage = (v)=>{
             :type="store.payload.isClearing ? 'primary' : 'tertiary'"
             @click="()=>{
               store.payload.isClearing=!store.payload.isClearing
-              store.payload.status = null
-              store.payload.hours = null
+              store.resetStatuses()
             }"
 
         >
@@ -107,31 +132,6 @@ const changePage = (v)=>{
             <n-icon :component="Broom16Filled" />
           </template>
         </n-button>
-        <n-form ref="form" class="flex gap-2 max-w-[450px]">
-          <n-grid :cols="4" :x-gap="10">
-            <n-form-item-gi :span="3" :show-label="false" :show-feedback="false">
-              <n-select
-                  :loading="compStore.timesheetEnumsLoading"
-                  :options="compStore.timesheetTypes"
-                  v-model:value="store.payload.status"
-                  label-field="name"
-                  value-field="id"
-                  @update-value="(_,v)=>{
-                    store.payload.isClearing = false
-                    if(!v?.hours) store.payload.hours=null
-                  }"
-              />
-            </n-form-item-gi>
-            <n-form-item-gi :span="1" :show-label="false" :show-feedback="false">
-              <n-input-number
-                  :min="0"
-                  :disabled="!(store.payload.status && compStore.timesheetTypes[store.payload.status-1]?.hours)"
-                  v-model:value="store.payload.hours"
-                  :placeholder="$t('timeSheetPage.hours')"
-              />
-            </n-form-item-gi>
-          </n-grid>
-        </n-form>
         <n-button type="error" @click="store.visible = false">
           {{$t('content.close')}}
           <template #icon>
@@ -155,9 +155,14 @@ const changePage = (v)=>{
               >
                 <thead>
                 <tr>
-                  <th></th>
-                  <th>{{$t('content.worker')}}</th>
+                  <th rowspan="3"></th>
+                  <th rowspan="3">{{$t('content.worker')}}</th>
+                  <th rowspan="1" v-if="store.days.length" :colspan="store.days.length">{{$t('timeSheetPage.tableTitle')}}</th>
+                  <th colspan="4" class="sticky right-[-1px]">{{$t('timeSheetPage.worked')}}</th>
+                </tr>
+                <tr>
                   <th
+                      rowspan="2"
                       v-for="day in store.days" :key="day.day"
                       :class="{'weekend': day.weekDay === 0 || day.weekDay === 6}"
                   >
@@ -167,8 +172,19 @@ const changePage = (v)=>{
                         {{dayjs().day(day.weekDay).format('ddd').substring(0, 2)}}
                       </span>
                     </div>
-                    </th>
-                  <th class="sticky right-[-1px]">{{$t('timeSheetPage.total')}}</th>
+                  </th>
+                  <th colspan="2">
+                    {{$t('timeSheetPage.halfMonth')}}
+                  </th>
+                  <th colspan=2>
+                    {{$t('timeSheetPage.total')}}
+                  </th>
+                </tr>
+                <tr>
+                  <th>{{$t('date.day')}}</th>
+                  <th>{{$t('date.hour')}}</th>
+                  <th>{{$t('date.day')}}</th>
+                  <th>{{$t('date.hour')}}</th>
                 </tr>
 <!--                <tr>-->
 <!--                  <th></th>-->
@@ -202,7 +218,7 @@ const changePage = (v)=>{
                       />
                   </td>
                   <td
-                      v-for="(day, col) in item.days"
+                      v-for="(day, col) in store.days"
                       :key="col"
                       :class="{
                         selected: isCellSelected(row, col)
@@ -212,24 +228,80 @@ const changePage = (v)=>{
                       @mousedown="handleMouseDown"
                       @mousemove="handleMouseMove"
                       @mouseup="handleMouseUp"
-                      class="h-[40px] w-[40px] max-h-[40px] min-w-[40px]"
+                      class="h-[40px] w-[45px] max-h-[40px] min-w-[45px]"
                   >
-                    <div v-if="day?.status && day?.hours" class="w-full h-full  relative overflow-hidden ">
-                      <span class="absolute left-1 top-[2px]">{{day?.hours}}</span>
-                      <div class="absolute border-l border-[#e5e7eb] h-[100px] rotate-45 origin-center left-[50%] translate-x-[-50%] top-[50%] translate-y-[-50%]  bottom-0"></div>
-                      <span class="absolute bottom-[2px] right-1 text-xs">{{day?.status?.key}}</span>
+                    <div class="flex flex-col">
+                      <div class="flex-grow border-b border-surface-line shrink-0">
+                        <p v-if="item.days[day.day]?.length">{{item.days[day.day]?.length > 1 ? item.days[day.day].map(i=>i.status).join('/') : item.days[day.day][0].status}}</p>
+                      </div>
+                      <div class="flex-grow shrink-0">
+                        <p class="font-bold" v-if="item.days[day.day]?.length">{{item.days[day.day]?.filter(i=>i?.hours).length > 1 ? item.days[day.day].map(i=>i?.hours).join('/') : item.days[day.day][0].hours}}</p>
+                      </div>
                     </div>
-                    <span v-else>
-                      {{ day?.status?.key}}
-                    </span>
                   </td>
-                  <td class="sticky right-0">{{ item.total }}</td>
+                  <td class="min-w-[50px] total">{{item.halfMonth.days}}</td>
+                  <td class="min-w-[50px] total">{{item.halfMonth.hours}}</td>
+                  <td class="min-w-[50px] total">{{item.allMonth.days}}</td>
+                  <td class="min-w-[50px] total">{{item.allMonth.hours}}</td>
                 </tr>
 
                 </tbody>
               </table>
             </VueDraggable>
       </div>
+      <n-form ref="form" class="flex gap-2 fixed bottom-8 right-8 left-8">
+          <n-grid :cols="8" :x-gap="10">
+            <n-form-item-gi :span="3" :show-label="false" :show-feedback="false">
+              <n-select
+                  :loading="compStore.timesheetEnumsLoading"
+                  :options="compStore.timesheetTypes"
+                  v-model:value="store.payload.status"
+                  :render-label="renderLabel"
+                  label-field="name"
+                  value-field="id"
+                  :render-option="renderOption"
+                  :disabled="store.payload.isClearing"
+                  @update-value="(_,v)=>{
+                      if(!v?.hours) store.payload.hours=null
+                    }"
+              />
+            </n-form-item-gi>
+            <n-form-item-gi :span="1" :show-label="false" :show-feedback="false">
+              <n-input-number
+                  :min="0"
+                  :disabled="!(store.payload.status && compStore.timesheetTypes[store.payload.status-1]?.hours)"
+                  v-model:value="store.payload.hours"
+                  :placeholder="$t('timeSheetPage.hours')"
+              />
+            </n-form-item-gi>
+            <n-divider />
+            <n-form-item-gi :span="3" :show-label="false" :show-feedback="false">
+              <n-select
+                  clearable
+                  :loading="compStore.timesheetEnumsLoading"
+                  :options="compStore.timesheetTypes"
+                  v-model:value="store.payload.status2"
+                  :render-label="renderLabel"
+                  label-field="name"
+                  value-field="id"
+                  :render-option="renderOption"
+                  :disabled="store.payload.isClearing || !store.payload.status"
+                  @update-value="(_,v)=>{
+                      if(!v?.hours) store.payload.hours2=null
+                    }"
+              />
+            </n-form-item-gi>
+            <n-form-item-gi :span="1" :show-label="false" :show-feedback="false">
+              <n-input-number
+                  :min="0"
+                  :disabled="!(store.payload.status2 && compStore.timesheetTypes[store.payload.status2-1]?.hours)"
+                  v-model:value="store.payload.hours2"
+                  :placeholder="$t('timeSheetPage.hours')"
+              />
+            </n-form-item-gi>
+          </n-grid>
+        </n-form>
+
       <UIPagination
           v-if="store.totalItems>store.params.per_page"
           :page="store.params.page"
@@ -287,7 +359,7 @@ tr:hover td {
   border: none;
 }
 
-td:last-child {
+.total {
   font-weight: 600;
   background: #f8fafc;
   outline: 1px solid #e5e7eb;

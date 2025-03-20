@@ -1,11 +1,14 @@
 <script setup>
 import {NoDataPicture, UIActionButton, UIPagination, UIUser, UIMenuButton, UIWorkerView} from "@/components/index.js"
-import {useWorkerStore} from "@/store/modules/index.js"
+import {useTimesheetDepartmentStore, useWorkerStore} from "@/store/modules/index.js"
 import {useRouter} from "vue-router"
 import {AppPaths} from "@/utils/index.js"
 import Utils from "@/utils/Utils.js"
+import {Table24Regular} from "@vicons/fluent";
 
 const store = useWorkerStore()
+const timesheetDepartmentStore = useTimesheetDepartmentStore()
+
 const router = useRouter()
 const previewRef = ref(null)
 
@@ -27,8 +30,13 @@ const changePage = (v)=>{
 const onSelectEv = (v)=>{
   if(v.key === Utils.ActionTypes.view){
     previewRef.value.openPreview(v.data.uuid)
+  }else if(v.key==="timesheet"){
+    timesheetDepartmentStore.payload.worker_position_id = v.data.id
+    timesheetDepartmentStore.visible = true
   }
 }
+
+
 </script>
 
 <template>
@@ -85,6 +93,12 @@ const onSelectEv = (v)=>{
                 show-edit
                 :show-delete="false"
                 @selectEv="onSelectEv"
+                :extra-options="[{
+                  label: $t('timesheet.name'),
+                  key: 'timesheet',
+                  icon: Table24Regular,
+                  visible:true,
+                }]"
             />
           </td>
         </tr>

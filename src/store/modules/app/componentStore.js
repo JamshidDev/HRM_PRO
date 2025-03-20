@@ -135,8 +135,8 @@ export const useComponentStore = defineStore('componentStore', {
         previewLoading:false,
         workerPreview:null,
 
-        timesheetDepartmentList: [],
-        timesheetDepartmentLoading: false,
+        timesheetWorkplace: null,
+        timesheetWorkplaceLoading: false,
         timesheetTypes: [],
         timesheetEnumsLoading: false,
 
@@ -399,11 +399,11 @@ export const useComponentStore = defineStore('componentStore', {
             })
         },
         _timesheetDepartment(){
-            this.timesheetDepartmentLoading = true
+            this.timesheetWorkplaceLoading = true
             $ApiService.timeSheetService._index_departments().then((res)=>{
-                this.timesheetDepartmentList = res.data.data
+                this.timesheetWorkplace = res.data.data
             }).finally(()=>{
-                this.timesheetDepartmentLoading = false
+                this.timesheetWorkplaceLoading = false
             })
         },
         _timesheetEnums(){

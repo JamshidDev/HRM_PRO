@@ -2,7 +2,7 @@ import {Folder48Filled,LockClosed16Filled, PersonChat20Filled, Person32Filled,
     DocumentPerson16Filled, PersonNote24Filled,Person12Filled,
     TextBulletListSquare20Filled, ChannelShare20Filled, DocumentTextExtract24Filled,
     PeopleCheckmark24Filled, DocumentArrowDown20Filled, Archive24Filled, WeatherSunnyLow20Filled,
-    Grid20Filled, Document32Filled} from "@vicons/fluent"
+    Grid20Filled, Document32Filled, Table28Filled} from "@vicons/fluent"
 import {AppPaths} from "@/utils/index.js";
 
 import Utils from "../../utils/Utils.js"
@@ -123,6 +123,19 @@ export const navigations = [
                 icon:DocumentArrowDown20Filled,
                 color:'bg-dark',
             },
+            {
+                label:'timesheetWorkerPage.name',
+                path:Utils.routeDocFlowPathMaker(AppPaths.TimesheetDepartment),
+                icon:Table28Filled,
+                color:'bg-dark'
+            },
+            {
+                label:'timeSheetPage.name',
+                path:Utils.routeDocFlowPathMaker(AppPaths.TimeSheet),
+                icon:Table28Filled,
+                color:'bg-dark'
+            },
+
         ]
     },
     {
@@ -153,27 +166,6 @@ export const navigations = [
     },
     {
         index:5,
-        label: 'Labor',
-        path:AppPaths.Labor,
-        icon:PersonNote24Filled,
-        children:[
-            {
-                label:t('userDepartmentPage.name'),
-                path:Utils.routeLaborPathMaker(AppPaths.Department),
-                icon:Archive24Filled,
-                color:'bg-dark',
-            },
-            {
-                label:t('userDepartmentPage.timeTable'),
-                path:Utils.routeLaborPathMaker(AppPaths.TimeSheet),
-                icon:Archive24Filled,
-                color:'bg-dark',
-
-            },
-        ]
-    },
-    {
-        index:6,
         label:'Admin',
         path:AppPaths.Admin,
         icon:LockClosed16Filled,

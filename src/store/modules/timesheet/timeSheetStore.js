@@ -17,8 +17,10 @@ export const useTimeSheetStore = defineStore('timeSheetStore', {
         structureCheck:[],
         detail: null,
         payload:{
-            department_id: null,
-            timestamp: null
+            department_id: undefined,
+            work_place_id: undefined,
+            timestamp: null,
+            active_tab: 'organization'
         },
         params:{
             page:1,
@@ -84,7 +86,8 @@ export const useTimeSheetStore = defineStore('timeSheetStore', {
         },
         resetForm(){
             this.payload.timestamp = null
-            this.payload.department_id = null
+            this.payload.department_id = undefined
+            this.payload.work_place_id = undefined
         }
     }
 })

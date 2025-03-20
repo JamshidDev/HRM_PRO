@@ -89,6 +89,10 @@
     "return": "Ortga qaytish",
     "finish": "Yakunlash"
   },
+  "date": {
+    "day": "Kun",
+    "hour": "Soat"
+  },
   "month": {
     "january": "Yanvar",
     "february": "Fevral",
@@ -133,7 +137,7 @@
     "chat": "Chat menyusi",
     "docflow": "Hujjatlar menyusi",
     "lms": "Attestatsiya menyusi",
-    "labor": "Tabel"
+    "timesheet": "Tabel"
   },
   "loginPage": {
     "name": "Xush kelibsiz",
@@ -272,6 +276,18 @@
     },
     "selectedOrg": "Tanlangan tashkilot",
     "deleteContent": "Haqiqattan ham bu tashkilotni o'chirmoqchimisiz? "
+  },
+  "timesheet": {
+    "name": "Tabel",
+    "assignUser": "Tabelga biriktirish",
+    "type": {
+      "organization": "Tashkilot",
+      "department": "Bo'lim"
+    }
+  },
+  "timesheetWorkerPage": {
+    "name": "Tabelchilar",
+    "work_place": "Tashkilot/Bo'lim"
   },
   "workerPage": {
     "name": "Xodimlar",
@@ -1058,10 +1074,15 @@
     "Sun": "Ya"
   },
   "timeSheetPage": {
+    "name": "Tabellar",
     "create": "Tabel yaratish",
     "update": "Tabelni tahrirlash",
     "department": "Bo'lim",
     "total": "Umumiy",
-    "hours": "Soat"
+    "hours": "Soat",
+    "verifiers": "Tasdiqlovchilar",
+    "worked": "Ishlagan",
+    "tableTitle": "Oy kuni bo'yicha ishda qatnashish va yo'qligi haqida eslatmalar",
+    "halfMonth": "Oy yarmigacha"
   }
 }
