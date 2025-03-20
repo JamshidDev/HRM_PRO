@@ -1,9 +1,9 @@
 <script setup>
 import validationRules from "@/utils/validationRules.js";
 const formRef = ref(null)
-import {useComponentStore, useTimeSheetStore, useUserDepartmentStore} from "@/store/modules/index.js";
+import {useComponentStore, useTimesheetStore} from "@/store/modules/index.js";
 
-const store = useTimeSheetStore()
+const store = useTimesheetStore()
 const componentStore = useComponentStore()
 
 const onSubmit = ()=>{

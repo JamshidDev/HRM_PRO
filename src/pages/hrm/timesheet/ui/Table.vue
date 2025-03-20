@@ -1,17 +1,17 @@
 <script setup>
 import {NoDataPicture, UIMenuButton, UIPagination, UIStatus} from "@/components/index.js"
 import {
-  useTimeSheetConfirmStore,
-  useTimeSheetStore,
+  useTimesheetConfirmStore,
+  useTimesheetStore,
   useTimesheetWorkerStore
 } from "@/store/modules/index.js"
 import {Checkmark16Filled} from "@vicons/fluent";
 
 import dayjs from "dayjs";
 
-const store = useTimeSheetStore()
+const store = useTimesheetStore()
 const timesheetDepartmentStore = useTimesheetWorkerStore()
-const timesheetConfirmStore = useTimeSheetConfirmStore()
+const timesheetConfirmStore = useTimesheetConfirmStore()
 
 const changePage = (v)=>{
   store.params.page = v.page
@@ -73,7 +73,7 @@ const onSelect = (v)=>{
                 show-edit
                 :show-delete="false"
                 :extra-options="[{
-                  label: $t('timeSheetPage.verifiers'),
+                  label: $t('timesheetPage.verifiers'),
                   key: 'verifiers',
                   icon: Checkmark16Filled,
                   visible:true,

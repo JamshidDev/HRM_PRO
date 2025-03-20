@@ -2,7 +2,7 @@ import {defineStore} from "pinia";
 import i18n from "@/i18n/index.js"
 import dayjs from "dayjs";
 const {t} = i18n.global
-export const useTimeSheetStore = defineStore('timeSheetStore', {
+export const useTimesheetStore = defineStore('timesheetStore', {
     state:()=>({
         list:[],
         loading:false,
@@ -31,7 +31,7 @@ export const useTimeSheetStore = defineStore('timeSheetStore', {
     actions:{
         _index(){
             this.loading= true
-            $ApiService.timeSheetService._index({params:this.params}).then((res)=>{
+            $ApiService.timesheetService._index({params:this.params}).then((res)=>{
                 this.list = res.data.data.data
                 this.totalItems = res.data.data.total
             }).finally(()=>{
@@ -46,7 +46,7 @@ export const useTimeSheetStore = defineStore('timeSheetStore', {
                 month: date.month()+1,
                 year: date.year(),
             }
-            $ApiService.timeSheetService._create({data}).then((res)=>{
+            $ApiService.timesheetService._create({data}).then((res)=>{
                 this.visible = false
                 this._index()
                 this.resetForm()
@@ -62,7 +62,7 @@ export const useTimeSheetStore = defineStore('timeSheetStore', {
                 month: date.month()+1,
                 year: date.year(),
             }
-            $ApiService.timeSheetService._update({data, id: this.elementId}).then((res)=>{
+            $ApiService.timesheetService._update({data, id: this.elementId}).then((res)=>{
                 this.visible = false
                 this._index()
                 this.resetForm()
@@ -70,16 +70,6 @@ export const useTimeSheetStore = defineStore('timeSheetStore', {
                 this.saveLoading = false
             })
         },
-        // _show(){
-        //     this.visibleLoading = true
-        //     $ApiService.userDepartmentService._show({id:this.elementId}).then((res)=>{
-        //
-        //         this.payload.worker_positions = res.data.data.users.map(i=>i.id)
-        //         this.visible = true
-        //     }).finally(()=>{
-        //         this.visibleLoading = false
-        //     })
-        // },
 
         openVisible(data){
             this.visible = data

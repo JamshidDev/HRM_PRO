@@ -2,19 +2,18 @@
 import { UIPageContent, UIPageFilter, UIDrawer} from "@/components/index.js"
 import Table from "./ui/Table.vue"
 import Form from "./ui/Form.vue"
-import TimeSheet from "./ui/TimeSheet.vue"
+import Timesheet from "./ui/Timesheet.vue"
 import ConfirmationForm from './ui/ConfirmationForm.vue'
 
 import {
-  useTimeSheetConfirmStore,
-  useTimeSheetStore,
-  useTimesheetDepartmentStore,
+  useTimesheetConfirmStore,
+  useTimesheetStore,
   useTimesheetWorkerStore
 } from "@/store/modules";
 
-const store = useTimeSheetStore()
+const store = useTimesheetStore()
 const timesheetDepartmentStore = useTimesheetWorkerStore()
-const confirmationStore = useTimeSheetConfirmStore()
+const confirmationStore = useTimesheetConfirmStore()
 
 
 const onSearch = ()=>{
@@ -49,7 +48,7 @@ const onAdd = ()=>{
         :width="300"
         :visible="store.visible"
         @update:visible="(v)=>store.visible = v"
-        :title="store.visibleType ? $t('timeSheetPage.create') : $t('timeSheetPage.update')"
+        :title="store.visibleType ? $t('timesheetPage.create') : $t('timesheetPage.update')"
 
     >
       <template #content>
@@ -59,7 +58,7 @@ const onAdd = ()=>{
     <UIDrawer
         :width="400"
         v-model:visible="confirmationStore.visible"
-        :title="$t('timeSheetPage.verifiers')"
+        :title="$t('timesheetPage.verifiers')"
     >
       <template #content>
         <ConfirmationForm/>
@@ -70,7 +69,7 @@ const onAdd = ()=>{
         v-model:show="timesheetDepartmentStore.visible"
         placement="bottom"
     >
-      <TimeSheet />
+      <Timesheet />
     </n-drawer>
 
   </UIPageContent>

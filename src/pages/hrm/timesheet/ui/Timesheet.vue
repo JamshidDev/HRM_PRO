@@ -1,19 +1,30 @@
 <script setup>
 import {onMounted, ref, computed} from 'vue';
 import {VueDraggable} from 'vue-draggable-plus';
-import {LineHorizontal320Filled} from "@vicons/fluent";
+import {LineHorizontal320Filled, Add28Filled, AddCircle28Regular, Delete20Filled, ArrowMoveInward20Filled} from "@vicons/fluent";
 import {useComponentStore, useTimesheetDepartmentStore, useTimesheetWorkerStore} from "@/store/modules/index.js";
 import {UIPagination, UIUser} from "@/components/index.js";
 import {Dismiss12Regular, Broom16Filled} from '@vicons/fluent'
 import {vScroll} from '@vueuse/components'
 import dayjs from "dayjs";
-import {NTooltip} from 'naive-ui'
+import {NAvatar, NTooltip} from 'naive-ui'
+import {useDebounceFn} from "@vueuse/core";
+import Utils from "@/utils/Utils.js";
 
 
 const store = useTimesheetWorkerStore()
 const compStore = useComponentStore()
 const isDragging = ref(false);
 const form = ref(null)
+const isAddUserVisible=ref(false)
+const addUserSelect = ref(null)
+
+const onAdd = ()=>{
+  isAddUserVisible.value = true
+  setTimeout(()=>{
+    addUserSelect.value?.focus()
+  }, 200)
+}
 
 onMounted(() => {
   if(compStore.timesheetTypes.length === 0){
@@ -24,12 +35,10 @@ onMounted(() => {
 
 const isCellSelected = (row, col) => {
   if (!store.payload.start || !store.payload.end) return false;
-
   const rowStart = Math.min(store.payload.start.row, store.payload.end.row);
   const rowEnd = Math.max(store.payload.start.row, store.payload.end.row);
   const colStart = Math.min(store.payload.start.col, store.payload.end.col);
   const colEnd = Math.max(store.payload.start.col, store.payload.end.col);
-
   return row >= rowStart && row <= rowEnd && col >= colStart && col <= colEnd;
 };
 
@@ -105,6 +114,32 @@ const renderLabel = (option)=>{
   ];
 }
 
+const checkWorker = useDebounceFn((v)=>{
+  store._check_pin(v)
+}, 300)
+
+const renderWorkerLabel = (option)=>{
+  return [
+    h(
+        'div',
+        {
+          class:'flex gap-2 my-1 items-center'
+        },[
+          h(NAvatar,
+              {
+                class:'',
+                src:option.worker.photo,
+                'fallback-src':Utils.noAvailableImage,
+              },),
+          h('div',{ class:'flex flex-col'}, [
+            h('div',{ class:'text-xs font-medium text-gray-500'},`${option.worker.last_name}.${option.worker.first_name[0]}.${option.worker.middle_name[0]}`),
+            h('div',{ class:'text-xs text-gray-400'},option.post_name),
+          ])
+        ]
+    ),
+  ];
+}
+
 </script>
 
 <template>
@@ -120,12 +155,19 @@ const renderLabel = (option)=>{
       </div>
       <div class="flex gap-2">
         <n-button
+            type="primary"
+            @click="onAdd"
+        >
+          <template #icon>
+            <AddCircle28Regular/>
+          </template>
+          {{$t(`timesheetPage.addNewWorker`)}}</n-button>
+        <n-button
             :type="store.payload.isClearing ? 'primary' : 'tertiary'"
             @click="()=>{
               store.payload.isClearing=!store.payload.isClearing
               store.resetStatuses()
             }"
-
         >
           {{$t('content.clear')}}
           <template #icon>
@@ -157,8 +199,8 @@ const renderLabel = (option)=>{
                 <tr>
                   <th rowspan="3"></th>
                   <th rowspan="3">{{$t('content.worker')}}</th>
-                  <th rowspan="1" v-if="store.days.length" :colspan="store.days.length">{{$t('timeSheetPage.tableTitle')}}</th>
-                  <th colspan="4" class="sticky right-[-1px]">{{$t('timeSheetPage.worked')}}</th>
+                  <th rowspan="1" v-if="store.days.length" :colspan="store.days.length">{{$t('timesheetPage.tableTitle')}}</th>
+                  <th colspan="4" >{{$t('timesheetPage.worked')}}</th>
                 </tr>
                 <tr>
                   <th
@@ -174,10 +216,10 @@ const renderLabel = (option)=>{
                     </div>
                   </th>
                   <th colspan="2">
-                    {{$t('timeSheetPage.halfMonth')}}
+                    {{$t('timesheetPage.halfMonth')}}
                   </th>
                   <th colspan=2>
-                    {{$t('timeSheetPage.total')}}
+                    {{$t('timesheetPage.total')}}
                   </th>
                 </tr>
                 <tr>
@@ -194,21 +236,77 @@ const renderLabel = (option)=>{
 <!--                      :key="day.day"-->
 <!--                      :class="{'weekend': day.weekDay === 0 || day.weekDay === 6}"-->
 <!--                  >{{   }}</th>-->
-<!--                  <th class="sticky right-0 h-full">{{$t('timeSheetPage.total')}}</th>-->
+<!--                  <th class="sticky right-0 h-full">{{$t('timesheetPage.total')}}</th>-->
 <!--                </tr>-->
                 </thead>
                 <tbody class="sort-target">
+                <tr v-if="isAddUserVisible">
+                  <td class="cursor-move w-[35px] min-w-[35px]">
+                                        <div class="h-full w-full justify-center items-center flex">
+                                          <n-tooltip trigger="hover">
+                                            {{$t('content.delete')}}
+                                            <template #trigger>
+                                            <n-button size="small" quaternary type="error" circle @click="isAddUserVisible=false">
+                                              <template #icon>
+                                                <n-icon :component="Delete20Filled"/>
+                                              </template>
+                                            </n-button>
+                                            </template>
+                                          </n-tooltip>
+                                        </div>
+                  </td>
+                  <td>
+                    <n-select
+                        :placeholder="$t('timesheetPage.pin')"
+                        filterable
+                        ref="addUserSelect"
+                        show-on-focus
+                        @search="checkWorker"
+                        :loading="store.pinLoading"
+                        :options="store.pinWorkers"
+                        value-field="id"
+                        @update-value="(_,v)=>{
+                          isAddUserVisible=false
+                          console.log(v)
+                          store._prepend_workers(v)
+                        }"
+                        label-field="worker"
+                        :render-label="renderWorkerLabel"
+                        :filter="()=>true"
+                    />
+                  </td>
+                  <td
+                      v-for="(day, col) in store.days"
+                      :key="col"
+                      class="h-[40px] w-[45px] max-h-[40px] min-w-[45px]"
+                  >
+                    <div class="flex flex-col">
+                      <div class="flex-grow border-b border-surface-line shrink-0">
+                      </div>
+                      <div class="flex-grow shrink-0">
+                      </div>
+                    </div>
+                  </td>
+                  <td class="min-w-[50px] total"></td>
+                  <td class="min-w-[50px] total"></td>
+                  <td class="min-w-[50px] total"></td>
+                  <td class="min-w-[50px] total"></td>
+                </tr>
                 <tr v-for="(item, row) in store.list" :key="row">
                   <td class="cursor-move w-[35px] min-w-[35px]">
                     <div class="h-full w-full justify-center items-center flex">
-                      <n-icon :component="LineHorizontal320Filled" class="handle"/>
+
+                          <n-button circle quaternary size="small">
+                            <template #icon>
+                              <n-icon :component="LineHorizontal320Filled" class="handle"/>
+                            </template>
+                          </n-button>
+
                     </div>
                   </td>
                   <td>
                       <UIUser
                           short
-                        :roundAvatar="false"
-                        :short="false"
                         :data="{
                           fullName: item.name,
                           photo: item.photo,
@@ -221,7 +319,8 @@ const renderLabel = (option)=>{
                       v-for="(day, col) in store.days"
                       :key="col"
                       :class="{
-                        selected: isCellSelected(row, col)
+                        selected: isCellSelected(row, col),
+                        'selected-ignore': isCellSelected(row, col) && !store.payload.isClearing && item.days[day.day]
                       }"
                       :data-col="col"
                       :data-row="row"
@@ -235,7 +334,7 @@ const renderLabel = (option)=>{
                         <p v-if="item.days[day.day]?.length">{{item.days[day.day]?.length > 1 ? item.days[day.day].map(i=>i.status).join('/') : item.days[day.day][0].status}}</p>
                       </div>
                       <div class="flex-grow shrink-0">
-                        <p class="font-bold" v-if="item.days[day.day]?.length">{{item.days[day.day]?.filter(i=>i?.hours).length > 1 ? item.days[day.day].map(i=>i?.hours).join('/') : item.days[day.day][0].hours}}</p>
+                        <p class="font-bold" v-if="item.days[day.day]?.length">{{item.days[day.day]?.filter(i=>i?.hours).length > 1 ? item.days[day.day].map(i=>i?.hours).join('/') : (item.days[day.day][0].hours || '&nbsp;')}}</p>
                       </div>
                     </div>
                   </td>
@@ -271,7 +370,7 @@ const renderLabel = (option)=>{
                   :min="0"
                   :disabled="!(store.payload.status && compStore.timesheetTypes[store.payload.status-1]?.hours)"
                   v-model:value="store.payload.hours"
-                  :placeholder="$t('timeSheetPage.hours')"
+                  :placeholder="$t('timesheetPage.hours')"
               />
             </n-form-item-gi>
             <n-divider />
@@ -296,7 +395,7 @@ const renderLabel = (option)=>{
                   :min="0"
                   :disabled="!(store.payload.status2 && compStore.timesheetTypes[store.payload.status2-1]?.hours)"
                   v-model:value="store.payload.hours2"
-                  :placeholder="$t('timeSheetPage.hours')"
+                  :placeholder="$t('timesheetPage.hours')"
               />
             </n-form-item-gi>
           </n-grid>
@@ -359,10 +458,15 @@ tr:hover td {
   border: none;
 }
 
+.selected-ignore{
+  background: transparent;
+  opacity: 0.7;
+  outline: 1px solid #6d6d6e;
+}
+
 .total {
   font-weight: 600;
   background: #f8fafc;
-  outline: 1px solid #e5e7eb;
 }
 
 /* Make numbers more readable */

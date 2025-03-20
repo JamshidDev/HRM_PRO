@@ -1,18 +1,18 @@
 <script setup>
-import {useComponentStore, useTimeSheetConfirmStore} from "@/store/modules/index.js"
+import {useComponentStore, useTimesheetConfirmStore} from "@/store/modules/index.js"
 import validationRules from "@/utils/validationRules.js";
 import {NAvatar} from "naive-ui";
 import Utils from "@/utils/Utils.js";
 import {VueDraggable} from 'vue-draggable-plus';
-import {CheckmarkCircle16Filled, CheckmarkCircle16Regular, LineHorizontal320Filled, Delete20Filled} from '@vicons/fluent'
+import {CheckmarkCircle16Filled, CheckmarkCircle16Regular, LineHorizontal320Filled, Delete20Filled, ArrowMoveInward20Filled} from '@vicons/fluent'
 
 
 const formRef = ref(null)
-const store = useTimeSheetConfirmStore()
+const store = useTimesheetConfirmStore()
 const componentStore = useComponentStore()
 
 onMounted(() => {
-  if (componentStore.confirmationList.length === 0) componentStore._confirmations()
+  componentStore._confirmations()
   store._index()
 })
 
@@ -25,6 +25,18 @@ const renderLabel = (option) => {
         }, `${option?.last_name} ${option?.first_name} ${option?.middle_name}`),
   ];
 }
+
+
+const renderMainVerifier = (option) => {
+  return [
+    h(
+        'div',
+        {
+          class: 'flex gap-2 my-1 items-center'
+        }, `${option.worker?.last_name} ${option.worker?.first_name} ${option.worker?.middle_name}`),
+  ];
+}
+
 const renderValue = ({option}) => {
   return [
     h(
@@ -55,7 +67,7 @@ const onSubmit = ()=>{
         class="flex flex-col h-full"
     >
       <n-grid :cols="9" x-gap="10px">
-        <n-form-item-gi :span="7" :label="$t('timeSheetPage.verifiers')" path="confirmations">
+        <n-form-item-gi :span="7" :label="$t('timesheetPage.verifiers')" path="confirmations">
           <n-select
               :loading="componentStore.confirmationLoading"
               :max-tag-count="1"
@@ -70,6 +82,7 @@ const onSubmit = ()=>{
               value-field="id"
           />
         </n-form-item-gi>
+
         <n-form-item-gi :span="2">
           <n-button
               :loading="store.saveLoading"
@@ -79,8 +92,18 @@ const onSubmit = ()=>{
             {{ $t('content.save') }}
           </n-button>
         </n-form-item-gi>
+        <n-form-item-gi :show-feedback="false" :span="9" :label="$t('timesheetPage.mainVerifier')">
+          <n-select
+              :options="store.list"
+              :placeholder="$t(`content.choose`)"
+              :render-label="renderMainVerifier"
+              filterable
+              label-field="last_name"
+              value-field="id"
+          />
+        </n-form-item-gi>
       </n-grid>
-
+      <n-divider />
       <VueDraggable
           v-model="store.list"
           :animation="150"
@@ -97,12 +120,13 @@ const onSubmit = ()=>{
              class="flex gap-2 border border-surface-line rounded-md p-1 ">
           <n-button class="handle !cursor-move flex-shrink-0" size="small" text type="primary">
             <template #icon>
-              <n-icon :component="LineHorizontal320Filled"/>
+              <n-icon :component="ArrowMoveInward20Filled"/>
             </template>
           </n-button>
           <div class="flex flex-grow group justify-between">
             <div class="flex gap-2 items-center">
               <n-avatar
+                  circle
                   :fallback-src="Utils.noAvailableImage"
                   :src="item.worker.photo"
               ></n-avatar>
@@ -113,43 +137,22 @@ const onSubmit = ()=>{
                 <div class="text-xs text-gray-400">{{ item.position }}</div>
               </div>
             </div>
-            <div class="flex gap-1">
+            <n-tooltip trigger="hover">
+              {{$t('content.delete')}}
+              <template #trigger>
                 <n-button
-                  circle
-                  quaternary
-                  type="error"
-                  @click="()=>store._update({attach: false, id: item.id})"
-                  class="transition-all duration-500 opacity-0 group-hover:opacity-100"
-              >
-                <template #icon>
-                  <n-icon :component="Delete20Filled"/>
-                </template>
-              </n-button>
-
-              <n-button
-                  v-if="item.main"
-                  circle
-                  quaternary
-                  type="primary"
-              >
-                <template #icon>
-                  <n-icon :component="CheckmarkCircle16Filled"/>
-                </template>
-              </n-button>
-
-              <n-button
-                  v-else
-                  circle
-                  class="transition-all duration-500 opacity-0 group-hover:opacity-100"
-                  quaternary
-                  type="primary"
-                  @click="store._update({main: true, id: item.id})"
-              >
-                <template #icon>
-                  <n-icon :component="CheckmarkCircle16Regular"/>
-                </template>
-              </n-button>
-            </div>
+                    circle
+                    quaternary
+                    type="error"
+                    @click="()=>store._update({attach: false, id: item.id})"
+                    class="transition-all duration-500 opacity-0 group-hover:opacity-100"
+                >
+                  <template #icon>
+                    <n-icon :component="Delete20Filled"/>
+                  </template>
+                </n-button>
+              </template>
+            </n-tooltip>
 
           </div>
 
