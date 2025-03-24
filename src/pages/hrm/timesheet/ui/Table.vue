@@ -10,7 +10,7 @@ import {Checkmark16Filled} from "@vicons/fluent";
 import dayjs from "dayjs";
 
 const store = useTimesheetStore()
-const timesheetDepartmentStore = useTimesheetWorkerStore()
+const timesheetWorkerStore = useTimesheetWorkerStore()
 const timesheetConfirmStore = useTimesheetConfirmStore()
 
 const changePage = (v)=>{
@@ -21,9 +21,9 @@ const changePage = (v)=>{
 
 const onSelect = (v)=>{
   if(v.key === 'view'){
-    timesheetDepartmentStore.elementId = v.data.id
-    timesheetDepartmentStore.visible = true
-    timesheetDepartmentStore._index()
+    timesheetWorkerStore.elementId = v.data.id
+    timesheetWorkerStore.visible = true
+    timesheetWorkerStore._index()
   }else if(v.key === 'edit'){
     console.log(v.data)
     store.elementId = v.data.id
