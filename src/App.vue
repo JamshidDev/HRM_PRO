@@ -4,27 +4,9 @@ import MediaViewer from '@/components/mediaViewer/MediaViewer.vue'
 import AppLayout from "@/layouts/AppLayout.vue";
 import {UIMainLoading} from "@/components/index.js"
 import SignatureInstance from "@/pages/app/e-imzo/SignatureInstance.vue"
-import dayjs from "dayjs";
-import 'dayjs/locale/uz.js'
-import 'dayjs/locale/ru.js'
 import i18n from "@/i18n/index.js"
-import updateLocale from 'dayjs/plugin/updateLocale'
 import { uzUZ, dateUzUZ, ruRU, dateRuRU, enUS, dateEnUS } from 'naive-ui'
 import {useAppStore} from "@/store/modules/index.js"
-
-
-
-dayjs.extend(updateLocale)
-dayjs.updateLocale('uz', {
-      months: ['Yanvar', 'Fevral', 'Mart', 'Aprel', 'May', 'Iyun', 'Iyul', 'Avgust', 'Sentabr', 'Oktabr',
-        'Noyabr', 'Dekabr'],
-      monthsShort: ['Yanvar', 'Fevral', 'Mart', 'Aprel', 'May', 'Iyun', 'Iyul', 'Avgust', 'Sentabr', 'Oktabr',
-        'Noyabr', 'Dekabr'],
-      weekdays: ['Yakshanba', 'Dushanba', 'Seshanba', 'Chorshanba', 'Payshanba', 'Juma', 'Shanba'],
-      weekdaysShort: ['Yak', 'Dush', 'Sesh', 'Chor', 'Pay', 'Jum', 'Shan'],
-    }
-)
-
 
 const appStore = useAppStore()
 
@@ -39,7 +21,7 @@ const localProvider = computed(()=>{
       lang: enUS,
       date: dateEnUS,
     }
-  }else{
+  }else if(i18n.global.locale==='ru'){
     return {
       lang: ruRU,
       date: dateRuRU,
@@ -47,16 +29,9 @@ const localProvider = computed(()=>{
   }
 })
 
-watchEffect(()=>{
-  dayjs.locale(i18n.global.locale)
-})
-
 onMounted(()=>{
   appStore.initApp()
 })
-
-
-
 
 </script>
 

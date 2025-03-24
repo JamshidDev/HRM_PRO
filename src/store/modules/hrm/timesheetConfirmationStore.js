@@ -14,6 +14,7 @@ export const useTimesheetConfirmStore = defineStore('timesheetConfirmStore', {
         allPermissionList:[],
         structureCheck:[],
         payload:{
+            confirmations: [],
             confirmationObjects: [],
             mainUser: null
         }
@@ -23,7 +24,6 @@ export const useTimesheetConfirmStore = defineStore('timesheetConfirmStore', {
             this.loading= true
             $ApiService.timesheetConfirmService._index({id: this.elementId}).then((res)=>{
                 this.list = res.data.data.confirmations
-                this.payload.mainUser = res.data.data.confirmations.find(i=>i.main)?.id || null
             }).finally(()=>{
                 this.loading= false
             })
@@ -33,14 +33,15 @@ export const useTimesheetConfirmStore = defineStore('timesheetConfirmStore', {
             let data = {
                 confirmations: this.payload.confirmationObjects.map((i, idx)=>({
                     attach: true,
-                    id: i,
+                    id: i.id,
                     order: idx+1,
-                    main: false
+                    main: this.payload.mainUser === i.id,
                 })),
             }
 
             $ApiService.timesheetConfirmService._create({data, id: this.elementId}).then((res)=>{
                 this.resetForm()
+                this.visible = false
                 this._index()
             }).finally(()=>{
                 this.saveLoading = false
@@ -52,12 +53,21 @@ export const useTimesheetConfirmStore = defineStore('timesheetConfirmStore', {
                 data: {
                     confirmations: [v]
                 }, id: this.elementId}).then((res)=>{
+                    this._index()
+            }).finally(()=>{
+                this.loading = false
+            })
+        },
+        _delete(v){
+            this.loading = true
+            $ApiService.timesheetConfirmService._delete({id: this.elementId, elementId: v}).then((res)=>{
                 this._index()
             }).finally(()=>{
                 this.loading = false
             })
         },
         resetForm(){
+            this.payload.confirmations = []
             this.payload.confirmationObjects = []
             this.payload.mainUser = null
         }

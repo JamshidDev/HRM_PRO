@@ -146,6 +146,9 @@ const renderWorkerLabel = (option)=>{
   <div class="h-full flex flex-col  p-8">
     <div class="flex my-2 justify-between  items-center shrink-0 gap-2">
       <div class="flex gap-2">
+<!--        <n-button text>-->
+<!--          -->
+<!--        </n-button>-->
         <n-button tertiary v-if="store?.month && store?.year">
           {{dayjs().month(store.month).year(store.year).format("YYYY MMMM")}}
         </n-button>
@@ -199,6 +202,7 @@ const renderWorkerLabel = (option)=>{
                 <tr>
                   <th rowspan="3"></th>
                   <th rowspan="3">{{$t('content.worker')}}</th>
+                  <th rowspan="3" class="px-3">{{$t('timesheet.name')}}</th>
                   <th rowspan="1" v-if="store.days.length" :colspan="store.days.length">{{$t('timesheetPage.tableTitle')}}</th>
                   <th colspan="4" >{{$t('timesheetPage.worked')}}</th>
                 </tr>
@@ -315,6 +319,7 @@ const renderWorkerLabel = (option)=>{
                           class="mx-auto"
                       />
                   </td>
+                  <td>{{ item.table }}</td>
                   <td
                       v-for="(day, col) in store.days"
                       :key="col"
@@ -412,73 +417,62 @@ const renderWorkerLabel = (option)=>{
   </div>
 </template>
 <style scoped>
-/* General Table Styling */
 table {
   width: 100%;
-  background: #fff;
-  border: 1px solid #d1d5db;
+  background: var(--surface-section);
+  border: 1px solid var(--surface-line);
   border-collapse: separate;
   border-spacing: 0;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
   user-select: none;
 }
-/*
-table::selection {
-  background: rgba(0, 0, 0, 0.01);
-  color: inherit;
-}
-*/
-/* Table Header */
+
 th {
-  background: #f3f4f6; /* Light gray background */
-  color: #333; /* Dark text */
+  background: var(--surface-ground);
+  color: var(--textColor0);
   font-weight: 600;
-  border-bottom: 1px solid #d1d5db;
-  border-right: 1px solid #d1d5db;
+  border-bottom: 1px solid var(--surface-line);
+  border-right: 1px solid var(--surface-line);
   text-transform: uppercase;
 }
 
-/* Table Rows */
 td {
   text-align: center;
-  outline: 1px solid #e5e7eb;
+  outline: 1px solid var(--surface-line);
   transition: background 0.2s ease-in-out;
 }
 
-
-/* Hover Effect */
 tr:hover td {
-  background: #f9fafb;
+  background: var(--surface-ground);
 }
 
-/* Selected Cell */
 .selected {
-  background: #e0e7ff;
-  outline: 1px solid #6366f1;
+  background: rgba(99, 102, 241, 0.2); /* using a light primary tone */
+  outline: 1px solid var(--primary-color);
   border: none;
 }
 
-.selected-ignore{
+.selected-ignore {
   background: transparent;
   opacity: 0.7;
-  outline: 1px solid #6d6d6e;
+  outline: 1px solid var(--textColor1);
 }
 
 .total {
   font-weight: 600;
-  background: #f8fafc;
+  background: var(--surface-ground);
 }
 
-/* Make numbers more readable */
 th, td {
   font-size: 14px;
-  font-family: "Inter", sans-serif;
-  white-space:  nowrap;
+  font-family: var(--public-sans);
+  white-space: nowrap;
 }
 
 .weekend {
-  background: rgba(255, 0, 0, 0.1); /* Light red background */
+  background: rgba(255, 0, 0, 0.1); /* kept as rgba red for "weekend" styling */
   font-weight: bold;
-  color: red;
+  color: var(--danger-color);
 }
+
 </style>
