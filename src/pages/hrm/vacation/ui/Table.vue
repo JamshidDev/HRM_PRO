@@ -62,7 +62,7 @@ const onSelectEv = (v)=>{
           <th class="!text-center min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
           <th class="min-w-[200px]">{{$t('confirmationPage.table.worker')}}</th>
           <th class="min-w-[100px] w-[200px]">{{$t('vacationPage.table.type')}}</th>
-          <th class="min-w-[100px] w-[200px]">{{$t('vacationPage.table.duration')}}</th>
+          <th class="min-w-[100px] w-[240px]">{{$t('vacationPage.table.duration')}}</th>
           <th class="min-w-[100px] w-[120px]">{{$t('vacationPage.table.workDay')}}</th>
 <!--          <th class="min-w-[40px] w-[40px]"></th>-->
         </tr>
@@ -85,8 +85,16 @@ const onSelectEv = (v)=>{
             </div>
           </td>
           <td>{{item.type?.name}}</td>
-          <td>{{Utils.timeOnlyDate(item.from) + ' - ' + Utils.timeOnlyDate(item.to)}}</td>
-          <td>{{Utils.timeOnlyDate(item.work_day)}}</td>
+          <td>
+            <div class="flex">
+              <n-tag class="mx-auto" round type="warning">{{Utils.timeOnlyDate(item.from)}}</n-tag>
+              <n-tag class="mx-auto" round type="warning">{{Utils.timeOnlyDate(item.to)}}</n-tag>
+            </div>
+
+          </td>
+          <td>
+            <n-tag v-if="item.work_day" class="mx-auto" round type="success">{{Utils.timeOnlyDate(item.work_day)}}</n-tag>
+          </td>
 <!--          <td>-->
 <!--            <UIMenuButton-->
 <!--                :data="item"-->
