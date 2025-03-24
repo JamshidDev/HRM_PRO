@@ -86,7 +86,7 @@ export default [
     {
         path:Utils.routeHrmPathMaker(AppPaths.TimeSheet),
         name:AppPaths.TimeSheet.substring(1),
-        component:TimeSheetListPage,
+        component:TimesheetListPage,
     },
     {
         path:Utils.routeHrmPathMaker(AppPaths.DashboardV2),
