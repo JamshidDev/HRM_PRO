@@ -23,6 +23,7 @@ export const useTimesheetConfirmStore = defineStore('timesheetConfirmStore', {
             this.loading= true
             $ApiService.timesheetConfirmService._index({id: this.elementId}).then((res)=>{
                 this.list = res.data.data.confirmations
+                this.payload.mainUser = res.data.data.confirmations.find(i=>i.main)?.id || null
             }).finally(()=>{
                 this.loading= false
             })
@@ -56,24 +57,9 @@ export const useTimesheetConfirmStore = defineStore('timesheetConfirmStore', {
                 this.loading = false
             })
         },
-        // _update(){
-        //     this.saveLoading = true
-        //     const date = dayjs(this.payload.timestamp)
-        //     let data = {
-        //         ...this.payload,
-        //         month: date.month()+1,
-        //         year: date.year(),
-        //     }
-        //     $ApiService.timeSheetService._update({data, id: this.elementId}).then((res)=>{
-        //         this.visible = false
-        //         this._index()
-        //         this.resetForm()
-        //     }).finally(()=>{
-        //         this.saveLoading = false
-        //     })
-        // },
         resetForm(){
             this.payload.confirmationObjects = []
+            this.payload.mainUser = null
         }
     }
 })

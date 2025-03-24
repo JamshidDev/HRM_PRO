@@ -4,7 +4,7 @@ import validationRules from "@/utils/validationRules.js";
 import {NAvatar} from "naive-ui";
 import Utils from "@/utils/Utils.js";
 import {VueDraggable} from 'vue-draggable-plus';
-import {CheckmarkCircle16Filled, CheckmarkCircle16Regular, LineHorizontal320Filled, Delete20Filled, ArrowMoveInward20Filled} from '@vicons/fluent'
+import {Delete20Filled, ArrowMoveInward20Filled, Star28Filled} from '@vicons/fluent'
 
 
 const formRef = ref(null)
@@ -98,9 +98,15 @@ const onSubmit = ()=>{
               :placeholder="$t(`content.choose`)"
               :render-label="renderMainVerifier"
               filterable
+              v-model="store.payload.mainUser"
               label-field="last_name"
               value-field="id"
+              @update-value="(_, v)=>{
+                console.log(_, v)
+                store._update({main:true, id: v.worker.id, attach: true, order: v.order})
+              }"
           />
+
         </n-form-item-gi>
       </n-grid>
       <n-divider />
@@ -112,7 +118,7 @@ const onSubmit = ()=>{
           @end="(v)=>{
             console.log(v)
             if(v.newIndex!==v.oldIndex){
-              store._update({order: v.newIndex, id: v.data.id})
+              store._update({order: v.newIndex+1, id: v.data.worker.id, attach: true, main: v.data.main})
             }
           }"
       >
@@ -132,10 +138,21 @@ const onSubmit = ()=>{
               ></n-avatar>
               <div class='flex flex-col'>
                 <div class="text-xs font-medium text-gray-500">
-                  {{ `${item.worker.last_name}.${item.worker.last_name[0]}.${item.worker.middle_name[0]} (${idx + 1})` }}
+                  {{ `${item.worker.last_name}.${item.worker.last_name[0]}.${item.worker.middle_name[0]}` }}
                 </div>
                 <div class="text-xs text-gray-400">{{ item.position }}</div>
               </div>
+
+                <n-button
+                    circle
+                    quaternary
+                    type="success"
+                    v-if="item.main"
+                >
+                  <template #icon>
+                    <n-icon :component="Star28Filled"/>
+                  </template>
+                </n-button>
             </div>
             <n-tooltip trigger="hover">
               {{$t('content.delete')}}
@@ -144,7 +161,7 @@ const onSubmit = ()=>{
                     circle
                     quaternary
                     type="error"
-                    @click="()=>store._update({attach: false, id: item.id})"
+                    @click="()=>store._update({attach: false, id: item.worker.id})"
                     class="transition-all duration-500 opacity-0 group-hover:opacity-100"
                 >
                   <template #icon>
