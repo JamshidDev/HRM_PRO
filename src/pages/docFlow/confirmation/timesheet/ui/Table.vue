@@ -1,9 +1,9 @@
 <script setup>
 import {NoDataPicture, UIMenuButton, UIPagination, UIStatus, UIUser,} from "@/components/index.js"
-import {useTimesheetStore} from "@/store/modules/index.js"
+import {useConfTimesheetStore} from "@/store/modules/index.js"
 import Utils from "@/utils/Utils.js"
 
-const store = useTimesheetStore()
+const store = useConfTimesheetStore()
 
 const emits = defineEmits([ 'openOffice', 'onChangePage'])
 

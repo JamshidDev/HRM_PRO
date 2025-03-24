@@ -12,8 +12,14 @@ const _create = async (payload)=>{
     return await axios.post(`/v1/timesheet/${payload.id}/workers`, payload.data)
 }
 
+const _check_worker = async (pin)=>{
+    console.log(pin)
+    return await axios.get(`/v1/timesheet/check-worker`, {params: {pin}})
+}
+
 export default {
     _index,
     _get_days,
-    _create
+    _create,
+    _check_worker
 }

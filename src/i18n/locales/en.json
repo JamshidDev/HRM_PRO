@@ -1,6 +1,7 @@
 {
   "content": {
-    "requiredField": "Field is required!",
+    "deadline": "Deadline",
+    "requiredField": "Field must be filled!",
     "save": "Save",
     "edit": "Edit",
     "delete": "Delete",
@@ -10,6 +11,7 @@
     "attachment": "Attach",
     "no-data": "No data",
     "cancel": "Cancel",
+    "reject": "Reject",
     "help": "Help",
     "enterField": "Enter",
     "phone": "Phone number",
@@ -22,7 +24,7 @@
     "news": "New",
     "action": "Actions",
     "fullName": "Full name",
-    "number": "№",
+    "number": "No.",
     "photo": "Photo",
     "platform": "Platform",
     "date": "Date",
@@ -32,14 +34,16 @@
     "yes": "Yes",
     "no": "No",
     "notFoundData": "Data not found!",
-    "noResultYourRequest": "No results found for your request...",
+    "noResultYourRequest": "No data found for your request...",
     "back": "Back",
     "profile": "Profile",
     "setting": "Settings",
-    "logOutSystem": "Log out",
+    "changeAccount": "My accounts",
+    "logOutSystem": "Log out of the system",
     "paginationSize": "Show {n} items",
     "confirm": "Confirm",
     "month": "Month",
+    "year": "Year",
     "or": "Or",
     "send": "Send",
     "file": "File",
@@ -50,6 +54,7 @@
     "closeSignatureModal": "Close signature window",
     "clear": "Clear",
     "continue": "Continue",
+    "restart": "Restart",
     "close": "Close",
     "open": "Open",
     "hide": "Hide",
@@ -57,7 +62,7 @@
     "notWorker": "Employee not found",
     "worker": "Employee",
     "status": "Status",
-    "Process": "In process",
+    "Process": "In progress",
     "Read": "Reviewed",
     "Success": "Approved",
     "Rejected": "Rejected",
@@ -75,8 +80,19 @@
     "downloadCV": "Download CV",
     "deleteWarning": "Are you sure you want to delete?",
     "sum": "Sum",
-    "total": "Total: {n}",
-    "next": "Next"
+    "total": "Total: {n} items",
+    "fromTa": "from",
+    "main": "Main",
+    "untilShow": "showing up to",
+    "next": "Next",
+    "warning": "Warning",
+    "error": "Error",
+    "return": "Return",
+    "finish": "Finish"
+  },
+  "date": {
+    "day": "Day",
+    "hour": "Hour"
   },
   "month": {
     "january": "January",
@@ -93,16 +109,16 @@
     "december": "December"
   },
   "rules": {
-    "login": "Email is required!",
-    "phone": "Phone number is required!",
-    "password": "Password is required!",
-    "requiredField": "Field is required!",
-    "requiredWorker": "Employee selection is required!",
-    "requiredImageField": "Image upload is required!",
-    "requiredMinLength": "Must be at least {n} characters",
+    "login": "Email must be entered!",
+    "phone": "Phone number must be entered!",
+    "password": "Password must be entered!",
+    "requiredField": "Field must be filled!",
+    "requiredWorker": "Employee must be selected!",
+    "requiredImageField": "Image must be uploaded!",
+    "requiredMinLength": "Must not be less than {n} characters",
     "requiredMaxLength": "Must not exceed {n} characters",
-    "unExpectedFormat": "Invalid data format!",
-    "requiredJSHSHIR": "Passport JSHSHIR is required!",
+    "unExpectedFormat": "Incorrect data type!",
+    "requiredJSHSHIR": "Passport JSHSHIR must be entered!",
     "enterOverNumber": "Enter a number greater than {n}"
   },
   "message": {
@@ -114,14 +130,15 @@
   },
   "account": {
     "changeAccount": "Change account!",
-    "changeRoleConfirm": "To log out of this account and switch to another, select the desired account and wait 20 seconds"
+    "changeRoleConfirm": "To log out of this account and log into another, select the desired account and wait 20 seconds"
   },
   "sidebar": {
     "hrm": "Employee menu",
     "admin": "Admin menu",
     "chat": "Chat menu",
-    "docflow": "Document menu",
-    "lms": "Certification menu"
+    "docflow": "Documents menu",
+    "lms": "Certification menu",
+    "timesheet": "Timesheet"
   },
   "loginPage": {
     "name": "Welcome",
@@ -129,13 +146,13 @@
     "subtitle": "HRM platform of Uzbekistan Railways JSC",
     "phone": "Phone number",
     "password": "Password",
-    "doYouHaveAccount": "Don't have an account?",
+    "doYouHaveAccount": "Don’t have an account?",
     "singUp": "Sign up",
     "login": "Login"
   },
   "registerPage": {
-    "name": "Registration",
-    "title": "Registration",
+    "name": "Sign up",
+    "title": "Sign up",
     "subtitle": "Verification",
     "firstName": "First name",
     "lastName": "Last name",
@@ -144,7 +161,7 @@
     "doYouHaveAccount": "Already have an account?",
     "loginToSystem": "Log in to the system!",
     "otp": "Code",
-    "verification": "We have sent a verification code to your phone number {n} via SMS.",
+    "verification": "We have sent a verification code {n} to your phone number via SMS.",
     "reSendOtp": "Get a new verification code",
     "getOtp": "Get code"
   },
@@ -224,7 +241,7 @@
   },
   "profilePage": {
     "tabs": {
-      "profileInfo": "Account details",
+      "profileInfo": "Profile information",
       "notification": "Notifications",
       "secure": "Security",
       "actionHistory": "Action history"
@@ -244,8 +261,8 @@
     "form": {
       "name": "Position name (uz)",
       "name_ru": "Position name (ru)",
-      "classification_index": "Classification index",
-      "classification_code": "Classification code"
+      "classification_index": "Classifier index",
+      "classification_code": "Classifier code"
     }
   },
   "organizationPage": {
@@ -261,6 +278,18 @@
     "selectedOrg": "Selected organization",
     "deleteContent": "Are you sure you want to delete this organization?"
   },
+  "timesheet": {
+    "name": "Timesheet",
+    "assignUser": "Assign to timesheet",
+    "type": {
+      "organization": "Organization",
+      "department": "Department"
+    }
+  },
+  "timesheetWorkerPage": {
+    "name": "Timesheet workers",
+    "work_place": "Organization/Department"
+  },
   "workerPage": {
     "name": "Employees",
     "filter": {
@@ -272,7 +301,7 @@
       "no-worker": "Employee not found in the system!",
       "born": "Date of birth",
       "addCandidate": "Add candidate",
-      "add-worker": "Add details of an employee not in the system via the candidate addition button",
+      "add-worker": "Add employee data not existing in the system via the add candidate button",
       "jshshir": "Enter JSHSHIR"
     },
     "table": {
@@ -292,9 +321,6 @@
   "documentHistoryPage": {
     "name": "Document history"
   },
-  "examPage": {
-    "name": "Exams"
-  },
   "workerProfile": {
     "tabs": {
       "personal": "Personal",
@@ -309,13 +335,13 @@
       "positionGroup": "Position group",
       "positionRank": "Position rank",
       "positionRate": "Position rate",
-      "no-passport": "Passport details not uploaded!"
+      "no-passport": "Passport data not uploaded!"
     },
     "position": {
       "contractType": "Contract type",
       "contractNumber": "Contract number",
       "contractDate": "Contract date",
-      "contractToDate": "Contract duration",
+      "contractToDate": "Contract expiration date",
       "positionDate": "Position date",
       "position": "Position",
       "title": "Position details"
@@ -341,12 +367,12 @@
       "position_id": "Select position",
       "department_id": "Select department",
       "group": "Position group",
-      "rank": "Rank for position",
+      "rank": "Position rank",
       "max_rank": "Maximum rank for position",
       "rate": "Position contingent",
       "salary": "Monthly salary",
       "experience": "Work experience (months)",
-      "educations": "Minimum required education"
+      "educations": "Required minimum education"
     },
     "table": {
       "position": "Position",
@@ -360,10 +386,10 @@
     }
   },
   "createWorkerPage": {
-    "name": "Add employee details",
+    "name": "Add employee data",
     "ui": {
-      "image": "It is recommended to add 3 photos of the candidate. Photos must be taken within the last 3 months.",
-      "phone": "Specify the candidate's primary number, which will serve as the login for system access as an employee."
+      "image": "It is recommended to add 3 photos for the candidate. Photos must have been taken within the last 3 months.",
+      "phone": "Specify the candidate’s primary number, which will serve as the login for the employee to access the system."
     },
     "form": {
       "lastName": "Last name",
@@ -372,8 +398,8 @@
       "country": "Country of birth",
       "region": "Region of birth",
       "city": "District of birth",
-      "currentRegion": "Region of residence",
-      "currentCity": "District of residence",
+      "currentRegion": "Current region of residence",
+      "currentCity": "Current district of residence",
       "birthday": "Date of birth",
       "academicTitle": "Academic title",
       "academicDegree": "Academic degree",
@@ -387,41 +413,46 @@
       "passport_file": "Passport copy (.pdf)",
       "inn": "TIN",
       "marital_status": "Marital status",
-      "address": "Address of residence"
+      "address": "Residential address",
+      "experience_date": "Continuous work experience",
+      "work_experience": "Total work experience"
     },
     "step": {
-      "personal": "Candidate's personal details",
-      "photo": "Candidate's photo",
-      "pasport": "Candidate's passport details",
-      "phone": "Candidate's phone details"
+      "personal": "Candidate’s personal data",
+      "photo": "Candidate’s photo",
+      "pasport": "Candidate’s passport data",
+      "phone": "Candidate’s phone number data"
     },
     "toast": {
       "warning": {
-        "title": "Employee already exists in the system",
+        "title": "Employee exists in the system",
         "subtitle": "No comment"
       },
       "success": {
         "title": "Candidate added to the system",
-        "subtitle": "Click the 'Continue' button to conclude an employment contract with the candidate."
+        "subtitle": "Click the continue button to proceed with creating an employment contract with the candidate."
       }
     }
   },
   "signature": {
     "keyType": "User type",
     "inn": "TIN",
-    "undo": "Back",
+    "undo": "Undo",
     "certificate": "Certificate number",
-    "validDate": "Validity period",
+    "validDate": "Expiration date",
     "expiredKey": "Key has expired!",
     "legalPerson": "Legal entity",
     "naturalPerson": "Individual",
-    "connectionError": "E-signature not installed or configured incorrectly!",
+    "connectionError": "E-signature not installed or not properly configured!",
     "copyLink": "Copy link",
     "copied": "Link copied",
     "goSignature": "Sign",
     "signatureTitle": "Sign document electronically!",
     "signatureWorker": "Signature link created for {name}. The document is valid only if signed electronically by {name}.",
     "linkText": "Document link",
+    "acceptApplication": "Approve application",
+    "comment": "Comment",
+    "rejectApplication": "Reject application",
     "pinfl": "JSHSHIR"
   },
   "documentPage": {
@@ -439,7 +470,7 @@
       "form": {
         "command_date": "Order date",
         "type": "Order type",
-        "byContract": "Based on contract № {n}",
+        "byContract": "Based on contract number {n}",
         "confirm": "Approvers",
         "director_id": "Director",
         "day": "Day",
@@ -459,7 +490,8 @@
         "isNotCalculate": "Employee vacation data not calculated!",
         "notSelectCommand": "Select order type and proceed!",
         "removeWorker": "Remove from list",
-        "calculateTitle": "Calculated vacation data. You can edit if you find them incorrect",
+        "calculateTitle": "Calculated vacation data. You can edit them if you consider them incorrect.",
+        "requiredVacationData": "Enter employee vacation data!",
         "command_number": "Order number"
       }
     },
@@ -467,19 +499,19 @@
       "candidate": "Employee",
       "contractDate": "Contract date",
       "contractNumber": "Contract number",
-      "tableNumber": "Table number",
+      "tableNumber": "Timesheet number",
       "type": "Contract type",
       "documentExampleId": "Document template",
       "department": "Department",
       "position": "Position",
-      "positionStatus": "Hiring to main staff",
+      "positionStatus": "Hiring for department position",
       "salary": "Monthly salary",
       "group": "Group",
       "rank": "Position rank",
       "rate": "Rate",
       "postName": "Full position name",
       "director": "Director",
-      "contract_to_date": "Contract duration",
+      "contract_to_date": "Contract term",
       "position_date": "Work start date",
       "vacation_main_day": "Main vacation day",
       "additional_vacation_day": "Additional vacation day",
@@ -495,11 +527,46 @@
       "viewer": "Document reviewers",
       "files": "Document files",
       "status": {
-        "Process": "In process"
+        "Process": "In progress"
       }
     },
     "attach": {
       "title": "Biriktirsh"
+    }
+  },
+  "commandPage": {
+    "form_43": {
+      "new_date": "Vacation end date",
+      "work_day": "Work start date",
+      "reason": "Reason"
+    },
+    "form_44": {
+      "new_date": "Work start date",
+      "rest_day": "Unused vacation day",
+      "reason": "Reason"
+    },
+    "form_45": {
+      "from": "From",
+      "to": "To",
+      "work_day": "Work start date"
+    },
+    "form_48": {
+      "from": "From",
+      "to": "To",
+      "work_day": "Work start date",
+      "all_day": "Vacation day",
+      "reason": "Reason"
+    },
+    "form_49": {
+      "from": "From",
+      "to": "To",
+      "work_day": "Work start date"
+    },
+    "form_55": {
+      "from": "From",
+      "to": "To",
+      "from_time": "From (time)",
+      "to_time": "To (time)"
     }
   },
   "confirmationPage": {
@@ -515,6 +582,7 @@
   },
   "contractPage": {
     "name": "Contracts",
+    "succeedText": "Contract successfully created!",
     "table": {
       "number": "Number",
       "type": "Type",
@@ -527,8 +595,14 @@
     "statuses": {
       "confirm": "Confirm"
     },
-    "confirmText": "Create an order based on contract № {n}?",
-    "confirmAdText": "Create an order based on additional agreement № {n}?"
+    "step": {
+      "stepOne": "Contract type",
+      "stepTwo": "Contract details",
+      "stepThree": "Assign order",
+      "stepFour": "Error"
+    },
+    "confirmText": "Do you want to create an order based on contract number {n}?",
+    "confirmAdText": "Do you want to create an order based on additional agreement number {n}?"
   },
   "chatWindow": {
     "name": "Chat"
@@ -623,7 +697,7 @@
     "createTitle": "Upload template",
     "updateTitle": "Edit template",
     "form": {
-      "signature": "Electronic signature",
+      "signature": "E-signature",
       "organization": "Number of organizations",
       "organizations": "Organizations",
       "type": "Contract type",
@@ -648,16 +722,16 @@
       "structure": "Organizations"
     },
     "status": {
-      "created": "Created",
-      "updated": "Updated",
+      "created": "Newly created",
+      "updated": "Edited",
       "deleted": "Deleted",
       "subject_type": "Model",
-      "sign-in": "System login"
+      "sign-in": "Login to system"
     }
   },
   "relativePage": {
-    "createTitle": "Add relative details",
-    "updateTitle": "Edit relative details",
+    "createTitle": "Add relative data",
+    "updateTitle": "Edit relative data",
     "tab": {
       "worker": "Railway worker",
       "notWorker": "Other profession"
@@ -672,19 +746,19 @@
     "no-data": "No close relatives added!"
   },
   "partyPage": {
-    "createTitle": "Add party affiliation details",
-    "updateTitle": "Edit party affiliation details",
+    "createTitle": "Add party affiliation data",
+    "updateTitle": "Edit party affiliation data",
     "form": {
-      "to_date": "Until when",
-      "from_date": "From when",
+      "to_date": "Until",
+      "from_date": "From",
       "party": "Party affiliation"
     },
     "title": "Party affiliation details",
-    "no-data": "Party affiliation not added!"
+    "no-data": "No party affiliation added!"
   },
   "militaryPage": {
-    "createTitle": "Add military record details",
-    "updateTitle": "Edit military record details",
+    "createTitle": "Add military record data",
+    "updateTitle": "Edit military record data",
     "form": {
       "status": "Status",
       "name": "Name",
@@ -693,60 +767,60 @@
       "number": "Number"
     },
     "title": "Military record details",
-    "no-data": "Military record not added!"
+    "no-data": "No military record added!"
   },
   "academicTitlePage": {
-    "createTitle": "Add academic title details",
-    "updateTitle": "Edit academic title details",
+    "createTitle": "Add academic title data",
+    "updateTitle": "Edit academic title data",
     "form": {
       "type": "Type",
       "file": "Academic title document"
     },
     "title": "Academic title details",
-    "no-data": "Academic title not added!"
+    "no-data": "No academic title added!"
   },
   "academicDegreePage": {
-    "createTitle": "Add academic degree details",
-    "updateTitle": "Edit academic degree details",
+    "createTitle": "Add academic degree data",
+    "updateTitle": "Edit academic degree data",
     "form": {
       "type": "Type",
       "file": "Academic degree document"
     },
     "title": "Academic degree details",
-    "no-data": "Academic degree not added!"
+    "no-data": "No academic degree added!"
   },
   "oldCareerPage": {
-    "createTitle": "Add work experience",
-    "updateTitle": "Edit work experience",
+    "createTitle": "Add career data",
+    "updateTitle": "Edit career data",
     "form": {
-      "from_date": "From when",
+      "from_date": "From",
       "post_name": "Position",
-      "to_date": "Until when"
+      "to_date": "Until"
     },
-    "title": "Work experience details",
-    "no-data": "Work experience not added!"
+    "title": "Career details",
+    "no-data": "No career data added!"
   },
   "languagePage": {
-    "createTitle": "Add language details",
-    "updateTitle": "Edit language details",
+    "createTitle": "Add language data",
+    "updateTitle": "Edit language data",
     "form": {
       "certificateFile": "Certificate file"
     },
     "title": "Language details",
-    "no-language": "No language details available!"
+    "no-language": "No language data!"
   },
   "universityPage": {
-    "createTitle": "Add university details",
-    "updateTitle": "Edit university details",
+    "createTitle": "Add university data",
+    "updateTitle": "Edit university data",
     "form": {
       "university_id": "University",
       "speciality_id": "Specialty",
-      "from_date": "From when",
-      "to_date": "Until when",
+      "from_date": "From",
+      "to_date": "Until",
       "file": "Click to upload"
     },
     "title": "University details",
-    "no-language": "No university details available!"
+    "no-language": "No university data!"
   },
   "topicDetailsPage": {
     "categories": {
@@ -766,18 +840,20 @@
       "createTitle": "Add exam creation",
       "name": "Exams",
       "updateTitle": "Edit exam",
-      "deadline": "Completion date",
+      "deadline": "End date",
       "toWhom": "To whom",
       "minute": "Duration in minutes",
       "variants": "Number of variants",
-      "isActive": "Activity status",
+      "isActive": "Active status",
       "positions": "Positions",
       "organizations": "Organizations",
+      "chances": "Chances",
+      "tests_count": "Number of questions",
       "workers": "Employees",
       "categories": "Categories",
       "questionCount": "Number of questions: ({n})",
       "attachQuestion": "Attach question",
-      "count": "Total exams: {n}"
+      "count": "All exams: {n}"
     },
     "questions": {
       "createTitle": "Add question",
@@ -789,11 +865,11 @@
     "addFile": "Add file",
     "editFile": "Edit file",
     "header": {
-      "active": "Activity status",
+      "active": "Active status",
       "file": "File name",
       "fileType": "File type"
     },
-    "isActive": "Activity status"
+    "isActive": "Active status"
   },
   "topicPage": {
     "createTitle": "Add topic",
@@ -813,7 +889,7 @@
       "phone": "Phone number",
       "birthday": "Date of birth",
       "maritalStatus": "Marital status",
-      "address": "Address of residence",
+      "address": "Residential address",
       "birthdayRegion": "Region of birth",
       "birthdayCity": "District of birth",
       "liveRegion": "Region of residence",
@@ -830,15 +906,15 @@
     },
     "tabs": {
       "general": "General details",
-      "career": "Work experience",
+      "career": "Career",
       "relative": "Close relatives",
-      "med": "Medical examination details",
-      "vacation": "Vacation details",
+      "med": "Medical examination data",
+      "vacation": "Vacation data",
       "incentive": "Incentives",
       "attestation": "Certification",
-      "checkSkill": "Skill assessment",
-      "checkKnowledge": "Knowledge assessment",
-      "punishment": "Disciplinary penalties"
+      "checkSkill": "Skill test",
+      "checkKnowledge": "Knowledge test",
+      "punishment": "Disciplinary actions"
     }
   },
   "categoryPage": {
@@ -847,6 +923,51 @@
     "name": "Categories",
     "addQuestion": "Add question",
     "questionCount": "Number of questions"
+  },
+  "examPage": {
+    "name": "Exams",
+    "topic": "Topic",
+    "exam": "Exam",
+    "variant": "Variants: {n}",
+    "totalTime": "Allocated time: {n} minutes",
+    "totalMinute": "{n} minutes",
+    "resources": "Resources",
+    "exams": "Exams",
+    "deadline": "Closing time: {n}",
+    "examBrief": "The exam contains questions with {variant} variants. You are given {chances} chances to solve it. The exam must be completed within {minute} minutes. The exam closes on {deadline}.",
+    "extra": "Additional: {n}",
+    "start": "Start",
+    "attempts": "Attempts",
+    "questions": "Questions: {n}",
+    "attemptHistory": "Attempt history",
+    "startTime": "Start time",
+    "result": "Result",
+    "endTime": "End time",
+    "leftAttempts": "Remaining attempts",
+    "endHead": "Exam completed!",
+    "endSub": "You scored {n} points.",
+    "ip": "IP address",
+    "wrongAnswer": "Answer incorrect",
+    "notChosen": "Answer not selected"
+  },
+  "solveExamPage": {
+    "alreadyStarted": "You have already started this exam. Do you want to continue?",
+    "restartWarning": "Restarting will end the previous attempt!!!",
+    "notAllowed": "You are not allowed to take the exam!",
+    "startedAt": "Start time",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "middleName": "Middle name",
+    "exam": "Exam",
+    "variant": "Variants",
+    "totalTime": "Allocated time (minutes)",
+    "deadline": "Closing time",
+    "attempts": "Total attempts",
+    "questions": "Number of questions",
+    "removeAnswer": "Remove answer",
+    "notAnswered": "You have not answered {n} questions!!!",
+    "endWarning": "Are you sure you want to end the exam?",
+    "leftAttempts": "Remaining attempts"
   },
   "questionPage": {
     "form": {
@@ -872,8 +993,31 @@
       "type": "Holiday type"
     }
   },
+  "vacationPage": {
+    "name": "Employees on vacation",
+    "table": {
+      "type": "Vacation type",
+      "durationDay": "Vacation duration {n} days",
+      "workDay": "Work start date",
+      "duration": "Vacation period"
+    }
+  },
+  "dashboardPage": {
+    "name": "Statistics",
+    "card": {
+      "type": "Vacation type",
+      "durationDay": "Vacation duration {n} days",
+      "workDay": "Work start date",
+      "duration": "Vacation period"
+    }
+  },
   "applicationPage": {
     "name": "Applications",
+    "createWorkerApplication": "Create application",
+    "updateWorkerApplication": "Edit application",
+    "lastVacationTitle": "Last vacation details",
+    "lastPeriod": "Vacation period: ",
+    "lastPDate": "Vacation date: ",
     "createTitle": "Create application link",
     "updateTitle": "Edit holiday",
     "form": {
@@ -883,13 +1027,64 @@
       "generateLink": "Generate link",
       "phones": "Phone number",
       "number": "Number",
-      "from_date": "From when"
+      "worker_position_id": "Position",
+      "confirmations": "Approvers",
+      "period_from": "Vacation period (from)",
+      "period_to": "Vacation period (to)",
+      "from": "Vacation start date",
+      "to": "Vacation return date",
+      "temporarily_absent": "Employees on vacation",
+      "reason": "Reason",
+      "from_time": "Time (from)",
+      "to_time": "Time (to)",
+      "education_type": "Education form",
+      "univer_number": "Letter number",
+      "univer_date": "Letter date",
+      "contract_to_date": "Cancellation date",
+      "from_date": "From"
     },
+    "step": {
+      "stepOne": "Application type",
+      "stepTwo": "Application details",
+      "stepThree": "Status"
+    },
+    "succeedApplication": "Application successfully submitted!",
+    "applicationTime": "Your application will be reviewed within 15 calendar working days!",
     "client": {
       "name": "Write application",
       "user": "Application recipient",
-      "sendApp": "Send application",
+      "sendApp": "Submit application",
       "type": "Application type"
     }
+  },
+  "userDepartmentPage": {
+    "name": "Timesheet workers",
+    "level_name": "Level",
+    "user_count": "Number of employees",
+    "attached_users": "Assigned employees",
+    "position": "Position",
+    "staff": "Employees",
+    "timeTable": "Timesheets"
+  },
+  "shortWeek": {
+    "Mon": "Mon",
+    "Tue": "Tue",
+    "Wed": "Wed",
+    "Thu": "Thu",
+    "Fri": "Fri",
+    "Sat": "Sat",
+    "Sun": "Sun"
+  },
+  "timesheetPage": {
+    "name": "Timesheets",
+    "create": "Create timesheet",
+    "update": "Edit timesheet",
+    "department": "Department",
+    "total": "Total",
+    "hours": "Hours",
+    "verifiers": "Approvers",
+    "worked": "Worked",
+    "tableTitle": "Notes on attendance and absence by day of the month",
+    "halfMonth": "Mid-month"
   }
 }

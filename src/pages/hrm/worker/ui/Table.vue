@@ -1,5 +1,5 @@
 <script setup>
-import {NoDataPicture, UIActionButton, UIPagination, UIUser, UIMenuButton, UIWorkerView} from "@/components/index.js"
+import {NoDataPicture, UIPagination, UIUser, UIMenuButton, UIWorkerView} from "@/components/index.js"
 import {useTimesheetDepartmentStore, useWorkerStore} from "@/store/modules/index.js"
 import {useRouter} from "vue-router"
 import {AppPaths} from "@/utils/index.js"

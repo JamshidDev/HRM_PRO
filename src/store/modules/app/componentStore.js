@@ -400,7 +400,7 @@ export const useComponentStore = defineStore('componentStore', {
         },
         _timesheetDepartment(){
             this.timesheetWorkplaceLoading = true
-            $ApiService.timeSheetService._index_departments().then((res)=>{
+            $ApiService.timesheetService._index_departments().then((res)=>{
                 this.timesheetWorkplace = res.data.data
             }).finally(()=>{
                 this.timesheetWorkplaceLoading = false
@@ -408,7 +408,7 @@ export const useComponentStore = defineStore('componentStore', {
         },
         _timesheetEnums(){
             this.timesheetEnumsLoading = true
-            $ApiService.timeSheetService._enumTimesheet().then((res)=>{
+            $ApiService.timesheetService._enumTimesheet().then((res)=>{
                 this.timesheetTypes = res.data.data.timesheet_types
             }).finally(()=>{
                 this.timesheetEnumsLoading = false
