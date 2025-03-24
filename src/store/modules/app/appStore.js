@@ -3,7 +3,19 @@ import router from "@/router/index.js"
 import {AppPaths, useAppSetting} from "@/utils/index.js"
 import {customTheme} from "@/assets/theme/theme.js"
 import i18n from "@/i18n/index.js"
+import updateLocale from "dayjs/plugin/updateLocale";
+import dayjs from "dayjs";
 
+dayjs.extend(updateLocale)
+dayjs.updateLocale('uz', {
+        months: ['Yanvar', 'Fevral', 'Mart', 'Aprel', 'May', 'Iyun', 'Iyul', 'Avgust', 'Sentabr', 'Oktabr',
+            'Noyabr', 'Dekabr'],
+        monthsShort: ['Yanvar', 'Fevral', 'Mart', 'Aprel', 'May', 'Iyun', 'Iyul', 'Avgust', 'Sentabr', 'Oktabr',
+            'Noyabr', 'Dekabr'],
+        weekdays: ['Yakshanba', 'Dushanba', 'Seshanba', 'Chorshanba', 'Payshanba', 'Juma', 'Shanba'],
+        weekdaysShort: ['Yak', 'Dush', 'Sesh', 'Chor', 'Pay', 'Jum', 'Shan'],
+    }
+)
 export const useAppStore = defineStore('appStore', {
     state:()=>({
         appConfig:{
@@ -44,6 +56,7 @@ export const useAppStore = defineStore('appStore', {
             html.setAttribute('data-theme', mode)
 
             this.theme = customTheme()
+            dayjs.locale(i18n.global.locale)
         }
     }
 

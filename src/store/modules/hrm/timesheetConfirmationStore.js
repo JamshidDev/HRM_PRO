@@ -14,6 +14,7 @@ export const useTimesheetConfirmStore = defineStore('timesheetConfirmStore', {
         allPermissionList:[],
         structureCheck:[],
         payload:{
+            confirmations: [],
             confirmationObjects: [],
             mainUser: null
         }
@@ -32,14 +33,15 @@ export const useTimesheetConfirmStore = defineStore('timesheetConfirmStore', {
             let data = {
                 confirmations: this.payload.confirmationObjects.map((i, idx)=>({
                     attach: true,
-                    id: i,
+                    id: i.id,
                     order: idx+1,
-                    main: false
+                    main: this.payload.mainUser === i.id,
                 })),
             }
 
             $ApiService.timesheetConfirmService._create({data, id: this.elementId}).then((res)=>{
                 this.resetForm()
+                this.visible = false
                 this._index()
             }).finally(()=>{
                 this.saveLoading = false
@@ -51,29 +53,23 @@ export const useTimesheetConfirmStore = defineStore('timesheetConfirmStore', {
                 data: {
                     confirmations: [v]
                 }, id: this.elementId}).then((res)=>{
+                    this._index()
+            }).finally(()=>{
+                this.loading = false
+            })
+        },
+        _delete(v){
+            this.loading = true
+            $ApiService.timesheetConfirmService._delete({id: this.elementId, elementId: v}).then((res)=>{
                 this._index()
             }).finally(()=>{
                 this.loading = false
             })
         },
-        // _update(){
-        //     this.saveLoading = true
-        //     const date = dayjs(this.payload.timestamp)
-        //     let data = {
-        //         ...this.payload,
-        //         month: date.month()+1,
-        //         year: date.year(),
-        //     }
-        //     $ApiService.timeSheetService._update({data, id: this.elementId}).then((res)=>{
-        //         this.visible = false
-        //         this._index()
-        //         this.resetForm()
-        //     }).finally(()=>{
-        //         this.saveLoading = false
-        //     })
-        // },
         resetForm(){
+            this.payload.confirmations = []
             this.payload.confirmationObjects = []
+            this.payload.mainUser = null
         }
     }
 })
