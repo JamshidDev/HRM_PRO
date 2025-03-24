@@ -59,6 +59,8 @@ export const AppPaths = {
     Contract:"/contract",
     Vacation:"/vacation",
     Application:"/application",
+    DashboardV2:"/dashboard-v2",
+    DashboardV3:"/dashboard-v3",
 }
 
 export const AppLayouts ={
