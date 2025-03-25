@@ -30,7 +30,7 @@ const changePage = (v)=>{
 const onSelectEv = (v)=>{
   if(v.key === Utils.ActionTypes.view){
     previewRef.value.openPreview(v.data.uuid)
-  }else if(v.key==="timesheet"){
+  }else if(v.key===Utils.ActionTypes.timesheet){
     timesheetDepartmentStore.payload.worker_position_id = v.data.id
     timesheetDepartmentStore.visible = true
   }
@@ -94,8 +94,8 @@ const onSelectEv = (v)=>{
                 :show-delete="false"
                 @selectEv="onSelectEv"
                 :extra-options="[{
-                  label: $t('timesheet.name'),
-                  key: 'timesheet',
+                  label: $t('timesheet.assignUser'),
+                  key: Utils.ActionTypes.timesheet,
                   icon: Table24Regular,
                   visible:true,
                 }]"

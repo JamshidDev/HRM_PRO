@@ -121,19 +121,19 @@ export const navigations = [
                 label:'documentPage.tabs.command',
                 path:Utils.routeDocFlowPathMaker(AppPaths.ConfCommand),
                 icon:DocumentTextExtract24Filled,
-                color:'bg-dark',
+                color:'bg-primary',
             },
             {
                 label:'documentPage.tabs.adContract',
                 path:Utils.routeDocFlowPathMaker(AppPaths.ConfAdContract),
                 icon:DocumentTextExtract24Filled,
-                color:'bg-dark',
+                color:'bg-warning',
             },
             {
                 label:'applicationPage.name',
                 path:Utils.routeDocFlowPathMaker(AppPaths.ConfApplication),
                 icon:DocumentArrowDown20Filled,
-                color:'bg-dark',
+                color:'bg-info',
             },
             {
                 label:'timesheetPage.name',

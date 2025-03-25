@@ -13,7 +13,6 @@ const _create = async (payload)=>{
 }
 
 const _check_worker = async (pin)=>{
-    console.log(pin)
     return await axios.get(`/v1/timesheet/check-worker`, {params: {pin}})
 }
 

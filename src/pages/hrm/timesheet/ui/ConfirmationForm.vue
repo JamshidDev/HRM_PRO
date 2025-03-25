@@ -71,8 +71,8 @@ const onSubmit = () => {
             <div
                  class="flex gap-2 p-1 items-center ">
               <div class="flex flex-grow group justify-between">
-                <div class="flex gap-1 items-center">
-                 <n-avatar
+                 <div class="flex gap-1 items-center">
+                    <n-avatar
                       size="large"
                       :fallback-src="Utils.noAvailableImage"
                       :src="item.worker.photo"

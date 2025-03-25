@@ -52,7 +52,7 @@ const onSelect = (v)=>{
       >
         <thead>
         <tr>
-          <th class="!text-center w-[30px] max-w-[30px]">{{$t('content.number')}}</th>
+          <th class="!text-center w-[40px] max-w-[40px]">{{$t('content.number')}}</th>
           <th class="!text-center min-w-[500px]">{{$t('timesheetWorkerPage.work_place')}}</th>
           <th class="!text-center">{{$t('content.month')}}</th>
           <th class="!text-center max-w-[100px] w-[100px]">{{$t('content.status')}}</th>
