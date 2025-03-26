@@ -144,6 +144,7 @@ const ActionTypes = {
     edit:"edit",
     download:"download",
     delete:"delete",
+    timesheet: "timesheet"
 }
 const combineFullName = (user)=>{
     return `${user.last_name} ${user.first_name} ${user.middle_name}`

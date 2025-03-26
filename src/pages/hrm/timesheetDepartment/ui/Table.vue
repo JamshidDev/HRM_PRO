@@ -33,16 +33,8 @@ const onSelectEv = (v)=>{
         <thead>
         <tr>
           <th class="!text-center min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
-          <th class="min-w-[200px] w-[300px]">{{$t('content.worker')}}</th>
-          <th class="min-w-[200px] w-[300px]">{{$t('timesheetWorkerPage.work_place')}}</th>
-
-<!--          <th class="min-w-[120px] w-[300px]">{{$t('workerPage.table.department')}}</th>-->
-<!--          <th class="min-w-[120px]">{{$t('workerPage.table.position')}}</th>-->
-<!--          <th class="min-w-[120px] w-[120px]">{{$t('workerPage.table.position_date')}}</th>-->
-<!--          <th class="min-w-[120px] w-[120px]">{{$t('workerPage.table.birthday')}}</th>-->
-<!--          <th class="min-w-[60px] w-[60px]">{{$t('workerPage.table.group')}}</th>-->
-<!--          <th class="min-w-[60px] w-[60px]">{{$t('workerPage.table.rank')}}</th>-->
-<!--          <th class="min-w-[60px] w-[60px]">{{$t('workerPage.table.rate')}}</th>-->
+          <th class="min-w-[200px]">{{$t('content.worker')}}</th>
+          <th class="min-w-[200px]">{{$t('timesheetWorkerPage.work_place')}}</th>
           <th class="min-w-[40px] w-[40px]"></th>
         </tr>
         </thead>
