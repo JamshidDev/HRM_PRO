@@ -285,7 +285,9 @@
     "type": {
       "organization": "Tashkilot",
       "department": "Bo'lim"
-    }
+    },
+    "nDays": "{n} kun",
+    "nHours": "{n} soat"
   },
   "timesheetWorkerPage": {
     "name": "Tabelchilar",

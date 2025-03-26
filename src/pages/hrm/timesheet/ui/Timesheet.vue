@@ -16,7 +16,7 @@ import dayjs from "dayjs";
 import {NAvatar, NTooltip} from 'naive-ui'
 import {useDebounceFn} from "@vueuse/core";
 import Utils from "@/utils/Utils.js";
-
+import MiniTimesheetInfoTable from './MiniTimesheetInfoTable.vue'
 
 const store = useTimesheetWorkerStore()
 const compStore = useComponentStore()
@@ -85,7 +85,7 @@ const handleMouseUp = () => {
   isDragging.value = false;
   form.value?.validate((error) => {
     if (!error) {
-      store._create()
+     store._create()
     }
   })
 
@@ -161,9 +161,7 @@ const checkWorker = useDebounceFn(() => {
   <div class="h-full flex flex-col  p-8">
     <div class="flex my-2 justify-between  items-center shrink-0 gap-2">
       <div class="flex gap-2">
-        <!--        <n-button text>-->
-        <!--          -->
-        <!--        </n-button>-->
+
         <n-button v-if="store?.month && store?.year" tertiary>
           {{ dayjs().month(store.month).year(store.year).format("YYYY MMMM") }}
         </n-button>
@@ -202,7 +200,8 @@ const checkWorker = useDebounceFn(() => {
       </div>
     </div>
     <n-spin :show="store.loading || store.saveLoading" class="flex-grow">
-      <div v-scroll="[()=>{}, { behavior: 'smooth' }]" class="overflow-x-auto">
+      <div  class="rounded-lg overflow-hidden">
+        <div class="overflow-x-auto">
         <VueDraggable
             v-model="store.list"
             :animation="150"
@@ -211,10 +210,19 @@ const checkWorker = useDebounceFn(() => {
             target=".sort-target"
         >
           <table
-              class="relative timesheet_table"
+              class="
+                relative 
+                bg-surface-section 
+                border-separate
+                border-spacing-0  
+                shadow-sm
+                select-none
+                w-full
+              "
+
               @mouseleave="handleMouseLeave"
           >
-            <thead class="border bg-surface-ground timesheet_header">
+            <thead class="bg-surface-ground">
             <tr>
               <th rowspan="3"></th>
               <th class="max-w-[200px] w-[200px]" rowspan="3">{{ $t('content.worker') }}</th>
@@ -335,8 +343,8 @@ const checkWorker = useDebounceFn(() => {
                   v-for="(day, col) in store.days"
                   :key="col"
                   :class="{
-                        selected: isCellSelected(row, col),
-                        'selected-ignore': isCellSelected(row, col) && !store.payload.isClearing && item.days[day.day]
+                        'timesheet_day-selected': isCellSelected(row, col),
+                        'timesheet_day-ignore': isCellSelected(row, col) && !store.payload.isClearing && item.days[day.day]
                       }"
                   :data-col="col"
                   :data-row="row"
@@ -360,32 +368,20 @@ const checkWorker = useDebounceFn(() => {
                   </div>
                 </div>
               </td>
-              <td class="max-w-[50px] w-[50px] min-w-[50px] sticky right-0 bg-white group">
-                <div
-                    class="absolute top-0 right-0 bottom-0 transition-all bg-white w-0 overflow-hidden group-hover:w-[200px]">
-                  <table class="h-full w-full border border-secondary border-collapse">
-                    <thead class="h-[50%]">
-                    <tr>
-                      <th class="text-xs  border border-secondary" colspan="2">
-                        {{ $t('timesheetPage.halfMonth') }}
-                      </th>
-                      <th class="text-xs  border border-secondary" colspan="2">
-                        {{ $t('timesheetPage.total') }}
-                      </th>
-                    </tr>
-                    </thead>
-                    <tbody class="h-[50%]">
-                    <tr>
-                      <td class="!text-xs !outline-none  border border-secondary">{{ item.halfMonth.days }}</td>
-                      <td class="!text-xs !outline-none  border border-secondary">{{ item.halfMonth.hours }}</td>
-                      <td class="!text-xs !outline-none  border border-secondary">{{ item.allMonth.days }}</td>
-                      <td class="!text-xs !outline-none  border border-secondary">{{ item.allMonth.hours }}</td>
-                    </tr>
-                    </tbody>
-                  </table>
+              <td class="w-[50px] min-w-[50px] h-full sticky right-0 bg-surface-section group">
+                <div 
+                  :class="{'border-b': row!=0}"
+                class="drop-shadow-none bg-surface-section right-0 top-0 bottom-0 left-0 absolute rounded-l-none group-hover:shadow-sm group-hover:rounded-l-full group-hover:-left-[180px] transition-all border-x border-surface-line overflow-hidden">
+                  <MiniTimesheetInfoTable
+                    :halfDays="item.halfMonth.days"
+                    :halfHours="item.halfMonth.hours"
+                    :allDays="item.allMonth.days"
+                    :allHours="item.allMonth.hours"
+                  />
                 </div>
                 <div
-                    class="absolute top-0 left-0 right-0 bottom-0 transition-all z-10 group-hover:opacity-0 bg-white  flex items-center justify-center">
+                    :class="{'border-b': row!=0}"
+                    class="absolute top-0 left-0 right-0 bottom-0 transition-all z-10 group-hover:opacity-0 bg-surface-section  border-surface-line flex items-center justify-center">
                   <n-button
                       circle
                       dashed
@@ -403,6 +399,8 @@ const checkWorker = useDebounceFn(() => {
           </table>
         </VueDraggable>
       </div>
+      </div>
+     
       <n-form ref="form" class="flex gap-2 fixed bottom-8 right-8 left-8">
         <n-grid :cols="8" :x-gap="10">
           <n-form-item-gi :show-feedback="false" :show-label="false" :span="3">
@@ -467,49 +465,46 @@ const checkWorker = useDebounceFn(() => {
   </div>
 </template>
 <style lang="scss" scoped>
+thead{
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  overflow: hidden;
+}
+tr{
+  &:first-child{
+    th{
+      border-top: 1px solid var(--dark-color);
+      &:first-child {
+        border-top-left-radius: 10px;
+      }
+      &:last-child {
+        border-top-right-radius: 10px;
+        border-right: 1px solid var(--dark-color);
+        background-color: var(--surface-ground);
+      }
+    }
+  }
+  &:first-child, &:nth-child(2){
+    th{
+      border-left: 1px solid var(--dark-color);
+      border-bottom: 1px solid var(--dark-color);
+    }
+  }
+}
+tr{
+  td{
+    border: 1px solid var(--surface-line);
+  }
+}
 .timesheet_day{
-  border: 1px solid var(--surface-line);
-}
-.timesheet_row:first-child{
-  .timesheet_day{
-    border-top: none;
+  &-selected{
+    border: 1px solid var(--primary-color);
+  }
+  &-ignore{
+    border: 1px solid var(--secondary-color);
   }
 }
-.timesheet_table {
-  width: 100%;
-  background: var(--surface-section);
-  border: 1px solid var(--surface-line);
-  border-collapse: collapse;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-  user-select: none;
-}
-/*
-.timesheet_header{
-  th{
-    border-bottom: 1px solid var(--surface-line);
-    border-right: 1px solid var(--surface-line);
-  }
-}
-*/
 
-.selected {
-  background: rgba(var(--secondary-color), 0.1); /* using a light primary tone */
-  border: 1px solid var(--primary-color);
-  outline: 1px solid var(--primary-color);
-}
-
-.selected-ignore {
-  background: transparent;
-  opacity: 0.7;
-  outline: 1px solid var(--textColor1);
-}
-
-/*
-.total {
-  font-weight: 600;
-  background: var(--surface-ground);
-}
-*/
 
 th, td {
   font-size: 14px;
@@ -517,7 +512,7 @@ th, td {
 }
 
 .weekend {
-  background: rgba(255, 0, 0, 0.1); /* kept as rgba red for "weekend" styling */
+  background: rgba(var(--danger-color), 0.2);
   font-weight: bold;
   color: var(--danger-color);
 }
