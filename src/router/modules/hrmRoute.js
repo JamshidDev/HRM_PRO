@@ -76,7 +76,7 @@ export default [
     {
         path:Utils.routeHrmPathMaker(AppPaths.Dashboard),
         name:AppPaths.Dashboard.substring(1),
-        component:DashboardPage,
+        component:DashboardV3Page,
     },
     {
         path:Utils.routeHrmPathMaker(AppPaths.TimesheetDepartment),

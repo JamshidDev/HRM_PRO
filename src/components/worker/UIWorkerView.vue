@@ -121,7 +121,7 @@ defineExpose({
       style="width:100%;height:96vh"
   >
 
-    <div class="w-full h-full grid grid-cols-12 max-w-[1200px] bg-white rounded-md overflow-hidden">
+    <div class="w-full h-full grid grid-cols-12 max-w-[1400px] bg-white rounded-md overflow-hidden">
       <n-spin
           :show="store.previewLoading"
           class="col-span-12  bg-white rounded-md overflow-hidden">

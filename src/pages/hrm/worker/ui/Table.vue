@@ -33,7 +33,13 @@ const onSelectEv = (v)=>{
   }else if(v.key===Utils.ActionTypes.timesheet){
     timesheetDepartmentStore.payload.worker_position_id = v.data.id
     timesheetDepartmentStore.visible = true
+  }else if(v.key === Utils.ActionTypes.edit){
+    goPush(v.data)
   }
+}
+
+const onPreview =(uuid)=>{
+  previewRef?.value.openPreview(uuid)
 }
 
 
@@ -66,9 +72,7 @@ const onSelectEv = (v)=>{
           <td><span class="text-center text-[12px] text-gray-600 block">{{ (store.params.page - 1) * store.params.per_page + idx + 1 }}</span></td>
           <td>
             <UIUser
-                @click="goPush(item)"
-                class="cursor-pointer"
-                :short="false"
+                @onClickFullName="onPreview(item.uuid)"
                 :data="{
                     photo:item?.worker.photo,
                     firstName:item?.worker.first_name,
@@ -81,7 +85,7 @@ const onSelectEv = (v)=>{
           <td>{{item?.department?.name}}</td>
           <td>{{item?.position?.name}}</td>
           <td><div class="flex justify-center">{{item?.position_date}}</div></td>
-          <td><div class="flex justify-center">{{item?.worker?.birthday}}</div></td>
+          <td><div class="flex justify-center">{{Utils.timeOnlyDate(item?.worker?.birthday)}}</div></td>
           <td><div class="flex justify-center "><n-button circle>{{item?.group}}</n-button></div></td>
           <td><div class="flex justify-center "><n-button circle>{{item?.rank}}</n-button></div></td>
           <td><div class="flex justify-center "><n-button circle>{{item?.rate}}</n-button></div></td>

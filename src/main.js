@@ -36,4 +36,5 @@ app.use(createYmaps({
     apikey: 'cd743c3b-f0bf-4f2e-b9ec-0240b9d87646',
 }));
 app.use(i18n)
+
 app.mount('#app')
