@@ -41,7 +41,6 @@ const onAdd = ()=>{
     <UIPageFilter
         v-model:search="store.params.search"
         @onSearch="onSearch"
-        :show-filter-button="false"
         @on-add="onAdd"
     />
     <Table/>
