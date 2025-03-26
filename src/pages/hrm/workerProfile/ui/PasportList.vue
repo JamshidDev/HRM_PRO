@@ -81,7 +81,7 @@ const onDownload = (v)=>{
 
 <template>
   <n-spin :show="store.passportLoading">
-    <div class="grid grid-cols-12 mb-16 mt-16 gap-x-4">
+    <div class="grid grid-cols-12 mb-16 mt-16 gap-x-4 border border-dashed border-surface-line p-2 rounded-lg">
       <template v-for="(item, idx) in store.passportList" :key="idx">
         <div class="col-span-6 flex flex-col">
           <span class="text-xs text-gray-500">{{$t(`createWorkerPage.form.serial_number`)}}</span>

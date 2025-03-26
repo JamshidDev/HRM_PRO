@@ -108,9 +108,14 @@
 }
 .ui__user-component{
   .n-avatar{
+    transition: all 0.225s ease;
     border:1px solid var(--surface-300);
+    transform: scale(1);
+
+    &:hover{
+      transform: scale(1.2);
+    }
     img{
-      //object-fit: cover;
       aspect-ratio: auto 3/4;
       width: 40px;
       height: 52px;

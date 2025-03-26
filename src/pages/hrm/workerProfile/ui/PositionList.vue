@@ -47,7 +47,7 @@ const onOpenCommand = (v)=>{
 <template>
 <div>
   <span class=" font-medium block mb-2">{{$t('workerProfile.position.title')}}</span>
-  <div v-for="(item, idx) in store.positionList" :key="idx" class="grid grid-cols-12 w-full border border-dashed border-surface-line mb-4">
+  <div v-for="(item, idx) in store.positionList" :key="idx" class="grid grid-cols-12 w-full border border-dashed border-surface-line rounded-lg mb-4">
     <div class="col-span-9 flex-col flex">
       <div class="grid grid-cols-12">
         <div class="col-span-12 p-2 border-b border-r border-dashed border-surface-line">

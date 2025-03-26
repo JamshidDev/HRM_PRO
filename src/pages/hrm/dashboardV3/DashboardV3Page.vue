@@ -5,7 +5,9 @@ import VChart from 'vue-echarts';
 import { use } from 'echarts/core';
 import { CanvasRenderer } from 'echarts/renderers';
 import { BarChart, PieChart } from 'echarts/charts';
+import {useI18n} from "vue-i18n"
 
+import {UIUserGroup} from "@/components/index.js"
 import {
   TitleComponent,
   TooltipComponent,
@@ -38,7 +40,7 @@ const chartOption = ref({
   },
   xAxis: {
     type: 'category',
-    data: ['Vacation 1', 'Vacation 2', 'Vacation 3', 'Vacation 4', 'Vacation 5', 'Vacation 6', 'Vacation 7','Vacation 8', 'Vacation 9','Vacation 10', ],
+    data: ['Yanvar', 'Fevral', 'Mart', 'Aprel', 'May', 'Iyun', 'Iyul','Avgust', 'Sentyabr','Oktyabr', 'Noyabr', 'Dekabr'],
     axisLabel:{
       show:false,
     }
@@ -50,8 +52,8 @@ const chartOption = ref({
     {
       name: 'Foydalanuvchilar',
       type: 'bar',
-      barWidth: '60%', // Ustun kengligi
-      data: [40, 25, 60, 120, 100, 110, 90, 70, 80, 30],
+      barWidth: '30%', // Ustun kengligi
+      data: [40, 25, 60, 120, 100, 110, 90, 70, 80, 30, 109, 50],
       itemStyle: {
         color: '#1A84FF',
         borderRadius: [5, 5, 0, 0]
@@ -63,63 +65,25 @@ const chartOption = ref({
         fontSize: 12,
         offset: [0, 10]
       }
-    }
-  ]
-})
-const chartOption2 = ref({
-  tooltip: {
-    trigger: 'axis',
-    axisPointer: {
-      type: 'shadow'
-    }
-  },
-  grid: {
-    left: '3%',
-    right: '4%',
-    bottom: '15%',
-    containLabel: true
-  },
-  xAxis: {
-    type: 'category',
-    data: ['Contract 1', 'Contract 2', 'Contract 3', 'Contract 4', 'Contract 5', 'Contract 6', 'Contract 7','Contract 8', 'Contract 9','Contract 10', ],
-    axisLabel:{
-      show:false,
-    }
-  },
-  yAxis: {
-    type: 'value'
-  },
-  series: [
+    },
     {
       name: 'Foydalanuvchilar',
       type: 'bar',
-      barWidth: '60%', // Ustun kengligi
-      data: [40, 25, 60, 120, 100, 110, 90, 70, 80, 30],
+      barWidth: '30%', // Ustun kengligi
+      data: [30, 45, 60, 120, 100, 110, 90, 70, 80, 30, 109, 50],
       itemStyle: {
-        color: '#ff9501',
+        color:  '#dae5f5',
         borderRadius: [5, 5, 0, 0]
       },
-      label: {
-        show: true,
-        position: 'bottom',
-        formatter: (params) => `{name|${params.name}}\n{value|${params.value}} %`, // "40", "25", "60"
-        fontSize: 12,
-        offset: [0, 10],
-        rich: {
-          name: {
-            fontSize: 12,
-            fontWeight: 'bold'
-          },
-          value: {
-            color: '#ff6384', // Qiymat uchun qizil rang
-            fontSize: 12,
-            fontWeight: 'semibold'
-          }
-        },
-      }
     }
   ]
 })
+
+
+
+
+
+
 
 const  pieOption = {
   tooltip: {
@@ -168,7 +132,7 @@ const  pieOption2 = {
 
       data: [
         { value: 1048, name: 'Hayfsan',  itemStyle: { color: '#1A84FF' } },
-        { value: 735, name: 'Boshqa',  itemStyle: { color: '#ff6c6c' }  },
+        { value: 735, name: 'Boshqa',  itemStyle: { color: '#E53835' }  },
       ]
     }
   ]
@@ -198,7 +162,7 @@ const  eduOption = {
       data: [
         { value: 1048, name: "Oliy ma'lumotli",itemStyle: { color: '#1A84FF' }, selected: true},
         { value: 735, name: "O'rta maxsus" ,itemStyle: { color: '#0f1114' }, selected: true},
-        { value: 580, name: "O'rta ma'lumotli", itemStyle: { color: '#ff6c6c'}, selected: true},
+        { value: 580, name: "O'rta ma'lumotli", itemStyle: { color: '#E53835'}, selected: true},
       ],
       emphasis: {
         itemStyle: {
@@ -331,7 +295,7 @@ const donutOption3 = {
     left: 'center',
     top: 'middle',
     textStyle: {
-      color: '#ff6c6c',
+      color: '#E53835',
       fontSize: 14,
       fontWeight: '600'
     }
@@ -369,12 +333,40 @@ const donutOption3 = {
         show: false
       },
       data: [
-        { value: 1048, name:"Oliy ma'lumotli", itemStyle: { color: '#ff6c6c' } },
+        { value: 1048, name:"Oliy ma'lumotli", itemStyle: { color: '#E53835' } },
       ],
 
     }
   ]
 }
+
+
+const userGroup = [
+  {
+    photo:'https://preview.keenthemes.com/metronic8/demo2/assets/media/avatars/300-9.jpg',
+    fullName:"Jamshid Raximov"
+  },
+  {
+    photo:'https://preview.keenthemes.com/metronic8/demo2/assets/media/avatars/300-9.jpg',
+    fullName:"Jamshid Raximov"
+  },
+  {
+    photo:'https://preview.keenthemes.com/metronic8/demo2/assets/media/avatars/300-9.jpg',
+    fullName:"Jamshid Raximov"
+  },
+  {
+    photo:'https://preview.keenthemes.com/metronic8/demo2/assets/media/avatars/300-9.jpg',
+    fullName:"Jamshid Raximov"
+  },
+  {
+    photo:'https://preview.keenthemes.com/metronic8/demo2/assets/media/avatars/300-9.jpg',
+    fullName:"Jamshid Raximov"
+  },
+  {
+    photo:'https://preview.keenthemes.com/metronic8/demo2/assets/media/avatars/300-9.jpg',
+    fullName:"Jamshid Raximov"
+  },
+]
 
 
 </script>
@@ -385,7 +377,8 @@ const donutOption3 = {
 
       <template v-for="item in 4" :key="item">
         <div class="col-span-3">
-          <div class="w-full border border-surface-line p-4 rounded-lg bg-surface-section">
+          <div class="w-full border border-surface-line p-4 rounded-lg bg-surface-section relative">
+            <span class="z-[1] opacity-30 absolute top-0 right-0 w-[160px] h-full bg-no-repeat bg-[url(/public/effect/primary-card.svg)]" ></span>
             <p class="font-medium">Xodimlar soni</p>
             <h3 class="text-2xl font-semibold mt-2">1676</h3>
             <p class="text-xs">Xodimlar soni</p>
@@ -399,7 +392,8 @@ const donutOption3 = {
 
 
       <div class="col-span-4">
-        <div class="w-full h-full border border-surface-line p-4 rounded-lg bg-surface-section">
+        <div class="w-full h-full border border-surface-line p-4 rounded-lg bg-surface-section relative">
+          <span class="z-[1] opacity-30 absolute top-0 right-0 w-[160px] h-full bg-no-repeat bg-[url(/public/effect/effect-card-1.svg)]" ></span>
           <p class="font-semibold">Xodimlarning yoshi bo'yicha</p>
           <div class="flex ">
             <div style="width: calc(100% - 250px)">
@@ -408,7 +402,7 @@ const donutOption3 = {
               <div><span class="w-[20px] h-[10px] bg-danger inline-block rounded font-semibold mt-2" ></span> 46 yoshdan kattalar</div>
             </div>
 
-            <div class="w-[250px] h-[250px]">
+            <div class="w-[250px] h-[250px] relative z-[2]">
               <v-chart :option="eduOption" />
             </div>
           </div>
@@ -416,7 +410,8 @@ const donutOption3 = {
       </div>
 
       <div class="col-span-4" >
-        <div class="w-full h-full flex flex-col border border-surface-line p-4 rounded-lg bg-surface-section">
+        <div class="w-full h-full flex flex-col border border-surface-line p-4 rounded-lg bg-surface-section relative">
+          <span class="z-[1] opacity-30 absolute top-0 right-0 w-[160px] h-full bg-no-repeat bg-[url(/public/effect/effect-card-1.svg)]" ></span>
           <p class="font-semibold mb-4">Xodimlarning ma'lumoti bo'yicha</p>
           <div class="flex gap-2">
             <div class="flex items-center justify-around w-1/2">
@@ -429,7 +424,7 @@ const donutOption3 = {
               </div>
             </div>
             <div class="flex items-center justify-around w-1/2">
-              <div class="w-[90px] h-[90px]">
+              <div class="w-[90px] h-[90px] relative z-[2]">
                 <v-chart :option="donutOption2" />
               </div>
               <div style="width: calc(100% - 90px)" class="pl-2">
@@ -452,11 +447,11 @@ const donutOption3 = {
       </div>
 
       <div class="col-span-4">
-        <div class="w-full h-full border border-surface-line p-4 rounded-lg bg-surface-section">
+        <div class="w-full h-full border border-surface-line p-4 rounded-lg bg-surface-section relative">
+          <span class="z-[1] opacity-30 absolute top-0 right-0 w-[160px] h-full bg-no-repeat bg-[url(/public/effect/effect-card-1.svg)]" ></span>
           <div class="flex h-auto">
-            <div style="width: calc(100% - 300px)">
+            <div style="width: calc(100% - 280px)">
               <p class="font-bold">Rag'batlantirish</p>
-
               <p class="mt-2 text-xs">Faxriy temiryo'lchi faxriy unvoni</p>
               <h3 class="font-semibold leading-[1.2]">45 000</h3>
 
@@ -464,13 +459,13 @@ const donutOption3 = {
               <h3 class="font-semibold leading-[1.2]">5 000</h3>
 
             </div>
-            <div class="w-[300px] h-[120px]">
+            <div class="w-[280px] h-[120px] relative z-[2]">
               <v-chart :option="pieOption" />
             </div>
           </div>
           <hr class="w-full h-[1px] text-surface-line mt-2">
           <div class="flex h-auto mt-2">
-            <div style="width: calc(100% - 300px)">
+            <div style="width: calc(100% - 280px)">
               <p class="font-bold">Intizomiy jazo</p>
 
               <p class="mt-2 text-xs">Hayfsan</p>
@@ -479,33 +474,50 @@ const donutOption3 = {
               <p class="mt-2 text-xs">Boshqa jazolar</p>
               <h3 class="font-semibold leading-[1.2]">5 000</h3>
             </div>
-            <div class="w-[300px] h-[120px]">
+            <div class="w-[280px] h-[120px] relative z-[2]">
               <v-chart :option="pieOption2" />
             </div>
           </div>
         </div>
       </div>
 
-      <div class="col-span-6">
-        <div class="w-full h-full border border-surface-line p-4 rounded-lg bg-surface-section">
-          <p class="font-semibold text-lg">Hozirda ta'tildagi xodimlar soni kesimida</p>
-          <div class="w-full h-[300px]">
-            <v-chart :option="chartOption" />
+      <div class="col-span-8">
+        <div class="w-full h-full border border-surface-line p-4 rounded-lg bg-surface-section relative">
+          <span class="z-[1] opacity-40 absolute top-0 right-0 w-[160px] h-full bg-no-repeat bg-[url(/public/effect/effect-card-2.svg)]" ></span>
+          <p class="font-semibold text-lg">Ishga qabul qilingan va ishdan bo'shatilgan xodimlar</p>
+          <div class="w-full h-[300px] relative z-[2]">
+            <v-chart class="w-full" :option="chartOption" />
           </div>
         </div>
 
       </div>
-      <div class="col-span-6">
-        <div class="w-full h-full border border-surface-line p-4 rounded-lg bg-surface-section">
-          <p class="font-semibold text-lg">Shartnoma turi bo'yicha</p>
-          <div class="w-full h-[300px]">
-            <v-chart :option="chartOption2" />
+      <div class="col-span-4">
+        <div class="w-full h-full border border-surface-line p-4 rounded-lg bg-surface-section relative">
+          <span class="z-[1] opacity-40 absolute top-0 right-0 w-[160px] h-full bg-no-repeat bg-[url(/public/effect/effect-card-2.svg)]" ></span>
+          <p class="font-semibold text-lg mb-4">Kutilayotgan tug'ilgan kunlar</p>
+          <div class="flex justify-between border-b border-surface-line items-center">
+            <span class="font-semibold">Bugungi tug'ulgan kunlar</span> <UIUserGroup class="relative z-[2]" :data="userGroup"/>
+          </div>
+          <div class="flex justify-between border-b border-surface-line items-center">
+            <span class="font-semibold ">Ertangi tug'ulgan kunlar</span> <UIUserGroup class="relative z-[2]" :data="userGroup"/>
+          </div>
+          <div class="flex justify-between border-b border-surface-line items-center">
+            <span class="font-semibold ">28 - mart</span> <UIUserGroup class="relative z-[2]" :data="userGroup"/>
+          </div>
+          <div class="flex justify-between border-b border-surface-line items-center">
+            <span class="font-semibold ">29 -mart</span> <UIUserGroup class="relative z-[2]" :data="userGroup"/>
+          </div>
+          <div class="flex justify-between border-b border-surface-line items-center">
+            <span class="font-semibold">30 -mart</span> <UIUserGroup class="relative z-[2]" :data="userGroup"/>
           </div>
         </div>
-
       </div>
 
+      <div class="col-span-4">
+        <div class="w-full h-full border border-surface-line p-4 rounded-lg bg-surface-section relative">
 
+        </div>
+      </div>
     </div>
   </UIPageContent>
 </template>

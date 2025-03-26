@@ -343,9 +343,6 @@ onMounted(()=>{
     <div class="col-span-12">
       <PassportForm/>
     </div>
-
-
-
   </n-form>
 <div class="grid grid-cols-12">
 

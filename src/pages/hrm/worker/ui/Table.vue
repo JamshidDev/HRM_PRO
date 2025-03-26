@@ -29,11 +29,17 @@ const changePage = (v)=>{
 
 const onSelectEv = (v)=>{
   if(v.key === Utils.ActionTypes.view){
-    previewRef.value.openPreview(v.data.uuid)
+    onPreview(v.data.uuid)
   }else if(v.key==="timesheet"){
     timesheetDepartmentStore.payload.worker_position_id = v.data.id
     timesheetDepartmentStore.visible = true
+  }else if(v.key === Utils.ActionTypes.edit){
+    goPush(v.data)
   }
+}
+
+const onPreview =(uuid)=>{
+  previewRef?.value.openPreview(uuid)
 }
 
 
@@ -50,9 +56,9 @@ const onSelectEv = (v)=>{
         <thead>
         <tr>
           <th class="!text-center min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
-          <th class="min-w-[200px] w-[300px]">{{$t('content.worker')}}</th>
-          <th class="min-w-[120px] w-[300px]">{{$t('workerPage.table.department')}}</th>
-          <th class="min-w-[120px]">{{$t('workerPage.table.position')}}</th>
+          <th class="min-w-[100px] w-[120px]">{{$t('content.worker')}}</th>
+          <th class="min-w-[100px] w-[200px]">{{$t('workerPage.table.department')}}</th>
+          <th class="min-w-[200px]">{{$t('workerPage.table.position')}}</th>
           <th class="min-w-[120px] w-[120px]">{{$t('workerPage.table.position_date')}}</th>
           <th class="min-w-[120px] w-[120px]">{{$t('workerPage.table.birthday')}}</th>
           <th class="min-w-[60px] w-[60px]">{{$t('workerPage.table.group')}}</th>
@@ -66,9 +72,7 @@ const onSelectEv = (v)=>{
           <td><span class="text-center text-[12px] text-gray-600 block">{{ (store.params.page - 1) * store.params.per_page + idx + 1 }}</span></td>
           <td>
             <UIUser
-                @click="goPush(item)"
-                class="cursor-pointer"
-                :short="false"
+                @onClickFullName="onPreview(item.uuid)"
                 :data="{
                     photo:item?.worker.photo,
                     firstName:item?.worker.first_name,
@@ -81,7 +85,7 @@ const onSelectEv = (v)=>{
           <td>{{item?.department?.name}}</td>
           <td>{{item?.position?.name}}</td>
           <td><div class="flex justify-center">{{item?.position_date}}</div></td>
-          <td><div class="flex justify-center">{{item?.worker?.birthday}}</div></td>
+          <td><div class="flex justify-center">{{Utils.timeOnlyDate(item?.worker?.birthday)}}</div></td>
           <td><div class="flex justify-center "><n-button circle>{{item?.group}}</n-button></div></td>
           <td><div class="flex justify-center "><n-button circle>{{item?.rank}}</n-button></div></td>
           <td><div class="flex justify-center "><n-button circle>{{item?.rate}}</n-button></div></td>

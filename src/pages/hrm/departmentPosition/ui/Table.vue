@@ -75,9 +75,13 @@ const onSelectEv = (v)=>{
           <td><span class="text-center text-[12px] text-gray-600 block">{{ (store.params.page - 1) * store.params.per_page + idx + 1 }}</span></td>
           <td>{{item.position?.name}}</td>
           <td>{{item.department?.name}}</td>
-          <td>{{item.group?.name}}</td>
-          <td>{{item.rank?.name}}</td>
-          <td>{{item.rate}}</td>
+          <td><div class="w-full flex justify-center "><n-tag round>{{item.group?.name}}</n-tag></div></td>
+          <td>
+            <div class="w-full flex justify-center "><n-tag round>{{item.rank?.name}}</n-tag></div>
+          </td>
+          <td>
+            <div class="w-full flex justify-center "><n-tag round>{{item.rate}}</n-tag></div>
+          </td>
           <td>{{item.salary}} {{$t('content.sum')}}</td>
           <td>{{item.education?.name}}</td>
           <td>{{item.experience}} {{$t('content.month')}}</td>

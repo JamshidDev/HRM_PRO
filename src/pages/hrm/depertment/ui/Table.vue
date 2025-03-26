@@ -100,7 +100,7 @@ const onSelectEv = (v)=>{
                 @click="onDeep(item.id)"
             >
               <template #icon>
-                <n-icon size="24">
+                <n-icon size="20">
                   <ChevronRight12Regular/>
                 </n-icon>
               </template>
