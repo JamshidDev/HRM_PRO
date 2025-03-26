@@ -20,6 +20,10 @@ const _update = async (payload)=>{
     return await axios.put(`/v1/timesheet/${payload.id}`, payload.data)
 }
 
+const _accept = async (payload)=>{
+    return await axios.post(`/v1/timesheet/${payload.id}/accept`, payload.data)
+}
+
 const _enumTimesheet = async ()=>{
     return await axios.get(`/v1/timesheet/enums`)
 }
@@ -30,5 +34,6 @@ export default {
     _create,
     _update,
     _index_departments,
-    _enumTimesheet
+    _enumTimesheet,
+    _accept
 }
