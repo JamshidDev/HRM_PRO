@@ -29,8 +29,8 @@ const changePage = (v)=>{
 
 const onSelectEv = (v)=>{
   if(v.key === Utils.ActionTypes.view){
-    onPreview(v.data.uuid)
-  }else if(v.key==="timesheet"){
+    previewRef.value.openPreview(v.data.uuid)
+  }else if(v.key===Utils.ActionTypes.timesheet){
     timesheetDepartmentStore.payload.worker_position_id = v.data.id
     timesheetDepartmentStore.visible = true
   }else if(v.key === Utils.ActionTypes.edit){
@@ -56,9 +56,9 @@ const onPreview =(uuid)=>{
         <thead>
         <tr>
           <th class="!text-center min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
-          <th class="min-w-[100px] w-[120px]">{{$t('content.worker')}}</th>
-          <th class="min-w-[100px] w-[200px]">{{$t('workerPage.table.department')}}</th>
-          <th class="min-w-[200px]">{{$t('workerPage.table.position')}}</th>
+          <th class="min-w-[200px] w-[300px]">{{$t('content.worker')}}</th>
+          <th class="min-w-[120px] w-[300px]">{{$t('workerPage.table.department')}}</th>
+          <th class="min-w-[120px]">{{$t('workerPage.table.position')}}</th>
           <th class="min-w-[120px] w-[120px]">{{$t('workerPage.table.position_date')}}</th>
           <th class="min-w-[120px] w-[120px]">{{$t('workerPage.table.birthday')}}</th>
           <th class="min-w-[60px] w-[60px]">{{$t('workerPage.table.group')}}</th>
@@ -98,8 +98,8 @@ const onPreview =(uuid)=>{
                 :show-delete="false"
                 @selectEv="onSelectEv"
                 :extra-options="[{
-                  label: $t('timesheet.name'),
-                  key: 'timesheet',
+                  label: $t('timesheet.assignUser'),
+                  key: Utils.ActionTypes.timesheet,
                   icon: Table24Regular,
                   visible:true,
                 }]"

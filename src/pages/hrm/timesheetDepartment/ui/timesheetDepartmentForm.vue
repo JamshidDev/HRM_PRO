@@ -31,12 +31,6 @@ const onSubmit = ()=>{
   })
 }
 
-onMounted(()=>{
-  if(componentStore.structureList.length === 0){
-    componentStore._structures()
-  }
-})
-
 </script>
 <template>
   <n-form

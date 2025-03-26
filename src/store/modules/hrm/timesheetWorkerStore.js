@@ -76,6 +76,40 @@ export const useTimesheetWorkerStore = defineStore('timesheetWorkerStore', {
                 this.loading = false
             })
         },
+        _index_workers(){
+            this.loading = true
+            let params = {
+                ...this.params
+            }
+            $ApiService.timesheetWorkerService._index({id: this.elementId, params}).then((res)=>{
+                this.list = res.data.data.data.map(i=>({
+                    ...i,
+                    days: Object.fromEntries(i.days.map(i=>[i.day, i.details])),
+                    halfMonth: {
+                        days: i.days.filter(i=>i.day<=15).length,
+                        hours: i.days.filter(i=>i.day<=15).reduce((sum, day) => {
+                            const dayHours = day.details.reduce((daySum, detail) => {
+                                return daySum + detail.hours
+                            }, 0);
+                            return sum + dayHours
+                        }, 0)
+                    },
+                    allMonth: {
+                        days: i.days.length,
+                        hours: i.days.reduce((sum, day) => {
+                            const dayHours = day.details.reduce((daySum, detail) => {
+                                return daySum + detail.hours
+                            }, 0)
+
+                            return sum + dayHours;
+                        }, 0)
+                    }
+                }))
+                this.totalItems = res.data.data.total
+            }).finally(()=>{
+                this.loading = false
+            })
+        },
         _create(){
             if (!this.payload.start || !this.payload.end) return;
 
@@ -121,7 +155,7 @@ export const useTimesheetWorkerStore = defineStore('timesheetWorkerStore', {
                 promises.push($ApiService.timesheetWorkerService._create({data: data2, id: this.elementId}))
             }
             Promise.all(promises).then(()=>{
-                this._index()
+                this._index_workers()
                 this.resetSelection()
             }).finally(()=>{
                 this.saveLoading = false
