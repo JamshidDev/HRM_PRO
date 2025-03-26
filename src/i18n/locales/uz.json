@@ -281,7 +281,9 @@
   },
   "timesheet": {
     "name": "Tabel",
+    "status": "Tabel holati",
     "assignUser": "Tabelga biriktirish",
+    "finished": "Yakunlangan",
     "type": {
       "organization": "Tashkilot",
       "department": "Bo'lim"
@@ -1095,6 +1097,10 @@
     "tableTitle": "Oy kuni bo'yicha ishda qatnashish va yo'qligi haqida eslatmalar",
     "halfMonth": "Oy yarmigacha",
     "pin": "Pasport JSHSHIR",
-    "addNewWorker": "Yangi xodim qo'shish"
+    "addNewWorker": "Yangi xodim qo'shish",
+    "closeWarning": {
+      "title": "Tabelni yakunlashga ishonchingiz komilmi?",
+      "desc": "Bu amalni ortga qaytarib bo'lmaydi."
+    }
   }
 }

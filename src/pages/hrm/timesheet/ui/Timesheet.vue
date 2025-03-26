@@ -7,7 +7,8 @@ import {
   Delete20Filled,
   Dismiss12Regular,
   Info16Filled,
-  LineHorizontal320Filled
+  LineHorizontal320Filled,
+  ArrowMoveInward20Filled
 } from "@vicons/fluent";
 import {useComponentStore, useTimesheetWorkerStore} from "@/store/modules/index.js";
 import {UIPagination} from "@/components/index.js";
@@ -296,7 +297,7 @@ const checkWorker = useDebounceFn(() => {
                   </div>
                 </div>
               </td>
-              <td class="min-w-[50px]"></td>
+              <td class="min-w-[50px] sticky right-0 bg-surface-section"></td>
             </tr>
 
             <!--     Workers row       -->
@@ -307,7 +308,7 @@ const checkWorker = useDebounceFn(() => {
 
                   <n-button circle quaternary size="small">
                     <template #icon>
-                      <n-icon :component="LineHorizontal320Filled" class="handle"/>
+                      <n-icon :component="ArrowMoveInward20Filled" class="handle"/>
                     </template>
                   </n-button>
 
@@ -473,21 +474,21 @@ thead{
 tr{
   &:first-child{
     th{
-      border-top: 1px solid var(--dark-color);
+      border-top: 1px solid var(--surface-line);
       &:first-child {
         border-top-left-radius: 10px;
       }
       &:last-child {
         border-top-right-radius: 10px;
-        border-right: 1px solid var(--dark-color);
+        border-right: 1px solid var(--surface-line);
         background-color: var(--surface-ground);
       }
     }
   }
   &:first-child, &:nth-child(2){
     th{
-      border-left: 1px solid var(--dark-color);
-      border-bottom: 1px solid var(--dark-color);
+      border-left: 1px solid var(--surface-line);
+      border-bottom: 1px solid var(--surface-line);
     }
   }
 }

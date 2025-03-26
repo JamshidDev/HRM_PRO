@@ -8,10 +8,12 @@ export const useTimesheetStore = defineStore('timesheetStore', {
         loading:false,
         saveLoading:false,
         deleteLoading:false,
+        closeLoading: false,
         visible:false,
         visibleType:true,
         elementId:null,
         visibleLoading:false,
+        warningVisible: false,
         totalItems:0,
         allPermissionList:[],
         structureCheck:[],
@@ -70,7 +72,15 @@ export const useTimesheetStore = defineStore('timesheetStore', {
                 this.saveLoading = false
             })
         },
-
+        _closeTimesheet(){
+            this.saveLoading = true
+            $ApiService.timesheetService._accept({data: {active: false}, id: this.elementId}).then((res)=>{
+                this.warningVisible = false
+                this._index()
+            }).finally(()=>{
+                this.saveLoading = false
+            })
+        },
         openVisible(data){
             this.visible = data
         },
