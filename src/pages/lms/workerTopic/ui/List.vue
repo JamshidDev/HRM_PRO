@@ -107,6 +107,7 @@ onMounted(()=>{
           <n-tabs animated type="line">
             <n-tab-pane name="exams" :tab="$t('examPage.exams')">
               <n-table
+                  v-if="!!lesson.exams.length"
                   :single-line="false"
               >
                 <thead>
@@ -133,10 +134,10 @@ onMounted(()=>{
                   />
                 </tbody>
               </n-table>
+              <NoDataPicture class="!my-0" v-else />
             </n-tab-pane>
             <n-tab-pane name="files" :tab="$t('examPage.resources')">
-<!--                <div class="overflow-x-auto whitespace-nowrap">-->
-                  <div class="grid gap-4 flex-wrap grid-cols-[repeat(auto-fill,minmax(100px,1fr))]">
+                  <div class="grid gap-4 flex-wrap grid-cols-[repeat(auto-fill,minmax(100px,1fr))]" v-if="!!lesson.files.length">
                     <div
                         v-for="(file, idx) in lesson.files"
                         :key="idx"
@@ -158,59 +159,9 @@ onMounted(()=>{
                       </div>
                     </div>
                   </div>
-<!--                </div>-->
+              <NoDataPicture class="!my-0" v-else />
 
             </n-tab-pane>
-<!--            <n-tab-pane name="results" :tab="$t('examPage.attemptHistory')">-->
-<!--              <n-table-->
-<!--                  :single-line="false"-->
-<!--                  size="small"-->
-<!--              >-->
-<!--                <thead>-->
-<!--                <tr>-->
-<!--                  <th>{{$t('content.number')}}</th>-->
-<!--                  <th>{{$t('examPage.startTime')}}</th>-->
-<!--                  <th>{{$t('examPage.endTime')}}</th>-->
-<!--                  <th>{{$t('examPage.result')}}</th>-->
-<!--                  <th class="max-w-[150px] !text-center w-[150px]">{{$t('content.action')}}</th>-->
-<!--                </tr>-->
-<!--                </thead>-->
-<!--                <tbody>-->
-<!--                <template-->
-<!--                  v-for="(exam, idx) in lesson.exams"-->
-<!--                  :key="idx"-->
-<!--                >-->
-<!--                  <tr v-for="(item, idx) in exam.results" :key="idx">-->
-<!--                    <td>{{idx+1}}</td>-->
-<!--                    <td>{{Utils.timeWithMonth(item.created)}}</td>-->
-<!--                    <td>{{item.ended && Utils.timeWithMonth(item.ended)}}</td>-->
-<!--                    <td>{{item?.result && item?.result}}</td>-->
-<!--                    <td class="!text-center">-->
-<!--                      <n-button size="small" tertiary type="info" v-if="item.result">-->
-<!--                        {{$t('content.view')}}-->
-<!--                        <template #icon>-->
-<!--                          <n-icon :component="Eye12Filled" />-->
-<!--                        </template>-->
-<!--                      </n-button>-->
-<!--                      <n-button-->
-<!--                          size="small"-->
-<!--                          tertiary-->
-<!--                          type="warning"-->
-<!--                          v-else-->
-<!--                          :disabled="!store.exam_storage?.[item.id]"-->
-<!--                          @click="goPush(item)"-->
-<!--                      >-->
-<!--                        {{$t('content.continue')}}-->
-<!--                        <template #icon>-->
-<!--                          <n-icon :component="ArrowSyncCheckmark24Filled" />-->
-<!--                        </template>-->
-<!--                      </n-button>-->
-<!--                    </td>-->
-<!--                  </tr>-->
-<!--                </template>-->
-<!--                </tbody>-->
-<!--              </n-table>-->
-<!--            </n-tab-pane>-->
           </n-tabs>
         </div>
       </template>

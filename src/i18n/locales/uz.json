@@ -974,7 +974,9 @@
     "removeAnswer": "Javobni olib tashlash",
     "notAnswered": "{n}ta savolga javob bermagansiz!!!",
     "endWarning": "Imtihonni yakunlashga ishonchingiz komilmi?",
-    "leftAttempts": "Qolgan urunishlar"
+    "leftAttempts": "Qolgan urunishlar",
+    "welcomeTitle": "Xush kelibsiz!",
+    "welcomeDesc": "Barcha temir yo'l xodimlari sertifikatlashtirish bo'limida o'z mutaxassisliklari bo'yicha test imtihonlarini topshiradilar."
   },
   "questionPage": {
     "form": {

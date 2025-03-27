@@ -1,5 +1,4 @@
 <script setup>
-
 import {UIDrawer, UIPageFilter} from "@/components/index.js";
 import {useTopicExamStore} from "@/store/modules/index.js";
 import Form from "./ui/Form.vue";
@@ -32,6 +31,7 @@ onMounted(() => {
 <template>
   <UIPageFilter
       v-model:search="store.params.search"
+      :show-filter-button="false"
       @onAdd="onAdd"
       @onSearch="onSearch"
       :show-search-input="false"

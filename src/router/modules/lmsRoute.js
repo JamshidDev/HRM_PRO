@@ -17,8 +17,13 @@ export default [
         path:Utils.routeLmsPathMaker(AppPaths.Topic),
         name:AppPaths.Topic.substring(1),
         component:()=>TopicPage,
-        children:[],
+        children:[{
+            path:':id',
+            component:TopicDetailPage,
+            children:[],
+        }],
     },
+
     {
         path:Utils.routeLmsPathMaker(AppPaths.Category),
         name:AppPaths.Category.substring(1),
@@ -43,11 +48,7 @@ export default [
         name: "edit_question",
         children:[],
     },
-    {
-        path:Utils.routeLmsPathMaker(AppPaths.Topic+'/:id'),
-        component:TopicDetailPage,
-        children:[],
-    },
+
     {
         path:Utils.routeLmsPathMaker(AppPaths.Exam),
         component:()=>WorkerTopicPage,

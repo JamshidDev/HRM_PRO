@@ -3,6 +3,7 @@ import List from "./ui/List.vue"
 import {useExamAttemptStore, useWorkerExamStore} from "@/store/modules/index.js";
 import {Warning20Filled} from "@vicons/fluent";
 import {UIModal, UIPageContent} from "@/components/index.js";
+import stars from "@/assets/images/svg/stars.svg";
 
 const store = useWorkerExamStore()
 const examStore = useExamAttemptStore()
@@ -23,30 +24,71 @@ onMounted(()=>{
 
 <template>
   <div class="mx-2 mt-4 mb-4 rounded">
-<!--    <UIPageFilter-->
-<!--        :show-search-input="false"-->
-<!--        v-model:search="store.params.search"-->
-<!--        @onSearch="onSearch"-->
-<!--        @onAdd="onAdd"-->
-<!--    />-->
+    <n-grid cols="12" class="py-2">
+      <n-grid-item class="min-h-[180px] welcome rounded-lg" :span="12">
+        <img alt="stars" class="stars first" :src="stars" />
+        <img alt="stars" class="stars middle" :src="stars" />
+        <img alt="stars" class="stars last" :src="stars" />
+        <div class="text">
+          <h1 class="text-white mb-4">{{ $t('solveExamPage.welcomeTitle') }}</h1>
+          <p class="text-white">{{ $t('solveExamPage.welcomeDesc') }}</p>
+        </div>
+      </n-grid-item>
+    </n-grid>
     <List/>
-<!--    <UIModal-->
-<!--        :width="500"-->
-<!--        v-model:visible="examStore.continueVisible"-->
-<!--        :title="$t('content.warning')"-->
-<!--    >-->
-<!--      <n-alert type="warning">-->
-<!--        {{$t('solveExamPage.alreadyStarted')}}-->
-<!--      </n-alert>-->
-<!--      <div class="flex items-center gap-3 justify-end mt-3">-->
-<!--        <n-button type="primary">{{$t('content.yes')}}</n-button>-->
-<!--        <n-button type="warning">-->
-<!--          {{$t('content.restart')}}-->
-<!--          <template #icon>-->
-<!--            <n-icon :component="Warning20Filled" />-->
-<!--          </template>-->
-<!--        </n-button>-->
-<!--      </div>-->
-<!--    </UIModal>-->
   </div>
 </template>
+
+<style lang="scss" scoped>
+.welcome {
+  background-color: #5897EF;
+  background-repeat: no-repeat;
+  background-image: url("@/assets/images/svg/attestation.svg");
+
+  @media (max-width: 850px) {
+    background-image: none;
+  }
+
+  background-position: center right;
+  background-size: auto 100%;
+  position: relative;
+  padding: 0;
+  overflow: hidden;
+}
+
+.stars {
+  mix-blend-mode: color-dodge;
+  user-select: none;
+  pointer-events: none;
+  position: absolute;
+  height: 100%;
+
+  &.first {
+    left: 0;
+  }
+
+  &.middle {
+    right: 25%;
+    bottom: -30%;
+  }
+
+  &.last {
+    right: 0;
+  }
+}
+
+.text {
+  max-width: 600px;
+  padding: 40px 30px;
+
+  h1 {
+    font-size: 2rem;
+    font-weight: 600;
+  }
+
+  p {
+    font-size: 1rem;
+    font-weight: 500;
+  }
+}
+</style>
