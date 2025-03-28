@@ -216,5 +216,23 @@ input:-webkit-autofill {
 .pswp__img{
   height: auto !important;
 }
+.ui__user-group{
+  cursor: pointer;
+  transform: scale(1);
+  position: relative;
+  &:hover{
+    z-index: 999 !important;
+    transform: scale(1.2);
+  }
+  &> img{
+    aspect-ratio: auto 3/4;
+    width: 36px !important;
+    height: 42px !important;
+  }
+}
+.has-more-avatar{
+  background-color: var(--primary-color) !important;
+  cursor: pointer;
+}
 
 

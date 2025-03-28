@@ -13,6 +13,7 @@ import VacationForm_45 from "@/pages/docFlow/document/command/ui/VacationForm_45
 import VacationForm_49 from "@/pages/docFlow/document/command/ui/VacationForm49.vue"
 import VacationForm_48 from "@/pages/docFlow/document/command/ui/VacationForm_48.vue"
 import VacationForm_55 from "@/pages/docFlow/document/command/ui/VacationForm_55.vue"
+import { useDebounceFn } from '@vueuse/core'
 
 
 
@@ -173,7 +174,8 @@ const onChangeStructure = (v)=>{
   if(v.length>0){
     componentStore.workerList = []
     store.workers = []
-    componentStore._workers({id: v[0].id})
+    componentStore.workerParams.organization_id= v[0].id
+    componentStore._workers()
   }
 }
 const onChangeCommandType = ()=>{
@@ -283,6 +285,25 @@ const fillVacation55 = ()=>{
   })
 }
 
+const onScroll = (e)=>{
+  const currentTarget = e.currentTarget;
+  if(currentTarget.scrollTop + currentTarget.offsetHeight >= currentTarget.scrollHeight && !componentStore.workerLoading){
+    componentStore.workerParams.page +=1
+    componentStore._workers(true)
+  }
+}
+
+
+
+const onSearch = (v)=>{
+  const debouncedFn = useDebounceFn(() => {
+    componentStore._workers()
+  }, 1000, { maxWait: 5000 })
+  componentStore.workerParams.page = 1
+  componentStore.workerParams.search = v
+  debouncedFn()
+}
+
 watchEffect(()=>{
   if(store.payload.director_id){
     store.payload.confirmations = store.payload.confirmations.filter(v=>v !==store.payload.director_id)
@@ -378,6 +399,7 @@ onMounted(()=>{
                     :render-tag="workerRenderValue"
                     @update:value="onChangeWorker"
                     :loading="componentStore.workerLoading"
+                    @search="onSearch"
                 />
               </n-form-item>
             </template>
@@ -396,6 +418,10 @@ onMounted(()=>{
                     :render-tag="workerRenderValue"
                     @update:value="onChangeWorkers"
                     :loading="componentStore.workerLoading"
+                    @scroll="componentStore._onScrollWorker"
+                    :filter="()=>true"
+                    @search="componentStore._onSearchWorker"
+                    :reset-menu-on-options-change="false"
                 />
               </n-form-item>
             </template>

@@ -2,6 +2,11 @@ import {defineStore} from "pinia";
 import i18n from "@/i18n/index.js"
 const {t} = i18n.global
 import Utils from "@/utils/Utils.js"
+import {useDebounceFn} from "@vueuse/core"
+
+
+
+
 export const useComponentStore = defineStore('componentStore', {
     state:()=>({
         organizationLevelList:[],
@@ -124,6 +129,14 @@ export const useComponentStore = defineStore('componentStore', {
 
         workerList:[],
         workerLoading:false,
+        workerParams:{
+            page:1,
+            per_page:30,
+            search:null,
+            organization_id:null,
+            organizations:null,
+        },
+        totalWorker:0,
 
         adContractTypes:[],
         adContractTypeLoading:false,
@@ -153,6 +166,11 @@ export const useComponentStore = defineStore('componentStore', {
 
     }),
     actions:{
+        debounceWithCallback(){
+            useDebounceFn(() => {
+                this._workers()
+            }, 1000, { maxWait: 5000 })
+        },
         _organizationLevel(){
             this.organizationLevelLoading= true
             $ApiService.organizationService._level().then((res)=>{
@@ -239,7 +257,6 @@ export const useComponentStore = defineStore('componentStore', {
             this.departmentLoading= true
             let params = {...this.params}
             params.organization_id = id
-            console.log(params)
             $ApiService.componentService._departments({params}).then((res)=>{
                 this.departmentList = res.data.data
             }).finally(()=>{
@@ -357,10 +374,13 @@ export const useComponentStore = defineStore('componentStore', {
                 this.commandTypeLoading = false
             })
         },
-        _workers({id, org_ids} = {}){
+        _workers(infinity=false){
             this.workerLoading = true
-            $ApiService.workerService._index({params:{page:1, per_page: 10000, organization_id:id, organizations: org_ids}}).then((res)=>{
-                this.workerList = res.data.data.data.map((v)=>({
+            let params ={
+                ...this.workerParams,
+            }
+            $ApiService.workerService._search({params}).then((res)=>{
+                let data = res.data.data.data.map((v)=>({
                     ...v,
                     name:v.worker.last_name + ' '+v.worker.first_name+' '+v.worker.middle_name,
                     position:v.position?.name || v?.post_name,
@@ -368,10 +388,32 @@ export const useComponentStore = defineStore('componentStore', {
                     typeId:v.contract?.type?.id,
                     photo: v.worker?.photo
                 }))
+                this.totalWorker =res.data.data.total
+                if(infinity){
+                    this.workerList =[...this.workerList, ...data]
+                }else{
+                    this.workerList = data
+                }
+
             }).finally(()=>{
                 this.workerLoading = false
             })
         },
+
+        _onSearchWorker(v){
+            this.workerParams.page = 1
+            this.workerParams.search = v
+            this.debounceWithCallback()
+        },
+        _onScrollWorker(e){
+            const currentTarget = e.currentTarget;
+            if(currentTarget.scrollTop + currentTarget.offsetHeight >= currentTarget.scrollHeight && !this.workerLoading){
+                this.workerParams.page +=1
+                this._workers(true)
+            }
+        },
+
+
         _adContractType(id){
             this.adContractTypeLoading = true
             $ApiService.componentService._contractAddition({params:{contract_type:id}}).then((res)=>{

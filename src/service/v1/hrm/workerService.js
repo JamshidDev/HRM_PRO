@@ -6,6 +6,9 @@ const _checkWorker =async (payload)=>{
 const _index =async (payload)=>{
     return await axios.get(`/v1/hr/worker-positions`, {params:payload.params})
 }
+const _search =async (payload)=>{
+    return await axios.get(`/v1/hr/search-workers`, {params:payload.params})
+}
 
 const _show =async (payload)=>{
     return await axios.get(`/v1/hr/worker-positions/${payload.id}/edit`, {params:payload.params})
@@ -32,4 +35,5 @@ export default {
     _create,
     _update,
     _preview,
+    _search,
 }

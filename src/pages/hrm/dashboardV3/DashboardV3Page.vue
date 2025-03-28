@@ -239,7 +239,7 @@ onMounted(()=>{
             <hr class="w-full h-[1px] text-surface-line">
             <span class="font-semibold text-nowrap">20 478</span>
           </div>
-          <div class="w-full h-[400px] relative z-[2]">
+          <div class="w-full h-[360px] relative z-[2]">
             <v-chart :option="vacationOption" />
           </div>
         </div>

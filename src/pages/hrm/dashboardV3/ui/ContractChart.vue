@@ -150,18 +150,6 @@ const totalCount = computed(()=>{
     <div class="w-full h-[300px] relative z-[2] mb-4">
       <v-chart :option="contractOption" />
     </div>
-    <div class="flex flex-wrap gap-4">
-      <template v-for="(item, index) in store.dashboard.contractTypes">
-        <div class="flex mb-2 gap-2 items-center">
-          <div
-              :style="{background:`${colors[index]}`}"
-              class="w-[30px] h-[18px] rounded-md shadow-sm"
-          ></div>
-          <span class="text-textColor1">{{item.type}}</span>
-        </div>
-      </template>
-    </div>
-
 
   </div>
 </template>
