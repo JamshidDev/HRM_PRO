@@ -5,5 +5,6 @@ export const  useAppSetting = {
     defaultThemeKey:'light',
     tokenKey:'app-token',
     noAvailableImage: "/no-picture.jpg",
-    appLogoUrl:'/logo.png'
+    appLogoUrl:'/logo.png',
+    datePicketFormat:'dd.MM.yyyy'
 }

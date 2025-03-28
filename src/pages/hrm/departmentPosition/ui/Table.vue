@@ -61,12 +61,14 @@ const onSelectEv = (v)=>{
           <th class="!text-center min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
           <th class="min-w-[200px]">{{$t('departmentPositionPage.table.position')}}</th>
           <th class="min-w-[120px] w-[300px]">{{$t('departmentPositionPage.table.department')}}</th>
-          <th class="min-w-[60px] w-[60px]">{{$t('departmentPositionPage.table.group')}}</th>
-          <th class="min-w-[60px] w-[60px]">{{$t('departmentPositionPage.table.rank')}}</th>
-          <th class="min-w-[60px] w-[60px]">{{$t('departmentPositionPage.table.rate')}}</th>
-          <th class="min-w-[60px] w-[60px]">{{$t('departmentPositionPage.table.salary')}}</th>
+          <th class="min-w-[120px] w-[300px]">{{$t('departmentPositionPage.table.organization')}}</th>
+
           <th class="min-w-[120px] w-[120px]">{{$t('departmentPositionPage.table.education')}}</th>
+          <th class="min-w-[40px] w-[40px]">{{$t('departmentPositionPage.table.group')}}</th>
+          <th class="min-w-[40px] w-[40px]">{{$t('departmentPositionPage.table.rank')}}</th>
+          <th class="min-w-[40px] w-[40px]">{{$t('departmentPositionPage.table.rate')}}</th>
           <th class="min-w-[60px] w-[60px]">{{$t('departmentPositionPage.table.experience')}}</th>
+          <th class="min-w-[60px] w-[100px]">{{$t('departmentPositionPage.table.salary')}}</th>
           <th class="min-w-[40px] w-[40px]"></th>
         </tr>
         </thead>
@@ -75,16 +77,21 @@ const onSelectEv = (v)=>{
           <td><span class="text-center text-[12px] text-gray-600 block">{{ (store.params.page - 1) * store.params.per_page + idx + 1 }}</span></td>
           <td>{{item.position?.name}}</td>
           <td>{{item.department?.name}}</td>
-          <td><div class="w-full flex justify-center "><n-tag round>{{item.group?.name}}</n-tag></div></td>
-          <td>
-            <div class="w-full flex justify-center "><n-tag round>{{item.rank?.name}}</n-tag></div>
-          </td>
-          <td>
-            <div class="w-full flex justify-center "><n-tag round>{{item.rate}}</n-tag></div>
-          </td>
-          <td>{{item.salary}} {{$t('content.sum')}}</td>
+          <td>{{item.organization?.name}}</td>
+
           <td>{{item.education?.name}}</td>
-          <td>{{item.experience}} {{$t('content.month')}}</td>
+          <td><div class="w-full flex justify-center "><n-button size="small" circle>{{item.group?.name}}</n-button></div></td>
+          <td><div class="w-full flex justify-center "><n-button size="small" circle>{{item.rank?.name}}</n-button></div></td>
+          <td><div class="w-full flex justify-center "><n-button size="small" circle>{{item.rate}}</n-button></div></td>
+          <td>
+          <div class="w-full flex justify-center ">
+          <n-button v-if="item.experience" circle size="small">{{item.experience}} </n-button>
+        </div>
+
+          </td>
+          <td>
+            {{Utils.formatNumberToMoney(item.salary)}}
+          </td>
           <td>
             <UIMenuButton
                 :data="item"

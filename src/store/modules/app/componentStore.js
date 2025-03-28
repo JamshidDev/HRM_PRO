@@ -265,7 +265,7 @@ export const useComponentStore = defineStore('componentStore', {
                         firstName:data?.first_name,
                         middleName:data?.middle_name,
                         position:`${t('workerPage.checkWorker.born')} ${Utils.timeOnlyDate(data?.birthday)}`,
-                        photo:data.photo,
+                        photo:data?.photo,
                         pin:data.id.toString()
                     }
                 }
@@ -277,7 +277,7 @@ export const useComponentStore = defineStore('componentStore', {
         },
         _regions(){
             this.regionLoading = true
-            $ApiService.regionService._index(this.params).then((res)=>{
+            $ApiService.regionService._index({params:this.params}).then((res)=>{
                 this.regionList = res.data.data.data
             }).finally(()=>{
                 this.regionLoading = false

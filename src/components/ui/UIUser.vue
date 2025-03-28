@@ -60,7 +60,7 @@ const userSrc = computed(()=> {
 </script>
 
 <template>
-<div class="ui__user-component flex items-center gap-x-2 cursor-pointer" :class="short? 'w-[200px]' : 'w-full'">
+<div v-bind="$attrs" class="ui__user-component flex items-center gap-x-2 cursor-pointer" :class="short? 'w-[260px]' : 'w-full'">
   <n-avatar
       @click="onOpen"
       lazy

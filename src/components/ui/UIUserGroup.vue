@@ -7,7 +7,11 @@ const props = defineProps({
   },
   max:{
     type: Number,
-    default: 4,
+    default: 3,
+  },
+  hasMore:{
+    type: Number,
+    default: 0,
   }
 })
 </script>
@@ -24,7 +28,7 @@ const props = defineProps({
       </n-tooltip>
     </template>
     <template #rest="{ options: restOptions, rest }">
-      <n-avatar>+{{ rest }}</n-avatar>
+      <n-avatar>+{{hasMore}}</n-avatar>
     </template>
   </n-avatar-group>
 </div>

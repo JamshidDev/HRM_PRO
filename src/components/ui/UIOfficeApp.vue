@@ -38,8 +38,8 @@ const openEv = (document_id, model)=>{
   onlyOfficeStore.config.document.url = pdfViewerStore.docxUrl
   onlyOfficeStore.config.document.title = pdfViewerStore.document.document.file_name
   onlyOfficeStore.config.editorConfig.user = {
-    name:`${accountStore.account?.last_name} ${accountStore.account?.first_name}`,
-    id:accountStore.account.id,
+    name:`${accountStore.account?.worker?.last_name} ${accountStore.account?.worker?.first_name}`,
+    id:accountStore.account.worker.id,
   }
   onlyOfficeStore.config.document.key = uuidv4()
   onlyOfficeStore.user_uuid = accountStore.account?.uuid

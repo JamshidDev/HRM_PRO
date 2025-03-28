@@ -1,6 +1,7 @@
 <script setup>
 import {CloudArrowUp24Regular} from "@vicons/fluent"
 import {useCreateWorkerStore} from "@/store/modules/index.js"
+import {useAppSetting} from "@/utils/index.js"
 const store = useCreateWorkerStore()
 const inputFileRef = ref(null)
 
@@ -38,6 +39,7 @@ const onUpload = async (v)=>{
           v-model:value="store.payload.from_date"
           type="date"
           :placeholder="$t(`createWorkerPage.form.from_date`)"
+          :format="useAppSetting.datePicketFormat"
       />
     </n-form-item>
     <n-form-item
@@ -49,6 +51,7 @@ const onUpload = async (v)=>{
           v-model:value="store.payload.to_date"
           type="date"
           :placeholder="$t(`createWorkerPage.form.to_date`)"
+          :format="useAppSetting.datePicketFormat"
       />
     </n-form-item>
     <n-form-item

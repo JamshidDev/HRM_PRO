@@ -46,6 +46,7 @@ export * from './hrm/timesheetDepartmentStore.js'
 export * from './hrm/timesheetStore.js'
 export * from './hrm/timesheetWorkerStore.js'
 export * from './hrm/timesheetConfirmationStore.js'
+export * from './hrm/dashboardStore.js'
 
 
 export * from "./docFlow/contractStore.js"
