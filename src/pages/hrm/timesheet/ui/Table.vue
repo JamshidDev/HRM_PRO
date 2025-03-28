@@ -5,9 +5,10 @@ import {
   useTimesheetStore,
   useTimesheetWorkerStore
 } from "@/store/modules/index.js"
-import {Checkmark16Filled} from "@vicons/fluent";
+import {Checkmark16Filled, CalendarCheckmark28Filled, CheckmarkCircle24Filled} from "@vicons/fluent";
 
 import dayjs from "dayjs";
+import Utils from "@/utils/Utils.js";
 
 const store = useTimesheetStore()
 const timesheetWorkerStore = useTimesheetWorkerStore()
@@ -20,11 +21,11 @@ const changePage = (v)=>{
 }
 
 const onSelect = (v)=>{
-  if(v.key === 'view'){
+  if(v.key ===  Utils.ActionTypes.view){
     timesheetWorkerStore.elementId = v.data.id
     timesheetWorkerStore.visible = true
     timesheetWorkerStore._index()
-  }else if(v.key === 'edit'){
+  }else if(v.key === Utils.ActionTypes.edit){
     console.log(v.data)
     store.elementId = v.data.id
     store.payload.department_id = v.data.department?.id
@@ -34,9 +35,12 @@ const onSelect = (v)=>{
     store.visibleType = false
     store.visible = true
     console.log(store.payload)
-  }else if(v.key==='verifiers'){
+  }else if(v.key===Utils.ActionTypes.verifier){
     timesheetConfirmStore.elementId = v.data.id
     timesheetConfirmStore.visible = true
+  }else if(v.key===Utils.ActionTypes.finish){
+    store.warningVisible = true
+    store.elementId = v.data.id
   }
 }
 
@@ -55,6 +59,7 @@ const onSelect = (v)=>{
           <th class="!text-center w-[40px] max-w-[40px]">{{$t('content.number')}}</th>
           <th class="!text-center min-w-[500px]">{{$t('timesheetWorkerPage.work_place')}}</th>
           <th class="!text-center">{{$t('content.month')}}</th>
+          <th class="!text-center max-w-[120px] w-[120px]">{{$t('timesheet.status')}}</th>
           <th class="!text-center max-w-[100px] w-[100px]">{{$t('content.status')}}</th>
           <th class="max-w-[40px] w-[40px]"></th>
         </tr>
@@ -64,6 +69,14 @@ const onSelect = (v)=>{
           <td class="w-[20px] max-w-[20px]"><span class="text-center text-[12px] text-gray-600 block">{{ (store.params.page - 1) * store.params.per_page + idx + 1 }}</span></td>
           <td>{{item.department?.name || item.work_place?.name}}</td>
           <td class="!text-center">{{dayjs().year(item.year).month(item.month-1).format('YYYY MMMM')}}</td>
+          <td class="!text-center max-w-[120px] w-[120px]">
+            <n-button v-if="!!item?.status" type='primary' size="tiny" dashed>
+              <template #icon>
+                <n-icon :component="CheckmarkCircle24Filled"/>
+              </template>
+              {{$t('timesheet.finished')}}
+            </n-button>
+          </td>
           <td class="!text-center"><UIStatus :status="item.confirmation"/></td>
           <td>
             <UIMenuButton
@@ -72,19 +85,30 @@ const onSelect = (v)=>{
                 @select-ev="onSelect"
                 show-edit
                 :show-delete="false"
-                :extra-options="[{
-                  label: $t('timesheetPage.verifiers'),
-                  key: 'verifiers',
-                  icon: Checkmark16Filled,
-                  visible:true,
-                }]"
+                :extra-options="(()=>{
+                    let options =[{
+                      label: $t('timesheetPage.verifiers'),
+                      key: Utils.ActionTypes.verifier,
+                      icon: Checkmark16Filled,
+                      visible:true,
+                    }]
+                    if(!item.status){
+                      options.push({
+                        label: $t('content.finish'),
+                        key: Utils.ActionTypes.finish,
+                        icon: CalendarCheckmark28Filled,
+                        visible:true,
+                      })
+                    }
+                    return options
+                })()"
             />
           </td>
         </tr>
         </tbody>
       </n-table>
       <UIPagination
-          v-if="store.totalItems>store.params.per_page"
+         
           :page="store.params.page"
           :per_page="store.params.size"
           :total="store.totalItems"

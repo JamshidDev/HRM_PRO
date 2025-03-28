@@ -1,5 +1,5 @@
 <script setup>
-import { UIPageContent, UIPageFilter, UIDrawer} from "@/components/index.js"
+import {UIPageContent, UIPageFilter, UIDrawer, UIDConfirm} from "@/components/index.js"
 import Table from "./ui/Table.vue"
 import Form from "./ui/Form.vue"
 import Timesheet from "./ui/Timesheet.vue"
@@ -10,6 +10,7 @@ import {
   useTimesheetStore,
   useTimesheetWorkerStore
 } from "@/store/modules";
+import {Copy20Regular} from "@vicons/fluent";
 
 const store = useTimesheetStore()
 const timesheetDepartmentStore = useTimesheetWorkerStore()
@@ -40,7 +41,6 @@ const onAdd = ()=>{
     <UIPageFilter
         v-model:search="store.params.search"
         @onSearch="onSearch"
-        :show-filter-button="false"
         @on-add="onAdd"
     />
     <Table/>
@@ -64,6 +64,33 @@ const onAdd = ()=>{
         <ConfirmationForm/>
       </template>
     </UIDrawer>
+    <UIDConfirm v-model:visible="store.warningVisible">
+      <template #icon> <span></span></template>
+      <div class="text-center pt-4">
+        <p class="text-xl text-warning">
+          {{$t('timesheetPage.closeWarning.title')}}
+        </p>
+        <p class="text-sm text-secondary">
+          {{$t('timesheetPage.closeWarning.desc')}}
+        </p>
+      </div>
+      <template #action>
+        <div class="grid grid-cols-2 gap-2 select-none">
+          <n-button
+              @click="store.warningVisible=false"
+              secondary
+              type="error">
+            {{$t('content.cancel')}}</n-button>
+          <n-button
+              :loading="store.saveLoading"
+              @click="store._closeTimesheet"
+              secondary
+              type="primary">
+            {{$t('content.finish')}}
+          </n-button>
+        </div>
+      </template>
+    </UIDConfirm>
     <n-drawer
         height="100vh"
         v-model:show="timesheetDepartmentStore.visible"

@@ -57,14 +57,6 @@ const onSelectEv = (v)=>{
           <td>
             {{item.work_place?.name || item.department?.name}}
           </td>
-<!--          <td>{{item?.department?.name}}</td>-->
-<!--          <td>{{item?.position?.name}}</td>-->
-<!--          <td><div class="flex justify-center">{{item?.position_date}}</div></td>-->
-<!--          <td><div class="flex justify-center">{{item?.worker?.birthday}}</div></td>-->
-<!--          <td><div class="flex justify-center "><n-button circle>{{item?.group}}</n-button></div></td>-->
-<!--          <td><div class="flex justify-center "><n-button circle>{{item?.rank}}</n-button></div></td>-->
-<!--          <td><div class="flex justify-center "><n-button circle>{{item?.rate}}</n-button></div></td>-->
-
           <td>
             <UIMenuButton
                 :loading="store.deleteLoading && store.elementId === item.id"
@@ -76,7 +68,6 @@ const onSelectEv = (v)=>{
         </tbody>
       </n-table>
       <UIPagination
-          v-if="store.totalItems > store.params.per_page"
           :page="store.params.page"
           :per_page="store.params.size"
           :total="store.totalItems"
