@@ -34,7 +34,7 @@ onMounted(() => {
       :show-filter-button="false"
       @onAdd="onAdd"
       @onSearch="onSearch"
-      :show-search-input="false"
+      class="mt-5"
   />
   <Table/>
   <UIDrawer

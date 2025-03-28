@@ -1,8 +1,10 @@
 <script setup>
 import List from "./ui/List.vue"
+import TopicDetail from './ui/TopicDetail.vue'
 import {useExamAttemptStore, useWorkerExamStore} from "@/store/modules/index.js";
 import {Warning20Filled} from "@vicons/fluent";
 import {UIModal, UIPageContent} from "@/components/index.js";
+
 import stars from "@/assets/images/svg/stars.svg";
 
 const store = useWorkerExamStore()
@@ -23,9 +25,9 @@ onMounted(()=>{
 </script>
 
 <template>
-  <div class="mx-2 mt-4 mb-4 rounded">
-    <n-grid cols="12" class="py-2">
-      <n-grid-item class="min-h-[180px] welcome rounded-lg" :span="12">
+  <div class="mx-2 mt-4 mb-4 rounded flex flex-col" style="min-height:calc(100vh - 100px);height:calc(100vh - 100px);">
+    <n-grid cols="12" >
+      <n-grid-item class="min-h-[180px] welcome rounded-lg" :span="8">
         <img alt="stars" class="stars first" :src="stars" />
         <img alt="stars" class="stars middle" :src="stars" />
         <img alt="stars" class="stars last" :src="stars" />
@@ -34,21 +36,31 @@ onMounted(()=>{
           <p class="text-white">{{ $t('solveExamPage.welcomeDesc') }}</p>
         </div>
       </n-grid-item>
+      <n-gi :span="4" />
     </n-grid>
-    <List/>
+    <div class="grow basis-auto overflow-hidden flex gap-4">
+      <div class="grow basis-auto">
+        <List/>
+      </div>
+      <div :style="{'width': store?.elementId && store.list.find(i=>i.id===store.elementId) ? '50%' : '0'}"
+           class="transition-all">
+        <TopicDetail />
+      </div>
+
+    </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
-.welcome {
-  background-color: #5897EF;
-  background-repeat: no-repeat;
-  background-image: url("@/assets/images/svg/attestation.svg");
-
-  @media (max-width: 850px) {
+@media (max-width: 850px) {
+  .welcome{
     background-image: none;
   }
-
+}
+.welcome {
+  background-color: #156eea;
+  background-repeat: no-repeat;
+  background-image: url("@/assets/images/svg/attestation.svg");
   background-position: center right;
   background-size: auto 100%;
   position: relative;

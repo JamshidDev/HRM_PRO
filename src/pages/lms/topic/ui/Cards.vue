@@ -38,12 +38,16 @@ const goPush = (v)=>{
   <n-spin :show="store.loading" class="h-full" style="max-height: calc(100vh - 170px); height: calc(100vh - 170px);">
     <NoDataPicture v-if="store.list.length===0 && !store.loading" />
     <div v-else-if="store.list.length>0 && !store.loading" class="flex flex-col h-full pt-5">
+
       <div class="overflow-y-auto">
         <n-grid x-gap="12"  y-gap="12"  cols="1 400:2 900:3 1200:4 1600:5">
             <n-gi
-                v-for="(item, idx) in store.list" :key="idx"
-                @click="goPush(item)"
-                class="cursor-pointer bg-surface-section border rounded-lg border-surface-line  relative overflow-hidden p-2 group h-[100px] min-h-[100px]">
+              v-for="(item, idx) in store.list" :key="idx"
+              @click="goPush(item)"
+              class="cursor-pointer bg-surface-section  border rounded-lg border-surface-line  relative overflow-hidden p-2 group h-[100px] min-h-[100px] transition-all hover:drop-shadow-sm"
+              :class="{'active-card': $route.params?.id==item.id}"
+            >
+
                 <n-tooltip trigger="hover">
                   <template #trigger>
                     <div class="text-lg font-medium text-gray-600 line-clamp-1">
@@ -111,3 +115,9 @@ const goPush = (v)=>{
   </n-spin>
 
 </template>
+<style scoped lang="scss">
+.active-card{
+  background-color: rgba(0,0,0, 0.01);
+  color: white !important;
+}
+</style>
