@@ -55,6 +55,7 @@ export const useContractStore = defineStore('contractStore', {
             organizations:[],
             confirmation:null,
             status:null,
+            created:null,
         },
         tabList:[
             {
@@ -84,6 +85,7 @@ export const useContractStore = defineStore('contractStore', {
             const params = {
                 ...this.params,
                 organizations:this.params.organizations.map(v=>v.id).toString(),
+                created:Utils.timeToZone(this.params.created),
             }
             $ApiService.contractService._index({params}).then((res)=>{
                 this.list = res.data.data.data

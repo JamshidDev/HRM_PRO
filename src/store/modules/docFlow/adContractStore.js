@@ -43,12 +43,20 @@ export const useAdContractStore = defineStore('adContractStore', {
             page:1,
             per_page:10,
             search:null,
+            organizations:[],
+            created:null,
+            confirmation:null,
         },
     }),
     actions:{
         _index(){
             this.loading= true
-            $ApiService.adContractService._index({params:this.params}).then((res)=>{
+            const params = {
+                ...this.params,
+                organizations:this.params.organizations.map(v=>v.id).toString(),
+                created:Utils.timeToZone(this.params.created),
+            }
+            $ApiService.adContractService._index({params}).then((res)=>{
                 this.list = res.data.data.data
                 this.totalItems = res.data.data.total
             }).finally(()=>{
@@ -56,7 +64,6 @@ export const useAdContractStore = defineStore('adContractStore', {
             })
         },
         _create(callBack){
-            const compStore = useComponentStore()
             this.saveLoading = true
             let data = {
                 ...this.payload,

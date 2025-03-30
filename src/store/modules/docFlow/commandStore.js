@@ -70,7 +70,11 @@ export const useCommandStore = defineStore('commandStore', {
     actions:{
         _index(){
             this.loading= true
-            $ApiService.commandService._index({params:this.params}).then((res)=>{
+            const params = {
+                ...this.params,
+                created:Utils.timeToZone(this.params.created),
+            }
+            $ApiService.commandService._index({params}).then((res)=>{
                 this.list = res.data.data.data
                 this.totalItems = res.data.data.total
             }).finally(()=>{
