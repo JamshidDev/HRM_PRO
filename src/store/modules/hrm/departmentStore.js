@@ -1,5 +1,6 @@
 import {defineStore} from "pinia";
 import i18n from "@/i18n/index.js"
+import Utils from "@/utils/Utils.js"
 const {t} = i18n.global
 export const useDepartmentStore = defineStore('departmentStore', {
     state:()=>({
@@ -20,6 +21,9 @@ export const useDepartmentStore = defineStore('departmentStore', {
             page:1,
             per_page:10,
             search:null,
+            organizations:[],
+            level:null,
+
         },
         levelLoading:false,
         levelList:[],
@@ -43,7 +47,11 @@ export const useDepartmentStore = defineStore('departmentStore', {
     actions:{
         _index(){
             this.loading= true
-            $ApiService.departmentService._index({params:this.params}).then((res)=>{
+            const params = {
+                ...this.params,
+                organizations:this.params.organizations.map(v=>v.id).toString(),
+            }
+            $ApiService.departmentService._index({params}).then((res)=>{
                 this.tabDataList[0] = res.data.data.data
                 this.totalItems = res.data.data.total
             }).finally(()=>{

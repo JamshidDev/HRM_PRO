@@ -1,4 +1,4 @@
-<script setup>
+x<script setup>
 import {NoDataPicture, UIPagination} from "@/components/index.js"
 import {useDepartmentStore} from "@/store/modules/index.js"
 import {FlowchartCircle24Regular, Circle48Regular, ChevronRight12Regular} from "@vicons/fluent"
@@ -55,7 +55,9 @@ const onAdd = (v)=>{
 }
 
 const changePage = (v)=>{
-  emits('onChangePage', v)
+  store.params.page = v.page
+  store.params.per_page = v.per_page
+  store._index()
 }
 
 const onSelectEv = (v)=>{

@@ -3,6 +3,7 @@ import {UIDrawer, UIPageContent, UIPageFilter} from "@/components/index.js"
 import TabPage from "./ui/TabPage.vue"
 import createForm from "./ui/createForm.vue"
 import {useDepartmentStore, useComponentStore} from "@/store/modules/index.js"
+import Filter from "./ui/Filter.vue"
 
 const store = useDepartmentStore()
 const componentStore = useComponentStore()
@@ -30,12 +31,8 @@ onMounted(()=>{
 
 <template>
 <UIPageContent>
-  <UIPageFilter
-      @onSearch="onSearch"
-      v-model:search="store.params.search"
-      @on-add="onAdd"
-      :show-filter-button="false"
-  />
+  <Filter/>
+
  <TabPage/>
   <UIDrawer
       :visible="store.visible"
