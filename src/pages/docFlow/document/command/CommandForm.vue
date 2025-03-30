@@ -13,7 +13,7 @@ import VacationForm_45 from "@/pages/docFlow/document/command/ui/VacationForm_45
 import VacationForm_49 from "@/pages/docFlow/document/command/ui/VacationForm49.vue"
 import VacationForm_48 from "@/pages/docFlow/document/command/ui/VacationForm_48.vue"
 import VacationForm_55 from "@/pages/docFlow/document/command/ui/VacationForm_55.vue"
-import { useDebounceFn } from '@vueuse/core'
+import {useAppSetting} from "@/utils/index.js"
 
 
 
@@ -100,6 +100,7 @@ const onSubmit = ()=>{
       const mainData = {
         command_date:Utils.timeToZone(store.payload.command_date),
         director_id:store.payload.director_id,
+        organization_id:store.payload.organization_id?.[0]?.id,
         confirmations:store.payload.confirmations,
         command_number:store.payload.command_number,
         command_type:store.payload.command_type,
@@ -285,24 +286,7 @@ const fillVacation55 = ()=>{
   })
 }
 
-const onScroll = (e)=>{
-  const currentTarget = e.currentTarget;
-  if(currentTarget.scrollTop + currentTarget.offsetHeight >= currentTarget.scrollHeight && !componentStore.workerLoading){
-    componentStore.workerParams.page +=1
-    componentStore._workers(true)
-  }
-}
 
-
-
-const onSearch = (v)=>{
-  const debouncedFn = useDebounceFn(() => {
-    componentStore._workers()
-  }, 1000, { maxWait: 5000 })
-  componentStore.workerParams.page = 1
-  componentStore.workerParams.search = v
-  debouncedFn()
-}
 
 watchEffect(()=>{
   if(store.payload.director_id){
@@ -349,6 +333,7 @@ onMounted(()=>{
                   v-model:value="store.payload.command_date"
                   type="date"
                   :placeholder="$t(`content.choose`)"
+                  :format="useAppSetting.datePicketFormat"
               />
             </n-form-item>
           </div>
@@ -399,7 +384,8 @@ onMounted(()=>{
                     :render-tag="workerRenderValue"
                     @update:value="onChangeWorker"
                     :loading="componentStore.workerLoading"
-                    @search="onSearch"
+                    @scroll="componentStore.onScrollWorker"
+                    @search="componentStore.onSearchWorker"
                 />
               </n-form-item>
             </template>
@@ -418,9 +404,9 @@ onMounted(()=>{
                     :render-tag="workerRenderValue"
                     @update:value="onChangeWorkers"
                     :loading="componentStore.workerLoading"
-                    @scroll="componentStore._onScrollWorker"
+                    @scroll="componentStore.onScrollWorker"
                     :filter="()=>true"
-                    @search="componentStore._onSearchWorker"
+                    @search="componentStore.onSearchWorker"
                     :reset-menu-on-options-change="false"
                 />
               </n-form-item>

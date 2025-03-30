@@ -71,6 +71,7 @@ const onPreview =(uuid)=>{
           <td><span class="text-center text-[12px] text-gray-600 block">{{ (store.params.page - 1) * store.params.per_page + idx + 1 }}</span></td>
           <td>
             <UIUser
+                :short="false"
                 @onClickFullName="onPreview(item.uuid)"
                 :data="{
                     photo:item?.worker.photo,

@@ -31,11 +31,12 @@ export const useComponentStore = defineStore('componentStore', {
         departmentList:[],
         depParams:{
             page:1,
-            per_page:1000,
+            per_page:50,
             search:null,
             organizations:null,
         },
         departmentLoading:false,
+        totalDepartment:0,
 
         positionList:[],
         positionLoading:false,
@@ -93,12 +94,19 @@ export const useComponentStore = defineStore('componentStore', {
         scheduleTypes:[],
         workDayTypes:[],
         holidayTypes:[],
+        positionCategory:[],
 
         docExampleList:[],
         docExampleLoading:false,
 
         departmentPositionList:[],
         departmentPositionLoading:false,
+        positionParams:{
+            page:1,
+            per_page:50,
+            search:null,
+        },
+        totalPosition:0,
 
         confirmationList:[],
         confirmationLoading:false,
@@ -131,7 +139,7 @@ export const useComponentStore = defineStore('componentStore', {
         workerLoading:false,
         workerParams:{
             page:1,
-            per_page:30,
+            per_page:50,
             search:null,
             organization_id:null,
             organizations:null,
@@ -163,14 +171,19 @@ export const useComponentStore = defineStore('componentStore', {
         directorList:[],
         directorLoading:false,
 
+        filterPositions:[],
+        filterPositionLoading:false,
+        filterPositionParams:{
+            page:1,
+            per_page:1000,
+            search:null,
+            departments:[],
+        }
+
+
 
     }),
     actions:{
-        debounceWithCallback(){
-            useDebounceFn(() => {
-                this._workers()
-            }, 1000, { maxWait: 5000 })
-        },
         _organizationLevel(){
             this.organizationLevelLoading= true
             $ApiService.organizationService._level().then((res)=>{
@@ -216,6 +229,7 @@ export const useComponentStore = defineStore('componentStore', {
                 this.contractTypes = res.data.data?.contract_types
                 this.commandTypes = res.data.data?.command_types
                 this.scheduleTypes = res.data.data?.schedules
+                this.positionCategory = res.data.data?.categories
                 this.workDayTypes = res.data.data?.work_day_types
                 this.holidayTypes=res.data.data?.holiday_types
                 this.organizationServiceList = res.data.data?.organization_services
@@ -253,16 +267,37 @@ export const useComponentStore = defineStore('componentStore', {
                 this.docExampleLoading = false
             })
         },
-        _departments(id){
+        _departments(infinity){
             this.departmentLoading= true
-            let params = {...this.params}
-            params.organization_id = id
-            $ApiService.componentService._departments({params}).then((res)=>{
-                this.departmentList = res.data.data
+            let params = {
+                ...this.depParams,
+                organizations:this.depParams.organizations?.toString(),
+            }
+            $ApiService.componentService._departmentByOrganizations({params}).then((res)=>{
+                this.totalDepartment = res.data.data.total
+                let data = res.data.data.data
+                if(infinity){
+                    this.departmentList =[...this.departmentList, ...data]
+                }else{
+                    this.departmentList = data
+                }
             }).finally(()=>{
                 this.departmentLoading= false
             })
         },
+        _onSearchDepartment(v){
+            this.depParams.page = 1
+            this.depParams.search = v
+            Utils.debouncedFn(this._departments)
+        },
+        _onScrollDepartment(e){
+            const currentTarget = e.currentTarget;
+            if(currentTarget.scrollTop + currentTarget.offsetHeight >= currentTarget.scrollHeight && !this.departmentLoading && this.totalDepartment>this.departmentList.length){
+                this.depParams.page +=1
+                this._workers(true)
+            }
+        },
+
         _positions(){
             this.positionLoading = true
             $ApiService.positionService._index(this.params).then((res)=>{
@@ -271,6 +306,16 @@ export const useComponentStore = defineStore('componentStore', {
                 this.positionLoading = false
             })
         },
+        _filterPosition(){
+            this.filterPositionLoading = true
+            $ApiService.positionService._filterIndex({params:this.filterPositionParams}).then((res)=>{
+                this.filterPositions = res.data.data.data
+            }).finally(()=>{
+                this.filterPositionLoading = false
+            })
+        },
+
+
         _checkWorker(pin){
             this.pinLoading = true
             this.worker = null
@@ -374,6 +419,8 @@ export const useComponentStore = defineStore('componentStore', {
                 this.commandTypeLoading = false
             })
         },
+
+
         _workers(infinity=false){
             this.workerLoading = true
             let params ={
@@ -399,15 +446,14 @@ export const useComponentStore = defineStore('componentStore', {
                 this.workerLoading = false
             })
         },
-
-        _onSearchWorker(v){
+        onSearchWorker(v){
             this.workerParams.page = 1
             this.workerParams.search = v
-            this.debounceWithCallback()
+            Utils.debouncedFn(this._workers)
         },
-        _onScrollWorker(e){
+        onScrollWorker(e){
             const currentTarget = e.currentTarget;
-            if(currentTarget.scrollTop + currentTarget.offsetHeight >= currentTarget.scrollHeight && !this.workerLoading){
+            if(currentTarget.scrollTop + currentTarget.offsetHeight >= currentTarget.scrollHeight && !this.workerLoading && this.totalWorker>this.workerList.length){
                 this.workerParams.page +=1
                 this._workers(true)
             }

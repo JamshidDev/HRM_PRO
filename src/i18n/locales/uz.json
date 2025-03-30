@@ -298,7 +298,13 @@
   "workerPage": {
     "name": "Xodimlar",
     "filter": {
-      "contract": "Shartnoma tuzish"
+      "contract": "Shartnoma tuzish",
+      "organization": "Korxonalar",
+      "birthday": "Tug'ilgan oy",
+      "contract_type": "Shartnoma turi",
+      "department": "Bo'linmalar",
+      "position": "Lavozimlar",
+      "position_type": "Lavozim turi"
     },
     "checkWorker": {
       "title": "Xodim izlash",

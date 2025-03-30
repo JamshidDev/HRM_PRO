@@ -45,6 +45,10 @@ const _workerApplicationEnum =async (payload)=>{
     return await axios.get(`/v1/worker-application/enums`, {params:payload?.params})
 }
 
+const _departmentByOrganizations =async (payload)=>{
+    return await axios.get(`v1/hr/get-departments`, {params:payload?.params})
+}
+
 export default {
     _enums,
     _organization,
@@ -59,4 +63,5 @@ export default {
     _examCategory,
     _directors,
     _workerApplicationEnum,
+    _departmentByOrganizations,
 }

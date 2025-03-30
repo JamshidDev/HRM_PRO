@@ -4,6 +4,7 @@ import {AppPaths} from "@/utils/AppPaths.js";
 import CryptoJS from "crypto-js"
 import i18n from "@/i18n/index.js"
 import {useAppSetting} from "@/utils/AppSetting.js"
+import {useDebounceFn} from "@vueuse/core"
 const {t} = i18n.global
 
 const lang = localStorage.getItem(useAppSetting.languageKey) || useAppSetting.defaultLanguage
@@ -236,6 +237,10 @@ const viewerStatus = {
     applicationDocument:"application-document"
 }
 
+const debouncedFn = useDebounceFn((callback) => {
+    callback?.()
+}, 1000, { maxWait: 5000 })
+
 
 export default {
     fileToBase64,
@@ -269,5 +274,6 @@ export default {
     viewerStatus,
     methodTypes,
     routeTimesheetPathMaker,
-    formatNumberToMoney
+    formatNumberToMoney,
+    debouncedFn,
 }
