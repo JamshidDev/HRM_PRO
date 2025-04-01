@@ -10,10 +10,6 @@
         "change": false
       }
     },
-    "font": {
-      "name": "Arial",
-      "size": "11px"
-    },
     "layout": {
       "header": {
         "editMode": false,
@@ -54,13 +50,6 @@
           "navigation": false
         }
       }
-    },
-    "loaderLogo": "https://example.com/loader-logo.png",
-    "loaderName": "Yuklnmoqda...",
-
-    "anonymous": {
-      "request": false,
-      "label": ""
     },
     "compactHeader": true,
     "compactToolbar": false,

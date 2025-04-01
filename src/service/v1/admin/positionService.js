@@ -16,6 +16,10 @@ const _delete = async (payload)=>{
     return await axios.delete(`/v1/structure/positions/${payload.id}`)
 }
 
+const _filterIndex =async (payload)=>{
+    return await axios.get(`/v1/hr/get-positions`, {params:payload.params})
+}
+
 
 
 
@@ -24,4 +28,5 @@ export default {
     _create,
     _update,
     _delete,
+    _filterIndex,
 }

@@ -127,13 +127,13 @@ onMounted(()=>{
   <n-dropdown trigger="click" :options="options">
     <div class="flex items-center gap-2  border-surface-line py-1 px-1 rounded-md border w-[100px] cursor-pointer h-[32px] overflow-hidden">
       <n-avatar
-          class="!w-[24px] !h-[24px]"
+          class="!w-[20px] !h-[20px]"
           round
           size="small"
           :src="dropdown.icon"
       />
-      <span class="text-sm text-surface-500 whitespace-nowrap font-semibold" style="width: calc(100% - 60px)">{{$t(dropdown.text)}}</span>
-      <n-icon class="text-[18px] text-surface-500">
+      <span class="text-sm text-surface-500 whitespace-nowrap" style="width: calc(100% - 60px)">{{$t(dropdown.text)}}</span>
+      <n-icon class="text-[12px] text-surface-500">
         <ChevronDown24Filled />
       </n-icon>
     </div>

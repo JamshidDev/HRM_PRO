@@ -4,6 +4,7 @@ import {useWorkerProfileStore} from "@/store/modules/index.js"
 import { v4 as uuidv4 } from 'uuid';
 import Utils from "@/utils/Utils.js"
 import i18n from "@/i18n/index.js"
+import {useAppSetting} from "@/utils/index.js"
 const {t} = i18n.global
 const inputFileRef = ref(null)
 const selectedId = ref(null)
@@ -82,6 +83,10 @@ const onDownload = (v)=>{
 <template>
   <n-spin :show="store.passportLoading">
     <div class="grid grid-cols-12 mb-16 mt-16 gap-x-4 border border-dashed border-surface-line p-2 rounded-lg">
+      <div class="col-span-12 mb-4">
+        <p class="text-textColor0 font-medium">{{$t(`createWorkerPage.form.passportTitle`)}}</p>
+      </div>
+
       <template v-for="(item, idx) in store.passportList" :key="idx">
         <div class="col-span-6 flex flex-col">
           <span class="text-xs text-gray-500">{{$t(`createWorkerPage.form.serial_number`)}}</span>
@@ -142,6 +147,7 @@ const onDownload = (v)=>{
                 v-model:value="item.from_date"
                 type="date"
                 :placeholder="$t(`createWorkerPage.form.from_date`)"
+                :format="useAppSetting.datePicketFormat"
             />
           </n-form-item>
           <span class="text-xs text-gray-500 mt-2">{{$t(`createWorkerPage.form.to_date`)}}</span>
@@ -153,6 +159,7 @@ const onDownload = (v)=>{
                 v-model:value="item.to_date"
                 type="date"
                 :placeholder="$t(`createWorkerPage.form.to_date`)"
+                :format="useAppSetting.datePicketFormat"
             />
           </n-form-item>
         </div>

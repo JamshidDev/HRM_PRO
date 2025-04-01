@@ -20,13 +20,6 @@ onMounted(()=>{
   <Filter/>
   <Table/>
   <CheckWorker/>
-  <UIModal
-      :title="$t('documentPage.createTitle')"
-      :width="1200"
-      v-model:visible="store.visible"
-  >
-    <contractForm/>
-  </UIModal>
   <UIDrawer
       :title="$t('timesheet.assignUser')"
       :width="450"

@@ -61,13 +61,19 @@ const changeOption = (v)=>{
 
 <template>
   <n-dropdown :options="options"  trigger="click" @select="changeOption">
-    <n-avatar
-        class="cursor-pointer"
-        round
-        size="large"
-        :src="accountStore.account?.worker?.photo"
-        :fallback-src="useAppSetting.noAvailableImage"
-    />
+    <div class="flex items-center gap-2">
+      <div>
+        <div class="font-medium text-xs max-w-[200px] truncate">{{accountStore.account?.organization?.name}}</div>
+        <div class="text-xs text-textColor1">{{accountStore.account?.worker?.last_name +'.'+accountStore.account?.worker?.first_name?.[0]}}</div>
+      </div>
+      <n-avatar
+          class="cursor-pointer"
+          round
+          size="large"
+          :src="accountStore.account?.worker?.photo"
+          :fallback-src="useAppSetting.noAvailableImage"
+      />
+    </div>
   </n-dropdown>
 </template>
 

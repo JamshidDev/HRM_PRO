@@ -1,9 +1,9 @@
 <script setup>
 import {UIPageFilter, UIStructure} from "@/components/index.js"
-import {useCommandStore, useContractStore, useComponentStore} from "@/store/modules/index.js"
+import { useContractStore, useComponentStore} from "@/store/modules/index.js"
+import {useAppSetting} from "@/utils/index.js"
 
 const store = useContractStore()
-const commandStore = useCommandStore()
 const componentStore = useComponentStore()
 
 const onAdd = ()=>{
@@ -12,7 +12,10 @@ const onAdd = ()=>{
   store.visible = true
 }
 
-const filterCount = computed(()=>Number(Boolean(store.params.organizations.length)) + Number(Boolean(store.params.status)) + Number(Boolean(store.params.confirmation)))
+const filterCount = computed(()=>Number(Boolean(store.params.organizations.length))
+    + Number(Boolean(store.params.status)) + Number(Boolean(store.params.confirmation))
+    +Number(Boolean(store.params.created))
+)
 
 
 const onSearchEv = ()=>{
@@ -28,6 +31,7 @@ const resetFilter = ()=>{
   store.params.organizations = []
   store.params.status = null
   store.params.confirmation = null
+  store.params.created = null
   filterEvent()
 }
 
@@ -84,6 +88,15 @@ const beforeShow = (v)=>{
         clearable
         @update:value="filterEvent"
         :loading="componentStore.enumAdminLoading"
+    />
+    <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{$t('content.created')}}</label>
+    <n-date-picker
+        class="w-full"
+        v-model:value="store.params.created"
+        type="date"
+        :placeholder="$t(`content.choose`)"
+        :format="useAppSetting.datePicketFormat"
+        @update:value="filterEvent"
     />
   </template>
 

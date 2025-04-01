@@ -89,6 +89,7 @@
     "error": "Xatolik",
     "return": "Ortga qaytish",
     "finish": "Yakunlash",
+    "created": "Yaratilgan sana",
     "move": "Siljitish"
   },
   "date": {
@@ -298,7 +299,13 @@
   "workerPage": {
     "name": "Xodimlar",
     "filter": {
-      "contract": "Shartnoma tuzish"
+      "contract": "Shartnoma tuzish",
+      "organization": "Korxonalar",
+      "birthday": "Tug'ilgan oy",
+      "contract_type": "Shartnoma turi",
+      "department": "Bo'linmalar",
+      "position": "Lavozimlar",
+      "position_type": "Lavozim turi"
     },
     "checkWorker": {
       "title": "Xodim izlash",
@@ -312,12 +319,13 @@
     "table": {
       "department": "Bo'lim",
       "contractType": "Shartnoma turi",
-      "group": "Guruh",
-      "rank": "Razryad",
-      "rate": "Stavka",
+      "group": "G",
+      "rank": "R",
+      "rate": "S",
       "position_date": "Lavozim sanasi",
       "birthday": "Tug'ilgan sanasi",
-      "position": "Lavozim"
+      "position": "Lavozim",
+      "organization": "Korxona"
     }
   },
   "contactPage": {
@@ -381,12 +389,13 @@
     },
     "table": {
       "position": "Lavozim",
-      "group": "Gurux",
-      "rank": "Razryad",
-      "rate": "Kontingent",
+      "group": "G",
+      "rank": "R",
+      "rate": "K",
       "salary": "Oylik maosh",
       "department": "Bo'lim",
       "education": "Ma'lumot",
+      "organization": "Korxona  ",
       "experience": "Tajriba"
     }
   },
@@ -420,7 +429,8 @@
       "marital_status": "Oilaviy holati",
       "address": "Yashash manzili",
       "experience_date": "Uzliksiz ish staji",
-      "work_experience": "Umumiy ish staji"
+      "passportTitle": "Pasport ma'lumotlari",
+      "work_experience": "Umumiy staj (oylarda ko'rsating)"
     },
     "step": {
       "personal": "Kandidatning shaxsiy ma'lumotlari",
@@ -1020,6 +1030,56 @@
       "durationDay": "Ta'til davomiyligi {n} kun",
       "workDay": "Ishga chiqish sanasi",
       "duration": "Ta'til davri"
+    },
+    "contract": {
+      "title": "Shartnoma turlari"
+    },
+    "mainCard": {
+      "totalWorker": "Xodimlar soni",
+      "man": "Erkakalar soni",
+      "woman": "Ayollar soni"
+    },
+    "age": {
+      "title": "Xodimlarning yoshi bo'yicha",
+      "age31": "31 yoshgacha",
+      "age32_45": "32 dan 45 yoshgacha",
+      "age46": "46 yoshdan kattalar"
+    },
+    "edu": {
+      "title": "Xodimlarning ma'lumoti bo'yicha",
+      "higher": "Oliy ma'lumotli",
+      "middle": "O'rta ma'lumotli",
+      "special": "O'rta maxsus"
+    },
+    "password": {
+      "title": "Xodimlarning pasport muddatlari",
+      "deadline": "Muddati yaqinlashgan",
+      "expired": "Muddati o'tgan"
+    },
+    "pension": {
+      "title": "Pensiya yoshidagi xodimlar",
+      "men": "Erkaklar",
+      "women": "Ayollar"
+    },
+    "medical": {
+      "title": "Tibbiy ko'rik muddatlari",
+      "deadline": "Muddati yaqinlashgan",
+      "expired": "Muddati o'tgan"
+    },
+    "position": {
+      "title": "Shtat birliklari",
+      "vakant": "Vakant",
+      "sverx": "Sverx"
+    },
+     "yearly": {
+       "title": "Ishga qabul qilingan va ishdan bo'shatilgan xodimlar",
+       "incoming": "Ishga qabul qilingan",
+       "outgoing": "Ishdan bo'shatilgan"
+    },
+    "birthday": {
+      "title": "Tug'ilgan kunlar",
+      "today": "Bugungi tug'ilgan kunlar",
+      "tomorrow": "Ertangi tug'ilgan kunlar"
     }
   },
   "applicationPage": {

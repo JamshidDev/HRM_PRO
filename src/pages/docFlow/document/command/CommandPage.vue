@@ -5,6 +5,7 @@ import Table from "./Table.vue"
 import CommandForm from "./CommandForm.vue"
 import {UIModal} from "@/components/index.js"
 import Utils from "@/utils/Utils.js"
+import Filter from "./ui/Filter.vue"
 
 const officeAppRef = ref(null)
 const store = useCommandStore()
@@ -34,12 +35,7 @@ onMounted(()=>{
 
 <template>
 <UIPageContent>
-  <UIPageFilter
-      @onAdd="onAdd"
-      @onSearch="onSearch"
-      v-model:search="store.params.search"
-      :show-filter-button="false"
-  />
+  <Filter/>
   <Table @openOffice="openCommand"/>
   <UIModal
       :title="store.visibleType? $t('documentPage.command.createTitle') : $t('documentPage.command.updateTitle')"

@@ -56,14 +56,13 @@ const onPreview =(uuid)=>{
         <thead>
         <tr>
           <th class="!text-center min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
-          <th class="min-w-[200px] w-[300px]">{{$t('content.worker')}}</th>
-          <th class="min-w-[120px] w-[300px]">{{$t('workerPage.table.department')}}</th>
-          <th class="min-w-[120px]">{{$t('workerPage.table.position')}}</th>
-          <th class="min-w-[120px] w-[120px]">{{$t('workerPage.table.position_date')}}</th>
-          <th class="min-w-[120px] w-[120px]">{{$t('workerPage.table.birthday')}}</th>
-          <th class="min-w-[60px] w-[60px]">{{$t('workerPage.table.group')}}</th>
-          <th class="min-w-[60px] w-[60px]">{{$t('workerPage.table.rank')}}</th>
-          <th class="min-w-[60px] w-[60px]">{{$t('workerPage.table.rate')}}</th>
+          <th class="min-w-[200px] w-[280px]">{{$t('content.worker')}}</th>
+          <th >{{$t('workerPage.table.department')}}</th>
+          <th >{{$t('workerPage.table.position')}}</th>
+          <th >{{$t('workerPage.table.organization')}}</th>
+          <th class="min-w-[40px] w-[40px]">{{$t('workerPage.table.group')}}</th>
+          <th class="min-w-[40px] w-[40px]">{{$t('workerPage.table.rank')}}</th>
+          <th class="min-w-[40px] w-[40px]">{{$t('workerPage.table.rate')}}</th>
           <th class="min-w-[40px] w-[40px]"></th>
         </tr>
         </thead>
@@ -72,6 +71,7 @@ const onPreview =(uuid)=>{
           <td><span class="text-center text-[12px] text-gray-600 block">{{ (store.params.page - 1) * store.params.per_page + idx + 1 }}</span></td>
           <td>
             <UIUser
+                :short="false"
                 @onClickFullName="onPreview(item.uuid)"
                 :data="{
                     photo:item?.worker.photo,
@@ -80,15 +80,15 @@ const onPreview =(uuid)=>{
                     lastName:item?.worker.last_name,
                     position:item?.contract?.type?.name,
                   }"
-            />
+            >
+            </UIUser>
           </td>
           <td>{{item?.department?.name}}</td>
           <td>{{item?.position?.name}}</td>
-          <td><div class="flex justify-center">{{item?.position_date}}</div></td>
-          <td><div class="flex justify-center">{{Utils.timeOnlyDate(item?.worker?.birthday)}}</div></td>
-          <td><div class="flex justify-center "><n-button circle>{{item?.group}}</n-button></div></td>
-          <td><div class="flex justify-center "><n-button circle>{{item?.rank}}</n-button></div></td>
-          <td><div class="flex justify-center "><n-button circle>{{item?.rate}}</n-button></div></td>
+          <td>{{item?.organization?.name}}</td>
+          <td><div class="flex justify-center "><n-button size="small" circle>{{item?.group}}</n-button></div></td>
+          <td><div class="flex justify-center "><n-button size="small" circle >{{item?.rank}}</n-button></div></td>
+          <td><div class="flex justify-center "><n-button size="small" circle>{{item?.rate}}</n-button></div></td>
 
           <td>
             <UIMenuButton

@@ -13,6 +13,7 @@ import VacationForm_45 from "@/pages/docFlow/document/command/ui/VacationForm_45
 import VacationForm_49 from "@/pages/docFlow/document/command/ui/VacationForm49.vue"
 import VacationForm_48 from "@/pages/docFlow/document/command/ui/VacationForm_48.vue"
 import VacationForm_55 from "@/pages/docFlow/document/command/ui/VacationForm_55.vue"
+import {useAppSetting} from "@/utils/index.js"
 
 
 
@@ -99,6 +100,7 @@ const onSubmit = ()=>{
       const mainData = {
         command_date:Utils.timeToZone(store.payload.command_date),
         director_id:store.payload.director_id,
+        organization_id:store.payload.organization_id?.[0]?.id,
         confirmations:store.payload.confirmations,
         command_number:store.payload.command_number,
         command_type:store.payload.command_type,
@@ -173,7 +175,8 @@ const onChangeStructure = (v)=>{
   if(v.length>0){
     componentStore.workerList = []
     store.workers = []
-    componentStore._workers({id: v[0].id})
+    componentStore.workerParams.organization_id= v[0].id
+    componentStore._workers()
   }
 }
 const onChangeCommandType = ()=>{
@@ -283,6 +286,8 @@ const fillVacation55 = ()=>{
   })
 }
 
+
+
 watchEffect(()=>{
   if(store.payload.director_id){
     store.payload.confirmations = store.payload.confirmations.filter(v=>v !==store.payload.director_id)
@@ -328,6 +333,7 @@ onMounted(()=>{
                   v-model:value="store.payload.command_date"
                   type="date"
                   :placeholder="$t(`content.choose`)"
+                  :format="useAppSetting.datePicketFormat"
               />
             </n-form-item>
           </div>
@@ -378,6 +384,8 @@ onMounted(()=>{
                     :render-tag="workerRenderValue"
                     @update:value="onChangeWorker"
                     :loading="componentStore.workerLoading"
+                    @scroll="componentStore.onScrollWorker"
+                    @search="componentStore.onSearchWorker"
                 />
               </n-form-item>
             </template>
@@ -396,6 +404,10 @@ onMounted(()=>{
                     :render-tag="workerRenderValue"
                     @update:value="onChangeWorkers"
                     :loading="componentStore.workerLoading"
+                    @scroll="componentStore.onScrollWorker"
+                    :filter="()=>true"
+                    @search="componentStore.onSearchWorker"
+                    :reset-menu-on-options-change="false"
                 />
               </n-form-item>
             </template>

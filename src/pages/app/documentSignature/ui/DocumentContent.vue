@@ -1,23 +1,19 @@
 <script setup>
-import DocxViewer from "@/components/pdfSignature/ui/DocxViewer.vue"
 import {usePdfViewerStore} from "@/store/modules/index.js"
+import PdfViewer from "@/components/pdfSignature/PdfViewer.vue"
 
 const store = usePdfViewerStore()
-const docxViewerRef = ref(null)
-
-const openFile = (url)=>{
-  docxViewerRef.value.openWord(url)
-}
 
 onMounted(()=>{
-  openFile(store.documentUrl)
+  console.log("render pdf")
+  store.loadPdf()
 })
 
 </script>
 
 <template>
   <div class="w-full max-w-[1440px] mx-auto overflow-auto">
-    <DocxViewer ref="docxViewerRef" :watermark="store.isSigned" />
+    <PdfViewer :container="false"/>
   </div>
 
 </template>

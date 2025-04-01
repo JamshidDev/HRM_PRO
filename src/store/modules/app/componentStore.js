@@ -2,6 +2,11 @@ import {defineStore} from "pinia";
 import i18n from "@/i18n/index.js"
 const {t} = i18n.global
 import Utils from "@/utils/Utils.js"
+import {useDebounceFn} from "@vueuse/core"
+
+
+
+
 export const useComponentStore = defineStore('componentStore', {
     state:()=>({
         organizationLevelList:[],
@@ -26,11 +31,12 @@ export const useComponentStore = defineStore('componentStore', {
         departmentList:[],
         depParams:{
             page:1,
-            per_page:1000,
+            per_page:50,
             search:null,
             organizations:null,
         },
         departmentLoading:false,
+        totalDepartment:0,
 
         positionList:[],
         positionLoading:false,
@@ -88,12 +94,19 @@ export const useComponentStore = defineStore('componentStore', {
         scheduleTypes:[],
         workDayTypes:[],
         holidayTypes:[],
+        positionCategory:[],
 
         docExampleList:[],
         docExampleLoading:false,
 
         departmentPositionList:[],
         departmentPositionLoading:false,
+        positionParams:{
+            page:1,
+            per_page:50,
+            search:null,
+        },
+        totalPosition:0,
 
         confirmationList:[],
         confirmationLoading:false,
@@ -124,6 +137,14 @@ export const useComponentStore = defineStore('componentStore', {
 
         workerList:[],
         workerLoading:false,
+        workerParams:{
+            page:1,
+            per_page:50,
+            search:null,
+            organization_id:null,
+            organizations:null,
+        },
+        totalWorker:0,
 
         adContractTypes:[],
         adContractTypeLoading:false,
@@ -149,6 +170,16 @@ export const useComponentStore = defineStore('componentStore', {
 
         directorList:[],
         directorLoading:false,
+
+        filterPositions:[],
+        filterPositionLoading:false,
+        filterPositionParams:{
+            page:1,
+            per_page:1000,
+            search:null,
+            departments:[],
+        }
+
 
 
     }),
@@ -198,6 +229,7 @@ export const useComponentStore = defineStore('componentStore', {
                 this.contractTypes = res.data.data?.contract_types
                 this.commandTypes = res.data.data?.command_types
                 this.scheduleTypes = res.data.data?.schedules
+                this.positionCategory = res.data.data?.categories
                 this.workDayTypes = res.data.data?.work_day_types
                 this.holidayTypes=res.data.data?.holiday_types
                 this.organizationServiceList = res.data.data?.organization_services
@@ -235,17 +267,37 @@ export const useComponentStore = defineStore('componentStore', {
                 this.docExampleLoading = false
             })
         },
-        _departments(id){
+        _departments(infinity){
             this.departmentLoading= true
-            let params = {...this.params}
-            params.organization_id = id
-            console.log(params)
-            $ApiService.componentService._departments({params}).then((res)=>{
-                this.departmentList = res.data.data
+            let params = {
+                ...this.depParams,
+                organizations:this.depParams.organizations?.toString(),
+            }
+            $ApiService.componentService._departmentByOrganizations({params}).then((res)=>{
+                this.totalDepartment = res.data.data.total
+                let data = res.data.data.data
+                if(infinity){
+                    this.departmentList =[...this.departmentList, ...data]
+                }else{
+                    this.departmentList = data
+                }
             }).finally(()=>{
                 this.departmentLoading= false
             })
         },
+        _onSearchDepartment(v){
+            this.depParams.page = 1
+            this.depParams.search = v
+            Utils.debouncedFn(this._departments)
+        },
+        _onScrollDepartment(e){
+            const currentTarget = e.currentTarget;
+            if(currentTarget.scrollTop + currentTarget.offsetHeight >= currentTarget.scrollHeight && !this.departmentLoading && this.totalDepartment>this.departmentList.length){
+                this.depParams.page +=1
+                this._workers(true)
+            }
+        },
+
         _positions(){
             this.positionLoading = true
             $ApiService.positionService._index(this.params).then((res)=>{
@@ -254,6 +306,16 @@ export const useComponentStore = defineStore('componentStore', {
                 this.positionLoading = false
             })
         },
+        _filterPosition(){
+            this.filterPositionLoading = true
+            $ApiService.positionService._filterIndex({params:this.filterPositionParams}).then((res)=>{
+                this.filterPositions = res.data.data.data
+            }).finally(()=>{
+                this.filterPositionLoading = false
+            })
+        },
+
+
         _checkWorker(pin){
             this.pinLoading = true
             this.worker = null
@@ -265,7 +327,7 @@ export const useComponentStore = defineStore('componentStore', {
                         firstName:data?.first_name,
                         middleName:data?.middle_name,
                         position:`${t('workerPage.checkWorker.born')} ${Utils.timeOnlyDate(data?.birthday)}`,
-                        photo:data.photo,
+                        photo:data?.photo,
                         pin:data.id.toString()
                     }
                 }
@@ -277,7 +339,7 @@ export const useComponentStore = defineStore('componentStore', {
         },
         _regions(){
             this.regionLoading = true
-            $ApiService.regionService._index(this.params).then((res)=>{
+            $ApiService.regionService._index({params:this.params}).then((res)=>{
                 this.regionList = res.data.data.data
             }).finally(()=>{
                 this.regionLoading = false
@@ -357,10 +419,15 @@ export const useComponentStore = defineStore('componentStore', {
                 this.commandTypeLoading = false
             })
         },
-        _workers({id, org_ids} = {}){
+
+
+        _workers(infinity=false){
             this.workerLoading = true
-            $ApiService.workerService._index({params:{page:1, per_page: 10000, organization_id:id, organizations: org_ids}}).then((res)=>{
-                this.workerList = res.data.data.data.map((v)=>({
+            let params ={
+                ...this.workerParams,
+            }
+            $ApiService.workerService._search({params}).then((res)=>{
+                let data = res.data.data.data.map((v)=>({
                     ...v,
                     name:v.worker.last_name + ' '+v.worker.first_name+' '+v.worker.middle_name,
                     position:v.position?.name || v?.post_name,
@@ -368,10 +435,31 @@ export const useComponentStore = defineStore('componentStore', {
                     typeId:v.contract?.type?.id,
                     photo: v.worker?.photo
                 }))
+                this.totalWorker =res.data.data.total
+                if(infinity){
+                    this.workerList =[...this.workerList, ...data]
+                }else{
+                    this.workerList = data
+                }
+
             }).finally(()=>{
                 this.workerLoading = false
             })
         },
+        onSearchWorker(v){
+            this.workerParams.page = 1
+            this.workerParams.search = v
+            Utils.debouncedFn(this._workers)
+        },
+        onScrollWorker(e){
+            const currentTarget = e.currentTarget;
+            if(currentTarget.scrollTop + currentTarget.offsetHeight >= currentTarget.scrollHeight && !this.workerLoading && this.totalWorker>this.workerList.length){
+                this.workerParams.page +=1
+                this._workers(true)
+            }
+        },
+
+
         _adContractType(id){
             this.adContractTypeLoading = true
             $ApiService.componentService._contractAddition({params:{contract_type:id}}).then((res)=>{

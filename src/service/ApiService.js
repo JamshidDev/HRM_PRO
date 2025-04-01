@@ -43,6 +43,7 @@ import vacationService from "@/service/v1/hrm/vacationService.js"
 import timesheetDepartmentService from "@/service/v1/hrm/timesheetDepartmentService.js";
 import timesheetService from '@/service/v1/hrm/timesheetService.js'
 import timesheetWorkerService from '@/service/v1/hrm/timesheetWorkerService.js'
+import dashboardService from "@/service/v1/hrm/dashboardService.js"
 
 
 import documentService from "@/service/v1/docFlow/documentService.js"
@@ -118,6 +119,7 @@ export default {
     timesheetDepartmentService,
     timesheetService,
     timesheetWorkerService,
-    timesheetConfirmService
+    timesheetConfirmService,
+    dashboardService,
 
 }

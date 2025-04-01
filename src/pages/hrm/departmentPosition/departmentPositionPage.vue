@@ -1,8 +1,9 @@
 <script setup>
-import {UIDrawer, UIPageContent, UIPageFilter} from "@/components/index.js"
+import {UIDrawer, UIPageContent} from "@/components/index.js"
 import {useDepartmentPositionStore, useComponentStore} from "@/store/modules/index.js"
 import createFrom from "./ui/createForm.vue"
 import Table from "./ui/Table.vue"
+import Filter from "./ui/Filter.vue"
 
 const store = useDepartmentPositionStore()
 const componentStore = useComponentStore()
@@ -28,11 +29,7 @@ onMounted(()=>{
 
 <template>
 <UIPageContent>
-  <UIPageFilter
-      v-model:search="store.params.search"
-      @on-add="onAdd"
-      @on-search="onSearch"
-  />
+  <Filter/>
   <Table/>
   <UIDrawer
       :width="800"

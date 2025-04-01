@@ -1,5 +1,6 @@
 import {defineStore} from "pinia";
 import i18n from "@/i18n/index.js"
+import Utils from "@/utils/Utils.js"
 const {t} = i18n.global
 export const useWorkerStore = defineStore('workerStore', {
     state:()=>({
@@ -20,14 +21,30 @@ export const useWorkerStore = defineStore('workerStore', {
             page:1,
             per_page:10,
             search:null,
+            organizations:[],
+            departments:[],
+            birthday:null,
+            contract_type:null,
+            position_type:null,
+            ages:[1,100],
+            positions:[],
+
         },
+        structureCheck:[],
         workerVisible:false,
 
     }),
     actions:{
         _index(){
             this.loading= true
-            $ApiService.workerService._index({params:this.params}).then((res)=>{
+            let params = {
+                ...this.params,
+                organizations:this.params.organizations.map(v=>v.id).toString() || undefined,
+                departments:this.params.departments.toString() || undefined,
+                positions:this.params.positions.toString() || undefined,
+                ages:undefined,
+            }
+            $ApiService.workerService._index({params}).then((res)=>{
                 this.list = res.data.data.data
                 this.totalItems = res.data.data.total
             }).finally(()=>{

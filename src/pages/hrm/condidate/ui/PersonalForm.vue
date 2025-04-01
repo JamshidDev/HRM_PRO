@@ -2,6 +2,7 @@
 import {useComponentStore, useCreateWorkerStore} from "@/store/modules/index.js"
 import validationRules from "@/utils/validationRules.js"
 import Utils from "@/utils/Utils.js"
+import {useAppSetting} from "@/utils/index.js"
 const store = useCreateWorkerStore()
 const componentStore = useComponentStore()
 const formRef = ref(null)
@@ -144,7 +145,7 @@ onMounted(()=>{
           v-model:value="store.payload.birthday"
           type="date"
           :placeholder="$t(`content.choose`)"
-          format="yyyy/MM/dd"
+          :format="useAppSetting.datePicketFormat"
       />
     </n-form-item>
     <n-form-item
@@ -232,7 +233,7 @@ onMounted(()=>{
           v-model:value="store.payload.experience_date"
           type="date"
           :placeholder="$t(`content.choose`)"
-          format="yyyy/MM/dd"
+          :format="useAppSetting.datePicketFormat"
       />
     </n-form-item>
 

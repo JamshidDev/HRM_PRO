@@ -8,6 +8,10 @@ const props = defineProps({
   max:{
     type: Number,
     default: 4,
+  },
+  hasMore:{
+    type: Number,
+    default: 0,
   }
 })
 </script>
@@ -18,13 +22,18 @@ const props = defineProps({
     <template #avatar="{ option: { photo, fullName } }">
       <n-tooltip>
         <template #trigger>
-          <n-avatar :src="photo" />
+          <n-avatar
+              lazy
+              round
+              size="large"
+              class="ui__user-group"
+              :src="photo" />
         </template>
         {{ fullName }}
       </n-tooltip>
     </template>
     <template #rest="{ options: restOptions, rest }">
-      <n-avatar>+{{ rest }}</n-avatar>
+      <n-avatar class="has-more-avatar" >+{{hasMore}}</n-avatar>
     </template>
   </n-avatar-group>
 </div>

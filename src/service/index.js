@@ -24,7 +24,7 @@ instance.interceptors.response.use(
     response => {
         if([Utils.methodTypes.PUT,Utils.methodTypes.POST, Utils.methodTypes.DELETE].includes(response.config.method)){
             if(!response.data?.error){
-                $Toast.success(response.data.message)
+                $Toast.success(response.data.message.toString())
             }
         }
         return Promise.resolve(response)

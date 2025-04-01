@@ -19,7 +19,7 @@ export const useOnlyOfficeStore = defineStore('onlyOfficeStore', {
             documentType:'word',
             editorConfig:{
                 lang: "ru",
-                mode: 'view',
+                mode: 'edit',
                 callbackUrl:'',
                 customization:config.customization,
                 user:{

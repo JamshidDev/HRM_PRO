@@ -7,6 +7,7 @@ import PhoneForm from "@/pages/hrm/condidate/ui/PhoneForm.vue"
 import PassportForm from "../ui/PasportList.vue"
 import PositionList from "../ui/PositionList.vue"
 import {useRoute} from "vue-router"
+import {useAppSetting} from "@/utils/index.js"
 const route = useRoute()
 const store = useWorkerProfileStore()
 const componentStore = useComponentStore()
@@ -150,6 +151,7 @@ onMounted(()=>{
           v-model:value="store.payload.birthday"
           type="date"
           :placeholder="$t(`content.choose`)"
+          :format="useAppSetting.datePicketFormat"
       />
     </n-form-item>
     <n-form-item
@@ -275,6 +277,7 @@ onMounted(()=>{
           class="w-full"
           type="text"
           :placeholder="$t(`content.enterField`)"
+          v-mask="`#########`"
           v-model:value="store.payload.inn"
           :allow-input="Utils.onlyAllowNumber"
       />
@@ -296,7 +299,7 @@ onMounted(()=>{
     <n-form-item
         class="col-span-4"
         :label="$t(`createWorkerPage.form.work_experience`)"
-        path="inn">
+        path="work_experience">
       <n-input
           class="w-full"
           type="text"
@@ -314,6 +317,7 @@ onMounted(()=>{
           v-model:value="store.payload.experience_date"
           type="date"
           :placeholder="$t(`content.choose`)"
+          :format="useAppSetting.datePicketFormat"
       />
     </n-form-item>
 

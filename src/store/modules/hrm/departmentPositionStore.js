@@ -23,18 +23,27 @@ export const useDepartmentPositionStore = defineStore('departmentPositionStore',
             salary:null,
             experience:null,
             education:null,
+            organizations:[],
+            departments:[],
         },
         params:{
             page:1,
             per_page:10,
             search:null,
+            organizations:[],
+            departments:[],
         },
 
     }),
     actions:{
         _index(){
             this.loading= true
-            $ApiService.departmentPositionService._index({params:this.params}).then((res)=>{
+            let params = {
+                ...this.params,
+                organizations:this.params.organizations.map(v=>v.id).toString() || undefined,
+                departments:this.params.departments.toString() || undefined,
+            }
+            $ApiService.departmentPositionService._index({params}).then((res)=>{
                 this.list = res.data.data.data
                 this.totalItems = res.data.data.total
             }).finally(()=>{

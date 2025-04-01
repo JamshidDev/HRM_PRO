@@ -18,6 +18,7 @@ const route = useRoute()
 
 const emits = defineEmits(["onClose", "onEdit", 'signatureEv', 'onUpdate'])
 
+
 const store = usePdfViewerStore()
 const signatureStore = useSignatureStore()
 const applicationStore = useApplicationStore()
@@ -53,18 +54,6 @@ const showConfirmButtons = computed(()=>{
   return route.path === "/hrm/application"
 })
 
-const signatureMan = computed(()=>{
-   const {worker} = store.permissions?.current_user
-    if(worker){
-      return {
-        photo:worker.photo,
-        lastName:worker.last_name,
-        firstName:worker.first_name,
-        middleName:worker.middle_name,
-        position:store.permissions?.current_user?.position
-      }
-    }else return  null
-})
 const openRejectModal = ()=>{
   store.documentComment = null
   store.documentVisible = true
@@ -84,11 +73,27 @@ const getDocument =async (document_id, model)=>{
     store.document.document.file_name = Utils.fileNameFromUrl(v.document?.doc_url)
     store.pdfUrl = v.document.url
     store.docxUrl = v.document?.doc_url
-    store.permissions = v.signature
+    store.permissions.canEdit =v.document.confirmation.id !== 3
+    store.permissions.canSignature =v.signature.signature
+    const worker = v.signature?.current_user?.worker
+    store.signatureMan = {
+      photo:worker?.photo,
+      lastName:worker?.last_name,
+      firstName:worker?.first_name,
+      middleName:worker?.middle_name,
+      position:v.signature?.current_user?.position
+    }
     store.permissions.qrcode = false
+
+
     // docxViewerRef.value.openWord(v.document?.doc_url)
     store.loadPdf()
 
+  }).catch(error=>{
+    console.log(error)
+    setTimeout(()=>{
+      store.visible = false
+    },300)
   }).finally(()=>{
     store.loading = false
   })
@@ -179,7 +184,7 @@ onUnmounted(()=>{
               <div>
               </div>
               <div class="flex gap-6">
-                <n-button v-if="store.permissions?.current_user"  @click="onEdit" type="info" secondary>
+                <n-button v-if="store.permissions.canEdit"  @click="onEdit" type="info" secondary>
                   {{$t('content.edit')}}
                   <template #icon>
                     <n-icon size="24">
@@ -217,18 +222,18 @@ onUnmounted(()=>{
                 </div>
 
 
-                <div v-if="store.permissions?.signature && showSignature" class="w-full bg-surface-section rounded-xl border border-surface-line flex flex-col p-1 gap-2">
+                <div v-if="store.permissions?.canSignature && showSignature" class="w-full bg-surface-section rounded-xl border border-surface-line flex flex-col p-1 gap-2">
                   <div class="bg-surface-section rounded-xl p-1 mb-4 shadow">
                     <UIUser
                         :short="false"
-                        :data="signatureMan"
+                        :data="store.signatureMan"
                     />
                   </div>
                   <n-button
-                      :disabled="!store.permissions?.signature"
+                      :disabled="!store.permissions?.canSignature "
                       @click="onSaveSignature"
                       class="shadow cursor-pointer"
-                      :type="Boolean(store.permissions?.signature)? 'primary' : 'default'"
+                      :type="store.permissions?.canSignature ? 'primary' : 'default'"
                   >{{$t('content.signatureDocument')}}
                     <template #icon>
                       <Signature20Filled/>
@@ -237,7 +242,7 @@ onUnmounted(()=>{
                   <n-button
                       @click="openRejectModal"
                       class="shadow cursor-pointer"
-                      :type="Boolean(store.permissions?.signature)? 'error' : 'default'"
+                      :type="store.permissions?.canSignature ? 'error' : 'default'"
                   >{{$t('content.reject')}}
                     <template #icon>
                       <Signature20Filled/>

@@ -4,6 +4,7 @@ import {AppPaths} from "@/utils/AppPaths.js";
 import CryptoJS from "crypto-js"
 import i18n from "@/i18n/index.js"
 import {useAppSetting} from "@/utils/AppSetting.js"
+import {useDebounceFn} from "@vueuse/core"
 const {t} = i18n.global
 
 const lang = localStorage.getItem(useAppSetting.languageKey) || useAppSetting.defaultLanguage
@@ -71,6 +72,7 @@ const timePickerFormatter = (time)=>{
 const timeOnlyMonth = (time)=>{
     return time? dayjs(time).format('M') : null
 }
+
 const base64UrlEncode = (obj)=>{
     return btoa(JSON.stringify(obj))
         .replace(/=+$/, '')
@@ -95,14 +97,16 @@ const generateJwtToken =(payload,secret)=>{
 
 }
 
-
-
 const noAvailableImage = "/public/no-picture.jpg"
 
 const fileNameFromUrl = (url)=>{
     return url.split('/').pop()?.split('?')[0].split('#')[0] || '';
 }
 
+const formatNumberToMoney = (num)=>{
+    if(!num) return
+    return  num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ')
+}
 const routePathMaker = (mainPath)=>(`${AppPaths.Admin}${mainPath}`)
 const routeHrmPathMaker = (mainPath)=>(`${AppPaths.Hrm}${mainPath}`)
 const routeLmsPathMaker = (mainPath)=>(`${AppPaths.Lms}${mainPath}`)
@@ -219,6 +223,7 @@ const getMonthNameById = (id)=>{
 const getMonthNameByKey = (key)=>{
     return monthList.filter((v)=>v.key === key)?.[0]?.name
 }
+
 const maskText =(text, start, end) =>{
     const str = text.toString()
     if (str.length <= start + end) return str;
@@ -231,6 +236,10 @@ const viewerStatus = {
     signatureDocument:'document-signature',
     applicationDocument:"application-document"
 }
+
+const debouncedFn = useDebounceFn((callback) => {
+    callback?.()
+}, 1000, { maxWait: 5000 })
 
 
 export default {
@@ -264,5 +273,7 @@ export default {
     convertFromUrlToQuery,
     viewerStatus,
     methodTypes,
-    routeTimesheetPathMaker
+    routeTimesheetPathMaker,
+    formatNumberToMoney,
+    debouncedFn,
 }

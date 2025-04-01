@@ -6,6 +6,8 @@ import {useAdContractStore, useCommandStore} from "@/store/modules/index.js"
 import {FlowchartCircle20Filled} from "@vicons/fluent"
 import CommandForm from "@/pages/docFlow/document/command/CommandForm.vue"
 import Utils from "@/utils/Utils.js"
+import Filter from "./ui/Filter.vue"
+
 
 const store = useAdContractStore()
 const commandStore = useCommandStore()
@@ -62,12 +64,7 @@ onMounted(()=>{
 
 <template>
 <UIPageContent>
-  <UIPageFilter
-      @onSearch="onSearchEv"
-      @onAdd="onAdd"
-      v-model:search="store.params.search"
-      :search-loading="store.loading"
-  />
+  <Filter/>
   <Table @openOffice="openContract"
          @commandEv="openCommand"
   />

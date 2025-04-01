@@ -53,6 +53,9 @@ const openOffice = (id)=>{
 
 onMounted(()=>{
   pdfStore.visible = false
+  store.payload.pin = componentStore.pin
+  store.payload.country_id = 1
+  store.payload.nationality_id = 1
 })
 </script>
 
