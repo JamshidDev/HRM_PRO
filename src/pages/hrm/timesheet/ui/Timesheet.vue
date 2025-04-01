@@ -130,7 +130,6 @@ const renderWorkerLabel = (option) => {
           class: 'flex gap-2 my-1 items-center',
           onClick: () => {
             if (option.disabled) return
-            console.log(option)
             isAddUserVisible.value = false
             store._prepend_workers(option)
           }

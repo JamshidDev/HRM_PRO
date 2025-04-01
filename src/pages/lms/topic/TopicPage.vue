@@ -24,13 +24,25 @@ onMounted(()=>{
 
 <template>
 <UIPageContent>
-  <UIPageFilter
-      :show-search-input="false"
-      v-model:search="store.params.search"
-      @onSearch="onSearch"
-      @onAdd="onAdd"
-  />
-  <Cards/>
+  <div class="flex gap-2">
+    <div class="basis-[30%] grow shrink-0">
+      <UIPageFilter
+          :show-search-input="false"
+          v-model:search="store.params.search"
+          @onSearch="onSearch"
+          @onAdd="onAdd"
+      />
+      <Cards/>
+    </div>
+    <div class="transition-all shrink-1 overflow-hidden" :style="{'flex-basis': $route.params?.id ? '70%' : 0, 'flex-grow': !!$route.params?.id}">
+      <router-view :key="$route.fullPath" v-slot="{ Component }">
+        <transition name="slide-right" mode="out-in">
+          <component :is="Component" />
+        </transition>
+      </router-view>
+    </div>
+
+  </div>
   <UIDrawer
       :width="600"
       :visible="store.visible"

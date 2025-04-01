@@ -12,7 +12,7 @@ defineProps({
 
 </script>
 <template>
-  <div class="border bg-surface-section rounded-lg overflow-hidden border-secondary p-2 shadow-blue-50 drop-shadow-sm"
+  <div class="border bg-surface-section rounded-lg overflow-hidden border-surface-line p-2 shadow-blue-50 drop-shadow-sm"
   >
     <UIEditorViewer :html="question.question"></UIEditorViewer>
     <n-divider/>
