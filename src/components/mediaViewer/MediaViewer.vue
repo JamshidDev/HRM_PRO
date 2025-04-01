@@ -58,7 +58,7 @@ window.$MediaViewer = mediaViewer;
           :src="mediaUrl"
           @close="mediaViewer.hideMediaViewer()"
       />
-      <DocumentViewer v-if="FileExtensions.PDF.includes(extension)" :src="mediaUrl" />
+      <DocumentViewer v-if="FileExtensions.PDF.includes(extension)" :src="mediaUrl"  @close="mediaViewer.hideMediaViewer()"/>
     </template>
   </div>
 </template>
