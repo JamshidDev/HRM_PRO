@@ -37,13 +37,14 @@ onMounted(() => {
 </script>
 
 <template>
-  <n-spin :show="store.loading" class="mt-3 h-full">
+  <n-spin :show="store.loading" class="h-full">
     <div class="h-full flex flex-col">
       <div v-if="store.list.length>0" class="overflow-y-auto grow basis-auto">
         <div class="grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-5">
           <template v-for="(lesson, idx) in store.list" :key="idx">
             <div
                 class="rounded-md drop-shadow-md hover:drop-shadow-lg transition-all cursor-pointer bg-surface-section p-2 h-[120px] flex flex-col"
+                :class="{'active-lesson': store?.elementId===lesson.id}"
                 @click="store.elementId = lesson.id"
             >
               <div class="flex items-center gap-3 justify-between border-b border-surface-line">
@@ -137,7 +138,6 @@ onMounted(() => {
           <!--          </n-tabs>-->
           <!--        </div>-->
           <!--      </template>-->
-
         </div>
       </div>
       <UIPagination
@@ -150,5 +150,11 @@ onMounted(() => {
       />
       <NoDataPicture v-if="store.list.length===0 && !store.loading"/>
     </div>
+
   </n-spin>
 </template>
+<style scoped lang="scss">
+.active-lesson{
+  background: var(--blue-50);
+}
+</style>

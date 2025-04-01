@@ -115,13 +115,13 @@ const handleCreated = (editor) => {
         :path="path"
         :show-feedback="showValidationMessage"
     >
-      <div class="w-full border border-secondary drop-shadow-sm">
+      <div class="w-full border border-surface-line drop-shadow-sm">
         <Toolbar
             v-if="showToolbar"
             :defaultConfig="toolbarConfig"
             :editor="editorRef"
             :mode="'default'"
-            class="toolbar border-b border-secondary"
+            class="toolbar border-b border-surface-line"
         />
         <Editor
             v-model="text"

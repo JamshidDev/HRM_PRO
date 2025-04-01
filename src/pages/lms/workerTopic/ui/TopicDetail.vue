@@ -24,19 +24,23 @@ const getMediaProperty = (v) => {
   switch (v) {
     case MediaTypeEnum.BOOK:
       return {
+        color: "info",
         icon: Book24Filled
       }
     case MediaTypeEnum.IMAGE:
       return {
+        color: "success",
         icon: Image48Filled
       }
     case MediaTypeEnum.VIDEO:
       return {
-        icon: VideoClip24Filled
+        icon: VideoClip24Filled,
+        color: "error"
       }
     case MediaTypeEnum.AUDIO:
       return {
-        icon: MusicNote224Filled
+        icon: MusicNote224Filled,
+        color: "primary"
       }
   }
 }
@@ -73,8 +77,10 @@ const lesson = computed(()=>{
 })
 </script>
 <template>
-  <n-tabs animated type="line" v-if="lesson">
-    <n-tab-pane name="exams" :tab="$t('examPage.exams')">
+  <n-tabs animated type="line" v-if="lesson" class="h-full">
+    <n-tab-pane class="h-full" name="exams" :tab="$t('examPage.exams')">
+      <div class="overflow-auto h-full">
+
       <n-table
           v-if="!!lesson.exams.length"
           :single-line="false"
@@ -104,18 +110,21 @@ const lesson = computed(()=>{
         </tbody>
       </n-table>
       <NoDataPicture class="!my-0" v-else />
+      </div>
     </n-tab-pane>
     <n-tab-pane name="files" :tab="$t('examPage.resources')">
-      <div class="grid gap-4 flex-wrap grid-cols-[repeat(auto-fill,minmax(100px,1fr))]" v-if="!!lesson.files.length">
+      <div class="grid gap-4 flex-wrap grid-cols-[repeat(auto-fill,minmax(80px,1fr))]" v-if="!!lesson.files.length">
         <div
             v-for="(file, idx) in lesson.files"
             :key="idx"
-            class="flex flex-col grow gap-3 items-center w-24 text-center border rounded-md p-3 border-gray-300 justify-center"
+            class="flex flex-col gap-3 items-center w-full text-center border rounded-md p-3 border-surface-line justify-center bg-surface-section"
         >
           <n-button
               circle
               size="large"
+              :type="getMediaProperty(file.type.id).color"
               @click="showFile(file)"
+              tertiary
           >
             <template #icon>
               <n-icon

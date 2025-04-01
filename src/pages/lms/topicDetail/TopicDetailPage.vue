@@ -24,7 +24,6 @@ const tabs = [{
   }]
 
 const renderLabel = (option) => {
-  console.log(option)
   return [
     h(NButton, {
       type: "primary",
