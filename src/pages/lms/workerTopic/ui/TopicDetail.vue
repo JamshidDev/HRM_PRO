@@ -1,49 +1,15 @@
 <script setup>
 import ExamRow from './ExamRow.vue'
+import ExamCard from './ExamCard.vue'
 import {NoDataPicture} from "@/components/index.js";
 import {useExamAttemptStore, useWorkerExamStore} from "@/store/modules/index.js";
 import {useRouter} from "vue-router";
-import {Book24Filled, Image48Filled, MusicNote224Filled, VideoClip24Filled} from "@vicons/fluent";
-
+import File from "../../topicDetail/topicFile/ui/File.vue";
+import {DismissCircle32Filled} from '@vicons/fluent'
 const store = useWorkerExamStore()
 
 const router = useRouter()
 const examStore = useExamAttemptStore()
-const showFile = (file) => {
-  $MediaViewer.showMediaViewer(file.file, file.file_extension)
-}
-
-const MediaTypeEnum = {
-  VIDEO: "1",
-  IMAGE: "2",
-  BOOK: "3",
-  AUDIO: "4"
-}
-
-const getMediaProperty = (v) => {
-  switch (v) {
-    case MediaTypeEnum.BOOK:
-      return {
-        color: "info",
-        icon: Book24Filled
-      }
-    case MediaTypeEnum.IMAGE:
-      return {
-        color: "success",
-        icon: Image48Filled
-      }
-    case MediaTypeEnum.VIDEO:
-      return {
-        icon: VideoClip24Filled,
-        color: "error"
-      }
-    case MediaTypeEnum.AUDIO:
-      return {
-        icon: MusicNote224Filled,
-        color: "primary"
-      }
-  }
-}
 
 
 const startAttempt = (v) => {
@@ -77,68 +43,63 @@ const lesson = computed(()=>{
 })
 </script>
 <template>
-  <n-tabs animated type="line" v-if="lesson" class="h-full">
-    <n-tab-pane class="h-full" name="exams" :tab="$t('examPage.exams')">
-      <div class="overflow-auto h-full">
-
-      <n-table
-          v-if="!!lesson.exams.length"
-          :single-line="false"
-      >
-        <thead>
-        <tr>
-          <th></th>
-          <th>{{$t('examPage.exam')}}</th>
-          <th>{{ $t('solveExamPage.variant') }}</th>
-          <th>{{ $t('solveExamPage.totalTime') }}</th>
-          <th>{{ $t('solveExamPage.deadline') }}</th>
-          <th>{{ $t('solveExamPage.leftAttempts') }}</th>
-          <th>{{ $t('solveExamPage.questions') }}</th>
-          <th class="max-w-[150px] !text-center w-[150px]">{{$t('content.action')}}</th>
-        </tr>
-        </thead>
-        <tbody>
-        <exam-row
-            v-for="(exam,idx) in lesson.exams"
-            :exam="exam"
-            :key="idx"
-            @continue="goPush"
-            @view="viewExam"
-            @start="startAttempt(exam)"
-            :row-num="idx+1"
-        />
-        </tbody>
-      </n-table>
-      <NoDataPicture class="!my-0" v-else />
-      </div>
-    </n-tab-pane>
-    <n-tab-pane name="files" :tab="$t('examPage.resources')">
-      <div class="grid gap-4 flex-wrap grid-cols-[repeat(auto-fill,minmax(80px,1fr))]" v-if="!!lesson.files.length">
-        <div
-            v-for="(file, idx) in lesson.files"
-            :key="idx"
-            class="flex flex-col gap-3 items-center w-full text-center border rounded-md p-3 border-surface-line justify-center bg-surface-section"
-        >
-          <n-button
-              circle
-              size="large"
-              :type="getMediaProperty(file.type.id).color"
-              @click="showFile(file)"
-              tertiary
-          >
-            <template #icon>
-              <n-icon
-                  :component="getMediaProperty(file.type.id).icon"
-              ></n-icon>
-            </template>
-          </n-button>
-          <div class="truncate max-w-full">
-            <p class="text-sm truncate ">{{ file.file_name }}</p>
-          </div>
+  <div class="h-full">
+    <div class="flex  justify-between border-b border-surface-line py-3" >
+      <p class="text-2xl font-semibold">{{lesson?.name}}</p>
+      <n-button icon-placement="right" type="tertiary" text color="#747b81" @click="store.elementId = null">
+        {{ $t('content.close') }}
+        <template #icon>
+          <n-icon  :component="DismissCircle32Filled"/>
+        </template>
+      </n-button>
+    </div>
+    <n-tabs animated type="line" v-if="lesson" class="h-full" placement="right">
+      <n-tab-pane class="h-full overflow-hidden" name="exams" :tab="$t('examPage.exams')">
+        <div class="overflow-auto h-full">
+        <n-collapse class="flex flex-col gap-2 pt-2" v-if="!!lesson.exams.length">
+          <exam-card v-for="(exam, idx) in lesson.exams" :key="idx" :exam="exam" />
+        </n-collapse>
+  <!--      <n-table-->
+  <!--          v-if="!!lesson.exams.length"-->
+  <!--          :single-line="false"-->
+  <!--      >-->
+  <!--        <thead>-->
+  <!--        <tr>-->
+  <!--          <th></th>-->
+  <!--          <th>{{$t('examPage.exam')}}</th>-->
+  <!--          <th>{{ $t('solveExamPage.variant') }}</th>-->
+  <!--          <th>{{ $t('solveExamPage.totalTime') }}</th>-->
+  <!--          <th>{{ $t('solveExamPage.deadline') }}</th>-->
+  <!--          <th>{{ $t('solveExamPage.leftAttempts') }}</th>-->
+  <!--          <th>{{ $t('solveExamPage.questions') }}</th>-->
+  <!--          <th class="max-w-[150px] !text-center w-[150px]">{{$t('content.action')}}</th>-->
+  <!--        </tr>-->
+  <!--        </thead>-->
+  <!--        <tbody>-->
+  <!--        <exam-row-->
+  <!--            v-for="(exam,idx) in lesson.exams"-->
+  <!--            :exam="exam"-->
+  <!--            :key="idx"-->
+  <!--            @continue="goPush"-->
+  <!--            @view="viewExam"-->
+  <!--            @start="startAttempt(exam)"-->
+  <!--            :row-num="idx+1"-->
+  <!--        />-->
+  <!--        </tbody>-->
+  <!--      </n-table>-->
         </div>
-      </div>
-      <NoDataPicture class="!my-0" v-else />
+      </n-tab-pane>
+      <n-tab-pane name="files" :tab="$t('examPage.resources')">
+        <div class="grid gap-2 grid-cols-[repeat(auto-fill,minmax(100px,1fr))] p-1"  v-if="!!lesson.files.length">
+          <div
+              class="h-[130px] bg-surface-section rounded-md flex justify-center items-center drop-shadow-sm cursor-pointer hover:drop-shadow-lg transition-all border-surface-line border"
+              v-for="(item, idx) in lesson.files" :key="idx"
+          >
+            <File :file="item" />
+          </div>
 
-    </n-tab-pane>
-  </n-tabs>
+        </div>
+      </n-tab-pane>
+    </n-tabs>
+  </div>
 </template>

@@ -39,7 +39,7 @@ const activeTab = ref(1)
 </script>
 
 <template>
-    <div class="border-l border-surface-line pl-2 h-full">
+    <div class="h-full bg-surface-section rounded-md p-2">
       <div class="h-full">
         <div class="flex justify-between">
           <n-select class="!w-[150px]" :options="tabs" v-model:value="activeTab" :render-label="renderLabel" value-field="id" label-field="id" :placeholder="$t(`content.choose`)" />
@@ -50,8 +50,7 @@ const activeTab = ref(1)
             </template>
           </n-button>
         </div>
-        <n-tabs class="h-full" :value="activeTab" animated size="small" :tab-style="{ display: 'none' }"  >
-
+        <n-tabs class="h-full" :value="activeTab" animated size="small" :tab-style="{ display: 'none', margin: 0 }"  >
           <n-tab-pane  v-for="(item) in tabs" :name="item.id"  class="h-full !pt-0">
             <component :is="item.component"/>
           </n-tab-pane>

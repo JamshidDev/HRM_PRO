@@ -3,7 +3,7 @@ import {useTopicExamStore} from "@/store/modules/index.js"
 import {NoDataPicture, UIMenuButton, UIPagination} from "@/components/index.js";
 import {useRouter} from "vue-router";
 import Utils from "@/utils/Utils.js"
-import {BookQuestionMark20Filled} from "@vicons/fluent";
+import {BookQuestionMark20Filled, ClockAlarm32Filled, AppsList20Filled} from "@vicons/fluent";
 
 const store = useTopicExamStore()
 
@@ -34,12 +34,10 @@ const onSelect = (v)=>{
 <template>
   <n-spin :show="store.loading" class="mt-2">
     <div class="w-full overflow-x-auto"  v-if="store.list.length>0">
-      <n-table
-          class="overflow-x-auto"
-          :single-line="false"
-          size="small"
+      <table
+          class="overflow-x-auto w-full"
       >
-        <thead>
+        <thead class="bg-primary border-spacing-0">
         <tr>
           <th class="!text-center min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
           <th class="!text-center min-w-[150px] w-[200px]">{{$t('content.name')}}</th>
@@ -52,35 +50,56 @@ const onSelect = (v)=>{
           <th>{{$t('content.action')}}</th>
         </tr>
        </thead>
-        <tbody>
-        <tr v-for="(item, idx) in store.list" :key="idx">
-          <td><span class="text-center text-[12px] text-gray-600 block">{{ (store.params.page - 1) * store.params.per_page + idx + 1 }}</span></td>
-          <td>{{item.name}}</td>
-          <td>{{item.whom.name}}</td>
-          <td>{{item.tests_count}}</td>
-          <td>{{item.variant}}</td>
-          <td>{{item.minute}}</td>
-          <td>{{Utils.timeWithMonth(item.deadline)}}</td>
-          <td><n-switch :value="!!item.active" disabled /></td>
-          <td>
-            <UIMenuButton
-                :show-edit="true"
-                :show-delete="true"
-                :data="item"
-                @select-ev="onSelect"
-                :extra-options="[
-                    {
-                      label: $t('topicDetailsPage.questions.name'),
-                      key: 'attach_question',
-                      icon: BookQuestionMark20Filled,
-                      visible:true,
-                    },
-                ]"
-            />
-          </td>
-        </tr>
+        <tbody class="bg-surface-section">
+        <template v-for="(item, idx) in store.list" :key="idx">
+          <tr />
+          <tr >
+            <td><span class="text-center text-[12px] text-gray-600 block">{{ (store.params.page - 1) * store.params.per_page + idx + 1 }}</span></td>
+            <td>{{item.name}}</td>
+            <td>{{item.whom.name}}</td>
+            <td>
+              <n-button size="small" round type="success" ghost >
+                {{item.tests_count}}
+                <template #icon>
+                  <n-icon  :component="AppsList20Filled"/>
+                </template>
+              </n-button>
+            </td>
+            <td>
+              <n-button type="tertiary" ghost circle>
+                {{item.variant}}
+              </n-button>
+            </td>
+            <td>
+              <n-button size="small" type="info" dashed round>
+                {{item.minute}}
+                <template #icon>
+                  <n-icon :component="ClockAlarm32Filled" />
+                </template>
+              </n-button>
+            </td>
+            <td><n-tag type="warning" round>{{Utils.timeWithMonth(item.deadline)}}</n-tag></td>
+            <td><n-switch :value="!!item.active" disabled /></td>
+            <td>
+              <UIMenuButton
+                  :show-edit="true"
+                  :show-delete="true"
+                  :data="item"
+                  @select-ev="onSelect"
+                  :extra-options="[
+                      {
+                        label: $t('topicDetailsPage.questions.name'),
+                        key: 'attach_question',
+                        icon: BookQuestionMark20Filled,
+                        visible:true,
+                      },
+                  ]"
+              />
+            </td>
+          </tr>
+        </template>
         </tbody>
-      </n-table>
+      </table>
       <UIPagination
           v-if="store.totalItems>store.params.per_page"
           :page="store.params.page"
@@ -92,3 +111,35 @@ const onSelect = (v)=>{
     <NoDataPicture v-if="store.list.length===0 && !store.loading" />
   </n-spin>
 </template>
+<style scoped lang="scss">
+table{
+  border-collapse: separate;
+  border-spacing: 0;
+}
+thead{
+  background: var(--surface-ground);
+}
+td, th{
+  padding: 5px;
+  border: 1px solid var(--surface-line);
+  border-left: none;
+  font-size: 14px;
+  text-wrap: nowrap;
+  text-align: center;
+}
+tr{
+  height: 30px;
+  td:first-child, th:first-child{
+    border-left: 1px solid var(--surface-line);
+    border-top-left-radius: 12px;
+    border-bottom-left-radius: 12px;
+  }
+  td:last-child, th:last-child{
+    border-top-right-radius: 12px;
+    border-bottom-right-radius: 12px;
+  }
+}
+tbody tr:nth-child(2n+1){
+  height: 10px;
+}
+</style>

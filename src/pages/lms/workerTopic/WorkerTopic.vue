@@ -38,13 +38,15 @@ onMounted(()=>{
       </n-grid-item>
       <n-gi :span="4" />
     </n-grid>
-    <div class="grow basis-auto overflow-hidden flex gap-4">
+    <div class="grow basis-auto overflow-hidden flex gap-3">
       <div class="grow basis-auto">
         <List/>
       </div>
       <div :style="{'width': store?.elementId && store.list.find(i=>i.id===store.elementId) ? '50%' : '0'}"
-           class="transition-all">
-        <TopicDetail />
+           class="transition-all  bg-surface-section rounded-md">
+        <div class="px-3 h-full">
+          <TopicDetail />
+        </div>
       </div>
     </div>
   </div>

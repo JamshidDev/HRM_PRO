@@ -1,11 +1,11 @@
 <script setup>
 import {
-  AppsList20Filled, ArrowRepeatAll16Filled,
+  AppsList20Filled, ArrowRepeatAll16Filled,DocumentBulletList20Filled,
   CalendarClock20Filled, ChevronDown12Filled, ClipboardBulletListLtr20Filled,
   DocumentBulletListClock20Filled,
   HatGraduation12Filled,
   Eye12Filled,
-  ArrowSyncCheckmark24Filled
+  ArrowSyncCheckmark24Filled, Clock32Filled
 } from "@vicons/fluent";
 import Utils from "@/utils/Utils.js";
 import {useRouter} from "vue-router";
@@ -40,120 +40,173 @@ const startAttempt = (v)=>{
 
 </script>
 <template>
-    <div class="p-2 rounded-md">
-      <div class="flex justify-between">
-        <n-button
-            text
-            type="warning"
-        >
-          <template #icon>
-            <n-icon :component="HatGraduation12Filled"></n-icon>
-          </template>
-          {{ exam.name }}
-        </n-button>
-        <n-button
-            type="primary"
-            :loading="examStore.loading && examStore.elementId===exam.id"
-            :disabled="exam.results.findIndex(i=>!i.result)!==-1 && !examStore.exam_storage?.[exam.id]"
-            @click="startAttempt(exam)"
-        >
-          {{$t('examPage.start')}}
-        </n-button>
-      </div>
-      <div>
-        <p v-if="exam?.description" class="text-sm text-gray-500">{{ exam.description }}</p>
-        <div class="flex gap-3 flex-wrap mt-2">
-          <n-button-group>
-            <n-button size="tiny"  ghost  type="primary">
-              {{$t('examPage.variant', {n: exam.variant})}}
-              <template #icon>
-                <n-icon :component="AppsList20Filled" />
-              </template>
-            </n-button>
-            <n-button size="tiny" ghost  type="warning">
-              {{$t('examPage.totalTime', {n: exam.minute})}}
-              <template #icon>
-                <n-icon :component="DocumentBulletListClock20Filled" />
-              </template>
-            </n-button>
-            <n-button size="tiny" ghost  type="error">
-              {{$t('examPage.deadline', {n: Utils.timeWithMonth(exam.deadline)})}}
-              <template #icon>
-                <n-icon :component="CalendarClock20Filled" />
-              </template>
-            </n-button>
-            <n-button size="tiny" ghost  type="info">
-              {{$t('examPage.attempts', {n: exam.chances})}}
-              <template #icon>
-                <n-icon :component="ArrowRepeatAll16Filled" />
-              </template>
-            </n-button>
-            <n-button size="tiny" ghost  type="success">
-              {{$t('examPage.questions', {n: exam.questions_count})}}
-              <template #icon>
-                <n-icon :component="ClipboardBulletListLtr20Filled" />
-              </template>
-            </n-button>
-          </n-button-group>
+    <n-collapse-item class="!mt-0 exam-collapse rounded-md border-surface-line border" :name="exam.id">
+      help
+      <template #arrow>
+        {{null}}
+      </template>
+      <template #header>
+        <div class="flex gap-2 items-center w-full p-2 transition-all hover:bg-surface-ground">
+          <n-button type="primary" tertiary >
+            {{$t('examPage.nMinute', {n: exam.minute})}}
+            <template #icon>
+              <n-icon :component="Clock32Filled"/>
+            </template>
+          </n-button>
+          <div>
+            <p class="font-bold text-lg">{{exam.name}}</p>
+              <n-button-group >
+                <n-button size="tiny" dashed type="tertiary">
+                  {{$t('examPage.nVariant', {n: exam.variant})}}
+                  <template #icon>
+                    <n-icon :component="AppsList20Filled" />
+                  </template>
+                </n-button>
+
+                <n-button size="tiny" dashed type="tertiary">
+                  {{$t('examPage.deadline', {n: Utils.timeWithMonth(exam.deadline)})}}
+                  <template #icon>
+                    <n-icon :component="CalendarClock20Filled" />
+                  </template>
+                </n-button>
+                <n-button size="tiny" dashed type="tertiary">
+                  {{$t('examPage.nAttempts', {n: exam.chances})}}
+                  <template #icon>
+                    <n-icon :component="ArrowRepeatAll16Filled" />
+                  </template>
+                </n-button>
+                <n-button size="tiny" dashed type="tertiary">
+                  {{$t('examPage.nQuestions', {n: exam.questions_count})}}
+                  <template #icon>
+                    <n-icon :component="ClipboardBulletListLtr20Filled" />
+                  </template>
+                </n-button>
+              </n-button-group>
+          </div>
         </div>
-      </div>
-      <n-collapse-transition v-if="exam.results.length" class="mt-3 overflow-y-auto" :show="showHistory">
-        <n-table
-            :single-line="false"
-            size="small"
-        >
-          <thead>
-          <tr>
-            <th>{{$t('content.number')}}</th>
-            <th>{{$t('examPage.startTime')}}</th>
-            <th>{{$t('examPage.endTime')}}</th>
-            <th>{{$t('examPage.result')}}</th>
-            <th class="max-w-[150px] !text-center w-[150px]">{{$t('content.action')}}</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr v-for="(item, idx) in exam.results" :key="idx">
-            <td>{{idx+1}}</td>
-            <td>{{Utils.timeWithMonth(item.created)}}</td>
-            <td>{{item.ended && Utils.timeWithMonth(item.ended)}}</td>
-            <td>{{item?.result && item?.result}}</td>
-            <td class="!text-center">
-              <n-button size="small" tertiary type="info" v-if="item.result">
-                {{$t('content.view')}}
-                <template #icon>
-                  <n-icon :component="Eye12Filled" />
-                </template>
-              </n-button>
-              <n-button
-                  size="small"
-                  tertiary
-                  type="warning"
-                  v-else
-                  :disabled="!examStore.exam_storage?.[item.id]"
-                  @click="goPush(item)"
-              >
-                {{$t('content.continue')}}
-                <template #icon>
-                  <n-icon :component="ArrowSyncCheckmark24Filled" />
-                </template>
-              </n-button>
-            </td>
-          </tr>
-          </tbody>
-        </n-table>
-      </n-collapse-transition>
-      <div class="flex justify-center mt-3" v-if="exam.results.length">
-        <n-button size="small" quaternary @click="showHistory=!showHistory">
-          <template #icon>
-            <div class="transition-all" :class="{'rotate-180': showHistory}">
-              <n-icon :component="ChevronDown12Filled"/>
-            </div>
-          </template>
-        </n-button>
-      </div>
-    </div>
+      </template>
+    </n-collapse-item>
+
+<!--    <div class="p-2 rounded-md">-->
+<!--      <div class="flex justify-between">-->
+<!--        <n-button-->
+<!--            text-->
+<!--            type="warning"-->
+<!--        >-->
+<!--          <template #icon>-->
+<!--            <n-icon :component="HatGraduation12Filled"></n-icon>-->
+<!--          </template>-->
+<!--          {{ exam.name }}-->
+<!--        </n-button>-->
+<!--        <n-button-->
+<!--            type="primary"-->
+<!--            :loading="examStore.loading && examStore.elementId===exam.id"-->
+<!--            :disabled="exam.results.findIndex(i=>!i.result)!==-1 && !examStore.exam_storage?.[exam.id]"-->
+<!--            @click="startAttempt(exam)"-->
+<!--        >-->
+<!--          {{$t('examPage.start')}}-->
+<!--        </n-button>-->
+<!--      </div>-->
+<!--      <div>-->
+<!--        <p v-if="exam?.description" class="text-sm text-gray-500">{{ exam.description }}</p>-->
+<!--        <div class="flex gap-3 flex-wrap mt-2">-->
+<!--          <n-button-group>-->
+<!--            <n-button size="tiny"  ghost  type="primary">-->
+<!--              {{$t('examPage.variant', {n: exam.variant})}}-->
+<!--              <template #icon>-->
+<!--                <n-icon :component="AppsList20Filled" />-->
+<!--              </template>-->
+<!--            </n-button>-->
+<!--            <n-button size="tiny" ghost  type="warning">-->
+<!--              {{$t('examPage.totalTime', {n: exam.minute})}}-->
+<!--              <template #icon>-->
+<!--                <n-icon :component="DocumentBulletListClock20Filled" />-->
+<!--              </template>-->
+<!--            </n-button>-->
+<!--            <n-button size="tiny" ghost  type="error">-->
+<!--              {{$t('examPage.deadline', {n: Utils.timeWithMonth(exam.deadline)})}}-->
+<!--              <template #icon>-->
+<!--                <n-icon :component="CalendarClock20Filled" />-->
+<!--              </template>-->
+<!--            </n-button>-->
+<!--            <n-button size="tiny" ghost  type="info">-->
+<!--              {{$t('examPage.attempts', {n: exam.chances})}}-->
+<!--              <template #icon>-->
+<!--                <n-icon :component="ArrowRepeatAll16Filled" />-->
+<!--              </template>-->
+<!--            </n-button>-->
+<!--            <n-button size="tiny" ghost  type="success">-->
+<!--              {{$t('examPage.questions', {n: exam.questions_count})}}-->
+<!--              <template #icon>-->
+<!--                <n-icon :component="ClipboardBulletListLtr20Filled" />-->
+<!--              </template>-->
+<!--            </n-button>-->
+<!--          </n-button-group>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--      <n-collapse-transition v-if="exam.results.length" class="mt-3 overflow-y-auto" :show="showHistory">-->
+<!--        <n-table-->
+<!--            :single-line="false"-->
+<!--            size="small"-->
+<!--        >-->
+<!--          <thead>-->
+<!--          <tr>-->
+<!--            <th>{{$t('content.number')}}</th>-->
+<!--            <th>{{$t('examPage.startTime')}}</th>-->
+<!--            <th>{{$t('examPage.endTime')}}</th>-->
+<!--            <th>{{$t('examPage.result')}}</th>-->
+<!--            <th class="max-w-[150px] !text-center w-[150px]">{{$t('content.action')}}</th>-->
+<!--          </tr>-->
+<!--          </thead>-->
+<!--          <tbody>-->
+<!--          <tr v-for="(item, idx) in exam.results" :key="idx">-->
+<!--            <td>{{idx+1}}</td>-->
+<!--            <td>{{Utils.timeWithMonth(item.created)}}</td>-->
+<!--            <td>{{item.ended && Utils.timeWithMonth(item.ended)}}</td>-->
+<!--            <td>{{item?.result && item?.result}}</td>-->
+<!--            <td class="!text-center">-->
+<!--              <n-button size="small" tertiary type="info" v-if="item.result">-->
+<!--                {{$t('content.view')}}-->
+<!--                <template #icon>-->
+<!--                  <n-icon :component="Eye12Filled" />-->
+<!--                </template>-->
+<!--              </n-button>-->
+<!--              <n-button-->
+<!--                  size="small"-->
+<!--                  tertiary-->
+<!--                  type="warning"-->
+<!--                  v-else-->
+<!--                  :disabled="!examStore.exam_storage?.[item.id]"-->
+<!--                  @click="goPush(item)"-->
+<!--              >-->
+<!--                {{$t('content.continue')}}-->
+<!--                <template #icon>-->
+<!--                  <n-icon :component="ArrowSyncCheckmark24Filled" />-->
+<!--                </template>-->
+<!--              </n-button>-->
+<!--            </td>-->
+<!--          </tr>-->
+<!--          </tbody>-->
+<!--        </n-table>-->
+<!--      </n-collapse-transition>-->
+<!--      <div class="flex justify-center mt-3" v-if="exam.results.length">-->
+<!--        <n-button size="small" quaternary @click="showHistory=!showHistory">-->
+<!--          <template #icon>-->
+<!--            <div class="transition-all" :class="{'rotate-180': showHistory}">-->
+<!--              <n-icon :component="ChevronDown12Filled"/>-->
+<!--            </div>-->
+<!--          </template>-->
+<!--        </n-button>-->
+<!--      </div>-->
+<!--    </div>-->
 </template>
-<style scoped lang="scss">
+<style lang="scss">
+.exam-collapse{
+  .n-collapse-item__header{
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+}
 .exam {
   &__card{
     border: 1px solid var(--secondary-color);

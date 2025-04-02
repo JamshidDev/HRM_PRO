@@ -37,36 +37,33 @@ onMounted(() => {
 </script>
 
 <template>
-  <n-spin :show="store.loading" class="h-full">
+  <n-spin :show="store.loading" class="h-full bg-surface-section rounded-md p-1">
     <div class="h-full flex flex-col">
       <div v-if="store.list.length>0" class="overflow-y-auto grow basis-auto">
-        <div class="grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-5">
+        <div class="grid grid-cols-[repeat(auto-fill,minmax(250px,1fr))] gap-5">
           <template v-for="(lesson, idx) in store.list" :key="idx">
             <div
-                class="rounded-md drop-shadow-md hover:drop-shadow-lg transition-all cursor-pointer bg-surface-section p-2 h-[120px] flex flex-col"
+                class="rounded-md drop-shadow-md hover:drop-shadow-lg transition-all cursor-pointer lesson-card p-2 h-[90px] flex flex-col"
                 :class="{'active-lesson': store?.elementId===lesson.id}"
                 @click="store.elementId = lesson.id"
             >
-              <div class="flex items-center gap-3 justify-between border-b border-surface-line">
-                <n-button :type="randomColors[0]" size="large" text>
-                  <template #icon>
-                    <n-icon :component="DocumentOnePage24Filled"/>
-                  </template>
-                  <span>{{ lesson.name }}</span>
-                </n-button>
+              <div class="flex items-center gap-3 justify-between">
+                <p class="text-xl font-semibold">
+                  {{ lesson.name }}
+                </p>
                 <n-button :type="randomColors[1]" dashed size="tiny">
                   {{ lesson.type.name }}
                 </n-button>
               </div>
-              <div class="flex gap-2 justify-end  items-end grow">
-                <n-button :type="randomColors[2]" text>
+              <div class="flex gap-2  items-end grow">
+                <n-button type="primary" text size="tiny">
                   <template #icon>
                     <n-icon :component="HatGraduation12Filled"/>
                   </template>
 
                   <p>{{ $t('examPage.nExams', {n: lesson.exams?.length}) }}</p>
                 </n-button>
-                <n-button :type="randomColors[2]" text>
+                <n-button type="primary" text  size="tiny">
                   <p>{{ $t('examPage.nFiles', {n: lesson.files?.length}) }}</p>
                   <template #icon>
                     <n-icon :component="Bookmark32Filled"/>
@@ -154,7 +151,13 @@ onMounted(() => {
   </n-spin>
 </template>
 <style scoped lang="scss">
+.lesson-card{
+  background-color: rgba(31, 65, 174, 0.05);
+  &:hover{
+    background-color:#2357ed1a;
+  }
+}
 .active-lesson{
-  background: var(--blue-50);
+  background: #2357ed1a;
 }
 </style>
