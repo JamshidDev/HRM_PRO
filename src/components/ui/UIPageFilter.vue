@@ -29,7 +29,7 @@ const props = defineProps({
     type:Object,
     default:{
       width:'360px',
-      height:'300px'
+      minHeight:'300px'
     }
   },
   searchLoading:{

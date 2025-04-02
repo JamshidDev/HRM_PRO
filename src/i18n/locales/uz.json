@@ -625,8 +625,8 @@
     "step": {
       "stepOne": "Shartnoma turi",
       "stepTwo": "Shartnoma ma'lumoti",
-      "stepThree": "Buyruk biriktirish",
-      "stepFour": "Hotali"
+      "stepThree": "Buyruq biriktirish",
+      "stepFour": "Holati"
     },
     "confirmText": "{n} raqamli shartnoma asosida buyruq yaratasizmi?",
     "confirmAdText": "{n} raqamli qo'shimcha kelishuv shartnoma asosida buyruq yaratasizmi?"
@@ -960,6 +960,8 @@
     "totalMinute": "{n} daqiqa",
     "resources": "Resurslar",
     "exams": "Imtihonlar",
+    "nExams": "{n} ta imtihon",
+    "nFiles": "{n} ta fayl",
     "deadline": "Yopilish vaqti: {n}",
     "examBrief": "Imtihonda savollarida {variant}ta variantlar mavjud. Yechish uchun {chances}ta imkoniyat berilgan. Imtihonni {minute} daqiqa ichida yakunlash kerak. Imtihon {deadline}da yopiladi",
     "extra": "Qo'shimcha: {n}",
@@ -994,7 +996,9 @@
     "removeAnswer": "Javobni olib tashlash",
     "notAnswered": "{n}ta savolga javob bermagansiz!!!",
     "endWarning": "Imtihonni yakunlashga ishonchingiz komilmi?",
-    "leftAttempts": "Qolgan urunishlar"
+    "leftAttempts": "Qolgan urunishlar",
+    "welcomeTitle": "Xush kelibsiz!",
+    "welcomeDesc": "Barcha temir yo'l xodimlari sertifikatlashtirish bo'limida o'z mutaxassisliklari bo'yicha test imtihonlarini topshiradilar."
   },
   "questionPage": {
     "form": {
@@ -1035,6 +1039,7 @@
       "type": "Ta'til turi",
       "durationDay": "Ta'til davomiyligi {n} kun",
       "workDay": "Ishga chiqish sanasi",
+      "vacation": "Ta'tildagi xodimlar",
       "duration": "Ta'til davri"
     },
     "contract": {
@@ -1090,6 +1095,7 @@
   },
   "applicationPage": {
     "name": "Arizalar",
+    "addApp": "Ariz yuborish",
     "createWorkerApplication": "Ariza yaratish",
     "updateWorkerApplication": "Ariza tahrirlash",
     "lastVacationTitle": "Oxirgi ta'til ma'lumotlari",

@@ -32,10 +32,10 @@ const onSelect = (v)=>{
 </script>
 
 <template>
-  <n-spin :show="store.loading" style="min-height: 200px">
+  <n-spin :show="store.loading" class="mt-2">
     <div class="w-full overflow-x-auto"  v-if="store.list.length>0">
       <n-table
-          class="mt-10"
+          class="overflow-x-auto"
           :single-line="false"
           size="small"
       >

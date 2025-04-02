@@ -47,7 +47,7 @@ const timeWithMonth = (time)=>{
     return time? dayjs(time).format('DD.MM.YYYY HH:mm') : null
 }
 const timeOnlyDate = (time)=>{
-    return time? dayjs(time).format('YYYY.MM.DD') : null
+    return time? dayjs(time).format('DD.MM.YYYY') : null
 }
 
 const timeOnlyHour = (time)=>{

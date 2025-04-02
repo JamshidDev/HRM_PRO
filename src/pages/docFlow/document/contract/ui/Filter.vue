@@ -24,6 +24,7 @@ const onSearchEv = ()=>{
 }
 
 const filterEvent = ()=>{
+  store.params.page=1
   store._index()
 }
 
@@ -91,7 +92,7 @@ const beforeShow = (v)=>{
     />
     <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{$t('content.created')}}</label>
     <n-date-picker
-        class="w-full"
+        class="w-full mb-2"
         v-model:value="store.params.created"
         type="date"
         :placeholder="$t(`content.choose`)"

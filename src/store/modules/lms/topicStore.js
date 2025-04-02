@@ -7,6 +7,7 @@ export const useTopicStore = defineStore('topicStore', {
         loading:false,
         saveLoading:false,
         deleteLoading:false,
+        showLoading: false,
         visible:false,
         visibleType:true,
         elementId:null,
@@ -35,14 +36,14 @@ export const useTopicStore = defineStore('topicStore', {
             })
         },
         _show(){
-            this.loading= true
+            this.showLoading= true
             $ApiService.topicService._show({id:this.elementId}).then((res)=>{
                 const {type, organizations, name} = res.data.data
                 this.payload.type = type.id
                 this.payload.organizations = organizations
                 this.payload.name = name
             }).finally(()=>{
-                this.loading= false
+                this.showLoading= false
             })
         },
         _create(){

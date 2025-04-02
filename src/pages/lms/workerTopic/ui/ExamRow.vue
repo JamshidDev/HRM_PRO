@@ -58,30 +58,9 @@ const historyData = ref(null)
         {{$t('examPage.start')}}
       </n-button>
     </td>
-    <!--                      <td class="!text-center">-->
-    <!--                        <n-button size="small" tertiary type="info" v-if="item.result">-->
-    <!--                          {{$t('content.view')}}-->
-    <!--                          <template #icon>-->
-    <!--                            <n-icon :component="Eye12Filled" />-->
-    <!--                          </template>-->
-    <!--                        </n-button>-->
-    <!--                        <n-button-->
-    <!--                            size="small"-->
-    <!--                            tertiary-->
-    <!--                            type="warning"-->
-    <!--                            v-else-->
-    <!--                            :disabled="!examStore.exam_storage?.[item.id]"-->
-    <!--                            @click="goPush(item)"-->
-    <!--                        >-->
-    <!--                          {{$t('content.continue')}}-->
-    <!--                          <template #icon>-->
-    <!--                            <n-icon :component="ArrowSyncCheckmark24Filled" />-->
-    <!--                          </template>-->
-    <!--                        </n-button>-->
-    <!--                      </td>-->
   </tr>
   <tr v-if="exam.results.length">
-    <td class="!py-[2px]" colspan="8" >
+    <td class="!py-[2px] !px-0" colspan="8" >
       <div class="flex items-center justify-end gap-2">
         <p class="text-xs">{{$t('examPage.attempts')}}</p>
         <n-button size="tiny" @click="showHistory=!showHistory" circle quaternary>
@@ -95,10 +74,11 @@ const historyData = ref(null)
       <n-collapse-transition :show="showHistory">
         <n-table
             striped
-            class="mt-2"
+            class="mt-2 !rounded-none"
             size="small"
             :bordered="false"
             :bottom-bordered="true"
+
         >
           <thead>
           <tr>

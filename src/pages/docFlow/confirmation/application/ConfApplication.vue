@@ -32,8 +32,10 @@ onMounted(()=>{
   <UIPageContent>
     <Banner/>
     <UIPageFilter
+        class="mt-4"
         v-model:search="store.params.search"
         :show-filter-button="false"
+        :show-add-button="false"
         @onSearch="onSearch"
         @onAdd="onAdd"/>
     <UIModal

@@ -3,7 +3,7 @@ import {useTopicFileStore} from "@/store/modules/index.js"
 import {NoDataPicture, UIMenuButton, UIPagination} from "@/components/index.js";
 import {AppPaths} from "@/utils/index.js";
 import {useRouter} from "vue-router";
-import {Book24Filled, Image48Filled, VideoClip24Filled, MusicNote224Filled} from "@vicons/fluent";
+import {Book24Filled, Image48Filled, VideoClip24Filled, MusicNote224Filled, Add16Filled} from "@vicons/fluent";
 
 const MediaTypeEnum = {
   VIDEO: "1",
@@ -72,10 +72,18 @@ const onSelect = (v)=>{
 </script>
 
 <template>
-  <n-spin :show="store.loading" style="min-height: 200px">
-    <div class="w-full overflow-x-auto"  v-if="store.list.length>0">
+  <n-spin :show="store.loading" class="mt-2">
+<!--    <div class="grid gap-2 grid-cols-[repeat(auto-fill,minmax(100px,1fr))] p-5 pl-0">-->
+<!--      <div class="h-[130px] bg-surface-section rounded-md flex justify-center items-center drop-shadow-sm cursor-pointer hover:drop-shadow-lg transition-all ">-->
+<!--        <n-button circle size="large" type="info" dashed>-->
+<!--          <template #icon>-->
+<!--            <n-icon :component="Add16Filled" />-->
+<!--          </template>-->
+<!--        </n-button>-->
+<!--      </div>-->
+<!--    </div>-->
+    <div class="w-full overflow-x-auto !pt-0"  v-if="store.list.length>0">
       <n-table
-          class="mt-10"
           :single-line="false"
           size="small"
       >
@@ -91,7 +99,7 @@ const onSelect = (v)=>{
         <tbody>
         <tr v-for="(item, idx) in store.list" :key="idx">
           <td><span class="text-center text-[12px] text-gray-600 block">{{ (store.params.page - 1) * store.params.per_page + idx + 1 }}</span></td>
-          <td>{{item.file_name+'.'+ item.file_extension}}</td>
+          <td>{{item.file_name}}</td>
           <td class="!text-center">
             <n-button size="tiny" dashed>
               <template #icon>

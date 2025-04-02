@@ -1,8 +1,9 @@
 import {Folder48Filled,LockClosed16Filled, Person32Filled,
     DocumentPerson16Filled, PersonNote24Filled,Person12Filled,
     TextBulletListSquare20Filled, ChannelShare20Filled, DocumentTextExtract24Filled,
-    PeopleCheckmark24Filled, DocumentArrowDown20Filled, Archive24Filled, WeatherSunnyLow20Filled,
-    Grid20Filled, Document32Filled, PersonClock24Filled, GridKanban20Filled,BriefcaseMedical20Filled} from "@vicons/fluent"
+    PeopleCheckmark24Filled, DocumentArrowDown20Filled, WeatherSunnyLow20Filled,
+    Grid20Filled, Document32Filled, PersonClock24Filled, GridKanban20Filled,BriefcaseMedical20Filled,
+    BookQuestionMark24Filled, Book20Filled, HatGraduation12Filled} from "@vicons/fluent"
 import {AppPaths} from "@/utils/index.js";
 import Utils from "@/utils/Utils.js"
 const {appPermissions} = Utils
@@ -181,22 +182,22 @@ export const navigations = [
             {
                 label:'topicPage.name',
                 path:Utils.routeLmsPathMaker(AppPaths.Topic),
-                icon:Archive24Filled,
-                color:'bg-dark',
+                icon:Book20Filled,
+                color:'bg-warning',
                 permission:appPermissions.examTopics,
             },
             {
                 label:'categoryPage.name',
                 path:Utils.routeLmsPathMaker(AppPaths.Category),
-                icon:Archive24Filled,
-                color:'bg-dark',
+                icon:BookQuestionMark24Filled,
+                color:'bg-info',
                 permission:appPermissions.examCategories,
             },
             {
                 label:t('examPage.name'),
                 path:Utils.routeLmsPathMaker(AppPaths.Exam),
-                icon:Archive24Filled,
-                color:'bg-dark',
+                icon:HatGraduation12Filled,
+                color:'bg-secondary',
                 permission:appPermissions.examExams,
             },
         ]
