@@ -80,7 +80,7 @@ const onSelect =(v)=>{
               @click="onOpenFile(item)"
               class="text-sm hover:text-primary hover:underline cursor-pointer">{{item?.type?.name}}</span></td>
           <td>
-            <div class="flex justify-center"><n-button class="font-medium" round type="error" size="tiny">{{item?.number}}</n-button></div>
+            <div v-if="item?.number" class="flex justify-center"><n-button class="font-medium" round type="info" size="tiny">{{item?.number}}</n-button></div>
           </td>
           <td>
             <UIUser

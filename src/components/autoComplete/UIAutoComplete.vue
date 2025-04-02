@@ -84,7 +84,7 @@ const feedback = computed(()=>!Boolean(pin.value))
 
     <div v-on-click-outside="onClose" v-if="visible" class="
     ui__autocomplete-panel shadow bg-surface-section border border-surface-line
-    w-full top-[65px] absolute z-[9] h-[60px] p-2 rounded-xl
+    w-full top-[65px] absolute z-[999] h-[60px] p-2 rounded-xl
 ">
       <n-spin class="w-full h-full flex justify-center items-center" :show="store.pinLoading" size="small">
         <template v-if="store.worker">

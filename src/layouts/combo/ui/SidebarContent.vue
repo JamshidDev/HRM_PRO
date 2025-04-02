@@ -51,12 +51,15 @@ const miniMenu = computed(()=>{
     label:v.label,
     path:v.path,
     icon:v.icon,
-  }))
+    permission:v.permission
+  })).filter((v)=>store.checkPermission(v.permission))
+
 })
 
 const panelMenu = computed(()=>{
   let index = navigations.findIndex((v=>v.path === menuPath.value))
-  return (index === -1)? navigations[0].children : navigations[index].children
+  // return (index === -1)? navigations[0].children.filter((v)=>store.checkPermission(v.permission)) : navigations[index].children.filter((v)=>store.checkPermission(v.permission))
+  return (index === -1)? navigations[0].children: navigations[index].children
 })
 
 const menuName = computed(()=>{
@@ -84,7 +87,8 @@ const isCurrentPath = (path)=>{
 
 const pushFirstMenu = (path)=>{
   let index = navigations.findIndex((v=>v.path === path))
-  router.push(navigations[index].children[0].path)
+  // router.push(navigations[index].children.filter((v)=>store.checkPermission(v.permission))?.[0]?.path)
+  router.push(navigations[index].children[0]?.path)
 }
 
 const accountFullName = computed(()=>{

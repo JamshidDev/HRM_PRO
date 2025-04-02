@@ -191,7 +191,14 @@
     }
   },
   "userPage": {
-    "name": "Foydalanuvchilar"
+    "name": "Foydalanuvchilar",
+    "createTitle": "Rolni biriktirish",
+    "updateTitle": "Rolni tahrirlash",
+    "form": {
+      "role": "Huquqlar"
+
+    },
+    "no-roles": "Biriktirilgan rollar yo'q!"
   },
   "confirmation": {
     "name": "Shartnomalar",
@@ -275,6 +282,9 @@
       "parent_id": "Tashkilot tanlang",
       "name": "Tashkilot nomi",
       "full_name": "Tashkilotning to'liq nomi",
+      "group": "Guruh",
+      "code": "Kod",
+      "city_id": "Tuman",
       "level": "Tashkilot turi"
     },
     "selectedOrg": "Tanlangan tashkilot",
@@ -1020,7 +1030,7 @@
     }
   },
   "dashboardPage": {
-    "name": "Statistika",
+    "name": "Dashboard",
     "card": {
       "type": "Ta'til turi",
       "durationDay": "Ta'til davomiyligi {n} kun",
@@ -1161,6 +1171,23 @@
     "closeWarning": {
       "title": "Tabelni yakunlashga ishonchingiz komilmi?",
       "desc": "Bu amalni ortga qaytarib bo'lmaydi."
+    }
+  },
+  "medPage": {
+    "name": "Tibbiy ko'rik",
+    "createTitle": "Tibbiy ko'rik ma'lumotini qo'shish",
+    "updateTitle": "Tibbiy ko'rik ma'lumotini tahrirlash",
+    "tab": {
+      "worker": "Temir yo'lchi",
+      "candidate": "Kandidat"
+    },
+    "form": {
+      "from": "Oxirgi tibbiy ko'rik o'tqazilgan sana",
+      "to": "Keyingi tibbiy ko'rikdan o'tish sanasi",
+      "comment": "Izoh",
+      "status": "Holati",
+      "organization": "Korxona",
+      "file": "Fayllar"
     }
   }
 }

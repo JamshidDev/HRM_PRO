@@ -19,6 +19,8 @@ export const useOrganizationStore = defineStore('organizationStore', {
             full_name:null,
             lat:null,
             long:null,
+            group:false,
+            code:null,
         },
         params:{
             page:1,
@@ -78,6 +80,8 @@ export const useOrganizationStore = defineStore('organizationStore', {
                     this.payload.level = organization.level
                     this.payload.parent_id = organization.parent_id
                     this.payload.city_id  = organization.city.id
+                    this.payload.group  = Boolean(organization.group)
+                    this.payload.code  = organization.code
                     this.visible = true
 
                 }
@@ -86,7 +90,10 @@ export const useOrganizationStore = defineStore('organizationStore', {
         },
         _create(){
             this.saveLoading = true
-            let data = {...this.payload}
+            let data = {
+                ...this.payload,
+                group:Number(this.payload.group)
+            }
             $ApiService.organizationService._create({data}).then((res)=>{
                 this.visible = false
                 this._index()
@@ -139,6 +146,8 @@ export const useOrganizationStore = defineStore('organizationStore', {
             this.payload.lat = null
             this.payload.long = null
             this.payload.city_id = null
+            this.payload.code = null
+            this.payload.group = null
         },
         nestedElement(node, indexPath, newNode){
             let currentNode = node

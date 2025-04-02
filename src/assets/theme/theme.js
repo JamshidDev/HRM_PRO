@@ -66,7 +66,7 @@ const superColor = (cr, opacity=1)=>{
             activeColor: "rgba(0, 0, 0, 0.1)", // Aktiv holat uchun fon rangi
         },
         Table: {
-            thColor: superColor(tailwindColors["surface-ground"]),
+            thColor: superColor(tailwindColors["surface-section"]),
             tdColor: superColor(tailwindColors["surface-section"]),
             borderColor: superColor(tailwindColors["surface-line"]),
             thTextColor:superColor(tailwindColors.textColor2),

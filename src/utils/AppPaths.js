@@ -61,6 +61,7 @@ export const AppPaths = {
     Application:"/application",
     DashboardV2:"/dashboard-v2",
     DashboardV3:"/dashboard-v3",
+    Med:"/med",
 }
 
 export const AppLayouts ={

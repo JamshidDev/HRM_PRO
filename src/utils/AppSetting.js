@@ -6,5 +6,6 @@ export const  useAppSetting = {
     tokenKey:'app-token',
     noAvailableImage: "/no-picture.jpg",
     appLogoUrl:'/logo.png',
-    datePicketFormat:'dd.MM.yyyy'
+    datePicketFormat:'dd.MM.yyyy',
+    appPermission:'appPermission'
 }

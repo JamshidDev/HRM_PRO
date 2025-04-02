@@ -84,17 +84,20 @@ const changePage =(v)=>{
 </script>
 
 <template>
+  <div class="bg-surface-section p-4">
     <UITree
         :children="store.list"
         @on-load="onLoad"
         @on-change="onChange"
         :element-id="store.indexPath"
     />
-  <UIPagination
-      :page="store.params.page"
-      :per_page="store.params.size"
-      :total="store.totalItems"
-      @change-page="changePage"
-  />
+    <UIPagination
+        :page="store.params.page"
+        :per_page="store.params.size"
+        :total="store.totalItems"
+        @change-page="changePage"
+    />
+  </div>
+
 
 </template>

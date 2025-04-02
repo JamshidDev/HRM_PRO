@@ -279,6 +279,20 @@ export default {
             trigger: triggerEvents
         },
     },
+    userForm:{
+        role_id:{
+            type:'number',
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        organization_id:{
+            type:"array",
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+    },
     regionPage:{
         name:{
             required: true,
@@ -1389,5 +1403,42 @@ export default {
                 trigger: 'blur',
             },
         ],
+    },
+    medFrom:{
+        organization_id:{
+            type:'array',
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        worker_id:{
+            type:'number',
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        from:{
+            type:'number',
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        to:{
+            type:'number',
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        status:{
+            type:'number',
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        pin:{
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        }
     },
 }

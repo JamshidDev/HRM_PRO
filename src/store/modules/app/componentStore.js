@@ -27,6 +27,7 @@ export const useComponentStore = defineStore('componentStore', {
         applicationTypes:[],
         workTypes:[],
         vacationAdditional:[],
+        medStatus:[],
 
         departmentList:[],
         depParams:{
@@ -219,6 +220,7 @@ export const useComponentStore = defineStore('componentStore', {
                 this.applicationTypes = res.data.data.contract_application_types
                 this.workTypes =res.data.data.create_application_types
                 this.vacationAdditional = res.data.data.vacation_additional
+                this.medStatus = res.data.data.med_statuses
             }).finally(()=>{
                 this.enumLoading= false
             })

@@ -4,6 +4,7 @@ import createForm from "./ui/createForm.vue"
 import Table from "./ui/Table.vue"
 import {useConfApplicationStore} from "@/store/modules/index.js"
 import Utils from "@/utils/Utils.js"
+import Banner from "./ui/Banner.vue"
 const store = useConfApplicationStore()
 
 const officeAppRef = ref(null)
@@ -29,6 +30,7 @@ onMounted(()=>{
 
 <template>
   <UIPageContent>
+    <Banner/>
     <UIPageFilter
         v-model:search="store.params.search"
         :show-filter-button="false"

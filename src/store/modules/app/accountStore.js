@@ -1,7 +1,7 @@
 import {defineStore} from "pinia";
 import i18n from "@/i18n/index.js"
 import router from '@/router/index.js'
-import {AppPaths} from "@/utils/index.js"
+import {AppPaths, useAppSetting} from "@/utils/index.js"
 export const useAccountStore = defineStore('accountStore', {
     state:()=>({
         account:null,
@@ -21,12 +21,22 @@ export const useAccountStore = defineStore('accountStore', {
         activeRole:null,
         roleLoading:false,
         roleList:[],
+        permissions:[],
     }),
+    getters:{
+       checkPermission:(state)=>(permission)=>{
+           const storePermissions = sessionStorage.getItem(useAppSetting.appPermission)
+           const permissions =storePermissions? JSON.parse(storePermissions)  : state.permissions
+           return permissions.includes(permission)
+       }
+    },
     actions:{
         _index(){
             $ApiService.accountService._index({data:this.payload}).then((res)=>{
                 this.payload = {...res.data.data, password:null}
                 this.account = {...res.data.data}
+                this.permissions = res.data.data.role.permissions.map(v=>v.name)
+                sessionStorage.setItem(useAppSetting.appPermission, JSON.stringify(this.permissions))
             })
         },
         _update(){

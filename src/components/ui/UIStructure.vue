@@ -126,7 +126,9 @@ const onFocusEv = ()=>{
       class="h-[460px] !py-0 px-1"
   >
     <template #trigger>
-      <n-badge class="w-full" :value="modelV.length" type="info">
+      <n-badge
+          :offset="[-10,-4]"
+          class="w-full" :value="modelV.length" type="info">
         <n-input @focus="onFocusEv" class="ui__structure-input w-full"  type="text" :value="inputVal?.toString()" :placeholder="$t('content.choose')" />
 
       </n-badge>
