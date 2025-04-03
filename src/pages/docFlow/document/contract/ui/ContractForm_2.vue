@@ -168,16 +168,16 @@ const onChangeStructure = (v)=>{
           </n-form-item>
         </div>
 
-        <div class="col-span-12">
-          <n-form-item :label="$t(`documentPage.form.postName`)" path="post_name">
-            <n-input
-                class="w-full"
-                type="text"
-                :placeholder="$t(`content.enterField`)"
-                v-model:value="store.payload.post_name"
-            />
-          </n-form-item>
-        </div>
+<!--        <div class="col-span-12">-->
+<!--          <n-form-item :label="$t(`documentPage.form.postName`)" path="post_name">-->
+<!--            <n-input-->
+<!--                class="w-full"-->
+<!--                type="text"-->
+<!--                :placeholder="$t(`content.enterField`)"-->
+<!--                v-model:value="store.payload.post_name"-->
+<!--            />-->
+<!--          </n-form-item>-->
+<!--        </div>-->
 
       </div>
     </div>

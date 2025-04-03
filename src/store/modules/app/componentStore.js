@@ -318,10 +318,10 @@ export const useComponentStore = defineStore('componentStore', {
         },
 
 
-        _checkWorker(pin){
+        _checkWorker(pin, type){
             this.pinLoading = true
             this.worker = null
-            $ApiService.workerService._checkWorker({params:{pin}}).then((res)=>{
+            $ApiService.workerService._checkWorker({params:{pin, type}}).then((res)=>{
                 if(!res.data.error){
                     let data = res.data.data
                     this.worker =  {

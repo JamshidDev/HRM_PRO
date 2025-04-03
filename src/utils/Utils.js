@@ -359,6 +359,15 @@ const appPermissions = {
 
 }
 
+const colorTypes = {
+    info:"Info",
+    warning:"Warning",
+    error:"Error",
+    success:"Success",
+    dark:"Dark",
+    secondary:"Secondary",
+}
+
 export default {
     fileToBase64,
     onlyAllowNumber,
@@ -394,4 +403,5 @@ export default {
     formatNumberToMoney,
     debouncedFn,
     appPermissions,
+    colorTypes,
 }

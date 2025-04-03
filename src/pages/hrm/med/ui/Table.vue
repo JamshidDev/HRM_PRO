@@ -1,5 +1,5 @@
 <script setup>
-import {NoDataPicture, UIPagination, UIUser, UIMenuButton, UIStatus} from "@/components/index.js"
+import {NoDataPicture, UIPagination, UIUser, UIMenuButton, UIStatus, UIBadge} from "@/components/index.js"
 import {useComponentStore, useMedStore} from "@/store/modules/index.js"
 import Utils from "@/utils/Utils.js"
 
@@ -134,8 +134,11 @@ const onSelectEv = (v)=>{
             </div>
           </td>
           <td>{{item.organization.name}}</td>
-          <td>{{Utils.timeOnlyDate(item.from)}}</td>
-          <td>{{Utils.timeOnlyDate(item.to)}}</td>
+          <td><UIBadge :show-icon="false" :label="Utils.timeOnlyDate(item.from)" />
+          </td>
+          <td>
+            <UIBadge :show-icon="false" :label="Utils.timeOnlyDate(item.to)" />
+          </td>
           <td>{{item.comment}}</td>
           <td>
             <UIMenuButton

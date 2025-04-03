@@ -35,7 +35,7 @@ onMounted(()=>{
       :model="store.payload"
   >
     <div style="min-height:calc(100vh - 120px)">
-      <UIAutoComplete v-model:pin="store.payload.pin" />
+      <UIAutoComplete v-model:pin="store.payload.pin" :search-type="'position'" />
       <n-form-item :label="$t(`confirmationPage.table.level`)" path="level">
         <n-select
             v-model:value="store.payload.level"
@@ -53,14 +53,6 @@ onMounted(()=>{
             type="text"
             :placeholder="$t(`content.enterField`)"
             v-model:value="store.payload.position"
-        />
-      </n-form-item>
-      <n-form-item :label="$t(`confirmationPage.table.full_position`)" path="full_position">
-        <n-input
-            rows="4"
-            type="textarea"
-            :placeholder="$t(`content.enterField`)"
-            v-model:value="store.payload.full_position"
         />
       </n-form-item>
     </div>

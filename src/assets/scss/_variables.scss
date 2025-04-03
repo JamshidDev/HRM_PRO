@@ -2,10 +2,10 @@
 
 :root {
   --primary-color: #1A84FF;
-  --info-color: #4ab0c1;
+  --info-color: #1A84FF;
   --success-color: #2dcb73;
   --warning-color: #ff9501;
-  --danger-color: #ff6c6c;
+  --danger-color: #FF6C6CFF;
   --dark-color: #0f1114;
   --secondary-color: #74788d;
   --white-color: #ffffff;
@@ -50,11 +50,11 @@
 }
 
 [data-theme="dark"] {
-  --primary-color: #7239EA;
+  --primary-color: #1A84FF;
   --info-color: #4ab0c1;
   --success-color: #2dcb73;
   --success-color-rgb: 45, 203, 115;
-  --warning-color: #ff9501;
+  --warning-color: rgba(255, 149, 1, 0.2);
   --danger-color: #ff6c6c;
   --dark-color: #0f1114;
   --secondary-color: #74788d;

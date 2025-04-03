@@ -23,7 +23,6 @@ const onEdit = (v)=>{
   store.visibleType = false
   store.elementId = v.id
   store.payload.pin = v.worker.id.toString()
-  store.payload.full_position = v.full_position
   store.payload.level = v.level.id
   store.visible = true
 
@@ -63,7 +62,6 @@ const onSelectEv = (v)=>{
           <th class="min-w-[200px]">{{$t('confirmationPage.table.worker')}}</th>
           <th class="min-w-[200px]">{{$t('confirmationPage.table.position')}}</th>
           <th class="min-w-[200px]">{{$t('confirmationPage.table.level')}}</th>
-          <th class="min-w-[200px]">{{$t('confirmationPage.table.full_position')}}</th>
           <th class="min-w-[40px] w-[40px]"></th>
         </tr>
         </thead>
@@ -86,7 +84,6 @@ const onSelectEv = (v)=>{
           </td>
           <td>{{item.position}}</td>
           <td>{{item.level?.name}}</td>
-          <td>{{item.full_position}}</td>
           <td>
             <UIMenuButton
                 :data="item"

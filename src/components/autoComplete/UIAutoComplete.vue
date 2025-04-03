@@ -6,8 +6,13 @@ import {useComponentStore} from "@/store/modules/index.js"
 import {UIUser} from "@/components/index.js"
 const store = useComponentStore()
 
+
 const searchModel = ref('')
 const visible = ref(false)
+
+const props = defineProps({
+  searchType:{type:String,default:null},
+})
 
 const pin = defineModel( 'pin',{type:String, default:null})
 
@@ -16,7 +21,7 @@ const searchEvent = useDebounceFn(() => {
   if(searchModel.value.length === 17){
     visible.value = true
     let pin = searchModel.value.split('-').join("")
-    store._checkWorker(pin)
+    store._checkWorker(pin, props.searchType)
   }
 }, 300,)
 

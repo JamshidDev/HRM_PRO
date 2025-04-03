@@ -15,7 +15,6 @@ export const useConfirmationStore = defineStore('confirmationStore', {
         payload:{
             pin:null,
             position:null,
-            full_position:null,
             level:null,
         },
         params:{
@@ -82,7 +81,6 @@ export const useConfirmationStore = defineStore('confirmationStore', {
             this.elementId = null
             this.payload.pin = null
             this.payload.position = null
-            this.payload.full_position = null
             this.payload.level = null
         }
 

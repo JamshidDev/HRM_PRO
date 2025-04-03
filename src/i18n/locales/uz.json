@@ -144,12 +144,17 @@
   },
   "loginPage": {
     "name": "Xush kelibsiz",
-    "title": "HRM PRO",
-    "subtitle": "O'zbekiston temir yo'llari AJning HRM platformasi",
+    "title": "Kirish",
+    "subtitle": "Tizimga kirish uchun telefon raqamingiz va parolingizni kiriting.",
     "phone": "Telefon raqam",
     "password": "Parol",
     "doYouHaveAccount": "Sizda hisob yo'qmi?",
     "singUp": "Ro'yhatdan o'tish",
+    "description": {
+      "title": "HRMS",
+      "subtitle": "Xodimlarni boshqarishning zamonaviy tizimi\n",
+      "text": "Xodimlaringizni samarali boshqarish, ish vaqtini nazorat qilish va hujjatlarni avtomatlashtirish uchun qulay yechim. HR jarayonlarini optimallashtiring va biznesingizni yangi bosqichga olib chiqing!"
+    },
     "login": "Kirish"
   },
   "registerPage": {
