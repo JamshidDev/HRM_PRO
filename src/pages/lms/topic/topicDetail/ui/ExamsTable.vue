@@ -1,7 +1,6 @@
 <script setup>
 import {useTopicExamStore} from "@/store/modules/index.js"
 import {NoDataPicture, UIMenuButton, UIPagination} from "@/components/index.js";
-import {useRouter} from "vue-router";
 import Utils from "@/utils/Utils.js"
 import {BookQuestionMark20Filled, ClockAlarm32Filled, AppsList20Filled} from "@vicons/fluent";
 
@@ -32,7 +31,6 @@ const onSelect = (v)=>{
 </script>
 
 <template>
-  <n-spin :show="store.loading" class="mt-2">
     <div class="w-full overflow-x-auto"  v-if="store.list.length>0">
       <table
           class="overflow-x-auto w-full"
@@ -49,7 +47,7 @@ const onSelect = (v)=>{
           <th>{{$t('topicDetailsPage.exams.isActive')}}</th>
           <th>{{$t('content.action')}}</th>
         </tr>
-       </thead>
+        </thead>
         <tbody class="bg-surface-section">
         <template v-for="(item, idx) in store.list" :key="idx">
           <tr />
@@ -108,8 +106,6 @@ const onSelect = (v)=>{
           @change-page="changePage"
       />
     </div>
-    <NoDataPicture v-if="store.list.length===0 && !store.loading" />
-  </n-spin>
 </template>
 <style scoped lang="scss">
 table{

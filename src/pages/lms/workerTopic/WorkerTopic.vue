@@ -3,7 +3,7 @@ import List from "./ui/List.vue"
 import TopicDetail from './ui/TopicDetail.vue'
 import {useExamAttemptStore, useWorkerExamStore} from "@/store/modules/index.js";
 import {Warning20Filled} from "@vicons/fluent";
-import {UIModal, UIPageContent} from "@/components/index.js";
+import {UIModal, UIPageContent, UIPageFilter} from "@/components/index.js";
 
 import stars from "@/assets/images/svg/stars.svg";
 
@@ -39,14 +39,15 @@ onMounted(()=>{
       <n-gi :span="4" />
     </n-grid>
     <div class="grow basis-auto overflow-hidden flex gap-3">
-      <div class="grow basis-auto">
-        <List/>
+      <div class="grow basis-auto flex flex-col gap-2">
+        <UIPageFilter :show-add-button="false" class="shrink-0" />
+        <div class="grow basis-auto bg-surface-section rounded-md">
+          <List/>
+        </div>
       </div>
       <div :style="{'width': store?.elementId && store.list.find(i=>i.id===store.elementId) ? '50%' : '0'}"
            class="transition-all  bg-surface-section rounded-md">
-        <div class="px-3 h-full">
           <TopicDetail />
-        </div>
       </div>
     </div>
   </div>

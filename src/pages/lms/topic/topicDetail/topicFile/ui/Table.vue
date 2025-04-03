@@ -86,12 +86,12 @@ const onAdd = ()=>{
           </template>
         </n-button>
       </div>
-      <div
-          class="h-[130px] border-surface-line border rounded-md flex justify-center items-center drop-shadow-sm cursor-pointer hover:drop-shadow-lg transition-all"
-          v-for="(item, idx) in store.list" :key="idx"
-      >
-        <File :file="item" />
-      </div>
+<!--      <div-->
+<!--          class="h-[130px] border-surface-line border rounded-md flex justify-center items-center drop-shadow-sm cursor-pointer hover:drop-shadow-lg transition-all"-->
+<!--          v-for="(item, idx) in store.list" :key="idx"-->
+<!--      >-->
+<!--        <File :file="item" />-->
+<!--      </div>-->
     </div>
 <!--    <div class="w-full overflow-x-auto !pt-0"  v-if="store.list.length>0">-->
 <!--      <n-table-->
@@ -140,6 +140,6 @@ const onAdd = ()=>{
 <!--          @change-page="changePage"-->
 <!--      />-->
 <!--    </div>-->
-    <NoDataPicture v-if="store.list.length===0 && !store.loading" />
+<!--    <NoDataPicture v-if="store.list.length===0 && !store.loading" />-->
   </n-spin>
 </template>

@@ -37,13 +37,13 @@ onMounted(() => {
 </script>
 
 <template>
-  <n-spin :show="store.loading" class="h-full bg-surface-section rounded-md p-1">
+  <n-spin :show="store.loading" class="h-full rounded-md p-1">
     <div class="h-full flex flex-col">
       <div v-if="store.list.length>0" class="overflow-y-auto grow basis-auto">
         <div class="grid grid-cols-[repeat(auto-fill,minmax(250px,1fr))] gap-5">
           <template v-for="(lesson, idx) in store.list" :key="idx">
             <div
-                class="rounded-md drop-shadow-md hover:drop-shadow-lg transition-all cursor-pointer lesson-card p-2 h-[90px] flex flex-col"
+                class="rounded-md transition-all cursor-pointer lesson-card p-2 h-[90px] flex flex-col"
                 :class="{'active-lesson': store?.elementId===lesson.id}"
                 @click="store.elementId = lesson.id"
             >
@@ -152,9 +152,9 @@ onMounted(() => {
 </template>
 <style scoped lang="scss">
 .lesson-card{
-  background-color: rgba(31, 65, 174, 0.05);
+  background: rgba(31, 65, 174, 0.04);
   &:hover{
-    background-color:#2357ed1a;
+    background: rgba(31, 65, 174, 0.09);
   }
 }
 .active-lesson{

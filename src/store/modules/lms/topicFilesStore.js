@@ -16,7 +16,6 @@ export const useTopicFileStore = defineStore('topicFileStore', {
         structureCheck:[],
         payload:{
             fileObjects: [],
-            type: null,
             active: false
         },
         params:{
@@ -29,9 +28,9 @@ export const useTopicFileStore = defineStore('topicFileStore', {
         _index(){
             this.loading= true
             $ApiService.topicFilesService._index({params:this.params, id: this.topicId}).then((res)=>{
-                this.list = res.data.data.data
-                this.totalItems = res.data.data.total
-            }).finally(()=>{
+                this.list = res.data.data
+                console.log(res.data.data)
+            }).finally(()=> {
                 this.loading= false
             })
         },
@@ -83,8 +82,7 @@ export const useTopicFileStore = defineStore('topicFileStore', {
         },
         resetForm(){
             this.elementId = null
-            this.payload.fileObjects = [],
-            this.payload.type = null,
+            this.payload.fileObjects = []
             this.payload.active = false
         }
     }

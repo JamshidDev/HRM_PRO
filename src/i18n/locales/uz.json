@@ -1,5 +1,6 @@
 {
   "content": {
+    "files": "Fayllar",
     "deadline": "Yakunlanish vaqti",
     "requiredField": "Maydon to'ldirilishi shart!",
     "save": "Saqlash",
@@ -943,6 +944,7 @@
   },
   "examPage": {
     "name": "Imtihonlar",
+    "history": "Imtihon tarixi",
     "topic": "Mavzu",
     "exam": "Imtihon",
     "nVariant": "{n}ta variant",
@@ -971,7 +973,9 @@
     "endSub": "Siz {n} ball oldingiz.",
     "ip": "Ip manzil",
     "wrongAnswer": "Javob noto'g'ri",
-    "notChosen": "Javob belgilanmagan"
+    "notChosen": "Javob belgilanmagan",
+    "finished": "Imtihon yakunlandi",
+    "inProgress": "Imtihon jarayonda"
   },
   "solveExamPage": {
     "alreadyStarted": "Siz bu imtihonni oldin boshlagansiz. Davom etishni xohlaysizmi?",

@@ -24,8 +24,8 @@ onMounted(()=>{
 
 <template>
 <UIPageContent>
-  <div class="flex gap-2">
-    <div class="basis-[30%] grow shrink-0">
+  <div class="flex" :style="{gap: $route.params?.id ? '10px' : 0}">
+    <div class="basis-[40%] grow shrink-0">
       <UIPageFilter
           :show-search-input="false"
           v-model:search="store.params.search"
@@ -34,14 +34,9 @@ onMounted(()=>{
       />
       <Cards/>
     </div>
-    <div class="transition-all shrink-1 overflow-hidden" :style="{'flex-basis': $route.params?.id ? '70%' : 0, 'flex-grow': !!$route.params?.id}">
-      <router-view :key="$route.fullPath" v-slot="{ Component }">
-        <transition name="slide-right" mode="out-in">
-          <component :is="Component" />
-        </transition>
-      </router-view>
+    <div class="transition-all shrink-1 overflow-hidden" :style="{'flex-basis': $route.params?.id ? '60%' : 0, 'flex-grow': !!$route.params?.id}">
+      <router-view :key="$route.fullPath" />
     </div>
-
   </div>
   <UIDrawer
       :width="600"

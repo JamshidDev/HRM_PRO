@@ -1,6 +1,6 @@
 import {AppPaths} from "@/utils/index.js"
 import Utils from "@/utils/Utils.js"
-import TopicDetailPage from "@/pages/lms/topicDetail/TopicDetailPage.vue"
+import TopicDetailPage from "@/pages/lms/topic/topicDetail/TopicDetailPage.vue"
 import {
     TopicPage,
     CategoryPage,
