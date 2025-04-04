@@ -2,6 +2,7 @@
 import {ArrowSyncCheckmark24Filled, Clock32Filled, Eye12Filled, PlayCircle28Regular} from "@vicons/fluent";
 import Utils from "@/utils/Utils.js";
 import {useExamAttemptStore} from "@/store/modules";
+import {UIStatus, UIBadge} from "@/components/index.js";
 
 const examStore = useExamAttemptStore()
 
@@ -17,11 +18,12 @@ defineProps({
 const show = ref(false)
 </script>
 <template>
-  <div class="rounded-md overflow-hidden">
+  <div class="rounded-md overflow-hidden" >
     <div
         :class="{'bg-surface-ground': show}"
         class="cursor-pointer transition-all hover:bg-surface-ground flex justify-between items-center  py-3 px-2"
         @click="show=!!exam.results?.length && !show"
+
     >
       <div
           class="flex gap-2 items-center w-full"
@@ -70,17 +72,18 @@ const show = ref(false)
     <n-collapse-transition :show="show">
       <div class="px-3">
         <p class="text-lg my-2 font-medium">{{ $t('examPage.history') }}</p>
-        <div class="flex flex-col gap-2">
+        <div class="flex flex-col gap-5">
           <div v-for="(item, idx) in exam.results" :key="idx"
-               class="flex items-center justify-between p-2 bg-surface-ground rounded-md">
+               class="flex items-center justify-between p-2 bg-surface-ground rounded-md" style="box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;">
             <div class="flex gap-2 items-center">
-              <n-button size="small" type="warning"><span class="min-w-[30px]">{{ item?.result || 0 }}</span></n-button>
+              <n-button size="small" type="warning" secondary class="!rounded-xl"><span class="min-w-[30px]">{{ item?.result || 0 }}</span></n-button>
               <div>
-                <p class="text-xl font-semibold">
-                  {{ item?.ended ? $t('examPage.finished') : $t('examPage.inProgress') }}</p>
-                <p class="text-xs text-secondary">
+                <p class="font-bold">
                   {{ Utils.timeWithMonth(item.created) }} - {{ item.ended ? Utils.timeWithMonth(item.ended) : '...' }}
                 </p>
+                <div class="inline-block">
+                  <UIBadge :label="item?.ended ? $t('examPage.finished') : $t('examPage.inProgress')" :type="Utils.colorTypes.dark" />
+                </div>
               </div>
             </div>
             <div>

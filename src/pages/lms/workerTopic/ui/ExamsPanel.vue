@@ -36,7 +36,9 @@ const viewExam = (v) => {
 <template>
   <template v-for="(exam, idx) in exams" :key="idx">
     <n-divider v-if="idx!==0" class="!my-2" />
-    <exam-card @continue="goPush"
+    <exam-card
+
+        @continue="goPush"
                @view="viewExam"
                @start="startAttempt(exam)"
                :exam="exam"/>
