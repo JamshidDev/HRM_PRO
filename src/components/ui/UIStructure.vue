@@ -8,6 +8,7 @@ const props = defineProps({
   multiple:{type:Boolean,default:true},
   modelV:{type:Array,default:[]},
   checkedVal:{type:Array,default:[]},
+  disabled:{type:Boolean,default:false},
 })
 
 
@@ -127,9 +128,10 @@ const onFocusEv = ()=>{
   >
     <template #trigger>
       <n-badge
+          :show="!disabled"
           :offset="[-10,-4]"
           class="w-full" :value="modelV.length" type="info">
-        <n-input @focus="onFocusEv" class="ui__structure-input w-full"  type="text" :value="inputVal?.toString()" :placeholder="$t('content.choose')" />
+        <n-input :disabled="disabled" @focus="onFocusEv" class="ui__structure-input w-full"  type="text" :value="inputVal?.toString()" :placeholder="$t('content.choose')" />
 
       </n-badge>
     </template>

@@ -6,6 +6,7 @@ import {useAdContractStore, useComponentStore} from "@/store/modules/index.js";
 import { NAvatar } from "naive-ui"
 import Utils from "@/utils/Utils.js"
 import UIDepartment from "@/components/ui/UIDepartment.vue"
+import {useAppSetting} from "@/utils/index.js"
 
 const store = useAdContractStore()
 const componentStore = useComponentStore()
@@ -19,6 +20,10 @@ const props = defineProps({
     default:null,
   },
   workers:{
+    type:Array,
+    default:[]
+  },
+  organization:{
     type:Array,
     default:[]
   }
@@ -55,6 +60,16 @@ const onChangeStructure = (v)=>{
     store.payload.department_id = []
     componentStore.depParams.organizations =v[0].id
     componentStore._departmentTree()
+  }
+}
+
+const onChangeOrganization = (v)=>{
+  store.organization=v
+  if(v.length>0){
+    componentStore.workerList = []
+    store.workers = []
+    componentStore.workerParams.organization_id= v[0].id
+    componentStore._workers()
   }
 }
 const onFocusConf = ()=>{
@@ -110,12 +125,12 @@ const scheduleLabel = (option)=>{
     h(
         'div',
         {
-          class:'w-full',
+          class:'w-full mb-2',
         },[
           h('div',{ class:'flex flex-col w-full'}, [
             h('div',{ class:'text-xs font-medium text-gray-500'},`${option.name}`),
-            h('div',{ class:'text-xs text-gray-400'},`${ option.work_days[0].type.name}`),
-            h('div',{ class:'text-xs text-gray-400'},`${option.work_days[0].start_time} - ${option.work_days[0].end_time}`),
+              ...option.work_days.map((day)=>h('div',{ class:'text-xs text-gray-400 w-full'},`(${day.day_of_week}) ${day.start_time} - ${day.end_time}`)),
+
           ])
         ]
     ),
@@ -137,7 +152,7 @@ const onChangeWorker = ()=>{
   showCheckBox.value = [2, 4, 5].includes(typeId)
   store.payload.group = worker.group
   store.payload.rank = worker.rank
-  store.payload.salary = worker.salary.toString()
+  store.payload.salary = worker?.salary?.toString()
 }
 
 watchEffect(()=>{
@@ -174,6 +189,7 @@ onMounted(()=>{
    store.resetForm()
    componentStore.workerList = props.workers
    store.payload.worker_position_id = componentStore.workerList[0].id
+   store.organization = props.organization
    componentStore._adContractType(componentStore.workerList[0].contractTypeId)
  }
 
@@ -189,25 +205,53 @@ onMounted(()=>{
   >
     <div style="height:calc(100vh - 120px)" class="overflow-y-auto overflow-x-hidden pb-12">
       <div class="grid grid-cols-12 gap-x-4">
-        <div class="col-span-12 flex justify-center">
-          <div class="w-[600px]">
-            <n-form-item :label="$t(`documentPage.form.worker`)" path="worker_position_id">
-              <n-select
-                  :disabled="workers.length>0"
-                  v-model:value="store.payload.worker_position_id"
-                  filterable
-                  :placeholder="$t(`content.choose`)"
-                  :options="componentStore.workerList"
-                  label-field="name"
-                  value-field="id"
-                  :render-label="workerRenderLabel"
-                  :render-tag="workerRenderValue"
-                  @update:value="onChangeWorker"
-                  :loading="componentStore.workerLoading"
-              />
-            </n-form-item>
+        <div class="col-span-12">
+          <div class="grid grid-cols-12 gap-x-4 border border-surface-line border-dashed p-2 rounded-md bg-surface-ground mt-6 mb-4">
+            <div class="col-span-6 flex">
+              <n-form-item class="w-full" :label="$t(`documentPage.form.organization`)" path="organization_id">
+                <UIStructure
+                    :modelV="store.organization"
+                    @updateModel="onChangeOrganization"
+                    :checkedVal="store.structureCheck2"
+                    @updateCheck="(v)=>store.structureCheck2=v"
+                    :multiple="false"
+                    :disabled="organization.length>0"
+                />
+              </n-form-item>
+            </div>
+            <div class="col-span-6 flex">
+              <n-form-item class="w-full" :label="$t(`documentPage.form.worker`)" path="worker">
+                <n-select
+                    :disabled="store.organization.length === 0 || workers.length>0"
+                    v-model:value="store.payload.worker_position_id"
+                    filterable
+                    :placeholder="$t(`content.choose`)"
+                    :options="componentStore.workerList"
+                    label-field="name"
+                    value-field="id"
+                    :render-label="workerRenderLabel"
+                    :render-tag="workerRenderValue"
+                    @update:value="onChangeWorker"
+                    :loading="componentStore.workerLoading"
+                    @scroll="componentStore.onScrollWorker"
+                    @search="componentStore.onSearchWorker"
+                />
+              </n-form-item>
+            </div>
           </div>
         </div>
+
+
+
+
+
+
+
+
+
+
+
+
 
 
         <div class="col-span-12 border border-dashed p-2 rounded-xl border-surface-line bg-surface-ground">
@@ -235,13 +279,14 @@ onMounted(()=>{
                 />
               </n-form-item>
             </div>
-            <div class="col-span-3">
+            <div class="col-span-4">
               <n-form-item :label="$t(`documentPage.form.contractDate`)" path="contract_date">
                 <n-date-picker
                     class="w-full"
                     v-model:value="store.payload.contract_date"
                     type="date"
                     :placeholder="$t(`content.choose`)"
+                    :format="useAppSetting.datePicketFormat"
                 />
               </n-form-item>
             </div>
@@ -316,7 +361,7 @@ onMounted(()=>{
             </template>
 
 
-            <div class="col-span-2">
+            <div class="col-span-4">
               <n-form-item :label="$t(`documentPage.form.group`)" path="group">
                 <n-select
                     v-model:value="store.payload.group"
@@ -330,7 +375,7 @@ onMounted(()=>{
                 />
               </n-form-item>
             </div>
-            <div class="col-span-3">
+            <div class="col-span-4">
               <n-form-item :label="$t(`documentPage.form.rank`)" path="rank">
                 <n-select
                     v-model:value="store.payload.rank"
@@ -344,7 +389,17 @@ onMounted(()=>{
                 />
               </n-form-item>
             </div>
-            <div class="col-span-2">
+            <div class="col-span-4">
+              <n-form-item :label="$t(`documentPage.form.rate`)" path="rate">
+                <n-input
+                    class="w-full"
+                    type="text"
+                    :placeholder="$t(`content.enterField`)"
+                    v-model:value="store.payload.rate"
+                />
+              </n-form-item>
+            </div>
+            <div class="col-span-4">
               <n-form-item :label="$t(`documentPage.form.salary`)" path="salary">
                 <n-input
                     class="w-full"
@@ -359,7 +414,7 @@ onMounted(()=>{
                 </n-input>
               </n-form-item>
             </div>
-            <div class="col-span-5">
+            <div class="col-span-4">
               <n-form-item :label="$t(`documentPage.form.schedule_id`)" path="schedule_id">
                 <n-select
                     v-model:value="store.payload.schedule_id"
@@ -374,18 +429,29 @@ onMounted(()=>{
                 />
               </n-form-item>
             </div>
-            <template v-if="store.payload.type === 8">
-              <div class="col-span-12">
-                <n-form-item :label="$t(`documentPage.form.postName`)" path="post_name">
-                  <n-input
-                      class="w-full"
-                      type="text"
-                      :placeholder="$t(`content.enterField`)"
-                      v-model:value="store.payload.post_name"
-                  />
-                </n-form-item>
-              </div>
-            </template>
+            <div class="col-span-4">
+              <n-form-item :label="$t(`documentPage.form.position_date`)" path="contract_date">
+                <n-date-picker
+                    class="w-full"
+                    v-model:value="store.payload.position_date"
+                    type="date"
+                    :placeholder="$t(`content.choose`)"
+                    :format="useAppSetting.datePicketFormat"
+                />
+              </n-form-item>
+            </div>
+<!--            <template v-if="store.payload.type === 8">-->
+<!--              <div class="col-span-12">-->
+<!--                <n-form-item :label="$t(`documentPage.form.postName`)" path="post_name">-->
+<!--                  <n-input-->
+<!--                      class="w-full"-->
+<!--                      type="text"-->
+<!--                      :placeholder="$t(`content.enterField`)"-->
+<!--                      v-model:value="store.payload.post_name"-->
+<!--                  />-->
+<!--                </n-form-item>-->
+<!--              </div>-->
+<!--            </template>-->
           </div>
         </div>
         <div class="col-span-12 mt-4">
@@ -448,6 +514,7 @@ onMounted(()=>{
                     v-model:value="store.payload.command_date"
                     type="date"
                     :placeholder="$t(`content.choose`)"
+                    :format="useAppSetting.datePicketFormat"
                 />
               </n-form-item>
             </div>

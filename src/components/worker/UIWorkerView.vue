@@ -141,11 +141,10 @@ defineExpose({
               <div
                   class=" cursor-pointer relative border border-surface-line w-[140px] mx-auto rounded-lg overflow-hidden mb-10">
                 <n-carousel
-
                     ref="carouselRef"
                     :show-dots="false"
                     :space-between="10"
-                    draggable
+                    :draggable="store.workerPreview?.worker?.photos.length>1"
                     @update-current-index="onChangeIndex"
                 >
                   <template v-if="store.workerPreview?.worker?.photos && store.workerPreview?.worker?.photos.length>0">

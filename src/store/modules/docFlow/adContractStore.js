@@ -13,8 +13,10 @@ export const useAdContractStore = defineStore('adContractStore', {
         elementId:null,
         totalItems:0,
         structureCheck:[],
+        structureCheck2:[],
         departmentCheck:[],
         confirmationVisible:false,
+        organization:[],
         number:null,
         payload:{
             worker_position_id:null,
@@ -32,12 +34,14 @@ export const useAdContractStore = defineStore('adContractStore', {
             position_id:null,
             group:null,
             rank:null,
-            post_name:null,
+            rate:null,
+            // post_name:null,
             schedule_id:null,
 
             command_date:null,
             command_number:null,
             confirmations:[],
+            position_date:null,
         },
         params:{
             page:1,
@@ -68,6 +72,7 @@ export const useAdContractStore = defineStore('adContractStore', {
             let data = {
                 ...this.payload,
                 ...{
+                    position_date:Utils.timeToZone(this.payload.position_date),
                     command_date:Utils.timeToZone(this.payload.command_date),
                     contract_date:Utils.timeToZone(this.payload.contract_date),
                     organization_id:this.payload.organization_id.length>0? this.payload.organization_id[0].id : null,
@@ -153,12 +158,14 @@ export const useAdContractStore = defineStore('adContractStore', {
             this.payload.position_id = null
             this.payload.group = null
             this.payload.rank = null
-            this.payload.post_name = null
+            this.payload.rate = null
+            // this.payload.post_name = null
             this.payload.schedule_id = null
 
             this.payload.command_date =  new Date().getTime()
             this.payload.command_number = null
             this.payload.confirmations = []
+            this.payload.position_date = null
         }
 
     }

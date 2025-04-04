@@ -3,6 +3,7 @@ import i18n from "@/i18n/index.js"
 const {t} = i18n.global
 import Utils from "@/utils/Utils.js"
 import {useDebounceFn} from "@vueuse/core"
+import {useAppSetting} from "@/utils/index.js"
 
 
 
@@ -179,7 +180,9 @@ export const useComponentStore = defineStore('componentStore', {
             per_page:1000,
             search:null,
             departments:[],
-        }
+        },
+        resumeLoading:false,
+        resumeId:null,
 
 
 
@@ -482,10 +485,27 @@ export const useComponentStore = defineStore('componentStore', {
         },
         _workerPreview(id){
             this.previewLoading = true
+            this.resumeId=id
             $ApiService.workerService._preview({id}).then((res)=>{
                 this.workerPreview = res.data.data
             }).finally(()=>{
                 this.previewLoading = false
+            })
+        },
+        _workerResume(){
+            this.resumeLoading = true
+            const id = this.resumeId
+            const lang =localStorage.getItem(useAppSetting.languageKey) || useAppSetting.defaultLanguage
+            const photo = this.workerPreview.worker?.photos.filter(v=>v.current === 1)?.[0]?.id
+            $ApiService.workerService._resume({id, params:{lang,photo }}).then((res)=>{
+                console.log(res.headers)
+                const type =res.headers["content-type"]
+                const fileName =res.headers.get('Content-Disposition')
+
+                console.log(fileName)
+                Utils.blobFileDownload(res.data, type, fileName)
+            }).finally(()=>{
+                this.resumeLoading = false
             })
         },
         _timesheetDepartment(){

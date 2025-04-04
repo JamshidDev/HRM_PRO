@@ -30,7 +30,12 @@ const maskString = (v)=>{
             <Eye24Filled v-else/>
           </template>
         </n-button>
-        <n-button type="primary" icon-placement="right">
+        <n-button
+            type="primary"
+            icon-placement="right"
+            :loading="store.resumeLoading"
+            @click="store._workerResume()"
+        >
           <template #icon>
             <ArrowCircleDown16Regular/>
           </template>
