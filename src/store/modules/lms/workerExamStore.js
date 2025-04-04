@@ -4,6 +4,7 @@ const {t} = i18n.global
 export const useWorkerExamStore = defineStore('workerExamStore', {
     state:()=>({
         list:[],
+        selectedLesson: null,
         loading:false,
         saveLoading:false,
         deleteLoading:false,

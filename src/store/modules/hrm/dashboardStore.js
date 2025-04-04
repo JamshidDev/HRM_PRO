@@ -197,7 +197,7 @@ export const useDashboardStore = defineStore('dashboardStore', {
                                 has_more:v.birthdays.result[3].has_more,
                             },
                             {
-                                title:formatMonth(v.birthdays.result[4].day),
+                                title:formatMonth(v.birthdays.result[4]?.day),
                                 workers:v.birthdays.result[4].count>3? [...v.birthdays.result[4].workers, ...v.birthdays.result[4].workers] : v.birthdays.result[4].workers,
                                 total:v.birthdays.result[4].count,
                                 has_more:v.birthdays.result[4].has_more,

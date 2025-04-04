@@ -4,15 +4,13 @@ import validationRules from "@/utils/validationRules.js";
 import {UIUpload} from "@/components/index.js";
 import {Delete48Filled, DocumentLink24Regular} from "@vicons/fluent";
 import {useRoute} from "vue-router";
-import {TopicUtils} from '@/pages/lms/Utils'
+
 const formRef = ref(null)
 const store = useTopicFileStore()
-const componentStore = useComponentStore()
 const route = useRoute()
 
 onMounted(() => {
   store.topicId = route.params.id
-  componentStore._enumExam()
 })
 
 const onSubmit = () => {
@@ -26,7 +24,6 @@ const onSubmit = () => {
     }
   })
 }
-const formValue = ref({ html: '', someOtherField: '' })
 
 </script>
 
@@ -37,18 +34,6 @@ const formValue = ref({ html: '', someOtherField: '' })
       :rules="validationRules.topicFilePage"
       class="h-full flex flex-col"
   >
-    <n-form-item :label="$t(`topicFiles.header.fileType`)" path="type" rule-path="type">
-      <n-select
-          @update:value="store.payload.fileObjects = []"
-          v-model:value="store.payload.type"
-          :loading="componentStore.enumExamLoading"
-          :options="componentStore.topicFileTypes"
-          :placeholder="$t('content.choose')"
-          clearable
-          label-field="name"
-          value-field="id"
-      />
-    </n-form-item>
     <n-form-item>
       <div class="border-surface-line border flex w-full justify-between rounded-md p-1 ">
         <p>{{$t('topicFiles.isActive')}}</p>
@@ -56,7 +41,7 @@ const formValue = ref({ html: '', someOtherField: '' })
       </div>
     </n-form-item>
     <n-form-item path="fileObjects" rule-path="filesField">
-      <UIUpload :accept="TopicUtils.getFileAccepts(store.payload.type)" :disabled="!store.payload.type" v-model:files="store.payload.fileObjects" :multiple="false" @on-delete="store.payload.fileObjects=[]">
+      <UIUpload  v-model:files="store.payload.fileObjects" :multiple="false" @on-delete="store.payload.fileObjects=[]">
         <template v-slot:content="{files, onDelete}">
           <div class="mt-3">
             <div v-for="(item, idx) in files" class="flex items-center gap-2 p-2 border

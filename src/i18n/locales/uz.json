@@ -1,5 +1,6 @@
 {
   "content": {
+    "files": "Fayllar",
     "deadline": "Yakunlanish vaqti",
     "requiredField": "Maydon to'ldirilishi shart!",
     "save": "Saqlash",
@@ -90,7 +91,8 @@
     "return": "Ortga qaytish",
     "finish": "Yakunlash",
     "created": "Yaratilgan sana",
-    "move": "Siljitish"
+    "move": "Siljitish",
+    "listen": "Tinglash"
   },
   "date": {
     "day": "Kun",
@@ -958,10 +960,13 @@
   },
   "examPage": {
     "name": "Imtihonlar",
+    "history": "Imtihon tarixi",
     "topic": "Mavzu",
     "exam": "Imtihon",
+    "nVariant": "{n}ta variant",
     "variant": "Variantlar: {n}ta",
     "totalTime": "Berilgan vaqt: {n} daqiqa",
+    "nMinute": "{n} daqiqa",
     "totalMinute": "{n} daqiqa",
     "resources": "Resurslar",
     "exams": "Imtihonlar",
@@ -972,7 +977,9 @@
     "extra": "Qo'shimcha: {n}",
     "start": "Boshlash",
     "attempts": "Urinishlar",
+    "nAttempts": "{n}ta urinishlar",
     "questions": "Savollar: {n}ta",
+    "nQuestions": "{n}ta savol",
     "attemptHistory": "Urinishlar tarixi",
     "startTime": "Boshlangan vaqt",
     "result": "Natija",
@@ -982,7 +989,9 @@
     "endSub": "Siz {n} ball oldingiz.",
     "ip": "Ip manzil",
     "wrongAnswer": "Javob noto'g'ri",
-    "notChosen": "Javob belgilanmagan"
+    "notChosen": "Javob belgilanmagan",
+    "finished": "Imtihon yakunlandi",
+    "inProgress": "Imtihon jarayonda"
   },
   "solveExamPage": {
     "alreadyStarted": "Siz bu imtihonni oldin boshlagansiz. Davom etishni xohlaysizmi?",

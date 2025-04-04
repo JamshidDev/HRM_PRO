@@ -24,7 +24,6 @@ export const useServiceOrgStore = defineStore('serviceOrgStore', {
             this.loading= true
             this.params.organization_id = this.elementId
             $ApiService.serviceOrgService._index({params:this.params}).then((res)=>{
-                console.log(res.data.data)
                 if(res.data.data.length>0){
                     res.data.data.forEach((v)=>{
                         if(v.key === "e-signature"){

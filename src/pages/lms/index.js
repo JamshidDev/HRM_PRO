@@ -1,7 +1,7 @@
-export const CategoryQuestionPage = import("./categoryQuestion/CategoryQuestionPage.vue")
+export const CategoryQuestionPage = import("./category/categoryQuestion/CategoryQuestionPage.vue")
 export const CategoryPage = import("./category/CategoryPage.vue");
 export const TopicPage = import("./topic/TopicPage.vue");
-export const QuestionFormPage = import('./categoryQuestion/ui/QuestionFormPage.vue')
+export const QuestionFormPage = import('./category/categoryQuestion/ui/QuestionFormPage.vue')
 export const WorkerTopicPage = import('./workerTopic/WorkerTopic.vue')
-export const SolveExamPage = import('./solveExam/SolveExamPage.vue')
-export const ViewExamPage = import('./solveExam/ViewExamPage.vue')
+export const SolveExamPage = import('./workerTopic/solveExam/SolveExamPage.vue')
+export const ViewExamPage = import('./workerTopic/solveExam/ViewExamPage.vue')

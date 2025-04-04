@@ -1,14 +1,13 @@
 <script setup>
 import {
-  Edit20Filled, Delete16Filled, VideoClip16Filled, Book20Filled,
-  Image20Filled, HeadphonesSoundWave32Filled, CircleSmall24Filled,
-  NotebookQuestionMark24Filled, Delete28Regular,
   HatGraduation12Filled
 } from "@vicons/fluent"
 import {NoDataPicture, UIPagination} from "@/components/index.js"
 import {useTopicStore} from "@/store/modules/index.js"
 import {useRouter} from "vue-router"
 import {AppPaths} from "@/utils/index.js"
+import {UIMenuButton} from "@/components/index.js"
+import Utils from "@/utils/Utils.js";
 
 const store = useTopicStore()
 const router = useRouter()
@@ -32,19 +31,27 @@ const goPush = (v)=>{
   router.push(`${AppPaths.Lms}${AppPaths.Topic}/${v.id}`)
 }
 
+const onSelectEv = (v)=>{
+  if(v.key === Utils.ActionTypes.edit){
+    onEdit(v.data)
+  }else if (v.key === Utils.ActionTypes.delete){
+    onDelete(v.data)
+  }
+}
+
 </script>
 
 <template>
-  <n-spin :show="store.loading" class="h-full" style="max-height: calc(100vh - 170px); height: calc(100vh - 170px);">
+  <n-spin :show="store.loading" class="h-full bg-surface-section rounded-md mt-2" style="max-height: calc(100vh - 170px); height: calc(100vh - 170px);">
     <NoDataPicture v-if="store.list.length===0 && !store.loading" />
-    <div v-else-if="store.list.length>0 && !store.loading" class="flex flex-col h-full pt-5">
+    <div v-else-if="store.list.length>0 && !store.loading" class="flex flex-col h-full p-3">
 
       <div class="overflow-y-auto">
         <n-grid x-gap="12"  y-gap="12"  cols="1 400:2 900:3 1200:4 1600:5">
             <n-gi
               v-for="(item, idx) in store.list" :key="idx"
               @click="goPush(item)"
-              class="cursor-pointer bg-surface-section  border rounded-lg border-surface-line  relative overflow-hidden p-2 group h-[100px] min-h-[100px] transition-all hover:drop-shadow-sm"
+              class="cursor-pointer bg-surface-section border rounded-lg border-surface-line  relative overflow-hidden p-2 group h-[100px] min-h-[100px] transition-all hover:drop-shadow-sm"
               :class="{'active-card': $route.params?.id==item.id}"
             >
 
@@ -67,39 +74,11 @@ const goPush = (v)=>{
                     {{item.type.name}}
                   </n-button>
                 </div>
-                <div class="flex gap-1 opacity-0 group-hover:opacity-100 transition duration-300" :class="{'opacity-100': store.elementId === item.id}">
-                  <n-button
-                      @click.stop="onEdit(item)"
-                      style="width: 50%"
-                      size="tiny"
-                      type="info"
-                      secondary>
-                    <template #icon>
-                      <Edit20Filled/>
-                    </template>
-                  </n-button>
-
-                  <n-popconfirm
-                      @positive-click="onDelete(item)"
-                      @negativeClick="store.elementId=null"
-                      @clickoutside="store.elementId=null"
-                      :negative-text="$t('content.no')"
-                      :positive-text="$t('content.yes')"
-                  >    <template #trigger>
-                    <n-button
-                        :loading="store.deleteLoading && store.elementId === item.id"
-                        style="width: 50%"
-                        size="tiny"
-                        type="error"
-                        secondary @click.stop="store.elementId=item.id">
-                      <template #icon>
-                        <Delete16Filled/>
-                      </template>
-                    </n-button>
-                  </template>
-                    {{$t('content.confirmDelete')}}
-                  </n-popconfirm>
-                </div>
+                <UIMenuButton
+                    size="tiny"
+                    @select-ev="onSelectEv"
+                    show-edit
+                />
               </div>
             </n-gi>
         </n-grid>
