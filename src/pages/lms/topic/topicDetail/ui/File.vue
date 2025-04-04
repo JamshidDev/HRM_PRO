@@ -1,40 +1,17 @@
 <script setup>
-import {Book24Filled, Play16Filled, Image48Filled, MusicNote224Filled, VideoClip24Filled, Add16Filled, Book20Filled} from "@vicons/fluent";
+import { Play16Filled, MusicNote224Filled,Book20Filled} from "@vicons/fluent";
+import {TopicUtils} from "@/pages/lms/Utils/index.js";
 
 const props = defineProps({
   file: Object,
   type: Number
 });
 
-const MediaTypeEnum = {
-  VIDEO: 1,
-  IMAGE: 2,
-  BOOK: 3,
-  AUDIO: 4
-};
-
-const getMediaProperty = (typeId) => {
-  switch (typeId) {
-    case MediaTypeEnum.BOOK:
-      return {color: "info", icon: Book24Filled};
-    case MediaTypeEnum.IMAGE:
-      return {color: "success", icon: Image48Filled};
-    case MediaTypeEnum.VIDEO:
-      return {color: "error", icon: VideoClip24Filled};
-    case MediaTypeEnum.AUDIO:
-      return {color: "primary", icon: MusicNote224Filled};
-    default:
-      return {color: "default", icon: Add16Filled}; // Default icon for unknown types
-  }
-};
-
 const showFile = (file) => {
   $MediaViewer.showMediaViewer(file.file, file.file_extension)
 }
-const conf = computed(()=>getMediaProperty(props.type))
-onMounted(()=>{
-  console.log(props, getMediaProperty(props.type))
-})
+const conf = computed(()=>TopicUtils.getMediaProperty(props.type))
+
 </script>
 
 <template>
@@ -43,20 +20,20 @@ onMounted(()=>{
     <n-tooltip>
       {{ file.file_name }}
       <template #trigger>
-        <p class="w-full truncate ">{{ file.file_name }}</p>
-<!--        <div class="w-full truncate border-b border-surface-line shrink-0">-->
-<!--          <n-button-->
-<!--              size="small"-->
-<!--              :type="conf.color"-->
-<!--               text-->
-<!--          >-->
-<!--            <template #icon>-->
-<!--              <n-icon-->
-<!--                  :component="conf.icon"-->
-<!--              ></n-icon>-->
-<!--            </template>-->
-<!--          </n-button>-->
-<!--        </div>-->
+        <div class="w-full truncate border-b border-surface-line shrink-0">
+          <n-button
+              size="small"
+              :type="conf.type"
+               text
+          >
+            <p class="w-full truncate ">{{ file.file_name }}</p>
+            <template #icon>
+              <n-icon
+                  :component="conf.icon"
+              ></n-icon>
+            </template>
+          </n-button>
+        </div>
 
       </template>
     </n-tooltip>
@@ -65,7 +42,7 @@ onMounted(()=>{
     <div class="grow w-full flex justify-center items-center mt-2 overflow-hidden border  border-surface-line rounded-lg" @click="showFile(file)">
       <!-- Image Preview -->
       <img
-          v-if="type === MediaTypeEnum.IMAGE"
+          v-if="type === TopicUtils.IMAGE"
           :src="file.file"
           alt="Preview"
           class="w-full h-full object-cover hover:scale-110 transition-all hover:brightness-75"
@@ -73,7 +50,7 @@ onMounted(()=>{
 
       <!-- Video Preview -->
       <div
-          v-else-if="type === MediaTypeEnum.VIDEO"
+          v-else-if="type === TopicUtils.VIDEO"
           class="h-full w-full relative group"
       >
         <video
@@ -92,7 +69,7 @@ onMounted(()=>{
       </div>
 
       <!-- Audio Preview -->
-      <div v-else-if="type === MediaTypeEnum.AUDIO" class="relative w-full h-full group">
+      <div v-else-if="type === TopicUtils.AUDIO" class="relative w-full h-full group">
         <n-button class="!h-full !w-full" type="primary" quaternary>
           <template #icon>
             <n-icon :component="MusicNote224Filled" :size="60" />
@@ -109,7 +86,7 @@ onMounted(()=>{
         </div>
       </div>
 
-      <n-button v-else-if="type === MediaTypeEnum.BOOK" class="!h-full !w-full" type="success" quaternary >
+      <n-button v-else-if="type === TopicUtils.BOOK" class="!h-full !w-full" type="success" quaternary >
         <template #icon>
           <n-icon :component="Book20Filled" :size="60" />
         </template>

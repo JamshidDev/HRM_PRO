@@ -26,7 +26,6 @@ const changePage = (v) => {
 let colors = ref(["primary", "success", "warning", "info"])
 const randomColors = ref(['', '', ''])
 onMounted(() => {
-
   for (let i = 0; i < 3; i++) {
     let rand = Math.floor(Math.random() * colors.value.length)
     randomColors.value[i] = colors.value[rand]
@@ -45,7 +44,7 @@ onMounted(() => {
             <div
                 class="rounded-md transition-all cursor-pointer lesson-card p-2 h-[90px] flex flex-col"
                 :class="{'active-lesson': store?.elementId===lesson.id}"
-                @click="store.elementId = lesson.id"
+                @click="store.selectedLesson = lesson"
             >
               <div class="flex items-center gap-3 justify-between">
                 <p class="text-xl font-semibold">
@@ -72,69 +71,6 @@ onMounted(() => {
               </div>
             </div>
           </template>
-          <!--      <template v-for="(lesson, idx) in store.list" :key="idx">-->
-          <!--        <div class="flex flex-col gap-2 rounded-lg bg-surface-section shrink-0 p-2">-->
-          <!--          <n-tabs animated type="line">-->
-          <!--            <n-tab-pane name="exams" :tab="$t('examPage.exams')">-->
-          <!--              <n-table-->
-          <!--                  v-if="!!lesson.exams.length"-->
-          <!--                  :single-line="false"-->
-          <!--              >-->
-          <!--                <thead>-->
-          <!--                <tr>-->
-          <!--                  <th></th>-->
-          <!--                  <th>{{$t('examPage.exam')}}</th>-->
-          <!--                  <th>{{ $t('solveExamPage.variant') }}</th>-->
-          <!--                  <th>{{ $t('solveExamPage.totalTime') }}</th>-->
-          <!--                  <th>{{ $t('solveExamPage.deadline') }}</th>-->
-          <!--                  <th>{{ $t('solveExamPage.leftAttempts') }}</th>-->
-          <!--                  <th>{{ $t('solveExamPage.questions') }}</th>-->
-          <!--                  <th class="max-w-[150px] !text-center w-[150px]">{{$t('content.action')}}</th>-->
-          <!--                </tr>-->
-          <!--                </thead>-->
-          <!--                <tbody>-->
-          <!--                  <exam-row-->
-          <!--                    v-for="(exam,idx) in lesson.exams"-->
-          <!--                    :exam="exam"-->
-          <!--                    :key="idx"-->
-          <!--                    @continue="goPush"-->
-          <!--                    @view="viewExam"-->
-          <!--                    @start="startAttempt(exam)"-->
-          <!--                    :row-num="idx+1"-->
-          <!--                  />-->
-          <!--                </tbody>-->
-          <!--              </n-table>-->
-          <!--              <NoDataPicture class="!my-0" v-else />-->
-          <!--            </n-tab-pane>-->
-          <!--            <n-tab-pane name="files" :tab="$t('examPage.resources')">-->
-          <!--                  <div class="grid gap-4 flex-wrap grid-cols-[repeat(auto-fill,minmax(100px,1fr))]" v-if="!!lesson.files.length">-->
-          <!--                    <div-->
-          <!--                        v-for="(file, idx) in lesson.files"-->
-          <!--                        :key="idx"-->
-          <!--                        class="flex flex-col grow gap-3 items-center w-24 text-center border rounded-md p-3 border-gray-300 justify-center"-->
-          <!--                    >-->
-          <!--                      <n-button-->
-          <!--                          circle-->
-          <!--                          size="large"-->
-          <!--                          @click="showFile(file)"-->
-          <!--                      >-->
-          <!--                        <template #icon>-->
-          <!--                          <n-icon-->
-          <!--                              :component="getMediaProperty(file.type.id).icon"-->
-          <!--                          ></n-icon>-->
-          <!--                        </template>-->
-          <!--                      </n-button>-->
-          <!--                      <div class="truncate max-w-full">-->
-          <!--                        <p class="text-sm truncate ">{{ file.file_name }}</p>-->
-          <!--                      </div>-->
-          <!--                    </div>-->
-          <!--                  </div>-->
-          <!--              <NoDataPicture class="!my-0" v-else />-->
-
-          <!--            </n-tab-pane>-->
-          <!--          </n-tabs>-->
-          <!--        </div>-->
-          <!--      </template>-->
         </div>
       </div>
       <UIPagination

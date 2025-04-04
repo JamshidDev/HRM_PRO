@@ -2,18 +2,13 @@
 import List from "./ui/List.vue"
 import TopicDetail from './ui/TopicDetail.vue'
 import {useExamAttemptStore, useWorkerExamStore} from "@/store/modules/index.js";
-import {Warning20Filled} from "@vicons/fluent";
-import {UIModal, UIPageContent, UIPageFilter} from "@/components/index.js";
+
+import {UIPageFilter} from "@/components/index.js";
 
 import stars from "@/assets/images/svg/stars.svg";
 
 const store = useWorkerExamStore()
 const examStore = useExamAttemptStore()
-
-const onSearch = ()=>{
-  store.params.page = 1
-  store._index()
-}
 
 onMounted(()=>{
   examStore._config_localstorage()
@@ -45,7 +40,7 @@ onMounted(()=>{
           <List/>
         </div>
       </div>
-      <div :style="{'width': store?.elementId && store.list.find(i=>i.id===store.elementId) ? '50%' : '0'}"
+      <div :style="{'width': store?.selectedLesson ? '50%' : '0'}"
            class="transition-all  bg-surface-section rounded-md">
           <TopicDetail />
       </div>

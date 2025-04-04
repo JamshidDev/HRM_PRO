@@ -29,7 +29,6 @@ export const useTopicFileStore = defineStore('topicFileStore', {
             this.loading= true
             $ApiService.topicFilesService._index({params:this.params, id: this.topicId}).then((res)=>{
                 this.list = res.data.data
-                console.log(res.data.data)
             }).finally(()=> {
                 this.loading= false
             })
@@ -39,7 +38,6 @@ export const useTopicFileStore = defineStore('topicFileStore', {
             const formData = new FormData()
             formData.append('active', Number(this.payload.active))
             formData.append('file', this.payload.fileObjects[0].file)
-            formData.append('type', this.payload.type)
             $ApiService.topicFilesService._create({data: formData, id: this.topicId}).then((res)=>{
                 this.visible = false
                 this._index()
@@ -54,13 +52,7 @@ export const useTopicFileStore = defineStore('topicFileStore', {
             this.saveLoading = true
             const formData = new FormData()
             formData.append('active', Number(this.payload.active))
-            if(this.payload.fileObjects[0].file){
-                formData.append('file', this.payload.fileObjects[0].file)
-            }
-            formData.append('type', this.payload.type)
-
             $ApiService.topicFilesService._update({data: formData, id:this.topicId, file_id: this.elementId}).then((res)=>{
-                this.visible = false
                 this._index()
                 this.resetForm()
                 

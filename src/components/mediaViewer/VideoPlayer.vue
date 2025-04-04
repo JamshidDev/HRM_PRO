@@ -28,6 +28,7 @@ onMounted(()=>{
             crossorigin
             height="100"
             class="!h-full"
+            autoplay
         ></video>
       </media-theme-yt>
     </div>

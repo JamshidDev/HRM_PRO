@@ -1,0 +1,44 @@
+<script setup>
+import ExamCard from './ExamCard.vue'
+import {useExamAttemptStore} from "@/store/modules/index.js";
+
+const examStore = useExamAttemptStore()
+const router = useRouter()
+defineProps({
+  exams: Array
+})
+
+
+const startAttempt = (v) => {
+  examStore.elementId = v.id
+  examStore._start_attempt()
+}
+
+const goPush = (v) => {
+  router.push({
+    name: 'solve_exam',
+    params: {
+      exam_id: v.id
+    }
+  })
+}
+
+const viewExam = (v) => {
+  router.push({
+    name: 'exam_attempt',
+    params: {
+      exam_id: v.id
+    }
+  })
+}
+
+</script>
+<template>
+  <template v-for="(exam, idx) in exams" :key="idx">
+    <n-divider v-if="idx!==0" class="!my-2" />
+    <exam-card @continue="goPush"
+               @view="viewExam"
+               @start="startAttempt(exam)"
+               :exam="exam"/>
+  </template>
+</template>

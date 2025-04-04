@@ -1,34 +1,13 @@
 <script setup>
-import FileList from './FileList.vue'
+import FilePanel from './FilePanel.vue'
 import TopicExamsTable from './ExamsTable.vue'
 import {AddCircle32Regular, Book24Filled, Image48Filled, MusicNote224Filled, VideoClip24Filled, PeopleEdit20Filled} from "@vicons/fluent";
 import {useTopicExamStore, useTopicFileStore} from "@/store/modules/index.js";
+import {TopicUtils} from "@/pages/lms/Utils/index.js";
 
 const fileStore = useTopicFileStore()
 const examStore = useTopicExamStore()
 
-const MediaTypeEnum = {
-  VIDEO: 1,
-  IMAGE: 2,
-  BOOK: 3,
-  AUDIO: 4
-}
-
-
-const getMediaProperty = (typeId) => {
-  switch (typeId) {
-    case MediaTypeEnum.BOOK:
-      return { color: "#2080f0", icon: Book24Filled }; // Info
-    case MediaTypeEnum.IMAGE:
-      return { color: "#1f2220", icon: Image48Filled }; // Success
-    case MediaTypeEnum.VIDEO:
-      return { color: "#d03050", icon: VideoClip24Filled }; // Error
-    case MediaTypeEnum.AUDIO:
-      return { color: "#18a058", icon: MusicNote224Filled }; // Primary
-    default:
-      return { color: "#8a8a8a", icon: AddCircle32Regular }; // Default
-  }
-};
 const examTabNumber = 0
 const activeTab = ref(examTabNumber)
 const onAdd = ()=>{
@@ -42,6 +21,8 @@ const onAddExam = ()=>{
   examStore.visibleType = true
   examStore.visible = true
 }
+
+
 </script>
 <template>
   <div class="h-full py-3 px-8">
@@ -50,34 +31,33 @@ const onAddExam = ()=>{
       <div
           @click="activeTab=examTabNumber"
           class="w-full p-4 py-3 bg-blue-50 rounded-md transition-all hover:bg-blue-100 cursor-pointer flex flex-col gap-2"
-        :class="{'bg-blue-100': activeTab===examTabNumber}"
+        :class="{'!bg-blue-100': activeTab===examTabNumber}"
       >
         <div class="flex items-center gap-1">
-          <n-icon-wrapper :color="getMediaProperty(examTabNumber).color" class="shrink-0" :size="30" :border-radius="10" >
-            <n-icon color="#FFF" :size="18" :component="PeopleEdit20Filled" />
+          <n-icon-wrapper :border-radius="10" :color="TopicUtils.getMediaProperty(examTabNumber).color" :size="30" class="shrink-0">
+            <n-icon :component="PeopleEdit20Filled" :size="18" color="#FFF"/>
           </n-icon-wrapper>
-          <p class="text-primary font-medium text-lg">Imtihonlar</p>
+          <p class="font-medium">{{ $t('examPage.name') }}</p>
+          <n-button size="tiny" circle  tertiary>
+            <span class="font-bold">{{  examStore.totalItems }}</span>
+          </n-button>
         </div>
-        <p class="text-xs text-gray-500 font-semibold">
-          {{$t('examPage.nExams', {n: examStore.totalItems})}}
-        </p>
       </div>
       <template v-for="(item, idx) in  fileStore.list">
         <div
             @click="activeTab=item.id"
             class="w-full p-4 py-3 bg-blue-50 rounded-md transition-all hover:bg-blue-100 cursor-pointer flex flex-col gap-2"
-            :class="{'bg-blue-100': activeTab===item.id}"
+            :class="{'!bg-blue-100': activeTab===item.id}"
         >
           <div class="flex items-center gap-1">
-            <n-icon-wrapper  :color="getMediaProperty(item.id).color" class="shrink-0" :size="30" :border-radius="10" >
-              <n-icon color="#FFF" :size="18" :component="getMediaProperty(item.id).icon" />
+            <n-icon-wrapper :border-radius="10" :color="TopicUtils.getMediaProperty(item.id).color" :size="30" class="shrink-0">
+              <n-icon :component="TopicUtils.getMediaProperty(item.id).icon" :size="18" color="#FFF"/>
             </n-icon-wrapper>
-            <p class="text-primary font-medium text-lg">{{item.name}}</p>
-
+            <p class="font-medium">{{ item.name }}</p>
+            <n-button size="tiny" circle  tertiary>
+              <span class="font-bold">{{  item.items.length }}</span>
+            </n-button>
           </div>
-          <p class="text-xs text-gray-500 font-semibold">
-            {{$t('examPage.nFiles', {n: item.items.length})}}
-          </p>
         </div>
       </template>
     </div>
@@ -104,7 +84,7 @@ const onAddExam = ()=>{
             </template>
           </n-button>
         </div>
-        <FileList :object="item" />
+        <FilePanel :object="item" />
 
       </n-tab-pane>
     </n-tabs>

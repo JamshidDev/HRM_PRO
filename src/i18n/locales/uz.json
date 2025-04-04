@@ -91,7 +91,8 @@
     "return": "Ortga qaytish",
     "finish": "Yakunlash",
     "created": "Yaratilgan sana",
-    "move": "Siljitish"
+    "move": "Siljitish",
+    "listen": "Tinglash"
   },
   "date": {
     "day": "Kun",
