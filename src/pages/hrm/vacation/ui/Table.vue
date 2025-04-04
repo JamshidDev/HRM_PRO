@@ -1,5 +1,5 @@
 <script setup>
-import {NoDataPicture,UIPagination, UIUser, UIMenuButton} from "@/components/index.js"
+import {NoDataPicture,UIPagination, UIUser, UIBadge} from "@/components/index.js"
 import {useVacationStore, useComponentStore} from "@/store/modules/index.js"
 import Utils from "@/utils/Utils.js"
 
@@ -47,6 +47,24 @@ const onSelectEv = (v)=>{
     onDelete(v.data)
   }
 }
+
+
+const vacationType =(id)=>{
+  switch (id){
+    case 1:
+      return Utils.colorTypes.info
+    case 2:
+      return Utils.colorTypes.warning
+    case 3:
+      return Utils.colorTypes.success
+    case 4:
+      return Utils.colorTypes.error
+    case 5:
+      return Utils.colorTypes.dark
+    default:
+      return Utils.colorTypes.secondary
+  }
+}
 </script>
 
 <template>
@@ -61,7 +79,7 @@ const onSelectEv = (v)=>{
         <tr>
           <th class="!text-center min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
           <th class="min-w-[200px]">{{$t('confirmationPage.table.worker')}}</th>
-          <th class="min-w-[100px] w-[200px]">{{$t('vacationPage.table.type')}}</th>
+          <th class="min-w-[100px] w-[300px]">{{$t('vacationPage.table.type')}}</th>
           <th class="min-w-[100px] w-[240px]">{{$t('vacationPage.table.duration')}}</th>
           <th class="min-w-[100px] w-[120px]">{{$t('vacationPage.table.workDay')}}</th>
 <!--          <th class="min-w-[40px] w-[40px]"></th>-->
@@ -84,16 +102,18 @@ const onSelectEv = (v)=>{
               />
             </div>
           </td>
-          <td>{{item.type?.name}}</td>
+          <td>
+            <UIBadge :label="item.type.name" :type="vacationType(item.type.id)" />
+          </td>
           <td>
             <div class="flex">
-              <n-tag class="mx-auto" round type="warning">{{Utils.timeOnlyDate(item.from)}}</n-tag>
-              <n-tag class="mx-auto" round type="warning">{{Utils.timeOnlyDate(item.to)}}</n-tag>
+              <UIBadge :show-icon="false" :label="Utils.timeOnlyDate(item.from)" />
+              <UIBadge :show-icon="false" :label="Utils.timeOnlyDate(item.to)" />
             </div>
 
           </td>
           <td>
-            <n-tag v-if="item.work_day" class="mx-auto" round type="success">{{Utils.timeOnlyDate(item.work_day)}}</n-tag>
+            <UIBadge v-if="item.work_day" :show-icon="false" :label="Utils.timeOnlyDate(item.work_day)" :type="Utils.colorTypes.success" />
           </td>
 <!--          <td>-->
 <!--            <UIMenuButton-->

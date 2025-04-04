@@ -33,7 +33,7 @@ export const useContractStore = defineStore('contractStore', {
             group:null,
             rank:null,
             rate:null,
-            post_name:null,
+            // post_name:null,
             contract_to_date:null,
             probation:null,
             position_date:null,
@@ -191,7 +191,7 @@ export const useContractStore = defineStore('contractStore', {
             this.payload.group = null
             this.payload.rank = null
             this.payload.rate = null
-            this.payload.post_name = null
+            // this.payload.post_name = null
             this.payload.probation = null
             this.payload.position_date = new Date().getTime()
             this.payload.vacation_main_day = '21'

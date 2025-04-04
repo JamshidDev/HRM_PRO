@@ -17,6 +17,7 @@ const onSearch = () => {
 
 const filterEvent = () => {
   componentStore.depParams.page = 1
+  store.params.page = 1
   store._index()
 }
 

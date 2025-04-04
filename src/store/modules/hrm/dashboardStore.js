@@ -24,6 +24,7 @@ export const useDashboardStore = defineStore('dashboardStore', {
             medicalCard:null,
             contracts:[],
             birthdays:null,
+            vacations:[],
         },
 
 
@@ -166,41 +167,45 @@ export const useDashboardStore = defineStore('dashboardStore', {
                     ],
                 }
                 this.dashboard.contracts =v.contracts
-                this.dashboard.birthdays = {
-                    title:"dashboardPage.birthday.title",
-                    data:[
-                        {
-                            title:t("dashboardPage.birthday.today"),
-                            workers:v.birthdays.result[0].count>3? [...v.birthdays.result[0].workers, ...v.birthdays.result[0].workers] : v.birthdays.result[0].workers,
-                            total:v.birthdays.result[0].count,
-                            has_more:v.birthdays.result[0].has_more,
-                        },
-                        {
-                            title:t("dashboardPage.birthday.tomorrow"),
-                            workers:v.birthdays.result[1].count>3? [...v.birthdays.result[1].workers, ...v.birthdays.result[1].workers] : v.birthdays.result[1].workers,
-                            total:v.birthdays.result[1].count,
-                            has_more:v.birthdays.result[1].has_more,
-                        },
-                        {
-                            title:formatMonth(v.birthdays.result[2].day),
-                            workers:v.birthdays.result[2].count>3? [...v.birthdays.result[2].workers, ...v.birthdays.result[2].workers] : v.birthdays.result[2].workers,
-                            total:v.birthdays.result[2].count,
-                            has_more:v.birthdays.result[2].has_more,
-                        },
-                        {
-                            title:formatMonth(v.birthdays.result[3].day),
-                            workers:v.birthdays.result[3].count>3? [...v.birthdays.result[3].workers, ...v.birthdays.result[3].workers] : v.birthdays.result[3].workers,
-                            total:v.birthdays.result[3].count,
-                            has_more:v.birthdays.result[3].has_more,
-                        },
-                        {
-                            title:formatMonth(v.birthdays.result[4].day),
-                            workers:v.birthdays.result[4].count>3? [...v.birthdays.result[4].workers, ...v.birthdays.result[4].workers] : v.birthdays.result[4].workers,
-                            total:v.birthdays.result[4].count,
-                            has_more:v.birthdays.result[4].has_more,
-                        },
-                    ]
+                this.dashboard.vacations =v.vacation_types
+                if(v.birthdays.result.length>0){
+                    this.dashboard.birthdays = {
+                        title:"dashboardPage.birthday.title",
+                        data:[
+                            {
+                                title:t("dashboardPage.birthday.today"),
+                                workers:v.birthdays.result[0]?.count>3? [...v.birthdays.result[0].workers, ...v.birthdays.result[0].workers] : v.birthdays.result[0].workers,
+                                total:v.birthdays.result[0].count,
+                                has_more:v.birthdays.result[0].has_more,
+                            },
+                            {
+                                title:t("dashboardPage.birthday.tomorrow"),
+                                workers:v.birthdays.result[1].count>3? [...v.birthdays.result[1].workers, ...v.birthdays.result[1].workers] : v.birthdays.result[1].workers,
+                                total:v.birthdays.result[1].count,
+                                has_more:v.birthdays.result[1].has_more,
+                            },
+                            {
+                                title:formatMonth(v.birthdays.result[2].day),
+                                workers:v.birthdays.result[2].count>3? [...v.birthdays.result[2].workers, ...v.birthdays.result[2].workers] : v.birthdays.result[2].workers,
+                                total:v.birthdays.result[2].count,
+                                has_more:v.birthdays.result[2].has_more,
+                            },
+                            {
+                                title:formatMonth(v.birthdays.result[3].day),
+                                workers:v.birthdays.result[3].count>3? [...v.birthdays.result[3].workers, ...v.birthdays.result[3].workers] : v.birthdays.result[3].workers,
+                                total:v.birthdays.result[3].count,
+                                has_more:v.birthdays.result[3].has_more,
+                            },
+                            {
+                                title:formatMonth(v.birthdays.result[4].day),
+                                workers:v.birthdays.result[4].count>3? [...v.birthdays.result[4].workers, ...v.birthdays.result[4].workers] : v.birthdays.result[4].workers,
+                                total:v.birthdays.result[4].count,
+                                has_more:v.birthdays.result[4].has_more,
+                            },
+                        ]
+                    }
                 }
+
 
             }).finally(()=>{
                 this.loading= false

@@ -27,6 +27,7 @@ export const useComponentStore = defineStore('componentStore', {
         applicationTypes:[],
         workTypes:[],
         vacationAdditional:[],
+        medStatus:[],
 
         departmentList:[],
         depParams:{
@@ -219,6 +220,7 @@ export const useComponentStore = defineStore('componentStore', {
                 this.applicationTypes = res.data.data.contract_application_types
                 this.workTypes =res.data.data.create_application_types
                 this.vacationAdditional = res.data.data.vacation_additional
+                this.medStatus = res.data.data.med_statuses
             }).finally(()=>{
                 this.enumLoading= false
             })
@@ -316,10 +318,10 @@ export const useComponentStore = defineStore('componentStore', {
         },
 
 
-        _checkWorker(pin){
+        _checkWorker(pin, type){
             this.pinLoading = true
             this.worker = null
-            $ApiService.workerService._checkWorker({params:{pin}}).then((res)=>{
+            $ApiService.workerService._checkWorker({params:{pin, type}}).then((res)=>{
                 if(!res.data.error){
                     let data = res.data.data
                     this.worker =  {

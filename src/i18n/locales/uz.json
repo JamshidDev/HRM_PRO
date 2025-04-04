@@ -146,12 +146,17 @@
   },
   "loginPage": {
     "name": "Xush kelibsiz",
-    "title": "HRM PRO",
-    "subtitle": "O'zbekiston temir yo'llari AJning HRM platformasi",
+    "title": "Kirish",
+    "subtitle": "Tizimga kirish uchun telefon raqamingiz va parolingizni kiriting.",
     "phone": "Telefon raqam",
     "password": "Parol",
     "doYouHaveAccount": "Sizda hisob yo'qmi?",
     "singUp": "Ro'yhatdan o'tish",
+    "description": {
+      "title": "HRMS",
+      "subtitle": "Xodimlarni boshqarishning zamonaviy tizimi\n",
+      "text": "Xodimlaringizni samarali boshqarish, ish vaqtini nazorat qilish va hujjatlarni avtomatlashtirish uchun qulay yechim. HR jarayonlarini optimallashtiring va biznesingizni yangi bosqichga olib chiqing!"
+    },
     "login": "Kirish"
   },
   "registerPage": {
@@ -193,7 +198,14 @@
     }
   },
   "userPage": {
-    "name": "Foydalanuvchilar"
+    "name": "Foydalanuvchilar",
+    "createTitle": "Rolni biriktirish",
+    "updateTitle": "Rolni tahrirlash",
+    "form": {
+      "role": "Huquqlar"
+
+    },
+    "no-roles": "Biriktirilgan rollar yo'q!"
   },
   "confirmation": {
     "name": "Shartnomalar",
@@ -277,6 +289,9 @@
       "parent_id": "Tashkilot tanlang",
       "name": "Tashkilot nomi",
       "full_name": "Tashkilotning to'liq nomi",
+      "group": "Guruh",
+      "code": "Kod",
+      "city_id": "Tuman",
       "level": "Tashkilot turi"
     },
     "selectedOrg": "Tanlangan tashkilot",
@@ -617,8 +632,8 @@
     "step": {
       "stepOne": "Shartnoma turi",
       "stepTwo": "Shartnoma ma'lumoti",
-      "stepThree": "Buyruk biriktirish",
-      "stepFour": "Hotali"
+      "stepThree": "Buyruq biriktirish",
+      "stepFour": "Holati"
     },
     "confirmText": "{n} raqamli shartnoma asosida buyruq yaratasizmi?",
     "confirmAdText": "{n} raqamli qo'shimcha kelishuv shartnoma asosida buyruq yaratasizmi?"
@@ -1033,11 +1048,12 @@
     }
   },
   "dashboardPage": {
-    "name": "Statistika",
+    "name": "Dashboard",
     "card": {
       "type": "Ta'til turi",
       "durationDay": "Ta'til davomiyligi {n} kun",
       "workDay": "Ishga chiqish sanasi",
+      "vacation": "Ta'tildagi xodimlar",
       "duration": "Ta'til davri"
     },
     "contract": {
@@ -1093,6 +1109,7 @@
   },
   "applicationPage": {
     "name": "Arizalar",
+    "addApp": "Ariz yuborish",
     "createWorkerApplication": "Ariza yaratish",
     "updateWorkerApplication": "Ariza tahrirlash",
     "lastVacationTitle": "Oxirgi ta'til ma'lumotlari",
@@ -1174,6 +1191,23 @@
     "closeWarning": {
       "title": "Tabelni yakunlashga ishonchingiz komilmi?",
       "desc": "Bu amalni ortga qaytarib bo'lmaydi."
+    }
+  },
+  "medPage": {
+    "name": "Tibbiy ko'rik",
+    "createTitle": "Tibbiy ko'rik ma'lumotini qo'shish",
+    "updateTitle": "Tibbiy ko'rik ma'lumotini tahrirlash",
+    "tab": {
+      "worker": "Temir yo'lchi",
+      "candidate": "Kandidat"
+    },
+    "form": {
+      "from": "Oxirgi tibbiy ko'rik o'tqazilgan sana",
+      "to": "Keyingi tibbiy ko'rikdan o'tish sanasi",
+      "comment": "Izoh",
+      "status": "Holati",
+      "organization": "Korxona",
+      "file": "Fayllar"
     }
   }
 }

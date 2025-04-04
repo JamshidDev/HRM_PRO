@@ -80,7 +80,13 @@ const onSelect =(v)=>{
               @click="onOpenFile(item)"
               class="text-sm hover:text-primary hover:underline cursor-pointer">{{item?.type?.name}}</span></td>
           <td>
-            <div class="flex justify-center"><n-button class="font-medium" round type="error" size="tiny">{{item?.number}}</n-button></div>
+            <div v-if="item?.number" class="flex justify-center">
+              <n-button
+                  dashed
+                  class="font-medium"
+                  round type="info"
+                  size="tiny">
+                {{item?.number}}</n-button></div>
           </td>
           <td>
             <UIUser
@@ -111,7 +117,10 @@ const onSelect =(v)=>{
           <td>
             <span class="text-sm">{{Utils.timeOnlyDate(item?.contract_date)}}</span>
           </td>
-          <td><UIStatus :status="item?.status"/></td>
+          <td><UIStatus :status="{
+            name:item?.status.name,
+            id:item?.status.id ===2? 3:2,
+          }"/></td>
           <td>
             <UIMenuButton
                 :show-view="true"

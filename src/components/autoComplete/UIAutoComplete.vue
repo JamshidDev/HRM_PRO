@@ -6,8 +6,13 @@ import {useComponentStore} from "@/store/modules/index.js"
 import {UIUser} from "@/components/index.js"
 const store = useComponentStore()
 
+
 const searchModel = ref('')
 const visible = ref(false)
+
+const props = defineProps({
+  searchType:{type:String,default:null},
+})
 
 const pin = defineModel( 'pin',{type:String, default:null})
 
@@ -16,7 +21,7 @@ const searchEvent = useDebounceFn(() => {
   if(searchModel.value.length === 17){
     visible.value = true
     let pin = searchModel.value.split('-').join("")
-    store._checkWorker(pin)
+    store._checkWorker(pin, props.searchType)
   }
 }, 300,)
 
@@ -84,7 +89,7 @@ const feedback = computed(()=>!Boolean(pin.value))
 
     <div v-on-click-outside="onClose" v-if="visible" class="
     ui__autocomplete-panel shadow bg-surface-section border border-surface-line
-    w-full top-[65px] absolute z-[9] h-[60px] p-2 rounded-xl
+    w-full top-[65px] absolute z-[999] h-[60px] p-2 rounded-xl
 ">
       <n-spin class="w-full h-full flex justify-center items-center" :show="store.pinLoading" size="small">
         <template v-if="store.worker">

@@ -33,7 +33,6 @@ const renderLabel = (option)=>{
               {
                 class:'',
                 src:option.worker.photo,
-                'fallback-src':Utils.noAvailableImage,
               },),
           h('div',{ class:'flex flex-col'}, [
             h('div',{ class:'text-xs font-medium text-gray-500'},`${option.worker.last_name}.${option.worker.first_name[0]}.${option.worker.middle_name[0]}`),
@@ -60,15 +59,18 @@ const renderLabel2 = (option)=>{
         {
           class:'flex gap-2 my-1 items-center'
         },[
-          h(NAvatar,
-              {
-                class:'',
-                src:option.worker.photo,
-                'fallback-src':Utils.noAvailableImage,
-              },),
-          h('div',{ class:'flex flex-col'}, [
+            h('div', {
+              class:'flex w-[40px]'
+            },[
+              h(NAvatar,
+                  {
+                    class:'w-[30px]',
+                    src:option.worker.photo,
+                  },),
+            ]),
+          h('div',{ class:'flex flex-col',}, [
             h('div',{ class:'text-xs font-medium text-gray-500'},`${option.worker.last_name}.${option.worker.first_name[0]}.${option.worker.middle_name[0]}`),
-            h('div',{ class:'text-xs text-gray-400'},option.post_name),
+            h('div',{ class:'text-xs text-gray-400 truncate'},option.post_short_name),
           ])
         ]
     ),
@@ -207,6 +209,7 @@ onMounted(()=>{
             :render-tag="renderValue"
             label-field="id"
             value-field="id"
+            :max-tag-count="1"
         />
       </n-form-item>
     </div>

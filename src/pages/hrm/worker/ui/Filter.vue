@@ -19,6 +19,7 @@ const onSearch = () => {
 
 const filterEvent = () => {
   componentStore.depParams.page = 1
+  store.params.page = 1
   store._index()
 }
 
@@ -164,7 +165,7 @@ onMounted(() => {
                 :ignore-composition="false"
             />
           </div>
-          <div class="col-span-1">
+          <div class="col-span-1 mb-3">
             <label class="mt-3 text-xs text-gray-500">{{ $t('workerPage.filter.birthday') }}</label>
             <n-select
                 v-model:value="store.params.birthday"

@@ -91,6 +91,20 @@ const onFocusCity = ()=>{
             :loading="componentStore.organizationLoading"
         />
       </n-form-item>
+      <n-form-item :label="$t(`organizationPage.form.code`)" path="code">
+        <n-input
+            type="text"
+            :placeholder="$t(`content.enterField`)"
+            v-model:value="store.payload.code"
+        />
+      </n-form-item>
+      <n-form-item path="code">
+        <n-checkbox
+            :label="$t(`organizationPage.form.group`)"
+            :placeholder="$t(`content.enterField`)"
+            v-model:checked="store.payload.group"
+        />
+      </n-form-item>
     </div>
 
     <div class="grid grid-cols-2 gap-2">

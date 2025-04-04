@@ -47,7 +47,7 @@ const timeWithMonth = (time)=>{
     return time? dayjs(time).format('DD.MM.YYYY HH:mm') : null
 }
 const timeOnlyDate = (time)=>{
-    return time? dayjs(time).format('YYYY.MM.DD') : null
+    return time? dayjs(time).format('DD.MM.YYYY') : null
 }
 
 const timeOnlyHour = (time)=>{
@@ -241,6 +241,132 @@ const debouncedFn = useDebounceFn((callback) => {
     callback?.()
 }, 1000, { maxWait: 5000 })
 
+const appPermissions = {
+
+    users:"users",
+    admin:"admin",
+    usersWrite:"users-write",
+    usersRead:"users-read",
+
+    roles:"roles",
+    rolesRead:"roles-read",
+    rolesWrite:"roles-write",
+
+    permissions:"permissions",
+    permissionsRead:"permissions-read",
+    permissionsWrite:"permissions-write",
+
+    countries:"countries",
+    countriesRead:"countries-read",
+    countriesWrite:"countries-write",
+
+    regions:"regions",
+    regionsRead:"regions-read",
+    regionsWrite:"regions-write",
+
+    cities:"cities",
+    citiesRead:"cities-read",
+    citiesWrite:"cities-write",
+
+    organizations:"organizations",
+    organizationsRead:"organizations-read",
+    organizationsWrite:"organizations-write",
+
+    documentExamples:"document-examples",
+    documentExamplesRead:"document-examples-read",
+    documentExamplesWrite:"document-examples-write",
+
+    organizationServices:"organization-services",
+    organizationServicesRead:"organization-services-read",
+    organizationServicesWrite:"organization-services-write",
+
+    organizationAdmin:"organization-admin",
+    organizationLeader:"organization-leader",
+    organization:"organization",
+
+    hr:"hr",
+
+    hrDashboard:"hr-dashboard",
+
+    hrWorkers:"hr-workers",
+    hrWorkersWrite:"hr-workers-write",
+    hrWorkersRead:"hr-workers-read",
+
+    hrDepartments:"hr-departments",
+    hrDepartmentsWrite:"hr-departments-write",
+    hrDepartmentsRead:"hr-departments-read",
+
+    hrPositions:"hr-positions",
+    hrPositionsWrite:"hr-positions-write",
+    hrPositionsRead:"hr-positions-read",
+
+    hrContracts:"hr-contracts",
+    hrContractsWrite:"hr-contracts-write",
+    hrContractsRead:"hr-contracts-read",
+
+    hrCommands:"hr-commands",
+    hrCommandsWrite:"hr-commands-write",
+    hrCommandsRead:"hr-commands-read",
+
+    hrContractAdditional:"hr-contract-additional",
+    hrContractAdditionalWrite:"hr-contract-additional-write",
+    hrContractAdditionalRead:"hr-contract-additional-read",
+
+    hrWorkerApplications:"hr-worker-applications",
+    hrWorkerApplicationsWrite:"hr-worker-applications-write",
+    hrWorkerApplicationsRead:"hr-worker-applications-read",
+
+    hrConfirmations:"hr-confirmations",
+    hrConfirmationsWrite:"hr-confirmations-write",
+    hrConfirmationsRead:"hr-confirmations-read",
+
+    hrVacations:"hr-vacations",
+    hrVacationsWrite:"hr-vacations-write",
+    hrVacationsRead:"hr-vacations-read",
+
+    hrTableWorkers:"hr-table-workers",
+    hrTableWorkersWrite:"hr-table-workers-write",
+    hrTableWorkersRead:"hr-table-workers-read",
+
+    hrTable:"hr-table",
+    hrTableWrite:"hr-table-write",
+    hrTableRead:"hr-table-read",
+
+    hrMed:"hr-med",
+    hrMedWrite:"hr-med-write",
+    hrMedRead:"hr-med-read",
+
+    confirmation:"confirmation",
+    confirmationContracts:"confirmation-contracts",
+    confirmationCommands:"confirmation-commands",
+    confirmationWorkerApplications:"confirmation-worker-applications",
+    confirmationTable:"confirmation-table",
+
+    exam:"exam",
+
+    examTopics:"exam-topics",
+    examTopicsWrite:"hr-topics-write",
+    examTopicsRead:"hr-topics-read",
+
+    examCategories:"exam-categories",
+    examCategoriesWrite:"hr-categories-write",
+    examCategoriesRead:"hr-categories-read",
+
+    examExams:"exam-exams",
+    examExamsWrite:"hr-exams-write",
+    examExamsRead:"hr-exams-read",
+
+
+}
+
+const colorTypes = {
+    info:"Info",
+    warning:"Warning",
+    error:"Error",
+    success:"Success",
+    dark:"Dark",
+    secondary:"Secondary",
+}
 
 export default {
     fileToBase64,
@@ -276,4 +402,6 @@ export default {
     routeTimesheetPathMaker,
     formatNumberToMoney,
     debouncedFn,
+    appPermissions,
+    colorTypes,
 }

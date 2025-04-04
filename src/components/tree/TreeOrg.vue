@@ -29,7 +29,10 @@ const emits = defineEmits(["onSelect", "onSelectAll"])
 
 
 const onSelect = (v)=>{
-  emits('onSelect',v)
+  if(v.group !== 1 || props.multiple){
+    emits('onSelect',v)
+  }
+
 }
 
 
@@ -76,7 +79,10 @@ const isCheck =(id)=>{
 
 
         <div @click="onSelect(item)" :style="{width:`calc(100% - ${deep>1? (deep*20) : 40}px)`}" class="leading-4 flex items-center truncate">
-          <n-checkbox :checked="modelV.map((a)=>a.id).includes(item.id)"></n-checkbox>
+          <n-checkbox
+              :disabled="Boolean(item.group && !multiple)"
+              :checked="modelV.map((a)=>a.id).includes(item.id)"
+          ></n-checkbox>
           <span class="text-xs ml-2">{{item.name}}</span>
         </div>
         <div class="w-[20px] lex justify-center items-center">

@@ -1,12 +1,9 @@
 <script setup>
-import {ContactCardRibbon16Regular, BriefcaseMedical20Regular, PeopleToolbox20Regular} from "@vicons/fluent"
 import {UIPageContent} from "@/components/index.js"
 import VChart from 'vue-echarts';
 import { use } from 'echarts/core';
 import { CanvasRenderer } from 'echarts/renderers';
 import { BarChart, PieChart } from 'echarts/charts';
-
-import {UIUserGroup} from "@/components/index.js"
 import ContractChart from "./ui/ContractChart.vue"
 import AgeChart from "./ui/AgeChart.vue"
 import EduChart from "./ui/EduChart.vue"
@@ -21,6 +18,7 @@ import  {useDashboardStore} from "@/store/modules/index.js"
 import InfoCard from "@/pages/hrm/dashboardV3/ui/InfoCard.vue"
 import YearlyChart from "@/pages/hrm/dashboardV3/ui/YearlyChart.vue"
 import BirthdayCard from "@/pages/hrm/dashboardV3/ui/BirthdayCard.vue"
+import VacationChart from "@/pages/hrm/dashboardV3/ui/VacationChart.vue"
 
 
 const store = useDashboardStore()
@@ -232,17 +230,7 @@ onMounted(()=>{
 
 
       <div class="col-span-4">
-        <div class="w-full h-full border border-surface-line p-4 rounded-lg bg-surface-section relative">
-          <span class="z-[1] opacity-30 absolute top-0 right-0 w-[160px] h-full bg-no-repeat bg-[url(/public/effect/primary-card.svg)]" ></span>
-          <div class="flex items-center gap-2">
-            <span class="font-semibold text-nowrap">Ta'tildagi xodimlar</span>
-            <hr class="w-full h-[1px] text-surface-line">
-            <span class="font-semibold text-nowrap">20 478</span>
-          </div>
-          <div class="w-full h-[360px] relative z-[2]">
-            <v-chart :option="vacationOption" />
-          </div>
-        </div>
+       <VacationChart/>
       </div>
       <div class="col-span-4">
        <ContractChart/>

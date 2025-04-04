@@ -9,14 +9,21 @@ export const useUserStore = defineStore('user', {
         visibleType:true,
         elementId:null,
         totalItems:0,
+        structureCheck:[],
         payload:{
-            name:null,
+            role_id:null,
+            organization_id:[],
         },
         params:{
             page:1,
             per_page:10,
             search:null,
-        }
+        },
+        roleList:[],
+        roleLoading:false,
+
+        myRoleList:[],
+        myRoleLoading:false,
     }),
     actions:{
         _index(){
@@ -28,10 +35,33 @@ export const useUserStore = defineStore('user', {
                 this.loading= false
             })
         },
+        _roles(){
+            this.roleLoading= true
+            $ApiService.userRoleService._index({params:{page:1, per_page:10000}}).then((res)=>{
+                this.roleList = res.data.data.data
+            }).finally(()=>{
+                this.roleLoading= false
+            })
+        },
+        _myRoles(){
+            this.myRoleLoading= true
+            $ApiService.userService._myRoles({id:this.elementId}).then((res)=>{
+                this.myRoleList = res.data.data
+            }).finally(()=>{
+                this.myRoleLoading= false
+            })
+        },
         _create(){
             this.saveLoading = true
-            $ApiService.userService._create({data:this.payload}).then((res)=>{
-                console.log(res.data)
+            const data = {
+                ...this.payload,
+                uuid:this.elementId,
+                organization_id:this.payload.organization_id[0].id,
+            }
+            $ApiService.userService._create({data}).then((res)=>{
+                this.payload.role_id = null
+                this.payload.organization_id = []
+                this._myRoles()
             }).finally(()=>{
                 this.saveLoading = false
             })
@@ -39,19 +69,27 @@ export const useUserStore = defineStore('user', {
         },
         _update(){
             this.saveLoading = true
-            $ApiService.userPermissionService._update({data:this.payload}).then((res)=>{
-                console.log(res.data)
+            const data = {
+                ...this.payload,
+                uuid:this.elementId,
+                organization_id:this.payload.organization_id[0].id,
+            }
+            $ApiService.userService._update({data, id:this.elementId}).then((res)=>{
+                this._myRoles()
             }).finally(()=>{
                 this.saveLoading = false
             })
         },
         _delete(){
             this.deleteLoading = true
-            $ApiService.userPermissionService._delete({id:this.elementId}).then((res)=>{
+            $ApiService.userService._delete({id:this.elementId}).then((res)=>{
                 console.log(res.data)
             }).finally(()=>{
                 this.deleteLoading = false
             })
+        },
+        openVisible(visible){
+            this.visible = visible
         }
 
     }

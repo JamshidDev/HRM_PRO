@@ -44,6 +44,7 @@ import timesheetDepartmentService from "@/service/v1/hrm/timesheetDepartmentServ
 import timesheetService from '@/service/v1/hrm/timesheetService.js'
 import timesheetWorkerService from '@/service/v1/hrm/timesheetWorkerService.js'
 import dashboardService from "@/service/v1/hrm/dashboardService.js"
+import medService from "@/service/v1/hrm/medService.js"
 
 
 import documentService from "@/service/v1/docFlow/documentService.js"
@@ -121,5 +122,6 @@ export default {
     timesheetWorkerService,
     timesheetConfirmService,
     dashboardService,
+    medService,
 
 }

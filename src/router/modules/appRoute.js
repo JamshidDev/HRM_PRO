@@ -4,6 +4,7 @@ import RegisterPage from "@/pages/app/register/RegisterPage.vue"
 import LoginPage from "@/pages/app/login/LoginPage.vue"
 import NotFoundPage from "@/pages/app/notFound/NotFoundPage.vue"
 import DocumentSignature from "@/pages/app/documentSignature/DocumentSignature.vue"
+import LoginPagev2 from "@/pages/app/login/LoginPagev2.vue"
 
 export default [
 
@@ -36,7 +37,8 @@ export default [
     {
         path:AppPaths.Login,
         name:AppPaths.Login.substring(1),
-        component:LoginPage,
+        // component:LoginPage,
+        component:LoginPagev2,
         meta:{
             layout:AppLayouts.empty
         }
