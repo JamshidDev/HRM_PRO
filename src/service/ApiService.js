@@ -60,6 +60,7 @@ import topicFilesService from "@/service/v1/lms/topicFilesService.js"
 import categoryService from "@/service/v1/lms/categoryService.js"
 import categoryQuestionService from "@/service/v1/lms/categoryQuestionService.js"
 import topicExamService from "@/service/v1/lms/topicExamService.js";
+import topicExamResultService from "@/service/v1/lms/topicExamResultService.js";
 import workerExamService from '@/service/v1/lms/workerExamService.js'
 import timesheetConfirmService from "@/service/v1/hrm/timesheetConfirmService.js";
 
@@ -101,6 +102,7 @@ export default {
     documentChatService,
     topicService,
     topicExamService,
+    topicExamResultService,
     topicFilesService,
     workerExamService,
     categoryService,

@@ -1,3 +1,4 @@
+
 <template>
-  <p>File</p>
+That is exams panel
 </template>

@@ -1,5 +1,6 @@
 {
   "content": {
+    "files": "Fayllar",
     "deadline": "Yakunlanish vaqti",
     "requiredField": "Maydon to'ldirilishi shart!",
     "save": "Saqlash",
@@ -90,7 +91,8 @@
     "return": "Ortga qaytish",
     "finish": "Yakunlash",
     "created": "Yaratilgan sana",
-    "move": "Siljitish"
+    "move": "Siljitish",
+    "listen": "Tinglash"
   },
   "date": {
     "day": "Kun",
@@ -969,21 +971,29 @@
   },
   "examPage": {
     "name": "Imtihonlar",
+    "history": "Imtihon tarixi",
     "topic": "Mavzu",
     "exam": "Imtihon",
-    "variant": "Variantlar: {n}ta",
+    "nVariant": "{n}ta variant",
+    "variant_count": "Variantlar",
+    "exam_duration": "Davomiyligi(min)",
     "totalTime": "Berilgan vaqt: {n} daqiqa",
+    "nMinute": "{n} daqiqa",
     "totalMinute": "{n} daqiqa",
     "resources": "Resurslar",
     "exams": "Imtihonlar",
     "nExams": "{n} ta imtihon",
     "nFiles": "{n} ta fayl",
-    "deadline": "Yopilish vaqti: {n}",
+    "deadline": "Tugash vaqti: {n}",
     "examBrief": "Imtihonda savollarida {variant}ta variantlar mavjud. Yechish uchun {chances}ta imkoniyat berilgan. Imtihonni {minute} daqiqa ichida yakunlash kerak. Imtihon {deadline}da yopiladi",
     "extra": "Qo'shimcha: {n}",
     "start": "Boshlash",
     "attempts": "Urinishlar",
-    "questions": "Savollar: {n}ta",
+    "nAttempts": "{n}ta urinishlar",
+    "question_count": "Savollar",
+    "nQuestions": "{n}ta savol",
+    "examName": "Nomi: {n}",
+    "toWhom": "Kimga",
     "attemptHistory": "Urinishlar tarixi",
     "startTime": "Boshlangan vaqt",
     "result": "Natija",
@@ -993,7 +1003,11 @@
     "endSub": "Siz {n} ball oldingiz.",
     "ip": "Ip manzil",
     "wrongAnswer": "Javob noto'g'ri",
-    "notChosen": "Javob belgilanmagan"
+    "notChosen": "Javob belgilanmagan",
+    "finished": "Imtihon yakunlandi",
+    "inProgress": "Imtihon jarayonda",
+    "attemptErrors": "Urunishdagi xatoliklar",
+    "device": "Qurilma"
   },
   "solveExamPage": {
     "alreadyStarted": "Siz bu imtihonni oldin boshlagansiz. Davom etishni xohlaysizmi?",

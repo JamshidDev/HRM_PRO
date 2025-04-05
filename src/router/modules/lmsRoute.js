@@ -1,6 +1,6 @@
 import {AppPaths} from "@/utils/index.js"
 import Utils from "@/utils/Utils.js"
-import TopicDetailPage from "@/pages/lms/topicDetail/TopicDetailPage.vue"
+import TopicDetailPage from "@/pages/lms/topic/topicDetail/TopicDetailPage.vue"
 import {
     TopicPage,
     CategoryPage,
@@ -8,7 +8,7 @@ import {
     QuestionFormPage,
     WorkerTopicPage,
     SolveExamPage,
-    ViewExamPage
+    ExamResultPage
 } from "@/pages/lms";
 
 
@@ -48,7 +48,11 @@ export default [
         name: "edit_question",
         children:[],
     },
-
+    {
+        path:Utils.routeLmsPathMaker(`${AppPaths.Result}`),
+        component: ()=>ExamResultPage,
+        children:[],
+    },
     {
         path:Utils.routeLmsPathMaker(AppPaths.Exam),
         component:()=>WorkerTopicPage,
@@ -60,10 +64,5 @@ export default [
         component: ()=>SolveExamPage,
         children:[],
     },
-    {
-        path:Utils.routeLmsPathMaker(`${AppPaths.Exam}/attempt/:exam_id`),
-        name: 'exam_attempt',
-        component: ()=>ViewExamPage,
-        children:[],
-    },
+
 ]

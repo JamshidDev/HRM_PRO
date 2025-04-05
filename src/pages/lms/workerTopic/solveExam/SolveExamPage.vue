@@ -169,19 +169,19 @@ onUnmounted(()=>{
                 :on-end="endAttempt"
             >
               <div class="text-xl font-bold flex">
-                <p class="py-1 px-2 drop-shadow-lg border-secondary border rounded-md">
+                <p class="py-1 px-2 drop-shadow-lg border-surface-line border rounded-md">
                   {{ hours }}
                 </p>
                 <p class="py-1 px-2">
                   :
                 </p>
-                <p class="py-1 px-2 drop-shadow-lg border-secondary border rounded-md">
+                <p class="py-1 px-2 drop-shadow-lg border-surface-line border rounded-md">
                   {{ minutes }}
                 </p>
                 <p class="py-1 px-2">
                   :
                 </p>
-                <p class="py-1 px-2 drop-shadow-lg border-secondary border rounded-md">
+                <p class="py-1 px-2 drop-shadow-lg border-surface-line border rounded-md">
                   {{ seconds }}
                 </p>
               </div>

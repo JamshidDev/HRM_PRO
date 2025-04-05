@@ -7,6 +7,10 @@ import i18n from "@/i18n/index.js"
 import Utils from "@/utils/Utils.js"
 const visible = ref(false)
 const props = defineProps({
+  size: {
+    type: String,
+    default: "small"
+  },
   showDelete:{
     type: Boolean,
     default:true,
@@ -122,7 +126,7 @@ const onDelete = ()=>{
 </script>
 
 <template>
-  <div class="flex gap-2 items-center justify-center relative">
+  <div class="flex gap-2 items-center justify-center relative" @click.stop>
     <n-spin v-if="loading" size="small" />
     <n-dropdown
         size="small"
@@ -131,14 +135,13 @@ const onDelete = ()=>{
           ...extraOptions.map(i=>({...i, icon: renderIcon(i.icon)}))
         ]"
         trigger="click"
-
         @select="onSelect"
     >
       <n-button
           :style="{opacity: loading ? 0 : 1}"
           :disabled="loading"
           tertiary
-          size="small"
+          :size="size"
           style="width: 30px"
       >
         <template #icon>

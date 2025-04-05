@@ -22,6 +22,7 @@ defineEmits(['close'])
               :src="src"
               playsinline
               crossorigin
+              autoplay
           ></audio>
         </media-theme-tailwind-audio>
       </div>

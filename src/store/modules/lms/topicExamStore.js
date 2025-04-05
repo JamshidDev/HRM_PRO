@@ -9,6 +9,7 @@ export const useTopicExamStore = defineStore('topicExamStore', {
         loading:false,
         saveLoading:false,
         deleteLoading:false,
+        showLoading:false,
         visible:false,
         attachQuestionVisible: false,
         attachQuestionVisibleType: true,
@@ -67,7 +68,7 @@ export const useTopicExamStore = defineStore('topicExamStore', {
         _update(){
             this.saveLoading = true
             $ApiService.topicExamService._update({
-                data:  {...this.payload, deadline: Utils.timeToZone(this.payload.deadline)},
+                data:  {...this.payload, deadline: this.payload?.deadline && Utils.timeToZone(this.payload.deadline)},
                 id:this.topicId, exam_id: this.elementId
             }).then((res)=>{
                 this.visible = false
@@ -88,7 +89,7 @@ export const useTopicExamStore = defineStore('topicExamStore', {
             })
         },
         _show(){
-            this.loading = true
+            this.showLoading = true
             $ApiService.topicExamService._show({id: this.topicId, exam_id:this.elementId}).then((res)=>{
                 const data = res.data.data
                 this.payload = {
@@ -99,7 +100,7 @@ export const useTopicExamStore = defineStore('topicExamStore', {
                     deadline: new Date(data.deadline).getTime()
                 }
             }).finally(()=>{
-                this.loading = false
+                this.showLoading = false
             })
         },
         _attach_question(){

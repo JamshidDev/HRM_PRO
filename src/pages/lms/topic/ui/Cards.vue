@@ -1,123 +1,101 @@
 <script setup>
-import {
-  Edit20Filled, Delete16Filled, VideoClip16Filled, Book20Filled,
-  Image20Filled, HeadphonesSoundWave32Filled, CircleSmall24Filled,
-  NotebookQuestionMark24Filled, Delete28Regular,
-  HatGraduation12Filled
-} from "@vicons/fluent"
-import {NoDataPicture, UIPagination} from "@/components/index.js"
+import {HatGraduation12Filled} from "@vicons/fluent"
+import {NoDataPicture, UIMenuButton, UIPagination} from "@/components/index.js"
 import {useTopicStore} from "@/store/modules/index.js"
 import {useRouter} from "vue-router"
 import {AppPaths} from "@/utils/index.js"
+import Utils from "@/utils/Utils.js";
 
 const store = useTopicStore()
 const router = useRouter()
-const onEdit = (v)=>{
+const onEdit = (v) => {
+  console.log(v)
   store.elementId = v.id
   store._show()
   store.visibleType = false
-  store.visible= true
+  store.visible = true
 }
 
-const onDelete = (v)=>{
-store.elementId = v.id
+const onDelete = (v) => {
+  store.elementId = v.id
   store._delete()
 }
 
-const changePage = (v)=>{
+const changePage = (v) => {
   emits('onChangePage', v)
 }
 
-const goPush = (v)=>{
+const goPush = (v) => {
   router.push(`${AppPaths.Lms}${AppPaths.Topic}/${v.id}`)
+}
+
+const onSelectEv = (v) => {
+  if (v.key === Utils.ActionTypes.edit) {
+    onEdit(v.data)
+  } else if (v.key === Utils.ActionTypes.delete) {
+    onDelete(v.data)
+  }
 }
 
 </script>
 
 <template>
-  <n-spin :show="store.loading" class="h-full" style="max-height: calc(100vh - 170px); height: calc(100vh - 170px);">
-    <NoDataPicture v-if="store.list.length===0 && !store.loading" />
-    <div v-else-if="store.list.length>0 && !store.loading" class="flex flex-col h-full pt-5">
+  <n-spin :show="store.loading" class="h-full bg-surface-section rounded-md">
+    <NoDataPicture v-if="store.list.length===0 && !store.loading"/>
+    <div v-else-if="store.list.length>0 && !store.loading" class="flex flex-col h-full p-3">
 
       <div class="overflow-y-auto">
-        <n-grid x-gap="12"  y-gap="12"  cols="1 400:2 900:3 1200:4 1600:5">
-            <n-gi
+        <n-grid cols="1 400:2 900:3 1200:4 1600:5" x-gap="12" y-gap="12">
+          <n-gi
               v-for="(item, idx) in store.list" :key="idx"
-              @click="goPush(item)"
-              class="cursor-pointer bg-surface-section  border rounded-lg border-surface-line  relative overflow-hidden p-2 group h-[100px] min-h-[100px] transition-all hover:drop-shadow-sm"
               :class="{'active-card': $route.params?.id==item.id}"
-            >
+              class="cursor-pointer bg-surface-section border rounded-lg border-surface-line  relative overflow-hidden p-2 group h-[110px] transition-all hover:drop-shadow-sm"
+              @click="goPush(item)"
+          >
 
-                <n-tooltip trigger="hover">
-                  <template #trigger>
-                    <div class="text-lg font-medium text-gray-600 line-clamp-1">
-                    {{item.name}}
-                  </div>
-                  </template>
-                  {{item.name}}
-                </n-tooltip>
-              <p class="text-xs text-primary">{{$t('topicDetailsPage.exams.count', {n: item.exams_count})}}</p>
-              <n-divider class="!my-2" />
-              <div class="flex justify-between items-center">
-                <div class="text-xs font-medium text-primary">
-                  <n-button size="tiny" dashed :type="item.type.id ==1 ? 'primary' : 'success'">
-                    <template #icon>
-                      <n-icon :component="HatGraduation12Filled" />
-                    </template>
-                    {{item.type.name}}
-                  </n-button>
+            <n-tooltip trigger="hover">
+              <template #trigger>
+                <div class="text-lg font-medium text-gray-600 line-clamp-1">
+                  {{ item.name }}
                 </div>
-                <div class="flex gap-1 opacity-0 group-hover:opacity-100 transition duration-300" :class="{'opacity-100': store.elementId === item.id}">
-                  <n-button
-                      @click.stop="onEdit(item)"
-                      style="width: 50%"
-                      size="tiny"
-                      type="info"
-                      secondary>
-                    <template #icon>
-                      <Edit20Filled/>
-                    </template>
-                  </n-button>
-
-                  <n-popconfirm
-                      @positive-click="onDelete(item)"
-                      @negativeClick="store.elementId=null"
-                      @clickoutside="store.elementId=null"
-                      :negative-text="$t('content.no')"
-                      :positive-text="$t('content.yes')"
-                  >    <template #trigger>
-                    <n-button
-                        :loading="store.deleteLoading && store.elementId === item.id"
-                        style="width: 50%"
-                        size="tiny"
-                        type="error"
-                        secondary @click.stop="store.elementId=item.id">
-                      <template #icon>
-                        <Delete16Filled/>
-                      </template>
-                    </n-button>
+              </template>
+              {{ item.name }}
+            </n-tooltip>
+            <p class="text-sm text-secondary">{{ $t('topicDetailsPage.exams.count', {n: item.exams_count}) }}</p>
+            <n-divider class="!my-2"/>
+            <div class="flex justify-between items-center">
+              <div class="text-xs font-medium text-primary">
+                <n-button :type="item.type.id ==1 ? 'primary' : 'success'" dashed size="tiny">
+                  <template #icon>
+                    <n-icon :component="HatGraduation12Filled"/>
                   </template>
-                    {{$t('content.confirmDelete')}}
-                  </n-popconfirm>
-                </div>
+                  {{ item.type.name }}
+                </n-button>
               </div>
-            </n-gi>
+              <UIMenuButton
+                  :data="item"
+                  show-edit
+                  size="tiny"
+                  @select-ev="onSelectEv"
+              />
+            </div>
+          </n-gi>
         </n-grid>
       </div>
       <UIPagination
-          class="mt-auto"
           :page="store.params.page"
           :per_page="store.params.size"
           :total="store.totalItems"
+          class="mt-auto"
           @change-page="changePage"
       />
     </div>
   </n-spin>
 
 </template>
-<style scoped lang="scss">
-.active-card{
-  background-color: rgba(0,0,0, 0.01);
+<style lang="scss" scoped>
+.active-card {
+  background-color: rgba(0, 0, 0, 0.01);
   color: white !important;
 }
 </style>

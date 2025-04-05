@@ -1,19 +1,14 @@
 <script setup>
-import List from "./ui/List.vue"
+import TopicCardList from "./ui/TopicCardList.vue"
 import TopicDetail from './ui/TopicDetail.vue'
 import {useExamAttemptStore, useWorkerExamStore} from "@/store/modules/index.js";
-import {Warning20Filled} from "@vicons/fluent";
-import {UIModal, UIPageContent} from "@/components/index.js";
 
+import {UIModal, UIPageFilter} from "@/components/index.js";
+import ViewAttemptModal from "./solveExam/ViewAttemptModal.vue";
 import stars from "@/assets/images/svg/stars.svg";
 
 const store = useWorkerExamStore()
 const examStore = useExamAttemptStore()
-
-const onSearch = ()=>{
-  store.params.page = 1
-  store._index()
-}
 
 onMounted(()=>{
   examStore._config_localstorage()
@@ -38,15 +33,21 @@ onMounted(()=>{
       </n-grid-item>
       <n-gi :span="4" />
     </n-grid>
-    <div class="grow basis-auto overflow-hidden flex gap-4">
-      <div class="grow basis-auto">
-        <List/>
+    <div class="grow basis-auto overflow-hidden flex gap-3">
+      <div class="grow basis-auto flex flex-col gap-2">
+        <UIPageFilter :show-add-button="false" class="shrink-0" />
+        <div class="grow basis-auto bg-surface-section rounded-md">
+          <TopicCardList/>
+        </div>
       </div>
-      <div :style="{'width': store?.elementId && store.list.find(i=>i.id===store.elementId) ? '50%' : '0'}"
-           class="transition-all">
-        <TopicDetail />
+      <div :style="{'width': store?.selectedLesson ? '50%' : '0'}"
+           class="transition-all  bg-surface-section rounded-md">
+          <TopicDetail />
       </div>
     </div>
+    <UIModal v-model:visible="examStore.visible" :width="1000" :title="$t('examPage.attemptErrors')">
+      <ViewAttemptModal />
+    </UIModal>
   </div>
 </template>
 

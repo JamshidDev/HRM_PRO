@@ -1,144 +1,117 @@
 <script setup>
-import ExamRow from './ExamRow.vue'
-import {NoDataPicture} from "@/components/index.js";
 import {useExamAttemptStore, useWorkerExamStore} from "@/store/modules/index.js";
-import {useRouter} from "vue-router";
-import {Book24Filled, Image48Filled, MusicNote224Filled, VideoClip24Filled} from "@vicons/fluent";
+import ExamsPanel from './ExamsPanel.vue'
+import FilesPanel from './FilesPanel.vue'
+import {DismissCircle32Filled, PeopleEdit20Filled} from '@vicons/fluent'
+import {TopicUtils} from "@/pages/lms/Utils/index.js";
+import i18n from "@/i18n/index.js";
 
 const store = useWorkerExamStore()
-
-const router = useRouter()
+const t = i18n.global.t
 const examStore = useExamAttemptStore()
-const showFile = (file) => {
-  $MediaViewer.showMediaViewer(file.file, file.file_extension)
-}
 
-const MediaTypeEnum = {
-  VIDEO: "1",
-  IMAGE: "2",
-  BOOK: "3",
-  AUDIO: "4"
-}
-
-const getMediaProperty = (v) => {
-  switch (v) {
-    case MediaTypeEnum.BOOK:
-      return {
-        color: "info",
-        icon: Book24Filled
-      }
-    case MediaTypeEnum.IMAGE:
-      return {
-        color: "success",
-        icon: Image48Filled
-      }
-    case MediaTypeEnum.VIDEO:
-      return {
-        icon: VideoClip24Filled,
-        color: "error"
-      }
-    case MediaTypeEnum.AUDIO:
-      return {
-        icon: MusicNote224Filled,
-        color: "primary"
-      }
-  }
-}
-
-
-const startAttempt = (v) => {
-  examStore.elementId = v.id
-  examStore._start_attempt()
-}
-
-const goPush = (v) => {
-  router.push({
-    name: 'solve_exam',
-    params: {
-      exam_id: v.id
-    }
-  })
-}
-
-const viewExam = (v) => {
-  router.push({
-    name: 'exam_attempt',
-    params: {
-      exam_id: v.id
-    }
-  })
-}
-
-onMounted(()=>{
+onMounted(() => {
   examStore._config_localstorage()
 })
-const lesson = computed(()=>{
-  return store.list.find(i=>i.id==store.elementId)
+
+const emptyTab = {
+  component: markRaw(ExamsPanel),
+  props: {},
+  title: t('examPage.name'),
+  count: 0,
+  id: 0,
+  icon: markRaw(PeopleEdit20Filled),
+  color: TopicUtils.getMediaProperty(0).color
+}
+
+const tabs = ref([])
+
+watch(store, (v) => {
+  if (v.selectedLesson) {
+    tabs.value=[]
+    tabs.value.push({
+      ...emptyTab,
+      props: {
+        exams: v.selectedLesson.exams
+      },
+      count: v.selectedLesson.exams.length,
+    })
+    v.selectedLesson.files.forEach((fileType)=>{
+      tabs.value.push({
+        component: markRaw(FilesPanel),
+        props: {
+          files: fileType.items,
+          type: fileType.id
+        },
+        title: fileType.name,
+        count: fileType.items.length,
+        id: fileType.id,
+        icon: markRaw(TopicUtils.getMediaProperty(fileType.id).icon),
+        color: TopicUtils.getMediaProperty(fileType.id).color
+      })
+    })
+  } else {
+    tabs.value=[]
+  }
+}, {
+  immediate: true
 })
+
+
+const activeTab = ref(0)
+
 </script>
 <template>
-  <n-tabs animated type="line" v-if="lesson" class="h-full">
-    <n-tab-pane class="h-full" name="exams" :tab="$t('examPage.exams')">
-      <div class="overflow-auto h-full">
-
-      <n-table
-          v-if="!!lesson.exams.length"
-          :single-line="false"
-      >
-        <thead>
-        <tr>
-          <th></th>
-          <th>{{$t('examPage.exam')}}</th>
-          <th>{{ $t('solveExamPage.variant') }}</th>
-          <th>{{ $t('solveExamPage.totalTime') }}</th>
-          <th>{{ $t('solveExamPage.deadline') }}</th>
-          <th>{{ $t('solveExamPage.leftAttempts') }}</th>
-          <th>{{ $t('solveExamPage.questions') }}</th>
-          <th class="max-w-[150px] !text-center w-[150px]">{{$t('content.action')}}</th>
-        </tr>
-        </thead>
-        <tbody>
-        <exam-row
-            v-for="(exam,idx) in lesson.exams"
-            :exam="exam"
-            :key="idx"
-            @continue="goPush"
-            @view="viewExam"
-            @start="startAttempt(exam)"
-            :row-num="idx+1"
-        />
-        </tbody>
-      </n-table>
-      <NoDataPicture class="!my-0" v-else />
-      </div>
-    </n-tab-pane>
-    <n-tab-pane name="files" :tab="$t('examPage.resources')">
-      <div class="grid gap-4 flex-wrap grid-cols-[repeat(auto-fill,minmax(80px,1fr))]" v-if="!!lesson.files.length">
-        <div
-            v-for="(file, idx) in lesson.files"
-            :key="idx"
-            class="flex flex-col gap-3 items-center w-full text-center border rounded-md p-3 border-surface-line justify-center bg-surface-section"
-        >
-          <n-button
-              circle
-              size="large"
-              :type="getMediaProperty(file.type.id).color"
-              @click="showFile(file)"
-              tertiary
-          >
-            <template #icon>
-              <n-icon
-                  :component="getMediaProperty(file.type.id).icon"
-              ></n-icon>
-            </template>
-          </n-button>
-          <div class="truncate max-w-full">
-            <p class="text-sm truncate ">{{ file.file_name }}</p>
-          </div>
+  <div class="flex flex-col h-full">
+    <div class="flex  justify-between border-b border-surface-line p-3 flex-shrink-0">
+      <p class="text-2xl font-semibold">{{ store.selectedLesson?.name }}</p>
+      <n-button color="#747b81" icon-placement="right" quaternary type="tertiary" @click="store.selectedLesson = null">
+        {{ $t('content.close') }}
+        <template #icon>
+          <n-icon :component="DismissCircle32Filled"/>
+        </template>
+      </n-button>
+    </div>
+    <div class="p-2 flex-grow basis-auto overflow-hidden">
+      <div class="flex flex-col h-full ">
+        <div v-if="store.selectedLesson" class="grid grid-cols-[repeat(auto-fill,minmax(150px,1fr))] gap-2 flex-shrink-0">
+          <template v-for="(tab, idx) in tabs" :key="idx">
+            <div
+                class="px-3 py-2 bg-blue-50 rounded-md transition-all hover:bg-blue-100 cursor-pointer flex flex-col gap-2"
+                :class="{'!bg-blue-100': tab.id==activeTab}"
+                @click="activeTab=tab.id"
+            >
+              <div class="flex items-center gap-1">
+                <n-icon-wrapper :border-radius="6" :color="tab.color" :size="30" class="shrink-0">
+                  <n-icon :component="tab.icon" :size="18" color="#FFF"/>
+                </n-icon-wrapper>
+                <p class="font-medium">{{ tab.title }}</p>
+                <n-button size="tiny" circle  tertiary>
+                  <span class="font-bold">{{  tab.count }}</span>
+                </n-button>
+              </div>
+            </div>
+          </template>
+        </div>
+        <div class="flex-grow basis-auto overflow-auto">
+          <n-tabs v-model:value="activeTab" :tab-style="{display: 'none'}" animated>
+            <n-tab-pane v-for="(tab, idx) in tabs" :key="idx" :name="tab.id">
+              <component :is="tab.component" v-bind="tab.props" />
+            </n-tab-pane>
+<!--            <n-tab-pane :name="2">-->
+<!--              <div v-if="!!lesson.files.length" class="grid gap-2 grid-cols-[repeat(auto-fill,minmax(100px,1fr))] p-1">-->
+<!--                <div-->
+<!--                    v-for="(item, idx) in lesson.files"-->
+<!--                    :key="idx"-->
+<!--                    class="h-[130px] bg-surface-section rounded-md flex justify-center items-center drop-shadow-sm cursor-pointer hover:drop-shadow-lg transition-all border-surface-line border"-->
+<!--                >-->
+<!--                  <File :file="item"/>-->
+<!--                </div>-->
+<!--              </div>-->
+<!--            </n-tab-pane>-->
+          </n-tabs>
         </div>
       </div>
-      <NoDataPicture class="!my-0" v-else />
-
-    </n-tab-pane>
-  </n-tabs>
+    </div>
+  </div>
 </template>

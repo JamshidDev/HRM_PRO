@@ -30,6 +30,7 @@ export const AppPaths = {
     ChatWindow:"/chat-window",
     DocumentHistory:"/document-history",
     Exam:"/exam",
+    Result: '/result',
     Department:"/department",
     TimeSheet: "/timesheet",
     TimesheetDepartment: "/timesheet-department",

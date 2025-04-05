@@ -6,6 +6,7 @@ const {t} = i18n.global
 export const useExamAttemptStore = defineStore('examAttemptStore', {
     state: () => ({
         questions:[],
+        visible: false,
         exam_token: null,
         exam_storage: {},
         worker_detail: null,
@@ -74,7 +75,7 @@ export const useExamAttemptStore = defineStore('examAttemptStore', {
                 delete data?.[this.elementId]
                 localStorage.setItem('exam_data', JSON.stringify({...data}))
                 this.result = res.data.data
-                console.log(res.data.data)
+
             }).catch((res) => {
 
             }).finally(() => {
