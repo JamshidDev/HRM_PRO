@@ -82,12 +82,12 @@ const show = ref(false)
                   {{ Utils.timeWithMonth(item.created) }} - {{ item.ended ? Utils.timeWithMonth(item.ended) : '...' }}
                 </p>
                 <div class="inline-block">
-                  <UIBadge :label="item?.ended ? $t('examPage.finished') : $t('examPage.inProgress')" :type="Utils.colorTypes.dark" />
+                  <UIBadge :show-icon="false" :label="item?.ended ? $t('examPage.finished') : $t('examPage.inProgress')" :type="item?.ended ? Utils.colorTypes.dark : Utils.colorTypes.warning" />
                 </div>
               </div>
             </div>
             <div>
-              <n-button v-if="item.result > -1" size="small" tertiary type="info" @click="$emit('view', item)">
+              <n-button v-if="item?.ended" size="small" tertiary type="info" @click="$emit('view', item)">
                 {{ $t('content.view') }}
                 <template #icon>
                   <n-icon :component="Eye12Filled"/>

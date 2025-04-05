@@ -11,6 +11,7 @@ import {
   MusicNote224Filled,
   VideoClip24Filled
 } from "@vicons/fluent";
+import {TopicUtils} from "@/pages/lms/Utils/index.js";
 
 const store = useWorkerExamStore()
 
@@ -55,19 +56,14 @@ onMounted(() => {
                 </n-button>
               </div>
               <div class="flex gap-2  items-end grow">
-                <n-button type="primary" text size="tiny">
-                  <template #icon>
-                    <n-icon :component="HatGraduation12Filled"/>
-                  </template>
-
-                  <p>{{ $t('examPage.nExams', {n: lesson.exams?.length}) }}</p>
-                </n-button>
-                <n-button type="primary" text  size="tiny">
-                  <p>{{ $t('examPage.nFiles', {n: lesson.files?.length}) }}</p>
-                  <template #icon>
-                    <n-icon :component="Bookmark32Filled"/>
-                  </template>
-                </n-button>
+                <template v-for="(item, idx) in [{id: 0, items: lesson.exams},...lesson.files]">
+                  <n-button dashed size="tiny">
+                    <template #icon>
+                      <n-icon :component="TopicUtils.getMediaProperty(item.id).icon" :color="TopicUtils.getMediaProperty(item.id).color"/>
+                    </template>
+                    {{item.items.length}}
+                  </n-button>
+                </template>
               </div>
             </div>
           </template>

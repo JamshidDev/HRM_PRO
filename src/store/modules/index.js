@@ -68,4 +68,4 @@ export * from './lms/topicFilesStore.js'
 export * from './lms/topicExamStore.js'
 export * from './lms/workerExamStore.js'
 export * from './lms/examAttemptStore.js'
-
+export * from './lms/topicExamResultStore.js'

@@ -1,90 +1,99 @@
 <script setup>
 import {useTopicExamStore} from "@/store/modules/index.js"
-import {NoDataPicture, UIMenuButton, UIPagination} from "@/components/index.js";
+import {UIMenuButton, UIPagination} from "@/components/index.js";
 import Utils from "@/utils/Utils.js"
-import {BookQuestionMark20Filled, ClockAlarm32Filled, AppsList20Filled} from "@vicons/fluent";
+import {BookQuestionMark20Filled} from "@vicons/fluent";
 
 const store = useTopicExamStore()
 
-const changePage = (v)=>{
+const changePage = (v) => {
   store.params.page = v.page
   store.params.per_page = v.per_page
   store._index()
 }
 
-const onSelect = (v)=>{
-  if(v.key === 'delete'){
+const onSelect = (v) => {
+  if (v.key === 'delete') {
     store.elementId = v.data.id
     store._delete()
-  }else if(v.key==='edit'){
+  } else if (v.key === 'edit') {
     store.elementId = v.data.id
     store._show()
     store.visibleType = false
-    store.visible= true
-  }else if(v.key==='attach_question'){
+    store.visible = true
+  } else if (v.key === 'attach_question') {
     store.elementId = v.data.id
     store.attachQuestionVisible = true
     store.attachQuestionVisibleType = true
   }
 }
 
+const updateStatus = (exam) => {
+  store.elementId = exam.id
+  store.payload = {
+    active: !exam.active
+  }
+  store._update()
+}
+
 </script>
 
 <template>
-    <div class="w-full overflow-x-auto"  v-if="store.list.length>0">
-      <table
-          class="overflow-x-auto w-full"
-      >
-        <thead class="bg-primary border-spacing-0">
-        <tr>
-          <th class="!text-center min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
-          <th class="!text-center min-w-[150px] w-[200px]">{{$t('content.name')}}</th>
-          <th>{{$t('topicDetailsPage.exams.toWhom')}}</th>
-          <th>{{$t('topicDetailsPage.exams.tests_count')}}</th>
-          <th>{{$t('topicDetailsPage.exams.variants')}}</th>
-          <th>{{$t('topicDetailsPage.exams.minute')}}</th>
-          <th>{{$t('topicDetailsPage.exams.deadline')}}</th>
-          <th>{{$t('topicDetailsPage.exams.isActive')}}</th>
-          <th>{{$t('content.action')}}</th>
-        </tr>
-        </thead>
-        <tbody class="bg-surface-section">
-        <template v-for="(item, idx) in store.list" :key="idx">
-          <tr />
-          <tr >
-            <td><span class="text-center text-[12px] text-gray-600 block">{{ (store.params.page - 1) * store.params.per_page + idx + 1 }}</span></td>
-            <td>{{item.name}}</td>
-            <td>{{item.whom.name}}</td>
-            <td>
-              <n-button size="small" round type="success" ghost >
-                {{item.tests_count}}
-                <template #icon>
-                  <n-icon  :component="AppsList20Filled"/>
-                </template>
-              </n-button>
-            </td>
-            <td>
-              <n-button type="tertiary" ghost circle>
-                {{item.variant}}
-              </n-button>
-            </td>
-            <td>
-              <n-button size="small" type="info" dashed round>
-                {{item.minute}}
-                <template #icon>
-                  <n-icon :component="ClockAlarm32Filled" />
-                </template>
-              </n-button>
-            </td>
-            <td><n-tag type="warning" round>{{Utils.timeWithMonth(item.deadline)}}</n-tag></td>
-            <td><n-switch :value="!!item.active" disabled /></td>
-            <td>
-              <UIMenuButton
-                  :show-edit="true"
-                  :show-delete="true"
-                  :data="item"
-                  @select-ev="onSelect"
-                  :extra-options="[
+  <div v-if="store.list.length>0" class="h-full flex flex-col">
+    <div
+        class="w-full grow basis-auto overflow-auto"
+    >
+      <div class="bg-surface-section p-3 grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-3">
+        <div v-for="(item, idx) in store.list" :key="idx" class="rounded-md p-3 shadow-sm">
+
+          <ul class="list-disc pl-5">
+
+            <li>
+              <p>{{ $t('content.name') }}: <span class="font-bold">{{ item.name }}</span></p>
+            </li>
+            <li class="flex justify-between">
+              <table>
+                <tr>
+                  <td>
+                    <ul class="list-disc">
+                      <li>
+                        <p>{{ $t('examPage.question_count') }}: <span class="font-bold">{{ item.tests_count }}</span>
+                        </p>
+                      </li>
+                      <li>
+                        <p>{{ $t('examPage.variant_count') }}: <span class="font-bold">{{ item.variant }}</span> </p>
+                      </li>
+                    </ul>
+                  </td>
+                </tr>
+              </table>
+
+              <table>
+                <tr>
+                  <td>
+                    <ul class="list-disc">
+
+                      <li>
+                        <p>{{ $t('examPage.exam_duration') }}: <span class="font-bold">{{ item.minute }}</span></p>
+                      </li>
+                      <li>
+                        <p>{{ $t('examPage.toWhom') }}: <span class="font-bold">{{ item.whom.name }}</span></p>
+                      </li>
+                    </ul>
+                  </td>
+                </tr>
+              </table>
+            </li>
+          </ul>
+          <n-tag round size="small" type="warning">
+            {{ $t('examPage.deadline', {n: Utils.timeWithMonth(item.deadline)}) }}
+          </n-tag>
+          <div class="flex justify-between items-center mt-2">
+            <n-switch :loading="store.loading && store.elementId === item.id" :value="!!item.active"
+                      size="small" @click="updateStatus(item)"/>
+            <UIMenuButton
+                :data="item"
+                :extra-options="[
                       {
                         label: $t('topicDetailsPage.questions.name'),
                         key: 'attach_question',
@@ -92,50 +101,26 @@ const onSelect = (v)=>{
                         visible:true,
                       },
                   ]"
-              />
-            </td>
-          </tr>
-        </template>
-        </tbody>
-      </table>
+                :show-delete="true"
+                :show-edit="true"
+                size="tiny"
+                @select-ev="onSelect"
+            />
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <div class="shrink-0">
       <UIPagination
-          v-if="store.totalItems>store.params.per_page"
           :page="store.params.page"
           :per_page="store.params.size"
           :total="store.totalItems"
           @change-page="changePage"
       />
     </div>
+  </div>
 </template>
-<style scoped lang="scss">
-table{
-  border-collapse: separate;
-  border-spacing: 0;
-}
-thead{
-  background: var(--surface-ground);
-}
-td, th{
-  padding: 5px;
-  border: 1px solid var(--surface-line);
-  border-left: none;
-  font-size: 14px;
-  text-wrap: nowrap;
-  text-align: center;
-}
-tr{
-  height: 30px;
-  td:first-child, th:first-child{
-    border-left: 1px solid var(--surface-line);
-    border-top-left-radius: 12px;
-    border-bottom-left-radius: 12px;
-  }
-  td:last-child, th:last-child{
-    border-top-right-radius: 12px;
-    border-bottom-right-radius: 12px;
-  }
-}
-tbody tr:nth-child(2n+1){
-  height: 10px;
-}
+<style lang="scss" scoped>
+
 </style>

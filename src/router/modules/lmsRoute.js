@@ -8,7 +8,7 @@ import {
     QuestionFormPage,
     WorkerTopicPage,
     SolveExamPage,
-    ViewExamPage
+    ExamResultPage
 } from "@/pages/lms";
 
 
@@ -48,7 +48,11 @@ export default [
         name: "edit_question",
         children:[],
     },
-
+    {
+        path:Utils.routeLmsPathMaker(`${AppPaths.Result}`),
+        component: ()=>ExamResultPage,
+        children:[],
+    },
     {
         path:Utils.routeLmsPathMaker(AppPaths.Exam),
         component:()=>WorkerTopicPage,
@@ -60,10 +64,5 @@ export default [
         component: ()=>SolveExamPage,
         children:[],
     },
-    {
-        path:Utils.routeLmsPathMaker(`${AppPaths.Exam}/attempt/:exam_id`),
-        name: 'exam_attempt',
-        component: ()=>ViewExamPage,
-        children:[],
-    },
+
 ]
