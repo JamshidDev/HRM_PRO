@@ -65,6 +65,7 @@ export const useCreateWorkerStore = defineStore('createWorkerStore', {
             })
         },
         changeRegion(v){
+            this.payload.city_id = null
             this.districtLoading = true
             $ApiService.districtService._index({params:{page:1,per_page:1000, region_id:v}}).then((res)=>{
                 this.districtList = res.data.data.data
@@ -73,6 +74,7 @@ export const useCreateWorkerStore = defineStore('createWorkerStore', {
             })
         },
         changeCurrentRegion(v){
+            this.payload.current_city_id = null
             this.currentDistrictLoading = true
             $ApiService.districtService._index({params:{page:1,per_page:1000, region_id:v}}).then((res)=>{
                 this.currentDistrictList = res.data.data.data

@@ -27,5 +27,7 @@ export {default as UIDrawSignature} from "./ui/UIDrawSignature.vue"
 export {default as UIWorkerView} from "./worker/UIWorkerView.vue"
 export {default as UIThemeSwitch} from "./ui/UIThemeSwitch.vue"
 export {default as UIBadge} from "./ui/UIBadge.vue"
+export {default as UIDepartment} from "./ui/UIDepartment.vue"
+export {default as UISelect} from "./ui/UISelect.vue"
 
 export * from './editor'

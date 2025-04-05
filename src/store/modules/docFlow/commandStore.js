@@ -65,6 +65,7 @@ export const useCommandStore = defineStore('commandStore', {
         },
         vacations:[],
         vacations55:[],
+        vacations62:[],
         calculateLoading:false,
     }),
     actions:{

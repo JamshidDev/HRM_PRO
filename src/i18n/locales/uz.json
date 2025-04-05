@@ -599,6 +599,17 @@
       "to": "Qachongacha",
       "from_time": "Qachondan (soat)",
       "to_time": "Qachongacha (soat)"
+    },
+    "form_62": {
+      "from": "Qachondan",
+      "to": "Qachongacha",
+      "reason": "Sabab",
+      "work_place_id": "Korxona nomi",
+      "department_id": "Bo'linma",
+      "railwayOrg": "Temir yo'l korxonasi",
+      "otherOrg": "Boshqa korxona",
+      "orgType": "Tashkilot turi",
+      "to_organization": "Tashkilot nomi"
     }
   },
   "confirmationPage": {

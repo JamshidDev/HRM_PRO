@@ -383,6 +383,19 @@ const blobFileDownload = (file, contentType, fileName)=>{
 
 }
 
+const checkRequestBody = (body)=>{
+    if(body){
+        for(let key in body){
+            console.log(body[key])
+            console.log(body[key]?.length)
+            if(body[key] === '' || body[key] === null ||  body[key]?.length === 0 ){
+                delete body[key]
+            }
+        }
+    }
+
+}
+
 export default {
     fileToBase64,
     onlyAllowNumber,
@@ -420,4 +433,5 @@ export default {
     appPermissions,
     colorTypes,
     blobFileDownload,
+    checkRequestBody,
 }

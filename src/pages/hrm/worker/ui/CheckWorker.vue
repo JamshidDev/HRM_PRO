@@ -28,9 +28,10 @@ const onAddCandidate = ()=>{
 const onContinue = ()=>{
   store.checkUserVisible = false
   store.isSelectedWorker = true
-  setTimeout(()=>{
-    workerStore.visible = true
-  },200)
+  onAddCandidate()
+  // setTimeout(()=>{
+  //   workerStore.visible = true
+  // },200)
 
 }
 
@@ -121,9 +122,6 @@ const onContinue = ()=>{
                 </n-button>
               </div>
            </template>
-
-
-
          </n-spin>
 
        </div>

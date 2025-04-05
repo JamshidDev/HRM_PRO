@@ -182,13 +182,13 @@ const onChangeStructure = (v)=>{
       </div>
     </div>
 
-    <div class="col-span-12 border border-dashed p-2 rounded-xl border-surface-line bg-surface-ground mt-4">
-      <div class="grid grid-cols-12 gap-x-4">
-        <div class="col-span-12">
-          <UIUpload v-model:files="store.payload.files" />
-        </div>
-      </div>
-    </div>
+<!--    <div class="col-span-12 border border-dashed p-2 rounded-xl border-surface-line bg-surface-ground mt-4">-->
+<!--      <div class="grid grid-cols-12 gap-x-4">-->
+<!--        <div class="col-span-12">-->
+<!--          <UIUpload v-model:files="store.payload.files" />-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
   </div>
 </template>
 

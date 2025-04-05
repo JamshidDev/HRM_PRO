@@ -9,7 +9,11 @@ const componentStore = useComponentStore()
 const onAdd = ()=>{
   store.visibleType = true
   store.resetForm()
+  store.stepNumber = 1
+  store.activeTab = 1
   store.visible = true
+  componentStore.worker = null
+  componentStore.isSelectedWorker = false
 }
 
 const filterCount = computed(()=>Number(Boolean(store.params.organizations.length))

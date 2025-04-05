@@ -2,6 +2,7 @@
 import {useComponentStore, useContractStore} from "@/store/modules/index.js"
 import {NAvatar} from "naive-ui"
 import Utils from "@/utils/Utils.js"
+import {useAppSetting} from "@/utils/index.js"
 
 const store = useContractStore()
 const componentStore = useComponentStore()
@@ -88,6 +89,7 @@ watchEffect(()=>{
                 v-model:value="store.payload.command_date"
                 type="date"
                 :placeholder="$t(`content.choose`)"
+                :format="useAppSetting.datePicketFormat"
             />
           </n-form-item>
         </div>

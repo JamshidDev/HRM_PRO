@@ -342,9 +342,13 @@ export const useComponentStore = defineStore('componentStore', {
                 this.pinLoading = false
             })
         },
-        _regions(){
+        _regions(id=undefined){
             this.regionLoading = true
-            $ApiService.regionService._index({params:this.params}).then((res)=>{
+            const params = {
+                ...this.params,
+                country_id:id
+            }
+            $ApiService.regionService._index({params}).then((res)=>{
                 this.regionList = res.data.data.data
             }).finally(()=>{
                 this.regionLoading = false
@@ -399,13 +403,23 @@ export const useComponentStore = defineStore('componentStore', {
                 this.confirmationLoading = false
             })
         },
-        _departmentTree(id){
+        _departmentTree(id=undefined){
             this.departmentLoading = true
             let params = {...this.depParams}
             $ApiService.componentService._departmentTree({params}).then((res)=>{
                 this.departmentList = res.data.data
             }).finally(()=>{
                 this.departmentLoading= false
+            })
+        },
+
+        _departmentTreeList(id, callback){
+            let params = {
+                organizations:[id]
+            }
+            $ApiService.componentService._departmentTree({params}).then((res)=>{
+                this.departmentList = res.data.data
+                callback?.(res.data.data)
             })
         },
         _scheduleList(){

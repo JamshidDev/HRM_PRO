@@ -1,5 +1,6 @@
 <script setup>
-import {UIAutoComplete, UIStructure, UIUpload, UIUser} from "@/components/index.js"
+import {UIStructure,} from "@/components/index.js"
+import UIHelper from "@/utils/UiHelper.js"
 import validationRules from "@/utils/validationRules.js";
 const formRef = ref(null)
 import {useAdContractStore, useComponentStore} from "@/store/modules/index.js";
@@ -423,8 +424,8 @@ onMounted(()=>{
                     :options="componentStore.scheduleList"
                     value-field="id"
                     :loading="componentStore.scheduleLoading"
-                    :render-label="scheduleLabel"
-                    :render-tag="scheduleValue"
+                    :render-label="UIHelper.scheduleRender.label"
+                    :render-tag="UIHelper.scheduleRender.value"
                     clearable
                 />
               </n-form-item>

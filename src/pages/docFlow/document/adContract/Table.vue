@@ -95,7 +95,6 @@ const onSelect =(v)=>{
           <td><div class="flex justify-center">
             <n-button
                 :type="item?.command_status.id === 1? 'primary' : 'default'"
-                @click="openContract(item, item?.command_status.id)"
                 size="small">
               <template #icon>
                 <ReceiptAdd24Regular v-if="item?.command_status.id === 1" />

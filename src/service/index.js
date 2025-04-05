@@ -10,6 +10,7 @@ const instance = axios.create({
     baseURL: `${apiUrl}/api`
 });
 
+
 instance.interceptors.request.use(function (config) {
     let token = localStorage.getItem(useAppSetting.tokenKey) || null;
     config.headers['Accept-Language'] = localStorage.getItem(useAppSetting.languageKey) || useAppSetting.defaultLanguage
@@ -17,13 +18,14 @@ instance.interceptors.request.use(function (config) {
     if (token) {
         config.headers['Authorization'] = 'Bearer ' + token
     }
+
     return config;
 })
 
 instance.interceptors.response.use(
     response => {
         if([Utils.methodTypes.PUT,Utils.methodTypes.POST, Utils.methodTypes.DELETE].includes(response.config.method)){
-            if(!response.data?.error){
+            if(!response.data?.error && response.data?.message && typeof response.data?.message === 'string'){
                 $Toast.success(response.data.message.toString())
             }
         }
