@@ -41,12 +41,12 @@ onMounted(()=>{
     >
       <div style="min-height:calc(100vh - 120px)">
         <n-grid :cols="2" :x-gap="10">
-          <n-form-item-gi :span="2" >
-            <div class="border-surface-line border flex w-full items-center px-3 justify-between rounded-md h-[34px] ">
-              <p>{{$t('topicDetailsPage.exams.isActive')}}</p>
-              <n-switch v-model:value="store.payload.active"/>
-            </div>
-          </n-form-item-gi>
+<!--          <n-form-item-gi :span="2" >-->
+<!--            <div class="border-surface-line border flex w-full items-center px-3 justify-between rounded-md h-[34px] ">-->
+<!--              <p>{{$t('topicDetailsPage.exams.isActive')}}</p>-->
+<!--              <n-switch v-model:value="store.payload.active"/>-->
+<!--            </div>-->
+<!--          </n-form-item-gi>-->
 
           <n-form-item-gi :span="2" :label="$t(`content.name`)" path="name" rule-path="requiredStringField">
             <n-input

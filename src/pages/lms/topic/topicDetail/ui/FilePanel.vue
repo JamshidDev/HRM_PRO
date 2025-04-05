@@ -1,6 +1,4 @@
 <script setup>
-import {TopicUtils} from "@/pages/lms/Utils/index.js";
-import {Eye16Filled, PlayCircle28Filled} from "@vicons/fluent";
 import {useTopicFileStore} from "@/store/modules/index.js";
 import {UIMenuButton} from "@/components/index.js";
 import Utils from "@/utils/Utils.js";

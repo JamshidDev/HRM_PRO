@@ -3,7 +3,7 @@ import {Folder48Filled,LockClosed16Filled, Person32Filled,
     TextBulletListSquare20Filled, ChannelShare20Filled, DocumentTextExtract24Filled,
     PeopleCheckmark24Filled, DocumentArrowDown20Filled, WeatherSunnyLow20Filled,
     Grid20Filled, Document32Filled, PersonClock24Filled, GridKanban20Filled,BriefcaseMedical20Filled,
-    BookQuestionMark24Filled, Book20Filled, HatGraduation12Filled} from "@vicons/fluent"
+    BookQuestionMark24Filled, Book20Filled, HatGraduation12Filled, ClipboardBulletListLtr20Filled} from "@vicons/fluent"
 import {AppPaths} from "@/utils/index.js";
 import Utils from "@/utils/Utils.js"
 const {appPermissions} = Utils
@@ -198,6 +198,13 @@ export const navigations = [
                 path:Utils.routeLmsPathMaker(AppPaths.Exam),
                 icon:HatGraduation12Filled,
                 color:'bg-secondary',
+                permission:appPermissions.examExams,
+            },
+            {
+                label:t('examPage.result'),
+                path:Utils.routeLmsPathMaker(AppPaths.Result),
+                icon:ClipboardBulletListLtr20Filled,
+                color:'bg-dark',
                 permission:appPermissions.examExams,
             },
         ]

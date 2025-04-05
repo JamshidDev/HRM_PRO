@@ -1,5 +1,6 @@
-import {Book24Filled, Image48Filled, MusicNote224Filled, VideoClip24Filled, Add16Filled} from '@vicons/fluent'
+import {Book24Filled, Image48Filled, MusicNote224Filled, VideoClip24Filled, Add16Filled,PeopleEdit20Filled} from '@vicons/fluent'
 export class TopicUtils {
+    static  EXAM = 0
     static VIDEO = 1
     static IMAGE = 2
     static BOOK = 3
@@ -7,6 +8,8 @@ export class TopicUtils {
 
     static getMediaProperty = (typeId) => {
         switch (typeId) {
+            case this.EXAM:
+                return {type: "default", icon: PeopleEdit20Filled, color: "#8a8a8a"};
             case this.BOOK:
                 return {type: "info", icon: Book24Filled, color: "#2080f0"};
             case this.IMAGE:

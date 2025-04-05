@@ -6,7 +6,7 @@ import { NButton, NIcon} from "naive-ui";
 import i18n from "@/i18n/index.js";
 import {NoDataPicture} from "@/components/index.js";
 import {useRoute, useRouter} from "vue-router";
-import Cards from './ui/Cards.vue'
+import Tabs from './ui/Tabs.vue'
 import {UIDrawer} from "@/components/index.js"
 import FileForm from './ui/FileForm.vue'
 import ExamForm from './ui/ExamForm.vue'
@@ -33,7 +33,7 @@ const lesson = computed(()=>{
 
 <template>
   <n-spin :show="examStore.loading || fileStore.loading" class="h-full bg-surface-section rounded-md">
-    <div v-if="lesson || examStore.loading || fileStore.loading" class="h-full flex flex-col">
+    <div class="h-full flex flex-col">
       <div class="flex justify-between border-b border-surface-line py-3 px-4 items-center">
         <p class="text-2xl font-bold">{{lesson?.name}}</p>
         <n-button @click="router.push({name: AppPaths.Topic.substring(1)})" type="error" tertiary>
@@ -43,22 +43,22 @@ const lesson = computed(()=>{
           </template>
         </n-button>
       </div>
-      <div class="flex-grow basis-auto">
+      <div class="flex-grow basis-auto overflow-hidden">
 
-        <Cards />
+        <Tabs />
       </div>
     </div>
-    <div v-else>
-      <div class="flex justify-end">
-        <n-button @click="router.push({name: AppPaths.Topic.substring(1)})" type="error" tertiary>
-          {{ $t('content.close') }}
-          <template #icon>
-            <n-icon :component="PanelLeftExpand16Filled"/>
-          </template>
-        </n-button>
-      </div>
-      <NoDataPicture  />
-    </div>
+<!--    <div v-else>-->
+<!--      <div class="flex justify-end">-->
+<!--        <n-button @click="router.push({name: AppPaths.Topic.substring(1)})" type="error" tertiary>-->
+<!--          {{ $t('content.close') }}-->
+<!--          <template #icon>-->
+<!--            <n-icon :component="PanelLeftExpand16Filled"/>-->
+<!--          </template>-->
+<!--        </n-button>-->
+<!--      </div>-->
+<!--      <NoDataPicture  />-->
+<!--    </div>-->
     <UIDrawer
         :visible="fileStore.visible"
         @update:visible="(v)=>fileStore.visible = v"

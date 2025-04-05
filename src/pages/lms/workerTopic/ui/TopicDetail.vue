@@ -82,7 +82,7 @@ const activeTab = ref(0)
                 @click="activeTab=tab.id"
             >
               <div class="flex items-center gap-1">
-                <n-icon-wrapper :border-radius="10" :color="tab.color" :size="30" class="shrink-0">
+                <n-icon-wrapper :border-radius="6" :color="tab.color" :size="30" class="shrink-0">
                   <n-icon :component="tab.icon" :size="18" color="#FFF"/>
                 </n-icon-wrapper>
                 <p class="font-medium">{{ tab.title }}</p>

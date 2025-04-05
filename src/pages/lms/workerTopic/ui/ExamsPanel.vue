@@ -24,12 +24,9 @@ const goPush = (v) => {
 }
 
 const viewExam = (v) => {
-  router.push({
-    name: 'exam_attempt',
-    params: {
-      exam_id: v.id
-    }
-  })
+  examStore.visible=true
+  examStore.elementId = v.id
+  examStore._get_attempt()
 }
 
 </script>

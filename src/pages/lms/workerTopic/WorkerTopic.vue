@@ -1,10 +1,10 @@
 <script setup>
-import List from "./ui/List.vue"
+import TopicCardList from "./ui/TopicCardList.vue"
 import TopicDetail from './ui/TopicDetail.vue'
 import {useExamAttemptStore, useWorkerExamStore} from "@/store/modules/index.js";
 
-import {UIPageFilter} from "@/components/index.js";
-
+import {UIModal, UIPageFilter} from "@/components/index.js";
+import ViewAttemptModal from "./solveExam/ViewAttemptModal.vue";
 import stars from "@/assets/images/svg/stars.svg";
 
 const store = useWorkerExamStore()
@@ -37,7 +37,7 @@ onMounted(()=>{
       <div class="grow basis-auto flex flex-col gap-2">
         <UIPageFilter :show-add-button="false" class="shrink-0" />
         <div class="grow basis-auto bg-surface-section rounded-md">
-          <List/>
+          <TopicCardList/>
         </div>
       </div>
       <div :style="{'width': store?.selectedLesson ? '50%' : '0'}"
@@ -45,6 +45,9 @@ onMounted(()=>{
           <TopicDetail />
       </div>
     </div>
+    <UIModal v-model:visible="examStore.visible" :width="1000" :title="$t('examPage.attemptErrors')">
+      <ViewAttemptModal />
+    </UIModal>
   </div>
 </template>
 

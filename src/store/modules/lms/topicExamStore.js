@@ -68,7 +68,7 @@ export const useTopicExamStore = defineStore('topicExamStore', {
         _update(){
             this.saveLoading = true
             $ApiService.topicExamService._update({
-                data:  {...this.payload, deadline: Utils.timeToZone(this.payload.deadline)},
+                data:  {...this.payload, deadline: this.payload?.deadline && Utils.timeToZone(this.payload.deadline)},
                 id:this.topicId, exam_id: this.elementId
             }).then((res)=>{
                 this.visible = false
