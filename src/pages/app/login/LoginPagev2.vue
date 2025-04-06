@@ -66,32 +66,32 @@ onMounted(()=>{
 </script>
 
 <template>
-<div class="w-full h-screen login-page-bg flex justify-center items-center">
-    <div class="w-[1200px] h-[700px] bg-surface-section relative overflow-hidden rounded-3xl bg-no-repeat bg-cover">
+<div class="w-full min-h-screen login-page-bg flex justify-center items-center">
+    <div class="page-form-content bg-surface-section relative overflow-hidden rounded-3xl bg-no-repeat bg-cover">
       <div class="absolute top-[20px] right-[20px] z-[5]">
         <LangDropdown class="!text-white"/>
       </div>
 
-      <div class="circle-shape w-[300px] h-[300px] rounded-full z-[2] absolute bottom-[-150px] right-[-150px]"></div>
-      <div class="circle-shape w-[900px] h-[900px] rounded-full z-[2] absolute top-[-300px] left-[-300px]"></div>
-      <div class="circle-shape w-[300px] h-[300px] rounded-full z-[2] absolute bottom-[-80px] left-[-100px]"></div>
-      <div class="circle-shape w-[300px] h-[300px] rounded-full z-[2] absolute bottom-[30px] left-[250px]"></div>
+      <div class="circle-shape circle-shape-1 rounded-full z-[2] absolute"></div>
+      <div class="circle-shape circle-shape-4 rounded-full z-[2] absolute "></div>
+      <div class="circle-shape circle-shape-2 rounded-full z-[2] absolute"></div>
+      <div class="circle-shape circle-shape-3 rounded-full z-[2] absolute"></div>
 
-      <div class="w-full grid grid-cols-12 relative z-[3] p-[40px]">
-        <div class="col-span-6 flex flex-col">
-           <div class="w-[500px] mx-auto mt-[60px]">
-             <div class="flex gap-4 items-center">
-               <img :src="useAppSetting.appLogoUrl" alt=" " class="object-center animation-logo h-[60px]" />
-               <span class="text-white text-4xl font-bold uppercase">{{$t('loginPage.description.title')}}</span>
+      <div class="w-full flex relative z-[3] form-box">
+        <div class="form-text-block flex flex-col ">
+           <div class=" mt-[20px] ">
+             <div class="flex gap-3 items-center">
+               <img :src="useAppSetting.appLogoUrl" alt=" " class="app-logo-element object-center animation-logo" />
+               <span class="text-white form-title font-bold uppercase">{{$t('loginPage.description.title')}}</span>
              </div>
-             <h1 class="text-white text-xl font-semibold uppercase mt-4 mb-4">{{$t('loginPage.description.subtitle')}}
+             <h1 class="text-white form-subtitle font-semibold uppercase mt-4 mb-4 lg:w-[450px]">{{$t('loginPage.description.subtitle')}}
              </h1>
-             <p class="text-white font-semibold mt-2 leading-6">{{$t('loginPage.description.text')}}</p>
+             <p class="text-white font-semibold mt-2 leading-6 form-description lg:w-[500px]">{{$t('loginPage.description.text')}}</p>
            </div>
         </div>
-        <div class="col-span-6 px-[100px] pt-[50px]">
-          <h3 class="text-dark font-bold text-4xl uppercase">{{ $t(`loginPage.title`) }}</h3>
-          <p class="mt-2">{{ $t(`loginPage.subtitle`) }}</p>
+        <div class="form-content-block">
+          <h3 class="text-dark font-bold form-title uppercase pt-[30px]">{{ $t(`loginPage.title`) }}</h3>
+          <p class="mt-2 leading-[1.2] form-description">{{ $t(`loginPage.subtitle`) }}</p>
 
           <n-form
               ref="formRef"
@@ -114,7 +114,7 @@ onMounted(()=>{
                 </template>
               </n-input>
             </n-form-item>
-            <n-form-item :label="$t(`loginPage.password`)" path="password" class="mb-8">
+            <n-form-item :label="$t(`loginPage.password`)" path="password" class="m6-8">
               <n-input
                   size="large"
                   name="password"
@@ -146,7 +146,7 @@ onMounted(()=>{
               >{{ $t(`loginPage.login`) }}
               </n-button>
               <template v-if="appStore.appConfig.signatureLogin">
-                <n-divider title-placement="center">{{$t('content.or')}}</n-divider>
+                <n-divider class="!my-2" title-placement="center">{{$t('content.or')}}</n-divider>
                 <n-button
                     @click="onSignatureLogin"
                     size="large"
@@ -208,6 +208,172 @@ onMounted(()=>{
 }
 .dark-border-button .n-button__state-border{
   border: unset !important;
+}
+
+
+@media only screen and (min-width:1480px){
+  .page-form-content{
+    width: 1400px !important;
+    height:800px !important;
+    .form-box{
+      margin-top: 100px;
+    }
+  }
+
+}
+
+@media only screen and (min-width:1051px){
+    .page-form-content{
+      width: clamp(min(700px, 10%), 100%, 1200px);
+      height:600px;
+      padding: 0 40px;
+      margin: 0 20px;
+
+      .app-logo-element{
+        height: 60px;
+      }
+      .form-title{
+        font-size: 36px;
+      }
+      .form-subtitle{
+        font-size: 20px;
+      }
+      .form-description{
+        font-size: 14px;
+      }
+    }
+  .form-box{
+    .form-text-block{
+      width: 50%;
+    }
+    .form-content-block{
+      width:50%;
+      padding: 0 100px;
+    }
+
+  }
+
+
+    .circle-shape-1{
+      width: 300px;
+      height: 300px;
+      bottom: -150px;
+      right: -150px;
+    }
+  .circle-shape-2{
+    width: 320px;
+    height: 320px;
+    bottom: -80px;
+    left: -100px;
+  }
+  .circle-shape-3{
+    width: 300px;
+    height: 300px;
+    bottom: 30px;
+    left: 250px;
+  }
+  .circle-shape-4{
+    width: 900px;
+    height: 900px;
+    top: -300px;
+    left:-300px;
+  }
+}
+
+@media only screen and (max-width:1050.99px){
+  .page-form-content{
+    width: clamp(min(700px, 10%), 100%, 1200px);
+    height:600px;
+    padding: 0 20px;
+    margin: 0 10px;
+
+    .app-logo-element{
+      height: 40px;
+    }
+
+    .form-title{
+      font-size: 24px;
+    }
+    .form-subtitle{
+      font-size:16px;
+    }
+    .form-description{
+      font-size: 12px;
+    }
+  }
+
+
+  .form-box{
+    margin-top: 20px;
+    .form-text-block{
+      width: 360px;
+    }
+    .form-content-block{
+      width:50%;
+      padding: 0 10px 0px 40px;
+    }
+  }
+
+  .circle-shape-1{
+    width: 200px;
+    height: 200px;
+    bottom: -90px;
+    right: -90px;
+  }
+  .circle-shape-2{
+    width: 220px;
+    height: 220px;
+    bottom: -80px;
+    left: -100px;
+  }
+  .circle-shape-3{
+    width: 200px;
+    height: 200px;
+    bottom: 30px;
+    left: 150px;
+  }
+  .circle-shape-4{
+    width: 600px;
+    height: 600px;
+    top: -150px;
+    left:-220px;
+  }
+}
+
+@media only screen and (max-width:700px){
+  .page-form-content{
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0;
+    height:100vh;
+    border-radius: 0;
+  }
+  .form-box{
+    margin-top: 20px;
+    .form-text-block{
+      display: none !important
+    }
+    .form-content-block{
+      width:100%;
+      padding: 0 40px 0px 40px;
+    }
+  }
+
+  .circle-shape-4{
+    display: none;
+  }
+  .circle-shape-3{
+    display: none;
+  }
+}
+
+@media only screen and (max-width:460px){
+  .form-box{
+    margin-top: 60px;
+    .form-content-block{
+      padding: 0;
+    }
+  }
 }
 
 

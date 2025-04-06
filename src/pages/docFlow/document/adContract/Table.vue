@@ -55,6 +55,7 @@ const onSelect =(v)=>{
   <n-spin :show="store.loading" style="min-height: 200px">
     <div class="w-full overflow-x-auto"  v-if="store.list?.length>0">
       <n-table
+          class="mt-4"
           :single-line="false"
           size="small"
       >
@@ -94,7 +95,6 @@ const onSelect =(v)=>{
           <td><div class="flex justify-center">
             <n-button
                 :type="item?.command_status.id === 1? 'primary' : 'default'"
-                @click="openContract(item, item?.command_status.id)"
                 size="small">
               <template #icon>
                 <ReceiptAdd24Regular v-if="item?.command_status.id === 1" />

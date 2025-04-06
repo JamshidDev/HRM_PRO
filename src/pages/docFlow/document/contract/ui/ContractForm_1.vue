@@ -3,6 +3,8 @@ import Utils from "@/utils/Utils.js"
 import {UIAutoComplete,UIUser} from "@/components/index.js"
 import {useComponentStore, useContractStore} from "@/store/modules/index.js"
 import {NAvatar} from "naive-ui"
+import UIHelper from "@/utils/UIHelper.js"
+import {useAppSetting} from "@/utils/index.js"
 
 const store = useContractStore()
 const componentStore = useComponentStore()
@@ -38,30 +40,6 @@ const renderValue = ({option})=>{
   ];
 }
 
-const scheduleLabel = (option)=>{
-  return [
-    h(
-        'div',
-        {
-          class:'w-full',
-        },[
-          h('div',{ class:'flex flex-col w-full'}, [
-            h('div',{ class:'text-xs font-medium text-gray-500'},`${option.name}`),
-            h('div',{ class:'text-xs text-gray-400'},`${ option.work_days[0].type.name}`),
-            h('div',{ class:'text-xs text-gray-400'},`${option.work_days[0].start_time} - ${option.work_days[0].end_time}`),
-          ])
-        ]
-    ),
-  ];
-}
-const scheduleValue = ({option})=>{
-  return h('div', {
-        class:'flex',
-      }, [
-        h('div', {class:'text-sm font-medium'},option.name)
-      ]
-  )
-}
 
 const showVacationDay = computed(()=>{
   return ![2].includes(store.payload.type)
@@ -141,6 +119,7 @@ watchEffect(()=>{
                 v-model:value="store.payload.contract_date"
                 type="date"
                 :placeholder="$t(`content.choose`)"
+                :format="useAppSetting.datePicketFormat"
             />
           </n-form-item>
         </div>
@@ -151,6 +130,7 @@ watchEffect(()=>{
                 v-model:value="store.payload.contract_to_date"
                 type="date"
                 :placeholder="$t(`content.choose`)"
+                :format="useAppSetting.datePicketFormat"
             />
           </n-form-item>
         </div>
@@ -161,6 +141,7 @@ watchEffect(()=>{
                 v-model:value="store.payload.position_date"
                 type="date"
                 :placeholder="$t(`content.choose`)"
+                :format="useAppSetting.datePicketFormat"
             />
           </n-form-item>
         </div>
@@ -212,8 +193,8 @@ watchEffect(()=>{
                 :options="componentStore.scheduleList"
                 value-field="id"
                 :loading="componentStore.scheduleLoading"
-                :render-label="scheduleLabel"
-                :render-tag="scheduleValue"
+                :render-label="UIHelper.scheduleRender.label"
+                :render-tag="UIHelper.scheduleRender.value"
                 clearable
             />
           </n-form-item>

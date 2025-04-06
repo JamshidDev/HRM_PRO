@@ -15,14 +15,21 @@ const onSubmit = ()=>{
   })
 }
 
+const changeCountry = ()=>{
+  componentStore.regionList = []
+  store.payload.region_id = null
+  store.payload.current_region_id = null
+  componentStore._regions(store.payload.country_id)
+}
+
 defineExpose({
   onSubmit
 })
 
 onMounted(()=>{
   componentStore._countries()
-  componentStore._regions()
   componentStore._enums()
+  componentStore._regions(1)
   componentStore._nationality()
 })
 </script>
@@ -74,6 +81,7 @@ onMounted(()=>{
           label-field="name"
           value-field="id"
           :loading="componentStore.countryLoading"
+          @update:value="changeCountry"
       />
     </n-form-item>
     <n-form-item

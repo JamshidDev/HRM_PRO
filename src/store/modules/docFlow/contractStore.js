@@ -40,7 +40,7 @@ export const useContractStore = defineStore('contractStore', {
             vacation_main_day:null,
             additional_vacation_day:null,
             schedule_id:null,
-            files:[],
+            // files:[],
             command_type:null,
             command_status:false,
 
@@ -94,7 +94,7 @@ export const useContractStore = defineStore('contractStore', {
                 this.loading= false
             })
         },
-        _create(){
+        _create(callback){
             const compStore = useComponentStore()
             this.saveLoading = true
             let data = {
@@ -112,13 +112,10 @@ export const useContractStore = defineStore('contractStore', {
             }
             delete data.pin
             $ApiService.contractService._create({data}).then((res)=>{
-                if(this.payload.files.length>0){
-                    this._attachFile(res.data.data.contract_id)
-                }else{
-                    this.activeTab = 4
-                    this.stepNumber = 4
-                    this._index()
-                }
+                 this.activeTab = 4
+                this.stepNumber = 4
+                this._index()
+                callback?.()
 
             }).finally(()=>{
                 this.saveLoading = false
@@ -157,7 +154,7 @@ export const useContractStore = defineStore('contractStore', {
             })
 
         },
-        _attachFile(id){
+        _attachFile(id,callback){
             this.saveLoading = true
             const formData = new FormData()
             formData.append('document_id',id)
@@ -168,6 +165,8 @@ export const useContractStore = defineStore('contractStore', {
             $ApiService.documentFileService._create({data:formData}).then((res)=>{
                 this.activeTab = 4
                 this.stepNumber = 4
+                callback?.()
+
             }).finally(()=>{
                 this.saveLoading = false
             })
@@ -190,7 +189,7 @@ export const useContractStore = defineStore('contractStore', {
             this.payload.position_id = null
             this.payload.group = null
             this.payload.rank = null
-            this.payload.rate = null
+            this.payload.rate = 1
             // this.payload.post_name = null
             this.payload.probation = null
             this.payload.position_date = new Date().getTime()
@@ -198,7 +197,7 @@ export const useContractStore = defineStore('contractStore', {
             this.payload.additional_vacation_day = '4'
             this.payload.schedule_id = null
             this.payload.command_type = null
-            this.payload.files = []
+            // this.payload.files = []
             this.payload.contract_to_date = null
 
             this.payload.command_date = null

@@ -121,9 +121,6 @@ const onContinue = ()=>{
                 </n-button>
               </div>
            </template>
-
-
-
          </n-spin>
 
        </div>

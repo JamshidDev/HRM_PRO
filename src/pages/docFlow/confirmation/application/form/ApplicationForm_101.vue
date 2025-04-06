@@ -1,11 +1,12 @@
 <script setup>
 import {useComponentStore, useConfApplicationStore} from "@/store/modules/index.js"
 import {NAvatar} from "naive-ui"
-import Utils from "@/utils/Utils.js"
 import {UIStructure} from "@/components/index.js"
 
 const store = useConfApplicationStore()
 const componentStore = useComponentStore()
+
+const isPosition = computed(()=>!([1,2].includes(store.payload.type)))
 
 
 const onFocusDirector = ()=>{
@@ -94,12 +95,15 @@ const onSelectDirector = ()=>{
   store._confirmation()
 }
 const onSelectApplication = (v)=>{
-
   componentStore.directorList = []
   store.payload.director_id = null
   store.confirmationList = []
   store.payload.confirmations = []
   store.organization_id = []
+
+  if(isPosition.value){
+    onFocusPosition()
+  }
 }
 
 const onChangeStructure = (v)=>{
@@ -131,7 +135,7 @@ onMounted(()=>{
     if(componentStore.workerApplicationTypes.length === 0){
       componentStore._workerApplicationEnums()
     }
-    onFocusPosition()
+    // onFocusPosition()
 })
 
 
@@ -153,7 +157,10 @@ onMounted(()=>{
         />
       </n-form-item>
     </div>
-    <div class="col-span-12">
+    <div
+        class="col-span-12"
+        v-if="isPosition && store.payload.type"
+    >
       <n-form-item :label="$t(`applicationPage.form.worker_position_id`)" path="worker_position_id">
         <n-select
             @focus="onFocusPosition"

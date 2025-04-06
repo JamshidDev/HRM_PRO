@@ -368,6 +368,34 @@ const colorTypes = {
     secondary:"Secondary",
 }
 
+const blobFileDownload = (file, contentType, fileName)=>{
+    try{
+        const blob = new Blob([file], {type:contentType})
+        const link = document.createElement("a");
+        link.href = window.URL.createObjectURL(blob);
+        link.setAttribute("download", fileName);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }catch (e){
+        console.log(e)
+    }
+
+}
+
+const checkRequestBody = (body)=>{
+    if(body){
+        for(let key in body){
+            console.log(body[key])
+            console.log(body[key]?.length)
+            if(body[key] === '' || body[key] === null ||  body[key]?.length === 0 ){
+                delete body[key]
+            }
+        }
+    }
+
+}
+
 export default {
     fileToBase64,
     onlyAllowNumber,
@@ -404,4 +432,6 @@ export default {
     debouncedFn,
     appPermissions,
     colorTypes,
+    blobFileDownload,
+    checkRequestBody,
 }

@@ -6,9 +6,10 @@ import {useComponentStore} from "@/store/modules/index.js"
 const store = useComponentStore()
 const props = defineProps({
   multiple:{type:Boolean,default:true},
+  loading:{type:Boolean,default:false},
   modelV:{type:Array,default:[]},
   checkedVal:{type:Array,default:[]},
-  disabled:{type:Boolean,default:false},
+  options:{type:Array, default:[]},
 })
 
 
@@ -65,29 +66,29 @@ const onSelectAll = (v)=>{
 
 const searchEvent = useDebounceFn(() => {
   emits('onSearch', searchModel.value )
-  store.structureParams.search = searchModel.value
-  store._structures()
+  store.depParams.search = searchModel.value
+  store._departmentTree()
 }, 300,)
 
 const getChildIds = (tree, elementId)=>{
-    const result = []
+  const result = []
 
-    const findAndCollect = (node)=>{
-      if(node.id === elementId){
-        collectChildIds(node)
-        return true
-      }
-      for(const child of node.children){
-        if(findAndCollect(child)) return true
-      }
-      return false
-   }
+  const findAndCollect = (node)=>{
+    if(node.id === elementId){
+      collectChildIds(node)
+      return true
+    }
+    for(const child of node.children){
+      if(findAndCollect(child)) return true
+    }
+    return false
+  }
 
-   const collectChildIds = (node)=>{
-     result.push(node)
-     for (const child of node.children){
-       collectChildIds(child)
-     }
+  const collectChildIds = (node)=>{
+    result.push(node)
+    for (const child of node.children){
+      collectChildIds(child)
+    }
   }
 
   for(const items of tree){
@@ -106,7 +107,6 @@ const changeCheckVal = (v)=>{
     list = props.checkedVal
     list.push(v.id)
   }
-
   emits('updateCheck',list)
 }
 
@@ -114,7 +114,7 @@ const inputVal = computed(()=>props.modelV.map((a)=>a.name).toString())
 
 const onFocusEv = ()=>{
   if(store.structureList.length===0){
-    store._structures()
+    store._departmentTree()
   }
 }
 </script>
@@ -123,23 +123,19 @@ const onFocusEv = ()=>{
   <n-popover
       placement="bottom"
       trigger="click"
-      width="540px"
-      class="h-[460px] !py-0 px-1"
+      width="400px"
+      class="h-[400px] !py-0 px-1"
   >
     <template #trigger>
-      <n-badge
-          :show="!disabled"
-          :offset="[-10,-4]"
-          class="w-full" :value="modelV.length" type="info">
-        <n-input :disabled="disabled" @focus="onFocusEv" class="ui__structure-input w-full"  type="text" :value="inputVal?.toString()" :placeholder="$t('content.choose')" />
-
+      <n-badge class="w-full" :value="modelV.length" type="info">
+        <n-input @focus="onFocusEv" :loading="loading" class="ui__structure-input w-full"  type="text" :value="inputVal?.toString()" :placeholder="$t('content.choose')" />
       </n-badge>
     </template>
     <div class="w-full h-[10px]"></div>
-    <div class="w-full h-[404px] overflow-y-auto">
-      <n-spin :show="store.structureLoading" class="w-full h-full">
+    <div class="w-full h-[344px] overflow-y-auto">
+      <n-spin :show="loading" class="w-full h-full">
         <TreeOrg
-            :data="store.structureList"
+            :data="options"
             :modelV="modelV"
             :checkedVal="checkedVal"
             :getChildIds="getChildIds"
@@ -157,7 +153,7 @@ const onFocusEv = ()=>{
             v-model:value="searchModel"
             round :placeholder="$t('content.search')"
             :on-keyup="searchEvent"
-            :loading="store.structureLoading"
+            :loading="loading"
         >
           <template #prefix>
             <n-icon :component="Search48Filled" />
@@ -167,7 +163,7 @@ const onFocusEv = ()=>{
             @click="emits('onSubmit')"
             type="primary"
             size="small"
-            :loading="store.structureLoading"
+            :loading="loading"
         >
           {{$t("content.search")}}
         </n-button>

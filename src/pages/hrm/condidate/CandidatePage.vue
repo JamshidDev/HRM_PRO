@@ -11,6 +11,7 @@ import {ArrowLeft12Regular, Save16Regular} from "@vicons/fluent"
 import router from "@/router/index.js"
 import validationRules from "@/utils/validationRules.js"
 import ContractForm from "@/pages/docFlow/document/contract/contractForm.vue"
+import {AppPaths} from "@/utils/index.js"
 const formRef = ref(null)
 const store = useCreateWorkerStore()
 const componentStore = useComponentStore()
@@ -44,8 +45,11 @@ const onSave = ()=>{
 
 const onSuccessEv = (id)=>{
   store.visible = false
-  openOffice(id)
+  router.push({name:`${AppPaths.Contract.substring(1)}`})
+  // openOffice(id)
+
 }
+
 
 const openOffice = (id)=>{
   officeAppRef.value.openPdf(id, 'contracts')

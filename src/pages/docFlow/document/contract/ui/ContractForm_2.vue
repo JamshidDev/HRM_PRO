@@ -132,7 +132,11 @@ const onChangeStructure = (v)=>{
               :label="$t(`documentPage.form.rate`)"
               :path="(store.payload.position_status && (store.payload.type === 2))? 'rate_no':'rate'"
           >
-            <n-input
+            <n-input-number
+                :max="1"
+                :min="0.1"
+                :step="0.1"
+                :show-button="false"
                 class="w-full"
                 type="text"
                 :placeholder="$t(`content.enterField`)"
@@ -182,13 +186,13 @@ const onChangeStructure = (v)=>{
       </div>
     </div>
 
-    <div class="col-span-12 border border-dashed p-2 rounded-xl border-surface-line bg-surface-ground mt-4">
-      <div class="grid grid-cols-12 gap-x-4">
-        <div class="col-span-12">
-          <UIUpload v-model:files="store.payload.files" />
-        </div>
-      </div>
-    </div>
+<!--    <div class="col-span-12 border border-dashed p-2 rounded-xl border-surface-line bg-surface-ground mt-4">-->
+<!--      <div class="grid grid-cols-12 gap-x-4">-->
+<!--        <div class="col-span-12">-->
+<!--          <UIUpload v-model:files="store.payload.files" />-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
   </div>
 </template>
 

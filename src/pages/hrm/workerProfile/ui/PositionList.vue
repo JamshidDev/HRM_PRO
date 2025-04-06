@@ -8,12 +8,14 @@ import CommandForm from "@/pages/docFlow/document/command/CommandForm.vue"
 
 const store = useWorkerProfileStore()
 const workers = ref([])
+const organization = ref([])
 
 const onSuccessEv = (v)=>{
   store.positionVisible = false
 }
 
 const onOpen = (v)=>{
+  organization.value = [v.organization]
   const worker = v.contract.worker
   workers.value = [
     {
@@ -108,6 +110,7 @@ const onOpenCommand = (v)=>{
   >
     <adContractForm
         :workers="workers"
+        :organization="organization"
         :call-back="onSuccessEv"
     />
   </UIModal>

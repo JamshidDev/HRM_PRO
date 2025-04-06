@@ -24,6 +24,9 @@ const _create = async (payload)=>{
 const _update = async (payload)=>{
     return await axios.put(`/v1/hr/workers/${payload.id}`, payload.data)
 }
+const _resume =async (payload)=>{
+    return await axios.get(`/v1/hr/worker-positions/${payload.id}/resume-download`,{responseType:"blob"}, {params:payload.params})
+}
 
 
 
@@ -36,4 +39,5 @@ export default {
     _update,
     _preview,
     _search,
+    _resume,
 }

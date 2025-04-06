@@ -230,7 +230,7 @@ onUnmounted(()=>{
                     />
                   </div>
                   <n-button
-                      :disabled="!store.permissions?.canSignature "
+                      :disabled="!store.permissions?.canSignature"
                       @click="onSaveSignature"
                       class="shadow cursor-pointer"
                       :type="store.permissions?.canSignature ? 'primary' : 'default'"

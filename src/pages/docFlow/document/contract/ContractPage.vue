@@ -1,11 +1,9 @@
 <script setup>
 import contractForm from "./contractForm.vue"
-import CommandForm from "../command/CommandForm.vue"
 import ContractList from "./ContractList.vue"
 import {UIModal,UIPageContent,UIOfficeApp} from "@/components/index.js"
 import {useContractStore, useCommandStore} from "@/store/modules/index.js"
 import Utils from "@/utils/Utils.js"
-import ContractForm2 from "@/pages/docFlow/document/contract/contractForm2.vue"
 import Filter from "./ui/Filter.vue"
 
 const store = useContractStore()
@@ -62,7 +60,7 @@ onMounted(()=>{
         :width="1200"
         v-model:visible="store.visible"
     >
-      <contractForm2 />
+      <contractForm />
     </UIModal>
     <UIOfficeApp ref="officeAppRef"/>
   </UIPageContent>

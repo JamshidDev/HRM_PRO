@@ -63,20 +63,7 @@ const onChangeDepartment = ()=>{
       @onClear="clearFilter"
       :show-add-button="false"
   >
-    <template #filterAction>
-      <n-button
-          type="primary"
-          icon-placement="right"
-          @click="onAdd"
-      >
-        <template #icon>
-          <n-icon>
-            <HomePerson20Regular/>
-          </n-icon>
-        </template>
-        {{ $t('workerPage.filter.contract') }}
-      </n-button>
-    </template>
+
 
     <template #filterContent>
       <label class="mt-3 text-xs text-gray-500">{{ $t('workerPage.filter.organization') }}</label>

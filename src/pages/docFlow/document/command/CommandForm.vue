@@ -13,6 +13,7 @@ import VacationForm_45 from "@/pages/docFlow/document/command/ui/VacationForm_45
 import VacationForm_49 from "@/pages/docFlow/document/command/ui/VacationForm49.vue"
 import VacationForm_48 from "@/pages/docFlow/document/command/ui/VacationForm_48.vue"
 import VacationForm_55 from "@/pages/docFlow/document/command/ui/VacationForm_55.vue"
+import VacationForm_62 from "@/pages/docFlow/document/command/ui/VacationForm_62.vue"
 import {useAppSetting} from "@/utils/index.js"
 
 
@@ -36,6 +37,7 @@ const vacationForm_45 = ref(null)
 const vacationForm_48 = ref(null)
 const vacationForm_49 = ref(null)
 const vacationForm_55 = ref(null)
+const vacationForm_62 = ref(null)
 
 
 const onFocusConf = ()=>{
@@ -46,7 +48,7 @@ const renderLabel = (option)=>{
     h(
         'div',
         {
-          class:'flex gap-2 my-1 items-center'
+          class:'flex gap-2 my-1 items-center px-2'
         },[
           h(NAvatar,
               {
@@ -55,8 +57,8 @@ const renderLabel = (option)=>{
                 'fallback-src':Utils.noAvailableImage,
               },),
           h('div',{ class:'flex flex-col'}, [
-            h('div',{ class:'text-xs font-medium text-gray-500'},`${option.last_name}.${option.last_name[0]}.${option.middle_name[0]}`),
-            h('div',{ class:'text-xs text-primary'},option.position),
+            h('div',{ class:'text-xs font-medium text-gray-500 leading-[1.2]'},`${option.last_name}.${option.last_name[0]}.${option.middle_name[0]}`),
+            h('div',{ class:'text-xs text-primary leading-[1.2]'},option.position),
           ])
         ]
     ),
@@ -89,6 +91,7 @@ const workerRenderValue = ({option})=>{
 const onChangeWorkers = ()=>{
   generationVacation55()
   generationVacation()
+  generationVacation62()
 }
 
 const onChangeWorker = ()=>{}
@@ -133,6 +136,9 @@ const onSubmit = ()=>{
       }
       else if(store.payload.command_type === 55){
         validate =await vacationForm_55.value?.onSubmit(mainData)
+      }
+      else if(store.payload.command_type === 62){
+        validate =await vacationForm_62.value?.onSubmit(mainData)
       }
 
 
@@ -203,6 +209,10 @@ const onChangeCommandType = ()=>{
   else if(store.payload.command_type === 55){
     fillVacation55()
   }
+  else if(store.payload.command_type === 62){
+    fillVacation62()
+  }
+
 
   if([44, 43, 48].includes(store.payload.command_type)){
     componentStore.reasonTypes = []
@@ -282,6 +292,54 @@ const fillVacation55 = ()=>{
       to:null,
       from_time:null,
       to_time:null,
+    }
+  })
+}
+
+const generationVacation62 = ()=>{
+  const oldValues = store.vacations62.map((v)=>v.id)
+  const id = store.payload.workers[store.payload.workers?.length-1]
+  const worker = componentStore.workerList.filter(x=>x.id === id)[0]
+  if(!oldValues.includes(id) &&  store.payload.workers.length > store.vacations62.length){
+    store.vacations62.push({
+      worker,
+      id,
+      from:null,
+      to:null,
+      reason:null,
+      department_id:[],
+      work_place_id:[],
+      orgCheck:[],
+      depCheck:[],
+      to_organization:null,
+      organizationType:1,
+      departmentList:[],
+      loading:false,
+    })
+  }
+  else if(store.payload.workers.length < store.vacations62.length){
+    store.vacations62 = store.vacations62.filter((a)=>store.payload.workers.includes(a.id))
+  }
+}
+
+const fillVacation62 = ()=>{
+  store.vacations62 = []
+  store.vacations62 = store.payload.workers.map((id)=>{
+    const worker = componentStore.workerList.filter(v=>v.id === id)[0]
+    return {
+      worker,
+      id,
+      from:null,
+      to:null,
+      reason:null,
+      department_id:[],
+      work_place_id:[],
+      orgCheck:[],
+      depCheck:[],
+      to_organization:null,
+      organizationType:1,
+      departmentList:[],
+      loading:false,
     }
   })
 }
@@ -443,6 +501,9 @@ onMounted(()=>{
         <template v-else-if="store.payload.command_type === 55">
           <VacationForm_55 ref="vacationForm_55" />
         </template>
+        <template v-else-if="store.payload.command_type === 62">
+          <VacationForm_62 ref="vacationForm_62" />
+        </template>
 
         <template v-else>
           <EmptyForm/>
@@ -478,7 +539,8 @@ onMounted(()=>{
                   :placeholder="$t(`content.choose`)"
                   :options="confirmationList"
                   :loading="componentStore.confirmationLoading"
-                  :render-label="renderLabel" />
+                  :render-label="renderLabel"
+              />
             </n-form-item>
           </div>
         </div>
@@ -498,6 +560,6 @@ onMounted(()=>{
   </div>
 </template>
 
-<style scoped>
+<style>
 
 </style>

@@ -53,6 +53,13 @@ export const useSignatureStore = defineStore('signatureStore', {
             this.successCallback = callback
             this.documentId = documentId
             this.loading = true
+
+            try{
+                await this._checkVersion()
+            }catch(error){
+                $Toast.error(t('signature.connectionError'))
+                return
+            }
             $ApiService.documentService._documentBase64({
                 params:{
                     model:this.documentType,
