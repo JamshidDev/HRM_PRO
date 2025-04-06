@@ -98,17 +98,6 @@ const activeTab = ref(0)
             <n-tab-pane v-for="(tab, idx) in tabs" :key="idx" :name="tab.id">
               <component :is="tab.component" v-bind="tab.props" />
             </n-tab-pane>
-<!--            <n-tab-pane :name="2">-->
-<!--              <div v-if="!!lesson.files.length" class="grid gap-2 grid-cols-[repeat(auto-fill,minmax(100px,1fr))] p-1">-->
-<!--                <div-->
-<!--                    v-for="(item, idx) in lesson.files"-->
-<!--                    :key="idx"-->
-<!--                    class="h-[130px] bg-surface-section rounded-md flex justify-center items-center drop-shadow-sm cursor-pointer hover:drop-shadow-lg transition-all border-surface-line border"-->
-<!--                >-->
-<!--                  <File :file="item"/>-->
-<!--                </div>-->
-<!--              </div>-->
-<!--            </n-tab-pane>-->
           </n-tabs>
         </div>
       </div>

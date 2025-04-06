@@ -978,7 +978,7 @@
     "variant_count": "Variantlar",
     "exam_duration": "Davomiyligi(min)",
     "totalTime": "Berilgan vaqt: {n} daqiqa",
-    "nMinute": "{n} daqiqa",
+    "nMinute": "{n}m",
     "totalMinute": "{n} daqiqa",
     "resources": "Resurslar",
     "exams": "Imtihonlar",
