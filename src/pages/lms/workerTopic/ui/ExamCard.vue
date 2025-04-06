@@ -36,19 +36,11 @@ const show = ref(false)
         </n-button>
         <div>
           <p class="font-bold text-lg">{{ exam.name }}</p>
-          <div class="text-secondary flex gap-2 text-xs">
-            <span>
-              {{ $t('examPage.nVariant', {n: exam.variant}) }}
-            </span>
-            <span>
-              {{ $t('examPage.deadline', {n: Utils.timeWithMonth(exam.deadline)}) }}
-            </span>
-            <span>
-              {{ $t('examPage.nAttempts', {n: exam.chances}) }}
-            </span>
-            <span>
-              {{ $t('examPage.nQuestions', {n: exam.questions_count}) }}
-            </span>
+          <div class="  flex gap-2 text-xs">
+            <p>{{$t('examPage.question_count')}}: <span class="font-bold">{{exam.questions_count}}</span></p>
+            <p>{{$t('solveExamPage.variant')}}: <span class="font-bold">{{exam.variant}}</span></p>
+            <p>{{$t('solveExamPage.deadline')}}: <span class="font-bold">{{Utils.timeWithMonth(exam.deadline)}}</span></p>
+            <p>{{$t('examPage.attempts')}}: <span class="font-bold">{{exam.chances}}</span></p>
           </div>
         </div>
       </div>
