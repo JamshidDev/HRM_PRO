@@ -4,13 +4,18 @@ import {useTimesheetDepartmentStore, useWorkerStore} from "@/store/modules/index
 import {useRouter} from "vue-router"
 import {AppPaths} from "@/utils/index.js"
 import Utils from "@/utils/Utils.js"
-import {Table24Regular} from "@vicons/fluent";
+import {Edit32Regular, Eye16Regular, Table24Regular} from "@vicons/fluent"
+import UIHelper from "@/utils/UIHelper.js"
+import i18n from "@/i18n/index.js"
+
 
 const store = useWorkerStore()
 const timesheetDepartmentStore = useTimesheetDepartmentStore()
+const {t} = i18n.global
 
 const router = useRouter()
 const previewRef = ref(null)
+const selectedItem = ref(null)
 
 
 
@@ -42,6 +47,48 @@ const onPreview =(uuid)=>{
   previewRef?.value.openPreview(uuid)
 }
 
+const options = [
+  {
+    label: t('content.view'),
+    key: Utils.ActionTypes.view,
+    icon: UIHelper.renderIcon(Eye16Regular),
+  },
+  {
+    label: t('content.edit'),
+    key: Utils.ActionTypes.edit,
+    icon: UIHelper.renderIcon(Edit32Regular),
+  },
+  {
+    label: t('timesheet.assignUser'),
+    key: Utils.ActionTypes.timesheet,
+    icon: UIHelper.renderIcon(Table24Regular),
+  }
+]
+
+const showDropdownRef = ref(false)
+const x = ref(0);
+const y = ref(0);
+
+const handleSelect =(key)=> {
+  showDropdownRef.value = false;
+  onSelectEv({key, data:selectedItem.value})
+}
+const handleContextMenu =(e,v) =>{
+  e.preventDefault();
+  selectedItem.value = v
+  showDropdownRef.value = false;
+  nextTick().then(() => {
+    showDropdownRef.value = true;
+    x.value = e.clientX;
+    y.value = e.clientY;
+  });
+}
+
+const onClickoutside=()=> {
+  showDropdownRef.value = false;
+}
+
+
 
 </script>
 
@@ -67,7 +114,11 @@ const onPreview =(uuid)=>{
         </tr>
         </thead>
         <tbody>
-        <tr v-for="(item, idx) in store.list" :key="idx">
+        <tr
+            v-for="(item, idx) in store.list"
+            :key="idx"
+            @contextmenu="handleContextMenu($event, item)"
+        >
           <td><span class="text-center text-[12px] text-gray-600 block">{{ (store.params.page - 1) * store.params.per_page + idx + 1 }}</span></td>
           <td>
             <UIUser
@@ -113,6 +164,17 @@ const onPreview =(uuid)=>{
           :per_page="store.params.size"
           :total="store.totalItems"
           @change-page="changePage"
+      />
+      <n-dropdown
+          size="small"
+          placement="bottom-start"
+          trigger="manual"
+          :x="x"
+          :y="y"
+          :options="options"
+          :show="showDropdownRef"
+          :on-clickoutside="onClickoutside"
+          @select="handleSelect"
       />
     </div>
     <NoDataPicture v-if="store.list.length===0 && !store.loading" />

@@ -1,3 +1,4 @@
+import {NIcon} from "naive-ui"
 
 
 const scheduleLabel = (option)=>{
@@ -26,9 +27,18 @@ const scheduleValue = ({option})=>{
     )
 }
 
+const renderIcon =(icon)=> {
+    return () => {
+        return h(NIcon, null, {
+            default: () => h(icon),
+        })
+    }
+}
+
 export default {
     scheduleRender:{
         label:scheduleLabel,
         value:scheduleValue,
-    }
+    },
+    renderIcon,
 }

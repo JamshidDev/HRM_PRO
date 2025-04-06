@@ -816,6 +816,7 @@ export default {
             trigger: triggerEvents
         },
         rate:{
+            type:'number',
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
@@ -902,6 +903,12 @@ export default {
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
+        contract_to_date:{
+            type:'number',
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
         post_name:{
             required: true,
             message: t(`rules.requiredField`),
@@ -931,6 +938,12 @@ export default {
             trigger: triggerEvents
         },
         command_number:{
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        rate:{
+            type:'number',
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents

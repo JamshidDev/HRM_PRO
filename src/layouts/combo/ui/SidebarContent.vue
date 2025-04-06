@@ -1,11 +1,10 @@
 <script setup>
 import {navigations} from "../../data/navigations.js"
-import {ChevronDown12Regular, PeopleSwap20Regular, ChevronDoubleLeft16Filled} from "@vicons/fluent"
+import {ChevronDown12Regular, ChevronDoubleLeft16Filled} from "@vicons/fluent"
 import {useAccountStore} from "@/store/modules/index.js"
-import {useRoute, useRouter} from "vue-router";
 import i18n from "@/i18n/index.js"
 import Utils from "@/utils/Utils.js"
-import {useAppSetting} from "@/utils/index.js"
+import {AppPaths, useAppSetting} from "@/utils/index.js"
 const {t} = i18n.global
 const router = useRouter()
 const route = useRoute()
@@ -112,7 +111,7 @@ const accountPhoto = computed(()=>{
   <div class="sidebar-content">
     <div class="mini-content">
       
-      <div class="logo-content cursor-pointer">
+      <div @click="()=>router.push({name:AppPaths.Home.substring(1)})" class="logo-content cursor-pointer">
         <img :src="useAppSetting.appLogoUrl" alt=" " class="object-center animation-logo" />
       </div>
       

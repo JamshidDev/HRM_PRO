@@ -67,10 +67,15 @@ const onChangeAge = ()=>{
   filterEvent()
 }
 
-onMounted(() => {
-  componentStore._enums()
-  componentStore._enumsAdmin()
-})
+const onShow = (isOpen)=>{
+  if(isOpen && componentStore.contractTypeList.length === 0){
+    componentStore._enums()
+  }
+
+  if(isOpen && componentStore.positionCategory.length === 0){
+    componentStore._enumsAdmin()
+  }
+}
 </script>
 
 <template>
@@ -81,6 +86,7 @@ onMounted(() => {
       v-model:search="store.params.search"
       @onSearch="onSearch"
       @onClear="clearFilter"
+      @show="onShow"
       :show-add-button="false"
       :popoverStyle="{
         width:'600px',

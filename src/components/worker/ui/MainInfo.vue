@@ -58,7 +58,7 @@ const maskString = (v)=>{
       <div class="col-span-6 font-bold"><span class="font-normal text-gray-400">{{$t('workerView.general.passportJSHSHIR')}}</span>: {{isHide? Utils.maskText(store.workerPreview?.worker.pin, 3,4) : store.workerPreview?.worker.pin}}</div>
       <div class="col-span-6 font-bold"> <span class="font-normal text-gray-400">{{$t('workerView.general.phone')}}</span>: {{isHide? Utils.maskText(store.workerPreview?.worker.phones[0].phone, 2,2) : store.workerPreview?.worker.phones[0].phone}}	</div>
       <div class="col-span-6 font-bold"><span class="font-normal text-gray-400">{{$t('workerView.general.department')}}</span>: {{store.workerPreview?.department?.name}}	</div>
-      <div class="col-span-6 font-bold"><span class="font-normal text-gray-400">{{$t('workerView.general.salary')}}</span>: {{isHide? Utils.maskText(store.workerPreview?.salary, 0,2) : store.workerPreview?.salary}} {{$t('content.sum')}}</div>
+      <div class="col-span-6 font-bold"><span class="font-normal text-gray-400">{{$t('workerView.general.salary')}}</span>: {{isHide? Utils.maskText(store.workerPreview?.salary, 0,2) : Utils.formatNumberToMoney(store.workerPreview?.salary)}} {{$t('content.sum')}}</div>
       <div class="col-span-12 font-bold"> <span class="font-normal text-gray-400">{{$t('workerView.general.position')}}</span>: {{store.workerPreview?.post_name}}	</div>
     </template>
 

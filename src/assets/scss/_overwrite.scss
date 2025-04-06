@@ -235,4 +235,10 @@ input:-webkit-autofill {
   cursor: pointer;
 }
 
+.n-base-selection-tag-wrapper{
+  .n-tag{
+    padding: 2px !important;
+    border-radius: 6px !important;
+  }
+}
 

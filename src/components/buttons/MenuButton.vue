@@ -2,9 +2,9 @@
 import {Edit32Regular, Delete20Regular, OpenFolder24Filled, Eye16Regular, ArrowCircleDown48Regular, MoreHorizontal48Filled } from "@vicons/fluent"
 const {t} = i18n.global
 import {UIDConfirm} from "@/components/index.js"
-import {NIcon} from "naive-ui"
 import i18n from "@/i18n/index.js"
 import Utils from "@/utils/Utils.js"
+import UIHelper from "@/utils/UIHelper.js"
 const visible = ref(false)
 const props = defineProps({
   size: {
@@ -56,50 +56,44 @@ const props = defineProps({
 const emits = defineEmits(["selectEv"])
 
 
-function renderIcon(icon) {
-  return () => {
-    return h(NIcon, null, {
-      default: () => h(icon),
-    })
-  }
-}
+
 
 const options = computed(()=>{
   return [
     {
       label: t('content.open'),
       key: Utils.ActionTypes.open,
-      icon: renderIcon(OpenFolder24Filled),
+      icon: UIHelper.renderIcon(OpenFolder24Filled),
       visible:props.showOpen
     },
     {
       label: t('content.attachment'),
       key: Utils.ActionTypes.attachment,
-      icon: renderIcon(OpenFolder24Filled),
+      icon: UIHelper.renderIcon(OpenFolder24Filled),
       visible:props.showAttachment
     },
     {
       label: t('content.view'),
       key: Utils.ActionTypes.view,
-      icon: renderIcon(Eye16Regular),
+      icon: UIHelper.renderIcon(Eye16Regular),
       visible:props.showView
     },
     {
       label: t('content.edit'),
       key: Utils.ActionTypes.edit,
-      icon: renderIcon(Edit32Regular),
+      icon: UIHelper.renderIcon(Edit32Regular),
       visible:props.showEdit,
     },
     {
       label: t('content.download'),
       key: Utils.ActionTypes.download,
-      icon: renderIcon(ArrowCircleDown48Regular),
+      icon: UIHelper.renderIcon(ArrowCircleDown48Regular),
       visible:props.showDownload,
     },
     {
       label: t('content.delete'),
       key: Utils.ActionTypes.delete,
-      icon: renderIcon(Delete20Regular),
+      icon: UIHelper.renderIcon(Delete20Regular),
       visible:props.showDelete,
     }
   ].filter((v)=>v.visible)
@@ -132,7 +126,7 @@ const onDelete = ()=>{
         size="small"
         :options="[
           ...options,
-          ...extraOptions.map(i=>({...i, icon: renderIcon(i.icon)}))
+          ...extraOptions.map(i=>({...i, icon: UIHelper.renderIcon(i.icon)}))
         ]"
         trigger="click"
         @select="onSelect"

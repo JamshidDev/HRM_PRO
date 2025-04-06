@@ -28,10 +28,9 @@ const onAddCandidate = ()=>{
 const onContinue = ()=>{
   store.checkUserVisible = false
   store.isSelectedWorker = true
-  onAddCandidate()
-  // setTimeout(()=>{
-  //   workerStore.visible = true
-  // },200)
+  setTimeout(()=>{
+    workerStore.visible = true
+  },200)
 
 }
 

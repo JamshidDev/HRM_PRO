@@ -1,6 +1,7 @@
 import {defineStore} from "pinia";
 import Utils from "@/utils/Utils.js"
 import {useComponentStore} from "@/store/modules/index.js"
+import UIHelper from "@/utils/UIHelper.js"
 
 export const useAdContractStore = defineStore('adContractStore', {
     state:()=>({
@@ -42,6 +43,7 @@ export const useAdContractStore = defineStore('adContractStore', {
             command_number:null,
             confirmations:[],
             position_date:null,
+            contract_to_date:null,
         },
         params:{
             page:1,
@@ -72,15 +74,18 @@ export const useAdContractStore = defineStore('adContractStore', {
             let data = {
                 ...this.payload,
                 ...{
-                    position_date:Utils.timeToZone(this.payload.position_date),
-                    command_date:Utils.timeToZone(this.payload.command_date),
-                    contract_date:Utils.timeToZone(this.payload.contract_date),
-                    organization_id:this.payload.organization_id.length>0? this.payload.organization_id[0].id : null,
+                    position_date:Utils.timeToZone(this.payload.position_date) || undefined,
+                    command_date:Utils.timeToZone(this.payload.command_date) || undefined,
+                    contract_date:Utils.timeToZone(this.payload.contract_date) || undefined,
+                    contract_to_date:Utils.timeToZone(this.payload.contract_to_date) || undefined,
+                    organization_id:this.payload.organization_id.length>0? this.payload.organization_id[0].id : undefined,
                     worker_position_id: this.payload.worker_position_id,
                     director_id:this.payload.director_id,
-                    department_id:this.payload.department_id.length>0? this.payload.department_id[0].id : null,
+                    department_id:this.payload.department_id.length>0? this.payload.department_id[0].id : undefined,
                 }
             }
+
+            Utils.checkRequestBody(data)
             $ApiService.adContractService._create({data}).then((res)=>{
                 this.visible = false
                 if(callBack === null){
@@ -153,12 +158,12 @@ export const useAdContractStore = defineStore('adContractStore', {
             this.payload.organization_id = []
             this.payload.department_id = []
             this.payload.department_position_id = null
-            this.payload.position_status = false
+            this.payload.position_status = true
             this.payload.salary = null
             this.payload.position_id = null
             this.payload.group = null
             this.payload.rank = null
-            this.payload.rate = null
+            this.payload.rate = 1
             // this.payload.post_name = null
             this.payload.schedule_id = null
 
@@ -166,6 +171,8 @@ export const useAdContractStore = defineStore('adContractStore', {
             this.payload.command_number = null
             this.payload.confirmations = []
             this.payload.position_date = null
+            this.payload.contract_to_date = new Date().getTime()
+
         }
 
     }

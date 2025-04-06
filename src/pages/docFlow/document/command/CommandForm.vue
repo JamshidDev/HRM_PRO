@@ -48,7 +48,7 @@ const renderLabel = (option)=>{
     h(
         'div',
         {
-          class:'flex gap-2 my-1 items-center'
+          class:'flex gap-2 my-1 items-center px-2'
         },[
           h(NAvatar,
               {
@@ -57,8 +57,8 @@ const renderLabel = (option)=>{
                 'fallback-src':Utils.noAvailableImage,
               },),
           h('div',{ class:'flex flex-col'}, [
-            h('div',{ class:'text-xs font-medium text-gray-500'},`${option.last_name}.${option.last_name[0]}.${option.middle_name[0]}`),
-            h('div',{ class:'text-xs text-primary'},option.position),
+            h('div',{ class:'text-xs font-medium text-gray-500 leading-[1.2]'},`${option.last_name}.${option.last_name[0]}.${option.middle_name[0]}`),
+            h('div',{ class:'text-xs text-primary leading-[1.2]'},option.position),
           ])
         ]
     ),
@@ -539,7 +539,8 @@ onMounted(()=>{
                   :placeholder="$t(`content.choose`)"
                   :options="confirmationList"
                   :loading="componentStore.confirmationLoading"
-                  :render-label="renderLabel" />
+                  :render-label="renderLabel"
+              />
             </n-form-item>
           </div>
         </div>
@@ -559,6 +560,6 @@ onMounted(()=>{
   </div>
 </template>
 
-<style scoped>
+<style>
 
 </style>

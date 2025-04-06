@@ -132,7 +132,11 @@ const onChangeStructure = (v)=>{
               :label="$t(`documentPage.form.rate`)"
               :path="(store.payload.position_status && (store.payload.type === 2))? 'rate_no':'rate'"
           >
-            <n-input
+            <n-input-number
+                :max="1"
+                :min="0.1"
+                :step="0.1"
+                :show-button="false"
                 class="w-full"
                 type="text"
                 :placeholder="$t(`content.enterField`)"

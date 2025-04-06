@@ -1,9 +1,10 @@
-import {Folder48Filled,LockClosed16Filled, Person32Filled,
-    DocumentPerson16Filled, PersonNote24Filled,Person12Filled,
+import {Folder48Filled,LockClosed16Filled, Person32Filled,DocumentPerson20Filled,
+    DocumentPerson16Filled, PersonNote24Filled,Person12Filled,DocumentAdd20Filled,
     TextBulletListSquare20Filled, ChannelShare20Filled, DocumentTextExtract24Filled,
     PeopleCheckmark24Filled, DocumentArrowDown20Filled, WeatherSunnyLow20Filled,
-    Grid20Filled, Document32Filled, PersonClock24Filled, GridKanban20Filled,BriefcaseMedical20Filled,
-    BookQuestionMark24Filled, Book20Filled, HatGraduation12Filled, ClipboardBulletListLtr20Filled} from "@vicons/fluent"
+    Grid20Filled, DocumentCopy24Filled, PersonClock24Filled, GridKanban20Filled,BriefcaseMedical20Filled,
+    BookQuestionMark24Filled, Book20Filled, HatGraduation12Filled,
+    ClipboardBulletListLtr20Filled, DocumentEdit20Filled} from "@vicons/fluent"
 import {AppPaths} from "@/utils/index.js";
 import Utils from "@/utils/Utils.js"
 const {appPermissions} = Utils
@@ -50,28 +51,28 @@ export const navigations = [
             {
                 label:'confirmation.name',
                 path:Utils.routeHrmPathMaker(AppPaths.Contract),
-                icon:Document32Filled,
+                icon:DocumentPerson20Filled,
                 color:'bg-success',
                 permission:appPermissions.hrConfirmations,
             },
             {
                 label:'documentPage.tabs.command',
                 path:Utils.routeHrmPathMaker(AppPaths.Command),
-                icon:Document32Filled,
+                icon:DocumentCopy24Filled,
                 color:'bg-secondary',
                 permission:appPermissions.hrCommands,
             },
             {
                 label:'documentPage.tabs.adContract',
                 path:Utils.routeHrmPathMaker(AppPaths.AdContract),
-                icon:Document32Filled,
+                icon:DocumentAdd20Filled,
                 color:'bg-warning',
                 permission:appPermissions.hrContracts,
             },
             {
                 label:'applicationPage.name',
                 path:Utils.routeHrmPathMaker(AppPaths.Application),
-                icon:DocumentArrowDown20Filled,
+                icon:DocumentEdit20Filled,
                 color:'bg-success',
                 permission:appPermissions.hrWorkerApplications,
             },
@@ -137,28 +138,28 @@ export const navigations = [
             {
                 label:'confirmation.name',
                 path:Utils.routeDocFlowPathMaker(AppPaths.ConfContract),
-                icon:DocumentTextExtract24Filled,
+                icon:DocumentPerson20Filled,
                 color:'bg-dark',
                 permission:appPermissions.confirmation,
             },
             {
                 label:'documentPage.tabs.command',
                 path:Utils.routeDocFlowPathMaker(AppPaths.ConfCommand),
-                icon:DocumentTextExtract24Filled,
+                icon:DocumentCopy24Filled,
                 color:'bg-primary',
                 permission:appPermissions.confirmationCommands,
             },
             {
                 label:'documentPage.tabs.adContract',
                 path:Utils.routeDocFlowPathMaker(AppPaths.ConfAdContract),
-                icon:DocumentTextExtract24Filled,
+                icon:DocumentAdd20Filled,
                 color:'bg-warning',
                 permission:appPermissions.confirmationContracts,
             },
             {
                 label:'applicationPage.name',
                 path:Utils.routeDocFlowPathMaker(AppPaths.ConfApplication),
-                icon:DocumentArrowDown20Filled,
+                icon:DocumentEdit20Filled,
                 color:'bg-info',
                 permission:appPermissions.confirmation,
             },

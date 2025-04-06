@@ -26,6 +26,7 @@ export * from "./admin/workdayStore.js"
 export * from "./admin/commandTempStore.js"
 export * from "./admin/specialityStore.js"
 export * from "./admin/holidayStore.js"
+export * from "./admin/quoteStore.js"
 
 export * from "./hrm/departmentStore.js"
 export * from "./hrm/departmentPositionStore.js"
