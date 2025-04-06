@@ -23,8 +23,9 @@ const onSelect = (v) => {
     store.visible = true
   } else if (v.key === 'attach_question') {
     store.elementId = v.data.id
-    store.attachQuestionVisible = true
-    store.attachQuestionVisibleType = true
+    store.attachCategoryVisible = true
+    store.attachCategoryVisibleType = true
+    store._get_attached_categories()
   }
 }
 
@@ -53,35 +54,39 @@ const updateStatus = (exam) => {
             </li>
             <li class="flex justify-between">
               <table>
-                <tr>
-                  <td>
-                    <ul class="list-disc">
-                      <li>
-                        <p>{{ $t('examPage.question_count') }}: <span class="font-bold">{{ item.tests_count }}</span>
-                        </p>
-                      </li>
-                      <li>
-                        <p>{{ $t('examPage.variant_count') }}: <span class="font-bold">{{ item.variant }}</span> </p>
-                      </li>
-                    </ul>
-                  </td>
-                </tr>
+                <tbody>
+                  <tr>
+                    <td>
+                      <ul class="list-disc">
+                        <li>
+                          <p>{{ $t('examPage.question_count') }}: <span class="font-bold">{{ item.tests_count }}</span>
+                          </p>
+                        </li>
+                        <li>
+                          <p>{{ $t('examPage.variant_count') }}: <span class="font-bold">{{ item.variant }}</span> </p>
+                        </li>
+                      </ul>
+                    </td>
+                  </tr>
+                </tbody>
               </table>
 
               <table>
-                <tr>
-                  <td>
-                    <ul class="list-disc">
+                <tbody>
+                  <tr>
+                    <td>
+                      <ul class="list-disc">
 
-                      <li>
-                        <p>{{ $t('examPage.exam_duration') }}: <span class="font-bold">{{ item.minute }}</span></p>
-                      </li>
-                      <li>
-                        <p>{{ $t('examPage.toWhom') }}: <span class="font-bold">{{ item.whom.name }}</span></p>
-                      </li>
-                    </ul>
-                  </td>
-                </tr>
+                        <li>
+                          <p>{{ $t('examPage.exam_duration') }}: <span class="font-bold">{{ item.minute }}</span></p>
+                        </li>
+                        <li>
+                          <p>{{ $t('examPage.toWhom') }}: <span class="font-bold">{{ item.whom?.name }}</span></p>
+                        </li>
+                      </ul>
+                    </td>
+                  </tr>
+                </tbody>
               </table>
             </li>
           </ul>

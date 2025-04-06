@@ -40,30 +40,34 @@ onMounted(() => {
   <n-spin :show="store.loading" class="h-full rounded-md p-1">
     <div class="h-full flex flex-col">
       <div v-if="store.list.length>0" class="overflow-y-auto grow basis-auto">
-        <div class="grid grid-cols-[repeat(auto-fill,minmax(250px,1fr))] gap-5">
+        <div class="grid grid-cols-[repeat(auto-fill,minmax(250px,1fr))] gap-2">
           <template v-for="(lesson, idx) in store.list" :key="idx">
             <div
-                class="rounded-md transition-all cursor-pointer lesson-card p-2 h-[90px] flex flex-col"
+                class="rounded-md transition-all cursor-pointer lesson-card h-[90px] flex flex-col"
                 :class="{'active-lesson': store?.elementId===lesson.id}"
                 @click="store.selectedLesson = lesson"
             >
-              <div class="flex items-center gap-3 justify-between">
-                <p class="text-xl font-semibold">
+              <div class="p-2">
+                <p class="text-sm font-semibold">
                   {{ lesson.name }}
                 </p>
+              </div>
+              <n-divider class="!my-0" />
+              <div class="flex justify-between grow items-end p-2">
+                <div class="flex gap-2  items-end ">
+                  <template v-for="(item, idx) in [{id: 0, items: lesson.exams},...lesson.files]">
+                    <n-button dashed size="tiny">
+                      <template #icon>
+                        <n-icon :component="TopicUtils.getMediaProperty(item.id).icon" :color="TopicUtils.getMediaProperty(item.id).color"/>
+                      </template>
+                      {{item.items.length}}
+                    </n-button>
+                  </template>
+
+                </div>
                 <n-button :type="randomColors[1]" dashed size="tiny">
                   {{ lesson.type.name }}
                 </n-button>
-              </div>
-              <div class="flex gap-2  items-end grow">
-                <template v-for="(item, idx) in [{id: 0, items: lesson.exams},...lesson.files]">
-                  <n-button dashed size="tiny">
-                    <template #icon>
-                      <n-icon :component="TopicUtils.getMediaProperty(item.id).icon" :color="TopicUtils.getMediaProperty(item.id).color"/>
-                    </template>
-                    {{item.items.length}}
-                  </n-button>
-                </template>
               </div>
             </div>
           </template>

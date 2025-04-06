@@ -1,14 +1,23 @@
 <script setup>
 import {UIUser, UIPagination, UIMenuButton} from "@/components/index.js";
-import {useTopicExamResultStore} from "@/store/modules/index.js";
+import {useExamAttemptStore, useTopicExamResultStore} from "@/store/modules/index.js";
 import Utils from "@/utils/Utils.js";
 
 const store = useTopicExamResultStore()
+const attemptStore = useExamAttemptStore()
 
 const changePage = (v)=>{
   store.params.page = v.page
   store.params.per_page = v.per_page
   store._index()
+}
+
+const onSelectEv = (v)=>{
+  if(v.key===Utils.ActionTypes.view){
+    attemptStore.visible=true
+    attemptStore.elementId = v.data.id
+    attemptStore._get_attempt()
+  }
 }
 
 </script>
@@ -84,6 +93,9 @@ const changePage = (v)=>{
           <td>
             <UIMenuButton
               :show-delete="false"
+              show-view
+              :data="result"
+              @select-ev="onSelectEv"
             />
           </td>
         </tr>

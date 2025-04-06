@@ -27,11 +27,10 @@ export default defineConfig({
           ],
         },
       ],
-      dts: false,
+      dts: "auto-imports.d.ts",
     }),
   ],
   server:{
     port:8000
   },
-
 })

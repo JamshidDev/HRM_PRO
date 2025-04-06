@@ -58,7 +58,7 @@ const onClickAction = (v)=>{
       <div v-if="store.loading" class="flex justify-center">
         <n-spin size="medium"/>
       </div>
-      <NoDataPicture v-if="store.list.length===0 && !store.loading" />
+      <NoDataPicture class="!mt-0" v-if="store.list.length===0 && !store.loading" />
     </div>
   </n-infinite-scroll>
 </template>

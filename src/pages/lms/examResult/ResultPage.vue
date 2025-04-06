@@ -1,14 +1,12 @@
 <script setup>
-import {useTopicExamResultStore} from "@/store/modules/index.js";
+import {useExamAttemptStore, useTopicExamResultStore} from "@/store/modules/index.js";
 
-
-
-
-import {UIPageContent, UIPageFilter} from "@/components/index.js";
+import {UIModal, UIPageContent, UIPageFilter} from "@/components/index.js";
 import Table from './ui/Table.vue'
+import ViewAttemptModal from "../workerTopic/solveExam/ViewAttemptModal.vue";
 
-const search = ref()
 const store = useTopicExamResultStore()
+const examStore = useExamAttemptStore()
 
 onMounted(()=>{
   store.params = {
@@ -24,6 +22,8 @@ const onSearch = (v)=>{
   store._index()
 }
 
+
+
 </script>
 <template>
 <UIPageContent>
@@ -33,5 +33,8 @@ const onSearch = (v)=>{
       v-model:search="store.params.search"
   />
   <Table />
+  <UIModal v-model:visible="examStore.visible" :width="1000" :title="$t('examPage.attemptErrors')">
+    <ViewAttemptModal />
+  </UIModal>
 </UIPageContent>
 </template>
