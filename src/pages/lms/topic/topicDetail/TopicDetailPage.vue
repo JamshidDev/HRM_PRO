@@ -78,9 +78,10 @@ const lesson = computed(()=>{
       </template>
     </UIDrawer>
     <UIDrawer
+        :width="700"
         :title="$t('topicDetailsPage.exams.attachQuestion')"
-        :visible="examStore.attachQuestionVisible"
-        @update:visible="(v)=>examStore.attachQuestionVisible = v"
+        :visible="examStore.attachCategoryVisible"
+        @update:visible="(v)=>examStore.attachCategoryVisible = v"
     >
       <template #content>
         <AttachQuestionForm/>

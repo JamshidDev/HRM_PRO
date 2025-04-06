@@ -56,7 +56,7 @@ const onAddExam = ()=>{
               </n-icon-wrapper>
               <p class="font-medium">{{ item.name }}</p>
               <n-button size="tiny" circle  tertiary>
-                <span class="font-bold">{{  item.items.length }}</span>
+                <span class="font-bold">{{  item.items?.length }}</span>
               </n-button>
             </div>
           </div>

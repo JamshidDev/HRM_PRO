@@ -11,14 +11,19 @@ export const useTopicExamStore = defineStore('topicExamStore', {
         deleteLoading:false,
         showLoading:false,
         visible:false,
-        attachQuestionVisible: false,
-        attachQuestionVisibleType: true,
+        attachCategoryVisible: false,
+        attachCategoryVisibleType: true,
+        categoryLoading: false,
         visibleType:true,
         elementId:null,
         topicId: null,
         totalItems:0,
         allPermissionList:[],
         structureCheck:[],
+        categoryPayload: {
+            category_ids: [],
+            categories: []
+        },
         questionPayload: {
             question_ids: [],
             questions: []
@@ -103,23 +108,35 @@ export const useTopicExamStore = defineStore('topicExamStore', {
                 this.showLoading = false
             })
         },
-        _attach_question(){
+        _attach_category(){
             this.saveLoading = true
-            $ApiService.topicExamService._attach_question({
+            $ApiService.topicExamService._attach_category({
                     data: {
-                        questions: this.questionPayload.questions.map(i=>({
-                            count: i.count,
-                            exam_category_id: i.exam.id
-                        }))
+                        questions: [...this.categoryPayload.categories]
                     },
                     id: this.topicId,
                     exam_id: this.elementId
                 }
             ).then((res)=>{
-                this.attachQuestionVisible = false
+                this.attachCategoryVisible = false
             }).finally(()=>{
                 this.saveLoading = false
-                this.resetQuestionPayload()
+                this.resetCategoryPayload()
+            })
+        },
+        _get_attached_categories(){
+            this.categoryLoading = true
+            $ApiService.topicExamService._get_attached_category({
+                id: this.topicId,
+                exam_id: this.elementId
+            }).then((res)=>{
+                this.categoryPayload.category_ids = res.data.data.map(i=>i.category.id)
+                this.categoryPayload.categories = res.data.data.map(i=>({
+                    count: i.count,
+                    exam_category_id: i.category.id
+                }))
+            }).finally(()=>{
+                this.categoryLoading = false
             })
         },
         openVisible(data){
@@ -136,9 +153,9 @@ export const useTopicExamStore = defineStore('topicExamStore', {
             this.payload.chances = 3
             this.payload.tests_count = 36
         },
-        resetQuestionPayload(){
-            this.questionPayload.questions = []
-            this.questionPayload.question_ids = []
+        resetCategoryPayload(){
+            this.categoryPayload.category_ids = []
+            this.categoryPayload.categories = []
         }
-    }
+    },
 })
