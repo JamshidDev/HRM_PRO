@@ -1,6 +1,6 @@
 <script setup>
 import {UIStructure,} from "@/components/index.js"
-import UIHelper from "@/utils/UiHelper.js"
+import UIHelper from "@/utils/UIHelper.js"
 import validationRules from "@/utils/validationRules.js";
 const formRef = ref(null)
 import {useAdContractStore, useComponentStore} from "@/store/modules/index.js";
