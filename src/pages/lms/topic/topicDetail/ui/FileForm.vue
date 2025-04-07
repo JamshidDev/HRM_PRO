@@ -40,7 +40,7 @@ const onSubmit = () => {
         <n-switch v-model:value="store.payload.active"/>
       </div>
     </n-form-item>
-    <n-form-item path="fileObjects" rule-path="filesField">
+    <n-form-item path="fileObjects" rule-path="filesField" :show-label="false">
       <UIUpload  v-model:files="store.payload.fileObjects" :multiple="false" @on-delete="store.payload.fileObjects=[]">
         <template v-slot:content="{files, onDelete}">
           <div class="mt-3">

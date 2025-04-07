@@ -44,77 +44,83 @@ const updateStatus = (exam) => {
     <div
         class="w-full grow basis-auto overflow-auto"
     >
-      <div class="bg-surface-section p-3 grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-3">
-        <div v-for="(item, idx) in store.list" :key="idx" class="rounded-md p-3 shadow-sm">
-
-          <ul class="list-disc pl-5">
-
-            <li>
+      <n-grid cols="1 400:2" class="p-1" x-gap="20" y-gap="20">
+        <template  v-for="(item, idx) in store.list" :key="idx">
+          <n-gi span="1">
+            <div class="rounded-xl p-3" style="box-shadow: rgba(50, 50, 93, 0.25) 0 0 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;">
               <p>{{ $t('content.name') }}: <span class="font-bold">{{ item.name }}</span></p>
-            </li>
-            <li class="flex justify-between">
-              <table>
-                <tbody>
-                  <tr>
-                    <td>
-                      <ul class="list-disc">
-                        <li>
-                          <p>{{ $t('examPage.question_count') }}: <span class="font-bold">{{ item.tests_count }}</span>
-                          </p>
-                        </li>
-                        <li>
-                          <p>{{ $t('examPage.variant_count') }}: <span class="font-bold">{{ item.variant }}</span> </p>
-                        </li>
-                      </ul>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+              <n-divider class="!my-1" />
+              <ul class="list-disc pl-5">
+                <li class="flex justify-between">
+                  <table>
+                    <tbody>
+                    <tr>
+                      <td>
+                        <ul class="list-disc">
+                          <li>
+                            <p>{{ $t('examPage.question_count') }}: <span class="font-bold">{{ item.tests_count }}</span>
+                            </p>
+                          </li>
+                          <li>
+                            <p>{{ $t('examPage.variant_count') }}: <span class="font-bold">{{ item.variant }}</span> </p>
+                          </li>
+                        </ul>
+                      </td>
+                    </tr>
+                    </tbody>
+                  </table>
 
-              <table>
-                <tbody>
-                  <tr>
-                    <td>
-                      <ul class="list-disc">
+                  <table>
+                    <tbody>
+                    <tr>
+                      <td>
+                        <ul class="list-disc">
 
-                        <li>
-                          <p>{{ $t('examPage.exam_duration') }}: <span class="font-bold">{{ item.minute }}</span></p>
-                        </li>
-                        <li>
-                          <p>{{ $t('examPage.toWhom') }}: <span class="font-bold">{{ item.whom?.name }}</span></p>
-                        </li>
-                      </ul>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </li>
-          </ul>
-          <n-tag round size="small" type="warning">
-            {{ $t('examPage.deadline', {n: Utils.timeWithMonth(item.deadline)}) }}
-          </n-tag>
-          <div class="flex justify-between items-center mt-2">
-            <n-switch :loading="store.loading && store.elementId === item.id" :value="!!item.active"
-                      size="small" @click="updateStatus(item)"/>
-            <UIMenuButton
-                :data="item"
-                :extra-options="[
-                      {
-                        label: $t('topicDetailsPage.questions.name'),
-                        key: 'attach_question',
-                        icon: BookQuestionMark20Filled,
-                        visible:true,
-                      },
-                  ]"
-                :show-delete="true"
-                :show-edit="true"
-                size="tiny"
-                @select-ev="onSelect"
-            />
-          </div>
+                          <li>
+                            <p>{{ $t('examPage.exam_duration') }}: <span class="font-bold">{{ item.minute }}</span></p>
+                          </li>
+                          <li>
+                            <p>{{ $t('examPage.toWhom') }}: <span class="font-bold">{{ item.whom?.name }}</span></p>
+                          </li>
+                        </ul>
+                      </td>
+                    </tr>
+                    </tbody>
+                  </table>
+                </li>
+                <li>
+                  <p>
+                    {{$t('topicDetailsPage.exams.chances')}}: <span class="font-bold">{{item.chances}}</span>
+                  </p>
+                </li>
+              </ul>
+              <n-tag round size="small" type="warning">
+                {{ $t('examPage.deadline', {n: Utils.timeWithMonth(item.deadline)}) }}
+              </n-tag>
+              <div class="flex justify-between items-center mt-2">
+                <n-switch :loading="store.loading && store.elementId === item.id" :value="!!item.active"
+                          size="small" @click="updateStatus(item)"/>
+                <UIMenuButton
+                    :data="item"
+                    :extra-options="[
+                        {
+                          label: $t('topicDetailsPage.questions.name'),
+                          key: 'attach_question',
+                          icon: BookQuestionMark20Filled,
+                          visible:true,
+                        },
+                    ]"
+                    :show-delete="true"
+                    :show-edit="true"
+                    size="tiny"
+                    @select-ev="onSelect"
+                />
+              </div>
 
-        </div>
-      </div>
+            </div>
+          </n-gi>
+        </template>
+      </n-grid>
     </div>
     <div class="shrink-0">
       <UIPagination

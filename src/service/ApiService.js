@@ -62,9 +62,9 @@ import categoryService from "@/service/v1/lms/categoryService.js"
 import categoryQuestionService from "@/service/v1/lms/categoryQuestionService.js"
 import topicExamService from "@/service/v1/lms/topicExamService.js";
 import topicExamResultService from "@/service/v1/lms/topicExamResultService.js";
+import examDashboardService from '@/service/v1/lms/examDashboardService.js'
 import workerExamService from '@/service/v1/lms/workerExamService.js'
 import timesheetConfirmService from "@/service/v1/hrm/timesheetConfirmService.js";
-
 
 export default {
     authService,
@@ -104,6 +104,7 @@ export default {
     topicService,
     topicExamService,
     topicExamResultService,
+    examDashboardService,
     topicFilesService,
     workerExamService,
     categoryService,

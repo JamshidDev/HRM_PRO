@@ -3,13 +3,15 @@ import AudioPlayer from "./AudioPlayer.vue";
 import VideoPlayer from "./VideoPlayer.vue";
 import DocumentViewer from "./DocumentViewer.vue";
 import ImageViewer from "./ImageViewer.vue";
+import DjvuViewer from "./DjvuViewer.vue";
 
 const mediaUrl = ref("");
 const isVisible = ref(false);
 const extension = ref('')
 const FileExtensions = {
   IMAGE: ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg'],
-  PDF: ['pdf', 'djvu'],
+  PDF: ['pdf'],
+  DJVU: ['djvu'],
   DOCUMENT: ['doc', 'docx'],
   SPREADSHEET: ['xls', 'xlsx'],
   PRESENTATION: ['ppt', 'pptx'],
@@ -59,6 +61,7 @@ window.$MediaViewer = mediaViewer;
           @close="mediaViewer.hideMediaViewer()"
       />
       <DocumentViewer v-if="FileExtensions.PDF.includes(extension)" :src="mediaUrl"  @close="mediaViewer.hideMediaViewer()"/>
+      <DjvuViewer v-if="FileExtensions.DJVU.includes(extension)" :src="mediaUrl"  @close="mediaViewer.hideMediaViewer()"/>
     </template>
   </div>
 </template>

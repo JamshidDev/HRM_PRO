@@ -44,7 +44,6 @@ const lesson = computed(()=>{
         </n-button>
       </div>
       <div class="flex-grow basis-auto overflow-hidden">
-
         <Tabs />
       </div>
     </div>
