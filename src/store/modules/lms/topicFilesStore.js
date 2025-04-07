@@ -12,6 +12,7 @@ export const useTopicFileStore = defineStore('topicFileStore', {
         elementId:null,
         topicId: null,
         totalItems:0,
+        accept: '',
         allPermissionList:[],
         structureCheck:[],
         payload:{

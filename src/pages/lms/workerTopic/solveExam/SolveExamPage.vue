@@ -193,7 +193,7 @@ onUnmounted(()=>{
             <a v-for="(question, idx) in store.questions"
                :key="idx"
                :href="`#question-${idx+1}`"
-               class="text-lg flex justify-center items-center bg-surface-section border border-secondary drop-shadow-lg rounded-lg"
+               class="text-lg flex justify-center items-center bg-surface-section border border-surface-line drop-shadow-lg rounded-lg"
                :class="{'!bg-primary text-white': !!question.result}"
             >
               {{ idx + 1 }}

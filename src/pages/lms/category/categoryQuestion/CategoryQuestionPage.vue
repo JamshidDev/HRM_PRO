@@ -31,6 +31,10 @@ const onAdd=()=>{
   })
 }
 
+const goBack = ()=>{
+  router.push(`${AppPaths.Lms}${AppPaths.Category}`)
+}
+
 </script>
 <template>
   <UIPageContent>
@@ -41,6 +45,11 @@ const onAdd=()=>{
         @on-add="onAdd"
         :show-search-input="false"
     >
+      <template #filterAction>
+        <n-button type="error" @click="goBack">
+          {{$t('content.goToList')}}
+        </n-button>
+      </template>
       <template #filterSearch>
         <div class="flex flex-col">
           <p class="font-semibold inline-block text-surface-600">{{$t('questionPage.title')}}</p>

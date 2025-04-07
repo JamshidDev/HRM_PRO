@@ -41,6 +41,7 @@ const onSubmit = () => {
 
 
 onMounted(()=>{
+  store.resetForm()
   store.category_id = route.params.category_id
   if(route.params.question_id){
     store.elementId = route.params.question_id

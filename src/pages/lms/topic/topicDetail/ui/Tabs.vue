@@ -11,6 +11,7 @@ const examStore = useTopicExamStore()
 const examTabNumber = 0
 const activeTab = ref(examTabNumber)
 const onAdd = ()=>{
+  fileStore.accept = TopicUtils.getMediaProperty(activeTab.value).accept
   fileStore.resetForm()
   fileStore.visibleType = true
   fileStore.visible = true
@@ -27,11 +28,11 @@ const onAddExam = ()=>{
 <template>
   <div class="h-full py-3 px-8 flex flex-col">
     <div class="flex-shrink-0">
-      <p class="text-[16px]">Materiallar</p>
+      <p class="text-[16px]">{{$t('examPage.materials')}}</p>
       <div class="grid grid-cols-[repeat(auto-fill,minmax(150px,1fr))] gap-2 my-4">
         <div
             @click="activeTab=examTabNumber"
-            class="w-full p-4 py-3 bg-blue-50 rounded-md transition-all hover:bg-blue-100 cursor-pointer flex flex-col gap-2"
+            class="w-full p-4 py-3 bg-blue-50 rounded-xl transition-all hover:bg-blue-100 cursor-pointer flex flex-col gap-2"
           :class="{'!bg-blue-100': activeTab===examTabNumber}"
         >
           <div class="flex items-center gap-1">
@@ -47,7 +48,7 @@ const onAddExam = ()=>{
         <template v-for="(item, idx) in  fileStore.list">
           <div
               @click="activeTab=item.id"
-              class="w-full p-4 py-3 bg-blue-50 rounded-md transition-all hover:bg-blue-100 cursor-pointer flex flex-col gap-2"
+              class="w-full p-4 py-3 bg-blue-50 rounded-xl transition-all hover:bg-blue-100 cursor-pointer flex flex-col gap-2"
               :class="{'!bg-blue-100': activeTab===item.id}"
           >
             <div class="flex items-center gap-1">
@@ -67,10 +68,10 @@ const onAddExam = ()=>{
       <n-tab-pane class="h-full !pt-0" :name="examTabNumber">
         <div class="flex flex-col h-full">
           <div class="flex shrink-0 justify-between  mb-2">
-            <p class="text-[16px]">Imtihonlar</p>
-            <n-button  type="tertiary" quaternary  @click="onAddExam">
+            <p class="text-[16px] font-bold">{{$t('topicDetailsPage.exams.name')}}</p>
+            <n-button size="small"  secondary  @click="onAddExam">
               <template #icon>
-                <n-icon size="24" :component="Add12Regular" />
+                <n-icon size="18" :component="Add12Regular" />
               </template>
             </n-button>
           </div>

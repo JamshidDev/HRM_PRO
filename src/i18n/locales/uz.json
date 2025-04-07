@@ -93,7 +93,8 @@
     "finish": "Yakunlash",
     "created": "Yaratilgan sana",
     "move": "Siljitish",
-    "listen": "Tinglash"
+    "listen": "Tinglash",
+    "goToList": "Ro'yxatga qaytish"
   },
   "date": {
     "day": "Kun",
@@ -1008,7 +1009,11 @@
     "finished": "Imtihon yakunlandi",
     "inProgress": "Imtihon jarayonda",
     "attemptErrors": "Urunishdagi xatoliklar",
-    "device": "Qurilma"
+    "device": "Qurilma",
+    "dashboard": {
+      "title": "Statistika"
+    },
+    "materials": "Materiallar"
   },
   "solveExamPage": {
     "alreadyStarted": "Siz bu imtihonni oldin boshlagansiz. Davom etishni xohlaysizmi?",

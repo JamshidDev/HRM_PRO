@@ -41,7 +41,6 @@ export const useCategoryQuestionStore = defineStore('categoryQuestionStore', {
                 ...this.payload
             }
             $ApiService.categoryQuestionService._create({data, category_id: this.category_id}).then((res)=>{
-                
                 this.resetForm()
             }).finally(()=>{
                 this.saveLoading = false
