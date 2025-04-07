@@ -108,7 +108,7 @@ watch(()=> store.dashboard.ageCard, (newValue, oldValue)=>{
       </div>
 
       <div class="w-[250px] h-[250px] relative z-[2]">
-        <v-chart :option="ageOption" />
+        <v-chart autoresize :option="ageOption" />
       </div>
     </div>
   </div>

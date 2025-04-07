@@ -3,11 +3,10 @@ import {navigations} from "../../data/navigations.js"
 import {ChevronDown12Regular, ChevronDoubleLeft16Filled} from "@vicons/fluent"
 import {useAccountStore} from "@/store/modules/index.js"
 import i18n from "@/i18n/index.js"
-import Utils from "@/utils/Utils.js"
-import {AppPaths, useAppSetting} from "@/utils/index.js"
+import {useAppSetting} from "@/utils/index.js"
 const {t} = i18n.global
-const router = useRouter()
 const route = useRoute()
+const router = useRouter()
 
 const store = useAccountStore()
 const emits = defineEmits(['onChange', 'onOpen'])
@@ -86,22 +85,10 @@ const isCurrentPath = (path)=>{
 
 const pushFirstMenu = (path)=>{
   let index = navigations.findIndex((v=>v.path === path))
-  // router.push(navigations[index].children.filter((v)=>store.checkPermission(v.permission))?.[0]?.path)
-  router.push(navigations[index].children[0]?.path)
+  router.push(navigations[index].children.filter((v)=>store.checkPermission(v.permission))?.[0]?.path)
+  // router.push(navigations[index].children[0]?.path)
 }
 
-const accountFullName = computed(()=>{
-  return store.account? `${store.account?.worker?.last_name} ${store.account?.worker?.first_name}`
-      : t('content.checking')
-})
-
-const accountRole = computed(()=>{
-  return store.account? store.account.role?.name : t('content.checking')
-})
-
-const accountPhoto = computed(()=>{
-  return store.account? store.account?.worker?.photo : Utils.noAvailableImage
-})
 
 
 

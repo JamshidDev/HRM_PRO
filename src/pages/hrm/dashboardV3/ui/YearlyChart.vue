@@ -80,6 +80,7 @@ watch(()=> store.dashboard.contracts, (newValue, oldValue)=>{
   }))
 
 })
+
 </script>
 
 <template>
@@ -87,7 +88,7 @@ watch(()=> store.dashboard.contracts, (newValue, oldValue)=>{
     <span class="z-[1] opacity-40 absolute top-0 right-0 w-[160px] h-full bg-no-repeat bg-[url(/public/effect/effect-card-2.svg)]" ></span>
     <p class="font-semibold text-lg">{{$t('dashboardPage.yearly.title')}}</p>
     <div class="w-full h-[300px] relative z-[2]">
-      <v-chart class="w-full" :option="option" />
+      <v-chart autoresize class="w-full" :option="option" ref="chartRef" />
     </div>
   </div>
 </template>

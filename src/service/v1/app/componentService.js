@@ -32,6 +32,10 @@ const _structure =async (payload)=>{
     return await axios.get(`/v1/structure`, {params:payload?.params})
 }
 
+const _allStructure =async (payload)=>{
+    return await axios.get(`/v1/structure/all`, {params:payload?.params})
+}
+
 const _commandTypes =async (payload)=>{
     return await axios.get(`/v1/hr/enums/command-types`, {params:payload?.params})
 }
@@ -64,4 +68,5 @@ export default {
     _directors,
     _workerApplicationEnum,
     _departmentByOrganizations,
+    _allStructure,
 }

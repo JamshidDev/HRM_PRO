@@ -23,8 +23,10 @@ export const useLoginStore = defineStore("loginStore", {
             }
             $ApiService.authService._login({data}).then((res)=>{
                 localStorage.setItem(useAppSetting.tokenKey,res.data.access_token)
-                accountStore._index()
-                router.push(AppPaths.Admin)
+                accountStore._index(()=>{
+                    router.push(AppPaths.Home)
+                })
+
             }).finally(()=>{
                 this.loading = false
             })

@@ -6,6 +6,7 @@ export const useAccountStore = defineStore('accountStore', {
     state:()=>({
         account:null,
         saveLoading:false,
+        loading:false,
         activeTab:1,
         tabs:[1,2,3,4],
         payload:{
@@ -31,12 +32,15 @@ export const useAccountStore = defineStore('accountStore', {
        }
     },
     actions:{
-        _index(){
+        _index(callback){
             $ApiService.accountService._index({data:this.payload}).then((res)=>{
                 this.payload = {...res.data.data, password:null}
                 this.account = {...res.data.data}
                 this.permissions = res.data.data.role.permissions.map(v=>v.name)
                 sessionStorage.setItem(useAppSetting.appPermission, JSON.stringify(this.permissions))
+                callback?.()
+            }).finally(()=>{
+                this.loading = false
             })
         },
         _update(){

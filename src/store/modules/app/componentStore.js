@@ -2,7 +2,6 @@ import {defineStore} from "pinia";
 import i18n from "@/i18n/index.js"
 const {t} = i18n.global
 import Utils from "@/utils/Utils.js"
-import {useDebounceFn} from "@vueuse/core"
 import {useAppSetting} from "@/utils/index.js"
 
 
@@ -183,6 +182,14 @@ export const useComponentStore = defineStore('componentStore', {
         },
         resumeLoading:false,
         resumeId:null,
+
+        allStructureList:[],
+        allStructureLoading:false,
+        allStructureParams:{
+            page:1,
+            per_page:1000,
+            search:null,
+        },
 
 
 
@@ -378,6 +385,15 @@ export const useComponentStore = defineStore('componentStore', {
                 this.structureLoading= false
             })
         },
+
+        _allStructures(){
+            this.allStructureLoading= true
+            $ApiService.componentService._allStructure({params:this.allStructureParams}).then((res)=>{
+                this.allStructureList = res.data.data
+            }).finally(()=>{
+                this.allStructureLoading= false
+            })
+        },
         _departmentPosition(id = undefined){
             const params = {
                 page:1,
@@ -566,7 +582,11 @@ export const useComponentStore = defineStore('componentStore', {
                 }
             })
                 .then((res)=>{
-                    this.directorList = res.data.data
+                    this.directorList = res.data.data.map((v)=>({
+                        ...v,
+                        fullName:Utils.combineFullName(v.worker)
+
+                    }))
                 }).finally(()=>{
                 this.directorLoading = false
             })

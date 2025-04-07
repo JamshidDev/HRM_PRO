@@ -34,7 +34,7 @@ export const useDashboardStore = defineStore('dashboardStore', {
             this.loading= true
             $ApiService.dashboardService._index({params:this.params}).then((res)=>{
                 const formatMonth = (date)=>{
-                    let day = Number(date.split('-')[1])
+                    let day = date.split('-')[1]
                     let month = Utils.getMonthNameByKey(date.split('-')[0])
                     return `${day} - ${month}`
                 }
