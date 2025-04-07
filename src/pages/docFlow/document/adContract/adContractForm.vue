@@ -464,7 +464,7 @@ const showForm = computed(()=>store.payload.type===null? true : [1,8].includes(s
 
 
 
-        <div class="col-span-12 mt-4">
+        <div class="col-span-12">
           <n-form-item :label="$t(`documentPage.form.director`)" path="director_id">
             <n-select
                 @focus="onFocusConf"
@@ -481,7 +481,7 @@ const showForm = computed(()=>store.payload.type===null? true : [1,8].includes(s
           </n-form-item>
         </div>
         <div class="col-span-12 pt-4 flex justify-center gap-2 items-center relative">
-          <n-divider dashed title-placement="left" class="w-full">
+          <n-divider dashed title-placement="left" class="w-full !mt-1">
             <div class="flex items-center gap-3">
               <n-switch v-model:value="store.payload.command_status" />
               <span class="text-primary font-medium">{{$t(`documentPage.form.command_status`)}}</span>

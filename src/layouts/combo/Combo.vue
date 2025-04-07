@@ -6,7 +6,7 @@ import {useAccountStore} from "@/store/modules/index.js"
 const store = useAccountStore()
 
 
-const open = ref(true)
+const open = ref(false)
 
 const layoutClass = computed(()=>({
   open_panel:open.value,
@@ -30,7 +30,7 @@ const openSidebar = ()=>{
 
 
 
-onMounted(()=>{
+onBeforeMount(()=>{
   open.value = JSON.parse(localStorage.getItem('appSidebar'))
 })
 </script>

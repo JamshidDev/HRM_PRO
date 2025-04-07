@@ -7,6 +7,8 @@ export default {
                 this.$nextTick(() => {
                     if (this.$el && this.$el?.querySelectorAll) {
                         const formatInput = (value) => {
+                            value = value.replace(/[а-яёқўғҳА-ЯЁҚЎҒҲ]/g, '')
+
                             return value.split('').map((char, index, array) => {
                                 if (char === "'" && (array[index - 1].toString().toLowerCase() === 'o' || array[index - 1].toString().toLowerCase() === 'g')) {
                                     return "’";

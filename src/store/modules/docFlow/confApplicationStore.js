@@ -111,6 +111,9 @@ export const useConfApplicationStore = defineStore('confApplicationStore', {
         ],
         activeTab:101,
 
+        statisticData:[],
+        statisticLoading:false,
+
     }),
     actions:{
         _index(){
@@ -120,6 +123,14 @@ export const useConfApplicationStore = defineStore('confApplicationStore', {
                 this.totalItems = res.data.data.total
             }).finally(()=>{
                 this.loading= false
+            })
+        },
+        _statistic(){
+            this.statisticLoading= true
+            $ApiService.applicationService._statistic().then((res)=>{
+                this.statisticData = res.data
+            }).finally(()=>{
+                this.statisticLoading= false
             })
         },
         _create(){
@@ -162,7 +173,12 @@ export const useConfApplicationStore = defineStore('confApplicationStore', {
             this.confirmLoading = true
             const params = this.confirmParams
             $ApiService.applicationService._confirmation({params}).then((res)=>{
-                this.confirmationList = res.data.data.data
+                this.confirmationList = res.data.data.data.map((v)=>({
+                    ...v,
+                    fullName:Utils.combineFullName(v.worker),
+                    position:v?.post_short_name,
+
+                }))
             }).finally(()=>{
                 this.confirmLoading= false
             })

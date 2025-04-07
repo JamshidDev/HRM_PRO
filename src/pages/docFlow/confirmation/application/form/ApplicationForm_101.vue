@@ -1,7 +1,8 @@
 <script setup>
 import {useComponentStore, useConfApplicationStore} from "@/store/modules/index.js"
 import {NAvatar} from "naive-ui"
-import {UIStructure} from "@/components/index.js"
+import {UIStructureV2} from "@/components/index.js"
+import UIHelper from "@/utils/UIHelper.js"
 
 const store = useConfApplicationStore()
 const componentStore = useComponentStore()
@@ -11,7 +12,7 @@ const isPosition = computed(()=>!([1,2].includes(store.payload.type)))
 
 const onFocusDirector = ()=>{
   if(componentStore.directorList.length === 0){
-    componentStore._directors(store.organization_id?.[0] || undefined)
+    componentStore._directors(store.organization_id?.[0].id || undefined)
   }
 
 }
@@ -22,35 +23,6 @@ const onFocusPosition = ()=>{
     store.payload.worker_position_id = store.myPositionList[0].id
   }
 
-}
-const renderLabel = (option)=>{
-  return [
-    h(
-        'div',
-        {
-          class:'flex gap-2 my-1 items-center'
-        },[
-          h(NAvatar,
-              {
-                class:'',
-                src:option.worker.photo,
-              },),
-          h('div',{ class:'flex flex-col'}, [
-            h('div',{ class:'text-xs font-medium text-gray-500'},`${option.worker.last_name}.${option.worker.first_name[0]}.${option.worker.middle_name[0]}`),
-            h('div',{ class:'text-xs text-gray-400'},option.position),
-          ])
-        ]
-    ),
-  ];
-}
-const renderValue = ({option})=>{
-  return [
-    h(
-        'div',
-        {
-          class:'flex gap-2 my-1 items-center'
-        },`${option?.worker?.last_name} ${option?.worker?.first_name} ${option?.worker?.middle_name}`),
-  ];
 }
 
 const renderLabel2 = (option)=>{
@@ -111,6 +83,8 @@ const onChangeStructure = (v)=>{
   if(v.length>0){
     componentStore.directorList = []
     store.payload.director_id = null
+    console.log(v[0].id)
+
     componentStore._directors(v[0].id)
   }
 }
@@ -177,7 +151,7 @@ onMounted(()=>{
     </div>
     <div class="col-span-12 pr-3" v-if="showOrganization">
       <n-form-item :label="$t(`documentPage.form.organization`)" path="organization_id">
-        <UIStructure
+        <UIStructureV2
             :modelV="store.organization_id"
             @updateModel="onChangeStructure"
             :checkedVal="store.structureCheck"
@@ -196,8 +170,8 @@ onMounted(()=>{
             :options="componentStore.directorList"
             :loading="componentStore.directorLoading"
             @update:value="onSelectDirector"
-            :render-label="renderLabel"
-            :render-tag="renderValue"
+            :render-label="UIHelper.selectRender.label"
+            :render-tag="UIHelper.selectRender.value"
             label-field="id"
             value-field="id"
         />
@@ -212,8 +186,8 @@ onMounted(()=>{
             :placeholder="$t(`content.choose`)"
             :options="store.confirmationList"
             :loading="store.confirmLoading"
-            :render-label="renderLabel2"
-            :render-tag="renderValue"
+            :render-label="UIHelper.selectRender.label"
+            :render-tag="UIHelper.selectRender.value"
             label-field="id"
             value-field="id"
             :max-tag-count="1"

@@ -1,6 +1,8 @@
 <script setup>
-
+import {useAccountStore} from "@/store/modules/app/accountStore.js";
+const store = useAccountStore()
 const visible = ref(true)
+
 
 onMounted(()=>{
   window.addEventListener('load',()=>{
@@ -10,7 +12,7 @@ onMounted(()=>{
 </script>
 
 <template>
- <div v-if="visible" class="w-full h-full fixed top-0 left-0 bg-surface-section z-[999] flex justify-center items-center">
+ <div v-if="visible || store.loading" class="w-full h-full fixed top-0 left-0 bg-surface-section z-[999] flex justify-center items-center">
    <div class="page-content-loader"></div>
  </div>
 </template>

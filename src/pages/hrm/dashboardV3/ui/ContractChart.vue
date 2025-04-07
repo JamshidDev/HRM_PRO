@@ -148,7 +148,7 @@ const totalCount = computed(()=>{
       <span class="font-semibold text-nowrap text-textColor2">{{totalCount}}</span>
     </div>
     <div class="w-full h-[300px] relative z-[2] mb-4">
-      <v-chart :option="contractOption" />
+      <v-chart autoresize :option="contractOption" />
     </div>
 
   </div>

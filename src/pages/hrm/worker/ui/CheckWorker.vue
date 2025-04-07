@@ -1,6 +1,6 @@
 <script setup>
 import {Search24Regular, GlobePerson24Regular, Warning24Filled, ArrowCircleRight20Regular, PersonAdd20Regular} from "@vicons/fluent"
-import {useComponentStore, useWorkerStore} from "@/store/modules/index.js"
+import {useComponentStore, useContractStore, useWorkerStore} from "@/store/modules/index.js"
 import {UIUser} from "@/components/index.js"
 import {useDebounceFn} from "@vueuse/core"
 import {useRouter} from "vue-router"
@@ -10,6 +10,7 @@ import {AppPaths} from "@/utils/index.js"
 const router = useRouter()
 const store = useComponentStore()
 const workerStore = useWorkerStore()
+const contractStore = useContractStore()
 
 
 const searchEvent = useDebounceFn(() => {
@@ -22,6 +23,7 @@ const searchEvent = useDebounceFn(() => {
 
 
 const onAddCandidate = ()=>{
+  store.checkUserVisible = false
   router.push({name:`${AppPaths.Worker.substring(1)}-${AppPaths.Create.substring(1)}`})
 }
 
@@ -29,6 +31,9 @@ const onContinue = ()=>{
   store.checkUserVisible = false
   store.isSelectedWorker = true
   setTimeout(()=>{
+    contractStore.resetForm()
+    contractStore.stepNumber = 1
+    contractStore.activeTab = 1
     workerStore.visible = true
   },200)
 
