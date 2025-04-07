@@ -11,6 +11,7 @@ const examStore = useTopicExamStore()
 const examTabNumber = 0
 const activeTab = ref(examTabNumber)
 const onAdd = ()=>{
+  fileStore.accept = TopicUtils.getMediaProperty(activeTab.value).accept
   fileStore.resetForm()
   fileStore.visibleType = true
   fileStore.visible = true
