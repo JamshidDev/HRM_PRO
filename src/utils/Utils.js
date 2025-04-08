@@ -224,12 +224,12 @@ const getMonthNameByKey = (key)=>{
     return monthList.filter((v)=>v.key === key)?.[0]?.name
 }
 
-const maskText =(text, start, end) =>{
+const maskText =(text, start, end, sign='*') =>{
     const str = text.toString()
     if (str.length <= start + end) return str;
     let startText = str.slice(0, start)
     let endText = str.slice(-end)
-    let masked = "*".repeat(str.length - (start + end))
+    let masked = sign.repeat(str.length - (start + end))
     return startText + masked + endText;
 }
 const viewerStatus = {
@@ -396,6 +396,43 @@ const checkRequestBody = (body)=>{
 
 }
 
+function formatPhoneWithMask(phone, mask) {
+    const digits = phone?.toString()?.replace(/\D/g, '')
+
+    if (!mask || !mask.includes('#')) {
+        return "Iltimos, to'g'ri maska kiriting (# belgisi bo'lishi kerak)";
+    }
+
+    const maskDigitCount = (mask.match(/#/g) || []).length;
+
+    let result = mask;
+    let digitIndex = 0;
+
+    while (result.includes('#') && digitIndex < digits.length) {
+        result = result.replace('#', digits[digitIndex]);
+        digitIndex++;
+    }
+
+    if (result.includes('#')) {
+        const parts = result.split('#');
+        result = parts[0];
+
+        for (let i = 1; i < parts.length; i++) {
+            if (i <= digitIndex) {
+                result += parts[i];
+            }
+        }
+    }
+
+    if (digits.length > maskDigitCount) {
+        const limitedDigits = digits.slice(0, maskDigitCount);
+        return formatPhoneWithMask(limitedDigits, mask);
+    }
+
+    return result.trim();
+}
+
+
 export default {
     fileToBase64,
     onlyAllowNumber,
@@ -434,4 +471,5 @@ export default {
     colorTypes,
     blobFileDownload,
     checkRequestBody,
+    formatPhoneWithMask
 }

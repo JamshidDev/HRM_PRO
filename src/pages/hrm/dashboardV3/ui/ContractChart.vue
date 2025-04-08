@@ -147,7 +147,7 @@ const totalCount = computed(()=>{
       <hr class="w-full h-[1px] text-surface-line">
       <span class="font-semibold text-nowrap text-textColor2">{{totalCount}}</span>
     </div>
-    <div class="w-full h-[300px] relative z-[2] mb-4">
+    <div class="w-full h-[300px] relative z-[1] mb-4">
       <v-chart autoresize :option="contractOption" />
     </div>
 

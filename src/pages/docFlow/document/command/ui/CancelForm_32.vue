@@ -11,9 +11,10 @@ const onSubmit =async (mainData)=>{
    let data = null
    await formRef.value?.validate(async (error)=>{
     if(!error){
-      data ={
+      data =
+          {
       ...mainData,
-            contract_to_date:Utils.timeToZone(store.form_32.contract_to_date),
+      contract_to_date:Utils.timeToZone(store.form_32.contract_to_date),
       }
 
     }else{

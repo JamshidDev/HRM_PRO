@@ -19,7 +19,7 @@ const store = useComponentStore()
           <n-timeline-item
               class="w-full"
               type="info"
-              :title="Utils.timeOnlyYear(item.from_date) + ' - ' + Utils.timeOnlyYear(item.to_date)"
+              :title="Utils.timeOnlyYear(item?.from_date) + ' - ' + Utils.timeOnlyYear(item?.to_date)"
               line-type="dashed"
           >
             <div class="w-full pb-4">

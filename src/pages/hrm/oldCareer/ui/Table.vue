@@ -1,12 +1,12 @@
 <script setup>
-import {UIActionButton, UIMenuButton} from "@/components/index.js"
+import {UIMenuButton} from "@/components/index.js"
 import {useOldCareerStore} from "@/store/modules/index.js"
-import {AddCircle28Regular} from "@vicons/fluent"
+import {AddCircle28Regular, Drag24Regular} from "@vicons/fluent"
 import Utils from "../../../../utils/Utils.js"
-
+import { VueDraggable } from 'vue-draggable-plus'
 const store = useOldCareerStore()
 
-
+const dragElement = ref(null)
 const onAdd = ()=>{
   store.visibleType = true
   store.resetForm()
@@ -36,6 +36,22 @@ const onDelete = (v)=>{
   store.elementId = v.id
   store._delete()
 }
+
+const onUpdate = (v)=>{
+  const data = [
+    {
+      worker_old_career_id:v.data.id,
+      position:v.oldIndex
+    },
+    {
+      worker_old_career_id:v.data.id,
+      position:v.newIndex
+    },
+  ]
+  console.log(data)
+}
+
+
 </script>
 
 <template>
@@ -58,36 +74,61 @@ const onDelete = (v)=>{
 
     </div>
     <div class="w-full overflow-x-auto"  v-if="store.list.length>0">
-      <n-table
-          class="mt-4"
-          :single-line="false"
-          size="small"
+      <VueDraggable
+          v-model="store.list"
+          :animation="150"
+          handle=".handle"
+          target=".sort-target"
+          @end="onUpdate"
       >
-        <thead>
-        <tr>
-          <th class="!text-center min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
-          <th class="min-w-[100px]">{{$t('oldCareerPage.form.post_name')}}</th>
-          <th class="min-w-[100px] w-[160px]">{{$t('oldCareerPage.form.from_date')}}</th>
-          <th class="min-w-[100px] w-[160px]">{{$t('oldCareerPage.form.to_date')}}</th>
-          <th class="min-w-[40px] w-[40px]"></th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr v-for="(item, idx) in store.list" :key="idx">
-          <td><span class="text-center text-[12px] text-gray-600 block">{{ (store.params.page - 1) * store.params.per_page + idx + 1 }}</span></td>
-          <td>{{item.post_name}}</td>
-          <td><span class="text-sm">{{Utils.timeOnlyDate(item.from_date)}}</span></td>
-          <td>{{Utils.timeOnlyDate(item.to_date)}}</td>
-          <td>
-           <UIMenuButton
-               :data="item"
-               :show-edit="true"
-               @selectEv="selectEv"
-           />
-          </td>
-        </tr>
-        </tbody>
-      </n-table>
+
+        <n-table
+            class="mt-4 select-none"
+            :single-line="false"
+            size="small"
+        >
+          <thead>
+          <tr>
+            <th class="!text-center min-w-[40px] w-[40px] handle">{{$t('content.number')}}</th>
+            <th class="!text-center min-w-[40px] w-[40px] handle"></th>
+            <th class="min-w-[100px]">{{$t('oldCareerPage.form.post_name')}}</th>
+            <th class="min-w-[100px] w-[160px]">{{$t('oldCareerPage.form.from_date')}}</th>
+            <th class="min-w-[100px] w-[160px]">{{$t('oldCareerPage.form.to_date')}}</th>
+            <th class="min-w-[40px] w-[40px]"></th>
+          </tr>
+          </thead>
+          <tbody class="sort-target">
+
+          <tr
+              v-for="(item, idx) in store.list"
+              :key="idx"
+          >
+            <td><span class="text-center text-[12px] text-gray-600 block">{{ (store.params.page - 1) * store.params.per_page + idx + 1 }}</span></td>
+            <td>
+              <n-button secondary type="primary" size="small" class="handle">
+                <template #icon>
+                 <n-icon>
+                   <Drag24Regular/>
+                 </n-icon>
+                </template>
+              </n-button>
+            </td>
+            <td>{{item.post_name}}</td>
+            <td><span class="text-sm">{{Utils.timeOnlyDate(item.from_date)}}</span></td>
+            <td>{{Utils.timeOnlyDate(item.to_date)}}</td>
+            <td>
+              <UIMenuButton
+                  :data="item"
+                  :show-edit="true"
+                  @selectEv="selectEv"
+              />
+            </td>
+          </tr>
+
+          </tbody>
+        </n-table>
+      </VueDraggable>
+
     </div>
 
 

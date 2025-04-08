@@ -3,6 +3,7 @@ import validationRules from "@/utils/validationRules.js";
 import {CloudLink16Regular} from "@vicons/fluent"
 import {useUniversityStore} from "@/store/modules/index.js";
 import Utils from "@/utils/Utils.js"
+import {useAppSetting} from "@/utils/index.js"
 
 const store = useUniversityStore()
 const formRef = ref(null)
@@ -87,6 +88,7 @@ onMounted(()=>{
             v-model:value="store.payload.from_date"
             type="date"
             :placeholder="$t(`createWorkerPage.form.from_date`)"
+            :format="useAppSetting.datePicketFormat"
         />
       </n-form-item>
       <n-form-item
@@ -97,6 +99,7 @@ onMounted(()=>{
             v-model:value="store.payload.to_date"
             type="date"
             :placeholder="$t(`createWorkerPage.form.from_date`)"
+            :format="useAppSetting.datePicketFormat"
         />
       </n-form-item>
       <n-form-item :label="$t(`content.file`)" path="file">

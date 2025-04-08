@@ -6,9 +6,6 @@ import {HomePerson20Regular} from "@vicons/fluent"
 const store = useDepartmentPositionStore()
 const componentStore = useComponentStore()
 
-const onAdd = () => {
-  componentStore.checkUserVisible = true
-}
 
 const onSearch = () => {
   store.params.page = 1
@@ -51,6 +48,15 @@ const clearFilter = ()=>{
 const onChangeDepartment = ()=>{
   filterEvent()
 }
+
+const onAdd = ()=>{
+  componentStore._enums()
+  componentStore._departments()
+  componentStore._positions()
+  store.resetForm()
+  store.visibleType = true
+  store.visible = true
+}
 </script>
 
 <template>
@@ -61,7 +67,8 @@ const onChangeDepartment = ()=>{
       v-model:search="store.params.search"
       @onSearch="onSearch"
       @onClear="clearFilter"
-      :show-add-button="false"
+      @onAdd="onAdd"
+      :show-add-button="true"
   >
 
 

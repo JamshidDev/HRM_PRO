@@ -54,7 +54,7 @@ defineExpose({
     role="card"
     aria-modal="true"
     class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
-    style="width:300px; position: fixed; right:50%;top:50%"
+    style="width:600px; position: fixed; right:50%;top:50%"
 >
   <cropper ref="cropperRef" class="cropper" :stencil-props="{
                     aspectRatio: 3/4,

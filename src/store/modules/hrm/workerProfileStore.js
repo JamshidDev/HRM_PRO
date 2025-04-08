@@ -172,10 +172,22 @@ export const useWorkerProfileStore = defineStore('workerProfileStore', {
                        worker_id,
                        ...photos[i],
                    }
-                   $ApiService.photoService._create({data})
+                   $ApiService.photoService._create({data}).then((res)=>{
+                       this.photos = res.data.data.map(v=>({
+                           id:v.id,
+                           blob:null,
+                           base64:v.photo,
+                           url:v.photo,
+                           current:v.current
+                       }))
+                       if(this.photos.filter(v=>v.current>0).length>0){
+                           this.mainImgId = this.photos.filter(v=>v.current>0)[0].id
+                       }
+
+                   })
                }
                 this.loading=false
-                this._index()
+                // this._index()
             }else if(this.photos.length>0){
                 this.loading=true
                     const data = {

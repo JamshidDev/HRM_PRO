@@ -1,5 +1,18 @@
 <script setup>
 
+import VuePictureSwipe from "vue3-picture-swipe"
+const pictureSwipe = ref(null)
+const imgSrc = ref([
+  {
+    src:'',
+    thumbnail:'',
+    w:500,
+    h:600,
+    title:'',
+
+  }
+])
+
 const props = defineProps({
   data:{
     type: Array,
@@ -14,10 +27,26 @@ const props = defineProps({
     default: 0,
   }
 })
+const onOpen = (photo,fullName)=>{
+  const thumbnail = pictureSwipe.value?.$el.querySelector('.gallery-thumbnail')
+  if (thumbnail) {
+    imgSrc.value = [{
+      src:photo,
+      thumbnail:photo,
+      w:500,
+      h:600,
+      title:fullName,
+    }]
+    setTimeout(()=>{
+      thumbnail.click()
+    }, 100)
+
+  }
+}
 </script>
 
 <template>
-<div>
+<div class="ml-auto relative z-[3]">
   <n-avatar-group :options="data" :size="40" :max="max">
     <template #avatar="{ option: { photo, fullName } }">
       <n-tooltip>
@@ -26,8 +55,10 @@ const props = defineProps({
               lazy
               round
               size="large"
-              class="ui__user-group"
-              :src="photo" />
+              class="ui__user-group z-[0]"
+              :src="photo"
+              @click="onOpen(photo, fullName)"
+          />
         </template>
         {{ fullName }}
       </n-tooltip>
@@ -37,4 +68,6 @@ const props = defineProps({
     </template>
   </n-avatar-group>
 </div>
+  <VuePictureSwipe  ref="pictureSwipe" :options="{shareEl:false, zoomEl:true}"  :items="imgSrc"></VuePictureSwipe>
 </template>
+

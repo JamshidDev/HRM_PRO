@@ -1,9 +1,9 @@
 <script setup>
-
 import {UIUserGroup} from "@/components/index.js"
 import {useDashboardStore} from "@/store/modules/index.js"
 
 const store = useDashboardStore()
+
 </script>
 
 <template>

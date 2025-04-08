@@ -57,6 +57,7 @@ export const useConfApplicationStore = defineStore('confApplicationStore', {
         },
         confirmParams:{
             director_id:null,
+            organization_id:null,
             search:null,
         },
         tabList:[

@@ -1,8 +1,9 @@
 <script setup>
-import {UIActionButton} from "@/components/index.js"
+import {UIActionButton, UIMenuButton} from "@/components/index.js"
 import {ArrowCircleDown24Regular} from "@vicons/fluent"
 import {useLanguageStore} from "@/store/modules/index.js"
 import {AddCircle28Regular} from "@vicons/fluent"
+import Utils from "@/utils/Utils.js"
 
 const store = useLanguageStore()
 
@@ -28,6 +29,14 @@ const onEdit = (v)=>{
 const onDelete = (v)=>{
   store.elementId = v.id
   store._delete()
+}
+
+const onSelect = (v)=>{
+  if(v.key === Utils.ActionTypes.edit){
+    onEdit(v.data)
+  }else if(v.key === Utils.ActionTypes.delete){
+    onDelete(v.data)
+  }
 }
 
 const onDownload = (v)=>{
@@ -65,7 +74,7 @@ const onDownload = (v)=>{
           <th class="!text-center min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
           <th class="min-w-[100px]">{{$t('content.name')}}</th>
           <th class="min-w-[80px] w-[80px]">{{$t('content.file')}}</th>
-          <th class="min-w-[90px] w-[90px]">{{$t('content.action')}}</th>
+          <th class="min-w-[40px] w-[40px]"></th>
         </tr>
         </thead>
         <tbody>
@@ -81,11 +90,10 @@ const onDownload = (v)=>{
             </n-button>
           </td>
           <td>
-            <UIActionButton
+            <UIMenuButton
                 :data="item"
-                :loading-delete="item.id === store.elementId && store.deleteLoading"
-                @on-edit="onEdit"
-                @on-delete="onDelete"
+                :show-edit="true"
+                @selectEv="onSelect"
             />
           </td>
         </tr>

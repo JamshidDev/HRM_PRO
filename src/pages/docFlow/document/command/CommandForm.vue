@@ -108,6 +108,7 @@ const onSubmit = ()=>{
         command_number:store.payload.command_number,
         command_type:store.payload.command_type,
         workers:store.payload.worker? [store.payload.worker] : store.payload.workers,
+        worker_position_id:store.payload.worker || undefined,
       }
       let validate = null
 

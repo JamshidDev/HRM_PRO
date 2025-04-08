@@ -3,6 +3,7 @@ import validationRules from "@/utils/validationRules.js";
 const formRef = ref(null)
 import {useRelativeStore, useComponentStore} from "@/store/modules/index.js";
 import {UIAutoComplete} from "@/components/index.js"
+import {useAppSetting} from "@/utils/index.js"
 
 const store = useRelativeStore()
 const componentStore = useComponentStore()
@@ -95,6 +96,7 @@ onMounted(()=>{
                   v-model:value="store.payload.birthday"
                   type="date"
                   :placeholder="$t(`content.choose`)"
+                  :format="useAppSetting.datePicketFormat"
               />
             </n-form-item>
             <n-form-item :label="$t(`relativePage.form.post_name`)" path="post_name">

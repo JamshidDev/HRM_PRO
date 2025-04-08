@@ -2,6 +2,7 @@
 import validationRules from "@/utils/validationRules.js"
 const formRef = ref(null)
 import {useOldCareerStore} from "@/store/modules/index.js";
+import {useAppSetting} from "@/utils/index.js"
 
 const store = useOldCareerStore()
 
@@ -38,6 +39,7 @@ const onSubmit = ()=>{
             v-model:value="store.payload.from_date"
             type="date"
             :placeholder="$t(`content.choose`)"
+            :format="useAppSetting.datePicketFormat"
         />
       </n-form-item>
       <n-form-item
@@ -48,6 +50,7 @@ const onSubmit = ()=>{
             v-model:value="store.payload.to_date"
             type="date"
             :placeholder="$t(`content.choose`)"
+            :format="useAppSetting.datePicketFormat"
         />
       </n-form-item>
       <n-form-item :label="$t(`oldCareerPage.form.post_name`)" path="post_name">

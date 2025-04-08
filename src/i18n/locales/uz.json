@@ -785,7 +785,8 @@
     "form": {
       "birth_place": "Tug'ilgan manzili",
       "post_name": "Lavozimi",
-      "birthdayPlace": "Tug'ilgan sana va joyi",
+      "birthdayPlace": "Tug'ilgan joyi",
+      "birthday": "Tug'ilgan sanasi",
       "relative": "Qarindoshligi"
     },
     "title": "Yaqin qarindosh ma'lumotlari",

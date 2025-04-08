@@ -113,21 +113,6 @@ export const navigations = [
             },
         ]
     },
-    // {
-    //     index:2,
-    //     label:'Chat',
-    //     path:AppPaths.Chat,
-    //     icon:PersonChat20Filled,
-    //     children:[
-    //         {
-    //             parentIndex:1,
-    //             label:'chatWindow.name',
-    //             path:Utils.routeChatPathMaker(AppPaths.ChatWindow),
-    //             icon:Folder48Filled,
-    //             color:'bg-dark',
-    //         },
-    //     ]
-    // },
     {
         index:3,
         label:'Doc Flow',

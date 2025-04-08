@@ -83,8 +83,7 @@ const onChangeStructure = (v)=>{
   if(v.length>0){
     componentStore.directorList = []
     store.payload.director_id = null
-    console.log(v[0].id)
-
+    store.confirmParams.organization_id = v[0].id
     componentStore._directors(v[0].id)
   }
 }
