@@ -40,7 +40,6 @@ const renderSourceTransferLabel = (option) => {
 }
 
 const renderTargetTransferLabel = (option) => {
-  console.log(option)
   return h('div', {
         class: "flex justify-between items-center pr-2"
       },

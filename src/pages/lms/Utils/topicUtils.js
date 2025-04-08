@@ -11,13 +11,13 @@ export class TopicUtils {
             case this.EXAM:
                 return {type: "default", icon: PeopleEdit20Filled, color: "#8a8a8a"};
             case this.BOOK:
-                return {type: "info", icon: Book24Filled, color: "#2080f0"};
+                return {type: "info", icon: Book24Filled, color: "#2080f0", accept: '.pdf,.djvu'};
             case this.IMAGE:
-                return {type: "success", icon: Image48Filled, color: "#1f2220"};
+                return {type: "success", icon: Image48Filled, color: "#1f2220", accept: 'image/*'};
             case this.VIDEO:
-                return {type: "error", icon: VideoClip24Filled, color: "#d03050"};
+                return {type: "error", icon: VideoClip24Filled, color: "#d03050", accept: 'video/*'};
             case this.AUDIO:
-                return {type: "primary", icon: MusicNote224Filled, color: "#18a058"};
+                return {type: "primary", icon: MusicNote224Filled, color: "#18a058", accept: 'audio/*'};
             case this.RESOURCE:
                 return {type: "info", icon: DocumentMultiple20Filled, color: "#2080f0"};
             default:
