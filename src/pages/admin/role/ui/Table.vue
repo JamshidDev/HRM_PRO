@@ -1,6 +1,8 @@
 <script setup>
-import {NoDataPicture, UIActionButton, UIPagination} from "@/components/index.js"
+import {NoDataPicture, UIMenuButton, UIBadge, UIPagination} from "@/components/index.js"
 import {useUserRoleStore} from "@/store/modules/index.js"
+import {RibbonStar24Filled} from "@vicons/fluent"
+import Utils from "@/utils/Utils.js"
 
 const store = useUserRoleStore()
 
@@ -18,6 +20,14 @@ const onEdit = (v)=>{
 const onDelete = (v)=>{
   store.elementId = v.id
   store._delete()
+}
+
+const onSelect = (v)=>{
+  if(v.key === Utils.ActionTypes.edit){
+    onEdit(v.data)
+  }else if(v.key === Utils.ActionTypes.delete){
+    onDelete(v.data)
+  }
 }
 
 const changePage = (v)=>{
@@ -39,19 +49,28 @@ const changePage = (v)=>{
         <tr>
           <th class="!text-center min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
           <th class="min-w-[200px]">{{$t('content.name')}}</th>
-          <th class="min-w-[90px] w-[90px]">{{$t('content.action')}}</th>
+          <th class="min-w-[40px] w-[40px]"></th>
         </tr>
         </thead>
         <tbody>
         <tr v-for="(item, idx) in store.list" :key="idx">
           <td><span class="text-center text-[12px] text-gray-600 block">{{ (store.params.page - 1) * store.params.per_page + idx + 1 }}</span></td>
-          <td>{{item.name}}</td>
           <td>
-            <UIActionButton
+            <div class="inline-block">
+              <UIBadge :label="item.name" :type="Utils.colorTypes.dark" >
+                <template #icon>
+                  <n-icon size="20">
+                    <RibbonStar24Filled/>
+                  </n-icon>
+                </template>
+              </UIBadge>
+            </div>
+          </td>
+          <td>
+            <UIMenuButton
                 :data="item"
-                :loading-delete="item.id === store.elementId && store.deleteLoading"
-                @on-edit="onEdit"
-                @on-delete="onDelete"
+                :show-edit="true"
+                @selectEv="onSelect"
             />
           </td>
         </tr>

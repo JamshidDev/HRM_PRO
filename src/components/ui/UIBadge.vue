@@ -69,11 +69,12 @@ const badgeIcon = computed(()=>{
           :class="[badgeType]"
           class="flex border items-center px-3 rounded-2xl cursor-pointer">
         <div v-if="showIcon" class="w-[20px] flex justify-center">
-          <n-icon size="12" class="ui--badge-icon">
             <slot name="icon">
-              <component :is="badgeIcon"/>
+              <n-icon size="12" class="ui--badge-icon">
+                <component :is="badgeIcon"/>
+              </n-icon>
+
             </slot>
-          </n-icon>
         </div>
         <div class="ui--badge-label truncate" v-bind:style="{width:`calc(100% - ${showIcon? 20:0}px)`}">
           {{label}}

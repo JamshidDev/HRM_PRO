@@ -39,6 +39,11 @@ export const useComponentStore = defineStore('componentStore', {
         departmentLoading:false,
         totalDepartment:0,
 
+        allDepartmentTrees:[],
+        allDepartmentLoading:false,
+
+
+
         positionList:[],
         positionLoading:false,
 
@@ -436,6 +441,17 @@ export const useComponentStore = defineStore('componentStore', {
             $ApiService.componentService._departmentTree({params}).then((res)=>{
                 this.departmentList = res.data.data
                 callback?.(res.data.data)
+            })
+        },
+        _allDepartmentTree(id=undefined){
+            this.allDepartmentLoading = true
+            let params = {
+                organization_id:id
+            }
+            $ApiService.componentService._allDepartmentTree({params}).then((res)=>{
+                this.allDepartmentTrees = res.data.data
+            }).finally(()=>{
+                this.allDepartmentLoading = false
             })
         },
         _scheduleList(){

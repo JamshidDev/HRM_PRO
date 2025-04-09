@@ -2,7 +2,8 @@
 import {useRouter} from "vue-router";
 import {useLoginStore, useAppStore, useSignatureStore, useAccountStore} from "@/store/modules/index.js"
 import validationRules from "@/utils/validationRules.js";
-import {Call16Filled, LockClosed16Filled, Eye24Regular, EyeOff20Filled, KeyMultiple20Filled} from '@vicons/fluent'
+import {Call16Filled, LockClosed16Filled, Eye24Regular,
+  EyeOff20Filled, KeyMultiple20Filled, AppStore24Filled} from '@vicons/fluent'
 import LangDropdown from "@/components/general/LangDropdown.vue";
 import {AppPaths, useAppSetting} from "@/utils/index.js"
 import i18n from "@/i18n/index.js"
@@ -90,8 +91,8 @@ onMounted(()=>{
            </div>
         </div>
         <div class="form-content-block">
-          <h3 class="text-dark font-bold form-title uppercase pt-[30px]">{{ $t(`loginPage.title`) }}</h3>
-          <p class="mt-2 leading-[1.2] form-description">{{ $t(`loginPage.subtitle`) }}</p>
+          <h3 class=" leading-[1.2] mt-6 text-dark font-bold form-title uppercase pt-[30px]">{{ $t(`loginPage.title`) }}</h3>
+          <p class="mb-4 leading-[1.2] form-description">{{ $t(`loginPage.subtitle`) }}</p>
 
           <n-form
               ref="formRef"
@@ -150,12 +151,70 @@ onMounted(()=>{
                 <n-button
                     @click="onSignatureLogin"
                     size="large"
-                    class="!bg-white !h-[50px] !rounded-2xl !font-bold dark-border-button"
+                    class="!h-[50px] !rounded-2xl !font-bold dark-border-button"
                 >{{ $t(`content.signatureLogin`) }}
                   <template #icon>
                     <n-icon class="!text-dark" size="24" :component="KeyMultiple20Filled" />
                   </template>
                 </n-button>
+                <div class="flex flex-col border border-dark rounded-3xl p-2 pb-4 store-container bg-surface-section">
+
+                  <p class=" text-dark font-semibold text-center">Mobil ilovani yuklab oling</p>
+                  <div class="flex items-center mx-auto mt-4">
+                    <n-tooltip
+                        placement="top"
+                        trigger="hover"
+                    >
+                      <template #trigger>
+                        <div>
+                          <a
+                              href="https://play.google.com/store/apps/details?id=uz.uzinfocom.mygov&pcampaignid=web_share"
+                              target="_blank"
+                              class="flex items-center justify-center border border-dark p-1
+                             gap-1 cursor-pointer rounded-lg bg-surface-section">
+                            <n-icon size="32" color="#019ff9">
+                              <AppStore24Filled/>
+                            </n-icon>
+                            <div>
+                              <p class="text-[12px] leading-[1.2] text-secondary">Download on the</p>
+                              <p class="font-semibold leading-[1.2]">App Store</p>
+                            </div>
+                          </a>
+                        </div>
+                      </template>
+                      <span>{{$t('content.appStore')}}</span>
+                    </n-tooltip>
+                    <n-tooltip
+                        placement="top"
+                        trigger="hover"
+                    >
+                      <template #trigger>
+                        <div>
+                          <a
+                              href="https://play.google.com/store/apps/details?id=uz.uzinfocom.mygov&pcampaignid=web_share"
+                              target="_blank"
+
+                              class="w-full flex bg-surface-section items-center justify-center gap-2  ml-4
+                        cursor-pointer border border-dark p-1 rounded-lg "
+                          >
+                            <img class="h-[30px]" src="https://mobile.soliq.uz/image/google%20play.svg" alt="">
+
+                            <div>
+                              <p class="text-[12px] leading-[1.2] text-secondary">Get it on</p>
+                              <p class="font-semibold leading-[1.2]">Google Play</p>
+                            </div>
+                          </a>
+                        </div>
+                      </template>
+                      <span>{{$t('content.googlePlay')}}</span>
+                    </n-tooltip>
+                </div>
+
+
+
+
+
+                </div>
               </template>
             </div>
           </n-form>
@@ -211,6 +270,8 @@ onMounted(()=>{
 }
 
 
+
+
 @media only screen and (min-width:1480px){
   .page-form-content{
     width: 1400px !important;
@@ -218,6 +279,9 @@ onMounted(()=>{
     .form-box{
       margin-top: 100px;
     }
+  }
+  .store-container{
+    margin-top: 40px;
   }
 
 }
@@ -252,6 +316,9 @@ onMounted(()=>{
     }
 
   }
+  .store-container{
+    margin-top: 20px;
+  }
 
 
     .circle-shape-1{
@@ -281,6 +348,10 @@ onMounted(()=>{
 }
 
 @media only screen and (max-width:1050.99px){
+
+  .store-container{
+    margin-top: 20px;
+  }
   .page-form-content{
     width: clamp(min(700px, 10%), 100%, 1200px);
     height:600px;

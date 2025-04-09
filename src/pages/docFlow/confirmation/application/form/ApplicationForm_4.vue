@@ -2,6 +2,7 @@
 import {ChevronRight12Regular} from "@vicons/fluent"
 import {useConfApplicationStore} from "@/store/modules/index.js"
 import Utils from "../../../../../utils/Utils.js"
+import {useAppSetting} from "@/utils/index.js"
 
 const store = useConfApplicationStore()
 
@@ -26,6 +27,7 @@ watchEffect(()=>{
             v-model:value="store.payload.period_from"
             type="date"
             :placeholder="$t(`content.choose`)"
+            :format="useAppSetting.datePicketFormat"
         />
       </n-form-item>
     </div>
@@ -36,6 +38,7 @@ watchEffect(()=>{
             v-model:value="store.payload.period_to"
             type="date"
             :placeholder="$t(`content.choose`)"
+            :format="useAppSetting.datePicketFormat"
         />
       </n-form-item>
     </div>
@@ -47,6 +50,7 @@ watchEffect(()=>{
             v-model:value="store.payload.from_time"
             type="date"
             :placeholder="$t(`content.choose`)"
+            :format="useAppSetting.datePicketFormat"
         />
       </n-form-item>
     </div>
@@ -57,6 +61,7 @@ watchEffect(()=>{
             v-model:value="store.payload.to_time"
             type="date"
             :placeholder="$t(`content.choose`)"
+            :format="useAppSetting.datePicketFormat"
         />
       </n-form-item>
     </div>
