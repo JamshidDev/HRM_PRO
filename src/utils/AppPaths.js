@@ -63,6 +63,9 @@ export const AppPaths = {
     DashboardV2:"/dashboard-v2",
     DashboardV3:"/dashboard-v3",
     Med:"/med",
+    Turnstile:"/turnstile",
+    Building:"/building",
+    Terminal:"/terminal"
 }
 
 export const AppLayouts ={

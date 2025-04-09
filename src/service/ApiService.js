@@ -1,4 +1,3 @@
-
 import authService from "@/service/v1/app/authService.js";
 import accountService from "@/service/v1/app/accountService.js";
 import userService from "@/service/v1/app/userService.js";
@@ -66,6 +65,8 @@ import examDashboardService from '@/service/v1/lms/examDashboardService.js'
 import workerExamService from '@/service/v1/lms/workerExamService.js'
 import timesheetConfirmService from "@/service/v1/hrm/timesheetConfirmService.js";
 
+import {turnstileTerminalService, turnstileBuildingService, turnstileOrganizationService} from './v1/turnstile'
+
 export default {
     authService,
     accountService,
@@ -129,4 +130,8 @@ export default {
     medService,
     quoteService,
 
+
+    turnstileTerminalService,
+    turnstileBuildingService,
+    turnstileOrganizationService
 }
