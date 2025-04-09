@@ -196,6 +196,8 @@ export const useComponentStore = defineStore('componentStore', {
             search:null,
         },
 
+        turnstileBuildingList: [],
+        turnstileBuildingListLoading: false,
 
 
     }),

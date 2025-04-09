@@ -110,6 +110,7 @@ const formatNumberToMoney = (num)=>{
 const routePathMaker = (mainPath)=>(`${AppPaths.Admin}${mainPath}`)
 const routeHrmPathMaker = (mainPath)=>(`${AppPaths.Hrm}${mainPath}`)
 const routeLmsPathMaker = (mainPath)=>(`${AppPaths.Lms}${mainPath}`)
+const routeTurnstilePathMaker = (mainPath)=>(`${AppPaths.Turnstile}${mainPath}`)
 const routeChatPathMaker = (mainPath)=>(`${AppPaths.Chat}${mainPath}`)
 const routeDocFlowPathMaker = (mainPath)=>(`${AppPaths.DocFlow}${mainPath}`)
 const routeTimesheetPathMaker = (mainPath)=>(`${AppPaths.TimeSheet}${mainPath}`)
@@ -450,6 +451,7 @@ export default {
     routeLmsPathMaker,
     routeChatPathMaker,
     routeDocFlowPathMaker,
+    routeTurnstilePathMaker,
     generateJwtToken,
     fileNameFromUrl,
     documentModels,
@@ -471,5 +473,6 @@ export default {
     colorTypes,
     blobFileDownload,
     checkRequestBody,
-    formatPhoneWithMask
+    formatPhoneWithMask,
+
 }

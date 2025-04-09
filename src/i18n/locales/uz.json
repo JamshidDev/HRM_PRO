@@ -97,7 +97,9 @@
     "downloadApp": "Ilovani yuklash",
     "appStore": "App Store",
     "googlePlay": "Google Play",
-    "goToList": "Ro'yxatga qaytish"
+    "goToList": "Ro'yxatga qaytish",
+    "ip": "Ip manzil",
+    "url": "Url manzil"
   },
   "date": {
     "day": "Kun",
@@ -1218,6 +1220,30 @@
     "closeWarning": {
       "title": "Tabelni yakunlashga ishonchingiz komilmi?",
       "desc": "Bu amalni ortga qaytarib bo'lmaydi."
+    }
+  },
+  "turnstile": {
+    "title": "Turniket",
+    "buildingPage": {
+      "title": "Binolar",
+      "name": "Bino nomi(UZ)",
+      "name_en": "Bino nomi(EN)",
+      "name_ru": "Bino nomi(RU)",
+      "create": "Bino qo'shish",
+      "edit": "Binoni tahrirlash"
+    },
+    "terminalPage": {
+      "title": "Terminallar",
+      "building": "Bino",
+      "name": "Terminal nomi(UZ)",
+      "name_en": "Terminal nomi(EN)",
+      "name_ru": "Terminal nomi(RU)",
+      "create": "Terminal qo'shish",
+      "edit": "Terminalni tahrirlash"
+    },
+    "organization": {
+      "title": "Tashkilotlar",
+      "terminal": "Terminal"
     }
   },
   "medPage": {
