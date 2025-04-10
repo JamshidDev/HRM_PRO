@@ -4,18 +4,19 @@ import i18n from "@/i18n/index.js"
 const {t} = i18n.global
 export const useTurnstileOrganizationStore = defineStore('turnstileOrganizationStore', {
     state: () => ({
-        list: [],
+        tree: [],
         loading: false,
         saveLoading: false,
         deleteLoading: false,
+        instanceLoading: false,
         visible: false,
         visibleType: true,
         elementId: null,
-        totalItems: 0,
         allPermissionList: [],
         structureCheck: [],
+        instanceTerminalList: [],
         payload: {
-            organization_id: [],
+            organization_id: null,
             terminals: [],
         },
         params: {
@@ -28,8 +29,7 @@ export const useTurnstileOrganizationStore = defineStore('turnstileOrganizationS
         _index() {
             this.loading = true
             $ApiService.turnstileOrganizationService._index({params: this.params}).then((res) => {
-                this.list = res.data.data.data
-                this.totalItems = res.data.data.total
+                this.tree = res.data.data
             }).finally(() => {
                 this.loading = false
             })
@@ -38,13 +38,20 @@ export const useTurnstileOrganizationStore = defineStore('turnstileOrganizationS
             this.saveLoading = true
             let data = {
                 ...this.payload,
-                organization_id: this.payload.organization_id[0].id
             }
             $ApiService.turnstileOrganizationService._create({data}).then((res) => {
-                this.visible = false
                 this._index()
             }).finally(() => {
                 this.saveLoading = false
+            })
+        },
+        _show(){
+            this.instanceLoading = true
+            this.payload.terminals = []
+            $ApiService.turnstileOrganizationService._show({id: this.payload.organization_id}).then((res) => {
+                this.payload.terminals = res.data.data.map(i=>i.id)
+            }).finally(() => {
+                this.instanceLoading = false
             })
         },
         _update() {

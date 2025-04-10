@@ -60,7 +60,6 @@ const panelMenu = computed(()=>{
   let navigationIndex = 0
   for (let i=0; i <navigations.length; i++) {
     const list = navigations[i]?.children?.filter((v)=>store.checkPermission(v.permission))
-    console.log(list)
     if(list?.length>0){
       navigationIndex = i
       break

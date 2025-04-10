@@ -241,13 +241,13 @@ export const navigations = [
                 color: 'bg-secondary',
                 permission: appPermissions.users,
             },
-            // {
-            //     label: 'turnstile.organization.title',
-            //     path: Utils.routeTurnstilePathMaker(AppPaths.Organizations),
-            //     icon: Organization12Filled,
-            //     color: 'bg-info',
-            //     permission: appPermissions.users,
-            // },
+            {
+                label: 'turnstile.organization.title',
+                path: Utils.routeTurnstilePathMaker(AppPaths.Organizations),
+                icon: Organization12Filled,
+                color: 'bg-info',
+                permission: appPermissions.users,
+            },
         ]
     },
     {

@@ -1,41 +1,52 @@
 <script setup>
-import {UIDrawer, UIPageContent, UIPageFilter} from "@/components/index.js"
-import Table from "./ui/Table.vue"
+import {UIDrawer, UIPageContent, UIPageFilter, NoDataPicture} from "@/components/index.js"
 import Form from "./ui/Form.vue"
-import {useTurnstileOrganizationStore} from "@/store/modules/index.js";
-
-
+import TurnstileOrgTree from './ui/TurnstileOrgTree.vue'
+import TerminalList from './ui/TerminalList.vue'
+import {useComponentStore, useTurnstileOrganizationStore} from "@/store/modules/index.js";
 
 const store = useTurnstileOrganizationStore()
+const componentStore = useComponentStore()
 
-const onAdd = ()=>{
+const onAdd = () => {
   store.resetForm()
   store.visibleType = true
   store.visible = true
 }
 
-const onSearch = ()=>{
+const onSearch = () => {
   store.params.page = 1
   store._index()
 }
 
-onMounted(()=>{
-  store.params.page = 1
-  store.params.per_page = 10
-  store.params.search = null
+onMounted(() => {
   store._index()
+  componentStore._turnstileTerminal()
 })
 </script>
 
 <template>
   <UIPageContent>
-    <UIPageFilter
-        :show-search-input="false"
-        v-model:search="store.params.search"
-        @onSearch="onSearch"
-        @onAdd="onAdd"
-    />
-    <Table/>
+    <n-spin :show="componentStore.turnstileTerminalListLoading || store.loading">
+
+        <n-grid cols="2" x-gap="12">
+          <n-gi span="1" class="bg-surface-section rounded-md">
+            <TurnstileOrgTree class="p-2 "/>
+          </n-gi>
+          <n-gi span="1" class="bg-surface-section rounded-md">
+            <div class="p-2 h-full">
+              <NoDataPicture class="!my-0" v-if="!store.payload.organization_id"/>
+              <TerminalList v-else/>
+            </div>
+          </n-gi>
+        </n-grid>
+
+    </n-spin>
+    <!--    <router-view v-slot="{ Component }">-->
+    <!--      <transition name="slide-right" mode="out-in">-->
+    <!--        <component :is="Component" />-->
+    <!--      </transition>-->
+    <!--    </router-view>-->
     <UIDrawer
         :width="550"
         :visible="store.visible"

@@ -11,8 +11,9 @@ import mask from "./directives/mask.js"
 import VueSignature from "vue-signature-pad"
 import inputFormatter from "@/plugins/inputFormatter.js"
 import dateMaskPlugin from "@/plugins/dateMaskPlugin.js"
-import '@wangeditor/editor/dist/css/style.css'
-
+import '@wangeditor/editor/dist/css/style.css';
+import '@he-tree/vue/style/default.css';
+import '@he-tree/vue/style/material-design.css';
 
 const app = createApp(App);
 const meta = document.createElement('meta')
