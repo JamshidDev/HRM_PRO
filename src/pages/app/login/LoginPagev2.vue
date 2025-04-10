@@ -40,7 +40,9 @@ const onSuccess = (data)=>{
   new Promise((resolve, reject)=>{
     try{
       localStorage.setItem(useAppSetting.tokenKey,data?.access_token)
-      accountStore._index()
+      accountStore._index(()=>{
+        router.push(AppPaths.Home)
+      })
       resolve(true)
     }catch (error){
       console.log(error)
@@ -49,11 +51,14 @@ const onSuccess = (data)=>{
   }).then((data)=>{
     if(data){
       signatureStore.visible = false
-      router.push(AppPaths.Main)
     }
   })
 
 
+}
+
+const onComingSoon = ()=>{
+  $Toast.info(t('content.comingSoon'))
 }
 
 onMounted(()=>{
@@ -91,7 +96,7 @@ onMounted(()=>{
            </div>
         </div>
         <div class="form-content-block">
-          <h3 class=" leading-[1.2] mt-6 text-dark font-bold form-title uppercase pt-[30px]">{{ $t(`loginPage.title`) }}</h3>
+          <h3 class=" leading-[1.2] mt-2 text-dark font-bold form-title uppercase pt-[20px]">{{ $t(`loginPage.title`) }}</h3>
           <p class="mb-4 leading-[1.2] form-description">{{ $t(`loginPage.subtitle`) }}</p>
 
           <n-form
@@ -157,9 +162,10 @@ onMounted(()=>{
                     <n-icon class="!text-dark" size="24" :component="KeyMultiple20Filled" />
                   </template>
                 </n-button>
-                <div class="flex flex-col border border-dark rounded-3xl p-2 pb-4 store-container bg-surface-section">
 
-                  <p class=" text-dark font-semibold text-center">Mobil ilovani yuklab oling</p>
+
+                <div class="flex flex-col border border-surface-line rounded-3xl p-2 pb-4 store-container bg-surface-ground">
+                  <p class=" text-dark font-semibold text-center">{{$t('content.downloadApp')}}</p>
                   <div class="flex items-center mx-auto mt-4">
                     <n-tooltip
                         placement="top"
@@ -168,9 +174,9 @@ onMounted(()=>{
                       <template #trigger>
                         <div>
                           <a
-                              href="https://play.google.com/store/apps/details?id=uz.uzinfocom.mygov&pcampaignid=web_share"
+                              @click="onComingSoon"
                               target="_blank"
-                              class="flex items-center justify-center border border-dark p-1
+                              class="flex items-center justify-center border border-surface-line p-1
                              gap-1 cursor-pointer rounded-lg bg-surface-section">
                             <n-icon size="32" color="#019ff9">
                               <AppStore24Filled/>
@@ -191,11 +197,10 @@ onMounted(()=>{
                       <template #trigger>
                         <div>
                           <a
-                              href="https://play.google.com/store/apps/details?id=uz.uzinfocom.mygov&pcampaignid=web_share"
                               target="_blank"
-
+                              @click="onComingSoon"
                               class="w-full flex bg-surface-section items-center justify-center gap-2  ml-4
-                        cursor-pointer border border-dark p-1 rounded-lg "
+                        cursor-pointer border border-surface-line p-1 rounded-lg "
                           >
                             <img class="h-[30px]" src="https://mobile.soliq.uz/image/google%20play.svg" alt="">
 
@@ -209,11 +214,6 @@ onMounted(()=>{
                       <span>{{$t('content.googlePlay')}}</span>
                     </n-tooltip>
                 </div>
-
-
-
-
-
                 </div>
               </template>
             </div>
@@ -317,7 +317,7 @@ onMounted(()=>{
 
   }
   .store-container{
-    margin-top: 20px;
+    margin-top: 40px;
   }
 
 
@@ -381,7 +381,7 @@ onMounted(()=>{
     }
     .form-content-block{
       width:50%;
-      padding: 0 10px 0px 40px;
+      padding: 0 10px 0 40px;
     }
   }
 

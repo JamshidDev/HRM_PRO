@@ -84,7 +84,7 @@ const isCheck =(id)=>{
               :disabled="Boolean(item.group && !multiple)"
               :checked="modelV.map((a)=>a.id).includes(item.id)"
           ></n-checkbox>
-          <span class="text-xs ml-2">{{item.name}}</span>
+          <span class="ml-2">{{item.name}}</span>
         </div>
         <div class="w-[20px] lex justify-center items-center">
           <n-radio
@@ -97,7 +97,7 @@ const isCheck =(id)=>{
         </div>
       </div>
       <n-collapse-transition :show="checkedVal.includes(item.id) || opened">
-        <TreeOrg
+        <Tree
             :deep="deep+1"
             :opened="opened"
             :data="item?.children"

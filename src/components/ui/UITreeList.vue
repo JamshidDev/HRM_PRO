@@ -1,5 +1,5 @@
 <script setup>
-import TreeOrg from "@/components/tree/TreeOrg.vue"
+import Tree from "@/components/tree/Tree.vue"
 import {useDebounceFn} from "@vueuse/core"
 import {useComponentStore} from "@/store/modules/index.js"
 const store = useComponentStore()
@@ -9,6 +9,7 @@ const props = defineProps({
   opened:{type:Boolean,default:false},
   modelV:{type:Array,default:[]},
   checkedVal:{type:Array,default:[]},
+  options:{type:Array,default:[]},
 
 })
 
@@ -119,8 +120,8 @@ onMounted(()=>{
 </script>
 
 <template>
-  <TreeOrg
-      :data="store.structureList"
+  <Tree
+      :data="options"
       :modelV="modelV"
       :checkedVal="checkedVal"
       :getChildIds="getChildIds"

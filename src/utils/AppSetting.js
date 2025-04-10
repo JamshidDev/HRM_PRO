@@ -7,5 +7,9 @@ export const  useAppSetting = {
     noAvailableImage: "/no-picture.jpg",
     appLogoUrl:'/logo.png',
     datePicketFormat:'dd.MM.yyyy',
+    signatureUseType:{
+      idCard:'idcard',
+      pfx:"pfx"
+    },
     appPermission:'appPermission'
 }

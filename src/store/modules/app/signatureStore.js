@@ -1,5 +1,6 @@
 import {defineStore} from "pinia"
 import i18n from "@/i18n/index.js"
+import {useAppSetting} from "@/utils/index.js"
 const apiUrl = import.meta.env.VITE_API_URL;
 
 const {t} = i18n.global
@@ -21,9 +22,12 @@ export const useSignatureStore = defineStore('signatureStore', {
         confirmationId:null,
         documentType:null,
         rejectLoading:null,
+        usbVisible:false,
+        keyType:useAppSetting.signatureUseType.pfx
     }),
     actions: {
         async _checkVersion() {
+            this.usbVisible = false
             return new Promise((resolve, reject) => {
                 EIMZOClient.checkVersion(
                     function (major, minor) {
@@ -35,16 +39,37 @@ export const useSignatureStore = defineStore('signatureStore', {
                 )
             })
         },
+        checkCardPluggedIn(){
+            EIMZOClient.idCardIsPLuggedIn((yes)=>{
+                console.log(yes)
+                this.usbVisible = yes
+            },function(e, r){
+                if(e){
+                    console.warn(errorCAPIWS + " : " + e)
+                    uiShowMessage(errorCAPIWS + " : " + e);
+
+                } else {
+                    console.log(r);
+                }
+            })
+        },
+        checkListKey(){
+            EIMZOClient.listAllUserKeys(
+                this._idGenCallback,
+                this._uiGenCallback,
+                this._successCallback,
+                this._failCallback
+            )
+        },
+
 
         async _initialSignature(signatureType, callback) {
             this.signatureType = signatureType
             this.successCallback = callback
             await this._checkVersion()
-            EIMZOClient.listAllUserKeys(
-                this._idGenCallback,
-                this._uiGenCallback,
-                this._successCallback,
-                this._failCallback)
+            this.checkListKey()
+            this.checkCardPluggedIn()
+
 
         },
 
@@ -52,7 +77,7 @@ export const useSignatureStore = defineStore('signatureStore', {
             this.signatureType = signatureType
             this.successCallback = callback
             this.documentId = documentId
-            this.loading = true
+            // this.loading = true
 
             try{
                 await this._checkVersion()
@@ -69,16 +94,13 @@ export const useSignatureStore = defineStore('signatureStore', {
                 this.documentBase64 = res.data.data
                 try{
                     await this._checkVersion()
-                    EIMZOClient.listAllUserKeys(
-                        this._idGenCallback,
-                        this._uiGenCallback,
-                        this._successCallback,
-                        this._failCallback)
+                    this.checkListKey()
+                    this.checkCardPluggedIn()
                 }catch (err){
                     $Toast.error(t('signature.connectionError'))
                 }
             }).finally(()=>{
-                this.loading = false
+                // this.loading = false
             })
         },
 
@@ -116,26 +138,37 @@ export const useSignatureStore = defineStore('signatureStore', {
             }
         },
         _accepted(idx, callback) {
-            const key = this.allKeys[idx]
-            this.workerPin = key.pinfl
-            if (key.expired) {
-                $Toast.error(t('signature.expiredKey'))
-                return ''
+            let key = null
+            if(idx === useAppSetting.signatureUseType.idCard){
+                key = useAppSetting.signatureUseType.idCard
+            }else{
+                key = this.allKeys[idx]
+                this.workerPin = key.pinfl
+                if (key.expired) {
+                    $Toast.error(t('signature.expiredKey'))
+                    return ''
+                }
             }
-            this.getChallenge(function (challenge) {
-                if (key) {
+
+
+            this.getChallenge((challenge)=>{
+                if(key === useAppSetting.signatureUseType.idCard){
+                    callback(key, challenge)
+                }else{
                     let vo = key.vo;
-                    EIMZOClient.loadKey(vo, function (id) {
+                    EIMZOClient.loadKey(vo, (id)=>{
                         callback(id, challenge)
-                    }, uiHandleError);
-                } else {
-                    uiHideProgress();
+
+                    }, ()=>{
+                        return uiHandleError
+                    });
                 }
             });
 
         },
         getChallenge(callback) {
-            microAjax(`${apiUrl}/api/v1/signature/challenge?_uc=` + (Date.now() + "_" + Math.random()), function (data, s) {
+            this.loading = true
+            microAjax(`${apiUrl}/api/v1/signature/challenge?_uc=` + (Date.now() + "_" + Math.random()), (data, s)=>{
                 data = JSON.parse(data)
                 let status = s.status
                 data = data.data
@@ -157,30 +190,39 @@ export const useSignatureStore = defineStore('signatureStore', {
                     }
                     callback(data.challenge)
                 } catch (e) {
+
                     uiShowMessage(s.statusText + ": " + e)
                 }
             })
         },
         _auth(keyId, challenge) {
             const callback = this.successCallback
-            EIMZOClient.createPkcs7(keyId, challenge, null, function (pkcs7) {
-                microAjax(`${apiUrl}/api/v1/signature/auth`, function (response, s) {
+
+            EIMZOClient.createPkcs7(keyId, challenge, null,  (pkcs7)=>{
+                microAjax(`${apiUrl}/api/v1/signature/auth`, (response, s)=>{
                     response = JSON.parse(response)
                     if (s.status === 200) {
                         callback(response)
                     }else{
                         uiShowMessage(response.message)
                     }
+                    this.loading = false
 
                 },'&code=' + encodeURIComponent(pkcs7))
-            }, uiHandleError, false)
+            }, ()=>{
+                this.loading = false
+                return uiHandleError
+            }, false)
         },
         _contract(keyId){
             const callback = this._confirmDocument
             const data = this.documentBase64
-            EIMZOClient.createPkcs7(keyId, data, null, function (pkcs7) {
+            EIMZOClient.createPkcs7(keyId, data, null, (pkcs7)=>{
                 callback(pkcs7)
-            }, uiHandleError, false)
+            }, ()=>{
+                this.loading = false
+                return uiHandleError
+            }, false)
         },
         _confirmDocument(pkcs7){
             const callback = this.successCallback

@@ -94,10 +94,12 @@
     "created": "Yaratilgan sana",
     "move": "Siljitish",
     "listen": "Tinglash",
-    "downloadApp": "Ilovani yuklash",
+    "downloadApp": "Mobil ilovani yuklab oling",
     "appStore": "App Store",
     "googlePlay": "Google Play",
     "goToList": "Ro'yxatga qaytish",
+    "loginByUsb": "Usb token orqali",
+    "comingSoon": "Tez orada ishga tushishi reja qilingan",
     "ip": "Ip manzil",
     "url": "Url manzil"
   },

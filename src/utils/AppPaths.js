@@ -63,6 +63,7 @@ export const AppPaths = {
     DashboardV2:"/dashboard-v2",
     DashboardV3:"/dashboard-v3",
     Med:"/med",
+    Slice:"/slice",
     Turnstile:"/turnstile",
     Building:"/building",
     Terminal:"/terminal"

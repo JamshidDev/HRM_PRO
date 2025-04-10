@@ -17,6 +17,7 @@ import DashboardV2Page from "@/pages/hrm/dashboardV2/DashboardV2Page.vue"
 import DashboardV3Page from "@/pages/hrm/dashboardV3/DashboardV3Page.vue"
 import TimesheetListPage from "@/pages/hrm/timesheet/TimesheetList.vue"
 import MedPage from "@/pages/hrm/med/MedPage.vue"
+import SlicePage from "@/pages/hrm/slice/SlicePage.vue"
 
 export default [
     {
@@ -103,6 +104,11 @@ export default [
         path:Utils.routeHrmPathMaker(AppPaths.Med),
         name:AppPaths.Med.substring(1),
         component:MedPage,
+    },
+    {
+        path:Utils.routeHrmPathMaker(AppPaths.Slice),
+        name:AppPaths.Slice.substring(1),
+        component:SlicePage,
     }
 
 ]
