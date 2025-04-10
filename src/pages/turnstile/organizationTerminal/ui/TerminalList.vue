@@ -16,15 +16,21 @@ const toggleItem = (v) => {
   <n-spin :show="store.instanceLoading" class="h-full">
     <div class="h-full flex flex-col gap-2">
       <div
-          class="grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-3 overflow-auto basis-auto grow grid-rows-[repeat(auto-fill,50px)]">
+          class="grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-3 overflow-auto basis-auto grow grid-rows-[repeat(auto-fill,60px)] p-1">
         <div v-for="(item, idx) in componentStore.turnstileTerminalList"
              :key="idx"
-             class="flex gap-3 rounded-md items-center p-3 hover:bg-blue-50 transition-all cursor-pointer"
+             class="rounded-md px-2 hover:bg-blue-50 transition-all cursor-pointer flex gap-3 items-center"
              style="box-shadow: rgba(17, 17, 26, 0.05) 0 1px 0, rgba(17, 17, 26, 0.1) 0 0 8px;"
              @click="toggleItem(item.id)"
         >
-          <n-checkbox :checked="(()=>!!store.payload.terminals.find(i=>i===item.id))()"/>
-          {{ item.name }}
+
+            <n-checkbox :checked="(()=>!!store.payload.terminals.find(i=>i===item.id))()"/>
+            <div>
+              <p class="font-bold">{{ item.name }}</p>
+              <p class="text-xs">{{item.building.name}}</p>
+
+            </div>
+
         </div>
       </div>
       <div class="shrink-0 flex justify-end">

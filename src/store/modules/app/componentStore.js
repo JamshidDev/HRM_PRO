@@ -199,6 +199,8 @@ export const useComponentStore = defineStore('componentStore', {
         turnstileBuildingList: [],
         turnstileBuildingListLoading: false,
 
+        turnstileTerminalList: [],
+        turnstileTerminalListLoading: false,
 
     }),
     actions:{
@@ -608,7 +610,23 @@ export const useComponentStore = defineStore('componentStore', {
                 }).finally(()=>{
                 this.directorLoading = false
             })
-        }
+        },
+        _turnstileBuilding() {
+            this.turnstileBuildingListLoading = true
+            $ApiService.turnstileBuildingService._index({params: {...this.params}}).then((res) => {
+                this.turnstileBuildingList = res.data.data.data
+            }).finally(() => {
+                this.turnstileBuildingListLoading = false
+            })
+        },
+        _turnstileTerminal() {
+            this.turnstileTerminalListLoading = true
+            $ApiService.turnstileTerminalService._index({params: {...this.params}}).then((res) => {
+                this.turnstileTerminalList = res.data.data.data
+            }).finally(() => {
+                this.turnstileTerminalListLoading = false
+            })
+        },
     }
 
 })
