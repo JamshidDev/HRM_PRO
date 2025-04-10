@@ -94,6 +94,9 @@
     "created": "Yaratilgan sana",
     "move": "Siljitish",
     "listen": "Tinglash",
+    "downloadApp": "Ilovani yuklash",
+    "appStore": "App Store",
+    "googlePlay": "Google Play",
     "goToList": "Ro'yxatga qaytish",
     "ip": "Ip manzil",
     "url": "Url manzil"
@@ -1165,6 +1168,7 @@
       "univer_number": "Xat raqami",
       "univer_date": "Xat sanasi",
       "contract_to_date": "Bekor qilish sanasi",
+      "application_date": "Ariza sanasi",
       "from_date": "Qachondan"
     },
     "step": {

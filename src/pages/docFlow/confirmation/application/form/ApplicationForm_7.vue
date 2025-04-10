@@ -1,6 +1,7 @@
 <script setup>
 import {useComponentStore, useConfApplicationStore} from "@/store/modules/index.js"
 import UIDepartment from "@/components/ui/UIDepartment.vue"
+import {useAppSetting} from "@/utils/index.js"
 
 const store = useConfApplicationStore()
 const componentStore = useComponentStore()
@@ -52,6 +53,7 @@ onMounted(()=>{
             v-model:value="store.payload.from_date"
             type="date"
             :placeholder="$t(`content.choose`)"
+            :format="useAppSetting.datePicketFormat"
         />
       </n-form-item>
     </div>

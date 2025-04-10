@@ -66,9 +66,6 @@ const panelMenu = computed(()=>{
     }
   }
 
-  console.log(navigationIndex)
-
-
   return (index === -1)? navigations[navigationIndex].children.filter((v)=>store.checkPermission(v.permission)) : navigations[index].children.filter((v)=>store.checkPermission(v.permission))
   // return (index === -1)? navigations[0].children: navigations[index].children
 })

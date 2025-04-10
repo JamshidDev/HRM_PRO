@@ -1270,6 +1270,12 @@ export default {
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
+        application_date:{
+            type:'number',
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
         worker_position_id:{
             type:'number',
             required: true,

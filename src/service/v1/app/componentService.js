@@ -24,6 +24,10 @@ const _departmentTree =async (payload)=>{
     return await axios.get(`/v1/hr/departments-tree`, {params:payload?.params})
 }
 
+const _allDepartmentTree =async (payload)=>{
+    return await axios.get(`/v1/hr/get-departments-tree`, {params:payload?.params})
+}
+
 const _docExample =async (payload)=>{
     return await axios.get(`/v1/hr/document-examples`, {params:payload?.params})
 }
@@ -53,6 +57,10 @@ const _departmentByOrganizations =async (payload)=>{
     return await axios.get(`v1/hr/get-departments`, {params:payload?.params})
 }
 
+const _allPosition =async (payload)=>{
+    return await axios.get(`/v1/hr/get-department-positions`, {params:payload?.params})
+}
+
 export default {
     _enums,
     _organization,
@@ -69,4 +77,6 @@ export default {
     _workerApplicationEnum,
     _departmentByOrganizations,
     _allStructure,
+    _allDepartmentTree,
+    _allPosition,
 }

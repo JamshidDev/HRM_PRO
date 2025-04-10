@@ -40,7 +40,7 @@ const onSubmit = ()=>{
       </n-form-item>
       <n-form-item :label="$t(`userRole.form.permissions`)" path="permissions">
         <n-checkbox-group v-model:value="store.payload.permissions">
-          <div class="grid grid-cols-3">
+          <div class="grid grid-cols-2">
             <n-checkbox
                 class="!text-sm mb-2rr"
                 v-for="(item, idx) in store.allPermissionList"

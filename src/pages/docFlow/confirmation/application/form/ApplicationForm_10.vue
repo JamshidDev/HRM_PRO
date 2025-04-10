@@ -1,5 +1,6 @@
 <script setup>
 import {useConfApplicationStore} from "@/store/modules/index.js"
+import {useAppSetting} from "@/utils/index.js"
 
 const store = useConfApplicationStore()
 
@@ -15,6 +16,7 @@ const store = useConfApplicationStore()
             v-model:value="store.payload.contract_to_date"
             type="date"
             :placeholder="$t(`content.choose`)"
+            :format="useAppSetting.datePicketFormat"
         />
       </n-form-item>
     </div>

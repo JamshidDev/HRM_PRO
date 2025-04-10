@@ -41,6 +41,7 @@ export const useConfApplicationStore = defineStore('confApplicationStore', {
             to:null,
             reason:null,
             from_date:null,
+            application_date:null,
             department_position_id:null,
             temporarily_absent:null,
             from_time:null,
@@ -115,8 +116,12 @@ export const useConfApplicationStore = defineStore('confApplicationStore', {
         statisticData:[],
         statisticLoading:false,
 
+        allPositions:[],
+        allPositionLoading:false,
+
     }),
     actions:{
+
         _index(){
             this.loading= true
             $ApiService.applicationService._confIndex({params:this.params}).then((res)=>{
@@ -143,6 +148,7 @@ export const useConfApplicationStore = defineStore('confApplicationStore', {
                 from:Utils.timeToZone(this.payload.from),
                 to:Utils.timeToZone(this.payload.to),
                 from_date:Utils.timeToZone(this.payload.from_date),
+                application_date:Utils.timeToZone(this.payload.application_date),
                 from_time:Utils.timeOnlyHour(this.payload.from_time),
                 to_time:Utils.timeOnlyHour(this.payload.to_time),
                 contract_to_date:Utils.timeToZone(this.payload.contract_to_date),
@@ -240,6 +246,15 @@ export const useConfApplicationStore = defineStore('confApplicationStore', {
                 this.deleteLoading = false
             })
         },
+        _allPositions(id){
+            this.allPositionLoading= true
+            $ApiService.componentService._allPosition({params:{department_id:id}}).then((res)=>{
+                this.allPositions = res.data.data.map((v)=>({...v,name:v.position?.name}))
+                console.log(this.allPositions)
+            }).finally(()=>{
+                this.allPositionLoading= false
+            })
+        },
         openVisible(data){
             this.visible = data
         },
@@ -258,6 +273,7 @@ export const useConfApplicationStore = defineStore('confApplicationStore', {
             this.payload.from_date = null
             this.payload.department_position_id = null
             this.payload.temporarily_absent = null
+            this.payload.application_date = new Date().getTime()
 
             this.activeTab = 101
             this.stepNumber = 1

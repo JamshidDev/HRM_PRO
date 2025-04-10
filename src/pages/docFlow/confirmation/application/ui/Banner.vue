@@ -57,7 +57,7 @@ const contractOption = ref({
   },
   tooltip: {
     trigger: 'item', // Trigger tooltip on each item (segment)
-    formatter:(params)=>`${params.name} - ${store.dashboard.contractTypes?.[params.dataIndex]?.active_contracts}`, // Customize the tooltip content
+    formatter:(params)=>`${params.name} - ${store?.statisticData?.[params.dataIndex]?.applications}`, // Customize the tooltip content
   },
   series: [
     {
@@ -115,7 +115,6 @@ const colors = {
 }
 
 watch(()=> store.statisticData, (newValue)=>{
-  console.log(newValue)
   const data = newValue.map((v)=>({
     name:v.name,
     id:v.id,

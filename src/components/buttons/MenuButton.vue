@@ -153,6 +153,7 @@ const onDelete = ()=>{
         <div class="grid grid-cols-12 gap-2">
           <div class="col-span-6">
             <n-button
+                secondary
                 @click="visible = false"
                 type="error"
                 style="width: 100%">{{$t('content.no')}}
@@ -160,6 +161,7 @@ const onDelete = ()=>{
           </div>
           <div class="col-span-6">
             <n-button
+                secondary
                 @click="onDelete"
                 type="primary"
                 style="width: 100%"

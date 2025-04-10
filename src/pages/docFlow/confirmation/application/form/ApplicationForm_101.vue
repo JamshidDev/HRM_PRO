@@ -3,6 +3,7 @@ import {useComponentStore, useConfApplicationStore} from "@/store/modules/index.
 import {NAvatar} from "naive-ui"
 import {UIStructureV2} from "@/components/index.js"
 import UIHelper from "@/utils/UIHelper.js"
+import {useAppSetting} from "@/utils/index.js"
 
 const store = useConfApplicationStore()
 const componentStore = useComponentStore()
@@ -190,6 +191,17 @@ onMounted(()=>{
             label-field="id"
             value-field="id"
             :max-tag-count="1"
+        />
+      </n-form-item>
+    </div>
+    <div class="col-span-12">
+      <n-form-item :label="$t(`applicationPage.form.application_date`)" path="application_date">
+        <n-date-picker
+            class="w-full"
+            v-model:value="store.payload.application_date"
+            type="date"
+            :placeholder="$t(`content.choose`)"
+            :format="useAppSetting.datePicketFormat"
         />
       </n-form-item>
     </div>
