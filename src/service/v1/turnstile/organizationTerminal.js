@@ -4,6 +4,11 @@ const _index =async (payload)=>{
     return await axios.get(`/v1/turnstile/organization-terminals`, {params:payload.params})
 }
 
+const _show =async (payload)=>{
+    console.log(payload)
+    return await axios.get(`/v1/turnstile/organization-terminals/${payload.id}`)
+}
+
 const _create = async (payload)=>{
     return await axios.post(`/v1/turnstile/organization-terminals`, payload.data)
 }
@@ -24,4 +29,5 @@ export default {
     _create,
     _update,
     _delete,
+    _show
 }
