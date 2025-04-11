@@ -33,7 +33,7 @@ const onSelect = (v)=>{
   <n-spin :show="store.loading" style="min-height: 200px">
     <div class="w-full overflow-x-auto"  v-if="store.list.length>0">
       <n-table
-          class="mt-10 w-full table-fixed"
+          class="mt-3 w-full table-fixed"
           :single-line="false"
           size="small"
       >

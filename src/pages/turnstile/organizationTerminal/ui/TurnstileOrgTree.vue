@@ -41,7 +41,7 @@ const onClickNode = (v) => {
             <p>{{ node.name }}</p>
           </div>
           <div class="!text-center min-w-[80px]">
-            {{ node?.terminals_count }}
+            <n-button size="tiny" v-if="node?.terminals_count" circle>{{node?.terminals_count}}</n-button>
           </div>
         </div>
       </template>

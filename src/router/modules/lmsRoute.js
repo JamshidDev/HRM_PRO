@@ -5,7 +5,6 @@ import {
     TopicPage,
     CategoryPage,
     CategoryQuestionPage,
-    QuestionFormPage,
     WorkerTopicPage,
     SolveExamPage,
     ExamResultPage
@@ -34,18 +33,6 @@ export default [
         path:Utils.routeLmsPathMaker(`${AppPaths.Category}/:category_id${AppPaths.Questions}`),
         component:()=>CategoryQuestionPage,
         name: "category_question",
-        children:[],
-    },
-    {
-        path:Utils.routeLmsPathMaker(`${AppPaths.Category}/:category_id${AppPaths.Questions}${AppPaths.Create}`),
-        component:()=>QuestionFormPage,
-        name: "add_question",
-        children:[],
-    },
-    {
-        path:Utils.routeLmsPathMaker(`${AppPaths.Category}/:category_id${AppPaths.Questions}/:question_id`),
-        component:()=>QuestionFormPage,
-        name: "edit_question",
         children:[],
     },
     {

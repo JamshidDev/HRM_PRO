@@ -106,7 +106,7 @@ const updateCategoryIds = (newVal) => {
   <n-spin :show="componentStore.examCategoryLoading || store.categoryLoading">
     <n-form
         ref="formRef"
-        :model="store.questionPayload"
+        :model="store.categoryPayload"
         :rules="validationRules.common"
     >
       <div style="min-height:calc(100vh - 120px)">

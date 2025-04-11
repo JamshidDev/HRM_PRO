@@ -24,17 +24,13 @@ export const useTopicExamStore = defineStore('topicExamStore', {
             category_ids: [],
             categories: []
         },
-        questionPayload: {
-            question_ids: [],
-            questions: []
-        },
         payload:{
             name: null,
             whom: null,
             deadline: null,
             active: false,
             minute: 45,
-            variant: 3,
+            variant: 4,
             tests_count: 36,
             chances: 3,
             description: null,
@@ -147,7 +143,7 @@ export const useTopicExamStore = defineStore('topicExamStore', {
             this.payload.whom = null
             this.payload.deadline = null
             this.payload.minute = 45
-            this.payload.variant = 3
+            this.payload.variant = 4
             this.payload.active = false
             this.payload.whom_ids = []
             this.payload.chances = 3

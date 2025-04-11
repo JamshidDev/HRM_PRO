@@ -5,7 +5,6 @@ const _index =async (payload)=>{
 }
 
 const _show =async (payload)=>{
-    console.log(payload)
     return await axios.get(`/v1/turnstile/organization-terminals/${payload.id}`)
 }
 
