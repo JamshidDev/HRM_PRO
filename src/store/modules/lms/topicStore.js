@@ -56,7 +56,6 @@ export const useTopicStore = defineStore('topicStore', {
             $ApiService.topicService._create({data}).then((res)=>{
                 this.visible = false
                 this._index()
-                $Toast.success(t('message.successDone'))
             }).finally(()=>{
                 this.saveLoading = false
             })

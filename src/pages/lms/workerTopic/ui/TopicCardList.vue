@@ -29,7 +29,7 @@ onMounted(() => {
   <n-spin :show="store.loading" class="h-full rounded-md p-1">
     <div class="h-full flex flex-col">
       <div v-if="store.list.length>0" class="overflow-y-auto grow basis-auto">
-        <div class="grid grid-cols-[repeat(auto-fill,minmax(330px,330px))] gap-2">
+        <div class="grid grid-cols-[repeat(auto-fill,minmax(330px,345px))] gap-2">
           <template v-for="(lesson, idx) in store.list" :key="idx">
             <div
                 :class="{'active-lesson': store?.elementId===lesson.id}"

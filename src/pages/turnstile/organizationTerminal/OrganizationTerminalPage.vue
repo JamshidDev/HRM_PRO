@@ -27,13 +27,13 @@ onMounted(() => {
 
 <template>
   <UIPageContent>
-    <n-spin :show="componentStore.turnstileTerminalListLoading || store.loading">
+    <n-spin :show="componentStore.turnstileTerminalListLoading || store.loading" class="h-full">
 
         <n-grid cols="2" x-gap="12">
           <n-gi span="1" class="bg-surface-section rounded-md">
             <TurnstileOrgTree class="p-2 "/>
           </n-gi>
-          <n-gi span="1" class="bg-surface-section rounded-md">
+          <n-gi span="1" class="rounded-md">
             <div class="p-2 h-full">
               <NoDataPicture class="!my-0" v-if="!store.payload.organization_id"/>
               <TerminalList v-else/>

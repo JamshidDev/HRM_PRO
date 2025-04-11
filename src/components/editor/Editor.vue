@@ -104,6 +104,7 @@ const handleCreated = (editor) => {
     <component
         :is="withValidation ? NFormItem : 'div'"
         :label="label"
+        :show-label="!!label"
         :rule="[{
           trigger: ['input', 'blur'],
           validator() {

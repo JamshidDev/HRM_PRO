@@ -4,6 +4,8 @@ import {useRoute, useRouter} from "vue-router";
 import {useCategoryQuestionStore} from "@/store/modules";
 import {UIPageContent, UIPageFilter} from "@/components/index.js";
 import {AppPaths} from "@/utils/index.js";
+import {UIModal} from "@/components/index.js"
+import QuestionForm from './ui/QuestionForm.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -22,13 +24,8 @@ const onSearch = ()=>{
 }
 
 const onAdd=()=>{
-  store.isModeEdit = false
-  router.push({
-    name:"add_question",
-    params: {
-      category_id: route.params.category_id,
-    }
-  })
+  store.visibleType = true
+  store.visible = true
 }
 
 const goBack = ()=>{
@@ -58,6 +55,13 @@ const goBack = ()=>{
       </template>
 
     </UIPageFilter>
-    <QuestionList class="mt-1" />
+    <QuestionList class="mt-3" />
+    <UIModal
+        :width="1300"
+        :title="store.visibleType ? $t('categoryPage.addQuestion') : $t('categoryPage.editQuestion')"
+        v-model:visible="store.visible"
+    >
+      <QuestionForm />
+    </UIModal>
   </UIPageContent>
 </template>

@@ -7,13 +7,15 @@ export const useCategoryQuestionStore = defineStore('categoryQuestionStore', {
         list:[],
         loading:false,
         saveLoading:false,
+        showLoading:false,
         deleteLoading:false,
-        isModeEdit:false,
         elementId:null,
         category_id:null,
         totalItems:0,
         allPermissionList:[],
         structureCheck:[],
+        visible: false,
+        visibleType: true,
         payload:{
             ques: '',
             options: [],
@@ -42,18 +44,21 @@ export const useCategoryQuestionStore = defineStore('categoryQuestionStore', {
             }
             $ApiService.categoryQuestionService._create({data, category_id: this.category_id}).then((res)=>{
                 this.resetForm()
+                this.resetData()
+                this._index()
             }).finally(()=>{
                 this.saveLoading = false
             })
         },
-        _update(func){
+        _update(){
             this.saveLoading = true
             let data = {
                 ...this.payload
             }
             $ApiService.categoryQuestionService._update({data, category_id: this.category_id, question_id:this.elementId}).then((res)=>{
-                
-                func()
+                this.visible = false
+                this.resetData()
+                this._index()
             }).finally(()=>{
                 this.saveLoading = false
             })
@@ -69,7 +74,7 @@ export const useCategoryQuestionStore = defineStore('categoryQuestionStore', {
             })
         },
         _show(){
-            this.loading = true
+            this.showLoading = true
             $ApiService.categoryQuestionService._show({category_id: this.category_id, question_id:this.elementId}).then((res)=>{
                 const {options, ques} = res.data.data
                 this.payload.ques = ques
@@ -80,7 +85,7 @@ export const useCategoryQuestionStore = defineStore('categoryQuestionStore', {
                 console.log(options)
                 console.log(this.payload.options)
             }).finally(()=>{
-                this.loading = false
+                this.showLoading = false
             })
         },
         resetForm(){

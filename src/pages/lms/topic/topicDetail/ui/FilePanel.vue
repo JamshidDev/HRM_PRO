@@ -27,9 +27,6 @@ const toggleActive = (v)=>{
   store._update()
 }
 
-onMounted(()=>{
-  console.log(new DjVu.Viewer())
-})
 
 </script>
 <template>

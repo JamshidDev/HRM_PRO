@@ -72,10 +72,10 @@ const option = ref({
 })
 
 const colors = [
-  '#2dcb73',
   '#E53835',
-  '#1A84FF',
-  '#8815bd',
+  '#859322',
+  '#ecb28d',
+  '#0ded6f',
 ]
 
 

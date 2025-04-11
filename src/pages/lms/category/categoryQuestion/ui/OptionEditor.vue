@@ -9,10 +9,7 @@ const t = i18n.global.t
 const emit = defineEmits(['onRemove', 'update:model-value'])
 const props = defineProps({
   placeholder: String,
-  withValidation: {
-    type: Boolean,
-    default: false
-  },
+
   extraRules: {
     type: Array,
     default: []
@@ -50,7 +47,7 @@ const editorConfig = {
             .then((res) => {
               const {data} = res.data
               console.log(data)
-              insertFn(data,data,data)
+              insertFn(data, data, data)
             })
       },
     },
@@ -89,14 +86,13 @@ const text = defineModel('text', {
   default: ''
 })
 
-const onChange = (editor)=>{
+const onChange = (editor) => {
   emit('update:model-value', editor.getHtml())
 }
 </script>
 
 <template>
-  <component
-      :is="withValidation ? NFormItem : 'div'"
+  <n-form-item
       :path="path"
       :rule="[{
           trigger: ['input', 'blur'],
@@ -111,14 +107,14 @@ const onChange = (editor)=>{
       :show-feedback="false"
   >
     <div class="w-full flex">
-        <Editor
-            v-model="text"
-            :defaultConfig="editorConfig"
-            :mode="'default'"
-            class="grow"
-            @onCreated="handleCreated"
-            @onChange="onChange"
-        />
+      <Editor
+          v-model="text"
+          :defaultConfig="editorConfig"
+          :mode="'default'"
+          class="grow"
+          @onCreated="handleCreated"
+          @onChange="onChange"
+      />
 
       <div class="flex items-center bg-white">
         <Toolbar
@@ -128,7 +124,7 @@ const onChange = (editor)=>{
         />
       </div>
     </div>
-  </component>
+  </n-form-item>
 </template>
 <style lang="scss">
 </style>
