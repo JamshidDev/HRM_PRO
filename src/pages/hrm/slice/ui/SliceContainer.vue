@@ -1,12 +1,12 @@
 <script setup>
 import {FullScreenMaximize16Regular, AddCircle24Filled} from '@vicons/fluent'
-import {useSliceStore} from "@/store/modules/index.js"
-const store = useSliceStore()
+import {useReportStore} from "@/store/modules/index.js"
+const store = useReportStore()
 </script>
 
 <template>
 <div
-    class="w-full bg-surface-section rounded-lg"
+    class="w-full rounded-lg"
     style="min-height: calc(100vh - 80px)"
     :class="[store.fullScreen && 'container-fullscreen']"
 >

@@ -23,8 +23,14 @@ const props = defineProps({
   },
   multiple:{type:Boolean,default:false},
   opened:{type:Boolean,default:false},
+  width:{
+    type:Number,
+    default:null
+  }
 
 })
+
+const slot = useSlots()
 
 const emits = defineEmits(["onSelect", "onSelectAll"])
 
@@ -59,15 +65,20 @@ const isCheck =(id)=>{
 }
 
 
+
 </script>
 
 <template>
   <div>
     <template v-for="(item, idx) in data" :key="idx">
-      <div class="w-full flex cursor-pointer hover:bg-blue-50 ui__tree-hover">
+      <div
+          :style="{minWidth:width? width+'px':'100%'}"
+          class="flex cursor-pointer hover:bg-surface-100 ui__tree-hover items-stretch"
+          :class="[modelV.includes(item) && 'bg-surface-100']"
+      >
 
         <template v-if="deep>1">
-          <div v-for="(item,idx) in (deep-1)" :key="idx" class="w-[20px] h-[20px] border__center-line"></div>
+          <div v-for="(item,idx) in (deep-1)" :key="idx" class="w-[20px]"></div>
         </template>
 
         <div v-if="Array.isArray(item?.children) && item?.children.length>0" class="w-[20px] max-w-[20px] overflow-hidden flex justify-center items-center">
@@ -75,7 +86,10 @@ const isCheck =(id)=>{
             <ChevronRight16Filled class="transition" :class="checkedVal.includes(item.id) && 'rotate-90'"/>
           </n-icon>
         </div>
-        <div v-else :class="'deep-'+deep" class="w-[20px] h-[20px] border__center-line border__center-content"></div>
+        <div v-else
+             :class="['deep-'+deep, (data.length === idx+1 || (data.length === idx+2 && data?.[idx+1].children?.length>0 )) && 'line-half']"
+             class="w-[20px] border__center-line border__center-content"
+        ></div>
 
 
 
@@ -84,9 +98,11 @@ const isCheck =(id)=>{
               :disabled="Boolean(item.group && !multiple)"
               :checked="modelV.map((a)=>a.id).includes(item.id)"
           ></n-checkbox>
-          <span class="ml-2">{{item.name}}</span>
+          <span class="ml-2 w-full text-wrap py-1">
+            <slot name="title" :data="item" >{{item.name}}</slot>
+          </span>
         </div>
-        <div class="w-[20px] lex justify-center items-center">
+        <div class="w-[20px] justify-center items-center">
           <n-radio
               v-if="Array.isArray(item?.children) && item?.children.length>0 && multiple"
               @click="onSelectRadio(item)"
@@ -96,9 +112,12 @@ const isCheck =(id)=>{
           />
         </div>
       </div>
-      <n-collapse-transition :show="checkedVal.includes(item.id) || opened">
+
+
+      <n-collapse-transition :show="opened? !checkedVal.includes(item.id) : checkedVal.includes(item.id)">
         <Tree
             :deep="deep+1"
+            :width="width"
             :opened="opened"
             :data="item?.children"
             :modelV="modelV"
@@ -109,7 +128,11 @@ const isCheck =(id)=>{
             @onSelect="onSelect"
             @onSelectAll="onSelectRadio"
 
-        />
+        >
+          <template v-if="slot.title" #title="{data}">
+            <slot name="title" :data="data"></slot>
+          </template>
+        </Tree>
       </n-collapse-transition>
 
     </template>

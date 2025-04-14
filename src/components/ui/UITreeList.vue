@@ -10,6 +10,7 @@ const props = defineProps({
   modelV:{type:Array,default:[]},
   checkedVal:{type:Array,default:[]},
   options:{type:Array,default:[]},
+  minWidth:{type:Number,default:undefined},
 
 })
 
@@ -110,17 +111,13 @@ const changeCheckVal = (v)=>{
   emits('updateCheck',list)
 }
 
-const inputVal = computed(()=>props.modelV.map((a)=>a.name).toString())
+const slot = useSlots()
 
-
-
-onMounted(()=>{
-  store._structures()
-})
 </script>
 
 <template>
   <Tree
+      :width="minWidth"
       :data="options"
       :modelV="modelV"
       :checkedVal="checkedVal"
@@ -129,6 +126,11 @@ onMounted(()=>{
       @onSelect="onSelect"
       @onSelectAll="onSelectAll"
       :opened="opened"
-  />
+  >
+        <template #title="{data}" v-if="slot.title" >
+          <slot  name="title" :data="data"></slot>
+        </template>
+
+  </Tree>
 
 </template>

@@ -83,7 +83,7 @@ export const customTheme = {
     Radio: {
         color: superColor(tailwindColors["surface-ground"]),
         border: '1px solid' + superColor(tailwindColors["surface-line"]),
-    }
+    },
 
 }
 

@@ -1265,5 +1265,15 @@
       "organization": "Korxona",
       "file": "Fayllar"
     }
+  },
+  "reportPage": {
+    "name": "Tibbiy ko'rik",
+    "createTitle": "Tibbiy ko'rik ma'lumotini qo'shish",
+    "updateTitle": "Tibbiy ko'rik ma'lumotini tahrirlash",
+    "form": {
+      "position": "Lavozim",
+      "rate": "Kontingent",
+      "realRate": "Fakt"
+    }
   }
 }

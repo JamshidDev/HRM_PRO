@@ -45,6 +45,7 @@ import timesheetService from '@/service/v1/hrm/timesheetService.js'
 import timesheetWorkerService from '@/service/v1/hrm/timesheetWorkerService.js'
 import dashboardService from "@/service/v1/hrm/dashboardService.js"
 import medService from "@/service/v1/hrm/medService.js"
+import reportService from "@/service/v1/hrm/reportService.js"
 
 
 import documentService from "@/service/v1/docFlow/documentService.js"
@@ -129,6 +130,7 @@ export default {
     dashboardService,
     medService,
     quoteService,
+    reportService,
 
 
     turnstileTerminalService,

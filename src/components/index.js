@@ -31,6 +31,6 @@ export {default as UIBadge} from "./ui/UIBadge.vue"
 export {default as UIDepartment} from "./ui/UIDepartment.vue"
 export {default as UISelect} from "./ui/UISelect.vue"
 export {default as UILottieReader} from "./ui/UILottieReader.vue"
-export {default as UITreeList} from "./ui/UITreeList.vue"
+export {default as TreeData} from "./ui/UITreeList.vue"
 
 export * from './editor'

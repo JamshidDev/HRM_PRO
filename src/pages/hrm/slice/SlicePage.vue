@@ -1,10 +1,17 @@
 <script setup>
 import SliceContainer from "./ui/SliceContainer.vue"
 import SectionPanel from "./ui/SectionPanel.vue"
-import OrganizationsPanel from "./ui/OrganizationPanel.vue"
-import {useSliceStore} from "@/store/modules/index.js"
+import OrganizationSection from "./ui/OrganizationSection.vue"
+import DepartmentSection from "./ui/DepartmentSection.vue"
+import PositionSection from "./ui/PositionSection.vue"
+import WorkerSection from "./ui/WorkerSection.vue"
+import {useReportStore} from "@/store/modules/index.js"
 
-const store = useSliceStore()
+const store = useReportStore()
+
+onMounted(()=>{
+  store.getOrganization()
+})
 </script>
 
 <template>
@@ -12,11 +19,20 @@ const store = useSliceStore()
   <SliceContainer>
     <template v-for="panel in store.cols" :key="panel.id">
       <SectionPanel
-          v-if="store.showPanel(panel.id)"
+          :class="[!store.showPanel(panel.id) && '!w-[0px] !border-none']"
           :data="panel"
       >
         <template v-if="panel.id === 1">
-          <OrganizationsPanel/>
+          <OrganizationSection/>
+        </template>
+        <template v-if="panel.id === 2">
+          <DepartmentSection/>
+        </template>
+        <template v-if="panel.id === 3">
+          <PositionSection/>
+        </template>
+        <template v-if="panel.id === 4">
+          <WorkerSection/>
         </template>
       </SectionPanel>
 

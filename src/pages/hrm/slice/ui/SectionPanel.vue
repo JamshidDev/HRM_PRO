@@ -1,8 +1,8 @@
 <script setup>
-import {useSliceStore} from "@/store/modules/index.js"
+import {useReportStore} from "@/store/modules/index.js"
 import {DismissCircle32Filled} from "@vicons/fluent"
 
-const store = useSliceStore()
+const store = useReportStore()
 
 const props = defineProps({
   data:Object
@@ -17,10 +17,10 @@ const elementClass = computed(()=>({
   <div
       :style="elementClass"
       style="height: calc(100vh - 130px)"
-      class="border border-surface-line transition-all
-      bg-surface-section px-4 py-2 rounded-lg overflow-auto"
+      class="border border-surface-line transition-all duration-300
+      bg-surface-section rounded-lg flex flex-col overflow-hidden"
   >
-    <div class="flex w-full items-center justify-between gap-2">
+    <div class="flex w-full px-2 items-center justify-between gap-2 sticky top-0 bg-surface-section z-10 pt-2">
        <span class="text-secondary font-semibold">{{data.name}}</span>
       <n-icon
           class="text-dark cursor-pointer"
@@ -29,7 +29,9 @@ const elementClass = computed(()=>({
         <DismissCircle32Filled/>
       </n-icon>
     </div>
-    <slot></slot>
+    <div class="overflow-auto px-2 " style="height:calc(100vh - 170px)">
+      <slot></slot>
+    </div>
   </div>
 </template>
 

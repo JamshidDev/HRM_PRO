@@ -37,6 +37,15 @@
     transform: translateX(-50%);
   }
 }
+
+.line-half{
+  &::before{
+    height:54% !important;
+  }
+}
+
+
+
 .border__center-line:first-child{
   &::before{
     background: transparent;
