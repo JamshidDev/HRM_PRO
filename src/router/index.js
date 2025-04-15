@@ -11,6 +11,7 @@ import lmsRoute from "@/router/modules/lmsRoute.js"
 import appRoute from "@/router/modules/appRoute.js"
 import docflowRoute from "@/router/modules/docflowRoute.js"
 import turnstileRoute from "@/router/modules/turnstileRoute.js"
+import otherRoutes from '@/router/modules/otherRoute.js'
 const beforeLogin = (to, from, next) => {
     const token = localStorage.getItem(useAppSetting.tokenKey);
     if (token) {
@@ -71,6 +72,13 @@ const routes = [
                 beforeEnter: beforeLogin,
                 redirect: AppPaths.Home,
                 children: [...docflowRoute]
+            },
+            {
+                path:AppPaths.Others,
+                name:AppPaths.Others.substring(1),
+                beforeEnter: beforeLogin,
+                redirect: AppPaths.Home,
+                children: [...otherRoutes]
             },
             {
                 path:AppPaths.Profile,

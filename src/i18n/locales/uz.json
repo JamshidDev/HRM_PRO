@@ -101,7 +101,8 @@
     "loginByUsb": "Usb token orqali",
     "comingSoon": "Tez orada ishga tushishi reja qilingan",
     "ip": "Ip manzil",
-    "url": "Url manzil"
+    "url": "Url manzil",
+    "brief": "Batafsil"
   },
   "date": {
     "day": "Kun",
@@ -1274,6 +1275,15 @@
       "position": "Lavozim",
       "rate": "Kontingent",
       "realRate": "Fakt"
+    }
+  },
+  "others": {
+    "dashboard": {
+      "title": "Dashboard",
+      "organizations": "Korxonalar",
+      "positions": "Lavozimlar",
+      "laborCode": "Mehnat kodeksi",
+      "empty": "Bo'sh"
     }
   }
 }

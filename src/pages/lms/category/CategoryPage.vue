@@ -32,6 +32,7 @@ onMounted(()=>{
         @onAdd="onAdd"
     />
     <Table/>
+<!--    That is a good category    -->
     <UIDrawer
         :width="300"
         :visible="store.visible"

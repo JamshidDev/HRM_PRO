@@ -24,6 +24,8 @@ import {
     ClipboardBulletListLtr20Filled,
     DocumentEdit20Filled,
     AccessTime24Filled,
+    Info28Filled,
+    AppFolder24Filled,
     BuildingMultiple24Filled,
     ScanObject24Filled,
     Organization12Filled
@@ -39,7 +41,6 @@ const {t} = i18n.global
 
 export const navigations = [
     {
-        index: 1,
         label: 'HRM',
         path: AppPaths.Hrm,
         icon: Person32Filled,
@@ -139,7 +140,6 @@ export const navigations = [
         ]
     },
     {
-        index: 3,
         label: 'Doc Flow',
         path: '/docflow',
         icon: DocumentPerson16Filled,
@@ -184,7 +184,6 @@ export const navigations = [
         ]
     },
     {
-        index: 4,
         label: 'LMS',
         path: AppPaths.Lms,
         icon: PersonNote24Filled,
@@ -221,7 +220,6 @@ export const navigations = [
         ]
     },
     {
-        index: 5,
         label: 'Turnstile',
         path: AppPaths.Turnstile,
         icon: AccessTime24Filled,
@@ -251,7 +249,15 @@ export const navigations = [
         ]
     },
     {
-        index: 6,
+        label: '',
+        path: Utils.routeOtherPathMaker(AppPaths.Dashboard),
+        icon: Info28Filled,
+        permission: appPermissions.admin,
+        children: [
+
+        ]
+    },
+    {
         label: 'Admin',
         path: AppPaths.Admin,
         icon: LockClosed16Filled,

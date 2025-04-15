@@ -12,6 +12,7 @@ const onSubmit = ()=>{
       store.saveLoading = true
       if(store.visibleType){
         store._create()
+      //   ok
       }else{
         store._update()
       }

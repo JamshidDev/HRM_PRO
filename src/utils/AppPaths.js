@@ -66,7 +66,8 @@ export const AppPaths = {
     Slice:"/slice",
     Turnstile:"/turnstile",
     Building:"/building",
-    Terminal:"/terminal"
+    Terminal:"/terminal",
+    Others: "/others",
 }
 
 export const AppLayouts ={

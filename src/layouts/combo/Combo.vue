@@ -20,12 +20,16 @@ const saveAppSidebar = (visible)=>{
 const controlSidebar = ()=>{
   saveAppSidebar(!open.value)
   open.value = !open.value
-
 }
 
 const openSidebar = ()=>{
   saveAppSidebar(true)
   open.value = true
+}
+
+const closeSidebar = ()=>{
+  saveAppSidebar(false)
+  open.value = false
 }
 
 
@@ -37,7 +41,7 @@ onBeforeMount(()=>{
 
 <template>
   <div :class="layoutClass" class="organization-layout">
-    <SidebarContent @on-change="controlSidebar" @on-open="openSidebar"/>
+    <SidebarContent @on-change="controlSidebar" @on-open="openSidebar" @on-close="closeSidebar"/>
     <PageContent @on-open="openSidebar" />
     <HelperLayout/>
   </div>

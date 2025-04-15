@@ -3,7 +3,7 @@ import {useExamAttemptStore, useTopicExamResultStore} from "@/store/modules/inde
 
 import {UIModal, UIPageContent, UIPageFilter} from "@/components/index.js";
 import Table from './ui/Table.vue'
-import ViewAttemptModal from "../workerTopic/solveExam/ViewAttemptModal.vue";
+import ViewAttemptModal from "./ui/ViewResultModal.vue";
 
 const store = useTopicExamResultStore()
 const examStore = useExamAttemptStore()
