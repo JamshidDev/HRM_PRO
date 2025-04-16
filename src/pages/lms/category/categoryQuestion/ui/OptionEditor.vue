@@ -116,7 +116,7 @@ const onChange = (editor) => {
           @onChange="onChange"
       />
 
-      <div class="flex items-center bg-white">
+      <div class="flex items-center bg-white shrink-0">
         <Toolbar
             :defaultConfig="toolbarConfig"
             :editor="editorRef"

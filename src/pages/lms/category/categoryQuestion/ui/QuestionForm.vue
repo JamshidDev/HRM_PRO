@@ -55,7 +55,20 @@ onMounted(() => {
           :showValidationMessage="false"
       />
       <div class=" my-4">
-
+        <n-form-item :rule="[{
+      trigger: ['input'],
+      validator() {
+        let check = false
+        store.payload.options.forEach(i=>{
+          if(i.is_correct){
+            check = true
+          }
+        })
+        return (store.payload.options.length>2 && !check) ? new Error( $t('questionPage.rules.chooseCorrectAnswer')) : true
+      },
+    }]" path="correct_option"
+                     :show-feedback="false"
+        >
 
           <div class="w-full flex flex-col gap-3 min-h-[400px] max-h-[400px] overflow-auto p-1">
             <template v-for="(option, idx) in store.payload.options" :key="idx">
@@ -82,7 +95,7 @@ onMounted(() => {
               </div>
             </template>
           </div>
-
+        </n-form-item>
       </div>
 
       <n-space justify="end">

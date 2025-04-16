@@ -1,0 +1,1 @@
+export const OthersDashboardPage = ()=> import('./OthersDashboardPage.vue')

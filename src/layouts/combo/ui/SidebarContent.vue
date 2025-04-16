@@ -9,11 +9,8 @@ const route = useRoute()
 const router = useRouter()
 
 const store = useAccountStore()
-const emits = defineEmits(['onChange', 'onOpen'])
+const emits = defineEmits(['onChange', 'onOpen', 'onClose'])
 
-const onClick = () => {
-  emits('onChange')
-}
 
 
 const showPanel = ref(true)
@@ -25,9 +22,15 @@ const controlCollapse = ()=>{
 }
 
 const nextPanel = (path)=>{
-  pushFirstMenu(path)
   menuPath.value = path
-  emits('onOpen')
+  let index = navigations.findIndex((v=>v.path === path))
+  if(navigations[index].children && navigations[index].children.length){
+    router.push(navigations[index].children.filter((v)=>store.checkPermission(v.permission))?.[0]?.path)
+    emits('onOpen')
+  }else{
+    router.push(navigations[index].path)
+    emits('onClose')
+  }
   showPanel.value =false
   setTimeout(()=>{
     showPanel.value = true
@@ -54,6 +57,8 @@ const miniMenu = computed(()=>{
 
 })
 
+
+
 const panelMenu = computed(()=>{
   let index = navigations.findIndex((v=>v.path === menuPath.value))
 
@@ -78,10 +83,15 @@ const menuName = computed(()=>{
   else if (menuPath.value === '/docflow') return t('sidebar.docflow')
   else if (menuPath.value === '/timesheet') return t('sidebar.timesheet')
   else if (menuPath.value === '/turnstile') return t('turnstile.title')
-  else return t('sidebar.hrm')
+  else return ''
 })
 
 
+const onClick = () => {
+  if(panelMenu.value?.length){
+    emits('onChange')
+  }
+}
 
 const isComboxMenu =(path)=>{
   if(route.path.includes(path)){
@@ -96,7 +106,9 @@ const isCurrentPath = (path)=>{
 
 const pushFirstMenu = (path)=>{
   let index = navigations.findIndex((v=>v.path === path))
-  router.push(navigations[index].children.filter((v)=>store.checkPermission(v.permission))?.[0]?.path)
+  if(navigations[index].children && navigations[index].children.length){
+    router.push(navigations[index].children.filter((v)=>store.checkPermission(v.permission))?.[0]?.path)
+  }
   // router.push(navigations[index].children[0]?.path)
 }
 
@@ -126,9 +138,8 @@ const pushFirstMenu = (path)=>{
 
     </div>
     <div class="panel-content sidebar-panel">
-
       <transition name="slide-right" mode="out-in">
-        <div v-if="showPanel">
+        <div v-if="showPanel && panelMenu?.length">
 
 
           <span class="text-sm block text-textColor2 truncate font-semibold pl-4 mb-3 mt-3">{{menuName}}</span>
