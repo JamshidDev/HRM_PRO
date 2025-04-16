@@ -48,7 +48,7 @@ onMounted(()=>{
 
   <template v-for="(item, idx) in navigationData" :key="idx">
 
-    <template v-if="item?.children && item.children.length>0">
+    <template v-if="item?.children?.length>0">
       <div class="multiple__item">
         <div class="list-item hover__item"
              @click="selectRoot(null, item.path)"

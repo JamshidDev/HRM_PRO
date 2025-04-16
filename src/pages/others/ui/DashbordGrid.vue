@@ -53,7 +53,7 @@ const tab = ref(0);
             <p class="text-lg font-bold">{{ $t(item.title) }}</p>
             <p class="max-w-[250px] font-medium ">{{ item.info }}</p>
             <div class="basis-auto grow flex items-end justify-end">
-              <p class="text-primary hover:underline">
+              <p class="text-primary border-b border-dashed">
                 {{ $t('content.brief') }}
               </p>
             </div>
