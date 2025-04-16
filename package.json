@@ -39,6 +39,7 @@
     "pinia": "^2.2.2",
     "player.style": "^0.1.4",
     "qrcode": "^1.5.4",
+    "splitpanes": "^4.0.3",
     "tabulator-tables": "^6.3.1",
     "uuid": "^10.0.0",
     "vue": "^3.4.37",

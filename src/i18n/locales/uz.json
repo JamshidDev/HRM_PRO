@@ -1267,13 +1267,19 @@
     }
   },
   "reportPage": {
-    "name": "Tibbiy ko'rik",
+    "name": "Hisobotlar",
     "createTitle": "Tibbiy ko'rik ma'lumotini qo'shish",
     "updateTitle": "Tibbiy ko'rik ma'lumotini tahrirlash",
     "form": {
       "position": "Lavozim",
-      "rate": "Kontingent",
-      "realRate": "Fakt"
+      "rate": "P",
+      "realRate": "F"
+    },
+    "tab": {
+      "organization": "Korxonalar",
+      "department": "Bo'linmalar",
+      "worker": "Xodimlar",
+      "position": "Lavozimlar"
     }
   }
 }
