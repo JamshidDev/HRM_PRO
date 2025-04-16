@@ -32,5 +32,6 @@ export {default as UIDepartment} from "./ui/UIDepartment.vue"
 export {default as UISelect} from "./ui/UISelect.vue"
 export {default as UILottieReader} from "./ui/UILottieReader.vue"
 export {default as TreeData} from "./ui/UITreeList.vue"
-
+export { default as UIPanZoomArea } from "./ui/UIPanZoomArea.vue"
+export { default as UIHierarchy } from "./ui/HierarchyNode.vue"
 export * from './editor'

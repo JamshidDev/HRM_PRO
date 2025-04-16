@@ -13,6 +13,7 @@
     "@chenfengyuan/vue-countdown": "^2.1.2",
     "@he-tree/vue": "^2.9.4",
     "@onlyoffice/document-editor-vue": "^1.4.0",
+    "@panzoom/panzoom": "^4.6.0",
     "@revolist/vue3-datagrid": "^4.13.3",
     "@vicons/utils": "^0.1.4",
     "@videojs-player/vue": "^1.0.0",

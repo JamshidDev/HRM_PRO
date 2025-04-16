@@ -8,7 +8,7 @@ import {
   ChevronLeft12Regular
 } from '@vicons/fluent'
 import {AppPaths} from "@/utils/index.js";
-
+import Example from './ExampleOrgTree.vue'
 
 const list = [
   {
@@ -76,7 +76,7 @@ const tab = ref(0);
           <n-icon :component="ChevronLeft12Regular"/>
         </template>
       </n-button>
-      1
+      <Example />
     </n-tab-pane>
     <n-tab-pane :name="2">
       <n-button tertiary circle @click="tab=0">
