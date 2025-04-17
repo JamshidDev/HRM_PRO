@@ -19,55 +19,57 @@ const toggleCollapse = ()=>{
 
 <template>
   <table>
-    <tr>
-      <td :colspan="(tree?.children?.length || 1)" class="relative !px-4">
-        <slot :data="tree">
-          <div class="flex justify-center">
-            <p class="text-center bg-surface-section rounded-md border border-surface-line p-2 text-nowrap">{{tree?.name}}</p>
-          </div>
-        </slot>
-        <slot name="collapse" :toggleCollapse="toggleCollapse" :collapsed="collapsed">
-          <div v-if="tree?.children?.length" class="absolute bottom-0 left-[50%] translate-x-[-50%] translate-y-[50%]">
-            <div @click="toggleCollapse" class="shadow-sm border border-surface-line rounded-full w-[20px] h-[20px] flex justify-center items-center bg-surface-section cursor-pointer">
-              <n-icon :component="ChevronDown28Regular" :style="{transform: collapsed ? 'rotate(180deg)' : 'rotate(0deg)'}"/>
+    <tbody>
+      <tr>
+        <td :colspan="(tree?.children?.length || 1)" class="relative !px-4">
+          <slot :data="tree">
+            <div class="flex justify-center">
+              <p class="text-center bg-surface-section rounded-md border border-surface-line p-2 text-nowrap">{{tree?.name}}</p>
             </div>
-          </div>
-        </slot>
-      </td>
-    </tr>
-    <template v-if="tree?.children?.length">
-      <tr class="connector_top"  :style="{visibility: collapsed ? 'hidden' : 'inherit'}">
-        <td :colspan="(tree?.children?.length || 1)">
-          <div class="flex">
-            <div class="border-r border-black basis-auto grow">
-              &nbsp;
+          </slot>
+          <slot name="collapse" :toggleCollapse="toggleCollapse" :collapsed="collapsed">
+            <div v-if="tree?.children?.length" class="absolute bottom-0 left-[50%] translate-x-[-50%] translate-y-[50%]">
+              <div @click="toggleCollapse" class="shadow-sm border border-surface-line rounded-full w-[20px] h-[20px] flex justify-center items-center bg-surface-section cursor-pointer">
+                <n-icon :component="ChevronDown28Regular" :style="{transform: collapsed ? 'rotate(180deg)' : 'rotate(0deg)'}"/>
+              </div>
             </div>
-            <div class="basis-auto grow">
-              &nbsp;
-            </div>
-          </div>
+          </slot>
         </td>
       </tr>
-      <tr class="connector" :style="{visibility: collapsed ? 'hidden' : 'inherit'}">
-        <template v-for="(child, idx) in tree.children" :key="idx">
-          <td>
+      <template v-if="tree?.children?.length">
+        <tr class="connector_top"  :style="{visibility: collapsed ? 'hidden' : 'inherit'}">
+          <td :colspan="(tree?.children?.length || 1)">
             <div class="flex">
-              <div class="border-r border-t border-black basis-auto grow">
+              <div class="border-r border-black basis-auto grow">
                 &nbsp;
               </div>
-              <div class="basis-auto border-t grow">
+              <div class="basis-auto grow">
                 &nbsp;
               </div>
             </div>
           </td>
-        </template>
-      </tr>
-      <tr :style="{visibility: collapsed ? 'hidden' : 'inherit'}">
-        <td v-for="(child, idx) in tree.children" :key="idx">
-          <HierarchyNode :tree="child" />
-        </td>
-      </tr>
-    </template>
+        </tr>
+        <tr class="connector" :style="{visibility: collapsed ? 'hidden' : 'inherit'}">
+          <template v-for="(child, idx) in tree.children" :key="idx">
+            <td>
+              <div class="flex">
+                <div class="border-r border-t border-black basis-auto grow">
+                  &nbsp;
+                </div>
+                <div class="basis-auto border-t grow">
+                  &nbsp;
+                </div>
+              </div>
+            </td>
+          </template>
+        </tr>
+        <tr :style="{visibility: collapsed ? 'hidden' : 'inherit'}">
+          <td v-for="(child, idx) in tree.children" :key="idx">
+            <HierarchyNode :tree="child" />
+          </td>
+        </tr>
+      </template>
+    </tbody>
   </table>
 </template>
 

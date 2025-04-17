@@ -1,11 +1,10 @@
 <script setup>
 import validationRules from "@/utils/validationRules.js";
-
-const formRef = ref(null)
 import {useOrganizationLeaderStore, useComponentStore} from "@/store/modules/index.js";
 import {UIStructure} from "@/components/index.js"
 import PhoneInput from './PhoneInput.vue'
 
+const formRef = ref(null)
 const store = useOrganizationLeaderStore()
 const componentStore = useComponentStore()
 
@@ -96,7 +95,8 @@ const workerRenderValue = ({option}) => {
                   :key="idx">
           <div class="grow shrink-0 basis-[200px]">
             <PhoneInput
-                v-model:phone="store.payload.phones[idx]"
+                :phone="store.payload.phones[idx]"
+                @update:value="(v)=>store.payload.phones[idx] = v"
                 :removable="store.payload.phones.length > 1"
                 :addable="store.payload.phones.length < 5 && idx === store.payload.phones.length - 1"
                 @add="store.payload.phones.push('')"

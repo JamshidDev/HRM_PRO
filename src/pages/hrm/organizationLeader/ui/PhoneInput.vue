@@ -7,18 +7,24 @@ import { vMaska } from 'maska/vue';
 const props = defineProps({
   removable: Boolean,
   addable: Boolean,
+  phone: String
 });
-const emit = defineEmits(['add', 'remove']);
+const emit = defineEmits(['add', 'remove', 'update:value']);
 
-const phone = defineModel('phone', { type: String }); // important: named model
+const masked = ref('')
 const unmasked = ref('');
 defineExpose({ unmasked });
 
 const onBlur = () => {
-  if (!phone.value && props.removable) {
+  if (!masked.value && props.removable) {
     emit('remove');
   }
 };
+
+onMounted(()=>{
+  masked.value = props.phone;
+})
+
 </script>
 
 <template>
@@ -30,7 +36,8 @@ const onBlur = () => {
     </n-button>
 
     <n-input
-        v-model:value="phone"
+        v-model:value="masked"
+        @update:value="emit('update:value', unmasked)"
         v-maska:unmasked.unmasked="{ mask: ['##-###-##-##', '##-###'] }"
         @blur="onBlur"
     />

@@ -45,12 +45,12 @@ export const useOrganizationLeaderStore = defineStore('organizationLeaderStore',
                 this.saveLoading = false
             })
         },
-        _update(data) {
+        _update() {
             this.saveLoading = true
+            const data = {phones: this.payload.phones}
             $ApiService.organizationLeaderService._update({
                 data,
                 id: this.elementId,
-                params: {_method: "PUT"}
             }).then((res) => {
                 this.visible = false
                 this._index()
