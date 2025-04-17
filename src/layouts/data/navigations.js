@@ -25,6 +25,7 @@ import {
     DocumentEdit20Filled,
     AccessTime24Filled,
     Info28Filled,
+    SlideMultipleSearch24Filled,
     AppFolder24Filled,
     BuildingMultiple24Filled,
     ScanObject24Filled,
@@ -251,7 +252,7 @@ export const navigations = [
     {
         label: '',
         path: Utils.routeOtherPathMaker(AppPaths.Dashboard),
-        icon: Info28Filled,
+        icon: SlideMultipleSearch24Filled,
         permission: appPermissions.admin,
         children: [
 

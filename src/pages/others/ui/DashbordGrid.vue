@@ -8,7 +8,7 @@ import {
   ChevronLeft12Regular
 } from '@vicons/fluent'
 import {AppPaths} from "@/utils/index.js";
-
+import Example from './ExampleOrgTree.vue'
 
 const list = [
   {
@@ -53,7 +53,7 @@ const tab = ref(0);
             <p class="text-lg font-bold">{{ $t(item.title) }}</p>
             <p class="max-w-[250px] font-medium ">{{ item.info }}</p>
             <div class="basis-auto grow flex items-end justify-end">
-              <p class="text-primary hover:underline">
+              <p class="text-primary border-b border-dashed">
                 {{ $t('content.brief') }}
               </p>
             </div>
@@ -76,7 +76,7 @@ const tab = ref(0);
           <n-icon :component="ChevronLeft12Regular"/>
         </template>
       </n-button>
-      1
+      <Example />
     </n-tab-pane>
     <n-tab-pane :name="2">
       <n-button tertiary circle @click="tab=0">
