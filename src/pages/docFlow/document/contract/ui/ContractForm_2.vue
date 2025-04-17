@@ -51,53 +51,51 @@ const onChangeStructure = (v)=>{
             />
           </n-form-item>
         </div>
-        <div v-if="showCheckBox" class="col-span-12 flex justify-end">
-          <n-checkbox v-model:checked="store.payload.position_status" @update:checked="onChangeStatus">
-            <span class="text-xs text-gray-500">{{$t(`documentPage.form.positionStatus`)}}</span>
-          </n-checkbox>
+<!--        <div v-if="showCheckBox" class="col-span-12 flex justify-end">-->
+<!--          <n-checkbox v-model:checked="store.payload.position_status" @update:checked="onChangeStatus">-->
+<!--            <span class="text-xs text-gray-500">{{$t(`documentPage.form.positionStatus`)}}</span>-->
+<!--          </n-checkbox>-->
+<!--        </div>-->
+<!--        <template v-if="!store.payload.position_status && showCheckBox">-->
+<!--          <div class="col-span-4">-->
+<!--            <n-form-item :label="$t(`documentPage.form.position`)" path="position_id">-->
+<!--              <n-select-->
+<!--                  v-model:value="store.payload.position_id"-->
+<!--                  filterable-->
+<!--                  :placeholder="$t(`content.choose`)"-->
+<!--                  :options="componentStore.positionList"-->
+<!--                  label-field="name"-->
+<!--                  value-field="id"-->
+<!--                  :loading="componentStore.positionLoading"-->
+<!--              />-->
+<!--            </n-form-item>-->
+<!--          </div>-->
+<!--        </template>-->
+        <div class="col-span-6">
+          <n-form-item :label="$t(`documentPage.form.department`)" path="department_id">
+            <UIDepartment
+                :modelV="store.payload.department_id"
+                @updateModel="onChangeDepartment"
+                :checkedVal="store.departmentCheck"
+                @updateCheck="(v)=>store.departmentCheck=v"
+                :multiple="false"
+            />
+          </n-form-item>
         </div>
-        <template v-if="!store.payload.position_status && showCheckBox">
-          <div class="col-span-4">
-            <n-form-item :label="$t(`documentPage.form.position`)" path="position_id">
-              <n-select
-                  v-model:value="store.payload.position_id"
-                  filterable
-                  :placeholder="$t(`content.choose`)"
-                  :options="componentStore.positionList"
-                  label-field="name"
-                  value-field="id"
-                  :loading="componentStore.positionLoading"
-              />
-            </n-form-item>
-          </div>
-        </template>
-        <template v-else>
-          <div class="col-span-6">
-            <n-form-item :label="$t(`documentPage.form.department`)" path="department_id">
-              <UIDepartment
-                  :modelV="store.payload.department_id"
-                  @updateModel="onChangeDepartment"
-                  :checkedVal="store.departmentCheck"
-                  @updateCheck="(v)=>store.departmentCheck=v"
-                  :multiple="false"
-              />
-            </n-form-item>
-          </div>
-          <div class="col-span-6">
-            <n-form-item :label="$t(`documentPage.form.position`)" path="department_position_id">
-              <n-select
-                  :disabled="!Boolean(store.payload.department_id)"
-                  v-model:value="store.payload.department_position_id"
-                  filterable
-                  :placeholder="$t(`content.choose`)"
-                  :options="componentStore.departmentPositionList"
-                  label-field="name"
-                  value-field="id"
-                  :loading="componentStore.departmentPositionLoading"
-              />
-            </n-form-item>
-          </div>
-        </template>
+        <div class="col-span-6">
+          <n-form-item :label="$t(`documentPage.form.position`)" path="department_position_id">
+            <n-select
+                :disabled="!Boolean(store.payload.department_id)"
+                v-model:value="store.payload.department_position_id"
+                filterable
+                :placeholder="$t(`content.choose`)"
+                :options="componentStore.departmentPositionList"
+                label-field="name"
+                value-field="id"
+                :loading="componentStore.departmentPositionLoading"
+            />
+          </n-form-item>
+        </div>
 
         <div class="col-span-3">
           <n-form-item :label="$t(`documentPage.form.group`)" path="group">

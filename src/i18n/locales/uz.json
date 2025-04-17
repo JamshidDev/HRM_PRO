@@ -142,6 +142,10 @@
     "unExpectedError": "Kutilmagan xatolik yuz berdi!",
     "warning-data": "Ma'lumotlar yetarli emas!"
   },
+  "enum": {
+    "man": "Erkak",
+    "woman": "Ayol"
+  },
   "account": {
     "changeAccount": "Hisobni o'zgartirish!",
     "changeRoleConfirm": "Bu hisobdan chiqib boshqa hisobga kirish uchun kerakli hisobni tanlang va 20 soniya kuting"
@@ -453,6 +457,7 @@
       "passport_address": "Berilgan joyi",
       "passport_file": "Passport nusxasi (.pdf)",
       "inn": "Inn",
+      "sex_id": "Jinsi",
       "marital_status": "Oilaviy holati",
       "address": "Yashash manzili",
       "experience_date": "Uzliksiz ish staji",
@@ -1281,6 +1286,16 @@
       "department": "Bo'linmalar",
       "worker": "Xodimlar",
       "position": "Lavozimlar"
+    }
+  },
+  "aiConversation":{
+    "canIHelpYouToday": "Bugun sizga qanday yordam bera olaman?",
+    "welcomeTo": "Xush kelibsiz, {n}",
+    "disclaimer": {
+      "cardOne": "Ushbu sun’iy intellekt yordamchisi hozirda test rejimida ishlamoqda. Uning javoblari hali to‘liq shakllanmagan bo‘lishi mumkin. Foydalanish davomida xatoliklar yoki noto‘g‘ri javoblar uchrashi ehtimoli mavjud.",
+      "cardTwo": "Bot hozircha faqat O‘zbekiston Respublikasi Mehnat kodeksi va Konstitutsiyasi kabi asosiy huquqiy hujjatlar asosida o‘rganmoqda. Boshqa qonun hujjatlari to‘liq yuklanmagan yoki hali o‘rganilmagan bo‘lishi mumkin.",
+      "cardThree": "Iltimos, faqat mehnat munosabatlari yoki boshqa huquqiy masalalarga oid savollarni yuboring. Bot hozircha texnik, umumiy bilimlar yoki shaxsiy maslahatlar uchun mo‘ljallanmagan.",
+      "cardFour": "Bot tomonidan berilayotgan javoblar faqat ma’lumot berish maqsadida shakllantirilgan. Ular rasmiy huquqiy maslahat o‘rnini bosa olmaydi. Muayyan huquqiy muammo bo‘yicha yuristga murojaat qilish tavsiya etiladi."
     }
   },
   "others": {

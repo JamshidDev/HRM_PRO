@@ -22,9 +22,6 @@ const onPagination = (v)=>{
         v-model:search="store.workerParams.search"
         @onSearch="store.getWorker()"
     >
-      <template #filterAction>
-        <n-button type="error" secondary>{{$t('content.clear')}}</n-button>
-      </template>
     </UIPageFilter>
     <div class="w-full"  v-if="store.workerList.length>0">
       <n-table

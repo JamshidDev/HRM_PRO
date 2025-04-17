@@ -13,7 +13,7 @@ const isPosition = computed(()=>!([1,2].includes(store.payload.type)))
 
 const onFocusDirector = ()=>{
   if(componentStore.directorList.length === 0){
-    componentStore._directors(store.organization_id?.[0].id || undefined)
+    componentStore._directors(store.organization_id?.[0]?.id || undefined)
   }
 
 }

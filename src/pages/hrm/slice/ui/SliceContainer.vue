@@ -1,5 +1,5 @@
 <script setup>
-import {FullScreenMaximize16Regular, AddCircle28Regular} from '@vicons/fluent'
+import {FullScreenMaximize16Regular, AddCircle28Regular, FullScreenMinimize24Regular} from '@vicons/fluent'
 import {useReportStore} from "@/store/modules/index.js"
 const store = useReportStore()
 </script>
@@ -15,10 +15,19 @@ const store = useReportStore()
       <n-breadcrumb>
         <template v-for="item in store.barList.sort((a,b)=>a.id - b.id)" :key="item.id">
           <n-breadcrumb-item
-              class="cursor-pointer text-primary"
+              class="cursor-pointer"
               @click="store.addPanel(item)"
           >
-            <n-icon :component="AddCircle28Regular" /> {{item.name}}
+            <n-icon :component="AddCircle28Regular"/>
+            <span class="pl-1 text-primary">
+                 <template v-if="item.id === 1">
+              {{ store.organizations?.[0]?.name || item.name}}
+            </template>
+            <template v-else-if="item.id === 2">
+              {{ store.departments?.[0]?.name || item.name}}
+            </template>
+            <template v-else>{{ item.name}}</template>
+            </span>
           </n-breadcrumb-item>
         </template>
       </n-breadcrumb>
@@ -27,14 +36,15 @@ const store = useReportStore()
           @click="store.changeScreenMode()"
           circle size="small">
         <template #icon>
-          <FullScreenMaximize16Regular/>
+          <FullScreenMinimize24Regular v-if="store.fullScreen" />
+          <FullScreenMaximize16Regular v-else/>
         </template>
       </n-button>
   </div>
   <TransitionGroup
       tag="div"
       name="grid-fade"
-      class="flex gap-2 w-full px-2"
+      class=" w-full px-2"
   >
     <slot name="default"></slot>
   </TransitionGroup>

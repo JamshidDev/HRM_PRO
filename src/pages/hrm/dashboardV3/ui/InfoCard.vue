@@ -8,7 +8,7 @@ const store = useDashboardStore()
 <template>
 <div class="h-full" v-if="store.dashboard?.passwordCard">
   <div class="w-full h-[33%] flex items-start">
-    <div class="w-full border border-surface-line p-3 rounded-lg bg-surface-section relative">
+    <div class="w-full border border-surface-line p-3 rounded-lg bg-surface-section relative hover-effect-card">
       <span class="font-semibold text-nowrap mb-4 block">{{$t(store.dashboard?.passwordCard?.title)}} </span>
       <span class="absolute w-[50px] h-[50px] top-[10px] right-[10px] bg-blue-50 flex justify-center items-center rounded-full">
               <n-icon size="36" class="text-primary">
@@ -28,7 +28,7 @@ const store = useDashboardStore()
   </div>
 
   <div class="w-full h-[33%] flex items-center">
-    <div class="w-full border border-surface-line p-3 rounded-lg bg-surface-section relative">
+    <div class="w-full border border-surface-line p-3 rounded-lg bg-surface-section relative hover-effect-card">
       <span class="font-semibold text-nowrap mb-4 block">{{$t(store.dashboard?.medicalCard?.title)}} </span>
       <span class="absolute w-[50px] h-[50px] top-[10px] right-[10px] bg-green-50 flex justify-center items-center rounded-full">
               <n-icon size="36" class="text-success">
@@ -48,7 +48,7 @@ const store = useDashboardStore()
   </div>
 
   <div class="w-full h-[33%] flex items-end">
-    <div class="w-full border border-surface-line p-3 rounded-lg bg-surface-section relative">
+    <div class="w-full border border-surface-line p-3 rounded-lg bg-surface-section relative hover-effect-card">
       <span class="font-semibold text-nowrap mb-4 block">{{$t(store.dashboard?.pensionCard?.title)}} </span>
       <span class="absolute w-[50px] h-[50px] top-[10px] right-[10px] bg-red-50 flex justify-center items-center rounded-full">
               <n-icon size="36" class="text-danger">

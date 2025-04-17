@@ -152,10 +152,11 @@ const ActionTypes = {
     delete:"delete",
     timesheet: "timesheet",
     verifier: "verifier",
+    close: "close",
     finish: "finish"
 }
 const combineFullName = (user)=>{
-    return `${user.last_name} ${user.first_name} ${user.middle_name}`
+    return `${user?.last_name} ${user?.first_name} ${user?.middle_name}`
 }
 const monthList = [
     {

@@ -73,7 +73,7 @@ onMounted(()=>{
 
 <template>
 <div class="w-full min-h-screen login-page-bg flex justify-center items-center">
-    <div class="page-form-content bg-surface-section relative overflow-hidden rounded-3xl bg-no-repeat bg-cover">
+    <div class="page-form-content relative overflow-hidden rounded-[20px] bg-no-repeat bg-cover">
       <div class="absolute top-[20px] right-[20px] z-[5]">
         <LangDropdown class="!text-white"/>
       </div>
@@ -269,6 +269,18 @@ onMounted(()=>{
   border: unset !important;
 }
 
+
+.page-form-content{
+  &::before{
+    content:' ';
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    top: 0;
+    left: 0;
+    position: absolute;
+  }
+}
 
 
 

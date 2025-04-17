@@ -1,5 +1,5 @@
 <script setup>
-import {UIPageContent} from "@/components/index.js"
+import {UIPageContent, AIButton} from "@/components/index.js"
 import {useQuoteStore} from "@/store/modules/index.js"
 import Quotes from "./ui/Quotes.vue"
 const store = useQuoteStore()

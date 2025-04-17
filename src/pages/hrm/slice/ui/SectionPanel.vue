@@ -1,6 +1,7 @@
 <script setup>
 import {useReportStore} from "@/store/modules/index.js"
 import {DismissCircle20Regular} from "@vicons/fluent"
+import {UIMenuButton} from "@/components/index.js"
 
 const store = useReportStore()
 const elementRef = ref(null)
@@ -31,12 +32,18 @@ const stylePanel = computed(()=>({
   >
     <div class="flex w-full px-2 items-center justify-between gap-2 sticky top-0 bg-surface-section z-10 pt-2">
        <span class="text-secondary font-semibold">{{data?.name}}</span>
-      <n-icon
-          class="text-danger cursor-pointer"
-          @click="store.closePanel(data?.id)"
-          size="26">
-        <DismissCircle20Regular/>
-      </n-icon>
+<!--      <n-icon-->
+<!--          class="text-danger cursor-pointer"-->
+<!--          @click="store.closePanel(data?.id)"-->
+<!--          size="26">-->
+<!--        <DismissCircle20Regular/>-->
+<!--      </n-icon>-->
+      <UIMenuButton
+          :data="data"
+          :show-close="true"
+          :show-delete="false"
+          @selectEv="store.closePanel(data?.id)"
+      />
     </div>
     <div class="overflow-auto px-2 " :style="stylePanel">
       <slot></slot>

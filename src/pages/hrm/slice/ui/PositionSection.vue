@@ -40,7 +40,11 @@ const onPagination = (v)=>{
         </tr>
         </thead>
         <tbody>
-        <tr v-for="(item, idx) in store.positionList" :key="idx">
+        <tr
+            v-for="(item, idx) in store.positionList"
+            :key="idx"
+            @click="store.changePosition(item.id)"
+        >
           <td>
 
             <span class=" text-[12px] text-gray-600 block">{{ (store.positionParams.page - 1) * store.positionParams.per_page + idx + 1 }}</span>
@@ -48,7 +52,6 @@ const onPagination = (v)=>{
           </td>
           <td>
             <n-checkbox
-                @click="store.changePosition(item.id)"
                 :checked="store.position === item.id"
             ></n-checkbox>
           </td>

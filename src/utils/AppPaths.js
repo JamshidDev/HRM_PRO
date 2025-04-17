@@ -68,6 +68,7 @@ export const AppPaths = {
     Building:"/building",
     Terminal:"/terminal",
     Others: "/others",
+    AIConversation: "/ai-conversation",
 }
 
 export const AppLayouts ={

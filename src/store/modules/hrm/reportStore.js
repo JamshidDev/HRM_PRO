@@ -66,9 +66,6 @@ export const useReportStore = defineStore('reportStore', {
 
     }),
     getters:{
-       showPanel:(state)=>(id)=>{
-            return !state.barList.map(v=>v.id).includes(id)
-       },
         activePanelCount:(state)=>{
            return state.activePanels.length;
         },
@@ -81,14 +78,14 @@ export const useReportStore = defineStore('reportStore', {
         closePanel(id){
             setTimeout(()=>{
                 this.panels--
+                const index = this.activePanels.findIndex(v=>v.id === id)
+                if(index !== -1){
+                    this.barList.push(this.activePanels[index])
+                    this.activePanels.splice(index,1)
+
+                }
             },0)
-           const index = this.activePanels.findIndex(v=>v.id === id)
-            if(index !== -1){
 
-                this.barList.push(this.activePanels[index])
-                this.activePanels.splice(index,1)
-
-            }
         },
         addPanel(item){
             this.beforeOpen(item)
@@ -101,8 +98,32 @@ export const useReportStore = defineStore('reportStore', {
                 this.panels++
 
             }else{
-                this.barList[0]=this.activePanels[2]
-                this.activePanels[2]=item
+                this.activePanels.push(item)
+                const idx = this.barList.findIndex(v=>v.id === item.id)
+                if(idx !== -1){
+                    this.barList.splice(idx,1)
+                }
+
+                if(item.id === 4){
+                    this.barList.push(this.cols[0])
+                    const l = this.activePanels.findIndex(v=>v.id === 1)
+                    if(l !== -1){
+                        this.activePanels.splice(l,1)
+                    }
+
+                }
+                for(let index in this.cols){
+                    let col = this.cols[index]
+
+                   if(col.id > item.id){
+                       const position = this.activePanels.findIndex(v=>v.id === col.id)
+                       if(position !== -1){
+                           this.activePanels.splice(position,1)
+                       }
+                       this.barList.push(col)
+
+                   }
+                }
             }
 
         },
@@ -112,11 +133,6 @@ export const useReportStore = defineStore('reportStore', {
 
             }else if(item.id === this.cols[2].id){
                 this.resetPosition()
-                if(this.departments?.[0]?.id){
-                    this.positionParams.department_id = this.departments?.[0]?.id
-                }else if(this.organizations?.[0]?.id){
-                    this.positionParams.organization_id = this.organizations?.[0]?.id
-                }
                 this.getPosition()
             }
             else if(item.id === 4){
@@ -149,15 +165,20 @@ export const useReportStore = defineStore('reportStore', {
             //     this.barList.splice(0,1)
             // }
 
+            this.positionParams.organization_id = this.organizations?.[0]?.id
+            this.workerParams.organization_id = this.organizations?.[0]?.id
+            this.positionParams.department_id = null
+            this.workerParams.department_id = null
+            this.workerParams.department_position_id = null
+            this.position = null
+            this.departments = []
 
             if(this.isActivePanel(this.cols[1].id)){
                 this.getDepartment()
             }else if(this.isActivePanel(this.cols[2].id)){
-                this.positionParams.organization_id = this.organizations?.[0]?.id
                 this.getPosition()
             }
             else if(this.isActivePanel(this.cols[3].id)){
-                this.workerParams.organization_id = this.organizations?.[0]?.id
                 this.getWorker()
             }
         },
@@ -176,16 +197,17 @@ export const useReportStore = defineStore('reportStore', {
         },
         changeDepartment(v){
             this.departments = v
-
             this.resetWorker()
             this.resetPosition()
 
+            this.positionParams.department_id = this.departments?.[0]?.id
+            this.workerParams.department_id = this.departments?.[0]?.id
+            this.workerParams.department_position_id = null
+
             if(this.isActivePanel(this.cols[2].id)){
-                this.positionParams.department_id = this.departments?.[0]?.id
                 this.getPosition()
             }
             else if(this.isActivePanel(this.cols[3].id)){
-                this.workerParams.department_id = this.departments?.[0]?.id
                 this.getWorker()
             }
         },
@@ -224,14 +246,13 @@ export const useReportStore = defineStore('reportStore', {
             })
         },
 
+
+
         resetWorker(){
             this.workerList =[]
         },
         resetPosition(){
-            this.position = null
             this.positionList=[]
-            this.positionParams.organization_id = null
-            this.positionParams.department_id = null
         },
         resetDepartment(){
             this.departmentList = []

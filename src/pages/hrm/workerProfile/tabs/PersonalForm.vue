@@ -259,6 +259,20 @@ onMounted(()=>{
     </n-form-item>
     <n-form-item
         class="col-span-4"
+        :label="$t(`createWorkerPage.form.sex_id`)"
+        path="sex">
+      <n-select
+          @focus="onNationality"
+          v-model:value="store.payload.sex"
+          filterable
+          :placeholder="$t(`content.choose`)"
+          :options="componentStore.genderList"
+          label-field="name"
+          value-field="id"
+      />
+    </n-form-item>
+    <n-form-item
+        class="col-span-4"
         :label="$t(`createWorkerPage.form.pin`)"
         path="pin">
       <n-input

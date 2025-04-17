@@ -12,6 +12,8 @@ import 'splitpanes/dist/splitpanes.css'
 
 const store = useReportStore()
 
+
+
 onMounted(()=>{
   store.getOrganization()
   store.activePanels.push(store.cols[0])
@@ -24,29 +26,36 @@ onMounted(()=>{
 <div class="p-2">
 
   <SliceContainer>
-    <splitpanes class="w-full">
-      <pane
-          v-for="(panel, idx) in store.panels" :key="panel"
-          min-size="10"
+    <splitpanes
+        class="w-full">
+      <template
+          v-for="(panel, idx) in store.cols" :key="panel.id"
       >
+        <pane
 
-        <SectionPanel
-            :data="store.activePanels[idx]"
+            min-size="10"
+            v-if="store.isActivePanel(panel.id)"
         >
-          <template v-if="store.activePanels[idx]?.id === 1">
-            <OrganizationSection/>
-          </template>
-          <template v-if="store.activePanels[idx]?.id === 2">
-            <DepartmentSection/>
-          </template>
-          <template v-if="store.activePanels[idx]?.id === 3">
-            <PositionSection/>
-          </template>
-          <template v-if="store.activePanels[idx]?.id === 4">
-            <WorkerSection/>
-          </template>
-        </SectionPanel>
-      </pane>
+
+          <SectionPanel
+              :data="panel"
+          >
+            <template v-if="panel.id === 1">
+              <OrganizationSection/>
+            </template>
+            <template v-if="panel.id === 2">
+              <DepartmentSection/>
+            </template>
+            <template v-if="panel.id === 3">
+              <PositionSection/>
+            </template>
+            <template v-if="panel.id === 4">
+              <WorkerSection/>
+            </template>
+          </SectionPanel>
+        </pane>
+      </template>
+
     </splitpanes>
   </SliceContainer>
 </div>

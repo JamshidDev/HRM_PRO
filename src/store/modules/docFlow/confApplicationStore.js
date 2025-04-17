@@ -29,7 +29,8 @@ export const useConfApplicationStore = defineStore('confApplicationStore', {
         vacationWorkerList:[],
         vacationWorkerLoading:false,
         editLoading:false,
-        typeList:[1,2,6,7],
+        // typeList:[1,2,6,7],
+        typeList:[1,2,3,4,5,6,7,8,9,10],
         payload:{
             director_id:null,
             worker_position_id:null,

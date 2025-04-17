@@ -3,7 +3,9 @@ import {navigations} from "../../data/navigations.js"
 import {ChevronDown12Regular, ChevronDoubleLeft16Filled} from "@vicons/fluent"
 import {useAccountStore} from "@/store/modules/index.js"
 import i18n from "@/i18n/index.js"
-import {useAppSetting} from "@/utils/index.js"
+import {AppPaths, useAppSetting} from "@/utils/index.js"
+import {AIButton} from "@/components/index.js"
+
 const {t} = i18n.global
 const route = useRoute()
 const router = useRouter()
@@ -135,6 +137,7 @@ const pushFirstMenu = (path)=>{
             </n-icon>
           </div>
       </template>
+      <AIButton/>
 
     </div>
     <div class="panel-content sidebar-panel">
