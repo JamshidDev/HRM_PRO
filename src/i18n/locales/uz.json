@@ -74,7 +74,7 @@
     "message": "Xabar yozing...",
     "no-message": "Hozircha suhbatlar yo'q",
     "type": "Turi",
-    "organization": "Korxona",
+    "workplace": "Korxona",
     "upload": "Fayl yuklash",
     "attachFile": "Fayl biriktirish",
     "document": "Hujjat",
@@ -102,7 +102,9 @@
     "comingSoon": "Tez orada ishga tushishi reja qilingan",
     "ip": "Ip manzil",
     "url": "Url manzil",
-    "brief": "Batafsil"
+    "brief": "Batafsil",
+    "organization": "Tashkilot",
+    "staff": "Xodim"
   },
   "date": {
     "day": "Kun",
@@ -1267,6 +1269,12 @@
       "file": "Fayllar"
     }
   },
+  "organizationLeaderPage": {
+    "name": "Rahbariyat",
+    "invalidPhone": "Telefon raqami noto'gri!",
+    "addLeader": "Rahbariyatni qo'shish",
+    "editLeader": "Rahbariyatni tahrirlash"
+  },
   "reportPage": {
     "name": "Tibbiy ko'rik",
     "createTitle": "Tibbiy ko'rik ma'lumotini qo'shish",
@@ -1278,6 +1286,7 @@
     }
   },
   "others": {
+    "title": "Boshqalar",
     "dashboard": {
       "title": "Dashboard",
       "organizations": "Korxonalar",

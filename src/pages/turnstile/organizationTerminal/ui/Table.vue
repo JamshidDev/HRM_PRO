@@ -37,7 +37,7 @@ const onSelect = (v)=>{
         <thead>
         <tr>
           <th class="!text-center w-[30px] min-w-[30px] flex-grow-0">{{$t('content.number')}}</th>
-          <th class="!text-center">{{$t('content.organization')}}</th>
+          <th class="!text-center">{{$t('content.workplace')}}</th>
           <th class="!text-center">{{$t('turnstile.organization.terminal')}}</th>
           <th class="!text-center">{{$t('turnstile.terminalPage.building')}}</th>
           <th class="max-w-[60px] w-[60px]">{{$t('content.action')}}</th>

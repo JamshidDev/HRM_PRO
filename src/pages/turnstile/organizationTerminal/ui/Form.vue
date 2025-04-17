@@ -36,7 +36,7 @@ onMounted(() => {
       class="h-full flex flex-col"
   >
     <n-form-item
-        :label="$t(`content.organization`)"
+        :label="$t(`content.workplace`)"
         path="organization_id"
         rule-path="requiredMultiSelectField"
     >

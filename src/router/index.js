@@ -75,7 +75,6 @@ const routes = [
             },
             {
                 path:AppPaths.Others,
-                name:AppPaths.Others.substring(1),
                 beforeEnter: beforeLogin,
                 redirect: AppPaths.Home,
                 children: [...otherRoutes]

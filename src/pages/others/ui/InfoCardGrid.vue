@@ -8,14 +8,15 @@ import {
   ChevronLeft12Regular
 } from '@vicons/fluent'
 import {AppPaths} from "@/utils/index.js";
-import Example from './ExampleOrgTree.vue'
+import TreeTabs from './TreeTabs.vue'
 
 const list = [
   {
     title: 'others.dashboard.organizations',
     icon: Organization12Filled,
     info: 'Temir yo\'llarda korxanalar to\'g\'r ma\'lumot korxanalar to\'g\'risida Batafsil ma\'lumot korxanalar to\'g\'risida Batafsil ma\'lumot',
-    type: 'success'
+    type: 'success',
+    component:TreeTabs
   },
   {
     title: 'others.dashboard.positions',
@@ -47,7 +48,6 @@ const tab = ref(0);
         <n-gi v-for="(item, idx) in list"
               :key="idx"
               class="bg-surface-section border border-surface-line rounded-lg info-card relative p-5 border-2 hover:border-info transition-all cursor-pointer relative"
-
         >
           <div class="flex flex-col gap-2 h-full" @click="()=>tab=idx+1">
             <p class="text-lg font-bold">{{ $t(item.title) }}</p>
@@ -70,38 +70,19 @@ const tab = ref(0);
         </n-gi>
       </n-grid>
     </n-tab-pane>
-    <n-tab-pane :name="1">
-      <n-button tertiary circle @click="tab=0">
-        <template #icon>
-          <n-icon :component="ChevronLeft12Regular"/>
-        </template>
-      </n-button>
-      <Example />
-    </n-tab-pane>
-    <n-tab-pane :name="2">
-      <n-button tertiary circle @click="tab=0">
-        <template #icon>
-          <n-icon :component="ChevronLeft12Regular"/>
-        </template>
-      </n-button>
-      2
-    </n-tab-pane>
-    <n-tab-pane :name="3">
-      <n-button tertiary circle @click="tab=0">
-        <template #icon>
-          <n-icon :component="ChevronLeft12Regular"/>
-        </template>
-      </n-button>
-      3
-    </n-tab-pane>
-    <n-tab-pane :name="4">
-      <n-button tertiary circle @click="tab=0">
-        <template #icon>
-          <n-icon :component="ChevronLeft12Regular"/>
-        </template>
-      </n-button>
-      4
-    </n-tab-pane>
+
+    <template v-for="(item, idx) in list" :key="idx"
+    >
+      <n-tab-pane class="bg-surface-section !p-2 rounded-md" :name="idx+1">
+        <n-button tertiary circle @click="tab=0">
+          <template #icon>
+            <n-icon :component="ChevronLeft12Regular"/>
+          </template>
+        </n-button>
+        <component :is="item?.component" v-if="item?.component" />
+        <p v-else>{{idx+1}}</p>
+      </n-tab-pane>
+    </template>
 
   </n-tabs>
 </template>

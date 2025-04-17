@@ -54,7 +54,7 @@ onMounted(()=>{
               :loading="componentStore.enumExamLoading"
           />
         </n-form-item>
-        <n-form-item :label="$t(`content.organization`)" path="organizations">
+        <n-form-item :label="$t(`content.workplace`)" path="organizations">
           <UIStructure
               :modelV="store.payload.organizations"
               :checkedVal="store.structureCheck"

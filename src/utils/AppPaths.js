@@ -68,6 +68,8 @@ export const AppPaths = {
     Building:"/building",
     Terminal:"/terminal",
     Others: "/others",
+    Info: "/info",
+    OrganizationLeader: '/organization-leader',
 }
 
 export const AppLayouts ={

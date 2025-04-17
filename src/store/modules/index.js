@@ -50,7 +50,7 @@ export * from './hrm/timesheetConfirmationStore.js'
 export * from './hrm/dashboardStore.js'
 export * from './hrm/medStore.js'
 export * from './hrm/reportStore.js'
-
+export * from './hrm/organizationLeaderStore.js'
 
 export * from "./docFlow/contractStore.js"
 export * from "./docFlow/documentStore.js"
