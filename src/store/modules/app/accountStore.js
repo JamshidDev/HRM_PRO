@@ -2,6 +2,7 @@ import {defineStore} from "pinia";
 import i18n from "@/i18n/index.js"
 import router from '@/router/index.js'
 import {AppPaths, useAppSetting} from "@/utils/index.js"
+import Utils from "@/utils/Utils.js"
 export const useAccountStore = defineStore('accountStore', {
     state:()=>({
         account:null,
@@ -29,7 +30,9 @@ export const useAccountStore = defineStore('accountStore', {
            const storePermissions = sessionStorage.getItem(useAppSetting.appPermission)
            const permissions =storePermissions? JSON.parse(storePermissions)  : state.permissions
            return permissions.includes(permission)
-       }
+       },
+        fullName:(state)=>Utils.combineFullName(state.account?.worker),
+        userPhoto:(state)=>state.account?.worker?.photo,
     },
     actions:{
         _index(callback){

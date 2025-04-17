@@ -19,6 +19,7 @@ export const useCreateWorkerStore = defineStore('createWorkerStore', {
             current_region_id:null,
             current_city_id:null,
             nationality_id:null,
+            sex:null,
             address:null,
             work_experience:null,
             experience_date:null,
@@ -146,6 +147,8 @@ export const useCreateWorkerStore = defineStore('createWorkerStore', {
             this.payload.current_region_id = null
             this.payload.current_city_id = null
             this.payload.nationality_id = null
+            this.payload.sex = null
+
             this.payload.academic_title = null
             this.payload.academic_degree = null
             this.payload.party = null

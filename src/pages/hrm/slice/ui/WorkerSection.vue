@@ -1,8 +1,15 @@
 <script setup>
-import {NoDataPicture, UIBadge, UIPageFilter, UIPagination} from "@/components/index.js"
+import {NoDataPicture, UIPageFilter, UIPagination, UIUser} from "@/components/index.js"
 import {useReportStore} from "@/store/modules/index.js"
 
 const store = useReportStore()
+
+const onPagination = (v)=>{
+  store.workerParams.page = v.page
+  store.workerParams.per_page = v.per_page
+  store.getWorker()
+
+}
 </script>
 
 <template>
@@ -15,39 +22,47 @@ const store = useReportStore()
         v-model:search="store.workerParams.search"
         @onSearch="store.getWorker()"
     >
-      <template #filterAction>
-        <n-button type="error" secondary>{{$t('content.clear')}}</n-button>
-      </template>
     </UIPageFilter>
-    <div class="w-full min-w-[600px]"  v-if="store.workerList.length>0">
+    <div class="w-full"  v-if="store.workerList.length>0">
       <n-table
           class="mt-4"
-          :single-line="false"
           size="small"
+          :single-column="true"
+          :striped="true"
       >
         <thead>
         <tr>
-          <th class="!text-center min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
-          <th class="min-w-[100px]">{{$t('reportPage.form.position')}}</th>
-          <th class="min-w-[90px] w-[90px]">{{$t('reportPage.form.rate')}}</th>
-          <th class="min-w-[90px] w-[90px]">{{$t('reportPage.form.realRate')}}</th>
+          <th>{{$t('content.number')}}</th>
+          <th>{{$t('content.worker')}}</th>
+          <th>{{$t('reportPage.form.rate')}}</th>
+          <th>{{$t('reportPage.form.realRate')}}</th>
         </tr>
         </thead>
         <tbody>
         <tr v-for="(item, idx) in store.workerList" :key="idx">
           <td>
 
-            <span class="text-center text-[12px] text-gray-600 block">{{ (store.workerParams.page - 1) * store.workerParams.per_page + idx + 1 }}</span>
+            <span class=" text-[12px] text-gray-600 block">{{ (store.workerParams.page - 1) * store.workerParams.per_page + idx + 1 }}</span>
 
           </td>
-
-          <td>{{item.rank}}
+          <td>
+            <UIUser
+                :short="false"
+                @onClickFullName="onPreview(item.uuid)"
+                :data="{
+                    photo:item?.worker.photo,
+                    firstName:item?.worker.first_name,
+                    middleName:item?.worker.middle_name,
+                    lastName:item?.worker.last_name,
+                    position:'',
+                  }"
+            />
           </td>
           <td>
-            <UIBadge :show-icon="false" :label="item.rate" />
+            <n-button circle size="tiny">{{item.rate}}</n-button>
           </td>
           <td>
-            <UIBadge :show-icon="false" :label="item.rank" />
+            <n-button circle size="tiny">{{item.rank}}</n-button>
           </td>
         </tr>
         </tbody>
@@ -57,7 +72,8 @@ const store = useReportStore()
           :page="store.workerParams.page"
           :per_page="store.workerParams.size"
           :total="store.totalWorker"
-          @change-page="store.changePosition"
+          @change-page="onPagination"
+          :short="true"
       />
     </div>
     <NoDataPicture v-if="store.workerList.length===0 && !store.workerLoading" />

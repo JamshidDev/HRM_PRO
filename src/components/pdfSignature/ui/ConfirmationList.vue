@@ -47,9 +47,13 @@ const isDocFlow = computed(()=>{
                            lastName:item.worker.last_name,
                            firstName:item.worker.first_name,
                            middleName:item.worker.middle_name,
-                           position:item.type === 'w'? $t('content.worker'):item.position
+                           position:''
                       }"
-        />
+        >
+          <template #position>
+            <div class="w-full text-wrap leading-[1.1] text-secondary text-xs">{{item.type === 'w'? $t('content.worker'):item.position}}</div>
+          </template>
+        </UIUser>
         <div class="mt-4 w-full flex justify-between items-center">
           <n-button
               :loading="store.linkLoading"

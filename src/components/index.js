@@ -34,4 +34,6 @@ export {default as UILottieReader} from "./ui/UILottieReader.vue"
 export {default as TreeData} from "./ui/UITreeList.vue"
 export { default as UIPanZoomArea } from "./ui/UIPanZoomArea.vue"
 export { default as UIHierarchy } from "./ui/HierarchyNode.vue"
+export {default as AIButton} from "./buttons/AIButton.vue"
+
 export * from './editor'

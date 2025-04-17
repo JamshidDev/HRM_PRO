@@ -70,6 +70,7 @@ export const AppPaths = {
     Others: "/others",
     Info: "/info",
     OrganizationLeader: '/organization-leader',
+    AIConversation: "/ai-conversation",
 }
 
 export const AppLayouts ={

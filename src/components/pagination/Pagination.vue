@@ -1,7 +1,10 @@
 <template>
   <div class="grid xl:grid-cols-2 lg:grid-cols-2 grid-cols-1   gap-4 py-4 w-full">
     <div class="flex xl:justify-start lg:justify-start md:justify-start justify-center text-textColor2">
-      <span class="font-normal"><span class="font-bold text-primary">{{total }}</span> {{$t('content.fromTa')}} <span class="font-bold text-primary">{{(page -1)*pageSize}}-{{page*pageSize}} </span> {{$t('content.untilShow')}}</span>
+      <template v-if="!short">
+        <span class="font-normal"><span class="font-bold text-primary">{{total }}</span> {{$t('content.fromTa')}} <span class="font-bold text-primary">{{(page -1)*pageSize}}-{{page*pageSize}} </span> {{$t('content.untilShow')}}</span>
+      </template>
+
     </div>
     <div class="flex xl:justify-end lg:justify-end md:justify-end justify-center">
       <n-pagination
@@ -36,6 +39,10 @@ const props = defineProps({
     type:Number,
     default:10,
   },
+  short:{
+    type:Boolean,
+    default:false,
+  }
 
 })
 

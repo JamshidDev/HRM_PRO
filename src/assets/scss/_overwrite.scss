@@ -254,3 +254,11 @@ input:-webkit-autofill {
 .n-checkbox .n-checkbox-box .n-checkbox-icon{
   transform: rotate(-13deg);
 }
+
+.splitpanes--vertical>.splitpanes__splitter{
+  min-width: 8px !important;
+  background-repeat: no-repeat;
+  background-position: 50% center;
+  background-image: url(https://split.js.org/vertical.png);
+
+}

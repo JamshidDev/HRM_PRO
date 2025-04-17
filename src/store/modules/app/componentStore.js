@@ -94,6 +94,16 @@ export const useComponentStore = defineStore('componentStore', {
                 id:'deleted'
             },
         ],
+        genderList:[
+            {
+                name:t('enum.man'),
+                id:1,
+            },
+            {
+                name:t('enum.woman'),
+                id:0,
+            },
+        ],
 
         contractTypes:[],
         commandTypes:[],

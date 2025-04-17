@@ -1,5 +1,6 @@
 <script setup>
-import {Edit32Regular, Delete20Regular, OpenFolder24Filled, Eye16Regular, ArrowCircleDown48Regular, MoreHorizontal48Filled } from "@vicons/fluent"
+import {Edit32Regular, Delete20Regular, OpenFolder24Filled, Eye16Regular,
+  ArrowCircleDown48Regular, MoreHorizontal48Filled, DismissCircle32Regular } from "@vicons/fluent"
 const {t} = i18n.global
 import {UIDConfirm} from "@/components/index.js"
 import i18n from "@/i18n/index.js"
@@ -32,6 +33,10 @@ const props = defineProps({
     default:false,
   },
   showDownload:{
+    type: Boolean,
+    default:false,
+  },
+  showClose:{
     type: Boolean,
     default:false,
   },
@@ -89,6 +94,12 @@ const options = computed(()=>{
       key: Utils.ActionTypes.download,
       icon: UIHelper.renderIcon(ArrowCircleDown48Regular),
       visible:props.showDownload,
+    },
+    {
+      label: t('content.close'),
+      key: Utils.ActionTypes.close,
+      icon: UIHelper.renderIcon(DismissCircle32Regular),
+      visible:props.showClose,
     },
     {
       label: t('content.delete'),

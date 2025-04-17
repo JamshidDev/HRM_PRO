@@ -7,7 +7,7 @@ const store = useReportStore()
 </script>
 
 <template>
-<div class="w-full overflow-auto pb-4">
+<div class="w-full min-w-[600px] pb-4">
   <n-spin :show="store.organizationLoading" class="min-h-[400px]">
     <TreeData
         :options="store.organizationList"
@@ -19,17 +19,13 @@ const store = useReportStore()
         :multiple="false"
     >
       <template #title="{data}">
-        <n-grid class="w-full " cols="1 400:2">
-          <n-grid-item class="flex items-center">
-            <div>{{data.name}}</div>
-          </n-grid-item>
-          <n-grid-item>
-            <Info
-                :one-count="data.rate"
-                :two-count="data.real_rate"
-            />
-          </n-grid-item>
-        </n-grid>
+        <div class="flex justify-between w-full items-center">
+          <div>{{data.name}}</div>
+          <Info
+              :one-count="data.rate"
+              :two-count="data.real_rate"
+          />
+        </div>
       </template>
     </TreeData>
   </n-spin>

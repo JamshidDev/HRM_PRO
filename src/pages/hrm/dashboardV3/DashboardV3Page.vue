@@ -162,86 +162,101 @@ onMounted(()=>{
 
 <template>
   <UIPageContent>
-    <div class="grid grid-cols-12 gap-4">
-      <template v-for="(card, idx) in store.dashboard.mainCard" :key="idx">
-        <div class="col-span-3">
-          <div class="w-full border border-surface-line p-4 rounded-lg bg-surface-section relative">
-            <span class="z-[1] opacity-30 absolute top-0 right-0 w-[160px] h-full bg-no-repeat bg-[url(/public/effect/primary-card.svg)]" ></span>
-            <p class="font-medium text-textColor2">{{$t(card?.total.title)}}</p>
-            <h3 class="text-2xl font-semibold mt-2 text-textColor0">{{card?.total?.count}}</h3>
-            <div class="w-full flex justify-between mt-4">
-              <span class="text-xs text-textColor1">{{$t(card?.data1.title)}} - <span class="text-sm font-semibold">{{card?.data1?.count}}</span></span>
-              <span class="text-xs text-textColor1">{{$t(card?.data2.title)}} - <span class="text-sm font-semibold">{{card?.data2?.count}}</span></span>
+    <n-spin :show="store.loading">
+      <div class="grid grid-cols-12 gap-4">
+        <template v-for="(card, idx) in store.dashboard.mainCard" :key="idx">
+          <div class="col-span-3">
+            <div class="w-full border border-surface-line p-4 rounded-lg bg-surface-section relative cursor-pointer scale-[1] hover:scale-[1.07] transition-all hover:z-10 hover:shadow-sm duration-200">
+              <span class="z-[1] opacity-30 absolute top-0 right-0 w-[160px] h-full bg-no-repeat bg-[url(/public/effect/primary-card.svg)]" ></span>
+              <p class="font-medium text-textColor2">{{$t(card?.total.title)}}</p>
+              <h3 class="text-2xl font-semibold mt-2 text-textColor0">{{card?.total?.count}}</h3>
+              <div class="w-full flex justify-between mt-4">
+                <span class="text-xs text-textColor1">{{$t(card?.data1.title)}} - <span class="text-sm font-semibold">{{card?.data1?.count}}</span></span>
+                <span class="text-xs text-textColor1">{{$t(card?.data2.title)}} - <span class="text-sm font-semibold">{{card?.data2?.count}}</span></span>
+              </div>
+            </div>
+          </div>
+        </template>
+        <div class="col-span-4">
+          <AgeChart/>
+        </div>
+        <div class="col-span-4">
+          <EduChart/>
+        </div>
+
+        <div class="col-span-4">
+          <div class="w-full h-full border border-surface-line p-4 rounded-lg bg-surface-section relative hover-effect-card">
+            <span class="z-[1] opacity-30 absolute top-0 right-0 w-[160px] h-full bg-no-repeat bg-[url(/public/effect/effect-card-1.svg)]" ></span>
+            <div class="flex h-auto">
+              <div style="width: calc(100% - 280px)">
+                <p class="font-bold">Rag'batlantirish</p>
+                <p class="mt-2 text-xs">Faxriy temiryo'lchi faxriy unvoni</p>
+                <h3 class="font-semibold leading-[1.2]">45 000</h3>
+
+                <p class="mt-2 text-xs">Boshqa mukofatlar</p>
+                <h3 class="font-semibold leading-[1.2]">5 000</h3>
+
+              </div>
+              <div class="w-[280px] h-[120px] relative z-[2]">
+                <v-chart :option="pieOption" />
+              </div>
+            </div>
+            <hr class="w-full h-[1px] text-surface-line mt-2">
+            <div class="flex h-auto mt-2">
+              <div style="width: calc(100% - 280px)">
+                <p class="font-bold">Intizomiy jazo</p>
+
+                <p class="mt-2 text-xs">Hayfsan</p>
+                <h3 class="font-semibold leading-[1.2]">45 000</h3>
+
+                <p class="mt-2 text-xs">Boshqa jazolar</p>
+                <h3 class="font-semibold leading-[1.2]">5 000</h3>
+              </div>
+              <div class="w-[280px] h-[120px] relative z-[2]">
+                <v-chart :option="pieOption2" />
+              </div>
             </div>
           </div>
         </div>
-      </template>
 
 
-      <div class="col-span-4">
-        <AgeChart/>
-      </div>
-      <div class="col-span-4">
-        <EduChart/>
-      </div>
+        <div class="col-span-8">
+          <YearlyChart/>
+        </div>
+        <div class="col-span-4">
+          <BirthdayCard/>
+        </div>
 
-      <div class="col-span-4">
-        <div class="w-full h-full border border-surface-line p-4 rounded-lg bg-surface-section relative">
-          <span class="z-[1] opacity-30 absolute top-0 right-0 w-[160px] h-full bg-no-repeat bg-[url(/public/effect/effect-card-1.svg)]" ></span>
-          <div class="flex h-auto">
-            <div style="width: calc(100% - 280px)">
-              <p class="font-bold">Rag'batlantirish</p>
-              <p class="mt-2 text-xs">Faxriy temiryo'lchi faxriy unvoni</p>
-              <h3 class="font-semibold leading-[1.2]">45 000</h3>
 
-              <p class="mt-2 text-xs">Boshqa mukofatlar</p>
-              <h3 class="font-semibold leading-[1.2]">5 000</h3>
-
-            </div>
-            <div class="w-[280px] h-[120px] relative z-[2]">
-              <v-chart :option="pieOption" />
-            </div>
-          </div>
-          <hr class="w-full h-[1px] text-surface-line mt-2">
-          <div class="flex h-auto mt-2">
-            <div style="width: calc(100% - 280px)">
-              <p class="font-bold">Intizomiy jazo</p>
-
-              <p class="mt-2 text-xs">Hayfsan</p>
-              <h3 class="font-semibold leading-[1.2]">45 000</h3>
-
-              <p class="mt-2 text-xs">Boshqa jazolar</p>
-              <h3 class="font-semibold leading-[1.2]">5 000</h3>
-            </div>
-            <div class="w-[280px] h-[120px] relative z-[2]">
-              <v-chart :option="pieOption2" />
-            </div>
-          </div>
+        <div class="col-span-4">
+          <VacationChart/>
+        </div>
+        <div class="col-span-4">
+          <ContractChart/>
+        </div>
+        <div class="col-span-4">
+          <InfoCard/>
         </div>
       </div>
+    </n-spin>
 
-
-      <div class="col-span-8">
-       <YearlyChart/>
-      </div>
-      <div class="col-span-4">
-        <BirthdayCard/>
-      </div>
-
-
-      <div class="col-span-4">
-       <VacationChart/>
-      </div>
-      <div class="col-span-4">
-       <ContractChart/>
-      </div>
-      <div class="col-span-4">
-        <InfoCard/>
-      </div>
-    </div>
   </UIPageContent>
 </template>
 
-<style scoped>
+<style lang="scss">
+
+.hover-effect-card{
+  cursor: pointer;
+  transform: scale(1);
+  transition: 0.2s ease;
+
+  &:hover{
+    transform: scale(1.04);
+    z-index: 10;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  }
+
+}
+
 
 </style>

@@ -18,7 +18,9 @@ const onSubmit = ()=>{
 const changeCountry = ()=>{
   componentStore.regionList = []
   store.payload.region_id = null
+  store.payload.city_id = null
   store.payload.current_region_id = null
+  store.payload.current_city_id = null
   componentStore._regions(store.payload.country_id)
 }
 
@@ -179,6 +181,19 @@ onMounted(()=>{
           label-field="name"
           value-field="id"
           :loading="componentStore.nationalityLoading"
+      />
+    </n-form-item>
+    <n-form-item
+        class="col-span-4"
+        :label="$t(`createWorkerPage.form.sex`)"
+        path="sex">
+      <n-select
+          v-model:value="store.payload.sex"
+          filterable
+          :placeholder="$t(`content.choose`)"
+          :options="componentStore.genderList"
+          label-field="name"
+          value-field="id"
       />
     </n-form-item>
     <n-form-item

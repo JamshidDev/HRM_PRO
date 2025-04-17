@@ -25,6 +25,7 @@ export const useWorkerProfileStore = defineStore('workerProfileStore', {
             current_region_id:null,
             current_city_id:null,
             nationality_id:null,
+            sex:null,
             address:null,
             pin:null,
             inn:null,
@@ -103,6 +104,7 @@ export const useWorkerProfileStore = defineStore('workerProfileStore', {
                 this.payload.current_city_id = this.data.current_city.id
                 this.payload.address = this.data.address
                 this.payload.nationality_id = this.data.nationality.name.id
+                this.payload.sex = this.data?.sex
                 this.payload.pin = this.data.pin?.toString()
                 this.payload.inn = this.data.inn?.toString()
                 this.payload.marital_status = this.data.marital_status?.id

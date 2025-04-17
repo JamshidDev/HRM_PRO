@@ -556,6 +556,12 @@ export default {
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
+        sex:{
+            type:'number',
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
         pin:{
             required: true,
             message: t(`rules.requiredField`),
@@ -673,6 +679,12 @@ export default {
             trigger: triggerEvents
         },
         nationality_id:{
+            type:'number',
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        sex:{
             type:'number',
             required: true,
             message: t(`rules.requiredField`),

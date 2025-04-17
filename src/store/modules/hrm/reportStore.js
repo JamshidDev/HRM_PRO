@@ -6,35 +6,25 @@ export const useReportStore = defineStore('reportStore', {
     state:()=>({
         cols:[
             {
-                name:'Korxonalar',
+                name:t('reportPage.tab.organization'),
                 id:1,
             },
             {
-                name:'Bolimlar',
+                name:t('reportPage.tab.department'),
                 id:2,
             },
             {
-                name:'Lavozimlar',
+                name:t('reportPage.tab.position'),
                 id:3,
             },
             {
-                name:'Xodimlar',
+                name:t('reportPage.tab.worker'),
                 id:4,
             },
         ],
-        barList:[
-            {
-                name:'Bolimlar',
-                id:2,
-            },
-            {
-                name:'Lavozimlar',
-                id:3,
-            },
-            {
-            name:'Xodimlar',
-            id:4,
-        },],
+        panels:1,
+        activePanels:[],
+        barList:[],
         hiddenList:[],
         fullScreen:false,
 
@@ -76,24 +66,81 @@ export const useReportStore = defineStore('reportStore', {
 
     }),
     getters:{
-       showPanel:(state)=>(id)=>{
-            return !state.barList.map(v=>v.id).includes(id)
-       },
+        activePanelCount:(state)=>{
+           return state.activePanels.length;
+        },
+        isActivePanel:(state)=>(id)=>{
+           return state.activePanels.map(v=>v.id).includes(id)
+        }
+
     },
     actions:{
         closePanel(id){
-           const index = this.cols.findIndex(v=>v.id === id)
-            if(index !== -1){
-                this.barList.push(this.cols[index])
-            }
+            setTimeout(()=>{
+                this.panels--
+                const index = this.activePanels.findIndex(v=>v.id === id)
+                if(index !== -1){
+                    this.barList.push(this.activePanels[index])
+                    this.activePanels.splice(index,1)
+
+                }
+            },0)
+
         },
         addPanel(item){
-            const index = this.barList.findIndex(v=>v.id === item.id)
-            if(index !== -1){
-                this.barList.splice(index,1)
+            this.beforeOpen(item)
+            if(this.activePanelCount <3){
+                const index = this.barList.findIndex(v=>v.id === item.id)
+                if(index !== -1){
+                    this.barList.splice(index,1)
+                }
+                this.activePanels.push(item)
+                this.panels++
+
+            }else{
+                this.activePanels.push(item)
+                const idx = this.barList.findIndex(v=>v.id === item.id)
+                if(idx !== -1){
+                    this.barList.splice(idx,1)
+                }
+
+                if(item.id === 4){
+                    this.barList.push(this.cols[0])
+                    const l = this.activePanels.findIndex(v=>v.id === 1)
+                    if(l !== -1){
+                        this.activePanels.splice(l,1)
+                    }
+
+                }
+                for(let index in this.cols){
+                    let col = this.cols[index]
+
+                   if(col.id > item.id){
+                       const position = this.activePanels.findIndex(v=>v.id === col.id)
+                       if(position !== -1){
+                           this.activePanels.splice(position,1)
+                       }
+                       this.barList.push(col)
+
+                   }
+                }
             }
 
         },
+        beforeOpen(item){
+            if(item.id === 2){
+                this.getDepartment()
+
+            }else if(item.id === this.cols[2].id){
+                this.resetPosition()
+                this.getPosition()
+            }
+            else if(item.id === 4){
+                this.resetWorker()
+                this.getWorker()
+            }
+        },
+
         changeScreenMode(){
             this.fullScreen = !this.fullScreen
         },
@@ -109,16 +156,38 @@ export const useReportStore = defineStore('reportStore', {
         },
         changeOrg(v){
             this.organizations = v
-            this.departmentList = []
-            this.getDepartment()
 
+            this.resetWorker()
+            this.resetPosition()
+            this.resetDepartment()
+
+            // if(this.activePanelCount === 1 && !this.isActivePanel(this.cols[1].id)){
+            //     this.barList.splice(0,1)
+            // }
+
+            this.positionParams.organization_id = this.organizations?.[0]?.id
+            this.workerParams.organization_id = this.organizations?.[0]?.id
+            this.positionParams.department_id = null
+            this.workerParams.department_id = null
+            this.workerParams.department_position_id = null
+            this.position = null
+            this.departments = []
+
+            if(this.isActivePanel(this.cols[1].id)){
+                this.getDepartment()
+            }else if(this.isActivePanel(this.cols[2].id)){
+                this.getPosition()
+            }
+            else if(this.isActivePanel(this.cols[3].id)){
+                this.getWorker()
+            }
         },
 
         getDepartment(){
             this.departmentLoading = true
             let params = {
                 ...this.positionParams,
-                organization_id:this.organizations?.[0].id
+                organization_id:this.organizations?.[0]?.id
             }
             $ApiService.reportService._department({params}).then((res)=>{
                 this.departmentList = res.data.data
@@ -128,7 +197,19 @@ export const useReportStore = defineStore('reportStore', {
         },
         changeDepartment(v){
             this.departments = v
-            this.getPosition()
+            this.resetWorker()
+            this.resetPosition()
+
+            this.positionParams.department_id = this.departments?.[0]?.id
+            this.workerParams.department_id = this.departments?.[0]?.id
+            this.workerParams.department_position_id = null
+
+            if(this.isActivePanel(this.cols[2].id)){
+                this.getPosition()
+            }
+            else if(this.isActivePanel(this.cols[3].id)){
+                this.getWorker()
+            }
         },
         getPosition(){
             this.positionLoading = true
@@ -145,8 +226,12 @@ export const useReportStore = defineStore('reportStore', {
         },
         changePosition(v){
             this.position =this.position === v? null : v
-            this.workerParams.department_position_id = v
-            this.getWorker()
+
+            this.resetWorker()
+            if(this.isActivePanel(this.cols[3].id)){
+                this.workerParams.department_position_id = this.position
+                this.getWorker()
+            }
         },
         getWorker(){
             this.workerLoading = true
@@ -160,6 +245,20 @@ export const useReportStore = defineStore('reportStore', {
                 this.workerLoading = false
             })
         },
+
+
+
+        resetWorker(){
+            this.workerList =[]
+        },
+        resetPosition(){
+            this.positionList=[]
+        },
+        resetDepartment(){
+            this.departmentList = []
+            this.departments = []
+            this.depCheck = []
+        }
     }
 
 })

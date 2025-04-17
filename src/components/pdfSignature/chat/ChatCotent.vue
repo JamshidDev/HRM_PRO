@@ -66,7 +66,7 @@ const onDelete = (v)=>{
   />
     <div
         style="height: calc(100vh - 230px)"
-        class="flex flex-col-reverse w-full border
+        class="flex flex-col-reverse border
         w-full h-full
         border-surface-line rounded-lg mb-1 bg-surface-ground
          overflow-x-hidden overflow-y-auto">
