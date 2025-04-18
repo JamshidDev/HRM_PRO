@@ -74,7 +74,7 @@
     "message": "Xabar yozing...",
     "no-message": "Hozircha suhbatlar yo'q",
     "type": "Turi",
-    "organization": "Korxona",
+    "workplace": "Korxona",
     "upload": "Fayl yuklash",
     "attachFile": "Fayl biriktirish",
     "document": "Hujjat",
@@ -102,7 +102,9 @@
     "comingSoon": "Tez orada ishga tushishi reja qilingan",
     "ip": "Ip manzil",
     "url": "Url manzil",
-    "brief": "Batafsil"
+    "brief": "Batafsil",
+    "organization": "Tashkilot",
+    "staff": "Xodim"
   },
   "date": {
     "day": "Kun",
@@ -1272,6 +1274,12 @@
       "file": "Fayllar"
     }
   },
+  "organizationLeaderPage": {
+    "name": "Rahbariyat",
+    "invalidPhone": "Telefon raqami noto'gri!",
+    "addLeader": "Rahbariyatni qo'shish",
+    "editLeader": "Rahbariyatni tahrirlash"
+  },
   "reportPage": {
     "name": "Hisobotlar",
     "createTitle": "Tibbiy ko'rik ma'lumotini qo'shish",
@@ -1306,12 +1314,17 @@
     }
   },
   "others": {
-    "dashboard": {
+    "title": "Boshqalar",
+    "info": {
       "title": "Dashboard",
       "organizations": "Korxonalar",
+      "organizationsDesc": "«O'zbekiston temir yo'llari» AJ tizimidagi barcha tashkilotlar, filiallar va rahbarlar haqidagi to‘liq ma’lumotlar. Joylashuvi, bo‘ysunuv tartibi va tuzilmasi bilan tanishing.",
       "positions": "Lavozimlar",
+      "positionsDesc": "«O'zbekiston temir yo'llari» AJda mavjud bo‘lgan lavozimlar ro‘yxati va ularning funksional vazifalari. Xodimlarning xizmat lavozimlari bo‘yicha strukturaviy taqsimoti keltirilgan.",
       "laborCode": "Mehnat kodeksi",
-      "empty": "Bo'sh"
+      "laborCodeDesc": "O‘zbekiston Respublikasi Mehnat kodeksi asosida xodimlar va ish beruvchilar o‘rtasidagi munosabatlar, huquq va majburiyatlar. Moddalar asosida tushuntirishlar va qonunchilik normalari keltiriladi.",
+      "empty": "Bo'sh",
+      "emptyDesc": "Hozircha bu bo‘limda ma’lumot mavjud emas. Yaqin kunlarda yangi xizmatlar yoki foydali kontent joylashtiriladi."
     }
   }
 }

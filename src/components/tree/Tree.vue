@@ -83,7 +83,7 @@ const isCheck =(id)=>{
 
         <div v-if="Array.isArray(item?.children) && item?.children.length>0" class="w-[20px] max-w-[20px] overflow-hidden flex justify-center items-center">
           <n-icon @click="onOpen(item)" size="18" class="text-gray-400" >
-            <ChevronRight16Filled class="transition" :class="checkedVal.includes(item.id) && 'rotate-90'"/>
+            <ChevronRight16Filled class="transition" :class="!checkedVal.includes(item.id) && 'rotate-90'"/>
           </n-icon>
         </div>
         <div v-else
@@ -93,8 +93,9 @@ const isCheck =(id)=>{
 
 
 
-        <div @click="onSelect(item)" :style="{width:`calc(100% - ${deep>1? (deep*20) : 40}px)`}" class="leading-4 flex items-center truncate">
+        <div @click="onSelect(item)" :style="{width:`calc(100% - ${deep>1? (deep*20) : 40}px)`}" class="leading-4 flex items-center truncate" >
           <n-checkbox
+              v-if="!$slots.title"
               :disabled="Boolean(item.group && !multiple)"
               :checked="modelV.map((a)=>a.id).includes(item.id)"
           ></n-checkbox>

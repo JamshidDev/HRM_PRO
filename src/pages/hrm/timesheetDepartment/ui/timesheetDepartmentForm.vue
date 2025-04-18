@@ -46,9 +46,9 @@ const onSubmit = ()=>{
     >
       <n-tab-pane v-for="(item, idx) in store.tabs" :key="idx" :tab="item.label" :name="item.type">
         <n-form-item
-            :label="$t(`content.organization`)"
+            :label="$t(`content.workplace`)"
             path="organizations"
-          rule-path="requiredMultiSelectField"
+            rule-path="requiredMultiSelectField"
         >
           <UIStructure
               :modelV="store.payload.organizations"

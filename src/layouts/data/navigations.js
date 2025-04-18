@@ -18,6 +18,7 @@ import {
     PersonClock24Filled,
     GridKanban20Filled,
     BriefcaseMedical20Filled,
+    PersonAccounts24Filled,
     BookQuestionMark24Filled,
     Book20Filled,
     HatGraduation12Filled,
@@ -138,6 +139,13 @@ export const navigations = [
                 color: 'bg-success',
                 permission: appPermissions.hrMed,
             },
+            {
+                label: 'organizationLeaderPage.name',
+                path: Utils.routeHrmPathMaker(AppPaths.OrganizationLeader),
+                icon: PersonAccounts24Filled,
+                color: 'bg-warning',
+                permission: appPermissions.hrMed,
+            },
         ]
     },
     {
@@ -251,12 +259,10 @@ export const navigations = [
     },
     {
         label: '',
-        path: Utils.routeOtherPathMaker(AppPaths.Dashboard),
+        path: Utils.routeOtherPathMaker(AppPaths.Info),
         icon: SlideMultipleSearch24Filled,
         permission: appPermissions.admin,
-        children: [
-
-        ]
+        children: []
     },
     {
         label: 'Admin',

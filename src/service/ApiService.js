@@ -1,5 +1,6 @@
 import authService from "@/service/v1/app/authService.js";
 import accountService from "@/service/v1/app/accountService.js";
+import usefulService from "@/service/v1/app/usefulService.js"
 import userService from "@/service/v1/app/userService.js";
 import userPermissionService from "@/service/v1/app/userPermissionService.js";
 import userRoleService from "@/service/v1/app/userRoleService.js";
@@ -47,7 +48,7 @@ import timesheetWorkerService from '@/service/v1/hrm/timesheetWorkerService.js'
 import dashboardService from "@/service/v1/hrm/dashboardService.js"
 import medService from "@/service/v1/hrm/medService.js"
 import reportService from "@/service/v1/hrm/reportService.js"
-
+import organizationLeaderService from '@/service/v1/hrm/organizationLeaderService.js'
 
 import documentService from "@/service/v1/docFlow/documentService.js"
 import contractService from "@/service/v1/docFlow/contractService.js"
@@ -73,6 +74,7 @@ export default {
     authService,
     accountService,
     userService,
+    usefulService,
     userPermissionService,
     userRoleService,
     countryService,
@@ -133,7 +135,7 @@ export default {
     quoteService,
     reportService,
     aiConversationService,
-
+    organizationLeaderService,
 
     turnstileTerminalService,
     turnstileBuildingService,
