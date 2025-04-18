@@ -23,7 +23,11 @@ const props = defineProps({
   roundAvatar: {
     type: Boolean,
     default: true
-  }
+  },
+  avatarClickable: {
+    type: Boolean,
+    default: true
+  },
 })
 
 const emits = defineEmits(['onClickFullName'])
@@ -40,7 +44,7 @@ const fullName = computed(()=> {
 
 const onOpen = ()=>{
   const thumbnail = pictureSwipe.value?.$el.querySelector('.gallery-thumbnail')
-  if (thumbnail) {
+  if (thumbnail && props.avatarClickable) {
     thumbnail.click()
   }
 }
@@ -70,7 +74,9 @@ const userSrc = computed(()=> {
       :fallback-src="Utils.noAvailableImage"
   />
   <div @click="emits('onClickFullName')"  class="flex flex-col" style="width: calc(100% - 50px)">
-    <span class="leading-2 text-sm text-textColor2 truncate w-full ">{{fullName}}</span>
+    <slot name="name" :title="fullName">
+      <span class="leading-2 text-sm text-textColor2 truncate w-full ">{{fullName}}</span>
+    </slot>
     <slot name="position">
       <span class="leading-1 text-xs text-textColor1 truncate w-full">{{data?.position || ''}}</span>
     </slot>

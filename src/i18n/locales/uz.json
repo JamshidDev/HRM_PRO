@@ -1308,12 +1308,16 @@
   },
   "others": {
     "title": "Boshqalar",
-    "dashboard": {
+    "info": {
       "title": "Dashboard",
       "organizations": "Korxonalar",
+      "organizationsDesc": "«O'zbekiston temir yo'llari» AJ tizimidagi barcha tashkilotlar, filiallar va rahbarlar haqidagi to‘liq ma’lumotlar. Joylashuvi, bo‘ysunuv tartibi va tuzilmasi bilan tanishing.",
       "positions": "Lavozimlar",
+      "positionsDesc": "«O'zbekiston temir yo'llari» AJda mavjud bo‘lgan lavozimlar ro‘yxati va ularning funksional vazifalari. Xodimlarning xizmat lavozimlari bo‘yicha strukturaviy taqsimoti keltirilgan.",
       "laborCode": "Mehnat kodeksi",
-      "empty": "Bo'sh"
+      "laborCodeDesc": "O‘zbekiston Respublikasi Mehnat kodeksi asosida xodimlar va ish beruvchilar o‘rtasidagi munosabatlar, huquq va majburiyatlar. Moddalar asosida tushuntirishlar va qonunchilik normalari keltiriladi.",
+      "empty": "Bo'sh",
+      "emptyDesc": "Hozircha bu bo‘limda ma’lumot mavjud emas. Yaqin kunlarda yangi xizmatlar yoki foydali kontent joylashtiriladi."
     }
   }
 }

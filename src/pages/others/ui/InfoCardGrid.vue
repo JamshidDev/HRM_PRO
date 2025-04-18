@@ -9,32 +9,35 @@ import {
 } from '@vicons/fluent'
 import {AppPaths} from "@/utils/index.js";
 import TreeTabs from './TreeTabs.vue'
+import CodexCard from './Codex.vue'
 
 const list = [
   {
-    title: 'others.dashboard.organizations',
+    title: 'others.info.organizations',
     icon: Organization12Filled,
-    info: 'Temir yo\'llarda korxanalar to\'g\'r ma\'lumot korxanalar to\'g\'risida Batafsil ma\'lumot korxanalar to\'g\'risida Batafsil ma\'lumot',
+    info: 'others.info.organizationsDesc',
     type: 'success',
     component:TreeTabs
   },
   {
-    title: 'others.dashboard.positions',
+    title: 'others.info.positions',
     icon: PeopleTeamToolbox20Filled,
-    info: 'Temir yo\'llarda lavozimlar to\'g\'rrisida Batafsil ma\'lumot korxanalar to\'g\'risida Batafsil ma\'lumot',
+    info: 'others.info.positionsDesc',
     type: 'primary'
   },
   {
-    title: 'others.dashboard.laborCode',
+    title: 'others.info.laborCode',
     icon: Book20Filled,
-    info: 'l ma\'lumot korxanalar to\'g\'risida Batafsil ma\'lumot korxanalar to\'g\'risida Batafsil ma\'lumot',
-    type: 'warning'
+    info: 'others.info.laborCodeDesc',
+    type: 'warning',
+    component: CodexCard
   },
   {
-    title: 'others.dashboard.empty',
+    title: 'others.info.empty',
     icon: Book20Filled,
-    info: 'Temir yo\'llarda korxanalar to\'g\'risida Batafsil ma\'lumot korxanalar to\'g\'risida Batafsil ma\'lumot',
-    type: 'error'
+    info: 'others.info.emptyDesc',
+    type: 'error',
+    disabled:true
   },
 ]
 
@@ -42,16 +45,20 @@ const tab = ref(0);
 
 </script>
 <template>
-  <n-tabs v-model:value="tab" :tab-style="{display: 'none'}" :pane-style="{padding: 0}" animated>
+  <n-tabs class="h-full" v-model:value="tab" :tab-style="{display: 'none'}" :pane-style="{padding: 0}" animated :pane-wrapper-style="{height: '100%'}">
     <n-tab-pane :name="0">
       <n-grid cols="4" :x-gap="20" :y-gap="20">
         <n-gi v-for="(item, idx) in list"
               :key="idx"
-              class="bg-surface-section border border-surface-line rounded-lg info-card relative p-5 border-2 hover:border-info transition-all cursor-pointer relative"
+              class="bg-surface-section border-surface-line rounded-lg info-card relative p-5 border-2 hover:border-info transition-all"
+              :style="{cursor: item?.disabled ? 'not-allowed' : 'pointer'}"
         >
-          <div class="flex flex-col gap-2 h-full" @click="()=>tab=idx+1">
+          <div class="flex flex-col gap-2 h-full" @click="()=>{
+            if(item.disabled) return
+            tab=idx+1
+          }">
             <p class="text-lg font-bold">{{ $t(item.title) }}</p>
-            <p class="max-w-[250px] font-medium ">{{ item.info }}</p>
+            <p class="max-w-[300px] font-medium ">{{ $t(item.info) }}</p>
             <div class="basis-auto grow flex items-end justify-end">
               <p class="text-primary border-b border-dashed">
                 {{ $t('content.brief') }}
@@ -73,7 +80,7 @@ const tab = ref(0);
 
     <template v-for="(item, idx) in list" :key="idx"
     >
-      <n-tab-pane class="bg-surface-section !p-2 rounded-md" :name="idx+1">
+      <n-tab-pane class="bg-surface-section !p-2 rounded-md h-full overflow-auto" :name="idx+1">
         <n-button tertiary circle @click="tab=0">
           <template #icon>
             <n-icon :component="ChevronLeft12Regular"/>

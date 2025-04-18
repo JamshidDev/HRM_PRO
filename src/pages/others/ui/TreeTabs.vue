@@ -1,169 +1,36 @@
 <script setup>
-import {UIHierarchy, UIPanZoomArea, TreeData} from "@/components/index.js";
-import {TextBulletListTree16Filled, Organization12Filled} from '@vicons/fluent'
+import {UIHierarchy, UIPanZoomArea, TreeData, UIUserGroup, UIUser} from "@/components/index.js";
+import {TextBulletListTree16Filled, Organization12Filled, Eye24Regular} from '@vicons/fluent'
+import {useUsefulStore} from "@/store/modules/index.js"
 
-const rootNode = {
-  id: 1,
-  name: "CEO",
-  children: [
-    {
-      id: 2,
-      name: "VP Operations",
-      children: [
-        {
-          id: 3,
-          name: "Manager Operations 1",
-          children: [
-            {
-              id: 4,
-              name: "Supervisor A",
-              children: [
-                {id: 5, name: "Employee A1"},
-                {id: 6, name: "Employee A2"},
-                {id: 7, name: "Employee A3"}
-              ]
-            },
-            {
-              id: 8,
-              name: "Supervisor B",
-              children: [
-                {id: 9, name: "Employee B1"},
-                {id: 10, name: "Employee B2"}
-              ]
-            }
-          ]
-        },
-        {
-          id: 11,
-          name: "Manager Operations 2",
-          children: [
-            {
-              id: 12,
-              name: "Supervisor C",
-              children: [
-                {id: 13, name: "Employee C1"},
-                {id: 14, name: "Employee C2"}
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      id: 15,
-      name: "VP Marketing",
-      children: [
-        {
-          id: 16,
-          name: "Manager Marketing 1",
-          children: [
-            {
-              id: 17,
-              name: "Team Lead D",
-              children: [
-                {id: 18, name: "Employee D1"},
-                {id: 19, name: "Employee D2"},
-                {id: 20, name: "Employee D3"}
-              ]
-            },
-            {
-              id: 21,
-              name: "Team Lead E",
-              children: [
-                {id: 22, name: "Employee E1"}
-              ]
-            }
-          ]
-        },
-        {
-          id: 23,
-          name: "Manager Marketing 2",
-          children: [
-            {
-              id: 24,
-              name: "Team Lead F",
-              children: [
-                {id: 25, name: "Employee F1"},
-                {id: 26, name: "Employee F2"}
-              ]
-            },
-            {
-              id: 27,
-              name: "Team Lead G",
-              children: [
-                {id: 28, name: "Employee G1"},
-                {id: 29, name: "Employee G2"},
-                {id: 30, name: "Employee G3"}
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      id: 31,
-      name: "VP Engineering",
-      children: [
-        {
-          id: 32,
-          name: "Manager Engineering 1",
-          children: [
-            {
-              id: 33,
-              name: "Tech Lead H",
-              children: [
-                {id: 34, name: "Engineer H1"},
-                {id: 35, name: "Engineer H2"},
-                {id: 36, name: "Engineer H3"}
-              ]
-            }
-          ]
-        },
-        {
-          id: 37,
-          name: "Manager Engineering 2",
-          children: [
-            {
-              id: 38,
-              name: "Tech Lead I",
-              children: [
-                {id: 39, name: "Engineer I1"},
-                {id: 40, name: "Engineer I2"}
-              ]
-            },
-            {
-              id: 41,
-              name: "Tech Lead J",
-              children: [
-                {id: 42, name: "Engineer J1"}
-              ]
-            }
-          ]
-        }
-      ]
-    }
-  ]
-};
+const store = useUsefulStore()
 
 const tab = ref(0);
 const buttons = [
   {
-    icon: Organization12Filled,
+    icon: TextBulletListTree16Filled,
   },
   {
-    icon: TextBulletListTree16Filled,
-  }
+    icon: Organization12Filled,
+  },
 ]
 
-const structureCheck = ref([])
-const structureModel = ref([])
+onMounted(() => {
+  store._leaders()
+})
+
+const openOrgDetail = (org) => {
+  store.orgInstance = org
+  store.visible = true
+}
 
 </script>
 <template>
   <div>
-    <div class="absolute top-2 right-2">
+    <div class="absolute top-2 right-2 z-10">
       <n-button-group>
-        <n-button v-for="(item, idx) in buttons" :key="idx" @click="tab=idx" :type="tab === idx ? 'primary' : 'default'">
+        <n-button v-for="(item, idx) in buttons" :key="idx" @click="tab=idx"
+                  :type="tab === idx ? 'primary' : 'default'">
           <template #icon>
             <n-icon :component="item.icon"/>
           </template>
@@ -171,28 +38,87 @@ const structureModel = ref([])
       </n-button-group>
 
     </div>
-    <n-tabs animated style="height: calc(100vh - 150px);" v-model:value="tab" class="h-full" :tab-style="{display: 'none'}" :pane-wrapper-style="{height: '100%'}">
-      <n-tab-pane  :name="0" class="h-full">
+    <n-tabs animated style="height: calc(100vh - 150px);" v-model:value="tab" class="h-full"
+            :tab-style="{display: 'none'}" :pane-wrapper-style="{height: '100%'}">
 
-        <UIPanZoomArea>
-          <UIHierarchy :tree="rootNode"></UIHierarchy>
-        </UIPanZoomArea>
-      </n-tab-pane>
-      <n-tab-pane :name="1" class="h-full overflow-auto">
+      <n-tab-pane :name="0" class="h-full overflow-auto">
 
         <!-- Data List -->
         <TreeData
             :multiple="false"
             :opened="true"
-            :options="[rootNode]"
-            :modelV="structureModel"
-            :checkedVal="structureCheck"
-            @updateModel="(v)=>structureModel=v"
-            @updateCheck="(v)=>structureCheck=v"
+            :options="store.leaders"
+            :modelV="store.structureModel"
+            :checkedVal="store.structureCheck"
+            @updateModel="(v)=>store.structureModel=v"
+            @updateCheck="(v)=>store.structureCheck=v"
         >
-          <template v-slot:title="{data}">{{ data.name }}</template>
+
+          <template v-slot:title="{data}">
+            <div class="flex justify-between items-center border-b  border-surface-line h-[45px]">
+              <p class="font-semibold">
+                {{ data.name }}
+              </p>
+              <div class="flex gap-1 items-center">
+                <div>
+                  <UIUser
+                      class="w-[300px]"
+                      v-if="data.leaders.length > 0"
+                      :data="{
+                      photo:data.leaders[0]?.worker.photo,
+                      firstName:data.leaders[0]?.worker.first_name,
+                      middleName:data.leaders[0]?.worker.middle_name,
+                      lastName:data.leaders[0]?.worker.last_name,
+                      position: data.leaders[0]?.position_short_name
+                    }"
+                  >
+                    <template v-slot:name="{title}">
+                      <span class="font-bold leading-2 text-sm text-textColor2 truncate w-full ">{{ title }}</span>
+                    </template>
+                  </UIUser>
+                </div>
+                <n-button v-if="data?.leaders?.length" type="primary" size="tiny" tertiary @click="openOrgDetail(data)">
+                  <template #icon>
+                    <n-icon :component="Eye24Regular"/>
+                  </template>
+                </n-button>
+              </div>
+            </div>
+          </template>
         </TreeData>
       </n-tab-pane>
+      <n-tab-pane :name="1" class="h-full">
+
+        <UIPanZoomArea>
+          <UIHierarchy v-if="store.leaders?.[0]" :tree="store.leaders[0]">
+            <template v-slot:default="{data}">
+              <div
+                  class="cursor-pointer flex flex-col gap-2 items-center rounded-md border-surface-line border p-1 hover:bg-blue-50 transition-all"
+                  @click="openOrgDetail(data)">
+                <p class="text-center font-semibold text-xs
+">{{ data.name }}</p>
+
+                <UIUser
+                    class="w-full"
+                    :avatar-clickable="false"
+                    v-if="data.leaders.length > 0"
+                    :data="{
+                      photo:data.leaders[0]?.worker.photo,
+                      firstName:data.leaders[0]?.worker.first_name,
+                      middleName:data.leaders[0]?.worker.middle_name,
+                      lastName:data.leaders[0]?.worker.last_name,
+                      position: data.leaders[0]?.position_short_name
+                    }"
+                >
+                </UIUser>
+
+
+              </div>
+            </template>
+          </UIHierarchy>
+        </UIPanZoomArea>
+      </n-tab-pane>
+
     </n-tabs>
   </div>
 </template>

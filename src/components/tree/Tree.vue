@@ -93,8 +93,9 @@ const isCheck =(id)=>{
 
 
 
-        <div @click="onSelect(item)" :style="{width:`calc(100% - ${deep>1? (deep*20) : 40}px)`}" class="leading-4 flex items-center truncate">
+        <div @click="onSelect(item)" :style="{width:`calc(100% - ${deep>1? (deep*20) : 40}px)`}" class="leading-4 flex items-center truncate" >
           <n-checkbox
+              v-if="!$slots.title"
               :disabled="Boolean(item.group && !multiple)"
               :checked="modelV.map((a)=>a.id).includes(item.id)"
           ></n-checkbox>

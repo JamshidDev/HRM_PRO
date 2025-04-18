@@ -1,5 +1,6 @@
 import authService from "@/service/v1/app/authService.js";
 import accountService from "@/service/v1/app/accountService.js";
+import usefulService from "@/service/v1/app/usefulService.js"
 import userService from "@/service/v1/app/userService.js";
 import userPermissionService from "@/service/v1/app/userPermissionService.js";
 import userRoleService from "@/service/v1/app/userRoleService.js";
@@ -73,6 +74,7 @@ export default {
     authService,
     accountService,
     userService,
+    usefulService,
     userPermissionService,
     userRoleService,
     countryService,
