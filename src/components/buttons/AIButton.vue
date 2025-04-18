@@ -3,7 +3,7 @@
 </script>
 
 <template>
-<div class="relative">
+<div class="relative w-[70px] h-[70px] cursor-pointer">
   <svg class="cursor-pointer" xmlns="http://www.w3.org/2000/svg" width="70" height="70" viewBox="0 0 391 391">
     <g id="ai">
       <g id="main" filter="url(#filter0_i)">
@@ -54,7 +54,7 @@
         <feOffset />
         <feGaussianBlur stdDeviation="11" />
         <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
-        <feColorMatrix type="matrix" values="0 0 0 0 0.33725 0 0 0 0 1 0 0 0 0 0 0 0 0 0.06 0" />
+        <feColorMatrix type="matrix" values="0 0 0 0 0.467 0 0 0 0 0.722 0 0 0 0 0.969 0 0 0 0.06 0" />
         <feBlend mode="normal" in2="shape" result="effect1_innerShadow" />
       </filter>
       <filter id="filter1_i" x="2.5" y="2.87793" width="386.053" height="385.637" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
@@ -64,17 +64,17 @@
         <feOffset />
         <feGaussianBlur stdDeviation="10" />
         <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
-        <feColorMatrix type="matrix" values="0 0 0 0 0.33725 0 0 0 0 1 0 0 0 0 0 0 0 0 0.77 0" />
+        <feColorMatrix type="matrix" values="0 0 0 0 0.467 0 0 0 0 0.722 0 0 0 0 0.969 0 0 0 0.77 0" />
         <feBlend mode="normal" in2="shape" result="effect1_innerShadow" />
       </filter>
-      <filter id="filter2_i" x="2" y="1.93799" width="385.898" height="386.199" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <filter id="filter2_i" x="2" y="1.93799" width="385.898" height="386.199 graves" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
         <feFlood flood-opacity="0" result="BackgroundImageFix" />
         <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
         <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
         <feOffset />
         <feGaussianBlur stdDeviation="10" />
         <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
-        <feColorMatrix type="matrix" values="0 0 0 0 0.33725 0 0 0 0 1 0 0 0 0 0 0 0 0 0.77 0" />
+        <feColorMatrix type="matrix" values="0 0 0 0 0.467 0 0 0 0 0.722 0 0 0 0 0.969 0 0 0 0.77 0" />
         <feBlend mode="normal" in2="shape" result="effect1_innerShadow" />
       </filter>
       <filter id="filter3_i" x="55" y="59.8779" width="280" height="271" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
@@ -84,7 +84,7 @@
         <feOffset />
         <feGaussianBlur stdDeviation="10" />
         <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
-        <feColorMatrix type="matrix" values="0 0 0 0 0.33725 0 0 0 0 1 0 0 0 0 0 0 0 0 0.77 0" />
+        <feColorMatrix type="matrix" values="0 0 0 0 0.467 0 0 0 0 0.722 0 0 0 0 0.969 0 0 0 0.77 0" />
         <feBlend mode="normal" in2="shape" result="effect1_innerShadow" />
       </filter>
       <filter id="filter4_i" x="55" y="54.8779" width="280.817" height="280.817" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
@@ -94,7 +94,7 @@
         <feOffset />
         <feGaussianBlur stdDeviation="10" />
         <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
-        <feColorMatrix type="matrix" values="0 0 0 0 0.33725 0 0 0 0 1 0 0 0 0 0 0 0 0 0.77 0" />
+        <feColorMatrix type="matrix" values="0 0 0 0 0.467 0 0 0 0 0.722 0 0 0 0 0.969 0 0 0 0.77 0" />
         <feBlend mode="normal" in2="shape" result="effect1_innerShadow" />
       </filter>
       <filter id="filter5_i" x="56" y="56.8779" width="278.738" height="276.802" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
@@ -104,7 +104,7 @@
         <feOffset />
         <feGaussianBlur stdDeviation="10" />
         <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
-        <feColorMatrix type="matrix" values="0 0 0 0 0.33725 0 0 0 0 1 0 0 0 0 0 0 0 0 0.77 0" />
+        <feColorMatrix type="matrix" values="0 0 0 0 0.467 0 0 0 0 0.722 0 0 0 0 0.969 0 0 0 0.77 0" />
         <feBlend mode="normal" in2="shape" result="effect1_innerShadow" />
       </filter>
       <filter id="filter6_i" x="0" y="0" width="390.838" height="390.84" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
@@ -114,7 +114,7 @@
         <feOffset />
         <feGaussianBlur stdDeviation="10" />
         <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
-        <feColorMatrix type="matrix" values="0 0 0 0 0.33725 0 0 0 0 1 0 0 0 0 0 0 0 0 0.77 0" />
+        <feColorMatrix type="matrix" values="0 0 0 0 0.467 0 0 0 0 0.722 0 0 0 0 0.969 0 0 0 0.77 0" />
         <feBlend mode="normal" in2="shape" result="effect1_innerShadow" />
       </filter>
       <filter id="filter7_i" x="35" y="39.8555" width="320.27" height="311.235" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
@@ -124,12 +124,12 @@
         <feOffset />
         <feGaussianBlur stdDeviation="10" />
         <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
-        <feColorMatrix type="matrix" values="0 0 0 0 0.33725 0 0 0 0 1 0 0 0 0 0 0 0 0 0.77 0" />
+        <feColorMatrix type="matrix" values="0 0 0 0 0.467 0 0 0 0 0.722 0 0 0 0 0.969 0 0 0 0.77 0" />
         <feBlend mode="normal" in2="shape" result="effect1_innerShadow" />
       </filter>
     </defs>
   </svg>
-  <span class="absolute left-[17px] top-[20px] text-white font-semibold cursor-pointer text-[18px]">AI</span>
+  <span class="absolute left-[26px] top-[20px] text-white font-semibold cursor-pointer text-[18px]">AI</span>
 </div>
 </template>
 
@@ -147,9 +147,6 @@
 
 svg {
   position: relative;
-  top: 50%;
-  left: 50%;
-  transform: translatex(-50%);
 }
 
 svg g {
@@ -157,7 +154,7 @@ svg g {
   transform-box: fill-box;
 }
 #main{
-  fill: #56ff00;
+  fill: #2e9ff8;
 }
 
 

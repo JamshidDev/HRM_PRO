@@ -5,11 +5,14 @@ const conversation =async (payload)=>{
 }
 
 const questions =async (payload)=>{
-    return await axios.get(`/v1/ai/questions`, payload.data )
+    return await axios.get(`/v1/ai/questions`, {params:payload?.params} )
 }
 
 const list =async (payload)=>{
-    return await axios.get(`/v1/ai/list`, payload.data )
+    return await axios.get(`/v1/ai/list`, {params:payload?.params} )
+}
+const like =async (payload)=>{
+    return await axios.post(`/v1/ai/questions/${payload.id}/like`, payload.data )
 }
 
 
@@ -18,4 +21,5 @@ export default {
     conversation,
     questions,
     list,
+    like,
 }

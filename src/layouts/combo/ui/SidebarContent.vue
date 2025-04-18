@@ -137,7 +137,6 @@ const pushFirstMenu = (path)=>{
             </n-icon>
           </div>
       </template>
-      <AIButton/>
 
     </div>
     <div class="panel-content sidebar-panel">
@@ -207,7 +206,6 @@ const pushFirstMenu = (path)=>{
 
 
     <div @click="onClick" class="control-btn border border-surface-line">
-<!--      <i class='bx bx-chevrons-left'></i>-->
       <n-icon>
         <ChevronDoubleLeft16Filled/>
       </n-icon>

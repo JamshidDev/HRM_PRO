@@ -19,12 +19,44 @@ const scrollToBottom=(el)=>{
 watch(()=>store.messages,
     async (async)=>{
       await nextTick()
-      console.log('tick')
       const el = chatContainer.value
-      if (!el) return
+      if (!el || store.historyMode) return
       scrollToBottom(el)
     }, { deep: true }
 )
+
+
+
+const containerScrollEv = ()=>{
+  const container =chatContainer.value
+  store.scrollContainer =container
+// Scroll event listener
+  container.addEventListener('scroll', () => {
+    const scrollTop = container.scrollTop;
+    const scrollHeight = container.scrollHeight;
+    const clientHeight = container.clientHeight;
+    store.scrollHeight = scrollHeight
+    if (scrollTop === 0 && !store.questionLoading && store.totalQuestion>store.messages.length && store.historyMode) {
+      store.questionParams.page++
+      store.questions(true)
+
+    }
+
+    // Check if it's at the bottom
+    // if (scrollTop + clientHeight === scrollHeight) {
+    //   console.log('At the bottom!');
+    // }
+  });
+}
+
+
+
+
+onMounted(()=>{
+  containerScrollEv()
+})
+
+
 
 onUnmounted(()=>{
   store.controller?.abort()
@@ -33,26 +65,29 @@ onUnmounted(()=>{
 
 <template>
   <div class="w-full flex h-full bg-[#F8FAFC]">
-    <div class="flex flex-col" style="width: calc(100% - 300px)">
-      <div class="mx-auto w-full max-w-[1200px] relative px-4" style="height: calc(100vh - 80px)">
-        <div ref="chatContainer" class="scroll-smooth mx-auto w-full relative flex flex-col overflow-y-scroll overflow-x-hidden pt-6 overscroll-none" style="height: calc(100vh - 130px)">
-
+    <div class="flex flex-col px-4" style="width:calc(100% - 260px)">
+      <div class="mx-auto w-full max-w-[1200px] relative px-8" style="height: calc(100vh - 80px)">
+        <div ref="chatContainer" class="mx-auto scroll-container w-full relative flex flex-col
+         overflow-y-scroll overflow-x-hidden pt-6 overscroll-none"
+             style="height: calc(100vh - 130px)"
+        >
           <Disclaimer/>
-          <template v-for="message in store.messages" :key="message.id">
-            <Message
-                :data="message"
-            />
-          </template>
-
+          <n-spin :show="store.questionLoading" class="w-full">
+            <template v-for="message in store.messages" :key="message.key">
+              <Message :data="message"/>
+            </template>
+            <span class="block w-full h-[40px]"></span>
+          </n-spin>
 
         </div>
         <Keyboard
             style="transform: translateX(-50%); left: 50%"
-            class="absolute bottom-0 w-[800px]"
+            class="absolute bottom-0 w-full max-w-[800px]"
         />
       </div>
     </div>
-    <div class="w-[300px] border h-full overflow-hidden">
+
+    <div class="w-[260px] h-full overflow-hidden bg-white border-l border-surface-line">
       <Panel/>
     </div>
 
@@ -60,3 +95,21 @@ onUnmounted(()=>{
 
 
 </template>
+
+<style scoped lang="scss">
+:deep(.scroll-container::-webkit-scrollbar) {
+  width: 6px;
+}
+
+:deep(.scroll-container::-webkit-scrollbar-track) {
+  background: transparent;
+}
+
+:deep(.scroll-container::-webkit-scrollbar-thumb) {
+  background-color: transparent;
+  border-radius: 10px;
+}
+:deep(.scroll-container::-webkit-scrollbar-thumb:hover) {
+  background-color: #CAD5E3;
+}
+</style>

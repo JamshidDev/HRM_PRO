@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>AI Mehnat Kodeksi Yordamchi</title>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.5/dist/purify.min.js"></script>
+  <style>
+    body {
+      font-family: sans-serif;
+      max-width: 700px;
+      margin: 40px auto;
+      padding: 20px;
+    }
+    textarea {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      font-size: 16px;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: #007bff;
+      border: none;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .output {
+      margin-top: 30px;
+      padding: 20px;
+      border: 1px solid #ccc;
+      background: #f8f8f8;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>💬 AI Mehnat Kodeksi Yordamchi</h2>
+
+  <textarea id="question" rows="4" placeholder="Savolingizni kiriting..."></textarea>
+  <button onclick="askAI()">So‘rash</button>
+
+  <div id="loading" style="margin-top:10px; color: gray;"></div>
+  <div class="output" id="response"></div>
+
+  <script>
+    async function askAI() {
+      const question = document.getElementById('question').value;
+      const responseDiv = document.getElementById('response');
+      const loadingDiv = document.getElementById('loading');
+
+      responseDiv.innerHTML = '';
+      loadingDiv.innerText = 'AI javobi kelmoqda...';
+
+      const res = await fetch('http://192.168.136.78:8004/api/v1/ai/lawyer', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'text/event-stream',
+            'Authorization': 'Bearer 153|FowzWoqxcPseg5iGUFrkaaGK6xDZDebxh53EB2JE75dcb253',
+        },
+        body: JSON.stringify({ question })
+      });
+
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder('utf-8');
+      let fullText = '';
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        const chunk = decoder.decode(value, { stream: true });
+
+        // SSE formatda keladigan qatorlarni ajratamiz
+        const lines = chunk.split('\n');
+        for (const line of lines) {
+          if (line.startsWith('data: ')) {
+            const data = line.replace('data: ', '');
+            if (data === '[DONE]') {
+              loadingDiv.innerText = '';
+              return;
+            }
+            fullText += data;
+          }
+        }
+
+        // Jonli markdown render qilish
+        const cleanHTML = DOMPurify.sanitize(marked.parse(fullText));
+        responseDiv.innerHTML = cleanHTML;
+      }
+
+      loadingDiv.innerText = '';
+    }
+  </script>
+
+</body>
+</html>

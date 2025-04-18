@@ -1292,10 +1292,17 @@
     "canIHelpYouToday": "Bugun sizga qanday yordam bera olaman?",
     "welcomeTo": "Xush kelibsiz, {n}",
     "disclaimer": {
-      "cardOne": "Ushbu sun’iy intellekt yordamchisi hozirda test rejimida ishlamoqda. Uning javoblari hali to‘liq shakllanmagan bo‘lishi mumkin. Foydalanish davomida xatoliklar yoki noto‘g‘ri javoblar uchrashi ehtimoli mavjud.",
-      "cardTwo": "Bot hozircha faqat O‘zbekiston Respublikasi Mehnat kodeksi va Konstitutsiyasi kabi asosiy huquqiy hujjatlar asosida o‘rganmoqda. Boshqa qonun hujjatlari to‘liq yuklanmagan yoki hali o‘rganilmagan bo‘lishi mumkin.",
-      "cardThree": "Iltimos, faqat mehnat munosabatlari yoki boshqa huquqiy masalalarga oid savollarni yuboring. Bot hozircha texnik, umumiy bilimlar yoki shaxsiy maslahatlar uchun mo‘ljallanmagan.",
-      "cardFour": "Bot tomonidan berilayotgan javoblar faqat ma’lumot berish maqsadida shakllantirilgan. Ular rasmiy huquqiy maslahat o‘rnini bosa olmaydi. Muayyan huquqiy muammo bo‘yicha yuristga murojaat qilish tavsiya etiladi."
+      "cardOne": "### \uD83E\uDDEA Test rejimi\n\nUshbu sun’iy intellekt yordamchisi hozirda **test rejimida** ishlamoqda.  \nJavoblari hali to‘liq shakllanmagan va _noto‘g‘ri bo‘lishi mumkin_.",
+
+      "cardTwo": "### \uD83D\uDCDA Huquqiy hujjatlar yuklanmoqda\n\nBot hozircha faqat **O‘zbekiston Respublikasi Mehnat kodeksi** asosida o‘rganmoqda.  \n_Boshqa qonun hujjatlari hali to‘liq yuklanmagan yoki o‘rganilmagan._",
+      "cardThree": "### ⚖\uFE0F Faqat huquqiy savollar uchun\n\nIltimos, faqat **mehnat munosabatlariga oid** savollarni yuboring.  \n_Bot texnik yoki shaxsiy maslahatlar uchun mo‘ljallanmagan._",
+      "cardFour": "### \uD83D\uDCCC Rasmiy maslahat emas\n\nBot javoblari **faqat ma’lumot berish maqsadida** shakllantirilgan.  \n_Ular rasmiy huquqiy maslahat o‘rnini bosa olmaydi._"
+    },
+    "form": {
+      "conversation": "Suhbatlar",
+      "goChat": "Suhbatga qaytish",
+      "feedback": "Fikringiz uchun raxmat!",
+      "askQuestion": "Savolingizni kiriting..."
     }
   },
   "others": {
