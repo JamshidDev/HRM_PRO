@@ -47,7 +47,6 @@ const cards = [
   <template v-for="(card,idx) in cards" :key="card.id">
     <div
         class="col-span-3 overflow-hidden h-full"
-        :class="[idx%2===1? 'rotate-[2deg]' : 'rotate-[-2deg]']"
     >
       <div class="flex flex-col bg-surface-section py-1 px-3 rounded-lg border border-gray-100 h-full overflow-hidden ">
         <div v-html="card?.name"></div>

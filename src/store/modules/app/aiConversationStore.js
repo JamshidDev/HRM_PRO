@@ -5,6 +5,7 @@ import DOMPurify from 'dompurify'
 import {useAccountStore} from "@/store/modules/index.js"
 import {useAppSetting} from "@/utils/index.js"
 import { v4 as uuidv4 } from 'uuid';
+const apiUrl = import.meta.env.VITE_API_URL;
 
 
 const {t} = i18n.global
@@ -55,7 +56,7 @@ export const useAIConversationStore = defineStore('AIConversationStore', {
             this.loading = true
 
             try {
-                const response = await fetch('http://192.168.136.78:8004/api/v1/ai/lawyer', {
+                const response = await fetch(`${apiUrl}/api/v1/ai/lawyer`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -64,7 +65,6 @@ export const useAIConversationStore = defineStore('AIConversationStore', {
                     },
                     mode: 'cors',
                     body: JSON.stringify(data), // payload ma'lumotlari
-                    signal: this.controller.signal,
                 });
                 const reader = response.body.getReader();
                 const decoder = new TextDecoder('utf-8');
