@@ -49,6 +49,7 @@ import dashboardService from "@/service/v1/hrm/dashboardService.js"
 import medService from "@/service/v1/hrm/medService.js"
 import reportService from "@/service/v1/hrm/reportService.js"
 import organizationLeaderService from '@/service/v1/hrm/organizationLeaderService.js'
+import exportService from '@/service/v1/hrm/exportService.js'
 
 import documentService from "@/service/v1/docFlow/documentService.js"
 import contractService from "@/service/v1/docFlow/contractService.js"
@@ -136,6 +137,7 @@ export default {
     reportService,
     aiConversationService,
     organizationLeaderService,
+    exportService,
 
     turnstileTerminalService,
     turnstileBuildingService,
