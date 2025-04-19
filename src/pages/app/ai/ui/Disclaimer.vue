@@ -51,9 +51,9 @@ const cards = [
       <div class="flex flex-col bg-surface-section py-1 px-3 rounded-lg border border-gray-100 h-full overflow-hidden ">
         <div v-html="card?.name"></div>
         <div class="justify-end items-end flex flex-1 overflow-hidden">
-          <n-button class="rotate-45 !bg-gray-100" circle>
+          <n-button class="!bg-gray-100" circle>
             <template #icon>
-              <n-icon size="26" class="text-warning">
+              <n-icon size="26" class="text-primary">
                 <component :is="card.icon" />
               </n-icon>
             </template>

@@ -5,6 +5,7 @@ import DOMPurify from 'dompurify'
 import {useAccountStore} from "@/store/modules/index.js"
 import {useAppSetting} from "@/utils/index.js"
 import { v4 as uuidv4 } from 'uuid';
+import Utils from "@/utils/Utils.js"
 const apiUrl = import.meta.env.VITE_API_URL;
 
 
@@ -15,15 +16,16 @@ export const useAIConversationStore = defineStore('AIConversationStore', {
         payload: {
             question: null,
         },
+        today: Utils.timeToZone(new Date()),
         controller:new AbortController(),
         renderResponse:'',
         messages:[
-            {
-                id:1,
-                bot:true,
-                text:"Salom. Men HRM Pro Bot.",
-                photo:'https://lineone.piniastudio.com/images/avatar/avatar-12.jpg',
-            },
+            // {
+            //     id:1,
+            //     bot:true,
+            //     text:"Salom. Men HRM Pro Bot.",
+            //     photo:'https://lineone.piniastudio.com/images/avatar/avatar-12.jpg',
+            // },
         ],
 
         questionList:[],
@@ -101,6 +103,11 @@ export const useAIConversationStore = defineStore('AIConversationStore', {
                         photo:'https://lineone.piniastudio.com/images/avatar/avatar-12.jpg',
                     }
                     await nextTick()
+
+                    this.scrollContainer.scrollTo({
+                        top: this.scrollContainer.scrollHeight,
+                        behavior: 'smooth'
+                    })
                 }
                 // this.messages[index] =  {
                 //     id:1,

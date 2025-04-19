@@ -5,8 +5,10 @@ import {ChatMultiple24Regular} from "@vicons/fluent"
 const store = useAIConversationStore()
 
 const goChat = ()=>{
-  store.messages = store.archiveMessage
+  // store.messages = store.archiveMessage
   store.historyMode = false
+  store.questionParams.date = store.today
+  store.questions()
 }
 </script>
 
@@ -27,7 +29,7 @@ const goChat = ()=>{
       :loading="store.loading"
   />
   <span
-      v-if="store.historyMode"
+      v-if="store.historyMode && store.today !== store.questionParams.date"
       @click="goChat"
       class="w-full h-full absolute top-0 left-0 flex justify-center
          items-center gap-2 z-10 bg-surface-ground cursor-pointer text-[#90A1B9] ">

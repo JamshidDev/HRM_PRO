@@ -21,7 +21,7 @@ watch(()=>store.messages,
       await nextTick()
       const el = chatContainer.value
       if (!el || store.historyMode) return
-      scrollToBottom(el)
+      // scrollToBottom(el)
     }, { deep: true }
 )
 
@@ -36,7 +36,7 @@ const containerScrollEv = ()=>{
     const scrollHeight = container.scrollHeight;
     const clientHeight = container.clientHeight;
     store.scrollHeight = scrollHeight
-    if (scrollTop === 0 && !store.questionLoading && store.totalQuestion>store.messages.length && store.historyMode) {
+    if (scrollTop === 0 && !store.questionLoading && store.totalQuestion>store.messages.length) {
       store.questionParams.page++
       store.questions(true)
 
@@ -54,6 +54,8 @@ const containerScrollEv = ()=>{
 
 onMounted(()=>{
   containerScrollEv()
+  store.questionParams.date = store.today
+  store.questions()
 })
 
 

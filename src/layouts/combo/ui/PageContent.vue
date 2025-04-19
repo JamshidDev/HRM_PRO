@@ -24,12 +24,12 @@ const onClick = ()=>{
         <component :is="Component" />
       </transition>
     </router-view>
-    <div class="fixed w-[90px] h-[60px] z-[999] bottom-[60px] right-[20px]">
-      <AIButton
-          v-if="route.name !== AppPaths.AIConversation.substring(1)"
-          @click="()=>router.push({name:AppPaths.AIConversation.substring(1)})"
-      />
-    </div>
+<!--    <div class="fixed w-[90px] h-[60px] z-[999] bottom-[60px] right-[20px]">-->
+<!--      <AIButton-->
+<!--          v-if="route.name !== AppPaths.AIConversation.substring(1)"-->
+<!--          @click="()=>router.push({name:AppPaths.AIConversation.substring(1)})"-->
+<!--      />-->
+<!--    </div>-->
   </div>
 </div>
 </template>
