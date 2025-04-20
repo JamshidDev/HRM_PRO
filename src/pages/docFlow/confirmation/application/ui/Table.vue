@@ -98,7 +98,7 @@ const onSelectEv = (v)=>{
           <td><span class="text-center text-[12px] text-gray-600 block">{{ (store.params.page - 1) * store.params.per_page + idx + 1 }}</span></td>
           <td>{{item.number}}</td>
           <td>
-            <span @click="onOpenFile(item?.id, item.id)" class="hover:text-primary hover:underline cursor-pointer">{{item?.type.name}}</span>
+            <span @click="onOpenFile(item?.id, item?.id)" class="hover:text-primary hover:underline cursor-pointer">{{item?.type.name}}</span>
           </td>
           <td>
             <UIUser

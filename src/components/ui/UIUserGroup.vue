@@ -46,7 +46,7 @@ const onOpen = (photo,fullName)=>{
 </script>
 
 <template>
-<div class="ml-auto relative z-[3]">
+<div class="ml-auto relative z-[3]" v-bind="$attrs">
   <n-avatar-group :options="data" :size="40" :max="max">
     <template #avatar="{ option: { photo, fullName } }">
       <n-tooltip>

@@ -26,7 +26,7 @@ const messages = computed(()=>{
   return store.messageList.filter((v)=>(store.payload.recipient_id === v.recipient.id || store.payload.recipient_id === v.sender.id)).map((v)=>({
     msg:v.message,
     author:v.sender.id === accountStore.account.id,
-    fullName:v.sender.last_name +" "+v.sender.first_name,
+    fullName:v.sender?.worker?.last_name +" "+v.sender?.worker?.first_name,
     avatar:v.sender.photo,
     time:Utils.timeOnlyHour(v.created_at),
     date:Utils.timeOnlyDate(v.created_at),

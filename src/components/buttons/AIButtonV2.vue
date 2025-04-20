@@ -40,7 +40,7 @@ import { Star20Filled } from "@vicons/fluent";
   width: calc( 100% - 2px );
   top:1px;
   left:1px;
-  background: radial-gradient(68.5% 119.738% at 49.1% 100%, rgb(175, 120, 245) 0%, rgb(116, 56, 255) 100%);
+  background: linear-gradient(to right, oklch(0.792 0.209 151.711) 0px, oklch(0.546 0.245 262.881) 100%);
   opacity: 0;
   transition: opacity 0.8s ease;
   border-radius: 16px;
@@ -65,9 +65,9 @@ import { Star20Filled } from "@vicons/fluent";
 .ai-button:hover {
   transform: scale(1.02);
   box-shadow: rgb(97 13 232 / 14%) -3px 1px 8px 7px;
-  background: radial-gradient(68.5% 119.738% at 49.1% 100%, rgb(175, 120, 245) 0%, rgb(116, 56, 255) 100%);
+  background: linear-gradient(to right, oklch(0.792 0.209 151.711) 0px, oklch(0.546 0.245 262.881) 100%);
   .bg-overall{
-    background: radial-gradient(68.5% 119.738% at 49.1% 100%, rgb(175, 120, 245) 0%, rgb(116, 56, 255) 100%);
+    background: linear-gradient(to right, oklch(0.792 0.209 151.711) 0px, oklch(0.546 0.245 262.881) 100%);
   }
 }
 

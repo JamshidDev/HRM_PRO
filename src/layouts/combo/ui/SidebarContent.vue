@@ -15,6 +15,16 @@ const emits = defineEmits(['onChange', 'onOpen', 'onClose'])
 
 
 
+watch(
+    () => route.path,
+    (newPath) => {
+      if([AppPaths.Home].includes(newPath)){
+        emits('onClose')
+        menuPath.value = null
+      }
+    }
+);
+
 const showPanel = ref(true)
 const menuPath = ref(null)
 const collapse = ref(false)
@@ -73,8 +83,8 @@ const panelMenu = computed(()=>{
     }
   }
 
+  if(navigationIndex === 0 && menuPath.value===null) return  []
   return (index === -1)? navigations[navigationIndex].children.filter((v)=>store.checkPermission(v.permission)) : navigations[index].children.filter((v)=>store.checkPermission(v.permission))
-  // return (index === -1)? navigations[0].children: navigations[index].children
 })
 
 const menuName = computed(()=>{
@@ -90,9 +100,10 @@ const menuName = computed(()=>{
 
 
 const onClick = () => {
-  if(panelMenu.value?.length){
-    emits('onChange')
-  }
+  // if(panelMenu.value?.length){
+  //   emits('onChange')
+  // }
+  emits('onChange')
 }
 
 const isComboxMenu =(path)=>{
@@ -106,13 +117,6 @@ const isCurrentPath = (path)=>{
   return route.path===path
 }
 
-const pushFirstMenu = (path)=>{
-  let index = navigations.findIndex((v=>v.path === path))
-  if(navigations[index].children && navigations[index].children.length){
-    router.push(navigations[index].children.filter((v)=>store.checkPermission(v.permission))?.[0]?.path)
-  }
-  // router.push(navigations[index].children[0]?.path)
-}
 
 </script>
 

@@ -20,20 +20,14 @@ const notification = ref(2)
   <div class="flex">
     <div
         @click="onClick"
-        class="mobile-control-btn flex justify-center items-center cursor-pointer w-[32px] h-[32px] bg-gray-900 rounded">
+        class="mobile-control-btn flex justify-center items-center cursor-pointer w-[32px] h-[32px] bg-gray-900 rounded mr-2">
       <i class='bx bx-chevrons-left text-surface-section text-xl rotate-180'></i>
     </div>
 
-    <n-input-group>
-      <n-input placeholder="Qidiruv">
-        <template #prefix>
-          <n-icon>
-            <Search32Regular/>
-          </n-icon>
-        </template>
-      </n-input>
-    </n-input-group>
 
+    <AIButtonV2
+        @click="()=>router.push({name:AppPaths.AIConversation.substring(1)})"
+    />
 
 
   </div>
@@ -46,9 +40,6 @@ const notification = ref(2)
 <!--    <UIThemeSwitch/>-->
     <LangDropdown/>
     <UIProfile/>
-    <AIButtonV2
-        @click="()=>router.push({name:AppPaths.AIConversation.substring(1)})"
-    />
 
   </div>
 </div>

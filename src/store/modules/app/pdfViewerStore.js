@@ -223,6 +223,7 @@ export const usePdfViewerStore = defineStore('pdfViewerStore', {
                     model: this.model,
                 }
             }).then((res) => {
+                console.log(res.data.data.data)
                 this.messageList = res.data.data.data
             }).finally(() => {
                 this.chatLoading = false
