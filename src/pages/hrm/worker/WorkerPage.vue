@@ -2,15 +2,17 @@
 import {UIModal, UIPageContent, UIDrawer} from "@/components/index.js"
 import contractForm from "@/pages/docFlow/document/contract/contractForm.vue"
 import Table from "./ui/Table.vue"
+import ExportForm from './ui/ExportForm.vue'
 import Filter from "./ui/Filter.vue"
 import CheckWorker from "./ui/CheckWorker.vue"
-import {useTimesheetDepartmentStore, useWorkerStore, useContractStore} from "@/store/modules/index.js"
+import {useTimesheetDepartmentStore, useWorkerStore, useContractStore, useExportStore} from "@/store/modules/index.js"
 import TimesheetAssignForm from '../timesheetDepartment/ui/timesheetDepartmentForm.vue'
 import router from "@/router/index.js"
 import {AppPaths} from "@/utils/index.js"
 
 const store = useWorkerStore()
 const contractStore = useContractStore()
+const exportStore = useExportStore()
 const timesheetDepartmentStore = useTimesheetDepartmentStore()
 
 
@@ -45,6 +47,15 @@ onMounted(()=>{
   >
     <template #default>
       <contractForm :call-back="onSuccessEv" />
+    </template>
+  </UIModal>
+  <UIModal
+      :title="$t('content.download')"
+      :width="800"
+      v-model:visible="exportStore.visible"
+  >
+    <template #default>
+      <ExportForm />
     </template>
   </UIModal>
 </UIPageContent>

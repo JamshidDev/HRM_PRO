@@ -1,11 +1,13 @@
 <script setup>
-import {useComponentStore, useWorkerStore} from "@/store/modules/index.js"
+import {useComponentStore, useWorkerStore, useExportStore} from "@/store/modules/index.js"
 import {UIPageFilter, UIStructure} from "@/components/index.js"
-import {HomePerson20Regular, Person32Regular} from "@vicons/fluent"
+import {HomePerson20Regular, Person32Regular, ArrowDownload16Regular} from "@vicons/fluent"
 import {useAppSetting} from "@/utils/index.js"
 import Utils from "@/utils/Utils.js"
 
+
 const store = useWorkerStore()
+const exportStore = useExportStore() 
 const componentStore = useComponentStore()
 
 const onAdd = () => {
@@ -76,6 +78,11 @@ const onShow = (isOpen)=>{
     componentStore._enumsAdmin()
   }
 }
+
+const onDownload = ()=>{
+  exportStore.visible = true
+}
+
 </script>
 
 <template>
@@ -93,18 +100,32 @@ const onShow = (isOpen)=>{
       }"
   >
     <template #filterAction>
-      <n-button
-          type="primary"
-          icon-placement="right"
-          @click="onAdd"
-      >
-        <template #icon>
-          <n-icon>
-            <HomePerson20Regular/>
-          </n-icon>
-        </template>
-        {{ $t('workerPage.filter.contract') }}
-      </n-button>
+      <n-space>
+        <n-button
+            type="primary"
+            icon-placement="right"
+            @click="onDownload"
+        >
+          <template #icon>
+            <n-icon :component="ArrowDownload16Regular" />
+          </template>
+          {{ $t('content.download') }}
+        </n-button>
+
+        <n-button
+            type="primary"
+            icon-placement="right"
+            @click="onAdd"
+        >
+          <template #icon>
+            <n-icon>
+              <HomePerson20Regular/>
+            </n-icon>
+          </template>
+          {{ $t('workerPage.filter.contract') }}
+        </n-button>
+
+      </n-space>
     </template>
 
     <template #filterContent>
