@@ -71,6 +71,7 @@ export const useAIConversationStore = defineStore('AIConversationStore', {
                 const reader = response.body.getReader();
                 const decoder = new TextDecoder('utf-8');
                 let fullText = '';
+                let logId = null
 
 
                 function normalizeMarkdown(md) {
@@ -90,24 +91,27 @@ export const useAIConversationStore = defineStore('AIConversationStore', {
 
                             if (data === '[DONE]') {
                                 return;
+                            }else if(data.includes('[LOG_ID')) {
+                                logId = data.match(/LOG_ID=(\d+)/g)?.map(id => Number(id.split('=')[1]))?.[0]
                             }else{
-                                fullText += data;
+                                fullText += data
                             }
 
+                            this.messages[index] =  {
+                                id:logId,
+                                bot:true,
+                                text:DOMPurify.sanitize(marked.parse(normalizeMarkdown(fullText))),
+                                photo:' ',
+                                key:uuidv4(),
+                            }
+                            this.scrollContainer.scrollTo({
+                                top: this.scrollContainer.scrollHeight,
+                                behavior: 'smooth'
+                            })
                         }
                     }
-                    this.messages[index] =  {
-                        id:1,
-                        bot:true,
-                        text:DOMPurify.sanitize(marked.parse(normalizeMarkdown(fullText))),
-                        photo:'https://lineone.piniastudio.com/images/avatar/avatar-12.jpg',
-                    }
-                    this.scrollContainer.scrollTo({
-                        top: this.scrollContainer.scrollHeight,
-                        behavior: 'smooth'
-                    })
+
                 }
-                await nextTick()
 
             } catch (error) {
                 console.error('❌ Stream xatosi:', error);
@@ -130,6 +134,11 @@ export const useAIConversationStore = defineStore('AIConversationStore', {
                    photo:store.userPhoto,
                })
                this.payload.question = ''
+               await nextTick()
+               this.scrollContainer.scrollTo({
+                   top: this.scrollContainer.scrollHeight,
+                   behavior: 'smooth'
+               })
 
                await  this.conversation(data)
 
@@ -180,11 +189,11 @@ export const useAIConversationStore = defineStore('AIConversationStore', {
                     key:uuidv4(),
             }
         },
-        like(id, isLike){
-            const index = this.messages.findIndex(v=>v.id === id)
-            this.messages[index+1].like = isLike? 2:3
+        like(key, isLike){
+            const index = this.messages.findIndex(v=>v.key === key)
+            const id = this.messages[index].id
+            this.messages[index].like = isLike? 2:3
             $ApiService.aiConversationService.like({id,data:{like:isLike? 2:3}}).then((res)=>{
-                console.log(res.data)
             })
         }
 

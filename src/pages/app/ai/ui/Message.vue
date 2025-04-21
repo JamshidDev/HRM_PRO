@@ -60,7 +60,7 @@ const isBot = computed(()=>props.data?.bot)
                 v-if="data.like===2" class="text-red-500"
             />
             <ThumbLike20Regular
-                @click="store.like(data.id, true)"
+                @click="store.like(data.key, true)"
                 v-else/>
           </n-icon>
           <n-icon
@@ -68,7 +68,7 @@ const isBot = computed(()=>props.data?.bot)
             <ThumbDislike20Filled
                 v-if="data.like===3"/>
             <ThumbDislike20Regular
-                @click="store.like(data.id, false)"
+                @click="store.like(data.key, false)"
                 v-else/>
           </n-icon>
         </div>

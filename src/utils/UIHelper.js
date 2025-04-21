@@ -1,4 +1,4 @@
-import {NAvatar, NIcon} from "naive-ui"
+import {NIcon} from "naive-ui"
 
 
 const scheduleLabel = (option)=>{

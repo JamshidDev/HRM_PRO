@@ -104,6 +104,7 @@
     "url": "Url manzil",
     "brief": "Batafsil",
     "organization": "Tashkilot",
+    "confirmStatus": "Tasdiqlov",
     "staff": "Xodim"
   },
   "date": {
@@ -146,7 +147,11 @@
   },
   "enum": {
     "man": "Erkak",
-    "woman": "Ayol"
+    "woman": "Ayol",
+    "noCreated": "Yaratilmagan",
+    "working": "Jarayonda",
+    "bug": "Xatolik",
+    "done": "Yaratilgan"
   },
   "account": {
     "changeAccount": "Hisobni o'zgartirish!",

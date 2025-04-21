@@ -68,6 +68,8 @@ const getDocument =async (document_id, model)=>{
   store.loading = true
   $ApiService.documentService._openDocument({params:{model,document_id}}).then((res)=>{
     const v = res.data.data
+
+    console.log(v.document.genereate)
     store.confirmations = v.confirmations
     store.document = v
     store.document.document.file_name = Utils.fileNameFromUrl(v.document?.doc_url)

@@ -14,15 +14,18 @@ const store = useAccountStore()
 const emits = defineEmits(['onChange', 'onOpen', 'onClose'])
 
 
+const checkPage = (path)=>{
+  if([AppPaths.Home, AppPaths.AIConversation].includes(path)){
+    menuPath.value = null
+    emits('onClose')
+  }
+}
 
 watch(
     () => route.path,
     (newPath) => {
-      if([AppPaths.Home, AppPaths.AIConversation].includes(newPath)){
-        emits('onClose')
-        menuPath.value = null
-      }
-    }
+      checkPage(newPath)
+    },
 );
 
 const showPanel = ref(true)
@@ -100,10 +103,9 @@ const menuName = computed(()=>{
 
 
 const onClick = () => {
-  // if(panelMenu.value?.length){
-  //   emits('onChange')
-  // }
-  emits('onChange')
+  if(panelMenu.value?.length){
+    emits('onChange')
+  }
 }
 
 const isComboxMenu =(path)=>{
@@ -117,6 +119,9 @@ const isCurrentPath = (path)=>{
   return route.path===path
 }
 
+onMounted(()=>{
+  checkPage(route.path)
+})
 
 </script>
 

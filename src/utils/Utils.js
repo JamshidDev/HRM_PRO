@@ -435,6 +435,24 @@ function formatPhoneWithMask(phone, mask) {
     return result.trim();
 }
 
+const documentStatus = {
+    '1':{
+        id:2,
+        name:t('enum.noCreated')
+    },
+    '2':{
+        id:1,
+        name:t('enum.working')
+    },
+    '3':{
+        id:3,
+        name:t('enum.done')
+    },
+    '4':{
+        id:3,
+        name:t('enum.bug')
+    },
+}
 
 export default {
     fileToBase64,
@@ -477,5 +495,6 @@ export default {
     blobFileDownload,
     checkRequestBody,
     formatPhoneWithMask,
+    documentStatus,
 
 }
