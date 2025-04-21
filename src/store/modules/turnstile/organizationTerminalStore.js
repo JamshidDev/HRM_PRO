@@ -16,7 +16,7 @@ export const useTurnstileOrganizationStore = defineStore('turnstileOrganizationS
         structureCheck: [],
         instanceTerminalList: [],
         payload: {
-            organization_id: null,
+            organization_id: [],
             terminals: [],
         },
         params: {
@@ -48,7 +48,7 @@ export const useTurnstileOrganizationStore = defineStore('turnstileOrganizationS
         _show(){
             this.instanceLoading = true
             this.payload.terminals = []
-            $ApiService.turnstileOrganizationService._show({id: this.payload.organization_id}).then((res) => {
+            $ApiService.turnstileOrganizationService._show({id: this.payload.organization_id?.[0]?.id}).then((res) => {
                 this.payload.terminals = res.data.data.map(i=>i.id)
             }).finally(() => {
                 this.instanceLoading = false

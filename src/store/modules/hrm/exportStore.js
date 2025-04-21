@@ -15,7 +15,8 @@ export const useExportStore = defineStore('exportStore', {
             columns: []
         },
         columns: [],
-        tasks: []
+        tasks: [],
+        saveLoading: false,
     }),
     actions:{
         _columns(){
@@ -33,6 +34,14 @@ export const useExportStore = defineStore('exportStore', {
                 this.totalItems = res.data.data.total
             }).finally(()=>{
                 this.loading= false
+            })
+        },
+        _export_workers(){
+            this.saveLoading=true
+            $ApiService.exportService._export_workers({data: this.payload.columns.map(i=>i.column)}).then((res)=>{
+                this.visible = false
+            }).finally(()=>{
+                this.saveLoading = false
             })
         },
         resetPayload(){

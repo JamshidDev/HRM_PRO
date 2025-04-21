@@ -64,13 +64,6 @@ export const navigations = [
                 permission: appPermissions.hrWorkers,
             },
             {
-                label: 'exportPage.name',
-                path: Utils.routeHrmPathMaker(AppPaths.Export),
-                icon: CloudArchive20Filled,
-                color: 'bg-warning',
-                permission: appPermissions.hrWorkers,
-            },
-            {
                 label: 'departmentPage.name',
                 path: Utils.routeHrmPathMaker(AppPaths.Department),
                 icon: ChannelShare20Filled,
@@ -160,6 +153,13 @@ export const navigations = [
                 icon: PreviewLink16Filled,
                 color: 'bg-info',
                 permission: appPermissions.hrMed,
+            },
+            {
+                label: 'exportPage.name',
+                path: Utils.routeHrmPathMaker(AppPaths.Export),
+                icon: CloudArchive20Filled,
+                color: 'bg-warning',
+                permission: appPermissions.hrWorkers,
             },
         ]
     },

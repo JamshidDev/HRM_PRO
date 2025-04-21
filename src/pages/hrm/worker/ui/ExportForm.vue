@@ -18,6 +18,9 @@ onMounted(() => {
     store._columns()
 })
 
+const onSubmit = ()=>{
+  store._export_workers()
+}
 
 </script>
 <template>
@@ -57,7 +60,7 @@ onMounted(() => {
             </div>
         </div>
         <n-space justify="end" class="mt-2">
-            <n-button type="primary">
+            <n-button @click="onSubmit" type="primary" :loading="store.loading">
                 {{ $t('content.download') }}
             </n-button>
         </n-space>
