@@ -3,6 +3,8 @@ import {ChevronRight12Regular} from "@vicons/fluent"
 import {useConfApplicationStore} from "@/store/modules/index.js"
 import Utils from "../../../../../utils/Utils.js"
 import {useAppSetting} from "@/utils/index.js"
+import i18n from "@/i18n/index.js"
+const {t} = i18n.global
 
 const store = useConfApplicationStore()
 
@@ -20,7 +22,9 @@ const disabledPeriod = computed(()=>{
 })
 
 onMounted(()=>{
-  store._onActiveVacation(store.payload.worker_position_id || 1)
+  store._onActiveVacation(store.payload.worker_position_id)
+  store.payload.from = new Date().getTime()
+  store.payload.reason = t('applicationPage.reason')
 })
 </script>
 

@@ -39,7 +39,6 @@ watch(route, (value)=>{
 
 onMounted(()=>{
   isLoadApp.value = true
-
 })
 
 

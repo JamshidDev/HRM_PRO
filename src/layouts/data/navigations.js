@@ -11,7 +11,7 @@ import {
     ChannelShare20Filled,
     DocumentTextExtract24Filled,
     PeopleCheckmark24Filled,
-    DocumentArrowDown20Filled,
+    PreviewLink16Filled,
     WeatherSunnyLow20Filled,
     Grid20Filled,
     DocumentCopy24Filled,
@@ -152,6 +152,13 @@ export const navigations = [
                 path: Utils.routeHrmPathMaker(AppPaths.OrganizationLeader),
                 icon: PersonAccounts24Filled,
                 color: 'bg-warning',
+                permission: appPermissions.hrMed,
+            },
+            {
+                label: 'reportPage.name',
+                path: Utils.routeHrmPathMaker(AppPaths.Slice),
+                icon: PreviewLink16Filled,
+                color: 'bg-info',
                 permission: appPermissions.hrMed,
             },
         ]
