@@ -102,19 +102,12 @@ export const useAIConversationStore = defineStore('AIConversationStore', {
                         text:DOMPurify.sanitize(marked.parse(normalizeMarkdown(fullText))),
                         photo:'https://lineone.piniastudio.com/images/avatar/avatar-12.jpg',
                     }
-                    await nextTick()
-
                     this.scrollContainer.scrollTo({
                         top: this.scrollContainer.scrollHeight,
                         behavior: 'smooth'
                     })
                 }
-                // this.messages[index] =  {
-                //     id:1,
-                //     bot:true,
-                //     text:DOMPurify.sanitize(marked.parse(fullText)),
-                //     photo:'https://lineone.piniastudio.com/images/avatar/avatar-12.jpg',
-                // }
+                await nextTick()
 
             } catch (error) {
                 console.error('❌ Stream xatosi:', error);

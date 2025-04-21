@@ -18,7 +18,7 @@ const emits = defineEmits(['onChange', 'onOpen', 'onClose'])
 watch(
     () => route.path,
     (newPath) => {
-      if([AppPaths.Home].includes(newPath)){
+      if([AppPaths.Home, AppPaths.AIConversation].includes(newPath)){
         emits('onClose')
         menuPath.value = null
       }

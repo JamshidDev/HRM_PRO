@@ -1,15 +1,15 @@
 <script setup>
-import {ArrowCircleDown16Regular,Eye24Filled, StarEmphasis32Filled, EyeOff20Filled, DismissCircle32Filled} from "@vicons/fluent"
+import {ArrowCircleDown16Regular,Eye24Filled, StarEmphasis32Filled,
+  EyeOff20Filled, DismissCircle32Filled, Copy16Regular} from "@vicons/fluent"
 import {useComponentStore} from "@/store/modules/index.js"
 import Utils from "../../../utils/Utils.js"
+import i18n from "@/i18n/index.js"
+const {t} = i18n.global
 const store = useComponentStore()
 const isHide = ref(true)
 
-
-const maskString = (v)=>{
-    const str = v.toString()
-  if(str.length<2) return str
-  return '*'.repeat(str.length - 2) + str.slice(-2);
+const onCopy = ()=>{
+  $Toast.info(t('message.successDone'))
 }
 
 </script>
@@ -55,8 +55,24 @@ const maskString = (v)=>{
       <div class="col-span-12 text-2xl text-primary font-bold mb-2 uppercase">
         {{Utils.combineFullName(store.workerPreview?.worker)}}
       </div>
-      <div class="col-span-6 font-bold"><span class="font-normal text-gray-400">{{$t('workerView.general.passportJSHSHIR')}}</span>: {{isHide? Utils.maskText(store.workerPreview?.worker.pin, 3,4,) : store.workerPreview?.worker.pin}}</div>
-      <div class="col-span-6 font-bold"> <span class="font-normal text-gray-400">{{$t('workerView.general.phone')}}</span>: {{isHide? Utils.maskText(store.workerPreview?.worker.phones[0].phone, 2,2) : Utils.formatPhoneWithMask(store.workerPreview?.worker.phones[0].phone, '## ### ## ##')}}	</div>
+      <div class="col-span-6 font-bold items-center flex"><span class="font-normal text-gray-400">{{$t('workerView.general.passportJSHSHIR')}}</span>: {{isHide? Utils.maskText(store.workerPreview?.worker.pin, 3,4,) : store.workerPreview?.worker.pin}}
+        <n-icon
+            @click="Utils.copyToClipboard(store.workerPreview?.worker.pin,onCopy)"
+            v-if="!isHide"
+            size="24"
+            class="cursor-pointer ml-2">
+          <Copy16Regular/>
+        </n-icon>
+      </div>
+      <div class="col-span-6 font-bold items-center flex"> <span class="font-normal text-gray-400">{{$t('workerView.general.phone')}}</span>: {{isHide? Utils.maskText(store.workerPreview?.worker.phones[0].phone, 2,2) : Utils.formatPhoneWithMask(store.workerPreview?.worker.phones[0].phone, '## ### ## ##')}}
+        <n-icon
+            @click="Utils.copyToClipboard(store.workerPreview?.worker.phones[0].phone,onCopy)"
+            v-if="!isHide"
+            size="24"
+            class="cursor-pointer ml-2">
+          <Copy16Regular/>
+        </n-icon>
+      </div>
       <div class="col-span-6 font-bold"><span class="font-normal text-gray-400">{{$t('workerView.general.department')}}</span>: {{store.workerPreview?.department?.name}}	</div>
       <div class="col-span-6 font-bold"><span class="font-normal text-gray-400">{{$t('workerView.general.salary')}}</span>: {{isHide? Utils.maskText(store.workerPreview?.salary, 0,2) : Utils.formatNumberToMoney(store.workerPreview?.salary)}} {{$t('content.sum')}}</div>
       <div class="col-span-12 font-bold"> <span class="font-normal text-gray-400">{{$t('workerView.general.position')}}</span>: {{store.workerPreview?.post_name}}	</div>

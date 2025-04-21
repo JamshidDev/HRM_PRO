@@ -129,7 +129,7 @@ const onClickoutside=()=> {
                     firstName:item?.worker.first_name,
                     middleName:item?.worker.middle_name,
                     lastName:item?.worker.last_name,
-                    position:item?.contract?.type?.name,
+                    position:item?.type?.name,
                   }"
             >
             </UIUser>
