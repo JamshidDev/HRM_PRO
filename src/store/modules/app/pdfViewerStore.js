@@ -102,6 +102,8 @@ export const usePdfViewerStore = defineStore('pdfViewerStore', {
         docApplicationLoading: false,
         workerApplications: [],
 
+        viewerLoading:false,
+
 
     }),
     actions: {

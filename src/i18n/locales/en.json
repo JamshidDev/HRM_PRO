@@ -107,7 +107,8 @@
     "confirmStatus": "Approver",
     "staff": "Staff",
     "export": "Export",
-    "reference": "Reference"
+    "reference": "Reference",
+    "preparingDocument": "Document is being prepared..."
   },
   "date": {
     "day": "Day",

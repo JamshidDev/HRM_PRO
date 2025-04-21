@@ -1,7 +1,5 @@
 <script setup>
-import {ChevronRight12Regular} from "@vicons/fluent"
 import {useConfApplicationStore} from "@/store/modules/index.js"
-import Utils from "../../../../../utils/Utils.js"
 import {useAppSetting} from "@/utils/index.js"
 
 const store = useConfApplicationStore()
@@ -15,13 +13,17 @@ watchEffect(()=>{
   }
 })
 
+onMounted(()=>{
+  console.log(store.payload.to_time)
+})
+
 
 </script>
 
 <template>
   <div class="grid grid-cols-12 gap-x-4">
     <div class="col-span-6">
-      <n-form-item :label="$t(`applicationPage.form.period_from`)" path="period_from">
+      <n-form-item :label="$t(`applicationPage.form.from`)" path="period_from">
         <n-date-picker
             class="w-full"
             v-model:value="store.payload.period_from"
@@ -32,7 +34,7 @@ watchEffect(()=>{
       </n-form-item>
     </div>
     <div class="col-span-6">
-      <n-form-item :label="$t(`applicationPage.form.period_to`)" path="period_to">
+      <n-form-item :label="$t(`applicationPage.form.to`)" path="period_to">
         <n-date-picker
             class="w-full"
             v-model:value="store.payload.period_to"
@@ -48,9 +50,7 @@ watchEffect(()=>{
         <n-time-picker
             class="w-full"
             v-model:value="store.payload.from_time"
-            type="date"
             :placeholder="$t(`content.choose`)"
-            :format="useAppSetting.datePicketFormat"
         />
       </n-form-item>
     </div>
@@ -59,9 +59,7 @@ watchEffect(()=>{
         <n-time-picker
             class="w-full"
             v-model:value="store.payload.to_time"
-            type="date"
             :placeholder="$t(`content.choose`)"
-            :format="useAppSetting.datePicketFormat"
         />
       </n-form-item>
     </div>

@@ -90,29 +90,31 @@ const onSelectEv = (v)=>{
           <th class="min-w-[200px] w-[200px]">{{$t('applicationPage.form.director_id')}}</th>
           <th class="min-w-[100px] w-[120px]">{{$t('content.status')}}</th>
           <th class="min-w-[100px] w-[100px]">{{$t('content.date')}}</th>
+          <th class="w-[120px]">{{$t('content.document')}}</th>
           <th class="min-w-[40px] w-[40px]"></th>
         </tr>
         </thead>
         <tbody>
         <tr v-for="(item, idx) in store.list" :key="idx">
           <td><span class="text-center text-[12px] text-gray-600 block">{{ (store.params.page - 1) * store.params.per_page + idx + 1 }}</span></td>
-          <td>{{item.number}}</td>
+          <td>{{item?.worker_application.number}}</td>
           <td>
-            <span @click="onOpenFile(item?.id, item?.id)" class="hover:text-primary hover:underline cursor-pointer">{{item?.type.name}}</span>
+            <span @click="onOpenFile(item?.id, item?.id)" class="hover:text-primary hover:underline cursor-pointer">{{item?.worker_application?.type.name}}</span>
           </td>
           <td>
             <UIUser
                 :data="{
-                    photo:item?.worker.photo,
-                    firstName:item?.worker.first_name,
-                    middleName:item?.worker.middle_name,
-                    lastName:item?.worker.last_name,
-                    position:item?.worker?.birthday,
+                    photo:item?.worker_application?.worker.photo,
+                    firstName:item?.worker_application?.worker.first_name,
+                    middleName:item?.worker_application?.worker.middle_name,
+                    lastName:item?.worker_application?.worker.last_name,
+                    position:item?.worker_application?.worker?.birthday,
                   }"
             />
           </td>
-          <td><UIStatus :status="item.confirmation" /></td>
-          <td>{{Utils.timeOnlyDate(item.created_at)}}</td>
+          <td><UIStatus :status="item?.worker_application.confirmation" /></td>
+          <td>{{Utils.timeOnlyDate(item?.worker_application.created_at)}}</td>
+          <td><UIStatus :status="Utils.documentStatus[item?.worker_application.genereate || 1]"/></td>
           <td>
            <MenuButton
                :data="item"

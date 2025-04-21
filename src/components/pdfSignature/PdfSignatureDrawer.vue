@@ -1,7 +1,9 @@
 <script setup>
 import {Signature20Filled,
-  PanelLeftContract20Filled, DocumentEdit24Regular, ClipboardCheckmark20Regular, CalendarCancel20Regular} from "@vicons/fluent"
-import {UIUser} from "@/components/index.js"
+  PanelLeftContract20Filled, DocumentEdit24Regular,
+  ClipboardCheckmark20Regular, CalendarCancel20Regular} from "@vicons/fluent"
+import {UIUser, UILottieReader} from "@/components/index.js"
+import generateFile from "@/assets/json/generateFile.json"
 import {usePdfViewerStore, useSignatureStore, useApplicationStore} from "@/store/modules/index.js"
 import ConfirmationList from "./ui/ConfirmationList.vue"
 import LeftContent from "./ui/LeftContent.vue"
@@ -68,8 +70,12 @@ const getDocument =async (document_id, model)=>{
   store.loading = true
   $ApiService.documentService._openDocument({params:{model,document_id}}).then((res)=>{
     const v = res.data.data
+    const key = v.document.genereate
+    store.viewerLoading = false
 
-    console.log(v.document.genereate)
+
+
+
     store.confirmations = v.confirmations
     store.document = v
     store.document.document.file_name = Utils.fileNameFromUrl(v.document?.doc_url)
@@ -88,14 +94,26 @@ const getDocument =async (document_id, model)=>{
     store.permissions.qrcode = false
 
 
-    // docxViewerRef.value.openWord(v.document?.doc_url)
-    store.loadPdf()
+
+    if([1, 4].includes(key)){
+      store.permissions.canSignature = false
+      setTimeout(()=>{
+        store.visible = false
+      },200)
+    }else if(key === 2){
+      store.viewerLoading = true
+      store.permissions.canSignature = false
+      store.permissions.canEdit = false
+    }else{
+      store.loadPdf()
+    }
+
 
   }).catch(error=>{
     console.log(error)
     setTimeout(()=>{
       store.visible = false
-    },300)
+    },200)
   }).finally(()=>{
     store.loading = false
   })
@@ -174,9 +192,7 @@ onUnmounted(()=>{
                     <n-icon size="24">
                       <PanelLeftContract20Filled/>
                     </n-icon>
-
                   </template>
-
                 </n-button>
                 <div>
                   <div class="text-gray-600 text-sm uppercase font-medium">{{store.document?.document?.file_name}}</div>
@@ -211,7 +227,26 @@ onUnmounted(()=>{
                   style="width: calc(100% - 600px)"
                   class=" h-full flex pt-[50px] overflow-auto"
               >
-                <PdfViewer ref="pdfViewerRef"/>
+                <template v-if="!store.viewerLoading">
+                  <PdfViewer ref="pdfViewerRef"/>
+                </template>
+                <template v-else>
+                  <div class="w-full flex justify-center items-center">
+                    <div>
+                      <UILottieReader
+                           style="height: calc(100vh - 120px)"
+                          :file-url="generateFile"
+                          :auto-run="true"
+                      />
+                      <h2 class="text-2xl text-center text-gray-400
+                       font-medium
+                       animate-bounce
+">{{$t('content.preparingDocument')}}</h2>
+                    </div>
+                  </div>
+                </template>
+
+
               </div>
 
 
@@ -276,6 +311,7 @@ onUnmounted(()=>{
                 </div>
               </div>w
             </div>
+
           </div>
         </n-spin>
       </n-drawer-content>

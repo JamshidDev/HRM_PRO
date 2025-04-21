@@ -1,12 +1,18 @@
 <script setup>
 import {UIPageFilter, UIStructure} from "@/components/index.js"
-import { useDepartmentStore} from "@/store/modules/index.js"
+import {useComponentStore, useDepartmentStore} from "@/store/modules/index.js"
 
+const componentStore = useComponentStore()
 const store = useDepartmentStore()
 
 const onAdd = ()=>{
-  store.visibleType = true
   store.resetForm()
+  store._level()
+  componentStore._departments()
+  store.activeDeep = 1
+
+  store.parentElement = null
+  store.visibleType = true
   store.visible = true
 }
 

@@ -55,6 +55,7 @@ const onOpenFile = (v)=>{
 
           <th class="min-w-[120px] w-[120px]">{{$t('content.status')}}</th>
           <th class="min-w-[90px] w-[90px]">{{$t('content.date')}}</th>
+          <th class="w-[120px]">{{$t('content.document')}}</th>
           <th class="min-w-[40px] w-[40px]"></th>
         </tr>
         </thead>
@@ -84,6 +85,7 @@ const onOpenFile = (v)=>{
             />
           </td>
           <td>{{Utils.timeOnlyDate(item?.created_at)}}</td>
+          <td><UIStatus :status="Utils.documentStatus[item?.genereate]"/></td>
           <td>
            <UIMenuButton
                :data="item"

@@ -93,10 +93,10 @@ const vacationType =(id)=>{
               <UIUser
                   :short="true"
                   :data="{
-                    photo:item?.worker.photo,
-                    firstName:item?.worker.first_name,
-                    middleName:item?.worker.middle_name,
-                    lastName:item?.worker.last_name,
+                    photo:item?.worker_position?.worker.photo,
+                    firstName:item?.worker_position?.worker.first_name,
+                    middleName:item?.worker_position?.worker.middle_name,
+                    lastName:item?.worker_position?.worker.last_name,
                     position:$t('vacationPage.table.durationDay',{n:item?.all_day}),
                   }"
               />

@@ -45,6 +45,7 @@ const onSelect = (v)=>{
           <th class="min-w-[100px] w-[300px]">{{$t('confirmation.contract.form.organization')}}</th>
           <th class="min-w-[100px] w-[100px]">{{$t('content.status')}}</th>
           <th class="min-w-[100px] w-[100px]">{{$t('content.date')}}</th>
+          <th class="min-w-[100px] w-[100px]">{{$t('content.document')}}</th>
           <th class="min-w-[40px] w-[40px]"></th>
         </tr>
         </thead>
@@ -60,6 +61,7 @@ const onSelect = (v)=>{
           <td>{{item?.organization?.name}}</td>
           <td><UIStatus :status="item?.confirmation"/> </td>
           <td>{{ Utils.timeOnlyDate(item?.command_date) }}</td>
+          <td><UIStatus :status="Utils.documentStatus[item?.genereate]"/></td>
           <td>
             <UIMenuButton
                 :show-view="true"
