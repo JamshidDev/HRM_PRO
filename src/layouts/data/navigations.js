@@ -30,7 +30,8 @@ import {
     AppFolder24Filled,
     BuildingMultiple24Filled,
     ScanObject24Filled,
-    Organization12Filled
+    Organization12Filled,
+    CloudArchive20Filled
 } from "@vicons/fluent"
 import {AppPaths} from "@/utils/index.js";
 import Utils from "@/utils/Utils.js"
@@ -60,6 +61,13 @@ export const navigations = [
                 path: Utils.routeHrmPathMaker(AppPaths.Worker),
                 icon: Person12Filled,
                 color: 'bg-primary',
+                permission: appPermissions.hrWorkers,
+            },
+            {
+                label: 'exportPage.name',
+                path: Utils.routeHrmPathMaker(AppPaths.Export),
+                icon: CloudArchive20Filled,
+                color: 'bg-warning',
                 permission: appPermissions.hrWorkers,
             },
             {

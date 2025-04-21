@@ -362,6 +362,9 @@
       "organization": "Korxona"
     }
   },
+  "exportPage": {
+    "name": "Yuklanmalar"
+  },
   "contactPage": {
     "name": "Kontaktlar"
   },

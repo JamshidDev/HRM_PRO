@@ -49,14 +49,15 @@ onMounted(()=>{
       <contractForm :call-back="onSuccessEv" />
     </template>
   </UIModal>
-  <UIModal
+  <UIDrawer
+      width="100%"
+      placement="bottom"
       :title="$t('content.download')"
-      :width="800"
       v-model:visible="exportStore.visible"
   >
-    <template #default>
+    <template #content>
       <ExportForm />
     </template>
-  </UIModal>
+  </UIDrawer>
 </UIPageContent>
 </template>

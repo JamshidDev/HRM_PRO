@@ -71,6 +71,7 @@ export const AppPaths = {
     Info: "/info",
     OrganizationLeader: '/organization-leader',
     AIConversation: "/ai-conversation",
+    Export: "/export"
 }
 
 export const AppLayouts ={

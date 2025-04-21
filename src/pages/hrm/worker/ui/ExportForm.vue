@@ -22,7 +22,7 @@ onMounted(() => {
 </script>
 <template>
     <n-spin :show="store.loading">
-        <div class="flex max-h-[300px] h-[300px]">
+        <div class="flex" style="height: calc(100vh - 120px);max-height: calc(100vh - 120px);">
             <div class="p-2 border-r border-surface-line basis-auto grow overflow-auto">
                 <VueDraggable v-if="store.payload.columns.length" data-id-attr="column" :animation="150" v-model="store.payload.columns" target=".sort-target">
                     <n-table :single-line="false" size="small" class="select-none">

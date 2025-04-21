@@ -4,11 +4,9 @@ const _columns =async ()=>{
     return await axios.get(`/v1/hr/export/workers/columns`)
 }
 
-const _tasks =async ()=>{
-    return await axios.get(`/v1/hr/export/tasks`)
+const _tasks =async (payload)=>{
+    return await axios.get(`/v1/hr/export/tasks`, {params: payload.params})
 }
-
-
 
 
 export default {
