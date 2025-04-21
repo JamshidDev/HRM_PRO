@@ -105,7 +105,9 @@
     "brief": "Batafsil",
     "organization": "Tashkilot",
     "confirmStatus": "Tasdiqlov",
-    "staff": "Xodim"
+    "staff": "Xodim",
+    "export": "Eksport",
+    "reference": "Ma'lumotnoma"
   },
   "date": {
     "day": "Kun",
@@ -368,7 +370,10 @@
     }
   },
   "exportPage": {
-    "name": "Topshiriqlar"
+    "name": "Topshiriqlar",
+    "exportAction": "Eksport qilish",
+    "checkAll": "Barchasini tanlash",
+    "addPassport": "Passport ma'lumotlari ham qo'shib yuklansinmi?"
   },
   "contactPage": {
     "name": "Kontaktlar"

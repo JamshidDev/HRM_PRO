@@ -359,6 +359,13 @@ const appPermissions = {
     examExamsWrite:"hr-exams-write",
     examExamsRead:"hr-exams-read",
 
+    turnstile: 'turnstile',
+    turnstileBuildingWrite: 'turnstile-building-write',
+    turnstileBuildingRead: 'turnstile-building-read',
+    turnstileTerminalRead: 'turnstile-terminal-read',
+    turnstileTerminalWrite: 'turnstile-terminal-write',
+    turnstileOrganizationWrite: 'turnstile-organization-write',
+    turnstileOrganizationRead: 'turnstile-organization-read',
 
 }
 

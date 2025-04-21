@@ -1,7 +1,8 @@
 <script setup>
-import {NoDataPicture, UIActionButton, UIPagination, UIUser, UIMenuButton} from "@/components/index.js"
+import {NoDataPicture, UIActionButton, UIPagination, UIUser, UIMenuButton, UIStatus} from "@/components/index.js"
 import {useExportStore} from "@/store/modules/index.js"
 import Utils from "@/utils/Utils.js"
+import {ArrowDownload24Regular} from '@vicons/fluent'
 
 const store = useExportStore()
 
@@ -26,7 +27,7 @@ const changePage = (v)=>{
           <th class="min-w-[200px]">{{$t('content.type')}}</th>
           <th class="min-w-[200px] w-[300px]">{{$t('content.status')}}</th>
           <th class="min-w-[120px] w-[120px]">{{$t('content.created')}}</th>
-          <th class="min-w-[200px]">{{$t('content.action')}}</th>
+          <th class="min-w-[50px] w-[50px]">{{$t('content.action')}}</th>
         </tr>
         </thead>
         <tbody>
@@ -39,15 +40,17 @@ const changePage = (v)=>{
             {{item.type}}
           </td>
           <td>
-            <n-button typeof="warning" dashed size="tiny">
-              {{item.status.name}}
-            </n-button>
+            <UIStatus size="tiny" :status="item.status" />
           </td>
           <td>
             {{Utils.timeWithMonth(item.created_at)}}
           </td>
-          <td>
-
+          <td class="text-center">
+            <n-button v-if="item.file" type="primary" ghost size="small" tag="a" :href="item.file" target="_blank">
+              <template #icon>
+                <n-icon :component="ArrowDownload24Regular" />
+              </template>
+            </n-button>
           </td>
         </tr>
         </tbody>

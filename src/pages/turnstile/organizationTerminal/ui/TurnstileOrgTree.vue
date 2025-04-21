@@ -24,67 +24,14 @@ const onClickNode = (v) => {
         @updateModel="onClickNode"
         @updateCheck="(v)=>store.structureCheck=v"
     >
-
-<!--      <template v-slot:title="{data}">-->
-<!--        <div class="flex justify-between w-full cursor-pointer" :class="{'active': store.payload.organization_id === node.id}">-->
-<!--          <div class="flex gap-1 items-center">-->
-<!--            <div class="flex">-->
-<!--              <OpenIcon-->
-<!--                  v-if="stat.children.length"-->
-<!--                  :open="stat.open"-->
-<!--                  class="mtl-mr"-->
-<!--                  @click.stop="stat.open = !stat.open"-->
-<!--              />-->
-<!--              <n-checkbox-->
-<!--                  :checked="store.payload.organization_id === node.id"-->
-<!--              ></n-checkbox>-->
-<!--            </div>-->
-
-<!--            <p>{{ node.name }}</p>-->
-<!--          </div>-->
-<!--          <div class="!text-center min-w-[80px]">-->
-<!--            <n-button size="tiny" v-if="data?.terminals_count" circle>{{data?.terminals_count}}</n-button>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--      </template>-->
     </TreeData>
-<!--    <BaseTree style="max-height: calc(100vh - 140px);" virtualization class="relative mtl-tree"-->
-
-<!--              @click:node="onClickNode"  :model-value="store.tree" tree-line>-->
-<!--      <template #prepend="{ tree }">-->
-<!--        <div class="sticky top-0 bg-surface-section flex justify-between z-10 font-bold">-->
-<!--          <div class="!text-start">{{ $t('turnstile.organization.title') }}</div>-->
-<!--          <div class="min-w-[80px]">{{ $t('turnstile.terminalPage.title') }}</div>-->
-<!--        </div>-->
-<!--      </template>-->
-<!--      <template #default="{ node, stat, indentStyle, tree }">-->
-<!--        <div class="flex justify-between w-full cursor-pointer" :class="{'active': store.payload.organization_id === node.id}">-->
-<!--          <div class="flex gap-1 items-center">-->
-<!--            <div class="flex">-->
-<!--              <OpenIcon-->
-<!--                  v-if="stat.children.length"-->
-<!--                  :open="stat.open"-->
-<!--                  class="mtl-mr"-->
-<!--                  @click.stop="stat.open = !stat.open"-->
-<!--              />-->
-<!--              <n-checkbox-->
-<!--                  :checked="store.payload.organization_id === node.id"-->
-<!--              ></n-checkbox>-->
-<!--            </div>-->
-
-<!--            <p>{{ node.name }}</p>-->
-<!--          </div>-->
-<!--          <div class="!text-center min-w-[80px]">-->
-<!--            <n-button size="tiny" v-if="node?.terminals_count" circle>{{node?.terminals_count}}</n-button>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--      </template>-->
-<!--    </BaseTree>-->
   </div>
 </template>
 <style lang="scss">
 .organization-turnstile {
-
+  max-height: calc(100vh - 125px);
+  height: calc(100vh - 125px);
+  overflow: auto;
   tr {
     cursor: pointer;
   }
