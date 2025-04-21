@@ -2,6 +2,17 @@
 import lottie from 'lottie-web';
 import WorkingTeam from "@/assets/json/workingTeam.json"
 
+const props = defineProps({
+  fileUrl:{
+    type:Object,
+    default:null,
+  },
+  autoRun:{
+    type:Boolean,
+    default:false
+  }
+})
+
 const lottieRef = ref(null)
 const runAnimation = ()=>{
     if(lottieRef.value){
@@ -10,18 +21,22 @@ const runAnimation = ()=>{
         renderer: 'svg',
         loop: true,
         autoplay: true,
-        animationData: WorkingTeam
+        animationData: props.fileUrl,
       });
     }
 }
 
 onMounted(()=>{
-  runAnimation()
+  if(props.autoRun){
+    runAnimation()
+  }
+
 })
 
 defineExpose({runAnimation})
 </script>
 
 <template>
-  <div class="w-[400px] h-[400px]" id="lottieRef" ref="lottieRef"></div>
+  <div class="w-full max-w-[900px] overflow-hidden" id="lottieRef" ref="lottieRef"></div>
 </template>
+
