@@ -27,8 +27,8 @@ export const useAccountStore = defineStore('accountStore', {
     }),
     getters:{
        checkPermission:(state)=>(permission)=>{
-           const storePermissions = sessionStorage.getItem(useAppSetting.appPermission)
-           const permissions =storePermissions? JSON.parse(storePermissions)  : state.permissions
+           const storePermissions = sessionStorage.getItem(useAppSetting.appPermission)? JSON.parse(sessionStorage.getItem(useAppSetting.appPermission)) : []
+           const permissions =state.permissions.length>0? state.permissions:storePermissions
            return permissions.includes(permission)
        },
         fullName:(state)=>Utils.combineFullName(state.account?.worker),
@@ -37,7 +37,7 @@ export const useAccountStore = defineStore('accountStore', {
     actions:{
         _index(callback){
             $ApiService.accountService._index({data:this.payload}).then((res)=>{
-                this.payload = {...res.data.data, password:null}
+                this.payload = {...res.data.data.worker, password:null}
                 this.account = {...res.data.data}
                 this.permissions = res.data.data.role.permissions.map(v=>v.name)
                 sessionStorage.setItem(useAppSetting.appPermission, JSON.stringify(this.permissions))

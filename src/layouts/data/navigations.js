@@ -25,9 +25,7 @@ import {
     ClipboardBulletListLtr20Filled,
     DocumentEdit20Filled,
     AccessTime24Filled,
-    Info28Filled,
     SlideMultipleSearch24Filled,
-    AppFolder24Filled,
     BuildingMultiple24Filled,
     ScanObject24Filled,
     Organization12Filled,
@@ -152,7 +150,7 @@ export const navigations = [
                 path: Utils.routeHrmPathMaker(AppPaths.Slice),
                 icon: PreviewLink16Filled,
                 color: 'bg-info',
-                permission: appPermissions.hrMed,
+                permission: appPermissions.hrJobs,
             },
             {
                 label: 'exportPage.name',
@@ -276,7 +274,7 @@ export const navigations = [
         label: '',
         path: Utils.routeOtherPathMaker(AppPaths.Info),
         icon: SlideMultipleSearch24Filled,
-        permission: appPermissions.admin,
+        permission: appPermissions.useful,
         children: []
     },
     {

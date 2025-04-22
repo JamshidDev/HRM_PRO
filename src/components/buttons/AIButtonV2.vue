@@ -15,7 +15,7 @@
         </n-icon>
       </span>
     </div>
-    <span class="ai-button-label">AI Yordamchi</span>
+    <span class="ai-button-label">{{$t('aiConversation.aiAssistant')}}</span>
     <span class="bg-overall"></span>
   </div>
 </template>

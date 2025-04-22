@@ -62,7 +62,7 @@ const onSelect = (v)=>{
 
           <td><UIStatus :status="item?.status"/></td>
           <td>{{ Utils.timeOnlyDate(item?.command?.command_date) }}</td>
-          <td><UIStatus :status="Utils.documentStatus[item?.genereate]"/></td>
+          <td><UIStatus :status="Utils.documentStatus[item?.generate]"/></td>
 
           <td>
             <UIMenuButton

@@ -27,8 +27,8 @@ const onResult = (v)=>{
    absolute left-4 z-10 flex justify-center items-center">
     <img
         class="rounded-xl w-[110px] h-[150px]"
-        :src="store.account? store.account?.photo : Utils.noAvailableImage"
-        :alt="store.account?.first_name">
+        :src="store.account? store.account?.worker?.photo : Utils.noAvailableImage"
+        :alt="store.account?.worker?.first_name">
 
     <div @click="openCropper()" class="w-[36px] h-[36px] bg-blue-400 absolute rounded-full bottom-1 -right-4 flex justify-center items-center shadow">
 

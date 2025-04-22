@@ -9,8 +9,9 @@ const pdfViewerStore = usePdfViewerStore()
 
 const pdfSignatureRef = ref(null)
 const payload = ref(null)
-
 const emits = defineEmits(['signatureEv'])
+
+
 
 const openPdf = (document_id, model, signatureId)=>{
   pdfViewerStore.model = model
@@ -76,6 +77,8 @@ const onUpdate = ()=>{
 }
 
 
+
+
 defineExpose({
   openPdf,
   openWord,
@@ -83,11 +86,17 @@ defineExpose({
 
 
 
+
 </script>
 
 <template>
   <div>
-    <UIPdfSignatureDrawer ref="pdfSignatureRef" @onEdit="onEditPdf" @signatureEv="onSignatureEv" @onUpdate="onUpdate" />
+    <UIPdfSignatureDrawer
+        ref="pdfSignatureRef"
+        @onEdit="onEditPdf"
+        @signatureEv="onSignatureEv"
+        @onUpdate="onUpdate"
+    />
     <UIOnlyOfficeDrawer @onBack="onBackWord"/>
     <RejectModal @onSuccessEv="onRejectEv" />
   </div>

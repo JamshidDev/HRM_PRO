@@ -110,7 +110,7 @@ const onSelect =(v)=>{
           <td>
             <span class="text-sm">{{Utils.timeOnlyDate(item?.contract_date)}}</span>
           </td>
-          <td><UIStatus :status="Utils.documentStatus[item?.genereate]"/></td>
+          <td><UIStatus :status="Utils.documentStatus[item?.generate]"/></td>
           <td>
             <UIMenuButton
                 :show-view="true"

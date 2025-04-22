@@ -591,6 +591,7 @@
       "history": "O'zgarishlar tarixini ko'rish",
       "viewer": "Hujjat bilan tanishuvchilar",
       "files": "Hujjat fayillari",
+      "checkDocument": "Hujjat holatini tekshirish uchun bosing",
       "status": {
         "Process": "Jarayonda"
       }
@@ -1160,7 +1161,24 @@
       "title": "Tug'ilgan kunlar",
       "today": "Bugungi tug'ilgan kunlar",
       "tomorrow": "Ertangi tug'ilgan kunlar"
+    },
+    "rewardCard": {
+      "reward":{
+        "title":  "Rag'batlantirish",
+        "typeOne":  "Faxriy temiryo'lchi faxriy unvoni",
+        "typeTwo":  "Boshqa mukofotlar",
+        "shortTypeOne": "Faxriy",
+        "shortTypeTwo": "Boshqa"
+      },
+      "punishment":{
+        "title":  "Intizomiy jazolar",
+        "typeOne":  "Hayfsan",
+        "typeTwo":  "Boshqa jazolar",
+        "shortTypeOne": "Hayfsan",
+        "shortTypeTwo": "Boshqa"
+      }
     }
+
   },
   "applicationPage": {
     "name": "Arizalar",
@@ -1315,6 +1333,7 @@
   },
   "aiConversation":{
     "canIHelpYouToday": "Bugun sizga qanday yordam bera olaman?",
+    "aiAssistant": "AI Yordamchi",
     "welcomeTo": "Xush kelibsiz, {n}",
     "disclaimer": {
       "cardOne": "### \uD83E\uDDEA Test rejimi\n\nUshbu sun’iy intellekt yordamchisi hozirda **test rejimida** ishlamoqda.  \nJavoblari hali to‘liq shakllanmagan va _noto‘g‘ri bo‘lishi mumkin_.",

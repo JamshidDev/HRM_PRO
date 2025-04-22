@@ -140,16 +140,18 @@ export const useReportStore = defineStore('reportStore', {
                 this.getWorker()
             }
         },
-
         changeScreenMode(){
             this.fullScreen = !this.fullScreen
         },
-
-
         getOrganization(){
             this.organizationLoading = true
             $ApiService.reportService._structure().then((res)=>{
                 this.organizationList = res.data.data
+                if(res.data.data.length === 1 && res.data.data?.[0]?.children?.length === 0){
+                    this.organizations = [res.data.data[0]]
+                    this.addPanel(this.cols[1])
+                }
+
             }).finally(()=>{
                 this.organizationLoading = false
             })
@@ -160,10 +162,6 @@ export const useReportStore = defineStore('reportStore', {
             this.resetWorker()
             this.resetPosition()
             this.resetDepartment()
-
-            // if(this.activePanelCount === 1 && !this.isActivePanel(this.cols[1].id)){
-            //     this.barList.splice(0,1)
-            // }
 
             this.positionParams.organization_id = this.organizations?.[0]?.id
             this.workerParams.organization_id = this.organizations?.[0]?.id

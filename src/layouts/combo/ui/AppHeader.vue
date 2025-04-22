@@ -1,17 +1,22 @@
 <script setup>
 import LangDropdown from "@/components/general/LangDropdown.vue";
-import {AIButton, UIProfile, UIThemeSwitch} from "@/components/index.js"
+import {UIProfile} from "@/components/index.js"
 import AIButtonV2 from "@/components/buttons/AIButtonV2.vue"
 import {AppPaths} from "@/utils/index.js"
-import {Alert20Regular, Search32Regular} from "@vicons/fluent"
+import {Alert20Regular} from "@vicons/fluent"
+import {useAccountStore} from "@/store/modules/index.js"
+import Utils from "@/utils/Utils.js"
 
 const emits = defineEmits(["onChange"])
 const router = useRouter()
+const store = useAccountStore()
 const onClick = ()=>{
   emits('onChange')
 }
 
-const notification = ref(2)
+const {appPermissions} = Utils
+
+const notification = ref(0)
 
 </script>
 
@@ -26,6 +31,7 @@ const notification = ref(2)
 
 
     <AIButtonV2
+        v-if="store.checkPermission(appPermissions.ai)"
         @click="()=>router.push({name:AppPaths.AIConversation.substring(1)})"
     />
 

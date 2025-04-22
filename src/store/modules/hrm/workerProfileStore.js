@@ -89,7 +89,7 @@ export const useWorkerProfileStore = defineStore('workerProfileStore', {
             this.loading= true
             $ApiService.workerService._show({id:this.elementId}).then((res)=>{
                 this.data = res.data.data
-                this.workerId = this.data.profile?.id
+                this.workerId = this.data?.id
 
                 this.payload.last_name = this.data.last_name
                 this.payload.first_name = this.data.first_name
@@ -130,14 +130,15 @@ export const useWorkerProfileStore = defineStore('workerProfileStore', {
                     url:v.photo,
                     current:v.current
                 }))
+
                 if(this.photos.filter(v=>v.current>0).length>0){
                     this.mainImgId = this.photos.filter(v=>v.current>0)[0].id
                 }
 
-                this.payload.phones = this.data.phones.map(v=>({
+                this.payload.phones = this.data.phones.map((v,index)=>({
                     id:v.id,
                     phone:'+998' + v.phone,
-                    main:v.phone === this.data.profile.phone,
+                    main:this.data.profile? v.phone === this.data.profile?.phone :index === 0,
                     exist:true,
                 }))
             }).finally(()=>{

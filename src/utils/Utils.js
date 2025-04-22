@@ -367,6 +367,16 @@ const appPermissions = {
     turnstileOrganizationWrite: 'turnstile-organization-write',
     turnstileOrganizationRead: 'turnstile-organization-read',
 
+    hrJobs:"hr-jobs",
+    hrJobsWrite:"hr-jobs-write",
+    hrJobsRead:"hr-jobs-read",
+
+
+
+    useful:'useful',
+    ai:'ai',
+
+
 }
 
 const colorTypes = {
@@ -443,6 +453,10 @@ function formatPhoneWithMask(phone, mask) {
 }
 
 const documentStatus = {
+    'null':{
+        id:2,
+        name:t('enum.noCreated')
+    },
     '1':{
         id:2,
         name:t('enum.noCreated')

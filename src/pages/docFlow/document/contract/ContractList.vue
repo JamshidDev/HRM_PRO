@@ -64,7 +64,7 @@ const onSelect =(v)=>{
           <th class="!text-center min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
           <th class="min-w-[200px]">{{$t('contractPage.table.type')}}</th>
           <th class="w-[80px]">{{$t('contractPage.table.number')}}</th>
-          <th class="min-w-[120px] w-[200px]">{{$t('contractPage.table.worker')}}</th>
+          <th class="min-w-[120px] w-[180px]">{{$t('contractPage.table.worker')}}</th>
           <th class="min-w-[100px] w-[100px]">{{$t('contractPage.table.command')}}</th>
           <th class="w-[120px]">{{$t('content.confirmStatus')}}</th>
           <th class="w-[300px]">{{$t('contractPage.table.organization')}}</th>
@@ -102,9 +102,10 @@ const onSelect =(v)=>{
           </td>
           <td><div class="flex justify-center">
             <n-button
+                dashed
                 :type="item?.command_status.id === 1? 'primary' : 'default'"
                 @click="openContract(item, item?.command_status.id)"
-                size="small">
+                size="tiny">
               <template #icon>
                 <ReceiptAdd24Regular v-if="item?.command_status.id === 1" />
                 <ArrowSyncCheckmark20Filled v-else-if="item?.command_status.id === 2"/>
@@ -123,7 +124,7 @@ const onSelect =(v)=>{
             id:item?.status.id ===2? 3:2,
           }"/></td>
 
-          <td><UIStatus :status="Utils.documentStatus[item?.genereate]"/></td>
+          <td><UIStatus :status="Utils.documentStatus[item?.generate]"/></td>
           <td>
             <UIMenuButton
                 :show-view="true"

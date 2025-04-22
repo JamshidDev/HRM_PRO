@@ -58,7 +58,6 @@ const onCopy = ()=>{
       <div class="col-span-6 font-bold items-center flex"><span class="font-normal text-gray-400">{{$t('workerView.general.passportJSHSHIR')}}</span>: {{isHide? Utils.maskText(store.workerPreview?.worker.pin, 3,4,) : store.workerPreview?.worker.pin}}
         <n-icon
             @click="Utils.copyToClipboard(store.workerPreview?.worker.pin,onCopy)"
-            v-if="!isHide"
             size="24"
             class="cursor-pointer ml-2">
           <Copy16Regular/>
@@ -67,7 +66,6 @@ const onCopy = ()=>{
       <div class="col-span-6 font-bold items-center flex"> <span class="font-normal text-gray-400">{{$t('workerView.general.phone')}}</span>: {{isHide? Utils.maskText(store.workerPreview?.worker.phones[0].phone, 2,2) : Utils.formatPhoneWithMask(store.workerPreview?.worker.phones[0].phone, '## ### ## ##')}}
         <n-icon
             @click="Utils.copyToClipboard(store.workerPreview?.worker.phones[0].phone,onCopy)"
-            v-if="!isHide"
             size="24"
             class="cursor-pointer ml-2">
           <Copy16Regular/>
