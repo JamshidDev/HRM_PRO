@@ -55,26 +55,25 @@ onMounted(()=>{
     </template>
   </UIModal>
   <UIModal
-      title=""
-      :width="450"
+      :title="$t('exportPage.addPassport')"
+      :width="500"
       v-model:visible="exportStore.resumeModalVisible"
   >
-    <template #header>
-      <div class="px-4">
-        <p class="text-lg font-semibold">{{ $t('exportPage.addPassport') }}</p>
-        <n-divider class="!my-2" />
-      </div>
-    </template>
+
     <template #default>
+      <n-divider class="!my-2 mb-3" />
+
       <n-spin :show="exportStore.exportResumeLoading">
-        <n-space justify="end">
+        <n-space justify="end" >
           <n-button
               secondary
+              size="large"
               @click="submitExportResume(false)"
               type="error"
           >{{ $t('content.no') }}
           </n-button>
           <n-button
+              size="large"
               secondary
               @click="submitExportResume(true)"
               type="primary"

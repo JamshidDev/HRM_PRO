@@ -17,7 +17,6 @@ const changePage = (v)=>{
   <n-spin :show="store.loading" style="min-height: 200px">
     <div class="w-full overflow-x-auto"  v-if="store.tasks.length>0">
       <n-table
-          class="mt-3"
           :single-line="false"
           size="small"
       >
@@ -25,8 +24,9 @@ const changePage = (v)=>{
         <tr>
           <th class="!text-center min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
           <th class="min-w-[200px]">{{$t('content.type')}}</th>
-          <th class="min-w-[200px] w-[300px]">{{$t('content.status')}}</th>
-          <th class="min-w-[120px] w-[120px]">{{$t('content.created')}}</th>
+          <th class="min-w-[200px] w-[300px] !text-center">{{$t('content.status')}}</th>
+          <th class="min-w-[130px] w-[130px]">{{$t('content.created')}}</th>
+          <th class="min-w-[130px] w-[130px]">{{$t('content.ended')}}</th>
           <th class="min-w-[50px] w-[50px]">{{$t('content.action')}}</th>
         </tr>
         </thead>
@@ -44,6 +44,9 @@ const changePage = (v)=>{
           </td>
           <td>
             {{Utils.timeWithMonth(item.created_at)}}
+          </td>
+          <td>
+            {{Utils.timeWithMonth(item.updated_at)}}
           </td>
           <td class="text-center">
             <n-button v-if="item.file" type="primary" ghost size="small" tag="a" :href="item.file" target="_blank">
