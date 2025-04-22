@@ -1,5 +1,5 @@
 <script setup>
-import {Signature20Filled,
+import {Signature20Filled,ArrowSyncCircle16Filled,
   PanelLeftContract20Filled, DocumentEdit24Regular,
   ClipboardCheckmark20Regular, CalendarCancel20Regular} from "@vicons/fluent"
 import {UIUser, UILottieReader} from "@/components/index.js"
@@ -16,9 +16,14 @@ import DocumentFileModal from "@/components/pdfSignature/ui/DocumentFileModal.vu
 const pdfViewerRef = ref(null)
 
 const route = useRoute()
-
-
-const emits = defineEmits(["onClose", "onEdit", 'signatureEv', 'onUpdate'])
+const emits = defineEmits([
+  "onClose",
+  "onEdit",
+  'signatureEv',
+  'onUpdate',
+  'onIntervalUpdate',
+  'onCancelInterval'
+])
 
 
 const store = usePdfViewerStore()
@@ -68,14 +73,10 @@ const getDocument =async (document_id, model)=>{
 
   store.visible = true
   store.loading = true
+  store.viewerLoading = false
   $ApiService.documentService._openDocument({params:{model,document_id}}).then((res)=>{
     const v = res.data.data
     const key = v.document.generate
-    store.viewerLoading = false
-
-
-
-
     store.confirmations = v.confirmations
     store.document = v
     store.document.document.file_name = Utils.fileNameFromUrl(v.document?.doc_url)
@@ -97,13 +98,12 @@ const getDocument =async (document_id, model)=>{
 
     if([1, 4].includes(key)){
       store.permissions.canSignature = false
-      setTimeout(()=>{
-        store.visible = false
-      },200)
+      autoClose()
     }else if(key === 2){
       store.viewerLoading = true
       store.permissions.canSignature = false
       store.permissions.canEdit = false
+
     }else{
       store.loadPdf()
     }
@@ -111,12 +111,20 @@ const getDocument =async (document_id, model)=>{
 
   }).catch(error=>{
     console.log(error)
-    setTimeout(()=>{
-      store.visible = false
-    },200)
+    autoClose()
   }).finally(()=>{
     store.loading = false
   })
+}
+
+const autoClose = ()=>{
+  setTimeout(()=>{
+    store.visible = false
+  },200)
+}
+
+const clearInterval = ()=>{
+  emits('onCancelInterval')
 }
 
 
@@ -156,9 +164,8 @@ const openConfirmModal = (v)=>{
     const id = store.document_id
     applicationStore._accept(data,id)
   }
-
-
 }
+
 
 defineExpose({
   getDocument
@@ -168,6 +175,8 @@ defineExpose({
 onMounted(()=>{
   window.addEventListener('keydown', handleKeyDown)
   window.addEventListener('keyup', handleKeyUp)
+
+
 })
 
 onUnmounted(()=>{
@@ -179,7 +188,12 @@ onUnmounted(()=>{
 
 <template>
   <div>
-    <n-drawer :close-on-esc="false" class="ui__onlyOffice-drawer" height="100vh" v-model:show="store.visible"  placement="bottom">
+    <n-drawer
+        :close-on-esc="false"
+        class="ui__onlyOffice-drawer"
+        height="100vh"
+        v-model:show="store.visible"
+        placement="bottom">
       <n-drawer-content class="h-screen" >
         <n-spin v-model:show="store.loading">
           <div class="w-full h-screen overflow-hidden flex flex-col">
@@ -205,7 +219,7 @@ onUnmounted(()=>{
                 <n-button v-if="store.permissions.canEdit"  @click="onEdit" type="info" secondary>
                   {{$t('content.edit')}}
                   <template #icon>
-                    <n-icon size="24">
+                    <n-icon size="28">
                       <DocumentEdit24Regular/>
                     </n-icon>
                   </template>
@@ -234,7 +248,7 @@ onUnmounted(()=>{
                   <div class="w-full flex justify-center items-center">
                     <div>
                       <UILottieReader
-                           style="height: calc(100vh - 120px)"
+                           style="height: calc(100vh - 160px)"
                           :file-url="generateFile"
                           :auto-run="true"
                       />
@@ -242,6 +256,20 @@ onUnmounted(()=>{
                        font-medium
                        animate-bounce
 ">{{$t('content.preparingDocument')}}</h2>
+                      <div class="w-full flex justify-center">
+                        <n-button
+                            size="medium"
+                            round
+                            @click="()=>emits('onUpdate')"
+                        >
+                          <template #icon>
+                            <n-icon size="32" class="text-dark">
+                              <ArrowSyncCircle16Filled/>
+                            </n-icon>
+                          </template>
+                          {{$t('documentPage.signature.checkDocument')}}
+                        </n-button>
+                      </div>
                     </div>
                   </div>
                 </template>

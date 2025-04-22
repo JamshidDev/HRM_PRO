@@ -16,7 +16,7 @@ const onClick = ()=>{
 
 const {appPermissions} = Utils
 
-const notification = ref(2)
+const notification = ref(0)
 
 </script>
 

@@ -37,7 +37,7 @@ export const useAccountStore = defineStore('accountStore', {
     actions:{
         _index(callback){
             $ApiService.accountService._index({data:this.payload}).then((res)=>{
-                this.payload = {...res.data.data, password:null}
+                this.payload = {...res.data.data.worker, password:null}
                 this.account = {...res.data.data}
                 this.permissions = res.data.data.role.permissions.map(v=>v.name)
                 sessionStorage.setItem(useAppSetting.appPermission, JSON.stringify(this.permissions))

@@ -13,6 +13,8 @@ import {
   LegendComponent,
   GridComponent
 } from 'echarts/components';
+import i18n from "@/i18n/index.js"
+const {t} = i18n.global
 
 import  {useDashboardStore} from "@/store/modules/index.js"
 import InfoCard from "@/pages/hrm/dashboardV3/ui/InfoCard.vue"
@@ -54,8 +56,8 @@ const  pieOption = {
         borderRadius:6,
       },
       data: [
-        { value: 1048, name: 'Faxriy',  itemStyle: { color: '#1A84FF' } },
-        { value: 735, name: 'Boshqa',  itemStyle: { color: '#2dcb73' }  },
+        { value: 1048, name: t('dashboardPage.rewardCard.reward.shortTypeOne'),  itemStyle: { color: '#1A84FF' } },
+        { value: 735, name: t('dashboardPage.rewardCard.reward.shortTypeTwo'),  itemStyle: { color: '#2dcb73' }  },
       ]
     }
   ]
@@ -84,8 +86,8 @@ const  pieOption2 = {
       },
 
       data: [
-        { value: 1048, name: 'Hayfsan',  itemStyle: { color: '#1A84FF' } },
-        { value: 735, name: 'Boshqa',  itemStyle: { color: '#E53835' }  },
+        { value: 1048, name: t('dashboardPage.rewardCard.punishment.shortTypeOne'),   itemStyle: { color: '#1A84FF' } },
+        { value: 735, name: t('dashboardPage.rewardCard.punishment.shortTypeOne'),  itemStyle: { color: '#E53835' }  },
       ]
     }
   ]
@@ -189,12 +191,12 @@ onMounted(()=>{
             <span class="z-[1] opacity-30 absolute top-0 right-0 w-[160px] h-full bg-no-repeat bg-[url(/public/effect/effect-card-1.svg)]" ></span>
             <div class="flex h-auto">
               <div style="width: calc(100% - 280px)">
-                <p class="font-bold">Rag'batlantirish</p>
-                <p class="mt-2 text-xs">Faxriy temiryo'lchi faxriy unvoni</p>
-                <h3 class="font-semibold leading-[1.2]">45 000</h3>
+                <p class="font-bold">{{$t('dashboardPage.rewardCard.reward.title')}}</p>
+                <p class="mt-2 text-xs">{{$t('dashboardPage.rewardCard.reward.typeOne')}}</p>
+                <h3 class="font-semibold leading-[1.2]">0</h3>
 
-                <p class="mt-2 text-xs">Boshqa mukofatlar</p>
-                <h3 class="font-semibold leading-[1.2]">5 000</h3>
+                <p class="mt-2 text-xs">{{$t('dashboardPage.rewardCard.reward.typeTwo')}}</p>
+                <h3 class="font-semibold leading-[1.2]">0</h3>
 
               </div>
               <div class="w-[280px] h-[120px] relative z-[2]">
@@ -204,13 +206,13 @@ onMounted(()=>{
             <hr class="w-full h-[1px] text-surface-line mt-2">
             <div class="flex h-auto mt-2">
               <div style="width: calc(100% - 280px)">
-                <p class="font-bold">Intizomiy jazo</p>
+                <p class="font-bold">{{$t('dashboardPage.rewardCard.punishment.title')}}</p>
 
-                <p class="mt-2 text-xs">Hayfsan</p>
-                <h3 class="font-semibold leading-[1.2]">45 000</h3>
+                <p class="mt-2 text-xs">{{$t('dashboardPage.rewardCard.punishment.typeOne')}}</p>
+                <h3 class="font-semibold leading-[1.2]">0</h3>
 
-                <p class="mt-2 text-xs">Boshqa jazolar</p>
-                <h3 class="font-semibold leading-[1.2]">5 000</h3>
+                <p class="mt-2 text-xs">{{$t('dashboardPage.rewardCard.punishment.typeTwo')}}</p>
+                <h3 class="font-semibold leading-[1.2]">0</h3>
               </div>
               <div class="w-[280px] h-[120px] relative z-[2]">
                 <v-chart :option="pieOption2" />
