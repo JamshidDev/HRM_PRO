@@ -114,7 +114,7 @@ const onSelectEv = (v)=>{
           </td>
           <td><UIStatus :status="item?.worker_application.confirmation" /></td>
           <td>{{Utils.timeOnlyDate(item?.worker_application.created_at)}}</td>
-          <td><UIStatus :status="Utils.documentStatus[item?.worker_application.genereate || 1]"/></td>
+          <td><UIStatus :status="Utils.documentStatus[item?.worker_application.generate]"/></td>
           <td>
            <MenuButton
                :data="item"

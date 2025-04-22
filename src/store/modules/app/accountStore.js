@@ -27,8 +27,8 @@ export const useAccountStore = defineStore('accountStore', {
     }),
     getters:{
        checkPermission:(state)=>(permission)=>{
-           const storePermissions = sessionStorage.getItem(useAppSetting.appPermission)
-           const permissions =storePermissions? JSON.parse(storePermissions)  : state.permissions
+           const storePermissions = sessionStorage.getItem(useAppSetting.appPermission)? JSON.parse(sessionStorage.getItem(useAppSetting.appPermission)) : []
+           const permissions =state.permissions.length>0? state.permissions:storePermissions
            return permissions.includes(permission)
        },
         fullName:(state)=>Utils.combineFullName(state.account?.worker),

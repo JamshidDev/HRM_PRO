@@ -85,7 +85,7 @@ const onOpenFile = (v)=>{
             />
           </td>
           <td>{{Utils.timeOnlyDate(item?.created_at)}}</td>
-          <td><UIStatus :status="Utils.documentStatus[item?.genereate]"/></td>
+          <td><UIStatus :status="Utils.documentStatus[item?.generate]"/></td>
           <td>
            <UIMenuButton
                :data="item"

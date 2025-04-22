@@ -123,7 +123,7 @@ const onSelect =(v)=>{
             id:item?.status.id ===2? 3:2,
           }"/></td>
 
-          <td><UIStatus :status="Utils.documentStatus[item?.genereate]"/></td>
+          <td><UIStatus :status="Utils.documentStatus[item?.generate]"/></td>
           <td>
             <UIMenuButton
                 :show-view="true"

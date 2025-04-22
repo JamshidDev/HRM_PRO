@@ -70,7 +70,7 @@ const getDocument =async (document_id, model)=>{
   store.loading = true
   $ApiService.documentService._openDocument({params:{model,document_id}}).then((res)=>{
     const v = res.data.data
-    const key = v.document.genereate
+    const key = v.document.generate
     store.viewerLoading = false
 
 
