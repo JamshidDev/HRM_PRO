@@ -109,7 +109,6 @@ export const usePdfViewerStore = defineStore('pdfViewerStore', {
     actions: {
         async loadPdf() {
             this.totalPdfPage = 0
-            console.log(this.pdfUrl)
             const pdfUrl = this.pdfUrl + `?_=${new Date().getTime()}`
             // const pdfUrl = "https://s3.dasuty.com/docflow/documents/timesheets/c4ca4238a0b923820dcc509a6f75849b.pdf"
             try {

@@ -1361,5 +1361,8 @@
       "empty": "Bo'sh",
       "emptyDesc": "Hozircha bu bo‘limda ma’lumot mavjud emas. Yaqin kunlarda yangi xizmatlar yoki foydali kontent joylashtiriladi."
     }
+  },
+  "businessTrip": {
+    "title": "Xizmat safari"
   }
 }

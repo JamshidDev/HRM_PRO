@@ -41,7 +41,6 @@ export const useSignatureStore = defineStore('signatureStore', {
         },
         checkCardPluggedIn(){
             EIMZOClient.idCardIsPLuggedIn((yes)=>{
-                console.log(yes)
                 this.usbVisible = yes
             },function(e, r){
                 if(e){
@@ -140,6 +139,8 @@ export const useSignatureStore = defineStore('signatureStore', {
         _accepted(idx, callback) {
             let key = null
             if(idx === useAppSetting.signatureUseType.idCard){
+                if(!this.usbVisible) return
+
                 key = useAppSetting.signatureUseType.idCard
             }else{
                 key = this.allKeys[idx]
@@ -233,6 +234,7 @@ export const useSignatureStore = defineStore('signatureStore', {
                 pin:this.workerPin,
             }
             $ApiService.documentService._confirmationDocument({data}).then((res)=>{
+                this.loading = false
                 callback(res.data)
             }).catch((err)=>{
                 console.log(err)

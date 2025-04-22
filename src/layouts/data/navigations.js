@@ -9,7 +9,7 @@ import {
     DocumentAdd20Filled,
     TextBulletListSquare20Filled,
     ChannelShare20Filled,
-    DocumentTextExtract24Filled,
+    AirplaneTakeOff20Regular,
     PeopleCheckmark24Filled,
     PreviewLink16Filled,
     WeatherSunnyLow20Filled,
@@ -159,6 +159,15 @@ export const navigations = [
                 color: 'bg-warning',
                 permission: appPermissions.hrWorkers,
             },
+            {
+                label: 'businessTrip.title',
+                path: Utils.routeHrmPathMaker(AppPaths.BusinessTrip),
+                icon: AirplaneTakeOff20Regular,
+                color: 'bg-secondary',
+                permission: appPermissions.hrWorkers,
+            },
+
+
         ]
     },
     {

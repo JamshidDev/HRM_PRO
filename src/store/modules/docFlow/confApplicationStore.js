@@ -1,6 +1,8 @@
 import {defineStore} from "pinia";
 import Utils from "@/utils/Utils.js"
 import {AppPaths} from "@/utils/index.js"
+import {useComponentStore} from "@/store/modules/index.js"
+
 export const useConfApplicationStore = defineStore('confApplicationStore', {
     state:()=>({
         list:[],
@@ -30,7 +32,7 @@ export const useConfApplicationStore = defineStore('confApplicationStore', {
         vacationWorkerLoading:false,
         editLoading:false,
         // typeList:[1,2,6,7],
-        typeList:[1,2,3,4,5,6,7,8,9,10],
+        typeList:[1,2],
         payload:{
             director_id:null,
             worker_position_id:null,
@@ -172,11 +174,24 @@ export const useConfApplicationStore = defineStore('confApplicationStore', {
                 this.myPositionList = res.data.data
                 if(res.data.data.length === 1){
                     this.payload.worker_position_id = res.data.data[0].id
+                    this.onChangePosition(this.payload.worker_position_id)
                 }
             }).finally(()=>{
                 this.positionLoading= false
             })
         },
+
+        onChangePosition(id){
+            const store = useComponentStore()
+            let index = this.myPositionList.findIndex(v=>v.id === id)
+            if(index !== -1){
+                let orgId = this.myPositionList[index]?.organization?.id
+                this.confirmParams.organization_id = orgId
+                store._directors(orgId)
+            }
+        },
+
+
         _confirmation(){
             this.confirmLoading = true
             const params = this.confirmParams
@@ -251,7 +266,6 @@ export const useConfApplicationStore = defineStore('confApplicationStore', {
             this.allPositionLoading= true
             $ApiService.componentService._allPosition({params:{department_id:id}}).then((res)=>{
                 this.allPositions = res.data.data.map((v)=>({...v,name:v.position?.name}))
-                console.log(this.allPositions)
             }).finally(()=>{
                 this.allPositionLoading= false
             })

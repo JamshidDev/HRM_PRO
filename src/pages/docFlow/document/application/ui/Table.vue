@@ -49,7 +49,7 @@ const onOpenFile = (v)=>{
         <thead>
         <tr>
           <th class="!text-center min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
-          <th class="min-w-[120px] w-[200px]">{{$t('applicationPage.form.number')}}</th>
+          <th class="min-w-[60px] w-[60px]">{{$t('applicationPage.form.number')}}</th>
           <th class="min-w-[200px]">{{$t('applicationPage.form.type')}}</th>
           <th class="min-w-[200px] w-[200px]">{{$t('content.worker')}}</th>
 
@@ -62,7 +62,11 @@ const onOpenFile = (v)=>{
         <tbody>
         <tr v-for="(item, idx) in store.list" :key="idx">
           <td><span class="text-center text-[12px] text-gray-600 block">{{ (store.params.page - 1) * store.params.per_page + idx + 1 }}</span></td>
-          <td><span class="font-medium">{{item?.number}}</span></td>
+          <td>
+            <div class="w-full flex justify-center">
+              <n-button circle size="tiny" type="error" dashed>{{item?.number}}</n-button>
+            </div>
+          </td>
           <td
               @click="onOpenFile(item)"
               class="text-sm hover:text-primary hover:underline cursor-pointer">{{item.type?.name}}</td>

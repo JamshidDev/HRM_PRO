@@ -20,6 +20,7 @@ import MedPage from "@/pages/hrm/med/MedPage.vue"
 import SlicePage from "@/pages/hrm/slice/SlicePage.vue"
 import OrganizationLeaderPage from '@/pages/hrm/organizationLeader/organizationLeaderPage.vue'
 import ExportPage from '@/pages/hrm/export/exportPage.vue'
+import BusinessTripPage from "@/pages/hrm/businessTrip/BusinessTripPage.vue"
 
 export default [
     {
@@ -119,5 +120,9 @@ export default [
     {
         path:Utils.routeHrmPathMaker(AppPaths.Export),
         component:ExportPage,
+    },
+    {
+        path:Utils.routeHrmPathMaker(AppPaths.BusinessTrip),
+        component:BusinessTripPage,
     }
 ]

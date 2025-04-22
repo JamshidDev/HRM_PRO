@@ -1,7 +1,7 @@
 <script setup>
 import {useComponentStore, useConfApplicationStore} from "@/store/modules/index.js"
 import {NAvatar} from "naive-ui"
-import {UIStructureV2} from "@/components/index.js"
+import {UIStructureV2, UIStructure} from "@/components/index.js"
 import UIHelper from "@/utils/UIHelper.js"
 import {useAppSetting} from "@/utils/index.js"
 
@@ -22,6 +22,7 @@ const onFocusPosition = ()=>{
     store._myPositions()
   }else if(store.myPositionList.length===1){
     store.payload.worker_position_id = store.myPositionList[0].id
+    store.onChangePosition(store.payload.worker_position_id)
   }
 
 }
@@ -89,12 +90,15 @@ const onChangeStructure = (v)=>{
   }
 }
 
-const showOrganization = computed(()=>{
-  return store.typeList.includes(store.payload.type)
+watchEffect(()=>{
+
+
 })
 
+
+
 const disabledDirector = computed(()=>{
-  return store.typeList.includes(store.payload.type)?  !Boolean(store.organization_id.length>0) : !Boolean(store.payload.type)
+  return store.typeList.includes(store.payload.type)?  !Boolean(store.organization_id.length>0) : !Boolean(store.payload.worker_position_id)
 })
 
 
@@ -144,14 +148,15 @@ onMounted(()=>{
             :loading="store.positionLoading"
             :render-label="renderLabel2"
             :render-tag="renderValue2"
+            @update:value="store.onChangePosition"
             label-field="id"
             value-field="id"
         />
       </n-form-item>
     </div>
-    <div class="col-span-12 pr-3" v-if="showOrganization">
+    <div class="col-span-12 pr-3" v-if="!isPosition">
       <n-form-item :label="$t(`documentPage.form.organization`)" path="organization_id">
-        <UIStructureV2
+        <UIStructure
             :modelV="store.organization_id"
             @updateModel="onChangeStructure"
             :checkedVal="store.structureCheck"
