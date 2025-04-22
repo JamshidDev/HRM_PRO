@@ -8,17 +8,6 @@ import {useComponentStore, useTurnstileOrganizationStore} from "@/store/modules/
 const store = useTurnstileOrganizationStore()
 const componentStore = useComponentStore()
 
-const onAdd = () => {
-  store.resetForm()
-  store.visibleType = true
-  store.visible = true
-}
-
-const onSearch = () => {
-  store.params.page = 1
-  store._index()
-}
-
 onMounted(() => {
   store._index()
   componentStore._turnstileTerminal()

@@ -105,8 +105,10 @@
     "brief": "Batafsil",
     "organization": "Tashkilot",
     "confirmStatus": "Tasdiqlov",
-    "preparingDocument": "Hujjat tayyorlanmoqda...",
-    "staff": "Xodim"
+    "staff": "Xodim",
+    "export": "Eksport",
+    "reference": "Ma'lumotnoma",
+    "preparingDocument": "Hujjat tayyorlanmoqda..."
   },
   "date": {
     "day": "Kun",
@@ -367,6 +369,12 @@
       "position": "Lavozim",
       "organization": "Korxona"
     }
+  },
+  "exportPage": {
+    "name": "Topshiriqlar",
+    "exportAction": "Eksport qilish",
+    "checkAll": "Barchasini tanlash",
+    "addPassport": "Passport ma'lumotlari ham qo'shib yuklansinmi?"
   },
   "contactPage": {
     "name": "Kontaktlar"

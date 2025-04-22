@@ -1,6 +1,6 @@
 <script setup>
 import {NoDataPicture, UIPagination, UIUser, UIMenuButton, UIWorkerView} from "@/components/index.js"
-import {useTimesheetDepartmentStore, useWorkerStore} from "@/store/modules/index.js"
+import {useTimesheetDepartmentStore, useWorkerStore, useExportStore} from "@/store/modules/index.js"
 import {useRouter} from "vue-router"
 import {AppPaths} from "@/utils/index.js"
 import Utils from "@/utils/Utils.js"
@@ -10,6 +10,8 @@ import i18n from "@/i18n/index.js"
 
 
 const store = useWorkerStore()
+const exportStore = useExportStore()
+
 const timesheetDepartmentStore = useTimesheetDepartmentStore()
 const {t} = i18n.global
 
@@ -88,8 +90,6 @@ const onClickoutside=()=> {
   showDropdownRef.value = false;
 }
 
-
-
 </script>
 
 <template>
@@ -102,7 +102,17 @@ const onClickoutside=()=> {
       >
         <thead>
         <tr>
-          <th class="!text-center min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
+          <th class="!text-center min-w-[40px] w-[40px]">
+            <n-tooltip v-if="exportStore.isExportingResume" trigger="hover">
+              {{$t('exportPage.checkAll')}}
+              <template #trigger>
+                <n-checkbox @click="exportStore.toggleAll" :checked="exportStore.resumePayload.all" />
+              </template>
+            </n-tooltip>
+            <span v-else>
+              {{ $t('content.number')}}
+            </span>
+          </th>
           <th class="min-w-[200px] w-[280px]">{{$t('content.worker')}}</th>
           <th >{{$t('workerPage.table.department')}}</th>
           <th >{{$t('workerPage.table.position')}}</th>
@@ -119,7 +129,10 @@ const onClickoutside=()=> {
             :key="idx"
             @contextmenu="handleContextMenu($event, item)"
         >
-          <td><span class="text-center text-[12px] text-gray-600 block">{{ (store.params.page - 1) * store.params.per_page + idx + 1 }}</span></td>
+          <td class="text-center">
+            <n-checkbox @click="exportStore.toggleResumeWorker(item)" :checked="exportStore.resumePayload.worker_ids.includes(item.id) || exportStore.resumePayload.all" :disabled="exportStore.resumePayload.all" v-if="exportStore.isExportingResume" />
+            <span v-else class="text-[12px] text-gray-600">{{ (store.params.page - 1) * store.params.per_page + idx + 1 }}</span>
+          </td>
           <td>
             <UIUser
                 :short="false"

@@ -21,6 +21,11 @@ const onSuccessEv = (id)=>{
   router.push({name:`${AppPaths.Contract.substring(1)}`})
 }
 
+const submitExportResume = (v)=>{
+  exportStore.resumePayload.passport = v
+  exportStore._export_resume(store.params)
+}
+
 onMounted(()=>{
   store._index()
 })
@@ -50,13 +55,44 @@ onMounted(()=>{
     </template>
   </UIModal>
   <UIModal
-      :title="$t('content.download')"
-      :width="800"
-      v-model:visible="exportStore.visible"
+      title=""
+      :width="450"
+      v-model:visible="exportStore.resumeModalVisible"
   >
+    <template #header>
+      <div class="px-4">
+        <p class="text-lg font-semibold">{{ $t('exportPage.addPassport') }}</p>
+        <n-divider class="!my-2" />
+      </div>
+    </template>
     <template #default>
-      <ExportForm />
+      <n-spin :show="exportStore.exportResumeLoading">
+        <n-space justify="end">
+          <n-button
+              secondary
+              @click="submitExportResume(false)"
+              type="error"
+          >{{ $t('content.no') }}
+          </n-button>
+          <n-button
+              secondary
+              @click="submitExportResume(true)"
+              type="primary"
+          >{{ $t('content.yes') }}
+          </n-button>
+        </n-space>
+      </n-spin>
     </template>
   </UIModal>
+  <UIDrawer
+      width="100%"
+      placement="bottom"
+      :title="$t('content.export')"
+      v-model:visible="exportStore.visible"
+  >
+    <template #content>
+      <ExportForm />
+    </template>
+  </UIDrawer>
 </UIPageContent>
 </template>

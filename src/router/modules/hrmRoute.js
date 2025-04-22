@@ -19,6 +19,7 @@ import TimesheetListPage from "@/pages/hrm/timesheet/TimesheetList.vue"
 import MedPage from "@/pages/hrm/med/MedPage.vue"
 import SlicePage from "@/pages/hrm/slice/SlicePage.vue"
 import OrganizationLeaderPage from '@/pages/hrm/organizationLeader/organizationLeaderPage.vue'
+import ExportPage from '@/pages/hrm/export/exportPage.vue'
 
 export default [
     {
@@ -114,6 +115,9 @@ export default [
     {
         path:Utils.routeHrmPathMaker(AppPaths.OrganizationLeader),
         component:OrganizationLeaderPage,
+    },
+    {
+        path:Utils.routeHrmPathMaker(AppPaths.Export),
+        component:ExportPage,
     }
-
 ]

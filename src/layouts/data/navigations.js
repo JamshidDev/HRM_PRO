@@ -28,7 +28,8 @@ import {
     SlideMultipleSearch24Filled,
     BuildingMultiple24Filled,
     ScanObject24Filled,
-    Organization12Filled
+    Organization12Filled,
+    CloudArchive20Filled
 } from "@vicons/fluent"
 import {AppPaths} from "@/utils/index.js";
 import Utils from "@/utils/Utils.js"
@@ -151,6 +152,13 @@ export const navigations = [
                 color: 'bg-info',
                 permission: appPermissions.hrJobs,
             },
+            {
+                label: 'exportPage.name',
+                path: Utils.routeHrmPathMaker(AppPaths.Export),
+                icon: CloudArchive20Filled,
+                color: 'bg-warning',
+                permission: appPermissions.hrWorkers,
+            },
         ]
     },
     {
@@ -237,28 +245,28 @@ export const navigations = [
         label: 'Turnstile',
         path: AppPaths.Turnstile,
         icon: AccessTime24Filled,
-        permission: appPermissions.admin,
+        permission: appPermissions.turnstile,
         children: [
             {
                 label: 'turnstile.buildingPage.title',
                 path: Utils.routeTurnstilePathMaker(AppPaths.Building),
                 icon: BuildingMultiple24Filled,
                 color: 'bg-dark',
-                permission: appPermissions.users,
+                permission: appPermissions.turnstile,
             },
             {
                 label: 'turnstile.terminalPage.title',
                 path: Utils.routeTurnstilePathMaker(AppPaths.Terminal),
                 icon: ScanObject24Filled,
                 color: 'bg-secondary',
-                permission: appPermissions.users,
+                permission: appPermissions.turnstile,
             },
             {
                 label: 'turnstile.organization.title',
                 path: Utils.routeTurnstilePathMaker(AppPaths.Organizations),
                 icon: Organization12Filled,
                 color: 'bg-info',
-                permission: appPermissions.users,
+                permission: appPermissions.turnstile,
             },
         ]
     },

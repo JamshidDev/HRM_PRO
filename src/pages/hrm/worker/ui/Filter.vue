@@ -1,13 +1,19 @@
 <script setup>
 import {useComponentStore, useWorkerStore, useExportStore} from "@/store/modules/index.js"
 import {UIPageFilter, UIStructure} from "@/components/index.js"
-import {HomePerson20Regular, Person32Regular, ArrowDownload16Regular} from "@vicons/fluent"
-import {useAppSetting} from "@/utils/index.js"
+import {
+  HomePerson20Regular,
+  CheckmarkCircle16Regular,
+  Person32Regular,
+  DocumentTable16Regular,
+  DismissCircle28Regular,
+  ShareScreenPersonOverlayInside16Regular
+} from "@vicons/fluent"
 import Utils from "@/utils/Utils.js"
 
 
 const store = useWorkerStore()
-const exportStore = useExportStore() 
+const exportStore = useExportStore()
 const componentStore = useComponentStore()
 
 const onAdd = () => {
@@ -41,12 +47,12 @@ const marks = {
   100: "100"
 }
 
-const filterCount = computed(()=>{
-  return Number(Boolean(store.params.organizations.length>0)) + Number(Boolean(store.params.departments.length>0))
-  + Number(Boolean(store.params.birthday)) + Number(Boolean(store.params.contract_type)) + Number(Boolean(store.params.position_type))
+const filterCount = computed(() => {
+  return Number(Boolean(store.params.organizations.length > 0)) + Number(Boolean(store.params.departments.length > 0))
+      + Number(Boolean(store.params.birthday)) + Number(Boolean(store.params.contract_type)) + Number(Boolean(store.params.position_type))
 })
 
-const clearFilter = ()=>{
+const clearFilter = () => {
   store.params.organizations = []
   store.params.departments = []
   store.params.positions = []
@@ -56,38 +62,46 @@ const clearFilter = ()=>{
   filterEvent()
 }
 
-const onChangeDepartment = ()=>{
-  componentStore.filterPositionParams.departments =store.params.departments.toString()
+const onChangeDepartment = () => {
+  componentStore.filterPositionParams.departments = store.params.departments.toString()
   componentStore.filterPositions = []
   componentStore._filterPosition()
   filterEvent()
 }
 
-const onChangeAge = ()=>{
-  store.params.age_start  = store.params.ages[0]
-  store.params.age_end  = store.params.ages[1]
+const onChangeAge = () => {
+  store.params.age_start = store.params.ages[0]
+  store.params.age_end = store.params.ages[1]
   filterEvent()
 }
 
-const onShow = (isOpen)=>{
-  if(isOpen && componentStore.contractTypeList.length === 0){
+const onShow = (isOpen) => {
+  if (isOpen && componentStore.contractTypeList.length === 0) {
     componentStore._enums()
   }
 
-  if(isOpen && componentStore.positionCategory.length === 0){
+  if (isOpen && componentStore.positionCategory.length === 0) {
     componentStore._enumsAdmin()
   }
 }
 
-const onDownload = ()=>{
+const onExport = () => {
   exportStore.visible = true
+}
+
+const onExportResume = () => {
+  exportStore.resetResumePayload()
+  exportStore.isExportingResume = !exportStore.isExportingResume
+}
+
+const onSubmitResumeExport = () => {
+  exportStore.resumeModalVisible = true
 }
 
 </script>
 
 <template>
   <UIPageFilter
-
       :search-loading="store.loading"
       :filter-count="filterCount"
       v-model:search="store.params.search"
@@ -100,16 +114,41 @@ const onDownload = ()=>{
       }"
   >
     <template #filterAction>
-      <n-space>
+      <n-space :wrap="false">
+        <n-button-group>
+          <n-button
+              :disabled="!(exportStore.resumePayload.all ? store.totalItems : exportStore.resumePayload.worker_ids.length)"
+              type="primary" ghost v-if="exportStore.isExportingResume" @click="onSubmitResumeExport">
+            <span
+                class="font-semibold">{{ exportStore.resumePayload.all ? store.totalItems : exportStore.resumePayload.worker_ids.length }}</span>
+            <template #icon>
+              <CheckmarkCircle16Regular/>
+            </template>
+          </n-button>
+          <n-button
+              :type="exportStore.isExportingResume ? 'error' : 'warning'"
+              ghost
+              icon-placement="right"
+              @click="onExportResume"
+          >
+            <template #icon>
+              <n-icon
+                  :component="exportStore.isExportingResume ? DismissCircle28Regular : ShareScreenPersonOverlayInside16Regular"/>
+            </template>
+            {{ $t('content.reference') }}
+          </n-button>
+        </n-button-group>
+
         <n-button
-            type="primary"
+            type="success"
             icon-placement="right"
-            @click="onDownload"
+
+            @click="onExport"
         >
           <template #icon>
-            <n-icon :component="ArrowDownload16Regular" />
+            <n-icon :component="DocumentTable16Regular"/>
           </template>
-          {{ $t('content.download') }}
+          {{ $t('content.export') }}
         </n-button>
 
         <n-button
@@ -221,10 +260,6 @@ const onDownload = ()=>{
                 :ignore-composition="false"
             />
           </div>
-
-
-
-
 
 
         </div>

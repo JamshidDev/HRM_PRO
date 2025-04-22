@@ -6,8 +6,12 @@ const props = defineProps({
     default:null,
   },
   width:{
-    type:Number,
+    type:[Number, String],
     default:500,
+  },
+  height:{
+    type:[Number, String],
+    default:"100vh",
   },
   showMask:{
     type:Boolean,
@@ -16,6 +20,10 @@ const props = defineProps({
   maskClosable:{
     type:Boolean,
     default:true,
+  },
+  placement: {
+    type:String,
+    default:"right",
   }
 })
 
@@ -25,9 +33,10 @@ const visible = defineModel('visible', {type:Boolean, default:false })
 
 <template>
   <n-drawer
+      :height="height"
       v-model:show="visible"
       :default-width="width"
-      placement="right"
+      :placement="placement"
       resizable
       class="ui-drawer"
       :show-mask="showMask"

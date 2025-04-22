@@ -1,5 +1,5 @@
 <script setup>
-import {Timer16Regular, Eye16Filled, CheckmarkCircle24Filled, Circle20Filled} from "@vicons/fluent"
+import {Timer16Regular, Eye16Filled, CheckmarkCircle24Filled, Circle20Filled, ErrorCircle12Filled} from "@vicons/fluent"
 const props = defineProps({
   status:Object,
   size:{
@@ -50,6 +50,12 @@ const statusList = [
     name:"DeActive",
     type:'error',
     icon:Circle20Filled,
+  },
+  {
+    id:8,
+    name:"Error",
+    type:'error',
+    icon:ErrorCircle12Filled,
   },
 ]
 
