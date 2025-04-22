@@ -1,5 +1,7 @@
 import {defineStore} from "pinia";
-import i18n from "@/i18n/index.js"
+import router from "@/router/index.js";
+import Utils from "@/utils/Utils.js"
+import {AppPaths} from "@/utils/index.js"
 
 export const useExportStore = defineStore('exportStore', {
     state: () => ({
@@ -69,6 +71,7 @@ export const useExportStore = defineStore('exportStore', {
             }
             $ApiService.exportService._export_workers({data}).then((res) => {
                 this.visible = false
+                router.push(Utils.routeHrmPathMaker(AppPaths.Export))
             }).finally(() => {
                 this.saveLoading = false
             })
@@ -80,6 +83,8 @@ export const useExportStore = defineStore('exportStore', {
             }
             $ApiService.exportService._export_resume({data}).then((res) => {
                 this.resumeModalVisible = false
+                this.resetResumePayload()
+                router.push(Utils.routeHrmPathMaker(AppPaths.Export))
             }).finally(() => {
                 this.exportResumeLoading = false
             })
