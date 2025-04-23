@@ -177,7 +177,7 @@ onMounted(()=>{
     </div>
     <div class="col-span-12 pr-3" v-if="!isPosition">
       <n-form-item :label="$t(`documentPage.form.organization`)" path="organization_id">
-        <UIStructure
+        <UIStructureV2
             :modelV="store.organization_id"
             @updateModel="onChangeStructure"
             :checkedVal="store.structureCheck"

@@ -320,7 +320,7 @@ export const usePdfViewerStore = defineStore('pdfViewerStore', {
             this.docApplicationLoading = true
             $ApiService.applicationService._documentApplication({params}).then((res) => {
                 this.documentApplications = res.data.data.data.map(v => ({
-                    name: v.number,
+                    name: v.number +' - ' + v.type?.name,
                     id: v.id,
                 }))
             }).finally(() => {
