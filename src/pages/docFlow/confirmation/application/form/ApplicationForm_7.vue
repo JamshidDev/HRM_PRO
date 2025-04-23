@@ -14,7 +14,7 @@ const onChangeDepartment = (v)=>{
 }
 
 onMounted(()=>{
-  componentStore.depParams.organizations = store.organization_id[0].id
+  componentStore.depParams.organizations = store.confirmParams.organization_id
   componentStore._departmentTree()
 })
 </script>

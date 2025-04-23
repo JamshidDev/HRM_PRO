@@ -4,18 +4,7 @@ import {useAppSetting} from "@/utils/index.js"
 
 const store = useConfApplicationStore()
 
-watchEffect(()=>{
-  if(store.vacationList.length>0){
-    const data = store.vacationList[0]
-    const date = new Date(data.period_to)
-    store.payload.period_from =date.getTime()
-    store.payload.period_to =new Date(date.setFullYear(date.getFullYear() +1)).getTime()
-  }
-})
 
-onMounted(()=>{
-  console.log(store.payload.to_time)
-})
 
 
 </script>
@@ -23,10 +12,10 @@ onMounted(()=>{
 <template>
   <div class="grid grid-cols-12 gap-x-4">
     <div class="col-span-6">
-      <n-form-item :label="$t(`applicationPage.form.from`)" path="period_from">
+      <n-form-item :label="$t(`applicationPage.form.from`)" path="from">
         <n-date-picker
             class="w-full"
-            v-model:value="store.payload.period_from"
+            v-model:value="store.payload.from"
             type="date"
             :placeholder="$t(`content.choose`)"
             :format="useAppSetting.datePicketFormat"
@@ -34,10 +23,10 @@ onMounted(()=>{
       </n-form-item>
     </div>
     <div class="col-span-6">
-      <n-form-item :label="$t(`applicationPage.form.to`)" path="period_to">
+      <n-form-item :label="$t(`applicationPage.form.to`)" path="to">
         <n-date-picker
             class="w-full"
-            v-model:value="store.payload.period_to"
+            v-model:value="store.payload.to"
             type="date"
             :placeholder="$t(`content.choose`)"
             :format="useAppSetting.datePicketFormat"

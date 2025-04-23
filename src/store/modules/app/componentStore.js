@@ -604,7 +604,7 @@ export const useComponentStore = defineStore('componentStore', {
                 this.workerApplicationLoading = false
             })
         },
-        _directors(id=undefined){
+        _directors(id=undefined, callback){
             this.directorLoading = true
             $ApiService.componentService._directors({
                 params:{
@@ -615,8 +615,9 @@ export const useComponentStore = defineStore('componentStore', {
                     this.directorList = res.data.data.map((v)=>({
                         ...v,
                         fullName:Utils.combineFullName(v.worker)
-
                     }))
+                    callback?.(this.directorList)
+
                 }).finally(()=>{
                 this.directorLoading = false
             })

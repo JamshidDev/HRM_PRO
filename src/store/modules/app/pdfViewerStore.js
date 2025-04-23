@@ -224,7 +224,6 @@ export const usePdfViewerStore = defineStore('pdfViewerStore', {
                     model: this.model,
                 }
             }).then((res) => {
-                console.log(res.data.data.data)
                 this.messageList = res.data.data.data
             }).finally(() => {
                 this.chatLoading = false
@@ -241,7 +240,7 @@ export const usePdfViewerStore = defineStore('pdfViewerStore', {
             }).then((res) => {
                 this.userList = res.data.data.map(v => ({
                     name: v.worker.last_name + ' ' + v.worker.first_name,
-                    id: v.worker.id
+                    id: v.id
                 }))
             }).finally(() => {
                 this.userLoading = false

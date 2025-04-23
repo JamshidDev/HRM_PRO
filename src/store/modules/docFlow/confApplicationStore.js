@@ -2,7 +2,8 @@ import {defineStore} from "pinia";
 import Utils from "@/utils/Utils.js"
 import {AppPaths} from "@/utils/index.js"
 import {useComponentStore} from "@/store/modules/index.js"
-
+import i18n from "@/i18n/index.js"
+const {t} = i18n.global
 export const useConfApplicationStore = defineStore('confApplicationStore', {
     state:()=>({
         list:[],
@@ -53,6 +54,7 @@ export const useConfApplicationStore = defineStore('confApplicationStore', {
             education_type:null,
             univer_date:null,
             univer_number:null,
+            rate:null,
         },
         params:{
             page:1,
@@ -168,28 +170,16 @@ export const useConfApplicationStore = defineStore('confApplicationStore', {
             })
 
         },
-        _myPositions(){
+        _myPositions(callback){
             this.positionLoading= true
             $ApiService.applicationService._myPositions( ).then((res)=>{
                 this.myPositionList = res.data.data
-                if(res.data.data.length === 1){
-                    this.payload.worker_position_id = res.data.data[0].id
-                    this.onChangePosition(this.payload.worker_position_id)
-                }
+                callback?.(res.data.data)
             }).finally(()=>{
                 this.positionLoading= false
             })
         },
 
-        onChangePosition(id){
-            const store = useComponentStore()
-            let index = this.myPositionList.findIndex(v=>v.id === id)
-            if(index !== -1){
-                let orgId = this.myPositionList[index]?.organization?.id
-                this.confirmParams.organization_id = orgId
-                store._directors(orgId)
-            }
-        },
 
 
         _confirmation(){
@@ -274,21 +264,23 @@ export const useConfApplicationStore = defineStore('confApplicationStore', {
             this.visible = data
         },
         resetForm(){
+            const now =  new Date().getTime()
             this.payload.director_id = null
             this.payload.type = null
             this.payload.confirmations = []
             this.payload.worker_position_id = null
 
 
-            this.payload.period_from = null
+            this.payload.period_from = now
             this.payload.period_to = null
-            this.payload.from = null
+            this.payload.from = now
             this.payload.to = null
-            this.payload.reason = null
+            this.payload.reason = t('applicationPage.reason')
             this.payload.from_date = null
             this.payload.department_position_id = null
             this.payload.temporarily_absent = null
-            this.payload.application_date = new Date().getTime()
+            this.payload.application_date = now
+            this.payload.rate = 1
 
             this.activeTab = 101
             this.stepNumber = 1

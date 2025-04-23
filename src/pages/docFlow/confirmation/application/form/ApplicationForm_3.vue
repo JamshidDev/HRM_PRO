@@ -24,7 +24,6 @@ const disabledPeriod = computed(()=>{
 onMounted(()=>{
   store._onActiveVacation(store.payload.worker_position_id)
   store.payload.from = new Date().getTime()
-  store.payload.reason = t('applicationPage.reason')
 })
 </script>
 

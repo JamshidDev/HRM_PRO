@@ -51,11 +51,6 @@ const onEdit = (v)=>{
   store._getEdit(editResponse)
 }
 
-const onDelete = (v)=>{
-  store.elementId = v.id
-  store._delete()
-}
-
 const onOpenFile = (documentId, signatureId)=>{
   emits('openOffice', {documentId, signatureId})
 }
@@ -85,7 +80,7 @@ const onSelectEv = (v)=>{
         <thead>
         <tr>
           <th class="!text-center min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
-          <th class="min-w-[200px] w-[200px]">{{$t('applicationPage.form.number')}}</th>
+          <th class="min-w-[60px] w-[60px]">{{$t('applicationPage.form.number')}}</th>
           <th class="min-w-[200px]">{{$t('applicationPage.form.type')}}</th>
           <th class="min-w-[200px] w-[200px]">{{$t('applicationPage.form.director_id')}}</th>
           <th class="min-w-[100px] w-[120px]">{{$t('content.status')}}</th>
@@ -99,7 +94,7 @@ const onSelectEv = (v)=>{
           <td><span class="text-center text-[12px] text-gray-600 block">{{ (store.params.page - 1) * store.params.per_page + idx + 1 }}</span></td>
           <td>{{item?.worker_application.number}}</td>
           <td>
-            <span @click="onOpenFile(item?.id, item?.id)" class="hover:text-primary hover:underline cursor-pointer">{{item?.worker_application?.type.name}}</span>
+            <span @click="onOpenFile(item?.worker_application?.id, item?.id)" class="hover:text-primary hover:underline cursor-pointer">{{item?.worker_application?.type.name}}</span>
           </td>
           <td>
             <UIUser
@@ -136,7 +131,3 @@ const onSelectEv = (v)=>{
     <NoDataPicture v-if="store.list.length===0 && !store.loading" />
   </n-spin>
 </template>
-
-<style scoped>
-
-</style>

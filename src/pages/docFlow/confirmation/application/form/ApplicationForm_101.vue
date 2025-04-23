@@ -12,17 +12,22 @@ const isPosition = computed(()=>!([1,2].includes(store.payload.type)))
 
 
 const onFocusDirector = ()=>{
-  if(componentStore.directorList.length === 0){
-    componentStore._directors(store.organization_id?.[0]?.id || undefined)
+  if(componentStore.directorList.length === 0){x
+    getDirectors(store.organization_id?.[0]?.id )
   }
 
 }
 const onFocusPosition = ()=>{
   if(store.myPositionList.length === 0){
-    store._myPositions()
+    store._myPositions((list)=>{
+      if(list.length===1){
+        store.payload.worker_position_id = list[0].id
+        changePosition(list[0].id)
+      }
+    })
   }else if(store.myPositionList.length===1){
     store.payload.worker_position_id = store.myPositionList[0].id
-    store.onChangePosition(store.payload.worker_position_id)
+    changePosition(store.payload.worker_position_id)
   }
 
 }
@@ -73,7 +78,6 @@ const onSelectApplication = (v)=>{
   store.payload.director_id = null
   store.confirmationList = []
   store.payload.confirmations = []
-  store.organization_id = []
 
   if(isPosition.value){
     onFocusPosition()
@@ -86,14 +90,31 @@ const onChangeStructure = (v)=>{
     componentStore.directorList = []
     store.payload.director_id = null
     store.confirmParams.organization_id = v[0].id
-    componentStore._directors(v[0].id)
+    getDirectors(v[0].id)
   }
 }
 
-watchEffect(()=>{
+const getDirectors = (id)=>{
+  store.confirmParams.organization_id = id
+  componentStore._directors(id,(list)=>{
+    if(list.length===1){
+      store.payload.director_id = list[0].id
+      store.confirmParams.director_id = list[0].id
+      store.confirmParams.search = null
+      store.confirmationList = []
+      store.payload.confirmations = []
+      store._confirmation()
+    }
+  })
+}
 
-
-})
+const changePosition = (id)=>{
+  let index = store.myPositionList.findIndex(v=>v.id === id)
+  if(index !== -1){
+    let orgId = store.myPositionList[index]?.organization?.id
+    getDirectors(orgId)
+  }
+}
 
 
 
@@ -148,7 +169,7 @@ onMounted(()=>{
             :loading="store.positionLoading"
             :render-label="renderLabel2"
             :render-tag="renderValue2"
-            @update:value="store.onChangePosition"
+            @update:value="changePosition"
             label-field="id"
             value-field="id"
         />

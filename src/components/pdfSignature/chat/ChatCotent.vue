@@ -27,7 +27,7 @@ const messages = computed(()=>{
     msg:v.message,
     author:v.sender.id === accountStore.account.id,
     fullName:v.sender?.worker?.last_name +" "+v.sender?.worker?.first_name,
-    avatar:v.sender.photo,
+    avatar:v.sender?.worker.photo,
     time:Utils.timeOnlyHour(v.created_at),
     date:Utils.timeOnlyDate(v.created_at),
     id:v.id

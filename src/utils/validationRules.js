@@ -1258,6 +1258,12 @@ export default {
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
+        rate:{
+            type:'number',
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
         from:{
             type:'number',
             required: true,
