@@ -23,7 +23,8 @@ export const useExportStore = defineStore('exportStore', {
             search: null,
         },
         payload: {
-            columns: []
+            columns: [],
+            allChecked: false
         },
         columns: [],
         tasks: [],
@@ -91,6 +92,7 @@ export const useExportStore = defineStore('exportStore', {
         },
         resetPayload() {
             this.payload.columns = [];
+            this.allChecked = false
         },
         resetResumePayload() {
             this.resumePayload = {

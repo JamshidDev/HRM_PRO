@@ -37,13 +37,7 @@ export const useWorkerStore = defineStore('workerStore', {
     actions:{
         _index(){
             this.loading= true
-            let params = {
-                ...this.params,
-                organizations:this.params.organizations.map(v=>v.id).toString() || undefined,
-                departments:this.params.departments.toString() || undefined,
-                positions:this.params.positions.toString() || undefined,
-                ages:undefined,
-            }
+            let params = this._params()
             $ApiService.workerService._index({params}).then((res)=>{
                 this.list = res.data.data.data
                 this.totalItems = res.data.data.total
@@ -96,6 +90,15 @@ export const useWorkerStore = defineStore('workerStore', {
             }).finally(()=>{
                 this.deleteLoading = false
             })
+        },
+        _params(){
+            return {
+                ...this.params,
+                organizations:this.params.organizations.map(v=>v.id).toString() || undefined,
+                departments:this.params.departments.toString() || undefined,
+                positions:this.params.positions.toString() || undefined,
+                ages:undefined,
+            }
         },
         openVisible(data){
             this.visible = data

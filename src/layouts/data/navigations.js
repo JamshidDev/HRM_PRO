@@ -412,6 +412,13 @@ export const navigations = [
                 color: 'bg-dark',
                 permission: appPermissions.cities,
             },
+            {
+                label: 'telegramPage.name',
+                path: Utils.routePathMaker(AppPaths.Telegram),
+                icon: Folder48Filled,
+                color: 'bg-dark',
+                permission: appPermissions.cities,
+            },
         ]
     },
 ]
