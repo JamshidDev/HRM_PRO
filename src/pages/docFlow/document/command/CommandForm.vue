@@ -138,7 +138,7 @@ const onSubmit = ()=>{
       else if(store.payload.command_type === 55){
         validate =await vacationForm_55.value?.onSubmit(mainData)
       }
-      else if(store.payload.command_type === 62){
+      else if(store.payload.command_type === 62 || store.payload.command_type === 61){
         validate =await vacationForm_62.value?.onSubmit(mainData)
       }
 
@@ -502,7 +502,7 @@ onMounted(()=>{
         <template v-else-if="store.payload.command_type === 55">
           <VacationForm_55 ref="vacationForm_55" />
         </template>
-        <template v-else-if="store.payload.command_type === 62">
+        <template v-else-if="store.payload.command_type === 62 || store.payload.command_type === 61">
           <VacationForm_62 ref="vacationForm_62" />
         </template>
 

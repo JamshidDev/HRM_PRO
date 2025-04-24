@@ -10,6 +10,7 @@ import {
 import {AppPaths} from "@/utils/index.js";
 import TreeTabs from './TreeTabs.vue'
 import CodexCard from './Codex.vue'
+import DocumentArchive from "./DocumentArchive.vue"
 
 const list = [
   {
@@ -23,7 +24,8 @@ const list = [
     title: 'others.info.positions',
     icon: PeopleTeamToolbox20Filled,
     info: 'others.info.positionsDesc',
-    type: 'primary'
+    type: 'primary',
+    component:DocumentArchive
   },
   {
     title: 'others.info.laborCode',

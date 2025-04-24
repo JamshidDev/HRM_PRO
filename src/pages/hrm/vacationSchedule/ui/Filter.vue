@@ -15,6 +15,7 @@ const onSearch = ()=>{
   store._index()
 }
 
+
 </script>
 
 <template>
@@ -23,7 +24,14 @@ const onSearch = ()=>{
     :search-loading="store.loading"
     @onAdd="onAdd"
     @onSearch="onSearch"
-/>
+>
+  <template #filterAction>
+    <n-button
+        @click="store.otherVisible=!store.otherVisible"
+        type="success">
+      {{$t('vacationSchedule.otherList.btn')}}</n-button>
+  </template>
+</UIPageFilter>
 </template>
 
 <style scoped>

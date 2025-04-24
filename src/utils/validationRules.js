@@ -1507,5 +1507,25 @@ export default {
             trigger: triggerEvents
         }
     },
+    vacationSchedule:{
+        worker:{
+            type:'number',
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        organization_id:{
+            type:'array',
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        month:{
+            type:'number',
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        }
+    },
 }
 

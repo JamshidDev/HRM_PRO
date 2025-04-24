@@ -15,7 +15,7 @@ export const useVacationScheduleStore = defineStore('vacationScheduleStore', {
         allLoading:false,
         structureCheck:[],
         payload:{
-            worker:null,
+            worker_position_id:null,
             organization_id:[],
             month:null,
         },
@@ -24,6 +24,17 @@ export const useVacationScheduleStore = defineStore('vacationScheduleStore', {
             per_page:10,
             search:null,
         },
+
+        othersList:[],
+        otherLoading:false,
+        otherVisible:false,
+        otherParam:{
+            page:1,
+            per_page:30,
+            search:null,
+        },
+        otherTotal:0,
+
     }),
     actions:{
         _index(){
@@ -38,8 +49,25 @@ export const useVacationScheduleStore = defineStore('vacationScheduleStore', {
                 this.loading= false
             })
         },
-        _create(data){
+        _otherWorkers(){
+            const params = {
+                ...this.otherParam
+            }
+            this.otherLoading= true
+            $ApiService.vacationScheduleService._notIncludes({params}).then((res)=>{
+                this.othersList = res.data.data.data.map((v)=>({...v,month:null}))
+                this.otherTotal = res.data.data.total
+            }).finally(()=>{
+                this.otherLoading= false
+            })
+        },
+        _create(){
             this.saveLoading = true
+            const data = {
+                ...this.payload,
+                organization_id:this.payload.organization_id?.[0]?.id,
+                month:this.payload.month,
+            }
             $ApiService.vacationScheduleService._create({data}).then((res)=>{
                 this.visible = false
                 this._index()
@@ -48,8 +76,12 @@ export const useVacationScheduleStore = defineStore('vacationScheduleStore', {
             })
 
         },
-        _update(data){
+        _update(){
             this.saveLoading = true
+            const data = {
+                ...this.payload,
+                organization_id:this.payload.organization_id?.[0]?.id,
+            }
             $ApiService.vacationScheduleService._update({data, id:this.elementId}).then((res)=>{
                 this.visible = false
                 this._index()
@@ -72,13 +104,9 @@ export const useVacationScheduleStore = defineStore('vacationScheduleStore', {
         },
         resetForm() {
             this.elementId = null
-            this.payload.visibility_type = null
-            this.payload.title = null
-            this.payload.file = []
-            this.payload.description = null
-            this.payload.document_date = null
-            this.payload.type = null
-            this.payload.fakeFile = null
+            this.payload.worker_position_id = null
+            this.payload.month = null
+            this.payload.organization_id = []
 
         }
 

@@ -1389,8 +1389,12 @@
     }
   },
   "vacationSchedule": {
-    "name": "Ta'tillar jadvali",
+    "name": "Ta'tillar grafigi",
     "createTitle": "Xodim biriktirish",
-    "updateTitle": "Tahrirlash"
+    "updateTitle": "Tahrirlash",
+    "otherList":{
+      "btn": "Xodimlar",
+      "name": "Xodimlar ro'yhati"
+    }
   }
 }

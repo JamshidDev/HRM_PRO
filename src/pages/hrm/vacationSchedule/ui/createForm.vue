@@ -13,28 +13,19 @@ const onSubmit = ()=>{
   formRef.value?.validate((error)=>{
     if(!error) {
       if (store.visibleType) {
-        store._create(formData)
-        formData.append('file', store.payload.file[0]?.file)
+        store._create()
       } else {
-        formData.append('_method', 'PUT')
-        console.log(store.payload.file)
-        if(typeof store.payload.file[0]?.file !== 'string'){
-          formData.append('file', store.payload.file[0]?.file)
-        }
-        store._update(formData)
+        store._update()
       }
-
-
     }
   })
 }
-
 
 const onChangeStructure = (v)=>{
   store.payload.organization_id=v
   if(v.length>0){
     componentStore.workerList = []
-    store.workers = []
+    store.payload.worker_position_id = null
     componentStore.workerParams.organization_id= v[0].id
     componentStore._workers()
   }
@@ -57,15 +48,12 @@ const workerRenderValue = ({option})=>{
 }
 
 
-onMounted(()=>{
-})
-
 </script>
 
 <template>
   <n-form
       ref="formRef"
-      :rules="validationRules.documentArchive"
+      :rules="validationRules.vacationSchedule"
       :model="store.payload"
   >
     <div style="min-height:calc(100vh - 120px)">
@@ -79,9 +67,9 @@ onMounted(()=>{
             :multiple="false"
         />
       </n-form-item>
-      <n-form-item class="w-full" :label="$t(`documentPage.form.worker`)" path="worker">
+      <n-form-item class="w-full" :label="$t(`documentPage.form.worker`)" path="worker_position_id">
         <n-select
-            v-model:value="store.payload.worker"
+            v-model:value="store.payload.worker_position_id"
             filterable
             :placeholder="$t(`content.choose`)"
             :options="componentStore.workerList"
@@ -94,7 +82,7 @@ onMounted(()=>{
             @search="componentStore.onSearchWorker"
         />
       </n-form-item>
-      <n-form-item class="w-full" :label="$t(`documentPage.form.worker`)" path="workers">
+      <n-form-item class="w-full" :label="$t(`content.month`)" path="month">
         <n-select
             v-model:value="store.payload.month"
             filterable
@@ -102,9 +90,6 @@ onMounted(()=>{
             :options="Utils.monthList"
             label-field="name"
             value-field="id"
-            :filter="()=>true"
-            @search="componentStore.onSearchWorker"
-            :reset-menu-on-options-change="false"
         />
       </n-form-item>
 

@@ -1,29 +1,20 @@
 <script setup>
-import {NoDataPicture,UIPagination, UIMenuButton, UIStatus} from "@/components/index.js"
-import {useVacationScheduleStore} from "@/store/modules/index.js"
-import {ArrowCircleDown48Regular} from "@vicons/fluent"
+import {NoDataPicture, UIPagination, UIMenuButton, UIUser} from "@/components/index.js"
+import {useComponentStore, useVacationScheduleStore} from "@/store/modules/index.js"
 import Utils from "@/utils/Utils.js"
-import { v4 as uuidv4 } from 'uuid';
 
 const store = useVacationScheduleStore()
-
+const componentStore = useComponentStore()
 
 
 
 const onEdit = (v)=>{
   store.elementId = v.id
-  store.payload.title = v.title
-  store.payload.description = v.description
-  store.payload.document_date = new Date(v.document_date).getTime()
-  store.payload.type = v.type.id
-  store.payload.visibility_type = v.visibility_type
-  store.payload.file = [
-    {
-      id:uuidv4(),
-      name:Utils.fileNameFromUrl(v.file),
-      file:v.file
-    }
-  ]
+  store.payload.organization_id = [v.organization]
+  store.payload.month = v.month
+  componentStore.workerParams.organization_id= v.organization.id
+  componentStore._workers()
+  store.payload.worker_position_id = v.worker.id
   store.visibleType = false
   store.visible = true
 
@@ -48,13 +39,6 @@ const onSelectEv = (v)=>{
   }
 }
 
-const openFile = (url)=>{
-  window.open(url, "_blank");
-}
-
-const statusData = (id)=>{
-  return store.visibleTypes.filter(v=>v.id === id)?.[0]
-}
 
 </script>
 
@@ -69,12 +53,9 @@ const statusData = (id)=>{
         <thead>
         <tr>
           <th class="!text-center min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
-          <th class="min-w-[200px]">{{$t('documentArchive.form.title')}}</th>
-          <th class="min-w-[200px]">{{$t('documentArchive.form.type')}}</th>
-          <th class="min-w-[80px] w-[200px]">{{$t('documentArchive.form.visibility_type')}}</th>
-          <th class="min-w-[100px]">{{$t('documentArchive.form.description')}}</th>
-          <th class="min-w-[80px] w-[80px]">{{$t('documentArchive.form.file')}}</th>
-          <th class="min-w-[80px] w-[80px]">{{$t('documentArchive.form.document_date')}}</th>
+          <th class="min-w-[200px]">{{$t('content.worker')}}</th>
+          <th class="min-w-[200px]">{{$t('content.organization')}}</th>
+          <th class="min-w-[80px] w-[200px]">{{$t('content.month')}}</th>
           <th class="min-w-[40px] w-[40px]"></th>
         </tr>
         </thead>
@@ -83,34 +64,25 @@ const statusData = (id)=>{
           <td><span class="text-center block">{{ (store.params.page - 1) * store.params.per_page + idx + 1 }}</span></td>
           <td>
             <div>
-              {{item.title}}
+              <UIUser
+                  :data="{
+                    photo:item?.worker.photo,
+                    firstName:item?.worker.first_name,
+                    middleName:item?.worker.middle_name,
+                    lastName:item?.worker.last_name,
+                    position:item?.position,
+                  }"
+              />
             </div>
           </td>
           <td>
             <div>
-              <UIStatus :status="item.type"/>
+              {{item.organization?.name}}
             </div>
           </td>
           <td>
-            <UIStatus :status="statusData(item.visibility_type)"/>
-          </td>
-          <td>
-            {{item.description}}
-          </td>
-          <td>
-            <div class="flex justify-center">
-              <n-button
-                  @click="openFile(item.file)"
-                  size="small">
-                <template #icon>
-                  <ArrowCircleDown48Regular/>
-                </template>
-              </n-button>
-            </div>
-          </td>
+            {{Utils.getMonthNameById(item.month)}}
 
-          <td>
-            {{Utils.timeOnlyDate(item.document_date)}}
           </td>
           <td>
             <UIMenuButton
