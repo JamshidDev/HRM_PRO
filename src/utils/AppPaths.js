@@ -73,6 +73,7 @@ export const AppPaths = {
     AIConversation: "/ai-conversation",
     Export: "/export",
     BusinessTrip: "/business-trip",
+    DocumentArchive: "/document-archive",
 }
 
 export const AppLayouts ={

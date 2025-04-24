@@ -21,6 +21,7 @@ import SlicePage from "@/pages/hrm/slice/SlicePage.vue"
 import OrganizationLeaderPage from '@/pages/hrm/organizationLeader/organizationLeaderPage.vue'
 import ExportPage from '@/pages/hrm/export/exportPage.vue'
 import BusinessTripPage from "@/pages/hrm/businessTrip/BusinessTripPage.vue"
+import DocumentArchivePage from "@/pages/hrm/documentArchive/DocumentArchivePage.vue"
 
 export default [
     {
@@ -124,5 +125,9 @@ export default [
     {
         path:Utils.routeHrmPathMaker(AppPaths.BusinessTrip),
         component:BusinessTripPage,
+    },
+    {
+        path:Utils.routeHrmPathMaker(AppPaths.DocumentArchive),
+        component:DocumentArchivePage,
     }
 ]

@@ -1364,6 +1364,11 @@
     }
   },
   "businessTrip": {
-    "title": "Xizmat safari"
+    "name": "Xizmat safari"
+  },
+  "documentArchive": {
+    "name": "Hujjatlar bazasi",
+    "createTitle": "Hujjat faylini qo'shish",
+    "updateTitle": "Hujjat faylini tahrirlash"
   }
 }

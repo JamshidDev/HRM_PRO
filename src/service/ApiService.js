@@ -50,6 +50,7 @@ import medService from "@/service/v1/hrm/medService.js"
 import reportService from "@/service/v1/hrm/reportService.js"
 import organizationLeaderService from '@/service/v1/hrm/organizationLeaderService.js'
 import exportService from '@/service/v1/hrm/exportService.js'
+import documentArchiveService from '@/service/v1/hrm/documentArchiveService.js'
 
 import documentService from "@/service/v1/docFlow/documentService.js"
 import contractService from "@/service/v1/docFlow/contractService.js"
@@ -138,6 +139,7 @@ export default {
     aiConversationService,
     organizationLeaderService,
     exportService,
+    documentArchiveService,
 
     turnstileTerminalService,
     turnstileBuildingService,
