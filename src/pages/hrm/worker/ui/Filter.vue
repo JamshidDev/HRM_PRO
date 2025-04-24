@@ -118,16 +118,16 @@ const onSubmitResumeExport = () => {
         <n-button-group>
           <n-button
               :disabled="!(exportStore.resumePayload.all ? store.totalItems : exportStore.resumePayload.worker_ids.length)"
-              type="primary" ghost v-if="exportStore.isExportingResume" @click="onSubmitResumeExport">
+              type="primary" v-if="exportStore.isExportingResume" @click="onSubmitResumeExport">
             <span
-                class="font-semibold">{{ exportStore.resumePayload.all ? store.totalItems : exportStore.resumePayload.worker_ids.length }}</span>
+                class="font-semibold">{{$t('content.download')}} ({{ exportStore.resumePayload.all ? store.totalItems : exportStore.resumePayload.worker_ids.length }})</span>
             <template #icon>
               <CheckmarkCircle16Regular/>
             </template>
           </n-button>
           <n-button
+              :color="exportStore.isExportingResume ? undefined : '#A020F0'"
               :type="exportStore.isExportingResume ? 'error' : 'warning'"
-              ghost
               icon-placement="right"
               @click="onExportResume"
           >

@@ -15,6 +15,7 @@ import SchedulePage from "@/pages/admin/schedule/SchedulePage.vue"
 import WorkdayPage from "@/pages/admin/workday/WorkdayPage.vue"
 import DocumentTemplate from "@/pages/admin/document/DocumentTemplate.vue"
 import HolidayPage from "@/pages/admin/holiday/HolidayPage.vue"
+import TelegramPage from "@/pages/admin/telegram/TelegramPage.vue"
 
 
 export default  [
@@ -98,5 +99,9 @@ export default  [
         path:Utils.routePathMaker(AppPaths.Holiday),
         name:AppPaths.Holiday.substring(1),
         component:HolidayPage,
+    },
+    {
+        path:Utils.routePathMaker(AppPaths.Telegram),
+        component:TelegramPage,
     },
 ]

@@ -1331,6 +1331,10 @@
       "position": "Lavozimlar"
     }
   },
+  "telegramPage": {
+    "name": "Telegram",
+    "chatId": "Chat ID"
+  },
   "aiConversation":{
     "canIHelpYouToday": "Bugun sizga qanday yordam bera olaman?",
     "aiAssistant": "AI Yordamchi",
