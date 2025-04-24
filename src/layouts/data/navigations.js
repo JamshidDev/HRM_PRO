@@ -20,7 +20,6 @@ import {
     BriefcaseMedical20Filled,
     PersonAccounts24Filled,
     BookQuestionMark24Filled,
-    CollectionsAdd24Filled,
     Book20Filled,
     HatGraduation12Filled,
     ClipboardBulletListLtr20Filled,
@@ -30,7 +29,8 @@ import {
     BuildingMultiple24Filled,
     ScanObject24Filled,
     Organization12Filled,
-    CloudArchive20Filled
+    CloudArchive20Filled,
+    BookDatabase24Regular
 } from "@vicons/fluent"
 import {AppPaths} from "@/utils/index.js";
 import Utils from "@/utils/Utils.js"
@@ -170,7 +170,14 @@ export const navigations = [
             {
                 label: 'documentArchive.name',
                 path: Utils.routeHrmPathMaker(AppPaths.DocumentArchive),
-                icon: CollectionsAdd24Filled,
+                icon: BookDatabase24Regular,
+                color: 'bg-secondary',
+                permission: appPermissions.hrWorkers,
+            },
+            {
+                label: 'vacationSchedule.name',
+                path: Utils.routeHrmPathMaker(AppPaths.VacationSchedule),
+                icon: BookDatabase24Regular,
                 color: 'bg-secondary',
                 permission: appPermissions.hrWorkers,
             },

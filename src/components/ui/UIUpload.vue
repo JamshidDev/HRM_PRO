@@ -28,6 +28,8 @@ const onFile = ()=>{
 }
 const onUpload =async (v)=> {
   const list = v.target.files
+  if(!list.length) return
+
   if(props.multiple){
     for(let i=0;i<list.length;i++){
       let file = list[i]

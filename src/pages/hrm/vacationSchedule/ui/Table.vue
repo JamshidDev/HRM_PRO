@@ -1,11 +1,11 @@
 <script setup>
 import {NoDataPicture,UIPagination, UIMenuButton, UIStatus} from "@/components/index.js"
-import {useDocumentArchiveStore} from "@/store/modules/index.js"
+import {useVacationScheduleStore} from "@/store/modules/index.js"
 import {ArrowCircleDown48Regular} from "@vicons/fluent"
 import Utils from "@/utils/Utils.js"
 import { v4 as uuidv4 } from 'uuid';
 
-const store = useDocumentArchiveStore()
+const store = useVacationScheduleStore()
 
 
 
@@ -112,13 +112,13 @@ const statusData = (id)=>{
           <td>
             {{Utils.timeOnlyDate(item.document_date)}}
           </td>
-                    <td>
-                      <UIMenuButton
-                          :data="item"
-                          :show-edit="true"
-                          @selectEv="onSelectEv"
-                      />
-                    </td>
+          <td>
+            <UIMenuButton
+                :data="item"
+                :show-edit="true"
+                @selectEv="onSelectEv"
+            />
+          </td>
         </tr>
         </tbody>
       </n-table>

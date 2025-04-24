@@ -4,12 +4,12 @@ const _index =async ()=>{
     return await axios.get(`/v1/hr/organization-documents`)
 }
 
-const _store =async (payload)=>{
+const _create =async (payload)=>{
     return await axios.post(`/v1/hr/organization-documents`, payload.data)
 }
 
 const _update =async (payload)=>{
-    return await axios.post(`/v1/hr/organization-documents`, payload.data)
+    return await axios.post(`/v1/hr/organization-documents/${payload.id}`, payload.data)
 }
 
 const _delete =async (payload)=>{
@@ -19,7 +19,7 @@ const _delete =async (payload)=>{
 
 export default {
     _index,
-    _store,
+    _create,
     _update,
     _delete
 }

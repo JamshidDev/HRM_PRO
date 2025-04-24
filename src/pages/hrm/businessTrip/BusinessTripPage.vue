@@ -1,5 +1,10 @@
 <script setup>
 import {UIPageContent, UIPageFilter} from "@/components/index.js"
+
+
+onMounted(()=>{
+
+})
 </script>
 
 <template>

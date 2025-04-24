@@ -1478,5 +1478,34 @@ export default {
             trigger: triggerEvents
         }
     },
+    documentArchive:{
+        visibility_type:{
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        title:{
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        fakeFile:{
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        document_date:{
+            type:'number',
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        type:{
+            type:'number',
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        }
+    },
 }
 

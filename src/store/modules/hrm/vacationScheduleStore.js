@@ -1,8 +1,7 @@
 import {defineStore} from "pinia";
 import i18n from "@/i18n/index.js"
-import Utils from "@/utils/Utils.js"
 const {t} = i18n.global
-export const useDocumentArchiveStore = defineStore('documentArchiveStore', {
+export const useVacationScheduleStore = defineStore('vacationScheduleStore', {
     state:()=>({
         list:[],
         loading:false,
@@ -14,34 +13,17 @@ export const useDocumentArchiveStore = defineStore('documentArchiveStore', {
         totalItems:0,
         allRegionList:[],
         allLoading:false,
+        structureCheck:[],
         payload:{
-            visibility_type:null,
-            title:null,
-            description:null,
-            document_date:null,
-            type:null,
-            file:[],
-            fakeFile:null,
+            worker:null,
+            organization_id:[],
+            month:null,
         },
         params:{
             page:1,
             per_page:10,
             search:null,
         },
-        visibleTypes:[
-            {
-                id:'OWN',
-                name:t('documentArchive.type.OWN')
-            },
-            {
-                id:'OWN_AND_BELOW',
-                name:t('documentArchive.type.OWN_AND_BELOW')
-            },
-            {
-                id:'ALL',
-                name:t('documentArchive.type.ALL')
-            },
-        ]
     }),
     actions:{
         _index(){
@@ -49,7 +31,7 @@ export const useDocumentArchiveStore = defineStore('documentArchiveStore', {
             const params = {
                 ...this.params
             }
-            $ApiService.documentArchiveService._index({params}).then((res)=>{
+            $ApiService.vacationScheduleService._index({params}).then((res)=>{
                 this.list = res.data.data.data
                 this.totalItems = res.data.data.total
             }).finally(()=>{
@@ -58,7 +40,7 @@ export const useDocumentArchiveStore = defineStore('documentArchiveStore', {
         },
         _create(data){
             this.saveLoading = true
-            $ApiService.documentArchiveService._create({data}).then((res)=>{
+            $ApiService.vacationScheduleService._create({data}).then((res)=>{
                 this.visible = false
                 this._index()
             }).finally(()=>{
@@ -68,7 +50,7 @@ export const useDocumentArchiveStore = defineStore('documentArchiveStore', {
         },
         _update(data){
             this.saveLoading = true
-            $ApiService.documentArchiveService._update({data, id:this.elementId}).then((res)=>{
+            $ApiService.vacationScheduleService._update({data, id:this.elementId}).then((res)=>{
                 this.visible = false
                 this._index()
 
@@ -78,7 +60,7 @@ export const useDocumentArchiveStore = defineStore('documentArchiveStore', {
         },
         _delete(){
             this.deleteLoading = true
-            $ApiService.documentArchiveService._delete({id:this.elementId}).then((res)=>{
+            $ApiService.vacationScheduleService._delete({id:this.elementId}).then((res)=>{
                 this._index()
 
             }).finally(()=>{

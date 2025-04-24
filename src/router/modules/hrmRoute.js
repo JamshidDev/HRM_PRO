@@ -11,7 +11,6 @@ import CommandPage from "../../pages/docFlow/document/command/CommandPage.vue"
 import AdContractPage from "@/pages/docFlow/document/adContract/AdContractPage.vue"
 import ContractPage from "@/pages/docFlow/document/contract/ContractPage.vue"
 import VacationPage from "@/pages/hrm/vacation/VacationPage.vue"
-import DashboardPage from "@/pages/hrm/dashboard/DashboardPage.vue"
 import TimesheetDepartmentPage from "@/pages/hrm/timesheetDepartment/TimesheetDepartmentPage.vue"
 import DashboardV2Page from "@/pages/hrm/dashboardV2/DashboardV2Page.vue"
 import DashboardV3Page from "@/pages/hrm/dashboardV3/DashboardV3Page.vue"
@@ -22,6 +21,7 @@ import OrganizationLeaderPage from '@/pages/hrm/organizationLeader/organizationL
 import ExportPage from '@/pages/hrm/export/exportPage.vue'
 import BusinessTripPage from "@/pages/hrm/businessTrip/BusinessTripPage.vue"
 import DocumentArchivePage from "@/pages/hrm/documentArchive/DocumentArchivePage.vue"
+import VacationSchedule from "@/pages/hrm/vacationSchedule/VacationSchedule.vue"
 
 export default [
     {
@@ -129,5 +129,9 @@ export default [
     {
         path:Utils.routeHrmPathMaker(AppPaths.DocumentArchive),
         component:DocumentArchivePage,
+    },
+    {
+        path:Utils.routeHrmPathMaker(AppPaths.VacationSchedule),
+        component:VacationSchedule,
     }
 ]
