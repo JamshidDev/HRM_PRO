@@ -14,13 +14,25 @@ const toggleItem = (v) => {
   }
 }
 
+const toggleAll = ()=>{
+  if(!(store.payload.columns?.length === store.columns.length)){
+    store.columns.forEach(i=>{
+      if(!store.payload.columns.find(j=>j.column===i.column)){
+        store.payload.columns.push(i)
+      }
+    })
+  }else{
+    store.payload.columns = []
+  }
+}
+
 onMounted(() => {
   store.resetPayload()
   store._columns()
 })
 
 const onSubmit = () => {
-  store._export_workers(workerStore.params)
+  store._export_workers(workerStore._params())
 }
 
 </script>
@@ -57,6 +69,12 @@ const onSubmit = () => {
       </div>
       <div class="p-2 shrink-0 h-full overflow-auto">
         <ul>
+          <li
+              class="rounded-lg transition-all hover:bg-blue-50 cursor-pointer flex gap-2 items-center p-1">
+            <n-checkbox :checked="store.payload.columns?.length === store.columns.length" @update:checked="toggleAll"/>
+            <p>{{ $t('exportPage.checkAll') }}</p>
+
+          </li>
           <li v-for="(item, idx) in store.columns" @click="toggleItem(item)"
               class="rounded-lg transition-all hover:bg-blue-50 cursor-pointer flex gap-2 items-center p-1"
               :key="idx">

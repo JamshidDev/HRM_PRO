@@ -23,7 +23,7 @@ const onSuccessEv = (id)=>{
 
 const submitExportResume = (v)=>{
   exportStore.resumePayload.passport = v
-  exportStore._export_resume(store.params)
+  exportStore._export_resume(store._params())
 }
 
 onMounted(()=>{
