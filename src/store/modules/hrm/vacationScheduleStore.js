@@ -61,7 +61,7 @@ export const useVacationScheduleStore = defineStore('vacationScheduleStore', {
                 this.otherLoading= false
             })
         },
-        _create(){
+        _create(callback=null){
             this.saveLoading = true
             const data = {
                 ...this.payload,
@@ -70,7 +70,9 @@ export const useVacationScheduleStore = defineStore('vacationScheduleStore', {
             }
             $ApiService.vacationScheduleService._create({data}).then((res)=>{
                 this.visible = false
+                if(callback) return callback?.()
                 this._index()
+
             }).finally(()=>{
                 this.saveLoading = false
             })
@@ -80,7 +82,8 @@ export const useVacationScheduleStore = defineStore('vacationScheduleStore', {
             this.saveLoading = true
             const data = {
                 ...this.payload,
-                organization_id:this.payload.organization_id?.[0]?.id,
+                organization_id:undefined,
+                worker_position_id:undefined,
             }
             $ApiService.vacationScheduleService._update({data, id:this.elementId}).then((res)=>{
                 this.visible = false

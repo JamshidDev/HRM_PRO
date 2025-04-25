@@ -1,7 +1,7 @@
 <script setup>
 import {UIPageFilter} from "@/components/index.js"
 import {useVacationScheduleStore} from "@/store/modules/index.js"
-
+import {People32Filled} from "@vicons/fluent"
 const store = useVacationScheduleStore()
 
 const onAdd = ()=>{
@@ -28,8 +28,12 @@ const onSearch = ()=>{
   <template #filterAction>
     <n-button
         @click="store.otherVisible=!store.otherVisible"
-        type="success">
-      {{$t('vacationSchedule.otherList.btn')}}</n-button>
+        type="error">
+      {{$t('vacationSchedule.otherList.btn')}}
+      <template #icon>
+        <People32Filled/>
+      </template>
+    </n-button>
   </template>
 </UIPageFilter>
 </template>

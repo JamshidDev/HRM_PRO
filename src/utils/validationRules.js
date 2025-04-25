@@ -1527,5 +1527,18 @@ export default {
             trigger: triggerEvents
         }
     },
+    roleForm:{
+        organization_id:{
+            type:'array',
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        role:{
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        }
+    },
 }
 

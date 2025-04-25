@@ -109,6 +109,8 @@
     "staff": "Xodim",
     "export": "Eksport",
     "reference": "Ma'lumotnoma",
+    "from": "Qachondan",
+    "to": "Qachongacha",
     "preparingDocument": "Hujjat tayyorlanmoqda..."
   },
   "date": {
@@ -394,7 +396,7 @@
     "personal": {
       "additionalContract": "Qo'shimcha kelishuv tuzish",
       "createOrder": "Buyruq tuzish",
-      "positionGroup": "Lavozim guruxi",
+      "positionGroup": "Lavozim guruhi",
       "positionRank": "Lavozim razryadi",
       "positionRate": "Lavozim stavkasi",
       "no-passport": "Passport ma'lumotlar yuklanmagan!"
@@ -407,6 +409,10 @@
       "positionDate": "Lavozim sanasi",
       "position": "Lavozimi",
       "title": "Lavozim ma'lumotlari"
+    },
+    "roles": {
+      "title": "Rollar",
+      "attachRole": "Role biriktirish"
     }
   },
   "departmentPage": {
@@ -428,7 +434,7 @@
     "form": {
       "position_id": "Lavozimni tanlang",
       "department_id": "Bo'limni tanlang",
-      "group": "Lavozim guruxi",
+      "group": "Lavozim guruhi",
       "rank": "Lavozim uchun razryad",
       "max_rank": "Lavozim uchun maksimal razryad",
       "rate": "Lavozim kontingenti",
@@ -532,6 +538,7 @@
     "command": {
       "createTitle": "Buyruq yaratish",
       "updateTitle": "Buyruqni tahrirlash",
+      "lastVacation": "Oxirgi ta'til ma'lumotlarini ko'rish",
       "form": {
         "command_date": "Buyruq sanasi",
         "type": "Buyruq turi",
@@ -557,6 +564,7 @@
         "removeWorker": "Ro'yhatdan olib tashlash",
         "calculateTitle": "Hisoblangan ta'til ma'lumotlari. Agarda ularni noto'g'ri deb bilsangiz tahrirlashingiz mumkin",
         "requiredVacationData": "Xodimlarning ta'til ma'lumotlarini kiring!",
+        "rest_day": "Qolgan kun",
         "command_number": "Buyruq raqami"
       }
     },
@@ -571,7 +579,7 @@
       "position": "Lavozim",
       "positionStatus": "Bo'linmadagi lavozimga qabul qilish",
       "salary": "Oylik maosh",
-      "group": "Gurux",
+      "group": "Guruh",
       "rank": "Lavozim razryad",
       "rate": "Stavka",
       "postName": "To'liq lavozim nomi",
@@ -1392,9 +1400,17 @@
     "name": "Ta'tillar grafigi",
     "createTitle": "Xodim biriktirish",
     "updateTitle": "Tahrirlash",
+    "requiredMonth": "Xodimning ta'tilga chiqish oyini tanlang",
     "otherList":{
-      "btn": "Xodimlar",
+      "btn": "Biriktirilmagan xodimlar",
       "name": "Xodimlar ro'yhati"
+    }
+  },
+  "workerRole": {
+    "name": "Foydalanuvchilar",
+    "from":{
+      "activeOrganization": "Aktiv korxonasi",
+      "role": "Rollari"
     }
   }
 }

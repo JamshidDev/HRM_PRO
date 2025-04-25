@@ -240,6 +240,7 @@ const generationVacation = ()=>{
       additional:null,
       addList:[],
       result:null,
+      lastVacation:null,
     })
   }
   else if(store.payload.workers.length < store.vacations.length){
@@ -259,6 +260,7 @@ const fillVacation = ()=>{
       additional:null,
       addList:[],
       result:null,
+      lastVacation:null
     }
   })
 }
@@ -276,6 +278,7 @@ const generationVacation55 = ()=>{
       to:null,
       from_time:null,
       to_time:null,
+      lastVacation:null
     })
   }
   else if(store.payload.workers.length < store.vacations55.length){
@@ -293,6 +296,7 @@ const fillVacation55 = ()=>{
       to:null,
       from_time:null,
       to_time:null,
+      lastVacation:null
     }
   })
 }
@@ -316,6 +320,7 @@ const generationVacation62 = ()=>{
       organizationType:1,
       departmentList:[],
       loading:false,
+      lastVacation:null
     })
   }
   else if(store.payload.workers.length < store.vacations62.length){
@@ -341,6 +346,7 @@ const fillVacation62 = ()=>{
       organizationType:1,
       departmentList:[],
       loading:false,
+      lastVacation:null
     }
   })
 }

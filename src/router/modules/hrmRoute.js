@@ -22,6 +22,7 @@ import ExportPage from '@/pages/hrm/export/exportPage.vue'
 import BusinessTripPage from "@/pages/hrm/businessTrip/BusinessTripPage.vue"
 import DocumentArchivePage from "@/pages/hrm/documentArchive/DocumentArchivePage.vue"
 import VacationSchedule from "@/pages/hrm/vacationSchedule/VacationSchedule.vue"
+import UserRolePage from "@/pages/hrm/UserRole/UserRolePage.vue"
 
 export default [
     {
@@ -133,5 +134,9 @@ export default [
     {
         path:Utils.routeHrmPathMaker(AppPaths.VacationSchedule),
         component:VacationSchedule,
-    }
+    },
+    {
+        path:Utils.routeHrmPathMaker(AppPaths.WorkerRole),
+        component:UserRolePage,
+    },
 ]

@@ -28,6 +28,18 @@ const _resume =async (payload)=>{
     return await axios.get(`/v1/hr/worker-positions/${payload.id}/resume-download`,{responseType:"blob"}, {params:payload.params})
 }
 
+const _deleteRole = async (payload)=>{
+    return await axios.put(`/v1/hr/worker-positions/${payload.id}/edit/detach-role`, payload.data)
+}
+
+const _storeRole = async (payload)=>{
+    return await axios.post(`/v1/hr/worker-positions/${payload.id}/edit/attach-role`, payload.data)
+}
+
+const _userRole =async (payload)=>{
+    return await axios.get(`/v1/hr/users`, {params:payload.params})
+}
+
 
 
 
@@ -40,4 +52,7 @@ export default {
     _preview,
     _search,
     _resume,
+    _deleteRole,
+    _storeRole,
+    _userRole,
 }

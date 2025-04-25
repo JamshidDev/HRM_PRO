@@ -57,31 +57,34 @@ const workerRenderValue = ({option})=>{
       :model="store.payload"
   >
     <div style="min-height:calc(100vh - 120px)">
+      <template v-if="store.visibleType">
+        <n-form-item class="w-full" :label="$t(`documentPage.form.organization`)" path="organization_id">
+          <UIStructure
+              :modelV="store.payload.organization_id"
+              @updateModel="onChangeStructure"
+              :checkedVal="store.structureCheck"
+              @updateCheck="(v)=>store.structureCheck=v"
+              :multiple="false"
+          />
+        </n-form-item>
+        <n-form-item class="w-full" :label="$t(`documentPage.form.worker`)" path="worker_position_id">
+          <n-select
+              v-model:value="store.payload.worker_position_id"
+              filterable
+              :placeholder="$t(`content.choose`)"
+              :options="componentStore.workerList"
+              label-field="name"
+              value-field="id"
+              :render-label="workerRenderLabel"
+              :render-tag="workerRenderValue"
+              :loading="componentStore.workerLoading"
+              @scroll="componentStore.onScrollWorker"
+              @search="componentStore.onSearchWorker"
+          />
+        </n-form-item>
+      </template>
 
-      <n-form-item class="w-full" :label="$t(`documentPage.form.organization`)" path="organization_id">
-        <UIStructure
-            :modelV="store.payload.organization_id"
-            @updateModel="onChangeStructure"
-            :checkedVal="store.structureCheck"
-            @updateCheck="(v)=>store.structureCheck=v"
-            :multiple="false"
-        />
-      </n-form-item>
-      <n-form-item class="w-full" :label="$t(`documentPage.form.worker`)" path="worker_position_id">
-        <n-select
-            v-model:value="store.payload.worker_position_id"
-            filterable
-            :placeholder="$t(`content.choose`)"
-            :options="componentStore.workerList"
-            label-field="name"
-            value-field="id"
-            :render-label="workerRenderLabel"
-            :render-tag="workerRenderValue"
-            :loading="componentStore.workerLoading"
-            @scroll="componentStore.onScrollWorker"
-            @search="componentStore.onSearchWorker"
-        />
-      </n-form-item>
+
       <n-form-item class="w-full" :label="$t(`content.month`)" path="month">
         <n-select
             v-model:value="store.payload.month"

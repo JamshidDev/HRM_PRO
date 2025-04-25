@@ -67,6 +67,8 @@ export const useCommandStore = defineStore('commandStore', {
         vacations55:[],
         vacations62:[],
         calculateLoading:false,
+        vacationLoading:false,
+        vacationId:null,
     }),
     actions:{
         _index(){
@@ -145,7 +147,18 @@ export const useCommandStore = defineStore('commandStore', {
                 this.form_44.rest_day = null
                 this.form_44.reason = null
 
-        }
+        },
+        lastVacation(callback){
+            let data = {
+                worker_positions:[this.vacationId],
+            }
+                this.vacationLoading = true
+            $ApiService.vacationService._lastOne({data}).then((res)=>{
+                callback?.(res.data.data)
+            }).finally(()=>{
+                this.vacationLoading = false
+            })
+        },
 
     }
 

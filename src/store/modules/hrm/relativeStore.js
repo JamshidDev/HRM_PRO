@@ -51,7 +51,7 @@ export const useRelativeStore = defineStore('relativeStore', {
         _index(){
             this.loading= true
             $ApiService.relativeService._index({params:{uuid:this.uuid}}).then((res)=>{
-                this.list = res.data.data.data
+                this.list = res.data.data
             }).finally(()=>{
                 this.loading= false
             })

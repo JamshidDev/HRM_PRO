@@ -28,7 +28,7 @@ onMounted(()=>{
     </template>
   </UIDrawer>
   <UIModal
-      width="1200"
+      :width="1200"
       :visible="store.otherVisible"
       @update:visible="(v)=>store.otherVisible = v"
       :title="$t('vacationSchedule.otherList.name')"

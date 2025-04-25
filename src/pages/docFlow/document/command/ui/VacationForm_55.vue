@@ -1,6 +1,6 @@
 <script setup>
 import {useCommandStore, useComponentStore} from "@/store/modules/index.js"
-import {PersonNote20Regular, DismissCircle16Regular} from "@vicons/fluent"
+import {PersonNote20Regular, DismissCircle16Regular, Eye24Regular} from "@vicons/fluent"
 import Utils from "../../../../../utils/Utils.js"
 import i18n from "@/i18n/index.js"
 
@@ -42,7 +42,14 @@ const onSubmit = (mainData)=>{
 
 }
 
-
+const getLastVacation = (v)=>{
+  store.vacationId = v.id
+  store.lastVacation((data)=>{
+    let index = store.vacations55.findIndex(a=>a.id === v.id)
+    if(index === -1) return
+    store.vacations55[index].lastVacation =data.length>0?  data[0] : t('content.no-data')
+  })
+}
 
 defineExpose({
   onSubmit
@@ -59,6 +66,61 @@ onMounted(()=>{
 <template>
   <div v-for="(item, idx) in store.vacations55" :key="idx"
        class="grid grid-cols-12 mb-8 gap-x-4 border border-surface-line border-dashed p-2 rounded-md bg-surface-ground">
+    <div class="col-span-12">
+      <template v-if="item?.lastVacation && item?.lastVacation?.period_from">
+        <n-collapse-transition v-show="Boolean(item?.lastVacation)">
+          <div class="mb-4 flex flex-wrap justify-center gap-x-[20px] text-secondary border border-gray-300 px-2 py-1 rounded-lg border-dashed">
+            <div>
+              <div class="font-medium"> {{ item?.lastVacation.period_from}}</div>
+              <div class="text-xs">{{$t('documentPage.command.form.period_from')}}</div>
+            </div>
+            <div>
+              <div class="font-medium"> {{ item?.lastVacation.period_to}}</div>
+              <div class="text-xs">{{$t('documentPage.command.form.period_to')}}</div>
+            </div>
+            <div>
+              <div class="font-medium"> {{ item?.lastVacation.from}}</div>
+              <div class="text-xs">{{$t('documentPage.command.form.from')}}</div>
+            </div>
+            <div>
+              <div class="font-medium"> {{ item?.lastVacation.to}}</div>
+              <div class="text-xs">{{$t('documentPage.command.form.to')}}</div>
+            </div>
+            <div>
+              <div class="font-medium text-warning"> {{ item?.lastVacation?.type?.name}}</div>
+              <div class="text-xs">{{$t('content.type')}}</div>
+            </div>
+            <div>
+              <div class="font-medium text-primary"> {{ item?.lastVacation?.all_day}}</div>
+              <div class="text-xs">{{$t('documentPage.command.form.all_day')}}</div>
+            </div>
+            <div>
+              <div class="font-medium" :class="[item?.lastVacation.rest_day>=0? 'text-success' : 'text-danger']"> {{ item?.lastVacation.rest_day}}</div>
+              <div class="text-xs">{{$t('documentPage.command.form.rest_day')}}</div>
+            </div>
+
+          </div>
+        </n-collapse-transition>
+      </template>
+      <template v-if="typeof item?.lastVacation === 'string'">
+        <div class="text-center mb-4 text-warning">{{item?.lastVacation}}</div>
+      </template>
+    </div>
+    <div class="col-span-12 flex justify-center mb-1">
+      <n-button
+          :loading="store.vacationLoading"
+          ghost
+          size="tiny"
+          @click="getLastVacation(item)"
+      >
+        <template #icon>
+          <Eye24Regular/>
+        </template>
+        {{$t('documentPage.command.lastVacation')}}</n-button>
+    </div>
+
+
+
     <div class="col-span-12 flex justify-between mb-2">
       <n-button type="info" secondary size="tiny">
         <template #icon>

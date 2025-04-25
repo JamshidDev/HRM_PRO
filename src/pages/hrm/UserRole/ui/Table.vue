@@ -1,10 +1,10 @@
 <script setup>
 import {NoDataPicture, UIPagination, UIUser, UIMenuButton, UIStatus, UIBadge} from "@/components/index.js"
-import {useComponentStore, useMedStore} from "@/store/modules/index.js"
+import {useWorkerProfileStore} from "@/store/modules/index.js"
 import Utils from "@/utils/Utils.js"
+import {RibbonStar24Filled} from "@vicons/fluent"
 
-const store = useMedStore()
-const compStore = useComponentStore()
+const store = useWorkerProfileStore()
 
 
 
@@ -75,9 +75,9 @@ const onDelete = (v)=>{
 }
 
 const changePage = (v)=>{
-  store.params.page = v.page
-  store.params.per_page = v.per_page
-  store._index()
+  store.userRoleParams.page = v.page
+  store.userRoleParams.per_page = v.per_page
+  store._userRole()
 }
 
 const onSelectEv = (v)=>{
@@ -90,8 +90,8 @@ const onSelectEv = (v)=>{
 </script>
 
 <template>
-  <n-spin :show="store.loading" style="min-height: 200px">
-    <div class="w-full overflow-x-auto"  v-if="store.list.length>0">
+  <n-spin :show="store.userRoleLoading" style="min-height: 200px">
+    <div class="w-full overflow-x-auto"  v-if="store.userRoleList.length>0">
       <n-table
           class="mt-4"
           :single-line="false"
@@ -101,18 +101,15 @@ const onSelectEv = (v)=>{
         <tr>
           <th class="!text-center min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
           <th class="min-w-[200px] w-[250px]">{{$t('confirmationPage.table.worker')}}</th>
-          <th class="min-w-[100px] w-[100px]">{{$t('medPage.form.status')}}</th>
-          <th class="min-w-[100px] w-[100px]">{{$t('date.day')}}</th>
-          <th class="min-w-[100px]">{{$t('medPage.form.organization')}}</th>
-          <th class="min-w-[90px] w-[90px]">{{$t('medPage.form.from')}}</th>
-          <th class="min-w-[90px] w-[90px]">{{$t('medPage.form.to')}}</th>
-          <th class="min-w-[200px] w-[200px]">{{$t('medPage.form.comment')}}</th>
+          <th class="min-w-[100px]">{{$t('workerRole.from.role')}}</th>
+          <th class="min-w-[200px] w-[300px]">{{$t('workerRole.from.activeOrganization')}}</th>
+
           <th class="min-w-[40px] w-[40px]"></th>
         </tr>
         </thead>
         <tbody>
-        <tr v-for="(item, idx) in store.list" :key="idx">
-          <td><span class="text-center text-[12px] text-gray-600 block">{{ (store.params.page - 1) * store.params.per_page + idx + 1 }}</span></td>
+        <tr v-for="(item, idx) in store.userRoleList" :key="idx">
+          <td><span class="text-center text-[12px] text-gray-600 block">{{ (store.userRoleParams.page - 1) * store.userRoleParams.per_page + idx + 1 }}</span></td>
           <td>
             <div>
               <UIUser
@@ -127,34 +124,28 @@ const onSelectEv = (v)=>{
             </div>
           </td>
           <td>
-            <div>
+            <div class="flex flex-wrap gap-2">
+              <template v-for="(role, idx) in item.roles" :key="idx" >
+                <div>
+                  <UIBadge :label="role.name" :type="Utils.colorTypes.dark">
+                    <template #icon>
+                      <n-icon size="20">
+                        <RibbonStar24Filled/>
+                      </n-icon>
+                    </template>
+                  </UIBadge>
+                </div>
+              </template>
+            </div>
+          </td>
+          <td>
+            <div>{{item.current_organization?.name}}</div>
+          </td>
 
-              <UIStatus :status="{
-                name:item.status.name,
-                id:item.status.id === 1? 6 : 5,
-              }" />
-            </div>
-          </td>
-          <td>
-            <div>
-              <UIBadge
-                  :show-icon="false"
-                  :label="Math.abs(item.days) + ' ' + $t('date.day')"
-                  :type="item.days<0? Utils.colorTypes.error:Utils.colorTypes.success"
-              />
-            </div>
-          </td>
-          <td>{{item.organization.name}}</td>
-          <td><UIBadge :show-icon="false" :type="Utils.colorTypes.dark" :label="Utils.timeOnlyDate(item.from)" />
-          </td>
-          <td>
-            <UIBadge :show-icon="false" :type="Utils.colorTypes.dark" :label="Utils.timeOnlyDate(item.to)" />
-          </td>
-          <td>{{item.comment}}</td>
           <td>
             <UIMenuButton
                 :data="item"
-                :show-edit="true"
+                :show-delete="false"
                 @selectEv="onSelectEv"
             />
           </td>
@@ -162,16 +153,13 @@ const onSelectEv = (v)=>{
         </tbody>
       </n-table>
       <UIPagination
-          :page="store.params.page"
-          :per_page="store.params.size"
-          :total="store.totalItems"
+          :page="store.userRoleParams.page"
+          :per_page="store.userRoleParams.per_page"
+          :total="store.userRoleTotal"
           @change-page="changePage"
       />
     </div>
-    <NoDataPicture v-if="store.list.length===0 && !store.loading" />
+    <NoDataPicture v-if="store.userRoleList.length===0 && !store.userRoleLoading" />
   </n-spin>
 </template>
-
-<style scoped>
-
-</style>
+>

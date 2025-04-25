@@ -12,6 +12,10 @@ const _reasonTypes =async (payload)=>{
     return await axios.get(`/v1/hr/enums/reason-types`, {params:payload.params})
 }
 
+const _lastOne =async (payload)=>{
+    return await axios.post(`/v1/hr/vacations/create`, payload.data)
+}
+
 
 
 
@@ -19,4 +23,5 @@ export default {
     _vacationCalculate,
     _reasonTypes,
     _index,
+    _lastOne,
 }

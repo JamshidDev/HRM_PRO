@@ -9,12 +9,13 @@ const componentStore = useComponentStore()
 
 
 const onEdit = (v)=>{
+  console.log(v)
   store.elementId = v.id
   store.payload.organization_id = [v.organization]
   store.payload.month = v.month
   componentStore.workerParams.organization_id= v.organization.id
   componentStore._workers()
-  store.payload.worker_position_id = v.worker.id
+  store.payload.worker_position_id = v.id
   store.visibleType = false
   store.visible = true
 
@@ -38,6 +39,11 @@ const onSelectEv = (v)=>{
     onDelete(v.data)
   }
 }
+
+watch(()=>store.otherVisible,(v)=>{
+  if(v) return
+  store._index()
+}, {deep:true})
 
 
 </script>

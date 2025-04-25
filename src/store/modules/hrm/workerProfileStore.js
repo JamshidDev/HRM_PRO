@@ -79,6 +79,24 @@ export const useWorkerProfileStore = defineStore('workerProfileStore', {
         positionList:[],
         previewLoading:false,
         workerPreview:false,
+        rolesList:[],
+        rolePayload:{
+            organization_id:[],
+            role:null,
+        },
+        roleVisible:false,
+        structureCheck:[],
+        roleLoading:false,
+
+        userRoleParams:{
+            page:1,
+            per_page:10,
+            search:null,
+        },
+        userRoleList:[],
+        userRoleLoading:false,
+        userRoleTotal:0,
+
 
 
 
@@ -141,6 +159,20 @@ export const useWorkerProfileStore = defineStore('workerProfileStore', {
                     main:this.data.profile? v.phone === this.data.profile?.phone :index === 0,
                     exist:true,
                 }))
+
+                this.rolesList = []
+                for (const role of this.data.profile?.roles){
+                    console.log(role)
+                    const roles =role.organizations.map((x)=>({
+                        ...x,
+                        roleName:role?.name,
+                        roleId:role?.id,
+                    }))
+                    console.log(roles)
+                    this.rolesList = [...this.rolesList,...roles]
+                }
+
+
             }).finally(()=>{
                 this.loading= false
             })
@@ -296,6 +328,33 @@ export const useWorkerProfileStore = defineStore('workerProfileStore', {
         },
         openVisible(data){
             this.visible = data
+        },
+        _deleteRole(data, id){
+            $ApiService.workerService._deleteRole({data, id}).then((res)=>{
+                this._index()
+            })
+        },
+        _storeRole(data, id){
+            this.roleLoading = true
+            $ApiService.workerService._storeRole({data, id}).then((res)=>{
+                this._index()
+            }).finally(()=>{
+                this.roleLoading = false
+                this.roleVisible = false
+            })
+        },
+
+        _userRole(){
+            this.userRoleLoading = true
+            const params = {
+                ...this.userRoleParams
+            }
+            $ApiService.workerService._userRole({params}).then((res)=>{
+                this.userRoleList = res.data.data.data
+                this.userRoleTotal = res.data.data.total
+            }).finally(()=>{
+                this.userRoleLoading = false
+            })
         },
 
         resetForm(){

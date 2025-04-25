@@ -29,6 +29,7 @@ export const useComponentStore = defineStore('componentStore', {
         vacationAdditional:[],
         medStatus:[],
         organizationDocumentTypes:[],
+        roles:[],
 
         departmentList:[],
         depParams:{
@@ -252,6 +253,7 @@ export const useComponentStore = defineStore('componentStore', {
                 this.vacationAdditional = res.data.data.vacation_additional
                 this.medStatus = res.data.data.med_statuses
                 this.organizationDocumentTypes = res.data.data.organization_document_types
+                this.roles = res.data.data.roles
             }).finally(()=>{
                 this.enumLoading= false
             })
