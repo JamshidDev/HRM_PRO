@@ -37,7 +37,7 @@ export const useAccountStore = defineStore('accountStore', {
         userPhoto:(state)=>state.account?.worker?.photo,
         telegramPopupVisible: (state)=> {
            if(state.storageUpdate){
-            return state.account?.telegram_account === 2 && !localStorage.getItem(useAppSetting.telegramPopup)
+            return state.account?.telegram_account === 0 && !localStorage.getItem(useAppSetting.telegramPopup)
            }
         }
     },
