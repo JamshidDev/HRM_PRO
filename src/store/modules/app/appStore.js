@@ -37,7 +37,8 @@ export const useAppStore = defineStore('appStore', {
     actions:{
         _logOutApp(){
             // localStorage.removeItem('appSidebar')
-            localStorage.removeItem('token')
+            // localStorage.removeItem('token')
+            localStorage.clear()
             router.push(AppPaths.Login)
         },
         changeTheme(){

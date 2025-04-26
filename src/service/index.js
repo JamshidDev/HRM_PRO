@@ -39,7 +39,7 @@ instance.interceptors.response.use(
             if(!(error.response.request.responseURL.includes(AppPaths.Profile))){
                 $Toast.error(error.response.data.message)
             }
-
+            localStorage.clear()
             router.push(AppPaths.Login)
         }else if(error.response?.status===422){
             if(Array.isArray(error.response.data.detail)){

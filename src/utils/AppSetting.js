@@ -4,6 +4,7 @@ export const  useAppSetting = {
     themeKey:'app-theme',
     defaultThemeKey:'light',
     tokenKey:'app-token',
+    telegramPopup: 'telegramPopup',
     noAvailableImage: "/no-picture.jpg",
     appLogoUrl:'/logo.png',
     datePicketFormat:'dd.MM.yyyy',

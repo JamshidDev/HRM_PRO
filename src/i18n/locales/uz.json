@@ -1412,5 +1412,18 @@
       "activeOrganization": "Aktiv korxonasi",
       "role": "Rollari"
     }
+  },
+  "telegramPopup": {
+    "header": "Telegram botimizga ulaning va quyidagi qulayliklardan bahramand bo‘ling:",
+    "benefit": {
+      "header": "Botga obuna bo’lish orqali",
+      "footer": "Hammasi bir joyda – faqat siz uchun va o‘z vaqtida!",
+      "1": "Hujjat holatlari – Tasdiqlash, rad etish yoki tahrirlash — barchasi haqida xabardor bo‘lasiz!",
+      "2": "Tabriklar – Tug‘ilgan kuningizda yoki ish yutuqlaringizda biz sizni eslaymiz!",
+      "3": "Muhim eslatmalar – Tatillar, yig‘ilish va muhim ma'lumotlar haqida o‘z vaqtida ogohlantiramiz.",
+      "4": "Real-time bildirishnomalar – Endi hech narsa e’tibordan chetda qolmaydi!",
+      "5": "Profil yangiliklari – Ma’lumotlaringizda o‘zgarish bo‘lsa, Telegram’da darhol bilib olasiz!"
+    },
+    "subscribe": "A'zo bo'lish"
   }
 }
