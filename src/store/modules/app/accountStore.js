@@ -24,6 +24,8 @@ export const useAccountStore = defineStore('accountStore', {
         roleLoading:false,
         roleList:[],
         permissions:[],
+        // Do not touch storageUpdate please i only created it to make getter which also is depended to localStorage reactive
+        storageUpdate: 1
     }),
     getters:{
        checkPermission:(state)=>(permission)=>{
@@ -33,6 +35,11 @@ export const useAccountStore = defineStore('accountStore', {
        },
         fullName:(state)=>Utils.combineFullName(state.account?.worker),
         userPhoto:(state)=>state.account?.worker?.photo,
+        telegramPopupVisible: (state)=> {
+           if(state.storageUpdate){
+            return state.account?.telegram_account === 0 && !localStorage.getItem(useAppSetting.telegramPopup)
+           }
+        }
     },
     actions:{
         _index(callback){
@@ -112,6 +119,10 @@ export const useAccountStore = defineStore('accountStore', {
                 this.activeRole = id
                 this._changeRole(id)
             }
+        },
+        hideTelegramPopup(){
+            localStorage.setItem(useAppSetting.telegramPopup, 1)
+            this.storageUpdate++
         }
     }
 

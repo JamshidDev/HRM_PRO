@@ -1,32 +1,13 @@
 <script setup>
+import {useAccountStore} from "@/store/modules/index.js"
 
-import {useAppSetting} from "@/utils/index.js"
-
-const visible = ref(true)
-
-const close = () => {
-  console.log("close")
-  visible.value = false
-  localStorage.setItem(useAppSetting.telegramPopup, 1)
-}
-
-onBeforeMount(() => {
-  visible.value = !localStorage.getItem(useAppSetting.telegramPopup)
-})
-
-const benefits = [
-  "Hujjat holatlari – Tasdiqlash, rad etish yoki tahrirlash — barchasi haqida xabardor bo‘lasiz!",
-  "Tabriklar – Tug‘ilgan kuningizda yoki ish yutuqlaringizda biz sizni eslaymiz!",
-  "Muhim eslatmalar – Tatillar, yig‘ilish va muhim ma'lumotlar haqida o‘z vaqtida ogohlantiramiz.",
-  "Real-time bildirishnomalar – Endi hech narsa e’tibordan chetda qolmaydi!",
-  "Profil yangiliklari – Ma’lumotlaringizda o‘zgarish bo‘lsa, Telegram’da darhol bilib olasiz!"
-]
+const store = useAccountStore()
 
 </script>
 <template>
   <n-modal
-      v-model:show="visible"
-      @maskClick="close"
+      :show="store.telegramPopupVisible"
+      @maskClick="store.hideTelegramPopup"
   >
     <div class="w-[1050px] h-[650px] rounded-[18px] telegram_popup p-5 pl-[30px] flex flex-col gap-[14px] !text-surface-section">
       <h1 class="text-[32px] font-semibold max-w-[60%]">
