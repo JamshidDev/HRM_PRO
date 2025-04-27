@@ -1,10 +1,14 @@
 <script setup>
 import OrganizationModal from "@/pages/app/profile/ui/OrganizationModal.vue"
 import TelegramPopup from "@/pages/app/popups/Telegram.vue"
-
+onMounted(()=>{
+  console.log("Helpers mounted")
+})
 </script>
 
 <template>
-  <OrganizationModal/>
-  <TelegramPopup/>
+  <div>
+    <OrganizationModal/>
+    <TelegramPopup/>
+  </div>
 </template>
