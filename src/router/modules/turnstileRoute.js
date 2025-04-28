@@ -3,7 +3,8 @@ import Utils from "@/utils/Utils.js"
 import {
     TurnstileBuildingPage,
     TurnstileTerminalPage,
-    TurnstileOrganizationPage
+    TurnstileOrganizationPage,
+    TurnstileTerminalUserPage
 } from "@/pages/turnstile";
 
 
@@ -21,6 +22,11 @@ export default [
     {
         path:Utils.routeTurnstilePathMaker(AppPaths.Organizations),
         component: ()=>TurnstileOrganizationPage,
+        children:[],
+    },
+    {
+        path:Utils.routeTurnstilePathMaker(AppPaths.User),
+        component: ()=>TurnstileTerminalUserPage,
         children:[],
     },
 ]
