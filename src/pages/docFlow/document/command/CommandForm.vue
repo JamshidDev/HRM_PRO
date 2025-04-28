@@ -182,6 +182,7 @@ const onChangeStructure = (v)=>{
   if(v.length>0){
     componentStore.workerList = []
     store.workers = []
+    store.payload.worker = null
     componentStore.workerParams.organization_id= v[0].id
     componentStore._workers()
   }
