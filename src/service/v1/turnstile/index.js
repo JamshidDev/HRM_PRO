@@ -1,3 +1,4 @@
 export {default as turnstileTerminalService} from './terminal.js'
 export {default as turnstileBuildingService} from './building.js'
 export {default as turnstileOrganizationService} from './organizationTerminal.js'
+export {default as turnstileTerminalUserService} from './terminalUser.js'

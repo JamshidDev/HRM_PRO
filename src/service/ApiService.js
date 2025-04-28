@@ -73,7 +73,7 @@ import workerExamService from '@/service/v1/lms/workerExamService.js'
 import timesheetConfirmService from "@/service/v1/hrm/timesheetConfirmService.js";
 import vacationScheduleService from "@/service/v1/hrm/vacationScheduleService.js";
 
-import {turnstileTerminalService, turnstileBuildingService, turnstileOrganizationService} from './v1/turnstile'
+import {turnstileTerminalService, turnstileBuildingService, turnstileOrganizationService, turnstileTerminalUserService} from './v1/turnstile'
 
 export default {
     authService,
@@ -149,5 +149,6 @@ export default {
 
     turnstileTerminalService,
     turnstileBuildingService,
-    turnstileOrganizationService
+    turnstileOrganizationService,
+    turnstileTerminalUserService
 }

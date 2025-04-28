@@ -1278,6 +1278,7 @@
   },
   "turnstile": {
     "title": "Turniket",
+    "terminals": "Terminallar",
     "buildingPage": {
       "title": "Binolar",
       "name": "Bino nomi(UZ)",
@@ -1298,6 +1299,11 @@
     "organization": {
       "title": "Tashkilotlar",
       "terminal": "Terminal"
+    },
+    "terminalUser": {
+      "title": "Xodimlar",
+      "create": "Xodimni biriktirish",
+      "edit": "Xodimni tahrirlash"
     }
   },
   "medPage": {

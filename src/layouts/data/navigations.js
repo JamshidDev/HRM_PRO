@@ -32,6 +32,7 @@ import {
     CloudArchive20Filled,
     BookDatabase24Regular,
     RibbonStar24Filled,
+    PeopleToolbox20Filled
 } from "@vicons/fluent"
 import {AppPaths} from "@/utils/index.js";
 import Utils from "@/utils/Utils.js"
@@ -298,6 +299,13 @@ export const navigations = [
                 path: Utils.routeTurnstilePathMaker(AppPaths.Organizations),
                 icon: Organization12Filled,
                 color: 'bg-info',
+                permission: appPermissions.turnstile,
+            },
+            {
+                label: 'turnstile.terminalUser.title',
+                path: Utils.routeTurnstilePathMaker(AppPaths.User),
+                icon: PeopleToolbox20Filled,
+                color: 'bg-warning',
                 permission: appPermissions.turnstile,
             },
         ]

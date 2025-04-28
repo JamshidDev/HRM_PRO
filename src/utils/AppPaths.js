@@ -76,7 +76,7 @@ export const AppPaths = {
     DocumentArchive: "/document-archive",
     VacationSchedule: "/vacation-schedule",
     WorkerRole: "/worker-role",
-    Telegram: "/telegram"
+    Telegram: "/telegram",
 }
 
 export const AppLayouts ={
