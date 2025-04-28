@@ -4,7 +4,8 @@ import Utils from "@/utils/Utils.js"
 import {
   NoDataPicture,
   UIPagination,
-  UIMenuButton
+  UIMenuButton,
+  UIUser
 } from "@/components/index.js"
 
 const onDelete = (v)=>{
@@ -49,7 +50,8 @@ const changePage = (v)=>{
         <thead>
         <tr>
           <th class="!text-center min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
-          <th class="min-w-[200px]">{{$t('telegramPage.chatId')}}</th>
+          <th class="max-w-[200px]">{{$t('content.staff')}}</th>
+          <th class="min-w-[100px]">{{$t('telegramPage.chatId')}}</th>
           <th class="max-w-[200px] w-[200px]">{{$t('content.created')}}</th>
           <th class="min-w-[40px] w-[40px]">{{$t('content.action')}}</th>
         </tr>
@@ -57,6 +59,17 @@ const changePage = (v)=>{
         <tbody>
         <tr v-for="(item, idx) in store.list" :key="idx">
           <td><span class="text-center text-[12px] text-gray-600 block">{{ (store.params.page - 1) * store.params.per_page + idx + 1 }}</span></td>
+          <td>
+            <UIUser
+                :data="{
+                    photo:item?.user.worker.photo,
+                    lastName:item?.user.worker.last_name,
+                    firstName:item?.user.worker.first_name,
+                    middleName:item?.user.worker.middle_name,
+                    position:item.user?.phone,
+                }"
+            />
+          </td>
           <td>{{item.chat_id}}</td>
           <td>{{Utils.timeWithMonth(item.created_at)}}</td>
           <td>
