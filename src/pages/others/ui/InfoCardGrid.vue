@@ -10,7 +10,7 @@ import {
 import {AppPaths} from "@/utils/index.js";
 import TreeTabs from './TreeTabs.vue'
 import CodexCard from './Codex.vue'
-import DocumentArchive from "./DocumentArchive.vue"
+import DocumentArchive from "../DocumentArchive/DocumentArchive.vue"
 
 const list = [
   {

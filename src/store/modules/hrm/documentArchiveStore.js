@@ -44,13 +44,14 @@ export const useDocumentArchiveStore = defineStore('documentArchiveStore', {
         ]
     }),
     actions:{
-        _index(){
+        _index(infinity=false){
             this.loading= true
             const params = {
                 ...this.params
             }
             $ApiService.documentArchiveService._index({params}).then((res)=>{
-                this.list = res.data.data.data
+                const data = res.data.data.data
+                this.list = infinity? [...this.list, ...data] : data
                 this.totalItems = res.data.data.total
             }).finally(()=>{
                 this.loading= false
