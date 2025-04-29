@@ -29,12 +29,8 @@ const onSubmit = () => {
 }
 
 const onSignatureLogin =async ()=>{
-  try{
-    await signatureStore._initialSignature(signatureStore.signatureTypes.auth, onSuccess)
-  }catch (err){
-    $Toast.error(t('signature.connectionError'))
-  }
-
+    await signatureStore.
+    _initialSignature(signatureStore.signatureTypes.auth, onSuccess)
 }
 const onSuccess = (data)=>{
   new Promise((resolve, reject)=>{

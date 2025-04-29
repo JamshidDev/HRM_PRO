@@ -141,7 +141,7 @@ const totalCount = computed(()=>{
 
 <template>
   <div class="w-full h-full border border-surface-line p-4 rounded-lg bg-surface-section relative hover-effect-card">
-    <span class="z-[1] opacity-30 absolute top-0 right-0 w-[160px] h-full bg-no-repeat bg-[url(/public/effect/primary-card.svg)]" ></span>
+    <span class="z-[1] opacity-30 absolute top-0 right-0 w-[160px] h-full bg-no-repeat bg-[url(/effect/primary-card.svg)]" ></span>
     <div class="flex items-center gap-2">
       <span class="font-semibold text-nowrap text-textColor2">{{$t('dashboardPage.contract.title')}}</span>
       <hr class="w-full h-[1px] text-surface-line">

@@ -28,11 +28,7 @@ const onSubmit = () => {
 }
 
 const onSignatureLogin =async ()=>{
-  try{
-    await signatureStore._initialSignature(signatureStore.signatureTypes.auth, onSuccess)
-  }catch (err){
-    $Toast.error(t('signature.connectionError'))
-  }
+  await signatureStore._initialSignature(signatureStore.signatureTypes.auth, onSuccess)
 
 }
 const onSuccess = (data)=>{
@@ -78,7 +74,7 @@ onMounted(()=>{
 
 
     <div class="bg-surface-section relative z-10 rounded-xl
-  flex justify-between xl:p-[20px] border border-surface-line bg-[url('./public/wing.png')] bg-bottom bg-cover
+  flex justify-between xl:p-[20px] border border-surface-line bg-[url('./wing.png')] bg-bottom bg-cover
 ">
 
       <n-form

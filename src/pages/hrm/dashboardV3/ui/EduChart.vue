@@ -190,7 +190,7 @@ watch(()=> store.dashboard.eduCard, (newValue, oldValue)=>{
 <template>
 
   <div class="w-full h-full flex flex-col border border-surface-line p-4 rounded-lg bg-surface-section relative hover-effect-card">
-    <span class="z-[1] opacity-30 absolute top-0 right-0 w-[160px] h-full bg-no-repeat bg-[url(/public/effect/effect-card-1.svg)]" ></span>
+    <span class="z-[1] opacity-30 absolute top-0 right-0 w-[160px] h-full bg-no-repeat bg-[url(/effect/effect-card-1.svg)]" ></span>
     <p class="font-semibold mb-4">{{$t('dashboardPage.edu.title')}}</p>
     <div class="flex gap-2">
       <div class="flex items-center justify-around w-1/2">
