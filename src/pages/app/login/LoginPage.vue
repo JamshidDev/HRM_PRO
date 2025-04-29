@@ -74,7 +74,7 @@ onMounted(()=>{
 
 
     <div class="bg-surface-section relative z-10 rounded-xl
-  flex justify-between xl:p-[20px] border border-surface-line bg-[url('./wing.png')] bg-bottom bg-cover
+  flex justify-between xl:p-[20px] border border-surface-line bg-[url('/wing.png')] bg-bottom bg-cover
 ">
 
       <n-form

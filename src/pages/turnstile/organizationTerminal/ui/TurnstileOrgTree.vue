@@ -1,7 +1,5 @@
 <script setup>
-import {BaseTree, OpenIcon} from '@he-tree/vue'
 import {useTurnstileOrganizationStore} from "@/store/modules/index.js";
-import {ChevronDown12Filled, Eye24Regular} from '@vicons/fluent'
 import {TreeData, UIUser} from "@/components/index.js"
 const store = useTurnstileOrganizationStore()
 
