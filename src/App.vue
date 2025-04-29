@@ -31,6 +31,7 @@ const localProvider = computed(()=>{
 
 onMounted(()=>{
   appStore.initApp()
+
 })
 
 </script>

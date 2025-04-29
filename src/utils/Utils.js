@@ -97,7 +97,7 @@ const generateJwtToken =(payload,secret)=>{
 
 }
 
-const noAvailableImage = "/public/no-picture.jpg"
+const noAvailableImage = "/no-picture.jpg"
 
 const fileNameFromUrl = (url)=>{
     return url.split('/').pop()?.split('?')[0].split('#')[0] || '';

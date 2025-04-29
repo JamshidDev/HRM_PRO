@@ -9,7 +9,7 @@ const store = useDashboardStore()
 <template>
   <div class="w-full h-full border border-surface-line p-4 rounded-lg bg-surface-section relative hover-effect-card">
     <span
-        class="z-[1] opacity-40 absolute top-0 right-0 w-[160px] h-full bg-no-repeat bg-[url(/public/effect/effect-card-2.svg)]"></span>
+        class="z-[1] opacity-40 absolute top-0 right-0 w-[160px] h-full bg-no-repeat bg-[url(/effect/effect-card-2.svg)]"></span>
     <template v-if="store.dashboard.birthdays">
       <p class="font-semibold text-lg mb-4">{{ $t(store.dashboard.birthdays.title) }}</p>
 

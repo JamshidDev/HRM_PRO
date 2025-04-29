@@ -27,6 +27,7 @@ export const useSignatureStore = defineStore('signatureStore', {
     }),
     actions: {
         async _checkVersion() {
+            AppLoad()
             this.usbVisible = false
             return new Promise((resolve, reject) => {
                 EIMZOClient.checkVersion(
@@ -34,10 +35,13 @@ export const useSignatureStore = defineStore('signatureStore', {
                         resolve({major, minor})
                     },
                     function (error, message) {
+                        $Toast.error(t('signature.connectionError'))
+                        console.log(error)
                         reject(error, message)
                     }
                 )
             })
+
         },
         checkCardPluggedIn(){
             EIMZOClient.idCardIsPLuggedIn((yes)=>{
@@ -78,12 +82,7 @@ export const useSignatureStore = defineStore('signatureStore', {
             this.documentId = documentId
             // this.loading = true
 
-            try{
-                await this._checkVersion()
-            }catch(error){
-                $Toast.error(t('signature.connectionError'))
-                return
-            }
+            await this._checkVersion()
             $ApiService.documentService._documentBase64({
                 params:{
                     model:this.documentType,
@@ -96,7 +95,7 @@ export const useSignatureStore = defineStore('signatureStore', {
                     this.checkListKey()
                     this.checkCardPluggedIn()
                 }catch (err){
-                    $Toast.error(t('signature.connectionError'))
+                    // $Toast.error(t('signature.connectionError'))
                 }
             }).finally(()=>{
                 // this.loading = false

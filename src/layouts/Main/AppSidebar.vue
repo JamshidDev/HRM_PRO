@@ -5,6 +5,7 @@ import {onMounted, ref} from "vue";
 const panelPath = ref(null)
 const path = ref(null)
 import {useRouter, useRoute} from "vue-router";
+import {useAppSetting} from "@/utils/index.js"
 const router = useRouter()
 const routes = useRoute()
 
@@ -41,7 +42,7 @@ onMounted(()=>{
 <template>
   <div class="sidebar__header">
     <div class="app__logo">
-      <img src="/public/logo.png" alt="">
+      <img :src="useAppSetting.appLogoUrl" alt="">
     </div>
     <div class="app__name">Market name</div>
   </div>

@@ -27,7 +27,7 @@ const goSignature = ()=>{
           class="w-[50px] h-[50px] overflow-hidden cursor-pointer" >
         <img
             class="w-full object-cover"
-            src="/public/logo.png" alt="app logo">
+            src="/logo.png" alt="app logo">
       </div>
       <div class="flex gap-4">
         <n-button

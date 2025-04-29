@@ -55,7 +55,7 @@ const onContinue = ()=>{
     >
      <div class="pb-6 relative
      before:content-[' ']
-  before:bg-[url('/public/search-user-icon.png')]
+  before:bg-[url('/search-user-icon.png')]
   before:w-full before:h-full before:absolute before:top-0 before:left-0 before:bg-no-repeat before:bg-center before:bg-contain before:opacity-[0.05]
 ">
        <div class="w-full p-4">
