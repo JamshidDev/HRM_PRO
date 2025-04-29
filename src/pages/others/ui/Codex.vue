@@ -8,7 +8,7 @@ onMounted(()=>{
 })
 </script>
 <template>
-  <n-spin :show="store.loading" class="bg-surface-section">
+  <n-spin style="height: calc(100vh - 150px);" :show="store.loading" class="bg-surface-section overflow-auto">
     <div v-html="store.codex" />
   </n-spin>
 </template>
