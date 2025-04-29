@@ -33,6 +33,7 @@ const toggleItem = (v) => {
       </div>
       <div class="shrink-0 flex justify-end">
         <n-button
+            :disabled="store.payload.organization_id.length === 0"
             type="primary"
             icon-placement="right"
             @click="store._create()"

@@ -15,7 +15,7 @@ const emits = defineEmits(['onChange', 'onOpen', 'onClose'])
 
 
 const checkPage = (path)=>{
-  if([AppPaths.Home, AppPaths.AIConversation].includes(path)){
+  if([AppPaths.Home, AppPaths.AIConversation, AppPaths.Info].includes(path)){
     menuPath.value = null
     emits('onClose')
   }

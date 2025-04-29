@@ -12,6 +12,10 @@ const _worker_photos =async (payload)=>{
     return await axios.get(`/v1/turnstile/worker-photos`, {params:payload.params})
 }
 
+const _turnstile_devices =async ()=>{
+    return await axios.get( `/v1/turnstile/devices`)
+}
+
 // const _update = async (payload)=>{
 //     return await axios.put(`/v1/turnstile/workers/${payload.id}`, payload.data)
 // }
@@ -27,7 +31,8 @@ export default {
     _index,
     _create,
     _worker_photos,
-    _delete
+    _delete,
+    _turnstile_devices
     // _update,
     // _delete,
 }

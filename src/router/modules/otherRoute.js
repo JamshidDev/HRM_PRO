@@ -3,6 +3,6 @@ import {AppPaths} from "@/utils/index.js";
 import {InfoPage} from "@/pages/others/index.js";
 
 export default [{
-    path:Utils.routeOtherPathMaker(AppPaths.Info),
+    path:AppPaths.Info,
     component: InfoPage,
 }]

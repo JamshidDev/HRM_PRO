@@ -312,7 +312,7 @@ export const navigations = [
     },
     {
         label: '',
-        path: Utils.routeOtherPathMaker(AppPaths.Info),
+        path: AppPaths.Info,
         icon: SlideMultipleSearch24Filled,
         permission: appPermissions.useful,
         children: []

@@ -13,6 +13,7 @@ export default {
       xl: '1440px',
     },
     colors: {
+      'custom-color': 'rgb(var(--custom-color) / <alpha-value>)',
       'primary': 'var(--primary-color)',
       'info': 'var(--info-color)',
       'success': 'var(--success-color)',

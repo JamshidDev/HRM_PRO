@@ -41,7 +41,7 @@ const onSelect = (v)=>{
           <th class="!text-center min-w-[200px]">{{$t('content.staff')}}</th>
           <th class="!text-center">{{$t('content.organization')}}</th>
           <th class="!text-center max-w-[150px] w-[150px]">{{$t('content.deadline')}}</th>
-          <th class="!text-center max-w-[90px] w-[90px]">{{$t('turnstile.terminals')}}</th>
+          <th class="!text-center">{{$t('turnstile.terminals')}}</th>
           <th class="max-w-[60px] w-[60px]">{{$t('content.action')}}</th>
         </tr>
         </thead>
@@ -64,7 +64,11 @@ const onSelect = (v)=>{
           <td class="!text-center">
             <UIBadge :show-icon="false" :label="Utils.timeOnlyDate(item.to)" />
           </td>
-          <td class="!text-center"><n-button size="small" circle >{{item.terminals.length}}</n-button></td>
+          <td class="!text-center">
+            <div class="flex gap-3 flex-wrap">
+              <n-button v-for="terminal in item.terminals" type="primary" size="tiny" dashed :key="terminal.id">{{terminal.name}}</n-button>
+            </div>
+          </td>
           <td>
             <UIMenuButton
                 :data="item"

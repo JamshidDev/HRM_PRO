@@ -38,6 +38,7 @@ export const useTurnstileOrganizationStore = defineStore('turnstileOrganizationS
             this.saveLoading = true
             let data = {
                 ...this.payload,
+                organization_id:this.payload.organization_id?.[0].id,
             }
             $ApiService.turnstileOrganizationService._create({data}).then((res) => {
                 this._index()
@@ -58,6 +59,7 @@ export const useTurnstileOrganizationStore = defineStore('turnstileOrganizationS
             this.saveLoading = true
             let data = {
                 ...this.payload,
+                organization_id:this.payload.organization_id?.[0].id,
             }
             $ApiService.turnstileOrganizationService._update({data, id: this.elementId}).then((res) => {
                 this.visible = false

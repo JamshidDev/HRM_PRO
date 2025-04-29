@@ -1,6 +1,7 @@
 import {defineStore} from "pinia";
 import i18n from "@/i18n/index.js"
 import {turnstileTerminalUserService} from "@/service/v1/turnstile/index.js"
+import Utils from "@/utils/Utils.js"
 
 const {t} = i18n.global
 export const useTurnstileTerminalUserStore = defineStore('turnstileTerminalUserStore', {
@@ -14,12 +15,15 @@ export const useTurnstileTerminalUserStore = defineStore('turnstileTerminalUserS
         totalItems: 0,
         structureCheck: [],
         photos: [],
+        devices: [],
+        devicesLoading: false,
         photosLoading: false,
         payload: {
             organization_id: [],
             worker_position_id: null,
             photo_id: null,
-            terminals: []
+            terminals: [],
+            to: null
         },
         params: {
             page: 1,
@@ -41,6 +45,7 @@ export const useTurnstileTerminalUserStore = defineStore('turnstileTerminalUserS
             this.saveLoading = true
             let data = {
                 ...this.payload,
+                to: Utils.timeToZone(this.payload.to)
             }
             $ApiService.turnstileTerminalUserService._create({data}).then((res) => {
                 this.visible = false
@@ -55,6 +60,14 @@ export const useTurnstileTerminalUserStore = defineStore('turnstileTerminalUserS
                 this.photos = res.data.data
             }).finally(() => {
                 this.photosLoading = false
+            })
+        },
+        _turnstile_devices(){
+            this.devicesLoading = true
+            $ApiService.turnstileTerminalUserService._turnstile_devices().then((res) => {
+                this.devices = res.data.data
+            }).finally(() => {
+                this.devicesLoading = false
             })
         },
         // _update() {
@@ -82,8 +95,10 @@ export const useTurnstileTerminalUserStore = defineStore('turnstileTerminalUserS
             this.payload.worker_position_id = null
             this.payload.photo_id = null
             this.payload.terminals = []
-            // this.payload.building_id = null
-            // this.payload.ip_address = null
+            this.payload.organization_id = []
+            this.payload.to = null
+            this.photos = []
+            this.devices = []
             // this.payload.url =null
         }
     }

@@ -114,7 +114,6 @@ const routeTurnstilePathMaker = (mainPath)=>(`${AppPaths.Turnstile}${mainPath}`)
 const routeChatPathMaker = (mainPath)=>(`${AppPaths.Chat}${mainPath}`)
 const routeDocFlowPathMaker = (mainPath)=>(`${AppPaths.DocFlow}${mainPath}`)
 const routeTimesheetPathMaker = (mainPath)=>(`${AppPaths.TimeSheet}${mainPath}`)
-const routeOtherPathMaker = (mainPath)=>(`${AppPaths.Others}${mainPath}`)
 
 const documentModels = {
     contract:'contracts',
@@ -508,7 +507,6 @@ export default {
     viewerStatus,
     methodTypes,
     routeTimesheetPathMaker,
-    routeOtherPathMaker,
     formatNumberToMoney,
     debouncedFn,
     appPermissions,
