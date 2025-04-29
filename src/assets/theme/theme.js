@@ -1,6 +1,5 @@
 import resolveConfig from 'tailwindcss/resolveConfig'
 import tailwindConfig from '../../../tailwind.config.js';
-import {log} from "qrcode/lib/core/galois-field.js"
 
 const fullConfig = resolveConfig(tailwindConfig)
 const tailwindColors = fullConfig.theme.colors
