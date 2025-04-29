@@ -148,9 +148,9 @@ onMounted(()=>{
       </template>
 
     </div>
-    <div class="panel-content sidebar-panel">
+    <div class="panel-content sidebar-panel !overflow-y-auto h-screen" style="scrollbar-width: none;">
       <transition name="slide-right" mode="out-in">
-        <div v-if="showPanel && panelMenu?.length">
+        <div v-if="showPanel && panelMenu?.length" >
 
 
           <span class="text-sm block text-textColor2 truncate font-semibold pl-4 mb-3 mt-3">{{menuName}}</span>

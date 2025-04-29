@@ -27,6 +27,7 @@ export const useDocumentArchiveStore = defineStore('documentArchiveStore', {
             page:1,
             per_page:10,
             search:null,
+            date:null,
         },
         visibleTypes:[
             {

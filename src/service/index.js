@@ -25,15 +25,15 @@ instance.interceptors.request.use(function (config) {
 instance.interceptors.response.use(
     response => {
         if([Utils.methodTypes.PUT,Utils.methodTypes.POST, Utils.methodTypes.DELETE].includes(response.config.method)){
-            if(!response.data?.error && response.data?.message && typeof response.data?.message === 'string'){
+            if(!response.data?.error && response?.data?.message && typeof response.data?.message === 'string'){
                 $Toast.success(response.data.message.toString())
             }
         }
         return Promise.resolve(response)
     },
     error => {
-        if(error.response.data?.error){
-            $Toast.error(error.response.data.message)
+        if(error.response?.data?.error){
+            $Toast.error(error.response?.data?.message)
         }
         if(error.response?.status===401){
             if(!(error.response.request.responseURL.includes(AppPaths.Profile))){

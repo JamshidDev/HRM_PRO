@@ -8,7 +8,7 @@ onMounted(()=>{
 })
 </script>
 <template>
-  <n-spin :show="store.loading" class="h-full">
+  <n-spin :show="store.loading" class="bg-surface-section">
     <div v-html="store.codex" />
   </n-spin>
 </template>

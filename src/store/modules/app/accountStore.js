@@ -7,7 +7,7 @@ export const useAccountStore = defineStore('accountStore', {
     state:()=>({
         account:null,
         saveLoading:false,
-        loading:false,
+        loading:true,
         activeTab:1,
         tabs:[1,2,3,4],
         payload:{

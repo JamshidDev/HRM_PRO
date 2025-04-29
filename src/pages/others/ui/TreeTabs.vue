@@ -19,7 +19,7 @@ const openOrgDetail = (org) => {
 </script>
 <template>
   <div style="height: calc(100vh - 150px);">
-    <n-tab-pane :name="0" class="h-full overflow-auto">
+    <n-tab-pane :name="0" class="h-full overflow-auto bg-surface-section">
 
       <!-- Data List -->
       <TreeData
