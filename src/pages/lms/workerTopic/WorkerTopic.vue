@@ -22,8 +22,8 @@ onMounted(()=>{
 
 <template>
   <div class="mx-2 mt-4 mb-4 rounded flex flex-col gap-3" style="min-height:calc(100vh - 100px);height:calc(100vh - 100px);">
-    <n-grid cols="12" class="shrink-0 min-h-[250px]" x-gap="10">
-      <n-grid-item class="welcome rounded-lg" :span="8">
+    <n-grid cols="12" class="shrink-0 min-h-[250px]" x-gap="10" item-responsive responsive="screen">
+      <n-grid-item class="welcome rounded-lg" span="0 s:8">
         <img alt="stars" class="stars first" :src="stars" />
         <img alt="stars" class="stars middle" :src="stars" />
         <img alt="stars" class="stars last" :src="stars" />
@@ -32,10 +32,9 @@ onMounted(()=>{
           <p class="text-white">{{ $t('solveExamPage.welcomeDesc') }}</p>
         </div>
       </n-grid-item>
-      <n-gi :span="4">
-
+      <n-grid-item class="min-h-[250px]" span="12 s:4">
           <ExamResultChart />
-      </n-gi>
+      </n-grid-item>
     </n-grid>
     <div class="grow basis-auto overflow-hidden flex gap-3" :style="{gap: store?.selectedLesson ? '12px' : 0}">
       <div class="grow basis-auto flex flex-col gap-2">
@@ -64,7 +63,10 @@ onMounted(()=>{
 .welcome {
   background-color: #156eea;
   background-repeat: no-repeat;
-  background-image: url("@/assets/images/svg/attestation.svg");
+  @media (min-width: 800px) {
+    background-image: url("@/assets/images/svg/attestation.svg");
+  }
+
   background-position: center right;
   background-size: auto 100%;
   position: relative;

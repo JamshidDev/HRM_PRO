@@ -31,7 +31,14 @@ const toggleItem = (v) => {
 
         </div>
       </div>
-      <div class="shrink-0 flex justify-end">
+      <div class="shrink-0 flex justify-end gap-3">
+        <n-button
+            class="md:hidden"
+            type="error"
+            @click="store.payload.organization_id=[]"
+        >
+          {{ $t('content.cancel') }}
+        </n-button>
         <n-button
             :disabled="store.payload.organization_id.length === 0"
             type="primary"

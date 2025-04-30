@@ -2,11 +2,17 @@
 import {useAccountStore} from "@/store/modules/index.js"
 
 const store = useAccountStore()
+const visible = ref(false)
+onMounted(()=>{
+  setTimeout(()=>{
+    visible.value = true
+  }, 1500)
+})
 
 </script>
 <template>
   <n-modal
-      :show="store.telegramPopupVisible"
+      :show="store.telegramPopupVisible && visible"
       @maskClick="store.hideTelegramPopup"
   >
     <div class="w-[1050px] lg:h-[650px] rounded-[18px] telegram_popup p-5 pl-[30px] flex flex-col gap-[14px] !text-surface-section">
@@ -20,16 +26,16 @@ const store = useAccountStore()
         </li>
       </ul>
       <p class="font-bold text-[16px] lg:text-[20px] text-center lg:text-start">{{$t('telegramPopup.benefit.footer')}}</p>
-      <div class="mt-auto flex gap-5 justify-center">
+      <div class="mt-auto flex flex-col gap-5 justify-center">
         <a
             href="https://t.me/hrmpro_bot"
             target="_blank"
-            class="bg-surface-section w-[150px] lg:w-[350px] h-[40px] lg:h-[56px] rounded-[8px] lg:rounded-[18px] flex items-center justify-center cursor-pointer join_button">
+            class="bg-surface-section w-full lg:w-[350px] h-[40px] lg:h-[56px] rounded-[8px] lg:rounded-[18px] flex items-center justify-center cursor-pointer join_button">
             <p class="lg:text-[20px] font-bold uppercase">{{$t('telegramPopup.subscribe')}}</p>
         </a>
         <div
             @click="store.hideTelegramPopup"
-            class="bg-surface-section lg:hidden w-[150px] h-[40px] lg:h-[56px] rounded-[8px] lg:rounded-[18px] flex items-center justify-center cursor-pointer join_button">
+            class="bg-surface-section lg:hidden w-full h-[40px] lg:h-[56px] rounded-[8px] lg:rounded-[18px] flex items-center justify-center cursor-pointer join_button">
           <p class="lg:text-[20px] font-bold uppercase">{{$t('content.later')}}</p>
         </div>
       </div>

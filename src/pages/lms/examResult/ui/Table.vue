@@ -1,5 +1,5 @@
 <script setup>
-import {UIUser, UIPagination, UIMenuButton} from "@/components/index.js";
+import {UIUser, UIPagination, UIMenuButton, NoDataPicture} from "@/components/index.js";
 import {useExamAttemptStore, useTopicExamResultStore} from "@/store/modules/index.js";
 import Utils from "@/utils/Utils.js";
 
@@ -24,6 +24,7 @@ const onSelectEv = (v)=>{
 <template>
   <n-spin :show="store.loading" >
     <n-table
+        v-if="store.list.length>0"
         size="small"
         class="w-full mt-4"
       :single-line="false"
@@ -102,11 +103,13 @@ const onSelectEv = (v)=>{
       </tbody>
     </n-table>
     <UIPagination
+        v-if="store.totalItems>store.params.per_page"
         :page="store.params.page"
         :per_page="store.params.per_page"
         :total="store.totalItems"
         @change-page="changePage"
     />
+    <NoDataPicture v-if="store.list.length===0 && !store.loading" />
   </n-spin>
 
 </template>

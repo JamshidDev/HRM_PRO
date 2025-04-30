@@ -103,9 +103,9 @@ const isCheck =(id)=>{
             <slot name="title" :data="item" >{{item.name}}</slot>
           </span>
         </div>
-        <div class="w-[20px] justify-center items-center">
+        <div v-if="Array.isArray(item?.children) && item?.children.length>0 && multiple" class="w-[20px] justify-center items-center">
           <n-radio
-              v-if="Array.isArray(item?.children) && item?.children.length>0 && multiple"
+
               @click="onSelectRadio(item)"
               :checked="isCheck(item.id)"
               :value="item.id"

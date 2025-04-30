@@ -379,7 +379,8 @@
     "name": "Topshiriqlar",
     "exportAction": "Eksport qilish",
     "checkAll": "Barchasini tanlash",
-    "addPassport": "Passport ma'lumotlari ham qo'shib yuklansinmi?"
+    "addPassport": "Passport ma'lumotlari ham qo'shib yuklansinmi?",
+    "chooseExport": "Maydonlarni tanlash"
   },
   "contactPage": {
     "name": "Kontaktlar"

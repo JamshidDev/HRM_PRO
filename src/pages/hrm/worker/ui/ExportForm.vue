@@ -37,9 +37,11 @@ const onSubmit = () => {
 
 </script>
 <template>
-  <n-spin :show="store.loading">
-    <div class="flex" style="height: calc(100vh - 120px);max-height: calc(100vh - 120px);">
-      <div class="p-2 border-r border-surface-line basis-auto grow overflow-auto">
+  <n-spin :content-style="{width: '100%'}" :show="store.loading">
+    <div class="flex flex-col md:flex-row w-full" style="height: calc(100vh - 120px);max-height: calc(100vh - 120px);">
+      <div class="p-2 border-b md:border-b-0 md:border-r border-surface-line basis-auto md:basis-[70%] shrink-0 grow overflow-auto">
+        <div class="w-full h-full overflow-auto">
+
         <VueDraggable v-if="store.payload.columns.length" data-id-attr="column" :animation="150"
                       v-model="store.payload.columns" target=".sort-target">
           <n-table :single-line="false" size="small" class="select-none">
@@ -66,13 +68,14 @@ const onSubmit = () => {
             </tbody>
           </n-table>
         </VueDraggable>
+        </div>
       </div>
-      <div class="p-2 shrink-0 h-full overflow-auto">
-        <ul>
+      <div class="p-2 shrink-0 md:h-full overflow-y-auto basis-auto">
+        <ul class="flex md:block gap-2 flex-wrap w-full">
           <li
               class="rounded-lg transition-all hover:bg-blue-50 cursor-pointer flex gap-2 items-center p-1">
             <n-checkbox :checked="store.payload.columns?.length === store.columns.length" @update:checked="toggleAll"/>
-            <p>{{ $t('exportPage.checkAll') }}</p>
+            <p class="text-nowrap">{{ $t('exportPage.checkAll') }}</p>
 
           </li>
           <li v-for="(item, idx) in store.columns" @click="toggleItem(item)"
@@ -80,7 +83,7 @@ const onSubmit = () => {
               :key="idx">
 
             <n-checkbox :checked="!!store.payload.columns.find(i => i.column == item.column)"/>
-            <p>{{ item.label }}</p>
+            <p class="text-nowrap">{{ item.label }}</p>
 
           </li>
         </ul>

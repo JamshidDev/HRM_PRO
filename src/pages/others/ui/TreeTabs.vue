@@ -38,7 +38,7 @@ const openOrgDetail = (org) => {
               {{ data.name }}
             </p>
             <div class="flex gap-1 items-center">
-              <div>
+              <div class="hidden md:block">
                 <UIUser
                     class="w-[300px]"
                     v-if="data.leaders.length > 0"

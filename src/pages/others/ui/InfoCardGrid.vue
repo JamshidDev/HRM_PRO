@@ -48,8 +48,8 @@ const tab = ref(0);
 </script>
 <template>
   <n-tabs class="h-full" v-model:value="tab" :tab-style="{display: 'none'}" :pane-style="{padding: 0}" animated :pane-wrapper-style="{height: '100%'}">
-    <n-tab-pane :name="0">
-      <n-grid cols="4" :x-gap="20" :y-gap="20">
+    <n-tab-pane class="h-full overflow-auto" :name="0">
+      <n-grid cols="1 500:2 800:4" :x-gap="20" :y-gap="20">
         <n-gi v-for="(item, idx) in list"
               :key="idx"
               class="bg-surface-section border-surface-line rounded-lg info-card relative p-5 border-2 hover:border-info transition-all"
@@ -82,7 +82,7 @@ const tab = ref(0);
 
     <template v-for="(item, idx) in list" :key="idx"
     >
-      <n-tab-pane class="!p-2 rounded-md h-full overflow-auto" :name="idx+1">
+      <n-tab-pane class="md:!p-2 rounded-md h-full overflow-auto" :name="idx+1">
         <n-button class="!mb-2" tertiary circle @click="tab=0">
           <template #icon>
             <n-icon :component="ChevronLeft12Regular"/>

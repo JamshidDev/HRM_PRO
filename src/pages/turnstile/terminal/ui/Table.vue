@@ -40,11 +40,11 @@ const onSelect = (v)=>{
         <thead>
         <tr>
           <th class="!text-center w-[30px] min-w-[30px] flex-grow-0">{{$t('content.number')}}</th>
-          <th class="!text-center">{{$t('turnstile.terminalPage.name')}}</th>
-          <th class="!text-center">{{$t('turnstile.terminalPage.name_ru')}}</th>
-          <th class="!text-center">{{$t('turnstile.terminalPage.name_en')}}</th>
-          <th class="!text-center">{{$t('turnstile.terminalPage.building')}}</th>
-          <th class="!text-center">{{$t('content.url')}}</th>
+          <th class="!text-center min-w-[150px] w-[150px]">{{$t('turnstile.terminalPage.name')}}</th>
+          <th class="!text-center min-w-[150px] w-[150px] ">{{$t('turnstile.terminalPage.name_ru')}}</th>
+          <th class="!text-center min-w-[150px] w-[150px] ">{{$t('turnstile.terminalPage.name_en')}}</th>
+          <th class="!text-center min-w-[100px] w-[100px]">{{$t('turnstile.terminalPage.building')}}</th>
+          <th class="!text-center min-w-[200px] w-[200px]">{{$t('content.url')}}</th>
           <th class="!text-center w-[130px] min-w-[120px]">{{$t('content.ip')}}</th>
           <th class="max-w-[60px] w-[60px]">{{$t('content.action')}}</th>
         </tr>
