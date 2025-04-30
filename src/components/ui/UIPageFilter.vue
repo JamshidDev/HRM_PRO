@@ -28,7 +28,8 @@ const props = defineProps({
   popoverStyle:{
     type:Object,
     default:{
-      width:'360px',
+      width:'360px ',
+      maxWidth:'100%',
       minHeight:'300px'
     }
   },
@@ -57,10 +58,10 @@ const addEvent = ()=>{
 <template>
   <div class="grid grid-cols-1">
     <div v-if="title"><span class="text-lg font-semibold inline-block mb-2 text-surface-600">{{title}}</span></div>
-    <div class="grid grid-cols-12 gap-4">
+    <div class="grid grid-cols-12 gap-2 md:gap-4">
       <div class="col-span-12 md:col-span-6 flex items-center">
         <n-input
-            class="w-full md:!max-w-[200px]"
+            class="w-full md:!max-w-[200px] md:!w-full"
             v-if="showSearchInput"
             v-model:value="searchModel"
             type="text"
@@ -74,9 +75,10 @@ const addEvent = ()=>{
         </n-input>
         <slot name="filterSearch"></slot>
       </div>
-      <div class="col-span-12 md:col-span-6 flex items-center justify-end gap-4">
+      <div class="col-span-12 md:col-span-6 flex flex-col md:flex-row items-center justify-end gap-2 md:gap-4">
         <slot name="filterAction"></slot>
         <n-button
+            class="!w-full md:!w-auto"
             v-if="showAddButton"
             type="primary"
             icon-placement="right"
@@ -92,19 +94,21 @@ const addEvent = ()=>{
         <n-popover
             @update:show="(v)=>emits('show',v)"
             v-if="showFilterButton"
-            v-bind:style="popoverStyle"
             trigger="click"
             scrollable
             placement="bottom"
+            class="w-full h-[400px]"
+
         >
           <template #trigger>
             <n-badge
+                class="!w-full md:!w-auto"
                 :value="filterCount"
                 processing
                 type="info"
-                class="cursor-pointer"
             >
               <n-button
+                  class="!w-full md:!w-auto"
                   type="primary"
                   ghost
                   icon-placement="right"
@@ -117,7 +121,7 @@ const addEvent = ()=>{
               </n-button>
             </n-badge>
           </template>
-          <div class="flex flex-col">
+          <div class="flex flex-col w-full">
             <div class="flex justify-between">
               <span class="text-sm text-surface-400">{{$t('content.filterSetting')}}</span>
               <n-button

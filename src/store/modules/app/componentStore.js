@@ -213,6 +213,7 @@ export const useComponentStore = defineStore('componentStore', {
 
         turnstileTerminalList: [],
         turnstileTerminalListLoading: false,
+        panelVisible:false,
 
     }),
     actions:{

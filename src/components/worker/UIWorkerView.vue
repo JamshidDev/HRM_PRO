@@ -88,6 +88,7 @@ const openPreview = (id)=>{
   store._workerPreview(id)
 }
 
+
 const onChange = (v) => {
   activeTab.value = v
 }
@@ -121,12 +122,12 @@ defineExpose({
       style="width:100%;height:96vh"
   >
 
-    <div class="w-full h-full grid grid-cols-12 max-w-[1400px] bg-white rounded-md overflow-hidden">
+    <div class="ui-preview-window w-full h-full grid grid-cols-12 max-w-[1400px] bg-white rounded-md overflow-hidden">
       <n-spin
           :show="store.previewLoading"
           class="col-span-12  bg-white rounded-md overflow-hidden">
-        <div class="flex w-full h-full">
-          <div class="bg-effect-wing w-[240px] border-r border-surface-line bg-surface-100 flex flex-col px-4 pt-6">
+        <div class="flex w-full h-full" :class="[store.panelVisible && 'preview-panel-active']">
+          <div class="preview-menu h-full bg-effect-wing border-r border-surface-line bg-surface-100 flex flex-col px-4 pt-6 z-10">
             <div class="relative w-full">
               <div v-if="showImgController" class="absolute top-1/2 translate-y-[-50%] right-1 cursor-pointer">
                 <n-icon @click="nextSlide" size="26" class="text-primary">
@@ -192,7 +193,7 @@ defineExpose({
             </template>
 
           </div>
-          <div class="px-4 overflow-x-hidden overflow-y-auto relative w-full" style="width: calc(100% - 240px)">
+          <div class="preview-panel px-4 overflow-x-hidden overflow-y-auto relative w-full">
             <MainInfo/>
             <n-tabs animated v-model:value="activeTab" class="hidden-tab-header" type="segment">
               <n-tab-pane v-for="(item, idx) in tabList" :name="item.id" :key="idx">
@@ -208,9 +209,59 @@ defineExpose({
               </n-tab-pane>
             </n-tabs>
           </div>
+          <div @click="()=>store.panelVisible=false" class="preview-overall"></div>
         </div>
       </n-spin>
     </div>
 
   </n-modal>
 </template>
+
+<style lang="scss">
+.ui-preview-window{
+  .preview-menu{
+    width: 240px;
+    transition: all 0.3s ease-out;
+  }
+  .preview-panel{
+    width: calc(100% - 240px);
+  }
+}
+
+@media only screen and (max-width: 769px) {
+  .ui-preview-window{
+    .preview-menu{
+      width: 240px;
+      position: absolute;
+      left: -250px;
+      bottom: 0;
+      top: 0;
+    }
+    .preview-panel{
+      width: calc(100% - 0px) !important;
+    }
+    .preview-overall{
+      display: none;
+    }
+  }
+
+  .preview-panel-active{
+    .preview-menu{
+      left: 0;
+    }
+    .preview-overall{
+      display: flex;
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      top: 0;
+      right: 0;
+      z-index: 9;
+      background: rgba(2, 11, 28, 0.32);
+    }
+  }
+}
+
+</style>

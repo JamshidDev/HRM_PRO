@@ -114,57 +114,59 @@ const onSubmitResumeExport = () => {
       }"
   >
     <template #filterAction>
-      <n-space :wrap="false">
-        <n-button-group>
-          <n-button
-              :disabled="!(exportStore.resumePayload.all ? store.totalItems : exportStore.resumePayload.worker_ids.length)"
-              type="primary" v-if="exportStore.isExportingResume" @click="onSubmitResumeExport">
+      <n-button-group
+          class="!w-full md:!w-auto">
+        <n-button
+            :class="[exportStore.isExportingResume? '!w-1/2 md:!w-auto':'!w-full md:!w-auto']"
+            :disabled="!(exportStore.resumePayload.all ? store.totalItems : exportStore.resumePayload.worker_ids.length)"
+            type="primary" v-if="exportStore.isExportingResume" @click="onSubmitResumeExport">
             <span
                 class="font-semibold">{{$t('content.download')}} ({{ exportStore.resumePayload.all ? store.totalItems : exportStore.resumePayload.worker_ids.length }})</span>
-            <template #icon>
-              <CheckmarkCircle16Regular/>
-            </template>
-          </n-button>
-          <n-button
-              :color="exportStore.isExportingResume ? undefined : '#A020F0'"
-              :type="exportStore.isExportingResume ? 'error' : 'warning'"
-              icon-placement="right"
-              @click="onExportResume"
-          >
-            <template #icon>
-              <n-icon
-                  :component="exportStore.isExportingResume ? DismissCircle28Regular : ShareScreenPersonOverlayInside16Regular"/>
-            </template>
-            {{ $t('content.reference') }}
-          </n-button>
-        </n-button-group>
-
+          <template #icon>
+            <CheckmarkCircle16Regular/>
+          </template>
+        </n-button>
         <n-button
-            type="success"
+            :class="[exportStore.isExportingResume? '!w-1/2 md:!w-auto':'!w-full md:!w-auto']"
+            :color="exportStore.isExportingResume ? undefined : '#A020F0'"
+            :type="exportStore.isExportingResume ? 'error' : 'warning'"
             icon-placement="right"
-
-            @click="onExport"
+            @click="onExportResume"
         >
           <template #icon>
-            <n-icon :component="DocumentTable16Regular"/>
+            <n-icon
+                :component="exportStore.isExportingResume ? DismissCircle28Regular : ShareScreenPersonOverlayInside16Regular"/>
           </template>
-          {{ $t('content.export') }}
+          {{ $t('content.reference') }}
         </n-button>
+      </n-button-group>
 
-        <n-button
-            type="primary"
-            icon-placement="right"
-            @click="onAdd"
-        >
-          <template #icon>
-            <n-icon>
-              <HomePerson20Regular/>
-            </n-icon>
-          </template>
-          {{ $t('workerPage.filter.contract') }}
-        </n-button>
+      <n-button
+          class="!w-full md:!w-auto"
+          type="success"
+          icon-placement="right"
 
-      </n-space>
+          @click="onExport"
+      >
+        <template #icon>
+          <n-icon :component="DocumentTable16Regular"/>
+        </template>
+        {{ $t('content.export') }}
+      </n-button>
+
+      <n-button
+          class="!w-full md:!w-auto"
+          type="primary"
+          icon-placement="right"
+          @click="onAdd"
+      >
+        <template #icon>
+          <n-icon>
+            <HomePerson20Regular/>
+          </n-icon>
+        </template>
+        {{ $t('workerPage.filter.contract') }}
+      </n-button>
     </template>
 
     <template #filterContent>
@@ -282,8 +284,6 @@ const onSubmitResumeExport = () => {
           </n-slider>
         </div>
       </div>
-
-
     </template>
 
   </UIPageFilter>

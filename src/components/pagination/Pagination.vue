@@ -106,3 +106,18 @@ onMounted(()=>{
 
 
 </script>
+
+<style lang="scss">
+
+
+@media only screen and (max-width: 650px) {
+  .n-pagination{
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+    row-gap: 10px !important;
+    .n-select{
+      display: block !important;
+    }
+  }
+}
+</style>
