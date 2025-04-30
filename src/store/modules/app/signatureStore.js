@@ -36,7 +36,6 @@ export const useSignatureStore = defineStore('signatureStore', {
                     },
                     function (error, message) {
                         $Toast.error(t('signature.connectionError'))
-                        console.log(error)
                         reject(error, message)
                     }
                 )

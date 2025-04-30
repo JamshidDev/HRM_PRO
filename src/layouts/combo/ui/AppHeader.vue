@@ -3,7 +3,7 @@ import LangDropdown from "@/components/general/LangDropdown.vue";
 import {UIProfile} from "@/components/index.js"
 import AIButtonV2 from "@/components/buttons/AIButtonV2.vue"
 import {AppPaths} from "@/utils/index.js"
-import {Alert20Regular} from "@vicons/fluent"
+import {Alert20Regular, ChevronDoubleRight16Filled} from "@vicons/fluent"
 import {useAccountStore} from "@/store/modules/index.js"
 import Utils from "@/utils/Utils.js"
 
@@ -27,10 +27,14 @@ const notification = ref(0)
         @click="onClick"
         class="mobile-control-btn flex justify-center items-center cursor-pointer w-[32px] h-[32px] bg-gray-900 rounded mr-2">
       <i class='bx bx-chevrons-left text-surface-section text-xl rotate-180'></i>
+      <n-icon class="text-white text-lg">
+        <ChevronDoubleRight16Filled/>
+      </n-icon>
     </div>
 
 
     <AIButtonV2
+        class="hidden md:flex"
         v-if="store.checkPermission(appPermissions.ai)"
         @click="()=>router.push({name:AppPaths.AIConversation.substring(1)})"
     />
@@ -38,7 +42,9 @@ const notification = ref(0)
 
   </div>
   <div class="flex justify-end items-center gap-4">
-    <n-badge :value="notification" :max="15" type="info">
+    <n-badge
+        class="! hidden md:flex"
+        :value="notification" :max="15" type="info">
       <n-icon size="26" class="text-secondary cursor-pointer">
         <Alert20Regular/>
       </n-icon>
