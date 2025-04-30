@@ -46,7 +46,7 @@ const  pieOption = {
   },
   series: [
     {
-      name: 'Access From',
+      name: t('dashboardPage.rewardCard.reward.title'),
       type: 'pie',
       radius: ['40%', '70%'],
       center: ['50%', '70%'],
@@ -75,7 +75,7 @@ const  pieOption2 = {
   },
   series: [
     {
-      name: 'Access From',
+      name: t('dashboardPage.rewardCard.punishment.title'),
       type: 'pie',
       radius: ['40%', '70%'],
       center: ['50%', '70%'],
@@ -93,64 +93,6 @@ const  pieOption2 = {
   ]
 }
 
-const vacationOption = {
-  title: {
-   show:false,
-  },
-  tooltip: {
-    trigger: 'axis',
-    axisPointer: {
-      type: 'shadow'
-    }
-  },
-  legend: {
-    show:false,
-  },
-  grid: {
-    top: '5%',
-    left: '2%',
-    right: '2%',
-    bottom: '10%',
-
-  },
-  xAxis: {
-    type: 'value',
-    boundaryGap: [0, 0]
-  },
-  yAxis: {
-    type: 'category',
-    data: ['Brazil', 'Indonesia', 'USA', 'India', 'China', 'World'],
-    show:false,
-  },
-  series: [
-    {
-      name: '2011',
-      type: 'bar',
-      data: [
-        { value: 300, itemStyle: { color: '#E53835' } }, // Red for Brazil
-        { value: 400, itemStyle: { color: '#2dcb73' } }, // Teal for Indonesia
-        { value: 800, itemStyle: { color: '#45b7d1' } }, // Light Blue for USA
-        { value: 600, itemStyle: { color: '#1A84FF' } }, // Sky Blue for India
-        { value: 700, itemStyle: { color: '#f9cb9c' } }, // Light Orange for China
-        { value: 500, itemStyle: { color: '#e06666' } }  // Salmon for World
-      ],
-      itemStyle: {
-        borderRadius: 6,
-      },
-      barWidth: '30px',
-      label: {
-        show: true,
-        position: 'inside',      // Place labels inside the bars
-        align: 'center',         // Horizontally center the text
-        verticalAlign: 'middle',
-        formatter: (params) => `${params.value.toLocaleString()} ta`,
-        color: '#ffffff',
-        fontSize: 12,
-        fontWeight: '600',
-      }
-    },
-  ]
-}
 
 
 
@@ -165,9 +107,9 @@ onMounted(()=>{
 <template>
   <UIPageContent>
     <n-spin :show="store.loading">
-      <div class="grid grid-cols-12 gap-4">
+      <div class="grid grid-cols-12 gap-1 md:gap-2 lg:gap-3">
         <template v-for="(card, idx) in store.dashboard.mainCard" :key="idx">
-          <div class="col-span-3">
+          <div class="col-span-12 md:col-span-6 lg:col-span-6 xl:col-span-3">
             <div class="w-full border border-surface-line p-4 rounded-lg bg-surface-section relative cursor-pointer scale-[1] hover:scale-[1.07] transition-all hover:z-10 hover:shadow-sm duration-200">
               <span class="z-[1] opacity-30 absolute top-0 right-0 w-[160px] h-full bg-no-repeat bg-[url(/effect/primary-card.svg)]" ></span>
               <p class="font-medium text-textColor2">{{$t(card?.total.title)}}</p>
@@ -179,14 +121,14 @@ onMounted(()=>{
             </div>
           </div>
         </template>
-        <div class="col-span-4">
+        <div class="col-span-12 md:col-span-6 lg:col-span-6 xl:col-span-4">
           <AgeChart/>
         </div>
-        <div class="col-span-4">
+        <div class="col-span-12 md:col-span-6 lg:col-span-6 xl:col-span-4">
           <EduChart/>
         </div>
 
-        <div class="col-span-4">
+        <div class="col-span-12 md:col-span-12 lg:col-span-6 xl:col-span-4">
           <div class="w-full h-full border border-surface-line p-4 rounded-lg bg-surface-section relative hover-effect-card">
             <span class="z-[1] opacity-30 absolute top-0 right-0 w-[160px] h-full bg-no-repeat bg-[url(/effect/effect-card-1.svg)]" ></span>
             <div class="flex h-auto">
@@ -222,21 +164,21 @@ onMounted(()=>{
         </div>
 
 
-        <div class="col-span-8">
+        <div class="col-span-12 md:col-span-12 lg:col-span-6 xl:col-span-8">
           <YearlyChart/>
         </div>
-        <div class="col-span-4">
+        <div class="col-span-12 md:col-span-6 lg:col-span-6 xl:col-span-4">
           <BirthdayCard/>
         </div>
 
 
-        <div class="col-span-4">
+        <div class="col-span-12 md:col-span-6 lg:col-span-6 xl:col-span-4">
           <VacationChart/>
         </div>
-        <div class="col-span-4">
+        <div class="col-span-12 md:col-span-6 lg:col-span-6 xl:col-span-4">
           <ContractChart/>
         </div>
-        <div class="col-span-4">
+        <div class="col-span-12 md:col-span-6 lg:col-span-6 xl:col-span-4">
           <InfoCard/>
         </div>
       </div>
@@ -253,7 +195,7 @@ onMounted(()=>{
   transition: 0.2s ease;
 
   &:hover{
-    transform: scale(1.04);
+    transform: scale(1.01);
     z-index: 10;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   }

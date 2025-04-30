@@ -62,7 +62,7 @@ const changeOption = (v)=>{
 <template>
   <n-dropdown :options="options"  trigger="click" @select="changeOption">
     <div class="flex items-center gap-2">
-      <div>
+      <div class="hidden md:block">
         <div class="font-medium text-xs max-w-[200px] truncate">{{accountStore.account?.organization?.name}}</div>
         <div class="text-xs text-textColor1">{{accountStore.account?.worker?.last_name +'.'+accountStore.account?.worker?.first_name?.[0]}}</div>
       </div>

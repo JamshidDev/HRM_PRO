@@ -1,5 +1,5 @@
 <template>
-  <div class="ai-button py-2 px-4 rounded-2xl cursor-pointer flex items-center gap-2 relative">
+  <div class="ai-button py-2 px-4 rounded-2xl cursor-pointer flex items-center gap-2 relative overflow-hidden">
     <div class="relative flex items-center justify-end border-white w-[20px] h-[20px] z-[2]">
       <n-icon class="text-sm text-[#FFFFFF66]">
         <Star20Filled />
@@ -30,6 +30,7 @@ import { Star20Filled } from "@vicons/fluent";
   background: linear-gradient(to right, oklch(0.792 0.209 151.711) 0px, oklch(0.546 0.245 262.881) 100%);
   border-radius: 16px;
   transition: transform 0.8s ease, box-shadow 0.8s ease;
+  z-index: 9999;
   overflow: hidden; /* Har qanday chiqib ketishni oldini olish uchun */
 }
 

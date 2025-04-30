@@ -3,8 +3,6 @@ import AppHeader from "./AppHeader.vue"
 import {AIButton} from "@/components/index.js"
 import {AppPaths} from "@/utils/index.js"
 
-const router = useRouter()
-const route = useRoute()
 const emits = defineEmits(['onOpen'])
 
 const onClick = ()=>{
