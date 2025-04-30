@@ -111,7 +111,7 @@ onMounted(()=>{
       <div class="w-full border-b mt-2 mb-10 border-dashed border-surface-line"></div>
     </div>
     <n-form-item
-        class="w-full col-span-4"
+        class="w-full col-span-12 md:col-span-6 lg:col-span-4"
         :label="$t(`createWorkerPage.form.lastName`)"
         path="last_name">
       <n-input
@@ -122,7 +122,7 @@ onMounted(()=>{
       />
     </n-form-item>
     <n-form-item
-        class="w-full col-span-4"
+        class="w-full col-span-12 md:col-span-6 lg:col-span-4"
         :label="$t(`createWorkerPage.form.firstName`)"
         path="first_name">
       <n-input
@@ -133,7 +133,7 @@ onMounted(()=>{
       />
     </n-form-item>
     <n-form-item
-        class="w-full col-span-4"
+        class="w-full col-span-12 md:col-span-6 lg:col-span-4"
         :label="$t(`createWorkerPage.form.middleName`)"
         path="middle_name">
       <n-input
@@ -144,7 +144,7 @@ onMounted(()=>{
       />
     </n-form-item>
     <n-form-item
-        class="col-span-4"
+        class="col-span-12 md:col-span-6 lg:col-span-4"
         :label="$t(`createWorkerPage.form.birthday`)"
         path="birthday">
       <n-date-picker

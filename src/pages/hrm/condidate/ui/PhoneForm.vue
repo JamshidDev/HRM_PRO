@@ -53,7 +53,7 @@ const onRemove = (v)=>{
   <div class="grid grid-cols-12 gap-x-4">
     <template v-for="(item, idx) in phones" :key="idx">
       <div
-          class="col-span-4"
+          class="col-span-12 md:col-span-6 lg:col-span-4 mb-4"
       >
         <template v-if="idx === 0">
           <n-form-item :show-label="false" path="phones">

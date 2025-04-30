@@ -19,7 +19,7 @@ const onUpload = async (v)=>{
 <template>
   <div class="grid grid-cols-12 gap-x-4">
     <n-form-item
-        class="col-span-4"
+        class="col-span-12 md:col-span-6 lg:col-span-4"
         :label="$t(`createWorkerPage.form.serial_number`)"
         path="serial_number">
       <n-input
@@ -31,7 +31,7 @@ const onUpload = async (v)=>{
       />
     </n-form-item>
     <n-form-item
-        class="col-span-4"
+        class="col-span-12 md:col-span-6 lg:col-span-4"
         :label="$t(`createWorkerPage.form.from_date`)"
         path="from_date">
       <n-date-picker
@@ -43,7 +43,7 @@ const onUpload = async (v)=>{
       />
     </n-form-item>
     <n-form-item
-        class="col-span-4"
+        class="col-span-12 md:col-span-6 lg:col-span-4"
         :label="$t(`createWorkerPage.form.to_date`)"
         path="to_date">
       <n-date-picker
@@ -55,7 +55,7 @@ const onUpload = async (v)=>{
       />
     </n-form-item>
     <n-form-item
-        class="col-span-4"
+        class="col-span-12 md:col-span-6 lg:col-span-4"
         :label="$t(`createWorkerPage.form.passport_address`)"
         path="address">
       <n-input
@@ -66,7 +66,7 @@ const onUpload = async (v)=>{
       />
     </n-form-item>
     <n-form-item
-        class="col-span-4"
+        class="col-span-12 md:col-span-6 lg:col-span-4"
         :label="$t(`createWorkerPage.form.passport_file`)"
         path="file">
       <n-button

@@ -1,6 +1,6 @@
 <script setup>
 import {ArrowCircleDown16Regular,Eye24Filled, StarEmphasis32Filled,
-  EyeOff20Filled, DismissCircle32Filled, Copy16Regular, PanelLeftExpand16Filled} from "@vicons/fluent"
+  EyeOff20Filled, DismissCircle32Filled, Copy16Regular, List20Filled} from "@vicons/fluent"
 import {useComponentStore} from "@/store/modules/index.js"
 import Utils from "../../../utils/Utils.js"
 import i18n from "@/i18n/index.js"
@@ -17,20 +17,29 @@ const onCopy = ()=>{
 <template>
   <div class="grid col-span-12 w-full">
     <div class="col-span-12 border-b border-surface-line flex gap-4 justify-between pb-2 pt-10 mb-6 ">
-      <n-icon
-          size="32"
-          class="text-surface-400 cursor-pointer block md:hidden"
-          @click="store.panelVisible=true"
-      >
-        <PanelLeftExpand16Filled/>
-      </n-icon>
+      <div class="flex flex-wrap gap-4 items-center">
+        <n-button
+            type="tertiary"
+            size="small"
+            class="inline-block md:!hidden"
+            @click="store.panelVisible=true"
+        >
+          <template #icon>
+            <n-icon>
+              <List20Filled/>
+            </n-icon>
+          </template>
+        </n-button>
+        <n-button text type="warning" icon-placement="right">
+          <template #icon>
+            <StarEmphasis32Filled/>
+          </template>
+          4.67</n-button>
+      </div>
 
-      <n-button text type="warning" icon-placement="right">
-        <template #icon>
-          <StarEmphasis32Filled/>
-        </template>
-        4.67</n-button>
-      <div class="flex flex-wrap items-center gap-2">
+
+
+      <div class="flex flex-wrap items-center gap-2 justify-end md:justify-start">
         <n-button @click="isHide=!isHide" type="primary" secondary icon-placement="right">
           <template #icon>
             <EyeOff20Filled v-if="isHide"/>
