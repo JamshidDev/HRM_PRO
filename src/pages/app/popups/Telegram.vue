@@ -9,24 +9,29 @@ const store = useAccountStore()
       :show="store.telegramPopupVisible"
       @maskClick="store.hideTelegramPopup"
   >
-    <div class="w-[1050px] h-[650px] rounded-[18px] telegram_popup p-5 pl-[30px] flex flex-col gap-[14px] !text-surface-section">
-      <h1 class="text-[32px] font-semibold max-w-[60%]">
+    <div class="w-[1050px] lg:h-[650px] rounded-[18px] telegram_popup p-5 pl-[30px] flex flex-col gap-[14px] !text-surface-section">
+      <h1 class="text-[20px] lg:text-[32px] font-semibold lg:max-w-[60%]">
         {{$t('telegramPopup.header')}}
       </h1>
-      <p class="font-medium text-[20px]">{{ $t('telegramPopup.benefit.header') }}</p>
-      <ul class="flex flex-col gap-[10px] list-disc pl-[24px] max-w-[50%]">
+      <p class="font-medium text-[16px] lg:text-[20px]">{{ $t('telegramPopup.benefit.header') }}</p>
+      <ul class="flex flex-col gap-[10px] list-disc pl-[24px] lg:max-w-[50%]">
         <li v-for="idx in 5" :key="idx">
           <p class="text-[14px] tracking-[1px]">{{ $t(`telegramPopup.benefit.${idx}`) }}</p>
         </li>
       </ul>
-      <p class="font-bold text-[20px]">{{$t('telegramPopup.benefit.footer')}}</p>
-      <div class="mt-auto">
+      <p class="font-bold text-[16px] lg:text-[20px] text-center lg:text-start">{{$t('telegramPopup.benefit.footer')}}</p>
+      <div class="mt-auto flex gap-5 justify-center">
         <a
             href="https://t.me/hrmpro_bot"
             target="_blank"
-            class="bg-surface-section w-[350px] h-[56px] mx-auto rounded-[18px] flex items-center justify-center cursor-pointer join_button">
-            <p class="text-[20px] font-bold uppercase">{{$t('telegramPopup.subscribe')}}</p>
+            class="bg-surface-section w-[150px] lg:w-[350px] h-[40px] lg:h-[56px] rounded-[8px] lg:rounded-[18px] flex items-center justify-center cursor-pointer join_button">
+            <p class="lg:text-[20px] font-bold uppercase">{{$t('telegramPopup.subscribe')}}</p>
         </a>
+        <div
+            @click="store.hideTelegramPopup"
+            class="bg-surface-section lg:hidden w-[150px] h-[40px] lg:h-[56px] rounded-[8px] lg:rounded-[18px] flex items-center justify-center cursor-pointer join_button">
+          <p class="lg:text-[20px] font-bold uppercase">{{$t('content.later')}}</p>
+        </div>
       </div>
     </div>
   </n-modal>
@@ -34,7 +39,10 @@ const store = useAccountStore()
 <style scoped>
 .telegram_popup {
   font-family: Poppins, Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  background: url('/telegramPopup.png'), linear-gradient(144deg, #268BC1 0%, #1E78B6 47%, #134C8A 81%);
+  background: linear-gradient(144deg, #268BC1 0%, #1E78B6 47%, #134C8A 81%);
+  @media (min-width: 976px) {
+    background: url('/telegramPopup.png'), linear-gradient(144deg, #268BC1 0%, #1E78B6 47%, #134C8A 81%);
+  }
   background-size: cover;
   h1 {
     letter-spacing: 1px;
