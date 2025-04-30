@@ -1,6 +1,6 @@
 <script setup>
 import {useComponentStore, useWorkerStore, useExportStore} from "@/store/modules/index.js"
-import {UIPageFilter, UIStructure} from "@/components/index.js"
+import {UIPageFilter, UIStructure, UISelect} from "@/components/index.js"
 import {
   HomePerson20Regular,
   CheckmarkCircle16Regular,
@@ -98,6 +98,10 @@ const onSubmitResumeExport = () => {
   exportStore.resumeModalVisible = true
 }
 
+onMounted(()=>{
+  componentStore._structures()
+})
+
 </script>
 
 <template>
@@ -174,13 +178,22 @@ const onSubmitResumeExport = () => {
         <div class="grid grid-cols-2 gap-3" style="width: calc(100% - 100px)">
           <div class="col-span-2">
             <label class="mt-3 text-xs text-gray-500">{{ $t('workerPage.filter.organization') }}</label>
-            <UIStructure
+            <UISelect
+                :options="componentStore.structureList"
                 :modelV="store.params.organizations"
                 @updateModel="onChangeStructure"
                 :checkedVal="store.structureCheck"
                 @updateCheck="(v)=>store.structureCheck=v"
+                :loading="componentStore.structureLoading"
                 @onSubmit="filterEvent"
             />
+<!--            <UIStructure-->
+<!--                :modelV="store.params.organizations"-->
+<!--                @updateModel="onChangeStructure"-->
+<!--                :checkedVal="store.structureCheck"-->
+<!--                @updateCheck="(v)=>store.structureCheck=v"-->
+<!--                @onSubmit="filterEvent"-->
+<!--            />-->
           </div>
           <div class="col-span-2">
             <label class="mt-3 text-xs text-gray-500">{{ $t('workerPage.filter.department') }}</label>
