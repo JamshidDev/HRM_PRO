@@ -10,7 +10,7 @@ import Utils from "@/utils/Utils.js"
 const emits = defineEmits(["onChange"])
 const router = useRouter()
 const store = useAccountStore()
-const onClick = ()=>{
+const controlBtn = ()=>{
   emits('onChange')
 }
 
@@ -22,11 +22,13 @@ const notification = ref(0)
 
 <template>
 <div class="app_header bg-surface-section flex justify-between items-center p-4">
-  <div class="flex">
+  <div class="flex items-center z-10 ">
     <div
-        @click="onClick"
-        class="mobile-control-btn flex justify-center items-center cursor-pointer w-[32px] h-[32px] bg-gray-900 rounded mr-2">
-      <i class='bx bx-chevrons-left text-surface-section text-xl rotate-180'></i>
+        @click="controlBtn"
+        class="mobile-control-btn
+         flex justify-center items-center
+          cursor-pointer w-[32px] h-[32px]
+            bg-gray-900 rounded mr-2">
       <n-icon class="text-white text-lg">
         <ChevronDoubleRight16Filled/>
       </n-icon>
@@ -34,7 +36,7 @@ const notification = ref(0)
 
 
     <AIButtonV2
-        class="hidden md:flex"
+        class="!hidden md:flex"
         v-if="store.checkPermission(appPermissions.ai)"
         @click="()=>router.push({name:AppPaths.AIConversation.substring(1)})"
     />

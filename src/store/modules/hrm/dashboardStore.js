@@ -95,7 +95,7 @@ export const useDashboardStore = defineStore('dashboardStore', {
                         },
                         data2:{
                             title:'dashboardPage.mainCard.woman',
-                            count:v.womans_count,
+                            count:v.woman_count,
                         },
                     },
                 ]

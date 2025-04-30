@@ -21,6 +21,7 @@ $mobile_device_screen_size:900px;
     left: 0;
     bottom: 0;
     transition: all 0.3s ease;
+    background:var(--surface-section);
     .mini-content{
       width: $sidebar-mini-width;
       background: #181A20;
