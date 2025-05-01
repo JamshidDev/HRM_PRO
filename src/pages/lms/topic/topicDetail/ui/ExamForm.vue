@@ -1,5 +1,4 @@
 <script setup>
-import {UIStructure} from "@/components/index.js"
 import validationRules from "@/utils/validationRules.js";
 import { useComponentStore, useTopicExamStore } from "@/store/modules/index.js";
 import {useRoute} from "vue-router";

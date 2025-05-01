@@ -97,8 +97,8 @@ const addEvent = ()=>{
             trigger="click"
             scrollable
             placement="bottom"
-            class="max-w-full min-w-[360px] h-[400px]"
-
+            class="max-w-full w-[var(--v-target-width)] md:w-auto md:min-w-[400px] h-[400px]"
+            :style="{'--top-activator-width': 'var(--v-target-width)'}"
         >
           <template #trigger>
             <n-badge
