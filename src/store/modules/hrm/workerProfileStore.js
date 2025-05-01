@@ -121,7 +121,7 @@ export const useWorkerProfileStore = defineStore('workerProfileStore', {
                 this.payload.current_region_id = this.data.current_region.id
                 this.payload.current_city_id = this.data.current_city.id
                 this.payload.address = this.data.address
-                this.payload.nationality_id = this.data.nationality.name.id
+                this.payload.nationality_id = this.data.nationality?.id
                 this.payload.sex = this.data?.sex
                 this.payload.pin = this.data.pin?.toString()
                 this.payload.inn = this.data.inn?.toString()
@@ -162,13 +162,11 @@ export const useWorkerProfileStore = defineStore('workerProfileStore', {
 
                 this.rolesList = []
                 for (const role of this.data.profile?.roles){
-                    console.log(role)
                     const roles =role.organizations.map((x)=>({
                         ...x,
                         roleName:role?.name,
                         roleId:role?.id,
                     }))
-                    console.log(roles)
                     this.rolesList = [...this.rolesList,...roles]
                 }
 

@@ -1,5 +1,5 @@
 <script setup>
-import {UIPageFilter, UIStructure} from "@/components/index.js"
+import {UIPageFilter, UISelect, UIStructure} from "@/components/index.js"
 import {useComponentStore, useDepartmentStore} from "@/store/modules/index.js"
 
 const componentStore = useComponentStore()
@@ -56,27 +56,36 @@ const onLevel = ()=>{
       @onClear="resetFilter"
   >
     <template #filterContent>
-      <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{$t('actionLog.table.structure')}}</label>
-      <UIStructure
-          :modelV="store.params.organizations"
-          @updateModel="(v)=>store.params.organizations=v"
-          :checkedVal="store.structureCheck2"
-          @updateCheck="(v)=>store.structureCheck2=v"
-          @onSubmit="filterEvent"
-      />
+      <div class="w-full grid grid-cols-12">
+        <div class="col-span-12">
+          <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{$t('actionLog.table.structure')}}</label>
+          <UISelect
+              :options="componentStore.structureList"
+              :modelV="store.params.organizations"
+              @updateModel="(v)=>store.params.organizations=v"
+              :checkedVal="store.structureCheck2"
+              @updateCheck="(v)=>store.structureCheck2=v"
+              :loading="componentStore.structureLoading"
+              @onSubmit="filterEvent"
+          />
+        </div>
+        <div class="col-span-12">
+          <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{$t('departmentPage.form.level')}}</label>
+          <n-select
+              v-model:value="store.params.level"
+              :options="store.levelList"
+              label-field="name"
+              value-field="id"
+              :placeholder="$t('content.choose')"
+              clearable
+              @update:value="filterEvent"
+              :loading="store.levelLoading"
+              @focus="onLevel"
+          />
+        </div>
 
-      <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{$t('departmentPage.form.level')}}</label>
-      <n-select
-          v-model:value="store.params.level"
-          :options="store.levelList"
-          label-field="name"
-          value-field="id"
-          :placeholder="$t('content.choose')"
-          clearable
-          @update:value="filterEvent"
-          :loading="store.levelLoading"
-          @focus="onLevel"
-      />
+      </div>
+
 
     </template>
 

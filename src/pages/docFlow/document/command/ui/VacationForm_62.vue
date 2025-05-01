@@ -176,7 +176,7 @@ onMounted(()=>{
         </template>
         {{$t('documentPage.command.form.removeWorker')}}</n-button>
     </div>
-    <div class="col-span-2">
+    <div class="col-span-12 md:col-span-6 lg:col-span-2">
       <n-form-item
           :show-feedback="false"
           :label="$t(`commandPage.form_62.from`)" path="from">
@@ -188,7 +188,7 @@ onMounted(()=>{
         />
       </n-form-item>
     </div>
-    <div class="col-span-2">
+    <div class="col-span-12 md:col-span-6 lg:col-span-2">
       <n-form-item
           :show-feedback="false"
           :label="$t(`commandPage.form_62.to`)" path="to">
@@ -200,7 +200,7 @@ onMounted(()=>{
         />
       </n-form-item>
     </div>
-    <div class="col-span-5">
+    <div class="col-span-12 md:col-span-6 lg:col-span-5">
       <n-form-item
           :show-feedback="false"
           :label="$t(`commandPage.form_62.reason`)" path="reason">
@@ -212,7 +212,7 @@ onMounted(()=>{
         />
       </n-form-item>
     </div>
-    <div class="col-span-3">
+    <div class="col-span-12 md:col-span-6 lg:col-span-3">
       <n-form-item
           :show-feedback="false"
           :label="$t(`commandPage.form_62.orgType`)" path="organizationType">
@@ -227,7 +227,7 @@ onMounted(()=>{
     </div>
 
     <template v-if="item.organizationType === 1">
-      <div class="col-span-6">
+      <div class="col-span-12 md:col-span-6">
         <n-form-item
             :show-feedback="false"
             :label="$t(`commandPage.form_62.to_organization`)" path="to_organization">
@@ -240,7 +240,7 @@ onMounted(()=>{
           />
         </n-form-item>
       </div>
-      <div class="col-span-6">
+      <div class="col-span-12 md:col-span-6">
         <n-form-item
             :show-feedback="false"
             :label="$t(`commandPage.form_62.department_id`)" path="department_id">

@@ -23,10 +23,6 @@ const openCommand = (v)=>{
   store.confirmationVisible=true
 }
 
-const onClose = ()=>{
-  store.confirmationVisible=false
-  store._finishContract(contractData.value?.id)
-}
 
 const onSave = ()=>{
   store.confirmationVisible=false

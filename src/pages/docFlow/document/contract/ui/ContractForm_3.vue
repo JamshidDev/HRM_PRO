@@ -54,9 +54,11 @@ watchEffect(()=>{
 
       </n-divider>
     </div>
-    <div v-if="store.payload.command_status" class="col-span-12 border border-dashed p-2 bg-surface-ground rounded-xl border-surface-line">
+    <div
+        v-if="store.payload.command_status"
+        class="col-span-12 border border-dashed p-2 bg-surface-ground rounded-xl border-surface-line">
       <div class="grid grid-cols-12 gap-x-4">
-        <div class="col-span-6" >
+        <div class="col-span-12 md:col-span-6" >
           <n-form-item :label="$t(`documentPage.form.command_type`)" path="command_type">
             <n-select
                 :disabled="!Boolean(store.payload.type)"
@@ -71,7 +73,7 @@ watchEffect(()=>{
             />
           </n-form-item>
         </div>
-        <div class="col-span-3">
+        <div class="col-span-12 md:col-span-3">
           <n-form-item :label="$t(`documentPage.command.form.command_number`)" path="command_number">
             <n-input
                 class="w-full"
@@ -82,7 +84,7 @@ watchEffect(()=>{
           </n-form-item>
 
         </div>
-        <div class="col-span-3">
+        <div class="col-span-12 md:col-span-3">
           <n-form-item :label="$t(`documentPage.command.form.command_date`)" path="command_date">
             <n-date-picker
                 class="w-full"

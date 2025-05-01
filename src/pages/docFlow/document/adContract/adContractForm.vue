@@ -195,7 +195,7 @@ const showForm = computed(()=>store.payload.type===null? true : [1,8].includes(s
       <div class="grid grid-cols-12 gap-x-4">
         <div class="col-span-12">
           <div class="grid grid-cols-12 gap-x-4 border border-surface-line border-dashed p-2 rounded-md bg-surface-ground mt-6 mb-4">
-            <div class="col-span-6 flex">
+            <div class="col-span-12 md:col-span-6 flex">
               <n-form-item class="w-full" :label="$t(`documentPage.form.organization`)" path="organization_id">
                 <UIStructure
                     :modelV="store.organization"
@@ -207,7 +207,7 @@ const showForm = computed(()=>store.payload.type===null? true : [1,8].includes(s
                 />
               </n-form-item>
             </div>
-            <div class="col-span-6 flex">
+            <div class="col-span-12 md:col-span-6 flex">
               <n-form-item class="w-full" :label="$t(`documentPage.form.worker`)" path="worker">
                 <n-select
                     :disabled="store.organization.length === 0 || workers.length>0"
@@ -229,22 +229,9 @@ const showForm = computed(()=>store.payload.type===null? true : [1,8].includes(s
           </div>
         </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
         <div class="col-span-12 border border-dashed p-2 rounded-xl border-surface-line bg-surface-ground">
           <div class="grid grid-cols-12 gap-x-4">
-            <div class="col-span-2">
+            <div class="col-span-12 md:col-span-6 lg:col-span-2">
               <n-form-item :label="$t(`documentPage.form.contractNumber`)" path="number">
                 <n-input
                     class="w-full"
@@ -254,7 +241,7 @@ const showForm = computed(()=>store.payload.type===null? true : [1,8].includes(s
                 />
               </n-form-item>
             </div>
-            <div class="col-span-6">
+            <div class="col-span-12 md:col-span-6 lg:col-span-6">
               <n-form-item :label="$t(`documentPage.form.type`)" path="type">
                 <n-select
                     v-model:value="store.payload.type"
@@ -267,7 +254,7 @@ const showForm = computed(()=>store.payload.type===null? true : [1,8].includes(s
                 />
               </n-form-item>
             </div>
-            <div class="col-span-4">
+            <div class="col-span-12 md:col-span-6 lg:col-span-4">
               <n-form-item :label="$t(`documentPage.form.contractDate`)" path="contract_date">
                 <n-date-picker
                     class="w-full"
@@ -278,8 +265,6 @@ const showForm = computed(()=>store.payload.type===null? true : [1,8].includes(s
                 />
               </n-form-item>
             </div>
-
-
           </div>
         </div>
 
@@ -306,7 +291,7 @@ const showForm = computed(()=>store.payload.type===null? true : [1,8].includes(s
                   </n-checkbox>
                 </div>
                 <template v-if="store.payload.position_status && showCheckBox">
-                  <div class="col-span-4">
+                  <div class="col-span-12 md:col-span-6 lg:col-span-4">
                     <n-form-item :label="$t(`documentPage.form.position`)" path="position_id">
                       <n-select
                           v-model:value="store.payload.position_id"
@@ -321,7 +306,7 @@ const showForm = computed(()=>store.payload.type===null? true : [1,8].includes(s
                   </div>
                 </template>
                 <template v-else>
-                  <div class="col-span-6">
+                  <div class="col-span-12 md:col-span-6 lg:col-span-6">
                     <n-form-item :label="$t(`documentPage.form.department`)" path="department_id">
                       <UIDepartment
                           :modelV="store.payload.department_id"
@@ -348,7 +333,7 @@ const showForm = computed(()=>store.payload.type===null? true : [1,8].includes(s
                   </div>
                 </template>
               </template>
-              <div class="col-span-4">
+              <div class="col-span-12 md:col-span-6 lg:col-span-4">
                 <n-form-item :label="$t(`documentPage.form.group`)" path="group">
                   <n-select
                       v-model:value="store.payload.group"
@@ -362,7 +347,7 @@ const showForm = computed(()=>store.payload.type===null? true : [1,8].includes(s
                   />
                 </n-form-item>
               </div>
-              <div class="col-span-4">
+              <div class="col-span-12 md:col-span-6 lg:col-span-4">
                 <n-form-item :label="$t(`documentPage.form.rank`)" path="rank">
                   <n-select
                       v-model:value="store.payload.rank"
@@ -376,7 +361,7 @@ const showForm = computed(()=>store.payload.type===null? true : [1,8].includes(s
                   />
                 </n-form-item>
               </div>
-              <div class="col-span-4">
+              <div class="col-span-12 md:col-span-6 lg:col-span-4">
                 <n-form-item :label="$t(`documentPage.form.rate`)" path="rate">
                   <n-input-number
                       :max="1"
@@ -389,7 +374,7 @@ const showForm = computed(()=>store.payload.type===null? true : [1,8].includes(s
                   />
                 </n-form-item>
               </div>
-              <div class="col-span-4">
+              <div class="col-span-12 md:col-span-6 lg:col-span-4">
                 <n-form-item :label="$t(`documentPage.form.salary`)" path="salary">
                   <n-input
                       class="w-full"
@@ -404,7 +389,7 @@ const showForm = computed(()=>store.payload.type===null? true : [1,8].includes(s
                   </n-input>
                 </n-form-item>
               </div>
-              <div class="col-span-4">
+              <div class="col-span-12 md:col-span-6 lg:col-span-4">
                 <n-form-item :label="$t(`documentPage.form.schedule_id`)" path="schedule_id">
                   <n-select
                       v-model:value="store.payload.schedule_id"
@@ -419,7 +404,7 @@ const showForm = computed(()=>store.payload.type===null? true : [1,8].includes(s
                   />
                 </n-form-item>
               </div>
-              <div class="col-span-4"
+              <div class="col-span-12 md:col-span-6 lg:col-span-4"
                    v-if="showPositionDate"
               >
                 <n-form-item :label="$t(`documentPage.form.position_date`)" path="position_date">
@@ -433,7 +418,7 @@ const showForm = computed(()=>store.payload.type===null? true : [1,8].includes(s
                 </n-form-item>
               </div>
             </template>
-            <div  v-if="[12,13].includes(store.payload.type)" class="col-span-4"
+            <div  v-if="[12,13].includes(store.payload.type)" class="col-span-12 md:col-span-6 lg:col-span-4"
             >
               <n-form-item :label="$t(`documentPage.form.contract_to_date`)" path="contract_to_date">
                 <n-date-picker
@@ -491,7 +476,7 @@ const showForm = computed(()=>store.payload.type===null? true : [1,8].includes(s
         </div>
         <div v-if="store.payload.command_status" class="col-span-12 border border-dashed p-2 rounded-xl border-surface-line bg-surface-ground mt-4">
           <div class="grid grid-cols-12 gap-x-4">
-            <div class="col-span-6" >
+            <div class="col-span-12 md:col-span-6 lg:col-span-6" >
               <n-form-item :label="$t(`documentPage.form.command_type`)" path="command_type">
                 <n-select
                     :disabled="!Boolean(store.payload.type)"
@@ -506,7 +491,7 @@ const showForm = computed(()=>store.payload.type===null? true : [1,8].includes(s
                 />
               </n-form-item>
             </div>
-            <div class="col-span-3">
+            <div class="col-span-12 md:col-span-6 lg:col-span-3">
               <n-form-item :label="$t(`documentPage.command.form.command_number`)" path="command_number">
                 <n-input
                     class="w-full"
@@ -517,7 +502,7 @@ const showForm = computed(()=>store.payload.type===null? true : [1,8].includes(s
               </n-form-item>
 
             </div>
-            <div class="col-span-3">
+            <div class="col-span-12 md:col-span-6 lg:col-span-3">
               <n-form-item :label="$t(`documentPage.command.form.command_date`)" path="command_date">
                 <n-date-picker
                     class="w-full"

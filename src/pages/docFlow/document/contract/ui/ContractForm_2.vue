@@ -71,7 +71,7 @@ const onChangeStructure = (v)=>{
 <!--            </n-form-item>-->
 <!--          </div>-->
 <!--        </template>-->
-        <div class="col-span-6">
+        <div class="col-span-12 md:col-span-6">
           <n-form-item :label="$t(`documentPage.form.department`)" path="department_id">
             <UIDepartment
                 :modelV="store.payload.department_id"
@@ -82,7 +82,7 @@ const onChangeStructure = (v)=>{
             />
           </n-form-item>
         </div>
-        <div class="col-span-6">
+        <div class="col-span-12 md:col-span-6">
           <n-form-item :label="$t(`documentPage.form.position`)" path="department_position_id">
             <n-select
                 :disabled="!Boolean(store.payload.department_id)"
@@ -97,7 +97,7 @@ const onChangeStructure = (v)=>{
           </n-form-item>
         </div>
 
-        <div class="col-span-3">
+        <div class="col-span-12 md:col-span-6 lg:col-span-3">
           <n-form-item :label="$t(`documentPage.form.group`)" path="group">
             <n-select
                 v-model:value="store.payload.group"
@@ -111,7 +111,7 @@ const onChangeStructure = (v)=>{
             />
           </n-form-item>
         </div>
-        <div class="col-span-3">
+        <div class="col-span-12 md:col-span-6 lg:col-span-3">
           <n-form-item :label="$t(`documentPage.form.rank`)" path="rank">
             <n-select
                 v-model:value="store.payload.rank"
@@ -125,7 +125,7 @@ const onChangeStructure = (v)=>{
             />
           </n-form-item>
         </div>
-        <div class="col-span-2">
+        <div class="col-span-12 md:col-span-6 lg:col-span-2">
           <n-form-item
               :label="$t(`documentPage.form.rate`)"
               :path="(store.payload.position_status && (store.payload.type === 2))? 'rate_no':'rate'"
@@ -143,7 +143,7 @@ const onChangeStructure = (v)=>{
             />
           </n-form-item>
         </div>
-        <div class="col-span-2">
+        <div class="col-span-12 md:col-span-6 lg:col-span-2">
           <n-form-item :label="$t(`documentPage.form.salary`)" path="salary">
             <n-input
                 class="w-full"
@@ -158,7 +158,7 @@ const onChangeStructure = (v)=>{
             </n-input>
           </n-form-item>
         </div>
-        <div class="col-span-2">
+        <div class="col-span-12 md:col-span-6 lg:col-span-2">
           <n-form-item :label="$t(`documentPage.form.tableNumber`)" path="table_number">
             <n-input
                 class="w-full"

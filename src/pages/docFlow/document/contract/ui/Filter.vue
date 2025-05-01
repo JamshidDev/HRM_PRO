@@ -13,6 +13,7 @@ const onAdd = ()=>{
   store.activeTab = 1
   store.visible = true
   componentStore.worker = null
+  componentStore.selectedWorker = null
   componentStore.isSelectedWorker = false
 }
 

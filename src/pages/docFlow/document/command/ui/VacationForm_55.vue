@@ -119,8 +119,6 @@ onMounted(()=>{
         {{$t('documentPage.command.lastVacation')}}</n-button>
     </div>
 
-
-
     <div class="col-span-12 flex justify-between mb-2">
       <n-button type="info" secondary size="tiny">
         <template #icon>
@@ -139,7 +137,7 @@ onMounted(()=>{
         </template>
         {{$t('documentPage.command.form.removeWorker')}}</n-button>
     </div>
-    <div class="col-span-3">
+    <div class="col-span-12 md:col-span-6 lg:col-span-3">
       <n-form-item
           :show-feedback="false"
           :label="$t(`commandPage.form_55.from`)" path="from">
@@ -151,7 +149,7 @@ onMounted(()=>{
         />
       </n-form-item>
     </div>
-    <div class="col-span-3">
+    <div class="col-span-12 md:col-span-6 lg:col-span-3">
       <n-form-item
           :show-feedback="false"
           :label="$t(`commandPage.form_55.from_time`)" path="from_time">
@@ -163,7 +161,7 @@ onMounted(()=>{
             format="h:mm a" />
       </n-form-item>
     </div>
-    <div class="col-span-3">
+    <div class="col-span-12 md:col-span-6 lg:col-span-3">
       <n-form-item
           :show-feedback="false"
           :label="$t(`commandPage.form_55.to`)" path="to">
@@ -175,7 +173,7 @@ onMounted(()=>{
         />
       </n-form-item>
     </div>
-    <div class="col-span-3">
+    <div class="col-span-12 md:col-span-6 lg:col-span-3">
       <n-form-item
           :show-feedback="false"
           :label="$t(`commandPage.form_55.to_time`)" path="to_time">

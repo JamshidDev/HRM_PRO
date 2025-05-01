@@ -1,6 +1,6 @@
 <script setup>
 import {ReceiptAdd24Regular, DocumentCheckmark24Regular, ArrowSyncCheckmark20Filled} from "@vicons/fluent"
-import {NoDataPicture, UIActionButton, UIPagination, UIUser, UIStatus, UIMenuButton} from "@/components/index.js"
+import {NoDataPicture, UIPagination, UIUser, UIStatus, UIMenuButton} from "@/components/index.js"
 import {useContractStore} from "@/store/modules/index.js"
 import Utils from "@/utils/Utils.js"
 

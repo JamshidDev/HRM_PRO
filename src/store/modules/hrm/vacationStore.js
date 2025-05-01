@@ -30,8 +30,13 @@ export const useVacationStore = defineStore('vacationStore', {
     actions:{
         _index(){
             this.loading= true
-            $ApiService.vacationService._index({params:{uuid:this.uuid}}).then((res)=>{
+            const params = {
+                ...this.params,
+                uuid:this.uuid
+            }
+            $ApiService.vacationService._index({params}).then((res)=>{
                 this.list = res.data.data.data
+                this.totalItems = res.data.data.total
             }).finally(()=>{
                 this.loading= false
             })

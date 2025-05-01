@@ -80,6 +80,7 @@ onMounted(()=>{
   store._index()
   store._indexPassport()
   componentStore._enums()
+  componentStore._nationality()
 })
 
 </script>

@@ -38,7 +38,7 @@ const visible = defineModel('visible', {type:Boolean, default:false })
       :default-width="width"
       :placement="placement"
       resizable
-      class="ui-drawer"
+      class="ui-drawer max-w-full"
       :show-mask="showMask"
       :mask-closable="maskClosable"
   >

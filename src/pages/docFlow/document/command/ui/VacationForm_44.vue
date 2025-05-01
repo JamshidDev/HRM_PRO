@@ -116,7 +116,7 @@ defineExpose({
 
 
 
-    <div class="col-span-3">
+    <div class="col-span-12 md:col-span-6 lg:col-span-3">
       <n-form-item :label="$t(`commandPage.form_44.new_date`)" path="new_date">
         <n-date-picker
             class="w-full"
@@ -126,7 +126,7 @@ defineExpose({
         />
       </n-form-item>
     </div>
-    <div class="col-span-3">
+    <div class="col-span-12 md:col-span-6 lg:col-span-3">
       <n-form-item :label="$t(`commandPage.form_44.rest_day`)" path="rest_day">
         <n-input
             class="w-full"
@@ -137,7 +137,7 @@ defineExpose({
         />
       </n-form-item>
     </div>
-    <div class="col-span-6">
+    <div class="col-span-12 md:col-span-6 lg:col-span-6">
       <n-form-item :label="$t(`commandPage.form_44.reason`)" path="reason">
         <n-select
             v-model:value="store.form_44.reason"

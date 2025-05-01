@@ -83,6 +83,10 @@ const onShow = (isOpen) => {
   if (isOpen && componentStore.positionCategory.length === 0) {
     componentStore._enumsAdmin()
   }
+  if(componentStore.structureList.length === 0){
+    componentStore._structures()
+  }
+
 }
 
 const onExport = () => {
@@ -98,9 +102,6 @@ const onSubmitResumeExport = () => {
   exportStore.resumeModalVisible = true
 }
 
-onMounted(()=>{
-  componentStore._structures()
-})
 
 </script>
 
@@ -113,9 +114,7 @@ onMounted(()=>{
       @onClear="clearFilter"
       @show="onShow"
       :show-add-button="false"
-      :popoverStyle="{
-        width:'600px',
-      }"
+
   >
     <template #filterAction>
       <n-button-group
@@ -275,11 +274,10 @@ onMounted(()=>{
                 :ignore-composition="false"
             />
           </div>
-
-
         </div>
         <div class="w-[100px] pl-[20px]">
           <n-slider
+              class="min-h-[200px]"
               v-model:value="store.params.ages"
               @dragend="onChangeAge"
               :marks="marks"
@@ -302,6 +300,3 @@ onMounted(()=>{
   </UIPageFilter>
 </template>
 
-<style scoped>
-
-</style>

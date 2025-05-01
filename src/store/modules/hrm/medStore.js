@@ -25,7 +25,6 @@ export const useMedStore = defineStore('medStore', {
             per_page:10,
             search:null,
         },
-        uuid:null,
         tabs:[
             {
                 id:1,
@@ -41,8 +40,12 @@ export const useMedStore = defineStore('medStore', {
     actions:{
         _index(){
             this.loading= true
-            $ApiService.medService._index({params:{uuid:this.uuid}}).then((res)=>{
+            const params = {
+                ...this.params,
+            }
+            $ApiService.medService._index({params}).then((res)=>{
                 this.list = res.data.data.data
+                this.totalItems = res.data.data.total
             }).finally(()=>{
                 this.loading= false
             })

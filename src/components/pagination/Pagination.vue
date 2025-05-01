@@ -1,5 +1,5 @@
 <template>
-  <div class="grid xl:grid-cols-2 lg:grid-cols-2 grid-cols-1   gap-4 py-4 w-full">
+  <div class="flex flex-wrap justify-center lg:justify-between items-center   gap-4 py-4 w-full">
     <div class="flex xl:justify-start lg:justify-start md:justify-start justify-center text-textColor2">
       <template v-if="!short">
         <span class="font-normal"><span class="font-bold text-primary">{{total }}</span> {{$t('content.fromTa')}} <span class="font-bold text-primary">{{(page -1)*pageSize}}-{{page*pageSize}} </span> {{$t('content.untilShow')}}</span>

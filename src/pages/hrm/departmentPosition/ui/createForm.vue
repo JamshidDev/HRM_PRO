@@ -30,8 +30,8 @@ const onSubmit = ()=>{
       :model="store.payload"
   >
     <div style="min-height:calc(100vh - 120px)">
-      <div class="grid grid-cols-3 gap-x-4 overflow-x-hidden">
-        <n-form-item class="col-span-3" :label="$t(`departmentPositionPage.form.position_id`)" path="position_id">
+      <div class="grid grid-cols-12 gap-x-4 overflow-x-hidden">
+        <n-form-item class="col-span-12" :label="$t(`departmentPositionPage.form.position_id`)" path="position_id">
           <n-select
               v-model:value="store.payload.position_id"
               filterable
@@ -43,7 +43,7 @@ const onSubmit = ()=>{
               :loading="componentStore.positionLoading"
           />
         </n-form-item>
-        <n-form-item class="col-span-3" :label="$t(`departmentPositionPage.form.department_id`)" path="department_id">
+        <n-form-item class="col-span-12" :label="$t(`departmentPositionPage.form.department_id`)" path="department_id">
           <n-select
               v-model:value="store.payload.department_id"
               filterable
@@ -55,7 +55,7 @@ const onSubmit = ()=>{
               :loading="componentStore.departmentLoading"
           />
         </n-form-item>
-        <n-form-item :label="$t(`departmentPositionPage.form.group`)" path="group">
+        <n-form-item class="col-span-12 md:col-span-6 lg:col-span-4" :label="$t(`departmentPositionPage.form.group`)" path="group">
           <n-select
               v-model:value="store.payload.group"
               filterable
@@ -68,7 +68,7 @@ const onSubmit = ()=>{
 
           />
         </n-form-item>
-        <n-form-item :label="$t(`departmentPositionPage.form.rank`)" path="rank">
+        <n-form-item class="col-span-12 md:col-span-6 lg:col-span-4" :label="$t(`departmentPositionPage.form.rank`)" path="rank">
           <n-select
               v-model:value="store.payload.rank"
               filterable
@@ -80,7 +80,7 @@ const onSubmit = ()=>{
               :loading="componentStore.enumLoading"
           />
         </n-form-item>
-        <n-form-item :label="$t(`departmentPositionPage.form.max_rank`)" path="max_rank">
+        <n-form-item class="col-span-12 md:col-span-6 lg:col-span-4" :label="$t(`departmentPositionPage.form.max_rank`)" path="max_rank">
           <n-select
               v-model:value="store.payload.max_rank"
               filterable
@@ -92,7 +92,7 @@ const onSubmit = ()=>{
               :loading="componentStore.enumLoading"
           />
         </n-form-item>
-        <n-form-item :label="$t(`departmentPositionPage.form.rate`)" path="rate">
+        <n-form-item class="col-span-12 md:col-span-6 lg:col-span-4" :label="$t(`departmentPositionPage.form.rate`)" path="rate">
           <n-input
               v-model:value="store.payload.rate"
               type="text"
@@ -100,7 +100,7 @@ const onSubmit = ()=>{
               :placeholder="$t(`departmentPositionPage.form.rate`)"
           />
         </n-form-item>
-        <n-form-item :label="$t(`departmentPositionPage.form.salary`)" path="salary">
+        <n-form-item class="col-span-12 md:col-span-6 lg:col-span-4" :label="$t(`departmentPositionPage.form.salary`)" path="salary">
           <n-input
               v-model:value="store.payload.salary"
               type="text"
@@ -112,7 +112,7 @@ const onSubmit = ()=>{
             </template>
           </n-input>
         </n-form-item>
-        <n-form-item :label="$t(`departmentPositionPage.form.experience`)" path="experience">
+        <n-form-item class="col-span-12 md:col-span-6 lg:col-span-4" :label="$t(`departmentPositionPage.form.experience`)" path="experience">
           <n-input
               v-model:value="store.payload.experience"
               type="text"
@@ -124,7 +124,7 @@ const onSubmit = ()=>{
             </template>
           </n-input>
         </n-form-item>
-        <n-form-item class="col-span-1" :label="$t(`departmentPositionPage.form.educations`)" path="educations">
+        <n-form-item class="col-span-12 md:col-span-6 lg:col-span-4" :label="$t(`departmentPositionPage.form.educations`)" path="educations">
           <n-select
               v-model:value="store.payload.education"
               filterable

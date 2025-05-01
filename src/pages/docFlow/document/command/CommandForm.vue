@@ -183,6 +183,11 @@ const onChangeStructure = (v)=>{
     componentStore.workerList = []
     store.workers = []
     store.payload.worker = null
+    store.payload.workers = []
+    fillVacation()
+    fillVacation55()
+    fillVacation62()
+
     componentStore.workerParams.organization_id= v[0].id
     componentStore._workers()
   }
@@ -381,7 +386,7 @@ onMounted(()=>{
 <!--      Command header-->
       <div class="col-span-12">
         <div class="grid grid-cols-12 gap-x-4 border border-surface-line border-dashed p-2 rounded-md bg-surface-ground">
-          <div class="col-span-2">
+          <div class="col-span-12  md:col-span-6 lg:col-span-2">
             <n-form-item :label="$t(`documentPage.command.form.command_number`)" path="command_number">
               <n-input
                   class="w-full"
@@ -392,7 +397,7 @@ onMounted(()=>{
             </n-form-item>
 
           </div>
-          <div class="col-span-2">
+          <div class="col-span-12  md:col-span-6 lg:col-span-2">
             <n-form-item :label="$t(`documentPage.command.form.command_date`)" path="command_date">
               <n-date-picker
                   class="w-full"
@@ -403,7 +408,7 @@ onMounted(()=>{
               />
             </n-form-item>
           </div>
-          <div class="col-span-8">
+          <div class="col-span-12 lg:col-span-8">
             <n-form-item :label="$t(`documentPage.command.form.type`)" path="command_type">
               <n-select
                   v-model:value="store.payload.command_type"
@@ -424,7 +429,7 @@ onMounted(()=>{
 
       <div class="col-span-12">
         <div class="grid grid-cols-12 gap-x-4 border border-surface-line border-dashed p-2 rounded-md bg-surface-ground mt-6">
-          <div class="col-span-6 flex">
+          <div class="col-span-12 md:col-span-6 flex">
             <n-form-item class="w-full" :label="$t(`documentPage.form.organization`)" path="organization_id">
               <UIStructure
                   :modelV="store.payload.organization_id"
@@ -435,7 +440,7 @@ onMounted(()=>{
               />
             </n-form-item>
           </div>
-          <div class="col-span-6 flex">
+          <div class="col-span-12 md:col-span-6 flex">
             <template v-if="isSingleSelect">
               <n-form-item class="w-full" :label="$t(`documentPage.form.worker`)" path="worker">
                 <n-select

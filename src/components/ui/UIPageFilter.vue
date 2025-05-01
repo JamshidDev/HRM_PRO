@@ -97,7 +97,7 @@ const addEvent = ()=>{
             trigger="click"
             scrollable
             placement="bottom"
-            class="w-full h-[400px]"
+            class="max-w-full min-w-[360px] h-[400px]"
 
         >
           <template #trigger>
