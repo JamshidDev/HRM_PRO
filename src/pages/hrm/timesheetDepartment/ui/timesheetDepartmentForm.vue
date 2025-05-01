@@ -1,10 +1,8 @@
 <script setup>
-import i18n from "@/i18n/index.js";
 import {useComponentStore, useTimesheetDepartmentStore} from "@/store/modules";
-import {UIStructure} from "@/components/index.js";
+import {UISelect} from "@/components/index.js";
 import UIDepartment from "@/components/ui/UIDepartment.vue"
 import ValidationRules from "@/utils/validationRules.js";
-const t = i18n.global.t
 
 const store = useTimesheetDepartmentStore()
 const componentStore = useComponentStore()
@@ -31,6 +29,12 @@ const onSubmit = ()=>{
   })
 }
 
+onMounted(()=>{
+  if(componentStore.structureList.length === 0){
+    componentStore._structures()
+  }
+})
+
 </script>
 <template>
   <n-form
@@ -50,13 +54,16 @@ const onSubmit = ()=>{
             path="organizations"
             rule-path="requiredMultiSelectField"
         >
-          <UIStructure
+          <UISelect
+              :options="componentStore.structureList"
               :modelV="store.payload.organizations"
+              @updateModel="changeOrgs"
               :checkedVal="store.structureCheck"
               @updateCheck="(v)=>store.structureCheck=v"
-              @updateModel="changeOrgs"
+              :loading="componentStore.structureLoading"
               :multiple="false"
           />
+
         </n-form-item>
 
         <template v-if="item.type === 'department'">

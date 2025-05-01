@@ -1,7 +1,7 @@
 <script setup>
 import validationRules from "@/utils/validationRules.js";
 import {useOrganizationLeaderStore, useComponentStore} from "@/store/modules/index.js";
-import {UIStructure} from "@/components/index.js"
+import {UISelect} from "@/components/index.js"
 import PhoneInput from './PhoneInput.vue'
 
 const formRef = ref(null)
@@ -45,6 +45,12 @@ const workerRenderValue = ({option}) => {
   ];
 }
 
+onMounted(()=>{
+  if(componentStore.structureList.length === 0){
+    componentStore._structures()
+  }
+})
+
 </script>
 
 <template>
@@ -57,11 +63,14 @@ const workerRenderValue = ({option}) => {
 
     <div style="min-height:calc(100vh - 120px)">
       <n-form-item v-if="store.visibleType" :label="$t(`content.organization`)" path="organization_id" rule-path="requiredMultiSelectField">
-        <UIStructure
+        <UISelect
+            :options="componentStore.structureList"
             :modelV="store.payload.organization_id"
             :checkedVal="store.structureCheck"
-            @updateCheck="(v)=>store.structureCheck=v"
             @updateModel="changeOrg"
+            @updateCheck="(v)=>store.structureCheck=v"
+            :loading="componentStore.structureLoading"
+            @onSubmit="filterEvent"
             :multiple="false"
         />
       </n-form-item>

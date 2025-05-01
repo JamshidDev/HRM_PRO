@@ -1,5 +1,5 @@
 <script setup>
-import {UIPageFilter, UIStructure} from "@/components/index.js"
+import {UIPageFilter} from "@/components/index.js"
 import {useCommandStore, useComponentStore} from "@/store/modules/index.js"
 import {useAppSetting} from "@/utils/index.js"
 

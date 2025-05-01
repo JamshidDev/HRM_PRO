@@ -1,5 +1,5 @@
 <script setup>
-import {UIPageFilter, UISelect, UIStructure} from "@/components/index.js"
+import {UIPageFilter, UISelect} from "@/components/index.js"
 import {useComponentStore, useDepartmentStore} from "@/store/modules/index.js"
 
 const componentStore = useComponentStore()
@@ -41,8 +41,14 @@ const onLevel = ()=>{
   if(store.levelList.length === 0){
     store._level()
   }
-
 }
+
+const onShow = () => {
+  if(componentStore.structureList.length === 0){
+    componentStore._structures()
+  }
+}
+
 
 </script>
 
@@ -54,6 +60,7 @@ const onLevel = ()=>{
       :searchLoading="store.loading"
       :filter-count="filterCount"
       @onClear="resetFilter"
+      @show="onShow"
   >
     <template #filterContent>
       <div class="w-full grid grid-cols-12">

@@ -4,7 +4,7 @@ import {useCommandStore, useComponentStore} from "@/store/modules/index.js"
 import {NAvatar} from "naive-ui"
 import Utils from "@/utils/Utils.js"
 import VacationForm_41 from "@/pages/docFlow/document/command/ui/VacationForm_41.vue"
-import {UIStructure} from "@/components/index.js"
+import {UISelect} from "@/components/index.js"
 import EmptyForm from "@/pages/docFlow/document/command/ui/EmptyForm.vue"
 import CancelForm_32 from "@/pages/docFlow/document/command/ui/CancelForm_32.vue"
 import VacationForm_44 from "@/pages/docFlow/document/command/ui/VacationForm_44.vue"
@@ -371,6 +371,9 @@ watchEffect(()=>{
 onMounted(()=>{
   componentStore._commandTypes()
   store.resetForm()
+  if(componentStore.structureList.length === 0){
+    componentStore._structures()
+  }
 })
 </script>
 
@@ -431,11 +434,13 @@ onMounted(()=>{
         <div class="grid grid-cols-12 gap-x-4 border border-surface-line border-dashed p-2 rounded-md bg-surface-ground mt-6">
           <div class="col-span-12 md:col-span-6 flex">
             <n-form-item class="w-full" :label="$t(`documentPage.form.organization`)" path="organization_id">
-              <UIStructure
+              <UISelect
+                  :options="componentStore.structureList"
                   :modelV="store.payload.organization_id"
                   @updateModel="onChangeStructure"
                   :checkedVal="store.structureCheck"
                   @updateCheck="(v)=>store.structureCheck=v"
+                  :loading="componentStore.structureLoading"
                   :multiple="false"
               />
             </n-form-item>

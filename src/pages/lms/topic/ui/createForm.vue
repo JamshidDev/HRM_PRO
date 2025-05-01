@@ -1,5 +1,5 @@
 <script setup>
-import {UIStructure, UISelect} from "@/components/index.js"
+import {UISelect} from "@/components/index.js"
 import validationRules from "@/utils/validationRules.js";
 const formRef = ref(null)
 import {useTopicStore, useComponentStore} from "@/store/modules/index.js";
@@ -64,15 +64,8 @@ onMounted(()=>{
               @updateModel="(v)=>store.payload.organizations=v"
               :checkedVal="store.structureCheck"
               @updateCheck="(v)=>store.structureCheck=v"
-              :multiple="false"
               :loading="componentStore.structureLoading"
           />
-<!--          <UIStructure-->
-<!--              :modelV="store.payload.organizations"-->
-<!--              :checkedVal="store.structureCheck"-->
-<!--              @updateCheck="(v)=>store.structureCheck=v"-->
-<!--              @updateModel="(v)=>store.payload.organizations=v"-->
-<!--          />-->
         </n-form-item>
       </div>
 

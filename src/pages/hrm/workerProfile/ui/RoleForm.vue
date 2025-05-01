@@ -1,6 +1,6 @@
 <script setup>
 import validationRules from "@/utils/validationRules.js";
-import {UIStructure} from "@/components/index.js"
+import {UISelect} from "@/components/index.js"
 const route = useRoute()
 const formRef = ref(null)
 import {useComponentStore, useWorkerProfileStore} from "@/store/modules/index.js"
@@ -27,6 +27,9 @@ onMounted(()=>{
   if(componentStore.roles.length === 0){
     componentStore._enums()
   }
+  if(componentStore.structureList.length === 0){
+    componentStore._structures()
+  }
 })
 
 
@@ -40,13 +43,17 @@ onMounted(()=>{
   >
     <div class="pb-[60px]">
       <n-form-item class="w-full" :label="$t(`documentPage.form.organization`)" path="organization_id">
-        <UIStructure
+        <UISelect
+            :options="componentStore.structureList"
             :modelV="store.rolePayload.organization_id"
             @updateModel="(v)=>store.rolePayload.organization_id=v"
             :checkedVal="store.structureCheck"
             @updateCheck="(v)=>store.structureCheck=v"
+            :loading="componentStore.structureLoading"
+            @onSubmit="filterEvent"
             :multiple="false"
         />
+
       </n-form-item>
       <n-form-item class="w-full" :label="$t(`content.role`)" path="role">
         <n-select
