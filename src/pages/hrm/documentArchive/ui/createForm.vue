@@ -13,7 +13,7 @@ const componentStore = useComponentStore()
 const onSubmit = ()=>{
   formRef.value?.validate((error)=>{
     if(!error) {
-      console.log(store.payload)
+      console.log(store.payload.description)
       const formData = new FormData()
       formData.append('visibility_type', store.payload.visibility_type)
       formData.append('title', store.payload.title)
@@ -87,7 +87,7 @@ onMounted(()=>{
       </n-form-item>
       <n-form-item :label="$t(`documentArchive.form.description`)" path="description">
         <n-input
-            v-model:value="store.payload.description"
+            v-model:value.trim="store.payload.description"
             type="textarea"
             :placeholder="$t(`content.enterField`)"
         />
@@ -116,7 +116,7 @@ onMounted(()=>{
             value-field="id"
         />
       </n-form-item>
-      <n-form-item :label="$t(`documentArchive.form.document_date`)" path="birthday">
+      <n-form-item :label="$t(`documentArchive.form.document_date`)" path="document_date">
         <n-date-picker
             class="w-full"
             v-model:value="store.payload.document_date"

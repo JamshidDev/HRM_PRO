@@ -14,6 +14,7 @@ import VacationForm_49 from "@/pages/docFlow/document/command/ui/VacationForm49.
 import VacationForm_48 from "@/pages/docFlow/document/command/ui/VacationForm_48.vue"
 import VacationForm_55 from "@/pages/docFlow/document/command/ui/VacationForm_55.vue"
 import VacationForm_62 from "@/pages/docFlow/document/command/ui/VacationForm_62.vue"
+import CommandFrom_51 from "./ui/CommandForm_51.vue"
 import {useAppSetting} from "@/utils/index.js"
 
 
@@ -24,7 +25,7 @@ const componentStore = useComponentStore()
 
 // command ids of only single select
 const commandIdList = [32,33,34,35,36,37,38,39]
-const singleSelectCommands = [32,33,34,35,36,37,38,39, 44,43,45,49,48]
+const singleSelectCommands = [32,33,34,35,36,37,38,39, 44,43,45,49,48,51,52,53,54]
 
 const formRef = ref(null)
 const confirmationList = ref([])
@@ -38,7 +39,7 @@ const vacationForm_48 = ref(null)
 const vacationForm_49 = ref(null)
 const vacationForm_55 = ref(null)
 const vacationForm_62 = ref(null)
-
+const vacationForm_51 = ref(null)
 
 const onFocusConf = ()=>{
   componentStore._confirmations()
@@ -140,6 +141,9 @@ const onSubmit = ()=>{
       }
       else if(store.payload.command_type === 62 || store.payload.command_type === 61){
         validate =await vacationForm_62.value?.onSubmit(mainData)
+      }
+      else if([51,52,53,54].includes(store.payload.command_type)){
+        validate =await vacationForm_51.value?.onSubmit(mainData)
       }
 
 
@@ -516,6 +520,10 @@ onMounted(()=>{
         </template>
         <template v-else-if="store.payload.command_type === 62 || store.payload.command_type === 61">
           <VacationForm_62 ref="vacationForm_62" />
+        </template>
+
+        <template v-else-if="[51,52,53,54].includes(store.payload.command_type)">
+          <CommandFrom_51 ref="vacationForm_51" />
         </template>
 
         <template v-else>

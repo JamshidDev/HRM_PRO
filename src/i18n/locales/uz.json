@@ -112,6 +112,8 @@
     "from": "Qachondan",
     "to": "Qachongacha",
     "more": "Ko'proq",
+    "role": "Role",
+    "duration": "Davomiyligi",
     "preparingDocument": "Hujjat tayyorlanmoqda...",
     "later": "Keyinroq"
   },

@@ -209,7 +209,7 @@ onUnmounted(()=>{
                     </n-icon>
                   </template>
                 </n-button>
-                <div>
+                <div class="hidden md:inline-block">
                   <div class="text-gray-600 text-sm uppercase font-medium">{{store.document?.document?.file_name}}</div>
                   <div class="text-xs text-gray-400">{{Utils.timeOnlyDate(store?.document?.document?.created)}}</div>
                 </div>
@@ -229,7 +229,7 @@ onUnmounted(()=>{
             </div>
 
 
-            <div class="w-full flex justify-between" style="height: calc(100vh - 0px)">
+            <div class="w-full flex justify-between" style="height:calc(100vh - 0px)">
               <div class="flex flex-col w-[300px] h-full bg-surface-ground border-r border-surface-line px-2 py-4 relative pt-[70px]">
                 <div class="w-full" style="height: calc(100% - 100px)">
                   <LeftContent/>
@@ -237,9 +237,10 @@ onUnmounted(()=>{
                 <ChatDrawer/>
                 <div v-if="store.permissions?.qrcode" class="bg-gray-300 rounded-xl border border-gray-400 h-[100px]"></div>
               </div>
+
               <div
                   @wheel="onWheelEv"
-                  style="width: calc(100% - 600px)"
+                  style="width: calc(100% - 0px)"
                   class=" h-full flex pt-[50px] overflow-auto"
               >
                 <template v-if="!store.viewerLoading">
@@ -277,9 +278,6 @@ onUnmounted(()=>{
 
 
               </div>
-
-
-
 
               <div class="flex flex-col w-[300px] h-full bg-surface-ground border-l border-surface-line px-2 py-4 pt-[70px]">
                 <div class="w-full" style="height: calc(100% - 110px)">

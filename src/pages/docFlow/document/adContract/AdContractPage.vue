@@ -1,7 +1,7 @@
 <script setup>
 import Table from "./Table.vue"
 import adContractForm from "./adContractForm.vue"
-import {UIDConfirm, UIModal, UIPageFilter, UIPageContent, UIOfficeApp} from "@/components/index.js"
+import {UIDConfirm, UIModal, UIPageContent, UIOfficeApp} from "@/components/index.js"
 import {useAdContractStore, useCommandStore} from "@/store/modules/index.js"
 import {FlowchartCircle20Filled} from "@vicons/fluent"
 import CommandForm from "@/pages/docFlow/document/command/CommandForm.vue"

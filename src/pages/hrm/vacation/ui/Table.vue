@@ -79,6 +79,7 @@ const vacationType =(id)=>{
         <tr>
           <th class="!text-center min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
           <th class="min-w-[200px]">{{$t('confirmationPage.table.worker')}}</th>
+          <th class="min-w-[100px] w-[120px]">{{$t('content.duration')}}</th>
           <th class="min-w-[100px] w-[300px]">{{$t('vacationPage.table.type')}}</th>
           <th class="min-w-[100px] w-[240px]">{{$t('vacationPage.table.duration')}}</th>
           <th class="min-w-[100px] w-[120px]">{{$t('vacationPage.table.workDay')}}</th>
@@ -91,16 +92,23 @@ const vacationType =(id)=>{
           <td>
             <div>
               <UIUser
-                  :short="true"
+                  :short="false"
                   :data="{
                     photo:item?.worker_position?.worker.photo,
                     firstName:item?.worker_position?.worker.first_name,
                     middleName:item?.worker_position?.worker.middle_name,
                     lastName:item?.worker_position?.worker.last_name,
-                    position:$t('vacationPage.table.durationDay',{n:item?.all_day}),
+                    position:item?.worker_position?.post_short_name,
                   }"
               />
             </div>
+          </td>
+          <td>
+            <UIBadge
+                :show-icon="false"
+                :label="item.all_day + ' ' + $t('date.day')"
+                :type="Utils.colorTypes.success"
+            />
           </td>
           <td>
             <UIBadge :label="item.type.name" :type="vacationType(item.type.id)" />

@@ -56,7 +56,7 @@ onMounted(()=>{
       </n-button>
     </n-badge>
     <n-input-group>
-      <n-badge type="success" :value="store.fileShow? 0 :store.document?.files" class="w-full">
+      <n-badge type="info" :value="store.fileShow? 0 :store.document?.files" class="w-full">
         <n-button type="primary" secondary  style="width:100%" @click="getFiles" :loading="store.fileLoading">
           <template #icon>
             <n-icon size="20">

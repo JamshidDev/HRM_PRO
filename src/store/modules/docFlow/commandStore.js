@@ -58,6 +58,12 @@ export const useCommandStore = defineStore('commandStore', {
             to:null,
             work_day:null,
         },
+        form_51:{
+            from:null,
+            to:null,
+            work_day:null,
+            reason:null,
+        },
         params:{
             page:1,
             per_page:10,

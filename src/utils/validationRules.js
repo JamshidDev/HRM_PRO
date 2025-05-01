@@ -1128,6 +1128,11 @@ export default {
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
+        reason:{
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
     },
     languagePage:{
         language_id:{
