@@ -1,5 +1,5 @@
 <script setup>
-import {UIStructure,} from "@/components/index.js"
+import {UISelect} from "@/components/index.js"
 import UIHelper from "@/utils/UIHelper.js"
 import validationRules from "@/utils/validationRules.js";
 const formRef = ref(null)
@@ -169,6 +169,9 @@ onMounted(()=>{
    store.organization = props.organization
    componentStore._adContractType(componentStore.workerList[0].contractTypeId)
  }
+  if(componentStore.structureList.length === 0){
+    componentStore._structures()
+  }
 
 })
 
@@ -197,13 +200,15 @@ const showForm = computed(()=>store.payload.type===null? true : [1,8].includes(s
           <div class="grid grid-cols-12 gap-x-4 border border-surface-line border-dashed p-2 rounded-md bg-surface-ground mt-6 mb-4">
             <div class="col-span-12 md:col-span-6 flex">
               <n-form-item class="w-full" :label="$t(`documentPage.form.organization`)" path="organization_id">
-                <UIStructure
+                <UISelect
+                    :options="componentStore.structureList"
                     :modelV="store.organization"
                     @updateModel="onChangeOrganization"
                     :checkedVal="store.structureCheck2"
                     @updateCheck="(v)=>store.structureCheck2=v"
-                    :multiple="false"
+                    :loading="componentStore.structureLoading"
                     :disabled="organization.length>0"
+                    :multiple="false"
                 />
               </n-form-item>
             </div>
@@ -276,13 +281,16 @@ const showForm = computed(()=>store.payload.type===null? true : [1,8].includes(s
               <template  v-if="store.payload.type === 8">
                 <div class="col-span-12">
                   <n-form-item :label="$t(`documentPage.form.organization`)" path="organization_id">
-                    <UIStructure
+                    <UISelect
+                        :options="componentStore.structureList"
                         :modelV="store.payload.organization_id"
                         @updateModel="onChangeStructure"
                         :checkedVal="store.structureCheck"
                         @updateCheck="(v)=>store.structureCheck=v"
+                        :loading="componentStore.structureLoading"
                         :multiple="false"
                     />
+
                   </n-form-item>
                 </div>
                 <div v-if="showCheckBox" class="col-span-12 flex justify-end">

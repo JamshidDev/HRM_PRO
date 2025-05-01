@@ -3,7 +3,7 @@ import {useCommandStore, useComponentStore} from "@/store/modules/index.js"
 import {PersonNote20Regular, DismissCircle16Regular, Eye24Regular} from "@vicons/fluent"
 import Utils from "../../../../../utils/Utils.js"
 import i18n from "@/i18n/index.js"
-import {UIStructure,UISelect} from "@/components/index.js"
+import {UISelect} from "@/components/index.js"
 
 const store = useCommandStore()
 const componentStore = useComponentStore()
@@ -96,6 +96,9 @@ defineExpose({
 
 onMounted(()=>{
   componentStore._enums()
+  if(componentStore.structureList.length === 0){
+    componentStore._structures()
+  }
 })
 
 
@@ -231,11 +234,14 @@ onMounted(()=>{
         <n-form-item
             :show-feedback="false"
             :label="$t(`commandPage.form_62.to_organization`)" path="to_organization">
-          <UIStructure
+          <UISelect
+              :options="componentStore.structureList"
               :modelV="item.work_place_id"
               @updateModel="onChangeStructure($event, item.id)"
               :checkedVal="item.orgCheck"
               @updateCheck="(v)=>item.orgCheck=v"
+              :loading="componentStore.structureLoading"
+              @onSubmit="filterEvent"
               :multiple="false"
           />
         </n-form-item>

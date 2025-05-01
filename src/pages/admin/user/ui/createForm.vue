@@ -2,9 +2,10 @@
 import validationRules from "@/utils/validationRules.js";
 const formRef = ref(null)
 import {useUserStore, useComponentStore} from "@/store/modules/index.js";
-import {UIStructure, UIMenuButton} from "@/components/index.js"
+import {UIMenuButton, UISelect} from "@/components/index.js"
 import Utils from "@/utils/Utils.js"
 
+const componentStore = useComponentStore()
 const store = useUserStore()
 
 const onSubmit = ()=>{
@@ -35,7 +36,9 @@ const onSelect = (v)=>{
 }
 
 onMounted(()=>{
-
+  if(componentStore.structureList.length === 0){
+    componentStore._structures()
+  }
 })
 </script>
 
@@ -47,11 +50,13 @@ onMounted(()=>{
   >
     <div style="min-height:calc(100vh - 120px)">
       <n-form-item class="w-full mr-4" :label="$t(`documentPage.form.organization`)" path="organization_id">
-        <UIStructure
+        <UISelect
+            :options="componentStore.structureList"
             :modelV="store.payload.organization_id"
             @updateModel="(v)=>store.payload.organization_id=v"
             :checkedVal="store.structureCheck"
             @updateCheck="(v)=>store.structureCheck=v"
+            :loading="componentStore.structureLoading"
             :multiple="false"
         />
       </n-form-item>

@@ -1,5 +1,5 @@
 <script setup>
-import {UIStructure} from "@/components/index.js"
+import {UISelect} from "@/components/index.js"
 import validationRules from "@/utils/validationRules.js";
 const formRef = ref(null)
 import {useTopicStore, useComponentStore} from "@/store/modules/index.js";
@@ -22,7 +22,10 @@ const onSubmit = ()=>{
 
 onMounted(()=>{
   componentStore._enumExam()
-  componentStore._structures()
+  // componentStore._structures()
+  if(componentStore.structureList.length===0){
+    componentStore._structures()
+  }
 })
 
 
@@ -55,11 +58,13 @@ onMounted(()=>{
           />
         </n-form-item>
         <n-form-item :label="$t(`content.workplace`)" path="organizations">
-          <UIStructure
+          <UISelect
+              :options="componentStore.structureList"
               :modelV="store.payload.organizations"
+              @updateModel="(v)=>store.payload.organizations=v"
               :checkedVal="store.structureCheck"
               @updateCheck="(v)=>store.structureCheck=v"
-              @updateModel="(v)=>store.payload.organizations=v"
+              :loading="componentStore.structureLoading"
           />
         </n-form-item>
       </div>

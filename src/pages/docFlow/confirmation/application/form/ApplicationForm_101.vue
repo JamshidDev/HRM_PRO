@@ -1,7 +1,7 @@
 <script setup>
 import {useComponentStore, useConfApplicationStore} from "@/store/modules/index.js"
 import {NAvatar} from "naive-ui"
-import {UIStructureV2, UIStructure} from "@/components/index.js"
+import {UISelect} from "@/components/index.js"
 import UIHelper from "@/utils/UIHelper.js"
 import {useAppSetting} from "@/utils/index.js"
 
@@ -122,19 +122,13 @@ const disabledDirector = computed(()=>{
   return store.typeList.includes(store.payload.type)?  !Boolean(store.organization_id.length>0) : !Boolean(store.payload.worker_position_id)
 })
 
-
-
-
-
-
-
-
-
 onMounted(()=>{
     if(componentStore.workerApplicationTypes.length === 0){
       componentStore._workerApplicationEnums()
     }
-    // onFocusPosition()
+    if(componentStore.allStructureList.length===0){
+      componentStore._allStructures()
+    }
 })
 
 
@@ -177,11 +171,13 @@ onMounted(()=>{
     </div>
     <div class="col-span-12 pr-3" v-if="!isPosition">
       <n-form-item :label="$t(`documentPage.form.organization`)" path="organization_id">
-        <UIStructureV2
+        <UISelect
+            :options="componentStore.allStructureList"
             :modelV="store.organization_id"
             @updateModel="onChangeStructure"
             :checkedVal="store.structureCheck"
             @updateCheck="(v)=>store.structureCheck=v"
+            :loading="componentStore.allStructureLoading"
             :multiple="false"
         />
       </n-form-item>

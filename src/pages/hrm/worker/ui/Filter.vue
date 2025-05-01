@@ -1,6 +1,6 @@
 <script setup>
 import {useComponentStore, useWorkerStore, useExportStore} from "@/store/modules/index.js"
-import {UIPageFilter, UIStructure, UISelect} from "@/components/index.js"
+import {UIPageFilter, UISelect} from "@/components/index.js"
 import {
   HomePerson20Regular,
   CheckmarkCircle16Regular,
@@ -186,13 +186,6 @@ const onSubmitResumeExport = () => {
                 :loading="componentStore.structureLoading"
                 @onSubmit="filterEvent"
             />
-<!--            <UIStructure-->
-<!--                :modelV="store.params.organizations"-->
-<!--                @updateModel="onChangeStructure"-->
-<!--                :checkedVal="store.structureCheck"-->
-<!--                @updateCheck="(v)=>store.structureCheck=v"-->
-<!--                @onSubmit="filterEvent"-->
-<!--            />-->
           </div>
           <div class="col-span-2">
             <label class="mt-3 text-xs text-gray-500">{{ $t('workerPage.filter.department') }}</label>

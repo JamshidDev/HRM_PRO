@@ -1,7 +1,7 @@
 <script setup>
 import validationRules from "@/utils/validationRules.js";
 import {useComponentStore, useTurnstileOrganizationStore} from "@/store/modules/index.js";
-import {UIStructure} from "@/components/index.js";
+import {UISelect} from "@/components/index.js";
 
 
 const formRef = ref(null)
@@ -23,6 +23,9 @@ const onSubmit = ()=>{
 
 onMounted(() => {
   componentStore._turnstileTerminal()
+  if(componentStore.structureList.length === 0){
+    componentStore._structures()
+  }
 })
 
 
@@ -40,12 +43,14 @@ onMounted(() => {
         path="organization_id"
         rule-path="requiredMultiSelectField"
     >
-      <UIStructure
+      <UISelect
+          :options="componentStore.structureList"
           :modelV="store.payload.organization_id"
           @updateModel="(v)=>store.payload.organization_id=v"
           :checkedVal="store.structureCheck"
           @updateCheck="(v)=>store.structureCheck=v"
           :multiple="false"
+          :loading="componentStore.structureLoading"
       />
     </n-form-item>
     <n-form-item

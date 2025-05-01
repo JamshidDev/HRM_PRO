@@ -4,7 +4,6 @@ import Table from "./ui/Table.vue"
 import Form from "./ui/Form.vue"
 import {useTurnstileBuildingStore} from "@/store/modules/index.js";
 
-
 const store = useTurnstileBuildingStore()
 
 const onAdd = ()=>{

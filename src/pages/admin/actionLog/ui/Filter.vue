@@ -1,5 +1,5 @@
 <script setup>
-import {UIPageFilter, UIStructure} from "@/components/index.js"
+import {UIPageFilter, UISelect} from "@/components/index.js"
 import {useComponentStore, useActionLogStore} from "@/store/modules/index.js"
 import {useDebounceFn} from "@vueuse/core"
 const compStore = useComponentStore()
@@ -40,7 +40,11 @@ const filterEvent = ()=>{
 
 
 
-
+const onShow = () => {
+  if(compStore.structureList.length === 0){
+    compStore._structures()
+  }
+}
 
 onMounted(()=>{
   store._getActionLog()
@@ -49,6 +53,7 @@ onMounted(()=>{
 
 <template>
   <UIPageFilter
+      @show="onShow"
       v-model:search="store.params.search"
       :show-add-button="false"
       :filterCount="filterCount"
@@ -58,11 +63,13 @@ onMounted(()=>{
   >
     <template #filterContent>
       <label class="mt-3 text-xs text-gray-500">{{$t('actionLog.table.structure')}}</label>
-      <UIStructure
+      <UISelect
+          :options="compStore.structureList"
           :modelV="store.params.organizations"
           @updateModel="(v)=>store.params.organizations=v"
           :checkedVal="store.structureCheck"
           @updateCheck="(v)=>store.structureCheck=v"
+          :loading="compStore.structureLoading"
           @onSubmit="filterEvent"
       />
       <template v-if="store.activeTab === 1">

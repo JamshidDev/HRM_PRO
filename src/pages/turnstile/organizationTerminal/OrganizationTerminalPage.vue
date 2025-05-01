@@ -34,15 +34,15 @@ onMounted(() => {
     <!--        <component :is="Component" />-->
     <!--      </transition>-->
     <!--    </router-view>-->
-    <UIDrawer
-        :width="550"
-        :visible="store.visible"
-        @update:visible="(v)=>store.visible = v"
-        :title="store.visibleType? $t('turnstile.buildingPage.create') : $t('turnstile.buildingPage.edit')"
-    >
-      <template #content>
-        <Form/>
-      </template>
-    </UIDrawer>
+<!--    <UIDrawer-->
+<!--        :width="550"-->
+<!--        :visible="store.visible"-->
+<!--        @update:visible="(v)=>store.visible = v"-->
+<!--        :title="store.visibleType? $t('turnstile.buildingPage.create') : $t('turnstile.buildingPage.edit')"-->
+<!--    >-->
+<!--      <template #content>-->
+<!--        <Form/>-->
+<!--      </template>-->
+<!--    </UIDrawer>-->
   </UIPageContent>
 </template>
