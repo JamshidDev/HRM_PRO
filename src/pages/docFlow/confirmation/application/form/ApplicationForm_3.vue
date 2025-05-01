@@ -57,7 +57,7 @@ onMounted(()=>{
       </div>
 
     </div>
-    <div class="col-span-6">
+    <div class="col-span-12 md:col-span-6">
       <n-form-item :label="$t(`applicationPage.form.period_from`)" path="period_from">
         <n-date-picker
             :disabled="disabledPeriod"
@@ -69,7 +69,7 @@ onMounted(()=>{
         />
       </n-form-item>
     </div>
-    <div class="col-span-6">
+    <div class="col-span-12 md:col-span-6">
       <n-form-item :label="$t(`applicationPage.form.period_to`)" path="period_to">
         <n-date-picker
             :disabled="disabledPeriod"
@@ -82,7 +82,7 @@ onMounted(()=>{
       </n-form-item>
     </div>
 
-    <div class="col-span-6">
+    <div class="col-span-12 md:col-span-6">
       <n-form-item :label="$t(`applicationPage.form.from`)" path="from">
         <n-date-picker
             class="w-full"
@@ -93,7 +93,7 @@ onMounted(()=>{
         />
       </n-form-item>
     </div>
-    <div class="col-span-6">
+    <div class="col-span-12 md:col-span-6">
       <n-form-item :label="$t(`applicationPage.form.to`)" path="to">
         <n-date-picker
             class="w-full"

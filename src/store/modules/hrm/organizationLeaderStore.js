@@ -73,6 +73,9 @@ export const useOrganizationLeaderStore = defineStore('organizationLeaderStore',
                 worker_position_id: null,
                 phones: ['']
             }
+        },
+        openVisible(v){
+            this.visible = v
         }
     }
 

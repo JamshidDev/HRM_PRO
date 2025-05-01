@@ -8,7 +8,7 @@ const store = useConfApplicationStore()
 
 <template>
   <div class="grid grid-cols-12 gap-x-4">
-    <div class="col-span-6">
+    <div class="col-span-12 md:col-span-6">
       <n-form-item :label="$t(`applicationPage.form.from`)" path="from">
         <n-date-picker
             class="w-full"
@@ -19,7 +19,7 @@ const store = useConfApplicationStore()
         />
       </n-form-item>
     </div>
-    <div class="col-span-6">
+    <div class="col-span-12 md:col-span-6">
       <n-form-item :label="$t(`applicationPage.form.to`)" path="to">
         <n-date-picker
             class="w-full"
