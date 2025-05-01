@@ -1,5 +1,5 @@
 <script setup>
-import {UIAutoComplete, UIStructure, UIUpload} from "@/components/index.js"
+import {UIAutoComplete, UISelect, UIUpload} from "@/components/index.js"
 import validationRules from "@/utils/validationRules.js";
 const formRef = ref(null)
 import {useMedStore, useComponentStore} from "@/store/modules/index.js";
@@ -84,6 +84,12 @@ const getStatus = ()=>{
   }
 }
 
+onMounted(()=>{
+  if(componentStore.structureList.length === 0){
+    componentStore._structures()
+  }
+})
+
 </script>
 
 <template>
@@ -101,11 +107,14 @@ const getStatus = ()=>{
               <template v-if="item.id === store.tabs[0].id">
 
                 <n-form-item class="w-full mr-4" :label="$t(`documentPage.form.organization`)" path="organization_id">
-                  <UIStructure
+                  <UISelect
+                      :options="componentStore.structureList"
                       :modelV="store.payload.organization_id"
                       @updateModel="onChangeStructure"
                       :checkedVal="store.structureCheck"
                       @updateCheck="(v)=>store.structureCheck=v"
+                      :loading="componentStore.structureLoading"
+                      @onSubmit="filterEvent"
                       :multiple="false"
                   />
                 </n-form-item>

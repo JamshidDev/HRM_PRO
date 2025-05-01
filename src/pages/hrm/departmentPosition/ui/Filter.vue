@@ -1,6 +1,6 @@
 <script setup>
 import {useDepartmentPositionStore, useComponentStore} from "@/store/modules/index.js"
-import {UIPageFilter, UIStructure} from "@/components/index.js"
+import {UIPageFilter, UISelect} from "@/components/index.js"
 import {HomePerson20Regular} from "@vicons/fluent"
 
 const store = useDepartmentPositionStore()
@@ -57,11 +57,19 @@ const onAdd = ()=>{
   store.visibleType = true
   store.visible = true
 }
+
+const onShow = () => {
+  if(componentStore.structureList.length === 0){
+    componentStore._structures()
+  }
+}
+
+
 </script>
 
 <template>
   <UIPageFilter
-
+      @show="onShow"
       :search-loading="store.loading"
       :filter-count="filterCount"
       v-model:search="store.params.search"
@@ -74,13 +82,16 @@ const onAdd = ()=>{
 
     <template #filterContent>
       <label class="mt-3 text-xs text-gray-500">{{ $t('workerPage.filter.organization') }}</label>
-      <UIStructure
+      <UISelect
+          :options="componentStore.structureList"
           :modelV="store.params.organizations"
           @updateModel="onChangeStructure"
           :checkedVal="store.structureCheck"
           @updateCheck="(v)=>store.structureCheck=v"
+          :loading="componentStore.structureLoading"
           @onSubmit="filterEvent"
       />
+
       <label class="mt-3 text-xs text-gray-500">{{ $t('workerPage.filter.department') }}</label>
       <n-select
           :disabled="store.params.organizations.length === 0"

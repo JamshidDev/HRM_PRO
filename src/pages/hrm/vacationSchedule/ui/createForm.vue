@@ -1,10 +1,10 @@
 <script setup>
 import validationRules from "@/utils/validationRules.js";
-import {UIStructure, UIUpload} from "@/components/index.js"
-
-const formRef = ref(null)
+import {UISelect} from "@/components/index.js"
 import {useComponentStore, useVacationScheduleStore} from "@/store/modules/index.js"
 import Utils from "@/utils/Utils.js"
+
+const formRef = ref(null)
 
 const store = useVacationScheduleStore()
 const componentStore = useComponentStore()
@@ -47,7 +47,11 @@ const workerRenderValue = ({option})=>{
   ];
 }
 
-
+onMounted(()=>{
+  if(componentStore.structureList.length === 0){
+    componentStore._structures()
+  }
+})
 </script>
 
 <template>
@@ -59,11 +63,13 @@ const workerRenderValue = ({option})=>{
     <div style="min-height:calc(100vh - 120px)">
       <template v-if="store.visibleType">
         <n-form-item class="w-full" :label="$t(`documentPage.form.organization`)" path="organization_id">
-          <UIStructure
+          <UISelect
+              :options="componentStore.structureList"
               :modelV="store.payload.organization_id"
               @updateModel="onChangeStructure"
               :checkedVal="store.structureCheck"
               @updateCheck="(v)=>store.structureCheck=v"
+              :loading="componentStore.structureLoading"
               :multiple="false"
           />
         </n-form-item>

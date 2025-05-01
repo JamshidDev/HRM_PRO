@@ -1,7 +1,7 @@
 <script setup>
 import validationRules from "@/utils/validationRules.js";
 import {useComponentStore, useTurnstileOrganizationStore, useTurnstileTerminalUserStore} from "@/store/modules/index.js";
-import {UIStructure, NoDataIllustration} from "@/components/index.js";
+import {UISelect, NoDataIllustration} from "@/components/index.js";
 import {Checkmark16Filled, CheckmarkCircle20Filled} from "@vicons/fluent"
 
 const formRef = ref(null)
@@ -74,6 +74,9 @@ const toggleDevice = (v)=>{
 
 onMounted(()=>{
   store._turnstile_devices();
+  if(componentStore.structureList.length === 0){
+    componentStore._structures()
+  }
 })
 
 </script>
@@ -87,11 +90,14 @@ onMounted(()=>{
         class="h-full flex flex-col"
     >
       <n-form-item v-if="store.visibleType" :label="$t(`content.organization`)" path="organization_id" rule-path="requiredMultiSelectField">
-        <UIStructure
+        <UISelect
+            :options="componentStore.structureList"
             :modelV="store.payload.organization_id"
+            @updateModel="changeOrg"
             :checkedVal="store.structureCheck"
             @updateCheck="(v)=>store.structureCheck=v"
-            @updateModel="changeOrg"
+            :loading="componentStore.structureLoading"
+            @onSubmit="filterEvent"
             :multiple="false"
         />
       </n-form-item>

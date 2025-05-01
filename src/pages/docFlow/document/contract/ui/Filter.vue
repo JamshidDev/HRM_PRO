@@ -1,5 +1,5 @@
 <script setup>
-import {UIPageFilter, UIStructure} from "@/components/index.js"
+import {UIPageFilter, UISelect} from "@/components/index.js"
 import { useContractStore, useComponentStore} from "@/store/modules/index.js"
 import {useAppSetting} from "@/utils/index.js"
 
@@ -49,8 +49,10 @@ const beforeShow = (v)=>{
   if(v && componentStore.confirmationStatusList.length === 0){
     componentStore._enumsAdmin()
   }
+  if(componentStore.structureList.length === 0){
+    componentStore._structures()
+  }
 }
-
 
 </script>
 
@@ -63,14 +65,17 @@ const beforeShow = (v)=>{
     :filter-count="filterCount"
     @show="beforeShow"
     @onClear="resetFilter"
+
 >
   <template #filterContent>
     <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{$t('actionLog.table.structure')}}</label>
-    <UIStructure
+    <UISelect
+        :options="componentStore.structureList"
         :modelV="store.params.organizations"
         @updateModel="(v)=>store.params.organizations=v"
         :checkedVal="store.structureCheck2"
         @updateCheck="(v)=>store.structureCheck2=v"
+        :loading="componentStore.structureLoading"
         @onSubmit="filterEvent"
     />
     <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{$t('content.status')}}</label>

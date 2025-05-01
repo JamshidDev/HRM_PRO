@@ -1,6 +1,6 @@
 <script setup>
 import Utils from "@/utils/Utils.js"
-import {UIStructure, UIUpload} from "@/components/index.js"
+import {UIUpload, UISelect} from "@/components/index.js"
 import UIDepartment from "@/components/ui/UIDepartment.vue"
 import {useComponentStore, useContractStore} from "@/store/modules/index.js"
 
@@ -34,6 +34,12 @@ const onChangeStructure = (v)=>{
   }
 }
 
+onMounted(()=>{
+  if(componentStore.structureList.length === 0){
+    componentStore._structures()
+  }
+})
+
 </script>
 
 <template>
@@ -42,11 +48,13 @@ const onChangeStructure = (v)=>{
       <div class="grid grid-cols-12 gap-x-4">
         <div class="col-span-12">
           <n-form-item :label="$t(`documentPage.form.organization`)" path="organization_id">
-            <UIStructure
+            <UISelect
+                :options="componentStore.structureList"
                 :modelV="store.payload.organization_id"
                 @updateModel="onChangeStructure"
                 :checkedVal="store.structureCheck"
                 @updateCheck="(v)=>store.structureCheck=v"
+                :loading="componentStore.structureLoading"
                 :multiple="false"
             />
           </n-form-item>
