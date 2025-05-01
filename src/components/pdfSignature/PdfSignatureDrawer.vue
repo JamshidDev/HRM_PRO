@@ -1,7 +1,7 @@
 <script setup>
 import {Signature20Filled,ArrowSyncCircle16Filled,
   PanelLeftContract20Filled, DocumentEdit24Regular,
-  ClipboardCheckmark20Regular, CalendarCancel20Regular} from "@vicons/fluent"
+  ClipboardCheckmark20Regular, CalendarCancel20Regular, Settings20Regular} from "@vicons/fluent"
 import {UIUser, UILottieReader} from "@/components/index.js"
 import generateFile from "@/assets/json/generateFile.json"
 import {usePdfViewerStore, useSignatureStore, useApplicationStore} from "@/store/modules/index.js"
@@ -197,7 +197,7 @@ onUnmounted(()=>{
         placement="bottom">
       <n-drawer-content class="h-screen" >
         <n-spin v-model:show="store.loading">
-          <div class="w-full h-screen overflow-hidden flex flex-col">
+          <div class="w-full h-screen overflow-hidden flex flex-col relative">
 
             <div class="w-full h-[60px] border-b border-surface-line flex items-center justify-between px-4 fixed top-0 left-0 z-20 bg-surface-section">
               <div class="flex gap-x-4">
@@ -228,9 +228,9 @@ onUnmounted(()=>{
               </div>
             </div>
 
-
             <div class="w-full flex justify-between" style="height:calc(100vh - 0px)">
-              <div class="flex flex-col w-[300px] h-full bg-surface-ground border-r border-surface-line px-2 py-4 relative pt-[70px]">
+
+              <div class="hidden md:flex  flex-col w-[300px] h-full bg-surface-ground border-r border-surface-line px-2 py-4 relative pt-[70px]">
                 <div class="w-full" style="height: calc(100% - 100px)">
                   <LeftContent/>
                 </div>
@@ -240,8 +240,8 @@ onUnmounted(()=>{
 
               <div
                   @wheel="onWheelEv"
-                  style="width: calc(100% - 0px)"
-                  class=" h-full flex pt-[50px] overflow-auto"
+                  style="width: calc(100% - 600px)"
+                  class=" h-full flex pt-[50px] overflow-auto pdf-viewer-box"
               >
                 <template v-if="!store.viewerLoading">
                   <PdfViewer ref="pdfViewerRef"/>
@@ -279,7 +279,7 @@ onUnmounted(()=>{
 
               </div>
 
-              <div class="flex flex-col w-[300px] h-full bg-surface-ground border-l border-surface-line px-2 py-4 pt-[70px]">
+              <div class="hidden md:flex flex-col w-[300px] h-full bg-surface-ground border-l border-surface-line px-2 py-4 pt-[70px]">
                 <div class="w-full" style="height: calc(100% - 110px)">
                   <h3 class="mb-1 text-gray-400 text-xs font-medium uppercase pl-2">{{$t('documentPage.signature.viewer')}}</h3>
                   <ConfirmationList/>
@@ -336,8 +336,13 @@ onUnmounted(()=>{
                     </template>
                   </n-button>
                 </div>
-              </div>w
+              </div>
             </div>
+            <div class="vertical-text absolute z-[999] top-[80px] right-0 text-white px-1 py-2 bg-surface-400 rounded-tl-lg rounded-bl-lg border border-surface-line">
+              <n-icon>
+                <Settings20Regular/>
+              </n-icon>
+              Vertical text</div>
 
           </div>
         </n-spin>
@@ -347,3 +352,17 @@ onUnmounted(()=>{
     <DocumentFileModal @onUpdate="emits('onUpdate')" />
   </div>
 </template>
+
+<style scoped>
+.vertical-text{
+  writing-mode: vertical-rl;
+}
+.pdf-viewer-box{
+  width:calc(100% - 600px) !important;
+}
+@media only screen and (max-width: 769px) {
+    .pdf-viewer-box{
+      width: 100% !important;
+    }
+}
+</style>
