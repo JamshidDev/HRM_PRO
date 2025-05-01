@@ -23,7 +23,7 @@ const componentStore = useComponentStore()
         />
       </n-form-item>
     </div>
-    <div class="col-span-6">
+    <div class="col-span-12 md:col-span-6">
       <n-form-item :label="$t(`applicationPage.form.univer_number`)" path="univer_number">
         <n-input
             class="w-full"
@@ -33,7 +33,7 @@ const componentStore = useComponentStore()
         />
       </n-form-item>
     </div>
-    <div class="col-span-6">
+    <div class="col-span-12 md:col-span-6">
       <n-form-item :label="$t(`applicationPage.form.univer_date`)" path="univer_date">
         <n-date-picker
             class="w-full"

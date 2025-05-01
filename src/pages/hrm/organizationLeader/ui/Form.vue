@@ -54,35 +54,37 @@ const workerRenderValue = ({option}) => {
       :rules="validationRules.common"
       class="h-full flex flex-col"
   >
-    <n-form-item v-if="store.visibleType" :label="$t(`content.organization`)" path="organization_id" rule-path="requiredMultiSelectField">
-      <UIStructure
-          :modelV="store.payload.organization_id"
-          :checkedVal="store.structureCheck"
-          @updateCheck="(v)=>store.structureCheck=v"
-          @updateModel="changeOrg"
-          :multiple="false"
-      />
-    </n-form-item>
-    <n-form-item v-if="store.visibleType" :label="$t(`content.staff`)" path="worker_position_id" rule-path="requiredNumberField">
-      <n-select
-          :disabled="store.payload.organization_id.length === 0"
-          v-model:value="store.payload.worker_position_id"
-          filterable
-          :placeholder="$t(`content.choose`)"
-          :options="componentStore.workerList"
-          label-field="name"
-          value-field="id"
-          :render-label="workerRenderLabel"
-          :render-tag="workerRenderValue"
-          :loading="componentStore.workerLoading"
-          @scroll="componentStore.onScrollWorker"
-          @search="componentStore.onSearchWorker"
-          :reset-menu-on-options-change="false"
-      />
-    </n-form-item>
-    <n-form-item
-        :label="$t('content.phone')"
-        path="phones" :rule="[{
+
+    <div style="min-height:calc(100vh - 120px)">
+      <n-form-item v-if="store.visibleType" :label="$t(`content.organization`)" path="organization_id" rule-path="requiredMultiSelectField">
+        <UIStructure
+            :modelV="store.payload.organization_id"
+            :checkedVal="store.structureCheck"
+            @updateCheck="(v)=>store.structureCheck=v"
+            @updateModel="changeOrg"
+            :multiple="false"
+        />
+      </n-form-item>
+      <n-form-item v-if="store.visibleType" :label="$t(`content.staff`)" path="worker_position_id" rule-path="requiredNumberField">
+        <n-select
+            :disabled="store.payload.organization_id.length === 0"
+            v-model:value="store.payload.worker_position_id"
+            filterable
+            :placeholder="$t(`content.choose`)"
+            :options="componentStore.workerList"
+            label-field="name"
+            value-field="id"
+            :render-label="workerRenderLabel"
+            :render-tag="workerRenderValue"
+            :loading="componentStore.workerLoading"
+            @scroll="componentStore.onScrollWorker"
+            @search="componentStore.onSearchWorker"
+            :reset-menu-on-options-change="false"
+        />
+      </n-form-item>
+      <n-form-item
+          :label="$t('content.phone')"
+          path="phones" :rule="[{
           trigger: [ 'blur'],
           validator() {
             console.log(store.payload.phones)
@@ -90,30 +92,37 @@ const workerRenderValue = ({option}) => {
             return true
           },
         }]">
-      <div class="flex gap-2 flex-wrap">
-        <template v-for="(item, idx) in store.payload.phones"
-                  :key="idx">
-          <div class="grow shrink-0 basis-[200px]">
-            <PhoneInput
-                :phone="store.payload.phones[idx]"
-                @update:value="(v)=>store.payload.phones[idx] = v"
-                :removable="store.payload.phones.length > 1"
-                :addable="store.payload.phones.length < 5 && idx === store.payload.phones.length - 1"
-                @add="store.payload.phones.push('')"
-                @remove="store.payload.phones.splice(idx, 1)"
-            />
+        <div class="flex gap-2 flex-wrap">
+          <template v-for="(item, idx) in store.payload.phones"
+                    :key="idx">
+            <div class="grow shrink-0 basis-[200px]">
+              <PhoneInput
+                  :phone="store.payload.phones[idx]"
+                  @update:value="(v)=>store.payload.phones[idx] = v"
+                  :removable="store.payload.phones.length > 1"
+                  :addable="store.payload.phones.length < 5 && idx === store.payload.phones.length - 1"
+                  @add="store.payload.phones.push('')"
+                  @remove="store.payload.phones.splice(idx, 1)"
+              />
 
-          </div>
+            </div>
 
-        </template>
-      </div>
-    </n-form-item>
-    <div class="mt-auto">
+          </template>
+        </div>
+      </n-form-item>
+    </div>
+
+
+
+    <div class="grid grid-cols-2 gap-2">
+      <n-button @click="store.openVisible(false)" type="error" ghost>
+        {{$t('content.cancel')}}
+      </n-button>
       <n-button
+          @click="onSubmit"
           :loading="store.saveLoading"
-          type="primary"
-          @click="onSubmit">
-        {{ $t('content.save') }}
+          type="primary">
+        {{$t('content.save')}}
       </n-button>
     </div>
   </n-form>

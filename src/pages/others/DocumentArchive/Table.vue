@@ -24,20 +24,19 @@ const downloadFile = (url)=>{
     <div class="w-full"  v-if="store.list.length>0">
       <template v-for="(item, idx) in store.list" :key="idx">
         <div class="w-full max-w-[1200px] mx-auto
-         flex p-4 border border-gray-200 mb-2
+         flex flex-col md:flex-row p-4 border border-gray-200 mb-2 cursor-pointer
           rounded-lg bg-surface-section hover:shadow-sm transition-all">
           <div
-              style="width: calc(100% - 80px)"
-              class="w-full flex flex-col">
-            <div class="flex items-center">
+              class="flex flex-col" style="width: calc(100% - 80px)">
+            <div class="flex items-start mb-2">
               <n-icon size="18" class="mr-1 text-secondary">
                 <CalendarStar20Regular/>
               </n-icon>
               <span class="text-secondary">{{$t('documentArchive.form.title')}}:</span>
-              <span class="font-medium ml-2">{{item.title}}</span>
+              <p class="font-medium ml-2 line-clamp-2">{{item.title}}</p>
             </div>
 
-            <div class="flex items-center">
+            <div class="flex items-start mb-2">
               <n-icon size="18" class="mr-1 text-secondary">
                 <Flag28Regular/>
               </n-icon>
@@ -55,16 +54,16 @@ const downloadFile = (url)=>{
 <!--            </div>-->
 
 
-            <div class="flex items-center">
+            <div class="flex items-start mb-2">
               <n-icon size="18" class="mr-1 text-secondary">
                 <CommentMultiple20Regular/>
               </n-icon>
-              <span class="text-secondary">{{$t('documentArchive.form.description')}}:</span>
-              <span class="font-medium ml-2">{{item?.description}}</span>
+              <span class="text-secondary ">{{$t('documentArchive.form.description')}}:</span>
+              <p class="font-medium ml-2 line-clamp-2">{{item?.description}}</p>
             </div>
 
 
-            <div class="flex items-center">
+            <div class="flex items-start mb-2">
               <n-icon size="18" class="mr-1 text-secondary">
                 <CalendarRtl16Regular/>
               </n-icon>
@@ -73,7 +72,9 @@ const downloadFile = (url)=>{
             </div>
 
           </div>
-          <div class="w-[80px] flex flex-col">
+
+
+          <div class="flex flex-col w-full md:w-[80px]">
             <n-icon size="42" class="mx-auto mt-6 text-success"
             @click="downloadFile(item.file)"
             >
@@ -84,6 +85,7 @@ const downloadFile = (url)=>{
                 @click="downloadFile(item.file)"
             >{{$t('content.download')}}</span>
           </div>
+
          </div>
       </template>
     </div>

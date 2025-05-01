@@ -155,8 +155,9 @@ onMounted(()=>{
 </script>
 
 <template>
-  <n-grid cols="12" x-gap="16px" >
-    <n-grid-item class="min-h-[180px] welcome rounded-lg" :span="8">
+
+  <div class="grid grid-cols-12 gap-4">
+    <div class="col-span-12 md:col-span-8 min-h-[180px] welcome rounded-lg">
       <img alt="stars" class="stars first" :src="stars" />
       <img alt="stars" class="stars middle" :src="stars" />
       <img alt="stars" class="stars last" :src="stars" />
@@ -164,13 +165,14 @@ onMounted(()=>{
         <h1 class="text-white mb-4">{{ $t('solveExamPage.welcomeTitle') }}</h1>
         <n-button @click="onAdd" size="large" class="!bg-white !font-bold">{{$t('applicationPage.addApp')}}</n-button>
       </div>
-    </n-grid-item>
-    <n-grid-item :span="4">
+    </div>
+    <div class="col-span-12 md:col-span-4">
       <div class="w-full border border-surface-line bg-surface-section p-2 rounded-lg">
         <v-chart class="h-[200px]" autoresize :option="contractOption" />
       </div>
-    </n-grid-item>
-  </n-grid>
+    </div>
+
+  </div>
 </template>
 
 <style lang="scss" scoped>
