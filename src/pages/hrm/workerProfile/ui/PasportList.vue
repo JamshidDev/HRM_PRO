@@ -88,11 +88,11 @@ const onDownload = (v)=>{
       </div>
 
       <template v-for="(item, idx) in store.passportList" :key="idx">
-        <div class="col-span-6 flex flex-col">
+        <div class="col-span-12 md:col-span-6 flex flex-col">
           <span class="text-xs text-gray-500">{{$t(`createWorkerPage.form.serial_number`)}}</span>
-          <div class="flex gap-2">
+          <div class="flex gap-2 flex-col md:flex-row">
             <n-form-item
-                class="w-[200px]"
+                class="w-full md:w-[200px]"
                 :show-label="false"
                 :label="$t(`createWorkerPage.form.serial_number`)"
                 path="serial_number">
@@ -105,6 +105,7 @@ const onDownload = (v)=>{
               />
             </n-form-item>
             <n-form-item
+                class="w-full md:w-[80%]"
                 style="width: calc(100% - 200px)"
                 :show-label="false"
                 path="file">
