@@ -15,6 +15,9 @@ import VacationForm_48 from "@/pages/docFlow/document/command/ui/VacationForm_48
 import VacationForm_55 from "@/pages/docFlow/document/command/ui/VacationForm_55.vue"
 import VacationForm_62 from "@/pages/docFlow/document/command/ui/VacationForm_62.vue"
 import CommandFrom_51 from "./ui/CommandForm_51.vue"
+import CommandForm_71 from "./ui/CommandForm_71.vue"
+import CommandForm_72 from "./ui/CommandForm_72.vue"
+import CommandForm_73 from "./ui/CommandForm_73.vue"
 import {useAppSetting} from "@/utils/index.js"
 
 
@@ -40,6 +43,9 @@ const vacationForm_49 = ref(null)
 const vacationForm_55 = ref(null)
 const vacationForm_62 = ref(null)
 const vacationForm_51 = ref(null)
+const vacationForm_71 = ref(null)
+const vacationForm_72 = ref(null)
+const vacationForm_73 = ref(null)
 
 const onFocusConf = ()=>{
   componentStore._confirmations()
@@ -93,6 +99,7 @@ const onChangeWorkers = ()=>{
   generationVacation55()
   generationVacation()
   generationVacation62()
+  generationData()
 }
 
 const onChangeWorker = ()=>{}
@@ -145,6 +152,14 @@ const onSubmit = ()=>{
       else if([51,52,53,54].includes(store.payload.command_type)){
         validate =await vacationForm_51.value?.onSubmit(mainData)
       }
+      else if(store.payload.command_type === 71){
+        validate =await vacationForm_71.value?.onSubmit(mainData)
+      }else if(store.payload.command_type === 72){
+        validate =await vacationForm_72.value?.onSubmit(mainData)
+      }else if(store.payload.command_type === 73){
+        validate =await vacationForm_73.value?.onSubmit(mainData)
+      }
+
 
 
 
@@ -191,6 +206,7 @@ const onChangeStructure = (v)=>{
     fillVacation()
     fillVacation55()
     fillVacation62()
+    generationData(true)
 
     componentStore.workerParams.organization_id= v[0].id
     componentStore._workers()
@@ -222,6 +238,9 @@ const onChangeCommandType = ()=>{
   }
   else if(store.payload.command_type === 62){
     fillVacation62()
+  }
+  else if([71,72,73].includes(store.payload.command_type)){
+    generationData(true)
   }
 
 
@@ -357,6 +376,83 @@ const fillVacation62 = ()=>{
       departmentList:[],
       loading:false,
       lastVacation:null
+    }
+  })
+}
+
+const generationData = (isFill=false)=>{
+
+  if(!store.payload.command_type) return
+  const typeId = store.payload.command_type
+
+  const objectSchema = {
+    '71':{
+      by_whom:null,
+      reason:null,
+      gift:null,
+      gift_type:null,
+    },
+    '72':{
+      reason:null,
+      fine:null,
+      fine_type:null,
+    },
+    '73':{
+      reason:null,
+      type:null,
+      amount:null,
+    },
+  }
+
+
+  if(isFill){
+
+    store.workerData = []
+    store.workerData = store.payload.workers.map((id)=>{
+      const worker = componentStore.workerList.filter(v=>v.id === id)[0]
+      return {
+        worker,
+        id,
+        ...(objectSchema[typeId] || {})
+      }
+    })
+
+  }else{
+
+    const oldValues = store.workerData.map((v)=>v.id)
+    const id = store.payload.workers[store.payload.workers?.length-1]
+    const worker = componentStore.workerList.filter(x=>x.id === id)[0]
+
+    if(!oldValues.includes(id) &&  store.payload.workers.length > store.workerData.length){
+      store.workerData.push({
+        worker,
+        id,
+        ...(objectSchema[typeId] || {})
+      })
+    }
+    else if(store.payload.workers.length < store.workerData.length){
+      store.workerData = store.workerData.filter((a)=>store.payload.workers.includes(a.id))
+    }
+  }
+
+
+
+
+
+
+}
+
+const fillData = ()=>{
+  store.workerData = []
+  store.workerData = store.payload.workers.map((id)=>{
+    const worker = componentStore.workerList.filter(v=>v.id === id)[0]
+    return {
+      worker,
+      id,
+      by_whom:null,
+      reason:null,
+      gift:null,
+      gift_type:null,
     }
   })
 }
@@ -529,6 +625,15 @@ onMounted(()=>{
 
         <template v-else-if="[51,52,53,54].includes(store.payload.command_type)">
           <CommandFrom_51 ref="vacationForm_51" />
+        </template>
+        <template v-else-if="store.payload.command_type === 71">
+          <CommandForm_71 ref="vacationForm_71" />
+        </template>
+        <template v-else-if="store.payload.command_type === 72">
+          <CommandForm_72 ref="vacationForm_72" />
+        </template>
+        <template v-else-if="store.payload.command_type === 73">
+          <CommandForm_73 ref="vacationForm_73" />
         </template>
 
         <template v-else>

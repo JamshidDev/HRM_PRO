@@ -72,9 +72,11 @@ export const useCommandStore = defineStore('commandStore', {
         vacations:[],
         vacations55:[],
         vacations62:[],
+        workerData:[],
         calculateLoading:false,
         vacationLoading:false,
         vacationId:null,
+
     }),
     actions:{
         _index(){

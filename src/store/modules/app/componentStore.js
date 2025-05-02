@@ -30,6 +30,9 @@ export const useComponentStore = defineStore('componentStore', {
         medStatus:[],
         organizationDocumentTypes:[],
         roles:[],
+        giftTypes:[],
+        fineTypes:[],
+        financialAssistance:[],
 
         departmentList:[],
         depParams:{
@@ -255,6 +258,9 @@ export const useComponentStore = defineStore('componentStore', {
                 this.medStatus = res.data.data.med_statuses
                 this.organizationDocumentTypes = res.data.data.organization_document_types
                 this.roles = res.data.data.roles
+                this.giftTypes = res.data.data.gift_types
+                this.financialAssistance = res.data.data.financial_assistance
+                this.fineTypes = res.data.data.fine_types
             }).finally(()=>{
                 this.enumLoading= false
             })

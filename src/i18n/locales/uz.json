@@ -570,6 +570,14 @@
         "calculateTitle": "Hisoblangan ta'til ma'lumotlari. Agarda ularni noto'g'ri deb bilsangiz tahrirlashingiz mumkin",
         "requiredVacationData": "Xodimlarning ta'til ma'lumotlarini kiring!",
         "rest_day": "Qolgan kun",
+        "by_whom": "Kim tomonidan",
+        "reason": "Sababi",
+        "gift_type": "Sovg'a turi",
+        "gift": "Sovg'a nomi",
+        "fine_type": "Jazo turi",
+        "fine": "Jazo nomi",
+        "amount": "Miqdori",
+        "financeType": "Moddiy yordam turi",
         "command_number": "Buyruq raqami"
       }
     },
