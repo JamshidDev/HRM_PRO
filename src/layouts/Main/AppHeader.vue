@@ -23,7 +23,7 @@ const changeSidebarEmit = ()=>{
     <div class="flex items-center">
       <div
           @click="changeSidebarEmit"
-          class="text-surface-300 border border-surface-300 p-1 flex justify-center items-center cursor-pointer rounded">
+          class="text-surface-300 border border-surface-300 p-1 flex justify-center items-center cursor-pointer rounded-sm">
         <n-icon size="18">
           <Navigation16Regular />
         </n-icon>

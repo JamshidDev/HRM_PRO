@@ -70,16 +70,16 @@ onMounted(()=>{
 <template>
 <div class="w-full min-h-screen login-page-bg flex justify-center items-center">
     <div class="page-form-content relative overflow-hidden rounded-[20px] bg-no-repeat bg-cover">
-      <div class="absolute top-[20px] right-[20px] z-[5]">
-        <LangDropdown class="!text-white"/>
+      <div class="absolute top-[20px] right-[20px] z-5">
+        <LangDropdown class="text-white!"/>
       </div>
 
-      <div class="circle-shape circle-shape-1 rounded-full z-[2] absolute"></div>
-      <div class="circle-shape circle-shape-4 rounded-full z-[2] absolute "></div>
-      <div class="circle-shape circle-shape-2 rounded-full z-[2] absolute"></div>
-      <div class="circle-shape circle-shape-3 rounded-full z-[2] absolute"></div>
+      <div class="circle-shape circle-shape-1 rounded-full z-2 absolute"></div>
+      <div class="circle-shape circle-shape-4 rounded-full z-2 absolute "></div>
+      <div class="circle-shape circle-shape-2 rounded-full z-2 absolute"></div>
+      <div class="circle-shape circle-shape-3 rounded-full z-2 absolute"></div>
 
-      <div class="w-full flex relative z-[3] form-box">
+      <div class="w-full flex relative z-3 form-box">
         <div class="form-text-block flex flex-col ">
            <div class=" mt-[20px] ">
              <div class="flex gap-3 items-center">
@@ -112,7 +112,7 @@ onMounted(()=>{
                   v-model:value="store.phone"
               >
                 <template #prefix>
-                  <n-icon class="!text-dark" size="24" :component="Call16Filled" />
+                  <n-icon class="text-dark!" size="24" :component="Call16Filled" />
                 </template>
               </n-input>
             </n-form-item>
@@ -128,7 +128,7 @@ onMounted(()=>{
                   v-model:value="store.password"
               >
                 <template #prefix>
-                  <n-icon class="!text-dark" size="24" :component="LockClosed16Filled" />
+                  <n-icon class="text-dark!" size="24" :component="LockClosed16Filled" />
                 </template>
 
                 <template #password-visible-icon>
@@ -141,21 +141,21 @@ onMounted(()=>{
             </n-form-item>
             <div class="grid">
               <n-button
-                  class="n-button-dark !h-[50px] !rounded-2xl !overflow-hidden"
+                  class="n-button-dark h-[50px]! rounded-2xl! overflow-hidden!"
                   size="large"
                   :loading="store.loading"
                   @click="onSubmit"
               >{{ $t(`loginPage.login`) }}
               </n-button>
               <template v-if="appStore.appConfig.signatureLogin">
-                <n-divider class="!my-2" title-placement="center">{{$t('content.or')}}</n-divider>
+                <n-divider class="my-2!" title-placement="center">{{$t('content.or')}}</n-divider>
                 <n-button
                     @click="onSignatureLogin"
                     size="large"
-                    class="!h-[50px] !rounded-2xl !font-bold dark-border-button"
+                    class="h-[50px]! rounded-2xl! font-bold! dark-border-button"
                 >{{ $t(`content.signatureLogin`) }}
                   <template #icon>
-                    <n-icon class="!text-dark" size="24" :component="KeyMultiple20Filled" />
+                    <n-icon class="text-dark!" size="24" :component="KeyMultiple20Filled" />
                   </template>
                 </n-button>
 

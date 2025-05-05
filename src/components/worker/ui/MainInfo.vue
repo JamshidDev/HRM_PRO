@@ -21,7 +21,7 @@ const onCopy = ()=>{
         <n-button
             type="tertiary"
             size="small"
-            class="inline-block md:!hidden"
+            class="inline-block md:hidden!"
             @click="store.panelVisible=true"
         >
           <template #icon>

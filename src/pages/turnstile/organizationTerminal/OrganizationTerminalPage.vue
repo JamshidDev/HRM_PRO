@@ -23,7 +23,7 @@ onMounted(() => {
         </div>
         <div class="bg-surface-ground transition-all rounded-md grow basis-[40%] shrink-0 absolute md:static w-full md:w-auto top-0 bottom-0" :style="{right: store.payload.organization_id?.length ? '0' : '-100%'}">
           <div class="md:p-2 h-full">
-            <NoDataPicture class="!my-0" v-if="!store.payload.organization_id?.length"/>
+            <NoDataPicture class="my-0!" v-if="!store.payload.organization_id?.length"/>
             <TerminalList v-else/>
           </div>
         </div>

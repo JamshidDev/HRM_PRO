@@ -66,7 +66,7 @@ const onDownload = (v)=>{
       >
         <thead>
         <tr>
-          <th class="!text-center min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
+          <th class="text-center! min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
           <th class="min-w-[100px]">{{$t('universityPage.form.university_id')}}</th>
           <th class="min-w-[80px] w-[80px]">{{$t('universityPage.form.speciality_id')}}</th>
           <th class="min-w-[80px] w-[80px]">{{$t('universityPage.form.from_date')}}</th>

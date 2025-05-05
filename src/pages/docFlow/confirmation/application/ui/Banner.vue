@@ -163,7 +163,7 @@ onMounted(()=>{
       <img alt="stars" class="stars last" :src="stars" />
       <div class="text">
         <h1 class="text-white mb-4">{{ $t('solveExamPage.welcomeTitle') }}</h1>
-        <n-button @click="onAdd" size="large" class="!bg-white !font-bold">{{$t('applicationPage.addApp')}}</n-button>
+        <n-button @click="onAdd" size="large" class="bg-white! font-bold!">{{$t('applicationPage.addApp')}}</n-button>
       </div>
     </div>
     <div class="col-span-12 md:col-span-4">

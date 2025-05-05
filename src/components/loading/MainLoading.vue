@@ -12,7 +12,7 @@ onMounted(()=>{
 </script>
 
 <template>
- <div v-if="store.loading" class="w-full h-full fixed top-0 left-0 bg-surface-section z-[999] flex justify-center items-center">
+ <div v-if="store.loading" class="w-full h-full fixed top-0 left-0 bg-surface-section z-999 flex justify-center items-center">
    <div class="page-content-loader"></div>
  </div>
 </template>

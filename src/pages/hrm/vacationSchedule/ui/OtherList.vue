@@ -55,7 +55,7 @@ onMounted(()=>{
         >
           <thead>
           <tr>
-            <th class="!text-center min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
+            <th class="text-center! min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
             <th class="min-w-[200px]">{{$t('content.worker')}}</th>
             <th class="min-w-[200px]">{{$t('content.organization')}}</th>
             <th class="min-w-[80px] w-[200px]">{{$t('content.month')}}</th>

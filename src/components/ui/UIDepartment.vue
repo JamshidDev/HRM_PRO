@@ -122,7 +122,7 @@ const onFocusEv = ()=>{
       placement="bottom"
       trigger="click"
       width="400px"
-      class="h-[400px] !py-0 px-1"
+      class="h-[400px] py-0! px-1"
   >
     <template #trigger>
       <n-badge class="w-full" :value="modelV.length" type="info">

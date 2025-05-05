@@ -102,7 +102,7 @@ const onClickoutside=()=> {
       >
         <thead>
         <tr>
-          <th class="!text-center min-w-[40px] w-[40px]">
+          <th class="text-center! min-w-[40px] w-[40px]">
             <n-tooltip v-if="exportStore.isExportingResume" trigger="hover">
               {{$t('exportPage.checkAll')}}
               <template #trigger>

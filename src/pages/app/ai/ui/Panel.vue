@@ -54,7 +54,7 @@ onMounted(()=>{
       <div
           @click="onSelect(item)"
           class="flex rounded-lg px-3 py-1 mb-2 bg-gray-50 cursor-pointer
-          bg-gradient-to-r from-gray-100 to-blue-100 from-[30%]
+          bg-linear-to-r from-gray-100 to-blue-100 from-30%
            mx-[4px] hover-effect-card" style="width: calc(100% - 8px)">
         <div class="w-[22px] flex justify-center items-center">
           <n-icon size="20" class="text-gray-400">

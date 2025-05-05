@@ -39,11 +39,11 @@ const removeImage = (id)=>{
 <div class="w-full flex gap-2">
   <template v-for="(item, idx) in model" :key="idx">
     <div
-        class="w-[100px] h-[100px] border border-surface-line rounded overflow-hidden relative"
+        class="w-[100px] h-[100px] border border-surface-line rounded-sm overflow-hidden relative"
     >
       <span
           @click="removeImage(item.id)"
-      class="absolute top-[4px] right-[4px] bg-red-50 flex justify-center items-center p-[2px] border border-red-50 rounded cursor-pointer"
+      class="absolute top-[4px] right-[4px] bg-red-50 flex justify-center items-center p-[2px] border border-red-50 rounded-sm cursor-pointer"
       >
         <n-icon class="text-danger text-xl">
         <ArrowSyncDismiss20Filled/>
@@ -56,7 +56,7 @@ const removeImage = (id)=>{
   <template v-if="maxCount>model.length">
     <div
         @click="fileRef.click"
-        class="w-[100px] h-[100px] border border-dashed rounded flex justify-center items-center border-surface-line cursor-pointer">
+        class="w-[100px] h-[100px] border border-dashed rounded-sm flex justify-center items-center border-surface-line cursor-pointer">
       <n-icon class="text-6xl text-surface-400 font-normal">
         <ImageAdd24Regular/>
       </n-icon>

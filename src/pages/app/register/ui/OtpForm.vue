@@ -25,7 +25,7 @@ const onSubmit = ()=>{
       class="xl:w-[400px] w-[360px] p-[20px] flex flex-col"
   >
     <div>
-      <n-button @click="store.activeTab=1" quaternary class="!px-0">
+      <n-button @click="store.activeTab=1" quaternary class="px-0!">
         <span class="text-gray-400">{{$t('content.back')}}</span>
         <template #icon>
           <n-icon class="font-bold" size="24"><ChevronLeft20Filled /></n-icon>
@@ -65,7 +65,7 @@ const onSubmit = ()=>{
     >
       <n-button
           size="large"
-          class="mt-4 flex !w-full"
+          class="mt-4 flex w-full!"
           type="primary"
           :loading="store.otpLoading"
           @click="onSubmit"

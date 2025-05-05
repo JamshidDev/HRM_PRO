@@ -21,7 +21,7 @@ const toggleCollapse = () => {
   <table>
     <tbody>
     <tr>
-      <td :colspan="(tree?.children?.length || 1)" class="relative !px-2">
+      <td :colspan="(tree?.children?.length || 1)" class="relative px-2!">
         <div class="flex justify-center">
           <slot :data="tree">
             <p class="text-center bg-surface-section rounded-md border border-surface-line p-2 ">{{ tree?.name }}</p>

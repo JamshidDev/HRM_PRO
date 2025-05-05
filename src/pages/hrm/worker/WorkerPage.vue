@@ -61,7 +61,7 @@ onMounted(()=>{
   >
 
     <template #default>
-      <n-divider class="!my-2 mb-3" />
+      <n-divider class="my-2! mb-3" />
 
       <n-spin :show="exportStore.exportResumeLoading">
         <n-space justify="end" >

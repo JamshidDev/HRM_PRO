@@ -20,7 +20,7 @@ const sendResult = (question_id, option_id) => {
 
 </script>
 <template>
-  <div class="border bg-surface-section rounded-lg overflow-hidden border-surface-line p-2 shadow-blue-50 drop-shadow-sm"
+  <div class="border bg-surface-section rounded-lg overflow-hidden border-surface-line p-2 shadow-blue-50 drop-shadow-xs"
   >
     <UIEditorViewer :html="question.question"></UIEditorViewer>
     <n-divider/>
@@ -29,7 +29,7 @@ const sendResult = (question_id, option_id) => {
         :key="idx"
     >
       <div class="flex gap-2 p-2">
-        <div class="relative !w-4">
+        <div class="relative w-4!">
           <n-spin
               v-if="store.sendResultLoading && store.questionId === question.id && store.payload.result===option.id"
               :size="12"

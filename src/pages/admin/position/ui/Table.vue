@@ -39,7 +39,7 @@ const changePage = (v)=>{
       >
         <thead>
         <tr>
-          <th class="!text-center min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
+          <th class="text-center! min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
           <th class="min-w-[200px]">{{$t('positionPage.form.name')}}</th>
           <th class="min-w-[100px] w-[200px]">{{$t('positionPage.form.name_ru')}}</th>
           <th class="min-w-[200px] w-[200px]">{{$t('positionPage.form.classification_index')}}</th>

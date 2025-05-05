@@ -44,7 +44,7 @@ onMounted(() => {
           :placeholder="$t('questionPage.form.enterQuestion')"
           v-model:text="store.payload.ques"
           :extra-rules="[{
-              trigger: ['input', 'blur'],
+              trigger: ['input', 'blur-sm'],
               validator() {
                 return (store.payload.options.length<3) ? new Error( $t('questionPage.rules.minOptions')) : true
               }
@@ -73,7 +73,7 @@ onMounted(() => {
           <div class="w-full flex flex-col gap-3 min-h-[400px] max-h-[400px] overflow-auto p-1">
             <template v-for="(option, idx) in store.payload.options" :key="idx">
               <div
-                  class="flex gap-2 bg-surface-section rounded-sm pl-2"
+                  class="flex gap-2 bg-surface-section rounded-xs pl-2"
                   style="box-shadow: rgba(0, 0, 0, 0.16) 0 1px 4px;">
                 <n-radio
                     @click="()=>{
@@ -128,6 +128,6 @@ onMounted(() => {
 </template>
 <style lang="scss" scoped>
 :deep(.n-radio__label) {
-  flex-grow: 1;
+  grow: 1;
 }
 </style>

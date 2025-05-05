@@ -21,7 +21,7 @@ onMounted(()=>{
 </script>
 
 <template>
-  <div class="mx-2 mt-4 mb-4 rounded flex flex-col gap-3" style="min-height:calc(100vh - 100px);height:calc(100vh - 100px);">
+  <div class="mx-2 mt-4 mb-4 rounded-sm flex flex-col gap-3" style="min-height:calc(100vh - 100px);height:calc(100vh - 100px);">
     <n-grid cols="12" class="shrink-0 min-h-[250px]" x-gap="10" item-responsive responsive="screen">
       <n-grid-item class="welcome rounded-lg" span="0 s:8">
         <img alt="stars" class="stars first" :src="stars" />

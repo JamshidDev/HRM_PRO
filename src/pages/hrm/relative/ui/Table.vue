@@ -95,8 +95,8 @@ const onUpdate = (v)=>{
         >
           <thead>
           <tr>
-            <th class="!text-center min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
-            <th class="!text-center min-w-[40px] w-[40px] handle"></th>
+            <th class="text-center! min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
+            <th class="text-center! min-w-[40px] w-[40px] handle"></th>
             <th class="w-[100px]">{{$t('relativePage.form.relative')}}</th>
             <th class="min-w-[100px]">{{$t('content.fullName')}}</th>
             <th class="min-w-[100px] w-[200px]">{{$t('relativePage.form.post_name')}}</th>

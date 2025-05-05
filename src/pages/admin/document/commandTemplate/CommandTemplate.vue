@@ -24,7 +24,7 @@ onMounted(()=>{
 <template>
   <div class="grid grid-cols-12">
     <div class="col-span-6">
-      <div class="bg-surface-ground p-1 px-2 rounded mb-4 mt-4 flex justify-between border-dashed border-gray-300 pb-1">
+      <div class="bg-surface-ground p-1 px-2 rounded-sm mb-4 mt-4 flex justify-between border-dashed border-gray-300 pb-1">
         <span class="text-sm">{{$t('documentSetting.form.organization')}}</span>
         <span class="text-primary font-medium">
         <template v-if="store.payload.organizations.length">
@@ -34,7 +34,7 @@ onMounted(()=>{
       </span>
       </div>
       <UITreeData
-          class="bg-gray-50 rounded ui__tree-data"
+          class="bg-gray-50 rounded-sm ui__tree-data"
           :modelV="store.payload.organizations"
           :checkedVal="store.checkedVal"
           @updateModel="onSelect"

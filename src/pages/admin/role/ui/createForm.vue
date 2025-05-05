@@ -42,7 +42,7 @@ const onSubmit = ()=>{
         <n-checkbox-group v-model:value="store.payload.permissions">
           <div class="grid grid-cols-2">
             <n-checkbox
-                class="!text-sm mb-2rr"
+                class="text-sm! mb-2rr"
                 v-for="(item, idx) in store.allPermissionList"
                 :key="idx"
                 :value="item.id" :label="item.name" />

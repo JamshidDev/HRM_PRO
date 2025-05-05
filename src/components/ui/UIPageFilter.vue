@@ -61,7 +61,7 @@ const addEvent = ()=>{
     <div class="grid grid-cols-12 gap-2 md:gap-4">
       <div class="col-span-12 md:col-span-6 flex items-center">
         <n-input
-            class="w-full md:!max-w-[200px] md:!w-full"
+            class="w-full md:max-w-[200px]! md:w-full!"
             v-if="showSearchInput"
             v-model:value="searchModel"
             type="text"
@@ -78,7 +78,7 @@ const addEvent = ()=>{
       <div class="col-span-12 md:col-span-6 flex flex-col md:flex-row items-center justify-end gap-2 md:gap-4">
         <slot name="filterAction"></slot>
         <n-button
-            class="!w-full md:!w-auto"
+            class="w-full! md:w-auto!"
             v-if="showAddButton"
             type="primary"
             icon-placement="right"
@@ -97,18 +97,18 @@ const addEvent = ()=>{
             trigger="click"
             scrollable
             placement="bottom"
-            class="max-w-full w-[var(--v-target-width)] md:w-auto md:min-w-[400px] h-[400px]"
+            class="max-w-full w-(--v-target-width) md:w-auto md:min-w-[400px] h-[400px]"
             :style="{'--top-activator-width': 'var(--v-target-width)'}"
         >
           <template #trigger>
             <n-badge
-                class="!w-full md:!w-auto"
+                class="w-full! md:w-auto!"
                 :value="filterCount"
                 processing
                 type="info"
             >
               <n-button
-                  class="!w-full md:!w-auto"
+                  class="w-full! md:w-auto!"
                   type="primary"
                   ghost
                   icon-placement="right"

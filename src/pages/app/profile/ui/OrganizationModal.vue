@@ -12,7 +12,7 @@ const store = useAccountStore()
         size="huge"
         role="dialog"
         aria-modal="true"
-        class="!bg-gradient-to-t from-blue-300 to-surface-50"
+        class="bg-linear-to-t! from-blue-300 to-surface-50"
     >
       <div class="flex justify-center items-center">
         <span class=" border-2 bg-indigo-200 border-indigo-200 shadow rounded-full flex justify-center items-center p-1">
@@ -32,7 +32,7 @@ const store = useAccountStore()
         <template v-for="(item, idx) in store.roleList" :key="idx">
           <div
               @click="store.changeAccount(item.id)"
-              class="w-full border border-indigo-200 rounded mb-2 p-2 flex cursor-pointer relative bg-indigo-100">
+              class="w-full border border-indigo-200 rounded-sm mb-2 p-2 flex cursor-pointer relative bg-indigo-100">
           <span style="width:30px" class="flex justify-center items-center">
             <n-radio size="large" :value="item.id" class="pointer-events-none" />
           </span>

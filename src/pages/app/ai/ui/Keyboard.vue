@@ -17,7 +17,7 @@ const goChat = ()=>{
   <n-input
       @keyup.enter="store.sendMessage"
       :bordered="false"
-      class="!bg-[#F8FAFC] !w-full"
+      class="bg-[#F8FAFC]! w-full!"
       v-model:value="store.payload.question"
       :placeholder="$t('aiConversation.form.askQuestion')"
       :rows="1"

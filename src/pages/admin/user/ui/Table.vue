@@ -32,7 +32,7 @@ const changePage = (v)=>{
       >
         <thead>
         <tr>
-          <th class="!text-center min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
+          <th class="text-center! min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
           <th class="min-w-[200px]">{{$t('content.worker')}}</th>
           <th class="min-w-[200px] w-[300px]">{{$t('content.workplace')}}</th>
           <th class="min-w-[120px] w-[120px]">{{$t('content.phone')}}</th>

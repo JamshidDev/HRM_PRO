@@ -54,7 +54,7 @@ onMounted(async ()=>{
           <template v-for="(key, idx) in store.allKeys" :key="idx">
             <div
                 @click="store._accepted(idx, activeCallback)"
-                class="grid grid-cols-12 gap-y-2 w-full bg-gray-50 mb-2 border border-gray-200 rounded px-4 py-4 cursor-pointer hover:bg-gray-200 shadow-none  transition-all">
+                class="grid grid-cols-12 gap-y-2 w-full bg-gray-50 mb-2 border border-gray-200 rounded-sm px-4 py-4 cursor-pointer hover:bg-gray-200 shadow-none  transition-all">
               <div class="col-span-12 font-bold text-lg mb-1 text-gray-800">{{key?.fullName}}</div>
 
               <div class="col-span-4 font-bold">

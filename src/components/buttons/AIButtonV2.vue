@@ -1,6 +1,6 @@
 <template>
-  <div class="ai-button py-2 px-4 rounded-2xl cursor-pointer flex items-center gap-2 relative overflow-hidden">
-    <div class="relative flex items-center justify-end border-white w-[20px] h-[20px] z-[2]">
+  <div class="!hidden md:!flex ai-button py-2 px-4 rounded-2xl cursor-pointer items-center gap-2 relative overflow-hidden">
+    <div class="relative flex items-center justify-end border-white w-[20px] h-[20px] z-2">
       <n-icon class="text-sm text-[#FFFFFF66]">
         <Star20Filled />
       </n-icon>

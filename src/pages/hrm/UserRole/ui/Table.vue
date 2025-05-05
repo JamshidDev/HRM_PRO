@@ -99,7 +99,7 @@ const onSelectEv = (v)=>{
       >
         <thead>
         <tr>
-          <th class="!text-center min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
+          <th class="text-center! min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
           <th class="min-w-[200px] w-[250px]">{{$t('confirmationPage.table.worker')}}</th>
           <th class="min-w-[100px]">{{$t('workerRole.from.role')}}</th>
           <th class="min-w-[200px] w-[300px]">{{$t('workerRole.from.activeOrganization')}}</th>

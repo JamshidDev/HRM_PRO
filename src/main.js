@@ -1,5 +1,4 @@
-import './style.css'
-import "./assets/index.scss"
+
 import { createApp } from 'vue'
 import App from './App.vue'
 import router from "./router"
@@ -17,6 +16,9 @@ const app = createApp(App);
 const meta = document.createElement('meta')
 meta.name = 'naive-ui-style'
 document.head.appendChild(meta)
+
+import "@/assets/index.scss"
+import './style.css'
 
 
 

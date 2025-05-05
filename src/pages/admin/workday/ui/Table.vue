@@ -49,7 +49,7 @@ const changePage = (v)=>{
       >
         <thead>
         <tr>
-          <th class="!text-center min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
+          <th class="text-center! min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
           <th class="min-w-[200px]">{{$t('workdayPage.form.schedule_id')}}</th>
           <th class="min-w-[200px]">{{$t('workdayPage.form.type')}}</th>
           <th class="min-w-[200px]">{{$t('workdayPage.form.day_of_week')}}</th>

@@ -36,19 +36,19 @@ const onSelect = (v)=>{
       >
         <thead>
         <tr>
-          <th class="!text-center w-[30px] min-w-[30px] flex-grow-0">{{$t('content.number')}}</th>
-          <th class="!text-center">{{$t('turnstile.buildingPage.name')}}</th>
-          <th class="!text-center">{{$t('turnstile.buildingPage.name_ru')}}</th>
-          <th class="!text-center">{{$t('turnstile.buildingPage.name_en')}}</th>
+          <th class="text-center! w-[30px] min-w-[30px] grow-0">{{$t('content.number')}}</th>
+          <th class="text-center!">{{$t('turnstile.buildingPage.name')}}</th>
+          <th class="text-center!">{{$t('turnstile.buildingPage.name_ru')}}</th>
+          <th class="text-center!">{{$t('turnstile.buildingPage.name_en')}}</th>
           <th class="max-w-[60px] w-[60px]">{{$t('content.action')}}</th>
         </tr>
         </thead>
         <tbody>
         <tr v-for="(item, idx) in store.list" :key="idx">
           <td class="w-[20px] max-w-[20px]"><span class="text-center text-[12px] text-gray-600 block">{{ (store.params.page - 1) * store.params.per_page + idx + 1 }}</span></td>
-          <td class="!text-center">{{item.name}}</td>
-          <td class="!text-center">{{item.name_ru}}</td>
-          <td class="!text-center">{{item.name_en}}</td>
+          <td class="text-center!">{{item.name}}</td>
+          <td class="text-center!">{{item.name_ru}}</td>
+          <td class="text-center!">{{item.name_en}}</td>
           <td>
             <UIMenuButton
                 :show-edit="true"

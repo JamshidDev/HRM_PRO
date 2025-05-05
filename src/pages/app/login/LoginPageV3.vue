@@ -15,7 +15,7 @@
       </div>
       <div class="col-span-6 p-4">
         <div
-            class="w-full rounded-lg bg-gradient-to-tr from-[#4253ef] to-[#4253ef]"
+            class="w-full rounded-lg bg-linear-to-tr from-[#4253ef] to-[#4253ef]"
             style="height: calc(100vh - 32px)"
         >
 

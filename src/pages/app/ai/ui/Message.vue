@@ -34,7 +34,7 @@ const isBot = computed(()=>props.data?.bot)
       <n-avatar
           round
           size="large"
-          class="!bg-surface-section"
+          class="bg-surface-section!"
           :src="useAppSetting.appLogoUrl"
       >
 
@@ -43,10 +43,10 @@ const isBot = computed(()=>props.data?.bot)
 
 
     <div
-        :class="[isBot? 'bg-[#E9EEF5]' : '!bg-primary !text-white']"
+        :class="[isBot? 'bg-[#E9EEF5]' : 'bg-primary! text-white!']"
         class=" inline-block py-1 px-4  border border-gray-200 rounded-2xl">
         <p
-            :class="[isBot? 'bg-[#E9EEF5] !text-dark' : '!text-white']"
+            :class="[isBot? 'bg-[#E9EEF5] text-dark!' : 'text-white!']"
             class="prose w-auto"
             v-html="data?.text"
         ></p>
@@ -118,7 +118,7 @@ const isBot = computed(()=>props.data?.bot)
     margin-bottom: 2px;
     width: 100% !important;
   }
-  @apply prose-base dark:prose-invert;
+
 }
 
 </style>

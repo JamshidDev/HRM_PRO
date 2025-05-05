@@ -18,6 +18,7 @@ const {appPermissions} = Utils
 
 const notification = ref(0)
 
+
 </script>
 
 <template>
@@ -36,7 +37,6 @@ const notification = ref(0)
 
 
     <AIButtonV2
-        class="!hidden md:flex"
         v-if="store.checkPermission(appPermissions.ai)"
         @click="()=>router.push({name:AppPaths.AIConversation.substring(1)})"
     />

@@ -93,10 +93,10 @@
 .ui__tree-data{
   .ui__tree-hover {
 
-    &:hover{
-      @apply border-surface-line
-    }
-    @apply border border-[transparent] transition-all rounded
+    //&:hover{
+    //  @apply border-surface-line
+    //}
+    //@apply border border-[transparent] transition-all rounded
   }
 }
 .ui__modal-element{
@@ -179,28 +179,28 @@ input:-webkit-autofill {
   thead{
     tr{
       th{
-        @apply bg-[#757a83] text-left font-medium text-white px-2 py-1
+        //@apply bg-[#757a83] text-left font-medium text-white px-2 py-1
       }
     }
   }
   tbody{
     tr:nth-child(2n+1){
       &> td{
-        @apply bg-[#b6d1ff1c] overflow-hidden border border-[transparent]
+        //@apply bg-[#b6d1ff1c] overflow-hidden border border-[transparent]
       }
     }
     tr:nth-child(2n){
       &> td{
-        @apply bg-white overflow-hidden border border-[transparent]
+        //@apply bg-white overflow-hidden border border-[transparent]
       }
     }
   }
 
-  @apply border border-[transparent]
+  //@apply border border-[transparent]
 }
 
 .bg-effect-wing{
-  background-image: url("/wing.png");
+  background-image: url("./wing.png");
 }
 .n-spin-content{
   height: 100%;
@@ -209,7 +209,7 @@ input:-webkit-autofill {
 
 .n-calendar-dates{
   &> .n-calendar-cell:nth-child(7n+1){
-    @apply bg-gray-50
+    //@apply bg-gray-50
   }
 }
 

@@ -33,7 +33,7 @@ const onClickAction = (v) => {
       <div
           v-for="i in store.list"
           :key="i"
-          class="border bg-surface-section group mb-3 rounded-lg border-surface-line p-2 shadow-blue-50 drop-shadow-sm relative"
+          class="border bg-surface-section group mb-3 rounded-lg border-surface-line p-2 shadow-blue-50 drop-shadow-xs relative"
       >
         <div class="absolute top-3 right-3 opacity-0 group-hover:opacity-100"
              :class="{'opacity-100': (i.id===store.elementId && store.deleteLoading)}">
@@ -56,7 +56,7 @@ const onClickAction = (v) => {
       </div>
 
     </n-infinite-scroll>
-    <NoDataPicture class="!mt-0" v-if="store.list.length===0 && !store.loading"/>
+    <NoDataPicture class="mt-0!" v-if="store.list.length===0 && !store.loading"/>
   </n-spin>
 </template>
 <style lang="scss" scoped>

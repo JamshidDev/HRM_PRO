@@ -81,7 +81,7 @@ onMounted(()=>{
           ref="formRef"
           :rules="validationRules.login"
           :model="store"
-          class="flex flex-col xl:w-[400px]  w-[360px] p-[20px] !rounded-3xl
+          class="flex flex-col xl:w-[400px]  w-[360px] p-[20px] rounded-3xl!
 "
       >
         <div class="flex justify-center">

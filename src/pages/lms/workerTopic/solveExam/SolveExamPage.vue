@@ -85,12 +85,12 @@ onUnmounted(()=>{
     </UIModal>
     <n-spin :show="store.loading" class="h-full">
       <div v-if="store.exam_detail && store.exam_token" class="h-full flex flex-col-reverse sm:flex-row gap-3">
-        <div class="flex flex-col gap-3 flex-grow overflow-y-auto p-3 scroll-smooth question__section lg:mx-10 xl:mx-20">
+        <div class="flex flex-col gap-3 grow overflow-y-auto p-3 scroll-smooth question__section lg:mx-10 xl:mx-20">
           <div class="shrink-0 flex gap-3 flex-wrap">
             <div class="shrink-0 flex items-center justify-center basis-[200px] grow md:grow-0">
               <img :src="store.worker_detail.user.worker.photo" alt="img" class="h-[200px] object-contain rounded-md">
             </div>
-            <n-table class="flex-grow shrink-0 basis-[230px]" size="small">
+            <n-table class="grow shrink-0 basis-[230px]" size="small">
               <tr>
                 <th>{{ $t('solveExamPage.exam') }}</th>
                 <td>{{ store.exam_detail.name }}</td>
@@ -113,7 +113,7 @@ onUnmounted(()=>{
               </tr>
             </n-table>
 
-            <n-table class="flex-grow shrink-0 basis-[230px]" size="small">
+            <n-table class="grow shrink-0 basis-[230px]" size="small">
               <tr>
                 <th>{{ $t('solveExamPage.variant') }}</th>
                 <td>{{ store.exam_detail.variant }}</td>
@@ -178,14 +178,14 @@ onUnmounted(()=>{
               </div>
             </vue-countdown>
           </div>
-          <n-divider v-if="!store.loading && !store.result" class="!hidden sm:!block"/>
+          <n-divider v-if="!store.loading && !store.result" class="hidden! sm:block!"/>
           <div
-              class="flex-grow gap-2 grid-cols-[repeat(auto-fill,minmax(30px,1fr))] md:grid-cols-[repeat(auto-fill,minmax(40px,1fr))] grid-rows-[repeat(auto-fill,30px)] md:grid-rows-[repeat(auto-fill,40px)] hidden sm:grid">
+              class="grow gap-2 grid-cols-[repeat(auto-fill,minmax(30px,1fr))] md:grid-cols-[repeat(auto-fill,minmax(40px,1fr))] grid-rows-[repeat(auto-fill,30px)] md:grid-rows-[repeat(auto-fill,40px)] hidden sm:grid">
             <a v-for="(question, idx) in store.questions"
                :key="idx"
                :href="`#question-${idx+1}`"
                class="text-lg flex justify-center items-center bg-surface-section border border-surface-line drop-shadow-lg rounded-lg"
-               :class="{'!bg-primary text-white': !!question.result}"
+               :class="{'bg-primary! text-white': !!question.result}"
             >
               {{ idx + 1 }}
             </a>
@@ -193,7 +193,7 @@ onUnmounted(()=>{
           <div>
             <n-button
                 @click="endWarningVisible=true"
-                class="md:!h-14 md:!text-xl"
+                class="md:h-14! md:text-xl!"
                 block
                 size="large"
                 tertiary
@@ -208,7 +208,7 @@ onUnmounted(()=>{
             </n-button>
             <n-button
                 @click="goBack()"
-                class="md:!h-14 md:!text-xl"
+                class="md:h-14! md:text-xl!"
                 block
                 size="large"
                 tertiary

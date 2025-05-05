@@ -24,7 +24,7 @@ const isEqual = computed(()=>props.oneCount === props.twoCount)
 <template>
   <div class="flex justify-end gap-4 items-center h-full">
     <n-button
-        class="!w-[80px]"
+        class="w-[80px]!"
         :secondary="!isEqual"
         :ghost="isEqual"
         :type="isEqual? 'default' : typeOne"
@@ -33,7 +33,7 @@ const isEqual = computed(()=>props.oneCount === props.twoCount)
     </n-button>
 
     <n-button
-        class="!w-[80px]"
+        class="w-[80px]!"
         :secondary="!isEqual"
         :ghost="isEqual"
         :type="isEqual? 'default' : typeTwo"

@@ -95,7 +95,7 @@ const onChange = (editor) => {
   <n-form-item
       :path="path"
       :rule="[{
-          trigger: ['input', 'blur'],
+          trigger: ['input', 'blur-sm'],
           validator() {
             console.log('validator working')
             return (editorRef?.isEmpty() || editorRef?.getText()?.trim()==='') ? new Error( $t('rules.requiredField')) : true

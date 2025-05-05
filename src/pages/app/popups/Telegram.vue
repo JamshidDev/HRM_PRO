@@ -15,7 +15,7 @@ onMounted(()=>{
       :show="store.telegramPopupVisible && visible"
       @maskClick="store.hideTelegramPopup"
   >
-    <div class="w-[1050px] lg:h-[650px] rounded-[18px] telegram_popup p-5 pl-[30px] flex flex-col gap-[14px] !text-surface-section">
+    <div class="w-[1050px] lg:h-[650px] rounded-[18px] telegram_popup p-5 pl-[30px] flex flex-col gap-[14px] text-surface-section!">
       <h1 class="text-[20px] lg:text-[32px] font-semibold lg:max-w-[60%]">
         {{$t('telegramPopup.header')}}
       </h1>

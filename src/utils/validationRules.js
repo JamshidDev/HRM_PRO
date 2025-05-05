@@ -1,7 +1,7 @@
 import i18n from "@/i18n/index.js"
 import {useAppSetting} from "@/utils/AppSetting.js"
 const {t} = i18n.global
-const triggerEvents =  ['input', 'blur']
+const triggerEvents =  ['input', 'blur-sm']
 
 const lang = localStorage.getItem(useAppSetting.languageKey) || useAppSetting.defaultLanguage
 i18n.global.locale = lang
@@ -608,7 +608,7 @@ export default {
                     }
                     return true;
                 },
-                trigger: 'blur',
+                trigger: 'blur-sm',
             },
         ],
     },
@@ -1442,7 +1442,7 @@ export default {
                     }
                     return true;
                 },
-                trigger: 'blur',
+                trigger: 'blur-sm',
             },
         ],
     },

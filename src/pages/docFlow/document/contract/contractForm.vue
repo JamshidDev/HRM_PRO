@@ -65,7 +65,7 @@ onMounted(()=>{
       :rules="validationRules.contractFrom"
       :model="store.payload"
   >
-    <n-space vertical class="w-full mb-4 !hidden md:!inline-block">
+    <n-space vertical class="w-full mb-4 hidden! md:inline-block!">
       <n-steps :status="store.st" :current="store.stepNumber">
         <template #finish-icon>
           <n-icon>

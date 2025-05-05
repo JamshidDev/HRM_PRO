@@ -49,7 +49,7 @@ const updateStatus = (exam) => {
           <n-gi span="1">
             <div class="rounded-xl p-3" style="box-shadow: rgba(50, 50, 93, 0.25) 0 0 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;">
               <p>{{ $t('content.name') }}: <span class="font-bold">{{ item.name }}</span></p>
-              <n-divider class="!my-1" />
+              <n-divider class="my-1!" />
               <ul class="list-disc pl-5">
                 <li class="flex justify-between">
                   <table>

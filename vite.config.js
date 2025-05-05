@@ -2,6 +2,7 @@ import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import path from 'path'
 import AutoImport from 'unplugin-auto-import/vite';
+import tailwindcss from '@tailwindcss/vite'
 
 export default defineConfig({
   resolve:{
@@ -10,6 +11,7 @@ export default defineConfig({
     },
   },
   plugins: [
+    tailwindcss(),
     vue({
       template: {
         compilerOptions: {

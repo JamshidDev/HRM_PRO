@@ -27,13 +27,13 @@ const onAddExam = ()=>{
 </script>
 <template>
   <div class="h-full py-3 px-8 flex flex-col">
-    <div class="flex-shrink-0">
+    <div class="shrink-0">
       <p class="text-[16px]">{{$t('examPage.materials')}}</p>
       <div class="grid grid-cols-[repeat(auto-fill,minmax(150px,1fr))] gap-2 my-4">
         <div
             @click="activeTab=examTabNumber"
             class="w-full p-4 py-3 bg-blue-50 rounded-xl transition-all hover:bg-blue-100 cursor-pointer flex flex-col gap-2"
-          :class="{'!bg-blue-100': activeTab===examTabNumber}"
+          :class="{'bg-blue-100!': activeTab===examTabNumber}"
         >
           <div class="flex items-center gap-1">
             <n-icon-wrapper :border-radius="6" :color="TopicUtils.getMediaProperty(examTabNumber).color" :size="30" class="shrink-0">
@@ -49,7 +49,7 @@ const onAddExam = ()=>{
           <div
               @click="activeTab=item.id"
               class="w-full p-4 py-3 bg-blue-50 rounded-xl transition-all hover:bg-blue-100 cursor-pointer flex flex-col gap-2"
-              :class="{'!bg-blue-100': activeTab===item.id}"
+              :class="{'bg-blue-100!': activeTab===item.id}"
           >
             <div class="flex items-center gap-1">
               <n-icon-wrapper :border-radius="6" :color="TopicUtils.getMediaProperty(item.id).color" :size="30" class="shrink-0">
@@ -64,8 +64,8 @@ const onAddExam = ()=>{
         </template>
       </div>
     </div>
-    <n-tabs :value="activeTab" class="flex-grow basis-auto overflow-hidden" animated :tab-style="{ display: 'none', margin: 0 }" :pane-wrapper-style="{height: '100%'}">
-      <n-tab-pane class="h-full !pt-0" :name="examTabNumber">
+    <n-tabs :value="activeTab" class="grow basis-auto overflow-hidden" animated :tab-style="{ display: 'none', margin: 0 }" :pane-wrapper-style="{height: '100%'}">
+      <n-tab-pane class="h-full pt-0!" :name="examTabNumber">
         <div class="flex flex-col h-full">
           <div class="flex shrink-0 justify-between  mb-2">
             <p class="text-[16px] font-bold">{{$t('topicDetailsPage.exams.name')}}</p>
@@ -80,7 +80,7 @@ const onAddExam = ()=>{
           </div>
         </div>
       </n-tab-pane>
-      <n-tab-pane v-for="(item) in fileStore.list" :key="item.id" :name="item.id" class="h-full !pt-0">
+      <n-tab-pane v-for="(item) in fileStore.list" :key="item.id" :name="item.id" class="h-full pt-0!">
         <div class="flex justify-between  mb-2">
           <p class="text-[16px]">
             {{item.name}}

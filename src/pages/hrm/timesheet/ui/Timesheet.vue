@@ -199,7 +199,7 @@ const checkWorker = useDebounceFn(() => {
         </n-button>
       </div>
     </div>
-    <n-spin :show="store.loading || store.saveLoading" class="flex-grow">
+    <n-spin :show="store.loading || store.saveLoading" class="grow">
       <div  class="rounded-lg overflow-hidden">
         <div class="overflow-x-auto">
         <VueDraggable
@@ -290,9 +290,9 @@ const checkWorker = useDebounceFn(() => {
                   class="h-[40px] w-[45px] max-h-[40px] min-w-[45px]"
               >
                 <div class="flex flex-col">
-                  <div class="flex-grow border-b border-surface-line shrink-0">
+                  <div class="grow border-b border-surface-line shrink-0">
                   </div>
-                  <div class="flex-grow shrink-0">
+                  <div class="grow shrink-0">
                   </div>
                 </div>
               </td>
@@ -354,13 +354,13 @@ const checkWorker = useDebounceFn(() => {
                   @mouseup="handleMouseUp"
               >
                 <div class="flex flex-col">
-                  <div class="flex-grow border-b border-surface-line shrink-0">
+                  <div class="grow border-b border-surface-line shrink-0">
                     <p v-if="item.days[day.day]?.length">
                       {{
                         item.days[day.day]?.length > 1 ? item.days[day.day].map(i => i.status).join('/') : item.days[day.day][0].status
                       }}</p>
                   </div>
-                  <div class="flex-grow shrink-0">
+                  <div class="grow shrink-0">
                     <p v-if="item.days[day.day]?.length" class="font-bold">
                       {{
                         item.days[day.day]?.filter(i => i?.hours).length > 1 ? item.days[day.day].map(i => i?.hours).join('/') : (item.days[day.day][0].hours || '&nbsp;')

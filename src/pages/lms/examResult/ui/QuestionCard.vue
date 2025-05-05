@@ -12,7 +12,7 @@ defineProps({
 
 </script>
 <template>
-  <div class="border bg-blue-50 rounded-lg overflow-hidden border-blue-200 p-2 shadow-blue-50 drop-shadow-sm flex flex-col gap-3"
+  <div class="border bg-blue-50 rounded-lg overflow-hidden border-blue-200 p-2 shadow-blue-50 drop-shadow-xs flex flex-col gap-3"
   >
     <UIEditorViewer :html="question.question"></UIEditorViewer>
     <template
@@ -20,7 +20,7 @@ defineProps({
         :key="idx"
     >
       <div class="flex gap-2 p-2 items-center border rounded-md border-blue-100">
-        <div class="relative !w-4 !h-4">
+        <div class="relative w-4! h-4!">
           <div
               class="radio"
               :class="{'radio-error': option.id===question.result}"

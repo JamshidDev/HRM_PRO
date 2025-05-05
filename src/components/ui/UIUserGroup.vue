@@ -46,7 +46,7 @@ const onOpen = (photo,fullName)=>{
 </script>
 
 <template>
-<div class="ml-auto relative z-[3]" v-bind="$attrs">
+<div class="ml-auto relative z-3" v-bind="$attrs">
   <n-avatar-group :options="data" :size="40" :max="max">
     <template #avatar="{ option: { photo, fullName } }">
       <n-tooltip>
@@ -55,7 +55,7 @@ const onOpen = (photo,fullName)=>{
               lazy
               round
               size="large"
-              class="ui__user-group z-[0]"
+              class="ui__user-group z-0"
               :src="photo"
               @click="onOpen(photo, fullName)"
           />

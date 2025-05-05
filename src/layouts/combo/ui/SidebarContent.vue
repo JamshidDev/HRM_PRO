@@ -147,7 +147,7 @@ onMounted(()=>{
       </template>
 
     </div>
-    <div class="panel-content sidebar-panel !overflow-y-auto h-screen" style="scrollbar-width: none;">
+    <div class="panel-content sidebar-panel overflow-y-auto! h-screen" style="scrollbar-width: none;">
       <transition name="slide-right" mode="out-in">
         <div v-if="showPanel && panelMenu?.length" >
 

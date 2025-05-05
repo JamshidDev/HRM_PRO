@@ -64,7 +64,7 @@ const goBack = ()=>{
       :rules="validationRules.applicationPage"
       :model="store.payload"
   >
-    <n-space vertical class="w-full mb-4 !hidden md:!inline-block">
+    <n-space vertical class="w-full mb-4 hidden! md:inline-block!">
       <n-steps :status="store.stepStatus" :current="store.stepNumber">
         <template #finish-icon>
           <n-icon>

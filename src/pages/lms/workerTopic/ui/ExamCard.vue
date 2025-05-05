@@ -68,7 +68,7 @@ const show = ref(false)
           <div v-for="(item, idx) in exam.results" :key="idx"
                class="flex items-center justify-between p-2 bg-surface-ground rounded-md" style="box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;">
             <div class="flex gap-2 items-center">
-              <n-button size="small" type="warning" secondary class="!rounded-xl"><span class="min-w-[30px]">{{ item?.result || 0 }}</span></n-button>
+              <n-button size="small" type="warning" secondary class="rounded-xl!"><span class="min-w-[30px]">{{ item?.result || 0 }}</span></n-button>
               <div>
                 <p class="font-bold">
                   {{ Utils.timeWithMonth(item.created) }} - {{ item.ended ? Utils.timeWithMonth(item.ended) : '...' }}
