@@ -26,7 +26,7 @@ onMounted(()=>{
         </li>
       </ul>
       <p class="font-bold text-[16px] lg:text-[20px] text-center lg:text-start">{{$t('telegramPopup.benefit.footer')}}</p>
-      <div class="mt-auto flex flex-col gap-5 justify-center">
+      <div class="mt-auto flex flex-col gap-5 justify-center items-center">
         <a
             href="https://t.me/hrmpro_bot"
             target="_blank"
