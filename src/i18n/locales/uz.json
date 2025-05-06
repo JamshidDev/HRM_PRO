@@ -115,7 +115,8 @@
     "role": "Role",
     "duration": "Davomiyligi",
     "preparingDocument": "Hujjat tayyorlanmoqda...",
-    "later": "Keyinroq"
+    "later": "Keyinroq",
+    "refresh": "Yangilash"
   },
   "date": {
     "day": "Kun",

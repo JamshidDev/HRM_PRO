@@ -15,7 +15,7 @@ const changePage = (v)=>{
 
 <template>
   <n-spin :show="store.loading" style="min-height: 200px">
-    <div class="w-full overflow-x-auto"  v-if="store.tasks.length>0">
+    <div class="w-full overflow-x-auto mt-3" v-if="store.tasks.length>0">
       <n-table
           :single-line="false"
           size="small"
