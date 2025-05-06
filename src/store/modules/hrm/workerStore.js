@@ -28,7 +28,7 @@ export const useWorkerStore = defineStore('workerStore', {
             position_type:null,
             ages:[1,100],
             positions:[],
-
+            sex:null,
         },
         structureCheck:[],
         workerVisible:false,

@@ -3,7 +3,7 @@ import {defineStore} from "pinia"
 import router from "@/router/index.js"
 import {AppPaths, useAppSetting} from "@/utils/index.js"
 import {useAccountStore} from "@/store/modules/index.js"
-
+import {getActivePinia} from "pinia"
 export const useLoginStore = defineStore("loginStore", {
     state:()=>({
         phone:'+998',
@@ -22,6 +22,7 @@ export const useLoginStore = defineStore("loginStore", {
                 password:this.password,
             }
             $ApiService.authService._login({data}).then((res)=>{
+                getActivePinia().reset()
                 localStorage.setItem(useAppSetting.tokenKey,res.data.access_token)
                 accountStore._index(()=>{
                     router.push(AppPaths.Home)

@@ -5,6 +5,7 @@ import {customTheme} from "@/assets/theme/theme.js"
 import i18n from "@/i18n/index.js"
 import updateLocale from "dayjs/plugin/updateLocale";
 import dayjs from "dayjs";
+import {getActivePinia} from "pinia"
 
 dayjs.extend(updateLocale)
 dayjs.updateLocale('uz', {
@@ -36,10 +37,10 @@ export const useAppStore = defineStore('appStore', {
     }),
     actions:{
         _logOutApp(){
-            // localStorage.removeItem('appSidebar')
-            // localStorage.removeItem('token')
+            getActivePinia().reset()
             localStorage.clear()
-            router.push(AppPaths.Login)
+            sessionStorage.clear()
+            router?.push(AppPaths.Login)
         },
         changeTheme(){
             const mode = this.themeSwitch? "dark" : "light"

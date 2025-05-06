@@ -48,7 +48,6 @@ const options = ref([
 ])
 
 const changeOption = (v)=>{
-  console.log(v)
   if(v==='profile'){
     router.push(AppPaths.Profile)
   }else if(v==='logout'){

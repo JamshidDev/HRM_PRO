@@ -49,7 +49,7 @@ const marks = {
 
 const filterCount = computed(() => {
   return Number(Boolean(store.params.organizations.length > 0)) + Number(Boolean(store.params.departments.length > 0))
-      + Number(Boolean(store.params.birthday)) + Number(Boolean(store.params.contract_type)) + Number(Boolean(store.params.position_type))
+      + Number(Boolean(store.params.birthday)) + Number(Boolean(store.params.contract_type)) + Number(Boolean(store.params.position_type)) + Number(Boolean(store.params.sex))
 })
 
 const clearFilter = () => {
@@ -59,6 +59,7 @@ const clearFilter = () => {
   store.params.birthday = null
   store.params.contract_type = null
   store.params.position_type = null
+  store.params.sex = null
   filterEvent()
 }
 
@@ -238,7 +239,7 @@ const onSubmitResumeExport = () => {
                 :ignore-composition="false"
             />
           </div>
-          <div class="col-span-1 mb-3">
+          <div class="col-span-1">
             <label class="mt-3 text-xs text-gray-500">{{ $t('workerPage.filter.birthday') }}</label>
             <n-select
                 v-model:value="store.params.birthday"
@@ -263,6 +264,20 @@ const onSubmitResumeExport = () => {
                 label-field="name"
                 value-field="id"
                 :loading="componentStore.enumAdminLoading"
+                @update:value="filterEvent"
+                :ignore-composition="false"
+            />
+          </div>
+          <div class="col-span-2">
+            <label class="text-xs text-gray-500">{{ $t('workerPage.filter.sex') }}</label>
+            <n-select
+                v-model:value="store.params.sex"
+                filterable
+                clearable
+                :placeholder="$t(`content.choose`)"
+                :options="componentStore.genderList"
+                label-field="name"
+                value-field="id"
                 @update:value="filterEvent"
                 :ignore-composition="false"
             />
