@@ -47,6 +47,7 @@ const onOpenCommand = (v)=>{
 }
 
 const onEdit = (v)=>{
+  console.log(v)
   store.positionId = v.id
   store.editVisible = true
   store.editPayload.rank = v.rank
