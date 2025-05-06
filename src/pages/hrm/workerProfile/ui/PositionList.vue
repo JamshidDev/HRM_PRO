@@ -1,12 +1,14 @@
 <script setup>
 import {Edit20Regular} from "@vicons/fluent"
-import {useWorkerProfileStore} from "@/store/modules/index.js"
+import {useComponentStore, useWorkerProfileStore} from "@/store/modules/index.js"
 import Utils from "../../../../utils/Utils.js"
 import {UIModal} from "@/components/index.js"
 import AdContractForm from "@/pages/docFlow/document/adContract/adContractForm.vue"
 import CommandForm from "@/pages/docFlow/document/command/CommandForm.vue"
+import editFrom from "./editFrom.vue"
 
 const store = useWorkerProfileStore()
+const componentStore = useComponentStore()
 const workers = ref([])
 const organization = ref([])
 
@@ -44,6 +46,26 @@ const onOpenCommand = (v)=>{
   store.commandVisible = true
 }
 
+const onEdit = (v)=>{
+  store.positionId = v.id
+  store.editVisible = true
+  store.editPayload.rank = v.rank
+  store.editPayload.salary = v.salary?.toString()
+  store.editPayload.group = v.group
+  store.editPayload.rate = v.rate
+  store.editPayload.type = v.type?.id
+  store.editPayload.contract_number =v.contract?.number
+  store.editPayload.contract_date = Utils.datePickerFormatter(v.contract?.contract_date)
+
+  componentStore.departmentList = []
+  componentStore.departmentPositionList = []
+  store.editPayload.organization_id = []
+  store.editPayload.department_id = []
+  store.editPayload.department_position_id = null
+
+
+}
+
 </script>
 
 <template>
@@ -79,6 +101,17 @@ const onOpenCommand = (v)=>{
       </div>
     </div>
     <div class="col-span-3 flex flex-col-reverse gap-y-2 p-2 ">
+      <n-button
+          @click="onEdit(item)"
+          size="small"
+          type="success"
+          secondary
+      >
+        <template #icon>
+          <Edit20Regular/>
+        </template>
+        {{$t('content.edit')}}
+      </n-button>
       <n-button
           @click="onOpen(item)"
           size="small"
@@ -122,6 +155,13 @@ const onOpenCommand = (v)=>{
     <CommandForm
         :workers="workers"
     />
+  </UIModal>
+  <UIModal
+      :title="$t('content.edit')"
+      :width="1200"
+      v-model:visible="store.editVisible"
+  >
+   <editFrom/>
   </UIModal>
 </div>
 </template>

@@ -32,6 +32,12 @@ export default {
             message: t(`rules.requiredField`)
         }
     },
+    rulesNames:{
+        requiredStringField:'requiredStringField',
+        requiredDateTimeField:'requiredDateTimeField',
+        requiredNumberField:'requiredNumberField',
+        requiredMultiSelectField:'requiredMultiSelectField',
+    },
     login:{
         phone:[
             {

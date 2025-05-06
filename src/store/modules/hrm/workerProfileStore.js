@@ -97,6 +97,25 @@ export const useWorkerProfileStore = defineStore('workerProfileStore', {
         userRoleLoading:false,
         userRoleTotal:0,
 
+        editVisible:false,
+        editPayload:{
+            organization_id:[],
+            department_id:[],
+            department_position_id:null,
+            contract_number:null,
+            contract_date:null,
+            group:null,
+            rank:null,
+            rate:null,
+            type:null,
+            salary:null,
+            schedule_id:null,
+        },
+        positionLoading:false,
+        positionId:null,
+        structureCheckV2:[],
+        departmentCheckV2:[],
+
 
 
 
@@ -340,6 +359,29 @@ export const useWorkerProfileStore = defineStore('workerProfileStore', {
                 this.roleLoading = false
                 this.roleVisible = false
             })
+        },
+        _updatePosition(){
+            const id = this.positionId
+            const data = {
+                ...this.editPayload,
+                ...((this.editPayload.organization_id.length>0 && this.editPayload.department_position_id)? {
+                    organization_id:this.editPayload.organization_id?.[0]?.id,
+                } : {
+                    organization_id:undefined,
+                    department_position_id:undefined,
+                }),
+                department_id:undefined,
+            }
+            this.positionLoading = true
+            $ApiService.workerService._updatePosition({data, id}).then((res)=>{
+                console.log(res.data)
+                this._index()
+            }).finally(()=>{
+                this.positionLoading = false
+                this.editVisible = false
+
+            })
+
         },
 
         _userRole(){

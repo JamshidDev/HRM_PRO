@@ -58,7 +58,7 @@ const timeOnlyYear = (time)=>{
 }
 
 const datePickerFormatter = (time)=>{
-    return time? new Date(time).getTime() : null
+    return  (time === null || time === undefined)? null : new Date(time).getTime()
 }
 
 const timePickerFormatter = (time)=>{

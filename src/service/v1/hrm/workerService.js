@@ -40,7 +40,9 @@ const _userRole =async (payload)=>{
     return await axios.get(`/v1/hr/users`, {params:payload.params})
 }
 
-
+const _updatePosition = async (payload)=>{
+    return await axios.put(`/v1/hr/worker-positions/${payload.id}/update`, payload.data)
+}
 
 
 export default {
@@ -55,4 +57,5 @@ export default {
     _deleteRole,
     _storeRole,
     _userRole,
+    _updatePosition,
 }
