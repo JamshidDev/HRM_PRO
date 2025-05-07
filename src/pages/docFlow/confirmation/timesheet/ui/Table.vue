@@ -39,7 +39,7 @@ const onSelect = (v)=>{
       >
         <thead>
         <tr>
-          <th class="!text-center min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
+          <th class="text-center! min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
           <th class="min-w-[200px] w-[300px]">{{$t('content.worker')}}</th>
           <th class="min-w-[120px]">{{$t('timesheetWorkerPage.work_place')}}</th>
           <th class="min-w-[100px] w-[100px]">{{$t('content.month')}}</th>

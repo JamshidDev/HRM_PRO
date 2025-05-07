@@ -338,7 +338,7 @@ onUnmounted(()=>{
                 </div>
               </div>
             </div>
-            <div class="vertical-text absolute z-[999] top-[80px] right-0 text-white px-1 py-2 bg-surface-400 rounded-tl-lg rounded-bl-lg border border-surface-line">
+            <div class="vertical-text absolute z-999 top-[80px] right-0 text-white px-1 py-2 bg-surface-400 rounded-tl-lg rounded-bl-lg border border-surface-line">
               <n-icon>
                 <Settings20Regular/>
               </n-icon>

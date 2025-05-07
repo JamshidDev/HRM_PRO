@@ -281,14 +281,14 @@ const cardList = [
   <div class="grid grid-cols-12 gap-4">
     <template v-for="(card, idx) in mainCardList" :key="idx">
       <div class="col-span-3">
-        <div class="bg-surface-section border border-surface-line p-4 pt-6 rounded-xl relative overflow-hidden drop-shadow-sm">
+        <div class="bg-surface-section border border-surface-line p-4 pt-6 rounded-xl relative overflow-hidden drop-shadow-xs">
           <span class="absolute top-0 right-0 w-[100px] h-full opacity-60 bg-no-repeat"  style="background-image:url('/effect/primary-card.svg')"></span>
           <p class="text-textColor2 font-semibold truncate">{{card.label}}</p>
           <template v-for="(data, index) in card.data" :key="index">
             <h2 class="text-2xl font-semibold text-textColor2 mt-3">{{data.count}}</h2>
             <p class="text-textColor1 leading-[1.2]">{{data.label}}</p>
           </template>
-          <p class="relative z-[2] text-textColor1 flex justify-end mt-2 items-center gap-2 hover:text-primary cursor-pointer transition-all">Batafsil ko'rish <n-icon size="16"><ExpandUpRight32Filled/></n-icon></p>
+          <p class="relative z-2 text-textColor1 flex justify-end mt-2 items-center gap-2 hover:text-primary cursor-pointer transition-all">Batafsil ko'rish <n-icon size="16"><ExpandUpRight32Filled/></n-icon></p>
 
         </div>
       </div>
@@ -298,7 +298,7 @@ const cardList = [
     <template v-for="(card, idx) in secondCardList" :key="idx">
       <div class="col-span-3">
         <div class="bg-surface-section rounded-xl p-4 pt-6 relative overflow-hidden border border-surface-line">
-          <span class="z-[1] opacity-30 absolute top-0 right-0 w-[160px] h-full bg-no-repeat bg-[url(/effect/effect-card-1.svg)]" ></span>
+          <span class="z-1 opacity-30 absolute top-0 right-0 w-[160px] h-full bg-no-repeat bg-[url(/effect/effect-card-1.svg)]" ></span>
 
           <p class="text-textColor2 font-semibold truncate">{{card.label}}</p>
 
@@ -316,7 +316,7 @@ const cardList = [
             </div>
           </template>
 
-          <p class="relative z-[2] text-textColor1 flex justify-end mt-2 items-center gap-2 hover:text-primary cursor-pointer transition-all">Batafsil ko'rish <n-icon size="16"><ExpandUpRight32Filled/></n-icon></p>
+          <p class="relative z-2 text-textColor1 flex justify-end mt-2 items-center gap-2 hover:text-primary cursor-pointer transition-all">Batafsil ko'rish <n-icon size="16"><ExpandUpRight32Filled/></n-icon></p>
 
         </div>
       </div>
@@ -324,7 +324,7 @@ const cardList = [
     <template v-for="(card, idx) in thirdCardList" :key="idx">
       <div class="col-span-3">
         <div class="bg-surface-section rounded-xl p-4 pt-6 relative overflow-hidden border border-surface-line">
-          <span class="z-[1] opacity-30 absolute top-0 right-0 w-[160px] h-full bg-no-repeat bg-[url(/effect/effect-card-1.svg)]" ></span>
+          <span class="z-1 opacity-30 absolute top-0 right-0 w-[160px] h-full bg-no-repeat bg-[url(/effect/effect-card-1.svg)]" ></span>
 
           <p class="text-textColor2 font-semibold truncate">{{card.label}}</p>
 
@@ -342,7 +342,7 @@ const cardList = [
             </div>
           </template>
 
-          <p class="relative z-[2] text-textColor1 flex justify-end mt-2 items-center gap-2 hover:text-primary cursor-pointer transition-all">Batafsil ko'rish <n-icon size="16"><ExpandUpRight32Filled/></n-icon></p>
+          <p class="relative z-2 text-textColor1 flex justify-end mt-2 items-center gap-2 hover:text-primary cursor-pointer transition-all">Batafsil ko'rish <n-icon size="16"><ExpandUpRight32Filled/></n-icon></p>
 
         </div>
       </div>
@@ -352,7 +352,7 @@ const cardList = [
     <template v-for="(card, idx) in cardList" :key="idx">
       <div class="col-span-6">
         <div class="bg-surface-section rounded-xl p-4 pt-6 relative overflow-hidden border border-surface-line">
-          <span class="z-[1] opacity-40 absolute top-0 right-0 w-[160px] h-full bg-no-repeat bg-[url(/effect/effect-card-2.svg)]" ></span>
+          <span class="z-1 opacity-40 absolute top-0 right-0 w-[160px] h-full bg-no-repeat bg-[url(/effect/effect-card-2.svg)]" ></span>
           <div class="flex items-center justify-between gap-3">
             <p class="text-textColor2 font-medium truncate w-[220px]">{{card.label}}</p>
             <hr class="w-[100%] h-[2px] text-surface-line" />
@@ -372,7 +372,7 @@ const cardList = [
             </div>
           </template>
 
-          <p class="relative z-[2] text-textColor1 flex justify-end mt-2 items-center gap-2 hover:text-primary cursor-pointer transition-all">Batafsil ko'rish <n-icon size="16"><ExpandUpRight32Filled/></n-icon></p>
+          <p class="relative z-2 text-textColor1 flex justify-end mt-2 items-center gap-2 hover:text-primary cursor-pointer transition-all">Batafsil ko'rish <n-icon size="16"><ExpandUpRight32Filled/></n-icon></p>
 
         </div>
       </div>

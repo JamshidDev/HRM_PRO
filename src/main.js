@@ -2,7 +2,7 @@ import "./assets/index.scss"
 import { createApp } from 'vue'
 import App from './App.vue'
 import router from "./router"
-import pinia from '@/store/index.js'
+import {createPinia} from "pinia"
 import i18n from "./i18n/index.js"
 import ApiService from "@/service/ApiService.js";
 import naive from 'naive-ui'
@@ -16,6 +16,14 @@ const app = createApp(App);
 const meta = document.createElement('meta')
 meta.name = 'naive-ui-style'
 document.head.appendChild(meta)
+
+import "@/assets/index.scss"
+import './style.css'
+
+
+
+
+const pinia =  createPinia()
 
 app.use(VueSignature)
 app.use(naive)

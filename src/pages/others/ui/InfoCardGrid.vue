@@ -82,8 +82,8 @@ const tab = ref(0);
 
     <template v-for="(item, idx) in list" :key="idx"
     >
-      <n-tab-pane class="md:!p-2 rounded-md h-full overflow-auto" :name="idx+1">
-        <n-button class="!mb-2" tertiary circle @click="tab=0">
+      <n-tab-pane class="md:p-2! rounded-md h-full overflow-auto" :name="idx+1">
+        <n-button class="mb-2!" tertiary circle @click="tab=0">
           <template #icon>
             <n-icon :component="ChevronLeft12Regular"/>
           </template>

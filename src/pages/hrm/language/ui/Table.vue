@@ -71,7 +71,7 @@ const onDownload = (v)=>{
       >
         <thead>
         <tr>
-          <th class="!text-center min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
+          <th class="text-center! min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
           <th class="min-w-[100px]">{{$t('content.name')}}</th>
           <th class="min-w-[80px] w-[80px]">{{$t('content.file')}}</th>
           <th class="min-w-[40px] w-[40px]"></th>

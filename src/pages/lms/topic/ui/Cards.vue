@@ -41,7 +41,7 @@ const onSelectEv = (v) => {
 
 <template>
   <n-spin :show="store.loading" class="h-full bg-surface-section rounded-md">
-    <NoDataPicture class="!mt-0" v-if="store.list.length===0 && !store.loading"/>
+    <NoDataPicture class="mt-0!" v-if="store.list.length===0 && !store.loading"/>
     <div v-else-if="store.list.length>0 && !store.loading" class="flex flex-col h-full p-3">
 
       <div class="overflow-y-auto">
@@ -49,7 +49,7 @@ const onSelectEv = (v) => {
           <n-gi
               v-for="(item, idx) in store.list" :key="idx"
               :class="{'active-card': route.params?.id==item.id}"
-              class="cursor-pointer bg-surface-section border rounded-lg border-surface-line  relative overflow-hidden p-2 group h-[110px] transition-all hover:drop-shadow-sm flex flex-col"
+              class="cursor-pointer bg-surface-section border rounded-lg border-surface-line  relative overflow-hidden p-2 group h-[110px] transition-all hover:drop-shadow-xs flex flex-col"
               @click="goPush(item)"
           >
             <div class="flex justify-between items-start shrink-0">

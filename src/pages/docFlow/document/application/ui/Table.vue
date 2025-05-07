@@ -48,7 +48,7 @@ const onOpenFile = (v)=>{
       >
         <thead>
         <tr>
-          <th class="!text-center min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
+          <th class="text-center! min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
           <th class="min-w-[60px] w-[60px]">{{$t('applicationPage.form.number')}}</th>
           <th class="min-w-[200px]">{{$t('applicationPage.form.type')}}</th>
           <th class="min-w-[200px] w-[200px]">{{$t('content.worker')}}</th>

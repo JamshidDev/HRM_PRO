@@ -27,7 +27,7 @@ onMounted(()=>{
             playsinline
             crossorigin
             height="100"
-            class="!h-full"
+            class="h-full!"
             autoplay
         ></video>
       </media-theme-yt>

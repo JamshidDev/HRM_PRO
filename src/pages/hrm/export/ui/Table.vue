@@ -22,9 +22,9 @@ const changePage = (v)=>{
       >
         <thead>
         <tr>
-          <th class="!text-center min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
+          <th class="text-center! min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
           <th class="min-w-[200px]">{{$t('content.type')}}</th>
-          <th class="min-w-[200px] w-[300px] !text-center">{{$t('content.status')}}</th>
+          <th class="min-w-[200px] w-[300px] text-center!">{{$t('content.status')}}</th>
           <th class="min-w-[130px] w-[130px]">{{$t('content.created')}}</th>
           <th class="min-w-[130px] w-[130px]">{{$t('content.ended')}}</th>
           <th class="min-w-[50px] w-[50px]">{{$t('content.action')}}</th>

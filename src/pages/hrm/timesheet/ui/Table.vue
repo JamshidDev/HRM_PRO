@@ -56,11 +56,11 @@ const onSelect = (v)=>{
       >
         <thead>
         <tr>
-          <th class="!text-center w-[40px] max-w-[40px]">{{$t('content.number')}}</th>
-          <th class="!text-center min-w-[500px]">{{$t('timesheetWorkerPage.work_place')}}</th>
-          <th class="!text-center">{{$t('content.month')}}</th>
-          <th class="!text-center max-w-[120px] w-[120px]">{{$t('timesheet.status')}}</th>
-          <th class="!text-center max-w-[100px] w-[100px]">{{$t('content.status')}}</th>
+          <th class="text-center! w-[40px] max-w-[40px]">{{$t('content.number')}}</th>
+          <th class="text-center! min-w-[500px]">{{$t('timesheetWorkerPage.work_place')}}</th>
+          <th class="text-center!">{{$t('content.month')}}</th>
+          <th class="text-center! max-w-[120px] w-[120px]">{{$t('timesheet.status')}}</th>
+          <th class="text-center! max-w-[100px] w-[100px]">{{$t('content.status')}}</th>
           <th class="max-w-[40px] w-[40px]"></th>
         </tr>
         </thead>
@@ -68,8 +68,8 @@ const onSelect = (v)=>{
         <tr v-for="(item, idx) in store.list" :key="idx">
           <td class="w-[20px] max-w-[20px]"><span class="text-center text-[12px] text-gray-600 block">{{ (store.params.page - 1) * store.params.per_page + idx + 1 }}</span></td>
           <td>{{item.department?.name || item.work_place?.name}}</td>
-          <td class="!text-center">{{dayjs().year(item.year).month(item.month-1).format('YYYY MMMM')}}</td>
-          <td class="!text-center max-w-[120px] w-[120px]">
+          <td class="text-center!">{{dayjs().year(item.year).month(item.month-1).format('YYYY MMMM')}}</td>
+          <td class="text-center! max-w-[120px] w-[120px]">
             <n-button v-if="!!item?.status" type='primary' size="tiny" dashed>
               <template #icon>
                 <n-icon :component="CheckmarkCircle24Filled"/>
@@ -77,7 +77,7 @@ const onSelect = (v)=>{
               {{$t('timesheet.finished')}}
             </n-button>
           </td>
-          <td class="!text-center"><UIStatus :status="item.confirmation"/></td>
+          <td class="text-center!"><UIStatus :status="item.confirmation"/></td>
           <td>
             <UIMenuButton
                 :show-view="true"

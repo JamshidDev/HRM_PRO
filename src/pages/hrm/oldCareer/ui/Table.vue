@@ -89,8 +89,8 @@ const onUpdate = (v)=>{
         >
           <thead>
           <tr>
-            <th class="!text-center min-w-[40px] w-[40px] handle">{{$t('content.number')}}</th>
-            <th class="!text-center min-w-[40px] w-[40px] handle"></th>
+            <th class="text-center! min-w-[40px] w-[40px] handle">{{$t('content.number')}}</th>
+            <th class="text-center! min-w-[40px] w-[40px] handle"></th>
             <th class="min-w-[100px]">{{$t('oldCareerPage.form.post_name')}}</th>
             <th class="min-w-[100px] w-[160px]">{{$t('oldCareerPage.form.from_date')}}</th>
             <th class="min-w-[100px] w-[160px]">{{$t('oldCareerPage.form.to_date')}}</th>

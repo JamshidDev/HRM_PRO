@@ -8,7 +8,7 @@
 ">
     <template v-for="item in 4" :key="item">
       <div
-          class="w-full px-4 py-2 bg-blue-300 mb-2 rounded"
+          class="w-full px-4 py-2 bg-blue-300 mb-2 rounded-sm"
       >Notification</div>
     </template>
   </div>

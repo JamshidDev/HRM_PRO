@@ -98,16 +98,16 @@ watch(()=> store.dashboard.ageCard, (newValue, oldValue)=>{
 
 <template>
   <div class="w-full h-full border border-surface-line p-4 rounded-lg bg-surface-section relative hover-effect-card">
-    <span class="z-[1] opacity-30 absolute top-0 right-0 w-[160px] h-full bg-no-repeat bg-[url(/effect/effect-card-1.svg)]" ></span>
+    <span class="z-1 opacity-30 absolute top-0 right-0 w-[160px] h-full bg-no-repeat bg-[url(/effect/effect-card-1.svg)]" ></span>
     <p class="font-semibold text-textColor2">{{$t('dashboardPage.age.title')}}</p>
     <div class="grid grid-cols-12">
       <div class="col-span-12 sm:col-span-6">
-        <div class="text-textColor1"><span class="shadow-sm w-[30px] h-[18px] bg-primary inline-block rounded mt-[80px] font-semibold mr-4"></span> {{$t('dashboardPage.age.age31')}}</div>
-        <div class="text-textColor1"><span class="shadow-sm w-[30px] h-[18px] bg-dark inline-block rounded font-semibold mt-2 mr-4"></span> {{$t('dashboardPage.age.age32_45')}}</div>
-        <div class="text-textColor1"><span class="shadow-sm w-[30px] h-[18px] bg-[#E53835] inline-block rounded font-semibold mt-2 mr-4" ></span> {{$t('dashboardPage.age.age46')}}</div>
+        <div class="text-textColor1"><span class="shadow-sm w-[30px] h-[18px] bg-primary inline-block rounded-sm mt-[80px] font-semibold mr-4"></span> {{$t('dashboardPage.age.age31')}}</div>
+        <div class="text-textColor1"><span class="shadow-sm w-[30px] h-[18px] bg-dark inline-block rounded-sm font-semibold mt-2 mr-4"></span> {{$t('dashboardPage.age.age32_45')}}</div>
+        <div class="text-textColor1"><span class="shadow-sm w-[30px] h-[18px] bg-[#E53835] inline-block rounded-sm font-semibold mt-2 mr-4" ></span> {{$t('dashboardPage.age.age46')}}</div>
       </div>
 
-      <div class="col-span-12 sm:col-span-6 h-[250px] relative z-[2]">
+      <div class="col-span-12 sm:col-span-6 h-[250px] relative z-2">
         <v-chart autoresize :option="ageOption" />
       </div>
     </div>

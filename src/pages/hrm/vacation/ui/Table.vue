@@ -77,7 +77,7 @@ const vacationType =(id)=>{
       >
         <thead>
         <tr>
-          <th class="!text-center min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
+          <th class="text-center! min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
           <th class="min-w-[200px]">{{$t('confirmationPage.table.worker')}}</th>
           <th class="min-w-[100px] w-[120px]">{{$t('content.duration')}}</th>
           <th class="min-w-[100px] w-[300px]">{{$t('vacationPage.table.type')}}</th>

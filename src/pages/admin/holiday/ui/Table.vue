@@ -88,7 +88,7 @@ const typeClass = (id)=>{
 <template>
   <n-spin :show="store.loading">
     <n-calendar
-        class="mt-10 w-full !min-h-[720px] !h-auto bg-white"
+        class="mt-10 w-full min-h-[720px]! h-auto! bg-white"
         v-model:value="store.currentDate"
         @panel-change="onChangeMonth"
         @update:value="changeValue"

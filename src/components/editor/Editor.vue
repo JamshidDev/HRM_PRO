@@ -106,7 +106,7 @@ const handleCreated = (editor) => {
         :label="label"
         :show-label="!!label"
         :rule="[{
-          trigger: ['input', 'blur'],
+          trigger: ['input', 'blur-sm'],
           validator() {
             return (editorRef?.isEmpty() || editorRef?.getText()?.trim()==='') ? new Error( t('rules.requiredField')) : true
           },
@@ -116,7 +116,7 @@ const handleCreated = (editor) => {
         :path="path"
         :show-feedback="showValidationMessage"
     >
-      <div class="w-full border border-surface-line drop-shadow-sm">
+      <div class="w-full border border-surface-line drop-shadow-xs">
         <Toolbar
             v-if="showToolbar"
             :defaultConfig="toolbarConfig"

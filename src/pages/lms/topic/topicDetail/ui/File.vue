@@ -70,7 +70,7 @@ const conf = computed(()=>TopicUtils.getMediaProperty(props.type))
 
       <!-- Audio Preview -->
       <div v-else-if="type === TopicUtils.AUDIO" class="relative w-full h-full group">
-        <n-button class="!h-full !w-full" type="primary" quaternary>
+        <n-button class="h-full! w-full!" type="primary" quaternary>
           <template #icon>
             <n-icon :component="MusicNote224Filled" :size="60" />
           </template>
@@ -86,7 +86,7 @@ const conf = computed(()=>TopicUtils.getMediaProperty(props.type))
         </div>
       </div>
 
-      <n-button v-else-if="type === TopicUtils.BOOK" class="!h-full !w-full" type="success" quaternary >
+      <n-button v-else-if="type === TopicUtils.BOOK" class="h-full! w-full!" type="success" quaternary >
         <template #icon>
           <n-icon :component="Book20Filled" :size="60" />
         </template>

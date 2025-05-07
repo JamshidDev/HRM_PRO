@@ -31,7 +31,7 @@ const openCode = (id)=>{
       >
         <thead>
         <tr>
-          <th class="!text-center min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
+          <th class="text-center! min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
           <th class="w-[200px]">{{$t('actionLog.table.owner')}}</th>
           <th class="min-w-[200px] ">{{$t('actionLog.table.detail')}}</th>
           <th class="w-[160px]">{{$t('actionLog.table.loginAt')}}</th>

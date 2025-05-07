@@ -37,18 +37,18 @@ const onSelect = (v)=>{
       >
         <thead>
         <tr>
-          <th class="!text-center w-[30px] min-w-[30px] flex-grow-0">{{$t('content.number')}}</th>
-          <th class="!text-center min-w-[200px]">{{$t('content.staff')}}</th>
-          <th class="!text-center">{{$t('content.organization')}}</th>
-          <th class="!text-center max-w-[150px] w-[150px]">{{$t('content.deadline')}}</th>
-          <th class="!text-center">{{$t('turnstile.terminals')}}</th>
+          <th class="text-center! w-[30px] min-w-[30px] grow-0">{{$t('content.number')}}</th>
+          <th class="text-center! min-w-[200px]">{{$t('content.staff')}}</th>
+          <th class="text-center!">{{$t('content.organization')}}</th>
+          <th class="text-center! max-w-[150px] w-[150px]">{{$t('content.deadline')}}</th>
+          <th class="text-center!">{{$t('turnstile.terminals')}}</th>
           <th class="max-w-[60px] w-[60px]">{{$t('content.action')}}</th>
         </tr>
         </thead>
         <tbody>
         <tr v-for="(item, idx) in store.list" :key="idx">
           <td class="w-[20px] max-w-[20px]"><span class="text-center text-[12px] text-gray-600 block">{{ (store.params.page - 1) * store.params.per_page + idx + 1 }}</span></td>
-          <td class="!text-center">
+          <td class="text-center!">
             <UIUser
                 :short="false"
               :data="{
@@ -60,11 +60,11 @@ const onSelect = (v)=>{
               }"
             />
           </td>
-          <td class="!text-center">{{item.worker_position.organization.name}}</td>
-          <td class="!text-center">
+          <td class="text-center!">{{item.worker_position.organization.name}}</td>
+          <td class="text-center!">
             <UIBadge :show-icon="false" :label="Utils.timeOnlyDate(item.to)" />
           </td>
-          <td class="!text-center">
+          <td class="text-center!">
             <div class="flex gap-3 flex-wrap">
               <n-button v-for="terminal in item.terminals" type="primary" size="tiny" dashed :key="terminal.id">{{terminal.name}}</n-button>
             </div>

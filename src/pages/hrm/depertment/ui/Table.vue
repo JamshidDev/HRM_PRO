@@ -82,7 +82,7 @@ const onSelectEv = (v)=>{
       >
         <thead>
         <tr>
-          <th class="!text-center min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
+          <th class="text-center! min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
           <th class="min-w-[30px] w-[30px]"></th>
           <th class="min-w-[200px]">{{$t('departmentPage.form.name')}}</th>
           <th class="min-w-[100px] w-[200px]">{{$t('departmentPage.form.level')}}</th>

@@ -50,7 +50,7 @@ const onSubmit = () => {
               <th class="cursor-move" v-for="(header, idx) in store.payload.columns" :key="header.column">
                 <div class="flex justify-between">
                   <p>{{ idx + 1 }}) {{ header.label }}</p>
-                  <n-button class="!cursor-move" size="tiny" quaternary type="primary">
+                  <n-button class="cursor-move!" size="tiny" quaternary type="primary">
                     <template #icon>
                       <n-icon :component="ArrowMove20Regular"/>
                     </template>

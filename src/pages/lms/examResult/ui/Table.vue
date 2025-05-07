@@ -31,7 +31,7 @@ const onSelectEv = (v)=>{
     >
       <thead>
         <tr>
-          <th class="!text-center">{{$t('content.number')}}</th>
+          <th class="text-center!">{{$t('content.number')}}</th>
           <th>
             {{$t('content.worker')}}
           </th>
@@ -58,7 +58,7 @@ const onSelectEv = (v)=>{
       </thead>
       <tbody>
         <tr v-for="(result, idx) in store.list" :key="idx">
-          <td class="!text-center">{{idx+1+(store.params.page-1)*store.params.per_page}}</td>
+          <td class="text-center!">{{idx+1+(store.params.page-1)*store.params.per_page}}</td>
           <td><UIUser
               :short="false"
             :data="{

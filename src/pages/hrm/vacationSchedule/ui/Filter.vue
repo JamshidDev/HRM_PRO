@@ -27,7 +27,7 @@ const onSearch = ()=>{
 >
   <template #filterAction>
     <n-button
-        class="!w-full md:!w-auto"
+        class="w-full! md:w-auto!"
         @click="store.otherVisible=!store.otherVisible"
         type="error">
       {{$t('vacationSchedule.otherList.btn')}}

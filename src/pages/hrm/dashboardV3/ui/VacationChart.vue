@@ -96,14 +96,14 @@ const totalCount = computed(()=>{
 
 <template>
   <div class="w-full h-full border border-surface-line p-4 rounded-lg bg-surface-section relative hover-effect-card">
-    <span class="z-[1] opacity-30 absolute top-0 right-0 w-[160px] h-full bg-no-repeat bg-[url(/effect/primary-card.svg)]" ></span>
-    <span class="z-[1] opacity-30 absolute bottom-0 left-0 w-[160px] h-[200px] rotate-180 bg-no-repeat bg-[url(/effect/primary-card.svg)]" ></span>
+    <span class="z-1 opacity-30 absolute top-0 right-0 w-[160px] h-full bg-no-repeat bg-[url(/effect/primary-card.svg)]" ></span>
+    <span class="z-1 opacity-30 absolute bottom-0 left-0 w-[160px] h-[200px] rotate-180 bg-no-repeat bg-[url(/effect/primary-card.svg)]" ></span>
     <div class="flex items-center gap-2 mb-10">
       <span class="font-semibold text-nowrap">{{$t('dashboardPage.card.vacation')}}</span>
       <hr class="w-full h-[1px] text-surface-line">
       <span class="font-semibold text-nowrap text-lg">{{totalCount}}</span>
     </div>
-<!--    <div class="w-full h-[360px] relative z-[2]">-->
+<!--    <div class="w-full h-[360px] relative z-2">-->
 <!--      <v-chart :option="vacationOption" />-->
 <!--    </div>-->
     <div v-for="(item, idx) in store.dashboard.vacations"  class="w-full flex mb-3 items-center cursor-pointer">

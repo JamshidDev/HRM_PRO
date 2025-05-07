@@ -20,7 +20,7 @@ const onResult = (v)=>{
 <template>
   <div class="w-[120px] h-[160px]
   select-none
-   rounded-xl bg-gradient-to-t
+   rounded-xl bg-linear-to-t
    from-blue-100
    to-80% cursor-pointer
    to-primary top-1/2 -translate-y-1/2

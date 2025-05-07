@@ -9,7 +9,7 @@ const props = defineProps({
 
 <template>
   <iframe
-      class="relative z-[1]"
+      class="relative z-1"
       :src="url"
       width="100%"
       style="height:calc(100% + 30px)"

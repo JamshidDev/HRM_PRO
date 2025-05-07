@@ -75,10 +75,10 @@ const userSrc = computed(()=> {
   />
   <div @click="emits('onClickFullName')"  class="flex flex-col" style="width: calc(100% - 50px)">
     <slot name="name" :title="fullName">
-      <span class="leading-2 text-sm text-textColor2 truncate w-full ">{{fullName}}</span>
+      <span class="text-sm text-textColor2 line-clamp-1 w-full leading-[1.2]">{{fullName}}</span>
     </slot>
     <slot name="position">
-      <span class="leading-1 text-xs text-textColor1 truncate w-full">{{data?.position || ''}}</span>
+      <span class="text-xs text-textColor1 line-clamp-1 w-full">{{data?.position || ''}}</span>
     </slot>
   </div>
 </div>

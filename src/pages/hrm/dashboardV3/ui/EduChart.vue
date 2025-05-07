@@ -190,7 +190,7 @@ watch(()=> store.dashboard.eduCard, (newValue, oldValue)=>{
 <template>
 
   <div class="w-full h-full flex flex-col border border-surface-line p-4 rounded-lg bg-surface-section relative hover-effect-card">
-    <span class="z-[1] opacity-30 absolute top-0 right-0 w-[160px] h-full bg-no-repeat bg-[url(/effect/effect-card-1.svg)]" ></span>
+    <span class="z-1 opacity-30 absolute top-0 right-0 w-[160px] h-full bg-no-repeat bg-[url(/effect/effect-card-1.svg)]" ></span>
     <p class="font-semibold mb-4">{{$t('dashboardPage.edu.title')}}</p>
     <div class="grid grid-cols-12 gap-2">
       <div class="col-span-12 flex md:col-span-6 items-center justify-around">
@@ -203,7 +203,7 @@ watch(()=> store.dashboard.eduCard, (newValue, oldValue)=>{
         </div>
       </div>
       <div class="col-span-12 flex md:col-span-6 items-center justify-around">
-        <div class="w-[90px] h-[90px] relative z-[2]">
+        <div class="w-[90px] h-[90px] relative z-2">
           <v-chart :option="eduOption2" />
         </div>
         <div style="width: calc(100% - 90px)" class="pl-2">

@@ -80,7 +80,7 @@ onMounted(()=>{
         </template>
       </n-button>
     </n-input-group>
-    <n-collapse-transition :show="store.fileShow" class="bg-surface-section p-2 rounded overflow-hidden">
+    <n-collapse-transition :show="store.fileShow" class="bg-surface-section p-2 rounded-sm overflow-hidden">
       <template v-for="(item, idx) in store.fileList" :key="idx">
 
         <template v-if="item?.file">
@@ -98,7 +98,7 @@ onMounted(()=>{
 
       </template>
     </n-collapse-transition>
-    <n-collapse-transition :show="store.show" class="bg-surface-section p-2 rounded overflow-hidden">
+    <n-collapse-transition :show="store.show" class="bg-surface-section p-2 rounded-sm overflow-hidden">
       <template v-for="(item, idx) in store.historyList" :key="idx">
         <div class="flex flex-col justify-between w-full py-1 border-b  border-dashed border-surface-line">
           <div class="flex">

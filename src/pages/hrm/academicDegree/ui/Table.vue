@@ -74,7 +74,7 @@ const onDownload = (url)=>{
       >
         <thead>
         <tr>
-          <th class="!text-center min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
+          <th class="text-center! min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
           <th class="min-w-[100px]">{{$t('academicDegreePage.form.type')}}</th>
           <th class="min-w-[100px] w-[200px]">{{$t('academicDegreePage.form.file')}}</th>
           <th class="min-w-[40px] w-[40px]"></th>

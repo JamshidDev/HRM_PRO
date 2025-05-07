@@ -136,7 +136,7 @@ const onSubmit = ()=>{
         :show-feedback="false"
     >
       <n-button
-          class="mt-4 flex !w-full"
+          class="mt-4 flex w-full!"
           size="large"
           type="primary"
           :loading="store.loading"

@@ -119,9 +119,9 @@ const onSubmitResumeExport = () => {
   >
     <template #filterAction>
       <n-button-group
-          class="!w-full md:!w-auto">
+          class="w-full! md:w-auto!">
         <n-button
-            :class="[exportStore.isExportingResume? '!w-1/2 md:!w-auto':'!w-full md:!w-auto']"
+            :class="[exportStore.isExportingResume? 'w-1/2! md:w-auto!':'w-full! md:w-auto!']"
             :disabled="!(exportStore.resumePayload.all ? store.totalItems : exportStore.resumePayload.worker_ids.length)"
             type="primary" v-if="exportStore.isExportingResume" @click="onSubmitResumeExport">
             <span
@@ -131,7 +131,7 @@ const onSubmitResumeExport = () => {
           </template>
         </n-button>
         <n-button
-            :class="[exportStore.isExportingResume? '!w-1/2 md:!w-auto':'!w-full md:!w-auto']"
+            :class="[exportStore.isExportingResume? 'w-1/2! md:w-auto!':'w-full! md:w-auto!']"
             :color="exportStore.isExportingResume ? undefined : '#A020F0'"
             :type="exportStore.isExportingResume ? 'error' : 'warning'"
             icon-placement="right"
@@ -146,7 +146,7 @@ const onSubmitResumeExport = () => {
       </n-button-group>
 
       <n-button
-          class="!w-full md:!w-auto"
+          class="w-full! md:w-auto!"
           type="success"
           icon-placement="right"
 
@@ -159,7 +159,7 @@ const onSubmitResumeExport = () => {
       </n-button>
 
       <n-button
-          class="!w-full md:!w-auto"
+          class="w-full! md:w-auto!"
           type="primary"
           icon-placement="right"
           @click="onAdd"

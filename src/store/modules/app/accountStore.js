@@ -24,7 +24,6 @@ export const useAccountStore = defineStore('accountStore', {
         roleLoading:false,
         roleList:[],
         permissions:[],
-        // Do not touch storageUpdate please i only created it to make getter which also is depended to localStorage reactive
         storageUpdate: 1
     }),
     getters:{

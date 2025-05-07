@@ -73,7 +73,7 @@ const dateMaskPlugin = {
                                 previousValue = formattedValue; // Har doim yangilash
                             });
 
-                            el.addEventListener('blur', function (event) {
+                            el.addEventListener('blur-sm', function (event) {
                                 const value = event.target.value;
                                 if (value.length === 10) {
                                     const [day, month, year] = value.split('.').map(Number);

@@ -10,7 +10,7 @@ import stars from "@/assets/images/svg/stars.svg";
 const store = useWorkerExamStore()
 const examStore = useExamAttemptStore()
 
-onMounted(() => {
+onMounted(()=>{
   examStore._config_localstorage()
   store.params.page = 1
   store.params.search = null

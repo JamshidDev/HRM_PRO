@@ -28,7 +28,7 @@ const stylePanel = computed(()=>({
       ref="elementRef"
       :style="style"
       class="border border-surface-line box-element
-      bg-surface-section rounded-lg overflow-hidden basis-[100px] flex-grow flex-shrink cursor-pointer select-none"
+      bg-surface-section rounded-lg overflow-hidden basis-[100px] grow shrink cursor-pointer select-none"
   >
     <div class="flex w-full px-2 items-center justify-between gap-2 sticky top-0 bg-surface-section z-10 pt-2">
        <span class="text-secondary font-semibold">{{data?.name}}</span>

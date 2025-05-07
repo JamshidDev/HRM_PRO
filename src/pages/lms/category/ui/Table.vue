@@ -42,9 +42,9 @@ const onSelect = (v) => {
       >
         <thead>
         <tr>
-          <th class="!text-center w-[30px] min-w-[30px] flex-grow-0">{{ $t('content.number') }}</th>
-          <th class="!text-center min-w-[500px]">{{ $t('categoryPage.name') }}</th>
-          <th class="!text-center w-[140px] min-w-[120px]">{{ $t('categoryPage.questionCount') }}</th>
+          <th class="text-center! w-[30px] min-w-[30px] grow-0">{{ $t('content.number') }}</th>
+          <th class="text-center! min-w-[500px]">{{ $t('categoryPage.name') }}</th>
+          <th class="text-center! w-[140px] min-w-[120px]">{{ $t('categoryPage.questionCount') }}</th>
           <th class="max-w-[60px] w-[60px]">{{ $t('content.action') }}</th>
         </tr>
         </thead>
@@ -54,7 +54,7 @@ const onSelect = (v) => {
               (store.params.page - 1) * store.params.per_page + idx + 1
             }}</span></td>
           <td>{{ item.name }}</td>
-          <td class="!text-center">{{ item.questions_count }}</td>
+          <td class="text-center!">{{ item.questions_count }}</td>
           <td>
             <UIMenuButton
                 :show-view="false"

@@ -43,7 +43,7 @@ const lesson = computed(()=>{
           </template>
         </n-button>
       </div>
-      <div class="flex-grow basis-auto overflow-hidden">
+      <div class="grow basis-auto overflow-hidden">
         <Tabs />
       </div>
     </div>

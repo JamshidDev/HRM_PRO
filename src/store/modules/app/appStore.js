@@ -32,7 +32,7 @@ export const useAppStore = defineStore('appStore', {
                 name:"Tashkent"
             }
         ],
-        theme:customTheme,
+        theme:undefined,
         themeSwitch:false,
     }),
     actions:{

@@ -32,7 +32,7 @@ const viewExam = (v) => {
 </script>
 <template>
   <template v-for="(exam, idx) in exams" :key="idx">
-    <n-divider v-if="idx!==0" class="!my-2" />
+    <n-divider v-if="idx!==0" class="my-2!" />
     <exam-card
 
         @continue="goPush"

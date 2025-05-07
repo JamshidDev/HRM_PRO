@@ -7,7 +7,7 @@ const store = useComponentStore()
 
 <template>
   <h3 class="text-sm uppercase mb-2 font-semibold mt-12 text-primary">{{$t('oldCareerPage.title')}}</h3>
-  <div class="w-full grid grid-cols-12 border p-6 rounded border-surface-line border-dashed">
+  <div class="w-full grid grid-cols-12 border p-6 rounded-sm border-surface-line border-dashed">
     <div class="col-span-12">
     </div>
     <template v-if="store.workerPreview?.worker && store.workerPreview?.worker?.old_careers">

@@ -62,15 +62,15 @@ const onSubmit = () => {
 <template>
   <n-tabs type="segment" default-value="view" class="h-full">
     <n-tab-pane name="view" :tab="$t('content.view')" class="h-full">
-      <n-spin :show="store.loading" class="flex-grow min-h-[200px]">
+      <n-spin :show="store.loading" class="grow min-h-[200px]">
         <NoDataPicture v-if="!store.loading && !store.list.length" />
         <template v-else>
           <div class="flex flex-col gap-2">
             <template v-for="(item, idx) in store.list" :key="idx">
-              <n-divider v-if="idx!==0" class="!my-2" />
+              <n-divider v-if="idx!==0" class="my-2!" />
             <div
                  class="flex gap-2 p-1 items-center ">
-              <div class="flex flex-grow group justify-between">
+              <div class="flex grow group justify-between">
                  <div class="flex gap-1 items-center">
                     <n-avatar
                       size="large"
@@ -163,7 +163,7 @@ const onSubmit = () => {
           >
             <div v-for="(item, idx) in store.payload.confirmationObjects" :key="idx"
                  class="flex gap-2 border border-surface-line rounded-md px-1 py-2 ">
-              <n-button class="handle !cursor-move flex-shrink-0" size="small" text type="primary">
+              <n-button class="handle cursor-move! shrink-0" size="small" text type="primary">
                 <template #icon>
                   <n-icon :component="ArrowMoveInward20Filled"/>
                 </template>
@@ -183,7 +183,7 @@ const onSubmit = () => {
               <!--              </n-button>-->
               <!--            </template>-->
               <!--          </n-tooltip>-->
-              <div class="flex flex-grow group justify-between">
+              <div class="flex grow group justify-between">
                 <div class="flex gap-4 items-center">
                   <n-badge :show="item.id === store.payload.mainUser" class="inline-flex justify-center items-center"
                            type="warning">

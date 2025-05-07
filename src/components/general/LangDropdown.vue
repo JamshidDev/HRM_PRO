@@ -18,14 +18,14 @@ const options= [
       return h(
           "div",
           {
-            class: "hover:bg-surface-200 p-1 m-1 rounded" ,
+            class: "hover:bg-surface-200 p-1 m-1 rounded-sm" ,
             style: "display: flex; align-items: center; cursor:pointer"
           },
           [
             h(NAvatar, {
               round: true,
               size:'small',
-              class:"!w-[24px] !h-[24px] mr-2",
+              class:"w-[24px]! h-[24px]! mr-2",
               src:uzFlag
             }),
             h("div", {
@@ -49,14 +49,14 @@ const options= [
       return h(
           "div",
           {
-            class: "hover:bg-surface-200 p-1 m-1 rounded" ,
+            class: "hover:bg-surface-200 p-1 m-1 rounded-sm" ,
             style: "display: flex; align-items: center; cursor:pointer"
           },
           [
             h(NAvatar, {
               round: true,
               size:'small',
-              class:"!w-[24px] !h-[24px] mr-2",
+              class:"w-[24px]! h-[24px]! mr-2",
               src:ruFlag
             }),
             h("div", { class:"text-[14px] font-medium" }, [
@@ -78,14 +78,14 @@ const options= [
       return h(
           "div",
           {
-            class: "hover:bg-surface-200 p-1 m-1 rounded" ,
+            class: "hover:bg-surface-200 p-1 m-1 rounded-sm" ,
             style: "display: flex; align-items: center; cursor:pointer"
           },
           [
             h(NAvatar, {
               round: true,
               size:'small',
-              class:"!w-[24px] !h-[24px] mr-2",
+              class:"w-[24px]! h-[24px]! mr-2",
               src:enFlag
             }),
             h("div", { class:"text-[14px] font-medium" }, [
@@ -127,7 +127,7 @@ onMounted(()=>{
   <n-dropdown trigger="click" :options="options">
     <div class="flex items-center  border-surface-line py-1 px-1 rounded-xl border w-[90px] cursor-pointer h-[32px] overflow-hidden">
       <n-avatar
-          class="!w-[20px] !h-[20px]"
+          class="w-[20px]! h-[20px]!"
           round
           size="small"
           :src="dropdown.icon"

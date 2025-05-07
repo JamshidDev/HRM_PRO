@@ -41,7 +41,7 @@ onMounted(() => {
                   {{ lesson.name }}
                 </p>
               </div>
-              <n-divider class="!my-1" />
+              <n-divider class="my-1!" />
               <n-button-group size="small" class="p-2">
                 <n-button :type="TopicUtils.getMediaProperty(TopicUtils.EXAM).type" tertiary>
                   <template #icon>

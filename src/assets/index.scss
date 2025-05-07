@@ -1,6 +1,8 @@
-@forward "scss/variables";
-@forward "scss/tailwand";
-@forward "scss/layout";
-@forward "scss/organizationLayout";
-@forward "scss/component";
-@forward "scss/overwrite";
+
+
+@use "scss/variables" as *;
+@use "scss/layout" as *;
+@use "scss/organizationLayout.scss" as *;
+@use "scss/component" as *;
+@use "scss/overwrite" as *;
+

@@ -151,7 +151,7 @@ const onDelete = ()=>{
       >
         <template #icon>
 <!--          <i class='bx bx-dots-vertical-rounded text-2xl'></i>-->
-          <MoreHorizontal48Filled class="!text-4xl"/>
+          <MoreHorizontal48Filled class="text-4xl!"/>
         </template>
       </n-button>
     </n-dropdown>

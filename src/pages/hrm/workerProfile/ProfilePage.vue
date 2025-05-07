@@ -13,7 +13,7 @@ const onChange = (v)=>{
 </script>
 
 <template>
-  <div class="w-full flex bg-surface-section rounded border-surface-line p-2 pt-8">
+  <div class="w-full flex bg-surface-section rounded-sm border-surface-line p-2 pt-8">
     <div class="flex flex-col" style="width: calc(100% - 0px)">
       <div class="mx-auto mb-16 sticky top-[10px] z-50 bg-white rounded-2xl">
         <n-button-group>

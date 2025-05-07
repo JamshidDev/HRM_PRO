@@ -40,7 +40,7 @@ const cards = [
 <template>
 <div class="w-full grid grid-cols-12 gap-4 mb-10">
     <div class="col-span-12">
-      <h1 class="2xl:text-5xl lg:text-4xl md:text-4xl text-sm font-bold mb-4 bg-gradient-to-r from-primary to-danger bg-clip-text text-[transparent]">{{$t('aiConversation.welcomeTo', {n:store.fullName})}}</h1>
+      <h1 class="2xl:text-5xl lg:text-4xl md:text-4xl text-sm font-bold mb-4 bg-linear-to-r from-primary to-danger bg-clip-text text-[transparent]">{{$t('aiConversation.welcomeTo', {n:store.fullName})}}</h1>
       <p class="text-2xl font-semibold text-[#90A1B9]">{{$t('aiConversation.canIHelpYouToday')}}</p>
     </div>
 
@@ -51,7 +51,7 @@ const cards = [
       <div class="flex flex-col bg-surface-section py-1 px-3 rounded-lg border border-gray-100 h-full overflow-hidden ">
         <div v-html="card?.name"></div>
         <div class="justify-end items-end flex flex-1 overflow-hidden">
-          <n-button class="!bg-gray-100" circle>
+          <n-button class="bg-gray-100!" circle>
             <template #icon>
               <n-icon size="26" class="text-primary">
                 <component :is="card.icon" />

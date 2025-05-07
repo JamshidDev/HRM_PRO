@@ -124,7 +124,7 @@ const onFocusEv = ()=>{
       placement="bottom"
       trigger="click"
       width="540px"
-      class="h-[460px] !py-0 px-1"
+      class="h-[460px] py-0! px-1"
   >
     <template #trigger>
       <n-badge

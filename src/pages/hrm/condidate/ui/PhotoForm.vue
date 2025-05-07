@@ -47,7 +47,7 @@ const onchangeMain = (id)=>{
   <template v-for="(img,idx) in images" :key="idx">
     <div
         @click="onchangeMain(img.id)"
-        class="w-[120px] h-[160px] overflow-hidden rounded  cursor-pointer transition-all relative show__delete-image"
+        class="w-[120px] h-[160px] overflow-hidden rounded-sm  cursor-pointer transition-all relative show__delete-image"
         :class="[img.id === mainImageId? 'border-4 border-primary' : 'border border-gray-300']"
     >
       <img
@@ -66,7 +66,7 @@ const onchangeMain = (id)=>{
   <div
       v-if="images.length<8"
       @click="onOpenFile"
-      class="w-[120px] h-[160px] border border-dashed border-gray-300 flex justify-center items-center cursor-pointer rounded">
+      class="w-[120px] h-[160px] border border-dashed border-gray-300 flex justify-center items-center cursor-pointer rounded-sm">
       <n-icon size="80" class="text-gray-500">
         <CameraAdd48Filled/>
       </n-icon>

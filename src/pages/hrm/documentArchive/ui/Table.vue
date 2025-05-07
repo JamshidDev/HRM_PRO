@@ -68,7 +68,7 @@ const statusData = (id)=>{
       >
         <thead>
         <tr>
-          <th class="!text-center min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
+          <th class="text-center! min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
           <th class="min-w-[200px]">{{$t('documentArchive.form.title')}}</th>
           <th class="min-w-[200px]">{{$t('documentArchive.form.type')}}</th>
           <th class="min-w-[80px] w-[200px]">{{$t('documentArchive.form.visibility_type')}}</th>

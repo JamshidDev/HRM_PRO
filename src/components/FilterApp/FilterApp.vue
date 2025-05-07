@@ -59,7 +59,7 @@ const addEvent = ()=>{
       <div class="grid grid-cols-12 gap-2 md:gap-4">
         <div class="col-span-12 md:col-span-6 flex items-center gap-2 md:gap-4">
           <n-input
-              class="w-full md:!max-w-[200px]"
+              class="w-full md:max-w-[200px]!"
               v-if="showSearchInput"
               v-model:value="searchModel"
               type="text"

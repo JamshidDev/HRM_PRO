@@ -67,7 +67,7 @@ const onDelete = (v)=>{
       >
         <thead>
         <tr>
-          <th class="!text-center min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
+          <th class="text-center! min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
           <th class="min-w-[100px]">{{$t('militaryPage.form.name')}}</th>
           <th class="min-w-[100px] w-[120px]">{{$t('militaryPage.form.status')}}</th>
           <th class="min-w-[60px] w-[60px]">{{$t('militaryPage.form.number')}}</th>
