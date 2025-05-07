@@ -13,9 +13,6 @@ const activeCallback = computed(()=>{
   if(store.signatureType === store.signatureTypes.contract) return store._contract
 })
 
-watch(()=>store, (v)=>{
-  console.log(v.loading)
-})
 
 
 

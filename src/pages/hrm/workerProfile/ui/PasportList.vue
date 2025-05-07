@@ -88,11 +88,11 @@ const onDownload = (v)=>{
       </div>
 
       <template v-for="(item, idx) in store.passportList" :key="idx">
-        <div class="col-span-6 flex flex-col">
+        <div class="col-span-12 md:col-span-6 flex flex-col">
           <span class="text-xs text-gray-500">{{$t(`createWorkerPage.form.serial_number`)}}</span>
-          <div class="flex gap-2">
+          <div class="flex flex-col md:flex-row  gap-2">
             <n-form-item
-                class="w-[200px]"
+                class="w-full md:w-[200px]"
                 :show-label="false"
                 :label="$t(`createWorkerPage.form.serial_number`)"
                 path="serial_number">
@@ -105,7 +105,7 @@ const onDownload = (v)=>{
               />
             </n-form-item>
             <n-form-item
-                style="width: calc(100% - 200px)"
+                class="w-full md:w-[calc(100%-200px)]"
                 :show-label="false"
                 path="file">
               <n-button
@@ -137,7 +137,7 @@ const onDownload = (v)=>{
             />
           </n-form-item>
         </div>
-        <div class="col-span-4 flex flex-col">
+        <div class="col-span-12 md:col-span-4 flex flex-col">
           <span class="text-xs text-gray-500">{{$t(`createWorkerPage.form.from_date`)}}</span>
           <n-form-item
               :show-label="false"
@@ -163,7 +163,7 @@ const onDownload = (v)=>{
             />
           </n-form-item>
         </div>
-        <div class="col-span-2 flex flex-col gap-2 pt-4">
+        <div class="col-span-12 md:col-span-2 flex flex-col gap-2 pt-4">
           <n-button
               @click="savePassport(item)"
               secondary

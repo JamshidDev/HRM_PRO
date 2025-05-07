@@ -47,7 +47,6 @@ const onOpenCommand = (v)=>{
 }
 
 const onEdit = (v)=>{
-  console.log(v)
   store.positionId = v.id
   store.editVisible = true
   store.editPayload.rank = v.rank
@@ -73,9 +72,9 @@ const onEdit = (v)=>{
 <div>
   <span class=" font-medium block mb-2">{{$t('workerProfile.position.title')}}</span>
   <div v-for="(item, idx) in store.positionList" :key="idx" class="grid grid-cols-12 w-full border border-dashed border-surface-line rounded-lg mb-4">
-    <div class="col-span-9 flex-col flex">
+    <div class="col-span-12 md:col-span-9 flex-col flex">
       <div class="grid grid-cols-12">
-        <div class="col-span-12 p-2 border-b border-r border-dashed border-surface-line">
+        <div class="col-span-12 p-2 border-b  md:border-r border-dashed border-surface-line">
           <div class="block text-gray-400">
             {{$t('workerProfile.position.contractType')}} -  <span class="font-medium text-primary mr-4">{{item.contract.type.name}}</span>
             {{$t('workerProfile.position.contractNumber')}} -  <span class="font-medium text-gray-600 mr-4">{{item.contract.number}}</span>
@@ -90,18 +89,18 @@ const onEdit = (v)=>{
           </div>
 
         </div>
-        <div class="col-span-4 text-gray-400 border-r border-dashed border-surface-line p-2 ">
+        <div class="col-span-12 md:col-span-4 text-gray-400 border-b md:border-r md:border-b-0 border-dashed border-surface-line p-2 ">
           {{$t('workerProfile.personal.positionGroup')}} - <span class="font-bold  text-success">{{item.group}}</span>
         </div>
-        <div class="col-span-4 text-gray-400 border-r border-dashed border-surface-line p-2">
+        <div class="col-span-12 md:col-span-4 text-gray-400 border-b md:border-r md:border-b-0 border-dashed border-surface-line p-2">
           {{$t('workerProfile.personal.positionRank')}} - <span class="font-bold  text-warning">{{item.rank}}</span>
         </div>
-        <div class="col-span-4 text-gray-400 border-r border-dashed border-surface-line p-2">
+        <div class="col-span-12 md:col-span-4 text-gray-400 border-b md:border-r md:border-b-0 border-dashed border-surface-line p-2">
           {{$t('workerProfile.personal.positionRate')}} - <span class="font-bold text-danger">{{item.rate}}</span>
         </div>
       </div>
     </div>
-    <div class="col-span-3 flex flex-col-reverse gap-y-2 p-2 ">
+    <div class="col-span-12 md:col-span-3 flex flex-col-reverse gap-y-2 p-2 ">
       <n-button
           @click="onEdit(item)"
           size="small"

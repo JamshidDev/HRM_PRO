@@ -157,7 +157,7 @@ onMounted(()=>{
       />
     </n-form-item>
     <n-form-item
-        class="col-span-4"
+        class="col-span-12 md:col-span-6 lg:col-span-4"
         :label="$t(`createWorkerPage.form.country`)"
         path="country_id">
       <n-select
@@ -172,7 +172,7 @@ onMounted(()=>{
       />
     </n-form-item>
     <n-form-item
-        class="col-span-4"
+        class="col-span-12 md:col-span-6 lg:col-span-4"
         :label="$t(`createWorkerPage.form.region`)"
         path="region_id">
       <n-select
@@ -188,7 +188,7 @@ onMounted(()=>{
       />
     </n-form-item>
     <n-form-item
-        class="col-span-4"
+        class="col-span-12 md:col-span-6 lg:col-span-4"
         :label="$t(`createWorkerPage.form.city`)"
         path="city_id">
       <n-select
@@ -203,7 +203,7 @@ onMounted(()=>{
       />
     </n-form-item>
     <n-form-item
-        class="col-span-4"
+        class="col-span-12 md:col-span-6 lg:col-span-4"
         :label="$t(`createWorkerPage.form.currentRegion`)"
         path="current_region_id">
       <n-select
@@ -219,7 +219,7 @@ onMounted(()=>{
       />
     </n-form-item>
     <n-form-item
-        class="col-span-4"
+        class="col-span-12 md:col-span-6 lg:col-span-4"
         :label="$t(`createWorkerPage.form.currentCity`)"
         path="current_city_id">
       <n-select
@@ -234,7 +234,7 @@ onMounted(()=>{
       />
     </n-form-item>
     <n-form-item
-        class="col-span-4"
+        class="col-span-12 md:col-span-6 lg:col-span-4"
         :label="$t(`createWorkerPage.form.address`)"
         path="address">
       <n-input
@@ -245,7 +245,7 @@ onMounted(()=>{
       />
     </n-form-item>
     <n-form-item
-        class="col-span-4"
+        class="col-span-12 md:col-span-6 lg:col-span-4"
         :label="$t(`createWorkerPage.form.nationality_id`)"
         path="nationality_id">
       <n-select
@@ -260,7 +260,7 @@ onMounted(()=>{
       />
     </n-form-item>
     <n-form-item
-        class="col-span-4"
+        class="col-span-12 md:col-span-6 lg:col-span-4"
         :label="$t(`createWorkerPage.form.sex_id`)"
         path="sex">
       <n-select
@@ -274,7 +274,7 @@ onMounted(()=>{
       />
     </n-form-item>
     <n-form-item
-        class="col-span-4"
+        class="col-span-12 md:col-span-6 lg:col-span-4"
         :label="$t(`createWorkerPage.form.pin`)"
         path="pin">
       <n-input
@@ -286,7 +286,7 @@ onMounted(()=>{
       />
     </n-form-item>
     <n-form-item
-        class="col-span-4"
+        class="col-span-12 md:col-span-6 lg:col-span-4"
         :label="$t(`createWorkerPage.form.inn`)"
         path="inn">
       <n-input
@@ -299,7 +299,7 @@ onMounted(()=>{
       />
     </n-form-item>
     <n-form-item
-        class="col-span-4"
+        class="col-span-12 md:col-span-6 lg:col-span-4"
         :label="$t(`createWorkerPage.form.marital_status`)"
         path="marital_status">
       <n-select
@@ -313,7 +313,7 @@ onMounted(()=>{
       />
     </n-form-item>
     <n-form-item
-        class="col-span-4"
+        class="col-span-12 md:col-span-6 lg:col-span-4"
         :label="$t(`createWorkerPage.form.work_experience`)"
         path="work_experience">
       <n-input
@@ -325,7 +325,7 @@ onMounted(()=>{
       />
     </n-form-item>
     <n-form-item
-        class="col-span-4"
+        class="col-span-12 md:col-span-6 lg:col-span-4"
         :label="$t(`createWorkerPage.form.experience_date`)"
         path="birthday">
       <n-date-picker

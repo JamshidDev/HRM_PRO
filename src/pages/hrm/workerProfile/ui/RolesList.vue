@@ -41,7 +41,7 @@ const onAdd = ()=>{
         </template>
       </n-button>
     </div>
-    <div class="col-span-12 p-2">
+    <div class="col-span-12 p-2 w-full overflow-x-auto">
       <n-table
           v-if="store.rolesList.length>0"
 
