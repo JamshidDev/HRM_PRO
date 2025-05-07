@@ -38,7 +38,7 @@ $mobile_device_screen_size:900px;
         border-radius: 6px;
         i{
           font-size: 28px;
-          color: var(--gray-400);
+          color: var(--secondary-color);
           font-weight: 500;
         }
       }
@@ -207,7 +207,7 @@ $mobile_device_screen_size:900px;
       position: absolute;
       bottom: 50px;
       right:-15px;
-      background: var(--gray-900);
+      background: var(--sidebar-panel);
       cursor: pointer;
       display: flex;
       justify-content: center;

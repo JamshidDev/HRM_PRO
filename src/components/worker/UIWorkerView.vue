@@ -122,12 +122,12 @@ defineExpose({
       style="width:100%;height:96vh"
   >
 
-    <div class="ui-preview-window w-full h-full grid grid-cols-12 max-w-[1400px] bg-white rounded-md overflow-hidden">
+    <div class="ui-preview-window w-full h-full grid grid-cols-12 max-w-[1400px] bg-surface-ground rounded-md overflow-hidden">
       <n-spin
           :show="store.previewLoading"
-          class="col-span-12  bg-white rounded-md overflow-hidden">
+          class="col-span-12 bg-surface-section rounded-md overflow-hidden">
         <div class="flex w-full h-full" :class="[store.panelVisible && 'preview-panel-active']">
-          <div class="preview-menu h-full bg-effect-wing border-r border-surface-line bg-surface-100 flex flex-col px-4 pt-6 z-10">
+          <div class="preview-menu h-full bg-[url('/wing.png')] border-r border-surface-line bg-surface-ground flex flex-col px-4 pt-6 z-10">
             <div class="relative w-full">
               <div v-if="showImgController" class="absolute top-1/2 translate-y-[-50%] right-1 cursor-pointer">
                 <n-icon @click="nextSlide" size="26" class="text-primary">
@@ -181,7 +181,7 @@ defineExpose({
                   v-for="(item, idx) in tabList" :key="idx"
                   @click="onChange(item.id)"
                   class="cursor-pointer w-full p-2 mb-2 flex items-center gap-2
-              rounded-md border border-surface-200 hover:bg-primary hover:text-white transition-all hover:scale-90"
+              rounded-md border border-surface/20 hover:bg-primary hover:text-white transition-all hover:scale-90"
                   :class="[activeTab === item.id && 'bg-primary text-white']"
               >
                 <n-icon size="22">
