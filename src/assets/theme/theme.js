@@ -9,7 +9,7 @@ const getValueOfCssVariable = (variableName) => {
  */
 
 /** @type {GlobalThemeOverrides} */
-export const customTheme = {
+export const customTheme = ()=>({
     common: {
         primaryColor:getValueOfCssVariable('--primary-color'),
         primaryColorHover:getValueOfCssVariable('--primary-color'),
@@ -61,4 +61,4 @@ export const customTheme = {
         border: '1px solid' + getValueOfCssVariable('--surface-line'),
     },
 
-}
+})
