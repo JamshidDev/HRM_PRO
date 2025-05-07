@@ -115,7 +115,7 @@ onMounted(()=>{
               <p class="font-medium text-textColor2">{{$t(card?.total.title)}}</p>
               <h3 class="text-2xl font-semibold mt-2 text-textColor0">{{card?.total?.count}}</h3>
               <div class="w-full flex justify-between mt-4">
-                <span class="text-xs text-textColor1">{{$t(card?.data1.title)}} - <span class="text-sm font-semibold">{{card?.data1?.count}}</span></span>
+                <span class="text-xs">{{$t(card?.data1.title)}} - <span class="text-sm font-semibold">{{card?.data1?.count}}</span></span>
                 <span class="text-xs text-textColor1">{{$t(card?.data2.title)}} - <span class="text-sm font-semibold">{{card?.data2?.count}}</span></span>
               </div>
             </div>
