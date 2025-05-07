@@ -1,6 +1,6 @@
 <script setup>
 import LangDropdown from "@/components/general/LangDropdown.vue";
-import {UIProfile} from "@/components/index.js"
+import {UIProfile, UIThemeSwitch} from "@/components/index.js"
 import AIButtonV2 from "@/components/buttons/AIButtonV2.vue"
 import {AppPaths} from "@/utils/index.js"
 import {Alert20Regular, ChevronDoubleRight16Filled} from "@vicons/fluent"
@@ -51,7 +51,7 @@ const notification = ref(0)
         <Alert20Regular/>
       </n-icon>
    </n-badge>
-<!--    <UIThemeSwitch/>-->
+    <UIThemeSwitch/>
     <LangDropdown/>
     <UIProfile/>
 
