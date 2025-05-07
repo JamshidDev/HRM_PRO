@@ -46,7 +46,7 @@ export const useAppStore = defineStore('appStore', {
             const mode = this.themeSwitch? "dark" : "light"
             const html = document.documentElement
             html.setAttribute('data-theme', mode)
-            this.theme = customTheme
+            this.theme = customTheme()
             localStorage.setItem(useAppSetting.themeKey, mode)
         },
         initApp(){
@@ -57,7 +57,7 @@ export const useAppStore = defineStore('appStore', {
             const html = document.documentElement
             html.setAttribute('data-theme', mode)
 
-            this.theme = customTheme
+            this.theme = customTheme()
             dayjs.locale(i18n.global.locale)
         }
     }
