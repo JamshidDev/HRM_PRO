@@ -110,7 +110,7 @@ onMounted(()=>{
       <div class="grid grid-cols-12 gap-1 md:gap-2 lg:gap-3">
         <template v-for="(card, idx) in store.dashboard.mainCard" :key="idx">
           <div class="col-span-12 md:col-span-6 lg:col-span-6 xl:col-span-3">
-            <div class="w-full border border-surface-line p-4 rounded-lg bg-surface-section relative cursor-pointer scale-1 hover:scale-[1.07] transition-all hover:z-10 hover:shadow-sm duration-200">
+            <div class="w-full border border-surface-line p-4 rounded-lg bg-surface-section relative cursor-pointer">
               <span class="z-1 opacity-30 absolute top-0 right-0 w-[160px] h-full bg-no-repeat bg-[url(/effect/primary-card.svg)]" ></span>
               <p class="font-medium text-textColor2">{{$t(card?.total.title)}}</p>
               <h3 class="text-2xl font-semibold mt-2 text-textColor0">{{card?.total?.count}}</h3>
