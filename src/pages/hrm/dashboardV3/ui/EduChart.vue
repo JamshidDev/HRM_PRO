@@ -1,10 +1,11 @@
 <script setup>
 import VChart from "vue-echarts"
-import {useDashboardStore} from "@/store/modules/index.js"
+import {useAppStore, useDashboardStore} from "@/store/modules/index.js"
 import i18n from "@/i18n/index.js"
 
 
 const store = useDashboardStore()
+const appStore = useAppStore()
 const {t} = i18n.global
 
 const eduOption1 = ref({
@@ -146,6 +147,18 @@ const eduOption3 = ref({
   ]
 })
 
+watch(()=>appStore.themeSwitch, (v)=>{
+  if(v){
+    eduOption1.value.title.textStyle.color = "#f3f3f3"
+    eduOption2.value.title.textStyle.color = "#f3f3f3"
+    eduOption3.value.title.textStyle.color = "#f3f3f3"
+  }else{
+    eduOption1.value.title.textStyle.color = "#0f1114"
+    eduOption2.value.title.textStyle.color = "#0f1114"
+    eduOption3.value.title.textStyle.color = "#0f1114"
+  }
+})
+
 watch(()=> store.dashboard.eduCard, (newValue, oldValue)=>{
   eduOption1.value.series[0].data =[
     {
@@ -189,9 +202,9 @@ watch(()=> store.dashboard.eduCard, (newValue, oldValue)=>{
 
 <template>
 
-  <div class="w-full h-full flex flex-col border border-surface-line p-4 rounded-lg bg-surface-section relative hover-effect-card">
+  <div class="w-full h-full flex flex-col border border-surface-line p-4 rounded-lg bg-surface-section relative hover-effect-card text-textColor2">
     <span class="z-1 opacity-30 absolute top-0 right-0 w-[160px] h-full bg-no-repeat bg-[url(/effect/effect-card-1.svg)]" ></span>
-    <p class="font-semibold mb-4">{{$t('dashboardPage.edu.title')}}</p>
+    <p class="font-semibold mb-4 text-textColor2">{{$t('dashboardPage.edu.title')}}</p>
     <div class="grid grid-cols-12 gap-2">
       <div class="col-span-12 flex md:col-span-6 items-center justify-around">
         <div class="w-[90px] h-[90px]">

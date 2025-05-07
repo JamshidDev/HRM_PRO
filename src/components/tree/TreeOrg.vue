@@ -67,7 +67,7 @@ const isCheck =(id)=>{
       <div class="w-full flex cursor-pointer hover:bg-blue-50 ui__tree-hover">
 
         <template v-if="deep>1">
-          <div v-for="(item,idx) in (deep-1)" :key="idx" class="w-[20px] h-[20px] border__center-line"></div>
+          <div v-for="(item,idx) in (deep-1)" :key="idx" class="w-[20px] min-h-[20px] border__center-line"></div>
         </template>
 
         <div v-if="Array.isArray(item?.children) && item?.children.length>0" class="w-[20px] max-w-[20px] overflow-hidden flex justify-center items-center">
@@ -75,7 +75,7 @@ const isCheck =(id)=>{
             <ChevronRight16Filled class="transition" :class="checkedVal.includes(item.id) && 'rotate-90'"/>
           </n-icon>
         </div>
-        <div v-else :class="'deep-'+deep" class="w-[20px] h-[20px] border__center-line border__center-content"></div>
+        <div v-else :class="'deep-'+deep" class="w-[20px] min-h-[20px] border__center-line border__center-content"></div>
 
 
 

@@ -20,10 +20,10 @@
   --color-surface-ground: var(--surface-ground);
   --color-surface-section: var(--surface-section);
   --color-surface-line: var(--surface-line);
-  --color-text-color0: var(--textColor0);
-  --color-text-color1: var(--textColor1);
-  --color-text-color2: var(--textColor2);
-  --color-text-color3: var(--textColor3);
+  --color-textColor0: var(--textColor0);
+  --color-textColor1: var(--textColor1);
+  --color-textColor2: var(--textColor2);
+  --color-textColor3: var(--textColor3);
   --color-surface-text: var(--textColor3);
   --color-surface-50: var(--surface-50);
   --color-surface-100: var(--surface-100);

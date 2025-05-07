@@ -11,7 +11,7 @@ const store = useDashboardStore()
     <span
         class="z-1 opacity-40 absolute top-0 right-0 w-[160px] h-full bg-no-repeat bg-[url(/effect/effect-card-2.svg)]"></span>
     <template v-if="store.dashboard.birthdays">
-      <p class="font-semibold text-lg mb-4">{{ $t(store.dashboard.birthdays.title) }}</p>
+      <p class="font-semibold text-lg mb-4 text-textColor0">{{ $t(store.dashboard.birthdays.title) }}</p>
 
       <template v-for="(item,idx) in store.dashboard.birthdays.data" :key="idx">
         <div class="flex justify-between border-b border-surface-line items-center h-[50px]">

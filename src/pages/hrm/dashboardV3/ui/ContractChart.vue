@@ -1,5 +1,5 @@
 <script setup>
-import  {useDashboardStore} from "@/store/modules/index.js"
+import  {useDashboardStore, useAppStore} from "@/store/modules/index.js"
 import VChart from "vue-echarts"
 import { use } from 'echarts/core'
 import { CanvasRenderer } from 'echarts/renderers'
@@ -13,6 +13,7 @@ import {
   GridComponent
 } from 'echarts/components';
 import i18n from "@/i18n/index.js"
+import { watch } from "vue"
 
 use([
   CanvasRenderer,
@@ -26,8 +27,9 @@ use([
 
 
 const store = useDashboardStore()
-const {t} = i18n.global
+const appStore = useAppStore()
 
+const {t} = i18n.global
 
 const contractOption = ref({
   legend: {
@@ -137,6 +139,17 @@ const totalCount = computed(()=>{
    return total + num.active_contracts
  },0)
 })
+
+watch(appStore, (v)=>{
+  if(v.themeSwitch){
+    contractOption.value.series[1].label.color = '#fff'
+  }else{
+    contractOption.value.series[1].label.color = '#333'
+  }
+}, {
+  immediate: true
+})
+
 </script>
 
 <template>

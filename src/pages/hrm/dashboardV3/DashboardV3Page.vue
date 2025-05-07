@@ -115,8 +115,8 @@ onMounted(()=>{
               <p class="font-medium text-textColor2">{{$t(card?.total.title)}}</p>
               <h3 class="text-2xl font-semibold mt-2 text-textColor0">{{card?.total?.count}}</h3>
               <div class="w-full flex justify-between mt-4">
-                <span class="text-xs">{{$t(card?.data1.title)}} - <span class="text-sm font-semibold">{{card?.data1?.count}}</span></span>
-                <span class="text-xs text-textColor1">{{$t(card?.data2.title)}} - <span class="text-sm font-semibold">{{card?.data2?.count}}</span></span>
+                <span class="text-xs text-textColor0">{{$t(card?.data1.title)}} - <span class="text-sm font-semibold">{{card?.data1?.count}}</span></span>
+                <span class="text-xs text-textColor2">{{$t(card?.data2.title)}} - <span class="text-sm font-semibold">{{card?.data2?.count}}</span></span>
               </div>
             </div>
           </div>
@@ -132,8 +132,8 @@ onMounted(()=>{
           <div class="w-full h-full border border-surface-line p-4 rounded-lg bg-surface-section relative hover-effect-card">
             <span class="z-1 opacity-30 absolute top-0 right-0 w-[160px] h-full bg-no-repeat bg-[url(/effect/effect-card-1.svg)]" ></span>
             <div class="flex h-auto">
-              <div style="width: calc(100% - 280px)">
-                <p class="font-bold">{{$t('dashboardPage.rewardCard.reward.title')}}</p>
+              <div class="text-textColor2" style="width: calc(100% - 280px)">
+                <p class="font-bold text-textColor0">{{$t('dashboardPage.rewardCard.reward.title')}}</p>
                 <p class="mt-2 text-xs">{{$t('dashboardPage.rewardCard.reward.typeOne')}}</p>
                 <h3 class="font-semibold leading-[1.2]">0</h3>
 
@@ -147,8 +147,8 @@ onMounted(()=>{
             </div>
             <hr class="w-full h-[1px] text-surface-line mt-2">
             <div class="flex h-auto mt-2">
-              <div style="width: calc(100% - 280px)">
-                <p class="font-bold">{{$t('dashboardPage.rewardCard.punishment.title')}}</p>
+              <div class="text-textColor2" style="width: calc(100% - 280px)">
+                <p class="font-bold text-textColor0">{{$t('dashboardPage.rewardCard.punishment.title')}}</p>
 
                 <p class="mt-2 text-xs">{{$t('dashboardPage.rewardCard.punishment.typeOne')}}</p>
                 <h3 class="font-semibold leading-[1.2]">0</h3>

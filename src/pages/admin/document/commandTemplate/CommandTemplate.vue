@@ -34,7 +34,7 @@ onMounted(()=>{
       </span>
       </div>
       <UITreeData
-          class="bg-gray-50 rounded-sm ui__tree-data"
+          class="bg-gray-50 rounded-sm"
           :modelV="store.payload.organizations"
           :checkedVal="store.checkedVal"
           @updateModel="onSelect"
