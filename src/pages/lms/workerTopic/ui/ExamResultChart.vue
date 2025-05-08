@@ -14,7 +14,7 @@ import {
 import {
   CanvasRenderer
 } from 'echarts/renderers'
-import {useExamDashboardService} from "@/store/modules/index.js";
+import {useAppStore, useExamDashboardService} from "@/store/modules/index.js";
 
 use([
   LegendComponent,
@@ -26,13 +26,17 @@ use([
 ])
 
 const store = useExamDashboardService()
+const appStore = useAppStore()
 const t = i18n.global.t
 
 const option = ref({
   title: {
     text: t('examPage.dashboard.title'),
     left: 'center',
-    top: 10
+    top: 10,
+    textStyle: {
+      color:'#000'
+    }
   },
   legend: {
     top: '90%',
@@ -79,10 +83,10 @@ const colors = [
 ]
 
 
-watch(store, (v)=>{
-  const newData = [...v.examStats]
+watch(()=>store.examStats, (v)=>{
+  const newData = [...v]
   let unique = Array.from(new Set(newData.sort((a,b)=>Number(a.count)-Number(b.count)).map(i=>Number(i.count))))
-  option.value.series[0].data = v.examStats.map((i, idx)=>({
+  option.value.series[0].data = v.map((i, idx)=>({
     value: 1+unique.findIndex(k=>k===Number(i.count)),
     name: i.label,
     realData: i.count,
@@ -90,6 +94,18 @@ watch(store, (v)=>{
       color:colors[idx]
     },
   }))
+}, {
+  immediate: true
+})
+
+watch(()=>appStore.themeSwitch, (v)=>{
+  if(v){
+    option.value.legend.textStyle.color = '#fff'
+    option.value.title.textStyle.color = '#fff'
+  }else{
+    option.value.title.textStyle.color = '#000'
+    option.value.legend.textStyle.color = '#000'
+  }
 }, {
   immediate: true
 })

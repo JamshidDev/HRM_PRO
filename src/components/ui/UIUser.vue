@@ -78,7 +78,7 @@ const userSrc = computed(()=> {
       <span class="text-sm text-textColor2 line-clamp-1 w-full leading-[1.2]">{{fullName}}</span>
     </slot>
     <slot name="position">
-      <span class="text-xs text-textColor1 line-clamp-1 w-full">{{data?.position || ''}}</span>
+      <span class="text-xs text-textColor3 line-clamp-1 w-full">{{data?.position || ''}}</span>
     </slot>
   </div>
 </div>

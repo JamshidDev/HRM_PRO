@@ -8,9 +8,10 @@ const getValueOfCssVariable = (variableName) => {
  * @typedef {import('naive-ui').GlobalThemeOverrides} GlobalThemeOverrides
  */
 
-/** @type {GlobalThemeOverrides} */
+/** @returns {GlobalThemeOverrides} */
 export const customTheme = ()=>({
     common: {
+        
         primaryColor:getValueOfCssVariable('--primary-color'),
         primaryColorHover:getValueOfCssVariable('--primary-color'),
         primaryColorPressed:getValueOfCssVariable('--primary-color'),
@@ -41,7 +42,7 @@ export const customTheme = ()=>({
         borderColor: getValueOfCssVariable('--surface-line'), // Komponentlar uchun standart chegara rangi
         dividerColor: getValueOfCssVariable('--surface-line'),
 
-        // hoverColor: superColor(tailwindColors.primary, 0.2), // Hover holati uchun fon rangi
+        hoverColor: getValueOfCssVariable('--primary-color')+"1a", // Hover holati uchun fon rangi
         activeColor: "rgba(0, 0, 0, 0.1)", // Aktiv holat uchun fon rangi
     },
     Table: {

@@ -83,7 +83,3 @@ onMounted(()=>{
     </n-form>
   </n-spin>
 </template>
-
-<style scoped>
-
-</style>

@@ -19,14 +19,14 @@ const toggleItem = (v) => {
           class="grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-3 overflow-auto basis-auto grow grid-rows-[repeat(auto-fill,45px)] p-1">
         <div v-for="(item, idx) in componentStore.turnstileTerminalList"
              :key="idx"
-             class="rounded-lg px-2 hover:bg-blue-50 transition-all cursor-pointer flex gap-3 items-center bg-surface-section"
+             class="rounded-lg px-2 hover:bg-blue-50 transition-all cursor-pointer flex gap-3 items-center bg-surface-section border-surface-line border"
              @click="toggleItem(item.id)"
         >
 
             <n-checkbox  :checked="(()=>!!store.payload.terminals.find(i=>i===item.id))()"/>
             <div>
-              <p class="font-bold">{{ item.name }}</p>
-              <p class="text-xs">{{item.building.name}}</p>
+              <p class="font-bold text-textColor0">{{ item.name }}</p>
+              <p class="text-xs text-textColor2">{{item.building.name}}</p>
             </div>
 
         </div>

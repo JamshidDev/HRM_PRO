@@ -21,21 +21,26 @@ const onSubmit = ()=>{
 }
 </script>
 
+
 <template>
-  <n-form
-      ref="formRef"
-      :model="store.payload"
-      :rules="validationRules.common"
-      class="h-full flex flex-col"
-  >
-    <n-form-item :label="$t(`content.name`)" path="name" rule-path="requiredStringField">
-      <n-input
-          type="text"
-          :placeholder="$t(`content.enterField`)"
-          v-model:value="store.payload.name"
-      />
-    </n-form-item>
-    <div class="grid grid-cols-2 gap-2 mt-auto">
+  <div style="height:calc(100vh - 120px)" class="overflow-y-auto">
+    <n-form
+        ref="formRef"
+        :model="store.payload"
+        :rules="validationRules.common"
+        class="h-full flex flex-col"
+    >
+      <n-form-item :label="$t(`content.name`)" path="name" rule-path="requiredStringField">
+        <n-input
+            type="text"
+            :placeholder="$t(`content.enterField`)"
+            v-model:value="store.payload.name"
+        />
+      </n-form-item>
+      
+    </n-form>
+  </div>
+  <div class="grid grid-cols-2 gap-2 mt-auto">
       <n-button ghost type="error" @click="store.openVisible(false)">
         {{ $t('content.cancel') }}
       </n-button>
@@ -46,7 +51,6 @@ const onSubmit = ()=>{
         {{ $t('content.save') }}
       </n-button>
     </div>
-  </n-form>
 </template>
 
 <style scoped>

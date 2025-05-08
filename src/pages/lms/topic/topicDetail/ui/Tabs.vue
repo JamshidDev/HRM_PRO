@@ -28,18 +28,18 @@ const onAddExam = ()=>{
 <template>
   <div class="h-full py-3 px-8 flex flex-col">
     <div class="shrink-0">
-      <p class="text-[16px]">{{$t('examPage.materials')}}</p>
+      <p class="text-[16px] text-textColor0">{{$t('examPage.materials')}}</p>
       <div class="grid grid-cols-[repeat(auto-fill,minmax(150px,1fr))] gap-2 my-4">
         <div
             @click="activeTab=examTabNumber"
             class="w-full p-4 py-3 bg-blue-50 rounded-xl transition-all hover:bg-blue-100 cursor-pointer flex flex-col gap-2"
-          :class="{'bg-blue-100!': activeTab===examTabNumber}"
+          :class="{'bg-info/10!': activeTab===examTabNumber}"
         >
           <div class="flex items-center gap-1">
             <n-icon-wrapper :border-radius="6" :color="TopicUtils.getMediaProperty(examTabNumber).color" :size="30" class="shrink-0">
               <n-icon :component="PeopleEdit20Filled" :size="18" color="#FFF"/>
             </n-icon-wrapper>
-            <p class="font-medium">{{ $t('examPage.name') }}</p>
+            <p class="font-medium text-textColor0">{{ $t('examPage.name') }}</p>
             <n-button size="tiny" circle  tertiary>
               <span class="font-bold">{{  examStore.totalItems }}</span>
             </n-button>
@@ -49,15 +49,15 @@ const onAddExam = ()=>{
           <div
               @click="activeTab=item.id"
               class="w-full p-4 py-3 bg-blue-50 rounded-xl transition-all hover:bg-blue-100 cursor-pointer flex flex-col gap-2"
-              :class="{'bg-blue-100!': activeTab===item.id}"
+              :class="{'bg-info/10!': activeTab===item.id}"
           >
             <div class="flex items-center gap-1">
               <n-icon-wrapper :border-radius="6" :color="TopicUtils.getMediaProperty(item.id).color" :size="30" class="shrink-0">
                 <n-icon :component="TopicUtils.getMediaProperty(item.id).icon" :size="18" color="#FFF"/>
               </n-icon-wrapper>
-              <p class="font-medium">{{ item.name }}</p>
+              <p class="font-medium text-textColor0">{{ item.name }}</p>
               <n-button size="tiny" circle  tertiary>
-                <span class="font-bold">{{  item.items?.length }}</span>
+                <span>{{  item.items?.length }}</span>
               </n-button>
             </div>
           </div>

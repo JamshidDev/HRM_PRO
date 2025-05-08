@@ -25,13 +25,16 @@ onMounted(() => {
 
 </script>
 
+
 <template>
-  <n-form
+  <div style="height:calc(100vh - 120px)" class="overflow-y-auto">
+    <n-form
       ref="formRef"
       :model="store.payload"
       :rules="validationRules.common"
-      class="h-full flex flex-col"
-  >
+      class="flex flex-col"
+    >
+
     <n-form-item :label="$t(`turnstile.terminalPage.building`)" path="building_id" rule-path="requiredNumberField">
       <n-select
           :options="componentStore.turnstileBuildingList"
@@ -77,18 +80,21 @@ onMounted(() => {
           v-model:value="store.payload.ip_address"
       />
     </n-form-item>
-    <div class="mt-auto">
-      <n-button
-          block
-          :loading="store.saveLoading"
-          type="primary"
-          @click="onSubmit">
-        {{ $t('content.save') }}
-      </n-button>
-    </div>
-  </n-form>
+    </n-form>
+
+
+  </div>
+  <div class="grid grid-cols-2 gap-2">
+    <n-button @click="store.visible = false" type="error" ghost>
+      {{ $t('content.cancel') }}
+    </n-button>
+    <n-button
+        @click="onSubmit"
+        :loading="store.saveLoading"
+        type="primary">
+      {{ $t('content.save') }}
+    </n-button>
+  </div>
+
+
 </template>
-
-<style scoped>
-
-</style>

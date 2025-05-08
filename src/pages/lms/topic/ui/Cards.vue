@@ -42,13 +42,13 @@ const onSelectEv = (v) => {
 <template>
   <n-spin :show="store.loading" class="h-full bg-surface-section rounded-md">
     <NoDataPicture class="mt-0!" v-if="store.list.length===0 && !store.loading"/>
-    <div v-else-if="store.list.length>0 && !store.loading" class="flex flex-col h-full p-3">
+    <div v-else-if="store.list.length>0 && !store.loading" class="flex flex-col h-full p-3 ">
 
       <div class="overflow-y-auto">
         <n-grid cols="1 400:2 900:3 1200:4 1600:5" x-gap="12" y-gap="12">
           <n-gi
               v-for="(item, idx) in store.list" :key="idx"
-              :class="{'active-card': route.params?.id==item.id}"
+              :class="{'bg-info/10!': route.params?.id==item.id}"
               class="cursor-pointer bg-surface-section border rounded-lg border-surface-line  relative overflow-hidden p-2 group h-[110px] transition-all hover:drop-shadow-xs flex flex-col"
               @click="goPush(item)"
           >
@@ -56,7 +56,7 @@ const onSelectEv = (v) => {
               <div>
                 <n-tooltip trigger="hover">
                   <template #trigger>
-                    <div class="text-lg font-medium text-gray-600 line-clamp-1">
+                    <div class="text-lg font-medium text-textColor0 line-clamp-1">
                       {{ item.name }}
                     </div>
                   </template>
@@ -96,8 +96,5 @@ const onSelectEv = (v) => {
 
 </template>
 <style lang="scss" scoped>
-.active-card {
-  background-color: rgba(0, 0, 0, 0.01);
-  color: white !important;
-}
+
 </style>

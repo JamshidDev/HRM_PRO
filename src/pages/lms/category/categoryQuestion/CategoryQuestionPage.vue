@@ -49,7 +49,7 @@ const goBack = ()=>{
       </template>
       <template #filterSearch>
         <div class="flex flex-col">
-          <p class="font-semibold inline-block text-surface-600">{{$t('questionPage.title')}}</p>
+          <p class="font-semibold inline-block text-textColor2">{{$t('questionPage.title')}}</p>
           <span class="text-xs text-primary">{{$t('content.total', {n: store.totalItems})}}</span>
         </div>
       </template>

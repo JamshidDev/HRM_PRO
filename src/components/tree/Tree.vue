@@ -82,7 +82,7 @@ const isCheck =(id)=>{
         </template>
 
         <div v-if="Array.isArray(item?.children) && item?.children.length>0" class="w-[20px] max-w-[20px] overflow-hidden flex justify-center items-center">
-          <n-icon @click="onOpen(item)" size="18" class="text-gray-400" >
+          <n-icon @click="onOpen(item)" size="18" class="text-surface" >
             <ChevronRight16Filled class="transition" :class="!checkedVal.includes(item.id) && 'rotate-90'"/>
           </n-icon>
         </div>
@@ -99,7 +99,7 @@ const isCheck =(id)=>{
               :disabled="Boolean(item.group && !multiple)"
               :checked="modelV.map((a)=>a.id).includes(item.id)"
           ></n-checkbox>
-          <span class="ml-2 w-full text-wrap py-1">
+          <span class="ml-2 w-full text-wrap py-1 text-textColor0">
             <slot name="title" :data="item" >{{item.name}}</slot>
           </span>
         </div>
