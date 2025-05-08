@@ -48,8 +48,8 @@ const cards = [
     <div
         class="col-span-3 overflow-hidden h-full"
     >
-      <div class="flex flex-col bg-surface-section py-1 px-3 rounded-lg border border-gray-100 h-full overflow-hidden ">
-        <div v-html="card?.name"></div>
+      <div class="flex flex-col bg-surface-section py-1 px-3 rounded-lg border border-surface-line h-full overflow-hidden ">
+        <div class="text-textColor0" v-html="card?.name"></div>
         <div class="justify-end items-end flex flex-1 overflow-hidden">
           <n-button class="bg-gray-100!" circle>
             <template #icon>

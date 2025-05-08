@@ -66,7 +66,7 @@ onUnmounted(()=>{
 </script>
 
 <template>
-  <div class="w-full flex h-full bg-[#F8FAFC]">
+  <div class="w-full flex h-full bg-surface-ground">
     <div class="flex flex-col px-4" style="width:calc(100% - 260px)">
       <div class="mx-auto w-full max-w-[1200px] relative px-8" style="height: calc(100vh - 80px)">
         <div ref="chatContainer" class="mx-auto scroll-container w-full relative flex flex-col

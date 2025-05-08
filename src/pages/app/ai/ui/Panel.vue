@@ -38,7 +38,7 @@ onMounted(()=>{
 </script>
 
 <template>
-<div ref="containerRef" class="flex flex-col overflow-y-auto " style="height: calc(100vh - 60px)">
+<div ref="containerRef" class="flex flex-col overflow-y-auto bg-surface-section" style="height: calc(100vh - 60px)">
   <div class="flex pt-2 px-1 border-b border-surface-line mb-4 text-[#90A1B9]">
     <div class="w-[24px]">
       <n-icon size="24" class="text-[#90A1B9] cursor-pointer text-wrap">
@@ -55,16 +55,16 @@ onMounted(()=>{
           @click="onSelect(item)"
           class="flex rounded-lg px-3 py-1 mb-2 bg-gray-50 cursor-pointer
           bg-linear-to-r from-gray-100 to-blue-100 from-30%
-           mx-[4px] hover-effect-card" style="width: calc(100% - 8px)">
+           mx-[4px] hover-effect-card text-textColor0" style="width: calc(100% - 8px)">
         <div class="w-[22px] flex justify-center items-center">
           <n-icon size="20" class="text-gray-400">
             <ChatMultiple24Regular/>
           </n-icon>
         </div>
         <div style="width: calc(100% - 22px)" class="pl-1">
-          <div class="truncate w-full text-dark font-medium leading-[1.2]">{{item.question}}</div>
+          <div class="truncate w-full font-medium leading-[1.2]">{{item.question}}</div>
           <div class="truncate w-full text-secondary leading-[1.2] text-xs" v-html="item.answer"></div>
-          <div class="truncate w-full text-dark text-[11px] font-semibold">{{item.date}}</div>
+          <div class="truncate w-full text-[11px] font-semibold">{{item.date}}</div>
         </div>
 
       </div>

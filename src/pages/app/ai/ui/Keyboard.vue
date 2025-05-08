@@ -13,11 +13,11 @@ const goChat = ()=>{
 </script>
 
 <template>
-<div class="rounded-3xl bg-[#F8FAFC] relative py-2 px-2 border border-gray-300 shadow-keyboard overflow-hidden">
+<div class="rounded-3xl bg-surface-section relative py-2 px-2 border border-surface-line shadow-keyboard overflow-hidden">
   <n-input
       @keyup.enter="store.sendMessage"
       :bordered="false"
-      class="bg-[#F8FAFC]! w-full!"
+      class=" w-full!"
       v-model:value="store.payload.question"
       :placeholder="$t('aiConversation.form.askQuestion')"
       :rows="1"

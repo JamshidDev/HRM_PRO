@@ -73,12 +73,12 @@ const isCheck =(id)=>{
     <template v-for="(item, idx) in data" :key="idx">
       <div
           :style="{minWidth:width? width+'px':'100%'}"
-          class="flex cursor-pointer hover:bg-surface-100 ui__tree-hover items-stretch"
+          class="flex cursor-pointer hover:bg-surface-100 ui__tree-hover items-stretch "
           :class="[modelV.includes(item) && 'bg-surface-100']"
       >
 
         <template v-if="deep>1">
-          <div v-for="(item,idx) in (deep-1)" :key="idx" class="w-[20px]"></div>
+          <div v-for="(item,idx) in (deep-1)" :key="idx" class="w-[20px]  min-h-[20px] border__center-line"></div>
         </template>
 
         <div v-if="Array.isArray(item?.children) && item?.children.length>0" class="w-[20px] max-w-[20px] overflow-hidden flex justify-center items-center">

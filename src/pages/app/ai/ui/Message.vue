@@ -43,29 +43,30 @@ const isBot = computed(()=>props.data?.bot)
 
 
     <div
-        :class="[isBot? 'bg-[#E9EEF5]' : 'bg-primary! text-white!']"
-        class=" inline-block py-1 px-4  border border-gray-200 rounded-2xl">
+        :class="[isBot? 'bg-info/5' : 'bg-primary! text-white!']"
+        class=" inline-block py-1 px-4  border border-surface-line rounded-2xl">
         <p
-            :class="[isBot? 'bg-[#E9EEF5] text-dark!' : 'text-white!']"
+            :class="[isBot? 'text-surface!' : 'text-white!']"
             class="prose w-auto"
             v-html="data?.text"
         ></p>
 
 
-      <div v-if="isBot" class="flex justify-between mt-4">
+      <div v-if="isBot" class="flex justify-between mt-4 text-secondary">
         <div class="flex gap-2">
           <n-icon
-              class="cursor-pointer scale-1 hover:scale-[1.1] transition-all text-[#90A1B9]" size="20">
+              class="cursor-pointer scale-100 hover:scale-[1.1] transition-all" size="20">
             <ThumbLike24Filled
-                v-if="data.like===2" class="text-red-500"
+                v-if="data.like===2" class="text-info/50"
             />
             <ThumbLike20Regular
                 @click="store.like(data.key, true)"
                 v-else/>
           </n-icon>
           <n-icon
-              class="cursor-pointer scale-1 hover:scale-[1.1] transition-all text-[#90A1B9]" size="20">
+              class="cursor-pointer scale-100 hover:scale-[1.1] transition-all" size="20">
             <ThumbDislike20Filled
+                class="text-danger/50"
                 v-if="data.like===3"/>
             <ThumbDislike20Regular
                 @click="store.like(data.key, false)"
@@ -75,7 +76,7 @@ const isBot = computed(()=>props.data?.bot)
         <div>
           <n-icon
               @click="Utils.copyToClipboard(data?.text, copied)"
-              class="cursor-pointer scale-1 hover:scale-[1.1] transition-all text-[#90A1B9]" size="24">
+              class="cursor-pointer scale-100 hover:scale-[1.1] transition-all" size="24">
             <Copy16Regular/>
           </n-icon>
         </div>
@@ -101,11 +102,11 @@ const isBot = computed(()=>props.data?.bot)
 <style>
 .prose {
   strong {
-    color: #1F2937 !important;
+    color: var(--color-textColor0) !important;
     font-weight: bold;
   }
   pre{
-    background-color: #1F2937 !important;
+    background-color: var(--color-textColor0) !important;
     width: 100%;
     overflow: auto;
     margin-top: 10px;
