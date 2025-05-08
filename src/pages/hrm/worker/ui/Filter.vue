@@ -49,7 +49,12 @@ const marks = {
 
 const filterCount = computed(() => {
   return Number(Boolean(store.params.organizations.length > 0)) + Number(Boolean(store.params.departments.length > 0))
-      + Number(Boolean(store.params.birthday)) + Number(Boolean(store.params.contract_type)) + Number(Boolean(store.params.position_type)) + Number(Boolean(store.params.sex))
+      + Number(Boolean(store.params.birthday)) +  Number(Boolean(store.params.contract_type)) + Number(Boolean(store.params.position_type))
+      + Number(Boolean(store.params.positions.length>0))
+      + Number(Boolean(store.params.sex !==null)) + Number(Boolean(store.params.nationality_id)) + Number(Boolean(store.params.country_id))
+      + Number(Boolean(store.params.region_id)) + Number(Boolean(store.params.city_id)) + Number(Boolean(store.params.current_region_id))
+      + Number(Boolean(store.params.current_city_id)) + Number(Boolean(store.params.marital_status))
+
 })
 
 const clearFilter = () => {
@@ -60,6 +65,13 @@ const clearFilter = () => {
   store.params.contract_type = null
   store.params.position_type = null
   store.params.sex = null
+  store.params.nationality_id = null
+  store.params.country_id = null
+  store.params.region_id = null
+  store.params.city_id = null
+  store.params.current_region_id = null
+  store.params.current_city_id = null
+  store.params.marital_status = null
   filterEvent()
 }
 
@@ -98,18 +110,26 @@ const onShow = (isOpen) => {
 
 const changeCountry = ()=>{
   componentStore.regionList = []
-  store.payload.region_id = null
-  store.payload.city_id = null
-  store.payload.current_region_id = null
-  store.payload.current_city_id = null
+  store.params.region_id = null
+  store.params.city_id = null
+
   componentStore._regions(store.params.country_id)
   filterEvent()
 }
+
+
 
 const onChangeRegion = ()=>{
   store.params.city_id = null
   store.districtList = []
   store.changeRegion(store.params.region_id)
+  filterEvent()
+}
+
+const onChangeCurrentRegion = ()=>{
+  store.params.current_city_id = null
+  store.currentDistrictList = []
+  store.changeCurrentRegion(store.params.current_region_id)
   filterEvent()
 }
 
@@ -248,7 +268,7 @@ const onSubmitResumeExport = () => {
                 :max-tag-count="1"
             />
           </div>
-          <div class="col-span-3">
+          <div class="col-span-6">
             <label class="mt-3 text-xs text-gray-500">{{ $t('workerPage.filter.contract_type') }}</label>
             <n-select
                 v-model:value="store.params.contract_type"
@@ -307,6 +327,22 @@ const onSubmitResumeExport = () => {
             />
           </div>
           <div class="col-span-3">
+            <label class="text-xs text-gray-500">{{ $t(`createWorkerPage.form.marital_status`) }}</label>
+            <n-select
+                v-model:value="store.params.marital_status"
+                filterable
+                clearable
+                :placeholder="$t(`content.choose`)"
+                :options="componentStore.maritalList"
+                label-field="name"
+                value-field="id"
+                :ignore-composition="false"
+                :loading="componentStore.enumLoading"
+                @update:value="filterEvent"
+
+            />
+          </div>
+          <div class="col-span-6">
             <label class="text-xs text-gray-500">{{ $t(`createWorkerPage.form.nationality_id`) }}</label>
             <n-select
                 v-model:value="store.params.nationality_id"
@@ -321,7 +357,8 @@ const onSubmitResumeExport = () => {
                 :loading="componentStore.nationalityLoading"
             />
           </div>
-          <div class="col-span-3">
+
+          <div class="col-span-6">
             <label class="text-xs text-gray-500">{{ $t(`createWorkerPage.form.country`) }}</label>
             <n-select
                 v-model:value="store.params.country_id"
@@ -340,6 +377,7 @@ const onSubmitResumeExport = () => {
             <label class="text-xs text-gray-500">{{ $t(`createWorkerPage.form.region`) }}</label>
             <n-select
                 v-model:value="store.params.region_id"
+                :disabled="!store.params.country_id"
                 filterable
                 clearable
                 :placeholder="$t(`content.choose`)"
@@ -368,6 +406,41 @@ const onSubmitResumeExport = () => {
                 @update:value="filterEvent"
             />
           </div>
+          <div class="col-span-3">
+            <label class="text-xs text-gray-500">{{ $t(`createWorkerPage.form.currentRegion`) }}</label>
+            <n-select
+                v-model:value="store.params.current_region_id"
+                :disabled="!store.params.country_id"
+                filterable
+                clearable
+                :placeholder="$t(`content.choose`)"
+                :options="componentStore.regionList"
+                label-field="name"
+                value-field="id"
+                :ignore-composition="false"
+                :loading="componentStore.regionLoading"
+                @update:value="onChangeCurrentRegion"
+
+            />
+          </div>
+          <div class="col-span-3">
+            <label class="text-xs text-gray-500">{{ $t(`createWorkerPage.form.currentRegion`) }}</label>
+            <n-select
+                v-model:value="store.params.current_city_id"
+                :disabled="!store.params.current_region_id"
+                filterable
+                clearable
+                :placeholder="$t(`content.choose`)"
+                :options="store.currentDistrictList"
+                label-field="name"
+                value-field="id"
+                :ignore-composition="false"
+                :loading="store.currentDistrictLoading"
+                @update:value="filterEvent"
+
+            />
+          </div>
+
         </div>
         <div class="w-[100px] pl-[20px]">
           <n-slider

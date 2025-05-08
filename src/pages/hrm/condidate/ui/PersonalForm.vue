@@ -92,7 +92,7 @@ onMounted(()=>{
         path="region_id">
       <n-select
           v-model:value="store.payload.region_id"
-          @update:value="onChangeRegion"
+          @update:value="store.changeRegion"
           filterable
           :placeholder="$t(`content.choose`)"
           :options="componentStore.regionList"
