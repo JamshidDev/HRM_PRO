@@ -35,7 +35,7 @@ const lesson = computed(()=>{
   <n-spin :show="examStore.loading || fileStore.loading" class="h-full bg-surface-section rounded-md">
     <div class="h-full flex flex-col">
       <div class="flex justify-between border-b border-surface-line py-3 px-4 items-center">
-        <p class="text-2xl font-bold">{{lesson?.name}}</p>
+        <p class="text-2xl font-bold text-textColor0">{{lesson?.name}}</p>
         <n-button @click="router.push({name: AppPaths.Topic.substring(1)})" type="error" tertiary>
           {{ $t('content.close') }}
           <template #icon>

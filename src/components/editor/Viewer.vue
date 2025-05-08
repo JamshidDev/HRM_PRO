@@ -12,7 +12,7 @@ defineProps({
 <template>
   <div class="w-full">
     <span
-      class="editor-content-view"
+      class="editor-content-view text-textColor0"
       v-html="html"
     />
   </div>

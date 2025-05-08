@@ -1,94 +1,74 @@
-
-
 :root {
-  --surface-ground:#EFF3F7;
-  --surface-section:#ffffff;
-  --surface-line:#e2e8f0;
-  --surface-text:#4B5675;
+  --surface-ground: #eff3f7;
+  --surface-section: #ffffff;
+  --surface-line: #e2e8f0;
+  --surface-text: #4b5675;
 
-  --sidebar-color:#1e293b;
+  --sidebar-color: #1e293b;
 
-  --textColor0:#434349;
-  --textColor1:#74788d;
-  --textColor2:#434349;
-  --textColor3:#9a9cae;
+  --textColor0: #434349;
+  --textColor1: #74788d;
+  --textColor2: #434349;
+  --textColor3: #9a9cae;
 
   //fonts
-  --public-sans:"Public Sans", sans-serif;
-  --poppins:"Poppins", sans-serif;
+  --public-sans: "Public Sans", sans-serif;
+  --poppins: "Poppins", sans-serif;
 
   // specific colors
-  --primary-card:linear-gradient(to right bottom, rgb(14, 165, 233), rgb(2, 132, 199));
-  --sidebar-panel:radial-gradient(
-                  farthest-side at top left,
-                  rgba(113, 239, 229, 0.7),
-                  transparent
-  ),
-  radial-gradient(
-                  farthest-side at bottom right,
-                  rgba(113, 239, 229, 0.7),
-                  transparent
-  ),
-  radial-gradient(
-                  farthest-corner at center center,
-                  rgba(0, 89, 255, 0.75),
-                  transparent
-  );
-  --sidebar-border:#6db2f687;
-
-
-
+  --primary-card: linear-gradient(to right bottom, rgb(14, 165, 233), rgb(2, 132, 199));
+  --sidebar-panel: radial-gradient(farthest-side at top left, rgba(113, 239, 229, 0.7), transparent),
+    radial-gradient(farthest-side at bottom right, rgba(113, 239, 229, 0.7), transparent),
+    radial-gradient(farthest-corner at center center, rgba(0, 89, 255, 0.75), transparent);
+  --sidebar-border: #6db2f687;
+  --surface: #0f172a;
 }
 
 [data-theme="dark"] {
+  --surface-ground: #192131;
+  --surface-section: #212b42;
 
-  --surface-ground:#171A20;
-  --surface-section:#171A20;
-
-  --surface-line: rgba(255, 255, 255, 0.07);
+  --surface-line: #26334d;
 
   --textColor0: #ffffff;
   --textColor1: #ffffff;
   --textColor2: #b4b4c0;
   --textColor3: #9f9fa9;
 
-
-  --sidebar-color:#1e293b;
+  --sidebar-color: #1e293b;
 
   // specific colors
-  --primary-card:transparent;
-  --sidebar-panel:#171A20;
-  --sidebar-border:#373737;
+  --primary-card: transparent;
+  --sidebar-panel: #212b42;
+  --sidebar-border: #373737;
+
+  --surface: #bfc5d1;
+
 }
 
-
-:root{
-
-
+:root {
   //  <<colors system>>
-  --primary-color: #1279F0;
-  --info-color: #1279F0;
+  --primary-color: #1279f0;
+  --info-color: #1279f0;
   --success-color: #2dcb73;
-  --warning-color: #FDC700;
-  --danger-color: #E7000A;
+  --warning-color: #fdc700;
+  --danger-color: #e7000a;
   --dark-color: #0f1114;
   --secondary-color: #74788d;
   --white-color: #ffffff;
 
-  --surface:#0f172a;
 
 }
 
+$primary-color: var(--primary-color);
+$info-color: var(--info-color);
+$success-color: var(--success-color);
+$warning-color: var(--warning-color);
+$danger-color: var(--danger-color);
+$dark-color: var(--dark-color);
+$secondary-color: var(--secondary-color);
+$white-color: var(--white-color);
 
-$primary-color:var(--primary-color);
-$info-color:var(--info-color);
-$success-color:var(--success-color);
-$warning-color:var(--warning-color);
-$danger-color:var(--danger-color);
-$dark-color:var(--dark-color);
-$secondary-color:var(--secondary-color);
-$white-color:var(--white-color);
-
-$sidebar-max-width:260px;
-$sidebar-mini-width:60px;
-$breakpoint-sidebar:1000px;
+$sidebar-max-width: 260px;
+$sidebar-mini-width: 60px;
+$breakpoint-sidebar: 1000px;

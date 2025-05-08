@@ -128,6 +128,6 @@ onMounted(() => {
 </template>
 <style lang="scss" scoped>
 :deep(.n-radio__label) {
-  grow: 1;
+  flex-grow: 1;
 }
 </style>

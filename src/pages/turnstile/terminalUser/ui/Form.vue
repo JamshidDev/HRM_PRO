@@ -81,14 +81,18 @@ onMounted(()=>{
 
 </script>
 
+
 <template>
-  <n-spin class="h-full" :show="store.devicesLoading">
-    <n-form
+  <n-spin :show="store.devicesLoading">
+
+    <div style="height:calc(100vh - 120px)" class="overflow-y-auto">
+      <n-form
         ref="formRef"
         :model="store.payload"
         :rules="validationRules.common"
-        class="h-full flex flex-col"
-    >
+        class="flex flex-col"
+      >
+  
       <n-form-item v-if="store.visibleType" :label="$t(`content.organization`)" path="organization_id" rule-path="requiredMultiSelectField">
         <UISelect
             :options="componentStore.structureList"
@@ -97,7 +101,7 @@ onMounted(()=>{
             :checkedVal="store.structureCheck"
             @updateCheck="(v)=>store.structureCheck=v"
             :loading="componentStore.structureLoading"
-            @onSubmit="filterEvent"
+            
             :multiple="false"
         />
       </n-form-item>
@@ -161,19 +165,23 @@ onMounted(()=>{
           </n-button>
         </div>
       </n-form-item>
-      <div class="mt-auto">
-        <n-button
-            block
+      </n-form>
+  
+  
+    </div>
+    <div class="grid grid-cols-2 gap-2">
+      <n-button @click="store.visible = false" type="error" ghost>
+        {{ $t('content.cancel') }}
+      </n-button>
+      <n-button
             :loading="store.saveLoading"
             type="primary"
             @click="onSubmit">
-          {{ $t('content.save') }}
-        </n-button>
-      </div>
-    </n-form>
+        {{ $t('content.save') }}
+      </n-button>
+    </div>
   </n-spin>
+
+
 </template>
 
-<style scoped>
-
-</style>
