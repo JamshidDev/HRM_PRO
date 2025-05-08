@@ -336,7 +336,7 @@ export const useComponentStore = defineStore('componentStore', {
             const currentTarget = e.currentTarget;
             if(currentTarget.scrollTop + currentTarget.offsetHeight >= currentTarget.scrollHeight && !this.departmentLoading && this.totalDepartment>this.departmentList.length){
                 this.depParams.page +=1
-                this._workers(true)
+                this._departments(true)
             }
         },
 

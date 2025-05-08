@@ -261,7 +261,7 @@ onMounted(()=>{
     </n-form-item>
     <n-form-item
         class="col-span-12 md:col-span-6 lg:col-span-4"
-        :label="$t(`createWorkerPage.form.sex_id`)"
+        :label="$t(`createWorkerPage.form.sex`)"
         path="sex">
       <n-select
           @focus="onNationality"
