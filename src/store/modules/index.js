@@ -58,6 +58,8 @@ export * from './hrm/exportStore.js'
 export * from './hrm/documentArchiveStore.js'
 export * from './hrm/vacationScheduleStore.js'
 export * from './hrm/businessTripStore.js'
+export * from './hrm/incentiveStore.js'
+export * from './hrm/punishmentStore.js'
 
 export * from "./docFlow/contractStore.js"
 export * from "./docFlow/documentStore.js"

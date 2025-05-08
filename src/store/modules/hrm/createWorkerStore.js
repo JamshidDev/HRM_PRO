@@ -24,7 +24,7 @@ export const useCreateWorkerStore = defineStore('createWorkerStore', {
             work_experience:null,
             experience_date:null,
             pin:null,
-            inn:null,
+            // inn:null,
             phones:[{
                 id:1,
                 phone:'+998',
@@ -154,7 +154,7 @@ export const useCreateWorkerStore = defineStore('createWorkerStore', {
             this.payload.party = null
             this.payload.address = null
             this.payload.pin = null
-            this.payload.inn = null
+            // this.payload.inn = null
             this.payload.phones = [{
                 id:1,
                 phone:'+998',

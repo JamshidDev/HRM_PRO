@@ -29,7 +29,7 @@ const notification = ref(0)
         class="mobile-control-btn
          flex justify-center items-center
           cursor-pointer w-[32px] h-[32px]
-            bg-gray-900 rounded mr-2">
+            bg-dark rounded mr-2">
       <n-icon class="text-white text-lg">
         <ChevronDoubleRight16Filled/>
       </n-icon>

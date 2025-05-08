@@ -208,19 +208,19 @@ onMounted(()=>{
           v-mask="`####-####-####-##`"
       />
     </n-form-item>
-    <n-form-item
-        class="col-span-12 md:col-span-6 lg:col-span-4"
-        :label="$t(`createWorkerPage.form.inn`)"
-        path="inn">
-      <n-input
-          class="w-full"
-          type="text"
-          v-mask="`#########`"
-          :placeholder="$t(`content.enterField`)"
-          v-model:value="store.payload.inn"
-          :allow-input="Utils.onlyAllowNumber"
-      />
-    </n-form-item>
+<!--    <n-form-item-->
+<!--        class="col-span-12 md:col-span-6 lg:col-span-4"-->
+<!--        :label="$t(`createWorkerPage.form.inn`)"-->
+<!--        path="inn">-->
+<!--      <n-input-->
+<!--          class="w-full"-->
+<!--          type="text"-->
+<!--          v-mask="`#########`"-->
+<!--          :placeholder="$t(`content.enterField`)"-->
+<!--          v-model:value="store.payload.inn"-->
+<!--          :allow-input="Utils.onlyAllowNumber"-->
+<!--      />-->
+<!--    </n-form-item>-->
     <n-form-item
         class="col-span-12 md:col-span-6 lg:col-span-4"
         :label="$t(`createWorkerPage.form.marital_status`)"
