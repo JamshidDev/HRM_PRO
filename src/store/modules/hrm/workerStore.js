@@ -29,9 +29,23 @@ export const useWorkerStore = defineStore('workerStore', {
             ages:[1,100],
             positions:[],
             sex:null,
+            nationality_id:null,
+            country_id:null,
+            region_id:null,
+            city_id:null,
+            current_region_id:null,
+            current_city_id:null,
+            marital_status:null,
+
         },
         structureCheck:[],
         workerVisible:false,
+
+        districtLoading:false,
+        districtList:[],
+
+        currentDistrictLoading:false,
+        currentDistrictList:[],
 
     }),
     actions:{
@@ -53,6 +67,23 @@ export const useWorkerStore = defineStore('workerStore', {
                 this.loading= false
             })
         },
+        changeRegion(v){
+            this.districtLoading = true
+            $ApiService.districtService._index({params:{page:1,per_page:1000, region_id:v}}).then((res)=>{
+                this.districtList = res.data.data.data
+            }).finally(()=>{
+                this.districtLoading = false
+            })
+        },
+        changeCurrentRegion(v){
+            this.currentDistrictLoading = true
+            $ApiService.districtService._index({params:{page:1,per_page:1000, region_id:v}}).then((res)=>{
+                this.currentDistrictList = res.data.data.data
+            }).finally(()=>{
+                this.currentDistrictLoading = false
+            })
+        },
+
         _create(){
             this.saveLoading = true
             let data = {

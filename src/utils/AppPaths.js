@@ -77,6 +77,8 @@ export const AppPaths = {
     VacationSchedule: "/vacation-schedule",
     WorkerRole: "/worker-role",
     Telegram: "/telegram",
+    Punishment: "/punishment",
+    Incentive: "/incentive",
 }
 
 export const AppLayouts ={

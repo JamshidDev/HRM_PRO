@@ -23,6 +23,8 @@ import BusinessTripPage from "@/pages/hrm/businessTrip/BusinessTripPage.vue"
 import DocumentArchivePage from "@/pages/hrm/documentArchive/DocumentArchivePage.vue"
 import VacationSchedule from "@/pages/hrm/vacationSchedule/VacationSchedule.vue"
 import UserRolePage from "@/pages/hrm/UserRole/UserRolePage.vue"
+import PunishmentPage from "@/pages/hrm/punishment/PunishmentPage.vue"
+import IncentivePage from "@/pages/hrm/incentive/IncentivePage.vue"
 
 export default [
     {
@@ -138,5 +140,13 @@ export default [
     {
         path:Utils.routeHrmPathMaker(AppPaths.WorkerRole),
         component:UserRolePage,
+    },
+    {
+        path:Utils.routeHrmPathMaker(AppPaths.Punishment),
+        component:PunishmentPage,
+    },
+    {
+        path:Utils.routeHrmPathMaker(AppPaths.Incentive),
+        component:IncentivePage,
     },
 ]

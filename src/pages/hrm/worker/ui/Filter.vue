@@ -49,7 +49,12 @@ const marks = {
 
 const filterCount = computed(() => {
   return Number(Boolean(store.params.organizations.length > 0)) + Number(Boolean(store.params.departments.length > 0))
-      + Number(Boolean(store.params.birthday)) + Number(Boolean(store.params.contract_type)) + Number(Boolean(store.params.position_type)) + Number(Boolean(store.params.sex))
+      + Number(Boolean(store.params.birthday)) +  Number(Boolean(store.params.contract_type)) + Number(Boolean(store.params.position_type))
+      + Number(Boolean(store.params.positions.length>0))
+      + Number(Boolean(store.params.sex !==null)) + Number(Boolean(store.params.nationality_id)) + Number(Boolean(store.params.country_id))
+      + Number(Boolean(store.params.region_id)) + Number(Boolean(store.params.city_id)) + Number(Boolean(store.params.current_region_id))
+      + Number(Boolean(store.params.current_city_id)) + Number(Boolean(store.params.marital_status))
+
 })
 
 const clearFilter = () => {
@@ -60,6 +65,13 @@ const clearFilter = () => {
   store.params.contract_type = null
   store.params.position_type = null
   store.params.sex = null
+  store.params.nationality_id = null
+  store.params.country_id = null
+  store.params.region_id = null
+  store.params.city_id = null
+  store.params.current_region_id = null
+  store.params.current_city_id = null
+  store.params.marital_status = null
   filterEvent()
 }
 
@@ -87,8 +99,40 @@ const onShow = (isOpen) => {
   if(componentStore.structureList.length === 0){
     componentStore._structures()
   }
+  if(componentStore.nationalityList.length === 0){
+    componentStore._nationality()
+  }
+  if(componentStore.countryList.length === 0){
+    componentStore._countries()
+  }
 
 }
+
+const changeCountry = ()=>{
+  componentStore.regionList = []
+  store.params.region_id = null
+  store.params.city_id = null
+
+  componentStore._regions(store.params.country_id)
+  filterEvent()
+}
+
+
+
+const onChangeRegion = ()=>{
+  store.params.city_id = null
+  store.districtList = []
+  store.changeRegion(store.params.region_id)
+  filterEvent()
+}
+
+const onChangeCurrentRegion = ()=>{
+  store.params.current_city_id = null
+  store.currentDistrictList = []
+  store.changeCurrentRegion(store.params.current_region_id)
+  filterEvent()
+}
+
 
 const onExport = () => {
   exportStore.visible = true
@@ -174,9 +218,9 @@ const onSubmitResumeExport = () => {
     </template>
 
     <template #filterContent>
-      <div class="flex w-full pt-4">
-        <div class="grid grid-cols-2 gap-3" style="width: calc(100% - 100px)">
-          <div class="col-span-2">
+      <div class="flex pt-4 !w-[900px]">
+        <div class="grid grid-cols-12 gap-3 w-[calc(100%-100px)]">
+          <div class="col-span-6">
             <label class="mt-3 text-xs text-gray-500">{{ $t('workerPage.filter.organization') }}</label>
             <UISelect
                 :options="componentStore.structureList"
@@ -188,7 +232,7 @@ const onSubmitResumeExport = () => {
                 @onSubmit="filterEvent"
             />
           </div>
-          <div class="col-span-2">
+          <div class="col-span-6">
             <label class="mt-3 text-xs text-gray-500">{{ $t('workerPage.filter.department') }}</label>
             <n-select
                 :disabled="store.params.organizations.length === 0"
@@ -207,7 +251,7 @@ const onSubmitResumeExport = () => {
                 @scroll="componentStore._onScrollDepartment"
             />
           </div>
-          <div class="col-span-2">
+          <div class="col-span-6">
             <label class="mt-3 text-xs text-gray-500">{{ $t('workerPage.filter.position') }}</label>
             <n-select
                 :disabled="store.params.departments.length === 0"
@@ -224,7 +268,7 @@ const onSubmitResumeExport = () => {
                 :max-tag-count="1"
             />
           </div>
-          <div class="col-span-2">
+          <div class="col-span-6">
             <label class="mt-3 text-xs text-gray-500">{{ $t('workerPage.filter.contract_type') }}</label>
             <n-select
                 v-model:value="store.params.contract_type"
@@ -239,7 +283,7 @@ const onSubmitResumeExport = () => {
                 :ignore-composition="false"
             />
           </div>
-          <div class="col-span-1">
+          <div class="col-span-3">
             <label class="mt-3 text-xs text-gray-500">{{ $t('workerPage.filter.birthday') }}</label>
             <n-select
                 v-model:value="store.params.birthday"
@@ -253,7 +297,7 @@ const onSubmitResumeExport = () => {
                 :ignore-composition="false"
             />
           </div>
-          <div class="col-span-1">
+          <div class="col-span-3">
             <label class="mt-3 text-xs text-gray-500">{{ $t('workerPage.filter.position_type') }}</label>
             <n-select
                 v-model:value="store.params.position_type"
@@ -268,7 +312,7 @@ const onSubmitResumeExport = () => {
                 :ignore-composition="false"
             />
           </div>
-          <div class="col-span-2">
+          <div class="col-span-3">
             <label class="text-xs text-gray-500">{{ $t('workerPage.filter.sex') }}</label>
             <n-select
                 v-model:value="store.params.sex"
@@ -282,6 +326,121 @@ const onSubmitResumeExport = () => {
                 :ignore-composition="false"
             />
           </div>
+          <div class="col-span-3">
+            <label class="text-xs text-gray-500">{{ $t(`createWorkerPage.form.marital_status`) }}</label>
+            <n-select
+                v-model:value="store.params.marital_status"
+                filterable
+                clearable
+                :placeholder="$t(`content.choose`)"
+                :options="componentStore.maritalList"
+                label-field="name"
+                value-field="id"
+                :ignore-composition="false"
+                :loading="componentStore.enumLoading"
+                @update:value="filterEvent"
+
+            />
+          </div>
+          <div class="col-span-6">
+            <label class="text-xs text-gray-500">{{ $t(`createWorkerPage.form.nationality_id`) }}</label>
+            <n-select
+                v-model:value="store.params.nationality_id"
+                filterable
+                clearable
+                :placeholder="$t(`content.choose`)"
+                :options="componentStore.nationalityList"
+                label-field="name"
+                value-field="id"
+                @update:value="filterEvent"
+                :ignore-composition="false"
+                :loading="componentStore.nationalityLoading"
+            />
+          </div>
+
+          <div class="col-span-6">
+            <label class="text-xs text-gray-500">{{ $t(`createWorkerPage.form.country`) }}</label>
+            <n-select
+                v-model:value="store.params.country_id"
+                filterable
+                clearable
+                :placeholder="$t(`content.choose`)"
+                :options="componentStore.countryList"
+                label-field="name"
+                value-field="id"
+                :ignore-composition="false"
+                :loading="componentStore.countryLoading"
+                @update:value="changeCountry"
+            />
+          </div>
+          <div class="col-span-3">
+            <label class="text-xs text-gray-500">{{ $t(`createWorkerPage.form.region`) }}</label>
+            <n-select
+                v-model:value="store.params.region_id"
+                :disabled="!store.params.country_id"
+                filterable
+                clearable
+                :placeholder="$t(`content.choose`)"
+                :options="componentStore.regionList"
+                label-field="name"
+                value-field="id"
+                :ignore-composition="false"
+                :loading="componentStore.regionLoading"
+                @update:value="onChangeRegion"
+
+            />
+          </div>
+          <div class="col-span-3">
+            <label class="text-xs text-gray-500">{{ $t(`createWorkerPage.form.city`) }}</label>
+            <n-select
+                :disabled="!store.params.region_id"
+                v-model:value="store.params.city_id"
+                filterable
+                clearable
+                :placeholder="$t(`content.choose`)"
+                :options="store.districtList"
+                label-field="name"
+                value-field="id"
+                :ignore-composition="false"
+                :loading="store.districtLoading"
+                @update:value="filterEvent"
+            />
+          </div>
+          <div class="col-span-3">
+            <label class="text-xs text-gray-500">{{ $t(`createWorkerPage.form.currentRegion`) }}</label>
+            <n-select
+                v-model:value="store.params.current_region_id"
+                :disabled="!store.params.country_id"
+                filterable
+                clearable
+                :placeholder="$t(`content.choose`)"
+                :options="componentStore.regionList"
+                label-field="name"
+                value-field="id"
+                :ignore-composition="false"
+                :loading="componentStore.regionLoading"
+                @update:value="onChangeCurrentRegion"
+
+            />
+          </div>
+          <div class="col-span-3">
+            <label class="text-xs text-gray-500">{{ $t(`createWorkerPage.form.currentRegion`) }}</label>
+            <n-select
+                v-model:value="store.params.current_city_id"
+                :disabled="!store.params.current_region_id"
+                filterable
+                clearable
+                :placeholder="$t(`content.choose`)"
+                :options="store.currentDistrictList"
+                label-field="name"
+                value-field="id"
+                :ignore-composition="false"
+                :loading="store.currentDistrictLoading"
+                @update:value="filterEvent"
+
+            />
+          </div>
+
         </div>
         <div class="w-[100px] pl-[20px]">
           <n-slider

@@ -133,7 +133,7 @@ onMounted(()=>{
           />
         </n-form-item>
       </div>
-      <div class="col-span-12 md:col-span-6 lg:col-span-2">
+      <div class="col-span-12 md:col-span-6 lg:col-span-1">
         <n-form-item
             :label="$t(`documentPage.form.rate`)"
             path="rate"
@@ -172,7 +172,7 @@ onMounted(()=>{
           </n-input>
         </n-form-item>
       </div>
-      <div class="col-span-12 md:col-span-6 lg:col-span-4">
+      <div class="col-span-12 md:col-span-6 lg:col-span-3">
         <n-form-item
             :label="$t(`documentPage.form.schedule_id`)"
             path="schedule_id"
@@ -188,6 +188,19 @@ onMounted(()=>{
               :render-label="UIHelper.scheduleRender.label"
               :render-tag="UIHelper.scheduleRender.value"
               clearable
+          />
+        </n-form-item>
+      </div>
+      <div class="col-span-12 md:col-span-6 lg:col-span-2">
+        <n-form-item
+            :label="$t(`documentPage.form.tableNumber`)"
+            path="table_number">
+          <n-input
+              class="w-full"
+              type="text"
+              :placeholder="$t(`content.enterField`)"
+              :allow-input="Utils.onlyAllowNumber"
+              v-model:value="store.editPayload.table_number"
           />
         </n-form-item>
       </div>

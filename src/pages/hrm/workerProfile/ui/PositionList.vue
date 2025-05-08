@@ -47,14 +47,17 @@ const onOpenCommand = (v)=>{
 }
 
 const onEdit = (v)=>{
+  console.log(v)
   store.positionId = v.id
   store.editVisible = true
   store.editPayload.rank = v.rank
   store.editPayload.salary = v.salary?.toString()
   store.editPayload.group = v.group
   store.editPayload.rate = v.rate
+  store.editPayload.schedule_id = v.schedule_id
   store.editPayload.type = v.type?.id
   store.editPayload.contract_number =v.contract?.number
+  store.editPayload.table_number =v.contract?.table_number
   store.editPayload.contract_date = Utils.datePickerFormatter(v.contract?.contract_date)
 
   componentStore.departmentList = []

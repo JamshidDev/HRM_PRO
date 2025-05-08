@@ -53,6 +53,8 @@ import organizationLeaderService from '@/service/v1/hrm/organizationLeaderServic
 import exportService from '@/service/v1/hrm/exportService.js'
 import documentArchiveService from '@/service/v1/hrm/documentArchiveService.js'
 import businessTrip from '@/service/v1/hrm/businessTrip.js'
+import incentiveService from '@/service/v1/hrm/incentiveService.js'
+import punishmentService from '@/service/v1/hrm/punishmentService.js'
 
 import documentService from "@/service/v1/docFlow/documentService.js"
 import contractService from "@/service/v1/docFlow/contractService.js"
@@ -72,6 +74,7 @@ import examDashboardService from '@/service/v1/lms/examDashboardService.js'
 import workerExamService from '@/service/v1/lms/workerExamService.js'
 import timesheetConfirmService from "@/service/v1/hrm/timesheetConfirmService.js";
 import vacationScheduleService from "@/service/v1/hrm/vacationScheduleService.js";
+
 
 import {turnstileTerminalService, turnstileBuildingService, turnstileOrganizationService, turnstileTerminalUserService} from './v1/turnstile'
 
@@ -146,9 +149,10 @@ export default {
     documentArchiveService,
     vacationScheduleService,
     businessTrip,
-
+    incentiveService,
     turnstileTerminalService,
     turnstileBuildingService,
     turnstileOrganizationService,
-    turnstileTerminalUserService
+    turnstileTerminalUserService,
+    punishmentService,
 }

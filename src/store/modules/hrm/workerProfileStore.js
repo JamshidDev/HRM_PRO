@@ -27,7 +27,7 @@ export const useWorkerProfileStore = defineStore('workerProfileStore', {
             nationality_id:null,
             sex:null,
             address:null,
-            pin:null,
+            // pin:null,
             inn:null,
             phones:[],
             marital_status:null,
@@ -110,6 +110,7 @@ export const useWorkerProfileStore = defineStore('workerProfileStore', {
             type:null,
             salary:null,
             schedule_id:null,
+            table_number:null,
         },
         positionLoading:false,
         positionId:null,
@@ -143,7 +144,7 @@ export const useWorkerProfileStore = defineStore('workerProfileStore', {
                 this.payload.nationality_id = this.data.nationality?.id
                 this.payload.sex = this.data?.sex
                 this.payload.pin = this.data.pin?.toString()
-                this.payload.inn = this.data.inn?.toString()
+                // this.payload.inn = this.data.inn?.toString()
                 this.payload.marital_status = this.data.marital_status?.id
 
 
@@ -399,7 +400,7 @@ export const useWorkerProfileStore = defineStore('workerProfileStore', {
 
         resetForm(){
             this.elementId = null
-            this.payload.pin = null
+            // this.payload.pin = null
             this.payload.position = null
         }
 
