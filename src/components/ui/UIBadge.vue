@@ -76,7 +76,7 @@ const badgeIcon = computed(()=>{
 
             </slot>
         </div>
-        <div class="ui--badge-label truncate" v-bind:style="{width:`calc(100% - ${showIcon? 20:0}px)`}">
+        <div class="ui--badge-label" v-bind:style="{width:`calc(100% - ${showIcon? 20:0}px)`}">
           {{label}}
         </div>
       </div>
