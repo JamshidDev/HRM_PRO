@@ -130,10 +130,10 @@ const badgeIcon = computed(()=>{
     border-color: rgba(15, 17, 20, 0.04);
     background-color: rgba(15, 17, 20, 0.04);
     .ui--badge-label{
-      color: var(--dark-color);
+      color: var(--textColor2);
     }
     .ui--badge-icon{
-      color: var(--dark-color) !important;
+      color: var(--textColor2) !important;
     }
   }
   .ui--badge-secondary{

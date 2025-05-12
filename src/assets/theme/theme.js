@@ -61,5 +61,9 @@ export const customTheme = ()=>({
         color:getValueOfCssVariable('--surface-ground'),
         border: '1px solid' + getValueOfCssVariable('--surface-line'),
     },
+    Tabs:{
+        tabColorSegment:getValueOfCssVariable('--surface-section'),
+        colorSegment:getValueOfCssVariable('--surface-ground'),
+    }
 
 })

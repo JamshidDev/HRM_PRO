@@ -47,7 +47,7 @@ const onSubmit = () => {
           <n-table :single-line="false" size="small" class="select-none">
             <thead>
             <tr class="sort-target">
-              <th class="cursor-move" v-for="(header, idx) in store.payload.columns" :key="header.column">
+              <th class="cursor-move !bg-surface-ground" v-for="(header, idx) in store.payload.columns" :key="header.column">
                 <div class="flex justify-between">
                   <p>{{ idx + 1 }}) {{ header.label }}</p>
                   <n-button class="cursor-move!" size="tiny" quaternary type="primary">
