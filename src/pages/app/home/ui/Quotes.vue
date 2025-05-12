@@ -28,7 +28,7 @@ onUnmounted(()=>{
 <!--<UILottieReader/>-->
   <div class="flex flex-col w-[400px] mx-auto">
     <div class=" w-[100px] h-[10px] bg-gray-400 mx-auto mb-10"></div>
-    <p class="text-center font-bold uppercase text-dark text-[32px]">{{store.randomText?.author?.[langKey]}}</p>
+    <p class="text-center font-bold uppercase text-textColor0 text-[32px]">{{store.randomText?.author?.[langKey]}}</p>
     <hr class="w-full h-[4px] bg-gray-300 text-[transparent] my-6">
     <div class="w-[300px] min-h-[60px] mx-auto text-center text-[18px] text-secondary font-semibold mb-10 uppercase px-10 relative">
       {{store.randomText?.text?.[langKey]}}

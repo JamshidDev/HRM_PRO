@@ -70,7 +70,6 @@ onMounted(()=>{
             @updateModel="changeOrg"
             @updateCheck="(v)=>store.structureCheck=v"
             :loading="componentStore.structureLoading"
-            @onSubmit="filterEvent"
             :multiple="false"
         />
       </n-form-item>

@@ -68,7 +68,7 @@ onMounted(()=>{
 </script>
 
 <template>
-<div class="w-full min-h-screen login-page-bg flex justify-center items-center">
+<div class="w-full min-h-screen login-page-bg flex justify-center items-center text-textColor0">
     <div class="page-form-content relative overflow-hidden rounded-[20px] bg-no-repeat bg-cover">
       <div class="absolute top-[20px] right-[20px] z-5">
         <LangDropdown class="text-white!"/>
@@ -92,8 +92,8 @@ onMounted(()=>{
            </div>
         </div>
         <div class="form-content-block">
-          <h3 class=" leading-[1.2] mt-2 text-dark font-bold form-title uppercase pt-[20px]">{{ $t(`loginPage.title`) }}</h3>
-          <p class="mb-4 leading-[1.2] form-description">{{ $t(`loginPage.subtitle`) }}</p>
+          <h3 class="leading-[1.2] mt-2 font-bold form-title uppercase pt-[20px]">{{ $t(`loginPage.title`) }}</h3>
+          <p class="mb-4 leading-[1.2] form-description text-textColor2">{{ $t(`loginPage.subtitle`) }}</p>
 
           <n-form
               ref="formRef"
@@ -101,7 +101,7 @@ onMounted(()=>{
               :model="store"
               class="flex flex-col mt-4"
           >
-            <n-form-item :label="$t(`loginPage.phone`)" path="phone">
+            <n-form-item class="text-textColor2!" :label="$t(`loginPage.phone`)" path="phone">
               <n-input
                   size="large"
                   name="phone"
@@ -112,11 +112,11 @@ onMounted(()=>{
                   v-model:value="store.phone"
               >
                 <template #prefix>
-                  <n-icon class="text-dark!" size="24" :component="Call16Filled" />
+                  <n-icon class="text-textColor3!" size="24" :component="Call16Filled" />
                 </template>
               </n-input>
             </n-form-item>
-            <n-form-item :label="$t(`loginPage.password`)" path="password" class="m6-8">
+            <n-form-item :label="$t(`loginPage.password`)" path="password" class="m6-8 text-textColor2!">
               <n-input
                   size="large"
                   name="password"
@@ -128,7 +128,7 @@ onMounted(()=>{
                   v-model:value="store.password"
               >
                 <template #prefix>
-                  <n-icon class="text-dark!" size="24" :component="LockClosed16Filled" />
+                  <n-icon class="text-textColor3!" size="24" :component="LockClosed16Filled" />
                 </template>
 
                 <template #password-visible-icon>
@@ -152,16 +152,16 @@ onMounted(()=>{
                 <n-button
                     @click="onSignatureLogin"
                     size="large"
-                    class="h-[50px]! rounded-2xl! font-bold! dark-border-button"
+                    class="h-[50px]! rounded-2xl! font-bold! dark-border-button text-textColor1"
                 >{{ $t(`content.signatureLogin`) }}
                   <template #icon>
-                    <n-icon class="text-dark!" size="24" :component="KeyMultiple20Filled" />
+                    <n-icon class="text-textColor3!" size="24" :component="KeyMultiple20Filled" />
                   </template>
                 </n-button>
 
 
                 <div class="flex flex-col border border-surface-line rounded-3xl p-2 pb-4 store-container bg-surface-ground">
-                  <p class=" text-dark font-semibold text-center">{{$t('content.downloadApp')}}</p>
+                  <p class="text-textColor0 font-semibold text-center">{{$t('content.downloadApp')}}</p>
                   <div class="flex items-center mx-auto mt-4">
                     <n-tooltip
                         placement="top"
@@ -246,14 +246,14 @@ onMounted(()=>{
   border: unset !important;
 }
 .dark-border-button{
-  border: 1px solid var(--dark-color) !important;
+  border: 1px solid var(--color-surface-line) !important;
   .n-base-wave{
    display: none !important;
   }
 }
 
 .dark-border-button:not(.n-button--disabled):hover {
-  color: var(--dark-color) !important;
+  color: var(--color-textColor0) !important;
   .n-button__border{
     border: unset !important;
   }
@@ -267,11 +267,17 @@ onMounted(()=>{
 
 
 .page-form-content{
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover, 
+  input:-webkit-autofill:focus {
+    -webkit-box-shadow: 0 0 0px 1000px var(--color-surface-section) inset !important;
+    -webkit-text-fill-color: var(--color-textColor2) !important;
+  } 
   &::before{
     content:' ';
     width: 100%;
     height: 100%;
-    background-color: white;
+    background-color: var(--color-surface-section);
     top: 0;
     left: 0;
     position: absolute;

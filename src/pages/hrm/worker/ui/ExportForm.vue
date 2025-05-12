@@ -70,7 +70,7 @@ const onSubmit = () => {
         </VueDraggable>
         </div>
       </div>
-      <div class="p-2 shrink-0 md:h-full overflow-y-auto basis-auto">
+      <div class="p-2 shrink-0 md:h-full overflow-y-auto basis-auto overflow-x-hidden">
         <ul class="flex md:block gap-2 flex-wrap w-full">
           <li
               class="rounded-lg transition-all hover:bg-blue-50 cursor-pointer flex gap-2 items-center p-1">

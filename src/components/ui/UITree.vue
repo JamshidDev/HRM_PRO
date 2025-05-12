@@ -71,7 +71,7 @@ const onChange = (v)=>{
       </div>
       <div class="flex flex-col pl-1" style="width: calc(100% - 160px)">
         <span class="font-bold text-primary">{{item.name}}</span>
-        <span class="text-gray-400 text-sm font-normal">{{item.fullName}}</span>
+        <span class="text-textColor0 text-sm font-normal">{{item.fullName}}</span>
       </div>
       <div class="flex gap-1 items-center w-[120px]">
         <n-button

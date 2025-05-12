@@ -133,7 +133,7 @@ onMounted(()=>{
           :src="dropdown.icon"
       />
       <span class="text-sm text-textColor3 whitespace-nowrap mx-1 w-[40px]">{{$t(dropdown.text)}}</span>
-      <n-icon class="text-[12px] text-surface-500">
+      <n-icon class="text-[12px] text-secondary">
         <ChevronDown24Filled />
       </n-icon>
     </div>
