@@ -232,9 +232,14 @@ onMounted(()=>{
   mask-image: radial-gradient(white, black);
 
 }
-
+[data-theme="dark"]{
+  .n-button-dark {
+    background-color: var(--color-surface-ground) !important;
+  }  
+}
 .n-button-dark {
   background-color: var(--dark-color) !important;
+
   color: var(--white-color) !important;
 }
 

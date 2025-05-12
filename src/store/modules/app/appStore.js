@@ -34,11 +34,13 @@ export const useAppStore = defineStore('appStore', {
         ],
         theme:customTheme(),
         themeSwitch:false,
+        skipReset:true,
     }),
     actions:{
         _logOutApp(){
             getActivePinia().reset()
-            localStorage.clear()
+            localStorage.removeItem("telegramPopup")
+            localStorage.removeItem("app-token")
             sessionStorage.clear()
             router?.push(AppPaths.Login)
         },
