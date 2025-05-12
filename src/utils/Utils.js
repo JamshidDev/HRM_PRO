@@ -370,6 +370,14 @@ const appPermissions = {
     hrJobsWrite:"hr-jobs-write",
     hrJobsRead:"hr-jobs-read",
 
+    hrIncentives:"hr-incentives",
+    hrIncentivesWrite:"hr-incentives-write",
+    hrIncentivesRead:"hr-incentives-read",
+
+    hrPunishment:"hr-discips",
+    hrPunishmentWrite:"hr-discips-write",
+    hrPunishmentRead:"hr-discips-read",
+
 
 
     useful:'useful',
