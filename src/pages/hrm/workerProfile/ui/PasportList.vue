@@ -99,7 +99,7 @@ const onDownload = (v)=>{
               <n-input
                   class="w-full"
                   type="text"
-                  v-mask="`AA ######`"
+                  v-mask="`AA #######`"
                   :placeholder="$t(`createWorkerPage.form.serial_number`)"
                   v-model:value="item.serial_number"
               />
