@@ -264,7 +264,6 @@ onMounted(()=>{
         :label="$t(`createWorkerPage.form.sex`)"
         path="sex">
       <n-select
-          @focus="onNationality"
           v-model:value="store.payload.sex"
           filterable
           :placeholder="$t(`content.choose`)"

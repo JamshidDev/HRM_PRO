@@ -110,6 +110,7 @@ export const useWorkerProfileStore = defineStore('workerProfileStore', {
             type:null,
             salary:null,
             schedule_id:null,
+            table_number:null,
         },
         positionLoading:false,
         positionId:null,

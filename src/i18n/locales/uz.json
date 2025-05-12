@@ -146,7 +146,7 @@
     "requiredMinLength": "{n} ta belgidan kam bo'lmasligi kerak",
     "requiredMaxLength": "{n} ta belgidan ko'p bo'lmasligi kerak",
     "unExpectedFormat": "Noto'g'ri turdagi ma'lumot!",
-    "requiredJSHSHIR": "Pasport jshshir kiritilishi shart!",
+    "requiredJSHSHIR": "Pasport JSHSHIR kiritilishi shart!",
     "enterOverNumber": "{n}dan katta son kiriting"
   },
   "message": {
@@ -365,7 +365,7 @@
       "born": "Tug'ilgan sana",
       "addCandidate": "Kandidat qo'shish",
       "add-worker": "Tizimda mavjud bo'lmagan xodimning ma'lumotlarini kandidat qo'shish tugamasi orqali qo'shing ",
-      "jshshir": "Jshshirni kiriting"
+      "jshshir": "JSHSHIRni kiriting"
     },
     "table": {
       "department": "Bo'lim",
@@ -481,14 +481,14 @@
       "academicDegree": "Ilmiy darajasi",
       "nationality_id": "Millati",
       "party": "Partiyaviyligi",
-      "pin": "Pasport Jshshr",
+      "pin": "Pasport JSHSHIR",
       "serial_number": "Seriyasi va raqami",
       "from_date": "Berilgan sanasi",
       "to_date": "Amal qilish muddati",
       "passport_address": "Berilgan joyi",
       "passport_file": "Passport nusxasi (.pdf)",
       "inn": "Inn",
-      "sex_id": "Jinsi",
+      "sex": "Jinsi",
       "marital_status": "Oilaviy holati",
       "address": "Yashash manzili",
       "experience_date": "Uzliksiz ish staji",
@@ -1446,5 +1446,20 @@
       "5": "Profil yangiliklari – Ma’lumotlaringizda o‘zgarish bo‘lsa, Telegram’da darhol bilib olasiz!"
     },
     "subscribe": "A'zo bo'lish"
+  },
+  "punishment": {
+    "name": "Intizomiy jazolar",
+    "form": {
+      "fine": ""
+    }
+  },
+  "incentive": {
+    "name": "Rag'batlar",
+    "form": {
+      "type": "Turi",
+      "who": "Kim tomonidan",
+      "reason": "Sabab",
+      "giftType": "Sana"
+    }
   }
 }
