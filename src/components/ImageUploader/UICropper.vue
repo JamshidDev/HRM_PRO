@@ -56,7 +56,7 @@ defineExpose({
     class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
     style="width:600px; position: fixed; right:50%;top:50%"
 >
-  <cropper ref="cropperRef" class="cropper" :stencil-props="{
+  <cropper ref="cropperRef " class="cropper !max-h-[90vh] !max-w-[90vw] overflow-hidden" :stencil-props="{
                     aspectRatio: 3/4,
                 }" :src="image.src" :autoZoom="true" />
   <template #footer>

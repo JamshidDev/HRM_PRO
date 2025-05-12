@@ -190,6 +190,20 @@ export const navigations = [
                 color: 'bg-info',
                 permission: appPermissions.hrWorkers,
             },
+            {
+                label: 'punishment.name',
+                path: Utils.routeHrmPathMaker(AppPaths.Punishment),
+                icon: RibbonStar24Filled,
+                color: 'bg-warning',
+                permission: appPermissions.hrPunishment,
+            },
+            {
+                label: 'incentive.name',
+                path: Utils.routeHrmPathMaker(AppPaths.Incentive),
+                icon: RibbonStar24Filled,
+                color: 'bg-info',
+                permission: appPermissions.hrIncentives,
+            },
 
 
         ]

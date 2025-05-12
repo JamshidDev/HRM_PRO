@@ -53,6 +53,8 @@ import organizationLeaderService from '@/service/v1/hrm/organizationLeaderServic
 import exportService from '@/service/v1/hrm/exportService.js'
 import documentArchiveService from '@/service/v1/hrm/documentArchiveService.js'
 import businessTrip from '@/service/v1/hrm/businessTrip.js'
+import incentiveService from '@/service/v1/hrm/incentiveService.js'
+import punishmentService from '@/service/v1/hrm/punishmentService.js'
 
 import documentService from "@/service/v1/docFlow/documentService.js"
 import contractService from "@/service/v1/docFlow/contractService.js"
@@ -146,9 +148,10 @@ export default {
     documentArchiveService,
     vacationScheduleService,
     businessTrip,
-
+    incentiveService,
     turnstileTerminalService,
     turnstileBuildingService,
     turnstileOrganizationService,
-    turnstileTerminalUserService
+    turnstileTerminalUserService,
+    punishmentService,
 }

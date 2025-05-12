@@ -63,9 +63,6 @@ const changeCurrentDistrict = ()=>{
   store.currentDistricts = []
 }
 
-const onNationality = ()=>{
-  componentStore._nationality()
-}
 
 const onSubmit = ()=>{
   formRef.value?.validate((error)=>{
@@ -249,7 +246,6 @@ onMounted(()=>{
         :label="$t(`createWorkerPage.form.nationality_id`)"
         path="nationality_id">
       <n-select
-          @focus="onNationality"
           v-model:value="store.payload.nationality_id"
           filterable
           :placeholder="$t(`content.choose`)"
@@ -264,7 +260,6 @@ onMounted(()=>{
         :label="$t(`createWorkerPage.form.sex`)"
         path="sex">
       <n-select
-          @focus="onNationality"
           v-model:value="store.payload.sex"
           filterable
           :placeholder="$t(`content.choose`)"
