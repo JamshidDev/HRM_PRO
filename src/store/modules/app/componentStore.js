@@ -401,7 +401,7 @@ export const useComponentStore = defineStore('componentStore', {
         },
         _nationality(){
             this.nationalityLoading = true
-            $ApiService.nationalityService._index(this.params).then((res)=>{
+            $ApiService.nationalityService._index({params:this.params}).then((res)=>{
                 this.nationalityList = res.data.data.data
             }).finally(()=>{
                 this.nationalityLoading = false

@@ -152,7 +152,6 @@ export const useWorkerProfileStore = defineStore('workerProfileStore', {
                 this.districts =[this.data.city]
                 this.currentDistricts = [this.data.current_city]
                 componentStore.countryList = [this.data.country]
-                componentStore.nationalityList = [this.data.nationality.name]
 
                 if(this.data.region.id ===this.data.current_region.id){
                     componentStore.regionList = [{...this.data.region}]
