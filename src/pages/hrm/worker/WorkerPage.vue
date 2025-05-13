@@ -5,13 +5,20 @@ import Table from "./ui/Table.vue"
 import ExportForm from './ui/ExportForm.vue'
 import Filter from "./ui/Filter.vue"
 import CheckWorker from "./ui/CheckWorker.vue"
-import {useTimesheetDepartmentStore, useWorkerStore, useContractStore, useExportStore} from "@/store/modules/index.js"
+import {
+  useTimesheetDepartmentStore,
+  useWorkerStore,
+  useContractStore,
+  useExportStore,
+  useAccountStore
+} from "@/store/modules/index.js"
 import TimesheetAssignForm from '../timesheetDepartment/ui/timesheetDepartmentForm.vue'
 import router from "@/router/index.js"
 import {AppPaths} from "@/utils/index.js"
+import Utils from "@/utils/Utils.js"
 
 const store = useWorkerStore()
-const contractStore = useContractStore()
+const accountStore = useAccountStore()
 const exportStore = useExportStore()
 const timesheetDepartmentStore = useTimesheetDepartmentStore()
 
@@ -27,7 +34,9 @@ const submitExportResume = (v)=>{
 }
 
 onMounted(()=>{
-  store._index()
+  if(accountStore.checkPermission(Utils.appPermissions.hrWorkersRead)){
+    store._index()
+  }
 })
 </script>
 

@@ -289,6 +289,7 @@ const appPermissions = {
     hr:"hr",
 
     hrDashboard:"hr-dashboard",
+    hrDashboardRead:"hr-dashboard-read",
 
     hrWorkers:"hr-workers",
     hrWorkersWrite:"hr-workers-write",

@@ -16,14 +16,16 @@ import {
 import i18n from "@/i18n/index.js"
 const {t} = i18n.global
 
-import  {useDashboardStore} from "@/store/modules/index.js"
+import {useAccountStore, useDashboardStore} from "@/store/modules/index.js"
 import InfoCard from "@/pages/hrm/dashboardV3/ui/InfoCard.vue"
 import YearlyChart from "@/pages/hrm/dashboardV3/ui/YearlyChart.vue"
 import BirthdayCard from "@/pages/hrm/dashboardV3/ui/BirthdayCard.vue"
 import VacationChart from "@/pages/hrm/dashboardV3/ui/VacationChart.vue"
+import Utils from "@/utils/Utils.js"
 
 
 const store = useDashboardStore()
+const accountStore = useAccountStore()
 
 use([
   CanvasRenderer,
@@ -98,16 +100,19 @@ const  pieOption2 = {
 
 
 
-
 onMounted(()=>{
-  store._index()
+  if(accountStore.checkPermission(Utils.appPermissions.hrDashboardRead)){
+    store._index()
+  }
 })
 </script>
 
 <template>
   <UIPageContent>
     <n-spin :show="store.loading">
-      <div class="grid grid-cols-12 gap-1 md:gap-2 lg:gap-3">
+      <div
+          v-if="accountStore.checkPermission(Utils.appPermissions.hrDashboardRead)"
+          class="grid grid-cols-12 gap-1 md:gap-2 lg:gap-3">
         <template v-for="(card, idx) in store.dashboard.mainCard" :key="idx">
           <div class="col-span-12 md:col-span-6 lg:col-span-6 xl:col-span-3">
             <div class="w-full border border-surface-line p-4 rounded-lg bg-surface-section relative cursor-pointer">

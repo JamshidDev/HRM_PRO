@@ -1,6 +1,6 @@
 <script setup>
 import {NoDataPicture, UIPagination, UIUser, UIMenuButton, UIWorkerView} from "@/components/index.js"
-import {useTimesheetDepartmentStore, useWorkerStore, useExportStore} from "@/store/modules/index.js"
+import {useTimesheetDepartmentStore, useWorkerStore, useExportStore, useAccountStore} from "@/store/modules/index.js"
 import {useRouter} from "vue-router"
 import {AppPaths} from "@/utils/index.js"
 import Utils from "@/utils/Utils.js"
@@ -10,6 +10,7 @@ import i18n from "@/i18n/index.js"
 
 
 const store = useWorkerStore()
+const accountStore = useAccountStore()
 const exportStore = useExportStore()
 
 const timesheetDepartmentStore = useTimesheetDepartmentStore()
@@ -35,6 +36,12 @@ const changePage = (v)=>{
 }
 
 const onSelectEv = (v)=>{
+
+  if(!accountStore.checkPermission(Utils.appPermissions.hrWorkersRead)){
+    $Toast.warning(t('message.noPermission'))
+    return
+  }
+
   if(v.key === Utils.ActionTypes.view){
     previewRef.value.openPreview(v.data.uuid)
   }else if(v.key===Utils.ActionTypes.timesheet){
@@ -46,6 +53,10 @@ const onSelectEv = (v)=>{
 }
 
 const onPreview =(uuid)=>{
+  if(!accountStore.checkPermission(Utils.appPermissions.hrWorkersWrite)){
+    $Toast.warning(t('message.noPermission'))
+    return
+  }
   previewRef?.value.openPreview(uuid)
 }
 

@@ -1,8 +1,9 @@
 <script setup>
 import {UIPageFilter, UISelect} from "@/components/index.js"
-import {useComponentStore, useDepartmentStore} from "@/store/modules/index.js"
+import {useAccountStore, useComponentStore, useDepartmentStore} from "@/store/modules/index.js"
 
 const componentStore = useComponentStore()
+const accountStore = useAccountStore()
 const store = useDepartmentStore()
 
 const onAdd = ()=>{

@@ -154,7 +154,8 @@
     "requiredSignature": "Imzo maydoni bo'sh bo'lmasligi kerak!",
     "clearedFields": "Maydonlar tozalandi!",
     "unExpectedError": "Kutilmagan xatolik yuz berdi!",
-    "warning-data": "Ma'lumotlar yetarli emas!"
+    "warning-data": "Ma'lumotlar yetarli emas!",
+    "noPermission": "Ruxsat etilmadi!"
   },
   "enum": {
     "man": "Erkak",

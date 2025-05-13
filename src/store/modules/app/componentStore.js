@@ -54,7 +54,7 @@ export const useComponentStore = defineStore('componentStore', {
 
         params:{
             page:1,
-            per_page:1000
+            per_page:10000
         },
 
         checkUserVisible:false,
@@ -342,7 +342,7 @@ export const useComponentStore = defineStore('componentStore', {
 
         _positions(){
             this.positionLoading = true
-            $ApiService.positionService._index(this.params).then((res)=>{
+            $ApiService.positionService._index({params:this.params}).then((res)=>{
                 this.positionList = res.data.data.data
             }).finally(()=>{
                 this.positionLoading = false

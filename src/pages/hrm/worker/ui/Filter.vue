@@ -1,5 +1,5 @@
 <script setup>
-import {useComponentStore, useWorkerStore, useExportStore} from "@/store/modules/index.js"
+import {useComponentStore, useWorkerStore, useExportStore, useAccountStore} from "@/store/modules/index.js"
 import {UIPageFilter, UISelect} from "@/components/index.js"
 import {
   HomePerson20Regular,
@@ -13,6 +13,7 @@ import Utils from "@/utils/Utils.js"
 
 
 const store = useWorkerStore()
+const accountStore = useAccountStore()
 const exportStore = useExportStore()
 const componentStore = useComponentStore()
 
@@ -147,6 +148,8 @@ const onSubmitResumeExport = () => {
   exportStore.resumeModalVisible = true
 }
 
+const canWrite = computed(()=>accountStore.checkPermission(Utils.appPermissions.hrWorkersWrite))
+
 
 </script>
 
@@ -167,7 +170,9 @@ const onSubmitResumeExport = () => {
         <n-button
             :class="[exportStore.isExportingResume? 'w-1/2! md:w-auto!':'w-full! md:w-auto!']"
             :disabled="!(exportStore.resumePayload.all ? store.totalItems : exportStore.resumePayload.worker_ids.length)"
-            type="primary" v-if="exportStore.isExportingResume" @click="onSubmitResumeExport">
+            type="primary"
+            v-if="exportStore.isExportingResume && canWrite"
+            @click="onSubmitResumeExport">
             <span
                 class="font-semibold">{{$t('content.download')}} ({{ exportStore.resumePayload.all ? store.totalItems : exportStore.resumePayload.worker_ids.length }})</span>
           <template #icon>
@@ -175,6 +180,7 @@ const onSubmitResumeExport = () => {
           </template>
         </n-button>
         <n-button
+            v-if="canWrite"
             :class="[exportStore.isExportingResume? 'w-1/2! md:w-auto!':'w-full! md:w-auto!']"
             :color="exportStore.isExportingResume ? undefined : '#A020F0'"
             :type="exportStore.isExportingResume ? 'error' : 'warning'"
@@ -190,6 +196,7 @@ const onSubmitResumeExport = () => {
       </n-button-group>
 
       <n-button
+          v-if="canWrite"
           class="w-full! md:w-auto!"
           type="success"
           icon-placement="right"
@@ -203,6 +210,7 @@ const onSubmitResumeExport = () => {
       </n-button>
 
       <n-button
+          v-if="canWrite"
           class="w-full! md:w-auto!"
           type="primary"
           icon-placement="right"

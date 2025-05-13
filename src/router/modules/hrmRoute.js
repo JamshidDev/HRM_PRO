@@ -98,16 +98,6 @@ export default [
         component:TimesheetListPage,
     },
     {
-        path:Utils.routeHrmPathMaker(AppPaths.DashboardV2),
-        name:AppPaths.DashboardV2.substring(1),
-        component:DashboardV2Page,
-    },
-    {
-        path:Utils.routeHrmPathMaker(AppPaths.DashboardV3),
-        name:AppPaths.DashboardV3.substring(1),
-        component:DashboardV3Page,
-    },
-    {
         path:Utils.routeHrmPathMaker(AppPaths.Med),
         name:AppPaths.Med.substring(1),
         component:MedPage,
