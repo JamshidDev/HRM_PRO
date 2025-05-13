@@ -1,12 +1,14 @@
 <script setup>
 import {UIPageFilter, UISelect} from "@/components/index.js"
-import { useComponentStore, useAdContractStore} from "@/store/modules/index.js"
+import {useComponentStore, useAdContractStore, useAccountStore} from "@/store/modules/index.js"
 import {useAppSetting} from "@/utils/index.js"
 
 const store = useAdContractStore()
+const accStore = useAccountStore()
 const componentStore = useComponentStore()
 
 const onAdd = ()=>{
+  if(!accStore.checkAction(accStore.pn.hrContractAdditionalWrite)) return
   store.visibleType = true
   store.resetForm()
   store.visible = true
@@ -19,6 +21,7 @@ const filterCount = computed(()=>Number(Boolean(store.params.organizations.lengt
 
 
 const onSearchEv = ()=>{
+  if(!accStore.checkAction(accStore.pn.hrContractAdditionalRead)) return
   store.params.page = 1
   store._index()
 }

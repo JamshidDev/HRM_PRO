@@ -100,7 +100,7 @@ const  pieOption2 = {
 
 
 onMounted(()=>{
-  if(accStore.checkAction(accStore.pn.hrDashboardRead))return
+  if(!accStore.checkAction(accStore.pn.hrDashboardRead))return
 
   store._index()
 })

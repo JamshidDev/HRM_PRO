@@ -1,23 +1,22 @@
 <script setup>
 import Table from "./Table.vue"
 import adContractForm from "./adContractForm.vue"
-import {UIDConfirm, UIModal, UIPageContent, UIOfficeApp} from "@/components/index.js"
-import {useAdContractStore, useCommandStore} from "@/store/modules/index.js"
+import {UIDConfirm, UIModal, UIPageContent, UIOfficeApp, UIConfirmByFile} from "@/components/index.js"
+import {useAccountStore, useAdContractStore, useCommandStore} from "@/store/modules/index.js"
 import {FlowchartCircle20Filled} from "@vicons/fluent"
 import CommandForm from "@/pages/docFlow/document/command/CommandForm.vue"
 import Utils from "@/utils/Utils.js"
 import Filter from "./ui/Filter.vue"
 
 
+
 const store = useAdContractStore()
+const accStore = useAccountStore()
 const commandStore = useCommandStore()
 const officeAppRef = ref(null)
 
 const emits = defineEmits([ 'openOffice',])
 const contractData = ref(null)
-const emitEv = (v)=>{
-  emits('openOffice',v)
-}
 const openCommand = (v)=>{
   contractData.value = {
     id:v.id,
@@ -41,22 +40,13 @@ const onSave = ()=>{
   commandStore.visible = true
 }
 
-const onSearchEv = ()=>{
-  store.params.page = 1
-  store._index()
-}
-
-const onAdd = ()=>{
-  store.visibleType = true
-  store.resetForm()
-  store.visible = true
-}
 
 const openContract = (id)=>{
   officeAppRef.value.openPdf(id, Utils.documentModels.adContract)
 }
 
 onMounted(()=>{
+  if(!accStore.checkAction(accStore.pn.hrContractAdditionalRead)) return
   store._index()
 })
 
@@ -103,5 +93,10 @@ onMounted(()=>{
     </template>
   </UIDConfirm>
   <UIOfficeApp ref="officeAppRef"/>
+  <UIConfirmByFile
+      :model="Utils.documentModels.adContract"
+      :document-id="store.elementId"
+      @onSuccess="store._index"
+  />
 </UIPageContent>
 </template>

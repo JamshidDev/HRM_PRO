@@ -1,11 +1,11 @@
 <script setup>
 import {NoDataPicture, UIActionButton, UIPagination, UIMenuButton} from "@/components/index.js"
-import {useComponentStore, useDepartmentPositionStore} from "@/store/modules/index.js"
+import {useAccountStore, useComponentStore, useDepartmentPositionStore} from "@/store/modules/index.js"
 import Utils from "@/utils/Utils.js"
 
 const store = useDepartmentPositionStore()
 const componentStore = useComponentStore()
-
+const accStore = useAccountStore()
 
 
 const onEdit = (v)=>{
@@ -40,6 +40,7 @@ const changePage = (v)=>{
 }
 
 const onSelectEv = (v)=>{
+  if(!accStore.checkAction(accStore.pn.hrPositionsWrite)) return
   if(Utils.ActionTypes.edit === v.key){
     onEdit(v.data)
   }else if(Utils.ActionTypes.delete === v.key){

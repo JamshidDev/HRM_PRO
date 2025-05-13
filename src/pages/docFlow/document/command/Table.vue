@@ -1,12 +1,16 @@
 <script setup>
 import {NoDataPicture, UIActionButton, UIMenuButton, UIPagination, UIStatus, UIUser,} from "@/components/index.js"
-import {useCommandStore} from "@/store/modules/index.js"
+import {useAccountStore, useCommandStore, useComponentStore} from "@/store/modules/index.js"
+import {CheckmarkCircle32Regular} from "@vicons/fluent"
 import Utils from "@/utils/Utils.js"
 
 const store = useCommandStore()
-
+const accStore = useAccountStore()
+const componentStore = useComponentStore()
 const emits = defineEmits([ 'openOffice',])
+import i18n from "@/i18n/index.js"
 
+const {t} = i18n.global
 
 const onOpenFile = (v)=>{
   emits('openOffice', v)
@@ -19,9 +23,22 @@ const changePage = (v)=>{
   store._index()
 }
 
+const onDelete = (v)=>{
+  store.elementId = v.id
+  store._delete()
+}
+
 const onSelect = (v)=>{
+  if(!accStore.checkAction(accStore.pn.hrCommandsRead)) return
+
   if(v.key === 'view'){
     emits('openOffice', v.data.id)
+  }else if(v.key === Utils.ActionTypes.delete){
+    onDelete(v.data)
+  }else if(v.key === Utils.ActionTypes.confirm){
+    store.elementId = v.data.id
+    componentStore.files = []
+    componentStore.fileVisible = true
   }
 }
 
@@ -68,6 +85,14 @@ const onSelect = (v)=>{
                 :show-edit="true"
                 :data="item"
                 @selectEv="onSelect"
+                :extra-options="[
+                     {
+                        label: t('content.confirm'),
+                        key: Utils.ActionTypes.confirm,
+                        icon: CheckmarkCircle32Regular,
+                        visible:true
+                     },
+                ]"
             />
           </td>
         </tr>

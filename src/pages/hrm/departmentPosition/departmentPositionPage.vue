@@ -1,28 +1,18 @@
 <script setup>
 import {UIDrawer, UIPageContent} from "@/components/index.js"
-import {useDepartmentPositionStore, useComponentStore} from "@/store/modules/index.js"
+import {useDepartmentPositionStore, useComponentStore, useAccountStore} from "@/store/modules/index.js"
 import createFrom from "./ui/createForm.vue"
 import Table from "./ui/Table.vue"
 import Filter from "./ui/Filter.vue"
 
 const store = useDepartmentPositionStore()
-const componentStore = useComponentStore()
+const accStore = useAccountStore()
 
-const onAdd = ()=>{
-  componentStore._enums()
-  componentStore._departments()
-  componentStore._positions()
-  store.resetForm()
-  store.visibleType = true
-  store.visible = true
-}
 
-const onSearch = ()=>{
-  store.params.page = 1
-  store._index()
-}
 
 onMounted(()=>{
+  if(!accStore.checkAction(accStore.pn.hrPositionsRead)) return
+
   store._index()
 })
 </script>

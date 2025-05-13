@@ -18,12 +18,12 @@ const exportStore = useExportStore()
 const componentStore = useComponentStore()
 
 const onAdd = () => {
-  if(accStore.checkAction(accStore.pn.hrWorkersWrite)) return
+  if(!accStore.checkAction(accStore.pn.hrWorkersWrite)) return
   componentStore.checkUserVisible = true
 }
 
 const onSearch = () => {
-  if(accStore.checkAction(accStore.pn.hrWorkersRead)) return
+  if(!accStore.checkAction(accStore.pn.hrWorkersRead)) return
 
   store.params.page = 1
   store._index()
@@ -151,7 +151,7 @@ const onSubmitResumeExport = () => {
   exportStore.resumeModalVisible = true
 }
 
-const canWrite = computed(()=>!accStore.checkAction(Utils.appPermissions.hrWorkersWrite))
+const canWrite = computed(()=>accStore.checkAction(Utils.appPermissions.hrWorkersWrite))
 
 
 </script>

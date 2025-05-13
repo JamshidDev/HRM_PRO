@@ -152,6 +152,7 @@ const ActionTypes = {
     timesheet: "timesheet",
     verifier: "verifier",
     close: "close",
+    confirm: "confirm",
     finish: "finish"
 }
 const combineFullName = (user)=>{

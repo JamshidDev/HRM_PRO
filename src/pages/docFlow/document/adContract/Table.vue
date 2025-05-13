@@ -1,10 +1,14 @@
 <script setup>
-import {ReceiptAdd24Regular, DocumentCheckmark24Regular, ArrowSyncCheckmark20Filled} from "@vicons/fluent"
+import {ReceiptAdd24Regular, DocumentCheckmark24Regular,CheckmarkCircle32Regular, ArrowSyncCheckmark20Filled} from "@vicons/fluent"
 import {NoDataPicture, UIPagination, UIUser, UIStatus, UIMenuButton} from "@/components/index.js"
-import {useAdContractStore} from "@/store/modules/index.js"
+import {useAccountStore, useAdContractStore, useComponentStore} from "@/store/modules/index.js"
 import Utils from "@/utils/Utils.js"
+import i18n from "@/i18n/index.js"
 
+const {t} = i18n.global
 const store = useAdContractStore()
+const accStore = useAccountStore()
+const componentStore = useComponentStore()
 
 
 
@@ -39,11 +43,19 @@ const openContract = (v, statusId)=>{
 }
 
 const onSelect =(v)=>{
+
   if(v.key === 'view'){
+    if(!accStore.checkAction(accStore.pn.hrContractAdditionalRead)) return
     emits('openOffice', v.data.id)
   }else if(v.key === 'delete'){
+    if(!accStore.checkAction(accStore.pn.hrContractAdditionalWrite)) return
     store.elementId = v.data.id
     store._delete()
+  }else if(v.key === Utils.ActionTypes.confirm){
+    if(!accStore.checkAction(accStore.pn.hrContractAdditionalWrite)) return
+    store.elementId = v.data.id
+    componentStore.files = []
+    componentStore.fileVisible = true
   }
 }
 
@@ -117,6 +129,14 @@ const onSelect =(v)=>{
                 :show-edit="true"
                 :data="item"
                 @selectEv="onSelect"
+                :extra-options="[
+                     {
+                        label: t('content.confirm'),
+                        key: Utils.ActionTypes.confirm,
+                        icon: CheckmarkCircle32Regular,
+                        visible:true
+                     },
+                ]"
             />
           </td>
         </tr>

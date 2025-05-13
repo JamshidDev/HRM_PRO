@@ -36,9 +36,7 @@ const changePage = (v)=>{
 }
 
 const onSelectEv = (v)=>{
-
-  if(accStore.checkAction(Utils.appPermissions.hrWorkersRead))return
-
+  if(!accStore.checkAction(accStore.pn.hrWorkersRead)) return
 
   if(v.key === Utils.ActionTypes.view){
     previewRef.value.openPreview(v.data.uuid)
@@ -51,10 +49,8 @@ const onSelectEv = (v)=>{
 }
 
 const onPreview =(uuid)=>{
-  if(!accountStore.checkPermission(Utils.appPermissions.hrWorkersWrite)){
-    $Toast.warning(t('message.noPermission'))
-    return
-  }
+  if(!accStore.checkAction(accStore.pn.hrWorkersWrite)) return
+
   previewRef?.value.openPreview(uuid)
 }
 

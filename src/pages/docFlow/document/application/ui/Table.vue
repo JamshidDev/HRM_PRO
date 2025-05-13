@@ -1,10 +1,11 @@
 <script setup>
 import {NoDataPicture, UIMenuButton, UIPagination, UIStatus, UIUser} from "@/components/index.js"
-import {useApplicationStore} from "@/store/modules/index.js"
+import {useAccountStore, useApplicationStore} from "@/store/modules/index.js"
 import Utils from "../../../../../utils/Utils.js"
 import {DocumentBulletList20Regular} from '@vicons/fluent'
 
 const store = useApplicationStore()
+const accStore = useAccountStore()
 
 
 
@@ -29,6 +30,7 @@ const changePage = (v)=>{
 
 const onSelectEv = (v)=>{
   if(Utils.ActionTypes.view === v.key){
+    if(!accStore.checkAction(accStore.pn.hrWorkerApplicationsRead)) return
     onOpenFile(v.data)
   }
 }

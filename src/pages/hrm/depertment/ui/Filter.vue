@@ -8,7 +8,7 @@ const accStore = useAccountStore()
 const store = useDepartmentStore()
 
 const onAdd = ()=>{
-  if(accStore.checkAction(accStore.pn.hrDepartmentsWrite)) return
+  if(!accStore.checkAction(accStore.pn.hrDepartmentsWrite)) return
 
   store.resetForm()
   store._level()
@@ -26,7 +26,7 @@ const filterCount = computed(()=>Number(Boolean(store.params.organizations.lengt
 
 
 const onSearchEv = ()=>{
-  if(accStore.checkAction(accStore.pn.hrDepartmentsWrite)) return
+  if(!accStore.checkAction(accStore.pn.hrDepartmentsRead)) return
 
   store.params.page = 1
   store._index()

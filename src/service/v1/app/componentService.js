@@ -61,6 +61,11 @@ const _allPosition =async (payload)=>{
     return await axios.get(`/v1/hr/get-department-positions`, {params:payload?.params})
 }
 
+const _confirmByFile =async (payload)=>{
+    return await axios.post(`/v1/document/document-confirm`, payload.data)
+}
+
+
 export default {
     _enums,
     _organization,
@@ -79,4 +84,5 @@ export default {
     _allStructure,
     _allDepartmentTree,
     _allPosition,
+    _confirmByFile,
 }

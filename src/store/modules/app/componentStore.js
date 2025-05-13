@@ -218,8 +218,19 @@ export const useComponentStore = defineStore('componentStore', {
         turnstileTerminalListLoading: false,
         panelVisible:false,
 
+        fileVisible:false,
+        fileLoading:false,
+        files:[],
     }),
     actions:{
+        _confirmFile(data, callback){
+            this.fileLoading = true
+            $ApiService.componentService._confirmByFile({data}).then((res)=>{
+                callback?.()
+            }).finally(()=>{
+                this.fileLoading= false
+            })
+        },
         _organizationLevel(){
             this.organizationLevelLoading= true
             $ApiService.organizationService._level().then((res)=>{
