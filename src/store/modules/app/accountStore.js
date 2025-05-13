@@ -37,9 +37,10 @@ export const useAccountStore = defineStore('accountStore', {
         checkAction:(state)=>(permission)=>{
            if(!state.checkPermission(permission)){
                $Toast.warning(t('message.noPermission'))
-               return true
+               return false
            }
-           return  false
+           return  true
+
         },
         fullName:(state)=>Utils.combineFullName(state.account?.worker),
         userPhoto:(state)=>state.account?.worker?.photo,

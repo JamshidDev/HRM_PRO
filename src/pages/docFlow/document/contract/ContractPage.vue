@@ -2,12 +2,11 @@
 import contractForm from "./contractForm.vue"
 import ContractList from "./ContractList.vue"
 import {UIModal,UIPageContent,UIOfficeApp} from "@/components/index.js"
-import {useContractStore, useCommandStore} from "@/store/modules/index.js"
+import {useContractStore, useAccountStore} from "@/store/modules/index.js"
 import Utils from "@/utils/Utils.js"
 import Filter from "./ui/Filter.vue"
-
+const accStore = useAccountStore()
 const store = useContractStore()
-const commandStore = useCommandStore()
 
 const contractData = ref(null)
 const officeAppRef = ref(null)
@@ -23,20 +22,13 @@ const openCommand = (v)=>{
   store.confirmationVisible=true
 }
 
-
-const onSave = ()=>{
-  store.confirmationVisible=false
-  commandStore.visibleType = true
-  commandStore.visible = true
-}
-
-
 const openOffice = (id)=>{
   officeAppRef.value.openPdf(id, Utils.documentModels.contract)
 }
 
 
 onMounted(()=>{
+  if(accStore.checkAction(accStore.pn.hrContractsRead)) return
   store._index()
 })
 

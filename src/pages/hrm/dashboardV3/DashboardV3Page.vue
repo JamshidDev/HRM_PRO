@@ -21,7 +21,6 @@ import InfoCard from "@/pages/hrm/dashboardV3/ui/InfoCard.vue"
 import YearlyChart from "@/pages/hrm/dashboardV3/ui/YearlyChart.vue"
 import BirthdayCard from "@/pages/hrm/dashboardV3/ui/BirthdayCard.vue"
 import VacationChart from "@/pages/hrm/dashboardV3/ui/VacationChart.vue"
-import Utils from "@/utils/Utils.js"
 
 
 const store = useDashboardStore()

@@ -1,12 +1,14 @@
 <script setup>
 import {UIPageFilter, UISelect} from "@/components/index.js"
-import { useContractStore, useComponentStore} from "@/store/modules/index.js"
+import {useContractStore, useComponentStore, useAccountStore} from "@/store/modules/index.js"
 import {useAppSetting} from "@/utils/index.js"
-
+const accStore = useAccountStore()
 const store = useContractStore()
 const componentStore = useComponentStore()
 
 const onAdd = ()=>{
+  if(accStore.checkAction(accStore.pn.hrContractsWrite)) return
+
   store.visibleType = true
   store.resetForm()
   store.stepNumber = 1
@@ -24,6 +26,8 @@ const filterCount = computed(()=>Number(Boolean(store.params.organizations.lengt
 
 
 const onSearchEv = ()=>{
+  if(accStore.checkAction(accStore.pn.hrContractsRead)) return
+
   store.params.page = 1
   store._index()
 }
