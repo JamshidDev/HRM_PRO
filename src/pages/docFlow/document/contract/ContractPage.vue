@@ -1,7 +1,7 @@
 <script setup>
 import contractForm from "./contractForm.vue"
 import ContractList from "./ContractList.vue"
-import {UIModal,UIPageContent,UIOfficeApp} from "@/components/index.js"
+import {UIModal,UIPageContent,UIOfficeApp, UIConfirmByFile} from "@/components/index.js"
 import {useContractStore, useAccountStore} from "@/store/modules/index.js"
 import Utils from "@/utils/Utils.js"
 import Filter from "./ui/Filter.vue"
@@ -26,9 +26,13 @@ const openOffice = (id)=>{
   officeAppRef.value.openPdf(id, Utils.documentModels.contract)
 }
 
+const onSuccessEv = (v)=>{
+  store._index()
+}
+
 
 onMounted(()=>{
-  if(accStore.checkAction(accStore.pn.hrContractsRead)) return
+  if(!accStore.checkAction(accStore.pn.hrContractsRead)) return
   store._index()
 })
 
@@ -51,5 +55,9 @@ onMounted(()=>{
       <contractForm />
     </UIModal>
     <UIOfficeApp ref="officeAppRef"/>
+    <UIConfirmByFile
+        :model="Utils.documentModels.contract"
+        :document-id="store.elementId"
+        @onSuccess="onSuccessEv"/>
   </UIPageContent>
 </template>

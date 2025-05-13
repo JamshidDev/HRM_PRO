@@ -11,7 +11,7 @@ const store = useDepartmentStore()
 
 
 onMounted(()=>{
-  if(accStore.checkAction(accStore.pn.hrDepartmentsRead)) return
+  if(!accStore.checkAction(accStore.pn.hrDepartmentsRead)) return
   store._index()
 })
 </script>

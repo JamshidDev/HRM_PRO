@@ -1,10 +1,20 @@
 <script setup>
-import {ReceiptAdd24Regular, DocumentCheckmark24Regular, ArrowSyncCheckmark20Filled} from "@vicons/fluent"
+import {
+  ReceiptAdd24Regular,
+  DocumentCheckmark24Regular,
+  ArrowSyncCheckmark20Filled,
+  CheckmarkCircle32Regular,
+} from "@vicons/fluent"
 import {NoDataPicture, UIPagination, UIUser, UIStatus, UIMenuButton} from "@/components/index.js"
-import {useContractStore} from "@/store/modules/index.js"
+import {useAccountStore, useComponentStore, useContractStore} from "@/store/modules/index.js"
 import Utils from "@/utils/Utils.js"
+import i18n from "@/i18n/index.js"
+
+const {t} = i18n.global
 
 const store = useContractStore()
+const componentStore = useComponentStore()
+const accStore = useAccountStore()
 
 
 
@@ -16,19 +26,6 @@ const changePage = (v)=>{
   store._index()
 }
 
-const onOpenFile = (v)=>{
-  emits('openOffice', v.id)
-}
-
-const onEdit = (v)=>{
-  store.visibleType = false
-  store.payload.number = v.number.toString()
-  store.payload.type = v.type.id
-  store.payload.contract_date = new Date(v.contract_date).getTime()
-  store.payload.contract_to_date = new Date(v.contract_date).getTime()
-  store.payload.position_date = new Date(v.contract_date).getTime()
-  store.visible = true
-}
 
 
 const openContract = (v, statusId)=>{
@@ -40,11 +37,22 @@ const openContract = (v, statusId)=>{
 
 const onSelect =(v)=>{
     if(v.key === 'view'){
-      emits('openOffice', v.data.id)
+      onPreview(v.data.id)
     }else if(v.key === 'delete'){
+      if(!accStore.checkAction(accStore.pn.hrContractsWrite)) return
       store.elementId = v.data.id
       store._delete()
+    }else if(v.key === Utils.ActionTypes.confirm){
+      if(!accStore.checkAction(accStore.pn.hrContractsWrite)) return
+      store.elementId = v.data.id
+      componentStore.files = []
+      componentStore.fileVisible = true
     }
+}
+
+const onPreview = (id)=>{
+  if(!accStore.checkAction(accStore.pn.hrContractsRead)) return
+  emits('openOffice', id)
 }
 
 </script>
@@ -78,7 +86,7 @@ const onSelect =(v)=>{
         <tr v-for="(item, idx) in store.list" :key="idx">
           <td><span class="text-center text-[12px] text-gray-600 block">{{ (store.params.page - 1) * store.params.per_page + idx + 1 }}</span></td>
           <td><span
-              @click="onOpenFile(item)"
+              @click="onPreview(item.id)"
               class="text-sm hover:text-primary hover:underline cursor-pointer">{{item?.type?.name}}</span></td>
           <td>
             <div v-if="item?.number" class="flex justify-center">
@@ -131,6 +139,14 @@ const onSelect =(v)=>{
                 :show-edit="true"
                 :data="item"
                 @selectEv="onSelect"
+                :extra-options="[
+                     {
+                        label: t('content.confirm'),
+                        key: Utils.ActionTypes.confirm,
+                        icon: CheckmarkCircle32Regular,
+                        visible:true
+                     },
+                ]"
             />
           </td>
         </tr>

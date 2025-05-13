@@ -1,12 +1,14 @@
 <script setup>
 import {UIPageFilter} from "@/components/index.js"
-import {useCommandStore, useComponentStore} from "@/store/modules/index.js"
+import {useAccountStore, useCommandStore, useComponentStore} from "@/store/modules/index.js"
 import {useAppSetting} from "@/utils/index.js"
 
 const store = useCommandStore()
+const accStore = useAccountStore()
 const componentStore = useComponentStore()
 
 const onAdd = ()=>{
+  if(!accStore.checkAction(accStore.pn.hrCommandsWrite)) return
   store.visibleType = true
   store.resetForm()
   store.visible = true
@@ -19,6 +21,7 @@ const filterCount = computed(()=>
 
 
 const onSearchEv = ()=>{
+  if(!accStore.checkAction(accStore.pn.hrCommandsRead)) return
   store.params.page = 1
   store._index()
 }

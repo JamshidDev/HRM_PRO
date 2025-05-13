@@ -1,6 +1,6 @@
 <script setup>
-import {useCommandStore} from "@/store/modules/index.js"
-import {UIOfficeApp, UIPageContent, UIPageFilter} from "@/components/index.js"
+import {useAccountStore, useCommandStore} from "@/store/modules/index.js"
+import {UIOfficeApp, UIPageContent, UIConfirmByFile} from "@/components/index.js"
 import Table from "./Table.vue"
 import CommandForm from "./CommandForm.vue"
 import {UIModal} from "@/components/index.js"
@@ -9,24 +9,20 @@ import Filter from "./ui/Filter.vue"
 
 const officeAppRef = ref(null)
 const store = useCommandStore()
+const accStore = useAccountStore()
 const emits = defineEmits([ 'openOffice',])
 
-const onSearch = (value)=>{
-  store.params.page = 1
-  store._index()
-}
-
-const onAdd = ()=>{
-  store.visibleType = true
-  store.resetForm()
-  store.visible = true
-}
 
 const openCommand = (id)=>{
   officeAppRef.value.openPdf(id, Utils.documentModels.command)
 }
 
+const onSuccessEv = (v)=>{
+  store._index()
+}
+
 onMounted(()=>{
+  if(!accStore.checkAction(accStore.pn.hrCommandsRead)) return
   store._index()
 })
 
@@ -45,5 +41,10 @@ onMounted(()=>{
     <CommandForm/>
   </UIModal>
   <UIOfficeApp ref="officeAppRef"/>
+  <UIConfirmByFile
+      :model="Utils.documentModels.command"
+      :document-id="store.elementId"
+      @onSuccess="onSuccessEv"
+  />
 </UIPageContent>
 </template>

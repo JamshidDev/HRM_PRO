@@ -18,7 +18,7 @@ import {AppPaths} from "@/utils/index.js"
 import Utils from "@/utils/Utils.js"
 
 const store = useWorkerStore()
-const accountStore = useAccountStore()
+const accStore = useAccountStore()
 const exportStore = useExportStore()
 const timesheetDepartmentStore = useTimesheetDepartmentStore()
 
@@ -34,9 +34,8 @@ const submitExportResume = (v)=>{
 }
 
 onMounted(()=>{
-  if(accountStore.checkPermission(Utils.appPermissions.hrWorkersRead)){
-    store._index()
-  }
+  if(!accStore.checkAction(accStore.pn.hrWorkersRead)) return
+  store._index()
 })
 </script>
 

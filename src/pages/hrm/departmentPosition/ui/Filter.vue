@@ -1,13 +1,15 @@
 <script setup>
-import {useDepartmentPositionStore, useComponentStore} from "@/store/modules/index.js"
+import {useDepartmentPositionStore, useComponentStore, useAccountStore} from "@/store/modules/index.js"
 import {UIPageFilter, UISelect} from "@/components/index.js"
 import {HomePerson20Regular} from "@vicons/fluent"
-
+const accStore = useAccountStore()
 const store = useDepartmentPositionStore()
 const componentStore = useComponentStore()
 
 
 const onSearch = () => {
+  if(!accStore.checkAction(accStore.pn.hrPositionsRead)) return
+
   store.params.page = 1
   store._index()
 }
@@ -50,6 +52,8 @@ const onChangeDepartment = ()=>{
 }
 
 const onAdd = ()=>{
+
+  if(!accStore.checkAction(accStore.pn.hrPositionsWrite)) return
   componentStore._enums()
   componentStore._departments()
   componentStore._positions()

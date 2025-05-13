@@ -7,7 +7,7 @@ const store = useContractStore()
 const componentStore = useComponentStore()
 
 const onAdd = ()=>{
-  if(accStore.checkAction(accStore.pn.hrContractsWrite)) return
+  if(!accStore.checkAction(accStore.pn.hrContractsWrite)) return
 
   store.visibleType = true
   store.resetForm()
@@ -26,7 +26,7 @@ const filterCount = computed(()=>Number(Boolean(store.params.organizations.lengt
 
 
 const onSearchEv = ()=>{
-  if(accStore.checkAction(accStore.pn.hrContractsRead)) return
+  if(!accStore.checkAction(accStore.pn.hrContractsRead)) return
 
   store.params.page = 1
   store._index()
