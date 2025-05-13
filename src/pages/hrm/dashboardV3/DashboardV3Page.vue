@@ -25,7 +25,7 @@ import Utils from "@/utils/Utils.js"
 
 
 const store = useDashboardStore()
-const accountStore = useAccountStore()
+const accStore = useAccountStore()
 
 use([
   CanvasRenderer,
@@ -101,9 +101,9 @@ const  pieOption2 = {
 
 
 onMounted(()=>{
-  if(accountStore.checkPermission(Utils.appPermissions.hrDashboardRead)){
-    store._index()
-  }
+  if(accStore.checkAction(accStore.pn.hrDashboardRead))return
+
+  store._index()
 })
 </script>
 
@@ -111,7 +111,7 @@ onMounted(()=>{
   <UIPageContent>
     <n-spin :show="store.loading">
       <div
-          v-if="accountStore.checkPermission(Utils.appPermissions.hrDashboardRead)"
+          v-if="!accStore.checkAction(accStore.pn.hrDashboardRead)"
           class="grid grid-cols-12 gap-1 md:gap-2 lg:gap-3">
         <template v-for="(card, idx) in store.dashboard.mainCard" :key="idx">
           <div class="col-span-12 md:col-span-6 lg:col-span-6 xl:col-span-3">

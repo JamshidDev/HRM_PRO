@@ -13,15 +13,18 @@ import Utils from "@/utils/Utils.js"
 
 
 const store = useWorkerStore()
-const accountStore = useAccountStore()
+const accStore = useAccountStore()
 const exportStore = useExportStore()
 const componentStore = useComponentStore()
 
 const onAdd = () => {
+  if(accStore.checkAction(accStore.pn.hrWorkersWrite)) return
   componentStore.checkUserVisible = true
 }
 
 const onSearch = () => {
+  if(accStore.checkAction(accStore.pn.hrWorkersRead)) return
+
   store.params.page = 1
   store._index()
 }
@@ -148,7 +151,7 @@ const onSubmitResumeExport = () => {
   exportStore.resumeModalVisible = true
 }
 
-const canWrite = computed(()=>accountStore.checkPermission(Utils.appPermissions.hrWorkersWrite))
+const canWrite = computed(()=>!accStore.checkAction(Utils.appPermissions.hrWorkersWrite))
 
 
 </script>

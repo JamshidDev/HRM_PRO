@@ -1,12 +1,15 @@
 <script setup>
 import {UIPageFilter, UISelect} from "@/components/index.js"
 import {useAccountStore, useComponentStore, useDepartmentStore} from "@/store/modules/index.js"
+import Utils from "@/utils/Utils.js"
 
 const componentStore = useComponentStore()
-const accountStore = useAccountStore()
+const accStore = useAccountStore()
 const store = useDepartmentStore()
 
 const onAdd = ()=>{
+  if(accStore.checkAction(accStore.pn.hrDepartmentsWrite)) return
+
   store.resetForm()
   store._level()
   componentStore._departments()
@@ -23,6 +26,8 @@ const filterCount = computed(()=>Number(Boolean(store.params.organizations.lengt
 
 
 const onSearchEv = ()=>{
+  if(accStore.checkAction(accStore.pn.hrDepartmentsWrite)) return
+
   store.params.page = 1
   store._index()
 }

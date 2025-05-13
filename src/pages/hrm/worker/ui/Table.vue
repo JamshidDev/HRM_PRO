@@ -10,7 +10,7 @@ import i18n from "@/i18n/index.js"
 
 
 const store = useWorkerStore()
-const accountStore = useAccountStore()
+const accStore = useAccountStore()
 const exportStore = useExportStore()
 
 const timesheetDepartmentStore = useTimesheetDepartmentStore()
@@ -37,10 +37,8 @@ const changePage = (v)=>{
 
 const onSelectEv = (v)=>{
 
-  if(!accountStore.checkPermission(Utils.appPermissions.hrWorkersRead)){
-    $Toast.warning(t('message.noPermission'))
-    return
-  }
+  if(accStore.checkAction(Utils.appPermissions.hrWorkersRead))return
+
 
   if(v.key === Utils.ActionTypes.view){
     previewRef.value.openPreview(v.data.uuid)

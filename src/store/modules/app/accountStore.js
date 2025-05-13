@@ -3,6 +3,7 @@ import i18n from "@/i18n/index.js"
 import router from '@/router/index.js'
 import {AppPaths, useAppSetting} from "@/utils/index.js"
 import Utils from "@/utils/Utils.js"
+const {t} = i18n.global
 export const useAccountStore = defineStore('accountStore', {
     state:()=>({
         account:null,
@@ -24,7 +25,8 @@ export const useAccountStore = defineStore('accountStore', {
         roleLoading:false,
         roleList:[],
         permissions:[],
-        storageUpdate: 1
+        storageUpdate: 1,
+        pn:Utils.appPermissions
     }),
     getters:{
        checkPermission:(state)=>(permission)=>{
@@ -32,6 +34,13 @@ export const useAccountStore = defineStore('accountStore', {
            const permissions =state.permissions.length>0? state.permissions:storePermissions
            return permissions.includes(permission)
        },
+        checkAction:(state)=>(permission)=>{
+           if(!state.checkPermission(permission)){
+               $Toast.warning(t('message.noPermission'))
+               return true
+           }
+           return  false
+        },
         fullName:(state)=>Utils.combineFullName(state.account?.worker),
         userPhoto:(state)=>state.account?.worker?.photo,
         telegramPopupVisible: (state)=> {

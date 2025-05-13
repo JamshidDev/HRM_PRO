@@ -4,14 +4,14 @@ import TabPage from "./ui/TabPage.vue"
 import createForm from "./ui/createForm.vue"
 import {useDepartmentStore, useAccountStore} from "@/store/modules/index.js"
 import Filter from "./ui/Filter.vue"
-import Utils from "@/utils/Utils.js"
+const accStore = useAccountStore()
+
 
 const store = useDepartmentStore()
-const accountStore = useAccountStore()
 
 
 onMounted(()=>{
-  if(!accountStore.checkPermission(Utils.appPermissions.hrDepartmentsRead)) return
+  if(accStore.checkAction(accStore.pn.hrDepartmentsRead)) return
   store._index()
 })
 </script>
