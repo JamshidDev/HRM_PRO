@@ -1,14 +1,15 @@
 <script setup>
-import {UIDrawer, UIPageContent, UIPageFilter, NoDataPicture, UIModal} from "@/components/index.js"
-import Form from "./ui/Form.vue"
+import {UIPageContent, NoDataPicture} from "@/components/index.js"
 import TurnstileOrgTree from './ui/TurnstileOrgTree.vue'
 import TerminalList from './ui/TerminalList.vue'
-import {useComponentStore, useTurnstileOrganizationStore} from "@/store/modules/index.js";
+import {useComponentStore, useTurnstileOrganizationStore, useAccountStore} from "@/store/modules/index.js";
 
 const store = useTurnstileOrganizationStore()
 const componentStore = useComponentStore()
+const accStore = useAccountStore()
 
 onMounted(() => {
+  if(!accStore.checkAction(accStore.pn.turnstileOrganizationRead)) return
   store._index()
   componentStore._turnstileTerminal()
 })

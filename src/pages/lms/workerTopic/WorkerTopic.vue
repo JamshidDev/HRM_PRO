@@ -1,7 +1,7 @@
 <script setup>
 import TopicCardList from "./ui/TopicCardList.vue"
 import TopicDetail from './ui/TopicDetail.vue'
-import {useExamAttemptStore, useWorkerExamStore} from "@/store/modules/index.js";
+import {useAccountStore, useExamAttemptStore, useWorkerExamStore} from "@/store/modules/index.js";
 import ExamResultChart from './ui/ExamResultChart.vue'
 import {UIModal, UIPageFilter} from "@/components/index.js";
 import ViewAttemptModal from "./solveExam/ViewAttemptModal.vue";
@@ -9,8 +9,11 @@ import stars from "@/assets/images/svg/stars.svg";
 
 const store = useWorkerExamStore()
 const examStore = useExamAttemptStore()
+const accStore = useAccountStore()
+
 
 onMounted(()=>{
+  if(!accStore.checkAction(accStore.pn.examExamsRead)) return
   examStore._config_localstorage()
   store.params.page = 1
   store.params.search = null

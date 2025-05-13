@@ -92,6 +92,7 @@
     "return": "Return",
     "finish": "Finish",
     "created": "Created date",
+    "ended": "Ended date",
     "move": "Move",
     "listen": "Listen",
     "downloadApp": "Download mobile app",
@@ -108,7 +109,14 @@
     "staff": "Staff",
     "export": "Export",
     "reference": "Reference",
-    "preparingDocument": "Document is being prepared..."
+    "from": "From",
+    "to": "To",
+    "more": "More",
+    "role": "Role",
+    "duration": "Duration",
+    "preparingDocument": "Document is being prepared...",
+    "later": "Later",
+    "refresh": "Refresh"
   },
   "date": {
     "day": "Day",
@@ -146,7 +154,8 @@
     "requiredSignature": "Signature field cannot be empty!",
     "clearedFields": "Fields cleared!",
     "unExpectedError": "An unexpected error occurred!",
-    "warning-data": "Insufficient data!"
+    "warning-data": "Insufficient data!",
+    "noPermission": "Not authorized!"
   },
   "enum": {
     "man": "Male",
@@ -345,6 +354,7 @@
       "contract_type": "Contract type",
       "department": "Departments",
       "position": "Positions",
+      "sex": "Gender",
       "position_type": "Position type"
     },
     "checkWorker": {
@@ -372,7 +382,8 @@
     "name": "Tasks",
     "exportAction": "Export",
     "checkAll": "Select all",
-    "addPassport": "Include passport details in the download?"
+    "addPassport": "Include passport details in the download?",
+    "chooseExport": "Select fields"
   },
   "contactPage": {
     "name": "Contacts"
@@ -404,6 +415,10 @@
       "positionDate": "Position date",
       "position": "Position",
       "title": "Position details"
+    },
+    "roles": {
+      "title": "Roles",
+      "attachRole": "Assign role"
     }
   },
   "departmentPage": {
@@ -472,7 +487,7 @@
       "passport_address": "Place of issue",
       "passport_file": "Passport copy (.pdf)",
       "inn": "TIN",
-      "sex_id": "Gender",
+      "sex": "Gender",
       "marital_status": "Marital status",
       "address": "Residential address",
       "experience_date": "Continuous work experience",
@@ -529,6 +544,7 @@
     "command": {
       "createTitle": "Create order",
       "updateTitle": "Edit order",
+      "lastVacation": "View last vacation details",
       "form": {
         "command_date": "Order date",
         "type": "Order type",
@@ -554,6 +570,15 @@
         "removeWorker": "Remove from list",
         "calculateTitle": "Calculated vacation details. If you believe they are incorrect, you can edit them.",
         "requiredVacationData": "Enter employee vacation details!",
+        "rest_day": "Remaining days",
+        "by_whom": "By whom",
+        "reason": "Reason",
+        "gift_type": "Gift type",
+        "gift": "Gift name",
+        "fine_type": "Penalty type",
+        "fine": "Penalty name",
+        "amount": "Amount",
+        "financeType": "Financial assistance type",
         "command_number": "Order number"
       }
     },
@@ -588,6 +613,7 @@
       "history": "View change history",
       "viewer": "Document reviewers",
       "files": "Document files",
+      "checkDocument": "Click to check document status",
       "status": {
         "Process": "In progress"
       }
@@ -1157,6 +1183,22 @@
       "title": "Birthdays",
       "today": "Today's birthdays",
       "tomorrow": "Tomorrow's birthdays"
+    },
+    "rewardCard": {
+      "reward": {
+        "title": "Incentives",
+        "typeOne": "Honorary Railway Worker title",
+        "typeTwo": "Other awards",
+        "shortTypeOne": "Honorary",
+        "shortTypeTwo": "Other"
+      },
+      "punishment": {
+        "title": "Disciplinary actions",
+        "typeOne": "Reprimand",
+        "typeTwo": "Other penalties",
+        "shortTypeOne": "Reprimand",
+        "shortTypeTwo": "Other"
+      }
     }
   },
   "applicationPage": {
@@ -1247,6 +1289,7 @@
   },
   "turnstile": {
     "title": "Turnstile",
+    "terminals": "Terminals",
     "buildingPage": {
       "title": "Buildings",
       "name": "Building name (UZ)",
@@ -1267,6 +1310,11 @@
     "organization": {
       "title": "Organizations",
       "terminal": "Terminal"
+    },
+    "terminalUser": {
+      "title": "Employees",
+      "create": "Assign employee",
+      "edit": "Edit employee"
     }
   },
   "medPage": {
@@ -1308,8 +1356,13 @@
       "position": "Positions"
     }
   },
+  "telegramPage": {
+    "name": "Telegram",
+    "chatId": "Chat ID"
+  },
   "aiConversation": {
     "canIHelpYouToday": "How can I help you today?",
+    "aiAssistant": "AI Assistant",
     "welcomeTo": "Welcome, {n}",
     "disclaimer": {
       "cardOne": "### 🧪 Test mode\n\nThis AI assistant is currently in **test mode**.  \nIts responses may not be fully developed and _could be inaccurate_.",
@@ -1336,6 +1389,72 @@
       "laborCodeDesc": "Relations, rights, and obligations between employees and employers based on the Labor Code of the Republic of Uzbekistan. Explanations and legal norms are provided based on the articles.",
       "empty": "Empty",
       "emptyDesc": "No information is available in this section yet. New services or useful content will be added soon."
+    }
+  },
+  "businessTrip": {
+    "name": "Business trip"
+  },
+  "documentArchive": {
+    "name": "Document archive",
+    "createTitle": "Add document file",
+    "updateTitle": "Edit document file",
+    "form": {
+      "title": "Title",
+      "description": "Comment",
+      "visibility_type": "Visibility type",
+      "document_date": "Created date",
+      "type": "Type",
+      "file": "Document file"
+    },
+    "type": {
+      "OWN": "This organization",
+      "OWN_AND_BELOW": "Subordinate organizations",
+      "ALL": "All"
+    }
+  },
+  "vacationSchedule": {
+    "name": "Vacation schedule",
+    "createTitle": "Assign employee",
+    "updateTitle": "Edit",
+    "requiredMonth": "Select the employee's vacation month",
+    "otherList": {
+      "btn": "Unassigned employees",
+      "name": "Employee list"
+    }
+  },
+  "workerRole": {
+    "name": "Users",
+    "from": {
+      "activeOrganization": "Active organization",
+      "role": "Roles"
+    }
+  },
+  "telegramPopup": {
+    "header": "Connect to our Telegram bot and enjoy the following benefits:",
+    "benefit": {
+      "header": "By subscribing to the bot",
+      "footer": "Everything in one place – just for you and on time!",
+      "1": "Document status – Approvals, rejections, or edits – stay informed!",
+      "2": "Congratulations – We’ll remember you on your birthday or work achievements!",
+      "3": "Important reminders – Vacations, meetings, and important information on time.",
+      "4": "Real-time notifications – Nothing will go unnoticed!",
+      "5": "Profile updates – Get instant notifications on Telegram about changes to your information!"
+    },
+    "subscribe": "Subscribe"
+  },
+  "punishment": {
+    "name": "Disciplinary actions",
+    "form": {
+      "fine": "Penalty"
+    }
+  },
+  "incentive": {
+    "name": "Incentives",
+    "form": {
+      "type": "Type",
+      "who": "By whom",
+      "reason": "Reason",
+      "giftType": "Date"
     }
   }
 }

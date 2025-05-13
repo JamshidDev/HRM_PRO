@@ -1,5 +1,6 @@
 <script setup>
 import {useAccountStore} from "@/store/modules/index.js"
+import i18n from "@/i18n/index.js"
 
 const store = useAccountStore()
 const visible = ref(false)
