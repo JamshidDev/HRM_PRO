@@ -1,7 +1,8 @@
 <script setup>
 import {Signature20Filled,ArrowSyncCircle16Filled,
   PanelLeftContract20Filled, DocumentEdit24Regular,
-  ClipboardCheckmark20Regular, CalendarCancel20Regular, Settings20Regular, DocumentArrowDown16Regular, DocumentHeaderArrowDown20Regular} from "@vicons/fluent"
+  ClipboardCheckmark20Regular, CalendarCancel20Regular,
+  Settings20Regular, DocumentArrowDown16Regular, DocumentPdf32Regular} from "@vicons/fluent"
 import {UIUser, UILottieReader} from "@/components/index.js"
 import generateFile from "@/assets/json/generateFile.json"
 import {usePdfViewerStore, useSignatureStore, useApplicationStore} from "@/store/modules/index.js"
@@ -218,15 +219,15 @@ onUnmounted(()=>{
               <div>
               </div>
               <div class="flex gap-3">
-                <n-button tag="a" target="_blank" :href="store.pdfUrl" download type="warning" secondary>
+                <n-button v-if="!showSignature" tag="a" target="_blank" :href="store.pdfUrl" download type="warning" secondary>
                   {{$t('content.download')}}
                   <template #icon>
                     <n-icon size="28">
-                      <DocumentHeaderArrowDown20Regular />
+                      <DocumentPdf32Regular />
                     </n-icon>
                   </template>
                 </n-button>
-                <n-button tag="a" target="_blank" :href="store?.docxUrl" download v-if="store?.docxUrl" type="success" secondary>
+                <n-button v-if="!showSignature && store?.docxUrl" tag="a" target="_blank" :href="store?.docxUrl" download type="success" secondary>
                   {{$t('content.download')}}
                   <template #icon>
                     <n-icon size="28">

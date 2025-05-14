@@ -20,20 +20,26 @@ const props = defineProps({
 
 
 const onSubmit = ()=>{
+
+
+  const formData = new FormData()
   if(componentStore.files.length>0){
     const file = componentStore.files[0].file
-    const formData = new FormData()
     formData.append('file', file)
-    formData.append('model', props.model)
-    formData.append('document_id', props.documentId)
-    componentStore._confirmFile(formData, ()=>{
-      componentStore.fileVisible = false
-      emits('onSuccess')
-    })
-
-  }else{
-    $Toast.warning(t('message.warning-data'))
   }
+  formData.append('model', props.model)
+  formData.append('document_id', props.documentId)
+  componentStore._confirmFile(formData, ()=>{
+    componentStore.fileVisible = false
+    emits('onSuccess')
+  })
+
+  // if(componentStore.files.length>0){
+  //
+  //
+  // }else{
+  //   $Toast.warning(t('message.warning-data'))
+  // }
 }
 
 </script>

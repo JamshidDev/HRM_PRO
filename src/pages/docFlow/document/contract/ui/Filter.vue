@@ -69,6 +69,7 @@ const beforeShow = (v)=>{
     :filter-count="filterCount"
     @show="beforeShow"
     @onClear="resetFilter"
+    :show-add-button="false"
 
 >
   <template #filterContent>
