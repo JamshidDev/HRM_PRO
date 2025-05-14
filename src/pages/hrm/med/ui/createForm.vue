@@ -116,6 +116,7 @@ onMounted(()=>{
                       :loading="componentStore.structureLoading"
                       @onSubmit="filterEvent"
                       :multiple="false"
+                      :auto-select="true"
                   />
                 </n-form-item>
                 <n-form-item class="w-full " :label="$t(`documentPage.form.worker`)" path="worker_position_id">

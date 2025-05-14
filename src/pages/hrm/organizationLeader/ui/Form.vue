@@ -71,6 +71,7 @@ onMounted(()=>{
             @updateCheck="(v)=>store.structureCheck=v"
             :loading="componentStore.structureLoading"
             :multiple="false"
+            :auto-select="true"
         />
       </n-form-item>
       <n-form-item v-if="store.visibleType" :label="$t(`content.staff`)" path="worker_position_id" rule-path="requiredNumberField">

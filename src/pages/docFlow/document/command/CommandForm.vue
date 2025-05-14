@@ -471,9 +471,7 @@ watchEffect(()=>{
 onMounted(()=>{
   componentStore._commandTypes()
   store.resetForm()
-  if(componentStore.structureList.length === 0){
-    componentStore._structures()
-  }
+  componentStore._structures()
 })
 </script>
 
@@ -542,6 +540,7 @@ onMounted(()=>{
                   @updateCheck="(v)=>store.structureCheck=v"
                   :loading="componentStore.structureLoading"
                   :multiple="false"
+                  :auto-select="true"
               />
             </n-form-item>
           </div>

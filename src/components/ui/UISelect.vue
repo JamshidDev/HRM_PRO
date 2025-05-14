@@ -7,6 +7,7 @@ const store = useComponentStore()
 const props = defineProps({
   multiple:{type:Boolean,default:true},
   loading:{type:Boolean,default:false},
+  autoSelect:{type:Boolean,default:false},
   modelV:{type:Array,default:[]},
   checkedVal:{type:Array,default:[]},
   options:{type:Array, default:[]},
@@ -33,6 +34,16 @@ const onSelect = (v)=>{
   }
   emits('updateModel',list)
 }
+
+watch(()=>props.options, (v)=>{
+  if(v.length===1 && (v[0]?.children? v[0].children?.length ===0 : true )){
+    if(props.autoSelect){
+      emits('updateModel',v)
+    }
+  }
+})
+
+
 
 const onSelectAll = (v)=>{
 
@@ -121,7 +132,7 @@ const inputVal = computed(()=>props.modelV.map((a)=>a.name).toString())
       class="h-[400px] md:max-w-auto  py-0! px-1 max-w-(--top-activator-width) md:max-w-none! md:w-[400px]"
   >
     <template #trigger>
-      <n-badge class="w-full" :value="modelV.length" type="info">
+      <n-badge class="w-full" :value="modelV.length" type="info" :offset="[-10,-4]">
         <n-input :loading="loading" class="ui__structure-input w-full"  type="text" :value="inputVal?.toString()" :placeholder="$t('content.choose')" />
       </n-badge>
     </template>

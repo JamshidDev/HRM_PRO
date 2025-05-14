@@ -418,10 +418,11 @@ export const useComponentStore = defineStore('componentStore', {
                 this.nationalityLoading = false
             })
         },
-        _structures(){
+        _structures(callback){
             this.structureLoading= true
             $ApiService.componentService._structure({params:this.structureParams}).then((res)=>{
                 this.structureList = res.data.data
+                callback?.()
             }).finally(()=>{
                 this.structureLoading= false
             })

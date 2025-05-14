@@ -161,7 +161,7 @@ onMounted(()=>{
   }
 
  if( props.workers.length === 0){
-   componentStore._workers()
+   // componentStore._workers()
  }else{
    store.resetForm()
    componentStore.workerList = props.workers
@@ -169,9 +169,7 @@ onMounted(()=>{
    store.organization = props.organization
    componentStore._adContractType(componentStore.workerList[0].contractTypeId)
  }
-  if(componentStore.structureList.length === 0){
-    componentStore._structures()
-  }
+  componentStore._structures()
 
 })
 
@@ -209,6 +207,7 @@ const showForm = computed(()=>store.payload.type===null? true : [1,8].includes(s
                     :loading="componentStore.structureLoading"
                     :disabled="organization.length>0"
                     :multiple="false"
+                    :auto-select="true"
                 />
               </n-form-item>
             </div>
