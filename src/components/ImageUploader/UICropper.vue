@@ -29,7 +29,6 @@ const uploadImage = (event)=>{
 }
 
 const onSave = ()=>{
-  console.log(cropperRef.value)
  let imgUrl = cropperRef.value.getResult().canvas.toDataURL()
   cropperRef.value.getResult().canvas.toBlob((blob) => {
     emits('onResult', {blob, imgUrl})
