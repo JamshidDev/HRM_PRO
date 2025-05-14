@@ -42,7 +42,7 @@ onMounted(() => {
                 </p>
               </div>
               <n-divider class="my-1!" />
-              <n-button-group size="small" class="p-2">
+              <n-button-group size="small" class="p-2 overflow-hidden">
                 <n-button :type="TopicUtils.getMediaProperty(TopicUtils.EXAM).type" tertiary>
                   <template #icon>
                     <n-icon :color="TopicUtils.getMediaProperty(TopicUtils.EXAM).color"

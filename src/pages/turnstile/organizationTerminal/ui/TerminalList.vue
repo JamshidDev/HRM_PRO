@@ -1,9 +1,12 @@
 <script setup>
-import {useComponentStore, useTurnstileOrganizationStore} from "@/store/modules/index.js";
+import {useComponentStore, useTurnstileOrganizationStore, useAccountStore} from "@/store/modules/index.js";
 import {Save16Regular} from "@vicons/fluent";
 
 const componentStore = useComponentStore()
 const store = useTurnstileOrganizationStore()
+const accStore = useAccountStore()
+
+
 const toggleItem = (v) => {
   if (store.payload.terminals.find(i => i === v)){
     store.payload.terminals = store.payload.terminals.filter(i => i !== v)
@@ -11,6 +14,12 @@ const toggleItem = (v) => {
     store.payload.terminals.push(v)
   }
 }
+
+const onSubmitTerminal = ()=>{
+  if(!accStore.checkAction(accStore.pn.turnstileOrganizationWrite)) return
+  store._create()
+}
+
 </script>
 <template>
   <n-spin :show="store.instanceLoading" class="h-full">
@@ -43,7 +52,7 @@ const toggleItem = (v) => {
             :disabled="store.payload.organization_id.length === 0"
             type="primary"
             icon-placement="right"
-            @click="store._create()"
+            @click="onSubmitTerminal"
             :loading="store.saveLoading"
         >
           <template #icon>

@@ -3,6 +3,8 @@ import ExamCard from './ExamCard.vue'
 import {useExamAttemptStore} from "@/store/modules/index.js";
 
 const examStore = useExamAttemptStore()
+const accStore = useAccountStore()
+
 const router = useRouter()
 defineProps({
   exams: Array
@@ -10,6 +12,7 @@ defineProps({
 
 
 const startAttempt = (v) => {
+  if(!accStore.checkAction(accStore.pn.examExamsWrite)) return
   examStore.elementId = v.id
   examStore._start_attempt()
 }

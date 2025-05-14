@@ -2,11 +2,14 @@
 import {UIDrawer, UIPageContent, UIPageFilter} from "@/components/index.js"
 import Table from "./ui/Table.vue"
 import Form from "./ui/Form.vue"
-import {useTurnstileBuildingStore} from "@/store/modules/index.js";
+import {useTurnstileBuildingStore, useAccountStore} from "@/store/modules/index.js";
 
 const store = useTurnstileBuildingStore()
+const accStore = useAccountStore()
+
 
 const onAdd = ()=>{
+  if(!accStore.checkAction(accStore.pn.turnstileBuildingWrite)) return
   store.resetForm()
   store.visibleType = true
   store.visible = true
@@ -18,6 +21,7 @@ const onSearch = ()=>{
 }
 
 onMounted(()=>{
+  if(!accStore.checkAction(accStore.pn.turnstileBuildingRead)) return
   store.params.page = 1
   store.params.per_page = 10
   store.params.search = null

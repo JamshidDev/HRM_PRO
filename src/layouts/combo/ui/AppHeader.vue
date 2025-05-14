@@ -45,7 +45,7 @@ const notification = ref(0)
   </div>
   <div class="flex justify-end items-center gap-4">
     <n-badge
-        class="! hidden md:flex"
+        class="!hidden md:flex"
         :value="notification" :max="15" type="info">
       <n-icon size="26" class="text-secondary cursor-pointer">
         <Alert20Regular/>

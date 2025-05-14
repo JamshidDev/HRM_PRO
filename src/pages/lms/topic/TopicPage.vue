@@ -6,8 +6,10 @@ import {useTopicStore} from "@/store/modules/index.js"
 import {useRoute} from "vue-router";
 
 const store = useTopicStore()
+const accStore = useAccountStore()
 
 const onAdd = () => {
+  if(!accStore.checkAction(accStore.pn.examTopicsWrite)) return
   store.resetForm()
   store.visibleType = true
   store.visible = true
@@ -19,6 +21,7 @@ const onSearch = () => {
 }
 
 onMounted(() => {
+  if(!accStore.checkAction(accStore.pn.examTopicsRead)) return
   store._index()
 })
 const route = useRoute()

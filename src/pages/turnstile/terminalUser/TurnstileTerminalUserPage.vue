@@ -2,9 +2,11 @@
 import {UIDrawer, UIPageContent, UIPageFilter} from "@/components/index.js"
 import Table from "./ui/Table.vue"
 import Form from "./ui/Form.vue"
-import {useTurnstileTerminalUserStore} from "@/store/modules/index.js";
+import {useAccountStore, useTurnstileTerminalUserStore} from "@/store/modules/index.js";
 
 const store = useTurnstileTerminalUserStore()
+const accStore = useAccountStore()
+
 
 const onAdd = ()=>{
   store.resetForm()
@@ -18,6 +20,7 @@ const onSearch = ()=>{
 }
 
 onMounted(()=>{
+  // if(!accStore.checkAction(accStore.pn.turn)) return
   store.params.page = 1
   store.params.per_page = 10
   store.params.search = null
@@ -34,7 +37,6 @@ onMounted(()=>{
     />
     <Table/>
     <UIDrawer
-        :width="550"
         :visible="store.visible"
         @update:visible="(v)=>store.visible = v"
         :title="store.visibleType? $t('turnstile.terminalUser.create') : $t('turnstile.terminalUser.edit')"

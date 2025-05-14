@@ -2,11 +2,13 @@
 import {UIDrawer, UIPageContent, UIPageFilter} from "@/components/index.js"
 import Table from "./ui/Table.vue"
 import Form from "./ui/Form.vue"
-import {useCategoryStore} from "@/store/modules/index.js"
+import {useAccountStore, useCategoryStore} from "@/store/modules/index.js"
 
 const store = useCategoryStore()
+const accStore = useAccountStore()
 
 const onAdd = ()=>{
+  if(!accStore.checkAction(accStore.pn.examCategoriesWrite)) return
   store.resetForm()
   store.visibleType = true
   store.visible = true
@@ -18,6 +20,7 @@ const onSearch = ()=>{
 }
 
 onMounted(()=>{
+  if(!accStore.checkAction(accStore.pn.examCategoriesRead)) return
   store.params.page = 1
   store._index()
 })
