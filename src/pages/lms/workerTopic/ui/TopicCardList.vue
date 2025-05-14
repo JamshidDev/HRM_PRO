@@ -5,7 +5,6 @@ import {TopicUtils} from "@/pages/lms/Utils/index.js";
 
 const store = useWorkerExamStore()
 
-
 const changePage = (v) => {
   store.params.page = v.page
   store.params.per_page = v.per_page

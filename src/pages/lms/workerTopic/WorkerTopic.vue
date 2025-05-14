@@ -12,6 +12,12 @@ const examStore = useExamAttemptStore()
 const accStore = useAccountStore()
 
 
+const onSearch = (v)=>{
+  if(!accStore.checkAction(accStore.pn.examExamsRead)) return
+  store.params.page = 1
+  store._index()
+}
+
 onMounted(()=>{
   if(!accStore.checkAction(accStore.pn.examExamsRead)) return
   examStore._config_localstorage()
@@ -42,7 +48,13 @@ onMounted(()=>{
     </n-grid>
     <div class="grow basis-auto overflow-hidden flex gap-3" :style="{gap: store?.selectedLesson ? '12px' : 0}">
       <div class="grow basis-auto flex flex-col gap-2">
-        <UIPageFilter :show-add-button="false" class="shrink-0"/>
+        <UIPageFilter 
+          v-model:search="store.params.search"
+          @on-search="onSearch"
+          :search-loading="store.loading"
+          :show-add-button="false" 
+          class="shrink-0"
+        />
         <div class="grow basis-auto bg-surface-section rounded-md">
           <TopicCardList/>
         </div>

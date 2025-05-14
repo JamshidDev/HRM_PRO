@@ -6,6 +6,7 @@ import Timesheet from "./ui/Timesheet.vue"
 import ConfirmationForm from './ui/ConfirmationForm.vue'
 
 import {
+  useAccountStore,
   useTimesheetConfirmStore,
   useTimesheetStore,
   useTimesheetWorkerStore
@@ -15,20 +16,24 @@ import {Copy20Regular} from "@vicons/fluent";
 const store = useTimesheetStore()
 const timesheetDepartmentStore = useTimesheetWorkerStore()
 const confirmationStore = useTimesheetConfirmStore()
+const accStore = useAccountStore()
 
 
 const onSearch = ()=>{
+  if(!accStore.checkAction(accStore.pn.hrTableWorkersRead)) return
   store.params.page = 1
   store._index()
 }
 
 onMounted(()=>{
+  if(!accStore.checkAction(accStore.pn.hrTableWorkersRead)) return
   store.params.page = 1
   store.params.search = null
   store._index()
 })
 
 const onAdd = ()=>{
+  if(!accStore.checkAction(accStore.pn.hrTableWorkersWrite)) return
   store.visibleType = true
   store.resetForm()
   store.visible = true

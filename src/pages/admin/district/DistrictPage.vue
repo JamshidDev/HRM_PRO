@@ -1,18 +1,22 @@
 <script setup>
 import {UIDrawer, UIPageContent, UIPageFilter} from "@/components/index.js";
 import Table from "./ui/Table.vue"
-import {useDistrictStore} from "@/store/modules/index.js";
+import {useDistrictStore, useAccountStore} from "@/store/modules/index.js";
 import createFrom from "./ui/createForm.vue"
 import i18n from "@/i18n/index.js"
 const {t} = i18n.global
+
+const accStore = useAccountStore()
 const store = useDistrictStore();
 
 const onSearch = (v)=>{
+  if(!accStore.checkAction(accStore.pn.citiesRead)) return
   store.params.page = 1
   store._index()
 }
 
 const onAdd = ()=>{
+  if(!accStore.checkAction(accStore.pn.citiesWrite)) return
   store.resetForm()
   store.visibleType = true
   store.visible = true
@@ -21,6 +25,7 @@ const onAdd = ()=>{
 
 
 onMounted(()=>{
+  if(!accStore.checkAction(accStore.pn.citiesRead)) return
   store._index()
   store._getRegionList()
 })
