@@ -50,6 +50,7 @@ const onSubmit = ()=>{
 
       <p class="col-span-12 text-textColor1 mt-6 mb-2 ">{{$t('content.confirmFileText')}}</p>
       <UIUpload
+          :accept="'.pdf'"
           :multiple="false"
           class="col-span-12 mb-4"
           v-model:files="componentStore.files"/>

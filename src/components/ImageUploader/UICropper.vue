@@ -22,25 +22,30 @@ const uploadImage = (event)=>{
     if (image.value.src) {
       URL.revokeObjectURL(image.value.src);
     }
-    const blob = URL.createObjectURL(files[0]);
-    image.value.src = blob
+    image.value.src = URL.createObjectURL(files[0])
     image.value.type =files[0].type
     visible.value = true;
   }
 }
 
 const onSave = ()=>{
-  visible.value = false
+  console.log(cropperRef.value)
  let imgUrl = cropperRef.value.getResult().canvas.toDataURL()
   cropperRef.value.getResult().canvas.toBlob((blob) => {
     emits('onResult', {blob, imgUrl})
   });
+  visible.value = false
 
 }
 
 const onClose = ()=>{
     visible.value = false
 }
+
+const onChange = (v)=>{
+}
+
+
 
 defineExpose({
   openFile,
@@ -56,9 +61,16 @@ defineExpose({
     class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
     style="width:600px; position: fixed; right:50%;top:50%"
 >
-  <cropper ref="cropperRef " class="cropper !max-h-[90vh] !max-w-[90vw] overflow-hidden" :stencil-props="{
-                    aspectRatio: 3/4,
-                }" :src="image.src" :autoZoom="true" />
+  <cropper
+      ref="cropperRef"
+      class="cropper !max-h-[90vh] !max-w-[90vw] overflow-hidden"
+      :stencil-props="{
+        aspectRatio: 3/4,
+      }"
+      :src="image.src"
+      :autoZoom="true"
+      @change="onChange"
+  />
   <template #footer>
     <div class="grid grid-cols-2 gap-x-2">
       <n-button ghost
