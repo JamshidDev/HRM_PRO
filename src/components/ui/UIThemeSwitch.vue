@@ -16,8 +16,8 @@ const store = useAppStore()
             class="relative"
   >
     <template #icon>
-      <n-icon class="text-primary mode-button !absolute" :class="{'mode-button-active': !store.themeSwitch}">
-        <WeatherMoon28Filled/>
+      <n-icon class="text-warning mode-button !absolute !rotate-[120deg]" :class="{'mode-button-active': !store.themeSwitch}">
+        <WeatherMoon28Filled/>  
       </n-icon>
       <n-icon class="text-warning mode-button !absolute" :class="{'mode-button-active': store.themeSwitch}">
         <WeatherSunny32Filled/>
