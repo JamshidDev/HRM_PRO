@@ -157,6 +157,8 @@ watch(()=>appStore.themeSwitch, (v)=>{
     eduOption2.value.title.textStyle.color = "#0f1114"
     eduOption3.value.title.textStyle.color = "#0f1114"
   }
+}, {
+  immediate: true
 })
 
 watch(()=> store.dashboard.eduCard, (newValue, oldValue)=>{
@@ -195,9 +197,11 @@ watch(()=> store.dashboard.eduCard, (newValue, oldValue)=>{
     }
   ]
   eduOption3.value.title.text = newValue[2].count
-
-
+}, {
+  immediate: true
 })
+
+
 </script>
 
 <template>

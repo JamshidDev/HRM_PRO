@@ -3,6 +3,12 @@ import VChart from "vue-echarts"
 import {useDashboardStore} from "@/store/modules/index.js"
 import i18n from "@/i18n/index.js"
 import Utils from "@/utils/Utils.js"
+import { use } from 'echarts/core'
+import { BarChart } from 'echarts/charts'
+import { TooltipComponent, GridComponent } from 'echarts/components'
+import { CanvasRenderer } from 'echarts/renderers'
+
+use([TooltipComponent, GridComponent, BarChart, CanvasRenderer])
 
 
 const store = useDashboardStore()
@@ -63,7 +69,6 @@ const option = ref({
 
 
 watch(()=> store.dashboard.contracts, (newValue, oldValue)=>{
-
   option.value.xAxis.data = newValue.map((v)=>{
     const key = v.month.split('-')[1]
     return Utils.getMonthNameByKey(key)
@@ -79,7 +84,10 @@ watch(()=> store.dashboard.contracts, (newValue, oldValue)=>{
     name:v.month,
   }))
 
+}, {
+  immediate: true
 })
+
 
 </script>
 

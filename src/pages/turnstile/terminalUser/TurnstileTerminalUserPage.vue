@@ -9,6 +9,7 @@ const accStore = useAccountStore()
 
 
 const onAdd = ()=>{
+  if(!accStore.checkAction(accStore.pn.turnstileWorkersWrite)) return
   store.resetForm()
   store.visibleType = true
   store.visible = true
@@ -20,7 +21,7 @@ const onSearch = ()=>{
 }
 
 onMounted(()=>{
-  // if(!accStore.checkAction(accStore.pn.turn)) return
+  if(!accStore.checkAction(accStore.pn.turnstileWorkersRead)) return
   store.params.page = 1
   store.params.per_page = 10
   store.params.search = null

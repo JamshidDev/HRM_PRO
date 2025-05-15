@@ -83,6 +83,8 @@ watch(()=> store.dashboard.vacations, (newValue, oldValue)=>{
     },
   }))
   vacationOption.value.yAxis.data =newValue.map((v)=>v.name)
+}, {
+  immediate: true
 })
 
 const totalCount = computed(()=>{

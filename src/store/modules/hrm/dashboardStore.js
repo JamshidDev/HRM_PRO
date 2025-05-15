@@ -26,7 +26,18 @@ export const useDashboardStore = defineStore('dashboardStore', {
             birthdays:null,
             vacations:[],
         },
-
+        detail:{
+            birthdays: [],
+            birthdaysLoading: false,
+            birthdayParams: {
+                page:1,
+                per_page:10,
+                search:null,
+                birth_day:null,
+                birth_month:null
+            },
+            birthdaysTotal: 0
+        }
 
     }),
     actions:{
@@ -53,7 +64,7 @@ export const useDashboardStore = defineStore('dashboardStore', {
                         },
                         data2:{
                             title:'dashboardPage.mainCard.woman',
-                            count:v.womans_count,
+                            count:v.woman_count,
                         },
                     },
                     {
@@ -209,6 +220,15 @@ export const useDashboardStore = defineStore('dashboardStore', {
 
             }).finally(()=>{
                 this.loading= false
+            })
+        },
+        _birthdayDetail(){
+            this.detail.birthdaysLoading= true
+            $ApiService.dashboardService._birthdayDetail({params:this.detail.birthdayParams}).then((res)=>{
+                this.detail.birthdays = res.data.data.data
+                this.detail.birthdaysTotal = res.data.data.total
+            }).finally(()=>{
+                this.detail.birthdaysLoading= false
             })
         },
         _show(){

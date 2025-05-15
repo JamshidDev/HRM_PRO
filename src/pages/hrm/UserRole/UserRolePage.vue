@@ -1,15 +1,19 @@
 <script setup>
 import {UIPageContent, UIPageFilter} from "@/components/index.js"
 import Table from "./ui/Table.vue"
-import {useWorkerProfileStore} from "@/store/modules/index.js"
+import {useAccountStore, useWorkerProfileStore} from "@/store/modules/index.js"
+
 const store = useWorkerProfileStore()
+const accStore = useAccountStore()
 
 const onSearch = ()=>{
+  if(!accStore.checkAction(accStore.pn.hrUsersRead)) return
   store.userRoleParams.page = 1
   store._userRole()
 }
 
 onMounted(()=>{
+  if(!accStore.checkAction(accStore.pn.hrUsersRead)) return
   store._userRole()
 })
 </script>

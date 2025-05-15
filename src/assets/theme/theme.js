@@ -1,17 +1,29 @@
+/**
+ * @typedef {import('naive-ui').GlobalThemeOverrides} GlobalThemeOverrides
+ */
+
+/**
+ * Customizing naive ui screen breakpoints to match with tailwind css breakpoints
+ */
+export const naiveBreakpoints = { 
+    xs: 0, 
+    s: 640, 
+    m: 768, 
+    l: 1024, 
+    xl: 1280, 
+    "2xl": 1568
+ }
 
 
 const getValueOfCssVariable = (variableName) => {
     const rootStyles = getComputedStyle(document.documentElement);
     return rootStyles.getPropertyValue(variableName).trim();
 }
-/**
- * @typedef {import('naive-ui').GlobalThemeOverrides} GlobalThemeOverrides
- */
 
 /** @returns {GlobalThemeOverrides} */
 export const customTheme = ()=>({
     common: {
-        
+
         primaryColor:getValueOfCssVariable('--primary-color'),
         primaryColorHover:getValueOfCssVariable('--primary-color'),
         primaryColorPressed:getValueOfCssVariable('--primary-color'),
