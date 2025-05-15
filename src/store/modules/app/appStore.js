@@ -17,6 +17,7 @@ dayjs.updateLocale('uz', {
         weekdaysShort: ['Yak', 'Dush', 'Sesh', 'Chor', 'Pay', 'Jum', 'Shan'],
     }
 )
+
 export const useAppStore = defineStore('appStore', {
     state:()=>({
         appConfig:{

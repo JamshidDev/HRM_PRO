@@ -117,7 +117,8 @@
     "preparingDocument": "Hujjat tayyorlanmoqda...",
     "later": "Keyinroq",
     "refresh": "Yangilash",
-    "confirmFileText": "Hujjatni tasdiqlash uchun uning imzolangan nusxasining pdf shaklidagi faylini yuklang."
+    "confirmFileText": "Hujjatni tasdiqlash uchun uning imzolangan nusxasining pdf shaklidagi faylini yuklang.",
+    "department": "Bo'lim"
   },
   "date": {
     "day": "Kun",

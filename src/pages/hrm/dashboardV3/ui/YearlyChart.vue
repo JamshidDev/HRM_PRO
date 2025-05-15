@@ -63,7 +63,6 @@ const option = ref({
 
 
 watch(()=> store.dashboard.contracts, (newValue, oldValue)=>{
-
   option.value.xAxis.data = newValue.map((v)=>{
     const key = v.month.split('-')[1]
     return Utils.getMonthNameByKey(key)
@@ -79,6 +78,12 @@ watch(()=> store.dashboard.contracts, (newValue, oldValue)=>{
     name:v.month,
   }))
 
+}, {
+  immediate: true
+})
+
+onMounted(()=>{
+  console.log("Yearly")
 })
 
 </script>

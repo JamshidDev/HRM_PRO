@@ -3,6 +3,7 @@ import {useDashboardStore} from "@/store/modules/index.js"
 import {BriefcaseMedical20Regular, ContactCardRibbon16Regular, PeopleToolbox20Regular} from "@vicons/fluent"
 
 const store = useDashboardStore()
+
 </script>
 
 <template>
