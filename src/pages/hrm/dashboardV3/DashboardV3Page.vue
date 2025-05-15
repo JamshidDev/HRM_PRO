@@ -18,7 +18,7 @@ const store = useDashboardStore()
 const accStore = useAccountStore()
 
 
-onMounted(() => {
+onBeforeMount(() => {
   if (!accStore.checkAction(accStore.pn.hrDashboardRead)) return
   store._index()
 })
@@ -78,15 +78,16 @@ const currentDetail = ref(null)
       <n-tab-pane :name="0" class="!p-0">
         <UIPageContent class="!pt-0 !mt-0">
           <n-spin :show="store.loading">
-            <n-grid x-gap="4 m:8 l:12" y-gap="4 m:8 l:12" cols="12" v-if="accStore.checkAction(accStore.pn.hrDashboardRead)" responsive="screen">
+            <n-grid x-gap="4 m:8 l:12" y-gap="4 m:8 l:12" cols="12" v-if="accStore.checkAction(accStore.pn.hrDashboardRead) && !store.loading" responsive="screen">
+
               <template v-for="(card, idx) in store.dashboard.mainCard" :key="idx">
                 <n-grid-item span="12 l:6 xl:3">
                   <HeaderCard :card="card"/>
                 </n-grid-item>
               </template>
               <n-grid-item v-for="(item, idx) in cards" :key="idx" :span="item.span">
-                <component v-if="item?.detail" :is="item.component" @detail="currentDetail = item" />
-                <component v-else :is="item.component" />
+                <component v-if="item?.detail"  :key="idx"  :is="item.component" @detail="currentDetail = item" />
+                <component v-else  :is="item.component" />
               </n-grid-item>
 
             </n-grid>

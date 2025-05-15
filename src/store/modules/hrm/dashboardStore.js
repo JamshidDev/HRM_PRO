@@ -33,6 +33,8 @@ export const useDashboardStore = defineStore('dashboardStore', {
                 page:1,
                 per_page:10,
                 search:null,
+                birth_day:null,
+                birth_month:null
             },
             birthdaysTotal: 0
         }

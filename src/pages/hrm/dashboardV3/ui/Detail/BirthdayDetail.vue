@@ -1,21 +1,38 @@
 <script setup>
 
-import Utils from "@/utils/Utils.js"
-import {Drag24Regular} from "@vicons/fluent"
-import {UIMenuButton, UIUser} from "@/components/index.js"
+import {UIMenuButton, UIUser, UIPagination, NoDataPicture, UIPageFilter} from "@/components/index.js"
 import {useDashboardStore} from "@/store/modules/index.js"
 
 const store = useDashboardStore()
 
 onMounted(()=>{
+  store.detail.birthdayParams.birth_day = new Date().getDate()
+  store.detail.birthdayParams.birth_month = new Date().getMonth() + 1
   store._birthdayDetail()
 })
 
+const changePage = (v)=>{
+  store.detail.birthdayParams.page = v.page
+  store.detail.birthdayParams.per_page = v.per_page
+  store._birthdayDetail()
+}
+
+const onSearch = (v)=>{
+  store.detail.birthdayParams.page = 1
+  store._birthdayDetail()
+}
 </script>
 
 <template>
   <n-spin :show="store.detail.birthdaysLoading">
+    <UIPageFilter
+        v-model:search="store.detail.birthdayParams.search"
+        @on-search="onSearch"
+        :search-loading="store.loading"
+        :show-add-button="false"
+    />
     <n-table
+        class="mt-4"
         :single-line="false"
         size="small"
     >
@@ -25,12 +42,6 @@ onMounted(()=>{
         <th class="text-center!">{{$t('content.worker')}}</th>
         <th class="min-w-[100px]">{{$t('content.organization')}}</th>
         <th class="min-w-[100px]">{{$t('content.department')}}</th>
-<!--        <th class="w-[100px]">{{$t('relativePage.form.relative')}}</th>-->
-<!--        <th class="min-w-[100px] w-[200px]">{{$t('relativePage.form.post_name')}}</th>-->
-<!--        <th class="min-w-[120px] w-[120px]">{{$t('relativePage.form.birthday')}}</th>-->
-<!--        <th class="min-w-[150px] w-[200px]">{{$t('relativePage.form.birthdayPlace')}}</th>-->
-<!--        <th class="min-w-[150px] w-[300px]">{{$t('createWorkerPage.form.address')}}</th>-->
-<!--        <th class="min-w-[40px] w-[40px]"></th>-->
       </tr>
       </thead>
       <tbody class="sort-target">
@@ -39,10 +50,10 @@ onMounted(()=>{
         <td>
           <UIUser
               :data="{
-                photo:item?.user?.photo,
-                lastName:item?.user?.last_name,
-                firstName:item?.user?.first_name,
-                middleName:item?.user?.middle_name,
+                photo:item?.worker?.photo,
+                lastName:item?.worker?.last_name,
+                firstName:item?.worker?.first_name,
+                middleName:item?.worker?.middle_name,
                 position:item?.position?.name
               }"
           />
@@ -74,5 +85,12 @@ onMounted(()=>{
       </tr>
       </tbody>
     </n-table>
+    <UIPagination
+        :page="store.params.page"
+        :per_page="store.params.size"
+        :total="store.detail.birthdaysTotal"
+        @change-page="changePage"
+    />
+    <NoDataPicture v-if="store.detail.birthdays.length===0 && !store.detail.birthdaysLoading" />
   </n-spin>
 </template>

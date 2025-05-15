@@ -197,11 +197,10 @@ watch(()=> store.dashboard.eduCard, (newValue, oldValue)=>{
     }
   ]
   eduOption3.value.title.text = newValue[2].count
+}, {
+  immediate: true
 })
 
-onMounted(()=>{
-  console.log(store.dashboard.eduCard)
-})
 
 </script>
 
