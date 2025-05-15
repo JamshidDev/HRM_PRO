@@ -3,13 +3,15 @@ import {UIDrawer, UIPageContent, UIPageFilter} from "@/components/index.js"
 import Tabs from "./ui/Tabs.vue"
 import ContractForm  from "./contractTemplate/ui/createForm.vue"
 import CommandForm from "./commandTemplate/ui/createForm.vue"
-import {useDocSettingStore, useComponentStore, useCommandTempStore} from "@/store/modules/index.js"
+import {useDocSettingStore, useComponentStore, useCommandTempStore, useAccountStore} from "@/store/modules/index.js"
+
 const store = useDocSettingStore()
 const compStore = useComponentStore()
 const commandStore = useCommandTempStore()
+const accStore = useAccountStore()
 
 const onAdd = ()=>{
-
+  if(!accStore.checkAction(accStore.pn.documentExamplesWrite)) return
   if(store.activeTab === 1){
     addContract()
   }else if(store.activeTab === 2){
@@ -32,11 +34,13 @@ const addCommand = ()=>{
 }
 
 const onSearch = ()=>{
+  if(!accStore.checkAction(accStore.pn.documentExamplesRead)) return
   store.params.page = 1
   store._index()
 }
 
 onMounted(()=>{
+  if(!accStore.checkAction(accStore.pn.documentExamplesRead)) return
   compStore._enumsAdmin()
   store._index()
 })

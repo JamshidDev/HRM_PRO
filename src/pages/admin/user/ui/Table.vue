@@ -1,13 +1,14 @@
 <script setup>
 import {NoDataPicture, UIActionButton, UIPagination, UIUser, UIMenuButton} from "@/components/index.js"
-import {useUserStore} from "@/store/modules/index.js"
+import {useUserStore, useAccountStore} from "@/store/modules/index.js"
 import Utils from "@/utils/Utils.js"
 
 const store = useUserStore()
-
+const accStore = useAccountStore()
 
 const onSelect = (v)=>{
     if(v.key === Utils.ActionTypes.attachment){
+      if(!accStore.checkAction(accStore.pn.usersWrite)) return
       store.elementId = v.data.uuid
       store._myRoles()
       store.visibleType = true

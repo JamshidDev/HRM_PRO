@@ -2,27 +2,30 @@
 import {UIDrawer, UIPageContent, UIPageFilter} from "@/components/index.js"
 import createForm from "./ui/createForm.vue"
 import Table from "./ui/Table.vue"
-import {useOrganizationStore, useComponentStore} from "@/store/modules/index.js"
+import {useOrganizationStore, useComponentStore, useAccountStore} from "@/store/modules/index.js"
 
 const store = useOrganizationStore()
 const componentStore = useComponentStore()
+const accStore = useAccountStore()
 
 const onSearch = ()=>{
+  if(!accStore.checkAction(accStore.pn.organizationsRead)) return
   store.params.page =1
   store._index()
 }
 
 const onAdd = ()=>{
+  if(!accStore.checkAction(accStore.pn.organizationsWrite)) return
   componentStore._organizationLevel()
   componentStore._organizations()
   store.resetForm()
   store.parentElement = null
   store.visibleType = true
   store.visible = true
-
 }
 
 onMounted(()=>{
+  if(!accStore.checkAction(accStore.pn.organizationsRead)) return
   store._index()
 })
 </script>

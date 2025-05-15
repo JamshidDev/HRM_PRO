@@ -16,6 +16,7 @@ const onAdd = ()=>{
 }
 
 const onSearch = ()=>{
+  if(!accStore.checkAction(accStore.pn.turnstileTerminalRead)) return
   store.params.page = 1
   store._index()
 }

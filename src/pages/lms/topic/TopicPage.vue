@@ -2,7 +2,7 @@
 import {UIDrawer, UIPageFilter} from "@/components/index.js"
 import Cards from "./ui/Cards.vue"
 import createFrom from "./ui/createForm.vue"
-import {useTopicStore} from "@/store/modules/index.js"
+import {useTopicStore, useAccountStore} from "@/store/modules/index.js"
 import {useRoute} from "vue-router";
 
 const store = useTopicStore()
@@ -16,6 +16,8 @@ const onAdd = () => {
 }
 
 const onSearch = () => {
+  if(!accStore.checkAction(accStore.pn.examTopicsRead)) return
+
   store.params.page = 1
   store._index()
 }

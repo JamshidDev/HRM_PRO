@@ -1,14 +1,16 @@
 <script setup>
-import {useComponentStore, useMedStore} from "@/store/modules/index.js"
+import {useComponentStore, useMedStore, useAccountStore} from "@/store/modules/index.js"
 import Table from "./ui/Table.vue"
 import createForm from "./ui/createForm.vue"
 import {UIDrawer, UIPageContent, UIPageFilter} from "@/components/index.js"
 
 const store = useMedStore()
 const componentStore = useComponentStore()
+const accStore = useAccountStore()
 
 
 const onAdd = ()=>{
+  if(!accStore.checkAction(accStore.pn.hrMedWrite)) return
   store.resetForm()
   componentStore.selectedWorker = null
   store.elementId = null
@@ -17,11 +19,13 @@ const onAdd = ()=>{
 }
 
 const onSearch = ()=>{
+  if(!accStore.checkAction(accStore.pn.hrMedRead)) return
   store.params.page = 1
   store._index()
 }
 
 onMounted(()=>{
+  if(!accStore.checkAction(accStore.pn.hrMedRead)) return
   store._index()
 })
 </script>
