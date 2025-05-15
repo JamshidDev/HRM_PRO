@@ -41,6 +41,7 @@ onMounted(()=>{
     <n-form-item
         class="col-span-12 md:col-span-6 lg:col-span-4"
         :label="$t(`createWorkerPage.form.lastName`)"
+        :rule-path="validationRules.rulesNames.requiredStringField"
         path="last_name">
       <n-input
           class="w-full"
@@ -52,6 +53,7 @@ onMounted(()=>{
     <n-form-item
         class="col-span-12 md:col-span-6 lg:col-span-4"
         :label="$t(`createWorkerPage.form.firstName`)"
+        :rule-path="validationRules.rulesNames.requiredStringField"
         path="first_name">
       <n-input
           class="w-full"
@@ -63,6 +65,7 @@ onMounted(()=>{
     <n-form-item
         class="col-span-12 md:col-span-6 lg:col-span-4"
         :label="$t(`createWorkerPage.form.middleName`)"
+        :rule-path="validationRules.rulesNames.requiredStringField"
         path="middle_name">
       <n-input
           class="w-full"
@@ -74,6 +77,7 @@ onMounted(()=>{
     <n-form-item
         class="col-span-12 md:col-span-6 lg:col-span-4"
         :label="$t(`createWorkerPage.form.country`)"
+        :rule-path="validationRules.rulesNames.requiredNumberField"
         path="country_id">
       <n-select
           v-model:value="store.payload.country_id"
@@ -89,6 +93,7 @@ onMounted(()=>{
     <n-form-item
         class="col-span-12 md:col-span-6 lg:col-span-4"
         :label="$t(`createWorkerPage.form.region`)"
+        :rule-path="validationRules.rulesNames.requiredNumberField"
         path="region_id">
       <n-select
           v-model:value="store.payload.region_id"
@@ -104,6 +109,7 @@ onMounted(()=>{
     <n-form-item
         class="col-span-12 md:col-span-6 lg:col-span-4"
         :label="$t(`createWorkerPage.form.city`)"
+        :rule-path="validationRules.rulesNames.requiredNumberField"
         path="city_id">
       <n-select
           :disabled="!store.payload.region_id"
@@ -119,6 +125,7 @@ onMounted(()=>{
     <n-form-item
         class="col-span-12 md:col-span-6 lg:col-span-4"
         :label="$t(`createWorkerPage.form.currentRegion`)"
+        :rule-path="validationRules.rulesNames.requiredNumberField"
         path="current_region_id">
       <n-select
           v-model:value="store.payload.current_region_id"
@@ -134,6 +141,7 @@ onMounted(()=>{
     <n-form-item
         class="col-span-12 md:col-span-6 lg:col-span-4"
         :label="$t(`createWorkerPage.form.currentCity`)"
+        :rule-path="validationRules.rulesNames.requiredNumberField"
         path="current_city_id">
       <n-select
           :disabled="!store.payload.current_region_id"
@@ -149,6 +157,7 @@ onMounted(()=>{
     <n-form-item
         class="col-span-12 md:col-span-6 lg:col-span-4"
         :label="$t(`createWorkerPage.form.birthday`)"
+        :rule-path="validationRules.rulesNames.requiredDateTimeField"
         path="birthday">
       <n-date-picker
           class="w-full"
@@ -161,6 +170,7 @@ onMounted(()=>{
     <n-form-item
         class="col-span-12 md:col-span-6 lg:col-span-4"
         :label="$t(`createWorkerPage.form.address`)"
+        :rule-path="validationRules.rulesNames.requiredStringField"
         path="address">
       <n-input
           class="w-full"
@@ -172,6 +182,7 @@ onMounted(()=>{
     <n-form-item
         class="col-span-12 md:col-span-6 lg:col-span-4"
         :label="$t(`createWorkerPage.form.nationality_id`)"
+        :rule-path="validationRules.rulesNames.requiredNumberField"
         path="nationality_id">
       <n-select
           v-model:value="store.payload.nationality_id"
@@ -186,6 +197,7 @@ onMounted(()=>{
     <n-form-item
         class="col-span-12 md:col-span-6 lg:col-span-4"
         :label="$t(`createWorkerPage.form.sex`)"
+        :rule-path="validationRules.rulesNames.requiredNumberField"
         path="sex">
       <n-select
           v-model:value="store.payload.sex"
@@ -199,6 +211,7 @@ onMounted(()=>{
     <n-form-item
         class="col-span-12 md:col-span-6 lg:col-span-4"
         :label="$t(`createWorkerPage.form.pin`)"
+        :rule-path="validationRules.rulesNames.requiredPinField"
         path="pin">
       <n-input
           class="w-full"
@@ -224,9 +237,11 @@ onMounted(()=>{
     <n-form-item
         class="col-span-12 md:col-span-6 lg:col-span-4"
         :label="$t(`createWorkerPage.form.marital_status`)"
+        :rule-path="validationRules.rulesNames.requiredNumberField"
         path="marital_status">
       <n-select
           v-model:value="store.payload.marital_status"
+          :rule-path="validationRules.rulesNames.requiredNumberField"
           filterable
           :placeholder="$t(`content.choose`)"
           :options="componentStore.maritalList"
@@ -238,6 +253,7 @@ onMounted(()=>{
     <n-form-item
         class="col-span-12 md:col-span-6 lg:col-span-4"
         :label="$t(`createWorkerPage.form.work_experience`)"
+        :rule-path="validationRules.rulesNames.requiredStringField"
         path="work_experience">
       <n-input
           class="w-full"
@@ -250,6 +266,7 @@ onMounted(()=>{
     <n-form-item
         class="col-span-12 md:col-span-6 lg:col-span-4"
         :label="$t(`createWorkerPage.form.experience_date`)"
+        :rule-path="validationRules.rulesNames.requiredDateTimeField"
         path="experience_date">
       <n-date-picker
           class="w-full"

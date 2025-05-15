@@ -82,7 +82,7 @@ const onDownload = (v)=>{
 
 <template>
   <n-spin :show="store.passportLoading">
-    <div class="grid grid-cols-12 mb-16 mt-16 gap-x-4 border border-dashed border-surface-line p-2 rounded-lg">
+    <div class="grid grid-cols-12 mb-16 mt-16 gap-x-4 border border-dashed border-warning p-2 rounded-lg">
       <div class="col-span-12 mb-4">
         <p class="text-textColor0 font-medium">{{$t(`createWorkerPage.form.passportTitle`)}}</p>
       </div>
@@ -191,7 +191,7 @@ const onDownload = (v)=>{
             {{$t(`content.download`)}}</n-button>
 
         </div>
-        <div class="col-span-12 border-t border-surface-line border-dashed mb-10"></div>
+        <div class="col-span-12 border-t border-warning border-dashed mb-10"></div>
       </template>
       <div v-if="store.passportList.length === 0" class="col-span-12 justify-center flex">
         <span class="text-gray-200">{{$t('workerProfile.personal.no-passport')}}</span>

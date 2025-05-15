@@ -85,7 +85,7 @@ onMounted(()=>{
     <n-form
         class="w-full"
         ref="formRef"
-        :rules="validationRules.personalForm"
+        :rules="validationRules.common"
         :model="store.payload"
     >
       <n-steps vertical>

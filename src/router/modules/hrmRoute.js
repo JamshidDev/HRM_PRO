@@ -25,6 +25,7 @@ import VacationSchedule from "@/pages/hrm/vacationSchedule/VacationSchedule.vue"
 import UserRolePage from "@/pages/hrm/UserRole/UserRolePage.vue"
 import PunishmentPage from "@/pages/hrm/punishment/PunishmentPage.vue"
 import IncentivePage from "@/pages/hrm/incentive/IncentivePage.vue"
+import ReportPage from "@/pages/hrm/report/ReportPage.vue"
 
 export default [
     {
@@ -138,5 +139,9 @@ export default [
     {
         path:Utils.routeHrmPathMaker(AppPaths.Incentive),
         component:IncentivePage,
+    },
+    {
+        path:Utils.routeHrmPathMaker(AppPaths.Report),
+        component:ReportPage,
     },
 ]

@@ -32,7 +32,7 @@ const onAdd = ()=>{
 </script>
 
 <template>
-<div class="w-full grid grid-cols-12 border border-dashed border-surface-line rounded-lg">
+<div class="w-full grid grid-cols-12 border border-dashed border-success rounded-lg">
     <div class="col-span-12 px-2 pt-2 flex justify-between items-center mb-1">
       <span class=" font-medium">{{$t('workerProfile.roles.title')}}</span>
       <n-button @click="onAdd">{{$t('workerProfile.roles.attachRole')}}

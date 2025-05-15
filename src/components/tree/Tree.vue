@@ -93,7 +93,7 @@ const isCheck =(id)=>{
 
 
 
-        <div @click="onSelect(item)" :style="{width:`calc(100% - ${deep>1? (deep*20) : 40}px)`}" class="leading-4 flex items-center truncate" >
+        <div @click="onSelect(item)"  class="leading-4 flex items-center truncate w-full" >
           <n-checkbox
               v-if="!$slots.title"
               :disabled="Boolean(item.group && !multiple)"

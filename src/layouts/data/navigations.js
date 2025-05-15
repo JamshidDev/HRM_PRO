@@ -32,7 +32,8 @@ import {
     CloudArchive20Filled,
     BookDatabase24Regular,
     RibbonStar24Filled,
-    PeopleToolbox20Filled
+    PeopleToolbox20Filled,
+    AppFolder20Filled,
 } from "@vicons/fluent"
 import {AppPaths} from "@/utils/index.js";
 import Utils from "@/utils/Utils.js"
@@ -148,13 +149,13 @@ export const navigations = [
                 color: 'bg-warning',
                 permission: appPermissions.hrMed,
             },
-            {
-                label: 'reportPage.name',
-                path: Utils.routeHrmPathMaker(AppPaths.Slice),
-                icon: PreviewLink16Filled,
-                color: 'bg-info',
-                permission: appPermissions.hrJobs,
-            },
+            // {
+            //     label: 'reportPage.name',
+            //     path: Utils.routeHrmPathMaker(AppPaths.Slice),
+            //     icon: PreviewLink16Filled,
+            //     color: 'bg-info',
+            //     permission: appPermissions.hrJobs,
+            // },
             {
                 label: 'exportPage.name',
                 path: Utils.routeHrmPathMaker(AppPaths.Export),
@@ -201,6 +202,13 @@ export const navigations = [
                 label: 'incentive.name',
                 path: Utils.routeHrmPathMaker(AppPaths.Incentive),
                 icon: RibbonStar24Filled,
+                color: 'bg-info',
+                permission: appPermissions.hrIncentives,
+            },
+            {
+                label: 'report.name',
+                path: Utils.routeHrmPathMaker(AppPaths.Report),
+                icon: AppFolder20Filled,
                 color: 'bg-info',
                 permission: appPermissions.hrIncentives,
             },

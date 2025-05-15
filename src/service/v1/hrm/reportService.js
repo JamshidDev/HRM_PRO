@@ -9,7 +9,7 @@ const _department=async (payload)=>{
 }
 
 const _position =async (payload)=>{
-    return await axios.get(`/v1/hr/report/department-positions`, {params:payload?.params})
+    return axios.get(`/v1/hr/report/department-positions`, {params:payload?.params})
 }
 
 const _worker =async (payload)=>{

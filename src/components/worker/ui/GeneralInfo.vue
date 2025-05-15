@@ -15,15 +15,15 @@ const store = useComponentStore()
           <span class="block p-1 leading-4 text-gray-400">{{$t('workerView.general.birthday')}}: <span class="font-semibold pl-2 text-gray-700">{{Utils.timeOnlyDate(store.workerPreview?.worker?.birthday)}}</span></span>
           <span class="block p-1 leading-4 text-gray-400">{{$t('workerView.general.birthdayRegion')}}: <span class="font-semibold pl-2 text-gray-700">{{store.workerPreview?.worker.region.name}}</span></span>
           <span class="block p-1 leading-4 text-gray-400">{{$t('workerView.general.birthdayCity')}}: <span class="font-semibold pl-2 text-gray-700"> {{store.workerPreview?.worker.city.name}}</span></span>
-          <span class="block p-1 leading-4 text-gray-400">{{$t('workerView.general.maritalStatus')}}: <span class="font-semibold pl-2 text-gray-700"></span></span>
 
         </div>
         <div class="col-span-12 md:col-span-6">
 
-          <span class="block p-1 leading-4 text-gray-400">{{$t('workerView.general.inn')}}: <span class="font-semibold pl-2 text-gray-700">{{store.workerPreview?.worker.inn}}</span></span>
-          <span class="block p-1 leading-4 text-gray-400">{{$t('workerView.general.nationality')}}: <span class="font-semibold pl-2 text-gray-700">{{store.workerPreview?.worker.nationality.name.name}}</span></span>
+<!--          <span class="block p-1 leading-4 text-gray-400">{{$t('workerView.general.inn')}}: <span class="font-semibold pl-2 text-gray-700">{{store.workerPreview?.worker.inn}}</span></span>-->
+          <span class="block p-1 leading-4 text-gray-400">{{$t('workerView.general.nationality')}}: <span class="font-semibold pl-2 text-gray-700">{{store.workerPreview?.worker.nationality.name}}</span></span>
           <span class="block p-1 leading-4 text-gray-400">{{$t('workerView.general.country')}}: <span class="font-semibold pl-2 text-gray-700">{{store.workerPreview?.worker.country.name}}</span></span>
           <span class="block p-1 leading-4 text-gray-400">{{$t('workerView.general.address')}}: <span class="font-semibold pl-2 text-gray-700">{{store.workerPreview?.worker.address}}</span></span>
+          <span class="block p-1 leading-4 text-gray-400">{{$t('workerView.general.maritalStatus')}}: <span class="font-semibold pl-2 text-gray-700">{{store.workerPreview?.worker.marital_status.name}}</span></span>
         </div>
       </div>
     </div>

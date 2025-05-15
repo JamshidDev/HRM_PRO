@@ -1,6 +1,7 @@
 <script setup>
 import {Delete28Regular, AddCircle28Regular} from "@vicons/fluent"
 import { v4 as uuidv4 } from 'uuid';
+import validationRules from "@/utils/validationRules.js"
 
 
 const emits = defineEmits(['onDelete'])
@@ -56,7 +57,7 @@ const onRemove = (v)=>{
           class="col-span-12 md:col-span-6 lg:col-span-4 mb-4"
       >
         <template v-if="idx === 0">
-          <n-form-item :show-label="false" path="phones">
+          <n-form-item :show-label="false" path="phones"    :rule-path="validationRules.rulesNames.requiredPhonesField">
             <n-input-group>
               <n-button
                   v-if="idx>0"

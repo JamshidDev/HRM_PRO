@@ -1463,5 +1463,27 @@
       "reason": "Sabab",
       "giftType": "Sana"
     }
+  },
+  "report": {
+    "name": "Hisobot",
+    "tooltip": {
+      "P": "Plan",
+      "F": "Fakt",
+      "V": "Vakant",
+      "S": "Sverx",
+      "R": "Raziryad"
+    },
+    "form": {
+      "position": "Lavozimlar",
+      "workers": "Xodimlar",
+      "vakant": "Vakant",
+      "sverx": "Sxerx",
+      "contingent": "Kontingent",
+      "worker": "Xodimlar soni",
+      "who": "Kim tomonidan",
+      "reason": "Sabab",
+      "byPosition": "Lavozimlar kesimida",
+      "byWorker": "Xodimlar kesimida"
+    }
   }
 }

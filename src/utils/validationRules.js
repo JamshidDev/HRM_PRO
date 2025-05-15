@@ -30,13 +30,38 @@ export default {
             required: true,
             trigger: [...triggerEvents, 'change'],
             message: t(`rules.requiredField`)
-        }
+        },
+        requiredPhonesField:[
+            {
+                validator: (rule, value) => {
+                    if (!value || value[0].phone.length <16) {
+                        return new Error( t(`rules.requiredField`));
+                    }
+                    return true;
+                },
+                trigger: [...triggerEvents, 'change'],
+            },
+        ],
+        requiredPinField:[
+            {
+                required: true,
+                message: t(`rules.requiredJSHSHIR`),
+                trigger: [...triggerEvents, 'change'],
+            },
+            {
+                min:17,
+                message: t(`rules.requiredMinLength`, {n:14}),
+                trigger: [...triggerEvents, 'change'],
+            },
+        ],
     },
     rulesNames:{
         requiredStringField:'requiredStringField',
         requiredDateTimeField:'requiredDateTimeField',
         requiredNumberField:'requiredNumberField',
         requiredMultiSelectField:'requiredMultiSelectField',
+        requiredPhonesField:'requiredPhonesField',
+        requiredPinField:'requiredPinField'
     },
     login:{
         phone:[
@@ -496,6 +521,11 @@ export default {
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
+        work_experience:{
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
         first_name:{
             required: true,
             message: t(`rules.requiredField`),
@@ -536,7 +566,7 @@ export default {
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
-        birthday: {
+        birthday:{
             validator: (rule, value) => {
                 const isValidDate = (text) => {
                     const date = new Date(text);
@@ -1398,7 +1428,7 @@ export default {
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
-        birthday: {
+        birthday:{
             validator: (rule, value) => {
                 const isValidDate = (text) => {
                     const date = new Date(text);

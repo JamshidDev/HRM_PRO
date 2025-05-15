@@ -2,6 +2,7 @@
 import {CloudArrowUp24Regular} from "@vicons/fluent"
 import {useCreateWorkerStore} from "@/store/modules/index.js"
 import {useAppSetting} from "@/utils/index.js"
+import validationRules from "@/utils/validationRules.js"
 const store = useCreateWorkerStore()
 const inputFileRef = ref(null)
 
@@ -21,6 +22,7 @@ const onUpload = async (v)=>{
     <n-form-item
         class="col-span-12 md:col-span-6 lg:col-span-4"
         :label="$t(`createWorkerPage.form.serial_number`)"
+        :rule-path="validationRules.rulesNames.requiredStringField"
         path="serial_number">
       <n-input
           class="w-full"
@@ -33,6 +35,7 @@ const onUpload = async (v)=>{
     <n-form-item
         class="col-span-12 md:col-span-6 lg:col-span-4"
         :label="$t(`createWorkerPage.form.from_date`)"
+        :rule-path="validationRules.rulesNames.requiredDateTimeField"
         path="from_date">
       <n-date-picker
           class="w-full"
@@ -45,6 +48,7 @@ const onUpload = async (v)=>{
     <n-form-item
         class="col-span-12 md:col-span-6 lg:col-span-4"
         :label="$t(`createWorkerPage.form.to_date`)"
+        :rule-path="validationRules.rulesNames.requiredDateTimeField"
         path="to_date">
       <n-date-picker
           class="w-full"
@@ -57,6 +61,7 @@ const onUpload = async (v)=>{
     <n-form-item
         class="col-span-12 md:col-span-6 lg:col-span-4"
         :label="$t(`createWorkerPage.form.passport_address`)"
+        :rule-path="validationRules.rulesNames.requiredStringField"
         path="address">
       <n-input
           class="w-full"

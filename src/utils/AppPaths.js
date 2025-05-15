@@ -79,6 +79,7 @@ export const AppPaths = {
     Telegram: "/telegram",
     Punishment: "/punishment",
     Incentive: "/incentive",
+    Report: "/report",
 }
 
 export const AppLayouts ={
