@@ -31,12 +31,32 @@ export const useDashboardStore = defineStore('dashboardStore', {
             birthdays: [],
             birthdaysLoading: false,
             birthdayParams: {
-                timestamp: new Date().getTime(),
+                birth_month: 1,
+                birth_day: 1,
                 page:1,
                 per_page:10,
                 search:null,
             },
-            birthdaysTotal: 0
+            birthdaysTotal: 0,
+            ages: [],
+            agesLoading: false,
+            ageParams: {
+                page:1,
+                per_page:10,
+                age_start: 1,
+                age_end: 100,
+                ages:[1,100],
+                sex: null
+            },
+            agesTotal: 0,
+            educationList: [],
+            educationListLoading: false,
+            educationListParams: {
+                page:1,
+                per_page:10,
+                type: null
+            },
+            educationListTotal: 0
         }
 
     }),
@@ -44,7 +64,6 @@ export const useDashboardStore = defineStore('dashboardStore', {
         _index(){
             this.loading= true
             const params = {}
-            // console.log(params)
             $ApiService.dashboardService._index({params}).then((res)=>{
                 const formatMonth = (date)=>{
                     let day = date.split('-')[1]
@@ -227,15 +246,37 @@ export const useDashboardStore = defineStore('dashboardStore', {
         _birthdayDetail(){
             this.detail.birthdaysLoading= true
             const params = this.appendParams({
-                ...this.detail.birthdayParams,
-                birth_day:new Date(this.detail.birthdayParams.timestamp).getDate(),
-                birth_month:new Date(this.detail.birthdayParams.timestamp).getMonth()+1
+                ...this.detail.birthdayParams
             })
             $ApiService.dashboardService._birthdayDetail({params}).then((res)=>{
                 this.detail.birthdays = res.data.data.data
                 this.detail.birthdaysTotal = res.data.data.total
             }).finally(()=>{
                 this.detail.birthdaysLoading= false
+            })
+        },
+        _ageDetail(){
+            this.detail.agesLoading= true
+            const params = this.appendParams({
+                ...this.detail.ageParams
+            })
+            $ApiService.dashboardService._ageDetail({params}).then((res)=>{
+                this.detail.ages = res.data.data.data
+                this.detail.agesTotal = res.data.data.total
+            }).finally(()=>{
+                this.detail.agesLoading= false
+            })
+        },
+        _educationDetail(){
+            this.detail.educationListLoading= true
+            const params = this.appendParams({
+                ...this.detail.educationListParams
+            })
+            $ApiService.dashboardService._ageDetail({params}).then((res)=>{
+                this.detail.educationList = res.data.data.data
+                this.detail.educationListTotal = res.data.data.total
+            }).finally(()=>{
+                this.detail.educationListLoading = false
             })
         },
         _show(){
@@ -288,7 +329,7 @@ export const useDashboardStore = defineStore('dashboardStore', {
         appendParams(params){
             return {
                 ...params,
-                organizations: this.params.organizations.map(i=>i.id).join(',')
+                organizations: this.params.organizations.length ? this.params.organizations.map(i=>i.id).join(',') : undefined
             }
         },
         openVisible(data){

@@ -1,5 +1,5 @@
 <script setup>
-
+import {Eye24Regular} from "@vicons/fluent"
 import VChart from "vue-echarts"
 import { use } from 'echarts/core'
 import { CanvasRenderer } from 'echarts/renderers'
@@ -25,6 +25,8 @@ use([
 
 const store = useDashboardStore()
 const {t} = i18n.global
+
+defineEmits(["detail"])
 
 const  ageOption = ref({
       title: {
@@ -100,8 +102,15 @@ watch(()=> store.dashboard.ageCard, (newValue, oldValue)=>{
 
 <template>
   <div class="w-full h-full border border-surface-line p-4 rounded-lg bg-surface-section relative hover-effect-card">
-    <span class="z-1 opacity-30 absolute top-0 right-0 w-[160px] h-full bg-no-repeat bg-[url(/effect/effect-card-1.svg)]" ></span>
-    <p class="font-semibold text-textColor2">{{$t('dashboardPage.age.title')}}</p>
+    <span class="z-0 opacity-30 absolute top-0 right-0 w-[160px] h-full bg-no-repeat bg-[url(/effect/effect-card-1.svg)]" ></span>
+    <div class="flex justify-between items-center">
+      <p class="font-semibold text-textColor2">{{$t('dashboardPage.age.title')}}</p>
+      <n-button @click="$emit('detail')" type="primary" tertiary circle>
+        <template #icon>
+          <Eye24Regular/>
+        </template>
+      </n-button>
+    </div>
     <div class="grid grid-cols-12">
       <div class="col-span-12 sm:col-span-6">
         <div class="text-textColor3"><span class="shadow-sm w-[30px] h-[18px] bg-primary inline-block rounded-sm mt-[80px] font-semibold mr-4"></span> {{$t('dashboardPage.age.age31')}}</div>
@@ -109,7 +118,7 @@ watch(()=> store.dashboard.ageCard, (newValue, oldValue)=>{
         <div class="text-textColor3"><span class="shadow-sm w-[30px] h-[18px] bg-[#E53835] inline-block rounded-sm font-semibold mt-2 mr-4" ></span> {{$t('dashboardPage.age.age46')}}</div>
       </div>
 
-      <div class="col-span-12 sm:col-span-6 h-[250px] relative z-2">
+      <div class="col-span-12 sm:col-span-6 h-[250px] relative">
         <v-chart autoresize :option="ageOption" />
       </div>
     </div>

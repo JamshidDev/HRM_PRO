@@ -118,7 +118,10 @@
     "later": "Keyinroq",
     "refresh": "Yangilash",
     "confirmFileText": "Hujjatni tasdiqlash uchun uning imzolangan nusxasining pdf shaklidagi faylini yuklang.",
-    "department": "Bo'lim"
+    "department": "Bo'lim",
+    "birthday": "Tug'ulgan sanasi",
+    "age": "Yosh",
+    "university": "Oliygoh"
   },
   "date": {
     "day": "Kun",
@@ -1156,7 +1159,8 @@
       "title": "Xodimlarning ma'lumoti bo'yicha",
       "higher": "Oliy ma'lumotli",
       "middle": "O'rta ma'lumotli",
-      "special": "O'rta maxsus"
+      "special": "O'rta maxsus",
+      "chooseEdu": "Ta'lim turini tanlang"
     },
     "password": {
       "title": "Xodimlarning pasport muddatlari",

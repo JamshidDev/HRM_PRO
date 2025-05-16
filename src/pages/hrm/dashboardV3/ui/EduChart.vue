@@ -2,7 +2,9 @@
 import VChart from "vue-echarts"
 import {useAppStore, useDashboardStore} from "@/store/modules/index.js"
 import i18n from "@/i18n/index.js"
+import {Eye24Regular} from "@vicons/fluent"
 
+defineEmits(["detail"])
 
 const store = useDashboardStore()
 const appStore = useAppStore()
@@ -207,8 +209,15 @@ watch(()=> store.dashboard.eduCard, (newValue, oldValue)=>{
 <template>
 
   <div class="w-full h-full flex flex-col border border-surface-line p-4 rounded-lg bg-surface-section relative hover-effect-card text-textColor2">
-    <span class="z-1 opacity-30 absolute top-0 right-0 w-[160px] h-full bg-no-repeat bg-[url(/effect/effect-card-1.svg)]" ></span>
-    <p class="font-semibold mb-4 text-textColor2">{{$t('dashboardPage.edu.title')}}</p>
+    <span class="z-0 opacity-30 absolute top-0 right-0 w-[160px] h-full bg-no-repeat bg-[url(/effect/effect-card-1.svg)]" ></span>
+    <div class="flex justify-between items-center">
+      <p class="font-semibold mb-4 text-textColor2">{{$t('dashboardPage.edu.title')}}</p>
+      <n-button @click="$emit('detail')" type="primary" tertiary circle>
+        <template #icon>
+          <Eye24Regular/>
+        </template>
+      </n-button>
+    </div>
     <div class="grid grid-cols-12 gap-2">
       <div class="col-span-12 flex md:col-span-6 items-center justify-around">
         <div class="w-[90px] h-[90px]">

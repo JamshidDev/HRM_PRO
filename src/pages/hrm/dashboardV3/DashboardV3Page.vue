@@ -13,6 +13,10 @@ import IncentiveChart from "@/pages/hrm/dashboardV3/ui/IncentiveChart.vue";
 import HeaderCard from "@/pages/hrm/dashboardV3/ui/HeaderCard.vue";
 
 import BirthdayDetail from "./ui/Detail/BirthdayDetail.vue"
+import AgeDetail from "./ui/Detail/AgeDetail.vue"
+import EducationDetail from "./ui/Detail/EducationDetail.vue"
+
+
 import Filter from './ui/Filter.vue'
 
 const store = useDashboardStore()
@@ -21,6 +25,7 @@ const accStore = useAccountStore()
 
 onBeforeMount(() => {
   if (!accStore.checkAction(accStore.pn.hrDashboardRead)) return
+  store.activeDetail=null
   store._index()
 })
 
@@ -28,11 +33,15 @@ onBeforeMount(() => {
 const cards = [
   {
     component: markRaw(AgeChart),
-    span: "12 l:6 xl:4"
+    span: "12 l:6 xl:4",
+    title: 'dashboardPage.age.title',
+    detail: markRaw(AgeDetail),
   },
   {
     component: markRaw(EduChart),
-    span: "12 l:6 xl:4"
+    span: "12 l:6 xl:4",
+    title: 'dashboardPage.edu.title',
+    detail: markRaw(EducationDetail),
   },
   {
     component: markRaw(IncentiveChart),
