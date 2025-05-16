@@ -37,7 +37,7 @@ export const useComponentStore = defineStore('componentStore', {
         departmentList:[],
         depParams:{
             page:1,
-            per_page:50,
+            per_page:10000,
             search:null,
             organizations:null,
         },
@@ -221,6 +221,8 @@ export const useComponentStore = defineStore('componentStore', {
         fileVisible:false,
         fileLoading:false,
         files:[],
+
+        universityTypes:[],
     }),
     actions:{
         _confirmFile(data, callback){
@@ -287,6 +289,10 @@ export const useComponentStore = defineStore('componentStore', {
                 this.holidayTypes=res.data.data?.holiday_types
                 this.organizationServiceList = res.data.data?.organization_services
                 this.confirmationStatusList = res.data.data?.confirmation_statuses
+                this.universityTypes = res.data.data?.university_types
+                this.educationTypes = res.data.data?.education_types
+
+
             }).finally(()=>{
                 this.enumAdminLoading= false
             })

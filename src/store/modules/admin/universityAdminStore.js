@@ -11,18 +11,21 @@ export const useUniversityAdminStore = defineStore('universityAdminStore', {
         visibleType:true,
         elementId:null,
         totalItems:0,
-        allPermissionList:[],
         payload:{
             name:null,
             name_ru:null,
             region_id:null,
+            city_id:null,
             education:null,
+            type:null,
         },
         params:{
             page:1,
             per_page:10,
             search:null,
         },
+        districtList:[],
+        districtLoading:false,
     }),
     actions:{
         _index(){
@@ -43,6 +46,15 @@ export const useUniversityAdminStore = defineStore('universityAdminStore', {
                 
             }).finally(()=>{
                 this.saveLoading = false
+            })
+
+        },
+        _getDistrict(){
+            this.districtLoading = true
+            $ApiService.districtService._index({params:{region_id:this.payload.region_id, page:1, per_page:10000}}).then((res)=>{
+                this.districtList = res.data.data.data
+            }).finally(()=>{
+                this.districtLoading = false
             })
 
         },
@@ -75,6 +87,8 @@ export const useUniversityAdminStore = defineStore('universityAdminStore', {
             this.payload.name_ru = null
             this.payload.region_id = null
             this.payload.education = null
+            this.payload.city_id = null
+            this.payload.type = null
         }
 
     }

@@ -14,6 +14,8 @@ export const useLanguageAdminStore = defineStore('languageAdminStore', {
         allPermissionList:[],
         payload:{
             name:null,
+            name_ru:null,
+            name_en:null,
         },
         params:{
             page:1,
@@ -49,8 +51,8 @@ export const useLanguageAdminStore = defineStore('languageAdminStore', {
         },
         _create(){
             this.saveLoading = true
-            let data = {
-                name:this.payload.name,
+            const data =  {
+                ...this.payload,
             }
             $ApiService.languageServiceAdmin._create({data}).then((res)=>{
                 this.visible = false

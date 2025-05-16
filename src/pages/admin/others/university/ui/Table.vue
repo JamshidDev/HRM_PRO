@@ -11,17 +11,23 @@ const onEdit = (v)=>{
   store.visibleType = false
   store.elementId = v.id
   store.payload.name = v.name
+  store.payload.type = v.type?.id
   store.payload.name_ru = v.name_ru
-  store.payload.region_id = v.region.id
+  store.payload.region_id = v.city.region.id
+  store.payload.city_id = v.city.id
   store.payload.education = v.education.id
   store.visible = true
 
-  if(compStore.educationList.length ===0){
-    compStore._enums()
-  }
 
   if(compStore.regionList.length === 0){
     compStore._regions()
+  }
+  if(store.districtList.length === 0){
+    store._getDistrict()
+  }
+
+  if(compStore.universityTypes.length === 0){
+    compStore._enumsAdmin()
   }
 }
 
@@ -52,6 +58,7 @@ const changePage = (v)=>{
           <th class="w-[200px]">{{$t('othersPage.university.form.name_ru')}}</th>
           <th class="w-[200px]">{{$t('othersPage.university.form.region_id')}}</th>
           <th class="min-[200px]">{{$t('othersPage.university.form.education')}}</th>
+          <th class="min-[200px]">{{$t('othersPage.university.form.type')}}</th>
           <th class="min-w-[90px] w-[90px]">{{$t('content.action')}}</th>
         </tr>
         </thead>
@@ -60,8 +67,9 @@ const changePage = (v)=>{
           <td><span class="text-center text-[12px] text-gray-600 block">{{ (store.params.page - 1) * store.params.per_page + idx + 1 }}</span></td>
           <td>{{item.name}}</td>
           <td>{{item.name_ru}}</td>
-          <td>{{item?.region?.name}}</td>
+          <td>{{item?.city.region?.name}}</td>
           <td>{{item?.education.name}}</td>
+          <td>{{item?.type.name}}</td>
           <td>
             <UIActionButton
                 :data="item"
@@ -74,7 +82,6 @@ const changePage = (v)=>{
         </tbody>
       </n-table>
       <UIPagination
-          v-show="store.list.length>10"
           :page="store.params.page"
           :per_page="store.params.size"
           :total="store.totalItems"

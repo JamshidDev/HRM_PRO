@@ -28,11 +28,25 @@ const onSubmit = ()=>{
       :model="store.payload"
   >
     <div style="min-height:calc(100vh - 120px)">
-      <n-form-item :label="$t(`othersPage.language.form.name`)" path="name">
+      <n-form-item :label="$t(`othersPage.language.form.nameUz`)" path="name">
         <n-input
             type="text"
             :placeholder="$t(`content.enterField`)"
             v-model:value="store.payload.name"
+        />
+      </n-form-item>
+      <n-form-item :label="$t(`othersPage.language.form.nameRu`)" path="name_ru">
+        <n-input
+            type="text"
+            :placeholder="$t(`content.enterField`)"
+            v-model:value="store.payload.name_ru"
+        />
+      </n-form-item>
+      <n-form-item :label="$t(`othersPage.language.form.nameEn`)" path="name_en">
+        <n-input
+            type="text"
+            :placeholder="$t(`content.enterField`)"
+            v-model:value="store.payload.name_en"
         />
       </n-form-item>
     </div>
