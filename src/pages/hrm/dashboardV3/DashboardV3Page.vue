@@ -45,7 +45,7 @@ const cards = ref([
     component: markRaw(BirthdayCard),
     span: "12 l:6 xl:4",
     title: 'dashboardPage.birthday.title',
-    detail: markRaw(BirthdayDetail)
+    // detail: markRaw(BirthdayDetail)
   },
   {
     component: markRaw(VacationChart),
