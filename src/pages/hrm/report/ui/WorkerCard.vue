@@ -14,6 +14,7 @@ const store = useReport2Store()
 
 <template>
   <div
+      @click.stop
       class="w-full min-h-[32px] relative py-2 pl-2 border-l-[3px] border-warning"
       :class="[bgFull? 'bg-warning/20' : 'bg-warning/5']"
   >
@@ -24,7 +25,7 @@ const store = useReport2Store()
       </div>
 
       <template v-for="(item, idx) in store.workerList" :key="idx">
-        <div class="flex border-b border-warning border-dashed py-2">
+        <div class="flex border-b border-warning border-dashed py-2 hover:bg-warning/10">
           <div class="w-[calc(100%-200px)]">
             <span class="inline-block pr-4 font-semibold">{{idx + 1}}</span>
             <span>{{Utils.combineFullName(item.worker)}}</span>

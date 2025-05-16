@@ -10,12 +10,12 @@ const list = [
   {
     tooltip:'report.tooltip.P',
     value:'P',
-    type:'primary',
+    type:'default',
   },
   {
     tooltip:'report.tooltip.F',
     value:'F',
-    type:'warning',
+    type:'default',
   },
   {
     tooltip:'report.tooltip.V',
@@ -33,7 +33,7 @@ const list2 = [
   {
     tooltip:'report.tooltip.P',
     value:'P',
-    type:'primary',
+    type:'default',
   },
   {
     tooltip:'report.tooltip.R',
@@ -51,7 +51,7 @@ const list2 = [
           trigger="hover"
       >
         <template #trigger>
-          <n-button :type="item.type" circle size="tiny" secondary>{{item.value}}</n-button>
+          <n-button :type="item.type" round size="tiny" secondary>{{item.value}}</n-button>
         </template>
         <span>{{$t(item.tooltip)}}</span>
       </n-tooltip>
@@ -64,7 +64,7 @@ const list2 = [
           trigger="hover"
       >
         <template #trigger>
-          <n-button :type="item.type" circle size="tiny" secondary>{{item.value}}</n-button>
+          <n-button :type="item.type" round size="tiny" secondary>{{item.value}}</n-button>
         </template>
         <span>{{$t(item.tooltip)}}</span>
       </n-tooltip>

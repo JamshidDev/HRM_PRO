@@ -15,12 +15,15 @@ defineProps({
 </script>
 
 <template>
-  <div class="grid grid-cols-12 border-b border-dashed border-surface-line py-1 w-full">
+  <div
+      @click="store.onChangeRadio(data)"
+      :class="[!(data.id === store.selectedDepId) && 'hover:bg-surface/3 rounded']"
+      class="grid grid-cols-12 border-b border-dashed border-surface-line py-1 w-full"
+  >
     <div class="col-span-12 flex items-center">
       <div class="flex w-[calc(100%-200px)]">
         <n-radio
             :checked="data.id === store.selectedDepId"
-            @click="store.onChangeRadio(data)"
         >
           {{data.name}}
         </n-radio>

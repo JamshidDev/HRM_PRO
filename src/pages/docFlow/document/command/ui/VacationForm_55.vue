@@ -14,13 +14,13 @@ const onRemoveWorker = (id)=>{
 }
 
 const onSubmit = (mainData)=>{
-  const checkForm = store.vacations55.every((v)=>(v.from && v.to && v.from_time && v.to_time))
+  const checkForm = store.vacations55.every((v)=>(v.from && v.to))
   if(checkForm){
     const data = store.vacations55.map(v=>({
       id:v.id,
       from:Utils.timeToZone(v.from),
-      from_time:Utils.timeOnlyHour(v.from_time),
-      to_time:Utils.timeOnlyHour(v.to_time),
+      from_time:Utils.timeOnlyHour(v.from_time) || undefined,
+      to_time:Utils.timeOnlyHour(v.to_time) || undefined,
       to:Utils.timeToZone(v.to),
     }))
 

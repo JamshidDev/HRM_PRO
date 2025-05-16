@@ -7,7 +7,10 @@ import IndicatorTitle from "@/pages/hrm/report/ui/IndicatorTitle.vue"
 </script>
 
 <template>
-  <div class="w-full min-h-[32px] relative py-2 pl-2 border-l-[3px] border-success bg-success/5">
+  <div
+      @click.stop
+      class="w-full min-h-[32px] relative py-2 pl-2 border-l-[3px] border-success bg-success/5"
+  >
     <n-spin size="small" class="h-full" :show="store.positionLoading">
       <div class="flex justify-between px-2">
         <span class="text-success mb-2 font-semibold"> {{$t('report.form.position')}}</span>
@@ -15,12 +18,15 @@ import IndicatorTitle from "@/pages/hrm/report/ui/IndicatorTitle.vue"
       </div>
 
       <template v-for="(item, idx) in store.positionList" :key="idx">
-        <div class="flex border-b border-success border-dashed py-2">
+        <div
+            @click.stop="store.onChangePosRadio(item)"
+            :class="[!(item?.id === store.selectedPosId) && 'hover:bg-success/10']"
+            class="flex border-b border-success border-dashed py-2"
+        >
           <div class="w-[calc(100%-200px)]">
             <span class="inline-block pr-4 font-semibold">{{idx + 1}}</span>
             <n-radio
                 :checked="item?.id === store.selectedPosId"
-                @click="store.onChangePosRadio(item)"
             >
               {{item?.position?.name}}
             </n-radio>
