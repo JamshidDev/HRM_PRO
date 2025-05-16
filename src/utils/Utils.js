@@ -73,7 +73,16 @@ const timeOnlyMonth = (time)=>{
     return time? dayjs(time).format('M') : null
 }
 
+const safeBase64Encode = (str)=>{
+    const utf8Bytes = new TextEncoder().encode(str);
+    let binary = '';
+    for (let byte of utf8Bytes) {
+        binary += String.fromCharCode(byte);
+    }
+}
+
 const base64UrlEncode = (obj)=>{
+
     return btoa(JSON.stringify(obj))
         .replace(/=+$/, '')
         .replace(/\+/g, '-')
@@ -85,6 +94,7 @@ const generateJwtToken =(payload,secret)=>{
         alg: 'HS256',
         typ: 'JWT',
     }
+
     const encodedHeader = base64UrlEncode(header);
     const encodedPayload = base64UrlEncode(payload);
     const signature = CryptoJS.HmacSHA256(`${encodedHeader}.${encodedPayload}`, secret);
@@ -444,8 +454,6 @@ const blobFileDownload = (file, contentType, fileName)=>{
 const checkRequestBody = (body)=>{
     if(body){
         for(let key in body){
-            console.log(body[key])
-            console.log(body[key]?.length)
             if(body[key] === '' || body[key] === null ||  body[key]?.length === 0 ){
                 delete body[key]
             }
@@ -554,5 +562,6 @@ export default {
     checkRequestBody,
     formatPhoneWithMask,
     documentStatus,
+    safeBase64Encode,
 
 }

@@ -3,14 +3,17 @@ import {useLanguageAdminStore} from "@/store/modules/admin/languageAdminStore.js
 import LanguagePage from "../languages/LanguagePage.vue"
 import UniversityPage from "../university/UniversityPage.vue"
 import SpecialtyPage from "../speciality/SpecialityPage.vue"
+import {useSpecialityStore, useUniversityAdminStore} from "@/store/modules/index.js"
 
 const store = useLanguageAdminStore()
+const universityStore = useUniversityAdminStore()
+const specialtyStore = useSpecialityStore()
 
 const onChange = ()=>{
       if(store.activeTab === 3){
-        if(store.list.length === 0){
-          store._index()
-        }
+        store.params.search =universityStore.params.search
+      }else if(store.activeTab === 2){
+        specialtyStore.params.search =universityStore.params.search
       }
 }
 </script>
