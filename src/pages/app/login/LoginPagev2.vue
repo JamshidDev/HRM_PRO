@@ -109,6 +109,7 @@ onMounted(()=>{
                   type="text"
                   v-mask="'+998(##)#######'"
                   :placeholder="'+998'"
+                  @paste="store.phone=''"
                   v-model:value="store.phone"
               >
                 <template #prefix>
