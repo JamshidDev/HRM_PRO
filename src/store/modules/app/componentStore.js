@@ -37,7 +37,7 @@ export const useComponentStore = defineStore('componentStore', {
         departmentList:[],
         depParams:{
             page:1,
-            per_page:10000,
+            per_page:50,
             search:null,
             organizations:null,
         },
@@ -334,7 +334,7 @@ export const useComponentStore = defineStore('componentStore', {
             }
             $ApiService.componentService._departmentByOrganizations({params}).then((res)=>{
                 this.totalDepartment = res.data.data.total
-                let data = res.data.data.data
+                let data = res.data.data.data.map((v)=>({...v, position:v?.organization?.name}))
                 if(infinity){
                     this.departmentList =[...this.departmentList, ...data]
                 }else{
@@ -353,7 +353,7 @@ export const useComponentStore = defineStore('componentStore', {
             const currentTarget = e.currentTarget;
             if(currentTarget.scrollTop + currentTarget.offsetHeight >= currentTarget.scrollHeight && !this.departmentLoading && this.totalDepartment>this.departmentList.length){
                 this.depParams.page +=1
-                this._workers(true)
+                this._departments(true)
             }
         },
 
@@ -643,7 +643,7 @@ export const useComponentStore = defineStore('componentStore', {
                 .then((res)=>{
                     this.directorList = res.data.data.map((v)=>({
                         ...v,
-                        fullName:Utils.combineFullName(v.worker)
+                        name:Utils.combineFullName(v.worker)
                     }))
                     callback?.(this.directorList)
 

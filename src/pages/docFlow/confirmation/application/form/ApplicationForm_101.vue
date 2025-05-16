@@ -164,7 +164,7 @@ onMounted(()=>{
             :render-label="renderLabel2"
             :render-tag="renderValue2"
             @update:value="changePosition"
-            label-field="id"
+            label-field="name"
             value-field="id"
         />
       </n-form-item>

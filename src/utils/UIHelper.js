@@ -42,8 +42,8 @@ const selectLabel = (option)=>{
             {
                 class:'flex gap-2 my-1 items-center'
             },[h('div',{ class:'flex flex-col'}, [
-                    h('div',{ class:'text-xs font-medium text-gray-500'},`${option.fullName}`),
-                    h('div',{ class:'text-xs text-gray-400'},option.position),
+                    h('div',{ class:'text-xs font-medium text-textColor2'},`${option.name}`),
+                    h('div',{ class:'text-xs text-textColor3'},option.position),
                 ])
             ]
         ),
@@ -56,7 +56,7 @@ const selectValue = ({option})=>{
             'div',
             {
                 class:'flex gap-2 my-1 items-center'
-            },`${option?.fullName}`),
+            },`${option?.name}`),
     ];
 }
 

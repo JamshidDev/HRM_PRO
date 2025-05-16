@@ -409,6 +409,7 @@
       "positionGroup": "Lavozim guruhi",
       "positionRank": "Lavozim razryadi",
       "positionRate": "Lavozim stavkasi",
+      "addPassport": "Passport nusxasini qo'shish",
       "no-passport": "Passport ma'lumotlar yuklanmagan!"
     },
     "position": {
@@ -1480,6 +1481,7 @@
     },
     "form": {
       "position": "Lavozimlar",
+      "optimization": "Optimallashtirish",
       "workers": "Xodimlar",
       "vakant": "Vakant",
       "sverx": "Sxerx",

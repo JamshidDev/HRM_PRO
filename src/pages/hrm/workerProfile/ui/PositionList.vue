@@ -2,7 +2,7 @@
 import {Edit20Regular} from "@vicons/fluent"
 import {useComponentStore, useWorkerProfileStore} from "@/store/modules/index.js"
 import Utils from "../../../../utils/Utils.js"
-import {UIModal} from "@/components/index.js"
+import {UIBadge, UIModal} from "@/components/index.js"
 import AdContractForm from "@/pages/docFlow/document/adContract/adContractForm.vue"
 import CommandForm from "@/pages/docFlow/document/command/CommandForm.vue"
 import editFrom from "./editFrom.vue"
@@ -71,16 +71,16 @@ const onEdit = (v)=>{
 <template>
 <div>
 
-  <div v-for="(item, idx) in store.positionList" :key="idx" class="grid grid-cols-12 w-full border border-dashed border-danger rounded-lg mb-4">
+  <div v-for="(item, idx) in store.positionList" :key="idx" class="grid p-4 grid-cols-12 w-full border border-dashed rounded-2xl mb-4">
     <div class="col-span-12 p-2">
       <span class=" font-medium block">{{$t('workerProfile.position.title')}}</span>
     </div>
     <div class="col-span-12 md:col-span-9 flex-col flex">
       <div class="grid grid-cols-12">
-        <div class="col-span-12 p-2 border-b  md:border-r md:border-t border-dashed border-danger">
+        <div class="col-span-12 p-2 border-b  md:border-r md:border-t border-dashed border-surface-line">
           <div class="grid grid-cols-12">
             <div class="col-span-12 md:col-span-6">
-              <span class="font-semibold">{{$t('workerProfile.position.contractType')}}</span> -  <span class="font-medium text-danger mr-4">{{item.contract.type.name}}</span>
+              <span class="font-semibold">{{$t('workerProfile.position.contractType')}}</span> -  <n-button type="warning" dashed ghost size="tiny">{{item.contract.type.name}}</n-button>
             </div>
 
             <div class="col-span-12">
@@ -89,30 +89,30 @@ const onEdit = (v)=>{
           </div>
 
         </div>
-        <div class="col-span-12 md:col-span-6 border-b md:border-r border-dashed border-danger p-2">
+        <div class="col-span-12 md:col-span-6 border-b md:border-r border-dashed border-surface-line p-2">
           <span class="font-semibold">{{$t('workerProfile.position.contractToDate')}}</span> -  <span class="font-medium mr-4">{{Utils.timeOnlyDate(item.contract.contract_to_date)}}</span>
         </div>
-        <div class="col-span-12 md:col-span-6 border-b md:border-r border-dashed border-danger p-2">
+        <div class="col-span-12 md:col-span-6 border-b md:border-r border-dashed border-surface-line p-2">
           <span class="font-semibold">{{$t('workerProfile.position.positionDate')}}</span> -  <span class="font-medium mr-4">{{Utils.timeOnlyDate(item.position_date)}}</span>
         </div>
-        <div class="col-span-12 md:col-span-6 border-b md:border-r border-dashed border-danger p-2">
+        <div class="col-span-12 md:col-span-6 border-b md:border-r border-dashed border-surface-line p-2">
           <span class="font-semibold">{{$t('workerProfile.position.contractNumber')}}</span> -  <span class="font-medium mr-4">{{item.contract.number}}</span>
         </div>
-        <div class="col-span-12 md:col-span-6 border-b md:border-r border-dashed border-danger p-2">
+        <div class="col-span-12 md:col-span-6 border-b md:border-r border-dashed border-surface-line p-2">
           <span class="font-semibold">{{$t('workerProfile.position.contractDate')}}</span> -  <span class="font-medium  mr-4">{{Utils.timeOnlyDate(item.contract.contract_date)}}</span>
         </div>
-        <div class="col-span-12 md:col-span-4 border-b md:border-r md:border-b-0 border-dashed border-danger p-2">
+        <div class="col-span-12 md:col-span-4 border-b md:border-r md:border-b-0 border-dashed border-surface-line p-2">
           {{$t('workerProfile.personal.positionGroup')}} - <span class="font-bold  text-success">{{item.group}}</span>
         </div>
-        <div class="col-span-12 md:col-span-4 border-b md:border-r md:border-b-0 border-dashed border-danger p-2">
+        <div class="col-span-12 md:col-span-4 border-b md:border-r md:border-b-0 border-dashed border-surface-line p-2">
           {{$t('workerProfile.personal.positionRank')}} - <span class="font-bold  text-warning">{{item.rank}}</span>
         </div>
-        <div class="col-span-12 md:col-span-4 border-b md:border-r md:border-b-0 border-dashed border-danger p-2">
+        <div class="col-span-12 md:col-span-4 border-b md:border-r md:border-b-0 border-dashed border-surface-line p-2">
           {{$t('workerProfile.personal.positionRate')}} - <span class="font-bold text-danger">{{item.rate}}</span>
         </div>
       </div>
     </div>
-    <div class="col-span-12 md:col-span-3 flex flex-col-reverse gap-y-2 p-2 border-t border-dashed border-danger ">
+    <div class="col-span-12 md:col-span-3 flex flex-col-reverse gap-y-2 p-2 border-t border-dashed border-surface-line ">
       <n-button
           @click="onEdit(item)"
           size="small"

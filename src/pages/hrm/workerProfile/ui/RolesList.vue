@@ -2,7 +2,7 @@
 import {useWorkerProfileStore} from "@/store/modules/index.js"
 import Utils from "@/utils/Utils.js"
 import {UIBadge, UIMenuButton, UIModal} from "@/components/index.js"
-import {RibbonStar24Filled, Attach12Regular} from "@vicons/fluent"
+import {RibbonStar24Filled, AddCircle20Regular } from "@vicons/fluent"
 import {useRoute} from "vue-router"
 import RoleForm from "./RoleForm.vue"
 const route = useRoute()
@@ -32,12 +32,12 @@ const onAdd = ()=>{
 </script>
 
 <template>
-<div class="w-full grid grid-cols-12 border border-dashed border-success rounded-lg">
+<div class="w-full grid grid-cols-12 border border-dashed rounded-2xl p-4">
     <div class="col-span-12 px-2 pt-2 flex justify-between items-center mb-1">
       <span class=" font-medium">{{$t('workerProfile.roles.title')}}</span>
-      <n-button @click="onAdd">{{$t('workerProfile.roles.attachRole')}}
+      <n-button type="primary" @click="onAdd">{{$t('workerProfile.roles.attachRole')}}
         <template #icon>
-          <Attach12Regular/>
+          <AddCircle20Regular/>
         </template>
       </n-button>
     </div>
