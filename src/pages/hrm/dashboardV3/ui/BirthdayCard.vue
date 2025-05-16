@@ -16,11 +16,11 @@ const store = useDashboardStore()
     <template v-if="store.dashboard.birthdays">
       <div class="flex justify-between items-center mb-4">
         <p class="font-semibold text-lg  text-textColor0">{{ $t(store.dashboard.birthdays.title) }}</p>
-<!--        <n-button @click="$emit('detail')" type="primary" tertiary circle>-->
-<!--          <template #icon>-->
-<!--            <Eye24Regular/>-->
-<!--          </template>-->
-<!--        </n-button>-->
+        <n-button @click="$emit('detail')" type="primary" tertiary circle>
+          <template #icon>
+            <Eye24Regular/>
+          </template>
+        </n-button>
       </div>
 
       <template v-for="(item,idx) in store.dashboard.birthdays.data" :key="idx">

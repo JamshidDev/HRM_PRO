@@ -5,22 +5,38 @@ import {useDashboardStore} from "@/store/modules/index.js"
 
 const store = useDashboardStore()
 
-onMounted(()=>{
-  store.detail.birthdayParams.birth_day = new Date().getDate()
-  store.detail.birthdayParams.birth_month = new Date().getMonth() + 1
+function filterEvent(){
   store._birthdayDetail()
+}
+
+onMounted(()=>{
+  store.detail.birthdayParams.timestamp = new Date().getTime()
+  filterEvent()
 })
 
 const changePage = (v)=>{
   store.detail.birthdayParams.page = v.page
   store.detail.birthdayParams.per_page = v.per_page
-  store._birthdayDetail()
+  filterEvent()
 }
 
-const onSearch = (v)=>{
+const onSearch = ()=>{
   store.detail.birthdayParams.page = 1
-  store._birthdayDetail()
+  filterEvent()
 }
+
+watch(()=>store.params.organizations.length, (v)=>{
+  console.log(v)
+  store.detail.birthdayParams.page = 1
+  filterEvent()
+})
+
+const onUpdateDate = (v)=>{
+  store.detail.birthdayParams.page = 1
+  store.detail.birthdayParams.timestamp = v
+  filterEvent()
+}
+
 </script>
 
 <template>
@@ -30,7 +46,12 @@ const onSearch = (v)=>{
         @on-search="onSearch"
         :search-loading="store.loading"
         :show-add-button="false"
-    />
+        :show-filter-button="false"
+    >
+      <template #filterAction>
+        <n-date-picker :value="store.detail.birthdayParams.timestamp" @updateValue="onUpdateDate" type="date"  />
+      </template>
+    </UIPageFilter>
     <n-table
         class="mt-4"
         :single-line="false"
@@ -60,34 +81,12 @@ const onSearch = (v)=>{
         </td>
         <td>{{item.organization.name}}</td>
         <td>{{item.department.name}}</td>
-<!--        <td>-->
-<!--          <n-button secondary type="primary" size="small" class="handle">-->
-<!--            <template #icon>-->
-<!--              <n-icon>-->
-<!--                <Drag24Regular/>-->
-<!--              </n-icon>-->
-<!--            </template>-->
-<!--          </n-button>-->
-<!--        </td>-->
-<!--        <td><span class="text-sm">{{item.relative.name}}</span></td>-->
-<!--        <td>{{item.last_name+' '+item.first_name+' '+item.middle_name}}</td>-->
-<!--        <td>{{item.post_name}}</td>-->
-<!--        <td>{{Utils.timeOnlyDate(item.birthday)}}</td>-->
-<!--        <td>{{item.birth_place}}</td>-->
-<!--        <td>{{item.address}}</td>-->
-<!--        <td>-->
-<!--          <UIMenuButton-->
-<!--              :data="item"-->
-<!--              :show-edit="true"-->
-<!--              @selectEv="onSelectEv"-->
-<!--          />-->
-<!--        </td>-->
       </tr>
       </tbody>
     </n-table>
     <UIPagination
-        :page="store.params.page"
-        :per_page="store.params.size"
+        :page="store.detail.birthdayParams.page"
+        :per_page="store.detail.birthdayParams.per_page"
         :total="store.detail.birthdaysTotal"
         @change-page="changePage"
     />

@@ -4,15 +4,16 @@ import Utils from "@/utils/Utils.js"
 const {t} = i18n.global
 export const useDashboardStore = defineStore('dashboardStore', {
     state:()=>({
+        structureModel: [],
+        structureCheck: [],
         loading:false,
+        activeDetail: null,
         payload:{
             pin:null,
             position:null,
         },
         params:{
-            page:1,
-            per_page:10,
-            search:null,
+            organizations: []
         },
         dashboard:{
             contractTypes:[],
@@ -30,11 +31,10 @@ export const useDashboardStore = defineStore('dashboardStore', {
             birthdays: [],
             birthdaysLoading: false,
             birthdayParams: {
+                timestamp: new Date().getTime(),
                 page:1,
                 per_page:10,
                 search:null,
-                birth_day:null,
-                birth_month:null
             },
             birthdaysTotal: 0
         }
@@ -43,7 +43,9 @@ export const useDashboardStore = defineStore('dashboardStore', {
     actions:{
         _index(){
             this.loading= true
-            $ApiService.dashboardService._index({params:this.params}).then((res)=>{
+            const params = {}
+            // console.log(params)
+            $ApiService.dashboardService._index({params}).then((res)=>{
                 const formatMonth = (date)=>{
                     let day = date.split('-')[1]
                     let month = Utils.getMonthNameByKey(date.split('-')[0])
@@ -224,7 +226,12 @@ export const useDashboardStore = defineStore('dashboardStore', {
         },
         _birthdayDetail(){
             this.detail.birthdaysLoading= true
-            $ApiService.dashboardService._birthdayDetail({params:this.detail.birthdayParams}).then((res)=>{
+            const params = this.appendParams({
+                ...this.detail.birthdayParams,
+                birth_day:new Date(this.detail.birthdayParams.timestamp).getDate(),
+                birth_month:new Date(this.detail.birthdayParams.timestamp).getMonth()+1
+            })
+            $ApiService.dashboardService._birthdayDetail({params}).then((res)=>{
                 this.detail.birthdays = res.data.data.data
                 this.detail.birthdaysTotal = res.data.data.total
             }).finally(()=>{
@@ -276,6 +283,13 @@ export const useDashboardStore = defineStore('dashboardStore', {
             }).finally(()=>{
                 this.deleteLoading = false
             })
+        },
+        // Helper for appending parent params to other children
+        appendParams(params){
+            return {
+                ...params,
+                organizations: this.params.organizations.map(i=>i.id).join(',')
+            }
         },
         openVisible(data){
             this.visible = data
