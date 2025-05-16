@@ -3,12 +3,13 @@ import {UIDrawer, UIPageContent} from "@/components/index.js"
 import Table from "./ui/Table.vue"
 import createFrom from "./ui/createForm.vue"
 import Filter from "./ui/Filter.vue"
-import {useDocumentArchiveStore} from "@/store/modules/index.js"
+import {useAccountStore, useDocumentArchiveStore} from "@/store/modules/index.js"
 
 const store = useDocumentArchiveStore()
-
+const accStore = useAccountStore()
 
 onMounted(()=>{
+  if(!accStore.checkAction(accStore.pn.hrDocumentsRead)) return
   store._index()
 })
 </script>

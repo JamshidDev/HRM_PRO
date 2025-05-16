@@ -340,6 +340,28 @@ const appPermissions = {
     hrMedWrite:"hr-med-write",
     hrMedRead:"hr-med-read",
 
+    hrLeaders: 'hr-leaders',
+    hrLeadersWrite: 'hr-leaders-write',
+    hrLeadersRead: 'hr-leaders-read',
+    
+    hrExport: 'hr-export',
+    
+    hrBusinessTrip: 'hr-business-trip',
+    hrBusinessTripWrite: 'hr-business-trip-write',
+    hrBusinessTripRead: 'hr-business-trip-read',
+    
+    hrDocuments: 'hr-documents',
+    hrDocumentsWrite: 'hr-documents-write',
+    hrDocumentsRead: 'hr-documents-read',
+    
+    hrVacationSchedule: 'hr-vacation-schedule',
+    hrVacationScheduleWrite: 'hr-vacation-schedule-write',
+    hrVacationScheduleRead: 'hr-vacation-schedule-read',
+    
+    hrUsers: 'hr-users',
+    hrUsersWrite: 'hr-users-write',
+    hrUsersRead: 'hr-users-read',
+
     confirmation:"confirmation",
     confirmationContracts:"confirmation-contracts",
     confirmationCommands:"confirmation-commands",
@@ -360,6 +382,10 @@ const appPermissions = {
     examExamsWrite:"hr-exams-write",
     examExamsRead:"hr-exams-read",
 
+    examResults: 'exam-results',
+    examResultsWrite: 'exam-results-write',
+    examResultsRead: 'exam-results-read',
+
     turnstile: 'turnstile',
     turnstileBuildingWrite: 'turnstile-building-write',
     turnstileBuildingRead: 'turnstile-building-read',
@@ -367,6 +393,9 @@ const appPermissions = {
     turnstileTerminalWrite: 'turnstile-terminal-write',
     turnstileOrganizationWrite: 'turnstile-organization-write',
     turnstileOrganizationRead: 'turnstile-organization-read',
+    turnstileWorkers: 'turnstile-workers',
+    turnstileWorkersWrite: 'turnstile-workers-write',
+    turnstileWorkersRead: 'turnstile-workers-read',
 
     hrJobs:"hr-jobs",
     hrJobsWrite:"hr-jobs-write",

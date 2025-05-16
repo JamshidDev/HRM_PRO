@@ -132,6 +132,8 @@ watch(()=> store.dashboard.contractTypes, (newValue, oldValue)=>{
     },
   }))
   contractOption.value.series[0].name = t('dashboardPage.contract.title')
+}, {
+  immediate: true
 })
 
 const totalCount = computed(()=>{

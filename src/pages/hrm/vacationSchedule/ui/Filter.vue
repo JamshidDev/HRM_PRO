@@ -1,16 +1,20 @@
 <script setup>
 import {UIPageFilter} from "@/components/index.js"
-import {useVacationScheduleStore} from "@/store/modules/index.js"
+import {useAccountStore, useVacationScheduleStore} from "@/store/modules/index.js"
 import {People32Filled} from "@vicons/fluent"
+
 const store = useVacationScheduleStore()
+const accStore = useAccountStore()
 
 const onAdd = ()=>{
+  if(!accStore.checkAction(accStore.pn.hrVacationScheduleWrite)) return
   store.visibleType = true
   store.resetForm()
   store.visible=true
 }
 
 const onSearch = ()=>{
+  if(!accStore.checkAction(accStore.pn.hrVacationScheduleRead)) return
   store.params.page = 1
   store._index()
 }

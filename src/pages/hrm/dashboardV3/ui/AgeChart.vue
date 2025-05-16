@@ -92,6 +92,8 @@ watch(()=> store.dashboard.ageCard, (newValue, oldValue)=>{
     selected: true
   }))
   ageOption.value.series[0].name = t('dashboardPage.age.title')
+}, {
+  immediate: true,
 })
 
 </script>

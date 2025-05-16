@@ -7,6 +7,7 @@ import SignatureInstance from "@/pages/app/e-imzo/SignatureInstance.vue"
 import i18n from "@/i18n/index.js"
 import { uzUZ, dateUzUZ, ruRU, dateRuRU, enUS, dateEnUS } from 'naive-ui'
 import {useAppStore} from "@/store/modules/index.js"
+import {naiveBreakpoints} from "@/assets/theme/theme.js"
 
 const appStore = useAppStore()
 
@@ -31,13 +32,12 @@ const localProvider = computed(()=>{
 
 onMounted(()=>{
   appStore.initApp()
-
 })
 
 </script>
 
 <template>
-  <n-config-provider :theme-overrides="appStore.theme" :locale="localProvider.lang" :date-locale="localProvider.date">
+  <n-config-provider :breakpoints="naiveBreakpoints" :theme-overrides="appStore.theme" :locale="localProvider.lang" :date-locale="localProvider.date">
     <n-message-provider placement="top-right">
       <n-dialog-provider>
         <AppLayout/>
