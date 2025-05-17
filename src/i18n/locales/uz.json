@@ -1160,7 +1160,7 @@
       "higher": "Oliy ma'lumotli",
       "middle": "O'rta ma'lumotli",
       "special": "O'rta maxsus",
-      "chooseEdu": "Ta'lim turini tanlang"
+      "type": "Ta'lim turi"
     },
     "password": {
       "title": "Xodimlarning pasport muddatlari",

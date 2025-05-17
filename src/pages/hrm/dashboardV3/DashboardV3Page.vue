@@ -1,23 +1,11 @@
 <script setup>
-import {UIPageContent, UIPageFilter, UISelect} from "@/components/index.js"
-import ContractChart from "./ui/ContractChart.vue"
-import AgeChart from "./ui/AgeChart.vue"
-import EduChart from "./ui/EduChart.vue"
-
+import {UIPageContent} from "@/components/index.js"
 import {useAccountStore, useDashboardStore} from "@/store/modules/index.js"
-import InfoCard from "@/pages/hrm/dashboardV3/ui/InfoCard.vue"
-import YearlyChart from "@/pages/hrm/dashboardV3/ui/YearlyChart.vue"
-import BirthdayCard from "@/pages/hrm/dashboardV3/ui/BirthdayCard.vue"
-import VacationChart from "@/pages/hrm/dashboardV3/ui/VacationChart.vue"
-import IncentiveChart from "@/pages/hrm/dashboardV3/ui/IncentiveChart.vue";
 import HeaderCard from "@/pages/hrm/dashboardV3/ui/HeaderCard.vue";
-
-import BirthdayDetail from "./ui/Detail/BirthdayDetail.vue"
-import AgeDetail from "./ui/Detail/AgeDetail.vue"
-import EducationDetail from "./ui/Detail/EducationDetail.vue"
-
-
+import DetailFilters from "./ui/Detail/Filter.vue"
 import Filter from './ui/Filter.vue'
+
+import {cards} from './constants.js'
 
 const store = useDashboardStore()
 const accStore = useAccountStore()
@@ -30,46 +18,10 @@ onBeforeMount(() => {
 })
 
 
-const cards = [
-  {
-    component: markRaw(AgeChart),
-    span: "12 l:6 xl:4",
-    title: 'dashboardPage.age.title',
-    detail: markRaw(AgeDetail),
-  },
-  {
-    component: markRaw(EduChart),
-    span: "12 l:6 xl:4",
-    title: 'dashboardPage.edu.title',
-    detail: markRaw(EducationDetail),
-  },
-  {
-    component: markRaw(IncentiveChart),
-    span: "12 l:6 xl:4"
-  },
-  {
-    component: markRaw(YearlyChart),
-    span: "12 l:6 xl:8"
-  },
-  {
-    component: markRaw(BirthdayCard),
-    span: "12 l:6 xl:4",
-    title: 'dashboardPage.birthday.title',
-    detail: markRaw(BirthdayDetail),
-  },
-  {
-    component: markRaw(VacationChart),
-    span: "12 l:6 xl:4"
-  },
-  {
-    component: markRaw(ContractChart),
-    span: "12 l:6 xl:4"
-  },
-  {
-    component: markRaw(InfoCard),
-    span: "12 l:6 xl:4"
-  },
-]
+const onDetailEv = (detailComponent) => {
+  store.resetDetailData()
+  store.activeDetail = detailComponent
+}
 
 </script>
 
@@ -96,7 +48,7 @@ const cards = [
                 </n-grid-item>
               </template>
               <n-grid-item v-for="(item, idx) in cards" :key="idx" :span="item.span">
-                <component v-if="item?.detail"  :key="idx"  :is="item.component" @detail="store.activeDetail = item" />
+                <component v-if="item?.detail"  :key="idx"  :is="item.component" @detail="onDetailEv(item)" />
                 <component v-else  :is="item.component" />
               </n-grid-item>
 
@@ -106,7 +58,8 @@ const cards = [
         </UIPageContent>
       </n-tab-pane>
       <n-tab-pane :name="1" class="!p-0">
-        <UIPageContent class="!pt-0 !px-4 !m-0">
+        <UIPageContent class="!pt-2 !px-4 !m-0">
+          <DetailFilters />
           <component v-if="store.activeDetail?.detail" :is="store.activeDetail.detail"/>
         </UIPageContent>
       </n-tab-pane>
