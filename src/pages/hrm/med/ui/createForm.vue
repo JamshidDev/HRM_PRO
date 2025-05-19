@@ -114,7 +114,6 @@ onMounted(()=>{
                       :checkedVal="store.structureCheck"
                       @updateCheck="(v)=>store.structureCheck=v"
                       :loading="componentStore.structureLoading"
-                      @onSubmit="filterEvent"
                       :multiple="false"
                       :auto-select="true"
                   />

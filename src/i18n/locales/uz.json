@@ -118,7 +118,10 @@
     "later": "Keyinroq",
     "refresh": "Yangilash",
     "confirmFileText": "Hujjatni tasdiqlash uchun uning imzolangan nusxasining pdf shaklidagi faylini yuklang.",
-    "department": "Bo'lim"
+    "department": "Bo'lim",
+    "birthday": "Tug'ulgan sanasi",
+    "age": "Yosh",
+    "university": "Oliygoh"
   },
   "date": {
     "day": "Kun",
@@ -238,7 +241,6 @@
     "updateTitle": "Rolni tahrirlash",
     "form": {
       "role": "Huquqlar"
-
     },
     "no-roles": "Biriktirilgan rollar yo'q!"
   },
@@ -359,7 +361,6 @@
       "position": "Lavozimlar",
       "sex": "Jinsi",
       "position_type": "Lavozim turi"
-      
     },
     "checkWorker": {
       "title": "Xodim izlash",
@@ -532,9 +533,9 @@
     "signatureTitle": "Hujjatni elektron yozuv orqali imzolash!",
     "signatureWorker": "Imzolash havolasi {name} uchun yaratilgan. Elektron imzo {name} tomonidan imzolangan holatdagina hujjat haqiqiy hisoblanadi.",
     "linkText": "Hujjat uchun havola",
-    "acceptApplication":"Arizani tasdiqlash",
-    "comment":"Izoh",
-    "rejectApplication":"Arizani rad qilish",
+    "acceptApplication": "Arizani tasdiqlash",
+    "comment": "Izoh",
+    "rejectApplication": "Arizani rad qilish",
     "pinfl": "JSHSHR"
   },
   "documentPage": {
@@ -1161,12 +1162,17 @@
       "title": "Xodimlarning ma'lumoti bo'yicha",
       "higher": "Oliy ma'lumotli",
       "middle": "O'rta ma'lumotli",
-      "special": "O'rta maxsus"
+      "special": "O'rta maxsus",
+      "type": "Ta'lim turi"
     },
     "password": {
       "title": "Xodimlarning pasport muddatlari",
       "deadline": "Muddati yaqinlashgan",
-      "expired": "Muddati o'tgan"
+      "expired": "Muddati o'tgan",
+      "number": "Passport raqami",
+      "approaching": "Muddati yaqinlashayotgan",
+      "not_included": "Mavjud bo'lmagan",
+      "filter": "Passport holati"
     },
     "pension": {
       "title": "Pensiya yoshidagi xodimlar",
@@ -1183,10 +1189,10 @@
       "vakant": "Vakant",
       "sverx": "Sverx"
     },
-     "yearly": {
-       "title": "Ishga qabul qilingan va ishdan bo'shatilgan xodimlar",
-       "incoming": "Ishga qabul qilingan",
-       "outgoing": "Ishdan bo'shatilgan"
+    "yearly": {
+      "title": "Ishga qabul qilingan va ishdan bo'shatilgan xodimlar",
+      "incoming": "Ishga qabul qilingan",
+      "outgoing": "Ishdan bo'shatilgan"
     },
     "birthday": {
       "title": "Tug'ilgan kunlar",
@@ -1194,22 +1200,21 @@
       "tomorrow": "Ertangi tug'ilgan kunlar"
     },
     "rewardCard": {
-      "reward":{
-        "title":  "Rag'batlantirish",
-        "typeOne":  "Faxriy temiryo'lchi faxriy unvoni",
-        "typeTwo":  "Boshqa mukofotlar",
+      "reward": {
+        "title": "Rag'batlantirish",
+        "typeOne": "Faxriy temiryo'lchi faxriy unvoni",
+        "typeTwo": "Boshqa mukofotlar",
         "shortTypeOne": "Faxriy",
         "shortTypeTwo": "Boshqa"
       },
-      "punishment":{
-        "title":  "Intizomiy jazolar",
-        "typeOne":  "Hayfsan",
-        "typeTwo":  "Boshqa jazolar",
+      "punishment": {
+        "title": "Intizomiy jazolar",
+        "typeOne": "Hayfsan",
+        "typeTwo": "Boshqa jazolar",
         "shortTypeOne": "Hayfsan",
         "shortTypeTwo": "Boshqa"
       }
     }
-
   },
   "applicationPage": {
     "name": "Arizalar",
@@ -1220,8 +1225,6 @@
     "lastPeriod": "Ta'til davri : ",
     "lastPDate": "Tatil sanasi : ",
     "reason": "Oilaviy zaruriyatim sababli",
-
-
     "createTitle": "Ariza uchun havola yaratish",
     "updateTitle": "Bayram kunini tahrirlash",
     "form": {
@@ -1372,16 +1375,15 @@
     "name": "Telegram",
     "chatId": "Chat ID"
   },
-  "aiConversation":{
+  "aiConversation": {
     "canIHelpYouToday": "Bugun sizga qanday yordam bera olaman?",
     "aiAssistant": "AI Yordamchi",
     "welcomeTo": "Xush kelibsiz, {n}",
     "disclaimer": {
-      "cardOne": "### \uD83E\uDDEA Test rejimi\n\nUshbu sun’iy intellekt yordamchisi hozirda **test rejimida** ishlamoqda.  \nJavoblari hali to‘liq shakllanmagan va _noto‘g‘ri bo‘lishi mumkin_.",
-
-      "cardTwo": "### \uD83D\uDCDA Huquqiy hujjatlar yuklanmoqda\n\nBot hozircha faqat **O‘zbekiston Respublikasi Mehnat kodeksi** asosida o‘rganmoqda.  \n_Boshqa qonun hujjatlari hali to‘liq yuklanmagan yoki o‘rganilmagan._",
-      "cardThree": "### ⚖\uFE0F Faqat huquqiy savollar uchun\n\nIltimos, faqat **mehnat munosabatlariga oid** savollarni yuboring.  \n_Bot texnik yoki shaxsiy maslahatlar uchun mo‘ljallanmagan._",
-      "cardFour": "### \uD83D\uDCCC Rasmiy maslahat emas\n\nBot javoblari **faqat ma’lumot berish maqsadida** shakllantirilgan.  \n_Ular rasmiy huquqiy maslahat o‘rnini bosa olmaydi._"
+      "cardOne": "### 🧪 Test rejimi\n\nUshbu sun’iy intellekt yordamchisi hozirda **test rejimida** ishlamoqda.  \nJavoblari hali to‘liq shakllanmagan va _noto‘g‘ri bo‘lishi mumkin_.",
+      "cardTwo": "### 📚 Huquqiy hujjatlar yuklanmoqda\n\nBot hozircha faqat **O‘zbekiston Respublikasi Mehnat kodeksi** asosida o‘rganmoqda.  \n_Boshqa qonun hujjatlari hali to‘liq yuklanmagan yoki o‘rganilmagan._",
+      "cardThree": "### ⚖️ Faqat huquqiy savollar uchun\n\nIltimos, faqat **mehnat munosabatlariga oid** savollarni yuboring.  \n_Bot texnik yoki shaxsiy maslahatlar uchun mo‘ljallanmagan._",
+      "cardFour": "### 📌 Rasmiy maslahat emas\n\nBot javoblari **faqat ma’lumot berish maqsadida** shakllantirilgan.  \n_Ular rasmiy huquqiy maslahat o‘rnini bosa olmaydi._"
     },
     "form": {
       "conversation": "Suhbatlar",
@@ -1430,14 +1432,14 @@
     "createTitle": "Xodim biriktirish",
     "updateTitle": "Tahrirlash",
     "requiredMonth": "Xodimning ta'tilga chiqish oyini tanlang",
-    "otherList":{
+    "otherList": {
       "btn": "Biriktirilmagan xodimlar",
       "name": "Xodimlar ro'yhati"
     }
   },
   "workerRole": {
     "name": "Foydalanuvchilar",
-    "from":{
+    "from": {
       "activeOrganization": "Aktiv korxonasi",
       "role": "Rollari"
     }
@@ -1445,13 +1447,13 @@
   "telegramPopup": {
     "header": "Telegram botimizga ulaning va quyidagi qulayliklardan bahramand bo‘ling:",
     "benefit": {
-      "header": "Botga obuna bo’lish orqali",
-      "footer": "Hammasi bir joyda – faqat siz uchun va o‘z vaqtida!",
       "1": "Hujjat holatlari – Tasdiqlash, rad etish yoki tahrirlash — barchasi haqida xabardor bo‘lasiz!",
       "2": "Tabriklar – Tug‘ilgan kuningizda yoki ish yutuqlaringizda biz sizni eslaymiz!",
       "3": "Muhim eslatmalar – Tatillar, yig‘ilish va muhim ma'lumotlar haqida o‘z vaqtida ogohlantiramiz.",
       "4": "Real-time bildirishnomalar – Endi hech narsa e’tibordan chetda qolmaydi!",
-      "5": "Profil yangiliklari – Ma’lumotlaringizda o‘zgarish bo‘lsa, Telegram’da darhol bilib olasiz!"
+      "5": "Profil yangiliklari – Ma’lumotlaringizda o‘zgarish bo‘lsa, Telegram’da darhol bilib olasiz!",
+      "header": "Botga obuna bo’lish orqali",
+      "footer": "Hammasi bir joyda – faqat siz uchun va o‘z vaqtida!"
     },
     "subscribe": "A'zo bo'lish"
   },

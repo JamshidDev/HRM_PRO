@@ -1,8 +1,6 @@
 <script setup>
 import {Search48Filled, AddCircle24Regular, Filter20Filled, DeleteArrowBack20Regular} from '@vicons/fluent'
 import { useDebounceFn } from '@vueuse/core'
-const search = ref(null)
-
 
 const props = defineProps({
   title:{
