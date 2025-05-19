@@ -118,7 +118,7 @@ const onClickoutside=()=> {
               {{ $t('content.number')}}
             </span>
           </th>
-          <th class="min-w-[200px] w-[280px]">{{$t('content.worker')}}</th>
+          <th class="min-w-[200px] w-[360px]">{{$t('content.worker')}}</th>
           <th >{{$t('workerPage.table.department')}}</th>
           <th >{{$t('workerPage.table.position')}}</th>
           <th >{{$t('workerPage.table.organization')}}</th>
