@@ -103,13 +103,14 @@ watch(()=> store.dashboard.ageCard, (newValue, oldValue)=>{
 <template>
   <div class="w-full h-full border border-surface-line p-4 rounded-lg bg-surface-section relative hover-effect-card">
     <span class="z-0 opacity-30 absolute top-0 right-0 w-[160px] h-full bg-no-repeat bg-[url(/effect/effect-card-1.svg)]" ></span>
-    <div class="flex justify-between items-center">
+    <div class="flex justify-between items-center mb-4">
       <p class="font-semibold text-textColor2">{{$t('dashboardPage.age.title')}}</p>
-      <n-button @click="$emit('detail')" type="primary" tertiary circle>
-        <template #icon>
-          <Eye24Regular/>
-        </template>
-      </n-button>
+      <p @click="$emit('detail')" class="text-primary border-b border-dashed border-primary z-[1] cursor-pointer transition-all hover:border-primary/80 hover:text-primary/80">{{$t("content.view")}}</p>
+<!--      <n-button @click="$emit('detail')" type="primary" tertiary circle>-->
+<!--        <template #icon>-->
+<!--          <Eye24Regular/>-->
+<!--        </template>-->
+<!--      </n-button>-->
     </div>
     <div class="grid grid-cols-12">
       <div class="col-span-12 sm:col-span-6">

@@ -9,8 +9,16 @@ import BirthdayDetail from "@/pages/hrm/dashboardV3/ui/Detail/BirthdayDetail.vue
 import VacationChart from "@/pages/hrm/dashboardV3/ui/VacationChart.vue"
 import ContractChart from "@/pages/hrm/dashboardV3/ui/ContractChart.vue"
 import InfoCard from "@/pages/hrm/dashboardV3/ui/InfoCard.vue"
+import PassportDetail from "@/pages/hrm/dashboardV3/ui/Detail/PassportDetail.vue"
+import PensionDetail from "@/pages/hrm/dashboardV3/ui/Detail/PensionDetail.vue"
+
 import ApiService from "@/service/ApiService.js";
 
+export const InfoCardEnum = {
+    PASSPORT: 'passport',
+    MED: 'med',
+    PENSION: 'pension'
+}
 
 export const cards = [
     {
@@ -18,7 +26,7 @@ export const cards = [
         span: "12 l:6 xl:4",
         title: 'dashboardPage.age.title',
         detail: markRaw(AgeDetail),
-        filters: ["sex","ages"],
+        filters: ["sex", "ages"],
         filterCallback: ApiService.dashboardService._ageDetail
     },
     {
@@ -55,6 +63,28 @@ export const cards = [
     },
     {
         component: markRaw(InfoCard),
-        span: "12 l:6 xl:4"
+        span: "12 l:6 xl:4",
+        /**
+         * That method is being written since the card in question has three different childs with respective details
+         * Thus we needed a dynamic method to identify small card in question 
+         */
+        detailFactory(v) {
+            switch (v) {
+                case InfoCardEnum.PASSPORT:
+                    return {
+                        title: 'dashboardPage.password.title',
+                        detail: markRaw(PassportDetail),
+                        filters: ["filter"],
+                        filterCallback: ApiService.dashboardService._passportDetail
+                    }
+                case InfoCardEnum.PENSION:
+                    return {
+                        title: 'dashboardPage.pension.title',
+                        detail: markRaw(PensionDetail),
+                        filters: ["sex"],
+                        filterCallback: ApiService.dashboardService._pensionDetail
+                    }
+            }
+        }
     },
 ]

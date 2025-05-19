@@ -1,14 +1,14 @@
 <script setup>
 import VChart from "vue-echarts"
-import {useAppStore, useDashboardStore} from "@/store/modules/index.js"
+import { useAppStore, useDashboardStore } from "@/store/modules/index.js"
 import i18n from "@/i18n/index.js"
-import {Eye24Regular} from "@vicons/fluent"
+import { Eye24Regular } from "@vicons/fluent"
 
 defineEmits(["detail"])
 
 const store = useDashboardStore()
 const appStore = useAppStore()
-const {t} = i18n.global
+const { t } = i18n.global
 
 const eduOption1 = ref({
   title: {
@@ -28,12 +28,12 @@ const eduOption1 = ref({
   legend: {
     top: '5%',
     left: 'center',
-    show:false,
+    show: false,
   },
   series: [
     {
       type: 'pie',
-      radius:['60%', '90%'],
+      radius: ['60%', '90%'],
       avoidLabelOverlap: false,
       itemStyle: {
         borderRadius: 4,
@@ -74,12 +74,12 @@ const eduOption2 = ref({
   legend: {
     top: '5%',
     left: 'center',
-    show:false,
+    show: false,
   },
   series: [
     {
       type: 'pie',
-      radius:['60%', '90%'],
+      radius: ['60%', '90%'],
       avoidLabelOverlap: false,
       itemStyle: {
         borderRadius: 4,
@@ -120,12 +120,12 @@ const eduOption3 = ref({
   legend: {
     top: '5%',
     left: 'center',
-    show:false,
+    show: false,
   },
   series: [
     {
       type: 'pie',
-      radius:['60%', '90%'],
+      radius: ['60%', '90%'],
       avoidLabelOverlap: false,
       itemStyle: {
         borderRadius: 4,
@@ -149,12 +149,12 @@ const eduOption3 = ref({
   ]
 })
 
-watch(()=>appStore.themeSwitch, (v)=>{
-  if(v){
+watch(() => appStore.themeSwitch, (v) => {
+  if (v) {
     eduOption1.value.title.textStyle.color = "#f3f3f3"
     eduOption2.value.title.textStyle.color = "#f3f3f3"
     eduOption3.value.title.textStyle.color = "#f3f3f3"
-  }else{
+  } else {
     eduOption1.value.title.textStyle.color = "#0f1114"
     eduOption2.value.title.textStyle.color = "#0f1114"
     eduOption3.value.title.textStyle.color = "#0f1114"
@@ -163,37 +163,37 @@ watch(()=>appStore.themeSwitch, (v)=>{
   immediate: true
 })
 
-watch(()=> store.dashboard.eduCard, (newValue, oldValue)=>{
-  eduOption1.value.series[0].data =[
+watch(() => store.dashboard.eduCard, (newValue, oldValue) => {
+  eduOption1.value.series[0].data = [
     {
-      value:newValue[0].count,
-      name:t(newValue[0].title),
-      itemStyle:{
-        color:'#1A84FF',
+      value: newValue[0].count,
+      name: t(newValue[0].title),
+      itemStyle: {
+        color: '#1A84FF',
       },
       selected: true
     }
   ]
   eduOption1.value.title.text = newValue[0].count
 
-  eduOption2.value.series[0].data =[
+  eduOption2.value.series[0].data = [
     {
-      value:newValue[1].count,
-      name:t(newValue[1].title),
-      itemStyle:{
-        color:'#0F1114',
+      value: newValue[1].count,
+      name: t(newValue[1].title),
+      itemStyle: {
+        color: '#0F1114',
       },
       selected: true
     }
   ]
   eduOption2.value.title.text = newValue[1].count
 
-  eduOption3.value.series[0].data =[
+  eduOption3.value.series[0].data = [
     {
-      value:newValue[2].count,
-      name:t(newValue[2].title),
-      itemStyle:{
-        color:'#E53835',
+      value: newValue[2].count,
+      name: t(newValue[2].title),
+      itemStyle: {
+        color: '#E53835',
       },
       selected: true
     }
@@ -208,15 +208,21 @@ watch(()=> store.dashboard.eduCard, (newValue, oldValue)=>{
 
 <template>
 
-  <div class="w-full h-full flex flex-col border border-surface-line p-4 rounded-lg bg-surface-section relative hover-effect-card text-textColor2">
-    <span class="z-0 opacity-30 absolute top-0 right-0 w-[160px] h-full bg-no-repeat bg-[url(/effect/effect-card-1.svg)]" ></span>
-    <div class="flex justify-between items-center">
-      <p class="font-semibold mb-4 text-textColor2">{{$t('dashboardPage.edu.title')}}</p>
-      <n-button @click="$emit('detail')" type="primary" tertiary circle>
-        <template #icon>
-          <Eye24Regular/>
-        </template>
-      </n-button>
+  <div
+    class="w-full h-full flex flex-col border border-surface-line p-4 rounded-lg bg-surface-section relative hover-effect-card text-textColor2">
+    <span
+      class="z-0 opacity-30 absolute top-0 right-0 w-[160px] h-full bg-no-repeat bg-[url(/effect/effect-card-1.svg)]"></span>
+    <div class="flex justify-between items-center mb-4">
+      <p class="font-semibold  text-textColor2">{{ $t('dashboardPage.edu.title') }}</p>
+      <p @click="$emit('detail')"
+        class="text-primary border-b border-dashed border-primary z-[1] cursor-pointer transition-all hover:border-primary/80 hover:text-primary/80">
+        {{ $t("content.view") }}</p>
+
+      <!--      <n-button @click="$emit('detail')" type="primary" tertiary circle>-->
+      <!--        <template #icon>-->
+      <!--          <Eye24Regular/>-->
+      <!--        </template>-->
+      <!--      </n-button>-->
     </div>
     <div class="grid grid-cols-12 gap-2">
       <div class="col-span-12 flex md:col-span-6 items-center justify-around">
@@ -224,7 +230,7 @@ watch(()=> store.dashboard.eduCard, (newValue, oldValue)=>{
           <v-chart :option="eduOption1" />
         </div>
         <div style="width: calc(100% - 90px)" class="pl-2">
-          <p>{{$t('dashboardPage.edu.higher')}}</p>
+          <p>{{ $t('dashboardPage.edu.higher') }}</p>
           <n-progress type="line" status="info" :percentage="20">10%</n-progress>
         </div>
       </div>
@@ -233,7 +239,7 @@ watch(()=> store.dashboard.eduCard, (newValue, oldValue)=>{
           <v-chart :option="eduOption2" />
         </div>
         <div style="width: calc(100% - 90px)" class="pl-2">
-          <p>{{$t('dashboardPage.edu.special')}}</p>
+          <p>{{ $t('dashboardPage.edu.special') }}</p>
           <n-progress type="line" :color="'#0f1114'" :percentage="20">10%</n-progress>
         </div>
       </div>
@@ -244,7 +250,7 @@ watch(()=> store.dashboard.eduCard, (newValue, oldValue)=>{
         <v-chart :option="eduOption3" />
       </div>
       <div style="width: calc(100% - 90px)" class="pl-2">
-        <p>{{$t('dashboardPage.edu.middle')}}</p>
+        <p>{{ $t('dashboardPage.edu.middle') }}</p>
         <n-progress type="line" status="error" :percentage="20">10%</n-progress>
       </div>
     </div>
@@ -252,6 +258,4 @@ watch(()=> store.dashboard.eduCard, (newValue, oldValue)=>{
 
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

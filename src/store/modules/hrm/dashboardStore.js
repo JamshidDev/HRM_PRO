@@ -24,6 +24,8 @@ export const useDashboardStore = defineStore('dashboardStore', {
             type: null,
             birth_day: new Date().getDate(),
             birth_month: new Date().getMonth() + 1,
+            // Passport state filter possible values were: expired, approaching, not_included
+            filter: null,
         },
         params: {
             organizations: [],
@@ -37,6 +39,7 @@ export const useDashboardStore = defineStore('dashboardStore', {
             type: null,
             birth_day: null,
             birth_month: null,
+            filter: null,
         },
         detailData: null,
         detailDataTotal: 0,
@@ -55,9 +58,14 @@ export const useDashboardStore = defineStore('dashboardStore', {
         },
     }),
     actions: {
-        _index() {
+        _index(update) {
             this.loading = true
-            const params = {}
+            let params = {}
+            if(update){
+                params.cache = "update"
+            }
+            params = this.appendParams(params)
+
             $ApiService.dashboardService._index({params}).then((res) => {
                 const formatMonth = (date) => {
                     let day = date.split('-')[1]
@@ -240,9 +248,19 @@ export const useDashboardStore = defineStore('dashboardStore', {
         _index_detail(){
             if(!this.activeDetail?.filterCallback) throw new Error("No detail filter callback set")
             this.detailLoading = true
-            const params = this.appendParams({
-                ...this.params
+            let params = {
+                page: this.params.page,
+                per_page: this.params.per_page,
+            }
+            this.activeDetail.filters.map(i=>{
+                if(i==='ages'){
+                    params.age_start = this.params.age_start
+                    params.age_end = this.params.age_end
+                }else{
+                    params[i] = this.params[i]
+                }
             })
+            params = this.appendParams(params)
             this.activeDetail?.filterCallback({params}).then((res) => {
                 this.detailData = res.data.data.data
                 this.detailDataTotal = res.data.data.total

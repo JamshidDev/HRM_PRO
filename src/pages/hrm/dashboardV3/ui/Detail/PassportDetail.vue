@@ -1,7 +1,7 @@
 <script setup>
-import {UIUser, UIPagination, NoDataPicture} from "@/components/index.js"
+import {UIUser, UIPagination, NoDataPicture, UIBadge} from "@/components/index.js"
 import {useDashboardStore} from "@/store/modules/index.js"
-
+import Utils from '@/utils/Utils.js'
 const store = useDashboardStore()
 
 const filterEvent = ()=>{
@@ -34,8 +34,8 @@ const changePage = (v) => {
         <th class="text-center!">{{ $t('content.worker') }}</th>
         <th class="min-w-[100px]">{{ $t('content.organization') }}</th>
         <th class="min-w-[100px]">{{ $t('content.department') }}</th>
-        <th class="min-w-[100px] !text-center">{{ $t('content.birthday') }}</th>
-        <th class="min-w-[100px] !text-center">{{ $t('content.age') }}</th>
+        <th class="min-w-[100px] w-[240px] !text-center">{{$t('vacationPage.table.duration')}}</th>
+        <th class="text-center!">{{$t('dashboardPage.password.number')}}</th>
       </tr>
       </thead>
       <tbody class="sort-target">
@@ -57,10 +57,16 @@ const changePage = (v) => {
         <td>{{ item.organization.name }}</td>
         <td>{{ item.department.name }}</td>
         <td class="!text-center">
-          <n-button type="primary" dashed round size="small">{{ item.worker.birthday }}</n-button>
+            <div class="flex">
+              <UIBadge :show-icon="false" :label="Utils.timeOnlyDate(item.passport.from_date)" />
+              <UIBadge :show-icon="false" :label="Utils.timeOnlyDate(item.passport.to_date)" />
+            </div>
+
         </td>
         <td class="!text-center">
-          <n-button circle size="small">{{ item.worker.age }}</n-button>
+            <n-button dashed type="primary" round size="small">
+                {{item.passport.serial_number}}
+            </n-button>
         </td>
 
       </tr>

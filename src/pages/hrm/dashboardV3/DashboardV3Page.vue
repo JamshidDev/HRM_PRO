@@ -18,16 +18,20 @@ onBeforeMount(() => {
 })
 
 
-const onDetailEv = (detailComponent) => {
+const onDetailEv = (detailComponent, key) => {
   store.resetDetailData()
+  if(detailComponent?.detailFactory && key){
+    store.activeDetail = detailComponent.detailFactory(key)
+    return
+  }
   store.activeDetail = detailComponent
 }
 
 </script>
 
 <template>
-  <div class="overflow-y-auto max-h-[100%]" style="scrollbar-gutter: stable;">
-    <div class="flex justify-between items-center px-4 py-3">
+  <div>
+    <div class="flex justify-between items-center pl-4 py-3 pr-7">
       <n-breadcrumb>
         <n-breadcrumb-item @click="store.activeDetail=null">Dashboard</n-breadcrumb-item>
         <n-breadcrumb-item v-if="store.activeDetail">
@@ -36,7 +40,7 @@ const onDetailEv = (detailComponent) => {
       </n-breadcrumb>
       <Filter />
     </div>
-    <n-tabs :value="store.activeDetail ? 1 : 0" animated :tab-style="{'display': 'none'}">
+    <n-tabs class="max-h-[calc(100vh-120px)]" :value="store.activeDetail ? 1 : 0" animated :tab-style="{'display': 'none'}" :pane-wrapper-style="{'overflow-y': 'auto', 'scrollbar-gutter': 'stable'}">
       <n-tab-pane :name="0" class="!p-0">
         <UIPageContent class="!pt-0 !px-4 !m-0">
           <n-spin :show="store.loading" class="min-h-[200px]">
@@ -48,7 +52,7 @@ const onDetailEv = (detailComponent) => {
                 </n-grid-item>
               </template>
               <n-grid-item v-for="(item, idx) in cards" :key="idx" :span="item.span">
-                <component v-if="item?.detail"  :key="idx"  :is="item.component" @detail="onDetailEv(item)" />
+                <component v-if="item?.detail || item?.detailFactory"  :key="idx"  :is="item.component" @detail="(key)=>onDetailEv(item, key)" />
                 <component v-else  :is="item.component" />
               </n-grid-item>
 

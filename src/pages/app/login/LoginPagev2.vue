@@ -109,7 +109,11 @@ onMounted(()=>{
                   type="text"
                   v-mask="'+998(##)#######'"
                   :placeholder="'+998'"
-                  @paste="store.phone=''"
+                  @paste="(e)=>{
+                    let a = (e.clipboardData.getData('text')).replaceAll(' ', '')
+                    console.log(a)
+                    if(a.length>9) store.phone = ''
+                  }"
                   v-model:value="store.phone"
               >
                 <template #prefix>

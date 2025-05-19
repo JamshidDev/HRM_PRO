@@ -1,10 +1,12 @@
 <script setup>
-import {Person32Regular} from "@vicons/fluent";
+import {Person32Regular, DocumentTable16Regular} from "@vicons/fluent";
 import {useComponentStore, useDashboardStore} from "@/store/modules/index.js"
 import {UIPageFilter} from "@/components/index.js"
 import isdeepequal from "fast-deep-equal"
 import dayjs from "dayjs"
+import i18n from "@/i18n/index.js"
 
+const {t} = i18n.global
 const store = useDashboardStore()
 const componentStore = useComponentStore()
 
@@ -53,16 +55,27 @@ const months = [
   "month.december",
 ]
 
+const passportFilter = [{
+    label: t("dashboardPage.password.expired"),
+    value: "expired"
+  },{
+    label: t("dashboardPage.password.approaching"),
+    value: "approaching"
+  },{
+    label: t("dashboardPage.password.not_included"),
+    value: "not_included"
+  }]
+
 onMounted(()=>{
   if (!componentStore.educationList.length) {
     componentStore._enums()
   }
 })
 
-watch(() => store.params.organizations.length, (v) => {
-  store.params.page = 1
-  filterEvent()
-})
+// watch(() => store.params.organizations.length, (v) => {
+//   store.params.page = 1
+//   filterEvent()
+// })
 
 
 </script>
@@ -76,6 +89,18 @@ watch(() => store.params.organizations.length, (v) => {
       :show-add-button="false"
       :show-filter-button="!!store.activeDetail?.filters?.length"
   >
+    <template #filterAction>
+      <n-button
+          type="success"
+          icon-placement="right"
+      >
+<!--          @click="onExport"-->
+        <template #icon>
+          <n-icon :component="DocumentTable16Regular"/>
+        </template>
+        {{ $t('content.export') }}
+      </n-button>
+    </template>
     <template v-if="store.activeDetail?.filters?.length" #filterContent>
       <div class="flex flex-col gap-4">
         <div v-for="(i,idx) in store.activeDetail?.filters" :key="idx">
@@ -153,6 +178,16 @@ watch(() => store.params.organizations.length, (v) => {
               :options="componentStore.educationList"
               label-field="name"
               value-field="id"
+            />
+          </template>
+          <template v-if="i==='filter'">
+            <label class="text-xs">{{ $t('dashboardPage.password.filter') }}</label>
+            <n-select
+              v-model:value="store.params.filter"
+              @update:value="filterEvent"
+              clearable
+              :placeholder="$t(`content.choose`)"
+              :options="passportFilter"
             />
           </template>
         </div>

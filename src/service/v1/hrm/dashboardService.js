@@ -16,10 +16,20 @@ const _educationDetail = async (payload)=>{
     return await axios.get(`/v1/hr/dashboard/educations`, {params:payload.params})
 }
 
+const _passportDetail = async (payload)=>{
+    return await axios.get(`/v1/hr/dashboard/passport`, {params:payload.params})
+}
+
+const _pensionDetail = async (payload)=>{
+    return await axios.get(`/v1/hr/dashboard/passport`, {params:payload.params})
+}
+
 
 export default {
     _index,
     _birthdayDetail,
     _ageDetail,
-    _educationDetail
+    _educationDetail,
+    _passportDetail,
+    _pensionDetail
 }
