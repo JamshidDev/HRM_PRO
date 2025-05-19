@@ -1,10 +1,10 @@
 <script setup>
-import { UIUser, UIPagination, NoDataPicture } from "@/components/index.js"
+import {UIUser, UIPagination, NoDataPicture} from "@/components/index.js"
 import {useDashboardStore} from "@/store/modules/index.js"
 
 const store = useDashboardStore()
 
-function filterEvent() {
+const filterEvent = ()=>{
   store._index_detail()
 }
 
@@ -21,8 +21,9 @@ const changePage = (v) => {
 </script>
 
 <template>
-  <n-spin :show="store.detailLoading">
+  <n-spin :show="store.detailLoading" class="pt-2">
     <n-table
+        v-if="store.detailData?.length"
         class="mt-4"
         :single-line="false"
         size="small"
@@ -55,12 +56,18 @@ const changePage = (v) => {
         </td>
         <td>{{ item.organization.name }}</td>
         <td>{{ item.department.name }}</td>
-        <td class="!text-center"><n-button type="primary" dashed round size="small">{{ item.worker.birthday }}</n-button></td>
-        <td class="!text-center"><n-button circle size="small">{{ item.worker.age }}</n-button></td>
+        <td class="!text-center">
+          <n-button type="primary" dashed round size="small">{{ item.worker.birthday }}</n-button>
+        </td>
+        <td class="!text-center">
+          <n-button circle size="small">{{ item.worker.age }}</n-button>
+        </td>
+
       </tr>
       </tbody>
     </n-table>
     <UIPagination
+        v-if="store.detailData?.length"
         :page="store.params.page"
         :per_page="store.params.per_page"
         :total="store.detailDataTotal"

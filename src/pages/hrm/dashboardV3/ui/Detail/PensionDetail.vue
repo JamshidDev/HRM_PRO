@@ -26,6 +26,7 @@ const changePage = (v) => {
         class="mt-4"
         :single-line="false"
         size="small"
+        v-if="store.detailData?.length"
     >
       <thead>
       <tr>
@@ -61,6 +62,7 @@ const changePage = (v) => {
       </tbody>
     </n-table>
     <UIPagination
+        v-if="store.detailData?.length"
         :page="store.params.page"
         :per_page="store.params.per_page"
         :total="store.detailDataTotal"
