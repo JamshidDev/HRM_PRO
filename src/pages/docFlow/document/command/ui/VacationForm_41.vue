@@ -6,6 +6,7 @@ import {
 } from "@vicons/fluent"
 import Utils from "../../../../../utils/Utils.js"
 import i18n from "@/i18n/index.js"
+import {useAppSetting} from "@/utils/index.js"
 
 const store = useCommandStore()
 const componentStore = useComponentStore()
@@ -195,6 +196,7 @@ onMounted(() => {
             v-model:value="item.from"
             type="date"
             :placeholder="$t(`content.choose`)"
+            :format="useAppSetting.datePicketFormat"
         />
       </n-form-item>
     </div>
@@ -283,6 +285,7 @@ onMounted(() => {
                   v-model:value="item.result.to"
                   type="date"
                   :placeholder="$t(`content.choose`)"
+                  :format="useAppSetting.datePicketFormat"
               />
             </n-form-item>
           </div>
@@ -295,6 +298,7 @@ onMounted(() => {
                   v-model:value="item.result.work_day"
                   type="date"
                   :placeholder="$t(`content.choose`)"
+                  :format="useAppSetting.datePicketFormat"
               />
             </n-form-item>
           </div>
@@ -307,6 +311,7 @@ onMounted(() => {
                   v-model:value="item.result.period_from"
                   type="date"
                   :placeholder="$t(`content.choose`)"
+                  :format="useAppSetting.datePicketFormat"
               />
             </n-form-item>
           </div>
@@ -319,6 +324,7 @@ onMounted(() => {
                   v-model:value="item.result.period_to"
                   type="date"
                   :placeholder="$t(`content.choose`)"
+                  :format="useAppSetting.datePicketFormat"
               />
             </n-form-item>
           </div>
