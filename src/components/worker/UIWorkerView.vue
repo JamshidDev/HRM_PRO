@@ -13,6 +13,8 @@ import GeneralInfo from "./ui/GeneralInfo.vue"
 import CareerInfo from "./ui/CareerInfo.vue"
 import RelativeInfo from "./ui/RelativeInfo.vue"
 import MainInfo from "./ui/MainInfo.vue"
+import MedList from "./ui/MedList.vue"
+import Vacationview from "./ui/Vacationview.vue"
 import i18n from "@/i18n/index.js"
 import {useComponentStore} from "@/store/modules/index.js"
 import Utils from "@/utils/Utils.js"
@@ -206,6 +208,14 @@ defineExpose({
                 <template v-if="tabList[2].id === item.id">
                   <RelativeInfo/>
                 </template>
+                <template v-if="tabList[3].id === item.id">
+                  <MedList/>
+                </template>
+                <template v-if="tabList[4].id === item.id">
+                  <Vacationview/>
+                </template>
+
+
               </n-tab-pane>
             </n-tabs>
           </div>
