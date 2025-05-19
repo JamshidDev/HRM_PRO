@@ -20,18 +20,25 @@ const onSubmit = ()=>{
   })
 }
 
-const onFocus = ()=>{
-  if(compStore.educationList.length ===0){
-    compStore._enums()
-  }
-}
 
 const onFocusRegion = ()=>{
   if(compStore.regionList.length === 0){
     compStore._regions()
   }
-
 }
+
+const onChangeRegion =(v)=>{
+    store.districtList = []
+    if(v){
+      store._getDistrict()
+    }
+}
+
+onMounted(()=>{
+  if(compStore.universityTypes.length === 0){
+    compStore._enumsAdmin()
+  }
+})
 
 
 </script>
@@ -67,18 +74,41 @@ const onFocusRegion = ()=>{
             label-field="name"
             value-field="id"
             :loading="compStore.regionLoading"
+            @update:value="onChangeRegion"
+        />
+      </n-form-item>
+      <n-form-item :label="$t(`othersPage.university.form.city_id`)" path="city_id">
+        <n-select
+            :disabled="!store.payload.region_id"
+            v-model:value="store.payload.city_id"
+            filterable
+            :placeholder="$t(`content.choose`)"
+            :options="store.districtList"
+            label-field="name"
+            value-field="id"
+            :loading="store.districtLoading"
         />
       </n-form-item>
       <n-form-item :label="$t(`othersPage.university.form.education`)" path="education">
         <n-select
-            @focus="onFocus"
             v-model:value="store.payload.education"
             filterable
             :placeholder="$t(`content.choose`)"
-            :options="compStore.educationList"
+            :options="compStore.educationTypes"
             label-field="name"
             value-field="id"
-            :loading="compStore.enumLoading"
+            :loading="compStore.enumAdminLoading"
+        />
+      </n-form-item>
+      <n-form-item :label="$t(`othersPage.university.form.education`)" path="education">
+        <n-select
+            v-model:value="store.payload.type"
+            filterable
+            :placeholder="$t(`content.choose`)"
+            :options="compStore.universityTypes"
+            label-field="name"
+            value-field="id"
+            :loading="compStore.enumAdminLoading"
         />
       </n-form-item>
     </div>

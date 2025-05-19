@@ -17,6 +17,22 @@ const onAdd = ()=>{
   }
 }
 
+const onSearch = ()=>{
+  if(store.activeTab === 3){
+    store.params.search = universityStore.params.search
+   store.params.page = 1
+    store._index()
+  }else if(store.activeTab === 1){
+    universityStore.params.page = 1
+    universityStore._index()
+  }else if(store.activeTab === 2){
+    specialtyStore.params.search = universityStore.params.search
+    specialtyStore.params.page = 1
+    specialtyStore._index()
+  }
+
+}
+
 const addLanguage =()=>{
   store.resetForm()
   store.visibleType = true
@@ -35,17 +51,14 @@ const addSpecialty =()=>{
   specialtyStore.visible = true
 }
 
-onMounted(()=>{
-  if(universityStore.list.length === 0){
-    universityStore._index()
-  }
-})
 
 </script>
 
 <template>
 <UIPageContent>
   <UIPageFilter
+      v-model:search="universityStore.params.search"
+      @onSearch="onSearch"
       @onAdd="onAdd"
       :show-filter-button="false"
   />

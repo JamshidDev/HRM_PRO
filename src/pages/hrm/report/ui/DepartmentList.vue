@@ -4,6 +4,7 @@ import PositionCard from "./PositionCard.vue"
 import WorkerCard from "./WorkerCard.vue"
 import Indicator from "./Indicator.vue"
 import IndicatorTitle from "@/pages/hrm/report/ui/IndicatorTitle.vue"
+import {AppFolder20Regular} from "@vicons/fluent"
 const store = useReport2Store()
 
 defineProps({
@@ -29,6 +30,14 @@ defineProps({
         </n-radio>
       </div>
       <div class="w-[200px] flex items-center justify-end h-full gap-2 pr-2" >
+        <n-button
+            @click.stop="store._getOptimization()"
+            :loading="store.optimizationLoading"
+            v-if="data.id === store.selectedDepId" size="tiny" secondary type="error">{{$t('report.form.optimization')}}
+        <template #icon>
+          <AppFolder20Regular/>
+        </template>
+        </n-button>
         <Indicator
             :data="data"
         />

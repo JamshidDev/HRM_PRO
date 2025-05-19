@@ -33,7 +33,7 @@ const onChange = (v)=>{
       </n-button-group>
       </div>
 
-      <Tabs class="mx-auto w-full max-w-[1100px] mb-10"/>
+      <Tabs class="mx-auto w-full max-w-[1400px] mb-10"/>
     </div>
   </div>
 

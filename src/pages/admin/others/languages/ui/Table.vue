@@ -10,6 +10,8 @@ const onEdit = (v)=>{
   store.visibleType = false
   store.elementId = v.id
   store.payload.name = v.name
+  store.payload.name_ru = v.name_ru
+  store.payload.name_en = v.name_en
   store.visible = true
 }
 
@@ -36,7 +38,9 @@ const changePage = (v)=>{
         <thead>
         <tr>
           <th class="text-center! min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
-          <th class="min-w-[200px]">{{$t('othersPage.language.form.name')}}</th>
+          <th class="min-w-[200px]">{{$t('othersPage.language.form.nameUz')}}</th>
+          <th class="min-w-[200px]">{{$t('othersPage.language.form.nameRu')}}</th>
+          <th class="min-w-[200px]">{{$t('othersPage.language.form.nameEn')}}</th>
           <th class="min-w-[90px] w-[90px]">{{$t('content.action')}}</th>
         </tr>
         </thead>
@@ -44,6 +48,8 @@ const changePage = (v)=>{
         <tr v-for="(item, idx) in store.list" :key="idx">
           <td><span class="text-center text-[12px] text-gray-600 block">{{ (store.params.page - 1) * store.params.per_page + idx + 1 }}</span></td>
           <td>{{item.name}}</td>
+          <td>{{item.name_ru}}</td>
+          <td>{{item.name_en}}</td>
           <td>
             <UIActionButton
                 :data="item"
@@ -56,7 +62,6 @@ const changePage = (v)=>{
         </tbody>
       </n-table>
       <UIPagination
-          v-show="store.list.length>10"
           :page="store.params.page"
           :per_page="store.params.size"
           :total="store.totalItems"

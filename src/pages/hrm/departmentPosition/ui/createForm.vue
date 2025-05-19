@@ -3,6 +3,7 @@ import validationRules from "@/utils/validationRules.js";
 const formRef = ref(null)
 import {useDepartmentPositionStore, useComponentStore} from "@/store/modules/index.js";
 import Utils from "@/utils/Utils.js"
+import UIHelper from "@/utils/UIHelper.js"
 
 const store = useDepartmentPositionStore()
 const componentStore = useComponentStore()
@@ -50,9 +51,12 @@ const onSubmit = ()=>{
               clearable
               :placeholder="$t(`departmentPositionPage.form.department_id`)"
               :options="componentStore.departmentList"
-              label-field="name"
+              :render-label="UIHelper.selectRender.label"
+              :render-tag="UIHelper.selectRender.value"
               value-field="id"
               :loading="componentStore.departmentLoading"
+              @search="componentStore._onSearchDepartment"
+              @scroll="componentStore._onScrollDepartment"
           />
         </n-form-item>
         <n-form-item class="col-span-12 md:col-span-6 lg:col-span-4" :label="$t(`departmentPositionPage.form.group`)" path="group">

@@ -188,7 +188,7 @@ export const useConfApplicationStore = defineStore('confApplicationStore', {
             $ApiService.applicationService._confirmation({params}).then((res)=>{
                 this.confirmationList = res.data.data.data.map((v)=>({
                     ...v,
-                    fullName:Utils.combineFullName(v.worker),
+                    name:Utils.combineFullName(v.worker),
                     position:v?.post_short_name,
 
                 }))

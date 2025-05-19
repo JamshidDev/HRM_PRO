@@ -5,6 +5,10 @@ import createForm from "./ui/createFrom.vue"
 import {useLanguageAdminStore} from "@/store/modules/admin/languageAdminStore.js"
 
 const store = useLanguageAdminStore()
+
+onMounted(()=>{
+  store._index()
+})
 </script>
 
 <template>

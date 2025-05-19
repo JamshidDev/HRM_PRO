@@ -3,6 +3,7 @@ import {UIPdfSignatureDrawer, UIOnlyOfficeDrawer} from "@/components/index.js"
 import {useOnlyOfficeStore, useAccountStore, usePdfViewerStore} from "@/store/modules/index.js"
 import {v4 as uuidv4} from "uuid"
 import RejectModal from "@/components/pdfSignature/ui/RejectModal.vue"
+import Utils from "@/utils/Utils.js"
 const onlyOfficeStore = useOnlyOfficeStore()
 const accountStore = useAccountStore()
 const pdfViewerStore = usePdfViewerStore()
@@ -38,8 +39,9 @@ const openEv = (document_id, model)=>{
   onlyOfficeStore.document_id = document_id
   onlyOfficeStore.config.document.url = pdfViewerStore.docxUrl
   onlyOfficeStore.config.document.title = pdfViewerStore.document.document.file_name
+  const fullName = `${accountStore.account?.worker?.last_name} ${accountStore.account?.worker?.first_name}`
   onlyOfficeStore.config.editorConfig.user = {
-    name:`${accountStore.account?.worker?.last_name} ${accountStore.account?.worker?.first_name}`,
+    name:Utils.safeBase64Encode(fullName),
     id:accountStore.account.worker.id,
   }
   onlyOfficeStore.config.document.key = uuidv4()

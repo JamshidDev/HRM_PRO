@@ -16,6 +16,10 @@ const _worker =async (payload)=>{
     return await axios.get(`/v1/hr/report/worker-positions`, {params:payload?.params})
 }
 
+const _optimization =async (payload)=>{
+    return await axios.get(`/v1/hr/report/optimization`, {params:payload?.params})
+}
+
 
 
 
@@ -25,4 +29,5 @@ export default {
     _department,
     _position,
     _worker,
+    _optimization,
 }

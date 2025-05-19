@@ -29,7 +29,7 @@ const changePage = (v)=>{
         <tr>
           <th class="text-center! min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
           <th class="min-w-[200px] w-[300px]">{{$t('confirmationPage.table.worker')}}</th>
-          <th class="min-w-[100px] w-[120px]">{{$t('incentive.form.type')}}</th>
+          <th class="min-w-[100px] w-[300px]">{{$t('incentive.form.type')}}</th>
           <th class="min-w-[100px]">{{$t('content.organization')}}</th>
           <th class="min-w-[100px]">{{$t('incentive.form.reason')}}</th>
           <th class="min-w-[80px] w-[120px]">{{$t('content.date')}}</th>

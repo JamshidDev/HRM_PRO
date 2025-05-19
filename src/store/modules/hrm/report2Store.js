@@ -40,8 +40,18 @@ export const useReport2Store = defineStore('report2Store', {
         workerLoading:false,
         workerList:[],
         totalWorker:0,
+        optimizationLoading:false,
     }),
     actions:{
+        _getOptimization(){
+            this.optimizationLoading = true
+            const department_id = this.selectedDepId
+            $ApiService.reportService._optimization({params:{department_id}}).then((res)=>{
+
+            }).finally(()=>{
+                this.optimizationLoading = false
+            })
+        },
         _getDepartment(){
             this.departmentLoading = true
             let params = {

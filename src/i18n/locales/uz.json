@@ -410,6 +410,7 @@
       "positionGroup": "Lavozim guruhi",
       "positionRank": "Lavozim razryadi",
       "positionRate": "Lavozim stavkasi",
+      "addPassport": "Passport nusxasini qo'shish",
       "no-passport": "Passport ma'lumotlar yuklanmagan!"
     },
     "position": {
@@ -769,7 +770,9 @@
       "createTitle": "Til qo'shish",
       "updateTitle": "Tilni tahrirlash",
       "form": {
-        "name": "Til nomi"
+        "nameUz": "Til nomi (uz)",
+        "nameEn": "Til nomi (en)",
+        "nameRu": "Til nomi (ru)"
       }
     },
     "university": {
@@ -778,7 +781,9 @@
       "form": {
         "name_ru": "Oligoh nomi (ru)",
         "region_id": "Joylashgan viloyat",
+        "city_id": "Joylashgan tuman",
         "education": "Ma'lumot turi",
+        "type": "Universitet turi",
         "name": "Oligoh nomi"
       }
     },
@@ -1478,6 +1483,7 @@
     },
     "form": {
       "position": "Lavozimlar",
+      "optimization": "Optimallashtirish",
       "workers": "Xodimlar",
       "vakant": "Vakant",
       "sverx": "Sxerx",

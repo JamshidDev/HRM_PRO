@@ -78,7 +78,6 @@ const getDocument =async (document_id, model)=>{
   store.viewerLoading = false
   $ApiService.documentService._openDocument({params:{model,document_id}}).then((res)=>{
     const v = res.data.data
-    console.log(v)
     const key = v.document.generate
     store.confirmations = v.confirmations
     store.document = v

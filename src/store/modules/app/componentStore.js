@@ -221,6 +221,8 @@ export const useComponentStore = defineStore('componentStore', {
         fileVisible:false,
         fileLoading:false,
         files:[],
+
+        universityTypes:[],
     }),
     actions:{
         _confirmFile(data, callback){
@@ -287,6 +289,10 @@ export const useComponentStore = defineStore('componentStore', {
                 this.holidayTypes=res.data.data?.holiday_types
                 this.organizationServiceList = res.data.data?.organization_services
                 this.confirmationStatusList = res.data.data?.confirmation_statuses
+                this.universityTypes = res.data.data?.university_types
+                this.educationTypes = res.data.data?.education_types
+
+
             }).finally(()=>{
                 this.enumAdminLoading= false
             })
@@ -328,7 +334,7 @@ export const useComponentStore = defineStore('componentStore', {
             }
             $ApiService.componentService._departmentByOrganizations({params}).then((res)=>{
                 this.totalDepartment = res.data.data.total
-                let data = res.data.data.data
+                let data = res.data.data.data.map((v)=>({...v, position:v?.organization?.name}))
                 if(infinity){
                     this.departmentList =[...this.departmentList, ...data]
                 }else{
@@ -347,7 +353,7 @@ export const useComponentStore = defineStore('componentStore', {
             const currentTarget = e.currentTarget;
             if(currentTarget.scrollTop + currentTarget.offsetHeight >= currentTarget.scrollHeight && !this.departmentLoading && this.totalDepartment>this.departmentList.length){
                 this.depParams.page +=1
-                this._workers(true)
+                this._departments(true)
             }
         },
 
@@ -637,7 +643,7 @@ export const useComponentStore = defineStore('componentStore', {
                 .then((res)=>{
                     this.directorList = res.data.data.map((v)=>({
                         ...v,
-                        fullName:Utils.combineFullName(v.worker)
+                        name:Utils.combineFullName(v.worker)
                     }))
                     callback?.(this.directorList)
 

@@ -247,6 +247,16 @@ export default {
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
+        name_ru:{
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        name_en:{
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
     },
     universityAdmin:{
         name:{
@@ -260,6 +270,18 @@ export default {
             trigger: triggerEvents
         },
         region_id:{
+            type: 'number',
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        city_id:{
+            type: 'number',
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        type:{
             type: 'number',
             required: true,
             message: t(`rules.requiredField`),
