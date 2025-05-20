@@ -4,6 +4,7 @@ import Utils from "@/utils/Utils.js"
 import validationRules from "@/utils/validationRules.js"
 import {Eye24Regular} from "@vicons/fluent"
 import i18n from "@/i18n/index.js"
+import {useAppSetting} from "@/utils/index.js"
 const {t} = i18n.global
 
 const store = useCommandStore()
@@ -120,6 +121,7 @@ defineExpose({
             v-model:value="store.form_45.from"
             type="date"
             :placeholder="$t(`content.choose`)"
+            :format="useAppSetting.datePicketFormat"
         />
       </n-form-item>
     </div>
@@ -130,6 +132,9 @@ defineExpose({
             v-model:value="store.form_45.to"
             type="date"
             :placeholder="$t(`content.choose`)"
+            :format="useAppSetting.datePicketFormat"
+            :disabled="!store.form_45.from && !store.form_45.to"
+            :is-date-disabled="(v)=>Utils.disablePasteDate(v,store.form_45.from)"
         />
       </n-form-item>
     </div>
@@ -140,6 +145,9 @@ defineExpose({
             v-model:value="store.form_45.work_day"
             type="date"
             :placeholder="$t(`content.choose`)"
+            :format="useAppSetting.datePicketFormat"
+            :disabled="!store.form_45.to && !store.form_45.work_day"
+            :is-date-disabled="(v)=>Utils.disablePasteDate(v,store.form_45.to)"
         />
       </n-form-item>
     </div>

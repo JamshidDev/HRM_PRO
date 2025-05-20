@@ -37,9 +37,10 @@ const onSelect = (v)=>{
 
 watch(()=>props.options, (v)=>{
   if(v.length===1 && (v[0]?.children? v[0].children?.length ===0 : true )){
-    if(props.autoSelect){
-      emits('updateModel',v)
-    }
+    // if(props.autoSelect){
+    //   emits('updateModel',v)
+    // }
+    emits('updateModel',v)
   }
 })
 

@@ -1,5 +1,6 @@
 <script setup>
 import Utils from "@/utils/Utils.js"
+import {useAppSetting} from "@/utils/index.js"
 import VuePictureSwipe from 'vue3-picture-swipe';
 const pictureSwipe = ref(null)
 const props = defineProps({
@@ -10,7 +11,7 @@ const props = defineProps({
   data:{
     photo:{
       type:String,
-      default:null
+      default:null,
     },
     lastName:String,
     firstName:String,
@@ -32,15 +33,9 @@ const props = defineProps({
 
 const emits = defineEmits(['onClickFullName'])
 
-const fullName = computed(()=> {
-  if(props.short){
-    if(props.data?.fullName) return props.data.fullName
-    return `${props.data.lastName}.${props.data.firstName[0]}.${props.data.middleName[0]} `
-  }else{
-    if(props.data?.fullName) return props.data.fullName
-    return `${props.data.lastName} ${props.data.firstName} ${props.data.middleName} `
-  }
-})
+const fullName = computed(()=> `${props.data.lastName} ${props.data.firstName} ${props.data.middleName} `)
+
+const shortName = computed(()=>  `${props.data.lastName}.${props.data.firstName[0]}.${props.data.middleName[0]} `)
 
 const onOpen = ()=>{
   const thumbnail = pictureSwipe.value?.$el.querySelector('.gallery-thumbnail')
@@ -70,12 +65,20 @@ const userSrc = computed(()=> {
       lazy
       size="large"
       :round="roundAvatar"
-      :src="data?.photo"
+      :src="data?.photo || useAppSetting.noAvailableImage"
       :fallback-src="Utils.noAvailableImage"
   />
   <div @click="emits('onClickFullName')"  class="flex flex-col" style="width: calc(100% - 50px)">
-    <slot name="name" :title="fullName">
-      <span class="text-sm text-textColor2 line-clamp-1 w-full leading-[1.2]">{{fullName}}</span>
+    <slot name="name" :title="short? shortName:fullName">
+      <n-tooltip
+          trigger="hover"
+      >
+        <template #trigger>
+          <span class="text-sm text-textColor2 line-clamp-1 w-full leading-[1.2]">{{short? shortName:fullName}}</span>
+        </template>
+        <span>{{fullName}}</span>
+      </n-tooltip>
+
     </slot>
     <slot name="position">
       <span class="text-xs text-textColor3 line-clamp-1 w-full">{{data?.position || ''}}</span>

@@ -4,6 +4,7 @@ import Utils from "@/utils/Utils.js"
 import validationRules from "@/utils/validationRules.js"
 import {Eye24Regular} from "@vicons/fluent"
 import i18n from "@/i18n/index.js"
+import {useAppSetting} from "@/utils/index.js"
 const {t} = i18n.global
 const store = useCommandStore()
 const componentStore = useComponentStore()
@@ -123,6 +124,7 @@ defineExpose({
             v-model:value="store.form_44.new_date"
             type="date"
             :placeholder="$t(`content.choose`)"
+            :format="useAppSetting.datePicketFormat"
         />
       </n-form-item>
     </div>

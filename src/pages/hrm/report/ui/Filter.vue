@@ -5,7 +5,6 @@ import {useComponentStore, useReport2Store} from "@/store/modules/index.js"
 const componentStore = useComponentStore()
 const store = useReport2Store()
 
-
 onMounted(()=>{
   componentStore._structures()
 })

@@ -65,6 +65,8 @@ export const useConfApplicationStore = defineStore('confApplicationStore', {
             director_id:null,
             organization_id:null,
             search:null,
+            page:1,
+            per_page:50,
         },
         tabList:[
             {
@@ -173,7 +175,7 @@ export const useConfApplicationStore = defineStore('confApplicationStore', {
         _myPositions(callback){
             this.positionLoading= true
             $ApiService.applicationService._myPositions( ).then((res)=>{
-                this.myPositionList = res.data.data
+                this.myPositionList = res.data.data.map((v)=>({...v, position:Utils.combineFullName(v.worker), name:v.post_short_name}))
                 callback?.(res.data.data)
             }).finally(()=>{
                 this.positionLoading= false
@@ -184,7 +186,7 @@ export const useConfApplicationStore = defineStore('confApplicationStore', {
 
         _confirmation(){
             this.confirmLoading = true
-            const params = this.confirmParams
+            const params = {...this.confirmParams}
             $ApiService.applicationService._confirmation({params}).then((res)=>{
                 this.confirmationList = res.data.data.data.map((v)=>({
                     ...v,
@@ -195,6 +197,12 @@ export const useConfApplicationStore = defineStore('confApplicationStore', {
             }).finally(()=>{
                 this.confirmLoading= false
             })
+        },
+
+        onSearchConfirmation(v){
+            this.confirmParams.paeg =1
+            this.confirmParams.search =v
+            Utils.debouncedFn(this._confirmation)
         },
         _vacationWorker(id){
             this.vacationWorkerLoading = true

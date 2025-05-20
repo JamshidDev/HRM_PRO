@@ -102,7 +102,7 @@ const onSelectEv = (v)=>{
           <th class="text-center! min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
           <th class="min-w-[200px] w-[250px]">{{$t('confirmationPage.table.worker')}}</th>
           <th class="min-w-[100px] w-[100px]">{{$t('medPage.form.status')}}</th>
-          <th class="min-w-[100px] w-[100px]">{{$t('date.day')}}</th>
+          <th class="min-w-[100px] w-[200px]">{{$t('date.day')}}</th>
           <th class="min-w-[100px]">{{$t('medPage.form.organization')}}</th>
           <th class="min-w-[90px] w-[90px]">{{$t('medPage.form.from')}}</th>
           <th class="min-w-[90px] w-[90px]">{{$t('medPage.form.to')}}</th>

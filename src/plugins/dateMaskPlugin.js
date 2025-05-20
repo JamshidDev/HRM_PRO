@@ -1,4 +1,3 @@
-// dateMaskPlugin.js
 const dateMaskPlugin = {
     install(app) {
         app.mixin({
@@ -6,22 +5,25 @@ const dateMaskPlugin = {
                 this.$nextTick(() => {
                     if (this.$el && this.$el?.querySelectorAll) {
                         const formatDateInput = (value, prevValue) => {
-                            let cleaned = value.replace(/\D/g, ''); // Faqat raqamlarni olish
-                            if (cleaned.length > 8) cleaned = cleaned.slice(0, 8); // Maksimum 8 raqam (ddMMyyyy)
+                            // Faqat raqamlar va nuqtalarni saqlash
+                            let cleaned = value.replace(/[^0-9.]/g, '');
 
-                            let formatted = '';
-                            let day = cleaned.slice(0, 2);
-                            let month = cleaned.slice(2, 4);
-                            let year = cleaned.slice(4);
+                            // Raqamlarni va nuqtalarni ajratish
+                            let parts = cleaned.split('.');
+                            let digits = parts.join(''); // Nuqtalarsiz raqamlar
+                            if (digits.length > 8) digits = digits.slice(0, 8); // Maksimum 8 raqam (ddMMyyyy)
+
+                            let day = digits.slice(0, 2);
+                            let month = digits.slice(2, 4);
+                            let year = digits.slice(4);
 
                             // Kun uchun maxsus qoida
                             if (day) {
                                 const firstDayDigit = parseInt(day[0]);
                                 if (firstDayDigit > 3) {
-                                    // Agar birinchi raqam 3 dan katta bo‘lsa, 0 qo‘shib ikki raqamli qilish
                                     day = `0${firstDayDigit}`;
                                 } else if (day.length === 2 && (day < 1 || day > 31)) {
-                                    return prevValue; // Kun 01-31 chegarasidan chiqsa, avvalgi qiymat
+                                    return prevValue; // Kun 01-31 chegarasidan chiqsa
                                 }
                             }
 
@@ -29,20 +31,24 @@ const dateMaskPlugin = {
                             if (month) {
                                 const firstMonthDigit = parseInt(month[0]);
                                 if (firstMonthDigit > 1) {
-                                    // Agar birinchi raqam 1 dan katta bo‘lsa, 0 qo‘shib ikki raqamli qilish
                                     month = `0${firstMonthDigit}`;
                                 } else if (month.length === 2 && (month < 1 || month > 12)) {
-                                    return prevValue; // Oy 01-12 chegarasidan chiqsa, avvalgi qiymat
+                                    return prevValue; // Oy 01-12 chegarasidan chiqsa
                                 }
                             }
 
-                            // Formatlash (avtomatik nuqta qo‘shish)
-                            if (cleaned.length > 4 && year) {
-                                formatted = `${day}.${month}.${year}`;
-                            } else if (cleaned.length > 2 && month) {
-                                formatted = `${day}.${month}`;
-                            } else if (day) {
-                                formatted = day;
+                            // Formatlash
+                            let formatted = day || '';
+                            if (month && parts.length > 1) {
+                                formatted += `.${month}`;
+                            }
+                            if (year && parts.length > 2) {
+                                formatted += `.${year}`;
+                            }
+
+                            // Foydalanuvchi kiritgan oxirgi nuqtani saqlash
+                            if (value.endsWith('.') && parts.length <= 3) {
+                                formatted += '.';
                             }
 
                             return formatted;
@@ -55,7 +61,6 @@ const dateMaskPlugin = {
                             el.addEventListener('input', function (event) {
                                 const currentValue = event.target.value;
                                 const formattedValue = formatDateInput(currentValue, previousValue);
-
                                 if (formattedValue !== currentValue) {
                                     event.target.value = formattedValue;
                                     event.target.dispatchEvent(new Event('input', { bubbles: true }));
@@ -73,7 +78,7 @@ const dateMaskPlugin = {
                                 previousValue = formattedValue; // Har doim yangilash
                             });
 
-                            el.addEventListener('blur-sm', function (event) {
+                            el.addEventListener('blur', function (event) {
                                 const value = event.target.value;
                                 if (value.length === 10) {
                                     const [day, month, year] = value.split('.').map(Number);

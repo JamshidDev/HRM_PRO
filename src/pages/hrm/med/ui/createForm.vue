@@ -185,6 +185,7 @@ onMounted(()=>{
               type="date"
               :placeholder="$t(`content.choose`)"
               :format="useAppSetting.datePicketFormat"
+              :is-date-disabled="(v)=>Utils.disablePasteDate(v,store.payload.from)"
           />
         </n-form-item>
         <n-form-item :label="$t(`medPage.form.file`)" path="file">

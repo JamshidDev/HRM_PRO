@@ -32,39 +32,6 @@ const onFocusPosition = ()=>{
 
 }
 
-const renderLabel2 = (option)=>{
-  return [
-    h(
-        'div',
-        {
-          class:'flex gap-2 my-1 items-center'
-        },[
-            h('div', {
-              class:'flex w-[40px]'
-            },[
-              h(NAvatar,
-                  {
-                    class:'w-[30px]',
-                    src:option.worker.photo,
-                  },),
-            ]),
-          h('div',{ class:'flex flex-col',}, [
-            h('div',{ class:'text-xs font-medium text-gray-500'},`${option.worker.last_name}.${option.worker.first_name[0]}.${option.worker.middle_name[0]}`),
-            h('div',{ class:'text-xs text-gray-400 truncate'},option.post_short_name),
-          ])
-        ]
-    ),
-  ];
-}
-const renderValue2 = ({option})=>{
-  return [
-    h(
-        'div',
-        {
-          class:'flex gap-2 my-1 items-center'
-        },`${option?.post_name}`),
-  ];
-}
 
 const onSelectDirector = ()=>{
   store.confirmParams.director_id = store.payload.director_id
@@ -161,9 +128,10 @@ onMounted(()=>{
             :placeholder="$t(`content.choose`)"
             :options="store.myPositionList"
             :loading="store.positionLoading"
-            :render-label="renderLabel2"
-            :render-tag="renderValue2"
+            :render-label="UIHelper.selectRender.label"
+            :render-tag="UIHelper.selectRender.value"
             @update:value="changePosition"
+
             label-field="name"
             value-field="id"
         />
@@ -213,6 +181,9 @@ onMounted(()=>{
             label-field="id"
             value-field="id"
             :max-tag-count="1"
+            filterable
+            :filter="()=>true"
+            @search="store.onSearchConfirmation"
         />
       </n-form-item>
     </div>

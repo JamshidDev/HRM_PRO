@@ -69,7 +69,7 @@ const changeOption = (v)=>{
           class="cursor-pointer"
           round
           size="large"
-          :src="accountStore.account?.worker?.photo"
+          :src="accountStore.account?.worker?.photo || useAppSetting.noAvailableImage"
           :fallback-src="useAppSetting.noAvailableImage"
       />
     </div>

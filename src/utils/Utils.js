@@ -521,7 +521,13 @@ const documentStatus = {
     },
 }
 
+const disablePasteDate = (v, date) =>{
+    if(!date) return false
+    return v<date
+}
+
 export default {
+    disablePasteDate,
     fileToBase64,
     onlyAllowNumber,
     getMyLocation,
