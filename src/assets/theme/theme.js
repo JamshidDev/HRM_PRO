@@ -45,7 +45,7 @@ export const customTheme = ()=>({
         tableColorHover: '#f5f5f5',
 
         // Joylashtiruvchi va kiritish ranglari
-        placeholderColor:getValueOfCssVariable('--surface-text'),// Kiritish maydonlaridagi joylashtiruvchi matn rangi
+        placeholderColor:getValueOfCssVariable('--textColor3'),// Kiritish maydonlaridagi joylashtiruvchi matn rangi
         inputColor:getValueOfCssVariable('--surface-section'), // Kiritish maydonlari uchun fon rangi
         inputColorDisabled:getValueOfCssVariable('--surface-section'), // Nogiron kiritish maydonlari uchun fon rangi
 
@@ -55,7 +55,7 @@ export const customTheme = ()=>({
         dividerColor: getValueOfCssVariable('--surface-line'),
 
         hoverColor: getValueOfCssVariable('--primary-color')+"1a", // Hover holati uchun fon rangi
-        activeColor: "rgba(0, 0, 0, 0.1)", // Aktiv holat uchun fon rangi
+        activeColor: "rgba(0, 0, 0, 0.1)", // Aktiv holat uchun fon rangi,
     },
     Table: {
         thColor:getValueOfCssVariable('--surface-section'),

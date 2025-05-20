@@ -81,12 +81,6 @@ const safeBase64Encode = (str)=>{
     }
 }
 
-const minuteToHHMM = (totalMinutes)=> {
-    const hours = String(Math.floor(totalMinutes/60)).padStart(2, '0')
-    const minutes = String(totalMinutes%60).padStart(2, '0')
-    return `${hours}:${minutes}`
-}
-
 const base64UrlEncode = (obj)=>{
 
     return btoa(JSON.stringify(obj))
@@ -412,7 +406,11 @@ const appPermissions = {
     turnstileWorkers: 'turnstile-workers',
     turnstileWorkersWrite: 'turnstile-workers-write',
     turnstileWorkersRead: 'turnstile-workers-read',
-
+    turnstileWorkDuration: "turnstile-work-duration",
+    turnstileWorkDurationRead: "turnstile-work-duration-read",
+    turnstileWorkDurationWrite: "turnstile-work-duration-write",
+    turnstileWorkDurationShow: "turnstile-work-duration-show",
+    turnstileWorkDurationLogs: "turnstile-work-duration-logs",
     hrJobs:"hr-jobs",
     hrJobsWrite:"hr-jobs-write",
     hrJobsRead:"hr-jobs-read",
@@ -575,5 +573,5 @@ export default {
     formatPhoneWithMask,
     documentStatus,
     safeBase64Encode,
-    minuteToHHMM
+
 }

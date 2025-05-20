@@ -72,7 +72,6 @@ const miniMenu = computed(() => {
 
 const panelMenu = computed(() => {
   if (menuPath.value == null) {
-    console.log("returning empty")
     return []
   }
   /**

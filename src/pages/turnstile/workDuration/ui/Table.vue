@@ -1,5 +1,5 @@
 <script setup>
-import {NoDataPicture,UIPagination, UIUser, UIBadge} from "@/components/index.js"
+import {NoDataPicture, UIPagination, UIUser, UIBadge, UIMenuButton} from "@/components/index.js"
 import {useTurnstileWorkDurationStore, useComponentStore} from "@/store/modules/index.js"
 import Utils from "@/utils/Utils.js"
 
@@ -14,14 +14,14 @@ const changePage = (v)=>{
 }
 
 const onSelectEv = (v)=>{
-  // if(Utils.ActionTypes.edit === v.key){
-  //   onEdit(v.data)
-  // }else if(Utils.ActionTypes.delete === v.key){
-  //   onDelete(v.data)
-  // }
+  if(Utils.ActionTypes.view === v.key){
+    store.workerInstance = v.data
+  }
 }
 
-
+const statuses = {
+  AT_WORK: 'in-work'
+}
 
 </script>
 
@@ -39,18 +39,18 @@ const onSelectEv = (v)=>{
           <th class="min-w-[200px]">{{$t('content.worker')}}</th>
           <th class="min-w-[100px] w-[300px]">{{$t('turnstile.workDurationPage.building')}}</th>
           <th class="min-w-[100px] w-[120px] !text-center">{{$t('turnstile.workDurationPage.workTime')}}</th>
-          <th class="min-w-[100px] w-[120px] !text-center">{{$t('turnstile.workDurationPage.time')}}</th>
+          <th class="min-w-[180px] w-[180px] !text-center">{{$t('turnstile.workDurationPage.actionTime')}}</th>
 
           <th class="min-w-[100px] w-[100px] !text-center">{{$t('turnstile.workDurationPage.action')}}</th>
-          <th class="min-w-[100px] w-[120px] !text-center">{{$t('content.status')}}</th>
-          <!--          <th class="min-w-[40px] w-[40px]"></th>-->
+          <th class="min-w-[100px] w-[100px] !text-center">{{$t('content.status')}}</th>
+          <th class="min-w-[40px] w-[40px]">{{$t('content.action')}}</th>
         </tr>
         </thead>
         <tbody>
         <tr v-for="(item, idx) in store.list" :key="idx">
           <td><span class="text-center block">{{ (store.params.page - 1) * store.params.per_page + idx + 1 }}</span></td>
           <td>
-            <div>
+            <div @click="console.log">
               <UIUser
                   :short="false"
                   :data="{
@@ -65,19 +65,31 @@ const onSelectEv = (v)=>{
           </td>
           <td>{{item.building.name}}</td>
           <td class="!text-center">
-            <n-button type="warning" tertiary size="tiny">
-              {{Utils.minuteToHHMM(item.total_minutes)}}
+            <n-button type="info" ghost circle size="tiny">
+              <span class="text-[14px] font-bold">{{Math.round(item.total_minutes/60)}}</span>
             </n-button>
           </td>
           <td class="!text-center">
-            <UIBadge :show-icon="false" :label="Utils.timeOnlyDate(item?.event_time)" />
+            <UIBadge :show-icon="false" :label="Utils.timeWithMonth(item?.event_time)" />
           </td>
           <td class="!text-center">
             <n-button :type="item.event_type ? 'primary' : 'error'" dashed size="tiny">
-              {{$t(item.event_type ? 'turnstile.workDurationPage.enter' : 'turnstile.workDurationPage.exit')}}
+              <span class="text-[14px]">{{$t(item.event_type ? 'turnstile.workDurationPage.enter' : 'turnstile.workDurationPage.exit')}}</span>
             </n-button>
           </td>
-          <td class="!text-center">{{item.status}}</td>
+          <td class="!text-center">
+            <n-button tertiary size="tiny" :type="item.status === statuses.AT_WORK ? 'primary' : 'success' ">
+              <span class="text-[14px]">{{$t(item.status === statuses.AT_WORK ? 'turnstile.workDurationPage.at_work' : 'turnstile.workDurationPage.outside')}}</span>
+            </n-button>
+          </td>
+          <td>
+            <UIMenuButton
+                :data="item"
+                show-view
+                :show-delete="false"
+                @selectEv="onSelectEv"
+            />
+          </td>
         </tr>
         </tbody>
       </n-table>

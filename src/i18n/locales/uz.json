@@ -1335,10 +1335,14 @@
       "name": "Ish vaqti",
       "building": "Bino",
       "action": "Amal",
+      "actionTime": "Amal vaqti",
       "enter": "Kirish",
       "exit": "Chiqish",
-      "workTime": "Ish vaqti",
-      "time": "Vaqt"
+      "workTime": "Ishlagan soat",
+      "time": "Vaqt",
+      "at_work": "Ishda",
+      "outside": "Tashqarida",
+      "calendarTitle": "Ish vaqti grafigi"
     }
   },
   "medPage": {
