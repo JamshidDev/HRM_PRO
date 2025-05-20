@@ -30,9 +30,21 @@ export const useUniversityStore = defineStore('universityStore', {
         uuid:null,
         universityList:[],
         universityLoading:false,
+        totalUniversity:0,
+        universityParam:{
+            page:1,
+            per_page:50,
+            search:null,
+        },
 
         specialityList:[],
+        totalSpecial:0,
         specialityLoading:false,
+        specialParam:{
+            page:1,
+            per_page:50,
+            search:null,
+        }
 
     }),
     actions:{
@@ -88,22 +100,51 @@ export const useUniversityStore = defineStore('universityStore', {
             this.payload.to_date = null
             this.payload.file = null
         },
-        _getUniversityList(){
+        _getUniversityList(infinity){
             this.universityLoading = true
-            $ApiService.universityServiceAdmin._index({params:{page:1, per_page:1000}}).then((res)=>{
-                    this.universityList = res.data.data.data
+            $ApiService.universityServiceAdmin._index({params:this.universityParam}).then((res)=>{
+                this.totalUniversity = res.data.data.total
+                const data = res.data.data.data
+                this.universityList =infinity? [...this.universityList, ...data]:data
             }).finally(()=>{
             this.universityLoading = false
             })
         },
-        _getSpeciality(){
+        onSearchUniversity(v){
+            this.universityParam.page = 1
+            this.universityParam.search = v
+            Utils.debouncedFn(this._getUniversityList)
+        },
+        onScrollUniversity(e){
+            const currentTarget = e.currentTarget;
+            if(currentTarget.scrollTop + currentTarget.offsetHeight >= currentTarget.scrollHeight && !this.universityLoading && this.totalUniversity>this.universityList.length){
+                this.universityParam.page +=1
+                this._getUniversityList(true)
+            }
+        },
+
+
+        _getSpeciality(infinity=false){
             this.specialityLoading = true
-            $ApiService.specialityService._index({params:{page:1, per_page:1000}}).then((res)=>{
-                this.specialityList = res.data.data.data
+            $ApiService.specialityService._index({params:this.specialParam}).then((res)=>{
+                this.totalSpecial = res.data.data.total
+                const data = res.data.data.data
+                this.specialityList =infinity? [...this.specialityList, ...data] : data
             }).finally(()=>{
             this.specialityLoading = false
             })
-
+        },
+        onSearchSpecial(v){
+            this.specialParam.page = 1
+            this.specialParam.search = v
+            Utils.debouncedFn(this._getSpeciality)
+        },
+        onScrollSpecial(e){
+            const currentTarget = e.currentTarget;
+            if(currentTarget.scrollTop + currentTarget.offsetHeight >= currentTarget.scrollHeight && !this.specialityLoading && this.totalSpecial>this.specialityList.length){
+                this.specialParam.page +=1
+                this._getSpeciality(true)
+            }
         }
 
     }

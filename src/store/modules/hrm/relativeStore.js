@@ -45,6 +45,7 @@ export const useRelativeStore = defineStore('relativeStore', {
             },
         ],
         activeTab:1,
+        sortableLoading:false,
 
     }),
     actions:{
@@ -87,6 +88,15 @@ export const useRelativeStore = defineStore('relativeStore', {
                 this.saveLoading = false
             })
         },
+        _sortable(data){
+            this.sortableLoading = true
+            $ApiService.relativeService._sortable({data}).then((res)=>{
+
+            }).finally(()=>{
+                this.sortableLoading = false
+            })
+        },
+
         _delete(){
             this.deleteLoading = true
             $ApiService.relativeService._delete({id:this.elementId}).then((res)=>{

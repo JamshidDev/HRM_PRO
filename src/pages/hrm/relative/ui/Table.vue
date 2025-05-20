@@ -46,17 +46,11 @@ const onDelete = (v)=>{
 }
 
 const onUpdate = (v)=>{
-  const data = [
-    {
-      worker_old_career_id:v.data.id,
-      position:v.oldIndex
-    },
-    {
-      worker_old_career_id:v.data.id,
-      position:v.newIndex
-    },
-  ]
-  console.log(data)
+  const data = store.list.map((v, idx)=>({
+    position:idx,
+    worker_relative_id:v.id
+  }))
+  store._sortable({orders:data})
 }
 </script>
 

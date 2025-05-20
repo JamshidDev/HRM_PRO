@@ -16,6 +16,10 @@ const _delete = async (payload)=>{
     return await axios.delete(`/v1/hr/worker-old-careers/${payload.id}`)
 }
 
+const _sortable = async (payload)=>{
+    return await axios.put(`/v1/hr/worker-old-careers-sortable`, payload.data)
+}
+
 
 
 
@@ -24,4 +28,5 @@ export default {
     _create,
     _update,
     _delete,
+    _sortable,
 }
