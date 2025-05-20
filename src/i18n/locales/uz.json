@@ -1330,6 +1330,9 @@
       "title": "Xodimlar",
       "create": "Xodimni biriktirish",
       "edit": "Xodimni tahrirlash"
+    },
+    "workDurationPage": {
+      "name": "Ish vaqti"
     }
   },
   "medPage": {

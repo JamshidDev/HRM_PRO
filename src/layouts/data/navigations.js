@@ -33,6 +33,7 @@ import {
     BookDatabase24Regular,
     RibbonStar24Filled,
     PeopleToolbox20Filled,
+    ClockToolbox20Filled,
     AppFolder20Filled,
 } from "@vicons/fluent"
 import {AppPaths} from "@/utils/index.js";
@@ -328,6 +329,13 @@ export const navigations = [
                 path: Utils.routeTurnstilePathMaker(AppPaths.User),
                 icon: PeopleToolbox20Filled,
                 color: 'bg-warning',
+                permission: appPermissions.turnstileWorkers,
+            },
+            {
+                label: 'turnstile.workDurationPage.name',
+                path: Utils.routeTurnstilePathMaker(AppPaths.WorkDuration),
+                icon: ClockToolbox20Filled,
+                color: 'bg-success',
                 permission: appPermissions.turnstileWorkers,
             },
         ]

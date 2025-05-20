@@ -26,21 +26,25 @@ export const useAccountStore = defineStore('accountStore', {
         roleList:[],
         permissions:[],
         storageUpdate: 1,
-        pn:Utils.appPermissions
+        pn:Utils.appPermissions,
+        isModeDev: false
     }),
     getters:{
        checkPermission:(state)=>(permission)=>{
-           const storePermissions = sessionStorage.getItem(useAppSetting.appPermission)? JSON.parse(sessionStorage.getItem(useAppSetting.appPermission)) : []
-           const permissions =state.permissions.length>0? state.permissions:storePermissions
+           const storePermissions = sessionStorage.getItem(useAppSetting.appPermission) ? JSON.parse(sessionStorage.getItem(useAppSetting.appPermission)) : []
+           const permissions = state.permissions.length>0 ? state.permissions : storePermissions
            return permissions.includes(permission)
        },
         checkAction:(state)=>(permission)=>{
-           if(!state.checkPermission(permission)){
+            if(!state.checkPermission(permission) && state.isModeDev){
+                $Toast.warning("Devda ligingiz uchun ruxsat berildi!")
+                return true
+            }
+            if(!state.checkPermission(permission)){
                $Toast.warning(t('message.noPermission'))
                return false
-           }
-           return  true
-
+            }
+            return  true
         },
         fullName:(state)=>Utils.combineFullName(state.account?.worker),
         userPhoto:(state)=>state.account?.worker?.photo,

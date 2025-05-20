@@ -12,6 +12,7 @@ import mask from "./directives/mask.js"
 import VueSignature from "vue-signature-pad"
 import inputFormatter from "@/plugins/inputFormatter.js"
 import dateMaskPlugin from "@/plugins/dateMaskPlugin.js"
+import {useAccountStore} from "@/store/modules/index.js"
 
 const app = createApp(App);
 const meta = document.createElement('meta')
@@ -24,6 +25,16 @@ app.use(inputFormatter)
 app.use(dateMaskPlugin)
 app.use(router)
 app.use(pinia)
+
+const store = useAccountStore()
+
+console.log(import.meta.env.MODE)
+
+if(import.meta.env.MODE === "development"){
+    store.isModeDev = true
+}
+
+
 window.$ApiService = ApiService
 
 app.directive('mask',mask)
