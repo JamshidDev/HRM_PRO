@@ -4,7 +4,8 @@ import {
     TurnstileBuildingPage,
     TurnstileTerminalPage,
     TurnstileOrganizationPage,
-    TurnstileTerminalUserPage
+    TurnstileTerminalUserPage,
+    TurnstileWorkDurationPage
 } from "@/pages/turnstile";
 
 
@@ -27,6 +28,11 @@ export default [
     {
         path:Utils.routeTurnstilePathMaker(AppPaths.User),
         component: ()=>TurnstileTerminalUserPage,
+        children:[],
+    },
+    {
+        path:Utils.routeTurnstilePathMaker(AppPaths.WorkDuration),
+        component: ()=>TurnstileWorkDurationPage,
         children:[],
     },
 ]

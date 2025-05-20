@@ -80,6 +80,7 @@ export const AppPaths = {
     Punishment: "/punishment",
     Incentive: "/incentive",
     Report: "/report",
+    WorkDuration: "/work-duration",
 }
 
 export const AppLayouts ={

@@ -81,6 +81,12 @@ const safeBase64Encode = (str)=>{
     }
 }
 
+const minuteToHHMM = (totalMinutes)=> {
+    const hours = String(Math.floor(totalMinutes/60)).padStart(2, '0')
+    const minutes = String(totalMinutes%60).padStart(2, '0')
+    return `${hours}:${minutes}`
+}
+
 const base64UrlEncode = (obj)=>{
 
     return btoa(JSON.stringify(obj))
@@ -569,5 +575,5 @@ export default {
     formatPhoneWithMask,
     documentStatus,
     safeBase64Encode,
-
+    minuteToHHMM
 }
