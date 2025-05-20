@@ -1332,7 +1332,13 @@
       "edit": "Xodimni tahrirlash"
     },
     "workDurationPage": {
-      "name": "Ish vaqti"
+      "name": "Ish vaqti",
+      "building": "Bino",
+      "action": "Amal",
+      "enter": "Kirish",
+      "exit": "Chiqish",
+      "workTime": "Ish vaqti",
+      "time": "Vaqt"
     }
   },
   "medPage": {
