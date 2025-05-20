@@ -28,13 +28,6 @@ const onChangeStructure = (v) => {
   filterEvent()
 }
 
-const marks = {
-  1: "1",
-  25: "25",
-  50: "50",
-  75: "75",
-  100: "100"
-}
 
 const filterCount = computed(()=>{
   return Number(Boolean(store.params.organizations.length>0))
@@ -52,10 +45,9 @@ const onChangeDepartment = ()=>{
 }
 
 const onAdd = ()=>{
-
+  componentStore._structures()
   if(!accStore.checkAction(accStore.pn.hrPositionsWrite)) return
   componentStore._enums()
-  componentStore._departments()
   componentStore._positions()
   store.resetForm()
   store.visibleType = true
