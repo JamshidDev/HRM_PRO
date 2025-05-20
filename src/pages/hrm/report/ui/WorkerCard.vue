@@ -3,6 +3,8 @@ import {useReport2Store} from "@/store/modules/index.js"
 import Utils from "../../../../utils/Utils.js"
 import Indicator from "@/pages/hrm/report/ui/Indicator.vue"
 import IndicatorTitle from "@/pages/hrm/report/ui/IndicatorTitle.vue"
+import {UIUser} from "@/components/index.js"
+
 defineProps({
   bgFull:{
     type:Boolean,
@@ -25,12 +27,22 @@ const store = useReport2Store()
       </div>
 
       <template v-for="(item, idx) in store.workerList" :key="idx">
-        <div class="flex border-b border-warning border-dashed py-2 hover:bg-warning/10">
-          <div class="w-[calc(100%-200px)]">
+        <div class="flex items-center border-b border-warning border-dashed py-2 hover:bg-warning/10">
+          <div class="w-[calc(100%-200px)] flex items-center">
             <span class="inline-block pr-4 font-semibold">{{idx + 1}}</span>
-            <span>{{Utils.combineFullName(item.worker)}}</span>
+            <UIUser
+                :short="false"
+                :data="{
+                  photo:item.worker.photo,
+                  position:item.worker.birthday,
+                  lastName:item.worker.last_name,
+                  firstName:item.worker.first_name,
+                  middleName:item.worker.middle_name,
+                }"
+            />
+
           </div>
-          <div class="w-[200px] flex items-center justify-end h-full gap-2 pr-2">
+          <div class="w-[200px] flex items-center justify-end h-full gap-2 pr-2 h-full">
             <Indicator
                 :is-worker="true"
                 :data="item"

@@ -167,7 +167,7 @@ onMounted(()=>{
       </div>
     </div>
     <div class="col-span-12 md:col-span-4">
-      <div class="w-full border border-surface-line bg-surface-section p-2 rounded-lg">
+      <div class="w-full h-full border border-surface-line bg-surface-section p-2 rounded-lg">
         <v-chart class="h-[200px]" autoresize :option="contractOption" />
       </div>
     </div>

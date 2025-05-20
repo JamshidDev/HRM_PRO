@@ -48,6 +48,7 @@ const onSubmit = ()=>{
           <n-select
               v-model:value="store.payload.department_id"
               filterable
+              :filter="()=>true"
               clearable
               :placeholder="$t(`departmentPositionPage.form.department_id`)"
               :options="componentStore.departmentList"
@@ -57,6 +58,7 @@ const onSubmit = ()=>{
               :loading="componentStore.departmentLoading"
               @search="componentStore._onSearchDepartment"
               @scroll="componentStore._onScrollDepartment"
+              :ignore-composition="false"
           />
         </n-form-item>
         <n-form-item class="col-span-12 md:col-span-6 lg:col-span-4" :label="$t(`departmentPositionPage.form.group`)" path="group">
