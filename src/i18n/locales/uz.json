@@ -1492,6 +1492,7 @@
       "who": "Kim tomonidan",
       "reason": "Sabab",
       "byPosition": "Lavozimlar kesimida",
+      "optimizationConfirm": "Ushbu amalni bajarish orqali bo'limdagi bir xil turdagi barcha lavozimlarni birlashtiriladi. Tasdiqalsh orqlai amalni bajaring",
       "byWorker": "Xodimlar kesimida"
     }
   }

@@ -24,7 +24,7 @@ import IndicatorTitle from "@/pages/hrm/report/ui/IndicatorTitle.vue"
             :class="[!(item?.id === store.selectedPosId) && 'hover:bg-success/10']"
             class="flex gap-4 border-b border-success border-dashed py-2"
         >
-          <div class="w-[calc(100%-240px)] text-wrap flex">
+          <div class="w-[calc(100%-260px)] text-wrap flex">
             <span class="inline-block pr-4 font-semibold">{{idx + 1}}</span>
             <n-radio
                 :checked="item?.id === store.selectedPosId"
@@ -32,7 +32,7 @@ import IndicatorTitle from "@/pages/hrm/report/ui/IndicatorTitle.vue"
               {{item?.position?.name}}
             </n-radio>
           </div>
-          <div class="w-[240px]x flex items-center justify-end h-full gap-2 pr-2">
+          <div class="w-[260px] flex items-center justify-between h-full gap-2 pr-2">
             <n-button
                 @click.stop="store.onEdit(item)"
                 size="tiny" type="primary" secondary>{{$t('content.edit')}}
@@ -41,6 +41,7 @@ import IndicatorTitle from "@/pages/hrm/report/ui/IndicatorTitle.vue"
               </template>
             </n-button>
             <Indicator
+
                 :data="item"
             />
           </div>

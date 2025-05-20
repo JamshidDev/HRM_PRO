@@ -1,6 +1,8 @@
 import {defineStore} from "pinia";
 import i18n from "@/i18n/index.js"
 const {t} = i18n.global
+import {useComponentStore} from "@/store/modules/index.js"
+
 export const useDepartmentPositionStore = defineStore('departmentPositionStore', {
     state:()=>({
         list:[],
@@ -14,6 +16,7 @@ export const useDepartmentPositionStore = defineStore('departmentPositionStore',
         allCountryList:[],
         allLoading:false,
         payload:{
+            organization_id:[],
             position_id:null,
             department_id:null,
             group:null,
@@ -36,6 +39,17 @@ export const useDepartmentPositionStore = defineStore('departmentPositionStore',
 
     }),
     actions:{
+        onChangeStructure(v){
+            const store = useComponentStore()
+            this.payload.organization_id = v
+            store.departmentList = []
+            this.payload.department_id = null
+            if(v.length>0){
+                store.depParams.organizations = [v?.[0]?.id]
+                store._departments()
+            }
+
+        },
         _index(){
             this.loading= true
             let params = {
@@ -52,7 +66,9 @@ export const useDepartmentPositionStore = defineStore('departmentPositionStore',
         },
         _create(){
             this.saveLoading = true
-            let data = {...this.payload}
+            let data = {
+                ...this.payload,
+                organization_id:undefined}
             $ApiService.departmentPositionService._create({data}).then((res)=>{
                 this.visible = false
                 this._index()
@@ -64,7 +80,9 @@ export const useDepartmentPositionStore = defineStore('departmentPositionStore',
         },
         _update(){
             this.saveLoading = true
-            let data = {...this.payload}
+            let data = {
+                ...this.payload,
+                organization_id:undefined}
             $ApiService.departmentPositionService._update({data, id:this.elementId}).then((res)=>{
                 this.visible = false
                 this._index()
@@ -88,6 +106,7 @@ export const useDepartmentPositionStore = defineStore('departmentPositionStore',
         resetForm(){
             this.elementId = null
             this.payload.position_id = null
+            this.payload.organization_id = []
             this.payload.department_id = null
             this.payload.group = null
             this.payload.rank = null
@@ -96,7 +115,7 @@ export const useDepartmentPositionStore = defineStore('departmentPositionStore',
             this.payload.salary = null
             this.payload.experience = null
             this.payload.education = null
-        }
+        },
 
     }
 

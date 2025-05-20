@@ -4,6 +4,7 @@ const formRef = ref(null)
 import {useDepartmentPositionStore, useComponentStore} from "@/store/modules/index.js";
 import Utils from "@/utils/Utils.js"
 import UIHelper from "@/utils/UIHelper.js"
+import {UISelect} from "@/components/index.js"
 
 const store = useDepartmentPositionStore()
 const componentStore = useComponentStore()
@@ -22,6 +23,7 @@ const onSubmit = ()=>{
   })
 }
 
+
 </script>
 
 <template>
@@ -32,20 +34,21 @@ const onSubmit = ()=>{
   >
     <div style="min-height:calc(100vh - 120px)">
       <div class="grid grid-cols-12 gap-x-4 overflow-x-hidden">
-        <n-form-item class="col-span-12" :label="$t(`departmentPositionPage.form.position_id`)" path="position_id">
-          <n-select
-              v-model:value="store.payload.position_id"
-              filterable
-              clearable
-              :placeholder="$t(`departmentPositionPage.form.position_id`)"
-              :options="componentStore.positionList"
-              label-field="name"
-              value-field="id"
-              :loading="componentStore.positionLoading"
+        <n-form-item class="col-span-12" :label="$t(`content.organization`)">
+          <UISelect
+              :options="componentStore.structureList"
+              :modelV="store.payload.organization_id"
+              @updateModel="store.onChangeStructure"
+              :checkedVal="store.structureCheck"
+              @updateCheck="(v)=>store.structureCheck=v"
+              :loading="componentStore.structureLoading"
+              :multiple="false"
+              :auto-select="true"
           />
         </n-form-item>
         <n-form-item class="col-span-12" :label="$t(`departmentPositionPage.form.department_id`)" path="department_id">
           <n-select
+              :disabled="store.payload.organization_id.length === 0"
               v-model:value="store.payload.department_id"
               filterable
               :filter="()=>true"
@@ -59,6 +62,18 @@ const onSubmit = ()=>{
               @search="componentStore._onSearchDepartment"
               @scroll="componentStore._onScrollDepartment"
               :ignore-composition="false"
+          />
+        </n-form-item>
+        <n-form-item class="col-span-12" :label="$t(`departmentPositionPage.form.position_id`)" path="position_id">
+          <n-select
+              v-model:value="store.payload.position_id"
+              filterable
+              clearable
+              :placeholder="$t(`departmentPositionPage.form.position_id`)"
+              :options="componentStore.positionList"
+              label-field="name"
+              value-field="id"
+              :loading="componentStore.positionLoading"
           />
         </n-form-item>
         <n-form-item class="col-span-12 md:col-span-6 lg:col-span-4" :label="$t(`departmentPositionPage.form.group`)" path="group">
@@ -130,7 +145,7 @@ const onSubmit = ()=>{
             </template>
           </n-input>
         </n-form-item>
-        <n-form-item class="col-span-12 md:col-span-6 lg:col-span-4" :label="$t(`departmentPositionPage.form.educations`)" path="educations">
+        <n-form-item class="col-span-12 md:col-span-6 lg:col-span-8" :label="$t(`departmentPositionPage.form.educations`)" path="educations">
           <n-select
               v-model:value="store.payload.education"
               filterable

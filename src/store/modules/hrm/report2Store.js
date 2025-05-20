@@ -61,13 +61,16 @@ export const useReport2Store = defineStore('report2Store', {
             organizations:[],
             departments:[],
         },
+
+        confirmVisible:false,
     }),
     actions:{
         _getOptimization(){
             this.optimizationLoading = true
             const department_id = this.selectedDepId
             $ApiService.reportService._optimization({params:{department_id}}).then((res)=>{
-
+                this.confirmVisible = false
+                this.getPosition()
             }).finally(()=>{
                 this.optimizationLoading = false
             })
