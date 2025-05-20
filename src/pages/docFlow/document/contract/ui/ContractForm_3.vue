@@ -64,7 +64,7 @@ watchEffect(()=>{
                 :disabled="!Boolean(store.payload.type)"
                 v-model:value="store.payload.command_type"
                 filterable
-                :placeholder="$t(`content.choose`)"
+
                 :options="componentStore.commandTypeList"
                 label-field="name"
                 value-field="id"
@@ -78,7 +78,7 @@ watchEffect(()=>{
             <n-input
                 class="w-full"
                 type="text"
-                :placeholder="$t(`content.enterField`)"
+
                 v-model:value="store.payload.command_number"
             />
           </n-form-item>
@@ -90,7 +90,7 @@ watchEffect(()=>{
                 class="w-full"
                 v-model:value="store.payload.command_date"
                 type="date"
-                :placeholder="$t(`content.choose`)"
+
                 :format="useAppSetting.datePicketFormat"
             />
           </n-form-item>
@@ -103,7 +103,7 @@ watchEffect(()=>{
                 value-field="id"
                 multiple
                 v-model:value="store.payload.confirmations"
-                :placeholder="$t(`content.choose`)"
+
                 :options="confirmationList"
                 :loading="componentStore.confirmationLoading"
                 :render-label="renderLabel" />

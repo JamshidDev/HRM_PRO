@@ -98,7 +98,7 @@ onMounted(()=>{
               id="phone"
               type="text"
               v-mask="'+998(##)#######'"
-              :placeholder="'+998'"
+
               v-model:value="store.phone"
           >
             <template #prefix>
@@ -114,7 +114,7 @@ onMounted(()=>{
               type="password"
               show-password-on="click"
               :maxlength="16"
-              :placeholder="$t(`loginPage.password`)"
+
               v-model:value="store.password"
               @keyup.enter ="onSubmit"
           >

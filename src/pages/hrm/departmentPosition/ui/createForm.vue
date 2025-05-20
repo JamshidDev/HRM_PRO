@@ -53,7 +53,7 @@ const onSubmit = ()=>{
               filterable
               :filter="()=>true"
               clearable
-              :placeholder="$t(`departmentPositionPage.form.department_id`)"
+
               :options="componentStore.departmentList"
               :render-label="UIHelper.selectRender.label"
               :render-tag="UIHelper.selectRender.value"
@@ -69,7 +69,7 @@ const onSubmit = ()=>{
               v-model:value="store.payload.position_id"
               filterable
               clearable
-              :placeholder="$t(`departmentPositionPage.form.position_id`)"
+
               :options="componentStore.positionList"
               label-field="name"
               value-field="id"
@@ -81,7 +81,7 @@ const onSubmit = ()=>{
               v-model:value="store.payload.group"
               filterable
               clearable
-              :placeholder="$t(`departmentPositionPage.form.group`)"
+
               :options="componentStore.groupList"
               label-field="name"
               value-field="id"
@@ -94,7 +94,7 @@ const onSubmit = ()=>{
               v-model:value="store.payload.rank"
               filterable
               clearable
-              :placeholder="$t(`departmentPositionPage.form.rank`)"
+
               :options="componentStore.rankList"
               label-field="name"
               value-field="id"
@@ -106,7 +106,7 @@ const onSubmit = ()=>{
               v-model:value="store.payload.max_rank"
               filterable
               clearable
-              :placeholder="$t(`departmentPositionPage.form.max_rank`)"
+
               :options="componentStore.rankList"
               label-field="name"
               value-field="id"
@@ -118,7 +118,7 @@ const onSubmit = ()=>{
               v-model:value="store.payload.rate"
               type="text"
               :allow-input="Utils.onlyAllowNumber"
-              :placeholder="$t(`departmentPositionPage.form.rate`)"
+
           />
         </n-form-item>
         <n-form-item class="col-span-12 md:col-span-6 lg:col-span-4" :label="$t(`departmentPositionPage.form.salary`)" path="salary">
@@ -126,7 +126,7 @@ const onSubmit = ()=>{
               v-model:value="store.payload.salary"
               type="text"
               :allow-input="Utils.onlyAllowNumber"
-              :placeholder="$t(`departmentPositionPage.form.salary`)"
+
           >
             <template #suffix>
               {{$t('content.sum')}}
@@ -138,7 +138,7 @@ const onSubmit = ()=>{
               v-model:value="store.payload.experience"
               type="text"
               :allow-input="Utils.onlyAllowNumber"
-              :placeholder="$t(`departmentPositionPage.form.experience`)"
+
           >
             <template #suffix>
               {{$t('content.month')}}
@@ -150,7 +150,7 @@ const onSubmit = ()=>{
               v-model:value="store.payload.education"
               filterable
               clearable
-              :placeholder="$t(`departmentPositionPage.form.educations`)"
+
               :options="componentStore.educationList"
               label-field="name"
               value-field="id"

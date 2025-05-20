@@ -90,7 +90,7 @@ onMounted(() => {
         <n-input
             class="w-full"
             type="text"
-            :placeholder="$t(`content.enterField`)"
+
             v-model:value="item.reason"
         />
       </n-form-item>
@@ -102,7 +102,7 @@ onMounted(() => {
         <n-select
             v-model:value="item.fine_type"
             filterable
-            :placeholder="$t(`content.choose`)"
+
             :options="componentStore.fineTypes"
             label-field="name"
             value-field="id"
@@ -118,7 +118,7 @@ onMounted(() => {
         <n-input
             class="w-full"
             type="text"
-            :placeholder="$t(`content.enterField`)"
+
             v-model:value="item.fine"
         />
       </n-form-item>

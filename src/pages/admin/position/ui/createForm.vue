@@ -33,28 +33,28 @@ const onSubmit = ()=>{
       <n-form-item :label="$t(`positionPage.form.name`)" path="name">
         <n-input
             type="text"
-            :placeholder="$t(`positionPage.form.name`)"
+
             v-model:value="store.payload.name"
         />
       </n-form-item>
       <n-form-item :label="$t(`positionPage.form.name_ru`)" path="name_ru">
         <n-input
             type="text"
-            :placeholder="$t(`positionPage.form.name_ru`)"
+
             v-model:value="store.payload.name_ru"
         />
       </n-form-item>
       <n-form-item :label="$t(`positionPage.form.classification_index`)" path="classification_index">
         <n-input
             type="text"
-            :placeholder="$t(`positionPage.form.classification_index`)"
+
             v-model:value="store.payload.classification_index"
         />
       </n-form-item>
       <n-form-item :label="$t(`positionPage.form.classification_code`)" path="classification_code">
         <n-input
             type="text"
-            :placeholder="$t(`positionPage.form.classification_code`)"
+
             v-model:value="store.payload.classification_code"
         />
       </n-form-item>

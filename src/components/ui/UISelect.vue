@@ -134,7 +134,7 @@ const inputVal = computed(()=>props.modelV.map((a)=>a.name).toString())
   >
     <template #trigger>
       <n-badge class="w-full" :value="modelV.length" type="info" :offset="[-10,-4]">
-        <n-input :loading="loading" class="ui__structure-input w-full"  type="text" :value="inputVal?.toString()" :placeholder="$t('content.choose')" />
+        <n-input :loading="loading" class="ui__structure-input w-full"  type="text" :value="inputVal?.toString()"  />
       </n-badge>
     </template>
     <div class="w-full h-[10px]"></div>
@@ -157,7 +157,7 @@ const inputVal = computed(()=>props.modelV.map((a)=>a.name).toString())
         <n-input
             size="small"
             v-model:value="searchModel"
-            round :placeholder="$t('content.search')"
+            round
             :on-keyup="searchEvent"
             :loading="loading"
         >

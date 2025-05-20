@@ -42,7 +42,7 @@ onMounted(()=>{
         <n-form-item :label="$t(`content.name`)" path="name">
           <n-input
               type="text"
-              :placeholder="$t(`content.enterField`)"
+
               v-model:value="store.payload.name"
           />
         </n-form-item>
@@ -50,7 +50,7 @@ onMounted(()=>{
           <n-select
               v-model:value="store.payload.type"
               filterable
-              :placeholder="$t(`content.choose`)"
+
               :options="componentStore.topicTypes"
               label-field="name"
               value-field="id"

@@ -58,7 +58,7 @@ onMounted(()=>{
         <n-select
             v-model:value="store.rolePayload.role"
             filterable
-            :placeholder="$t(`workerProfile.roles.title`)"
+
             :options="componentStore.roles"
             :loading="componentStore.enumLoading"
             label-field="name"

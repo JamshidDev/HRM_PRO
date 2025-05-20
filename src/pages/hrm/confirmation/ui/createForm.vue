@@ -41,7 +41,7 @@ onMounted(()=>{
             v-model:value="store.payload.level"
             filterable
             clearable
-            :placeholder="$t(`content.choose`)"
+
             :options="componentStore.confirmationLevels"
             label-field="name"
             value-field="id"
@@ -51,7 +51,7 @@ onMounted(()=>{
       <n-form-item :label="$t(`confirmationPage.table.position`)" path="position">
         <n-input
             type="text"
-            :placeholder="$t(`content.enterField`)"
+
             v-model:value="store.payload.position"
         />
       </n-form-item>

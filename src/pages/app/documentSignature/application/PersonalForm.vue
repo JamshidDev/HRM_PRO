@@ -80,7 +80,7 @@ componentStore._enums()
           <n-input
               class="w-full"
               type="text"
-              :placeholder="$t(`content.enterField`)"
+
               v-model:value="store.form.last_name"
           />
         </n-form-item>
@@ -91,7 +91,7 @@ componentStore._enums()
           <n-input
               class="w-full"
               type="text"
-              :placeholder="$t(`content.enterField`)"
+
               v-model:value="store.form.first_name"
           />
         </n-form-item>
@@ -102,7 +102,7 @@ componentStore._enums()
           <n-input
               class="w-full"
               type="text"
-              :placeholder="$t(`content.enterField`)"
+
               v-model:value="store.form.middle_name"
           />
         </n-form-item>
@@ -114,7 +114,7 @@ componentStore._enums()
               @focus="onCountry"
               v-model:value="store.form.country_id"
               filterable
-              :placeholder="$t(`content.choose`)"
+
               :options="componentStore.countryList"
               label-field="name"
               value-field="id"
@@ -130,7 +130,7 @@ componentStore._enums()
               v-model:value="store.form.region_id"
               @update:value="store._getCity"
               filterable
-              :placeholder="$t(`content.choose`)"
+
               :options="componentStore.regionList"
               label-field="name"
               value-field="id"
@@ -145,7 +145,7 @@ componentStore._enums()
               :disabled="!store.form.region_id"
               v-model:value="store.form.city_id"
               filterable
-              :placeholder="$t(`content.choose`)"
+
               :options="store.cityList"
               label-field="name"
               value-field="id"
@@ -161,7 +161,7 @@ componentStore._enums()
               v-model:value="store.form.current_region_id"
               @update:value="store._getLiveCity"
               filterable
-              :placeholder="$t(`content.choose`)"
+
               :options="componentStore.regionList"
               label-field="name"
               value-field="id"
@@ -176,7 +176,7 @@ componentStore._enums()
               :disabled="!store.form.current_region_id"
               v-model:value="store.form.current_city_id"
               filterable
-              :placeholder="$t(`content.choose`)"
+
               :options="store.liveCityList"
               label-field="name"
               value-field="id"
@@ -191,7 +191,7 @@ componentStore._enums()
               class="w-full"
               v-model:value="store.form.birthday"
               type="date"
-              :placeholder="$t(`content.choose`)"
+
               format="yyyy/MM/dd"
           />
         </n-form-item>
@@ -202,7 +202,7 @@ componentStore._enums()
           <n-input
               class="w-full"
               type="text"
-              :placeholder="$t(`content.enterField`)"
+
               v-model:value="store.form.address"
           />
         </n-form-item>
@@ -214,7 +214,7 @@ componentStore._enums()
               @focus="onNationality"
               v-model:value="store.form.nationality_id"
               filterable
-              :placeholder="$t(`content.choose`)"
+
               :options="componentStore.nationalityList"
               label-field="name"
               value-field="id"
@@ -228,7 +228,7 @@ componentStore._enums()
           <n-input
               class="w-full"
               type="text"
-              :placeholder="$t(`content.enterField`)"
+
               v-model:value="store.form.pin"
               v-mask="`####-####-####-##`"
           />
@@ -241,7 +241,7 @@ componentStore._enums()
               class="w-full"
               type="text"
               v-mask="`#########`"
-              :placeholder="$t(`content.enterField`)"
+
               v-model:value="store.form.inn"
               :allow-input="Utils.onlyAllowNumber"
           />
@@ -253,7 +253,7 @@ componentStore._enums()
           <n-select
               v-model:value="store.form.marital_status"
               filterable
-              :placeholder="$t(`content.choose`)"
+
               :options="componentStore.maritalList"
               label-field="name"
               value-field="id"

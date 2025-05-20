@@ -43,7 +43,7 @@ const onSubmit = ()=>{
           name="firstName"
           id="firstName"
           type="text"
-          :placeholder="$t(`registerPage.firstName`)"
+
           v-model:value="store.payload.first_name"
       >
         <template #prefix>
@@ -57,7 +57,7 @@ const onSubmit = ()=>{
           name="lastName"
           id="lastName"
           type="text"
-          :placeholder="$t(`registerPage.lastName`)"
+
           v-model:value="store.payload.last_name"
       >
         <template #prefix>
@@ -71,7 +71,7 @@ const onSubmit = ()=>{
           name="middleName"
           id="middleName"
           type="text"
-          :placeholder="$t(`registerPage.middleName`)"
+
           v-model:value="store.payload.middle_name"
       >
         <template #prefix>
@@ -86,7 +86,7 @@ const onSubmit = ()=>{
           id="phone"
           type="text"
           v-mask="'+998(##)########'"
-          :placeholder="'+998'"
+
           maxlength="15"
           v-model:value="store.payload.phone"
       >
@@ -100,7 +100,7 @@ const onSubmit = ()=>{
           size="large"
           type="text"
           :maxlength="17"
-          :placeholder="$t(`registerPage.pin`)"
+
           v-model:value="store.payload.pin"
           v-mask="'####-####-####-##'"
       >
@@ -117,7 +117,7 @@ const onSubmit = ()=>{
           type="password"
           show-password-on="click"
           :maxlength="16"
-          :placeholder="$t(`loginPage.password`)"
+
           v-model:value="store.payload.password"
       >
         <template #prefix>

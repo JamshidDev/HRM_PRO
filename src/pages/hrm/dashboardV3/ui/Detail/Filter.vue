@@ -111,7 +111,7 @@ onMounted(()=>{
                 filterable
                 @update:value="filterEvent"
                 clearable
-                :placeholder="$t(`content.choose`)"
+
                 :options="componentStore.genderList"
                 label-field="name"
                 value-field="id"
@@ -174,7 +174,7 @@ onMounted(()=>{
               v-model:value="store.params.type"
               @update:value="filterEvent"
               clearable
-              :placeholder="$t(`content.choose`)"
+
               :options="componentStore.educationList"
               label-field="name"
               value-field="id"
@@ -186,7 +186,7 @@ onMounted(()=>{
               v-model:value="store.params.filter"
               @update:value="filterEvent"
               clearable
-              :placeholder="$t(`content.choose`)"
+
               :options="passportFilter"
             />
           </template>

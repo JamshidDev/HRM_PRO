@@ -44,7 +44,7 @@ onMounted(()=>{
             :disabled="!Boolean(store.department_id)"
             v-model:value="store.payload.department_position_id"
             filterable
-            :placeholder="$t(`content.choose`)"
+
             :options="store.allPositions"
             label-field="name"
             value-field="id"
@@ -58,7 +58,7 @@ onMounted(()=>{
             class="w-full"
             v-model:value="store.payload.from_date"
             type="date"
-            :placeholder="$t(`content.choose`)"
+
             :format="useAppSetting.datePicketFormat"
         />
       </n-form-item>

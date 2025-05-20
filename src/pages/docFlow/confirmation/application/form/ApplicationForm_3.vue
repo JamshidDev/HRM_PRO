@@ -64,7 +64,7 @@ onMounted(()=>{
             class="w-full"
             v-model:value="store.payload.period_from"
             type="date"
-            :placeholder="$t(`content.choose`)"
+
             :format="useAppSetting.datePicketFormat"
         />
       </n-form-item>
@@ -76,7 +76,7 @@ onMounted(()=>{
             class="w-full"
             v-model:value="store.payload.period_to"
             type="date"
-            :placeholder="$t(`content.choose`)"
+
             :format="useAppSetting.datePicketFormat"
         />
       </n-form-item>
@@ -88,7 +88,7 @@ onMounted(()=>{
             class="w-full"
             v-model:value="store.payload.from"
             type="date"
-            :placeholder="$t(`content.choose`)"
+
             :format="useAppSetting.datePicketFormat"
         />
       </n-form-item>
@@ -99,7 +99,7 @@ onMounted(()=>{
             class="w-full"
             v-model:value="store.payload.to"
             type="date"
-            :placeholder="$t(`content.choose`)"
+
             :format="useAppSetting.datePicketFormat"
         />
       </n-form-item>
@@ -110,7 +110,7 @@ onMounted(()=>{
           <n-input
               class="w-full"
               type="textarea"
-              :placeholder="$t(`content.enterField`)"
+
               v-model:value="store.payload.reason"
           />
       </n-form-item>

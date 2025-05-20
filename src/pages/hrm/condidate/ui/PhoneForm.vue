@@ -74,7 +74,7 @@ const onRemove = (v)=>{
               <n-input
                   class="w-full"
                   type="text"
-                  :placeholder="$t(`content.phone`)"
+
                   v-model:value="item.phone"
                   v-mask="`+998##-###-##-##`"
               />
@@ -106,7 +106,7 @@ const onRemove = (v)=>{
             <n-input
                 class="w-full"
                 type="text"
-                :placeholder="$t(`content.phone`)"
+
                 v-model:value="item.phone"
                 v-mask="`+998##-###-##-##`"
             />

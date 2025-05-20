@@ -76,7 +76,7 @@ const onFocusSpecial = (v)=>{
             filterable
             :filter="()=>true"
             clearable
-            :placeholder="$t(`content.choose`)"
+
             :options="store.universityList"
             label-field="name"
             value-field="id"
@@ -96,7 +96,7 @@ const onFocusSpecial = (v)=>{
             v-model:value="store.payload.speciality_id"
             filterable
             :filter="()=>true"
-            :placeholder="$t(`content.choose`)"
+
             :options="store.specialityList"
             label-field="name"
             value-field="id"
@@ -116,7 +116,7 @@ const onFocusSpecial = (v)=>{
             class="w-full"
             v-model:value="store.payload.from_date"
             type="date"
-            :placeholder="$t(`createWorkerPage.form.from_date`)"
+
             :format="useAppSetting.datePicketFormat"
         />
       </n-form-item>
@@ -129,7 +129,7 @@ const onFocusSpecial = (v)=>{
             class="w-full"
             v-model:value="store.payload.to_date"
             type="date"
-            :placeholder="$t(`createWorkerPage.form.from_date`)"
+
             :format="useAppSetting.datePicketFormat"
         />
       </n-form-item>

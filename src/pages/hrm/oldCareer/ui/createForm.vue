@@ -38,7 +38,7 @@ const onSubmit = ()=>{
             class="w-full"
             v-model:value="store.payload.from_date"
             type="date"
-            :placeholder="$t(`content.choose`)"
+
             :format="useAppSetting.datePicketFormat"
         />
       </n-form-item>
@@ -49,7 +49,7 @@ const onSubmit = ()=>{
             class="w-full"
             v-model:value="store.payload.to_date"
             type="date"
-            :placeholder="$t(`content.choose`)"
+
             :format="useAppSetting.datePicketFormat"
         />
       </n-form-item>
@@ -57,7 +57,7 @@ const onSubmit = ()=>{
         <n-input
             type="textarea"
             autosize
-            :placeholder="$t(`content.enterField`)"
+
             v-model:value="store.payload.post_name"
         />
       </n-form-item>

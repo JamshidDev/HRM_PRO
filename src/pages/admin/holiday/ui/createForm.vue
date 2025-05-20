@@ -40,14 +40,14 @@ onMounted(()=>{
             class="w-full"
             v-model:value="store.payload.holiday_date"
             type="date"
-            :placeholder="$t(`content.choose`)"
+
         />
       </n-form-item>
       <n-form-item :label="$t(`holidayPage.form.type`)" path="type">
         <n-select
             v-model:value="store.payload.type"
             filterable
-            :placeholder="$t(`content.choose`)"
+
             :options="componentStore.holidayTypes"
             label-field="name"
             value-field="id"
@@ -57,7 +57,7 @@ onMounted(()=>{
       <n-form-item :label="$t(`holidayPage.form.name`)" path="name">
         <n-input
             type="text"
-            :placeholder="$t(`content.enterField`)"
+
             v-model:value="store.payload.name"
         />
       </n-form-item>

@@ -97,7 +97,7 @@ const onShow = () => {
           filterable
           label-field="name"
           value-field="id"
-          :placeholder="$t('content.choose')"
+
           clearable
           @update:value="onChangeDepartment"
           :max-tag-count="1"

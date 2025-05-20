@@ -217,7 +217,7 @@ const showForm = computed(()=>store.payload.type===null? true : [1,8].includes(s
                     :disabled="store.organization.length === 0 || workers.length>0"
                     v-model:value="store.payload.worker_position_id"
                     filterable
-                    :placeholder="$t(`content.choose`)"
+
                     :options="componentStore.workerList"
                     label-field="name"
                     value-field="id"
@@ -240,7 +240,7 @@ const showForm = computed(()=>store.payload.type===null? true : [1,8].includes(s
                 <n-input
                     class="w-full"
                     type="text"
-                    :placeholder="$t(`content.enterField`)"
+
                     v-model:value="store.payload.number"
                 />
               </n-form-item>
@@ -250,7 +250,7 @@ const showForm = computed(()=>store.payload.type===null? true : [1,8].includes(s
                 <n-select
                     v-model:value="store.payload.type"
                     filterable
-                    :placeholder="$t(`content.choose`)"
+
                     :options="componentStore.adContractTypes"
                     label-field="name"
                     value-field="id"
@@ -264,7 +264,7 @@ const showForm = computed(()=>store.payload.type===null? true : [1,8].includes(s
                     class="w-full"
                     v-model:value="store.payload.contract_date"
                     type="date"
-                    :placeholder="$t(`content.choose`)"
+
                     :format="useAppSetting.datePicketFormat"
                 />
               </n-form-item>
@@ -303,7 +303,7 @@ const showForm = computed(()=>store.payload.type===null? true : [1,8].includes(s
                       <n-select
                           v-model:value="store.payload.position_id"
                           filterable
-                          :placeholder="$t(`content.choose`)"
+
                           :options="componentStore.positionList"
                           label-field="name"
                           value-field="id"
@@ -330,7 +330,7 @@ const showForm = computed(()=>store.payload.type===null? true : [1,8].includes(s
                           :disabled="!Boolean(store.payload.department_id)"
                           v-model:value="store.payload.department_position_id"
                           filterable
-                          :placeholder="$t(`content.choose`)"
+
                           :options="componentStore.departmentPositionList"
                           label-field="name"
                           value-field="id"
@@ -345,7 +345,7 @@ const showForm = computed(()=>store.payload.type===null? true : [1,8].includes(s
                   <n-select
                       v-model:value="store.payload.group"
                       filterable
-                      :placeholder="$t(`content.choose`)"
+
                       :options="componentStore.groupList"
                       label-field="name"
                       value-field="id"
@@ -359,7 +359,7 @@ const showForm = computed(()=>store.payload.type===null? true : [1,8].includes(s
                   <n-select
                       v-model:value="store.payload.rank"
                       filterable
-                      :placeholder="$t(`content.choose`)"
+
                       :options="componentStore.rankList"
                       label-field="name"
                       value-field="id"
@@ -376,7 +376,7 @@ const showForm = computed(()=>store.payload.type===null? true : [1,8].includes(s
                       :step="0.1"
                       :show-button="false"
                       class="w-full"
-                      :placeholder="$t(`content.enterField`)"
+
                       v-model:value="store.payload.rate"
                   />
                 </n-form-item>
@@ -386,7 +386,7 @@ const showForm = computed(()=>store.payload.type===null? true : [1,8].includes(s
                   <n-input
                       class="w-full"
                       type="text"
-                      :placeholder="$t(`content.enterField`)"
+
                       :allow-input="Utils.onlyAllowNumber"
                       v-model:value="store.payload.salary"
                   >
@@ -401,7 +401,7 @@ const showForm = computed(()=>store.payload.type===null? true : [1,8].includes(s
                   <n-select
                       v-model:value="store.payload.schedule_id"
                       filterable
-                      :placeholder="$t(`content.choose`)"
+
                       :options="componentStore.scheduleList"
                       value-field="id"
                       :loading="componentStore.scheduleLoading"
@@ -419,7 +419,7 @@ const showForm = computed(()=>store.payload.type===null? true : [1,8].includes(s
                       class="w-full"
                       v-model:value="store.payload.position_date"
                       type="date"
-                      :placeholder="$t(`content.choose`)"
+
                       :format="useAppSetting.datePicketFormat"
                   />
                 </n-form-item>
@@ -432,7 +432,7 @@ const showForm = computed(()=>store.payload.type===null? true : [1,8].includes(s
                     class="w-full"
                     v-model:value="store.payload.contract_to_date"
                     type="date"
-                    :placeholder="$t(`content.choose`)"
+
                     :format="useAppSetting.datePicketFormat"
                 />
               </n-form-item>
@@ -443,7 +443,7 @@ const showForm = computed(()=>store.payload.type===null? true : [1,8].includes(s
 <!--                  <n-input-->
 <!--                      class="w-full"-->
 <!--                      type="text"-->
-<!--                      :placeholder="$t(`content.enterField`)"-->
+<!--                      -->
 <!--                      v-model:value="store.payload.post_name"-->
 <!--                  />-->
 <!--                </n-form-item>-->
@@ -464,7 +464,7 @@ const showForm = computed(()=>store.payload.type===null? true : [1,8].includes(s
                 value-field="id"
                 label-field="last_name"
                 v-model:value="store.payload.director_id"
-                :placeholder="$t(`content.choose`)"
+
                 :options="componentStore.confirmationList"
                 :loading="componentStore.confirmationLoading"
                 :render-label="renderLabel"
@@ -489,7 +489,7 @@ const showForm = computed(()=>store.payload.type===null? true : [1,8].includes(s
                     :disabled="!Boolean(store.payload.type)"
                     v-model:value="store.payload.command_type"
                     filterable
-                    :placeholder="$t(`content.choose`)"
+
                     :options="componentStore.commandTypeList"
                     label-field="name"
                     value-field="id"
@@ -503,7 +503,7 @@ const showForm = computed(()=>store.payload.type===null? true : [1,8].includes(s
                 <n-input
                     class="w-full"
                     type="text"
-                    :placeholder="$t(`content.enterField`)"
+
                     v-model:value="store.payload.command_number"
                 />
               </n-form-item>
@@ -515,7 +515,7 @@ const showForm = computed(()=>store.payload.type===null? true : [1,8].includes(s
                     class="w-full"
                     v-model:value="store.payload.command_date"
                     type="date"
-                    :placeholder="$t(`content.choose`)"
+
                     :format="useAppSetting.datePicketFormat"
                 />
               </n-form-item>
@@ -528,7 +528,7 @@ const showForm = computed(()=>store.payload.type===null? true : [1,8].includes(s
                     value-field="id"
                     multiple
                     v-model:value="store.payload.confirmations"
-                    :placeholder="$t(`content.choose`)"
+
                     :options="confirmationList"
                     :loading="componentStore.confirmationLoading"
                     :render-label="renderLabel" />

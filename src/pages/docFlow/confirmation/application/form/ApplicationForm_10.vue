@@ -15,7 +15,7 @@ const store = useConfApplicationStore()
             class="w-full"
             v-model:value="store.payload.contract_to_date"
             type="date"
-            :placeholder="$t(`content.choose`)"
+
             :format="useAppSetting.datePicketFormat"
         />
       </n-form-item>
@@ -25,7 +25,7 @@ const store = useConfApplicationStore()
         <n-input
             class="w-full"
             type="textarea"
-            :placeholder="$t(`content.enterField`)"
+
             v-model:value="store.payload.reason"
         />
       </n-form-item>

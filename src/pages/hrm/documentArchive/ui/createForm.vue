@@ -68,7 +68,7 @@ onMounted(()=>{
             v-show="false"
             v-model:value="store.payload.fakeFile"
             type="text"
-            :placeholder="$t(`content.enterField`)"
+
         />
         <UIUpload
             v-model:files="store.payload.file"
@@ -82,14 +82,14 @@ onMounted(()=>{
         <n-input
             v-model:value="store.payload.title"
             type="text"
-            :placeholder="$t(`content.enterField`)"
+
         />
       </n-form-item>
       <n-form-item :label="$t(`documentArchive.form.description`)" path="description">
         <n-input
             v-model:value.trim="store.payload.description"
             type="textarea"
-            :placeholder="$t(`content.enterField`)"
+
         />
       </n-form-item>
       <n-form-item :label="$t(`documentArchive.form.visibility_type`)"
@@ -98,7 +98,7 @@ onMounted(()=>{
             v-model:value="store.payload.visibility_type"
             filterable
             clearable
-            :placeholder="$t(`content.choose`)"
+
             :options="store.visibleTypes"
             label-field="name"
             value-field="id"
@@ -109,7 +109,7 @@ onMounted(()=>{
             v-model:value="store.payload.type"
             filterable
             clearable
-            :placeholder="$t(`content.choose`)"
+
             :options="componentStore.organizationDocumentTypes"
             :loading="componentStore.enumLoading"
             label-field="name"
@@ -121,7 +121,7 @@ onMounted(()=>{
             class="w-full"
             v-model:value="store.payload.document_date"
             type="date"
-            :placeholder="$t(`content.choose`)"
+
             :format="useAppSetting.datePicketFormat"
         />
       </n-form-item>

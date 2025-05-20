@@ -56,7 +56,7 @@ onMounted(()=>{
         <n-select
             v-model:value="store.payload.language_id"
             filterable
-            :placeholder="$t(`content.choose`)"
+
             :options="componentStore.languageList"
             label-field="name"
             value-field="id"

@@ -37,7 +37,7 @@ onMounted(()=>{
         <n-select
             v-model:value="store.payload.type"
             filterable
-            :placeholder="$t(`content.choose`)"
+
             :options="componentStore.workDayTypes"
             label-field="name"
             value-field="id"
@@ -49,7 +49,7 @@ onMounted(()=>{
         <n-select
             v-model:value="store.payload.schedule_id"
             filterable
-            :placeholder="$t(`content.choose`)"
+
             :options="componentStore.scheduleList"
             label-field="name"
             value-field="id"
@@ -60,7 +60,7 @@ onMounted(()=>{
       <n-form-item :label="$t(`workdayPage.form.day_of_week`)" path="day_of_week">
         <n-input
             type="text"
-            :placeholder="$t(`content.enterField`)"
+
             v-model:value="store.payload.day_of_week"
         />
       </n-form-item>
@@ -68,14 +68,14 @@ onMounted(()=>{
         <n-time-picker
             class="w-full"
             v-model:value="store.payload.start_time"
-            :placeholder="$t(`content.choose`)"
+
         />
       </n-form-item>
       <n-form-item :label="$t(`workdayPage.form.end_time`)" path="end_time">
         <n-time-picker
             class="w-full"
             v-model:value="store.payload.end_time"
-            :placeholder="$t(`content.choose`)"
+
         />
       </n-form-item>
 

@@ -276,7 +276,7 @@ const checkWorker = useDebounceFn(() => {
                       v-mask="`####-####-####-##`"
                       v-model:value="searchPin"
                       :loading="store.pinLoading"
-                      :placeholder="$t(`timesheetPage.pin`)"
+
                       class="w-full"
                       type="text"
                       @update:value="checkWorker"
@@ -423,7 +423,7 @@ const checkWorker = useDebounceFn(() => {
                 v-model:value="store.payload.hours"
                 :disabled="!(store.payload.status && compStore.timesheetTypes[store.payload.status-1]?.hours)"
                 :min="0"
-                :placeholder="$t('timesheetPage.hours')"
+
             />
           </n-form-item-gi>
           <n-divider/>
@@ -448,7 +448,7 @@ const checkWorker = useDebounceFn(() => {
                 v-model:value="store.payload.hours2"
                 :disabled="!(store.payload.status2 && compStore.timesheetTypes[store.payload.status2-1]?.hours)"
                 :min="0"
-                :placeholder="$t('timesheetPage.hours')"
+
             />
           </n-form-item-gi>
         </n-grid>

@@ -41,14 +41,14 @@ const onFocusCity = ()=>{
       <n-form-item :label="$t(`organizationPage.form.name`)" path="name">
         <n-input
             type="text"
-            :placeholder="$t(`organizationPage.form.name`)"
+
             v-model:value="store.payload.name"
         />
       </n-form-item>
       <n-form-item :label="$t(`organizationPage.form.full_name`)" path="full_name">
         <n-input
             type="text"
-            :placeholder="$t(`organizationPage.form.full_name`)"
+
             v-model:value="store.payload.full_name"
         />
       </n-form-item>
@@ -57,7 +57,7 @@ const onFocusCity = ()=>{
             v-model:value="store.payload.level"
             clearable
             filterable
-            :placeholder="$t(`organizationPage.form.level`)"
+
             :options="componentStore.organizationLevelList"
             label-field="name"
             value-field="id"
@@ -70,7 +70,7 @@ const onFocusCity = ()=>{
             clearable
             filterable
             @focus="onFocusCity"
-            :placeholder="$t(`content.choose`)"
+
             :options="componentStore.allCityList"
             label-field="name"
             value-field="id"
@@ -84,7 +84,7 @@ const onFocusCity = ()=>{
             v-model:value="store.payload.parent_id"
             clearable
             filterable
-            :placeholder="$t(`organizationPage.form.parent_id`)"
+
             :options="componentStore.organizationList"
             label-field="name"
             value-field="id"
@@ -94,14 +94,14 @@ const onFocusCity = ()=>{
       <n-form-item :label="$t(`organizationPage.form.code`)" path="code">
         <n-input
             type="text"
-            :placeholder="$t(`content.enterField`)"
+
             v-model:value="store.payload.code"
         />
       </n-form-item>
       <n-form-item path="code">
         <n-checkbox
             :label="$t(`organizationPage.form.group`)"
-            :placeholder="$t(`content.enterField`)"
+
             v-model:checked="store.payload.group"
         />
       </n-form-item>

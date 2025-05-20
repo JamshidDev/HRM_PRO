@@ -80,7 +80,7 @@ const beforeShow = (v)=>{
           :options="componentStore.confirmationStatusList"
           label-field="name"
           value-field="id"
-          :placeholder="$t('content.choose')"
+
           clearable
           @update:value="filterEvent"
           :loading="componentStore.enumAdminLoading"
@@ -90,7 +90,7 @@ const beforeShow = (v)=>{
           class="w-full"
           v-model:value="store.params.created"
           type="date"
-          :placeholder="$t(`content.choose`)"
+
           :format="useAppSetting.datePicketFormat"
           @update:value="filterEvent"
       />

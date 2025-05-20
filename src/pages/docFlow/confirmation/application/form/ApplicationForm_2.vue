@@ -71,7 +71,7 @@ onMounted(()=>{
             :disabled="!Boolean(store.department_id)"
             v-model:value="store.payload.department_position_id"
             filterable
-            :placeholder="$t(`content.choose`)"
+
             :options="componentStore.departmentPositionList"
             label-field="name"
             value-field="id"
@@ -85,7 +85,7 @@ onMounted(()=>{
             class="w-full"
             v-model:value="store.payload.from_date"
             type="date"
-            :placeholder="$t(`content.choose`)"
+
             :format="useAppSetting.datePicketFormat"
         />
       </n-form-item>
@@ -94,7 +94,7 @@ onMounted(()=>{
       <n-form-item :label="$t(`applicationPage.form.temporarily_absent`)" path="temporarily_absent">
         <n-select
             v-model:value="store.payload.temporarily_absent"
-            :placeholder="$t(`content.choose`)"
+
             :options="store.vacationWorkerList"
             :loading="store.vacationWorkerLoading"
             :render-label="renderLabel2"

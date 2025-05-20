@@ -39,7 +39,7 @@ onMounted(()=>{
                 v-model:value="store.positionPayload.position_id"
                 filterable
                 clearable
-                :placeholder="$t(`departmentPositionPage.form.position_id`)"
+
                 :options="componentStore.positionList"
                 label-field="name"
                 value-field="id"
@@ -52,7 +52,7 @@ onMounted(()=>{
                 filterable
                 :filter="()=>true"
                 clearable
-                :placeholder="$t(`departmentPositionPage.form.department_id`)"
+
                 :options="componentStore.departmentList"
                 :render-label="UIHelper.selectRender.label"
                 :render-tag="UIHelper.selectRender.value"
@@ -67,7 +67,7 @@ onMounted(()=>{
                 v-model:value="store.positionPayload.group"
                 filterable
                 clearable
-                :placeholder="$t(`departmentPositionPage.form.group`)"
+
                 :options="componentStore.groupList"
                 label-field="name"
                 value-field="id"
@@ -80,7 +80,7 @@ onMounted(()=>{
                 v-model:value="store.positionPayload.rank"
                 filterable
                 clearable
-                :placeholder="$t(`departmentPositionPage.form.rank`)"
+
                 :options="componentStore.rankList"
                 label-field="name"
                 value-field="id"
@@ -92,7 +92,7 @@ onMounted(()=>{
                 v-model:value="store.positionPayload.max_rank"
                 filterable
                 clearable
-                :placeholder="$t(`departmentPositionPage.form.max_rank`)"
+
                 :options="componentStore.rankList"
                 label-field="name"
                 value-field="id"
@@ -104,7 +104,7 @@ onMounted(()=>{
                 v-model:value="store.positionPayload.rate"
                 type="text"
                 :allow-input="Utils.onlyAllowNumber"
-                :placeholder="$t(`departmentPositionPage.form.rate`)"
+
             />
           </n-form-item>
           <n-form-item class="col-span-12 md:col-span-6 lg:col-span-4" :label="$t(`departmentPositionPage.form.salary`)" path="salary">
@@ -112,7 +112,7 @@ onMounted(()=>{
                 v-model:value="store.positionPayload.salary"
                 type="text"
                 :allow-input="Utils.onlyAllowNumber"
-                :placeholder="$t(`departmentPositionPage.form.salary`)"
+
             >
               <template #suffix>
                 {{$t('content.sum')}}
@@ -124,7 +124,7 @@ onMounted(()=>{
                 v-model:value="store.positionPayload.experience"
                 type="text"
                 :allow-input="Utils.onlyAllowNumber"
-                :placeholder="$t(`departmentPositionPage.form.experience`)"
+
             >
               <template #suffix>
                 {{$t('content.month')}}
@@ -136,7 +136,7 @@ onMounted(()=>{
                 v-model:value="store.positionPayload.education"
                 filterable
                 clearable
-                :placeholder="$t(`departmentPositionPage.form.educations`)"
+
                 :options="componentStore.educationList"
                 label-field="name"
                 value-field="id"

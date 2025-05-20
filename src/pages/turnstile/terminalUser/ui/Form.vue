@@ -110,7 +110,7 @@ onMounted(()=>{
             :disabled="store.payload.organization_id.length === 0"
             v-model:value="store.payload.worker_position_id"
             filterable
-            :placeholder="$t(`content.choose`)"
+
             :options="componentStore.workerList"
             label-field="name"
             value-field="id"
@@ -126,7 +126,7 @@ onMounted(()=>{
       <n-form-item :label="$t(`content.deadline`)" path="to" rule-path="requiredDateTimeField">
         <n-date-picker
             class="w-full"
-            :placeholder="$t(`content.choose`)"
+
             v-model:value="store.payload.to"
             type="date"
             update-value-on-close

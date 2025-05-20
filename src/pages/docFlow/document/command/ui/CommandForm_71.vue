@@ -89,7 +89,7 @@ onMounted(() => {
         <n-input
             class="w-full"
             type="text"
-            :placeholder="$t(`content.enterField`)"
+
             v-model:value="item.reason"
         />
       </n-form-item>
@@ -101,7 +101,7 @@ onMounted(() => {
         <n-input
             class="w-full"
             type="text"
-            :placeholder="$t(`content.enterField`)"
+
             v-model:value="item.by_whom"
         />
       </n-form-item>
@@ -113,7 +113,7 @@ onMounted(() => {
         <n-select
             v-model:value="item.gift_type"
             filterable
-            :placeholder="$t(`content.choose`)"
+
             :options="componentStore.giftTypes"
             label-field="name"
             value-field="id"
@@ -129,7 +129,7 @@ onMounted(() => {
         <n-input
             class="w-full"
             type="text"
-            :placeholder="$t(`content.enterField`)"
+
             v-model:value="item.gift"
         />
       </n-form-item>

@@ -50,7 +50,7 @@ onMounted(()=>{
         <n-select
             v-model:value="store.payload.type"
             filterable
-            :placeholder="$t(`content.choose`)"
+
             :options="componentStore.academicDegreeList"
             label-field="name"
             value-field="id"

@@ -90,7 +90,7 @@ onMounted(() => {
         <n-input
             class="w-full"
             type="text"
-            :placeholder="$t(`content.enterField`)"
+
             v-model:value="item.reason"
         />
       </n-form-item>
@@ -102,7 +102,7 @@ onMounted(() => {
         <n-select
             v-model:value="item.type"
             filterable
-            :placeholder="$t(`content.choose`)"
+
             :options="componentStore.financialAssistance"
             label-field="name"
             value-field="id"
@@ -118,7 +118,7 @@ onMounted(() => {
         <n-input
             class="w-full"
             :allow-input="Utils.onlyAllowNumber"
-            :placeholder="$t(`content.enterField`)"
+
             v-model:value="item.amount"
         />
       </n-form-item>

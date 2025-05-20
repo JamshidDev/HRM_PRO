@@ -50,7 +50,7 @@ onMounted(()=>{
           <n-form-item-gi :span="2" :label="$t(`content.name`)" path="name" rule-path="requiredStringField">
             <n-input
                 type="text"
-                :placeholder="$t(`content.enterField`)"
+
                 v-model:value="store.payload.name"
             />
           </n-form-item-gi>
@@ -58,7 +58,7 @@ onMounted(()=>{
           <n-form-item-gi :span="2" :label="$t(`topicDetailsPage.exams.deadline`)" path="deadline" rule-path="requiredDateTimeField">
             <n-date-picker
                 class="w-full"
-                :placeholder="$t(`content.choose`)"
+
                 v-model:value="store.payload.deadline"
                 type="datetime"
                 update-value-on-close
@@ -69,7 +69,7 @@ onMounted(()=>{
             <n-input-number
                 class="w-full"
                 :min="1"
-                :placeholder="$t(`content.enterField`)"
+
                 v-model:value="store.payload.tests_count"
             />
           </n-form-item-gi>
@@ -82,7 +82,7 @@ onMounted(()=>{
             <n-input-number
                 class="w-full"
                 :min="1"
-                :placeholder="$t(`content.enterField`)"
+
                 v-model:value="store.payload.variant"
             />
           </n-form-item-gi>
@@ -90,7 +90,7 @@ onMounted(()=>{
             <n-input-number
                 :min="1"
                 class="w-full"
-                :placeholder="$t(`content.enterField`)"
+
                 v-model:value="store.payload.chances"
             />
           </n-form-item-gi>
@@ -98,7 +98,7 @@ onMounted(()=>{
             <n-input-number
                 :min="1"
                 class="w-full"
-                :placeholder="$t(`content.enterField`)"
+
                 v-model:value="store.payload.minute"
             />
           </n-form-item-gi>
@@ -113,7 +113,7 @@ onMounted(()=>{
                 v-model:value="store.payload.whom"
                 filterable
                 @update:value="store.payload.whom_ids = []"
-                :placeholder="$t(`content.choose`)"
+
                 :options="componentStore.topicWhomList"
                 label-field="name"
                 value-field="id"
@@ -129,7 +129,7 @@ onMounted(()=>{
             <n-select
                 v-model:value="store.payload.whom_ids"
                 filterable
-                :placeholder="$t(`content.choose`)"
+
                 :options="componentStore.departmentPositionList"
                 label-field="name"
                 value-field="id"
@@ -147,7 +147,7 @@ onMounted(()=>{
             <n-select
                 v-model:value="store.payload.whom_ids"
                 filterable
-                :placeholder="$t(`content.choose`)"
+
                 :options="componentStore.workerList"
                 label-field="name"
                 value-field="id"
@@ -158,7 +158,7 @@ onMounted(()=>{
           <n-form-item-gi :span="2" :label="$t(`content.description`)" path="description">
             <n-input
                 type="textarea"
-                :placeholder="$t(`content.enterField`)"
+
                 v-model:value="store.payload.description"
             />
           </n-form-item-gi>

@@ -128,7 +128,7 @@ const onSubmit = () => {
                 :loading="componentStore.confirmationLoading"
                 :max-tag-count="1"
                 :options="componentStore.confirmationList"
-                :placeholder="$t(`content.choose`)"
+
                 :render-label="renderLabel"
                 :render-tag="renderValue"
                 filterable
@@ -142,7 +142,7 @@ const onSubmit = () => {
             <n-select
                 v-model:value="store.payload.mainUser"
                 :options="store.payload.confirmationObjects"
-                :placeholder="$t(`content.choose`)"
+
                 :render-label="renderMainVerifier"
                 filterable
                 value-field="id"

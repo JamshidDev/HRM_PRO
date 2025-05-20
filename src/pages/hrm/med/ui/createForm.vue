@@ -123,7 +123,7 @@ onMounted(()=>{
                       :disabled="store.payload.organization_id.length === 0"
                       v-model:value="store.payload.worker_position_id"
                       filterable
-                      :placeholder="$t(`content.choose`)"
+
                       :options="componentStore.workerList"
                       label-field="name"
                       value-field="id"
@@ -146,7 +146,7 @@ onMounted(()=>{
         <n-form-item :label="$t(`medPage.form.status`)" path="status">
           <n-select
               v-model:value="store.payload.status"
-              :placeholder="$t(`content.choose`)"
+
               :options="componentStore.medStatus"
               :loading="componentStore.enumExamLoading"
               label-field="name"
@@ -161,7 +161,7 @@ onMounted(()=>{
           <n-input
               rows="2"
               type="textarea"
-              :placeholder="$t(`content.enterField`)"
+
               v-model:value="store.payload.comment"
           />
         </n-form-item>
@@ -172,7 +172,7 @@ onMounted(()=>{
               class="w-full"
               v-model:value="store.payload.from"
               type="date"
-              :placeholder="$t(`content.choose`)"
+
               :format="useAppSetting.datePicketFormat"
           />
         </n-form-item>
@@ -183,7 +183,7 @@ onMounted(()=>{
               class="w-full"
               v-model:value="store.payload.to"
               type="date"
-              :placeholder="$t(`content.choose`)"
+
               :format="useAppSetting.datePicketFormat"
               :is-date-disabled="(v)=>Utils.disablePasteDate(v,store.payload.from)"
           />

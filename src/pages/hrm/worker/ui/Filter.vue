@@ -253,7 +253,7 @@ const canWrite = computed(()=>accStore.checkAction(Utils.appPermissions.hrWorker
                 filterable
                 label-field="name"
                 value-field="id"
-                :placeholder="$t('content.choose')"
+
                 clearable
                 @update:value="onChangeDepartment"
                 :max-tag-count="1"
@@ -270,7 +270,7 @@ const canWrite = computed(()=>accStore.checkAction(Utils.appPermissions.hrWorker
                 filterable
                 clearable
                 multiple
-                :placeholder="$t(`content.choose`)"
+
                 :options="componentStore.filterPositions"
                 label-field="name"
                 value-field="id"
@@ -285,7 +285,7 @@ const canWrite = computed(()=>accStore.checkAction(Utils.appPermissions.hrWorker
                 v-model:value="store.params.contract_type"
                 filterable
                 clearable
-                :placeholder="$t(`content.choose`)"
+
                 :options="componentStore.contractTypeList"
                 label-field="name"
                 value-field="id"
@@ -300,7 +300,7 @@ const canWrite = computed(()=>accStore.checkAction(Utils.appPermissions.hrWorker
                 v-model:value="store.params.birthday"
                 filterable
                 clearable
-                :placeholder="$t(`content.choose`)"
+
                 :options="Utils.monthList"
                 label-field="name"
                 value-field="id"
@@ -314,7 +314,7 @@ const canWrite = computed(()=>accStore.checkAction(Utils.appPermissions.hrWorker
                 v-model:value="store.params.position_type"
                 filterable
                 clearable
-                :placeholder="$t(`content.choose`)"
+
                 :options="componentStore.positionCategory"
                 label-field="name"
                 value-field="id"
@@ -329,7 +329,7 @@ const canWrite = computed(()=>accStore.checkAction(Utils.appPermissions.hrWorker
                 v-model:value="store.params.sex"
                 filterable
                 clearable
-                :placeholder="$t(`content.choose`)"
+
                 :options="componentStore.genderList"
                 label-field="name"
                 value-field="id"
@@ -343,7 +343,7 @@ const canWrite = computed(()=>accStore.checkAction(Utils.appPermissions.hrWorker
                 v-model:value="store.params.marital_status"
                 filterable
                 clearable
-                :placeholder="$t(`content.choose`)"
+
                 :options="componentStore.maritalList"
                 label-field="name"
                 value-field="id"
@@ -359,7 +359,7 @@ const canWrite = computed(()=>accStore.checkAction(Utils.appPermissions.hrWorker
                 v-model:value="store.params.nationality_id"
                 filterable
                 clearable
-                :placeholder="$t(`content.choose`)"
+
                 :options="componentStore.nationalityList"
                 label-field="name"
                 value-field="id"
@@ -375,7 +375,7 @@ const canWrite = computed(()=>accStore.checkAction(Utils.appPermissions.hrWorker
                 v-model:value="store.params.country_id"
                 filterable
                 clearable
-                :placeholder="$t(`content.choose`)"
+
                 :options="componentStore.countryList"
                 label-field="name"
                 value-field="id"
@@ -391,7 +391,7 @@ const canWrite = computed(()=>accStore.checkAction(Utils.appPermissions.hrWorker
                 :disabled="!store.params.country_id"
                 filterable
                 clearable
-                :placeholder="$t(`content.choose`)"
+
                 :options="componentStore.regionList"
                 label-field="name"
                 value-field="id"
@@ -408,7 +408,7 @@ const canWrite = computed(()=>accStore.checkAction(Utils.appPermissions.hrWorker
                 v-model:value="store.params.city_id"
                 filterable
                 clearable
-                :placeholder="$t(`content.choose`)"
+
                 :options="store.districtList"
                 label-field="name"
                 value-field="id"
@@ -424,7 +424,7 @@ const canWrite = computed(()=>accStore.checkAction(Utils.appPermissions.hrWorker
                 :disabled="!store.params.country_id"
                 filterable
                 clearable
-                :placeholder="$t(`content.choose`)"
+
                 :options="componentStore.regionList"
                 label-field="name"
                 value-field="id"
@@ -441,7 +441,7 @@ const canWrite = computed(()=>accStore.checkAction(Utils.appPermissions.hrWorker
                 :disabled="!store.params.current_region_id"
                 filterable
                 clearable
-                :placeholder="$t(`content.choose`)"
+
                 :options="store.currentDistrictList"
                 label-field="name"
                 value-field="id"

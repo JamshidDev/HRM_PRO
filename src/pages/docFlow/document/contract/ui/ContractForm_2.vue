@@ -69,7 +69,7 @@ onMounted(()=>{
 <!--              <n-select-->
 <!--                  v-model:value="store.payload.position_id"-->
 <!--                  filterable-->
-<!--                  :placeholder="$t(`content.choose`)"-->
+<!--                  -->
 <!--                  :options="componentStore.positionList"-->
 <!--                  label-field="name"-->
 <!--                  value-field="id"-->
@@ -95,7 +95,7 @@ onMounted(()=>{
                 :disabled="!Boolean(store.payload.department_id)"
                 v-model:value="store.payload.department_position_id"
                 filterable
-                :placeholder="$t(`content.choose`)"
+
                 :options="componentStore.departmentPositionList"
                 label-field="name"
                 value-field="id"
@@ -109,7 +109,7 @@ onMounted(()=>{
             <n-select
                 v-model:value="store.payload.group"
                 filterable
-                :placeholder="$t(`content.choose`)"
+
                 :options="componentStore.groupList"
                 label-field="name"
                 value-field="id"
@@ -123,7 +123,7 @@ onMounted(()=>{
             <n-select
                 v-model:value="store.payload.rank"
                 filterable
-                :placeholder="$t(`content.choose`)"
+
                 :options="componentStore.rankList"
                 label-field="name"
                 value-field="id"
@@ -144,7 +144,7 @@ onMounted(()=>{
                 :show-button="false"
                 class="w-full"
                 type="text"
-                :placeholder="$t(`content.enterField`)"
+
                 :allow-input="Utils.onlyAllowNumber"
                 v-model:value="store.payload.rate"
             />
@@ -155,7 +155,7 @@ onMounted(()=>{
             <n-input
                 class="w-full"
                 type="text"
-                :placeholder="$t(`content.enterField`)"
+
                 :allow-input="Utils.onlyAllowNumber"
                 v-model:value="store.payload.salary"
             >
@@ -170,7 +170,7 @@ onMounted(()=>{
             <n-input
                 class="w-full"
                 type="text"
-                :placeholder="$t(`content.enterField`)"
+
                 :allow-input="Utils.onlyAllowNumber"
                 v-model:value="store.payload.table_number"
             />
@@ -182,7 +182,7 @@ onMounted(()=>{
 <!--            <n-input-->
 <!--                class="w-full"-->
 <!--                type="text"-->
-<!--                :placeholder="$t(`content.enterField`)"-->
+<!--                -->
 <!--                v-model:value="store.payload.post_name"-->
 <!--            />-->
 <!--          </n-form-item>-->

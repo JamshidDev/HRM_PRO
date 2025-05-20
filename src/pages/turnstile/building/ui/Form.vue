@@ -27,13 +27,13 @@ const onSubmit = () => {
     <n-form ref="formRef" :model="store.payload" :rules="validationRules.common">
 
       <n-form-item :label="$t(`turnstile.buildingPage.name`)" path="name" rule-path="requiredStringField">
-        <n-input type="text" :placeholder="$t(`content.enterField`)" v-model:value="store.payload.name" />
+        <n-input type="text"  v-model:value="store.payload.name" />
       </n-form-item>
       <n-form-item :label="$t(`turnstile.buildingPage.name_ru`)" path="name_ru" rule-path="requiredStringField">
-        <n-input type="text" :placeholder="$t(`content.enterField`)" v-model:value="store.payload.name_ru" />
+        <n-input type="text"  v-model:value="store.payload.name_ru" />
       </n-form-item>
       <n-form-item :label="$t(`turnstile.buildingPage.name_en`)" path="name_en" rule-path="requiredStringField">
-        <n-input type="text" :placeholder="$t(`content.enterField`)" v-model:value="store.payload.name_en" />
+        <n-input type="text"  v-model:value="store.payload.name_en" />
       </n-form-item>
     </n-form>
 

@@ -42,7 +42,7 @@ const onSubmit = ()=>{
           <n-input
               class="w-full"
               type="textarea"
-              :placeholder="$t(`content.enterField`)"
+
               v-model:value="store.documentComment"
           />
         </n-form-item>

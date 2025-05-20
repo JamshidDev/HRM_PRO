@@ -40,7 +40,7 @@ onMounted(()=>{
           <n-select
               v-model:value="store.payload.work_place_id"
               filterable
-              :placeholder="$t(`content.choose`)"
+
               :options="componentStore.timesheetWorkplace?.organizations"
               label-field="name"
               value-field="id"
@@ -66,7 +66,7 @@ onMounted(()=>{
           <n-select
               v-model:value="store.payload.department_id"
               filterable
-              :placeholder="$t(`content.choose`)"
+
               :options="componentStore.timesheetWorkplace?.departments"
               label-field="name"
               value-field="id"

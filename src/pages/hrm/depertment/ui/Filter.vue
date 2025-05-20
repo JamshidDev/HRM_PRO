@@ -89,7 +89,7 @@ const onShow = () => {
               :options="store.levelList"
               label-field="name"
               value-field="id"
-              :placeholder="$t('content.choose')"
+
               clearable
               @update:value="filterEvent"
               :loading="store.levelLoading"

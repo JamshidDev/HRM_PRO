@@ -38,7 +38,7 @@ const onChangeMap = (coords)=>{
         <n-select
             v-model:value="store.payload.country_id"
             filterable
-            :placeholder="$t(`regionPage.form.country`)"
+
             :options="store.allCountryList"
             label-field="name"
             value-field="id"
@@ -48,7 +48,7 @@ const onChangeMap = (coords)=>{
       <n-form-item :label="$t(`regionPage.form.name`)" path="name">
         <n-input
             type="text"
-            :placeholder="$t(`regionPage.form.name`)"
+
             v-model:value="store.payload.name"
         />
       </n-form-item>

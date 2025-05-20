@@ -64,7 +64,7 @@ onMounted(()=>{
         <n-select
             v-model:value="store.payload.role_id"
             filterable
-            :placeholder="$t(`content.choose`)"
+
             :options="store.roleList"
             label-field="name"
             value-field="id"
