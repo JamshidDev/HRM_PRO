@@ -336,7 +336,7 @@ export const navigations = [
                 path: Utils.routeTurnstilePathMaker(AppPaths.WorkDuration),
                 icon: ClockToolbox20Filled,
                 color: 'bg-success',
-                permission: appPermissions.turnstileWorkers,
+                permission: appPermissions.turnstileWorkDuration,
             },
         ]
     },
