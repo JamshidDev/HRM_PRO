@@ -9,6 +9,12 @@ const store = useUniversityStore()
 
 
 const onAdd = ()=>{
+  if(store.universityList.length === 0){
+    store._getUniversityList()
+  }
+  if(store.specialityList.length === 0){
+    store._getSpeciality()
+  }
   store.visibleType = true
   store.resetForm()
   store.visible = true
@@ -19,6 +25,8 @@ const onEdit = (v)=>{
   store.activeTab = 1
   store.visibleType = false
   store.elementId = v.id
+  store.specialityList = [v.speciality]
+  store.universityList = [v.university]
   store.payload.university_id = v.university.id
   store.payload.speciality_id = v.speciality.id
   store.payload.from_date = new Date(v.from_date).getTime()
@@ -36,6 +44,7 @@ const onDelete = (v)=>{
 const onDownload = (v)=>{
   window.open(v.file, '_blank');
 }
+
 
 </script>
 
@@ -68,7 +77,7 @@ const onDownload = (v)=>{
         <tr>
           <th class="text-center! min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
           <th class="min-w-[100px]">{{$t('universityPage.form.university_id')}}</th>
-          <th class="min-w-[80px] w-[80px]">{{$t('universityPage.form.speciality_id')}}</th>
+          <th class="min-w-[80px]">{{$t('universityPage.form.speciality_id')}}</th>
           <th class="min-w-[80px] w-[80px]">{{$t('universityPage.form.from_date')}}</th>
           <th class="min-w-[80px] w-[80px]">{{$t('universityPage.form.to_date')}}</th>
           <th class="min-w-[80px] w-[80px]">{{$t('content.file')}}</th>

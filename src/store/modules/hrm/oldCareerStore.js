@@ -27,12 +27,12 @@ export const useOldCareerStore = defineStore('oldCareerStore', {
             search:null,
         },
         uuid:null,
+        sortableLoading:false,
     }),
     actions:{
         _index(){
             this.loading= true
             $ApiService.olCareerService._index({params:{uuid:this.uuid}}).then((res)=>{
-                console.log(res.data.data)
                 this.list = res.data.data
             }).finally(()=>{
                 this.loading= false
@@ -70,6 +70,13 @@ export const useOldCareerStore = defineStore('oldCareerStore', {
                
             }).finally(()=>{
                 this.saveLoading = false
+            })
+        },
+        _sortable(data){
+            this.sortableLoading = true
+            $ApiService.olCareerService._sortable({data}).then((res)=>{
+            }).finally(()=>{
+                this.sortableLoading = false
             })
         },
         _delete(){

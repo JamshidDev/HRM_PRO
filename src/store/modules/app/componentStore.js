@@ -326,7 +326,7 @@ export const useComponentStore = defineStore('componentStore', {
                 this.docExampleLoading = false
             })
         },
-        _departments(infinity){
+        _departments(infinity=false){
             this.departmentLoading= true
             let params = {
                 ...this.depParams,
@@ -356,7 +356,6 @@ export const useComponentStore = defineStore('componentStore', {
                 this._departments(true)
             }
         },
-
         _positions(){
             this.positionLoading = true
             $ApiService.positionService._index({params:this.params}).then((res)=>{

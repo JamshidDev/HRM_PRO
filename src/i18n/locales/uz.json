@@ -926,7 +926,7 @@
     "updateTitle": "Oliygoh ma'lumotini tahrirlash",
     "form": {
       "university_id": "Universititet",
-      "speciality_id": "Mutaxasislik",
+      "speciality_id": "Mutaxassislik",
       "from_date": "Qachondan",
       "to_date": "Qachongacha",
       "file": "Yuklash uchun bosing"
@@ -1501,7 +1501,7 @@
       "who": "Kim tomonidan",
       "reason": "Sabab",
       "byPosition": "Lavozimlar kesimida",
-      "optimizationConfirm": "Ushbu amalni bajarish orqali bo'limdagi bir xil turdagi barcha lavozimlarni birlashtiriladi. Tasdiqalsh orqlai amalni bajaring",
+      "optimizationConfirm": "Ushbu amalni bajarish orqali bo'limdagi bir xil turdagi barcha lavozimlarni birlashtiriladi. Tasdiqlash orqali amalni bajaring",
       "byWorker": "Xodimlar kesimida"
     }
   }
