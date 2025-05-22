@@ -748,6 +748,12 @@ export default {
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
+        education:{
+            type:'number',
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
         pin:{
             required: true,
             message: t(`rules.requiredField`),

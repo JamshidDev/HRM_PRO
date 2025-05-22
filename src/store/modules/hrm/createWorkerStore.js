@@ -24,7 +24,7 @@ export const useCreateWorkerStore = defineStore('createWorkerStore', {
             work_experience:null,
             experience_date:null,
             pin:null,
-            // inn:null,
+            education:null,
             phones:[{
                 id:1,
                 phone:'+998',
@@ -170,6 +170,7 @@ export const useCreateWorkerStore = defineStore('createWorkerStore', {
             this.passportFileName = null
             this.candidatePhotos = []
             this.mainImageId = null
+            this.education = null
         },
 
     }
