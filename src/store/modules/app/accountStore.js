@@ -27,7 +27,8 @@ export const useAccountStore = defineStore('accountStore', {
         permissions:[],
         storageUpdate: 1,
         pn:Utils.appPermissions,
-        isModeDev: false
+        isModeDev: false,
+        skipReset:true,
     }),
     getters:{
        checkPermission:(state)=>(permission)=>{

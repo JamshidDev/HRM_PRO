@@ -1,8 +1,8 @@
 <script setup>
 import dayjs from "dayjs"
 import {useTurnstileWorkDurationStore} from "@/store/modules/index.js"
-import {UIUser} from "@/components/index.js"
-import {Dismiss32Regular, ChevronLeft12Regular, HatGraduation12Filled} from '@vicons/fluent'
+import {UIBadge, UIUser} from "@/components/index.js"
+import {ChevronLeft12Regular} from '@vicons/fluent'
 import Utils from "@/utils/Utils.js"
 
 const store = useTurnstileWorkDurationStore()
@@ -18,7 +18,6 @@ const onPanelChange = ({year, month}) => {
 }
 
 const viewDayLogs = (date, building)=>{
-  console.log(date, building)
   store.dayLogParams.date = date
   store.dayLogParams.building = building
   store._logs()
@@ -38,28 +37,12 @@ onMounted(() => {
 
 onUnmounted(() => {
   store.workerInstance = null
+  closeDayLogs()
 })
 </script>
 
 <template>
     <n-spin  class="worker-calendar" :show="store.instanceLoading">
-<!--  <n-card-->
-<!--      title="Modal"-->
-<!--      :bordered="false"-->
-<!--      size="huge"-->
-<!--      role="dialog"-->
-<!--      aria-modal="true"-->
-<!--      class="p-3 worker-calendar pt-6"-->
-<!--      :style="{width:'1000px'}"-->
-<!--      closable-->
-<!--  >-->
-<!--    <div class="absolute top-1 right-3 cursor-pointer">-->
-<!--      <n-button circle size="tiny" type="error" secondary @click="store.workerInstance = null">-->
-<!--        <template #icon>-->
-<!--          <n-icon :component="Dismiss32Regular"/>-->
-<!--        </template>-->
-<!--      </n-button>-->
-<!--    </div>-->
       <n-tabs :value="store.dayLogParams.building ? 2 : 1" :tab-style="{display: 'none'}" :pane-style="{padding: 0}" animated>
         <n-tab-pane :name="1">
           <n-calendar
@@ -113,38 +96,61 @@ onUnmounted(() => {
         </n-tab-pane>
         <n-tab-pane :name="2">
           <div class="flex justify-between p-2 pl-0 border-b border-surface-line">
-            <n-button circle secondary @click="closeDayLogs">
-              <template #icon>
-                <n-icon :component="ChevronLeft12Regular" />
-              </template>
-            </n-button>
+            <div class="flex gap-2 items-center">
+              <n-button circle secondary @click="closeDayLogs">
+                <template #icon>
+                  <n-icon :component="ChevronLeft12Regular" />
+                </template>
+              </n-button>
+              <p class="text-lg" v-if="store.dayLogParams.date">{{Utils.timeOnlyDate(store.dayLogParams.date)}}</p>
+            </div>
             <p class="truncate text-lg font-bold">
               {{store.dayLogParams.building?.name}}
             </p>
           </div>
-          <div class="min-h-[250px] max-h-[600px] overflow-y-auto">
-            <n-timeline item-placement="right" class="w-full mt-3 p-3">
+          <div class="min-h-[500px] max-h-[600px] overflow-y-auto py-3 flex flex-col log-timeline">
               <template
                   v-for="(item, idx) in store.dayLogList" :key="idx"
               >
-                <n-timeline-item
-                    :type="item.event_type ? 'success' : 'error'"
-                    :time="Utils.timeWithMonth(item?.event_time)"
-                    :title="$t(item.event_type ? 'turnstile.workDurationPage.enter' : 'turnstile.workDurationPage.exit')"
-                    :content="$t(item.status === 'in-work' ? 'turnstile.workDurationPage.at_work' : 'turnstile.workDurationPage.outside')"
-                    line-type="dashed"
-                />
+                <div class="flex gap-3 justify-center h-[50px]">
+                  <div class="w-[300px] translate-y-[-5px]">
+                    <template v-if="item.event_type">
+                      <div class="flex items-center gap-2 justify-end">
+                        <n-button type="primary" text size="tiny">
+                          <span class="text-[14px]">{{$t('turnstile.workDurationPage.enter')}}</span>
+                        </n-button>
+                        <div>
+                          <UIBadge :show-icon="false" :label="Utils.timeWithMonth(item?.event_time)" />
+                        </div>
+                      </div>
+                    </template>
+                  </div>
+                  <div class="h-full relative">
+                    <div :class="{'leave-dot': item.event_type, 'enter-dot': !item.event_type}" />
+                    <div v-if="idx!==store.dayLogList.length-1" class="action-line" :class="{'leave-line': item.event_type, 'enter-line': !item.event_type}" />
+                  </div>
+                  <div class="w-[300px] translate-y-[-5px]">
+                    <template v-if="!item.event_type">
+                      <div class="flex items-center gap-2">
+                        <div>
+                          <UIBadge  :show-icon="false" :label="Utils.timeWithMonth(item?.event_time)" />
+                        </div>
+                        <n-button type="success" text size="tiny">
+                          <span class="text-[14px]">{{$t('turnstile.workDurationPage.exit')}}</span>
+                        </n-button>
+                      </div>
+                    </template>
+                  </div>
+                </div>
               </template>
 
-            </n-timeline>
           </div>
         </n-tab-pane>
       </n-tabs>
-<!--  </n-card>-->
     </n-spin>
 </template>
 
-<style>
+<style lang="scss">
 .worker-calendar .n-calendar-header__title {
   width: 100%;
 }
@@ -168,6 +174,53 @@ onUnmounted(() => {
 
 .worker-calendar .n-calendar-cell--other-month .n-calendar-date {
   justify-content: end !important;
+}
+
+.log-timeline{
+  .leave-dot{
+    z-index: 1;
+    background: var(--surface-ground);
+    position: relative;
+    width: 16px;
+    height: 16px;
+    border: 3px solid var(--primary-color);
+    border-radius: 50%;
+  }
+
+  .enter-dot{
+    z-index: 1;
+    background: var(--surface-ground);
+    position: relative;
+    width: 16px;
+    height: 16px;
+    border: 3px solid var(--success-color);
+    border-radius: 50%;
+  }
+  .action-line{
+    width: 2px;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%);
+    right: 0;
+    bottom: 0;
+  }
+  .enter-line{
+    background-image: repeating-linear-gradient(
+            to bottom,
+            var(--success-color) 0px 5px,
+            transparent 5px 10px
+    );
+  }
+
+  .leave-line{
+    background-image: repeating-linear-gradient(
+            to bottom,
+            var(--primary-color) 0px 5px,
+            transparent 5px 10px
+    );
+  }
+
 }
 
 </style>
