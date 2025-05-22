@@ -38,6 +38,8 @@ const onSelectDirector = ()=>{
   store.confirmParams.search = null
   store.confirmationList = []
   store.payload.confirmations = []
+  store.confirmParams.page = 1
+  store.confirmParams.search = null
   store._confirmation()
 }
 const onSelectApplication = (v)=>{
@@ -175,7 +177,7 @@ onMounted(()=>{
             :disabled="!store.payload.director_id"
             multiple
             v-model:value="store.payload.confirmations"
-
+            @scroll="store.onScrollConfirmation"
             :options="store.confirmationList"
             :loading="store.confirmLoading"
             :render-label="UIHelper.selectRender.label"
