@@ -37,7 +37,7 @@ const onSelect = (v)=>{
 
 watch(()=>props.options, (v)=>{
   if(isSingleOption.value){
-    // emits('defaultValue',props.options)
+    emits('defaultValue',props.options)
   }
 })
 
@@ -123,6 +123,7 @@ const changeCheckVal = (v)=>{
 const inputVal = computed(()=>props.modelV.map((a)=>a.name).toString())
 
 onMounted(()=>{
+  console.log(props)
   if(isSingleOption.value && props.modelV.length === 0){
     console.log('default value is exist...')
     emits('defaultValue',props.options)
