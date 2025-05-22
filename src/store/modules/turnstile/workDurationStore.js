@@ -1,14 +1,13 @@
 import {defineStore} from "pinia";
 import i18n from "@/i18n/index.js"
-import {turnstileWorkDurationService} from "@/service/v1/turnstile/index.js"
 import Utils from "@/utils/Utils.js"
 import dayjs from "dayjs"
 
 const {t} = i18n.global
 export const useTurnstileWorkDurationStore = defineStore('turnstileWorkDurationStore', {
     state: () => ({
-        list: [],
         loading: false,
+        list: [],
         visible: false,
         visibleType: true,
         elementId: null,
@@ -18,8 +17,12 @@ export const useTurnstileWorkDurationStore = defineStore('turnstileWorkDurationS
         totalItems: 0,
         allPermissionList: [],
         structureCheck: [],
-        workerParams: {
-            day: null,
+        dayLogList: [],
+        dayLogParams: {
+            date: null,
+            building: null,
+        },
+        calendarParams: {
             year: null,
             month: null,
         },
@@ -34,6 +37,7 @@ export const useTurnstileWorkDurationStore = defineStore('turnstileWorkDurationS
             start: null,
             end: null
         },
+        tooltipVisible: false,
     }),
     actions: {
         _index() {
@@ -52,7 +56,7 @@ export const useTurnstileWorkDurationStore = defineStore('turnstileWorkDurationS
         },
         _instance(){
             this.instanceLoading = true
-            const start =  dayjs(`${this.workerParams.year}-${String(this.workerParams.month).padStart(2, '0')}-01`)
+            const start =  dayjs(`${this.calendarParams.year}-${String(this.calendarParams.month).padStart(2, '0')}-01`)
             const end = start.endOf('month')
             const params = {
                 // worker_id: this.workerInstance.id,
@@ -60,24 +64,44 @@ export const useTurnstileWorkDurationStore = defineStore('turnstileWorkDurationS
                 start: start.format('YYYY-MM-DD'),
                 end: end.format('YYYY-MM-DD'),
             }
+
+            this.instanceData = {}
+
             $ApiService.turnstileWorkDurationService._index({params}).then((res) => {
                 res.data.data.data.map(v=>{
-                    const key = dayjs(v.event_time).format('DDMMYYYY')
-                    if(!this.instanceData[key]){
-                        this.instanceData[key] = {}
-                    }
-                    this.instanceData[key].hours = Math.round(v.total_minutes/60)
-                    console.log(this.instanceData)
-                    if(this.instanceData[key]?.data){
+                    const key = this.dateToKey(v.year, v.month, v.day)
+                    if(this.instanceData[key]){
                         this.instanceData[key].data.push(v)
                     }else{
-                        this.instanceData[key].data = [v]
+                        this.instanceData[key] = {
+                            data: [v, v, v],
+                            date:this.dateToKey(v.year, v.month, v.day, '-'),
+                        }
                     }
                 })
-                this.totalItems = res.data.data.total
+                console.log(this.instanceData)
             }).finally(() => {
                 this.instanceLoading = false
             })
+        },
+        _logs() {
+            this.instanceLoading = true
+            const params = {
+                date: this.dayLogParams.date,
+                building_id: this.dayLogParams.building?.id,
+                worker_id: 190 //this.workerInstance.id,
+            }
+            $ApiService.turnstileWorkDurationService._logs({params}).then((res) => {
+                this.dayLogList = res.data.data
+            }).finally(() => {
+                this.instanceLoading = false
+            })
+        },
+        dateToKey(year, month, date, delimeter){
+            if(delimeter){
+                return dayjs(`${year}.${String(month).padStart(2, '0')}.${String(date).padStart(2, '0')}`).format(`YYYY${delimeter}MM${delimeter}DD`)
+            }
+            return dayjs(`${year}.${String(month).padStart(2, '0')}.${String(date).padStart(2, '0')}`).format("YYYYMMDD")
         }
     }
 })

@@ -62,20 +62,18 @@ onMounted(()=>{
       </template>
     </UIPageFilter>
     <Table/>
+<!--    <n-modal-->
+<!--        class="ui__modal-element"-->
+<!--        :show="!!store?.workerInstance"-->
+<!--    >-->
+<!--      <WorkerCalendar />-->
+<!--    </n-modal>-->
     <UIModal
       :visible="!!store?.workerInstance"
       :width="1000"
       :title="$t('turnstile.workDurationPage.calendarTitle')">
-        <WorkerCalendar />
+      <WorkerCalendar />
     </UIModal>
-<!--    <UIDrawer-->
-<!--        :visible="store.visible"-->
-<!--        @update:visible="(v)=>store.visible = v"-->
-<!--        :title="store.visibleType? $t('userPage.createTitle') : $t('userPage.updateTitle')"-->
-<!--    >-->
-<!--      <template #content>-->
-<!--        <createForm/>-->
-<!--      </template>-->
-<!--    </UIDrawer>-->
+
   </UIPageContent>
 </template>

@@ -13,7 +13,7 @@ const changePage = (v)=>{
   store._index()
 }
 
-const onSelectEv = (v)=>{
+const onSelectEv = async (v)=>{
   if(Utils.ActionTypes.view === v.key){
     store.workerInstance = v.data
   }
@@ -50,7 +50,7 @@ const statuses = {
         <tr v-for="(item, idx) in store.list" :key="idx">
           <td><span class="text-center block">{{ (store.params.page - 1) * store.params.per_page + idx + 1 }}</span></td>
           <td>
-            <div @click="console.log">
+            <div>
               <UIUser
                   :short="false"
                   :data="{
@@ -65,7 +65,7 @@ const statuses = {
           </td>
           <td>{{item.building.name}}</td>
           <td class="!text-center">
-            <n-button type="info" ghost circle size="tiny">
+            <n-button type="info" :ghost="!Math.round(item.total_minutes/60)" circle size="tiny">
               <span class="text-[14px] font-bold">{{Math.round(item.total_minutes/60)}}</span>
             </n-button>
           </td>
