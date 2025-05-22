@@ -62,6 +62,7 @@ export const useOnlyOfficeStore = defineStore('onlyOfficeStore', {
             this.visible = v
         },
         _onLoadComponentError(errorCode,errorDescription){
+            console.log('error onlyOffice')
             switch(errorCode) {
                 case -1: // Unknown error loading component
                     console.log(errorDescription)

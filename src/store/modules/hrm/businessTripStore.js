@@ -1,5 +1,6 @@
 import {defineStore} from "pinia";
 import i18n from "@/i18n/index.js"
+import Utils from "@/utils/Utils.js"
 const {t} = i18n.global
 export const useBusinessTripStore = defineStore('businessTripStore', {
     state:()=>({
@@ -21,13 +22,19 @@ export const useBusinessTripStore = defineStore('businessTripStore', {
             page:1,
             per_page:10,
             search:null,
+            organizations:[],
         },
 
     }),
     actions:{
         _index(){
             this.loading= true
-            $ApiService.businessTrip._index({params:this.params}).then((res)=>{
+            const params = {
+                ...this.params,
+                created:Utils.timeToZone(this.params.created),
+                organizations:this.params.organizations.map(v=>v.id).toString() || undefined,
+            }
+            $ApiService.businessTrip._index({params}).then((res)=>{
                 this.list = res.data.data.data
                 this.totalItems = res.data.data.total
             }).finally(()=>{

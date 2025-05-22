@@ -1,27 +1,26 @@
-
 <script setup>
 
 import {UIPageFilter, UISelect} from "@/components/index.js"
 import {
   useAccountStore,
   useComponentStore,
-  useDocumentArchiveStore
+  useTimesheetStore
 } from "@/store/modules/index.js"
 
 
-const store = useDocumentArchiveStore()
+const store = useTimesheetStore()
 const accStore = useAccountStore()
 const componentStore = useComponentStore()
 
 const onAdd = ()=>{
-  if(!accStore.checkAction(accStore.pn.hrDocumentsWrite)) return
-  store.resetForm()
+  if(!accStore.checkAction(accStore.pn.hrTableWorkersWrite)) return
   store.visibleType = true
+  store.resetForm()
   store.visible = true
 }
 
 const onSearch = ()=>{
-  if(!accStore.checkAction(accStore.pn.hrDocumentsRead)) return
+  if(!accStore.checkAction(accStore.pn.hrTableWorkersRead)) return
   store.params.page = 1
   store._index()
 }
@@ -31,15 +30,9 @@ const filterEvent = ()=>{
   store._index()
 }
 
-const filterCount = computed(()=>Number(Boolean(store.params.organizations.length))
-    + Number(Boolean(store.params.confirmation))
-    +Number(Boolean(store.params.created))
-)
+const filterCount = computed(()=>Number(Boolean(store.params.organizations.length)))
 
 const beforeShow = (v)=>{
-  if(v && componentStore.confirmationStatusList.length === 0){
-    componentStore._enumsAdmin()
-  }
   if(componentStore.structureList.length === 0){
     componentStore._structures()
   }
@@ -54,8 +47,6 @@ const onChangeStructure = (v)=>{
 
 const resetFilter = ()=>{
   store.params.organizations = []
-  store.params.confirmation = null
-  store.params.created = null
   filterEvent()
 }
 
@@ -75,8 +66,8 @@ const resetFilter = ()=>{
       <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{$t('actionLog.table.structure')}}</label>
       <UISelect
           :options="componentStore.structureList"
-          @defaultValue="(v)=>store.params.organizations=v"
           :modelV="store.params.organizations"
+          @defaultValue="(v)=>store.params.organizations=v"
           @updateModel="onChangeStructure"
           :checkedVal="store.structureCheck2"
           @updateCheck="(v)=>store.structureCheck2=v"

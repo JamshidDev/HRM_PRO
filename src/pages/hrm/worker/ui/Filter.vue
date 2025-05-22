@@ -93,15 +93,13 @@ const onChangeAge = () => {
 }
 
 const onShow = (isOpen) => {
-  if (isOpen && componentStore.contractTypeList.length === 0) {
+  if(!isOpen) return
+  componentStore._structures()
+  if (componentStore.contractTypeList.length === 0) {
     componentStore._enums()
   }
-
-  if (isOpen && componentStore.positionCategory.length === 0) {
+  if (componentStore.positionCategory.length === 0) {
     componentStore._enumsAdmin()
-  }
-  if(componentStore.structureList.length === 0){
-    componentStore._structures()
   }
   if(componentStore.nationalityList.length === 0){
     componentStore._nationality()
@@ -236,6 +234,7 @@ const canWrite = computed(()=>accStore.checkAction(Utils.appPermissions.hrWorker
             <UISelect
                 :options="componentStore.structureList"
                 :modelV="store.params.organizations"
+                @defaultValue="(v)=>store.params.organizations=v"
                 @updateModel="onChangeStructure"
                 :checkedVal="store.structureCheck"
                 @updateCheck="(v)=>store.structureCheck=v"

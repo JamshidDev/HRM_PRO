@@ -1,5 +1,6 @@
 import {defineStore} from "pinia";
 import i18n from "@/i18n/index.js"
+import Utils from "@/utils/Utils.js"
 export const usePunishmentStore = defineStore('punishmentStore', {
     state:()=>({
         list:[],
@@ -9,6 +10,8 @@ export const usePunishmentStore = defineStore('punishmentStore', {
             page:1,
             per_page:10,
             search:null,
+            organizations:[],
+            created:null,
         },
     }),
     actions:{
@@ -16,6 +19,8 @@ export const usePunishmentStore = defineStore('punishmentStore', {
             this.loading= true
             const params = {
                 ...this.params,
+                created:Utils.timeToZone(this.params.created),
+                organizations:this.params.organizations.map(v=>v.id).toString() || undefined,
             }
             $ApiService.punishmentService._index({params}).then((res)=>{
                 this.list = res.data.data.data

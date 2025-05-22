@@ -24,6 +24,8 @@ export const useMedStore = defineStore('medStore', {
             page:1,
             per_page:10,
             search:null,
+            organizations:[],
+            status:null,
         },
         tabs:[
             {
@@ -42,6 +44,7 @@ export const useMedStore = defineStore('medStore', {
             this.loading= true
             const params = {
                 ...this.params,
+                organizations:this.params.organizations.map(v=>v.id).toString() || undefined,
             }
             $ApiService.medService._index({params}).then((res)=>{
                 this.list = res.data.data.data

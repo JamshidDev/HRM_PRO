@@ -23,6 +23,7 @@ export const useVacationScheduleStore = defineStore('vacationScheduleStore', {
             page:1,
             per_page:10,
             search:null,
+            organizations:[],
         },
 
         othersList:[],
@@ -32,15 +33,18 @@ export const useVacationScheduleStore = defineStore('vacationScheduleStore', {
             page:1,
             per_page:30,
             search:null,
+            organizations:[],
         },
         otherTotal:0,
+        structureCheck2:[],
 
     }),
     actions:{
         _index(){
             this.loading= true
             const params = {
-                ...this.params
+                ...this.params,
+                organizations:this.params.organizations.map(v=>v.id).toString() || undefined,
             }
             $ApiService.vacationScheduleService._index({params}).then((res)=>{
                 this.list = res.data.data.data

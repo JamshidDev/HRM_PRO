@@ -54,6 +54,7 @@ onMounted(()=>{
             :options="componentStore.structureList"
             :modelV="store.payload.organization_id"
             @updateModel="(v)=>store.payload.organization_id=v"
+            @defaultValue="(v)=>store.payload.organizations=v"
             :checkedVal="store.structureCheck"
             @updateCheck="(v)=>store.structureCheck=v"
             :loading="componentStore.structureLoading"

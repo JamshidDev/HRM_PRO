@@ -68,6 +68,9 @@ export const useCommandStore = defineStore('commandStore', {
             page:1,
             per_page:10,
             search:null,
+            organizations:[],
+            confirmation:null,
+            created:null,
         },
         vacations:[],
         vacations55:[],
@@ -76,6 +79,7 @@ export const useCommandStore = defineStore('commandStore', {
         calculateLoading:false,
         vacationLoading:false,
         vacationId:null,
+        structureCheck2:[],
 
     }),
     actions:{
@@ -84,6 +88,7 @@ export const useCommandStore = defineStore('commandStore', {
             const params = {
                 ...this.params,
                 created:Utils.timeToZone(this.params.created),
+                organizations:this.params.organizations.map(v=>v.id).toString() || undefined,
             }
             $ApiService.commandService._index({params}).then((res)=>{
                 this.list = res.data.data.data

@@ -200,7 +200,9 @@ const showForm = computed(()=>store.payload.type===null? true : [1,8].includes(s
               <n-form-item class="w-full" :label="$t(`documentPage.form.organization`)" path="organization_id">
                 <UISelect
                     :options="componentStore.structureList"
+
                     :modelV="store.organization"
+                    @defaultValue="(v)=>store.organization=v"
                     @updateModel="onChangeOrganization"
                     :checkedVal="store.structureCheck2"
                     @updateCheck="(v)=>store.structureCheck2=v"
@@ -282,7 +284,9 @@ const showForm = computed(()=>store.payload.type===null? true : [1,8].includes(s
                   <n-form-item :label="$t(`documentPage.form.organization`)" path="organization_id">
                     <UISelect
                         :options="componentStore.structureList"
+
                         :modelV="store.payload.organization_id"
+                        @defaultValue="(v)=>store.payload.organization_id=v"
                         @updateModel="onChangeStructure"
                         :checkedVal="store.structureCheck"
                         @updateCheck="(v)=>store.structureCheck=v"

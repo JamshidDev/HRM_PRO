@@ -66,6 +66,7 @@ onMounted(()=>{
       <UISelect
           :options="compStore.structureList"
           :modelV="store.params.organizations"
+          @defaultValue="(v)=>store.params.organizations=v"
           @updateModel="(v)=>store.params.organizations=v"
           :checkedVal="store.structureCheck"
           @updateCheck="(v)=>store.structureCheck=v"

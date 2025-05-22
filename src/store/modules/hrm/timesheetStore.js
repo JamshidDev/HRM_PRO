@@ -1,6 +1,7 @@
 import {defineStore} from "pinia";
 import i18n from "@/i18n/index.js"
 import dayjs from "dayjs";
+import Utils from "@/utils/Utils.js"
 const {t} = i18n.global
 export const useTimesheetStore = defineStore('timesheetStore', {
     state:()=>({
@@ -28,12 +29,18 @@ export const useTimesheetStore = defineStore('timesheetStore', {
             page:1,
             per_page:10,
             search:null,
+            organizations:[],
         },
+        structureCheck2:[],
     }),
     actions:{
         _index(){
             this.loading= true
-            $ApiService.timesheetService._index({params:this.params}).then((res)=>{
+            const params = {
+                ...this.params,
+                organizations:this.params.organizations.map(v=>v.id).toString() || undefined,
+            }
+            $ApiService.timesheetService._index({params}).then((res)=>{
                 this.list = res.data.data.data
                 this.totalItems = res.data.data.total
             }).finally(()=>{

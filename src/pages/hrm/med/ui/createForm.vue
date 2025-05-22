@@ -110,6 +110,7 @@ onMounted(()=>{
                   <UISelect
                       :options="componentStore.structureList"
                       :modelV="store.payload.organization_id"
+                      @defaultValue="(v)=>store.payload.organization_id=v"
                       @updateModel="onChangeStructure"
                       :checkedVal="store.structureCheck"
                       @updateCheck="(v)=>store.structureCheck=v"

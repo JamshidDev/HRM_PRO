@@ -1,6 +1,7 @@
 <script setup>
 import {UIPageContent, UIPageFilter} from "@/components/index.js"
 import Table from "./ui/Table.vue"
+import Filter from "./ui/Filter.vue"
 import {useIncentiveStore, useAccountStore} from "@/store/modules/index.js"
 import {useRoute} from "vue-router"
 
@@ -25,12 +26,7 @@ onMounted(()=>{
 <template>
 
   <UIPageContent>
-    <UIPageFilter
-        @onSearch="onSearch"
-        v-model:search="store.params.search"
-        :search-loading="store.loading"
-        :show-add-button="false"
-    />
+    <Filter/>
     <Table/>
   </UIPageContent>
 </template>

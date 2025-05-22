@@ -2,7 +2,7 @@
 import {Signature20Filled,ArrowSyncCircle16Filled,
   PanelLeftContract20Filled, DocumentEdit24Regular,
   ClipboardCheckmark20Regular, CalendarCancel20Regular,
-  Settings20Regular, DocumentArrowDown16Regular, DocumentPdf32Regular} from "@vicons/fluent"
+  Settings20Regular} from "@vicons/fluent"
 import {UIUser, UILottieReader} from "@/components/index.js"
 import generateFile from "@/assets/json/generateFile.json"
 import {usePdfViewerStore, useSignatureStore, useApplicationStore} from "@/store/modules/index.js"
@@ -14,7 +14,6 @@ import {useRoute} from "vue-router"
 import PdfViewer from "@/components/pdfSignature/PdfViewer.vue"
 import ConformAndRejectModal from "@/components/pdfSignature/ui/ConformAndRejectModal.vue"
 import DocumentFileModal from "@/components/pdfSignature/ui/DocumentFileModal.vue"
-import wordAppIcon from "@/assets/images/svg/word-app.svg"
 const pdfViewerRef = ref(null)
 
 const route = useRoute()
@@ -219,40 +218,17 @@ onUnmounted(()=>{
               <div>
               </div>
               <div class="flex gap-3">
-                <n-button v-if="!showSignature && store?.pdfUrl && !store.viewerLoading" tag="a" target="_blank" :href="store.pdfUrl" download type="warning" secondary>
-                  {{$t('content.download')}}
-                  <template #icon>
-                    <n-icon size="28">
-                      <DocumentPdf32Regular />
-                    </n-icon>
-                  </template>
+                <n-button v-if="!showSignature && store?.pdfUrl && !store.viewerLoading" tag="a" target="_blank" :href="store.pdfUrl" download type="error" secondary>
+                  <div class="flex items-center gap-1">
+                    <img class="w-[26px] object-contain" alt="" src="@/assets/images/content/pdfLogo.png"/>
+                    <span>{{$t('content.download')}}</span>
+                  </div>
                 </n-button>
-                <n-button v-if="!showSignature && store?.docxUrl && !store.viewerLoading" tag="a" target="_blank" :href="store?.docxUrl" download type="success" secondary>
-                  {{$t('content.download')}}
-                  <template #icon>
-                    <n-icon size="22">
-                      <svg  fill="#18a058" version="1.1" font-weight="700" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-                            width="100%" height="100%" viewBox="0 0 31.519 31.519"
-                            xml:space="preserve">
-<g>
-	<g>
-		<path d="M11.184,0L3.021,8.619v22.9h25.477V0H11.184z M10.463,3.624v3.819H6.847L10.463,3.624z M26.528,29.55H4.991V9.413h7.443
-			V1.97h14.094V29.55z"/>
-    <path d="M13.5,15.211c0.127,0.046,0.238,0.111,0.335,0.197c0.102,0.095,0.196,0.213,0.278,0.351
-			c0.095,0.16,0.188,0.345,0.268,0.532l0.62,1.764l-1.68,4.828l-2.107-6.003c-0.135-0.372-0.235-0.679-0.296-0.92
-			c-0.079-0.3-0.085-0.408-0.085-0.435c0-0.102,0.036-0.178,0.127-0.256c0.096-0.085,0.271-0.129,0.506-0.129h0.59v-1.079H6.701
-			v1.079h0.37c0.3,0,0.538,0.043,0.688,0.125c0.144,0.079,0.257,0.198,0.346,0.367c0.039,0.072,0.158,0.363,0.502,1.32l3.794,10.6
-			h0.852l2.564-7.236l2.579,7.236h0.891l3.564-10.303c0.322-0.982,0.479-1.342,0.549-1.469c0.076-0.136,0.155-0.248,0.232-0.336
-			c0.065-0.074,0.137-0.135,0.209-0.179c0.074-0.044,0.154-0.075,0.244-0.095c0.102-0.021,0.225-0.032,0.361-0.032h0.37v-1.079
-			h-4.461v1.079h0.368c0.352,0,0.634,0.048,0.84,0.142c0.124,0.058,0.169,0.127,0.169,0.271c0,0.135-0.051,0.503-0.383,1.462
-			l-2.028,5.868l-2.035-5.779c-0.327-0.913-0.394-1.327-0.394-1.515c0-0.2,0.064-0.284,0.115-0.33
-			c0.046-0.045,0.174-0.117,0.508-0.117h0.7v-1.079h-5.595v1.079h0.369C13.194,15.142,13.368,15.164,13.5,15.211z"/>
-	</g>
-</g>
-</svg>
-                    </n-icon>
-
-                  </template>
+                <n-button v-if="!showSignature && store?.docxUrl && !store.viewerLoading" tag="a" target="_blank" :href="store?.docxUrl" download type="primary" secondary>
+                  <div class="flex items-center gap-1">
+                    <img class="w-[26px] object-cover" alt="" src="@/assets/images/content/wordLogo.png"/>
+                    <span>{{$t('content.download')}}</span>
+                  </div>
                 </n-button>
                 <n-button v-if="store.permissions.canEdit"  @click="onEdit" type="info" secondary>
                   {{$t('content.edit')}}
@@ -375,11 +351,6 @@ onUnmounted(()=>{
                 </div>
               </div>
             </div>
-            <div class="vertical-text absolute z-999 top-[80px] right-0 text-white px-1 py-2 bg-surface-400 rounded-tl-lg rounded-bl-lg border border-surface-line">
-              <n-icon>
-                <Settings20Regular/>
-              </n-icon>
-              Vertical text</div>
 
           </div>
         </n-spin>

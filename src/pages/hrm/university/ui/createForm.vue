@@ -96,7 +96,6 @@ const onFocusSpecial = (v)=>{
             v-model:value="store.payload.speciality_id"
             filterable
             :filter="()=>true"
-
             :options="store.specialityList"
             label-field="name"
             value-field="id"

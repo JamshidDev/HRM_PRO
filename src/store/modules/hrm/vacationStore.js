@@ -24,6 +24,8 @@ export const useVacationStore = defineStore('vacationStore', {
             page:1,
             per_page:10,
             search:null,
+            organizations:[],
+            vacation_type:null,
         },
         uuid:null,
     }),
@@ -32,7 +34,8 @@ export const useVacationStore = defineStore('vacationStore', {
             this.loading= true
             const params = {
                 ...this.params,
-                uuid:this.uuid
+                uuid:this.uuid,
+                organizations:this.params.organizations.map(v=>v.id).toString() || undefined,
             }
             $ApiService.vacationService._index({params}).then((res)=>{
                 this.list = res.data.data.data

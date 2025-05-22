@@ -35,6 +35,7 @@ export const useTimesheetDepartmentStore = defineStore('timesheetDepartmentStore
             page:1,
             per_page:10,
             search:null,
+            organizations:[],
         },
     }),
     actions:{
@@ -42,6 +43,7 @@ export const useTimesheetDepartmentStore = defineStore('timesheetDepartmentStore
             this.loading = true
             let params = {
                 ...this.params,
+                organizations:this.params.organizations.map(v=>v.id).toString() || undefined,
             }
             $ApiService.timesheetDepartmentService._index({params}).then((res)=>{
                 this.list = res.data.data.data

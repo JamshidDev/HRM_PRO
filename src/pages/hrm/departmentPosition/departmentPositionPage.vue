@@ -1,6 +1,6 @@
 <script setup>
 import {UIDrawer, UIPageContent} from "@/components/index.js"
-import {useDepartmentPositionStore, useComponentStore, useAccountStore} from "@/store/modules/index.js"
+import {useDepartmentPositionStore, useAccountStore} from "@/store/modules/index.js"
 import createFrom from "./ui/createForm.vue"
 import Table from "./ui/Table.vue"
 import Filter from "./ui/Filter.vue"

@@ -37,6 +37,11 @@ const resetFilter = ()=>{
   filterEvent()
 }
 
+const onChangeStructure = (v)=>{
+  store.params.organizations=v
+  filterEvent()
+}
+
 
 
 
@@ -68,7 +73,8 @@ const beforeShow = (v)=>{
       <UISelect
           :options="componentStore.structureList"
           :modelV="store.params.organizations"
-          @updateModel="(v)=>store.params.organizations=v"
+          @defaultValue="(v)=>store.params.organizations=v"
+          @updateModel="onChangeStructure"
           :checkedVal="store.structureCheck2"
           @updateCheck="(v)=>store.structureCheck2=v"
           :loading="componentStore.structureLoading"

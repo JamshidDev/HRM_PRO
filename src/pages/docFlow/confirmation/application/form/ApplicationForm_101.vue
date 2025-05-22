@@ -141,7 +141,9 @@ onMounted(()=>{
       <n-form-item :label="$t(`documentPage.form.organization`)" path="organization_id">
         <UISelect
             :options="componentStore.allStructureList"
+
             :modelV="store.organization_id"
+            @defaultValue="(v)=>store.organization_id=v"
             @updateModel="onChangeStructure"
             :checkedVal="store.structureCheck"
             @updateCheck="(v)=>store.structureCheck=v"

@@ -5,13 +5,13 @@ import Utils from "@/utils/Utils.js"
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
-
 const instance = axios.create({
     baseURL: `${apiUrl}/api`
 });
 
 
 instance.interceptors.request.use(function (config) {
+    // console.log(config)
     let token = localStorage.getItem(useAppSetting.tokenKey) || null;
     config.headers['Accept-Language'] = localStorage.getItem(useAppSetting.languageKey) || useAppSetting.defaultLanguage
     config.headers['Access-Control-Allow-Origin'] = '*'
