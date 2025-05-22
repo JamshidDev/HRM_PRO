@@ -183,8 +183,6 @@ export const useConfApplicationStore = defineStore('confApplicationStore', {
             })
         },
 
-
-
         _confirmation(infinite){
             this.confirmLoading = true
             const params = {...this.confirmParams}

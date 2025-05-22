@@ -10,32 +10,7 @@ const baseConfig = store.config
 baseConfig.editorConfig.callbackUrl = store.callBackUrl
 const token = Utils.generateJwtToken(store.config, store.secret)
 const config = { ...baseConfig, token}
-const saveDocument = () => {
-  console.log(officeRef.value)
-  if (officeRef.value && officeRef.value.docEditor) {
-    console.log(officeRef.value.docEditor)
-    // officeRef.value.docEditor.forceSave()
-    alert("Hujjat saqlashga yuborildi!")
-  } else {
-    alert("Hujjat muharriri hali yuklanmagan!")
-  }
-}
 
-const onDocumentReady = () => {
-  console.log('loaded...')
-  console.log(officeRef.value.docEditor)
-}
-
-watch(
-    () => officeRef.value,
-    (newVal) => {
-      console.log(newVal)
-      if (newVal && newVal.docEditor) {
-        docEditorInstance.value = newVal.docEditor
-        console.log('docEditor tayyor:', docEditorInstance.value)
-      }
-    }
-)
 
 
 </script>
@@ -48,7 +23,7 @@ watch(
       id="docEditor"
       :documentServerUrl="store.serverUrl"
       :config="config"
-      :events_onDocumentReady="onDocumentReady"
+      :events_onDocumentReady="store._onDocumentReady"
       :onLoadComponentError="store._onLoadComponentError"
 
   />
