@@ -184,7 +184,7 @@ export const useConfApplicationStore = defineStore('confApplicationStore', {
 
 
 
-        _confirmation(){
+        _confirmation(infinity=false){
             this.confirmLoading = true
             const params = {...this.confirmParams}
             $ApiService.applicationService._confirmation({params}).then((res)=>{

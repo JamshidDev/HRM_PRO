@@ -4,6 +4,7 @@ import TreeOrg from "@/components/tree/TreeOrg.vue"
 import {useDebounceFn} from "@vueuse/core"
 import {useComponentStore} from "@/store/modules/index.js"
 const store = useComponentStore()
+const instance = getCurrentInstance();
 const props = defineProps({
   multiple:{type:Boolean,default:true},
   loading:{type:Boolean,default:false},
@@ -37,7 +38,12 @@ const onSelect = (v)=>{
 
 watch(()=>props.options, (v)=>{
   if(isSingleOption.value){
-    emits('defaultValue',props.options)
+    if(isExistDefaultVal.value){
+      emits('defaultValue',props.options)
+    }else{
+      emits('updateModel',props.options)
+    }
+
   }
 })
 
@@ -122,12 +128,17 @@ const changeCheckVal = (v)=>{
 
 const inputVal = computed(()=>props.modelV.map((a)=>a.name).toString())
 
-onMounted(()=>{
-  console.log(props)
-  if(isSingleOption.value && props.modelV.length === 0){
+const isExistDefaultVal = computed(()=>instance.vnode.props?.onDefaultValue)
+
+const callDefaultValue = ()=>{
+  if(isSingleOption.value && props.modelV.length === 0 && isExistDefaultVal.value){
     console.log('default value is exist...')
     emits('defaultValue',props.options)
   }
+}
+
+onMounted(()=>{
+  callDefaultValue()
 })
 
 </script>
