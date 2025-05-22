@@ -34,7 +34,7 @@ onMounted(()=>{
                 :loading="store.loading"
                 v-model:value="store.params.search"
                 type="text"
-                :placeholder="$t('content.search')"
+
                 :on-keyup="searchEvent"
             />
 
@@ -60,7 +60,7 @@ onMounted(()=>{
                     class="w-full"
                     v-model:value="store.params.date"
                     type="date"
-                    :placeholder="$t(`content.choose`)"
+
                     :format="useAppSetting.datePicketFormat"
                 />
               </div>

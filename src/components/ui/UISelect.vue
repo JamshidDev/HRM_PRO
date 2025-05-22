@@ -7,7 +7,6 @@ const store = useComponentStore()
 const props = defineProps({
   multiple:{type:Boolean,default:true},
   loading:{type:Boolean,default:false},
-  autoSelect:{type:Boolean,default:false},
   modelV:{type:Array,default:[]},
   checkedVal:{type:Array,default:[]},
   options:{type:Array, default:[]},
@@ -15,7 +14,7 @@ const props = defineProps({
 
 
 const searchModel = defineModel("search",{type:String,default:null })
-const emits = defineEmits(["onSearch", "onSubmit","updateModel", "updateCheck"])
+const emits = defineEmits(["onSearch", "onSubmit","updateModel", "updateCheck", "defaultValue"])
 
 const onSelect = (v)=>{
   let list = []
@@ -35,16 +34,15 @@ const onSelect = (v)=>{
   emits('updateModel',list)
 }
 
+
 watch(()=>props.options, (v)=>{
-  if(v.length===1 && (v[0]?.children? v[0].children?.length ===0 : true )){
-    // if(props.autoSelect){
-    //   emits('updateModel',v)
-    // }
-    emits('updateModel',v)
+  if(isSingleOption.value){
+    // emits('defaultValue',props.options)
   }
 })
 
 
+const isSingleOption = computed(()=> props.options.length===1 && (props.options[0]?.children? props.options[0].children?.length ===0 : true))
 
 const onSelectAll = (v)=>{
 
@@ -124,6 +122,13 @@ const changeCheckVal = (v)=>{
 
 const inputVal = computed(()=>props.modelV.map((a)=>a.name).toString())
 
+onMounted(()=>{
+  if(isSingleOption.value && props.modelV.length === 0){
+    console.log('default value is exist...')
+    emits('defaultValue',props.options)
+  }
+})
+
 </script>
 
 <template>
@@ -134,7 +139,7 @@ const inputVal = computed(()=>props.modelV.map((a)=>a.name).toString())
   >
     <template #trigger>
       <n-badge class="w-full" :value="modelV.length" type="info" :offset="[-10,-4]">
-        <n-input :loading="loading" class="ui__structure-input w-full"  type="text" :value="inputVal?.toString()" :placeholder="$t('content.choose')" />
+        <n-input :loading="loading" class="ui__structure-input w-full"  type="text" :value="inputVal?.toString()"  />
       </n-badge>
     </template>
     <div class="w-full h-[10px]"></div>
@@ -157,7 +162,7 @@ const inputVal = computed(()=>props.modelV.map((a)=>a.name).toString())
         <n-input
             size="small"
             v-model:value="searchModel"
-            round :placeholder="$t('content.search')"
+            round
             :on-keyup="searchEvent"
             :loading="loading"
         >

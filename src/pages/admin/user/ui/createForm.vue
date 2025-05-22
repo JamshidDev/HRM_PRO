@@ -54,6 +54,7 @@ onMounted(()=>{
             :options="componentStore.structureList"
             :modelV="store.payload.organization_id"
             @updateModel="(v)=>store.payload.organization_id=v"
+            @defaultValue="(v)=>store.payload.organizations=v"
             :checkedVal="store.structureCheck"
             @updateCheck="(v)=>store.structureCheck=v"
             :loading="componentStore.structureLoading"
@@ -64,7 +65,7 @@ onMounted(()=>{
         <n-select
             v-model:value="store.payload.role_id"
             filterable
-            :placeholder="$t(`content.choose`)"
+
             :options="store.roleList"
             label-field="name"
             value-field="id"

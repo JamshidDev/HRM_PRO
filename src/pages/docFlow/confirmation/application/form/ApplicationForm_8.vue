@@ -15,7 +15,7 @@ const componentStore = useComponentStore()
         <n-select
             v-model:value="store.payload.education_type"
             filterable
-            :placeholder="$t(`content.choose`)"
+
             :options="componentStore.educationTypes"
             label-field="name"
             value-field="id"
@@ -28,7 +28,7 @@ const componentStore = useComponentStore()
         <n-input
             class="w-full"
             type="text"
-            :placeholder="$t(`content.enterField`)"
+
             v-model:value="store.payload.univer_number"
         />
       </n-form-item>
@@ -39,7 +39,7 @@ const componentStore = useComponentStore()
             class="w-full"
             v-model:value="store.payload.univer_date"
             type="date"
-            :placeholder="$t(`content.choose`)"
+
             :format="useAppSetting.datePicketFormat"
         />
       </n-form-item>

@@ -21,6 +21,8 @@ export const useExportStore = defineStore('exportStore', {
             page: 1,
             per_page: 10,
             search: null,
+            organizations:[],
+            created:null,
         },
         payload: {
             columns: [],
@@ -41,7 +43,12 @@ export const useExportStore = defineStore('exportStore', {
         },
         _tasks() {
             this.loading = true
-            $ApiService.exportService._tasks({params: this.params}).then((res) => {
+            const params = {
+                ...this.params,
+                created:Utils.timeToZone(this.params.created),
+                organizations:this.params.organizations.map(v=>v.id).toString() || undefined,
+            }
+            $ApiService.exportService._tasks({params}).then((res) => {
                 this.tasks = res.data.data.data.map(i => {
                     let id;
                     if (i.status.id === 2) {

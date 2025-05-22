@@ -63,7 +63,7 @@ const addEvent = ()=>{
               v-if="showSearchInput"
               v-model:value="searchModel"
               type="text"
-              :placeholder="$t('content.search')"
+
               :on-keyup="searchEvent"
               :loading="searchLoading"
 

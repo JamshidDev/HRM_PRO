@@ -112,7 +112,7 @@ const onNext = (v)=>{
                   multiple
                   v-model:value="store.workerApplications"
                   filterable
-                  :placeholder="$t(`content.choose`)"
+
                   :options="store.documentApplications"
                   label-field="name"
                   value-field="id"

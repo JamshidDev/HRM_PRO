@@ -37,7 +37,7 @@ const onSubmit = ()=>{
       <n-form-item :label="$t(`departmentPage.form.name`)" path="name">
         <n-input
             type="text"
-            :placeholder="$t(`departmentPage.form.name`)"
+
             v-model:value="store.payload.name"
         />
       </n-form-item>
@@ -45,7 +45,7 @@ const onSubmit = ()=>{
         <n-select
             v-model:value="store.payload.level"
             filterable
-            :placeholder="$t(`departmentPage.form.level`)"
+
             :options="store.levelList"
             label-field="name"
             value-field="id"
@@ -59,7 +59,7 @@ const onSubmit = ()=>{
             v-model:value="store.payload.parent_id"
             filterable
             clearable
-            :placeholder="$t(`departmentPage.form.parent_id`)"
+
             :options="componentStore.departmentList"
             label-field="name"
             value-field="id"

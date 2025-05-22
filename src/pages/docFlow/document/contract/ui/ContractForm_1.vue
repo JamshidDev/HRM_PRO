@@ -93,7 +93,7 @@ watchEffect(()=>{
             <n-input
                 class="w-full"
                 type="text"
-                :placeholder="$t(`content.enterField`)"
+
                 v-model:value="store.payload.number"
             />
           </n-form-item>
@@ -103,7 +103,7 @@ watchEffect(()=>{
             <n-select
                 v-model:value="store.payload.type"
                 filterable
-                :placeholder="$t(`content.choose`)"
+
                 :options="componentStore.contractTypeList"
                 label-field="name"
                 value-field="id"
@@ -118,7 +118,7 @@ watchEffect(()=>{
                 class="w-full"
                 v-model:value="store.payload.contract_date"
                 type="date"
-                :placeholder="$t(`content.choose`)"
+
                 :format="useAppSetting.datePicketFormat"
             />
           </n-form-item>
@@ -129,7 +129,7 @@ watchEffect(()=>{
                 class="w-full"
                 v-model:value="store.payload.contract_to_date"
                 type="date"
-                :placeholder="$t(`content.choose`)"
+
                 :format="useAppSetting.datePicketFormat"
             />
           </n-form-item>
@@ -140,7 +140,7 @@ watchEffect(()=>{
                 class="w-full"
                 v-model:value="store.payload.position_date"
                 type="date"
-                :placeholder="$t(`content.choose`)"
+
                 :format="useAppSetting.datePicketFormat"
             />
           </n-form-item>
@@ -151,7 +151,7 @@ watchEffect(()=>{
               <n-input
                   class="w-full"
                   type="text"
-                  :placeholder="$t(`content.enterField`)"
+
                   v-model:value="store.payload.vacation_main_day"
                   :allow-input="Utils.onlyAllowNumber"
               />
@@ -162,7 +162,7 @@ watchEffect(()=>{
               <n-input
                   class="w-full"
                   type="text"
-                  :placeholder="$t(`content.enterField`)"
+
                   v-model:value="store.payload.additional_vacation_day"
                   :allow-input="Utils.onlyAllowNumber"
               />
@@ -175,7 +175,7 @@ watchEffect(()=>{
             <n-select
                 v-model:value="store.payload.probation"
                 filterable
-                :placeholder="$t(`content.choose`)"
+
                 :options="componentStore.probationList"
                 label-field="name"
                 value-field="id"
@@ -189,7 +189,7 @@ watchEffect(()=>{
             <n-select
                 v-model:value="store.payload.schedule_id"
                 filterable
-                :placeholder="$t(`content.choose`)"
+
                 :options="componentStore.scheduleList"
                 value-field="id"
                 :loading="componentStore.scheduleLoading"
@@ -209,7 +209,7 @@ watchEffect(()=>{
             @focus="onFocusConf"
             size="large"
             v-model:value="store.payload.director_id"
-            :placeholder="$t(`content.choose`)"
+
             :options="componentStore.confirmationList"
             :loading="componentStore.confirmationLoading"
             :render-label="renderLabel"

@@ -2,23 +2,13 @@
 import {useAccountStore, useOrganizationLeaderStore} from "@/store/modules/index.js"
 import Table from "./ui/Table.vue"
 import Form from "./ui/Form.vue"
-import {UIDrawer, UIPageContent, UIPageFilter} from "@/components/index.js"
+import Filter from "./ui/Filter.vue"
+import {UIDrawer, UIPageContent} from "@/components/index.js"
 
 const store = useOrganizationLeaderStore()
 const accStore = useAccountStore()
 
-const onAdd = ()=>{
-  if(!accStore.checkAction(accStore.pn.hrLeadersWrite)) return
-  store.resetForm()
-  store.visibleType = true
-  store.visible = true
-}
 
-const onSearch = ()=>{
-  if(!accStore.checkAction(accStore.pn.hrLeadersRead)) return
-  store.params.page = 1
-  store._index()
-}
 
 onMounted(()=>{
   if(!accStore.checkAction(accStore.pn.hrLeadersRead)) return
@@ -30,13 +20,7 @@ onMounted(()=>{
 
 <template>
   <UIPageContent>
-    <UIPageFilter
-        @onAdd="onAdd"
-        :show-filter-button="false"
-        v-model:search="store.params.search"
-        @on-search="onSearch"
-        :search-loading="store.loading"
-    />
+    <Filter/>
     <Table/>
     <UIDrawer
         v-model:visible="store.visible"

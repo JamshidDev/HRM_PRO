@@ -43,7 +43,9 @@ onMounted(() => {
     <div class="w-[400px]">
       <UISelect
           :options="componentStore.structureList"
+
           :modelV="store.params.organizations"
+          @defaultValue="(v)=>store.params.organizations=v"
           @updateModel="updateModel"
           :checkedVal="store.structureCheck"
           @updateCheck="(v)=>store.structureCheck=v"

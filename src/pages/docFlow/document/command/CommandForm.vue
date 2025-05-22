@@ -492,7 +492,7 @@ onMounted(()=>{
               <n-input
                   class="w-full"
                   type="text"
-                  :placeholder="$t(`content.enterField`)"
+
                   v-model:value="store.payload.command_number"
               />
             </n-form-item>
@@ -504,7 +504,7 @@ onMounted(()=>{
                   class="w-full"
                   v-model:value="store.payload.command_date"
                   type="date"
-                  :placeholder="$t(`content.choose`)"
+
                   :format="useAppSetting.datePicketFormat"
               />
             </n-form-item>
@@ -514,7 +514,7 @@ onMounted(()=>{
               <n-select
                   v-model:value="store.payload.command_type"
                   filterable
-                  :placeholder="$t(`content.choose`)"
+
                   :options="componentStore.commandTypeList"
                   label-field="name"
                   value-field="id"
@@ -551,7 +551,7 @@ onMounted(()=>{
                     :disabled="store.payload.organization_id.length === 0"
                     v-model:value="store.payload.worker"
                     filterable
-                    :placeholder="$t(`content.choose`)"
+
                     :options="componentStore.workerList"
                     label-field="name"
                     value-field="id"
@@ -571,7 +571,7 @@ onMounted(()=>{
                     multiple
                     v-model:value="store.payload.workers"
                     filterable
-                    :placeholder="$t(`content.choose`)"
+
                     :options="componentStore.workerList"
                     label-field="name"
                     value-field="id"
@@ -651,7 +651,7 @@ onMounted(()=>{
                   value-field="id"
                   label-field="last_name"
                   v-model:value="store.payload.director_id"
-                  :placeholder="$t(`content.choose`)"
+
                   :options="componentStore.confirmationList"
                   :loading="componentStore.confirmationLoading"
                   :render-label="renderLabel"
@@ -666,7 +666,7 @@ onMounted(()=>{
                   value-field="id"
                   multiple
                   v-model:value="store.payload.confirmations"
-                  :placeholder="$t(`content.choose`)"
+
                   :options="confirmationList"
                   :loading="componentStore.confirmationLoading"
                   :render-label="renderLabel"

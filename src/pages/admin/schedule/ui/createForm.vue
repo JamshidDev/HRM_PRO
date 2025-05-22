@@ -35,14 +35,14 @@ onMounted(()=>{
       <n-form-item :label="$t(`schedulePage.form.name`)" path="name">
         <n-input
             type="text"
-            :placeholder="$t(`content.enterField`)"
+
             v-model:value="store.payload.name"
         />
       </n-form-item>
       <n-form-item :label="$t(`schedulePage.form.name_ru`)" path="name_ru">
         <n-input
             type="text"
-            :placeholder="$t(`content.enterField`)"
+
             v-model:value="store.payload.name_ru"
         />
       </n-form-item>
@@ -50,7 +50,7 @@ onMounted(()=>{
         <n-select
             v-model:value="store.payload.type"
             filterable
-            :placeholder="$t(`content.choose`)"
+
             :options="componentStore.scheduleTypes"
             label-field="name"
             value-field="id"

@@ -48,35 +48,35 @@ onMounted(() => {
     <n-form-item :label="$t(`turnstile.terminalPage.name`)" path="name" rule-path="requiredStringField">
       <n-input
           type="text"
-          :placeholder="$t(`content.enterField`)"
+
           v-model:value="store.payload.name"
       />
     </n-form-item>
     <n-form-item :label="$t(`turnstile.terminalPage.name_ru`)" path="name_ru" rule-path="requiredStringField">
       <n-input
           type="text"
-          :placeholder="$t(`content.enterField`)"
+
           v-model:value="store.payload.name_ru"
       />
     </n-form-item>
     <n-form-item :label="$t(`turnstile.terminalPage.name_en`)" path="name_en" rule-path="requiredStringField">
       <n-input
           type="text"
-          :placeholder="$t(`content.enterField`)"
+
           v-model:value="store.payload.name_en"
       />
     </n-form-item>
     <n-form-item :label="$t(`content.url`)" path="url" rule-path="requiredStringField">
       <n-input
           type="text"
-          :placeholder="$t(`content.enterField`)"
+
           v-model:value="store.payload.url"
       />
     </n-form-item>
     <n-form-item :label="$t(`content.ip`)" path="ip_address" rule-path="requiredStringField">
       <n-input
           type="text"
-          :placeholder="$t(`content.enterField`)"
+
           v-model:value="store.payload.ip_address"
       />
     </n-form-item>

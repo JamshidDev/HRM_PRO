@@ -33,7 +33,7 @@ const onSubmit = ()=>{
       <n-form-item :label="$t(`content.name`)" path="name" rule-path="requiredStringField">
         <n-input
             type="text"
-            :placeholder="$t(`content.enterField`)"
+
             v-model:value="store.payload.name"
         />
       </n-form-item>

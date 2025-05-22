@@ -108,7 +108,7 @@ onMounted(()=>{
         <n-select
             v-model:value="store.payload.type"
             filterable
-            :placeholder="$t(`content.choose`)"
+
             :options="componentStore.workerApplicationTypes"
             label-field="name"
             value-field="id"
@@ -125,7 +125,7 @@ onMounted(()=>{
         <n-select
             @focus="onFocusPosition"
             v-model:value="store.payload.worker_position_id"
-            :placeholder="$t(`content.choose`)"
+
             :options="store.myPositionList"
             :loading="store.positionLoading"
             :render-label="UIHelper.selectRender.label"
@@ -141,7 +141,9 @@ onMounted(()=>{
       <n-form-item :label="$t(`documentPage.form.organization`)" path="organization_id">
         <UISelect
             :options="componentStore.allStructureList"
+
             :modelV="store.organization_id"
+            @defaultValue="(v)=>store.organization_id=v"
             @updateModel="onChangeStructure"
             :checkedVal="store.structureCheck"
             @updateCheck="(v)=>store.structureCheck=v"
@@ -156,7 +158,7 @@ onMounted(()=>{
             :disabled="disabledDirector"
             @focus="onFocusDirector"
             v-model:value="store.payload.director_id"
-            :placeholder="$t(`content.choose`)"
+
             :options="componentStore.directorList"
             :loading="componentStore.directorLoading"
             @update:value="onSelectDirector"
@@ -173,7 +175,7 @@ onMounted(()=>{
             :disabled="!store.payload.director_id"
             multiple
             v-model:value="store.payload.confirmations"
-            :placeholder="$t(`content.choose`)"
+
             :options="store.confirmationList"
             :loading="store.confirmLoading"
             :render-label="UIHelper.selectRender.label"
@@ -193,7 +195,7 @@ onMounted(()=>{
             class="w-full"
             v-model:value="store.payload.application_date"
             type="date"
-            :placeholder="$t(`content.choose`)"
+
             :format="useAppSetting.datePicketFormat"
         />
       </n-form-item>

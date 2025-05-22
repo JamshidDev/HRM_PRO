@@ -39,7 +39,7 @@ onMounted(()=>{
             :disabled="!Boolean(store.department_id)"
             v-model:value="store.payload.department_position_id"
             filterable
-            :placeholder="$t(`content.choose`)"
+
             :options="componentStore.departmentPositionList"
             label-field="name"
             value-field="id"
@@ -59,7 +59,7 @@ onMounted(()=>{
             :show-button="false"
             class="w-full"
             type="text"
-            :placeholder="$t(`content.enterField`)"
+
             :allow-input="Utils.onlyAllowNumber"
             v-model:value="store.payload.rate"
         />
@@ -72,7 +72,7 @@ onMounted(()=>{
             class="w-full"
             v-model:value="store.payload.from_date"
             type="date"
-            :placeholder="$t(`content.choose`)"
+
             :format="useAppSetting.datePicketFormat"
         />
       </n-form-item>
@@ -82,7 +82,7 @@ onMounted(()=>{
         <n-input
             class="w-full"
             type="textarea"
-            :placeholder="$t(`content.enterField`)"
+
             v-model:value="store.payload.reason"
         />
       </n-form-item>

@@ -28,7 +28,7 @@ const onUpload = async (v)=>{
           class="w-full"
           type="text"
           v-mask="`AA #######`"
-          :placeholder="$t(`createWorkerPage.form.serial_number`)"
+
           v-model:value="store.payload.serial_number"
       />
     </n-form-item>
@@ -41,7 +41,7 @@ const onUpload = async (v)=>{
           class="w-full"
           v-model:value="store.payload.from_date"
           type="date"
-          :placeholder="$t(`createWorkerPage.form.from_date`)"
+
           :format="useAppSetting.datePicketFormat"
       />
     </n-form-item>
@@ -54,7 +54,7 @@ const onUpload = async (v)=>{
           class="w-full"
           v-model:value="store.payload.to_date"
           type="date"
-          :placeholder="$t(`createWorkerPage.form.to_date`)"
+
           :format="useAppSetting.datePicketFormat"
       />
     </n-form-item>
@@ -66,7 +66,7 @@ const onUpload = async (v)=>{
       <n-input
           class="w-full"
           type="text"
-          :placeholder="$t(`createWorkerPage.form.passport_address`)"
+
           v-model:value="store.payload.passport_address"
       />
     </n-form-item>

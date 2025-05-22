@@ -37,6 +37,11 @@ const resetFilter = ()=>{
   filterEvent()
 }
 
+const onChangeStructure = (v)=>{
+  store.params.organizations=v
+  filterEvent()
+}
+
 
 
 
@@ -68,7 +73,8 @@ const beforeShow = (v)=>{
       <UISelect
           :options="componentStore.structureList"
           :modelV="store.params.organizations"
-          @updateModel="(v)=>store.params.organizations=v"
+          @defaultValue="(v)=>store.params.organizations=v"
+          @updateModel="onChangeStructure"
           :checkedVal="store.structureCheck2"
           @updateCheck="(v)=>store.structureCheck2=v"
           :loading="componentStore.structureLoading"
@@ -80,7 +86,7 @@ const beforeShow = (v)=>{
           :options="componentStore.confirmationStatusList"
           label-field="name"
           value-field="id"
-          :placeholder="$t('content.choose')"
+
           clearable
           @update:value="filterEvent"
           :loading="componentStore.enumAdminLoading"
@@ -90,7 +96,7 @@ const beforeShow = (v)=>{
           class="w-full"
           v-model:value="store.params.created"
           type="date"
-          :placeholder="$t(`content.choose`)"
+
           :format="useAppSetting.datePicketFormat"
           @update:value="filterEvent"
       />

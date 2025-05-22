@@ -42,7 +42,7 @@ onMounted(()=>{
         <n-select
             v-model:value="store.payload.status"
             filterable
-            :placeholder="$t(`content.choose`)"
+
             :options="componentStore.militaryStatuses"
             label-field="name"
             value-field="id"
@@ -53,7 +53,7 @@ onMounted(()=>{
         <n-input
             type="textarea"
             autosize
-            :placeholder="$t(`content.enterField`)"
+
             v-model:value="store.payload.name"
         />
       </n-form-item>
@@ -61,7 +61,7 @@ onMounted(()=>{
         <n-input
             type="textarea"
             autosize
-            :placeholder="$t(`content.enterField`)"
+
             v-model:value="store.payload.number"
         />
       </n-form-item>
@@ -69,7 +69,7 @@ onMounted(()=>{
         <n-input
             type="textarea"
             autosize
-            :placeholder="$t(`content.enterField`)"
+
             v-model:value="store.payload.speciality"
         />
       </n-form-item>
@@ -77,7 +77,7 @@ onMounted(()=>{
         <n-input
             type="textarea"
             autosize
-            :placeholder="$t(`content.enterField`)"
+
             v-model:value="store.payload.commissariat"
         />
       </n-form-item>

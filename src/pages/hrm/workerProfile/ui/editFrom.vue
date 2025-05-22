@@ -62,7 +62,7 @@ onMounted(()=>{
           <n-input
               class="w-full"
               type="text"
-              :placeholder="$t(`content.enterField`)"
+
               v-model:value="store.editPayload.contract_number"
           />
         </n-form-item>
@@ -75,7 +75,7 @@ onMounted(()=>{
           <n-select
               v-model:value="store.editPayload.type"
               filterable
-              :placeholder="$t(`content.choose`)"
+
               :options="componentStore.contractTypeList"
               label-field="name"
               value-field="id"
@@ -92,7 +92,7 @@ onMounted(()=>{
               class="w-full"
               v-model:value="store.editPayload.contract_date"
               type="date"
-              :placeholder="$t(`content.choose`)"
+
               :format="useAppSetting.datePicketFormat"
           />
         </n-form-item>
@@ -106,7 +106,7 @@ onMounted(()=>{
           <n-select
               v-model:value="store.editPayload.group"
               filterable
-              :placeholder="$t(`content.choose`)"
+
               :options="componentStore.groupList"
               label-field="name"
               value-field="id"
@@ -124,7 +124,7 @@ onMounted(()=>{
           <n-select
               v-model:value="store.editPayload.rank"
               filterable
-              :placeholder="$t(`content.choose`)"
+
               :options="componentStore.rankList"
               label-field="name"
               value-field="id"
@@ -146,7 +146,7 @@ onMounted(()=>{
               :show-button="false"
               class="w-full"
               type="text"
-              :placeholder="$t(`content.enterField`)"
+
               :allow-input="Utils.onlyAllowNumber"
               v-model:value="store.editPayload.rate"
           />
@@ -162,7 +162,7 @@ onMounted(()=>{
 
               class="w-full"
               type="text"
-              :placeholder="$t(`content.enterField`)"
+
               :allow-input="Utils.onlyAllowNumber"
               v-model:value="store.editPayload.salary"
           >
@@ -181,7 +181,7 @@ onMounted(()=>{
           <n-select
               v-model:value="store.editPayload.schedule_id"
               filterable
-              :placeholder="$t(`content.choose`)"
+
               :options="componentStore.scheduleList"
               value-field="id"
               :loading="componentStore.scheduleLoading"
@@ -197,6 +197,7 @@ onMounted(()=>{
           <UISelect
               :options="componentStore.structureList"
               :modelV="store.editPayload.organization_id"
+              @defaultValue="(v)=>store.editPayload.organization_id=v"
               @updateModel="onChangeStructure"
               :checkedVal="store.structureCheckV2"
               @updateCheck="(v)=>store.structureCheckV2=v"
@@ -222,7 +223,7 @@ onMounted(()=>{
               :disabled="!Boolean(store.editPayload.department_id.length)"
               v-model:value="store.editPayload.department_position_id"
               filterable
-              :placeholder="$t(`content.choose`)"
+
               :options="componentStore.departmentPositionList"
               label-field="name"
               value-field="id"

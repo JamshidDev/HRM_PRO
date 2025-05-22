@@ -3,6 +3,7 @@ import {UIPageContent, UIPageFilter, UIDrawer, UIDConfirm} from "@/components/in
 import Table from "./ui/Table.vue"
 import Form from "./ui/Form.vue"
 import Timesheet from "./ui/Timesheet.vue"
+import Filter from "./ui/Filter.vue"
 import ConfirmationForm from './ui/ConfirmationForm.vue'
 
 import {
@@ -11,19 +12,12 @@ import {
   useTimesheetStore,
   useTimesheetWorkerStore
 } from "@/store/modules";
-import {Copy20Regular} from "@vicons/fluent";
 
 const store = useTimesheetStore()
 const timesheetDepartmentStore = useTimesheetWorkerStore()
 const confirmationStore = useTimesheetConfirmStore()
 const accStore = useAccountStore()
 
-
-const onSearch = ()=>{
-  if(!accStore.checkAction(accStore.pn.hrTableWorkersRead)) return
-  store.params.page = 1
-  store._index()
-}
 
 onMounted(()=>{
   if(!accStore.checkAction(accStore.pn.hrTableWorkersRead)) return
@@ -32,22 +26,12 @@ onMounted(()=>{
   store._index()
 })
 
-const onAdd = ()=>{
-  if(!accStore.checkAction(accStore.pn.hrTableWorkersWrite)) return
-  store.visibleType = true
-  store.resetForm()
-  store.visible = true
-}
 
 </script>
 
 <template>
   <UIPageContent>
-    <UIPageFilter
-        v-model:search="store.params.search"
-        @onSearch="onSearch"
-        @on-add="onAdd"
-    />
+    <Filter/>
     <Table/>
     <UIDrawer
         :width="300"

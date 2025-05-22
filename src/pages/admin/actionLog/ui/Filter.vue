@@ -66,6 +66,7 @@ onMounted(()=>{
       <UISelect
           :options="compStore.structureList"
           :modelV="store.params.organizations"
+          @defaultValue="(v)=>store.params.organizations=v"
           @updateModel="(v)=>store.params.organizations=v"
           :checkedVal="store.structureCheck"
           @updateCheck="(v)=>store.structureCheck=v"
@@ -75,7 +76,7 @@ onMounted(()=>{
       <template v-if="store.activeTab === 1">
         <label class="mt-3 text-xs text-gray-500">{{$t('content.date')}}</label>
         <n-date-picker clearable v-model:value="store.params.created_at" type="date"
-                       @update:value="filterEvent" :placeholder="$t('content.choose')" />
+                       @update:value="filterEvent"  />
       </template>
       <template v-if="store.activeTab === 1">
         <label class="mt-3 text-xs text-gray-500">{{$t('actionLog.table.status')}}</label>
@@ -84,22 +85,22 @@ onMounted(()=>{
             :options="compStore.logStatusList"
             label-field="name"
             value-field="id"
-            :placeholder="$t('content.choose')"
+
             clearable
             @update:value="filterEvent"
         />
       </template>
       <template v-if="store.activeTab === 1">
         <label class="mt-3 text-xs text-gray-500">{{$t('actionLog.status.subject_type')}}</label>
-        <n-input v-model:value="store.params.subject_type"  :on-keyup="onSearchEv" type="text" :placeholder="$t('content.enterField')" />
+        <n-input v-model:value="store.params.subject_type"  :on-keyup="onSearchEv" type="text"  />
       </template>
       <template v-if="store.activeTab === 2">
         <label class="mt-3 text-xs text-gray-500">{{$t('actionLog.table.ip')}}</label>
-        <n-input v-model:value="store.params.ip_address"  :on-keyup="onSearchEv" type="text" :placeholder="$t('content.enterField')" />
+        <n-input v-model:value="store.params.ip_address"  :on-keyup="onSearchEv" type="text"  />
       </template>
       <template v-if="store.activeTab === 2">
         <label class="mt-3 text-xs text-gray-500">{{$t('actionLog.table.loginAt')}}</label>
-        <n-date-picker clearable v-model:value="store.params.login_at" type="date" @update:value="filterEvent" :placeholder="$t('content.choose')" />
+        <n-date-picker clearable v-model:value="store.params.login_at" type="date" @update:value="filterEvent"  />
       </template>
     </template>
   </UIPageFilter>

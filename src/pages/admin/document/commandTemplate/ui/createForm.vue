@@ -42,7 +42,7 @@ onMounted(()=>{
       <n-form-item :label="$t(`documentSetting.form.name`)" path="name">
         <n-input
             type="text"
-            :placeholder="$t(`documentSetting.form.name`)"
+
             v-model:value="store.payload.name"
         />
       </n-form-item>
@@ -50,7 +50,7 @@ onMounted(()=>{
         <n-select
             v-model:value="store.payload.type"
             filterable
-            :placeholder="$t(`content.choose`)"
+
             :options="compStore.commandTypes"
             label-field="name"
             value-field="id"

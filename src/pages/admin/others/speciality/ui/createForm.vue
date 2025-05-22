@@ -33,14 +33,14 @@ const onSubmit = ()=>{
       <n-form-item :label="$t(`othersPage.speciality.form.name`)" path="name">
         <n-input
             type="text"
-            :placeholder="$t(`content.enterField`)"
+
             v-model:value="store.payload.name"
         />
       </n-form-item>
       <n-form-item :label="$t(`othersPage.speciality.form.name_ru`)" path="name_ru">
         <n-input
             type="text"
-            :placeholder="$t(`content.enterField`)"
+
             v-model:value="store.payload.name_ru"
         />
       </n-form-item>

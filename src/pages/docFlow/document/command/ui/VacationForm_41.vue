@@ -195,7 +195,7 @@ onMounted(() => {
             class="w-full"
             v-model:value="item.from"
             type="date"
-            :placeholder="$t(`content.choose`)"
+
             :format="useAppSetting.datePicketFormat"
         />
       </n-form-item>
@@ -207,7 +207,7 @@ onMounted(() => {
         <n-input
             class="w-full"
             type="text"
-            :placeholder="$t(`content.enterField`)"
+
             v-model:value="item.main_day"
         />
       </n-form-item>
@@ -219,7 +219,7 @@ onMounted(() => {
         <n-input
             class="w-full"
             type="text"
-            :placeholder="$t(`content.enterField`)"
+
             v-model:value="item.second_day"
         />
       </n-form-item>
@@ -231,7 +231,7 @@ onMounted(() => {
         <n-select
             v-model:value="item.additional"
             filterable
-            :placeholder="$t(`content.choose`)"
+
             :options="componentStore.vacationAdditional"
             label-field="name"
             value-field="id"
@@ -284,7 +284,7 @@ onMounted(() => {
                   class="w-full"
                   v-model:value="item.result.to"
                   type="date"
-                  :placeholder="$t(`content.choose`)"
+
                   :format="useAppSetting.datePicketFormat"
               />
             </n-form-item>
@@ -297,7 +297,7 @@ onMounted(() => {
                   class="w-full"
                   v-model:value="item.result.work_day"
                   type="date"
-                  :placeholder="$t(`content.choose`)"
+
                   :format="useAppSetting.datePicketFormat"
               />
             </n-form-item>
@@ -310,7 +310,7 @@ onMounted(() => {
                   class="w-full"
                   v-model:value="item.result.period_from"
                   type="date"
-                  :placeholder="$t(`content.choose`)"
+
                   :format="useAppSetting.datePicketFormat"
               />
             </n-form-item>
@@ -323,7 +323,7 @@ onMounted(() => {
                   class="w-full"
                   v-model:value="item.result.period_to"
                   type="date"
-                  :placeholder="$t(`content.choose`)"
+
                   :format="useAppSetting.datePicketFormat"
               />
             </n-form-item>
@@ -335,7 +335,7 @@ onMounted(() => {
               <n-input
                   class="w-full"
                   type="text"
-                  :placeholder="$t(`content.enterField`)"
+
                   v-model:value="item.result.all_day"
               />
             </n-form-item>

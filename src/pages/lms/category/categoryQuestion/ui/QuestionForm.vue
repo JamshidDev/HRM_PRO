@@ -41,7 +41,7 @@ onMounted(() => {
         :rules="validationRules.common"
     >
       <UIEditor
-          :placeholder="$t('questionPage.form.enterQuestion')"
+
           v-model:text="store.payload.ques"
           :extra-rules="[{
               trigger: ['input', 'blur-sm'],
@@ -86,7 +86,7 @@ onMounted(() => {
                     class="mt-4"/>
                 <div class="grow">
                   <OptionEditor
-                      :placeholder="$t('questionPage.form.enterOption')"
+
                       v-model:text="option.text"
                       :path="`${idx}.text`"
                       @on-remove="store.removeOption(idx)"

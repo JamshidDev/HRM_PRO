@@ -37,7 +37,7 @@ const onChangeMap = (coords)=>{
       <n-form-item :label="$t(`countryPage.form.name`)" path="name">
         <n-input
             type="text"
-            :placeholder="$t(`countryPage.form.name`)"
+
             v-model:value="store.payload.name"
         />
       </n-form-item>

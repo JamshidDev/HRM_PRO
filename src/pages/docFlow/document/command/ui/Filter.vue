@@ -1,5 +1,5 @@
 <script setup>
-import {UIPageFilter} from "@/components/index.js"
+import {UIPageFilter, UISelect} from "@/components/index.js"
 import {useAccountStore, useCommandStore, useComponentStore} from "@/store/modules/index.js"
 import {useAppSetting} from "@/utils/index.js"
 
@@ -17,6 +17,7 @@ const onAdd = ()=>{
 const filterCount = computed(()=>
      Number(Boolean(store.params.confirmation))
     +Number(Boolean(store.params.created))
+    +Number(Boolean(store.params.organizations.length))
 )
 
 
@@ -38,6 +39,11 @@ const resetFilter = ()=>{
   filterEvent()
 }
 
+const onChangeStructure = (v)=>{
+  store.params.organizations=v
+  filterEvent()
+}
+
 
 
 
@@ -45,6 +51,10 @@ const resetFilter = ()=>{
 const beforeShow = (v)=>{
   if(v && componentStore.confirmationStatusList.length === 0){
     componentStore._enumsAdmin()
+  }
+
+  if(componentStore.structureList.length === 0){
+    componentStore._structures()
   }
 }
 
@@ -62,13 +72,23 @@ const beforeShow = (v)=>{
       @onClear="resetFilter"
   >
     <template #filterContent>
+      <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{$t('actionLog.table.structure')}}</label>
+      <UISelect
+          :options="componentStore.structureList"
+          :modelV="store.params.organizations"
+          @defaultValue="(v)=>store.params.organizations=v"
+          @updateModel="onChangeStructure"
+          :checkedVal="store.structureCheck2"
+          @updateCheck="(v)=>store.structureCheck2=v"
+          :loading="componentStore.structureLoading"
+          @onSubmit="filterEvent"
+      />
       <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{$t('content.status')}}</label>
       <n-select
           v-model:value="store.params.confirmation"
           :options="componentStore.confirmationStatusList"
           label-field="name"
           value-field="id"
-          :placeholder="$t('content.choose')"
           clearable
           @update:value="filterEvent"
           :loading="componentStore.enumAdminLoading"
@@ -78,7 +98,7 @@ const beforeShow = (v)=>{
           class="w-full"
           v-model:value="store.params.created"
           type="date"
-          :placeholder="$t(`content.choose`)"
+
           :format="useAppSetting.datePicketFormat"
           @update:value="filterEvent"
       />

@@ -108,7 +108,7 @@ onMounted(()=>{
                   id="phone"
                   type="text"
                   v-mask="'+998(##)#######'"
-                  :placeholder="'+998'"
+
                   @paste="(e)=>{
                     let a = (e.clipboardData.getData('text')).replaceAll(' ', '')
                     console.log(a)
@@ -129,7 +129,7 @@ onMounted(()=>{
                   type="password"
                   show-password-on="click"
                   :maxlength="16"
-                  :placeholder="$t(`loginPage.password`)"
+
                   v-model:value="store.password"
               >
                 <template #prefix>

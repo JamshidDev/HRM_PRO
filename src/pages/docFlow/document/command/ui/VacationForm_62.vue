@@ -187,7 +187,7 @@ onMounted(()=>{
             class="w-full"
             v-model:value="item.from"
             type="date"
-            :placeholder="$t(`content.choose`)"
+
         />
       </n-form-item>
     </div>
@@ -199,7 +199,7 @@ onMounted(()=>{
             class="w-full"
             v-model:value="item.to"
             type="date"
-            :placeholder="$t(`content.choose`)"
+
         />
       </n-form-item>
     </div>
@@ -210,7 +210,7 @@ onMounted(()=>{
         <n-input
             class="w-full"
             type="text"
-            :placeholder="$t(`content.enterField`)"
+
             v-model:value="item.reason"
         />
       </n-form-item>
@@ -221,7 +221,7 @@ onMounted(()=>{
           :label="$t(`commandPage.form_62.orgType`)" path="organizationType">
         <n-select
             v-model:value="item.organizationType"
-            :placeholder="$t(`content.choose`)"
+
             :options="organizationTypes"
             label-field="name"
             value-field="id"
@@ -270,7 +270,7 @@ onMounted(()=>{
           <n-input
               class="w-full"
               type="text"
-              :placeholder="$t(`content.enterField`)"
+
               v-model:value="item.to_organization"
           />
         </n-form-item>

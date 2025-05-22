@@ -54,10 +54,9 @@ const onAdd = ()=>{
   store.visible = true
 }
 
-const onShow = () => {
-  if(componentStore.structureList.length === 0){
-    componentStore._structures()
-  }
+const onShow = (v) => {
+  if(!v) return
+  componentStore._structures()
 }
 
 
@@ -81,6 +80,7 @@ const onShow = () => {
       <UISelect
           :options="componentStore.structureList"
           :modelV="store.params.organizations"
+          @defaultValue="(v)=>store.params.organizations=v"
           @updateModel="onChangeStructure"
           :checkedVal="store.structureCheck"
           @updateCheck="(v)=>store.structureCheck=v"
@@ -97,7 +97,7 @@ const onShow = () => {
           filterable
           label-field="name"
           value-field="id"
-          :placeholder="$t('content.choose')"
+
           clearable
           @update:value="onChangeDepartment"
           :max-tag-count="1"

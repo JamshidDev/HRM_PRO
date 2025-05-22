@@ -92,6 +92,7 @@ export const useWorkerProfileStore = defineStore('workerProfileStore', {
             page:1,
             per_page:10,
             search:null,
+            organizations:[],
         },
         userRoleList:[],
         userRoleLoading:false,
@@ -116,7 +117,7 @@ export const useWorkerProfileStore = defineStore('workerProfileStore', {
         positionId:null,
         structureCheckV2:[],
         departmentCheckV2:[],
-
+        structureCheck2:[],
 
 
 
@@ -387,7 +388,8 @@ export const useWorkerProfileStore = defineStore('workerProfileStore', {
         _userRole(){
             this.userRoleLoading = true
             const params = {
-                ...this.userRoleParams
+                ...this.userRoleParams,
+                organizations:this.userRoleParams.organizations.map(v=>v.id).toString() || undefined,
             }
             $ApiService.workerService._userRole({params}).then((res)=>{
                 this.userRoleList = res.data.data.data

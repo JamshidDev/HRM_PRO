@@ -17,7 +17,7 @@ const store = useConfApplicationStore()
             class="w-full"
             v-model:value="store.payload.from"
             type="date"
-            :placeholder="$t(`content.choose`)"
+
             :format="useAppSetting.datePicketFormat"
         />
       </n-form-item>
@@ -28,7 +28,7 @@ const store = useConfApplicationStore()
             class="w-full"
             v-model:value="store.payload.to"
             type="date"
-            :placeholder="$t(`content.choose`)"
+
             :format="useAppSetting.datePicketFormat"
         />
       </n-form-item>
@@ -39,7 +39,7 @@ const store = useConfApplicationStore()
         <n-time-picker
             class="w-full"
             v-model:value="store.payload.from_time"
-            :placeholder="$t(`content.choose`)"
+
         />
       </n-form-item>
     </div>
@@ -48,7 +48,7 @@ const store = useConfApplicationStore()
         <n-time-picker
             class="w-full"
             v-model:value="store.payload.to_time"
-            :placeholder="$t(`content.choose`)"
+
         />
       </n-form-item>
     </div>
@@ -58,7 +58,7 @@ const store = useConfApplicationStore()
         <n-input
             class="w-full"
             type="textarea"
-            :placeholder="$t(`content.enterField`)"
+
             v-model:value="store.payload.reason"
         />
       </n-form-item>

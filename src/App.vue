@@ -5,7 +5,7 @@ import AppLayout from "@/layouts/AppLayout.vue";
 import {UIMainLoading} from "@/components/index.js"
 import SignatureInstance from "@/pages/app/e-imzo/SignatureInstance.vue"
 import i18n from "@/i18n/index.js"
-import { uzUZ, dateUzUZ, ruRU, dateRuRU, enUS, dateEnUS } from 'naive-ui'
+import { uzUZ, dateUzUZ, ruRU, dateRuRU, enUS, dateEnUS, }  from 'naive-ui'
 import {useAppStore} from "@/store/modules/index.js"
 import {naiveBreakpoints} from "@/assets/theme/theme.js"
 

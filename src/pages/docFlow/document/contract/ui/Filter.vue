@@ -45,17 +45,23 @@ const resetFilter = ()=>{
   filterEvent()
 }
 
+const onChangeStructure = (v)=>{
+  store.params.organizations=v
+  filterEvent()
+}
+
 
 
 
 
 const beforeShow = (v)=>{
-  if(v && componentStore.confirmationStatusList.length === 0){
-    componentStore._enumsAdmin()
-  }
-  if(componentStore.structureList.length === 0){
+  if(!v) return
+  if(componentStore.structureList.length===0){
     componentStore._structures()
   }
+  if(componentStore.confirmationStatusList.length>0) return
+  componentStore._enumsAdmin()
+
 }
 
 </script>
@@ -77,7 +83,8 @@ const beforeShow = (v)=>{
     <UISelect
         :options="componentStore.structureList"
         :modelV="store.params.organizations"
-        @updateModel="(v)=>store.params.organizations=v"
+        @defaultValue="(v)=>store.params.organizations=v"
+        @updateModel="onChangeStructure"
         :checkedVal="store.structureCheck2"
         @updateCheck="(v)=>store.structureCheck2=v"
         :loading="componentStore.structureLoading"
@@ -89,7 +96,7 @@ const beforeShow = (v)=>{
         :options="componentStore.confirmationStatusList"
         label-field="name"
         value-field="id"
-        :placeholder="$t('content.choose')"
+
         clearable
         @update:value="filterEvent"
         :loading="componentStore.enumAdminLoading"
@@ -100,7 +107,7 @@ const beforeShow = (v)=>{
         :options="componentStore.confirmationStatusList"
         label-field="name"
         value-field="id"
-        :placeholder="$t('content.choose')"
+
         clearable
         @update:value="filterEvent"
         :loading="componentStore.enumAdminLoading"
@@ -110,7 +117,7 @@ const beforeShow = (v)=>{
         class="w-full mb-2"
         v-model:value="store.params.created"
         type="date"
-        :placeholder="$t(`content.choose`)"
+
         :format="useAppSetting.datePicketFormat"
         @update:value="filterEvent"
     />

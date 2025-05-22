@@ -223,6 +223,7 @@ export const useComponentStore = defineStore('componentStore', {
         files:[],
 
         universityTypes:[],
+        vacationTypes:[],
     }),
     actions:{
         _confirmFile(data, callback){
@@ -274,6 +275,8 @@ export const useComponentStore = defineStore('componentStore', {
                 this.giftTypes = res.data.data.gift_types
                 this.financialAssistance = res.data.data.financial_assistance
                 this.fineTypes = res.data.data.fine_types
+                this.vacationTypes = res.data.data.vacation_types
+
             }).finally(()=>{
                 this.enumLoading= false
             })
@@ -427,7 +430,7 @@ export const useComponentStore = defineStore('componentStore', {
             this.structureLoading= true
             $ApiService.componentService._structure({params:this.structureParams}).then((res)=>{
                 this.structureList = res.data.data
-                callback?.()
+                // callback?.()
             }).finally(()=>{
                 this.structureLoading= false
             })

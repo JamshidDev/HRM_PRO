@@ -70,7 +70,7 @@ const onContinue = ()=>{
                clearable
                v-mask="`####-####-####-##`"
                type="text"
-               :placeholder="$t('workerPage.checkWorker.jshshir')"
+
            >
              <template #prefix>
                <n-icon :component="GlobePerson24Regular" />

@@ -31,21 +31,21 @@ const onSubmit = ()=>{
       <n-form-item :label="$t(`othersPage.language.form.nameUz`)" path="name">
         <n-input
             type="text"
-            :placeholder="$t(`content.enterField`)"
+
             v-model:value="store.payload.name"
         />
       </n-form-item>
       <n-form-item :label="$t(`othersPage.language.form.nameRu`)" path="name_ru">
         <n-input
             type="text"
-            :placeholder="$t(`content.enterField`)"
+
             v-model:value="store.payload.name_ru"
         />
       </n-form-item>
       <n-form-item :label="$t(`othersPage.language.form.nameEn`)" path="name_en">
         <n-input
             type="text"
-            :placeholder="$t(`content.enterField`)"
+
             v-model:value="store.payload.name_en"
         />
       </n-form-item>

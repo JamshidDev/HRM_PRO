@@ -43,7 +43,7 @@ onMounted(()=>{
         <n-select
             v-model:value="store.payload.party"
             filterable
-            :placeholder="$t(`content.choose`)"
+
             :options="componentStore.partyList"
             label-field="name"
             value-field="id"
@@ -57,7 +57,7 @@ onMounted(()=>{
             class="w-full"
             v-model:value="store.payload.from_date"
             type="date"
-            :placeholder="$t(`content.choose`)"
+
             :format="useAppSetting.datePicketFormat"
         />
       </n-form-item>
@@ -68,7 +68,7 @@ onMounted(()=>{
             class="w-full"
             v-model:value="store.payload.to_date"
             type="date"
-            :placeholder="$t(`content.choose`)"
+
             :format="useAppSetting.datePicketFormat"
         />
       </n-form-item>

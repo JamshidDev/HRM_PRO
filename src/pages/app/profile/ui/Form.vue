@@ -24,35 +24,35 @@ const onSubmit = ()=>{
       <n-form-item :label="$t(`profilePage.form.lastName`)" path="last_name">
         <n-input
             type="text"
-            :placeholder="$t(`profilePage.form.lastName`)"
+
             v-model:value="store.payload.last_name"
         />
       </n-form-item>
       <n-form-item :label="$t(`profilePage.form.fistName`)" path="first_name">
         <n-input
             type="text"
-            :placeholder="$t(`profilePage.form.fistName`)"
+
             v-model:value="store.payload.first_name"
         />
       </n-form-item>
       <n-form-item :label="$t(`profilePage.form.middleName`)" path="middle_name">
         <n-input
             type="text"
-            :placeholder="$t(`profilePage.form.middleName`)"
+
             v-model:value="store.payload.middle_name"
         />
       </n-form-item>
       <n-form-item :label="$t(`profilePage.form.password`)" path="password">
         <n-input
             type="text"
-            :placeholder="$t(`profilePage.form.password`)"
+
             v-model:value="store.payload.password"
         />
       </n-form-item>
       <n-form-item :label="$t(`profilePage.form.confirmPassword`)">
         <n-input
             type="text"
-            :placeholder="$t(`profilePage.form.confirmPassword`)"
+
             v-model:value="store.payload.password"
         />
       </n-form-item>

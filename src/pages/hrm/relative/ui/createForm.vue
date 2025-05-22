@@ -60,7 +60,7 @@ onMounted(()=>{
               <n-select
                   v-model:value="store.payload.relative"
                   filterable
-                  :placeholder="$t(`content.choose`)"
+
                   :options="componentStore.relativesList"
                   label-field="name"
                   value-field="id"
@@ -70,21 +70,21 @@ onMounted(()=>{
             <n-form-item :label="$t(`createWorkerPage.form.lastName`)" path="last_name">
               <n-input
                   type="text"
-                  :placeholder="$t(`content.enterField`)"
+
                   v-model:value="store.payload.last_name"
               />
             </n-form-item>
             <n-form-item :label="$t(`createWorkerPage.form.firstName`)" path="first_name">
               <n-input
                   type="text"
-                  :placeholder="$t(`content.enterField`)"
+
                   v-model:value="store.payload.first_name"
               />
             </n-form-item>
             <n-form-item :label="$t(`createWorkerPage.form.middleName`)" path="middle_name">
               <n-input
                   type="text"
-                  :placeholder="$t(`content.enterField`)"
+
                   v-model:value="store.payload.middle_name"
               />
             </n-form-item>
@@ -95,14 +95,14 @@ onMounted(()=>{
                   class="w-full"
                   v-model:value="store.payload.birthday"
                   type="date"
-                  :placeholder="$t(`content.choose`)"
+
                   :format="useAppSetting.datePicketFormat"
               />
             </n-form-item>
             <n-form-item :label="$t(`relativePage.form.post_name`)" path="post_name">
               <n-input
                   type="text"
-                  :placeholder="$t(`content.enterField`)"
+
                   v-model:value="store.payload.post_name"
               />
             </n-form-item>
@@ -111,14 +111,14 @@ onMounted(()=>{
                 path="birth_place">
               <n-input
                   type="text"
-                  :placeholder="$t(`content.enterField`)"
+
                   v-model:value="store.payload.birth_place"
               />
             </n-form-item>
             <n-form-item :label="$t(`createWorkerPage.form.address`)" path="address">
               <n-input
                   type="text"
-                  :placeholder="$t(`content.enterField`)"
+
                   v-model:value="store.payload.address"
               />
             </n-form-item>
@@ -128,7 +128,7 @@ onMounted(()=>{
               <n-select
                   v-model:value="store.payload.relative"
                   filterable
-                  :placeholder="$t(`content.choose`)"
+
                   :options="componentStore.relativesList"
                   label-field="name"
                   value-field="id"

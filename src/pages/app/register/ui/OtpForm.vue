@@ -52,7 +52,7 @@ const onSubmit = ()=>{
           name="password"
           id="password"
           v-mask="'######'"
-          :placeholder="$t(`registerPage.otp`)"
+
           v-model:value="store.create.otp"
       >
         <template #prefix>

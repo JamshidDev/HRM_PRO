@@ -58,7 +58,7 @@ const onDelete = (v)=>{
       size="small"
       v-model:value="store.payload.recipient_id"
       filterable
-      :placeholder="$t(`content.choose`)"
+
       :options="users"
       label-field="name"
       value-field="id"

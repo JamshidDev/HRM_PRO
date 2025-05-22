@@ -14,7 +14,7 @@ const store = useConfApplicationStore()
             class="w-full"
             v-model:value="store.payload.from"
             type="date"
-            :placeholder="$t(`content.choose`)"
+
             :format="useAppSetting.datePicketFormat"
         />
       </n-form-item>
@@ -25,7 +25,7 @@ const store = useConfApplicationStore()
             class="w-full"
             v-model:value="store.payload.to"
             type="date"
-            :placeholder="$t(`content.choose`)"
+
             :format="useAppSetting.datePicketFormat"
         />
       </n-form-item>

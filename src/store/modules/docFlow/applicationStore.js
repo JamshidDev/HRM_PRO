@@ -25,6 +25,8 @@ export const useApplicationStore = defineStore('applicationStore', {
             page:1,
             per_page:10,
             search:null,
+            organizations:[],
+            created:null,
         },
         tabList:[1,2,3],
         activeTab:1,
@@ -70,7 +72,12 @@ export const useApplicationStore = defineStore('applicationStore', {
     actions:{
         _index(){
             this.loading= true
-            $ApiService.applicationService._index({params:this.params}).then((res)=>{
+            const params = {
+                ...this.params,
+                created:Utils.timeToZone(this.params.created),
+                organizations:this.params.organizations.map(v=>v.id).toString() || undefined,
+            }
+            $ApiService.applicationService._index({params}).then((res)=>{
                 this.list = res.data.data.data
                 this.totalItems = res.data.data.total
             }).finally(()=>{

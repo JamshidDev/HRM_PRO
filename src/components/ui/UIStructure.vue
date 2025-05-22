@@ -131,7 +131,7 @@ const onFocusEv = ()=>{
           :show="!disabled"
           :offset="[-10,-4]"
           class="w-full" :value="modelV.length" type="info">
-        <n-input :disabled="disabled" @focus="onFocusEv" class="ui__structure-input w-full"  type="text" :value="inputVal?.toString()" :placeholder="$t('content.choose')" />
+        <n-input :disabled="disabled" @focus="onFocusEv" class="ui__structure-input w-full"  type="text" :value="inputVal?.toString()"  />
 
       </n-badge>
     </template>
@@ -155,7 +155,7 @@ const onFocusEv = ()=>{
         <n-input
             size="small"
             v-model:value="searchModel"
-            round :placeholder="$t('content.search')"
+            round
             :on-keyup="searchEvent"
             :loading="store.structureLoading"
         >

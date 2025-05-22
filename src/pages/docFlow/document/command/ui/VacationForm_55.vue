@@ -145,7 +145,7 @@ onMounted(()=>{
             class="w-full"
             v-model:value="item.from"
             type="date"
-            :placeholder="$t(`content.choose`)"
+
         />
       </n-form-item>
     </div>
@@ -156,7 +156,7 @@ onMounted(()=>{
 
         <n-time-picker
             class="w-full"
-            :placeholder="$t(`content.choose`)"
+
             v-model:value="item.from_time"
             format="h:mm a" />
       </n-form-item>
@@ -169,7 +169,7 @@ onMounted(()=>{
             class="w-full"
             v-model:value="item.to"
             type="date"
-            :placeholder="$t(`content.choose`)"
+
         />
       </n-form-item>
     </div>
@@ -179,7 +179,7 @@ onMounted(()=>{
           :label="$t(`commandPage.form_55.to_time`)" path="to_time">
         <n-time-picker
             class="w-full"
-            :placeholder="$t(`content.choose`)"
+
             v-model:value="item.to_time"
             format="h:mm a" />
       </n-form-item>

@@ -46,7 +46,7 @@ onMounted(()=>{
       <n-input
           class="w-full"
           type="text"
-          :placeholder="$t(`content.enterField`)"
+
           v-model:value="store.payload.last_name"
       />
     </n-form-item>
@@ -58,7 +58,7 @@ onMounted(()=>{
       <n-input
           class="w-full"
           type="text"
-          :placeholder="$t(`content.enterField`)"
+
           v-model:value="store.payload.first_name"
       />
     </n-form-item>
@@ -70,7 +70,7 @@ onMounted(()=>{
       <n-input
           class="w-full"
           type="text"
-          :placeholder="$t(`content.enterField`)"
+
           v-model:value="store.payload.middle_name"
       />
     </n-form-item>
@@ -82,7 +82,7 @@ onMounted(()=>{
       <n-select
           v-model:value="store.payload.country_id"
           filterable
-          :placeholder="$t(`content.choose`)"
+
           :options="componentStore.countryList"
           label-field="name"
           value-field="id"
@@ -99,7 +99,7 @@ onMounted(()=>{
           v-model:value="store.payload.region_id"
           @update:value="store.changeRegion"
           filterable
-          :placeholder="$t(`content.choose`)"
+
           :options="componentStore.regionList"
           label-field="name"
           value-field="id"
@@ -115,7 +115,7 @@ onMounted(()=>{
           :disabled="!store.payload.region_id"
           v-model:value="store.payload.city_id"
           filterable
-          :placeholder="$t(`content.choose`)"
+
           :options="store.districtList"
           label-field="name"
           value-field="id"
@@ -131,7 +131,7 @@ onMounted(()=>{
           v-model:value="store.payload.current_region_id"
           @update:value="store.changeCurrentRegion"
           filterable
-          :placeholder="$t(`content.choose`)"
+
           :options="componentStore.regionList"
           label-field="name"
           value-field="id"
@@ -147,7 +147,7 @@ onMounted(()=>{
           :disabled="!store.payload.current_region_id"
           v-model:value="store.payload.current_city_id"
           filterable
-          :placeholder="$t(`content.choose`)"
+
           :options="store.currentDistrictList"
           label-field="name"
           value-field="id"
@@ -163,7 +163,7 @@ onMounted(()=>{
           class="w-full"
           v-model:value="store.payload.birthday"
           type="date"
-          :placeholder="$t(`content.choose`)"
+
           :format="useAppSetting.datePicketFormat"
       />
     </n-form-item>
@@ -175,7 +175,7 @@ onMounted(()=>{
       <n-input
           class="w-full"
           type="text"
-          :placeholder="$t(`content.enterField`)"
+
           v-model:value="store.payload.address"
       />
     </n-form-item>
@@ -187,7 +187,7 @@ onMounted(()=>{
       <n-select
           v-model:value="store.payload.nationality_id"
           filterable
-          :placeholder="$t(`content.choose`)"
+
           :options="componentStore.nationalityList"
           label-field="name"
           value-field="id"
@@ -202,7 +202,7 @@ onMounted(()=>{
       <n-select
           v-model:value="store.payload.sex"
           filterable
-          :placeholder="$t(`content.choose`)"
+
           :options="componentStore.genderList"
           label-field="name"
           value-field="id"
@@ -216,7 +216,7 @@ onMounted(()=>{
       <n-input
           class="w-full"
           type="text"
-          :placeholder="$t(`content.enterField`)"
+
           v-model:value="store.payload.pin"
           v-mask="`####-####-####-##`"
       />
@@ -229,7 +229,7 @@ onMounted(()=>{
 <!--          class="w-full"-->
 <!--          type="text"-->
 <!--          v-mask="`#########`"-->
-<!--          :placeholder="$t(`content.enterField`)"-->
+<!--          -->
 <!--          v-model:value="store.payload.inn"-->
 <!--          :allow-input="Utils.onlyAllowNumber"-->
 <!--      />-->
@@ -243,7 +243,7 @@ onMounted(()=>{
           v-model:value="store.payload.marital_status"
           :rule-path="validationRules.rulesNames.requiredNumberField"
           filterable
-          :placeholder="$t(`content.choose`)"
+
           :options="componentStore.maritalList"
           label-field="name"
           value-field="id"
@@ -258,7 +258,7 @@ onMounted(()=>{
       <n-input
           class="w-full"
           type="text"
-          :placeholder="$t(`content.enterField`)"
+
           v-model:value="store.payload.work_experience"
           :allow-input="Utils.onlyAllowNumber"
       />
@@ -272,7 +272,7 @@ onMounted(()=>{
           class="w-full"
           v-model:value="store.payload.experience_date"
           type="date"
-          :placeholder="$t(`content.choose`)"
+
           :format="useAppSetting.datePicketFormat"
       />
     </n-form-item>

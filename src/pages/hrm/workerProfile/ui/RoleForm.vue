@@ -46,6 +46,7 @@ onMounted(()=>{
         <UISelect
             :options="componentStore.structureList"
             :modelV="store.rolePayload.organization_id"
+            @defaultValue="(v)=>store.rolePayload.organization_id=v"
             @updateModel="(v)=>store.rolePayload.organization_id=v"
             :checkedVal="store.structureCheck"
             @updateCheck="(v)=>store.structureCheck=v"
@@ -58,7 +59,7 @@ onMounted(()=>{
         <n-select
             v-model:value="store.rolePayload.role"
             filterable
-            :placeholder="$t(`workerProfile.roles.title`)"
+
             :options="componentStore.roles"
             :loading="componentStore.enumLoading"
             label-field="name"

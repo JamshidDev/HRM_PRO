@@ -57,7 +57,7 @@ const feedback = computed(()=>!Boolean(pin.value))
         class="w-full z-10"
         type="text"
         clearable
-        :placeholder="$t('workerPage.checkWorker.jshshir')"
+
     />
     <n-form-item path="pin" :show-feedback="feedback">
       <n-input

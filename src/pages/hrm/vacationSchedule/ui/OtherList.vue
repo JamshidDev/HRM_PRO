@@ -87,7 +87,7 @@ onMounted(()=>{
               <n-select
                   v-model:value="item.month"
                   filterable
-                  :placeholder="$t(`content.choose`)"
+
                   :options="Utils.monthList"
                   label-field="name"
                   value-field="id"

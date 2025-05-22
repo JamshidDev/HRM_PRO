@@ -66,6 +66,7 @@ onMounted(()=>{
           <UISelect
               :options="componentStore.structureList"
               :modelV="store.payload.organization_id"
+              @defaultValue="(v)=>store.payload.organization_id=v"
               @updateModel="onChangeStructure"
               :checkedVal="store.structureCheck"
               @updateCheck="(v)=>store.structureCheck=v"
@@ -78,7 +79,7 @@ onMounted(()=>{
           <n-select
               v-model:value="store.payload.worker_position_id"
               filterable
-              :placeholder="$t(`content.choose`)"
+
               :options="componentStore.workerList"
               label-field="name"
               value-field="id"
@@ -96,7 +97,7 @@ onMounted(()=>{
         <n-select
             v-model:value="store.payload.month"
             filterable
-            :placeholder="$t(`content.choose`)"
+
             :options="Utils.monthList"
             label-field="name"
             value-field="id"

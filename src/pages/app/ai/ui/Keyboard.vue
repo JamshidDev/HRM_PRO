@@ -19,7 +19,7 @@ const goChat = ()=>{
       :bordered="false"
       class=" w-full!"
       v-model:value="store.payload.question"
-      :placeholder="$t('aiConversation.form.askQuestion')"
+
       :rows="1"
       :autosize="{
         minRows:1,

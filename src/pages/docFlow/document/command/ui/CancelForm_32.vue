@@ -47,7 +47,7 @@ defineExpose({
             class="w-full"
             v-model:value="store.form_32.contract_to_date"
             type="date"
-            :placeholder="$t(`content.choose`)"
+
         />
       </n-form-item>
     </div>

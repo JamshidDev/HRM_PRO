@@ -96,7 +96,7 @@ onMounted(()=>{
               <n-select
                   v-model:value="store.payload.type"
                   filterable
-                  :placeholder="$t(`content.choose`)"
+
                   :options="componentStore.workTypes"
                   label-field="name"
                   value-field="id"
@@ -110,7 +110,7 @@ onMounted(()=>{
                   class="w-full"
                   v-model:value="store.payload.from_date"
                   type="date"
-                  :placeholder="$t(`content.choose`)"
+
               />
             </n-form-item>
           </div>
@@ -132,7 +132,7 @@ onMounted(()=>{
                     :disabled="!Boolean(store.payload.department_id.length>0)"
                     v-model:value="store.payload.department_position_id"
                     filterable
-                    :placeholder="$t(`content.choose`)"
+
                     :options="componentStore.departmentPositionList"
                     label-field="name"
                     value-field="id"
@@ -147,7 +147,7 @@ onMounted(()=>{
               <n-select
                   @focus="onFocusConf"
                   v-model:value="store.payload.director_id"
-                  :placeholder="$t(`content.choose`)"
+
                   :options="componentStore.confirmationList"
                   :loading="componentStore.confirmationLoading"
                   :render-label="renderLabel"

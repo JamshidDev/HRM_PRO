@@ -3,6 +3,7 @@ import {UIDrawer, UIPageContent, UIPageFilter} from "@/components/index.js"
 import {useConfirmationStore, useComponentStore, useAccountStore} from "@/store/modules/index.js"
 import Table from "./ui/Table.vue"
 import createFrom from "./ui/createForm.vue"
+import Filter from "./ui/Filter.vue"
 
 const store = useConfirmationStore()
 const compStore = useComponentStore()
@@ -35,13 +36,7 @@ onMounted(()=>{
 
 <template>
 <UIPageContent>
-  <UIPageFilter
-      @onAdd="onAdd"
-      :show-filter-button="false"
-      v-model:search="store.params.search"
-      @on-search="onSearch"
-      :search-loading="store.loading"
-  />
+  <Filter/>
   <Table/>
   <UIDrawer
       :visible="store.visible"

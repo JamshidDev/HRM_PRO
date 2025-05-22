@@ -23,11 +23,13 @@ export const useDocumentArchiveStore = defineStore('documentArchiveStore', {
             file:[],
             fakeFile:null,
         },
+        structureCheck2:[],
         params:{
             page:1,
             per_page:10,
             search:null,
             date:null,
+            organizations:[],
         },
         visibleTypes:[
             {
@@ -48,7 +50,8 @@ export const useDocumentArchiveStore = defineStore('documentArchiveStore', {
         _index(infinity=false){
             this.loading= true
             const params = {
-                ...this.params
+                ...this.params,
+                organizations:this.params.organizations.map(v=>v.id).toString() || undefined,
             }
             $ApiService.documentArchiveService._index({params}).then((res)=>{
                 const data = res.data.data.data

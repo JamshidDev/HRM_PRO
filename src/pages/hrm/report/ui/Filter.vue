@@ -17,6 +17,7 @@ onMounted(()=>{
     <UISelect
         :options="componentStore.structureList"
         :model-v="store.params.organization_id"
+        @defaultValue="(v)=>store.params.organization_id=v"
         @update-model="store.onChangeOrg"
         :loading="componentStore.structureLoading"
         :checked-val="store.orgCheck"

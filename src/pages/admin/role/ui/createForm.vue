@@ -34,7 +34,7 @@ const onSubmit = ()=>{
       <n-form-item :label="$t(`userRole.form.name`)" path="name">
         <n-input
             type="text"
-            :placeholder="$t(`userRole.form.name`)"
+
             v-model:value="store.payload.name"
         />
       </n-form-item>

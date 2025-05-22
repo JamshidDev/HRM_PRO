@@ -19,7 +19,7 @@ const onMessageEv = ()=>{
              minRows: 1,
              maxRows: 4,
              }"
-          :placeholder="$t(`content.message`)"
+
           v-model:value="store.msg"
       />
     </div>

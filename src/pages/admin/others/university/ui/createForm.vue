@@ -53,14 +53,14 @@ onMounted(()=>{
       <n-form-item :label="$t(`othersPage.university.form.name`)" path="name">
         <n-input
             type="text"
-            :placeholder="$t(`content.enterField`)"
+
             v-model:value="store.payload.name"
         />
       </n-form-item>
       <n-form-item :label="$t(`othersPage.university.form.name_ru`)" path="name_ru">
         <n-input
             type="text"
-            :placeholder="$t(`content.enterField`)"
+
             v-model:value="store.payload.name_ru"
         />
       </n-form-item>
@@ -69,7 +69,7 @@ onMounted(()=>{
             @focus="onFocusRegion"
             v-model:value="store.payload.region_id"
             filterable
-            :placeholder="$t(`content.choose`)"
+
             :options="compStore.regionList"
             label-field="name"
             value-field="id"
@@ -82,7 +82,7 @@ onMounted(()=>{
             :disabled="!store.payload.region_id"
             v-model:value="store.payload.city_id"
             filterable
-            :placeholder="$t(`content.choose`)"
+
             :options="store.districtList"
             label-field="name"
             value-field="id"
@@ -93,7 +93,7 @@ onMounted(()=>{
         <n-select
             v-model:value="store.payload.education"
             filterable
-            :placeholder="$t(`content.choose`)"
+
             :options="compStore.educationTypes"
             label-field="name"
             value-field="id"
@@ -104,7 +104,7 @@ onMounted(()=>{
         <n-select
             v-model:value="store.payload.type"
             filterable
-            :placeholder="$t(`content.choose`)"
+
             :options="compStore.universityTypes"
             label-field="name"
             value-field="id"
