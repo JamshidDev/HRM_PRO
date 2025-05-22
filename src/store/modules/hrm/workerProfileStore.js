@@ -33,6 +33,7 @@ export const useWorkerProfileStore = defineStore('workerProfileStore', {
             marital_status:null,
             work_experience:null,
             experience_date:null,
+            education:null,
         },
         params:{
             page:1,
@@ -144,6 +145,7 @@ export const useWorkerProfileStore = defineStore('workerProfileStore', {
                 this.payload.address = this.data.address
                 this.payload.nationality_id = this.data.nationality?.id
                 this.payload.sex = this.data?.sex
+                this.payload.education = this.data?.education
                 this.payload.pin = this.data.pin?.toString()
                 // this.payload.inn = this.data.inn?.toString()
                 this.payload.marital_status = this.data.marital_status?.id

@@ -327,8 +327,20 @@ onMounted(()=>{
           class="w-full"
           v-model:value="store.payload.experience_date"
           type="date"
-
           :format="useAppSetting.datePicketFormat"
+      />
+    </n-form-item>
+    <n-form-item
+        class="col-span-12 md:col-span-6 lg:col-span-4"
+        :label="$t(`createWorkerPage.form.education`)"
+        path="education">
+      <n-select
+          v-model:value="store.payload.education"
+          filterable
+          :options="componentStore.educationList"
+          label-field="name"
+          value-field="id"
+          :loading="componentStore.enumLoading"
       />
     </n-form-item>
 
