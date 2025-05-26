@@ -121,7 +121,11 @@
     "department": "Bo'lim",
     "birthday": "Tug'ulgan sanasi",
     "age": "Yosh",
-    "university": "Oliygoh"
+    "university": "Oliygoh",
+    "nameUz": "Nomi (UZ)",
+    "nameRu": "Nomi (RU)",
+    "nameEn": "Nomi (En)",
+    "users": "Foydalanuvchilar"
   },
   "date": {
     "day": "Kun",
@@ -179,8 +183,9 @@
     "admin": "Admin menyusi",
     "chat": "Chat menyusi",
     "docflow": "Hujjatlar menyusi",
-    "lms": "Attestatsiya menyusi",
-    "timesheet": "Tabel"
+    "attestation": "Attestatsiya menyusi",
+    "timesheet": "Tabel",
+    "lms": "LMS"
   },
   "loginPage": {
     "name": "Xush kelibsiz",
@@ -1389,8 +1394,27 @@
     "name": "Telegram",
     "chatId": "Chat ID"
   },
+  "learningCenterPage": {
+    "name": "O'quv markazlari",
+    "createTitle": "O'quv markazi qo'shish",
+    "updateTitle": "O'quv markazini tahrirlash"
+  },
+  "directionPage": {
+    "name": "Yo'nalishlar",
+    "createTitle": "Yo'nalish qo'shish",
+    "updateTitle": "Yo'nalishni tahrirlash"
+  },
+  "specializationPage": {
+    "name": "Mutaxassislik",
+    "createTitle": "Mutaxassislik qo'shish",
+    "updateTitle": "Mutaxassislik tahrirlash",
+    "form": {
+      "direction": "Yo'nalish",
+      "positions": "Lavozimlar"
+    }
+  },
   "aiConversation": {
-    "canIHelpYouToday": "Bugun sizga qanday yordam bera olaman?",
+    "canIHelpYouToday": "Bugun s  izga qanday yordam bera olaman?",
     "aiAssistant": "AI Yordamchi",
     "welcomeTo": "Xush kelibsiz, {n}",
     "disclaimer": {

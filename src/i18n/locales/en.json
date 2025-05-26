@@ -179,7 +179,7 @@
     "admin": "Admin menu",
     "chat": "Chat menu",
     "docflow": "Documents menu",
-    "lms": "Certification menu",
+    "attestation": "Certification menu",
     "timesheet": "Timesheet"
   },
   "loginPage": {

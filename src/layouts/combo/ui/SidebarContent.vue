@@ -87,12 +87,13 @@ const panelMenu = computed(() => {
 
 const menuName = computed(() => {
   if (menuPath.value === '/hrm') return t('sidebar.hrm')
-  else if (menuPath.value === '/lms') return t('sidebar.lms')
+  else if (menuPath.value === '/attestation') return t('sidebar.attestation')
   else if (menuPath.value === '/admin') return t('sidebar.admin')
   else if (menuPath.value === '/chat') return t('sidebar.chat')
   else if (menuPath.value === '/docflow') return t('sidebar.docflow')
   else if (menuPath.value === '/timesheet') return t('sidebar.timesheet')
   else if (menuPath.value === '/turnstile') return t('turnstile.title')
+  else if (menuPath.value === '/lms') return t('sidebar.lms')
   else return ''
 })
 
