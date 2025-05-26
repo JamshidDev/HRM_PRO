@@ -80,7 +80,7 @@ export const useCommandStore = defineStore('commandStore', {
         vacationLoading:false,
         vacationId:null,
         structureCheck2:[],
-
+        viewLoading:false,
     }),
     actions:{
         _index(){
@@ -105,8 +105,15 @@ export const useCommandStore = defineStore('commandStore', {
             }).finally(()=>{
                 this.saveLoading = false
             })
-
         },
+        _viewCommand(data){
+            this.viewLoading = true
+            $ApiService.commandService._create({data:{...data, status:'view'}}).then((res)=>{
+            }).finally(()=>{
+                this.viewLoading = false
+            })
+        },
+
         _update(){
             this.saveLoading = true
             $ApiService.nationalityService._update({data:this.payload, id:this.elementId}).then((res)=>{

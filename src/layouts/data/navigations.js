@@ -11,7 +11,7 @@ import {
     ChannelShare20Filled,
     AirplaneTakeOff20Regular,
     PeopleCheckmark24Filled,
-    PreviewLink16Filled,
+    PersonProhibited24Filled,
     WeatherSunnyLow20Filled,
     Grid20Filled,
     DocumentCopy24Filled,
@@ -147,7 +147,7 @@ export const navigations = [
                 label: 'organizationLeaderPage.name',
                 path: Utils.routeHrmPathMaker(AppPaths.OrganizationLeader),
                 icon: PersonAccounts24Filled,
-                color: 'bg-warning',
+                color: 'bg-info',
                 permission: appPermissions.hrLeaders,
             },
             // {
@@ -182,7 +182,7 @@ export const navigations = [
                 label: 'vacationSchedule.name',
                 path: Utils.routeHrmPathMaker(AppPaths.VacationSchedule),
                 icon: BookDatabase24Regular,
-                color: 'bg-warning',
+                color: 'bg-info',
                 permission: appPermissions.hrVacationSchedule,
             },
             // {
@@ -195,7 +195,7 @@ export const navigations = [
             {
                 label: 'punishment.name',
                 path: Utils.routeHrmPathMaker(AppPaths.Punishment),
-                icon: RibbonStar24Filled,
+                icon: PersonProhibited24Filled,
                 color: 'bg-warning',
                 permission: appPermissions.hrPunishment,
             },
@@ -203,7 +203,7 @@ export const navigations = [
                 label: 'incentive.name',
                 path: Utils.routeHrmPathMaker(AppPaths.Incentive),
                 icon: RibbonStar24Filled,
-                color: 'bg-info',
+                color: 'bg-success',
                 permission: appPermissions.hrIncentives,
             },
             {

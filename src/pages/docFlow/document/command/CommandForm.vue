@@ -1,4 +1,5 @@
 <script setup>
+import {DocumentBulletList20Filled} from "@vicons/fluent"
 import validationRules from "@/utils/validationRules.js"
 import {useCommandStore, useComponentStore} from "@/store/modules/index.js"
 import {NAvatar} from "naive-ui"
@@ -104,7 +105,7 @@ const onChangeWorkers = ()=>{
 
 const onChangeWorker = ()=>{}
 
-const onSubmit = ()=>{
+const onSubmit = (status=false)=>{
   formRef.value?.validate( async (error)=>{
     validationComponent()
     if(!error){
@@ -169,7 +170,11 @@ const onSubmit = ()=>{
       if(validate?.isValid){
         store.saveLoading = true
         if(store.visibleType){
-          store._create(validate?.data)
+          if(status){
+            store._viewCommand(validate?.data)
+          }else{
+            store._create(validate?.data)
+          }
         }else{
           store._update()
         }
@@ -677,11 +682,27 @@ onMounted(()=>{
       </div>
     </n-form>
   </div>
-  <div class="grid grid-cols-2 gap-2">
-    <n-button @click="store.openVisible(false)" type="error" ghost>
+  <div class="grid grid-cols-12 gap-2">
+<!--    <n-button-->
+<!--        @click="onSubmit(true)"-->
+<!--        :loading="store.viewLoading"-->
+<!--        class="col-span-3"-->
+<!--        ghost>-->
+<!--      {{$t('content.view')}}-->
+<!--      <template #icon>-->
+<!--        <DocumentBulletList20Filled/>-->
+<!--      </template>-->
+<!--    </n-button>-->
+    <div class="col-span-6">
+
+    </div>
+    <n-button
+        class="col-span-3"
+        @click="store.openVisible(false)" type="error" ghost>
       {{$t('content.cancel')}}
     </n-button>
     <n-button
+        class="col-span-3"
         @click="onSubmit"
         :loading="store.saveLoading"
         type="primary">
