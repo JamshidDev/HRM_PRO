@@ -103,7 +103,6 @@ watchEffect(()=>{
             <n-select
                 v-model:value="store.payload.type"
                 filterable
-
                 :options="componentStore.contractTypeList"
                 label-field="name"
                 value-field="id"
@@ -118,7 +117,6 @@ watchEffect(()=>{
                 class="w-full"
                 v-model:value="store.payload.contract_date"
                 type="date"
-
                 :format="useAppSetting.datePicketFormat"
             />
           </n-form-item>

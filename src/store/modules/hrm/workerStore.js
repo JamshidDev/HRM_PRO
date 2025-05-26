@@ -46,6 +46,7 @@ export const useWorkerStore = defineStore('workerStore', {
 
         currentDistrictLoading:false,
         currentDistrictList:[],
+        userRoleVisible:false,
 
     }),
     actions:{

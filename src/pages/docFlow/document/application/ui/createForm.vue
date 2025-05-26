@@ -132,7 +132,6 @@ onMounted(()=>{
                     :disabled="!Boolean(store.payload.department_id.length>0)"
                     v-model:value="store.payload.department_position_id"
                     filterable
-
                     :options="componentStore.departmentPositionList"
                     label-field="name"
                     value-field="id"

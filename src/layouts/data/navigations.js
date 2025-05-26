@@ -185,13 +185,13 @@ export const navigations = [
                 color: 'bg-warning',
                 permission: appPermissions.hrVacationSchedule,
             },
-            {
-                label: 'workerRole.name',
-                path: Utils.routeHrmPathMaker(AppPaths.WorkerRole),
-                icon: RibbonStar24Filled,
-                color: 'bg-info',
-                permission: appPermissions.hrUsers,
-            },
+            // {
+            //     label: 'workerRole.name',
+            //     path: Utils.routeHrmPathMaker(AppPaths.WorkerRole),
+            //     icon: RibbonStar24Filled,
+            //     color: 'bg-info',
+            //     permission: appPermissions.hrUsers,
+            // },
             {
                 label: 'punishment.name',
                 path: Utils.routeHrmPathMaker(AppPaths.Punishment),

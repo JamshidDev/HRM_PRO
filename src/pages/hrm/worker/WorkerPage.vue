@@ -5,17 +5,16 @@ import Table from "./ui/Table.vue"
 import ExportForm from './ui/ExportForm.vue'
 import Filter from "./ui/Filter.vue"
 import CheckWorker from "./ui/CheckWorker.vue"
+import UserRolePage from "./ui/UserRolePage.vue"
 import {
   useTimesheetDepartmentStore,
   useWorkerStore,
-  useContractStore,
   useExportStore,
   useAccountStore
 } from "@/store/modules/index.js"
 import TimesheetAssignForm from '../timesheetDepartment/ui/timesheetDepartmentForm.vue'
 import router from "@/router/index.js"
 import {AppPaths} from "@/utils/index.js"
-import Utils from "@/utils/Utils.js"
 
 const store = useWorkerStore()
 const accStore = useAccountStore()
@@ -101,5 +100,16 @@ onMounted(()=>{
       <ExportForm />
     </template>
   </UIDrawer>
+
+  <UIModal
+      :title="$t('workerRole.name')"
+      :width="1200"
+      v-model:visible="store.userRoleVisible"
+  >
+
+    <template #default>
+     <UserRolePage/>
+    </template>
+  </UIModal>
 </UIPageContent>
 </template>

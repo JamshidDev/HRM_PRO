@@ -3,9 +3,10 @@ import {UIModal, UIOfficeApp, UIPageContent, UIPageFilter} from "@/components/in
 import createForm from "./ui/createForm.vue"
 import Table from "./ui/Table.vue"
 import Filter from "./ui/Filter.vue"
-import {useAccountStore, useApplicationStore,} from "@/store/modules/index.js"
+import {useAccountStore, useApplicationStore, useComponentStore} from "@/store/modules/index.js"
 import Utils from "@/utils/Utils.js"
 const store = useApplicationStore()
+const componentStore = useComponentStore()
 const accStore = useAccountStore()
 const officeAppRef = ref(null)
 
@@ -17,6 +18,10 @@ const openApplication = (id)=>{
 onMounted(()=>{
   if(!accStore.checkAction(accStore.pn.hrWorkerApplicationsRead)) return
   store._index()
+})
+
+onUnmounted(()=>{
+  componentStore.clearCache()
 })
 
 </script>

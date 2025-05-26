@@ -53,6 +53,10 @@ onMounted(()=>{
   componentStore._scheduleList()
 })
 
+onUnmounted(()=>{
+  componentStore.clearCache()
+})
+
 </script>
 
 <template>

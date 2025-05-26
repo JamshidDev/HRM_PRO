@@ -2,10 +2,11 @@
 import contractForm from "./contractForm.vue"
 import ContractList from "./ContractList.vue"
 import {UIModal,UIPageContent,UIOfficeApp, UIConfirmByFile} from "@/components/index.js"
-import {useContractStore, useAccountStore} from "@/store/modules/index.js"
+import {useContractStore, useAccountStore, useComponentStore} from "@/store/modules/index.js"
 import Utils from "@/utils/Utils.js"
 import Filter from "./ui/Filter.vue"
 const accStore = useAccountStore()
+const componentStore = useComponentStore()
 const store = useContractStore()
 
 const contractData = ref(null)
@@ -34,6 +35,11 @@ const onSuccessEv = (v)=>{
 onMounted(()=>{
   if(!accStore.checkAction(accStore.pn.hrContractsRead)) return
   store._index()
+})
+
+
+onUnmounted(()=>{
+  componentStore.clearCache()
 })
 
 

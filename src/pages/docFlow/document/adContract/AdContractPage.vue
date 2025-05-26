@@ -2,7 +2,7 @@
 import Table from "./Table.vue"
 import adContractForm from "./adContractForm.vue"
 import {UIDConfirm, UIModal, UIPageContent, UIOfficeApp, UIConfirmByFile} from "@/components/index.js"
-import {useAccountStore, useAdContractStore, useCommandStore} from "@/store/modules/index.js"
+import {useAccountStore, useAdContractStore, useCommandStore, useComponentStore} from "@/store/modules/index.js"
 import {FlowchartCircle20Filled} from "@vicons/fluent"
 import CommandForm from "@/pages/docFlow/document/command/CommandForm.vue"
 import Utils from "@/utils/Utils.js"
@@ -10,6 +10,7 @@ import Filter from "./ui/Filter.vue"
 
 
 
+const componentStore = useComponentStore()
 const store = useAdContractStore()
 const accStore = useAccountStore()
 const commandStore = useCommandStore()
@@ -48,6 +49,10 @@ const openContract = (id)=>{
 onMounted(()=>{
   if(!accStore.checkAction(accStore.pn.hrContractAdditionalRead)) return
   store._index()
+})
+
+onUnmounted(()=>{
+  componentStore.clearCache()
 })
 
 </script>

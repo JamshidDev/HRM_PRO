@@ -29,6 +29,10 @@ onMounted(()=>{
   if(!accStore.checkAction(accStore.pn.hrMedRead)) return
   store._index()
 })
+
+onUnmounted(()=>{
+  componentStore.clearCache()
+})
 </script>
 
 <template>

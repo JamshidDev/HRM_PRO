@@ -226,6 +226,12 @@ export const useComponentStore = defineStore('componentStore', {
         vacationTypes:[],
     }),
     actions:{
+        clearCache(){
+            this.workerParams = {
+                ...this.workerParams,
+                search:null,
+            }
+        },
         _confirmFile(data, callback){
             this.fileLoading = true
             $ApiService.componentService._confirmByFile({data}).then((res)=>{

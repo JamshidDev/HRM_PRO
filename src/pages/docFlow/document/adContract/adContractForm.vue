@@ -184,6 +184,7 @@ const showPositionDate = computed(()=>{
 
 const showForm = computed(()=>store.payload.type===null? true : [1,8].includes(store.payload.type))
 
+
 </script>
 
 <template>
@@ -242,7 +243,6 @@ const showForm = computed(()=>store.payload.type===null? true : [1,8].includes(s
                 <n-input
                     class="w-full"
                     type="text"
-
                     v-model:value="store.payload.number"
                 />
               </n-form-item>
@@ -252,7 +252,6 @@ const showForm = computed(()=>store.payload.type===null? true : [1,8].includes(s
                 <n-select
                     v-model:value="store.payload.type"
                     filterable
-
                     :options="componentStore.adContractTypes"
                     label-field="name"
                     value-field="id"
