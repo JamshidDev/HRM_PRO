@@ -63,6 +63,8 @@ onMounted(()=>{
               :modelV="store.payload.organizations"
               @defaultValue="(v)=>store.payload.organizations=v"
               @updateModel="(v)=>store.payload.organizations=v"
+              v-model:search="componentStore.structureParams.search"
+              @onSearch="componentStore._structures"
               :checkedVal="store.structureCheck"
               @updateCheck="(v)=>store.structureCheck=v"
               :loading="componentStore.structureLoading"

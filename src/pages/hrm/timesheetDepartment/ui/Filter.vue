@@ -66,6 +66,8 @@ const resetFilter = ()=>{
           :checkedVal="store.structureCheck2"
           @updateCheck="(v)=>store.structureCheck2=v"
           :loading="componentStore.structureLoading"
+          v-model:search="componentStore.structureParams.search"
+          @onSearch="componentStore._structures"
           @onSubmit="filterEvent"
       />
     </template>

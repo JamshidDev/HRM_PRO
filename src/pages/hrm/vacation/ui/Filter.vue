@@ -72,6 +72,8 @@ const resetFilter = ()=>{
           :checkedVal="store.structureCheck2"
           @updateCheck="(v)=>store.structureCheck2=v"
           :loading="componentStore.structureLoading"
+          v-model:search="componentStore.structureParams.search"
+          @onSearch="componentStore._structures"
           @onSubmit="filterEvent"
       />
       <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{$t('vacationPage.table.type')}}</label>

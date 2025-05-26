@@ -43,7 +43,6 @@ watch(()=>props.options, (v)=>{
     }else{
       emits('updateModel',props.options)
     }
-
   }
 })
 
@@ -82,9 +81,7 @@ const onSelectAll = (v)=>{
 
 const searchEvent = useDebounceFn(() => {
   emits('onSearch', searchModel.value )
-  store.depParams.search = searchModel.value
-  store._departmentTree()
-}, 300,)
+}, 800,)
 
 const getChildIds = (tree, elementId)=>{
   const result = []
@@ -132,7 +129,6 @@ const isExistDefaultVal = computed(()=>instance.vnode.props?.onDefaultValue)
 
 const callDefaultValue = ()=>{
   if(isSingleOption.value && props.modelV.length === 0 && isExistDefaultVal.value){
-    console.log('default value is exist...')
     emits('defaultValue',props.options)
   }
 }

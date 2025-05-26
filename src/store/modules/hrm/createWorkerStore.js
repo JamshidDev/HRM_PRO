@@ -170,7 +170,7 @@ export const useCreateWorkerStore = defineStore('createWorkerStore', {
             this.passportFileName = null
             this.candidatePhotos = []
             this.mainImageId = null
-            this.education = null
+            this.payload.education = null
         },
 
     }

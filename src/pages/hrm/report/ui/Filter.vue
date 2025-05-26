@@ -22,6 +22,8 @@ onMounted(()=>{
         :loading="componentStore.structureLoading"
         :checked-val="store.orgCheck"
         @updateCheck="(v)=>store.orgCheck = v"
+        v-model:search="componentStore.structureParams.search"
+        @onSearch="componentStore._structures"
         :multiple="false"
         :auto-select="true"
     />

@@ -7,7 +7,8 @@ import {
   Person32Regular,
   DocumentTable16Regular,
   DismissCircle28Regular,
-  ShareScreenPersonOverlayInside16Regular
+  ShareScreenPersonOverlayInside16Regular,
+  PremiumPerson20Regular,
 } from "@vicons/fluent"
 import Utils from "@/utils/Utils.js"
 
@@ -166,6 +167,14 @@ const canWrite = computed(()=>accStore.checkAction(Utils.appPermissions.hrWorker
 
   >
     <template #filterAction>
+      <n-button
+          @click="()=>store.userRoleVisible=true"
+          class="w-full! md:w-auto!"
+          type="primary">{{$t('workerRole.name')}}
+        <template #icon>
+          <PremiumPerson20Regular/>
+        </template>
+      </n-button>
       <n-button-group
           class="w-full! md:w-auto!">
         <n-button
@@ -224,6 +233,7 @@ const canWrite = computed(()=>accStore.checkAction(Utils.appPermissions.hrWorker
         </template>
         {{ $t('workerPage.filter.contract') }}
       </n-button>
+
     </template>
 
     <template #filterContent>
@@ -239,6 +249,8 @@ const canWrite = computed(()=>accStore.checkAction(Utils.appPermissions.hrWorker
                 :checkedVal="store.structureCheck"
                 @updateCheck="(v)=>store.structureCheck=v"
                 :loading="componentStore.structureLoading"
+                v-model:search="componentStore.structureParams.search"
+                @onSearch="componentStore._structures"
                 @onSubmit="filterEvent"
             />
           </div>

@@ -87,6 +87,8 @@ const beforeShow = (v)=>{
         @updateModel="onChangeStructure"
         :checkedVal="store.structureCheck2"
         @updateCheck="(v)=>store.structureCheck2=v"
+        v-model:search="componentStore.structureParams.search"
+        @onSearch="componentStore._structures"
         :loading="componentStore.structureLoading"
         @onSubmit="filterEvent"
     />

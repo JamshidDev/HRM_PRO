@@ -70,6 +70,8 @@ const resetFilter = ()=>{
           @updateCheck="(v)=>store.structureCheck2=v"
           :loading="componentStore.structureLoading"
           @onSubmit="filterEvent"
+          v-model:search="componentStore.structureParams.search"
+          @onSearch="componentStore._structures"
       />
       <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{$t('content.created')}}</label>
       <n-date-picker

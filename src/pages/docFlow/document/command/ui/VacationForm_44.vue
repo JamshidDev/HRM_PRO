@@ -15,7 +15,7 @@ const onSubmit =async (mainData)=>{
     if(!error){
       data ={
         ...mainData,
-        contract_to_date:Utils.timeToZone(store.form_44.new_date),
+        new_date:Utils.timeToZone(store.form_44.new_date),
         rest_day:store.form_44.rest_day,
         reason:store.form_44.reason,
       }

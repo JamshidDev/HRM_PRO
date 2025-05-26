@@ -202,6 +202,8 @@ onMounted(()=>{
               :checkedVal="store.structureCheckV2"
               @updateCheck="(v)=>store.structureCheckV2=v"
               :loading="componentStore.structureLoading"
+              v-model:search="componentStore.structureParams.search"
+              @onSearch="componentStore._structures"
               :multiple="false"
           />
         </n-form-item>

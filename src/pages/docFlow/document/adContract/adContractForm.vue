@@ -184,6 +184,7 @@ const showPositionDate = computed(()=>{
 
 const showForm = computed(()=>store.payload.type===null? true : [1,8].includes(store.payload.type))
 
+
 </script>
 
 <template>
@@ -206,6 +207,8 @@ const showForm = computed(()=>store.payload.type===null? true : [1,8].includes(s
                     @updateModel="onChangeOrganization"
                     :checkedVal="store.structureCheck2"
                     @updateCheck="(v)=>store.structureCheck2=v"
+                    v-model:search="componentStore.structureParams.search"
+                    @onSearch="componentStore._structures"
                     :loading="componentStore.structureLoading"
                     :disabled="organization.length>0"
                     :multiple="false"
@@ -242,7 +245,6 @@ const showForm = computed(()=>store.payload.type===null? true : [1,8].includes(s
                 <n-input
                     class="w-full"
                     type="text"
-
                     v-model:value="store.payload.number"
                 />
               </n-form-item>
@@ -252,7 +254,6 @@ const showForm = computed(()=>store.payload.type===null? true : [1,8].includes(s
                 <n-select
                     v-model:value="store.payload.type"
                     filterable
-
                     :options="componentStore.adContractTypes"
                     label-field="name"
                     value-field="id"
@@ -290,6 +291,8 @@ const showForm = computed(()=>store.payload.type===null? true : [1,8].includes(s
                         @updateModel="onChangeStructure"
                         :checkedVal="store.structureCheck"
                         @updateCheck="(v)=>store.structureCheck=v"
+                        v-model:search="componentStore.structureParams.search"
+                        @onSearch="componentStore._structures"
                         :loading="componentStore.structureLoading"
                         :multiple="false"
                     />

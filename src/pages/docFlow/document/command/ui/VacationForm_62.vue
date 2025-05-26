@@ -241,6 +241,8 @@ onMounted(()=>{
               :checkedVal="item.orgCheck"
               @updateCheck="(v)=>item.orgCheck=v"
               :loading="componentStore.structureLoading"
+              v-model:search="componentStore.structureParams.search"
+              @onSearch="componentStore._structures"
               @onSubmit="filterEvent"
               :multiple="false"
           />

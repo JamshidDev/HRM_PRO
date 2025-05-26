@@ -54,6 +54,7 @@ const feedback = computed(()=>!Boolean(pin.value))
         :on-keyup="searchEvent"
         :loading="store.pinLoading"
         v-mask="`####-####-####-##`"
+        :placeholder="$t('content.pin')"
         class="w-full z-10"
         type="text"
         clearable
@@ -64,7 +65,6 @@ const feedback = computed(()=>!Boolean(pin.value))
           v-show="false"
           v-model:value="pin"
           type="text"
-
       />
     </n-form-item>
 

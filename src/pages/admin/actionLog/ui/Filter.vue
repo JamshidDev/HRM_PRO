@@ -69,6 +69,8 @@ onMounted(()=>{
           @defaultValue="(v)=>store.params.organizations=v"
           @updateModel="(v)=>store.params.organizations=v"
           :checkedVal="store.structureCheck"
+          v-model:search="compStore.structureParams.search"
+          @onSearch="compStore._structures"
           @updateCheck="(v)=>store.structureCheck=v"
           :loading="compStore.structureLoading"
           @onSubmit="filterEvent"

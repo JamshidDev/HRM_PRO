@@ -121,6 +121,7 @@
     "department": "Bo'lim",
     "birthday": "Tug'ulgan sanasi",
     "age": "Yosh",
+    "pin": "Pasport JSHSHIR kiriting",
     "university": "Oliygoh",
     "nameUz": "Nomi (UZ)",
     "nameRu": "Nomi (RU)",
@@ -1414,7 +1415,7 @@
     }
   },
   "aiConversation": {
-    "canIHelpYouToday": "Bugun s  izga qanday yordam bera olaman?",
+    "canIHelpYouToday": "Bugun sizga qanday yordam bera olaman?",
     "aiAssistant": "AI Yordamchi",
     "welcomeTo": "Xush kelibsiz, {n}",
     "disclaimer": {

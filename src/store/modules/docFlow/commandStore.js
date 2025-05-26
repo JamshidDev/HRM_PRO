@@ -80,7 +80,7 @@ export const useCommandStore = defineStore('commandStore', {
         vacationLoading:false,
         vacationId:null,
         structureCheck2:[],
-
+        viewLoading:false,
     }),
     actions:{
         _index(){
@@ -105,8 +105,18 @@ export const useCommandStore = defineStore('commandStore', {
             }).finally(()=>{
                 this.saveLoading = false
             })
-
         },
+        _viewCommand(data){
+            this.viewLoading = true
+            $ApiService.commandService._viewFile({data:{...data, status:"view"}}).then((response)=>{
+                const url = window.URL.createObjectURL(new Blob([response.data], { type: 'application/pdf' }))
+                window.open(url, '_blank')
+                setTimeout(() => window.URL.revokeObjectURL(url), 20000);
+            }).finally(()=>{
+                this.viewLoading = false
+            })
+        },
+
         _update(){
             this.saveLoading = true
             $ApiService.nationalityService._update({data:this.payload, id:this.elementId}).then((res)=>{

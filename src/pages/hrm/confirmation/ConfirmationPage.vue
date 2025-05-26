@@ -9,26 +9,15 @@ const store = useConfirmationStore()
 const compStore = useComponentStore()
 const accStore = useAccountStore()
 
-
-const onAdd = ()=>{
-  if(!accStore.checkAction(accStore.pn.hrConfirmationsWrite)) return
-  compStore.selectedWorker = null
-  store.resetForm()
-  store.elementId = null
-  store.visibleType = true
-  store.visible = true
-}
-
-const onSearch = ()=>{
-  if(!accStore.checkAction(accStore.pn.hrConfirmationsRead)) return
-  store.params.page = 1
-  store._index()
-}
-
 onMounted(()=>{
   if(!accStore.checkAction(accStore.pn.hrConfirmationsRead)) return
   store._index()
 })
+
+onUnmounted(()=>{
+  compStore.clearCache()
+})
+
 </script>
 
 

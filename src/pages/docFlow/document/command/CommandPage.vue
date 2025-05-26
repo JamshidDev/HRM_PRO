@@ -1,5 +1,5 @@
 <script setup>
-import {useAccountStore, useCommandStore} from "@/store/modules/index.js"
+import {useAccountStore, useCommandStore, useComponentStore} from "@/store/modules/index.js"
 import {UIOfficeApp, UIPageContent, UIConfirmByFile} from "@/components/index.js"
 import Table from "./Table.vue"
 import CommandForm from "./CommandForm.vue"
@@ -9,6 +9,7 @@ import Filter from "./ui/Filter.vue"
 
 const officeAppRef = ref(null)
 const store = useCommandStore()
+const componentStore = useComponentStore()
 const accStore = useAccountStore()
 const emits = defineEmits([ 'openOffice',])
 
@@ -24,6 +25,10 @@ const onSuccessEv = (v)=>{
 onMounted(()=>{
   if(!accStore.checkAction(accStore.pn.hrCommandsRead)) return
   store._index()
+})
+
+onUnmounted(()=>{
+  componentStore.clearCache()
 })
 
 

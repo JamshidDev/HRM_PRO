@@ -90,6 +90,7 @@ onMounted(()=>{
   }
 })
 
+
 </script>
 
 <template>
@@ -114,6 +115,8 @@ onMounted(()=>{
                       @updateModel="onChangeStructure"
                       :checkedVal="store.structureCheck"
                       @updateCheck="(v)=>store.structureCheck=v"
+                      v-model:search="componentStore.structureParams.search"
+                      @onSearch="componentStore._structures"
                       :loading="componentStore.structureLoading"
                       :multiple="false"
                       :auto-select="true"
@@ -124,7 +127,6 @@ onMounted(()=>{
                       :disabled="store.payload.organization_id.length === 0"
                       v-model:value="store.payload.worker_position_id"
                       filterable
-
                       :options="componentStore.workerList"
                       label-field="name"
                       value-field="id"
