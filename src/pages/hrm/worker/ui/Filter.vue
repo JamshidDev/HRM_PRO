@@ -249,6 +249,8 @@ const canWrite = computed(()=>accStore.checkAction(Utils.appPermissions.hrWorker
                 :checkedVal="store.structureCheck"
                 @updateCheck="(v)=>store.structureCheck=v"
                 :loading="componentStore.structureLoading"
+                v-model:search="componentStore.structureParams.search"
+                @onSearch="componentStore._structures"
                 @onSubmit="filterEvent"
             />
           </div>

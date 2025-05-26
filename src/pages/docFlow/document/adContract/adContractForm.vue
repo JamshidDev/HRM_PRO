@@ -207,6 +207,8 @@ const showForm = computed(()=>store.payload.type===null? true : [1,8].includes(s
                     @updateModel="onChangeOrganization"
                     :checkedVal="store.structureCheck2"
                     @updateCheck="(v)=>store.structureCheck2=v"
+                    v-model:search="componentStore.structureParams.search"
+                    @onSearch="componentStore._structures"
                     :loading="componentStore.structureLoading"
                     :disabled="organization.length>0"
                     :multiple="false"
@@ -289,6 +291,8 @@ const showForm = computed(()=>store.payload.type===null? true : [1,8].includes(s
                         @updateModel="onChangeStructure"
                         :checkedVal="store.structureCheck"
                         @updateCheck="(v)=>store.structureCheck=v"
+                        v-model:search="componentStore.structureParams.search"
+                        @onSearch="componentStore._structures"
                         :loading="componentStore.structureLoading"
                         :multiple="false"
                     />

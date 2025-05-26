@@ -115,6 +115,8 @@ onMounted(()=>{
                       @updateModel="onChangeStructure"
                       :checkedVal="store.structureCheck"
                       @updateCheck="(v)=>store.structureCheck=v"
+                      v-model:search="componentStore.structureParams.search"
+                      @onSearch="componentStore._structures"
                       :loading="componentStore.structureLoading"
                       :multiple="false"
                       :auto-select="true"

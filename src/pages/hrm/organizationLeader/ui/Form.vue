@@ -70,6 +70,8 @@ onMounted(()=>{
             :checkedVal="store.structureCheck"
             @updateModel="changeOrg"
             @updateCheck="(v)=>store.structureCheck=v"
+            v-model:search="componentStore.structureParams.search"
+            @onSearch="componentStore._structures"
             :loading="componentStore.structureLoading"
             :multiple="false"
             :auto-select="true"

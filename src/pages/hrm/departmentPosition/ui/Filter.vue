@@ -86,6 +86,8 @@ const onShow = (v) => {
           @updateCheck="(v)=>store.structureCheck=v"
           :loading="componentStore.structureLoading"
           @onSubmit="filterEvent"
+          v-model:search="componentStore.structureParams.search"
+          @onSearch="componentStore._structures"
       />
 
       <label class="mt-3 text-xs text-gray-500">{{ $t('workerPage.filter.department') }}</label>

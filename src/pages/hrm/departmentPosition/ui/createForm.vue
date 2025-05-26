@@ -41,6 +41,8 @@ const onSubmit = ()=>{
               @defaultValue="(v)=>store.payload.organization_id=v"
               @updateModel="store.onChangeStructure"
               :checkedVal="store.structureCheck"
+              v-model:search="componentStore.structureParams.search"
+              @onSearch="componentStore._structures"
               @updateCheck="(v)=>store.structureCheck=v"
               :loading="componentStore.structureLoading"
               :multiple="false"
