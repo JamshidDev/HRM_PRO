@@ -105,7 +105,7 @@ const onChangeWorkers = ()=>{
 
 const onChangeWorker = ()=>{}
 
-const onSubmit = (status=false)=>{
+const onSubmit = (status)=>{
   formRef.value?.validate( async (error)=>{
     validationComponent()
     if(!error){
@@ -162,17 +162,13 @@ const onSubmit = (status=false)=>{
       }
 
 
-
-
-
-
-
       if(validate?.isValid){
-        store.saveLoading = true
+
         if(store.visibleType){
           if(status){
             store._viewCommand(validate?.data)
           }else{
+            store.saveLoading = true
             store._create(validate?.data)
           }
         }else{
@@ -447,20 +443,6 @@ const generationData = (isFill=false)=>{
 
 }
 
-const fillData = ()=>{
-  store.workerData = []
-  store.workerData = store.payload.workers.map((id)=>{
-    const worker = componentStore.workerList.filter(v=>v.id === id)[0]
-    return {
-      worker,
-      id,
-      by_whom:null,
-      reason:null,
-      gift:null,
-      gift_type:null,
-    }
-  })
-}
 
 
 
@@ -519,7 +501,6 @@ onMounted(()=>{
               <n-select
                   v-model:value="store.payload.command_type"
                   filterable
-
                   :options="componentStore.commandTypeList"
                   label-field="name"
                   value-field="id"
@@ -543,6 +524,8 @@ onMounted(()=>{
                   @updateModel="onChangeStructure"
                   :checkedVal="store.structureCheck"
                   @updateCheck="(v)=>store.structureCheck=v"
+                  v-model:search="componentStore.structureParams.search"
+                  @onSearch="componentStore._structures"
                   :loading="componentStore.structureLoading"
                   :multiple="false"
                   :auto-select="true"
@@ -683,17 +666,17 @@ onMounted(()=>{
     </n-form>
   </div>
   <div class="grid grid-cols-12 gap-2">
-<!--    <n-button-->
-<!--        @click="onSubmit(true)"-->
-<!--        :loading="store.viewLoading"-->
-<!--        class="col-span-3"-->
-<!--        ghost>-->
-<!--      {{$t('content.view')}}-->
-<!--      <template #icon>-->
-<!--        <DocumentBulletList20Filled/>-->
-<!--      </template>-->
-<!--    </n-button>-->
-    <div class="col-span-6">
+    <n-button
+        @click="onSubmit(true)"
+        :loading="store.viewLoading"
+        class="col-span-3"
+        ghost>
+      {{$t('content.view')}}
+      <template #icon>
+        <DocumentBulletList20Filled/>
+      </template>
+    </n-button>
+    <div class="col-span-3">
 
     </div>
     <n-button
@@ -703,7 +686,7 @@ onMounted(()=>{
     </n-button>
     <n-button
         class="col-span-3"
-        @click="onSubmit"
+        @click="onSubmit(false)"
         :loading="store.saveLoading"
         type="primary">
       {{$t('content.save')}}

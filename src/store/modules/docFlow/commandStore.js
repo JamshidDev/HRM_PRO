@@ -108,7 +108,10 @@ export const useCommandStore = defineStore('commandStore', {
         },
         _viewCommand(data){
             this.viewLoading = true
-            $ApiService.commandService._create({data:{...data, status:'view'}}).then((res)=>{
+            $ApiService.commandService._viewFile({data:{...data, status:"view"}}).then((response)=>{
+                const url = window.URL.createObjectURL(new Blob([response.data], { type: 'application/pdf' }))
+                window.open(url, '_blank')
+                setTimeout(() => window.URL.revokeObjectURL(url), 20000);
             }).finally(()=>{
                 this.viewLoading = false
             })
