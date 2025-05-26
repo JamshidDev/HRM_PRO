@@ -1332,13 +1332,17 @@
       "edit": "Edit employee"
     },
     "workDurationPage": {
-      "name": "Work time",
+      "name": "Working Time",
       "building": "Building",
       "action": "Action",
+      "actionTime": "Action Time",
       "enter": "Enter",
       "exit": "Exit",
-      "workTime": "Work time",
-      "time": "Time"
+      "workTime": "Worked Hours",
+      "time": "Time",
+      "at_work": "At Work",
+      "outside": "Not at Work",
+      "calendarTitle": "Work Schedule"
     }
   },
   "medPage": {

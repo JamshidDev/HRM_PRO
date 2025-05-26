@@ -59,8 +59,7 @@ export const useTurnstileWorkDurationStore = defineStore('turnstileWorkDurationS
             const start =  dayjs(`${this.calendarParams.year}-${String(this.calendarParams.month).padStart(2, '0')}-01`)
             const end = start.endOf('month')
             const params = {
-                // worker_id: this.workerInstance.id,
-                worker_id: 190,
+                worker_id: this.workerInstance.worker.id,
                 start: start.format('YYYY-MM-DD'),
                 end: end.format('YYYY-MM-DD'),
             }
@@ -74,12 +73,11 @@ export const useTurnstileWorkDurationStore = defineStore('turnstileWorkDurationS
                         this.instanceData[key].data.push(v)
                     }else{
                         this.instanceData[key] = {
-                            data: [v, v, v],
+                            data: [v],
                             date:this.dateToKey(v.year, v.month, v.day, '-'),
                         }
                     }
                 })
-                console.log(this.instanceData)
             }).finally(() => {
                 this.instanceLoading = false
             })
@@ -89,7 +87,7 @@ export const useTurnstileWorkDurationStore = defineStore('turnstileWorkDurationS
             const params = {
                 date: this.dayLogParams.date,
                 building_id: this.dayLogParams.building?.id,
-                worker_id: 190 //this.workerInstance.id,
+                worker_id: this.workerInstance.worker.id,
             }
             $ApiService.turnstileWorkDurationService._logs({params}).then((res) => {
                 this.dayLogList = res.data.data

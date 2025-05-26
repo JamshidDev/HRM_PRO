@@ -1,13 +1,14 @@
 *{
   font-family: var(--poppins);
-  scrollbar-color: var(--scrollbar-thumb) var(--surface-ground);
-  scrollbar-width: thin;
+  //scrollbar-color: var(--scrollbar-thumb) var(--surface-ground);
+  //scrollbar-width: thin;
   &::-webkit-scrollbar-button {
     display: none;
   }
 
   &::-webkit-scrollbar {
-    width: 10px;
+    width: 8px;
+    height: 8px;
   }
 
   &::-webkit-scrollbar-thumb {
