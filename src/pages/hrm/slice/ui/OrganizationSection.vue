@@ -16,7 +16,6 @@ const store = useReportStore()
         :checkedVal="store.orgCheck"
         @updateModel="store.changeOrg"
         @updateCheck="(v)=>store.orgCheck=v"
-        :multiple="false"
     >
       <template #title="{data}">
         <div class="flex justify-between w-full items-center">

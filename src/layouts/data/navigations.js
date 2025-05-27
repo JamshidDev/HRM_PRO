@@ -37,7 +37,8 @@ import {
     AppFolder20Filled,
     HatGraduation24Filled,
     AppsList24Filled,
-    RibbonStar20Filled
+    RibbonStar20Filled,
+    PeopleMoney24Filled,
 } from "@vicons/fluent"
 import {AppPaths} from "@/utils/index.js";
 import Utils from "@/utils/Utils.js"
@@ -497,6 +498,21 @@ export const navigations = [
                 color: 'bg-secondary',
                 permission: appPermissions.users,
             }
+        ]
+    },
+    {
+        label: 'Accountant',
+        path: AppPaths.Accountant,
+        icon: PeopleMoney24Filled,
+        permission: appPermissions.admin,
+        children: [
+            {
+                label: 'uploadReport.name',
+                path: Utils.routeAccountantPathMaker(AppPaths.UploadReport),
+                icon: AppsList24Filled,
+                color: 'bg-dark',
+                permission: appPermissions.users,
+            },
         ]
     },
 ]

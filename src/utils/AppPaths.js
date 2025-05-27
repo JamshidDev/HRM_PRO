@@ -85,6 +85,8 @@ export const AppPaths = {
     Incentive: "/incentive",
     Report: "/report",
     WorkDuration: "/work-duration",
+    Accountant: "/accountant",
+    UploadReport: "/upload-report",
 }
 
 export const AppLayouts ={

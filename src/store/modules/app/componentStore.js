@@ -224,8 +224,19 @@ export const useComponentStore = defineStore('componentStore', {
 
         universityTypes:[],
         vacationTypes:[],
+
+        uploadTypes:[],
+        accountantEnumLoading:false,
     }),
     actions:{
+        _enumAccountant(){
+            this.accountantEnumLoading= true
+            $ApiService.accountantService._enum().then((res)=>{
+                this.uploadTypes = res.data.data?.upload_types
+            }).finally(()=>{
+                this.accountantEnumLoading= false
+            })
+        },
         clearCache(){
             this.workerParams = {
                 ...this.workerParams,

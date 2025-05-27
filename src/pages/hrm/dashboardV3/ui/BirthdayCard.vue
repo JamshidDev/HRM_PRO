@@ -31,7 +31,7 @@ const store = useDashboardStore()
       <template v-for="(item, idx) in store.dashboard.birthdays.data" :key="idx">
         <div class="flex justify-between border-b border-surface-line items-center h-[50px]">
           <span class="font-medium text-textColor1">{{ item.title }}</span>
-          <UIUserGroup class="relative" :has-more="item.has_more" :data="item.workers.map((v) => ({
+          <UIUserGroup class="relative ml-auto" :has-more="item.has_more" :data="item.workers.map((v) => ({
             photo: v.photo,
             fullName: v.last_name + ' ' + v.first_name,
           }))" />
