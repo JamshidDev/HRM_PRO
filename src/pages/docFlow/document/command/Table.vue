@@ -1,5 +1,13 @@
 <script setup>
-import {NoDataPicture, UIActionButton, UIMenuButton, UIPagination, UIStatus, UIUser,} from "@/components/index.js"
+import {
+  NoDataPicture,
+  UIActionButton,
+  UIMenuButton,
+  UIPagination,
+  UIStatus,
+  UIUser,
+  UIUserGroup,
+} from "@/components/index.js"
 import {useAccountStore, useCommandStore, useComponentStore} from "@/store/modules/index.js"
 import {CheckmarkCircle32Regular} from "@vicons/fluent"
 import Utils from "@/utils/Utils.js"
@@ -58,6 +66,7 @@ const onSelect = (v)=>{
         <tr>
           <th class="text-center! min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
           <th class="min-w-[60px]">{{$t('content.type')}}</th>
+          <th class="min-w-[60px] w-[120px]">{{$t('content.worker')}}</th>
           <th class="min-w-[60px] w-[60px]">{{$t('confirmation.contract.form.number')}}</th>
           <th class="min-w-[100px] w-[300px]">{{$t('confirmation.contract.form.organization')}}</th>
           <th class="min-w-[100px] w-[100px]">{{$t('content.status')}}</th>
@@ -73,7 +82,15 @@ const onSelect = (v)=>{
             <span @click="onOpenFile(item.id)" class="hover:text-primary hover:underline cursor-pointer">{{item?.type?.name}}</span>
           </td>
           <td>
-           <div class="flex justify-center"> <n-button class="font-medium" round type="error" size="tiny">{{item?.command_number}}</n-button></div>
+           <div class="flex justify-center w-fullx">
+             <UIUserGroup class="relative" :has-more="(item.workers.length>4? item.workers.length-4:0)" :data="item.workers.map((v) => ({
+            photo: v?.worker?.photo,
+            fullName: v?.worker?.last_name + ' ' + v?.worker?.first_name,
+          }))" />
+           </div>
+          </td>
+          <td>
+            <div class="flex justify-center"> <n-button class="font-medium" round type="error" size="tiny">{{item?.command_number}}</n-button></div>
           </td>
           <td>{{item?.organization?.name}}</td>
           <td><UIStatus :status="item?.confirmation"/> </td>

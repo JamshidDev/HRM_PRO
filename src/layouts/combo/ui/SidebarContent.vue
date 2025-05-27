@@ -94,6 +94,7 @@ const menuName = computed(() => {
   else if (menuPath.value === '/timesheet') return t('sidebar.timesheet')
   else if (menuPath.value === '/turnstile') return t('turnstile.title')
   else if (menuPath.value === '/lms') return t('sidebar.lms')
+  else if (menuPath.value === AppPaths.Accountant) return t('sidebar.accountant')
   else return ''
 })
 

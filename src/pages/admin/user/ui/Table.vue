@@ -1,7 +1,11 @@
 <script setup>
 import {NoDataPicture, UIActionButton, UIPagination, UIUser, UIMenuButton} from "@/components/index.js"
 import {useUserStore, useAccountStore} from "@/store/modules/index.js"
+import {ShieldLock20Regular} from "@vicons/fluent"
 import Utils from "@/utils/Utils.js"
+import {AppPaths, useAppSetting} from "@/utils/index.js"
+import router from "@/router/index.js"
+import {getActivePinia} from "pinia"
 
 const store = useUserStore()
 const accStore = useAccountStore()
@@ -21,6 +25,14 @@ const changePage = (v)=>{
   store.params.per_page = v.per_page
   store._index()
 }
+
+const onSuccessEv = (token)=>{
+  localStorage.setItem(useAppSetting.tokenKey,token)
+  accStore._index(()=>{
+    getActivePinia().reset()
+    router.push(AppPaths.Home)
+  })
+}
 </script>
 
 <template>
@@ -35,6 +47,7 @@ const changePage = (v)=>{
         <tr>
           <th class="text-center! min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
           <th class="min-w-[200px]">{{$t('content.worker')}}</th>
+          <th class="min-w-[60px] w-[100px]"></th>
           <th class="min-w-[200px] w-[300px]">{{$t('content.workplace')}}</th>
           <th class="min-w-[120px] w-[120px]">{{$t('content.phone')}}</th>
           <th class="min-w-[40px] w-[40px]"></th>
@@ -55,6 +68,17 @@ const changePage = (v)=>{
                   }"
               />
             </div>
+          </td>
+          <td>
+            <n-button
+                @click="store._loginById(item.uuid, onSuccessEv)"
+                :size="'small'"
+                :loading="store.loginLoading"
+            >{{$t('content.loginById')}}
+              <template #icon>
+                <ShieldLock20Regular/>
+              </template>
+            </n-button>
           </td>
           <td>{{item?.organization.name}}</td>
           <td>{{item?.phone}}</td>

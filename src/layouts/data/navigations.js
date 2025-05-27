@@ -38,6 +38,8 @@ import {
     HatGraduation24Filled,
     AppsList24Filled,
     RibbonStar20Filled,
+    PeopleMoney24Filled,
+    RibbonStar20Filled,
     DocumentRibbon20Filled,
     CalendarLtr20Filled,
     ShareScreenPerson20Filled
@@ -521,6 +523,21 @@ export const navigations = [
             //     color: 'bg-info',
             //     permission: appPermissions.users,
             // }
+        ]
+    },
+    {
+        label: 'Accountant',
+        path: AppPaths.Accountant,
+        icon: PeopleMoney24Filled,
+        permission: appPermissions.admin,
+        children: [
+            {
+                label: 'uploadReport.name',
+                path: Utils.routeAccountantPathMaker(AppPaths.UploadReport),
+                icon: AppsList24Filled,
+                color: 'bg-dark',
+                permission: appPermissions.users,
+            },
         ]
     },
 ]

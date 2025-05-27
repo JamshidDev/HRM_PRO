@@ -11,6 +11,7 @@ import attestationRoute from "@/router/modules/attestationRoute.js"
 import appRoute from "@/router/modules/appRoute.js"
 import docflowRoute from "@/router/modules/docflowRoute.js"
 import lmsRoute from "@/router/modules/lmsRoute.js"
+import accountantRoute from "@/router/modules/accountantRoute.js"
 import turnstileRoute from "@/router/modules/turnstileRoute.js"
 import otherRoutes from '@/router/modules/otherRoute.js'
 const beforeLogin = (to, from, next) => {
@@ -27,6 +28,7 @@ const beforeLogin = (to, from, next) => {
 
 const routes = [
     ...appRoute,
+    ...accountantRoute,
     {
         path:AppPaths.Main,
         beforeEnter: beforeLogin,

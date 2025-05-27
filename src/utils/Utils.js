@@ -120,6 +120,7 @@ const formatNumberToMoney = (num)=>{
 const routePathMaker = (mainPath)=>(`${AppPaths.Admin}${mainPath}`)
 const routeHrmPathMaker = (mainPath)=>(`${AppPaths.Hrm}${mainPath}`)
 const routeLmsPathMaker = (mainPath)=>(`${AppPaths.Lms}${mainPath}`)
+const routeAccountantPathMaker = (mainPath)=>(`${AppPaths.Accountant}${mainPath}`)
 const routeAttestationPathMaker = (mainPath)=>(`${AppPaths.Attestation}${mainPath}`)
 const routeTurnstilePathMaker = (mainPath)=>(`${AppPaths.Turnstile}${mainPath}`)
 const routeChatPathMaker = (mainPath)=>(`${AppPaths.Chat}${mainPath}`)
@@ -229,6 +230,33 @@ const monthList = [
         name: t('month.december'),
         key: '12',
         id: 12,
+    },
+]
+const yearList = [
+    {
+        name:'2023',
+        key: '2023',
+        id: 2023,
+    },
+    {
+        name:'2024',
+        key: '2024',
+        id: 2024,
+    },
+    {
+        name:'2025',
+        key: '2025',
+        id: 2025,
+    },
+    {
+        name:'2026',
+        key: '2026',
+        id: 2026,
+    },
+    {
+        name:'2027',
+        key: '2027',
+        id: 2027,
     },
 ]
 const getMonthNameById = (id)=>{
@@ -551,6 +579,7 @@ export default {
     routeAttestationPathMaker,
     routeDocFlowPathMaker,
     routeTurnstilePathMaker,
+    routeAccountantPathMaker,
     generateJwtToken,
     fileNameFromUrl,
     documentModels,
@@ -559,6 +588,7 @@ export default {
     timeOnlyYear,
     combineFullName,
     monthList,
+    yearList,
     getMonthNameById,
     getMonthNameByKey,
     maskText,

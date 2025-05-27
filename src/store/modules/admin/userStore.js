@@ -1,4 +1,8 @@
-import {defineStore} from "pinia";
+import {defineStore} from "pinia"
+import {useAccountStore} from "@/store/modules/index.js"
+import {AppPaths, useAppSetting} from "@/utils/index.js"
+import router from "@/router/index.js"
+
 export const useUserStore = defineStore('user', {
     state:()=>({
         list:[],
@@ -24,6 +28,7 @@ export const useUserStore = defineStore('user', {
 
         myRoleList:[],
         myRoleLoading:false,
+        loginLoading:false,
     }),
     actions:{
         _index(){
@@ -35,6 +40,15 @@ export const useUserStore = defineStore('user', {
                 this.loading= false
             })
         },
+        _loginById(id, callback){
+            this.loginLoading= true
+            $ApiService.userService._loginByIdToSystem({id}).then((res)=>{
+                callback(res.data.access_token)
+            }).finally(()=>{
+                this.loginLoading= false
+            })
+        },
+
         _roles(){
             this.roleLoading= true
             $ApiService.userRoleService._index({params:{page:1, per_page:10000}}).then((res)=>{

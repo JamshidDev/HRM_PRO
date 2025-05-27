@@ -127,6 +127,7 @@
     "nameUz": "Nomi (UZ)",
     "nameRu": "Nomi (RU)",
     "nameEn": "Nomi (En)",
+    "loginById": "Tizimga kirish",
     "users": "Foydalanuvchilar"
   },
   "date": {
@@ -154,6 +155,7 @@
     "requiredField": "Maydon to'ldirilishi shart!",
     "requiredWorker": "Xodim tanlash shart!",
     "requiredImageField": "Rasm yuklanishi shart!",
+    "requiredFileField": "Fayl yuklanishi shart!",
     "requiredMinLength": "{n} ta belgidan kam bo'lmasligi kerak",
     "requiredMaxLength": "{n} ta belgidan ko'p bo'lmasligi kerak",
     "unExpectedFormat": "Noto'g'ri turdagi ma'lumot!",
@@ -187,6 +189,7 @@
     "docflow": "Hujjatlar menyusi",
     "attestation": "Attestatsiya menyusi",
     "timesheet": "Tabel",
+    "accountant": "Hisobchi",
     "lms": "LMS"
   },
   "loginPage": {
@@ -1560,6 +1563,18 @@
       "byPosition": "Lavozimlar kesimida",
       "optimizationConfirm": "Ushbu amalni bajarish orqali bo'limdagi bir xil turdagi barcha lavozimlarni birlashtiriladi. Tasdiqlash orqali amalni bajaring",
       "byWorker": "Xodimlar kesimida"
+    }
+  },
+  "uploadReport": {
+    "name": "Hisobot yuklash",
+    "createTitle": "Hisobot yuklash",
+    "form": {
+      "type": "Hisobot turi",
+      "month": "Oy",
+      "year": "Yil",
+      "file": "Hisobot fayli",
+      "enterOption": "Variantni kiriting",
+      "addOption": "Variant qo'shish"
     }
   }
 }

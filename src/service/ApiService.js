@@ -84,6 +84,8 @@ import teacherService from '@/service/v1/lms/teacherService.js'
 
 import {turnstileTerminalService, turnstileBuildingService, turnstileOrganizationService, turnstileTerminalUserService, turnstileWorkDurationService} from './v1/turnstile'
 
+import accountantService from "./v1/accountant/accountantService.js"
+
 export default {
     authService,
     accountService,
@@ -166,6 +168,7 @@ export default {
     learningCenterService,
     directionService,
     specializationService,
+    accountantService,
     subjectService,
     eduPlanService,
     teacherService

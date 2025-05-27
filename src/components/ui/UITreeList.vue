@@ -11,7 +11,7 @@ const props = defineProps({
   checkedVal:{type:Array,default:[]},
   options:{type:Array,default:[]},
   minWidth:{type:Number,default:undefined},
-
+  showCheck:{type:Boolean,default:false},
 })
 
 
@@ -126,6 +126,7 @@ const slot = useSlots()
       @onSelect="onSelect"
       @onSelectAll="onSelectAll"
       :opened="opened"
+      :showCheck="showCheck"
   >
         <template #title="{data}" v-if="slot.title" >
           <slot  name="title" :data="data"></slot>

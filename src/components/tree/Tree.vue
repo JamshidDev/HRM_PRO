@@ -26,7 +26,8 @@ const props = defineProps({
   width:{
     type:Number,
     default:null
-  }
+  },
+  showCheck:{type:Boolean, default:false},
 
 })
 
@@ -93,9 +94,9 @@ const isCheck =(id)=>{
 
 
 
-        <div @click="onSelect(item)"  class="leading-4 flex items-center truncate w-full" >
+        <div @click="onSelect(item)"  class="leading-4 flex items-center truncate w-full">
           <n-checkbox
-              v-if="!$slots.title"
+              v-if="slot.title? showCheck : !showCheck"
               :disabled="Boolean(item.group && !multiple)"
               :checked="modelV.map((a)=>a.id).includes(item.id)"
           ></n-checkbox>
@@ -128,6 +129,7 @@ const isCheck =(id)=>{
             :multiple="multiple"
             @onSelect="onSelect"
             @onSelectAll="onSelectRadio"
+            :showCheck="showCheck"
 
         >
           <template v-if="slot.title" #title="{data}">

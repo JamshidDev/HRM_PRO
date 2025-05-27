@@ -102,7 +102,9 @@ onMounted(()=>{
       </template>
       <template v-if="store.activeTab === 2">
         <label class="mt-3 text-xs text-gray-500">{{$t('actionLog.table.loginAt')}}</label>
+
         <n-date-picker clearable v-model:value="store.params.login_at" type="date" @update:value="filterEvent"  />
+
       </template>
     </template>
   </UIPageFilter>

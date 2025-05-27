@@ -16,6 +16,11 @@ const _update = async (payload)=>{
     return await axios.put(`/v1/admin/users/${payload?.id}/roles/detach`, payload.data)
 }
 
+const _loginByIdToSystem = async (payload)=>{
+    return await axios.get(`/v1/admin/users/${payload?.id}/login`, {params:payload.params})
+}
+
+
 
 
 
@@ -24,4 +29,5 @@ export default {
     _create,
     _myRoles,
     _update,
+    _loginByIdToSystem,
 }
