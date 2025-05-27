@@ -81,7 +81,7 @@ onMounted(()=>{
           <n-select
               v-model:value="store.payload.worker_position_id"
               filterable
-
+              :placeholder="$t('content.searchWorker')"
               :options="componentStore.workerList"
               label-field="name"
               value-field="id"

@@ -128,6 +128,7 @@ onMounted(()=>{
                       v-model:value="store.payload.worker_position_id"
                       filterable
                       :options="componentStore.workerList"
+                      :placeholder="$t('content.searchWorker')"
                       label-field="name"
                       value-field="id"
                       :render-label="workerRenderLabel"

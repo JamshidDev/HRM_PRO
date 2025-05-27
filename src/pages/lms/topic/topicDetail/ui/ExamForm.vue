@@ -147,7 +147,7 @@ onMounted(()=>{
             <n-select
                 v-model:value="store.payload.whom_ids"
                 filterable
-
+                :placeholder="$t('content.searchWorker')"
                 :options="componentStore.workerList"
                 label-field="name"
                 value-field="id"

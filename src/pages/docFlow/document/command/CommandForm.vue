@@ -539,7 +539,7 @@ onMounted(()=>{
                     :disabled="store.payload.organization_id.length === 0"
                     v-model:value="store.payload.worker"
                     filterable
-
+                    :placeholder="$t('content.searchWorker')"
                     :options="componentStore.workerList"
                     label-field="name"
                     value-field="id"
@@ -559,7 +559,7 @@ onMounted(()=>{
                     multiple
                     v-model:value="store.payload.workers"
                     filterable
-
+                    :placeholder="$t('content.searchWorker')"
                     :options="componentStore.workerList"
                     label-field="name"
                     value-field="id"

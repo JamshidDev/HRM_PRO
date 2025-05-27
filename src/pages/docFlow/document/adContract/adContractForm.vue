@@ -66,6 +66,7 @@ const onChangeStructure = (v)=>{
 
 const onChangeOrganization = (v)=>{
   store.organization=v
+  console.log(v)
   if(v.length>0){
     componentStore.workerList = []
     store.workers = []
@@ -201,18 +202,14 @@ const showForm = computed(()=>store.payload.type===null? true : [1,8].includes(s
               <n-form-item class="w-full" :label="$t(`documentPage.form.organization`)" path="organization_id">
                 <UISelect
                     :options="componentStore.structureList"
-
                     :modelV="store.organization"
-                    @defaultValue="(v)=>store.organization=v"
                     @updateModel="onChangeOrganization"
                     :checkedVal="store.structureCheck2"
                     @updateCheck="(v)=>store.structureCheck2=v"
                     v-model:search="componentStore.structureParams.search"
                     @onSearch="componentStore._structures"
                     :loading="componentStore.structureLoading"
-                    :disabled="organization.length>0"
                     :multiple="false"
-                    :auto-select="true"
                 />
               </n-form-item>
             </div>
@@ -222,7 +219,6 @@ const showForm = computed(()=>store.payload.type===null? true : [1,8].includes(s
                     :disabled="store.organization.length === 0 || workers.length>0"
                     v-model:value="store.payload.worker_position_id"
                     filterable
-
                     :options="componentStore.workerList"
                     label-field="name"
                     value-field="id"
