@@ -45,7 +45,7 @@ const changePage = (v)=>{
           <th class="min-w-[200px]">{{$t('content.nameUz')}}</th>
           <th class="min-w-[200px]">{{$t('content.nameRu')}}</th>
           <th class="min-w-[200px]">{{$t('content.nameEn')}}</th>
-          <th class="min-w-[200px]">{{$t('content.users')}}</th>
+          <th class="min-w-[200px] !text-center">{{$t('content.users')}}</th>
           <th class="min-w-[90px] w-[90px] text-center!">{{$t('content.action')}}</th>
         </tr>
         </thead>
@@ -56,19 +56,21 @@ const changePage = (v)=>{
           <td>{{item.name_ru}}</td>
           <td>{{item.name_en}}</td>
           <td>
-            <UIMore :data="item.users">
-              <template #content="{data}">
-                <UIUser
-                    :data="{
-                    photo:data.user.worker.photo,
-                    lastName:data.user.worker.last_name,
-                    firstName:data.user.worker.first_name,
-                    middleName:data.user.worker.middle_name,
-                    position:data.user.phone
-                  }"
-                />
-              </template>
-            </UIMore>
+            <div class="flex justify-center">
+              <UIMore :data="item.users">
+                <template #content="{data}">
+                  <UIUser
+                      :data="{
+                      photo:data.user.worker.photo,
+                      lastName:data.user.worker.last_name,
+                      firstName:data.user.worker.first_name,
+                      middleName:data.user.worker.middle_name,
+                      position:data.user.phone
+                    }"
+                  />
+                </template>
+              </UIMore>
+            </div>
           </td>
           <td>
             <UIActionButton

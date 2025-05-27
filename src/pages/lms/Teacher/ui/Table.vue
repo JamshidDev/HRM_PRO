@@ -1,15 +1,16 @@
 <script setup>
-import {NoDataPicture, UIPagination} from "@/components/index.js"
-import {useSpecializationStore} from "@/store/modules/index.js"
+import {NoDataPicture, UIActionButton, UIPagination, UIUser, UIMore, UIBadge} from "@/components/index.js"
+import {useEduPlanStore} from "@/store/modules/index.js"
 import Utils from "@/utils/Utils.js"
 import MenuButton from "@/components/buttons/MenuButton.vue"
 
-const store = useSpecializationStore()
+const store = useEduPlanStore()
 
 const onEdit = (v)=>{
-  store.elementId = v.id
-  store._show()
   store.visibleType = false
+  store.elementId = v.id
+  store.payload.subjects = v.subjects.map(i=>i.id)
+  store.subjects = v.subjects
   store.visible = true
 }
 
@@ -44,28 +45,33 @@ const changePage = (v)=>{
         <thead>
         <tr>
           <th class="text-center! min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
-          <th class="min-w-[200px]">{{$t('content.nameUz')}}</th>
-          <th class="min-w-[200px]">{{$t('content.nameRu')}}</th>
-          <th class="min-w-[200px]">{{$t('content.nameEn')}}</th>
-          <th class="min-w-[200px]">{{$t('specializationPage.form.direction')}}</th>
-          <th class="min-w-[100px] !text-center">{{$t('specializationPage.form.positions')}}</th>
+          <th class="min-w-[200px]">{{$t('eduPlanPage.form.learning_center')}}</th>
+          <th class="min-w-[200px]">{{$t('eduPlanPage.form.specialization')}}</th>
+          <th class="!text-center max-w-[130px] w-[130px]">{{$t('eduPlanPage.form.start_date')}}</th>
+          <th class="max-w-[70px] w-[70px] !text-center">{{$t('eduPlanPage.form.hours')}}</th>
+          <th class="min-w-[200px] text-center!">{{$t('eduPlanPage.form.subjects')}}</th>
           <th class="min-w-[60px] w-[60px] !text-center">{{$t('content.action')}}</th>
         </tr>
         </thead>
         <tbody>
         <tr v-for="(item, idx) in store.list" :key="idx">
           <td><span class="text-center text-[12px] text-gray-600 block">{{ (store.params.page - 1) * store.params.per_page + idx + 1 }}</span></td>
-          <td>{{item.name}}</td>
-          <td>{{item.name_ru}}</td>
-          <td>{{item.name_en}}</td>
-          <td>{{item.direction?.name}}</td>
+          <td>{{item.learning_center.name}}</td>
+          <td>{{item.specialization.name}}</td>
+          <td>
+            <UIBadge :show-icon="false" :label="Utils.timeOnlyDate(item.start_date)" />
+          </td>
           <td class="!text-center">
-            <n-button circle>{{item.positions_count}}</n-button>
-<!--            <UIMore :data="item.positions">-->
-<!--              <template #content="{data}">-->
-<!--                <span>{{data.name}}</span>-->
-<!--              </template>-->
-<!--            </UIMore>-->
+            <n-button circle>
+              {{item.hours}}
+            </n-button>
+          </td>
+          <td class="text-center!">
+            <UIMore :height="100" :width="200" :data="item.subjects">
+              <template #content="{data}">
+                <p>{{data.name}}</p>
+              </template>
+            </UIMore>
           </td>
           <td>
             <MenuButton

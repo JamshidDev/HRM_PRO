@@ -78,6 +78,9 @@ import vacationScheduleService from "@/service/v1/hrm/vacationScheduleService.js
 import learningCenterService from '@/service/v1/lms/learningCenterService.js'
 import directionService from '@/service/v1/lms/directionService.js'
 import specializationService from '@/service/v1/lms/specializationService.js'
+import subjectService from '@/service/v1/lms/subjectService.js'
+import eduPlanService from '@/service/v1/lms/eduPlanService.js'
+import teacherService from '@/service/v1/lms/teacherService.js'
 
 import {turnstileTerminalService, turnstileBuildingService, turnstileOrganizationService, turnstileTerminalUserService, turnstileWorkDurationService} from './v1/turnstile'
 
@@ -162,5 +165,8 @@ export default {
 
     learningCenterService,
     directionService,
-    specializationService
+    specializationService,
+    subjectService,
+    eduPlanService,
+    teacherService
 }

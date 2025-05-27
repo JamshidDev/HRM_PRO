@@ -2,7 +2,10 @@ import {AppPaths} from "@/utils/index.js"
 import Utils from "@/utils/Utils.js"
 import {
     DirectionPage,
-    SpecializationPage
+    SpecializationPage,
+    SubjectPage,
+    EduPlanPage,
+    TeacherPage
 } from "@/pages/lms";
 
 
@@ -17,4 +20,19 @@ export default [
         component: SpecializationPage,
         children:[],
     },
+    {
+        path:Utils.routeLmsPathMaker(AppPaths.Subject),
+        component: SubjectPage,
+        children:[],
+    },
+    {
+        path:Utils.routeLmsPathMaker(AppPaths.EduPlan),
+        component: EduPlanPage,
+        children:[],
+    },
+    // {
+    //     path:Utils.routeLmsPathMaker(AppPaths.Teacher),
+    //     component: TeacherPage,
+    //     children:[],
+    // },
 ]

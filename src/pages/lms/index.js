@@ -1,2 +1,5 @@
 export const DirectionPage = ()=>import("./Direction/DirectionPage.vue")
 export const SpecializationPage = ()=>import("./Specialization/SpecializationPage.vue")
+export const SubjectPage = ()=>import("./Subject/SubjectPage.vue")
+export const EduPlanPage = ()=>import("./EduPlan/EduPlan.vue")
+export const TeacherPage = ()=>import("./Teacher/TeacherPage.vue")

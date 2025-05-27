@@ -9,6 +9,7 @@ export const useSpecializationStore = defineStore('specializationStore', {
         loading:false,
         saveLoading:false,
         deleteLoading:false,
+        showLoading:false,
         visible:false,
         visibleType:true,
         elementId:null,
@@ -68,6 +69,19 @@ export const useSpecializationStore = defineStore('specializationStore', {
                 this._index()
             }).finally(()=>{
                 this.saveLoading = false
+            })
+        },
+        _show(){
+            this.showLoading = true
+            $ApiService.specializationService._show({id:this.elementId}).then((res)=>{
+                const v = res.data.data
+                this.payload.name = v.name
+                this.payload.name_ru = v.name_ru
+                this.payload.name_en = v.name_en
+                this.payload.positions = v.positions.map(i=>i.id)
+                this.payload.direction_id = v.direction?.id
+            }).finally(()=>{
+                this.showLoading = false
             })
         },
         _delete(){

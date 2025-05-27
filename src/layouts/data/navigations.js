@@ -37,7 +37,10 @@ import {
     AppFolder20Filled,
     HatGraduation24Filled,
     AppsList24Filled,
-    RibbonStar20Filled
+    RibbonStar20Filled,
+    DocumentRibbon20Filled,
+    CalendarLtr20Filled,
+    ShareScreenPerson20Filled
 } from "@vicons/fluent"
 import {AppPaths} from "@/utils/index.js";
 import Utils from "@/utils/Utils.js"
@@ -479,7 +482,7 @@ export const navigations = [
     },
     {
         label: 'LMS',
-        path: AppPaths.Admin,
+        path: AppPaths.Lms,
         icon: HatGraduation24Filled,
         permission: appPermissions.admin,
         children: [
@@ -496,7 +499,28 @@ export const navigations = [
                 icon: RibbonStar20Filled,
                 color: 'bg-secondary',
                 permission: appPermissions.users,
-            }
+            },
+            {
+                label: 'subjectPage.name',
+                path: Utils.routeLmsPathMaker(AppPaths.Subject),
+                icon: DocumentRibbon20Filled,
+                color: 'bg-primary',
+                permission: appPermissions.users,
+            },
+            {
+                label: 'eduPlanPage.name',
+                path: Utils.routeLmsPathMaker(AppPaths.EduPlan),
+                icon: CalendarLtr20Filled,
+                color: 'bg-warning',
+                permission: appPermissions.users,
+            },
+            // {
+            //     label: 'teacherPage.name',
+            //     path: Utils.routeLmsPathMaker(AppPaths.Teacher),
+            //     icon: ShareScreenPerson20Filled,
+            //     color: 'bg-info',
+            //     permission: appPermissions.users,
+            // }
         ]
     },
 ]

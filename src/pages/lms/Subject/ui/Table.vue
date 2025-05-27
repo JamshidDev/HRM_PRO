@@ -1,15 +1,17 @@
 <script setup>
 import {NoDataPicture, UIPagination} from "@/components/index.js"
-import {useSpecializationStore} from "@/store/modules/index.js"
+import {useSubjectStore} from "@/store/modules/index.js"
 import Utils from "@/utils/Utils.js"
 import MenuButton from "@/components/buttons/MenuButton.vue"
 
-const store = useSpecializationStore()
+const store = useSubjectStore()
 
 const onEdit = (v)=>{
-  store.elementId = v.id
-  store._show()
   store.visibleType = false
+  store.elementId = v.id
+  store.payload.name = v.name
+  store.payload.name_ru = v.name_ru
+  store.payload.name_en = v.name_en
   store.visible = true
 }
 
@@ -17,6 +19,7 @@ const onDelete = (v)=>{
   store.elementId = v.id
   store._delete()
 }
+
 
 const onSelectEv = (v)=>{
   if(v.key === Utils.ActionTypes.edit){
@@ -47,8 +50,6 @@ const changePage = (v)=>{
           <th class="min-w-[200px]">{{$t('content.nameUz')}}</th>
           <th class="min-w-[200px]">{{$t('content.nameRu')}}</th>
           <th class="min-w-[200px]">{{$t('content.nameEn')}}</th>
-          <th class="min-w-[200px]">{{$t('specializationPage.form.direction')}}</th>
-          <th class="min-w-[100px] !text-center">{{$t('specializationPage.form.positions')}}</th>
           <th class="min-w-[60px] w-[60px] !text-center">{{$t('content.action')}}</th>
         </tr>
         </thead>
@@ -58,15 +59,6 @@ const changePage = (v)=>{
           <td>{{item.name}}</td>
           <td>{{item.name_ru}}</td>
           <td>{{item.name_en}}</td>
-          <td>{{item.direction?.name}}</td>
-          <td class="!text-center">
-            <n-button circle>{{item.positions_count}}</n-button>
-<!--            <UIMore :data="item.positions">-->
-<!--              <template #content="{data}">-->
-<!--                <span>{{data.name}}</span>-->
-<!--              </template>-->
-<!--            </UIMore>-->
-          </td>
           <td>
             <MenuButton
                 :data="item"

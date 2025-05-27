@@ -92,3 +92,6 @@ export * from './turnstile/workDurationStore.js'
 
 export * from './lms/directionStore.js'
 export * from './lms/specializationStore.js'
+export * from './lms/subjectStore.js'
+export * from './lms/eduPlanStore.js'
+export * from './lms/teacherStore.js'

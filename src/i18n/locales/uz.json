@@ -1407,12 +1407,38 @@
     "updateTitle": "Yo'nalishni tahrirlash"
   },
   "specializationPage": {
-    "name": "Mutaxassislik",
+    "name": "Ixtisosliklar",
     "createTitle": "Mutaxassislik qo'shish",
     "updateTitle": "Mutaxassislik tahrirlash",
     "form": {
       "direction": "Yo'nalish",
       "positions": "Lavozimlar"
+    }
+  },
+  "subjectPage": {
+    "name": "Fanlar (modullar)",
+    "createTitle": "Fan qo'shish",
+    "updateTitle": "Fanni tahrirlash"
+  },
+  "eduPlanPage": {
+    "name": "O'quv rejasi",
+    "createTitle": "Ta'lim rejasi yaratish",
+    "updateTitle": "Ta'lim rejasini tahrirlash",
+    "form": {
+      "hours": "Soat",
+      "start_date": "Boshlanish vaqti",
+      "specialization": "Mutaxassislik",
+      "subjects": "Fanlar",
+      "learning_center": "O'quv markazi"
+    }
+  },
+  "teacherPage": {
+    "name": "Pedagoglar",
+    "createTitle": "Pedagog qo'shish",
+    "updateTitle": "Pedagogni tahrirlash",
+    "form": {
+      "subjects": "Fanlar",
+      "worker": "Xodim"
     }
   },
   "aiConversation": {

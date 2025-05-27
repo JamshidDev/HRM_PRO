@@ -29,6 +29,10 @@ const props = defineProps({
     type: Boolean,
     default: true
   },
+  hideTooltip: {
+    type: Boolean,
+    default: false
+  }
 })
 
 const emits = defineEmits(['onClickFullName'])
@@ -71,6 +75,7 @@ const userSrc = computed(()=> {
   <div @click="emits('onClickFullName')"  class="flex flex-col" style="width: calc(100% - 50px)">
     <slot name="name" :title="short? shortName:fullName">
       <n-tooltip
+          :disabled="hideTooltip"
           trigger="hover"
       >
         <template #trigger>
