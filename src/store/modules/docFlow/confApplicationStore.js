@@ -200,7 +200,7 @@ export const useConfApplicationStore = defineStore('confApplicationStore', {
                     }
                 })
                 this.confirmationList = data
-                this.confirmationListTotal = res.data.data.total+1
+                this.confirmationListTotal = res.data.data.total
             }).finally(()=>{
                 this.confirmLoading= false
             })

@@ -64,16 +64,20 @@ import documentFileService from "@/service/v1/docFlow/documentFileService.js"
 import adContractService from "@/service/v1/docFlow/adContractService.js"
 import applicationService from "@/service/v1/docFlow/applicationService.js"
 
-import topicService from "@/service/v1/lms/topicService.js"
-import topicFilesService from "@/service/v1/lms/topicFilesService.js"
-import categoryService from "@/service/v1/lms/categoryService.js"
-import categoryQuestionService from "@/service/v1/lms/categoryQuestionService.js"
-import topicExamService from "@/service/v1/lms/topicExamService.js";
-import topicExamResultService from "@/service/v1/lms/topicExamResultService.js";
-import examDashboardService from '@/service/v1/lms/examDashboardService.js'
-import workerExamService from '@/service/v1/lms/workerExamService.js'
+import topicService from "@/service/v1/attestation/topicService.js"
+import topicFilesService from "@/service/v1/attestation/topicFilesService.js"
+import categoryService from "@/service/v1/attestation/categoryService.js"
+import categoryQuestionService from "@/service/v1/attestation/categoryQuestionService.js"
+import topicExamService from "@/service/v1/attestation/topicExamService.js";
+import topicExamResultService from "@/service/v1/attestation/topicExamResultService.js";
+import examDashboardService from '@/service/v1/attestation/examDashboardService.js'
+import workerExamService from '@/service/v1/attestation/workerExamService.js'
 import timesheetConfirmService from "@/service/v1/hrm/timesheetConfirmService.js";
 import vacationScheduleService from "@/service/v1/hrm/vacationScheduleService.js";
+
+import learningCenterService from '@/service/v1/lms/learningCenterService.js'
+import directionService from '@/service/v1/lms/directionService.js'
+import specializationService from '@/service/v1/lms/specializationService.js'
 
 import {turnstileTerminalService, turnstileBuildingService, turnstileOrganizationService, turnstileTerminalUserService, turnstileWorkDurationService} from './v1/turnstile'
 
@@ -155,4 +159,8 @@ export default {
     turnstileTerminalUserService,
     turnstileWorkDurationService,
     punishmentService,
+
+    learningCenterService,
+    directionService,
+    specializationService
 }

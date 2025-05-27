@@ -35,11 +35,14 @@ import {
     PeopleToolbox20Filled,
     ClockToolbox20Filled,
     AppFolder20Filled,
+    HatGraduation24Filled,
+    AppsList24Filled,
+    RibbonStar20Filled
 } from "@vicons/fluent"
 import {AppPaths} from "@/utils/index.js";
 import Utils from "@/utils/Utils.js"
 
-const {appPermissions} = Utils
+const { appPermissions} = Utils
 
 import i18n from "@/i18n/index.js"
 
@@ -262,35 +265,35 @@ export const navigations = [
         ]
     },
     {
-        label: 'LMS',
-        path: AppPaths.Lms,
+        label: 'ATTESTATION',
+        path: AppPaths.Attestation,
         icon: PersonNote24Filled,
         permission: appPermissions.exam,
         children: [
             {
                 label: 'topicPage.name',
-                path: Utils.routeLmsPathMaker(AppPaths.Topic),
+                path: Utils.routeAttestationPathMaker(AppPaths.Topic),
                 icon: Book20Filled,
                 color: 'bg-warning',
                 permission: appPermissions.examTopics,
             },
             {
                 label: 'categoryPage.name',
-                path: Utils.routeLmsPathMaker(AppPaths.Category),
+                path: Utils.routeAttestationPathMaker(AppPaths.Category),
                 icon: BookQuestionMark24Filled,
                 color: 'bg-info',
                 permission: appPermissions.examCategories,
             },
             {
                 label: t('examPage.name'),
-                path: Utils.routeLmsPathMaker(AppPaths.Exam),
+                path: Utils.routeAttestationPathMaker(AppPaths.Exam),
                 icon: HatGraduation12Filled,
                 color: 'bg-secondary',
                 permission: appPermissions.examExams,
             },
             {
                 label: t('examPage.result'),
-                path: Utils.routeLmsPathMaker(AppPaths.Result),
+                path: Utils.routeAttestationPathMaker(AppPaths.Result),
                 icon: ClipboardBulletListLtr20Filled,
                 color: 'bg-dark',
                 permission: appPermissions.examResults,
@@ -465,6 +468,35 @@ export const navigations = [
                 color: 'bg-dark',
                 permission: appPermissions.cities,
             },
+            {
+                label: 'learningCenterPage.name',
+                path: Utils.routePathMaker(AppPaths.LearningCenter),
+                icon: Folder48Filled,
+                color: 'bg-dark',
+                permission: appPermissions.cities,
+            },
+        ]
+    },
+    {
+        label: 'LMS',
+        path: AppPaths.Admin,
+        icon: HatGraduation24Filled,
+        permission: appPermissions.admin,
+        children: [
+            {
+                label: 'directionPage.name',
+                path: Utils.routeLmsPathMaker(AppPaths.Direction),
+                icon: AppsList24Filled,
+                color: 'bg-dark',
+                permission: appPermissions.users,
+            },
+            {
+                label: 'specializationPage.name',
+                path: Utils.routeLmsPathMaker(AppPaths.Specialization),
+                icon: RibbonStar20Filled,
+                color: 'bg-secondary',
+                permission: appPermissions.users,
+            }
         ]
     },
 ]

@@ -120,6 +120,7 @@ const formatNumberToMoney = (num)=>{
 const routePathMaker = (mainPath)=>(`${AppPaths.Admin}${mainPath}`)
 const routeHrmPathMaker = (mainPath)=>(`${AppPaths.Hrm}${mainPath}`)
 const routeLmsPathMaker = (mainPath)=>(`${AppPaths.Lms}${mainPath}`)
+const routeAttestationPathMaker = (mainPath)=>(`${AppPaths.Attestation}${mainPath}`)
 const routeTurnstilePathMaker = (mainPath)=>(`${AppPaths.Turnstile}${mainPath}`)
 const routeChatPathMaker = (mainPath)=>(`${AppPaths.Chat}${mainPath}`)
 const routeDocFlowPathMaker = (mainPath)=>(`${AppPaths.DocFlow}${mainPath}`)
@@ -547,6 +548,7 @@ export default {
     routeHrmPathMaker,
     routeLmsPathMaker,
     routeChatPathMaker,
+    routeAttestationPathMaker,
     routeDocFlowPathMaker,
     routeTurnstilePathMaker,
     generateJwtToken,

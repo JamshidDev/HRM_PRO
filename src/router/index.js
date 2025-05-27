@@ -7,9 +7,10 @@ import ProfilePage from "@/pages/app/profile/ProfilePage.vue";
 import adminRoute from "@/router/modules/adminRoute.js";
 import hrmRoute from "@/router/modules/hrmRoute.js"
 import chatRoute from "@/router/modules/chatRoute.js"
-import lmsRoute from "@/router/modules/lmsRoute.js"
+import attestationRoute from "@/router/modules/attestationRoute.js"
 import appRoute from "@/router/modules/appRoute.js"
 import docflowRoute from "@/router/modules/docflowRoute.js"
+import lmsRoute from "@/router/modules/lmsRoute.js"
 import turnstileRoute from "@/router/modules/turnstileRoute.js"
 import otherRoutes from '@/router/modules/otherRoute.js'
 const beforeLogin = (to, from, next) => {
@@ -53,11 +54,11 @@ const routes = [
                 children: [...chatRoute]
             },
             {
-                path:AppPaths.Lms,
-                name:AppPaths.Lms.substring(1),
+                path:AppPaths.Attestation,
+                name:AppPaths.Attestation.substring(1),
                 beforeEnter: beforeLogin,
                 redirect: AppPaths.Home,
-                children: [...lmsRoute]
+                children: [...attestationRoute]
             },
             {
                 path:AppPaths.Turnstile,
@@ -72,6 +73,13 @@ const routes = [
                 beforeEnter: beforeLogin,
                 redirect: AppPaths.Home,
                 children: [...docflowRoute]
+            },
+            {
+                path:AppPaths.Lms,
+                name:AppPaths.Lms.substring(1),
+                beforeEnter: beforeLogin,
+                redirect: AppPaths.Home,
+                children: [...lmsRoute]
             },
             {
                 path:AppPaths.Others,
