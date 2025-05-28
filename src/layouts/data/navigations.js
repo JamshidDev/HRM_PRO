@@ -39,7 +39,6 @@ import {
     AppsList24Filled,
     RibbonStar20Filled,
     PeopleMoney24Filled,
-    RibbonStar20Filled,
     DocumentRibbon20Filled,
     CalendarLtr20Filled,
     ShareScreenPerson20Filled

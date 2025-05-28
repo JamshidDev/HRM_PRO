@@ -48,7 +48,6 @@ const onUpload =async (v)=> {
       }
     ]
   }
-
 }
 
 const onDelete = (v)=> {
