@@ -83,10 +83,25 @@ const onSelect = (v)=>{
           </td>
           <td>
            <div class="flex justify-center w-fullx">
-             <UIUserGroup class="relative" :has-more="(item.workers.length>4? item.workers.length-4:0)" :data="item.workers.map((v) => ({
+             <template v-if="item.workers.length===1">
+               <UIUser
+                   :short="true"
+                   :data="{
+                           photo:item.workers[0].worker?.photo,
+                           lastName:item.workers[0].worker.last_name,
+                           firstName:item.workers[0].worker.first_name,
+                           middleName:item.workers[0].worker.middle_name,
+                           position:''
+                      }"
+               />
+             </template>
+             <template v-else>
+               <UIUserGroup class="relative" :has-more="(item.workers.length>4? item.workers.length-4:0)" :data="item.workers.map((v) => ({
             photo: v?.worker?.photo,
             fullName: v?.worker?.last_name + ' ' + v?.worker?.first_name,
           }))" />
+             </template>
+
            </div>
           </td>
           <td>
