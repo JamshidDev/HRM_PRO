@@ -2,7 +2,9 @@
 import {UIDrawer, UIPageContent, UIModal} from "@/components/index.js"
 import TreeOrg from "./ui/TreeOrg.vue"
 import Table from "./ui/Table.vue"
+import ListItem from "./ui/ListItem.vue"
 import createForm from "./ui/createForm.vue"
+import Filter from "./ui/Filter.vue"
 import {useUploadReportStore} from "@/store/modules/index.js"
 
 const store = useUploadReportStore()
@@ -13,10 +15,14 @@ const store = useUploadReportStore()
 <template>
 <UIPageContent>
 <div class="w-full grid grid-cols-12">
-    <div class="col-span-6">
+  <div class="col-span-12 mb-4">
+    <Filter/>
+  </div>
+    <div class="col-span-12 lg:col-span-6">
       <TreeOrg/>
     </div>
-  <div class="col-span-6">
+  <div class="col-span-12 lg:col-span-6 pl-2">
+    <ListItem/>
     <Table/>
   </div>
   <div class="col-span-12">

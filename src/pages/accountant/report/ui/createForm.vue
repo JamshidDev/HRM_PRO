@@ -1,8 +1,9 @@
 <script setup>
 import {UIUpload} from "@/components/index.js"
 import validationRules from "@/utils/validationRules.js";
+import {CheckboxChecked24Filled} from "@vicons/fluent"
 const formRef = ref(null)
-import { useUploadReportStore, useComponentStore} from "@/store/modules/index.js"
+import {useUploadReportStore, useComponentStore} from "@/store/modules/index.js"
 import ValidationRules from "@/utils/validationRules.js"
 import Utils from "@/utils/Utils.js"
 import i18n from "@/i18n/index.js"
@@ -43,6 +44,16 @@ onMounted(()=>{
       :model="store.payload"
   >
     <div class="grid grid-cols-12 gap-x-2">
+      <div class="col-span-12 mb-2">
+        <p class="px-2 py-1 bg-primary/5 border-primary/10 border rounded-lg relative">{{store.selectedOrgName}}
+          <span class="absolute top-[6px] right-[8px]">
+            <n-icon size="18" class="text-success">
+          <CheckboxChecked24Filled/>
+        </n-icon>
+          </span>
+
+        </p>
+      </div>
       <n-form-item
           class="col-span-12"
           :label="$t(`uploadReport.form.type`)"
