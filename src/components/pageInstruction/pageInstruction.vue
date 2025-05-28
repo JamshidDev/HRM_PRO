@@ -1,26 +1,30 @@
 <script setup>
 import {CalendarQuestionMark20Regular} from '@vicons/fluent'
 import {usePageInstructionStore} from "@/store/modules/index.js"
-import { UIModal, UIDrawer } from '@/components/index.js'
-import Utils from "@/utils/Utils.js"
-import en from "@/assets/images/content/en.png"
-import ru from "@/assets/images/content/ru.png"
-import uz from "@/assets/images/content/uz.png"
-import login from "@/assets/images/content/login-overall.png"
+import { UIDrawer, UIMenuButton } from '@/components/index.js'
+
 import Form from './createForm.vue'
+import Utils from "@/utils/Utils.js"
 
-const photos = [
-  en,
-  ru,
-  uz,
-  login,
-]
 const store = usePageInstructionStore()
-const route = useRouter()
+const route = useRoute()
 
-onMounted(() => {
+watchEffect(() => {
   console.log(route)
 })
+
+const onSelectEv = (v) => {
+  if (v.key === Utils.ActionTypes.delete) {
+    store.elementId = v.data.id
+    store._delete()
+  }else if(v.key === Utils.ActionTypes.edit) {
+    store.elementId = v.data.id
+    store.payload.text = v.data.text
+    store.payload.title = v.data.title
+    store.payload.photos = v.data.photos
+    store.activeSection = 99999
+  }
+}
 
 </script>
 <template>
@@ -36,20 +40,23 @@ onMounted(() => {
             <div class="page_instruction_section">
               <div>
                 <n-carousel draggable autoplay show-arrow :show-dots="false">
-                  <n-carousel-item v-for="(photo, photo_idx) in section.photos" :key="photo_idx">
+                  <n-carousel-item v-for="(photo) in section.photos" :key="photo.id">
                     <img
                         class="page_instruction_image"
-                        :src="photo"
+                        :src="photo.url"
                     >
                   </n-carousel-item>
                 </n-carousel>
               </div>
-              <h2 class="text-xl font-bold">{{section.title}}</h2>
+              <div class="flex justify-between">
+                <h2 class="text-xl font-bold">{{section.title}}</h2>
+                <UIMenuButton :data="section" show-edit @select-ev="onSelectEv" />
+              </div>
               <!--   !Do not touch the classname. It is styling html from wange editor. you can customize it in wange editor styles in custom scss files   -->
               <div class="w-e-viewer" v-html="section.text"></div>
             </div>
           </n-tab-pane>
-          <n-tab-pane :name="99999" tab="Yangi qo'shish">
+          <n-tab-pane :name="99999" :tab="store.elementId ? $t('content.edit') : $t('content.add') ">
             <Form/>
           </n-tab-pane>
         </n-tabs>
@@ -82,6 +89,9 @@ onMounted(() => {
   height: calc(100vh - 90px);
   max-height: calc(100vh - 90px);
   overflow-y:auto;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
 }
 .page_instruction_image{
   aspect-ratio: 16 / 9;

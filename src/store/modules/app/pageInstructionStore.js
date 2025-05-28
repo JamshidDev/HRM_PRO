@@ -64,8 +64,12 @@ export const usePageInstructionStore = defineStore('pageInstructionStore', {
 
             `,
             photos: [
-                "https://naive-ui.oss-cn-beijing.aliyuncs.com/carousel-img/carousel1.jpeg",
-                "https://naive-ui.oss-cn-beijing.aliyuncs.com/carousel-img/carousel2.jpeg"
+                {
+                    id: 1,
+                    url: "https://naive-ui.oss-cn-beijing.aliyuncs.com/carousel-img/carousel1.jpeg"},
+                {
+                    id: 2,
+                    url: "https://naive-ui.oss-cn-beijing.aliyuncs.com/carousel-img/carousel2.jpeg"}
             ]
         },
         {
@@ -73,9 +77,16 @@ export const usePageInstructionStore = defineStore('pageInstructionStore', {
             id: 2,
             text: "This is some text 2",
             photos: [
-                login,
-                "https://naive-ui.oss-cn-beijing.aliyuncs.com/carousel-img/carousel4.jpeg",
-                "https://naive-ui.oss-cn-beijing.aliyuncs.com/carousel-img/carousel3.jpeg"
+                {
+                    id: 1,
+                    url: login
+                },{
+                    id: 2,
+                    url: "https://naive-ui.oss-cn-beijing.aliyuncs.com/carousel-img/carousel4.jpeg"
+                },{
+                    id: 3,
+                    url: "https://naive-ui.oss-cn-beijing.aliyuncs.com/carousel-img/carousel3.jpeg"
+                }
             ]
         }]
     }),
@@ -138,9 +149,10 @@ export const usePageInstructionStore = defineStore('pageInstructionStore', {
             }
         },
         resetForm(){
-            this.payload.name = null
-            this.payload.name_ru = null
-            this.payload.name_en = null
+            this.payload.title = null
+            this.payload.text = ''
+            this.payload.photos = []
+            this.elementId = null
         }
     }
 })

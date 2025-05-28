@@ -130,7 +130,8 @@
     "loginById": "Tizimga kirish",
     "detail": "Batafsil",
     "users": "Foydalanuvchilar",
-    "image": "Rasm"
+    "image": "Rasm",
+    "noImage": "Rasm mavjud emas"
   },
   "date": {
     "day": "Kun",

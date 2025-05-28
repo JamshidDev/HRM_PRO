@@ -56,13 +56,15 @@ const onSubmit = ()=>{
 <template>
   <div style="height:calc(100vh - 140px)" class="overflow-y-auto overflow-x-hidden mb-[20px]">
     <n-form
+        class="px-2"
         ref="formRef"
         :rules="validationRules.common"
         :model="store.payload"
     >
-      <n-form-item @paste="onPaste" :label="$t('content.image')" path="photos" rule-path="requiredMultiSelectField" class="relative">
-        <div v-if="!store.payload.photos.length" class="text-secondary/20 page_instruction_image flex justify-center items-center">
+      <n-form-item @paste="onPaste" :show-label="false" path="photos" rule-path="requiredMultiSelectField" class="relative">
+        <div v-if="!store.payload.photos.length" class="text-secondary/20 page_instruction_image flex justify-center flex-col items-center">
           <NoImage class="w-[200px]" />
+          <p class="text-secondary/40 text-xl">{{$t('content.noImage')}}</p>
         </div>
         <n-carousel v-model:current-index="store.imgCarouselIdx" v-else draggable autoplay show-arrow :show-dots="false">
           <n-carousel-item v-for="(photo, idx) in store.payload.photos" :key="idx">
@@ -108,7 +110,7 @@ const onSubmit = ()=>{
 
   </div>
   <div class="grid grid-cols-2 gap-2">
-    <n-button @click="store.openVisible(false)" type="error" ghost>
+    <n-button @click="store.resetForm" type="error" ghost>
       {{ $t('content.cancel') }}
     </n-button>
     <n-button
