@@ -29,6 +29,11 @@ export const useUploadReportStore = defineStore('uploadReport', {
         structureCache:[],
         structuresLoading:false,
         structuresList:[],
+        cards:[],
+        cardLoading:false,
+        selectedTitle:null,
+        selectedId:null,
+        selectedOrgName:null,
 
     }),
     actions:{
@@ -40,20 +45,16 @@ export const useUploadReportStore = defineStore('uploadReport', {
                 this.structuresLoading= false
             })
         },
-        _index(){
-            this.loading= true
+        _cards(){
+            this.cardLoading= true
             const params= {
                 ...this.params,
-                organization_id:1,
-                year:2025,
-                month:5,
+                organization_id:this.params.organization_id[0]?.id,
             }
             $ApiService.accountantService._index({params}).then((res)=>{
-                console.log(res.data)
-                this.list = res.data.data
-                this.totalItems = res.data.total
+                this.cards = res.data.data
             }).finally(()=>{
-                this.loading= false
+                this.cardLoading= false
             })
         },
         _create(){
@@ -63,6 +64,7 @@ export const useUploadReportStore = defineStore('uploadReport', {
             data.append('type', this.payload.type)
             data.append('year', this.payload.year)
             data.append('month', this.payload.month)
+            data.append('organization_id', this.params.organization_id?.[0]?.id)
             $ApiService.accountantService._create({data}).then((res)=>{
                 this.visible = false
                 this._index()
@@ -100,11 +102,16 @@ export const useUploadReportStore = defineStore('uploadReport', {
             this.elementId = null
             this.payload.file = []
             this.payload.type = null
-            this.payload.year = null
-            this.payload.month = null
+            this.payload.year = new Date().getFullYear()
+            this.payload.month = new Date().getMonth()
         },
         onChangeStructure(v){
             this.params.organization_id = v
+            this.list = []
+            if(v.length > 0){
+                this.selectedOrgName = v[0].name
+                this._cards()
+            }
         },
         changePage(v){
 

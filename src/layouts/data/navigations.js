@@ -41,7 +41,6 @@ import {
     PeopleMoney24Filled,
     DocumentRibbon20Filled,
     CalendarLtr20Filled,
-    ShareScreenPerson20Filled
 } from "@vicons/fluent"
 import {AppPaths} from "@/utils/index.js";
 import Utils from "@/utils/Utils.js"

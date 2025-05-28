@@ -128,6 +128,7 @@
     "nameRu": "Nomi (RU)",
     "nameEn": "Nomi (En)",
     "loginById": "Tizimga kirish",
+    "detail": "Batafsil",
     "users": "Foydalanuvchilar",
     "image": "Rasm"
   },
@@ -1574,8 +1575,9 @@
       "month": "Oy",
       "year": "Yil",
       "file": "Hisobot fayli",
-      "enterOption": "Variantni kiriting",
-      "addOption": "Variant qo'shish"
+      "uploadCount": "Yuklangan {n} ta",
+      "requiredOrganization": "Yuklash uchun korxona tanlanishi shart!",
+      "uploadFile": "Hisobot yuklash"
     }
   }
 }
