@@ -11,14 +11,16 @@ const onDownload = (url)=>{
 }
 
 const showComment = (v)=>{
-    store.selectedId = store.selectedId===v.id? null:v.id
+  console.log(v)
+    store.commentContent =v.comment
+    store.commentVisible=true
 }
 
 </script>
 
 <template>
   <n-spin :show="store.loading">
-    <div class="w-full overflow-y-auto h-[calc(100vh-490px)] mt-4">
+    <div class="w-full overflow-y-auto h-[calc(100vh-510px)] mt-4">
       <n-table
           v-if="store.list.length>0"
           :single-line="false"
@@ -52,11 +54,6 @@ const showComment = (v)=>{
                     <Info24Regular/>
                   </template>
                 </n-button>
-              </div>
-              <div class="bg-warning/10 rounded max-w-[300px]">
-                <n-collapse-transition class="p-1" :show="item.id === store.selectedId">
-                  {{item.comment}}
-                </n-collapse-transition>
               </div>
 
             </div>

@@ -1575,6 +1575,7 @@
       "year": "Yil",
       "file": "Hisobot fayli",
       "uploadCount": "Yuklangan {n} ta",
+      "comment": "Tavsif",
       "requiredOrganization": "Yuklash uchun korxona tanlanishi shart!",
       "uploadFile": "Hisobot yuklash"
     }

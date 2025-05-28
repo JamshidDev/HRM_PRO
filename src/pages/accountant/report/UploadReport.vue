@@ -1,10 +1,11 @@
 <script setup>
-import {UIDrawer, UIPageContent, UIModal} from "@/components/index.js"
+import {UIPageContent, UIModal} from "@/components/index.js"
 import TreeOrg from "./ui/TreeOrg.vue"
 import Table from "./ui/Table.vue"
 import ListItem from "./ui/ListItem.vue"
 import createForm from "./ui/createForm.vue"
 import Filter from "./ui/Filter.vue"
+import CommentModal from "./ui/CommentModal.vue"
 import {useUploadReportStore} from "@/store/modules/index.js"
 
 const store = useUploadReportStore()
@@ -34,6 +35,7 @@ const store = useUploadReportStore()
     >
       <createForm/>
     </UIModal>
+    <CommentModal/>
   </div>
 </div>
 </UIPageContent>

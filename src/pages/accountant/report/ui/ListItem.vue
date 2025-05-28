@@ -34,7 +34,7 @@ const onSelect = (v)=>{
                 {{$t('uploadReport.form.uploadCount', {n:item.count})}}</div>
               <div
                   @click="onSelect(item)"
-                  class="text-textColor2 text-sm flex items-center gap-1"
+                  class="text-textColor2 hover:bg-surface/5 px-2 py-1 rounded text-sm flex items-center gap-1 border-b border-dashed border-surface-line"
               >{{$t('content.detail')}} <n-icon size="16"><ClipboardBulletListLtr20Regular/></n-icon> </div>
             </div>
 

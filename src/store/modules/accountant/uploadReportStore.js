@@ -34,6 +34,8 @@ export const useUploadReportStore = defineStore('uploadReport', {
         selectedTitle:null,
         selectedId:null,
         selectedOrgName:null,
+        commentVisible:false,
+        commentContent:null,
 
     }),
     actions:{
@@ -107,7 +109,7 @@ export const useUploadReportStore = defineStore('uploadReport', {
         },
         onChangeStructure(v){
             this.params.organization_id = v
-            this.list = []
+            this.cards = []
             if(v.length > 0){
                 this.selectedOrgName = v[0].name
                 this._cards()
