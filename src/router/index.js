@@ -14,6 +14,9 @@ import lmsRoute from "@/router/modules/lmsRoute.js"
 import accountantRoute from "@/router/modules/accountantRoute.js"
 import turnstileRoute from "@/router/modules/turnstileRoute.js"
 import otherRoutes from '@/router/modules/otherRoute.js'
+import {navigations} from "@/layouts/data/navigations.js"
+
+
 const beforeLogin = (to, from, next) => {
     const token = localStorage.getItem(useAppSetting.tokenKey);
     if (token) {
@@ -26,9 +29,10 @@ const beforeLogin = (to, from, next) => {
 
 
 
+
+
 const routes = [
     ...appRoute,
-    ...accountantRoute,
     {
         path:AppPaths.Main,
         beforeEnter: beforeLogin,
@@ -90,6 +94,12 @@ const routes = [
                 children: [...otherRoutes]
             },
             {
+                path:AppPaths.Accountant,
+                beforeEnter: beforeLogin,
+                redirect: AppPaths.Home,
+                children: [...accountantRoute]
+            },
+            {
                 path:AppPaths.Profile,
                 name:AppPaths.Profile.substring(1),
                 component: ProfilePage,
@@ -99,9 +109,42 @@ const routes = [
     },
 ]
 
+
+
+const calculatePermission = ()=> {
+    let permissions = []
+    navigations.forEach(v => {
+        const list = [...v.children.map(x => ({path: x.path, permission: x.permission}))]
+        permissions = [...permissions, ...list]
+    })
+    return [...permissions, ...navigations.map(x=>({path: x.path, permission: x.permission}))]
+}
+const allPermission =calculatePermission()
+const findPermissionByPath = (path)=> {
+    const result = allPermission.filter(x=>x.path === path)
+    return result.length > 0? result[0].permission : null
+}
+const attachPermissionToRouter = (routes)=>{
+    return routes.map(node=>{
+        const newNode = {
+            ...node,
+            meta:{
+                ...node.meta,
+                permission:findPermissionByPath(node.path)
+            }
+        }
+        if(node.children && node.children.length){
+            newNode.children = attachPermissionToRouter(node.children)
+        }
+        return newNode
+    })
+
+}
+const newRouter = attachPermissionToRouter(routes)
+
 const router = createRouter({
     history: createWebHistory(),
-    routes,
+    routes:newRouter,
 })
 
 export default router
