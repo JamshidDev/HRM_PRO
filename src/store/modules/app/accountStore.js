@@ -37,6 +37,7 @@ export const useAccountStore = defineStore('accountStore', {
            return permissions.includes(permission)
        },
         checkAction:(state)=>(permission)=>{
+            console.log(state.checkPermission(permission) + " - "+permission)
             if(!state.checkPermission(permission) && state.isModeDev){
                 $Toast.warning("Devda ligingiz uchun ruxsat berildi!")
                 return true

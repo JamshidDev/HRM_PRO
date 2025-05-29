@@ -28,7 +28,7 @@ app.use(pinia)
 
 const store = useAccountStore()
 
-if(import.meta.env.MODE === "development"){
+if(import.meta.env.VITE_APP_MODE === "development"){
     store.isModeDev = true
 }
 

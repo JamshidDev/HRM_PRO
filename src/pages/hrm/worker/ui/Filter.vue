@@ -150,6 +150,11 @@ const onSubmitResumeExport = () => {
   exportStore.resumeModalVisible = true
 }
 
+const openUserListEv = ()=>{
+  if(!accStore.checkAction(Utils.appPermissions.hrUsersRead)) return
+  store.userRoleVisible=true
+}
+
 const canWrite = computed(()=>accStore.checkAction(Utils.appPermissions.hrWorkersWrite))
 
 
@@ -168,7 +173,7 @@ const canWrite = computed(()=>accStore.checkAction(Utils.appPermissions.hrWorker
   >
     <template #filterAction>
       <n-button
-          @click="()=>store.userRoleVisible=true"
+          @click="openUserListEv"
           class="w-full! md:w-auto!"
           type="primary">{{$t('workerRole.name')}}
         <template #icon>

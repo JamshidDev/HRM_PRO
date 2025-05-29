@@ -41,9 +41,11 @@ const onSelectEv = (v)=>{
   if(v.key === Utils.ActionTypes.view){
     previewRef.value.openPreview(v.data.uuid)
   }else if(v.key===Utils.ActionTypes.timesheet){
+    if(!accStore.checkAction(accStore.pn.hrWorkersWrite)) return
     timesheetDepartmentStore.payload.worker_position_id = v.data.id
     timesheetDepartmentStore.visible = true
   }else if(v.key === Utils.ActionTypes.edit){
+    if(!accStore.checkAction(accStore.pn.hrWorkersWrite)) return
     goPush(v.data)
   }
 }
