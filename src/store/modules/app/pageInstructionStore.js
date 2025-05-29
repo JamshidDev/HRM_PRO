@@ -1,9 +1,5 @@
 import {defineStore} from "pinia";
 import i18n from "@/i18n/index.js"
-import Utils from "@/utils/Utils.js"
-import en from "@/assets/images/content/en.png"
-import ru from "@/assets/images/content/ru.png"
-import uz from "@/assets/images/content/uz.png"
 import login from "@/assets/images/content/login-overall.png"
 
 const {t} = i18n.global
@@ -17,11 +13,20 @@ export const usePageInstructionStore = defineStore('pageInstructionStore', {
         instructionList: [],
         elementId:null,
         imgCarouselIdx: 0,
+        params:{
+            page:1,
+            per_page:10,
+            search:null,
+        },
+        list:[],
+        totalItems:0,
         payload: {
             title: null,
             text: '',
             permission: null,
-            photos: []
+            photos: [],
+            menu:null,
+            sub_menu:null,
         },
         activeSection: 1,
         sections: [{
@@ -88,41 +93,31 @@ export const usePageInstructionStore = defineStore('pageInstructionStore', {
                     url: "https://naive-ui.oss-cn-beijing.aliyuncs.com/carousel-img/carousel3.jpeg"
                 }
             ]
-        }]
+        }],
+        imageLoading:false,
     }),
     actions:{
         _index(){
             this.loading= true
-            $ApiService.directionService._index({params:this.params}).then((res)=>{
+            $ApiService.instructionService._index({params:this.params}).then((res)=>{
                 this.list = res.data.data.data
                 this.totalItems = res.data.data.total
             }).finally(()=>{
                 this.loading= false
             })
         },
-        _create(){
+        _create(data){
             this.saveLoading = true
-            let data = {
-                name:this.payload.name,
-                long:this.payload.marker.coords[0],
-                lat:this.payload.marker.coords[1],
-            }
-            $ApiService.countryService._create({data}).then((res)=>{
+            $ApiService.instructionService._create({data}).then((res)=>{
                 this.visible = false
                 this._index()
             }).finally(()=>{
                 this.saveLoading = false
             })
-
         },
-        _update(){
+        _update(data){
             this.saveLoading = true
-            let data = {
-                name:this.payload.name,
-                long:this.payload.marker.coords[0],
-                lat:this.payload.marker.coords[1],
-            }
-            $ApiService.countryService._update({data, id:this.elementId}).then((res)=>{
+            $ApiService.instructionService._update({data, id:this.elementId}).then((res)=>{
                 this.visible = false
                 this._index()
             }).finally(()=>{
@@ -131,7 +126,7 @@ export const usePageInstructionStore = defineStore('pageInstructionStore', {
         },
         _delete(){
             this.deleteLoading = true
-            $ApiService.countryService._delete({id:this.elementId}).then((res)=>{
+            $ApiService.instructionService._delete({id:this.elementId}).then((res)=>{
                 this._index()
             }).finally(()=>{
                 this.deleteLoading = false
@@ -142,11 +137,18 @@ export const usePageInstructionStore = defineStore('pageInstructionStore', {
         },
         deleteImage(){
             const index = this.imgCarouselIdx
-            if(this.payload.photos[index]?.id){
-
-            }else{
-                this.payload.photos = this.payload.photos.filter((_, idx)=>idx!==index)
+            const id = this.payload.photos[index]?.id
+            if(!id){
+                this.payload.photos = this.payload.photos.filter((_,idx)=>idx!==index)
+                return
             }
+
+            this.imageLoading = true
+            $ApiService.instructionService._deletePhoto({id}).then((res)=>{
+                this.payload.photos = this.payload.photos.filter((_,idx)=>idx!==index)
+            }).finally(()=>{
+                this.imageLoading = false
+            })
         },
         resetForm(){
             this.payload.title = null

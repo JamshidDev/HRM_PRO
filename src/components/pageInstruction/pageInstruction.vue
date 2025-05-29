@@ -9,9 +9,7 @@ import Utils from "@/utils/Utils.js"
 const store = usePageInstructionStore()
 const route = useRoute()
 
-watchEffect(() => {
-  console.log(route)
-})
+
 
 const onSelectEv = (v) => {
   if (v.key === Utils.ActionTypes.delete) {
@@ -28,38 +26,40 @@ const onSelectEv = (v) => {
 
 </script>
 <template>
-  <n-spin :show="store.loading">
     <UIDrawer
       :width="1000"
       v-model:visible="store.visible"
       title="Yo'riqnoma"
     >
       <template #content>
-        <n-tabs type="line" v-model:value="store.activeSection" placement="right" animated>
-          <n-tab-pane v-for="(section, idx) in store.sections" :name="section.id" :tab="section.title" >
-            <div class="page_instruction_section">
-              <div>
-                <n-carousel draggable autoplay show-arrow :show-dots="false">
-                  <n-carousel-item v-for="(photo) in section.photos" :key="photo.id">
-                    <img
-                        class="page_instruction_image"
-                        :src="photo.url"
-                    >
-                  </n-carousel-item>
-                </n-carousel>
+        <n-spin :show="store.loading">
+          <n-tabs type="line" v-model:value="store.activeSection" placement="right" animated>
+            <n-tab-pane v-for="(section, idx) in store.sections" :name="section.id" :tab="section.title" >
+              <div class="page_instruction_section">
+                <div>
+                  <n-carousel draggable autoplay show-arrow :show-dots="false">
+                    <n-carousel-item v-for="(photo) in section.photos" :key="photo.id">
+                      <img
+                          class="page_instruction_image"
+                          :src="photo.url"
+                      >
+                    </n-carousel-item>
+                  </n-carousel>
+                </div>
+                <div class="flex justify-between">
+                  <h2 class="text-xl font-bold">{{section.title}}</h2>
+                  <UIMenuButton :data="section" show-edit @select-ev="onSelectEv" />
+                </div>
+                <!--   !Do not touch the classname. It is styling html from wange editor. you can customize it in wange editor styles in custom scss files   -->
+                <div class="w-e-viewer" v-html="section.text"></div>
               </div>
-              <div class="flex justify-between">
-                <h2 class="text-xl font-bold">{{section.title}}</h2>
-                <UIMenuButton :data="section" show-edit @select-ev="onSelectEv" />
-              </div>
-              <!--   !Do not touch the classname. It is styling html from wange editor. you can customize it in wange editor styles in custom scss files   -->
-              <div class="w-e-viewer" v-html="section.text"></div>
-            </div>
-          </n-tab-pane>
-          <n-tab-pane :name="99999" :tab="store.elementId ? $t('content.edit') : $t('content.add') ">
-            <Form/>
-          </n-tab-pane>
-        </n-tabs>
+            </n-tab-pane>
+            <n-tab-pane :name="99999" :tab="store.elementId ? $t('content.edit') : $t('content.add') ">
+              <Form/>
+            </n-tab-pane>
+          </n-tabs>
+        </n-spin>
+
 
       </template>
     </UIDrawer>
@@ -68,7 +68,6 @@ const onSelectEv = (v) => {
         <CalendarQuestionMark20Regular />
       </n-icon>
     </div>
-  </n-spin>
 </template>
 <style>
 .page_instruction_activator{

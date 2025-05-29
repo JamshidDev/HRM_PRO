@@ -478,6 +478,13 @@ export const navigations = [
                 color: 'bg-dark',
                 permission: appPermissions.cities,
             },
+            {
+                label: 'instructionPage.name',
+                path: Utils.routePathMaker(AppPaths.Instruction),
+                icon: Folder48Filled,
+                color: 'bg-dark',
+                permission: appPermissions.cities,
+            },
         ]
     },
     {

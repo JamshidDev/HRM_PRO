@@ -1,13 +1,13 @@
 <script setup>
 import {UIDrawer, UIPageContent, UIPageFilter} from "@/components/index.js";
 import Table from "./ui/Table.vue"
-import {useDistrictStore, useAccountStore} from "@/store/modules/index.js";
+import {usePageInstructionStore, useAccountStore} from "@/store/modules/index.js";
 import createFrom from "./ui/createForm.vue"
 import i18n from "@/i18n/index.js"
 const {t} = i18n.global
 
 const accStore = useAccountStore()
-const store = useDistrictStore();
+const store = usePageInstructionStore();
 
 const onSearch = (v)=>{
   if(!accStore.checkAction(accStore.pn.citiesRead)) return
@@ -25,9 +25,7 @@ const onAdd = ()=>{
 
 
 onMounted(()=>{
-  if(!accStore.checkAction(accStore.pn.citiesRead)) return
   store._index()
-  store._getRegionList()
 })
 </script>
 
@@ -39,17 +37,8 @@ onMounted(()=>{
         :search-loading="store.loading"
         @on-add="onAdd"
         :show-filter-button="false"
+        :show-add-button="false"
     />
     <Table/>
-    <UIDrawer
-        :visible="store.visible"
-        @update:visible="(v)=>store.visible = v"
-        :title="store.visibleType? t('districtPage.createTitle') : t('districtPage.updateTitle')"
-    >
-      <template #content>
-        <createFrom/>
-      </template>
-    </UIDrawer>
   </UIPageContent>
-
 </template>

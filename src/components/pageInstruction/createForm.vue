@@ -5,7 +5,7 @@ import validationRules from "@/utils/validationRules.js";
 import {AddCircle24Regular, Delete16Filled} from '@vicons/fluent'
 import Utils from "@/utils/Utils.js"
 
-
+const route = useRoute()
 const formRef = ref(null)
 const inputFileRef = ref(null)
 const store = usePageInstructionStore()
@@ -40,12 +40,29 @@ const onPaste = async (e)=>{
 }
 
 const onSubmit = ()=>{
+  console.log(store.payload.photos)
   formRef.value?.validate((error)=>{
     if(!error) {
+
+      store.payload.menu = route.matched[1].meta.permission
+      store.payload.sub_menu = route.meta.permission
+
+      const data = new FormData()
+      data.append('title', store.payload.title)
+      data.append('text', store.payload.text)
+      data.append('menu', store.payload.menu)
+      data.append('sub_menu', store.payload.sub_menu)
+
+      const photos = store.payload.photos.filter(v=>v.file)
+      for(const photo of photos){
+        data.append('photos[]', photo.file)
+      }
+
       if (store.visibleType) {
-        store._create()
+        store._create(data)
       } else {
-        store._update()
+        data.append('_method', 'PUT')
+        store._update(data)
       }
     }
   })
@@ -84,7 +101,7 @@ const onSubmit = ()=>{
                 </n-icon>
               </template>
             </n-button>
-            <n-button type="error" v-if="store.payload.photos.length" @click="store.deleteImage">
+            <n-button type="error" v-if="store.payload.photos.length" @click="store.deleteImage" :loading="store.imageLoading">
               {{$t('content.delete')}}
               <template #icon>
                 <n-icon>

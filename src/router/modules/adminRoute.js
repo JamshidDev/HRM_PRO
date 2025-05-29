@@ -17,6 +17,7 @@ import DocumentTemplate from "@/pages/admin/document/DocumentTemplate.vue"
 import HolidayPage from "@/pages/admin/holiday/HolidayPage.vue"
 import TelegramPage from "@/pages/admin/telegram/TelegramPage.vue"
 import LearningCenterPage from "@/pages/admin/learningCenter/LearningCenterPage.vue"
+import InstructionPage from "@/pages/admin/instruction/InstructionPage.vue"
 
 
 export default  [
@@ -109,5 +110,10 @@ export default  [
         path:Utils.routePathMaker(AppPaths.LearningCenter),
         name:AppPaths.LearningCenter.substring(1),
         component:LearningCenterPage,
+    },
+    {
+        path:Utils.routePathMaker(AppPaths.Instruction),
+        name:AppPaths.Instruction.substring(1),
+        component:InstructionPage,
     },
 ]

@@ -110,6 +110,7 @@ export const useUploadReportStore = defineStore('uploadReport', {
         onChangeStructure(v){
             this.params.organization_id = v
             this.cards = []
+            this.list = []
             if(v.length > 0){
                 this.selectedOrgName = v[0].name
                 this._cards()

@@ -1581,5 +1581,19 @@
       "requiredOrganization": "Yuklash uchun korxona tanlanishi shart!",
       "uploadFile": "Hisobot yuklash"
     }
+  },
+  "instructionPage": {
+    "name": "Instruksiya",
+    "createTitle": "Hisobot yuklash",
+    "form": {
+      "menu": "menu",
+      "subMenu": "Sub menu",
+      "title": "Nomi",
+      "file": "Hisobot fayli",
+      "uploadCount": "Yuklangan {n} ta",
+      "comment": "Tavsif",
+      "requiredOrganization": "Yuklash uchun korxona tanlanishi shart!",
+      "uploadFile": "Hisobot yuklash"
+    }
   }
 }
