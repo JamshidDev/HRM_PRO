@@ -67,7 +67,7 @@ export const usePageInstructionStore = defineStore('pageInstructionStore', {
         _create(data){
             this.saveLoading = true
             $ApiService.instructionService._create({data}).then((res)=>{
-                this.visible = false
+                // this.visible = false
                 this._index()
             }).finally(()=>{
                 this.saveLoading = false
@@ -76,7 +76,7 @@ export const usePageInstructionStore = defineStore('pageInstructionStore', {
         _update(data){
             this.saveLoading = true
             $ApiService.instructionService._update({data, id:this.elementId}).then((res)=>{
-                this.visible = false
+                // this.visible = false
                 this._index()
             }).finally(()=>{
                 this.saveLoading = false

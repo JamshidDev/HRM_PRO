@@ -197,7 +197,7 @@ onMounted(() => {
                 <!-- Convinience for development -->
                 <!-- Do not worry it will not appear in prod since only in dev mode  -->
                 <!-- disallowed panelItems are returned  -->
-                <n-button size="tiny" quaternary circle type="error" v-if="!item?.allowed">
+                <n-button size="tiny" quaternary circle type="error" class="!hidden" v-if="!item?.allowed">
                   <template #icon>
                     <n-icon>
                       <ErrorCircle20Filled />
