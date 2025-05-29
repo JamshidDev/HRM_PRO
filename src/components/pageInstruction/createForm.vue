@@ -62,6 +62,11 @@ const onSubmit = ()=>{
   })
 }
 
+const showImage = (image)=>{
+  $MediaViewer.showMediaViewer(image, 'jpg')
+}
+
+
 </script>
 
 <template>
@@ -77,10 +82,11 @@ const onSubmit = ()=>{
           <NoImage class="w-[200px]" />
           <p class="text-secondary/40 text-xl">{{$t('content.noImage')}}</p>
         </div>
-        <n-carousel v-model:current-index="store.imgCarouselIdx" v-else draggable autoplay show-arrow :show-dots="false">
+        <n-carousel v-model:current-index="store.imgCarouselIdx" v-else :draggable="(store.payload.photos.length>1)" draggable autoplay show-arrow :show-dots="false">
           <n-carousel-item v-for="(item, idx) in store.payload.photos" :key="idx">
             <img
-                class="page_instruction_image"
+                @click="showImage(item.photo)"
+                class="page_instruction_image cursor-pointer"
                 :src="item.photo"
             >
           </n-carousel-item>

@@ -1,12 +1,13 @@
 <script setup>
 import {CalendarQuestionMark20Regular} from '@vicons/fluent'
-import {usePageInstructionStore} from "@/store/modules/index.js"
-import { UIDrawer, UIMenuButton } from '@/components/index.js'
+import {useAccountStore, usePageInstructionStore} from "@/store/modules/index.js"
+import { UIDrawer, UIMenuButton, NoDataPicture } from '@/components/index.js'
 
 import Form from './createForm.vue'
 import Utils from "@/utils/Utils.js"
 
 const store = usePageInstructionStore()
+const accStore = useAccountStore()
 const route = useRoute()
 
 watch(route, (v)=>{
@@ -40,6 +41,14 @@ const openDrawer = ()=>{
   store.openVisible(true)
 }
 
+const showImage = (image)=>{
+  $MediaViewer.showMediaViewer(image, 'jpg')
+}
+
+const isAdmin = computed(()=>{
+  return accStore.checkAction(accStore.pn.admin)
+})
+
 </script>
 <template>
     <UIDrawer
@@ -49,13 +58,14 @@ const openDrawer = ()=>{
     >
       <template #content>
         <n-spin :show="store.loading">
-          <n-tabs type="line" v-model:value="store.activeSection" placement="right" animated>
+          <n-tabs type="line" v-model:value="store.activeSection" placement="right" animated :default-value="100000">
             <n-tab-pane v-for="(section, idx) in store.sections" :name="section.id" :tab="section.title" >
               <div class="page_instruction_section">
                 <div>
-                  <n-carousel draggable autoplay show-arrow :show-dots="false">
+                  <n-carousel :draggable="(section.photos.length>1)" autoplay show-arrow :show-dots="false">
                     <n-carousel-item v-for="(item) in section.photos" :key="item.id">
                       <img
+                          @click="showImage(item.photo)"
                           class="page_instruction_image"
                           :src="item.photo"
                       >
@@ -70,8 +80,18 @@ const openDrawer = ()=>{
                 <div class="w-e-viewer" v-html="section.text"></div>
               </div>
             </n-tab-pane>
-            <n-tab-pane :name="99999" :tab="store.elementId ? $t('content.edit') : $t('content.add') ">
+            <n-tab-pane v-if="isAdmin" :name="99999">
+              <template #tab>
+                <n-button block>
+                  {{store.elementId ? $t('content.edit') : $t('content.add')}}
+                </n-button>
+              </template>
               <Form/>
+            </n-tab-pane>
+            <n-tab-pane :name="100000" :tab="$t('content.empty')" :tab-props="{
+              style: 'display: none;'
+            }">
+              <NoDataPicture />
             </n-tab-pane>
           </n-tabs>
         </n-spin>

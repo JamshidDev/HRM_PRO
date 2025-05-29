@@ -10,9 +10,6 @@ defineProps({
 
 defineEmits(['close'])
 
-onMounted(()=>{
-  console.log(window)
-})
 </script>
 <template>
   <vue-easy-lightbox

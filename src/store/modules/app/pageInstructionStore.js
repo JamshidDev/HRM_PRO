@@ -28,7 +28,7 @@ export const usePageInstructionStore = defineStore('pageInstructionStore', {
             menu:null,
             sub_menu:null,
         },
-        activeSection: null,
+        activeSection: undefined,
         sections: [],
         imageLoading:false,
     }),
@@ -45,9 +45,8 @@ export const usePageInstructionStore = defineStore('pageInstructionStore', {
                 if(data.length){
                     this.activeSection = data[0].id
                 }else{
-                    this.activeSection = null
+                    this.activeSection = undefined
                 }
-                console.log(this.activeSection)
             }).finally(()=>{
                 this.loading= false
             })
