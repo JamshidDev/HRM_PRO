@@ -32,6 +32,7 @@ const onSelectEv = (v) => {
     store.payload.title = v.data.title
     store.payload.photos = v.data.photos
     store.activeSection = 99999
+    store.visibleType = false
   }
 }
 
@@ -74,7 +75,7 @@ const isAdmin = computed(()=>{
                 </div>
                 <div class="flex justify-between">
                   <h2 class="text-xl font-bold">{{section.title}}</h2>
-                  <UIMenuButton :data="section" show-edit @select-ev="onSelectEv" />
+                  <UIMenuButton v-if="isAdmin" :data="section" show-edit @select-ev="onSelectEv" />
                 </div>
                 <!--   !Do not touch the classname. It is styling html from wange editor. you can customize it in wange editor styles in custom scss files   -->
                 <div class="w-e-viewer" v-html="section.text"></div>
@@ -97,7 +98,7 @@ const isAdmin = computed(()=>{
         </n-spin>
       </template>
     </UIDrawer>
-    <div class="page_instruction_activator" @click="openDrawer" v-show="store.payload.menu">
+    <div class="page_instruction_activator z-[20]" @click="openDrawer" v-show="store.payload.menu">
       <n-icon size="30" color="var(--surface-section)">
         <CalendarQuestionMark20Regular />
       </n-icon>

@@ -32,7 +32,6 @@ export * from "./admin/holidayStore.js"
 export * from "./admin/quoteStore.js"
 export * from './admin/telegramStore.js'
 export * from './admin/learningCenterStore.js'
-export * from './admin/instructionStore.js'
 
 export * from "./hrm/departmentStore.js"
 export * from "./hrm/departmentPositionStore.js"

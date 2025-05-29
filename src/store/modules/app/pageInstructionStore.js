@@ -1,6 +1,7 @@
 import {defineStore} from "pinia";
 import i18n from "@/i18n/index.js"
 import login from "@/assets/images/content/login-overall.png"
+import {useAccountStore} from "@/store/modules/index.js"
 
 const {t} = i18n.global
 export const usePageInstructionStore = defineStore('pageInstructionStore', {
@@ -34,6 +35,7 @@ export const usePageInstructionStore = defineStore('pageInstructionStore', {
     }),
     actions:{
         _sections(){
+            const accStore = useAccountStore()
             const params = {
                 menu: this.payload.menu,
                 sub_menu: this.payload.sub_menu,
@@ -42,7 +44,9 @@ export const usePageInstructionStore = defineStore('pageInstructionStore', {
             $ApiService.instructionService._index({params}).then((res)=>{
                 const data = res.data.data.data
                 this.sections = data
-                if(data.length){
+                if(accStore.checkAction(accStore.pn.admin)){
+                    this.activeSection = 99999
+                }else if(data.length){
                     this.activeSection = data[0].id
                 }else{
                     this.activeSection = undefined
