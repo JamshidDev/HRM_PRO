@@ -1,8 +1,9 @@
 <script setup>
 import ToastProvider from "@/components/Toast/ToastProvider.vue";
 import MediaViewer from '@/components/mediaViewer/MediaViewer.vue'
+
 import AppLayout from "@/layouts/AppLayout.vue";
-import {UIMainLoading} from "@/components/index.js"
+import {PageInstruction, UIMainLoading} from "@/components/index.js"
 import SignatureInstance from "@/pages/app/e-imzo/SignatureInstance.vue"
 import i18n from "@/i18n/index.js"
 import { uzUZ, dateUzUZ, ruRU, dateRuRU, enUS, dateEnUS, }  from 'naive-ui'
@@ -45,6 +46,7 @@ onMounted(()=>{
         <MediaViewer />
         <UIMainLoading/>
         <SignatureInstance/>
+        <PageInstruction />
       </n-dialog-provider>
     </n-message-provider>
   </n-config-provider>

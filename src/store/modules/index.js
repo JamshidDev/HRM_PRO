@@ -8,6 +8,7 @@ export * from "./app/loginStore.js"
 export * from "./app/pdfViewerStore.js"
 export * from "./app/aiConversationStore.js"
 export * from './app/usefulStore.js'
+export * from "./app/pageInstructionStore.js"
 
 export * from "./admin/userPermissonStore.js"
 export * from "./admin/userStore.js"
@@ -31,6 +32,7 @@ export * from "./admin/holidayStore.js"
 export * from "./admin/quoteStore.js"
 export * from './admin/telegramStore.js'
 export * from './admin/learningCenterStore.js'
+export * from './admin/instructionStore.js'
 
 export * from "./hrm/departmentStore.js"
 export * from "./hrm/departmentPositionStore.js"

@@ -3,6 +3,7 @@ export {default as UILanguage} from "./general/LangDropdown.vue"
 export {default as UIActionButton} from "./buttons/ActionButtons.vue"
 export {default as NoDataPicture} from "./no-data/NoDataPicture.vue"
 export {default as NoDataIllustration} from "./no-data/NoDataIllustration.vue"
+export { default as NoImage } from './no-data/NoImage.vue'
 export {default as UIPagination} from "./pagination/Pagination.vue"
 export {default as UIProfile} from "./ui/UIProfile.vue"
 export {default as UIPageContent} from "./ui/UIPageContent.vue"
@@ -38,5 +39,6 @@ export { default as UIHierarchy } from "./ui/HierarchyNode.vue"
 export {default as AIButton} from "./buttons/AIButton.vue"
 export {default as UIConfirmByFile} from "./ui/UIConfirmByFile.vue"
 export {default as UIMore} from './ui/UIMore.vue'
+export {default as PageInstruction} from './pageInstruction/pageInstruction.vue'
 
 export * from './editor'

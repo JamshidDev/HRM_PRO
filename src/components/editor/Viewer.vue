@@ -3,8 +3,7 @@ defineProps({
   html: {
     type: String,
     required: true
-  },
-  className: String,
+  }
 })
 
 </script>
@@ -22,7 +21,7 @@ defineProps({
 .editor-content-view{
   p,
   li {
-    white-space: pre-wrap; /* 保留空格 */
+    white-space: pre-wrap;
   }
 
   blockquote {

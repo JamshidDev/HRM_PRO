@@ -129,7 +129,9 @@
     "nameEn": "Nomi (En)",
     "loginById": "Tizimga kirish",
     "detail": "Batafsil",
-    "users": "Foydalanuvchilar"
+    "users": "Foydalanuvchilar",
+    "image": "Rasm",
+    "noImage": "Rasm mavjud emas"
   },
   "date": {
     "day": "Kun",

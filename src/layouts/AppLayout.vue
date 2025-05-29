@@ -7,7 +7,6 @@ import {useAccountStore} from "@/store/modules/app/accountStore.js";
 import {navigations, otherNavigations} from "@/layouts/data/navigations.js"
 import i18n from "@/i18n/index.js"
 
-
 const {t} = i18n.global
 const route = useRoute()
 const store = useAccountStore()
