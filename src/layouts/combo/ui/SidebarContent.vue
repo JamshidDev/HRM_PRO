@@ -4,6 +4,7 @@ import {ChevronDown12Regular, ChevronDoubleLeft16Filled, ErrorCircle20Filled} fr
 import {useAccountStore} from "@/store/modules/index.js"
 import i18n from "@/i18n/index.js"
 import {AppPaths, useAppSetting} from "@/utils/index.js"
+import {PageInstruction} from '@/components/index.js'
 
 const {t} = i18n.global
 const route = useRoute()
@@ -125,22 +126,24 @@ onMounted(() => {
 <template>
   <div class="sidebar-content">
     <div class="mini-content">
-
-      <div @click="()=>router.push({name:AppPaths.Home.substring(1)})" class="logo-content cursor-pointer">
-        <img :src="useAppSetting.appLogoUrl" alt=" " class="object-center animation-logo"/>
-      </div>
-
-      <template v-for="item in miniMenu" :key="item">
-        <div
-            :class="[isComboxMenu(item.path) && 'active-mini-content']"
-            class="main-menu-item"
-            @click="nextPanel(item.path)">
-          <n-icon
-          >
-            <component :is="item.icon"/>
-          </n-icon>
+      <div>
+        <div @click="()=>router.push({name:AppPaths.Home.substring(1)})" class="logo-content cursor-pointer">
+          <img :src="useAppSetting.appLogoUrl" alt=" " class="object-center animation-logo"/>
         </div>
-      </template>
+
+        <template v-for="item in miniMenu" :key="item">
+          <div
+              :class="[isComboxMenu(item.path) && 'active-mini-content']"
+              class="main-menu-item"
+              @click="nextPanel(item.path)">
+            <n-icon
+            >
+              <component :is="item.icon"/>
+            </n-icon>
+          </div>
+        </template>
+      </div>
+      <PageInstruction />
 
     </div>
     <div class="panel-content sidebar-panel overflow-y-auto! h-screen" style="scrollbar-width: none;">

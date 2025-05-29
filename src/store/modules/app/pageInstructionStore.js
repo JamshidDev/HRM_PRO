@@ -69,6 +69,7 @@ export const usePageInstructionStore = defineStore('pageInstructionStore', {
             $ApiService.instructionService._create({data}).then((res)=>{
                 // this.visible = false
                 this._index()
+                this._sections()
             }).finally(()=>{
                 this.saveLoading = false
             })
@@ -78,6 +79,7 @@ export const usePageInstructionStore = defineStore('pageInstructionStore', {
             $ApiService.instructionService._update({data, id:this.elementId}).then((res)=>{
                 // this.visible = false
                 this._index()
+                this._sections()
             }).finally(()=>{
                 this.saveLoading = false
             })
@@ -116,6 +118,7 @@ export const usePageInstructionStore = defineStore('pageInstructionStore', {
             this.payload.text = ''
             this.payload.photos = []
             this.elementId = null
+            this.visibleType = true
         }
     }
 })

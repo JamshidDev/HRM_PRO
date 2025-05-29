@@ -98,21 +98,17 @@ const isAdmin = computed(()=>{
         </n-spin>
       </template>
     </UIDrawer>
-    <div class="page_instruction_activator z-[20]" @click="openDrawer" v-show="store.payload.menu">
-      <n-icon size="30" color="var(--surface-section)">
+    <div class="page_instruction_activator z-[20] bg-secondary/10" @click="openDrawer" v-show="store.payload.menu">
+      <n-icon size="30" color="var(--secondary-color)">
         <CalendarQuestionMark20Regular />
       </n-icon>
     </div>
 </template>
 <style>
 .page_instruction_activator{
-  position: fixed;
-  bottom: 35px;
-  right: 35px;
-  width: 50px;
-  height: 50px;
+  width: 38px;
+  height: 38px;
   border-radius: 50%;
-  background-color: var(--primary-color);
   cursor: pointer;
   display: flex;
   justify-content: center;
