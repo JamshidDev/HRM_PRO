@@ -9,7 +9,17 @@ import Utils from "@/utils/Utils.js"
 const store = usePageInstructionStore()
 const route = useRoute()
 
-
+watch(route, (v)=>{
+  if(v.matched.length>2){
+    store.payload.menu = v.matched[1].meta.permission
+    store.payload.sub_menu = v.meta.permission
+  }else{
+    store.payload.menu = null
+    store.payload.sub_menu = null
+  }
+}, {
+  immediate: true
+})
 
 const onSelectEv = (v) => {
   if (v.key === Utils.ActionTypes.delete) {
@@ -22,6 +32,12 @@ const onSelectEv = (v) => {
     store.payload.photos = v.data.photos
     store.activeSection = 99999
   }
+}
+
+const openDrawer = ()=>{
+  store._sections()
+  store.resetForm()
+  store.openVisible(true)
 }
 
 </script>
@@ -38,10 +54,10 @@ const onSelectEv = (v) => {
               <div class="page_instruction_section">
                 <div>
                   <n-carousel draggable autoplay show-arrow :show-dots="false">
-                    <n-carousel-item v-for="(photo) in section.photos" :key="photo.id">
+                    <n-carousel-item v-for="(item) in section.photos" :key="item.id">
                       <img
                           class="page_instruction_image"
-                          :src="photo.url"
+                          :src="item.photo"
                       >
                     </n-carousel-item>
                   </n-carousel>
@@ -59,11 +75,9 @@ const onSelectEv = (v) => {
             </n-tab-pane>
           </n-tabs>
         </n-spin>
-
-
       </template>
     </UIDrawer>
-    <div class="page_instruction_activator" @click="store.openVisible(true)">
+    <div class="page_instruction_activator" @click="openDrawer" v-show="store.payload.menu">
       <n-icon size="30" color="var(--surface-section)">
         <CalendarQuestionMark20Regular />
       </n-icon>

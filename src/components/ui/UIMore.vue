@@ -6,7 +6,7 @@ defineProps({
     required: true
   },
   width: {
-    type: Number,
+    type: [Number, String],
     default: "trigger"
   },
   height: {

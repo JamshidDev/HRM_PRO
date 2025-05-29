@@ -5,7 +5,6 @@ import validationRules from "@/utils/validationRules.js";
 import {AddCircle24Regular, Delete16Filled} from '@vicons/fluent'
 import Utils from "@/utils/Utils.js"
 
-const route = useRoute()
 const formRef = ref(null)
 const inputFileRef = ref(null)
 const store = usePageInstructionStore()
@@ -20,7 +19,7 @@ const onUpload = async (v) => {
   for (const file of files) {
     const base64Url = await Utils.fileToBase64(file)
     store.payload.photos.push({
-      url: base64Url,
+      photo: base64Url,
       file
     })
   }
@@ -33,20 +32,15 @@ const onPaste = async (e)=>{
   if (file) {
     const base64Url = await Utils.fileToBase64(file)
     store.payload.photos.push({
-      url: base64Url,
+      photo: base64Url,
       file
     })
   }
 }
 
 const onSubmit = ()=>{
-  console.log(store.payload.photos)
   formRef.value?.validate((error)=>{
     if(!error) {
-
-      store.payload.menu = route.matched[1].meta.permission
-      store.payload.sub_menu = route.meta.permission
-
       const data = new FormData()
       data.append('title', store.payload.title)
       data.append('text', store.payload.text)
@@ -84,10 +78,10 @@ const onSubmit = ()=>{
           <p class="text-secondary/40 text-xl">{{$t('content.noImage')}}</p>
         </div>
         <n-carousel v-model:current-index="store.imgCarouselIdx" v-else draggable autoplay show-arrow :show-dots="false">
-          <n-carousel-item v-for="(photo, idx) in store.payload.photos" :key="idx">
+          <n-carousel-item v-for="(item, idx) in store.payload.photos" :key="idx">
             <img
                 class="page_instruction_image"
-                :src="photo.url"
+                :src="item.photo"
             >
           </n-carousel-item>
         </n-carousel>

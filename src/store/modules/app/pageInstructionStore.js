@@ -28,75 +28,30 @@ export const usePageInstructionStore = defineStore('pageInstructionStore', {
             menu:null,
             sub_menu:null,
         },
-        activeSection: 1,
-        sections: [{
-            title: "Xodimlarni baholash",
-            id: 1,
-            text: `
-            <h1>Welcome to <em>Vue.js</em> Testing</h1>
-            <p>This is a <strong>sample paragraph</strong> with some <a href="https://vuejs.org" target="_blank">external link</a>.</p>
-            
-            <ul>
-              <li>First item</li>
-              <li>Second item</li>
-              <li><span style="color: red;">Styled third item</span></li>
-            </ul>
-            
-            <ol>
-              <li>Ordered one</li>
-              <li>Ordered two</li>
-            </ol>
-            
-            <blockquote>
-              "This is a quote element. Use this for long quotations."
-            </blockquote>
-            
-            <hr>
-            
-            <table border="1" cellpadding="4">
-              <thead>
-                <tr><th>Name</th><th>Role</th></tr>
-              </thead>
-              <tbody>
-                <tr><td>Jane Doe</td><td>Developer</td></tr>
-                <tr><td>John Smith</td><td>Designer</td></tr>
-              </tbody>
-            </table>
-            
-            <div style="background-color: #f0f0f0; padding: 10px;">
-              <p>This is inside a styled div. <code>&lt;code&gt;</code> tag is useful for inline code.</p>
-            </div>
-
-            `,
-            photos: [
-                {
-                    id: 1,
-                    url: "https://naive-ui.oss-cn-beijing.aliyuncs.com/carousel-img/carousel1.jpeg"},
-                {
-                    id: 2,
-                    url: "https://naive-ui.oss-cn-beijing.aliyuncs.com/carousel-img/carousel2.jpeg"}
-            ]
-        },
-        {
-            title: "hello 2",
-            id: 2,
-            text: "This is some text 2",
-            photos: [
-                {
-                    id: 1,
-                    url: login
-                },{
-                    id: 2,
-                    url: "https://naive-ui.oss-cn-beijing.aliyuncs.com/carousel-img/carousel4.jpeg"
-                },{
-                    id: 3,
-                    url: "https://naive-ui.oss-cn-beijing.aliyuncs.com/carousel-img/carousel3.jpeg"
-                }
-            ]
-        }],
+        activeSection: null,
+        sections: [],
         imageLoading:false,
     }),
     actions:{
+        _sections(){
+            const params = {
+                menu: this.payload.menu,
+                sub_menu: this.payload.sub_menu,
+            }
+            this.loading= true
+            $ApiService.instructionService._index({params}).then((res)=>{
+                const data = res.data.data.data
+                this.sections = data
+                if(data.length){
+                    this.activeSection = data[0].id
+                }else{
+                    this.activeSection = null
+                }
+                console.log(this.activeSection)
+            }).finally(()=>{
+                this.loading= false
+            })
+        },
         _index(){
             this.loading= true
             $ApiService.instructionService._index({params:this.params}).then((res)=>{
@@ -128,6 +83,9 @@ export const usePageInstructionStore = defineStore('pageInstructionStore', {
             this.deleteLoading = true
             $ApiService.instructionService._delete({id:this.elementId}).then((res)=>{
                 this._index()
+                if(this.activeSection){
+                    this._sections()
+                }
             }).finally(()=>{
                 this.deleteLoading = false
             })

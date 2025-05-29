@@ -5,16 +5,14 @@ import Utils from "@/utils/Utils.js"
 
 const store = usePageInstructionStore()
 
-
-
-
 const onEdit = (v)=>{
   store.elementId = v.data.id
   store.payload.text = v.data.text
   store.payload.title = v.data.title
-  store.payload.photos = v.data.photos.map(v=>({url:v.photo, id:v.id}))
+  store.payload.photos = v.data.photos.map(v=>({photo:v.photo, id:v.id}))
   store.visibleType = false
   store.visible =true
+  store.activeSection = 99999
 }
 
 const onDelete = (v)=>{
@@ -34,7 +32,6 @@ const onSelectEv = (v)=>{
   }else if(Utils.ActionTypes.delete === v.key){
     onDelete(v.data)
   }
-
 }
 </script>
 
