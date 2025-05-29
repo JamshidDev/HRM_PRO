@@ -401,6 +401,10 @@ const appPermissions = {
     hrUsersWrite: 'hr-users-write',
     hrUsersRead: 'hr-users-read',
 
+    hrReport: 'hr-report',
+    hrReportWrite: 'hr-report-write',
+    hrReportRead: 'hr-report-read',
+
     confirmation:"confirmation",
     confirmationContracts:"confirmation-contracts",
     confirmationCommands:"confirmation-commands",
