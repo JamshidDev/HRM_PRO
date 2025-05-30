@@ -91,7 +91,7 @@ export const navigations = [
                 path: Utils.routeHrmPathMaker(AppPaths.Contract),
                 icon: DocumentPerson20Filled,
                 color: 'bg-success',
-                permission: appPermissions.hrConfirmations,
+                permission: appPermissions.hrContracts,
             },
             {
                 label: 'documentPage.tabs.command',
@@ -105,7 +105,7 @@ export const navigations = [
                 path: Utils.routeHrmPathMaker(AppPaths.AdContract),
                 icon: DocumentAdd20Filled,
                 color: 'bg-warning',
-                permission: appPermissions.hrContracts,
+                permission: appPermissions.hrContractAdditional,
             },
             {
                 label: 'applicationPage.name',
@@ -234,7 +234,7 @@ export const navigations = [
                 path: Utils.routeDocFlowPathMaker(AppPaths.ConfContract),
                 icon: DocumentPerson20Filled,
                 color: 'bg-dark',
-                permission: appPermissions.confirmation,
+                permission: appPermissions.confirmationContracts,
             },
             {
                 label: 'documentPage.tabs.command',
@@ -248,21 +248,21 @@ export const navigations = [
                 path: Utils.routeDocFlowPathMaker(AppPaths.ConfAdContract),
                 icon: DocumentAdd20Filled,
                 color: 'bg-warning',
-                permission: appPermissions.confirmationContracts,
+                permission: appPermissions.confirmationAddContracts,
             },
             {
                 label: 'applicationPage.name',
                 path: Utils.routeDocFlowPathMaker(AppPaths.ConfApplication),
                 icon: DocumentEdit20Filled,
                 color: 'bg-info',
-                permission: appPermissions.confirmation,
+                permission: appPermissions.confirmationWorkerApplications,
             },
             {
                 label: 'timesheetPage.name',
                 path: Utils.routeDocFlowPathMaker(AppPaths.TimeSheet),
                 icon: GridKanban20Filled,
                 color: 'bg-secondary',
-                permission: appPermissions.confirmation,
+                permission: appPermissions.confirmationTable,
             },
 
         ]
