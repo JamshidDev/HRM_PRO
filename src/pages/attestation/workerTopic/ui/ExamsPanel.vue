@@ -1,6 +1,6 @@
 <script setup>
 import ExamCard from './ExamCard.vue'
-import {useExamAttemptStore} from "@/store/modules/index.js";
+import {useExamAttemptStore, useAccountStore} from "@/store/modules/index.js";
 
 const examStore = useExamAttemptStore()
 const accStore = useAccountStore()

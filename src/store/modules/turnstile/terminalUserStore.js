@@ -20,10 +20,13 @@ export const useTurnstileTerminalUserStore = defineStore('turnstileTerminalUserS
         photosLoading: false,
         payload: {
             organization_id: [],
-            worker_position_id: null,
+            worker_id: null,
             photo_id: null,
+            photo_index: null,
             terminals: [],
-            to: null
+            to: null,
+            isWorker: 1,
+            photo: null,
         },
         params: {
             page: 1,
@@ -43,9 +46,20 @@ export const useTurnstileTerminalUserStore = defineStore('turnstileTerminalUserS
         },
         _create() {
             this.saveLoading = true
+            const payload = this.payload
             let data = {
-                ...this.payload,
-                to: Utils.timeToZone(this.payload.to)
+                organization_id: payload.organization_id,
+                worker_id: payload.worker_id,
+                terminals: payload.terminals,
+            }
+            if(payload.photo){
+                data.photo = payload.photo
+            }
+            if(payload.photo_id){
+                data.photo_id = payload.photo_id
+            }
+            if(payload.to){
+                data.to = Utils.timeToZone(payload.to)
             }
             $ApiService.turnstileTerminalUserService._create({data}).then((res) => {
                 this.visible = false
@@ -54,9 +68,9 @@ export const useTurnstileTerminalUserStore = defineStore('turnstileTerminalUserS
                 this.saveLoading = false
             })
         },
-        _worker_photos(v) {
+        _worker_photos() {
             this.photosLoading = true
-            $ApiService.turnstileTerminalUserService._worker_photos({params: {worker_position_id: v}}).then((res) => {
+            $ApiService.turnstileTerminalUserService._worker_photos({params: {worker_id: this.payload.worker_id}}).then((res) => {
                 this.photos = res.data.data
             }).finally(() => {
                 this.photosLoading = false
@@ -92,11 +106,12 @@ export const useTurnstileTerminalUserStore = defineStore('turnstileTerminalUserS
             })
         },
         resetForm() {
-            this.payload.worker_position_id = null
+            this.payload.worker_id = null
             this.payload.photo_id = null
             this.payload.terminals = []
             this.payload.organization_id = []
             this.payload.to = null
+            this.payload.isWorker = 1
             this.photos = []
             this.devices = []
             // this.payload.url =null

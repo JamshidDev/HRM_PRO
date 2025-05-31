@@ -11,12 +11,12 @@ const lang = localStorage.getItem(useAppSetting.languageKey) || useAppSetting.de
 i18n.global.locale = lang
 
 const fileToBase64 = (file)=>{
-        return new Promise((resolve, reject)=>{
-            const reader = new FileReader()
-            reader.readAsDataURL(file)
-            reader.onload = () => resolve(reader.result)
-            reader.onerror = (error) => reject(error)
-        })
+    return new Promise((resolve, reject)=>{
+        const reader = new FileReader()
+        reader.readAsDataURL(file)
+        reader.onload = () => resolve(reader.result)
+        reader.onerror = (error) => reject(error)
+    })
 }
 
 const onlyAllowNumber = (value) => !value || /^\d+$/.test(value)
@@ -382,21 +382,21 @@ const appPermissions = {
     hrLeaders: 'hr-leaders',
     hrLeadersWrite: 'hr-leaders-write',
     hrLeadersRead: 'hr-leaders-read',
-    
+
     hrExport: 'hr-export',
-    
+
     hrBusinessTrip: 'hr-business-trip',
     hrBusinessTripWrite: 'hr-business-trip-write',
     hrBusinessTripRead: 'hr-business-trip-read',
-    
+
     hrDocuments: 'hr-documents',
     hrDocumentsWrite: 'hr-documents-write',
     hrDocumentsRead: 'hr-documents-read',
-    
+
     hrVacationSchedule: 'hr-vacation-schedule',
     hrVacationScheduleWrite: 'hr-vacation-schedule-write',
     hrVacationScheduleRead: 'hr-vacation-schedule-read',
-    
+
     hrUsers: 'hr-users',
     hrUsersWrite: 'hr-users-write',
     hrUsersRead: 'hr-users-read',
@@ -431,10 +431,13 @@ const appPermissions = {
     examResultsRead: 'exam-results-read',
 
     turnstile: 'turnstile',
+    turnstileBuilding: 'turnstile-building',
     turnstileBuildingWrite: 'turnstile-building-write',
     turnstileBuildingRead: 'turnstile-building-read',
+    turnstileTerminal: 'turnstile-terminal',
     turnstileTerminalRead: 'turnstile-terminal-read',
     turnstileTerminalWrite: 'turnstile-terminal-write',
+    turnstileOrganization: 'turnstile-organization',
     turnstileOrganizationWrite: 'turnstile-organization-write',
     turnstileOrganizationRead: 'turnstile-organization-read',
     turnstileWorkers: 'turnstile-workers',

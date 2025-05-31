@@ -1343,7 +1343,10 @@
     "terminalUser": {
       "title": "Xodimlar",
       "create": "Xodimni biriktirish",
-      "edit": "Xodimni tahrirlash"
+      "edit": "Xodimni tahrirlash",
+      "companyWorker": "Korxona xodimi",
+      "notCompanyWorker": "Korxona xodimi emas",
+      "deadline_feedback": "Bo'sh qoldirilsa 2 yil"
     },
     "workDurationPage": {
       "name": "Ish vaqti",

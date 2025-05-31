@@ -13,7 +13,7 @@ const _worker_photos =async (payload)=>{
 }
 
 const _turnstile_devices =async ()=>{
-    return await axios.get( `/v1/turnstile/devices`)
+    return await axios.get( `/v1/turnstile/user-terminals`)
 }
 
 // const _update = async (payload)=>{
