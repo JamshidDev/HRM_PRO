@@ -407,6 +407,7 @@ const appPermissions = {
 
     confirmation:"confirmation",
     confirmationContracts:"confirmation-contracts",
+    confirmationAddContracts:"confirmation-contracts-additional",
     confirmationCommands:"confirmation-commands",
     confirmationWorkerApplications:"confirmation-worker-applications",
     confirmationTable:"confirmation-table",

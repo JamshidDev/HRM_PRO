@@ -61,7 +61,6 @@ const onSelectEv = (v)=>{
           <td>
             <UIMenuButton
                 :data="item"
-                :show-edit="true"
                 @selectEv="onSelectEv"
             />
           </td>

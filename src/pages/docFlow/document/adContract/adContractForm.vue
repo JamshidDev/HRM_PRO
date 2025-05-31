@@ -66,7 +66,6 @@ const onChangeStructure = (v)=>{
 
 const onChangeOrganization = (v)=>{
   store.organization=v
-  console.log(v)
   if(v.length>0){
     componentStore.workerList = []
     store.workers = []
@@ -148,6 +147,10 @@ watchEffect(()=>{
   if(store.payload.director_id){
     store.payload.confirmations = store.payload.confirmations.filter(v=>v !==store.payload.director_id)
     confirmationList.value = componentStore.confirmationList.filter(v=>v.id !==store.payload.director_id)
+  }
+
+  if(store.payload.type === 8){
+    componentStore._structures()
   }
 })
 
@@ -281,9 +284,7 @@ const showForm = computed(()=>store.payload.type===null? true : [1,8].includes(s
                   <n-form-item :label="$t(`documentPage.form.organization`)" path="organization_id">
                     <UISelect
                         :options="componentStore.structureList"
-
                         :modelV="store.payload.organization_id"
-                        @defaultValue="(v)=>store.payload.organization_id=v"
                         @updateModel="onChangeStructure"
                         :checkedVal="store.structureCheck"
                         @updateCheck="(v)=>store.structureCheck=v"

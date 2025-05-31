@@ -75,6 +75,7 @@ const onSelect = (v) =>{
           <td>
             <UIMenuButton
                 :show-view="true"
+                :show-delete="false"
                 :data="item"
                 @selectEv="onSelect"
             />
