@@ -151,6 +151,13 @@ export const navigations = [
                 permission: appPermissions.hrMed,
             },
             {
+                label: 'polyclinic.name',
+                path: Utils.routeHrmPathMaker(AppPaths.Polyclinic),
+                icon: BuildingMultiple24Filled,
+                color: 'bg-dark',
+                permission: appPermissions.hrMed,
+            },
+            {
                 label: 'organizationLeaderPage.name',
                 path: Utils.routeHrmPathMaker(AppPaths.OrganizationLeader),
                 icon: PersonAccounts24Filled,

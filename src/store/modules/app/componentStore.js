@@ -570,6 +570,12 @@ export const useComponentStore = defineStore('componentStore', {
                 this._workers(true)
             }
         },
+        onOpenWorkerEv(v){
+            if(!v) return
+            this.workerParams.search=null
+            this.workerParams.page=1
+            this._workers()
+        },
 
 
         _adContractType(id){

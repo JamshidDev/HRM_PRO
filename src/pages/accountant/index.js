@@ -1,2 +1,2 @@
-export const UploadReportPage = ()=>import("./report/UploadReport.vue")
-export const MonthReportPage = ()=>import("./monthReport/monthReportPage.vue")
+export const UploadReportPage = ()=>import("./report/page.vue")
+export const MonthReportPage = ()=>import("./monthReport/page.vue")

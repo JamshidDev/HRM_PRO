@@ -1,8 +1,8 @@
 <script setup>
-
+import {BuildingMultiple24Filled} from '@vicons/fluent'
 import {UIPageFilter, UISelect} from "@/components/index.js"
 import {
-  useAccountStore,
+  useAccountStore,useMedInspectionStore,
   useComponentStore, useMedStore,
 } from "@/store/modules/index.js"
 
@@ -10,6 +10,7 @@ import {
 const store = useMedStore()
 const accStore = useAccountStore()
 const componentStore = useComponentStore()
+const inspectionStore = useMedInspectionStore()
 
 
 const onSearch = (v)=>{
@@ -57,6 +58,12 @@ const resetFilter = ()=>{
   filterEvent()
 }
 
+const openInspectionEv =()=>{
+  inspectionStore.resetForm()
+  componentStore._structures()
+  inspectionStore.visible = true
+}
+
 </script>
 
 <template>
@@ -69,6 +76,18 @@ const resetFilter = ()=>{
       :search-loading="store.loading"
       @onAdd="onAdd"
   >
+    <template #filterAction>
+      <n-button
+          @click="openInspectionEv"
+          secondary
+          type="error"
+      >
+        {{$t('medInspection.name')}}
+        <template #icon>
+          <BuildingMultiple24Filled/>
+        </template>
+      </n-button>
+    </template>
     <template #filterContent>
       <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{$t('actionLog.table.structure')}}</label>
       <UISelect

@@ -66,12 +66,10 @@ const onChangeStructure = (v)=>{
 
 const onChangeOrganization = (v)=>{
   store.organization=v
-  if(v.length>0){
-    componentStore.workerList = []
-    store.workers = []
-    componentStore.workerParams.organization_id= v[0].id
-    componentStore._workers()
-  }
+  componentStore.workerList = []
+  store.workers = []
+  store.payload.worker_position_id = null
+  componentStore.workerParams.organization_id = v.length>0? v?.[0]?.id : null
 }
 const onFocusConf = ()=>{
   componentStore._confirmations()
@@ -106,21 +104,6 @@ const renderValue = ({option})=>{
         },`${option?.last_name} ${option?.first_name} ${option?.middle_name}`),
   ];
 }
-const workerRenderLabel = (option)=>{
-  return [
-    h('div',{ class:'flex flex-col'}, [
-      h('div',{ class:'text-xs font-medium text-gray-500'},option.name),
-      h('div',{ class:'text-xs text-gray-400'},option.position),
-    ])
-  ];
-}
-const workerRenderValue = ({option})=>{
-  return [
-    h('div',{ class:'flex flex-col'}, [
-      h('div',{ class:'text-sm font-medium text-gray-500'},option.name),
-    ])
-  ];
-}
 const onChangeWorker = ()=>{
   const worker = componentStore.workerList.filter((v)=>v.id === store.payload.worker_position_id)[0]
   const typeId = worker.typeId
@@ -153,6 +136,12 @@ watchEffect(()=>{
     componentStore._structures()
   }
 })
+
+const onOpenEv = (v)=>{
+  if(!v) return
+  store.payload.worker_position_id = null
+  componentStore.onOpenWorkerEv(v)
+}
 
 
 
@@ -225,12 +214,13 @@ const showForm = computed(()=>store.payload.type===null? true : [1,8].includes(s
                     :options="componentStore.workerList"
                     label-field="name"
                     value-field="id"
-                    :render-label="workerRenderLabel"
-                    :render-tag="workerRenderValue"
+                    :render-label="UIHelper.selectRender.label"
+                    :render-tag="UIHelper.selectRender.value"
                     @update:value="onChangeWorker"
                     :loading="componentStore.workerLoading"
                     @scroll="componentStore.onScrollWorker"
                     @search="componentStore.onSearchWorker"
+                    @update:show="onOpenEv"
                 />
               </n-form-item>
             </div>
@@ -307,7 +297,6 @@ const showForm = computed(()=>store.payload.type===null? true : [1,8].includes(s
                       <n-select
                           v-model:value="store.payload.position_id"
                           filterable
-
                           :options="componentStore.positionList"
                           label-field="name"
                           value-field="id"
@@ -334,7 +323,6 @@ const showForm = computed(()=>store.payload.type===null? true : [1,8].includes(s
                           :disabled="!Boolean(store.payload.department_id)"
                           v-model:value="store.payload.department_position_id"
                           filterable
-
                           :options="componentStore.departmentPositionList"
                           label-field="name"
                           value-field="id"

@@ -1368,12 +1368,21 @@
       "candidate": "Kandidat"
     },
     "form": {
-      "from": "Oxirgi tibbiy ko'rik o'tqazilgan sana",
-      "to": "Keyingi tibbiy ko'rikdan o'tish sanasi",
+      "from": "Qachondan",
+      "to": "Qachongacha",
       "comment": "Izoh",
       "status": "Holati",
       "organization": "Korxona",
       "file": "Fayllar"
+    }
+  },
+  "medInspection": {
+    "name": "Tekshiruvga yuborish",
+    "createTitle": "Tibbiy ko'rikga xodimni yuborish",
+    "updateTitle": "Ma'lumotlarni tahrirlash",
+    "form": {
+      "hospital": "Poliknika",
+      "start_date": "Borish sanasi"
     }
   },
   "organizationLeaderPage": {
@@ -1600,14 +1609,20 @@
     "name": "Oylik hisobot",
     "createTitle": "Hisobot yuklash",
     "form": {
-      "menu": "menu",
-      "subMenu": "Sub menu",
-      "title": "Nomi",
-      "file": "Hisobot fayli",
-      "uploadCount": "Yuklangan {n} ta",
-      "comment": "Tavsif",
-      "requiredOrganization": "Yuklash uchun korxona tanlanishi shart!",
-      "uploadFile": "Hisobot yuklash"
+      "pin": "Pin",
+      "salary": "Ish haqi",
+      "totalOne": "Ish haqi fondiga kiruvchi to'lov turlari",
+      "totalTwo": "Ish haqi fondiga kirmaydigan to'lov turlari",
+      "totalThree": "Hisoblandi",
+      "totalFour": "Ish haqidan ushlamalar"
+    }
+  },
+  "polyclinic": {
+    "name": "Poliknikalar",
+    "createTitle": "Poliknika qo'shish",
+    "updateTitle": "Tahrirlash",
+    "form": {
+      "choosePolyclinic": "Poliknikalarni tanlang"
     }
   }
 }

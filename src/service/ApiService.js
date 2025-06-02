@@ -56,6 +56,8 @@ import documentArchiveService from '@/service/v1/hrm/documentArchiveService.js'
 import businessTrip from '@/service/v1/hrm/businessTrip.js'
 import incentiveService from '@/service/v1/hrm/incentiveService.js'
 import punishmentService from '@/service/v1/hrm/punishmentService.js'
+import medInspectionService from '@/service/v1/hrm/medInspectionService.js'
+import polyclinicService from '@/service/v1/hrm/polyclinicService.js'
 
 import documentService from "@/service/v1/docFlow/documentService.js"
 import contractService from "@/service/v1/docFlow/contractService.js"
@@ -153,6 +155,8 @@ export default {
     quoteService,
     telegramService,
     instructionService,
+    medInspectionService,
+    polyclinicService,
 
     reportService,
     aiConversationService,

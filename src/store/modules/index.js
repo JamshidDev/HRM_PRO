@@ -63,6 +63,8 @@ export * from './hrm/businessTripStore.js'
 export * from './hrm/incentiveStore.js'
 export * from './hrm/punishmentStore.js'
 export * from './hrm/report2Store.js'
+export * from './hrm/medInspectionStore.js'
+export * from './hrm/polyclinicStore.js'
 
 export * from "./docFlow/contractStore.js"
 export * from "./docFlow/documentStore.js"

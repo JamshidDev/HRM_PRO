@@ -1,13 +1,15 @@
 <script setup>
-import {useComponentStore, useMedStore, useAccountStore} from "@/store/modules/index.js"
+import {useComponentStore, useMedStore, useAccountStore, useMedInspectionStore} from "@/store/modules/index.js"
 import Table from "./ui/Table.vue"
 import createForm from "./ui/createForm.vue"
 import Filter from "./ui/Filter.vue"
-import {UIDrawer, UIPageContent, UIPageFilter} from "@/components/index.js"
+import SendInspectionForm from "@/pages/hrm/med/ui/SendInspectionForm.vue"
+import {UIDrawer, UIPageContent} from "@/components/index.js"
 
 const store = useMedStore()
 const componentStore = useComponentStore()
 const accStore = useAccountStore()
+const inspectionStore = useMedInspectionStore()
 
 
 const onAdd = ()=>{
@@ -46,6 +48,15 @@ onUnmounted(()=>{
     >
       <template #content>
         <createForm/>
+      </template>
+    </UIDrawer>
+    <UIDrawer
+        :visible="inspectionStore.visible"
+        @update:visible="(v)=>inspectionStore.visible = v"
+        :title="inspectionStore.visibleType? $t('medInspection.createTitle') : $t('medInspection.updateTitle')"
+    >
+      <template #content>
+        <SendInspectionForm/>
       </template>
     </UIDrawer>
   </UIPageContent>

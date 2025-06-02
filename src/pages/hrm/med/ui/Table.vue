@@ -40,7 +40,14 @@ const onEdit = (v)=>{
       store.payload.pin = null
       compStore.selectedWorker = null
       compStore.workerParams.organization_id = v.organization?.id
-      compStore._workers()
+      compStore.workerList = [
+        {
+          id:v.worker_position.id,
+          name:Utils.combineFullName(v.worker_position.worker),
+          position:v.worker_position.post_short_name
+        }
+      ]
+      // compStore._workers()
     }
     else{
       compStore.selectedWorker ={

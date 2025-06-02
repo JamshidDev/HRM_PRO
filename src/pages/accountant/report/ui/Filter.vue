@@ -35,7 +35,7 @@ onMounted(()=>{
   <template #filterAction>
 
     <n-select
-        class="!w-[200px]"
+        class="w-full! md:w-[200px]!"
         v-model:value="store.params.year"
         :options="Utils.yearList"
         label-field="name"
@@ -43,14 +43,18 @@ onMounted(()=>{
         @update:value="store._cards"
     />
     <n-select
-        class="!w-[200px]"
+        class="w-full! md:w-[200px]!"
         v-model:value="store.params.month"
         :options="Utils.monthList"
         label-field="name"
         value-field="id"
         @update:value="store._cards"
     />
-    <n-button @click="onAdd" type="success">
+    <n-button
+        @click="onAdd"
+        type="success"
+        class="w-full! md:w-auto!"
+    >
       {{$t('uploadReport.form.uploadFile')}}
       <template #icon>
         <DocumentArrowUp20Regular/>

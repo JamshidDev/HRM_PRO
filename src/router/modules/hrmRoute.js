@@ -26,6 +26,7 @@ import UserRolePage from "@/pages/hrm/UserRole/UserRolePage.vue"
 import PunishmentPage from "@/pages/hrm/punishment/PunishmentPage.vue"
 import IncentivePage from "@/pages/hrm/incentive/IncentivePage.vue"
 import ReportPage from "@/pages/hrm/report/ReportPage.vue"
+import {PolyclinicPage} from "@/pages/hrm/index.js"
 
 export default [
     {
@@ -143,5 +144,9 @@ export default [
     {
         path:Utils.routeHrmPathMaker(AppPaths.Report),
         component:ReportPage,
+    },
+    {
+        path:Utils.routeHrmPathMaker(AppPaths.Polyclinic),
+        component:PolyclinicPage,
     },
 ]

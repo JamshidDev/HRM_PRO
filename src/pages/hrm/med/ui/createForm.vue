@@ -5,6 +5,7 @@ const formRef = ref(null)
 import {useMedStore, useComponentStore} from "@/store/modules/index.js";
 import {useAppSetting} from "@/utils/index.js"
 import Utils from "@/utils/Utils.js"
+import UIHelper from "@/utils/UIHelper.js"
 
 const store = useMedStore()
 const componentStore = useComponentStore()
@@ -61,27 +62,16 @@ const onDeleteFile = (v)=>{
 }
 
 
-
-const workerRenderLabel = (option)=>{
-  return [
-    h('div',{ class:'flex flex-col pt-2'}, [
-      h('div',{ class:'text-xs font-medium text-gray-500'},option.name),
-      h('div',{ class:'text-xs text-primary'},option.position),
-    ])
-  ];
-}
-const workerRenderValue = ({option})=>{
-  return [
-    h('div',{ class:'flex flex-col'}, [
-      h('div',{ class:'text-sm font-medium text-gray-500'},option.name),
-    ])
-  ];
-}
-
 const getStatus = ()=>{
   if(componentStore.medStatus.length === 0){
     componentStore._enums()
   }
+}
+
+const onFocusEv = ()=>{
+  if(componentStore.workerList.length>1) return
+  store.payload.worker_position_id = null
+  componentStore._workers()
 }
 
 onMounted(()=>{
@@ -131,11 +121,12 @@ onMounted(()=>{
                       :placeholder="$t('content.searchWorker')"
                       label-field="name"
                       value-field="id"
-                      :render-label="workerRenderLabel"
-                      :render-tag="workerRenderValue"
+                      :render-label="UIHelper.selectRender.label"
+                      :render-tag="UIHelper.selectRender.value"
                       :loading="componentStore.workerLoading"
                       @scroll="componentStore.onScrollWorker"
                       @search="componentStore.onSearchWorker"
+                      @focus="onFocusEv"
                       :default-value="'Jamshid'"
                   />
                 </n-form-item>
