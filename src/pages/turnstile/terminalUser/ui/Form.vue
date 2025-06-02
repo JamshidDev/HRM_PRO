@@ -51,6 +51,7 @@ const onChangeWorker = (v) => {
   store.photos = []
   store.payload.photo_index = null
   if(v){
+    store.payload.worker_id = Number(v)
     store._worker_photos(v)
   }
 }
