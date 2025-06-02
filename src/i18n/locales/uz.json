@@ -131,7 +131,8 @@
     "detail": "Batafsil",
     "users": "Foydalanuvchilar",
     "image": "Rasm",
-    "noImage": "Rasm mavjud emas"
+    "noImage": "Rasm mavjud emas",
+    "selectAll": "Barchasini tanlash"
   },
   "date": {
     "day": "Kun",
@@ -1341,12 +1342,13 @@
       "terminal": "Terminal"
     },
     "terminalUser": {
-      "title": "Xodimlar",
+      "title": "Terminal xodimlar",
       "create": "Xodimni biriktirish",
       "edit": "Xodimni tahrirlash",
       "companyWorker": "Korxona xodimi",
       "notCompanyWorker": "Korxona xodimi emas",
-      "deadline_feedback": "Bo'sh qoldirilsa 2 yil"
+      "deadline_feedback": "Bo'sh qoldirilsa 2 yil",
+      "terminals": "Terminallar"
     },
     "workDurationPage": {
       "name": "Ish vaqti",

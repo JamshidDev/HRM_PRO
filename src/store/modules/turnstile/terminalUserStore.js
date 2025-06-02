@@ -9,17 +9,21 @@ export const useTurnstileTerminalUserStore = defineStore('turnstileTerminalUserS
         list: [],
         loading: false,
         saveLoading: false,
+        instanceDataLoading: false,
+        instanceData: null,
         visible: false,
         visibleType: true,
         elementId: null,
+        deleteLoading: false,
         totalItems: 0,
         structureCheck: [],
         photos: [],
-        devices: [],
-        devicesLoading: false,
+        terminals: [],
+        terminalsLoading: false,
         photosLoading: false,
         payload: {
             organization_id: [],
+            search_worker_id: null,
             worker_id: null,
             photo_id: null,
             photo_index: null,
@@ -27,6 +31,8 @@ export const useTurnstileTerminalUserStore = defineStore('turnstileTerminalUserS
             to: null,
             isWorker: 1,
             photo: null,
+            detachTerminals: [],
+            allTerminalsChecked: false
         },
         params: {
             page: 1,
@@ -46,22 +52,21 @@ export const useTurnstileTerminalUserStore = defineStore('turnstileTerminalUserS
         },
         _create() {
             this.saveLoading = true
-            const payload = this.payload
-            let data = {
-                organization_id: payload.organization_id,
-                worker_id: payload.worker_id,
-                terminals: payload.terminals,
+            const data = this.payload
+            let payload = {
+                worker_id: data.worker_id,
+                terminals: data.terminals,
             }
-            if(payload.photo){
-                data.photo = payload.photo
+            if(data.photo){
+                payload.photo = data.photo
             }
-            if(payload.photo_id){
-                data.photo_id = payload.photo_id
+            if(data.photo_id){
+                payload.photo_id = data.photo_id
             }
-            if(payload.to){
-                data.to = Utils.timeToZone(payload.to)
+            if(data.to){
+                payload.to = Utils.timeToZone(data.to)
             }
-            $ApiService.turnstileTerminalUserService._create({data}).then((res) => {
+            $ApiService.turnstileTerminalUserService._create({data: payload}).then((res) => {
                 this.visible = false
                 this._index()
             }).finally(() => {
@@ -76,27 +81,34 @@ export const useTurnstileTerminalUserStore = defineStore('turnstileTerminalUserS
                 this.photosLoading = false
             })
         },
-        _turnstile_devices(){
-            this.devicesLoading = true
-            $ApiService.turnstileTerminalUserService._turnstile_devices().then((res) => {
-                this.devices = res.data.data
+        _turnstile_terminals(){
+            this.terminalsLoading = true
+            $ApiService.turnstileTerminalUserService._turnstile_terminals().then((res) => {
+                this.terminals = res.data.data
             }).finally(() => {
-                this.devicesLoading = false
+                this.terminalsLoading = false
             })
         },
-        // _update() {
-        //     this.saveLoading = true
-        //     let data = {
-        //         ...this.payload,
-        //     }
-        //     $ApiService.turnstileTerminalService._update({data, id: this.elementId}).then((res) => {
-        //         this.visible = false
-        //         this._index()
-        //
-        //     }).finally(() => {
-        //         this.saveLoading = false
-        //     })
-        // },
+        _show(){
+            this.instanceDataLoading = true
+            $ApiService.turnstileTerminalUserService._show({id: this.elementId}).then((res) => {
+                this.instanceData = res.data.data
+            }).finally(() => {
+                this.instanceDataLoading = false
+            })
+        },
+        _detach() {
+            this.saveLoading = true
+            let data = {
+                terminals: this.payload.detachTerminals,
+            }
+            $ApiService.turnstileTerminalUserService._detach({data, id: this.elementId}).then((res) => {
+                this.elementId = null
+                this._index()
+            }).finally(() => {
+                this.saveLoading = false
+            })
+        },
         _delete() {
             this.deleteLoading = true
             $ApiService.turnstileTerminalUserService._delete({id: this.elementId}).then((res) => {
@@ -108,12 +120,18 @@ export const useTurnstileTerminalUserStore = defineStore('turnstileTerminalUserS
         resetForm() {
             this.payload.worker_id = null
             this.payload.photo_id = null
+            this.payload.photo = null
+            this.payload.photo_index = null
             this.payload.terminals = []
             this.payload.organization_id = []
             this.payload.to = null
             this.payload.isWorker = 1
+            this.payload.detachTerminals = []
+            this.payload.search_worker_id = null
+            this.payload.allTerminalsChecked = false
             this.photos = []
-            this.devices = []
+            this.terminals = []
+
             // this.payload.url =null
         }
     }

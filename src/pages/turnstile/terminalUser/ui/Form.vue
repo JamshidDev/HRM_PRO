@@ -16,8 +16,6 @@ const onSubmit = ()=>{
       store.saveLoading = true
       if(store.visibleType){
         store._create()
-      }else{
-        // store._update()
       }
     }
   })
@@ -27,18 +25,31 @@ const onSubmit = ()=>{
 const changeOrg = (v) => {
   store.payload.organization_id = v
   store.payload.worker_id = null
+  store.payload.search_worker_id = null
   store.photos = []
-  store.payload.photo_id = null
-  componentStore.workerParams.organization_id = v[0].id
-  componentStore._workers()
+  store.payload.photo_index = null
+  componentStore.workerList = []
+  if(v[0]?.id){
+    componentStore.workerParams.organization_id = v[0]?.id
+    componentStore._workers()
+  }
 }
 
-const onChangeWorker = (v, obj) => {
+const onChangeSearchWorker = (v, obj) => {
   store.photos = []
-  store.payload.photo_id = null
+  store.payload.photo_index = null
+
   if(obj){
     store.payload.worker_id = obj.worker.id
+    store._worker_photos(obj.worker.id)
+  }else{
+    store.payload.worker_id = null
   }
+}
+
+const onChangeWorker = (v) => {
+  store.photos = []
+  store.payload.photo_index = null
   if(v){
     store._worker_photos(v)
   }
@@ -70,7 +81,7 @@ const deviceRenderLabel = (option) => {
   return [
     h('div', {class: 'flex flex-col'}, [
       h('div', {class: 'text-xs font-medium text-gray-500'}, option.name),
-      h('div', {class: 'text-xs text-primary'}, option.building.name),
+      h('div', {class: 'text-xs text-gray-300'}, option.building.name),
     ])
   ];
 }
@@ -79,19 +90,23 @@ const toggleImage = (v)=>{
   if(store.payload.photo_index === v){
     store.payload.photo_id = null
     store.payload.photo = null
+    store.payload.photo_index = null
   }else{
     if(store.photos[v]?.id){
-      store.payload.photo_id = v
+      store.payload.photo_id = store.photos[v]?.id
       store.payload.photo = null
     }else{
       store.payload.photo = store.photos[v].photo
       store.payload.photo_id = null
     }
+    store.payload.photo_index = v
   }
 }
 
 const resetWorkerId = ()=>{
   store.payload.worker_id = null
+  store.payload.search_worker_id = null
+  store.payload.photo_index = null
   store.photos = []
 }
 
@@ -109,17 +124,33 @@ const onResult = (v)=>{
 }
 
 onMounted(()=>{
-  store._turnstile_devices();
+  store._turnstile_terminals();
   if(componentStore.structureList.length === 0){
     componentStore._structures()
   }
 })
 
+const onChangeCheckAll = (v)=>{
+  if(v){
+    store.payload.terminals = store.terminals.map(i=>i.id)
+  }else{
+    store.payload.terminals = []
+  }
+}
+
+const onChangeCheckTerminal = ()=>{
+  if(store.payload.terminals.length === store.terminals.length){
+    store.payload.allTerminalsChecked = true
+  }else{
+    store.payload.allTerminalsChecked = false
+  }
+}
+
 </script>
 
 
 <template>
-  <n-spin :show="store.devicesLoading">
+  <n-spin :show="store.terminalsLoading">
     <div style="height:calc(100vh - 120px)" class="overflow-y-auto">
       <n-form
         ref="formRef"
@@ -128,7 +159,19 @@ onMounted(()=>{
         class="flex flex-col"
       >
   
-      <n-form-item v-if="store.visibleType" :label="$t(`content.organization`)" path="organization_id" rule-path="requiredMultiSelectField">
+        <n-radio-group
+            class="mx-auto mb-3"
+            @update:value="resetWorkerId"
+            v-model:value="store.payload.isWorker"
+        >
+          <n-radio-button :value="1">
+            {{$t('turnstile.terminalUser.companyWorker')}}
+          </n-radio-button>
+          <n-radio-button :value="0">
+            {{$t('turnstile.terminalUser.notCompanyWorker')}}
+          </n-radio-button>
+        </n-radio-group>
+      <n-form-item v-if="store.payload.isWorker" :label="$t(`content.organization`)" path="organization_id" rule-path="requiredMultiSelectField">
         <UISelect
             :options="componentStore.structureList"
             :modelV="store.payload.organization_id"
@@ -142,23 +185,10 @@ onMounted(()=>{
             :multiple="false"
         />
       </n-form-item>
-        <n-radio-group
-            class="mx-auto mb-3"
-            @update:value="resetWorkerId"
-            v-model:value="store.payload.isWorker"
-        >
-          <n-radio-button :value="1">
-            {{$t('turnstile.terminalUser.companyWorker')}}
-          </n-radio-button>
-          <n-radio-button :value="0">
-            {{$t('turnstile.terminalUser.notCompanyWorker')}}
-          </n-radio-button>
-        </n-radio-group>
-      <n-form-item v-if="store.visibleType" :label="$t(`content.staff`)" path="worker_id" rule-path="requiredNumberField">
+      <n-form-item v-if="store.payload.isWorker" :label="$t(`content.staff`)" path="worker_id" rule-path="requiredNumberField">
         <n-select
-            v-if="store.payload.isWorker"
             :disabled="store.payload.organization_id.length === 0"
-            :value="store.payload.worker_id"
+            v-model:value="store.payload.search_worker_id"
             filterable
             :options="componentStore.workerList"
             label-field="name"
@@ -169,9 +199,11 @@ onMounted(()=>{
             @scroll="componentStore.onScrollWorker"
             @search="componentStore.onSearchWorker"
             :reset-menu-on-options-change="false"
-            @update:value="onChangeWorker"
+            @update:value="onChangeSearchWorker"
         />
-        <checkWorkerSelect v-else v-model:value="store.payload.worker_id" @update:value="onChangeWorker" />
+      </n-form-item>
+      <n-form-item v-else :label="$t(`content.staff`)" path="worker_id" rule-path="requiredStringField">
+        <checkWorkerSelect v-model:value="store.payload.worker_id" @update:value="onChangeWorker" />
       </n-form-item>
       <n-form-item :label="$t(`content.deadline`)" :feedback="$t('turnstile.terminalUser.deadline_feedback')">
         <n-date-picker
@@ -184,7 +216,7 @@ onMounted(()=>{
       </n-form-item>
       <n-form-item :label="$t(`content.photo`)" path="photo_index" rule-path="requiredNumberField">
         <div class="h-[250px] max-h-[250px] p-2 border border-surface-line border-dashed w-full rounded-md relative">
-          <n-spin class="h-full w-full" :show="store.photosLoading">
+          <n-spin class="h-full w-full overflow-y-auto pr-1" :show="store.photosLoading">
             <NoDataIllustration v-if="!store.photos.length" class="w-full h-full" />
             <div v-else class="grid grid-cols-[repeat(auto-fill,minmax(100px,1fr))] grid-rows-[repeat(auto-fill,minmax(120px,1fr))] gap-[10px]">
               <div v-for="(photo,idx) in store.photos" :key="idx" class="rounded-md overflow-hidden relative" @click="toggleImage(idx)" style="box-shadow: rgba(0, 0, 0, 0.1) 0 4px 12px;">
@@ -196,7 +228,7 @@ onMounted(()=>{
             </div>
           </n-spin>
           <div class="absolute bottom-[10px] right-[10px]">
-            <n-button @click="openCropper" type="primary" size="tiny">
+            <n-button :disabled="typeof store.payload.photo_index === 'number'" @click="openCropper" type="primary" size="tiny">
               {{$t('content.upload')}}
               <template #icon>
                 <AddCircle16Filled/>
@@ -212,13 +244,18 @@ onMounted(()=>{
             :max-tag-count="2"
             v-model:value="store.payload.terminals"
             filterable
-            :options="store.devices"
+            :options="store.terminals"
             label-field="name"
             value-field="id"
             :render-label="deviceRenderLabel"
             :render-tag="deviceRenderLabel"
-            :loading="store.devicesLoading"
-        />
+            :loading="store.terminalsLoading"
+            @update:value="onChangeCheckTerminal"
+        >
+          <template #action>
+            <n-checkbox v-model:checked="store.payload.allTerminalsChecked" @update:checked="onChangeCheckAll">{{$t('content.selectAll')}}</n-checkbox>
+          </template>
+        </n-select>
       </n-form-item>
       </n-form>
   
@@ -240,3 +277,9 @@ onMounted(()=>{
 
 </template>
 
+<style scoped>
+.disabled-img{
+  cursor: not-allowed;
+  filter: grayscale(100%);
+}
+</style>
