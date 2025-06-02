@@ -42,6 +42,7 @@ import {
     DocumentRibbon20Filled,
     CalendarLtr20Filled,
     Calculator24Regular,
+    ShareScreenPerson20Filled
 } from "@vicons/fluent"
 import {AppPaths} from "@/utils/index.js";
 import Utils from "@/utils/Utils.js"
@@ -322,21 +323,21 @@ export const navigations = [
                 path: Utils.routeTurnstilePathMaker(AppPaths.Building),
                 icon: BuildingMultiple24Filled,
                 color: 'bg-dark',
-                permission: appPermissions.turnstile,
+                permission: appPermissions.turnstileBuilding,
             },
             {
                 label: 'turnstile.terminalPage.title',
                 path: Utils.routeTurnstilePathMaker(AppPaths.Terminal),
                 icon: ScanObject24Filled,
                 color: 'bg-secondary',
-                permission: appPermissions.turnstile,
+                permission: appPermissions.turnstileTerminal,
             },
             {
                 label: 'turnstile.organization.title',
                 path: Utils.routeTurnstilePathMaker(AppPaths.Organizations),
                 icon: Organization12Filled,
                 color: 'bg-info',
-                permission: appPermissions.turnstile,
+                permission: appPermissions.turnstileOrganization,
             },
             {
                 label: 'turnstile.terminalUser.title',
@@ -395,13 +396,13 @@ export const navigations = [
                 color: 'bg-warning',
                 permission: appPermissions.users,
             },
-            // {
-            //     label: 'teacherPage.name',
-            //     path: Utils.routeLmsPathMaker(AppPaths.Teacher),
-            //     icon: ShareScreenPerson20Filled,
-            //     color: 'bg-info',
-            //     permission: appPermissions.users,
-            // }
+            {
+                label: 'teacherPage.name',
+                path: Utils.routeLmsPathMaker(AppPaths.Teacher),
+                icon: ShareScreenPerson20Filled,
+                color: 'bg-info',
+                permission: appPermissions.users,
+            }
         ]
     },
     {
@@ -560,7 +561,6 @@ export const navigations = [
             },
         ]
     },
-
 ]
 
 export const otherNavigations = [

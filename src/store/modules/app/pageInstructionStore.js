@@ -101,6 +101,7 @@ export const usePageInstructionStore = defineStore('pageInstructionStore', {
             this.visible = data
         },
         deleteImage(){
+            console.log("dete", this.imgCarouselIdx)
             const index = this.imgCarouselIdx
             const id = this.payload.photos[index]?.id
             if(!id){

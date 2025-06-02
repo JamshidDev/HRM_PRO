@@ -12,14 +12,14 @@ defineProps({
 
 </script>
 <template>
-  <div class="border bg-blue-50 rounded-lg overflow-hidden border-blue-200 p-2 shadow-blue-50 drop-shadow-xs flex flex-col gap-3"
+  <div class="border bg-primary/5 rounded-lg overflow-hidden border-primary/20 p-2 shadow-primary/5 drop-shadow-xs flex flex-col gap-3"
   >
     <UIEditorViewer :html="question.question"></UIEditorViewer>
     <template
         v-for="(option, idx) in question.answers"
         :key="idx"
     >
-      <div class="flex gap-2 p-2 items-center border rounded-md border-blue-100">
+      <div class="flex gap-2 p-2 items-center border rounded-md border-primary/10">
         <div class="relative w-4! h-4!">
           <div
               class="radio"

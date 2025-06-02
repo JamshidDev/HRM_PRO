@@ -30,9 +30,9 @@ export default [
         component: EduPlanPage,
         children:[],
     },
-    // {
-    //     path:Utils.routeLmsPathMaker(AppPaths.Teacher),
-    //     component: TeacherPage,
-    //     children:[],
-    // },
+    {
+        path:Utils.routeLmsPathMaker(AppPaths.Teacher),
+        component: TeacherPage,
+        children:[],
+    },
 ]
