@@ -1,8 +1,16 @@
 import Utils from "@/utils/Utils.js";
 import {AppPaths} from "@/utils/index.js";
-import UploadReport from "@/pages/accountant/report/UploadReport.vue"
+import {UploadReportPage, MonthReportPage} from "@/pages/accountant/index.js"
 
-export default [{
+
+export default [
+    {
     path:Utils.routeAccountantPathMaker(AppPaths.UploadReport),
-    component: UploadReport,
-}]
+    component: UploadReportPage,
+    },
+    {
+        path:Utils.routeAccountantPathMaker(AppPaths.MonthReport),
+        component: MonthReportPage,
+    },
+
+]
