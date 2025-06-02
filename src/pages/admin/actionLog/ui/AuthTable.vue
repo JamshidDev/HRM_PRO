@@ -45,11 +45,11 @@ const openCode = (id)=>{
           <td>
             <UIUser
                 :data="{
-                  photo:item?.user?.photo,
-                  lastName:item?.user?.last_name,
-                  firstName:item?.user?.first_name,
-                  middleName:item?.user?.middle_name,
-                  position:item?.user?.phone
+                  photo:item?.user?.worker?.photo,
+                  lastName:item?.user?.worker?.last_name,
+                  firstName:item?.user?.worker?.first_name,
+                  middleName:item?.user?.worker?.middle_name,
+                  position:item?.user?.worker?.phone
                 }"
             />
           </td>

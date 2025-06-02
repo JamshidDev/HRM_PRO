@@ -26,10 +26,10 @@ const notification = ref(0)
   <div class="flex items-center z-10 ">
     <div
         @click="controlBtn"
-        class="mobile-control-btn
+        class="mobile-control-btn bg-dark
          flex justify-center items-center
           cursor-pointer w-[32px] h-[32px]
-            bg-gray-900 rounded mr-2">
+            rounded mr-2">
       <n-icon class="text-white text-lg">
         <ChevronDoubleRight16Filled/>
       </n-icon>

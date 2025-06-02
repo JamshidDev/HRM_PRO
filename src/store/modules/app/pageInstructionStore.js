@@ -39,6 +39,8 @@ export const usePageInstructionStore = defineStore('pageInstructionStore', {
             const params = {
                 menu: this.payload.menu,
                 sub_menu: this.payload.sub_menu,
+                page:1,
+                per_page:50,
             }
             this.loading= true
             $ApiService.instructionService._index({params}).then((res)=>{

@@ -90,6 +90,7 @@ export const AppPaths = {
     WorkDuration: "/work-duration",
     Accountant: "/accountant",
     UploadReport: "/upload-report",
+    MonthReport: "/month-report",
     Instruction: "/instruction",
 }
 
