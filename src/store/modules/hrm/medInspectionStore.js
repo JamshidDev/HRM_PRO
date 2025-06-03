@@ -33,7 +33,7 @@ export const useMedInspectionStore = defineStore('medInspectionStore', {
             const params = {
                 ...this.params,
                 uuid:this.uuid,
-                organizations:this.params.organizations.map(v=>v.id).toString() || undefined,
+                // organizations:this.params.organizations.map(v=>v.id).toString() || undefined,
             }
             $ApiService.medInspectionService._index({params}).then((res)=>{
                 this.list = res.data.data.data
@@ -100,7 +100,7 @@ export const useMedInspectionStore = defineStore('medInspectionStore', {
             this.payload.organization_id = []
             this.payload.hospital_id = null
             this.payload.worker_id = null
-            this.payload.start_date = null
+            this.payload.start_date = new Date().getTime()
             this.payload.worker_position_id = null
         },
 

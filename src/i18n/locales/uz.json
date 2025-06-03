@@ -633,7 +633,7 @@
     "signature": {
       "history": "O'zgarishlar tarixini ko'rish",
       "viewer": "Hujjat bilan tanishuvchilar",
-      "files": "Hujjat fayillari",
+      "files": "Hujjat fayllari",
       "checkDocument": "Hujjat holatini tekshirish uchun bosing",
       "status": {
         "Process": "Jarayonda"
@@ -925,6 +925,7 @@
       "to_date": "Qachongacha"
     },
     "title": "Mehnat faoliyati ma'lumotlari",
+    "systemTitle": "Tizimdagi mehnat faoliyati ma'lumotlari",
     "no-data": "Mehnat faoliyati qo'shilmagan!"
   },
   "languagePage": {
@@ -1032,10 +1033,10 @@
       "country": "Tug'ilgan davlati"
     },
     "tabs": {
-      "general": "Umimiy ma'lumotlari",
+      "general": "Umumiy ma'lumotlari",
       "career": "Mehnat faoliyati",
       "relative": "Yaqin qarindoshlari",
-      "med": "Tibbiy ko'rik ma'lumoti",
+      "med": "Tibbiy ko'rik",
       "vacation": "Ta'til ma'lumoti",
       "incentive": "Rag'batlantirishlari",
       "attestation": "Attestatsiya",
@@ -1379,6 +1380,13 @@
       "status": "Holati",
       "organization": "Korxona",
       "file": "Fayllar"
+    },
+    "panel": {
+      "panel_one": "Tibbiy ko'rik",
+      "panel_two": "Poliklinikalar",
+      "panel_three": "Ko'rikdagi xodimlar",
+      "panel_four": "Joriy yilda",
+      "selected": "Tanlangan"
     }
   },
   "medInspection": {
@@ -1386,7 +1394,8 @@
     "createTitle": "Tibbiy ko'rikga xodimni yuborish",
     "updateTitle": "Ma'lumotlarni tahrirlash",
     "form": {
-      "hospital": "Poliknika",
+      "hospital": "Poliklinika",
+      "status": "Dr xulosasi",
       "start_date": "Borish sanasi"
     }
   },
@@ -1550,7 +1559,7 @@
     }
   },
   "incentive": {
-    "name": "Rag'batlar",
+    "name": "Rag'batlantirishlar",
     "form": {
       "type": "Turi",
       "who": "Kim tomonidan",
@@ -1623,11 +1632,11 @@
     }
   },
   "polyclinic": {
-    "name": "Poliknikalar",
-    "createTitle": "Poliknika qo'shish",
+    "name": "Poliklinikalar",
+    "createTitle": "Poliklinika qo'shish",
     "updateTitle": "Tahrirlash",
     "form": {
-      "choosePolyclinic": "Poliknikalarni tanlang"
+      "choosePolyclinic": "Poliklinika tanlang"
     }
   }
 }

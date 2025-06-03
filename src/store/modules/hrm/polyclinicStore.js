@@ -41,7 +41,7 @@ export const usePolyclinicStore = defineStore('polyclinicStore', {
         _create(){
             this.saveLoading = true
             const data = {
-                polyclincs:this.payload.polyclinics
+                ...this.payload
             }
             $ApiService.polyclinicService._create({data}).then((res)=>{
                 this.visible = false

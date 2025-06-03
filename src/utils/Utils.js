@@ -133,6 +133,7 @@ const documentModels = {
     adContract:'contract-additional',
     workerApplication:'worker-application',
     timesheet:'timesheet',
+    med:'med',
 }
 const copyToClipboard = async (text, callback)=>{
     try {
@@ -598,7 +599,7 @@ const documentStatus = {
         name:t('enum.done')
     },
     '4':{
-        id:3,
+        id:4,
         name:t('enum.bug')
     },
 }

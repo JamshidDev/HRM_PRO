@@ -20,6 +20,10 @@ const _sortable = async (payload)=>{
     return await axios.put(`/v1/hr/worker-old-careers-sortable`, payload.data)
 }
 
+const _newCareer =async (payload)=>{
+    return await axios.get(`/v1/hr/worker-new-careers/${payload.id}`)
+}
+
 
 
 
@@ -29,4 +33,5 @@ export default {
     _update,
     _delete,
     _sortable,
+    _newCareer,
 }

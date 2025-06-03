@@ -1,35 +1,32 @@
 <script setup>
-import {useComponentStore, useMedStore, useAccountStore, useMedInspectionStore} from "@/store/modules/index.js"
+import {useComponentStore, useMedStore, useAccountStore} from "@/store/modules/index.js"
 import Table from "./ui/Table.vue"
 import createForm from "./ui/createForm.vue"
 import Filter from "./ui/Filter.vue"
-import SendInspectionForm from "@/pages/hrm/med/ui/SendInspectionForm.vue"
-import {UIDrawer, UIPageContent} from "@/components/index.js"
+import IndicatorBoxes from "./ui/IndicatorBoxes.vue"
+import {UIDrawer, UIPageContent, UIOnlyOfficeApp, UIOfficeApp} from "@/components/index.js"
+import PolyclinicPage from "../polyclinic/page.vue"
+import MedInspectionPage from "../medInspection/page.vue"
+import Utils from "@/utils/Utils.js"
 
 const store = useMedStore()
 const componentStore = useComponentStore()
 const accStore = useAccountStore()
-const inspectionStore = useMedInspectionStore()
+const officeAppRef = ref(null)
 
 
-const onAdd = ()=>{
-  if(!accStore.checkAction(accStore.pn.hrMedWrite)) return
-  store.resetForm()
-  componentStore.selectedWorker = null
-  store.elementId = null
-  store.visibleType = true
-  store.visible = true
+
+const openOffice = (id)=>{
+  officeAppRef.value.openPdf(id, Utils.documentModels.med)
 }
 
-const onSearch = ()=>{
-  if(!accStore.checkAction(accStore.pn.hrMedRead)) return
-  store.params.page = 1
-  store._index()
-}
 
 onMounted(()=>{
+  store._dashboard()
+
   if(!accStore.checkAction(accStore.pn.hrMedRead)) return
   store._index()
+
 })
 
 onUnmounted(()=>{
@@ -39,8 +36,21 @@ onUnmounted(()=>{
 
 <template>
   <UIPageContent>
-    <Filter/>
-    <Table/>
+    <IndicatorBoxes>
+      <template #panel-1>
+        <Filter/>
+        <Table/>
+      </template>
+      <template #panel-2>
+        <div>
+          <PolyclinicPage/>
+        </div>
+      </template>
+      <template #panel-3>
+         <MedInspectionPage @openOffice="openOffice" />
+      </template>
+    </IndicatorBoxes>
+    <UIOfficeApp ref="officeAppRef"/>
     <UIDrawer
         :visible="store.visible"
         @update:visible="(v)=>store.visible = v"
@@ -48,15 +58,6 @@ onUnmounted(()=>{
     >
       <template #content>
         <createForm/>
-      </template>
-    </UIDrawer>
-    <UIDrawer
-        :visible="inspectionStore.visible"
-        @update:visible="(v)=>inspectionStore.visible = v"
-        :title="inspectionStore.visibleType? $t('medInspection.createTitle') : $t('medInspection.updateTitle')"
-    >
-      <template #content>
-        <SendInspectionForm/>
       </template>
     </UIDrawer>
   </UIPageContent>

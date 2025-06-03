@@ -14,6 +14,7 @@ const route = useRoute()
 onMounted(()=>{
   store.uuid = route.query.id
   store._index()
+  store._newCareer()
 })
 </script>
 

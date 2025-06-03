@@ -5,7 +5,6 @@ import {useMedInspectionStore, useComponentStore} from "@/store/modules/index.js
 import {UISelect} from "@/components/index.js"
 import UIHelper from "@/utils/UIHelper.js"
 import {useAppSetting} from "@/utils/index.js"
-import Utils from "@/utils/Utils.js"
 
 const store = useMedInspectionStore()
 const componentStore = useComponentStore()

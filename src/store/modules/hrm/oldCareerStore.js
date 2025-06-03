@@ -28,8 +28,18 @@ export const useOldCareerStore = defineStore('oldCareerStore', {
         },
         uuid:null,
         sortableLoading:false,
+        newCareers:[],
+        newCareerLoading:false,
     }),
     actions:{
+        _newCareer(){
+            this.newCareerLoading= true
+            $ApiService.olCareerService._newCareer({id:this.uuid}).then((res)=>{
+                this.newCareers = res.data.data
+            }).finally(()=>{
+                this.newCareerLoading= false
+            })
+        },
         _index(){
             this.loading= true
             $ApiService.olCareerService._index({params:{uuid:this.uuid}}).then((res)=>{

@@ -49,6 +49,7 @@ const onUpdate = (v)=>{
 </script>
 
 <template>
+<div>
   <n-spin :show="store.loading">
     <div
         class="w-full flex justify-between items-end border-surface-line border-dashed pb-2"
@@ -101,9 +102,9 @@ const onUpdate = (v)=>{
             <td>
               <n-button secondary type="primary" size="small" class="handle">
                 <template #icon>
-                 <n-icon>
-                   <Drag24Regular/>
-                 </n-icon>
+                  <n-icon>
+                    <Drag24Regular/>
+                  </n-icon>
                 </template>
               </n-button>
             </td>
@@ -127,6 +128,67 @@ const onUpdate = (v)=>{
 
 
   </n-spin>
+
+  <n-spin :show="store.newCareerLoading">
+    <div
+        class="w-full flex justify-between items-end border-surface-line border-dashed pb-2 mt-8"
+        :class="store.newCareers.length === 0 && 'border-b'"
+    >
+      <span class="text-lg font-medium" v-if="store.newCareers.length>0">{{$t('oldCareerPage.systemTitle')}}</span>
+      <span v-else class="text-sm text-gray-300">{{$t('oldCareerPage.no-data')}}</span>
+
+<!--      <n-button-->
+<!--          round-->
+<!--          @click="onAdd"-->
+<!--      >-->
+<!--        <template #icon>-->
+<!--          <AddCircle28Regular/>-->
+<!--        </template>-->
+<!--        {{$t(`content.add`)}}</n-button>-->
+
+    </div>
+    <div class="w-full overflow-x-auto"  v-if="store.newCareers.length>0">
+      <n-table
+          class=" select-none"
+          :single-line="false"
+          size="small"
+      >
+        <thead>
+        <tr>
+          <th class="text-center! min-w-[40px] w-[40px] handle">{{$t('content.number')}}</th>
+          <th class="min-w-[100px]">{{$t('oldCareerPage.form.post_name')}}</th>
+          <th class="min-w-[100px] w-[160px]">{{$t('oldCareerPage.form.from_date')}}</th>
+          <th class="min-w-[100px] w-[160px]">{{$t('oldCareerPage.form.to_date')}}</th>
+<!--          <th class="min-w-[40px] w-[40px]"></th>-->
+        </tr>
+        </thead>
+        <tbody class="sort-target">
+
+        <tr
+            v-for="(item, idx) in store.newCareers"
+            :key="idx"
+        >
+          <td><span class="text-center text-[12px] text-gray-600 block">{{ (store.params.page - 1) * store.params.per_page + idx + 1 }}</span></td>
+          <td>{{item.full_position}}</td>
+          <td><span class="text-sm">{{Utils.timeOnlyDate(item.from)}}</span></td>
+          <td>{{Utils.timeOnlyDate(item.to)}}</td>
+<!--          <td>-->
+<!--            <UIMenuButton-->
+<!--                :data="item"-->
+<!--                :show-edit="true"-->
+<!--                @selectEv="selectEv"-->
+<!--            />-->
+<!--          </td>-->
+        </tr>
+
+        </tbody>
+      </n-table>
+
+    </div>
+
+
+  </n-spin>
+</div>
 </template>
 
 <style scoped>

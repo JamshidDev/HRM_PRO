@@ -13,7 +13,7 @@ onMounted(()=>{
 </script>
 
 <template>
-<UIPageContent>
+<div>
   <Filter/>
   <Table/>
   <UIDrawer
@@ -25,5 +25,5 @@ onMounted(()=>{
       <createForm/>
     </template>
   </UIDrawer>
-</UIPageContent>
+</div>
 </template>
