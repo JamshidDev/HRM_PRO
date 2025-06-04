@@ -46,16 +46,16 @@ export const useMedInspectionStore = defineStore('medInspectionStore', {
         },
         _polyclinics(){
             this.hospitalLoading= true
-            $ApiService.medInspectionService._polyclinics().then((res)=>{
-                this.hospitalList = res.data.data
+            $ApiService.medInspectionService._polyclinics({params:{page:1,per_page:1000}}).then((res)=>{
+                this.hospitalList = res.data.data.data
             }).finally(()=>{
                 this.hospitalLoading= false
             })
         },
         _myPolyclinics(){
             this.polyclinicLoading = true
-            $ApiService.polyclinicService._index({page:1, pr_page:1000}).then((res)=>{
-                this.polyclinicList = res.data.data
+            $ApiService.polyclinicService._index({params:{page:1,per_page:1000}}).then((res)=>{
+                this.polyclinicList = res.data.data.data
             }).finally(()=>{
                 this.polyclinicLoading = false
             })
@@ -70,7 +70,6 @@ export const useMedInspectionStore = defineStore('medInspectionStore', {
                 organization_id:undefined,
                 hospital_id:undefined,
             }
-            console.log(data)
             $ApiService.medInspectionService._create({data}).then((res)=>{
                 this.visible = false
                 this._index()

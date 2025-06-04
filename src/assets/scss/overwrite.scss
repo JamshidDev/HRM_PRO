@@ -273,5 +273,9 @@ input:-webkit-autofill {
   background-repeat: no-repeat;
   background-position: 50% center;
   background-image: url(https://split.js.org/vertical.png);
-
+}
+.pswp__container{
+  .pswp__item{
+    z-index: 999999 !important;
+  }
 }

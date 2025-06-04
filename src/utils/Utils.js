@@ -503,6 +503,14 @@ const appPermissions = {
     hrPunishmentWrite:"hr-discips-write",
     hrPunishmentRead:"hr-discips-read",
 
+    hospital: "hospital",
+    hospitalExpired: "hospital-expired",
+    hospitalExpiredWrite: "hospital-expired-write",
+    hospitalExpiredRead: "hospital-expired-read",
+    hospitalTicket: "hospital-ticket",
+    hospitalTicketWrite: "hospital-ticket-write",
+    hospitalTicketRead: "hospital-ticket-read",
+
 
 
     useful:'useful',

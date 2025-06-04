@@ -92,6 +92,7 @@ export const AppPaths = {
     Accountant: "/accountant",
     Hospital: "/hospital",
     ExpiredHealth: "/expired-health",
+    Ticket: "/ticket",
     UploadReport: "/upload-report",
     MonthReport: "/month-report",
     Instruction: "/instruction",

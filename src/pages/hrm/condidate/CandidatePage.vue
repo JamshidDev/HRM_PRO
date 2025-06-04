@@ -55,6 +55,10 @@ const openOffice = (id)=>{
   officeAppRef.value.openPdf(id, 'contracts')
 }
 
+const onDelete = (v)=>{
+  store.candidatePhotos = store.candidatePhotos.filter((x)=>x.id !== v.id)
+}
+
 onMounted(()=>{
   pdfStore.visible = false
   store.payload.pin = componentStore.pin
@@ -111,6 +115,7 @@ onMounted(()=>{
             <PhotoForm
                 v-model:images="store.candidatePhotos"
                 v-model:main-image-id="store.mainImageId"
+                @onDelete="onDelete"
             />
             <span class="text-xs text-gray-400">{{$t('createWorkerPage.ui.image')}}</span>
           </template>

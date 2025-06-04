@@ -44,6 +44,7 @@ import {
     Calculator24Regular,
     ShareScreenPerson20Filled,
     BuildingHome16Filled,
+    DocumentRibbon24Filled,
 } from "@vicons/fluent"
 import {AppPaths} from "@/utils/index.js";
 import Utils from "@/utils/Utils.js"
@@ -425,14 +426,21 @@ export const navigations = [
         label: 'Hospital',
         path: AppPaths.Hospital,
         icon: BuildingHome16Filled,
-        permission: appPermissions.admin,
+        permission: appPermissions.hospital,
         children: [
             {
                 label: 'expiredHealth.name',
                 path: Utils.routeHospitalPathMaker(AppPaths.ExpiredHealth),
                 icon: BriefcaseMedical20Filled,
                 color: 'bg-warning',
-                permission: appPermissions.users,
+                permission: appPermissions.hospitalExpired,
+            },
+            {
+                label: 'ticket.name',
+                path: Utils.routeHospitalPathMaker(AppPaths.Ticket),
+                icon: DocumentRibbon24Filled,
+                color: 'bg-success',
+                permission: appPermissions.hospitalTicket,
             },
         ]
     },
