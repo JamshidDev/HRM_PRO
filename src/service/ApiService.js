@@ -90,6 +90,9 @@ import {turnstileTerminalService, turnstileBuildingService, turnstileOrganizatio
 import accountantService from "./v1/accountant/accountantService.js"
 import monthReportService from "./v1/accountant/monthReportService.js"
 
+
+import expiredHealthService from "./v1/hospital/expiredHealthService.js"
+
 export default {
     authService,
     accountService,
@@ -182,4 +185,6 @@ export default {
 
     monthReportService,
     accountantService,
+
+    expiredHealthService,
 }

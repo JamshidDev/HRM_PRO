@@ -1,7 +1,7 @@
 <script setup>
 import validationRules from "@/utils/validationRules.js";
 const formRef = ref(null)
-import {useMedInspectionStore, useComponentStore} from "@/store/modules/index.js";
+import {useMedInspectionStore, useComponentStore} from "@/store/modules/index.js"
 import {UISelect} from "@/components/index.js"
 import UIHelper from "@/utils/UIHelper.js"
 import {useAppSetting} from "@/utils/index.js"
@@ -38,7 +38,7 @@ const onChangeWorker = (v)=>{
 
 
 onMounted(()=>{
-  store._polyclinics()
+  store._myPolyclinics()
 })
 
 
@@ -60,10 +60,10 @@ onMounted(()=>{
         <n-select
             v-model:value="store.payload.hospital_id"
             filterable
-            :options="store.hospitalList"
+            :options="store.polyclinicList"
             label-field="name"
             value-field="id"
-            :loading="store.hospitalLoading"
+            :loading="store.polyclinicLoading"
             :rule-path="validationRules.rulesNames.requiredNumberField"
         />
       </n-form-item>

@@ -14,6 +14,7 @@ import lmsRoute from "@/router/modules/lmsRoute.js"
 import accountantRoute from "@/router/modules/accountantRoute.js"
 import turnstileRoute from "@/router/modules/turnstileRoute.js"
 import otherRoutes from '@/router/modules/otherRoute.js'
+import hospitalRoute from '@/router/modules/hospitalRoute.js'
 import {navigations} from "@/layouts/data/navigations.js"
 
 
@@ -98,6 +99,12 @@ const routes = [
                 beforeEnter: beforeLogin,
                 redirect: AppPaths.Home,
                 children: [...accountantRoute]
+            },
+            {
+                path:AppPaths.Hospital,
+                beforeEnter: beforeLogin,
+                redirect: AppPaths.Home,
+                children: [...hospitalRoute]
             },
             {
                 path:AppPaths.Profile,

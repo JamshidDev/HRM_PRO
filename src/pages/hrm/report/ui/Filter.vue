@@ -14,19 +14,21 @@ onMounted(()=>{
 <div class="w-full grid grid-cols-12">
   <div class="col-span-3 ">
     <label class="text-textColor1 text-sm pl-2">{{$t('content.organization')}}</label>
+
     <UISelect
         :options="componentStore.structureList"
         :model-v="store.params.organization_id"
-        @defaultValue="(v)=>store.params.organization_id=v"
-        @update-model="store.onChangeOrg"
-        :loading="componentStore.structureLoading"
-        :checked-val="store.orgCheck"
-        @updateCheck="(v)=>store.orgCheck = v"
+        @updateModel="store.onChangeOrg"
+        :checkedVal="store.orgCheck"
+        @updateCheck="(v)=>store.orgCheck=v"
         v-model:search="componentStore.structureParams.search"
         @onSearch="componentStore._structures"
+        :loading="componentStore.structureLoading"
         :multiple="false"
         :auto-select="true"
     />
+
+
   </div>
   <div class="col-span-9">
 

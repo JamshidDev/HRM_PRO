@@ -121,6 +121,7 @@ const routePathMaker = (mainPath)=>(`${AppPaths.Admin}${mainPath}`)
 const routeHrmPathMaker = (mainPath)=>(`${AppPaths.Hrm}${mainPath}`)
 const routeLmsPathMaker = (mainPath)=>(`${AppPaths.Lms}${mainPath}`)
 const routeAccountantPathMaker = (mainPath)=>(`${AppPaths.Accountant}${mainPath}`)
+const routeHospitalPathMaker = (mainPath)=>(`${AppPaths.Hospital}${mainPath}`)
 const routeAttestationPathMaker = (mainPath)=>(`${AppPaths.Attestation}${mainPath}`)
 const routeTurnstilePathMaker = (mainPath)=>(`${AppPaths.Turnstile}${mainPath}`)
 const routeChatPathMaker = (mainPath)=>(`${AppPaths.Chat}${mainPath}`)
@@ -630,6 +631,7 @@ export default {
     routeDocFlowPathMaker,
     routeTurnstilePathMaker,
     routeAccountantPathMaker,
+    routeHospitalPathMaker,
     generateJwtToken,
     fileNameFromUrl,
     documentModels,

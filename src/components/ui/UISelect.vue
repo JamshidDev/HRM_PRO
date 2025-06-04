@@ -38,13 +38,14 @@ const onSelect = (v)=>{
 
 watch(()=>props.options, (v)=>{
   if(isSingleOption.value){
+    console.log(isExistDefaultVal.value)
     if(isExistDefaultVal.value){
       emits('defaultValue',props.options)
     }else{
       emits('updateModel',props.options)
     }
   }
-})
+}, {deep:true})
 
 
 const isSingleOption = computed(()=> props.options.length===1 && (props.options[0]?.children? props.options[0].children?.length ===0 : true))

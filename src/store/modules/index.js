@@ -99,7 +99,7 @@ export * from './lms/subjectStore.js'
 export * from './lms/eduPlanStore.js'
 export * from './lms/teacherStore.js'
 
-
-
 export * from './accountant/uploadReportStore.js'
 export * from './accountant/monthReportStore.js'
+
+export * from './hospital/expiredhealthStore.js'

@@ -26,6 +26,8 @@ export const useMedInspectionStore = defineStore('medInspectionStore', {
         },
         hospitalList:[],
         hospitalLoading:false,
+        polyclinicLoading:false,
+        polyclinicList:[],
     }),
     actions:{
         _index(){
@@ -48,6 +50,14 @@ export const useMedInspectionStore = defineStore('medInspectionStore', {
                 this.hospitalList = res.data.data
             }).finally(()=>{
                 this.hospitalLoading= false
+            })
+        },
+        _myPolyclinics(){
+            this.polyclinicLoading = true
+            $ApiService.polyclinicService._index({page:1, pr_page:1000}).then((res)=>{
+                this.polyclinicList = res.data.data
+            }).finally(()=>{
+                this.polyclinicLoading = false
             })
         },
 

@@ -84,8 +84,8 @@ const getDocument =async (document_id, model)=>{
     store.pdfUrl = v.document.url
     store.docxUrl = v.document?.doc_url
     store.permissions.canEdit =v.document.confirmation.id !== 3
-    // store.permissions.canSignature =v.signature.signature
-    store.permissions.canSignature =true
+    store.permissions.canSignature =v.signature.signature
+    // store.permissions.canSignature =true
     const worker = v.signature?.current_user?.worker
     store.signatureMan = {
       photo:worker?.photo,

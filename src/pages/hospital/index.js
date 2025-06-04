@@ -1,0 +1,1 @@
+export const ExpiredHealthPage = ()=>import('./expiredHealth/page.vue')

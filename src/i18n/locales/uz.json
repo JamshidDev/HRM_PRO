@@ -193,7 +193,8 @@
     "docflow": "Hujjatlar menyusi",
     "attestation": "Attestatsiya menyusi",
     "timesheet": "Tabel",
-    "accountant": "Hisobchi",
+    "accountant": "Hisobchi menyusi",
+    "hospital": "Tibbiy ko'rik menyusi",
     "lms": "LMS"
   },
   "loginPage": {
@@ -1633,6 +1634,14 @@
   },
   "polyclinic": {
     "name": "Poliklinikalar",
+    "createTitle": "Poliklinika qo'shish",
+    "updateTitle": "Tahrirlash",
+    "form": {
+      "choosePolyclinic": "Poliklinika tanlang"
+    }
+  },
+  "expiredHealth": {
+    "name": "Tibbiy ko'rik",
     "createTitle": "Poliklinika qo'shish",
     "updateTitle": "Tahrirlash",
     "form": {

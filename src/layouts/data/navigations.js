@@ -42,7 +42,8 @@ import {
     DocumentRibbon20Filled,
     CalendarLtr20Filled,
     Calculator24Regular,
-    ShareScreenPerson20Filled
+    ShareScreenPerson20Filled,
+    BuildingHome16Filled,
 } from "@vicons/fluent"
 import {AppPaths} from "@/utils/index.js";
 import Utils from "@/utils/Utils.js"
@@ -149,13 +150,6 @@ export const navigations = [
                 path: Utils.routeHrmPathMaker(AppPaths.Med),
                 icon: BriefcaseMedical20Filled,
                 color: 'bg-success',
-                permission: appPermissions.hrMed,
-            },
-            {
-                label: 'polyclinic.name',
-                path: Utils.routeHrmPathMaker(AppPaths.Polyclinic),
-                icon: BuildingMultiple24Filled,
-                color: 'bg-dark',
                 permission: appPermissions.hrMed,
             },
             {
@@ -422,6 +416,21 @@ export const navigations = [
                 label: 'monthReport.name',
                 path: Utils.routeAccountantPathMaker(AppPaths.MonthReport),
                 icon: Calculator24Regular,
+                color: 'bg-warning',
+                permission: appPermissions.users,
+            },
+        ]
+    },
+    {
+        label: 'Hospital',
+        path: AppPaths.Hospital,
+        icon: BuildingHome16Filled,
+        permission: appPermissions.admin,
+        children: [
+            {
+                label: 'expiredHealth.name',
+                path: Utils.routeHospitalPathMaker(AppPaths.ExpiredHealth),
+                icon: BriefcaseMedical20Filled,
                 color: 'bg-warning',
                 permission: appPermissions.users,
             },

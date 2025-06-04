@@ -8,9 +8,6 @@ import createForm from "./ui/createForm.vue"
 const store = useMedInspectionStore()
 const emits = defineEmits(['openOffice'])
 
-
-
-
 onMounted(()=>{
   store._index()
 })
