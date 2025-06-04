@@ -1650,12 +1650,14 @@
   },
   "ticket": {
     "name": "Yo'llanmalar",
-    "createTitle": "Yo'llanma berish",
+    "createTitle": "Biriktirish",
     "updateTitle": "Tahrirlash",
     "form": {
       "worker_positions": "Komissiya a'zolari",
       "tickets": "Tanlangan xodimlar",
       "no-data": "Xodim tanlanmagan!",
+      "ticket": "Komissiya",
+      "warning": "Biriktirilmagan xodim!",
       "requiredWorker": "Xodim tanlanishi shart!",
       "commission_leader_id": "Komissiya rahbari"
     }

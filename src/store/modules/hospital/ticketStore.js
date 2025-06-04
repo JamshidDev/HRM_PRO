@@ -26,6 +26,8 @@ export const useTicketStore = defineStore('ticketStore', {
         },
         enableCheck:true,
         selectedWorkers:[],
+        commissionList:[],
+        commissionLoading:false,
 
     }),
     actions:{
@@ -39,6 +41,15 @@ export const useTicketStore = defineStore('ticketStore', {
                 this.totalItems = res.data.data.total
             }).finally(()=>{
                 this.loading= false
+            })
+        },
+        _commission(id){
+            this.commissionList = []
+            this.commissionLoading = true
+            $ApiService.ticketService._commission({id}).then((res)=>{
+                this.commissionList = res.data.data
+            }).finally(()=>{
+                this.commissionLoading = false
             })
         },
         _checkWorker(id){
@@ -58,6 +69,7 @@ export const useTicketStore = defineStore('ticketStore', {
                 tickets:this.selectedWorkers.map((v)=>v.id),
             }
             $ApiService.ticketService._create({data}).then((res)=>{
+                this.selectedWorkers = []
                 this.visible = false
                 this._index()
 
@@ -81,9 +93,14 @@ export const useTicketStore = defineStore('ticketStore', {
                 this.saveLoading = false
             })
         },
-        _delete(){
+        _delete(v){
+            if(v.commission_leader_id === null){
+                $Toast.warning(t('ticket.form.warning'))
+                return
+            }
+
             this.deleteLoading = true
-            $ApiService.confirmationService._delete({id:this.elementId}).then((res)=>{
+            $ApiService.ticketService._delete({id:this.elementId}).then((res)=>{
                 this._index()
 
             }).finally(()=>{

@@ -1,4 +1,5 @@
 <script setup>
+import {CheckmarkCircle24Filled} from "@vicons/fluent"
 import {NoDataPicture,UIPagination, UIMenuButton, UIUser, UIStatus} from "@/components/index.js"
 import {useTicketStore} from "@/store/modules/index.js"
 import Utils from "@/utils/Utils.js"
@@ -22,7 +23,7 @@ const changePage = (v)=>{
 const onSelectEv = (v)=>{
   if(v.key === Utils.ActionTypes.delete){
     store.elementId = v.data.id
-    store._delete()
+    store._delete(v.data)
   }else if(v.key === Utils.ActionTypes.view){
     openDocument(v.data.id)
   }else if(v.key === Utils.ActionTypes.attachment){
@@ -50,6 +51,7 @@ const onSelectEv = (v)=>{
           <th class="text-center! min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
           <th v-if="store.enableCheck" class="text-center! min-w-[30px] w-[30px]"></th>
           <th class="min-w-[200px]">{{$t('content.name')}}</th>
+          <th class="min-w-[30px] w-[80px]">{{$t('ticket.form.ticket')}}</th>
           <th class="min-w-[200px]">{{$t('content.organization')}}</th>
           <th class="w-[60px]">{{$t('medInspection.form.status')}}</th>
           <th class="w-[60px]">{{$t('medInspection.form.start_date')}}</th>
@@ -61,8 +63,8 @@ const onSelectEv = (v)=>{
         <tbody>
         <tr v-for="(item, idx) in store.list" :key="idx">
           <td><span class="text-center block">{{ (store.params.page - 1) * store.params.per_page + idx + 1 }}</span></td>
-          <td v-if="store.enableCheck">
-            <div class="flex justify-center items-center">
+          <td>
+            <div v-if="item.commission_leader_id === null" class="flex justify-center items-center">
               <n-checkbox @click="store._selectEv(item)" :checked="store._checkWorker(item.id)"></n-checkbox>
             </div>
           </td>
@@ -77,6 +79,42 @@ const onSelectEv = (v)=>{
                     position:item?.position,
                 }"
             />
+          </td>
+          <td>
+            <div>
+
+              <n-popover v-if="item.commission_leader_id" trigger="click" width="400">
+                <n-spin :show="store.commissionLoading">
+                  <div class="w-full h-[260px] overflow-y-auto">
+                        <template v-for="item in store.commissionList" :key="item">
+                          <div class="mb-2 bg-surface/4 p-1 rounded-lg">
+                            <UIUser
+                                :short="false"
+                                :data="{
+                                     photo:item?.worker.photo,
+                                     lastName:item?.worker.last_name,
+                                     firstName:item?.worker.first_name,
+                                     middleName:item?.worker.middle_name,
+                                     position:item?.position,
+                                       }"
+                            />
+                          </div>
+                        </template>
+                  </div>
+                </n-spin>
+
+
+                <template #trigger>
+                  <div @click="store._commission(item.id)" class="flex justify-center">
+                    <n-icon size="22" class="text-success mx-auto">
+                      <CheckmarkCircle24Filled/>
+                    </n-icon>
+                  </div>
+                </template>
+              </n-popover>
+
+
+            </div>
           </td>
           <td>
             <span @click="openDocument(item.id)" class="hover:underline hover:text-primary cursor-pointer">{{item?.polyclinic?.name}}</span>
