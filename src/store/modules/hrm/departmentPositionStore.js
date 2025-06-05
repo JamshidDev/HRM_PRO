@@ -44,10 +44,7 @@ export const useDepartmentPositionStore = defineStore('departmentPositionStore',
             this.payload.organization_id = v
             store.departmentList = []
             this.payload.department_id = null
-            if(v.length>0){
-                store.depParams.organizations = [v?.[0]?.id]
-                store._departments()
-            }
+            store.depParams.organizations = v.length>0? [v?.[0]?.id] : []
 
         },
         _index(){

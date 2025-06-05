@@ -56,7 +56,6 @@ const onSubmit = ()=>{
               filterable
               :filter="()=>true"
               clearable
-
               :options="componentStore.departmentList"
               :render-label="UIHelper.selectRender.label"
               :render-tag="UIHelper.selectRender.value"
@@ -64,6 +63,7 @@ const onSubmit = ()=>{
               :loading="componentStore.departmentLoading"
               @search="componentStore._onSearchDepartment"
               @scroll="componentStore._onScrollDepartment"
+              @update:show="componentStore.onOpenDepartmentEv"
               :ignore-composition="false"
           />
         </n-form-item>

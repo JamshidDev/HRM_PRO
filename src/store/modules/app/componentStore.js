@@ -369,6 +369,12 @@ export const useComponentStore = defineStore('componentStore', {
             this.depParams.search = v
             Utils.debouncedFn(this._departments)
         },
+        onOpenDepartmentEv(v){
+            if(!v) return
+            this.depParams.search=null
+            this.depParams.page=1
+            this._departments()
+        },
         _onScrollDepartment(e){
             const currentTarget = e.currentTarget;
             if(currentTarget.scrollTop + currentTarget.offsetHeight >= currentTarget.scrollHeight && !this.departmentLoading && this.totalDepartment>this.departmentList.length){
