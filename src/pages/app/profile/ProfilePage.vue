@@ -6,7 +6,7 @@ import Tabs from "./ui/Tabs.vue"
 
 <template>
   <div class="px-3 py-3">
-    <Banner/>
+<!--    <Banner/>-->
     <Tabs/>
   </div>
 

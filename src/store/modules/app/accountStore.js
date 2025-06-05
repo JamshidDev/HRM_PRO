@@ -19,6 +19,12 @@ export const useAccountStore = defineStore('accountStore', {
             user:null,
             photo:null,
         },
+        orgPayload:{
+            command_address:null,
+            city_id:null,
+            address:null,
+        },
+        region_id:null,
         accountImage:null,
         organizationVisible:false,
         activeRole:null,
@@ -29,6 +35,9 @@ export const useAccountStore = defineStore('accountStore', {
         pn:Utils.appPermissions,
         isModeDev: false,
         skipReset:true,
+        districtList:[],
+        districtLoading:false,
+        orgLoading:false,
     }),
     getters:{
        checkPermission:(state)=>(permission)=>{
@@ -53,9 +62,35 @@ export const useAccountStore = defineStore('accountStore', {
            if(state.storageUpdate){
             return state.account?.telegram_account === 0 && !localStorage.getItem(useAppSetting.telegramPopup)
            }
-        }
+        },
     },
     actions:{
+        _getOrgInfo(){
+            this.orgLoading = true
+            $ApiService.accountService._orgInfo().then((res)=>{
+                this.orgPayload.command_address = res.data.data.command_name
+                this.orgPayload.address = res.data.data.address
+                this.orgPayload.city_id = res.data.data?.city?.id || null
+                console.log(this.orgPayload.city_id )
+                if(res.data.data.city){
+                    this.region_id = res.data.data.city?.region?.id || null
+                    this.getDistrict()
+                }
+            }).finally(()=>{
+                this.orgLoading = false
+            })
+        },
+        updateOrgInfo(){
+            this.orgLoading = true
+            const data = {
+                ...this.orgPayload
+            }
+            $ApiService.accountService._updateOrgInfo({data}).then((res)=>{
+                this._getOrgInfo()
+            }).finally(()=>{
+                this.orgLoading = false
+            })
+        },
         _index(callback){
             $ApiService.accountService._index({data:this.payload}).then((res)=>{
                 this.payload = {...res.data.data.worker, password:null}
@@ -65,6 +100,19 @@ export const useAccountStore = defineStore('accountStore', {
                 callback?.()
             }).finally(()=>{
                 this.loading = false
+            })
+        },
+        changeRegion(){
+            this.orgPayload.city_id = null
+            this.getDistrict()
+
+        },
+        getDistrict(){
+            this.districtLoading = true
+            $ApiService.districtService._index({params:{page:1,per_page:1000, region_id:this.region_id}}).then((res)=>{
+                this.districtList = res.data.data.data
+            }).finally(()=>{
+                this.districtLoading = false
             })
         },
         _update(){

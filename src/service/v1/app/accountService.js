@@ -16,6 +16,13 @@ const _roles =async (payload)=>{
 const _changeRole =async (payload)=>{
     return await axios.put(`/v1/user/change-organization`, payload?.data)
 }
+const _orgInfo =async (payload)=>{
+    return await axios.get(`/v1/user/organization-info`)
+}
+
+const _updateOrgInfo =async (payload)=>{
+    return await axios.put(`/v1/user/organization-info`, payload?.data)
+}
 
 
 
@@ -25,4 +32,6 @@ export default {
     _logOut,
     _roles,
     _changeRole,
+    _orgInfo,
+    _updateOrgInfo,
 }

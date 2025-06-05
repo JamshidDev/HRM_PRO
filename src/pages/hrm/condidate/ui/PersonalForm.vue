@@ -99,7 +99,6 @@ onMounted(()=>{
           v-model:value="store.payload.region_id"
           @update:value="store.changeRegion"
           filterable
-
           :options="componentStore.regionList"
           label-field="name"
           value-field="id"
@@ -115,7 +114,6 @@ onMounted(()=>{
           :disabled="!store.payload.region_id"
           v-model:value="store.payload.city_id"
           filterable
-
           :options="store.districtList"
           label-field="name"
           value-field="id"

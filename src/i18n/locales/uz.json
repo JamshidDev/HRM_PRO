@@ -315,6 +315,13 @@
       "secure": "Xavsizlik",
       "actionHistory": "Amallar tarixi"
     },
+    "org": {
+      "title": "Buyruq blankasi uchun ma'lumotlar",
+      "command_name": "Shahar/Tuman (Buyruq blankasidagi)",
+      "address": "Tashkilot to'liq manzili",
+      "city_id": "Tuman",
+      "region_id": "Viloyat"
+    },
     "form": {
       "lastName": "Familiya",
       "fistName": "Ism",
