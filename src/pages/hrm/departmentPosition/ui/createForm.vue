@@ -23,6 +23,18 @@ const onSubmit = ()=>{
   })
 }
 
+const onPanelEv = (v)=>{
+  if(!v) return
+  if(store.visibleType && !store.payload.department_id){
+    componentStore.onOpenDepartmentEv(v)
+  }
+  if(!store.visibleType && componentStore.departmentList.length === 1){
+    store.payload.department_id = null
+    componentStore.onOpenDepartmentEv(v)
+  }
+
+}
+
 
 </script>
 
@@ -63,7 +75,7 @@ const onSubmit = ()=>{
               :loading="componentStore.departmentLoading"
               @search="componentStore._onSearchDepartment"
               @scroll="componentStore._onScrollDepartment"
-              @update:show="componentStore.onOpenDepartmentEv"
+              @update:show="onPanelEv"
               :ignore-composition="false"
           />
         </n-form-item>

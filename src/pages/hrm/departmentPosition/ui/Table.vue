@@ -11,14 +11,13 @@ const accStore = useAccountStore()
 const onEdit = (v)=>{
 
   componentStore.depParams.organizations = [v.organization?.id]
-
+  store.payload.organization_id = [v.organization]
   if(componentStore.educationList.length === 0){
     componentStore._enums()
   }
-  componentStore._structures(()=>{
-    store.payload.organization_id = [v.organization]
-  })
-  componentStore._departments()
+  componentStore._structures()
+  componentStore.departmentList = [v.department]
+  // componentStore._departments()
   componentStore._positions()
   store.visibleType = false
   store.elementId = v.id
