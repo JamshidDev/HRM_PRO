@@ -309,6 +309,10 @@
     }
   },
   "profilePage": {
+    "account": {
+      "title": "Hisob ma'lumotlari",
+        "warningText": "Akkount ma'lumotlaringizni tez-tez yangilab turish tavsiya qilinadi. Bu orqali siz akkauntingiz boshqalar qo'liga tushishini oldini olasiz."
+    },
     "tabs": {
       "profileInfo": "Hisob ma'lumotlar",
       "notification": "Bildirishnomalar",

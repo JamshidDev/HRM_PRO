@@ -17,42 +17,35 @@ const onSubmit = ()=>{
 <template>
   <n-form
       ref="formRef"
-      :rules="validationRules.profilePage"
+      :rules="validationRules.common"
       :model="store.payload"
   >
-    <div class="grid xl:grid-cols-3 lg:grid-cols-3 grid-cols-1 gap-x-4">
-      <n-form-item :label="$t(`profilePage.form.lastName`)" path="last_name">
+    <div class="grid grid-cols-12 gap-x-4">
+      <div class="col-span-12 mb-10">
+        <p class="text-sm text-textColor3">{{$t('profilePage.account.title')}}</p>
+        <p class="text-lg text-primary">{{store.account?.worker?.last_name + ' ' + store.account?.worker.first_name + ' '+store.account?.worker.middle_name}}</p>
+        <n-alert type="warning" :title="$t('content.warning')" class="mt-4">
+          {{$t('profilePage.account.warningText')}}
+        </n-alert>
+      </div>
+      <n-form-item
+          class="col-span-6"
+          :label="$t(`profilePage.form.password`)"
+          path="password"
+          :rule-path="validationRules.rulesNames.requiredStringField"
+      >
         <n-input
             type="text"
-
-            v-model:value="store.payload.last_name"
-        />
-      </n-form-item>
-      <n-form-item :label="$t(`profilePage.form.fistName`)" path="first_name">
-        <n-input
-            type="text"
-
-            v-model:value="store.payload.first_name"
-        />
-      </n-form-item>
-      <n-form-item :label="$t(`profilePage.form.middleName`)" path="middle_name">
-        <n-input
-            type="text"
-
-            v-model:value="store.payload.middle_name"
-        />
-      </n-form-item>
-      <n-form-item :label="$t(`profilePage.form.password`)" path="password">
-        <n-input
-            type="text"
-
             v-model:value="store.payload.password"
+            :rule-path="validationRules.rulesNames.requiredStringField"
         />
       </n-form-item>
-      <n-form-item :label="$t(`profilePage.form.confirmPassword`)">
+      <n-form-item
+          class="col-span-6"
+          :label="$t(`profilePage.form.confirmPassword`)"
+      >
         <n-input
             type="text"
-
             v-model:value="store.payload.password"
         />
       </n-form-item>

@@ -13,11 +13,6 @@ export const useAccountStore = defineStore('accountStore', {
         tabs:[1,2,3,4],
         payload:{
             password:null,
-            first_name:null,
-            last_name:null,
-            middle_name:null,
-            user:null,
-            photo:null,
         },
         orgPayload:{
             command_address:null,
@@ -40,7 +35,7 @@ export const useAccountStore = defineStore('accountStore', {
         orgLoading:false,
     }),
     getters:{
-       checkPermission:(state)=>(permission)=>{
+        checkPermission:(state)=>(permission)=>{
            const storePermissions = sessionStorage.getItem(useAppSetting.appPermission) ? JSON.parse(sessionStorage.getItem(useAppSetting.appPermission)) : []
            const permissions = state.permissions.length>0 ? state.permissions : storePermissions
            return permissions.includes(permission)
@@ -71,7 +66,6 @@ export const useAccountStore = defineStore('accountStore', {
                 this.orgPayload.command_address = res.data.data.command_name
                 this.orgPayload.address = res.data.data.address
                 this.orgPayload.city_id = res.data.data?.city?.id || null
-                console.log(this.orgPayload.city_id )
                 if(res.data.data.city){
                     this.region_id = res.data.data.city?.region?.id || null
                     this.getDistrict()
