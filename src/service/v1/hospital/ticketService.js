@@ -16,6 +16,10 @@ const _commission =async (payload)=>{
     return await axios.get(`/v1/med/hospital/tickets/${payload.id}/commissions`, {params:payload?.params})
 }
 
+const _confirm = async (payload)=>{
+    return await axios.post(`/v1/med/hospital/tickets/${payload.id}/confirm`, payload.data)
+}
+
 
 
 
@@ -26,4 +30,5 @@ export default {
     _create,
     _delete,
     _commission,
+    _confirm,
 }

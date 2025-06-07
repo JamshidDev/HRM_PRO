@@ -1,8 +1,9 @@
 <script setup>
-import {UIDrawer, UIOfficeApp, UIPageContent} from "@/components/index.js"
+import {UIDrawer, UIOfficeApp, UIPageContent, UIModal} from "@/components/index.js"
 import {useTicketStore} from "@/store/modules/index.js"
 import Filter from "./ui/Filter.vue"
 import Table from "./ui/Table.vue"
+import confirmForm from "./ui/confirmForm.vue"
 import createForm from "./ui/createForm.vue"
 import Utils from "@/utils/Utils.js"
 
@@ -35,7 +36,15 @@ onMounted(()=>{
       <createForm/>
     </template>
   </UIDrawer>
+  <UIModal
+  :visible="store.confirmVisible"
+  :width="600"
+  :title="$t('ticket.confirmTitle')"
+  >
+<confirmForm/>
+  </UIModal>
 </UIPageContent>
+
 </template>
 
 <style scoped>

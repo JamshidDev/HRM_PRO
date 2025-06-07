@@ -38,7 +38,6 @@ const onChangeMap = (coords)=>{
         <n-select
             v-model:value="store.payload.region_id"
             filterable
-
             :options="store.allRegionList"
             label-field="name"
             value-field="id"

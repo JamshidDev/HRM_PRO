@@ -35,6 +35,12 @@ const onSelectEv = (v)=>{
   }
 }
 
+const onConfirm = (v)=>{
+  store.resetConfirmForm()
+  store.confirmVisible = true
+  store.elementId = v.data.id
+}
+
 
 </script>
 

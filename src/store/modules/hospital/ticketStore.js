@@ -18,6 +18,12 @@ export const useTicketStore = defineStore('ticketStore', {
             worker_positions:[],
             commission_leader_id:null,
         },
+        confirmPayload:{
+            med_status:null,
+            med_date:null,
+            to:null,
+            comment:null,
+        },
         params:{
             page:1,
             per_page:10,
@@ -29,8 +35,24 @@ export const useTicketStore = defineStore('ticketStore', {
         commissionList:[],
         commissionLoading:false,
 
+        confirmVisible:false,
+        confirmLoading:false,
+
     }),
     actions:{
+        _confirm(){
+            const data = {
+                ...this.confirmPayload,
+                med_date:Utils.timeToZone(this.confirmPayload.med_date),
+                to:Utils.timeToZone(this.confirmPayload.to),
+            }
+            this.confirmLoading= true
+            $ApiService.ticketService._confirm({data, id:this.elementId}).then((res)=>{
+               this._index()
+            }).finally(()=>{
+                this.confirmLoading= false
+            })
+        },
         _index(){
             this.loading= true
             const params = {
@@ -115,6 +137,13 @@ export const useTicketStore = defineStore('ticketStore', {
             this.payload.tickets = []
             this.payload.worker_positions = []
             this.payload.commission_leader_id = null
+        },
+        resetConfirmForm(){
+            this.elementId = null
+            this.confirmPayload.med_status = null
+            this.confirmPayload.med_date = new Date().getTime()
+            this.confirmPayload.to = null
+            this.confirmPayload.comment = null
         }
 
     }

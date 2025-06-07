@@ -1660,6 +1660,7 @@
     "name": "Yo'llanmalar",
     "createTitle": "Biriktirish",
     "updateTitle": "Tahrirlash",
+    "confirmTitle": "Tasdiqlash",
     "form": {
       "worker_positions": "Komissiya a'zolari",
       "tickets": "Tanlangan xodimlar",
@@ -1668,6 +1669,11 @@
       "warning": "Biriktirilmagan xodim!",
       "requiredWorker": "Xodim tanlanishi shart!",
       "commission_leader_id": "Komissiya rahbari"
+    },
+    "confirm": {
+      "med_date": "O'tkazilgan tekshiruv sanasi",
+      "to": "Keyingi tekshiruv sanansi",
+      "comment": "Izoh"
     }
   }
 }

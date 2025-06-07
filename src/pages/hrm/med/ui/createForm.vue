@@ -141,7 +141,6 @@ onMounted(()=>{
         <n-form-item :label="$t(`medPage.form.status`)" path="status">
           <n-select
               v-model:value="store.payload.status"
-
               :options="componentStore.medStatus"
               :loading="componentStore.enumExamLoading"
               label-field="name"
