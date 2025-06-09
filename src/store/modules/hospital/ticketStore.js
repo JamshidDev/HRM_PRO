@@ -50,6 +50,7 @@ export const useTicketStore = defineStore('ticketStore', {
             $ApiService.ticketService._confirm({data, id:this.elementId}).then((res)=>{
                this._index()
             }).finally(()=>{
+                this.confirmVisible = false
                 this.confirmLoading= false
             })
         },
@@ -72,6 +73,7 @@ export const useTicketStore = defineStore('ticketStore', {
                 this.commissionList = res.data.data
             }).finally(()=>{
                 this.commissionLoading = false
+                this.confirmVisible = false
             })
         },
         _checkWorker(id){

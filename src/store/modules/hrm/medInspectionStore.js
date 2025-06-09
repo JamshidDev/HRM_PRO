@@ -47,7 +47,7 @@ export const useMedInspectionStore = defineStore('medInspectionStore', {
         _polyclinics(){
             this.hospitalLoading= true
             $ApiService.medInspectionService._polyclinics({params:{page:1,per_page:1000}}).then((res)=>{
-                this.hospitalList = res.data.data.data
+                this.hospitalList = res.data.data
             }).finally(()=>{
                 this.hospitalLoading= false
             })

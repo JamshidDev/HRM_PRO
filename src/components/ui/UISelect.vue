@@ -38,7 +38,6 @@ const onSelect = (v)=>{
 
 watch(()=>props.options, (v)=>{
   if(isSingleOption.value){
-    console.log(isExistDefaultVal.value)
     if(isExistDefaultVal.value){
       emits('defaultValue',props.options)
     }else{

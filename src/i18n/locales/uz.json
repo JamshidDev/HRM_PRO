@@ -311,7 +311,7 @@
   "profilePage": {
     "account": {
       "title": "Hisob ma'lumotlari",
-        "warningText": "Akkount ma'lumotlaringizni tez-tez yangilab turish tavsiya qilinadi. Bu orqali siz akkauntingiz boshqalar qo'liga tushishini oldini olasiz."
+        "warningText": "Hisobingiz xavfsizligini ta'minlash maqsadida akkaunt ma'lumotlaringizni muntazam ravishda yangilab turishingiz tavsiya etiladi. Bu choralar hisobingizni ruxsatsiz kirishlardan himoya qilishga yordam beradi."
     },
     "tabs": {
       "profileInfo": "Hisob ma'lumotlar",
@@ -1183,8 +1183,8 @@
     },
     "age": {
       "title": "Xodimlarning yoshi bo'yicha",
-      "age31": "31 yoshgacha",
-      "age32_45": "32 dan 45 yoshgacha",
+      "age31": "30 yoshgacha",
+      "age32_45": "31 dan 45 yoshgacha",
       "age46": "46 yoshdan kattalar"
     },
     "edu": {
@@ -1375,7 +1375,9 @@
       "time": "Vaqt",
       "at_work": "Ishda",
       "outside": "Ishda emas",
-      "calendarTitle": "Ish vaqti grafigi"
+      "calendarTitle": "Ish vaqti grafigi",
+      "latecomers": "Kechikkan xodimlar",
+      "lateTitle": "Kechikkan xodimlar ro'yhati"
     }
   },
   "medPage": {
@@ -1677,7 +1679,8 @@
     "confirm": {
       "med_date": "O'tkazilgan tekshiruv sanasi",
       "to": "Keyingi tekshiruv sanansi",
-      "comment": "Izoh"
+      "comment": "Izoh",
+      "removeCommission": "Haqiqattan ham komissiya a'zolarini tozalamoqchimisiz?"
     }
   }
 }

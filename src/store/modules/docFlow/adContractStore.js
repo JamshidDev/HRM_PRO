@@ -53,8 +53,23 @@ export const useAdContractStore = defineStore('adContractStore', {
             created:null,
             confirmation:null,
         },
+        structureList:[],
+        structureLoading:false,
+        structureParams:{
+            page:1,
+            per_page:1000,
+            search:null,
+        },
     }),
     actions:{
+        _getStructures(){
+            this.structureLoading = true
+            $ApiService.componentService._structure({params:this.structureParams}).then((res)=>{
+                this.structureList = res.data.data
+            }).finally(()=>{
+                this.structureLoading = false
+            })
+        },
         _index(){
             this.loading= true
             const params = {

@@ -1,6 +1,6 @@
 <script setup>
 import {Edit32Regular, Delete20Regular, OpenFolder24Filled, Eye16Regular,
-  ArrowCircleDown48Regular, MoreHorizontal48Filled, DismissCircle32Regular } from "@vicons/fluent"
+  ArrowCircleDown48Regular, MoreHorizontal48Filled, DismissCircle32Regular, CheckmarkCircle32Regular } from "@vicons/fluent"
 const {t} = i18n.global
 import {UIDConfirm} from "@/components/index.js"
 import i18n from "@/i18n/index.js"
@@ -36,6 +36,10 @@ const props = defineProps({
     type: Boolean,
     default:false,
   },
+  showConfirm:{
+    type: Boolean,
+    default:false,
+  },
   showClose:{
     type: Boolean,
     default:false,
@@ -45,6 +49,10 @@ const props = defineProps({
     default:null,
   },
   deleteWarning:{
+    type: String,
+    default:null,
+  },
+  deleteOptionText:{
     type: String,
     default:null,
   },
@@ -96,13 +104,19 @@ const options = computed(()=>{
       visible:props.showDownload,
     },
     {
+      label: t('content.confirm'),
+      key: Utils.ActionTypes.confirm,
+      icon: UIHelper.renderIcon(CheckmarkCircle32Regular),
+      visible:props.showConfirm,
+    },
+    {
       label: t('content.close'),
       key: Utils.ActionTypes.close,
       icon: UIHelper.renderIcon(DismissCircle32Regular),
       visible:props.showClose,
     },
     {
-      label: t('content.delete'),
+      label: props.deleteOptionText || t('content.delete'),
       key: Utils.ActionTypes.delete,
       icon: UIHelper.renderIcon(Delete20Regular),
       visible:props.showDelete,

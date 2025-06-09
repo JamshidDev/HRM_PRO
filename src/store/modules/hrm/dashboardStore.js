@@ -136,11 +136,11 @@ export const useDashboardStore = defineStore('dashboardStore', {
                 this.dashboard.ageCard = [
                     {
                         title: 'dashboardPage.age.age31',
-                        count: v.age_31_and_younger,
+                        count: v.age_30_and_younger,
                     },
                     {
                         title: 'dashboardPage.age.age32_45',
-                        count: v.age_32_to_45,
+                        count: v.age_31_to_45,
                     },
                     {
                         title: 'dashboardPage.age.age46',

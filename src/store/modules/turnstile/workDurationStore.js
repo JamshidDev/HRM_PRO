@@ -38,8 +38,31 @@ export const useTurnstileWorkDurationStore = defineStore('turnstileWorkDurationS
             end: null
         },
         tooltipVisible: false,
+        lateVisible:false,
+        lateLoading:false,
+        lateList:[],
+        lateParams:{
+            page: 1,
+            per_page: 10,
+            search: null,
+            from:null,
+            to:null,
+            first_time:null,
+        },
     }),
     actions: {
+        _lateComers(){
+            const params = {
+                ...this.lateParams,
+            }
+            this.lateLoading = true
+            $ApiService.turnstileWorkDurationService._latecomers({params}).then((res) => {
+                this.list = res.data.data.data
+                this.totalItems = res.data.data.total
+            }).finally(() => {
+                this.lateLoading = false
+            })
+        },
         _index() {
             this.loading = true
             const params = {

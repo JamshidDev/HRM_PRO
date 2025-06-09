@@ -133,7 +133,7 @@ watchEffect(()=>{
   }
 
   if(store.payload.type === 8){
-    componentStore._structures()
+    store._getStructures()
   }
 })
 
@@ -141,6 +141,7 @@ const onOpenEv = (v)=>{
   if(!v) return
   store.payload.worker_position_id = null
   componentStore.onOpenWorkerEv(v)
+
 }
 
 
@@ -232,6 +233,7 @@ const showForm = computed(()=>store.payload.type===null? true : [1,8].includes(s
             <div class="col-span-12 md:col-span-6 lg:col-span-2">
               <n-form-item :label="$t(`documentPage.form.contractNumber`)" path="number">
                 <n-input
+                    :allow-input="Utils.onlyAllowNumber"
                     class="w-full"
                     type="text"
                     v-model:value="store.payload.number"
@@ -273,14 +275,14 @@ const showForm = computed(()=>store.payload.type===null? true : [1,8].includes(s
                 <div class="col-span-12">
                   <n-form-item :label="$t(`documentPage.form.organization`)" path="organization_id">
                     <UISelect
-                        :options="componentStore.structureList"
+                        :options="store.structureList"
                         :modelV="store.payload.organization_id"
                         @updateModel="onChangeStructure"
                         :checkedVal="store.structureCheck"
                         @updateCheck="(v)=>store.structureCheck=v"
-                        v-model:search="componentStore.structureParams.search"
-                        @onSearch="componentStore._structures"
-                        :loading="componentStore.structureLoading"
+                        v-model:search="store.structureParams.search"
+                        @onSearch="store._getStructures"
+                        :loading="store.structureLoading"
                         :multiple="false"
                     />
 

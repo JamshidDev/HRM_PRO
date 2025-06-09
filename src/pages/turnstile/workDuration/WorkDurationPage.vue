@@ -1,9 +1,11 @@
 <script setup>
-import {UIDrawer, UIModal, UIPageContent, UIPageFilter, UISelect} from "@/components/index.js"
+import {UIDrawer, UIModal, UIPageContent, UIPageFilter} from "@/components/index.js"
 import {useTurnstileWorkDurationStore, useAccountStore} from "@/store/modules/index.js";
+import {ClockToolbox20Regular} from "@vicons/fluent"
 import Table from "./ui/Table.vue"
 import {useAppSetting} from "@/utils/index.js"
 import WorkerCalendar from "./ui/WorkerCalendar.vue"
+import LateComersList from "./ui/LateComersList.vue"
 // import createForm from "./ui/createForm.vue"
 
 const store = useTurnstileWorkDurationStore()
@@ -42,6 +44,14 @@ onMounted(()=>{
         :search-loading="store.loading"
         :show-add-button="false"
     >
+      <template #filterAction>
+        <n-button type="error" secondary @click="store.lateVisible=true">
+          {{$t('turnstile.workDurationPage.latecomers')}}
+          <template #icon>
+            <ClockToolbox20Regular/>
+          </template>
+        </n-button>
+      </template>
       <template #filterContent>
         <label class="mt-3 text-xs text-gray-500">{{ $t('content.from') }}</label>
         <n-date-picker
@@ -73,6 +83,12 @@ onMounted(()=>{
       :width="1000"
       :title="$t('turnstile.workDurationPage.calendarTitle')">
       <WorkerCalendar />
+    </UIModal>
+    <UIModal
+        :visible="store.lateVisible"
+        :width="1200"
+        :title="$t('turnstile.workDurationPage.lateTitle')">
+      <LateComersList/>
     </UIModal>
 
   </UIPageContent>

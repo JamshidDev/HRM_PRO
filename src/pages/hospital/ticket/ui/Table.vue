@@ -31,14 +31,15 @@ const onSelectEv = (v)=>{
     store.resetForm()
     store.visibleType = true
     store.visible = true
-
+  }else if(v.key === Utils.ActionTypes.confirm){
+    onConfirm(v.data)
   }
 }
 
 const onConfirm = (v)=>{
   store.resetConfirmForm()
   store.confirmVisible = true
-  store.elementId = v.data.id
+  store.elementId = v.id
 }
 
 
@@ -141,6 +142,9 @@ const onConfirm = (v)=>{
                 :data="item"
                 :show-view="true"
                 :show-attachment="true"
+                :show-confirm="Boolean(item.commission_leader_id)"
+                :delete-option-text="$t('content.clear')"
+                :delete-warning="$t('ticket.confirm.removeCommission')"
                 @selectEv="onSelectEv"
             />
           </td>
