@@ -32,22 +32,17 @@ instance.interceptors.response.use(
         return Promise.resolve(response)
     },
     error => {
-        if(error.response?.data?.error){
-            $Toast.error(error.response?.data?.message)
-        }
+        // if(error.response?.data?.error){
+        //     $Toast.error(error.response?.data?.message)
+        // }
         if(error.response?.status===401){
             if(!(error.response.request.responseURL.includes(AppPaths.Profile))){
                 $Toast.error(error.response.data.message)
             }
             localStorage.clear()
             router.push(AppPaths.Login)
-        }else if(error.response?.status===422){
-            if(Array.isArray(error.response.data.detail)){
-                error.response.data.detail.forEach((item, index) => {
-                    $Toast.error(item?.msg || "No message")
-                })
-            }
-
+        }else {
+            $Toast.error(error.response?.data?.message)
         }
 
         return Promise.reject(error)

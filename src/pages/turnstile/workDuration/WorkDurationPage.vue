@@ -85,8 +85,8 @@ onMounted(()=>{
       <WorkerCalendar />
     </UIModal>
     <UIModal
-        :visible="store.lateVisible"
-        :width="1200"
+        v-model:visible="store.lateVisible"
+        :width="1400"
         :title="$t('turnstile.workDurationPage.lateTitle')">
       <LateComersList/>
     </UIModal>

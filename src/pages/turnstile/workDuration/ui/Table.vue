@@ -63,7 +63,7 @@ const statuses = {
               />
             </div>
           </td>
-          <td>{{item.building.name}}</td>
+          <td>{{item.building?.name}}</td>
           <td class="!text-center">
             <n-button type="info" :ghost="!Math.round(item.total_minutes/60)" circle size="tiny">
               <span class="text-[14px] font-bold">{{Math.round(item.total_minutes/60)}}</span>

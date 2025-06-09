@@ -54,7 +54,7 @@ const dateMaskPlugin = {
                             return formatted;
                         };
 
-                        const inputs = this.$el.querySelectorAll('.n-date-picker .n-input__input-el');
+                        const inputs = this.$el.querySelectorAll('.n-date-picker:not(.disable-mask) .n-input__input-el');
                         inputs.forEach((el) => {
                             let previousValue = '';
 

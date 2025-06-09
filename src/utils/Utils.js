@@ -618,7 +618,27 @@ const disablePasteDate = (v, date) =>{
     return v<date
 }
 
+const startWorkTime = [
+    {
+        name:'09:30',
+        id:'09:30',
+    },
+    {
+        name:'09:00',
+        id:'09:00',
+    },
+    {
+        name:'08:30',
+        id:'08:30',
+    },
+    {
+        name:'08:00',
+        id:'08:00',
+    },
+]
+
 export default {
+    startWorkTime,
     disablePasteDate,
     fileToBase64,
     onlyAllowNumber,

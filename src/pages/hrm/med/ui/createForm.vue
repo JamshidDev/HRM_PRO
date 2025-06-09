@@ -177,7 +177,6 @@ onMounted(()=>{
               class="w-full"
               v-model:value="store.payload.to"
               type="date"
-
               :format="useAppSetting.datePicketFormat"
               :is-date-disabled="(v)=>Utils.disablePasteDate(v,store.payload.from)"
           />

@@ -145,7 +145,6 @@ onMounted(()=>{
           :disabled="!store.payload.current_region_id"
           v-model:value="store.payload.current_city_id"
           filterable
-
           :options="store.currentDistrictList"
           label-field="name"
           value-field="id"
@@ -161,7 +160,6 @@ onMounted(()=>{
           class="w-full"
           v-model:value="store.payload.birthday"
           type="date"
-
           :format="useAppSetting.datePicketFormat"
       />
     </n-form-item>
