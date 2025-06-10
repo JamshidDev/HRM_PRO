@@ -2,6 +2,8 @@ import {defineStore} from "pinia";
 import i18n from "@/i18n/index.js"
 import Utils from "@/utils/Utils.js"
 import dayjs from "dayjs"
+import router from "@/router/index.js"
+import {AppPaths} from "@/utils/index.js"
 
 const {t} = i18n.global
 export const useTurnstileWorkDurationStore = defineStore('turnstileWorkDurationStore', {
@@ -49,8 +51,25 @@ export const useTurnstileWorkDurationStore = defineStore('turnstileWorkDurationS
             to:null,
             first_time:null,
         },
+        downloadLoading:false,
     }),
     actions: {
+        _download(){
+            this.downloadLoading = true
+            const params = {
+                ...this.lateParams,
+                from:Utils.timeToZone(this.lateParams.from),
+                to:Utils.timeToZone(this.lateParams.to),
+            }
+            $ApiService.turnstileWorkDurationService._download({params}).then((res) => {
+            }).finally(() => {
+                this.downloadLoading = false
+                this.lateVisible = false
+                setTimeout(()=>{
+                    router.push(Utils.routeHrmPathMaker(AppPaths.Export))
+                },300)
+            })
+        },
         _lateComers(){
             const params = {
                 ...this.lateParams,

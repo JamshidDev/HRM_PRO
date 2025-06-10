@@ -93,7 +93,6 @@ const onShow = () => {
               :options="store.levelList"
               label-field="name"
               value-field="id"
-
               clearable
               @update:value="filterEvent"
               :loading="store.levelLoading"

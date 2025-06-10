@@ -22,6 +22,8 @@ export const useUserStore = defineStore('user', {
             page:1,
             per_page:10,
             search:null,
+            organizations:[],
+            role:null,
         },
         roleList:[],
         roleLoading:false,
@@ -33,7 +35,11 @@ export const useUserStore = defineStore('user', {
     actions:{
         _index(){
             this.loading= true
-            $ApiService.userService._index({params:this.params}).then((res)=>{
+            const params = {
+                ...this.params,
+                organizations:this.params.organizations.map(v=>v.id).toString() || undefined,
+            }
+            $ApiService.userService._index({params}).then((res)=>{
                 this.list = res.data.data.data
                 this.totalItems = res.data.data.total
             }).finally(()=>{

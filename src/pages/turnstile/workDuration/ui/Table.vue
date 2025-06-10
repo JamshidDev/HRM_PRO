@@ -2,6 +2,7 @@
 import {NoDataPicture, UIPagination, UIUser, UIBadge, UIMenuButton} from "@/components/index.js"
 import {useTurnstileWorkDurationStore, useComponentStore} from "@/store/modules/index.js"
 import Utils from "@/utils/Utils.js"
+import {ArrowCircleDownRight20Regular, ArrowCircleUpLeft20Regular} from "@vicons/fluent"
 
 const store = useTurnstileWorkDurationStore()
 const compStore = useComponentStore()
@@ -73,8 +74,14 @@ const statuses = {
             <UIBadge :show-icon="false" :label="Utils.timeWithMonth(item?.event_time)" />
           </td>
           <td class="!text-center">
-            <n-button :type="item.event_type ? 'primary' : 'error'" dashed size="tiny">
-              <span class="text-[14px]">{{$t(item.event_type ? 'turnstile.workDurationPage.enter' : 'turnstile.workDurationPage.exit')}}</span>
+            <n-button :type="item.event_type ? 'primary' : 'error'" secondary size="tiny">
+              <span>{{$t(item.event_type ? 'turnstile.workDurationPage.enter' : 'turnstile.workDurationPage.exit')}}</span>
+              <template #icon>
+                <n-icon size="17">
+                  <ArrowCircleDownRight20Regular v-if="item.event_type"/>
+                  <ArrowCircleUpLeft20Regular v-else />
+                </n-icon>
+              </template>
             </n-button>
           </td>
           <td class="!text-center">

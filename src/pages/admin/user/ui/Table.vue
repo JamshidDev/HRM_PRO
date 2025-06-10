@@ -1,7 +1,7 @@
 <script setup>
-import {NoDataPicture, UIActionButton, UIPagination, UIUser, UIMenuButton} from "@/components/index.js"
+import {NoDataPicture, UIActionButton, UIPagination, UIUser, UIMenuButton, UIBadge} from "@/components/index.js"
 import {useUserStore, useAccountStore} from "@/store/modules/index.js"
-import {ShieldLock20Regular} from "@vicons/fluent"
+import {RibbonStar24Filled, ShieldLock20Regular} from "@vicons/fluent"
 import Utils from "@/utils/Utils.js"
 import {AppPaths, useAppSetting} from "@/utils/index.js"
 import router from "@/router/index.js"
@@ -39,7 +39,7 @@ const onSuccessEv = (token)=>{
   <n-spin :show="store.loading" style="min-height: 200px">
     <div class="w-full overflow-x-auto"  v-if="store.list.length>0">
       <n-table
-          class="mt-10"
+          class="mt-4"
           :single-line="false"
           size="small"
       >
@@ -49,6 +49,7 @@ const onSuccessEv = (token)=>{
           <th class="min-w-[200px]">{{$t('content.worker')}}</th>
           <th class="min-w-[60px] w-[100px]"></th>
           <th class="min-w-[200px] w-[300px]">{{$t('content.workplace')}}</th>
+          <th class="min-w-[120px] w-[120px]">{{$t('userPage.form.role')}}</th>
           <th class="min-w-[120px] w-[120px]">{{$t('content.phone')}}</th>
           <th class="min-w-[40px] w-[40px]"></th>
         </tr>
@@ -59,6 +60,7 @@ const onSuccessEv = (token)=>{
           <td>
             <div>
               <UIUser
+                  :short="false"
                   :data="{
                     photo:item?.worker.photo,
                     firstName:item?.worker.first_name,
@@ -71,8 +73,10 @@ const onSuccessEv = (token)=>{
           </td>
           <td>
             <n-button
+                secondary
+                type="error"
                 @click="store._loginById(item.uuid, onSuccessEv)"
-                :size="'small'"
+                :size="'tiny'"
                 :loading="store.loginLoading"
             >{{$t('content.loginById')}}
               <template #icon>
@@ -81,6 +85,20 @@ const onSuccessEv = (token)=>{
             </n-button>
           </td>
           <td>{{item?.organization.name}}</td>
+          <td>
+            <div class="flex flex-wrap gap-1">
+              <template v-for="item in item?.roles" :key="item.id">
+                <UIBadge :label="item.name" :type="Utils.colorTypes.dark" >
+                  <template #icon>
+                    <n-icon size="20">
+                      <RibbonStar24Filled/>
+                    </n-icon>
+                  </template>
+                </UIBadge>
+              </template>
+
+            </div>
+          </td>
           <td>{{item?.phone}}</td>
           <td>
             <UIMenuButton

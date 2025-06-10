@@ -40,7 +40,7 @@ const resetFilter = ()=>{
 
 <template>
   <UIPageFilter
-      v-model:search="store.params.search"
+      v-model:search="store.userRoleParams.search"
       @onSearch="onSearch"
       @show="beforeShow"
       @onClear="resetFilter"

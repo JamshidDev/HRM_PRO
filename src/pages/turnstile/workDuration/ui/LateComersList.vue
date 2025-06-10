@@ -1,4 +1,5 @@
 <script setup>
+import {ArrowCircleDownRight20Regular, ArrowCircleUpLeft20Regular, ClockArrowDownload24Regular} from "@vicons/fluent"
 import {NoDataPicture,UIPageFilter, UIPagination, UIUser} from "@/components/index.js"
 import {useTurnstileWorkDurationStore} from "@/store/modules/index.js"
 import {useAppSetting} from "@/utils/index.js"
@@ -51,6 +52,16 @@ onMounted(()=>{
         @onSearch="onSearch"
     >
       <template #filterAction>
+        <n-button
+            @click="store._download()"
+            :loading="store.downloadLoading"
+            class="!mt-5"
+            type="success">
+          {{$t('content.download')}}
+          <template #icon>
+            <ClockArrowDownload24Regular/>
+          </template>
+        </n-button>
         <div class="w-[300px]">
           <label class="text-textColor3 ml-1">{{$t('turnstile.workDurationPage.startTime')}}</label>
           <n-input
@@ -126,9 +137,15 @@ onMounted(()=>{
             </td>
             <td>
               <div class="text-center">
-                <n-button secondary :type="item.event_type? 'success' : 'error'" size="tiny">
+                <n-button secondary :type="item.event_type? 'primary' : 'error'" size="tiny">
                   {{$t(item.event_type? 'turnstile.workDurationPage.enter' : 'turnstile.workDurationPage.exit') }}
+                  <template #icon>
+                    <n-icon size="17">
+                      <ArrowCircleDownRight20Regular/>
+                    </n-icon>
+                  </template>
                 </n-button>
+
               </div>
             </td>
             <td>

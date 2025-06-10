@@ -24,7 +24,6 @@ const onChangeStructure = (v) => {
   store.params.organizations = v
   componentStore.depParams.organizations = v.map((x) => x.id)
   componentStore.departmentList = []
-  componentStore._departments()
   filterEvent()
 }
 
@@ -57,6 +56,11 @@ const onAdd = ()=>{
 const onShow = (v) => {
   if(!v) return
   componentStore._structures()
+}
+
+const onUpdateShow = (v)=>{
+  if(!v || componentStore.departmentList.length>0) return
+  componentStore.onOpenDepartmentEv(v)
 }
 
 
@@ -99,13 +103,14 @@ const onShow = (v) => {
           filterable
           label-field="name"
           value-field="id"
-
           clearable
           @update:value="onChangeDepartment"
           :max-tag-count="1"
           :filter="()=>true"
           @search="componentStore._onSearchDepartment"
           @scroll="componentStore._onScrollDepartment"
+          @update:show="onUpdateShow"
+          :loading="componentStore.departmentLoading"
       />
 
     </template>

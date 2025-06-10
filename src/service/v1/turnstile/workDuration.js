@@ -11,10 +11,14 @@ const _logs = async (payload)=>{
 const _latecomers = async (payload)=>{
     return await axios.get(`/v1/turnstile/terminal-logs`, {params:payload?.params})
 }
+const _download = async (payload)=>{
+    return await axios.get(`/v1/turnstile/terminal-logs/export`, {params:payload?.params})
+}
 
 
 export default {
     _index,
     _logs,
     _latecomers,
+    _download,
 }

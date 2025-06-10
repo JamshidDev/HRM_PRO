@@ -1,18 +1,12 @@
 <script setup>
-import {UIDrawer, UIPageContent, UIPageFilter} from "@/components/index.js"
+import {UIDrawer, UIPageContent} from "@/components/index.js"
 import {useUserStore, useAccountStore} from "@/store/modules/index.js";
 import Table from "./ui/Table.vue"
 import createForm from "./ui/createForm.vue"
+import Filter from "./ui/Filter.vue"
 
 const store = useUserStore()
 const accStore = useAccountStore()
-
-const onSearch = (v)=>{
-  if(!accStore.checkAction(accStore.pn.usersRead)) return
-  store.params.page = 1
-  store._index()
-}
-
 
 onMounted(()=>{
   if(!accStore.checkAction(accStore.pn.usersRead)) return
@@ -22,13 +16,7 @@ onMounted(()=>{
 
 <template>
 <UIPageContent>
-  <UIPageFilter
-  v-model:search="store.params.search"
-  @on-search="onSearch"
-  :search-loading="store.loading"
-  :show-filter-button="false"
-  :show-add-button="false"
-  />
+  <Filter/>
   <Table/>
   <UIDrawer
       :visible="store.visible"
