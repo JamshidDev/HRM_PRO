@@ -6,10 +6,6 @@ import Utils from "@/utils/Utils.js"
 const store = useMedWorkerStore()
 const emits = defineEmits(['openEv'])
 
-const openDocument = (v)=>{
-  emits('openEv', v)
-}
-
 
 
 
@@ -17,28 +13,6 @@ const changePage = (v)=>{
   store.params.page = v.page
   store.params.per_page = v.per_page
   store._index()
-}
-
-const onSelectEv = (v)=>{
-  if(v.key === Utils.ActionTypes.delete){
-    store.elementId = v.data.id
-    store._delete(v.data)
-  }else if(v.key === Utils.ActionTypes.view){
-    openDocument(v.data.id)
-  }else if(v.key === Utils.ActionTypes.attachment){
-    store.selectedWorkers = [v.data]
-    store.resetForm()
-    store.visibleType = true
-    store.visible = true
-  }else if(v.key === Utils.ActionTypes.confirm){
-    onConfirm(v.data)
-  }
-}
-
-const onConfirm = (v)=>{
-  store.resetConfirmForm()
-  store.confirmVisible = true
-  store.elementId = v.id
 }
 
 
@@ -56,7 +30,7 @@ const onConfirm = (v)=>{
         <tr>
           <th class="text-center! min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
           <th v-if="store.enableCheck" class="text-center! min-w-[30px] w-[30px]"></th>
-          <th class="min-w-[100px]">{{$t('content.worker')}}</th>
+          <th class="min-w-[200px] w-[300px]">{{$t('content.worker')}}</th>
           <th class="min-w-[100px] ">{{$t('content.organization')}}</th>
           <th class="min-w-[100px]">{{$t('medWorker.form.department')}}</th>
           <th class="min-w-[100px]">{{$t('medWorker.form.position')}}</th>

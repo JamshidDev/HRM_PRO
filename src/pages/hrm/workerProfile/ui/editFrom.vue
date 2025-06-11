@@ -192,7 +192,21 @@ onMounted(()=>{
         </n-form-item>
       </div>
 
-      <div class="col-span-12 md:col-span-6">
+      <div class="col-span-12 md:col-span-6 lg:col-span-3">
+        <n-form-item
+            :label="$t(`documentPage.position_date`)"
+            path="position_date"
+            :rule-path="validationRules.rulesNames.requiredDateTimeField">
+          <n-date-picker
+              class="w-full"
+              v-model:value="store.editPayload.position_date"
+              type="date"
+              :format="useAppSetting.datePicketFormat"
+          />
+        </n-form-item>
+      </div>
+
+      <div class="col-span-12 md:col-span-9">
         <n-form-item :label="$t(`documentPage.form.organization`)" path="organization_id">
           <UISelect
               :options="componentStore.structureList"

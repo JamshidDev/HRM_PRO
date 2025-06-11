@@ -33,6 +33,7 @@ const onOpen = (v)=>{
 
 
 const onOpenCommand = (v)=>{
+  console.log(v)
   const worker = v.contract.worker
   workers.value = [
     {
@@ -56,6 +57,7 @@ const onEdit = (v)=>{
   store.editPayload.type = v.type?.id
   store.editPayload.contract_number =v.contract?.number
   store.editPayload.contract_date = Utils.datePickerFormatter(v.contract?.contract_date)
+  store.editPayload.position_date = Utils.datePickerFormatter(v.position_date)
 
   componentStore.departmentList = []
   componentStore.departmentPositionList = []

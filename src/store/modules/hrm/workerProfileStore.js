@@ -113,6 +113,7 @@ export const useWorkerProfileStore = defineStore('workerProfileStore', {
             salary:null,
             schedule_id:null,
             table_number:null,
+            position_date:null,
         },
         positionLoading:false,
         positionId:null,
@@ -374,10 +375,11 @@ export const useWorkerProfileStore = defineStore('workerProfileStore', {
                     department_position_id:undefined,
                 }),
                 department_id:undefined,
+                contract_date:Utils.timeToZone(this.editPayload.contract_date),
+                position_date:Utils.timeToZone(this.editPayload.position_date)
             }
             this.positionLoading = true
             $ApiService.workerService._updatePosition({data, id}).then((res)=>{
-                console.log(res.data)
                 this._index()
             }).finally(()=>{
                 this.positionLoading = false

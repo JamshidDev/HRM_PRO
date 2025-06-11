@@ -570,11 +570,13 @@
     "name": "Hujjatlar",
     "createTitle": "Shartnoma tuzish",
     "updateTitle": "Shartnomani tahrirlash",
+    "position_date": "Lavozim sanasi",
     "tabs": {
       "contract": "Shartnomalar",
       "adContract": "Qo'sh. kelishuv",
       "command": "Buyruqlar"
     },
+
     "command": {
       "createTitle": "Buyruq yaratish",
       "updateTitle": "Buyruqni tahrirlash",

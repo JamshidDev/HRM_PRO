@@ -33,6 +33,7 @@ export const useMedWorkerStore = defineStore('medWorkerStore', {
             this.loading= true
             const params = {
                 ...this.params,
+                organizations:this.params.organizations.map(v=>v.id).toString(),
             }
             $ApiService.medWorkerService._index({params}).then((res)=>{
                 this.list = res.data.data.data

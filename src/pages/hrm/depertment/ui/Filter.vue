@@ -74,7 +74,6 @@ const onShow = () => {
           <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{$t('actionLog.table.structure')}}</label>
           <UISelect
               :options="componentStore.structureList"
-
               :modelV="store.params.organizations"
               @defaultValue="(v)=>store.params.organizations=v"
               @updateModel="(v)=>store.params.organizations=v"
