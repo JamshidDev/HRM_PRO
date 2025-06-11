@@ -93,6 +93,7 @@ import monthReportService from "./v1/accountant/monthReportService.js"
 
 import expiredHealthService from "./v1/hospital/expiredHealthService.js"
 import ticketService from "./v1/hospital/ticketService.js"
+import medWorkerService from "./v1/hospital/medWorkerService.js"
 
 export default {
     authService,
@@ -189,4 +190,5 @@ export default {
 
     expiredHealthService,
     ticketService,
+    medWorkerService,
 }

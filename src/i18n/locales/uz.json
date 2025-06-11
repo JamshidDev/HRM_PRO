@@ -1665,8 +1665,9 @@
   },
   "ticket": {
     "name": "Yo'llanmalar",
-    "createTitle": "Biriktirish",
+    "createTitle": "Biriktish",
     "updateTitle": "Tahrirlash",
+    "attachCommission": "Komissiya a'zolarini biriktirish",
     "confirmTitle": "Tasdiqlash",
     "form": {
       "worker_positions": "Komissiya a'zolari",
@@ -1682,6 +1683,17 @@
       "to": "Keyingi tekshiruv sanansi",
       "comment": "Izoh",
       "removeCommission": "Haqiqattan ham komissiya a'zolarini tozalamoqchimisiz?"
+    }
+  },
+  "medWorker": {
+    "name": "Barcha xodimlar",
+    "createTitle": "Biriktish",
+    "updateTitle": "Tahrirlash",
+    "form": {
+      "education": "Ma'lumoti",
+      "position": "Lavozimi",
+      "department": "Bo'lim",
+      "position_date": "Lavozim sanasi"
     }
   }
 }

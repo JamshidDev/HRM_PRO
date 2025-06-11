@@ -142,7 +142,7 @@ export const useTicketStore = defineStore('ticketStore', {
         },
         resetConfirmForm(){
             this.elementId = null
-            this.confirmPayload.med_status = null
+            this.confirmPayload.med_status = 1
             this.confirmPayload.med_date = new Date().getTime()
             this.confirmPayload.to = null
             this.confirmPayload.comment = null

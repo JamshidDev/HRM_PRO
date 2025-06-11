@@ -442,6 +442,13 @@ export const navigations = [
                 color: 'bg-success',
                 permission: appPermissions.hospitalTicket,
             },
+            {
+                label: 'medWorker.name',
+                path: Utils.routeHospitalPathMaker(AppPaths.MedWorker),
+                icon: DocumentRibbon24Filled,
+                color: 'bg-info',
+                permission: appPermissions.hospitalTicket,
+            },
         ]
     },
     {

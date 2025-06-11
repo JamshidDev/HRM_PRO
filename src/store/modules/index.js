@@ -104,3 +104,4 @@ export * from './accountant/monthReportStore.js'
 
 export * from './hospital/expiredhealthStore.js'
 export * from './hospital/ticketStore.js'
+export * from './hospital/medWorkerStore.js'

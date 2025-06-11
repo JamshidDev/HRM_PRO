@@ -93,6 +93,7 @@ export const AppPaths = {
     Hospital: "/hospital",
     ExpiredHealth: "/expired-health",
     Ticket: "/ticket",
+    MedWorker: "/med-worker",
     UploadReport: "/upload-report",
     MonthReport: "/month-report",
     Instruction: "/instruction",

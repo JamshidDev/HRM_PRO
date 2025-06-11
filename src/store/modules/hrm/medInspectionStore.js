@@ -94,7 +94,7 @@ export const useMedInspectionStore = defineStore('medInspectionStore', {
         },
         _delete(){
             this.deleteLoading = true
-            $ApiService.militaryService._delete({id:this.elementId}).then((res)=>{
+            $ApiService.medInspectionService._delete({id:this.elementId}).then((res)=>{
                 this._index()
 
             }).finally(()=>{
