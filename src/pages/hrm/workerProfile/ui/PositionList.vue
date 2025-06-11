@@ -18,10 +18,9 @@ const onSuccessEv = (v)=>{
 
 const onOpen = (v)=>{
   organization.value = [v.organization]
-  const worker = v.contract.worker
   workers.value = [
     {
-      name:worker.last_name + ' '+worker.first_name+' '+worker.middle_name,
+      name:Utils.combineFullName(store.data),
       position:v.position?.name,
       id:v.id,
       contractTypeId:v.contract.type.id,
@@ -34,10 +33,9 @@ const onOpen = (v)=>{
 
 const onOpenCommand = (v)=>{
   console.log(v)
-  const worker = v.contract.worker
   workers.value = [
     {
-      name:worker.last_name + ' '+worker.first_name+' '+worker.middle_name,
+      name:Utils.combineFullName(store.data),
       position:v.position?.name,
       id:v.id,
       contractTypeId:v.contract.type.id,
@@ -126,28 +124,28 @@ const onEdit = (v)=>{
         </template>
         {{$t('content.edit')}}
       </n-button>
-      <n-button
-          @click="onOpen(item)"
-          size="small"
-          type="info"
-          secondary
-      >
-        <template #icon>
-          <Edit20Regular/>
-        </template>
-        {{$t('workerProfile.personal.additionalContract')}}
-      </n-button>
-      <n-button
-          @click="onOpenCommand(item)"
-          size="small"
-          type="warning"
-          secondary
-      >
-        <template #icon>
-          <Edit20Regular/>
-        </template>
-        {{$t('workerProfile.personal.createOrder')}}
-      </n-button>
+<!--      <n-button-->
+<!--          @click="onOpen(item)"-->
+<!--          size="small"-->
+<!--          type="info"-->
+<!--          secondary-->
+<!--      >-->
+<!--        <template #icon>-->
+<!--          <Edit20Regular/>-->
+<!--        </template>-->
+<!--        {{$t('workerProfile.personal.additionalContract')}}-->
+<!--      </n-button>-->
+<!--      <n-button-->
+<!--          @click="onOpenCommand(item)"-->
+<!--          size="small"-->
+<!--          type="warning"-->
+<!--          secondary-->
+<!--      >-->
+<!--        <template #icon>-->
+<!--          <Edit20Regular/>-->
+<!--        </template>-->
+<!--        {{$t('workerProfile.personal.createOrder')}}-->
+<!--      </n-button>-->
     </div>
   </div>
   <UIModal

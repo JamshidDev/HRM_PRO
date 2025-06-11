@@ -122,7 +122,6 @@ export const useWorkerProfileStore = defineStore('workerProfileStore', {
         structureCheck2:[],
 
 
-
     }),
     actions:{
         _index(){
