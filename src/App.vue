@@ -5,10 +5,10 @@ import MediaViewer from '@/components/mediaViewer/MediaViewer.vue'
 import AppLayout from "@/layouts/AppLayout.vue";
 import {UIMainLoading} from "@/components/index.js"
 import SignatureInstance from "@/pages/app/e-imzo/SignatureInstance.vue"
-import i18n from "@/i18n/index.js"
 import { uzUZ, dateUzUZ, ruRU, dateRuRU, enUS, dateEnUS, }  from 'naive-ui'
 import {useAppStore} from "@/store/modules/index.js"
 import {naiveBreakpoints} from "@/assets/theme/theme.js"
+import i18n from "./i18n/index.js"
 
 const appStore = useAppStore()
 
@@ -38,7 +38,11 @@ onMounted(()=>{
 </script>
 
 <template>
-  <n-config-provider :breakpoints="naiveBreakpoints" :theme-overrides="appStore.theme" :locale="localProvider.lang" :date-locale="localProvider.date">
+  <n-config-provider
+      :breakpoints="naiveBreakpoints"
+      :theme-overrides="appStore.theme"
+      :locale="localProvider.lang"
+      :date-locale="localProvider.date">
     <n-message-provider placement="top-right">
       <n-dialog-provider>
         <AppLayout/>
