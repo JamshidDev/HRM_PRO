@@ -14,6 +14,7 @@ watch(route, (v)=>{
   if(v.matched.length>2){
     store.payload.menu = v.matched[1].meta.permission
     store.payload.sub_menu = v.meta.permission || 'hr-workers'
+    console.log(store.payload.sub_menu)
   }else{
     store.payload.menu = null
     store.payload.sub_menu = null

@@ -1,9 +1,16 @@
 <script setup>
 import {UISelect} from "@/components/index.js"
 import {useComponentStore, useReport2Store} from "@/store/modules/index.js"
+import {useAccountStore} from "@/store/modules/index.js"
+const accStore = useAccountStore()
 
 const componentStore = useComponentStore()
 const store = useReport2Store()
+
+const onChangeOrg = (v)=>{
+  if(!accStore.checkAction(accStore.pn.hrReportRead)) return
+  store.onChangeOrg(v)
+}
 
 onMounted(()=>{
   componentStore._structures()
@@ -18,7 +25,7 @@ onMounted(()=>{
     <UISelect
         :options="componentStore.structureList"
         :model-v="store.params.organization_id"
-        @updateModel="store.onChangeOrg"
+        @updateModel="onChangeOrg"
         :checkedVal="store.orgCheck"
         @updateCheck="(v)=>store.orgCheck=v"
         v-model:search="componentStore.structureParams.search"

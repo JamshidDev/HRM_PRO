@@ -5,7 +5,16 @@ import WorkerCard from "./WorkerCard.vue"
 const store = useReport2Store()
 import Indicator from "./Indicator.vue"
 import IndicatorTitle from "@/pages/hrm/report/ui/IndicatorTitle.vue"
+import {useAccountStore} from "@/store/modules/index.js"
+const accStore = useAccountStore()
+
+
+const onEdit = (item)=>{
+  if(!accStore.checkAction(accStore.pn.hrReportWrite)) return
+  store.onEdit(item)
+}
 </script>
+
 
 <template>
   <div
@@ -34,7 +43,7 @@ import IndicatorTitle from "@/pages/hrm/report/ui/IndicatorTitle.vue"
           </div>
           <div class="w-[260px] flex items-center justify-between h-full gap-2 pr-2">
             <n-button
-                @click.stop="store.onEdit(item)"
+                @click.stop="()=>onEdit(item)"
                 size="tiny" type="primary" secondary>{{$t('content.edit')}}
               <template #icon>
                 <Edit20Filled/>

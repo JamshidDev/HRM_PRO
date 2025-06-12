@@ -42,8 +42,10 @@ const onSelect = (v)=>{
   if(v.key === 'view'){
     emits('openOffice', v.data.id)
   }else if(v.key === Utils.ActionTypes.delete){
+    if(!accStore.checkAction(accStore.pn.hrCommandsWrite)) return
     onDelete(v.data)
   }else if(v.key === Utils.ActionTypes.confirm){
+    if(!accStore.checkAction(accStore.pn.hrCommandsWrite)) return
     store.elementId = v.data.id
     componentStore.files = []
     componentStore.fileVisible = true

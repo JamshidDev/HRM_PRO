@@ -2,6 +2,8 @@
 import {NoDataPicture, UIPagination, UIMenuButton, UIUser} from "@/components/index.js"
 import {useComponentStore, useVacationScheduleStore} from "@/store/modules/index.js"
 import Utils from "@/utils/Utils.js"
+import {useAccountStore} from "@/store/modules/index.js"
+const accStore = useAccountStore()
 
 const store = useVacationScheduleStore()
 const componentStore = useComponentStore()
@@ -33,6 +35,7 @@ const changePage = (v)=>{
 }
 
 const onSelectEv = (v)=>{
+  if(!accStore.checkAction(accStore.pn.hrVacationScheduleWrite)) return
   if(Utils.ActionTypes.edit === v.key){
     onEdit(v.data)
   }else if(Utils.ActionTypes.delete === v.key){

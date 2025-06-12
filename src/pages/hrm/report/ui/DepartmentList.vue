@@ -4,6 +4,9 @@ import PositionCard from "./PositionCard.vue"
 import WorkerCard from "./WorkerCard.vue"
 import Indicator from "./Indicator.vue"
 import {AppFolder20Regular} from "@vicons/fluent"
+import {useAccountStore} from "@/store/modules/index.js"
+const accStore = useAccountStore()
+
 const store = useReport2Store()
 
 defineProps({
@@ -15,6 +18,7 @@ defineProps({
 
 
 const openConfirm = () => {
+  if(!accStore.checkAction(accStore.pn.hrReportWrite)) return
   store.confirmVisible = true
 }
 </script>

@@ -1,6 +1,6 @@
 x<script setup>
 import {NoDataPicture, UIPagination} from "@/components/index.js"
-import {useDepartmentStore} from "@/store/modules/index.js"
+import {useDepartmentStore, useAccountStore} from "@/store/modules/index.js"
 import {FlowchartCircle24Regular, Circle48Regular, ChevronRight12Regular} from "@vicons/fluent"
 import MenuButton from "@/components/buttons/MenuButton.vue"
 import Utils from "@/utils/Utils.js"
@@ -60,12 +60,17 @@ const changePage = (v)=>{
   store._index()
 }
 
+const accStore = useAccountStore()
+
 const onSelectEv = (v)=>{
   if(v.key === Utils.ActionTypes.edit){
+    if(!accStore.checkAction(accStore.pn.hrDepartmentsWrite)) return
     onEdit(v.data)
   }else if (v.key === Utils.ActionTypes.delete){
+    if(!accStore.checkAction(accStore.pn.hrDepartmentsWrite)) return
     onDelete(v.data)
   }else if(v.key === Utils.ActionTypes.attachment){
+    if(!accStore.checkAction(accStore.pn.hrDepartmentsWrite)) return
     onAdd(v.data)
   }
 }

@@ -6,6 +6,8 @@ import {
   useTimesheetWorkerStore
 } from "@/store/modules/index.js"
 import {Checkmark16Filled, CalendarCheckmark28Filled, CheckmarkCircle24Filled} from "@vicons/fluent";
+import {useAccountStore} from "@/store/modules/index.js"
+const accStore = useAccountStore()
 
 import dayjs from "dayjs";
 import Utils from "@/utils/Utils.js";
@@ -26,7 +28,7 @@ const onSelect = (v)=>{
     timesheetWorkerStore.visible = true
     timesheetWorkerStore._index()
   }else if(v.key === Utils.ActionTypes.edit){
-    console.log(v.data)
+    if(!accStore.checkAction(accStore.pn.hrTableWorkersWrite)) return
     store.elementId = v.data.id
     store.payload.department_id = v.data.department?.id
     store.payload.work_place_id = v.data.work_place?.id
@@ -36,9 +38,11 @@ const onSelect = (v)=>{
     store.visible = true
     console.log(store.payload)
   }else if(v.key===Utils.ActionTypes.verifier){
+    if(!accStore.checkAction(accStore.pn.hrTableWorkersWrite)) return
     timesheetConfirmStore.elementId = v.data.id
     timesheetConfirmStore.visible = true
   }else if(v.key===Utils.ActionTypes.finish){
+    if(!accStore.checkAction(accStore.pn.hrTableWorkersWrite)) return
     store.warningVisible = true
     store.elementId = v.data.id
   }

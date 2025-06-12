@@ -35,6 +35,7 @@ const openContract = (v, statusId)=>{
 
 }
 
+
 const onSelect =(v)=>{
     if(v.key === 'view'){
       onPreview(v.data.id)
