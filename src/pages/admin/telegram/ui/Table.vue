@@ -7,6 +7,8 @@ import {
   UIMenuButton,
   UIUser
 } from "@/components/index.js"
+import {useAccountStore} from "@/store/modules/index.js"
+const accStore = useAccountStore()
 
 const onDelete = (v)=>{
   store.elementId = v.id
@@ -14,6 +16,7 @@ const onDelete = (v)=>{
 }
 
 const onSelectEv = (v)=>{
+  if(!accStore.checkAction(accStore.pn.telegramWrite)) return
   // if(v.key === Utils.ActionTypes.edit){
   //   onEdit(v.data)
   // }else

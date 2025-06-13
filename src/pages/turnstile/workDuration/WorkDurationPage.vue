@@ -12,12 +12,7 @@ const store = useTurnstileWorkDurationStore()
 const accStore = useAccountStore()
 
 const filterEvent = ()=>{
-  store.params.page = 1
-  store._index()
-}
-
-const onSearch = (v)=>{
-  // if(!accStore.checkAction(accStore.pn.usersRead)) return
+  if(!accStore.checkAction(accStore.pn.turnstileWorkDurationRead)) return
   store.params.page = 1
   store._index()
 }
@@ -30,7 +25,6 @@ const clearParams = ()=>{
 }
 
 onMounted(()=>{
-  // if(!accStore.checkAction(accStore.pn.usersRead)) return
   filterEvent()
 })
 </script>
@@ -40,7 +34,7 @@ onMounted(()=>{
     <UIPageFilter
         @on-clear="clearParams"
         v-model:search="store.params.search"
-        @on-search="onSearch"
+        @on-search="filterEvent"
         :search-loading="store.loading"
         :show-add-button="false"
     >

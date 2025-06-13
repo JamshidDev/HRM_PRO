@@ -1,11 +1,10 @@
 <script setup>
 import {NoDataPicture, UIActionButton, UIPagination, UIUser, UIMore} from "@/components/index.js"
 import {useNationalityStore, useLearningCenterStore} from "@/store/modules/index.js"
+import {useAccountStore} from "@/store/modules/index.js"
+const accStore = useAccountStore()
 
 const store = useLearningCenterStore()
-
-
-
 
 const onEdit = (v)=>{
   console.log(v)
@@ -20,6 +19,7 @@ const onEdit = (v)=>{
 }
 
 const onDelete = (v)=>{
+  if(!accStore.checkAction(accStore.pn.learningCentersWrite)) return
   store.elementId = v.id
   store._delete()
 }

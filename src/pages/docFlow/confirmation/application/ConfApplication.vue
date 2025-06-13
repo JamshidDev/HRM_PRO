@@ -5,6 +5,9 @@ import Table from "./ui/Table.vue"
 import {useConfApplicationStore} from "@/store/modules/index.js"
 import Utils from "@/utils/Utils.js"
 import Banner from "./ui/Banner.vue"
+import {useAccountStore} from "@/store/modules/index.js"
+const accStore = useAccountStore()
+
 const store = useConfApplicationStore()
 
 const officeAppRef = ref(null)
@@ -23,6 +26,7 @@ const openOffice = (v)=>{
 }
 
 onMounted(()=>{
+  if(!accStore.checkAction(accStore.pn.confirmationWorkerApplications)) return
   store._index()
 })
 

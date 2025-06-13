@@ -11,6 +11,8 @@ import {UIDrawer} from "@/components/index.js"
 import FileForm from './ui/FileForm.vue'
 import ExamForm from './ui/ExamForm.vue'
 import AttachQuestionForm from './ui/ExamAttachQuestionForm.vue'
+import {useAccountStore} from "@/store/modules/index.js"
+const accStore = useAccountStore()
 
 const route = useRoute()
 const router = useRouter()
@@ -20,12 +22,14 @@ const examStore = useTopicExamStore()
 const t = i18n.global.t
 
 onMounted(()=>{
+  if(!accStore.checkAction(accStore.pn.examTopicsRead)) return
   store.elementId = route.params?.id
   fileStore.topicId = route.params?.id
   fileStore._index()
   examStore.topicId = route.params?.id
   examStore._index()
 })
+
 const lesson = computed(()=>{
   return store.elementId ? store.list.find(i=>i.id==store.elementId) : undefined
 })

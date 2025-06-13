@@ -2,6 +2,8 @@
 import {NoDataPicture, UIPagination} from "@/components/index.js"
 import {useWorkerExamStore} from "@/store/modules/index.js"
 import {TopicUtils} from "@/pages/attestation/Utils/index.js";
+import {useAccountStore} from "@/store/modules/index.js"
+const accStore = useAccountStore()
 
 const store = useWorkerExamStore()
 
@@ -22,6 +24,11 @@ onMounted(() => {
   }
 })
 
+const selectLesson = ()=>{
+  if(!accStore.checkAction(accStore.pn.examExamsRead)) return
+  store.selectedLesson = lesson
+}
+
 </script>
 
 <template>
@@ -33,7 +40,7 @@ onMounted(() => {
             <div
                 :class="{'active-lesson': store?.elementId===lesson.id}"
                 class="rounded-md transition-all cursor-pointer lesson-card  flex flex-col"
-                @click="store.selectedLesson = lesson"
+                @click="()=>selectLesson(lesson)"
             >
               <div class="p-2">
                 <p class="text-lg font-semibold">

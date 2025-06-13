@@ -6,6 +6,8 @@ import {AppPaths} from "@/utils/index.js"
 import Utils from "@/utils/Utils.js";
 import UIHelper from "@/utils/UIHelper.js";
 import {Delete20Regular, Eye16Regular} from "@vicons/fluent";
+import {useAccountStore} from "@/store/modules/index.js"
+const accStore = useAccountStore()
 
 const store = useCategoryStore()
 const router = useRouter()
@@ -17,12 +19,15 @@ const changePage = (v) => {
 }
 
 const onSelect = (v) => {
+  if(!accStore.checkAction(accStore.pn.examCategoriesRead)) return
   if (v.key === 'view') {
     router.push(`${AppPaths.Attestation}${AppPaths.Category}/${v.data.id}${AppPaths.Questions}`)
   } else if (v.key === 'delete') {
+    if(!accStore.checkAction(accStore.pn.examCategoriesWrite)) return
     store.elementId = v.data.id
     store._delete()
   } else if (v.key === 'edit') {
+    if(!accStore.checkAction(accStore.pn.examCategoriesWrite)) return
     store.elementId = v.data.id
     store.payload.name = v.data.name
     store.visibleType = false

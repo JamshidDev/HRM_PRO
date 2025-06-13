@@ -4,6 +4,9 @@ import Utils from "@/utils/Utils.js"
 import {Delete16Regular} from "@vicons/fluent"
 import {NIcon} from "naive-ui"
 import i18n from "@/i18n/index.js"
+import {useAccountStore} from "@/store/modules/index.js"
+const accStore = useAccountStore()
+
 const {t} = i18n.global
 
 const store = useHolidayStore()
@@ -52,6 +55,7 @@ const handleSelect =(key)=>{
 
 
 const onEdit = (v)=>{
+  if(!accStore.checkAction(accStore.pn.holidaysWrite)) return
   store.visibleType = false
   store.elementId = v.id
   store.payload.name = v.name
@@ -61,12 +65,14 @@ const onEdit = (v)=>{
 }
 
 const onChangeMonth = (v)=>{
+  if(!accStore.checkAction(accStore.pn.holidaysRead)) return
   store.params.month = v.month
   store.params.year = v.year
   store._index()
 }
 
 const changeValue = (v)=>{
+  if(!accStore.checkAction(accStore.pn.holidaysWrite)) return
   store.resetForm()
   store.payload.holiday_date = v
   store.visibleType = true

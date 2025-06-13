@@ -2,6 +2,9 @@
 import {UIPageFilter, UISelect} from "@/components/index.js"
 import {useComponentStore, useActionLogStore} from "@/store/modules/index.js"
 import {useDebounceFn} from "@vueuse/core"
+import {useAccountStore} from "@/store/modules/index.js"
+const accStore = useAccountStore()
+
 const compStore = useComponentStore()
 const store = useActionLogStore()
 
@@ -47,6 +50,7 @@ const onShow = () => {
 }
 
 onMounted(()=>{
+  if(!accStore.checkAction(accStore.pn.activityLogsRead)) return
   store._getActionLog()
 })
 </script>

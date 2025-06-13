@@ -1,6 +1,8 @@
 <script setup>
 import {NoDataPicture, UIMenuButton, UIPagination} from "@/components/index.js"
 import {useTurnstileBuildingStore} from "@/store/modules/index.js"
+import {useAccountStore} from "@/store/modules/index.js"
+const accStore = useAccountStore()
 
 const store = useTurnstileBuildingStore()
 
@@ -11,6 +13,8 @@ const changePage = (v)=>{
 }
 
 const onSelect = (v)=>{
+  if(!accStore.checkAction(accStore.pn.turnstileBuildingWrite)) return
+
   if(v.key === 'delete'){
     store.elementId = v.data.id
     store._delete()

@@ -3,6 +3,8 @@ import {UIPageFilter, UIPageContent, UIOfficeApp} from "@/components/index.js"
 import {useConfirmationAdContractStore} from "@/store/modules/index.js"
 import Table from "./Table.vue"
 import Utils from "@/utils/Utils.js"
+import {useAccountStore} from "@/store/modules/index.js"
+const accStore = useAccountStore()
 
 const store = useConfirmationAdContractStore()
 const officeAppRef = ref(null)
@@ -16,11 +18,13 @@ const onSignatureEv = (v)=>{
 }
 
 const onSearch = ()=>{
+  if(!accStore.checkAction(accStore.pn.confirmationAddContracts)) return
   store.params.page = 1
   store._index()
 }
 
 onMounted(()=>{
+  if(!accStore.checkAction(accStore.pn.confirmationAddContracts)) return
   store._index()
 })
 </script>

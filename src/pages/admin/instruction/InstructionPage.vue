@@ -10,13 +10,13 @@ const accStore = useAccountStore()
 const store = usePageInstructionStore();
 
 const onSearch = (v)=>{
-  if(!accStore.checkAction(accStore.pn.citiesRead)) return
+  if(!accStore.checkAction(accStore.pn.instructionsWrite)) return
   store.params.page = 1
   store._index()
 }
 
 const onAdd = ()=>{
-  if(!accStore.checkAction(accStore.pn.citiesWrite)) return
+  if(!accStore.checkAction(accStore.pn.instructionsWrite)) return
   store.resetForm()
   store.visibleType = true
   store.visible = true
@@ -25,6 +25,7 @@ const onAdd = ()=>{
 
 
 onMounted(()=>{
+  if(!accStore.checkAction(accStore.pn.instructionsRead)) return
   store._index()
 })
 </script>

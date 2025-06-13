@@ -3,6 +3,8 @@ import {useOrganizationStore, useComponentStore} from "@/store/modules/index.js"
 import {UITree, UIPagination} from "@/components/index.js"
 import { useDialog, useMessage } from 'naive-ui'
 import i18n from "@/i18n/index.js"
+import {useAccountStore} from "@/store/modules/index.js"
+const accStore = useAccountStore()
 
 const store = useOrganizationStore()
 const componentStore = useComponentStore()
@@ -17,6 +19,7 @@ const {t} = i18n.global
 
 
 const onLoad = (v)=>{
+  if(!accStore.checkAction(accStore.pn.organizationsRead)) return
   store.elementId = v.id
   store.indexPath = v.index
   store.visibleType = true
@@ -24,6 +27,7 @@ const onLoad = (v)=>{
 }
 
 const onChange = (v)=>{
+  if(!accStore.checkAction(accStore.pn.organizationsWrite)) return
   if(v.type === 'create'){
     createNested(v)
   }else if(v.type === 'delete'){

@@ -3,6 +3,8 @@ import {NoDataPicture, UIPagination, UIUser, UIBadge, UIMenuButton} from "@/comp
 import {useTurnstileWorkDurationStore, useComponentStore} from "@/store/modules/index.js"
 import Utils from "@/utils/Utils.js"
 import {ArrowCircleDownRight20Regular, ArrowCircleUpLeft20Regular} from "@vicons/fluent"
+import {useAccountStore} from "@/store/modules/index.js"
+const accStore = useAccountStore()
 
 const store = useTurnstileWorkDurationStore()
 const compStore = useComponentStore()

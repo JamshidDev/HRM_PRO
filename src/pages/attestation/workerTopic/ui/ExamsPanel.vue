@@ -18,6 +18,7 @@ const startAttempt = (v) => {
 }
 
 const goPush = (v) => {
+  if(!accStore.checkAction(accStore.pn.examExamsWrite)) return
   router.push({
     name: 'solve_exam',
     params: {

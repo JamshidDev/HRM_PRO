@@ -2,6 +2,8 @@
 import {useCommandTempStore} from "@/store/modules/index.js"
 import {UITreeData} from "@/components/index.js"
 import Table from "./ui/Table.vue"
+import {useAccountStore} from "@/store/modules/index.js"
+const accStore = useAccountStore()
 const store = useCommandTempStore()
 
 const onSelect = (v)=>{
@@ -16,6 +18,7 @@ const onClearEv = ()=>{
 }
 
 onMounted(()=>{
+  if(!accStore.checkAction(accStore.pn.documentExamplesRead)) return
   store._index()
 })
 

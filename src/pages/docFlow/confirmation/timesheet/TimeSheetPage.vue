@@ -3,12 +3,14 @@ import {UIOfficeApp, UIPageContent, UIPageFilter} from "@/components/index.js"
 import {useTimesheetStore} from "@/store/modules/index.js"
 import Table from "./ui/Table.vue"
 import Utils from "@/utils/Utils.js"
-
+import {useAccountStore} from "@/store/modules/index.js"
+const accStore = useAccountStore()
 
 const store = useTimesheetStore()
 const officeAppRef = ref(null)
 
 const onSearchEv = ()=>{
+  if(!accStore.checkAction(accStore.pn.confirmationTable)) return
   store.params.page = 1
   store._index()
 }
@@ -22,6 +24,7 @@ const onSignatureEv = (v)=>{
 }
 
 onMounted(()=>{
+  if(!accStore.checkAction(accStore.pn.confirmationTable)) return
   store._index()
 })
 </script>

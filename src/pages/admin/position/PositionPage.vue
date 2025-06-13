@@ -4,23 +4,28 @@ import Table from "./ui/Table.vue"
 import {usePositionStore} from "@/store/modules/index.js";
 import createFrom from "./ui/createForm.vue"
 import i18n from "@/i18n/index.js"
+import {useAccountStore} from "@/store/modules/index.js"
+const accStore = useAccountStore()
+
 const {t} = i18n.global
 const store = usePositionStore();
 
+
 const onSearch = (v)=>{
+  if(!accStore.checkAction(accStore.pn.positionsRead)) return
   store.params.page = 1
   store._index()
 }
 
 const onAdd = ()=>{
+  if(!accStore.checkAction(accStore.pn.positionsWrite)) return
   store.resetForm()
   store.visibleType = true
   store.visible = true
 }
 
-
-
 onMounted(()=>{
+  if(!accStore.checkAction(accStore.pn.positionsRead)) return
   store._index()
 })
 </script>

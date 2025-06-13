@@ -1,13 +1,13 @@
 <script setup>
 import {NoDataPicture, UIActionButton, UIPagination} from "@/components/index.js"
 import {useScheduleStore} from "@/store/modules/index.js"
+import {useAccountStore} from "@/store/modules/index.js"
+const accStore = useAccountStore()
 
 const store = useScheduleStore()
 
-
-
-
 const onEdit = (v)=>{
+  if(!accStore.checkAction(accStore.pn.schedulesWrite)) return
   store.visibleType = false
   store.elementId = v.id
   store.payload.name = v.name
@@ -17,6 +17,7 @@ const onEdit = (v)=>{
 }
 
 const onDelete = (v)=>{
+  if(!accStore.checkAction(accStore.pn.schedulesWrite)) return
   store.elementId = v.id
   store._delete()
 }
