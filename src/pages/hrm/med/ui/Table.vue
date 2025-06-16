@@ -2,6 +2,8 @@
 import {NoDataPicture, UIPagination, UIUser, UIMenuButton, UIStatus, UIBadge} from "@/components/index.js"
 import {useComponentStore, useMedStore} from "@/store/modules/index.js"
 import Utils from "@/utils/Utils.js"
+import {useAccountStore} from "@/store/modules/index.js"
+const accStore = useAccountStore()
 
 const store = useMedStore()
 const compStore = useComponentStore()
@@ -89,8 +91,10 @@ const changePage = (v)=>{
 
 const onSelectEv = (v)=>{
   if(Utils.ActionTypes.edit === v.key){
+    if(!accStore.checkAction(accStore.pn.hrMedWrite)) return
     onEdit(v.data)
   }else if(Utils.ActionTypes.delete === v.key){
+    if(!accStore.checkAction(accStore.pn.hrMedWrite)) return
     onDelete(v.data)
   }
 }

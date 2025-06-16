@@ -6,13 +6,17 @@ import createFrom from "./ui/createForm.vue"
 import i18n from "@/i18n/index.js"
 const {t} = i18n.global
 const store = useNationalityStore();
+import {useAccountStore} from "@/store/modules/index.js"
+const accStore = useAccountStore()
 
 const onSearch = (v)=>{
+  if(!accStore.checkAction(accStore.pn.nationalitiesRead)) return
   store.params.page = 1
   store._index()
 }
 
 const onAdd = ()=>{
+  if(!accStore.checkAction(accStore.pn.nationalitiesWrite)) return
   store.resetForm()
   store.visibleType = true
   store.visible = true
@@ -21,6 +25,7 @@ const onAdd = ()=>{
 
 
 onMounted(()=>{
+  if(!accStore.checkAction(accStore.pn.nationalitiesRead)) return
   store._index()
 })
 </script>

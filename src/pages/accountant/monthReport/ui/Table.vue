@@ -4,9 +4,6 @@ import {useMonthReportStore} from "@/store/modules/index.js"
 
 const store = useMonthReportStore()
 
-
-
-
 const onEdit = (v)=>{
   store.visibleType = false
   store.elementId = v.id

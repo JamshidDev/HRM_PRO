@@ -2,6 +2,8 @@
 import {NoDataPicture, UIBadge, UIMenuButton, UIPagination, UIUser} from "@/components/index.js"
 import { useTurnstileTerminalUserStore} from "@/store/modules/index.js"
 import {Eye12Filled} from '@vicons/fluent'
+import {useAccountStore} from "@/store/modules/index.js"
+const accStore = useAccountStore()
 
 const store = useTurnstileTerminalUserStore()
 
@@ -12,6 +14,7 @@ const changePage = (v)=>{
 }
 
 const onSelect = (v)=>{
+  if(!accStore.checkAction(accStore.pn.turnstileWorkersWrite)) return
   if(v.key === 'delete'){
     store.elementId = v.data.worker.id
     store._delete()

@@ -4,6 +4,8 @@ import {useDocumentArchiveStore} from "@/store/modules/index.js"
 import {ArrowCircleDown48Regular} from "@vicons/fluent"
 import Utils from "@/utils/Utils.js"
 import { v4 as uuidv4 } from 'uuid';
+import {useAccountStore} from "@/store/modules/index.js"
+const accStore = useAccountStore()
 
 const store = useDocumentArchiveStore()
 
@@ -41,6 +43,7 @@ const changePage = (v)=>{
 }
 
 const onSelectEv = (v)=>{
+  if(!accStore.checkAction(accStore.pn.hrDocumentsWrite)) return
   if(Utils.ActionTypes.edit === v.key){
     onEdit(v.data)
   }else if(Utils.ActionTypes.delete === v.key){

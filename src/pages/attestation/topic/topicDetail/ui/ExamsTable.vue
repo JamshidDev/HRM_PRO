@@ -3,6 +3,8 @@ import {useTopicExamStore} from "@/store/modules/index.js"
 import {UIMenuButton, UIPagination} from "@/components/index.js";
 import Utils from "@/utils/Utils.js"
 import {BookQuestionMark20Filled} from "@vicons/fluent";
+import {useAccountStore} from "@/store/modules/index.js"
+const accStore = useAccountStore()
 
 const store = useTopicExamStore()
 
@@ -13,6 +15,7 @@ const changePage = (v) => {
 }
 
 const onSelect = (v) => {
+  if(!accStore.checkAction(accStore.pn.examExamsWrite)) return
   if (v.key === 'delete') {
     store.elementId = v.data.id
     store._delete()

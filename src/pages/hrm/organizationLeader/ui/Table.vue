@@ -4,6 +4,8 @@ import {NoDataPicture, UIMenuButton, UIPagination, UIUser} from "@/components/in
 import {useOrganizationLeaderStore} from "@/store/modules/index.js"
 import Utils from "@/utils/Utils.js"
 import { Mask } from "maska"
+import {useAccountStore} from "@/store/modules/index.js"
+const accStore = useAccountStore()
 
 const mask = new Mask({ mask: ['##-###-##-##', '##-###']})
 const store = useOrganizationLeaderStore()
@@ -17,9 +19,11 @@ const changePage = (v)=>{
 
 const onSelect = (v)=>{
   if(v.key === 'delete'){
+    if(!accStore.checkAction(accStore.pn.hrLeadersWrite)) return
     store.elementId = v.data.id
     store._delete()
   }else if(v.key==='edit'){
+    if(!accStore.checkAction(accStore.pn.hrLeadersWrite)) return
     store.elementId = v.data.id
     store.visibleType = false
     store.visible= true

@@ -4,6 +4,8 @@ import TopicExamsTable from './ExamsTable.vue'
 import {Add12Regular, Book24Filled, Image48Filled, MusicNote224Filled, VideoClip24Filled, PeopleEdit20Filled} from "@vicons/fluent";
 import {useTopicExamStore, useTopicFileStore} from "@/store/modules/index.js";
 import {TopicUtils} from "@/pages/attestation/Utils/index.js";
+import {useAccountStore} from "@/store/modules/index.js"
+const accStore = useAccountStore()
 
 const fileStore = useTopicFileStore()
 const examStore = useTopicExamStore()
@@ -11,6 +13,7 @@ const examStore = useTopicExamStore()
 const examTabNumber = 0
 const activeTab = ref(examTabNumber)
 const onAdd = ()=>{
+  if(!accStore.checkAction(accStore.pn.examTopicsRead)) return
   fileStore.accept = TopicUtils.getMediaProperty(activeTab.value).accept
   fileStore.resetForm()
   fileStore.visibleType = true
@@ -18,6 +21,7 @@ const onAdd = ()=>{
 }
 
 const onAddExam = ()=>{
+  if(!accStore.checkAction(accStore.pn.examTopicsWrite)) return
   examStore.resetForm()
   examStore.visibleType = true
   examStore.visible = true

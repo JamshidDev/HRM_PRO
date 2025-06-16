@@ -4,9 +4,11 @@ const store = useUniversityAdminStore()
 import {UIDrawer} from "@/components/index.js"
 import Table from "./ui/Table.vue"
 import createForm from "./ui/createForm.vue"
-
+import {useAccountStore} from "@/store/modules/index.js"
+const accStore = useAccountStore()
 
 onMounted(()=>{
+  if(!accStore.checkAction(accStore.pn.universitiesRead)) return
   store._index()
 })
 

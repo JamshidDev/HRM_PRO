@@ -1,10 +1,11 @@
 <script setup>
 import {NoDataPicture, UIActionButton, UIPagination, UIUser, UIMenuButton} from "@/components/index.js"
-import {useConfirmationStore, useComponentStore} from "@/store/modules/index.js"
+import {useConfirmationStore, useComponentStore, useAccountStore} from "@/store/modules/index.js"
 import Utils from "@/utils/Utils.js"
 
 const store = useConfirmationStore()
 const compStore = useComponentStore()
+const accStore = useAccountStore()
 
 
 
@@ -40,6 +41,7 @@ const changePage = (v)=>{
 }
 
 const onSelectEv = (v)=>{
+  if(!accStore.checkAction(accStore.pn.hrConfirmationsWrite)) return
   if(Utils.ActionTypes.edit === v.key){
     onEdit(v.data)
   }else if(Utils.ActionTypes.delete === v.key){

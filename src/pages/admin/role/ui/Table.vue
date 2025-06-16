@@ -3,6 +3,9 @@ import {NoDataPicture, UIMenuButton, UIBadge, UIPagination} from "@/components/i
 import {useUserRoleStore} from "@/store/modules/index.js"
 import {RibbonStar24Filled} from "@vicons/fluent"
 import Utils from "@/utils/Utils.js"
+import {useAccountStore} from "@/store/modules/index.js"
+const accStore = useAccountStore()
+
 
 const store = useUserRoleStore()
 
@@ -23,6 +26,7 @@ const onDelete = (v)=>{
 }
 
 const onSelect = (v)=>{
+  if(!accStore.checkAction(accStore.pn.rolesWrite)) return
   if(v.key === Utils.ActionTypes.edit){
     onEdit(v.data)
   }else if(v.key === Utils.ActionTypes.delete){

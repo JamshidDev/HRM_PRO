@@ -1,13 +1,11 @@
 <script setup>
 import {NoDataPicture,UIPagination, UIUser, UIBadge} from "@/components/index.js"
-import {useVacationStore, useComponentStore} from "@/store/modules/index.js"
+import {useVacationStore, useComponentStore, useAccountStore} from "@/store/modules/index.js"
 import Utils from "@/utils/Utils.js"
 
 const store = useVacationStore()
 const compStore = useComponentStore()
-
-
-
+const accStore = useAccountStore()
 
 const onEdit = (v)=>{
 
@@ -41,6 +39,7 @@ const changePage = (v)=>{
 }
 
 const onSelectEv = (v)=>{
+  if(!accStore.checkAction(accStore.pn.hrVacationsWrite)) return
   if(Utils.ActionTypes.edit === v.key){
     onEdit(v.data)
   }else if(Utils.ActionTypes.delete === v.key){

@@ -25,8 +25,6 @@ const onSearch = (v)=>{
   store._index()
 }
 
-
-
 </script>
 <template>
 <UIPageContent>

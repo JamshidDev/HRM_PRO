@@ -1,10 +1,14 @@
 <script setup>
 import {useServiceOrgStore, useComponentStore} from "@/store/modules/index.js"
+import {useAccountStore} from "@/store/modules/index.js"
+const accStore = useAccountStore()
+
 const store = useServiceOrgStore()
 const componentStore = useComponentStore()
 
 
 const onChange = (value,key)=>{
+  if(!accStore.checkAction(accStore.pn.documentExamplesWrite)) return
   store._update({key, active:value})
 }
 

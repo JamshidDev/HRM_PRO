@@ -2,7 +2,8 @@
 import {NoDataPicture, UIActionButton, UIPagination, UIUser, UIMenuButton, UIWorkerView} from "@/components/index.js"
 import {useTimesheetDepartmentStore, useWorkerStore} from "@/store/modules/index.js"
 import Utils from "@/utils/Utils.js"
-
+import {useAccountStore} from "@/store/modules/index.js"
+const accStore = useAccountStore()
 
 const store = useTimesheetDepartmentStore()
 
@@ -14,6 +15,7 @@ const changePage = (v)=>{
 
 const onSelectEv = (v)=>{
   if(v.key === Utils.ActionTypes.delete){
+    if(!accStore.checkAction(accStore.pn.hrTableWrite)) return
     store.elementId = v.data.id
     store._delete()
   }

@@ -2,6 +2,8 @@
 import {NoDataPicture, UIMenuButton, UIPagination} from "@/components/index.js"
 import {usePageInstructionStore} from "@/store/modules/index.js"
 import Utils from "@/utils/Utils.js"
+import {useAccountStore} from "@/store/modules/index.js"
+const accStore = useAccountStore()
 
 const store = usePageInstructionStore()
 
@@ -27,6 +29,7 @@ const changePage = (v)=>{
 }
 
 const onSelectEv = (v)=>{
+  if(!accStore.checkAction(accStore.pn.instructionsWrite)) return
   if(Utils.ActionTypes.edit === v.key){
     onEdit(v)
   }else if(Utils.ActionTypes.delete === v.key){

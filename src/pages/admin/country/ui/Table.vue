@@ -1,6 +1,9 @@
 <script setup>
 import {NoDataPicture, UIActionButton, UIPagination} from "@/components/index.js"
 import {useCountryStore} from "@/store/modules/index.js"
+import {useAccountStore} from "@/store/modules/index.js"
+const accStore = useAccountStore()
+
 
 const store = useCountryStore()
 
@@ -8,6 +11,8 @@ const store = useCountryStore()
 
 
 const onEdit = (v)=>{
+  if(!accStore.checkAction(accStore.pn.countriesWrite)) return
+
   store.visibleType = false
   store.elementId = v.id
   store.payload.name = v.name
@@ -17,6 +22,7 @@ const onEdit = (v)=>{
 }
 
 const onDelete = (v)=>{
+  if(!accStore.checkAction(accStore.pn.countriesWrite)) return
   store.elementId = v.id
   store._delete()
 }
