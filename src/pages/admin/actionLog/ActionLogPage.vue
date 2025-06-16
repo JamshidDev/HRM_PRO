@@ -10,7 +10,7 @@ const store = useActionLogStore()
 
 <template>
   <UIPageContent>
-    <Filter/>
+    <Filter />
     <Tabs/>
   </UIPageContent>
 </template>
