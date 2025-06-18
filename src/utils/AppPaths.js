@@ -96,6 +96,8 @@ export const AppPaths = {
     MedWorker: "/med-worker",
     UploadReport: "/upload-report",
     MonthReport: "/month-report",
+    TaxFour: "/tax-four",
+    TaxFive: "/tax-five",
     Instruction: "/instruction",
 }
 

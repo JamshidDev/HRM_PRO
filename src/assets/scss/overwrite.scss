@@ -1,7 +1,6 @@
 *{
-  font-family: var(--poppins);
-  //scrollbar-color: var(--scrollbar-thumb) var(--surface-ground);
-  //scrollbar-width: thin;
+  font-family:"Poppins", sans-serif !important;
+
   &::-webkit-scrollbar-button {
     display: none;
   }
@@ -24,6 +23,17 @@
 .hidden-tab-header{
   .n-tabs-nav--segment-type{
     display: none !important;
+  }
+}
+.hidden-form-item{
+  .n-form-item-blank{
+    display: none !important;
+  }
+}
+
+.image-viewer-container{
+  .vel-img{
+    width: 600px !important;
   }
 }
 
@@ -278,4 +288,7 @@ input:-webkit-autofill {
   .pswp__item{
     z-index: 999999 !important;
   }
+}
+.n-table thead th {
+    font-weight: 500 !important;
 }

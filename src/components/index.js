@@ -39,6 +39,7 @@ export { default as UIHierarchy } from "./ui/HierarchyNode.vue"
 export {default as AIButton} from "./buttons/AIButton.vue"
 export {default as UIConfirmByFile} from "./ui/UIConfirmByFile.vue"
 export {default as UIMore} from './ui/UIMore.vue'
+export {default as UIImageViewer} from './ui/UIImageViewer.vue'
 export {default as PageInstruction} from './pageInstruction/pageInstruction.vue'
 
 export * from './editor'

@@ -39,6 +39,38 @@ export const useTurnstileTerminalUserStore = defineStore('turnstileTerminalUserS
             per_page: 10,
             search: null,
         },
+        userPayload:{
+            first_name:null,
+            last_name:null,
+            middle_name:null,
+            birthday:null,
+            country_id:null,
+            region_id:null,
+            city_id:null,
+            current_region_id:null,
+            current_city_id:null,
+            nationality_id:null,
+            sex:null,
+            address:null,
+            work_experience:null,
+            experience_date:null,
+            pin:null,
+            education:null,
+            phones:[{
+                id:1,
+                phone:'+998',
+                main:true,
+            }],
+            marital_status:null,
+            photos:[],
+        },
+        addVisible:false,
+        districtList:[],
+        currentDistrictList:[],
+        districtLoading:false,
+        currentDistrictLoading:false,
+        mainImageId:null,
+        userLoading:false,
     }),
     actions: {
         _index() {
@@ -133,6 +165,77 @@ export const useTurnstileTerminalUserStore = defineStore('turnstileTerminalUserS
             this.terminals = []
 
             // this.payload.url =null
-        }
+        },
+        changeRegion(v){
+            this.userPayload.city_id = null
+            this.districtLoading = true
+            $ApiService.districtService._index({params:{page:1,per_page:1000, region_id:v}}).then((res)=>{
+                this.districtList = res.data.data.data
+            }).finally(()=>{
+                this.districtLoading = false
+            })
+        },
+        changeCurrentRegion(v){
+            this.userPayload.current_city_id = null
+            this.currentDistrictLoading = true
+            $ApiService.districtService._index({params:{page:1,per_page:1000, region_id:v}}).then((res)=>{
+                this.currentDistrictList = res.data.data.data
+            }).finally(()=>{
+                this.currentDistrictLoading = false
+            })
+        },
+        onDeletePhoto(v){
+            this.userPayload.photos = this.userPayload.photos.filter((x)=>x.id !== v.id)
+        },
+        saveUser(){
+            let data = {
+                ...this.userPayload,
+                pin:this.userPayload.pin.split('-').join(""),
+                birthday:Utils.timeToZone(this.userPayload.birthday),
+                experience_date:Utils.timeToZone(this.userPayload.experience_date),
+                phones:this.userPayload.phones.map((v)=>v.phone.split('-').join('').slice(4)),
+                photos:this.userPayload.photos.length>0? this.userPayload.photos.map((v)=>({
+                    photo:v.base64,
+                    current:v.id === this.mainImageId
+                })) : [],
+                user_phone:this.userPayload.phones.filter((v)=>v.main)[0].phone.split('-').join('').slice(4),
+            }
+            this.userLoading = true
+            $ApiService.workerService._create({data}).then((res)=>{
+                console.log(res.data)
+                this.addVisible = false
+            }).catch(()=>{
+                this.userLoading = false
+            })
+
+        },
+        resetUserForm(){
+            this.userPayload.first_name = null
+            this.userPayload.last_name = null
+            this.userPayload.middle_name = null
+            this.userPayload.birthday = null
+            this.userPayload.country_id = null
+            this.userPayload.region_id = null
+            this.userPayload.city_id = null
+            this.userPayload.current_region_id = null
+            this.userPayload.current_city_id = null
+            this.userPayload.nationality_id = null
+            this.userPayload.sex = null
+
+            this.userPayload.academic_title = null
+            this.userPayload.academic_degree = null
+            this.userPayload.party = null
+            this.userPayload.address = null
+            this.userPayload.pin = null
+            this.userPayload.phones = [{
+                id:1,
+                phone:'+998',
+                main:true,
+            }]
+            this.userPayload.marital_status = null
+            this.userPayload.photos = []
+            this.mainImageId = null
+            this.userPayload.education = null
+        },
     }
 })

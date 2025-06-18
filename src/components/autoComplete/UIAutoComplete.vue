@@ -58,7 +58,6 @@ const feedback = computed(()=>!Boolean(pin.value))
         class="w-full z-10"
         type="text"
         clearable
-
     />
     <n-form-item path="pin" :show-feedback="feedback">
       <n-input

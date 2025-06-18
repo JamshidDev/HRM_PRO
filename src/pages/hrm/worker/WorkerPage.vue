@@ -100,7 +100,6 @@ onMounted(()=>{
       <ExportForm />
     </template>
   </UIDrawer>
-
   <UIModal
       :title="$t('workerRole.name')"
       :width="1200"

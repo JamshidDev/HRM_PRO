@@ -31,6 +31,12 @@ export default {
             trigger: [...triggerEvents, 'change'],
             message: t(`rules.requiredField`)
         },
+        requiredPhotoField: {
+            type: 'array',
+            required: true,
+            trigger: [...triggerEvents, 'change'],
+            message: t(`rules.requiredImageField`)
+        },
         requiredPhonesField:[
             {
                 validator: (rule, value) => {
@@ -61,6 +67,7 @@ export default {
         requiredNumberField:'requiredNumberField',
         requiredMultiSelectField:'requiredMultiSelectField',
         requiredPhonesField:'requiredPhonesField',
+        requiredPhotoField:'requiredPhotoField',
         requiredPinField:'requiredPinField'
     },
     login:{
@@ -1008,6 +1015,12 @@ export default {
             trigger: triggerEvents
         },
         command_date:{
+            type:'number',
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        position_date:{
             type:'number',
             required: true,
             message: t(`rules.requiredField`),

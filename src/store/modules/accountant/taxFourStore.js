@@ -1,12 +1,13 @@
 import {defineStore} from "pinia";
 import i18n from "@/i18n/index.js"
+import Utils from "@/utils/Utils.js"
 const {t} = i18n.global
-export const useMonthReportStore = defineStore('monthReportStore', {
+export const useTaxFourStore = defineStore('taxFourStore', {
     state:()=>({
         list:[],
         loading:false,
         showLoading:false,
-        deleteLoading:false,
+        downloadLoading:false,
         visible:false,
         visibleType:true,
         elementId:null,
@@ -23,11 +24,6 @@ export const useMonthReportStore = defineStore('monthReportStore', {
             month:null,
         },
         structureCheck2:[],
-        showList:[],
-        showPrams:{
-            year:null,
-            month:null,
-        }
 
     }),
     actions:{
@@ -37,7 +33,7 @@ export const useMonthReportStore = defineStore('monthReportStore', {
                 ...this.params,
                 organizations:this.params.organizations.map(v=>v.id).toString() || undefined,
             }
-            $ApiService.monthReportService._index({params}).then((res)=>{
+            $ApiService.taxFourService._index({params}).then((res)=>{
                 this.list = res.data.data.data
                 this.totalItems = res.data.data.total
             }).finally(()=>{
@@ -46,15 +42,19 @@ export const useMonthReportStore = defineStore('monthReportStore', {
         },
         _show(){
             this.showLoading = true
-            let params = {
-                year:this.showPrams.year,
-                month:this.showPrams.month,
-            }
-            let id = this.elementId
-            $ApiService.monthReportService._show({params, id}).then((res)=>{
-                this.showList = res.data.data
+            $ApiService.taxFourService._show({params:this.params}).then((res)=>{
+                this.list = res.data.data.data
+                this.totalItems = res.data.data.total
             }).finally(()=>{
                 this.showLoading = false
+            })
+        },
+        _download(){
+            this.downloadLoading = true
+            $ApiService.taxFourService._template().then((res)=>{
+               Utils.downloadFileByUrl(res.data.data.url)
+            }).finally(()=>{
+                this.downloadLoading = false
             })
         },
 

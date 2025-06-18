@@ -1,8 +1,6 @@
 <script setup>
 import Utils from "@/utils/Utils.js"
 import {useAppSetting} from "@/utils/index.js"
-import VuePictureSwipe from 'vue3-picture-swipe';
-const pictureSwipe = ref(null)
 const props = defineProps({
   short:{
     type:Boolean,
@@ -42,23 +40,9 @@ const fullName = computed(()=> `${props.data.lastName} ${props.data.firstName} $
 const shortName = computed(()=>  `${props.data.lastName}.${props.data.firstName[0]}.${props.data.middleName[0]} `)
 
 const onOpen = ()=>{
-  const thumbnail = pictureSwipe.value?.$el.querySelector('.gallery-thumbnail')
-  if (thumbnail && props.avatarClickable) {
-    thumbnail.click()
-  }
+  window.$openViewer(props.data.photo)
 }
 
-const userSrc = computed(()=> {
-  return [
-    {
-      src:props.data.photo,
-      thumbnail:props.data.photo,
-      w:500,
-      h:600,
-      title: props.data.lastName+' '+props.data.firstName+' '+props.data.middleName,
-    }
-  ]
-})
 
 </script>
 
@@ -90,12 +74,6 @@ const userSrc = computed(()=> {
     </slot>
   </div>
 </div>
-  <VuePictureSwipe  ref="pictureSwipe" :options="{shareEl:false, zoomEl:true}"  :items="userSrc"></VuePictureSwipe>
 </template>
 
-<style>
-.my-gallery{
-  width: 0px;
-  height: 0px;
-}
-</style>
+

@@ -407,6 +407,13 @@ export const navigations = [
         permission: appPermissions.admin,
         children: [
             {
+                label: 'accDashboard.name',
+                path: Utils.routeAccountantPathMaker(AppPaths.Dashboard),
+                icon: Grid20Filled,
+                color: 'bg-dark',
+                permission: appPermissions.users,
+            },
+            {
                 label: 'uploadReport.name',
                 path: Utils.routeAccountantPathMaker(AppPaths.UploadReport),
                 icon: AppsList24Filled,
@@ -418,6 +425,20 @@ export const navigations = [
                 path: Utils.routeAccountantPathMaker(AppPaths.MonthReport),
                 icon: Calculator24Regular,
                 color: 'bg-warning',
+                permission: appPermissions.users,
+            },
+            {
+                label: 'taxFour.name',
+                path: Utils.routeAccountantPathMaker(AppPaths.TaxFour),
+                icon: Calculator24Regular,
+                color: 'bg-success',
+                permission: appPermissions.users,
+            },
+            {
+                label: 'taxFive.name',
+                path: Utils.routeAccountantPathMaker(AppPaths.TaxFive),
+                icon: Calculator24Regular,
+                color: 'bg-info',
                 permission: appPermissions.users,
             },
         ]

@@ -108,6 +108,8 @@ export const useContractStore = defineStore('contractStore', {
                    worker_id:compStore.isSelectedWorker? Number(compStore.worker.pin) : this.payload.pin,
                    director_id:this.payload.director_id,
                    department_id:this.payload.department_id.length>0? this.payload.department_id[0].id : null,
+                   vacation_main_day:this.payload.vacation_main_day || 0,
+                   additional_vacation_day:this.payload.additional_vacation_day || 0,
                }
             }
             delete data.pin

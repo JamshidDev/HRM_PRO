@@ -1,2 +1,5 @@
 export const UploadReportPage = ()=>import("./report/page.vue")
 export const MonthReportPage = ()=>import("./monthReport/page.vue")
+export const TaxFourPage = ()=>import("./taxFour/page.vue")
+export const TaxFivePage = ()=>import("./taxFive/page.vue")
+export const DashboardPage = ()=>import("./dashboard/page.vue")

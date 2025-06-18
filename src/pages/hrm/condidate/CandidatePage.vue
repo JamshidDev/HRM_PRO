@@ -56,7 +56,7 @@ const openOffice = (id)=>{
 }
 
 const onDelete = (v)=>{
-  store.candidatePhotos = store.candidatePhotos.filter((x)=>x.id !== v.id)
+  store.payload.photos = store.payload.photos.filter((x)=>x.id !== v.id)
 }
 
 onMounted(()=>{
@@ -113,7 +113,7 @@ onMounted(()=>{
         >
           <template #default>
             <PhotoForm
-                v-model:images="store.candidatePhotos"
+                v-model:images="store.payload.photos"
                 v-model:main-image-id="store.mainImageId"
                 @onDelete="onDelete"
             />

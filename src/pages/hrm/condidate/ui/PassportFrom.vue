@@ -62,11 +62,10 @@ const onUpload = async (v)=>{
         class="col-span-12 md:col-span-6 lg:col-span-4"
         :label="$t(`createWorkerPage.form.passport_address`)"
         :rule-path="validationRules.rulesNames.requiredStringField"
-        path="address">
+        path="passport_address">
       <n-input
           class="w-full"
           type="text"
-
           v-model:value="store.payload.passport_address"
       />
     </n-form-item>

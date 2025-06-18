@@ -24,8 +24,11 @@
     "add": "Qo'shish",
     "filterSetting": "Filter sozlamalar",
     "news": "Yangi",
+    "hour": "soat",
     "action": "Amallar",
     "fullName": "Ism",
+    "position": "Lavozim",
+    "template": "Shablon fayl",
     "number": "№",
     "photo": "Rasm",
     "platform": "Platforma",
@@ -1364,7 +1367,9 @@
       "companyWorker": "Korxona xodimi",
       "notCompanyWorker": "Korxona xodimi emas",
       "deadline_feedback": "Bo'sh qoldirilsa 2 yil",
-      "terminals": "Terminallar"
+      "terminals": "Terminallar",
+      "addUser": "Terminalga foydalanuvchi qo'shish",
+      "addBtn": "Foydalanuvchi qo'shish"
     },
     "workDurationPage": {
       "name": "Ish vaqti",
@@ -1639,7 +1644,7 @@
   },
   "monthReport": {
     "name": "Oylik hisobot",
-    "createTitle": "Hisobot yuklash",
+    "createTitle": "To'liq ma'lumot",
     "form": {
       "pin": "Pin",
       "salary": "Ish haqi",
@@ -1647,6 +1652,17 @@
       "totalTwo": "Ish haqi fondiga kirmaydigan to'lov turlari",
       "totalThree": "Hisoblandi",
       "totalFour": "Ish haqidan ushlamalar"
+    },
+    "view": {
+      "main_salary": "Oklad",
+      "work_time": "Ishlagan vaqti"
+    },
+    "in": {
+      "code": "To'lov shifri",
+      "type": "To'lov turi va nomi",
+      "amount": "Summa",
+      "total": "Jami hisoblandi",
+      "out_total": "Jami ushlanma"
     }
   },
   "polyclinic": {
@@ -1696,6 +1712,37 @@
       "position": "Lavozimi",
       "department": "Bo'lim",
       "position_date": "Lavozim sanasi"
+    }
+  },
+  "taxFour": {
+    "name": "JSHDS 4-ilova",
+    "form": {
+      "employee_status": "Hisobot davrida xodim holati (1-ishlaydi, 2-ishlamaydi)",
+      "contract_type": "Shartnoma turi (1-asosiy, 2-o'rindosh, 3-FXSH, 4-yolllanma)",
+      "total_salary_income": "Jami mehnatga haq to'lash tarzidagi daromadlar",
+      "total_tax": "Jami hisoblangan soliq summasi",
+      "reported_salary_income": "Hisobot davridagi mehnatga haq to'lash tarzidagi daromadlar",
+      "reported_tax": "Hisobot davrida hisoblangan soliq summasi"
+    }
+  },
+  "taxFive": {
+    "name": "JSHDS 5-ilova",
+    "form": {
+      "total_income": "Jami hisoblangan daromadlar",
+      "reported_income": "Hisobot davrida hisoblangan daromadlar",
+      "income_type": "Daromad turi (1 - mulkiy, 2-ijara, 3-moddiy naf tarzidagi, 4-boshqa)",
+      "total_tax": "Jami hisoblangan soliq summasi",
+      "reported_tax": "Hisobot davrida hisoblangan soliq summasi"
+    }
+  },
+  "accDashboard": {
+    "name": "Dashboard",
+    "form": {
+      "total_income": "Jami hisoblangan daromadlar",
+      "reported_income": "Hisobot davrida hisoblangan daromadlar",
+      "income_type": "Daromad turi (1 - mulkiy, 2-ijara, 3-moddiy naf tarzidagi, 4-boshqa)",
+      "total_tax": "Jami hisoblangan soliq summasi",
+      "reported_tax": "Hisobot davrida hisoblangan soliq summasi"
     }
   }
 }

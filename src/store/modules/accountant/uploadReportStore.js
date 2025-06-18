@@ -55,6 +55,7 @@ export const useUploadReportStore = defineStore('uploadReport', {
             }
             $ApiService.accountantService._index({params}).then((res)=>{
                 this.cards = res.data.data
+                this.list = []
             }).finally(()=>{
                 this.cardLoading= false
             })
@@ -69,25 +70,11 @@ export const useUploadReportStore = defineStore('uploadReport', {
             data.append('organization_id', this.params.organization_id?.[0]?.id)
             $ApiService.accountantService._create({data}).then((res)=>{
                 this.visible = false
-                this._index()
+                this._cards()
             }).finally(()=>{
                 this.saveLoading = false
             })
 
-        },
-        _update(){
-            this.saveLoading = true
-            let data = {
-                name:this.payload.name,
-                long:this.payload.marker.coords[0],
-                lat:this.payload.marker.coords[1],
-            }
-            $ApiService.countryService._update({data, id:this.elementId}).then((res)=>{
-                this.visible = false
-                this._index()
-            }).finally(()=>{
-                this.saveLoading = false
-            })
         },
         _delete(){
             this.deleteLoading = true

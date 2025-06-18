@@ -258,7 +258,6 @@ const showForm = computed(()=>store.payload.type===null? true : [1,8].includes(s
                     class="w-full"
                     v-model:value="store.payload.contract_date"
                     type="date"
-
                     :format="useAppSetting.datePicketFormat"
                 />
               </n-form-item>
@@ -426,30 +425,12 @@ const showForm = computed(()=>store.payload.type===null? true : [1,8].includes(s
                     class="w-full"
                     v-model:value="store.payload.contract_to_date"
                     type="date"
-
                     :format="useAppSetting.datePicketFormat"
                 />
               </n-form-item>
             </div>
-<!--            <template v-if="store.payload.type === 8">-->
-<!--              <div class="col-span-12">-->
-<!--                <n-form-item :label="$t(`documentPage.form.postName`)" path="post_name">-->
-<!--                  <n-input-->
-<!--                      class="w-full"-->
-<!--                      type="text"-->
-<!--                      -->
-<!--                      v-model:value="store.payload.post_name"-->
-<!--                  />-->
-<!--                </n-form-item>-->
-<!--              </div>-->
-<!--            </template>-->
           </div>
         </div>
-
-
-
-
-
         <div class="col-span-12">
           <n-form-item :label="$t(`documentPage.form.director`)" path="director_id">
             <n-select
@@ -458,7 +439,6 @@ const showForm = computed(()=>store.payload.type===null? true : [1,8].includes(s
                 value-field="id"
                 label-field="last_name"
                 v-model:value="store.payload.director_id"
-
                 :options="componentStore.confirmationList"
                 :loading="componentStore.confirmationLoading"
                 :render-label="renderLabel"

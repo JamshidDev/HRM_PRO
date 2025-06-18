@@ -36,6 +36,7 @@ export const useCreateWorkerStore = defineStore('createWorkerStore', {
             to_date:null,
             passport_address:null,
             file:null,
+            photos:[],
         },
         params:{
             page:1,
@@ -91,7 +92,7 @@ export const useCreateWorkerStore = defineStore('createWorkerStore', {
                 birthday:Utils.timeToZone(this.payload.birthday),
                 experience_date:Utils.timeToZone(this.payload.experience_date),
                 phones:this.payload.phones.map((v)=>v.phone.split('-').join('').slice(4)),
-                photos:this.candidatePhotos.length>0? this.candidatePhotos.map((v)=>({
+                photos:this.payload.photos.length>0? this.payload.photos.map((v)=>({
                     photo:v.base64,
                     current:v.id === this.mainImageId
                 })) : [],
@@ -154,7 +155,6 @@ export const useCreateWorkerStore = defineStore('createWorkerStore', {
             this.payload.party = null
             this.payload.address = null
             this.payload.pin = null
-            // this.payload.inn = null
             this.payload.phones = [{
                 id:1,
                 phone:'+998',
@@ -168,7 +168,7 @@ export const useCreateWorkerStore = defineStore('createWorkerStore', {
             this.payload.file = null
 
             this.passportFileName = null
-            this.candidatePhotos = []
+            this.payload.photos = []
             this.mainImageId = null
             this.payload.education = null
         },

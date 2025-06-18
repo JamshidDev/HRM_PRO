@@ -543,6 +543,15 @@ const blobFileDownload = (file, contentType, fileName)=>{
 
 }
 
+const downloadFileByUrl = (url)=>{
+    const link = document.createElement("a")
+    link.href = url
+    link.setAttribute("download", 'file')
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+}
+
 const checkRequestBody = (body)=>{
     if(body){
         for(let key in body){
@@ -681,6 +690,7 @@ export default {
     appPermissions,
     colorTypes,
     blobFileDownload,
+    downloadFileByUrl,
     checkRequestBody,
     formatPhoneWithMask,
     documentStatus,
