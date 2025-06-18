@@ -203,7 +203,7 @@ const onChangeCheckTerminal = ()=>{
             @update:value="onChangeSearchWorker"
         />
       </n-form-item>
-      <n-form-item v-else :label="$t(`content.staff`)" path="worker_id" rule-path="requiredStringField">
+      <n-form-item v-else :label="$t(`content.staff`)" path="worker_id" rule-path="requiredNumberField">
         <checkWorkerSelect v-model:value="store.payload.worker_id" @update:value="onChangeWorker" />
       </n-form-item>
       <n-form-item :label="$t(`content.deadline`)" :feedback="$t('turnstile.terminalUser.deadline_feedback')">
