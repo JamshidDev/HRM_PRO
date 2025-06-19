@@ -1,5 +1,4 @@
 <script setup>
-import {Eye24Regular} from "@vicons/fluent"
 import VChart from "vue-echarts"
 import { use } from 'echarts/core'
 import { CanvasRenderer } from 'echarts/renderers'
@@ -84,7 +83,7 @@ const colors = {
 }
 
 
-watch(()=> store.dashboard.ageCard, (newValue, oldValue)=>{
+watch(()=> store.dashboard.ageCard, (newValue)=>{
   ageOption.value.series[0].data =newValue.map((v,idx)=>({
     value:v.count,
     name:t(v.title),

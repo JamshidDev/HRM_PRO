@@ -24,6 +24,8 @@ export const useAccDashboardStore = defineStore('accDashboardStore', {
             month:null,
         },
         structureCheck2:[],
+        dashboardData:null,
+        dashboardLoading:false,
 
     }),
     actions:{
@@ -49,12 +51,12 @@ export const useAccDashboardStore = defineStore('accDashboardStore', {
                 this.showLoading = false
             })
         },
-        _download(){
-            this.downloadLoading = true
-            $ApiService.taxFourService._template().then((res)=>{
-                Utils.downloadFileByUrl(res.data.data.url)
+        _dashboard(){
+            this.dashboardLoading = true
+            $ApiService.accDashboardService._dashboard().then((res)=>{
+                this.dashboardData = res.data.data
             }).finally(()=>{
-                this.downloadLoading = false
+                this.dashboardLoading = false
             })
         },
 
