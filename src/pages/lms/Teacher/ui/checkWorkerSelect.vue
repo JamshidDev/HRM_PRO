@@ -80,7 +80,7 @@ onMounted(()=>{
       clearable
       clear-filter-after-select
       ref="workerSelectRef"
-      v-model:value="workerId"
+      :value="workerId ? String(workerId) : undefined"
       :options="componentStore.worker ? [componentStore.worker] : []"
       :loading="componentStore.pinLoading"
       label-field="lastName"

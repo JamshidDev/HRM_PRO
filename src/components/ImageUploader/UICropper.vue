@@ -23,16 +23,16 @@ const uploadImage = (event)=>{
       URL.revokeObjectURL(image.value.src);
     }
     image.value.src = URL.createObjectURL(files[0])
-    image.value.type =files[0].type
+    image.value.type = files[0].type
     visible.value = true;
   }
 }
 
 const onSave = ()=>{
- let imgUrl = cropperRef.value.getResult().canvas.toDataURL()
+ let imgUrl = cropperRef.value.getResult().canvas.toDataURL(image.value.type)
   cropperRef.value.getResult().canvas.toBlob((blob) => {
     emits('onResult', {blob, imgUrl})
-  });
+  }, image.value.type);
   visible.value = false
 
 }
