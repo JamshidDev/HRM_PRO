@@ -58,7 +58,7 @@ const option = computed(()=>{
     left: '2%',
     right: '2%',
     bottom: '2%',
-    containLabel: true
+    containLabel: true,
   },
     tooltip: {
       trigger: 'axis',
@@ -74,7 +74,8 @@ const option = computed(()=>{
       data: [],
       axisPointer: {
         type: 'shadow'
-      }
+      },
+      splitLine: { show: false }
     },
     yAxis: {
       type: 'value',
@@ -93,7 +94,8 @@ const option = computed(()=>{
             fontWeight: 'normal' // Birlik oddiy font
           }
         },
-      }
+      },
+      splitLine: { show: true }
     },
     series: [
       {
@@ -153,7 +155,7 @@ const option = computed(()=>{
   if(!store.dashboardData) return defaultOption
   const v = store.dashboardData
   defaultOption.xAxis.data = v.statements.map(x=>x.label)
-  console.log(props.chartType)
+
   if(props.chartType === 'card_one'){
     defaultOption.series[0].data = v.statements.map(x=>x.amount?.total_one || 0)
   }else if(props.chartType === 'card_two'){
@@ -162,9 +164,6 @@ const option = computed(()=>{
   else if(props.chartType === 'card_three'){
     defaultOption.series[0].data = v.statements.map(x=>x.amount?.total_three || 0)
   }
-
-
-
   return defaultOption
 })
 </script>

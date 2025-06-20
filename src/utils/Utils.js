@@ -622,6 +622,11 @@ const documentStatus = {
     },
 }
 
+const formatToMLN = (num, index=0)=>{
+    if(!num) return 0
+    return (num/1000000).toFixed(index)
+}
+
 const disablePasteDate = (v, date) =>{
     if(!date) return false
     return v<date
@@ -647,6 +652,7 @@ const startWorkTime = [
 ]
 
 export default {
+    formatToMLN,
     startWorkTime,
     disablePasteDate,
     fileToBase64,

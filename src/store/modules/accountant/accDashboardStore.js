@@ -25,38 +25,52 @@ export const useAccDashboardStore = defineStore('accDashboardStore', {
         },
         structureCheck2:[],
         dashboardData:null,
+        cards:[],
         dashboardLoading:false,
 
     }),
     actions:{
         _index(){
-            this.loading= true
             const params = {
                 ...this.params,
                 organizations:this.params.organizations.map(v=>v.id).toString() || undefined,
             }
-            $ApiService.taxFourService._index({params}).then((res)=>{
-                this.list = res.data.data.data
-                this.totalItems = res.data.data.total
-            }).finally(()=>{
-                this.loading= false
-            })
-        },
-        _show(){
-            this.showLoading = true
-            $ApiService.taxFourService._show({params:this.params}).then((res)=>{
-                this.list = res.data.data.data
-                this.totalItems = res.data.data.total
-            }).finally(()=>{
-                this.showLoading = false
-            })
-        },
-        _dashboard(){
-            this.dashboardLoading = true
-            $ApiService.accDashboardService._dashboard().then((res)=>{
+            this.loading = true
+            $ApiService.accDashboardService._dashboard({params}).then((res)=>{
                 this.dashboardData = res.data.data
+                const data =res.data.data.last_month
+                this.cards = [
+                    {
+                        name:'accDashboard.chart.statements',
+                        data:data.statement.filter((_,index)=>index<3).map((v)=>({
+                            name:`accDashboard.chart.${v.key }`,
+                            count:v.value,
+                        }))
+                    },
+                    {
+                        name:'accDashboard.chart.tax_five',
+                        data:data.tax_five.map((v)=>({
+                            name:`accDashboard.tax_five.${v.key }`,
+                            count:v.value,
+                        }))
+                    },
+                    {
+                        name:'accDashboard.chart.tax_four',
+                        data:data.tax_four.map((v)=>({
+                            name:`accDashboard.chart.${v.key }`,
+                            count:v.value,
+                        }))
+                    },
+                    {
+                        name:'accDashboard.chart.pension_payment',
+                        data:data.pension_payment.map((v)=>({
+                            name:`accDashboard.chart.${v.key }`,
+                            count:v.value,
+                        }))
+                    },
+                ]
             }).finally(()=>{
-                this.dashboardLoading = false
+                this.loading = false
             })
         },
 

@@ -20,6 +20,7 @@
     "langRu": "RUS",
     "langEn": "ENG",
     "search": "Qidiruv",
+    "mln": "mln",
     "searchWorker": "Xodimni qidirish uchun yozing...",
     "add": "Qo'shish",
     "filterSetting": "Filter sozlamalar",
@@ -85,7 +86,7 @@
     "checking": "Tekshirilmoqda...",
     "downloadCV": "Ma'lumotnoma yuklash",
     "deleteWarning": "Haqiqattan ham o'chirmoqchimisz?",
-    "sum": "So'm",
+    "sum": "so'm",
     "total": "Umumiy: {n}ta",
     "fromTa": "tadan",
     "main": "Asosiy",
@@ -1743,6 +1744,27 @@
       "income_type": "Daromad turi (1 - mulkiy, 2-ijara, 3-moddiy naf tarzidagi, 4-boshqa)",
       "total_tax": "Jami hisoblangan soliq summasi",
       "reported_tax": "Hisobot davrida hisoblangan soliq summasi"
+    },
+    "chart": {
+      "sum": "Yig'indi",
+      "total_one": "Ish haqi fondiga kiruvchi to'lov turlari",
+      "total_two": "Daromad tarkibiga kiritilmaydigan to‘lovlar",
+      "total_three": "Ish haqi fondiga kirmaydigan to'lov turlari",
+      "total_four": "Jami ish haqi",
+      "total_five": "Ish haqidan ushlamalar",
+      "statements": "Oylik hisobot",
+      "tax_four": "Soliq hisoboti 4-ilova",
+      "tax_five": "Soliq hisoboti 5-ilova",
+      "pension_payment": "INPS",
+      "reported_income": "Hisobot davridagi daromadlar",
+      "reported_tax": "Hisobot davridagi soliq summasi",
+      "income_tax_paid": "Daromad solig‘i to‘langan daromad miqdori",
+      "total_contributions": "Jami badallar",
+      "reported_salary_income": "Hisobot davridagi mehnatga haq to‘lash tarzidagi daromadlar"
+    },
+    "tax_five": {
+      "reported_income": "Hisobot davridagi daromadlar",
+      "reported_tax": "Hisobot davridagi soliq summasi"
     }
   }
 }
