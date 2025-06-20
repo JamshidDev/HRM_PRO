@@ -48,7 +48,7 @@ const option = computed(()=>{
           }
         },
         itemStyle: {
-          borderRadius:4,
+          borderRadius:12,
           borderColor: '#ffffff',
           borderWidth: 1
         },
@@ -103,36 +103,36 @@ const option = computed(()=>{
 </script>
 
 <template>
-  <div class="flex bg-surface-section p-2 rounded-lg border border-surface-line h-full">
+  <div class="flex bg-surface-section p-2 rounded-2xl border border-surface-line h-full">
     <div class="h-[200px] w-[200px]">
       <v-chart autoresize :option="option" />
     </div>
-    <div class="w-[calc(100%-200px)] pl-2 grid grid-cols-12 content-between min-h-[320px]">
+    <div class="w-[calc(100%-200px)] pl-2 grid grid-cols-12 content-between min-h-[260px]">
       <div class="col-span-12">
         <template v-for="(item, index) in data">
           <div class="leading-[1] mb-2">
             <p v-bind:style="{color:colors[item.key]}" class="text-lg font-black mb-0">{{numeral(item.real).format('0,0.0')}}<small class="text-xs text-textColor3/60 font-normal pl-1 lowercase"> {{ $t('content.sum')}}</small></p>
-            <small class="text-xs text-textColor3">{{$t(`accDashboard.chart.${item.key}`)}}</small>
+            <p class="text-xs text-textColor3 line-clamp-2">{{$t(`accDashboard.chart.${item.key}`)}}</p>
           </div>
         </template>
       </div>
 
-      <div class="border p-4 border-dashed rounded-2xl mt-4 col-span-12"
+      <div class="border p-1 border-dashed rounded-2xl mt-4 col-span-12"
            :class="[isCorrect? 'bg-success/5 border-success text-success' : 'bg-danger/5 border-danger text-danger']"
       >
         <div class="leading-[1] flex">
           <p class="text-center font-black text-3xl leading-[1] w-[140px]">
             {{Utils.formatToMLN(data?.[0]?.real,1)}}
             <small class="font-normal text-xs text-textColor3/40"> {{ $t('content.mln') }}</small></p>
-          <small class="text-xs text-textColor3/40 text-center flex items-center leading-[1] w-[calc(100%-140px)]">
-            <n-icon size="24" class="rotate-[-20deg] text-textColor3">
+          <div class="text-xs text-textColor3/40 text-center flex items-center leading-[1] w-[calc(100%-140px)]">
+            <n-icon size="14" class="rotate-[-20deg] text-textColor3">
               <Line32Filled/>
             </n-icon>
-            {{$t('accDashboard.chart.sum')}}</small>
+            <p class="line-clamp-2">{{$t('accDashboard.chart.sum')}}</p></div>
         </div>
 
-        <n-divider class="!my-2" dashed>
-          <n-icon size="20" class="text-primary">
+        <n-divider class="!my-0" dashed>
+          <n-icon size="16" class="text-primary">
             <ChevronDoubleUp20Regular/>
           </n-icon>
         </n-divider>
@@ -141,11 +141,11 @@ const option = computed(()=>{
           <p class="text-center font-black  text-3xl leading-[1] w-[140px]">
             {{Utils.formatToMLN(data?.[1]?.real,1)}}
             <small class="font-normal text-xs text-textColor3/40"> {{ $t('content.mln')}}</small></p>
-          <small class="text-xs text-textColor3/40 text-center flex items-center leading-[1] w-[calc(100%-140px)]">
-            <n-icon size="24" class="rotate-[-20deg] text-textColor3">
+          <div class="text-xs text-textColor3/40 text-center flex items-center leading-[1] w-[calc(100%-140px)]">
+            <n-icon size="14" class="rotate-[-20deg] text-textColor3">
               <Line32Filled/>
             </n-icon>
-            {{$t('accDashboard.chart.total_two')}}</small>
+            <span class="line-clamp-2">{{$t('accDashboard.chart.total_two')}}</span></div>
         </div>
 
 

@@ -1,5 +1,11 @@
 <script setup>
+import numeral from "numeral"
+
 const props = defineProps({
+  index:{
+    type: Number,
+    default:1
+  },
   data:{
     type: Object,
     default:{
@@ -15,15 +21,44 @@ const props = defineProps({
 
 <template>
 
-  <div class="w-full p-4 bg-surface-section border border-surface-line rounded-lg relative h-full">
-    <h1 class="text-lg mb-4 font-medium text-textColor2">{{$t(data?.name)}}</h1>
+  <div
+      class="w-full px-3 pt-2 bg-surface-section border border-surface-line rounded-2xl relative h-full overflow-hidden">
+    <h1 class="mb-4 font-semibold  line-clamp-1 text-primary">{{$t(data?.name)}}</h1>
     <template v-for="(item,index) in data?.data" :key="index">
-      <h3 class="text-primary font-semibold leading-[1] text-lg">{{item.count}}</h3>
-      <h3 class="text-textColor3 text-xs font-normal leading-[1] mb-4">{{$t(item?.name)}}</h3>
+      <h3 class=" font-semibold line-clamp-1 relative z-[2]">
+        {{numeral(item.count).format('0,0.0')}}</h3>
+      <h3 class="text-textColor3 relative z-[2] text-xs font-normal leading-[1] mb-4 line-clamp-2">{{$t(item?.name)}}</h3>
     </template>
+    <img
+        :class="[`position-${index}`]"
+        class="absolute z-[1]" src="@/assets/images/svg/circle-shape.svg" alt="shape-svg"/>
     <span
-        class="z-1 opacity-30 absolute top-0 right-0 w-[160px] h-full bg-no-repeat bg-[url(/effect/primary-card.svg)]"></span>
+        class="z-[10] opacity-30 absolute top-0 right-0 w-[160px] h-full bg-no-repeat bg-[url(/effect/primary-card.svg)]"></span>
   </div>
 
 </template>
+
+<style scoped>
+.position-1{
+  bottom:-160px;
+  right:-120px;
+}
+
+.position-2{
+  top:-160px;
+  right:-100px;
+}
+
+.position-3{
+  bottom:-160px;
+  right:-100px;
+}
+
+.position-4{
+  top:-160px;
+  left:-100px;
+}
+
+
+</style>
 
