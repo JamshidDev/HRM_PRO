@@ -99,6 +99,7 @@ export const AppPaths = {
     TaxFour: "/tax-four",
     TaxFive: "/tax-five",
     Instruction: "/instruction",
+    PublicVacancy: "/public-vacancy",
 }
 
 export const AppLayouts ={

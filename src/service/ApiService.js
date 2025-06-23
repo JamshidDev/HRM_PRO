@@ -58,6 +58,7 @@ import incentiveService from '@/service/v1/hrm/incentiveService.js'
 import punishmentService from '@/service/v1/hrm/punishmentService.js'
 import medInspectionService from '@/service/v1/hrm/medInspectionService.js'
 import polyclinicService from '@/service/v1/hrm/polyclinicService.js'
+import vacancyService from '@/service/v1/hrm/vacancyService.js'
 
 import documentService from "@/service/v1/docFlow/documentService.js"
 import contractService from "@/service/v1/docFlow/contractService.js"
@@ -180,6 +181,7 @@ export default {
     turnstileTerminalUserService,
     turnstileWorkDurationService,
     punishmentService,
+    vacancyService,
 
     learningCenterService,
     directionService,

@@ -111,7 +111,6 @@ onMounted(()=>{
 
                   @paste="(e)=>{
                     let a = (e.clipboardData.getData('text')).replaceAll(' ', '')
-                    console.log(a)
                     if(a.length>9) store.phone = ''
                   }"
                   v-model:value="store.phone"
@@ -129,7 +128,6 @@ onMounted(()=>{
                   type="password"
                   show-password-on="click"
                   :maxlength="16"
-
                   v-model:value="store.password"
               >
                 <template #prefix>

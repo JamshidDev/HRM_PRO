@@ -130,6 +130,7 @@ const handleCreated = (editor) => {
             :mode="'default'"
             class="editor"
             @onCreated="handleCreated"
+            style="height:300px;"
         />
       </div>
     </component>

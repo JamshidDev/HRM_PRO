@@ -1766,5 +1766,26 @@
       "reported_income": "Hisobot davridagi daromadlar",
       "reported_tax": "Hisobot davridagi soliq summasi"
     }
+  },
+  "vacancy": {
+    "name": "Ochiq vakansiyalar",
+    "createTitle": "Vakansiya yaratish",
+    "updateTitle": "Vakansiya tahrirlash",
+    "form": {
+      "department_position_id": "Vakansiya lavozimlari",
+      "region_id": "Viloyat",
+      "city_id": "Tuman/Shahar",
+      "work_type": "Ish tartibi",
+      "address": "Ishxona manzili (to'liq)",
+      "education": "Minimum ma'lumot (lavozim u-n)",
+      "rate": "Stavka",
+      "salary": "Oylik maosh (so'm)",
+      "experience": "Talab qilinadigan staj (yil)",
+      "to": "Vakansiya muddati",
+      "position_obligations": "Lavozim majburiyatlari",
+      "qualification_requirements": "Malaka talablari",
+      "working_conditions": "Ish sharoitlari",
+      "specialties": "Mutaxassisligi"
+    }
   }
 }

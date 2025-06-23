@@ -1,4 +1,4 @@
-<script setup>
+x<script setup>
 import {useComponentStore, useCreateWorkerStore} from "@/store/modules/index.js"
 import validationRules from "@/utils/validationRules.js"
 import Utils from "@/utils/Utils.js"

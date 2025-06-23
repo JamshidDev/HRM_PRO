@@ -45,6 +45,7 @@ import {
     ShareScreenPerson20Filled,
     BuildingHome16Filled,
     DocumentRibbon24Filled,
+    Briefcase48Filled,
 } from "@vicons/fluent"
 import {AppPaths} from "@/utils/index.js";
 import Utils from "@/utils/Utils.js"
@@ -195,13 +196,13 @@ export const navigations = [
                 color: 'bg-info',
                 permission: appPermissions.hrVacationSchedule,
             },
-            // {
-            //     label: 'workerRole.name',
-            //     path: Utils.routeHrmPathMaker(AppPaths.WorkerRole),
-            //     icon: RibbonStar24Filled,
-            //     color: 'bg-info',
-            //     permission: appPermissions.hrUsers,
-            // },
+            {
+                label: 'vacancy.name',
+                path: Utils.routeHrmPathMaker(AppPaths.PublicVacancy),
+                icon: Briefcase48Filled,
+                color: 'bg-info',
+                permission: appPermissions.hrUsers,
+            },
             {
                 label: 'punishment.name',
                 path: Utils.routeHrmPathMaker(AppPaths.Punishment),

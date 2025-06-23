@@ -181,7 +181,7 @@ export const useComponentStore = defineStore('componentStore', {
         timesheetWorkplaceLoading: false,
         timesheetTypes: [],
         timesheetEnumsLoading: false,
-
+        work_Types:[],
         reasonTypes:[],
         reasonTypeLoading:false,
 
@@ -293,6 +293,7 @@ export const useComponentStore = defineStore('componentStore', {
                 this.financialAssistance = res.data.data.financial_assistance
                 this.fineTypes = res.data.data.fine_types
                 this.vacationTypes = res.data.data.vacation_types
+                this.work_Types = res.data.data.work_types
 
             }).finally(()=>{
                 this.enumLoading= false
