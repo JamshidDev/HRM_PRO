@@ -39,14 +39,14 @@ export const useVacancyStore = defineStore('vacancyStore', {
         vacancyPositions:[],
         cityList:[],
         cityLoading:false,
+        switchLoading:false,
     }),
     actions:{
         _index(){
             this.loading= true
             const params = {
                 ...this.params,
-                uuid:this.uuid,
-                organizations:this.params.organizations.map(v=>v.id).toString() || undefined,
+                organizations:this.params?.organizations?.map(v=>v.id)?.toString() || undefined,
             }
             $ApiService.vacancyService._index({params}).then((res)=>{
                 this.list = res.data.data.data
@@ -66,6 +66,30 @@ export const useVacancyStore = defineStore('vacancyStore', {
                 this._index()
             }).finally(()=>{
                 this.saveLoading = false
+            })
+
+        },
+        _show(){
+            $ApiService.vacancyService._show({id:this.elementId}).then((res)=>{
+                const v = res.data.data
+                this.payload.department_position_id = v.department_position_id
+                this.payload.region_id = v.city?.region?.id
+                this.payload.city_id = v.city.id
+                this.payload.education = v.education.id
+                this.payload.rate = v.rate?.toString()
+                this.payload.salary = v.salary?.toString()
+                this.payload.experience = v.experience?.toString()
+                this.payload.to = Utils.datePickerFormatter(v.to)
+                this.payload.work_type = v.work_type.id
+                this.payload.address = v.address
+                this.payload.position_obligations = v.position_obligations
+                this.payload.qualification_requirements = v.qualification_requirements
+                this.payload.working_conditions = v.working_conditions
+                this.payload.specialties = v.specialties
+                this._cities(this.payload.region_id)
+                this.visibleType = false
+                this.visible = true
+            }).finally(()=>{
             })
 
         },
@@ -94,19 +118,30 @@ export const useVacancyStore = defineStore('vacancyStore', {
             this.saveLoading = true
             const data = {
                 ...this.payload,
-                uuid:this.uuid,
+                to:Utils.timeToZone(this.payload.to),
             }
-            $ApiService.militaryService._update({data, id:this.elementId}).then((res)=>{
+            $ApiService.vacancyService._update({data, id:this.elementId}).then((res)=>{
                 this.visible = false
                 this._index()
-
             }).finally(()=>{
                 this.saveLoading = false
             })
         },
+        _changePublic(v, item){
+            this.elementId = item.id
+            this.switchLoading = true
+            const data = {
+                status:v
+            }
+            $ApiService.vacancyService._update({data, id:this.elementId}).then((res)=>{
+            }).finally(()=>{
+                this.switchLoading = false
+            })
+
+        },
         _delete(){
             this.deleteLoading = true
-            $ApiService.militaryService._delete({id:this.elementId}).then((res)=>{
+            $ApiService.vacancyService._delete({id:this.elementId}).then((res)=>{
                 this._index()
 
             }).finally(()=>{
@@ -118,6 +153,20 @@ export const useVacancyStore = defineStore('vacancyStore', {
         },
         resetForm() {
             this.elementId = null
+            this.payload.department_position_id = null
+            this.payload.region_id = null
+            this.payload.city_id = null
+            this.payload.address = null
+            this.payload.work_type = null
+            this.payload.education = null
+            this.payload.rate = null
+            this.payload.salary = null
+            this.payload.experience = null
+            this.payload.to = null
+            this.payload.position_obligations = ''
+            this.payload.qualification_requirements = ''
+            this.payload.working_conditions = ''
+            this.payload.specialties = ''
         },
 
     }

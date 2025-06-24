@@ -7,7 +7,9 @@ import {useVacancyStore} from "@/store/modules/index.js"
 
 const store = useVacancyStore()
 
-
+onMounted(()=>{
+  store._index()
+})
 </script>
 
 <template>

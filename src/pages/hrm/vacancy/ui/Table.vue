@@ -1,34 +1,13 @@
 <script setup>
-import {NoDataPicture,UIPagination, UIUser, UIBadge} from "@/components/index.js"
-import {useVacationStore, useComponentStore, useAccountStore} from "@/store/modules/index.js"
+import {NoDataPicture,UIPagination, UIMenuButton, UIBadge} from "@/components/index.js"
+import {useVacancyStore, useComponentStore, useAccountStore} from "@/store/modules/index.js"
 import Utils from "@/utils/Utils.js"
-
-const store = useVacationStore()
+import numeral from 'numeral';
+const store = useVacancyStore()
 const compStore = useComponentStore()
 const accStore = useAccountStore()
 
-const onEdit = (v)=>{
-
-  store.payload.position = v.position
-  compStore.selectedWorker ={
-    lastName:v.worker.last_name,
-    firstName:v.worker.first_name,
-    middleName:v.worker.middle_name,
-    position:v.position,
-    photo:v.worker.photo || Utils.noAvailableImage,
-    pin:v.worker.uuid
-  }
-  store.visibleType = false
-  store.elementId = v.id
-  store.payload.pin = v.worker.id.toString()
-  store.payload.full_position = v.full_position
-  store.payload.level = v.level.id
-  store.visible = true
-
-}
-
 const onDelete = (v)=>{
-  store.elementId = v.id
   store._delete()
 }
 
@@ -39,31 +18,15 @@ const changePage = (v)=>{
 }
 
 const onSelectEv = (v)=>{
-  if(!accStore.checkAction(accStore.pn.hrVacationsWrite)) return
+  store.elementId = v.data.id
   if(Utils.ActionTypes.edit === v.key){
-    onEdit(v.data)
+    store._show()
   }else if(Utils.ActionTypes.delete === v.key){
     onDelete(v.data)
   }
 }
 
 
-const vacationType =(id)=>{
-  switch (id){
-    case 1:
-      return Utils.colorTypes.info
-    case 2:
-      return Utils.colorTypes.warning
-    case 3:
-      return Utils.colorTypes.success
-    case 4:
-      return Utils.colorTypes.error
-    case 5:
-      return Utils.colorTypes.dark
-    default:
-      return Utils.colorTypes.secondary
-  }
-}
 </script>
 
 <template>
@@ -77,12 +40,20 @@ const vacationType =(id)=>{
         <thead>
         <tr>
           <th class="text-center! min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
-          <th class="min-w-[200px]">{{$t('confirmationPage.table.worker')}}</th>
-          <th class="min-w-[100px] w-[120px]">{{$t('content.duration')}}</th>
-          <th class="min-w-[100px] w-[300px]">{{$t('vacationPage.table.type')}}</th>
-          <th class="min-w-[100px] w-[240px]">{{$t('vacationPage.table.duration')}}</th>
-          <th class="min-w-[100px] w-[120px]">{{$t('vacationPage.table.workDay')}}</th>
-          <!--          <th class="min-w-[40px] w-[40px]"></th>-->
+          <th class="min-w-[200px]">{{$t('vacancy.form.department_position_id')}}</th>
+          <th class="min-w-[40px] w-[80px] max-w-[80px]">
+            <p class="line-clamp-1 truncate">{{$t('vacancy.form.rate')}}</p>
+          </th>
+          <th class="min-w-[100px] w-[120px] max-w-[120px]">
+            <p class="line-clamp-1 truncate">{{$t('vacancy.form.to')}}</p>
+
+          </th>
+          <th class="min-w-[100px] w-[120px]">{{$t('departmentPositionPage.form.salary')}}</th>
+          <th class="min-w-[60px] w-[80px]">{{$t('vacancy.form.short_experience')}}</th>
+          <th class="min-w-[100px] w-[120px]">{{$t('medWorker.form.education')}}</th>
+          <th class="min-w-[100px] w-[120px]">{{$t('vacancy.form.work_type')}}</th>
+          <th class="min-w-[60px] w-[80px]">{{$t('vacancy.form.switch')}}</th>
+           <th class="min-w-[40px] w-[40px]"></th>
         </tr>
         </thead>
         <tbody>
@@ -90,45 +61,46 @@ const vacationType =(id)=>{
           <td><span class="text-center block">{{ (store.params.page - 1) * store.params.per_page + idx + 1 }}</span></td>
           <td>
             <div>
-              <UIUser
-                  :short="false"
-                  :data="{
-                    photo:item?.worker_position?.worker.photo,
-                    firstName:item?.worker_position?.worker.first_name,
-                    middleName:item?.worker_position?.worker.middle_name,
-                    lastName:item?.worker_position?.worker.last_name,
-                    position:item?.worker_position?.post_short_name,
-                  }"
-              />
+              <p class="line-clamp-2 text-textColor2 leading-[1]">
+                {{item.position.name}}
+              </p>
+              <p class="line-clamp-1 text-textColor3 text-xs leading-[1]">{{item.department.name}}</p>
             </div>
           </td>
           <td>
-            <UIBadge
-                :show-icon="false"
-                :label="item.all_day + ' ' + $t('date.day')"
-                :type="Utils.colorTypes.success"
+           <div class="flex justify-center">
+             <n-button class="mx-auto" bordered dashed circle size="small" type="primary">
+               {{item.rate}}
+             </n-button>
+           </div>
+          </td>
+          <td>
+            <UIBadge :type="Utils.colorTypes.secondary" :show-icon="false" :label="Utils.timeOnlyDate(item.to)" />
+          </td>
+          <td>
+            {{numeral(item.salary).format('0,0.0')}} <span class="text-textColor3 text-xs">{{$t('content.sum')}}</span>
+          </td>
+          <td>
+            {{item.experience}}
+          </td>
+          <td>
+            {{item.education?.name}}
+          </td>
+          <td>
+            {{item.work_type?.name}}
+          </td>
+          <td>
+            <div class="flex justify-center">
+              <n-switch :loading="store.switchLoading" v-model:value="item.status" @update:value="store._changePublic($event, item)" />
+            </div>
+          </td>
+          <td>
+            <UIMenuButton
+                :data="item"
+                :show-edit="true"
+                @selectEv="onSelectEv"
             />
           </td>
-          <td>
-            <UIBadge :label="item.type.name" :type="vacationType(item.type.id)" />
-          </td>
-          <td>
-            <div class="flex">
-              <UIBadge :show-icon="false" :label="Utils.timeOnlyDate(item.from)" />
-              <UIBadge :show-icon="false" :label="Utils.timeOnlyDate(item.to)" />
-            </div>
-
-          </td>
-          <td>
-            <UIBadge v-if="item.work_day" :show-icon="false" :label="Utils.timeOnlyDate(item.work_day)" :type="Utils.colorTypes.success" />
-          </td>
-          <!--          <td>-->
-          <!--            <UIMenuButton-->
-          <!--                :data="item"-->
-          <!--                :show-edit="true"-->
-          <!--                @selectEv="onSelectEv"-->
-          <!--            />-->
-          <!--          </td>-->
         </tr>
         </tbody>
       </n-table>

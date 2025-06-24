@@ -109,7 +109,7 @@ const handleCreated = (editor) => {
           trigger: ['input', 'blur-sm'],
           validator() {
             return (editorRef?.isEmpty() || editorRef?.getText()?.trim()==='') ? new Error( t('rules.requiredField')) : true
-          },
+          }
         },
          ...extraRules
         ]"
