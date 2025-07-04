@@ -255,7 +255,6 @@ onMounted(()=>{
           class="w-full"
           v-model:value="store.payload.experience_date"
           type="date"
-
           :format="useAppSetting.datePicketFormat"
       />
     </n-form-item>

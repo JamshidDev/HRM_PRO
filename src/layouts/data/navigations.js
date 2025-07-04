@@ -46,6 +46,7 @@ import {
     BuildingHome16Filled,
     DocumentRibbon24Filled,
     Briefcase48Filled,
+    AppTitle24Filled,
 } from "@vicons/fluent"
 import {AppPaths} from "@/utils/index.js";
 import Utils from "@/utils/Utils.js"
@@ -411,6 +412,13 @@ export const navigations = [
                 label: 'accDashboard.name',
                 path: Utils.routeAccountantPathMaker(AppPaths.Dashboard),
                 icon: Grid20Filled,
+                color: 'bg-dark',
+                permission: appPermissions.users,
+            },
+            {
+                label: 'salaryCategory.name',
+                path: Utils.routeAccountantPathMaker(AppPaths.SalaryCategory),
+                icon: AppTitle24Filled,
                 color: 'bg-dark',
                 permission: appPermissions.users,
             },

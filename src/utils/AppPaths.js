@@ -100,6 +100,7 @@ export const AppPaths = {
     TaxFive: "/tax-five",
     Instruction: "/instruction",
     PublicVacancy: "/public-vacancy",
+    SalaryCategory: "/salary-category",
 }
 
 export const AppLayouts ={

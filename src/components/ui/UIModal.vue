@@ -5,7 +5,7 @@ const visible = defineModel("visible", {type:Boolean,default:false })
 const emit = defineEmits(["click:close"])
 const props = defineProps({
   width:{
-      type:Number,
+      type:[Number, String],
       default:400
   },
   title:{
@@ -38,7 +38,7 @@ const onClickClose = ()=>{
         size="huge"
         role="dialog"
         aria-modal="true"
-        :style="{width:width+'px'}"
+        :style="{width:(isNaN(width)? width : width+'px')}"
         closable
     >
       <template #default>

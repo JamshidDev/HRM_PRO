@@ -1789,5 +1789,75 @@
       "working_conditions": "Ish sharoitlari",
       "specialties": "Mutaxassisligi"
     }
+  },
+  "salaryCategory": {
+    "name": "Ish haqi fondi",
+    "createTitle": "Qo'shish",
+    "updateTitle": "Tahrirlash",
+    "tab": {
+      "month": "Oy kesimida",
+      "organization": "Korxona kesimida"
+    },
+    "label": {
+      "external": "Tashish (ekspluatatsiya)",
+      "capital": "Kapital ta’mirlash",
+      "construction": "Qurilish ishlari",
+      "other": "Boshqa ishlar (yordamchi-ko‘makchi faoliyat)",
+      "fromIt": "Shundan",
+      "all": "Jami",
+      "area": "Maydon",
+      "mediumWorkerCount": "O‘rtacha xodimlar soni, kishi",
+      "mediumSalaryAmount": "Ish haqi fondi, ming so‘m",
+      "forOrganization": "Jamiyat korxonalari uchun",
+      "forOwn": "O‘z ehtiyoji uchun",
+      "forForeign": "Chet korxona uchun",
+      "forLogistic": "Tashish bilan bog‘liq",
+      "forOther": "Boshqa faoliyat turi (sanoat, pudratçilik va boshqa)",
+      "fixed-term": "Muddatli mehnat shartnomasi asosida ishlovchi xodimlar",
+      "contract": "Fuqarolik-huquqiy shartnoma asosida ishlovchi xodimlar",
+      "Housekeeper": "Kasanachilar"
+
+    },
+    "form": {
+      "external_worker_count": "(O‘rtacha xodimlar soni, kishi)",
+      "external_salary_fund": "(Ish haqi fondi, ming so‘m)",
+
+      "capital_society_worker_count": "Jamiyat korxonalari uchun - (O‘rtacha xodimlar soni, kishi)",
+      "capital_society_salary_fund": "Jamiyat korxonalari uchun - (Ish haqi fondi, ming so‘m)",
+
+      "capital_own_use_worker_count": "O‘z ehtiyoji uchun - (O‘rtacha xodimlar soni, kishi)",
+      "capital_own_use_salary_fund": "O‘z ehtiyoji uchun - (Ish haqi fondi, ming so‘m)",
+
+      "capital_foreign_company_worker_count": "Chet korxona uchun - (O‘rtacha xodimlar soni, kishi)",
+      "capital_foreign_company_salary_fund": "Chet korxona uchun - (Ish haqi fondi, ming so‘m)",
+
+      "construction_society_worker_count": "Jamiyat korxonalari uchun - (O‘rtacha xodimlar soni, kishi)",
+      "construction_society_salary_fund": "Jamiyat korxonalari uchun - (Ish haqi fondi, ming so‘m)",
+
+      "construction_own_use_worker_count": "O‘z ehtiyoji uchun - (O‘rtacha xodimlar soni, kishi)",
+      "construction_own_use_salary_fund": "O‘z ehtiyoji uchun - (Ish haqi fondi, ming so‘m)",
+
+      "construction_foreign_company_worker_count": "Chet korxona uchun - (O‘rtacha xodimlar soni, kishi)",
+      "construction_foreign_company_salary_fund": "Chet korxona uchun - (Ish haqi fondi, ming so‘m)",
+
+      "other_society_worker_count": "Boshqa faoliyat turi (sanoat, pudratchilik va boshqa) - (O‘rtacha xodimlar soni, kishi)",
+      "other_society_salary_fund": "Boshqa faoliyat turi (sanoat, pudratchilik va boshqa) - (Ish haqi fondi, ming so‘m)",
+
+      "other_own_use_worker_count": "Tashish bilan bog‘liq - (O‘rtacha xodimlar soni, kishi)",
+      "other_own_use_salary_fund": "Tashish bilan bog‘liq - (Ish haqi fondi, ming so‘m)",
+
+      "other_foreign_company_worker_count": "Chet korxona uchun - (O‘rtacha xodimlar soni, kishi)",
+      "other_foreign_company_salary_fund": "Chet korxona uchun - (Ish haqi fondi, ming so‘m)",
+
+      "temporary_contract_worker_count": "Muddatli mehnat shartnomasi asosida ishlovchi xodimlar - (O‘rtacha xodimlar soni, kishi)",
+      "temporary_contract_salary_fund": "Muddatli mehnat shartnomasi asosida ishlovchi xodimlar - (Ish haqi fondi, ming so‘m)",
+
+      "civil_contract_worker_count": "Fuqarolik-huquqiy shartnoma asosida ishlovchi xodimlar - (O‘rtacha xodimlar soni, kishi)",
+      "civil_contract_salary_fund": "Fuqarolik-huquqiy shartnoma asosida ishlovchi xodimlar - (Ish haqi fondi, ming so‘m)",
+
+      "freelancer_worker_count": "Kasanachilar - (O‘rtacha xodimlar soni, kishi)",
+      "freelancer_salary_fund": "Kasanachilar - (Ish haqi fondi, ming so‘m)"
+    }
+
   }
 }

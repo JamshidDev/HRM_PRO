@@ -58,7 +58,7 @@ export const customTheme = ()=>({
         activeColor: "rgba(0, 0, 0, 0.1)", // Aktiv holat uchun fon rangi,
     },
     Table: {
-        thColor:getValueOfCssVariable('--surface-ground'),
+        thColor:getValueOfCssVariable('--table-header'),
         tdColor:getValueOfCssVariable('--surface-section'),
         borderColor:getValueOfCssVariable('--surface-line'),
         thTextColor:getValueOfCssVariable('--textColor2'),
