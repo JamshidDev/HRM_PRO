@@ -6,7 +6,7 @@ import {
     TaxFourPage,
     TaxFivePage,
     DashboardPage,
-    SalaryCategoryPage
+    SalaryCategoryPage, SalaryReportPage
 } from "@/pages/accountant/index.js"
 
 
@@ -34,6 +34,10 @@ export default [
     {
         path:Utils.routeAccountantPathMaker(AppPaths.SalaryCategory),
         component: SalaryCategoryPage,
+    },
+    {
+        path:Utils.routeAccountantPathMaker(AppPaths.SalaryReport),
+        component: SalaryReportPage,
     },
 
 ]

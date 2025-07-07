@@ -423,6 +423,13 @@ export const navigations = [
                 permission: appPermissions.users,
             },
             {
+                label: 'salaryReport.name',
+                path: Utils.routeAccountantPathMaker(AppPaths.SalaryReport),
+                icon: AppTitle24Filled,
+                color: 'bg-dark',
+                permission: appPermissions.users,
+            },
+            {
                 label: 'uploadReport.name',
                 path: Utils.routeAccountantPathMaker(AppPaths.UploadReport),
                 icon: AppsList24Filled,

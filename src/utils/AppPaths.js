@@ -101,6 +101,7 @@ export const AppPaths = {
     Instruction: "/instruction",
     PublicVacancy: "/public-vacancy",
     SalaryCategory: "/salary-category",
+    SalaryReport: "/salary-report",
 }
 
 export const AppLayouts ={

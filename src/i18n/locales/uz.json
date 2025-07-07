@@ -1859,5 +1859,19 @@
       "freelancer_salary_fund": "Kasanachilar - (Ish haqi fondi, ming so‘m)"
     }
 
+  },
+  "salaryReport": {
+    "name": "Ish haqi hisoboti",
+    "createTitle": "Ish haqi hisobotini yuklash",
+    "updateTitle": "Ish haqi hisobotini tahrirlash",
+    "form": {
+      "title": "Mehnatga haq to‘lash fondi to‘lov turlari rasshifrovkasi",
+      "name": "To‘lov turlarining nomi",
+      "type": "Turi",
+      "fromYear": "Yil boshidan",
+      "total": "Jami",
+      "code": "Shifr",
+      "salaryType": "Mehnatga haq to‘lash fondi, 1-T hisobotida aks etuvchi"
+    }
   }
 }
