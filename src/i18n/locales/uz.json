@@ -14,6 +14,7 @@
     "cancel": "Bekor qilish",
     "reject": "Rad qilish",
     "help": "Yordam",
+    "notUpload": "Yuklanmagan",
     "enterField": "Kiriting",
     "phone": "Telefon raqam",
     "langUz": "O’ZB",
@@ -1626,7 +1627,12 @@
       "uploadCount": "Yuklangan {n} ta",
       "comment": "Tavsif",
       "requiredOrganization": "Yuklash uchun korxona tanlanishi shart!",
-      "uploadFile": "Hisobot yuklash"
+      "uploadFile": "Hisobot yuklash",
+      "monthReport": "Oylik hisobot",
+      "applicationFour": "INPS 4-ilova",
+      "applicationFive": "INPS 5-ilova",
+      "INPSPayment": "INPS to'lovlar",
+      "confirmed": "Tasdiqlangan"
     }
   },
   "instructionPage": {

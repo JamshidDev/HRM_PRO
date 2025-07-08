@@ -10,7 +10,10 @@ import {useUploadReportStore} from "@/store/modules/index.js"
 
 const store = useUploadReportStore()
 
+onMounted(()=>{
+  store._structures()
 
+})
 </script>
 
 <template>

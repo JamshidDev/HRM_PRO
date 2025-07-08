@@ -60,7 +60,7 @@ const onSelectEv = (v)=>{
               {{$t('taxFour.form.contract_type')}}
             </n-tooltip>
           </th>
-          <th class="w-[100px] max-w-[100px] text-wrap! leading-[1.2]">
+          <th class="w-[100px] max-w-[120px] text-wrap! leading-[1.2]">
             <n-tooltip
                 trigger="hover"
             >
@@ -70,7 +70,7 @@ const onSelectEv = (v)=>{
               {{$t('taxFour.form.total_salary_income')}}
             </n-tooltip>
           </th>
-          <th class="w-[100px] max-w-[100px] text-wrap! leading-[1.2]">
+          <th class="w-[100px] max-w-[120px] text-wrap! leading-[1.2]">
             <n-tooltip
                 trigger="hover"
             >
@@ -80,7 +80,7 @@ const onSelectEv = (v)=>{
               {{$t('taxFour.form.reported_salary_income')}}
             </n-tooltip>
           </th>
-          <th class="w-[100px] max-w-[100px] ">
+          <th class="w-[100px] max-w-[120px] ">
 
             <n-tooltip
                 trigger="hover"
@@ -92,7 +92,7 @@ const onSelectEv = (v)=>{
             </n-tooltip>
 
           </th>
-          <th class="w-[100px] max-w-[100px] text-wrap! leading-[1.2]">
+          <th class="w-[100px] max-w-[120px] text-wrap! leading-[1.2]">
 
             <n-tooltip
                 trigger="hover"

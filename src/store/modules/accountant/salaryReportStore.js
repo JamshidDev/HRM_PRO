@@ -32,7 +32,7 @@ export const useSalaryReportStore = defineStore('salaryReportStore', {
                 id:2,
             },
         ],
-        activeTab:1,
+        activeTab:2,
         structureCheck2:[],
         organizationList:[],
         organizationData:[],
@@ -62,7 +62,7 @@ export const useSalaryReportStore = defineStore('salaryReportStore', {
             $ApiService.salaryReportService._indexByOrg({params}).then((res)=>{
                 const {type_name,type_code,total_year, ...organizations} =  res.data.data[0]
                 this.organizationList=organizations
-                this.organizationData =res.data.data.filter((_, index)=>index>2)
+                this.organizationData =res.data.data.filter((_, index)=>index>2).map((v,index)=>({id:index+1 , ...v}))
 
             }).finally(()=>{
                 this.loading= false

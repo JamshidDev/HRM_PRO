@@ -1,6 +1,6 @@
 <script setup>
 import {useUploadReportStore} from "@/store/modules/index.js"
-import {Timer16Regular, ClipboardBulletListLtr20Regular,CheckmarkLock24Filled, CheckmarkCircle20Filled} from '@vicons/fluent'
+import {Timer16Regular, ClipboardBulletListLtr20Regular,CheckmarkLock24Filled, CheckmarkCircle20Filled, CheckmarkCircle16Regular} from '@vicons/fluent'
 import i18n from "@/i18n/index.js"
 
 const {t} = i18n.global
@@ -17,15 +17,22 @@ const onSelect = (v)=>{
 <template>
   <n-spin :show="store.cardLoading">
     <div class="w-full grid grid-cols-12 gap-3">
-      <template v-if="store.cards.length>0">
+      <template v-if="store.cards.length>0 && store.params.organization_id">
         <template v-for="item in store.cards" :key="item">
           <div class="col-span-6 bg-surface-section rounded-lg p-2 flex flex-col relative cursor-pointer drop-shadow-sm">
             <div class="flex justify-between">
               <span class="text-textColor2 font-semibold uppercase">{{item.name}}</span>
-              <n-button :loading="store.confirmLoading" @click="store._confirm(item.id)" secondary type="success" size="tiny">{{$t('content.confirm')}}
+              <n-button
+                  :loading="store.confirmLoading"
+                  @click="store._confirm(item)"
+                  :text="item.status"
+                  :type="item.status? 'success' : 'primary'"
+                  size="tiny">
+                {{$t(item.status? 'uploadReport.form.confirmed' : 'content.confirm')}}
               <template #icon>
                 <n-icon size="18">
-                  <CheckmarkCircle20Filled/>
+                  <CheckmarkCircle16Regular v-if="item.status"/>
+                  <CheckmarkCircle20Filled v-else/>
                 </n-icon>
 
               </template>
@@ -61,7 +68,3 @@ const onSelect = (v)=>{
 
 
 </template>
-
-<style scoped>
-
-</style>

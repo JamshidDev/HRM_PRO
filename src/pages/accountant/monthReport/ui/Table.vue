@@ -2,6 +2,7 @@
 import {NoDataPicture, UIMenuButton, UIPagination, UIUser} from "@/components/index.js"
 import {useMonthReportStore} from "@/store/modules/index.js"
 import {CheckmarkCircle24Filled, ErrorCircle24Filled} from "@vicons/fluent"
+import Utils from "@/utils/Utils.js"
 
 const store = useMonthReportStore()
 
@@ -34,7 +35,7 @@ const onShow = (v) => {
           <th class="text-center! min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
           <th class="min-w-[200px]">{{$t('content.fullName')}}</th>
           <th class="min-w-[60px] w-[60px]">{{$t('content.status')}}</th>
-          <th class="min-w-[100px]">{{$t('content.organization')}}</th>
+          <th class="min-w-[200px]">{{$t('content.organization')}}</th>
           <th class="min-w-[200px]">{{$t('monthReport.form.salary')}}</th>
           <th class="w-[130px] max-w-[130px] text-wrap!">
             <n-tooltip
@@ -60,7 +61,7 @@ const onShow = (v) => {
               {{$t('monthReport.form.totalTwo')}}
             </n-tooltip>
           </th>
-          <th class="min-w-[50px] w-[100px] text-wrap!">{{$t('monthReport.form.totalThree')}}</th>
+          <th class="min-w-[50px] w-[120px] text-wrap!">{{$t('monthReport.form.totalThree')}}</th>
           <th class="min-w-[50px] w-[130px] max-w-[130px]">
             <n-tooltip
                 trigger="hover"
@@ -121,11 +122,19 @@ const onShow = (v) => {
           <td>{{item.organization.name}}</td>
           <td>{{item.main_salary}}</td>
           <td>{{item.total_one}}</td>
-          <td>{{item.total_two}}</td>
+          <td>{{item.total_three}}</td>
           <td>
-            <span @click="onShow(item)" class="text-primary cursor-pointer">{{item.total_three}}</span>
+            <n-button
+
+                size="tiny"
+                :type="item.diff? 'success' : 'error' "
+                dashed
+                @click="onShow(item)"
+            >
+              {{item.total_four}}
+            </n-button>
           </td>
-          <td>{{item.total_four}}</td>
+          <td>{{item.total_five}}</td>
           <td><UIMenuButton/></td>
         </tr>
         </tbody>

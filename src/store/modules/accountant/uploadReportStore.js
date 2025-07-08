@@ -22,7 +22,7 @@ export const useUploadReportStore = defineStore('uploadReport', {
             page:1,
             per_page:10,
             search:null,
-            organization_id:[],
+            organization_id:null,
             year:null,
             month:null,
         },
@@ -41,15 +41,15 @@ export const useUploadReportStore = defineStore('uploadReport', {
 
     }),
     actions:{
-        _confirm(id){
+        _confirm(v){
+            if(v.status) return
             this.confirmLoading= true
             const data = {
                 ...this.params,
-                type:id,
+                type:v.id,
                 search:undefined,
                 page:undefined,
                 per_page:undefined,
-                organization_id:this.params.organization_id[0]?.id,
             }
             $ApiService.accountantService._confirm({data}).then((res)=>{
                 this._structures()
@@ -77,7 +77,6 @@ export const useUploadReportStore = defineStore('uploadReport', {
             this.cardLoading= true
             const params= {
                 ...this.params,
-                organization_id:this.params.organization_id[0]?.id,
             }
             $ApiService.accountantService._index({params}).then((res)=>{
                 this.cards = res.data.data
@@ -121,11 +120,11 @@ export const useUploadReportStore = defineStore('uploadReport', {
             this.payload.month = new Date().getMonth()
         },
         onChangeStructure(v){
-            this.params.organization_id = v
+            this.params.organization_id =this.params.organization_id  === v.id? null : v.id
             this.cards = []
             this.list = []
-            if(v.length > 0){
-                this.selectedOrgName = v[0].name
+            if(this.params.organization_id){
+                this.selectedOrgName = v.name
                 this._cards()
             }
         },

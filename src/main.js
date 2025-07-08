@@ -3,7 +3,6 @@ import "./assets/index.scss"
 import { createApp } from 'vue'
 import App from './App.vue'
 import router from "./router"
-import {createPinia} from "pinia"
 import i18n from "./i18n/index.js"
 import pinia from "./store/index.js"
 import ApiService from "@/service/ApiService.js";
@@ -13,6 +12,8 @@ import VueSignature from "vue-signature-pad"
 import inputFormatter from "@/plugins/inputFormatter.js"
 import dateMaskPlugin from "@/plugins/dateMaskPlugin.js"
 import {useAccountStore} from "@/store/modules/index.js"
+import { RecycleScroller } from 'vue3-virtual-scroller'
+import 'vue3-virtual-scroller/dist/vue3-virtual-scroller.css'
 
 const app = createApp(App);
 const meta = document.createElement('meta')
@@ -25,6 +26,7 @@ app.use(inputFormatter)
 app.use(dateMaskPlugin)
 app.use(router)
 app.use(pinia)
+app.component('RecycleScroller', RecycleScroller)
 
 const store = useAccountStore()
 

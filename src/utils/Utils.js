@@ -6,6 +6,28 @@ import i18n from "@/i18n/index.js"
 import {useAppSetting} from "@/utils/AppSetting.js"
 import {useDebounceFn} from "@vueuse/core"
 const {t} = i18n.global
+import numeral from "numeral"
+
+
+numeral.register('locale', 'space-locale', {
+    delimiters: {
+        thousands: ' ',
+        decimal: '.',
+    },
+    abbreviations: {
+        thousand: 'k',
+        million: 'm',
+        billion: 'b',
+        trillion: 't',
+    },
+    ordinal: function () {
+        return '';
+    },
+    currency: {
+        symbol: ''
+    }
+})
+numeral.locale('space-locale');
 
 const lang = localStorage.getItem(useAppSetting.languageKey) || useAppSetting.defaultLanguage
 i18n.global.locale = lang
@@ -116,6 +138,11 @@ const fileNameFromUrl = (url)=>{
 const formatNumberToMoney = (num)=>{
     if(!num) return
     return  num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ')
+}
+
+const sumFormat = (v)=>{
+    // if(isNaN(v)) return v
+    return numeral(v).format('0 0.00')
 }
 const routePathMaker = (mainPath)=>(`${AppPaths.Admin}${mainPath}`)
 const routeHrmPathMaker = (mainPath)=>(`${AppPaths.Hrm}${mainPath}`)
@@ -701,5 +728,6 @@ export default {
     formatPhoneWithMask,
     documentStatus,
     safeBase64Encode,
+    sumFormat,
 
 }
