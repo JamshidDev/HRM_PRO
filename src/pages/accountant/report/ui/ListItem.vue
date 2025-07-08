@@ -1,6 +1,6 @@
 <script setup>
 import {useUploadReportStore} from "@/store/modules/index.js"
-import {Timer16Regular, ClipboardBulletListLtr20Regular,CheckmarkLock24Filled} from '@vicons/fluent'
+import {Timer16Regular, ClipboardBulletListLtr20Regular,CheckmarkLock24Filled, CheckmarkCircle20Filled} from '@vicons/fluent'
 import i18n from "@/i18n/index.js"
 
 const {t} = i18n.global
@@ -20,7 +20,17 @@ const onSelect = (v)=>{
       <template v-if="store.cards.length>0">
         <template v-for="item in store.cards" :key="item">
           <div class="col-span-6 bg-surface-section rounded-lg p-2 flex flex-col relative cursor-pointer drop-shadow-sm">
-            <div class="text-textColor2 font-semibold mx-auto uppercase">{{item.name}}</div>
+            <div class="flex justify-between">
+              <span class="text-textColor2 font-semibold uppercase">{{item.name}}</span>
+              <n-button :loading="store.confirmLoading" @click="store._confirm(item.id)" secondary type="success" size="tiny">{{$t('content.confirm')}}
+              <template #icon>
+                <n-icon size="18">
+                  <CheckmarkCircle20Filled/>
+                </n-icon>
+
+              </template>
+              </n-button>
+            </div>
             <div
                 :class="[item.status? 'bg-success/10 border-success' : 'bg-warning/10 border-warning']"
                 class="rounded-full p-2 mx-auto my-4 flex justify-center items-center border border-dashed">

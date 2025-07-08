@@ -36,12 +36,38 @@ export const useUploadReportStore = defineStore('uploadReport', {
         selectedOrgName:null,
         commentVisible:false,
         commentContent:null,
+        confirmLoading:false,
+        expandSet:new Set(),
 
     }),
     actions:{
+        _confirm(id){
+            this.confirmLoading= true
+            const data = {
+                ...this.params,
+                type:id,
+                search:undefined,
+                page:undefined,
+                per_page:undefined,
+                organization_id:this.params.organization_id[0]?.id,
+            }
+            $ApiService.accountantService._confirm({data}).then((res)=>{
+                this._structures()
+                this._cards()
+            }).finally(()=>{
+                this.confirmLoading= false
+            })
+        },
         _structures(){
             this.structuresLoading= true
-            $ApiService.accountantService._structure().then((res)=>{
+            const params = {
+                ...this.params,
+                organization_id:undefined,
+                search:undefined,
+                page:undefined,
+                per_page:undefined,
+            }
+            $ApiService.accountantService._structure({params}).then((res)=>{
                 this.structuresList = res.data.data
             }).finally(()=>{
                 this.structuresLoading= false

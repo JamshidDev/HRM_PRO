@@ -18,6 +18,11 @@ const onAdd = async () => {
   store.visible = true
 }
 
+const onChange = ()=>{
+  store._structures()
+  store._cards()
+}
+
 
 
 
@@ -40,7 +45,7 @@ onMounted(()=>{
         :options="Utils.yearList"
         label-field="name"
         value-field="id"
-        @update:value="store._cards"
+        @update:value="onChange"
     />
     <n-select
         class="w-full! md:w-[200px]!"
@@ -48,7 +53,7 @@ onMounted(()=>{
         :options="Utils.monthList"
         label-field="name"
         value-field="id"
-        @update:value="store._cards"
+        @update:value="onChange"
     />
     <n-button
         @click="onAdd"

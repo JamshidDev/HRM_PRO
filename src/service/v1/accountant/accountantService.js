@@ -23,6 +23,10 @@ const _delete = async (payload)=>{
     return await axios.delete(`/v1/structure/countries/${payload.id}`)
 }
 
+const _confirm = async (payload)=>{
+    return await axios.post(`/v1/economist/upload-histories/confirm`, payload.data)
+}
+
 
 
 
@@ -33,4 +37,5 @@ export default {
     _delete,
     _enum,
     _structure,
+    _confirm,
 }
