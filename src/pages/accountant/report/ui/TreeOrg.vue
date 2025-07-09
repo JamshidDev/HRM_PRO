@@ -128,19 +128,3 @@ const toggleExpand =(id)=> {
 </template>
 
 
-<style scoped lang="scss">
-.sticky-table-header{
-  border-collapse: separate !important;
-  overflow: auto !important;
-  thead{
-    position: sticky;
-    top: 0;
-    z-index: 10;
-  }
-}
-.selectedRow {
- td{
-   background-color: rgba(186, 17, 196, 0.05);
- }
-}
-</style>

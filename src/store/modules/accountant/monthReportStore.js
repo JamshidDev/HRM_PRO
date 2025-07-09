@@ -19,6 +19,7 @@ export const useMonthReportStore = defineStore('monthReportStore', {
             per_page:10,
             search:null,
             organizations:[],
+            code:null,
             year:null,
             month:null,
         },
@@ -27,7 +28,9 @@ export const useMonthReportStore = defineStore('monthReportStore', {
         showPrams:{
             year:null,
             month:null,
-        }
+        },
+        codeList:[],
+        enumLoading:false,
 
     }),
     actions:{
@@ -55,6 +58,18 @@ export const useMonthReportStore = defineStore('monthReportStore', {
                 this.showList = res.data.data
             }).finally(()=>{
                 this.showLoading = false
+            })
+        },
+        _enum(){
+            this.enumLoading= true
+            $ApiService.accountantService._enum().then((res)=>{
+                this.codeList = Object.entries(res.data.data.codes).map(([key,value])=>({
+                    id:key,
+                    name:value,
+                    position:key,
+                }))
+            }).finally(()=>{
+                this.enumLoading= false
             })
         },
 

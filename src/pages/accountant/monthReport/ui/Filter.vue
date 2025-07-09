@@ -2,6 +2,7 @@
 import {useComponentStore, useMonthReportStore} from "@/store/modules/index.js"
 import {UIPageFilter, UISelect} from "@/components/index.js"
 import Utils from "@/utils/Utils.js"
+import UIHelper from "@/utils/UIHelper.js"
 
 const store = useMonthReportStore()
 
@@ -21,14 +22,19 @@ const beforeShow = (v)=>{
   if(componentStore.structureList.length === 0){
     componentStore._structures()
   }
+
+  if(store.codeList.length === 0){
+    store._enum()
+  }
 }
 
 const resetFilter = ()=>{
   store.params.organizations = []
+  store.params.code = null
   filterEvent()
 }
 
-const filterCount = computed(()=>Number(Boolean(store.params.organizations.length)))
+const filterCount = computed(()=>Number(Boolean(store.params.organizations.length)) + Number(Boolean(store.params.code)))
 </script>
 
 <template>
@@ -42,17 +48,31 @@ const filterCount = computed(()=>Number(Boolean(store.params.organizations.lengt
     @onClear="resetFilter"
 >
   <template #filterContent>
-    <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{$t('actionLog.table.structure')}}</label>
-    <UISelect
-        :options="componentStore.structureList"
-        :modelV="store.params.organizations"
-        @defaultValue="(v)=>store.params.organizations=v"
-        @updateModel="onChangeStructure"
-        :checkedVal="store.structureCheck2"
-        @updateCheck="(v)=>store.structureCheck2=v"
-        :loading="componentStore.structureLoading"
-        @onSubmit="filterEvent"
+      <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{$t('actionLog.table.structure')}}</label>
+      <UISelect
+          :options="componentStore.structureList"
+          :modelV="store.params.organizations"
+          @defaultValue="(v)=>store.params.organizations=v"
+          @updateModel="onChangeStructure"
+          :checkedVal="store.structureCheck2"
+          @updateCheck="(v)=>store.structureCheck2=v"
+          :loading="componentStore.structureLoading"
+          @onSubmit="filterEvent"
+      />
+    <label class="text-xs mt-3 text-gray-500 mb-1 font-medium">{{$t('monthReport.form.code')}}</label>
+    <n-select
+        class="w-full max-w-[400px]"
+        clearable
+        v-model:value="store.params.code"
+        :options="store.codeList"
+        label-field="name"
+        value-field="id"
+        :render-label="UIHelper.selectRender.label"
+        :render-tag="UIHelper.selectRender.value"
+        @update:value="filterEvent"
     />
+
+
   </template>
   <template #filterAction>
 

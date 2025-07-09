@@ -32,7 +32,7 @@ export const useSalaryReportStore = defineStore('salaryReportStore', {
                 id:2,
             },
         ],
-        activeTab:2,
+        activeTab:1,
         structureCheck2:[],
         organizationList:[],
         organizationData:[],

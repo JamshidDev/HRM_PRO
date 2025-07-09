@@ -5,13 +5,19 @@ import Table from "./ui/Table.vue"
 import ViewSalary from "./ui/ViewSalary.vue"
 import {useMonthReportStore} from "@/store/modules/index.js"
 
+
 const store = useMonthReportStore()
+const route = useRoute()
 
 
 onMounted(()=>{
-  store.params.year = new Date().getFullYear()
-  store.params.month = new Date().getMonth()
+  const query = route.query
+  store.params.year =query? query.year : new Date().getFullYear()
+  store.params.month =query? Number(query.month) : new Date().getMonth()
+  store.params.code =query? query.code : null
   store._index()
+
+
 })
 
 </script>

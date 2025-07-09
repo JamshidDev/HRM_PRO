@@ -1,8 +1,22 @@
 <script setup>
 import {useSalaryReportStore} from "@/store/modules/index.js"
 import Utils from "@/utils/Utils.js"
-
+import {AppPaths} from "@/utils/index.js"
+const router = useRouter()
 const store = useSalaryReportStore()
+
+
+const goPush = (v, month)=>{
+  router.push({
+    path:Utils.routeAccountantPathMaker(AppPaths.MonthReport),
+    query:{
+      month,
+      year:store.params.year,
+      code:v.type_code
+    }
+  })
+
+}
 
 onMounted(()=>{
   store.params.year = new Date().getFullYear()
@@ -47,7 +61,11 @@ onMounted(()=>{
             <td class="!text-center" :class="[!Boolean(item.type_code.toString().trim()) && '!font-semibold']">{{item.type_name}}</td>
             <td class="!text-center !font-semibold">{{item.type_code}}</td>
             <template v-for="index in 12" :key="index">
-              <td class="!text-center">{{item?.[index]}}</td>
+              <td class="!text-center">
+                <span
+                    @click="goPush(item, index)"
+                    class="hover:text-primary cursor-pointer">{{item?.[index]}}</span>
+              </td>
             </template>
             <td class="!text-center">{{item.total_year}}</td>
           </tr>

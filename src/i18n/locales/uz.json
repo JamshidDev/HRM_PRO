@@ -1658,6 +1658,7 @@
       "totalOne": "Ish haqi fondiga kiruvchi to'lov turlari",
       "totalTwo": "Ish haqi fondiga kirmaydigan to'lov turlari",
       "totalThree": "Hisoblandi",
+      "code": "To'lov kodi",
       "totalFour": "Ish haqidan ushlamalar"
     },
     "view": {
