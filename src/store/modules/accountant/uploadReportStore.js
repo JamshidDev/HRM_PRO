@@ -38,6 +38,7 @@ export const useUploadReportStore = defineStore('uploadReport', {
         commentContent:null,
         confirmLoading:false,
         expandSet:new Set(),
+        flattenData:[],
 
     }),
     actions:{

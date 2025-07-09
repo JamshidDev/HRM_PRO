@@ -11,8 +11,9 @@ import {useUploadReportStore} from "@/store/modules/index.js"
 const store = useUploadReportStore()
 
 onMounted(()=>{
-  store._structures()
-
+  if(store.flattenData.length === 0){
+    store._structures()
+  }
 })
 </script>
 
