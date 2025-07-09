@@ -34,6 +34,7 @@ onMounted(() => {
   <n-spin :show="store.loading">
     <div class="w-full pb-4 mt-4 overflow-y-auto h-[calc(100vh-210px)]">
       <n-table
+          class="sticky-table-header sticky-table-body-left-element table-hover-row"
           :single-line="false"
           size="small"
       >
@@ -63,7 +64,7 @@ onMounted(() => {
         <template v-for="(item, idx) in store.organizationData" :key="idx">
           <tr>
             <td class="!text-center">{{idx+1}}</td>
-            <td  :class="[!Boolean(item.type_code.toString().trim()) && '!font-semibold']">{{item.type_name}}</td>
+            <td class="sticky-element"  :class="[!Boolean(item.type_code.toString().trim()) && '!font-semibold']">{{item.type_name}}</td>
             <td class=" !font-semibold">{{item.type_code}}</td>
             <template v-for="(value, key) in item" :key="key">
               <td v-if="!['type_name', 'type_code', 'total_year', 'id'].includes(key)"  class="!text-center">{{value}}</td>

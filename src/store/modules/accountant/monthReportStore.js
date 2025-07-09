@@ -31,6 +31,7 @@ export const useMonthReportStore = defineStore('monthReportStore', {
         },
         codeList:[],
         enumLoading:false,
+        workerPhotoUrl:null,
 
     }),
     actions:{

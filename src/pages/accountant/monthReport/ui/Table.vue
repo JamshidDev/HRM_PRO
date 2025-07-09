@@ -17,6 +17,7 @@ const onShow = (v) => {
   store.elementId = v.pin
   store.showPrams.year = store.params.year
   store.showPrams.month = store.params.month
+  store.workerPhotoUrl = v.worker?.photo
   store._show()
 
 }

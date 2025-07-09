@@ -31,8 +31,9 @@ onMounted(()=>{
 
 <template>
   <n-spin :show="store.loading">
-    <div class="w-full pb-4 mt-4 overflow-y-auto">
+    <div class="w-full mt-4 overflow-y-auto h-[calc(100vh-200px)]">
       <n-table
+          class="sticky-table-body-left table-hover-row"
           v-if="store.list.length>0"
           :single-line="false"
           size="small"

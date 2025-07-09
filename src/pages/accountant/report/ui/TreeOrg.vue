@@ -45,7 +45,8 @@ const toggleExpand =(id)=> {
 
 <template>
   <n-spin class="min-h-[400px]" :show="store.structuresLoading">
-    <div class="h-[calc(100vh-200px)] overflow-auto scroll-mt-5">
+
+    <div class="h-[calc(100vh-200px)] overflow-auto">
       <n-table
           class="!border-t-0 sticky-table-header"
           :single-line="false"

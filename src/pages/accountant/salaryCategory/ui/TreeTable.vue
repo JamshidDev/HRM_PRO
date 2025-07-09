@@ -45,8 +45,9 @@ onMounted(()=>{
 
 <template>
   <n-spin :show="store.loading">
-    <div class="w-full pb-4 mt-4 overflow-y-auto h-[calc(100vh-186px)] relative">
+    <div class="w-full pb-4 mt-4 overflow-y-auto h-[calc(100vh-186px)]">
       <n-table
+          class="sticky-table-header sticky-table-body-left table-hover-row"
           style="border-collapse:collapse"
           :single-line="false"
           size="small"

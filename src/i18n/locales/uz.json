@@ -88,11 +88,12 @@
     "downloadCV": "Ma'lumotnoma yuklash",
     "deleteWarning": "Haqiqattan ham o'chirmoqchimisz?",
     "sum": "so'm",
-    "total": "Umumiy: {n}ta",
+    "total": "Umumiy: {n} ta",
     "fromTa": "tadan",
     "main": "Asosiy",
     "untilShow": " gacha ko'rsatilmoqda",
     "next": "Keyingi",
+    "preview": "Oldingi",
     "warning": "Ogohlantirish",
     "error": "Xatolik",
     "return": "Ortga qaytish",
@@ -1868,7 +1869,7 @@
 
   },
   "salaryReport": {
-    "name": "Ish haqi hisoboti",
+    "name": "Oylik hisobot (shifr)",
     "createTitle": "Ish haqi hisobotini yuklash",
     "updateTitle": "Ish haqi hisobotini tahrirlash",
     "form": {

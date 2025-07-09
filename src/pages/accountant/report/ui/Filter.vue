@@ -9,7 +9,7 @@ const {t} = i18n.global
 const store = useUploadReportStore()
 
 const onAdd = async () => {
-  if(store.params.organization_id.length === 0){
+  if(!store.params.organization_id){
     $Toast.warning(t('uploadReport.form.requiredOrganization'))
     return
   }

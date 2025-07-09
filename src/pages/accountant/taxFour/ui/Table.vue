@@ -34,12 +34,12 @@ const onSelectEv = (v)=>{
         <thead>
         <tr>
           <th class="text-center! min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
-          <th class="min-w-[100px]">{{$t('content.fullName')}}</th>
+          <th class="min-w-[200px]">{{$t('content.fullName')}}</th>
           <th class="min-w-[60px] w-[60px]">{{$t('content.status')}}</th>
-          <th class="min-w-[100px] w-[150px]">{{$t('content.organization')}}</th>
+          <th class="min-w-[200px] w-[250px]">{{$t('content.organization')}}</th>
           <th class="w-[60px]">{{$t('content.year')}}</th>
           <th class="w-[60px]">{{$t('content.month')}}</th>
-          <th class="w-[100px] text-wrap!">{{$t('content.position')}}</th>
+          <th class="min-w-[200px] w-[250px] text-wrap!">{{$t('content.position')}}</th>
           <th class="w-[100px] max-w-[100px] text-wrap! leading-[1.2]">
             <n-tooltip
                 trigger="hover"

@@ -12,9 +12,10 @@ const route = useRoute()
 
 onMounted(()=>{
   const query = route.query
-  store.params.year =query? query.year : new Date().getFullYear()
-  store.params.month =query? Number(query.month) : new Date().getMonth()
-  store.params.code =query? query.code : null
+  const isHasQuery = Object.keys(route.query).length>0
+  store.params.year =isHasQuery? query.year : new Date().getFullYear()
+  store.params.month =isHasQuery? Number(query.month) : new Date().getMonth()
+  store.params.code =isHasQuery? query.code : null
   store._index()
 
 

@@ -29,6 +29,7 @@ onMounted(()=>{
   <n-spin :show="store.loading">
     <div class="w-full pb-4 mt-4 overflow-y-auto h-[calc(100vh-210px)]">
       <n-table
+          class="sticky-table-header sticky-table-body-left-element table-hover-row"
           :single-line="false"
           size="small"
       >
@@ -58,7 +59,7 @@ onMounted(()=>{
         <template v-for="(item, idx) in store.list" :key="idx">
           <tr>
             <td class="!text-center">{{idx+1}}</td>
-            <td class="!text-center" :class="[!Boolean(item.type_code.toString().trim()) && '!font-semibold']">{{item.type_name}}</td>
+            <td class="sticky-element" :class="[!Boolean(item.type_code.toString().trim()) && '!font-semibold']">{{item.type_name}}</td>
             <td class="!text-center !font-semibold">{{item.type_code}}</td>
             <template v-for="index in 12" :key="index">
               <td class="!text-center">

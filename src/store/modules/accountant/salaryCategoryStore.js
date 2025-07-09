@@ -74,7 +74,6 @@ export const useSalaryCategoryStore = defineStore('salaryCategoryStore', {
                 ...this.params,
                 organizations:this.params.organizations.map(v=>v.id).toString() || undefined,
             }
-            console.log(params)
             $ApiService.salaryCategoryService._index({params}).then((res)=>{
                 this.list = res.data.data
                 this.totalItems = res.data.data.total
