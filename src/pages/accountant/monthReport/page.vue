@@ -3,14 +3,15 @@ import {UIModal, UIPageContent} from "@/components/index.js"
 import Filter from "./ui/Filter.vue"
 import Table from "./ui/Table.vue"
 import ViewSalary from "./ui/ViewSalary.vue"
-import {useMonthReportStore} from "@/store/modules/index.js"
+import {useAccountStore, useMonthReportStore} from "@/store/modules/index.js"
 
 
 const store = useMonthReportStore()
 const route = useRoute()
-
+const accStore = useAccountStore()
 
 onMounted(()=>{
+  if(!accStore.checkAction(accStore.pn.economistStatementsRead)) return
   const query = route.query
   const isHasQuery = Object.keys(route.query).length>0
   store.params.year =isHasQuery? query.year : new Date().getFullYear()

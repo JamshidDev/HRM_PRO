@@ -1,10 +1,10 @@
 <script setup>
 import { computed, ref } from 'vue';
 import {Folder20Filled, ChevronRight12Regular, FolderOpen24Filled, DocumentBulletList24Filled} from "@vicons/fluent"
-import {useSalaryCategoryStore} from "@/store/modules/index.js"
+import {useAccountStore, useSalaryCategoryStore} from "@/store/modules/index.js"
 
 const store = useSalaryCategoryStore()
-
+const accStore = useAccountStore()
 
 const flattenData = computed(()=>{
 
@@ -39,6 +39,7 @@ const toggleExpand =(id)=> {
 
 
 onMounted(()=>{
+  if(!accStore.checkAction(accStore.pn.economistWorkerCategoriesRead)) return
   store._byOrganization()
 })
 </script>
@@ -78,13 +79,13 @@ onMounted(()=>{
         </tr>
         <tr >
           <template v-for="(item) in 28">
-            <th class="min-w-[100px] w-[100px] !text-wrap leading-[1.2] !font-normal text-xs !text-center !border-r">{{item%2===1? $t('salaryCategory.label.mediumWorkerCount') : $t('salaryCategory.label.mediumSalaryAmount')  }}</th>
+            <th class="min-w-[140px] w-[140px] !text-wrap leading-[1.2] !font-normal text-xs !text-center !border-r">{{item%2===1? $t('salaryCategory.label.mediumWorkerCount') : $t('salaryCategory.label.mediumSalaryAmount')  }}</th>
           </template>
         </tr>
         </thead>
         <tbody>
         <template v-for="(item, idx) in flattenData" :key="idx">
-          <tr class="!text-center">
+          <tr class="!text-right">
             <td colspan="4" class="!text-left">
               <div :style="{paddingLeft:(item.level*15+'px')}" class="flex items-start">
                 <div class="flex justify-end w-[40px]">

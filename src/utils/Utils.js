@@ -538,10 +538,32 @@ const appPermissions = {
     hospitalTicketWrite: "hospital-ticket-write",
     hospitalTicketRead: "hospital-ticket-read",
 
-
-
     useful:'useful',
     ai:'ai',
+    economist: "economist",
+    economistDashboard: "economist-dashboard",
+    economistWorkerCategories: "economist-worker-categories",
+    economistWorkerCategoriesRead: "economist-worker-categories-read",
+    economistWorkerCategoriesWrite: "economist-worker-categories-write",
+    economistStatements: "economist-statements",
+    economistStatementsWrite: "economist-statements-write",
+    economistStatementsRead: "economist-statements-read",
+    economistStatementsCode: "economist-statements-code",
+    economistTaxFour: "economist-tax-four",
+    economistTaxFourWrite: "economist-tax-four-write",
+    economistTaxFourRead: "economist-tax-four-read",
+    economistTaxFive: "economist-tax-five",
+    economistTaxFiveWrite: "economist-tax-five-write",
+    economistTaxFiveRead: "economist-tax-five-read",
+    economistPensionPayments: "economist-pension-payments",
+    economistPensionPaymentsWrite: "economist-pension-payments-write",
+    economistPensionPaymentsRead: "economist-pension-payments-read",
+    economistUploads: "economist-uploads",
+    economistUploadsWrite: "economist-uploads-write",
+    economistUploadsRead: "economist-uploads-read",
+    economistUploadsConfirm: "economist-uploads-confirm"
+
+
 
 
 }

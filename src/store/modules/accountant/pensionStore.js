@@ -2,38 +2,26 @@ import {defineStore} from "pinia";
 import i18n from "@/i18n/index.js"
 import Utils from "@/utils/Utils.js"
 const {t} = i18n.global
-export const useMonthReportStore = defineStore('monthReportStore', {
+export const usePensionStore = defineStore('pensionStore', {
     state:()=>({
         list:[],
         loading:false,
         showLoading:false,
-        deleteLoading:false,
+        downloadLoading:false,
         visible:false,
         visibleType:true,
         elementId:null,
         totalItems:0,
         allPermissionList:[],
-        payload:{
-        },
         params:{
             page:1,
             per_page:10,
             search:null,
             organizations:[],
-            code:null,
             year:null,
             month:null,
         },
         structureCheck2:[],
-        showList:[],
-        showPrams:{
-            year:null,
-            month:null,
-        },
-        codeList:[],
-        enumLoading:false,
-        workerPhotoUrl:null,
-        downloadLoading:false,
 
     }),
     actions:{
@@ -43,7 +31,7 @@ export const useMonthReportStore = defineStore('monthReportStore', {
                 ...this.params,
                 organizations:this.params.organizations.map(v=>v.id).toString() || undefined,
             }
-            $ApiService.monthReportService._index({params}).then((res)=>{
+            $ApiService.pensionService._index({params}).then((res)=>{
                 this.list = res.data.data.data
                 this.totalItems = res.data.data.total
             }).finally(()=>{
@@ -52,36 +40,25 @@ export const useMonthReportStore = defineStore('monthReportStore', {
         },
         _show(){
             this.showLoading = true
-            let params = {
-                year:this.showPrams.year,
-                month:this.showPrams.month,
-            }
-            let id = this.elementId
-            $ApiService.monthReportService._show({params, id}).then((res)=>{
-                this.showList = res.data.data
+            $ApiService.pensionService._show({params:this.params}).then((res)=>{
+                this.list = res.data.data.data
+                this.totalItems = res.data.data.total
             }).finally(()=>{
                 this.showLoading = false
             })
         },
-        _enum(){
-            this.enumLoading= true
-            $ApiService.accountantService._enum().then((res)=>{
-                this.codeList = Object.entries(res.data.data.codes).map(([key,value])=>({
-                    id:key,
-                    name:value,
-                    position:key,
-                }))
-            }).finally(()=>{
-                this.enumLoading= false
-            })
-        },
         _download(){
             this.downloadLoading = true
-            $ApiService.monthReportService._template().then((res)=>{
+            $ApiService.pensionService._example().then((res)=>{
                 Utils.downloadFileByUrl(res.data.data.url)
             }).finally(()=>{
                 this.downloadLoading = false
             })
+        },
+        resetParams(){
+            this.params.organizations = []
+            this.params.year = new Date().getFullYear()
+            this.params.month = new Date().getMonth()
         },
 
         openVisible(data){
@@ -89,7 +66,6 @@ export const useMonthReportStore = defineStore('monthReportStore', {
         },
         resetForm(){
             this.elementId = null
-            this.payload.name = null
         }
 
     }

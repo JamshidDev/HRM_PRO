@@ -6,12 +6,14 @@ import ListItem from "./ui/ListItem.vue"
 import createForm from "./ui/createForm.vue"
 import Filter from "./ui/Filter.vue"
 import CommentModal from "./ui/CommentModal.vue"
-import {useUploadReportStore} from "@/store/modules/index.js"
+import {useAccountStore, useUploadReportStore} from "@/store/modules/index.js"
 
 const store = useUploadReportStore()
+const accStore = useAccountStore()
 
 onMounted(()=>{
-  if(store.flattenData.length === 0){
+  if(!accStore.checkAction(accStore.pn.economistUploadsRead)) return
+  if(store.structuresList.length === 0){
     store._structures()
   }
 })

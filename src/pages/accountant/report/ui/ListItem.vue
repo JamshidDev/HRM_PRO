@@ -1,10 +1,11 @@
 <script setup>
-import {useUploadReportStore} from "@/store/modules/index.js"
+import {useAccountStore, useUploadReportStore} from "@/store/modules/index.js"
 import {Timer16Regular, ClipboardBulletListLtr20Regular,CheckmarkLock24Filled, CheckmarkCircle20Filled, CheckmarkCircle16Regular} from '@vicons/fluent'
 import i18n from "@/i18n/index.js"
 
 const {t} = i18n.global
 const store = useUploadReportStore()
+const accStore = useAccountStore()
 
 const onSelect = (v)=>{
   store.list = v.data
@@ -23,6 +24,7 @@ const onSelect = (v)=>{
             <div class="flex justify-between">
               <span class="text-textColor2 font-semibold uppercase">{{item.name}}</span>
               <n-button
+                  v-if="accStore.checkPermission(accStore.pn.economistUploadsConfirm)"
                   :loading="store.confirmLoading"
                   @click="store._confirm(item)"
                   :text="item.status"

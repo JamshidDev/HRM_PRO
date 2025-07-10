@@ -1,67 +1,56 @@
 <script setup>
 import {UIPageFilter, UISelect} from "@/components/index.js"
-import {useAccountStore, useComponentStore, useSalaryReportStore} from "@/store/modules/index.js"
+import {useAccountStore, useComponentStore, usePensionStore} from "@/store/modules/index.js"
 import Utils from "@/utils/Utils.js"
 
 
-const store = useSalaryReportStore()
+const store = usePensionStore()
 const componentStore = useComponentStore()
 const accStore = useAccountStore()
 
 const filterEvent = ()=>{
-  if(!accStore.checkAction(accStore.pn.economistStatementsCode)) return
-  if(store.activeTab === 1){
-    store._index()
-  }else{
-    store._indexOrg()
-  }
+  if(!accStore.checkAction(accStore.pn.economistPensionPaymentsRead)) return
+  store.params.page = 1
+  store._index()
 }
 
 const onChangeStructure = (v)=>{
-  store.params.organizations = v
+  store.params.organizations=v
   filterEvent()
 }
 
 const filterCount = computed(()=>{
-  return  Number(Boolean(store.params.organizations.length)) + Number(Boolean(store.params.year)) + Number(Boolean(store.params.month) )
+  return  Number(Boolean(store.params.organizations.length)) + Number(Boolean(store.params.year)) + Number(Boolean(store.params.month))
 })
 
-const onClear = ()=>{
-  store.params.organizations = []
-  filterEvent()
-}
-
-onMounted(()=>{
+const beforeShow = (v)=>{
   if(componentStore.structureList.length === 0){
     componentStore._structures()
   }
-})
+}
+
+const onClear = ()=>{
+  store.resetParams()
+  filterEvent()
+}
 </script>
 
 <template>
   <UIPageFilter
+      :show-add-button="false"
       @onClear="onClear"
+      @show="beforeShow"
       :filterCount="filterCount"
       v-model:search="store.params.search"
       @onSearch="filterEvent"
-      :show-add-button="false"
   >
-    <template #filterAction>
-      <n-select
-          class="w-full! md:w-[200px]!"
-          v-model:value="store.activeTab"
-          :options="store.tabs"
-          label-field="name"
-          value-field="id"
-      />
-    </template>
     <template #filterContent>
       <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{$t('actionLog.table.structure')}}</label>
       <UISelect
           :options="componentStore.structureList"
           :modelV="store.params.organizations"
-          @defaultValue="(v)=>store.params.organizations=v"
           @updateModel="onChangeStructure"
+          @defaultValue="(v)=>store.params.organizations=v"
           :checkedVal="store.structureCheck2"
           @updateCheck="(v)=>store.structureCheck2=v"
           :loading="componentStore.structureLoading"

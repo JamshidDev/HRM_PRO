@@ -125,6 +125,11 @@ export const useSalaryCategoryStore = defineStore('salaryCategoryStore', {
         openVisible(data){
             this.visible = data
         },
+        resetParams(){
+            this.params.year = new Date().getFullYear()
+            this.params.month = new Date().getMonth()
+            this.params.organizations = []
+        },
         resetForm() {
             this.elementId = null
             this.payload.year = new Date().getFullYear()

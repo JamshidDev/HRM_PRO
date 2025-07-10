@@ -105,6 +105,7 @@ export const AppPaths = {
     PublicVacancy: "/public-vacancy",
     SalaryCategory: "/salary-category",
     SalaryReport: "/salary-report",
+    PensionPayment: "/pension-payment",
 }
 
 export const AppLayouts ={

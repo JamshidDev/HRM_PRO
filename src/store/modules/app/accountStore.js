@@ -41,10 +41,10 @@ export const useAccountStore = defineStore('accountStore', {
            return permissions.includes(permission)
        },
         checkAction:(state)=>(permission)=>{
-            if(!state.checkPermission(permission) && state.isModeDev){
-                $Toast.warning("Devda ligingiz uchun ruxsat berildi!")
-                return true
-            }
+            // if(!state.checkPermission(permission) && state.isModeDev){
+            //     $Toast.warning("Devda ligingiz uchun ruxsat berildi!")
+            //     return true
+            // }
             if(!state.checkPermission(permission)){
                $Toast.warning(t('message.noPermission'))
                return false
