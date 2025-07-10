@@ -1,10 +1,10 @@
 <script setup>
 import { computed, ref } from 'vue';
 import {Folder20Filled, ChevronRight12Regular, FolderOpen24Filled, DocumentBulletList24Filled} from "@vicons/fluent"
-import {useSalaryCategoryStore} from "@/store/modules/index.js"
+import {useAccountStore, useSalaryCategoryStore} from "@/store/modules/index.js"
 
 const store = useSalaryCategoryStore()
-
+const accStore = useAccountStore()
 
 const flattenData = computed(()=>{
 
@@ -39,6 +39,7 @@ const toggleExpand =(id)=> {
 
 
 onMounted(()=>{
+  if(!accStore.checkAction(accStore.pn.economistWorkerCategoriesRead)) return
   store._byOrganization()
 })
 </script>

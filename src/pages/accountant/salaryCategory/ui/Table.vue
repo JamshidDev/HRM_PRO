@@ -1,11 +1,11 @@
 <script setup>
 import {UIMenuButton} from "@/components/index.js"
-import {useSalaryCategoryStore} from "@/store/modules/index.js"
+import {useAccountStore, useSalaryCategoryStore} from "@/store/modules/index.js"
 import Utils from "@/utils/Utils.js"
 
 
 const store = useSalaryCategoryStore()
-
+const accStore = useAccountStore()
 
 const onSelect = (v)=>{
     store.elementId = v.data.data.id
@@ -22,6 +22,7 @@ const onSelect = (v)=>{
 }
 
 onMounted(()=>{
+  if(!accStore.checkAction(accStore.pn.economistWorkerCategoriesRead)) return
   if(store.list.length === 0){
     store.resetParams()
     store._index()

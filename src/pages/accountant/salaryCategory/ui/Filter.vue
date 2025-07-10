@@ -16,6 +16,7 @@ const onAdd = ()=>{
 }
 
 const filterEvent = ()=>{
+  if(!accStore.checkAction(accStore.pn.economistWorkerCategoriesRead)) return
   store.params.page = 1
   if(store.activeTab === 1){
     store._index()

@@ -6,9 +6,10 @@ import StatementChart from "./ui/StatementChart.vue"
 import CircleChart from "./ui/CircleChart.vue"
 import SemiCircleChart from "./ui/SemiCircleChart.vue"
 import Circle2Chart from "./ui/Circle2Chart.vue"
-import {useAccDashboardStore} from "@/store/modules/index.js"
+import {useAccDashboardStore, useAccountStore} from "@/store/modules/index.js"
 
 const store = useAccDashboardStore()
+const accStore = useAccountStore()
 
 const template = [
   {
@@ -26,6 +27,7 @@ const template = [
 ]
 
 onMounted(()=>{
+  if(!accStore.checkAction(accStore.pn.economistDashboard)) return
   store.params.year = new Date().getFullYear()
   store.params.month = new Date().getMonth()+1
   store._index()

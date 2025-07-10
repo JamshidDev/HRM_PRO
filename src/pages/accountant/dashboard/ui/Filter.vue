@@ -1,12 +1,14 @@
 <script setup>
 import {UIPageFilter, UISelect} from "@/components/index.js"
-import {useAccDashboardStore, useComponentStore} from "@/store/modules/index.js"
+import {useAccDashboardStore, useAccountStore, useComponentStore} from "@/store/modules/index.js"
 import Utils from "@/utils/Utils.js"
 
 const store = useAccDashboardStore()
 const componentStore = useComponentStore()
+const accStore = useAccountStore()
 
 const filterEvent = ()=>{
+  if(!accStore.checkAction(accStore.pn.economistDashboard)) return
   store.params.page = 1
   store._index()
 }
