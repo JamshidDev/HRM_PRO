@@ -2,13 +2,15 @@
 import {UIPageFilter} from "@/components/index.js"
 import Utils from "@/utils/Utils.js"
 import {DocumentArrowUp20Regular} from "@vicons/fluent"
-import {useUploadReportStore} from "@/store/modules/index.js"
+import {useAccountStore, useUploadReportStore} from "@/store/modules/index.js"
 import i18n from "@/i18n/index.js"
 
 const {t} = i18n.global
 const store = useUploadReportStore()
+const accStore = useAccountStore()
 
 const onAdd = async () => {
+  if(!accStore.checkAction(accStore.pn.economistUploadsWrite)) return
   if(!store.params.organization_id){
     $Toast.warning(t('uploadReport.form.requiredOrganization'))
     return
@@ -19,6 +21,7 @@ const onAdd = async () => {
 }
 
 const onChange = ()=>{
+  if(!accStore.checkAction(accStore.pn.economistUploadsRead)) return
   store._structures()
   store._cards()
 }

@@ -1,14 +1,16 @@
 <script setup>
 import {ArrowCircleDown32Regular} from "@vicons/fluent"
 import {UIPageFilter, UISelect} from "@/components/index.js"
-import {useComponentStore, useTaxFiveStore} from "@/store/modules/index.js"
+import {useAccountStore, useComponentStore, useTaxFiveStore} from "@/store/modules/index.js"
 import Utils from "@/utils/Utils.js"
 
 
 const store = useTaxFiveStore()
 const componentStore = useComponentStore()
+const accStore = useAccountStore()
 
 const filterEvent = ()=>{
+  if(!accStore.checkAction(accStore.pn.economistTaxFiveRead)) return
   store.params.page = 1
   store._index()
 }
@@ -80,6 +82,8 @@ const filterCount = computed(()=>Number(Boolean(store.params.organizations.lengt
           :checkedVal="store.structureCheck2"
           @updateCheck="(v)=>store.structureCheck2=v"
           :loading="componentStore.structureLoading"
+          v-model:search="componentStore.structureParams.search"
+          @onSearch="componentStore._structures"
           @onSubmit="filterEvent"
       />
     </template>

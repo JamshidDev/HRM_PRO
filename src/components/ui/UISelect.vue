@@ -168,10 +168,12 @@ onMounted(()=>{
     <div class="w-full h-[40px] flex items-center">
       <n-input-group>
         <n-input
+            clearable
             size="small"
             v-model:value="searchModel"
             round
             :on-keyup="searchEvent"
+            @update:value="searchEvent"
             :loading="loading"
         >
           <template #prefix>

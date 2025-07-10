@@ -95,6 +95,7 @@ import taxFiveService from "./v1/accountant/taxFiveService.js"
 import accDashboardService from "./v1/accountant/accDashboardService.js"
 import salaryCategoryService from "./v1/accountant/salaryCategoryService.js"
 import salaryReportService from "./v1/accountant/salaryReportService.js"
+import pensionService from "./v1/accountant/pensionService.js"
 
 
 import expiredHealthService from "./v1/hospital/expiredHealthService.js"
@@ -199,6 +200,7 @@ export default {
     accDashboardService,
     salaryCategoryService,
     salaryReportService,
+    pensionService,
 
     expiredHealthService,
     ticketService,

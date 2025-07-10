@@ -1,32 +1,21 @@
 <script setup>
-import {useSalaryReportStore} from "@/store/modules/index.js"
+import {useAccountStore, useSalaryReportStore} from "@/store/modules/index.js"
 import 'vue3-virtual-scroller/dist/vue3-virtual-scroller.css'
-import { RecycleScroller } from 'vue3-virtual-scroller'
 import Utils from "@/utils/Utils.js"
 const store = useSalaryReportStore()
-
+const accStore = useAccountStore()
 
 const totalCol = computed(()=>Number(Object.keys(store.organizationList).length) + 4)
 const organizationCount = computed(()=>Number(Object.keys(store.organizationList).length))
 
 
 onMounted(()=>{
+  if(!accStore.checkAction(accStore.pn.economistStatementsCode)) return
   store._indexOrg()
 })
 
 
 
-
-onMounted(() => {
-  const scrollContainer = ref(null)
-  const header = scrollContainer.value?.querySelector('.table-header')
-  const body = scrollContainer.value?.querySelector('.table-body')
-  if (header && body) {
-    body.addEventListener('scroll', () => {
-      header.scrollLeft = body.scrollLeft
-    })
-  }
-})
 
 </script>
 

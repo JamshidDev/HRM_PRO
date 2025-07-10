@@ -107,6 +107,7 @@ export * from './accountant/taxFiveStore.js'
 export * from './accountant/accDashboardStore.js'
 export * from './accountant/salaryCategoryStore.js'
 export * from './accountant/salaryReportStore.js'
+export * from './accountant/pensionStore.js'
 
 export * from './hospital/expiredhealthStore.js'
 export * from './hospital/ticketStore.js'

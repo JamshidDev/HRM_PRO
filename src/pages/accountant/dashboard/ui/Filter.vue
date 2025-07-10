@@ -16,6 +16,12 @@ const onChangeStructure = (v)=>{
   filterEvent()
 }
 
+const filterCount = computed(()=>Number(Boolean(store.params.organizations.length)) + Number(Boolean(store.params.year)) + Number(Boolean(store.params.month)))
+
+const resetFilter = ()=>{
+  store.params.organizations = []
+  filterEvent()
+}
 </script>
 
 <template>
@@ -24,6 +30,8 @@ const onChangeStructure = (v)=>{
     :search-loading="store.loading"
     @onSearch="filterEvent"
     :show-add-button="false"
+    :filterCount="filterCount"
+    @onClear="resetFilter"
 >
   <template #filterContent>
     <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{$t('actionLog.table.structure')}}</label>
@@ -35,6 +43,8 @@ const onChangeStructure = (v)=>{
         :checkedVal="store.structureCheck2"
         @updateCheck="(v)=>store.structureCheck2=v"
         :loading="componentStore.structureLoading"
+        v-model:search="componentStore.structureParams.search"
+        @onSearch="componentStore._structures"
         @onSubmit="filterEvent"
     />
     <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{$t('content.year')}}</label>

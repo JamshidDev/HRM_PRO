@@ -22,9 +22,11 @@ const onSelect = (v)=>{
 }
 
 onMounted(()=>{
-  store.params.year = new Date().getFullYear()
-  store.params.month = new Date().getMonth()
-  store._index()
+  if(store.list.length === 0){
+    store.resetParams()
+    store._index()
+  }
+
 })
 
 </script>

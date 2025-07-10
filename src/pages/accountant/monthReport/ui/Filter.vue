@@ -1,12 +1,14 @@
 <script setup>
-import {useComponentStore, useMonthReportStore} from "@/store/modules/index.js"
+import {useAccountStore, useComponentStore, useMonthReportStore} from "@/store/modules/index.js"
 import {UIPageFilter, UISelect} from "@/components/index.js"
 import Utils from "@/utils/Utils.js"
 import UIHelper from "@/utils/UIHelper.js"
 
 const store = useMonthReportStore()
+const accStore = useAccountStore()
 
 const filterEvent = ()=>{
+  if(!accStore.checkAction(accStore.pn.economistStatementsRead)) return
   store.params.page = 1
   store._index()
 }
@@ -57,11 +59,13 @@ const filterCount = computed(()=>Number(Boolean(store.params.organizations.lengt
           :checkedVal="store.structureCheck2"
           @updateCheck="(v)=>store.structureCheck2=v"
           :loading="componentStore.structureLoading"
+          v-model:search="componentStore.structureParams.search"
+          @onSearch="componentStore._structures"
           @onSubmit="filterEvent"
       />
     <label class="text-xs mt-3 text-gray-500 mb-1 font-medium">{{$t('monthReport.form.code')}}</label>
     <n-select
-        class="w-full max-w-[400px]"
+        class="w-full max-w-[370px]"
         clearable
         v-model:value="store.params.code"
         :options="store.codeList"

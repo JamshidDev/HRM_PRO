@@ -1881,5 +1881,16 @@
       "code": "Shifr",
       "salaryType": "Mehnatga haq to‘lash fondi, 1-T hisobotida aks etuvchi"
     }
+  },
+  "pensionPayment": {
+    "name": "SHJPH (INPS) to'lov",
+    "createTitle": "",
+    "updateTitle": "",
+    "form": {
+      "income_tax_paid": "Daromad solig'i",
+      "mandatory_pension_contribution": "Majburiy badal pensiya uchun",
+      "voluntary_pension_contribution": "Ixtiyoriy badal pensiya uchun",
+      "total_contributions": "Jami badallar"
+    }
   }
 }
