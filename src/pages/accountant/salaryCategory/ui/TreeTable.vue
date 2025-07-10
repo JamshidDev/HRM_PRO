@@ -85,7 +85,7 @@ onMounted(()=>{
         </thead>
         <tbody>
         <template v-for="(item, idx) in flattenData" :key="idx">
-          <tr class="!text-center">
+          <tr class="!text-right">
             <td colspan="4" class="!text-left">
               <div :style="{paddingLeft:(item.level*15+'px')}" class="flex items-start">
                 <div class="flex justify-end w-[40px]">

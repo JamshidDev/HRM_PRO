@@ -1,7 +1,6 @@
 <script setup>
 import {useAccountStore, useSalaryReportStore} from "@/store/modules/index.js"
 import 'vue3-virtual-scroller/dist/vue3-virtual-scroller.css'
-import Utils from "@/utils/Utils.js"
 const store = useSalaryReportStore()
 const accStore = useAccountStore()
 
@@ -39,11 +38,11 @@ onMounted(()=>{
           <th rowspan="2" class="min-w-[300px] !text-center">{{$t('salaryReport.form.name')}}</th>
           <th rowspan="2" class="min-w-[60px] w-[60px] !text-center">{{$t('salaryReport.form.code')}}</th>
           <th :colspan="organizationCount" v-if="organizationCount"  class="min-w-[60px] w-[60px] ">{{$t('content.organization')}}</th>
-          <th rowspan="3"  class="min-w-[60px] w-[60px] !text-center">{{$t('salaryReport.form.total')}}</th>
+          <th rowspan="3"  class="min-w-[150px] w-[150px] !text-center">{{$t('salaryReport.form.total')}}</th>
         </tr>
         <tr>
           <template v-for="item in store.organizationList" :key="item.key">
-            <th  class="min-w-[140px] w-[140px] !text-center !border-r">{{item}}</th>
+            <th  class="min-w-[150px] w-[150px] !text-center !border-r">{{item}}</th>
           </template>
 
         </tr>
@@ -54,14 +53,14 @@ onMounted(()=>{
         </thead>
         <tbody>
         <template v-for="(item, idx) in store.organizationData" :key="idx">
-          <tr>
+          <tr class="!text-right">
             <td class="!text-center">{{idx+1}}</td>
-            <td class="sticky-element"  :class="[!Boolean(item.type_code.toString().trim()) && '!font-semibold']">{{item.type_name}}</td>
+            <td class="sticky-element text-left"  :class="[!Boolean(item.type_code.toString().trim()) && '!font-semibold']">{{item.type_name}}</td>
             <td class=" !font-semibold">{{item.type_code}}</td>
             <template v-for="(value, key) in item" :key="key">
-              <td v-if="!['type_name', 'type_code', 'total_year', 'id'].includes(key)"  class="!text-center">{{value}}</td>
+              <td v-if="!['type_name', 'type_code', 'total_year', 'id'].includes(key)">{{value}}</td>
             </template>
-            <td class="!text-right">{{item.total_year}}</td>
+            <td>{{item.total_year}}</td>
           </tr>
         </template>
         </tbody>

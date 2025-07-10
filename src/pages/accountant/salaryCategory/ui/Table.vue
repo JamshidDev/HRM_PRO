@@ -74,7 +74,7 @@ onMounted(()=>{
         </thead>
         <tbody>
         <template v-for="(item, idx) in store.list" :key="idx">
-          <tr class="!text-center">
+          <tr class="!text-right">
             <td>
               <div class="flex items-center justify-center">
                 <span class="px-2 py-1 text-secondary bg-surface-ground/50 rounded-lg capitalize">{{item.month}}</span>
