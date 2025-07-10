@@ -86,7 +86,15 @@ import subjectService from '@/service/v1/lms/subjectService.js'
 import eduPlanService from '@/service/v1/lms/eduPlanService.js'
 import teacherService from '@/service/v1/lms/teacherService.js'
 
-import {turnstileTerminalService, turnstileBuildingService, turnstileOrganizationService, turnstileTerminalUserService, turnstileWorkDurationService} from './v1/turnstile'
+import {
+    turnstileTerminalService,
+    turnstileBuildingService,
+    turnstileOrganizationService,
+    turnstileTerminalUserService,
+    turnstileWorkDurationService,
+    turnstileHikCentralAccessService,
+    turnstileHikCentralWorkerService
+} from './v1/turnstile'
 
 import accountantService from "./v1/accountant/accountantService.js"
 import monthReportService from "./v1/accountant/monthReportService.js"
@@ -182,6 +190,8 @@ export default {
     turnstileOrganizationService,
     turnstileTerminalUserService,
     turnstileWorkDurationService,
+    turnstileHikCentralAccessService,
+    turnstileHikCentralWorkerService,
     punishmentService,
     vacancyService,
 

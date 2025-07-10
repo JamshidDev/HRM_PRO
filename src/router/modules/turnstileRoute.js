@@ -5,7 +5,10 @@ import {
     TurnstileTerminalPage,
     TurnstileOrganizationPage,
     TurnstileTerminalUserPage,
-    TurnstileWorkDurationPage
+    TurnstileWorkDurationPage,
+    TurnstileAccessLevelsPage,
+    TurnstileOrgAccessLevelsPage,
+    TurnstileHcWorkersPage
 } from "@/pages/turnstile";
 
 
@@ -33,6 +36,21 @@ export default [
     {
         path:Utils.routeTurnstilePathMaker(AppPaths.WorkDuration),
         component: ()=>TurnstileWorkDurationPage,
+        children:[],
+    },
+    {
+        path:Utils.routeTurnstilePathMaker(AppPaths.AccessLevels),
+        component: ()=>TurnstileAccessLevelsPage,
+        children:[],
+    },
+    {
+        path:Utils.routeTurnstilePathMaker(AppPaths.OrgAccessLevels),
+        component: ()=>TurnstileOrgAccessLevelsPage,
+        children:[],
+    },
+    {
+        path:Utils.routeTurnstilePathMaker(AppPaths.HcWorkers),
+        component: ()=>TurnstileHcWorkersPage,
         children:[],
     },
 ]

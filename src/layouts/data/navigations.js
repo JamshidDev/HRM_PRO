@@ -350,6 +350,27 @@ export const navigations = [
                 color: 'bg-success',
                 permission: appPermissions.turnstileWorkDuration,
             },
+            {
+                label: 'turnstile.accessLevelPage.name',
+                path: Utils.routeTurnstilePathMaker(AppPaths.AccessLevels),
+                icon: ClockToolbox20Filled,
+                color: 'bg-info',
+                permission: appPermissions.turnstileWorkDuration,
+            },
+            {
+                label: 'turnstile.orgAccessLevelsPage.name',
+                path: Utils.routeTurnstilePathMaker(AppPaths.OrgAccessLevels),
+                icon: Organization12Filled,
+                color: 'bg-secondary',
+                permission: appPermissions.turnstileWorkDuration,
+            },
+            {
+                label: 'turnstile.hcWorkersPage.name',
+                path: Utils.routeTurnstilePathMaker(AppPaths.HcWorkers),
+                icon: PeopleToolbox20Filled,
+                color: 'bg-warning',
+                permission: appPermissions.turnstileWorkDuration,
+            },
         ]
     },
     {
