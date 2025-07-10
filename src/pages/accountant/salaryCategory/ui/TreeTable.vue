@@ -79,7 +79,7 @@ onMounted(()=>{
         </tr>
         <tr >
           <template v-for="(item) in 28">
-            <th class="min-w-[100px] w-[100px] !text-wrap leading-[1.2] !font-normal text-xs !text-center !border-r">{{item%2===1? $t('salaryCategory.label.mediumWorkerCount') : $t('salaryCategory.label.mediumSalaryAmount')  }}</th>
+            <th class="min-w-[140px] w-[140px] !text-wrap leading-[1.2] !font-normal text-xs !text-center !border-r">{{item%2===1? $t('salaryCategory.label.mediumWorkerCount') : $t('salaryCategory.label.mediumSalaryAmount')  }}</th>
           </template>
         </tr>
         </thead>

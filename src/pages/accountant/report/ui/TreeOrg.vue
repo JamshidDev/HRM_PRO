@@ -8,10 +8,28 @@ import {
 } from "@vicons/fluent"
 import {computed} from "vue"
 const store = useUploadReportStore()
-const list = ref([])
 
 
+const flattenData = computed(()=>{
 
+  function flattenTreeWithLevel(tree, level = 0) {
+    const result = [];
+
+    function traverse(nodes, currentLevel) {
+      for (const node of nodes) {
+        const { children, ...rest } = node;
+        result.push({ ...rest, level: currentLevel, isHasChildren: !!children.length })
+        const isExpanded = !store.expandSet.has(node.id)
+        if (isExpanded && children && children.length > 0) {
+          traverse(children, currentLevel + 1);
+        }
+      }
+    }
+    traverse(tree, level);
+    return result;
+  }
+  return  flattenTreeWithLevel(store.structuresList, 0)
+})
 
 
 
@@ -23,68 +41,6 @@ const toggleExpand =(id)=> {
     store.expandSet.add(id)
   }
 }
-
-
-let worker = null
-const workerCode = `
-  self.onmessage = function(e) {
-  const result = []
-  const {expandSet,tree } = e.data
-    console.log(tree)
-   function flattenTreeWithLevel(tree, level = 0) {
-    function traverse(nodes, currentLevel) {
-      for (const node of nodes) {
-        const { children, ...rest } = node;
-        result.push({ ...rest, level:currentLevel, isHasChildren: !!children.length })
-        const isExpanded = !expandSet.includes(node.id)
-        if (isExpanded && children && children.length > 0) {
-          traverse(children, currentLevel + 1);
-        }
-      }
-    }
-    traverse(tree, level);
-    return result;
-  }
-  flattenTreeWithLevel(tree, 0)
-    self.postMessage(result)
-  }
-`
-
-const createWorker = ()=>{
-  const blob = new Blob([workerCode], { type: 'application/javascript' })
-  const url = URL.createObjectURL(blob)
-  return new Worker(url)
-}
-
-
-
-
-
-watchEffect(async ()=>{
-  if (worker) {
-    worker.terminate()
-  }
-  worker = createWorker()
-  const plainStructuresList = JSON.parse(JSON.stringify(store.structuresList));
-  const plainExpandSet = Array.from(store.expandSet || new Set());
-  worker.postMessage({ tree: plainStructuresList, expandSet: plainExpandSet })
-
-  worker.onmessage = function(e) {
-    store.flattenData= e.data
-  }
-
-  worker.onerror = function(e) {
-    console.error('Worker xatosi:', e)
-  }
-
-})
-
-onBeforeUnmount(() => {
-  if (worker) {
-    worker.terminate()
-  }
-})
-
 
 </script>
 
@@ -109,7 +65,7 @@ onBeforeUnmount(() => {
         </thead>
 
         <tbody>
-        <template v-for="(item, idx) in store.flattenData" :key="idx">
+        <template v-for="(item, idx) in flattenData" :key="idx">
           <tr class="!text-center" :class="[item.id === store.params.organization_id && 'selectedRow']">
             <td @click="store.onChangeStructure(item)">
               <n-checkbox :checked="item.id === store.params.organization_id" ></n-checkbox>
@@ -141,29 +97,38 @@ onBeforeUnmount(() => {
                 <span class="ml-2 leading-[1.2] inline-block !text-wrap text-sm w-[calc(100%-40px)]">{{' '+ item.name}}</span>
               </div>
             </td>
-            <template v-for="stat in item.uploadStats" :key="stat.id">
-              <td>
-               <n-button
-                   :secondary="!stat.confirmed"
-                   :text="stat.confirmed"
-                   :type="stat.confirmed? 'success' : 'primary'"
-                   circle
-                   size="small"
-                   :disabled="stat.uploaded_count === 0"
-               >
-                 <template v-if="!stat.confirmed">
-                   {{stat.uploaded_count}}
-                 </template>
-                 <template #icon>
-                   <n-icon v-if="stat.confirmed" size="22" class="text-success">
-                     <CheckmarkCircle32Filled/>
-                   </n-icon>
-
-                 </template>
-
-               </n-button>
-              </td>
-            </template>
+            <td>
+              <div class="flex justify-center w-full">
+                <n-icon v-if="item.uploadStats?.[0]?.confirmed" size="22" class="text-success">
+                  <CheckmarkCircle32Filled/>
+                </n-icon>
+                <span :class="[item.uploadStats?.[0]?.uploaded_count === 0 && 'text-textColor3']">{{item.uploadStats?.[0]?.uploaded_count}}</span>
+              </div>
+            </td>
+             <td>
+            <div class="flex justify-center w-full">
+              <n-icon v-if="item.uploadStats?.[1]?.confirmed" size="22" class="text-success">
+                <CheckmarkCircle32Filled/>
+              </n-icon>
+              <span :class="[item.uploadStats?.[1]?.uploaded_count === 0 && 'text-textColor3']">{{item.uploadStats?.[1]?.uploaded_count}}</span>
+            </div>
+          </td>
+            <td>
+              <div class="flex justify-center w-full">
+                <n-icon v-if="item.uploadStats?.[1]?.confirmed" size="22" class="text-success">
+                  <CheckmarkCircle32Filled/>
+                </n-icon>
+                <span :class="[item.uploadStats?.[1]?.uploaded_count === 0 && 'text-textColor3']">{{item.uploadStats?.[1]?.uploaded_count}}</span>
+              </div>
+            </td>
+            <td>
+              <div class="flex justify-center w-full">
+                <n-icon v-if="item.uploadStats?.[1]?.confirmed" size="22" class="text-success">
+                  <CheckmarkCircle32Filled/>
+                </n-icon>
+                <span :class="[item.uploadStats?.[1]?.uploaded_count === 0 && 'text-textColor3']">{{item.uploadStats?.[1]?.uploaded_count}}</span>
+              </div>
+            </td>
           </tr>
         </template>
 

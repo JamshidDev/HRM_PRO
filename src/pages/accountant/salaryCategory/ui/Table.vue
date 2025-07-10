@@ -44,7 +44,7 @@ onMounted(()=>{
         <thead>
         <tr>
           <th rowspan="3" class="!text-center">{{$t('content.month')}}</th>
-          <th colspan="2" rowspan="2" class="min-w-[100px] w-[100px] !text-center">{{$t('salaryCategory.label.all')}}</th>
+          <th colspan="2" rowspan="2" class="!text-center">{{$t('salaryCategory.label.all')}}</th>
           <th rowspan="2" colspan="2" class="min-w-[100px] w-[100px] !text-center">{{$t('salaryCategory.label.external')}}</th>
           <th colspan="6" class="min-w-[100px] w-[100px] !text-center">{{$t('salaryCategory.label.capital')}}</th>
           <th colspan="6" class="min-w-[100px] w-[100px] !text-center">{{$t('salaryCategory.label.construction')}}</th>
@@ -53,22 +53,22 @@ onMounted(()=>{
           <th rowspan="3" class="min-w-[40px] w-[100px]"></th>
         </tr>
         <tr>
-          <th colspan="2" class="min-w-[100px] w-[100px] !font-normal">{{$t('salaryCategory.label.forOrganization')}}</th>
-          <th colspan="2"  class="min-w-[100px] w-[100px] !font-normal">{{$t('salaryCategory.label.forOwn')}}</th>
-          <th colspan="2"  class="min-w-[100px] w-[100px] !font-normal">{{$t('salaryCategory.label.forForeign')}}</th>
-          <th colspan="2" class="min-w-[100px] w-[100px] !font-normal">{{$t('salaryCategory.label.forOrganization')}}</th>
-          <th colspan="2" class="min-w-[100px] w-[100px] !font-normal">{{$t('salaryCategory.label.forOwn')}}</th>
-          <th colspan="2" class="min-w-[100px] w-[100px] !font-normal">{{$t('salaryCategory.label.forForeign')}}</th>
-          <th colspan="2" class="min-w-[100px] w-[100px] !font-normal">{{$t('salaryCategory.label.forLogistic')}}</th>
-          <th colspan="2" class="min-w-[100px] w-[100px] !font-normal">{{$t('salaryCategory.label.forForeign')}}</th>
-          <th colspan="2" class="min-w-[100px] w-[100px] !font-normal !text-wrap leading-[1.2] !text-center">{{$t('salaryCategory.label.forOther')}}</th>
-          <th colspan="2" class="min-w-[100px] w-[100px] !font-normal !text-wrap leading-[1.2] !text-center">{{$t('salaryCategory.label.fixed-term')}}</th>
-          <th colspan="2" class="min-w-[100px] w-[100px] !font-normal !text-wrap leading-[1.2] !text-center">{{$t('salaryCategory.label.contract')}}</th>
-          <th colspan="2" class="min-w-[100px] w-[100px] !border-r !text-wrap leading-[1.2] !text-center">{{$t('salaryCategory.label.Housekeeper')}}</th>
+          <th colspan="2" class=" w-[100px] !font-normal">{{$t('salaryCategory.label.forOrganization')}}</th>
+          <th colspan="2"  class=" !font-normal">{{$t('salaryCategory.label.forOwn')}}</th>
+          <th colspan="2"  class=" !font-normal">{{$t('salaryCategory.label.forForeign')}}</th>
+          <th colspan="2" class=" !font-normal">{{$t('salaryCategory.label.forOrganization')}}</th>
+          <th colspan="2" class=" !font-normal">{{$t('salaryCategory.label.forOwn')}}</th>
+          <th colspan="2" class=" !font-normal">{{$t('salaryCategory.label.forForeign')}}</th>
+          <th colspan="2" class=" !font-normal">{{$t('salaryCategory.label.forLogistic')}}</th>
+          <th colspan="2" class=" !font-normal">{{$t('salaryCategory.label.forForeign')}}</th>
+          <th colspan="2" class=" !font-normal !text-wrap leading-[1.2] !text-center">{{$t('salaryCategory.label.forOther')}}</th>
+          <th colspan="2" class=" !font-normal !text-wrap leading-[1.2] !text-center">{{$t('salaryCategory.label.fixed-term')}}</th>
+          <th colspan="2" class=" !font-normal !text-wrap leading-[1.2] !text-center">{{$t('salaryCategory.label.contract')}}</th>
+          <th colspan="2" class=" !border-r !text-wrap leading-[1.2] !text-center">{{$t('salaryCategory.label.Housekeeper')}}</th>
         </tr>
         <tr >
           <template v-for="(item) in 28">
-            <th class="min-w-[100px] w-[100px] !text-wrap leading-[1.2] !font-normal text-xs !text-center !border-r">{{item%2===1? $t('salaryCategory.label.mediumWorkerCount') : $t('salaryCategory.label.mediumSalaryAmount')  }}</th>
+            <th class="min-w-[140px] w-[140px] !text-wrap leading-[1.2] !font-normal text-xs !text-center !border-r">{{item%2===1? $t('salaryCategory.label.mediumWorkerCount') : $t('salaryCategory.label.mediumSalaryAmount')  }}</th>
           </template>
         </tr>
         </thead>

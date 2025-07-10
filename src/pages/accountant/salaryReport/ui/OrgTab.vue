@@ -11,7 +11,10 @@ const organizationCount = computed(()=>Number(Object.keys(store.organizationList
 
 onMounted(()=>{
   if(!accStore.checkAction(accStore.pn.economistStatementsCode)) return
-  store._indexOrg()
+  if(store.organizationData.length === 0){
+    store._indexOrg()
+  }
+
 })
 
 
@@ -40,7 +43,7 @@ onMounted(()=>{
         </tr>
         <tr>
           <template v-for="item in store.organizationList" :key="item.key">
-            <th  class="min-w-[100px] w-[100px] !text-center !border-r">{{item}}</th>
+            <th  class="min-w-[140px] w-[140px] !text-center !border-r">{{item}}</th>
           </template>
 
         </tr>
@@ -58,7 +61,7 @@ onMounted(()=>{
             <template v-for="(value, key) in item" :key="key">
               <td v-if="!['type_name', 'type_code', 'total_year', 'id'].includes(key)"  class="!text-center">{{value}}</td>
             </template>
-            <td class="!text-right">{{Utils.sumFormat(item.total_year)}}</td>
+            <td class="!text-right">{{item.total_year}}</td>
           </tr>
         </template>
         </tbody>

@@ -37,39 +37,42 @@ onMounted(()=>{
 <template>
 <UIPageContent>
   <Filter/>
-  <div class="grid grid-cols-12 mt-4 gap-2">
-    <div
-        v-for="(data, index) in store.cards"
-        class="lg:col-span-3 md:col-span-6 col-span-12"
-    >
-      <PremiumCard
-          :index="index+1"
-          :data="data"
-      />
-    </div>
-
-
-    <template v-for="(item, idx) in template" :key="idx">
-      <div class="lg:col-span-4 mg:col-span-6 col-span-12 bg-surface-section pt-4 rounded-2xl border border-surface-line">
-        <h1 class="px-4 font-semibold uppercase text-textColor0 line-clamp-1">{{$t(`accDashboard.chart.${item.name}`)}} <small class="text-textColor3 font-normal lowercase">({{$t('content.mln')}} {{$t('content.sum')}})</small></h1>
-        <div class="h-[200px]">
-          <StatementChart
-              :chart-type="item.type"
-          />
-        </div>
+  <n-spin :show="store.loading" class="min-h-[400px]">
+    <div v-if="store.cards.length>0" class="grid grid-cols-12 mt-4 gap-2">
+      <div
+          v-for="(data, index) in store.cards"
+          class="lg:col-span-3 md:col-span-6 col-span-12"
+      >
+        <PremiumCard
+            :index="index+1"
+            :data="data"
+        />
       </div>
-    </template>
 
 
-    <div class="2xl:col-span-4 lg:col-span-6  col-span-12">
-      <CircleChart/>
+      <template v-for="(item, idx) in template" :key="idx">
+        <div class="lg:col-span-4 mg:col-span-6 col-span-12 bg-surface-section pt-4 rounded-2xl border border-surface-line">
+          <h1 class="px-4 font-semibold uppercase text-textColor0 line-clamp-1">{{$t(`accDashboard.chart.${item.name}`)}} <small class="text-textColor3 font-normal lowercase">({{$t('content.mln')}} {{$t('content.sum')}})</small></h1>
+          <div class="h-[200px]">
+            <StatementChart
+                :chart-type="item.type"
+            />
+          </div>
+        </div>
+      </template>
+
+
+      <div class="2xl:col-span-4 lg:col-span-6  col-span-12">
+        <CircleChart/>
+      </div>
+      <div class="2xl:col-span-4 lg:col-span-6  col-span-12">
+        <SemiCircleChart/>
+      </div>
+      <div class="2xl:col-span-4 lg:col-span-6  col-span-12">
+        <Circle2Chart/>
+      </div>
     </div>
-    <div class="2xl:col-span-4 lg:col-span-6  col-span-12">
-      <SemiCircleChart/>
-    </div>
-    <div class="2xl:col-span-4 lg:col-span-6  col-span-12">
-      <Circle2Chart/>
-    </div>
-  </div>
+  </n-spin>
+
 </UIPageContent>
 </template>

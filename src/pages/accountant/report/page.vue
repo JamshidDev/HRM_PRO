@@ -13,7 +13,7 @@ const accStore = useAccountStore()
 
 onMounted(()=>{
   if(!accStore.checkAction(accStore.pn.economistUploadsRead)) return
-  if(store.flattenData.length === 0){
+  if(store.structuresList.length === 0){
     store._structures()
   }
 })

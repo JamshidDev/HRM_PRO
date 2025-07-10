@@ -3,6 +3,7 @@ import {useAccountStore, useComponentStore, useMonthReportStore} from "@/store/m
 import {UIPageFilter, UISelect} from "@/components/index.js"
 import Utils from "@/utils/Utils.js"
 import UIHelper from "@/utils/UIHelper.js"
+import {ArrowCircleDown32Regular} from "@vicons/fluent"
 
 const store = useMonthReportStore()
 const accStore = useAccountStore()
@@ -79,7 +80,15 @@ const filterCount = computed(()=>Number(Boolean(store.params.organizations.lengt
 
   </template>
   <template #filterAction>
-
+    <n-button
+        @click="store._download()"
+        :loading="store.downloadLoading"
+        type="success">
+      <template #icon>
+        <ArrowCircleDown32Regular/>
+      </template>
+      {{$t('content.template')}}
+    </n-button>
     <n-select
         class="w-full! md:w-[200px]!"
         v-model:value="store.params.year"

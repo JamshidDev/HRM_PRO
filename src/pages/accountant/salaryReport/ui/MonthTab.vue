@@ -20,10 +20,13 @@ const goPush = (v, month)=>{
 
 onMounted(()=>{
   if(!accStore.checkAction(accStore.pn.economistStatementsCode)) return
-  store.params.year = new Date().getFullYear()
-  store.params.month = new Date().getMonth()
+  if(store.list.length === 0){
+    store.params.year = new Date().getFullYear()
+    store.params.month = new Date().getMonth()
+    store._index()
+  }
 
-  store._index()
+
 })
 </script>
 
@@ -48,9 +51,9 @@ onMounted(()=>{
         </tr>
         <tr>
           <template v-for="item in Utils.monthList" :key="item.id">
-            <th  class="min-w-[100px] w-[100px] !text-center">{{item.name}}</th>
+            <th  class="min-w-[140px] w-[140px] !text-center">{{item.name}}</th>
           </template>
-          <th  class="min-w-[100px] w-[100px] !text-center"></th>
+          <th  class="min-w-[140px] w-[140px] !text-center"></th>
         </tr>
         <tr>
           <th colspan="16">{{$t('salaryReport.form.salaryType')}}</th>

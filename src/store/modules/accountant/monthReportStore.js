@@ -1,5 +1,6 @@
 import {defineStore} from "pinia";
 import i18n from "@/i18n/index.js"
+import Utils from "@/utils/Utils.js"
 const {t} = i18n.global
 export const useMonthReportStore = defineStore('monthReportStore', {
     state:()=>({
@@ -32,6 +33,7 @@ export const useMonthReportStore = defineStore('monthReportStore', {
         codeList:[],
         enumLoading:false,
         workerPhotoUrl:null,
+        downloadLoading:false,
 
     }),
     actions:{
@@ -71,6 +73,14 @@ export const useMonthReportStore = defineStore('monthReportStore', {
                 }))
             }).finally(()=>{
                 this.enumLoading= false
+            })
+        },
+        _download(){
+            this.downloadLoading = true
+            $ApiService.monthReportService._template().then((res)=>{
+                Utils.downloadFileByUrl(res.data.data.url)
+            }).finally(()=>{
+                this.downloadLoading = false
             })
         },
 

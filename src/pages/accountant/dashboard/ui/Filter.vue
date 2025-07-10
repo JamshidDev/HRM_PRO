@@ -24,10 +24,17 @@ const resetFilter = ()=>{
   store.params.organizations = []
   filterEvent()
 }
+
+const beforeShow = (v)=>{
+  if(componentStore.structureList.length === 0){
+    componentStore._structures()
+  }
+}
 </script>
 
 <template>
 <UIPageFilter
+    @show="beforeShow"
     v-model:search="store.params.search"
     :search-loading="store.loading"
     @onSearch="filterEvent"
