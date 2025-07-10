@@ -50,7 +50,7 @@ onMounted(()=>{
         </tr>
         <tr>
           <th rowspan="2" class="min-w-[40px] w-[40px] !text-center">#</th>
-          <th rowspan="2" class="min-w-[300px] !text-center">{{$t('salaryReport.form.name')}}</th>
+          <th rowspan="2" class="min-w-[400px] !text-center">{{$t('salaryReport.form.name')}}</th>
           <th rowspan="2" class="min-w-[60px] w-[60px] !text-center">{{$t('salaryReport.form.code')}}</th>
           <th :colspan="organizationCount" v-if="organizationCount"  class="min-w-[60px] w-[60px] ">{{$t('content.organization')}}</th>
           <th rowspan="3"  class="min-w-[150px] w-[150px] !text-center">{{$t('salaryReport.form.total')}}</th>
