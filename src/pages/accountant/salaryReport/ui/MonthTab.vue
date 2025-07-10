@@ -15,7 +15,6 @@ const goPush = (v, month)=>{
       code:v.type_code
     }
   })
-
 }
 
 onMounted(()=>{
@@ -62,9 +61,9 @@ onMounted(()=>{
         </thead>
         <tbody>
         <template v-for="(item, idx) in store.list" :key="idx">
-          <tr class="!text-right">
+          <tr class="!text-right" :class="[!Boolean(item.type_code.toString().trim()) && '!font-semibold selectedRow']">
             <td class="!text-center">{{idx+1}}</td>
-            <td class="sticky-element text-left" :class="[!Boolean(item.type_code.toString().trim()) && '!font-semibold']">{{item.type_name}}</td>
+            <td class="sticky-element text-left">{{item.type_name}}</td>
             <td class="!text-center !font-semibold">{{item.type_code}}</td>
             <template v-for="index in 12" :key="index">
               <td>

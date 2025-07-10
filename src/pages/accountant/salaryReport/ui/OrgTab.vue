@@ -1,11 +1,25 @@
 <script setup>
 import {useAccountStore, useSalaryReportStore} from "@/store/modules/index.js"
 import 'vue3-virtual-scroller/dist/vue3-virtual-scroller.css'
+import Utils from "@/utils/Utils.js"
+import {AppPaths} from "@/utils/index.js"
 const store = useSalaryReportStore()
 const accStore = useAccountStore()
+const router = useRouter()
 
 const totalCol = computed(()=>Number(Object.keys(store.organizationList).length) + 4)
 const organizationCount = computed(()=>Number(Object.keys(store.organizationList).length))
+
+const goPush = (v, month)=>{
+  router.push({
+    path:Utils.routeAccountantPathMaker(AppPaths.MonthReport),
+    query:{
+      month:store.params.month,
+      year:store.params.year,
+      code:v.type_code
+    }
+  })
+}
 
 
 onMounted(()=>{
@@ -13,8 +27,9 @@ onMounted(()=>{
   if(store.organizationData.length === 0){
     store._indexOrg()
   }
-
 })
+
+
 
 
 
@@ -53,10 +68,10 @@ onMounted(()=>{
         </thead>
         <tbody>
         <template v-for="(item, idx) in store.organizationData" :key="idx">
-          <tr class="!text-right">
+          <tr class="!text-right" :class="[!Boolean(item.type_code.toString().trim()) && '!font-semibold selectedRow']">
             <td class="!text-center">{{idx+1}}</td>
-            <td class="sticky-element text-left"  :class="[!Boolean(item.type_code.toString().trim()) && '!font-semibold']">{{item.type_name}}</td>
-            <td class=" !font-semibold">{{item.type_code}}</td>
+            <td class="sticky-element text-left">{{item.type_name}}</td>
+            <td @click="goPush(item)" class=" !font-semibold"><span class="hover:text-primary">{{item.type_code}}</span></td>
             <template v-for="(value, key) in item" :key="key">
               <td v-if="!['type_name', 'type_code', 'total_year', 'id'].includes(key)">{{value}}</td>
             </template>

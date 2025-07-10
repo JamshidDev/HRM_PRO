@@ -292,7 +292,11 @@ input:-webkit-autofill {
 .n-table thead th {
     font-weight: 500 !important;
 }
-
+.selectedRow {
+  td{
+    background-color: rgba(186, 17, 196, 0.05) !important;
+  }
+}
 .sticky-table-header{
   border-collapse: separate !important;
   overflow: auto !important;
@@ -321,7 +325,6 @@ input:-webkit-autofill {
     }
   }
 }
-
 .table-hover-row {
   tbody tr:hover{
     cursor: pointer;
@@ -330,7 +333,6 @@ input:-webkit-autofill {
     }
   }
 }
-
 .sticky-table-body-left-element{
   border-collapse: separate !important;
   overflow: auto !important;
@@ -345,14 +347,10 @@ input:-webkit-autofill {
       position: sticky;
       left: 0;
       z-index: 9;
-      background-color: var(--table-header);
+      background-color: var(--table-header) !important;
     }
 
   }
 
 }
-.selectedRow {
-  td{
-    background-color: rgba(186, 17, 196, 0.05);
-  }
-}
+
