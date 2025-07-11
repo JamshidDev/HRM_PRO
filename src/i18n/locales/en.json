@@ -1375,6 +1375,22 @@
       "addUser": "Add user to terminal",
       "addBtn": "Add user"
     },
+    "accessLevelPage": {
+      "name": "(HC) Groups",
+      "deviceCount": "Number of Devices",
+      "sync": "Synchronization",
+      "server": "Server"
+    },
+    "orgAccessLevelsPage": {
+      "name": "(HC) Organizations and Groups"
+    },
+    "hcWorkersPage": {
+      "access_levels": "Groups",
+      "name": "(HC) Employees",
+      "create": "Add Employee",
+      "edit": "Edit Employee",
+      "access_levels_count": "Number of Groups"
+    },
     "workDurationPage": {
       "name": "Working hours",
       "building": "Building",

@@ -1375,6 +1375,22 @@
       "addUser": "Добавить пользователя в терминал",
       "addBtn": "Добавить пользователя"
     },
+    "accessLevelPage": {
+      "name": "(HC) Группы",
+      "deviceCount": "Количество устройств",
+      "sync": "Синхронизация",
+      "server": "Сервер"
+    },
+    "orgAccessLevelsPage": {
+      "name": "(HC) Организации и группы"
+    },
+    "hcWorkersPage": {
+      "access_levels": "Группы",
+      "name": "(HC) Сотрудники",
+      "create": "Добавить сотрудника",
+      "edit": "Редактировать сотрудника",
+      "access_levels_count": "Количество групп"
+    },
     "workDurationPage": {
       "name": "Рабочее время",
       "building": "Здание",

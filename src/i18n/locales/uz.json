@@ -1378,6 +1378,22 @@
       "addUser": "Terminalga foydalanuvchi qo'shish",
       "addBtn": "Foydalanuvchi qo'shish"
     },
+    "accessLevelPage": {
+      "name": "(HC) Guruhlar",
+      "deviceCount": "Qurilmalar soni",
+      "sync": "Sinxronlash",
+      "server": "Server"
+    },
+    "orgAccessLevelsPage": {
+      "name": "(HC) Tashkilot va guruhlar"
+    },
+    "hcWorkersPage": {
+      "access_levels": "Guruhlar",
+      "name": "(HC) Xodimlar",
+      "create": "Xodim qo'shish",
+      "edit": "Xodimni tahrirlash",
+      "access_levels_count": "Guruhlar soni"
+    },
     "workDurationPage": {
       "name": "Ish vaqti",
       "building": "Bino",
