@@ -86,7 +86,7 @@ const option = computed(()=>{
     </div>
     <div class="w-[calc(100%-200px)] pl-2 grid grid-cols-12 content-between min-h-[260px]">
       <div class="col-span-12">
-        <template v-for="(item, index) in data">
+        <template v-for="(item, index) in data" :key="index">
           <div class="leading-[1] mb-2">
             <p v-bind:style="{color:colors[item.key]}" class="text-lg font-black mb-0">{{numeral(item.real).format('0,0.0')}}<small class="text-xs text-textColor3/60 font-normal pl-1 lowercase"> {{ $t('content.sum')}}</small></p>
             <p class="text-xs text-textColor3 line-clamp-2">{{$t(`accDashboard.chart.${item.key}`)}}</p>

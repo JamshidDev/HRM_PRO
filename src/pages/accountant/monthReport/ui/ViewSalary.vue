@@ -30,31 +30,54 @@ const onChangeIndex = (v) => {
   <div class="grid grid-cols-12">
     <div class="col-span-12 h-[calc(100vh-100px)] overflow-auto">
       <n-spin class="w-full min-h-[660px] " :show="store.showLoading">
-        <div v-if="totalItem>1" class="w-full grid grid-cols-12 border border-surface-line rounded-lg px-4 py-2 mb-4 ">
-          <div class="col-span-6 flex items-center">
-            <span class="text-textColor3">{{$t('content.total', {n:totalItem})}}</span>
-            <n-icon class="text-warning mx-4" size="30">
-              <ArrowFit16Filled/>
-            </n-icon>
-            <span class="text-2xl font-semibold text-primary">{{currentIndex}}</span>
+        <div class="w-full grid grid-cols-12 border border-surface-line rounded-lg px-4 py-2 mb-4 ">
+          <div class="col-span-4 flex items-center">
+            <template v-if="store.showList.length > 0">
+              <span class="text-textColor3">{{$t('content.total', {n:totalItem})}}</span>
+              <n-icon class="text-warning mx-4" size="30">
+                <ArrowFit16Filled/>
+              </n-icon>
+              <span class="text-2xl font-semibold text-primary">{{currentIndex}}</span>
+            </template>
+
           </div>
-          <div class="col-span-6 flex justify-end gap-4">
-            <n-button
-                :disabled="totalItem===1"
-                @click="prev" type="error" size="small">
-              {{$t('content.preview')}}
-              <template #icon>
-                <ArrowCircleLeft20Filled/>
-              </template>
-            </n-button>
-            <n-button
-                :disabled="totalItem===1"
-                @click="next" type="primary" size="small" icon-placement="right">
-              {{$t('content.next')}}
-              <template #icon>
-                <ArrowCircleRight16Filled/>
-              </template>
-            </n-button>
+          <div class="col-span-4 flex justify-center gap-4 items-center">
+            <n-select
+                class="w-full! md:w-[100px]!"
+                v-model:value="store.showPrams.year"
+                :options="Utils.yearList"
+                label-field="name"
+                value-field="id"
+                @update:value="store._show"
+            />
+            <n-select
+                class="w-full! md:w-[120px]!"
+                v-model:value="store.showPrams.month"
+                :options="Utils.monthList"
+                label-field="name"
+                value-field="id"
+                @update:value="store._show"
+            />
+          </div>
+          <div class="col-span-4 flex justify-end gap-4">
+            <template v-if="store.showList.length > 1">
+              <n-button
+                  :disabled="totalItem===1"
+                  @click="prev" type="error" size="small">
+                {{$t('content.preview')}}
+                <template #icon>
+                  <ArrowCircleLeft20Filled/>
+                </template>
+              </n-button>
+              <n-button
+                  :disabled="totalItem===1"
+                  @click="next" type="primary" size="small" icon-placement="right">
+                {{$t('content.next')}}
+                <template #icon>
+                  <ArrowCircleRight16Filled/>
+                </template>
+              </n-button>
+            </template>
           </div>
         </div>
         <n-carousel
@@ -84,22 +107,6 @@ const onChangeIndex = (v) => {
                       <div class="col-span-12"><span class="text-primary">{{$t('monthReport.view.main_salary')}}: </span> {{item.worker?.main_salary}}</div>
                       <div class="col-span-6"><span class="text-primary">{{$t('monthReport.view.work_time')}}: </span> {{item.worker?.work_time}} {{$t('content.hour')}}</div>
                       <div class="col-span-6 flex gap-4 justify-end">
-                        <n-select
-                            class="w-full! md:w-[100px]!"
-                            v-model:value="store.showPrams.year"
-                            :options="Utils.yearList"
-                            label-field="name"
-                            value-field="id"
-                            @update:value="store._show"
-                        />
-                        <n-select
-                            class="w-full! md:w-[100px]!"
-                            v-model:value="store.showPrams.month"
-                            :options="Utils.monthList"
-                            label-field="name"
-                            value-field="id"
-                            @update:value="store._show"
-                        />
                       </div>
                     </div>
                   </div>

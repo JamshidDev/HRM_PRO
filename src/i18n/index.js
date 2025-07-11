@@ -6,6 +6,8 @@ import ru from "./locales/ru.json"
 
 
 const i18n = createI18n({
+    legacy: false,
+    fallbackLocale: 'uz',
     locale:'uz',
     messages:{
         en,
