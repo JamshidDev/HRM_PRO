@@ -75,7 +75,6 @@ onMounted(()=>{
             <td>{{item.total_year}}</td>
           </tr>
         </template>
-
         </tbody>
       </n-table>
     </div>

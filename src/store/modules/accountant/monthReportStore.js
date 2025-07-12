@@ -57,7 +57,9 @@ export const useMonthReportStore = defineStore('monthReportStore', {
                 month:this.showPrams.month,
             }
             let id = this.elementId
-            $ApiService.monthReportService._show({params, id}).then((res)=>{
+            $ApiService.monthReportService._show({params, id}).then(async (res)=>{
+                this.showList=[]
+                await  nextTick()
                 this.showList = res.data.data
             }).finally(()=>{
                 this.showLoading = false
