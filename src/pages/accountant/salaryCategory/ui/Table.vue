@@ -36,15 +36,15 @@ onMounted(()=>{
   <n-spin :show="store.loading">
     <div class="w-full mt-4 overflow-y-auto h-[calc(100vh-200px)]">
       <n-table
-          class="sticky-table-body-left table-hover-row"
+          class="sticky-table-body-left table-hover-row sticky-table-body-element"
           v-if="store.list.length>0"
           :single-line="false"
           size="small"
       >
         <thead>
         <tr>
-          <th rowspan="3" class="!text-center">{{$t('content.month')}}</th>
-          <th colspan="2" rowspan="2" class="!text-center">{{$t('salaryCategory.label.all')}}</th>
+          <th rowspan="3" class="!text-center sticky-element !left-0">{{$t('content.month')}}</th>
+          <th colspan="2" rowspan="2" class="!text-center sticky-element !left-[92px]">{{$t('salaryCategory.label.all')}}</th>
           <th rowspan="2" colspan="2" class="min-w-[100px] w-[100px] !text-center">{{$t('salaryCategory.label.external')}}</th>
           <th colspan="6" class="min-w-[100px] w-[100px] !text-center">{{$t('salaryCategory.label.capital')}}</th>
           <th colspan="6" class="min-w-[100px] w-[100px] !text-center">{{$t('salaryCategory.label.construction')}}</th>
@@ -67,7 +67,10 @@ onMounted(()=>{
           <th colspan="2" class=" !border-r !text-wrap leading-[1.2] !text-center">{{$t('salaryCategory.label.Housekeeper')}}</th>
         </tr>
         <tr >
-          <template v-for="(item) in 28">
+          <th class="sticky-element !left-[92px] min-w-[140px] w-[140px] !text-wrap leading-[1.2] !font-normal text-xs !text-center !border-r">{{$t('salaryCategory.label.mediumWorkerCount')}}</th>
+          <th class="sticky-element left-[232px] min-w-[140px] w-[140px] !text-wrap leading-[1.2] !font-normal text-xs !text-center !border-r">{{$t('salaryCategory.label.mediumSalaryAmount')}}</th>
+
+          <template v-for="(item) in 26">
             <th class="min-w-[140px] w-[140px] !text-wrap leading-[1.2] !font-normal text-xs !text-center !border-r">{{item%2===1? $t('salaryCategory.label.mediumWorkerCount') : $t('salaryCategory.label.mediumSalaryAmount')  }}</th>
           </template>
         </tr>
@@ -80,8 +83,8 @@ onMounted(()=>{
                 <span class="px-2 py-1 text-secondary bg-surface-ground/50 rounded-lg capitalize">{{item.month}}</span>
               </div>
             </td>
-            <td>{{item.data?.result_worker_count}}</td>
-            <td>{{item.data?.result_salary_fund}}</td>
+            <td class="sticky-element !left-[92px]">{{item.data?.result_worker_count}}</td>
+            <td class="sticky-element left-[232px]">{{item.data?.result_salary_fund}}</td>
 
             <td>{{item.data?.external_worker_count}}</td>
             <td>{{item.data?.external_salary_fund}}</td>

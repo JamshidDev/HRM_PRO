@@ -40,7 +40,7 @@ onMounted(()=>{
   <n-spin :show="store.loading">
     <div class="w-full pb-4 mt-4 overflow-y-auto h-[calc(100vh-210px)]">
       <n-table
-          class="sticky-table-header sticky-table-body-left-element table-hover-row"
+          class="sticky-table-header sticky-table-body-element table-hover-row"
           :single-line="false"
           size="small"
       >
@@ -53,7 +53,7 @@ onMounted(()=>{
           <th rowspan="2" class="min-w-[400px] !text-center">{{$t('salaryReport.form.name')}}</th>
           <th rowspan="2" class="min-w-[60px] w-[60px] !text-center">{{$t('salaryReport.form.code')}}</th>
           <th :colspan="organizationCount" v-if="organizationCount"  class="min-w-[60px] w-[60px] ">{{$t('content.organization')}}</th>
-          <th rowspan="3"  class="min-w-[150px] w-[150px] !text-center">{{$t('salaryReport.form.total')}}</th>
+          <th rowspan="3"  class="min-w-[150px] w-[150px] !text-center sticky-element !right-0 !border">{{$t('salaryReport.form.total')}}</th>
         </tr>
         <tr>
           <template v-for="item in store.organizationList" :key="item.key">
@@ -70,12 +70,12 @@ onMounted(()=>{
         <template v-for="(item, idx) in store.organizationData" :key="idx">
           <tr class="!text-right" :class="[!Boolean(item.type_code.toString().trim()) && '!font-semibold selectedRow']">
             <td class="!text-center">{{idx+1}}</td>
-            <td class="sticky-element text-left">{{item.type_name}}</td>
+            <td class="sticky-element !left-0 text-left">{{item.type_name}}</td>
             <td @click="goPush(item)" class=" !font-semibold"><span class="hover:text-primary">{{item.type_code}}</span></td>
             <template v-for="(value, key) in item" :key="key">
               <td v-if="!['type_name', 'type_code', 'total_year', 'id'].includes(key)">{{value}}</td>
             </template>
-            <td>{{item.total_year}}</td>
+            <td class="sticky-element !right-0 !border-l">{{item.total_year}}</td>
           </tr>
         </template>
         </tbody>

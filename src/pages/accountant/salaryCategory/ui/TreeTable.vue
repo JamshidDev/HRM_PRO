@@ -48,15 +48,15 @@ onMounted(()=>{
   <n-spin :show="store.loading">
     <div class="w-full pb-4 mt-4 overflow-y-auto h-[calc(100vh-186px)]">
       <n-table
-          class="sticky-table-header sticky-table-body-left table-hover-row"
+          class="sticky-table-header sticky-table-body-left sticky-table-body-element table-hover-row"
           style="border-collapse:collapse"
           :single-line="false"
           size="small"
       >
         <thead>
         <tr>
-          <th rowspan="3" colspan="4" class="min-w-[400px] w-[400px] !text-center">{{$t('content.organization')}}</th>
-          <th colspan="2" rowspan="2" class="min-w-[100px] w-[100px] !text-center ">{{$t('salaryCategory.label.all')}}</th>
+          <th rowspan="3" colspan="4" class="min-w-[400px] w-[400px] !text-center sticky-element !left-0">{{$t('content.organization')}}</th>
+          <th colspan="2" rowspan="2" class="min-w-[100px] w-[100px] !text-center sticky-element !left-[400px]">{{$t('salaryCategory.label.all')}}</th>
           <th rowspan="2" colspan="2" class="min-w-[100px] w-[100px] !text-center">{{$t('salaryCategory.label.external')}}</th>
           <th colspan="6" class="min-w-[100px] w-[100px] !text-center">{{$t('salaryCategory.label.capital')}}</th>
           <th colspan="6" class="min-w-[100px] w-[100px] !text-center">{{$t('salaryCategory.label.construction')}}</th>
@@ -78,7 +78,10 @@ onMounted(()=>{
           <th colspan="2" class="min-w-[100px] w-[100px] !border-r !text-wrap leading-[1.2] !text-center">{{$t('salaryCategory.label.Housekeeper')}}</th>
         </tr>
         <tr >
-          <template v-for="(item) in 28">
+          <th class="min-w-[140px] w-[140px] !text-wrap leading-[1.2] !font-normal text-xs !text-center !border-r sticky-element !left-[400px]">{{$t('salaryCategory.label.mediumWorkerCount') }}</th>
+          <th class="min-w-[140px] w-[140px] !text-wrap leading-[1.2] !font-normal text-xs !text-center !border-r sticky-element !left-[540px]">{{$t('salaryCategory.label.mediumSalaryAmount')}}</th>
+
+          <template v-for="(item) in 26">
             <th class="min-w-[140px] w-[140px] !text-wrap leading-[1.2] !font-normal text-xs !text-center !border-r">{{item%2===1? $t('salaryCategory.label.mediumWorkerCount') : $t('salaryCategory.label.mediumSalaryAmount')  }}</th>
           </template>
         </tr>
@@ -113,8 +116,8 @@ onMounted(()=>{
                 <span class="ml-2 leading-[1.2] inline-block text-wrap text-sm w-[calc(100%-40px)]">{{' '+ item.name}}</span>
               </div>
             </td>
-            <td>{{item.data?.result_worker_count}}</td>
-            <td>{{item.data?.result_salary_fund}}</td>
+            <td class="sticky-element !left-[400px]">{{item.data?.result_worker_count}}</td>
+            <td class="sticky-element !left-[540px]">{{item.data?.result_salary_fund}}</td>
 
             <td>{{item.data?.external_worker_count}}</td>
             <td>{{item.data?.external_salary_fund}}</td>

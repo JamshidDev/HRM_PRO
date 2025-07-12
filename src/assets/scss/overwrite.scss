@@ -333,23 +333,24 @@ input:-webkit-autofill {
     }
   }
 }
-.sticky-table-body-left-element{
+.sticky-table-body-element{
   border-collapse: separate !important;
   overflow: auto !important;
   border-left: none !important;
-  tbody tr{
-    &:hover{
-      .sticky-element{
-        background-color: rgb(164, 181, 255) !important;
+  tbody, thead {
+    tr{
+      &:hover{
+        .sticky-element{
+          background-color: rgb(164, 181, 255) !important;
+        }
       }
-    }
-    .sticky-element {
-      position: sticky;
-      left: 0;
-      z-index: 9;
-      background-color: var(--table-header) !important;
-    }
+      .sticky-element {
+        position: sticky;
+        z-index: 9;
+        background-color: var(--table-header) !important;
+      }
 
+    }
   }
 
 }
