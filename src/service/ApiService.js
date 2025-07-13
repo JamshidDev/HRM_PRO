@@ -93,7 +93,8 @@ import {
     turnstileTerminalUserService,
     turnstileWorkDurationService,
     turnstileHikCentralAccessService,
-    turnstileHikCentralWorkerService
+    turnstileHikCentralWorkerService,
+    hikServerService,
 } from './v1/turnstile'
 
 import accountantService from "./v1/accountant/accountantService.js"
