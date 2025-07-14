@@ -1,6 +1,7 @@
 <script setup>
-import {NoDataPicture,UIPagination, UIUser, UIBadge} from "@/components/index.js"
+import {NoDataPicture,UIPagination, UIBadge} from "@/components/index.js"
 import {useHcServerStore, useComponentStore, useAccountStore} from "@/store/modules/index.js"
+import {ErrorCircle24Filled} from "@vicons/fluent"
 import Utils from "@/utils/Utils.js"
 
 const store = useHcServerStore()
@@ -53,6 +54,7 @@ onMounted(()=>{
           <th class="min-w-[100px] w-[120px]">{{$t('hcServer.form.workers_count')}}</th>
           <th class="min-w-[100px] w-[120px]">{{$t('hcServer.form.exported_count')}}</th>
           <th class="min-w-[100px] w-[120px]">{{$t('hcServer.form.status')}}</th>
+          <th class="min-w-[40px] w-[40px]">{{$t('hcServer.form.error')}}</th>
           <th class="min-w-[100px] w-[100px]">{{$t('content.date')}}</th>
         </tr>
         </thead>
@@ -71,6 +73,28 @@ onMounted(()=>{
             </div>
           </td>
           <td>{{item?.status}}</td>
+          <td>
+            <div class="flex justify-center">
+              <template v-if="item?.errors">
+                <n-popover trigger="hover">
+                  <template #trigger>
+                    <n-icon size="24" class="text-danger">
+                      <ErrorCircle24Filled/>
+                    </n-icon>
+                  </template>
+                  <div class="w-[200px] h-[300px] overflow-y-auto">
+                    <div class="text-danger mb-5" v-for="(item, index) in item?.errors.toString().trim().split('...')">
+                      <span v-if="item" class="mb-4 leading-[1.2] text-xs">{{(index+1)+". " + item}}</span>
+                    </div>
+                  </div>
+
+                </n-popover>
+
+              </template>
+            </div>
+
+
+          </td>
           <td>{{Utils.timeOnlyDate(item?.created_at)}}</td>
         </tr>
         </tbody>

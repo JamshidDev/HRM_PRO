@@ -43,6 +43,7 @@ const onchangeMain = (id)=>{
 
 const fakeV = ref(null)
 
+
 watchEffect(()=>{
   fakeV.value = images?.[0]?.id
 })

@@ -1923,7 +1923,8 @@
       "access_level_id": "access_level_id",
       "workers_count": "Xodimlar soni",
       "exported_count": "exported_count",
-      "status": "status"
+      "status": "status",
+      "error": "error"
     }
   }
 }

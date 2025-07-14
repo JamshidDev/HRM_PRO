@@ -41,6 +41,7 @@ export const useHcServerStore = defineStore('hcServerStore', {
             department_position_id:null,
         },
         totalWorker:0,
+        selectedWorkers:[],
     }),
     actions: {
         _index() {
@@ -65,9 +66,10 @@ export const useHcServerStore = defineStore('hcServerStore', {
             let data = {
                 ...this.payload,
                 organization_id:this.payload.organization_id[0]?.id,
-                worker_position_ids:this.payload.workers,
+                worker_position_ids:this.payload.workers.length>0? this.payload.workers : undefined,
                 department_id:this.payload.department_id || undefined,
                 workers:undefined,
+                job:true,
             }
             $ApiService.hcServerService._syncToServer({data, params:{job:true}}).then((res) => {
                 this.visible = false
@@ -82,7 +84,8 @@ export const useHcServerStore = defineStore('hcServerStore', {
                 ...this.workerParams,
             }
             $ApiService.reportService._worker({params}).then((res)=>{
-                let data = res.data.data.data.map((v)=>({
+                const selectedIds =this.selectedWorkers.map((v)=>v.id)
+                let data = res.data.data.data.filter((x)=>!selectedIds.includes(x.id)).map((v)=>({
                     ...v,
                     name:v.worker.last_name + ' '+v.worker.first_name+' '+v.worker.middle_name,
                     position:v.position?.name || v?.post_name,
@@ -95,7 +98,7 @@ export const useHcServerStore = defineStore('hcServerStore', {
                 if(infinity){
                     this.workerList =[...this.workerList, ...data]
                 }else{
-                    this.workerList = data
+                    this.workerList = [...this.selectedWorkers,...data]
                 }
             }).finally(()=>{
                 this.workerLoading = false

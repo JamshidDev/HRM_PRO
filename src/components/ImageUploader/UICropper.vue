@@ -4,6 +4,8 @@ import { Cropper } from 'vue-advanced-cropper';
 const cropperRef = ref(null)
 const imageRef = ref(null)
 const visible = ref(false)
+const originFileSizeInBytes = ref(0)
+const croppedFileSizeInKB = ref(0)
 
 const emits = defineEmits(['onResult'])
 
@@ -19,6 +21,7 @@ const openFile =()=>{
 const uploadImage = (event)=>{
   const { files } = event.target;
   if (files && files[0]) {
+    originFileSizeInBytes.value =  files[0]?.size
     if (image.value.src) {
       URL.revokeObjectURL(image.value.src);
     }
@@ -37,11 +40,29 @@ const onSave = ()=>{
 
 }
 
+const originSize = computed(()=>{
+    if(!originFileSizeInBytes.value) return 0
+   return (originFileSizeInBytes.value / 1024).toFixed(2)
+})
+
 const onClose = ()=>{
     visible.value = false
 }
 
-const onChange = (v)=>{
+const onChange = async (v)=>{
+  let imgUrl = cropperRef.value.getResult().canvas.toDataURL(image.value.type)
+  croppedFileSizeInKB.value =calculateBase64Size(imgUrl)
+}
+
+const calculateBase64Size = (base64)=> {
+  // `data:image/jpeg;base64,...` qismini olib tashlaymiz
+  const base64Data = base64.split(',')[1]
+
+  const padding = (base64Data.match(/=+$/) || [''])[0].length
+  const sizeInBytes = (base64Data.length * 3) / 4 - padding
+  const sizeInKB = sizeInBytes / 1024
+
+  return Number(sizeInKB.toFixed(2))
 }
 
 
@@ -72,6 +93,10 @@ defineExpose({
   />
   <template #footer>
     <div class="grid grid-cols-2 gap-x-2">
+<!--      <div class="col-span-2">-->
+<!--        <p>Haqiqiy o'lchami: <span class="text-shadow-textColor2 font-semibold">{{originSize}} kB</span></p>-->
+<!--        <p>Haqiqiy o'lchami: <span class="text-shadow-textColor2 font-semibold">{{croppedFileSizeInKB}} kB</span></p>-->
+<!--      </div>-->
       <n-button ghost
           @click="onClose"
           type="error">

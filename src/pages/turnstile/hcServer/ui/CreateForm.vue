@@ -2,7 +2,6 @@
 import validationRules from "@/utils/validationRules.js";
 import {UISelect} from "@/components/index.js"
 import {useComponentStore, useHcServerStore} from "@/store/modules/index.js"
-import Utils from "@/utils/Utils.js"
 import UIHelper from "@/utils/UIHelper.js"
 
 const formRef = ref(null)
@@ -43,12 +42,12 @@ const onChangeDepartment = (v)=>{
   store.workerParams.department_id = v
 }
 
-const onChangeWorker = ()=>{
+const onChangeWorker = (v)=>{
 }
 
 const onOpenEv = (v)=>{
   if(!v) return
-  store.payload.workers = []
+  // store.payload.workers = []
   store.workerParams.search=null
   store.workerParams.page=1
   store._workers()
@@ -66,7 +65,9 @@ const onPanelEv = (v)=>{
 
 }
 
-
+watch(()=>store.payload.workers,(values)=>{
+  store.selectedWorkers = store.workerList.filter((x)=>values.includes(x.id))
+})
 
 onMounted(()=>{
   if(componentStore.structureList.length === 0){
@@ -112,7 +113,8 @@ onMounted(()=>{
               :multiple="false"
           />
         </n-form-item>
-        <n-form-item :label="$t(`departmentPositionPage.form.department_id`)">
+        <n-form-item
+            :label="$t(`departmentPositionPage.form.department_id`)">
           <n-select
               :disabled="store.payload.organization_id.length === 0"
               v-model:value="store.payload.department_id"
@@ -131,11 +133,10 @@ onMounted(()=>{
               :ignore-composition="false"
           />
         </n-form-item>
+
         <n-form-item
             class="w-full"
             :label="$t(`documentPage.form.worker`)"
-            path="workers"
-            :rule-path="validationRules.rulesNames.requiredMultiSelectField"
         >
           <n-select
               :disabled="store.payload.organization_id.length === 0"
@@ -153,6 +154,7 @@ onMounted(()=>{
               @scroll="store.onScrollWorker"
               @search="store.onSearchWorker"
               @update:show="onOpenEv"
+              :ignore-composition="true"
               :max-tag-count="1"
           />
         </n-form-item>
@@ -174,7 +176,7 @@ onMounted(()=>{
     </div>
 
     <div class="grid grid-cols-2 gap-2 mt-8">
-      <n-button @click="store.openVisible(false)" type="error" ghost>
+      <n-button @click="store.visible=false" type="error" ghost>
         {{ $t('content.cancel') }}
       </n-button>
       <n-button

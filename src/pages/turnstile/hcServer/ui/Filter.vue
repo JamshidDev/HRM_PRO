@@ -1,7 +1,7 @@
 <script setup>
 import {useAccountStore, useComponentStore, useHcServerStore} from "@/store/modules/index.js"
 import {UIPageFilter, UISelect} from "@/components/index.js"
-
+import {ArrowSync16Filled} from "@vicons/fluent"
 const store = useHcServerStore()
 const accStore = useAccountStore()
 
@@ -62,6 +62,13 @@ const onAdd = ()=>{
           @onSearch="componentStore._structures"
           @onSubmit="filterEvent"
       />
+    </template>
+    <template #filterAction>
+      <n-button type="error" :loading="store.loading" @click="store._index()">
+        <template #icon>
+          <ArrowSync16Filled/>
+        </template>
+      </n-button>
     </template>
   </UIPageFilter>
 </template>
