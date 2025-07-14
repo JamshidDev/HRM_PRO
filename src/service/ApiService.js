@@ -94,7 +94,7 @@ import {
     turnstileWorkDurationService,
     turnstileHikCentralAccessService,
     turnstileHikCentralWorkerService,
-    hikServerService,
+    hcServerService,
 } from './v1/turnstile'
 
 import accountantService from "./v1/accountant/accountantService.js"
@@ -194,6 +194,7 @@ export default {
     turnstileWorkDurationService,
     turnstileHikCentralAccessService,
     turnstileHikCentralWorkerService,
+    hcServerService,
     punishmentService,
     vacancyService,
 

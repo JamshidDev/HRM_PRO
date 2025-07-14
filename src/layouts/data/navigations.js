@@ -47,6 +47,7 @@ import {
     DocumentRibbon24Filled,
     Briefcase48Filled,
     AppTitle24Filled,
+    ContactCard16Filled,
 } from "@vicons/fluent"
 import {AppPaths} from "@/utils/index.js";
 import Utils from "@/utils/Utils.js"
@@ -369,6 +370,13 @@ export const navigations = [
                 path: Utils.routeTurnstilePathMaker(AppPaths.HcWorkers),
                 icon: PeopleToolbox20Filled,
                 color: 'bg-warning',
+                permission: appPermissions.admin,
+            },
+            {
+                label: 'hcServer.name',
+                path: Utils.routeTurnstilePathMaker(AppPaths.HcServer),
+                icon: ContactCard16Filled,
+                color: 'bg-info',
                 permission: appPermissions.admin,
             },
         ]

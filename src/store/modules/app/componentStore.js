@@ -163,6 +163,7 @@ export const useComponentStore = defineStore('componentStore', {
             per_page:50,
             search:null,
             organization_id:null,
+            department_id:null,
             organizations:null,
         },
         totalWorker:0,

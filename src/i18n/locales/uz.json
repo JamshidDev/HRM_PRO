@@ -1913,5 +1913,17 @@
       "voluntary_pension_contribution": "Ixtiyoriy badal pensiya uchun",
       "total_contributions": "Jami badallar"
     }
+  },
+  "hcServer": {
+    "name": "Turniket",
+    "createTitle": "Yuklash",
+    "updateTitle": "Tahrirlash",
+    "form": {
+      "name": "Nomi",
+      "access_level_id": "access_level_id",
+      "workers_count": "Xodimlar soni",
+      "exported_count": "exported_count",
+      "status": "status"
+    }
   }
 }
