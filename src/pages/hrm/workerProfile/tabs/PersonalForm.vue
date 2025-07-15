@@ -175,9 +175,8 @@ onMounted(()=>{
       <n-select
           @focus="onRegion"
           v-model:value="store.payload.region_id"
-          @updateValue="changeDistrict"
+          @update:value="changeDistrict"
           filterable
-
           :options="componentStore.regionList"
           label-field="name"
           value-field="id"
