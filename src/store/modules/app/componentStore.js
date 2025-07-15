@@ -478,7 +478,7 @@ export const useComponentStore = defineStore('componentStore', {
             $ApiService.departmentPositionService._index({params}).then((res)=>{
 
                 this.departmentPositionList = res.data.data.data.map((v)=>({
-                    name:v.position.name,
+                    name:v.position?.name,
                     id:v.id,
                 }))
             }).finally(()=>{
