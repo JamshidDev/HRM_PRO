@@ -103,12 +103,14 @@ onMounted(()=>{
             <td>{{item.data?.construction_foreign_company_worker_count}}</td>
             <td>{{item.data?.construction_foreign_company_salary_fund}}</td>
 
-            <td>{{item.data?.other_society_worker_count}}</td>
-            <td>{{item.data?.other_society_salary_fund}}</td>
             <td>{{item.data?.other_own_use_worker_count}}</td>
             <td>{{item.data?.other_own_use_salary_fund}}</td>
+
             <td>{{item.data?.other_foreign_company_worker_count}}</td>
             <td>{{item.data?.other_foreign_company_salary_fund}}</td>
+
+            <td>{{item.data?.other_society_worker_count}}</td>
+            <td>{{item.data?.other_society_salary_fund}}</td>
 
             <td>{{item.data?.temporary_contract_worker_count}}</td>
             <td>{{item.data?.temporary_contract_salary_fund}}</td>
