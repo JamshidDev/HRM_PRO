@@ -613,15 +613,14 @@ export const useComponentStore = defineStore('componentStore', {
                 this.previewLoading = false
             })
         },
-        _workerResume(){
+        _workerResume(fileName){
             this.resumeLoading = true
             const id = this.resumeId
             const lang =localStorage.getItem(useAppSetting.languageKey) || useAppSetting.defaultLanguage
             const photo = this.workerPreview.worker?.photos.filter(v=>v.current === 1)?.[0]?.id
             $ApiService.workerService._resume({id, params:{lang,photo }}).then((res)=>{
-                console.log(res.headers)
                 const type =res.headers["content-type"]
-                const fileName =res.headers.get('Content-Disposition')
+                console.log(fileName)
 
                 console.log(fileName)
                 Utils.blobFileDownload(res.data, type, fileName)

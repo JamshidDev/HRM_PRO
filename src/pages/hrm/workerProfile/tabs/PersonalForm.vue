@@ -161,7 +161,6 @@ onMounted(()=>{
           v-model:value="store.payload.country_id"
           @focus="onCountry"
           filterable
-
           :options="componentStore.countryList"
           label-field="name"
           value-field="id"

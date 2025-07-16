@@ -50,7 +50,7 @@ const onCopy = ()=>{
             type="primary"
             icon-placement="right"
             :loading="store.resumeLoading"
-            @click="store._workerResume()"
+            @click="store._workerResume(Utils.combineFullName(store.workerPreview?.worker))"
         >
           <template #icon>
             <ArrowCircleDown16Regular/>
