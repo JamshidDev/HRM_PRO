@@ -1,7 +1,7 @@
 <script setup>
 import {NoDataPicture,UIPagination, UIBadge} from "@/components/index.js"
 import {useHcServerStore, useComponentStore, useAccountStore} from "@/store/modules/index.js"
-import {ErrorCircle24Filled} from "@vicons/fluent"
+import {ErrorCircle24Filled, ArrowCircleDown16Regular} from "@vicons/fluent"
 import Utils from "@/utils/Utils.js"
 
 const store = useHcServerStore()
@@ -31,6 +31,20 @@ const onSelectEv = (v)=>{
   }else if(Utils.ActionTypes.delete === v.key){
     onDelete(v.data)
   }
+}
+
+const downloadTextFile =(texts, fileName = "InvalidPhotos.txt")=> {
+  const blob = new Blob([texts], { type: "text/plain" });
+  const url = URL.createObjectURL(blob);
+
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = fileName;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+
+  URL.revokeObjectURL(url)
 }
 
 onMounted(()=>{
@@ -82,11 +96,21 @@ onMounted(()=>{
                       <ErrorCircle24Filled/>
                     </n-icon>
                   </template>
-                  <div class="w-[200px] h-[300px] overflow-y-auto">
-                    <div class="text-danger mb-5" v-for="(item, index) in item?.errors.toString().trim().split('...')">
-                      <span v-if="item" class="mb-4 leading-[1.2] text-xs">{{(index+1)+". " + item}}</span>
+                  <div>
+                    <div class="w-[200px] h-[300px] overflow-y-auto">
+                      <div class="text-danger mb-5" v-for="(item, index) in item?.errors.toString().trim().split('...')">
+                        <span v-if="item" class="mb-4 leading-[1.2] text-xs">{{(index+1)+". " + item}}</span>
+                      </div>
+                    </div>
+                    <div>
+                      <n-button
+                          size="small"
+                          @click="downloadTextFile(item?.errors.toString())"
+                      ><span class="text-xs">{{$t('hcServer.form.asFile')}}</span>
+                      </n-button>
                     </div>
                   </div>
+
 
                 </n-popover>
 

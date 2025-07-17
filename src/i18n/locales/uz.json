@@ -1924,6 +1924,7 @@
       "workers_count": "Xodimlar soni",
       "exported_count": "exported_count",
       "status": "status",
+      "asFile": "Faylga yuklash uchun bosing",
       "error": "error"
     }
   }
