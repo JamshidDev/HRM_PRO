@@ -65,7 +65,7 @@ const changePage = (v)=>{
         </tbody>
       </n-table>
       <UIPagination
-          v-if="store.totalItems>store.params.per_page"
+
           :page="store.params.page"
           :per_page="store.params.size"
           :total="store.totalItems"
