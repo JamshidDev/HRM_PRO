@@ -49,19 +49,19 @@ onMounted(()=>{
       :rules="validationRules.universityAdmin"
       :model="store.payload"
   >
-    <div style="min-height:calc(100vh - 120px)">
+    <div style="height:calc(100vh - 120px)" class="overflow-y-auto">
       <n-form-item :label="$t(`othersPage.university.form.name`)" path="name">
         <n-input
-            type="text"
-
+            type="textarea"
             v-model:value="store.payload.name"
+            :rows="2"
         />
       </n-form-item>
       <n-form-item :label="$t(`othersPage.university.form.name_ru`)" path="name_ru">
         <n-input
-            type="text"
-
+            type="textarea"
             v-model:value="store.payload.name_ru"
+            :rows="2"
         />
       </n-form-item>
       <n-form-item :label="$t(`othersPage.university.form.region_id`)" path="region_id">
@@ -69,7 +69,6 @@ onMounted(()=>{
             @focus="onFocusRegion"
             v-model:value="store.payload.region_id"
             filterable
-
             :options="compStore.regionList"
             label-field="name"
             value-field="id"
@@ -126,7 +125,3 @@ onMounted(()=>{
     </div>
   </n-form>
 </template>
-
-<style scoped>
-
-</style>

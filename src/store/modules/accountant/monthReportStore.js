@@ -34,6 +34,7 @@ export const useMonthReportStore = defineStore('monthReportStore', {
         enumLoading:false,
         workerPhotoUrl:null,
         downloadLoading:false,
+        cashedWorkerData:null,
 
     }),
     actions:{
@@ -58,8 +59,11 @@ export const useMonthReportStore = defineStore('monthReportStore', {
             }
             let id = this.elementId
             $ApiService.monthReportService._show({params, id}).then(async (res)=>{
+                if(res.data.data.length>0){
+                    this.cashedWorkerData = res.data.data[0]?.worker
+                }
                 this.showList=[]
-                await  nextTick()
+                await nextTick()
                 this.showList = res.data.data
             }).finally(()=>{
                 this.showLoading = false

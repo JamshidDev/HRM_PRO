@@ -28,7 +28,7 @@ const onChangeIndex = (v) => {
 <div>
 
   <div class="grid grid-cols-12">
-    <div class="col-span-12 h-[calc(100vh-100px)] overflow-auto">
+    <div class="col-span-12 h-[calc(100vh-120px)] overflow-auto">
       <n-spin class="w-full min-h-[660px] " :show="store.showLoading">
         <div class="w-full grid grid-cols-12 border border-surface-line rounded-lg px-4 py-2 mb-4 ">
           <div class="col-span-4 flex items-center">
@@ -80,6 +80,34 @@ const onChangeIndex = (v) => {
             </template>
           </div>
         </div>
+        <template v-if="store.showList.length === 0 && store.cashedWorkerData">
+          <n-table
+              :single-line="false"
+              size="small"
+          >
+            <thead>
+            <tr>
+              <th colspan="3">
+                <div class="flex">
+                  <div class="w-[120px] p-2">
+                    <img class="w-full rounded-lg border border-surface-line" :src="photoUrl" alt="no photo"/>
+                  </div>
+                  <div class="grid grid-cols-12 px-2 pt-2 w-[calc(100%-120px)]">
+                    <div class="col-span-12 font-semibold text-lg mb-2">{{store.cashedWorkerData?.full_name}}</div>
+                    <div class="col-span-12 !text-wrap leading-[1.2]"><span class="text-primary">{{$t('content.organization')}}: </span> {{store.cashedWorkerData?.organization}}</div>
+                    <div class="col-span-12"><span class="text-primary">{{$t('content.position')}}: </span> {{store.cashedWorkerData?.position}}</div>
+                    <div class="col-span-12"><span class="text-primary">{{$t('monthReport.view.main_salary')}}: </span>-:-</div>
+                    <div class="col-span-6"><span class="text-primary">{{$t('monthReport.view.work_time')}}: </span>-:-</div>
+                    <div class="col-span-6 flex gap-4 justify-end">
+                    </div>
+                  </div>
+                </div>
+              </th>
+            </tr>
+            </thead>
+          </n-table>
+        </template>
+
         <n-carousel
             ref="carouselRef"
             :show-dots="false"
@@ -121,18 +149,18 @@ const onChangeIndex = (v) => {
             >
               <tbody>
               <tr>
-                <td class="w-[120px] font-semibold">{{$t('monthReport.in.code')}}</td>
-                <td class="font-semibold">{{$t('monthReport.in.type')}}</td>
-                <td class="w-[120px] font-semibold">{{$t('monthReport.in.amount')}}</td>
+                <td class="w-[120px] font-semibold py-0!">{{$t('monthReport.in.code')}}</td>
+                <td class="font-semibold py-0!">{{$t('monthReport.in.type')}}</td>
+                <td class="w-[120px] font-semibold py-0!">{{$t('monthReport.in.amount')}}</td>
               </tr>
               <tr v-for="(card, index) in item.in" :key="index">
-                <td class="w-[120px] font-semibold">{{card.code}}</td>
-                <td>{{card.type}}</td>
-                <td class="font-semibold">{{card.amount}}</td>
+                <td class="w-[120px] font-semibold py-0!">{{card.code}}</td>
+                <td class="py-0!">{{card.type}}</td>
+                <td class="font-semibold py-0!">{{card.amount}}</td>
               </tr>
               <tr>
-                <td colspan="2" ><span class="text-primary text-center block font-semibold">{{$t('monthReport.in.total')}}</span></td>
-                <td class="font-semibold">{{item.in_total}}</td>
+                <td colspan="2" class="py-0!" ><span class="text-primary text-center block font-semibold">{{$t('monthReport.in.total')}}</span></td>
+                <td class="font-semibold py-0!">{{item.in_total}}</td>
               </tr>
               </tbody>
             </n-table>
@@ -144,18 +172,18 @@ const onChangeIndex = (v) => {
 
               <tbody>
               <tr>
-                <td class="w-[120px] font-semibold">{{$t('monthReport.in.code')}}</td>
-                <td class="font-semibold">{{$t('monthReport.in.type')}}</td>
-                <td class="w-[120px] font-semibold">{{$t('monthReport.in.amount')}}</td>
+                <td class="w-[120px] font-semibold py-0!">{{$t('monthReport.in.code')}}</td>
+                <td class="font-semibold py-0!">{{$t('monthReport.in.type')}}</td>
+                <td class="w-[120px] font-semibold py-0!">{{$t('monthReport.in.amount')}}</td>
               </tr>
               <tr v-for="(out, subIndex) in item.out" :key="subIndex">
-                <td class="w-[120px] font-semibold">{{out.code}}</td>
-                <td>{{out.type}}</td>
-                <td class="font-semibold">{{out.amount}}</td>
+                <td class="w-[120px] font-semibold py-0!">{{out.code}}</td>
+                <td class="py-0!">{{out.type}}</td>
+                <td class="font-semibold py-0!">{{out.amount}}</td>
               </tr>
               <tr>
-                <td colspan="2" ><span class="text-primary text-center block font-semibold">{{$t('monthReport.in.out_total')}}</span></td>
-                <td class="font-semibold">{{item.out_total}}</td>
+                <td colspan="2" class="py-0!" ><span class="text-primary text-center block font-semibold">{{$t('monthReport.in.out_total')}}</span></td>
+                <td class="font-semibold py-0!">{{item.out_total}}</td>
               </tr>
               </tbody>
             </n-table>

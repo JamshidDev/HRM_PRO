@@ -93,7 +93,7 @@ export const useUploadReportStore = defineStore('uploadReport', {
             data.append('type', this.payload.type)
             data.append('year', this.payload.year)
             data.append('month', this.payload.month)
-            data.append('organization_id', this.params.organization_id?.[0]?.id)
+            data.append('organization_id', this.params.organization_id)
             $ApiService.accountantService._create({data}).then((res)=>{
                 this.visible = false
                 this._cards()
@@ -121,7 +121,7 @@ export const useUploadReportStore = defineStore('uploadReport', {
             this.payload.month = new Date().getMonth()
         },
         onChangeStructure(v){
-            this.params.organization_id =this.params.organization_id  === v.id? null : v.id
+            this.params.organization_id =this.params.organization_id === v.id? null : v.id
             this.cards = []
             this.list = []
             if(this.params.organization_id){

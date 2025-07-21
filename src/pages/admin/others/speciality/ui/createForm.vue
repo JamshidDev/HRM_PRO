@@ -32,15 +32,15 @@ const onSubmit = ()=>{
     <div style="min-height:calc(100vh - 120px)">
       <n-form-item :label="$t(`othersPage.speciality.form.name`)" path="name">
         <n-input
-            type="text"
-
+            type="textarea"
+            :rows="2"
             v-model:value="store.payload.name"
         />
       </n-form-item>
       <n-form-item :label="$t(`othersPage.speciality.form.name_ru`)" path="name_ru">
         <n-input
-            type="text"
-
+            type="textarea"
+            :rows="2"
             v-model:value="store.payload.name_ru"
         />
       </n-form-item>
