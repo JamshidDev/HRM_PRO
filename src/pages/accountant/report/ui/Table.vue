@@ -3,7 +3,9 @@ import {UIStatus} from "@/components/index.js"
 import {useUploadReportStore} from "@/store/modules/index.js"
 import Utils from "@/utils/Utils.js"
 import {Info24Regular} from "@vicons/fluent"
+import i18n from "@/i18n/index.js"
 
+const {t} = i18n.global
 const store = useUploadReportStore()
 
 const onDownload = (url)=>{
@@ -14,6 +16,21 @@ const showComment = (v)=>{
   console.log(v)
     store.commentContent =v.comment
     store.commentVisible=true
+}
+
+const statusList = {
+  1:{
+    name:t("content.error"),
+    id:4,
+  },
+  2:{
+    name:t("content.process"),
+    id:1,
+  },
+  3:{
+    name:t("content.success"),
+    id:3,
+  },
 }
 
 </script>
@@ -31,6 +48,7 @@ const showComment = (v)=>{
           <th class="text-center! min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
           <th class="min-w-[100px] !max-w-[400px]">{{$t('uploadReport.form.type')}} - <span class="text-xs bg-primary/10 px-1 rounded">#{{store.selectedTitle}}</span></th>
           <th class="w-[100px]">{{$t('content.status')}}</th>
+          <th class="w-[80px]">{{$t('content.process')}}</th>
           <th class="w-[80px]">{{$t('content.date')}}</th>
           <th class="min-w-[100px] w-[120px]">{{$t('uploadReport.form.file')}}</th>
         </tr>
@@ -61,6 +79,9 @@ const showComment = (v)=>{
           </td>
           <td>
             <UIStatus :status="item.status"></UIStatus>
+          </td>
+          <td>
+            <UIStatus :status="statusList[item.done]"></UIStatus>
           </td>
           <td>
             {{Utils.timeOnlyDate(item.created_at)}}

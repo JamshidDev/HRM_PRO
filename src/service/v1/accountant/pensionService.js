@@ -9,7 +9,7 @@ const _show = async (payload)=>{
 }
 
 const _example = async (payload)=>{
-    return await axios.get(`/v1/economist/tax-four-example`, {params:payload?.params})
+    return await axios.get(`/v1/economist/pension-example`, {params:payload?.params})
 }
 
 

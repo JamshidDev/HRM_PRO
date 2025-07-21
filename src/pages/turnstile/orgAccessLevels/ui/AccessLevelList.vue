@@ -37,7 +37,7 @@ const onSubmitLevels = ()=>{
 <template>
   <div class="h-full flex flex-col gap-2">
     <div
-        class="grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-3 overflow-auto basis-auto grow grid-rows-[repeat(auto-fill,45px)] p-1">
+        class="grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-3 overflow-auto basis-auto grow grid-rows-[repeat(auto-fill,32px)] p-1">
       <div v-for="(item, idx) in store.accessLevels"
            :key="idx"
            class="rounded-lg px-2 hover:bg-blue-50 transition-all cursor-pointer flex gap-3 items-center bg-surface-section border-surface-line border"

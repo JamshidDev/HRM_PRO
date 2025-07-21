@@ -2,6 +2,7 @@
 import {UIPageFilter, UISelect} from "@/components/index.js"
 import {useAccountStore, useComponentStore, usePensionStore} from "@/store/modules/index.js"
 import Utils from "@/utils/Utils.js"
+import {ArrowCircleDown32Regular} from "@vicons/fluent"
 
 
 const store = usePensionStore()
@@ -44,6 +45,17 @@ const onClear = ()=>{
       v-model:search="store.params.search"
       @onSearch="filterEvent"
   >
+    <template #filterAction>
+      <n-button
+          @click="store._download()"
+          :loading="store.downloadLoading"
+          type="success">
+        <template #icon>
+          <ArrowCircleDown32Regular/>
+        </template>
+        {{$t('content.template')}}
+      </n-button>
+    </template>
     <template #filterContent>
       <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{$t('actionLog.table.structure')}}</label>
       <UISelect

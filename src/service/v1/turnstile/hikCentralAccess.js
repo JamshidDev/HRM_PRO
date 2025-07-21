@@ -8,8 +8,8 @@ const _sync = async ()=>{
     return await axios.get(`/v1/turnstile/hik-central/access-levels-sync`)
 }
 
-const _org_access_levels = async ()=>{
-    return await axios.get(`/v1/turnstile/hik-central/organization-access-levels`)
+const _org_access_levels = async (payload)=>{
+    return await axios.get(`/v1/turnstile/hik-central/organization-access-levels`, {params:payload?.params})
 }
 
 const _attach_org_access_levels = async (payload)=>{

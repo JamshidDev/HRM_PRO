@@ -110,23 +110,23 @@ const toggleExpand =(id)=> {
               <n-icon v-if="item.uploadStats?.[1]?.confirmed" size="22" class="text-success">
                 <CheckmarkCircle32Filled/>
               </n-icon>
-              <span :class="[item.uploadStats?.[1]?.uploaded_count === 0 && 'text-textColor3']">{{item.uploadStats?.[1]?.uploaded_count}}</span>
+              <span v-else :class="[item.uploadStats?.[1]?.uploaded_count === 0 && 'text-textColor3']">{{item.uploadStats?.[1]?.uploaded_count}}</span>
             </div>
           </td>
             <td>
               <div class="flex justify-center w-full">
-                <n-icon v-if="item.uploadStats?.[1]?.confirmed" size="22" class="text-success">
+                <n-icon v-if="item.uploadStats?.[2]?.confirmed" size="22" class="text-success">
                   <CheckmarkCircle32Filled/>
                 </n-icon>
-                <span :class="[item.uploadStats?.[1]?.uploaded_count === 0 && 'text-textColor3']">{{item.uploadStats?.[1]?.uploaded_count}}</span>
+                <span v-else :class="[item.uploadStats?.[2]?.uploaded_count === 0 && 'text-textColor3']">{{item.uploadStats?.[2]?.uploaded_count}}</span>
               </div>
             </td>
             <td>
               <div class="flex justify-center w-full">
-                <n-icon v-if="item.uploadStats?.[1]?.confirmed" size="22" class="text-success">
+                <n-icon v-if="item.uploadStats?.[3]?.confirmed" size="22" class="text-success">
                   <CheckmarkCircle32Filled/>
                 </n-icon>
-                <span :class="[item.uploadStats?.[1]?.uploaded_count === 0 && 'text-textColor3']">{{item.uploadStats?.[1]?.uploaded_count}}</span>
+                <span v-else :class="[item.uploadStats?.[3]?.uploaded_count === 0 && 'text-textColor3']">{{item.uploadStats?.[3]?.uploaded_count}}</span>
               </div>
             </td>
           </tr>

@@ -48,6 +48,8 @@ import {
     Briefcase48Filled,
     AppTitle24Filled,
     ContactCard16Filled,
+    ArrowUpload16Filled,
+    QrCode24Regular,
 } from "@vicons/fluent"
 import {AppPaths} from "@/utils/index.js";
 import Utils from "@/utils/Utils.js"
@@ -454,8 +456,8 @@ export const navigations = [
             {
                 label: 'uploadReport.name',
                 path: Utils.routeAccountantPathMaker(AppPaths.UploadReport),
-                icon: AppsList24Filled,
-                color: 'bg-dark',
+                icon: ArrowUpload16Filled,
+                color: 'bg-success',
                 permission: appPermissions.economistUploads,
             },
             {
@@ -468,7 +470,7 @@ export const navigations = [
             {
                 label: 'salaryReport.name',
                 path: Utils.routeAccountantPathMaker(AppPaths.SalaryReport),
-                icon: AppTitle24Filled,
+                icon: QrCode24Regular,
                 color: 'bg-dark',
                 permission: appPermissions.economistStatementsCode,
             },

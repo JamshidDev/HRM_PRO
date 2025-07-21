@@ -96,6 +96,8 @@
     "preview": "Oldingi",
     "warning": "Ogohlantirish",
     "error": "Xatolik",
+    "process": "Jarayonda",
+    "success": "Bajarildi",
     "return": "Ortga qaytish",
     "finish": "Yakunlash",
     "created": "Yaratilgan sana",
