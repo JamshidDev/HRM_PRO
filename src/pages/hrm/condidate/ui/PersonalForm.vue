@@ -15,15 +15,6 @@ const onSubmit = ()=>{
   })
 }
 
-const changeCountry = ()=>{
-  componentStore.regionList = []
-  store.payload.region_id = null
-  store.payload.city_id = null
-  store.payload.current_region_id = null
-  store.payload.current_city_id = null
-  componentStore._regions(store.payload.country_id)
-}
-
 defineExpose({
   onSubmit
 })
@@ -31,7 +22,7 @@ defineExpose({
 onMounted(()=>{
   componentStore._countries()
   componentStore._enums()
-  componentStore._regions(1)
+  componentStore._regions()
   componentStore._nationality()
 })
 </script>
@@ -58,7 +49,6 @@ onMounted(()=>{
       <n-input
           class="w-full"
           type="text"
-
           v-model:value="store.payload.first_name"
       />
     </n-form-item>
@@ -82,12 +72,10 @@ onMounted(()=>{
       <n-select
           v-model:value="store.payload.country_id"
           filterable
-
           :options="componentStore.countryList"
           label-field="name"
           value-field="id"
           :loading="componentStore.countryLoading"
-          @update:value="changeCountry"
       />
     </n-form-item>
     <n-form-item
