@@ -96,6 +96,7 @@ export * from './turnstile/workDurationStore.js'
 export * from './turnstile/hikCentralAccessStore.js'
 export * from './turnstile/hikCentralWorkerStore.js'
 export * from './turnstile/hcServerStore.js'
+export * from './turnstile/eventStore.js'
 
 export * from './lms/directionStore.js'
 export * from './lms/specializationStore.js'

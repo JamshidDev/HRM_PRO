@@ -381,6 +381,13 @@ export const navigations = [
                 color: 'bg-info',
                 permission: appPermissions.admin,
             },
+            {
+                label: 'hcEvent.name',
+                path: Utils.routeTurnstilePathMaker(AppPaths.HcEvents),
+                icon: ContactCard16Filled,
+                color: 'bg-info',
+                permission: appPermissions.admin,
+            },
         ]
     },
     {

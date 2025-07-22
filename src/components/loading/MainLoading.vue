@@ -1,13 +1,16 @@
 <script setup>
 import {useAccountStore} from "@/store/modules/app/accountStore.js";
 const store = useAccountStore()
-const visible = ref(true)
 
+watch(()=>store.loading, (v)=>{
+  console.log()
+}, {
+  immediate:true,
+})
 
 onMounted(()=>{
-  // window.addEventListener('load',()=>{
-  //   visible.value = false
-  // })
+  window.addEventListener('load',()=>{
+  })
 })
 </script>
 

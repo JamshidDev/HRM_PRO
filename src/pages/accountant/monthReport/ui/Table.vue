@@ -2,8 +2,7 @@
 import {NoDataPicture, UIMenuButton, UIPagination, UIUser} from "@/components/index.js"
 import {useMonthReportStore} from "@/store/modules/index.js"
 import {CheckmarkCircle24Filled, ErrorCircle24Filled} from "@vicons/fluent"
-import Utils from "@/utils/Utils.js"
-
+import SortBtn from "./SortBtn.vue"
 const store = useMonthReportStore()
 
 const changePage = (v)=>{
@@ -34,18 +33,46 @@ const onShow = (v) => {
         <thead>
         <tr>
           <th class="text-center! min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
-          <th class="min-w-[200px]">{{$t('content.fullName')}}</th>
-          <th class="min-w-[60px] w-[60px]">{{$t('content.status')}}</th>
-          <th class="min-w-[200px]">{{$t('content.organization')}}</th>
-          <th class="min-w-[200px]">{{$t('monthReport.form.salary')}}</th>
+          <th class="min-w-[200px]">
+            {{$t('content.fullName')}}
+          </th>
+          <th class="min-w-[60px] w-[60px]">
+            <SortBtn
+                @click="store._filterStatus('status')"
+                by="status"
+                :value="store.params.sort_by"
+                :order="store.params.sort_order"
+            >
+              {{$t('content.status')}}
+            </SortBtn>
+          </th>
+          <th class="min-w-[200px] w-[300px]">{{$t('content.organization')}}</th>
+          <th class="min-w-[200px] w-[200px]">
+            <SortBtn
+                @click="store._filterCol('main_salary')"
+                by="main_salary"
+                :value="store.params.sort_by"
+                :order="store.params.sort_order"
+            >
+              {{$t('monthReport.form.salary')}}
+            </SortBtn>
+          </th>
           <th class="w-[130px] max-w-[130px] text-wrap!">
             <n-tooltip
                 trigger="hover"
             >
               <template #trigger>
-                <p class="text-sm text-textColor2 line-clamp-1 w-full leading-[1.2] truncate">
-                  {{$t('monthReport.form.totalOne')}}
-                </p>
+
+                <SortBtn
+                    @click="store._filterCol('total_one')"
+                    by="total_one"
+                    :value="store.params.sort_by"
+                    :order="store.params.sort_order"
+                >
+                  <p class="text-sm text-textColor2 line-clamp-1 w-full leading-[1.2] truncate">
+                    {{$t('monthReport.form.totalOne')}}
+                  </p>
+                </SortBtn>
               </template>
               {{$t('monthReport.form.totalOne')}}
             </n-tooltip>
@@ -55,22 +82,48 @@ const onShow = (v) => {
                 trigger="hover"
             >
               <template #trigger>
-                <p class="text-sm text-textColor2 line-clamp-1 w-full leading-[1.2] truncate">
-                  {{$t('monthReport.form.totalTwo')}}
-                </p>
+
+                <SortBtn
+                    @click="store._filterCol('total_three')"
+                    by="total_three"
+                    :value="store.params.sort_by"
+                    :order="store.params.sort_order"
+                >
+                  <p class="text-sm text-textColor2 line-clamp-1 w-full leading-[1.2] truncate">
+                    {{$t('monthReport.form.totalTwo')}}
+                  </p>
+                </SortBtn>
               </template>
               {{$t('monthReport.form.totalTwo')}}
             </n-tooltip>
           </th>
-          <th class="min-w-[50px] w-[120px] text-wrap!">{{$t('monthReport.form.totalThree')}}</th>
+          <th class="min-w-[50px] w-[120px] text-wrap!">
+
+            <SortBtn
+                @click="store._filterCol('total_four')"
+                by="total_four"
+                :value="store.params.sort_by"
+                :order="store.params.sort_order"
+            >
+              {{$t('monthReport.form.totalThree')}}
+            </SortBtn>
+          </th>
           <th class="min-w-[50px] w-[130px] max-w-[130px]">
             <n-tooltip
                 trigger="hover"
             >
               <template #trigger>
-                <p class="text-sm text-textColor2 line-clamp-1 w-full leading-[1.2] truncate">
-                  {{$t('monthReport.form.totalFour')}}
-                </p>
+
+                <SortBtn
+                    @click="store._filterCol('total_five')"
+                    by="total_five"
+                    :value="store.params.sort_by"
+                    :order="store.params.sort_order"
+                >
+                  <p class="text-sm text-textColor2 line-clamp-1 w-full leading-[1.2] truncate">
+                    {{$t('monthReport.form.totalFour')}}
+                  </p>
+                </SortBtn>
               </template>
               {{$t('monthReport.form.totalFour')}}
             </n-tooltip>
@@ -121,7 +174,8 @@ const onShow = (v) => {
               </n-icon>
           </td>
           <td>{{item.organization.name}}</td>
-          <td>{{item.main_salary}}</td>
+          <td>{{item.main_salary}}
+          </td>
           <td>{{item.total_one}}</td>
           <td>{{item.total_three}}</td>
           <td>

@@ -23,6 +23,8 @@ export const useMonthReportStore = defineStore('monthReportStore', {
             code:null,
             year:null,
             month:null,
+            sort_by:null,
+            sort_order:1
         },
         structureCheck2:[],
         showList:[],
@@ -43,6 +45,9 @@ export const useMonthReportStore = defineStore('monthReportStore', {
             const params = {
                 ...this.params,
                 organizations:this.params.organizations.map(v=>v.id).toString() || undefined,
+                sort_order:(this.params.sort_by === 'status' || this.params.sort_by === null)? undefined : this.params.sort_order === 1 ? 'asc' : 'desc',
+                status:this.params.sort_by === 'status'? this.params.sort_order === 1 ? 1 : undefined : undefined,
+                sort_by:this.params.sort_by === 'status' ? undefined: this.params.sort_by,
             }
             $ApiService.monthReportService._index({params}).then((res)=>{
                 this.list = res.data.data.data
@@ -88,6 +93,16 @@ export const useMonthReportStore = defineStore('monthReportStore', {
             }).finally(()=>{
                 this.downloadLoading = false
             })
+        },
+        _filterCol(key){
+            this.params.sort_by = key
+            this.params.sort_order *= -1;
+            this._index()
+        },
+        _filterStatus(key){
+            this.params.sort_order = this.params.sort_by !== key? 1:this.params.sort_order ===1 ? -1 : 1
+            this.params.sort_by = key
+            this._index()
         },
 
         openVisible(data){

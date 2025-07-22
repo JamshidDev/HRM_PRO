@@ -39,11 +39,11 @@ export const useAppStore = defineStore('appStore', {
     }),
     actions:{
         _logOutApp(){
-            getActivePinia().reset()
             localStorage.removeItem("telegramPopup")
             localStorage.removeItem("app-token")
             sessionStorage.clear()
             router?.push(AppPaths.Login)
+            getActivePinia().reset()
         },
         changeTheme(){
             const mode = this.themeSwitch? "dark" : "light"

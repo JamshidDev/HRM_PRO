@@ -8,7 +8,7 @@ import {
     TurnstileWorkDurationPage,
     TurnstileAccessLevelsPage,
     TurnstileOrgAccessLevelsPage,
-    TurnstileHcWorkersPage, HcServerPage
+    TurnstileHcWorkersPage, HcServerPage, HcEventPage
 } from "@/pages/turnstile"
 
 
@@ -56,6 +56,11 @@ export default [
     {
         path:Utils.routeTurnstilePathMaker(AppPaths.HcServer),
         component: ()=>HcServerPage,
+        children:[],
+    },
+    {
+        path:Utils.routeTurnstilePathMaker(AppPaths.HcEvents),
+        component: ()=>HcEventPage,
         children:[],
     },
 ]

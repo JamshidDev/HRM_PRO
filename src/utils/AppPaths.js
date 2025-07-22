@@ -107,6 +107,7 @@ export const AppPaths = {
     SalaryReport: "/salary-report",
     PensionPayment: "/pension-payment",
     HcServer: "/hc-server",
+    HcEvents: "/hc-events",
 }
 
 export const AppLayouts ={

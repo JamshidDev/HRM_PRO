@@ -29,7 +29,7 @@ export const useWorkerStore = defineStore('workerStore', {
             ages:[1,100],
             positions:[],
             sex:null,
-            nationality_id:null,
+            nationalities:[],
             country_id:null,
             region_id:null,
             city_id:null,
@@ -127,6 +127,7 @@ export const useWorkerStore = defineStore('workerStore', {
             return {
                 ...this.params,
                 organizations:this.params.organizations.map(v=>v.id).toString() || undefined,
+                nationalities:this.params.nationalities?.toString() || undefined,
                 departments:this.params.departments.toString() || undefined,
                 positions:this.params.positions.toString() || undefined,
                 ages:undefined,

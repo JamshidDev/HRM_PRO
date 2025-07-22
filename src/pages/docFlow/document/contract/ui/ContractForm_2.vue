@@ -111,12 +111,10 @@ onMounted(()=>{
             <n-select
                 v-model:value="store.payload.group"
                 filterable
-
                 :options="componentStore.groupList"
                 label-field="name"
                 value-field="id"
                 :loading="componentStore.enumLoading"
-                clearable
             />
           </n-form-item>
         </div>

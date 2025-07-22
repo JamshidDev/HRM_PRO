@@ -95,7 +95,10 @@ const onChangeAge = () => {
 
 const onShow = (isOpen) => {
   if(!isOpen) return
-  componentStore._structures()
+  if(componentStore.structureList.length === 0) {
+    componentStore._structures()
+  }
+
   if (componentStore.contractTypeList.length === 0) {
     componentStore._enums()
   }
@@ -109,14 +112,13 @@ const onShow = (isOpen) => {
     componentStore._countries()
   }
 
+  if(componentStore.regionList.length === 0){
+    componentStore._regions()
+  }
+
 }
 
 const changeCountry = ()=>{
-  componentStore.regionList = []
-  store.params.region_id = null
-  store.params.city_id = null
-
-  componentStore._regions(store.params.country_id)
   filterEvent()
 }
 
@@ -156,6 +158,13 @@ const openUserListEv = ()=>{
 }
 
 const canWrite = computed(()=>accStore.checkAction(Utils.appPermissions.hrWorkersWrite))
+
+const defaultEv = (v)=>{
+  store.params.organizations=v
+  componentStore.depParams.organizations = v.map((x) => x.id)
+  componentStore.departmentList = []
+  componentStore._departments()
+}
 
 
 </script>
@@ -249,7 +258,7 @@ const canWrite = computed(()=>accStore.checkAction(Utils.appPermissions.hrWorker
             <UISelect
                 :options="componentStore.structureList"
                 :modelV="store.params.organizations"
-                @defaultValue="(v)=>store.params.organizations=v"
+                @defaultValue="defaultEv"
                 @updateModel="onChangeStructure"
                 :checkedVal="store.structureCheck"
                 @updateCheck="(v)=>store.structureCheck=v"
@@ -269,7 +278,6 @@ const canWrite = computed(()=>accStore.checkAction(Utils.appPermissions.hrWorker
                 filterable
                 label-field="name"
                 value-field="id"
-
                 clearable
                 @update:value="onChangeDepartment"
                 :max-tag-count="1"
@@ -372,10 +380,10 @@ const canWrite = computed(()=>accStore.checkAction(Utils.appPermissions.hrWorker
           <div class="col-span-6">
             <label class="text-xs text-gray-500">{{ $t(`createWorkerPage.form.nationality_id`) }}</label>
             <n-select
-                v-model:value="store.params.nationality_id"
+                v-model:value="store.params.nationalities"
+                multiple
                 filterable
                 clearable
-
                 :options="componentStore.nationalityList"
                 label-field="name"
                 value-field="id"
@@ -404,10 +412,8 @@ const canWrite = computed(()=>accStore.checkAction(Utils.appPermissions.hrWorker
             <label class="text-xs text-gray-500">{{ $t(`createWorkerPage.form.region`) }}</label>
             <n-select
                 v-model:value="store.params.region_id"
-                :disabled="!store.params.country_id"
                 filterable
                 clearable
-
                 :options="componentStore.regionList"
                 label-field="name"
                 value-field="id"
@@ -424,7 +430,6 @@ const canWrite = computed(()=>accStore.checkAction(Utils.appPermissions.hrWorker
                 v-model:value="store.params.city_id"
                 filterable
                 clearable
-
                 :options="store.districtList"
                 label-field="name"
                 value-field="id"
@@ -437,10 +442,8 @@ const canWrite = computed(()=>accStore.checkAction(Utils.appPermissions.hrWorker
             <label class="text-xs text-gray-500">{{ $t(`createWorkerPage.form.currentRegion`) }}</label>
             <n-select
                 v-model:value="store.params.current_region_id"
-                :disabled="!store.params.country_id"
                 filterable
                 clearable
-
                 :options="componentStore.regionList"
                 label-field="name"
                 value-field="id"
@@ -451,13 +454,12 @@ const canWrite = computed(()=>accStore.checkAction(Utils.appPermissions.hrWorker
             />
           </div>
           <div class="col-span-3">
-            <label class="text-xs text-gray-500">{{ $t(`createWorkerPage.form.currentRegion`) }}</label>
+            <label class="text-xs text-gray-500">{{ $t(`createWorkerPage.form.currentCity`) }}</label>
             <n-select
                 v-model:value="store.params.current_city_id"
                 :disabled="!store.params.current_region_id"
                 filterable
                 clearable
-
                 :options="store.currentDistrictList"
                 label-field="name"
                 value-field="id"

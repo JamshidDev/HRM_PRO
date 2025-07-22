@@ -56,6 +56,7 @@ export const useDashboardStore = defineStore('dashboardStore', {
             birthdays: null,
             vacations: [],
         },
+        skipReset:true,
     }),
     actions: {
         _index(update) {

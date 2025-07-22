@@ -26,7 +26,7 @@
     "add": "Qo'shish",
     "filterSetting": "Filter sozlamalar",
     "news": "Yangi",
-    "hour": "soat",
+    "hour": "Soat",
     "action": "Amallar",
     "fullName": "Ism",
     "position": "Lavozim",
@@ -1928,6 +1928,25 @@
       "status": "status",
       "asFile": "Faylga yuklash uchun bosing",
       "error": "error"
+    }
+  },
+  "hcEvent": {
+    "name": "Hodisalar",
+    "createTitle": "Yuklash",
+    "updateTitle": "Tahrirlash",
+    "form": {
+      "name": "Nomi",
+      "temperature": "Harorat",
+      "device": "Qurilma",
+      "mask_status": "Niqob",
+      "status": "status",
+      "asFile": "Faylga yuklash uchun bosing",
+      "withMask": "Niqb bilan",
+      "NoMask": "Niqobsiz",
+      "direction": "Turniket",
+      "face": "FACE",
+      "finger": "Barmoq izi",
+      "unknown": "No'malum"
     }
   }
 }

@@ -50,10 +50,10 @@ onMounted(()=>{
         <AppLayout/>
         <ToastProvider/>
         <MediaViewer />
-        <UIMainLoading/>
         <SignatureInstance/>
       </n-dialog-provider>
     </n-message-provider>
   </n-config-provider>
+  <UIMainLoading/>
 </template>
 

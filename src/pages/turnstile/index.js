@@ -7,3 +7,4 @@ export const TurnstileAccessLevelsPage = import('./accessLevels/accessLevelsPage
 export const TurnstileOrgAccessLevelsPage = import('./orgAccessLevels/OrgAccessLevelsPage.vue')
 export const TurnstileHcWorkersPage = import('./hcWorkers/hcWorkersPage.vue')
 export const HcServerPage = import('./hcServer/page.vue')
+export const HcEventPage = import('./events/page.vue')

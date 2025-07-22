@@ -86,6 +86,8 @@ export const useAccountStore = defineStore('accountStore', {
             })
         },
         _index(callback){
+            const startDate = Date.now()
+            this.loading = true
             $ApiService.accountService._index({data:this.payload}).then((res)=>{
                 this.payload = {...res.data.data.worker, password:null}
                 this.account = {...res.data.data}
@@ -93,7 +95,15 @@ export const useAccountStore = defineStore('accountStore', {
                 sessionStorage.setItem(useAppSetting.appPermission, JSON.stringify(this.permissions))
                 callback?.()
             }).finally(()=>{
+                const duration = Date.now() - startDate
+                if(duration < 500){
+                    setTimeout(()=>{
+                        this.loading = false
+                    },500)
+                }
                 this.loading = false
+
+
             })
         },
         changeRegion(){
