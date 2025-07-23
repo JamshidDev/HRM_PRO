@@ -94,7 +94,6 @@ onMounted(()=>{
       <n-form-item :label="$t(`applicationPage.form.temporarily_absent`)" path="temporarily_absent">
         <n-select
             v-model:value="store.payload.temporarily_absent"
-
             :options="store.vacationWorkerList"
             :loading="store.vacationWorkerLoading"
             :render-label="renderLabel2"

@@ -3,6 +3,7 @@ import {useComponentStore, useContractStore} from "@/store/modules/index.js"
 import {NAvatar} from "naive-ui"
 import Utils from "@/utils/Utils.js"
 import {useAppSetting} from "@/utils/index.js"
+import UIHelper from "@/utils/UIHelper.js"
 
 const store = useContractStore()
 const componentStore = useComponentStore()
@@ -41,6 +42,14 @@ watchEffect(()=>{
   }
 })
 
+const onChange = (v)=>{
+  if(v ===6){
+    store.payload.temporary_worker_id = null
+    const id = store.payload.organization_id[0].id
+    store._vacationWorkers(id)
+  }
+
+}
 </script>
 
 <template>
@@ -64,11 +73,11 @@ watchEffect(()=>{
                 :disabled="!Boolean(store.payload.type)"
                 v-model:value="store.payload.command_type"
                 filterable
-
                 :options="componentStore.commandTypeList"
                 label-field="name"
                 value-field="id"
                 :loading="componentStore.commandTypeLoading"
+                @update:value="onChange"
                 clearable
             />
           </n-form-item>
@@ -78,7 +87,6 @@ watchEffect(()=>{
             <n-input
                 class="w-full"
                 type="text"
-
                 v-model:value="store.payload.command_number"
             />
           </n-form-item>
@@ -92,6 +100,19 @@ watchEffect(()=>{
                 type="date"
 
                 :format="useAppSetting.datePicketFormat"
+            />
+          </n-form-item>
+        </div>
+        <div v-if="store.payload.command_type === 6" class="col-span-12">
+          <n-form-item :label="$t(`applicationPage.form.temporarily_absent`)" path="temporary_worker_id">
+            <n-select
+                v-model:value="store.payload.temporary_worker_id"
+                :options="store.vacationWorkers"
+                :loading="store.vacationLoading"
+                :render-label="UIHelper.selectRender.label"
+                :render-tag="UIHelper.selectRender.value"
+                value-field="id"
+                label-field="id"
             />
           </n-form-item>
         </div>

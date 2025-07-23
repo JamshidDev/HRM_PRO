@@ -874,6 +874,12 @@ export default {
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
+        temporary_worker_id:{
+            type:'number',
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
         department_id:{
             type:'array',
             required: true,

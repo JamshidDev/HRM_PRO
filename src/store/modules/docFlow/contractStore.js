@@ -47,6 +47,7 @@ export const useContractStore = defineStore('contractStore', {
             command_date:null,
             command_number:null,
             confirmations:[],
+            temporary_worker_id:null,
         },
         params:{
             page:1,
@@ -78,8 +79,22 @@ export const useContractStore = defineStore('contractStore', {
         activeTab:1,
         stepStatus:"process",
         stepNumber:1,
+        vacationWorkers:[],
+        vacationLoading:false,
     }),
     actions:{
+        _vacationWorkers(id){
+            this.vacationLoading = true
+            $ApiService.applicationService._vacationWorker({params:{organizations:id, page:1,per_page:1000}}).then((res)=>{
+                this.vacationWorkers = res.data.data.data.map((v)=>({
+                    ...v,
+                    name:Utils.combineFullName(v.worker),
+                    position:v.post_short_name,
+                }))
+            }).finally(()=>{
+                this.vacationLoading= false
+            })
+        },
         _index(){
             this.loading= true
             const params = {
@@ -204,6 +219,7 @@ export const useContractStore = defineStore('contractStore', {
 
             this.payload.command_date = null
             this.payload.command_number = null
+            this.payload.temporary_worker_id = null
             this.payload.confirmations = []
         }
 

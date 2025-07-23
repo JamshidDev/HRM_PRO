@@ -50,6 +50,7 @@ const statusList = {
           <th class="w-[100px]">{{$t('content.status')}}</th>
           <th class="w-[80px]">{{$t('content.process')}}</th>
           <th class="w-[80px]">{{$t('content.date')}}</th>
+          <th class="w-[80px]">{{$t('content.hour')}}</th>
           <th class="min-w-[100px] w-[120px]">{{$t('uploadReport.form.file')}}</th>
         </tr>
         </thead>
@@ -83,9 +84,8 @@ const statusList = {
           <td>
             <UIStatus :status="statusList[item.done]"></UIStatus>
           </td>
-          <td>
-            {{Utils.timeOnlyDate(item.created_at)}}
-          </td>
+          <td>{{Utils.timeOnlyDate(item.created_at)}}</td>
+          <td>{{Utils.timeOnlyHour(item.created_at)}}</td>
           <td>
             <div v-if="item?.file" class="flex justify-center w-full">
               <n-button size="small" @click="onDownload(item.file)">{{$t('content.download')}}</n-button>
