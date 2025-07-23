@@ -16,9 +16,15 @@ const _access_levels = async (params)=>{
     return await axios.get(`/v1/turnstile/hik-central/workers/access-levels`, {params})
 }
 
+const _updateFace = async (payload)=>{
+    return await axios.post(`/v1/turnstile/hik-central/workers/update-face`, payload?.data)
+}
+
+
 export default {
     _index,
     _add_worker,
     _detach_worker,
-    _access_levels
+    _access_levels,
+    _updateFace,
 }

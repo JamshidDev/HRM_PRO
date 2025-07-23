@@ -36,6 +36,13 @@ export const useTurnstileHikCentralWorkerStore = defineStore('turnstileHikCentra
             photo: null,
             end_time: null
         },
+        editPayload:{
+            id:null,
+            photo_id:null,
+            photo:null,
+        },
+        editVisible:false,
+        editLoading:false,
     }),
     actions: {
         _index() {
@@ -47,9 +54,20 @@ export const useTurnstileHikCentralWorkerStore = defineStore('turnstileHikCentra
                 this.loading = false
             })
         },
+        _updateFace(){
+            this.editLoading = true
+            let data = this.editPayload
+            $ApiService.turnstileHikCentralWorkerService._updateFace({data}).then((res) => {
+                console.log(res.data)
+                this.editVisible = false
+                this._index()
+            }).finally(() => {
+                this.editLoading = false
+            })
+
+        },
         _add_worker(){
             this.saveLoading = true
-            console.log(this.payload)
             let payload = {
                 access_level_id: this.payload.access_level_id,
                 worker_id: this.payload.worker_id,
@@ -68,11 +86,12 @@ export const useTurnstileHikCentralWorkerStore = defineStore('turnstileHikCentra
                 this.saveLoading = false
             })
         },
-        _worker_photos() {
+        _worker_photos(callback) {
             this.photosLoading = true
             this.photos = []
             $ApiService.turnstileTerminalUserService._worker_photos({params: {worker_id: this.payload.worker_id}}).then((res) => {
                 this.photos = res.data.data
+                callback?.()
             }).finally(() => {
                 this.photosLoading = false
             })
@@ -134,6 +153,11 @@ export const useTurnstileHikCentralWorkerStore = defineStore('turnstileHikCentra
             this.payload.photo = null
             this.payload.end_time = null
             this.photos = []
+        },
+        resetEditPayload(){
+            this.editPayload.id = null
+            this.editPayload.photo_id = null
+            this.editPayload.photo = null
         }
 
     }

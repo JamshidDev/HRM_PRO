@@ -1,7 +1,8 @@
 <script setup>
-import {UIDrawer, UIPageContent, UIPageFilter} from "@/components/index.js"
+import {UIDrawer, UIModal, UIPageContent, UIPageFilter} from "@/components/index.js"
 import Table from "./ui/Table.vue"
 import Form from "./ui/Form.vue"
+import faceForm from "./ui/faceForm.vue"
 import {useAccountStore, useTurnstileHikCentralWorkerStore} from "@/store/modules/index.js";
 
 const store = useTurnstileHikCentralWorkerStore()
@@ -49,5 +50,13 @@ onMounted(()=>{
         <Form/>
       </template>
     </UIDrawer>
+    <UIModal
+        :visible="store.editVisible"
+        @update:visible="(v)=>store.editVisible = v"
+        :title="$t('turnstile.hcWorkersPage.edit')"
+    >
+      <faceForm/>
+    </UIModal>
+
   </UIPageContent>
 </template>

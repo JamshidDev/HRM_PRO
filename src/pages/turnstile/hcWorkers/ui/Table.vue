@@ -13,11 +13,22 @@ const changePage = (v)=>{
   store._index()
 }
 
+const onEdit = (v)=>{
+  store.editPayload.id = v.id
+  store.payload.worker_id = v.worker?.id
+  store._worker_photos(()=>{
+    store.editVisible = true
+  })
+}
+
 const onSelect = (v)=>{
   if(!accStore.checkAction(accStore.pn.turnstileWorkersWrite)) return
   if(v.key === 'delete'){
     store.elementId = v.data.worker.id
-    // store._delete()
+  }else if(v.key==='edit'){
+    store.resetEditPayload()
+    store.resetForm()
+    onEdit(v.data)
   }
 }
 
@@ -60,7 +71,7 @@ const toggleDetachTerminals = (v)=>{
             <UIUser
                 :short="false"
               :data="{
-                photo: item.worker.photo,
+                photo: item?.photo?.photo || item.worker?.photo,
                 lastName: item.worker.last_name,
                 firstName: item.worker.first_name,
                 middleName: item.worker.middle_name,
@@ -116,6 +127,7 @@ const toggleDetachTerminals = (v)=>{
           <td>
             <UIMenuButton
                 :data="item"
+                :show-edit="true"
                 @select-ev="onSelect"
             />
 <!--                :loading="store.elementId === item.worker.id && store.deleteLoading"-->
