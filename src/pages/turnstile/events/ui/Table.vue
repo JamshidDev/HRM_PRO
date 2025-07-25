@@ -103,11 +103,11 @@ const eventStatus = {
             </div>
           </td>
           <td class="!text-center">
-            <n-button :type="item.direction ===2 ? 'primary' : 'error'" secondary size="tiny">
-              <span>{{$t(item.direction===2 ? 'turnstile.workDurationPage.enter' : 'turnstile.workDurationPage.exit')}}</span>
+            <n-button :type="item.direction? 'primary' : 'error'" secondary size="tiny">
+              <span>{{$t(item.direction? 'turnstile.workDurationPage.enter' : 'turnstile.workDurationPage.exit')}}</span>
               <template #icon>
                 <n-icon size="17">
-                  <ArrowCircleDownRight20Regular v-if="item.direction===2"/>
+                  <ArrowCircleDownRight20Regular v-if="item.direction"/>
                   <ArrowCircleUpLeft20Regular v-else />
                 </n-icon>
               </template>

@@ -1,26 +1,13 @@
 <script setup>
-import {UIDrawer, UIModal, UIPageContent, UIPageFilter} from "@/components/index.js"
+import {UIDrawer, UIModal, UIPageContent} from "@/components/index.js"
 import Table from "./ui/Table.vue"
 import Form from "./ui/Form.vue"
 import faceForm from "./ui/faceForm.vue"
+import Filter from "./ui/Filter.vue"
 import {useAccountStore, useTurnstileHikCentralWorkerStore} from "@/store/modules/index.js";
 
 const store = useTurnstileHikCentralWorkerStore()
 const accStore = useAccountStore()
-
-
-const onAdd = ()=>{
-  if(!accStore.checkAction(accStore.pn.turnstileWorkersWrite)) return
-  store.resetForm()
-  store.visibleType = true
-  store.visible = true
-}
-
-const onSearch = ()=>{
-  if(!accStore.checkAction(accStore.pn.turnstileWorkersRead)) return
-  store.params.page = 1
-  store._index()
-}
 
 onMounted(()=>{
   if(!accStore.checkAction(accStore.pn.turnstileWorkersRead)) return
@@ -33,13 +20,7 @@ onMounted(()=>{
 
 <template>
   <UIPageContent>
-    <UIPageFilter
-        v-model:search="store.params.search"
-        @onSearch="onSearch"
-        @onAdd="onAdd"
-        :show-filter-button="false"
-    >
-    </UIPageFilter>
+    <Filter/>
     <Table/>
     <UIDrawer
         :visible="store.visible"

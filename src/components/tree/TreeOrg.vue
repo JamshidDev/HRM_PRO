@@ -11,6 +11,10 @@ const props = defineProps({
     type:Number,
     default:1,
   },
+  short:{
+    type:Boolean,
+    default:false,
+  },
   modelV:{type:Array,default:[]},
   checkedVal:{type:Array,default:[]},
   getChildIds:{
@@ -84,7 +88,7 @@ const isCheck =(id)=>{
               :disabled="Boolean(item.group)"
               :checked="modelV.map((a)=>a.id).includes(item.id)"
           ></n-checkbox>
-          <span class="text-xs ml-2 ">{{item.name}}</span>
+          <span class="text-xs ml-2 ">{{short? item.code : item.name}}</span>
         </div>
         <div class="w-[20px] lex justify-center items-center">
           <n-radio
@@ -98,6 +102,7 @@ const isCheck =(id)=>{
       </div>
       <n-collapse-transition :show="checkedVal.includes(item.id) || opened">
         <TreeOrg
+            :short="short"
             :deep="deep+1"
             :opened="opened"
             :data="item?.children"

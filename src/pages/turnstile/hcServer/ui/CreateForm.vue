@@ -73,9 +73,7 @@ onMounted(()=>{
   if(componentStore.structureList.length === 0){
     componentStore._structures()
   }
-  if(store.levelList.length === 0){
   store._levels()
-  }
 })
 </script>
 

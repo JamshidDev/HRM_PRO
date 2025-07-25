@@ -1,5 +1,5 @@
 <script setup>
-import {Search48Filled} from "@vicons/fluent"
+import {Search48Filled, Search32Filled} from "@vicons/fluent"
 import TreeOrg from "@/components/tree/TreeOrg.vue"
 import {useDebounceFn} from "@vueuse/core"
 import {useComponentStore} from "@/store/modules/index.js"
@@ -154,6 +154,7 @@ onMounted(()=>{
     <div class="w-full h-[344px] overflow-y-auto">
       <n-spin :show="loading" class="w-full h-full">
         <TreeOrg
+            :short="store.structureShort"
             :data="options"
             :modelV="modelV"
             :checkedVal="checkedVal"
@@ -167,6 +168,13 @@ onMounted(()=>{
     </div>
     <div class="w-full h-[40px] flex items-center">
       <n-input-group>
+        <n-button
+            size="small">
+          <template #icon>
+            <n-checkbox v-model:checked="store.structureShort" />
+          </template>
+          {{store.structureShort? $t('content.long') : $t('content.short')}}
+        </n-button>
         <n-input
             clearable
             size="small"
@@ -186,7 +194,9 @@ onMounted(()=>{
             size="small"
             :loading="loading"
         >
-          {{$t("content.search")}}
+         <template #icon>
+           <Search32Filled/>
+         </template>
         </n-button>
       </n-input-group>
     </div>

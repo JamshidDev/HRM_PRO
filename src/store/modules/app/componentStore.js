@@ -9,6 +9,7 @@ import {useAppSetting} from "@/utils/index.js"
 
 export const useComponentStore = defineStore('componentStore', {
     state:()=>({
+        structureShort:false,
         organizationLevelList:[],
         organizationLevelLoading:false,
 

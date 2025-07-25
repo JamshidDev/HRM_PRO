@@ -17,13 +17,15 @@ export const useTurnstileHikCentralWorkerStore = defineStore('turnstileHikCentra
         elementId: null,
         totalItems: 0,
         allPermissionList: [],
-        structureCheck: [],
+        structureCheck2: [],
         photos: [],
         photosLoading: false,
         params: {
             page: 1,
             per_page: 10,
             search: null,
+            organizations:[],
+            access_level_id:null,
         },
         payload: {
             level_org_id: [],
@@ -43,11 +45,26 @@ export const useTurnstileHikCentralWorkerStore = defineStore('turnstileHikCentra
         },
         editVisible:false,
         editLoading:false,
+        levelLoading:false,
+        levelList:[],
+
     }),
     actions: {
+        _levels() {
+            this.levelLoading = true
+            $ApiService.hcServerService._accessLevels().then((res) => {
+                this.levelList = res.data.data
+            }).finally(() => {
+                this.levelLoading = false
+            })
+        },
         _index() {
             this.loading = true
-            $ApiService.turnstileHikCentralWorkerService._index({params: this.params}).then((res) => {
+            const params = {
+                ...this.params,
+                organizations:this.params.organizations.map(v=>v.id).toString() || undefined,
+            }
+            $ApiService.turnstileHikCentralWorkerService._index({params}).then((res) => {
                 this.list = res.data.data.data
                 this.totalItems = res.data.data.total
             }).finally(() => {

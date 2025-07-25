@@ -1,9 +1,8 @@
 <script setup>
 import {NoDataPicture, UIPagination, UIBadge, UIStatus} from "@/components/index.js"
 import {useHcServerStore, useComponentStore, useAccountStore} from "@/store/modules/index.js"
-import {ErrorCircle24Filled, ArrowCircleDown16Regular} from "@vicons/fluent"
+import {ErrorCircle24Filled, Person12Filled, PersonAvailable20Filled} from "@vicons/fluent"
 import Utils from "@/utils/Utils.js"
-import i81n from "@/i18n/index.js"
 import i18n from "@/i18n/index.js"
 
 const {t} = i18n.global
@@ -75,12 +74,30 @@ const statusObj = {
           <td><span>{{item?.name}}</span></td>
           <td>
             <div>
-              <UIBadge :type="Utils.colorTypes.info" :show-icon="false" :label="item?.workers_count"></UIBadge>
+              <UIBadge
+                  :type="Utils.colorTypes.info"
+                  :show-icon="true"
+                  :label="item?.workers_count">
+                <template #icon>
+                  <n-icon size="20" class="text-primary">
+                    <Person12Filled/>
+                  </n-icon>
+                </template>
+              </UIBadge>
             </div>
           </td>
           <td>
             <div>
-              <UIBadge :type="Utils.colorTypes.success" :show-icon="false" :label="item?.exported_count"></UIBadge>
+              <UIBadge
+                  :type="Utils.colorTypes.success"
+                  :show-icon="true"
+                  :label="item?.exported_count">
+                <template #icon>
+                  <n-icon size="20" class="text-success ">
+                    <PersonAvailable20Filled/>
+                  </n-icon>
+                </template>
+              </UIBadge>
             </div>
           </td>
           <td>

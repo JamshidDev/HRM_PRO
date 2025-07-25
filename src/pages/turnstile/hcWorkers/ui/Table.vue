@@ -53,14 +53,14 @@ const toggleDetachTerminals = (v)=>{
     <div class="w-full overflow-x-auto"  v-if="store.list.length>0">
       <n-table
           class="mt-5 w-full table-fixed"
-          :single-line="false"F
+          :single-line="false"
           size="small"
       >
         <thead>
         <tr>
           <th class="text-center! w-[30px] min-w-[30px] grow-0">{{$t('content.number')}}</th>
-          <th class="min-w-[200px]">{{$t('content.staff')}}</th>
-          <th class="text-center! min-w-[300px] w-[500px]">{{$t('turnstile.hcWorkersPage.access_levels')}}</th>
+          <th class="min-w-[200px]">{{$t('content.fullName')}}</th>
+          <th class="text-center! min-w-[200px]">{{$t('turnstile.hcWorkersPage.access_levels')}}</th>
           <th class="max-w-[65px] w-[65px]">{{$t('content.action')}}</th>
         </tr>
         </thead>
@@ -69,8 +69,9 @@ const toggleDetachTerminals = (v)=>{
           <td class="w-[20px] max-w-[20px]"><span class="text-center text-[12px] text-gray-600 block">{{ (store.params.page - 1) * store.params.per_page + idx + 1 }}</span></td>
           <td>
             <UIUser
+                :hide-tooltip="true"
                 :short="false"
-              :data="{
+                :data="{
                 photo: item?.photo?.photo || item.worker?.photo,
                 lastName: item.worker.last_name,
                 firstName: item.worker.first_name,
