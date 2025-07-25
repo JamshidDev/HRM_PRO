@@ -1,4 +1,4 @@
-<script setup>
+2 <script setup>
 import {useComponentStore, useMedStore, useAccountStore} from "@/store/modules/index.js"
 import Table from "./ui/Table.vue"
 import createForm from "./ui/createForm.vue"

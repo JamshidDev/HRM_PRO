@@ -8,6 +8,9 @@ const store = useTurnstileHikCentralStore()
 const accStore = useAccountStore()
 
 onMounted(() => {
+  store.params.page = 1
+  store.params.per_page = 100
+  store.params.search = null
   if(!accStore.checkAction(accStore.pn.turnstileOrganizationRead)) return
   store._org_access_levels()
   store._index_access_levels()

@@ -57,6 +57,12 @@ const statusList = [
     type:'error',
     icon:ErrorCircle12Filled,
   },
+  {
+    id:9,
+    name:"Primary",
+    type:'primary',
+    icon:ErrorCircle12Filled,
+  },
 ]
 
 const type = computed(()=>{

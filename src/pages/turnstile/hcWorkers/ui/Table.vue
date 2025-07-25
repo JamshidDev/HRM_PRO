@@ -1,7 +1,7 @@
 <script setup>
 import {NoDataPicture, UIBadge, UIMenuButton, UIPagination, UIUser} from "@/components/index.js"
 import { useTurnstileHikCentralWorkerStore} from "@/store/modules/index.js"
-import {Eye12Filled} from '@vicons/fluent'
+import {AddSquareMultiple20Regular} from '@vicons/fluent'
 import {useAccountStore} from "@/store/modules/index.js"
 const accStore = useAccountStore()
 
@@ -60,7 +60,7 @@ const toggleDetachTerminals = (v)=>{
         <tr>
           <th class="text-center! w-[30px] min-w-[30px] grow-0">{{$t('content.number')}}</th>
           <th class="min-w-[200px]">{{$t('content.staff')}}</th>
-          <th class="text-center! max-w-[200px] w-[200px]">{{$t('turnstile.hcWorkersPage.access_levels_count')}}</th>
+          <th class="text-center! min-w-[300px] w-[500px]">{{$t('turnstile.hcWorkersPage.access_levels')}}</th>
           <th class="max-w-[65px] w-[65px]">{{$t('content.action')}}</th>
         </tr>
         </thead>
@@ -80,49 +80,17 @@ const toggleDetachTerminals = (v)=>{
             />
           </td>
           <td class="text-center!">
-            {{item.access_levels_count}}
-<!--            <n-popover v-if="item.access_levels_count" :show="!!(store.instanceData && item.worker.id === store.elementId)" @clickoutside="store.elementId=null" trigger="click">-->
-<!--              <div>-->
-<!--                <div class="h-[150px] max-h-[150px] overflow-y-auto">-->
-<!--                  <div v-for="(option, idx) in store.instanceData?.terminals" :key="option.id">-->
-<!--                    <n-divider v-if="idx" class="my-1!" />-->
-<!--                    <n-checkbox @click="()=>toggleDetachTerminals(option.id)" :checked="!store.payload.detachTerminals.includes(option.id)">-->
-<!--                      <div class="flex flex-col">-->
-<!--                        <div class="text-xs font-medium text-gray-500">{{option.terminal.name}}</div>-->
-<!--                        <div class="text-xs text-primary">{{option.terminal.building.name}}</div>-->
-<!--                      </div>-->
-<!--                    </n-checkbox>-->
-<!--                  </div>-->
-<!--                </div>-->
-<!--                <n-button-->
-<!--                  block-->
-<!--                  :loading="store.saveLoading && store.elementId===item.worker.id"-->
-<!--                  :disabled="!store.payload.detachTerminals.length"-->
-<!--                  type="primary"-->
-<!--                  @click="store._detach()"-->
-<!--                >-->
-<!--                  {{$t('content.save')}}-->
-<!--                </n-button>-->
-<!--              </div>-->
-<!--              <template #trigger>-->
-<!--                <div class="group relative inline-block">-->
-<!--                  <n-spin :show="store.instanceDataLoading">-->
-<!--                    <n-button class="group-hover:opacity-0" circle ghost>-->
-<!--                      {{item.terminals_count}}-->
-<!--                    </n-button>-->
-<!--                    <div class="opacity-0 group-hover:opacity-100 transition-all absolute left-0 top-0 right-0 bottom-0">-->
-<!--                      <n-button @click="()=>onShow(item.worker.id)" circle ghost>-->
-<!--                        <template #icon>-->
-<!--                          <n-icon>-->
-<!--                            <Eye12Filled />-->
-<!--                          </n-icon>-->
-<!--                        </template>-->
-<!--                      </n-button>-->
-<!--                    </div>-->
-<!--                  </n-spin>-->
-<!--                </div>-->
-<!--              </template>-->
-<!--            </n-popover>-->
+            <div class="flex flex-wrap gap-2">
+              <template v-for="level in item.access_levels" :key="level.id">
+                <n-button size="tiny" dashed type="primary">{{level.name}}
+                  <template #icon>
+                   <n-icon size="19">
+                     <AddSquareMultiple20Regular/>
+                   </n-icon>
+                  </template>
+                </n-button>
+              </template>
+            </div>
           </td>
           <td>
             <UIMenuButton

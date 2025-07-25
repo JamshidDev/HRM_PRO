@@ -1,36 +1,18 @@
 <script setup>
-import {NoDataPicture,UIPagination, UIBadge} from "@/components/index.js"
+import {NoDataPicture, UIPagination, UIBadge, UIStatus} from "@/components/index.js"
 import {useHcServerStore, useComponentStore, useAccountStore} from "@/store/modules/index.js"
 import {ErrorCircle24Filled, ArrowCircleDown16Regular} from "@vicons/fluent"
 import Utils from "@/utils/Utils.js"
+import i81n from "@/i18n/index.js"
+import i18n from "@/i18n/index.js"
 
+const {t} = i18n.global
 const store = useHcServerStore()
-const compStore = useComponentStore()
-const accStore = useAccountStore()
-
-const onEdit = (v)=>{
-
-
-}
-
-const onDelete = (v)=>{
-  store.elementId = v.id
-  store._delete()
-}
 
 const changePage = (v)=>{
   store.params.page = v.page
   store.params.per_page = v.per_page
   store._index()
-}
-
-const onSelectEv = (v)=>{
-  if(!accStore.checkAction(accStore.pn.hrVacationsWrite)) return
-  if(Utils.ActionTypes.edit === v.key){
-    onEdit(v.data)
-  }else if(Utils.ActionTypes.delete === v.key){
-    onDelete(v.data)
-  }
 }
 
 const downloadTextFile =(texts, fileName = "InvalidPhotos.txt")=> {
@@ -51,6 +33,21 @@ onMounted(()=>{
   store._index()
 })
 
+const statusObj = {
+  1: {
+    name:t('content.process'),
+    id:1,
+  },
+  2: {
+    name:t('content.error'),
+    id:4,
+  },
+  3: {
+    name:t('content.success'),
+    id:3,
+  }
+}
+
 </script>
 
 <template>
@@ -67,8 +64,8 @@ onMounted(()=>{
           <th class="min-w-[200px]">{{$t('hcServer.form.name')}}</th>
           <th class="min-w-[100px] w-[120px]">{{$t('hcServer.form.workers_count')}}</th>
           <th class="min-w-[100px] w-[120px]">{{$t('hcServer.form.exported_count')}}</th>
-          <th class="min-w-[100px] w-[120px]">{{$t('hcServer.form.status')}}</th>
-          <th class="min-w-[40px] w-[40px]">{{$t('hcServer.form.error')}}</th>
+          <th class="min-w-[100px] w-[120px]">{{$t('content.status')}}</th>
+          <th class="min-w-[40px] w-[40px]">{{$t('content.error')}}</th>
           <th class="min-w-[100px] w-[100px]">{{$t('content.date')}}</th>
         </tr>
         </thead>
@@ -86,7 +83,9 @@ onMounted(()=>{
               <UIBadge :type="Utils.colorTypes.success" :show-icon="false" :label="item?.exported_count"></UIBadge>
             </div>
           </td>
-          <td>{{item?.status}}</td>
+          <td>
+            <UIStatus :status="statusObj[item?.status]"/>
+          </td>
           <td>
             <div class="flex justify-center">
               <template v-if="item?.errors">

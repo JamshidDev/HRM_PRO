@@ -25,11 +25,11 @@ const maskStatus = {
   },
   2:{
     name:t("hcEvent.form.NoMask"),
-    id:3
+    id:2
   },
   3:{
-    name:t("hcEvent.form.unknown"),
-    id:4
+    name:t("hcEvent.form.NoMask"),
+    id:2
   },
 }
 
@@ -49,6 +49,10 @@ const eventStatus = {
   'ACSEventHumanDetectFail':{
     name:t("hcEvent.form.face"),
     id:3
+  },
+  'ACSEventLegalCardThrough':{
+    name:t("hcEvent.form.card"),
+    id:9
   },
 }
 
@@ -72,7 +76,7 @@ const eventStatus = {
           <th class="min-w-[200px]">{{$t('content.worker')}}</th>
           <th class="min-w-[100px] w-[120px]">{{$t('hcEvent.form.direction')}}</th>
           <th class="min-w-[100px] w-[300px]">{{$t('hcEvent.form.device')}}</th>
-          <th class="min-w-[100px] w-[100px]">{{$t('hcEvent.form.device')}}</th>
+          <th class="min-w-[100px] w-[160px]">{{$t('hcEvent.form.device')}}</th>
           <th class="min-w-[180px] w-[180px] !text-center">{{$t('content.date')}}</th>
 
           <th class="min-w-[100px] w-[100px] !text-center">{{$t('content.hour')}}</th>
@@ -86,6 +90,7 @@ const eventStatus = {
           <td>
             <div>
               <UIUser
+                  :hide-tooltip="true"
                   :short="false"
                   :data="{
                     photo:item?.worker?.photo,

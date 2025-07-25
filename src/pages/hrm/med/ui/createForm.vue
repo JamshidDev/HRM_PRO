@@ -96,42 +96,44 @@ onMounted(()=>{
           <template v-for="(item,index) in store.tabs">
             <n-tab-pane :name="item.id" :tab="$t(item.name)">
               <template v-if="item.id === store.tabs[0].id">
+                <template v-if="store.visibleType">
+                  <n-form-item class="w-full mr-4" :label="$t(`documentPage.form.organization`)" path="organization_id">
+                    <UISelect
+                        :options="componentStore.structureList"
+                        :modelV="store.payload.organization_id"
+                        @defaultValue="(v)=>store.payload.organization_id=v"
+                        @updateModel="onChangeStructure"
+                        :checkedVal="store.structureCheck"
+                        @updateCheck="(v)=>store.structureCheck=v"
+                        v-model:search="componentStore.structureParams.search"
+                        @onSearch="componentStore._structures"
+                        :loading="componentStore.structureLoading"
+                        :multiple="false"
+                        :auto-select="true"
+                    />
+                  </n-form-item>
+                  <n-form-item class="w-full " :label="$t(`documentPage.form.worker`)" path="worker_position_id">
+                    <n-select
+                        :disabled="store.payload.organization_id.length === 0"
+                        v-model:value="store.payload.worker_position_id"
+                        filterable
+                        :options="componentStore.workerList"
+                        :placeholder="$t('content.searchWorker')"
+                        label-field="name"
+                        value-field="id"
+                        :render-label="UIHelper.selectRender.label"
+                        :render-tag="UIHelper.selectRender.value"
+                        :loading="componentStore.workerLoading"
+                        @scroll="componentStore.onScrollWorker"
+                        @search="componentStore.onSearchWorker"
+                        @focus="onFocusEv"
+                        :default-value="'Jamshid'"
+                    />
+                  </n-form-item>
+                </template>
 
-                <n-form-item class="w-full mr-4" :label="$t(`documentPage.form.organization`)" path="organization_id">
-                  <UISelect
-                      :options="componentStore.structureList"
-                      :modelV="store.payload.organization_id"
-                      @defaultValue="(v)=>store.payload.organization_id=v"
-                      @updateModel="onChangeStructure"
-                      :checkedVal="store.structureCheck"
-                      @updateCheck="(v)=>store.structureCheck=v"
-                      v-model:search="componentStore.structureParams.search"
-                      @onSearch="componentStore._structures"
-                      :loading="componentStore.structureLoading"
-                      :multiple="false"
-                      :auto-select="true"
-                  />
-                </n-form-item>
-                <n-form-item class="w-full " :label="$t(`documentPage.form.worker`)" path="worker_position_id">
-                  <n-select
-                      :disabled="store.payload.organization_id.length === 0"
-                      v-model:value="store.payload.worker_position_id"
-                      filterable
-                      :options="componentStore.workerList"
-                      :placeholder="$t('content.searchWorker')"
-                      label-field="name"
-                      value-field="id"
-                      :render-label="UIHelper.selectRender.label"
-                      :render-tag="UIHelper.selectRender.value"
-                      :loading="componentStore.workerLoading"
-                      @scroll="componentStore.onScrollWorker"
-                      @search="componentStore.onSearchWorker"
-                      @focus="onFocusEv"
-                      :default-value="'Jamshid'"
-                  />
-                </n-form-item>
               </template>
-              <template v-if="item.id === store.tabs[1].id">
+              <template v-if="item.id === store.tabs[1].id && store.visibleType">
                 <UIAutoComplete class="mb-10"  v-model:pin="store.payload.pin" />
               </template>
             </n-tab-pane>
