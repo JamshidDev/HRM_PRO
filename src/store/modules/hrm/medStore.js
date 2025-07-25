@@ -55,7 +55,7 @@ export const useMedStore = defineStore('medStore', {
 
             }).finally(()=>{
                 this.dashboardLoading = false
-            })
+            })``
         },
         _index(){
             this.loading= true

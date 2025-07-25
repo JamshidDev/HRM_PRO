@@ -228,6 +228,13 @@ export const navigations = [
                 color: 'bg-info',
                 permission: appPermissions.hrReport,
             },
+            {
+                label: 'pensioner.name',
+                path: Utils.routeHrmPathMaker(AppPaths.Pensioner),
+                icon: AppFolder20Filled,
+                color: 'bg-info',
+                permission: appPermissions.hrReport,
+            },
 
 
         ]

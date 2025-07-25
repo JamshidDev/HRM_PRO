@@ -26,7 +26,7 @@ import UserRolePage from "@/pages/hrm/UserRole/UserRolePage.vue"
 import PunishmentPage from "@/pages/hrm/punishment/PunishmentPage.vue"
 import IncentivePage from "@/pages/hrm/incentive/IncentivePage.vue"
 import ReportPage from "@/pages/hrm/report/ReportPage.vue"
-import {PolyclinicPage, VacancyPage} from "@/pages/hrm/index.js"
+import {PensionerPage, PolyclinicPage, VacancyPage} from "@/pages/hrm/index.js"
 
 export default [
     {
@@ -152,5 +152,9 @@ export default [
     {
         path:Utils.routeHrmPathMaker(AppPaths.PublicVacancy),
         component:VacancyPage,
+    },
+    {
+        path:Utils.routeHrmPathMaker(AppPaths.Pensioner),
+        component:PensionerPage,
     },
 ]

@@ -108,6 +108,7 @@ export const AppPaths = {
     PensionPayment: "/pension-payment",
     HcServer: "/hc-server",
     HcEvents: "/hc-events",
+    Pensioner: "/pensioner",
 }
 
 export const AppLayouts ={

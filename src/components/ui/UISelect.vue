@@ -143,7 +143,7 @@ onMounted(()=>{
   <n-popover
       placement="bottom"
       trigger="click"
-      class="h-[400px] md:max-w-auto  py-0! px-1 max-w-(--top-activator-width) md:max-w-none! md:w-[400px]"
+      class="h-[400px] md:max-w-auto  py-0! px-0! max-w-(--top-activator-width) md:max-w-none! md:w-[400px]"
   >
     <template #trigger>
       <n-badge class="w-full" :value="modelV.length" type="info" :offset="[-10,-4]">

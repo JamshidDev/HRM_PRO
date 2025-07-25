@@ -1951,5 +1951,25 @@
       "finger": "Barmoq izi",
       "unknown": "No'malum"
     }
+  },
+  "pensioner": {
+    "name": "Pensiyanerlar",
+    "createTitle": "Yuklash",
+    "updateTitle": "Tahrirlash",
+    "form": {
+      "name": "Nomi",
+      "temperature": "Harorat",
+      "device": "Qurilma",
+      "mask_status": "Niqob",
+      "status": "status",
+      "asFile": "Faylga yuklash uchun bosing",
+      "withMask": "Niqb bilan",
+      "NoMask": "Niqobsiz",
+      "direction": "Turniket",
+      "face": "FACE",
+      "card": "Karta",
+      "finger": "Barmoq izi",
+      "unknown": "No'malum"
+    }
   }
 }

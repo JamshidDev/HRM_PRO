@@ -59,6 +59,7 @@ import punishmentService from '@/service/v1/hrm/punishmentService.js'
 import medInspectionService from '@/service/v1/hrm/medInspectionService.js'
 import polyclinicService from '@/service/v1/hrm/polyclinicService.js'
 import vacancyService from '@/service/v1/hrm/vacancyService.js'
+import pensionerService from '@/service/v1/hrm/pensionerService.js'
 
 import documentService from "@/service/v1/docFlow/documentService.js"
 import contractService from "@/service/v1/docFlow/contractService.js"
@@ -179,6 +180,7 @@ export default {
     instructionService,
     medInspectionService,
     polyclinicService,
+    pensionerService,
 
     reportService,
     aiConversationService,
