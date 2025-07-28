@@ -1,17 +1,20 @@
 <script setup>
 import {UIPageFilter, UISelect} from "@/components/index.js"
-import {useComponentStore, useTurnstileHikCentralWorkerStore} from "@/store/modules/index.js"
+import {useAccountStore, useComponentStore, useTurnstileHikCentralWorkerStore} from "@/store/modules/index.js"
 
 const store = useTurnstileHikCentralWorkerStore()
 const componentStore = useComponentStore()
+const accStore = useAccountStore()
 
 const filterEvent = ()=>{
+  if(!accStore.checkAction(accStore.pn.turnstileHikCentralWorkersRead)) return
   store.params.page = 1
   store._index()
 }
 
 
 const onAdd = ()=>{
+  if(!accStore.checkAction(accStore.pn.turnstileHikCentralWorkersWrite)) return
   store.resetForm()
   store.visibleType = true
   store.visible = true

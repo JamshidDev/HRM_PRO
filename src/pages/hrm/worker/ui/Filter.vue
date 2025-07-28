@@ -9,15 +9,17 @@ import {
   DismissCircle28Regular,
   ShareScreenPersonOverlayInside16Regular,
   PremiumPerson20Regular,
+  CloudArchive20Filled,
 } from "@vicons/fluent"
 import Utils from "@/utils/Utils.js"
+import {AppPaths} from "@/utils/index.js"
 
 
 const store = useWorkerStore()
 const accStore = useAccountStore()
 const exportStore = useExportStore()
 const componentStore = useComponentStore()
-
+const router = useRouter()
 const onAdd = () => {
   if(!accStore.checkAction(accStore.pn.hrWorkersWrite)) return
   componentStore.checkUserVisible = true
@@ -181,6 +183,14 @@ const defaultEv = (v)=>{
 
   >
     <template #filterAction>
+      <n-button
+          @click="router.push(Utils.routeHrmPathMaker(AppPaths.Export))"
+          class="w-full! md:w-auto!"
+          type="warning">{{$t('exportPage.name')}}
+        <template #icon>
+          <CloudArchive20Filled/>
+        </template>
+      </n-button>
       <n-button
           @click="openUserListEv"
           class="w-full! md:w-auto!"

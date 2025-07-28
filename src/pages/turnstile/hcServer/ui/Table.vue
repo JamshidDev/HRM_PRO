@@ -1,7 +1,7 @@
 <script setup>
 import {NoDataPicture, UIPagination, UIBadge, UIStatus} from "@/components/index.js"
-import {useHcServerStore, useComponentStore, useAccountStore} from "@/store/modules/index.js"
-import {ErrorCircle24Filled, Person12Filled, PersonAvailable20Filled} from "@vicons/fluent"
+import {useHcServerStore} from "@/store/modules/index.js"
+import {ErrorCircle24Filled,PersonAvailable20Filled, Person12Filled} from "@vicons/fluent"
 import Utils from "@/utils/Utils.js"
 import i18n from "@/i18n/index.js"
 
@@ -28,9 +28,6 @@ const downloadTextFile =(texts, fileName = "InvalidPhotos.txt")=> {
   URL.revokeObjectURL(url)
 }
 
-onMounted(()=>{
-  store._index()
-})
 
 const statusObj = {
   1: {

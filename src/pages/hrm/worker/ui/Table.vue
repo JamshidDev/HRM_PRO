@@ -51,7 +51,7 @@ const onSelectEv = (v)=>{
 }
 
 const onPreview =(uuid)=>{
-  if(!accStore.checkAction(accStore.pn.hrWorkersWrite)) return
+  if(!accStore.checkAction(accStore.pn.hrWorkersRead)) return
 
   previewRef?.value.openPreview(uuid)
 }

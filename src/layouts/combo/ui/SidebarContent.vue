@@ -52,8 +52,9 @@ const nextPanel = (path) => {
   }, 150)
 }
 
-const onChangePath = (path) => {
-  router.push(path)
+const onChangePath = (item) => {
+  if(item?.disable) return
+  router.push(item.path)
 }
 
 
@@ -150,8 +151,6 @@ onMounted(() => {
     <div class="panel-content sidebar-panel overflow-y-auto! h-screen" style="scrollbar-width: none;">
       <transition name="slide-right" mode="out-in">
         <div v-if="showPanel && panelMenu?.length">
-
-
           <span class="text-sm block text-textColor2 truncate font-semibold pl-4 mb-3 mt-3">{{ menuName }}</span>
           <template v-for="item in panelMenu" :key="item">
 
@@ -186,9 +185,9 @@ onMounted(() => {
 
             <template v-else>
               <div
-                  @click="onChangePath(item.path)"
+                  @click="onChangePath(item)"
                   class="panel-item-single"
-                  :class="[isCurrentPath(item.path) && 'active-panel-item-single']"
+                  :class="[isCurrentPath(item.path) && 'active-panel-item-single', item?.disable && 'opacity-30']"
               >
                 <div :class="[item?.color]" class="item-icon rounded-md ml-[-2px]">
                   <n-icon size="20">

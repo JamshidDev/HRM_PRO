@@ -3,9 +3,15 @@ import {UIModal, UIPageContent} from "@/components/index.js"
 import Filter from "./ui/Filter.vue"
 import createForm from "./ui/CreateForm.vue"
 import Table from "./ui/Table.vue"
-import {useHcServerStore} from "@/store/modules/index.js"
+import {useAccountStore, useHcServerStore} from "@/store/modules/index.js"
 
 const store = useHcServerStore()
+const accStore = useAccountStore()
+
+onMounted(()=>{
+  if(!accStore.checkAction(accStore.pn.turnstileHikCentralJobRead)) return
+  store._index()
+})
 </script>
 
 <template>

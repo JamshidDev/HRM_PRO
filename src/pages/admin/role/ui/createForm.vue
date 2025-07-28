@@ -38,17 +38,22 @@ const onSubmit = ()=>{
             v-model:value="store.payload.name"
         />
       </n-form-item>
-      <n-form-item :label="$t(`userRole.form.permissions`)" path="permissions">
-        <n-checkbox-group v-model:value="store.payload.permissions">
-          <div class="grid grid-cols-2">
-            <n-checkbox
-                class="text-sm! mb-2rr"
-                v-for="(item, idx) in store.allPermissionList"
-                :key="idx"
-                :value="item.id" :label="item.name" />
+        <n-form-item :label="$t(`userRole.form.permissions`)" path="permissions">
+          <div class="w-full h-[calc(100vh-260px)] overflow-y-auto border border-surface-line p-2">
+            <n-checkbox-group v-model:value="store.payload.permissions">
+              <div class="grid grid-cols-2">
+                <n-checkbox
+                    class="text-sm! mb-2rr"
+                    v-for="(item, idx) in store.allPermissionList"
+                    :key="idx"
+                    :value="item.id" :label="item.name" />
+              </div>
+            </n-checkbox-group>
           </div>
-        </n-checkbox-group>
-      </n-form-item>
+
+        </n-form-item>
+
+
     </div>
 
     <div class="grid grid-cols-2 gap-2">

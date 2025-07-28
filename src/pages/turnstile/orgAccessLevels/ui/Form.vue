@@ -1,14 +1,17 @@
 <script setup>
 import validationRules from "@/utils/validationRules.js";
-import {useComponentStore, useTurnstileOrganizationStore} from "@/store/modules/index.js";
+import {useAccountStore, useComponentStore, useTurnstileOrganizationStore} from "@/store/modules/index.js"
 import {UISelect} from "@/components/index.js";
 
 
 const formRef = ref(null)
 const store = useTurnstileOrganizationStore()
 const componentStore = useComponentStore()
+const accStore = useAccountStore()
 
 const onSubmit = ()=>{
+
+  if(!accStore.checkAction(accStore.pn.turnstileOrganizationAccessLevelsWrite)) return
   formRef.value?.validate((error)=>{
     if(!error){
       store.saveLoading = true

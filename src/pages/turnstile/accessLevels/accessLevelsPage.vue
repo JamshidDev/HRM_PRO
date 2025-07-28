@@ -7,13 +7,18 @@ const store = useTurnstileHikCentralStore()
 const accStore = useAccountStore()
 
 const onSearch = ()=>{
-  if(!accStore.checkAction(accStore.pn.turnstileBuildingRead)) return
+  if(!accStore.checkAction(accStore.pn.turnstileAccessLevelsRead)) return
   store.params.page = 1
   store._index_access_levels()
 }
 
+const onSync = ()=>{
+  if(!accStore.checkAction(accStore.pn.turnstileAccessLevelsWrite)) return
+  store._sync()
+}
+
 onMounted(()=>{
-  if(!accStore.checkAction(accStore.pn.turnstileBuildingRead)) return
+  if(!accStore.checkAction(accStore.pn.turnstileAccessLevelsRead)) return
   store.params.page = 1
   store.params.per_page = 10
   store.params.search = null
@@ -30,7 +35,7 @@ onMounted(()=>{
         @onSearch="onSearch"
     >
       <template #filterAction>
-        <n-button :loading="store.syncLoading" @click="store._sync" type="primary">
+        <n-button :loading="store.syncLoading" @click="onSync" type="primary">
           {{$t('turnstile.accessLevelPage.sync')}}
         </n-button>
       </template>

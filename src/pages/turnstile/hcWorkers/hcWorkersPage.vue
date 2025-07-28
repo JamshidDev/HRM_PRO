@@ -10,7 +10,7 @@ const store = useTurnstileHikCentralWorkerStore()
 const accStore = useAccountStore()
 
 onMounted(()=>{
-  if(!accStore.checkAction(accStore.pn.turnstileWorkersRead)) return
+  if(!accStore.checkAction(accStore.pn.turnstileHikCentralWorkers)) return
   store.params.page = 1
   store.params.per_page = 10
   store.params.search = null

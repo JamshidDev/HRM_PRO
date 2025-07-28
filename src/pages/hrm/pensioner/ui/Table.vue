@@ -69,7 +69,7 @@ const onSelectEv = (v)=>{
           <th class="min-w-[100px] w-[200px]">{{$t('content.position')}}</th>
           <th class="min-w-[100px] w-[140px]">{{$t('pensioner.form.pin')}}</th>
           <th class="min-w-[100px] w-[120px]">{{$t('pensioner.form.passport')}}</th>
-          <th class="min-w-[100px] w-[240px]">{{$t('pensioner.form.address')}}</th>
+          <th class="min-w-[100px] max-w-[240px]">{{$t('pensioner.form.address')}}</th>
           <th class="min-w-[100px] max-w-[120px] !text-wrap">
             <n-tooltip trigger="hover">
               <template #trigger>
@@ -136,7 +136,14 @@ const onSelectEv = (v)=>{
           <td>{{item.position}}</td>
           <td>{{item.pin}}</td>
           <td>{{item.passport}}</td>
-          <td>{{item.address}}</td>
+          <td>
+            <n-tooltip trigger="hover">
+              <template #trigger>
+                <p class="text-sm text-textColor2 line-clamp-1 w-full leading-[1.2] truncate max-w-[140px]">{{item.address}}</p>
+              </template>
+              {{item.address}}
+            </n-tooltip>
+          </td>
           <td>{{item.experience}} {{$t('content.year')}}</td>
           <td>{{item.year}}</td>
           <td>{{item.phone}}</td>

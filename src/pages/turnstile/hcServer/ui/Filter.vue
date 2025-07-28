@@ -6,7 +6,7 @@ const store = useHcServerStore()
 const accStore = useAccountStore()
 
 const filterEvent = ()=>{
-  if(!accStore.checkAction(accStore.pn.economistStatementsRead)) return
+  if(!accStore.checkAction(accStore.pn.turnstileHikCentralJobRead)) return
   store.params.page = 1
   store._index()
 }
@@ -32,6 +32,7 @@ const resetFilter = ()=>{
 const filterCount = computed(()=>Number(Boolean(store.params.organizations.length)))
 
 const onAdd = ()=>{
+  if(!accStore.checkAction(accStore.pn.turnstileHikCentralJobWrite)) return
   store.resetForm()
   store.visibleType = true
   store.visible = true

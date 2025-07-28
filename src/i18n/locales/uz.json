@@ -1953,7 +1953,7 @@
     }
   },
   "pensioner": {
-    "name": "Pensiyanerlar",
+    "name": "Pensionerlar",
     "createTitle": "Qo'shish",
     "updateTitle": "Tahrirlash",
     "form": {

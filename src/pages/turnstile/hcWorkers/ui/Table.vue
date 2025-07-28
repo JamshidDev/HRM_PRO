@@ -22,7 +22,7 @@ const onEdit = (v)=>{
 }
 
 const onSelect = (v)=>{
-  if(!accStore.checkAction(accStore.pn.turnstileWorkersWrite)) return
+  if(!accStore.checkAction(accStore.pn.turnstileHikCentralWorkersWrite)) return
   if(v.key === 'delete'){
     store.elementId = v.data.worker.id
   }else if(v.key==='edit'){

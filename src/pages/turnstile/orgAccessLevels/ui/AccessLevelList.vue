@@ -20,16 +20,13 @@ const currOrgLevels = computed(() => {
   return []
 })
 
-const actionsDisabled = computed(() => {
- return isdeepequal(store.payload.access_levels.toSorted((a,b)=>a-b), currOrgLevels.value.toSorted((a,b)=>a-b))
-})
 
 const cancelChanges = ()=>{
   store.payload.access_levels = [...currOrgLevels.value]
 }
 
 const onSubmitLevels = ()=>{
-  if(!accStore.checkAction(accStore.pn.turnstileOrganizationWrite)) return
+  if(!accStore.checkAction(accStore.pn.turnstileOrganizationAccessLevelsWrite)) return
   store._attach_org_access_levels()
 }
 
@@ -54,16 +51,15 @@ const onSubmitLevels = ()=>{
       <n-button
           class="md:hidden"
           type="error"
-          :disabled="actionsDisabled"
           @click="cancelChanges"
       >
         {{ $t('content.cancel') }}
       </n-button>
       <n-button
+          :disabled="store.payload.organization.length === 0"
           type="primary"
           icon-placement="right"
           @click="onSubmitLevels"
-          :disabled="actionsDisabled"
           :loading="store.saveLoading"
       >
         <template #icon>
