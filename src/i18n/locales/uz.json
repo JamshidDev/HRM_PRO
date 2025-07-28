@@ -1954,22 +1954,20 @@
   },
   "pensioner": {
     "name": "Pensiyanerlar",
-    "createTitle": "Yuklash",
+    "createTitle": "Qo'shish",
     "updateTitle": "Tahrirlash",
     "form": {
-      "name": "Nomi",
-      "temperature": "Harorat",
-      "device": "Qurilma",
-      "mask_status": "Niqob",
-      "status": "status",
-      "asFile": "Faylga yuklash uchun bosing",
-      "withMask": "Niqb bilan",
-      "NoMask": "Niqobsiz",
-      "direction": "Turniket",
-      "face": "FACE",
-      "card": "Karta",
-      "finger": "Barmoq izi",
-      "unknown": "No'malum"
+      "position": "Pensiyaga chiqqan vaqtdagi lavozimi (to'liq shaklda)",
+      "passport": "Pasport seriya",
+      "address": "Yashash manzili",
+      "experience": "Temir yo'ldagi uzliksiz ish tajribasi",
+      "year": "Pensiyaga chiqqan yili",
+      "invalid": "Nogironlik guruhi (1; 2; 3;)",
+      "railway_title": "Faxriy temir yo'lchi unvoni mavjudmi?",
+      "afghan": "Afg'on urushida qatnashganmi?",
+      "pin": "JSHSHIR",
+      "phone": "Telefon raqam",
+      "chernobyl": "Chernobel AES halokati oqibatlarini tugatishda ishtirok etganmi?"
     }
   }
 }

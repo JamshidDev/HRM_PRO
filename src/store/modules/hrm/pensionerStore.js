@@ -16,7 +16,7 @@ export const usePensionerStore = defineStore('pensionerStore', {
             last_name:null,
             first_name: null,
             middle_name: null,
-            sex: true,
+            sex: null,
             position: null,
             pin: null,
             address: null,
@@ -24,10 +24,10 @@ export const usePensionerStore = defineStore('pensionerStore', {
             experience: null,
             year: null,
             phone: null,
-            afghan: true,
-            invalid: false,
-            chernobyl: true,
-            railway_title: false
+            afghan: null,
+            invalid: null,
+            chernobyl: null,
+            railway_title: null
         },
         params:{
             page:1,
@@ -45,19 +45,14 @@ export const usePensionerStore = defineStore('pensionerStore', {
                 organizations:this.params.organizations.map(v=>v.id).toString() || undefined,
             }
             $ApiService.pensionerService._index({params}).then((res)=>{
-                this.list = res.data.data
+                this.list = res.data.data.data
+                this.totalItems = res.data.data.total
             }).finally(()=>{
                 this.loading= false
             })
         },
-        _create(){
+        _create(data){
             this.saveLoading = true
-            const data = {
-                ...this.payload,
-                uuid:this.uuid,
-                from_date:this.payload.from_date? Utils.timeToZone(this.payload.from_date) : null,
-                to_date:this.payload.to_date? Utils.timeToZone(this.payload.to_date) : null,
-            }
             $ApiService.pensionerService._create({data}).then((res)=>{
                 this.visible = false
                 this._index()
@@ -66,14 +61,8 @@ export const usePensionerStore = defineStore('pensionerStore', {
             })
 
         },
-        _update(){
+        _update(data){
             this.saveLoading = true
-            const data = {
-                ...this.payload,
-                uuid:this.uuid,
-                from_date:this.payload.from_date? Utils.timeToZone(this.payload.from_date) : null,
-                to_date:this.payload.to_date? Utils.timeToZone(this.payload.to_date) : null,
-            }
             $ApiService.pensionerService._update({data, id:this.elementId}).then((res)=>{
                 this.visible = false
                 this._index()
@@ -99,18 +88,18 @@ export const usePensionerStore = defineStore('pensionerStore', {
             this.payload.last_name = null;
             this.payload.first_name = null;
             this.payload.middle_name = null;
-            this.payload.sex = true;
+            this.payload.sex = null;
             this.payload.position = null;
             this.payload.pin = null;
             this.payload.address = null;
             this.payload.passport = null;
             this.payload.experience = null;
-            this.payload.year = null;
+            this.payload.year =null;
             this.payload.phone = null;
-            this.payload.afghan = true;
-            this.payload.invalid = false;
-            this.payload.chernobyl = true;
-            this.payload.railway_title = false;
+            this.payload.afghan = 0;
+            this.payload.invalid = 0;
+            this.payload.chernobyl = 0;
+            this.payload.railway_title = 0;
         },
 
     }

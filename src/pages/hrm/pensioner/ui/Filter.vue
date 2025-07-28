@@ -46,6 +46,7 @@ const onAdd = ()=>{
       @show="beforeShow"
       :filter-count="filterCount"
       @onClear="resetFilter"
+      @onAdd="onAdd"
   >
     <template #filterContent>
       <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{$t('actionLog.table.structure')}}</label>
