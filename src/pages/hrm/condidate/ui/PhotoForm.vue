@@ -58,7 +58,7 @@ watchEffect(()=>{
         <div
             @click="onchangeMain(img.id)"
             class="w-[120px] h-[160px] overflow-hidden rounded-sm  cursor-pointer transition-all relative show__delete-image"
-            :class="[img.id === mainImageId? 'border-4 border-primary' : 'border border-gray-300']"
+            :class="[img.id === mainImageId? 'border-4 border-primary' : 'border border-surface-line']"
         >
           <img
               class="w-full h-full object-cover"
@@ -76,8 +76,8 @@ watchEffect(()=>{
       <div
           v-if="images.length<8"
           @click="onOpenFile"
-          class="w-[120px] h-[160px] border border-dashed border-gray-300 flex justify-center items-center cursor-pointer rounded-sm">
-        <n-icon size="80" class="text-gray-500">
+          class="w-[120px] h-[160px] border border-dashed border-surface-line flex justify-center items-center cursor-pointer rounded-sm">
+        <n-icon size="80" class="text-secondary">
           <CameraAdd48Filled/>
         </n-icon>
       </div>

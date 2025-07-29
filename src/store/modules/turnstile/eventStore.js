@@ -21,6 +21,27 @@ export const useEventStore = defineStore('eventStore', {
             search: null,
             organizations:[],
         },
+        cardList:[
+            {
+                name:t('hcEvent.cards.cardOne'),
+                id:1,
+            },
+            {
+                name:t('hcEvent.cards.cardTwo'),
+                id:2,
+            },
+            {
+                name:t('hcEvent.cards.cardThree'),
+                id:3,
+            },
+            {
+                name:t('hcEvent.cards.cardFour'),
+                id:4,
+            },
+        ],
+        detailShow:false,
+        dashboardLoading:false,
+        dashboardObj:null,
     }),
     actions: {
         _index() {
@@ -36,5 +57,14 @@ export const useEventStore = defineStore('eventStore', {
                 this.loading = false
             })
         },
+        _dashboard(){
+            this.dashboardLoading = true
+            $ApiService.eventService._dashboard().then((res) => {
+                this.dashboardObj = res.data.data
+            }).finally(() => {
+                this.dashboardLoading = false
+            })
+        },
+
     }
 })

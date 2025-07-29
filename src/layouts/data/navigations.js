@@ -285,7 +285,7 @@ export const navigations = [
         ]
     },
     {
-        label: 'Test',
+        label: 'Attestatsiya',
         path: AppPaths.Attestation,
         icon: PersonNote24Filled,
         permission: appPermissions.exam,

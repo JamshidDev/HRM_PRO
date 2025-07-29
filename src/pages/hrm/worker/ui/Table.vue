@@ -142,6 +142,7 @@ const onClickoutside=()=> {
           </td>
           <td>
             <UIUser
+                :hide-tooltip="true"
                 :short="false"
                 @onClickFullName="onPreview(item.uuid)"
                 :data="{

@@ -1,4 +1,6 @@
 <script setup>
+import {useAppSetting} from "@/utils/index.js"
+
 const pictureSwipe = ref(null)
 
 const props = defineProps({
@@ -18,6 +20,8 @@ const props = defineProps({
 const onOpen = (photo)=>{
   window.$openViewer(photo)
 }
+
+
 </script>
 
 <template>
@@ -31,7 +35,7 @@ const onOpen = (photo)=>{
               round
               size="large"
               class="ui__user-group z-0"
-              :src="photo"
+              :src="photo || useAppSetting.noAvailableImage"
               @click="onOpen(photo)"
           />
         </template>

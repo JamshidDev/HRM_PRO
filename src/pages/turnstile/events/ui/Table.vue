@@ -66,73 +66,74 @@ const eventStatus = {
 <template>
   <n-spin :show="store.loading" style="min-height: 200px">
     <div class="w-full overflow-x-auto"  v-if="store.list.length>0">
-      <n-table
-          class="mt-4"
-          :single-line="false"
-          size="small"
-      >
-        <thead>
-        <tr>
-          <th class="text-center! min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
-          <th class="min-w-[90px] w-[90px] !text-center">{{$t('content.hour')}}</th>
-          <th class="min-w-[130px] w-[130px] !text-center">{{$t('content.date')}}</th>
-          <th class="min-w-[200px]">{{$t('content.worker')}}</th>
-          <th class="min-w-[100px] w-[100px]">{{$t('hcEvent.form.direction')}}</th>
-          <th class="min-w-[100px] w-[300px]">{{$t('hcEvent.form.device')}}</th>
-          <th class="min-w-[100px] w-[160px]">{{$t('hcEvent.form.device')}}</th>
+      <div class="w-full h-[600px] overflow-y-auto mt-4">
+        <n-table
+            :single-line="false"
+            size="small"
+        >
+          <thead>
+          <tr>
+            <th class="text-center! min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
+            <th class="min-w-[200px]">{{$t('content.worker')}}</th>
+            <th class="min-w-[130px] w-[130px] !text-center">{{$t('content.date')}}</th>
+            <th class="min-w-[90px] w-[90px] !text-center">{{$t('content.hour')}}</th>
+            <th class="min-w-[100px] w-[100px]">{{$t('hcEvent.form.direction')}}</th>
+            <th class="min-w-[100px] w-[300px]">{{$t('hcEvent.form.device')}}</th>
+            <th class="min-w-[100px] w-[160px]">{{$t('hcEvent.form.device')}}</th>
 
-          <th class="min-w-[100px] w-[120px] !text-center">{{$t('hcEvent.form.mask_status')}}</th>
-          <th class="min-w-[100px] w-[100px] !text-center">{{$t('hcEvent.form.temperature')}}</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr v-for="(item, idx) in store.list" :key="idx">
-          <td><span class="text-center block">{{ (store.params.page - 1) * store.params.per_page + idx + 1 }}</span></td>
-          <td class="!text-center">
-            <UIBadge :show-icon="false" :label="item?.event_time" :type="Utils.colorTypes.dark" />
-          </td>
-          <td class="!text-center">
-            <UIBadge :show-icon="false" :label="item?.event_date" />
-          </td>
-          <td>
-            <div>
-              <UIUser
-                  :hide-tooltip="true"
-                  :short="false"
-                  :data="{
+            <th class="min-w-[100px] w-[120px] !text-center">{{$t('hcEvent.form.mask_status')}}</th>
+            <th class="min-w-[100px] w-[100px] !text-center">{{$t('hcEvent.form.temperature')}}</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr v-for="(item, idx) in store.list" :key="idx">
+            <td><span class="text-center block">{{ (store.params.page - 1) * store.params.per_page + idx + 1 }}</span></td>
+            <td>
+              <div>
+                <UIUser
+                    :hide-tooltip="true"
+                    :short="false"
+                    :data="{
                     photo:item?.worker?.photo,
                     firstName:item?.worker?.first_name,
                     middleName:item?.worker?.middle_name,
                     lastName:item?.worker?.last_name,
                     position:item?.worker.id,
                   }"
-              />
-            </div>
-          </td>
+                />
+              </div>
+            </td>
+            <td class="!text-center">
+              <UIBadge :show-icon="false" :label="item?.event_date" />
+            </td>
+            <td class="!text-center">
+              <UIBadge :show-icon="false" :label="item?.event_time" :type="Utils.colorTypes.dark" />
+            </td>
 
 
-          <td class="!text-center">
-            <n-button :type="item.direction? 'primary' : 'error'" secondary size="tiny">
-              <span>{{$t(item.direction? 'turnstile.workDurationPage.enter' : 'turnstile.workDurationPage.exit')}}</span>
-              <template #icon>
-                <n-icon size="17">
-                  <ArrowCircleDownRight20Regular v-if="item.direction"/>
-                  <ArrowCircleUpLeft20Regular v-else />
-                </n-icon>
-              </template>
-            </n-button>
-          </td>
-          <td>{{item.device}}</td>
-          <td>
-            <UIStatus :status="eventStatus[item.auth_type]"/>
-          </td>
-          <td class="!text-center">
-            <UIStatus :status="maskStatus[item.mask_status]"/>
-          </td>
-          <td class="!text-center">{{item?.temperature}} °C</td>
-        </tr>
-        </tbody>
-      </n-table>
+            <td class="!text-center">
+              <n-button :type="item.direction? 'primary' : 'error'" secondary size="tiny">
+                <span>{{$t(item.direction? 'turnstile.workDurationPage.enter' : 'turnstile.workDurationPage.exit')}}</span>
+                <template #icon>
+                  <n-icon size="17">
+                    <ArrowCircleDownRight20Regular v-if="item.direction"/>
+                    <ArrowCircleUpLeft20Regular v-else />
+                  </n-icon>
+                </template>
+              </n-button>
+            </td>
+            <td>{{item.device}}</td>
+            <td>
+              <UIStatus :status="eventStatus[item.auth_type]"/>
+            </td>
+            <td class="!text-center">
+              <UIStatus :status="maskStatus[item.mask_status]"/>
+            </td>
+            <td class="!text-center">{{item?.temperature}} °C</td>
+          </tr>
+          </tbody>
+        </n-table>
+      </div>
       <UIPagination
           :page="store.params.page"
           :per_page="store.params.size"

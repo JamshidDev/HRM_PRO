@@ -1950,6 +1950,13 @@
       "card": "Karta",
       "finger": "Barmoq izi",
       "unknown": "No'malum"
+    },
+    "detailShow": "Batafsil ko'rish",
+    "cards": {
+      "cardOne": "Kechikkan xodimlar",
+      "cardTwo": "Ishga kelmagan xodimlar",
+      "cardThree": "Erta ketganlar xodimlar",
+      "cardFour": "Norma soati bo'yicha"
     }
   },
   "pensioner": {
