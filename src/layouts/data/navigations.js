@@ -285,7 +285,7 @@ export const navigations = [
         ]
     },
     {
-        label: 'ATTESTATION',
+        label: 'Test',
         path: AppPaths.Attestation,
         icon: PersonNote24Filled,
         permission: appPermissions.exam,
@@ -321,7 +321,7 @@ export const navigations = [
         ]
     },
     {
-        label: 'Turnstile',
+        label: 'Turniket',
         path: AppPaths.Turnstile,
         icon: AccessTime24Filled,
         permission: appPermissions.turnstile,
@@ -399,7 +399,7 @@ export const navigations = [
         ]
     },
     {
-        label: '',
+        label: 'General',
         path: AppPaths.Info,
         icon: SlideMultipleSearch24Filled,
         permission: appPermissions.useful,
@@ -449,7 +449,7 @@ export const navigations = [
         ]
     },
     {
-        label: 'Accountant',
+        label: 'Economist',
         path: AppPaths.Accountant,
         icon: PeopleMoney24Filled,
         permission: appPermissions.economist,

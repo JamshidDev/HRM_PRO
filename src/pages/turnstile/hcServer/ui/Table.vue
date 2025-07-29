@@ -1,5 +1,5 @@
 <script setup>
-import {NoDataPicture, UIPagination, UIBadge, UIStatus} from "@/components/index.js"
+import {NoDataPicture, UIPagination, UIBadge, UIStatus, UIDateViewer} from "@/components/index.js"
 import {useHcServerStore} from "@/store/modules/index.js"
 import {ErrorCircle24Filled,PersonAvailable20Filled, Person12Filled} from "@vicons/fluent"
 import Utils from "@/utils/Utils.js"
@@ -132,7 +132,7 @@ const statusObj = {
 
 
           </td>
-          <td>{{Utils.timeOnlyDate(item?.created_at)}}</td>
+          <td><UIDateViewer :date="item?.created_at"/></td>
         </tr>
         </tbody>
       </n-table>

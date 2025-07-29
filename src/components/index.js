@@ -41,5 +41,6 @@ export {default as UIConfirmByFile} from "./ui/UIConfirmByFile.vue"
 export {default as UIMore} from './ui/UIMore.vue'
 export {default as UIImageViewer} from './ui/UIImageViewer.vue'
 export {default as PageInstruction} from './pageInstruction/pageInstruction.vue'
+export {default as UIDateViewer} from './general/UIDateViewer.vue'
 
 export * from './editor'

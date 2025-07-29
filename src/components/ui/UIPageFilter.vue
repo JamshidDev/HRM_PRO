@@ -56,8 +56,8 @@ const addEvent = ()=>{
 <template>
   <div class="grid grid-cols-1">
     <div v-if="title"><span class="text-lg font-semibold inline-block mb-2 text-surface-600">{{title}}</span></div>
-    <div class="grid grid-cols-12 gap-2 md:gap-4">
-      <div class="col-span-12 md:col-span-6 flex items-center">
+    <div class="flex flex-col md:flex-row gap-4">
+      <div class="w-full md:max-w-[200px] flex items-start">
         <n-input
             class="w-full md:max-w-[200px]! md:w-full!"
             v-if="showSearchInput"
@@ -73,7 +73,7 @@ const addEvent = ()=>{
         </n-input>
         <slot name="filterSearch"></slot>
       </div>
-      <div class="col-span-12 md:col-span-6 flex flex-col md:flex-row items-center justify-end gap-2 md:gap-4">
+      <div class="flex flex-wrap w-full md:w-[calc(100%-200px)] justify-end gap-4">
         <slot name="filterAction"></slot>
         <n-button
             class="w-full! md:w-auto!"

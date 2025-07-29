@@ -134,15 +134,25 @@ onMounted(() => {
         </div>
 
         <template v-for="item in miniMenu" :key="item">
-          <div
-              :class="[isComboxMenu(item.path) && 'active-mini-content']"
-              class="main-menu-item"
-              @click="nextPanel(item.path)">
-            <n-icon
-            >
-              <component :is="item.icon"/>
-            </n-icon>
+          <div class="flex flex-col relative group">
+            <div
+                :class="[isComboxMenu(item.path) && 'active-mini-content']"
+                class="main-menu-item"
+                @click="nextPanel(item.path)">
+              <n-icon
+              >
+                <component :is="item.icon"/>
+              </n-icon>
+            </div>
+            <div class="absolute group-hover:opacity-100 group-hover:left-[50px] transition-all duration-300
+            pointer-events-none opacity-0 w-[100px] h-[24px] bg-dark border border-secondary left-[40px] rounded
+             top-[25px] z-[999] text-center text-secondary">
+              <span class="tooltip-triangle absolute"></span>
+              {{item.label}}
+            </div>
           </div>
+
+
         </template>
       </div>
       <PageInstruction />
@@ -226,6 +236,16 @@ onMounted(() => {
 </template>
 
 <style scoped>
+.tooltip-triangle{
+  width: 0;
+  height: 0;
+  border-top: 7px solid transparent;
+  border-right: 10px solid #74788d;
+  border-bottom: 7px solid transparent;
+  left: -10px;
+  top: 4px;
+
+}
 
 .slide-right-enter-active {
   transition: all 0.2s ease;
