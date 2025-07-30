@@ -11,6 +11,7 @@ const accStore = useAccountStore()
 onMounted(()=>{
   if(!accStore.checkAction(accStore.pn.turnstileHikCentralEvents)) return
   store._index()
+  store._dashboard()
 })
 </script>
 

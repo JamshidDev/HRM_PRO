@@ -75,6 +75,9 @@ const timeOnlyDate = (time)=>{
 const timeOnlyHour = (time)=>{
     return time? dayjs(time).format('HH:mm') : null
 }
+const timeOnlySecond = (time)=>{
+    return time? dayjs(time).format('HH:mm:ss') : null
+}
 const timeOnlyYear = (time)=>{
     return time? dayjs(time).format('YYYY') : null
 }
@@ -725,6 +728,7 @@ export default {
     timeWithMonth,
     timeOnlyDate,
     timeOnlyHour,
+    timeOnlySecond,
     timeOnlyMonth,
     datePickerFormatter,
     timePickerFormatter,

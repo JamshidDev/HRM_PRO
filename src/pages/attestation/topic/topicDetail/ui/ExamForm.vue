@@ -58,7 +58,6 @@ onMounted(()=>{
           <n-form-item-gi :span="2" :label="$t(`topicDetailsPage.exams.deadline`)" path="deadline" rule-path="requiredDateTimeField">
             <n-date-picker
                 class="w-full"
-
                 v-model:value="store.payload.deadline"
                 type="datetime"
                 update-value-on-close

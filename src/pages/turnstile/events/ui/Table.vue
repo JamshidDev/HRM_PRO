@@ -1,15 +1,11 @@
 <script setup>
 import {NoDataPicture, UIPagination, UIUser, UIBadge, UIMenuButton, UIStatus} from "@/components/index.js"
-import {useEventStore, useComponentStore} from "@/store/modules/index.js"
-import i18n from "@/i18n/index.js"
-import {useAccountStore} from "@/store/modules/index.js"
+import {useEventStore} from "@/store/modules/index.js"
 import {ArrowCircleDownRight20Regular, ArrowCircleUpLeft20Regular} from "@vicons/fluent"
 import Utils from "@/utils/Utils.js"
-
+import i18n from "@/i18n/index.js"
 const {t} = i18n.global
-const accStore = useAccountStore()
 const store = useEventStore()
-const compStore = useComponentStore()
 
 
 const changePage = (v)=>{

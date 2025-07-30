@@ -13,13 +13,17 @@ export const useEventStore = defineStore('eventStore', {
         visibleType: true,
         elementId: null,
         totalItems: 0,
-        structureCheck: [],
+        structureCheck2: [],
 
         params: {
             page: 1,
             per_page: 10,
             search: null,
             organizations:[],
+            direction:null,
+            start:null,
+            end:null,
+            access_levels:[],
         },
         cardList:[
             {
@@ -42,6 +46,9 @@ export const useEventStore = defineStore('eventStore', {
         detailShow:false,
         dashboardLoading:false,
         dashboardObj:null,
+        levelLoading:false,
+        levelList:[],
+
     }),
     actions: {
         _index() {
@@ -49,6 +56,9 @@ export const useEventStore = defineStore('eventStore', {
             const params = {
                 ...this.params,
                 organizations:this.params.organizations.map(v=>v.id).toString() || undefined,
+                access_levels:this.params.access_levels.toString() || undefined,
+                start:this.params.start? Utils.timeToZone(this.params.start)+' '+Utils.timeOnlySecond(this.params.start) : undefined,
+                end:this.params.end? Utils.timeToZone(this.params.end)+' '+Utils.timeOnlySecond(this.params.end) : undefined,
             }
             $ApiService.eventService._index({params}).then((res) => {
                 this.list = res.data.data.data
@@ -63,6 +73,14 @@ export const useEventStore = defineStore('eventStore', {
                 this.dashboardObj = res.data.data
             }).finally(() => {
                 this.dashboardLoading = false
+            })
+        },
+        _levels() {
+            this.levelLoading = true
+            $ApiService.hcServerService._accessLevels().then((res) => {
+                this.levelList = res.data.data
+            }).finally(() => {
+                this.levelLoading = false
             })
         },
 
