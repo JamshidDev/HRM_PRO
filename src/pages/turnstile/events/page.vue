@@ -1,8 +1,9 @@
 <script setup>
-import {UIPageContent} from "@/components/index.js"
+import {UIModal, UIPageContent} from "@/components/index.js"
 import Filter from "./ui/Filter.vue"
 import Table from "./ui/Table.vue"
 import DashboardCards from "./ui/DashboardCards.vue"
+import PreviewList from "./ui/PreviewList.vue"
 import {useAccountStore, useEventStore} from "@/store/modules/index.js"
 
 const store = useEventStore()
@@ -20,5 +21,11 @@ onMounted(()=>{
   <Filter/>
   <DashboardCards/>
   <Table/>
+  <UIModal
+      v-model:visible="store.previewVisible"
+      :width="1400"
+      :title="$t('turnstile.workDurationPage.lateTitle')">
+    <PreviewList/>
+  </UIModal>
 </UIPageContent>
 </template>

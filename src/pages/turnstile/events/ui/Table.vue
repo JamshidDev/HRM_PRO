@@ -125,7 +125,15 @@ const eventStatus = {
             <td class="!text-center">
               <UIStatus :status="maskStatus[item.mask_status]"/>
             </td>
-            <td class="!text-center">{{item?.temperature}} °C</td>
+            <td class="!text-center">
+              <template v-if="[1,2].includes(item.temperature)">
+                <UIStatus :status="store.temperatureStatus[item.temperature]"/>
+              </template>
+              <template v-else>
+                <UIStatus :status="store.temperatureStatus[3]"/>
+              </template>
+            </td>
+
           </tr>
           </tbody>
         </n-table>

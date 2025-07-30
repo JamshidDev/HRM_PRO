@@ -1,6 +1,6 @@
 <script setup>
 import {useEventStore} from "@/store/modules/index.js"
-import {Info20Regular, Settings48Regular, DismissCircle28Regular} from "@vicons/fluent";
+import {FullScreenMaximize20Filled, Settings48Regular, DismissCircle28Regular} from "@vicons/fluent";
 import {UIUserGroup} from "@/components/index.js"
 
 const store = useEventStore()
@@ -36,6 +36,12 @@ const userFourObj = computed(()=>{
     more:store.dashboardObj?.work_hours?.total || 0,
   }
 })
+
+const onPreview = (v)=>{
+  store.previewParams.type = v
+  store.previewVisible = true
+  store._preview()
+}
 </script>
 
 <template>
@@ -43,8 +49,16 @@ const userFourObj = computed(()=>{
     <div class="w-full grid grid-cols-12 gap-4 border-dashed border-surface-line rounded-xl"
          :class="[store.detailShow && ' border']"
     >
-      <div class="col-span-12 md:col-span-6 xl:col-span-3 border border-surface-line px-4 py-2 rounded-xl bg-surface-section h-[96px] relative">
-        <h3 class="text-textColor2 font-medium">{{$t('hcEvent.cards.cardOne')}}</h3>
+      <div @click="onPreview('late_workers')" class="col-span-12 md:col-span-6 xl:col-span-3 border border-surface-line hover-effect-card px-4 py-2 rounded-xl bg-surface-section h-[96px] relative">
+        <div class="flex justify-between mb-2">
+          <span class="text-textColor2 font-medium">{{$t('hcEvent.cards.cardOne')}}</span>
+          <n-button secondary type="error" size="tiny">
+            <template #icon>
+              <FullScreenMaximize20Filled/>
+            </template>
+          </n-button>
+        </div>
+
         <div class="text-2xl z-10 text-right font-bold text-secondary flex items-center justify-between">
             <span>{{userOneObj.more}}
             </span>
@@ -58,9 +72,17 @@ const userFourObj = computed(()=>{
         </div>
         <span class="z-1 opacity-30 absolute top-0 right-0 w-[160px] h-full bg-no-repeat bg-[url(/effect/primary-card.svg)]"></span>
       </div>
-      <div class="col-span-12 md:col-span-6 xl:col-span-3 border border-surface-line px-4 py-2 rounded-xl bg-surface-section h-[96px] relative">
-        <h3 class="text-textColor2 font-medium">{{$t('hcEvent.cards.cardTwo')}}</h3>
+      <div class="col-span-12 md:col-span-6 xl:col-span-3 border border-surface-line hover-effect-card px-4 py-2 rounded-xl bg-surface-section h-[96px] relative">
+        <div class="flex justify-between mb-2">
+          <span class="text-textColor2 font-medium">{{$t('hcEvent.cards.cardTwo')}}</span>
+          <n-button secondary type="error" size="tiny">
+            <template #icon>
+              <FullScreenMaximize20Filled/>
+            </template>
+          </n-button>
+        </div>
         <div class="text-2xl text-right font-bold text-secondary flex items-center justify-between">
+
             <span>{{userTwoObj.more}}
             </span>
           <span class="flex items-center">
@@ -74,8 +96,15 @@ const userFourObj = computed(()=>{
         <span class="z-1 opacity-30 absolute top-0 right-0 w-[160px] h-full bg-no-repeat bg-[url(/effect/primary-card.svg)]"></span>
 
       </div>
-      <div class="col-span-12 md:col-span-6 xl:col-span-3 border border-surface-line px-4 py-2 rounded-xl bg-surface-section h-[96px] relative">
-        <h3 class="text-textColor2 font-medium">{{$t('hcEvent.cards.cardThree')}}</h3>
+      <div class="col-span-12 md:col-span-6 xl:col-span-3 border border-surface-line hover-effect-card px-4 py-2 rounded-xl bg-surface-section h-[96px] relative">
+        <div class="flex justify-between mb-2">
+          <span class="text-textColor2 font-medium">{{$t('hcEvent.cards.cardThree')}}</span>
+          <n-button secondary type="error" size="tiny">
+            <template #icon>
+              <FullScreenMaximize20Filled/>
+            </template>
+          </n-button>
+        </div>
         <div class="text-2xl text-right font-bold text-secondary flex items-center justify-between">
             <span>{{userTreeObj.more}}
             </span>
@@ -89,8 +118,15 @@ const userFourObj = computed(()=>{
         </div>
         <span class="z-1 opacity-30 absolute top-0 right-0 w-[160px] h-full bg-no-repeat bg-[url(/effect/primary-card.svg)]"></span>
       </div>
-      <div class="col-span-12 md:col-span-6 xl:col-span-3 border border-surface-line px-4 py-2 rounded-xl bg-surface-section h-[96px] relative">
-        <h3 class="text-textColor2 font-medium">{{$t('hcEvent.cards.cardFour')}}</h3>
+      <div class="col-span-12 md:col-span-6 xl:col-span-3 border border-surface-line hover-effect-card px-4 py-2 rounded-xl bg-surface-section h-[96px] relative">
+        <div class="flex justify-between mb-2">
+          <span class="text-textColor2 font-medium">{{$t('hcEvent.cards.cardFour')}}</span>
+          <n-button secondary type="error" size="tiny">
+            <template #icon>
+              <FullScreenMaximize20Filled/>
+            </template>
+          </n-button>
+        </div>
         <div class="text-2xl text-right font-bold text-secondary flex items-center justify-between">
             <span>{{userFourObj.more}}
             </span>
@@ -104,10 +140,6 @@ const userFourObj = computed(()=>{
         </div>
         <span class="z-1 opacity-30 absolute top-0 right-0 w-[160px] h-full bg-no-repeat bg-[url(/effect/primary-card.svg)]"></span>
       </div>
-
-
-
-
 <!--      <div  class="col-span-12 flex justify-end items-center gap-1 text-secondary hover:text-primary pr-2">-->
 <!--        <n-button-->
 <!--            text-->

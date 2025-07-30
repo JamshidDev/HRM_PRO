@@ -1,7 +1,6 @@
 <script setup>
 import {useAccountStore, useComponentStore, useEventStore} from "@/store/modules/index.js"
 import {UIPageFilter, UISelect} from "@/components/index.js"
-import {useAppSetting} from "@/utils/index.js"
 import i18n from "@/i18n/index.js"
 
 const {t} = i18n.global

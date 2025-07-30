@@ -48,6 +48,53 @@ export const useEventStore = defineStore('eventStore', {
         dashboardObj:null,
         levelLoading:false,
         levelList:[],
+        previewList:[],
+        previewTotal:0,
+        previewParams:{
+            page: 1,
+            per_page: 10,
+            search: null,
+            organizations:[],
+            direction:null,
+            start:null,
+            end:null,
+            access_levels:[],
+            type:null,
+        },
+        previewLoading:false,
+        previewVisible:false,
+        temperatureStatus:{
+            1:{
+                name:t("hcEvent.form.normal"),
+                id:3
+            },
+            2:{
+                name:t("hcEvent.form.noNormal"),
+                id:4
+            },
+            3:{
+                name:t("hcEvent.form.unknown"),
+                id:2
+            },
+        },
+        typeList:[
+            {
+                name:t('hcEvent.cards.cardOne'),
+                id:'late_workers'
+            },
+            {
+                name:t('hcEvent.cards.cardTwo'),
+                id:'absent_workers'
+            },
+            {
+                name:t('hcEvent.cards.cardThree'),
+                id:'early_leave_workers'
+            },
+            {
+                name:t('hcEvent.cards.cardFour'),
+                id:'work_hours'
+            },
+        ]
 
     }),
     actions: {
@@ -81,6 +128,22 @@ export const useEventStore = defineStore('eventStore', {
                 this.levelList = res.data.data
             }).finally(() => {
                 this.levelLoading = false
+            })
+        },
+        _preview() {
+            this.previewLoading = true
+            const params = {
+                ...this.previewParams,
+                organizations:this.previewParams.organizations.map(v=>v.id).toString() || undefined,
+                access_levels:this.previewParams.access_levels.toString() || undefined,
+                start:this.previewParams.start? Utils.timeToZone(this.previewParams.start)+' '+Utils.timeOnlySecond(this.previewParams.start) : undefined,
+                end:this.previewParams.end? Utils.timeToZone(this.previewParams.end)+' '+Utils.timeOnlySecond(this.previewParams.end) : undefined,
+            }
+            $ApiService.eventService._preview({params}).then((res) => {
+                this.previewList = res.data.data.data
+                this.previewTotal = res.data.data.total
+            }).finally(() => {
+                this.previewLoading = false
             })
         },
 

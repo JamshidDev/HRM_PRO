@@ -61,7 +61,7 @@ const statuses = {
                     firstName:item?.worker?.first_name,
                     middleName:item?.worker?.middle_name,
                     lastName:item?.worker?.last_name,
-                    position:item?.worker_position,
+                    position:item?.worker_position
                   }"
               />
             </div>
