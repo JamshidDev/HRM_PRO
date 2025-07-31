@@ -46,7 +46,11 @@ const onClickClose = ()=>{
           <div class="w-full">
             <slot name="header">
               <div class="flex justify-between px-4 py-2">
-                <h3 class="text-lg font-medium">{{title}}</h3>
+                <h3 class="text-lg font-medium">
+                  <slot name="header-title">
+                    {{title}}
+                  </slot>
+                </h3>
                 <n-icon
                     @click="onClickClose"
                     class="text-[34px] text-red-500 cursor-pointer">

@@ -1952,7 +1952,11 @@
       "finger": "Barmoq izi",
       "unknown": "No'malum",
       "normal": "Normal",
-      "noNormal": "Normal emas"
+      "workTime": "Ish vaqti",
+      "noNormal": "Normal emas",
+      "start_time": "Boshlanish vaqti",
+      "hours": "Norma soati (/soat)",
+      "end_time": "Tugash vaqti"
     },
     "detailShow": "Batafsil ko'rish",
     "cards": {

@@ -56,11 +56,13 @@ export const useEventStore = defineStore('eventStore', {
             per_page: 10,
             search: null,
             organizations:[],
-            start_time:null,
-            end_time:null,
             access_levels:[],
             type:null,
-            first_time:'09:00',
+            hours:null,
+            end_time:null,
+            start_time:null,
+            start_date_and_time:null,
+            end_date_and_time:null,
         },
         previewLoading:false,
         previewVisible:false,
@@ -137,8 +139,8 @@ export const useEventStore = defineStore('eventStore', {
                 ...this.previewParams,
                 organizations:this.previewParams.organizations.map(v=>v.id).toString() || undefined,
                 access_levels:this.previewParams.access_levels.toString() || undefined,
-                start_time:Utils.timeToZone(this.previewParams.start_time),
-                end_time:Utils.timeToZone(this.previewParams.end_time),
+                start_date_and_time:Utils.timeWithMonth(this.previewParams.start_date_and_time),
+                end_date_and_time:Utils.timeWithMonth(this.previewParams.end_date_and_time),
             }
             $ApiService.eventService._preview({params}).then((res) => {
                 this.previewList = res.data.data.data
@@ -147,6 +149,15 @@ export const useEventStore = defineStore('eventStore', {
                 this.previewLoading = false
             })
         },
+        resetPreviewParams(){
+            this.previewParams.organizations = []
+            this.previewParams.access_levels = []
+            this.previewParams.hours = null
+            this.previewParams.end_time = null
+            this.previewParams.start_time = null
+            this.previewParams.start_date_and_time = null
+            this.previewParams.end_date_and_time = null
+        }
 
     }
 })

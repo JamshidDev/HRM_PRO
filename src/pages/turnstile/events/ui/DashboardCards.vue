@@ -5,9 +5,6 @@ import {UIUserGroup} from "@/components/index.js"
 
 const store = useEventStore()
 
-const onChangeCollapse = ()=>{
-  store.detailShow = !store.detailShow
-}
 
 const userOneObj = computed(()=>{
   return {
@@ -38,9 +35,10 @@ const userFourObj = computed(()=>{
 })
 
 const onPreview = (v)=>{
+  store.resetPreviewParams()
   store.previewParams.type = v
   store.previewVisible = true
-  store._preview()
+  store.previewList = []
 }
 </script>
 

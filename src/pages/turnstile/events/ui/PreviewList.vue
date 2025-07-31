@@ -9,6 +9,14 @@ const {t} = i18n.global
 const store = useEventStore()
 const componentStore = useComponentStore()
 
+const filterVisible = ref({
+  start_time:false,
+  end_time:false,
+  hours:false,
+  start_date_and_time:false,
+  end_date_and_time:false,
+})
+
 const changePage = (v)=>{
   store.previewParams.page = v.page
   store.previewParams.per_page = v.per_page
@@ -65,10 +73,23 @@ const onChangeStructure = (v)=>{
   filterEvent()
 }
 
-const onEnterEv = ()=>{
-  if(store.previewParams.first_time?.length !== 5) return
+const onStartTimeEv = ()=>{
+  if(store.previewParams.start_time?.length !== 5) return
   filterEvent()
 }
+
+const onEndTimeEv = ()=>{
+  if(store.previewParams.end_time?.length !== 5) return
+  filterEvent()
+}
+
+const onHourEv = ()=>{
+  if(store.previewParams.hours?.length<3 && store.previewParams.hours?.length>0) return
+  filterEvent()
+}
+
+const isHideColumn = computed(()=>['late_workers', 'early_leave_workers'].includes(store.previewParams.type))
+const isShowMinuteColumn = computed(()=>store.previewParams.type ==='work_hours')
 
 onMounted(()=>{
   if(store.levelList.length===0){
@@ -78,7 +99,38 @@ onMounted(()=>{
   if(componentStore.structureList.length===0){
     componentStore._structures()
   }
+  controlFilter(store.previewParams.type)
+
 })
+
+const controlFilter =(v)=>{
+  Object.keys(filterVisible.value).forEach((key)=>{filterVisible.value[key] = false})
+
+  if(v==='late_workers'){
+    store.previewParams.start_time = '09:00'
+    filterVisible.value.start_time = true
+    filterVisible.value.start_date_and_time = true
+    filterVisible.value.end_date_and_time = true
+  }
+  else if(v==='absent_workers'){
+    filterVisible.value.start_date_and_time = true
+    filterVisible.value.end_date_and_time = true
+  }
+  else if(v==='early_leave_workers'){
+    store.previewParams.end_time = '18:00'
+    filterVisible.value.end_time = true
+    filterVisible.value.start_date_and_time = true
+    filterVisible.value.end_date_and_time = true
+  }
+  else if(v==='work_hours'){
+    store.previewParams.hours = '8'
+    filterVisible.value.hours = true
+    filterVisible.value.start_date_and_time = true
+    filterVisible.value.end_date_and_time = true
+  }
+  store._preview()
+}
+
 
 </script>
 
@@ -114,33 +166,57 @@ onMounted(()=>{
             :max-tag-count="2"
         />
       </div>
-      <div class="col-span-2">
-        <label class="text-textColor3 ml-1">{{$t('turnstile.workDurationPage.startTime')}}</label>
+      <div v-if="filterVisible.hours" class="col-span-2">
+        <label class="text-textColor3 ml-1">{{$t('hcEvent.form.hours')}}</label>
         <n-input
-            v-mask="'##:##'"
+            v-mask="'##'"
             class="w-full"
             type="text"
-            v-model:value="store.previewParams.first_time"
-            @keydown.enter="onEnterEv"
+            v-model:value="store.previewParams.hours"
+            @keydown.enter="onHourEv"
             :loading="store.previewLoading"
             :disabled="store.previewLoading"
         />
       </div>
-      <div class="col-span-2">
+      <div v-if="filterVisible.start_time" class="col-span-2">
+        <label class="text-textColor3 ml-1">{{$t('hcEvent.form.start_time')}}</label>
+        <n-input
+            v-mask="'##:##'"
+            class="w-full"
+            type="text"
+            v-model:value="store.previewParams.start_time"
+            @keydown.enter="onStartTimeEv"
+            :loading="store.previewLoading"
+            :disabled="store.previewLoading"
+        />
+      </div>
+      <div v-if="filterVisible.end_time" class="col-span-2">
+        <label class="text-textColor3 ml-1">{{$t('hcEvent.form.end_time')}}</label>
+        <n-input
+            v-mask="'##:##'"
+            class="w-full"
+            type="text"
+            v-model:value="store.previewParams.end_time"
+            @keydown.enter="onEndTimeEv"
+            :loading="store.previewLoading"
+            :disabled="store.previewLoading"
+        />
+      </div>
+      <div v-if="filterVisible.start_date_and_time" class="col-span-2">
         <label class="text-xs text-gray-500">{{ $t('content.from') }}</label>
         <n-date-picker
-            v-model:value="store.previewParams.start_time"
+            v-model:value="store.previewParams.start_date_and_time"
             @update:value="filterEvent"
-            type="date"
+            type="datetime"
             update-value-on-close
             clearable />
       </div>
-      <div class="col-span-2">
+      <div v-if="filterVisible.end_date_and_time" class="col-span-2">
         <label class=" text-xs text-gray-500">{{ $t('content.to') }}</label>
         <n-date-picker
-            v-model:value="store.previewParams.end_time"
+            v-model:value="store.previewParams.end_date_and_time"
             @update:value="filterEvent"
-            type="date"
+            type="datetime"
             update-value-on-close
             :actions="null"
             clearable />
@@ -166,14 +242,18 @@ onMounted(()=>{
                 <tr>
                   <th class="text-center! min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
                   <th class="min-w-[200px]">{{$t('content.worker')}}</th>
-                  <th class="min-w-[130px] w-[130px] !text-center">{{$t('content.date')}}</th>
-                  <th class="min-w-[110px] w-[110px] !text-center">{{$t('content.hour')}}</th>
-                  <th class="min-w-[100px] w-[100px]">{{$t('hcEvent.form.direction')}}</th>
-                  <th class="min-w-[100px] w-[300px]">{{$t('hcEvent.form.device')}}</th>
-                  <th class="min-w-[100px] w-[160px]">{{$t('hcEvent.form.device')}}</th>
+                  <th v-if="isHideColumn" class="min-w-[130px] w-[130px] !text-center">{{$t('content.date')}}</th>
+                  <th v-if="isHideColumn" class="min-w-[110px] w-[110px] !text-center">{{$t('content.hour')}}</th>
+                  <th v-if="isHideColumn" class="min-w-[100px] w-[100px]">{{$t('hcEvent.form.direction')}}</th>
+                  <th v-if="isHideColumn" class="min-w-[100px] w-[300px]">{{$t('hcEvent.form.device')}}</th>
+                  <th v-if="isHideColumn" class="min-w-[100px] w-[160px]">{{$t('hcEvent.form.device')}}</th>
+                  <th v-if="isHideColumn" class="min-w-[100px] w-[120px] !text-center">{{$t('hcEvent.form.mask_status')}}</th>
+                  <th v-if="isHideColumn" class="min-w-[100px] w-[100px] !text-center">{{$t('hcEvent.form.temperature')}}</th>
 
-                  <th class="min-w-[100px] w-[120px] !text-center">{{$t('hcEvent.form.mask_status')}}</th>
-                  <th class="min-w-[100px] w-[100px] !text-center">{{$t('hcEvent.form.temperature')}}</th>
+                  <th v-if="!isHideColumn && !isShowMinuteColumn" class="min-w-[100px] w-[500px]">{{$t('content.position')}}</th>
+                  <th v-if="!isHideColumn && !isShowMinuteColumn" class="min-w-[100px] w-[300px]">{{$t('content.department')}}</th>
+
+                  <th v-if="isShowMinuteColumn" class="min-w-[100px] w-[300px]">{{$t('hcEvent.form.workTime')}}</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -194,15 +274,13 @@ onMounted(()=>{
                       />
                     </div>
                   </td>
-                  <td class="!text-center">
+                  <td v-if="isHideColumn" class="!text-center">
                     <UIBadge :show-icon="false" :label="item?.event_date" />
                   </td>
-                  <td class="!text-center">
+                  <td v-if="isHideColumn" class="!text-center">
                     <UIBadge :show-icon="false" :label="item?.event_time" :type="Utils.colorTypes.dark" />
                   </td>
-
-
-                  <td class="!text-center">
+                  <td v-if="isHideColumn" class="!text-center">
                     <n-button :type="item.direction? 'primary' : 'error'" secondary size="tiny">
                       <span>{{$t(item.direction? 'turnstile.workDurationPage.enter' : 'turnstile.workDurationPage.exit')}}</span>
                       <template #icon>
@@ -213,20 +291,31 @@ onMounted(()=>{
                       </template>
                     </n-button>
                   </td>
-                  <td>{{item.device}}</td>
-                  <td>
+                  <td v-if="isHideColumn">{{item.device}}</td>
+                  <td v-if="isHideColumn">
                     <UIStatus :status="eventStatus[item.auth_type]"/>
                   </td>
-                  <td class="!text-center">
+                  <td v-if="isHideColumn" class="!text-center">
                     <UIStatus :status="maskStatus[item.mask_status]"/>
                   </td>
-                  <td class="!text-center">
+                  <td v-if="isHideColumn" class="!text-center">
                     <template v-if="[1,2].includes(item.temperature)">
                       <UIStatus :status="store.temperatureStatus[item.temperature]"/>
                     </template>
                     <template v-else>
                       <UIStatus :status="store.temperatureStatus[3]"/>
                     </template>
+                  </td>
+
+                  <td v-if="!isHideColumn && !isShowMinuteColumn" class="!text-center">
+                    {{item?.position?.name}}
+                  </td>
+                  <td v-if="!isHideColumn && !isShowMinuteColumn" class="!text-center">
+                    {{item?.department?.name}}
+                  </td>
+
+                  <td v-if="isShowMinuteColumn" class="!text-center">
+                    {{item?.minutes_worked}}
                   </td>
                 </tr>
                 </tbody>
