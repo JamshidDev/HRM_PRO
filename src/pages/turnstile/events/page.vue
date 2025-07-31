@@ -24,7 +24,7 @@ onMounted(()=>{
   <UIModal
       v-model:visible="store.previewVisible"
       :width="1400"
-      :title="$t('turnstile.workDurationPage.lateTitle')">
+      :title="$t('hcEvent.preview')">
     <PreviewList/>
   </UIModal>
 </UIPageContent>

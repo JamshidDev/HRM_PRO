@@ -12,7 +12,7 @@ const onEdit = (v)=>{
   store.payload.first_name = v.first_name
   store.payload.last_name = v.last_name
   store.payload.middle_name = v.middle_name
-  store.payload.sex = v.sex
+  store.payload.sex = Number(v.sex)
   store.payload.experience = v.experience?.toString()
   store.payload.passport = v.passport
   store.payload.pin = v.pin?.toString()
@@ -20,10 +20,10 @@ const onEdit = (v)=>{
   store.payload.position = v.position
   store.payload.year = new Date().setFullYear(v.year)
   store.payload.phone = v.phone
-  store.payload.invalid = v.invalid
-  store.payload.railway_title = v.railway_title
-  store.payload.afghan = v.afghan
-  store.payload.chernobyl = v.chernobyl
+  store.payload.invalid = Number(v.invalid)
+  store.payload.railway_title = Number(v.railway_title)
+  store.payload.afghan = Number(v.afghan)
+  store.payload.chernobyl =Number(v.chernobyl)
 
   store.visibleType = false
   store.elementId = v.id

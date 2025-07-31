@@ -72,7 +72,7 @@ const onPreview = (v)=>{
         </div>
         <span class="z-1 opacity-30 absolute top-0 right-0 w-[160px] h-full bg-no-repeat bg-[url(/effect/primary-card.svg)]"></span>
       </div>
-      <div class="col-span-12 md:col-span-6 xl:col-span-3 border border-surface-line hover-effect-card px-4 py-2 rounded-xl bg-surface-section h-[96px] relative">
+      <div @click="onPreview('absent_workers')" class="col-span-12 md:col-span-6 xl:col-span-3 border border-surface-line hover-effect-card px-4 py-2 rounded-xl bg-surface-section h-[96px] relative">
         <div class="flex justify-between mb-2">
           <span class="text-textColor2 font-medium">{{$t('hcEvent.cards.cardTwo')}}</span>
           <n-button secondary type="error" size="tiny">
@@ -96,7 +96,7 @@ const onPreview = (v)=>{
         <span class="z-1 opacity-30 absolute top-0 right-0 w-[160px] h-full bg-no-repeat bg-[url(/effect/primary-card.svg)]"></span>
 
       </div>
-      <div class="col-span-12 md:col-span-6 xl:col-span-3 border border-surface-line hover-effect-card px-4 py-2 rounded-xl bg-surface-section h-[96px] relative">
+      <div @click="onPreview('early_leave_workers')" class="col-span-12 md:col-span-6 xl:col-span-3 border border-surface-line hover-effect-card px-4 py-2 rounded-xl bg-surface-section h-[96px] relative">
         <div class="flex justify-between mb-2">
           <span class="text-textColor2 font-medium">{{$t('hcEvent.cards.cardThree')}}</span>
           <n-button secondary type="error" size="tiny">
@@ -118,7 +118,7 @@ const onPreview = (v)=>{
         </div>
         <span class="z-1 opacity-30 absolute top-0 right-0 w-[160px] h-full bg-no-repeat bg-[url(/effect/primary-card.svg)]"></span>
       </div>
-      <div class="col-span-12 md:col-span-6 xl:col-span-3 border border-surface-line hover-effect-card px-4 py-2 rounded-xl bg-surface-section h-[96px] relative">
+      <div @click="onPreview('work_hours')" class="col-span-12 md:col-span-6 xl:col-span-3 border border-surface-line hover-effect-card px-4 py-2 rounded-xl bg-surface-section h-[96px] relative">
         <div class="flex justify-between mb-2">
           <span class="text-textColor2 font-medium">{{$t('hcEvent.cards.cardFour')}}</span>
           <n-button secondary type="error" size="tiny">

@@ -14,6 +14,7 @@ export const useEventStore = defineStore('eventStore', {
         elementId: null,
         totalItems: 0,
         structureCheck2: [],
+        structureCheck3: [],
 
         params: {
             page: 1,
@@ -55,11 +56,11 @@ export const useEventStore = defineStore('eventStore', {
             per_page: 10,
             search: null,
             organizations:[],
-            direction:null,
-            start:null,
-            end:null,
+            start_time:null,
+            end_time:null,
             access_levels:[],
             type:null,
+            first_time:'09:00',
         },
         previewLoading:false,
         previewVisible:false,
@@ -136,8 +137,8 @@ export const useEventStore = defineStore('eventStore', {
                 ...this.previewParams,
                 organizations:this.previewParams.organizations.map(v=>v.id).toString() || undefined,
                 access_levels:this.previewParams.access_levels.toString() || undefined,
-                start:this.previewParams.start? Utils.timeToZone(this.previewParams.start)+' '+Utils.timeOnlySecond(this.previewParams.start) : undefined,
-                end:this.previewParams.end? Utils.timeToZone(this.previewParams.end)+' '+Utils.timeOnlySecond(this.previewParams.end) : undefined,
+                start_time:Utils.timeToZone(this.previewParams.start_time),
+                end_time:Utils.timeToZone(this.previewParams.end_time),
             }
             $ApiService.eventService._preview({params}).then((res) => {
                 this.previewList = res.data.data.data

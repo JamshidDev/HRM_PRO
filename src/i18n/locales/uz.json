@@ -1936,6 +1936,7 @@
     "name": "Hodisalar",
     "createTitle": "Yuklash",
     "updateTitle": "Tahrirlash",
+    "preview": "Ko'rish",
     "form": {
       "name": "Nomi",
       "temperature": "Harorat",
