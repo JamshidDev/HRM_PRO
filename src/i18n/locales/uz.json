@@ -1078,7 +1078,13 @@
     "name": "Kategoriyalar",
     "addQuestion": "Savol qo'shish",
     "editQuestion": "Savolni tahrirlash",
-    "questionCount": "Savollar soni"
+    "questionCount": "Savollar soni",
+    "uploadExcel": "Savol yuklash",
+    "pressUpload": "Yuklash uchun bosing!",
+    "checkingFile": "Fayl tekshirilmoqda...",
+    "question": "Savol",
+    "answer": "Javob",
+    "correctAnswer": "To'g'ri javob"
   },
 
 
@@ -1924,7 +1930,7 @@
     "updateTitle": "Tahrirlash",
     "form": {
       "name": "Nomi",
-      "access_level_id": "access_level_id",
+      "access_level_id": "Guruhlar",
       "workers_count": "Xodimlar soni",
       "exported_count": "exported_count",
       "status": "status",

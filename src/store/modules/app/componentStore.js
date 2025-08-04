@@ -480,6 +480,7 @@ export const useComponentStore = defineStore('componentStore', {
 
                 this.departmentPositionList = res.data.data.data.map((v)=>({
                     name:v.position?.name,
+                    position:v.department?.name,
                     id:v.id,
                 }))
             }).finally(()=>{

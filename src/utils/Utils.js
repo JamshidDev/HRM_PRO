@@ -488,16 +488,16 @@ const appPermissions = {
     exam:"exam",
 
     examTopics:"exam-topics",
-    examTopicsWrite:"hr-topics-write",
-    examTopicsRead:"hr-topics-read",
+    examTopicsWrite:"exam-topics-write",
+    examTopicsRead:"exam-topics-read",
 
     examCategories:"exam-categories",
     examCategoriesWrite:"exam-categories-write",
     examCategoriesRead:"exam-categories-read",
 
     examExams:"exam-exams",
-    examExamsWrite:"hr-exams-write",
-    examExamsRead:"hr-exams-read",
+    examExamsWrite:"exam-exams-write",
+    examExamsRead:"exam-exams-read",
 
     examResults: 'exam-results',
     examResultsWrite: 'exam-results-write',

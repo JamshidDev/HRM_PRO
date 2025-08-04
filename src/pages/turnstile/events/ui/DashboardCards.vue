@@ -50,11 +50,6 @@ const onPreview = (v)=>{
       <div @click="onPreview('late_workers')" class="col-span-12 md:col-span-6 xl:col-span-3 border border-surface-line hover-effect-card px-4 py-2 rounded-xl bg-surface-section h-[96px] relative">
         <div class="flex justify-between mb-2">
           <span class="text-textColor2 font-medium">{{$t('hcEvent.cards.cardOne')}}</span>
-          <n-button secondary type="error" size="tiny">
-            <template #icon>
-              <FullScreenMaximize20Filled/>
-            </template>
-          </n-button>
         </div>
 
         <div class="text-2xl z-10 text-right font-bold text-secondary flex items-center justify-between">
@@ -73,11 +68,6 @@ const onPreview = (v)=>{
       <div @click="onPreview('absent_workers')" class="col-span-12 md:col-span-6 xl:col-span-3 border border-surface-line hover-effect-card px-4 py-2 rounded-xl bg-surface-section h-[96px] relative">
         <div class="flex justify-between mb-2">
           <span class="text-textColor2 font-medium">{{$t('hcEvent.cards.cardTwo')}}</span>
-          <n-button secondary type="error" size="tiny">
-            <template #icon>
-              <FullScreenMaximize20Filled/>
-            </template>
-          </n-button>
         </div>
         <div class="text-2xl text-right font-bold text-secondary flex items-center justify-between">
 
@@ -97,11 +87,6 @@ const onPreview = (v)=>{
       <div @click="onPreview('early_leave_workers')" class="col-span-12 md:col-span-6 xl:col-span-3 border border-surface-line hover-effect-card px-4 py-2 rounded-xl bg-surface-section h-[96px] relative">
         <div class="flex justify-between mb-2">
           <span class="text-textColor2 font-medium">{{$t('hcEvent.cards.cardThree')}}</span>
-          <n-button secondary type="error" size="tiny">
-            <template #icon>
-              <FullScreenMaximize20Filled/>
-            </template>
-          </n-button>
         </div>
         <div class="text-2xl text-right font-bold text-secondary flex items-center justify-between">
             <span>{{userTreeObj.more}}
@@ -119,11 +104,6 @@ const onPreview = (v)=>{
       <div @click="onPreview('work_hours')" class="col-span-12 md:col-span-6 xl:col-span-3 border border-surface-line hover-effect-card px-4 py-2 rounded-xl bg-surface-section h-[96px] relative">
         <div class="flex justify-between mb-2">
           <span class="text-textColor2 font-medium">{{$t('hcEvent.cards.cardFour')}}</span>
-          <n-button secondary type="error" size="tiny">
-            <template #icon>
-              <FullScreenMaximize20Filled/>
-            </template>
-          </n-button>
         </div>
         <div class="text-2xl text-right font-bold text-secondary flex items-center justify-between">
             <span>{{userFourObj.more}}

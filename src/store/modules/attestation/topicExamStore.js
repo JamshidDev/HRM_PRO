@@ -41,8 +41,19 @@ export const useTopicExamStore = defineStore('topicExamStore', {
             per_page:10,
             search:null,
         },
+        positionList:[],
+        positionLoading:false,
     }),
     actions:{
+        _position(){
+            this.positionLoading= true
+            $ApiService.topicExamService._position({params:{page:1, per_page:1000}, id: this.topicId}).then((res)=>{
+                this.positionList = res.data.data
+            }).finally(()=>{
+                this.positionLoading= false
+            })
+        },
+
         _index(){
             this.loading= true
             $ApiService.topicExamService._index({params:this.params, id: this.topicId}).then((res)=>{

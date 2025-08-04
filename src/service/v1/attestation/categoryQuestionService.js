@@ -20,6 +20,10 @@ const _show = async (payload)=>{
     return await axios.get(`/v1/exam/categories/${payload.category_id}/questions/${payload.question_id}`)
 }
 
+const _readExcel = async (payload)=>{
+    return await axios.post(`/v1/exam/topics/1/exams/${payload.id}/excel-header`, payload.data)
+}
+
 
 
 
@@ -28,5 +32,6 @@ export default {
     _create,
     _update,
     _delete,
-    _show
+    _show,
+    _readExcel,
 }

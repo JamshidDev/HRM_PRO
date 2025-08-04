@@ -31,7 +31,7 @@ onMounted(()=>{
 })
 
 const lesson = computed(()=>{
-  return store.elementId ? store.list.find(i=>i.id==store.elementId) : undefined
+  return store.elementId ? store.list.find(i=>i.id===store.elementId) : undefined
 })
 </script>
 

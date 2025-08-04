@@ -4,6 +4,10 @@ const _index =async (payload)=>{
     return await axios.get(`/v1/exam/topics/${payload.id}/exams`, {params:payload.params})
 }
 
+const _position =async (payload)=>{
+    return await axios.get(`/v1/exam/topics/${payload.id}/positions`, {params:payload.params})
+}
+
 const _create = async (payload)=>{
     return await axios.post(`/v1/exam/topics/${payload.id}/exams`, payload.data)
 }
@@ -35,5 +39,6 @@ export default {
     _delete,
     _show,
     _attach_category,
-    _get_attached_category
+    _get_attached_category,
+    _position,
 }

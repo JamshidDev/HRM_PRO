@@ -162,6 +162,7 @@ onMounted(()=>{
             path="access_level_id"
             :rule-path="validationRules.rulesNames.requiredNumberField">
           <n-select
+              filterable
               v-model:value="store.payload.access_level_id"
               :options="store.levelList"
               :loading="store.levelLoading"

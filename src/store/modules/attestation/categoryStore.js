@@ -21,6 +21,7 @@ export const useCategoryStore = defineStore('categoryStore', {
             per_page:10,
             search:null,
         },
+        uploadVisible:false
     }),
     actions:{
         _index(){

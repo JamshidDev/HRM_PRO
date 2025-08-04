@@ -2,6 +2,7 @@
 import validationRules from "@/utils/validationRules.js";
 import { useComponentStore, useTopicExamStore } from "@/store/modules/index.js";
 import {useRoute} from "vue-router";
+import UIHelper from "@/utils/UIHelper.js"
 
 const formRef = ref(null)
 const store = useTopicExamStore()
@@ -24,9 +25,22 @@ const onSubmit = ()=>{
 onMounted(()=>{
   store.topicId = route.params.id
   componentStore._enumExam()
-  componentStore._departmentPosition()
-  componentStore._workers()
+  if(!store.visibleType){
+    store._position()
+  }
 })
+
+
+const onChange = ()=>{
+  store.payload.whom_ids = []
+  if(store.payload.whom === 2){
+    store._position()
+  }else if(store.payload.whom === 3){
+    componentStore._workers()
+  }
+}
+
+
 
 
 </script>
@@ -40,17 +54,9 @@ onMounted(()=>{
     >
       <div style="min-height:calc(100vh - 120px)">
         <n-grid :cols="2" :x-gap="10">
-<!--          <n-form-item-gi :span="2" >-->
-<!--            <div class="border-surface-line border flex w-full items-center px-3 justify-between rounded-md h-[34px] ">-->
-<!--              <p>{{$t('topicDetailsPage.exams.isActive')}}</p>-->
-<!--              <n-switch v-model:value="store.payload.active"/>-->
-<!--            </div>-->
-<!--          </n-form-item-gi>-->
-
           <n-form-item-gi :span="2" :label="$t(`content.name`)" path="name" rule-path="requiredStringField">
             <n-input
                 type="text"
-
                 v-model:value="store.payload.name"
             />
           </n-form-item-gi>
@@ -89,7 +95,6 @@ onMounted(()=>{
             <n-input-number
                 :min="1"
                 class="w-full"
-
                 v-model:value="store.payload.chances"
             />
           </n-form-item-gi>
@@ -97,12 +102,9 @@ onMounted(()=>{
             <n-input-number
                 :min="1"
                 class="w-full"
-
                 v-model:value="store.payload.minute"
             />
           </n-form-item-gi>
-
-
           <n-form-item-gi :span="2"
                           :label="$t(`topicDetailsPage.exams.toWhom`)"
                           path="whom"
@@ -111,8 +113,7 @@ onMounted(()=>{
             <n-select
                 v-model:value="store.payload.whom"
                 filterable
-                @update:value="store.payload.whom_ids = []"
-
+                @update:value="onChange"
                 :options="componentStore.topicWhomList"
                 label-field="name"
                 value-field="id"
@@ -128,13 +129,12 @@ onMounted(()=>{
             <n-select
                 v-model:value="store.payload.whom_ids"
                 filterable
-
-                :options="componentStore.departmentPositionList"
+                :options="store.positionList"
                 label-field="name"
                 value-field="id"
                 multiple
                 max-tag-count="responsive"
-                :loading="componentStore.departmentPositionLoading"
+                :loading="store.positionLoading"
             />
           </n-form-item-gi>
           <n-form-item-gi :span="2"
