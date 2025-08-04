@@ -119,7 +119,12 @@ export const useEventStore = defineStore('eventStore', {
         },
         _dashboard(){
             this.dashboardLoading = true
-            $ApiService.eventService._dashboard().then((res) => {
+            const params = {
+                organizations:this.params.organizations.map(v=>v.id).toString() || undefined,
+                start:this.params.start? Utils.timeWithMonth(this.params.start): undefined,
+                end:this.params.end? Utils.timeWithMonth(this.params.end): undefined,
+            }
+            $ApiService.eventService._dashboard({params}).then((res) => {
                 this.dashboardObj = res.data.data
             }).finally(() => {
                 this.dashboardLoading = false

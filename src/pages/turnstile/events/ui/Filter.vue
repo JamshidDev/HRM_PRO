@@ -18,6 +18,12 @@ const componentStore = useComponentStore()
 const onChangeStructure = (v)=>{
   store.params.organizations=v
   filterEvent()
+  store._dashboard()
+}
+
+const onChangeDate =()=>{
+  filterEvent()
+  store._dashboard()
 }
 
 const beforeShow = (v)=>{
@@ -108,7 +114,7 @@ const directionList = [
       <n-date-picker
           class="mt-1"
           v-model:value="store.params.start"
-          @update:value="filterEvent"
+          @update:value="onChangeDate"
           type="datetime"
           update-value-on-close
           clearable />
@@ -116,7 +122,7 @@ const directionList = [
       <n-date-picker
           class="mt-1"
           v-model:value="store.params.end"
-          @update:value="filterEvent"
+          @update:value="onChangeDate"
           type="datetime"
           update-value-on-close
           :actions="null"
