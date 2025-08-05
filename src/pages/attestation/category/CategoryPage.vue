@@ -3,17 +3,17 @@ import {UIDrawer, UIModal, UIPageContent, UIPageFilter} from "@/components/index
 import Table from "./ui/Table.vue"
 import Form from "./ui/Form.vue"
 import UploadExcel from "./categoryQuestion/ui/UploadExcel.vue"
-import {useAccountStore, useCategoryStore} from "@/store/modules/index.js"
+import {useAccountStore, useCategoryStore, useCategoryQuestionStore} from "@/store/modules/index.js"
 
 const store = useCategoryStore()
+const categoryQuestionStore = useCategoryQuestionStore()
 const accStore = useAccountStore()
 
 const onAdd = ()=>{
   if(!accStore.checkAction(accStore.pn.examCategoriesWrite)) return
   store.resetForm()
   store.visibleType = true
-  // store.visible = true
-  store.uploadVisible = true
+  store.visible = true
 }
 
 const onSearch = ()=>{
@@ -52,8 +52,8 @@ onMounted(()=>{
     </UIDrawer>
     <UIModal
         :width="'90%'"
-        :visible="store.uploadVisible"
-        @update:visible="(v)=>store.uploadVisible = v"
+        :visible="categoryQuestionStore.excelVisible"
+        @update:visible="(v)=>categoryQuestionStore.excelVisible = v"
         :title="$t('categoryPage.uploadExcel')"
     >
       <UploadExcel/>

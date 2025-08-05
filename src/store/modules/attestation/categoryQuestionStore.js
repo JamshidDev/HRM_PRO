@@ -38,11 +38,16 @@ export const useCategoryQuestionStore = defineStore('categoryQuestionStore', {
                 name:t('categoryPage.answer'),
                 id:'option'
             },
-            {
-                name:t('categoryPage.correctAnswer'),
-                id:'correct'
-            },
-        ]
+            // {
+            //     name:t('categoryPage.correctAnswer'),
+            //     id:'correct'
+            // },
+        ],
+        selectedFile:null,
+        selectedRow:1,
+        selectedCol:null,
+        importLoading:false,
+        excelVisible:false,
 
     }),
     actions: {
@@ -60,12 +65,21 @@ export const useCategoryQuestionStore = defineStore('categoryQuestionStore', {
                 this.excelPreviewLoading = false
             })
         },
+        _importExcel(data, callback) {
+            this.importLoading = true
+            $ApiService.categoryQuestionService._importExcel({id: this.elementId, data}).then((res) => {
+                this.excelVisible = false
+                callback?.()
+            }).finally(() => {
+                this.importLoading = false
+            })
+        },
+
         _index() {
             this.loading = true
             $ApiService.categoryQuestionService._index({id: this.category_id, params: this.params}).then((res) => {
-                const {data, total} = res.data.data
-                this.list = [...this.list, ...data]
-                this.totalItems = total
+                this.list = res.data.data.data
+                this.totalItems =res.data.data.total
             }).finally(() => {
                 this.loading = false
             })

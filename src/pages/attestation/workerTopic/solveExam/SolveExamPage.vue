@@ -7,7 +7,7 @@ import Utils from "@/utils/Utils.js";
 import VueCountdown from '@chenfengyuan/vue-countdown'
 import {Flag20Filled, ShieldError16Filled, ArrowStepBack16Regular, DocumentRibbon20Regular} from "@vicons/fluent";
 import dayjs from "dayjs";
-import {AppPaths} from "@/utils/index.js";
+import {AppPaths, useAppSetting} from "@/utils/index.js"
 
 const store = useExamAttemptStore()
 const router = useRouter()
@@ -34,6 +34,7 @@ const endAttempt = ()=>{
 
   store._finish_attempt()
   endWarningVisible.value=true
+  // router.push(Utils.routeAttestationPathMaker(AppPaths.Exam))
 }
 
 const goBack = ()=>{
@@ -87,8 +88,8 @@ onUnmounted(()=>{
       <div v-if="store.exam_detail && store.exam_token" class="h-full flex flex-col-reverse sm:flex-row gap-3">
         <div class="flex flex-col gap-3 grow overflow-y-auto p-3 scroll-smooth question__section lg:mx-10 xl:mx-20">
           <div class="shrink-0 flex gap-3 flex-wrap">
-            <div class="shrink-0 flex items-center justify-center basis-[200px] grow md:grow-0">
-              <img :src="store.worker_detail.user.worker.photo" alt="img" class="h-[200px] object-contain rounded-md">
+            <div class="shrink-0 flex items-center basis-[200px] grow md:grow-0">
+              <img :src="store.worker_detail.user.worker.photo || useAppSetting.noAvailableImage" alt="img" class="h-[200px] object-contain rounded-md">
             </div>
             <n-table class="grow shrink-0 basis-[230px]" size="small">
               <tr>
@@ -139,7 +140,10 @@ onUnmounted(()=>{
           </div>
           <QuestionCard
               v-for="(question, idx) in store.questions"
-              :id="`question-${idx+1}`" :key="idx" :question="question"
+              :id="`question-${idx+1}`"
+              :key="idx"
+              :question="question"
+              :number="idx+1"
               class="shrink-0"
           />
         </div>
@@ -196,15 +200,11 @@ onUnmounted(()=>{
                 class="md:h-14! md:text-xl!"
                 block
                 size="large"
-                tertiary
                 type="primary"
                 :loading="store.finishLoading"
                 v-if="!store.result"
             >
                 {{  $t('content.finish') }}
-                <template #icon>
-                  <n-icon :component="Flag20Filled"/>
-                </template>
             </n-button>
             <n-button
                 @click="goBack()"

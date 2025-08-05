@@ -24,6 +24,13 @@ export const useCategoryStore = defineStore('categoryStore', {
         uploadVisible:false
     }),
     actions:{
+        _clear(){
+            this.loading= true
+            $ApiService.categoryService._clear({id:this.elementId}).then((res)=>{
+                this._index()
+            }).finally(()=>{
+            })
+        },
         _index(){
             this.loading= true
             $ApiService.categoryService._index({params:this.params}).then((res)=>{

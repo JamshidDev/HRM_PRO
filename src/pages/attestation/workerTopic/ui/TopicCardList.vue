@@ -24,9 +24,9 @@ onMounted(() => {
   }
 })
 
-const selectLesson = ()=>{
+const selectLesson = (v)=>{
   if(!accStore.checkAction(accStore.pn.examExamsRead)) return
-  store.selectedLesson = lesson
+  store.selectedLesson = v
 }
 
 </script>

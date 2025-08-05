@@ -21,7 +21,11 @@ const _show = async (payload)=>{
 }
 
 const _readExcel = async (payload)=>{
-    return await axios.post(`/v1/exam/topics/1/exams/${payload.id}/excel-header`, payload.data)
+    return await axios.post(`/v1/exam/categories/${payload.id}/excel-header`, payload.data)
+}
+
+const _importExcel = async (payload)=>{
+    return await axios.post(`/v1/exam/categories/${payload.id}/import`, payload.data)
 }
 
 
@@ -34,4 +38,5 @@ export default {
     _delete,
     _show,
     _readExcel,
+    _importExcel,
 }

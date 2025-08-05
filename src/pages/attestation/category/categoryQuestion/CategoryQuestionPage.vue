@@ -7,6 +7,7 @@ import {AppPaths} from "@/utils/index.js";
 import {UIModal} from "@/components/index.js"
 import QuestionForm from './ui/QuestionForm.vue'
 import {useAccountStore} from "@/store/modules/index.js"
+import {ArrowLeft16Filled} from "@vicons/fluent";
 const accStore = useAccountStore()
 
 const route = useRoute()
@@ -48,8 +49,11 @@ const goBack = ()=>{
         :show-search-input="false"
     >
       <template #filterAction>
-        <n-button type="error" @click="goBack">
-          {{$t('content.goToList')}}
+        <n-button secondary type="error" @click="goBack">
+          {{$t('content.back')}}
+          <template #icon>
+            <ArrowLeft16Filled/>
+          </template>
         </n-button>
       </template>
       <template #filterSearch>

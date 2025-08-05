@@ -1,15 +1,15 @@
 <script setup>
 import {NoDataPicture, UIMenuButton, UIPagination} from "@/components/index.js"
-import {useCategoryStore} from "@/store/modules/index.js"
+import {useCategoryQuestionStore, useCategoryStore} from "@/store/modules/index.js"
 import {useRouter} from "vue-router"
 import {AppPaths} from "@/utils/index.js"
 import Utils from "@/utils/Utils.js";
-import UIHelper from "@/utils/UIHelper.js";
-import {Delete20Regular, Eye16Regular} from "@vicons/fluent";
+import {CloudLink20Regular, Eye16Regular, Cut24Filled} from "@vicons/fluent";
 import {useAccountStore} from "@/store/modules/index.js"
 const accStore = useAccountStore()
 
 const store = useCategoryStore()
+const categoryQuestionStore = useCategoryQuestionStore()
 const router = useRouter()
 
 const changePage = (v) => {
@@ -32,7 +32,17 @@ const onSelect = (v) => {
     store.payload.name = v.data.name
     store.visibleType = false
     store.visible = true
+  }else if(v.key === Utils.ActionTypes.attachment){
+    categoryQuestionStore.elementId = v.data.id
+    categoryQuestionStore.selectedFile = null
+    categoryQuestionStore.selectedCol = null
+    categoryQuestionStore.excelVisible = true
+
+  }else if(v.key === Utils.ActionTypes.close){
+    store.elementId = v.data.id
+    store._clear()
   }
+
 }
 
 </script>
@@ -69,7 +79,18 @@ const onSelect = (v) => {
                   label: $t('questionPage.title'),
                   key: Utils.ActionTypes.view,
                   icon: Eye16Regular
-                }]"
+                },
+                {
+                  label: $t('categoryPage.upload'),
+                  key: Utils.ActionTypes.attachment,
+                  icon: CloudLink20Regular
+                },
+                {
+                  label: $t('content.clear'),
+                  key: Utils.ActionTypes.close,
+                  icon: Cut24Filled
+                }
+                ]"
                 @select-ev="onSelect"
             />
           </td>

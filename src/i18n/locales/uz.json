@@ -1079,12 +1079,14 @@
     "addQuestion": "Savol qo'shish",
     "editQuestion": "Savolni tahrirlash",
     "questionCount": "Savollar soni",
-    "uploadExcel": "Savol yuklash",
+    "uploadExcel": "Test savollarini yuklash",
     "pressUpload": "Yuklash uchun bosing!",
     "checkingFile": "Fayl tekshirilmoqda...",
     "question": "Savol",
+    "upload": "Savol yuklash",
     "answer": "Javob",
-    "correctAnswer": "To'g'ri javob"
+    "correctAnswer": "To'g'ri javob",
+    "warning": "Tanlangan savol va javob ustunlari to'g'riligini tekshiring!"
   },
 
 

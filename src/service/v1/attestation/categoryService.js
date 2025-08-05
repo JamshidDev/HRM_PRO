@@ -15,7 +15,9 @@ const _update = async (payload)=>{
 const _delete = async (payload)=>{
     return await axios.delete(`/v1/exam/categories/${payload.id}`)
 }
-
+const _clear =async (payload)=>{
+    return await axios.get(`/v1/exam/categories/${payload.id}/clear`, {params:payload?.params})
+}
 
 
 
@@ -24,4 +26,5 @@ export default {
     _create,
     _update,
     _delete,
+    _clear,
 }

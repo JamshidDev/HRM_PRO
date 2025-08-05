@@ -78,7 +78,7 @@ const activeTab = ref(0)
           <template v-for="(tab, idx) in tabs" :key="idx">
             <div
                 class="px-3 py-2 bg-primary/5 rounded-md transition-all hover:bg-primary/10 cursor-pointer flex flex-col gap-2"
-                :class="{'bg-primary/10': tab.id==activeTab}"
+                :class="{'bg-primary/10': tab.id===activeTab}"
                 @click="activeTab=tab.id"
             >
               <div class="flex items-center gap-1">

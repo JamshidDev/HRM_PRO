@@ -7,20 +7,27 @@ defineProps({
   question: {
     type: Object,
     required: true
+  },
+  number:{
+    type: Number,
+    required: true
   }
 })
 
 </script>
 <template>
-  <div class="border bg-surface-section rounded-lg overflow-hidden border-surface-line p-2 shadow-blue-50 drop-shadow-xs"
-  >
+  <div class="border bg-primary/4 rounded-lg overflow-hidden border-surface-line p-2 shadow-blue-50 drop-shadow-xs"
+  ><p>{{number}}.</p>
     <UIEditorViewer :html="question.question"></UIEditorViewer>
     <n-divider/>
     <template
         v-for="(option, idx) in question.answers"
         :key="idx"
     >
-      <div class="flex gap-2 p-2 items-center">
+      <div class="flex gap-2 p-2 items-center"
+           :class="[option.id===question.result && 'bg-danger/4 border border-danger/20 rounded-lg']"
+      >
+        {{store.options[idx]}}
         <div class="relative w-4! h-4!">
           <div
               class="radio"
@@ -33,7 +40,7 @@ defineProps({
       </div>
     </template>
     <n-button
-          type="error"
+          type="warning"
           text
       >{{question.result==null ? $t('examPage.notChosen') : $t('examPage.wrongAnswer')}}</n-button>
   </div>

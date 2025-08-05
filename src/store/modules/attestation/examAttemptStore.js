@@ -20,7 +20,14 @@ export const useExamAttemptStore = defineStore('examAttemptStore', {
             result: null,
         },
         finishLoading: false,
-        result: null
+        result: null,
+        options:{
+            0:"A",
+            1:"B",
+            2:"C",
+            3:"D",
+            4:"E",
+        }
     }),
     actions: {
         _config_localstorage() {
