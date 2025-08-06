@@ -36,32 +36,35 @@ const onAddExam = ()=>{
       <div class="grid grid-cols-[repeat(auto-fill,minmax(150px,1fr))] gap-2 my-4">
         <div
             @click="activeTab=examTabNumber"
-            class="w-full p-4 py-3 bg-blue-50 rounded-xl transition-all hover:bg-blue-100 cursor-pointer flex flex-col gap-2"
+            class="w-full p-4 py-3 bg-blue-50 rounded-xl transition-all bg-gradient-card-1
+            hover:bg-blue-100 cursor-pointer flex flex-col gap-2"
           :class="{'bg-info/10!': activeTab===examTabNumber}"
         >
           <div class="flex items-center gap-1">
-            <n-icon-wrapper :border-radius="6" :color="TopicUtils.getMediaProperty(examTabNumber).color" :size="30" class="shrink-0">
+            <n-icon :border-radius="6" :color="TopicUtils.getMediaProperty(examTabNumber).color" :size="30" class="shrink-0">
               <n-icon :component="PeopleEdit20Filled" :size="18" color="#FFF"/>
-            </n-icon-wrapper>
-            <p class="font-medium text-textColor0">{{ $t('examPage.name') }}</p>
+            </n-icon>
+            <p class="font-medium text-white">{{ $t('examPage.name') }}</p>
             <n-button size="tiny" circle  tertiary>
-              <span class="font-bold">{{  examStore.totalItems }}</span>
+              <span class="font-bold text-white">{{  examStore.totalItems }}</span>
             </n-button>
           </div>
         </div>
+
+
         <template v-for="(item, idx) in  fileStore.list">
           <div
               @click="activeTab=item.id"
               class="w-full p-4 py-3 bg-blue-50 rounded-xl transition-all hover:bg-blue-100 cursor-pointer flex flex-col gap-2"
-              :class="{'bg-info/10!': activeTab===item.id}"
+              :class="{'bg-info/10!': activeTab===item.id}, [`bg-gradient-card-${idx+2}`]"
           >
             <div class="flex items-center gap-1">
-              <n-icon-wrapper :border-radius="6" :color="TopicUtils.getMediaProperty(item.id).color" :size="30" class="shrink-0">
+              <n-icon :border-radius="6" :color="TopicUtils.getMediaProperty(item.id).color" :size="30" class="shrink-0">
                 <n-icon :component="TopicUtils.getMediaProperty(item.id).icon" :size="18" color="#FFF"/>
-              </n-icon-wrapper>
-              <p class="font-medium text-textColor0">{{ item.name }}</p>
+              </n-icon>
+              <p class="font-medium text-white">{{ item.name }}</p>
               <n-button size="tiny" circle  tertiary>
-                <span>{{  item.items?.length }}</span>
+                <span class="text-white">{{  item.items?.length }}</span>
               </n-button>
             </div>
           </div>

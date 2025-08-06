@@ -46,7 +46,7 @@ const route = useRoute()
         </div>
       </div>
         <div :style="{'flex-basis': route.params?.id ? '60%' : 0, 'grow': !!route.params?.id, 'right': !!route.params?.id ? '0' : '-100%'}"
-             class="transition-all shrink-1 overflow-hidden h-full absolute md:static top-0 w-full md:w-auto bottom-0 bg-surface-section">
+             class="transition-all rounded-xl shrink-1 overflow-hidden h-full absolute md:static top-0 w-full md:w-auto bottom-0 bg-surface-section">
           <router-view :key="$route.fullPath"/>
         </div>
     </div>

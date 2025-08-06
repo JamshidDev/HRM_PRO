@@ -77,17 +77,17 @@ const activeTab = ref(0)
         <div v-if="store.selectedLesson" class="grid grid-cols-[repeat(auto-fill,minmax(150px,1fr))] gap-2 shrink-0">
           <template v-for="(tab, idx) in tabs" :key="idx">
             <div
-                class="px-3 py-2 bg-primary/5 rounded-md transition-all hover:bg-primary/10 cursor-pointer flex flex-col gap-2"
-                :class="{'bg-primary/10': tab.id===activeTab}"
+                class="px-3 py-2 bg-primary/5 rounded-md  transition-all hover:bg-primary/10 cursor-pointer flex flex-col gap-2"
+                :class="[`bg-gradient-card-${idx+1}`]"
                 @click="activeTab=tab.id"
             >
               <div class="flex items-center gap-1">
-                <n-icon-wrapper :border-radius="6" :color="tab.color" :size="30" class="shrink-0">
+                <n-icon :border-radius="6" :size="30" class="shrink-0">
                   <n-icon :component="tab.icon" :size="18" color="#FFF"/>
-                </n-icon-wrapper>
-                <p class="font-medium">{{ tab.title }}</p>
+                </n-icon>
+                <p class="font-medium text-white">{{ tab.title }}</p>
                 <n-button size="tiny" circle  tertiary>
-                  <span class="font-bold">{{  tab.count }}</span>
+                  <span class="font-bold text-white">{{  tab.count }}</span>
                 </n-button>
               </div>
             </div>

@@ -355,3 +355,42 @@ input:-webkit-autofill {
 
 }
 
+
+
+.bg-gradient-card-1 {
+  background: linear-gradient(to right, #7440FD, rgba(141, 107, 253, 0.8));
+  .n-icon{
+    color: #7440FD;
+  }
+}
+.bg-gradient-card-2 {
+  background: linear-gradient(to right, #FE9D1D, rgba(253, 190, 21, 0.8));
+  .n-icon{
+    color: #FE9D1D;
+  }
+}
+.bg-gradient-card-3 {
+  background: linear-gradient(to right, #F626A8, rgba(253, 107, 234, 0.8));
+  .n-icon{
+    color: #F626A8;
+  }
+}
+.bg-gradient-card-4 {
+  background: linear-gradient(to right, #1EA3FE, rgba(17, 183, 253, 0.8));
+  .n-icon{
+    color: #1EA3FE;
+  }
+}
+.bg-gradient-card-5 {
+  background: linear-gradient(to right, #49E06C, rgba(78, 231, 160, 0.8));
+  .n-icon{
+    color: #49E06C;
+  }
+}
+.bg-gradient-card-6 {
+  background: linear-gradient(to right, #0a99e9, #61b8f1);
+  .n-icon{
+    color: #0a99e9;
+  }
+}
+

@@ -34,12 +34,12 @@ const selectLesson = (v)=>{
 <template>
   <n-spin :show="store.loading" class="h-full rounded-md p-1">
     <div class="h-full flex flex-col">
-      <div v-if="store.list.length>0" class="overflow-y-auto grow basis-auto">
+      <div v-if="store.list.length>0" class="overflow-y-auto grow basis-auto p-4">
         <div class="grid grid-cols-[repeat(auto-fill,minmax(330px,345px))] gap-2">
           <template v-for="(lesson, idx) in store.list" :key="idx">
             <div
-                :class="{'active-lesson': store?.elementId===lesson.id}"
-                class="rounded-md transition-all cursor-pointer lesson-card  flex flex-col"
+                :class="['active-lesson' && store?.elementId===lesson.id, `bg-gradient-card-${(idx%5) + 1}`]"
+                class="rounded-2xl transition-all cursor-pointer lesson-card  flex flex-col text-white p-2"
                 @click="()=>selectLesson(lesson)"
             >
               <div class="p-2">
@@ -48,25 +48,23 @@ const selectLesson = (v)=>{
                 </p>
               </div>
               <n-divider class="my-1!" />
-              <n-button-group size="small" class="p-2 overflow-hidden">
-                <n-button :type="TopicUtils.getMediaProperty(TopicUtils.EXAM).type" tertiary>
+              <div class="flex justify-between">
+                <n-button type="error" tertiary>
                   <template #icon>
-                    <n-icon :color="TopicUtils.getMediaProperty(TopicUtils.EXAM).color"
-                            :component="TopicUtils.getMediaProperty(TopicUtils.EXAM).icon"/>
+                    <component class="text-white" :is="TopicUtils.getMediaProperty(TopicUtils.EXAM).icon" />
                   </template>
-                  <span class="font-bold">{{ lesson.exams.length }}</span>
+                  <span class="font-bold text-white">{{ lesson.exams.length }}</span>
                 </n-button>
-                <n-button :type="TopicUtils.getMediaProperty(TopicUtils.RESOURCE).type" tertiary>
+                <n-button type="default" tertiary>
                   <template #icon>
-                    <n-icon :color="TopicUtils.getMediaProperty(TopicUtils.RESOURCE).color"
-                            :component="TopicUtils.getMediaProperty(TopicUtils.RESOURCE).icon"/>
+                    <component class="text-white" :is="TopicUtils.getMediaProperty(TopicUtils.RESOURCE).icon"/>
                   </template>
-                  <span class="font-bold">{{ lesson.files.reduce((prev, curr) => prev + curr.items.length, 0) }}</span>
+                  <span class="font-bold text-white">{{ lesson.files.reduce((prev, curr) => prev + curr.items.length, 0) }}</span>
                 </n-button>
-                <n-button type="warning" tertiary>
-                  {{ lesson.type.name }}
-                </n-button>
-              </n-button-group>
+              </div>
+              <p class="line-clamp-1">
+                {{ lesson.type.name }}
+              </p>
             </div>
           </template>
         </div>
@@ -84,16 +82,3 @@ const selectLesson = (v)=>{
 
   </n-spin>
 </template>
-<style lang="scss" scoped>
-.lesson-card {
-  background: rgba(31, 65, 174, 0.04);
-
-  &:hover {
-    background: rgba(31, 65, 174, 0.09);
-  }
-}
-
-.active-lesson {
-  background: #2357ed1a;
-}
-</style>

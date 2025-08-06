@@ -36,7 +36,7 @@ const lesson = computed(()=>{
 </script>
 
 <template>
-  <n-spin :show="examStore.loading || fileStore.loading" class="h-full bg-surface-section rounded-md">
+  <n-spin :show="examStore.loading || fileStore.loading" class="h-full bg-surface-section">
     <div class="h-full flex flex-col">
       <div class="flex justify-between border-b border-surface-line py-3 px-4 items-center">
         <p class="text-2xl font-bold text-textColor0">{{lesson?.name}}</p>

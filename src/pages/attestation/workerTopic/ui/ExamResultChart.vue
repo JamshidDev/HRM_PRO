@@ -77,8 +77,8 @@ const option = ref({
 
 const colors = [
   '#E53835',
-  '#859322',
-  '#ecb28d',
+  '#7440FD',
+  '#FE9D1D',
   '#0ded6f',
 ]
 
