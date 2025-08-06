@@ -9,15 +9,15 @@ const _start_exam = async (payload)=>{
 }
 
 const _finish_exam = async (payload)=>{
-    return await axios.get(`/v1/exam/worker-exams/${payload.id}/finished`, {headers: {'active_token': payload.token}})
+    return await axios.get(`/v1/exam/worker-exams/${payload.id}/finished`, {headers: {'active-token': payload.token}})
 }
 
 const _continue_exam = async (payload)=>{
-    return await axios.get(`/v1/exam/worker-exams/${payload.id}/continue`, {headers: {'active_token': payload.token}})
+    return await axios.get(`/v1/exam/worker-exams/${payload.id}/continue`, {headers: {'active-token': payload.token}})
 }
 
 const _send_result = async (payload)=>{
-    return await axios.post(`/v1/exam/worker-exams/${payload.id}/send-result/${payload.questionId}`,payload.data, {headers: {'active_token': payload.token}})
+    return await axios.post(`/v1/exam/worker-exams/${payload.id}/send-result/${payload.questionId}`,payload.data, {headers: {'active-token': payload.token}})
 }
 
 const _get_attempt = async (payload)=>{
