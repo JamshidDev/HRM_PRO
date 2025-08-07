@@ -43,8 +43,61 @@ export const useTopicExamStore = defineStore('topicExamStore', {
         },
         positionList:[],
         positionLoading:false,
+
+        workerParams:{
+            page:1,
+            per_page:50,
+            search:null,
+        },
+        workerLoading:false,
+        totalWorker:0,
+        workerList:[],
+
     }),
     actions:{
+        onOpenWorkerEv(v){
+            if(!v) return
+            this.workerParams.search=null
+            this.workerParams.page=1
+            this._workers()
+        },
+        _workers(infinity=false){
+            this.workerLoading = true
+            let params ={
+                ...this.workerParams,
+            }
+            $ApiService.topicExamService._worker({params, id: this.topicId}).then((res)=>{
+                let data = res.data.data.data.map((v)=>({
+                    ...v,
+                    name:v.worker.last_name + ' '+v.worker.first_name+' '+v.worker.middle_name,
+                    position:v.position?.name,
+                    id:v.id,
+                    photo: v.worker?.photo
+                }))
+                this.totalWorker =res.data.data.total
+                if(infinity){
+                    this.workerList =[...this.workerList, ...data]
+                }else{
+                    this.workerList = data
+                }
+
+            }).finally(()=>{
+                this.workerLoading = false
+            })
+        },
+        onSearchWorker(v){
+            this.workerParams.page = 1
+            this.workerParams.search = v
+            Utils.debouncedFn(this._workers)
+        },
+        onScrollWorker(e){
+            const currentTarget = e.currentTarget;
+            if(currentTarget.scrollTop + currentTarget.offsetHeight >= currentTarget.scrollHeight && !this.workerLoading && this.totalWorker>this.workerList.length){
+                this.workerParams.page +=1
+                this._workers(true)
+            }
+        },
+
         _position(){
             this.positionLoading= true
             $ApiService.topicExamService._position({params:{page:1, per_page:1000}, id: this.topicId}).then((res)=>{

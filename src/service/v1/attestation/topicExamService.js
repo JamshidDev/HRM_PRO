@@ -8,6 +8,10 @@ const _position =async (payload)=>{
     return await axios.get(`/v1/exam/topics/${payload.id}/positions`, {params:payload.params})
 }
 
+const _worker =async (payload)=>{
+    return await axios.get(`/v1/exam/topics/${payload.id}/workers`, {params:payload.params})
+}
+
 const _create = async (payload)=>{
     return await axios.post(`/v1/exam/topics/${payload.id}/exams`, payload.data)
 }
@@ -41,4 +45,5 @@ export default {
     _attach_category,
     _get_attached_category,
     _position,
+    _worker,
 }

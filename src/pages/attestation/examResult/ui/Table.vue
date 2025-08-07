@@ -1,5 +1,5 @@
 <script setup>
-import {UIUser, UIPagination, UIMenuButton, NoDataPicture} from "@/components/index.js";
+import {UIUser, UIPagination, UIMenuButton, NoDataPicture, UIStatus, UIBadge} from "@/components/index.js"
 import {useExamAttemptStore, useTopicExamResultStore} from "@/store/modules/index.js";
 import Utils from "@/utils/Utils.js";
 
@@ -20,6 +20,15 @@ const onSelectEv = (v)=>{
   }
 }
 
+
+const resultClass = (allQuestion,correctAnswerCount)=>{
+  const percent = (correctAnswerCount/allQuestion)*100
+  if(percent>=86) return 'bg-success/80!'
+  if(percent>=56) return 'bg-warning/80!'
+  return 'bg-danger/80!'
+}
+
+
 </script>
 <template>
   <n-spin :show="store.loading" >
@@ -31,27 +40,27 @@ const onSelectEv = (v)=>{
     >
       <thead>
         <tr>
-          <th class="text-center!">{{$t('content.number')}}</th>
+          <th class="text-center! w-[40px] min-w-[40px]">{{$t('content.number')}}</th>
           <th>
             {{$t('content.worker')}}
           </th>
           <th>
+            {{$t('examPage.topic')}}
+          </th>
+          <th class="w-[300px]">
             {{$t('solveExamPage.exam')}}
           </th>
-          <th>
+          <th class="w-[200px]">
+            {{$t('content.type')}}
+          </th>
+          <th class="w-[140px] min-w-[140px]">
             {{$t('examPage.startTime')}}
           </th>
-          <th>
+          <th class="w-[140px] min-w-[140px]">
             {{$t('examPage.endTime')}}
           </th>
-          <th>
+          <th class="w-[60px] ">
             {{$t('examPage.result')}}
-          </th>
-          <th>
-            {{$t('examPage.ip')}}
-          </th>
-          <th>
-            {{$t('examPage.device')}}
           </th>
           <th></th>
         </tr>
@@ -68,28 +77,34 @@ const onSelectEv = (v)=>{
               middleName: result.worker.middle_name,
             }"
           /></td>
+          <td class="w-[360px]">
+           <UIBadge :show-icon="false" :label="result.topic?.name" :type="Utils.colorTypes.dark" />
+          </td>
           <td>
             {{result.exam?.name}}
           </td>
           <td>
-            <n-tag round size="small" type="warning">
-              {{Utils.timeWithMonth(result?.created)}}
-            </n-tag>
 
+            <n-tag round size="small">
+              {{result.topic?.type?.name}}
+            </n-tag>
           </td>
           <td>
-            <n-tag v-if="result?.ended" round size="small" type="warning">
+            <n-tag round size="small" type="primary">
+              {{Utils.timeWithMonth(result?.created)}}
+            </n-tag>
+          </td>
+          <td>
+            <n-tag v-if="result?.ended" round size="small" type="error">
               {{Utils.timeWithMonth(result?.ended)}}
             </n-tag>
           </td>
           <td class="text-center">
-            <n-tag v-if="typeof result?.result ==='number' " round>{{result?.result}}</n-tag>
-          </td>
-          <td>
-            {{result.ip_address}}
-          </td>
-          <td>
-            {{result.user_agent}}
+            <template v-if="result?.result">
+              <n-tag class="text-white! rounded-2xl! w-[32px] h-[32px]! justify-center" :class="resultClass(result.exam?.tests_count, result.result)" round>
+                {{result?.result}}</n-tag>
+            </template>
+
           </td>
           <td>
             <UIMenuButton

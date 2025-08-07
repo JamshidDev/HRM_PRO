@@ -36,7 +36,7 @@ const onChange = ()=>{
   if(store.payload.whom === 2){
     store._position()
   }else if(store.payload.whom === 3){
-    componentStore._workers()
+    store._workers()
   }
 }
 
@@ -146,11 +146,16 @@ const onChange = ()=>{
             <n-select
                 v-model:value="store.payload.whom_ids"
                 filterable
+                clearable
                 :placeholder="$t('content.searchWorker')"
-                :options="componentStore.workerList"
+                :options="store.workerList"
+                @scroll="store.onScrollWorker"
+                @search="store.onSearchWorker"
                 label-field="name"
                 value-field="id"
-                :loading="componentStore.workerLoading"
+                :render-label="UIHelper.selectRender.label"
+                :render-tag="UIHelper.selectRender.value"
+                :loading="store.workerLoading"
                 multiple
             />
           </n-form-item-gi>

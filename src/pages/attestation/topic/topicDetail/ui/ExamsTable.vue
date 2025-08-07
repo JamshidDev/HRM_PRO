@@ -87,7 +87,7 @@ const updateStatus = (exam) => {
                           label: $t('topicDetailsPage.questions.name'),
                           key: 'attach_question',
                           icon: BookQuestionMark20Filled,
-                          visible:true,
+                          visible:true
                         },
                     ]"
                     :show-delete="true"

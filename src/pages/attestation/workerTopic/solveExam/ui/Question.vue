@@ -28,7 +28,7 @@ const sendResult = (question_id, option_id) => {
   >
     <p>{{number}}.</p>
     <UIEditorViewer :html="question.question"></UIEditorViewer>
-    <n-divider/>
+    <n-divider class="mb-0!"/>
     <template
         v-for="(option, idx) in question.answers"
         :key="idx"

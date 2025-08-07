@@ -44,7 +44,7 @@ const renderTargetTransferLabel = (option) => {
         class: "flex justify-between items-center pr-2"
       },
       [
-        h('span', {}, option.option.label),
+        h('p', {class:'line-clamp-1 w-full',}, option.option.label),
         h(NFormItem, {
               showLabel: false,
               showFeedback: false
@@ -59,7 +59,7 @@ const renderTargetTransferLabel = (option) => {
                   return i
                 })
               },
-              style: "width: 80px",
+              style: "width:80px; min-width:80px",
               size: "small",
               placeholder: '',
               defaultValue: (()=>store.categoryPayload.categories.find(i=>i.exam_category_id===option.option.value)?.count)(),
