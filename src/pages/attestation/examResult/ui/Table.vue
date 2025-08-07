@@ -44,7 +44,7 @@ const resultClass = (allQuestion,correctAnswerCount)=>{
           <th>
             {{$t('content.worker')}}
           </th>
-          <th>
+          <th class="w-[200px]">
             {{$t('examPage.topic')}}
           </th>
           <th class="w-[300px]">
@@ -77,17 +77,26 @@ const resultClass = (allQuestion,correctAnswerCount)=>{
               middleName: result.worker.middle_name,
             }"
           /></td>
-          <td class="w-[360px]">
-           <UIBadge :show-icon="false" :label="result.topic?.name" :type="Utils.colorTypes.dark" />
+          <td>
+            <n-tooltip trigger="hover">
+              <template #trigger>
+                <p class="w-[200px] line-clamp-1 border rounded-lg
+             border-surface-line px-1 bg-dark/4 cursor-pointer">{{result.topic?.name}}</p>
+              </template>
+              {{result.topic?.name}}
+            </n-tooltip>
           </td>
           <td>
             {{result.exam?.name}}
           </td>
           <td>
-
-            <n-tag round size="small">
+            <n-tooltip trigger="hover">
+              <template #trigger>
+                <p class="w-[200px] line-clamp-1 border rounded-lg
+             border-surface-line px-1 bg-dark/4 cursor-pointer">{{result.topic?.type?.name}}</p>
+              </template>
               {{result.topic?.type?.name}}
-            </n-tag>
+            </n-tooltip>
           </td>
           <td>
             <n-tag round size="small" type="primary">
@@ -100,8 +109,8 @@ const resultClass = (allQuestion,correctAnswerCount)=>{
             </n-tag>
           </td>
           <td class="text-center">
-            <template v-if="result?.result">
-              <n-tag class="text-white! rounded-2xl! w-[32px] h-[32px]! justify-center" :class="resultClass(result.exam?.tests_count, result.result)" round>
+            <template v-if="typeof result?.result === 'number'">
+              <n-tag :bordered="false" class="text-white! rounded-2xl! w-[32px] h-[32px]! justify-center" :class="resultClass(result.exam?.tests_count, result.result)" round>
                 {{result?.result}}</n-tag>
             </template>
 
