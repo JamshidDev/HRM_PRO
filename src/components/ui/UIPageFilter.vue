@@ -41,9 +41,13 @@ const searchModel = defineModel("search",{type:String,default:null })
 
 const emits = defineEmits(['onAdd', 'onSearch', 'onClear', 'show',])
 
-const searchEvent = useDebounceFn(() => {
-  emits('onSearch', searchModel.value )
-}, 300, )
+let timeout = null
+const searchEvent = ()=>{
+  clearTimeout(timeout)
+  timeout = setTimeout(()=>{
+    emits('onSearch', searchModel.value )
+  },1000)
+}
 
 
 const addEvent = ()=>{
@@ -59,12 +63,14 @@ const addEvent = ()=>{
     <div class="flex flex-col md:flex-row gap-4">
       <div class="w-full md:max-w-[200px] flex items-start">
         <n-input
-            class="w-full md:max-w-[200px]! md:w-full!"
+            clearable
+            class="w-full md:max-w-[200px]! md:w-full! skip-format"
             v-if="showSearchInput"
             v-model:value="searchModel"
             type="text"
             :placeholder="$t('content.search')"
             :on-keyup="searchEvent"
+            @clear="searchEvent"
             :loading="searchLoading"
         >
           <template #suffix>

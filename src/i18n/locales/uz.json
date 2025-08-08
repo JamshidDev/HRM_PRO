@@ -1,5 +1,6 @@
 {
   "content": {
+    "deleted": "O'chirilgan",
     "files": "Fayllar",
     "deadline": "Yakunlanish vaqti",
     "requiredField": "Maydon to'ldirilishi shart!",
@@ -8,6 +9,7 @@
     "delete": "O'chirish",
     "view": "Ko'rish",
     "copy": "Nusxalash",
+    "category": "Kategoriya",
     "download": "Yuklash",
     "attachment": "Biriktirish",
     "no-data": "Ma'lumot yo'q",
@@ -1091,6 +1093,12 @@
 
 
   "examPage": {
+    "downloadResult": "Natijalarni yuklash",
+    "downloadNotPassed": "Qatnashmaganlarni yuklash",
+    "showDeleted": "O'chirilganlarni ko'rsatish",
+    "deletedResult": "O'chirilgan imtihon natijasi",
+    "finishedProcess": "Tugatish",
+    "finishedDescription": "Yakunlash vaqtidan o'tgan imtixonlarni yakunlash",
     "name": "Imtihonlar",
     "history": "Imtihon tarixi",
     "topic": "Mavzu",

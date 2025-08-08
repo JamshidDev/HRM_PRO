@@ -63,7 +63,6 @@ export const useWorkerStore = defineStore('workerStore', {
         _show(){
             this.loading= true
             $ApiService.workerService._index({id:this.elementId}).then((res)=>{
-                console.log(res.data.data)
             }).finally(()=>{
                 this.loading= false
             })

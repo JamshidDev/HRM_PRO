@@ -79,6 +79,7 @@ const clearFilter = () => {
   store.params.current_region_id = null
   store.params.current_city_id = null
   store.params.marital_status = null
+  store.params.ages=[1,100]
   filterEvent()
 }
 
@@ -234,7 +235,6 @@ const defaultEv = (v)=>{
           class="w-full! md:w-auto!"
           type="success"
           icon-placement="right"
-
           @click="onExport"
       >
         <template #icon>
@@ -257,7 +257,6 @@ const defaultEv = (v)=>{
         </template>
         {{ $t('workerPage.filter.contract') }}
       </n-button>
-
     </template>
 
     <template #filterContent>
@@ -476,7 +475,6 @@ const defaultEv = (v)=>{
                 :ignore-composition="false"
                 :loading="store.currentDistrictLoading"
                 @update:value="filterEvent"
-
             />
           </div>
 

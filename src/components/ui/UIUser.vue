@@ -30,6 +30,10 @@ const props = defineProps({
   hideTooltip: {
     type: Boolean,
     default: false
+  },
+  overLine:{
+    type: Boolean,
+    default: false
   }
 })
 
@@ -63,7 +67,7 @@ const onOpen = ()=>{
           trigger="hover"
       >
         <template #trigger>
-          <span class="text-sm text-textColor2 line-clamp-1 w-full leading-[1.2]">{{short? shortName:fullName}}</span>
+          <span :class="[overLine && 'line-through']" class="text-sm text-textColor2 line-clamp-1 w-full leading-[1.2] ">{{short? shortName:fullName}}</span>
         </template>
         <span>{{fullName}}</span>
       </n-tooltip>

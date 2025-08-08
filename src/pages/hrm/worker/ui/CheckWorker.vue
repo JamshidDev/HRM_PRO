@@ -70,6 +70,7 @@ const onContinue = ()=>{
                clearable
                v-mask="`####-####-####-##`"
                type="text"
+               :placeholder="$t('content.pin')"
 
            >
              <template #prefix>
