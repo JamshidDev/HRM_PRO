@@ -74,6 +74,10 @@ onMounted(()=>{
     componentStore._structures()
   }
   store._levels()
+
+  if(store.departmentList.length===0){
+    store._department()
+  }
 })
 </script>
 
@@ -166,6 +170,19 @@ onMounted(()=>{
               v-model:value="store.payload.access_level_id"
               :options="store.levelList"
               :loading="store.levelLoading"
+              label-field="name"
+              value-field="id"
+          />
+        </n-form-item>
+        <n-form-item
+            :label="$t(`hcServer.form.department`)"
+            path="department"
+            :rule-path="validationRules.rulesNames.requiredNumberField">
+          <n-select
+              filterable
+              v-model:value="store.payload.department"
+              :options="store.departmentList"
+              :loading="store.departmentLoading"
               label-field="name"
               value-field="id"
           />

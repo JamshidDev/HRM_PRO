@@ -222,7 +222,7 @@ const controlFilter =(v)=>{
             clearable />
       </div>
       <div class="col-span-2">
-        <n-button type="success" class="!mt-5 !w-full">
+        <n-button @click="store._download()" :loading="store.previewLoading" type="success" class="!mt-5 !w-full">
           {{$t('content.download')}}
           <template #icon>
             <ArrowCircleDown48Regular/>

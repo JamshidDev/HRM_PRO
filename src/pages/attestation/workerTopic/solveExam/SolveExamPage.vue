@@ -5,7 +5,7 @@ import {useExamAttemptStore} from "@/store/modules";
 import QuestionCard from './ui/Question.vue'
 import Utils from "@/utils/Utils.js";
 import VueCountdown from '@chenfengyuan/vue-countdown'
-import {Flag20Filled, ShieldError16Filled, ArrowStepBack16Regular, DocumentRibbon20Regular} from "@vicons/fluent";
+import {ChevronCircleLeft32Regular, ShieldError16Filled, ArrowStepBack16Regular, DocumentRibbon20Regular} from "@vicons/fluent";
 import dayjs from "dayjs";
 import {AppPaths, useAppSetting} from "@/utils/index.js"
 
@@ -41,6 +41,11 @@ const goBack = ()=>{
   router.push(Utils.routeAttestationPathMaker(AppPaths.Exam))
 }
 
+const onChangeVisible = (v)=>{
+  if(!v && !store.result)  return
+  goBack()
+}
+
 onUnmounted(()=>{
   store.result=null
 })
@@ -52,6 +57,8 @@ onUnmounted(()=>{
         :title="store?.result ? $t('examPage.result') : $t('content.warning')"
         :width="500"
         v-model:visible="endWarningVisible"
+        @update:visible="onChangeVisible"
+        :persistent="true"
     >
       <n-spin :show="store.finishLoading">
         <div class="flex flex-col gap-3" v-if="!store.result">
@@ -79,7 +86,7 @@ onUnmounted(()=>{
               <n-icon :component="DocumentRibbon20Regular" />
             </template>
           </n-button>
-          <h3 class="text-xl font-bold">{{$t('examPage.endSub', {n: store.result.result})}}</h3>
+          <h3 class="text-xl font-bold">{{$t('examPage.endSub', {n: store.result?.result})}}</h3>
           <p class="text-primary">{{$t('examPage.endHead')}}</p>
         </div>
       </n-spin>
@@ -212,12 +219,11 @@ onUnmounted(()=>{
                 block
                 size="large"
                 tertiary
-                type="success"
                 v-else
             >
               {{$t('content.return')}}
               <template #icon>
-                <n-icon :component="ArrowStepBack16Regular" />
+                <n-icon :component="ChevronCircleLeft32Regular" />
               </template>
             </n-button>
           </div>

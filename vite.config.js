@@ -29,10 +29,13 @@ export default defineConfig({
           ],
         },
       ],
-      dts: "auto-imports.d.ts",
+      // dts: "auto-imports.d.ts",
     }),
   ],
   server:{
     port:8000,
+    watch: {
+      ignored: ['dist/**', 'auto-imports.d.ts']  // dist ni kuzatmaydi
+    }
   },
 })

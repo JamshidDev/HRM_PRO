@@ -12,6 +12,10 @@ const _accessLevels = async (payload)=>{
     return await axios.get(`/v1/turnstile/hik-central/workers/access-levels`, {params:payload?.params})
 }
 
+const _department = async (payload)=>{
+    return await axios.get(`/v1/turnstile/hik-central/groups`, {params:payload?.params})
+}
+
 
 
 
@@ -20,4 +24,5 @@ export default {
     _syncToServer,
     _exportedJob,
     _accessLevels,
+    _department,
 }

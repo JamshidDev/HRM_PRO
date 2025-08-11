@@ -3,10 +3,10 @@ import LangDropdown from "@/components/general/LangDropdown.vue";
 import {UIProfile, UIThemeSwitch} from "@/components/index.js"
 import AIButtonV2 from "@/components/buttons/AIButtonV2.vue"
 import {AppPaths} from "@/utils/index.js"
-import {Alert20Regular, ChevronDoubleRight16Filled} from "@vicons/fluent"
+import {Alert20Regular, ChevronDoubleRight16Filled, WifiWarning24Regular} from "@vicons/fluent"
 import {useAccountStore} from "@/store/modules/index.js"
 import Utils from "@/utils/Utils.js"
-
+import axios from "axios"
 const emits = defineEmits(["onChange"])
 const router = useRouter()
 const store = useAccountStore()
@@ -18,7 +18,20 @@ const {appPermissions} = Utils
 
 const notification = ref(0)
 
-
+const loading = ref(false)
+const deployProject = ()=>{
+  loading.value = true
+  axios.get('http://localhost:9000/api/deploy')
+      .then((res)=>{
+        $Toast.success(res.data.message)
+      })
+      .catch((err)=>{
+        console.log(err)
+      })
+      .finally(()=>{
+    loading.value = false
+  })
+}
 </script>
 
 <template>
@@ -44,6 +57,12 @@ const notification = ref(0)
 
   </div>
   <div class="flex justify-end items-center gap-4">
+    <n-button type="error" v-if="store.isModeDev" @click="deployProject" :loading="loading">
+     <span class="hidden md:inline-block"> Build vs Deploy</span>
+      <template #icon>
+        <WifiWarning24Regular/>
+      </template>
+    </n-button>
     <n-badge
         class="!hidden md:flex"
         :value="notification" :max="15" type="info">
@@ -58,7 +77,3 @@ const notification = ref(0)
   </div>
 </div>
 </template>
-
-<style scoped>
-
-</style>

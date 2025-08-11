@@ -24,9 +24,18 @@ onMounted(() => {
   }
 })
 
+let timeout = null
 const selectLesson = (v)=>{
   if(!accStore.checkAction(accStore.pn.examExamsRead)) return
   store.selectedLesson = v
+
+  clearTimeout(timeout)
+  timeout = setTimeout(()=>{
+   document.getElementById('mainContent').scrollTo({
+     top: document.body.scrollHeight,
+     behavior: 'smooth'
+   })
+ },200)
 }
 
 </script>
@@ -34,16 +43,16 @@ const selectLesson = (v)=>{
 <template>
   <n-spin :show="store.loading" class="h-full rounded-md p-1">
     <div class="h-full flex flex-col">
-      <div v-if="store.list.length>0" class="overflow-y-auto grow basis-auto p-4">
-        <div class="grid grid-cols-[repeat(auto-fill,minmax(330px,345px))] gap-2">
+      <div v-if="store.list.length>0" class="overflow-y-auto grow basis-auto lg:p-4 p-2">
+        <div class="grid grid-cols-12 gap-2">
           <template v-for="(lesson, idx) in store.list" :key="idx">
             <div
                 :class="['active-lesson' && store?.elementId===lesson.id, `bg-gradient-card-${(idx%5) + 1}`]"
-                class="rounded-2xl transition-all cursor-pointer lesson-card  flex flex-col text-white p-2"
+                class="rounded-2xl lg:col-span-3 md:col-span-6 col-span-12 transition-all cursor-pointer lesson-card  flex flex-col text-white p-2"
                 @click="()=>selectLesson(lesson)"
             >
               <div class="p-2">
-                <p class="text-lg font-semibold">
+                <p class="text-lg font-semibold line-clamp-1">
                   {{ lesson.name }}
                 </p>
               </div>

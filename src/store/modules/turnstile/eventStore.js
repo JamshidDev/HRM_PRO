@@ -101,6 +101,23 @@ export const useEventStore = defineStore('eventStore', {
 
     }),
     actions: {
+        _download(){
+            this.previewLoading = true
+            const params = {
+                ...this.previewParams,
+                organizations:this.previewParams.organizations.map(v=>v.id).toString() || undefined,
+                access_levels:this.previewParams.access_levels.toString() || undefined,
+                start_date_and_time:Utils.timeWithMonth(this.previewParams.start_date_and_time),
+                end_date_and_time:Utils.timeWithMonth(this.previewParams.end_date_and_time),
+                download:1,
+            }
+            $ApiService.eventService._download({params}).then((res) => {
+                console.log(res.data)
+                Utils.blobFileDownload(res.data, 'application/vnd.ms-excel', 'Hikcentral.xls')
+            }).finally(() => {
+                this.previewLoading = false
+            })
+        },
         _index() {
             this.loading = true
             const params = {

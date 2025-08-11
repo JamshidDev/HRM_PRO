@@ -64,7 +64,7 @@ const activeTab = ref(0)
 <template>
   <div class="flex flex-col h-full">
     <div class="flex  justify-between border-b border-surface-line p-3 shrink-0">
-      <p class="text-2xl font-semibold">{{ store.selectedLesson?.name }}</p>
+      <p class="text-sm md:text-2xl font-semibold">{{ store.selectedLesson?.name }}</p>
       <n-button color="#747b81" icon-placement="right" quaternary type="tertiary" @click="store.selectedLesson = null">
         {{ $t('content.close') }}
         <template #icon>

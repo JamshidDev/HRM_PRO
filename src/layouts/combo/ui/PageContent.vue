@@ -16,7 +16,7 @@ const onClick = ()=>{
 <AppHeader
     @on-change="onClick"
 />
-  <div class="main-content">
+  <div class="main-content" id="mainContent">
     <router-view v-slot="{ Component }">
       <transition name="slide-right" mode="out-in">
         <component :is="Component" />

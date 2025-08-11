@@ -31,7 +31,7 @@ onMounted(()=>{
 
 <template>
   <div class="mx-2 mt-4 mb-4 rounded flex flex-col gap-3"
-       style="min-height:calc(100vh - 100px);height:calc(100vh - 100px);">
+       style="min-height:calc(100vh - 100px)">
     <n-grid cols="12" class="shrink-0 min-h-[250px]" x-gap="10" item-responsive responsive="screen">
       <n-grid-item class="welcome rounded-lg" span="0 s:8">
         <img alt="stars" class="stars first" :src="stars"/>
@@ -46,8 +46,11 @@ onMounted(()=>{
         <ExamResultChart/>
       </n-grid-item>
     </n-grid>
-    <div class="grow basis-auto overflow-hidden flex gap-3" :style="{gap: store?.selectedLesson ? '12px' : 0}">
-      <div class="grow basis-auto flex flex-col gap-2">
+    <div class="xl:flex grid grid-cols-12" :style="{gap: store?.selectedLesson ? '12px' : 0}">
+      <div
+          :class="[store?.selectedLesson? 'xl:w-[50%] col-span-12' : 'xl:w-[100%] col-span-12']"
+          class="transition-all duration-400"
+      >
         <UIPageFilter 
           v-model:search="store.params.search"
           @on-search="onSearch"
@@ -55,12 +58,12 @@ onMounted(()=>{
           :show-add-button="false" 
           class="shrink-0"
         />
-        <div class="grow basis-auto bg-surface-section rounded-md">
+        <div class="grow basis-auto bg-surface-section rounded-md mt-2">
           <TopicCardList/>
         </div>
       </div>
-      <div :style="{'width': store?.selectedLesson ? '50%' : '0'}"
-           class="transition-all  bg-surface-section rounded-md">
+      <div :class="[store?.selectedLesson? 'xl:w-[50%] col-span-12' : 'w-0!']"
+           class="transition-all duration-400  bg-surface-section rounded-md overflow-hidden xl:mb-0 mb-10">
         <TopicDetail/>
       </div>
     </div>

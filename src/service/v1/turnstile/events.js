@@ -13,6 +13,10 @@ const _preview =async (payload)=>{
 }
 
 
+const _download =async (payload)=>{
+    return await axios.get(`/v1/turnstile/hik-central/dashboard/pereview`,{responseType:"blob", params:payload?.params})
+}
+
 
 
 
@@ -21,4 +25,5 @@ export default {
     _index,
     _dashboard,
     _preview,
+    _download,
 }

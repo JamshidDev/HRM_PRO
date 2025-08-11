@@ -21,6 +21,7 @@ export const useHcServerStore = defineStore('hcServerStore', {
             organization_id: [],
             department_id:null,
             workers: [],
+            department:null,
         },
         params: {
             page: 1,
@@ -42,8 +43,19 @@ export const useHcServerStore = defineStore('hcServerStore', {
         },
         totalWorker:0,
         selectedWorkers:[],
+        departmentList:[],
+        departmentLoading:false,
     }),
     actions: {
+        _department() {
+            this.departmentLoading = true
+            $ApiService.hcServerService._department().then((res) => {
+                console.log(res.data.data)
+                this.departmentList = res.data.data.map((v)=>({...v, name:v.orgName, id:Number(v.orgIndexCode)}))
+            }).finally(() => {
+                this.departmentLoading = false
+            })
+        },
         _index() {
             this.loading = true
             $ApiService.hcServerService._exportedJob({params: this.params}).then((res) => {
@@ -144,6 +156,7 @@ export const useHcServerStore = defineStore('hcServerStore', {
             this.payload.name = null
             this.payload.access_level_id = null
             this.payload.department_id = null
+            this.payload.department = null
             this.payload.workers = []
             this.payload.organization_id = []
 

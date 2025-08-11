@@ -1940,6 +1940,7 @@
     "updateTitle": "Tahrirlash",
     "form": {
       "name": "Nomi",
+      "department": "Bo'linma",
       "access_level_id": "Guruhlar",
       "workers_count": "Xodimlar soni",
       "exported_count": "exported_count",

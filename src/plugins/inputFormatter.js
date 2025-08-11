@@ -18,7 +18,6 @@ export default {
                         };
                         const inputs = this.$el.querySelectorAll('.n-input__input-el:not(.skip-format .n-input__input-el)')
                         inputs.forEach(el => {
-                            console.log(el)
                             el.addEventListener('input', function(event) {
                                 const formattedValue = formatInput(event.target.value);
                                 if (formattedValue !== event.target.value) {
