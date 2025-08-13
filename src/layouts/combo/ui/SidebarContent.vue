@@ -144,11 +144,11 @@ onMounted(() => {
                 <component :is="item.icon"/>
               </n-icon>
             </div>
-            <div class="absolute group-hover:opacity-100 group-hover:left-[50px] transition-all duration-300
-            pointer-events-none opacity-0 w-[100px] h-[24px] bg-dark border border-secondary left-[40px] rounded
-             top-[25px] z-[999] text-center text-secondary">
-              <span class="tooltip-triangle absolute"></span>
-              {{item.label}}
+            <div class="absolute group-hover:opacity-100 group-hover:left-[60px] transition-all duration-300
+            pointer-events-none opacity-0 h-[32px] bg-dark border border-secondary left-[40px] rounded-lg
+             top-[20px] z-[999] text-center text-white flex items-center justify-center text-nowrap px-2">
+              <p class="tooltip-triangle line-clamp-1 absolute font-bold font-poppins"></p>
+              {{$t(item.label)}}
             </div>
           </div>
 
@@ -240,10 +240,10 @@ onMounted(() => {
   width: 0;
   height: 0;
   border-top: 7px solid transparent;
-  border-right: 10px solid #74788d;
+  border-right: 10px solid #020304;
   border-bottom: 7px solid transparent;
   left: -10px;
-  top: 4px;
+  top: 8px;
 
 }
 

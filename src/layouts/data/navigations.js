@@ -29,7 +29,6 @@ import {
     BuildingMultiple24Filled,
     ScanObject24Filled,
     Organization12Filled,
-    CloudArchive20Filled,
     BookDatabase24Regular,
     RibbonStar24Filled,
     PeopleToolbox20Filled,
@@ -62,7 +61,7 @@ const {t} = i18n.global
 
 export const navigations = [
     {
-        label: 'HRM',
+        label: 'navigation.hrm',
         path: AppPaths.Hrm,
         icon: Person32Filled,
         permission: appPermissions.hr,
@@ -241,7 +240,7 @@ export const navigations = [
         ]
     },
     {
-        label: 'Doc Flow',
+        label: 'navigation.docFlow',
         path: '/docflow',
         icon: DocumentPerson16Filled,
         permission: appPermissions.confirmation,
@@ -285,7 +284,7 @@ export const navigations = [
         ]
     },
     {
-        label: 'Attestatsiya',
+        label: 'navigation.attestation',
         path: AppPaths.Attestation,
         icon: PersonNote24Filled,
         permission: appPermissions.exam,
@@ -321,7 +320,7 @@ export const navigations = [
         ]
     },
     {
-        label: 'Turniket',
+        label: 'navigation.turnstile',
         path: AppPaths.Turnstile,
         icon: AccessTime24Filled,
         permission: appPermissions.turnstile,
@@ -399,14 +398,14 @@ export const navigations = [
         ]
     },
     {
-        label: 'General',
+        label: 'navigation.general',
         path: AppPaths.Info,
         icon: SlideMultipleSearch24Filled,
         permission: appPermissions.useful,
         children: []
     },
     {
-        label: 'LMS',
+        label: 'navigation.lms',
         path: AppPaths.Lms,
         icon: HatGraduation24Filled,
         permission: appPermissions.admin,
@@ -449,7 +448,7 @@ export const navigations = [
         ]
     },
     {
-        label: 'Economist',
+        label: 'navigation.economist',
         path: AppPaths.Accountant,
         icon: PeopleMoney24Filled,
         permission: appPermissions.economist,
@@ -513,7 +512,7 @@ export const navigations = [
         ]
     },
     {
-        label: 'Hospital',
+        label: 'navigation.hospital',
         path: AppPaths.Hospital,
         icon: BuildingHome16Filled,
         permission: appPermissions.hospital,
@@ -542,7 +541,7 @@ export const navigations = [
         ]
     },
     {
-        label: 'Admin',
+        label: 'navigation.admin',
         path: AppPaths.Admin,
         icon: LockClosed16Filled,
         permission: appPermissions.admin,

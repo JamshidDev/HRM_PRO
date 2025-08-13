@@ -26,9 +26,49 @@ export const useTurnstileHikCentralStore = defineStore('turnstileHikCentralStore
         payload: {
             organization: [],
             access_levels: [],
-        }
+        },
+        departmentList:[],
+        deviceList:[],
+        deviceLoading:false,
+        depPayload:{
+            hik_central_department_id:null,
+            devices:[],
+        },
+        onlineDeviceList:[],
+        onlineDeviceLoading:false,
+        deviceVisible:false,
+        searchModel:null,
+        originList:[],
+
     }),
     actions: {
+        _department(){
+            this.deviceLoading = true
+            $ApiService.turnstileHikCentralAccessService._departments().then((res) => {
+                this.departmentList = res.data.data.departments
+                this.deviceList = res.data.data.devices
+            }).finally(() => {
+                this.deviceLoading = false
+            })
+        },
+        _onlineDevice(){
+            this.onlineDeviceLoading = true
+            $ApiService.turnstileHikCentralAccessService._devices().then((res) => {
+                this.onlineDeviceList = res.data.data
+                this.originList = res.data.data
+                this.deviceVisible = true
+            }).finally(() => {
+                this.onlineDeviceLoading = false
+            })
+        },
+        _refreshDevice(){
+            this.onlineDeviceLoading = true
+            $ApiService.turnstileHikCentralAccessService._refreshDevices().then((res) => {
+                this._onlineDevice()
+            }).finally(() => {
+                this.onlineDeviceLoading = false
+            })
+        },
         _index_access_levels() {
             this.accessLevelsLoading = true
             $ApiService.turnstileHikCentralAccessService._index({params: this.params}).then((res) => {
@@ -39,11 +79,11 @@ export const useTurnstileHikCentralStore = defineStore('turnstileHikCentralStore
             })
         },
         _sync(){
-            this.syncLoading = true
+            this.accessLevelsLoading = true
             $ApiService.turnstileHikCentralAccessService._sync().then(() => {
                 this._index_access_levels()
             }).finally(() => {
-                this.syncLoading = false
+                this.accessLevelsLoading = false
             })
         },
         _org_access_levels(){
@@ -62,37 +102,23 @@ export const useTurnstileHikCentralStore = defineStore('turnstileHikCentralStore
             }
             $ApiService.turnstileHikCentralAccessService._attach_org_access_levels(data).then((res) => {
                 this.payload.organization[0].access_levels = this.accessLevels.filter(i=>data.access_levels.includes(i.id))
-                console.log(this.orgAccessLevels)
             }).finally(() => {
                 this.saveLoading = false
             })
         },
-        // _create() {
-        //     this.saveLoading = true
-        //     let data = {
-        //         ...this.payload,
-        //     }
-        //     $ApiService.turnstileBuildingService._create({data}).then((res) => {
-        //         this.visible = false
-        //         this._index()
-        //
-        //     }).finally(() => {
-        //         this.saveLoading = false
-        //     })
-        // },
-        // _update() {
-        //     this.saveLoading = true
-        //     let data = {
-        //         ...this.payload,
-        //     }
-        //     $ApiService.turnstileBuildingService._update({data, id: this.elementId}).then((res) => {
-        //         this.visible = false
-        //         this._index()
-        //
-        //     }).finally(() => {
-        //         this.saveLoading = false
-        //     })
-        // },
+        _update() {
+            this.saveLoading = true
+            let data = {
+                ...this.depPayload,
+            }
+            $ApiService.turnstileHikCentralAccessService._update({data, id: this.elementId}).then((res) => {
+                this.visible = false
+                this._index_access_levels()
+
+            }).finally(() => {
+                this.saveLoading = false
+            })
+        },
         // _delete() {
         //     this.deleteLoading = true
         //     $ApiService.turnstileBuildingService._delete({id: this.elementId}).then((res) => {

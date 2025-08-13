@@ -1,7 +1,10 @@
 <script setup>
-import {UIDrawer, UIPageContent, UIPageFilter} from "@/components/index.js"
+import {UIPageContent, UIPageFilter,UIModal} from "@/components/index.js"
 import Table from "./ui/Table.vue"
+import createForm from "./ui/createForm.vue"
+import deviceForm from "./ui/deviceForm.vue"
 import {useTurnstileHikCentralStore, useAccountStore} from "@/store/modules/index.js";
+import {ArrowSync24Filled} from "@vicons/fluent"
 
 const store = useTurnstileHikCentralStore()
 const accStore = useAccountStore()
@@ -35,21 +38,36 @@ onMounted(()=>{
         @onSearch="onSearch"
     >
       <template #filterAction>
-        <n-button :loading="store.syncLoading" @click="onSync" type="primary">
+        <n-button :loading="store.onlineDeviceLoading" @click="store._onlineDevice()" type="success">
+          {{$t('turnstile.hcWorkersPage.device')}}
+          <template #icon>
+            <ArrowSync24Filled/>
+          </template>
+        </n-button>
+        <n-button :loading="store.accessLevelsLoading" @click="onSync" type="primary">
+                      <template #icon>
+                        <ArrowSync24Filled/>
+                      </template>
           {{$t('turnstile.accessLevelPage.sync')}}
         </n-button>
       </template>
     </UIPageFilter>
     <Table/>
-<!--    <UIDrawer-->
-<!--        :width="300"-->
-<!--        :visible="store.visible"-->
-<!--        @update:visible="(v)=>store.visible = v"-->
-<!--        :title="store.visibleType? $t('turnstile.buildingPage.create') : $t('turnstile.buildingPage.edit')"-->
-<!--    >-->
-<!--      <template #content>-->
-<!--        <Form/>-->
-<!--      </template>-->
-<!--    </UIDrawer>-->
+    <UIModal
+        :width="420"
+        :visible="store.visible"
+        @update:visible="(v)=>store.visible = v"
+        :title="$t('content.edit')"
+    >
+      <createForm/>
+    </UIModal>
+    <UIModal
+        width="600px"
+        :visible="store.deviceVisible"
+        @update:visible="(v)=>store.deviceVisible = v"
+        :title="$t('turnstile.hcWorkersPage.device')"
+    >
+      <deviceForm/>
+    </UIModal>
   </UIPageContent>
 </template>

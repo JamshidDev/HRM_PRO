@@ -4,6 +4,7 @@ import AppSidebar from "@/layouts/Main/AppSidebar.vue";
 import AppHeader from "@/layouts/Main/AppHeader.vue";
 import {useAccountStore} from "@/store/modules/app/accountStore.js";
 import i18n from "@/i18n/index.js";
+import {useAppSetting} from "@/utils/index.js"
 const store = useAccountStore()
 
 
@@ -16,7 +17,7 @@ const controlSidebar=(v)=>{
 }
 
 const initialApp = ()=>{
-  i18n.global.locale = localStorage.getItem('applicationLang') || 'uz'
+  i18n.global.locale = localStorage.getItem(useAppSetting.languageKey) || useAppSetting.defaultLanguage
   store._index()
 }
 

@@ -1,0 +1,69 @@
+<script setup>
+import {useTurnstileHikCentralStore} from "@/store/modules/index.js"
+import {ArrowSync24Filled, DeviceEq24Filled, Search48Filled} from "@vicons/fluent"
+const store = useTurnstileHikCentralStore()
+
+const onSearchEv = () => {
+  let query =store.searchModel.toString().trim().toLowerCase()
+  if(!Boolean(query)){
+    store.onlineDeviceList = store.originList
+    return
+  }
+  store.onlineDeviceList = store.originList.filter(v=>v.name.toLowerCase().includes(query))
+}
+</script>
+
+<template>
+<div class="w-full h-[calc(100vh-200px)] overflow-auto">
+  <n-spin :show="store.onlineDeviceLoading">
+    <div class="grid grid-cols-12 gap-4">
+      <div class="col-span-12 md:col-span-6">
+        <n-input
+            v-model:value="store.searchModel"
+            class="w-full skip-format"
+            :placeholder="$t('content.search')"
+            :on-keyup="onSearchEv"
+            :loading="store.onlineDeviceLoading"
+        >
+          <template #suffix>
+            <n-icon :component="Search48Filled" />
+          </template>
+        </n-input>
+      </div>
+      <div class="col-span-12 md:col-span-6 flex justify-end">
+        <n-button type="primary" @click="store._refreshDevice()" :loading="store.onlineDeviceLoading">
+          {{$t('content.refresh')}}
+          <template #icon>
+            <ArrowSync24Filled/>
+          </template>
+        </n-button>
+      </div>
+
+      <template v-for="item in store.onlineDeviceList" :key="item.id">
+        <div class="col-span-12 md:col-span-6
+         gap-x-4 flex flex-col items-center border border-surface-line px-4
+         py-2 rounded-lg bg-gradient-to-b from-secondary/50 to-surface-section to-84%">
+          <n-icon size="60" class="text-secondary opacity-60 mb-10">
+            <DeviceEq24Filled/>
+          </n-icon>
+          <div class="w-full flex flex-col">
+            <p class="line-clamp-1 text-lg text-center font-medium mb-2!">{{item.name}}</p>
+            <n-button size="small" dashed>
+               <span class="text-xs flex items-center gap-2" :class="[Boolean(item.status)? 'text-success' : 'text-secondary']">
+                   <span class="relative flex size-3">
+  <span :class="[Boolean(item.status)? 'animate-ping bg-success/90' : 'bg-secondary/90']" class="absolute inline-flex h-full w-full  rounded-full  opacity-75"></span>
+  <span :class="[Boolean(item.status)? 'bg-success' : 'bg-secondary']" class="relative inline-flex size-3 rounded-full"></span>
+</span>
+                 {{item.status ===1? 'Online' : 'Offline'}}</span>
+            </n-button>
+          </div>
+        </div>
+      </template>
+      <template v-if="store.onlineDeviceList.length === 0">
+        <div class="col-span-12 text-secondary text-center">{{$t('content.no-data')}}</div>
+      </template>
+    </div>
+  </n-spin>
+
+</div>
+</template>

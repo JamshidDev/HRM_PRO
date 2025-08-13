@@ -92,6 +92,7 @@ const directionList = [
       <n-select
           multiple
           clearable
+          filterable
           v-model:value="store.params.access_levels"
           :options="store.levelList"
           :loading="store.levelLoading"

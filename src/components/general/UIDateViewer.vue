@@ -4,7 +4,7 @@ import Utils from "@/utils/Utils.js"
 const showDate = ref(true)
 defineProps({
   date:{
-    type:Date,
+    type:String,
     default:null
   }
 })

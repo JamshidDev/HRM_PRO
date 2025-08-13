@@ -557,8 +557,6 @@
       }
     }
   },
-
-
   "signature": {
     "keyType": "Foydalanuvchi turi",
     "inn": "STIR",
@@ -1129,7 +1127,7 @@
     "endTime": "Yakunlangan vaqt",
     "leftAttempts": "Qolgan urunishlar",
     "endHead": "Imtihon yakunlandi!",
-    "endSub": "Siz {n} ball oldingiz.",
+    "endSub": "Siz to'plagan ball",
     "ip": "Ip manzil",
     "wrongAnswer": "Javob noto'g'ri",
     "notChosen": "Javob belgilanmagan",
@@ -1402,6 +1400,7 @@
       "name": "(HC) Guruhlar",
       "deviceCount": "Qurilmalar soni",
       "sync": "Sinxronlash",
+      "syncDepartment": "Bo'limlarni sinxronlash",
       "server": "Server"
     },
     "orgAccessLevelsPage": {
@@ -1412,7 +1411,9 @@
       "name": "(HC) Xodimlar",
       "create": "Xodim qo'shish",
       "edit": "Xodimni tahrirlash",
-      "access_levels_count": "Guruhlar soni"
+      "access_levels_count": "Guruhlar soni",
+      "department": "Bo'linma",
+      "device": "Qurilmalar"
     },
     "workDurationPage": {
       "name": "Ish vaqti",
@@ -1938,15 +1939,16 @@
     "name": "Turniket",
     "createTitle": "Yuklash",
     "updateTitle": "Tahrirlash",
+    "errorTitle": "Ma'lumotlarida xatolik yuz bergan xodimlar ro'yxati",
     "form": {
       "name": "Nomi",
       "department": "Bo'linma",
       "access_level_id": "Guruhlar",
       "workers_count": "Xodimlar soni",
-      "exported_count": "exported_count",
+      "exported_count": "Yuklangan",
       "status": "status",
       "asFile": "Faylga yuklash uchun bosing",
-      "error": "error"
+      "error": "Xatolik"
     }
   },
   "hcEvent": {
@@ -2000,5 +2002,16 @@
       "phone": "Telefon raqam",
       "chernobyl": "Chernobel AES halokati oqibatlarini tugatishda ishtirok etganmi?"
     }
+  },
+  "navigation": {
+    "hrm": "Kadrlar boshqaruvi",
+    "docFlow": "Hujjat aylanishi",
+    "attestation": "Attestatsiya",
+    "turnstile": "Turniket",
+    "general": "Umumiy",
+    "lms": "O'quv boshqaruvi",
+    "economist": "Iqtisodchi",
+    "hospital": "Kasalxona",
+    "admin": "Admin"
   }
 }

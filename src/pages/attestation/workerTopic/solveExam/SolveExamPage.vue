@@ -73,21 +73,19 @@ onUnmounted(()=>{
               })()})}}</p>
           </n-alert>
           <n-space justify="end">
-            <n-button @click="endAttempt" type="primary">{{$t('content.yes')}}</n-button>
-            <n-button @click="endWarningVisible=false" type="warning">{{$t('content.no')}}</n-button>
+            <n-button class="px-10!" round @click="endAttempt" type="error">{{$t('content.yes')}}</n-button>
+            <n-button class="px-10!"  round @click="endWarningVisible=false" type="success">{{$t('content.no')}}</n-button>
           </n-space>
         </div>
         <div
             v-else
             class="flex items-center flex-col gap-2"
         >
-          <n-button size="large" circle type="info" dashed>
-            <template #icon>
-              <n-icon :component="DocumentRibbon20Regular" />
-            </template>
-          </n-button>
-          <h3 class="text-xl font-bold">{{$t('examPage.endSub', {n: store.result?.result})}}</h3>
-          <p class="text-primary">{{$t('examPage.endHead')}}</p>
+          <n-icon class="text-primary" size="84" :component="DocumentRibbon20Regular" />
+          <p class="text-primary">{{Utils.combineFullName(store.worker_detail?.user?.worker)}}</p>
+          <h3 class="text-xl font-bold text-textColor3">{{$t('examPage.endSub')}}</h3>
+          <p class="text-6xl font-bold text-">{{store.result?.result || 0}}</p>
+          <p class="text-danger mt-10!">{{$t('examPage.endHead')}}</p>
         </div>
       </n-spin>
     </UIModal>

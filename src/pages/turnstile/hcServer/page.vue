@@ -2,6 +2,7 @@
 import {UIModal, UIPageContent} from "@/components/index.js"
 import Filter from "./ui/Filter.vue"
 import createForm from "./ui/CreateForm.vue"
+import errorForm from "./ui/errorForm.vue"
 import Table from "./ui/Table.vue"
 import {useAccountStore, useHcServerStore} from "@/store/modules/index.js"
 
@@ -25,6 +26,14 @@ onMounted(()=>{
       :title="store.visibleType?$t('hcServer.createTitle') : $t('hcServer.updateTitle')"
   >
     <createForm/>
+  </UIModal>
+  <UIModal
+      :width="900"
+      :visible="store.errorVisible"
+      @update:visible="(v)=>store.errorVisible = v"
+      :title="$t('hcServer.errorTitle')"
+  >
+    <errorForm/>
   </UIModal>
 
 </UIPageContent>

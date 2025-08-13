@@ -57,6 +57,11 @@ const onChangeStructure = (v)=>{
   }
 }
 
+const onDefaultVal = (v)=>{
+  store.payload.organization_id=v
+  componentStore.workerParams.organization_id= v[0]?.id
+}
+
 const onDeleteFile = (v)=>{
   store.payload.file = []
 }
@@ -101,10 +106,10 @@ onMounted(()=>{
                     <UISelect
                         :options="componentStore.structureList"
                         :modelV="store.payload.organization_id"
-                        @defaultValue="(v)=>store.payload.organization_id=v"
+                        @defaultValue="onDefaultVal"
                         @updateModel="onChangeStructure"
                         :checkedVal="store.structureCheck"
-                        @updateCheck="(v)=>store.structureCheck=v"
+                        @updateCheck="(v)=>store.structureCheck=v"x
                         v-model:search="componentStore.structureParams.search"
                         @onSearch="componentStore._structures"
                         :loading="componentStore.structureLoading"

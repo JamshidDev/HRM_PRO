@@ -14,19 +14,6 @@ const changePage = (v)=>{
   store._index()
 }
 
-const downloadTextFile =(texts, fileName = "InvalidPhotos.txt")=> {
-  const blob = new Blob([texts], { type: "text/plain" });
-  const url = URL.createObjectURL(blob);
-
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = fileName;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-
-  URL.revokeObjectURL(url)
-}
 
 
 const statusObj = {
@@ -42,6 +29,13 @@ const statusObj = {
     name:t('content.success'),
     id:3,
   }
+}
+
+const showDetails = (v)=>{
+  store.elementId = v.id
+  store.errorParams.page = 1
+  store._showError()
+  store.errorVisible = true
 }
 
 </script>
@@ -102,30 +96,15 @@ const statusObj = {
           </td>
           <td>
             <div class="flex justify-center">
-              <template v-if="item?.errors">
-                <n-popover trigger="hover">
-                  <template #trigger>
+              <template v-if="item?.error_workers_count>0">
+                <n-button @click="showDetails(item)" type="error" secondary>
+                  <template #icon>
                     <n-icon size="24" class="text-danger">
                       <ErrorCircle24Filled/>
                     </n-icon>
                   </template>
-                  <div>
-                    <div class="w-[200px] h-[300px] overflow-y-auto">
-                      <div class="text-danger mb-5" v-for="(item, index) in item?.errors.toString().trim().split('...')">
-                        <span v-if="item" class="mb-4 leading-[1.2] text-xs">{{(index+1)+". " + item}}</span>
-                      </div>
-                    </div>
-                    <div>
-                      <n-button
-                          size="small"
-                          @click="downloadTextFile(item?.errors.toString())"
-                      ><span class="text-xs">{{$t('hcServer.form.asFile')}}</span>
-                      </n-button>
-                    </div>
-                  </div>
-
-
-                </n-popover>
+                  {{item?.error_workers_count}}
+                </n-button>
 
               </template>
             </div>

@@ -1,6 +1,8 @@
 import {defineStore} from "pinia";
 import i18n from "@/i18n/index.js"
 import Utils from "@/utils/Utils.js"
+import router from "@/router/index.js"
+import {AppPaths} from "@/utils/index.js"
 
 const {t} = i18n.global
 export const useEventStore = defineStore('eventStore', {
@@ -102,6 +104,7 @@ export const useEventStore = defineStore('eventStore', {
     }),
     actions: {
         _download(){
+
             this.previewLoading = true
             const params = {
                 ...this.previewParams,
@@ -111,9 +114,9 @@ export const useEventStore = defineStore('eventStore', {
                 end_date_and_time:Utils.timeWithMonth(this.previewParams.end_date_and_time),
                 download:1,
             }
-            $ApiService.eventService._download({params}).then((res) => {
-                console.log(res.data)
-                Utils.blobFileDownload(res.data, 'application/vnd.ms-excel', 'Hikcentral.xls')
+            $ApiService.eventService._download({params}).then(() => {
+                this.previewVisible = false
+                router.push(Utils.routeHrmPathMaker(AppPaths.Export))
             }).finally(() => {
                 this.previewLoading = false
             })

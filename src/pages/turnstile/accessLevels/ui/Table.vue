@@ -11,21 +11,15 @@ const changePage = (v)=>{
   store._index_access_levels()
 }
 
-// const onSelect = (v)=>{
-//   if(!accStore.checkAction(accStore.pn.turnstileBuildingWrite)) return
-//
-//   if(v.key === 'delete'){
-//     store.elementId = v.data.id
-//     store._delete()
-//   }else if(v.key==='edit'){
-//     store.elementId = v.data.id
-//     store.payload.name = v.data.name
-//     store.payload.name_en = v.data.name_en
-//     store.payload.name_ru = v.data.name_ru
-//     store.visibleType = false
-//     store.visible= true
-//   }
-// }
+const onSelect = (v)=>{
+  if(!accStore.checkAction(accStore.pn.turnstileBuildingWrite)) return
+  if(v.key==='edit'){
+    store.elementId = v.data.id
+    store.depPayload.hik_central_department_id = v.data?.department?.id
+    store.depPayload.devices = v.data?.devices?.map(v=>v.id)
+    store.visible = true
+  }
+}
 
 </script>
 
@@ -40,27 +34,51 @@ const changePage = (v)=>{
         <thead>
         <tr>
           <th class="text-center! w-[30px] min-w-[30px] grow-0">{{$t('content.number')}}</th>
-          <th class="text-center!">{{$t('content.name')}}</th>
-          <th class="text-center!">{{$t('content.description')}}</th>
-          <th class="text-center!">{{$t('turnstile.accessLevelPage.deviceCount')}}</th>
-          <th class="text-center!">{{$t('turnstile.accessLevelPage.server')}}</th>
-<!--          <th class="max-w-[60px] w-[60px]">{{$t('content.action')}}</th>-->
+          <th class="text-center! w-[260px]">{{$t('content.name')}}</th>
+          <th class="text-center! w-[160px]">{{$t('turnstile.accessLevelPage.deviceCount')}}</th>
+          <th class="text-center! w-[160px]">{{$t('turnstile.accessLevelPage.server')}}</th>
+          <th class="text-center! w-[200px]">{{$t('turnstile.hcWorkersPage.department')}}</th>
+          <th class="text-center!">{{$t('turnstile.hcWorkersPage.device')}}</th>
+          <th class="max-w-[40px] w-[40px]"></th>
         </tr>
         </thead>
         <tbody>
         <tr v-for="(item, idx) in store.accessLevels" :key="idx">
           <td class="w-[20px] max-w-[20px]"><span class="text-center text-[12px] text-gray-600 block">{{ (store.params.page - 1) * store.params.per_page + idx + 1 }}</span></td>
           <td class="text-center!">{{item.name}}</td>
-          <td class="text-center!">{{item.description}}</td>
-          <td class="text-center!">{{item.devices_count}}</td>
+          <td class="text-center!">
+            <n-button bordered size="small" circle dashed>{{item.devices_count}}</n-button>
+          </td>
           <td class="text-center!">{{item.hik_server}}</td>
-<!--          <td>-->
-<!--            <UIMenuButton-->
-<!--                :show-edit="true"-->
-<!--                :data="item"-->
-<!--                @select-ev="onSelect"-->
-<!--            />-->
-<!--          </td>-->
+          <td class="text-center!">
+            <n-button v-if="item.department" size="tiny" type="primary" dashed border>
+              {{item.department?.name}}
+            </n-button>
+          </td>
+          <td class="text-center!">{{item.description}}
+            <p class="line-clamp-3">
+              <template v-for="device in item.devices" :key="device.id">
+                <n-button :type="Boolean(device.status)? 'success' : undefined" class="mr-1! mt-[2px]!" size="tiny" dashed bordered>
+                  {{device.name}}
+                  <template #icon>
+                      <span class="relative flex size-2">
+  <span :class="[Boolean(device.status)? 'animate-ping bg-success/90' : 'bg-secondary/90']" class="absolute inline-flex h-full w-full  rounded-full  opacity-75"></span>
+  <span :class="[Boolean(device.status)? 'bg-success' : 'bg-secondary']" class="relative inline-flex size-2 rounded-full"></span>
+</span>
+                  </template>
+                </n-button>
+              </template>
+            </p>
+
+          </td>
+          <td>
+            <UIMenuButton
+                :show-delete="false"
+                :show-edit="true"
+                :data="item"
+                @select-ev="onSelect"
+            />
+          </td>
         </tr>
         </tbody>
       </n-table>

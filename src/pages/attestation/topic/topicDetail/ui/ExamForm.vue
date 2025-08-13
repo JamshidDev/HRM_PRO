@@ -162,7 +162,6 @@ const onChange = ()=>{
           <n-form-item-gi :span="2" :label="$t(`content.description`)" path="description">
             <n-input
                 type="textarea"
-
                 v-model:value="store.payload.description"
             />
           </n-form-item-gi>

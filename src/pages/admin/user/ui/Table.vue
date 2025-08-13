@@ -84,7 +84,7 @@ const onSuccessEv = (token)=>{
               </template>
             </n-button>
           </td>
-          <td>{{item?.organization.name}}</td>
+          <td>{{item?.organization?.name}}</td>
           <td>
             <div class="flex flex-wrap gap-1">
               <template v-for="item in item?.roles" :key="item.id">

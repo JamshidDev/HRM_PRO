@@ -119,7 +119,7 @@ export const useTopicExamStore = defineStore('topicExamStore', {
         _create(){
             this.saveLoading = true
             $ApiService.topicExamService._create({
-                data: {...this.payload, deadline: Utils.timeToZone(this.payload.deadline)},
+                data: {...this.payload, deadline: Utils.timeToZone(this.payload.deadline),description:this.payload.description || undefined, },
                 id: this.topicId}
             ).then((res)=>{
                 this.visible = false

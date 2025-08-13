@@ -45,8 +45,31 @@ export const useHcServerStore = defineStore('hcServerStore', {
         selectedWorkers:[],
         departmentList:[],
         departmentLoading:false,
+        errorList:[],
+        totalError:0,
+        errorLoading:false,
+        errorVisible:false,
+        errorParams:{
+            page:1,
+            per_page:10,
+            search:null,
+            job_id:null,
+        }
     }),
     actions: {
+        _showError(){
+            this.errorLoading = true
+            let params = {
+                ...this.errorParams,
+                job_id:this.elementId
+            }
+            $ApiService.hcServerService._exportedError({params}).then((res) => {
+                this.errorList = res.data.data.data
+                this.totalError = res.data.data.total
+            }).finally(() => {
+                this.errorLoading = false
+            })
+        },
         _department() {
             this.departmentLoading = true
             $ApiService.hcServerService._department().then((res) => {

@@ -25,6 +25,16 @@ const onShow = (v) => {
   store._roles()
 }
 
+const onClear = ()=>{
+  store.params.organizations = []
+  store.params.role = null
+  filterEvent()
+}
+
+const filterCount = computed(()=>{
+  return  Number(Boolean(store.params.organizations.length)) + Number(Boolean(store.params.role))
+})
+
 
 </script>
 
@@ -34,7 +44,9 @@ const onShow = (v) => {
     :show-add-button="false"
     v-model:search="store.params.search"
     :search-loading="store.loading"
+    :filterCount="filterCount"
     @onSearch="filterEvent"
+    @onClear="onClear"
 >
 <template #filterContent>
   <label class="mt-3 text-xs text-gray-500">{{ $t('workerPage.filter.organization') }}</label>
