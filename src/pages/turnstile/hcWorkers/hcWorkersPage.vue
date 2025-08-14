@@ -4,8 +4,13 @@ import Table from "./ui/Table.vue"
 import Form from "./ui/Form.vue"
 import faceForm from "./ui/faceForm.vue"
 import Filter from "./ui/Filter.vue"
-import {useAccountStore, useTurnstileHikCentralWorkerStore} from "@/store/modules/index.js";
-
+import deviceForm from "../accessLevels/ui/deviceForm.vue"
+import {
+  useAccountStore,
+  useTurnstileHikCentralStore,
+  useTurnstileHikCentralWorkerStore
+} from "@/store/modules/index.js"
+const levelStore = useTurnstileHikCentralStore()
 const store = useTurnstileHikCentralWorkerStore()
 const accStore = useAccountStore()
 
@@ -37,6 +42,14 @@ onMounted(()=>{
         :title="$t('turnstile.hcWorkersPage.edit')"
     >
       <faceForm/>
+    </UIModal>
+    <UIModal
+        width="600px"
+        :visible="levelStore.deviceVisible"
+        @update:visible="(v)=>levelStore.deviceVisible = v"
+        :title="$t('turnstile.hcWorkersPage.device')"
+    >
+      <deviceForm/>
     </UIModal>
 
   </UIPageContent>

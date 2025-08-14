@@ -58,12 +58,12 @@ const onSelect = (v)=>{
           <td class="text-center!">{{item.description}}
             <p class="line-clamp-3">
               <template v-for="device in item.devices" :key="device.id">
-                <n-button :type="device.status===1? 'success' : undefined" class="mr-1! mt-[2px]!" size="tiny" dashed bordered>
+                <n-button :type="device.status===1? 'success' : 'error'" class="mr-1! mt-[2px]!" size="tiny" dashed bordered>
                   {{device.name}}
                   <template #icon>
                       <span class="relative flex size-2">
-  <span :class="[device.status===1? 'animate-ping bg-success/90' : 'bg-secondary/90']" class="absolute inline-flex h-full w-full  rounded-full  opacity-75"></span>
-  <span :class="[device.status===1? 'bg-success' : 'bg-secondary']" class="relative inline-flex size-2 rounded-full"></span>
+  <span :class="[device.status===1? 'animate-ping bg-success/90' : 'bg-danger/90']" class="absolute inline-flex h-full w-full  rounded-full  opacity-75"></span>
+  <span :class="[device.status===1? 'bg-success' : 'bg-danger']" class="relative inline-flex size-2 rounded-full"></span>
 </span>
                   </template>
                 </n-button>

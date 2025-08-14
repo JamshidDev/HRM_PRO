@@ -4,17 +4,18 @@ import {ArrowSync24Filled, DeviceEq24Filled, Search48Filled} from "@vicons/fluen
 const store = useTurnstileHikCentralStore()
 
 const onSearchEv = () => {
-  let query =store.searchModel.toString().trim().toLowerCase()
+  let query =store.searchModel?.toString()?.trim()?.toLowerCase()
   if(!Boolean(query)){
     store.onlineDeviceList = store.originList
-    return
+  }else{
+    store.onlineDeviceList = store.originList.filter(v=>v?.name?.toString()?.toLowerCase()?.includes(query))
   }
-  store.onlineDeviceList = store.originList.filter(v=>v.name.toLowerCase().includes(query))
+
 }
 </script>
 
 <template>
-<div class="w-full h-[calc(100vh-200px)] overflow-auto">
+<div class="w-full">
   <n-spin :show="store.onlineDeviceLoading">
     <div class="grid grid-cols-12 gap-4">
       <div class="col-span-12 md:col-span-6">
@@ -38,31 +39,35 @@ const onSearchEv = () => {
           </template>
         </n-button>
       </div>
-
-      <template v-for="item in store.onlineDeviceList" :key="item.id">
-        <div class="col-span-12 md:col-span-6
+    </div>
+    <div class="h-[calc(100vh-200px)] overflow-auto mt-2 px-2">
+      <div class="grid grid-cols-12 gap-2 gap-y-6">
+        <template v-for="item in store.onlineDeviceList" :key="item.id">
+          <div class="col-span-12 md:col-span-6
          gap-x-4 flex flex-col items-center border border-surface-line px-4
          py-2 rounded-lg bg-gradient-to-b from-secondary/50 to-surface-section to-84%">
-          <n-icon size="60" class="text-secondary opacity-60 mb-10">
-            <DeviceEq24Filled/>
-          </n-icon>
-          <div class="w-full flex flex-col">
-            <p class="line-clamp-1 text-lg text-center font-medium mb-2!">{{item.name}}</p>
-            <n-button size="small" dashed>
-               <span class="text-xs flex items-center gap-2" :class="[item.status===1? 'text-success' : 'text-secondary']">
+            <n-icon size="60" class="text-secondary opacity-60 mb-6 mt-4">
+              <DeviceEq24Filled/>
+            </n-icon>
+            <div class="w-full flex flex-col">
+              <p class="line-clamp-1 text-lg text-center font-medium mb-2!">{{item.name}}</p>
+              <n-button size="small" dashed>
+               <span class="text-xs flex items-center gap-2" :class="[item.status===1? 'text-success' : 'text-danger']">
                    <span class="relative flex size-3">
-  <span :class="[item.status===1? 'animate-ping bg-success/90' : 'bg-secondary/90']" class="absolute inline-flex h-full w-full  rounded-full  opacity-75"></span>
-  <span :class="[item.status===1? 'bg-success' : 'bg-secondary']" class="relative inline-flex size-3 rounded-full"></span>
+  <span :class="[item.status===1? 'animate-ping bg-success/90' : 'bg-danger/90']" class="absolute inline-flex h-full w-full  rounded-full  opacity-75"></span>
+  <span :class="[item.status===1? 'bg-success' : 'bg-danger']" class="relative inline-flex size-3 rounded-full"></span>
 </span>
                  {{item.status ===1? 'Online' : 'Offline'}}</span>
-            </n-button>
+              </n-button>
+            </div>
           </div>
-        </div>
-      </template>
-      <template v-if="store.onlineDeviceList.length === 0">
-        <div class="col-span-12 text-secondary text-center">{{$t('content.no-data')}}</div>
-      </template>
+        </template>
+        <template v-if="store.onlineDeviceList.length === 0">
+          <div class="col-span-12 text-secondary text-center">{{$t('content.no-data')}}</div>
+        </template>
+      </div>
     </div>
+
   </n-spin>
 
 </div>

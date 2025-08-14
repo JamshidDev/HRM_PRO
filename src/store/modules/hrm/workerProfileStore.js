@@ -121,6 +121,8 @@ export const useWorkerProfileStore = defineStore('workerProfileStore', {
         structureCheckV2:[],
         departmentCheckV2:[],
         structureCheck2:[],
+        isExistAccount:false,
+        anotherProfile:null,
 
 
     }),
@@ -129,95 +131,109 @@ export const useWorkerProfileStore = defineStore('workerProfileStore', {
             const componentStore = useComponentStore();
             this.loading= true
             $ApiService.workerService._show({id:this.elementId}).then((res)=>{
-                this.data = res.data.data
-                this.workerId = this.data?.id
-
-                this.payload.last_name = this.data.last_name
-                this.payload.first_name = this.data.first_name
-                this.payload.middle_name = this.data.middle_name
-                this.payload.work_experience = this.data.work_experience.toString()
-                this.payload.birthday = new Date(this.data.birthday).getTime()
-                this.payload.experience_date = new Date(this.data.experience_date).getTime()
-                this.payload.country_id = this.data.country.id
-                this.payload.region_id = this.data.region.id
-                this.payload.city_id = this.data.city.id
-                this.payload.current_region_id = this.data.current_region.id
-                this.payload.current_city_id = this.data.current_city.id
-                this.payload.address = this.data.address
-                this.payload.nationality_id = this.data.nationality?.id
-                this.payload.sex = this.data?.sex
-                this.payload.education = this.data?.education
-                this.payload.pin = this.data.pin?.toString()
-                // this.payload.inn = this.data.inn?.toString()
-                this.payload.marital_status = this.data.marital_status?.id
-
-
-                this.positionList = this.data.positions
-                this.districts =[this.data.city]
-                this.currentDistricts = [this.data.current_city]
-                componentStore.countryList = [this.data.country]
-
-                if(this.data.region.id ===this.data.current_region.id){
-                    componentStore.regionList = [{...this.data.region}]
-                }else{
-                    componentStore.regionList = [{...this.data.region},{...this.data.current_region}]
-                }
+                try{
+                    this.data = res.data.data
+                    this.workerId = this.data?.id
+                    this.isExistAccount = Boolean(this.data.profile)
+                    this.anotherProfile = this.data.another_profile
+                    this.payload.last_name = this.data.last_name
+                    this.payload.first_name = this.data.first_name
+                    this.payload.middle_name = this.data.middle_name
+                    this.payload.work_experience = this.data.work_experience.toString()
+                    this.payload.birthday = new Date(this.data.birthday).getTime()
+                    this.payload.experience_date = new Date(this.data.experience_date).getTime()
+                    this.payload.country_id = this.data.country.id
+                    this.payload.region_id = this.data.region.id
+                    this.payload.city_id = this.data.city.id
+                    this.payload.current_region_id = this.data.current_region.id
+                    this.payload.current_city_id = this.data.current_city.id
+                    this.payload.address = this.data.address
+                    this.payload.nationality_id = this.data.nationality?.id
+                    this.payload.sex = this.data?.sex
+                    this.payload.education = this.data?.education
+                    this.payload.pin = this.data.pin?.toString()
+                    // this.payload.inn = this.data.inn?.toString()
+                    this.payload.marital_status = this.data.marital_status?.id
 
 
-                this.photos = this.data.photos.map(v=>({
-                    id:v.id,
-                    blob:null,
-                    base64:v.photo,
-                    url:v.photo,
-                    current:v.current
-                }))
+                    this.positionList = this.data.positions
+                    this.districts =[this.data.city]
+                    this.currentDistricts = [this.data.current_city]
+                    componentStore.countryList = [this.data.country]
 
-                if(this.photos.filter(v=>v.current>0).length>0){
-                    this.mainImgId = this.photos.filter(v=>v.current>0)[0].id
-                }
+                    if(this.data.region.id ===this.data.current_region.id){
+                        componentStore.regionList = [{...this.data.region}]
+                    }else{
+                        componentStore.regionList = [{...this.data.region},{...this.data.current_region}]
+                    }
+                    console.log(this.data.photos)
 
-
-
-                this.payload.phones = (Array.isArray(this.data.phones) && this.data.phones?.length>0)?
-                    this.data.phones.map((v,index)=>({
+                    this.photos = this.data.photos.map(v=>({
                         id:v.id,
-                        phone:'+998' + v.phone,
-                        main:this.data.profile? v.phone === this.data.profile?.phone :index === 0,
-                        exist:true,
+                        blob:null,
+                        base64:v.photo,
+                        url:v.photo,
+                        current:v.current
                     }))
-                    : [
-                        {
-                            id:uuidv4(),
-                            phone:'+998',
-                            main:true,
-                            exist:false,
-                        }
-                    ]
 
-                this.rolesList = []
-                for (const role of this.data.profile?.roles){
-                    const roles =role.organizations.map((x)=>({
-                        ...x,
-                        roleName:role?.name,
-                        roleId:role?.id,
-                    }))
-                    this.rolesList = [...this.rolesList,...roles]
+                    if(this.photos.filter(v=>v.current).length>0){
+                        this.mainImgId = this.photos.filter(v=>v.current>0)[0].id
+                    }else{
+                        this.mainImgId = this.photos?.[0]?.id
+                    }
+
+
+
+                    this.payload.phones = (Array.isArray(this.data.phones) && this.data.phones?.length>0)?
+                        this.data.phones.map((v,index)=>({
+                            id:v.id,
+                            phone:'+998' + v.phone,
+                            main:this.data.profile? v.phone === this.data.profile?.phone :index === 0,
+                            exist:true,
+                        }))
+                        : [
+                            {
+                                id:uuidv4(),
+                                phone:'+998',
+                                main:true,
+                                exist:false,
+                            }
+                        ]
+
+                    this.rolesList = []
+                    for (const role of this.data.profile?.roles){
+                        const roles =role.organizations.map((x)=>({
+                            ...x,
+                            roleName:role?.name,
+                            roleId:role?.id,
+                        }))
+                        this.rolesList = [...this.rolesList,...roles]
+                    }
+                }catch(error){
+                    console.log(error)
                 }
+
 
 
             }).finally(()=>{
                 this.loading= false
             })
         },
-        savePersonalInfo(){
-            this.loading=true
-            const data = {
+        buildBodyData(){
+            return {
                 ...this.payload,
                 pin:this.payload.pin.split('-').join(""),
                 birthday:Utils.timeToZone(this.payload.birthday),
                 experience_date:Utils.timeToZone(this.payload.experience_date),
                 user_phone:this.payload.phones.filter(v=>v.main)[0].phone.split('-').join('').slice(4),
                 phones:this.payload.phones.map((v)=>v.phone.split('-').join('').slice(4)),
+            }
+        },
+        savePersonalInfo(isUpdatePassword=false){
+            this.loading=true
+            const data = {
+                ...this.buildBodyData(),
+            ...(isUpdatePassword? {update_password:true} : {})
             }
             const id = this.workerId
             $ApiService.workerService._update({data,id}).then((res)=>{

@@ -507,6 +507,10 @@
     }
   },
   "createWorkerPage": {
+    "updatePasswordWarning": "Xodimni parolini passport JSHSHIRga o'zgartirish uchun 'Parolni yangilash' tugmasini bosing",
+    "updatePassword": "Parolni yangilash",
+    "no-account": "Xodim uchun hisob yaratilmagan. Yaratish uchun saqlash tugmasini bosing!",
+    "otherProfile": "Xodim uchun hisob yaratilmagan. Chunki xodimga biriktirilgan telefon raqam allaqachon {n}ga biriktirilgan!",
     "name": "Xodim ma'lumotlarini qo'shish",
     "ui": {
       "image": "Kandidat uchun 3 ta rasm qo'shish tavsiya qilinadi. Rasmlar oxirgi 3 oy davomida suratga olingan bo'ishi shart.",

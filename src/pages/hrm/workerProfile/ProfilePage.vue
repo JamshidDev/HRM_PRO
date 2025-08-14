@@ -9,6 +9,11 @@ const onChange = (v)=>{
   store.activeTab = v
 }
 
+onMounted(()=>{
+  store.anotherProfile = null
+  store.isExistAccount = false
+})
+
 
 </script>
 

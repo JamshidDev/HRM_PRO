@@ -38,12 +38,6 @@ onMounted(()=>{
         @onSearch="onSearch"
     >
       <template #filterAction>
-        <n-button :loading="store.onlineDeviceLoading" @click="store._onlineDevice()" type="success">
-          {{$t('turnstile.hcWorkersPage.device')}}
-          <template #icon>
-            <ArrowSync24Filled/>
-          </template>
-        </n-button>
         <n-button :loading="store.accessLevelsLoading" @click="onSync" type="primary">
                       <template #icon>
                         <ArrowSync24Filled/>
@@ -60,14 +54,6 @@ onMounted(()=>{
         :title="$t('content.edit')"
     >
       <createForm/>
-    </UIModal>
-    <UIModal
-        width="600px"
-        :visible="store.deviceVisible"
-        @update:visible="(v)=>store.deviceVisible = v"
-        :title="$t('turnstile.hcWorkersPage.device')"
-    >
-      <deviceForm/>
     </UIModal>
   </UIPageContent>
 </template>

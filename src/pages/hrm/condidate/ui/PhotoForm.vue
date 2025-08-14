@@ -43,7 +43,7 @@ const onchangeMain = (id)=>{
 }
 
 const onChange = (id)=>{
-  const savedMainImageId = images.value.filter(v=>v.current>0)[0].id
+  const savedMainImageId = images.value.filter(v=>v.current)?.[0]?.id
   let result = savedMainImageId === id
   emits('onChangeMain', !result)
 }

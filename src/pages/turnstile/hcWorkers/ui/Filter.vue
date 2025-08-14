@@ -1,7 +1,14 @@
 <script setup>
 import {UIPageFilter, UISelect} from "@/components/index.js"
-import {useAccountStore, useComponentStore, useTurnstileHikCentralWorkerStore} from "@/store/modules/index.js"
+import {
+  useAccountStore,
+  useComponentStore,
+  useTurnstileHikCentralStore,
+  useTurnstileHikCentralWorkerStore
+} from "@/store/modules/index.js"
+import {ArrowSync24Filled} from "@vicons/fluent"
 
+const levelStore = useTurnstileHikCentralStore()
 const store = useTurnstileHikCentralWorkerStore()
 const componentStore = useComponentStore()
 const accStore = useAccountStore()
@@ -81,6 +88,15 @@ const filterCount = computed(()=>Number(Boolean(store.params.organizations.lengt
           value-field="id"
           @update:value="filterEvent"
       />
+    </template>
+    <template #filterAction>
+        <n-button :loading="levelStore.onlineDeviceLoading" @click="levelStore._onlineDevice()" type="success">
+          {{$t('turnstile.hcWorkersPage.device')}}
+          <template #icon>
+            <ArrowSync24Filled/>
+          </template>
+        </n-button>
+
     </template>
   </UIPageFilter>
 </template>
