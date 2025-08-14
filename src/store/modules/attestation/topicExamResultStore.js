@@ -16,8 +16,8 @@ export const useTopicExamResultStore = defineStore('topicExamResult', {
             per_page:10,
             search:null,
             organizations:[],
-            topic_id:null,
-            exam_id:null,
+            topics:[],
+            exams:[],
             deleted_at:false,
         },
         topicList:[],
@@ -61,17 +61,17 @@ export const useTopicExamResultStore = defineStore('topicExamResult', {
                 this.loading= false
             })
         },
-        _exam(id){
+        _exam(topics){
             this.examLoading= true
-            $ApiService.topicExamService._index({params:{page:1, per_page:1000}, id}).then((res)=>{
-                this.examList = res.data.data.data.map(v=>({...v, position:`${v.tests_count} ta savol mavjud`}))
+            $ApiService.topicExamResultService._exams({params:{page:1, per_page:1000, topics}}).then((res)=>{
+                this.examList = res.data.data.data.map(v=>({...v, position:`${v.topic?.name}`}))
             }).finally(()=>{
                 this.examLoading= false
             })
         },
         _topic(){
             this.topicLoading = true
-            $ApiService.topicService._index({params:{page:1, per_page:1000}}).then((res)=>{
+            $ApiService.topicExamResultService._topics({params:{page:1, per_page:1000}}).then((res)=>{
                 this.topicList = res.data.data.data.map(v=>({...v, position:v.type?.name}))
             }).finally(()=>{
                 this.topicLoading= false
@@ -92,6 +92,8 @@ export const useTopicExamResultStore = defineStore('topicExamResult', {
                 ...this.params,
                 organizations:this.params.organizations?.map(v=>v.id).toString() || undefined,
                 deleted_at:this.params.deleted_at? undefined : true,
+                exams:this.params.exams?.toString() || undefined,
+                topics:this.params.topics?.toString() || undefined,
             }
         }
 

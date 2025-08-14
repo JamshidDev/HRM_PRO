@@ -49,10 +49,10 @@ const onSearchEv = () => {
           <div class="w-full flex flex-col">
             <p class="line-clamp-1 text-lg text-center font-medium mb-2!">{{item.name}}</p>
             <n-button size="small" dashed>
-               <span class="text-xs flex items-center gap-2" :class="[Boolean(item.status)? 'text-success' : 'text-secondary']">
+               <span class="text-xs flex items-center gap-2" :class="[item.status===1? 'text-success' : 'text-secondary']">
                    <span class="relative flex size-3">
-  <span :class="[Boolean(item.status)? 'animate-ping bg-success/90' : 'bg-secondary/90']" class="absolute inline-flex h-full w-full  rounded-full  opacity-75"></span>
-  <span :class="[Boolean(item.status)? 'bg-success' : 'bg-secondary']" class="relative inline-flex size-3 rounded-full"></span>
+  <span :class="[item.status===1? 'animate-ping bg-success/90' : 'bg-secondary/90']" class="absolute inline-flex h-full w-full  rounded-full  opacity-75"></span>
+  <span :class="[item.status===1? 'bg-success' : 'bg-secondary']" class="relative inline-flex size-3 rounded-full"></span>
 </span>
                  {{item.status ===1? 'Online' : 'Offline'}}</span>
             </n-button>

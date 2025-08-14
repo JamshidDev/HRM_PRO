@@ -1,6 +1,7 @@
 import {defineStore} from "pinia";
 import Utils from "@/utils/Utils.js"
 import {useComponentStore} from "@/store/modules/index.js"
+import {v4 as uuidv4} from "uuid"
 
 export const useWorkerProfileStore = defineStore('workerProfileStore', {
     state:()=>({
@@ -175,12 +176,23 @@ export const useWorkerProfileStore = defineStore('workerProfileStore', {
                     this.mainImgId = this.photos.filter(v=>v.current>0)[0].id
                 }
 
-                this.payload.phones = this.data.phones.map((v,index)=>({
-                    id:v.id,
-                    phone:'+998' + v.phone,
-                    main:this.data.profile? v.phone === this.data.profile?.phone :index === 0,
-                    exist:true,
-                }))
+
+
+                this.payload.phones = (Array.isArray(this.data.phones) && this.data.phones?.length>0)?
+                    this.data.phones.map((v,index)=>({
+                        id:v.id,
+                        phone:'+998' + v.phone,
+                        main:this.data.profile? v.phone === this.data.profile?.phone :index === 0,
+                        exist:true,
+                    }))
+                    : [
+                        {
+                            id:uuidv4(),
+                            phone:'+998',
+                            main:true,
+                            exist:false,
+                        }
+                    ]
 
                 this.rolesList = []
                 for (const role of this.data.profile?.roles){

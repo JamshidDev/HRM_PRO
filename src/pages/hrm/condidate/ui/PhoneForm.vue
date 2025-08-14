@@ -127,7 +127,3 @@ const onRemove = (v)=>{
     </template>
   </div>
 </template>
-
-<style scoped>
-
-</style>

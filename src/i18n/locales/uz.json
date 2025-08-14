@@ -145,6 +145,7 @@
     "image": "Rasm",
     "noImage": "Rasm mavjud emas",
     "untilNow": "h.v",
+    "warningImageSave": "Asosiy rasm uchun yangi rasm tanlandi. O‘zgarishni saqlash uchun 'Saqlash' tugmasini bosing.",
     "selectAll": "Barchasini tanlash"
   },
   "date": {

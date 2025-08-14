@@ -13,6 +13,7 @@ const route = useRoute()
 const store = useWorkerProfileStore()
 const componentStore = useComponentStore()
 const formRef = ref(null)
+const isSave = ref(false)
 
 const onDelete = (v)=>{
   if(v.id.toString().length>10){
@@ -72,6 +73,7 @@ const onSubmit = ()=>{
   })
 }
 
+
 onMounted(()=>{
   store.elementId = route.query.id
   store._index()
@@ -94,7 +96,17 @@ onMounted(()=>{
           v-model:images="store.photos"
           v-model:main-image-id="store.mainImgId"
           @onDelete="onDelete"
+          @onChangeMain="(v)=>{isSave=v}"
       />
+    </div>
+
+    <div class="col-span-12 mb-2">
+      <n-collapse-transition :show="isSave">
+        <n-alert type="warning" size="small">
+         {{$t('content.warningImageSave')}}
+        </n-alert>
+
+      </n-collapse-transition>
     </div>
     <div class="col-span-12 flex flex-col">
       <div class="flex justify-between items-end">

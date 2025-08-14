@@ -16,7 +16,7 @@ const mainImageId = defineModel('mainImageId',{
 
 const cropper_ref = ref(null)
 
-const emits = defineEmits(['onDelete'])
+const emits = defineEmits(['onDelete', 'onChangeMain'])
 
 const onOpenFile = ()=>{
   cropper_ref.value.openFile()
@@ -39,10 +39,19 @@ const deleteEv = (v)=>{
 
 const onchangeMain = (id)=>{
   mainImageId.value = id
+  onChange(id)
+}
+
+const onChange = (id)=>{
+  const savedMainImageId = images.value.filter(v=>v.current>0)[0].id
+  let result = savedMainImageId === id
+  emits('onChangeMain', !result)
 }
 
 const fakeV = ref(null)
-
+watch(()=>images, (v)=>{
+  onChange(mainImageId.value)
+}, {deep:true})
 
 watchEffect(()=>{
   fakeV.value = images?.[0]?.id
@@ -60,6 +69,7 @@ watchEffect(()=>{
             class="w-[120px] h-[160px] overflow-hidden rounded-sm  cursor-pointer transition-all relative show__delete-image"
             :class="[img.id === mainImageId? 'border-4 border-primary' : 'border border-surface-line']"
         >
+          <span v-if="img.id === mainImageId" class="text-xs bg-primary text-white px-1 absolute z-[100] top-[4px] right-[2px] rounded">Asosiy rasm</span>
           <img
               class="w-full h-full object-cover"
               :src="img.base64"

@@ -23,7 +23,7 @@ const onChangeStructure = (v)=>{
   filterEvent()
 }
 
-const beforeShow = ()=>{
+const beforeShow = (v)=>{
   if(componentStore.structureList.length === 0){
     componentStore._structures()
   }
@@ -31,16 +31,12 @@ const beforeShow = ()=>{
   if(store.topicList.length === 0){
     store._topic()
   }
-
-  if(store.categoryList.length === 0){
-    store._categories()
-  }
 }
 
 const resetFilter = ()=>{
   store.params.organizations = []
-  store.params.topic_id = null
-  store.params.exam_id = null
+  store.params.topics = []
+  store.params.exams = []
   store.params.deleted_at = false
   filterEvent()
 }
@@ -51,16 +47,18 @@ const onChange = (v)=>{
 }
 
 const onChangeTopic = (v)=>{
-  store.params.exam_id = null
+  store.params.exams = []
   filterEvent()
-  store._exam(v)
+  console.log(v)
+  if(Array.isArray(v) && v.length ===0) return
+  store._exam(v?.toString())
 
 }
 
-const filterCount = computed(()=>Number(Boolean(store.params.organizations?.length)) + Number(Boolean(store.params.topic_id)) +Number(Boolean(store.params.deleted_at)))
+const filterCount = computed(()=>Number(Boolean(store.params.organizations?.length)) + Number(Boolean(store.params.topics.length))+ Number(Boolean(store.params.exams.length)) +Number(Boolean(store.params.deleted_at)))
 
 
-const accessFinishBtn = computed(()=>accStore.checkAction(accStore.pn.admin))
+const accessFinishBtn = computed(()=>accStore.checkPermission(accStore.pn.admin))
 </script>
 
 <template>
@@ -91,7 +89,8 @@ const accessFinishBtn = computed(()=>accStore.checkAction(accStore.pn.admin))
       <n-select
           class="w-full max-w-[370px]"
           clearable
-          v-model:value="store.params.topic_id"
+          multiple
+          v-model:value="store.params.topics"
           :options="store.topicList"
           label-field="name"
           value-field="id"
@@ -99,13 +98,15 @@ const accessFinishBtn = computed(()=>accStore.checkAction(accStore.pn.admin))
           :render-tag="UIHelper.selectRender.value"
           @update:value="onChangeTopic"
           :loading="store.topicLoading"
+          :max-tag-count="1"
       />
       <label class="text-xs mt-3 text-gray-500 mb-1 font-medium">{{$t('examPage.exam')}}</label>
       <n-select
-          :disabled="!store.params.topic_id"
+          :disabled="store.params.topics.length === 0"
           class="w-full max-w-[370px]"
           clearable
-          v-model:value="store.params.exam_id"
+          multiple
+          v-model:value="store.params.exams"
           :options="store.examList"
           label-field="name"
           value-field="id"
@@ -113,6 +114,7 @@ const accessFinishBtn = computed(()=>accStore.checkAction(accStore.pn.admin))
           :render-tag="UIHelper.selectRender.value"
           @update:value="filterEvent"
           :loading="store.examLoading"
+          :max-tag-count="1"
       />
       <div @click.self="onChange(!store.params.deleted_at)" class="flex cursor-pointer py-1 px-3 border rounded-lg mt-4 border-surface-line">
         <n-checkbox @update:checked="onChange" v-model:checked="store.params.deleted_at" >

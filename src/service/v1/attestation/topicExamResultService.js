@@ -28,6 +28,14 @@ const _delete = async (payload)=>{
     return await axios.delete(`/v1/exam/worker-exams/${payload.id}`)
 }
 
+const _exams =async (payload)=>{
+    return await axios.get(`/v1/exam/filter/exams`, {params:payload?.params})
+}
+
+const _topics =async (payload)=>{
+    return await axios.get(`/v1/exam/filter/topics`, {params:payload?.params})
+}
+
 
 
 
@@ -39,4 +47,6 @@ export default {
     _downloadNoPassedWorker,
     _finishedExam,
     _downloadExam,
+    _exams,
+    _topics,
 }
