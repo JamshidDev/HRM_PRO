@@ -1,11 +1,13 @@
 <script setup>
 import {NoDataPicture, UIPagination} from "@/components/index.js"
-import {useWorkerExamStore} from "@/store/modules/index.js"
-import {TopicUtils} from "@/pages/attestation/Utils/index.js";
+import {useExamAttemptStore, useWorkerExamStore} from "@/store/modules/index.js"
+import {SquareArrowForward48Regular, Clock20Filled, DismissCircle20Filled} from "@vicons/fluent"
 import {useAccountStore} from "@/store/modules/index.js"
 const accStore = useAccountStore()
-
+const router = useRouter()
 const store = useWorkerExamStore()
+const examStore = useExamAttemptStore()
+const selectedRowId = ref(null)
 
 const changePage = (v) => {
   store.params.page = v.page
@@ -13,81 +15,150 @@ const changePage = (v) => {
   store._index()
 }
 
+const onChangeCollapse = (id)=>{
+  selectedRowId.value = selectedRowId.value === id ? null : id
+}
 
-let colors = ref(["primary", "success", "warning", "info"])
-const randomColors = ref(['', '', ''])
-onMounted(() => {
-  for (let i = 0; i < 3; i++) {
-    let rand = Math.floor(Math.random() * colors.value.length)
-    randomColors.value[i] = colors.value[rand]
-    colors.value = colors.value.filter((i, idx) => idx !== rand);
-  }
-})
+const existAttemptCount = (result,changes)=>{
+  if(result.length>=changes) return 0
+  else return changes-result.length;
+}
 
-let timeout = null
-const selectLesson = (v)=>{
-  if(!accStore.checkAction(accStore.pn.examExamsRead)) return
-  store.selectedLesson = v
+const isCanContinue = (results)=>{
+  return results.filter(v => !v.ended)?.length > 0
+}
 
-  clearTimeout(timeout)
-  timeout = setTimeout(()=>{
-   document.getElementById('mainContent').scrollTo({
-     top: document.body.scrollHeight,
-     behavior: 'smooth'
-   })
- },200)
+const isCanStart = (results, attempt)=>{
+  return (attempt>results.length && !isCanContinue(results))
+}
+
+const isRunDevice = (results)=>{
+  const current = results.filter(v => !v.ended)
+  const id = current[0].id
+  if(current.length>0){
+    return !examStore.exam_storage?.[id]
+  }else return  false
+}
+
+const goStart = (v)=>{
+  examStore.elementId = v.id
+  examStore._start_attempt()
+
+}
+
+const goContinue = (v)=>{
+  const current = v.results.filter(v => !v.ended)
+  const id = current[0].id
+  store.elementId = id
+  router.push({
+    name: 'solve_exam',
+    params: {
+      exam_id: id
+    }
+  })
 }
 
 </script>
 
 <template>
-  <n-spin :show="store.loading" class="h-full rounded-md p-1">
-    <div class="h-full flex flex-col">
-      <div v-if="store.list.length>0" class="overflow-y-auto grow basis-auto lg:p-4 p-2">
-        <div class="grid grid-cols-12 gap-2">
-          <template v-for="(lesson, idx) in store.list" :key="idx">
-            <div
-                :class="['active-lesson' && store?.elementId===lesson.id, `bg-gradient-card-${(idx%5) + 1}`]"
-                class="rounded-2xl lg:col-span-3 md:col-span-6 col-span-12 transition-all cursor-pointer lesson-card  flex flex-col text-white p-2"
-                @click="()=>selectLesson(lesson)"
-            >
-              <div class="p-2">
-                <p class="text-lg font-semibold line-clamp-1">
-                  {{ lesson.name }}
-                </p>
-              </div>
-              <n-divider class="my-1!" />
-              <div class="flex justify-between">
-                <n-button type="error" tertiary>
-                  <template #icon>
-                    <component class="text-white" :is="TopicUtils.getMediaProperty(TopicUtils.EXAM).icon" />
-                  </template>
-                  <span class="font-bold text-white">{{ lesson.exams.length }}</span>
-                </n-button>
-                <n-button type="default" tertiary>
-                  <template #icon>
-                    <component class="text-white" :is="TopicUtils.getMediaProperty(TopicUtils.RESOURCE).icon"/>
-                  </template>
-                  <span class="font-bold text-white">{{ lesson.files.reduce((prev, curr) => prev + curr.items.length, 0) }}</span>
-                </n-button>
-              </div>
-              <p class="line-clamp-1">
-                {{ lesson.type.name }}
-              </p>
+  <n-spin :show="store.loading" class="h-full rounded-md p-1 min-h-[300px]">
+    <div v-if="store.list.length>0" class="w-full overflow-auto">
+      <div class="w-full table md:min-w-[700px]">
+        <template v-for="(item, idx) in store.list" :key="idx">
+          <div
+              class="flex flex-col md:flex-row bg-surface-section rounded-tl-lg
+               rounded-tr-lg gap-2 px-2 pt-[10px] items-center
+                w-full"
+              :class="[item.id === selectedRowId && 'pb-[10px]']"
+          >
+            <div class="w-[40px] text-center text-sm">{{(store.params.page - 1) * store.params.per_page + idx + 1}}</div>
+            <div class="w-[100px]">
+              <n-button class="w-[100px]!" type="primary" secondary>
+                <template #icon>
+                  <n-icon size="22">
+                    <Clock20Filled/>
+                  </n-icon>
+                </template>
+                {{$t('examPage.nMinute', {n:item.minute})}}
+              </n-button>
             </div>
-          </template>
-        </div>
+            <div class="flex flex-col md:w-[calc(100%-840px)] md:min-w-[200px] w-full">
+              <p class="leading-[1.2] font-semibold text-textColor0 line-clamp-1">{{item?.name}}</p>
+              <p class="leading-[1.2] text-xs text-secondary line-clamp-1">{{item?.topic.name}}</p>
+            </div>
+            <div class="flex flex-col text-xs text-secondary md:w-[260px] w-full">
+              <p class="leading-[1.2] line-clamp-1 w-full" :class="[existAttemptCount(item.results,item.chances) ===0 && 'line-through opacity-50']">{{$t('examPage.attemptsCount')}}: <span class="font-semibold text-textColor0">{{existAttemptCount(item.results,item.chances)}}</span> </p>
+              <p class="leading-[1.2] line-clamp-1">{{$t('solveExamPage.deadline')}}: <span class="font-semibold text-textColor0">{{item.deadline}}</span></p>
+            </div>
+            <div class="hidden md:flex md:w-[200px] w-full md:justify-center">
+              <n-button
+                  :type="item.id === selectedRowId? 'error' : 'default'"
+                  @click="onChangeCollapse(item.id)"
+                  size="small"
+                  :disabled="item.results?.length===0">
+                <template #icon>
+                  <DismissCircle20Filled v-if="item.id === selectedRowId"/>
+                  <SquareArrowForward48Regular v-else />
+                </template>
+                {{item.id === selectedRowId? $t('content.close') : $t('examPage.viewResult')}}
+              </n-button>
+            </div>
+            <div class="flex flex-col text-xs md:w-[260px] w-full text-secondary">
+              <p class="leading-[1.2] line-clamp-1">{{item.topic?.type?.name}}</p>
+              <p class="leading-[1.2] line-clamp-1">{{$t('solveExamPage.questions')}}: <span class="font-semibold text-textColor0">{{item.tests_count}}</span></p>
+            </div>
+            <div class="flex md:w-[120px]! w-full! md:justify-end">
+              <n-button
+                  class="w-full! md:w-auto! mt-4! md:mt-0!"
+                  :disabled="isRunDevice(item.results)"
+                  v-if="isCanContinue(item.results)"
+                  @click="goContinue(item)"
+                  type="warning"
+                  size="small"
+                  round>
+                {{$t('content.continue')}}
+              </n-button>
+              <n-button
+                  class="w-full! md:w-auto! mt-4! md:mt-0!"
+                  v-else-if="isCanStart(item.results, item.chances)"
+                  @click="goStart(item)"
+                  type="primary"
+                  size="small"
+                  round>
+                {{$t('content.start')}}
+              </n-button>
+              <n-button
+                  class="w-full! md:w-auto! mt-4! md:mt-0!"
+                  v-else secondary
+                  size="small"
+                  round>
+                {{$t('content.finished')}}
+              </n-button>
+            </div>
+          </div>
+          <div class="mb-2 rounded-bl-lg rounded-br-lg py-1 transition-all bg-surface-section">
+            <n-collapse-transition class="w-full px-6 bg-surface-section" :show="item.id === selectedRowId">
+              <div class="h-[40px] bg-dark/10 w-full rounded-lg">
+                <template v-for="result in item.results" :key="result.id">
+
+                </template>
+              </div>
+            </n-collapse-transition>
+          </div>
+        </template>
       </div>
-      <UIPagination
-          v-if="store.totalItems>0 && !store.loading"
-          :page="store.params.page"
-          :per_page="store.params.size"
-          :total="store.totalItems"
-          class="mt-auto shrink-0"
-          @change-page="changePage"
-      />
-      <NoDataPicture v-if="store.list.length===0 && !store.loading"/>
+
+
+
     </div>
+    <UIPagination
+        v-if="store.totalItems>0 && !store.loading"
+        :page="store.params.page"
+        :per_page="store.params.size"
+        :total="store.totalItems"
+        @change-page="changePage"
+    />
+    <NoDataPicture v-if="store.list.length===0 && !store.loading"/>
 
   </n-spin>
 </template>

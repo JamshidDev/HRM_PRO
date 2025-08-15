@@ -80,6 +80,9 @@ const clearFilter = () => {
   store.params.current_city_id = null
   store.params.marital_status = null
   store.params.ages=[1,100]
+  store.params.age_start = undefined
+  store.params.age_end = undefined
+
   filterEvent()
 }
 

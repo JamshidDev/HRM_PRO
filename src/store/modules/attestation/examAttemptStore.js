@@ -33,6 +33,7 @@ export const useExamAttemptStore = defineStore('examAttemptStore', {
         _config_localstorage() {
             let data = localStorage.getItem('exam_data')
             data = data && JSON.parse(data)
+            console.log(data)
             this.exam_storage = data || {}
             this.exam_token = data && data[this.elementId]
         },

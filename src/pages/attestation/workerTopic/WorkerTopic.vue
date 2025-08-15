@@ -55,10 +55,9 @@ onMounted(()=>{
           v-model:search="store.params.search"
           @on-search="onSearch"
           :search-loading="store.loading"
-          :show-add-button="false" 
-          class="shrink-0"
+          :show-add-button="false"
         />
-        <div class="grow basis-auto bg-surface-section rounded-md mt-2">
+        <div class="grow basis-auto rounded-md mt-2">
           <TopicCardList/>
         </div>
       </div>
