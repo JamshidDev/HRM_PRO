@@ -97,7 +97,10 @@ const changePage = (current_page)=>{
   })
 }
 
+
+
 onMounted(()=>{
+  console.log(props.per_page)
   page.value = props.page;
   pageSize.value = props.per_page;
   pageSizes.value = props.total

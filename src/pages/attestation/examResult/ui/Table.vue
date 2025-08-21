@@ -77,6 +77,7 @@ const resultClass = (allQuestion, correctAnswerCount) => {
         <td class="text-center!">{{ idx + 1 + (store.params.page - 1) * store.params.per_page }}</td>
         <td>
           <UIUser
+              :hide-tooltip="true"
               :over-line="Boolean(result?.deleted_at)"
               :short="false"
               :data="{

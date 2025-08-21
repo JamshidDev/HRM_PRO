@@ -17,6 +17,13 @@ const _download =async (payload)=>{
     return await axios.get(`/v1/turnstile/hik-central/dashboard/pereview`,{responseType:"blob", params:payload?.params})
 }
 
+const _jobIndex =async (payload)=>{
+    return await axios.get(`/v1/turnstile/hik-central/sync/jobs`, {params:payload?.params})
+}
+const _jobCreate =async (payload)=>{
+    return await axios.post(`/v1/turnstile/hik-central/sync/jobs`, payload?.data)
+}
+
 
 
 
@@ -26,4 +33,6 @@ export default {
     _dashboard,
     _preview,
     _download,
+    _jobIndex,
+    _jobCreate,
 }

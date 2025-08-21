@@ -36,6 +36,9 @@ export const useWorkerStore = defineStore('workerStore', {
             current_region_id:null,
             current_city_id:null,
             marital_status:null,
+            first_name:null,
+            last_name:null,
+            middle_name:null,
 
         },
         structureCheck:[],
@@ -130,6 +133,9 @@ export const useWorkerStore = defineStore('workerStore', {
                 departments:this.params.departments.toString() || undefined,
                 positions:this.params.positions.toString() || undefined,
                 ages:undefined,
+                first_name:this.params.first_name || undefined,
+                last_name:this.params.last_name || undefined,
+                middle_name:this.params.middle_name || undefined,
             }
         },
         openVisible(data){

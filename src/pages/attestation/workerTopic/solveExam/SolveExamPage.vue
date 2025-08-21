@@ -73,8 +73,8 @@ onUnmounted(()=>{
               })()})}}</p>
           </n-alert>
           <n-space justify="end">
-            <n-button class="px-10!" round @click="endAttempt" type="error">{{$t('content.yes')}}</n-button>
-            <n-button class="px-10!"  round @click="endWarningVisible=false" type="success">{{$t('content.no')}}</n-button>
+            <n-button class="px-10!" @click="endAttempt" type="success">{{$t('content.yes')}}</n-button>
+            <n-button class="px-10!" @click="endWarningVisible=false" type="error">{{$t('content.no')}}</n-button>
           </n-space>
         </div>
         <div

@@ -2,6 +2,7 @@
 import {UIModal, UIPageContent} from "@/components/index.js"
 import Filter from "./ui/Filter.vue"
 import Table from "./ui/Table.vue"
+import jobForm from "./ui/jobForm.vue"
 import DashboardCards from "./ui/DashboardCards.vue"
 import PreviewList from "./ui/PreviewList.vue"
 import {useAccountStore, useEventStore} from "@/store/modules/index.js"
@@ -36,6 +37,13 @@ onMounted(()=>{
       </h1>
     </template>
     <PreviewList/>
+  </UIModal>
+  <UIModal
+      v-model:visible="store.visible"
+      :width="900"
+      :title="$t('hcEvent.syncTitle')"
+  >
+    <jobForm/>
   </UIModal>
 </UIPageContent>
 </template>

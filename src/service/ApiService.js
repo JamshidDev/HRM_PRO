@@ -97,6 +97,8 @@ import {
     turnstileHikCentralWorkerService,
     hcServerService,
     eventService,
+    telegramUserService,
+
 } from './v1/turnstile'
 
 import accountantService from "./v1/accountant/accountantService.js"
@@ -201,6 +203,7 @@ export default {
     punishmentService,
     vacancyService,
     eventService,
+    telegramUserService,
 
     learningCenterService,
     directionService,

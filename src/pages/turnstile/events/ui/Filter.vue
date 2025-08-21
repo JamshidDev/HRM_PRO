@@ -2,6 +2,7 @@
 import {useAccountStore, useComponentStore, useEventStore} from "@/store/modules/index.js"
 import {UIPageFilter, UISelect} from "@/components/index.js"
 import i18n from "@/i18n/index.js"
+import {ArrowSync24Filled} from "@vicons/fluent"
 
 const {t} = i18n.global
 const store = useEventStore()
@@ -128,6 +129,14 @@ const directionList = [
           update-value-on-close
           :actions="null"
           clearable />
+    </template>
+    <template #filterAction>
+      <n-button :loading="store.jobLoading" @click="store._indexJob()" type="success">
+        {{$t('turnstile.accessLevelPage.sync')}}
+        <template #icon>
+          <ArrowSync24Filled/>
+        </template>
+      </n-button>
     </template>
   </UIPageFilter>
 </template>

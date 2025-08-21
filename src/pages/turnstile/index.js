@@ -8,3 +8,4 @@ export const TurnstileOrgAccessLevelsPage = import('./orgAccessLevels/OrgAccessL
 export const TurnstileHcWorkersPage = import('./hcWorkers/hcWorkersPage.vue')
 export const HcServerPage = import('./hcServer/page.vue')
 export const HcEventPage = import('./events/page.vue')
+export const TelegramUserPage = import('./telegramUser/page.vue')

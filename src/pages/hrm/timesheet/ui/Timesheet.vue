@@ -457,7 +457,7 @@ const checkWorker = useDebounceFn(() => {
       <UIPagination
           v-if="store.totalItems>store.params.per_page"
           :page="store.params.page"
-          :per_page="store.params.size"
+          :per_page="store.params.per_page"
           :total="store.totalItems"
           @change-page="changePage"
       />

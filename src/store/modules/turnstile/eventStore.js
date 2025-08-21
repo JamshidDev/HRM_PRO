@@ -99,10 +99,45 @@ export const useEventStore = defineStore('eventStore', {
                 name:t('hcEvent.cards.cardFour'),
                 id:'work_hours'
             },
-        ]
+        ],
+        jobList:[],
+        jobItems:0,
+        jobLoading:false,
+        jobPayload:{
+            f_date:null,
+        },
+        jobParams:{
+            page: 1,
+            per_page: 10,
+            search: null,
+        }
 
     }),
     actions: {
+        _indexJob(){
+            this.jobLoading = true
+            const params = {
+                ...this.jobParams
+            }
+            $ApiService.eventService._jobIndex({params}).then((res) => {
+                this.visible = true
+                this.jobList = res.data.data.data
+                this.jobItems = res.data.data.total
+            }).finally(() => {
+                this.jobLoading = false
+            })
+        },
+        _createJob(){
+            this.jobLoading = true
+            const data = {
+                ...this.jobPayload,
+                f_date:Utils.timeWithMonth(this.jobPayload.f_date)
+            }
+            $ApiService.eventService._jobCreate({data}).then((res) => {
+                this._indexJob()
+            }).finally(() => {
+            })
+        },
         _download(){
 
             this.previewLoading = true

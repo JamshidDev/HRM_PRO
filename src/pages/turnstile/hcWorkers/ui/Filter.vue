@@ -96,7 +96,6 @@ const filterCount = computed(()=>Number(Boolean(store.params.organizations.lengt
             <ArrowSync24Filled/>
           </template>
         </n-button>
-
     </template>
   </UIPageFilter>
 </template>

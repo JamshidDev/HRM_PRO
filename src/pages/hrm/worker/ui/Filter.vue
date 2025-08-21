@@ -9,7 +9,7 @@ import {
   DismissCircle28Regular,
   ShareScreenPersonOverlayInside16Regular,
   PremiumPerson20Regular,
-  CloudArchive20Filled,
+  CloudArchive20Filled, Search48Filled,
 } from "@vicons/fluent"
 import Utils from "@/utils/Utils.js"
 import {AppPaths} from "@/utils/index.js"
@@ -72,7 +72,7 @@ const clearFilter = () => {
   store.params.contract_type = null
   store.params.position_type = null
   store.params.sex = null
-  store.params.nationality_id = null
+  store.params.nationalities = []
   store.params.country_id = null
   store.params.region_id = null
   store.params.city_id = null
@@ -82,6 +82,9 @@ const clearFilter = () => {
   store.params.ages=[1,100]
   store.params.age_start = undefined
   store.params.age_end = undefined
+  store.params.last_name = null
+  store.params.first_name = null
+  store.params.middle_name = null
 
   filterEvent()
 }
@@ -171,6 +174,8 @@ const defaultEv = (v)=>{
   componentStore.departmentList = []
   componentStore._departments()
 }
+
+const onKeyUp = Utils.useDebounce(filterEvent,1000)
 
 
 </script>
@@ -404,7 +409,6 @@ const defaultEv = (v)=>{
                 :loading="componentStore.nationalityLoading"
             />
           </div>
-
           <div class="col-span-6">
             <label class="text-xs text-gray-500">{{ $t(`createWorkerPage.form.country`) }}</label>
             <n-select
@@ -479,6 +483,54 @@ const defaultEv = (v)=>{
                 :loading="store.currentDistrictLoading"
                 @update:value="filterEvent"
             />
+          </div>
+          <div class="col-span-4">
+            <label class="text-xs text-gray-500">{{ $t(`registerPage.lastName`) }}</label>
+            <n-input
+                clearable
+                class="w-full! skip-format"
+                v-model:value="store.params.last_name"
+                type="text"
+                :placeholder="$t('content.search')"
+                :on-keyup="onKeyUp"
+                @clear="onKeyUp"
+            >
+              <template #suffix>
+                <n-icon :component="Search48Filled" />
+              </template>
+            </n-input>
+          </div>
+          <div class="col-span-4">
+            <label class="text-xs text-gray-500">{{ $t(`registerPage.firstName`) }}</label>
+            <n-input
+                clearable
+                class="w-full! skip-format"
+                v-model:value="store.params.first_name"
+                type="text"
+                :placeholder="$t('content.search')"
+                :on-keyup="onKeyUp"
+                @clear="onKeyUp"
+            >
+              <template #suffix>
+                <n-icon :component="Search48Filled" />
+              </template>
+            </n-input>
+          </div>
+          <div class="col-span-4">
+            <label class="text-xs text-gray-500">{{ $t(`registerPage.middleName`) }}</label>
+            <n-input
+                clearable
+                class="w-full! skip-format"
+                v-model:value="store.params.middle_name"
+                type="text"
+                :placeholder="$t('content.search')"
+                :on-keyup="onKeyUp"
+                @clear="onKeyUp"
+            >
+              <template #suffix>
+                <n-icon :component="Search48Filled" />
+              </template>
+            </n-input>
           </div>
 
         </div>

@@ -1,7 +1,7 @@
 <script setup>
 import {NoDataPicture, UIPagination} from "@/components/index.js"
 import {useExamAttemptStore, useWorkerExamStore} from "@/store/modules/index.js"
-import {SquareArrowForward48Regular, Clock20Filled, DismissCircle20Filled} from "@vicons/fluent"
+import {SquareArrowForward48Regular, Clock20Filled, DismissCircle20Filled, Eye16Filled, ArrowRight16Filled} from "@vicons/fluent"
 import {useAccountStore} from "@/store/modules/index.js"
 const accStore = useAccountStore()
 const router = useRouter()
@@ -58,6 +58,12 @@ const goContinue = (v)=>{
   })
 }
 
+const viewExam = (v) => {
+  examStore.visible=true
+  examStore.elementId = v.id
+  examStore._get_attempt()
+}
+
 </script>
 
 <template>
@@ -84,7 +90,7 @@ const goContinue = (v)=>{
             </div>
             <div class="flex flex-col md:w-[calc(100%-840px)] md:min-w-[200px] w-full">
               <p class="leading-[1.2] font-semibold text-textColor0 line-clamp-1">{{item?.name}}</p>
-              <p class="leading-[1.2] text-xs text-secondary line-clamp-1">{{item?.topic.name}}</p>
+              <p class="leading-[1.2] text-xs text-secondary line-clamp-1">{{item?.topic?.name}}</p>
             </div>
             <div class="flex flex-col text-xs text-secondary md:w-[260px] w-full">
               <p class="leading-[1.2] line-clamp-1 w-full" :class="[existAttemptCount(item.results,item.chances) ===0 && 'line-through opacity-50']">{{$t('examPage.attemptsCount')}}: <span class="font-semibold text-textColor0">{{existAttemptCount(item.results,item.chances)}}</span> </p>
@@ -92,6 +98,7 @@ const goContinue = (v)=>{
             </div>
             <div class="hidden md:flex md:w-[200px] w-full md:justify-center">
               <n-button
+                  secondary
                   :type="item.id === selectedRowId? 'error' : 'default'"
                   @click="onChangeCollapse(item.id)"
                   size="small"
@@ -113,34 +120,75 @@ const goContinue = (v)=>{
                   :disabled="isRunDevice(item.results)"
                   v-if="isCanContinue(item.results)"
                   @click="goContinue(item)"
-                  type="warning"
-                  size="small"
-                  round>
+                  type="success"
+                  secondary
+                  icon-placement="right"
+                  size="small">
                 {{$t('content.continue')}}
+                <template #icon>
+                  <ArrowRight16Filled/>
+                </template>
               </n-button>
               <n-button
                   class="w-full! md:w-auto! mt-4! md:mt-0!"
                   v-else-if="isCanStart(item.results, item.chances)"
                   @click="goStart(item)"
+                  :loading="examStore.loading"
                   type="primary"
                   size="small"
-                  round>
+                  icon-placement="right"
+                >
                 {{$t('content.start')}}
+                <template #icon>
+                  <ArrowRight16Filled/>
+                </template>
               </n-button>
               <n-button
                   class="w-full! md:w-auto! mt-4! md:mt-0!"
                   v-else secondary
                   size="small"
-                  round>
+                  >
                 {{$t('content.finished')}}
               </n-button>
             </div>
           </div>
           <div class="mb-2 rounded-bl-lg rounded-br-lg py-1 transition-all bg-surface-section">
             <n-collapse-transition class="w-full px-6 bg-surface-section" :show="item.id === selectedRowId">
-              <div class="h-[40px] bg-dark/10 w-full rounded-lg">
+              <div class="grid grid-cols-12 bg-primary/10 w-full rounded-lg py-2 px-4">
                 <template v-for="result in item.results" :key="result.id">
+                    <div class="col-span-12 flex items-center my-2 pb-1 border-b border-primary/60 border-dashed">
+                          <n-button class="w-[60px]!" type="primary" secondary size="small">
+                            <template v-if="result.ended">
+                              {{result.result}}
+                            </template>
 
+                            <n-icon size="20" v-else class="text-primary">
+                              <Clock20Filled/>
+                            </n-icon>
+                          </n-button>
+                          <div class="flex flex-col pl-4 w-[calc(100%-180px)]">
+                            <p class="leading-[1.2] text-xs text-primary font-semibold"><span class="text-secondary w-[120px] inline-block">{{$t('examPage.startTime')}}:</span> {{result.created}}</p>
+                            <p v-if="result.ended" class="leading-[1.2] text-xs text-primary font-semibold"><span class="text-secondary w-[120px] inline-block">{{$t('examPage.endTime')}}:</span> {{result.ended}}</p>
+                            <p v-else class="text-warning leading-[1.2] text-xs">{{$t('examPage.inProgress')}}</p>
+                          </div>
+                          <div class="w-[120px] flex justify-end items-center">
+                            <n-button
+                                @click="viewExam(result)"
+                                v-if="result.ended"
+                                type="primary" ghost round size="tiny">{{$t('content.view')}}
+                              <template #icon>
+                                <Eye16Filled/>
+                              </template>
+                            </n-button>
+                            <span v-else class="text-warning">{{$t('content.process')}}</span>
+                          </div>
+
+
+
+                    </div>
+                </template>
+                <template v-if="item.results.length===0">
+                    <p class="col-span-12 text-center py-4! text-secondary">{{$t('content.no-data')}}</p>
                 </template>
               </div>
             </n-collapse-transition>
@@ -154,7 +202,7 @@ const goContinue = (v)=>{
     <UIPagination
         v-if="store.totalItems>0 && !store.loading"
         :page="store.params.page"
-        :per_page="store.params.size"
+        :per_page="store.params.per_page"
         :total="store.totalItems"
         @change-page="changePage"
     />

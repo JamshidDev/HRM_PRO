@@ -109,6 +109,7 @@ export const AppPaths = {
     HcServer: "/hc-server",
     HcEvents: "/hc-events",
     Pensioner: "/pensioner",
+    Notification: "/notification",
 }
 
 export const AppLayouts ={

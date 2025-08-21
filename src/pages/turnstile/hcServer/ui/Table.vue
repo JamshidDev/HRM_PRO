@@ -117,7 +117,7 @@ const showDetails = (v)=>{
       </n-table>
       <UIPagination
           :page="store.params.page"
-          :per_page="store.params.size"
+          :per_page="store.params.per_page"
           :total="store.totalItems"
           @change-page="changePage"
       />
@@ -125,7 +125,3 @@ const showDetails = (v)=>{
     <NoDataPicture v-if="store.list.length===0 && !store.loading" />
   </n-spin>
 </template>
-
-<style scoped>
-
-</style>

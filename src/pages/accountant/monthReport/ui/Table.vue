@@ -196,7 +196,7 @@ const onShow = (v) => {
       </n-table>
       <UIPagination
           :page="store.params.page"
-          :per_page="store.params.size"
+          :per_page="store.params.per_page"
           :total="store.totalItems"
           @change-page="changePage"
       />

@@ -52,7 +52,6 @@ onMounted(()=>{
                 filterable
                 :filter="()=>true"
                 clearable
-
                 :options="componentStore.departmentList"
                 :render-label="UIHelper.selectRender.label"
                 :render-tag="UIHelper.selectRender.value"
@@ -60,6 +59,7 @@ onMounted(()=>{
                 :loading="componentStore.departmentLoading"
                 @search="componentStore._onSearchDepartment"
                 @scroll="componentStore._onScrollDepartment"
+                :reset-menu-on-options-change="true"
             />
           </n-form-item>
           <n-form-item class="col-span-12 md:col-span-6 lg:col-span-4" :label="$t(`departmentPositionPage.form.group`)" path="group">

@@ -66,7 +66,7 @@ const timeToZone = (time)=>{
 }
 
 const timeWithMonth = (time)=>{
-    return time? dayjs(time).format('DD.MM.YYYY HH:mm:ss') : null
+    return time? dayjs(time).format('YYYY-MM-DD HH:mm:ss') : null
 }
 const timeOnlyDate = (time)=>{
     return time? dayjs(time).format('DD.MM.YYYY') : null
@@ -718,7 +718,18 @@ const startWorkTime = [
     },
 ]
 
+const useDebounce = (fn, delay=1000) => {
+    let timer
+    return (...args) => {
+        clearTimeout(timer);
+        timer = setTimeout(() => {
+            fn(...args);
+        }, delay);
+    }
+}
+
 export default {
+    useDebounce,
     formatToMLN,
     startWorkTime,
     disablePasteDate,

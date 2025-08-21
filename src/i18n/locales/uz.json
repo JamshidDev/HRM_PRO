@@ -41,6 +41,8 @@
     "platform": "Platforma",
     "date": "Sana",
     "name": "Nomi",
+    "general": "Umumiy",
+    "added": "Qo'shildi",
     "description": "Tavsif",
     "confirmDelete": "Haqiqattan ham o'chirmoqchimisiz?",
     "yes": "Ha",
@@ -1964,6 +1966,8 @@
     "name": "Hodisalar",
     "createTitle": "Yuklash",
     "updateTitle": "Tahrirlash",
+    "syncTitle": "Sinxronlash",
+    "syncText": "Iltimos, sinxronlash uchun kerakli vaqtni tanlang. Tizim ushbu kunni oxirigacha bo‘lgan vaqtni avtomatik ravishda sinxronlaydi.",
     "preview": "Ko'rish",
     "form": {
       "name": "Nomi",
@@ -2010,6 +2014,15 @@
       "pin": "JSHSHIR",
       "phone": "Telefon raqam",
       "chernobyl": "Chernobel AES halokati oqibatlarini tugatishda ishtirok etganmi?"
+    }
+  },
+  "notification": {
+    "name": "Xabarnoma",
+    "createTitle": "Qurilma biriktirish",
+    "updateTitle": "Tahrirlash",
+    "form": {
+      "user_id": "Xodim",
+      "devices": "Qurilmalar"
     }
   },
   "navigation": {

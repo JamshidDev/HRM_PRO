@@ -38,7 +38,7 @@ const onSelect = (v)=>{
           <th class="text-center! w-[160px]">{{$t('turnstile.accessLevelPage.deviceCount')}}</th>
           <th class="text-center! w-[160px]">{{$t('turnstile.accessLevelPage.server')}}</th>
           <th class="text-center! w-[200px]">{{$t('turnstile.hcWorkersPage.department')}}</th>
-          <th class="text-center!">{{$t('turnstile.hcWorkersPage.device')}}</th>
+          <th class="text-center! min-w-[200px] w-[200px]">{{$t('turnstile.hcWorkersPage.device')}}</th>
           <th class="max-w-[40px] w-[40px]"></th>
         </tr>
         </thead>
@@ -56,7 +56,7 @@ const onSelect = (v)=>{
             </n-button>
           </td>
           <td class="text-center!">{{item.description}}
-            <p class="line-clamp-3">
+            <p class="flex flex-wrap">
               <template v-for="device in item.devices" :key="device.id">
                 <n-button :type="device.status===1? 'success' : 'error'" class="mr-1! mt-[2px]!" size="tiny" dashed bordered>
                   {{device.name}}
@@ -85,7 +85,7 @@ const onSelect = (v)=>{
       <UIPagination
 
           :page="store.params.page"
-          :per_page="store.params.size"
+          :per_page="store.params.per_page"
           :total="store.totalItems"
           @change-page="changePage"
       />

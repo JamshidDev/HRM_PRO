@@ -49,6 +49,7 @@ import {
     ContactCard16Filled,
     ArrowUpload16Filled,
     QrCode24Regular,
+    AlertUrgent16Filled,
 } from "@vicons/fluent"
 import {AppPaths} from "@/utils/index.js";
 import Utils from "@/utils/Utils.js"
@@ -393,6 +394,13 @@ export const navigations = [
                 path: Utils.routeTurnstilePathMaker(AppPaths.HcEvents),
                 icon: ContactCard16Filled,
                 color: 'bg-info',
+                permission: appPermissions.turnstileHikCentralEvents,
+            },
+            {
+                label: 'notification.name',
+                path: Utils.routeTurnstilePathMaker(AppPaths.Notification),
+                icon: AlertUrgent16Filled,
+                color: 'bg-warning',
                 permission: appPermissions.turnstileHikCentralEvents,
             },
         ]
