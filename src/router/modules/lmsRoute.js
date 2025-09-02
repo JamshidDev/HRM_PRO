@@ -5,7 +5,8 @@ import {
     SpecializationPage,
     SubjectPage,
     EduPlanPage,
-    TeacherPage
+    TeacherPage,
+    WorkerPage,
 } from "@/pages/lms";
 
 
@@ -35,4 +36,9 @@ export default [
         component: TeacherPage,
         children:[],
     },
+    {
+        path:Utils.routeLmsPathMaker(AppPaths.Worker),
+        component: WorkerPage,
+        children:[],
+    }
 ]

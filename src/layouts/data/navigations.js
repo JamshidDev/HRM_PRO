@@ -50,6 +50,7 @@ import {
     ArrowUpload16Filled,
     QrCode24Regular,
     AlertUrgent16Filled,
+    AppsAddIn16Regular,
 } from "@vicons/fluent"
 import {AppPaths} from "@/utils/index.js";
 import Utils from "@/utils/Utils.js"
@@ -401,7 +402,7 @@ export const navigations = [
                 path: Utils.routeTurnstilePathMaker(AppPaths.Notification),
                 icon: AlertUrgent16Filled,
                 color: 'bg-warning',
-                permission: appPermissions.turnstileHikCentralEvents,
+                permission: appPermissions.turnstileHikCentralTgUser,
             },
         ]
     },
@@ -452,6 +453,13 @@ export const navigations = [
                 icon: ShareScreenPerson20Filled,
                 color: 'bg-info',
                 permission: appPermissions.users,
+            },
+            {
+                label: 'lmsWorkerPage.name',
+                path: Utils.routeLmsPathMaker(AppPaths.Worker),
+                icon: AppsAddIn16Regular,
+                color: 'bg-success',
+                permission: appPermissions.admin,
             }
         ]
     },

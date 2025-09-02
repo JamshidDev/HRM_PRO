@@ -19,7 +19,7 @@ export const useHcServerStore = defineStore('hcServerStore', {
             name: null,
             access_level_id: null,
             organization_id: [],
-            department_id:null,
+            departments:[],
             workers: [],
             department:null,
         },
@@ -38,7 +38,8 @@ export const useHcServerStore = defineStore('hcServerStore', {
             per_page:10,
             search:null,
             organization_id:null,
-            department_id:null,
+            departments:[],
+            department:null,
             department_position_id:null,
         },
         totalWorker:0,
@@ -73,7 +74,6 @@ export const useHcServerStore = defineStore('hcServerStore', {
         _department() {
             this.departmentLoading = true
             $ApiService.hcServerService._department().then((res) => {
-                console.log(res.data.data)
                 this.departmentList = res.data.data.map((v)=>({...v, name:v.orgName, id:Number(v.orgIndexCode)}))
             }).finally(() => {
                 this.departmentLoading = false
@@ -102,7 +102,7 @@ export const useHcServerStore = defineStore('hcServerStore', {
                 ...this.payload,
                 organization_id:this.payload.organization_id[0]?.id,
                 worker_position_ids:this.payload.workers.length>0? this.payload.workers : undefined,
-                department_id:this.payload.department_id || undefined,
+                departments:this.payload.departments?.toString() || undefined,
                 workers:undefined,
                 job:true,
             }
@@ -178,8 +178,8 @@ export const useHcServerStore = defineStore('hcServerStore', {
             this.elementId = null
             this.payload.name = null
             this.payload.access_level_id = null
-            this.payload.department_id = null
             this.payload.department = null
+            this.payload.departments = []
             this.payload.workers = []
             this.payload.organization_id = []
 

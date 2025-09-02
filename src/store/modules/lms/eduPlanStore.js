@@ -15,6 +15,7 @@ export const useEduPlanStore = defineStore('eduPlanStore', {
         elementId:null,
         totalItems:0,
         allPermissionList:[],
+        structureCheck2:[],
         specializationsParams:{
             page:1,
             per_page:10,
@@ -32,15 +33,23 @@ export const useEduPlanStore = defineStore('eduPlanStore', {
         subjectsLoading: false,
         subjectsTotal: 0,
         payload:{
+            name:null,
+            learning_center_id:null,
             specialization_id: null,
             start_date: null,
             hours: null,
             subjects: [],
+            count_groups:null,
+            count_workers:null,
+            type:null,
         },
         params:{
             page:1,
             per_page:10,
             search:null,
+            name:null,
+            learning_center_id:null,
+            organizations:[],
         },
     }),
     actions:{
@@ -70,6 +79,7 @@ export const useEduPlanStore = defineStore('eduPlanStore', {
             this.saveLoading = true
             let data = {
                 ...this.payload,
+                start_date: Utils.timeToZone(this.payload.start_date)
             }
             $ApiService.eduPlanService._update({data, id:this.elementId}).then((res)=>{
                 this.visible = false
@@ -163,10 +173,15 @@ export const useEduPlanStore = defineStore('eduPlanStore', {
             this.visible = data
         },
         resetForm(){
+            this.payload.name = null
+            this.payload.type = null
+            this.payload.learning_center_id = null
             this.payload.specialization_id = null
             this.payload.start_date = null
-            this.payload.hours = null
+            this.payload.hours = 1
             this.payload.subjects = []
+            this.payload.count_groups = 1
+            this.payload.count_workers = 1
         }
     }
 })

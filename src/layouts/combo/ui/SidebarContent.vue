@@ -1,6 +1,6 @@
 <script setup>
 import {navigations} from "../../data/navigations.js"
-import {ChevronDown12Regular, ChevronDoubleLeft16Filled, ErrorCircle20Filled} from "@vicons/fluent"
+import {ChevronDown12Regular, ChevronDoubleLeft16Filled, ErrorCircle20Filled, Bookmark16Filled} from "@vicons/fluent"
 import {useAccountStore} from "@/store/modules/index.js"
 import i18n from "@/i18n/index.js"
 import {AppPaths, useAppSetting} from "@/utils/index.js"
@@ -196,7 +196,7 @@ onMounted(() => {
             <template v-else>
               <div
                   @click="onChangePath(item)"
-                  class="panel-item-single"
+                  class="panel-item-single relative"
                   :class="[isCurrentPath(item.path) && 'active-panel-item-single', item?.disable && 'opacity-30']"
               >
                 <div :class="[item?.color]" class="item-icon rounded-md ml-[-2px]">
@@ -207,16 +207,12 @@ onMounted(() => {
                 <div class="item-title truncate pl-2">
                   <span>{{ $t(item.label) }}</span>
                 </div>
-                <!-- Convinience for development -->
-                <!-- Do not worry it will not appear in prod since only in dev mode  -->
-                <!-- disallowed panelItems are returned  -->
-                <n-button size="tiny" quaternary circle type="error" class="!hidden" v-if="!item?.allowed">
-                  <template #icon>
-                    <n-icon>
-                      <ErrorCircle20Filled />
-                    </n-icon>
-                  </template>
-                </n-button>
+
+<!--                <span class="absolute top-[-6px] right-[0px]">-->
+<!--                  <n-icon size="18" class="text-success/60">-->
+<!--                    <Bookmark16Filled/>-->
+<!--                  </n-icon>-->
+<!--                </span>-->
               </div>
             </template>
 

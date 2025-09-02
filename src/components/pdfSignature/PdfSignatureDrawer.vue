@@ -293,13 +293,13 @@ onUnmounted(()=>{
               </div>
 
               <div class="hidden md:flex flex-col w-[300px] h-full bg-surface-ground border-l border-surface-line px-2 py-4 pt-[70px]">
-                <div class="w-full" style="height: calc(100% - 110px)">
+                <div class="w-full overflow-auto mb-5" style="height: calc(100% - 130px)">
                   <h3 class="mb-1 text-gray-400 text-xs font-medium uppercase pl-2">{{$t('documentPage.signature.viewer')}}</h3>
                   <ConfirmationList/>
                 </div>
 
 
-                <div v-if="store.permissions?.canSignature && showSignature" class="w-full bg-surface-section rounded-xl border border-surface-line flex flex-col p-1 gap-2">
+                <div v-if="store.permissions?.canSignature && showSignature" class="w-full bg-gradient-to-b to-95% from-secondary/70 to-surface-ground rounded-xl border border-surface-line flex flex-col p-1 gap-2">
                   <div class="bg-surface-section rounded-xl p-1 mb-4 shadow">
                     <UIUser
                         :short="false"

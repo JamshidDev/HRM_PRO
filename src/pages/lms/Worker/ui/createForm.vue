@@ -1,0 +1,96 @@
+<script setup>
+import {UINSelect} from "@/components/index.js"
+import validationRules from "@/utils/validationRules.js";
+import {useLmsWorkerStore, useComponentStore} from "@/store/modules/index.js";
+import UIHelper from "@/utils/UIHelper.js"
+
+const formRef = ref(null)
+const store = useLmsWorkerStore()
+const componentStore = useComponentStore()
+
+const onSubmit = ()=>{
+  formRef.value?.validate((error)=>{
+    if(!error){
+      store.saveLoading = true
+      const data = {
+        ...store.payload
+      }
+      if(store.visibleType){
+        store._create(data)
+      }else{
+        store._update()
+      }
+    }
+  })
+}
+
+
+
+const onChange = ()=>{
+    store.payload.worker_position_ids = []
+    if(!store.payload.edu_plan_id) return
+    store._workers()
+
+}
+
+const onSearch = (v)=>{
+  store.workerParams.search = v
+  store._workers()
+}
+
+onMounted(()=>{
+  if(store.eduPlanList.length === 0){
+    store._eduPlans()
+  }
+})
+
+</script>
+
+<template>
+  <n-form
+      ref="formRef"
+      :rules="validationRules.common"
+      :model="store.payload"
+  >
+    <div style="min-height:calc(100vh - 120px)">
+      <n-form-item :label="$t(`lmsWorkerPage.form.eduPlan`)" path="edu_plan_id" rule-path="requiredNumberField">
+        <n-select
+            v-model:value="store.payload.edu_plan_id"
+            :options="store.eduPlanList"
+            :loading="store.eduPlanLoading"
+            label-field="name"
+            value-field="id"
+            filterable
+            clearable
+            :render-label="UIHelper.selectRender.label"
+            :render-tag="UIHelper.selectRender.value"
+            @update:value="onChange"
+        />
+      </n-form-item>
+      <n-form-item :label="$t(`lmsWorkerPage.form.eduPlan`)" path="worker_position_ids" rule-path="requiredMultiSelectField">
+        <UINSelect
+            :disabled="!store.payload.edu_plan_id"
+            :multiple="true"
+            :query="store.workerParams.search"
+            v-model:value="store.payload.worker_position_ids"
+            :value-field="'id'"
+            :options="store.workerList"
+            :loading="store.workerLoading"
+            @onSearch="onSearch"
+        />
+      </n-form-item>
+    </div>
+
+    <div class="grid grid-cols-2 gap-2">
+      <n-button @click="store.openVisible(false)" type="error" ghost>
+        {{$t('content.cancel')}}
+      </n-button>
+      <n-button
+          @click="onSubmit"
+          :loading="store.saveLoading"
+          type="primary">
+        {{$t('content.save')}}
+      </n-button>
+    </div>
+  </n-form>
+</template>

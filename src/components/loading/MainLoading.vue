@@ -2,11 +2,6 @@
 import {useAccountStore} from "@/store/modules/app/accountStore.js";
 const store = useAccountStore()
 
-watch(()=>store.loading, (v)=>{
-  console.log()
-}, {
-  immediate:true,
-})
 
 onMounted(()=>{
   window.addEventListener('load',()=>{

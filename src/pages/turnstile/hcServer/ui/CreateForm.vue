@@ -23,23 +23,29 @@ const onSubmit = ()=>{
 
 const onChangeStructure = (v)=>{
   store.payload.organization_id=v
-  store.payload.department_id= null
+  store.payload.departments= []
   store.workerList = []
   componentStore.departmentList = []
   store.payload.workers = []
-  store.payload.department_id = null
 
   if(v.length>0){
     componentStore.workerList = []
     store.workerParams.organization_id= v[0].id
     componentStore.depParams.organizations =  v[0].id
     store._workers()
+    store._department()
   }
 }
 
+let timeout = null
 const onChangeDepartment = (v)=>{
   store.payload.workers = []
-  store.workerParams.department_id = v
+  store.workerParams.departments = v.length>0? v.toString() : null
+  clearTimeout(timeout)
+  timeout = setTimeout(()=>{
+    store.workerParams.page=1
+    store._workers()
+  },1000)
 }
 
 const onChangeWorker = (v)=>{
@@ -47,19 +53,17 @@ const onChangeWorker = (v)=>{
 
 const onOpenEv = (v)=>{
   if(!v) return
-  // store.payload.workers = []
-  store.workerParams.search=null
-  store.workerParams.page=1
-  store._workers()
+  if(store.workerList.length===0){
+    store.workerParams.search=null
+    store.workerParams.page=1
+    store._workers()
+  }
+
 }
 
 const onPanelEv = (v)=>{
   if(!v) return
-  if(store.visibleType && !store.payload.department_id){
-    componentStore.onOpenDepartmentEv(v)
-  }
-  if(!store.visibleType && componentStore.departmentList.length === 1){
-    store.payload.department_id = null
+  if(store.payload.departments.length===0){
     componentStore.onOpenDepartmentEv(v)
   }
 
@@ -119,7 +123,8 @@ onMounted(()=>{
             :label="$t(`departmentPositionPage.form.department_id`)">
           <n-select
               :disabled="store.payload.organization_id.length === 0"
-              v-model:value="store.payload.department_id"
+              v-model:value="store.payload.departments"
+              multiple
               filterable
               :filter="()=>true"
               clearable
@@ -133,6 +138,7 @@ onMounted(()=>{
               @update:show="onPanelEv"
               @update:value="onChangeDepartment"
               :ignore-composition="false"
+              :max-tag-count="1"
           />
         </n-form-item>
 

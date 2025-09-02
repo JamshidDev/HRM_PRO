@@ -11,7 +11,6 @@ import {naiveBreakpoints} from "@/assets/theme/theme.js"
 import i18n from "./i18n/index.js"
 
 const appStore = useAppStore()
-const instructionStore = usePageInstructionStore()
 
 const localProvider = computed(()=>{
   if(i18n.global.locale==='uz'){

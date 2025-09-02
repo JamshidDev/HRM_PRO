@@ -34,7 +34,22 @@ const onChangeRegion =(v)=>{
     }
 }
 
+let timeout = null
+const onSearchEv = ()=>{
+  if(!store.visibleType) return
+  clearTimeout(timeout)
+
+  if(!Boolean(store.payload.name)) {
+    store.existUniversities = []
+    return
+  }
+  timeout = setTimeout(()=>{
+    store._checkExistUniversity(store.payload.name)
+  },1000)
+}
+
 onMounted(()=>{
+  store.existUniversities = []
   if(compStore.universityTypes.length === 0){
     compStore._enumsAdmin()
   }
@@ -50,11 +65,18 @@ onMounted(()=>{
       :model="store.payload"
   >
     <div style="height:calc(100vh - 120px)" class="overflow-y-auto">
-      <n-form-item :label="$t(`othersPage.university.form.name`)" path="name">
+      <n-collapse-transition :show="store.existUniversities.length>0">
+        <n-alert type="warning">
+          {{$t('othersPage.university.existName')}}
+        </n-alert>
+      </n-collapse-transition>
+      <n-form-item class="mt-4" :label="$t(`othersPage.university.form.name`)" path="name">
         <n-input
             type="textarea"
             v-model:value="store.payload.name"
             :rows="2"
+            :on-keyup="onSearchEv"
+            @clear="onSearchEv"
         />
       </n-form-item>
       <n-form-item :label="$t(`othersPage.university.form.name_ru`)" path="name_ru">
@@ -103,7 +125,6 @@ onMounted(()=>{
         <n-select
             v-model:value="store.payload.type"
             filterable
-
             :options="compStore.universityTypes"
             label-field="name"
             value-field="id"
@@ -117,8 +138,9 @@ onMounted(()=>{
         {{$t('content.cancel')}}
       </n-button>
       <n-button
+          :disabled="store.existUniversities.length>0"
           @click="onSubmit"
-          :loading="store.saveLoading"
+          :loading="store.saveLoading || store.checkLoading"
           type="primary">
         {{$t('content.save')}}
       </n-button>

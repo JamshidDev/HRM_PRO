@@ -1,5 +1,7 @@
 <script setup>
 import {useAccountStore} from "@/store/modules/app/accountStore.js";
+
+
 import Form from "./Form.vue"
 import OrgForm from "./OrgForm.vue"
 const store = useAccountStore()
@@ -12,7 +14,7 @@ const store = useAccountStore()
         <div class=" border border-surface-line border-dashed p-4 mb-4 rounded-lg bg-surface-ground">
           <Form/>
         </div>
-        <div class=" border border-surface-line border-dashed p-4 mb-2 rounded-lg bg-surface-ground">
+        <div v-if="store.checkPermission(store.pn.hrCommandsBlank)"  class=" border border-surface-line border-dashed p-4 mb-2 rounded-lg bg-surface-ground">
           <h2 class="mb-4 text-xl text-primary text-center">
             {{$t('profilePage.org.title')}}
           </h2>

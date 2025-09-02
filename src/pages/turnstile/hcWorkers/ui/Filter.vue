@@ -81,6 +81,7 @@ const filterCount = computed(()=>Number(Boolean(store.params.organizations.lengt
       />
       <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{$t('turnstile.hcWorkersPage.access_levels')}}</label>
       <n-select
+          filterable
           v-model:value="store.params.access_level_id"
           :options="store.levelList"
           :loading="store.levelLoading"

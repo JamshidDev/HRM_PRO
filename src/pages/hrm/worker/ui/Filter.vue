@@ -32,7 +32,7 @@ const onSearch = () => {
   store._index()
 }
 
-const filterEvent = () => {
+const filterEvent = (v) => {
   componentStore.depParams.page = 1
   store.params.page = 1
   store._index()
@@ -55,13 +55,23 @@ const marks = {
 }
 
 const filterCount = computed(() => {
-  return Number(Boolean(store.params.organizations.length > 0)) + Number(Boolean(store.params.departments.length > 0))
-      + Number(Boolean(store.params.birthday)) +  Number(Boolean(store.params.contract_type)) + Number(Boolean(store.params.position_type))
-      + Number(Boolean(store.params.positions.length>0))
-      + Number(Boolean(store.params.sex !==null)) + Number(Boolean(store.params.nationality_id)) + Number(Boolean(store.params.country_id))
-      + Number(Boolean(store.params.region_id)) + Number(Boolean(store.params.city_id)) + Number(Boolean(store.params.current_region_id))
-      + Number(Boolean(store.params.current_city_id)) + Number(Boolean(store.params.marital_status))
-
+  return [
+    store.params.organizations.length,
+    store.params.departments.length,
+    store.params.birthday,
+    store.params.contract_type,
+    store.params.position_type,
+    store.params.positions.length,
+    store.params.sex !== null,
+    store.params.nationalities.length,
+    store.params.country_id,
+    store.params.region_id,
+    store.params.city_id,
+    store.params.current_region_id,
+    store.params.current_city_id,
+    store.params.marital_status,
+    store.params.multiple_position,
+  ].filter(Boolean).length
 })
 
 const clearFilter = () => {
@@ -531,6 +541,14 @@ const onKeyUp = Utils.useDebounce(filterEvent,1000)
                 <n-icon :component="Search48Filled" />
               </template>
             </n-input>
+          </div>
+          <div class="col-span-4">
+            <div class="border border-surface-line rounded-lg p-1">
+              <n-checkbox @change="filterEvent" v-model:checked="store.params.multiple_position">
+                <span class="text-secondary text-xs">{{$t('workerPage.filter.multiple_position')}}</span>
+              </n-checkbox>
+            </div>
+
           </div>
 
         </div>

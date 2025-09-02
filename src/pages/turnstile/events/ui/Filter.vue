@@ -9,7 +9,7 @@ const store = useEventStore()
 const accStore = useAccountStore()
 
 const filterEvent = ()=>{
-  if(!accStore.checkAction(accStore.pn.economistStatementsRead)) return
+  if(!accStore.checkAction(accStore.pn.turnstileHikCentralEventsRead)) return
   store.params.page = 1
   store._index()
 }
@@ -131,7 +131,7 @@ const directionList = [
           clearable />
     </template>
     <template #filterAction>
-      <n-button :loading="store.jobLoading" @click="store._indexJob()" type="success">
+      <n-button v-if="accStore.checkPermission(accStore.pn.admin)" :loading="store.jobLoading" @click="store._indexJob()" type="success">
         {{$t('turnstile.accessLevelPage.sync')}}
         <template #icon>
           <ArrowSync24Filled/>

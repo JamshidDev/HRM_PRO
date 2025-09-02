@@ -41,6 +41,7 @@ onMounted(()=>{
     />
     <Table/>
     <UIDrawer
+        :width="800"
         :visible="store.visible"
         @update:visible="(v)=>store.visible = v"
         :title="store.visibleType? t('userRole.createTitle') : t('userRole.updateTitle')"
@@ -53,7 +54,3 @@ onMounted(()=>{
   </UIPageContent>
 
 </template>
-
-<style scoped>
-
-</style>

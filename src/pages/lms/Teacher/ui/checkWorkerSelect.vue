@@ -49,7 +49,7 @@ const renderWorkerOption = ({option, selected})=>{
   return h('div',{
     class:"pinfl-worker-option",
     onClick() {
-      if(workerId.value == option?.pin){
+      if(workerId.value === option?.pin){
         workerId.value = null
       }else{
         workerId.value = option?.pin
@@ -84,7 +84,7 @@ onMounted(()=>{
       :options="componentStore.worker ? [componentStore.worker] : []"
       :loading="componentStore.pinLoading"
       label-field="lastName"
-      value-field="pin"
+      value-field="id"
       filterable
       :render-option="renderWorkerOption"
       :render-tag="renderWorkerLabel"

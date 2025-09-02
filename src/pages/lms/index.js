@@ -3,3 +3,4 @@ export const SpecializationPage = ()=>import("./Specialization/SpecializationPag
 export const SubjectPage = ()=>import("./Subject/SubjectPage.vue")
 export const EduPlanPage = ()=>import("./EduPlan/EduPlan.vue")
 export const TeacherPage = ()=>import("./Teacher/TeacherPage.vue")
+export const WorkerPage = ()=>import("./Worker/page.vue")

@@ -424,6 +424,7 @@ const appPermissions = {
     hrCommands:"hr-commands",
     hrCommandsWrite:"hr-commands-write",
     hrCommandsRead:"hr-commands-read",
+    hrCommandsBlank:"hr-commands-blank",
 
     hrContractAdditional:"hr-contract-additional",
     hrContractAdditionalWrite:"hr-contract-additional-write",
@@ -539,6 +540,11 @@ const appPermissions = {
     turnstileHikCentralJobWrite: 'turnstile-hik-central-job-write',
     turnstileHikCentralJobRead: 'turnstile-hik-central-job-read',
     turnstileHikCentralEvents: 'turnstile-hik-central-events',
+    turnstileHikCentralEventsRead: 'turnstile-hik-central-events-read',
+    turnstileHikCentralEventsWrite: 'turnstile-hik-central-events-write',
+    turnstileHikCentralTgUser: 'turnstile-hik-central-tg-user',
+    turnstileHikCentralTgUserRead: 'turnstile-hik-central-tg-user-read',
+    turnstileHikCentralTgUserWrite: 'turnstile-hik-central-tg-user-write',
 
     hrIncentives:"hr-incentives",
     hrIncentivesWrite:"hr-incentives-write",

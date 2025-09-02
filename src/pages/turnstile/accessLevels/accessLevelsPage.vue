@@ -22,9 +22,6 @@ const onSync = ()=>{
 
 onMounted(()=>{
   if(!accStore.checkAction(accStore.pn.turnstileAccessLevelsRead)) return
-  store.params.page = 1
-  store.params.per_page = 10
-  store.params.search = null
   store._index_access_levels()
 })
 </script>

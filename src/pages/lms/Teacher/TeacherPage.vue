@@ -1,12 +1,13 @@
 <script setup>
 import {UIDrawer, UIPageContent, UIPageFilter} from "@/components/index.js";
 import Table from "./ui/Table.vue"
-import {useLearningCenterStore} from "@/store/modules/index.js";
+import {useComponentStore, useTeacherStore} from "@/store/modules/index.js"
 import createFrom from "./ui/createForm.vue"
 import i18n from "@/i18n/index.js"
 
 const {t} = i18n.global
-const store = useLearningCenterStore();
+const store = useTeacherStore()
+const componentStore = useComponentStore()
 
 const onSearch = (v)=>{
   store.params.page = 1
@@ -16,6 +17,7 @@ const onSearch = (v)=>{
 const onAdd = ()=>{
   store.resetForm()
   store.visibleType = true
+  componentStore.workerPinList = []
   store.visible = true
 }
 

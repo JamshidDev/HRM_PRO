@@ -1,5 +1,5 @@
 <script setup>
-import {ArrowCircleDown32Regular} from "@vicons/fluent"
+import {ArrowCircleDown32Regular, ArrowSync20Filled} from "@vicons/fluent"
 import {UIPageFilter, UISelect} from "@/components/index.js"
 import {useAccountStore, useComponentStore, useTaxFourStore} from "@/store/modules/index.js"
 import Utils from "@/utils/Utils.js"
@@ -32,6 +32,10 @@ const resetFilter = ()=>{
 }
 
 const filterCount = computed(()=>Number(Boolean(store.params.organizations.length)))
+const onRefreshEv = ()=>{
+  store.loading = true
+  componentStore._refreshPin('tax-four-applications', store._index)
+}
 
 </script>
 
@@ -46,6 +50,15 @@ const filterCount = computed(()=>Number(Boolean(store.params.organizations.lengt
     :filter-count="filterCount"
 >
   <template #filterAction>
+    <n-button
+        @click="onRefreshEv"
+        :loading="store.loading"
+        type="primary">
+      <template #icon>
+        <ArrowSync20Filled/>
+      </template>
+      {{$t('content.refresh')}}
+    </n-button>
     <n-button
         @click="store._download()"
         :loading="store.downloadLoading"

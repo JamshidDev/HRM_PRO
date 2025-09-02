@@ -3,6 +3,7 @@ import i18n from "@/i18n/index.js"
 const {t} = i18n.global
 import Utils from "@/utils/Utils.js"
 import {useAppSetting} from "@/utils/index.js"
+import utils from "@/utils/Utils.js"
 
 
 
@@ -229,8 +230,76 @@ export const useComponentStore = defineStore('componentStore', {
 
         uploadTypes:[],
         accountantEnumLoading:false,
+        workerPinList:[],
+        workerPinLoading:false,
+        lmsEnumLoading:false,
+        lmsEnumTypes:[],
+        lmsEnumExamTypes:[],
+        lmsLearningCenters:[],
+        lmsLearningCenterLoading:false,
     }),
     actions:{
+        _lmsEnum(){
+            this.lmsEnumLoading= true
+            $ApiService.eduPlanService._enum().then((res)=>{
+                this.lmsEnumTypes = res.data.data?.edu_plan_types
+                this.lmsEnumExamTypes = res.data.data?.exam_types
+            }).finally(()=>{
+                this.lmsEnumLoading= false
+            })
+        },
+        _lmsLearningCenter(){
+            this.lmsLearningCenterLoading= true
+            $ApiService.eduPlanService._learningCenter({params:{page:1, per_page:1000}}).then((res)=>{
+                this.lmsLearningCenters = res.data.data
+            }).finally(()=>{
+                this.lmsLearningCenterLoading= false
+            })
+        },
+        _checkWorker(pin, type){
+            this.pinLoading = true
+            this.worker = null
+            $ApiService.workerService._checkWorker({params:{pin, type}}).then((res)=>{
+                if(!res.data.error){
+                    let data = res.data.data
+                    this.worker =  {
+                        lastName:data?.last_name,
+                        firstName:data?.first_name,
+                        middleName:data?.middle_name,
+                        position:`${t('workerPage.checkWorker.born')} ${Utils.timeOnlyDate(data?.birthday)}`,
+                        photo:data?.photo,
+                        pin:data.id.toString()
+                    }
+                }
+
+            }).finally(()=>{
+                this.submitted = true
+                this.pinLoading = false
+            })
+        },
+        _searchWorkerByPin(queryPin){
+            this.workerPinLoading = true
+            this.workerPinList = []
+            $ApiService.workerService._checkWorker({params:{pin:queryPin}}).then((res)=>{
+                if(!res.data.error){
+                    let data = res.data.data
+                    this.workerPinList = [{
+                        id:data.id,
+                        name:utils.combineFullName(data),
+                        position:`${t('workerPage.checkWorker.born')} ${Utils.timeOnlyDate(data?.birthday)}`,
+                    }]
+                }
+
+            }).finally(()=>{
+                this.workerPinLoading = false
+            })
+        },
+        _refreshPin(type, callback){
+            $ApiService.pensionService._refreshPin({params:{type}}).then((res)=>{
+                callback?.()
+            }).finally(()=>{
+            })
+        },
         _enumAccountant(){
             this.accountantEnumLoading= true
             $ApiService.accountantService._enum().then((res)=>{
@@ -399,29 +468,6 @@ export const useComponentStore = defineStore('componentStore', {
                 this.filterPositions = res.data.data.data
             }).finally(()=>{
                 this.filterPositionLoading = false
-            })
-        },
-
-
-        _checkWorker(pin, type){
-            this.pinLoading = true
-            this.worker = null
-            $ApiService.workerService._checkWorker({params:{pin, type}}).then((res)=>{
-                if(!res.data.error){
-                    let data = res.data.data
-                    this.worker =  {
-                        lastName:data?.last_name,
-                        firstName:data?.first_name,
-                        middleName:data?.middle_name,
-                        position:`${t('workerPage.checkWorker.born')} ${Utils.timeOnlyDate(data?.birthday)}`,
-                        photo:data?.photo,
-                        pin:data.id.toString()
-                    }
-                }
-
-            }).finally(()=>{
-                this.submitted = true
-                this.pinLoading = false
             })
         },
         _regions(id=undefined){

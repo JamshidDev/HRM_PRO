@@ -86,6 +86,7 @@ import specializationService from '@/service/v1/lms/specializationService.js'
 import subjectService from '@/service/v1/lms/subjectService.js'
 import eduPlanService from '@/service/v1/lms/eduPlanService.js'
 import teacherService from '@/service/v1/lms/teacherService.js'
+import lmsWorkerService from '@/service/v1/lms/workerService.js'
 
 import {
     turnstileTerminalService,
@@ -183,7 +184,6 @@ export default {
     medInspectionService,
     polyclinicService,
     pensionerService,
-
     reportService,
     aiConversationService,
     organizationLeaderService,
@@ -204,14 +204,12 @@ export default {
     vacancyService,
     eventService,
     telegramUserService,
-
     learningCenterService,
     directionService,
     specializationService,
     subjectService,
     eduPlanService,
     teacherService,
-
     monthReportService,
     accountantService,
     taxFourService,
@@ -220,8 +218,8 @@ export default {
     salaryCategoryService,
     salaryReportService,
     pensionService,
-
     expiredHealthService,
     ticketService,
     medWorkerService,
+    lmsWorkerService,
 }

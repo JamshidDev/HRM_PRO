@@ -54,6 +54,7 @@ const onSelect = (v)=>{
             <UIUser
                 v-if="item.worker"
                 :short="false"
+                :hide-tooltip="true"
                 :data="{
                     photo:item?.worker.photo,
                     firstName:item?.worker.first_name,

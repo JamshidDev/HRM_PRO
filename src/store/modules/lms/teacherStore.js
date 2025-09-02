@@ -18,6 +18,7 @@ export const useTeacherStore = defineStore('teacherStore', {
         structureCheck:[],
         payload:{
             worker_id: null,
+            learning_center_id:null,
             subjects: []
         },
         params:{
@@ -30,11 +31,23 @@ export const useTeacherStore = defineStore('teacherStore', {
             per_page:10,
             search:null,
         },
+        searchQuery:null,
         subjects: [],
         subjectsLoading: false,
         subjectsTotal: 0,
+        learningCenters:[],
+        learningCenterLoading:false,
     }),
     actions:{
+        _learningCenter(){
+            this.learningCenterLoading= true
+            $ApiService.learningCenterService._index({params:{page:1, per_page:1000}}).then((res)=>{
+                this.learningCenters = res.data.data.data
+            }).finally(()=>{
+                this.learningCenterLoading= false
+            })
+        },
+
         _index(){
             this.loading= true
             $ApiService.teacherService._index({params:this.params}).then((res)=>{
@@ -69,11 +82,9 @@ export const useTeacherStore = defineStore('teacherStore', {
             })
         },
         _delete(){
-            this.deleteLoading = true
+            this.loading = true
             $ApiService.teacherService._delete({id:this.elementId}).then((res)=>{
                 this._index()
-            }).finally(()=>{
-                this.deleteLoading = false
             })
         },
         _subjects(infinite){
@@ -110,11 +121,9 @@ export const useTeacherStore = defineStore('teacherStore', {
             this.visible = data
         },
         resetForm(){
-            this.payload.name = null
-            this.payload.name_ru = null
-            this.payload.name_en = null
-            this.payload.direction_id = null
-            this.payload.positions = []
+            this.payload.worker_id = null
+            this.payload.learning_center_id = null
+            this.payload.subjects = []
         }
     }
 })

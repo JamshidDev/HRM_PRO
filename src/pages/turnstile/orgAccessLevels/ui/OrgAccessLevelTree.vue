@@ -5,10 +5,15 @@ const store = useTurnstileHikCentralStore()
 
 const onClickNode = (v) => {
   store.payload.organization = v
-  if(v.length){
-    store.payload.access_levels = v[0].access_levels.map(i=>i.id)
+  if(v?.length>0){
+    const existIds = v[0].access_levels.map(i=>i.id)
+    const selectedOption = store.accessLevels.filter(i=>existIds.includes(i.id))
+    const unSelectedOption = store.accessLevels.filter(i=>!existIds.includes(i.id))
+    store.accessLevels = [...selectedOption,...unSelectedOption]
+    store.payload.access_levels = existIds
   }else{
     store.payload.access_levels = []
+    store.accessLevels = store.originAccessLevels
   }
 }
 

@@ -20,6 +20,10 @@ const _devices = async ()=>{
     return await axios.get(`/v1/turnstile/hik-central/devices`)
 }
 
+const _downloadDevices = async (payload)=>{
+    return await axios.get(`/v1/turnstile/hik-central/devices`, {params:payload?.params, responseType: 'blob'})
+}
+
 const _refreshDevices = async ()=>{
     return await axios.get(`/v1/turnstile/hik-central/devices-refresh`)
 }
@@ -43,4 +47,5 @@ export default {
     _departments,
     _update,
     _refreshDevices,
+    _downloadDevices,
 }

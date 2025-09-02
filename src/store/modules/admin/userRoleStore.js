@@ -12,6 +12,7 @@ export const useUserRoleStore = defineStore('userRole', {
         elementId:null,
         totalItems:0,
         allPermissionList:[],
+        originAllPermissionList:[],
         payload:{
             name:null,
             permissions:[],
@@ -20,7 +21,8 @@ export const useUserRoleStore = defineStore('userRole', {
             page:1,
             per_page:10,
             search:null,
-        }
+        },
+        query:null,
     }),
     actions:{
         _index(){
@@ -66,7 +68,9 @@ export const useUserRoleStore = defineStore('userRole', {
                 page:1,
                 per_page:1000
                 }}).then((res)=>{
-                this.allPermissionList = res.data.data.data
+                const sorted = res.data.data.data.sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()))
+                this.allPermissionList = sorted
+                this.originAllPermissionList = sorted
             })
         },
         openVisible(data){

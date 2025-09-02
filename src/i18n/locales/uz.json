@@ -15,6 +15,7 @@
     "attachment": "Biriktirish",
     "no-data": "Ma'lumot yo'q",
     "cancel": "Bekor qilish",
+    "code": "Kod",
     "reject": "Rad qilish",
     "help": "Yordam",
     "notUpload": "Yuklanmagan",
@@ -404,6 +405,7 @@
       "department": "Bo'linmalar",
       "position": "Lavozimlar",
       "sex": "Jinsi",
+      "multiple_position": "Birdan ortiq shartnomaga ega xodimlar",
       "position_type": "Lavozim turi"
     },
     "checkWorker": {
@@ -829,6 +831,7 @@
     "university": {
       "createTitle": "Oligoh qo'shish",
       "updateTitle": "Oligoh tahrirlash",
+      "existName": "Tizimda mavjud nomi...",
       "form": {
         "name_ru": "Oligoh nomi (ru)",
         "region_id": "Joylashgan viloyat",
@@ -1536,7 +1539,17 @@
       "start_date": "Boshlanish vaqti",
       "specialization": "Mutaxassislik",
       "subjects": "Fanlar",
-      "learning_center": "O'quv markazi"
+      "learning_center": "O'quv markazi",
+      "count_groups": "Guruxlar soni",
+      "count_workers": "Xodimlar soni"
+    }
+  },
+  "lmsWorkerPage": {
+    "name": "Xodim biriktirish",
+    "createTitle": "Xodim biriktirish",
+    "updateTitle": "Tahrirlash",
+    "form": {
+      "eduPlan": "O'quv reja"
     }
   },
   "teacherPage": {
@@ -1545,8 +1558,12 @@
     "updateTitle": "Pedagogni tahrirlash",
     "form": {
       "subjects": "Fanlar",
+      "learningCenter": "O'quv markaz",
       "worker": "Xodim"
     }
+  },
+  "learningCenter": {
+    "name": "O'quv markaz"
   },
   "aiConversation": {
     "canIHelpYouToday": "Bugun sizga qanday yordam bera olaman?",

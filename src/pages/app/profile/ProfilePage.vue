@@ -1,6 +1,4 @@
 <script setup>
-import Banner from "./ui/Banner.vue"
-import ProfileNavigation from "./ui/ProfileNavigation.vue";
 import Tabs from "./ui/Tabs.vue"
 </script>
 
@@ -11,7 +9,3 @@ import Tabs from "./ui/Tabs.vue"
   </div>
 
 </template>
-
-<style scoped>
-
-</style>

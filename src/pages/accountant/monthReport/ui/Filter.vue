@@ -3,7 +3,7 @@ import {useAccountStore, useComponentStore, useMonthReportStore} from "@/store/m
 import {UIPageFilter, UISelect} from "@/components/index.js"
 import Utils from "@/utils/Utils.js"
 import UIHelper from "@/utils/UIHelper.js"
-import {ArrowCircleDown32Regular} from "@vicons/fluent"
+import {ArrowCircleDown32Regular, ArrowSync20Filled} from "@vicons/fluent"
 
 const store = useMonthReportStore()
 const accStore = useAccountStore()
@@ -38,6 +38,12 @@ const resetFilter = ()=>{
 }
 
 const filterCount = computed(()=>Number(Boolean(store.params.organizations.length)) + Number(Boolean(store.params.code)))
+
+const onRefreshEv = ()=>{
+  store.loading = true
+  componentStore._refreshPin('statements', store._index)
+}
+
 </script>
 
 <template>
@@ -80,6 +86,15 @@ const filterCount = computed(()=>Number(Boolean(store.params.organizations.lengt
 
   </template>
   <template #filterAction>
+    <n-button
+        @click="onRefreshEv"
+        :loading="store.loading"
+        type="primary">
+      <template #icon>
+        <ArrowSync20Filled/>
+      </template>
+      {{$t('content.refresh')}}
+    </n-button>
     <n-button
         @click="store._download()"
         :loading="store.downloadLoading"

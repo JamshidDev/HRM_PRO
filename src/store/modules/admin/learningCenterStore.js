@@ -18,7 +18,7 @@ export const useLearningCenterStore = defineStore('learningCenterStore', {
         userListLoading: false,
         userListParams: {
             page:1,
-            per_page:10,
+            per_page:100,
             search:null,
         },
         userList: [],
@@ -27,6 +27,7 @@ export const useLearningCenterStore = defineStore('learningCenterStore', {
             name: null,
             name_ru: null,
             name_en: null,
+            code: null,
             users: []
         },
         params:{
@@ -73,20 +74,17 @@ export const useLearningCenterStore = defineStore('learningCenterStore', {
             this.userListLoading = true
             const params = {...this.userListParams}
             $ApiService.userService._index({params}).then((res)=>{
-                const newData = res.data.data.data.map((v)=>({
+
+                let selectedData =Array.isArray(this.payload.users)? this.userList.filter(v=>this.payload.users.includes(v.id)) : []
+
+
+                const data = res.data.data.data.map((v)=>({
                     id: v.worker.id,
-                    ...v,
                     name:Utils.combineFullName(v.worker),
-                    position:v?.phone,
+                    position:v.worker.id,
                 }))
-                const oldData = this.userList
-                const data = infinite ? [...oldData, ...newData] : [...newData]
-                this.payload.users.forEach(user => {
-                    if(!data.find(i=>i.id===user)){
-                        data.push(oldData.find(i=>i.id===user))
-                    }
-                })
-                this.userList = data
+
+                this.userList =infinite? Array.from(new Map([...this.userList,...data, ...selectedData].map(v => [v.id, v])).values()) :Array.from(new Map([...data, ...selectedData].map(v => [v.id, v])).values())
                 this.userListTotal = res.data.data.total
             }).finally(()=>{
                 this.userListLoading= false
@@ -105,11 +103,9 @@ export const useLearningCenterStore = defineStore('learningCenterStore', {
             }
         },
         _delete(){
-            this.deleteLoading = true
+            this.loading = true
             $ApiService.learningCenterService._delete({id:this.elementId}).then((res)=>{
                 this._index()
-            }).finally(()=>{
-                this.deleteLoading = false
             })
         },
         openVisible(data){

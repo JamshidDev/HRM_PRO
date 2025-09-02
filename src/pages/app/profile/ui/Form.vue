@@ -61,7 +61,3 @@ const onSubmit = ()=>{
 
   </n-form>
 </template>
-
-<style scoped>
-
-</style>

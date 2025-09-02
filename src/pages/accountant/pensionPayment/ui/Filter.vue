@@ -2,7 +2,7 @@
 import {UIPageFilter, UISelect} from "@/components/index.js"
 import {useAccountStore, useComponentStore, usePensionStore} from "@/store/modules/index.js"
 import Utils from "@/utils/Utils.js"
-import {ArrowCircleDown32Regular} from "@vicons/fluent"
+import {ArrowCircleDown32Regular, ArrowSync20Filled} from "@vicons/fluent"
 
 
 const store = usePensionStore()
@@ -34,6 +34,11 @@ const onClear = ()=>{
   store.resetParams()
   filterEvent()
 }
+
+const onRefreshEv = ()=>{
+  store.loading = true
+  componentStore._refreshPin('pension-payments', store._index)
+}
 </script>
 
 <template>
@@ -46,6 +51,15 @@ const onClear = ()=>{
       @onSearch="filterEvent"
   >
     <template #filterAction>
+      <n-button
+          @click="onRefreshEv"
+          :loading="store.loading"
+          type="primary">
+        <template #icon>
+          <ArrowSync20Filled/>
+        </template>
+        {{$t('content.refresh')}}
+      </n-button>
       <n-button
           @click="store._download()"
           :loading="store.downloadLoading"

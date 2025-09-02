@@ -1,16 +1,24 @@
 <script setup>
-import {NoDataPicture, UIActionButton, UIPagination, UIUser, UIMore, UIBadge} from "@/components/index.js"
-import {useEduPlanStore} from "@/store/modules/index.js"
+import {NoDataPicture, UIPagination, UIUser,UIBadge} from "@/components/index.js"
+import {useComponentStore, useTeacherStore} from "@/store/modules/index.js"
 import Utils from "@/utils/Utils.js"
 import MenuButton from "@/components/buttons/MenuButton.vue"
 
-const store = useEduPlanStore()
+const store = useTeacherStore()
+const componentStore = useComponentStore()
 
 const onEdit = (v)=>{
   store.visibleType = false
   store.elementId = v.id
   store.payload.subjects = v.subjects.map(i=>i.id)
+  store.payload.learning_center_id = v?.learning_center?.id
   store.subjects = v.subjects
+  store.payload.worker_id = v.worker?.id
+  componentStore.workerPinList =[{
+    id:v.worker.id,
+    name:Utils.combineFullName(v.worker),
+    position:'#worker'
+  }]
   store.visible = true
 }
 
@@ -45,39 +53,48 @@ const changePage = (v)=>{
         <thead>
         <tr>
           <th class="text-center! min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
-          <th class="min-w-[200px]">{{$t('eduPlanPage.form.learning_center')}}</th>
-          <th class="min-w-[200px]">{{$t('eduPlanPage.form.specialization')}}</th>
-          <th class="!text-center max-w-[130px] w-[130px]">{{$t('eduPlanPage.form.start_date')}}</th>
-          <th class="max-w-[70px] w-[70px] !text-center">{{$t('eduPlanPage.form.hours')}}</th>
-          <th class="min-w-[200px] text-center!">{{$t('eduPlanPage.form.subjects')}}</th>
-          <th class="min-w-[60px] w-[60px] !text-center">{{$t('content.action')}}</th>
+          <th class="min-w-[260px] w-[400px]">{{$t('content.worker')}}</th>
+          <th class="min-w-[200px] w-[300px]">{{$t('teacherPage.form.learningCenter')}}</th>
+          <th class="min-w-[200px]">{{$t('teacherPage.form.subjects')}}</th>
+          <th class="min-w-[40px] w-[40px]"></th>
         </tr>
         </thead>
         <tbody>
         <tr v-for="(item, idx) in store.list" :key="idx">
           <td><span class="text-center text-[12px] text-gray-600 block">{{ (store.params.page - 1) * store.params.per_page + idx + 1 }}</span></td>
-          <td>{{item.learning_center.name}}</td>
-          <td>{{item.specialization.name}}</td>
           <td>
-            <UIBadge :show-icon="false" :label="Utils.timeOnlyDate(item.start_date)" />
+            <UIUser
+                :short="false"
+                :data="{
+                    photo:item?.worker.photo,
+                    lastName:item?.worker.last_name,
+                    firstName:item?.worker.first_name,
+                    middleName:item?.worker.middle_name,
+                    position:item?.position,
+                }"
+            />
           </td>
-          <td class="!text-center">
-            <n-button circle>
-              {{item.hours}}
-            </n-button>
+          <td>
+            {{item?.learning_center?.name}}
           </td>
-          <td class="text-center!">
-            <UIMore :height="100" :width="200" :data="item.subjects">
-              <template #content="{data}">
-                <p>{{data.name}}</p>
-              </template>
-            </UIMore>
+          <td>
+            <template v-if="item.subjects.length>0">
+              <div class="flex flex-wrap gap-2">
+                <n-button
+                    v-for="subject in item.subjects"
+                    dashed
+                    ghost
+                    size="tiny"
+                    type="primary"
+                >
+                  {{subject.name}}
+                </n-button>
+              </div>
+            </template>
           </td>
           <td>
             <MenuButton
                 :data="item"
-                :show-edit="true"
-                :loading="item.id === store.elementId && store.deleteLoading"
                 @selectEv="onSelectEv"
             />
           </td>

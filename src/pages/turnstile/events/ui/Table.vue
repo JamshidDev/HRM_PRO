@@ -31,6 +31,10 @@ const maskStatus = {
 }
 
 const eventStatus = {
+  'ACSEventInvalidDoorStateFail':{
+    name:t("hcEvent.form.unknown"),
+    id:2
+  },
   'ACSEventFaceVerifyPass':{
     name:t("hcEvent.form.face"),
     id:3
@@ -77,7 +81,6 @@ const eventStatus = {
             <th class="min-w-[100px] w-[100px]">{{$t('hcEvent.form.direction')}}</th>
             <th class="min-w-[100px] w-[300px]">{{$t('hcEvent.form.device')}}</th>
             <th class="min-w-[100px] w-[160px]">{{$t('hcEvent.form.device')}}</th>
-
             <th class="min-w-[100px] w-[120px] !text-center">{{$t('hcEvent.form.mask_status')}}</th>
             <th class="min-w-[100px] w-[100px] !text-center">{{$t('hcEvent.form.temperature')}}</th>
           </tr>

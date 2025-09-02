@@ -1,21 +1,18 @@
 <script setup>
 import validationRules from "@/utils/validationRules.js";
-import {useTeacherStore} from "@/store/modules/index.js";
-import checkWorkerSelect from './checkWorkerSelect.vue'
+import {useTeacherStore, useComponentStore} from "@/store/modules/index.js";
+import {UINSelect} from "@/components/index.js"
 
 const formRef = ref(null)
 const store = useTeacherStore()
+const componentSore = useComponentStore()
 
 
 const onSubmit = ()=>{
   formRef.value?.validate((error)=>{
     if(!error){
       store.saveLoading = true
-      if(store.visibleType){
-        store._create()
-      }else{
-        store._update()
-      }
+      store._create()
     }
   })
 }
@@ -24,7 +21,25 @@ onMounted(()=>{
   store.subjectsParams.page = 1
   store.subjectsParams.search = null
   store._subjects()
+
+  if(store.learningCenters.length === 0){
+    store._learningCenter()
+  }
+
 })
+
+let timer = null
+const onSearch = (v)=>{
+  if(v?.toString().length === 17){
+    store.payload.worker_id = null
+   clearTimeout(timer)
+    timer = setTimeout(()=>{
+      let pin = v.split('-').join("")
+      componentSore._searchWorkerByPin(pin)
+    },1000)
+  }
+
+}
 
 
 
@@ -37,8 +52,27 @@ onMounted(()=>{
       :model="store.payload"
   >
     <div style="min-height:calc(100vh - 120px)">
-      <n-form-item :label="$t(`teacherPage.form.worker`)" path="worker_id" rule-path="requiredStringField">
-        <checkWorkerSelect v-model:value="store.payload.worker_id" />
+      <n-form-item :label="$t(`teacherPage.form.worker`)" path="worker_id" rule-path="requiredNumberField">
+        <UINSelect
+            :query="store.searchQuery"
+            v-model:value="store.payload.worker_id"
+            :options="componentSore.workerPinList"
+            value-field="id"
+            :pin-select="true"
+            :loading="componentSore.workerPinLoading"
+            @onSearch="onSearch"
+        />
+      </n-form-item>
+      <n-form-item :label="$t(`learningCenterPage.name`)" path="learning_center_id" rule-path="requiredNumberField">
+        <n-select
+            v-model:value="store.payload.learning_center_id"
+            :options="store.learningCenters"
+            :loading="store.learningCenterLoading"
+            label-field="name"
+            value-field="id"
+            filterable
+            clearable
+        />
       </n-form-item>
 
       <n-form-item :label="$t(`teacherPage.form.subjects`)" path="subjects" rule-path="requiredMultiSelectField">

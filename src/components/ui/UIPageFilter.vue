@@ -43,6 +43,7 @@ const emits = defineEmits(['onAdd', 'onSearch', 'onClear', 'show',])
 
 let timeout = null
 const searchEvent = ()=>{
+
   clearTimeout(timeout)
   timeout = setTimeout(()=>{
     emits('onSearch', searchModel.value )

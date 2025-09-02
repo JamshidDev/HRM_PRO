@@ -1,6 +1,6 @@
 <script setup>
 import {useTurnstileHikCentralStore} from "@/store/modules/index.js"
-import {ArrowSync24Filled, DeviceEq24Filled, Search48Filled} from "@vicons/fluent"
+import {ArrowSync24Filled, ArrowCircleDown12Regular, Search48Filled} from "@vicons/fluent"
 const store = useTurnstileHikCentralStore()
 
 const onSearchEv = () => {
@@ -21,7 +21,7 @@ const onSearchEv = () => {
       <div class="col-span-12 md:col-span-6">
         <n-input
             v-model:value="store.searchModel"
-            class="w-full skip-format"
+            class="w-full max-w-[300px]! skip-format"
             :placeholder="$t('content.search')"
             :on-keyup="onSearchEv"
             :loading="store.onlineDeviceLoading"
@@ -31,7 +31,13 @@ const onSearchEv = () => {
           </template>
         </n-input>
       </div>
-      <div class="col-span-12 md:col-span-6 flex justify-end">
+      <div class="col-span-12 md:col-span-6 flex justify-end gap-2">
+        <n-button type="success" @click="store._downloadDevices()" :loading="store.downloading">
+          {{$t('content.download')}}
+          <template #icon>
+            <ArrowCircleDown12Regular/>
+          </template>
+        </n-button>
         <n-button type="primary" @click="store._refreshDevice()" :loading="store.onlineDeviceLoading">
           {{$t('content.refresh')}}
           <template #icon>
@@ -43,7 +49,7 @@ const onSearchEv = () => {
     <div class="h-[calc(100vh-200px)] overflow-auto mt-2 px-2">
       <div class="grid grid-cols-12 gap-2 gap-y-2">
         <template v-for="item in store.onlineDeviceList" :key="item.id">
-          <div class="col-span-12 md:col-span-6
+          <div class="col-span-12 md:col-span-4
         flex flex-col bg-surface-ground/30 border border-surface-line px-4
          py-2 rounded-lg">
             <span class="text-xs flex items-center gap-2" :class="[item.status===1? 'text-success' : 'text-danger']">

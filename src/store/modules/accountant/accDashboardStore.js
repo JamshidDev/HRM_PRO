@@ -48,16 +48,16 @@ export const useAccDashboardStore = defineStore('accDashboardStore', {
                         }))
                     },
                     {
-                        name:'accDashboard.chart.tax_five',
-                        data:data.tax_five.map((v)=>({
-                            name:`accDashboard.tax_five.${v.key }`,
+                        name:'accDashboard.chart.tax_four',
+                        data:data.tax_four.map((v)=>({
+                            name:`accDashboard.chart.${v.key }`,
                             count:v.value,
                         }))
                     },
                     {
-                        name:'accDashboard.chart.tax_four',
-                        data:data.tax_four.map((v)=>({
-                            name:`accDashboard.chart.${v.key }`,
+                        name:'accDashboard.chart.tax_five',
+                        data:data.tax_five.map((v)=>({
+                            name:`accDashboard.tax_five.${v.key }`,
                             count:v.value,
                         }))
                     },

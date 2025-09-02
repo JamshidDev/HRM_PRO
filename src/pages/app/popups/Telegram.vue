@@ -29,7 +29,7 @@ onMounted(()=>{
       <p class="font-bold text-[16px] lg:text-[20px] text-center lg:text-start">{{$t('telegramPopup.benefit.footer')}}</p>
       <div class="mt-auto flex flex-col gap-5 justify-center items-center">
         <a
-            href="https://t.me/hrmpro_bot"
+            href="https://t.me/hrmpro_robot"
             target="_blank"
             class="bg-surface-section w-full lg:w-[350px] h-[40px] lg:h-[56px] rounded-[8px] lg:rounded-[18px] flex items-center justify-center cursor-pointer join_button">
             <p class="lg:text-[20px] font-bold uppercase">{{$t('telegramPopup.subscribe')}}</p>

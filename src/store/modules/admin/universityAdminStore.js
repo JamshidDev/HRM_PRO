@@ -26,8 +26,18 @@ export const useUniversityAdminStore = defineStore('universityAdminStore', {
         },
         districtList:[],
         districtLoading:false,
+        checkLoading:false,
+        existUniversities:[],
     }),
     actions:{
+        _checkExistUniversity(v){
+            this.checkLoading= true
+            $ApiService.universityServiceAdmin._index({params:{search:v, page:1, per_page:10}}).then((res)=>{
+                this.existUniversities = res.data.data.data
+            }).finally(()=>{
+                this.checkLoading= false
+            })
+        },
         _index(){
             this.loading= true
             $ApiService.universityServiceAdmin._index({params:this.params}).then((res)=>{

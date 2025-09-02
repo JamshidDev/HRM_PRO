@@ -39,6 +39,7 @@ export const useWorkerStore = defineStore('workerStore', {
             first_name:null,
             last_name:null,
             middle_name:null,
+            multiple_position:false,
 
         },
         structureCheck:[],
@@ -126,8 +127,27 @@ export const useWorkerStore = defineStore('workerStore', {
             })
         },
         _params(){
-            return {
-                ...this.params,
+
+            function cleanParams(params) {
+                const cleaned = {};
+
+                Object.entries(params).forEach(([key, value]) => {
+                    if (
+                        value !== null &&
+                        value !== undefined &&
+                        value !== "" &&
+                        !(Array.isArray(value) && value.length === 0) &&
+                        !(typeof value === "boolean" && value === false)
+                    ) {
+                        cleaned[key] = value;
+                    }
+                });
+
+                return cleaned;
+            }
+
+           const params = {
+            ...this.params,
                 organizations:this.params.organizations.map(v=>v.id).toString() || undefined,
                 nationalities:this.params.nationalities?.toString() || undefined,
                 departments:this.params.departments.toString() || undefined,
@@ -136,7 +156,11 @@ export const useWorkerStore = defineStore('workerStore', {
                 first_name:this.params.first_name || undefined,
                 last_name:this.params.last_name || undefined,
                 middle_name:this.params.middle_name || undefined,
+                multiple_position:this.params.multiple_position || undefined,
             }
+
+           return  cleanParams(params)
+
         },
         openVisible(data){
             this.visible = data

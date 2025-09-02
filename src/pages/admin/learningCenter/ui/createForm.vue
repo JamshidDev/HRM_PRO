@@ -1,8 +1,11 @@
 <script setup>
 import validationRules from "@/utils/validationRules.js";
+import {UINSelect} from "@/components/index.js"
+
 const formRef = ref(null)
 import {useLearningCenterStore} from "@/store/modules/index.js";
 import UIHelper from "@/utils/UIHelper.js"
+import utils from "@/utils/Utils.js"
 
 const store = useLearningCenterStore()
 
@@ -52,21 +55,25 @@ onMounted(()=>{
             v-model:value="store.payload.name_en"
         />
       </n-form-item>
-      <n-form-item :label="$t(`applicationPage.form.confirmations`)" path="users" rule-path="requiredMultiSelectField">
-        <n-select
+      <n-form-item :label="$t(`applicationPage.form.confirmations`)" path="users" :rule-path="validationRules.rulesNames.requiredMultiSelectField">
+        <UINSelect
             multiple
             v-model:value="store.payload.users"
-            @scroll="store.onScrollUserList"
             :options="store.userList"
             :loading="store.userListLoading"
-            :render-label="UIHelper.selectRender.label"
-            :render-tag="UIHelper.selectRender.value"
-            label-field="id"
-            value-field="id"
-            :max-tag-count="1"
-            filterable
-            :filter="()=>true"
-            @search="store.onSearchUserList"
+            :value-field="'id'"
+            :query="store.userListParams.search"
+            @onSearch="store.onSearchUserList"
+            @onScroll="store.onScrollUserList"
+            />
+      </n-form-item>
+      <n-form-item :label="$t(`content.code`)" path="code" :rule-path="validationRules.rulesNames.requiredStringField">
+        <n-input
+            type="text"
+            class="w-full!"
+            v-model:value="store.payload.code"
+            v-mask="'##########'"
+            :allow-input="utils.onlyAllowNumber"
         />
       </n-form-item>
     </div>

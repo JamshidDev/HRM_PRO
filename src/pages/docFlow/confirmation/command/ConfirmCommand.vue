@@ -40,7 +40,3 @@ onMounted(()=>{
   <UIOfficeApp ref="officeAppRef" @signatureEv="onSignatureEv" />
 </UIPageContent>
 </template>
-
-<style scoped>
-
-</style>

@@ -1,7 +1,9 @@
 <script setup>
-import {NoDataPicture, UIActionButton, UIPagination, UIUser, UIMore} from "@/components/index.js"
+import {NoDataPicture, UIActionButton,UIMenuButton, UIPagination, UIUser, UIMore} from "@/components/index.js"
 import {useNationalityStore, useLearningCenterStore} from "@/store/modules/index.js"
 import {useAccountStore} from "@/store/modules/index.js"
+import utils from "@/utils/Utils.js"
+import Utils from "@/utils/Utils.js"
 const accStore = useAccountStore()
 
 const store = useLearningCenterStore()
@@ -18,16 +20,35 @@ const onEdit = (v)=>{
   // store.visible = true
 }
 
-const onDelete = (v)=>{
-  if(!accStore.checkAction(accStore.pn.learningCentersWrite)) return
-  store.elementId = v.id
-  store._delete()
-}
 
 const changePage = (v)=>{
   store.params.page = v.page
   store.params.per_page = v.per_page
   store._index()
+}
+
+const onSelectEv = (v) =>{
+  store.elementId = v.data.id
+  if(v.key === utils.ActionTypes.delete){
+    if(!accStore.checkAction(accStore.pn.learningCentersWrite)) return
+    store._delete()
+  }else if(v.key === utils.ActionTypes.edit){
+    if(!accStore.checkAction(accStore.pn.learningCentersWrite)) return
+
+    store.payload.name = v.data.name
+    store.payload.name_ru = v.data.name_ru
+    store.payload.name_en = v.data.name_en
+    store.payload.code = v.data.code
+    store.payload.users = v.data.users.map(x=>x.worker.id)
+    store.userList = v.data?.users.map(z=>({
+      id:z.worker.id,
+      name:Utils.combineFullName(z.worker),
+      position:z.worker.id,
+    }))
+    store.visibleType = false
+    store.visible = true
+  }
+
 }
 </script>
 
@@ -45,8 +66,9 @@ const changePage = (v)=>{
           <th class="min-w-[200px]">{{$t('content.nameUz')}}</th>
           <th class="min-w-[200px]">{{$t('content.nameRu')}}</th>
           <th class="min-w-[200px]">{{$t('content.nameEn')}}</th>
-          <th class="min-w-[200px] !text-center">{{$t('content.users')}}</th>
-          <th class="min-w-[90px] w-[90px] text-center!">{{$t('content.action')}}</th>
+          <th class="w-[120px]">{{$t('content.code')}}</th>
+          <th class="w-[200px]">{{$t('content.users')}}</th>
+          <th class="w-[40px] text-center!"></th>
         </tr>
         </thead>
         <tbody>
@@ -55,17 +77,19 @@ const changePage = (v)=>{
           <td>{{item.name}}</td>
           <td>{{item.name_ru}}</td>
           <td>{{item.name_en}}</td>
+          <td>{{item?.code}}</td>
           <td>
             <div class="flex justify-center">
-              <UIMore :data="item.users">
+              <UIMore width="250" :data="item.users">
                 <template #content="{data}">
                   <UIUser
+                      :hide-tooltip="true"
                       :data="{
-                      photo:data.user.worker.photo,
-                      lastName:data.user.worker.last_name,
-                      firstName:data.user.worker.first_name,
-                      middleName:data.user.worker.middle_name,
-                      position:data.user.phone
+                      photo:data.worker.photo,
+                      lastName:data.worker.last_name,
+                      firstName:data.worker.first_name,
+                      middleName:data.worker.middle_name,
+                      position:data.phone
                     }"
                   />
                 </template>
@@ -73,13 +97,12 @@ const changePage = (v)=>{
             </div>
           </td>
           <td>
-            <UIActionButton
-                class="justify-center"
+            <UIMenuButton
                 :data="item"
-                :visible-edit-btn="false"
-                :loading-delete="item.id === store.elementId && store.deleteLoading"
-                @on-delete="onDelete"
+                :show-edit="true"
+                @selectEv="onSelectEv"
             />
+
           </td>
         </tr>
         </tbody>

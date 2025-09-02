@@ -1,11 +1,13 @@
 import {defineStore} from "pinia";
 import i18n from "@/i18n/index.js"
 import {turnstileHikCentralAccessService} from "@/service/v1/turnstile/index.js"
+import Utils from "@/utils/Utils.js"
 
 const {t} = i18n.global
 export const useTurnstileHikCentralStore = defineStore('turnstileHikCentralStore', {
     state: () => ({
         accessLevels: [],
+        originAccessLevels: [],
         orgAccessLevels: [],
         orgAccessLevelsLoading: false,
         accessLevelsLoading: false,
@@ -20,7 +22,7 @@ export const useTurnstileHikCentralStore = defineStore('turnstileHikCentralStore
         structureCheck: [],
         params: {
             page: 1,
-            per_page: 100,
+            per_page:10,
             search: null,
         },
         payload: {
@@ -39,6 +41,9 @@ export const useTurnstileHikCentralStore = defineStore('turnstileHikCentralStore
         deviceVisible:false,
         searchModel:null,
         originList:[],
+        query:null,
+        downloading:false,
+
 
     }),
     actions: {
@@ -61,6 +66,14 @@ export const useTurnstileHikCentralStore = defineStore('turnstileHikCentralStore
                 this.onlineDeviceLoading = false
             })
         },
+        _downloadDevices(){
+            this.downloading = true
+            $ApiService.turnstileHikCentralAccessService._downloadDevices({params:{download:true}}).then((res) => {
+                Utils.blobFileDownload(res.data,'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'download.xlsx' )
+            }).finally(() => {
+                this.downloading = false
+            })
+        },
         _refreshDevice(){
             this.onlineDeviceLoading = true
             $ApiService.turnstileHikCentralAccessService._refreshDevices().then((res) => {
@@ -72,7 +85,9 @@ export const useTurnstileHikCentralStore = defineStore('turnstileHikCentralStore
         _index_access_levels() {
             this.accessLevelsLoading = true
             $ApiService.turnstileHikCentralAccessService._index({params: this.params}).then((res) => {
-                this.accessLevels = res.data.data.data
+                const sorted = res.data.data.data.sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()))
+                this.accessLevels = sorted
+                this.originAccessLevels = sorted
                 this.totalItems = res.data.data.total
             }).finally(() => {
                 this.accessLevelsLoading = false
@@ -90,6 +105,7 @@ export const useTurnstileHikCentralStore = defineStore('turnstileHikCentralStore
             this.orgAccessLevelsLoading = true
             $ApiService.turnstileHikCentralAccessService._org_access_levels().then((res) => {
                 this.orgAccessLevels = res.data.data
+
             }).finally(() => {
                 this.orgAccessLevelsLoading = false
             })

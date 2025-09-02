@@ -44,7 +44,7 @@ onMounted(()=>{
       <faceForm/>
     </UIModal>
     <UIModal
-        width="600px"
+        width="900px"
         :visible="levelStore.deviceVisible"
         @update:visible="(v)=>levelStore.deviceVisible = v"
         :title="$t('turnstile.hcWorkersPage.device')"
