@@ -78,6 +78,7 @@ onMounted(()=>{
       </n-form-item>
       <n-form-item class="col-span-6" :label="$t(`content.nameRu`)" path="name_ru" rule-path="requiredStringField">
         <n-input
+            class="skip-format"
             type="text"
             v-model:value="store.payload.name_ru"
         />
