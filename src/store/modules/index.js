@@ -106,6 +106,8 @@ export * from './lms/subjectStore.js'
 export * from './lms/eduPlanStore.js'
 export * from './lms/teacherStore.js'
 export * from './lms/lmsWorkerStore.js'
+export * from './lms/lmsGroupStore.js'
+export * from './lms/lmsLessonStore.js'
 
 export * from './accountant/uploadReportStore.js'
 export * from './accountant/monthReportStore.js'

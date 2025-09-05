@@ -77,11 +77,11 @@ export const useLearningCenterStore = defineStore('learningCenterStore', {
 
                 let selectedData =Array.isArray(this.payload.users)? this.userList.filter(v=>this.payload.users.includes(v.id)) : []
 
-
                 const data = res.data.data.data.map((v)=>({
-                    id: v.worker.id,
+                    id: v.id,
                     name:Utils.combineFullName(v.worker),
-                    position:v.worker.id,
+                    position:v?.organization?.name,
+                    subPosition:v?.phone,
                 }))
 
                 this.userList =infinite? Array.from(new Map([...this.userList,...data, ...selectedData].map(v => [v.id, v])).values()) :Array.from(new Map([...data, ...selectedData].map(v => [v.id, v])).values())

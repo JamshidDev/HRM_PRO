@@ -1,5 +1,5 @@
 <script setup>
-import {UINSelect} from "@/components/index.js"
+import {UINSelect, UISelect} from "@/components/index.js"
 import validationRules from "@/utils/validationRules.js";
 import {useLmsWorkerStore, useComponentStore} from "@/store/modules/index.js";
 import UIHelper from "@/utils/UIHelper.js"
@@ -13,13 +13,10 @@ const onSubmit = ()=>{
     if(!error){
       store.saveLoading = true
       const data = {
-        ...store.payload
+        ...store.payload,
+        organizations:undefined,
       }
-      if(store.visibleType){
-        store._create(data)
-      }else{
-        store._update()
-      }
+      store._create(data)
     }
   })
 }
@@ -38,9 +35,20 @@ const onSearch = (v)=>{
   store._workers()
 }
 
+const onChangeOrg = (v) =>{
+  store.payload.organizations = v
+  store.payload.worker_position_ids = []
+  if(!store.payload.organizations.length === 0) return
+  store._workers()
+
+}
+
 onMounted(()=>{
   if(store.eduPlanList.length === 0){
     store._eduPlans()
+  }
+  if(componentStore.structureList.length === 0){
+    componentStore._structures()
   }
 })
 
@@ -67,9 +75,22 @@ onMounted(()=>{
             @update:value="onChange"
         />
       </n-form-item>
-      <n-form-item :label="$t(`lmsWorkerPage.form.eduPlan`)" path="worker_position_ids" rule-path="requiredMultiSelectField">
+      <n-form-item :label="$t(`content.organization`)" path="edu_plan_id" rule-path="requiredNumberField">
+        <UISelect
+            :options="componentStore.structureList"
+            :modelV="store.payload.organizations"
+            @defaultValue="(v)=>store.payload.organizations=v"
+            @updateModel="onChangeOrg"
+            :checkedVal="store.structureCheck"
+            @updateCheck="(v)=>store.structureCheck=v"
+            :loading="componentStore.structureLoading"
+            v-model:search="componentStore.structureParams.search"
+            @onSearch="componentStore._structures"
+        />
+      </n-form-item>
+      <n-form-item :label="$t(`lmsWorkerPage.form.worker_position_ids`)" path="worker_position_ids" rule-path="requiredMultiSelectField">
         <UINSelect
-            :disabled="!store.payload.edu_plan_id"
+            :disabled="!store.payload.edu_plan_id || store.payload.organizations.length === 0"
             :multiple="true"
             :query="store.workerParams.search"
             v-model:value="store.payload.worker_position_ids"

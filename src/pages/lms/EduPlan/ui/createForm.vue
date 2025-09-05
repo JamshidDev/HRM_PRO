@@ -119,18 +119,18 @@ onMounted(()=>{
             v-model:value="store.payload.hours"
         />
       </n-form-item>
-      <n-form-item :label="$t(`eduPlanPage.form.count_workers`)" path="count_workers" rule-path="requiredNumberField">
-        <n-input-number
-            class="w-full"
-            min="1"
-            v-model:value="store.payload.count_workers"
-        />
-      </n-form-item>
       <n-form-item :label="$t(`eduPlanPage.form.count_groups`)" path="count_groups" rule-path="requiredNumberField">
         <n-input-number
             class="w-full"
             min="1"
             v-model:value="store.payload.count_groups"
+        />
+      </n-form-item>
+      <n-form-item :label="$t(`eduPlanPage.form.count_workers`)" path="count_workers" rule-path="requiredNumberField">
+        <n-input-number
+            class="w-full"
+            min="1"
+            v-model:value="store.payload.count_workers"
         />
       </n-form-item>
 

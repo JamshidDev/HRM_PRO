@@ -94,7 +94,7 @@ const computedOption =computed(()=>{
 
 watchEffect(()=>{
   if(props.multiple){
-    selectAll.value = computedOption.value.length === valueModel.value.length
+    selectAll.value = computedOption.value.length === valueModel.value.length && computedOption.value.length>0
   }
 })
 

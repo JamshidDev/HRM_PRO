@@ -23,14 +23,11 @@ const onChangeStructure = (v)=>{
 
 const resetFilter = ()=>{
   store.params.organizations = []
-  store.params.name = null
-  store.params.learning_center_id = null
+  store.params.edu_plan_id = null
   filterEvent()
 }
 
-const filterCount = computed(()=>Number(Boolean(store.params.organizations.length))
-    + Number(Boolean(store.params.name))
-    + Number(Boolean(store.params.learning_center_id)))
+const filterCount = computed(()=>Number(Boolean(store.params.organizations.length)) + Number(Boolean(store.params.edu_plan_id)))
 
 const onAdd = ()=>{
   store.resetForm()

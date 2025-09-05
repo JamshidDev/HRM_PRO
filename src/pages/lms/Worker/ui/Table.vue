@@ -56,7 +56,7 @@ const changePage = (v)=>{
                     firstName:item?.worker_position.worker.first_name,
                     middleName:item?.worker_position.worker.middle_name,
                     lastName:item?.worker_position.worker.last_name,
-                    position:item?.worker_position.post_short_name,
+                    position:item?.worker_position?.post_short_name
                   }"
               />
             </td>

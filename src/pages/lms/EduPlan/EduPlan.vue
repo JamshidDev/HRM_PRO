@@ -1,9 +1,10 @@
 <script setup>
-import {UIDrawer, UIPageContent, UIPageFilter} from "@/components/index.js";
+import {UIDrawer, UIModal, UIPageContent, UIPageFilter} from "@/components/index.js"
 import Table from "./ui/Table.vue"
 import Filter from "./ui/Filter.vue"
 import {useEduPlanStore} from "@/store/modules/index.js";
 import createFrom from "./ui/createForm.vue"
+import groupForm from "../Group/ui/createForm.vue"
 const store = useEduPlanStore();
 
 onMounted(()=>{
@@ -24,6 +25,15 @@ onMounted(()=>{
         <createFrom/>
       </template>
     </UIDrawer>
+    <UIModal
+        :visible="store.groupVisible"
+        @update:visible="(v)=>store.groupVisible = v"
+        :title="$t('eduPlanPage.attachmentGroup')"
+    >
+      <template #default>
+        <groupForm/>
+      </template>
+    </UIModal>
   </UIPageContent>
 
 </template>

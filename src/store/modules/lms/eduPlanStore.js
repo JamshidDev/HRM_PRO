@@ -12,6 +12,7 @@ export const useEduPlanStore = defineStore('eduPlanStore', {
         showLoading:false,
         visible:false,
         visibleType:true,
+        groupVisible:false,
         elementId:null,
         totalItems:0,
         allPermissionList:[],
@@ -51,11 +52,16 @@ export const useEduPlanStore = defineStore('eduPlanStore', {
             learning_center_id:null,
             organizations:[],
         },
+
     }),
     actions:{
         _index(){
             this.loading= true
-            $ApiService.eduPlanService._index({params:this.params}).then((res)=>{
+            const params = {
+                ...this.params,
+                organizations:this.params.organizations.map(v=>v.id).toString() || undefined,
+            }
+            $ApiService.eduPlanService._index({params}).then((res)=>{
                 this.list = res.data.data.data
                 this.totalItems = res.data.data.total
             }).finally(()=>{

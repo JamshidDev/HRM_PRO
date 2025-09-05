@@ -51,6 +51,7 @@ import {
     QrCode24Regular,
     AlertUrgent16Filled,
     AppsAddIn16Regular,
+    Collections24Regular,
 } from "@vicons/fluent"
 import {AppPaths} from "@/utils/index.js";
 import Utils from "@/utils/Utils.js"
@@ -460,7 +461,14 @@ export const navigations = [
                 icon: AppsAddIn16Regular,
                 color: 'bg-success',
                 permission: appPermissions.admin,
-            }
+            },
+            {
+                label: 'lessonPage.name',
+                path: Utils.routeLmsPathMaker(AppPaths.Lesson),
+                icon: AppsAddIn16Regular,
+                color: 'bg-info',
+                permission: appPermissions.admin,
+            },
         ]
     },
     {

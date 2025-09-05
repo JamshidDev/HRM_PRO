@@ -34,7 +34,7 @@ const onEdit = (v)=>{
     if(compStore.medStatus.length === 0){
       compStore._enums()
     }
-
+    console.log(v)
     if(v.worker_position){
       store.payload.organization_id = [v.organization]
       store.payload.worker_position_id = v.worker_position.id
@@ -51,13 +51,13 @@ const onEdit = (v)=>{
       ]
       // compStore._workers()
     }
-    else{
+    else if(v.worker){
       compStore.selectedWorker ={
-        lastName:v.worker.last_name,
-        firstName:v.worker.first_name,
-        middleName:v.worker.middle_name,
+        lastName:v.worker?.last_name,
+        firstName:v.worker?.first_name,
+        middleName:v.worker?.middle_name,
         position:v?.position,
-        photo:v.worker.photo || Utils.noAvailableImage,
+        photo:v.worker?.photo || Utils.noAvailableImage,
         pin:v.worker.uuid
       }
       store.payload.pin = v.worker.id.toString()

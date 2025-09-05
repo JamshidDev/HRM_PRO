@@ -87,6 +87,8 @@ import subjectService from '@/service/v1/lms/subjectService.js'
 import eduPlanService from '@/service/v1/lms/eduPlanService.js'
 import teacherService from '@/service/v1/lms/teacherService.js'
 import lmsWorkerService from '@/service/v1/lms/workerService.js'
+import lmsGroupService from '@/service/v1/lms/groupService.js'
+import lmsLessonService from '@/service/v1/lms/lessonService.js'
 
 import {
     turnstileTerminalService,
@@ -222,4 +224,6 @@ export default {
     ticketService,
     medWorkerService,
     lmsWorkerService,
+    lmsGroupService,
+    lmsLessonService,
 }

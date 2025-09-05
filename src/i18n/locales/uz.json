@@ -1534,14 +1534,17 @@
     "name": "O'quv rejasi",
     "createTitle": "Ta'lim rejasi yaratish",
     "updateTitle": "Ta'lim rejasini tahrirlash",
+    "attachmentGroup": "Guruh yaratish",
     "form": {
       "hours": "Soat",
       "start_date": "Boshlanish vaqti",
-      "specialization": "Mutaxassislik",
+      "specialization": "Ixtisoslik",
       "subjects": "Fanlar",
-      "learning_center": "O'quv markazi",
-      "count_groups": "Guruxlar soni",
-      "count_workers": "Xodimlar soni"
+      "learning_center": "O'quv markaz",
+      "count_groups": "Guruhlar soni",
+      "count_workers": "Guruh tarkibi",
+      "short_count_workers": "Xodimlar",
+      "groupWorker": "Guruh soni/tarkib"
     }
   },
   "lmsWorkerPage": {
@@ -1549,7 +1552,8 @@
     "createTitle": "Xodim biriktirish",
     "updateTitle": "Tahrirlash",
     "form": {
-      "eduPlan": "O'quv reja"
+      "eduPlan": "O'quv reja",
+      "worker_position_ids": "Xodimlar"
     }
   },
   "teacherPage": {
@@ -1562,6 +1566,38 @@
       "worker": "Xodim"
     }
   },
+  "groupPage": {
+    "name": "Guruhlar",
+    "createTitle": "Guruh yaratish",
+    "form": {
+      "edu_plan_id": "O'quv reja",
+      "workers": "Xodimlar soni"
+    }
+  },
+  "lessonPage": {
+    "name": "Mashg'ulotlar",
+    "createTitle": "Mashg'ulot qo'shish",
+    "previewTitle": "Batafsil",
+    "form": {
+      "edu_plan_id": "O'quv reja",
+      "workers": "Xodimlar soni",
+      "lesson_date": "Boshlanish sanasi",
+      "group_id": "Guruhlar",
+      "teacher_id": "O'qituvchi",
+      "subject_id": "Fanlar",
+      "start_time": "Boshlanish vaqti",
+      "end_time": "Tugash vaqti"
+    },
+    "detail": {
+      "name": "Mashg'ulot nomi",
+      "group": "Guruh nomi",
+      "teacher": "Fan o'qituvchisi",
+      "time": "Mashg'ulot vaqti",
+      "subject": "Mashg'ulot fani",
+      "cancelLesson": "Mashg'ulotni bekor qilish"
+    }
+  },
+
   "learningCenter": {
     "name": "O'quv markaz"
   },

@@ -248,10 +248,11 @@ export const useComponentStore = defineStore('componentStore', {
                 this.lmsEnumLoading= false
             })
         },
-        _lmsLearningCenter(){
+        _lmsLearningCenter(callback){
             this.lmsLearningCenterLoading= true
             $ApiService.eduPlanService._learningCenter({params:{page:1, per_page:1000}}).then((res)=>{
                 this.lmsLearningCenters = res.data.data
+                callback?.()
             }).finally(()=>{
                 this.lmsLearningCenterLoading= false
             })

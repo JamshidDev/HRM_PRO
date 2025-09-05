@@ -3,7 +3,7 @@ import i18n from "@/i18n/index.js"
 import Utils from "@/utils/Utils.js"
 
 const {t} = i18n.global
-export const useLmsWorkerStore = defineStore('lmsWorkerStore', {
+export const useLmsGroupStore = defineStore('lmsGroupStore', {
     state:()=>({
         list:[],
         loading:false,
@@ -14,12 +14,9 @@ export const useLmsWorkerStore = defineStore('lmsWorkerStore', {
         visibleType:true,
         elementId:null,
         totalItems:0,
-        structureCheck:[],
         structureCheck2:[],
         payload:{
             edu_plan_id:null,
-            organizations:[],
-            worker_position_ids:[],
         },
         params:{
             page:1,
@@ -33,16 +30,14 @@ export const useLmsWorkerStore = defineStore('lmsWorkerStore', {
         totalWorker:0,
         workerParams:{
             page:1,
-            per_page:200,
+            per_page:100,
             search:'',
             edu_plan_id:null,
-            organizations:[],
         },
 
         eduPlanList:[],
         eduPlanLoading:false,
         selectedWorkers:[],
-        isActiveDelete:false,
     }),
     actions:{
         _eduPlans(){
@@ -57,19 +52,11 @@ export const useLmsWorkerStore = defineStore('lmsWorkerStore', {
                 this.eduPlanLoading= false
             })
         },
-        _workers(){
+        _workers(id){
             this.workerLoading= true
-            this.workerParams.edu_plan_id = this.payload.edu_plan_id
-            this.workerParams.organizations = this.payload.organizations.map(v=>v.id).toString() || undefined
-            $ApiService.lmsWorkerService._workers({params:this.workerParams}).then((res)=>{
-                const selectedData = this.workerList.filter(v=>this.payload.worker_position_ids.includes(v.id))
-                const data = res.data.data.data.map(v=>({
-                    ...v,
-                    name:Utils.combineFullName(v.worker),
-                    position:v?.position,
-                }))
-                this.workerList=Array.from(new Map([...data, ...selectedData].map(v => [v.id, v])).values())
-                this.totalWorker = res.data.data.total
+            $ApiService.lmsGroupService._groupWorkers({params:{page:1, per_page:500,group_id:id }}).then((res)=>{
+                this.workerList=res.data?.data?.data
+                this.totalWorker=res.data?.data?.total
             }).finally(()=>{
                 this.workerLoading= false
             })
@@ -80,26 +67,26 @@ export const useLmsWorkerStore = defineStore('lmsWorkerStore', {
                 ...this.params,
                 organizations:this.params.organizations.map(v=>v.id).toString() || undefined,
             }
-            $ApiService.lmsWorkerService._index({params}).then((res)=>{
-                this.list = res.data.data.data
-                this.totalItems = res.data.data.total
+            $ApiService.lmsGroupService._index({params}).then((res)=>{
+                this.list = res.data.data
             }).finally(()=>{
                 this.loading= false
             })
         },
-        _create(data){
+        _create(data, callback){
             this.saveLoading = true
-            $ApiService.lmsWorkerService._create({data}).then((res)=>{
-                this.visible = false
-                this._index()
+            $ApiService.lmsGroupService._create({data}).then((res)=>{
+                callback?.()
             }).finally(()=>{
                 this.saveLoading = false
             })
         },
         _delete(){
-            this.loading = true
-            $ApiService.lmsWorkerService._delete({data:{ids:this.selectedWorkers}}).then(()=>{
-                this._index()
+            this.deleteLoading = true
+            $ApiService.lmsGroupService._delete({data:{worker_position_ids:this.selectedWorkers,group_id:this.elementId}}).then(()=>{
+                this._workers(this.elementId)
+            }).finally(()=>{
+                this.deleteLoading = false
             })
         },
 
@@ -108,8 +95,9 @@ export const useLmsWorkerStore = defineStore('lmsWorkerStore', {
         },
         resetForm(){
             this.payload.edu_plan_id = null
-            this.payload.organizations = []
+            this.payload.type = null
             this.payload.worker_position_ids = []
+
         }
     }
 })

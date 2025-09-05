@@ -55,7 +55,7 @@ onMounted(()=>{
             v-model:value="store.payload.name_en"
         />
       </n-form-item>
-      <n-form-item :label="$t(`applicationPage.form.confirmations`)" path="users" :rule-path="validationRules.rulesNames.requiredMultiSelectField">
+      <n-form-item :label="$t(`content.users`)" path="users" :rule-path="validationRules.rulesNames.requiredMultiSelectField">
         <UINSelect
             multiple
             v-model:value="store.payload.users"

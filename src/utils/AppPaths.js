@@ -27,6 +27,8 @@ export const AppPaths = {
     Position:"/position",
     Organizations:"/organizations",
     Worker:"/worker",
+    Group:"/group",
+    Lesson:"/lesson",
     Contact:"/contact",
     ChatWindow:"/chat-window",
     DocumentHistory:"/document-history",

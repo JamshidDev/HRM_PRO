@@ -43,7 +43,8 @@ const selectLabel = (option)=>{
                 class:'flex gap-2 my-1 items-center'
             },[h('div',{ class:'flex flex-col'}, [
                     h('div',{ class:'text-xs font-medium text-textColor2 !text-wrap'},`${option.name}`),
-                    h('div',{ class:'text-xs text-textColor3'},option.position),
+                h('div',{ class:'text-xs text-textColor3'},option.position),
+                option.subPosition? h('div',{ class:'text-xs text-textColor3'},option.subPosition) : null,
                 ])
             ]
         ),

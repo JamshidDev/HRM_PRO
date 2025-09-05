@@ -7,6 +7,8 @@ import {
     EduPlanPage,
     TeacherPage,
     WorkerPage,
+    LmsGroupPage,
+    LmsLessonPage,
 } from "@/pages/lms";
 
 
@@ -40,5 +42,15 @@ export default [
         path:Utils.routeLmsPathMaker(AppPaths.Worker),
         component: WorkerPage,
         children:[],
-    }
+    },
+    {
+        path:Utils.routeLmsPathMaker(AppPaths.Group)+'/:id',
+        component: LmsGroupPage,
+        children:[],
+    },
+    {
+        path:Utils.routeLmsPathMaker(AppPaths.Lesson),
+        component: LmsLessonPage,
+        children:[],
+    },
 ]

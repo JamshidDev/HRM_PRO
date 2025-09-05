@@ -37,6 +37,14 @@ const onAdd = ()=>{
   store.visible = true
 }
 
+let timer = null
+const onKeyUp = ()=>{
+  clearTimeout(timer)
+  timer = setTimeout(()=>{
+    filterEvent()
+  }, 1000)
+}
+
 onMounted(()=>{
   if(componentStore.structureList.length === 0){
     componentStore._structures()
@@ -77,6 +85,7 @@ const onShow = (v)=>{
       <n-input
           type="text"
           v-model:value="store.params.name"
+          @keyup="onKeyUp"
       />
       <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{$t('eduPlanPage.form.learning_center')}}</label>
       <n-select
