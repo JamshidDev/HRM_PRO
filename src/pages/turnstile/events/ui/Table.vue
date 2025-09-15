@@ -28,6 +28,10 @@ const maskStatus = {
     name:t("hcEvent.form.NoMask"),
     id:2
   },
+  0:{
+    name:t("hcEvent.form.NoMask"),
+    id:2
+  },
 }
 
 const eventStatus = {

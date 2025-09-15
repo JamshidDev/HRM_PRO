@@ -1,8 +1,8 @@
 <script setup>
 import {useAccountStore, useComponentStore, useEventStore} from "@/store/modules/index.js"
+import {ArrowSync24Filled} from "@vicons/fluent"
 import {UIPageFilter, UISelect} from "@/components/index.js"
 import i18n from "@/i18n/index.js"
-import {ArrowSync24Filled} from "@vicons/fluent"
 
 const {t} = i18n.global
 const store = useEventStore()
@@ -12,6 +12,7 @@ const filterEvent = ()=>{
   if(!accStore.checkAction(accStore.pn.turnstileHikCentralEventsRead)) return
   store.params.page = 1
   store._index()
+  store._dashboard()
 }
 
 const componentStore = useComponentStore()
@@ -19,12 +20,10 @@ const componentStore = useComponentStore()
 const onChangeStructure = (v)=>{
   store.params.organizations=v
   filterEvent()
-  store._dashboard()
 }
 
 const onChangeDate =()=>{
   filterEvent()
-  store._dashboard()
 }
 
 const beforeShow = (v)=>{
@@ -62,6 +61,31 @@ const directionList = [
     id:0,
   },
 ]
+
+const checkLastClick = ()=>{
+    const TIMEOUT = 60 // minute
+    const now = Date.now()
+    const lastClickTime = localStorage.getItem("lastClickTime")
+
+
+  if (lastClickTime) {
+    const diffMs = now - parseInt(lastClickTime, 10)
+    const diffMinutes = Math.floor(diffMs / (1000 * 60))
+    if (diffMs < TIMEOUT*60*1000) {
+      $Toast.warning(t('content.lastClickTime', {n:(TIMEOUT-diffMinutes)}))
+      return false
+    }
+  }
+  return true
+}
+
+const onSync = ()=>{
+  if(!checkLastClick()) return
+  store.syncPayload.from_date = null
+  store.syncPayload.to_date = null
+  store.syncPayload.access_level_ids = []
+  store.visible = true
+}
 
 </script>
 
@@ -119,6 +143,7 @@ const directionList = [
           @update:value="onChangeDate"
           type="datetime"
           update-value-on-close
+          :actions="null"
           clearable />
       <label class="mt-3 text-xs text-gray-500">{{ $t('content.to') }}</label>
       <n-date-picker
@@ -131,7 +156,7 @@ const directionList = [
           clearable />
     </template>
     <template #filterAction>
-      <n-button v-if="accStore.checkPermission(accStore.pn.admin)" :loading="store.jobLoading" @click="store._indexJob()" type="success">
+      <n-button :loading="store.jobLoading" @click="onSync" type="primary">
         {{$t('turnstile.accessLevelPage.sync')}}
         <template #icon>
           <ArrowSync24Filled/>

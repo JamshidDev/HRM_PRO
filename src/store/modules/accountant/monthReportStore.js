@@ -1,7 +1,9 @@
 import {defineStore} from "pinia";
 import i18n from "@/i18n/index.js"
 import Utils from "@/utils/Utils.js"
-const {t} = i18n.global
+import {AppPaths} from "@/utils/index.js"
+import router from "@/router/index.js"
+
 export const useMonthReportStore = defineStore('monthReportStore', {
     state:()=>({
         list:[],
@@ -27,6 +29,7 @@ export const useMonthReportStore = defineStore('monthReportStore', {
             sort_order:1
         },
         structureCheck2:[],
+        structureCheck:[],
         showList:[],
         showPrams:{
             year:null,
@@ -37,9 +40,26 @@ export const useMonthReportStore = defineStore('monthReportStore', {
         workerPhotoUrl:null,
         downloadLoading:false,
         cashedWorkerData:null,
+        exportParams:{
+            year:null,
+            month:null,
+            codes:[],
+            organizations:[],
+            byOrganization:true
+        },
+        exportVisible:false,
 
     }),
     actions:{
+        _exportWithCode(data){
+            this.showLoading = true
+            $ApiService.monthReportService._exportWithCode({data}).then(()=>{
+                this.exportVisible = false
+                router.push(Utils.routeHrmPathMaker(AppPaths.Export))
+            }).finally(()=>{
+                this.showLoading= false
+            })
+        },
         _index(){
             this.loading= true
             const params = {
@@ -81,7 +101,7 @@ export const useMonthReportStore = defineStore('monthReportStore', {
                     id:key,
                     name:value,
                     position:key,
-                }))
+                })).sort((a,b)=>a.position-b.position)
             }).finally(()=>{
                 this.enumLoading= false
             })

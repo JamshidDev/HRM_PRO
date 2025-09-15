@@ -7,6 +7,7 @@ const accStore = useAccountStore()
 const componentStore = useComponentStore()
 
 const filterEvent = ()=>{
+  if(!accStore.checkAction(accStore.pn.lmsWorkerRead)) return
   store.params.page = 1
   store._index()
 }
@@ -30,6 +31,7 @@ const resetFilter = ()=>{
 const filterCount = computed(()=>Number(Boolean(store.params.organizations.length)) + Number(Boolean(store.params.edu_plan_id)))
 
 const onAdd = ()=>{
+  if(!accStore.checkAction(accStore.pn.lmsWorkerWrite)) return
   store.resetForm()
   store.visibleType = true
   store.visible = true

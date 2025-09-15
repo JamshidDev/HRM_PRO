@@ -203,6 +203,15 @@ const onKeyUp = Utils.useDebounce(filterEvent,1000)
   >
     <template #filterAction>
       <n-button
+          @click="store._downloadRelative"
+          :loading="store.loading"
+          class="w-full! md:w-auto!"
+          type="error">{{$t('workerPage.filter.downloadRelative')}}
+        <template #icon>
+          <CloudArchive20Filled/>
+        </template>
+      </n-button>
+      <n-button
           @click="router.push(Utils.routeHrmPathMaker(AppPaths.Export))"
           class="w-full! md:w-auto!"
           type="warning">{{$t('exportPage.name')}}

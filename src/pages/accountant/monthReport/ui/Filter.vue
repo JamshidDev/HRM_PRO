@@ -82,10 +82,36 @@ const onRefreshEv = ()=>{
         :render-tag="UIHelper.selectRender.value"
         @update:value="filterEvent"
     />
+    <label class="text-xs mt-3 text-gray-500 mb-1 font-medium">{{$t('content.year')}}</label>
+    <n-select
+        class="w-full"
+        v-model:value="store.params.year"
+        :options="Utils.yearList"
+        label-field="name"
+        value-field="id"
+        @update:value="filterEvent"
+    />
+    <label class="text-xs mt-3 text-gray-500 mb-1 font-medium">{{$t('content.month')}}</label>
+    <n-select
+        class="w-full"
+        v-model:value="store.params.month"
+        :options="Utils.monthList"
+        label-field="name"
+        value-field="id"
+        @update:value="filterEvent"
+    />
 
 
   </template>
   <template #filterAction>
+    <n-button
+        @click="store.exportVisible=true"
+        type="primary">
+      <template #icon>
+        <ArrowSync20Filled/>
+      </template>
+      {{$t('content.export')}}
+    </n-button>
     <n-button
         @click="onRefreshEv"
         :loading="store.loading"
@@ -93,7 +119,6 @@ const onRefreshEv = ()=>{
       <template #icon>
         <ArrowSync20Filled/>
       </template>
-      {{$t('content.refresh')}}
     </n-button>
     <n-button
         @click="store._download()"
@@ -104,22 +129,6 @@ const onRefreshEv = ()=>{
       </template>
       {{$t('content.template')}}
     </n-button>
-    <n-select
-        class="w-full! md:w-[200px]!"
-        v-model:value="store.params.year"
-        :options="Utils.yearList"
-        label-field="name"
-        value-field="id"
-        @update:value="filterEvent"
-    />
-    <n-select
-        class="w-full! md:w-[200px]!"
-        v-model:value="store.params.month"
-        :options="Utils.monthList"
-        label-field="name"
-        value-field="id"
-        @update:value="filterEvent"
-    />
   </template>
 </UIPageFilter>
 </template>

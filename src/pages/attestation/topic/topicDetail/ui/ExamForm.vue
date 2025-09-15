@@ -147,6 +147,7 @@ const onChange = ()=>{
                 v-model:value="store.payload.whom_ids"
                 filterable
                 clearable
+                :filter="()=>true"
                 :placeholder="$t('content.searchWorker')"
                 :options="store.workerList"
                 @scroll="store.onScrollWorker"

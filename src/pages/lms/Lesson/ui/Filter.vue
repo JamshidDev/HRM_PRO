@@ -1,11 +1,12 @@
 <script setup>
 import {useAccountStore, useComponentStore, useLmsLessonStore} from "@/store/modules/index.js"
-import {UIPageFilter, UISelect} from "@/components/index.js"
+import {UIPageFilter} from "@/components/index.js"
 const store = useLmsLessonStore()
 const accStore = useAccountStore()
 const componentStore = useComponentStore()
 
 const filterEvent = ()=>{
+  if(!accStore.checkAction(accStore.pn.lmsLessonsRead)) return
   store.params.page = 1
   store._index()
 }
@@ -22,6 +23,7 @@ const resetFilter = ()=>{
 const filterCount = computed(()=>Number(Boolean(store.params.learning_center_id)))
 
 const onAdd = ()=>{
+  if(!accStore.checkAction(accStore.pn.lmsLessonsWrite)) return
   store.resetForm()
   store.payload.lesson_date = new Date().getTime()
   store.visibleType = true

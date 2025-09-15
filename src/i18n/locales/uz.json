@@ -2,6 +2,7 @@
   "content": {
     "deleted": "O'chirilgan",
     "files": "Fayllar",
+    "lastClickTime": " {n} daqiqadan so'ng qayta foydalanishingiz mumkin!",
     "deadline": "Yakunlanish vaqti",
     "requiredField": "Maydon to'ldirilishi shart!",
     "save": "Saqlash",
@@ -26,11 +27,16 @@
     "langEn": "ENG",
     "search": "Qidiruv",
     "mln": "mln",
+    "today": "Bugun",
+    "tomorrow": "Kecha",
+    "piece": "ta",
+    "person": "nafar",
     "searchWorker": "Xodimni qidirish uchun yozing...",
     "add": "Qo'shish",
     "filterSetting": "Filter sozlamalar",
     "news": "Yangi",
     "hour": "Soat",
+    "group": "Guruh",
     "action": "Amallar",
     "fullName": "Ism",
     "position": "Lavozim",
@@ -52,6 +58,7 @@
     "noResultYourRequest": "Sizning so‘rovingiz bo‘yicha hech qanday ma'lumot topilmadi...",
     "back": "Orqaga",
     "profile": "Kabinet",
+    "asAdmin": "Super admin",
     "setting": "Sozlamalar",
     "changeAccount": "Hisoblarim",
     "logOutSystem": "Tizmdan chiqish",
@@ -149,6 +156,7 @@
     "users": "Foydalanuvchilar",
     "image": "Rasm",
     "noImage": "Rasm mavjud emas",
+    "waitResponse": "Iltimos javobni kuting!",
     "untilNow": "h.v",
     "warningImageSave": "Asosiy rasm uchun yangi rasm tanlandi. O‘zgarishni saqlash uchun 'Saqlash' tugmasini bosing.",
     "selectAll": "Barchasini tanlash"
@@ -406,7 +414,8 @@
       "position": "Lavozimlar",
       "sex": "Jinsi",
       "multiple_position": "Birdan ortiq shartnomaga ega xodimlar",
-      "position_type": "Lavozim turi"
+      "position_type": "Lavozim turi",
+      "downloadRelative": "Qarindoshlarni yuklash"
     },
     "checkWorker": {
       "title": "Xodim izlash",
@@ -1548,7 +1557,7 @@
     }
   },
   "lmsWorkerPage": {
-    "name": "Xodim biriktirish",
+    "name": "Malaka oshirish",
     "createTitle": "Xodim biriktirish",
     "updateTitle": "Tahrirlash",
     "form": {
@@ -1759,6 +1768,7 @@
   "monthReport": {
     "name": "Oylik hisobot",
     "createTitle": "To'liq ma'lumot",
+    "exportTitle": "Export Panel",
     "form": {
       "pin": "Pin",
       "salary": "Ish haqi",
@@ -1766,6 +1776,8 @@
       "totalTwo": "Ish haqi fondiga kirmaydigan to'lov turlari",
       "totalThree": "Hisoblandi",
       "code": "To'lov kodi",
+      "organizations": "Korxonalar kesimida",
+      "workers": "Xodimlar kesimida",
       "totalFour": "Ish haqidan ushlamalar"
     },
     "view": {
@@ -2015,6 +2027,21 @@
       "error": "Xatolik"
     }
   },
+  "syncLog": {
+    "name": "Qayta yuklash",
+    "createTitle": "Terminallar ma'lumotini qayta yuklash",
+    "updateTitle": "Tahrirlash",
+    "form": {
+      "name": "Nomi",
+      "deviceLastSync": "Qurilma vaqti",
+      "access_level_id": "Guruhlar",
+      "workers_count": "Xodimlar soni",
+      "exported_count": "Yuklangan",
+      "status": "status",
+      "asFile": "Faylga yuklash uchun bosing",
+      "error": "Xatolik"
+    }
+  },
   "hcEvent": {
     "name": "Hodisalar",
     "createTitle": "Yuklash",
@@ -2077,6 +2104,12 @@
       "user_id": "Xodim",
       "devices": "Qurilmalar"
     }
+  },
+  "teacherLesson": {
+    "name": "Darslar"
+  },
+  "listener": {
+    "name": "Tinglovchilar"
   },
   "navigation": {
     "hrm": "Kadrlar boshqaruvi",

@@ -1,5 +1,5 @@
 <script setup>
-import {useLmsLessonStore, useComponentStore} from "@/store/modules/index.js"
+import {useLmsLessonStore, useComponentStore, useAccountStore} from "@/store/modules/index.js"
 import Calendar from "./ui/Calendar.vue"
 import Filter from "./ui/Filter.vue"
 import createFrom from "./ui/createForm.vue"
@@ -8,7 +8,7 @@ import {UIModal, UIPageContent} from "@/components/index.js"
 
 const store = useLmsLessonStore()
 const componentStore = useComponentStore()
-
+const accStore = useAccountStore()
 
 
 onMounted(()=>{
@@ -16,9 +16,11 @@ onMounted(()=>{
   store.params.year = now.getFullYear()
   store.params.month = now.getMonth()+1
   store.currentTime = now.getTime() || null
+
   componentStore._lmsLearningCenter(()=>{
     const existCenter = componentStore.lmsLearningCenters?.find(v=>v.id === store.params.learning_center_id)
     store.params.learning_center_id =existCenter? store.params.learning_center_id : componentStore.lmsLearningCenters?.[0].id
+    if(!accStore.checkAction(accStore.pn.lmsLessonsRead)) return
     store._index()
   })
 })

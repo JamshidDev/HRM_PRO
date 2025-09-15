@@ -1,10 +1,11 @@
 <script setup>
 import {NoDataPicture, UIActionButton, UIPagination, UIUser} from "@/components/index.js"
-import {useDirectionStore} from "@/store/modules/index.js"
+import {useAccountStore, useDirectionStore} from "@/store/modules/index.js"
 import Utils from "@/utils/Utils.js"
 import MenuButton from "@/components/buttons/MenuButton.vue"
 
 const store = useDirectionStore()
+const accStore = useAccountStore()
 
 const onEdit = (v)=>{
   store.visibleType = false
@@ -22,6 +23,7 @@ const onDelete = (v)=>{
 
 
 const onSelectEv = (v)=>{
+  if(!accStore.checkAction(accStore.pn.lmsDirectionWrite)) return
   if(v.key === Utils.ActionTypes.edit){
     onEdit(v.data)
   }else if (v.key === Utils.ActionTypes.delete){

@@ -8,7 +8,7 @@ const store = useTurnstileHikCentralStore()
 const changePage = (v)=>{
   store.params.page = v.page
   store.params.per_page = v.per_page
-  store._index_access_levels()
+  store._index()
 }
 
 const onSelect = (v)=>{
@@ -24,8 +24,8 @@ const onSelect = (v)=>{
 </script>
 
 <template>
-  <n-spin :show="store.accessLevelsLoading" style="min-height: 200px">
-    <div class="w-full overflow-x-auto"  v-if="store.accessLevels.length>0">
+  <n-spin :show="store.loading" style="min-height: 200px">
+    <div class="w-full overflow-x-auto"  v-if="store.list.length>0">
       <n-table
           class="mt-3 w-full table-fixed"
           :single-line="false"
@@ -43,7 +43,7 @@ const onSelect = (v)=>{
         </tr>
         </thead>
         <tbody>
-        <tr v-for="(item, idx) in store.accessLevels" :key="idx">
+        <tr v-for="(item, idx) in store.list" :key="idx">
           <td class="w-[20px] max-w-[20px]"><span class="text-center text-[12px] text-gray-600 block">{{ (store.params.page - 1) * store.params.per_page + idx + 1 }}</span></td>
           <td class="text-center!">{{item.name}}</td>
           <td class="text-center!">
@@ -90,6 +90,6 @@ const onSelect = (v)=>{
           @change-page="changePage"
       />
     </div>
-    <NoDataPicture v-if="store.accessLevels.length===0 && !store.accessLevelsLoading" />
+    <NoDataPicture v-if="store.list.length===0 && !store.loading" />
   </n-spin>
 </template>

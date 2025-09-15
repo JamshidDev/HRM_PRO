@@ -6,6 +6,7 @@ const accStore = useAccountStore()
 const componentStore = useComponentStore()
 
 const filterEvent = ()=>{
+  if(!accStore.checkAction(accStore.pn.lmsEduPlanRead)) return
   store.params.page = 1
   store._index()
 }
@@ -32,6 +33,7 @@ const filterCount = computed(()=>Number(Boolean(store.params.organizations.lengt
     + Number(Boolean(store.params.learning_center_id)))
 
 const onAdd = ()=>{
+  if(!accStore.checkAction(accStore.pn.lmsEduPlanWrite)) return
   store.resetForm()
   store.visibleType = true
   store.visible = true

@@ -1,11 +1,13 @@
 <script setup>
 import {Delete48Filled} from "@vicons/fluent"
-import {useLmsLessonStore} from "@/store/modules/index.js"
+import {useAccountStore, useLmsLessonStore} from "@/store/modules/index.js"
 import {UIUser} from "@/components/index.js"
 
 const store = useLmsLessonStore()
+const accStore = useAccountStore()
 
 const onDelete = ()=>{
+  if(!accStore.checkAction(accStore.pn.lmsLessonsWrite)) return
   store.elementId = store.selectedLesson?.id
   store._delete()
 }

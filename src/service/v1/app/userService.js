@@ -20,6 +20,15 @@ const _loginByIdToSystem = async (payload)=>{
     return await axios.get(`/v1/admin/users/${payload?.id}/login`, {params:payload.params})
 }
 
+const _temporaryToken =async (payload)=>{
+    return await axios.get(`/v1/admin/access-for-admin`, {params:payload?.params})
+}
+
+
+const _accessForAdmin =async (payload)=>{
+    return await axios.post(`/v1/user/access-for-admin`, payload?.data)
+}
+
 
 
 
@@ -30,4 +39,6 @@ export default {
     _myRoles,
     _update,
     _loginByIdToSystem,
+    _temporaryToken,
+    _accessForAdmin,
 }

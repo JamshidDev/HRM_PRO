@@ -2,6 +2,7 @@
 import {UIModal, UIPageContent} from "@/components/index.js"
 import Filter from "./ui/Filter.vue"
 import Table from "./ui/Table.vue"
+import ExportPanel from "./ui/ExportPanel.vue"
 import ViewSalary from "./ui/ViewSalary.vue"
 import {useAccountStore, useMonthReportStore} from "@/store/modules/index.js"
 
@@ -35,6 +36,14 @@ onMounted(()=>{
         :title="store.visibleType?$t('monthReport.createTitle') : $t('monthReport.updateTitle')"
     >
       <ViewSalary/>
+    </UIModal>
+    <UIModal
+        :width="600"
+        :visible="store.exportVisible"
+        @update:visible="(v)=>store.exportVisible = v"
+        :title="$t('monthReport.exportTitle')"
+    >
+      <ExportPanel/>
     </UIModal>
   </UIPageContent>
 </template>

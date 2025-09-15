@@ -1,6 +1,8 @@
 import {defineStore} from "pinia";
 import i18n from "@/i18n/index.js"
 import Utils from "@/utils/Utils.js"
+import router from "@/router/index.js"
+import {AppPaths} from "@/utils/index.js"
 const {t} = i18n.global
 export const usePensionerStore = defineStore('pensionerStore', {
     state:()=>({
@@ -47,6 +49,14 @@ export const usePensionerStore = defineStore('pensionerStore', {
             $ApiService.pensionerService._index({params}).then((res)=>{
                 this.list = res.data.data.data
                 this.totalItems = res.data.data.total
+            }).finally(()=>{
+                this.loading= false
+            })
+        },
+        _download(){
+            this.loading= true
+            $ApiService.pensionerService._index({params:{export:true}}).then((res)=>{
+                router.push(Utils.routeHrmPathMaker(AppPaths.Export))
             }).finally(()=>{
                 this.loading= false
             })

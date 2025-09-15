@@ -111,7 +111,6 @@ const onDownload = (v)=>{
                   class="w-full"
                   type="text"
                   v-mask="`AA #######`"
-
                   v-model:value="item.serial_number"
               />
             </n-form-item>
@@ -143,7 +142,6 @@ const onDownload = (v)=>{
             <n-input
                 class="w-full"
                 type="text"
-
                 v-model:value="item.address"
             />
           </n-form-item>
@@ -157,7 +155,6 @@ const onDownload = (v)=>{
                 class="w-full"
                 v-model:value="item.from_date"
                 type="date"
-
                 :format="useAppSetting.datePicketFormat"
             />
           </n-form-item>
@@ -169,7 +166,6 @@ const onDownload = (v)=>{
                 class="w-full"
                 v-model:value="item.to_date"
                 type="date"
-
                 :format="useAppSetting.datePicketFormat"
             />
           </n-form-item>
@@ -252,7 +248,3 @@ const onDownload = (v)=>{
   </n-spin>
 
 </template>
-
-<style scoped>
-
-</style>

@@ -51,7 +51,9 @@ import {
     QrCode24Regular,
     AlertUrgent16Filled,
     AppsAddIn16Regular,
-    Collections24Regular,
+    ArrowSyncCircle24Filled,
+    AppFolder24Filled,
+    ShiftsCheckmark20Regular,
 } from "@vicons/fluent"
 import {AppPaths} from "@/utils/index.js";
 import Utils from "@/utils/Utils.js"
@@ -238,6 +240,13 @@ export const navigations = [
                 color: 'bg-info',
                 permission: appPermissions.hrReport,
             },
+            {
+                label: 'lmsWorkerPage.name',
+                path: Utils.routeHrmPathMaker(AppPaths.LmsWorker),
+                icon: AppsAddIn16Regular,
+                color: 'bg-success',
+                permission: appPermissions.lmsWorker,
+            },
 
 
         ]
@@ -405,6 +414,13 @@ export const navigations = [
                 color: 'bg-warning',
                 permission: appPermissions.turnstileHikCentralTgUser,
             },
+            {
+                label: 'syncLog.name',
+                path: Utils.routeTurnstilePathMaker(AppPaths.SyncLog),
+                icon: ArrowSyncCircle24Filled,
+                color: 'bg-success',
+                permission: appPermissions.turnstileHikCentralSync,
+            },
         ]
     },
     {
@@ -418,55 +434,62 @@ export const navigations = [
         label: 'navigation.lms',
         path: AppPaths.Lms,
         icon: HatGraduation24Filled,
-        permission: appPermissions.admin,
+        permission: appPermissions.lms,
         children: [
             {
                 label: 'directionPage.name',
                 path: Utils.routeLmsPathMaker(AppPaths.Direction),
                 icon: AppsList24Filled,
                 color: 'bg-dark',
-                permission: appPermissions.users,
+                permission: appPermissions.lmsDirection,
             },
             {
                 label: 'specializationPage.name',
                 path: Utils.routeLmsPathMaker(AppPaths.Specialization),
                 icon: RibbonStar20Filled,
                 color: 'bg-secondary',
-                permission: appPermissions.users,
+                permission: appPermissions.lmsSpecialization,
             },
             {
                 label: 'subjectPage.name',
                 path: Utils.routeLmsPathMaker(AppPaths.Subject),
                 icon: DocumentRibbon20Filled,
                 color: 'bg-primary',
-                permission: appPermissions.users,
+                permission: appPermissions.lmsSubjects,
             },
             {
                 label: 'eduPlanPage.name',
                 path: Utils.routeLmsPathMaker(AppPaths.EduPlan),
                 icon: CalendarLtr20Filled,
                 color: 'bg-warning',
-                permission: appPermissions.users,
+                permission: appPermissions.lmsEduPlan,
             },
             {
                 label: 'teacherPage.name',
                 path: Utils.routeLmsPathMaker(AppPaths.Teacher),
                 icon: ShareScreenPerson20Filled,
                 color: 'bg-info',
-                permission: appPermissions.users,
-            },
-            {
-                label: 'lmsWorkerPage.name',
-                path: Utils.routeLmsPathMaker(AppPaths.Worker),
-                icon: AppsAddIn16Regular,
-                color: 'bg-success',
-                permission: appPermissions.admin,
+                permission: appPermissions.lmsTeachers,
             },
             {
                 label: 'lessonPage.name',
                 path: Utils.routeLmsPathMaker(AppPaths.Lesson),
                 icon: AppsAddIn16Regular,
                 color: 'bg-info',
+                permission: appPermissions.lmsLessons,
+            },
+            {
+                label: 'teacherLesson.name',
+                path: Utils.routeLmsPathMaker(AppPaths.TeacherLesson),
+                icon: ShiftsCheckmark20Regular,
+                color: 'bg-info',
+                permission: appPermissions.admin,
+            },
+            {
+                label: 'listener.name',
+                path: Utils.routeLmsPathMaker(AppPaths.Listener),
+                icon: ShiftsCheckmark20Regular,
+                color: 'bg-dark',
                 permission: appPermissions.admin,
             },
         ]
@@ -561,6 +584,13 @@ export const navigations = [
                 icon: DocumentRibbon24Filled,
                 color: 'bg-info',
                 permission: appPermissions.hospitalTicket,
+            },
+            {
+                label: 'pensioner.name',
+                path: Utils.routeHospitalPathMaker(AppPaths.Pensioner),
+                icon: AppFolder24Filled,
+                color: 'bg-info',
+                permission: appPermissions.hospitalPensioner,
             },
         ]
     },

@@ -8,7 +8,7 @@ import {
     TurnstileWorkDurationPage,
     TurnstileAccessLevelsPage,
     TurnstileOrgAccessLevelsPage,
-    TurnstileHcWorkersPage, HcServerPage, HcEventPage, TelegramUserPage
+    TurnstileHcWorkersPage, HcServerPage, HcEventPage, TelegramUserPage, SyncLogPage
 } from "@/pages/turnstile"
 
 
@@ -66,6 +66,11 @@ export default [
     {
         path:Utils.routeTurnstilePathMaker(AppPaths.Notification),
         component: ()=>TelegramUserPage,
+        children:[],
+    },
+    {
+        path:Utils.routeTurnstilePathMaker(AppPaths.SyncLog),
+        component: ()=>SyncLogPage,
         children:[],
     },
 ]

@@ -48,8 +48,9 @@ const onPreview = (v)=>{
          :class="[store.detailShow && ' border']"
     >
       <div @click="onPreview('late_workers')" class="col-span-12 md:col-span-6 xl:col-span-3 border border-surface-line hover-effect-card px-4 py-2 rounded-xl bg-surface-section h-[96px] relative">
-        <div class="flex justify-between mb-2">
+        <div class="flex flex-col mb-2">
           <span class="text-textColor2 font-medium">{{$t('hcEvent.cards.cardOne')}}</span>
+          <span class="text-xs text-secondary">{{$t('content.today')}}</span>
         </div>
 
         <div class="text-2xl z-10 text-right font-bold text-secondary flex items-center justify-between">
@@ -66,8 +67,9 @@ const onPreview = (v)=>{
         <span class="z-1 opacity-30 absolute top-0 right-0 w-[160px] h-full bg-no-repeat bg-[url(/effect/primary-card.svg)]"></span>
       </div>
       <div @click="onPreview('absent_workers')" class="col-span-12 md:col-span-6 xl:col-span-3 border border-surface-line hover-effect-card px-4 py-2 rounded-xl bg-surface-section h-[96px] relative">
-        <div class="flex justify-between mb-2">
+        <div class="flex flex-col mb-2">
           <span class="text-textColor2 font-medium">{{$t('hcEvent.cards.cardTwo')}}</span>
+          <span class="text-xs text-secondary">{{$t('content.tomorrow')}}</span>
         </div>
         <div class="text-2xl text-right font-bold text-secondary flex items-center justify-between">
 
@@ -85,8 +87,9 @@ const onPreview = (v)=>{
 
       </div>
       <div @click="onPreview('early_leave_workers')" class="col-span-12 md:col-span-6 xl:col-span-3 border border-surface-line hover-effect-card px-4 py-2 rounded-xl bg-surface-section h-[96px] relative">
-        <div class="flex justify-between mb-2">
+        <div class="flex flex-col mb-2">
           <span class="text-textColor2 font-medium">{{$t('hcEvent.cards.cardThree')}}</span>
+          <span class="text-xs text-secondary">{{$t('content.tomorrow')}}</span>
         </div>
         <div class="text-2xl text-right font-bold text-secondary flex items-center justify-between">
             <span>{{userTreeObj.more}}
@@ -102,8 +105,9 @@ const onPreview = (v)=>{
         <span class="z-1 opacity-30 absolute top-0 right-0 w-[160px] h-full bg-no-repeat bg-[url(/effect/primary-card.svg)]"></span>
       </div>
       <div @click="onPreview('work_hours')" class="col-span-12 md:col-span-6 xl:col-span-3 border border-surface-line hover-effect-card px-4 py-2 rounded-xl bg-surface-section h-[96px] relative">
-        <div class="flex justify-between mb-2">
+        <div class="flex flex-col mb-2">
           <span class="text-textColor2 font-medium">{{$t('hcEvent.cards.cardFour')}}</span>
+          <span class="text-xs text-secondary">{{$t('content.tomorrow')}}</span>
         </div>
         <div class="text-2xl text-right font-bold text-secondary flex items-center justify-between">
             <span>{{userFourObj.more}}
@@ -118,18 +122,6 @@ const onPreview = (v)=>{
         </div>
         <span class="z-1 opacity-30 absolute top-0 right-0 w-[160px] h-full bg-no-repeat bg-[url(/effect/primary-card.svg)]"></span>
       </div>
-<!--      <div  class="col-span-12 flex justify-end items-center gap-1 text-secondary hover:text-primary pr-2">-->
-<!--        <n-button-->
-<!--            text-->
-<!--            :type="store.detailShow? 'error' : 'default'"-->
-<!--            @click="onChangeCollapse">-->
-<!--          <template #icon>-->
-<!--            <DismissCircle28Regular v-if="store.detailShow"/>-->
-<!--            <Settings48Regular v-else/>-->
-<!--          </template>-->
-<!--          {{store.detailShow? $t('content.close') : $t('hcEvent.detailShow')}}-->
-<!--        </n-button>-->
-<!--      </div>-->
       <div class="col-span-12">
         <n-collapse-transition :show="store.detailShow">
           <div class="grid grid-cols-12 gap-4 h-[200px]">

@@ -13,5 +13,10 @@ export const  useAppSetting = {
       idCard:'idcard',
       pfx:"pfx"
     },
-    appPermission:'appPermission'
+    appPermission:'appPermission',
+
+    adminSecret:'JAMACODER',
+    adminExistSecret:'EXIST',
+    adminSecretKey:"secretKey",
+    temporaryToken:"temporarySecretKey",
 }

@@ -1,10 +1,11 @@
 <script setup>
 import {NoDataPicture, UIPagination} from "@/components/index.js"
-import {useSpecializationStore} from "@/store/modules/index.js"
+import {useAccountStore, useSpecializationStore} from "@/store/modules/index.js"
 import Utils from "@/utils/Utils.js"
 import MenuButton from "@/components/buttons/MenuButton.vue"
 
 const store = useSpecializationStore()
+const accStore = useAccountStore()
 
 const onEdit = (v)=>{
   store.elementId = v.id
@@ -19,6 +20,7 @@ const onDelete = (v)=>{
 }
 
 const onSelectEv = (v)=>{
+  if(!accStore.checkAction(accStore.pn.lmsSpecializationWrite)) return
   if(v.key === Utils.ActionTypes.edit){
     onEdit(v.data)
   }else if (v.key === Utils.ActionTypes.delete){

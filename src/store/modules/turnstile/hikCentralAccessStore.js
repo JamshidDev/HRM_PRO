@@ -6,6 +6,9 @@ import Utils from "@/utils/Utils.js"
 const {t} = i18n.global
 export const useTurnstileHikCentralStore = defineStore('turnstileHikCentralStore', {
     state: () => ({
+        list: [],
+        totalCount:[],
+        loading: false,
         accessLevels: [],
         originAccessLevels: [],
         orgAccessLevels: [],
@@ -43,10 +46,32 @@ export const useTurnstileHikCentralStore = defineStore('turnstileHikCentralStore
         originList:[],
         query:null,
         downloading:false,
-
+        short:false,
 
     }),
     actions: {
+        _index(){
+            this.loading = true
+            const params = {
+                ...this.params,
+            }
+            this.loading = true
+            $ApiService.turnstileHikCentralAccessService._index({params}).then((res) => {
+                this.list = res.data.data.data
+                this.totalItems = res.data.data.total
+
+            }).finally(() => {
+                this.loading = false
+            })
+        },
+        _org_levels(){
+            this.accessLevelsLoading = true
+            $ApiService.turnstileHikCentralAccessService._org_levels({params:{organization_id:this.elementId}}).then((res) => {
+                this.payload.access_levels = res.data.data.map(v=>v.id)
+            }).finally(() => {
+                this.accessLevelsLoading = false
+            })
+        },
         _department(){
             this.deviceLoading = true
             $ApiService.turnstileHikCentralAccessService._departments().then((res) => {
@@ -84,11 +109,10 @@ export const useTurnstileHikCentralStore = defineStore('turnstileHikCentralStore
         },
         _index_access_levels() {
             this.accessLevelsLoading = true
-            $ApiService.turnstileHikCentralAccessService._index({params: this.params}).then((res) => {
-                const sorted = res.data.data.data.sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()))
+            $ApiService.turnstileHikCentralAccessService._all_access_levels().then((res) => {
+                const sorted = res.data.data.sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()))
                 this.accessLevels = sorted
                 this.originAccessLevels = sorted
-                this.totalItems = res.data.data.total
             }).finally(() => {
                 this.accessLevelsLoading = false
             })
@@ -96,7 +120,7 @@ export const useTurnstileHikCentralStore = defineStore('turnstileHikCentralStore
         _sync(){
             this.accessLevelsLoading = true
             $ApiService.turnstileHikCentralAccessService._sync().then(() => {
-                this._index_access_levels()
+                this._index()
             }).finally(() => {
                 this.accessLevelsLoading = false
             })
@@ -129,7 +153,7 @@ export const useTurnstileHikCentralStore = defineStore('turnstileHikCentralStore
             }
             $ApiService.turnstileHikCentralAccessService._update({data, id: this.elementId}).then((res) => {
                 this.visible = false
-                this._index_access_levels()
+                this._index()
 
             }).finally(() => {
                 this.saveLoading = false

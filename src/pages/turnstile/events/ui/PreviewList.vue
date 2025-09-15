@@ -137,35 +137,35 @@ const controlFilter =(v)=>{
 <template>
   <div class="h-[calc(100vh-100px)] overflow-y-auto">
     <div class="w-full grid gap-2 grid-cols-12">
-      <div class="col-span-2">
-        <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{$t('actionLog.table.structure')}}</label>
-        <UISelect
-            :options="componentStore.structureList"
-            :modelV="store.previewParams.organizations"
-            @defaultValue="(v)=>store.previewParams.organizations=v"
-            @updateModel="onChangeStructure"
-            :checkedVal="store.structureCheck3"
-            @updateCheck="(v)=>store.structureCheck3=v"
-            :loading="componentStore.structureLoading"
-            v-model:search="componentStore.structureParams.search"
-            @onSearch="componentStore._structures"
-            @onSubmit="filterEvent"
-        />
-      </div>
-      <div class="col-span-2">
-        <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{$t('turnstile.hcWorkersPage.access_levels')}}</label>
-        <n-select
-            multiple
-            clearable
-            v-model:value="store.previewParams.access_levels"
-            :options="store.levelList"
-            :loading="store.levelLoading"
-            label-field="name"
-            value-field="id"
-            @update:value="filterEvent"
-            :max-tag-count="2"
-        />
-      </div>
+<!--      <div class="col-span-2">-->
+<!--        <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{$t('actionLog.table.structure')}}</label>-->
+<!--        <UISelect-->
+<!--            :options="componentStore.structureList"-->
+<!--            :modelV="store.previewParams.organizations"-->
+<!--            @defaultValue="(v)=>store.previewParams.organizations=v"-->
+<!--            @updateModel="onChangeStructure"-->
+<!--            :checkedVal="store.structureCheck3"-->
+<!--            @updateCheck="(v)=>store.structureCheck3=v"-->
+<!--            :loading="componentStore.structureLoading"-->
+<!--            v-model:search="componentStore.structureParams.search"-->
+<!--            @onSearch="componentStore._structures"-->
+<!--            @onSubmit="filterEvent"-->
+<!--        />-->
+<!--      </div>-->
+<!--      <div class="col-span-2">-->
+<!--        <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{$t('turnstile.hcWorkersPage.access_levels')}}</label>-->
+<!--        <n-select-->
+<!--            multiple-->
+<!--            clearable-->
+<!--            v-model:value="store.previewParams.access_levels"-->
+<!--            :options="store.levelList"-->
+<!--            :loading="store.levelLoading"-->
+<!--            label-field="name"-->
+<!--            value-field="id"-->
+<!--            @update:value="filterEvent"-->
+<!--            :max-tag-count="2"-->
+<!--        />-->
+<!--      </div>-->
       <div v-if="filterVisible.hours" class="col-span-2">
         <label class="text-textColor3 ml-1">{{$t('hcEvent.form.hours')}}</label>
         <n-input
@@ -202,25 +202,26 @@ const controlFilter =(v)=>{
             :disabled="store.previewLoading"
         />
       </div>
-      <div v-if="filterVisible.start_date_and_time" class="col-span-2">
-        <label class="text-xs text-gray-500">{{ $t('content.from') }}</label>
-        <n-date-picker
-            v-model:value="store.previewParams.start_date_and_time"
-            @update:value="filterEvent"
-            type="datetime"
-            update-value-on-close
-            clearable />
-      </div>
-      <div v-if="filterVisible.end_date_and_time" class="col-span-2">
-        <label class=" text-xs text-gray-500">{{ $t('content.to') }}</label>
-        <n-date-picker
-            v-model:value="store.previewParams.end_date_and_time"
-            @update:value="filterEvent"
-            type="datetime"
-            update-value-on-close
-            :actions="null"
-            clearable />
-      </div>
+<!--      <div v-if="filterVisible.start_date_and_time" class="col-span-2">-->
+<!--        <label class="text-xs text-gray-500">{{ $t('content.from') }}</label>-->
+<!--        <n-date-picker-->
+<!--            v-model:value="store.previewParams.start_date_and_time"-->
+<!--            @update:value="filterEvent"-->
+<!--            type="datetime"-->
+<!--            update-value-on-close-->
+<!--            :actions="null"-->
+<!--            clearable />-->
+<!--      </div>-->
+<!--      <div v-if="filterVisible.end_date_and_time" class="col-span-2">-->
+<!--        <label class=" text-xs text-gray-500">{{ $t('content.to') }}</label>-->
+<!--        <n-date-picker-->
+<!--            v-model:value="store.previewParams.end_date_and_time"-->
+<!--            @update:value="filterEvent"-->
+<!--            type="datetime"-->
+<!--            update-value-on-close-->
+<!--            :actions="null"-->
+<!--            clearable />-->
+<!--      </div>-->
       <div class="col-span-2">
         <n-button @click="store._download()" :loading="store.previewLoading" type="success" class="!mt-5 !w-full">
           {{$t('content.download')}}

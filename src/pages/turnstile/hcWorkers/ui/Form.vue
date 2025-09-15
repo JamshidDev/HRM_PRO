@@ -1,7 +1,7 @@
 <script setup>
 import validationRules from "@/utils/validationRules.js";
 import {useComponentStore, useTurnstileHikCentralWorkerStore} from "@/store/modules/index.js";
-import {UISelect, NoDataIllustration} from "@/components/index.js";
+import {UISelect, NoDataIllustration, UINSelect} from "@/components/index.js"
 import {Checkmark16Filled, AddCircle16Filled} from "@vicons/fluent"
 import {UICropper} from "@/components/index.js";
 
@@ -232,18 +232,25 @@ onMounted(() => {
             />
           </n-form-item>
 
-          <n-form-item :label="$t(`turnstile.hcWorkersPage.access_levels`)" path="access_level_id"
-                       rule-path="requiredNumberField">
-            <n-select
+          <n-form-item :label="$t(`turnstile.hcWorkersPage.access_levels`)" path="access_level_ids"
+                       rule-path="requiredMultiSelectField">
+<!--            <n-select-->
+<!--                :disabled="!store.payload.level_org_id.length"-->
+<!--                v-model:value="store.payload.access_level_id"-->
+<!--                filterable-->
+<!--                :options="store.accessLevels"-->
+<!--                label-field="name"-->
+<!--                value-field="id"-->
+<!--                :loading="store.accessLevelsLoading"-->
+<!--            >-->
+<!--            </n-select>-->
+            <UINSelect
+                multiple
                 :disabled="!store.payload.level_org_id.length"
-                v-model:value="store.payload.access_level_id"
-                filterable
+                v-model:value="store.payload.access_level_ids"
                 :options="store.accessLevels"
-                label-field="name"
                 value-field="id"
-                :loading="store.accessLevelsLoading"
-            >
-            </n-select>
+                />
           </n-form-item>
         </div>
       </n-form>

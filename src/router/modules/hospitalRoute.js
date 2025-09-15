@@ -1,6 +1,12 @@
 import Utils from "@/utils/Utils.js";
 import {AppPaths} from "@/utils/index.js";
-import {ExpiredHealthPage, TicketPage, MedWorkerPage} from "@/pages/hospital/index.js"
+import {
+
+    ExpiredHealthPage,
+    TicketPage,
+    MedWorkerPage,
+    MedPensionerPage,
+} from "@/pages/hospital/index.js"
 
 
 export default [
@@ -15,6 +21,10 @@ export default [
     {
         path:Utils.routeHospitalPathMaker(AppPaths.MedWorker),
         component: MedWorkerPage,
+    },
+    {
+        path:Utils.routeHospitalPathMaker(AppPaths.Pensioner),
+        component: MedPensionerPage,
     },
 
 ]

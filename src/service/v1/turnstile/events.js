@@ -24,6 +24,9 @@ const _jobCreate =async (payload)=>{
     return await axios.post(`/v1/turnstile/hik-central/sync/jobs`, payload?.data)
 }
 
+const _sync =async (payload)=>{
+    return await axios.post(`/v1/turnstile/hik-central/events/sync`, payload?.data)
+}
 
 
 
@@ -35,4 +38,5 @@ export default {
     _download,
     _jobIndex,
     _jobCreate,
+    _sync,
 }

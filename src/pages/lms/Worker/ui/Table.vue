@@ -1,11 +1,11 @@
 <script setup>
 import {NoDataPicture, UIPagination, UIUser, UIMore, UIBadge} from "@/components/index.js"
-import {useLmsWorkerStore} from "@/store/modules/index.js"
+import {useAccountStore, useLmsWorkerStore} from "@/store/modules/index.js"
 import Utils from "@/utils/Utils.js"
 import MenuButton from "@/components/buttons/MenuButton.vue"
 
 const store = useLmsWorkerStore()
-
+const accStore = useAccountStore()
 
 const onDelete = (v)=>{
   store.selectedWorkers = [v.id]
@@ -14,6 +14,7 @@ const onDelete = (v)=>{
 
 
 const onSelectEv = (v)=>{
+  if(!accStore.checkAction(accStore.pn.lmsWorkerWrite)) return
   if(v.key === Utils.ActionTypes.delete){
     onDelete(v.data)
   }
@@ -39,8 +40,10 @@ const changePage = (v)=>{
           <tr>
             <th class="text-center! min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
             <th class="min-w-[200px]">{{$t('content.worker')}}</th>
-            <th class="w-[300px]">{{$t('eduPlanPage.form.learning_center')}}</th>
-            <th class="w-[300px]">{{$t('lmsWorkerPage.form.eduPlan')}}</th>
+            <th class="w-[200px]">{{$t('eduPlanPage.form.learning_center')}}</th>
+            <th class="w-[160px]">{{$t('content.type')}}</th>
+            <th class="w-[220px]">{{$t('lmsWorkerPage.form.eduPlan')}}</th>
+            <th class="w-[220px]">{{$t('content.group')}}</th>
             <th class="min-w-[40px] w-[40px]"></th>
           </tr>
           </thead>
@@ -62,11 +65,25 @@ const changePage = (v)=>{
             </td>
             <td>{{item?.learning_center?.name}}</td>
             <td>
+              <div class="flex flex-col">
+                <p class="leading-[1.2]">{{item?.edu_plan?.type?.name}}</p>
+                <p class="text-secondary text-xs leading-[1.2]">{{item?.edu_plan?.start_date}}</p>
+              </div>
+            </td>
+            <td>
               <div class="leading-[1.2]">
                 {{item.edu_plan?.name}}
               </div>
               <div class="text-xs text-secondary leading-[1.2]">
-                {{item.edu_plan?.specialization?.name}} ({{item.edu_plan?.count_workers}})
+                {{item.edu_plan?.specialization?.name}}
+              </div>
+            </td>
+            <td>
+              <div class="flex flex-col lowercase">
+                <p class="leading-[1.2]">{{item?.edu_plan?.hours}} {{$t('content.hour')}}</p>
+                <p class="text-secondary text-xs leading-[1.2]">{{item?.edu_plan?.count_groups +' '+ $t('content.piece')+ ' ' +$t('content.group')}}
+                  {{item?.edu_plan?.count_workers +' '+ $t('content.person')+ ' ' +$t('content.worker')}}
+                </p>
               </div>
             </td>
 

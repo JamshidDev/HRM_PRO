@@ -73,8 +73,7 @@ onMounted(()=>{
             type="text"
             class="w-full!"
             v-model:value="store.payload.code"
-            v-mask="'##########'"
-            :allow-input="utils.onlyAllowNumber"
+            v-mask="'*****'"
         />
       </n-form-item>
     </div>

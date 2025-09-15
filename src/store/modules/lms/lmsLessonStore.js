@@ -51,17 +51,6 @@ export const useLmsLessonStore = defineStore('lmsLessonStore', {
         selectedLesson:null,
     }),
     actions:{
-        _getMonthRange(year, month){
-            const start = new Date(year, month - 1, 1)
-            const end = new Date(year, month, 0)
-            function format(d) {
-                const yyyy = d.getFullYear()
-                const mm = String(d.getMonth() + 1).padStart(2, "0")
-                const dd = String(d.getDate()).padStart(2, "0")
-                return `${yyyy}-${mm}-${dd}`
-            }
-            return { start_date: format(start), end_date: format(end) }
-        },
         _eduPlans(){
             this.eduPlanLoading = true
             const learning_center_id = this.payload.learning_center_id
@@ -101,7 +90,7 @@ export const useLmsLessonStore = defineStore('lmsLessonStore', {
 
         _index(){
             this.loading= true
-            const rangeMonth = this._getMonthRange(this.params.year, this.params.month)
+            const rangeMonth = Utils.getMonthRange(this.params.year, this.params.month)
             const params = {
                 ...this.params,
                 ...rangeMonth,

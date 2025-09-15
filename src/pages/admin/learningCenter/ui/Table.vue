@@ -39,9 +39,9 @@ const onSelectEv = (v) =>{
     store.payload.name_ru = v.data.name_ru
     store.payload.name_en = v.data.name_en
     store.payload.code = v.data.code
-    store.payload.users = v.data.users.map(x=>x.worker.id)
+    store.payload.users = v.data.users.map(x=>x.id)
     store.userList = v.data?.users.map(z=>({
-      id:z.worker.id,
+      id:z.id,
       name:Utils.combineFullName(z.worker),
       position:z.worker.id,
     }))

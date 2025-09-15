@@ -36,6 +36,10 @@ const _storeRole = async (payload)=>{
     return await axios.post(`/v1/hr/worker-positions/${payload.id}/edit/attach-role`, payload.data)
 }
 
+const _downloadRelative = async (payload)=>{
+    return await axios.post(`/v1/hr/export/relatives`,{},{params:payload.params})
+}
+
 const _userRole =async (payload)=>{
     return await axios.get(`/v1/hr/users`, {params:payload.params})
 }
@@ -58,4 +62,5 @@ export default {
     _storeRole,
     _userRole,
     _updatePosition,
+    _downloadRelative,
 }

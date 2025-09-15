@@ -59,7 +59,6 @@ const renderTargetTransferLabel = (option) => {
                   return i
                 })
               },
-              style: "width:80px; min-width:80px",
               size: "small",
               placeholder: '',
               defaultValue: (()=>store.categoryPayload.categories.find(i=>i.exam_category_id===option.option.value)?.count)(),

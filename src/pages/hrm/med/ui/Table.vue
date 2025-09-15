@@ -10,7 +10,6 @@ const compStore = useComponentStore()
 
 
 
-
 const onEdit = (v)=>{
   store.elementId = v.id
   store.visibleType = false

@@ -2,10 +2,11 @@
 import {h} from "vue";
 import {NIcon} from "naive-ui";
 import {useRouter} from "vue-router";
-import {Person24Regular, Settings16Regular, SignOut20Regular, PeopleSync20Regular} from "@vicons/fluent";
+import {Person24Regular, Settings16Regular, SignOut20Regular, PeopleSync20Regular, PeopleLock24Filled} from "@vicons/fluent";
 import {useAppStore, useAccountStore} from "@/store/modules/index.js"
 import i18n from "@/i18n/index.js"
 import {AppPaths, useAppSetting} from "@/utils/index.js"
+import {getActivePinia} from "pinia"
 
 const {t} = i18n.global
 const router = useRouter()
@@ -23,6 +24,8 @@ const renderIcon = (icon)=> {
     });
   };
 }
+
+
 
 const options = ref([
   {
@@ -47,6 +50,15 @@ const options = ref([
   }
 ])
 
+const secret =localStorage.getItem(useAppSetting.adminSecretKey)
+if (secret === useAppSetting.adminSecret) {
+  options.value.unshift({
+    label: t('content.asAdmin'),
+    key: "asAdmin",
+    icon: renderIcon(PeopleLock24Filled)
+  })
+}
+
 const changeOption = (v)=>{
   if(v==='profile'){
     router.push(AppPaths.Profile)
@@ -54,7 +66,23 @@ const changeOption = (v)=>{
     store._logOutApp()
   }else if(v==='changeAccount'){
     accountStore.openRoleModal()
+  }else if(v==='asAdmin'){
+    const token = sessionStorage.getItem(useAppSetting.temporaryToken)
+    if(token){
+      loginAsAdmin(token)
+    }
   }
+}
+
+
+const loginAsAdmin = (token)=>{
+    store._loginAsAdmin(token, (tkn)=>{
+      localStorage.setItem(useAppSetting.tokenKey,tkn)
+      accountStore._index(()=>{
+        getActivePinia().reset()
+        router.push(AppPaths.Home)
+      })
+    })
 }
 </script>
 

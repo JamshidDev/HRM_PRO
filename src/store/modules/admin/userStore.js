@@ -54,7 +54,12 @@ export const useUserStore = defineStore('user', {
                 this.loginLoading= false
             })
         },
+        _getTemporaryToken(params){
+            $ApiService.userService._temporaryToken({params}).then((res)=>{
+                sessionStorage.setItem(useAppSetting.temporaryToken, res.data.data.token)
 
+            })
+        },
         _roles(){
             this.roleLoading= true
             $ApiService.userRoleService._index({params:{page:1, per_page:10000}}).then((res)=>{

@@ -29,7 +29,9 @@ export const AppPaths = {
     Worker:"/worker",
     Group:"/group",
     Lesson:"/lesson",
+    TeacherLesson:"/teacher-lesson",
     Contact:"/contact",
+    Listener:"/listener",
     ChatWindow:"/chat-window",
     DocumentHistory:"/document-history",
     Exam:"/exam",
@@ -112,6 +114,8 @@ export const AppPaths = {
     HcEvents: "/hc-events",
     Pensioner: "/pensioner",
     Notification: "/notification",
+    LmsWorker: "/education-worker",
+    SyncLog: "/sync-log",
 }
 
 export const AppLayouts ={

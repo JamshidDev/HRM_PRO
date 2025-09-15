@@ -21,7 +21,7 @@ const onEdit = (v)=>{
   })
 }
 
-const onSelect = (v)=>{
+const onSelectEv = (v)=>{
   if(!accStore.checkAction(accStore.pn.turnstileHikCentralWorkersWrite)) return
   if(v.key === 'delete'){
     store.elementId = v.data.worker.id
@@ -32,19 +32,22 @@ const onSelect = (v)=>{
   }
 }
 
-const onShow = (v)=>{
-  store.instanceData = null
-  store.elementId = v
-  // store._show()
+const checkDeviceExpiry = (date)=>{
+  const now = new Date()
+  const expiryDate = new Date(date)
+  if(now > expiryDate) return 'error'
+  const oneMonthLater = new Date(now)
+  oneMonthLater.setMonth(now.getMonth() + 1)
+  if(expiryDate<=oneMonthLater) return 'warning'
+  return 'primary'
+
 }
 
-const toggleDetachTerminals = (v)=>{
-  // if(store.payload.detachTerminals.includes(v)){
-  //   store.payload.detachTerminals = store.payload.detachTerminals.filter(i=>i!==v)
-  // }else{
-  //   store.payload.detachTerminals.push(v)
-  // }
+const onSelect = (v)=>{
+  store.selectedRowId =store.selectedRowId === v.id? null : v.id
 }
+
+
 
 </script>
 
@@ -58,9 +61,9 @@ const toggleDetachTerminals = (v)=>{
       >
         <thead>
         <tr>
-          <th class="text-center! w-[30px] min-w-[30px] grow-0">{{$t('content.number')}}</th>
-          <th class="min-w-[200px]">{{$t('content.fullName')}}</th>
-          <th class="text-center! min-w-[200px]">{{$t('turnstile.hcWorkersPage.access_levels')}}</th>
+          <th class="w-[46px] min-w-[30px]">{{$t('content.number')}}</th>
+          <th class="min-w-[200px] w-[400px]">{{$t('content.fullName')}}</th>
+          <th class="min-w-[200px]">{{$t('turnstile.hcWorkersPage.access_levels')}}</th>
           <th class="max-w-[65px] w-[65px]">{{$t('content.action')}}</th>
         </tr>
         </thead>
@@ -82,22 +85,63 @@ const toggleDetachTerminals = (v)=>{
           </td>
           <td class="text-center!">
             <div class="flex flex-wrap gap-2">
-              <template v-for="level in item.access_levels" :key="level.id">
-                <n-button size="tiny" dashed type="primary">{{level.name}}
-                  <template #icon>
-                   <n-icon size="19">
-                     <AddSquareMultiple20Regular/>
-                   </n-icon>
-                  </template>
-                </n-button>
+              <template v-if="store.selectedRowId !== item.id">
+                <template v-for="level in item.access_levels.slice(0,3)" :key="level.id">
+                  <n-button
+                      dashed
+                      :type="checkDeviceExpiry(level.to)"
+                  >
+                    <div class="flex flex-col p-1">
+                      <span class="font-semibold"> {{level.name}}</span>
+                      <span class="text-xs text-secondary"> {{level.to}}</span>
+                    </div>
+
+                    <template #icon>
+                      <n-icon size="19">
+                        <AddSquareMultiple20Regular/>
+                      </n-icon>
+                    </template>
+                  </n-button>
+                </template>
               </template>
+              <n-button
+                  @click="onSelect(item)"
+                  round
+                  secondary
+                  v-if="item.access_levels.length>3"
+                  :type="store.selectedRowId === item.id? 'error' : 'default'"
+              >
+                 {{ store.selectedRowId === item.id? $t('content.close') : `+ ${item.access_levels.length - 3}`}}
+              </n-button>
+
             </div>
+            <n-collapse-transition :show="item.id === store.selectedRowId">
+              <div class="flex flex-wrap gap-2 mt-2">
+                <template v-for="level in item.access_levels.slice(3)" :key="level.id">
+                  <n-button
+                      dashed
+                      :type="checkDeviceExpiry(level.to)"
+                  >
+                    <div class="flex flex-col p-1">
+                      <span class="font-semibold"> {{level.name}}</span>
+                      <span class="text-xs text-secondary"> {{level.to}}</span>
+                    </div>
+
+                    <template #icon>
+                      <n-icon size="19">
+                        <AddSquareMultiple20Regular/>
+                      </n-icon>
+                    </template>
+                  </n-button>
+                </template>
+              </div>
+            </n-collapse-transition>
           </td>
           <td>
             <UIMenuButton
                 :data="item"
                 :show-edit="true"
-                @select-ev="onSelect"
+                @select-ev="onSelectEv"
             />
 <!--                :loading="store.elementId === item.worker.id && store.deleteLoading"-->
           </td>

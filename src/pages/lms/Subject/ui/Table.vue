@@ -1,10 +1,11 @@
 <script setup>
 import {NoDataPicture, UIPagination} from "@/components/index.js"
-import {useSubjectStore} from "@/store/modules/index.js"
+import {useAccountStore, useSubjectStore} from "@/store/modules/index.js"
 import Utils from "@/utils/Utils.js"
 import MenuButton from "@/components/buttons/MenuButton.vue"
 
 const store = useSubjectStore()
+const accStore = useAccountStore()
 
 const onEdit = (v)=>{
   store.visibleType = false
@@ -22,6 +23,7 @@ const onDelete = (v)=>{
 
 
 const onSelectEv = (v)=>{
+  if(!accStore.checkAction(accStore.pn.lmsSubjectsWrite)) return
   if(v.key === Utils.ActionTypes.edit){
     onEdit(v.data)
   }else if (v.key === Utils.ActionTypes.delete){

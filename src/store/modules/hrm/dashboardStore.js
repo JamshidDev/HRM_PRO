@@ -57,8 +57,31 @@ export const useDashboardStore = defineStore('dashboardStore', {
             vacations: [],
         },
         skipReset:true,
+        passportPayload:{
+            worker_id:null,
+            serial_number:null,
+            from_date:null,
+            to_date:null,
+            address:null,
+            file:null,
+        },
+        visible:false,
+        elementId:null,
+        selectedFile:null,
+        workerId:null,
+        loadingPassport:false,
     }),
     actions: {
+        _updatePassport(data){
+            this.loadingPassport = true
+            $ApiService.passportService._update({data,id:this.elementId, params:{_method:'PUT'}}).then((res)=>{
+                    this._index_detail()
+                    this.visible = false
+
+            }).finally(()=>{
+                this.loadingPassport = false
+            })
+        },
         _index(update) {
             this.loading = true
             let params = {}
@@ -343,6 +366,15 @@ export const useDashboardStore = defineStore('dashboardStore', {
             this.elementId = null
             this.payload.pin = null
             this.payload.position = null
+        },
+        resetPassportForm(){
+            this.selectedFile = null
+            this.passportPayload.file = null
+            this.passportPayload.serial_number = null
+            this.passportPayload.from_date = null
+            this.passportPayload.to_date = null
+            this.passportPayload.address = null
+
         }
 
     }

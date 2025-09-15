@@ -34,9 +34,6 @@ const changePage = (v)=>{
         <tr v-for="(item, idx) in store.tasks" :key="idx">
           <td><span class="text-center text-[12px] text-gray-600 block">{{ (store.params.page - 1) * store.params.per_page + idx + 1 }}</span></td>
           <td>
-<!--            <n-button type="primary" dashed size="tiny">-->
-<!--              -->
-<!--            </n-button>-->
             {{item.type}}
           </td>
           <td>

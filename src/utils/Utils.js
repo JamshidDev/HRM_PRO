@@ -545,6 +545,9 @@ const appPermissions = {
     turnstileHikCentralTgUser: 'turnstile-hik-central-tg-user',
     turnstileHikCentralTgUserRead: 'turnstile-hik-central-tg-user-read',
     turnstileHikCentralTgUserWrite: 'turnstile-hik-central-tg-user-write',
+    turnstileHikCentralSync: "turnstile-hik-central-sync",
+    turnstileHikCentralSyncWrite: "turnstile-hik-central-sync-write",
+    turnstileHikCentralSyncRead: "turnstile-hik-central-sync-read",
 
     hrIncentives:"hr-incentives",
     hrIncentivesWrite:"hr-incentives-write",
@@ -561,6 +564,10 @@ const appPermissions = {
     hospitalTicket: "hospital-ticket",
     hospitalTicketWrite: "hospital-ticket-write",
     hospitalTicketRead: "hospital-ticket-read",
+    hospitalPensioner: "hospital-pensioner",
+    hospitalPensionerRead: "hospital-pensioner-read",
+    hospitalPensionerWrite: "hospital-pensioner-write",
+
 
     useful:'useful',
     ai:'ai',
@@ -585,7 +592,33 @@ const appPermissions = {
     economistUploads: "economist-uploads",
     economistUploadsWrite: "economist-uploads-write",
     economistUploadsRead: "economist-uploads-read",
-    economistUploadsConfirm: "economist-uploads-confirm"
+    economistUploadsConfirm: "economist-uploads-confirm",
+
+    lms: "lms",
+    lmsDirection: "lms-direction",
+    lmsDirectionRead: "lms-direction-read",
+    lmsDirectionWrite: "lms-direction-write",
+    lmsSpecialization: "lms-specialization",
+    lmsSpecializationRead: "lms-specialization-read",
+    lmsSpecializationWrite: "lms-specialization-write",
+    lmsSubjects: "lms-subjects",
+    lmsSubjectsRead: "lms-subjects-read",
+    lmsSubjectsWrite: "lms-subjects-write",
+    lmsEduPlan: "lms-edu-plan",
+    lmsEduPlanRead: "lms-edu-plan-read",
+    lmsEduPlanWrite: "lms-edu-plan-write",
+    lmsTeachers: "lms-teachers",
+    lmsTeachersRead: "lms-teachers-read",
+    lmsTeachersWrite: "lms-teachers-write",
+    lmsGroups: "lms-groups",
+    lmsGroupsRead: "lms-groups-read",
+    lmsGroupsWrite: "lms-groups-write",
+    lmsLessons: "lms-lessons",
+    lmsLessonsRead: "lms-lessons-read",
+    lmsLessonsWrite: "lms-lessons-write",
+    lmsWorker: "lms-worker",
+    lmsWorkerRead: "lms-worker-read",
+    lmsWorkerWrite: "lms-worker-write",
 
 
 
@@ -734,7 +767,20 @@ const useDebounce = (fn, delay=1000) => {
     }
 }
 
+const getMonthRange = (year, month)=>{
+    const start = new Date(year, month - 1, 1)
+    const end = new Date(year, month, 0)
+    function format(d) {
+        const yyyy = d.getFullYear()
+        const mm = String(d.getMonth() + 1).padStart(2, "0")
+        const dd = String(d.getDate()).padStart(2, "0")
+        return `${yyyy}-${mm}-${dd}`
+    }
+    return { start_date: format(start), end_date: format(end) }
+}
+
 export default {
+    getMonthRange,
     useDebounce,
     formatToMLN,
     startWorkTime,

@@ -18,14 +18,12 @@ const onSubmit = ()=>{
 }
 
 onMounted(()=>{
-  store.subjectsParams.page = 1
-  store.subjectsParams.search = null
-  store._subjects()
-
-  if(store.learningCenters.length === 0){
-    store._learningCenter()
+  if(componentSore.lmsLearningCenters.length === 0){
+    componentSore._lmsLearningCenter()
   }
-
+  if(store.subjects.length === 0){
+    store._subjects()
+  }
 })
 
 let timer = null
@@ -66,8 +64,8 @@ const onSearch = (v)=>{
       <n-form-item :label="$t(`learningCenterPage.name`)" path="learning_center_id" rule-path="requiredNumberField">
         <n-select
             v-model:value="store.payload.learning_center_id"
-            :options="store.learningCenters"
-            :loading="store.learningCenterLoading"
+            :options="componentSore.lmsLearningCenters"
+            :loading="componentSore.lmsLearningCenterLoading"
             label-field="name"
             value-field="id"
             filterable
@@ -79,14 +77,11 @@ const onSearch = (v)=>{
         <n-select
             v-model:value="store.payload.subjects"
             multiple
-            @scroll="store.onScrollSubjects"
             :options="store.subjects"
             :loading="store.subjectsLoading"
             label-field="name"
             value-field="id"
             filterable
-            :filter="()=>true"
-            @search="store.onSearchSubjects"
         />
       </n-form-item>
     </div>

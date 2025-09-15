@@ -89,6 +89,8 @@ import teacherService from '@/service/v1/lms/teacherService.js'
 import lmsWorkerService from '@/service/v1/lms/workerService.js'
 import lmsGroupService from '@/service/v1/lms/groupService.js'
 import lmsLessonService from '@/service/v1/lms/lessonService.js'
+import teacherLessonService from '@/service/v1/lms/teacherLessonService.js'
+import listenerService from '@/service/v1/lms/listenerService.js'
 
 import {
     turnstileTerminalService,
@@ -101,7 +103,7 @@ import {
     hcServerService,
     eventService,
     telegramUserService,
-
+    syncLogService,
 } from './v1/turnstile'
 
 import accountantService from "./v1/accountant/accountantService.js"
@@ -226,4 +228,7 @@ export default {
     lmsWorkerService,
     lmsGroupService,
     lmsLessonService,
+    syncLogService,
+    teacherLessonService,
+    listenerService,
 }

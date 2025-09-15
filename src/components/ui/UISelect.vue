@@ -151,7 +151,7 @@ onMounted(()=>{
       </n-badge>
     </template>
     <div class="w-full h-[10px]"></div>
-    <div class="w-full h-[344px] overflow-y-auto">
+    <div class="w-full h-[344px] overflow-y-auto px-1">
       <n-spin :show="loading" class="w-full h-full">
         <TreeOrg
             :short="store.structureShort"
@@ -166,7 +166,7 @@ onMounted(()=>{
         />
       </n-spin>
     </div>
-    <div class="w-full h-[40px] flex items-center">
+    <div class="w-full h-[40px] flex items-center px-1">
       <n-input-group>
         <n-button
             size="small">

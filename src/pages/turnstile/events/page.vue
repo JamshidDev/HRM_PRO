@@ -5,6 +5,7 @@ import Table from "./ui/Table.vue"
 import jobForm from "./ui/jobForm.vue"
 import DashboardCards from "./ui/DashboardCards.vue"
 import PreviewList from "./ui/PreviewList.vue"
+import syncForm from './ui/syncForm.vue'
 import {useAccountStore, useEventStore} from "@/store/modules/index.js"
 
 const store = useEventStore()
@@ -40,10 +41,11 @@ onMounted(()=>{
   </UIModal>
   <UIModal
       v-model:visible="store.visible"
-      :width="900"
+      :width="400"
       :title="$t('hcEvent.syncTitle')"
   >
-    <jobForm/>
+<!--    <jobForm/>-->
+    <syncForm/>
   </UIModal>
 </UIPageContent>
 </template>

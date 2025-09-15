@@ -101,7 +101,7 @@ onMounted(()=>{
     </div>
 
     <div class="col-span-12 mb-2">
-      <n-collapse-transition :show="isSave">
+      <n-collapse-transition :show="isSave && store.photos.length>0">
         <n-alert type="warning" size="small">
          {{$t('content.warningImageSave')}}
         </n-alert>

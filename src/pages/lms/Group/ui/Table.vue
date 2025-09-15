@@ -1,31 +1,14 @@
 <script setup>
-import {NoDataPicture, UIPagination, UIUser,UIBadge} from "@/components/index.js"
-import {useComponentStore, useLmsGroupStore} from "@/store/modules/index.js"
-import Utils from "@/utils/Utils.js"
+import {NoDataPicture} from "@/components/index.js"
+import {useAccountStore, useLmsGroupStore} from "@/store/modules/index.js"
 
 
 const store = useLmsGroupStore()
-const componentStore = useComponentStore()
+const accStore = useAccountStore()
 
-
-const onDelete = (v)=>{
-  store.elementId = v.id
-  store._delete()
-}
-
-const onSelectEv = (v)=>{
-  if (v.key === Utils.ActionTypes.delete){
-    onDelete(v.data)
-  }
-}
-
-const changePage = (v)=>{
-  store.params.page = v.page
-  store.params.per_page = v.per_page
-  store._index()
-}
 
 const onPreview = (v)=>{
+  if(!accStore.checkAction(accStore.pn.lmsGroupsWrite)) return
   store.elementId = v.id
   store.visible = true
   store.visibleType = true
@@ -64,12 +47,6 @@ const onPreview = (v)=>{
         </tr>
         </tbody>
       </n-table>
-<!--      <UIPagination-->
-<!--          :page="store.params.page"-->
-<!--          :per_page="store.params.per_page"-->
-<!--          :total="store.totalItems"-->
-<!--          @change-page="changePage"-->
-<!--      />-->
     </div>
     <NoDataPicture v-if="store.list.length===0 && !store.loading" />
   </n-spin>

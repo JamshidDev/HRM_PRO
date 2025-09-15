@@ -74,6 +74,7 @@ export const tokens = {
     A: { pattern: /[a-zA-Z]/, transform: v => v.toLocaleUpperCase() },
     H: { pattern: /[0-9a-fA-F]/, transform: v => v.toLocaleUpperCase() },
     a: { pattern: /[a-zA-Z]/, transform: v => v.toLocaleLowerCase() },
+    '*': { pattern: /./ },
     '!': { escape: true }
 }
 

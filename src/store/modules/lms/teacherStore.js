@@ -35,19 +35,8 @@ export const useTeacherStore = defineStore('teacherStore', {
         subjects: [],
         subjectsLoading: false,
         subjectsTotal: 0,
-        learningCenters:[],
-        learningCenterLoading:false,
     }),
     actions:{
-        _learningCenter(){
-            this.learningCenterLoading= true
-            $ApiService.learningCenterService._index({params:{page:1, per_page:1000}}).then((res)=>{
-                this.learningCenters = res.data.data.data
-            }).finally(()=>{
-                this.learningCenterLoading= false
-            })
-        },
-
         _index(){
             this.loading= true
             $ApiService.teacherService._index({params:this.params}).then((res)=>{
@@ -87,35 +76,13 @@ export const useTeacherStore = defineStore('teacherStore', {
                 this._index()
             })
         },
-        _subjects(infinite){
+        _subjects(){
             this.subjectsLoading = true
-            const params = {...this.subjectsParams}
-            $ApiService.subjectService._index({params}).then((res)=>{
-                const newData = res.data.data.data
-                const oldData = this.subjects
-                const data = infinite ? [...oldData, ...newData] : [...newData]
-                this.payload.subjects.forEach(subject => {
-                    if(!data.find(i=>i.id===subject)){
-                        data.push(oldData.find(i=>i.id===subject))
-                    }
-                })
-                this.subjects = data
-                this.subjectsTotal = res.data.data.total
+            $ApiService.subjectService._index({params:{page:1, per_page:1000}}).then((res)=>{
+                this.subjects =  res.data.data.data
             }).finally(()=>{
                 this.subjectsLoading= false
             })
-        },
-        onSearchSubjects(v){
-            this.subjectsParams.page =1
-            this.subjectsParams.search =v
-            Utils.debouncedFn(this._subjects)
-        },
-        onScrollSubjects(e){
-            const currentTarget = e.currentTarget;
-            if(currentTarget.scrollTop + currentTarget.offsetHeight >= currentTarget.scrollHeight && !this.subjectsLoading && this.subjectsTotal>this.subjects.length){
-                this.subjectsParams.page += 1
-                this._subjects(true)
-            }
         },
         openVisible(data){
             this.visible = data

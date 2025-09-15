@@ -1,19 +1,22 @@
 <script setup>
 import {UIDrawer, UIPageContent, UIPageFilter} from "@/components/index.js";
 import Table from "./ui/Table.vue"
-import {useSubjectStore} from "@/store/modules/index.js";
+import {useAccountStore, useSubjectStore} from "@/store/modules/index.js"
 import createFrom from "./ui/createForm.vue"
 import i18n from "@/i18n/index.js"
 
 const {t} = i18n.global
-const store = useSubjectStore();
+const store = useSubjectStore()
+const accStore = useAccountStore()
 
 const onSearch = (v)=>{
+  if(!accStore.checkAction(accStore.pn.lmsSubjectsRead)) return
   store.params.page = 1
   store._index()
 }
 
 const onAdd = ()=>{
+  if(!accStore.checkAction(accStore.pn.lmsSubjectsWrite)) return
   store.resetForm()
   store.visibleType = true
   store.visible = true
@@ -21,6 +24,7 @@ const onAdd = ()=>{
 
 
 onMounted(()=>{
+  if(!accStore.checkAction(accStore.pn.lmsSubjectsRead)) return
   store._index()
 })
 </script>

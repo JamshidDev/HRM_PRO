@@ -2,7 +2,6 @@
 import {UIPageContent, UIPageFilter,UIModal} from "@/components/index.js"
 import Table from "./ui/Table.vue"
 import createForm from "./ui/createForm.vue"
-import deviceForm from "./ui/deviceForm.vue"
 import {useTurnstileHikCentralStore, useAccountStore} from "@/store/modules/index.js";
 import {ArrowSync24Filled} from "@vicons/fluent"
 
@@ -12,7 +11,7 @@ const accStore = useAccountStore()
 const onSearch = ()=>{
   if(!accStore.checkAction(accStore.pn.turnstileAccessLevelsRead)) return
   store.params.page = 1
-  store._index_access_levels()
+  store._index()
 }
 
 const onSync = ()=>{
@@ -22,7 +21,7 @@ const onSync = ()=>{
 
 onMounted(()=>{
   if(!accStore.checkAction(accStore.pn.turnstileAccessLevelsRead)) return
-  store._index_access_levels()
+  store._index()
 })
 </script>
 

@@ -57,6 +57,10 @@ const props = defineProps({
   pinSelect:{
     type:Boolean,
     default:false,
+  },
+  multipleSearch:{
+    type:Boolean,
+    default:false,
   }
 
 })
@@ -87,7 +91,9 @@ const computedOption =computed(()=>{
   if(props.multiple){
     selectedOptions.value = [...props.options].filter(v=>valueModel.value.includes(v.id))
   }
-  const filtered = props.options.filter(v=>v?.name?.toString()?.toLowerCase()?.includes(query))
+
+  const filtered = props.multipleSearch? props.options.filter(v=>v?.name?.toString()?.toLowerCase()?.includes(query) || v?.position?.toString()?.toLowerCase()?.includes(query)) : props.options.filter(v=>v?.name?.toString()?.toLowerCase()?.includes(query))
+
   return Array.from(new Map([...filtered, ...selectedOptions.value].map(v => [v.id, v])).values())
 
 })

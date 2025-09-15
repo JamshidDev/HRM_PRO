@@ -6,9 +6,10 @@ import {
     SubjectPage,
     EduPlanPage,
     TeacherPage,
-    WorkerPage,
     LmsGroupPage,
     LmsLessonPage,
+    TeacherLessonPage,
+    ListenerPage,
 } from "@/pages/lms";
 
 
@@ -39,11 +40,6 @@ export default [
         children:[],
     },
     {
-        path:Utils.routeLmsPathMaker(AppPaths.Worker),
-        component: WorkerPage,
-        children:[],
-    },
-    {
         path:Utils.routeLmsPathMaker(AppPaths.Group)+'/:id',
         component: LmsGroupPage,
         children:[],
@@ -51,6 +47,16 @@ export default [
     {
         path:Utils.routeLmsPathMaker(AppPaths.Lesson),
         component: LmsLessonPage,
+        children:[],
+    },
+    {
+        path:Utils.routeLmsPathMaker(AppPaths.TeacherLesson),
+        component: TeacherLessonPage,
+        children:[],
+    },
+    {
+        path:Utils.routeLmsPathMaker(AppPaths.Listener),
+        component: ListenerPage,
         children:[],
     },
 ]

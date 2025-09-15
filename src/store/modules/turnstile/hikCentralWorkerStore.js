@@ -34,7 +34,7 @@ export const useTurnstileHikCentralWorkerStore = defineStore('turnstileHikCentra
             worker_id: null,
             photo_id: null,
             photo_index: null,
-            access_level_id: null,
+            access_level_ids: [],
             photo: null,
             end_time: null
         },
@@ -47,6 +47,7 @@ export const useTurnstileHikCentralWorkerStore = defineStore('turnstileHikCentra
         editLoading:false,
         levelLoading:false,
         levelList:[],
+        selectedRowId:null,
 
     }),
     actions: {
@@ -86,7 +87,7 @@ export const useTurnstileHikCentralWorkerStore = defineStore('turnstileHikCentra
         _add_worker(){
             this.saveLoading = true
             let payload = {
-                access_level_id: this.payload.access_level_id,
+                access_level_ids: this.payload.access_level_ids,
                 worker_id: this.payload.worker_id,
                 end_time: Utils.timeToZone(this.payload.end_time)
             }
@@ -108,7 +109,10 @@ export const useTurnstileHikCentralWorkerStore = defineStore('turnstileHikCentra
             this.photos = []
             $ApiService.turnstileTerminalUserService._worker_photos({params: {worker_id: this.payload.worker_id}}).then((res) => {
                 this.photos = res.data.data
-                callback?.()
+                if(callback){
+                    callback?.call()
+                }
+
             }).finally(() => {
                 this.photosLoading = false
             })
@@ -166,7 +170,7 @@ export const useTurnstileHikCentralWorkerStore = defineStore('turnstileHikCentra
             this.payload.worker_id = null
             this.payload.photo_id = null
             this.payload.photo_index = null
-            this.payload.access_level_id = null
+            this.payload.access_level_ids = []
             this.payload.photo = null
             this.payload.end_time = null
             this.photos = []

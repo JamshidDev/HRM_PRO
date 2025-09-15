@@ -28,7 +28,6 @@ export const useWorkerProfileStore = defineStore('workerProfileStore', {
             nationality_id:null,
             sex:null,
             address:null,
-            // pin:null,
             inn:null,
             phones:[],
             marital_status:null,
@@ -166,7 +165,6 @@ export const useWorkerProfileStore = defineStore('workerProfileStore', {
                     }else{
                         componentStore.regionList = [{...this.data.region},{...this.data.current_region}]
                     }
-                    console.log(this.data.photos)
 
                     this.photos = this.data.photos.map(v=>({
                         id:v.id,

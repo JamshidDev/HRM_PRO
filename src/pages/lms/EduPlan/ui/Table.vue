@@ -1,13 +1,14 @@
 <script setup>
-import {NoDataPicture, UIActionButton, UIPagination, UIUser, UIMore, UIBadge} from "@/components/index.js"
-import {useEduPlanStore} from "@/store/modules/index.js"
+import {NoDataPicture, UIPagination, UIUser, UIMore, UIBadge} from "@/components/index.js"
+import {useAccountStore, useEduPlanStore} from "@/store/modules/index.js"
 import Utils from "@/utils/Utils.js"
 import MenuButton from "@/components/buttons/MenuButton.vue"
 import {AppPaths} from "@/utils/index.js"
-import UIHelper from "@/utils/UIHelper.js"
 import {ChannelAdd24Regular} from "@vicons/fluent"
+import UIHelper from "@/utils/UIHelper.js"
 
 const store = useEduPlanStore()
+const accStore = useAccountStore()
 const router = useRouter()
 
 const onEdit = (v) => {
@@ -36,6 +37,7 @@ const onDelete = (v) => {
 
 const onSelectEv = (v) => {
   store.elementId = v.data.id
+  if(!accStore.checkAction(accStore.pn.lmsEduPlanWrite)) return
   if (v.key === Utils.ActionTypes.edit) {
     onEdit(v.data)
   } else if (v.key === Utils.ActionTypes.delete) {
@@ -52,6 +54,7 @@ const changePage = (v) => {
 }
 
 const onViewGroup = (v) => {
+  if(!accStore.checkAction(accStore.pn.lmsEduPlanRead)) return
   router.push(Utils.routeLmsPathMaker(AppPaths.Group) + `/${v.id}`)
 }
 </script>

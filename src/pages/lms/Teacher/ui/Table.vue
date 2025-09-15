@@ -1,11 +1,12 @@
 <script setup>
 import {NoDataPicture, UIPagination, UIUser,UIBadge} from "@/components/index.js"
-import {useComponentStore, useTeacherStore} from "@/store/modules/index.js"
+import {useAccountStore, useComponentStore, useTeacherStore} from "@/store/modules/index.js"
 import Utils from "@/utils/Utils.js"
 import MenuButton from "@/components/buttons/MenuButton.vue"
 
 const store = useTeacherStore()
 const componentStore = useComponentStore()
+const accStore = useAccountStore()
 
 const onEdit = (v)=>{
   store.visibleType = false
@@ -28,6 +29,7 @@ const onDelete = (v)=>{
 }
 
 const onSelectEv = (v)=>{
+  if(!accStore.checkAction(accStore.pn.lmsTeachersWrite)) return
   if(v.key === Utils.ActionTypes.edit){
     onEdit(v.data)
   }else if (v.key === Utils.ActionTypes.delete){

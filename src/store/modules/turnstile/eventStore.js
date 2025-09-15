@@ -110,10 +110,41 @@ export const useEventStore = defineStore('eventStore', {
             page: 1,
             per_page: 10,
             search: null,
-        }
+        },
+        syncPayload:{
+            from_date:null,
+            // to_date:null,
+            access_level_ids:[],
+        },
+        syncLoading:false,
+
 
     }),
     actions: {
+        _syncEvent(){
+            this.syncLoading = true
+            const data = {
+                ...this.syncPayload,
+                from_date:Utils.timeToZone(this.syncPayload.from_date),
+                to_date:Utils.timeToZone(this.syncPayload.from_date),
+            }
+            $ApiService.eventService._sync({data}).then((res) => {
+                const now = Date.now()
+                localStorage.setItem("lastClickTime", now.toString())
+                this.visible=false
+            }).finally(() => {
+                this.syncLoading = false
+            })
+        },
+        _params(){
+            return {
+                ...this.params,
+                organizations:this.params.organizations.map(v=>v.id).toString() || undefined,
+                access_levels:this.params.access_levels.toString() || undefined,
+                start:this.params.start? Utils.timeWithMonth(this.params.start): undefined,
+                end:this.params.end? Utils.timeWithMonth(this.params.end): undefined,
+            }
+        },
         _indexJob(){
             this.jobLoading = true
             const params = {
@@ -135,18 +166,16 @@ export const useEventStore = defineStore('eventStore', {
             }
             $ApiService.eventService._jobCreate({data}).then((res) => {
                 this._indexJob()
-            }).finally(() => {
             })
         },
         _download(){
-
             this.previewLoading = true
             const params = {
                 ...this.previewParams,
-                organizations:this.previewParams.organizations.map(v=>v.id).toString() || undefined,
-                access_levels:this.previewParams.access_levels.toString() || undefined,
-                start_date_and_time:Utils.timeWithMonth(this.previewParams.start_date_and_time),
-                end_date_and_time:Utils.timeWithMonth(this.previewParams.end_date_and_time),
+                organizations:this.params.organizations.map(v=>v.id).toString() || undefined,
+                access_levels:this.params.access_levels.toString() || undefined,
+                start_date_and_time:Utils.timeWithMonth(this.params.start),
+                end_date_and_time:Utils.timeWithMonth(this.params.end),
                 download:1,
             }
             $ApiService.eventService._download({params}).then(() => {
@@ -159,11 +188,7 @@ export const useEventStore = defineStore('eventStore', {
         _index() {
             this.loading = true
             const params = {
-                ...this.params,
-                organizations:this.params.organizations.map(v=>v.id).toString() || undefined,
-                access_levels:this.params.access_levels.toString() || undefined,
-                start:this.params.start? Utils.timeToZone(this.params.start)+' '+Utils.timeOnlySecond(this.params.start) : undefined,
-                end:this.params.end? Utils.timeToZone(this.params.end)+' '+Utils.timeOnlySecond(this.params.end) : undefined,
+                ...this._params(),
             }
             $ApiService.eventService._index({params}).then((res) => {
                 this.list = res.data.data.data
@@ -174,11 +199,7 @@ export const useEventStore = defineStore('eventStore', {
         },
         _dashboard(){
             this.dashboardLoading = true
-            const params = {
-                organizations:this.params.organizations.map(v=>v.id).toString() || undefined,
-                start:this.params.start? Utils.timeWithMonth(this.params.start): undefined,
-                end:this.params.end? Utils.timeWithMonth(this.params.end): undefined,
-            }
+            const params = {...this._params(),}
             $ApiService.eventService._dashboard({params}).then((res) => {
                 this.dashboardObj = res.data.data
             }).finally(() => {
@@ -189,6 +210,9 @@ export const useEventStore = defineStore('eventStore', {
             this.levelLoading = true
             $ApiService.hcServerService._accessLevels().then((res) => {
                 this.levelList = res.data.data
+                if(res.data.data.length === 1){
+                    this.syncPayload.access_level_ids = [res.data.data[0].id]
+                }
             }).finally(() => {
                 this.levelLoading = false
             })
@@ -197,10 +221,10 @@ export const useEventStore = defineStore('eventStore', {
             this.previewLoading = true
             const params = {
                 ...this.previewParams,
-                organizations:this.previewParams.organizations.map(v=>v.id).toString() || undefined,
-                access_levels:this.previewParams.access_levels.toString() || undefined,
-                start_date_and_time:Utils.timeWithMonth(this.previewParams.start_date_and_time),
-                end_date_and_time:Utils.timeWithMonth(this.previewParams.end_date_and_time),
+                organizations:this.params.organizations.map(v=>v.id).toString() || undefined,
+                access_levels:this.params.access_levels.toString() || undefined,
+                start_date_and_time:Utils.timeWithMonth(this.params.start),
+                end_date_and_time:Utils.timeWithMonth(this.params.end),
             }
             $ApiService.eventService._preview({params}).then((res) => {
                 this.previewList = res.data.data.data

@@ -12,6 +12,7 @@ const onChange = (v)=>{
 onMounted(()=>{
   store.anotherProfile = null
   store.isExistAccount = false
+  store.photos = []
 })
 
 
@@ -44,6 +45,3 @@ onMounted(()=>{
 
 </template>
 
-<style scoped>
-
-</style>

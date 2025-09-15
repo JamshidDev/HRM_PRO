@@ -33,6 +33,12 @@ const onSuccessEv = (token)=>{
     router.push(AppPaths.Home)
   })
 }
+
+const onLogin =(v)=>{
+  store._getTemporaryToken({user_uuid:v.uuid})
+  store._loginById(v.uuid, onSuccessEv)
+
+}
 </script>
 
 <template>
@@ -75,7 +81,7 @@ const onSuccessEv = (token)=>{
             <n-button
                 secondary
                 type="error"
-                @click="store._loginById(item.uuid, onSuccessEv)"
+                @click="onLogin(item)"
                 :size="'tiny'"
                 :loading="store.loginLoading"
             >{{$t('content.loginById')}}

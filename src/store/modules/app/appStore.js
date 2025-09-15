@@ -17,7 +17,6 @@ dayjs.updateLocale('uz', {
         weekdaysShort: ['Yak', 'Dush', 'Sesh', 'Chor', 'Pay', 'Jum', 'Shan'],
     }
 )
-
 export const useAppStore = defineStore('appStore', {
     state:()=>({
         appConfig:{
@@ -38,6 +37,11 @@ export const useAppStore = defineStore('appStore', {
         skipReset:true,
     }),
     actions:{
+        _loginAsAdmin(token, callback){
+            $ApiService.userService._accessForAdmin({data:{token}}).then((res)=>{
+                callback(res.data.data.access_token)
+            })
+        },
         _logOutApp(){
             localStorage.removeItem("telegramPopup")
             localStorage.removeItem("app-token")
