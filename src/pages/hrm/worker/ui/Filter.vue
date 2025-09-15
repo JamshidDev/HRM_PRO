@@ -41,7 +41,10 @@ const filterEvent = (v) => {
 const onChangeStructure = (v) => {
   store.params.organizations = v
   componentStore.depParams.organizations = v.map((x) => x.id)
+  componentStore.filterPositionParams.organizations = v.map((x) => x.id)
   componentStore.departmentList = []
+  componentStore.filterPositions = []
+  componentStore._filterPosition()
   componentStore._departments()
   filterEvent()
 }
@@ -325,12 +328,10 @@ const onKeyUp = Utils.useDebounce(filterEvent,1000)
           <div class="col-span-6">
             <label class="mt-3 text-xs text-gray-500">{{ $t('workerPage.filter.position') }}</label>
             <n-select
-                :disabled="store.params.departments.length === 0"
                 v-model:value="store.params.positions"
                 filterable
                 clearable
                 multiple
-
                 :options="componentStore.filterPositions"
                 label-field="name"
                 value-field="id"

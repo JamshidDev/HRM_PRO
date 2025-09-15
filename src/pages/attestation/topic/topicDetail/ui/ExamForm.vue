@@ -3,6 +3,7 @@ import validationRules from "@/utils/validationRules.js";
 import { useComponentStore, useTopicExamStore } from "@/store/modules/index.js";
 import {useRoute} from "vue-router";
 import UIHelper from "@/utils/UIHelper.js"
+import {UINSelect} from "@/components/index.js"
 
 const formRef = ref(null)
 const store = useTopicExamStore()
@@ -26,7 +27,11 @@ onMounted(()=>{
   store.topicId = route.params.id
   componentStore._enumExam()
   if(!store.visibleType){
-    store._position()
+    if(store.payload.whom === 2){
+      store._position()
+    }else if(store.payload.whom === 3){
+      store._workers()
+    }
   }
 })
 
@@ -126,16 +131,15 @@ const onChange = ()=>{
                           path="whom_ids"
                           rule-path="requiredMultiSelectField"
           >
-            <n-select
-                v-model:value="store.payload.whom_ids"
-                filterable
-                :options="store.positionList"
-                label-field="name"
-                value-field="id"
+            <UINSelect
                 multiple
-                max-tag-count="responsive"
+                v-model:value="store.payload.whom_ids"
+                :options="store.positionList"
                 :loading="store.positionLoading"
+                :max-tag-count="1"
+                value-field="id"
             />
+
           </n-form-item-gi>
           <n-form-item-gi :span="2"
                           v-else-if="store.payload.whom===3"

@@ -67,6 +67,7 @@ export const useTopicExamStore = defineStore('topicExamStore', {
                 ...this.workerParams,
             }
             $ApiService.topicExamService._worker({params, id: this.topicId}).then((res)=>{
+                const selectedOption = this.workerList
                 let data = res.data.data.data.map((v)=>({
                     ...v,
                     name:v.worker.last_name + ' '+v.worker.first_name+' '+v.worker.middle_name,
@@ -75,11 +76,7 @@ export const useTopicExamStore = defineStore('topicExamStore', {
                     photo: v.worker?.photo
                 }))
                 this.totalWorker =res.data.data.total
-                if(infinity){
-                    this.workerList =[...this.workerList, ...data]
-                }else{
-                    this.workerList = data
-                }
+                this.workerList =infinity? Array.from(new Map([...data, ...selectedOption].map(v => [v.id, v])).values()) :Array.from(new Map([...data, ...selectedOption].map(v => [v.id, v])).values())
 
             }).finally(()=>{
                 this.workerLoading = false
@@ -101,7 +98,10 @@ export const useTopicExamStore = defineStore('topicExamStore', {
         _position(){
             this.positionLoading= true
             $ApiService.topicExamService._position({params:{page:1, per_page:1000}, id: this.topicId}).then((res)=>{
-                this.positionList = res.data.data
+                this.positionList = res.data.data.map(v=>({
+                    ...v,
+                    position:v.id
+                }))
             }).finally(()=>{
                 this.positionLoading= false
             })
@@ -157,12 +157,25 @@ export const useTopicExamStore = defineStore('topicExamStore', {
             this.showLoading = true
             $ApiService.topicExamService._show({id: this.topicId, exam_id:this.elementId}).then((res)=>{
                 const data = res.data.data
+                this.workerList = res.data.data.workers.map(v=>({
+                    ...v,
+                    name:v.last_name + ' '+v.first_name+' '+v.middle_name,
+                    position:v.position?.name,
+                    id:v.worker_position_id,
+                    photo: v?.photo
+                }))
+
                 this.payload = {
                     ...data,
                     active: !!data.active,
                     whom_ids: data?.positions?.map(i=>i.id) || data?.workers?.map(i=>i.id) || [],
                     whom: data.whom.id,
                     deadline: new Date(data.deadline).getTime()
+                }
+                if(res.data.data.whom.id === 2){
+                    this._position()
+                }else if(res.data.data.whom.id === 3){
+                    this._workers()
                 }
             }).finally(()=>{
                 this.showLoading = false

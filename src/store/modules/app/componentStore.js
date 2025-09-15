@@ -202,6 +202,7 @@ export const useComponentStore = defineStore('componentStore', {
             per_page:1000,
             search:null,
             departments:[],
+            organizations:[],
         },
         resumeLoading:false,
         resumeId:null,
@@ -465,7 +466,11 @@ export const useComponentStore = defineStore('componentStore', {
         },
         _filterPosition(){
             this.filterPositionLoading = true
-            $ApiService.positionService._filterIndex({params:this.filterPositionParams}).then((res)=>{
+            const params = {
+                ...this.filterPositionParams,
+                organizations:this.filterPositionParams.organizations?.toString(),
+            }
+            $ApiService.positionService._filterIndex({params}).then((res)=>{
                 this.filterPositions = res.data.data.data
             }).finally(()=>{
                 this.filterPositionLoading = false

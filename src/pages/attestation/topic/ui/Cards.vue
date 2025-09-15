@@ -9,7 +9,6 @@ const store = useTopicStore()
 const router = useRouter()
 const route = useRoute()
 const onEdit = (v) => {
-  console.log(v)
   store.elementId = v.id
   store._show()
   store.visibleType = false

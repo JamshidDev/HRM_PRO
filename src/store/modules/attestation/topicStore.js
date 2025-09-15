@@ -42,6 +42,7 @@ export const useTopicStore = defineStore('topicStore', {
                 this.payload.type = type.id
                 this.payload.organizations = organizations
                 this.payload.name = name
+
             }).finally(()=>{
                 this.showLoading= false
             })
