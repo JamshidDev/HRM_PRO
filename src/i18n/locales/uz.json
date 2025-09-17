@@ -159,7 +159,10 @@
     "waitResponse": "Iltimos javobni kuting!",
     "untilNow": "h.v",
     "warningImageSave": "Asosiy rasm uchun yangi rasm tanlandi. O‘zgarishni saqlash uchun 'Saqlash' tugmasini bosing.",
-    "selectAll": "Barchasini tanlash"
+    "selectAll": "Barchasini tanlash",
+    "uz": "UZ",
+    "ru": "RU",
+    "en": "EN"
   },
   "date": {
     "day": "Kun",
@@ -1544,6 +1547,7 @@
     "createTitle": "Ta'lim rejasi yaratish",
     "updateTitle": "Ta'lim rejasini tahrirlash",
     "attachmentGroup": "Guruh yaratish",
+    "workers": "Xodimlar",
     "form": {
       "hours": "Soat",
       "start_date": "Boshlanish vaqti",

@@ -1,5 +1,6 @@
 <script setup>
 import validationRules from "@/utils/validationRules.js";
+import {UIMultipleLangItems} from "@/components/index.js"
 import {useLmsLessonStore, useComponentStore} from "@/store/modules/index.js";
 import {useAppSetting} from "@/utils/index.js"
 import Utils from "@/utils/Utils.js"
@@ -67,27 +68,29 @@ onMounted(()=>{
       :rules="validationRules.common"
       :model="store.payload"
   >
+
     <div class="grid grid-cols-12 gap-x-4">
-
-
-      <n-form-item class="col-span-6" :label="$t(`content.name`)" path="name" rule-path="requiredStringField">
-        <n-input
-            type="text"
-            v-model:value="store.payload.name"
-        />
-      </n-form-item>
-      <n-form-item class="col-span-6" :label="$t(`content.nameRu`)" path="name_ru" rule-path="requiredStringField">
-        <n-input
-            class="skip-format"
-            type="text"
-            v-model:value="store.payload.name_ru"
-        />
-      </n-form-item>
-      <n-form-item class="col-span-6" :label="$t(`content.nameEn`)" path="name_en" rule-path="requiredStringField">
-        <n-input
-            type="text"
-            v-model:value="store.payload.name_en"
-        />
+      <n-form-item  class="col-span-6" :label="$t(`content.name`)">
+        <UIMultipleLangItems>
+          <template #uz-content>
+            <n-input
+                type="text"
+                v-model:value="store.payload.name"
+            />
+          </template>
+          <template #ru-content>
+            <n-input
+                type="text"
+                v-model:value="store.payload.name_ru"
+            />
+          </template>
+          <template #en-content>
+            <n-input
+                type="text"
+                v-model:value="store.payload.name_en"
+            />
+          </template>
+        </UIMultipleLangItems>
       </n-form-item>
       <n-form-item class="col-span-6" :label="$t(`eduPlanPage.form.learning_center`)" path="learning_center_id" rule-path="requiredNumberField">
         <n-select

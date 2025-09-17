@@ -2,6 +2,7 @@
 import {UIDrawer, UIModal, UIPageContent, UIPageFilter} from "@/components/index.js"
 import Table from "./ui/Table.vue"
 import Filter from "./ui/Filter.vue"
+import workerList from "./ui/workerList.vue"
 import {useAccountStore, useEduPlanStore} from "@/store/modules/index.js"
 import createFrom from "./ui/createForm.vue"
 import groupForm from "../Group/ui/createForm.vue"
@@ -34,6 +35,16 @@ onMounted(()=>{
     >
       <template #default>
         <groupForm/>
+      </template>
+    </UIModal>
+    <UIModal
+        :width="1200"
+        :visible="store.workerVisible"
+        @update:visible="(v)=>store.workerVisible = v"
+        :title="$t('eduPlanPage.workers')"
+    >
+      <template #default>
+        <workerList/>
       </template>
     </UIModal>
   </UIPageContent>

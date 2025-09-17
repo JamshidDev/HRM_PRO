@@ -41,5 +41,6 @@ export {default as UIMore} from './ui/UIMore.vue'
 export {default as UIImageViewer} from './ui/UIImageViewer.vue'
 export {default as PageInstruction} from './pageInstruction/pageInstruction.vue'
 export {default as UIDateViewer} from './general/UIDateViewer.vue'
+export {default as UIMultipleLangItems} from './ui/MultipleLangItems.vue'
 
 export * from './editor'

@@ -4,7 +4,7 @@ import {useAccountStore, useEduPlanStore} from "@/store/modules/index.js"
 import Utils from "@/utils/Utils.js"
 import MenuButton from "@/components/buttons/MenuButton.vue"
 import {AppPaths} from "@/utils/index.js"
-import {ChannelAdd24Regular} from "@vicons/fluent"
+import {ChannelAdd24Regular, People28Regular} from "@vicons/fluent"
 import UIHelper from "@/utils/UIHelper.js"
 
 const store = useEduPlanStore()
@@ -44,7 +44,15 @@ const onSelectEv = (v) => {
     onDelete(v.data)
   }else if (v.key === Utils.ActionTypes.attachment) {
     store.groupVisible=true
+  } else if (v.key === Utils.ActionTypes.finish) {
+    onAttach()
   }
+}
+
+const onAttach = ()=>{
+    store.workerList = []
+    store.workerVisible = true
+    store._attachedWorkers()
 }
 
 const changePage = (v) => {
@@ -132,7 +140,13 @@ const onViewGroup = (v) => {
                          key: Utils.ActionTypes.attachment,
                          icon: UIHelper.renderIcon(ChannelAdd24Regular),
                          visible:true
-    },
+                      },
+                      {
+                         label: $t('eduPlanPage.workers'),
+                         key: Utils.ActionTypes.finish,
+                         icon: UIHelper.renderIcon(People28Regular),
+                         visible:true
+                      },
                   ]"
               />
             </td>

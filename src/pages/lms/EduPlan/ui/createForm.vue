@@ -87,6 +87,7 @@ onMounted(()=>{
             filterable
             :filter="()=>true"
             @search="store.onSearchSpecializations"
+            :max-tag-count="1"
         />
       </n-form-item>
       <n-form-item :label="$t(`eduPlanPage.form.subjects`)" path="subjects" rule-path="requiredMultiSelectField">
@@ -100,6 +101,7 @@ onMounted(()=>{
             value-field="id"
             filterable
             :filter="()=>true"
+            :max-tag-count="1"
             @search="store.onSearchSubjects"
         />
       </n-form-item>

@@ -52,9 +52,39 @@ export const useEduPlanStore = defineStore('eduPlanStore', {
             learning_center_id:null,
             organizations:[],
         },
+        workerList:[],
+        workerLoading:false,
+        workerVisible:false,
+        workerParams:{
+            page:1,
+            per_page:10,
+            search:null,
+        },
+        totalWorker:0,
+
 
     }),
     actions:{
+        _attachedWorkers(){
+            this.workerLoading= true
+            const params = {
+                ...this.workerParams,
+            }
+            $ApiService.eduPlanService._attachWorkers({id:this.elementId, params}).then((res)=>{
+                this.workerList = res.data.data.data
+                this.totalWorker = res.data.data.total
+            }).finally(()=>{
+                this.workerLoading= false
+            })
+        },
+        _detachWorkers(data){
+            this.deleteLoading = true
+            $ApiService.eduPlanService._detachWorkers({id:this.elementId, data}).then((res)=>{
+               this._attachedWorkers()
+            }).finally(()=>{
+                this.deleteLoading= false
+            })
+        },
         _index(){
             this.loading= true
             const params = {
