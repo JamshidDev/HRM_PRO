@@ -37,7 +37,14 @@ const onClear = ()=>{
 
 const onRefreshEv = ()=>{
   store.loading = true
-  componentStore._refreshPin('pension-payments', store._index)
+  const params = {
+    type:'pension-payments',
+    year:store.params.year,
+    month:store.params.month,
+  }
+  componentStore._refreshPin(params, store._index, ()=>{
+    store.loading = false
+  })
 }
 </script>
 
@@ -51,15 +58,20 @@ const onRefreshEv = ()=>{
       @onSearch="filterEvent"
   >
     <template #filterAction>
-      <n-button
-          @click="onRefreshEv"
-          :loading="store.loading"
-          type="primary">
-        <template #icon>
-          <ArrowSync20Filled/>
+      <n-tooltip :delay="1500" placement="bottom" trigger="hover">
+        <template #trigger>
+          <n-button
+              @click="onRefreshEv"
+              :loading="store.loading"
+              type="primary">
+            {{$t('content.refresh')}}
+            <template #icon>
+              <ArrowSync20Filled/>
+            </template>
+          </n-button>
         </template>
-        {{$t('content.refresh')}}
-      </n-button>
+        <span>{{$t('monthReport.refreshDescription')}}</span>
+      </n-tooltip>
       <n-button
           @click="store._download()"
           :loading="store.downloadLoading"

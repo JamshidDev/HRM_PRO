@@ -46,12 +46,15 @@ export const useTopicExamStore = defineStore('topicExamStore', {
 
         workerParams:{
             page:1,
-            per_page:50,
+            per_page:200,
             search:null,
         },
         workerLoading:false,
         totalWorker:0,
         workerList:[],
+        checkedWorkers:[],
+        checkWorkerLoading:false,
+        workerPin:null
 
     }),
     actions:{
@@ -61,13 +64,33 @@ export const useTopicExamStore = defineStore('topicExamStore', {
             this.workerParams.page=1
             this._workers()
         },
+        _checkWorker(pin){
+            this.checkWorkerLoading = true
+            $ApiService.workerService._checkWorker({params:{pin}}).then((res)=>{
+                if(!res.data.error){
+                    this.checkedWorkers = this.checkedWorkers.filter(v=>this.payload.whom_ids.includes(v.id))
+                    let data = res.data.data
+                    this.checkedWorkers.unshift({
+                        id:data.id.toString(),
+                        name:Utils.combineFullName(data),
+                        position:`${t('workerPage.checkWorker.born')} ${Utils.timeOnlyDate(data?.birthday)}`,
+
+                    })
+                }else{
+                    $Toast.info(t('content.notWorker'))
+                }
+
+            }).finally(()=>{
+                this.checkWorkerLoading = false
+            })
+        },
         _workers(infinity=false){
             this.workerLoading = true
             let params ={
                 ...this.workerParams,
             }
             $ApiService.topicExamService._worker({params, id: this.topicId}).then((res)=>{
-                const selectedOption = this.workerList
+                const selectedOption = this.workerList.filter(v=>this.payload.whom_ids.includes(v.id))
                 let data = res.data.data.data.map((v)=>({
                     ...v,
                     name:v.worker.last_name + ' '+v.worker.first_name+' '+v.worker.middle_name,
@@ -94,7 +117,6 @@ export const useTopicExamStore = defineStore('topicExamStore', {
                 this._workers(true)
             }
         },
-
         _position(){
             this.positionLoading= true
             $ApiService.topicExamService._position({params:{page:1, per_page:1000}, id: this.topicId}).then((res)=>{
@@ -106,7 +128,6 @@ export const useTopicExamStore = defineStore('topicExamStore', {
                 this.positionLoading= false
             })
         },
-
         _index(){
             this.loading= true
             $ApiService.topicExamService._index({params:this.params, id: this.topicId}).then((res)=>{
@@ -157,14 +178,7 @@ export const useTopicExamStore = defineStore('topicExamStore', {
             this.showLoading = true
             $ApiService.topicExamService._show({id: this.topicId, exam_id:this.elementId}).then((res)=>{
                 const data = res.data.data
-                this.workerList = res.data.data.workers.map(v=>({
-                    ...v,
-                    name:v.last_name + ' '+v.first_name+' '+v.middle_name,
-                    position:v.position?.name,
-                    id:v.worker_position_id,
-                    photo: v?.photo
-                }))
-
+                this.workerPin = null
                 this.payload = {
                     ...data,
                     active: !!data.active,
@@ -175,7 +189,20 @@ export const useTopicExamStore = defineStore('topicExamStore', {
                 if(res.data.data.whom.id === 2){
                     this._position()
                 }else if(res.data.data.whom.id === 3){
+                    this.workerList = res.data.data.workers.map(v=>({
+                        ...v,
+                        name:Utils.combineFullName(v.worker),
+                        position:v.post_name,
+                        id:v.id,
+                    }))
                     this._workers()
+                }else if(res.data.data.whom.id === 5){
+                    this.checkedWorkers = res.data.data.workers.map(v=>({
+                        name:Utils.combineFullName(v),
+                        position:`${t('workerPage.checkWorker.born')} ${Utils.timeOnlyDate(v?.birthday)}`,
+                        id:v.id
+                    }))
+
                 }
             }).finally(()=>{
                 this.showLoading = false

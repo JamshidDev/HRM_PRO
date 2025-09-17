@@ -41,7 +41,12 @@ const filterCount = computed(()=>Number(Boolean(store.params.organizations.lengt
 
 const onRefreshEv = ()=>{
   store.loading = true
-  componentStore._refreshPin('statements', store._index)
+  const params = {
+    type:'statements',
+    year:store.params.year,
+    month:store.params.month,
+  }
+  componentStore._refreshPin(params, store._index, ()=>store.loading = false)
 }
 
 </script>
@@ -106,20 +111,27 @@ const onRefreshEv = ()=>{
   <template #filterAction>
     <n-button
         @click="store.exportVisible=true"
-        type="primary">
+        type="error">
       <template #icon>
         <ArrowSync20Filled/>
       </template>
       {{$t('content.export')}}
     </n-button>
-    <n-button
-        @click="onRefreshEv"
-        :loading="store.loading"
-        type="primary">
-      <template #icon>
-        <ArrowSync20Filled/>
+    <n-tooltip :delay="1500" placement="bottom" trigger="hover">
+      <template #trigger>
+        <n-button
+            @click="onRefreshEv"
+            :loading="store.loading"
+            type="primary">
+          {{$t('content.refresh')}}
+          <template #icon>
+            <ArrowSync20Filled/>
+          </template>
+        </n-button>
       </template>
-    </n-button>
+      <span>{{$t('monthReport.refreshDescription')}}</span>
+    </n-tooltip>
+
     <n-button
         @click="store._download()"
         :loading="store.downloadLoading"

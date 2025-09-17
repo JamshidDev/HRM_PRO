@@ -16,6 +16,10 @@ const _exportWithCode = async (payload)=>{
     return await axios.post(`/v1/economist/statements-export-with-codes`, payload?.data)
 }
 
+const _exportMultiple = async (payload)=>{
+    return await axios.get(`/v1/economist/statements-multiple-workers`, {params:payload?.params})
+}
+
 
 
 
@@ -24,4 +28,5 @@ export default {
     _show,
     _template,
     _exportWithCode,
+    _exportMultiple,
 }

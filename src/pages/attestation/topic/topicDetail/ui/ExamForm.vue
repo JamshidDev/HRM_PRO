@@ -25,13 +25,8 @@ const onSubmit = ()=>{
 
 onMounted(()=>{
   store.topicId = route.params.id
-  componentStore._enumExam()
-  if(!store.visibleType){
-    if(store.payload.whom === 2){
-      store._position()
-    }else if(store.payload.whom === 3){
-      store._workers()
-    }
+  if(componentStore.topicWhomList.length === 0){
+    componentStore._enumExam()
   }
 })
 
@@ -44,6 +39,19 @@ const onChange = ()=>{
     store._workers()
   }
 }
+
+let timer = null
+const onSearch = (v)=>{
+  if(v?.toString().length === 17){
+    clearTimeout(timer)
+    timer = setTimeout(()=>{
+      let pin = v.split('-').join("")
+      store._checkWorker(pin)
+    },600)
+  }
+
+}
+
 
 
 
@@ -147,21 +155,31 @@ const onChange = ()=>{
                           path="whom_ids"
                           rule-path="requiredMultiSelectField"
           >
-            <n-select
+            <UINSelect
                 v-model:value="store.payload.whom_ids"
-                filterable
-                clearable
-                :filter="()=>true"
-                :placeholder="$t('content.searchWorker')"
-                :options="store.workerList"
-                @scroll="store.onScrollWorker"
-                @search="store.onSearchWorker"
-                label-field="name"
                 value-field="id"
-                :render-label="UIHelper.selectRender.label"
-                :render-tag="UIHelper.selectRender.value"
                 :loading="store.workerLoading"
+                :query="store.workerParams.search"
+                :options="store.workerList"
+                @onSearch="store.onSearchWorker"
                 multiple
+            />
+          </n-form-item-gi>
+          <n-form-item-gi :span="2"
+                          v-else-if="store.payload.whom===5"
+                          :label="$t(`topicDetailsPage.exams.workers`)"
+                          path="whom_ids"
+                          rule-path="requiredMultiSelectField"
+          >
+            <UINSelect
+                v-model:value="store.payload.whom_ids"
+                value-field="id"
+                :loading="store.checkWorkerLoading"
+                :query="store.workerPin"
+                :options="store.checkedWorkers"
+                @onSearch="onSearch"
+                multiple
+                pin-select
             />
           </n-form-item-gi>
           <n-form-item-gi :span="2" :label="$t(`content.description`)" path="description">

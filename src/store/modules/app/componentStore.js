@@ -296,10 +296,11 @@ export const useComponentStore = defineStore('componentStore', {
                 this.workerPinLoading = false
             })
         },
-        _refreshPin(type, callback){
-            $ApiService.pensionService._refreshPin({params:{type}}).then((res)=>{
+        _refreshPin(params, callback, errorCallback){
+            $ApiService.pensionService._refreshPin({params}).then((res)=>{
                 callback?.()
             }).finally(()=>{
+                errorCallback?.()
             })
         },
         _enumAccountant(){

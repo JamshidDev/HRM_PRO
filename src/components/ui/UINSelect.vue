@@ -108,6 +108,9 @@ const onUpdateCheck = (v)=>{
   valueModel.value = v? computedOption.value.map(x=>x[props.valueField]):[]
 }
 
+onMounted(()=>{
+  searchModel.value = props.query
+})
 
 
 </script>

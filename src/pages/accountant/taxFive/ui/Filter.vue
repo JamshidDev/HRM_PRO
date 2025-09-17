@@ -34,7 +34,14 @@ const resetFilter = ()=>{
 const filterCount = computed(()=>Number(Boolean(store.params.organizations.length)))
 const onRefreshEv = ()=>{
   store.loading = true
-  componentStore._refreshPin('tax-five-applications', store._index)
+  const params = {
+    type:'tax-five-applications',
+    year:store.params.year,
+    month:store.params.month,
+  }
+  componentStore._refreshPin(params, store._index, ()=>{
+    store.loading = true
+  })
 }
 
 </script>
@@ -50,15 +57,20 @@ const onRefreshEv = ()=>{
       :filter-count="filterCount"
   >
     <template #filterAction>
-      <n-button
-          @click="onRefreshEv"
-          :loading="store.loading"
-          type="primary">
-        <template #icon>
-          <ArrowSync20Filled/>
+      <n-tooltip :delay="1500" placement="bottom" trigger="hover">
+        <template #trigger>
+          <n-button
+              @click="onRefreshEv"
+              :loading="store.loading"
+              type="primary">
+            {{$t('content.refresh')}}
+            <template #icon>
+              <ArrowSync20Filled/>
+            </template>
+          </n-button>
         </template>
-        {{$t('content.refresh')}}
-      </n-button>
+        <span>{{$t('monthReport.refreshDescription')}}</span>
+      </n-tooltip>
       <n-button
           @click="store._download()"
           :loading="store.downloadLoading"

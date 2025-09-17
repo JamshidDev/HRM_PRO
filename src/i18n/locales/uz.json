@@ -1769,6 +1769,11 @@
     "name": "Oylik hisobot",
     "createTitle": "To'liq ma'lumot",
     "exportTitle": "Export Panel",
+    "refreshDescription": "JSHSHIRlarni qayta tekshirish",
+    "tab": {
+      "multipleSalary": "Birdan ortiq joydan oylik olayotgan xodimlarni ro'yxatini yuklash",
+      "exportWithCode": "To'lov kodi bo'yicha yuklash"
+    },
     "form": {
       "pin": "Pin",
       "salary": "Ish haqi",
