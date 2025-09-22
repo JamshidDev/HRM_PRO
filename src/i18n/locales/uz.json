@@ -11,6 +11,10 @@
     "delete": "O'chirish",
     "view": "Ko'rish",
     "copy": "Nusxalash",
+    "startDate": "Boshlangan vaqt",
+    "endDate": "Tugagan vaqt",
+    "exam": "Imtihon",
+    "result": "Natija",
     "category": "Kategoriya",
     "download": "Yuklash",
     "attachment": "Biriktirish",
@@ -1547,6 +1551,7 @@
     "createTitle": "Ta'lim rejasi yaratish",
     "updateTitle": "Ta'lim rejasini tahrirlash",
     "attachmentGroup": "Guruh yaratish",
+    "attachmentExam": "Imtihon biriktirish",
     "workers": "Xodimlar",
     "form": {
       "hours": "Soat",
@@ -1607,7 +1612,8 @@
       "teacher": "Fan o'qituvchisi",
       "time": "Mashg'ulot vaqti",
       "subject": "Mashg'ulot fani",
-      "cancelLesson": "Mashg'ulotni bekor qilish"
+      "cancelLesson": "Mashg'ulotni bekor qilish",
+      "attachmentLesson": "Darsga imtixon biriktirish"
     }
   },
 
@@ -2130,5 +2136,19 @@
     "economist": "Iqtisodchi",
     "hospital": "Kasalxona",
     "admin": "Admin"
+  },
+  "resultPage": {
+    "name": "Natijalar",
+    "createTitle": "Ish haqi hisobotini yuklash",
+    "updateTitle": "Ish haqi hisobotini tahrirlash",
+    "form": {
+      "chances": "Urinishlar soni",
+      "name": "To‘lov turlarining nomi",
+      "type": "Turi",
+      "fromYear": "Yil boshidan",
+      "total": "Jami",
+      "code": "Shifr",
+      "salaryType": "Mehnatga haq to‘lash fondi, 1-T hisobotida aks etuvchi"
+    }
   }
 }

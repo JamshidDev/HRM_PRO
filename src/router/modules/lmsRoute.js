@@ -10,6 +10,7 @@ import {
     LmsLessonPage,
     TeacherLessonPage,
     ListenerPage,
+    LmsResultPage,
 } from "@/pages/lms";
 
 
@@ -57,6 +58,11 @@ export default [
     {
         path:Utils.routeLmsPathMaker(AppPaths.Listener),
         component: ListenerPage,
+        children:[],
+    },
+    {
+        path:Utils.routeLmsPathMaker(AppPaths.Result),
+        component: LmsResultPage,
         children:[],
     },
 ]

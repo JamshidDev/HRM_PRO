@@ -12,7 +12,6 @@ import AdContractPage from "@/pages/docFlow/document/adContract/AdContractPage.v
 import ContractPage from "@/pages/docFlow/document/contract/ContractPage.vue"
 import VacationPage from "@/pages/hrm/vacation/VacationPage.vue"
 import TimesheetDepartmentPage from "@/pages/hrm/timesheetDepartment/TimesheetDepartmentPage.vue"
-import DashboardV2Page from "@/pages/hrm/dashboardV2/DashboardV2Page.vue"
 import DashboardV3Page from "@/pages/hrm/dashboardV3/DashboardV3Page.vue"
 import TimesheetListPage from "@/pages/hrm/timesheet/TimesheetList.vue"
 import MedPage from "@/pages/hrm/med/MedPage.vue"

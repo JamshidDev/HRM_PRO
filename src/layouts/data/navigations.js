@@ -492,6 +492,13 @@ export const navigations = [
                 color: 'bg-dark',
                 permission: appPermissions.admin,
             },
+            {
+                label: 'resultPage.name',
+                path: Utils.routeLmsPathMaker(AppPaths.Result),
+                icon: AppsList24Filled,
+                color: 'bg-info',
+                permission: appPermissions.admin,
+            },
         ]
     },
     {

@@ -37,7 +37,6 @@ export const useLmsLessonStore = defineStore('lmsLessonStore', {
             end_date:null,
             year:null,
             month:null,
-
         },
         currentTime:null,
         eduPlans:[],
@@ -49,8 +48,59 @@ export const useLmsLessonStore = defineStore('lmsLessonStore', {
         subjectList:[],
         previewVisible:false,
         selectedLesson:null,
+        examPayload:{
+            type:null,
+            edu_plan_id:null,
+            lesson_id:null,
+            exam_id:null,
+        },
+        examLoading:false,
+        examList:[],
+        resultList:[],
+        resultParams:{
+            page:1,
+            per_page:10,
+            search:null,
+        },
+        totalResult:0,
+        resultLoading:false,
     }),
     actions:{
+        _resultIndex(){
+            this.resultLoading = true
+            const params = {
+               ...this.resultParams,
+            }
+            $ApiService.lmsExamService._result({params}).then((res)=>{
+                this.resultList = res.data?.data?.data
+                this.totalResult = res.data?.data?.total
+            }).finally(()=>{
+                this.resultLoading = false
+            })
+        },
+        _exams(){
+            this.examLoading = true
+            $ApiService.lmsExamService._index({page:1, per_page:1000}).then((res)=>{
+                this.examList = res.data?.data?.data.map(v=>({
+                    id:v.id,
+                    name:v.name,
+                    position:v.topic?.name,
+                }))
+            }).finally(()=>{
+                this.examLoading = false
+            })
+        },
+        _attachmentExam(callback){
+            this.examLoading = true
+            const data = {
+                ...this.examPayload,
+            }
+            $ApiService.lmsExamService._create({data}).then((res)=>{
+                callback?.()
+            }).finally(()=>{
+                this.examLoading = false
+            })
+        },
         _eduPlans(){
             this.eduPlanLoading = true
             const learning_center_id = this.payload.learning_center_id
@@ -87,7 +137,6 @@ export const useLmsLessonStore = defineStore('lmsLessonStore', {
                 this.teacherLoading = false
             })
         },
-
         _index(){
             this.loading= true
             const rangeMonth = Utils.getMonthRange(this.params.year, this.params.month)
@@ -122,7 +171,6 @@ export const useLmsLessonStore = defineStore('lmsLessonStore', {
                 this.deleteLoading = false
             })
         },
-
         openVisible(data){
             this.visible = data
         },

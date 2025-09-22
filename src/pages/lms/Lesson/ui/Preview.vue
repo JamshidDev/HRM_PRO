@@ -1,7 +1,8 @@
 <script setup>
 import {Delete48Filled} from "@vicons/fluent"
-import {useAccountStore, useLmsLessonStore} from "@/store/modules/index.js"
+import {useAccountStore, useLmsLessonStore, useComponentStore} from "@/store/modules/index.js"
 import {UIUser} from "@/components/index.js"
+import LessonExamForm from "@/pages/lms/Lesson/ui/LessonExamForm.vue"
 
 const store = useLmsLessonStore()
 const accStore = useAccountStore()
@@ -11,6 +12,7 @@ const onDelete = ()=>{
   store.elementId = store.selectedLesson?.id
   store._delete()
 }
+
 </script>
 
 <template>
@@ -40,12 +42,13 @@ const onDelete = ()=>{
                     lastName:store.selectedLesson?.teacher?.worker?.last_name,
                     firstName:store.selectedLesson?.teacher?.worker?.first_name,
                     middleName:store.selectedLesson?.teacher?.worker?.middle_name,
-                    position:$t('lessonPage.detail.teacher'),
+                    position:$t('lessonPage.detail.teacher')
                 }"
         />
       </div>
-      <div class="col-span-12 flex justify-end">
+      <div class="col-span-12 flex justify-center">
           <n-button
+              secondary
               @click="onDelete"
               :loading="store.deleteLoading"
               size="small"
@@ -54,6 +57,17 @@ const onDelete = ()=>{
               <Delete48Filled/>
             </template>
             {{$t('lessonPage.detail.cancelLesson')}}</n-button>
+      </div>
+      <div class="col-span-12 border bg-surface-ground/20 border-surface-line rounded-lg border-dashed p-4 mt-10">
+          <div class="grid grid-cols-12 gap-2">
+            <div class="col-span-12">
+              <p class="text-secondary text-center">{{$t('lessonPage.detail.attachmentLesson')}}</p>
+            </div>
+              <div class="col-span-12">
+               <LessonExamForm :lesson-id="store.selectedLesson?.id"/>
+              </div>
+
+          </div>
       </div>
     </div>
 </template>

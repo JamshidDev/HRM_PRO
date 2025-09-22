@@ -4,7 +4,7 @@ import {useAccountStore, useEduPlanStore} from "@/store/modules/index.js"
 import Utils from "@/utils/Utils.js"
 import MenuButton from "@/components/buttons/MenuButton.vue"
 import {AppPaths} from "@/utils/index.js"
-import {ChannelAdd24Regular, People28Regular} from "@vicons/fluent"
+import {ChannelAdd24Regular, People28Regular, TextBulletListAdd20Regular} from "@vicons/fluent"
 import UIHelper from "@/utils/UIHelper.js"
 
 const store = useEduPlanStore()
@@ -46,6 +46,8 @@ const onSelectEv = (v) => {
     store.groupVisible=true
   } else if (v.key === Utils.ActionTypes.finish) {
     onAttach()
+  }else if(v.key === Utils.ActionTypes.open){
+    onAttachExam()
   }
 }
 
@@ -64,6 +66,10 @@ const changePage = (v) => {
 const onViewGroup = (v) => {
   if(!accStore.checkAction(accStore.pn.lmsEduPlanRead)) return
   router.push(Utils.routeLmsPathMaker(AppPaths.Group) + `/${v.id}`)
+}
+
+const onAttachExam = ()=>{
+  store.examVisible = true
 }
 </script>
 
@@ -145,6 +151,12 @@ const onViewGroup = (v) => {
                          label: $t('eduPlanPage.workers'),
                          key: Utils.ActionTypes.finish,
                          icon: UIHelper.renderIcon(People28Regular),
+                         visible:true
+                      },
+                      {
+                         label: $t('content.exam'),
+                         key: Utils.ActionTypes.open,
+                         icon: UIHelper.renderIcon(TextBulletListAdd20Regular),
                          visible:true
                       },
                   ]"

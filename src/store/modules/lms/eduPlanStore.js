@@ -61,6 +61,7 @@ export const useEduPlanStore = defineStore('eduPlanStore', {
             search:null,
         },
         totalWorker:0,
+        examVisible:false,
 
 
     }),

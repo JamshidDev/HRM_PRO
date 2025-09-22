@@ -24,6 +24,8 @@ const onSubmit = ()=>{
 
 
 const onChangeLearningCenter = ()=>{
+  store.payload.edu_plan_id = null
+  store.payload.teacher_id = null
   if(store.payload.learning_center_id){
     store._eduPlans()
     store._teacher()
