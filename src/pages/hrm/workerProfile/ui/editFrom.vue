@@ -40,10 +40,7 @@ const onChangeDepartment = (v)=>{
 onMounted(()=>{
   componentStore._enums()
   componentStore._scheduleList()
-
-  if(componentStore.structureList.length === 0){
-    componentStore._structures()
-  }
+  componentStore._structures()
 })
 </script>
 
@@ -211,7 +208,6 @@ onMounted(()=>{
           <UISelect
               :options="componentStore.structureList"
               :modelV="store.editPayload.organization_id"
-              @defaultValue="(v)=>store.editPayload.organization_id=v"
               @updateModel="onChangeStructure"
               :checkedVal="store.structureCheckV2"
               @updateCheck="(v)=>store.structureCheckV2=v"

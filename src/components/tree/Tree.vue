@@ -103,7 +103,7 @@ const isCheck =(id)=>{
               :checked="modelV.map((a)=>a.id).includes(item.id)"
           ></n-checkbox>
           <span class="ml-2 w-full text-wrap py-1 text-textColor0">
-            <slot name="title" :data="item" >{{short? item.code : item.name}}</slot>
+            <slot name="title" :data="item" >{{short? item.code :item.name}}</slot>
           </span>
         </div>
         <div v-if="Array.isArray(item?.children) && item?.children.length>0 && multiple" class="w-[20px] justify-center items-center">

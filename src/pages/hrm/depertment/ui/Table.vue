@@ -90,6 +90,7 @@ const onSelectEv = (v)=>{
           <th class="text-center! min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
           <th class="min-w-[30px] w-[30px]"></th>
           <th class="min-w-[200px]">{{$t('departmentPage.form.name')}}</th>
+          <th class="min-w-[100px] w-[300px]">{{$t('content.organization')}}</th>
           <th class="min-w-[100px] w-[200px]">{{$t('departmentPage.form.level')}}</th>
           <th class="min-w-[40px] w-[40px]"></th>
         </tr>
@@ -113,8 +114,9 @@ const onSelectEv = (v)=>{
               </template>
             </n-button>
           </td>
-          <td>{{item.name}}</td>
-          <td>{{item.level.name}}</td>
+          <td>{{item.id +' - '+ item.name}}</td>
+          <td>{{item.organization.name}}</td>
+          <td>{{item.level?.name}}</td>
           <td>
             <MenuButton
                 :data="item"
