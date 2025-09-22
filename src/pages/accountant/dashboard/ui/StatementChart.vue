@@ -154,14 +154,15 @@ const option = computed(()=>{
 
   if(!store.dashboardData) return defaultOption
   const v = store.dashboardData
-  defaultOption.xAxis.data = v.statements.map(x=>x.label)
-
   if(props.chartType === 'card_one'){
-    defaultOption.series[0].data = v.statements.map(x=>x.amount?.total_one || 0)
+    defaultOption.xAxis.data = v.tax_four.map(x=>x.label)
+    defaultOption.series[0].data = v.tax_four.map(x=>x.amount?.reported_salary_income || 0)
   }else if(props.chartType === 'card_two'){
-    defaultOption.series[0].data = v.statements.map(x=>x.amount?.total_two || 0)
+    defaultOption.xAxis.data = v.tax_five.map(x=>x.label)
+    defaultOption.series[0].data = v.tax_five.map(x=>x.amount?.reported_income || 0)
   }
   else if(props.chartType === 'card_three'){
+    defaultOption.xAxis.data = v.statements.map(x=>x.label)
     defaultOption.series[0].data = v.statements.map(x=>x.amount?.total_three || 0)
   }
   return defaultOption

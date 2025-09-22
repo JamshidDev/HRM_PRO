@@ -13,16 +13,16 @@ const accStore = useAccountStore()
 
 const template = [
   {
+    name:"statements",
+    type:'card_three',
+  },
+  {
     name:"tax_four",
     type:'card_one',
   },
   {
     name:"tax_five",
     type:'card_two',
-  },
-  {
-    name:"statements",
-    type:'card_three',
   },
 ]
 

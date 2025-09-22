@@ -39,6 +39,7 @@ export const useAccDashboardStore = defineStore('accDashboardStore', {
             $ApiService.accDashboardService._dashboard({params}).then((res)=>{
                 this.dashboardData = res.data.data
                 const data =res.data.data.last_month
+                console.log(data)
                 this.cards = [
                     {
                         name:'accDashboard.chart.statements',
