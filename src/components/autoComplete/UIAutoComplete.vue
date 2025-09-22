@@ -52,6 +52,7 @@ const feedback = computed(()=>!Boolean(pin.value))
     <n-input
         v-model:value="searchModel"
         :on-keyup="searchEvent"
+        @paste="searchEvent"
         :loading="store.pinLoading"
         v-mask="`####-####-####-##`"
         :placeholder="$t('content.pin')"

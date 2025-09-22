@@ -67,6 +67,7 @@ const onContinue = ()=>{
                v-model:value="store.pin"
                :loading="store.pinLoading"
                :on-keyup="searchEvent"
+               @paste="searchEvent"
                clearable
                v-mask="`####-####-####-##`"
                type="text"

@@ -1613,7 +1613,8 @@
       "time": "Mashg'ulot vaqti",
       "subject": "Mashg'ulot fani",
       "cancelLesson": "Mashg'ulotni bekor qilish",
-      "attachmentLesson": "Darsga imtixon biriktirish"
+      "attachmentLesson": "Darsga imtixon biriktirish",
+      "attachedLesson": "Darsga allaqachon imtihon biriktirilgan"
     }
   },
 

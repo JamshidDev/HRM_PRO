@@ -12,9 +12,9 @@ const _result =async (payload)=>{
     return await axios.get(`/v1/lms/exams/result`, {params:payload?.params})
 }
 
-// const _delete = async (payload)=>{
-//     return await axios.delete(`/v1/lms/lessons/${payload.id}`)
-// }
+const _delete = async (payload)=>{
+    return await axios.get(`/v1/lms/exams/detach/${payload.id}`)
+}
 
 
 
@@ -25,4 +25,5 @@ export default {
     _index,
     _create,
     _result,
+    _delete,
 }

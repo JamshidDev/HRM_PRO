@@ -1,6 +1,6 @@
 <script setup>
-import {Delete48Filled} from "@vicons/fluent"
-import {useAccountStore, useLmsLessonStore, useComponentStore} from "@/store/modules/index.js"
+import {Delete48Filled, Clock28Filled, Delete20Filled} from "@vicons/fluent"
+import {useAccountStore, useLmsLessonStore} from "@/store/modules/index.js"
 import {UIUser} from "@/components/index.js"
 import LessonExamForm from "@/pages/lms/Lesson/ui/LessonExamForm.vue"
 
@@ -11,6 +11,11 @@ const onDelete = ()=>{
   if(!accStore.checkAction(accStore.pn.lmsLessonsWrite)) return
   store.elementId = store.selectedLesson?.id
   store._delete()
+}
+
+const onCallback = ()=>{
+  store.previewVisible =false
+  store._index()
 }
 
 </script>
@@ -61,10 +66,24 @@ const onDelete = ()=>{
       <div class="col-span-12 border bg-surface-ground/20 border-surface-line rounded-lg border-dashed p-4 mt-10">
           <div class="grid grid-cols-12 gap-2">
             <div class="col-span-12">
-              <p class="text-secondary text-center">{{$t('lessonPage.detail.attachmentLesson')}}</p>
+              <p class="text-secondary text-center">{{$t(store.selectedLesson?.exam? 'lessonPage.detail.attachedLesson' : 'lessonPage.detail.attachmentLesson')}}</p>
             </div>
-              <div class="col-span-12">
-               <LessonExamForm :lesson-id="store.selectedLesson?.id"/>
+            <div class="col-span-12" v-if="store.selectedLesson?.exam">
+              <div class="w-full px-2 py-2 text-center border border-surface-line rounded-lg text-primary flex gap-2 items-center justify-between">
+                <span class="flex items-center gap-2"><n-icon class="text-primary" size="20">
+                  <Clock28Filled/>
+                </n-icon>
+                {{store.selectedLesson?.exam.exam?.name}}</span>
+                <n-icon @click="store._detachExam(store.selectedLesson?.exam?.id)" class="text-danger cursor-pointer" size="18">
+                  <n-spin :show="store.deleteLoading">
+                    <Delete20Filled/>
+                  </n-spin>
+
+                </n-icon>
+              </div>
+            </div>
+              <div class="col-span-12" v-else>
+               <LessonExamForm :lesson-id="store.selectedLesson?.id" @onCallback="onCallback" />
               </div>
 
           </div>

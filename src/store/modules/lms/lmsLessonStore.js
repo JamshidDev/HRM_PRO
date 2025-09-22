@@ -101,6 +101,15 @@ export const useLmsLessonStore = defineStore('lmsLessonStore', {
                 this.examLoading = false
             })
         },
+        _detachExam(id){
+            this.deleteLoading = true
+            $ApiService.lmsExamService._delete({id}).then((res)=>{
+                this.previewVisible = false
+                this._index()
+            }).finally(()=>{
+                this.deleteLoading = false
+            })
+        },
         _eduPlans(){
             this.eduPlanLoading = true
             const learning_center_id = this.payload.learning_center_id
