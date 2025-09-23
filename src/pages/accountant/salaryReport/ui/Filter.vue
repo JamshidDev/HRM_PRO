@@ -2,6 +2,7 @@
 import {UIPageFilter, UISelect} from "@/components/index.js"
 import {useAccountStore, useComponentStore, useSalaryReportStore} from "@/store/modules/index.js"
 import Utils from "@/utils/Utils.js"
+import {ArrowCircleDown48Regular} from "@vicons/fluent"
 
 
 const store = useSalaryReportStore()
@@ -47,6 +48,12 @@ onMounted(()=>{
       :show-add-button="false"
   >
     <template #filterAction>
+      <n-button type="success" :loading="store.downloadLoading" @click="store._downloadExcel()">
+        {{$t('content.download')}}
+        <template #icon>
+          <ArrowCircleDown48Regular/>
+        </template>
+      </n-button>
       <n-select
           class="w-full! md:w-[200px]!"
           v-model:value="store.activeTab"

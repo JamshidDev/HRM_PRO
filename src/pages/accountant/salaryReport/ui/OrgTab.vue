@@ -71,7 +71,7 @@ onMounted(()=>{
           <tr class="!text-right" :class="[!Boolean(item.type_code.toString().trim()) && '!font-semibold selectedRow']">
             <td class="!text-center">{{idx+1}}</td>
             <td class="sticky-element !left-0 text-left">{{item.type_name}}</td>
-            <td @click="goPush(item)" class=" !font-semibold"><span class="hover:text-primary">{{item.type_code}}</span></td>
+            <td @click="goPush(item)" class="!font-semibold sticky-element !left-[400px]"><span class="hover:text-primary">{{item.type_code}}</span></td>
             <template v-for="(value, key) in item" :key="key">
               <td v-if="!['type_name', 'type_code', 'total_year', 'id'].includes(key)">{{value}}</td>
             </template>

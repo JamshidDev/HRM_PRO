@@ -3,6 +3,8 @@ import {defineStore} from "pinia";
 import i18n from "@/i18n/index.js"
 import Utils from "@/utils/Utils.js"
 const {t} = i18n.global
+import router from "@/router/index.js"
+import {AppPaths} from "@/utils/index.js"
 export const useSalaryReportStore = defineStore('salaryReportStore', {
     state:()=>({
         list:[],
@@ -41,6 +43,20 @@ export const useSalaryReportStore = defineStore('salaryReportStore', {
 
     }),
     actions:{
+        _downloadExcel(){
+            this.downloadLoading = true
+            const params = {
+                ...this.params,
+                organizations:this.params.organizations.map(v=>v.id).toString() || undefined,
+                download:true,
+            }
+            const service = this.activeTab===1? $ApiService.salaryReportService._indexByMonth({params}) :  $ApiService.salaryReportService._indexByOrg({params})
+            service.then((res)=>{
+                router.push(Utils.routeHrmPathMaker(AppPaths.Export))
+            }).finally(()=>{
+                this.downloadLoading = false
+            })
+        },
         _index(){
             this.loading= true
             const params = {

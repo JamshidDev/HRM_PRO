@@ -63,7 +63,7 @@ onMounted(()=>{
           <tr class="!text-right" :class="[!Boolean(item.type_code.toString().trim()) && '!font-semibold selectedRow']">
             <td class="!text-center">{{idx+1}}</td>
             <td class="sticky-element text-left !left-0">{{item.type_name}}</td>
-            <td class="!text-center !font-semibold">{{item.type_code}}</td>
+            <td class="!text-center !font-semibold sticky-element !left-[400px]">{{item.type_code}}</td>
             <template v-for="index in 12" :key="index">
               <td>
                 <span

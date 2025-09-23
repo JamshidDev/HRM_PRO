@@ -13,6 +13,13 @@ const changePage = (v)=>{
   store.resultParams.per_page = v.per_page
   store._resultIndex()
 }
+
+const resultClass = (allQuestion, correctAnswerCount) => {
+  const percent = (correctAnswerCount / allQuestion) * 100
+  if (percent >= 86) return 'border-success! text-success!'
+  if (percent >= 56) return 'border-warning! text-warning!'
+  return 'border-danger! text-danger!'
+}
 </script>
 
 <template>
@@ -65,7 +72,13 @@ const changePage = (v)=>{
               <div class="text-xs"><span class="text-secondary">{{$t('content.endDate')}} :</span> {{item.ended}}</div>
             </td>
             <td>
-              <n-button dashed circle>{{item?.result || 0}}</n-button>
+              <template v-if="typeof item?.result === 'number'">
+                <n-tag :bordered="false" class=" rounded-2xl! w-[32px] h-[32px]! justify-center border-dashed! border! bg-transparent!"
+                       :class="resultClass(item.exam?.tests_count, item.result)" round>
+                  {{ item?.result }}
+                </n-tag>
+              </template>
+
             </td>
           </tr>
           </tbody>
