@@ -125,7 +125,7 @@ onMounted(()=>{
 
 <template>
   <n-dropdown trigger="click" :options="options">
-    <div class="flex items-center  border-surface-line py-1 px-1 rounded-xl border w-[90px] cursor-pointer h-[32px] overflow-hidden">
+    <div class="flex items-center  border-surface-line py-1 px-1 rounded-xl border w-[90px] cursor-pointer h-[34px] overflow-hidden">
       <n-avatar
           class="w-[20px]! h-[20px]!"
           round

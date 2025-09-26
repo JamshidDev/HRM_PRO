@@ -26,6 +26,8 @@ export const useSyncLogStore = defineStore('syncLogStore', {
         },
         levelLoading:false,
         levelList:[],
+        sortByTime:0,
+        sortByCount:0,
     }),
     actions: {
         _index() {

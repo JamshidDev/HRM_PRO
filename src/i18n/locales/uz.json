@@ -21,6 +21,9 @@
     "no-data": "Ma'lumot yo'q",
     "cancel": "Bekor qilish",
     "code": "Kod",
+    "questions": "Savollar",
+    "videos": "Videolar",
+    "confirmExit": "Chiqishni tasdiqlaysizmi?",
     "reject": "Rad qilish",
     "help": "Yordam",
     "notUpload": "Yuklanmagan",
@@ -1033,6 +1036,7 @@
       "chances": "Imkoniyatlar",
       "tests_count": "Savollar soni",
       "workers": "Xodimlar",
+      "camera": "Kamera oldida imtihonni yechish",
       "categories": "Kategoriyalar",
       "questionCount": "Savollar soni: ({n})",
       "attachQuestion": "Savol biriktirish",
@@ -2043,6 +2047,25 @@
       "error": "Xatolik"
     }
   },
+  "cameraPage": {
+    "name": "Camera",
+    "createTitle": "Yuklash",
+    "updateTitle": "Tahrirlash",
+    "warningRecording": "Imtihon jarayoniga oid talablar",
+    "warningTextOne": "Imtihon davomida kamera va mikrofon doimiy ravishda yoqilgan bo‘lishi shart.",
+    "warningTextTwo": "Imtihon topshirayotgan shaxs kamera tasvirida to‘liq ko‘rinishi kerak.",
+    "warningTextThree": "Kamera yoki mikrofonni o‘chirib qo‘yish imtihon jarayonining bekor qilinishiga sabab bo‘lishi mumkin.",
+    "form": {
+      "name": "Nomi",
+      "department": "Bo'linma",
+      "access_level_id": "Guruhlar",
+      "workers_count": "Xodimlar soni",
+      "exported_count": "Yuklangan",
+      "status": "status",
+      "asFile": "Faylga yuklash uchun bosing",
+      "error": "Xatolik"
+    }
+  },
   "syncLog": {
     "name": "Qayta yuklash",
     "createTitle": "Terminallar ma'lumotini qayta yuklash",
@@ -2151,5 +2174,16 @@
       "code": "Shifr",
       "salaryType": "Mehnatga haq to‘lash fondi, 1-T hisobotida aks etuvchi"
     }
-  }
+  },
+  "turnStileDashboard": {
+    "name": "Dashboard",
+    "form": {
+      "topOfflineDevices": "Top offline qurilmalar",
+      "lastSynchronizationTime": "Oxirgi sinxronizatsiya",
+      "workerCount": "Xodimlar soni",
+      "offlineDevice": "Offline qurilmalar",
+      "onlineDevice": "Online qurilmalar",
+      "dailyEvent": "Bugungi turniket kirish-chiqish qaydnomasi (xodimlar bo‘yicha)"
+    }
+}
 }

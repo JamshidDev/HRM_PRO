@@ -7,7 +7,8 @@ import {
     CategoryQuestionPage,
     WorkerTopicPage,
     SolveExamPage,
-    ExamResultPage
+    ExamResultPage,
+    CameraPage,
 } from "@/pages/attestation";
 
 
@@ -48,6 +49,11 @@ export default [
         path:Utils.routeAttestationPathMaker(`${AppPaths.Exam}/:exam_id/solve`),
         name: 'solve_exam',
         component: ()=>SolveExamPage,
+        children:[],
+    },
+    {
+        path:Utils.routeAttestationPathMaker(`${AppPaths.Camera}`),
+        component: ()=>CameraPage,
         children:[],
     },
 ]

@@ -6,7 +6,6 @@ import {useAccountStore} from "@/store/modules/index.js"
 const accStore = useAccountStore()
 
 const store = useMedStore()
-const compStore = useComponentStore()
 
 
 
@@ -30,51 +29,10 @@ const onEdit = (v)=>{
       ]
     }
 
-    if(compStore.medStatus.length === 0){
-      compStore._enums()
-    }
-    console.log(v)
-    if(v.worker_position){
-      store.payload.organization_id = [v.organization]
-      store.payload.worker_position_id = v.worker_position.id
-      store.activeTab = 1
-      store.payload.pin = null
-      compStore.selectedWorker = null
-      compStore.workerParams.organization_id = v.organization?.id
-      compStore.workerList = [
-        {
-          id:v.worker_position.id,
-          name:Utils.combineFullName(v.worker_position.worker),
-          position:v.worker_position.post_short_name
-        }
-      ]
-      // compStore._workers()
-    }
-    else if(v.worker){
-      compStore.selectedWorker ={
-        lastName:v.worker?.last_name,
-        firstName:v.worker?.first_name,
-        middleName:v.worker?.middle_name,
-        position:v?.position,
-        photo:v.worker?.photo || Utils.noAvailableImage,
-        pin:v.worker.uuid
-      }
-      store.payload.pin = v.worker.id.toString()
-      store.activeTab = 2
-      store.payload.worker_position_id = null
-      store.payload.organization_id = []
+    store.activeTab = 1
+    store.payload.organization_id = [v.organization]
 
-    }
   })
-  compStore.selectedWorker ={
-    lastName:v.worker.last_name,
-    firstName:v.worker.first_name,
-    middleName:v.worker.middle_name,
-    position:v.position,
-    photo:v.worker.photo || Utils.noAvailableImage,
-    pin:v.worker.uuid
-  }
-
 }
 
 const onDelete = (v)=>{

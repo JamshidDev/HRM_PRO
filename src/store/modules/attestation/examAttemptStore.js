@@ -27,13 +27,24 @@ export const useExamAttemptStore = defineStore('examAttemptStore', {
             2:"C",
             3:"D",
             4:"E",
-        }
+        },
+        activeTab:1,
+        videosList:[],
+        videoLoading:false,
+        isCamera:false,
     }),
     actions: {
+        _showVideos(){
+            this.videoLoading = true
+            $ApiService.workerExamService._showVideos({id:this.elementId }).then((res)=>{
+                this.videosList = res.data.data
+            }).finally(()=>{
+                this.videoLoading = false
+            })
+        },
         _config_localstorage() {
             let data = localStorage.getItem('exam_data')
             data = data && JSON.parse(data)
-            console.log(data)
             this.exam_storage = data || {}
             this.exam_token = data && data[this.elementId]
         },
@@ -46,6 +57,7 @@ export const useExamAttemptStore = defineStore('examAttemptStore', {
                 this.worker_detail = worker_exam_details
                 this.exam_token = active_token
                 let data = localStorage.getItem('exam_data')
+
                 data = data ? JSON.parse(data) : {}
                 localStorage.setItem('exam_data', JSON.stringify({...data, [worker_exam_details.id]: active_token}))
                 router.push({
@@ -61,7 +73,7 @@ export const useExamAttemptStore = defineStore('examAttemptStore', {
                 this.loading = false
             })
         },
-        _continue_attempt() {
+        _continue_attempt(callback) {
             if(!this.exam_token) return
             this.loading = true
             $ApiService.workerExamService._continue_exam({id: this.elementId, token: this.exam_token}).then((res) => {
@@ -69,24 +81,29 @@ export const useExamAttemptStore = defineStore('examAttemptStore', {
                 this.questions = questions
                 this.exam_detail = exam
                 this.worker_detail = worker_exam_details
+                if(exam?.camera){
+                    callback?.({
+                        examId:exam.id,
+                        workerExamId:worker_exam_details.id,
+                    })
+                }
+
             }).catch((res) => {
 
             }).finally(() => {
                 this.loading = false
             })
         },
-        _finish_attempt() {
-            this.finishLoading = true
+        _finish_attempt(callback) {
             $ApiService.workerExamService._finish_exam({id: this.elementId, token: this.exam_token}).then((res) => {
                 let data = localStorage.getItem('exam_data')
                 data = data ? JSON.parse(data) : {}
                 delete data?.[this.elementId]
                 localStorage.setItem('exam_data', JSON.stringify({...data}))
                 this.result = res.data.data
+                callback?.()
 
-            }).catch((res) => {
-
-            }).finally(() => {
+            }).catch(() => {
                 this.finishLoading = false
             })
         },

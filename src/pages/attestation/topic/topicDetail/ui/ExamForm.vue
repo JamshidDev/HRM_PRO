@@ -131,7 +131,8 @@ const onSearch = (v)=>{
                 label-field="name"
                 value-field="id"
                 :loading="componentStore.enumExamLoading"
-            />
+            >
+            </n-select>
           </n-form-item-gi>
           <n-form-item-gi :span="2"
                           v-if="store.payload.whom===2"
@@ -181,6 +182,9 @@ const onSearch = (v)=>{
                 multiple
                 pin-select
             />
+          </n-form-item-gi>
+          <n-form-item-gi :span="2" :label="$t(`topicDetailsPage.exams.camera`)" path="description">
+            <n-switch v-model:value="store.payload.camera"/>
           </n-form-item-gi>
           <n-form-item-gi :span="2" :label="$t(`content.description`)" path="description">
             <n-input

@@ -5,6 +5,8 @@ import {useAccountStore, useExamAttemptStore, useWorkerExamStore} from "@/store/
 import ExamResultChart from './ui/ExamResultChart.vue'
 import {UIModal, UIPageFilter} from "@/components/index.js";
 import ViewAttemptModal from "./solveExam/ViewAttemptModal.vue";
+import Tabs from "./solveExam/ui/Tabs.vue"
+import VideoTab from "./solveExam/ui/VideoTab.vue"
 import stars from "@/assets/images/svg/stars.svg";
 
 const store = useWorkerExamStore()
@@ -67,7 +69,15 @@ onMounted(()=>{
       </div>
     </div>
     <UIModal v-model:visible="examStore.visible" :width="1000" :title="$t('examPage.attemptErrors')">
-      <ViewAttemptModal/>
+      <Tabs>
+        <template #questin-content>
+          <ViewAttemptModal/>
+        </template>
+        <template #video-content>
+          <VideoTab/>
+        </template>
+      </Tabs>
+
     </UIModal>
   </div>
 </template>

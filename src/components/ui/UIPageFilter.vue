@@ -73,6 +73,7 @@ const addEvent = ()=>{
             type="text"
             :placeholder="$t('content.search')"
             :on-keyup="searchEvent"
+            @paste="searchEvent"
             @clear="searchEvent"
             :loading="searchLoading"
         >

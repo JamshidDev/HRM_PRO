@@ -70,6 +70,7 @@ import adContractService from "@/service/v1/docFlow/adContractService.js"
 import applicationService from "@/service/v1/docFlow/applicationService.js"
 
 import topicService from "@/service/v1/attestation/topicService.js"
+import examVideoService from "@/service/v1/attestation/examVideoService.js"
 import topicFilesService from "@/service/v1/attestation/topicFilesService.js"
 import categoryService from "@/service/v1/attestation/categoryService.js"
 import categoryQuestionService from "@/service/v1/attestation/categoryQuestionService.js"
@@ -105,6 +106,7 @@ import {
     eventService,
     telegramUserService,
     syncLogService,
+    turnstileDashboardService,
 } from './v1/turnstile'
 
 import accountantService from "./v1/accountant/accountantService.js"
@@ -233,4 +235,6 @@ export default {
     teacherLessonService,
     listenerService,
     lmsExamService,
+    examVideoService,
+    turnstileDashboardService,
 }

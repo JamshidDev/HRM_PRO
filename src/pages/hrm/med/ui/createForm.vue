@@ -109,7 +109,7 @@ onMounted(()=>{
                         @defaultValue="onDefaultVal"
                         @updateModel="onChangeStructure"
                         :checkedVal="store.structureCheck"
-                        @updateCheck="(v)=>store.structureCheck=v"x
+                        @updateCheck="(v)=>store.structureCheck=v"
                         v-model:search="componentStore.structureParams.search"
                         @onSearch="componentStore._structures"
                         :loading="componentStore.structureLoading"

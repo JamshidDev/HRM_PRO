@@ -2,14 +2,14 @@
 import LangDropdown from "@/components/general/LangDropdown.vue";
 import {UIProfile, UIThemeSwitch} from "@/components/index.js"
 import AIButtonV2 from "@/components/buttons/AIButtonV2.vue"
-import {AppPaths} from "@/utils/index.js"
-import {Alert20Regular, ChevronDoubleRight16Filled, WifiWarning24Regular} from "@vicons/fluent"
-import {useAccountStore} from "@/store/modules/index.js"
+import {Alert20Regular, ChevronDoubleRight16Filled, WifiWarning24Regular, Video28Filled} from "@vicons/fluent"
+import {useAccountStore, useExamVideoStore} from "@/store/modules/index.js"
 import Utils from "@/utils/Utils.js"
 import axios from "axios"
 const emits = defineEmits(["onChange"])
 const router = useRouter()
 const store = useAccountStore()
+const examVideoStore = useExamVideoStore()
 const controlBtn = ()=>{
   emits('onChange')
 }
@@ -31,6 +31,11 @@ const deployProject = ()=>{
       .finally(()=>{
     loading.value = false
   })
+}
+
+const showVideo = ()=>{
+  const callback = examVideoStore.showCanvas? examVideoStore.stopCanvasRender : examVideoStore.startCanvasDraw
+  callback()
 }
 </script>
 
@@ -71,7 +76,14 @@ const deployProject = ()=>{
       </n-icon>
    </n-badge>
     <UIThemeSwitch/>
+    <n-button @click="showVideo()" v-if="examVideoStore.isRecording">
+      <template #icon>
+        <Video28Filled class="text-danger animate-pulse-fast"/>
+      </template>
+      <span class="hidden md:flex" >Recording</span>
+    </n-button>
     <LangDropdown/>
+
     <UIProfile/>
 
   </div>

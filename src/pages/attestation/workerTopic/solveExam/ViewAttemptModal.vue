@@ -7,9 +7,9 @@ const store = useExamAttemptStore()
 
 </script>
 <template>
-  <n-spin :show="store.loading" class="h-[90vh] max-h-[90vh]">
+  <n-spin :show="store.loading" class="h-[calc(100vh-160px)]">
     <div class="h-full flex flex-col-reverse sm:flex-row gap-3">
-      <div class="flex flex-col gap-3 grow overflow-y-auto" style="scrollbar-width:none !important;">
+      <div class="flex flex-col gap-3 !w-full !h-full !overflow-y-auto">
         <QuestionCard
             v-for="(question, idx) in store.questions"
             :id="`question-${idx+1}`" :key="idx" :question="question"
@@ -21,6 +21,3 @@ const store = useExamAttemptStore()
     </div>
   </n-spin>
 </template>
-<style lang="scss" scoped>
-
-</style>

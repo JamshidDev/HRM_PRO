@@ -88,6 +88,7 @@ export * from './attestation/workerExamStore.js'
 export * from './attestation/examAttemptStore.js'
 export * from './attestation/topicExamResultStore.js'
 export * from './attestation/examDashboardStore.js'
+export * from './attestation/examVideoStore.js'
 
 export * from './turnstile/buildingStore.js'
 export * from './turnstile/terminalStore.js'

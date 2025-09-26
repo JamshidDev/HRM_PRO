@@ -1,28 +1,40 @@
 <script setup>
 import {useRoute, useRouter} from 'vue-router';
 import {UIModal} from "@/components/index.js";
-import {useExamAttemptStore} from "@/store/modules";
+import {useExamAttemptStore, useExamVideoStore} from "@/store/modules";
 import QuestionCard from './ui/Question.vue'
 import Utils from "@/utils/Utils.js";
 import VueCountdown from '@chenfengyuan/vue-countdown'
+import CameraApp from "@/pages/attestation/Camera/CameraApp.vue"
 import {ChevronCircleLeft32Regular, ShieldError16Filled, ArrowStepBack16Regular, DocumentRibbon20Regular} from "@vicons/fluent";
 import dayjs from "dayjs";
 import {AppPaths, useAppSetting} from "@/utils/index.js"
+import { onBeforeRouteLeave } from "vue-router";
+import i18n from "@/i18n/index.js"
 
+const t = i18n.global.t
 const store = useExamAttemptStore()
+const examVideoStore = useExamVideoStore()
 const router = useRouter()
 const route = useRoute()
 onMounted(() => {
+  store.finishLoading = false
+  store.result = null
+  examVideoStore.workerExamId = null
+  examVideoStore.isUnMounted = false
   store.elementId = route.params.exam_id
   store._config_localstorage()
-  store._continue_attempt()
+  store._continue_attempt((data)=>{
+    examVideoStore.examId = data.examId
+    examVideoStore.workerExamId = data.workerExamId
+    examVideoStore._start()
+  })
 })
 
 
 const leftTime = computed(()=>{
   const endTime = dayjs(store.worker_detail.created).add(store.exam_detail.minute, 'minutes')
   const diff = endTime.diff(dayjs(), 'seconds')
-  console.log(diff)
   return diff>0 ? diff : 0;
 })
 
@@ -31,10 +43,22 @@ const countDown = ref(null)
 const endWarningVisible = ref(false)
 
 const endAttempt = ()=>{
+  store.finishLoading = true
+  store._finish_attempt(()=>{
+    if(examVideoStore.workerExamId){
+      examVideoStore.stopCanvasRender()
+      examVideoStore._stopCameraAndFinishVideo(true, ()=>{
+        // endWarningVisible.value=true
+        store.finishLoading = false
+        router.push(Utils.routeAttestationPathMaker(AppPaths.Exam))
+      })
+    }else{
+      store.finishLoading = false
+      router.push(Utils.routeAttestationPathMaker(AppPaths.Exam))
+    }
 
-  store._finish_attempt()
-  endWarningVisible.value=true
-  // router.push(Utils.routeAttestationPathMaker(AppPaths.Exam))
+  })
+
 }
 
 const goBack = ()=>{
@@ -46,8 +70,24 @@ const onChangeVisible = (v)=>{
   goBack()
 }
 
+
 onUnmounted(()=>{
   store.result=null
+})
+onBeforeRouteLeave((to, from, next) => {
+  if(!examVideoStore.workerExamId || examVideoStore.isFinished) {
+    next()
+    return
+  }
+  const answer = window.confirm(t('content.confirmExit'));
+  if (answer) {
+    examVideoStore.isUnMounted = true
+    examVideoStore.stopCanvasRender()
+    examVideoStore._stopCameraAndFinishVideo()
+    next()
+  } else {
+    next(false)
+  }
 })
 
 </script>
@@ -119,7 +159,7 @@ onUnmounted(()=>{
               </tr>
             </n-table>
 
-            <n-table class="grow shrink-0 basis-[230px]" size="small">
+            <n-table class="grow shrink-0 basis-[230px] " size="small">
               <tr>
                 <th>{{ $t('solveExamPage.variant') }}</th>
                 <td>{{ store.exam_detail.variant }}</td>
@@ -168,7 +208,7 @@ onUnmounted(()=>{
                 }"
                 @end="endAttempt"
             >
-              <div class="text-xl font-bold flex">
+              <div class="text-xl text-textColor2 font-bold flex">
                 <p class="py-1 px-2 drop-shadow-lg border-surface-line border rounded-md">
                   {{ hours }}
                 </p>
@@ -193,7 +233,7 @@ onUnmounted(()=>{
             <a v-for="(question, idx) in store.questions"
                :key="idx"
                :href="`#question-${idx+1}`"
-               class="text-lg flex justify-center items-center bg-surface-section border border-surface-line drop-shadow-lg rounded-lg"
+               class="text-lg flex justify-center items-center bg-surface-section border border-surface-line shadow-sm rounded-lg"
                :class="{'bg-primary! text-white': !!question.result}"
             >
               {{ idx + 1 }}
@@ -240,6 +280,7 @@ onUnmounted(()=>{
         </div>
       </div>
     </n-spin>
+    <CameraApp/>
   </div>
 </template>
 <style lang="scss" scoped>

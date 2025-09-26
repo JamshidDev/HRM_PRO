@@ -18,15 +18,15 @@ function generateKey(config) {
 
 instance.interceptors.request.use(function (config) {
     const key = generateKey(config)
-    if (!config.meta?.skipCancel) {
-        if (controllers.has(key)) {
-            controllers.get(key).abort()
-            controllers.delete(key)
-        }
-        const controller = new AbortController()
-        config.signal = controller.signal;
-        controllers.set(key, controller)
-    }
+    // if (!config.meta?.skipCancel) {
+    //     if (controllers.has(key)) {
+    //         controllers.get(key).abort()
+    //         controllers.delete(key)
+    //     }
+    //     const controller = new AbortController()
+    //     config.signal = controller.signal;
+    //     controllers.set(key, controller)
+    // }
 
     let token = localStorage.getItem(useAppSetting.tokenKey) || null;
     config.headers['Accept-Language'] = localStorage.getItem(useAppSetting.languageKey) || useAppSetting.defaultLanguage

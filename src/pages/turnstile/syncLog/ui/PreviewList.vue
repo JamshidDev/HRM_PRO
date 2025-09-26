@@ -1,35 +1,40 @@
 <script setup>
-import {NoDataPicture, UIPagination, UIBadge, UIStatus, UIMenuButton} from "@/components/index.js"
+import {NoDataPicture,UIBadge} from "@/components/index.js"
 import {useSyncLogStore} from "@/store/modules/index.js"
-import {ErrorCircle24Filled,PersonAvailable20Filled, Person12Filled} from "@vicons/fluent"
+import {PersonAvailable20Filled} from "@vicons/fluent"
 import Utils from "@/utils/Utils.js"
 import i18n from "@/i18n/index.js"
+import SortBtn from "@/pages/turnstile/syncLog/ui/SortBtn.vue"
 
 const {t} = i18n.global
 const store = useSyncLogStore()
 
-
-const onSelect = (v)=>{
-  store.elementId = v.data.id
-  if(v.key === Utils.ActionTypes.view){
-
-  }
+const sortByTime = ()=>{
+  store.sortByCount = 0
+  store.sortByTime = store.sortByTime === -1? 1 : -1
+  store.previewList.sort((a,b)=>{
+    const aItem =new Date(a.device?.last_sync).getTime()
+    const bItem =new Date(b.device?.last_sync).getTime()
+    return store.sortByTime===1? aItem-bItem : bItem-aItem
+  })
 }
 
-const statusObj = {
-  1: {
-    name:t('content.process'),
-    id:1,
-  },
-  2: {
-    name:t('content.error'),
-    id:4,
-  },
-  3: {
-    name:t('content.success'),
-    id:3,
-  }
+const sortByCount = ()=>{
+  store.sortByTime = 0
+  store.sortByCount = store.sortByCount === -1? 1 : -1
+  store.previewList.sort((a,b)=>{
+    const aItem =new Date(a.events_count).getTime()
+    const bItem =new Date(b.events_count).getTime()
+    return store.sortByCount===1? aItem-bItem : bItem-aItem
+  })
 }
+
+
+
+
+
+
+
 
 </script>
 
@@ -45,8 +50,19 @@ const statusObj = {
         <tr>
           <th class="text-center! min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
           <th class="min-w-[100px]">{{$t('content.name')}}</th>
-          <th class="min-w-[160px]">{{$t('syncLog.form.deviceLastSync')}}</th>
-          <th class="min-w-[100px]">{{$t('hcServer.form.exported_count')}}</th>
+          <th class="min-w-[160px]">
+            <div @click="sortByTime" class="flex gap-2 items-center cursor-pointer">
+              <SortBtn :order-number="store.sortByTime" />
+              <span>{{$t('syncLog.form.deviceLastSync')}}</span>
+            </div>
+          </th>
+          <th class="min-w-[100px]">
+            <div @click="sortByCount" class="flex gap-2 items-center cursor-pointer">
+              <SortBtn :order-number="store.sortByCount" />
+              <span>{{$t('hcServer.form.exported_count')}}</span>
+            </div>
+
+          </th>
           <th class="min-w-[80px] w-[180px]">{{$t('content.from')}}</th>
           <th class="min-w-[80px] w-[180px]">{{$t('content.to')}}</th>
         </tr>

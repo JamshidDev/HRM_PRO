@@ -66,6 +66,16 @@ export const useEventStore = defineStore('eventStore', {
             start_date_and_time:null,
             end_date_and_time:null,
         },
+        dashboardParams:{
+            organizations:[],
+            access_levels:[],
+            type:null,
+            hours:null,
+            end_time:null,
+            start_time:null,
+            start_date_and_time:null,
+            end_date_and_time:null,
+        },
         previewLoading:false,
         previewVisible:false,
         temperatureStatus:{
@@ -117,7 +127,10 @@ export const useEventStore = defineStore('eventStore', {
             access_level_ids:[],
         },
         syncLoading:false,
-
+        topOfflineDeviceList:[],
+        dailyEvents:[],
+        totalOfflineDeviceCount:0,
+        devices:null,
 
     }),
     actions: {
@@ -199,9 +212,20 @@ export const useEventStore = defineStore('eventStore', {
         },
         _dashboard(){
             this.dashboardLoading = true
-            const params = {...this._params(),}
+            const params = {
+                ...this.dashboardParams,
+                organizations:this.dashboardParams.organizations.map(v=>v.id).toString() || undefined,
+                access_levels:this.dashboardParams.access_levels.toString() || undefined,
+                start:this.dashboardParams.start? Utils.timeWithMonth(this.dashboardParams.start): undefined,
+                end:this.dashboardParams.end? Utils.timeWithMonth(this.dashboardParams.end): undefined,
+            }
             $ApiService.eventService._dashboard({params}).then((res) => {
                 this.dashboardObj = res.data.data
+                this.topOfflineDeviceList = res.data.data.offline_devices?.top_offline
+                console.log(res.data.data.offline_devices?.top_offline)
+                this.totalOfflineDeviceCount = res.data.data.offline_devices?.total_offline
+                this.dailyEvents = res.data.data.daily_attendance_chart
+                this.devices = res.data.data.devices
             }).finally(() => {
                 this.dashboardLoading = false
             })

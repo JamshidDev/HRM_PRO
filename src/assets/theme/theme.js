@@ -13,6 +13,8 @@ export const naiveBreakpoints = {
     xl: 1280, 
     "2xl": 1568
  }
+import { NIcon } from 'naive-ui'
+import {CheckmarkCircle24Regular} from "@vicons/fluent"
 
 
 const getValueOfCssVariable = (variableName) => {
@@ -77,6 +79,11 @@ export const customTheme = ()=>({
         tabColorSegment:getValueOfCssVariable('--surface-section'),
         colorSegment:getValueOfCssVariable('--surface-ground'),
         tabColor: getValueOfCssVariable('--surface-section'),
+    },
+    Select: {
+        icons: {
+            check: () => h(NIcon, null, { default: () => h(CheckmarkCircle24Regular) })
+        }
     }
 
 })

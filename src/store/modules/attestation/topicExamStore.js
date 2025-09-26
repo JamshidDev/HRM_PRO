@@ -34,7 +34,8 @@ export const useTopicExamStore = defineStore('topicExamStore', {
             tests_count: 36,
             chances: 3,
             description: null,
-            whom_ids: []
+            whom_ids: [],
+            camera:false,
         },
         params:{
             page:1,
@@ -140,7 +141,11 @@ export const useTopicExamStore = defineStore('topicExamStore', {
         _create(){
             this.saveLoading = true
             $ApiService.topicExamService._create({
-                data: {...this.payload, deadline: Utils.timeToZone(this.payload.deadline),description:this.payload.description || undefined, },
+                data: {
+                    ...this.payload,
+                    deadline: Utils.timeToZone(this.payload.deadline),
+                    description:this.payload.description || undefined,
+                },
                 id: this.topicId}
             ).then((res)=>{
                 this.visible = false
@@ -154,7 +159,10 @@ export const useTopicExamStore = defineStore('topicExamStore', {
         _update(){
             this.saveLoading = true
             $ApiService.topicExamService._update({
-                data:  {...this.payload, deadline: this.payload?.deadline && Utils.timeToZone(this.payload.deadline)},
+                data:  {
+                    ...this.payload,
+                    deadline: this.payload?.deadline && Utils.timeToZone(this.payload.deadline),
+                },
                 id:this.topicId, exam_id: this.elementId
             }).then((res)=>{
                 this.visible = false
@@ -184,7 +192,8 @@ export const useTopicExamStore = defineStore('topicExamStore', {
                     active: !!data.active,
                     whom_ids: data?.positions?.map(i=>i.id) || data?.workers?.map(i=>i.id) || [],
                     whom: data.whom.id,
-                    deadline: new Date(data.deadline).getTime()
+                    deadline: new Date(data.deadline).getTime(),
+                    camera:Boolean(data.camera),
                 }
                 if(res.data.data.whom.id === 2){
                     this._position()

@@ -8,7 +8,13 @@ import {
     TurnstileWorkDurationPage,
     TurnstileAccessLevelsPage,
     TurnstileOrgAccessLevelsPage,
-    TurnstileHcWorkersPage, HcServerPage, HcEventPage, TelegramUserPage, SyncLogPage
+    TurnstileHcWorkersPage,
+    HcServerPage,
+    HcEventPage,
+    TelegramUserPage,
+    SyncLogPage,
+    DashboardPage,
+
 } from "@/pages/turnstile"
 
 
@@ -71,6 +77,11 @@ export default [
     {
         path:Utils.routeTurnstilePathMaker(AppPaths.SyncLog),
         component: ()=>SyncLogPage,
+        children:[],
+    },
+    {
+        path:Utils.routeTurnstilePathMaker(AppPaths.Dashboard),
+        component: ()=>DashboardPage,
         children:[],
     },
 ]
