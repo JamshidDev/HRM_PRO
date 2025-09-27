@@ -1,7 +1,7 @@
 <script setup>
 import {NoDataPicture, UIPagination, UIBadge, UIStatus, UIMenuButton} from "@/components/index.js"
 import {useAccountStore, useSyncLogStore} from "@/store/modules/index.js"
-import {ErrorCircle24Filled,PersonAvailable20Filled, Person12Filled} from "@vicons/fluent"
+import {ErrorCircle24Filled, PersonAvailable20Filled, CellularWarning20Regular} from "@vicons/fluent"
 import Utils from "@/utils/Utils.js"
 import i18n from "@/i18n/index.js"
 
@@ -21,7 +21,14 @@ const onSelect = (v)=>{
     if(v.key === Utils.ActionTypes.view){
       store._show()
       store.visible = true
+    }else if(v.key === Utils.ActionTypes.confirm){
+      onOfflineDevicesEv()
     }
+}
+
+const onOfflineDevicesEv = ()=>{
+  store._offlineDeviceList()
+  store.offlineDeviceVisible =true
 }
 
 const statusObj = {
@@ -54,6 +61,7 @@ const statusObj = {
           <th class="text-center! min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
           <th class="min-w-[100px] w-[300px]">{{$t('content.date')}}</th>
           <th class="min-w-[100px] w-[300px]">{{$t('content.hour')}}</th>
+          <th class="min-w-[100px] w-[300px]">{{$t('content.type')}}</th>
           <th class="min-w-[100px]">{{$t('content.status')}}</th>
           <th class="min-w-[100px]">{{$t('hcServer.form.exported_count')}}</th>
           <th class="min-w-[80px] w-[80px]">{{$t('content.error')}}</th>
@@ -63,8 +71,11 @@ const statusObj = {
         <tbody>
         <tr v-for="(item, idx) in store.list" :key="idx">
           <td><span class="text-center block">{{ (store.params.page - 1) * store.params.per_page + idx + 1 }}</span></td>
-          <td>{{item?.sync_datetime?.split(' ')?.[0]}}</td>
+          <td>{{item.type.name==='Foydalanuvchi'? item?.day:item?.sync_datetime?.split(' ')?.[0] }}</td>
           <td>{{item?.sync_datetime?.split(' ')?.[1]}}</td>
+          <td>
+            <UIBadge :type="item?.type?.name==='Tizim'? Utils.colorTypes.dark :Utils.colorTypes.warning" :show-icon="false" :label="item?.type?.name"/>
+          </td>
           <td>
             <UIStatus :status="statusObj[item?.status]"/>
           </td>
@@ -88,7 +99,7 @@ const statusObj = {
 
                 <n-popover trigger="click">
                   <template #trigger>
-                    <n-button type="error" secondary>
+                    <n-button type="error" secondary size="small">
                       <template #icon>
                         <n-icon size="24" class="text-danger">
                           <ErrorCircle24Filled/>
@@ -106,10 +117,19 @@ const statusObj = {
           </td>
           <td>
             <UIMenuButton
+                v-if="item.type.name !== 'Foydalanuvchi'"
                 :show-delete="false"
                 :show-view="true"
                 :data="item"
                 @selectEv="onSelect"
+                :extra-options="[
+                    {
+                        label: t('syncLog.offlineDevices'),
+                        key: Utils.ActionTypes.confirm,
+                        icon: CellularWarning20Regular,
+                        visible:true
+                     },
+                ]"
             />
           </td>
         </tr>

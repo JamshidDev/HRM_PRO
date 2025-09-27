@@ -8,19 +8,13 @@ const _show =async (payload)=>{
     return await axios.get(`/v1/turnstile/hik-central/sync/${payload.id}`, {params:payload.params})
 }
 
-
-// const _update = async (payload)=>{
-//     return await axios.put(`/v1/turnstile/terminals/${payload.id}`, payload.data)
-// }
-//
-// const _delete = async (payload)=>{
-//     return await axios.delete(`/v1/turnstile/terminals/${payload.id}`)
-// }
-
-
+const _offlineDevice =async (payload)=>{
+    return await axios.get(`/v1/turnstile/hik-central/sync/${payload.id}/offline-devices`, {params:payload.params})
+}
 
 
 export default {
     _index,
     _show,
+    _offlineDevice,
 }

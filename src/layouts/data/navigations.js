@@ -54,6 +54,7 @@ import {
     ArrowSyncCircle24Filled,
     AppFolder24Filled,
     ShiftsCheckmark20Regular,
+    CellularData124Filled,
 } from "@vicons/fluent"
 import {AppPaths} from "@/utils/index.js";
 import Utils from "@/utils/Utils.js"
@@ -403,7 +404,7 @@ export const navigations = [
             {
                 label: 'hcServer.name',
                 path: Utils.routeTurnstilePathMaker(AppPaths.HcServer),
-                icon: ContactCard16Filled,
+                icon: CellularData124Filled,
                 color: 'bg-info',
                 permission: appPermissions.turnstileHikCentralJob,
             },

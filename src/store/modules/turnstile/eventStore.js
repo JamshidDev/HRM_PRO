@@ -145,6 +145,7 @@ export const useEventStore = defineStore('eventStore', {
                 const now = Date.now()
                 localStorage.setItem("lastClickTime", now.toString())
                 this.visible=false
+                router.push(Utils.routeTurnstilePathMaker(AppPaths.SyncLog))
             }).finally(() => {
                 this.syncLoading = false
             })
@@ -222,10 +223,32 @@ export const useEventStore = defineStore('eventStore', {
             $ApiService.eventService._dashboard({params}).then((res) => {
                 this.dashboardObj = res.data.data
                 this.topOfflineDeviceList = res.data.data.offline_devices?.top_offline
-                console.log(res.data.data.offline_devices?.top_offline)
                 this.totalOfflineDeviceCount = res.data.data.offline_devices?.total_offline
                 this.dailyEvents = res.data.data.daily_attendance_chart
                 this.devices = res.data.data.devices
+                this.deviceStatusList =[
+                    {
+                        type:"primary",
+                        status:"all",
+                        count:res.data.data.devices.all,
+                    },
+                    {
+                        type:"success",
+                        status:"online",
+                        count:res.data.data.devices?.online || 0,
+                    },
+                    {
+                        type:"danger",
+                        status:"offline",
+                        count:res.data.data.devices?.offline || 0,
+                    },
+                    {
+                        type:"warning",
+                        status:"left",
+                        count:res.data.data?.left_workplace_early || 0,
+                    }
+
+                ]
             }).finally(() => {
                 this.dashboardLoading = false
             })

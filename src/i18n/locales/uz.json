@@ -10,6 +10,9 @@
     "edit": "Tahrirlash",
     "delete": "O'chirish",
     "view": "Ko'rish",
+    "offline": "Offline",
+    "online": "Online",
+    "all": "Barchasi",
     "copy": "Nusxalash",
     "startDate": "Boshlangan vaqt",
     "endDate": "Tugagan vaqt",
@@ -2070,6 +2073,7 @@
     "name": "Qayta yuklash",
     "createTitle": "Terminallar ma'lumotini qayta yuklash",
     "updateTitle": "Tahrirlash",
+    "offlineDevices": "Oflayn qurilmalar",
     "form": {
       "name": "Nomi",
       "deviceLastSync": "Qurilma vaqti",
@@ -2078,7 +2082,9 @@
       "exported_count": "Yuklangan",
       "status": "status",
       "asFile": "Faylga yuklash uchun bosing",
-      "error": "Xatolik"
+      "error": "Xatolik",
+      "logId": "Log ID",
+      "deviceId": "Qurilma ID"
     }
   },
   "hcEvent": {
@@ -2183,7 +2189,15 @@
       "workerCount": "Xodimlar soni",
       "offlineDevice": "Offline qurilmalar",
       "onlineDevice": "Online qurilmalar",
+      "left": "Chiqqan",
+      "leftWorkplace": "Ishxonadan chiqqan xodimlar",
       "dailyEvent": "Bugungi turniket kirish-chiqish qaydnomasi (xodimlar bo‘yicha)"
+    },
+    "device": {
+      "all": "Barcha qurilmalar",
+      "online": "Online qurilmalar",
+      "offline": "Ofline  qurilmalar",
+      "left": "Ishxonadan chiqqan xodimlar"
     }
 }
 }

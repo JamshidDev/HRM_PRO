@@ -28,6 +28,10 @@ export const useSyncLogStore = defineStore('syncLogStore', {
         levelList:[],
         sortByTime:0,
         sortByCount:0,
+        offlineDeviceList:[],
+        offlineDeviceLoading:false,
+        offlineDeviceVisible:false,
+
     }),
     actions: {
         _index() {
@@ -42,6 +46,14 @@ export const useSyncLogStore = defineStore('syncLogStore', {
                 this.totalItems = res.data.data.total
             }).finally(() => {
                 this.loading = false
+            })
+        },
+        _offlineDeviceList(){
+            this.offlineDeviceLoading = true
+            $ApiService.syncLogService._offlineDevice({id:this.elementId}).then((res) => {
+                this.offlineDeviceList = res.data.data.devices
+            }).finally(() => {
+                this.offlineDeviceLoading = false
             })
         },
         _show() {

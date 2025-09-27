@@ -4,6 +4,7 @@ import {useAccountStore, useSyncLogStore} from "@/store/modules/index.js"
 import Filter from "./ui/Filter.vue"
 import Table from "./ui/Table.vue"
 import PreviewList from './ui/PreviewList.vue'
+import DeviceList from './ui/DeviceList.vue'
 
 const store = useSyncLogStore()
 const accStore = useAccountStore()
@@ -25,6 +26,14 @@ onMounted(()=>{
       :title="$t('syncLog.createTitle')"
   >
     <PreviewList/>
+  </UIModal>
+  <UIModal
+      :width="1200"
+      :visible="store.offlineDeviceVisible"
+      @update:visible="(v)=>store.offlineDeviceVisible = v"
+      :title="$t('syncLog.offlineDevices')"
+  >
+    <DeviceList/>
   </UIModal>
 </UIPageContent>
 </template>

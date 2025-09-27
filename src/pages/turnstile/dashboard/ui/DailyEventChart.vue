@@ -56,7 +56,12 @@ const option = ref({
         show: true,
         position: 'bottom',
         formatter: (params) => `${params.name}`, // "40", "25", "60"
-        fontSize: 12,
+        fontSize: (value, index) => {
+          const width = window.innerWidth
+          if (width < 640) return 8   // telefon
+          if (width < 1024) return 10 // planshet
+          return 12                   // desktop
+        },
         offset: [0, 10]
       }
     },
@@ -82,7 +87,7 @@ watch(()=> store.dailyEvents, (newValue)=>{
 </script>
 
 <template>
-  <div class="w-full h-full border border-surface-line rounded-lg bg-surface-section relative hover-effect-card">
+  <div class="w-full border border-surface-line rounded-lg bg-surface-section relative hover-effect-card">
     <span class="z-1 opacity-40 absolute top-0 right-0 w-[160px] h-full bg-no-repeat bg-[url(/effect/effect-card-2.svg)]" ></span>
     <div class="px-3 pt-2">
       <span class="text-sm text-textColor2 font-semibold">{{$t('turnStileDashboard.form.dailyEvent')}}</span>

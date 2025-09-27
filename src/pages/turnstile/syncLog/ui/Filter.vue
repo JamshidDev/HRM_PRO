@@ -1,6 +1,7 @@
 <script setup>
 import {useAccountStore, useComponentStore, useSyncLogStore} from "@/store/modules/index.js"
 import {UIPageFilter, UISelect} from "@/components/index.js"
+import {ArrowSync16Filled} from "@vicons/fluent"
 const store = useSyncLogStore()
 const accStore = useAccountStore()
 
@@ -76,6 +77,14 @@ const filterCount = computed(()=>Number(store.params.organizations.length>0) + B
           @update:value="filterEvent"
           :max-tag-count="2"
       />
+    </template>
+    <template #filterAction>
+      <n-button type="primary" :loading="store.loading" @click="store._index()">
+        {{$t('content.refresh')}}
+        <template #icon>
+          <ArrowSync16Filled/>
+        </template>
+      </n-button>
     </template>
   </UIPageFilter>
 </template>
