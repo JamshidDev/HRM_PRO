@@ -71,63 +71,74 @@ const directionList = [
       :filter-count="filterCount"
       @onClear="resetFilter"
       :show-add-button="false"
+      :show-filter-button="false"
       :show-search-input="false"
   >
-    <template #filterContent>
-      <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{$t('actionLog.table.structure')}}</label>
-      <UISelect
-          :options="componentStore.structureList"
-          :modelV="store.dashboardParams.organizations"
-          @defaultValue="(v)=>store.dashboardParams.organizations=v"
-          @updateModel="onChangeStructure"
-          :checkedVal="store.structureCheck2"
-          @updateCheck="(v)=>store.structureCheck2=v"
-          :loading="componentStore.structureLoading"
-          v-model:search="componentStore.structureParams.search"
-          @onSearch="componentStore._structures"
-          @onSubmit="filterEvent"
-      />
-      <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{$t('turnstile.hcWorkersPage.access_levels')}}</label>
-      <n-select
-          multiple
-          clearable
-          filterable
-          v-model:value="store.dashboardParams.access_levels"
-          :options="store.levelList"
-          :loading="store.levelLoading"
-          label-field="name"
-          value-field="id"
-          @update:value="filterEvent"
-          :max-tag-count="2"
-      />
-      <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{$t('hcEvent.form.direction')}}</label>
-      <n-select
-          clearable
-          v-model:value="store.dashboardParams.direction"
-          :options="directionList"
-          label-field="name"
-          value-field="id"
-          @update:value="filterEvent"
+    <template #fullFilterContent>
+      <div class="grid grid-cols-12 gap-2">
+        <div class="lg:col-span-4 md:col-span-6 col-span-12">
+          <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{$t('actionLog.table.structure')}}</label>
+          <UISelect
+              :options="componentStore.structureList"
+              :modelV="store.dashboardParams.organizations"
+              @defaultValue="(v)=>store.dashboardParams.organizations=v"
+              @updateModel="onChangeStructure"
+              :checkedVal="store.structureCheck2"
+              @updateCheck="(v)=>store.structureCheck2=v"
+              :loading="componentStore.structureLoading"
+              v-model:search="componentStore.structureParams.search"
+              @onSearch="componentStore._structures"
+              @onSubmit="filterEvent"
+          />
+        </div>
+        <div class="lg:col-span-2 md:col-span-6 col-span-12">
+          <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{$t('turnstile.hcWorkersPage.access_levels')}}</label>
+          <n-select
+              multiple
+              clearable
+              filterable
+              v-model:value="store.dashboardParams.access_levels"
+              :options="store.levelList"
+              :loading="store.levelLoading"
+              label-field="name"
+              value-field="id"
+              @update:value="filterEvent"
+              :max-tag-count="2"
+          />
+        </div>
+        <div class="lg:col-span-2 md:col-span-4 col-span-12">
+          <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{$t('hcEvent.form.direction')}}</label>
+          <n-select
+              clearable
+              v-model:value="store.dashboardParams.direction"
+              :options="directionList"
+              label-field="name"
+              value-field="id"
+              @update:value="filterEvent"
 
-      />
-      <label class="mt-3 text-xs text-gray-500">{{ $t('content.from') }}</label>
-      <n-date-picker
-          class="mt-1"
-          v-model:value="store.dashboardParams.start"
-          @update:value="onChangeDate"
-          type="datetime"
-          update-value-on-close
-          :actions="null"
-          clearable />
-      <label class="mt-3 text-xs text-gray-500">{{ $t('content.to') }}</label>
-      <n-date-picker
-          class="mt-1"
-          v-model:value="store.dashboardParams.end"
-          @update:value="onChangeDate"
-          type="datetime"
-          update-value-on-close
-          :actions="null"
-          clearable />
+          />
+        </div>
+        <div class="lg:col-span-2 md:col-span-4 col-span-12">
+          <label class="mt-3 text-xs text-gray-500">{{ $t('content.from') }}</label>
+          <n-date-picker
+              v-model:value="store.dashboardParams.start"
+              @update:value="onChangeDate"
+              type="datetime"
+              update-value-on-close
+              :actions="null"
+              clearable />
+        </div>
+        <div class="lg:col-span-2 md:col-span-4 col-span-12">
+          <label class="mt-3 text-xs text-gray-500">{{ $t('content.to') }}</label>
+          <n-date-picker
+              v-model:value="store.dashboardParams.end"
+              @update:value="onChangeDate"
+              type="datetime"
+              update-value-on-close
+              :actions="null"
+              clearable />
+        </div>
+      </div>
     </template>
   </UIPageFilter>
 </template>

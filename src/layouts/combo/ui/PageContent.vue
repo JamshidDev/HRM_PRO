@@ -1,8 +1,7 @@
 <script setup>
 import AppHeader from "./AppHeader.vue"
-import {AIButton} from "@/components/index.js"
-import {AppPaths} from "@/utils/index.js"
-
+import {HeaderTabContainer, HeaderTabButton} from "@/components/layoutTab/index.js"
+import {Star16Regular} from "@vicons/fluent"
 const emits = defineEmits(['onOpen'])
 
 const onClick = ()=>{
@@ -16,18 +15,16 @@ const onClick = ()=>{
 <AppHeader
     @on-change="onClick"
 />
+<!--  <HeaderTabContainer/>-->
+
+
+
   <div class="main-content" id="mainContent">
     <router-view v-slot="{ Component }">
       <transition name="slide-right" mode="out-in">
         <component :is="Component" />
       </transition>
     </router-view>
-<!--    <div class="fixed w-[90px] h-[60px] z-999 bottom-[60px] right-[20px]">-->
-<!--      <AIButton-->
-<!--          v-if="route.name !== AppPaths.AIConversation.substring(1)"-->
-<!--          @click="()=>router.push({name:AppPaths.AIConversation.substring(1)})"-->
-<!--      />-->
-<!--    </div>-->
   </div>
 </div>
 </template>

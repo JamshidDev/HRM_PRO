@@ -10,6 +10,8 @@
     "edit": "Tahrirlash",
     "delete": "O'chirish",
     "view": "Ko'rish",
+    "now": "Hozir",
+    "day": "Kun",
     "offline": "Offline",
     "online": "Online",
     "all": "Barchasi",
@@ -1124,7 +1126,6 @@
     "warning": "Tanlangan savol va javob ustunlari to'g'riligini tekshiring!"
   },
 
-
   "examPage": {
     "downloadResult": "Natijalarni yuklash",
     "downloadNotPassed": "Qatnashmaganlarni yuklash",
@@ -2191,7 +2192,19 @@
       "onlineDevice": "Online qurilmalar",
       "left": "Chiqqan",
       "leftWorkplace": "Ishxonadan chiqqan xodimlar",
-      "dailyEvent": "Bugungi turniket kirish-chiqish qaydnomasi (xodimlar bo‘yicha)"
+      "dailyEvent": "Bugungi turniket kirish-chiqish qaydnomasi (xodimlar bo‘yicha)",
+      "came_today": "Ishga kelgan xodimlar",
+      "not_came_today": "Ishga kelmagan xodimlar",
+      "current_in": "Ishxonadagi xodimlar",
+      "current_out": "Ishxonada yo'q xodimlar",
+      "workdays": "Ishxonada yo'q xodimlar"
+    },
+    "work_durations": {
+      "workdays": "Joriy oydagi ish kunlari",
+      "all_minutes": "Bajarilgan ish soati",
+      "deficit": "Bajarilmagan ish soati",
+      "min_workers": "Eng kam ish soati bajargan xodimlar",
+      "max_workers": "Eng ko'p ish soati bajargan xodimlar"
     },
     "device": {
       "all": "Barcha qurilmalar",

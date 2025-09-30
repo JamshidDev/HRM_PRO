@@ -1,7 +1,6 @@
 <script setup>
 import {useAppSetting} from "@/utils/index.js"
 
-const pictureSwipe = ref(null)
 
 const props = defineProps({
   data:{
@@ -15,6 +14,10 @@ const props = defineProps({
   hasMore:{
     type: Number,
     default: 0,
+  },
+  hideMore:{
+    type: Boolean,
+    default: false,
   }
 })
 const onOpen = (photo)=>{
@@ -43,7 +46,7 @@ const onOpen = (photo)=>{
       </n-tooltip>
     </template>
     <template #rest="{ options: restOptions, rest }">
-      <n-avatar class="has-more-avatar" >+{{hasMore}}</n-avatar>
+      <n-avatar v-if="!hideMore" class="has-more-avatar" >+{{hasMore}}</n-avatar>
     </template>
   </n-avatar-group>
 </div>

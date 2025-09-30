@@ -1,3 +1,9 @@
+import {
+    CellularWarning24Filled,
+    CellularData120Filled,
+    DataUsage20Regular,
+    DoorArrowLeft24Regular,
+} from "@vicons/fluent"
 import {defineStore} from "pinia";
 import i18n from "@/i18n/index.js"
 import Utils from "@/utils/Utils.js"
@@ -123,14 +129,16 @@ export const useEventStore = defineStore('eventStore', {
         },
         syncPayload:{
             from_date:null,
-            // to_date:null,
             access_level_ids:[],
         },
         syncLoading:false,
+
         topOfflineDeviceList:[],
         dailyEvents:[],
         totalOfflineDeviceCount:0,
         devices:null,
+        workerStatuses:[],
+        workDuration:null,
 
     }),
     actions: {
@@ -211,48 +219,126 @@ export const useEventStore = defineStore('eventStore', {
                 this.loading = false
             })
         },
-        _dashboard(){
-            this.dashboardLoading = true
-            const params = {
+        _dashboardParams(){
+            return {
                 ...this.dashboardParams,
                 organizations:this.dashboardParams.organizations.map(v=>v.id).toString() || undefined,
                 access_levels:this.dashboardParams.access_levels.toString() || undefined,
                 start:this.dashboardParams.start? Utils.timeWithMonth(this.dashboardParams.start): undefined,
                 end:this.dashboardParams.end? Utils.timeWithMonth(this.dashboardParams.end): undefined,
             }
-            $ApiService.eventService._dashboard({params}).then((res) => {
-                this.dashboardObj = res.data.data
-                this.topOfflineDeviceList = res.data.data.offline_devices?.top_offline
-                this.totalOfflineDeviceCount = res.data.data.offline_devices?.total_offline
-                this.dailyEvents = res.data.data.daily_attendance_chart
-                this.devices = res.data.data.devices
-                this.deviceStatusList =[
-                    {
-                        type:"primary",
-                        status:"all",
-                        count:res.data.data.devices.all,
-                    },
-                    {
-                        type:"success",
-                        status:"online",
-                        count:res.data.data.devices?.online || 0,
-                    },
-                    {
-                        type:"danger",
-                        status:"offline",
-                        count:res.data.data.devices?.offline || 0,
-                    },
-                    {
-                        type:"warning",
-                        status:"left",
-                        count:res.data.data?.left_workplace_early || 0,
-                    }
-
-                ]
-            }).finally(() => {
-                this.dashboardLoading = false
-            })
         },
+        async _dashboard(){
+            this.dashboardLoading = true
+            const params = this._dashboardParams()
+            const urls = [
+                '/v1/turnstile/hik-central/dashboard',
+                '/v1/turnstile/hik-central/dashboard/daily-attendance',
+                '/v1/turnstile/hik-central/dashboard/worker-stats',
+                '/v1/turnstile/hik-central/dashboard/devices',
+                '/v1/turnstile/hik-central/dashboard/work-durations',
+            ]
+
+            const requests = urls.map(async (url)=>{
+                    try{
+                        const res = await $ApiService.eventService._allDashboard({url, params})
+                        const data = res.data.data
+                        return {
+                            url,
+                            data,
+                            error:null,
+                        }
+                    }catch (error){
+                        return {
+                            url,
+                            data:null,
+                            error:err.message,
+                        }
+                    }
+            })
+
+
+            for await (const result of requests) {
+                if (result.error) throw new Error(result.error)
+                const data = result.data
+                if(result.url === urls[0]){
+                    this.dashboardObj = data
+                }else if(result.url === urls[1]){
+                    this.dailyEvents = data
+                }else if(result.url === urls[2]){
+                    this.workerStatuses = [
+                        {
+                            type:"primary",
+                            icon:markRaw(DataUsage20Regular),
+                            status:"content.today",
+                            description:"turnStileDashboard.form.came_today",
+                            count:data?.worker_stats?.came_today || 0,
+                        },
+                        {
+                            type:"danger",
+                            icon:markRaw(DataUsage20Regular),
+                            status:"content.today",
+                            description:"turnStileDashboard.form.not_came_today",
+                            count:data?.worker_stats?.not_came_today || 0,
+                        },
+                        {
+                            type:"success",
+                            icon:markRaw(DataUsage20Regular),
+                            status:"content.now",
+                            description:"turnStileDashboard.form.current_in",
+                            count:data?.worker_stats?.current_in || 0,
+                        },
+                        {
+                            type:"warning",
+                            icon:markRaw(DataUsage20Regular),
+                            status:"content.now",
+                            description:"turnStileDashboard.form.current_out",
+                            count:data?.worker_stats?.current_out || 0,
+                        },
+                    ]
+                }else if(result.url === urls[3]){
+                    this.topOfflineDeviceList = data.offline_devices?.top_offline
+                    this.totalOfflineDeviceCount = data.offline_devices?.total_offline
+                    this.devices = data.devices
+                    this.deviceStatusList =[
+                        {
+                            type:"primary",
+                            icon:markRaw(DataUsage20Regular),
+                            status:"content.all",
+                            description:"turnStileDashboard.device.all",
+                            count:data.devices.all,
+                        },
+                        {
+                            type:"success",
+                            icon:markRaw(CellularData120Filled),
+                            status:"content.online",
+                            description:"turnStileDashboard.device.online",
+                            count:data.devices?.online || 0,
+                        },
+                        {
+                            type:"danger",
+                            icon:markRaw(CellularWarning24Filled),
+                            status:"content.offline",
+                            description:"turnStileDashboard.device.offline",
+                            count:data.devices?.offline || 0,
+                        },
+                        // {
+                        //     type:"warning",
+                        //     icon:markRaw(DoorArrowLeft24Regular),
+                        //     status:"turnStileDashboard.form.left",
+                        //     description:"turnStileDashboard.device.left",
+                        //     count:data?.worker_stats?.went_out_during_work || 0,
+                        // }
+
+                    ]
+                }else if(result.url === urls[4]){
+                    this.workDuration = data
+                }
+
+            }
+            this.dashboardLoading = false
+        },
+
         _levels() {
             this.levelLoading = true
             $ApiService.hcServerService._accessLevels().then((res) => {

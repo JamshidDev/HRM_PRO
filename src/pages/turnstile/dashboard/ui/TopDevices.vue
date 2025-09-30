@@ -6,20 +6,17 @@ const store = useEventStore()
 
 <template>
   <div class="w-full !h-full bg-surface-section px-3 py-2 rounded-lg border border-surface-line hover-effect-card">
-    <div class="grid grid-cols-12 gap-2">
+    <div class="grid grid-cols-12">
       <div class="col-span-12 flex items-center">
-        <span class="text-nowrap text-secondary text-sm">{{$t('turnStileDashboard.form.topOfflineDevices')}}</span>
+        <span class="text-nowrap text-danger text-sm">{{$t('turnStileDashboard.form.topOfflineDevices')}}</span>
         <n-divider dashed  class="mx-2 !my-4"/>
         <span class="font-semibold text-secondary">{{store.totalOfflineDeviceCount}}</span>
       </div>
       <template v-for="(item,idx) in store.topOfflineDeviceList" :key="idx">
-        <div class="col-span-12 flex gap-2 bg-danger/3 m-1 rounded-lg px-2 py-1 border border-danger/30">
-          <div class="w-[32px] h-[32px] flex justify-center items-center rounded-full bg-surface-section text-secondary">
-            #{{idx+1}}
-          </div>
-          <div class="w-[calc(100%-32px)]">
-            <p class="text-textColor2 leading-[1.2] font-semibold">{{item.area_name}}</p>
-            <p class="text-xs text-secondary leading-[1.2]">{{$t('turnStileDashboard.form.lastSynchronizationTime')}}: {{item.last_sync}}</p>
+        <div class="col-span-12 flex gap-2 bg-dark/3 mb-1 rounded-lg px-2 border-b border-b-surface-line">
+          <div class="flex justify-between w-full">
+            <p class="text-textColor2 leading-[1.2]">{{item.area_name}}</p>
+            <p class="text-xs text-secondary leading-[1.2]">{{item.last_sync}}</p>
           </div>
         </div>
       </template>

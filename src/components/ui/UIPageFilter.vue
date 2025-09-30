@@ -1,7 +1,6 @@
 <script setup>
 import {Search48Filled, AddCircle24Regular, Filter20Filled, DeleteArrowBack20Regular} from '@vicons/fluent'
-import { useDebounceFn } from '@vueuse/core'
-
+const slots = useSlots()
 const props = defineProps({
   title:{
     type:String,
@@ -36,7 +35,7 @@ const props = defineProps({
     default:false
   }
 })
-
+const hasFullFilterSlot = !!slots.fullFilterContent
 const searchModel = defineModel("search",{type:String,default:null })
 
 const emits = defineEmits(['onAdd', 'onSearch', 'onClear', 'show',])
@@ -150,6 +149,10 @@ const addEvent = ()=>{
         </n-popover>
       </div>
     </div>
+    <div v-if="hasFullFilterSlot" class="w-full">
+      <slot name="fullFilterContent"></slot>
+    </div>
+
 
   </div>
 </template>

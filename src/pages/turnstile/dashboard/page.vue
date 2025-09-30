@@ -1,5 +1,5 @@
 <script setup>
-import {UIModal, UIPageContent} from "@/components/index.js"
+import {NoDataPicture, UIModal, UIPageContent} from "@/components/index.js"
 import {useAccountStore, useEventStore} from "@/store/modules/index.js"
 import {
   MainCard,
@@ -33,6 +33,7 @@ onMounted(()=>{
       <MainCard/>
       <GridBox/>
     </template>
+    <NoDataPicture v-if="!store.dashboardObj && !store.dashboardLoading" />
   </n-spin>
 
   <UIModal
