@@ -64,8 +64,7 @@ const onPreview = (v)=>{
             <p class="text-secondary text-xs font-medium leading-[1.2] line-clamp-1">{{$t('hcEvent.cards.cardOne')}}</p>
           </div>
           <span class="flex items-center">
-              <n-skeleton v-if="store.dashboardLoading" :width="132" round size="medium" />
-            <UIUserGroup v-else
+            <UIUserGroup
                          :max="4"
                          :data="[...userOneObj.data, ...userOneObj.data]"
                          :has-more="userOneObj.more-3"
@@ -91,8 +90,7 @@ const onPreview = (v)=>{
             <p class="text-secondary text-xs font-medium leading-[1.2] line-clamp-1">{{$t('hcEvent.cards.cardTwo')}}</p>
           </div>
           <span class="flex items-center">
-              <n-skeleton v-if="store.dashboardLoading" :width="132" round size="medium" />
-            <UIUserGroup v-else
+            <UIUserGroup
                          :max="4"
                          :data="[...userTwoObj.data, ...userTwoObj.data]"
                          :has-more="userTwoObj.more-3"
@@ -119,8 +117,8 @@ const onPreview = (v)=>{
             <p class="text-secondary text-xs font-medium leading-[1.2] line-clamp-1">{{$t('hcEvent.cards.cardThree')}}</p>
           </div>
           <span class="flex items-center">
-              <n-skeleton v-if="store.dashboardLoading" :width="132" round size="medium" />
-            <UIUserGroup v-else
+
+            <UIUserGroup
                          :max="4"
                          :data="[...userTreeObj.data, ...userTreeObj.data]"
                          :has-more="userTreeObj.more-3"
@@ -147,8 +145,7 @@ const onPreview = (v)=>{
             <p class="text-secondary text-xs font-medium leading-[1.2] line-clamp-1">{{$t('hcEvent.cards.cardFour')}}</p>
           </div>
           <span class="flex items-center">
-              <n-skeleton v-if="store.dashboardLoading" :width="132" round size="medium" />
-            <UIUserGroup v-else
+            <UIUserGroup
                          :max="4"
                          :data="[...userFourObj.data, ...userFourObj.data]"
                          :has-more="userFourObj.more-3"

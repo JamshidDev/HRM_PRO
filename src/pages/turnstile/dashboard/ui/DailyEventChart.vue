@@ -14,6 +14,7 @@ use([TooltipComponent, GridComponent, BarChart, CanvasRenderer])
 
 const store = useEventStore()
 const {t} = i18n.global
+const chartRef = ref(null)
 const option = ref({
   tooltip: {
     trigger: 'axis',
@@ -70,11 +71,13 @@ const option = ref({
 
 
 watch(()=> store.dailyEvents, (newValue)=>{
+  if (!newValue || !Array.isArray(newValue)) return
+  
   option.value.xAxis.data = newValue.map((v)=>{
     return v.hour
   })
 
-  option.value.series[0].data =newValue.map((v)=>{
+  option.value.series[0].data = newValue.map((v)=>{
     return v.count
   })
 

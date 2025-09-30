@@ -53,7 +53,15 @@ export const useEventStore = defineStore('eventStore', {
             },
         ],
         detailShow:false,
+        // Umumiy dashboard loading (butun sahifa uchun)
         dashboardLoading:false,
+        // Har bir so'rov uchun alohida loading flaglar
+        dashboardMainLoading:false,          // '/v1/turnstile/hik-central/dashboard'
+        dailyAttendanceLoading:false,        // '/v1/turnstile/hik-central/dashboard/daily-attendance'
+        workerStatsLoading:false,            // '/v1/turnstile/hik-central/dashboard/worker-stats'
+        devicesLoading:false,                // '/v1/turnstile/hik-central/dashboard/devices'
+        workDurationsLoading:false,          // '/v1/turnstile/hik-central/dashboard/work-durations'
+
         dashboardObj:null,
         levelLoading:false,
         levelList:[],
@@ -138,6 +146,8 @@ export const useEventStore = defineStore('eventStore', {
         totalOfflineDeviceCount:0,
         devices:null,
         workerStatuses:[],
+        deviceStatusList:[],
+
         workDuration:null,
 
     }),
@@ -229,7 +239,14 @@ export const useEventStore = defineStore('eventStore', {
             }
         },
         async _dashboard(){
+            // Umumiy va bo'linma bo'yicha loadinglarni yoqamiz
             this.dashboardLoading = true
+            this.dashboardMainLoading = true
+            this.dailyAttendanceLoading = true
+            this.workerStatsLoading = true
+            this.devicesLoading = true
+            this.workDurationsLoading = true
+
             const params = this._dashboardParams()
             const urls = [
                 '/v1/turnstile/hik-central/dashboard',
@@ -240,103 +257,103 @@ export const useEventStore = defineStore('eventStore', {
             ]
 
             const requests = urls.map(async (url)=>{
-                    try{
-                        const res = await $ApiService.eventService._allDashboard({url, params})
-                        const data = res.data.data
-                        return {
-                            url,
-                            data,
-                            error:null,
-                        }
-                    }catch (error){
-                        return {
-                            url,
-                            data:null,
-                            error:err.message,
-                        }
-                    }
+                try{
+                    const res = await $ApiService.eventService._allDashboard({url, params})
+                    const data = res.data.data
+                    return { url, data, error:null }
+                }catch (error){
+                    return { url, data:null, error: error?.message || 'Unknown error' }
+                }
             })
 
-
-            for await (const result of requests) {
-                if (result.error) throw new Error(result.error)
-                const data = result.data
-                if(result.url === urls[0]){
-                    this.dashboardObj = data
-                }else if(result.url === urls[1]){
-                    this.dailyEvents = data
-                }else if(result.url === urls[2]){
-                    this.workerStatuses = [
-                        {
-                            type:"primary",
-                            icon:markRaw(DataUsage20Regular),
-                            status:"content.today",
-                            description:"turnStileDashboard.form.came_today",
-                            count:data?.worker_stats?.came_today || 0,
-                        },
-                        {
-                            type:"danger",
-                            icon:markRaw(DataUsage20Regular),
-                            status:"content.today",
-                            description:"turnStileDashboard.form.not_came_today",
-                            count:data?.worker_stats?.not_came_today || 0,
-                        },
-                        {
-                            type:"success",
-                            icon:markRaw(DataUsage20Regular),
-                            status:"content.now",
-                            description:"turnStileDashboard.form.current_in",
-                            count:data?.worker_stats?.current_in || 0,
-                        },
-                        {
-                            type:"warning",
-                            icon:markRaw(DataUsage20Regular),
-                            status:"content.now",
-                            description:"turnStileDashboard.form.current_out",
-                            count:data?.worker_stats?.current_out || 0,
-                        },
-                    ]
-                }else if(result.url === urls[3]){
-                    this.topOfflineDeviceList = data.offline_devices?.top_offline
-                    this.totalOfflineDeviceCount = data.offline_devices?.total_offline
-                    this.devices = data.devices
-                    this.deviceStatusList =[
-                        {
-                            type:"primary",
-                            icon:markRaw(DataUsage20Regular),
-                            status:"content.all",
-                            description:"turnStileDashboard.device.all",
-                            count:data.devices.all,
-                        },
-                        {
-                            type:"success",
-                            icon:markRaw(CellularData120Filled),
-                            status:"content.online",
-                            description:"turnStileDashboard.device.online",
-                            count:data.devices?.online || 0,
-                        },
-                        {
-                            type:"danger",
-                            icon:markRaw(CellularWarning24Filled),
-                            status:"content.offline",
-                            description:"turnStileDashboard.device.offline",
-                            count:data.devices?.offline || 0,
-                        },
-                        // {
-                        //     type:"warning",
-                        //     icon:markRaw(DoorArrowLeft24Regular),
-                        //     status:"turnStileDashboard.form.left",
-                        //     description:"turnStileDashboard.device.left",
-                        //     count:data?.worker_stats?.went_out_during_work || 0,
-                        // }
-
-                    ]
-                }else if(result.url === urls[4]){
-                    this.workDuration = data
+            try{
+                for await (const result of requests) {
+                    const data = result.data
+                    if(result.url === urls[0]){
+                        if(!result.error) this.dashboardObj = data
+                        this.dashboardMainLoading = false
+                    }else if(result.url === urls[1]){
+                        if(!result.error) this.dailyEvents = data
+                        this.dailyAttendanceLoading = false
+                    }else if(result.url === urls[2]){
+                        if(!result.error){
+                            this.workerStatuses = [
+                                {
+                                    type:"primary",
+                                    icon:markRaw(DataUsage20Regular),
+                                    status:"content.today",
+                                    description:"turnStileDashboard.form.came_today",
+                                    count:data?.worker_stats?.came_today || 0,
+                                },
+                                {
+                                    type:"danger",
+                                    icon:markRaw(DataUsage20Regular),
+                                    status:"content.today",
+                                    description:"turnStileDashboard.form.not_came_today",
+                                    count:data?.worker_stats?.not_came_today || 0,
+                                },
+                                {
+                                    type:"success",
+                                    icon:markRaw(DataUsage20Regular),
+                                    status:"content.now",
+                                    description:"turnStileDashboard.form.current_in",
+                                    count:data?.worker_stats?.current_in || 0,
+                                },
+                                {
+                                    type:"warning",
+                                    icon:markRaw(DataUsage20Regular),
+                                    status:"content.now",
+                                    description:"turnStileDashboard.form.current_out",
+                                    count:data?.worker_stats?.current_out || 0,
+                                },
+                            ]
+                        }
+                        this.workerStatsLoading = false
+                    }else if(result.url === urls[3]){
+                        if(!result.error){
+                            this.topOfflineDeviceList = data.offline_devices?.top_offline
+                            this.totalOfflineDeviceCount = data.offline_devices?.total_offline
+                            this.devices = data.devices
+                            this.deviceStatusList =[
+                                {
+                                    type:"primary",
+                                    icon:markRaw(DataUsage20Regular),
+                                    status:"content.all",
+                                    description:"turnStileDashboard.device.all",
+                                    count:data.devices.all,
+                                },
+                                {
+                                    type:"success",
+                                    icon:markRaw(CellularData120Filled),
+                                    status:"content.online",
+                                    description:"turnStileDashboard.device.online",
+                                    count:data.devices?.online || 0,
+                                },
+                                {
+                                    type:"danger",
+                                    icon:markRaw(CellularWarning24Filled),
+                                    status:"content.offline",
+                                    description:"turnStileDashboard.device.offline",
+                                    count:data.devices?.offline || 0,
+                                },
+                            ]
+                        }
+                        this.devicesLoading = false
+                    }else if(result.url === urls[4]){
+                        if(!result.error) this.workDuration = data
+                        this.workDurationsLoading = false
+                    }
                 }
-
+            } finally {
+                // Har qanday holatda ham umumiy loadingni o'chiramiz
+                this.dashboardLoading = false
+                // Agar biror joyda qolib ketgan bo'lsa, barchasini o'chirish
+                this.dashboardMainLoading = false
+                this.dailyAttendanceLoading = false
+                this.workerStatsLoading = false
+                this.devicesLoading = false
+                this.workDurationsLoading = false
             }
-            this.dashboardLoading = false
         },
 
         _levels() {

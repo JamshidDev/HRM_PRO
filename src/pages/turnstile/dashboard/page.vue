@@ -7,6 +7,7 @@ import {
   PreviewList,
   GridBox,
 } from "./ui/index.js"
+import MainCardsSkeleton from "@/pages/turnstile/dashboard/ui/MainCardsSkeleton.vue"
 
 
 const store = useEventStore()
@@ -28,14 +29,10 @@ onMounted(()=>{
 <template>
 <UIPageContent>
   <Filter/>
-  <n-spin :show="store.dashboardLoading" class="min-h-[400px]">
-    <template v-if="store.dashboardObj">
-      <MainCard/>
-      <GridBox/>
-    </template>
-    <NoDataPicture v-if="!store.dashboardObj && !store.dashboardLoading" />
-  </n-spin>
+  <MainCardsSkeleton v-if="store.dashboardMainLoading" :count="4" />
+  <MainCard v-else />
 
+  <GridBox/>
   <UIModal
       v-model:visible="store.previewVisible"
       :width="1400"
