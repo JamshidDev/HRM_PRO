@@ -5,12 +5,12 @@ const _index =async (payload)=>{
 }
 
 const _preview =async (payload)=>{
-    return await axios.get(`/v1/turnstile/hik-central/dashboard/pereview`, {params:payload?.params})
+    return await axios.get(`/v1/turnstile/hik-central/dashboard/preview`, {params:payload?.params})
 }
 
 
 const _download =async (payload)=>{
-    return await axios.get(`/v1/turnstile/hik-central/dashboard/pereview`,{responseType:"blob", params:payload?.params})
+    return await axios.get(`/v1/turnstile/hik-central/dashboard/preview`,{responseType:"blob", params:payload?.params})
 }
 
 const _jobIndex =async (payload)=>{

@@ -109,15 +109,15 @@ export const useEventStore = defineStore('eventStore', {
         typeList:[
             {
                 name:t('hcEvent.cards.cardOne'),
-                id:'late_workers'
+                id:'late_come'
             },
             {
                 name:t('hcEvent.cards.cardTwo'),
-                id:'absent_workers'
+                id:'not_come'
             },
             {
                 name:t('hcEvent.cards.cardThree'),
-                id:'early_leave_workers'
+                id:'early_leave'
             },
             {
                 name:t('hcEvent.cards.cardFour'),

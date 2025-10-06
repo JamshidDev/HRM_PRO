@@ -556,6 +556,10 @@ const appPermissions = {
     hrPunishment:"hr-discips",
     hrPunishmentWrite:"hr-discips-write",
     hrPunishmentRead:"hr-discips-read",
+    turnstileDashboard:"turnstile-dashboard",
+    turnstileDashboardRead:"turnstile-dashboard-read",
+    turnstileDashboardWrite:"turnstile-dashboard-write",
+
 
     hospital: "hospital",
     hospitalExpired: "hospital-expired",
@@ -779,6 +783,47 @@ const getMonthRange = (year, month)=>{
     return { start_date: format(start), end_date: format(end) }
 }
 
+// Time validation functions
+const validateTime = (time) => {
+    if (!time || time.length !== 5) return false
+    const timeRegex = /^([0-1]?[0-9]|2[0-3]):([0-5][0-9])$/
+    return timeRegex.test(time)
+}
+
+const isValidTimeChar = (char, currentValue, position) => {
+    if (char === '' || char === null) return true
+    if (!/[\d:]/.test(char)) return false
+    
+    if (position === 0) return /[0-2]/.test(char)
+    if (position === 1) {
+        const firstDigit = currentValue[0]
+        return firstDigit === '2' ? /[0-3]/.test(char) : /[0-9]/.test(char)
+    }
+    if (position === 2) return char === ':'
+    if (position === 3) return /[0-5]/.test(char)
+    if (position === 4) return /[0-9]/.test(char)
+    
+    return false
+}
+
+const handleTimeKeydown = (event) => {
+    const input = event.target
+    const currentValue = input.value
+    const cursorPosition = input.selectionStart
+    const key = event.key
+    
+    if (['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Enter'].includes(key)) {
+        return true
+    }
+    
+    if (!isValidTimeChar(key, currentValue, cursorPosition)) {
+        event.preventDefault()
+        return false
+    }
+    
+    return true
+}
+
 export default {
     getMonthRange,
     useDebounce,
@@ -833,5 +878,8 @@ export default {
     documentStatus,
     safeBase64Encode,
     sumFormat,
+    validateTime,
+    isValidTimeChar,
+    handleTimeKeydown,
 
 }

@@ -12,6 +12,7 @@
     "view": "Ko'rish",
     "now": "Hozir",
     "day": "Kun",
+    "time": "Vaqt",
     "offline": "Offline",
     "online": "Online",
     "all": "Barchasi",
@@ -178,7 +179,8 @@
   },
   "date": {
     "day": "Kun",
-    "hour": "Soat"
+    "hour": "Soat",
+    "minute": "Daqiqa"
   },
   "month": {
     "january": "Yanvar",
@@ -2121,7 +2123,7 @@
       "cardOne": "Kechikkan xodimlar",
       "cardTwo": "Ishga kelmagan xodimlar",
       "cardThree": "Erta ketgan xodimlar",
-      "cardFour": "Norma soatni bajarmaganlar"
+      "cardFour": "Ta'tildagi xodimlar"
     }
   },
   "pensioner": {
@@ -2185,7 +2187,7 @@
   "turnStileDashboard": {
     "name": "Dashboard",
     "form": {
-      "topOfflineDevices": "Top offline qurilmalar",
+      "topOfflineDevices": "Sinxronizatsiyalangan qurilmalar",
       "lastSynchronizationTime": "Oxirgi sinxronizatsiya",
       "workerCount": "Xodimlar soni",
       "offlineDevice": "Offline qurilmalar",
@@ -2200,8 +2202,8 @@
       "workdays": "Ishxonada yo'q xodimlar"
     },
     "work_durations": {
-      "workdays": "Joriy oydagi ish kunlari",
-      "all_minutes": "Bajarilgan ish soati",
+      "workdays": "Belgilangan ish vaqti",
+      "max_worked_count": "Bajarilgan ish soati",
       "deficit": "Bajarilmagan ish soati",
       "min_workers": "Eng kam ish soati bajargan xodimlar",
       "max_workers": "Eng ko'p ish soati bajargan xodimlar"
@@ -2211,6 +2213,46 @@
       "online": "Online qurilmalar",
       "offline": "Ofline  qurilmalar",
       "left": "Ishxonadan chiqqan xodimlar"
+    },
+    "perview":{
+        "time":"Sana",
+        "workTime":"Ish boshlanish vaqti",
+        "temperature":"Harorat",
+        "device":"Qurilma",
+        "direction":"Holati",
+        "norm_hours":"Norma soati",
+        "auth_type":"Auth type",
+        "mask_status":"Niqob"
+    },
+    "cards":{
+      "late_come":"Kechikkan xodimlar",
+      "not_come_yesterday":"Ishga kelmagan xodimlar (kecha)",
+      "early_leave_yesterday":"Erta ketgan xodimlar (kecha)",
+      "not_come":"Ishga kelmagan xodimlar",
+      "come":"Ishga kelgan xodimlar",
+      "current_in":"Ishxonadagi xodimlar",
+      "current_out":"Ishxonada yo'q xodimlar",
+      "early_leave":"Erta ketgan xodimlar",
+      "daily_attendance":"Turniket qaydnomasi",
+      "work_hours":"Norma soatni bajarmaganlar",
+      "device_status":"Barcha qurilmalar",
+      "device_status_online":"Online qurilmalar",
+      "device_status_offline":"Ofline  qurilmalar",
+      "lesson_worked":"Ish soati ko'rsatgichlari",
+      "devices":"Top offline qurilmalar"
+    },
+    "options":{
+        "status":"Ish soati bo'yicha",
+        "max":"Eng ko'p",
+        "min":"Eng kam"
     }
-}
+},
+  "hcWorkDuration": {
+    "name": "(HC) Ish vaqti",
+    "form":{
+      "enter":"Kirish",
+      "exit":"Chiqish"
+    }
+  }
+
 }

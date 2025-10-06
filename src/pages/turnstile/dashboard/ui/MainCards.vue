@@ -1,44 +1,45 @@
 <script setup>
-import {useEventStore} from "@/store/modules/index.js"
+import {useEventStore, useTurnstileDashboardStore} from "@/store/modules/index.js"
 import {UIUserGroup} from "@/components/index.js"
-import {NetworkCheck24Filled, ClockToolbox24Regular, PersonClock20Regular,PersonDelete24Regular} from "@vicons/fluent"
+import {NetworkCheck24Filled, WeatherSunnyLow48Filled, PersonClock20Regular,PersonDelete24Regular} from "@vicons/fluent"
 
 const store = useEventStore()
+const dashboardStore = useTurnstileDashboardStore()
 
 
 const userOneObj = computed(()=>{
   return {
-    data:store.dashboardObj?.late_workers?.list?.map((v)=>({...v,fullName:v.full_name})) || [],
-    more:store.dashboardObj?.late_workers?.total || 0,
+    data:dashboardStore.dashboardObj?.late_workers?.list?.map((v)=>({...v,fullName:v.full_name})) || [],
+    more:dashboardStore.dashboardObj?.late_workers?.total || 0,
   }
 })
 
 const userTwoObj = computed(()=>{
   return {
-    data:store.dashboardObj?.absent_workers?.list?.map((v)=>({...v,fullName:v.full_name})) || [],
-    more:store.dashboardObj?.absent_workers?.total || 0,
+    data:dashboardStore.dashboardObj?.absent_workers?.list?.map((v)=>({...v,fullName:v.full_name})) || [],
+    more:dashboardStore.dashboardObj?.absent_workers?.total || 0,
   }
 })
 
 const userTreeObj = computed(()=>{
   return {
-    data:store.dashboardObj?.early_leave_workers?.list?.map((v)=>({...v,fullName:v.full_name})) || [],
-    more:store.dashboardObj?.early_leave_workers?.total || 0,
+    data:dashboardStore.dashboardObj?.early_leave_workers?.list?.map((v)=>({...v,fullName:v.full_name})) || [],
+    more:dashboardStore.dashboardObj?.early_leave_workers?.total || 0,
   }
 })
 
 const userFourObj = computed(()=>{
   return {
-    data:store.dashboardObj?.work_hours?.list?.map((v)=>({...v,fullName:v.full_name})) || [],
-    more:store.dashboardObj?.work_hours?.total || 0,
+    data:dashboardStore.dashboardObj?.vacation_workers?.list?.map((v)=>({...v,fullName:v.full_name})) || [],
+    more:dashboardStore.dashboardObj?.vacation_workers?.total || 0,
   }
 })
 
-const onPreview = (v)=>{
-  store.resetPreviewParams()
-  store.previewParams.type = v
-  store.previewVisible = true
-  store.previewList = []
+const onPreview = (v, yesterday = false)=>{
+  dashboardStore.yesterday = yesterday
+  dashboardStore.previewParams.type = v
+  dashboardStore.previewList = []
+  dashboardStore.previewVisible = true
 }
 </script>
 
@@ -47,7 +48,7 @@ const onPreview = (v)=>{
     <div class="w-full grid grid-cols-12 gap-4 border-dashed border-surface-line rounded-xl"
          :class="[store.detailShow && ' border']"
     >
-      <div @click="onPreview('late_workers')" class="col-span-12 md:col-span-6 xl:col-span-3 border border-surface-line hover-effect-card px-4 py-2 rounded-xl bg-surface-section relative">
+      <div @click="onPreview('late_come')" class="col-span-12 md:col-span-6 xl:col-span-3 border border-surface-line hover-effect-card px-4 py-2 rounded-xl bg-surface-section relative">
         <div class="flex justify-between items-start">
           <div
               class="bg-warning/10 w-[40px] h-[40px] rounded-lg flex justify-center items-center">
@@ -61,10 +62,11 @@ const onPreview = (v)=>{
         <div class="z-10 text-right flex items-center justify-between mt-2">
           <div>
             <p class="text-left leading-[1.2] font-semibold text-textColor2 text-lg">{{userOneObj.more}}</p>
-            <p class="text-secondary text-xs font-medium leading-[1.2] line-clamp-1">{{$t('hcEvent.cards.cardOne')}}</p>
+            <p class="text-secondary text-xs font-medium leading-[1.2] line-clamp-1 text-left">{{$t('hcEvent.cards.cardOne')}}</p>
           </div>
           <span class="flex items-center">
             <UIUserGroup
+            @click.stop
                          :max="4"
                          :data="[...userOneObj.data, ...userOneObj.data]"
                          :has-more="userOneObj.more-3"
@@ -73,7 +75,7 @@ const onPreview = (v)=>{
         </div>
         <span class="z-1 opacity-30 absolute top-0 right-0 w-[160px] h-full bg-no-repeat bg-[url(/effect/primary-card.svg)]"></span>
       </div>
-      <div @click="onPreview('absent_workers')" class="col-span-12 md:col-span-6 xl:col-span-3 border border-surface-line hover-effect-card px-4 py-2 rounded-xl bg-surface-section relative">
+      <div @click="onPreview('not_come', true)" class="col-span-12 md:col-span-6 xl:col-span-3 border border-surface-line hover-effect-card px-4 py-2 rounded-xl bg-surface-section relative">
         <div class="flex justify-between items-start">
           <div
               class="bg-success/10 w-[40px] h-[40px] rounded-lg flex justify-center items-center">
@@ -87,11 +89,12 @@ const onPreview = (v)=>{
         <div class="z-10 text-right flex items-center justify-between mt-2">
           <div>
             <p class="text-left leading-[1.2] font-semibold text-textColor2 text-lg">{{userTwoObj.more}}</p>
-            <p class="text-secondary text-xs font-medium leading-[1.2] line-clamp-1">{{$t('hcEvent.cards.cardTwo')}}</p>
+            <p class="text-secondary text-xs font-medium leading-[1.2] line-clamp-1 text-left">{{$t('hcEvent.cards.cardTwo')}}</p>
           </div>
           <span class="flex items-center">
             <UIUserGroup
-                         :max="4"
+            @click.stop
+                        :max="4"
                          :data="[...userTwoObj.data, ...userTwoObj.data]"
                          :has-more="userTwoObj.more-3"
             />
@@ -100,7 +103,7 @@ const onPreview = (v)=>{
         </div>
         <span class="z-1 opacity-30 absolute top-0 right-0 w-[160px] h-full bg-no-repeat bg-[url(/effect/primary-card.svg)]"></span>
       </div>
-      <div @click="onPreview('early_leave_workers')" class="col-span-12 md:col-span-6 xl:col-span-3 border border-surface-line hover-effect-card px-4 py-2 rounded-xl bg-surface-section relative">
+      <div @click="onPreview('early_leave', true)" class="col-span-12 md:col-span-6 xl:col-span-3 border border-surface-line hover-effect-card px-4 py-2 rounded-xl bg-surface-section relative">
         <div class="flex justify-between items-start">
           <div
               class="bg-primary/10 w-[40px] h-[40px] rounded-lg flex justify-center items-center">
@@ -114,11 +117,12 @@ const onPreview = (v)=>{
         <div class="z-10 text-right flex items-center justify-between mt-2">
           <div>
             <p class="text-left leading-[1.2] font-semibold text-textColor2 text-lg">{{userTreeObj.more}}</p>
-            <p class="text-secondary text-xs font-medium leading-[1.2] line-clamp-1">{{$t('hcEvent.cards.cardThree')}}</p>
+            <p class="text-secondary text-xs font-medium leading-[1.2] line-clamp-1 text-left">{{$t('hcEvent.cards.cardThree')}}</p>
           </div>
           <span class="flex items-center">
 
             <UIUserGroup
+            @click.stop
                          :max="4"
                          :data="[...userTreeObj.data, ...userTreeObj.data]"
                          :has-more="userTreeObj.more-3"
@@ -128,12 +132,12 @@ const onPreview = (v)=>{
         </div>
         <span class="z-1 opacity-30 absolute top-0 right-0 w-[160px] h-full bg-no-repeat bg-[url(/effect/primary-card.svg)]"></span>
       </div>
-      <div @click="onPreview('early_leave_workers')" class="col-span-12 md:col-span-6 xl:col-span-3 border border-surface-line hover-effect-card px-4 py-2 rounded-xl bg-surface-section relative">
+      <div class="col-span-12 md:col-span-6 xl:col-span-3 border border-surface-line hover-effect-card px-4 py-2 rounded-xl bg-surface-section relative">
         <div class="flex justify-between items-start">
           <div
               class="bg-danger/10 w-[40px] h-[40px] rounded-lg flex justify-center items-center">
             <n-icon size="26" class="text-danger">
-              <ClockToolbox24Regular/>
+              <WeatherSunnyLow48Filled/>
             </n-icon>
           </div>
           <div class="px-2 py-1 rounded-lg bg-danger/10 text-danger text-[10px] font-medium">{{$t('content.tomorrow')}}</div>
@@ -142,11 +146,12 @@ const onPreview = (v)=>{
         <div class="z-10 text-right flex items-center justify-between mt-2">
           <div>
             <p class="text-left leading-[1.2] font-semibold text-textColor2 text-lg">{{userFourObj.more}}</p>
-            <p class="text-secondary text-xs font-medium leading-[1.2] line-clamp-1">{{$t('hcEvent.cards.cardFour')}}</p>
+            <p class="text-secondary text-xs font-medium leading-[1.2] line-clamp-1 text-left">{{$t('hcEvent.cards.cardFour')}}</p>
           </div>
           <span class="flex items-center">
             <UIUserGroup
-                         :max="4"
+            @click.stop
+                      :max="4"
                          :data="[...userFourObj.data, ...userFourObj.data]"
                          :has-more="userFourObj.more-3"
             />
@@ -162,7 +167,6 @@ const onPreview = (v)=>{
           </div>
         </n-collapse-transition>
       </div>
-
     </div>
   </div>
 

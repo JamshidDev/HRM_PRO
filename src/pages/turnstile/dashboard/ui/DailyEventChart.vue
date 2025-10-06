@@ -1,20 +1,47 @@
 <script setup>
 import VChart from "vue-echarts"
-import {useDashboardStore, useEventStore} from "@/store/modules/index.js"
+import {useTurnstileDashboardStore} from "@/store/modules/index.js"
 import i18n from "@/i18n/index.js"
-import Utils from "@/utils/Utils.js"
 import { use } from 'echarts/core'
 import { BarChart } from 'echarts/charts'
 import { TooltipComponent, GridComponent } from 'echarts/components'
 import { CanvasRenderer } from 'echarts/renderers'
 import * as echarts from 'echarts'
+import { onMounted, nextTick } from 'vue'
 
 use([TooltipComponent, GridComponent, BarChart, CanvasRenderer])
 
 
-const store = useEventStore()
+const emit = defineEmits(['barClick'])
+const dashboardStore = useTurnstileDashboardStore()
 const {t} = i18n.global
 const chartRef = ref(null)
+
+// Method to get start_time and end_time for a given hour
+const getTimeRange = (hour) => {
+  // Parse the hour (e.g., "07:00" -> 7)
+  const hourNum = parseInt(hour.split(':')[0])
+  
+  // Calculate start_time (previous hour)
+  const startHour = hourNum - 1
+  const startTime = `${startHour.toString().padStart(2, '0')}:00`
+  
+  // Calculate end_time (next hour)
+  const endHour = hourNum + 1
+  const endTime = `${endHour.toString().padStart(2, '0')}:00`
+  
+  return {
+    start_time: startTime,
+    end_time: endTime,
+  }
+}
+
+// Bar click handler
+const onBarClick = (params) => {
+  const timeRange = getTimeRange(params.name)
+  emit('barClick', timeRange)
+}
+
 const option = ref({
   tooltip: {
     trigger: 'axis',
@@ -66,11 +93,14 @@ const option = ref({
         offset: [0, 10]
       }
     },
+   
+   
+    
   ]
 })
 
 
-watch(()=> store.dailyEvents, (newValue)=>{
+watch(()=> dashboardStore.dailyEvents, (newValue)=>{
   if (!newValue || !Array.isArray(newValue)) return
   
   option.value.xAxis.data = newValue.map((v)=>{
@@ -82,15 +112,43 @@ watch(()=> store.dailyEvents, (newValue)=>{
   })
 
 
+  // Add click listener after data is updated
+  nextTick(() => {
+    if (chartRef.value) {
+      setTimeout(() => {
+        const chartInstance = chartRef.value.chart
+        if (chartInstance) {
+          chartInstance.off('click') // Remove existing listener
+          chartInstance.on('click', onBarClick) // Add new listener
+        }
+      }, 100)
+    }
+  })
+
 }, {
   immediate: true
+})
+
+// Add click event listener when chart is ready
+onMounted(() => {
+  nextTick(() => {
+    if (chartRef.value) {
+      // Wait a bit more for chart to be fully rendered
+      setTimeout(() => {
+        const chartInstance = chartRef.value.chart
+        if (chartInstance) {
+          chartInstance.on('click', onBarClick)
+        }
+      }, 100)
+    }
+  })
 })
 
 
 </script>
 
 <template>
-  <div class="w-full border border-surface-line rounded-lg bg-surface-section relative hover-effect-card">
+  <div class="w-full border border-surface-line rounded-lg bg-surface-section relative hover-effect-card h-full">
     <span class="z-1 opacity-40 absolute top-0 right-0 w-[160px] h-full bg-no-repeat bg-[url(/effect/effect-card-2.svg)]" ></span>
     <div class="px-3 pt-2">
       <span class="text-sm text-textColor2 font-semibold">{{$t('turnStileDashboard.form.dailyEvent')}}</span>

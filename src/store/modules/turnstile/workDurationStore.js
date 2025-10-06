@@ -51,6 +51,7 @@ export const useTurnstileWorkDurationStore = defineStore('turnstileWorkDurationS
             to:null,
             first_time:null,
         },
+        lateTotalItems:0,
         downloadLoading:false,
     }),
     actions: {
@@ -79,7 +80,7 @@ export const useTurnstileWorkDurationStore = defineStore('turnstileWorkDurationS
             this.lateLoading = true
             $ApiService.turnstileWorkDurationService._latecomers({params}).then((res) => {
                 this.lateList = res.data.data?.data || []
-                this.totalItems = res.data?.data?.total
+                this.lateTotalItems = res.data?.data?.total
             }).finally(() => {
                 this.lateLoading = false
             })

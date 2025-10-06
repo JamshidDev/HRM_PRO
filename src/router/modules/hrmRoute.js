@@ -27,6 +27,7 @@ import IncentivePage from "@/pages/hrm/incentive/IncentivePage.vue"
 import ReportPage from "@/pages/hrm/report/ReportPage.vue"
 import {PensionerPage, PolyclinicPage, VacancyPage} from "@/pages/hrm/index.js"
 import {LmsWorkerPage} from "@/pages/lms/index.js"
+import OtherPage from "@/pages/hrm/other/page.vue"
 
 export default [
     {
@@ -160,5 +161,10 @@ export default [
     {
         path:Utils.routeHrmPathMaker(AppPaths.LmsWorker),
         component:LmsWorkerPage,
+    },
+    {
+        path:Utils.routeHrmPathMaker(AppPaths.Other),
+        name:AppPaths.Other.substring(1),
+        component:OtherPage,
     },
 ]

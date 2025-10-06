@@ -52,6 +52,7 @@ export const useLmsWorkerStore = defineStore('lmsWorkerStore', {
                     ...v,
                     name:v.name,
                     position:v?.specialization?.name + `\n (${v.count_workers})`,
+                    subPosition:v?.start_date,
                 }))
             }).finally(()=>{
                 this.eduPlanLoading= false

@@ -41,12 +41,10 @@ const statuses = {
           <th class="text-center! min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
           <th class="min-w-[200px]">{{$t('content.worker')}}</th>
           <th class="min-w-[100px] w-[300px]">{{$t('turnstile.workDurationPage.building')}}</th>
-          <th class="min-w-[100px] w-[120px] !text-center">{{$t('turnstile.workDurationPage.workTime')}}</th>
           <th class="min-w-[180px] w-[180px] !text-center">{{$t('turnstile.workDurationPage.actionTime')}}</th>
 
           <th class="min-w-[100px] w-[100px] !text-center">{{$t('turnstile.workDurationPage.action')}}</th>
-          <th class="min-w-[100px] w-[100px] !text-center">{{$t('content.status')}}</th>
-          <th class="min-w-[40px] w-[40px]">{{$t('content.action')}}</th>
+<!--          <th class="min-w-[40px] w-[40px]">{{$t('content.action')}}</th>-->
         </tr>
         </thead>
         <tbody>
@@ -66,12 +64,7 @@ const statuses = {
               />
             </div>
           </td>
-          <td>{{item.building?.name}}</td>
-          <td class="!text-center">
-            <n-button type="info" :ghost="!Math.round(item.total_minutes/60)" circle size="tiny">
-              <span class="text-[14px] font-bold">{{Math.round(item.total_minutes/60)}}</span>
-            </n-button>
-          </td>
+          <td>{{item.terminal?.name}}</td>
           <td class="!text-center">
             <UIBadge :show-icon="false" :label="Utils.timeWithMonth(item?.event_time)" />
           </td>
@@ -86,19 +79,15 @@ const statuses = {
               </template>
             </n-button>
           </td>
-          <td class="!text-center">
-            <n-button tertiary size="tiny" :type="item.status === statuses.AT_WORK ? 'primary' : 'success' ">
-              <span class="text-[14px]">{{$t(item.status === statuses.AT_WORK ? 'turnstile.workDurationPage.at_work' : 'turnstile.workDurationPage.outside')}}</span>
-            </n-button>
-          </td>
-          <td>
-            <UIMenuButton
-                :data="item"
-                show-view
-                :show-delete="false"
-                @selectEv="onSelectEv"
-            />
-          </td>
+
+<!--          <td>-->
+<!--            <UIMenuButton-->
+<!--                :data="item"-->
+<!--                show-view-->
+<!--                :show-delete="false"-->
+<!--                @selectEv="onSelectEv"-->
+<!--            />-->
+<!--          </td>-->
         </tr>
         </tbody>
       </n-table>

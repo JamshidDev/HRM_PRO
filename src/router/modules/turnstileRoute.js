@@ -14,7 +14,7 @@ import {
     TelegramUserPage,
     SyncLogPage,
     DashboardPage,
-
+    HKWorkDurationPage,
 } from "@/pages/turnstile"
 
 
@@ -82,6 +82,11 @@ export default [
     {
         path:Utils.routeTurnstilePathMaker(AppPaths.Dashboard),
         component: ()=>DashboardPage,
+        children:[],
+    },
+    {
+        path:Utils.routeTurnstilePathMaker(AppPaths.HCWorkDuration),
+        component: ()=>HKWorkDurationPage,
         children:[],
     },
 ]

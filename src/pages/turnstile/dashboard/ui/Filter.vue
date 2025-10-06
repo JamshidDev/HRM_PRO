@@ -1,63 +1,43 @@
 <script setup>
-import {useAccountStore, useComponentStore, useEventStore} from "@/store/modules/index.js"
-import {UIPageFilter, UISelect} from "@/components/index.js"
-import i18n from "@/i18n/index.js"
+import {useAccountStore, useComponentStore, useEventStore, useTurnstileDashboardStore} from "@/store/modules/index.js"
+import {UISelect} from "@/components/index.js"
 
-const {t} = i18n.global
+
 const store = useEventStore()
+const dashboardStore = useTurnstileDashboardStore()
 const accStore = useAccountStore()
 
+let timer = null
 const filterEvent = ()=>{
-  if(!accStore.checkAction(accStore.pn.admin)) return
-  store._dashboard()
+  if(!accStore.checkAction(accStore.pn.turnstileDashboardRead)) return
+  clearTimeout(timer)
+  timer = setTimeout(()=>{
+    dashboardStore._dashboard()
+  }, 1000)
+
 }
 
 const componentStore = useComponentStore()
 
 const onChangeStructure = (v)=>{
-  store.dashboardParams.organizations=v
+  dashboardStore.dashboardParams.organizations=v
   filterEvent()
 }
 
-const onChangeDate =()=>{
-  filterEvent()
-}
 
-const beforeShow = (v)=>{
+
+onMounted(()=>{
   if(componentStore.structureList.length === 0){
     componentStore._structures()
   }
   if(store.levelList.length===0){
     store._levels()
   }
+})
 
-}
-
-const resetFilter = ()=>{
-  store.dashboardParams.organizations = []
-  store.dashboardParams.access_levels = []
-  store.dashboardParams.direction = null
-  store.dashboardParams.start = null
-  store.dashboardParams.end = null
-  filterEvent()
-}
-
-const filterCount = computed(()=>Number(Boolean(store.dashboardParams.organizations.length))
-    + Number(Boolean(store.dashboardParams.access_levels.length))
-    + Number(Boolean(store.dashboardParams.start))
-    + Number(Boolean(store.dashboardParams.end))
-    + Number(Boolean(store.dashboardParams.direction)) )
-
-const directionList = [
-  {
-    name:t('turnstile.workDurationPage.enter'),
-    id:1,
-  },
-  {
-    name:t('turnstile.workDurationPage.exit'),
-    id:0,
-  },
-]
+onBeforeUnmount(()=>{
+  clearTimeout(timer)
+})
 
 
 
@@ -66,27 +46,21 @@ const directionList = [
 </script>
 
 <template>
-  <UIPageFilter
-      @show="beforeShow"
-      :filter-count="filterCount"
-      @onClear="resetFilter"
-      :show-add-button="false"
-      :show-filter-button="false"
-      :show-search-input="false"
-  >
-    <template #fullFilterContent>
-      <div class="grid grid-cols-12 gap-2">
+   <div class="grid grid-cols-12 gap-2">
+        <div class="text-lg lg:col-span-6 md:col-span-6 col-span-12 flex items-center text-textColor2 font-medium">
+          {{ $t('turnStileDashboard.name') }}
+        </div>
         <div class="lg:col-span-4 md:col-span-6 col-span-12">
           <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{$t('actionLog.table.structure')}}</label>
           <UISelect
               :options="componentStore.structureList"
-              :modelV="store.dashboardParams.organizations"
-              @defaultValue="(v)=>store.dashboardParams.organizations=v"
-              @updateModel="onChangeStructure"
-              :checkedVal="store.structureCheck2"
-              @updateCheck="(v)=>store.structureCheck2=v"
+              :modelV="dashboardStore.dashboardParams.organizations"
+              :checkedVal="dashboardStore.structureCheck2"
               :loading="componentStore.structureLoading"
               v-model:search="componentStore.structureParams.search"
+              @defaultValue="(v)=>dashboardStore.dashboardParams.organizations=v"
+              @updateModel="onChangeStructure"
+              @updateCheck="(v)=>dashboardStore.structureCheck2=v"
               @onSearch="componentStore._structures"
               @onSubmit="filterEvent"
           />
@@ -94,23 +68,22 @@ const directionList = [
         <div class="lg:col-span-2 md:col-span-6 col-span-12">
           <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{$t('turnstile.hcWorkersPage.access_levels')}}</label>
           <n-select
+              clearable 
               multiple
-              clearable
-              filterable
-              v-model:value="store.dashboardParams.access_levels"
+              v-model:value="dashboardStore.dashboardParams.access_levels"
               :options="store.levelList"
               :loading="store.levelLoading"
               label-field="name"
               value-field="id"
               @update:value="filterEvent"
-              :max-tag-count="2"
+              :max-tag-count="1"
           />
         </div>
-        <div class="lg:col-span-2 md:col-span-4 col-span-12">
+        <!-- <div class="lg:col-span-2 md:col-span-4 col-span-12">
           <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{$t('hcEvent.form.direction')}}</label>
           <n-select
               clearable
-              v-model:value="store.dashboardParams.direction"
+              v-model:value="dashboardStore.dashboardParams.direction"
               :options="directionList"
               label-field="name"
               value-field="id"
@@ -121,7 +94,7 @@ const directionList = [
         <div class="lg:col-span-2 md:col-span-4 col-span-12">
           <label class="mt-3 text-xs text-gray-500">{{ $t('content.from') }}</label>
           <n-date-picker
-              v-model:value="store.dashboardParams.start"
+              v-model:value="dashboardStore.dashboardParams.start"
               @update:value="onChangeDate"
               type="datetime"
               update-value-on-close
@@ -131,14 +104,12 @@ const directionList = [
         <div class="lg:col-span-2 md:col-span-4 col-span-12">
           <label class="mt-3 text-xs text-gray-500">{{ $t('content.to') }}</label>
           <n-date-picker
-              v-model:value="store.dashboardParams.end"
+              v-model:value="dashboardStore.dashboardParams.end"
               @update:value="onChangeDate"
               type="datetime"
               update-value-on-close
               :actions="null"
               clearable />
-        </div>
+        </div> -->
       </div>
-    </template>
-  </UIPageFilter>
 </template>

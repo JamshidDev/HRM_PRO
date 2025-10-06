@@ -163,7 +163,7 @@ onMounted(()=>{
       <UIPagination
           :page="store.lateParams.page"
           :per_page="store.lateParams.size"
-          :total="store.totalItems"
+          :total="store.lateTotalItems"
           @change-page="onChangePage"
       />
     </n-spin>

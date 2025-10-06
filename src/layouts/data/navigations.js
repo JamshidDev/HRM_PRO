@@ -55,6 +55,7 @@ import {
     AppFolder24Filled,
     ShiftsCheckmark20Regular,
     CellularData124Filled,
+    Clock24Filled,
 } from "@vicons/fluent"
 import {AppPaths} from "@/utils/index.js";
 import Utils from "@/utils/Utils.js"
@@ -343,7 +344,7 @@ export const navigations = [
                 path: Utils.routeTurnstilePathMaker(AppPaths.Dashboard),
                 icon: Grid20Filled,
                 color: 'bg-dark',
-                permission: appPermissions.admin,
+                permission: appPermissions.turnstileDashboard,
             },
             {
                 label: 'turnstile.buildingPage.title',
@@ -428,6 +429,13 @@ export const navigations = [
                 icon: ArrowSyncCircle24Filled,
                 color: 'bg-success',
                 permission: appPermissions.turnstileHikCentralSync,
+            },
+            {
+                label: 'hcWorkDuration.name',
+                path: Utils.routeTurnstilePathMaker(AppPaths.HCWorkDuration),
+                icon: Clock24Filled,
+                color: 'bg-success',
+                permission: appPermissions.admin,
             },
         ]
     },

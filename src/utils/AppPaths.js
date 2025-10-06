@@ -94,6 +94,7 @@ export const AppPaths = {
     Incentive: "/incentive",
     Report: "/report",
     WorkDuration: "/work-duration",
+    HCWorkDuration: "/hc-work-duration",
     AccessLevels: "/access-levels",
     OrgAccessLevels: "/org-access-levels",
     HcWorkers: "/hc-workers",
@@ -117,6 +118,7 @@ export const AppPaths = {
     Notification: "/notification",
     LmsWorker: "/education-worker",
     SyncLog: "/sync-log",
+    Other: "/other",
 }
 
 export const AppLayouts ={

@@ -14,6 +14,10 @@ const props = defineProps({
     type:Boolean,
     default:true
   },
+  icon:{
+    type:Object,
+    default:null,
+  },
 
 })
 
@@ -57,7 +61,7 @@ const badgeType = computed(()=>{
   return types.filter(v=>v.id === props.type)[0].type
 })
 const badgeIcon = computed(()=>{
-  return types.filter(v=>v.id === props.type)[0].icon
+  return types.filter(v=>v.id === props.type)[0]?.icon
 })
 
 
@@ -71,7 +75,7 @@ const badgeIcon = computed(()=>{
         <div v-if="showIcon" class="w-[20px] flex justify-center">
             <slot name="icon">
               <n-icon size="12" class="ui--badge-icon">
-                <component :is="badgeIcon"/>
+                <component :is="icon?icon:badgeIcon"/>
               </n-icon>
             </slot>
         </div>

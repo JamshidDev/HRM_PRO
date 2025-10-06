@@ -15,10 +15,23 @@ const _download = async (payload)=>{
     return await axios.get(`/v1/turnstile/terminal-logs/export`, {params:payload?.params})
 }
 
+const _HKIndex =async (payload)=>{
+    return await axios.get(`/v1/turnstile/hik-central/work-durations`, {params:payload.params})
+}
+const _HKShow =async (payload)=>{
+    return await axios.get(`/v1/turnstile/hik-central/work-durations/${payload.id}`, {params:payload.params})
+}
+const _HKShowEventsInDay =async (payload)=>{
+    return await axios.get(`/v1/turnstile/hik-central/work-durations/${payload.id}/events`, {params:payload.params})
+}
+
 
 export default {
     _index,
     _logs,
     _latecomers,
     _download,
+    _HKIndex,
+    _HKShow,
+    _HKShowEventsInDay
 }
