@@ -559,7 +559,12 @@ const appPermissions = {
     turnstileDashboard:"turnstile-dashboard",
     turnstileDashboardRead:"turnstile-dashboard-read",
     turnstileDashboardWrite:"turnstile-dashboard-write",
-
+    turnstileHcpDurationShow:"turnstile-hcp-duration-show",
+    
+    turnstileHcpDuration:"turnstile-hcp-duration",
+    turnstileHcpDurationWrite:"turnstile-hcp-duration-write",
+    turnstileHcpDurationRead:"turnstile-hcp-duration-read",
+    turnstileHcpDuration:"turnstile-hcp-duration",
 
     hospital: "hospital",
     hospitalExpired: "hospital-expired",
@@ -571,6 +576,7 @@ const appPermissions = {
     hospitalPensioner: "hospital-pensioner",
     hospitalPensionerRead: "hospital-pensioner-read",
     hospitalPensionerWrite: "hospital-pensioner-write",
+
 
 
     useful:'useful',

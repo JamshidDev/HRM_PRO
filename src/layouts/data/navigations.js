@@ -435,7 +435,7 @@ export const navigations = [
                 path: Utils.routeTurnstilePathMaker(AppPaths.HCWorkDuration),
                 icon: Clock24Filled,
                 color: 'bg-success',
-                permission: appPermissions.admin,
+                permission: appPermissions.turnstileHcpDuration,
             },
         ]
     },

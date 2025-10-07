@@ -1,9 +1,6 @@
 import {defineStore} from "pinia";
-import i18n from "@/i18n/index.js"
-import {turnstileHikCentralAccessService, turnstileHikCentralWorkerService} from "@/service/v1/turnstile/index.js"
 import Utils from "@/utils/Utils.js"
 
-const {t} = i18n.global
 export const useTurnstileHikCentralWorkerStore = defineStore('turnstileHikCentralWorkerStore', {
     state: () => ({
         list: [],
@@ -36,7 +33,8 @@ export const useTurnstileHikCentralWorkerStore = defineStore('turnstileHikCentra
             photo_index: null,
             access_level_ids: [],
             photo: null,
-            end_time: null
+            end_time: null,
+            isWorker: 1,
         },
         editPayload:{
             id:null,
@@ -48,6 +46,7 @@ export const useTurnstileHikCentralWorkerStore = defineStore('turnstileHikCentra
         levelLoading:false,
         levelList:[],
         selectedRowId:null,
+        userVisible:false,
 
     }),
     actions: {
@@ -105,12 +104,14 @@ export const useTurnstileHikCentralWorkerStore = defineStore('turnstileHikCentra
             })
         },
         _worker_photos(callback) {
+            console.log(typeof callback)
+            
             this.photosLoading = true
             this.photos = []
             $ApiService.turnstileTerminalUserService._worker_photos({params: {worker_id: this.payload.worker_id}}).then((res) => {
                 this.photos = res.data.data
-                if(callback){
-                    callback?.call()
+                if(typeof callback === "function"){
+                    callback?.()
                 }
 
             }).finally(() => {
@@ -128,41 +129,22 @@ export const useTurnstileHikCentralWorkerStore = defineStore('turnstileHikCentra
                 this.accessLevelsLoading = false
             })
         },
-        // _create() {
-        //     this.saveLoading = true
-        //     let data = {
-        //         ...this.payload,
-        //     }
-        //     $ApiService.turnstileBuildingService._create({data}).then((res) => {
-        //         this.visible = false
-        //         this._index()
-        //
-        //     }).finally(() => {
-        //         this.saveLoading = false
-        //     })
-        // },
-        // _update() {
-        //     this.saveLoading = true
-        //     let data = {
-        //         ...this.payload,
-        //     }
-        //     $ApiService.turnstileBuildingService._update({data, id: this.elementId}).then((res) => {
-        //         this.visible = false
-        //         this._index()
-        //
-        //     }).finally(() => {
-        //         this.saveLoading = false
-        //     })
-        // },
-        // _delete() {
-        //     this.deleteLoading = true
-        //     $ApiService.turnstileBuildingService._delete({id: this.elementId}).then((res) => {
-        //         this._index()
-        //
-        //     }).finally(() => {
-        //         this.deleteLoading = false
-        //     })
-        // },
+        _delete(){
+            this.loading = true
+            $ApiService.turnstileHikCentralWorkerService._delete({id: this.elementId}).then((res) => {
+                this._index()
+            }).finally(() => {
+                this.loading = false
+            })
+        },
+        _deleteAccessLevel(id){
+            this.loading = true
+            $ApiService.turnstileHikCentralWorkerService._detach_worker({data:{access_level_id:id}}).then((res) => {
+                this._index()
+            }).finally(() => {
+                this.loading = false
+            })
+        },
         resetForm() {
             this.payload.level_org_id = []
             this.payload.worker_org_id = []

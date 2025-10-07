@@ -25,6 +25,7 @@ const onAdd = ()=>{
   store.resetForm()
   store.visibleType = true
   store.visible = true
+  store.payload.isWorker = 1
 }
 
 const onSearch = ()=>{

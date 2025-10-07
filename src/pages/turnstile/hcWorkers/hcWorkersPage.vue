@@ -4,6 +4,7 @@ import Table from "./ui/Table.vue"
 import Form from "./ui/Form.vue"
 import faceForm from "./ui/faceForm.vue"
 import Filter from "./ui/Filter.vue"
+import UserForm from "@/pages/turnstile/terminalUser/ui/UserForm.vue"
 import deviceForm from "../accessLevels/ui/deviceForm.vue"
 import {
   useAccountStore,
@@ -21,12 +22,19 @@ onMounted(()=>{
   store.params.search = null
   store._index()
 })
+
+const onSuccessEv = (v)=>{
+  console.log(v)
+  store.userVisible = false
+}
 </script>
 
 <template>
   <UIPageContent>
+
     <Filter/>
     <Table/>
+
     <UIDrawer
         :visible="store.visible"
         @update:visible="(v)=>store.visible = v"
@@ -36,6 +44,7 @@ onMounted(()=>{
         <Form/>
       </template>
     </UIDrawer>
+
     <UIModal
         :visible="store.editVisible"
         @update:visible="(v)=>store.editVisible = v"
@@ -43,6 +52,7 @@ onMounted(()=>{
     >
       <faceForm/>
     </UIModal>
+
     <UIModal
         width="900px"
         :visible="levelStore.deviceVisible"
@@ -50,6 +60,19 @@ onMounted(()=>{
         :title="$t('turnstile.hcWorkersPage.device')"
     >
       <deviceForm/>
+    </UIModal>
+
+    <UIModal
+        :width="1200"
+        :visible="store.userVisible"
+        @update:visible="(v)=>store.userVisible = v"
+        :title="$t('turnstile.terminalUser.addUser')"
+    >
+      <template #default>
+        <UserForm
+          @onSuccess="onSuccessEv"
+        />
+      </template>
     </UIModal>
 
   </UIPageContent>

@@ -8,8 +8,8 @@ const _add_worker = async (payload)=>{
     return await axios.post(`/v1/turnstile/hik-central/workers/add`, payload)
 }
 
-const _detach_worker = async ()=>{
-    return await axios.get(`/v1/turnstile/hik-central/workers/detach`)
+const _detach_worker = async(payload)=>{
+    return await axios.post(`/v1/turnstile/hik-central/workers/detach`, payload.data)
 }
 
 const _access_levels = async (params)=>{
@@ -20,6 +20,10 @@ const _updateFace = async (payload)=>{
     return await axios.post(`/v1/turnstile/hik-central/workers/update-face`, payload?.data)
 }
 
+const _delete = async (payload)=>{
+    return await axios.delete(`/v1/turnstile/hik-central/workers/destroy/${payload.id}`)
+}
+
 
 export default {
     _index,
@@ -27,4 +31,5 @@ export default {
     _detach_worker,
     _access_levels,
     _updateFace,
+    _delete,
 }

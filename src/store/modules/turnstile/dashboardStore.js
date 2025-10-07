@@ -7,7 +7,6 @@ import {defineStore} from "pinia";
 import i18n from "@/i18n/index.js"
 import Utils from "@/utils/Utils.js"
 import { getTableConfig } from "@/pages/turnstile/dashboard/ui/tableConfig";
-const router = useRouter()
 
 const {t} = i18n.global
 
@@ -413,6 +412,7 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
             }
             
             $ApiService.eventService._download({ params }).then(() => {
+                const router = useRouter()
                 this.previewVisible = false
                 // You can add router navigation here if needed
                 router.push(Utils.routeTurnstilePathMaker(AppPaths.Export))

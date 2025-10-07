@@ -1,13 +1,15 @@
 <script setup>
 import validationRules from "@/utils/validationRules.js";
-import {useComponentStore, useTurnstileHikCentralWorkerStore} from "@/store/modules/index.js";
+import {useComponentStore, useTurnstileHikCentralWorkerStore, useTurnstileTerminalUserStore} from "@/store/modules/index.js";
 import {UISelect, NoDataIllustration, UINSelect} from "@/components/index.js"
-import {Checkmark16Filled, AddCircle16Filled} from "@vicons/fluent"
+import {Checkmark16Filled, AddCircle16Filled, AddCircle28Regular} from "@vicons/fluent"
 import {UICropper} from "@/components/index.js";
+import checkWorkerSelect from '@/pages/lms/Teacher/ui/checkWorkerSelect.vue'
 
 const formRef = ref(null)
 const store = useTurnstileHikCentralWorkerStore()
 const componentStore = useComponentStore()
+const terminalUserStore = useTurnstileTerminalUserStore()
 
 const onSubmit = () => {
   formRef.value?.validate((error) => {
@@ -28,6 +30,13 @@ const changeAccessLevelOrg = (v) => {
   }
 }
 
+const resetWorkerId = ()=>{
+  store.payload.worker_id = null
+  store.payload.search_worker_id = null
+  store.payload.photo_index = null
+  store.photos = []
+}
+
 const changeWorkerOrg = (v) => {
   store.payload.worker_org_id = v
   store.payload.worker_id = null
@@ -43,7 +52,6 @@ const changeWorkerOrg = (v) => {
 const onChangeSearchWorker = (_, obj) => {
   store.photos = []
   store.payload.photo_index = null
-  console.log(obj)
   if (obj) {
     store.payload.worker_id = obj.worker.id
     store._worker_photos(obj.worker.id)
@@ -69,6 +77,7 @@ const workerRenderLabel = (option) => {
     ])
   ];
 }
+
 const workerRenderValue = ({option}) => {
   return [
     h('div', {class: 'flex flex-col'}, [
@@ -106,6 +115,11 @@ const onResult = (v) => {
   })
 }
 
+const openAddUserForm = () =>{
+  terminalUserStore.resetUserForm()
+  store.userVisible = true
+}
+
 onMounted(() => {
   componentStore.structureParams.search = null
   componentStore.workerParams.search = null
@@ -127,54 +141,58 @@ onMounted(() => {
           class="flex flex-col"
       >
 
-        <!--        <n-radio-group-->
-        <!--            class="mx-auto mb-3"-->
-        <!--            @update:value="resetWorkerId"-->
-        <!--            v-model:value="store.payload.role"-->
-        <!--        >-->
-        <!--          <n-radio-button :value="0">-->
-        <!--            {{$t('turnstile.terminalUser.companyWorker')}}-->
-        <!--          </n-radio-button>-->
-        <!--          <n-radio-button :value="1">-->
-        <!--            {{$t('turnstile.terminalUser.notCompanyWorker')}}-->
-        <!--          </n-radio-button>-->
-        <!--          <n-radio-button :value="2">-->
-        <!--            {{$t('turnstile.terminalUser.hikCentral')}}-->
-        <!--          </n-radio-button>-->
-        <!--        </n-radio-group>-->
-        <div class="p-1 rounded-sm border border-dashed mb-1 border-surface-line">
-          <n-form-item :label="$t(`content.organization`)" path="worker_org_id" rule-path="requiredMultiSelectField">
-            <UISelect
-                :options="componentStore.structureList"
-                :modelV="store.payload.worker_org_id"
-                @defaultValue="changeWorkerOrg"
-                @updateModel="changeWorkerOrg"
-                :checkedVal="store.structureCheck"
-                @updateCheck="(v)=>store.structureCheck=v"
-                :loading="componentStore.structureLoading"
-                v-model:search="componentStore.structureParams.search"
-                @onSearch="componentStore._structures"
-                :multiple="false"
-            />
-          </n-form-item>
+        <n-radio-group
+            class="mx-auto mb-3"
+            @update:value="resetWorkerId"
+            v-model:value="store.payload.isWorker"
+        >
+          <n-radio-button :value="1">
+            {{$t('turnstile.terminalUser.companyWorker')}}
+          </n-radio-button>
+          <n-radio-button :value="0">
+            {{$t('turnstile.terminalUser.notCompanyWorker')}}
+          </n-radio-button>
+        </n-radio-group>
 
-          <n-form-item :label="$t(`content.staff`)" path="worker_id" rule-path="requiredNumberField">
-            <n-select
-                :disabled="!store.payload.worker_org_id.length"
-                v-model:value="store.payload.worker_wrapper_id"
-                filterable
-                :options="componentStore.workerList"
-                label-field="name"
-                value-field="id"
-                :render-label="workerRenderLabel"
-                :render-tag="workerRenderValue"
-                :loading="componentStore.workerLoading"
-                @scroll="componentStore.onScrollWorker"
-                @search="componentStore.onSearchWorker"
-                :reset-menu-on-options-change="false"
-                @update:value="onChangeSearchWorker"
-            />
+        
+        <div class="p-1 rounded-sm border border-dashed mb-1 border-surface-line">
+          <template v-if="store.payload.isWorker" >
+            <n-form-item :label="$t(`content.organization`)" path="worker_org_id" rule-path="requiredMultiSelectField">
+              <UISelect
+                  :options="componentStore.structureList"
+                  :modelV="store.payload.worker_org_id"
+                  @defaultValue="changeWorkerOrg"
+                  @updateModel="changeWorkerOrg"
+                  :checkedVal="store.structureCheck2"
+                  @updateCheck="(v)=>store.structureCheck2=v"
+                  :loading="componentStore.structureLoading"
+                  v-model:search="componentStore.structureParams.search"
+                  @onSearch="componentStore._structures"
+                  :multiple="false"
+              />
+            </n-form-item>
+            <n-form-item :label="$t(`content.staff`)" path="worker_id" rule-path="requiredNumberField">
+              <n-select
+                  :disabled="!store.payload.worker_org_id.length"
+                  v-model:value="store.payload.worker_wrapper_id"
+                  filterable
+                  :options="componentStore.workerList"
+                  label-field="name"
+                  value-field="id"
+                  :render-label="workerRenderLabel"
+                  :render-tag="workerRenderValue"
+                  :loading="componentStore.workerLoading"
+                  @scroll="componentStore.onScrollWorker"
+                  @search="componentStore.onSearchWorker"
+                  :reset-menu-on-options-change="false"
+                  @update:value="onChangeSearchWorker"
+              />
+            </n-form-item>
+          </template>
+          <n-form-item v-else :label="$t(`content.staff`)" path="worker_id" rule-path="requiredNumberField">
+            <checkWorkerSelect v-model:value="store.payload.worker_id" @update:value="onChangeWorker" />
           </n-form-item>
+          <p v-if="!store.payload.isWorker" @click="openAddUserForm" class="text-xs text-primary flex gap-1 items-center cursor-pointer justify-end"> <n-icon size="16"><AddCircle28Regular/></n-icon>  {{$t('turnstile.terminalUser.addBtn')}}</p>
 
         </div>
         <n-form-item :label="$t(`content.deadline`)" :feedback="$t('turnstile.terminalUser.deadline_feedback')">

@@ -14,7 +14,6 @@ export const  useAppSetting = {
       pfx:"pfx"
     },
     appPermission:'appPermission',
-
     adminSecret:'JAMACODER',
     adminExistSecret:'EXIST',
     adminSecretKey:"secretKey",

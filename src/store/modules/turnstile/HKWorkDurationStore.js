@@ -1,3 +1,4 @@
+import Utils from "@/utils/Utils";
 import {defineStore} from "pinia";
 
 export const useHKWorkDurationStore = defineStore('HKWorkDurationStore', {
@@ -14,6 +15,7 @@ export const useHKWorkDurationStore = defineStore('HKWorkDurationStore', {
             page: 1,
             per_page: 10,
             search: null,
+            date: null,
             access_levels:[],
             organizations:[],
         },
@@ -38,6 +40,7 @@ export const useHKWorkDurationStore = defineStore('HKWorkDurationStore', {
                 ...this.params,
                 organizations: this.params.organizations.map(v => v.id).toString() || undefined,
                 access_levels: this.params.access_levels.toString() || undefined,
+                date: Utils.timeToZone(this.params.date),
             }
             $ApiService.turnstileWorkDurationService._HKIndex({params}).then((res) => {
                 this.list = res.data.data.data.data.map(v=>({

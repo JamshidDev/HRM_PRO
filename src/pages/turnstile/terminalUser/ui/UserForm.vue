@@ -6,6 +6,8 @@ import Utils from "@/utils/Utils.js"
 import PhoneForm from "@/pages/hrm/condidate/ui/PhoneForm.vue"
 import PhotoForm from "@/pages/hrm/condidate/ui/PhotoForm.vue"
 
+const emit = defineEmits(['onSuccess'])
+
 const store = useTurnstileTerminalUserStore()
 const componentStore = useComponentStore()
 const formRef = ref(null)
@@ -13,7 +15,9 @@ const formRef = ref(null)
 const onSubmit = ()=>{
   formRef.value?.validate((error)=>{
     if(!error){
-      store.saveUser()
+      store.saveUser((v)=>{
+        emit('onSuccess', v)
+      })
     }
   })
 }

@@ -1,7 +1,7 @@
 <script setup>
-import {NoDataPicture, UIBadge, UIMenuButton, UIPagination, UIUser} from "@/components/index.js"
+import {NoDataPicture,UIMenuButton, UIPagination, UIUser} from "@/components/index.js"
 import { useTurnstileHikCentralWorkerStore} from "@/store/modules/index.js"
-import {AddSquareMultiple20Regular} from '@vicons/fluent'
+import {AddSquareMultiple20Regular, DeleteArrowBack20Filled} from '@vicons/fluent'
 import {useAccountStore} from "@/store/modules/index.js"
 const accStore = useAccountStore()
 
@@ -22,9 +22,10 @@ const onEdit = (v)=>{
 }
 
 const onSelectEv = (v)=>{
+  store.elementId = v.data.worker.id
   if(!accStore.checkAction(accStore.pn.turnstileHikCentralWorkersWrite)) return
   if(v.key === 'delete'){
-    store.elementId = v.data.worker.id
+    onDelete()
   }else if(v.key==='edit'){
     store.resetEditPayload()
     store.resetForm()
@@ -45,6 +46,14 @@ const checkDeviceExpiry = (date)=>{
 
 const onSelect = (v)=>{
   store.selectedRowId =store.selectedRowId === v.id? null : v.id
+}
+
+const onDelete = ()=>{
+  store._delete()
+}
+
+const onDeleteAccessLevel = (v)=>{
+  store._deleteAccessLevel(v.id)
 }
 
 
@@ -88,12 +97,19 @@ const onSelect = (v)=>{
               <template v-if="store.selectedRowId !== item.id">
                 <template v-for="level in item.access_levels.slice(0,3)" :key="level.id">
                   <n-button
+                  class="!px-1"
                       dashed
                       :type="checkDeviceExpiry(level.to)"
                   >
-                    <div class="flex flex-col p-1">
+                    <div class="flex flex-col px-4 relative group overflow-hidden">
                       <span class="font-semibold"> {{level.name}}</span>
                       <span class="text-xs text-secondary"> {{level.to}}</span>
+                      <span @click.stop="onDeleteAccessLevel(level)" class="px-1 absolute w-full h-full text-danger flex items-center gap-2 top-0 right-[-200px] group-hover:right-[4px] transition-all duration-300 z-[999] bg-surface-section">
+                        <n-icon size="24">
+                          <DeleteArrowBack20Filled/>
+                        </n-icon>
+                        {{ $t('content.delete') }}
+                      </span>
                     </div>
 
                     <template #icon>
@@ -122,9 +138,15 @@ const onSelect = (v)=>{
                       dashed
                       :type="checkDeviceExpiry(level.to)"
                   >
-                    <div class="flex flex-col p-1">
+                  <div class="flex flex-col px-4 relative group overflow-hidden">
                       <span class="font-semibold"> {{level.name}}</span>
                       <span class="text-xs text-secondary"> {{level.to}}</span>
+                      <span @click.stop="onDeleteAccessLevel(level)" class="px-1 absolute w-full h-full text-danger flex items-center gap-2 top-0 right-[-200px] group-hover:right-[4px] transition-all duration-300 z-[999] bg-surface-section">
+                        <n-icon size="24">
+                          <DeleteArrowBack20Filled/>
+                        </n-icon>
+                        {{ $t('content.delete') }}
+                      </span>
                     </div>
 
                     <template #icon>

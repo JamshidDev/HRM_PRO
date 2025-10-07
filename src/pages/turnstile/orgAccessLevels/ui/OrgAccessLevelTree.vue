@@ -1,6 +1,6 @@
 <script setup>
 import {useTurnstileHikCentralStore, useComponentStore} from "@/store/modules/index.js";
-import {TreeData, UIUser} from "@/components/index.js"
+import {TreeData} from "@/components/index.js"
 
 const store = useTurnstileHikCentralStore()
 const componentStore = useComponentStore()

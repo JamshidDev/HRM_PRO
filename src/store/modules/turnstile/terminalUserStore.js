@@ -187,7 +187,7 @@ export const useTurnstileTerminalUserStore = defineStore('turnstileTerminalUserS
         onDeletePhoto(v){
             this.userPayload.photos = this.userPayload.photos.filter((x)=>x.id !== v.id)
         },
-        saveUser(){
+        saveUser(callback){
             let data = {
                 ...this.userPayload,
                 pin:this.userPayload.pin.split('-').join(""),
@@ -202,9 +202,9 @@ export const useTurnstileTerminalUserStore = defineStore('turnstileTerminalUserS
             }
             this.userLoading = true
             $ApiService.workerService._create({data}).then((res)=>{
-                console.log(res.data)
+                callback?.(res.data.data)
                 this.addVisible = false
-            }).catch(()=>{
+            }).finally(()=>{
                 this.userLoading = false
             })
 

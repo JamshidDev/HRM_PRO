@@ -67,7 +67,16 @@ export const useTurnstileHikCentralStore = defineStore('turnstileHikCentralStore
         _org_levels(){
             this.accessLevelsLoading = true
             $ApiService.turnstileHikCentralAccessService._org_levels({params:{organization_id:this.elementId}}).then((res) => {
-                this.payload.access_levels = res.data.data.map(v=>v.id)
+                
+                if(res.data.data.length === 0){
+                    this.accessLevels = this.originAccessLevels
+                }else{
+                    this.payload.access_levels = res.data.data.map(v=>v.id)
+                    const selected = this.originAccessLevels.filter(v=>this.payload.access_levels.includes(v.id))
+                    const notSelected = this.originAccessLevels.filter(v=>!this.payload.access_levels.includes(v.id))
+                    this.accessLevels = [...selected, ...notSelected]
+                }
+                
             }).finally(() => {
                 this.accessLevelsLoading = false
             })
@@ -159,15 +168,6 @@ export const useTurnstileHikCentralStore = defineStore('turnstileHikCentralStore
                 this.saveLoading = false
             })
         },
-        // _delete() {
-        //     this.deleteLoading = true
-        //     $ApiService.turnstileBuildingService._delete({id: this.elementId}).then((res) => {
-        //         this._index()
-        //
-        //     }).finally(() => {
-        //         this.deleteLoading = false
-        //     })
-        // },
         resetForm() {
             this.payload.name = null
             this.payload.name_ru = null

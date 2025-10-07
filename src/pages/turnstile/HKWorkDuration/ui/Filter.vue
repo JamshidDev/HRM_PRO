@@ -5,6 +5,7 @@ import {
   useComponentStore,
   useHKWorkDurationStore
 } from "@/store/modules/index.js"
+import {useAppSetting} from "@/utils/index.js"
 
 
 const store = useHKWorkDurationStore()
@@ -12,7 +13,7 @@ const componentStore = useComponentStore()
 const accStore = useAccountStore()
 
 const filterEvent = ()=>{
-  if(!accStore.checkAction(accStore.pn.turnstileHikCentralWorkersRead)) return
+  if(!accStore.checkAction(accStore.pn.turnstileHcpDurationRead)) return
   store.params.page = 1
   store._index()
 }
@@ -33,7 +34,9 @@ const beforeShow = (v)=>{
   if(componentStore.structureList.length === 0){
     componentStore._structures()
   }
-  store._levels()
+  if(store.levelList.length === 0){
+    store._levels()
+  }
 }
 
 const resetFilter = ()=>{
@@ -42,13 +45,8 @@ const resetFilter = ()=>{
   filterEvent()
 }
 
-onMounted(()=>{
-  if(store.levelList.length === 0){
-    store._levels()
-  }
-})
 
-const filterCount = computed(()=>Number(Boolean(store.params.organizations.length)) + Boolean(store.params.access_level_id))
+const filterCount = computed(()=>Number(Boolean(store.params.organizations.length)) + Boolean(store.params.access_levels.length))
 
 </script>
 
@@ -83,10 +81,21 @@ const filterCount = computed(()=>Number(Boolean(store.params.organizations.lengt
           v-model:value="store.params.access_levels"
           :options="store.levelList"
           :loading="store.levelLoading"
+          :max-tag-count="1"
           label-field="name"
           value-field="id"
           @update:value="filterEvent"
       />
+    </template>
+    <template #filterAction>
+      <n-date-picker
+          class="w-[160px]"
+          v-model:value="store.params.date"
+          @update:value="filterEvent"
+          type="date"
+          :format="useAppSetting.datePicketFormat"
+          
+          />
     </template>
   </UIPageFilter>
 </template>

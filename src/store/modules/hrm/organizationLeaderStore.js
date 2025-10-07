@@ -34,6 +34,7 @@ export const useOrganizationLeaderStore = defineStore('organizationLeaderStore',
             }
             $ApiService.organizationLeaderService._index({params}).then((res) => {
                 this.list = res.data.data.data
+                this.totalItems = res.data.data.total
             }).finally(() => {
                 this.loading = false
             })
