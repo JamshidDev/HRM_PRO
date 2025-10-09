@@ -32,7 +32,7 @@ const getTimeRange = (hour) => {
   
   return {
     start_time: startTime,
-    end_time: endTime,
+    end_time: hour,
   }
 }
 

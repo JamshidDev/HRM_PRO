@@ -36,6 +36,10 @@ const beforeLeave = computed(()=>{
   return !store.visibleType
 })
 
+const onBeforeLeave = (v)=>{
+  return store.visibleType
+}
+
 onMounted(()=>{
   if(componentStore.maritalList.length === 0){
     componentStore._enums()
@@ -52,7 +56,7 @@ onMounted(()=>{
         :rules="rules"
         :model="store.payload"
     >
-      <n-tabs @before-leave="beforeLeave" animated v-model:value="store.activeTab"  type="segment">
+      <n-tabs @before-leave="onBeforeLeave" animated v-model:value="store.activeTab"  type="segment">
 
         <n-tab-pane v-for="(item) in store.tabList"  :name="item.id" :tab="$t(item.name)">
           <template v-if="store.tabList[0].id === store.activeTab">

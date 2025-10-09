@@ -1,5 +1,7 @@
 import {defineStore} from "pinia";
 import Utils from "@/utils/Utils.js"
+import i18n from "@/i18n/index.js"
+const {t} = i18n.global
 
 export const useTurnstileHikCentralWorkerStore = defineStore('turnstileHikCentralWorkerStore', {
     state: () => ({
@@ -47,6 +49,9 @@ export const useTurnstileHikCentralWorkerStore = defineStore('turnstileHikCentra
         levelList:[],
         selectedRowId:null,
         userVisible:false,
+        pin:null,
+        freeWorkerList:[],
+        freeWorkerLoading:false,
 
     }),
     actions: {
@@ -56,6 +61,34 @@ export const useTurnstileHikCentralWorkerStore = defineStore('turnstileHikCentra
                 this.levelList = res.data.data
             }).finally(() => {
                 this.levelLoading = false
+            })
+        },
+        autoFillWorkerField(pin){
+            this._searchWorkerByPin(pin, (id)=>{
+                this.payload.worker_id = id
+                this._worker_photos()
+            })
+        },
+        _searchWorkerByPin(pin, callback=undefined){
+            this.freeWorkerLoading = true
+            $ApiService.workerService._checkWorker({params:{pin}}).then((res)=>{
+                if(!res.data.error){
+                    let data = res.data.data
+                    this.freeWorkerList = [
+                        {
+                            id:data.id,
+                            name:Utils.combineFullName(data),
+                            position:`${t('workerPage.checkWorker.born')} ${Utils.timeOnlyDate(data?.birthday)}`,
+
+                        }
+                    ]
+                    callback?.(data.id)
+                }else{
+                    $Toast.info(t('content.notWorker'))
+                }
+
+            }).finally(()=>{
+                this.freeWorkerLoading = false
             })
         },
         _index() {
@@ -104,8 +137,6 @@ export const useTurnstileHikCentralWorkerStore = defineStore('turnstileHikCentra
             })
         },
         _worker_photos(callback) {
-            console.log(typeof callback)
-            
             this.photosLoading = true
             this.photos = []
             $ApiService.turnstileTerminalUserService._worker_photos({params: {worker_id: this.payload.worker_id}}).then((res) => {

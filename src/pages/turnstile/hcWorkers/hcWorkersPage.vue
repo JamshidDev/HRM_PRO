@@ -21,10 +21,16 @@ onMounted(()=>{
   store.params.per_page = 10
   store.params.search = null
   store._index()
+
 })
 
+// 42810690100023
+
+
 const onSuccessEv = (v)=>{
-  console.log(v)
+  store.pin = v.pin
+  let pin = v.pin.split('-').join("")
+  store.autoFillWorkerField(pin)
   store.userVisible = false
 }
 </script>

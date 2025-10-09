@@ -24,6 +24,23 @@ const onChangeStructure = (v)=>{
   filterEvent()
 }
 
+const handleTimeKeydownWithEnter = (event, key) => {
+  if (event.key === 'Enter') {
+    onEnterTime(key)
+  } else {
+    Utils.handleTimeKeydown(event)
+  }
+}
+
+const onEnterTime = (key)=>{
+  if(dashboardStore.dashboardParams.start_time?.length===5 && dashboardStore.dashboardParams.end_time?.length===5){
+    const value =key === 'turnstile_start_time'? dashboardStore.dashboardParams.start_time : dashboardStore.dashboardParams.end_time
+    localStorage.setItem(key,value)
+    filterEvent()
+  }
+
+}
+
 
 
 onMounted(()=>{
@@ -47,10 +64,10 @@ onBeforeUnmount(()=>{
 
 <template>
    <div class="grid grid-cols-12 gap-2">
-        <div class="text-lg lg:col-span-6 md:col-span-6 col-span-12 flex items-center text-textColor2 font-medium">
+        <div class="text-lg lg:col-span-4 md:col-span-6 col-span-12 flex items-center text-textColor2 font-medium">
           {{ $t('turnStileDashboard.name') }}
         </div>
-        <div class="lg:col-span-4 md:col-span-6 col-span-12">
+        <div class="lg:col-span-2 md:col-span-6 col-span-12">
           <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{$t('actionLog.table.structure')}}</label>
           <UISelect
               :options="componentStore.structureList"
@@ -68,6 +85,7 @@ onBeforeUnmount(()=>{
         <div class="lg:col-span-2 md:col-span-6 col-span-12">
           <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{$t('turnstile.hcWorkersPage.access_levels')}}</label>
           <n-select
+              filterable
               clearable 
               multiple
               v-model:value="dashboardStore.dashboardParams.access_levels"
@@ -79,37 +97,34 @@ onBeforeUnmount(()=>{
               :max-tag-count="1"
           />
         </div>
-        <!-- <div class="lg:col-span-2 md:col-span-4 col-span-12">
-          <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{$t('hcEvent.form.direction')}}</label>
-          <n-select
-              clearable
-              v-model:value="dashboardStore.dashboardParams.direction"
-              :options="directionList"
-              label-field="name"
-              value-field="id"
-              @update:value="filterEvent"
-
+        <div class="lg:col-span-2 md:col-span-6 col-span-12">
+          <label class="text-textColor3 ml-1">{{$t('hcEvent.form.start_time')}}</label>
+          <n-input
+              v-mask="'##:##'"
+              class="w-full"
+              type="text"
+              @keydown="handleTimeKeydownWithEnter($event, 'turnstile_start_time')"
+              v-model:value="dashboardStore.dashboardParams.start_time"
+              :loading="dashboardStore.loading"
+              :disabled="dashboardStore.loading"
+              placeholder="09:00"
+              maxlength="5"
           />
         </div>
-        <div class="lg:col-span-2 md:col-span-4 col-span-12">
-          <label class="mt-3 text-xs text-gray-500">{{ $t('content.from') }}</label>
-          <n-date-picker
-              v-model:value="dashboardStore.dashboardParams.start"
-              @update:value="onChangeDate"
-              type="datetime"
-              update-value-on-close
-              :actions="null"
-              clearable />
+        <div class="lg:col-span-2 md:col-span-6 col-span-12">
+          <label class="text-textColor3 ml-1">{{$t('hcEvent.form.end_time')}}</label>
+        <n-input
+            v-mask="'##:##'"
+            class="w-full"
+            type="text"
+            v-model:value="dashboardStore.dashboardParams.end_time"
+            @keydown="handleTimeKeydownWithEnter($event, 'turnstile_end_time')"
+            :loading="dashboardStore.loading"
+            :disabled="dashboardStore.loading"
+            placeholder="18:00"
+            maxlength="5"
+        />
         </div>
-        <div class="lg:col-span-2 md:col-span-4 col-span-12">
-          <label class="mt-3 text-xs text-gray-500">{{ $t('content.to') }}</label>
-          <n-date-picker
-              v-model:value="dashboardStore.dashboardParams.end"
-              @update:value="onChangeDate"
-              type="datetime"
-              update-value-on-close
-              :actions="null"
-              clearable />
-        </div> -->
+        
       </div>
 </template>

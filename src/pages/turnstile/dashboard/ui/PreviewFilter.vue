@@ -55,23 +55,23 @@ const controlFilterEv = (v)=>{
   if(dashboardStore.cardTypes.late_come.key === cardType){
     filterVisible.value.start_time = true
 
-    dashboardStore.previewParams.start_time = '09:00'
+    dashboardStore.previewParams.start_time = localStorage.getItem('turnstile_start_time') || '09:00';
 
   }else if(dashboardStore.cardTypes.not_come.key === cardType && dashboardStore.yesterday){
   }else if(dashboardStore.cardTypes.early_leave.key === cardType && dashboardStore.yesterday){
     filterVisible.value.end_time = true
 
-    dashboardStore.previewParams.end_time = '18:00'
+    dashboardStore.previewParams.end_time =localStorage.getItem('turnstile_end_time') || '18:00';
   }else if(dashboardStore.cardTypes.early_leave.key === cardType && dashboardStore.yesterday){
     filterVisible.value.end_time = true
 
-    dashboardStore.previewParams.end_time = '18:00'
+    dashboardStore.previewParams.end_time = localStorage.getItem('turnstile_end_time') || '18:00';
   }else if(dashboardStore.cardTypes.daily_attendance.key === cardType){
     filterVisible.value.start_time = true
     filterVisible.value.end_time = true
 
-    dashboardStore.previewParams.start_time =dashboardStore.timeRange?.start_time || '09:00'
-    dashboardStore.previewParams.end_time =dashboardStore.timeRange?.end_time || '18:00'
+    dashboardStore.previewParams.start_time =dashboardStore.timeRange?.start_time || dashboardStore.previewParams.start_time
+    dashboardStore.previewParams.end_time =dashboardStore.timeRange?.end_time || dashboardStore.previewParams.end_time
   }else if(dashboardStore.cardTypes.devices.key === cardType){
     dashboardStore.previewParams.date = null
     filterVisible.value.date = false
@@ -101,12 +101,21 @@ const onEnter = ()=>{
   dashboardStore._preview()
 }
 
-const handleTimeKeydownWithEnter = (event) => {
+const handleTimeKeydownWithEnter = (event, key) => {
   if (event.key === 'Enter') {
-    onEnter()
+    onEnterTime(key)
   } else {
     Utils.handleTimeKeydown(event)
   }
+}
+
+const onEnterTime = (key)=>{
+  if(dashboardStore.previewParams.start_time?.length===5 || dashboardStore.previewParams.end_time?.length===5){
+    const value =key === 'turnstile_start_time'? dashboardStore.previewParams.start_time : dashboardStore.previewParams.end_time
+    localStorage.setItem(key,value)
+    dashboardStore._preview()
+  }
+
 }
 
 onMounted(()=>{
@@ -130,20 +139,7 @@ onMounted(()=>{
              :actions="[]"
              />
        </div>
-        <div v-if="filterVisible.time" class="col-span-2">
-         <label class="text-textColor3 ml-1">{{$t('turnStileDashboard.perview.workTime')}}</label>
-         <n-input
-             v-mask="'##:##'"
-             class="w-full"
-             type="text"
-             v-model:value="dashboardStore.previewParams.time"
-             @keydown="handleTimeKeydownWithEnter"
-             :loading="dashboardStore.previewLoading"
-             :disabled="dashboardStore.previewLoading"
-             placeholder="16:00"
-             maxlength="5"
-         />
-       </div>
+
       <div v-if="filterVisible.norm_hours" class="col-span-2">
         <label class="text-textColor3 ml-1">{{$t('turnStileDashboard.perview.norm_hours')}}</label>
         <n-input
@@ -175,7 +171,7 @@ onMounted(()=>{
              v-mask="'##:##'"
              class="w-full"
              type="text"
-             @keydown="handleTimeKeydownWithEnter"
+             @keydown="handleTimeKeydownWithEnter($event, 'turnstile_start_time')"
              v-model:value="dashboardStore.previewParams.start_time"
              :loading="dashboardStore.previewLoading"
              :disabled="dashboardStore.previewLoading"
@@ -201,7 +197,7 @@ onMounted(()=>{
             class="w-full"
             type="text"
             v-model:value="dashboardStore.previewParams.end_time"
-            @keydown="handleTimeKeydownWithEnter"
+            @keydown="handleTimeKeydownWithEnter($event, 'turnstile_end_time')"
             :loading="dashboardStore.previewLoading"
             :disabled="dashboardStore.previewLoading"
             placeholder="18:00"

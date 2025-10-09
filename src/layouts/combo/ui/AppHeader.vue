@@ -5,6 +5,7 @@ import AIButtonV2 from "@/components/buttons/AIButtonV2.vue"
 import {Alert20Regular, ChevronDoubleRight16Filled, WifiWarning24Regular, Video28Filled} from "@vicons/fluent"
 import {useAccountStore, useExamVideoStore} from "@/store/modules/index.js"
 import Utils from "@/utils/Utils.js"
+import {AppPaths} from "@/utils/index.js"
 import axios from "axios"
 const emits = defineEmits(["onChange"])
 const router = useRouter()

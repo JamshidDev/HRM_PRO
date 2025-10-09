@@ -5,6 +5,7 @@ import {UISelect, NoDataIllustration} from "@/components/index.js";
 import {Checkmark16Filled, CheckmarkCircle20Filled, AddCircle16Filled} from "@vicons/fluent"
 import checkWorkerSelect from '@/pages/lms/Teacher/ui/checkWorkerSelect.vue'
 import {UICropper} from "@/components/index.js";
+import {useAppSetting} from "@/utils/index.js"
 
 const formRef = ref(null)
 const store = useTurnstileTerminalUserStore()
@@ -215,6 +216,7 @@ const onChangeCheckTerminal = ()=>{
             type="date"
             update-value-on-close
             :actions="null"
+            :format="useAppSetting.datePicketFormat"
             clearable />
       </n-form-item>
       <n-form-item :label="$t(`content.photo`)" path="photo_index" rule-path="requiredNumberField">

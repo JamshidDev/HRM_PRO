@@ -755,6 +755,7 @@
       "to_organization": "Tashkilot nomi"
     }
   },
+
   "confirmationPage": {
     "name": "Tasdiqlovchilar",
     "createTitle": "Tasdiqlovchi qo'shish",
@@ -1627,7 +1628,6 @@
       "attachedLesson": "Darsga allaqachon imtihon biriktirilgan"
     }
   },
-
   "learningCenter": {
     "name": "O'quv markaz"
   },

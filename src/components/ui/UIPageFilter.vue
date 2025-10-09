@@ -33,12 +33,18 @@ const props = defineProps({
   searchLoading:{
     type:Boolean,
     default:false
+  },
+  autoFocusInput:{
+    type:Boolean,
+    default:true
   }
 })
 const hasFullFilterSlot = !!slots.fullFilterContent
 const searchModel = defineModel("search",{type:String,default:null })
+const searchInputRef = ref(null)
 
 const emits = defineEmits(['onAdd', 'onSearch', 'onClear', 'show',])
+
 
 let timeout = null
 const searchEvent = ()=>{
@@ -54,7 +60,10 @@ const addEvent = ()=>{
   emits('onAdd')
 }
 
-
+onMounted(()=>{
+  if(!props.autoFocusInput) return
+  searchInputRef.value?.focus()
+})
 
 
 </script>
@@ -65,6 +74,7 @@ const addEvent = ()=>{
     <div class="flex flex-col md:flex-row gap-4">
       <div class="w-full md:max-w-[200px] flex items-start">
         <n-input
+            ref="searchInputRef"
             clearable
             class="w-full md:max-w-[200px]! md:w-full! skip-format"
             v-if="showSearchInput"

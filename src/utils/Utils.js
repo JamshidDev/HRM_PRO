@@ -564,7 +564,6 @@ const appPermissions = {
     turnstileHcpDuration:"turnstile-hcp-duration",
     turnstileHcpDurationWrite:"turnstile-hcp-duration-write",
     turnstileHcpDurationRead:"turnstile-hcp-duration-read",
-    turnstileHcpDuration:"turnstile-hcp-duration",
 
     hospital: "hospital",
     hospitalExpired: "hospital-expired",

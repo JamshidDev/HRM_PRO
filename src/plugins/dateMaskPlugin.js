@@ -39,10 +39,10 @@ const dateMaskPlugin = {
 
                             // Formatlash
                             let formatted = day || '';
-                            if (month && parts.length > 1) {
+                            if (month) {
                                 formatted += `.${month}`;
                             }
-                            if (year && parts.length > 2) {
+                            if (year) {
                                 formatted += `.${year}`;
                             }
 

@@ -16,7 +16,7 @@ const onSubmit = ()=>{
   formRef.value?.validate((error)=>{
     if(!error){
       store.saveUser((v)=>{
-        emit('onSuccess', v)
+        emit('onSuccess', {...v, pin:store.userPayload.pin})
       })
     }
   })

@@ -5,6 +5,7 @@ import {UISelect, NoDataIllustration, UINSelect} from "@/components/index.js"
 import {Checkmark16Filled, AddCircle16Filled, AddCircle28Regular} from "@vicons/fluent"
 import {UICropper} from "@/components/index.js";
 import checkWorkerSelect from '@/pages/lms/Teacher/ui/checkWorkerSelect.vue'
+import {useAppSetting} from "@/utils/index.js"
 
 const formRef = ref(null)
 const store = useTurnstileHikCentralWorkerStore()
@@ -50,8 +51,7 @@ const changeWorkerOrg = (v) => {
 }
 
 const onChangeSearchWorker = (_, obj) => {
-  store.photos = []
-  store.payload.photo_index = null
+  clearPhoto()
   if (obj) {
     store.payload.worker_id = obj.worker.id
     store._worker_photos(obj.worker.id)
@@ -60,12 +60,17 @@ const onChangeSearchWorker = (_, obj) => {
   }
 }
 
+const clearPhoto = ()=>{
+  store.photos = []
+  store.payload.photo_index = null
+}
+
 const onChangeWorker = (v) => {
+
   store.photos = []
   store.payload.photo_index = null
   if (v) {
-    store.payload.worker_id = Number(v)
-    store._worker_photos(v)
+    store._worker_photos()
   }
 }
 
@@ -118,6 +123,20 @@ const onResult = (v) => {
 const openAddUserForm = () =>{
   terminalUserStore.resetUserForm()
   store.userVisible = true
+}
+
+let timer = null
+const onSearch = (v)=>{
+  if(v?.toString().length === 17){
+    clearTimeout(timer)
+    timer = setTimeout(()=>{
+      store.freeWorkerList = []
+      store.payload.worker_id = null
+      clearPhoto()
+      let pin = v.split('-').join("")
+      store._searchWorkerByPin(pin)
+    },600)
+  }
 }
 
 onMounted(() => {
@@ -190,7 +209,19 @@ onMounted(() => {
             </n-form-item>
           </template>
           <n-form-item v-else :label="$t(`content.staff`)" path="worker_id" rule-path="requiredNumberField">
-            <checkWorkerSelect v-model:value="store.payload.worker_id" @update:value="onChangeWorker" />
+            <UINSelect
+                clearable
+                v-model:value="store.payload.worker_id"
+                @update:value="onChangeWorker"
+                value-field="id"
+                label-field="name"
+                :options="store.freeWorkerList"
+                :loading="store.freeWorkerLoading"
+                :query="store.pin"
+                pin-select
+                @onSearch="onSearch"
+
+            />
           </n-form-item>
           <p v-if="!store.payload.isWorker" @click="openAddUserForm" class="text-xs text-primary flex gap-1 items-center cursor-pointer justify-end"> <n-icon size="16"><AddCircle28Regular/></n-icon>  {{$t('turnstile.terminalUser.addBtn')}}</p>
 
@@ -203,6 +234,7 @@ onMounted(() => {
               update-value-on-close
               :actions="null"
               clearable
+              :format="useAppSetting.datePicketFormat"
           />
         </n-form-item>
         <n-form-item :label="$t(`content.photo`)" path="photo_index" rule-path="requiredNumberField">

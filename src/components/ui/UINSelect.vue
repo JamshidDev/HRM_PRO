@@ -61,6 +61,10 @@ const props = defineProps({
   multipleSearch:{
     type:Boolean,
     default:false,
+  },
+  clearable:{
+    type:Boolean,
+    default:false,
   }
 
 })
@@ -117,6 +121,7 @@ onMounted(()=>{
 
 <template>
   <n-select
+      :clearable="clearable"
       @scroll="e=>emits('onScroll',e)"
       :multiple="multiple"
       v-model:value="valueModel"
@@ -140,6 +145,7 @@ onMounted(()=>{
             class="w-full skip-format"
             :placeholder="$t(pinSelect? 'content.pin' : 'content.search')"
             :on-keyup="onSearchEv"
+            @paste="onSearchEv"
             @keydown.stop
             @clear="onSearchEv"
             v-mask="pinSelect? '####-####-####-##' : undefined"

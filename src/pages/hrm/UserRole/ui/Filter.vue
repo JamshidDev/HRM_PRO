@@ -32,7 +32,7 @@ const onChangeStructure = (v)=>{
 }
 
 const resetFilter = ()=>{
-  store.params.organizations = []
+  store.userRoleParams.organizations = []
   filterEvent()
 }
 

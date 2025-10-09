@@ -1,7 +1,8 @@
 <script setup>
 import validationRules from "@/utils/validationRules.js";
 import {useEventStore} from "@/store/modules/index.js"
-
+import {useAppSetting} from "@/utils/index.js"
+  
 const formRef = ref(null)
 
 const store = useEventStore()
@@ -42,22 +43,9 @@ onMounted(()=>{
             type="date"
             update-value-on-close
             :actions="null"
+            :format="useAppSetting.datePicketFormat"
             clearable />
       </n-form-item>
-<!--      <n-form-item-->
-<!--          class="w-full"-->
-<!--          :label="$t(`content.to`)"-->
-<!--          path="to_date"-->
-<!--          :rule-path="validationRules.rulesNames.requiredNumberField"-->
-<!--      >-->
-<!--        <n-date-picker-->
-<!--            class="w-full"-->
-<!--            v-model:value="store.syncPayload.to_date"-->
-<!--            type="date"-->
-<!--            update-value-on-close-->
-<!--            :actions="null"-->
-<!--            clearable />-->
-<!--      </n-form-item>-->
       <n-form-item
           :label="$t(`hcServer.form.access_level_id`)"
           path="access_level_ids"

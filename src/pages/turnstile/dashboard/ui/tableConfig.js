@@ -120,23 +120,6 @@ export const getTableConfig = (cardType) => {
           component: 'UIUser'
         },
         {
-          headerName: 'hcEvent.form.direction',
-          key: 'direction',
-          width: '100px',
-          minWidth: '120px',
-          component: 'UIBadge',
-          componentProps: (value) => {
-            return {
-              icon: value ? DoorArrowRight20Regular : DoorArrowLeft20Regular,
-              type: value ? directionStatus.enter.type : directionStatus.exist.type
-            }
-          },
-          formatValue: (value) => {
-            return value ? directionStatus.enter.name : directionStatus.exist.name
-          },
-        },
-
-        {
           headerName: 'content.organization',
           key: 'organization_name',
           width: '300px',
@@ -584,7 +567,7 @@ export const getTableConfig = (cardType) => {
       columns: [
         {
           headerName: 'content.name',
-          key: 'name',
+          key: 'area_name',
           minWidth: '200px'
         },
         {

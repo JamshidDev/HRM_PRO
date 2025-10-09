@@ -90,12 +90,9 @@ export const useOldCareerStore = defineStore('oldCareerStore', {
             })
         },
         _delete(){
-            this.deleteLoading = true
+            this.loading = true
             $ApiService.olCareerService._delete({id:this.elementId}).then((res)=>{
                 this._index()
-               
-            }).finally(()=>{
-                this.deleteLoading = false
             })
         },
         openVisible(data){

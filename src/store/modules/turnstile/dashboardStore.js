@@ -6,7 +6,9 @@ import {
 import {defineStore} from "pinia";
 import i18n from "@/i18n/index.js"
 import Utils from "@/utils/Utils.js"
-import { getTableConfig } from "@/pages/turnstile/dashboard/ui/tableConfig";
+import { getTableConfig } from "@/pages/turnstile/dashboard/ui/tableConfig"
+import router from "@/router/index.js"
+import {AppPaths} from "@/utils/index.js"
 
 const {t} = i18n.global
 
@@ -36,12 +38,8 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
         dashboardParams: {
             organizations: [],
             access_levels: [],
-            type: null,
-            hours: null,
-            end_time: null,
-            start_time: null,
-            start_date_and_time: null,
-            end_date_and_time: null,
+            end_time: localStorage.getItem('turnstile_end_time') || '18:00',
+            start_time: localStorage.getItem('turnstile_start_time') || '09:00',
         },
         structureCheck2: [],
 
@@ -56,8 +54,6 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
             search: null,
             organizations: [],
             access_levels: [],
-            start_date_and_time: null,
-            end_date_and_time: null,
 
 
             type: null,
@@ -143,16 +139,6 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
     }),
     
     actions: {
-        _dashboardParams() {
-            return {
-                ...this.dashboardParams,
-                organizations: this.dashboardParams.organizations.map(v => v.id).toString() || undefined,
-                access_levels: this.dashboardParams.access_levels.toString() || undefined,
-                start: this.dashboardParams.start ? Utils.timeWithMonth(this.dashboardParams.start) : undefined,
-                end: this.dashboardParams.end ? Utils.timeWithMonth(this.dashboardParams.end) : undefined,
-            }
-        },
-
         async _dashboard() {
             // Umumiy va bo'linma bo'yicha loadinglarni yoqamiz
             this.dashboardLoading = true
@@ -162,7 +148,11 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
             this.devicesLoading = true
             this.workDurationsLoading = true
 
-            const params = this._dashboardParams()
+            const params = {
+                ...this._previewQueryParams(),
+                start_time:this.dashboardParams.start_time,
+                end_time:this.dashboardParams.end_time,
+            }
             const urls = [
                 '/v1/turnstile/hik-central/dashboard',
                 '/v1/turnstile/hik-central/dashboard/daily-attendance',
@@ -284,14 +274,7 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
             if(!isPagination){
                 this.previewList = []
             }
-            const params = {
-                ...this.previewParams,
-                organizations: this.dashboardParams.organizations.map(v => v.id).toString() || undefined,
-                access_levels: this.dashboardParams.access_levels.toString() || undefined,
-                start_date_and_time: this.previewParams.start_date_and_time ? Utils.timeWithMonth(this.previewParams.start_date_and_time) : undefined,
-                end_date_and_time: this.previewParams.end_date_and_time ? Utils.timeWithMonth(this.previewParams.end_date_and_time) : undefined,
-                date:Utils.timeToZone(this.previewParams.date),
-            }
+            const params = this._previewQueryParams()
             this.previewLoading = true
             
             $ApiService.eventService._preview({ params }).then((res) => {
@@ -304,6 +287,15 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
             }).finally(() => {
                 this.previewLoading = false
             })
+        },
+
+        _previewQueryParams(){
+            return {
+                ...this.previewParams,
+                organizations: this.dashboardParams.organizations.map(v => v.id).toString() || undefined,
+                access_levels: this.dashboardParams.access_levels.toString() || undefined,
+                date:Utils.timeToZone(this.previewParams.date),
+            }
         },
 
         // Preview responselarini formatlash methodi
@@ -377,14 +369,16 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
 
             
             })
-
+            
             if(cardType === 'devices'){
+
                 return data.sort((a, b) => new Date(a.last_sync) - new Date(b.last_sync))
             }else if(cardType === 'device_status' && this.isOnlineDevice !== null){
                 const status = this.isOnlineDevice ? 1 : 2
                 return data.filter(v => v.status === status)
             }
-
+            
+            
             return data
         },
 
@@ -403,19 +397,14 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
         _download() {
             this.previewLoading = true
             const params = {
-                ...this.previewParams,
-                organizations: this.previewParams.organizations.map(v => v.id).toString() || undefined,
-                access_levels: this.previewParams.access_levels.toString() || undefined,
-                start_date_and_time: this.previewParams.start_date_and_time ? Utils.timeWithMonth(this.previewParams.start_date_and_time) : undefined,
-                end_date_and_time: this.previewParams.end_date_and_time ? Utils.timeWithMonth(this.previewParams.end_date_and_time) : undefined,
+                ...this._previewQueryParams(),
                 download: 1,
             }
             
             $ApiService.eventService._download({ params }).then(() => {
-                const router = useRouter()
                 this.previewVisible = false
                 // You can add router navigation here if needed
-                router.push(Utils.routeTurnstilePathMaker(AppPaths.Export))
+                router.push(Utils.routeHrmPathMaker(AppPaths.Export))
             }).finally(() => {
                 this.previewLoading = false
             })
@@ -427,8 +416,6 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
             this.previewParams.hours = null
             this.previewParams.end_time = null
             this.previewParams.start_time = null
-            this.previewParams.start_date_and_time = null
-            this.previewParams.end_date_and_time = null
             this.previewParams.status = null
         },
 
@@ -444,26 +431,6 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
             this._preview()
         },
 
-        // Preview modalini yopish
-        closePreview() {
-            this.previewVisible = false
-            this.resetPreviewParams()
-        },
-        resetDashboardParams() {
-            this.dashboardParams = {
-                organizations: [],
-                access_levels: [],
-                type: null,
-                hours: null,
-                end_time: null,
-                start_time: null,
-                start_date_and_time: null,
-                end_date_and_time: null,
-                norm_hours: null,
-                status: null,
-            }
-            this.structureCheck2 = []
-        },
 
     }
 })

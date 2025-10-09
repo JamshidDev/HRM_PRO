@@ -20,7 +20,10 @@ const onChangeStructure = (v)=>{
 
 const onShow = (v) => {
   if(!v) return
-  componentStore._structures()
+ 
+  if(componentStore.structureList.length === 0){
+    componentStore._structures()
+  }
   if(store.roleList.length>0) return
   store._roles()
 }

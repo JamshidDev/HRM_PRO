@@ -321,6 +321,7 @@ const onKeyUp = Utils.useDebounce(filterEvent,1000)
                 @update:value="onChangeDepartment"
                 :max-tag-count="1"
                 :filter="()=>true"
+                :loading="componentStore.departmentLoading"
                 @search="componentStore._onSearchDepartment"
                 @scroll="componentStore._onScrollDepartment"
             />

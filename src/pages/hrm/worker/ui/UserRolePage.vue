@@ -102,18 +102,15 @@ onMounted(()=>{
     <n-spin :show="store.userRoleLoading" style="min-height: 200px">
       <div class="w-full overflow-x-auto"  v-if="store.userRoleList.length>0">
         <n-table
-            class="mt-4"
             :single-line="false"
             size="small"
         >
           <thead>
           <tr>
             <th class="text-center! min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
-            <th class="min-w-[200px] w-[250px]">{{$t('confirmationPage.table.worker')}}</th>
+            <th class="min-w-[200px] w-[360px]">{{$t('confirmationPage.table.worker')}}</th>
             <th class="min-w-[100px]">{{$t('workerRole.from.role')}}</th>
             <th class="min-w-[200px] w-[300px]">{{$t('workerRole.from.activeOrganization')}}</th>
-
-            <th class="min-w-[40px] w-[40px]"></th>
           </tr>
           </thead>
           <tbody>
@@ -122,6 +119,8 @@ onMounted(()=>{
             <td>
               <div>
                 <UIUser
+                    :hide-tooltip="true"
+                    :short="false"
                     :data="{
                     photo:item?.worker.photo,
                     firstName:item?.worker.first_name,
@@ -150,14 +149,6 @@ onMounted(()=>{
             <td>
               <div>{{item.current_organization?.name}}</div>
             </td>
-
-            <td>
-              <UIMenuButton
-                  :data="item"
-                  :show-delete="false"
-                  @selectEv="onSelectEv"
-              />
-            </td>
           </tr>
           </tbody>
         </n-table>
@@ -173,7 +164,3 @@ onMounted(()=>{
   />
 </div>
 </template>
-
-<style scoped>
-
-</style>
