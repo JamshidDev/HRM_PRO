@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev":  "vite --mode development --host",
+    "dev": "vite --mode development --host",
     "prod": "vite --mode production --host",
     "build": "vite build",
     "server": "node buildAndDeploy.js",
@@ -44,6 +44,7 @@
     "pdfjs-dist": "2.9.359",
     "pinia": "^2.2.2",
     "player.style": "^0.1.4",
+    "rollup-plugin-visualizer": "^6.0.4",
     "splitpanes": "^4.0.3",
     "uuid": "^10.0.0",
     "vue": "^3.4.37",
