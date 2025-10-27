@@ -812,6 +812,8 @@
   "chatWindow": {
     "name": "Chat"
   },
+
+
   "adContractPage": {
     "createTitle": "Qo'shimcha kelishuv tuzish",
     "updateTitle": "Qo'shimcha kelishuvni tahrirlash",
@@ -1513,6 +1515,8 @@
       "selected": "Tanlangan"
     }
   },
+
+
   "medInspection": {
     "name": "Tekshiruvga yuborish",
     "createTitle": "Tibbiy ko'rikga xodimni yuborish",
@@ -2062,6 +2066,8 @@
       "error": "Xatolik"
     }
   },
+
+
   "workerImage": {
     "name": "(HC) Telegram rasmlari",
     "photo": "Rasm",

@@ -1508,26 +1508,29 @@
       "selected": "Selected"
     }
   },
+
+
+
   "medInspection": {
-    "name": "Send for inspection",
-    "createTitle": "Send employee for medical examination",
-    "updateTitle": "Edit details",
+    "name": "Send for Inspection",
+    "createTitle": "Send Employee for Med Exam",
+    "updateTitle": "Edit Data",
     "form": {
       "hospital": "Clinic",
-      "status": "Doctor's conclusion",
-      "start_date": "Visit date"
+      "status": "Doctor's Opinion",
+      "start_date": "Visit Date"
     }
   },
   "organizationLeaderPage": {
-    "name": "Management",
-    "invalidPhone": "Invalid phone number!",
-    "addLeader": "Add management",
-    "editLeader": "Edit management"
+    "name": "Leadership",
+    "invalidPhone": "Invalid Phone!",
+    "addLeader": "Add Leader",
+    "editLeader": "Edit Leader"
   },
   "reportPage": {
     "name": "Reports",
-    "createTitle": "Add medical examination info",
-    "updateTitle": "Edit medical examination info",
+    "createTitle": "Add Med Exam",
+    "updateTitle": "Edit Med Exam",
     "form": {
       "position": "Position",
       "rate": "P",
@@ -1545,187 +1548,173 @@
     "chatId": "Chat ID"
   },
   "learningCenterPage": {
-    "name": "Training centers",
-    "createTitle": "Add training center",
-    "updateTitle": "Edit training center"
+    "name": "Training Centers",
+    "createTitle": "Add Center",
+    "updateTitle": "Edit Center"
   },
   "directionPage": {
     "name": "Directions",
-    "createTitle": "Add direction",
-    "updateTitle": "Edit direction"
+    "createTitle": "Add Direction",
+    "updateTitle": "Edit Direction"
   },
   "specializationPage": {
     "name": "Specializations",
-    "createTitle": "Add specialization",
-    "updateTitle": "Edit specialization",
+    "createTitle": "Add Specialization",
+    "updateTitle": "Edit Specialization",
     "form": {
       "direction": "Direction",
       "positions": "Positions"
     }
   },
   "subjectPage": {
-    "name": "Subjects (modules)",
-    "createTitle": "Add subject",
-    "updateTitle": "Edit subject"
+    "name": "Subjects (Modules)",
+    "createTitle": "Add Subject",
+    "updateTitle": "Edit Subject"
   },
   "eduPlanPage": {
-    "name": "Training plan",
-    "createTitle": "Create training plan",
-    "updateTitle": "Edit training plan",
-    "attachmentGroup": "Create group",
-    "attachmentExam": "Attach exam",
+    "name": "Education Plan",
+    "createTitle": "Create Plan",
+    "updateTitle": "Edit Plan",
+    "attachmentGroup": "Create Group",
+    "attachmentExam": "Attach Exam",
     "workers": "Employees",
     "form": {
       "hours": "Hours",
-      "start_date": "Start time",
+      "start_date": "Start Time",
       "specialization": "Specialization",
       "subjects": "Subjects",
-      "learning_center": "Training center",
-      "count_groups": "Number of groups",
-      "count_workers": "Group composition",
+      "learning_center": "Training Center",
+      "count_groups": "Groups Count",
+      "count_workers": "Group Composition",
       "short_count_workers": "Employees",
-      "groupWorker": "Number of groups/composition"
+      "groupWorker": "Groups/Composition"
     }
   },
   "lmsWorkerPage": {
-    "name": "Skill enhancement",
-    "createTitle": "Attach employee",
+    "name": "Skill Upgrade",
+    "createTitle": "Attach Employee",
     "updateTitle": "Edit",
     "form": {
-      "eduPlan": "Training plan",
+      "eduPlan": "Education Plan",
       "worker_position_ids": "Employees"
     }
   },
   "teacherPage": {
     "name": "Teachers",
-    "createTitle": "Add teacher",
-    "updateTitle": "Edit teacher",
+    "createTitle": "Add Teacher",
+    "updateTitle": "Edit Teacher",
     "form": {
       "subjects": "Subjects",
-      "learningCenter": "Training center",
+      "learningCenter": "Training Center",
       "worker": "Employee"
     }
   },
   "groupPage": {
     "name": "Groups",
-    "createTitle": "Create group",
+    "createTitle": "Create Group",
     "form": {
-      "edu_plan_id": "Training plan",
-      "workers": "Number of employees"
+      "edu_plan_id": "Education Plan",
+      "workers": "Employees Count"
     }
   },
   "lessonPage": {
     "name": "Lessons",
-    "createTitle": "Add lesson",
+    "createTitle": "Add Lesson",
     "previewTitle": "Details",
     "form": {
-      "edu_plan_id": "Training plan",
-      "workers": "Number of employees",
-      "lesson_date": "Start date",
+      "edu_plan_id": "Education Plan",
+      "workers": "Employees Count",
+      "lesson_date": "Start Date",
       "group_id": "Groups",
       "teacher_id": "Teacher",
       "subject_id": "Subjects",
-      "start_time": "Start time",
-      "end_time": "End time"
+      "start_time": "Start Time",
+      "end_time": "End Time"
     },
     "detail": {
-      "name": "Lesson name",
-      "group": "Group name",
-      "teacher": "Subject teacher",
-      "time": "Lesson time",
-      "subject": "Lesson subject",
-      "cancelLesson": "Cancel lesson",
-      "attachmentLesson": "Attach exam to lesson",
-      "attachedLesson": "Exam already attached to lesson"
+      "name": "Lesson Name",
+      "group": "Group Name",
+      "teacher": "Subject Teacher",
+      "time": "Lesson Time",
+      "subject": "Lesson Subject",
+      "cancelLesson": "Cancel Lesson",
+      "attachmentLesson": "Attach Exam to Lesson",
+      "attachedLesson": "Exam Already Attached"
     }
   },
   "learningCenter": {
-    "name": "Training center"
+    "name": "Training Center"
   },
   "aiConversation": {
-    "canIHelpYouToday": "How can I help you today?",
+    "canIHelpYouToday": "How can I help?",
     "aiAssistant": "AI Assistant",
     "welcomeTo": "Welcome, {n}",
     "disclaimer": {
-      "cardOne": "### 🧪 Test mode\n\nThis AI assistant is currently in **test mode**.  \nResponses may not be fully formed and _could be incorrect_.",
-      "cardTwo": "### 📚 Legal documents loading\n\nBot is studying only the **Labor Code of Uzbekistan**.  \n_Other laws not fully loaded or studied._",
-      "cardThree": "### ⚖️ For legal questions only\n\nPlease ask only **labor relations** questions.  \n_Bot not for technical or personal advice._",
-      "cardFour": "### 📌 Not official advice\n\nBot responses for **information only**.  \n_They do not replace official legal advice._"
+      "cardOne": "### 🧪 Test Mode\n\nAI in **test mode**. Answers may be incorrect.",
+      "cardTwo": "### 📚 Document Loading\n\nStudying **Labor Code of Uzbekistan**. Others not loaded.",
+      "cardThree": "### ⚖️ Labor Law Only\n\nOnly labor relations questions.",
+      "cardFour": "### 📌 Not Official\n\nResponses for info only. Not legal advice."
     },
     "form": {
-      "conversation": "Conversations",
-      "goChat": "Back to chat",
-      "feedback": "Thanks for your feedback!",
-      "askQuestion": "Enter your question..."
-    }
-  },
-  "others": {
-    "title": "Others",
-    "info": {
-      "title": "Dashboard",
-      "organizations": "Organizations",
-      "organizationsDesc": "Full details on all organizations, branches, and managers in 'Uzbekistan Railways' JSC system. Locations, hierarchy, and structure.",
-      "positions": "Positions",
-      "positionsDesc": "List of positions in 'Uzbekistan Railways' JSC and their functional duties. Structural distribution by employee service positions.",
-      "laborCode": "Labor Code",
-      "laborCodeDesc": "Labor relations, rights, and obligations between employees and employers based on Uzbekistan Labor Code. Explanations and norms by articles.",
-      "empty": "Empty",
-      "emptyDesc": "No data in this section yet. New services or useful content coming soon."
+      "conversation": "Chats",
+      "goChat": "Back to Chat",
+      "feedback": "Thanks for feedback!",
+      "askQuestion": "Enter question..."
     }
   },
   "businessTrip": {
-    "name": "Business trip"
+    "name": "Business Trip"
   },
   "documentArchive": {
-    "name": "Documents database",
-    "createTitle": "Add document file",
-    "updateTitle": "Edit document file",
+    "name": "Document Base",
+    "createTitle": "Add File",
+    "updateTitle": "Edit File",
     "form": {
-      "title": "Name",
+      "title": "Title",
       "description": "Comment",
-      "visibility_type": "For whom",
-      "document_date": "Created date",
+      "visibility_type": "For Whom",
+      "document_date": "Creation Date",
       "type": "Type",
-      "file": "Document file"
+      "file": "Document File"
     },
     "type": {
-      "OWN": "This organization",
-      "OWN_AND_BELOW": "Subordinate organizations",
-      "ALL": "All"
+      "OWN": "For Organization",
+      "OWN_AND_BELOW": "For Subordinates",
+      "ALL": "For All"
     }
   },
   "vacationSchedule": {
-    "name": "Vacation schedule",
-    "createTitle": "Attach employee",
+    "name": "Vacation Schedule",
+    "createTitle": "Attach Employee",
     "updateTitle": "Edit",
-    "requiredMonth": "Select employee's vacation month",
+    "requiredMonth": "Select Vacation Month",
     "otherList": {
-      "btn": "Unattached employees",
-      "name": "Employee list"
+      "btn": "Unattached Employees",
+      "name": "Employee List"
     }
   },
   "workerRole": {
     "name": "Users",
     "from": {
-      "activeOrganization": "Active enterprise",
+      "activeOrganization": "Active Organization",
       "role": "Roles"
     }
   },
   "telegramPopup": {
-    "header": "Connect to our Telegram bot and enjoy these conveniences:",
+    "header": "Connect to Telegram bot for benefits:",
     "benefit": {
-      "1": "Document statuses – Approvals, rejections, or edits – stay informed!",
-      "2": "Greetings – We remember your birthday or work achievements!",
-      "3": "Important reminders – Vacations, meetings, and key info on time.",
-      "4": "Real-time notifications – Nothing slips by!",
-      "5": "Profile updates – Changes in your info, know instantly via Telegram!",
-      "header": "By subscribing to the bot",
-      "footer": "Everything in one place – just for you, on time!"
+      "1": "Document statuses – approval, rejection, edits – stay informed!",
+      "2": "Greetings – remember birthdays and achievements!",
+      "3": "Reminders – vacations, meetings, important info on time.",
+      "4": "Real-time notifications – nothing missed!",
+      "5": "Profile updates – changes in data right in Telegram!",
+      "header": "Subscription provides",
+      "footer": "All in one place – timely and for you!"
     },
     "subscribe": "Subscribe"
   },
   "punishment": {
-    "name": "Disciplinary penalties",
+    "name": "Disciplinary Penalties",
     "form": {
       "fine": ""
     }
@@ -1734,7 +1723,7 @@
     "name": "Incentives",
     "form": {
       "type": "Type",
-      "who": "By whom",
+      "who": "By Whom",
       "reason": "Reason",
       "giftType": "Date"
     }
@@ -1745,7 +1734,7 @@
       "P": "Plan",
       "F": "Fact",
       "V": "Vacant",
-      "S": "Overstaffed",
+      "S": "Over",
       "R": "Rank"
     },
     "form": {
@@ -1753,302 +1742,302 @@
       "optimization": "Optimization",
       "workers": "Employees",
       "vakant": "Vacant",
-      "sverx": "Overstaffed",
+      "sverx": "Over",
       "contingent": "Contingent",
-      "worker": "Number of employees",
-      "who": "By whom",
+      "worker": "Employee Count",
+      "who": "By Whom",
       "reason": "Reason",
-      "byPosition": "By positions",
-      "optimizationConfirm": "This action merges all similar positions in the department. Confirm to proceed",
-      "byWorker": "By employees"
+      "byPosition": "By Positions",
+      "optimizationConfirm": "Merge similar positions. Confirm?",
+      "byWorker": "By Employees"
     }
   },
   "uploadReport": {
-    "name": "Upload report",
-    "createTitle": "Upload report",
+    "name": "Upload Reports",
+    "createTitle": "Upload Report",
     "form": {
-      "type": "Report type",
+      "type": "Report Type",
       "month": "Month",
       "year": "Year",
-      "file": "Report file",
-      "uploadCount": "Uploaded {n} pcs",
+      "file": "Report File",
+      "uploadCount": "Uploaded {n}",
       "comment": "Description",
-      "requiredOrganization": "Enterprise must be selected for upload!",
-      "uploadFile": "Upload report",
-      "monthReport": "Monthly report",
-      "applicationFour": "INPS Appendix 4",
-      "applicationFive": "INPS Appendix 5",
-      "INPSPayment": "INPS payments",
-      "notAllowedUploadByAdminsat": "Report upload restricted by administrator",
+      "requiredOrganization": "Select Enterprise!",
+      "uploadFile": "Upload",
+      "monthReport": "Monthly Report",
+      "applicationFour": "INPS App 4",
+      "applicationFive": "INPS App 5",
+      "INPSPayment": "INPS Payments",
+      "notAllowedUploadByAdminsat": "Upload Blocked by Admin",
       "confirmed": "Confirmed",
-      "openFromBlock": "Close",
-      "closeToBlock": "Open"
+      "openFromBlock": "Open",
+      "closeToBlock": "Close"
     }
   },
   "instructionPage": {
     "name": "Instruction",
-    "createTitle": "Upload report",
+    "createTitle": "Upload Report",
     "form": {
       "menu": "Menu",
-      "subMenu": "Sub menu",
-      "title": "Name",
-      "file": "Report file",
-      "uploadCount": "Uploaded {n} pcs",
+      "subMenu": "Submenu",
+      "title": "Title",
+      "file": "Report File",
+      "uploadCount": "Uploaded {n}",
       "comment": "Description",
-      "requiredOrganization": "Enterprise must be selected for upload!",
-      "uploadFile": "Upload report"
+      "requiredOrganization": "Select Enterprise!",
+      "uploadFile": "Upload"
     }
   },
   "monthReport": {
-    "name": "Monthly report",
-    "createTitle": "Full details",
+    "name": "Monthly Report",
+    "createTitle": "Full Data",
     "exportTitle": "Export Panel",
-    "refreshDescription": "Re-check JSHSHIR",
+    "refreshDescription": "Re-check PINFL",
     "tab": {
-      "multipleSalary": "Upload list of employees receiving salary from multiple places",
-      "exportWithCode": "Upload by payment code"
+      "multipleSalary": "Upload Multi-Salary",
+      "exportWithCode": "By Payment Code"
     },
     "form": {
-      "pin": "PIN",
+      "pin": "PINFL",
       "salary": "Salary",
-      "totalOne": "Payment types included in salary fund",
-      "totalTwo": "Payment types not included in salary fund",
-      "totalThree": "Calculated",
-      "code": "Payment code",
-      "organizations": "By enterprises",
-      "workers": "By employees",
-      "totalFour": "Deductions from salary"
+      "totalOne": "Payments in Salary Fund",
+      "totalTwo": "Payments Outside Fund",
+      "totalThree": "Accrued",
+      "code": "Payment Code",
+      "organizations": "By Enterprises",
+      "workers": "By Employees",
+      "totalFour": "Deductions from Salary"
     },
     "view": {
-      "main_salary": "Base salary",
-      "work_time": "Worked time"
+      "main_salary": "Base Salary",
+      "work_time": "Worked Time"
     },
     "in": {
-      "code": "Payment code",
-      "type": "Payment type and name",
+      "code": "Payment Code",
+      "type": "Type and Name",
       "amount": "Amount",
-      "total": "Total calculated",
-      "out_total": "Total deducted"
+      "total": "Total Accrued",
+      "out_total": "Total Deducted"
     }
   },
   "polyclinic": {
     "name": "Clinics",
-    "createTitle": "Add clinic",
+    "createTitle": "Add Clinic",
     "updateTitle": "Edit",
     "form": {
-      "choosePolyclinic": "Select clinic"
+      "choosePolyclinic": "Select Clinic"
     }
   },
   "expiredHealth": {
-    "name": "Medical examination",
-    "createTitle": "Add clinic",
+    "name": "Medical Exam",
+    "createTitle": "Add Clinic",
     "updateTitle": "Edit",
     "form": {
-      "choosePolyclinic": "Select clinic"
+      "choosePolyclinic": "Select Clinic"
     }
   },
   "ticket": {
-    "name": "Vouchers",
+    "name": "Directions",
     "createTitle": "Attach",
     "updateTitle": "Edit",
-    "attachCommission": "Attach commission members",
+    "attachCommission": "Attach Commission",
     "confirmTitle": "Confirm",
     "form": {
-      "worker_positions": "Commission members",
-      "tickets": "Selected employees",
-      "no-data": "No employee selected!",
+      "worker_positions": "Commission Members",
+      "tickets": "Selected Employees",
+      "no-data": "No Employee Selected!",
       "ticket": "Commission",
-      "warning": "Unattached employee!",
-      "requiredWorker": "Employee must be selected!",
-      "commission_leader_id": "Commission leader"
+      "warning": "Unattached Employee!",
+      "requiredWorker": "Select Employee!",
+      "commission_leader_id": "Commission Leader"
     },
     "confirm": {
-      "med_date": "Examination date",
-      "to": "Next examination date",
+      "med_date": "Exam Date",
+      "to": "Next Exam Date",
       "comment": "Comment",
-      "removeCommission": "Are you sure to clear commission members?"
+      "removeCommission": "Clear Commission Members?"
     }
   },
   "medWorker": {
-    "name": "All employees",
+    "name": "All Employees",
     "createTitle": "Attach",
     "updateTitle": "Edit",
     "form": {
       "education": "Education",
       "position": "Position",
       "department": "Department",
-      "position_date": "Position date"
+      "position_date": "Position Date"
     }
   },
   "taxFour": {
-    "name": "INPS Appendix 4",
+    "name": "PIT App 4",
     "form": {
-      "employee_status": "Employee status during reporting period (1-working, 2-not working)",
-      "contract_type": "Contract type (1-main, 2-additional, 3-FXSH, 4-voucher)",
-      "total_salary_income": "Total salary income",
-      "total_tax": "Total calculated tax amount",
-      "reported_salary_income": "Salary income in reporting period",
-      "reported_tax": "Tax amount calculated in reporting period"
+      "employee_status": "Employee Status (1-working, 2-not)",
+      "contract_type": "Contract Type (1-main, 2-part, 3-GPC, 4-direction)",
+      "total_salary_income": "Total Salary Income",
+      "total_tax": "Total Tax",
+      "reported_salary_income": "Period Salary Income",
+      "reported_tax": "Period Tax"
     }
   },
   "taxFive": {
-    "name": "INPS Appendix 5",
+    "name": "PIT App 5",
     "form": {
-      "total_income": "Total calculated income",
-      "reported_income": "Income calculated in reporting period",
-      "income_type": "Income type (1-property, 2-rental, 3-material aid, 4-other)",
-      "total_tax": "Total calculated tax amount",
-      "reported_tax": "Tax amount calculated in reporting period"
+      "total_income": "Total Income",
+      "reported_income": "Period Income",
+      "income_type": "Income Type (1-property, 2-rent, 3-aid, 4-other)",
+      "total_tax": "Total Tax",
+      "reported_tax": "Period Tax"
     }
   },
   "accDashboard": {
     "name": "Dashboard",
     "form": {
-      "total_income": "Total calculated income",
-      "reported_income": "Income calculated in reporting period",
-      "income_type": "Income type (1-property, 2-rental, 3-material aid, 4-other)",
-      "total_tax": "Total calculated tax amount",
-      "reported_tax": "Tax amount calculated in reporting period"
+      "total_income": "Total Income",
+      "reported_income": "Period Income",
+      "income_type": "Income Type (1-property, 2-rent, 3-aid, 4-other)",
+      "total_tax": "Total Tax",
+      "reported_tax": "Period Tax"
     },
     "chart": {
-      "sum": "Total",
-      "total_one": "Payment types included in salary fund",
-      "total_two": "Payments not included in income composition",
-      "total_three": "Payment types not included in salary fund",
-      "total_four": "Total salary",
-      "total_five": "Deductions from salary",
-      "statements": "Monthly report",
-      "tax_four": "Tax report Appendix 4",
-      "tax_five": "Tax report Appendix 5",
+      "sum": "Sum",
+      "total_one": "Payments in Salary Fund",
+      "total_two": "Payments Outside Fund",
+      "total_three": "Payments Outside Salary Fund",
+      "total_four": "Total Salary",
+      "total_five": "Deductions from Salary",
+      "statements": "Monthly Report",
+      "tax_four": "Tax App 4",
+      "tax_five": "Tax App 5",
       "pension_payment": "INPS",
-      "reported_income": "Income in reporting period",
-      "reported_tax": "Tax amount in reporting period",
-      "income_tax_paid": "Income tax paid amount",
-      "total_contributions": "Total contributions",
-      "reported_salary_income": "Salary income in reporting period"
+      "reported_income": "Period Income",
+      "reported_tax": "Period Tax",
+      "income_tax_paid": "Income Tax Paid",
+      "total_contributions": "Total Contributions",
+      "reported_salary_income": "Period Salary Income"
     },
     "tax_five": {
-      "reported_income": "Income in reporting period",
-      "reported_tax": "Tax amount in reporting period"
+      "reported_income": "Period Income",
+      "reported_tax": "Period Tax"
     }
   },
   "vacancy": {
-    "name": "Open vacancies",
-    "createTitle": "Create vacancy",
-    "updateTitle": "Edit vacancy",
+    "name": "Open Vacancies",
+    "createTitle": "Create Vacancy",
+    "updateTitle": "Edit Vacancy",
     "form": {
-      "department_position_id": "Vacancy positions",
+      "department_position_id": "Vacancy Positions",
       "region_id": "Region",
       "city_id": "District/City",
-      "work_type": "Work schedule",
-      "address": "Enterprise address (full)",
-      "education": "Minimum education (per position)",
-      "rate": "Vacant positions",
-      "salary": "Monthly salary (UZS)",
-      "experience": "Required experience (years)",
+      "work_type": "Work Schedule",
+      "address": "Address (full)",
+      "education": "Min Education (by position)",
+      "rate": "Open Positions",
+      "salary": "Salary (sum)",
+      "experience": "Required Experience (years)",
       "short_experience": "Experience",
       "switch": "Status",
-      "to": "Vacancy term",
-      "position_obligations": "Position duties",
-      "qualification_requirements": "Qualification requirements",
-      "working_conditions": "Working conditions",
+      "to": "Vacancy Term",
+      "position_obligations": "Duties",
+      "qualification_requirements": "Qualifications",
+      "working_conditions": "Conditions",
       "specialties": "Specialty"
     }
   },
   "salaryCategory": {
-    "name": "Salary fund",
+    "name": "Salary Fund",
     "createTitle": "Add",
     "updateTitle": "Edit",
     "tab": {
-      "month": "By month",
-      "organization": "By enterprise"
+      "month": "By Month",
+      "organization": "By Enterprise"
     },
     "label": {
-      "external": "Transportation (operation)",
-      "capital": "Capital repair",
-      "construction": "Construction works",
-      "other": "Other works (auxiliary-supporting activities)",
+      "external": "Transport (operation)",
+      "capital": "Capital Repair",
+      "construction": "Construction Works",
+      "other": "Other Works (auxiliary)",
       "fromIt": "Of which",
       "all": "Total",
       "area": "Area",
-      "mediumWorkerCount": "Average number of employees, persons",
-      "mediumSalaryAmount": "Salary fund, thousand UZS",
-      "forOrganization": "For society enterprises",
-      "forOwn": "For own needs",
-      "forForeign": "For foreign enterprise",
-      "forLogistic": "Related to transportation",
-      "forOther": "Other activity type (industry, contracting, etc.)",
-      "fixed-term": "Employees working under fixed-term employment contract",
-      "contract": "Employees working under civil-legal contract",
-      "Housekeeper": "Housekeepers"
+      "mediumWorkerCount": "Avg Employees, persons",
+      "mediumSalaryAmount": "Salary Fund, thous. sum",
+      "forOrganization": "For Subsidiaries",
+      "forOwn": "For Own Needs",
+      "forForeign": "For Foreign",
+      "forLogistic": "For Transport",
+      "forOther": "Other Activities (industry etc.)",
+      "fixed-term": "Fixed-term Contracts",
+      "contract": "Civil Contracts",
+      "Housekeeper": "Cashiers"
     },
     "form": {
-      "external_worker_count": "(Average number of employees, persons)",
-      "external_salary_fund": "(Salary fund, thousand UZS)",
-      "capital_society_worker_count": "For society enterprises - (Average number of employees, persons)",
-      "capital_society_salary_fund": "For society enterprises - (Salary fund, thousand UZS)",
-      "capital_own_use_worker_count": "For own needs - (Average number of employees, persons)",
-      "capital_own_use_salary_fund": "For own needs - (Salary fund, thousand UZS)",
-      "capital_foreign_company_worker_count": "For foreign enterprise - (Average number of employees, persons)",
-      "capital_foreign_company_salary_fund": "For foreign enterprise - (Salary fund, thousand UZS)",
-      "construction_society_worker_count": "For society enterprises - (Average number of employees, persons)",
-      "construction_society_salary_fund": "For society enterprises - (Salary fund, thousand UZS)",
-      "construction_own_use_worker_count": "For own needs - (Average number of employees, persons)",
-      "construction_own_use_salary_fund": "For own needs - (Salary fund, thousand UZS)",
-      "construction_foreign_company_worker_count": "For foreign enterprise - (Average number of employees, persons)",
-      "construction_foreign_company_salary_fund": "For foreign enterprise - (Salary fund, thousand UZS)",
-      "other_society_worker_count": "Other activity type (industry, contracting, etc.) - (Average number of employees, persons)",
-      "other_society_salary_fund": "Other activity type (industry, contracting, etc.) - (Salary fund, thousand UZS)",
-      "other_own_use_worker_count": "Related to transportation - (Average number of employees, persons)",
-      "other_own_use_salary_fund": "Related to transportation - (Salary fund, thousand UZS)",
-      "other_foreign_company_worker_count": "For foreign enterprise - (Average number of employees, persons)",
-      "other_foreign_company_salary_fund": "For foreign enterprise - (Salary fund, thousand UZS)",
-      "temporary_contract_worker_count": "Employees under fixed-term employment contract - (Average number of employees, persons)",
-      "temporary_contract_salary_fund": "Employees under fixed-term employment contract - (Salary fund, thousand UZS)",
-      "civil_contract_worker_count": "Employees under civil-legal contract - (Average number of employees, persons)",
-      "civil_contract_salary_fund": "Employees under civil-legal contract - (Salary fund, thousand UZS)",
-      "freelancer_worker_count": "Housekeepers - (Average number of employees, persons)",
-      "freelancer_salary_fund": "Housekeepers - (Salary fund, thousand UZS)"
+      "external_worker_count": "(Avg Employees, persons)",
+      "external_salary_fund": "(Fund, thous. sum)",
+      "capital_society_worker_count": "Subsidiaries - (persons)",
+      "capital_society_salary_fund": "Subsidiaries - (thous. sum)",
+      "capital_own_use_worker_count": "Own Needs - (persons)",
+      "capital_own_use_salary_fund": "Own Needs - (thous. sum)",
+      "capital_foreign_company_worker_count": "Foreign - (persons)",
+      "capital_foreign_company_salary_fund": "Foreign - (thous. sum)",
+      "construction_society_worker_count": "Subsidiaries - (persons)",
+      "construction_society_salary_fund": "Subsidiaries - (thous. sum)",
+      "construction_own_use_worker_count": "Own Needs - (persons)",
+      "construction_own_use_salary_fund": "Own Needs - (thous. sum)",
+      "construction_foreign_company_worker_count": "Foreign - (persons)",
+      "construction_foreign_company_salary_fund": "Foreign - (thous. sum)",
+      "other_society_worker_count": "Other Activities - (persons)",
+      "other_society_salary_fund": "Other Activities - (thous. sum)",
+      "other_own_use_worker_count": "Transport - (persons)",
+      "other_own_use_salary_fund": "Transport - (thous. sum)",
+      "other_foreign_company_worker_count": "Foreign - (persons)",
+      "other_foreign_company_salary_fund": "Foreign - (thous. sum)",
+      "temporary_contract_worker_count": "Fixed-term - (persons)",
+      "temporary_contract_salary_fund": "Fixed-term - (thous. sum)",
+      "civil_contract_worker_count": "Civil - (persons)",
+      "civil_contract_salary_fund": "Civil - (thous. sum)",
+      "freelancer_worker_count": "Cashiers - (persons)",
+      "freelancer_salary_fund": "Cashiers - (thous. sum)"
     }
   },
   "salaryReport": {
-    "name": "Monthly report (code)",
-    "createTitle": "Upload salary report",
-    "updateTitle": "Edit salary report",
+    "name": "Monthly Report (Code)",
+    "createTitle": "Upload Salary Report",
+    "updateTitle": "Edit Salary Report",
     "form": {
-      "title": "Breakdown of payment types in salary fund",
-      "name": "Name of payment types",
+      "title": "Salary Fund Payments Breakdown",
+      "name": "Payment Type Name",
       "type": "Type",
-      "fromYear": "From beginning of year",
+      "fromYear": "From Year Start",
       "total": "Total",
       "code": "Code",
-      "salaryType": "Salary fund, reflected in Form 1-T"
+      "salaryType": "Salary Fund, Reflected in Form 1-T"
     }
   },
   "pensionPayment": {
-    "name": "INPS payment",
+    "name": "INPS Payments",
     "createTitle": "",
     "updateTitle": "",
     "form": {
-      "income_tax_paid": "Income tax",
-      "mandatory_pension_contribution": "Mandatory contribution for pension",
-      "voluntary_pension_contribution": "Voluntary contribution for pension",
-      "total_contributions": "Total contributions"
+      "income_tax_paid": "Income Tax",
+      "mandatory_pension_contribution": "Mandatory Pension Contribution",
+      "voluntary_pension_contribution": "Voluntary Pension Contribution",
+      "total_contributions": "Total Contributions"
     }
   },
   "hcServer": {
     "name": "Turnstile",
     "createTitle": "Upload",
     "updateTitle": "Edit",
-    "errorTitle": "List of employees with data errors",
+    "errorTitle": "List with Errors",
     "form": {
       "name": "Name",
       "department": "Department",
       "access_level_id": "Groups",
-      "workers_count": "Number of employees",
+      "workers_count": "Employees Count",
       "exported_count": "Uploaded",
       "status": "Status",
-      "asFile": "Click to upload as file",
+      "asFile": "Upload to File",
       "error": "Error"
     }
   },
@@ -2056,45 +2045,55 @@
     "name": "Camera",
     "createTitle": "Upload",
     "updateTitle": "Edit",
-    "warningRecording": "Requirements for exam process",
-    "warningTextOne": "Camera and microphone must be on during exam.",
-    "warningTextTwo": "The person taking the exam must be fully visible on camera.",
-    "warningTextThree": "Turning off camera or microphone may invalidate the exam.",
+    "warningRecording": "Exam Requirements",
+    "warningTextOne": "Camera and mic must be on during exam.",
+    "warningTextTwo": "Face fully visible on camera.",
+    "warningTextThree": "Disabling may cancel exam.",
     "form": {
       "name": "Name",
       "department": "Department",
       "access_level_id": "Groups",
-      "workers_count": "Number of employees",
+      "workers_count": "Employees Count",
       "exported_count": "Uploaded",
       "status": "Status",
-      "asFile": "Click to upload as file",
+      "asFile": "Upload to File",
       "error": "Error"
     }
   },
+
+  "workerImage": {
+    "name": "(HC) Telegram Photos",
+    "photo": "Photo",
+    "status": "Status",
+    "viewPhoto": "View Photo",
+    "createTitle": "Add Employee Photo",
+    "requiredCommentForRejection": "Enter comment for rejection and press save",
+    "updateTitle": "Edit Employee Photo"
+  },
   "syncLog": {
-    "name": "Re-upload",
-    "createTitle": "Re-upload terminal data",
+    "name": "Reload",
+    "createTitle": "Reload Terminal Data",
     "updateTitle": "Edit",
-    "offlineDevices": "Offline devices",
+    "offlineDevices": "Offline Devices",
     "form": {
       "name": "Name",
-      "deviceLastSync": "Device time",
+      "deviceLastSync": "Device Time",
       "access_level_id": "Groups",
-      "workers_count": "Number of employees",
+      "workers_count": "Employees",
       "exported_count": "Uploaded",
       "status": "Status",
-      "asFile": "Click to upload as file",
+      "asFile": "Press for File",
       "error": "Error",
       "logId": "Log ID",
       "deviceId": "Device ID"
     }
   },
   "hcEvent": {
-    "name": "Events",
+    "name": "(HC) Events",
     "createTitle": "Upload",
     "updateTitle": "Edit",
     "syncTitle": "Sync",
-    "syncText": "Please select time for sync. System will auto-sync up to end of selected day.",
+    "syncText": "Select time. System syncs to end of day.",
     "preview": "View",
     "form": {
       "name": "Name",
@@ -2102,27 +2101,27 @@
       "device": "Device",
       "mask_status": "Mask",
       "status": "Status",
-      "asFile": "Click to upload as file",
-      "withMask": "With mask",
-      "NoMask": "Without mask",
+      "asFile": "Press for File",
+      "withMask": "With Mask",
+      "NoMask": "No Mask",
       "direction": "Turnstile",
-      "face": "FACE",
+      "face": "Face",
       "card": "Card",
       "finger": "Fingerprint",
       "unknown": "Unknown",
       "normal": "Normal",
-      "workTime": "Work time",
-      "noNormal": "Not normal",
-      "start_time": "Start time",
-      "hours": "Norm hours (/hours)",
-      "end_time": "End time"
+      "workTime": "Work Time",
+      "noNormal": "Not Normal",
+      "start_time": "Start",
+      "hours": "Norm Hours (/hour)",
+      "end_time": "End"
     },
-    "detailShow": "View details",
+    "detailShow": "Detailed View",
     "cards": {
-      "cardOne": "Late employees",
-      "cardTwo": "Employees not at work (yesterday)",
-      "cardThree": "Early leavers (yesterday)",
-      "cardFour": "Employees on vacation"
+      "cardOne": "Late Arrivals",
+      "cardTwo": "Absent",
+      "cardThree": "Early Leavers",
+      "cardFour": "On Vacation"
     }
   },
   "pensioner": {
@@ -2130,22 +2129,22 @@
     "createTitle": "Add",
     "updateTitle": "Edit",
     "form": {
-      "position": "Position at retirement (full form)",
-      "passport": "Passport series",
-      "address": "Residence address",
-      "experience": "Continuous railway experience",
-      "year": "Retirement year",
-      "invalid": "Disability group (1; 2; 3;)",
-      "railway_title": "Honorary railway worker title?",
-      "afghan": "Participated in Afghan war?",
-      "pin": "JSHSHIR",
-      "phone": "Phone number",
-      "chernobyl": "Participated in Chernobyl cleanup?"
+      "position": "Position at Retirement (full)",
+      "passport": "Passport Series",
+      "address": "Address",
+      "experience": "Continuous Railway Experience",
+      "year": "Retirement Year",
+      "invalid": "Disability Group (1;2;3;)",
+      "railway_title": "Honorary Railway Worker?",
+      "afghan": "Afghan War Veteran?",
+      "pin": "PINFL",
+      "phone": "Phone",
+      "chernobyl": "Chernobyl Participant?"
     }
   },
   "notification": {
-    "name": "Notification",
-    "createTitle": "Attach device",
+    "name": "Notifications",
+    "createTitle": "Attach Device",
     "updateTitle": "Edit",
     "form": {
       "user_id": "Employee",
@@ -2164,150 +2163,147 @@
     "attestation": "Attestation",
     "turnstile": "Turnstile",
     "general": "General",
-    "lms": "Training Management",
+    "lms": "Learning Management",
     "economist": "Economist",
     "hospital": "Hospital",
     "admin": "Admin"
   },
   "resultPage": {
     "name": "Results",
-    "createTitle": "Upload salary report",
-    "updateTitle": "Edit salary report",
+    "createTitle": "Upload Salary Report",
+    "updateTitle": "Edit Salary Report",
     "form": {
-      "chances": "Number of attempts",
-      "name": "Name of payment types",
+      "chances": "Attempts Count",
+      "name": "Payment Names",
       "type": "Type",
-      "fromYear": "From beginning of year",
+      "fromYear": "From Year Start",
       "total": "Total",
       "code": "Code",
-      "salaryType": "Salary fund, reflected in Form 1-T"
+      "salaryType": "Salary Fund, Reflected in 1-T"
     }
   },
   "turnStileDashboard": {
     "name": "Dashboard",
     "form": {
-      "topOfflineDevices": "Synchronized devices",
-      "lastSynchronizationTime": "Last sync",
-      "workerCount": "Number of employees",
-      "offlineDevice": "Offline devices",
-      "onlineDevice": "Online devices",
+      "topOfflineDevices": "Synced Devices",
+      "lastSynchronizationTime": "Last Sync",
+      "workerCount": "Employees",
+      "offlineDevice": "Offline Devices",
+      "onlineDevice": "Online Devices",
       "left": "Left",
-      "leftWorkplace": "Employees left workplace",
-      "dailyEvent": "Today's turnstile entry-exit log (by employees)",
-      "came_today": "Employees arrived today",
-      "not_came_today": "Employees not arrived today",
-      "current_in": "Employees at workplace",
-      "current_out": "Employees not at workplace",
-      "workdays": "Employees not at workplace"
+      "leftWorkplace": "Left Workplace",
+      "dailyEvent": "Daily Turnstile Log (by Employees)",
+      "came_today": "Arrived Today",
+      "not_came_today": "Absent Today",
+      "current_in": "At Workplace",
+      "current_out": "Away from Workplace",
+      "workdays": "Away from Workplace"
     },
     "work_durations": {
-      "workdays": "Set work time",
-      "max_worked_count": "Worked hours completed",
-      "deficit": "Unworked hours",
-      "min_workers": "Employees with least worked hours",
-      "max_workers": "Employees with most worked hours"
+      "workdays": "Planned Work Time",
+      "max_worked_count": "Worked Hours",
+      "deficit": "Unworked Hours",
+      "min_workers": "Least Worked",
+      "max_workers": "Most Worked"
     },
     "device": {
-      "all": "All devices",
-      "online": "Online devices",
-      "offline": "Offline devices",
-      "left": "Employees left workplace"
+      "all": "All Devices",
+      "online": "Online",
+      "offline": "Offline",
+      "left": "Left Workplace"
     },
     "perview": {
       "time": "Date",
-      "workTime": "Work start time",
+      "workTime": "Work Start Time",
       "temperature": "Temperature",
       "device": "Device",
       "direction": "Status",
-      "norm_hours": "Norm hours",
-      "auth_type": "Auth type",
+      "norm_hours": "Norm Hours",
+      "auth_type": "Auth Type",
       "mask_status": "Mask"
     },
     "cards": {
-      "late_come": "Late employees",
-      "not_come_yesterday": "Employees not at work (yesterday)",
-      "early_leave_yesterday": "Early leavers (yesterday)",
-      "not_come": "Employees not arrived",
-      "come": "Employees arrived",
-      "current_in": "Employees at workplace",
-      "current_out": "Employees not at workplace",
-      "early_leave": "Early leavers",
-      "daily_attendance": "Turnstile log",
-      "work_hours": "Under norm hours",
-      "device_status": "All devices",
-      "device_status_online": "Online devices",
-      "device_status_offline": "Offline devices",
-      "lesson_worked": "Work hours indicators",
-      "devices": "Top offline devices"
+      "late_come": "Late Arrivals",
+      "not_come_yesterday": "Absent Yesterday",
+      "early_leave_yesterday": "Early Leavers Yesterday",
+      "not_come": "Absent",
+      "come": "Arrived",
+      "current_in": "At Workplace",
+      "current_out": "Away",
+      "early_leave": "Early Leavers",
+      "daily_attendance": "Turnstile Log",
+      "work_hours": "Below Norm",
+      "device_status": "All Devices",
+      "device_status_online": "Online Devices",
+      "device_status_offline": "Offline Devices",
+      "lesson_worked": "Work Time Indicators",
+      "devices": "Top Offline Devices"
     },
     "options": {
-      "status": "By work hours",
-      "max": "Most",
-      "min": "Least"
+      "status": "By Work Time",
+      "max": "Max",
+      "min": "Min"
     }
   },
   "hcWorkDuration": {
-    "name": "(HC) Work time",
+    "name": "(HC) Work Time",
     "form": {
       "enter": "Enter",
       "exit": "Exit"
     }
   },
   "userImageLogs": {
-    "name": "Image History",
+    "name": "Photo History",
     "photo": "Photo",
-    "noPhoto": "No photo",
+    "noPhoto": "No Photo",
     "status": {
       "title": "Status",
       "create": "Created",
-      "update": "Updated", 
+      "update": "Updated",
       "delete": "Deleted"
     }
   },
   "invalidUser": {
-    "name": "Rejected",
+    "name": "Rejected Photos",
     "photo": "Photo",
-    "noPhoto": "No photo",
+    "noPhoto": "No Photo",
     "syncTime": "Sync Time"
+  },
+  "others": {
+    "name": "Additional"
   },
   "accessLevel": {
     "title": "Access Levels",
     "unknown": "Unknown",
     "expired": "Expired",
-    "expiresToday": "Expires today",
-    "daysLeft": "{days} days left",
+    "expiresToday": "Expires Today",
+    "daysLeft": "{days} Days Left",
     "active": "Active",
-    "noSearchResults": "No search results found",
-    "noAccessLevels": "No access levels available",
-    "expiryDate": "Expiry Date",
+    "noSearchResults": "No Results",
+    "noAccessLevels": "No Access Levels",
+    "expiryDate": "Expiry",
     "status": "Status",
     "refresh": "Refresh",
     "showing": "Showing",
-    "more": "more"
-  },
-  "workerImage": {
-    "name": "Worker Images",
-    "photo": "Photo",
-    "status": "Status",
-    "viewPhoto": "View Photo",
-    "createTitle": "Add Worker Image",
-    "updateTitle": "Edit Worker Image"
+    "more": "pcs"
   },
   "devices": {
-    "name": "Devices",
+    "name": "(HC) Devices",
     "createTitle": "Add Device",
     "updateTitle": "Edit Device",
     "deviceName": "Device Name",
-    "name": "Name",
-    "namePlaceholder": "Enter device name",
+    "namePlaceholder": "Enter Device Name",
     "ipAddress": "IP Address",
-    "ipAddressPlaceholder": "Enter IP address",
+    "ipAddressPlaceholder": "Enter IP",
     "macAddress": "MAC Address",
-    "macAddressPlaceholder": "Enter MAC address",
+    "macAddressPlaceholder": "Enter MAC",
     "serialNumber": "Serial Number",
-    "serialNumberPlaceholder": "Enter serial number",
+    "serialNumberPlaceholder": "Enter Serial",
     "status": "Status",
     "online": "Online",
     "offline": "Offline"
   }
+
+
+
 }

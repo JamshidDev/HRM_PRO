@@ -1,820 +1,833 @@
 {
   "content": {
-    "deleted": "Удалено",
-    "files": "Файлы",
-    "lastClickTime": "Вы можете использовать это снова через {n} минут!",
-    "deadline": "Срок",
-    "requiredField": "Поле обязательно для заполнения!",
-    "save": "Сохранить",
-    "start": "Начать",
-    "edit": "Редактировать",
-    "delete": "Удалить",
-    "view": "Просмотреть",
-    "now": "Сейчас",
-    "day": "День",
-    "time": "Время",
-    "offline": "Оффлайн",
-    "online": "Онлайн",
-    "all": "Все",
-    "copy": "Копировать",
-    "startDate": "Время начала",
-    "endDate": "Время окончания",
-    "exam": "Экзамен",
-    "result": "Результат",
-    "category": "Категория",
-    "download": "Скачать",
-    "attachment": "Вложение",
-    "no-data": "Нет данных",
-    "cancel": "Отмена",
-    "code": "Код",
-    "questions": "Вопросы",
-    "videos": "Видео",
-    "confirmExit": "Подтвердить выход?",
-    "reject": "Отклонить",
-    "help": "Помощь",
-    "notUpload": "Не загружено",
-    "enterField": "Введите",
-    "phone": "Номер телефона",
-    "langUz": "O’ZB",
-    "langRu": "РУС",
+    "deleted": "Deleted",
+    "files": "Files",
+    "lastClickTime": "Available again in {n} min!",
+    "deadline": "Deadline",
+    "requiredField": "Field required!",
+    "save": "Save",
+    "start": "Start",
+    "edit": "Edit",
+    "delete": "Delete",
+    "view": "View",
+    "responsible": "Responsible",
+    "now": "Now",
+    "day": "Day",
+    "time": "Time",
+    "offline": "Offline",
+    "online": "Online",
+    "all": "All",
+    "copy": "Copy",
+    "startDate": "Start Date",
+    "endDate": "End Date",
+    "exam": "Exam",
+    "result": "Result",
+    "category": "Category",
+    "download": "Download",
+    "attachment": "Attachment",
+    "no-data": "No Data",
+    "cancel": "Cancel",
+    "code": "Code",
+    "questions": "Questions",
+    "videos": "Videos",
+    "confirmExit": "Confirm exit?",
+    "reject": "Reject",
+    "help": "Help",
+    "notUpload": "Not Uploaded",
+    "enterField": "Enter",
+    "phone": "Phone",
+    "langUz": "UZB",
+    "langRu": "RUS",
     "langEn": "ENG",
-    "search": "Поиск",
-    "mln": "млн",
-    "today": "Сегодня",
-    "tomorrow": "Завтра",
-    "piece": "шт",
-    "person": "чел",
-    "searchWorker": "Введите для поиска сотрудника...",
-    "add": "Добавить",
-    "filterSetting": "Настройки фильтра",
-    "news": "Новое",
-    "hour": "Час",
-    "group": "Группа",
-    "action": "Действия",
-    "fullName": "Имя",
-    "position": "Должность",
-    "template": "Шаблонный файл",
-    "number": "№",
-    "photo": "Фото",
-    "short": "Коротко",
-    "long": "Полностью",
-    "platform": "Платформа",
-    "date": "Дата",
-    "name": "Название",
-    "general": "Общее",
-    "added": "Добавлено",
-    "description": "Описание",
-    "confirmDelete": "Вы уверены, что хотите удалить?",
-    "yes": "Да",
-    "no": "Нет",
-    "notFoundData": "Данные не найдены!",
-    "noResultYourRequest": "По вашему запросу данные не найдены...",
-    "back": "Назад",
-    "profile": "Кабинет",
-    "asAdmin": "Супер админ",
-    "setting": "Настройки",
-    "changeAccount": "Мои аккаунты",
-    "logOutSystem": "Выйти из системы",
-    "paginationSize": "Показывать по {n}",
-    "confirm": "Подтвердить",
-    "month": "Месяц",
-    "year": "Год",
-    "or": "Или",
-    "send": "Отправить",
-    "file": "Файл",
-    "choose": "Выбрать",
-    "chooseFile": "Выбрать файл",
-    "signatureLogin": "Вход через ЭЦП",
-    "signatureDocument": "Подписать и сохранить",
-    "closeSignatureModal": "Закрыть окно подписи",
-    "clear": "Очистить",
-    "continue": "Продолжить",
-    "finished": "Завершено",
-    "restart": "Перезапустить",
-    "close": "Закрыть",
-    "open": "Открыть",
-    "hide": "Скрыть",
-    "closeAndClear": "Закрыть и очистить",
-    "notWorker": "Сотрудник не найден",
-    "noAvailable": "Недоступно",
-    "worker": "Сотрудник",
-    "status": "Статус",
-    "Process": "В процессе",
-    "Read": "Ознакомлен",
-    "Success": "Согласовано",
-    "Rejected": "Отклонено",
-    "Deleted": "Удалено",
-    "Active": "Активно",
-    "DeActive": "Неактивно",
-    "message": "Напишите сообщение...",
-    "no-message": "Пока нет чатов",
-    "type": "Тип",
-    "workplace": "Предприятие",
-    "upload": "Загрузить файл",
-    "attachFile": "Прикрепить файл",
-    "document": "Документ",
-    "checking": "Проверяется...",
-    "downloadCV": "Скачать справку",
-    "deleteWarning": "Вы уверены, что хотите удалить?",
-    "sum": "сум",
-    "total": "Всего: {n} шт",
-    "fromTa": "из",
-    "main": "Основное",
-    "untilShow": " отображается до",
-    "next": "Следующий",
-    "preview": "Предыдущий",
-    "warning": "Предупреждение",
-    "error": "Ошибка",
-    "process": "В процессе",
-    "success": "Выполнено",
-    "return": "Вернуться",
-    "finish": "Завершить",
-    "created": "Дата создания",
-    "ended": "Дата завершения",
-    "move": "Переместить",
-    "listen": "Прослушать",
-    "downloadApp": "Скачать мобильное приложение",
+    "search": "Search",
+    "mln": "mln",
+    "today": "Today",
+    "tomorrow": "Tomorrow",
+    "piece": "pcs",
+    "person": "persons",
+    "searchWorker": "Type to search employee...",
+    "add": "Add",
+    "filterSetting": "Filter Settings",
+    "news": "New",
+    "hour": "Hour",
+    "group": "Group",
+    "action": "Actions",
+    "expiryDate": "Expiry",
+    "updatedAt": "Updated",
+    "deviceStatus": "Device Status",
+    "comment": "Comment",
+    "commentPlaceholder": "Enter comment...",
+    "fullName": "Name",
+    "position": "Position",
+    "template": "Template File",
+    "number": "#",
+    "photo": "Photo",
+    "short": "Short",
+    "long": "Full",
+    "platform": "Platform",
+    "date": "Date",
+    "name": "Name",
+    "general": "General",
+    "added": "Added",
+    "description": "Description",
+    "confirmDelete": "Delete?",
+    "yes": "Yes",
+    "no": "No",
+    "notFoundData": "Data not found!",
+    "noResultYourRequest": "No results for request...",
+    "back": "Back",
+    "profile": "Profile",
+    "asAdmin": "Super Admin",
+    "setting": "Settings",
+    "changeAccount": "Accounts",
+    "logOutSystem": "Logout",
+    "paginationSize": "Show {n}",
+    "confirm": "Confirm",
+    "month": "Month",
+    "year": "Year",
+    "or": "Or",
+    "send": "Send",
+    "file": "File",
+    "choose": "Choose",
+    "chooseFile": "Choose File",
+    "signatureLogin": "Login via EDS",
+    "signatureDocument": "Sign and Save",
+    "closeSignatureModal": "Close Signature Window",
+    "clear": "Clear",
+    "continue": "Continue",
+    "finished": "Finished",
+    "restart": "Restart",
+    "close": "Close",
+    "open": "Open",
+    "hide": "Hide",
+    "closeAndClear": "Close and Clear",
+    "notWorker": "Employee Not Found",
+    "noAvailable": "Unavailable",
+    "worker": "Employee",
+    "status": "Status",
+    "Process": "In Process",
+    "Read": "Read",
+    "Success": "Approved",
+    "Rejected": "Rejected",
+    "Deleted": "Deleted",
+    "Active": "Active",
+    "DeActive": "Inactive",
+    "message": "Write message...",
+    "no-message": "No messages",
+    "type": "Type",
+    "workplace": "Enterprise",
+    "upload": "Upload File",
+    "attachFile": "Attach File",
+    "document": "Document",
+    "checking": "Checking...",
+    "downloadCV": "Download Certificate",
+    "deleteWarning": "Delete?",
+    "sum": "sum",
+    "total": "Total: {n}",
+    "fromTa": "of",
+    "main": "Main",
+    "untilShow": "shown",
+    "next": "Next",
+    "preview": "Previous",
+    "warning": "Warning",
+    "error": "Error",
+    "process": "Processing",
+    "success": "Success",
+    "return": "Return",
+    "finish": "Finish",
+    "created": "Created Date",
+    "ended": "Ended Date",
+    "move": "Move",
+    "listen": "Listen",
+    "downloadApp": "Download Mobile App",
     "appStore": "App Store",
     "googlePlay": "Google Play",
-    "goToList": "Вернуться к списку",
-    "loginByUsb": "Через USB-токен",
-    "comingSoon": "Скоро",
-    "ip": "IP-адрес",
-    "url": "URL-адрес",
-    "brief": "Подробно",
-    "organization": "Организация",
-    "confirmStatus": "Подтверждение",
-    "staff": "Персонал",
-    "export": "Экспорт",
-    "reference": "Справка",
-    "from": "С",
-    "to": "По",
-    "more": "Больше",
-    "role": "Роль",
-    "duration": "Продолжительность",
-    "preparingDocument": "Документ готовится...",
-    "later": "Позже",
-    "refresh": "Обновить",
-    "confirmFileText": "Для подтверждения документа загрузите подписанную PDF-версию.",
-    "department": "Отдел",
-    "birthday": "Дата рождения",
-    "age": "Возраст",
-    "pin": "Введите паспортный JSHSHIR",
-    "university": "Университет",
-    "nameUz": "Название (UZ)",
-    "nameRu": "Название (RU)",
-    "nameEn": "Название (EN)",
-    "loginById": "Вход в систему",
-    "detail": "Подробности",
-    "users": "Пользователи",
-    "image": "Изображение",
-    "noImage": "Изображение отсутствует",
-    "waitResponse": "Пожалуйста, подождите ответа!",
-    "untilNow": "н.в.",
-    "warningImageSave": "Выбрано новое изображение для основной фото. Нажмите 'Сохранить' для применения.",
-    "selectAll": "Выбрать все",
+    "goToList": "To List",
+    "loginByUsb": "Via USB Token",
+    "comingSoon": "Coming Soon",
+    "ip": "IP Address",
+    "url": "URL Address",
+    "brief": "Details",
+    "organization": "Organization",
+    "confirmStatus": "Approval",
+    "staff": "Staff",
+    "export": "Export",
+    "reference": "Reference",
+    "from": "From",
+    "to": "To",
+    "more": "More",
+    "role": "Role",
+    "duration": "Duration",
+    "preparingDocument": "Document Preparing...",
+    "later": "Later",
+    "refresh": "Refresh",
+    "confirmFileText": "Upload PDF of signed copy to confirm.",
+    "department": "Department",
+    "birthday": "Birthday",
+    "age": "Age",
+    "pin": "Passport PINFL",
+    "university": "University",
+    "nameUz": "Name (UZ)",
+    "nameRu": "Name (RU)",
+    "nameEn": "Name (EN)",
+    "loginById": "System Login",
+    "detail": "Details",
+    "users": "Users",
+    "image": "Image",
+    "spam": "Spam",
+    "noSpam": "Remove from Spam",
+    "noImage": "No Image",
+    "waitResponse": "Wait for response!",
+    "untilNow": "c.t.",
+    "warningImageSave": "New photo selected. Press 'Save' to apply.",
+    "selectAll": "Select All",
     "uz": "UZ",
     "ru": "RU",
     "en": "EN"
   },
-      "social": {
-        "title": "Социальные сети",
-        "subtitle": "Присоединяйтесь к нашим официальным телеграм каналам",
-        "group": "Telegram группа",
-        "bot": "Telegram бот",
-        "copy": "Копировать",
-        "join": "Присоединиться",
-        "copySuccess": "Ссылка скопирована!",
-        "copyError": "Ошибка при копировании!"
-      },
   "date": {
-    "day": "День",
-    "hour": "Час",
-    "minute": "Минута"
+    "day": "Day",
+    "hour": "Hour",
+    "minute": "Minute"
   },
   "month": {
-    "january": "Январь",
-    "february": "Февраль",
-    "march": "Март",
-    "april": "Апрель",
-    "may": "Май",
-    "june": "Июнь",
-    "july": "Июль",
-    "august": "Август",
-    "september": "Сентябрь",
-    "october": "Октябрь",
-    "november": "Ноябрь",
-    "december": "Декабрь"
+    "january": "January",
+    "february": "February",
+    "march": "March",
+    "april": "April",
+    "may": "May",
+    "june": "June",
+    "july": "July",
+    "august": "August",
+    "september": "September",
+    "october": "October",
+    "november": "November",
+    "december": "December"
   },
   "rules": {
-    "login": "Email обязателен!",
-    "phone": "Номер телефона обязателен!",
-    "password": "Пароль обязателен!",
-    "requiredField": "Поле обязательно для заполнения!",
-    "requiredWorker": "Выбор сотрудника обязателен!",
-    "requiredImageField": "Загрузка изображения обязательна!",
-    "requiredFileField": "Загрузка файла обязательна!",
-    "requiredMinLength": "Не менее {n} символов",
-    "requiredMaxLength": "Не более {n} символов",
-    "unExpectedFormat": "Неверный тип данных!",
-    "requiredJSHSHIR": "Паспортный JSHSHIR обязателен!",
-    "enterOverNumber": "Введите число больше {n}"
+    "login": "Email required!",
+    "phone": "Phone required!",
+    "password": "Password required!",
+    "requiredField": "Field required!",
+    "requiredWorker": "Select employee!",
+    "requiredImageField": "Image required!",
+    "requiredFileField": "File required!",
+    "requiredMinLength": "At least {n} characters",
+    "requiredMaxLength": "At most {n} characters",
+    "unExpectedFormat": "Invalid format!",
+    "requiredJSHSHIR": "PINFL required!",
+    "enterOverNumber": "Enter number > {n}"
   },
   "message": {
-    "successDone": "Успешно выполнено",
-    "requiredSignature": "Поле подписи не может быть пустым!",
-    "clearedFields": "Поля очищены!",
-    "unExpectedError": "Произошла неожиданная ошибка!",
-    "warning-data": "Недостаточно данных!",
-    "noPermission": "Не разрешено!"
+    "successDone": "Done successfully",
+    "requiredSignature": "Signature field required!",
+    "clearedFields": "Fields cleared!",
+    "unExpectedError": "Unexpected error!",
+    "warning-data": "Insufficient data!",
+    "noPermission": "No permission!"
   },
   "enum": {
-    "man": "Мужской",
-    "woman": "Женский",
-    "noCreated": "Не создано",
-    "working": "В процессе",
-    "bug": "Ошибка",
-    "done": "Создано"
+    "man": "Male",
+    "woman": "Female",
+    "noCreated": "Not Created",
+    "working": "Working",
+    "bug": "Bug",
+    "done": "Created"
   },
   "account": {
-    "changeAccount": "Сменить аккаунт!",
-    "changeRoleConfirm": "Выберите нужный аккаунт и подождите 20 секунд для переключения"
+    "changeAccount": "Change Account!",
+    "changeRoleConfirm": "Select account and wait 20 sec to login"
   },
   "sidebar": {
-    "hrm": "Меню сотрудников",
-    "admin": "Меню админа",
-    "chat": "Меню чата",
-    "docflow": "Меню документов",
-    "attestation": "Меню аттестации",
-    "timesheet": "Табель",
-    "accountant": "Меню бухгалтера",
-    "hospital": "Меню медосмотра",
+    "hrm": "Employee Menu",
+    "admin": "Admin Menu",
+    "chat": "Chat Menu",
+    "docflow": "Documents Menu",
+    "attestation": "Attestation Menu",
+    "timesheet": "Timesheet",
+    "accountant": "Accountant Menu",
+    "hospital": "Medical Menu",
     "lms": "LMS"
   },
   "loginPage": {
-    "name": "Добро пожаловать",
-    "title": "Вход",
-    "subtitle": "Введите номер телефона и пароль для входа.",
-    "phone": "Номер телефона",
-    "password": "Пароль",
-    "doYouHaveAccount": "Нет аккаунта?",
-    "singUp": "Регистрация",
+    "name": "Welcome",
+    "title": "Login",
+    "subtitle": "Enter phone and password to login.",
+    "phone": "Phone",
+    "password": "Password",
+    "doYouHaveAccount": "No Account?",
+    "singUp": "Sign Up",
     "description": {
       "title": "HRMS",
-      "subtitle": "Современная система управления персоналом\n",
-      "text": "Эффективно управляйте сотрудниками, контролируйте рабочее время и автоматизируйте документы. Оптимизируйте HR-процессы и выведите бизнес на новый уровень!"
+      "subtitle": "Modern HR Management System\n",
+      "text": "Efficient employee management, time tracking, and document automation. Optimize HR processes!"
     },
-    "login": "Вход"
+    "login": "Login"
   },
   "registerPage": {
-    "name": "Регистрация",
-    "title": "Регистрация",
-    "subtitle": "Подтверждение",
-    "firstName": "Имя",
-    "lastName": "Фамилия",
-    "middleName": "Отчество",
-    "pin": "Паспорт JSHSHIR",
-    "doYouHaveAccount": "Есть аккаунт?",
-    "loginToSystem": "Вход в систему!",
-    "otp": "Код",
-    "verification": "Мы отправили {n} код подтверждения по SMS на ваш номер телефона.",
-    "reSendOtp": "Получить новый код подтверждения",
-    "getOtp": "Получить код"
+    "name": "Registration",
+    "title": "Registration",
+    "subtitle": "Verification",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "middleName": "Middle Name",
+    "pin": "Passport PINFL",
+    "doYouHaveAccount": "Have Account?",
+    "loginToSystem": "Login!",
+    "otp": "Code",
+    "verification": "Verification code sent to {n} via SMS.",
+    "reSendOtp": "Get New Code",
+    "getOtp": "Get Code"
   },
   "verificationEmail": {
-    "title": "Подтверждение аккаунта",
-    "subtitle": "Мы отправили код подтверждения на вашу почту {email}",
-    "placeholder": "Введите код здесь",
-    "verification": "Подтвердить"
+    "title": "Account Verification",
+    "subtitle": "Code sent to {email}",
+    "placeholder": "Enter code",
+    "verification": "Verify"
   },
   "userPermission": {
-    "name": "Права",
-    "createTitle": "Добавить разрешение",
-    "updateTitle": "Редактировать разрешение",
+    "name": "Permissions",
+    "createTitle": "Add Permission",
+    "updateTitle": "Edit Permission",
     "form": {
-      "name": "Название разрешения"
+      "name": "Permission Name"
     }
   },
   "userRole": {
-    "name": "Роли",
-    "createTitle": "Добавить роль",
-    "updateTitle": "Редактировать роль",
+    "name": "Roles",
+    "createTitle": "Add Role",
+    "updateTitle": "Edit Role",
     "form": {
-      "name": "Название роли",
-      "permissions": "Разрешения"
+      "name": "Role Name",
+      "permissions": "Permissions"
     }
   },
   "userPage": {
-    "name": "Пользователи",
-    "createTitle": "Назначить роль",
-    "updateTitle": "Редактировать роль",
+    "name": "Users",
+    "createTitle": "Attach Role",
+    "updateTitle": "Edit Role",
     "form": {
-      "role": "Права"
+      "role": "Permissions",
+      "confirmSpam": "Spam?",
+      "cancelSpam": "Remove from Spam?"
     },
-    "no-roles": "Назначенные роли отсутствуют!"
+    "no-roles": "No Attached Roles!"
   },
   "confirmation": {
-    "name": "Договоры",
+    "name": "Contracts",
     "contract": {
       "form": {
-        "number": "Номер",
-        "type": "Тип",
-        "organization": "Предприятие",
-        "worker": "Сотрудник"
+        "number": "Number",
+        "type": "Type",
+        "organization": "Enterprise",
+        "worker": "Employee"
       }
     }
   },
   "countryPage": {
-    "name": "Страны",
-    "createTitle": "Добавить страну",
-    "updateTitle": "Редактировать страну",
+    "name": "Countries",
+    "createTitle": "Add Country",
+    "updateTitle": "Edit Country",
     "form": {
-      "name": "Название страны",
-      "coordinates": "Выберите центр страны"
+      "name": "Country Name",
+      "coordinates": "Country Center"
     }
   },
   "regionPage": {
-    "name": "Области",
-    "createTitle": "Добавить область",
-    "updateTitle": "Редактировать область",
+    "name": "Regions",
+    "createTitle": "Add Region",
+    "updateTitle": "Edit Region",
     "form": {
-      "name": "Область",
-      "coordinates": "Выберите центр области",
-      "country": "Страна"
+      "name": "Region",
+      "coordinates": "Region Center",
+      "country": "Country"
     }
   },
   "districtPage": {
-    "name": "Районы",
-    "createTitle": "Добавить район",
-    "updateTitle": "Редактировать район",
+    "name": "Districts",
+    "createTitle": "Add District",
+    "updateTitle": "Edit District",
     "form": {
-      "name": "Район",
-      "coordinates": "Выберите центр района",
-      "region": "Область"
+      "name": "District",
+      "coordinates": "District Center",
+      "region": "Region"
     }
   },
   "nationalityPage": {
-    "name": "Национальности",
-    "createTitle": "Добавить национальность",
-    "updateTitle": "Редактировать национальность",
+    "name": "Nationalities",
+    "createTitle": "Add Nationality",
+    "updateTitle": "Edit Nationality",
     "form": {
-      "name": "Национальность"
+      "name": "Nationality"
     }
   },
   "profilePage": {
     "account": {
-      "title": "Информация об аккаунте",
-      "warningText": "Для безопасности регулярно обновляйте данные аккаунта, чтобы защитить от несанкционированного доступа."
+      "title": "Account Info",
+      "warningText": "Update data regularly for security."
     },
     "tabs": {
-      "profileInfo": "Данные аккаунта",
-      "notification": "Уведомления",
-      "secure": "Безопасность",
-      "actionHistory": "История действий",
-      "socialLinks": "Социальные сети"
+      "profileInfo": "Account Info",
+      "notification": "Notifications",
+      "secure": "Security",
+      "actionHistory": "Action History",
+      "social": {
+        "title": "Social Networks",
+        "subtitle": "Join support groups",
+        "group": "HRM Group",
+        "bot": "HRMPRO Bot",
+        "copy": "Copy",
+        "join": "Join",
+        "copySuccess": "Link copied!",
+        "copyError": "Copy error!"
+      }
     },
     "org": {
-      "title": "Данные для формы приказа",
-      "command_name": "Город/Район (в форме приказа)",
-      "address": "Полный адрес организации",
-      "city_id": "Район",
-      "region_id": "Область"
+      "title": "Order Form Data",
+      "command_name": "City/District (in Order)",
+      "address": "Full Organization Address",
+      "city_id": "District",
+      "region_id": "Region"
     },
     "form": {
-      "lastName": "Фамилия",
-      "fistName": "Имя",
-      "middleName": "Отчество",
-      "password": "Пароль",
-      "confirmPassword": "Подтвердить пароль"
+      "lastName": "Last Name",
+      "fistName": "First Name",
+      "middleName": "Middle Name",
+      "password": "Password",
+      "confirmPassword": "Confirm Password"
     }
   },
   "positionPage": {
-    "name": "Должности",
-    "createTitle": "Добавить должность",
-    "updateTitle": "Редактировать должность",
+    "name": "Positions",
+    "createTitle": "Add Position",
+    "updateTitle": "Edit Position",
     "form": {
-      "name": "Название должности (uz)",
-      "name_ru": "Название должности (ru)",
-      "classification_index": "Индекс классификатора",
-      "classification_code": "Код классификатора"
+      "name": "Name (UZ)",
+      "name_ru": "Name (RU)",
+      "classification_index": "Classifier Index",
+      "classification_code": "Classifier Code"
     }
   },
   "organizationPage": {
-    "name": "Организации",
-    "createTitle": "Добавить организацию",
-    "updateTitle": "Редактировать организацию",
+    "name": "Organizations",
+    "createTitle": "Add Organization",
+    "updateTitle": "Edit Organization",
     "form": {
-      "parent_id": "Выберите организацию",
-      "name": "Название организации",
-      "full_name": "Полное название организации",
-      "group": "Группа",
-      "code": "Код",
-      "city_id": "Район",
-      "level": "Тип организации"
+      "parent_id": "Select Organization",
+      "name": "Name",
+      "full_name": "Full Name",
+      "group": "Group",
+      "code": "Code",
+      "city_id": "District",
+      "level": "Organization Type"
     },
-    "selectedOrg": "Выбранная организация",
-    "deleteContent": "Вы уверены, что хотите удалить эту организацию? "
+    "selectedOrg": "Selected Organization",
+    "deleteContent": "Delete organization? "
   },
   "timesheet": {
-    "name": "Табель",
-    "status": "Статус табеля",
-    "assignUser": "Прикрепить к табелю",
-    "finished": "Завершено",
+    "name": "Timesheet",
+    "status": "Timesheet Status",
+    "assignUser": "Assign to Timesheet",
+    "finished": "Completed",
     "type": {
-      "organization": "Организация",
-      "department": "Отдел"
+      "organization": "Organization",
+      "department": "Department"
     },
-    "nDays": "{n} дней",
-    "nHours": "{n} часов"
+    "nDays": "{n} days",
+    "nHours": "{n} hours"
   },
   "timesheetWorkerPage": {
-    "name": "Табельщики",
-    "work_place": "Организация/Отдел"
+    "name": "Timesheet Users",
+    "work_place": "Organization/Department"
   },
   "workerPage": {
-    "name": "Сотрудники",
+    "name": "Employees",
     "filter": {
-      "contract": "Заключение договора",
-      "organization": "Предприятия",
-      "birthday": "Месяц рождения",
-      "contract_type": "Тип договора",
-      "department": "Отделы",
-      "position": "Должности",
-      "sex": "Пол",
-      "multiple_position": "Сотрудники с несколькими договорами",
-      "position_type": "Тип должности",
-      "downloadRelative": "Скачать родственников"
+      "contract": "Conclude Contract",
+      "organization": "Enterprises",
+      "birthday": "Birth Month",
+      "contract_type": "Contract Type",
+      "department": "Departments",
+      "position": "Positions",
+      "sex": "Gender",
+      "multiple_position": "Employees with Multiple Contracts",
+      "position_type": "Position Type",
+      "downloadRelative": "Download Relatives"
     },
     "checkWorker": {
-      "title": "Поиск сотрудника",
-      "defaultText": "Начните поиск...",
-      "no-worker": "Сотрудник не найден в системе!",
-      "born": "Дата рождения",
-      "addCandidate": "Добавить кандидата",
-      "add-worker": "Добавьте данные сотрудника вне системы через кнопку добавления кандидата",
-      "jshshir": "Введите JSHSHIR"
+      "title": "Search Employee",
+      "defaultText": "Start search...",
+      "no-worker": "Employee not found!",
+      "born": "Birth Date",
+      "addCandidate": "Add Candidate",
+      "add-worker": "Add via candidate button",
+      "jshshir": "Enter PINFL"
     },
     "table": {
-      "department": "Отдел",
-      "contractType": "Тип договора",
-      "group": "Г",
-      "rank": "Р",
-      "rate": "С",
-      "position_date": "Дата должности",
-      "birthday": "Дата рождения",
-      "position": "Должность",
-      "organization": "Предприятие"
+      "department": "Department",
+      "contractType": "Contract Type",
+      "group": "G",
+      "rank": "R",
+      "rate": "S",
+      "position_date": "Position Date",
+      "birthday": "Birth Date",
+      "position": "Position",
+      "organization": "Enterprise"
     }
   },
   "exportPage": {
-    "name": "Задачи",
-    "exportAction": "Экспорт",
-    "checkAll": "Выбрать все",
-    "addPassport": "Включить паспортные данные в экспорт?",
-    "chooseExport": "Выбрать поля"
+    "name": "Tasks",
+    "exportAction": "Export",
+    "checkAll": "Select All",
+    "addPassport": "Include Passport Data?",
+    "chooseExport": "Select Fields"
   },
   "contactPage": {
-    "name": "Контакты"
+    "name": "Contacts"
   },
   "documentHistoryPage": {
-    "name": "История документов"
+    "name": "Document History"
   },
   "workerProfile": {
     "tabs": {
-      "personal": "Личное",
-      "education": "Образование",
-      "career": "Карьера",
-      "relative": "Родственники",
-      "others": "Другое"
+      "personal": "Personal",
+      "education": "Education",
+      "career": "Career",
+      "relative": "Relatives",
+      "others": "Other"
     },
     "personal": {
-      "additionalContract": "Заключить дополнительное соглашение",
-      "createOrder": "Создать приказ",
-      "positionGroup": "Группа должности",
-      "positionRank": "Разряд должности",
-      "positionRate": "Ставка должности",
-      "addPassport": "Добавить копию паспорта",
-      "no-passport": "Паспортные данные не загружены!"
+      "additionalContract": "Additional Agreement",
+      "createOrder": "Create Order",
+      "positionGroup": "Position Group",
+      "positionRank": "Position Rank",
+      "positionRate": "Position Rate",
+      "addPassport": "Add Passport Copy",
+      "no-passport": "Passport Not Uploaded!"
     },
     "position": {
-      "contractType": "Тип договора",
-      "contractNumber": "Номер договора",
-      "contractDate": "Дата договора",
-      "contractToDate": "Срок договора",
-      "positionDate": "Дата должности",
-      "position": "Должность",
-      "title": "Данные должности"
+      "contractType": "Contract Type",
+      "contractNumber": "Contract Number",
+      "contractDate": "Contract Date",
+      "contractToDate": "Contract Term",
+      "positionDate": "Position Date",
+      "position": "Position",
+      "title": "Position Info"
     },
     "roles": {
-      "title": "Роли",
-      "attachRole": "Назначить роль"
+      "title": "Roles",
+      "attachRole": "Attach Role"
     }
   },
   "departmentPage": {
-    "name": "Отделы",
-    "createTitle": "Добавить отдел",
-    "updateTitle": "Редактировать отдел",
+    "name": "Departments",
+    "createTitle": "Add Department",
+    "updateTitle": "Edit Department",
     "form": {
-      "parent_id": "Выберите отдел",
-      "name": "Название отдела",
-      "level": "Тип отдела"
+      "parent_id": "Select Department",
+      "name": "Department Name",
+      "level": "Department Type"
     },
-    "selectedOrg": "Выбранная организация",
-    "deleteContent": "Вы уверены, что хотите удалить эту организацию? "
+    "selectedOrg": "Selected Organization",
+    "deleteContent": "Delete organization? "
   },
   "departmentPositionPage": {
-    "name": "Должности",
-    "createTitle": "Прикрепить должность к отделу",
-    "updateTitle": "Редактировать должность",
+    "name": "Positions",
+    "createTitle": "Assign Position to Department",
+    "updateTitle": "Edit Position",
     "form": {
-      "position_id": "Выберите должность",
-      "department_id": "Выберите отдел",
-      "group": "Группа должности",
-      "rank": "Разряд для должности",
-      "max_rank": "Максимальный разряд для должности",
-      "rate": "Штат должности",
-      "salary": "Месячная зарплата",
-      "experience": "Стаж работы (мес)",
-      "educations": "Требуемое минимальное образование"
+      "position_id": "Select Position",
+      "department_id": "Select Department",
+      "group": "Position Group",
+      "rank": "Rank",
+      "max_rank": "Max Rank",
+      "rate": "Staff Unit",
+      "salary": "Salary",
+      "experience": "Experience (months)",
+      "educations": "Min Education"
     },
     "table": {
-      "position": "Должность",
-      "group": "Г",
-      "rank": "Р",
-      "rate": "К",
-      "salary": "Месячная зарплата",
-      "department": "Отдел",
-      "education": "Образование",
-      "organization": "Предприятие",
-      "experience": "Стаж"
+      "position": "Position",
+      "group": "G",
+      "rank": "R",
+      "rate": "K",
+      "salary": "Salary",
+      "department": "Department",
+      "education": "Education",
+      "organization": "Enterprise",
+      "experience": "Experience"
     }
   },
   "createWorkerPage": {
-    "updatePasswordWarning": "Для изменения пароля сотрудника на паспортный JSHSHIR нажмите 'Обновить пароль'",
-    "updatePassword": "Обновить пароль",
-    "no-account": "Аккаунт для сотрудника не создан. Нажмите сохранить для создания!",
-    "otherProfile": "Аккаунт для сотрудника не создан. Номер телефона уже привязан к {n}!",
-    "name": "Добавить данные сотрудника",
+    "updatePasswordWarning": "To change password to PINFL, press 'Update Password'",
+    "updatePassword": "Update Password",
+    "no-account": "No account. Press 'Save' to create!",
+    "otherProfile": "No account: phone tied to {n}!",
+    "name": "Add Employee Data",
     "ui": {
-      "image": "Рекомендуется добавить 3 фото кандидата, сделанные за последние 3 месяца.",
-      "phone": "Укажите основной номер кандидата, который будет использоваться как логин для входа в систему."
+      "image": "Recommend 3 photos from last 3 months.",
+      "phone": "Set main phone for login."
     },
     "form": {
-      "lastName": "Фамилия",
-      "firstName": "Имя",
-      "middleName": "Отчество",
-      "country": "Страна рождения",
-      "region": "Область рождения",
-      "city": "Район рождения",
-      "currentRegion": "Область проживания",
-      "currentCity": "Район проживания",
-      "birthday": "Дата рождения",
-      "academicTitle": "Научная степень",
-      "academicDegree": "Ученая степень",
-      "nationality_id": "Национальность",
-      "party": "Партийность",
-      "pin": "Паспорт JSHSHIR",
-      "serial_number": "Серия и номер",
-      "from_date": "Дата выдачи",
-      "to_date": "Срок действия",
-      "passport_address": "Место выдачи",
-      "passport_file": "Копия паспорта (.pdf)",
-      "inn": "ИНН",
-      "sex": "Пол",
-      "marital_status": "Семейное положение",
-      "address": "Адрес проживания",
-      "experience_date": "Непрерывный стаж",
-      "passportTitle": "Паспортные данные",
-      "education": "Образование",
-      "work_experience": "Общий стаж (в месяцах)"
+      "lastName": "Last Name",
+      "firstName": "First Name",
+      "middleName": "Middle Name",
+      "country": "Birth Country",
+      "region": "Birth Region",
+      "city": "Birth District",
+      "currentRegion": "Residence Region",
+      "currentCity": "Residence District",
+      "birthday": "Birthday",
+      "academicTitle": "Academic Title",
+      "academicDegree": "Academic Degree",
+      "nationality_id": "Nationality",
+      "party": "Party Membership",
+      "pin": "Passport PINFL",
+      "serial_number": "Series and Number",
+      "from_date": "Issue Date",
+      "to_date": "Expiry Date",
+      "passport_address": "Issue Place",
+      "passport_file": "Passport Copy (.pdf)",
+      "inn": "INN",
+      "sex": "Gender",
+      "marital_status": "Marital Status",
+      "address": "Residence Address",
+      "experience_date": "Continuous Experience",
+      "passportTitle": "Passport Info",
+      "education": "Education",
+      "work_experience": "Total Experience (months)"
     },
     "step": {
-      "personal": "Личные данные кандидата",
-      "photo": "Фото кандидата",
-      "pasport": "Паспортные данные кандидата",
-      "phone": "Данные номера телефона кандидата"
+      "personal": "Candidate Personal Data",
+      "photo": "Candidate Photo",
+      "pasport": "Passport Data",
+      "phone": "Phone Data"
     },
     "toast": {
       "warning": {
-        "title": "Существующий сотрудник в системе",
+        "title": "Existing Employee",
         "subtitle": "No comment"
       },
       "success": {
-        "title": "Кандидат добавлен в систему",
-        "subtitle": "Нажмите продолжить для заключения трудового договора с кандидатом."
+        "title": "Candidate Added",
+        "subtitle": "Press 'Continue' for contract."
       }
     }
   },
   "signature": {
-    "keyType": "Тип пользователя",
-    "inn": "СТИР",
-    "undo": "Назад",
-    "certificate": "Номер сертификата",
-    "validDate": "Срок действия",
-    "expiredKey": "Срок ключа истек!",
-    "legalPerson": "Юридическое лицо",
-    "naturalPerson": "Физическое лицо",
-    "connectionError": "ЭЦП не установлена или неправильно настроена!",
-    "copyLink": "Копировать ссылку",
-    "copied": "Ссылка скопирована",
-    "goSignature": "Подписать",
-    "signatureTitle": "Подписать документ электронной подписью!",
-    "signatureWorker": "Ссылка для подписи создана для {name}. Документ действителен только при подписи {name}.",
-    "linkText": "Ссылка для документа",
-    "acceptApplication": "Подтвердить заявление",
-    "comment": "Комментарий",
-    "rejectApplication": "Отклонить заявление",
-    "pinfl": "JSHSHR"
+    "keyType": "User Type",
+    "inn": "TIN",
+    "undo": "Back",
+    "certificate": "Certificate Number",
+    "validDate": "Expiry",
+    "expiredKey": "Key expired!",
+    "legalPerson": "Legal Entity",
+    "naturalPerson": "Natural Person",
+    "connectionError": "EDS not installed or incorrect!",
+    "copyLink": "Copy Link",
+    "copied": "Link copied",
+    "goSignature": "Sign",
+    "signatureTitle": "Sign electronically!",
+    "signatureWorker": "Link for {name}. Valid only after {name}'s signature.",
+    "linkText": "Document Link",
+    "acceptApplication": "Approve Application",
+    "comment": "Comment",
+    "rejectApplication": "Reject Application",
+    "pinfl": "PINFL"
   },
   "documentPage": {
-    "name": "Документы",
-    "createTitle": "Заключить договор",
-    "updateTitle": "Редактировать договор",
-    "position_date": "Дата должности",
+    "name": "Documents",
+    "createTitle": "Create Contract",
+    "updateTitle": "Edit Contract",
+    "position_date": "Position Date",
     "tabs": {
-      "contract": "Договоры",
-      "adContract": "Доп. соглашение",
-      "command": "Приказы"
+      "contract": "Contracts",
+      "adContract": "Add. Agreements",
+      "command": "Orders"
     },
     "command": {
-      "createTitle": "Создать приказ",
-      "updateTitle": "Редактировать приказ",
-      "lastVacation": "Просмотреть данные последнего отпуска",
+      "createTitle": "Create Order",
+      "updateTitle": "Edit Order",
+      "lastVacation": "View Last Vacation",
       "form": {
-        "command_date": "Дата приказа",
-        "type": "Тип приказа",
-        "byContract": "На основании {n} договора",
-        "confirm": "Подтверждающие",
-        "director_id": "Директор",
-        "day": "День",
-        "from": "Дата начала отпуска",
-        "period_from": "Период отпуска (с)",
-        "period_to": "Период отпуска (по)",
-        "to": "Дата окончания отпуска",
-        "work_day": "Дата выхода на работу",
-        "main_day": "Основные дни отпуска",
-        "second_day": "Дополнительные дни отпуска",
-        "additionals": "Дополнения",
-        "calculateVacation": "Рассчитать отпуск",
-        "no-calculate": "Дни отпуска не рассчитаны!",
-        "all_day": "Дни отпуска",
-        "contract_to_date": "Дата окончания договора",
-        "isNotValid": "Недостаточно данных для расчета отпуска!",
-        "isNotCalculate": "Данные отпуска сотрудников не рассчитаны!",
-        "notSelectCommand": "Выберите тип приказа и продолжите!",
-        "removeWorker": "Удалить из списка",
-        "calculateTitle": "Рассчитанные данные отпуска. Можно редактировать, если неверно",
-        "requiredVacationData": "Введите данные отпуска сотрудников!",
-        "rest_day": "Остаток дней",
-        "by_whom": "Кем",
-        "reason": "Причина",
-        "gift_type": "Тип подарка",
-        "gift": "Название подарка",
-        "fine_type": "Тип штрафа",
-        "fine": "Название штрафа",
-        "amount": "Сумма",
-        "financeType": "Тип материальной помощи",
-        "command_number": "Номер приказа"
+        "command_date": "Order Date",
+        "type": "Order Type",
+        "byContract": "Based on Contract {n}",
+        "confirm": "Approvers",
+        "director_id": "Director",
+        "day": "Day",
+        "from": "Vacation Start Date",
+        "period_from": "Vacation From",
+        "period_to": "Vacation To",
+        "to": "Vacation End Date",
+        "work_day": "Return to Work Date",
+        "main_day": "Main Vacation Days",
+        "second_day": "Additional Vacation Days",
+        "additionals": "Additions",
+        "calculateVacation": "Calculate Vacation",
+        "no-calculate": "Vacation days not calculated!",
+        "all_day": "Vacation Days",
+        "contract_to_date": "Contract End Date",
+        "isNotValid": "Insufficient data for calculation!",
+        "isNotCalculate": "Vacations not calculated!",
+        "notSelectCommand": "Select order type!",
+        "removeWorker": "Remove from List",
+        "calculateTitle": "Calculated vacation data. Editable.",
+        "requiredVacationData": "Enter vacation data!",
+        "rest_day": "Remaining Days",
+        "by_whom": "By Whom",
+        "reason": "Reason",
+        "gift_type": "Gift Type",
+        "gift": "Gift Name",
+        "fine_type": "Penalty Type",
+        "fine": "Penalty Name",
+        "amount": "Amount",
+        "financeType": "Aid Type",
+        "command_number": "Order Number"
       }
     },
     "form": {
-      "candidate": "Сотрудник",
-      "contractDate": "Дата договора",
-      "contractNumber": "Номер договора",
-      "tableNumber": "Номер табеля",
-      "type": "Тип договора",
-      "documentExampleId": "Шаблон документа",
-      "department": "Отдел",
-      "position": "Должность",
-      "positionStatus": "Принять на должность в отдел",
-      "salary": "Месячная зарплата",
-      "group": "Группа",
-      "rank": "Разряд должности",
-      "rate": "Ставка",
-      "postName": "Полное название должности",
-      "director": "Директор",
-      "contract_to_date": "Срок договора",
-      "position_date": "Дата приема на работу",
-      "vacation_main_day": "Основные дни отпуска",
-      "additional_vacation_day": "Дополнительные дни отпуска",
-      "probation": "Срок испытания",
-      "schedule_id": "Расписание работы",
-      "command_type": "Тип приказа",
-      "worker": "Выберите сотрудника",
-      "command_status": "Установите для создания приказа на основе договора",
-      "organization": "Предприятие"
+      "candidate": "Employee",
+      "contractDate": "Contract Date",
+      "contractNumber": "Contract Number",
+      "tableNumber": "Timesheet Number",
+      "type": "Contract Type",
+      "documentExampleId": "Document Template",
+      "department": "Department",
+      "position": "Position",
+      "positionStatus": "Hire to Position",
+      "salary": "Salary",
+      "group": "Group",
+      "rank": "Rank",
+      "rate": "Rate",
+      "postName": "Full Position Name",
+      "director": "Director",
+      "contract_to_date": "Contract Term",
+      "position_date": "Hire Date",
+      "vacation_main_day": "Main Vacation Days",
+      "additional_vacation_day": "Additional Vacation Days",
+      "probation": "Probation Period",
+      "schedule_id": "Work Schedule",
+      "command_type": "Order Type",
+      "worker": "Select Employee",
+      "command_status": "Set for Order Creation",
+      "organization": "Enterprise"
     },
     "signature": {
-      "history": "Просмотреть историю изменений",
-      "viewer": "Знакомящиеся с документом",
-      "files": "Файлы документа",
-      "checkDocument": "Нажмите для проверки статуса документа",
+      "history": "Change History",
+      "viewer": "Viewers",
+      "files": "Document Files",
+      "checkDocument": "Check Status",
       "status": {
-        "Process": "В процессе"
+        "Process": "In Process"
       }
     },
     "attach": {
-      "title": "Прикрепление",
-      "attachFile": "Прикрепить файл",
-      "attachApplication": "Прикрепить заявление"
+      "title": "Attachments",
+      "attachFile": "Attach File",
+      "attachApplication": "Attach Application"
     }
   },
   "commandPage": {
     "form_43": {
-      "new_date": "Дата окончания отпуска",
-      "work_day": "Дата выхода на работу",
-      "reason": "Причина"
+      "new_date": "Vacation End Date",
+      "work_day": "Return Date",
+      "reason": "Reason"
     },
     "form_44": {
-      "new_date": "Дата выхода на работу",
-      "rest_day": "Неиспользованные дни отпуска",
-      "reason": "Причина"
+      "new_date": "Return Date",
+      "rest_day": "Unused Days",
+      "reason": "Reason"
     },
     "form_45": {
-      "from": "С",
-      "to": "По",
-      "work_day": "Дата выхода на работу"
+      "from": "From",
+      "to": "To",
+      "work_day": "Return Date"
     },
     "form_48": {
-      "from": "С",
-      "to": "По",
-      "work_day": "Дата выхода на работу",
-      "all_day": "Дни отпуска",
-      "reason": "Причина"
+      "from": "From",
+      "to": "To",
+      "work_day": "Return Date",
+      "all_day": "Vacation Days",
+      "reason": "Reason"
     },
     "form_49": {
-      "from": "С",
-      "to": "По",
-      "work_day": "Дата выхода на работу"
+      "from": "From",
+      "to": "To",
+      "work_day": "Return Date"
     },
     "form_55": {
-      "from": "С",
-      "to": "По",
-      "from_time": "С (час)",
-      "to_time": "По (час)"
+      "from": "From",
+      "to": "To",
+      "from_time": "From (hour)",
+      "to_time": "To (hour)"
     },
     "form_62": {
-      "from": "С",
-      "to": "По",
-      "reason": "Причина",
-      "work_place_id": "Название предприятия",
-      "department_id": "Отдел",
-      "railwayOrg": "Железнодорожное предприятие",
-      "otherOrg": "Другое предприятие",
-      "orgType": "Тип организации",
-      "to_organization": "Название организации"
+      "from": "From",
+      "to": "To",
+      "reason": "Reason",
+      "work_place_id": "Enterprise Name",
+      "department_id": "Department",
+      "railwayOrg": "Railway Enterprise",
+      "otherOrg": "Other Enterprise",
+      "orgType": "Organization Type",
+      "to_organization": "Organization Name"
     }
   },
   "confirmationPage": {
-    "name": "Подтверждающие",
-    "createTitle": "Добавить подтверждающего",
-    "updateTitle": "Редактировать подтверждающего",
+    "name": "Approvers",
+    "createTitle": "Add Approver",
+    "updateTitle": "Edit Approver",
     "table": {
-      "worker": "Сотрудник",
-      "full_position": "Полное название должности (Полное название с названием организации)",
-      "level": "Тип",
-      "position": "Должность"
+      "worker": "Employee",
+      "full_position": "Full Position Name (with Org)",
+      "level": "Type",
+      "position": "Position"
     }
   },
   "contractPage": {
-    "name": "Договоры",
-    "succeedText": "Договор успешно создан!",
+    "name": "Contracts",
+    "succeedText": "Contract created successfully!",
     "table": {
-      "number": "Номер",
-      "type": "Тип",
-      "worker": "Сотрудник",
-      "date": "Дата",
-      "organization": "Предприятие",
-      "command": "Приказ",
-      "status": "Статус"
+      "number": "Number",
+      "type": "Type",
+      "worker": "Employee",
+      "date": "Date",
+      "organization": "Enterprise",
+      "command": "Order",
+      "status": "Status"
     },
     "statuses": {
-      "confirm": "Подтвердить"
+      "confirm": "Approve"
     },
     "step": {
-      "stepOne": "Тип договора",
-      "stepTwo": "Данные договора",
-      "stepThree": "Прикрепить приказ",
-      "stepFour": "Статус"
+      "stepOne": "Contract Type",
+      "stepTwo": "Contract Info",
+      "stepThree": "Attach Order",
+      "stepFour": "Status"
     },
-    "confirmText": "Создать приказ на основе {n} договора?",
-    "confirmAdText": "Создать приказ на основе {n} дополнительного соглашения договора?"
+    "confirmText": "Create order based on contract {n}?",
+    "confirmAdText": "Create order based on add. agreement {n}?"
   },
   "chatWindow": {
-    "name": "Чат"
+    "name": "Chat"
   },
+
+
+
+
   "adContractPage": {
-    "createTitle": "Заключить дополнительное соглашение",
-    "updateTitle": "Редактировать дополнительное соглашение",
-    "name": "Дополнительное соглашение"
+    "createTitle": "Доп. соглашение",
+    "updateTitle": "Ред. доп. соглашения",
+    "name": "Доп. соглашение"
   },
   "documentSetting": {
     "name": "Настройки документов",
-    "createTitle": "Загрузить шаблон договора",
-    "updateTitle": "Редактировать шаблон договора",
+    "createTitle": "Загрузка шаблона",
+    "updateTitle": "Ред. шаблона",
     "command": {
-      "createTitle": "Загрузить шаблон приказа",
-      "updateTitle": "Редактировать шаблон приказа"
+      "createTitle": "Загрузка шаблона приказа",
+      "updateTitle": "Ред. шаблона приказа"
     },
     "tabs": {
       "contract": "Шаблон договора",
@@ -823,7 +836,7 @@
     },
     "form": {
       "count": "{n} шт",
-      "organization": "Количество предприятий",
+      "organization": "Кол-во предприятий",
       "organizations": "Предприятия",
       "type": "Тип договора",
       "commandType": "Тип приказа",
@@ -832,61 +845,61 @@
     }
   },
   "schedulePage": {
-    "name": "Расписание работы",
-    "createTitle": "Добавить расписание",
-    "updateTitle": "Редактировать расписание",
+    "name": "График работы",
+    "createTitle": "Добавить график",
+    "updateTitle": "Ред. графика",
     "form": {
-      "type": "Тип расписания",
-      "name_ru": "Название (ru)",
+      "type": "Тип графика",
+      "name_ru": "Название (RU)",
       "name": "Название"
     }
   },
   "workdayPage": {
     "name": "Рабочие дни",
-    "createTitle": "Добавить рабочий день",
-    "updateTitle": "Редактировать рабочий день",
+    "createTitle": "Добавить день",
+    "updateTitle": "Ред. дня",
     "form": {
-      "schedule_id": "Расписание работы",
+      "schedule_id": "График",
       "day_of_week": "День недели",
-      "start_time": "Время начала",
-      "end_time": "Время окончания",
+      "start_time": "Начало",
+      "end_time": "Конец",
       "type": "Тип"
     }
   },
   "othersPage": {
-    "name": "Другое",
+    "name": "Прочее",
     "language": {
       "createTitle": "Добавить язык",
-      "updateTitle": "Редактировать язык",
+      "updateTitle": "Ред. языка",
       "form": {
-        "nameUz": "Название языка (uz)",
-        "nameEn": "Название языка (en)",
-        "nameRu": "Название языка (ru)"
+        "nameUz": "Язык (UZ)",
+        "nameEn": "Язык (EN)",
+        "nameRu": "Язык (RU)"
       }
     },
     "university": {
-      "createTitle": "Добавить университет",
-      "updateTitle": "Редактировать университет",
-      "existName": "Существующее название в системе...",
+      "createTitle": "Добавить ВУЗ",
+      "updateTitle": "Ред. ВУЗа",
+      "existName": "Существующее название...",
       "form": {
-        "name_ru": "Название университета (ru)",
-        "region_id": "Расположенная область",
-        "city_id": "Расположенный район",
+        "name_ru": "ВУЗ (RU)",
+        "region_id": "Область",
+        "city_id": "Район",
         "education": "Тип образования",
         "type": "Тип университета",
-        "name": "Название университета"
+        "name": "ВУЗ"
       }
     },
     "speciality": {
       "createTitle": "Добавить специальность",
-      "updateTitle": "Редактировать специальность",
+      "updateTitle": "Ред. специальности",
       "form": {
-        "name_ru": "Название специальности (ru)",
-        "name": "Название специальности"
+        "name_ru": "Специальность (RU)",
+        "name": "Специальность"
       }
     },
     "tabs": {
-      "university": "Университеты",
+      "university": "ВУЗы",
       "speciality": "Специальности",
       "language": "Языки"
     },
@@ -895,11 +908,11 @@
     }
   },
   "serviceOrgPage": {
-    "createTitle": "Загрузить шаблон",
-    "updateTitle": "Редактировать шаблон",
+    "createTitle": "Загрузка шаблона",
+    "updateTitle": "Ред. шаблона",
     "form": {
-      "signature": "Электронная подпись",
-      "organization": "Количество предприятий",
+      "signature": "ЭЦП",
+      "organization": "Кол-во предприятий",
       "organizations": "Предприятия",
       "type": "Тип договора",
       "file": "Файл шаблона",
@@ -915,24 +928,24 @@
     "table": {
       "status": "Тип действия",
       "owner": "Владелец",
-      "detail": "Подробности",
-      "ip": "IP-адрес",
+      "detail": "Детали",
+      "ip": "IP",
       "agent": "Агент",
       "loginAt": "Время входа",
       "logoutAt": "Время выхода",
       "structure": "Предприятия"
     },
     "status": {
-      "created": "Новосозданный",
-      "updated": "Отредактированный",
-      "deleted": "Удаленный",
+      "created": "Создано",
+      "updated": "Изменено",
+      "deleted": "Удалено",
       "subject_type": "Модель",
-      "sign-in": "Вход в систему"
+      "sign-in": "Вход"
     }
   },
   "relativePage": {
-    "createTitle": "Добавить информацию о родственнике",
-    "updateTitle": "Редактировать информацию о родственнике",
+    "createTitle": "Добавить родственника",
+    "updateTitle": "Ред. родственника",
     "tab": {
       "worker": "Железнодорожник",
       "notWorker": "Другая профессия"
@@ -944,86 +957,86 @@
       "birthday": "Дата рождения",
       "relative": "Родство"
     },
-    "title": "Данные близкого родственника",
-    "no-data": "Близкие родственники не добавлены!"
+    "title": "Данные родственников",
+    "no-data": "Родственники не добавлены!"
   },
   "partyPage": {
-    "createTitle": "Добавить информацию о партийности",
-    "updateTitle": "Редактировать информацию о партийности",
+    "createTitle": "Добавить членство",
+    "updateTitle": "Ред. членства",
     "form": {
-      "to_date": "До",
+      "to_date": "По",
       "from_date": "С",
-      "party": "Партийность"
+      "party": "Членство"
     },
-    "title": "Данные партийности",
-    "no-data": "Партийность не добавлена!"
+    "title": "Данные членства",
+    "no-data": "Членство не добавлено!"
   },
   "militaryPage": {
-    "createTitle": "Добавить информацию о воинском учете",
-    "updateTitle": "Редактировать информацию о воинском учете",
+    "createTitle": "Добавить воинский учет",
+    "updateTitle": "Ред. воинского учета",
     "form": {
       "status": "Статус",
       "name": "Название",
-      "speciality": "Специальность в воинском учете",
-      "commissariat": "Название комиссариата по месту жительства",
+      "speciality": "Специальность",
+      "commissariat": "Военкомат",
       "number": "Номер"
     },
-    "title": "Данные воинского учета",
+    "title": "Воинский учет",
     "no-data": "Воинский учет не добавлен!"
   },
   "academicTitlePage": {
-    "createTitle": "Добавить информацию об ученом звании",
-    "updateTitle": "Редактировать информацию об ученом звании",
+    "createTitle": "Добавить ученое звание",
+    "updateTitle": "Ред. ученого звания",
     "form": {
       "type": "Тип",
-      "file": "Документ ученого звания"
+      "file": "Документ"
     },
-    "title": "Данные ученого звания",
+    "title": "Ученое звание",
     "no-data": "Ученое звание не добавлено!"
   },
   "academicDegreePage": {
-    "createTitle": "Добавить информацию об ученой степени",
-    "updateTitle": "Редактировать информацию об ученой степени",
+    "createTitle": "Добавить ученую степень",
+    "updateTitle": "Ред. ученой степени",
     "form": {
       "type": "Тип",
-      "file": "Документ ученой степени"
+      "file": "Документ"
     },
-    "title": "Данные ученой степени",
+    "title": "Ученая степень",
     "no-data": "Ученая степень не добавлена!"
   },
   "oldCareerPage": {
     "createTitle": "Добавить трудовую деятельность",
-    "updateTitle": "Редактировать трудовую деятельность",
+    "updateTitle": "Ред. трудовой деятельности",
     "form": {
       "from_date": "С",
       "post_name": "Должность",
       "to_date": "По"
     },
-    "title": "Данные трудовой деятельности",
-    "systemTitle": "Данные трудовой деятельности в системе",
+    "title": "Трудовая деятельность",
+    "systemTitle": "Данные в системе",
     "no-data": "Трудовая деятельность не добавлена!"
   },
   "languagePage": {
-    "createTitle": "Добавить информацию о языке",
-    "updateTitle": "Редактировать информацию о языке",
+    "createTitle": "Добавить знание языка",
+    "updateTitle": "Ред. знания языка",
     "form": {
-      "certificateFile": "Файл сертификата"
+      "certificateFile": "Сертификат"
     },
-    "title": "Данные языка",
-    "no-language": "Нет данных о языке!"
+    "title": "Знание языков",
+    "no-language": "Знание языков отсутствует!"
   },
   "universityPage": {
-    "createTitle": "Добавить информацию о вузе",
-    "updateTitle": "Редактировать информацию о вузе",
+    "createTitle": "Добавить образование",
+    "updateTitle": "Ред. образования",
     "form": {
-      "university_id": "Университет",
+      "university_id": "ВУЗ",
       "speciality_id": "Специальность",
       "from_date": "С",
       "to_date": "По",
-      "file": "Нажмите для загрузки"
+      "file": "Загрузить"
     },
-    "title": "Данные вуза",
-    "no-language": "Нет данных о вузе!"
+    "title": "Образование",
+    "no-language": "Образование отсутствует!"
   },
   "topicDetailsPage": {
     "categories": {
@@ -1032,118 +1045,118 @@
         "attach": "Прикрепить"
       },
       "name": "Категории",
-      "updateTitle": "Редактировать категорию"
+      "updateTitle": "Ред. категории"
     },
     "files": {
       "createTitle": "Добавить файл",
       "name": "Ресурсы",
-      "updateTitle": "Редактировать файл"
+      "updateTitle": "Ред. файла"
     },
     "exams": {
-      "createTitle": "Добавить создание экзамена",
+      "createTitle": "Добавить экзамен",
       "name": "Экзамены",
-      "updateTitle": "Редактировать экзамен",
+      "updateTitle": "Ред. экзамена",
       "deadline": "Дата окончания",
-      "toWhom": "Кому",
-      "minute": "Продолжительность в минутах",
-      "variants": "Количество вариантов",
-      "isActive": "Статус активности",
+      "toWhom": "Для кого",
+      "minute": "Продолжительность",
+      "variants": "Варианты",
+      "isActive": "Активность",
       "positions": "Должности",
       "organizations": "Организации",
-      "chances": "Возможности",
-      "tests_count": "Количество вопросов",
+      "chances": "Попытки",
+      "tests_count": "Вопросы",
       "workers": "Сотрудники",
-      "camera": "Сдавать экзамен перед камерой",
+      "camera": "Экзамен с камерой",
       "categories": "Категории",
-      "questionCount": "Количество вопросов: ({n})",
+      "questionCount": "Вопросы: ({n})",
       "attachQuestion": "Прикрепить вопрос",
-      "count": "Все экзамены: {n} шт"
+      "count": "Все экзамены: {n}"
     },
     "questions": {
       "createTitle": "Добавить вопрос",
       "name": "Вопросы",
-      "updateTitle": "Редактировать вопрос"
+      "updateTitle": "Ред. вопроса"
     }
   },
   "topicFiles": {
     "addFile": "Добавить файл",
-    "editFile": "Редактировать файл",
+    "editFile": "Ред. файла",
     "header": {
-      "active": "Статус активности",
-      "file": "Название файла",
+      "active": "Активность",
+      "file": "Файл",
       "fileType": "Тип файла"
     },
-    "isActive": "Статус активности"
+    "isActive": "Активность"
   },
   "topicPage": {
     "createTitle": "Добавить тему",
     "name": "Темы",
-    "updateTitle": "Редактировать тему"
+    "updateTitle": "Ред. темы"
   },
   "workerView": {
     "general": {
       "name": "Личные данные",
-      "passportName": "Паспортные данные",
-      "fullName": "Ф.И.О.",
-      "passportNumber": "Серия паспорта",
-      "passportJSHSHIR": "JSHSHIR",
+      "passportName": "Паспорт",
+      "fullName": "ФИО",
+      "passportNumber": "Серия",
+      "passportJSHSHIR": "ПИНФЛ",
       "fromDate": "Дата выдачи",
-      "toDate": "Дата окончания",
-      "who": "Место выдачи",
-      "phone": "Номер телефона",
+      "toDate": "Срок",
+      "who": "Кем выдан",
+      "phone": "Телефон",
       "birthday": "Дата рождения",
-      "maritalStatus": "Семейное положение",
-      "address": "Адрес проживания",
+      "maritalStatus": "Сем. положение",
+      "address": "Адрес",
       "birthdayRegion": "Область рождения",
       "birthdayCity": "Район рождения",
       "liveRegion": "Область проживания",
       "liveCity": "Район проживания",
       "academicTitle": "Ученое звание",
       "academicDegree": "Ученая степень",
-      "part": "Партийность",
+      "part": "Членство",
       "inn": "ИНН",
       "nationality": "Национальность",
       "position": "Должность",
       "department": "Отдел",
-      "salary": "Месячная зарплата",
+      "salary": "Зарплата",
       "country": "Страна рождения"
     },
     "tabs": {
       "general": "Общие данные",
       "career": "Трудовая деятельность",
-      "relative": "Близкие родственники",
+      "relative": "Родственники",
       "med": "Медосмотр",
-      "vacation": "Данные отпуска",
-      "incentive": "Стимулирование",
+      "vacation": "Отпуск",
+      "incentive": "Поощрения",
       "attestation": "Аттестация",
       "checkSkill": "Проверка навыков",
       "checkKnowledge": "Проверка знаний",
-      "punishment": "Дисциплинарные взыскания"
+      "punishment": "Взыскания"
     }
   },
   "categoryPage": {
     "createCategory": "Создать категорию",
-    "editCategory": "Редактировать категорию",
+    "editCategory": "Ред. категории",
     "name": "Категории",
     "addQuestion": "Добавить вопрос",
-    "editQuestion": "Редактировать вопрос",
-    "questionCount": "Количество вопросов",
-    "uploadExcel": "Загрузить вопросы теста",
+    "editQuestion": "Ред. вопроса",
+    "questionCount": "Вопросы",
+    "uploadExcel": "Загрузить Excel",
     "pressUpload": "Нажмите для загрузки!",
     "checkingFile": "Проверка файла...",
     "question": "Вопрос",
     "upload": "Загрузить вопрос",
     "answer": "Ответ",
-    "correctAnswer": "Правильный ответ",
-    "warning": "Проверьте выбранные столбцы вопросов и ответов!"
+    "correctAnswer": "Правильный",
+    "warning": "Проверьте столбцы!"
   },
   "examPage": {
     "downloadResult": "Скачать результаты",
-    "downloadNotPassed": "Скачать неучастников",
+    "downloadNotPassed": "Скачать не прошедших",
     "showDeleted": "Показать удаленные",
-    "deletedResult": "Удаленный результат экзамена",
+    "deletedResult": "Удаленный результат",
     "finishedProcess": "Завершить",
-    "finishedDescription": "Завершить экзамены после срока",
+    "finishedDescription": "Завершить просроченные экзамены",
     "name": "Экзамены",
     "history": "История экзаменов",
     "topic": "Тема",
@@ -1151,38 +1164,38 @@
     "nVariant": "{n} вариантов",
     "variant_count": "Варианты",
     "exam_duration": "Продолжительность (мин)",
-    "totalTime": "Дано время: {n} минут",
+    "totalTime": "Время: {n} мин",
     "nMinute": "{n} мин",
-    "totalMinute": "{n} минуты",
+    "totalMinute": "{n} мин",
     "resources": "Ресурсы",
     "exams": "Экзамены",
     "nExams": "{n} экзаменов",
     "nFiles": "{n} файлов",
-    "deadline": "Время окончания: {n}",
-    "examBrief": "В экзамене {variant} вариантов. Дано {chances} попыток. Завершить за {minute} минут. Закрытие {deadline}",
-    "extra": "Дополнительно: {n}",
+    "deadline": "Конец: {n}",
+    "examBrief": "В экзамене {variant} вариантов. {chances} попыток. {minute} мин. Закрытие {deadline}",
+    "extra": "Доп.: {n}",
     "start": "Начать",
     "attempts": "Попытки",
-    "viewResult": "Просмотреть результат",
+    "viewResult": "Просмотр результата",
     "attemptsCount": "Доступные попытки",
     "nAttempts": "{n} попыток",
     "question_count": "Вопросы",
     "nQuestions": "{n} вопросов",
     "examName": "Название: {n}",
-    "toWhom": "Кому",
+    "toWhom": "Для кого",
     "attemptHistory": "История попыток",
-    "startTime": "Время начала",
+    "startTime": "Начало",
     "result": "Результаты",
-    "endTime": "Время окончания",
-    "leftAttempts": "Оставшиеся попытки",
+    "endTime": "Конец",
+    "leftAttempts": "Осталось попыток",
     "endHead": "Экзамен завершен!",
-    "endSub": "Ваш балл",
-    "ip": "IP-адрес",
+    "endSub": "Ваши баллы",
+    "ip": "IP",
     "wrongAnswer": "Неверный ответ",
     "notChosen": "Не выбран",
-    "finished": "Экзамен завершен",
-    "inProgress": "Экзамен в процессе",
-    "attemptErrors": "Ошибки в попытке",
+    "finished": "Завершен",
+    "inProgress": "В процессе",
+    "attemptErrors": "Ошибки попытки",
     "device": "Устройство",
     "dashboard": {
       "title": "Статистика"
@@ -1190,25 +1203,25 @@
     "materials": "Материалы"
   },
   "solveExamPage": {
-    "alreadyStarted": "Вы уже начали этот экзамен. Продолжить?",
-    "restartWarning": "Перезапуск завершит предыдущую попытку!!!",
-    "notAllowed": "Вы не можете сдавать экзамен!",
-    "startedAt": "Начато в",
+    "alreadyStarted": "Экзамен уже начат. Продолжить?",
+    "restartWarning": "Перезапуск завершит попытку!!!",
+    "notAllowed": "Экзамен недоступен!",
+    "startedAt": "Начало",
     "firstName": "Имя",
     "lastName": "Фамилия",
     "middleName": "Отчество",
     "exam": "Экзамен",
     "variant": "Варианты",
-    "totalTime": "Дано время (минуты)",
-    "deadline": "Время закрытия",
-    "attempts": "Общее количество попыток",
-    "questions": "Количество вопросов",
+    "totalTime": "Время (мин)",
+    "deadline": "Закрытие",
+    "attempts": "Попыток",
+    "questions": "Вопросов",
     "removeAnswer": "Удалить ответ",
-    "notAnswered": "Вы не ответили на {n} вопросов!!!",
-    "endWarning": "Уверены в завершении экзамена?",
-    "leftAttempts": "Оставшиеся попытки",
+    "notAnswered": "{n} вопросов без ответа!!!",
+    "endWarning": "Завершить экзамен?",
+    "leftAttempts": "Осталось попыток",
     "welcomeTitle": "Добро пожаловать!",
-    "welcomeDesc": "Все железнодорожные работники сдают тестовые экзамены по специальностям в отделе сертификации."
+    "welcomeDesc": "Все железнодорожники проходят тесты по специальности."
   },
   "questionPage": {
     "form": {
@@ -1220,26 +1233,26 @@
     },
     "title": "Вопросы",
     "rules": {
-      "minOptions": "Не менее 3 вариантов!",
-      "chooseCorrectAnswer": "Выберите правильный ответ!"
+      "minOptions": "Минимум 3 варианта!",
+      "chooseCorrectAnswer": "Выберите правильный!"
     }
   },
   "holidayPage": {
-    "name": "Праздничные дни",
+    "name": "Праздники",
     "createTitle": "Добавить праздник",
-    "updateTitle": "Редактировать праздник",
+    "updateTitle": "Ред. праздника",
     "form": {
-      "name": "Название праздника",
-      "holiday_date": "Дата праздника",
-      "type": "Тип праздника"
+      "name": "Название",
+      "holiday_date": "Дата",
+      "type": "Тип"
     }
   },
   "vacationPage": {
     "name": "Сотрудники в отпуске",
     "table": {
       "type": "Тип отпуска",
-      "durationDay": "Продолжительность отпуска {n} дней",
-      "workDay": "Дата выхода на работу",
+      "durationDay": "Продолжительность {n} дней",
+      "workDay": "Выход на работу",
       "duration": "С - По"
     }
   },
@@ -1247,137 +1260,137 @@
     "name": "Дашборд",
     "card": {
       "type": "Тип отпуска",
-      "durationDay": "Продолжительность отпуска {n} дней",
-      "workDay": "Дата выхода на работу",
-      "vacation": "Сотрудники в отпуске",
+      "durationDay": "Продолжительность {n} дней",
+      "workDay": "Выход на работу",
+      "vacation": "В отпуске",
       "duration": "Период отпуска"
     },
     "contract": {
       "title": "Типы договоров"
     },
     "mainCard": {
-      "totalWorker": "Количество сотрудников",
-      "man": "Количество мужчин",
-      "woman": "Количество женщин"
+      "totalWorker": "Сотрудников",
+      "man": "Мужчин",
+      "woman": "Женщин"
     },
     "age": {
-      "title": "По возрасту сотрудников",
-      "age31": "До 30 лет",
-      "age32_45": "От 31 до 45 лет",
-      "age46": "Старше 46 лет"
+      "title": "По возрасту",
+      "age31": "До 30",
+      "age32_45": "31-45",
+      "age46": "Старше 46"
     },
     "edu": {
-      "title": "По образованию сотрудников",
-      "higher": "Высшее образование",
-      "middle": "Среднее образование",
-      "special": "Среднее специальное",
+      "title": "По образованию",
+      "higher": "Высшее",
+      "middle": "Среднее",
+      "special": "Среднее спец.",
       "type": "Тип образования"
     },
     "password": {
-      "title": "Сроки паспортов сотрудников",
-      "deadline": "Срок приближается",
-      "expired": "Просрочено",
+      "title": "Сроки паспортов",
+      "deadline": "Скоро истекают",
+      "expired": "Истекли",
       "number": "Номер паспорта",
-      "approaching": "Приближается",
-      "not_included": "Не включено",
+      "approaching": "Истекают скоро",
+      "not_included": "Отсутствуют",
       "filter": "Статус паспорта"
     },
     "pension": {
-      "title": "Сотрудники пенсионного возраста",
+      "title": "Пенсионеры",
       "men": "Мужчины",
       "women": "Женщины"
     },
     "medical": {
       "title": "Сроки медосмотра",
-      "deadline": "Срок приближается",
-      "expired": "Просрочено"
+      "deadline": "Скоро истекают",
+      "expired": "Истекли"
     },
     "position": {
       "title": "Штатные единицы",
-      "vakant": "Вакантные",
-      "sverx": "Перештат"
+      "vakant": "Вакансии",
+      "sverx": "Сверх штата"
     },
     "yearly": {
-      "title": "Принятые и уволенные сотрудники",
+      "title": "Принятые/уволенные",
       "incoming": "Принятые",
       "outgoing": "Уволенные"
     },
     "birthday": {
       "title": "Дни рождения",
-      "today": "Дни рождения сегодня",
-      "tomorrow": "Дни рождения завтра"
+      "today": "Сегодня",
+      "tomorrow": "Завтра"
     },
     "rewardCard": {
       "reward": {
         "title": "Поощрения",
-        "typeOne": "Почетный железнодорожник звание",
+        "typeOne": "Почетный железнодорожник",
         "typeTwo": "Другие награды",
         "shortTypeOne": "Почетный",
         "shortTypeTwo": "Другие"
       },
       "punishment": {
-        "title": "Дисциплинарные взыскания",
-        "typeOne": "Строгий",
-        "typeTwo": "Другие взыскания",
+        "title": "Взыскания",
+        "typeOne": "Строгий выговор",
+        "typeTwo": "Другие",
         "shortTypeOne": "Строгий",
         "shortTypeTwo": "Другие"
       }
     }
   },
   "applicationPage": {
-    "name": "Заявления",
-    "addApp": "Отправить заявление",
-    "createWorkerApplication": "Создать заявление",
-    "updateWorkerApplication": "Редактировать заявление",
-    "lastVacationTitle": "Данные последнего отпуска",
-    "lastPeriod": "Период отпуска: ",
-    "lastPDate": "Дата отпуска: ",
+    "name": "Заявки",
+    "addApp": "Отправить заявку",
+    "createWorkerApplication": "Создать заявку",
+    "updateWorkerApplication": "Ред. заявки",
+    "lastVacationTitle": "Последний отпуск",
+    "lastPeriod": "Период: ",
+    "lastPDate": "Дата: ",
     "reason": "По семейным обстоятельствам",
-    "createTitle": "Создать ссылку для заявления",
-    "updateTitle": "Редактировать праздник",
+    "createTitle": "Создать ссылку",
+    "updateTitle": "Ред. праздника",
     "form": {
       "director_id": "Директор",
-      "type": "Тип заявления",
+      "type": "Тип заявки",
       "work_type": "Тип работы",
       "generateLink": "Создать ссылку",
-      "phones": "Номер телефона",
+      "phones": "Телефон",
       "number": "Номер",
       "worker_position_id": "Должность",
-      "confirmations": "Подтверждающие",
-      "period_from": "Период отпуска (с)",
-      "period_to": "Период отпуска (по)",
-      "from": "Дата начала отпуска",
-      "to": "Дата возвращения из отпуска",
-      "temporarily_absent": "Сотрудники в отпуске",
+      "confirmations": "Согласователи",
+      "period_from": "Отпуск с",
+      "period_to": "Отпуск по",
+      "from": "Начало отпуска",
+      "to": "Конец отпуска",
+      "temporarily_absent": "В отпуске",
       "reason": "Причина",
-      "from_time": "Время (с)",
-      "to_time": "Время (по)",
+      "from_time": "С (час)",
+      "to_time": "По (час)",
       "education_type": "Форма обучения",
       "univer_number": "Номер письма",
       "univer_date": "Дата письма",
-      "contract_to_date": "Дата отмены",
-      "application_date": "Дата заявления",
+      "contract_to_date": "Дата расторжения",
+      "application_date": "Дата заявки",
       "from_date": "С"
     },
     "step": {
-      "stepOne": "Тип заявления",
-      "stepTwo": "Данные заявления",
+      "stepOne": "Тип заявки",
+      "stepTwo": "Данные заявки",
       "stepThree": "Статус"
     },
-    "succeedApplication": "Заявление успешно отправлено!",
-    "applicationTime": "Ваше заявление будет рассмотрено в течение 15 рабочих дней!",
+    "succeedApplication": "Заявка отправлена!",
+    "applicationTime": "Рассмотрение в 15 дней!",
     "client": {
-      "name": "Написать заявление",
-      "user": "Получатель заявления",
-      "sendApp": "Отправить заявление",
-      "type": "Тип заявления"
+      "name": "Написать заявку",
+      "user": "Получатель",
+      "sendApp": "Отправить",
+      "type": "Тип"
     }
   },
   "userDepartmentPage": {
     "name": "Табельщики",
     "level_name": "Уровень",
-    "user_count": "Количество сотрудников",
-    "attached_users": "Прикрепленные сотрудники",
+    "user_count": "Сотрудников",
+    "attached_users": "Прикрепленные",
     "position": "Должность",
     "staff": "Сотрудники",
     "timeTable": "Табели"
@@ -1394,20 +1407,20 @@
   "timesheetPage": {
     "name": "Табели",
     "create": "Создать табель",
-    "update": "Редактировать табель",
+    "update": "Ред. табеля",
     "department": "Отдел",
-    "total": "Всего",
+    "total": "Итого",
     "hours": "Часы",
-    "verifiers": "Подтверждающие",
-    "mainVerifier": "Основной подтверждающий",
+    "verifiers": "Согласователи",
+    "mainVerifier": "Главный",
     "worked": "Отработано",
-    "tableTitle": "Заметки о присутствии и отсутствии по дням месяца",
-    "halfMonth": "До половины месяца",
-    "pin": "Паспорт JSHSHIR",
-    "addNewWorker": "Добавить нового сотрудника",
+    "tableTitle": "Участие в работе по дням",
+    "halfMonth": "До середины месяца",
+    "pin": "ПИНФЛ",
+    "addNewWorker": "Добавить сотрудника",
     "closeWarning": {
-      "title": "Уверены в закрытии табеля?",
-      "desc": "Это действие нельзя отменить."
+      "title": "Завершить табель?",
+      "desc": "Действие необратимо."
     }
   },
   "turnstile": {
@@ -1415,41 +1428,41 @@
     "terminals": "Терминалы",
     "buildingPage": {
       "title": "Здания",
-      "name": "Название здания (UZ)",
-      "name_en": "Название здания (EN)",
-      "name_ru": "Название здания (RU)",
+      "name": "Название (UZ)",
+      "name_en": "Название (EN)",
+      "name_ru": "Название (RU)",
       "create": "Добавить здание",
-      "edit": "Редактировать здание"
+      "edit": "Ред. здания"
     },
     "terminalPage": {
       "title": "Терминалы",
       "building": "Здание",
-      "name": "Название терминала (UZ)",
-      "name_en": "Название терминала (EN)",
-      "name_ru": "Название терминала (RU)",
+      "name": "Название (UZ)",
+      "name_en": "Название (EN)",
+      "name_ru": "Название (RU)",
       "create": "Добавить терминал",
-      "edit": "Редактировать терминал"
+      "edit": "Ред. терминала"
     },
     "organization": {
       "title": "Организации",
       "terminal": "Терминал"
     },
     "terminalUser": {
-      "title": "Сотрудники терминалов",
+      "title": "Сотрудники терминала",
       "create": "Прикрепить сотрудника",
-      "edit": "Редактировать сотрудника",
+      "edit": "Ред. сотрудника",
       "companyWorker": "Сотрудник компании",
-      "notCompanyWorker": "Не сотрудник компании",
-      "deadline_feedback": "Оставить пустым на 2 года",
+      "notCompanyWorker": "Добавить не из системы",
+      "deadline_feedback": "Если пусто - 2 года",
       "terminals": "Терминалы",
-      "addUser": "Добавить пользователя к терминалу",
-      "addBtn": "Добавить пользователя"
+      "addUser": "Добавить пользователя",
+      "addBtn": "Добавить"
     },
     "accessLevelPage": {
       "name": "(HC) Группы",
-      "deviceCount": "Количество устройств",
+      "deviceCount": "Устройств",
       "sync": "Синхронизация",
-      "syncDepartment": "Синхронизация отделов",
+      "syncDepartment": "Синхр. отделов",
       "server": "Сервер"
     },
     "orgAccessLevelsPage": {
@@ -1459,37 +1472,31 @@
       "access_levels": "Группы",
       "name": "(HC) Сотрудники",
       "create": "Добавить сотрудника",
-      "edit": "Редактировать сотрудника",
-      "access_levels_count": "Количество групп",
+      "edit": "Ред. сотрудника",
+      "access_levels_count": "Групп",
       "department": "Отдел",
       "device": "Устройства"
     },
     "workDurationPage": {
       "name": "Время работы",
       "building": "Здание",
-      "expiryDate": "Срок действия",
-    "updatedAt": "Обновлено",
-    "deviceStatus": "Статус устройства",
-    "comment": "Комментарий",
-    "commentPlaceholder": "Введите комментарий...",
-    "error": "Ошибка",
       "actionTime": "Время действия",
       "enter": "Вход",
       "exit": "Выход",
-      "workTime": "Отработанные часы",
+      "workTime": "Отработано",
       "time": "Время",
       "at_work": "На работе",
       "outside": "Не на работе",
-      "calendarTitle": "График времени работы",
-      "latecomers": "Опоздавшие сотрудники",
-      "startTime": "Время начала работы",
-      "lateTitle": "Список опоздавших сотрудников"
+      "calendarTitle": "График времени",
+      "latecomers": "Опоздавшие",
+      "startTime": "Начало работы",
+      "lateTitle": "Список опоздавших"
     }
   },
   "medPage": {
     "name": "Медосмотр",
-    "createTitle": "Добавить информацию о медосмотре",
-    "updateTitle": "Редактировать информацию о медосмотре",
+    "createTitle": "Добавить медосмотр",
+    "updateTitle": "Ред. медосмотра",
     "tab": {
       "worker": "Железнодорожник",
       "candidate": "Кандидат"
@@ -1505,15 +1512,17 @@
     "panel": {
       "panel_one": "Медосмотр",
       "panel_two": "Поликлиники",
-      "panel_three": "Сотрудники на осмотре",
+      "panel_three": "В осмотре",
       "panel_four": "В этом году",
-      "selected": "Выбранные"
+      "selected": "Выбрано"
     }
   },
+
+
   "medInspection": {
-    "name": "Отправить на осмотр",
-    "createTitle": "Отправить сотрудника на медосмотр",
-    "updateTitle": "Редактировать данные",
+    "name": "Направить на проверку",
+    "createTitle": "Направить сотрудника на медосмотр",
+    "updateTitle": "Ред. данных",
     "form": {
       "hospital": "Поликлиника",
       "status": "Заключение врача",
@@ -1522,14 +1531,14 @@
   },
   "organizationLeaderPage": {
     "name": "Руководство",
-    "invalidPhone": "Неверный номер телефона!",
-    "addLeader": "Добавить руководство",
-    "editLeader": "Редактировать руководство"
+    "invalidPhone": "Неверный телефон!",
+    "addLeader": "Добавить руководителя",
+    "editLeader": "Ред. руководителя"
   },
   "reportPage": {
     "name": "Отчеты",
-    "createTitle": "Добавить информацию о медосмотре",
-    "updateTitle": "Редактировать информацию о медосмотре",
+    "createTitle": "Добавить медосмотр",
+    "updateTitle": "Ред. медосмотра",
     "form": {
       "position": "Должность",
       "rate": "П",
@@ -1547,19 +1556,19 @@
     "chatId": "Chat ID"
   },
   "learningCenterPage": {
-    "name": "Обучающие центры",
-    "createTitle": "Добавить обучающий центр",
-    "updateTitle": "Редактировать обучающий центр"
+    "name": "Учебные центры",
+    "createTitle": "Добавить центр",
+    "updateTitle": "Ред. центра"
   },
   "directionPage": {
     "name": "Направления",
     "createTitle": "Добавить направление",
-    "updateTitle": "Редактировать направление"
+    "updateTitle": "Ред. направления"
   },
   "specializationPage": {
-    "name": "Специализации",
-    "createTitle": "Добавить специализацию",
-    "updateTitle": "Редактировать специализацию",
+    "name": "Специальности",
+    "createTitle": "Добавить специальность",
+    "updateTitle": "Ред. специальности",
     "form": {
       "direction": "Направление",
       "positions": "Должности"
@@ -1568,25 +1577,25 @@
   "subjectPage": {
     "name": "Предметы (модули)",
     "createTitle": "Добавить предмет",
-    "updateTitle": "Редактировать предмет"
+    "updateTitle": "Ред. предмета"
   },
   "eduPlanPage": {
-    "name": "Обучающий план",
-    "createTitle": "Создать план обучения",
-    "updateTitle": "Редактировать план обучения",
+    "name": "Учебный план",
+    "createTitle": "Создать план",
+    "updateTitle": "Ред. плана",
     "attachmentGroup": "Создать группу",
     "attachmentExam": "Прикрепить экзамен",
     "workers": "Сотрудники",
     "form": {
       "hours": "Часы",
-      "start_date": "Время начала",
-      "specialization": "Специализация",
+      "start_date": "Начало",
+      "specialization": "Специальность",
       "subjects": "Предметы",
-      "learning_center": "Обучающий центр",
-      "count_groups": "Количество групп",
+      "learning_center": "Учебный центр",
+      "count_groups": "Групп",
       "count_workers": "Состав группы",
       "short_count_workers": "Сотрудники",
-      "groupWorker": "Количество групп/состав"
+      "groupWorker": "Группы/состав"
     }
   },
   "lmsWorkerPage": {
@@ -1594,17 +1603,17 @@
     "createTitle": "Прикрепить сотрудника",
     "updateTitle": "Редактировать",
     "form": {
-      "eduPlan": "План обучения",
+      "eduPlan": "Учебный план",
       "worker_position_ids": "Сотрудники"
     }
   },
   "teacherPage": {
-    "name": "Педагоги",
-    "createTitle": "Добавить педагога",
-    "updateTitle": "Редактировать педагога",
+    "name": "Преподаватели",
+    "createTitle": "Добавить преподавателя",
+    "updateTitle": "Ред. преподавателя",
     "form": {
       "subjects": "Предметы",
-      "learningCenter": "Обучающий центр",
+      "learningCenter": "Учебный центр",
       "worker": "Сотрудник"
     }
   },
@@ -1612,67 +1621,53 @@
     "name": "Группы",
     "createTitle": "Создать группу",
     "form": {
-      "edu_plan_id": "План обучения",
-      "workers": "Количество сотрудников"
+      "edu_plan_id": "Учебный план",
+      "workers": "Сотрудников"
     }
   },
   "lessonPage": {
     "name": "Занятия",
     "createTitle": "Добавить занятие",
-    "previewTitle": "Подробности",
+    "previewTitle": "Детали",
     "form": {
-      "edu_plan_id": "План обучения",
-      "workers": "Количество сотрудников",
+      "edu_plan_id": "Учебный план",
+      "workers": "Сотрудников",
       "lesson_date": "Дата начала",
       "group_id": "Группы",
       "teacher_id": "Преподаватель",
       "subject_id": "Предметы",
-      "start_time": "Время начала",
-      "end_time": "Время окончания"
+      "start_time": "Начало",
+      "end_time": "Конец"
     },
     "detail": {
       "name": "Название занятия",
-      "group": "Название группы",
-      "teacher": "Преподаватель предмета",
+      "group": "Группа",
+      "teacher": "Преподаватель",
       "time": "Время занятия",
-      "subject": "Предмет занятия",
+      "subject": "Предмет",
       "cancelLesson": "Отменить занятие",
-      "attachmentLesson": "Прикрепить экзамен к занятию",
-      "attachedLesson": "Экзамен уже прикреплен к занятию"
+      "attachmentLesson": "Прикрепить экзамен",
+      "attachedLesson": "Экзамен уже прикреплен"
     }
   },
   "learningCenter": {
-    "name": "Обучающий центр"
+    "name": "Учебный центр"
   },
   "aiConversation": {
-    "canIHelpYouToday": "Чем могу помочь сегодня?",
-    "aiAssistant": "AI Помощник",
+    "canIHelpYouToday": "Чем помочь?",
+    "aiAssistant": "AI-помощник",
     "welcomeTo": "Добро пожаловать, {n}",
     "disclaimer": {
-      "cardOne": "### 🧪 Тестовый режим\n\nЭтот ИИ-помощник работает в **тестовом режиме**.  \nОтветы могут быть неполными и _неверными_.",
-      "cardTwo": "### 📚 Загрузка правовых документов\n\nБот изучает только **Трудовой кодекс Узбекистана**.  \n_Другие законы не полностью загружены или изучены._",
-      "cardThree": "### ⚖️ Только для правовых вопросов\n\nПожалуйста, задавайте только вопросы по **трудовым отношениям**.  \n_Бот не для технических или личных советов._",
-      "cardFour": "### 📌 Не официальная консультация\n\nОтветы бота только для **информирования**.  \n_Они не заменяют официальную правовую консультацию._"
+      "cardOne": "### 🧪 Тестовый режим\n\nAI в **тестовом режиме**. Ответы могут быть неверными.",
+      "cardTwo": "### 📚 Загрузка документов\n\nИзучает **ТК РУз**. Другие документы не загружены.",
+      "cardThree": "### ⚖️ Только трудовое право\n\nТолько вопросы по трудовым отношениям.",
+      "cardFour": "### 📌 Не официально\n\nОтветы для информации. Не замена юридической консультации."
     },
     "form": {
-      "conversation": "Разговоры",
-      "goChat": "Вернуться к чату",
-      "feedback": "Спасибо за ваше мнение!",
-      "askQuestion": "Введите ваш вопрос..."
-    }
-  },
-  "others": {
-    "title": "Другое",
-    "info": {
-      "title": "Дашборд",
-      "organizations": "Организации",
-      "organizationsDesc": "Полные данные о всех организациях, филиалах и руководителях в системе ОАО «Узбекистон темир йуллари». Местоположение, иерархия и структура.",
-      "positions": "Должности",
-      "positionsDesc": "Список должностей в ОАО «Узбекистон темир йуллари» и их функциональные обязанности. Структурное распределение по служебным должностям сотрудников.",
-      "laborCode": "Трудовой кодекс",
-      "laborCodeDesc": "Трудовые отношения, права и обязанности между сотрудниками и работодателями на основе Трудового кодекса Узбекистана. Пояснения и нормы по статьям.",
-      "empty": "Пусто",
-      "emptyDesc": "В этом разделе пока нет данных. Скоро добавятся новые услуги или полезный контент."
+      "conversation": "Чаты",
+      "goChat": "Вернуться в чат",
+      "feedback": "Спасибо за отзыв!",
+      "askQuestion": "Введите вопрос..."
     }
   },
   "businessTrip": {
@@ -1680,19 +1675,19 @@
   },
   "documentArchive": {
     "name": "База документов",
-    "createTitle": "Добавить файл документа",
-    "updateTitle": "Редактировать файл документа",
+    "createTitle": "Добавить файл",
+    "updateTitle": "Ред. файла",
     "form": {
       "title": "Название",
       "description": "Комментарий",
       "visibility_type": "Для кого",
       "document_date": "Дата создания",
       "type": "Тип",
-      "file": "Файл документа"
+      "file": "Файл"
     },
     "type": {
-      "OWN": "Для этой организации",
-      "OWN_AND_BELOW": "Для подчиненных организаций",
+      "OWN": "Для организации",
+      "OWN_AND_BELOW": "Для подчиненных",
       "ALL": "Для всех"
     }
   },
@@ -1700,29 +1695,29 @@
     "name": "График отпусков",
     "createTitle": "Прикрепить сотрудника",
     "updateTitle": "Редактировать",
-    "requiredMonth": "Выберите месяц отпуска сотрудника",
+    "requiredMonth": "Выберите месяц отпуска",
     "otherList": {
-      "btn": "Неприкрепленные сотрудники",
+      "btn": "Неприкрепленные",
       "name": "Список сотрудников"
     }
   },
   "workerRole": {
     "name": "Пользователи",
     "from": {
-      "activeOrganization": "Активное предприятие",
+      "activeOrganization": "Активная организация",
       "role": "Роли"
     }
   },
   "telegramPopup": {
-    "header": "Подключитесь к нашему Telegram-боту и наслаждайтесь удобствами:",
+    "header": "Подключитесь к Telegram-боту для удобств:",
     "benefit": {
-      "1": "Статусы документов – Утверждения, отклонения или редактирования – оставайтесь в курсе!",
-      "2": "Поздравления – Мы помним ваш день рождения или рабочие достижения!",
-      "3": "Важные напоминания – Отпуска, собрания и ключевые данные вовремя.",
-      "4": "Уведомления в реальном времени – Ничего не упустите!",
-      "5": "Обновления профиля – Изменения в ваших данных, узнайте мгновенно в Telegram!",
-      "header": "Подписавшись на бота",
-      "footer": "Все в одном месте – только для вас, вовремя!"
+      "1": "Статусы документов – утверждение, отклонение, редактирование – все в курсе!",
+      "2": "Поздравления – помним дни рождения и достижения!",
+      "3": "Напоминания – отпуска, собрания, важная информация вовремя.",
+      "4": "Уведомления в реальном времени – ничего не упустите!",
+      "5": "Обновления профиля – изменения в данных сразу в Telegram!",
+      "header": "Подписка дает",
+      "footer": "Все в одном месте – timely и для вас!"
     },
     "subscribe": "Подписаться"
   },
@@ -1747,44 +1742,44 @@
       "P": "План",
       "F": "Факт",
       "V": "Вакант",
-      "S": "Перештат",
+      "S": "Сверх",
       "R": "Разряд"
     },
     "form": {
       "position": "Должности",
       "optimization": "Оптимизация",
       "workers": "Сотрудники",
-      "vakant": "Вакант",
-      "sverx": "Перештат",
-      "contingent": "Штат",
+      "vakant": "Вакансии",
+      "sverx": "Сверх",
+      "contingent": "Контингент",
       "worker": "Количество сотрудников",
       "who": "Кем",
       "reason": "Причина",
       "byPosition": "По должностям",
-      "optimizationConfirm": "Это действие объединит все похожие должности в отделе. Подтвердите для выполнения",
+      "optimizationConfirm": "Объединить все похожие должности. Подтвердить?",
       "byWorker": "По сотрудникам"
     }
   },
   "uploadReport": {
-    "name": "Загрузить отчет",
+    "name": "Загрузка отчетов",
     "createTitle": "Загрузить отчет",
     "form": {
       "type": "Тип отчета",
       "month": "Месяц",
       "year": "Год",
       "file": "Файл отчета",
-      "uploadCount": "Загружено {n} шт",
+      "uploadCount": "Загружено {n}",
       "comment": "Описание",
-      "requiredOrganization": "Для загрузки необходимо выбрать предприятие!",
-      "uploadFile": "Загрузить отчет",
+      "requiredOrganization": "Выберите предприятие!",
+      "uploadFile": "Загрузить",
       "monthReport": "Месячный отчет",
-      "applicationFour": "Приложение 4 INPS",
-      "applicationFive": "Приложение 5 INPS",
-      "INPSPayment": "Платежи INPS",
-      "notAllowedUploadByAdminsat": "Загрузка отчета ограничена администратором",
+      "applicationFour": "INPS 4-приложение",
+      "applicationFive": "INPS 5-приложение",
+      "INPSPayment": "INPS платежи",
+      "notAllowedUploadByAdminsat": "Загрузка заблокирована",
       "confirmed": "Подтверждено",
-      "openFromBlock": "Закрыть",
-      "closeToBlock": "Открыть"
+      "openFromBlock": "Открыть",
+      "closeToBlock": "Закрыть"
     }
   },
   "instructionPage": {
@@ -1795,27 +1790,27 @@
       "subMenu": "Подменю",
       "title": "Название",
       "file": "Файл отчета",
-      "uploadCount": "Загружено {n} шт",
+      "uploadCount": "Загружено {n}",
       "comment": "Описание",
-      "requiredOrganization": "Для загрузки необходимо выбрать предприятие!",
-      "uploadFile": "Загрузить отчет"
+      "requiredOrganization": "Выберите предприятие!",
+      "uploadFile": "Загрузить"
     }
   },
   "monthReport": {
     "name": "Месячный отчет",
     "createTitle": "Полные данные",
     "exportTitle": "Панель экспорта",
-    "refreshDescription": "Перепроверить JSHSHIR",
+    "refreshDescription": "Перепроверить ПИНФЛ",
     "tab": {
-      "multipleSalary": "Загрузить список сотрудников, получающих зарплату с нескольких мест",
-      "exportWithCode": "Загрузить по коду платежа"
+      "multipleSalary": "Загрузить с несколькими зарплатами",
+      "exportWithCode": "По коду платежа"
     },
     "form": {
-      "pin": "PIN",
+      "pin": "ПИНФЛ",
       "salary": "Зарплата",
-      "totalOne": "Типы платежей, входящие в фонд зарплаты",
-      "totalTwo": "Типы платежей, не входящие в фонд зарплаты",
-      "totalThree": "Рассчитано",
+      "totalOne": "Платежи в фонд зарплаты",
+      "totalTwo": "Платежи вне фонда",
+      "totalThree": "Начислено",
       "code": "Код платежа",
       "organizations": "По предприятиям",
       "workers": "По сотрудникам",
@@ -1823,14 +1818,14 @@
     },
     "view": {
       "main_salary": "Оклад",
-      "work_time": "Отработанное время"
+      "work_time": "Отработано"
     },
     "in": {
       "code": "Код платежа",
-      "type": "Тип и название платежа",
+      "type": "Тип и название",
       "amount": "Сумма",
-      "total": "Всего рассчитано",
-      "out_total": "Всего удержано"
+      "total": "Начислено всего",
+      "out_total": "Удержано всего"
     }
   },
   "polyclinic": {
@@ -1853,7 +1848,7 @@
     "name": "Направления",
     "createTitle": "Прикрепить",
     "updateTitle": "Редактировать",
-    "attachCommission": "Прикрепить членов комиссии",
+    "attachCommission": "Прикрепить комиссию",
     "confirmTitle": "Подтвердить",
     "form": {
       "worker_positions": "Члены комиссии",
@@ -1861,14 +1856,14 @@
       "no-data": "Сотрудник не выбран!",
       "ticket": "Комиссия",
       "warning": "Неприкрепленный сотрудник!",
-      "requiredWorker": "Необходимо выбрать сотрудника!",
+      "requiredWorker": "Выберите сотрудника!",
       "commission_leader_id": "Руководитель комиссии"
     },
     "confirm": {
       "med_date": "Дата осмотра",
-      "to": "Дата следующего осмотра",
+      "to": "Следующий осмотр",
       "comment": "Комментарий",
-      "removeCommission": "Вы уверены, что хотите очистить членов комиссии?"
+      "removeCommission": "Очистить комиссию?"
     }
   },
   "medWorker": {
@@ -1883,77 +1878,77 @@
     }
   },
   "taxFour": {
-    "name": "Приложение 4 INPS",
+    "name": "НДФЛ 4-приложение",
     "form": {
-      "employee_status": "Статус сотрудника в отчетном периоде (1-работает, 2-не работает)",
-      "contract_type": "Тип договора (1-основной, 2-дополнительный, 3-FXSH, 4-направление)",
-      "total_salary_income": "Общий доход в форме зарплаты",
-      "total_tax": "Общая сумма рассчитанного налога",
-      "reported_salary_income": "Доход в форме зарплаты в отчетном периоде",
-      "reported_tax": "Сумма налога, рассчитанная в отчетном периоде"
+      "employee_status": "Статус сотрудника (1-работает, 2-не работает)",
+      "contract_type": "Тип договора (1-основной, 2-совместитель, 3-ГПХ, 4-направление)",
+      "total_salary_income": "Общий доход по зарплате",
+      "total_tax": "Общий налог",
+      "reported_salary_income": "Доход в периоде",
+      "reported_tax": "Налог в периоде"
     }
   },
   "taxFive": {
-    "name": "Приложение 5 INPS",
+    "name": "НДФЛ 5-приложение",
     "form": {
-      "total_income": "Общий рассчитанный доход",
-      "reported_income": "Рассчитанный доход в отчетном периоде",
-      "income_type": "Тип дохода (1-имущественный, 2-аренда, 3-материальная помощь, 4-другой)",
-      "total_tax": "Общая сумма рассчитанного налога",
-      "reported_tax": "Сумма налога, рассчитанная в отчетном периоде"
+      "total_income": "Общий доход",
+      "reported_income": "Доход в периоде",
+      "income_type": "Тип дохода (1-имущество, 2-аренда, 3-матпомощь, 4-другое)",
+      "total_tax": "Общий налог",
+      "reported_tax": "Налог в периоде"
     }
   },
   "accDashboard": {
     "name": "Дашборд",
     "form": {
-      "total_income": "Общий рассчитанный доход",
-      "reported_income": "Рассчитанный доход в отчетном периоде",
-      "income_type": "Тип дохода (1-имущественный, 2-аренда, 3-материальная помощь, 4-другой)",
-      "total_tax": "Общая сумма рассчитанного налога",
-      "reported_tax": "Сумма налога, рассчитанная в отчетном периоде"
+      "total_income": "Общий доход",
+      "reported_income": "Доход в периоде",
+      "income_type": "Тип дохода (1-имущество, 2-аренда, 3-матпомощь, 4-другое)",
+      "total_tax": "Общий налог",
+      "reported_tax": "Налог в периоде"
     },
     "chart": {
-      "sum": "Итого",
-      "total_one": "Типы платежей, входящие в фонд зарплаты",
-      "total_two": "Платежи, не включаемые в состав дохода",
-      "total_three": "Типы платежей, не входящие в фонд зарплаты",
+      "sum": "Сумма",
+      "total_one": "Платежи в фонд зарплаты",
+      "total_two": "Платежи вне фонда",
+      "total_three": "Платежи вне фонда зарплаты",
       "total_four": "Общая зарплата",
       "total_five": "Удержания из зарплаты",
       "statements": "Месячный отчет",
-      "tax_four": "Налоговый отчет Приложение 4",
-      "tax_five": "Налоговый отчет Приложение 5",
+      "tax_four": "Налог 4-приложение",
+      "tax_five": "Налог 5-приложение",
       "pension_payment": "INPS",
-      "reported_income": "Доход в отчетном периоде",
-      "reported_tax": "Сумма налога в отчетном периоде",
-      "income_tax_paid": "Сумма дохода, по которой уплачен налог на доход",
+      "reported_income": "Доход в периоде",
+      "reported_tax": "Налог в периоде",
+      "income_tax_paid": "Налог на доход уплачен",
       "total_contributions": "Общие взносы",
-      "reported_salary_income": "Доход в форме зарплаты в отчетном периоде"
+      "reported_salary_income": "Доход по зарплате в периоде"
     },
     "tax_five": {
-      "reported_income": "Доход в отчетном периоде",
-      "reported_tax": "Сумма налога в отчетном периоде"
+      "reported_income": "Доход в периоде",
+      "reported_tax": "Налог в периоде"
     }
   },
   "vacancy": {
-    "name": "Открытые вакансии",
+    "name": "Вакансии",
     "createTitle": "Создать вакансию",
-    "updateTitle": "Редактировать вакансию",
+    "updateTitle": "Ред. вакансии",
     "form": {
       "department_position_id": "Должности вакансии",
       "region_id": "Область",
       "city_id": "Район/Город",
-      "work_type": "График работы",
-      "address": "Адрес предприятия (полный)",
-      "education": "Минимальное образование (по должности)",
-      "rate": "Свободные места",
-      "salary": "Месячная зарплата (сум)",
-      "experience": "Требуемый стаж (лет)",
+      "work_type": "Режим работы",
+      "address": "Адрес (полный)",
+      "education": "Мин. образование (по должности)",
+      "rate": "Вакантных мест",
+      "salary": "Зарплата (сум)",
+      "experience": "Стаж (лет)",
       "short_experience": "Стаж",
       "switch": "Статус",
       "to": "Срок вакансии",
-      "position_obligations": "Обязанности должности",
-      "qualification_requirements": "Требования к квалификации",
-      "working_conditions": "Условия работы",
+      "position_obligations": "Обязанности",
+      "qualification_requirements": "Требования",
+      "working_conditions": "Условия",
       "specialties": "Специальность"
     }
   },
@@ -1968,89 +1963,89 @@
     "label": {
       "external": "Перевозки (эксплуатация)",
       "capital": "Капитальный ремонт",
-      "construction": "Строительно-монтажные работы",
-      "other": "Другие работы (вспомогательно-подсобная деятельность)",
+      "construction": "Строительные работы",
+      "other": "Другие работы (вспомогательные)",
       "fromIt": "Из них",
       "all": "Всего",
       "area": "Площадь",
       "mediumWorkerCount": "Среднесписочная численность, чел.",
       "mediumSalaryAmount": "Фонд зарплаты, тыс. сум",
-      "forOrganization": "Для предприятий общества",
+      "forOrganization": "Для дочерних",
       "forOwn": "Для собственных нужд",
-      "forForeign": "Для иностранных предприятий",
-      "forLogistic": "Связанные с перевозками",
-      "forOther": "Другие виды деятельности (промышленность, подряд и другие)",
-      "fixed-term": "Сотрудники, работающие по срочному трудовому договору",
-      "contract": "Сотрудники, работающие по гражданско-правовому договору",
-      "Housekeeper": "Кассачи"
+      "forForeign": "Для иностранных",
+      "forLogistic": "По перевозкам",
+      "forOther": "Другие виды (промышленность и др.)",
+      "fixed-term": "По срочным договорам",
+      "contract": "По гражданско-правовым",
+      "Housekeeper": "Кассиры"
     },
     "form": {
-      "external_worker_count": "(Среднесписочная численность, чел.)",
-      "external_salary_fund": "(Фонд зарплаты, тыс. сум)",
-      "capital_society_worker_count": "Для предприятий общества - (Среднесписочная численность, чел.)",
-      "capital_society_salary_fund": "Для предприятий общества - (Фонд зарплаты, тыс. сум)",
-      "capital_own_use_worker_count": "Для собственных нужд - (Среднесписочная численность, чел.)",
-      "capital_own_use_salary_fund": "Для собственных нужд - (Фонд зарплаты, тыс. сум)",
-      "capital_foreign_company_worker_count": "Для иностранных предприятий - (Среднесписочная численность, чел.)",
-      "capital_foreign_company_salary_fund": "Для иностранных предприятий - (Фонд зарплаты, тыс. сум)",
-      "construction_society_worker_count": "Для предприятий общества - (Среднесписочная численность, чел.)",
-      "construction_society_salary_fund": "Для предприятий общества - (Фонд зарплаты, тыс. сум)",
-      "construction_own_use_worker_count": "Для собственных нужд - (Среднесписочная численность, чел.)",
-      "construction_own_use_salary_fund": "Для собственных нужд - (Фонд зарплаты, тыс. сум)",
-      "construction_foreign_company_worker_count": "Для иностранных предприятий - (Среднесписочная численность, чел.)",
-      "construction_foreign_company_salary_fund": "Для иностранных предприятий - (Фонд зарплаты, тыс. сум)",
-      "other_society_worker_count": "Другие виды деятельности (промышленность, подряд и другие) - (Среднесписочная численность, чел.)",
-      "other_society_salary_fund": "Другие виды деятельности (промышленность, подряд и другие) - (Фонд зарплаты, тыс. сум)",
-      "other_own_use_worker_count": "Связанные с перевозками - (Среднесписочная численность, чел.)",
-      "other_own_use_salary_fund": "Связанные с перевозками - (Фонд зарплаты, тыс. сум)",
-      "other_foreign_company_worker_count": "Для иностранных предприятий - (Среднесписочная численность, чел.)",
-      "other_foreign_company_salary_fund": "Для иностранных предприятий - (Фонд зарплаты, тыс. сум)",
-      "temporary_contract_worker_count": "Сотрудники, работающие по срочному трудовому договору - (Среднесписочная численность, чел.)",
-      "temporary_contract_salary_fund": "Сотрудники, работающие по срочному трудовому договору - (Фонд зарплаты, тыс. сум)",
-      "civil_contract_worker_count": "Сотрудники, работающие по гражданско-правовому договору - (Среднесписочная численность, чел.)",
-      "civil_contract_salary_fund": "Сотрудники, работающие по гражданско-правовому договору - (Фонд зарплаты, тыс. сум)",
-      "freelancer_worker_count": "Кассачи - (Среднесписочная численность, чел.)",
-      "freelancer_salary_fund": "Кассачи - (Фонд зарплаты, тыс. сум)"
+      "external_worker_count": "(Среднесписочная, чел.)",
+      "external_salary_fund": "(Фонд, тыс. сум)",
+      "capital_society_worker_count": "Для дочерних - (чел.)",
+      "capital_society_salary_fund": "Для дочерних - (тыс. сум)",
+      "capital_own_use_worker_count": "Собственные нужды - (чел.)",
+      "capital_own_use_salary_fund": "Собственные нужды - (тыс. сум)",
+      "capital_foreign_company_worker_count": "Иностранные - (чел.)",
+      "capital_foreign_company_salary_fund": "Иностранные - (тыс. сум)",
+      "construction_society_worker_count": "Для дочерних - (чел.)",
+      "construction_society_salary_fund": "Для дочерних - (тыс. сум)",
+      "construction_own_use_worker_count": "Собственные нужды - (чел.)",
+      "construction_own_use_salary_fund": "Собственные нужды - (тыс. сум)",
+      "construction_foreign_company_worker_count": "Иностранные - (чел.)",
+      "construction_foreign_company_salary_fund": "Иностранные - (тыс. сум)",
+      "other_society_worker_count": "Другие виды - (чел.)",
+      "other_society_salary_fund": "Другие виды - (тыс. сум)",
+      "other_own_use_worker_count": "По перевозкам - (чел.)",
+      "other_own_use_salary_fund": "По перевозкам - (тыс. сум)",
+      "other_foreign_company_worker_count": "Иностранные - (чел.)",
+      "other_foreign_company_salary_fund": "Иностранные - (тыс. сум)",
+      "temporary_contract_worker_count": "Срочные договоры - (чел.)",
+      "temporary_contract_salary_fund": "Срочные договоры - (тыс. сум)",
+      "civil_contract_worker_count": "Гражданско-правовые - (чел.)",
+      "civil_contract_salary_fund": "Гражданско-правовые - (тыс. сум)",
+      "freelancer_worker_count": "Кассиры - (чел.)",
+      "freelancer_salary_fund": "Кассиры - (тыс. сум)"
     }
   },
   "salaryReport": {
-    "name": "Месячный отчет (шифр)",
-    "createTitle": "Загрузить отчет по зарплате",
-    "updateTitle": "Редактировать отчет по зарплате",
+    "name": "Месячный отчет (код)",
+    "createTitle": "Загрузить отчет зарплаты",
+    "updateTitle": "Ред. отчета зарплаты",
     "form": {
-      "title": "Расшифровка типов платежей фонда оплаты труда",
-      "name": "Название типов платежей",
+      "title": "Расшифровка платежей фонда зарплаты",
+      "name": "Название платежа",
       "type": "Тип",
       "fromYear": "С начала года",
       "total": "Всего",
-      "code": "Шифр",
-      "salaryType": "Фонд оплаты труда, отражаемый в форме 1-Т"
+      "code": "Код",
+      "salaryType": "Фонд зарплаты, отраженный в форме 1-Т"
     }
   },
   "pensionPayment": {
-    "name": "Платежи SHJPH (INPS)",
+    "name": "INPS платежи",
     "createTitle": "",
     "updateTitle": "",
     "form": {
       "income_tax_paid": "Налог на доход",
       "mandatory_pension_contribution": "Обязательный взнос на пенсию",
       "voluntary_pension_contribution": "Добровольный взнос на пенсию",
-      "total_contributions": "Общие взносы"
+      "total_contributions": "Всего взносов"
     }
   },
   "hcServer": {
     "name": "Турникет",
     "createTitle": "Загрузить",
     "updateTitle": "Редактировать",
-    "errorTitle": "Список сотрудников с ошибками в данных",
+    "errorTitle": "Список с ошибками",
     "form": {
       "name": "Название",
       "department": "Отдел",
       "access_level_id": "Группы",
-      "workers_count": "Количество сотрудников",
+      "workers_count": "Сотрудников",
       "exported_count": "Загружено",
       "status": "Статус",
-      "asFile": "Нажмите для загрузки в файл",
+      "asFile": "Загрузить в файл",
       "error": "Ошибка"
     }
   },
@@ -2058,53 +2053,56 @@
     "name": "Камера",
     "createTitle": "Загрузить",
     "updateTitle": "Редактировать",
-    "warningRecording": "Требования к процессу экзамена",
-    "warningTextOne": "Во время экзамена камера и микрофон должны быть постоянно включены.",
-    "warningTextTwo": "Лицо, сдающее экзамен, должно быть полностью видно на камере.",
-    "warningTextThree": "Выключение камеры или микрофона может привести к аннулированию экзамена.",
+    "warningRecording": "Требования к экзамену",
+    "warningTextOne": "Камера и микрофон включены во время экзамена.",
+    "warningTextTwo": "Лицо полностью видно на камере.",
+    "warningTextThree": "Отключение приведет к отмене экзамена.",
     "form": {
       "name": "Название",
       "department": "Отдел",
       "access_level_id": "Группы",
-      "workers_count": "Количество сотрудников",
+      "workers_count": "Сотрудников",
       "exported_count": "Загружено",
       "status": "Статус",
-      "asFile": "Нажмите для загрузки в файл",
+      "asFile": "Загрузить в файл",
       "error": "Ошибка"
     }
   },
+
+
   "workerImage": {
-    "name": "Фотографии сотрудников",
+    "name": "(HC) Telegram фото",
     "photo": "Фото",
     "status": "Статус",
     "viewPhoto": "Просмотр фото",
     "createTitle": "Добавить фото сотрудника",
-    "updateTitle": "Редактировать фото сотрудника"
+    "requiredCommentForRejection": "Введите комментарий для отклонения и нажмите сохранить",
+    "updateTitle": "Ред. фото сотрудника"
   },
   "syncLog": {
     "name": "Перезагрузка",
     "createTitle": "Перезагрузить данные терминалов",
     "updateTitle": "Редактировать",
-    "offlineDevices": "Офлайн устройства",
+    "offlineDevices": "Оффлайн устройства",
     "form": {
       "name": "Название",
       "deviceLastSync": "Время устройства",
       "access_level_id": "Группы",
-      "workers_count": "Количество сотрудников",
+      "workers_count": "Сотрудников",
       "exported_count": "Загружено",
       "status": "Статус",
-      "asFile": "Нажмите для загрузки в файл",
+      "asFile": "Нажмите для файла",
       "error": "Ошибка",
-      "logId": "ID лога",
+      "logId": "Log ID",
       "deviceId": "ID устройства"
     }
   },
   "hcEvent": {
-    "name": "События",
+    "name": "(HC) События",
     "createTitle": "Загрузить",
     "updateTitle": "Редактировать",
     "syncTitle": "Синхронизация",
-    "syncText": "Пожалуйста, выберите время для синхронизации. Система автоматически синхронизирует до конца выбранного дня.",
+    "syncText": "Выберите время. Система синхронизирует до конца дня.",
     "preview": "Просмотр",
     "form": {
       "name": "Название",
@@ -2112,27 +2110,27 @@
       "device": "Устройство",
       "mask_status": "Маска",
       "status": "Статус",
-      "asFile": "Нажмите для загрузки в файл",
+      "asFile": "Нажмите для файла",
       "withMask": "С маской",
       "NoMask": "Без маски",
       "direction": "Турникет",
-      "face": "FACE",
+      "face": "Лицо",
       "card": "Карта",
-      "finger": "Отпечаток пальца",
+      "finger": "Отпечаток",
       "unknown": "Неизвестно",
       "normal": "Норма",
       "workTime": "Время работы",
       "noNormal": "Не норма",
-      "start_time": "Время начала",
-      "hours": "Норма часов (/часов)",
-      "end_time": "Время окончания"
+      "start_time": "Начало",
+      "hours": "Норма часов (/час)",
+      "end_time": "Конец"
     },
-    "detailShow": "Подробный просмотр",
+    "detailShow": "Детальный просмотр",
     "cards": {
-      "cardOne": "Опоздавшие сотрудники",
-      "cardTwo": "Сотрудники не на работе (вчера)",
-      "cardThree": "Ранние уходы (вчера)",
-      "cardFour": "Сотрудники в отпуске"
+      "cardOne": "Опоздавшие",
+      "cardTwo": "Не пришедшие",
+      "cardThree": "Ушедшие рано",
+      "cardFour": "В отпуске"
     }
   },
   "pensioner": {
@@ -2140,21 +2138,21 @@
     "createTitle": "Добавить",
     "updateTitle": "Редактировать",
     "form": {
-      "position": "Должность на момент выхода на пенсию (полная форма)",
+      "position": "Должность на пенсии (полностью)",
       "passport": "Серия паспорта",
-      "address": "Адрес проживания",
-      "experience": "Непрерывный стаж на железной дороге",
+      "address": "Адрес",
+      "experience": "Стаж на железной дороге",
       "year": "Год выхода на пенсию",
-      "invalid": "Группа инвалидности (1; 2; 3;)",
-      "railway_title": "Наличие почетного звания железнодорожник?",
-      "afghan": "Участвовал в афганской войне?",
-      "pin": "JSHSHIR",
-      "phone": "Номер телефона",
-      "chernobyl": "Участвовал в ликвидации последствий Чернобыльской АЭС?"
+      "invalid": "Группа инвалидности (1;2;3;)",
+      "railway_title": "Почетный железнодорожник?",
+      "afghan": "Участник Афгана?",
+      "pin": "ПИНФЛ",
+      "phone": "Телефон",
+      "chernobyl": "Участник Чернобыля?"
     }
   },
   "notification": {
-    "name": "Уведомление",
+    "name": "Уведомления",
     "createTitle": "Прикрепить устройство",
     "updateTitle": "Редактировать",
     "form": {
@@ -2181,79 +2179,79 @@
   },
   "resultPage": {
     "name": "Результаты",
-    "createTitle": "Загрузить отчет по зарплате",
-    "updateTitle": "Редактировать отчет по зарплате",
+    "createTitle": "Загрузить отчет зарплаты",
+    "updateTitle": "Ред. отчета зарплаты",
     "form": {
-      "chances": "Количество попыток",
-      "name": "Название типов платежей",
+      "chances": "Попыток",
+      "name": "Названия платежей",
       "type": "Тип",
       "fromYear": "С начала года",
       "total": "Всего",
-      "code": "Шифр",
-      "salaryType": "Фонд оплаты труда, отражаемый в форме 1-Т"
+      "code": "Код",
+      "salaryType": "Фонд зарплаты, отраженный в 1-Т"
     }
   },
   "turnStileDashboard": {
     "name": "Дашборд",
     "form": {
-      "topOfflineDevices": "Синхронизиованные устройства",
+      "topOfflineDevices": "Синхронизированные устройства",
       "lastSynchronizationTime": "Последняя синхронизация",
-      "workerCount": "Количество сотрудников",
-      "offlineDevice": "Офлайн устройства",
+      "workerCount": "Сотрудников",
+      "offlineDevice": "Оффлайн устройства",
       "onlineDevice": "Онлайн устройства",
       "left": "Ушедшие",
-      "leftWorkplace": "Сотрудники, ушедшие с рабочего места",
-      "dailyEvent": "Сегодняшний журнал входа-выхода турникета (по сотрудникам)",
-      "came_today": "Сотрудники, пришедшие сегодня",
-      "not_came_today": "Сотрудники, не пришедшие сегодня",
-      "current_in": "Сотрудники на рабочем месте",
-      "current_out": "Сотрудники не на рабочем месте",
-      "workdays": "Сотрудники не на рабочем месте"
+      "leftWorkplace": "Ушедшие с работы",
+      "dailyEvent": "Ежедневный журнал турникета (по сотрудникам)",
+      "came_today": "Пришедшие",
+      "not_came_today": "Не пришедшие",
+      "current_in": "На работе",
+      "current_out": "Не на работе",
+      "workdays": "Не на работе"
     },
     "work_durations": {
-      "workdays": "Установленное рабочее время",
-      "max_worked_count": "Выполненные рабочие часы",
-      "deficit": "Невыполненные рабочие часы",
-      "min_workers": "Сотрудники с наименьшим количеством отработанных часов",
-      "max_workers": "Сотрудники с наибольшим количеством отработанных часов"
+      "workdays": "Запланированное время",
+      "max_worked_count": "Отработано",
+      "deficit": "Недоработано",
+      "min_workers": "Минимум отработали",
+      "max_workers": "Максимум отработали"
     },
     "device": {
       "all": "Все устройства",
-      "online": "Онлайн устройства",
-      "offline": "Офлайн устройства",
-      "left": "Сотрудники, ушедшие с рабочего места"
+      "online": "Онлайн",
+      "offline": "Оффлайн",
+      "left": "Ушедшие с работы"
     },
     "perview": {
       "time": "Дата",
-      "workTime": "Время начала работы",
+      "workTime": "Начало работы",
       "temperature": "Температура",
       "device": "Устройство",
       "direction": "Статус",
       "norm_hours": "Норма часов",
-      "auth_type": "Тип авторизации",
+      "auth_type": "Тип аутентификации",
       "mask_status": "Маска"
     },
     "cards": {
-      "late_come": "Опоздавшие сотрудники",
-      "not_come_yesterday": "Сотрудники не на работе (вчера)",
-      "early_leave_yesterday": "Ранние уходы (вчера)",
-      "not_come": "Сотрудники, не пришедшие",
-      "come": "Сотрудники, пришедшие",
-      "current_in": "Сотрудники на рабочем месте",
-      "current_out": "Сотрудники не на рабочем месте",
-      "early_leave": "Ранние уходи",
+      "late_come": "Опоздавшие",
+      "not_come_yesterday": "Не пришедшие (вчера)",
+      "early_leave_yesterday": "Ушедшие рано (вчера)",
+      "not_come": "Не пришедшие",
+      "come": "Пришедшие",
+      "current_in": "На работе",
+      "current_out": "Не на работе",
+      "early_leave": "Ушедшие рано",
       "daily_attendance": "Журнал турникета",
-      "work_hours": "Не выполнившие норму часов",
+      "work_hours": "Не выполнили норму",
       "device_status": "Все устройства",
       "device_status_online": "Онлайн устройства",
-      "device_status_offline": "Офлайн устройства",
-      "lesson_worked": "Показатели рабочих часов",
-      "devices": "Топ офлайн устройств"
+      "device_status_offline": "Оффлайн устройства",
+      "lesson_worked": "Индикаторы времени",
+      "devices": "Топ оффлайн устройств"
     },
     "options": {
-      "status": "По рабочим часам",
-      "max": "Наибольшее",
-      "min": "Наименьшее"
+      "status": "По времени работы",
+      "max": "Максимум",
+      "min": "Минимум"
     }
   },
   "hcWorkDuration": {
@@ -2264,60 +2262,55 @@
     }
   },
   "userImageLogs": {
-    "name": "История изображений",
+    "name": "История фото",
     "photo": "Фото",
     "noPhoto": "Нет фото",
     "status": {
       "title": "Статус",
       "create": "Создано",
-      "update": "Обновлено", 
+      "update": "Обновлено",
       "delete": "Удалено"
     }
   },
   "invalidUser": {
-    "name": "Отклоненные",
+    "name": "Отклоненные фото",
     "photo": "Фото",
     "noPhoto": "Нет фото",
     "syncTime": "Время синхронизации"
   },
   "others": {
-    "name": "Логи турникета",
-    "tabs": {
-      "tab1": "Tab 1",
-      "tab2": "Tab 2",
-      "tab3": "Tab 3"
-    }
+    "name": "Дополнительно"
   },
   "accessLevel": {
     "title": "Уровни доступа",
     "unknown": "Неизвестно",
-    "expired": "Срок истек",
+    "expired": "Истек",
     "expiresToday": "Истекает сегодня",
-    "daysLeft": "Осталось {days} дней",
-    "active": "Активный",
-    "noSearchResults": "Результаты поиска не найдены",
-    "noAccessLevels": "Уровни доступа отсутствуют",
-    "expiryDate": "Срок действия",
+    "daysLeft": "{days} дней осталось",
+    "active": "Активно",
+    "noSearchResults": "Нет результатов",
+    "noAccessLevels": "Нет уровней доступа",
+    "expiryDate": "Срок",
     "status": "Статус",
     "refresh": "Обновить",
-    "showing": "Показано",
-    "more": "еще"
+    "showing": "Показаны",
+    "more": "шт"
   },
   "devices": {
-    "name": "Устройства",
+    "name": "(HC) Устройства",
     "createTitle": "Добавить устройство",
-    "updateTitle": "Редактировать устройство",
+    "updateTitle": "Ред. устройства",
     "deviceName": "Название устройства",
-    "name": "Название",
-    "namePlaceholder": "Введите название устройства",
+    "namePlaceholder": "Введите название",
     "ipAddress": "IP адрес",
-    "ipAddressPlaceholder": "Введите IP адрес",
+    "ipAddressPlaceholder": "Введите IP",
     "macAddress": "MAC адрес",
-    "macAddressPlaceholder": "Введите MAC адрес",
+    "macAddressPlaceholder": "Введите MAC",
     "serialNumber": "Серийный номер",
     "serialNumberPlaceholder": "Введите серийный номер",
     "status": "Статус",
     "online": "Онлайн",
-    "offline": "Офлайн"
+    "offline": "Оффлайн"
   }
+
 }
