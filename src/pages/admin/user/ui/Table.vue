@@ -1,7 +1,7 @@
 <script setup>
-import {NoDataPicture, UIActionButton, UIPagination, UIUser, UIMenuButton, UIBadge} from "@/components/index.js"
+import {NoDataPicture, UIPagination, UIUser, UIMenuButton, UIBadge} from "@/components/index.js"
 import {useUserStore, useAccountStore} from "@/store/modules/index.js"
-import {RibbonStar24Filled, ShieldLock20Regular} from "@vicons/fluent"
+import {RibbonStar24Filled, ShieldLock20Regular, LockClosed12Filled, LockOpen16Filled} from "@vicons/fluent"
 import Utils from "@/utils/Utils.js"
 import {AppPaths, useAppSetting} from "@/utils/index.js"
 import router from "@/router/index.js"
@@ -11,13 +11,20 @@ const store = useUserStore()
 const accStore = useAccountStore()
 
 const onSelect = (v)=>{
+    store.elementId = v.data.uuid
     if(v.key === Utils.ActionTypes.attachment){
       if(!accStore.checkAction(accStore.pn.usersWrite)) return
-      store.elementId = v.data.uuid
       store._myRoles()
       store.visibleType = true
       store.visible = true
+    }else if(v.key === Utils.ActionTypes.finish){
+      onSpam(v.data)
     }
+}
+
+const onSpam = (v)=>{
+  store.isSpam = !v.status
+  store.confirmVisible = true
 }
 
 const changePage = (v)=>{
@@ -66,6 +73,7 @@ const onLogin =(v)=>{
           <td>
             <div>
               <UIUser
+                  :hide-tooltip="true"
                   :short="false"
                   :data="{
                     photo:item?.worker.photo,
@@ -74,7 +82,19 @@ const onLogin =(v)=>{
                     lastName:item?.worker.last_name,
                     position:item?.phone,
                   }"
-              />
+              >
+            <template #position>
+             <div class="text-xs w-full text-secondary">
+               <template v-if="item.status">
+                 {{item?.phone }}
+               </template>
+               <template v-else>
+                 <span class="text-danger bg-danger/4 px-2 rounded-2xl font-medium" >Bloklangan</span>
+               </template>
+
+             </div>
+            </template>
+            </UIUser>
             </div>
           </td>
           <td>
@@ -113,6 +133,12 @@ const onLogin =(v)=>{
                 :show-attachment="true"
                 :show-delete="false"
                 @selectEv="onSelect"
+                :extra-options="[{
+                  label: $t(item.status ? 'content.spam' : 'content.noSpam'),
+                  key: Utils.ActionTypes.finish,
+                  icon:item.status ? LockClosed12Filled : LockOpen16Filled,
+                  visible:true
+                }]"
             />
           </td>
         </tr>
@@ -129,7 +155,3 @@ const onLogin =(v)=>{
     <NoDataPicture v-if="store.list.length===0 && !store.loading" />
   </n-spin>
 </template>
-
-<style scoped>
-
-</style>

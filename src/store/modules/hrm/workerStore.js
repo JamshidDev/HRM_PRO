@@ -32,6 +32,7 @@ export const useWorkerStore = defineStore('workerStore', {
             positions:[],
             sex:null,
             nationalities:[],
+            educations:[],
             country_id:null,
             region_id:null,
             city_id:null,
@@ -160,7 +161,8 @@ export const useWorkerStore = defineStore('workerStore', {
            const params = {
             ...this.params,
                 organizations:this.params.organizations.map(v=>v.id).toString() || undefined,
-                nationalities:this.params.nationalities?.toString() || undefined,
+               nationalities:this.params.nationalities?.toString() || undefined,
+               educations:this.params.educations?.toString() || undefined,
                 departments:this.params.departments.toString() || undefined,
                 positions:this.params.positions.toString() || undefined,
                 ages:undefined,

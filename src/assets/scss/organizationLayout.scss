@@ -252,6 +252,11 @@ $mobile_device_screen_size:900px;
       overflow-y: auto;
       height: calc(100vh - 60px);
     }
+    .main-content-with-tabs{
+      overflow-x: hidden;
+      overflow-y: auto;
+      height: calc(100vh - 100px);
+    }
   }
 }
 

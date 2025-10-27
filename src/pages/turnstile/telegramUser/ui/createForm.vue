@@ -2,6 +2,7 @@
 import validationRules from "@/utils/validationRules.js";
 import {useTelegramUserStore} from "@/store/modules/index.js"
 import UIHelper from "@/utils/UIHelper.js"
+import UINSelect from "@/components/ui/UINSelect.vue";
 
 const formRef = ref(null)
 
@@ -84,6 +85,10 @@ onMounted(()=>{
           :label="$t(`notification.form.devices`)"
           path="devices"
           :rule-path="validationRules.rulesNames.requiredMultiSelectField">
+          
+
+
+
         <n-select
             multiple
             clearable

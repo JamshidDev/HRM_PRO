@@ -29,6 +29,9 @@ const _accessForAdmin =async (payload)=>{
     return await axios.post(`/v1/user/access-for-admin`, payload?.data)
 }
 
+const _onSpam =async (payload)=>{
+    return await axios.post(`/v1/admin/users/${payload.id}/block`, payload?.data)
+}
 
 
 
@@ -41,4 +44,5 @@ export default {
     _loginByIdToSystem,
     _temporaryToken,
     _accessForAdmin,
+    _onSpam,
 }

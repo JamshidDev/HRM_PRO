@@ -42,7 +42,6 @@ const onSave = ()=>{
   const options = store.headerRow.filter(v=>v.value==='option')
   const question = store.headerRow.filter(v=>v.value==='ques')
   const correctOption = store.headerRow.filter(v=>v.key===store.selectedCol)
-  console.log(correctOption)
   const isValid = question.length===1 && correctOption.length===1 && options.length>=3 && options.length<=5
   if(!isValid){
     $Toast.warning(t('categoryPage.warning'))

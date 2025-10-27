@@ -7,6 +7,8 @@ import { promisify } from 'util';
 import FormData from 'form-data';
 import chalk from 'chalk';
 import cors from 'cors';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 
 const productionUrl = 'https://hrm-api.railway.uz/api'
@@ -17,9 +19,14 @@ const PASSWORD = 'YFhwRUxYsaSs'
 
 const execPromise = promisify(exec);
 const app = express()
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 app.use(cors());
 app.use(express.json())
+
+// Serve static files from dist folder
+app.use('/', express.static(path.join(__dirname, 'dist')));
 
 
 
@@ -62,7 +69,7 @@ const buildAndDeploy = async () => {
                 })
                 token = loginResponse.data.access_token
             }catch(err){
-                console.log(chalk.red.bold('Login failed:', error.message));
+                console.log(chalk.red.bold('Login failed:', err.message));
             }
 
 
@@ -113,8 +120,25 @@ app.get('/api/deploy', async (req, res) => {
     }
 })
 
-app.get('/', async (req,res)=>{
-    res.status(200).json({ success: true, message: '✅ Deploy server is running...!' })
+
+app.get('/', async (req, res) => {
+    try {
+        const fs = await import('fs');
+        const path = await import('path');
+        
+        const indexPath = path.join(process.cwd(), 'dist', 'index.html');
+        
+        if (fs.existsSync(indexPath)) {
+            const htmlContent = fs.readFileSync(indexPath, 'utf8');
+            res.setHeader('Content-Type', 'text/html');
+            res.status(200).send(htmlContent);
+        } else {
+            res.status(404).json({ success: false, message: 'dist/index.html file not found' });
+        }
+    } catch (error) {
+        console.error('Error serving HTML:', error.message);
+        res.status(500).json({ success: false, message: error.message });
+    }
 })
 
 

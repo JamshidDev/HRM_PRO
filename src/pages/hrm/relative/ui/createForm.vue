@@ -14,7 +14,6 @@ const onSubmit = ()=>{
       store.saveLoading = true
       if (store.visibleType) {
         store.payload.worker_id = null
-        console.log(componentStore.worker)
         if(store.activeTab === store.tabList[1].id){
           store.payload.worker_id = componentStore.worker.pin
         }

@@ -110,7 +110,6 @@ function uiAppLoad() {
 }
 
 function uiHandleError(e, r) {
-    console.log('error')
     uiHideProgress();
     if (r) {
         if (r.indexOf("BadPaddingException") !== -1) {

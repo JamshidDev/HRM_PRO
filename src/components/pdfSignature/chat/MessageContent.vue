@@ -72,10 +72,6 @@ const initialObserver = ()=>{
     threshold: 0.9,
   }
   const callBack = (entries, observer)=>{
-    entries.forEach((v)=>{
-      // const index = v.target.getAttribute("data-index");
-      console.log((Number(index)+1) + ' - '+  v.isIntersecting )
-    })
   }
   const observer = new IntersectionObserver(callBack, options)
   document.querySelectorAll(".chat-message-element").forEach((el) => observer.observe(el))

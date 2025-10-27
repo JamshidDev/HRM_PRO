@@ -18,7 +18,6 @@ const onPreview =(uuid)=>{
 }
 
 const onSelectEv = (v)=>{
-  console.log(v)
 }
 
 </script>

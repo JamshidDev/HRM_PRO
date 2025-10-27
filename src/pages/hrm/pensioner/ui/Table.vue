@@ -8,7 +8,6 @@ const compStore = useComponentStore()
 const accStore = useAccountStore()
 
 const onEdit = (v)=>{
-  console.log(v.passport)
   store.payload.first_name = v.first_name
   store.payload.last_name = v.last_name
   store.payload.middle_name = v.middle_name

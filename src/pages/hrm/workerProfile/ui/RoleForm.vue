@@ -38,11 +38,16 @@ onMounted(()=>{
 <template>
   <n-form
       ref="formRef"
-      :rules="validationRules.roleForm"
+      :rules="validationRules.common"
       :model="store.rolePayload"
   >
     <div class="pb-[60px]">
-      <n-form-item class="w-full" :label="$t(`documentPage.form.organization`)" path="organization_id">
+      <n-form-item
+          class="w-full"
+          :label="$t(`documentPage.form.organization`)"
+          path="organization_id"
+          :rule-path="validationRules.rulesNames.requiredNumberField"
+      >
         <UISelect
             :options="componentStore.structureList"
             :modelV="store.rolePayload.organization_id"
@@ -57,7 +62,7 @@ onMounted(()=>{
         />
 
       </n-form-item>
-      <n-form-item class="w-full" :label="$t(`content.role`)" path="role">
+      <n-form-item class="w-full" :label="$t(`content.role`)" path="role" :rule-path="validationRules.rulesNames.requiredNumberField">
         <n-select
             v-model:value="store.rolePayload.role"
             filterable

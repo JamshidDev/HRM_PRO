@@ -44,7 +44,6 @@ const containerScrollEv = ()=>{
 
     // Check if it's at the bottom
     // if (scrollTop + clientHeight === scrollHeight) {
-    //   console.log('At the bottom!');
     // }
   });
 }

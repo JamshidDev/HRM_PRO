@@ -46,7 +46,6 @@ const editorConfig = {
         await $ApiService.uploadService._create(formData)
             .then((res) => {
               const {data} = res.data
-              console.log(data)
               insertFn(data, data, data)
             })
       },
@@ -78,7 +77,6 @@ const handleCreated = (editor) => {
   editor.on('delete-event', () => {
     emit('onRemove')
   })
-  console.log(editor.getMenuConfig('menu1'))
 }
 
 const text = defineModel('text', {
@@ -97,7 +95,6 @@ const onChange = (editor) => {
       :rule="[{
           trigger: ['input', 'blur-sm'],
           validator() {
-            console.log('validator working')
             return (editorRef?.isEmpty() || editorRef?.getText()?.trim()==='') ? new Error( $t('rules.requiredField')) : true
           },
         },

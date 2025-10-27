@@ -6,7 +6,6 @@ const store = usePensionerStore()
 const accStore = useAccountStore()
 
 const filterEvent = ()=>{
-  if(!accStore.checkAction(accStore.pn.economistStatementsRead)) return
   store.params.page = 1
   store._index()
 }

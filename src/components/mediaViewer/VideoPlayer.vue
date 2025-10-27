@@ -12,9 +12,6 @@ defineProps({
 defineEmits(['close'])
 
 const visible = ref(true);
-onMounted(()=>{
-  console.log("Mounted")
-})
 </script>
 
 <template>

@@ -1,11 +1,13 @@
 <script setup>
 import {useAccountStore, useComponentStore, useEventStore, useTurnstileDashboardStore} from "@/store/modules/index.js"
 import {UISelect} from "@/components/index.js"
+import {selectRender} from "@/utils/index.js"
 
 
 const store = useEventStore()
 const dashboardStore = useTurnstileDashboardStore()
 const accStore = useAccountStore()
+const componentStore = useComponentStore()
 
 let timer = null
 const filterEvent = ()=>{
@@ -17,11 +19,14 @@ const filterEvent = ()=>{
 
 }
 
-const componentStore = useComponentStore()
 
 const onChangeStructure = (v)=>{
   dashboardStore.dashboardParams.organizations=v
+  componentStore.depParams.organizations = v.map((x) => x.id)
+  componentStore.departmentList = []
+  dashboardStore.dashboardParams.departments = []
   filterEvent()
+  componentStore._departments()
 }
 
 const handleTimeKeydownWithEnter = (event, key) => {
@@ -39,6 +44,10 @@ const onEnterTime = (key)=>{
     filterEvent()
   }
 
+}
+const onChangeDepartment = ()=>{
+  console.log(dashboardStore.dashboardParams.departments)
+  filterEvent()
 }
 
 
@@ -64,7 +73,7 @@ onBeforeUnmount(()=>{
 
 <template>
    <div class="grid grid-cols-12 gap-2">
-        <div class="text-lg lg:col-span-4 md:col-span-6 col-span-12 flex items-center text-textColor2 font-medium">
+        <div class="text-lg lg:col-span-2 md:col-span-6 col-span-12 flex items-center text-textColor2 font-medium">
           {{ $t('turnStileDashboard.name') }}
         </div>
         <div class="lg:col-span-2 md:col-span-6 col-span-12">
@@ -82,6 +91,26 @@ onBeforeUnmount(()=>{
               @onSubmit="filterEvent"
           />
         </div>
+     <div class="lg:col-span-2 md:col-span-6 col-span-12">
+       <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{$t('content.department')}}</label>
+       <n-select
+           v-model:value="dashboardStore.dashboardParams.departments"
+           :options="componentStore.departmentList"
+           multiple
+           filterable
+           label-field="name"
+           value-field="id"
+           :render-label="selectRender.label"
+           :render-tag ="selectRender.value"
+           clearable
+           @update:value="onChangeDepartment"
+           :max-tag-count="1"
+           :filter="()=>true"
+           :loading="componentStore.departmentLoading"
+           @search="componentStore._onSearchDepartment"
+           @scroll="componentStore._onScrollDepartment"
+       />
+     </div>
         <div class="lg:col-span-2 md:col-span-6 col-span-12">
           <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{$t('turnstile.hcWorkersPage.access_levels')}}</label>
           <n-select
@@ -98,7 +127,7 @@ onBeforeUnmount(()=>{
           />
         </div>
         <div class="lg:col-span-2 md:col-span-6 col-span-12">
-          <label class="text-textColor3 ml-1">{{$t('hcEvent.form.start_time')}}</label>
+          <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{$t('hcEvent.form.start_time')}}</label>
           <n-input
               v-mask="'##:##'"
               class="w-full"
@@ -112,7 +141,7 @@ onBeforeUnmount(()=>{
           />
         </div>
         <div class="lg:col-span-2 md:col-span-6 col-span-12">
-          <label class="text-textColor3 ml-1">{{$t('hcEvent.form.end_time')}}</label>
+          <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{$t('hcEvent.form.end_time')}}</label>
         <n-input
             v-mask="'##:##'"
             class="w-full"

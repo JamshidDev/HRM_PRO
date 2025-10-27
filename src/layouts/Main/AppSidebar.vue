@@ -29,7 +29,6 @@ const rememberSidebar = ()=>{
 }
 
 watch(()=>routes.path,(newpPath, oldPath)=>{
-  console.log(newpPath)
   path.value = newpPath
 })
 

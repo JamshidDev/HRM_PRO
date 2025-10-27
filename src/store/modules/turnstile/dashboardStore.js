@@ -37,6 +37,7 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
         // Dashboard parametrlari
         dashboardParams: {
             organizations: [],
+            departments: [],
             access_levels: [],
             end_time: localStorage.getItem('turnstile_end_time') || '18:00',
             start_time: localStorage.getItem('turnstile_start_time') || '09:00',
@@ -147,7 +148,6 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
             this.workerStatsLoading = true
             this.devicesLoading = true
             this.workDurationsLoading = true
-
             const params = {
                 ...this._previewQueryParams(),
                 start_time:this.dashboardParams.start_time,
@@ -293,6 +293,7 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
             return {
                 ...this.previewParams,
                 organizations: this.dashboardParams.organizations.map(v => v.id).toString() || undefined,
+                departments: this.dashboardParams.departments.toString() || undefined,
                 access_levels: this.dashboardParams.access_levels.toString() || undefined,
                 date:Utils.timeToZone(this.previewParams.date),
             }
@@ -414,6 +415,7 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
             this.previewParams.access_levels = []
             this.previewParams.page = 1
             this.previewParams.hours = null
+            this.previewParams.search = null
             this.previewParams.end_time = null
             this.previewParams.start_time = null
             this.previewParams.status = null

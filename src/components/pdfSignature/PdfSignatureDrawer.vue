@@ -112,7 +112,6 @@ const getDocument =async (document_id, model)=>{
 
 
   }).catch(error=>{
-    console.log(error)
     autoClose()
   }).finally(()=>{
     store.loading = false

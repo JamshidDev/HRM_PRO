@@ -98,7 +98,6 @@ onMounted(()=>{
           path="phones" :rule="[{
           trigger: [ 'blur-sm'],
           validator() {
-            console.log(store.payload.phones)
             if(store.payload.phones.find(i=>i.length!==5 && i.length!==9)!==undefined) return new Error($t('organizationLeaderPage.invalidPhone'))
             return true
           },

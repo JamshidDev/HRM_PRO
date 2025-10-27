@@ -12,9 +12,14 @@ import {
     HcServerPage,
     HcEventPage,
     TelegramUserPage,
+    WorkerImagePage,
     SyncLogPage,
     DashboardPage,
     HKWorkDurationPage,
+    UserImageLogsPage,
+    InvalidUserPage,
+    OthersPage,
+    DevicesPage,
 } from "@/pages/turnstile"
 
 
@@ -70,8 +75,8 @@ export default [
         children:[],
     },
     {
-        path:Utils.routeTurnstilePathMaker(AppPaths.Notification),
-        component: ()=>TelegramUserPage,
+        path:Utils.routeTurnstilePathMaker(AppPaths.WorkerImage),
+        component: ()=>WorkerImagePage,
         children:[],
     },
     {
@@ -87,6 +92,16 @@ export default [
     {
         path:Utils.routeTurnstilePathMaker(AppPaths.HCWorkDuration),
         component: ()=>HKWorkDurationPage,
+        children:[],
+    },
+    {
+        path:Utils.routeTurnstilePathMaker(AppPaths.Others),
+        component: ()=>OthersPage,
+        children:[],
+    },
+    {
+        path:Utils.routeTurnstilePathMaker(AppPaths.Devices),
+        component: ()=>DevicesPage,
         children:[],
     },
 ]

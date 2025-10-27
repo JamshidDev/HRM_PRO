@@ -291,7 +291,6 @@ export const usePdfViewerStore = defineStore('pdfViewerStore', {
         _confirmSignature(params, data) {
             this.saveLoading = true
             $ApiService.documentService._signature({params, data}).then((res) => {
-                console.log(res.data)
                 this._checkSignature(params)
             }).finally(() => {
                 this.saveLoading = false

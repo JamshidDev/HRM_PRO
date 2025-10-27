@@ -32,7 +32,6 @@ const onOpen = (v)=>{
 
 
 const onOpenCommand = (v)=>{
-  console.log(v)
   workers.value = [
     {
       name:Utils.combineFullName(store.data),

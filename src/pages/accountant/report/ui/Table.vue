@@ -13,7 +13,6 @@ const onDownload = (url)=>{
 }
 
 const showComment = (v)=>{
-  console.log(v)
     store.commentContent =v.comment
     store.commentVisible=true
 }

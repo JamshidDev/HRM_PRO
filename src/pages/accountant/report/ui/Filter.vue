@@ -1,7 +1,7 @@
 <script setup>
 import {UIPageFilter} from "@/components/index.js"
 import Utils from "@/utils/Utils.js"
-import {DocumentArrowUp20Regular} from "@vicons/fluent"
+import {DocumentArrowUp20Regular, LockClosed24Filled, LockOpen16Filled} from "@vicons/fluent"
 import {useAccountStore, useUploadReportStore} from "@/store/modules/index.js"
 import i18n from "@/i18n/index.js"
 
@@ -22,8 +22,9 @@ const onAdd = async () => {
 
 const onChange = ()=>{
   if(!accStore.checkAction(accStore.pn.economistUploadsRead)) return
+  store.params.organization_id = null
+  store.resetCards()
   store._structures()
-  store._cards()
 }
 
 
@@ -41,6 +42,18 @@ onMounted(()=>{
     :show-add-button="false"
 >
   <template #filterAction>
+    <n-button 
+    v-if="store.params.organization_id && accStore.checkPermission(accStore.pn.economistUploadsStatus)" 
+    :type="store.orgStatus? 'error' : 'success'"
+    @click="store._uploadStatus"
+    :loading="store.structuresLoading"
+    >
+      {{ $t( store.orgStatus? 'uploadReport.form.openFromBlock' : 'uploadReport.form.closeToBlock') }}
+      <template #icon>
+        <LockClosed24Filled v-if="store.orgStatus" />
+        <LockOpen16Filled v-else/>
+      </template>
+    </n-button>
 
     <n-select
         class="w-full! md:w-[200px]!"

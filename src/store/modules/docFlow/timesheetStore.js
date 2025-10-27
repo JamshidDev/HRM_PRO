@@ -21,7 +21,6 @@ export const useConfTimesheetStore = defineStore('confTimesheetStore', {
         _index(){
             this.loading= true
             $ApiService.documentService._confirmationTimesheet({params:this.params}).then((res)=>{
-                console.log(res.data.data.data)
                 this.list= res.data.data.data
                 this.totalItems = res.data.data.total
             }).finally(()=>{

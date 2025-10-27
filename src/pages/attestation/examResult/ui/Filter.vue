@@ -49,7 +49,6 @@ const onChange = (v)=>{
 const onChangeTopic = (v)=>{
   store.params.exams = []
   filterEvent()
-  console.log(v)
   if(Array.isArray(v) && v.length ===0) return
   store._exam(v?.toString())
 

@@ -2,6 +2,7 @@
 import validationRules from "@/utils/validationRules.js";
 import {useEventStore} from "@/store/modules/index.js"
 import {useAppSetting} from "@/utils/index.js"
+import UINSelect from "@/components/ui/UINSelect.vue";
   
 const formRef = ref(null)
 
@@ -50,16 +51,17 @@ onMounted(()=>{
           :label="$t(`hcServer.form.access_level_id`)"
           path="access_level_ids"
           :rule-path="validationRules.rulesNames.requiredMultiSelectField">
-        <n-select
-            filterable
-            multiple
-            v-model:value="store.syncPayload.access_level_ids"
+        <UINSelect
             :options="store.levelList"
             :loading="store.levelLoading"
-            label-field="name"
+            v-model:value="store.syncPayload.access_level_ids"
             value-field="id"
+            label-field="name"
             :max-tag-count="2"
-        />
+            multiple
+        >
+        </UINSelect>
+
       </n-form-item>
 
     </div>

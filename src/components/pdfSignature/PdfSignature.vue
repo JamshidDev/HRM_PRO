@@ -33,7 +33,6 @@ const addQRCodeToPDF = async (pdfUrl, qrCodeData, pageIndex, cordY, cordX )=>{
   a.download = 'signed_document.pdf';
   a.click();
   URL.revokeObjectURL(url);
-  console.log("success")
 }
 
 defineExpose({

@@ -60,7 +60,6 @@ export const useExamVideoStore = defineStore('examVideoStore', {
                     this._finishVideo()
                 }
             }).catch((error) => {
-                console.log(error)
             })
         },
         _finishVideo() {
@@ -102,7 +101,6 @@ export const useExamVideoStore = defineStore('examVideoStore', {
                                 const blob = e.data
 
                                 const sizeInMB = (blob.size / (1024 * 1024)).toFixed(2)
-                                console.log("Size (MB):", sizeInMB, "MB")
 
                                 this.downloadBlob(blob)
 
@@ -119,7 +117,6 @@ export const useExamVideoStore = defineStore('examVideoStore', {
                     createRecorder()
                     this.mediaRecorder.onstop = async () => {
                         this.isRecording = false
-                        console.log(this.isFinished)
                         if(!this.isFinished){
                             createRecorder()
                             this.mediaRecorder.start()

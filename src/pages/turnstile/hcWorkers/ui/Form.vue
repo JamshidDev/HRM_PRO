@@ -160,21 +160,21 @@ onMounted(() => {
           class="flex flex-col"
       >
 
-        <n-radio-group
-            class="mx-auto mb-3"
-            @update:value="resetWorkerId"
-            v-model:value="store.payload.isWorker"
-        >
-          <n-radio-button :value="1">
-            {{$t('turnstile.terminalUser.companyWorker')}}
-          </n-radio-button>
-          <n-radio-button :value="0">
-            {{$t('turnstile.terminalUser.notCompanyWorker')}}
-          </n-radio-button>
-        </n-radio-group>
+<!--        <n-radio-group-->
+<!--            class="mx-auto mb-3"-->
+<!--            @update:value="resetWorkerId"-->
+<!--            v-model:value="store.payload.isWorker"-->
+<!--        >-->
+<!--          &lt;!&ndash; <n-radio-button :value="1">-->
+<!--            {{$t('turnstile.terminalUser.companyWorker')}}-->
+<!--          </n-radio-button> &ndash;&gt;-->
+<!--          <n-radio-button :value="0">-->
+<!--            {{$t('turnstile.terminalUser.notCompanyWorker')}}-->
+<!--          </n-radio-button>-->
+<!--        </n-radio-group>-->
 
         
-        <div class="p-1 rounded-sm border border-dashed mb-1 border-surface-line">
+        <div class="p-1 rounded-sm border-dashed mb-1 border-surface-line">
           <template v-if="store.payload.isWorker" >
             <n-form-item :label="$t(`content.organization`)" path="worker_org_id" rule-path="requiredMultiSelectField">
               <UISelect

@@ -38,7 +38,6 @@ const onSuccess = (data)=>{
       accountStore._index()
       resolve(true)
     }catch (error){
-      console.log(error)
       reject(false)
     }
   }).then((data)=>{

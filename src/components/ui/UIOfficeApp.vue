@@ -42,7 +42,7 @@ const openEv = (document_id, model)=>{
   const fullName = `${accountStore.account?.worker?.last_name} ${accountStore.account?.worker?.first_name}`
   onlyOfficeStore.config.editorConfig.user = {
     name:Utils.safeBase64Encode(fullName),
-    id:accountStore.account.worker.id,
+    id:accountStore.account.worker.id?.toString(),
   }
   onlyOfficeStore.config.document.key = uuidv4()
   onlyOfficeStore.user_uuid = accountStore.account?.uuid

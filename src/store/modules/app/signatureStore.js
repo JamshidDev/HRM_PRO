@@ -51,7 +51,6 @@ export const useSignatureStore = defineStore('signatureStore', {
                     uiShowMessage(errorCAPIWS + " : " + e);
 
                 } else {
-                    console.log(r);
                 }
             })
         },
@@ -127,10 +126,8 @@ export const useSignatureStore = defineStore('signatureStore', {
         },
         _failCallback(e, r) {
             if (e) {
-                console.log(e)
                 uiShowMessage(errorCAPIWS + " : " + e)
             } else {
-                console.log(r)
                 uiShowMessage(r)
             }
         },
@@ -235,7 +232,6 @@ export const useSignatureStore = defineStore('signatureStore', {
                 this.loading = false
                 callback(res.data)
             }).catch((err)=>{
-                console.log(err)
             })
 
         },

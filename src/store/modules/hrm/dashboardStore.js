@@ -273,6 +273,7 @@ export const useDashboardStore = defineStore('dashboardStore', {
             if(!this.activeDetail?.filterCallback) throw new Error("No detail filter callback set")
             this.detailLoading = true
             let params = {
+                search: this.params.search,
                 page: this.params.page,
                 per_page: this.params.per_page,
             }
@@ -301,7 +302,6 @@ export const useDashboardStore = defineStore('dashboardStore', {
         _show() {
             this.loading = true
             $ApiService.workerService._index({id: this.elementId}).then((res) => {
-                console.log(res.data.data)
             }).finally(() => {
                 this.loading = false
             })

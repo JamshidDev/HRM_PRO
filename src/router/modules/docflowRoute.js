@@ -1,35 +1,33 @@
 import {AppPaths} from "@/utils/index.js"
 import Utils from "@/utils/Utils.js"
-import ConfirmationContract from "@/pages/docFlow/confirmation/contract/ConfirmationContract.vue"
-import ConfirmCommand from "@/pages/docFlow/confirmation/command/ConfirmCommand.vue"
-import AdContractPage from "@/pages/docFlow/confirmation/adContract/AdContractPage.vue"
-import ConfApplication from "@/pages/docFlow/confirmation/application/ConfApplication.vue"
-import TimeSheetPage from "@/pages/docFlow/confirmation/timesheet/TimeSheetPage.vue"
+import {
+    ConfContractPage,
+    ConfAddContractPage,
+    ConfApplicationPage,
+    ConfCommandPage,
+    ConfTimeSheetPage,
+} from "@/pages/docFlow/index.js"
+
 
 export default [
     {
         path:Utils.routeDocFlowPathMaker(AppPaths.ConfContract),
-        component:ConfirmationContract,
-        children:[],
+        component:ConfContractPage,
     },
     {
         path:Utils.routeDocFlowPathMaker(AppPaths.ConfCommand),
-        component:ConfirmCommand,
-        children:[],
+        component:ConfCommandPage,
     },
     {
         path:Utils.routeDocFlowPathMaker(AppPaths.ConfAdContract),
-        component:AdContractPage,
-        children:[],
+        component:ConfAddContractPage,
     },
     {
         path:Utils.routeDocFlowPathMaker(AppPaths.ConfApplication),
-        component:ConfApplication,
-        children:[],
+        component:ConfApplicationPage,
     },
     {
         path:Utils.routeDocFlowPathMaker(AppPaths.TimeSheet),
-        component:TimeSheetPage,
-        children:[],
+        component:ConfTimeSheetPage,
     },
 ]

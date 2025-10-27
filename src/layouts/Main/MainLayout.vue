@@ -24,7 +24,6 @@ const initialApp = ()=>{
 const initialMountApp = ()=>{
   const appSidebar = localStorage.getItem('appSidebar')
   sidebar.value = JSON.parse(appSidebar)
-  console.log(sidebar.value)
 }
 
 const layoutClass = computed(()=>{
@@ -32,8 +31,6 @@ const layoutClass = computed(()=>{
     open__sidebar:sidebar.value,
     close__sidebar:!sidebar.value,
   }
-
-  console.log(data)
 
 
   return data

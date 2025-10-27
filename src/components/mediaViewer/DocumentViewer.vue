@@ -18,7 +18,6 @@ const props = defineProps({
 const visible = ref(true);
 
 onMounted(()=>{
-  console.log("render pdf")
   store.pdfUrl = props.src
   store.loadPdf()
 })

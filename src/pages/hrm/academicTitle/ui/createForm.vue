@@ -11,7 +11,6 @@ const onSubmit = ()=>{
   formRef.value?.validate((error)=>{
     if(!error) {
       const files = store.payload.file.filter(v=>v.file)
-      console.log(store.payload.file)
       const formData = new FormData()
       formData.append('uuid', store.uuid)
       formData.append('type', store.payload.type)

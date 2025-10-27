@@ -675,9 +675,6 @@ export const useComponentStore = defineStore('componentStore', {
             const photo = this.workerPreview.worker?.photos.filter(v=>v.current === 1)?.[0]?.id
             $ApiService.workerService._resume({id, params:{lang,photo }}).then((res)=>{
                 const type =res.headers["content-type"]
-                console.log(fileName)
-
-                console.log(fileName)
                 Utils.blobFileDownload(res.data, type, fileName)
             }).finally(()=>{
                 this.resumeLoading = false

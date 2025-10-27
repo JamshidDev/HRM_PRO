@@ -13,7 +13,6 @@ const componentStore = useComponentStore()
 const onSubmit = ()=>{
   formRef.value?.validate((error)=>{
     if(!error) {
-      console.log(store.payload.description)
       const formData = new FormData()
       formData.append('visibility_type', store.payload.visibility_type)
       formData.append('title', store.payload.title)
@@ -27,7 +26,6 @@ const onSubmit = ()=>{
         formData.append('file', store.payload.file[0]?.file)
       } else {
         formData.append('_method', 'PUT')
-        console.log(store.payload.file)
         if(typeof store.payload.file[0]?.file !== 'string'){
           formData.append('file', store.payload.file[0]?.file)
         }

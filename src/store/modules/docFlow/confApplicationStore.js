@@ -212,7 +212,6 @@ export const useConfApplicationStore = defineStore('confApplicationStore', {
             Utils.debouncedFn(this._confirmation)
         },
         onScrollConfirmation(e){
-            console.log(e)
             const currentTarget = e.currentTarget;
             if(currentTarget.scrollTop + currentTarget.offsetHeight >= currentTarget.scrollHeight && !this.confirmLoading && this.confirmationListTotal>this.confirmationList.length){
                 this.confirmParams.page += 1

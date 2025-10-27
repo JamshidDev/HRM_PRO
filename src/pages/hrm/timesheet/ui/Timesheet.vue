@@ -270,7 +270,6 @@ const checkWorker = useDebounceFn(() => {
                 <n-popselect
                     :options="store.pinWorkers"
                     :render-label="renderWorkerLabel"
-                    @update:value="console.log"
                 >
                   <n-input
                       v-mask="`####-####-####-##`"

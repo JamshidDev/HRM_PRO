@@ -1,6 +1,5 @@
 self.onmessage = function (e) {
     const { tree, expandSet } = e.data;
-    console.log('Worker received:', { tree, expandSet });
     // self.postMessage(e.data);
     function flattenTreeWithLevel(tree, level = 0) {
         const result = [];
@@ -17,7 +16,6 @@ self.onmessage = function (e) {
             }
         }
         traverse(tree, level);
-        console.log('Worker result:', result);
         self.postMessage(result);
     }
 

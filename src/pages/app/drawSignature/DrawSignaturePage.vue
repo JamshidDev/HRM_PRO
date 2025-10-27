@@ -24,9 +24,6 @@ const downloadBase64File = (base64Data, filename) => {
   document.body.removeChild(link);
 };
 
-onMounted(()=>{
-  console.log(signaturePad.value)
-})
 </script>
 
 <template>

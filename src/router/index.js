@@ -6,7 +6,6 @@ import ProfilePage from "@/pages/app/profile/ProfilePage.vue";
 // routes
 import adminRoute from "@/router/modules/adminRoute.js";
 import hrmRoute from "@/router/modules/hrmRoute.js"
-import chatRoute from "@/router/modules/chatRoute.js"
 import attestationRoute from "@/router/modules/attestationRoute.js"
 import appRoute from "@/router/modules/appRoute.js"
 import docflowRoute from "@/router/modules/docflowRoute.js"
@@ -52,13 +51,6 @@ const routes = [
                 beforeEnter: beforeLogin,
                 redirect: AppPaths.Home,
                 children: [...hrmRoute]
-            },
-            {
-                path:AppPaths.Chat,
-                name:AppPaths.Chat.substring(1),
-                beforeEnter: beforeLogin,
-                redirect: AppPaths.Home,
-                children: [...chatRoute]
             },
             {
                 path:AppPaths.Attestation,

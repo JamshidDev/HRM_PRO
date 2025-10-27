@@ -6,7 +6,6 @@ import {useRoute, useRouter} from "vue-router";
 const store = useCategoryQuestionStore()
 
 const handleLoad = () => {
-  console.log("load")
   if (store.list.length < store.totalItems && !store.loading) {
     store.params.page++;
     store._index()

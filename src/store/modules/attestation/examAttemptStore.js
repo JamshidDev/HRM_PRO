@@ -117,7 +117,6 @@ export const useExamAttemptStore = defineStore('examAttemptStore', {
                     }
                 }
             }).catch((res) => {
-                console.log(res)
             }).finally(() => {
                 this.sendResultLoading = false
             })
@@ -128,7 +127,6 @@ export const useExamAttemptStore = defineStore('examAttemptStore', {
                 this.questions = res.data.data
 
             }).catch((res) => {
-                console.log(res)
             }).finally(() => {
                 this.loading = false
             })

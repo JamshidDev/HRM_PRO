@@ -43,4 +43,5 @@ export {default as PageInstruction} from './pageInstruction/pageInstruction.vue'
 export {default as UIDateViewer} from './general/UIDateViewer.vue'
 export {default as UIMultipleLangItems} from './ui/MultipleLangItems.vue'
 
+export * from './layoutTab'
 export * from './editor'

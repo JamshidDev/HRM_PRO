@@ -37,7 +37,6 @@ export const useRegisterStore = defineStore('registerStore', {
             sessionStorage.setItem('registerOtp', JSON.stringify(data))
 
             $ApiService.authService._registerOtp({data}).then((res)=>{
-                console.log(res.data)
                 this.otpToken = res.data.data.user
                 this.activeTab=2
             }).catch((error)=>{
@@ -61,9 +60,6 @@ export const useRegisterStore = defineStore('registerStore', {
                 phone:userInfo.phone,
             }
             $ApiService.authService._register({data}).then((res)=>{
-                console.log(res.data.message)
-
-
             }).catch((error)=>{
                 this.otpErrorMessage = error.response?.data?.message
             }).finally(()=>{

@@ -67,7 +67,6 @@ const editorConfig = ref({
         await $ApiService.uploadService._create(formData)
           .then((res) => {
             const {data} = res.data
-            console.log(data)
             insertFn(data,data,data)
           })
       },

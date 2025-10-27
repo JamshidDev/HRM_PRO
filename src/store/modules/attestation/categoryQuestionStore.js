@@ -136,8 +136,6 @@ export const useCategoryQuestionStore = defineStore('categoryQuestionStore', {
                     is_correct: !!i.is_correct,
                     text: i.text
                 }))
-                console.log(options)
-                console.log(this.payload.options)
             }).finally(() => {
                 this.showLoading = false
             })

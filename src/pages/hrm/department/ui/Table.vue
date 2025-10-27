@@ -114,7 +114,7 @@ const onSelectEv = (v)=>{
               </template>
             </n-button>
           </td>
-          <td>{{item.id +' - '+ item.name}}</td>
+          <td>{{item.name}}</td>
           <td>{{item.organization.name}}</td>
           <td>{{item.level?.name}}</td>
           <td>

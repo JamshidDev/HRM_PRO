@@ -1,33 +1,43 @@
 import {AppPaths} from "@/utils/index.js"
 import Utils from "@/utils/Utils.js"
-import WorkerPage from "@/pages/hrm/worker/WorkerPage.vue"
-import DepartmentPage from "@/pages/hrm/depertment/DepartmentPage.vue"
-import DepartmentPositionPage from "@/pages/hrm/departmentPosition/departmentPositionPage.vue"
-import CandidatePage from "@/pages/hrm/condidate/CandidatePage.vue"
-import ConfirmationPage from "@/pages/hrm/confirmation/ConfirmationPage.vue"
-import ProfilePage from "@/pages/hrm/workerProfile/ProfilePage.vue"
-import ApplicationPage from "@/pages/docFlow/document/application/ApplicationPage.vue"
-import CommandPage from "../../pages/docFlow/document/command/CommandPage.vue"
-import AdContractPage from "@/pages/docFlow/document/adContract/AdContractPage.vue"
-import ContractPage from "@/pages/docFlow/document/contract/ContractPage.vue"
-import VacationPage from "@/pages/hrm/vacation/VacationPage.vue"
-import TimesheetDepartmentPage from "@/pages/hrm/timesheetDepartment/TimesheetDepartmentPage.vue"
-import DashboardV3Page from "@/pages/hrm/dashboardV3/DashboardV3Page.vue"
-import TimesheetListPage from "@/pages/hrm/timesheet/TimesheetList.vue"
-import MedPage from "@/pages/hrm/med/MedPage.vue"
-import SlicePage from "@/pages/hrm/slice/SlicePage.vue"
-import OrganizationLeaderPage from '@/pages/hrm/organizationLeader/organizationLeaderPage.vue'
-import ExportPage from '@/pages/hrm/export/exportPage.vue'
-import BusinessTripPage from "@/pages/hrm/businessTrip/BusinessTripPage.vue"
-import DocumentArchivePage from "@/pages/hrm/documentArchive/DocumentArchivePage.vue"
-import VacationSchedule from "@/pages/hrm/vacationSchedule/VacationSchedule.vue"
-import UserRolePage from "@/pages/hrm/UserRole/UserRolePage.vue"
-import PunishmentPage from "@/pages/hrm/punishment/PunishmentPage.vue"
-import IncentivePage from "@/pages/hrm/incentive/IncentivePage.vue"
-import ReportPage from "@/pages/hrm/report/ReportPage.vue"
-import {PensionerPage, PolyclinicPage, VacancyPage} from "@/pages/hrm/index.js"
-import {LmsWorkerPage} from "@/pages/lms/index.js"
-import OtherPage from "@/pages/hrm/other/page.vue"
+import {
+    PensionerPage,
+    PolyclinicPage,
+    VacancyPage,
+    WorkerPage,
+    DepartmentPage,
+    DepartmentPositionPage,
+    CandidatePage,
+    ConfirmationPage,
+    ProfilePage,
+    VacationPage,
+    TimesheetDepartmentPage,
+    DashboardV3Page,
+    TimesheetListPage,
+    MedPage,
+    SlicePage,
+    OrganizationLeaderPage,
+    ExportPage,
+    BusinessTripPage,
+    DocumentArchivePage,
+    VacationSchedule,
+    UserRolePage,
+    PunishmentPage,
+    IncentivePage,
+    ReportPage,
+    OtherPage,
+} from "@/pages/hrm/index.js"
+
+import {
+    LmsWorkerPage,
+} from "@/pages/lms/index.js"
+
+import {
+    ApplicationPage,
+    CommandPage,
+    AdContractPage,
+    ContractPage,
+} from "@/pages/docFlow/index.js"
 
 export default [
     {

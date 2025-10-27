@@ -11,7 +11,6 @@ const onSubmit = ()=>{
     if(!error){
       store.saveLoading = true
       if(store.visibleType){
-        console.log(store.payload)
         store._create()
       }else{
         store._update()

@@ -105,9 +105,14 @@ import {
     hcServerService,
     eventService,
     telegramUserService,
+    workerImageService,
+    devicesService,
     syncLogService,
     turnstileDashboardService,
+    userImageLogsService,
+    invalidUserService,
 } from './v1/turnstile'
+
 
 import accountantService from "./v1/accountant/accountantService.js"
 import monthReportService from "./v1/accountant/monthReportService.js"
@@ -211,6 +216,8 @@ export default {
     vacancyService,
     eventService,
     telegramUserService,
+    workerImageService,
+    devicesService,
     learningCenterService,
     directionService,
     specializationService,
@@ -237,4 +244,6 @@ export default {
     lmsExamService,
     examVideoService,
     turnstileDashboardService,
+    userImageLogsService,
+    invalidUserService,
 }

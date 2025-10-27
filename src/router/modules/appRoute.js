@@ -1,10 +1,12 @@
 import {AppLayouts, AppPaths} from "@/utils/index.js"
-import HomePage from "@/pages/app/home/HomePage.vue"
-import NotFoundPage from "@/pages/app/notFound/NotFoundPage.vue"
-import DocumentSignature from "@/pages/app/documentSignature/DocumentSignature.vue"
-import LoginPageV2 from "@/pages/app/login/LoginPagev2.vue"
-import LoginPageV3 from "@/pages/app/login/LoginPageV3.vue"
-import AIConversationPage from "@/pages/app/ai/AIConversationPage.vue"
+
+import {
+    HomePage,
+    NotFoundPage,
+    DocumentSignature,
+    LoginPageV2,
+    AIConversationPage,
+} from "@/pages/app/index.js"
 
 export default [
 
@@ -15,7 +17,6 @@ export default [
         meta:{
             layout:AppLayouts.empty
         },
-        children:[],
     },
     {
         path:AppPaths.Home,
@@ -24,7 +25,6 @@ export default [
         meta:{
             layout:AppLayouts.main
         },
-        children: []
     },
     {
         path:AppPaths.AIConversation,
@@ -33,21 +33,10 @@ export default [
         meta:{
             layout:AppLayouts.main
         },
-        children: []
-    },
-    {
-        path:AppPaths.Register,
-        name:AppPaths.Register.substring(1),
-        // component:RegisterPage,
-        component:LoginPageV3,
-        meta:{
-            layout:AppLayouts.empty
-        }
     },
     {
         path:AppPaths.Login,
         name:AppPaths.Login.substring(1),
-        // component:LoginPage,
         component:LoginPageV2,
         meta:{
             layout:AppLayouts.empty

@@ -146,7 +146,6 @@ const onSubmit = () => {
                 :render-label="renderMainVerifier"
                 filterable
                 value-field="id"
-                @update-value="console.log"
             />
           </n-form-item>
           <n-divider/>

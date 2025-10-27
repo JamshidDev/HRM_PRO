@@ -37,6 +37,10 @@ const props = defineProps({
   autoFocusInput:{
     type:Boolean,
     default:true
+  },
+  addButtonTitle:{
+    type:String,
+    default:null
   }
 })
 const hasFullFilterSlot = !!slots.fullFilterContent
@@ -106,7 +110,7 @@ onMounted(()=>{
               <AddCircle24Regular/>
             </n-icon>
           </template>
-          {{$t('content.add')}}
+          {{addButtonTitle || $t('content.add')}}
         </n-button>
         <n-popover
             @update:show="(v)=>emits('show',v)"

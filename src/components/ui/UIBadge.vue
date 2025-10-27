@@ -58,7 +58,7 @@ const types = [
 
 
 const badgeType = computed(()=>{
-  return types.filter(v=>v.id === props.type)[0].type
+  return types.filter(v=>v.id === props.type)?.[0]?.type
 })
 const badgeIcon = computed(()=>{
   return types.filter(v=>v.id === props.type)[0]?.icon

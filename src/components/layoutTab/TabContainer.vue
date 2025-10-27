@@ -1,13 +1,13 @@
 <script setup>
 import {HeaderTabButton} from "@/components/layoutTab/index.js"
-import {Star16Regular, MoreVertical24Regular} from "@vicons/fluent"
+import {MoreVertical24Regular} from "@vicons/fluent"
 import UIHelper from "@/utils/UIHelper.js"
 
 const tabContainer = ref(null)
 let hiddenTabs = ref([])
 const moreButtonWidth = 80
 
-const activeTab = defineModel('value', {type:String, default:null })
+const activeTab = defineModel('tab', {type:String, default:null })
 
 const props = defineProps({
   options:{
@@ -18,12 +18,13 @@ const props = defineProps({
 
 const emits = defineEmits(['onSelect'])
 
-const options = new Array(5).fill(null).map((v, index)=>{
+const options = props.options.map((v, index)=>{
   return {
     order:index,
-    name:'Pensionerlar ' + index,
-    icon:markRaw(Star16Regular),
-    key:`key_${index}`,
+    name: v.name,
+    icon:markRaw(v.icon),
+    key:v.key,
+    color:v?.color || 'primary',
   }
 })
 
@@ -73,6 +74,32 @@ const onSelectEv = (key)=>{
     emits('onSelect', key)
 }
 
+const getTabClasses = (item) => {
+  const baseClasses = 'before:bg-current'
+  const activeClasses = activeTab.value === item.key ? 'before:w-full before:left-0' : ''
+  
+  return [baseClasses, activeClasses].filter(Boolean).join(' ')
+}
+
+const getTabStyles = (item) => {
+  const colorMap = {
+    primary: '#3b82f6',
+    secondary: '#6b7280', 
+    success: '#10b981',
+    warning: '#f59e0b',
+    error: '#ef4444',
+    info: '#06b6d4'
+  }
+  
+  const color = colorMap[item.color] || colorMap.primary
+  
+  return {
+    '--tab-color': color,
+    '--hover-color': color,
+    color: activeTab.value === item.key ? color : 'inherit'
+  }
+}
+
 
 
 
@@ -110,7 +137,10 @@ onBeforeUnmount(() => {
 <template>
   <div ref="tabContainer" class="w-full overflow-hidden flex h-[40px] border-b bg-surface-section border-surface-line relative">
     <template v-for="item in options" :key="item">
-      <HeaderTabButton @click="onSelectEv(item.key)" :data-key="item.key">
+      <HeaderTabButton
+          :class="getTabClasses(item)"
+          :style="getTabStyles(item)"
+          @click="onSelectEv(item.key)" :data-key="item.key">
         <n-icon size="20">
           <component :is="item.icon"/>
         </n-icon>
@@ -126,7 +156,9 @@ onBeforeUnmount(() => {
           @select="onSelectEv"
           label-field="name"
       >
-        <div class="min-w-[80px] w-full text-secondary cursor-pointer border-surface-line h-full right-0 bottom-0 flex justify-center items-center">
+        <div 
+        class="min-w-[80px] w-full text-secondary cursor-pointer 
+        border-surface-line h-full right-0 bottom-0 flex justify-center items-center">
           {{$t('content.more')}}
           <n-icon size="20">
             <MoreVertical24Regular/>
@@ -136,3 +168,10 @@ onBeforeUnmount(() => {
     </template>
   </div>
 </template>
+
+<style scoped>
+.HeaderTabButton:hover {
+  color: var(--hover-color) !important;
+}
+</style>
+

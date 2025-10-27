@@ -1,17 +1,17 @@
-import axios from "@/service/index.js"
+import axios from "../../index.js"
 
 const _index =async (payload)=>{
-    return await axios.get(`v1/hr/commands`, {params:payload.params})
+    return await axios.get(`/v1/hr/commands`, {params:payload.params})
 }
 const _create = async (payload)=>{
-    return await axios.post(`v1/hr/commands`, payload.data)
+    return await axios.post(`/v1/hr/commands`, payload?.data)
 }
 
 const _viewFile = async (payload)=>{
-    return await axios.post(`v1/hr/commands`, payload.data, {responseType:'blob'})
+    return await axios.post(`/v1/hr/commands`, payload.data, {responseType:'blob'})
 }
 const _delete = async (payload)=>{
-    return await axios.delete(`v1/hr/commands/${payload.id}`)
+    return await axios.delete(`/v1/hr/commands/${payload.id}`)
 }
 
 

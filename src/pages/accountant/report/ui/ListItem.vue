@@ -1,6 +1,7 @@
 <script setup>
 import {useAccountStore, useUploadReportStore} from "@/store/modules/index.js"
 import {Timer16Regular, ClipboardBulletListLtr20Regular,CheckmarkLock24Filled, CheckmarkCircle20Filled, CheckmarkCircle16Regular} from '@vicons/fluent'
+import LockWrapper from "./LockWrapper.vue"
 import i18n from "@/i18n/index.js"
 
 const {t} = i18n.global
@@ -17,10 +18,10 @@ const onSelect = (v)=>{
 
 <template>
   <n-spin :show="store.cardLoading">
-    <div class="w-full grid grid-cols-12 gap-3">
       <template v-if="store.cards.length>0 && store.params.organization_id">
-        <template v-for="item in store.cards" :key="item">
-          <div class="col-span-6 bg-surface-section rounded-lg p-2 flex flex-col relative cursor-pointer drop-shadow-sm">
+        <div class="w-full grid grid-cols-12 gap-3 relative">
+          <template v-for="item in store.cards" :key="item">
+            <div class="col-span-6 bg-surface-section rounded-lg p-2 flex flex-col relative cursor-pointer drop-shadow-sm">
             <div class="flex justify-between">
               <span class="text-textColor2 font-semibold uppercase">{{item.name}}</span>
               <n-button
@@ -56,16 +57,17 @@ const onSelect = (v)=>{
                   class="text-textColor2 hover:bg-surface/5 px-2 py-1 rounded text-sm flex items-center gap-1 border-b border-dashed border-surface-line"
               >{{$t('content.detail')}} <n-icon size="16"><ClipboardBulletListLtr20Regular/></n-icon> </div>
             </div>
-
-          </div>
+            </div>
         </template>
+        </div>
+        
       </template>
       <template v-else>
         <div class="col-span-12">
           <span class="text-center !mt-10 block text-textColor3">{{$t('content.no-data')}}</span>
         </div>
       </template>
-    </div>
+   
   </n-spin>
 
 

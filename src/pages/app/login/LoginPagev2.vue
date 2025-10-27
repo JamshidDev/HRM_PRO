@@ -41,7 +41,7 @@ const onSuccess = (data)=>{
       })
       resolve(true)
     }catch (error){
-      console.log(error)
+
       reject(false)
     }
   }).then((data)=>{

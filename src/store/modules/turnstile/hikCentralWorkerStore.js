@@ -11,9 +11,8 @@ export const useTurnstileHikCentralWorkerStore = defineStore('turnstileHikCentra
         accessLevelsLoading: false,
         saveLoading: false,
         deleteLoading: false,
-        visible: false,
-        visibleType: true,
-        elementId: null,
+        accessLevelModalVisible: false,
+        selectedWorker: null,
         totalItems: 0,
         allPermissionList: [],
         structureCheck2: [],
@@ -22,7 +21,7 @@ export const useTurnstileHikCentralWorkerStore = defineStore('turnstileHikCentra
         params: {
             page: 1,
             per_page: 10,
-            search: null,
+            search:null,
             organizations:[],
             access_level_id:null,
         },
@@ -42,6 +41,10 @@ export const useTurnstileHikCentralWorkerStore = defineStore('turnstileHikCentra
             id:null,
             photo_id:null,
             photo:null,
+            to:null,
+            access_level_ids:[],
+            worker_id:null,
+
         },
         editVisible:false,
         editLoading:false,
@@ -108,7 +111,7 @@ export const useTurnstileHikCentralWorkerStore = defineStore('turnstileHikCentra
             this.editLoading = true
             let data = this.editPayload
             $ApiService.turnstileHikCentralWorkerService._updateFace({data}).then((res) => {
-                console.log(res.data)
+
                 this.editVisible = false
                 this._index()
             }).finally(() => {
@@ -152,9 +155,7 @@ export const useTurnstileHikCentralWorkerStore = defineStore('turnstileHikCentra
         _access_levels() {
             this.accessLevels = []
             this.accessLevelsLoading = true
-            $ApiService.turnstileHikCentralWorkerService._access_levels({
-                organization_id: this.payload.level_org_id[0].id,
-            }).then((res) => {
+            $ApiService.turnstileHikCentralWorkerService._access_levels().then((res) => {
                 this.accessLevels = res.data.data
             }).finally(() => {
                 this.accessLevelsLoading = false
@@ -168,9 +169,9 @@ export const useTurnstileHikCentralWorkerStore = defineStore('turnstileHikCentra
                 this.loading = false
             })
         },
-        _deleteAccessLevel(id){
+        _onRefreshAcessLeves(id){
             this.loading = true
-            $ApiService.turnstileHikCentralWorkerService._detach_worker({data:{access_level_id:id}}).then((res) => {
+            $ApiService.turnstileHikCentralWorkerService._refresh_worker({data:{access_level_id:id}}).then((res) => {
                 this._index()
             }).finally(() => {
                 this.loading = false

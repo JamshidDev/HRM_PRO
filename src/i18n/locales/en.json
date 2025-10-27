@@ -177,6 +177,14 @@
     "ru": "RU",
     "en": "EN"
   },
+  "social": {
+    "title": "Social Links",
+    "subtitle": "Join our official telegram channels",
+    "group": "Main Group",
+    "bot": "Bot",
+    "copy": "Copy",
+    "join": "Join"
+  },
   "date": {
     "day": "Day",
     "hour": "Hour",
@@ -360,7 +368,8 @@
       "profileInfo": "Account details",
       "notification": "Notifications",
       "secure": "Security",
-      "actionHistory": "Action history"
+      "actionHistory": "Action history",
+      "socialLinks": "Social Links"
     },
     "org": {
       "title": "Data for order form",
@@ -754,8 +763,7 @@
       "to_organization": "Organization name"
     }
   },
-
-"confirmationPage": {
+  "confirmationPage": {
     "name": "Approvers",
     "createTitle": "Add approver",
     "updateTitle": "Edit approver",
@@ -1127,7 +1135,6 @@
     "correctAnswer": "Correct answer",
     "warning": "Check selected question and answer columns!"
   },
-
   "examPage": {
     "downloadResult": "Download results",
     "downloadNotPassed": "Download non-participants",
@@ -1145,7 +1152,7 @@
     "totalTime": "Given time: {n} minutes",
     "nMinute": "{n} min",
     "totalMinute": "{n} minutes",
-    "resources": "Resources",
+    "resources": "Materials",
     "exams": "Exams",
     "nExams": "{n} exams",
     "nFiles": "{n} files",
@@ -1458,7 +1465,12 @@
     "workDurationPage": {
       "name": "Work time",
       "building": "Building",
-      "action": "Action",
+      "expiryDate": "Expiry Date",
+    "updatedAt": "Updated",
+    "deviceStatus": "Device Status",
+    "comment": "Comment",
+    "commentPlaceholder": "Enter comment...",
+    "error": "Error",
       "actionTime": "Action time",
       "enter": "Enter",
       "exit": "Exit",
@@ -1718,7 +1730,6 @@
       "fine": ""
     }
   },
-
   "incentive": {
     "name": "Incentives",
     "form": {
@@ -1768,7 +1779,10 @@
       "applicationFour": "INPS Appendix 4",
       "applicationFive": "INPS Appendix 5",
       "INPSPayment": "INPS payments",
-      "confirmed": "Confirmed"
+      "notAllowedUploadByAdminsat": "Report upload restricted by administrator",
+      "confirmed": "Confirmed",
+      "openFromBlock": "Close",
+      "closeToBlock": "Open"
     }
   },
   "instructionPage": {
@@ -2238,5 +2252,62 @@
       "enter": "Enter",
       "exit": "Exit"
     }
+  },
+  "userImageLogs": {
+    "name": "Image History",
+    "photo": "Photo",
+    "noPhoto": "No photo",
+    "status": {
+      "title": "Status",
+      "create": "Created",
+      "update": "Updated", 
+      "delete": "Deleted"
+    }
+  },
+  "invalidUser": {
+    "name": "Rejected",
+    "photo": "Photo",
+    "noPhoto": "No photo",
+    "syncTime": "Sync Time"
+  },
+  "accessLevel": {
+    "title": "Access Levels",
+    "unknown": "Unknown",
+    "expired": "Expired",
+    "expiresToday": "Expires today",
+    "daysLeft": "{days} days left",
+    "active": "Active",
+    "noSearchResults": "No search results found",
+    "noAccessLevels": "No access levels available",
+    "expiryDate": "Expiry Date",
+    "status": "Status",
+    "refresh": "Refresh",
+    "showing": "Showing",
+    "more": "more"
+  },
+  "workerImage": {
+    "name": "Worker Images",
+    "photo": "Photo",
+    "status": "Status",
+    "viewPhoto": "View Photo",
+    "createTitle": "Add Worker Image",
+    "updateTitle": "Edit Worker Image"
+  },
+  "devices": {
+    "name": "Devices",
+    "createTitle": "Add Device",
+    "updateTitle": "Edit Device",
+    "deviceName": "Device Name",
+    "name": "Name",
+    "namePlaceholder": "Enter device name",
+    "ipAddress": "IP Address",
+    "ipAddressPlaceholder": "Enter IP address",
+    "macAddress": "MAC Address",
+    "macAddressPlaceholder": "Enter MAC address",
+    "serialNumber": "Serial Number",
+    "serialNumberPlaceholder": "Enter serial number",
+    "status": "Status",
+    "online": "Online",
+    "offline": "Offline"
   }
 }

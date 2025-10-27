@@ -25,7 +25,7 @@ const onAdd = ()=>{
   store.resetForm()
   store.visibleType = true
   store.visible = true
-  store.payload.isWorker = 1
+  store.payload.isWorker = 0
 }
 
 const onSearch = ()=>{
@@ -65,6 +65,7 @@ const filterCount = computed(()=>Number(Boolean(store.params.organizations.lengt
       :filter-count="filterCount"
       @onClear="resetFilter"
       @onAdd="onAdd"
+      :add-button-title="$t('turnstile.terminalUser.notCompanyWorker')"
   >
     <template #filterContent>
       <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{$t('actionLog.table.structure')}}</label>
@@ -91,14 +92,14 @@ const filterCount = computed(()=>Number(Boolean(store.params.organizations.lengt
           @update:value="filterEvent"
       />
     </template>
-    <template #filterAction>
+    <!-- <template #filterAction>
         <n-button :loading="levelStore.onlineDeviceLoading" @click="levelStore._onlineDevice()" type="success">
           {{$t('turnstile.hcWorkersPage.device')}}
           <template #icon>
             <ArrowSync24Filled/>
           </template>
         </n-button>
-    </template>
+    </template> -->
   </UIPageFilter>
 </template>
 

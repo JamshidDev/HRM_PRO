@@ -1,8 +1,9 @@
 import {defineStore} from "pinia";
 import i18n from "@/i18n/index.js"
 import router from '@/router/index.js'
-import {AppPaths, useAppSetting} from "@/utils/index.js"
+import {AppPaths, useAppSetting, appPermissions} from "@/utils/index.js"
 import Utils from "@/utils/Utils.js"
+
 const {t} = i18n.global
 export const useAccountStore = defineStore('accountStore', {
     state:()=>({
@@ -10,7 +11,7 @@ export const useAccountStore = defineStore('accountStore', {
         saveLoading:false,
         loading:false,
         activeTab:1,
-        tabs:[1,2,3,4],
+        tabs:[1,2,3,4,5],
         payload:{
             password:null,
         },
@@ -27,7 +28,7 @@ export const useAccountStore = defineStore('accountStore', {
         roleList:[],
         permissions:[],
         storageUpdate: 1,
-        pn:Utils.appPermissions,
+        pn:appPermissions,
         isModeDev: false,
         skipReset:true,
         districtList:[],

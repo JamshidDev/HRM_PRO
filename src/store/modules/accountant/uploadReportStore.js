@@ -39,6 +39,8 @@ export const useUploadReportStore = defineStore('uploadReport', {
         confirmLoading:false,
         expandSet:new Set(),
         flattenData:[],
+        isBlocked:false,
+        orgStatus:true,
 
     }),
     actions:{
@@ -121,17 +123,39 @@ export const useUploadReportStore = defineStore('uploadReport', {
             this.payload.month = new Date().getMonth()
         },
         onChangeStructure(v){
+            this.resetCards()
+            this.orgStatus = v.uploadStatus
+            this.isBlocked = !v.uploadStatus
             this.params.organization_id =this.params.organization_id === v.id? null : v.id
-            this.cards = []
-            this.list = []
             if(this.params.organization_id){
                 this.selectedOrgName = v.name
                 this._cards()
             }
         },
+        resetCards(){
+            this.isBlocked = false
+            this.cards = []
+            this.list = []
+        },
         changePage(v){
 
-        }
+        },
+        _uploadStatus(){
+            this.structuresLoading= true
+            const data = {
+                ...this.params,
+                search:undefined,
+                page:undefined,
+                per_page:undefined,
+                status:!this.orgStatus,
+            }
+            $ApiService.accountantService._updateStatus({data}).then((res)=>{
+                this.resetCards()
+                this.params.organization_id = null
+                this._structures()
+            })
+
+        },
 
     }
 

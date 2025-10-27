@@ -1,13 +1,21 @@
 <script setup>
 import AppHeader from "./AppHeader.vue"
-import {HeaderTabContainer, HeaderTabButton} from "@/components/layoutTab/index.js"
-import {Star16Regular} from "@vicons/fluent"
 const emits = defineEmits(['onOpen'])
 
 const onClick = ()=>{
   emits('onOpen')
 }
+const hasTeleportedContent = ref(false)
 
+const mainContentClass = computed(() => {
+  return hasTeleportedContent.value ? 'main-content-with-tabs' : 'main-content'
+})
+
+onMounted(() => {
+  window.addEventListener('teleport-changed', (e) => {
+    hasTeleportedContent.value = e.detail?.hasContent || false
+  })
+})
 </script>
 
 <template>
@@ -15,11 +23,9 @@ const onClick = ()=>{
 <AppHeader
     @on-change="onClick"
 />
-<!--  <HeaderTabContainer/>-->
+  <div id="layout-header-tab"></div>
 
-
-
-  <div class="main-content" id="mainContent">
+  <div :class="mainContentClass" id="mainContent">
     <router-view v-slot="{ Component }">
       <transition name="slide-right" mode="out-in">
         <component :is="Component" />

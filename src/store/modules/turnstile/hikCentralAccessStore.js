@@ -93,7 +93,7 @@ export const useTurnstileHikCentralStore = defineStore('turnstileHikCentralStore
         _onlineDevice(){
             this.onlineDeviceLoading = true
             $ApiService.turnstileHikCentralAccessService._devices().then((res) => {
-                this.onlineDeviceList = res.data.data
+                this.onlineDeviceList = res.data.data.data
                 this.originList = res.data.data
                 this.deviceVisible = true
             }).finally(() => {

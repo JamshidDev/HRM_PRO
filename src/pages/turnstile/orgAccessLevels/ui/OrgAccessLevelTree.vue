@@ -47,7 +47,7 @@ const onSearchEv = ()=>{
   <div class="organization-access-levels pt-2">
     <TreeData
         :multiple="false"
-        :opened="true"
+        :opened="false"
         :options="componentStore.structureList"
         :modelV="store.payload.organization"
         :checkedVal="store.structureCheck"

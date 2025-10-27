@@ -1,9 +1,11 @@
 <script setup>
 import validationRules from "@/utils/validationRules.js";
 import {useComponentStore, useTurnstileHikCentralWorkerStore} from "@/store/modules/index.js";
-import {UISelect, NoDataIllustration} from "@/components/index.js";
+import {NoDataIllustration, UINSelect} from "@/components/index.js";
 import {Checkmark16Filled, AddCircle16Filled} from "@vicons/fluent"
 import {UICropper} from "@/components/index.js";
+import {useAppSetting} from "@/utils/index.js"
+import Utils from "@/utils/Utils";
 
 const formRef = ref(null)
 const store = useTurnstileHikCentralWorkerStore()
@@ -13,7 +15,11 @@ const onSubmit = () => {
   formRef.value?.validate((error) => {
     if (!error) {
       store.editPayload.photo = store.payload.photo
+
       store.editPayload.photo_id = store.payload.photo_id
+      store.editPayload.access_level_ids = store.payload.access_level_ids
+      store.editPayload.to = store.payload.end_time? Utils.timeToZone(store.payload.end_time) : null
+
       store._updateFace()
     }
   })
@@ -61,8 +67,19 @@ const onResult = (v) => {
           :rules="validationRules.common"
           class="flex flex-col"
       >
+      <n-form-item :label="$t(`turnstile.hcWorkersPage.access_levels`)" path="access_level_ids"
+                       rule-path="requiredMultiSelectField">
+            <UINSelect
+                multiple
+                :loading="store.accessLevelsLoading"
+                v-model:value="store.payload.access_level_ids"
+                :options="store.accessLevels"
+                value-field="id"
+                />
+          </n-form-item>
+
         <n-form-item :label="$t(`content.photo`)" path="photo_index" rule-path="requiredNumberField">
-          <div class="h-[300px] max-h-[400px] p-2 border border-surface-line border-dashed w-full rounded-md relative">
+          <div class="h-[260px] max-h-[400px] p-2 border border-surface-line w-full rounded-md relative">
             <n-spin class="h-full w-full overflow-y-auto pr-1" :show="store.photosLoading">
               <NoDataIllustration v-if="!store.photos.length" class="w-full h-full"/>
               <div v-else
@@ -90,16 +107,30 @@ const onResult = (v) => {
             <UICropper ref="cropperRef" @on-result="onResult"/>
           </div>
         </n-form-item>
+
+        <n-form-item :label="$t(`content.deadline`)" :feedback="$t('turnstile.terminalUser.deadline_feedback')">
+          <n-date-picker
+              class="w-full"
+              v-model:value="store.payload.end_time"
+              type="date"
+              update-value-on-close
+              :actions="null"
+              clearable
+              :format="useAppSetting.datePicketFormat"
+          />
+        </n-form-item>
+        
       </n-form>
 
 
+
     </div>
-    <div class="grid grid-cols-2 gap-2">
+    <div class="grid grid-cols-2 gap-2 mt-4">
       <n-button @click="store.editVisible = false" type="error" ghost>
         {{ $t('content.cancel') }}
       </n-button>
       <n-button
-          :loading="store.editLoading"
+          :loading="store.editLoading || store.photosLoading"
           type="primary"
           @click="onSubmit">
         {{ $t('content.save') }}

@@ -118,6 +118,10 @@ export const AppPaths = {
     Notification: "/notification",
     LmsWorker: "/education-worker",
     SyncLog: "/sync-log",
+    UserImageLogs: "/user-image-logs",
+    InvalidUser: "/invalid-user",
+    WorkerImage: "/worker-image",
+    Devices: "/devices",
     Other: "/other",
 }
 

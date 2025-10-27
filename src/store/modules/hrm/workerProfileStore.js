@@ -208,7 +208,6 @@ export const useWorkerProfileStore = defineStore('workerProfileStore', {
                         this.rolesList = [...this.rolesList,...roles]
                     }
                 }catch(error){
-                    console.log(error)
                 }
 
 

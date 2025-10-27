@@ -177,6 +177,16 @@
     "ru": "RU",
     "en": "EN"
   },
+      "social": {
+        "title": "Социальные сети",
+        "subtitle": "Присоединяйтесь к нашим официальным телеграм каналам",
+        "group": "Telegram группа",
+        "bot": "Telegram бот",
+        "copy": "Копировать",
+        "join": "Присоединиться",
+        "copySuccess": "Ссылка скопирована!",
+        "copyError": "Ошибка при копировании!"
+      },
   "date": {
     "day": "День",
     "hour": "Час",
@@ -360,7 +370,8 @@
       "profileInfo": "Данные аккаунта",
       "notification": "Уведомления",
       "secure": "Безопасность",
-      "actionHistory": "История действий"
+      "actionHistory": "История действий",
+      "socialLinks": "Социальные сети"
     },
     "org": {
       "title": "Данные для формы приказа",
@@ -754,7 +765,6 @@
       "to_organization": "Название организации"
     }
   },
-
   "confirmationPage": {
     "name": "Подтверждающие",
     "createTitle": "Добавить подтверждающего",
@@ -1127,7 +1137,6 @@
     "correctAnswer": "Правильный ответ",
     "warning": "Проверьте выбранные столбцы вопросов и ответов!"
   },
-
   "examPage": {
     "downloadResult": "Скачать результаты",
     "downloadNotPassed": "Скачать неучастников",
@@ -1440,7 +1449,7 @@
       "name": "(HC) Группы",
       "deviceCount": "Количество устройств",
       "sync": "Синхронизация",
-      "syncDepartment": "Синхронизировать отделы",
+      "syncDepartment": "Синхронизация отделов",
       "server": "Сервер"
     },
     "orgAccessLevelsPage": {
@@ -1458,7 +1467,12 @@
     "workDurationPage": {
       "name": "Время работы",
       "building": "Здание",
-      "action": "Действие",
+      "expiryDate": "Срок действия",
+    "updatedAt": "Обновлено",
+    "deviceStatus": "Статус устройства",
+    "comment": "Комментарий",
+    "commentPlaceholder": "Введите комментарий...",
+    "error": "Ошибка",
       "actionTime": "Время действия",
       "enter": "Вход",
       "exit": "Выход",
@@ -1718,7 +1732,6 @@
       "fine": ""
     }
   },
-
   "incentive": {
     "name": "Поощрения",
     "form": {
@@ -1768,7 +1781,10 @@
       "applicationFour": "Приложение 4 INPS",
       "applicationFive": "Приложение 5 INPS",
       "INPSPayment": "Платежи INPS",
-      "confirmed": "Подтверждено"
+      "notAllowedUploadByAdminsat": "Загрузка отчета ограничена администратором",
+      "confirmed": "Подтверждено",
+      "openFromBlock": "Закрыть",
+      "closeToBlock": "Открыть"
     }
   },
   "instructionPage": {
@@ -2057,6 +2073,14 @@
       "error": "Ошибка"
     }
   },
+  "workerImage": {
+    "name": "Фотографии сотрудников",
+    "photo": "Фото",
+    "status": "Статус",
+    "viewPhoto": "Просмотр фото",
+    "createTitle": "Добавить фото сотрудника",
+    "updateTitle": "Редактировать фото сотрудника"
+  },
   "syncLog": {
     "name": "Перезагрузка",
     "createTitle": "Перезагрузить данные терминалов",
@@ -2172,7 +2196,7 @@
   "turnStileDashboard": {
     "name": "Дашборд",
     "form": {
-      "topOfflineDevices": "Синхронизированные устройства",
+      "topOfflineDevices": "Синхронизиованные устройства",
       "lastSynchronizationTime": "Последняя синхронизация",
       "workerCount": "Количество сотрудников",
       "offlineDevice": "Офлайн устройства",
@@ -2217,7 +2241,7 @@
       "come": "Сотрудники, пришедшие",
       "current_in": "Сотрудники на рабочем месте",
       "current_out": "Сотрудники не на рабочем месте",
-      "early_leave": "Ранние уходы",
+      "early_leave": "Ранние уходи",
       "daily_attendance": "Журнал турникета",
       "work_hours": "Не выполнившие норму часов",
       "device_status": "Все устройства",
@@ -2238,5 +2262,62 @@
       "enter": "Вход",
       "exit": "Выход"
     }
+  },
+  "userImageLogs": {
+    "name": "История изображений",
+    "photo": "Фото",
+    "noPhoto": "Нет фото",
+    "status": {
+      "title": "Статус",
+      "create": "Создано",
+      "update": "Обновлено", 
+      "delete": "Удалено"
+    }
+  },
+  "invalidUser": {
+    "name": "Отклоненные",
+    "photo": "Фото",
+    "noPhoto": "Нет фото",
+    "syncTime": "Время синхронизации"
+  },
+  "others": {
+    "name": "Логи турникета",
+    "tabs": {
+      "tab1": "Tab 1",
+      "tab2": "Tab 2",
+      "tab3": "Tab 3"
+    }
+  },
+  "accessLevel": {
+    "title": "Уровни доступа",
+    "unknown": "Неизвестно",
+    "expired": "Срок истек",
+    "expiresToday": "Истекает сегодня",
+    "daysLeft": "Осталось {days} дней",
+    "active": "Активный",
+    "noSearchResults": "Результаты поиска не найдены",
+    "noAccessLevels": "Уровни доступа отсутствуют",
+    "expiryDate": "Срок действия",
+    "status": "Статус",
+    "refresh": "Обновить",
+    "showing": "Показано",
+    "more": "еще"
+  },
+  "devices": {
+    "name": "Устройства",
+    "createTitle": "Добавить устройство",
+    "updateTitle": "Редактировать устройство",
+    "deviceName": "Название устройства",
+    "name": "Название",
+    "namePlaceholder": "Введите название устройства",
+    "ipAddress": "IP адрес",
+    "ipAddressPlaceholder": "Введите IP адрес",
+    "macAddress": "MAC адрес",
+    "macAddressPlaceholder": "Введите MAC адрес",
+    "serialNumber": "Серийный номер",
+    "serialNumberPlaceholder": "Введите серийный номер",
+    "status": "Статус",
+    "online": "Онлайн",
+    "offline": "Офлайн"
   }
 }

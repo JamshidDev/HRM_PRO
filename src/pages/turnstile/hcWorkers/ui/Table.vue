@@ -1,8 +1,12 @@
 <script setup>
 import {NoDataPicture,UIMenuButton, UIPagination, UIUser} from "@/components/index.js"
 import { useTurnstileHikCentralWorkerStore} from "@/store/modules/index.js"
-import {AddSquareMultiple20Regular, DeleteArrowBack20Filled} from '@vicons/fluent'
+import {AddSquareMultiple20Regular, ArrowSync24Filled} from '@vicons/fluent'
 import {useAccountStore} from "@/store/modules/index.js"
+import Utils from "@/utils/Utils.js"
+import UIBadge from "@/components/ui/UIBadge.vue"
+import AccessLevelModal from "./AccessLevelModal.vue"
+
 const accStore = useAccountStore()
 
 const store = useTurnstileHikCentralWorkerStore()
@@ -14,15 +18,33 @@ const changePage = (v)=>{
 }
 
 const onEdit = (v)=>{
-  store.editPayload.id = v.id
-  store.payload.worker_id = v.worker?.id
+  const existPerson = Boolean(v.hcpPerson)
+  const photoId = v?.hcpPerson?.photo?.id
+  
+
+  store.payload.end_time =v?.hcpPerson?.to? new Date(v.hcpPerson.to).getTime() : null
+  store.payload.access_level_ids = v?.hcpPerson?.access_levels.map(a=>a.access_level_id) || []
+  store.editPayload.id =v?.hcpPerson?.id || undefined 
+  store.editPayload.worker_id =v?.hcpPerson?.id? undefined:v.id
+
+  store.payload.worker_id = v?.id
+
+  store.editVisible = true
+  store._access_levels()
+
   store._worker_photos(()=>{
-    store.editVisible = true
+    if(!existPerson) return
+    const idx = store.photos.findIndex(x=>x.id == photoId)
+    store.payload.photo_index = idx
+    store.payload.photo_id = photoId
   })
+  
+  
+ 
 }
 
 const onSelectEv = (v)=>{
-  store.elementId = v.data.worker.id
+  store.elementId = v.data.id
   if(!accStore.checkAction(accStore.pn.turnstileHikCentralWorkersWrite)) return
   if(v.key === 'delete'){
     onDelete()
@@ -45,15 +67,20 @@ const checkDeviceExpiry = (date)=>{
 }
 
 const onSelect = (v)=>{
-  store.selectedRowId =store.selectedRowId === v.id? null : v.id
+  store.accessLevelModalVisible = true
+  store.selectedWorker = v
+}
+
+const onRefreshAccessLevel = async (v) => {
+  onRefresh(v)
 }
 
 const onDelete = ()=>{
   store._delete()
 }
 
-const onDeleteAccessLevel = (v)=>{
-  store._deleteAccessLevel(v.id)
+const onRefresh = (v)=>{
+  store._onRefreshAcessLeves(v.id)
 }
 
 
@@ -72,8 +99,10 @@ const onDeleteAccessLevel = (v)=>{
         <tr>
           <th class="w-[46px] min-w-[30px]">{{$t('content.number')}}</th>
           <th class="min-w-[200px] w-[400px]">{{$t('content.fullName')}}</th>
-          <th class="min-w-[200px]">{{$t('turnstile.hcWorkersPage.access_levels')}}</th>
-          <th class="max-w-[65px] w-[65px]">{{$t('content.action')}}</th>
+          <th class="min-w-[200px] ">{{$t('turnstile.hcWorkersPage.access_levels')}}</th>
+          <th class="min-w-[120px] w-[120px]">{{$t('content.expiryDate')}}</th>
+          <th class="min-w-[120px] w-[120px]">{{$t('content.updatedAt')}}</th>
+          <th class="max-w-[40px] w-[40px]"></th>
         </tr>
         </thead>
         <tbody>
@@ -84,31 +113,29 @@ const onDeleteAccessLevel = (v)=>{
                 :hide-tooltip="true"
                 :short="false"
                 :data="{
-                photo: item?.photo?.photo || item.worker?.photo,
-                lastName: item.worker.last_name,
-                firstName: item.worker.first_name,
-                middleName: item.worker.middle_name,
-                position: item.post_name
+                photo:item?.hcpPerson?.photo?.photo || item?.photo,
+                lastName: item?.last_name,
+                firstName: item?.first_name,
+                middleName: item?.middle_name,
+                position: item.post_name,
               }"
             />
           </td>
           <td class="text-center!">
-            <div class="flex flex-wrap gap-2">
-              <template v-if="store.selectedRowId !== item.id">
-                <template v-for="level in item.access_levels.slice(0,3)" :key="level.id">
+            <div class="flex flex-wrap gap-2" v-if="item.hcpPerson">
+              <template v-for="level in item.hcpPerson.access_levels.slice(0,3)" :key="level.id">
                   <n-button
                   class="!px-1"
                       dashed
                       :type="checkDeviceExpiry(level.to)"
                   >
-                    <div class="flex flex-col px-4 relative group overflow-hidden">
+                    <div class="flex flex-col px-4 relative group overflow-hidden min-w-[100px]">
                       <span class="font-semibold"> {{level.name}}</span>
-                      <span class="text-xs text-secondary"> {{level.to}}</span>
-                      <span @click.stop="onDeleteAccessLevel(level)" class="px-1 absolute w-full h-full text-danger flex items-center gap-2 top-0 right-[-200px] group-hover:right-[4px] transition-all duration-300 z-[999] bg-surface-section">
-                        <n-icon size="24">
-                          <DeleteArrowBack20Filled/>
+                      <span @click.stop="onRefresh(level)" class="px-1 bottom-0 absolute w-full h-full text-success flex justify-center items-center gap-2 top-0 right-[-200px] group-hover:right-[4px] transition-all duration-300 z-[999] bg-surface-section">
+                        <n-icon size="16">
+                          <ArrowSync24Filled/>
                         </n-icon>
-                        {{ $t('content.delete') }}
+                        {{ $t('content.refresh') }}
                       </span>
                     </div>
 
@@ -119,45 +146,26 @@ const onDeleteAccessLevel = (v)=>{
                     </template>
                   </n-button>
                 </template>
-              </template>
               <n-button
                   @click="onSelect(item)"
                   round
                   secondary
-                  v-if="item.access_levels.length>3"
-                  :type="store.selectedRowId === item.id? 'error' : 'default'"
+                  v-if="item.hcpPerson.access_levels.length>3"
               >
-                 {{ store.selectedRowId === item.id? $t('content.close') : `+ ${item.access_levels.length - 3}`}}
+                +{{ item.hcpPerson.access_levels.length - 3 }} {{ $t('accessLevel.more') }}
               </n-button>
 
             </div>
-            <n-collapse-transition :show="item.id === store.selectedRowId">
-              <div class="flex flex-wrap gap-2 mt-2">
-                <template v-for="level in item.access_levels.slice(3)" :key="level.id">
-                  <n-button
-                      dashed
-                      :type="checkDeviceExpiry(level.to)"
-                  >
-                  <div class="flex flex-col px-4 relative group overflow-hidden">
-                      <span class="font-semibold"> {{level.name}}</span>
-                      <span class="text-xs text-secondary"> {{level.to}}</span>
-                      <span @click.stop="onDeleteAccessLevel(level)" class="px-1 absolute w-full h-full text-danger flex items-center gap-2 top-0 right-[-200px] group-hover:right-[4px] transition-all duration-300 z-[999] bg-surface-section">
-                        <n-icon size="24">
-                          <DeleteArrowBack20Filled/>
-                        </n-icon>
-                        {{ $t('content.delete') }}
-                      </span>
-                    </div>
-
-                    <template #icon>
-                      <n-icon size="19">
-                        <AddSquareMultiple20Regular/>
-                      </n-icon>
-                    </template>
-                  </n-button>
-                </template>
-              </div>
-            </n-collapse-transition>
+          </td>
+          <td class="text-center">
+            <UIBadge
+              v-if="item?.hcpPerson?.to"
+              :show-icon="false"
+              :label="Utils.timeOnlyDate(item?.hcpPerson?.to)"
+            />
+          </td>
+          <td class="text-center">
+            {{ Utils.timeOnlyDate(item?.hcpPerson?.updated_at) }}
           </td>
           <td>
             <UIMenuButton
@@ -179,5 +187,14 @@ const onDeleteAccessLevel = (v)=>{
       />
     </div>
     <NoDataPicture v-if="store.list.length===0 && !store.loading" />
+    
+    <!-- Access Level Modal -->
+    <AccessLevelModal
+      :visible="store.accessLevelModalVisible"
+      @update:visible="(v) => store.accessLevelModalVisible = v"
+      @refresh="onRefreshAccessLevel"
+      :access-levels="store.selectedWorker?.hcpPerson?.access_levels || []"
+      :worker-name="`${store.selectedWorker?.first_name} ${store.selectedWorker?.last_name}`"
+    />
   </n-spin>
 </template>

@@ -1,9 +1,10 @@
 <script setup>
 import {useAccountStore} from "@/store/modules/app/accountStore.js";
 
-
 import Form from "./Form.vue"
 import OrgForm from "./OrgForm.vue"
+import SocialLink from "./SocialLink.vue"
+
 const store = useAccountStore()
 </script>
 
@@ -22,9 +23,14 @@ const store = useAccountStore()
         </div>
       </div>
     </n-tab-pane>
+    <n-tab-pane :name="store.tabs[4]" :tab="$t('profilePage.tabs.social.title')">
+      <div class="w-full border border-surface-line shadow bg-surface-section rounded-xl p-4 form--min-height">
+        <SocialLink />
+      </div>
+    </n-tab-pane>
     <n-tab-pane :name="store.tabs[1]" :tab="$t('profilePage.tabs.notification')">
       <template #tab>
-        <n-badge type="info" :value="9" :offset="[12,0]">
+        <n-badge type="info" :offset="[12,0]">
           {{$t('profilePage.tabs.notification')}}
         </n-badge>
       </template>
@@ -35,11 +41,6 @@ const store = useAccountStore()
     <n-tab-pane :name="store.tabs[2]" :tab="$t('profilePage.tabs.secure')">
       <div class="w-full border border-surface-line shadow bg-surface-section rounded-xl p-4 form--min-height">
         {{$t('profilePage.tabs.secure')}}
-      </div>
-    </n-tab-pane>
-    <n-tab-pane :name="store.tabs[3]" :tab="$t('profilePage.tabs.actionHistory')">
-      <div class="w-full border border-surface-line shadow bg-surface-section rounded-xl p-4 form--min-height">
-        {{$t('profilePage.tabs.actionHistory')}}
       </div>
     </n-tab-pane>
   </n-tabs>

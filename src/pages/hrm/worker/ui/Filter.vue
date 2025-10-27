@@ -12,7 +12,7 @@ import {
   CloudArchive20Filled, Search48Filled,
 } from "@vicons/fluent"
 import Utils from "@/utils/Utils.js"
-import {AppPaths} from "@/utils/index.js"
+import {AppPaths, appPermissions} from "@/utils/index.js"
 
 
 const store = useWorkerStore()
@@ -175,11 +175,11 @@ const onSubmitResumeExport = () => {
 }
 
 const openUserListEv = ()=>{
-  if(!accStore.checkAction(Utils.appPermissions.hrUsersRead)) return
+  if(!accStore.checkAction(appPermissions.hrUsersRead)) return
   store.userRoleVisible=true
 }
 
-const canWrite = computed(()=>accStore.checkAction(Utils.appPermissions.hrWorkersWrite))
+const canWrite = computed(()=>accStore.checkAction(appPermissions.hrWorkersWrite))
 
 const defaultEv = (v)=>{
   store.params.organizations=v
@@ -391,7 +391,6 @@ const onKeyUp = Utils.useDebounce(filterEvent,1000)
                 v-model:value="store.params.sex"
                 filterable
                 clearable
-
                 :options="componentStore.genderList"
                 label-field="name"
                 value-field="id"
@@ -405,7 +404,6 @@ const onKeyUp = Utils.useDebounce(filterEvent,1000)
                 v-model:value="store.params.marital_status"
                 filterable
                 clearable
-
                 :options="componentStore.maritalList"
                 label-field="name"
                 value-field="id"
@@ -415,7 +413,7 @@ const onKeyUp = Utils.useDebounce(filterEvent,1000)
 
             />
           </div>
-          <div class="col-span-6">
+          <div class="col-span-4">
             <label class="text-xs text-gray-500">{{ $t(`createWorkerPage.form.nationality_id`) }}</label>
             <n-select
                 v-model:value="store.params.nationalities"
@@ -430,7 +428,22 @@ const onKeyUp = Utils.useDebounce(filterEvent,1000)
                 :loading="componentStore.nationalityLoading"
             />
           </div>
-          <div class="col-span-6">
+          <div class="col-span-4">
+            <label class="text-xs text-gray-500">{{ $t(`createWorkerPage.form.education`) }}</label>
+            <n-select
+                v-model:value="store.params.educations"
+                multiple
+                filterable
+                clearable
+                :options="componentStore.educationList"
+                label-field="name"
+                value-field="id"
+                @update:value="filterEvent"
+                :ignore-composition="false"
+                :loading="componentStore.enumLoading"
+            />
+          </div>
+          <div class="col-span-4">
             <label class="text-xs text-gray-500">{{ $t(`createWorkerPage.form.country`) }}</label>
             <n-select
                 v-model:value="store.params.country_id"

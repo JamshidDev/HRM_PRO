@@ -4,7 +4,7 @@ import {UIProfile, UIThemeSwitch} from "@/components/index.js"
 import AIButtonV2 from "@/components/buttons/AIButtonV2.vue"
 import {Alert20Regular, ChevronDoubleRight16Filled, WifiWarning24Regular, Video28Filled} from "@vicons/fluent"
 import {useAccountStore, useExamVideoStore} from "@/store/modules/index.js"
-import Utils from "@/utils/Utils.js"
+import {appPermissions} from "@/utils/index.js"
 import {AppPaths} from "@/utils/index.js"
 import axios from "axios"
 const emits = defineEmits(["onChange"])
@@ -14,8 +14,6 @@ const examVideoStore = useExamVideoStore()
 const controlBtn = ()=>{
   emits('onChange')
 }
-
-const {appPermissions} = Utils
 
 const notification = ref(0)
 
@@ -27,7 +25,6 @@ const deployProject = ()=>{
         $Toast.success(res.data.message)
       })
       .catch((err)=>{
-        console.log(err)
       })
       .finally(()=>{
     loading.value = false

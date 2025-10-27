@@ -9,7 +9,6 @@ const accStore = useAccountStore()
 const store = useLearningCenterStore()
 
 const onEdit = (v)=>{
-  console.log(v)
   store.payload.name = v.name
   store.payload.name_ru = v.name_ru
   store.payload.name_en = v.name_en

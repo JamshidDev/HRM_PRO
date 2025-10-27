@@ -18,7 +18,6 @@ const onRemoveWorker = (id)=>{
 const onSubmit = (mainData)=>{
 
   const checkForm = store.vacations62.every((v)=>{
-    console.log(v)
     return (Boolean(v.from) && Boolean(v.to) && (v.reason))
   })
   if(checkForm){

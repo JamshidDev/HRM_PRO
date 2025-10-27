@@ -10,6 +10,7 @@
     "edit": "Tahrirlash",
     "delete": "O'chirish",
     "view": "Ko'rish",
+    "responsible": "Mas'ul xodim",
     "now": "Hozir",
     "day": "Kun",
     "time": "Vaqt",
@@ -51,6 +52,11 @@
     "hour": "Soat",
     "group": "Guruh",
     "action": "Amallar",
+    "expiryDate": "Muddati",
+    "updatedAt": "Yangilangan",
+    "deviceStatus": "Qurilma holati",
+    "comment": "Izoh",
+    "commentPlaceholder": "Izoh kiriting...",
     "fullName": "Ism",
     "position": "Lavozim",
     "template": "Shablon fayl",
@@ -168,6 +174,8 @@
     "detail": "Batafsil",
     "users": "Foydalanuvchilar",
     "image": "Rasm",
+    "spam": "Spam qilish",
+    "noSpam": "Spamdan chiqarish",
     "noImage": "Rasm mavjud emas",
     "waitResponse": "Iltimos javobni kuting!",
     "untilNow": "h.v",
@@ -299,7 +307,9 @@
     "createTitle": "Rolni biriktirish",
     "updateTitle": "Rolni tahrirlash",
     "form": {
-      "role": "Huquqlar"
+      "role": "Huquqlar",
+      "confirmSpam": "Haqiqattan ham spam qilmoqchimisiz?",
+      "cancelSpam": "Haqiqattan ham spamdan chiqarilmoqchimisiz?"
     },
     "no-roles": "Biriktirilgan rollar yo'q!"
   },
@@ -354,28 +364,38 @@
   "profilePage": {
     "account": {
       "title": "Hisob ma'lumotlari",
-        "warningText": "Hisobingiz xavfsizligini ta'minlash maqsadida akkaunt ma'lumotlaringizni muntazam ravishda yangilab turishingiz tavsiya etiladi. Bu choralar hisobingizni ruxsatsiz kirishlardan himoya qilishga yordam beradi."
+      "warningText": "Hisobingiz xavfsizligini ta'minlash maqsadida akkaunt ma'lumotlaringizni muntazam ravishda yangilab turishingiz tavsiya etiladi. Bu choralar hisobingizni ruxsatsiz kirishlardan himoya qilishga yordam beradi."
     },
     "tabs": {
       "profileInfo": "Hisob ma'lumotlar",
       "notification": "Bildirishnomalar",
       "secure": "Xavsizlik",
-      "actionHistory": "Amallar tarixi"
+      "actionHistory": "Amallar tarixi",
+      "social": {
+        "title": "Ijtimoiy tarmoqlar",
+        "subtitle": "Bizning qo'llab quvatlash guruhlarimiznga qo'shiling",
+        "group": "HRM ma'sullari guruh",
+        "bot": "HRMPRO bot",
+        "copy": "Nusxa olish",
+        "join": "Qo'shilish",
+        "copySuccess": "Link nusxa olindi!",
+        "copyError": "Nusxa olishda xatolik!"
+      }
     },
     "org": {
-      "title": "Buyruq blankasi uchun ma'lumotlar",
-      "command_name": "Shahar/Tuman (Buyruq blankasidagi)",
-      "address": "Tashkilot to'liq manzili",
-      "city_id": "Tuman",
-      "region_id": "Viloyat"
-    },
-    "form": {
-      "lastName": "Familiya",
-      "fistName": "Ism",
-      "middleName": "Sharif",
-      "password": "Parol",
-      "confirmPassword": "Parolni takrorlang"
-    }
+        "title": "Buyruq blankasi uchun ma'lumotlar",
+        "command_name": "Shahar/Tuman (Buyruq blankasidagi)",
+        "address": "Tashkilot to'liq manzili",
+        "city_id": "Tuman",
+        "region_id": "Viloyat"
+      },
+      "form": {
+        "lastName": "Familiya",
+        "fistName": "Ism",
+        "middleName": "Sharif",
+        "password": "Parol",
+        "confirmPassword": "Parolni takrorlang"
+      }
   },
   "positionPage": {
     "name": "Lavozimlar",
@@ -625,7 +645,6 @@
       "adContract": "Qo'sh. kelishuv",
       "command": "Buyruqlar"
     },
-
     "command": {
       "createTitle": "Buyruq yaratish",
       "updateTitle": "Buyruqni tahrirlash",
@@ -755,7 +774,6 @@
       "to_organization": "Tashkilot nomi"
     }
   },
-
   "confirmationPage": {
     "name": "Tasdiqlovchilar",
     "createTitle": "Tasdiqlovchi qo'shish",
@@ -1128,7 +1146,6 @@
     "correctAnswer": "To'g'ri javob",
     "warning": "Tanlangan savol va javob ustunlari to'g'riligini tekshiring!"
   },
-
   "examPage": {
     "downloadResult": "Natijalarni yuklash",
     "downloadNotPassed": "Qatnashmaganlarni yuklash",
@@ -1431,7 +1448,7 @@
       "create": "Xodimni biriktirish",
       "edit": "Xodimni tahrirlash",
       "companyWorker": "Korxona xodimi",
-      "notCompanyWorker": "Korxona xodimi emas",
+      "notCompanyWorker": "Tizimda mavjud bo'lmagan xodimlarni qo'shish",
       "deadline_feedback": "Bo'sh qoldirilsa 2 yil",
       "terminals": "Terminallar",
       "addUser": "Terminalga foydalanuvchi qo'shish",
@@ -1459,7 +1476,6 @@
     "workDurationPage": {
       "name": "Ish vaqti",
       "building": "Bino",
-      "action": "Amal",
       "actionTime": "Amal vaqti",
       "enter": "Kirish",
       "exit": "Chiqish",
@@ -1648,20 +1664,6 @@
       "askQuestion": "Savolingizni kiriting..."
     }
   },
-  "others": {
-    "title": "Boshqalar",
-    "info": {
-      "title": "Dashboard",
-      "organizations": "Korxonalar",
-      "organizationsDesc": "«O'zbekiston temir yo'llari» AJ tizimidagi barcha tashkilotlar, filiallar va rahbarlar haqidagi to‘liq ma’lumotlar. Joylashuvi, bo‘ysunuv tartibi va tuzilmasi bilan tanishing.",
-      "positions": "Lavozimlar",
-      "positionsDesc": "«O'zbekiston temir yo'llari» AJda mavjud bo‘lgan lavozimlar ro‘yxati va ularning funksional vazifalari. Xodimlarning xizmat lavozimlari bo‘yicha strukturaviy taqsimoti keltirilgan.",
-      "laborCode": "Mehnat kodeksi",
-      "laborCodeDesc": "O‘zbekiston Respublikasi Mehnat kodeksi asosida xodimlar va ish beruvchilar o‘rtasidagi munosabatlar, huquq va majburiyatlar. Moddalar asosida tushuntirishlar va qonunchilik normalari keltiriladi.",
-      "empty": "Bo'sh",
-      "emptyDesc": "Hozircha bu bo‘limda ma’lumot mavjud emas. Yaqin kunlarda yangi xizmatlar yoki foydali kontent joylashtiriladi."
-    }
-  },
   "businessTrip": {
     "name": "Xizmat safari"
   },
@@ -1719,7 +1721,6 @@
       "fine": ""
     }
   },
-
   "incentive": {
     "name": "Rag'batlantirishlar",
     "form": {
@@ -1769,7 +1770,10 @@
       "applicationFour": "INPS 4-ilova",
       "applicationFive": "INPS 5-ilova",
       "INPSPayment": "INPS to'lovlar",
-      "confirmed": "Tasdiqlangan"
+      "notAllowedUploadByAdminsat": "Hisobot yuklash adminstator tomonidan cheklangan",
+      "confirmed": "Tasdiqlangan",
+      "openFromBlock": "Yopish",
+      "closeToBlock": "Ochish"
     }
   },
   "instructionPage": {
@@ -1968,49 +1972,35 @@
       "fixed-term": "Muddatli mehnat shartnomasi asosida ishlovchi xodimlar",
       "contract": "Fuqarolik-huquqiy shartnoma asosida ishlovchi xodimlar",
       "Housekeeper": "Kasanachilar"
-
     },
     "form": {
       "external_worker_count": "(O‘rtacha xodimlar soni, kishi)",
       "external_salary_fund": "(Ish haqi fondi, ming so‘m)",
-
       "capital_society_worker_count": "Jamiyat korxonalari uchun - (O‘rtacha xodimlar soni, kishi)",
       "capital_society_salary_fund": "Jamiyat korxonalari uchun - (Ish haqi fondi, ming so‘m)",
-
       "capital_own_use_worker_count": "O‘z ehtiyoji uchun - (O‘rtacha xodimlar soni, kishi)",
       "capital_own_use_salary_fund": "O‘z ehtiyoji uchun - (Ish haqi fondi, ming so‘m)",
-
       "capital_foreign_company_worker_count": "Chet korxona uchun - (O‘rtacha xodimlar soni, kishi)",
       "capital_foreign_company_salary_fund": "Chet korxona uchun - (Ish haqi fondi, ming so‘m)",
-
       "construction_society_worker_count": "Jamiyat korxonalari uchun - (O‘rtacha xodimlar soni, kishi)",
       "construction_society_salary_fund": "Jamiyat korxonalari uchun - (Ish haqi fondi, ming so‘m)",
-
       "construction_own_use_worker_count": "O‘z ehtiyoji uchun - (O‘rtacha xodimlar soni, kishi)",
       "construction_own_use_salary_fund": "O‘z ehtiyoji uchun - (Ish haqi fondi, ming so‘m)",
-
       "construction_foreign_company_worker_count": "Chet korxona uchun - (O‘rtacha xodimlar soni, kishi)",
       "construction_foreign_company_salary_fund": "Chet korxona uchun - (Ish haqi fondi, ming so‘m)",
-
       "other_society_worker_count": "Boshqa faoliyat turi (sanoat, pudratchilik va boshqa) - (O‘rtacha xodimlar soni, kishi)",
       "other_society_salary_fund": "Boshqa faoliyat turi (sanoat, pudratchilik va boshqa) - (Ish haqi fondi, ming so‘m)",
-
       "other_own_use_worker_count": "Tashish bilan bog‘liq - (O‘rtacha xodimlar soni, kishi)",
       "other_own_use_salary_fund": "Tashish bilan bog‘liq - (Ish haqi fondi, ming so‘m)",
-
       "other_foreign_company_worker_count": "Chet korxona uchun - (O‘rtacha xodimlar soni, kishi)",
       "other_foreign_company_salary_fund": "Chet korxona uchun - (Ish haqi fondi, ming so‘m)",
-
       "temporary_contract_worker_count": "Muddatli mehnat shartnomasi asosida ishlovchi xodimlar - (O‘rtacha xodimlar soni, kishi)",
       "temporary_contract_salary_fund": "Muddatli mehnat shartnomasi asosida ishlovchi xodimlar - (Ish haqi fondi, ming so‘m)",
-
       "civil_contract_worker_count": "Fuqarolik-huquqiy shartnoma asosida ishlovchi xodimlar - (O‘rtacha xodimlar soni, kishi)",
       "civil_contract_salary_fund": "Fuqarolik-huquqiy shartnoma asosida ishlovchi xodimlar - (Ish haqi fondi, ming so‘m)",
-
       "freelancer_worker_count": "Kasanachilar - (O‘rtacha xodimlar soni, kishi)",
       "freelancer_salary_fund": "Kasanachilar - (Ish haqi fondi, ming so‘m)"
     }
-
   },
   "salaryReport": {
     "name": "Oylik hisobot (shifr)",
@@ -2072,6 +2062,15 @@
       "error": "Xatolik"
     }
   },
+  "workerImage": {
+    "name": "(HC) Telegram rasmlari",
+    "photo": "Rasm",
+    "status": "Holat",
+    "viewPhoto": "Rasmni ko'rish",
+    "createTitle": "Xodim rasmini qo'shish",
+    "requiredCommentForRejection": "Raq qilish uchun izoh kiritib saqlash tugmasini bosing",
+    "updateTitle": "Xodim rasmini tahrirlash"
+  },
   "syncLog": {
     "name": "Qayta yuklash",
     "createTitle": "Terminallar ma'lumotini qayta yuklash",
@@ -2091,7 +2090,7 @@
     }
   },
   "hcEvent": {
-    "name": "Hodisalar",
+    "name": "(HC) Hodisalar",
     "createTitle": "Yuklash",
     "updateTitle": "Tahrirlash",
     "syncTitle": "Sinxronlash",
@@ -2214,45 +2213,98 @@
       "offline": "Ofline  qurilmalar",
       "left": "Ishxonadan chiqqan xodimlar"
     },
-    "perview":{
-        "time":"Sana",
-        "workTime":"Ish boshlanish vaqti",
-        "temperature":"Harorat",
-        "device":"Qurilma",
-        "direction":"Holati",
-        "norm_hours":"Norma soati",
-        "auth_type":"Auth type",
-        "mask_status":"Niqob"
+    "perview": {
+      "time": "Sana",
+      "workTime": "Ish boshlanish vaqti",
+      "temperature": "Harorat",
+      "device": "Qurilma",
+      "direction": "Holati",
+      "norm_hours": "Norma soati",
+      "auth_type": "Auth type",
+      "mask_status": "Niqob"
     },
-    "cards":{
-      "late_come":"Kechikkan xodimlar",
-      "not_come_yesterday":"Ishga kelmagan xodimlar (kecha)",
-      "early_leave_yesterday":"Erta ketgan xodimlar (kecha)",
-      "not_come":"Ishga kelmagan xodimlar",
-      "come":"Ishga kelgan xodimlar",
-      "current_in":"Ishxonadagi xodimlar",
-      "current_out":"Ishxonada yo'q xodimlar",
-      "early_leave":"Erta ketgan xodimlar",
-      "daily_attendance":"Turniket qaydnomasi",
-      "work_hours":"Norma soatni bajarmaganlar",
-      "device_status":"Barcha qurilmalar",
-      "device_status_online":"Online qurilmalar",
-      "device_status_offline":"Ofline  qurilmalar",
-      "lesson_worked":"Ish soati ko'rsatgichlari",
-      "devices":"Top offline qurilmalar"
+    "cards": {
+      "late_come": "Kechikkan xodimlar",
+      "not_come_yesterday": "Ishga kelmagan xodimlar (kecha)",
+      "early_leave_yesterday": "Erta ketgan xodimlar (kecha)",
+      "not_come": "Ishga kelmagan xodimlar",
+      "come": "Ishga kelgan xodimlar",
+      "current_in": "Ishxonadagi xodimlar",
+      "current_out": "Ishxonada yo'q xodimlar",
+      "early_leave": "Erta ketgan xodimlar",
+      "daily_attendance": "Turniket qaydnomasi",
+      "work_hours": "Norma soatni bajarmaganlar",
+      "device_status": "Barcha qurilmalar",
+      "device_status_online": "Online qurilmalar",
+      "device_status_offline": "Ofline  qurilmalar",
+      "lesson_worked": "Ish soati ko'rsatgichlari",
+      "devices": "Top offline qurilmalar"
     },
-    "options":{
-        "status":"Ish soati bo'yicha",
-        "max":"Eng ko'p",
-        "min":"Eng kam"
+    "options": {
+      "status": "Ish soati bo'yicha",
+      "max": "Eng ko'p",
+      "min": "Eng kam"
     }
-},
+  },
   "hcWorkDuration": {
     "name": "(HC) Ish vaqti",
-    "form":{
-      "enter":"Kirish",
-      "exit":"Chiqish"
+    "form": {
+      "enter": "Kirish",
+      "exit": "Chiqish"
     }
+  },
+  "userImageLogs": {
+    "name": "Rasmlar tarixi",
+    "photo": "Rasm",
+    "noPhoto": "Rasm yo'q",
+    "status": {
+      "title": "Holat",
+      "create": "Yaratildi",
+      "update": "Yangilandi",
+      "delete": "O'chirildi"
+    }
+  },
+  "invalidUser": {
+    "name": "Rad etilganlar rasmlar",
+    "photo": "Rasm",
+    "noPhoto": "Rasm yo'q",
+    "syncTime": "Sinxronlash vaqti"
+  },
+  "others": {
+    "name": "Qo'chimcha"
+  },
+  "accessLevel": {
+    "title": "Ruxsat darajalari",
+    "unknown": "Noma'lum",
+    "expired": "Muddati o'tgan",
+    "expiresToday": "Bugun tugaydi",
+    "daysLeft": "{days} kun qoldi",
+    "active": "Faol",
+    "noSearchResults": "Qidiruv natijasi topilmadi",
+    "noAccessLevels": "Ruxsat darajalari mavjud emas",
+    "expiryDate": "Muddati",
+    "status": "Holati",
+    "refresh": "Yangilash",
+    "showing": "Ko'rsatilgan",
+    "more": "ta"
+  },
+  "devices": {
+    "name": "(HC) Qurilmalar",
+    "createTitle": "Qurilma qo'shish",
+    "updateTitle": "Qurilmani tahrirlash",
+    "deviceName": "Qurilma nomi",
+    "namePlaceholder": "Qurilma nomini kiriting",
+    "ipAddress": "IP manzil",
+    "ipAddressPlaceholder": "IP manzilni kiriting",
+    "macAddress": "MAC manzil",
+    "macAddressPlaceholder": "MAC manzilni kiriting",
+    "serialNumber": "Seriya raqami",
+    "serialNumberPlaceholder": "Seriya raqamini kiriting",
+    "status": "Holati",
+    "online": "Onlayn",
+    "offline": "Oflayn"
   }
-
 }
+
+
+

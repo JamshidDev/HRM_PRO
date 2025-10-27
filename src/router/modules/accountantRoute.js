@@ -6,7 +6,9 @@ import {
     TaxFourPage,
     TaxFivePage,
     DashboardPage,
-    SalaryCategoryPage, SalaryReportPage, PensionPaymentPage
+    SalaryCategoryPage,
+    SalaryReportPage,
+    PensionPaymentPage,
 } from "@/pages/accountant/index.js"
 
 

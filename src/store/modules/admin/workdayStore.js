@@ -38,7 +38,7 @@ export const useWorkdayStore = defineStore('workdayStore', {
             const data = {...this.payload}
             data.start_time = Utils.timeOnlyHour(this.payload.start_time)
             data.end_time = Utils.timeOnlyHour(this.payload.end_time)
-            console.log(data)
+
             $ApiService.workdayService._create({data}).then((res)=>{
                 this.visible = false
                 this._index()

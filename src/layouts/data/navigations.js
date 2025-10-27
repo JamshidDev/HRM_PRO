@@ -48,20 +48,21 @@ import {
     AppTitle24Filled,
     ContactCard16Filled,
     ArrowUpload16Filled,
+    DesktopPulse24Filled,
     QrCode24Regular,
-    AlertUrgent16Filled,
+    ImageMultiple24Filled,
     AppsAddIn16Regular,
     ArrowSyncCircle24Filled,
     AppFolder24Filled,
     ShiftsCheckmark20Regular,
     CellularData124Filled,
     Clock24Filled,
+    DocumentBulletList24Filled,
 } from "@vicons/fluent"
 import {AppPaths} from "@/utils/index.js";
 import Utils from "@/utils/Utils.js"
 
-const { appPermissions} = Utils
-
+import { appPermissions} from "@/utils/index.js"
 import i18n from "@/i18n/index.js"
 
 const {t} = i18n.global
@@ -402,13 +403,13 @@ export const navigations = [
                 color: 'bg-warning',
                 permission: appPermissions.turnstileHikCentralWorkers,
             },
-            {
-                label: 'hcServer.name',
-                path: Utils.routeTurnstilePathMaker(AppPaths.HcServer),
-                icon: CellularData124Filled,
-                color: 'bg-info',
-                permission: appPermissions.turnstileHikCentralJob,
-            },
+            // {
+            //     label: 'hcServer.name',
+            //     path: Utils.routeTurnstilePathMaker(AppPaths.HcServer),
+            //     icon: CellularData124Filled,
+            //     color: 'bg-info',
+            //     permission: appPermissions.turnstileHikCentralJob,
+            // },
             {
                 label: 'hcEvent.name',
                 path: Utils.routeTurnstilePathMaker(AppPaths.HcEvents),
@@ -416,19 +417,19 @@ export const navigations = [
                 color: 'bg-info',
                 permission: appPermissions.turnstileHikCentralEvents,
             },
+            // {
+            //     label: 'syncLog.name',
+            //     path: Utils.routeTurnstilePathMaker(AppPaths.SyncLog),
+            //     icon: ArrowSyncCircle24Filled,
+            //     color: 'bg-success',
+            //     permission: appPermissions.turnstileHikCentralSync,
+            // },
             {
-                label: 'notification.name',
-                path: Utils.routeTurnstilePathMaker(AppPaths.Notification),
-                icon: AlertUrgent16Filled,
-                color: 'bg-warning',
-                permission: appPermissions.turnstileHikCentralTgUser,
-            },
-            {
-                label: 'syncLog.name',
-                path: Utils.routeTurnstilePathMaker(AppPaths.SyncLog),
-                icon: ArrowSyncCircle24Filled,
-                color: 'bg-success',
-                permission: appPermissions.turnstileHikCentralSync,
+                label: 'workerImage.name',
+                path: Utils.routeTurnstilePathMaker(AppPaths.WorkerImage),
+                icon: ImageMultiple24Filled,
+                color: 'bg-primary',
+                permission: appPermissions.turnstileWorkerImage,
             },
             {
                 label: 'hcWorkDuration.name',
@@ -436,6 +437,20 @@ export const navigations = [
                 icon: Clock24Filled,
                 color: 'bg-success',
                 permission: appPermissions.turnstileHcpDuration,
+            },
+            {
+                label: 'devices.name',
+                path: Utils.routeTurnstilePathMaker(AppPaths.Devices),
+                icon: DesktopPulse24Filled,
+                color: 'bg-info',
+                permission: appPermissions.turnstileDevices,
+            },
+            {
+                label: 'others.name',
+                path: Utils.routeTurnstilePathMaker(AppPaths.Others),
+                icon: DocumentBulletList24Filled,
+                color: 'bg-primary',
+                permission: appPermissions.turnstileOthers,
             },
         ]
     },

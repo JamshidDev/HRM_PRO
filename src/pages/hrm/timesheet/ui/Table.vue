@@ -36,7 +36,6 @@ const onSelect = (v)=>{
     store.payload.timestamp = dayjs().month(v.data.month-1).year(v.data.year).valueOf()
     store.visibleType = false
     store.visible = true
-    console.log(store.payload)
   }else if(v.key===Utils.ActionTypes.verifier){
     if(!accStore.checkAction(accStore.pn.hrTableWorkersWrite)) return
     timesheetConfirmStore.elementId = v.data.id

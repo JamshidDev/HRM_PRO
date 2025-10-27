@@ -31,8 +31,20 @@ export const useUserStore = defineStore('user', {
         myRoleList:[],
         myRoleLoading:false,
         loginLoading:false,
+        confirmVisible:false,
+        isSpam:false,
+
     }),
     actions:{
+        _onSpam(){
+            this.confirmVisible = false
+            this.loading = true
+            $ApiService.userService._onSpam({id:this.elementId, data:{status:this.isSpam}}).then((res)=>{
+            }).finally(()=>{
+                this.loading = false
+                this._index()
+            })
+        },
         _index(){
             this.loading= true
             const params = {
@@ -108,7 +120,6 @@ export const useUserStore = defineStore('user', {
         _delete(){
             this.deleteLoading = true
             $ApiService.userService._delete({id:this.elementId}).then((res)=>{
-                console.log(res.data)
             }).finally(()=>{
                 this.deleteLoading = false
             })

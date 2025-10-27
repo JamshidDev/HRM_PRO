@@ -11,7 +11,6 @@ const componentStore = useComponentStore()
 
 
 const onEdit = (v)=>{
-  console.log(v)
   store.elementId = v.id
   store.payload.organization_id = [v.organization]
   store.payload.month = v.month

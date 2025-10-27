@@ -17,7 +17,6 @@ const onChange = (v) =>{
 }
 
 const onSelectEv = (v)=>{
-  console.log(v)
 }
 
 </script>

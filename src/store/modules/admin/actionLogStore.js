@@ -49,7 +49,6 @@ export const useActionLogStore = defineStore('actionLog', {
                 organizations:this.params.organizations.map((v)=>v.id).toString() || null,
             }
             $ApiService.logService._actionLog({params}).then((res)=>{
-                console.log(res.data.data.data)
                 this.list = res.data.data.data
                 this.totalItems = res.data.data.total
             }).finally(()=>{

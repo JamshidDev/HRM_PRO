@@ -125,7 +125,7 @@ export const useConfirmationContractStore = defineStore('confirmationContractSto
                 this.tabList =this.tabList.filter((a, idx)=>idx !== (Number(deep)-1))
                 this.tabDataList =  this.tabDataList.filter((v, idx)=>idx !==(Number(deep)-1))
                 this.activeTab = Number(deep)-1
-                console.log(this.tabList)
+
             }
 
         },

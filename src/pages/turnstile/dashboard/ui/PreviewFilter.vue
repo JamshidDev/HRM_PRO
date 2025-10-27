@@ -4,7 +4,8 @@ import {ArrowCircleDown48Regular} from "@vicons/fluent"
 import i18n from "@/i18n/index.js"
 import {useAppSetting} from "@/utils/index.js"
 import Utils from "@/utils/Utils.js"
-import { onMounted } from "vue"
+import { onMounted, getCurrentInstance } from "vue"
+import {useDebounce} from "@/utils/index.js"
 
 const {t} = i18n.global
 const dashboardStore = useTurnstileDashboardStore()
@@ -19,7 +20,6 @@ const statusOptions = [
     id:'min'
   }
 ]
-
 const filterVisible = ref({
     date:false,
     hours:false,
@@ -28,12 +28,19 @@ const filterVisible = ref({
     norm_hours:false,
     status:false,
 })
-
 const resetFilterVisible = ()=>{
   Object.keys(filterVisible.value).forEach((key)=>{filterVisible.value[key] = false})
 }
+const filterEvent = ()=>{
+  dashboardStore._preview(true)
+}
+const debouncedEvent = useDebounce(filterEvent,600)
 
 
+
+const onSearchEv=()=>{
+  debouncedEvent()
+}
 
 
 
@@ -92,11 +99,6 @@ const controlFilterEv = (v)=>{
   dashboardStore._preview()
 }
 
-
-const filterEvent = ()=>{
-    dashboardStore._preview(true)
-}
-
 const onEnter = ()=>{
   dashboardStore._preview()
 }
@@ -120,6 +122,7 @@ const onEnterTime = (key)=>{
 
 onMounted(()=>{
   controlFilterEv()
+  debouncedEvent.cancel()
 })
 
 
@@ -127,6 +130,19 @@ onMounted(()=>{
 
 <template>
    <div class="w-full grid gap-2 grid-cols-12 mb-2">
+     <div class="col-span-2">
+       <label class="mt-3 text-xs text-gray-500">{{$t('content.search')}}</label>
+       <n-input
+           class="w-full"
+           type="text"
+           v-model:value="dashboardStore.previewParams.search"
+           :loading="dashboardStore.previewLoading"
+           :on-keyup="onSearchEv"
+           @clear="onSearchEv"
+           @paste="onSearchEv"
+           clearable
+       />
+     </div>
      <div v-if="filterVisible.date" class="col-span-2">
          <label class="mt-3 text-xs text-gray-500">{{ $t('content.date') }}</label>
          <n-date-picker

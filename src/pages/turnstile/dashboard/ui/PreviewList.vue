@@ -1,7 +1,6 @@
 <script setup>
 import {NoDataPicture, UIPagination} from "@/components/index.js"
 import {useEventStore, useTurnstileDashboardStore} from "@/store/modules/index.js"
-import {ArrowCircleDown48Regular} from "@vicons/fluent"
 import i18n from "@/i18n/index.js"
 import { getTableConfig } from "./tableConfig.js"
 import Table from "./Table.vue"
@@ -31,7 +30,6 @@ const tableConfig = computed(() => {
 
 // Handle row click
 const handleRowClick = (item, index) => {
-  console.log('Row clicked:', item, index)
   // You can add custom row click logic here
 }
 

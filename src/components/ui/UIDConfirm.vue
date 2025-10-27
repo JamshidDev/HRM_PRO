@@ -56,7 +56,7 @@ const emits = defineEmits(['onClose', 'onSave'])
         </slot>
       </div>
       <div class="px-6">
-        <slot></slot>
+        <slot name="default"></slot>
       </div>
       <div class="p-4 mt-4 flex-col flex">
         <slot name="action">

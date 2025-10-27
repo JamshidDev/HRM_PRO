@@ -78,12 +78,7 @@ export const appPermissions = {
     instructionsWrite:'instructions-write',
     instructionsRead:'instructions-read',
 
-
-
-
-
     hr:"hr",
-
     hrDashboard:"hr-dashboard",
     hrDashboardRead:"hr-dashboard-read",
 
@@ -227,9 +222,19 @@ export const appPermissions = {
     turnstileHikCentralTgUser: 'turnstile-hik-central-tg-user',
     turnstileHikCentralTgUserRead: 'turnstile-hik-central-tg-user-read',
     turnstileHikCentralTgUserWrite: 'turnstile-hik-central-tg-user-write',
+    turnstileWorkerImage: 'turnstile-worker-image',
+    turnstileWorkerImageRead: 'turnstile-worker-image-read',
+    turnstileWorkerImageWrite: 'turnstile-worker-image-write',
     turnstileHikCentralSync: "turnstile-hik-central-sync",
     turnstileHikCentralSyncWrite: "turnstile-hik-central-sync-write",
     turnstileHikCentralSyncRead: "turnstile-hik-central-sync-read",
+    turnstileHikCentralUserImageLogs: "turnstile-hc-user-image-logs",
+    turnstileHikCentralInvalidUser: "turnstile-hc-invalid-user",
+    turnstileDevices: "turnstile-devices",
+    turnstileDevicesRead: "turnstile-devices-read",
+    turnstileDevicesWrite: "turnstile-devices-write",
+    turnstileOthers: "turnstile-others",
+
 
     hrIncentives:"hr-incentives",
     hrIncentivesWrite:"hr-incentives-write",
@@ -247,7 +252,6 @@ export const appPermissions = {
     turnstileHcpDurationWrite:"turnstile-hcp-duration-write",   
     turnstileHcpDurationRead:"turnstile-hcp-duration-read",
 
-
     hospital: "hospital",
     hospitalExpired: "hospital-expired",
     hospitalExpiredWrite: "hospital-expired-write",
@@ -258,7 +262,6 @@ export const appPermissions = {
     hospitalPensioner: "hospital-pensioner",
     hospitalPensionerRead: "hospital-pensioner-read",
     hospitalPensionerWrite: "hospital-pensioner-write",
-
 
     useful:'useful',
     ai:'ai',
@@ -284,6 +287,7 @@ export const appPermissions = {
     economistUploadsWrite: "economist-uploads-write",
     economistUploadsRead: "economist-uploads-read",
     economistUploadsConfirm: "economist-uploads-confirm",
+    economistUploadsStatus:"economist-uploads-status",
 
     lms: "lms",
     lmsDirection: "lms-direction",
@@ -310,8 +314,5 @@ export const appPermissions = {
     lmsWorker: "lms-worker",
     lmsWorkerRead: "lms-worker-read",
     lmsWorkerWrite: "lms-worker-write",
-
-
-
 
 }

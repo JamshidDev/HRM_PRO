@@ -27,7 +27,7 @@ const scheduleValue = ({option})=>{
     )
 }
 
-const renderIcon =(icon)=> {
+export const renderIcon =(icon)=> {
     return () => {
         return h(NIcon, null, {
             default: () => h(icon),
@@ -60,6 +60,19 @@ const selectValue = ({option})=>{
             },`${option?.name}`),
     ];
 }
+
+
+export const scheduleRender = {
+        label:scheduleLabel,
+        value:scheduleValue,
+    }
+
+
+export const selectRender = {
+    label:selectLabel,
+    value:selectValue,
+}
+
 
 export default {
     scheduleRender:{

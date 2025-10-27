@@ -16,7 +16,6 @@ const onSubmit = () => {
 }
 
 onMounted(()=>{
-  if(store.departmentList.length > 0) return
   store._department()
 })
 
@@ -82,6 +81,4 @@ onMounted(()=>{
       </n-button>
     </div>
   </n-spin>
-
-
 </template>
