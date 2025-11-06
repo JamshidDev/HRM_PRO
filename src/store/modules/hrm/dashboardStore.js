@@ -8,6 +8,7 @@ export const useDashboardStore = defineStore('dashboardStore', {
         structureModel: [],
         structureCheck: [],
         loading: false,
+        loadingTwo: false,
         activeDetail: null,
         payload: {
             pin: null,
@@ -22,6 +23,7 @@ export const useDashboardStore = defineStore('dashboardStore', {
             ages: [1, 100],
             sex: null,
             type: null,
+            year:2025,
             birth_day: new Date().getDate(),
             birth_month: new Date().getMonth() + 1,
             // Passport state filter possible values were: expired, approaching, not_included
@@ -32,6 +34,7 @@ export const useDashboardStore = defineStore('dashboardStore', {
             page: 1,
             per_page: 10,
             search: null,
+            year:2025,
             age_start: 1,
             age_end: 100,
             ages: [1, 100],
@@ -70,6 +73,7 @@ export const useDashboardStore = defineStore('dashboardStore', {
         selectedFile:null,
         workerId:null,
         loadingPassport:false,
+        typeNames:['med_type', 'disc_type', 'inc_type']
     }),
     actions: {
         _updatePassport(data){
@@ -82,192 +86,205 @@ export const useDashboardStore = defineStore('dashboardStore', {
                 this.loadingPassport = false
             })
         },
-        _index(update) {
+        async _dashboard(isUpdateCache){
             this.loading = true
             let params = {}
-            if(update){
+            if(isUpdateCache){
                 params.cache = "update"
             }
             params = this.appendParams(params)
 
-            $ApiService.dashboardService._index({params}).then((res) => {
-                const formatMonth = (date) => {
-                    let day = date.split('-')[1]
-                    let month = Utils.getMonthNameByKey(date.split('-')[0])
-                    return `${day} - ${month}`
-                }
+            const [responseOne, responseTwo] = await Promise.all([
+                $ApiService.dashboardService._index({params}),
+                $ApiService.dashboardService._indexTwo({params})
+            ])
+            this._responseOneAttach(responseOne)
+            this._responseTwoAttach(responseTwo)
+            this.loading = false
+        },
+        _responseOneAttach(res){
+            const formatMonth = (date) => {
+                let day = date.split('-')[1]
+                let month = Utils.getMonthNameByKey(date.split('-')[0])
+                return `${day} - ${month}`
+            }
 
-                const v = res.data.data
-                this.dashboard.contractTypes = v.contract_types
-                this.dashboard.mainCard = [
-                    {
-                        total: {
-                            title: 'dashboardPage.mainCard.totalWorker',
-                            count: v.workers_count,
-                        },
-                        data1: {
-                            title: 'dashboardPage.mainCard.man',
-                            count: v.mans_count,
-                        },
-                        data2: {
-                            title: 'dashboardPage.mainCard.woman',
-                            count: v.woman_count,
-                        },
+            const v = res.data.data
+            this.dashboard.contractTypes = v.contract_types
+            this.dashboard.mainCard = [
+                {
+                    total: {
+                        title: 'dashboardPage.mainCard.totalWorker',
+                        count: v.workers_count,
                     },
-                    {
-                        total: {
-                            title: 'dashboardPage.pension.title',
-                            count: v.retired_men_count + v.retired_women_count,
-                        },
-                        data1: {
-                            title: 'dashboardPage.pension.men',
-                            count: v.retired_men_count,
-                        },
-                        data2: {
-                            title: 'dashboardPage.pension.women',
-                            count: v.retired_women_count,
-                        },
+                    data1: {
+                        title: 'dashboardPage.mainCard.man',
+                        count: v.mans_count,
                     },
-                    {
-                        total: {
-                            title: 'dashboardPage.position.title',
-                            count: v.positions_rate,
-                        },
-                        data1: {
-                            title: 'dashboardPage.position.vakant',
-                            count: Math.max(v.positions_rate - v.worker_positions_rate, 0)
-                        },
-                        data2: {
-                            title: 'dashboardPage.position.sverx',
-                            count: Math.max(v.worker_positions_rate - v.positions_rate, 0)
-                        }
+                    data2: {
+                        title: 'dashboardPage.mainCard.woman',
+                        count: v.woman_count,
                     },
-                    {
-                        total: {
-                            title: 'dashboardPage.mainCard.totalWorker',
-                            count: v.workers_count,
-                        },
-                        data1: {
-                            title: 'dashboardPage.mainCard.man',
-                            count: v.mans_count,
-                        },
-                        data2: {
-                            title: 'dashboardPage.mainCard.woman',
-                            count: v.woman_count,
-                        },
+                },
+                {
+                    total: {
+                        title: 'dashboardPage.pension.title',
+                        count: v.retired_men_count + v.retired_women_count,
                     },
-                ]
-                this.dashboard.ageCard = [
-                    {
-                        title: 'dashboardPage.age.age31',
-                        count: v.age_30_and_younger,
+                    data1: {
+                        title: 'dashboardPage.pension.men',
+                        count: v.retired_men_count,
                     },
-                    {
-                        title: 'dashboardPage.age.age32_45',
-                        count: v.age_31_to_45,
+                    data2: {
+                        title: 'dashboardPage.pension.women',
+                        count: v.retired_women_count,
                     },
-                    {
-                        title: 'dashboardPage.age.age46',
-                        count: v.age_46_and_older,
+                },
+                {
+                    total: {
+                        title: 'dashboardPage.position.title',
+                        count: v.positions_rate,
                     },
-                ]
-                this.dashboard.eduCard = [
-                    {
-                        title: 'dashboardPage.edu.higher',
-                        count: v.higher_edu_count,
+                    data1: {
+                        title: 'dashboardPage.position.vakant',
+                        count: Math.max(v.positions_rate - v.worker_positions_rate, 0)
                     },
-                    {
-                        title: 'dashboardPage.edu.middle',
-                        count: v.middle_edu_count,
-                    },
-                    {
-                        title: 'dashboardPage.edu.special',
-                        count: v.special_edu_count,
-                    },
-                ]
-                this.dashboard.passwordCard = {
-                    title: 'dashboardPage.password.title',
-                    data: [
-                        {
-                            title: 'dashboardPage.password.deadline',
-                            count: v.passports_count,
-                        },
-                        {
-                            title: 'dashboardPage.password.expired',
-                            count: v.passports_more_count,
-                        },
-                    ],
-                }
-                this.dashboard.pensionCard = {
-                    title: 'dashboardPage.pension.title',
-                    data: [
-                        {
-                            title: 'dashboardPage.pension.men',
-                            count: v.retired_men_count,
-                        },
-                        {
-                            title: 'dashboardPage.pension.women',
-                            count: v.retired_women_count,
-                        },
-                    ],
-                }
-                this.dashboard.medicalCard = {
-                    title: 'dashboardPage.medical.title',
-                    data: [
-                        {
-                            title: 'dashboardPage.medical.deadline',
-                            count: 0,
-                        },
-                        {
-                            title: 'dashboardPage.medical.expired',
-                            count: 0,
-                        },
-                    ],
-                }
-                this.dashboard.contracts = v.contracts
-                this.dashboard.vacations = v.vacation_types
-                if (v.birthdays.result.length > 0) {
-                    this.dashboard.birthdays = {
-                        title: "dashboardPage.birthday.title",
-                        data: [
-                            {
-                                title: t("dashboardPage.birthday.today"),
-                                workers: v.birthdays.result[0]?.count > 3 ? [...v.birthdays.result[0].workers, ...v.birthdays.result[0].workers] : v.birthdays.result[0].workers,
-                                total: v.birthdays.result[0].count,
-                                has_more: v.birthdays.result[0].has_more,
-                            },
-                            {
-                                title: t("dashboardPage.birthday.tomorrow"),
-                                workers: v.birthdays.result[1].count > 3 ? [...v.birthdays.result[1].workers, ...v.birthdays.result[1].workers] : v.birthdays.result[1].workers,
-                                total: v.birthdays.result[1].count,
-                                has_more: v.birthdays.result[1].has_more,
-                            },
-                            {
-                                title: formatMonth(v.birthdays.result[2].day),
-                                workers: v.birthdays.result[2].count > 3 ? [...v.birthdays.result[2].workers, ...v.birthdays.result[2].workers] : v.birthdays.result[2].workers,
-                                total: v.birthdays.result[2].count,
-                                has_more: v.birthdays.result[2].has_more,
-                            },
-                            {
-                                title: formatMonth(v.birthdays.result[3].day),
-                                workers: v.birthdays.result[3].count > 3 ? [...v.birthdays.result[3].workers, ...v.birthdays.result[3].workers] : v.birthdays.result[3].workers,
-                                total: v.birthdays.result[3].count,
-                                has_more: v.birthdays.result[3].has_more,
-                            },
-                            {
-                                title: formatMonth(v.birthdays.result[4]?.day),
-                                workers: v.birthdays.result[4].count > 3 ? [...v.birthdays.result[4].workers, ...v.birthdays.result[4].workers] : v.birthdays.result[4].workers,
-                                total: v.birthdays.result[4].count,
-                                has_more: v.birthdays.result[4].has_more,
-                            },
-                        ]
+                    data2: {
+                        title: 'dashboardPage.position.sverx',
+                        count: Math.max(v.worker_positions_rate - v.positions_rate, 0)
                     }
+                },
+                {
+                    total: {
+                        title: 'dashboardPage.mainCard.totalWorker',
+                        count: v.workers_count,
+                    },
+                    data1: {
+                        title: 'dashboardPage.mainCard.man',
+                        count: v.mans_count,
+                    },
+                    data2: {
+                        title: 'dashboardPage.mainCard.woman',
+                        count: v.woman_count,
+                    },
+                },
+            ]
+            this.dashboard.ageCard = [
+                {
+                    title: 'dashboardPage.age.age31',
+                    count: v.age_30_and_younger,
+                },
+                {
+                    title: 'dashboardPage.age.age32_45',
+                    count: v.age_31_to_45,
+                },
+                {
+                    title: 'dashboardPage.age.age46',
+                    count: v.age_46_and_older,
+                },
+            ]
+            this.dashboard.eduCard = [
+                {
+                    title: 'dashboardPage.edu.higher',
+                    count: v.higher_edu_count,
+                },
+                {
+                    title: 'dashboardPage.edu.middle',
+                    count: v.middle_edu_count,
+                },
+                {
+                    title: 'dashboardPage.edu.special',
+                    count: v.special_edu_count,
+                },
+            ]
+            this.dashboard.passwordCard = {
+                title: 'dashboardPage.password.title',
+                data: [
+                    {
+                        title: 'dashboardPage.password.deadline',
+                        count: v.passports_count,
+                    },
+                    {
+                        title: 'dashboardPage.password.expired',
+                        count: v.passports_more_count,
+                    },
+                ],
+            }
+            this.dashboard.pensionCard = {
+                title: 'dashboardPage.pension.title',
+                data: [
+                    {
+                        title: 'dashboardPage.pension.men',
+                        count: v.retired_men_count,
+                    },
+                    {
+                        title: 'dashboardPage.pension.women',
+                        count: v.retired_women_count,
+                    },
+                ],
+            }
+            this.dashboard.contracts = v.contracts
+            this.dashboard.vacations = v.vacation_types
+            if (v.birthdays.result.length > 0) {
+                this.dashboard.birthdays = {
+                    title: "dashboardPage.birthday.title",
+                    data: [
+                        {
+                            title: t("dashboardPage.birthday.today"),
+                            workers: v.birthdays.result[0]?.count > 3 ? [...v.birthdays.result[0].workers, ...v.birthdays.result[0].workers] : v.birthdays.result[0].workers,
+                            total: v.birthdays.result[0].count,
+                            has_more: v.birthdays.result[0].has_more,
+                        },
+                        {
+                            title: t("dashboardPage.birthday.tomorrow"),
+                            workers: v.birthdays.result[1].count > 3 ? [...v.birthdays.result[1].workers, ...v.birthdays.result[1].workers] : v.birthdays.result[1].workers,
+                            total: v.birthdays.result[1].count,
+                            has_more: v.birthdays.result[1].has_more,
+                        },
+                        {
+                            title: formatMonth(v.birthdays.result[2].day),
+                            workers: v.birthdays.result[2].count > 3 ? [...v.birthdays.result[2].workers, ...v.birthdays.result[2].workers] : v.birthdays.result[2].workers,
+                            total: v.birthdays.result[2].count,
+                            has_more: v.birthdays.result[2].has_more,
+                        },
+                        {
+                            title: formatMonth(v.birthdays.result[3].day),
+                            workers: v.birthdays.result[3].count > 3 ? [...v.birthdays.result[3].workers, ...v.birthdays.result[3].workers] : v.birthdays.result[3].workers,
+                            total: v.birthdays.result[3].count,
+                            has_more: v.birthdays.result[3].has_more,
+                        },
+                        {
+                            title: formatMonth(v.birthdays.result[4]?.day),
+                            workers: v.birthdays.result[4].count > 3 ? [...v.birthdays.result[4].workers, ...v.birthdays.result[4].workers] : v.birthdays.result[4].workers,
+                            total: v.birthdays.result[4].count,
+                            has_more: v.birthdays.result[4].has_more,
+                        },
+                    ]
                 }
+            }
+        },
+        _responseTwoAttach(res){
+            const v = res.data.data
+            this.dashboard.incentivesCount = v.incentives
+            this.dashboard.incentivesGiftCount = v.incentive_actions_gift_type
+            this.dashboard.disciplinaryCount = v.disciplinary_actions
+            this.dashboard.disciplinaryFineCount = v.disciplinary_actions_fine_type
+            this.dashboard.medFinishedCound = v.meds_finished
+            this.dashboard.medApproachCount = v.meds_approaching
 
-
-            }).finally(() => {
-                this.loading = false
-            })
+            this.dashboard.medicalCard = {
+                title: 'dashboardPage.medical.title',
+                data: [
+                    {
+                        title: 'dashboardPage.medical.deadline',
+                        count: v.meds_approaching || 0,
+                    },
+                    {
+                        title: 'dashboardPage.medical.expired',
+                        count: v.meds_finished || 0,
+                    },
+                ],
+            }
         },
         _index_detail(){
             if(!this.activeDetail?.filterCallback) throw new Error("No detail filter callback set")
@@ -281,7 +298,10 @@ export const useDashboardStore = defineStore('dashboardStore', {
                 if(i==='ages'){
                     params.age_start = this.params.age_start
                     params.age_end = this.params.age_end
-                }else{
+                }else if(this.typeNames.includes(i)){
+                    params.type = this.params.type
+                }
+                else{
                     params[i] = this.params[i]
                 }
             })

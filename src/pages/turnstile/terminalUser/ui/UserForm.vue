@@ -25,10 +25,32 @@ const onSubmit = ()=>{
 
 
 onMounted(()=>{
-  componentStore._countries()
-  componentStore._enums()
-  componentStore._regions()
-  componentStore._nationality()
+  componentStore._countries(()=>{
+    store.userPayload.country_id = 1
+  })
+  componentStore._regions(undefined, ()=>{
+    store.userPayload.region_id = 14
+    store.userPayload.current_region_id = 14
+    store.changeRegion(store.userPayload.region_id, ()=>{
+      store.userPayload.city_id = 197
+    })
+    store.changeCurrentRegion(store.userPayload.current_region_id, ()=>{
+      store.userPayload.current_city_id = 197
+    })
+  })
+  store.userPayload.birthday = new Date('1990-01-01').getTime()
+  store.userPayload.experience_date = new Date('2025-10-31').getTime()
+  store.userPayload.sex = 1
+  store.userPayload.work_experience = '0'
+  store.userPayload.address = ' '
+  componentStore._enums(()=>{
+    store.userPayload.marital_status = 2
+    store.userPayload.education = 2
+  })
+
+  componentStore._nationality(()=>{
+    store.userPayload.nationality_id = 1
+  })
 })
 </script>
 

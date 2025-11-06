@@ -7,7 +7,6 @@ import { computed } from "vue"
 
 const store = useHKWorkDurationStore()
 
-// Computed property for calendar item data
 const calendarItemData = computed(() => {
   const data = {}
   if (store.previewList && store.previewList.length > 0) {

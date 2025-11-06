@@ -1,7 +1,7 @@
 <script setup>
 import validationRules from "@/utils/validationRules.js";
 import {useComponentStore, useTurnstileHikCentralWorkerStore, useTurnstileTerminalUserStore} from "@/store/modules/index.js";
-import {UISelect, NoDataIllustration, UINSelect} from "@/components/index.js"
+import {UISelect, NoDataIllustration, UINSelect, UITransferSelect} from "@/components/index.js"
 import {Checkmark16Filled, AddCircle16Filled, AddCircle28Regular} from "@vicons/fluent"
 import {UICropper} from "@/components/index.js";
 import checkWorkerSelect from '@/pages/lms/Teacher/ui/checkWorkerSelect.vue'
@@ -31,12 +31,6 @@ const changeAccessLevelOrg = (v) => {
   }
 }
 
-const resetWorkerId = ()=>{
-  store.payload.worker_id = null
-  store.payload.search_worker_id = null
-  store.payload.photo_index = null
-  store.photos = []
-}
 
 const changeWorkerOrg = (v) => {
   store.payload.worker_org_id = v
@@ -159,21 +153,6 @@ onMounted(() => {
           :rules="validationRules.common"
           class="flex flex-col"
       >
-
-<!--        <n-radio-group-->
-<!--            class="mx-auto mb-3"-->
-<!--            @update:value="resetWorkerId"-->
-<!--            v-model:value="store.payload.isWorker"-->
-<!--        >-->
-<!--          &lt;!&ndash; <n-radio-button :value="1">-->
-<!--            {{$t('turnstile.terminalUser.companyWorker')}}-->
-<!--          </n-radio-button> &ndash;&gt;-->
-<!--          <n-radio-button :value="0">-->
-<!--            {{$t('turnstile.terminalUser.notCompanyWorker')}}-->
-<!--          </n-radio-button>-->
-<!--        </n-radio-group>-->
-
-        
         <div class="p-1 rounded-sm border-dashed mb-1 border-surface-line">
           <template v-if="store.payload.isWorker" >
             <n-form-item :label="$t(`content.organization`)" path="worker_org_id" rule-path="requiredMultiSelectField">
@@ -284,16 +263,6 @@ onMounted(() => {
 
           <n-form-item :label="$t(`turnstile.hcWorkersPage.access_levels`)" path="access_level_ids"
                        rule-path="requiredMultiSelectField">
-<!--            <n-select-->
-<!--                :disabled="!store.payload.level_org_id.length"-->
-<!--                v-model:value="store.payload.access_level_id"-->
-<!--                filterable-->
-<!--                :options="store.accessLevels"-->
-<!--                label-field="name"-->
-<!--                value-field="id"-->
-<!--                :loading="store.accessLevelsLoading"-->
-<!--            >-->
-<!--            </n-select>-->
             <UINSelect
                 multiple
                 :disabled="!store.payload.level_org_id.length"

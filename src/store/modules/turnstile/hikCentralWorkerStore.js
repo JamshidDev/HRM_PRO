@@ -14,6 +14,7 @@ export const useTurnstileHikCentralWorkerStore = defineStore('turnstileHikCentra
         accessLevelModalVisible: false,
         selectedWorker: null,
         totalItems: 0,
+        elementId: null,
         allPermissionList: [],
         structureCheck2: [],
         photos: [],
@@ -23,7 +24,10 @@ export const useTurnstileHikCentralWorkerStore = defineStore('turnstileHikCentra
             per_page: 10,
             search:null,
             organizations:[],
+            departments:[],
             access_level_id:null,
+            added:true,
+            status:null,
         },
         payload: {
             level_org_id: [],
@@ -55,6 +59,9 @@ export const useTurnstileHikCentralWorkerStore = defineStore('turnstileHikCentra
         pin:null,
         freeWorkerList:[],
         freeWorkerLoading:false,
+        errorVisible:false,
+        errorLoading:false,
+        errorList:[],
 
     }),
     actions: {
@@ -64,6 +71,15 @@ export const useTurnstileHikCentralWorkerStore = defineStore('turnstileHikCentra
                 this.levelList = res.data.data
             }).finally(() => {
                 this.levelLoading = false
+            })
+        },
+        _getErrors(params){
+            this.errorList = []
+            this.errorLoading = true
+            $ApiService.turnstileHikCentralWorkerService._error({params}).then((res) => {
+                this.errorList = res.data.data
+            }).finally(() => {
+                this.errorLoading = false
             })
         },
         autoFillWorkerField(pin){
@@ -99,9 +115,21 @@ export const useTurnstileHikCentralWorkerStore = defineStore('turnstileHikCentra
             const params = {
                 ...this.params,
                 organizations:this.params.organizations.map(v=>v.id).toString() || undefined,
+                departments:this.params.departments.toString() || undefined,
+                added:this.params.added? 'yes' : 'no',
             }
             $ApiService.turnstileHikCentralWorkerService._index({params}).then((res) => {
-                this.list = res.data.data.data
+                const type = {
+                    1:'warning',
+                    2:'success',
+                    3:'error',
+                }
+                this.list = res.data.data.data.map(v=>{
+                    if(!v?.hcpPerson) return v
+                    v.errorMessage = v?.hcpPerson?.access_levels?.some(s=>s.status === 3) || false
+                    v.hcpPerson.access_levels = v?.hcpPerson?.access_levels?.map(x=>({...x,type:type[x.status]}))
+                    return v
+                })
                 this.totalItems = res.data.data.total
             }).finally(() => {
                 this.loading = false

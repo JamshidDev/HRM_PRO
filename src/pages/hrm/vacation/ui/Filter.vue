@@ -6,6 +6,7 @@ import {
   useComponentStore,
   useVacationStore
 } from "@/store/modules/index.js"
+import {ArrowCircleDown32Regular} from "@vicons/fluent"
 
 
 const store = useVacationStore()
@@ -86,6 +87,17 @@ const resetFilter = ()=>{
           value-field="id"
           clearable
       />
+    </template>
+    <template #filterAction>
+      <n-button
+          @click="store._download()"
+          :loading="store.loading"
+          type="success">
+        <template #icon>
+          <ArrowCircleDown32Regular/>
+        </template>
+        {{$t('content.download')}}
+      </n-button>
     </template>
   </UIPageFilter>
 </template>

@@ -39,7 +39,7 @@ export const useComponentStore = defineStore('componentStore', {
         departmentList:[],
         depParams:{
             page:1,
-            per_page:100,
+            per_page:1000,
             search:null,
             organizations:null,
         },
@@ -341,7 +341,7 @@ export const useComponentStore = defineStore('componentStore', {
                 this.organizationLoading= false
             })
         },
-        _enums(){
+        _enums(callback){
             this.enumLoading= true
             $ApiService.componentService._enums().then((res)=>{
                 this.academicDegreeList = res.data.data.academic_degrees
@@ -368,7 +368,7 @@ export const useComponentStore = defineStore('componentStore', {
                 this.fineTypes = res.data.data.fine_types
                 this.vacationTypes = res.data.data.vacation_types
                 this.work_Types = res.data.data.work_types
-
+                callback?.()
             }).finally(()=>{
                 this.enumLoading= false
             })
@@ -460,7 +460,10 @@ export const useComponentStore = defineStore('componentStore', {
         _positions(){
             this.positionLoading = true
             $ApiService.positionService._index({params:this.params}).then((res)=>{
-                this.positionList = res.data.data.data
+                this.positionList = res.data.data.data.map(v=>({
+                    ...v,
+                    position:v.id,
+                }))
             }).finally(()=>{
                 this.positionLoading = false
             })
@@ -477,7 +480,7 @@ export const useComponentStore = defineStore('componentStore', {
                 this.filterPositionLoading = false
             })
         },
-        _regions(id=undefined){
+        _regions(id=undefined, callback){
             this.regionLoading = true
             const params = {
                 ...this.params,
@@ -485,22 +488,25 @@ export const useComponentStore = defineStore('componentStore', {
             }
             $ApiService.regionService._index({params}).then((res)=>{
                 this.regionList = res.data.data.data
+                callback?.()
             }).finally(()=>{
                 this.regionLoading = false
             })
         },
-        _countries(){
+        _countries(callback){
             this.countryLoading = true
             $ApiService.countryService._index(this.params).then((res)=>{
                 this.countryList = res.data.data.data
+                callback?.()
             }).finally(()=>{
                 this.countryLoading = false
             })
         },
-        _nationality(){
+        _nationality(callback){
             this.nationalityLoading = true
             $ApiService.nationalityService._index({params:this.params}).then((res)=>{
                 this.nationalityList = res.data.data.data
+                callback?.()
             }).finally(()=>{
                 this.nationalityLoading = false
             })

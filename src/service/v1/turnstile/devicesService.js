@@ -16,14 +16,9 @@ const _delete = async (payload) => {
     return await axios.delete(`/v1/turnstile/hik-central/devices/${payload.id}`)
 }
 
-const _show = async (payload) => {
-    return await axios.get(`/v1/turnstile/hik-central/devices/${payload.id}`)
-}
-
 export default {
     _index,
     _create,
     _update,
     _delete,
-    _show,
 }

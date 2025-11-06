@@ -11,13 +11,18 @@ import ContractChart from "@/pages/hrm/dashboardV3/ui/ContractChart.vue"
 import InfoCard from "@/pages/hrm/dashboardV3/ui/InfoCard.vue"
 import PassportDetail from "@/pages/hrm/dashboardV3/ui/Detail/PassportDetail.vue"
 import PensionDetail from "@/pages/hrm/dashboardV3/ui/Detail/PensionDetail.vue"
+import MedDetail from "@/pages/hrm/dashboardV3/ui/Detail/MedDetail.vue"
+import IncentiveDetail from "@/pages/hrm/dashboardV3/ui/Detail/IncentiveDetail.vue"
+import DisciplinaryDetail from "@/pages/hrm/dashboardV3/ui/Detail/DisciplinaryDetail.vue"
 
 import ApiService from "@/service/ApiService.js";
 
 export const InfoCardEnum = {
     PASSPORT: 'passport',
     MED: 'med',
-    PENSION: 'pension'
+    PENSION: 'pension',
+    DISCIPLINARY: 'disciplinary',
+    INCENTIVE: 'incentive',
 }
 
 export const cards = [
@@ -39,7 +44,25 @@ export const cards = [
     },
     {
         component: markRaw(IncentiveChart),
-        span: "12 l:6 xl:4"
+        span: "12 l:6 xl:4",
+        detailFactory(v) {
+            switch (v) {
+                case InfoCardEnum.DISCIPLINARY:
+                    return {
+                        title: 'dashboardPage.disciplinary.title',
+                        detail: markRaw(DisciplinaryDetail),
+                        filters: ["year", "disc_type"],
+                        filterCallback: ApiService.dashboardService._disciplinaryDetail,
+                    }
+                case InfoCardEnum.INCENTIVE:
+                    return {
+                        title: 'dashboardPage.incentive.title',
+                        detail: markRaw(IncentiveDetail),
+                        filters: ['year',"inc_type"],
+                        filterCallback: ApiService.dashboardService._incentiveDetail
+                    }
+            }
+        }
     },
     {
         component: markRaw(YearlyChart),
@@ -76,6 +99,13 @@ export const cards = [
                         detail: markRaw(PassportDetail),
                         filters: ["filter"],
                         filterCallback: ApiService.dashboardService._passportDetail
+                    }
+                case InfoCardEnum.MED:
+                    return {
+                        title: 'dashboardPage.medical.title',
+                        detail: markRaw(MedDetail),
+                        filters: ['med_type'],
+                        filterCallback: ApiService.dashboardService._medDetail
                     }
                 case InfoCardEnum.PENSION:
                     return {

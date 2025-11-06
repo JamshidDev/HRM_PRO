@@ -1,11 +1,12 @@
 <script setup>
-import {useAccountStore, useComponentStore, useEventStore} from "@/store/modules/index.js"
-import {ArrowSync24Filled, StarEmphasis32Filled} from "@vicons/fluent"
+import {useAccountStore, useComponentStore, useEventStore, useEventV2Store} from "@/store/modules/index.js"
 import {UIPageFilter, UISelect} from "@/components/index.js"
 import i18n from "@/i18n/index.js"
+import {StarLineHorizontal320Regular} from "@vicons/fluent"
 
 const {t} = i18n.global
-const store = useEventStore()
+const store = useEventV2Store()
+const eventStore = useEventStore()
 const accStore = useAccountStore()
 
 const filterEvent = ()=>{
@@ -39,15 +40,14 @@ const resetFilter = ()=>{
   store.params.organizations = []
   store.params.access_levels = []
   store.params.direction = null
-  store.params.start = null
-  store.params.end = null
+  store.params.date = null
+  store.params.event = null
   filterEvent()
 }
 
 const filterCount = computed(()=>Number(Boolean(store.params.organizations.length))
     + Number(Boolean(store.params.access_levels.length))
-    + Number(Boolean(store.params.start))
-    + Number(Boolean(store.params.end))
+    + Number(Boolean(store.params.date))
     + Number(Boolean(store.params.direction)) )
 
 const directionList = [
@@ -61,30 +61,17 @@ const directionList = [
   },
 ]
 
-const checkLastClick = ()=>{
-    const TIMEOUT = 60 // minute
-    const now = Date.now()
-    const lastClickTime = localStorage.getItem("lastClickTime")
+const eventOption = [
+  {
+    name:t('hcEvent.eventYes'),
+    id:'yes',
+  },
+  {
+    name:t('hcEvent.eventNo'),
+    id:'no',
+  },
+]
 
-
-  if (lastClickTime) {
-    const diffMs = now - parseInt(lastClickTime, 10)
-    const diffMinutes = Math.floor(diffMs / (1000 * 60))
-    if (diffMs < TIMEOUT*60*1000) {
-      $Toast.warning(t('content.lastClickTime', {n:(TIMEOUT-diffMinutes)}))
-      return false
-    }
-  }
-  return true
-}
-
-const onSync = ()=>{
-  if(!checkLastClick()) return
-  store.syncPayload.from_date = null
-  store.syncPayload.to_date = null
-  store.syncPayload.access_level_ids = []
-  store.visible = true
-}
 
 </script>
 
@@ -135,39 +122,32 @@ const onSync = ()=>{
           @update:value="filterEvent"
 
       />
-      <label class="mt-3 text-xs text-gray-500">{{ $t('content.from') }}</label>
+      <label class="mt-3 text-xs text-gray-500">{{ $t('content.date') }}</label>
       <n-date-picker
           class="mt-1"
-          v-model:value="store.params.start"
+          v-model:value="store.params.date"
           @update:value="onChangeDate"
-          type="datetime"
+          type="date"
           update-value-on-close
           :actions="null"
           clearable />
-      <label class="mt-3 text-xs text-gray-500">{{ $t('content.to') }}</label>
-      <n-date-picker
-          class="mt-1"
-          v-model:value="store.params.end"
-          @update:value="onChangeDate"
-          type="datetime"
-          update-value-on-close
-          :actions="null"
-          clearable />
-    </template>
-    <template #filterAction>
-      <n-button :loading="store.jobLoading" @click="onSync" type="primary">
-        {{$t('turnstile.accessLevelPage.sync')}}
-        <template #icon>
-          <ArrowSync24Filled/>
-        </template>
-      </n-button>
+      <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{$t('hcEvent.event')}}</label>
+      <n-select
+          clearable
+          v-model:value="store.params.event"
+          :options="eventOption"
+          label-field="name"
+          value-field="id"
+          @update:value="filterEvent"
+
+      />
     </template>
     <template #filterSearch>
-      <n-button @click="store._changeView(2)" class="!ml-4" type="primary">
+      <n-button @click="eventStore._changeView(1)" class="!ml-4" type="primary">
         <template #icon>
-          <StarEmphasis32Filled/>
+          <StarLineHorizontal320Regular/>
         </template>
-        {{$t('hcEvent.newView')}}
+        {{$t('hcEvent.oldView')}}
       </n-button>
     </template>
   </UIPageFilter>

@@ -53,9 +53,7 @@ export const useEventStore = defineStore('eventStore', {
             },
         ],
         detailShow:false,
-        // Umumiy dashboard loading (butun sahifa uchun)
         dashboardLoading:false,
-        // Har bir so'rov uchun alohida loading flaglar
         dashboardMainLoading:false,          // '/v1/turnstile/hik-central/dashboard'
         dailyAttendanceLoading:false,        // '/v1/turnstile/hik-central/dashboard/daily-attendance'
         workerStatsLoading:false,            // '/v1/turnstile/hik-central/dashboard/worker-stats'
@@ -147,11 +145,16 @@ export const useEventStore = defineStore('eventStore', {
         devices:null,
         workerStatuses:[],
         deviceStatusList:[],
-
         workDuration:null,
+        tabs:[1,2],
+        activeTab:1,
 
     }),
     actions: {
+        _changeView(v){
+            localStorage.setItem("eventPageView",JSON.stringify(v))
+            this.activeTab = v
+        },
         _syncEvent(){
             this.syncLoading = true
             const data = {

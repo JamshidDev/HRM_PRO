@@ -24,6 +24,10 @@ const _delete = async (payload)=>{
     return await axios.delete(`/v1/turnstile/hik-central/workers/destroy/${payload.id}`)
 }
 
+const _error =async (payload)=>{
+    return await axios.get(`/v1/turnstile/hik-central/worker-errors`, {params:payload.params})
+}
+
 
 export default {
     _index,
@@ -32,4 +36,5 @@ export default {
     _access_levels,
     _updateFace,
     _delete,
+    _error,
 }

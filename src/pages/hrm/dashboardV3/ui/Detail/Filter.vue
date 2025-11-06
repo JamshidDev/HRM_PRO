@@ -1,10 +1,11 @@
 <script setup>
 import {Person32Regular, DocumentTable16Regular} from "@vicons/fluent";
 import {useComponentStore, useDashboardStore} from "@/store/modules/index.js"
-import {UIPageFilter} from "@/components/index.js"
+import {UIPageFilter, UISelect} from "@/components/index.js"
 import isdeepequal from "fast-deep-equal"
 import dayjs from "dayjs"
 import i18n from "@/i18n/index.js"
+import Utils from "@/utils/Utils.js"
 
 const {t} = i18n.global
 const store = useDashboardStore()
@@ -27,7 +28,13 @@ const filterEvent = () => {
 
 const clearFilters = () => {
   for (let i of store.activeDetail.filters) {
-    store.params[i] = store.defaultParams[i]
+    if(store.typeNames.includes(i)){
+      store.params.type = store.defaultParams.type
+    }
+    else{
+      store.params[i] = store.defaultParams[i]
+    }
+
   }
   filterEvent()
 }
@@ -53,6 +60,17 @@ const months = [
   "month.october",
   "month.november",
   "month.december",
+]
+
+const medTypes = [
+  {
+    name:t('dashboardPage.medical.finished'),
+    id:'finished'
+  },
+  {
+    name:t('dashboardPage.medical.approaching'),
+    id:'approaching'
+  },
 ]
 
 const passportFilter = [{
@@ -104,14 +122,65 @@ onMounted(()=>{
     <template v-if="store.activeDetail?.filters?.length" #filterContent>
       <div class="flex flex-col gap-4">
         <div v-for="(i,idx) in store.activeDetail?.filters" :key="idx">
+          <template v-if="i==='inc_type'">
+            <label class="text-xs">{{ $t('content.type') }}</label>
+            <n-select
+                v-model:value="store.params.type"
+                filterable
+                @update:value="filterEvent"
+                clearablewA
+                :options="componentStore.giftTypes"
+                label-field="name"
+                value-field="id"
+                :ignore-composition="false"
+            />
+          </template>
+          <template v-if="i==='disc_type'">
+            <label class="text-xs">{{ $t('content.type') }}</label>
+            <n-select
+                v-model:value="store.params.type"
+                filterable
+                @update:value="filterEvent"
+                clearablewA
+                :options="componentStore.fineTypes"
+                label-field="name"
+                value-field="id"
+                :ignore-composition="false"
+            />
+          </template>
+          <template v-if="i==='med_type'">
+            <label class="text-xs">{{ $t('content.type') }}</label>
+            <n-select
+                v-model:value="store.params.type"
+                filterable
+                @update:value="filterEvent"
+                clearablewA
+                :options="medTypes"
+                label-field="name"
+                value-field="id"
+                :ignore-composition="false"
+            />
+          </template>
+          <template v-if="i==='year'">
+            <label class="text-xs">{{ $t('content.year') }}</label>
+            <n-select
+                v-model:value="store.params.year"
+                filterable
+                @update:value="filterEvent"
+                clearablewA
+                :options="Utils.yearList"
+                label-field="name"
+                value-field="id"
+                :ignore-composition="false"
+            />
+          </template>
           <template v-if="i==='sex'">
             <label class="text-xs">{{ $t('workerPage.filter.sex') }}</label>
             <n-select
                 v-model:value="store.params.sex"
                 filterable
                 @update:value="filterEvent"
-                clearable
-
+                clearablewA
                 :options="componentStore.genderList"
                 label-field="name"
                 value-field="id"
@@ -174,7 +243,6 @@ onMounted(()=>{
               v-model:value="store.params.type"
               @update:value="filterEvent"
               clearable
-
               :options="componentStore.educationList"
               label-field="name"
               value-field="id"
@@ -186,7 +254,6 @@ onMounted(()=>{
               v-model:value="store.params.filter"
               @update:value="filterEvent"
               clearable
-
               :options="passportFilter"
             />
           </template>

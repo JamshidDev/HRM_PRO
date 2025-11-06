@@ -1,7 +1,7 @@
 <script setup>
 import validationRules from "@/utils/validationRules.js";
 import {useComponentStore, useTurnstileHikCentralWorkerStore} from "@/store/modules/index.js";
-import {NoDataIllustration, UINSelect} from "@/components/index.js";
+import {NoDataIllustration, UITransferSelect} from "@/components/index.js";
 import {Checkmark16Filled, AddCircle16Filled} from "@vicons/fluent"
 import {UICropper} from "@/components/index.js";
 import {useAppSetting} from "@/utils/index.js"
@@ -69,7 +69,7 @@ const onResult = (v) => {
       >
       <n-form-item :label="$t(`turnstile.hcWorkersPage.access_levels`)" path="access_level_ids"
                        rule-path="requiredMultiSelectField">
-            <UINSelect
+            <UITransferSelect
                 multiple
                 :loading="store.accessLevelsLoading"
                 v-model:value="store.payload.access_level_ids"

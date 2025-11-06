@@ -166,8 +166,8 @@ watch(() => appStore.themeSwitch, (v) => {
 watch(() => store.dashboard.eduCard, (newValue, oldValue) => {
   eduOption1.value.series[0].data = [
     {
-      value: newValue[0].count,
-      name: t(newValue[0].title),
+      value: newValue[0]?.count || 0,
+      name: t(newValue[0]?.title),
       itemStyle: {
         color: '#1A84FF',
       },

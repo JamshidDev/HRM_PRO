@@ -1,7 +1,7 @@
 <script setup>
 import {NoDataPicture,UIMenuButton, UIPagination, UIUser} from "@/components/index.js"
 import { useTurnstileHikCentralWorkerStore} from "@/store/modules/index.js"
-import {AddSquareMultiple20Regular, ArrowSync24Filled} from '@vicons/fluent'
+import {AddSquareMultiple20Regular, ArrowSync24Filled, ErrorCircle24Filled} from '@vicons/fluent'
 import {useAccountStore} from "@/store/modules/index.js"
 import Utils from "@/utils/Utils.js"
 import UIBadge from "@/components/ui/UIBadge.vue"
@@ -83,6 +83,15 @@ const onRefresh = (v)=>{
   store._onRefreshAcessLeves(v.id)
 }
 
+const onShowErrorEv = (worker_id, access_level_id)=>{
+  const params = {
+    worker_id:worker_id || undefined,
+    access_level_id:access_level_id || undefined,
+  }
+  store._getErrors(params)
+  store.errorVisible = true
+}
+
 
 
 </script>
@@ -91,17 +100,18 @@ const onRefresh = (v)=>{
   <n-spin :show="store.loading" style="min-height: 200px">
     <div class="w-full overflow-x-auto"  v-if="store.list.length>0">
       <n-table
-          class="mt-5 w-full table-fixed"
+          class="mt-4 w-full"
           :single-line="false"
           size="small"
       >
         <thead>
         <tr>
           <th class="w-[46px] min-w-[30px]">{{$t('content.number')}}</th>
-          <th class="min-w-[200px] w-[400px]">{{$t('content.fullName')}}</th>
-          <th class="min-w-[200px] ">{{$t('turnstile.hcWorkersPage.access_levels')}}</th>
+          <th class="min-w-[260px] w-[400px]">{{$t('content.fullName')}}</th>
+          <th class="min-w-[300px] ">{{$t('turnstile.hcWorkersPage.access_levels')}}</th>
           <th class="min-w-[120px] w-[120px]">{{$t('content.expiryDate')}}</th>
           <th class="min-w-[120px] w-[120px]">{{$t('content.updatedAt')}}</th>
+          <th class="min-w-[90px] w-[90px]">{{$t('content.error')}}</th>
           <th class="max-w-[40px] w-[40px]"></th>
         </tr>
         </thead>
@@ -119,15 +129,19 @@ const onRefresh = (v)=>{
                 middleName: item?.middle_name,
                 position: item.post_name,
               }"
-            />
+            >
+              <template #position>
+                <div class="text-xs line-clamp-1 text-secondary"><n-button class="!py-0 !h-[16px] !text-xs !select-all" secondary type="primary" size="tiny">{{item.id}}</n-button> {{item.post_name}}</div>
+              </template>
+            </UIUser>
           </td>
-          <td class="text-center!">
+          <td>
             <div class="flex flex-wrap gap-2" v-if="item.hcpPerson">
               <template v-for="level in item.hcpPerson.access_levels.slice(0,3)" :key="level.id">
                   <n-button
-                  class="!px-1"
+                      class="!px-1"
                       dashed
-                      :type="checkDeviceExpiry(level.to)"
+                      :type="level.type || 'default'"
                   >
                     <div class="flex flex-col px-4 relative group overflow-hidden min-w-[100px]">
                       <span class="font-semibold"> {{level.name}}</span>
@@ -141,7 +155,8 @@ const onRefresh = (v)=>{
 
                     <template #icon>
                       <n-icon size="19">
-                        <AddSquareMultiple20Regular/>
+                        <ErrorCircle24Filled @click.stop="onShowErrorEv(undefined,level.id )" v-if="level.type === 'error'" />
+                        <AddSquareMultiple20Regular v-else />
                       </n-icon>
                     </template>
                   </n-button>
@@ -166,6 +181,16 @@ const onRefresh = (v)=>{
           </td>
           <td class="text-center">
             {{ Utils.timeOnlyDate(item?.hcpPerson?.updated_at) }}
+          </td>
+          <td class="text-center">
+            <n-button @click="onShowErrorEv(item.id)" v-if="item.errorMessage" type="error" secondary size="small">
+              <template #icon>
+                <n-icon size="24" class="text-danger">
+                  <ErrorCircle24Filled/>
+                </n-icon>
+              </template>
+              {{$t('content.error')}}
+            </n-button>
           </td>
           <td>
             <UIMenuButton

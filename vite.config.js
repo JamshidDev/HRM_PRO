@@ -35,7 +35,7 @@ export default defineConfig({
   server:{
     port:8000,
     watch: {
-      ignored: ['dist/**', 'auto-imports.d.ts']  // dist ni kuzatmaydi
+      ignored: ['dist/**', 'auto-imports.d.ts']
     },
   },
 })

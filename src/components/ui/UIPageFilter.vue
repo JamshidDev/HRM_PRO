@@ -76,7 +76,7 @@ onMounted(()=>{
   <div class="grid grid-cols-1">
     <div v-if="title"><span class="text-lg font-semibold inline-block mb-2 text-surface-600">{{title}}</span></div>
     <div class="flex flex-col md:flex-row gap-4">
-      <div class="w-full md:max-w-[200px] flex items-start">
+      <div :class="[slots.filterSearch? 'md:max-w-full' : 'md:max-w-[200px]!']" class="w-full flex items-start">
         <n-input
             ref="searchInputRef"
             clearable

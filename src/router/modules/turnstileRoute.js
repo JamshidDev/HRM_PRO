@@ -11,15 +11,13 @@ import {
     TurnstileHcWorkersPage,
     HcServerPage,
     HcEventPage,
-    TelegramUserPage,
     WorkerImagePage,
     SyncLogPage,
     DashboardPage,
     HKWorkDurationPage,
-    UserImageLogsPage,
-    InvalidUserPage,
     OthersPage,
     DevicesPage,
+    HcEventV2Page,
 } from "@/pages/turnstile"
 
 
@@ -72,6 +70,11 @@ export default [
     {
         path:Utils.routeTurnstilePathMaker(AppPaths.HcEvents),
         component: ()=>HcEventPage,
+        children:[],
+    },
+    {
+        path:Utils.routeTurnstilePathMaker(AppPaths.HcEventsV2),
+        component: ()=>HcEventV2Page,
         children:[],
     },
     {

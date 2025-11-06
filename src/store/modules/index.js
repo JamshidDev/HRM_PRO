@@ -108,6 +108,7 @@ export * from './turnstile/userImageLogsStore.js'
 export * from './turnstile/invalidUserStore.js'
 export * from './turnstile/othersStore.js'
 export * from './turnstile/devicesStore.js'
+export * from './turnstile/eventV2Store.js'
 
 export * from './lms/directionStore.js'
 export * from './lms/specializationStore.js'

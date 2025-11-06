@@ -44,7 +44,7 @@ const store = useHKWorkDurationStore()
                 <p class="text-secondary text-xs">{{ item.event_date }} {{ item.event_time }}</p>
                </template>
               </div>
-          </div>
+           </div>
           </template>
           
         </div>

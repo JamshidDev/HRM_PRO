@@ -14,7 +14,7 @@ const accStore = useAccountStore()
 onBeforeMount(() => {
   if (!accStore.checkAction(accStore.pn.hrDashboardRead)) return
   store.activeDetail=null
-  store._index()
+   store._dashboard()
 })
 
 
@@ -64,7 +64,7 @@ const onDetailEv = (detailComponent, key) => {
       <n-tab-pane :name="1" class="!p-0">
         <UIPageContent class="!pt-2 !px-4 !m-0">
           <DetailFilters />
-          <component v-if="store.activeDetail?.detail" :is="store.activeDetail.detail"/>
+          <component v-if="store.activeDetail?.detail" :is="store.activeDetail?.detail"/>
         </UIPageContent>
       </n-tab-pane>
 

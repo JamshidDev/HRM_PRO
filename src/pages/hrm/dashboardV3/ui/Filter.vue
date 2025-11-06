@@ -12,7 +12,7 @@ const updateModel = (v)=>{
     store.params.page = 1
     store._index_detail()
   }
-  store._index()
+  store._dashboard()
 }
 
 const refresh = ()=>{
@@ -20,7 +20,7 @@ const refresh = ()=>{
     store._index_detail()
     return
   }
-  store._index(true)
+  store._dashboard(true)
 }
 
 onMounted(() => {
@@ -43,7 +43,6 @@ onMounted(() => {
     <div class="w-[400px]">
       <UISelect
           :options="componentStore.structureList"
-
           :modelV="store.params.organizations"
           @defaultValue="(v)=>store.params.organizations=v"
           @updateModel="updateModel"

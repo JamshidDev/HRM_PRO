@@ -1,5 +1,5 @@
 <script setup>
-import {NoDataPicture, UIPagination, UIBadge, UIStatus, UIMenuButton} from "@/components/index.js"
+import {NoDataPicture, UIPagination, UIBadge, UIStatus, UIMenuButton, UIUser} from "@/components/index.js"
 import {useAccountStore, useSyncLogStore} from "@/store/modules/index.js"
 import {ErrorCircle24Filled, PersonAvailable20Filled, CellularWarning20Regular} from "@vicons/fluent"
 import Utils from "@/utils/Utils.js"
@@ -71,10 +71,24 @@ const statusObj = {
         <tbody>
         <tr v-for="(item, idx) in store.list" :key="idx">
           <td><span class="text-center block">{{ (store.params.page - 1) * store.params.per_page + idx + 1 }}</span></td>
-          <td>{{item.type.name==='Foydalanuvchi'? item?.day:item?.sync_datetime?.split(' ')?.[0] }}</td>
+          <td>
+            {{item.type.name==='Foydalanuvchi'? item?.day:item?.sync_datetime?.split(' ')?.[0] }}
+          </td>
           <td>{{item?.sync_datetime?.split(' ')?.[1]}}</td>
           <td>
-            <UIBadge :type="item?.type?.name==='Tizim'? Utils.colorTypes.dark :Utils.colorTypes.warning" :show-icon="false" :label="item?.type?.name"/>
+            <UIBadge v-if="item?.type?.name === 'Tizim'" :type="Utils.colorTypes.dark" :show-icon="false" :label="item?.type?.name"/>
+            <template v-else>
+                <UIUser
+                    class="mx-auto bg-surface-ground/60 rounded-lg px-2"
+                    :data="{
+                    photo:item?.user?.worker.photo,
+                    firstName:item?.user?.worker.first_name,
+                    middleName:item?.user?.worker.middle_name,
+                    lastName:item?.user?.worker.last_name,
+                    position:item?.user?.worker.id,
+                  }"
+                />
+            </template>
           </td>
           <td>
             <UIStatus :status="statusObj[item?.status]"/>

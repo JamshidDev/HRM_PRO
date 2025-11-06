@@ -92,9 +92,8 @@ const computedOption =computed(()=>{
   if(!query){
     return props.options
   }
-  if(props.multiple){
-    selectedOptions.value = [...props.options].filter(v=>valueModel.value.includes(v.id))
-  }
+
+  selectedOptions.value =props.multiple? [...props.options].filter(v=>valueModel.value.includes(v.id)) : [...props.options].filter(v=>valueModel.value === v.id)
 
   const filtered = props.multipleSearch? props.options.filter(v=>v?.name?.toString()?.toLowerCase()?.includes(query) || v?.position?.toString()?.toLowerCase()?.includes(query)) : props.options.filter(v=>v?.name?.toString()?.toLowerCase()?.includes(query))
 

@@ -417,3 +417,9 @@ input:-webkit-autofill {
   background: radial-gradient(circle, transparent 20%, #ffffff 20%, #ffffff 80%, transparent 80%, transparent), radial-gradient(circle, transparent 20%, #ffffff 20%, #ffffff 80%, transparent 80%, transparent) 25px 25px, linear-gradient(#ecedf4 2px, transparent 2px) 0 -1px, linear-gradient(90deg, #ecedf4 2px, #ffffff 2px) -1px 0;
   background-size: 50px 50px, 50px 50px, 25px 25px, 25px 25px;
 }
+
+.image-viewer-container .vel-img {
+  width: unset !important;
+}
+
+

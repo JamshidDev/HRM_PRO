@@ -12,10 +12,15 @@
     "view": "Ko'rish",
     "responsible": "Mas'ul xodim",
     "now": "Hozir",
+    "price": "Narx",
+    "active": "Faol",
+    "noActive": "No Faol",
     "day": "Kun",
     "time": "Vaqt",
     "offline": "Offline",
     "online": "Online",
+    "attached": "Biriktirilgan",
+    "noAttached": "Biriktirilmagan",
     "all": "Barchasi",
     "copy": "Nusxalash",
     "startDate": "Boshlangan vaqt",
@@ -905,6 +910,9 @@
       "name": "Til"
     }
   },
+  "additionalPage": {
+    "name": "Qo'shimcha"
+  },
   "serviceOrgPage": {
     "createTitle": "Andoza yuklash",
     "updateTitle": "Andozani tahrirlash",
@@ -1094,7 +1102,10 @@
   "workerView": {
     "general": {
       "name": "Shaxsiy ma'lumotlari",
+      "specialty": "Mutaxassislik",
+      "educationPeriod": "Ta'lim davri",
       "passportName": "Pasport ma'lumotlari",
+      "university": "Oligoh ma'lumotlari",
       "fullName": "F.I.SH",
       "passportNumber": "Pasport seriyasi",
       "passportJSHSHIR": "JSHSHIR",
@@ -1300,9 +1311,19 @@
     },
     "medical": {
       "title": "Tibbiy ko'rik muddatlari",
+      "nextExamination": "Ko'rikdan o'tish sanasi",
       "deadline": "Muddati yaqinlashgan",
+      "approaching": "Muddati yaqinlashgan",
+      "finished": "Muddati o'tgan",
       "expired": "Muddati o'tgan"
     },
+    "incentive": {
+      "title": "Rag'batlantirishlar"
+    },
+    "disciplinary": {
+      "title": "Intizomiy jazolar"
+    },
+
     "position": {
       "title": "Shtat birliklari",
       "vakant": "Vakant",
@@ -1473,6 +1494,7 @@
       "edit": "Xodimni tahrirlash",
       "access_levels_count": "Guruhlar soni",
       "department": "Bo'linma",
+      "added": "Biriktirilgan xodimlar",
       "device": "Qurilmalar"
     },
     "workDurationPage": {
@@ -1666,6 +1688,20 @@
       "goChat": "Suhbatga qaytish",
       "feedback": "Fikringiz uchun raxmat!",
       "askQuestion": "Savolingizni kiriting..."
+    }
+  },
+  "others": {
+    "title": "Boshqalar",
+    "info": {
+      "title": "Dashboard",
+      "organizations": "Korxonalar",
+      "organizationsDesc": "«O'zbekiston temir yo'llari» AJ tizimidagi barcha tashkilotlar, filiallar va rahbarlar haqidagi to‘liq ma’lumotlar. Joylashuvi, bo‘ysunuv tartibi va tuzilmasi bilan tanishing.",
+      "positions": "Lavozimlar",
+      "positionsDesc": "«O'zbekiston temir yo'llari» AJda mavjud bo‘lgan lavozimlar ro‘yxati va ularning funksional vazifalari. Xodimlarning xizmat lavozimlari bo‘yicha strukturaviy taqsimoti keltirilgan.",
+      "laborCode": "Mehnat kodeksi",
+      "laborCodeDesc": "O‘zbekiston Respublikasi Mehnat kodeksi asosida xodimlar va ish beruvchilar o‘rtasidagi munosabatlar, huquq va majburiyatlar. Moddalar asosida tushuntirishlar va qonunchilik normalari keltiriladi.",
+      "empty": "Bo'sh",
+      "emptyDesc": "Hozircha bu bo‘limda ma’lumot mavjud emas. Yaqin kunlarda yangi xizmatlar yoki foydali kontent joylashtiriladi."
     }
   },
   "businessTrip": {
@@ -2097,11 +2133,19 @@
   },
   "hcEvent": {
     "name": "(HC) Hodisalar",
+    "nameV2": "(HC) Hodisalar V2",
     "createTitle": "Yuklash",
     "updateTitle": "Tahrirlash",
     "syncTitle": "Sinxronlash",
     "syncText": "Iltimos, sinxronlash uchun kerakli vaqtni tanlang. Tizim ushbu kunni oxirigacha bo‘lgan vaqtni avtomatik ravishda sinxronlaydi.",
     "preview": "Ko'rish",
+    "availableEvent": "Mavjud hodisalar",
+    "newView": "Ish vaqti kesimida",
+    "oldView": "Hodisalar kesimida",
+    "byMonth": "Oy bo'yicha",
+    "event": "Hodisalar",
+    "eventYes": "Mavjud hodisalar",
+    "eventNo": "Mavjud bo'lmagan hodisalar",
     "form": {
       "name": "Nomi",
       "temperature": "Harorat",
@@ -2121,6 +2165,7 @@
       "noNormal": "Normal emas",
       "start_time": "Boshlanish vaqti",
       "hours": "Norma soati (/soat)",
+      "on_vacation": "Ta'til",
       "end_time": "Tugash vaqti"
     },
     "detailShow": "Batafsil ko'rish",
@@ -2276,9 +2321,6 @@
     "noPhoto": "Rasm yo'q",
     "syncTime": "Sinxronlash vaqti"
   },
-  "others": {
-    "name": "Qo'chimcha"
-  },
   "accessLevel": {
     "title": "Ruxsat darajalari",
     "unknown": "Noma'lum",
@@ -2306,9 +2348,20 @@
     "macAddressPlaceholder": "MAC manzilni kiriting",
     "serialNumber": "Seriya raqami",
     "serialNumberPlaceholder": "Seriya raqamini kiriting",
+    "contractTitle": "Shartnoma ma'lumotlari",
     "status": "Holati",
     "online": "Onlayn",
-    "offline": "Oflayn"
+    "offline": "Oflayn",
+    "config": "C",
+    "log": "L",
+    "contract_number": "Sh/raqami",
+    "contract_date": "Sh/sanasi",
+    "price": "Sh/narxi",
+    "upload_workers": "U",
+    "device_code": "Qurilma kodi",
+    "attachedOrg": "Tashkilotga biriktirilgan",
+    "noAttachedOrg": "Tashkilotga biriktirilmagan",
+    "orgStatus": "Tashkilot bo'yicha"
   }
 }
 

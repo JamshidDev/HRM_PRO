@@ -114,6 +114,7 @@ export const AppPaths = {
     PensionPayment: "/pension-payment",
     HcServer: "/hc-server",
     HcEvents: "/hc-events",
+    HcEventsV2: "/hc-events-v2",
     Pensioner: "/pensioner",
     Notification: "/notification",
     LmsWorker: "/education-worker",

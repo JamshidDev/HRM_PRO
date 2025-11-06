@@ -418,6 +418,13 @@ export const navigations = [
                 permission: appPermissions.turnstileHikCentralEvents,
             },
             // {
+            //     label: 'hcEvent.nameV2',
+            //     path: Utils.routeTurnstilePathMaker(AppPaths.HcEventsV2),
+            //     icon: ContactCard16Filled,
+            //     color: 'bg-info',
+            //     permission: appPermissions.turnstileHikCentralEvents,
+            // },
+            // {
             //     label: 'syncLog.name',
             //     path: Utils.routeTurnstilePathMaker(AppPaths.SyncLog),
             //     icon: ArrowSyncCircle24Filled,
@@ -431,13 +438,13 @@ export const navigations = [
                 color: 'bg-primary',
                 permission: appPermissions.turnstileWorkerImage,
             },
-            {
-                label: 'hcWorkDuration.name',
-                path: Utils.routeTurnstilePathMaker(AppPaths.HCWorkDuration),
-                icon: Clock24Filled,
-                color: 'bg-success',
-                permission: appPermissions.turnstileHcpDuration,
-            },
+            // {
+            //     label: 'hcWorkDuration.name',
+            //     path: Utils.routeTurnstilePathMaker(AppPaths.HCWorkDuration),
+            //     icon: Clock24Filled,
+            //     color: 'bg-success',
+            //     permission: appPermissions.turnstileHcpDuration,
+            // },
             {
                 label: 'devices.name',
                 path: Utils.routeTurnstilePathMaker(AppPaths.Devices),
@@ -446,7 +453,7 @@ export const navigations = [
                 permission: appPermissions.turnstileDevices,
             },
             {
-                label: 'others.name',
+                label: 'additionalPage.name',
                 path: Utils.routeTurnstilePathMaker(AppPaths.Others),
                 icon: DocumentBulletList24Filled,
                 color: 'bg-primary',

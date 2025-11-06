@@ -43,6 +43,22 @@ const store = useComponentStore()
       </div>
     </div>
 
+    <div class="col-span-12 mt-12 mb-6">
+      <div class="text-sm uppercase mb-2 font-semibold text-primary">{{$t('workerView.general.university')}}</div>
+      <div v-for="(item, idx) in store.workerPreview?.worker.universities" :key="idx" class="grid grid-cols-12 border border-dashed rounded-md border-surface-line p-2">
+        <div class="col-span-12 md:col-span-6">
+          <span class="block p-1 leading-4 text-gray-400">{{$t('content.name')}}: <span class="font-semibold pl-2 text-gray-700">{{item.university.name}} ({{item?.university?.education?.name}})</span></span>
+          <span class="block p-1 leading-4 text-gray-400">{{$t('workerView.general.specialty')}}: <span class="font-semibold pl-2 text-gray-700">{{item.speciality?.name}}</span></span>
+
+        </div>
+        <div class="col-span-12 md:col-span-6">
+          <span class="block p-1 leading-4 text-gray-400">{{$t('workerView.general.educationPeriod')}}: <span class="font-semibold pl-2 text-gray-700">{{Utils.timeOnlyDate(item.from_date) +' - '+ Utils.timeOnlyDate(item.to_date)}}</span></span>
+          <span class="block p-1 leading-4 text-gray-400">{{$t('content.organization')}}: <span class="font-semibold pl-2 text-gray-700">{{item.university?.type?.name}}</span></span>
+        </div>
+      </div>
+      <h4 v-if="store.workerPreview?.worker.universities.length === 0" class="text-center text-secondary">{{$t('content.no-data')}}</h4>
+    </div>
+
 
 
 

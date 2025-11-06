@@ -1,7 +1,7 @@
 <script setup>
 import { ref, computed, watch } from 'vue'
 import { UIModal } from '@/components/index.js'
-import { Search24Regular, ArrowSync24Filled } from '@vicons/fluent'
+import { Search24Regular, ArrowSync24Filled, ErrorCircle24Filled, DismissCircle16Filled } from '@vicons/fluent'
 import i18n from '@/i18n/index.js'
 import {useTurnstileHikCentralWorkerStore} from "@/store/modules/index.js"
 const store = useTurnstileHikCentralWorkerStore()
@@ -39,6 +39,14 @@ const filteredAccessLevels = computed(() => {
 
 const onRefresh = (level) => {
   emit('refresh', level)
+}
+
+const onOpenErrorEv = (v)=>{
+  store.elementId = v.id
+  const params = {
+    access_level_id:v.id,
+  }
+  store._getErrors(params)
 }
 
 watch(() => props.visible, (newVal) => {
@@ -86,7 +94,16 @@ watch(() => props.visible, (newVal) => {
               class="border border-surface-line rounded-lg bg-surface-ground px-4 hover:bg-surface-ground transition-colors"
             >
               <div class="flex items-center justify-between py-2">
-                <span class="font-semibold text-textColor">{{ level.name }}</span>
+                <span class="font-semibold text-textColor flex items-center gap-2">
+                  <n-icon
+                      size="20"
+                      class="text-danger cursor-pointer"
+                      v-if="level.type === 'error'"
+                  >
+                    <DismissCircle16Filled @click.stop="store.elementId = null" v-if="store.elementId === level.id" />
+                    <ErrorCircle24Filled @click.stop="onOpenErrorEv(level)" v-else/>
+                  </n-icon>
+                  {{ level.name }}</span>
                 <n-button
                     @click="onRefresh(level)"
                     size="tiny"
@@ -94,6 +111,7 @@ watch(() => props.visible, (newVal) => {
                     round
                     :loading="store.loading"
                     :disabled="store.loading"
+                    :type="level.type || 'default'"
                   >
                     <template #icon>
                       <n-icon size="16" v-if="!store.loading">
@@ -103,6 +121,25 @@ watch(() => props.visible, (newVal) => {
                     {{ $t('accessLevel.refresh') }}
                   </n-button>
               </div>
+              <n-collapse-transition :show="level.id === store.elementId">
+                <n-spin :show="store.errorLoading">
+                  <div class="w-full min-h-[100px]">
+                    <template v-for="item in store.errorList" :key="item.id">
+                      <div class="bg-surface-section/60 p-2 rounded-lg mt-2">
+                        <div class="flex justify-between">
+                          <n-button size="tiny" type="primary" secondary>{{item.name}}</n-button>
+                          <n-button text size="tiny">{{item.time}}</n-button>
+                        </div>
+
+                        <div class="text-danger block mt-1">
+                          {{item.code}}
+                        </div>
+                      </div>
+                    </template>
+                  </div>
+                </n-spin>
+
+              </n-collapse-transition>
             </div>
           </div>
         </div>

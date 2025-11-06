@@ -111,6 +111,7 @@ import {
     turnstileDashboardService,
     userImageLogsService,
     invalidUserService,
+    eventV2Service,
 } from './v1/turnstile'
 
 
@@ -246,4 +247,5 @@ export default {
     turnstileDashboardService,
     userImageLogsService,
     invalidUserService,
+    eventV2Service,
 }

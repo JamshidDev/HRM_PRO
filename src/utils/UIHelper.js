@@ -57,7 +57,7 @@ const selectValue = ({option})=>{
             'span',
             {
                 class:'w-full !truncate line-clamp-1'
-            },`${option?.name}`),
+            },`${option?.name}`)
     ];
 }
 

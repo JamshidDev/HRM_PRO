@@ -4,6 +4,7 @@ import {UIPageFilter, UISelect} from "@/components/index.js"
 import {ArrowCircleDown32Regular} from "@vicons/fluent"
 const store = usePensionerStore()
 const accStore = useAccountStore()
+import router from "@/router/index.js"
 
 const filterEvent = ()=>{
   store.params.page = 1

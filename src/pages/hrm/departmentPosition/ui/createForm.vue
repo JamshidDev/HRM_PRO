@@ -79,17 +79,26 @@ const onPanelEv = (v)=>{
               :ignore-composition="false"
           />
         </n-form-item>
-        <n-form-item class="col-span-12" :label="$t(`departmentPositionPage.form.position_id`)" path="position_id">
-          <n-select
-              v-model:value="store.payload.position_id"
-              filterable
-              clearable
+        <label class="col-span-12 text-secondary mb-2">{{$t(`departmentPositionPage.form.position_id`)}}
+          <span class="n-form-item-label__asterisk text-danger">&nbsp;*</span>
+          <template v-if="store.payload.position_id">(<span class="select-all cursor-pointer">{{store.payload.position_id}}</span>)</template>
+        </label>
+        <n-form-item class="col-span-12" :show-label="false" :label="$t(`departmentPositionPage.form.position_id`)" path="position_id">
+          <div class="flex gap-2 w-full items-center">
+            <n-select
+                class="w-[calc(100% - 60px)]"
+                v-model:value="store.payload.position_id"
+                filterable
+                clearable
+                :options="componentStore.positionList"
+                label-field="name"
+                value-field="id"
+                :loading="componentStore.positionLoading"
+                :render-label="UIHelper.selectRender.label"
+                :render-tag="UIHelper.selectRender.value"
+            />
+          </div>
 
-              :options="componentStore.positionList"
-              label-field="name"
-              value-field="id"
-              :loading="componentStore.positionLoading"
-          />
         </n-form-item>
         <n-form-item class="col-span-12 md:col-span-6 lg:col-span-4" :label="$t(`departmentPositionPage.form.group`)" path="group">
           <n-select

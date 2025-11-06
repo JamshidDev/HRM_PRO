@@ -9,47 +9,77 @@ export const useDevicesStore = defineStore('devicesStore', {
         loading:false,
         saveLoading:false,
         deleteLoading:false,
+        structureCheck2:[],
         downloading:false,
         visible:false,
         visibleType:true,
         elementId:null,
         totalItems:0,
         payload:{
-            name: null,
+            name:null,
+            organization_id: [],
+            device_id:null,
+            device_code:null,
             ip_address: null,
             mac_address: null,
-            serial_number: null,
-            status: true,
+            config: false,
+            log: false,
+            upload_workers:false,
+            contract_number:null,
+            contract_date:null,
+            price:'0',
         },
         params:{
             page:1,
             per_page:10,
             search:null,
+            organizations:[],
+            attached:null,
+            status:null,
+            org_status:null,
         },
+        accessLevels:[],
+        isAdmin:false,
+        deviceList:[],
+        deviceLoading:false,
     }),
     actions:{
+        _access_levels() {
+            this.accessLevels = []
+            this.accessLevelsLoading = true
+            $ApiService.turnstileHikCentralWorkerService._access_levels().then((res) => {
+                this.accessLevels = res.data.data
+            }).finally(() => {
+                this.accessLevelsLoading = false
+            })
+        },
+        _deviceList() {
+            this.deviceLoading = true
+            $ApiService.devicesService._index({params:{page:1, per_page:2000}}).then((res) => {
+                this.deviceList = res.data.data.data.map(v=>({
+                    id:v.device_id,
+                    name:v.name
+                }))
+            }).finally(() => {
+                this.deviceLoading = false
+            })
+        },
         _index(){
             this.loading= true
-            $ApiService.devicesService._index({params:this.params}).then((res)=>{
+            const params = {
+                ...this.params,
+                organizations:this.params.organizations.map(v=>v.id).toString() || undefined,
+            }
+            $ApiService.devicesService._index({params}).then((res)=>{
                 this.list = res.data.data.data
                 this.totalItems = res.data.data.total
             }).finally(()=>{
                 this.loading= false
             })
         },
-        _create(){
+        _create(data){
             this.saveLoading = true
-            $ApiService.devicesService._create({data:this.payload}).then(()=>{
-                this.visible = false
-                this._index()
-                this.resetForm()
-            }).finally(()=>{
-                this.saveLoading = false
-            })
-        },
-        _update(){
-            this.saveLoading = true
-            $ApiService.devicesService._update({id:this.elementId, data:this.payload}).then(()=>{
+            $ApiService.devicesService._create({data}).then(()=>{
                 this.visible = false
                 this._index()
                 this.resetForm()
@@ -58,38 +88,27 @@ export const useDevicesStore = defineStore('devicesStore', {
             })
         },
         _delete(){
-            this.deleteLoading = true
+            this.loading= true
             $ApiService.devicesService._delete({id:this.elementId}).then(()=>{
                 this._index()
-            }).finally(()=>{
-                this.deleteLoading = false
             })
         },
-        resetForm(){
-            this.payload = {
-                name: null,
-                ip_address: null,
-                mac_address: null,
-                serial_number: null,
-                status: true,
-            }
-            this.elementId = null
-            this.visible = false
-            this.visibleType = true
+
+        _update(data){
+            this.saveLoading = true
+            $ApiService.devicesService._update({id:this.elementId,data}).then(()=>{
+                this.visible = false
+                this._index()
+                this.resetForm()
+            }).finally(()=>{
+                this.saveLoading = false
+            })
         },
         _refreshDevice(){
             this.loading = true
             $ApiService.turnstileHikCentralAccessService._refreshDevices().then((res) => {
                 this._index()
             }).finally(() => {
-                this.loading = false
-            })
-        },
-        _show(){
-            this.loading = true
-            $ApiService.devicesService._show({id:this.elementId}).then((res)=>{
-                this.payload = res.data.data
-            }).finally(()=>{
                 this.loading = false
             })
         },
@@ -100,6 +119,20 @@ export const useDevicesStore = defineStore('devicesStore', {
             }).finally(() => {
                 this.downloading = false
             })
+        },
+        resetForm(){
+            this.payload.name = null
+            this.payload.organization_id = []
+            this.payload.device_id = null
+            this.payload.device_code = null
+            this.payload.ip_address = null
+            this.payload.mac_address = null
+            this.payload.config = false
+            this.payload.log = false
+            this.payload.upload_workers = false
+            this.payload.contract_number = null
+            this.payload.contract_date = null
+            this.payload.price = '0'
         },
     }
 })

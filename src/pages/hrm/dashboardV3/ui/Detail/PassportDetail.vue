@@ -1,5 +1,5 @@
 <script setup>
-import {UIUser, UIPagination, NoDataPicture, UIBadge, UIMenuButton, UIDrawer, UIModal} from "@/components/index.js"
+import {UIUser, UIPagination, NoDataPicture, UIBadge, UIMenuButton, UIModal} from "@/components/index.js"
 import {useDashboardStore} from "@/store/modules/index.js"
 import Utils from '@/utils/Utils.js'
 import passportForm from "../pasportForm.vue"

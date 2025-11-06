@@ -202,7 +202,3 @@ const onClickoutside=()=> {
   </n-spin>
   <UIWorkerView ref="previewRef"/>
 </template>
-
-<style scoped>
-
-</style>

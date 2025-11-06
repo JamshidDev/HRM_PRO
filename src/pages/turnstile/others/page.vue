@@ -31,22 +31,22 @@ const emitTeleportEvent = (content) => {
 }
 const pages =computed(()=>{
   return [
-    {
-      name:t('userImageLogs.name'),
-      icon: markRaw(ImageMultiple24Filled),
-      component:markRaw(UserImageLogPage),
-      key:store.tabs[0],
-      visible:accStore.checkPermission(accStore.pn.turnstileHikCentralUserImageLogs),
-      color:'primary',
-    },
-    {
-      name:t('invalidUser.name'),
-      icon: markRaw(PersonProhibited24Filled),
-      component:markRaw(InvalidUserPage),
-      key:store.tabs[1],
-      visible:accStore.checkPermission(accStore.pn.turnstileHikCentralInvalidUser),
-      color:'error',
-    },
+    // {
+    //   name:t('userImageLogs.name'),
+    //   icon: markRaw(ImageMultiple24Filled),
+    //   component:markRaw(UserImageLogPage),
+    //   key:store.tabs[0],
+    //   visible:accStore.checkPermission(accStore.pn.turnstileHikCentralUserImageLogs),
+    //   color:'primary',
+    // },
+    // {
+    //   name:t('invalidUser.name'),
+    //   icon: markRaw(PersonProhibited24Filled),
+    //   component:markRaw(InvalidUserPage),
+    //   key:store.tabs[1],
+    //   visible:accStore.checkPermission(accStore.pn.turnstileHikCentralInvalidUser),
+    //   color:'error',
+    // },
 
     {
       name:t('syncLog.name'),

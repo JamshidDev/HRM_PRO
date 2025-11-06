@@ -1,14 +1,14 @@
 <script setup>
-import {UIPageFilter, UISelect} from "@/components/index.js"
+import {UINSelect, UIPageFilter, UISelect} from "@/components/index.js"
 import {
   useAccountStore,
   useComponentStore,
-  useTurnstileHikCentralStore,
   useTurnstileHikCentralWorkerStore
 } from "@/store/modules/index.js"
-import {ArrowSync24Filled} from "@vicons/fluent"
 
-const levelStore = useTurnstileHikCentralStore()
+import i18n from "@/i18n/index.js"
+const t = i18n.global.t
+
 const store = useTurnstileHikCentralWorkerStore()
 const componentStore = useComponentStore()
 const accStore = useAccountStore()
@@ -36,6 +36,14 @@ const onSearch = ()=>{
 
 const onChangeStructure = (v)=>{
   store.params.organizations=v
+  componentStore.depParams.organizations = v.map((x) => x.id)
+  componentStore.departmentList = []
+  filterEvent()
+  if(v.length === 0) return
+  componentStore._departments()
+}
+
+const onChangeDepartment = (v)=>{
   filterEvent()
 }
 
@@ -49,8 +57,31 @@ const beforeShow = (v)=>{
 const resetFilter = ()=>{
   store.params.organizations = []
   store.params.access_level_id = null
+  store.params.added = true
+  store.params.departments = []
+  store.params.status = null
   filterEvent()
 }
+
+const onChange = (v)=>{
+    store.params.added = v
+    filterEvent()
+}
+
+const statusOption = [
+  {
+    name:t('content.process'),
+    id:1,
+  },
+  {
+    name:t('content.success'),
+    id:2,
+  },
+  {
+    name:t('content.error'),
+    id:3,
+  },
+]
 
 const filterCount = computed(()=>Number(Boolean(store.params.organizations.length)) + Boolean(store.params.access_level_id))
 
@@ -81,6 +112,17 @@ const filterCount = computed(()=>Number(Boolean(store.params.organizations.lengt
           @onSearch="componentStore._structures"
           @onSubmit="filterEvent"
       />
+      <label class="mt-3 text-xs text-gray-500 mb-1">{{ $t('workerPage.filter.department') }}</label>
+      <UINSelect
+          :disabled="store.params.organizations.length === 0"
+          v-model:value="store.params.departments"
+          :options="componentStore.departmentList"
+          @update:value="onChangeDepartment"
+          multiple
+          clearable
+          value-field="id"
+          :loading="componentStore.departmentLoading"
+      />
       <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{$t('turnstile.hcWorkersPage.access_levels')}}</label>
       <n-select
           filterable
@@ -91,15 +133,22 @@ const filterCount = computed(()=>Number(Boolean(store.params.organizations.lengt
           value-field="id"
           @update:value="filterEvent"
       />
+      <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{$t('content.status')}}</label>
+      <n-select
+          filterable
+          v-model:value="store.params.status"
+          :options="statusOption"
+          label-field="name"
+          value-field="id"
+          @update:value="filterEvent"
+      />
+      <div @click.self="onChange(!store.params.added)" class="flex cursor-pointer py-1 px-3 border rounded-lg mt-4 border-surface-line">
+        <n-checkbox @update:checked="onChange" v-model:checked="store.params.added" >
+          <p class="line-clamp-1">{{$t('turnstile.hcWorkersPage.added')}}</p>
+        </n-checkbox>
+      </div>
     </template>
-    <!-- <template #filterAction>
-        <n-button :loading="levelStore.onlineDeviceLoading" @click="levelStore._onlineDevice()" type="success">
-          {{$t('turnstile.hcWorkersPage.device')}}
-          <template #icon>
-            <ArrowSync24Filled/>
-          </template>
-        </n-button>
-    </template> -->
+
   </UIPageFilter>
 </template>
 

@@ -6,6 +6,7 @@ import faceForm from "./ui/faceForm.vue"
 import Filter from "./ui/Filter.vue"
 import UserForm from "@/pages/turnstile/terminalUser/ui/UserForm.vue"
 import deviceForm from "../accessLevels/ui/deviceForm.vue"
+import ErrorModal from "./ui/ErrorModal.vue"
 import {
   useAccountStore,
   useTurnstileHikCentralStore,
@@ -80,6 +81,7 @@ const onSuccessEv = (v)=>{
         />
       </template>
     </UIModal>
+    <ErrorModal/>
 
   </UIPageContent>
 </template>

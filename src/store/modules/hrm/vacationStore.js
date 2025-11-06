@@ -1,6 +1,8 @@
 import {defineStore} from "pinia";
 import i18n from "@/i18n/index.js"
 import Utils from "@/utils/Utils.js"
+import router from "@/router/index.js"
+import {AppPaths} from "@/utils/index.js"
 const {t} = i18n.global
 export const useVacationStore = defineStore('vacationStore', {
     state:()=>({
@@ -30,6 +32,20 @@ export const useVacationStore = defineStore('vacationStore', {
         uuid:null,
     }),
     actions:{
+        _download(){
+            this.loading= true
+            const params = {
+                ...this.params,
+                uuid:this.uuid,
+                organizations:this.params.organizations.map(v=>v.id).toString() || undefined,
+                download:true,
+            }
+            $ApiService.vacationService._index({params}).then((res)=>{
+                router.push(Utils.routeHrmPathMaker(AppPaths.Export))
+            }).finally(()=>{
+                this.loading= false
+            })
+        },
         _index(){
             this.loading= true
             const params = {
@@ -44,6 +60,7 @@ export const useVacationStore = defineStore('vacationStore', {
                 this.loading= false
             })
         },
+
         _create(){
             this.saveLoading = true
             const data = {
