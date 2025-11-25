@@ -64,6 +64,7 @@ export const useDevicesStore = defineStore('devicesStore', {
                 this.deviceLoading = false
             })
         },
+
         _index(){
             this.loading= true
             const params = {
@@ -115,6 +116,18 @@ export const useDevicesStore = defineStore('devicesStore', {
         _downloadDevices(){
             this.downloading = true
             $ApiService.turnstileHikCentralAccessService._downloadDevices({params:{download:true}}).then((res) => {
+                Utils.blobFileDownload(res.data,'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'download.xlsx' )
+            }).finally(() => {
+                this.downloading = false
+            })
+        },
+        _downloadReport(){
+            this.downloading = true
+            const params = {
+                ...this.params,
+                organizations:this.params.organizations.map(v=>v.id).toString() || undefined,
+            }
+            $ApiService.turnstileHikCentralAccessService._downloadReport({params}).then((res) => {
                 Utils.blobFileDownload(res.data,'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'download.xlsx' )
             }).finally(() => {
                 this.downloading = false

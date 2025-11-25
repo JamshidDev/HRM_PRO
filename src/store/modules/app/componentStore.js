@@ -238,8 +238,58 @@ export const useComponentStore = defineStore('componentStore', {
         lmsEnumExamTypes:[],
         lmsLearningCenters:[],
         lmsLearningCenterLoading:false,
+
+        departments:{},
+        positions:{},
     }),
     actions:{
+        createDepartmentFetcher(key){
+            this.departments[key] ??= { list: [], total: 0, loading: false }
+
+            return async (params={}, infinity=false)=>{
+                const item = this.departments[key]
+                item.loading = true
+                try{
+                    const { data: { data } } = await $ApiService.componentService._departmentByOrganizations({ params })
+                    const newData = data.data.map(v => ({ ...v, position: v?.organization?.name }))
+                    item.total = data.total
+                    item.list = infinity ? [...item.list, ...newData] : newData
+                }catch (error){
+                    console.log(error)
+                }finally {
+                    item.loading = false
+                }
+
+            }
+        },
+        getDepartmentState(key) {
+            return this.departments[key] ??= { list: [], total: 0, loading: false }
+        },
+
+        createPositionFetcher(key){
+            this.positions[key] ??= { list: [], total: 0, loading: false }
+
+            return async (params={}, infinity=false)=>{
+                const item = this.positions[key]
+                item.loading = true
+                try{
+                    const { data: { data } } = await $ApiService.positionService._filterIndex({ params })
+                    const newData = data.data
+                    item.total = data.total
+                    item.list = infinity ? [...item.list, ...newData] : newData
+                }catch (error){
+                    console.log(error)
+                }finally {
+                    item.loading = false
+                }
+
+            }
+        },
+        getPositionState(key) {
+            return this.positions[key] ??= { list: [], total: 0, loading: false }
+        },
+
+
         _lmsEnum(){
             this.lmsEnumLoading= true
             $ApiService.eduPlanService._enum().then((res)=>{
@@ -554,7 +604,7 @@ export const useComponentStore = defineStore('componentStore', {
                 this.confirmationLoading = false
             })
         },
-        _departmentTree(id=undefined){
+        _departmentTree(){
             this.departmentLoading = true
             let params = {...this.depParams}
             $ApiService.componentService._departmentTree({params}).then((res)=>{
@@ -584,10 +634,11 @@ export const useComponentStore = defineStore('componentStore', {
                 this.allDepartmentLoading = false
             })
         },
-        _scheduleList(){
+        _scheduleList(callback){
             this.scheduleLoading = true
             $ApiService.scheduleService._index(this.params).then((res)=>{
                 this.scheduleList = res.data.data.data
+                callback?.(res.data.data.data)
             }).finally(()=>{
                 this.scheduleLoading = false
             })

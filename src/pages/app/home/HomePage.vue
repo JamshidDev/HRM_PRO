@@ -2,6 +2,8 @@
 import {UIPageContent, AIButton} from "@/components/index.js"
 import {useQuoteStore} from "@/store/modules/index.js"
 import Quotes from "./ui/Quotes.vue"
+import OnlineUsers from "./ui/OnlineUsers.vue"
+import UsersModal from "./ui/UsersModal.vue"
 const store = useQuoteStore()
 import {useAppSetting} from "@/utils/index.js"
 
@@ -37,6 +39,8 @@ onUnmounted(() => {
       <div class="w-full h-[60vh] flex justify-center items-center">
           <Quotes/>
       </div>
+      <OnlineUsers/>
+      <UsersModal/>
     </UIPageContent>
 </template>
 

@@ -1,7 +1,7 @@
 <script setup>
 import {NoDataPicture,UIMenuButton, UIPagination, UIUser} from "@/components/index.js"
 import { useTurnstileHikCentralWorkerStore} from "@/store/modules/index.js"
-import {AddSquareMultiple20Regular, ArrowSync24Filled, ErrorCircle24Filled} from '@vicons/fluent'
+import {AddSquareMultiple20Regular, ArrowSync24Filled, ErrorCircle24Filled, MoreHorizontal24Regular} from '@vicons/fluent'
 import {useAccountStore} from "@/store/modules/index.js"
 import Utils from "@/utils/Utils.js"
 import UIBadge from "@/components/ui/UIBadge.vue"
@@ -23,7 +23,7 @@ const onEdit = (v)=>{
   
 
   store.payload.end_time =v?.hcpPerson?.to? new Date(v.hcpPerson.to).getTime() : null
-  store.payload.access_level_ids = v?.hcpPerson?.access_levels.map(a=>a.access_level_id) || []
+  store.payload.access_level_ids = []
   store.editPayload.id =v?.hcpPerson?.id || undefined 
   store.editPayload.worker_id =v?.hcpPerson?.id? undefined:v.id
 
@@ -32,10 +32,13 @@ const onEdit = (v)=>{
   store.editVisible = true
   store._access_levels()
 
+  store._workerAccessLevels(v.id, (data)=>{
+    store.payload.access_level_ids = data.map(level=>level.access_level_id) || []
+  })
+
   store._worker_photos(()=>{
     if(!existPerson) return
-    const idx = store.photos.findIndex(x=>x.id == photoId)
-    store.payload.photo_index = idx
+    store.payload.photo_index = store.photos.findIndex(x=>x.id == photoId)
     store.payload.photo_id = photoId
   })
   
@@ -68,6 +71,8 @@ const checkDeviceExpiry = (date)=>{
 
 const onSelect = (v)=>{
   store.accessLevelModalVisible = true
+  store.moreAccessLevels = []
+  store._workerAccessLevels(v.id)
   store.selectedWorker = v
 }
 
@@ -131,7 +136,7 @@ const onShowErrorEv = (worker_id, access_level_id)=>{
               }"
             >
               <template #position>
-                <div class="text-xs line-clamp-1 text-secondary"><n-button class="!py-0 !h-[16px] !text-xs !select-all" secondary type="primary" size="tiny">{{item.id}}</n-button> {{item.post_name}}</div>
+                <div class="text-xs line-clamp-1 text-secondary"><n-button class="!py-0 !h-[16px] !text-xs !select-all" secondary type="primary" size="tiny">{{item.card}}</n-button> {{item.post_name}}</div>
               </template>
             </UIUser>
           </td>
@@ -167,7 +172,10 @@ const onShowErrorEv = (worker_id, access_level_id)=>{
                   secondary
                   v-if="item.hcpPerson.access_levels.length>3"
               >
-                +{{ item.hcpPerson.access_levels.length - 3 }} {{ $t('accessLevel.more') }}
+                <template #icon>
+                  <MoreHorizontal24Regular/>
+                </template>
+
               </n-button>
 
             </div>
@@ -218,7 +226,6 @@ const onShowErrorEv = (worker_id, access_level_id)=>{
       :visible="store.accessLevelModalVisible"
       @update:visible="(v) => store.accessLevelModalVisible = v"
       @refresh="onRefreshAccessLevel"
-      :access-levels="store.selectedWorker?.hcpPerson?.access_levels || []"
       :worker-name="`${store.selectedWorker?.first_name} ${store.selectedWorker?.last_name}`"
     />
   </n-spin>

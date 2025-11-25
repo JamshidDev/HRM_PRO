@@ -48,6 +48,14 @@ const onRefreshEv = ()=>{
   }
   componentStore._refreshPin(params, store._index, ()=>store.loading = false)
 }
+const onExportPanel = ()=>{
+  store.activeTab = 1
+  store.exportParams.positions = []
+  store.exportParams.organizations = []
+  store.exportParams.codes = []
+  store.exportParams.byOrganization = true
+  store.exportVisible = true
+}
 
 </script>
 
@@ -110,7 +118,7 @@ const onRefreshEv = ()=>{
   </template>
   <template #filterAction>
     <n-button
-        @click="store.exportVisible=true"
+        @click="onExportPanel"
         type="error">
       <template #icon>
         <ArrowSync20Filled/>

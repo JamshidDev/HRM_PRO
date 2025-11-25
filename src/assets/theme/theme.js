@@ -51,7 +51,7 @@ export const customTheme = ()=>({
         inputColor:getValueOfCssVariable('--surface-section'), // Kiritish maydonlari uchun fon rangi
         inputColorDisabled:getValueOfCssVariable('--surface-section'), // Nogiron kiritish maydonlari uchun fon rangi
 
-        borderRadius: '8px',
+        borderRadius: '10px',
 
         borderColor: getValueOfCssVariable('--surface-line'), // Komponentlar uchun standart chegara rangi
         dividerColor: getValueOfCssVariable('--surface-line'),

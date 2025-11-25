@@ -199,7 +199,7 @@ onMounted(() => {
                   class="panel-item-single relative"
                   :class="[isCurrentPath(item.path) && 'active-panel-item-single', item?.disable && 'opacity-30']"
               >
-                <div :class="[item?.color]" class="item-icon rounded-md ml-[-2px]">
+                <div :class="[item?.color]" class="item-icon rounded-[10px] ml-[-2px]">
                   <n-icon size="20">
                     <component :is="item.icon"/>
                   </n-icon>

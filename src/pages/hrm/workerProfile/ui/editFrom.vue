@@ -121,7 +121,6 @@ onMounted(()=>{
           <n-select
               v-model:value="store.editPayload.rank"
               filterable
-
               :options="componentStore.rankList"
               label-field="name"
               value-field="id"
@@ -143,7 +142,6 @@ onMounted(()=>{
               :show-button="false"
               class="w-full"
               type="text"
-
               :allow-input="Utils.onlyAllowNumber"
               v-model:value="store.editPayload.rate"
           />

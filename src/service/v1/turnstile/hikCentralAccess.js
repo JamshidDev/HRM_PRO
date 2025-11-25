@@ -44,6 +44,10 @@ const _org_levels = async (payload)=>{
     return await axios.get(`/v1/turnstile/hik-central/organization-access-levels`, {params:payload?.params})
 }
 
+const _downloadReport = async (payload)=>{
+    return await axios.get(`/v1/turnstile/hik-central/devices-stat-export`, {params:payload?.params, responseType: 'blob'})
+}
+
 
 
 export default {
@@ -58,4 +62,5 @@ export default {
     _downloadDevices,
     _all_access_levels,
     _org_levels,
+    _downloadReport,
 }

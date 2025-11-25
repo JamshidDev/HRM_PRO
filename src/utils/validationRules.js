@@ -19,6 +19,12 @@ export default {
             trigger: [...triggerEvents, 'change'],
             message: t(`rules.requiredField`)
         },
+        requiredSelectImageField: {
+            type: 'number',
+            required: true,
+            trigger: [...triggerEvents, 'change'],
+            message: t(`rules.requiredSelectImageField`)
+        },
         requiredNumberField: {
             type: 'number',
             required: true,
@@ -37,6 +43,19 @@ export default {
             trigger: [...triggerEvents, 'change'],
             message: t(`rules.requiredImageField`)
         },
+        requiredHoursField:[
+            {
+                validator: (rule, value) => {
+                    const regex = /^([01]\d|2[0-3]):([0-5]\d)$/
+                    if(!value || !regex.test(value)){
+                        return new Error( t(`rules.requiredHoursField`));
+                    }
+
+                    return true;
+                },
+                trigger: [...triggerEvents, 'change'],
+            },
+        ],
         requiredPhonesField:[
             {
                 validator: (rule, value) => {
@@ -68,7 +87,9 @@ export default {
         requiredMultiSelectField:'requiredMultiSelectField',
         requiredPhonesField:'requiredPhonesField',
         requiredPhotoField:'requiredPhotoField',
-        requiredPinField:'requiredPinField'
+        requiredPinField:'requiredPinField',
+        requiredHoursField:'requiredHoursField',
+        requiredSelectImageField:'requiredSelectImageField'
     },
     login:{
         phone:[
@@ -486,6 +507,7 @@ export default {
             trigger: triggerEvents
         },
         rate:{
+            type:'number',
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents

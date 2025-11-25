@@ -1,0 +1,5 @@
+
+export {default as ToolBar} from "./ToolBar.vue"
+export {default as Document} from "./Document.vue"
+export {default as Authectication} from "./Authectication.vue"
+export {default as QuizItem} from "./QuizItem.vue"

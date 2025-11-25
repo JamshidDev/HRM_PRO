@@ -4,7 +4,6 @@ import {useComponentStore, useTurnstileHikCentralWorkerStore, useTurnstileTermin
 import {UISelect, NoDataIllustration, UINSelect, UITransferSelect} from "@/components/index.js"
 import {Checkmark16Filled, AddCircle16Filled, AddCircle28Regular} from "@vicons/fluent"
 import {UICropper} from "@/components/index.js";
-import checkWorkerSelect from '@/pages/lms/Teacher/ui/checkWorkerSelect.vue'
 import {useAppSetting} from "@/utils/index.js"
 
 const formRef = ref(null)
@@ -94,8 +93,10 @@ const toggleImage = (v) => {
     if (store.photos[v]?.id) {
       store.payload.photo_id = store.photos[v]?.id
       store.payload.photo = null
+      store.payload.blob = null
     } else {
       store.payload.photo = store.photos[v].photo
+      store.payload.blob = store.photos[v].blob
       store.payload.photo_id = null
     }
     store.payload.photo_index = v
@@ -110,7 +111,8 @@ const openCropper = () => {
 
 const onResult = (v) => {
   store.photos.push({
-    photo: v.imgUrl
+    photo: v.imgUrl,
+    blob:v.blob,
   })
 }
 
@@ -234,7 +236,7 @@ onMounted(() => {
               </div>
             </n-spin>
             <div class="absolute bottom-[10px] right-[10px]">
-              <n-button :disabled="typeof store.payload.photo_index === 'number'" @click="openCropper" type="primary"
+              <n-button @click="openCropper" type="primary"
                         size="tiny">
                 {{ $t('content.upload') }}
                 <template #icon>

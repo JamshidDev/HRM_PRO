@@ -55,6 +55,20 @@ export const useWorkerStore = defineStore('workerStore', {
         currentDistrictList:[],
         userRoleVisible:false,
 
+        filterDepParams:{
+            page:1,
+            per_page:100,
+            search:null,
+            key:null,
+        },
+
+        filterPosParams:{
+            page:1,
+            per_page:100,
+            search:null,
+            key:null,
+        },
+
     }),
     actions:{
         _downloadRelative(){

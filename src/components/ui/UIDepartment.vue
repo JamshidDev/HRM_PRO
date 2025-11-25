@@ -126,7 +126,7 @@ const onFocusEv = ()=>{
   >
     <template #trigger>
       <n-badge class="w-full" :value="modelV.length" type="info">
-        <n-input @focus="onFocusEv" class="ui__structure-input w-full"  type="text" :value="inputVal?.toString()"  />
+        <n-input :loading="store.departmentLoading" @focus="onFocusEv" class="ui__structure-input w-full"  type="text" :value="inputVal?.toString()"  />
       </n-badge>
     </template>
     <div class="w-full h-[10px]"></div>

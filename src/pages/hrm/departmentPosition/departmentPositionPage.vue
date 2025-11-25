@@ -26,7 +26,6 @@ onMounted(()=>{
       :visible="store.visible"
       @update:visible="(v)=>store.visible = v"
       :title="store.visibleType? $t('departmentPositionPage.createTitle') : $t('departmentPositionPage.updateTitle')"
-
   >
     <template #content>
       <createFrom/>
@@ -34,7 +33,3 @@ onMounted(()=>{
   </UIDrawer>
 </UIPageContent>
 </template>
-
-<style scoped>
-
-</style>

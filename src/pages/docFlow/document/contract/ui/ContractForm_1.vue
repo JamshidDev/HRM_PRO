@@ -66,6 +66,12 @@ watchEffect(()=>{
     }
     componentStore._commandTypes(data)
   }
+  store.payload.position_date = store.payload.contract_date
+  store.payload.command_date = store.payload.contract_date
+
+  if(store.payload.director_id){
+    store.payload.confirmations = componentStore.confirmationList.filter(v=>v.id !== store.payload.director_id).map(v=>v.id)
+  }
 })
 </script>
 
@@ -149,7 +155,6 @@ watchEffect(()=>{
               <n-input
                   class="w-full"
                   type="text"
-
                   v-model:value="store.payload.vacation_main_day"
                   :allow-input="Utils.onlyAllowNumber"
               />
@@ -160,7 +165,6 @@ watchEffect(()=>{
               <n-input
                   class="w-full"
                   type="text"
-
                   v-model:value="store.payload.additional_vacation_day"
                   :allow-input="Utils.onlyAllowNumber"
               />
@@ -173,7 +177,6 @@ watchEffect(()=>{
             <n-select
                 v-model:value="store.payload.probation"
                 filterable
-
                 :options="componentStore.probationList"
                 label-field="name"
                 value-field="id"
@@ -187,7 +190,6 @@ watchEffect(()=>{
             <n-select
                 v-model:value="store.payload.schedule_id"
                 filterable
-
                 :options="componentStore.scheduleList"
                 value-field="id"
                 :loading="componentStore.scheduleLoading"
@@ -207,7 +209,6 @@ watchEffect(()=>{
             @focus="onFocusConf"
             size="large"
             v-model:value="store.payload.director_id"
-
             :options="componentStore.confirmationList"
             :loading="componentStore.confirmationLoading"
             :render-label="renderLabel"
@@ -219,7 +220,3 @@ watchEffect(()=>{
     </div>
    </div>
 </template>
-
-<style scoped>
-
-</style>

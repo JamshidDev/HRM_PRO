@@ -1,4 +1,4 @@
-import {AppPaths} from "@/utils/index.js"
+import {AppLayouts, AppPaths} from "@/utils/index.js"
 import Utils from "@/utils/Utils.js"
 import {
     TopicPage,
@@ -21,33 +21,54 @@ export default [
             path:':id',
             component:TopicDetailPage,
         }],
+        meta:{
+            layout:AppLayouts.main
+        },
     },
     {
         path:Utils.routeAttestationPathMaker(AppPaths.Category),
         name:AppPaths.Category.substring(1),
         component:CategoryPage,
+        meta:{
+            layout:AppLayouts.main
+        },
     },
     {
         path:Utils.routeAttestationPathMaker(`${AppPaths.Category}/:category_id${AppPaths.Questions}`),
         component:CategoryQuestionPage,
         name: "category_question",
+        meta:{
+            layout:AppLayouts.main
+        },
     },
     {
         path:Utils.routeAttestationPathMaker(`${AppPaths.Result}`),
         component: ExamResultPage,
+        meta:{
+            layout:AppLayouts.main
+        },
     },
     {
         path:Utils.routeAttestationPathMaker(AppPaths.Exam),
         component:WorkerTopicPage,
+        meta:{
+            layout:AppLayouts.main
+        },
     },
     {
         path:Utils.routeAttestationPathMaker(`${AppPaths.Exam}/:exam_id/solve`),
         name: 'solve_exam',
         component: SolveExamPage,
+        meta:{
+            layout:AppLayouts.main
+        },
     },
     {
         path:Utils.routeAttestationPathMaker(`${AppPaths.Camera}`),
         component: CameraPage,
+        meta:{
+            layout:AppLayouts.main
+        },
 
     },
 ]

@@ -20,6 +20,10 @@ const _exportMultiple = async (payload)=>{
     return await axios.get(`/v1/economist/statements-multiple-workers`, {params:payload?.params})
 }
 
+const _exportByPosition = async (payload)=>{
+    return await axios.get(`/v1/economist/statements-by-positions`, {params:payload?.params})
+}
+
 
 
 
@@ -29,4 +33,5 @@ export default {
     _template,
     _exportWithCode,
     _exportMultiple,
+    _exportByPosition,
 }

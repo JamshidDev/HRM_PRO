@@ -100,11 +100,16 @@ onMounted(()=>{
             />
           </n-form-item>
           <n-form-item class="col-span-12 md:col-span-6 lg:col-span-4" :label="$t(`departmentPositionPage.form.rate`)" path="rate">
-            <n-input
-                v-model:value="store.positionPayload.rate"
+
+            <n-input-number
+                :max="300"
+                :min="0.1"
+                :step="0.1"
+                :show-button="false"
+                class="w-full"
                 type="text"
                 :allow-input="Utils.onlyAllowNumber"
-
+                v-model:value="store.positionPayload.rate"
             />
           </n-form-item>
           <n-form-item class="col-span-12 md:col-span-6 lg:col-span-4" :label="$t(`departmentPositionPage.form.salary`)" path="salary">

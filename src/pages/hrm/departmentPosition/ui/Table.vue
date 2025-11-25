@@ -1,5 +1,5 @@
 <script setup>
-import {NoDataPicture, UIActionButton, UIPagination, UIMenuButton} from "@/components/index.js"
+import {NoDataPicture, UIPagination, UIMenuButton} from "@/components/index.js"
 import {useAccountStore, useComponentStore, useDepartmentPositionStore} from "@/store/modules/index.js"
 import Utils from "@/utils/Utils.js"
 
@@ -16,8 +16,8 @@ const onEdit = (v)=>{
     componentStore._enums()
   }
   componentStore._structures()
-  componentStore.departmentList = [v.department]
-  // componentStore._departments()
+  componentStore.getDepartmentState(store.depParams.key)
+  componentStore.departments[store.depParams.key].list = [v.department]
   componentStore._positions()
   store.visibleType = false
   store.elementId = v.id
@@ -27,7 +27,7 @@ const onEdit = (v)=>{
   store.payload.rank = v.rank?.id
   store.payload.max_rank = v?.max_rank?.id
   store.payload.education = v.education?.id
-  store.payload.rate =v.rate.toString()
+  store.payload.rate =v.rate
   store.payload.salary = v.salary.toString()
   store.payload.experience = v.experience.toString()
 

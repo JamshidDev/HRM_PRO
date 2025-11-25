@@ -94,7 +94,7 @@ export const useAccountStore = defineStore('accountStore', {
                 this.account = {...res.data.data}
                 this.permissions = res.data.data.role?.permissions?.map(v=>v.name)
                 sessionStorage.setItem(useAppSetting.appPermission, JSON.stringify(this.permissions))
-                callback?.()
+                callback?.(this.account)
             }).finally(()=>{
                 const duration = Date.now() - startDate
                 if(duration < 500){

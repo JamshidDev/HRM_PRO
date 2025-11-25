@@ -24,7 +24,11 @@ const props = defineProps({
   placement: {
     type:String,
     default:"right",
-  }
+  },
+  hideHeader:{
+    type:Boolean,
+    default:false,
+  },
 })
 
 const visible = defineModel('visible', {type:Boolean, default:false })
@@ -44,7 +48,7 @@ const visible = defineModel('visible', {type:Boolean, default:false })
   >
     <n-drawer-content>
       <template #default>
-        <div class="w-full flex justify-between items-center
+        <div v-if="!hideHeader" class="w-full flex justify-between items-center
         border-b border-surface-line px-[20px] py-[6px]">
           <span class="text-lg font-medium">{{title}}</span>
           <span>

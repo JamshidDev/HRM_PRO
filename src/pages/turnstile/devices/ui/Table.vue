@@ -87,7 +87,15 @@ const onDelete = ()=>{
             <UIOnlineOffline :status="item.status" :text="$t(item.status? 'devices.online' : 'devices.offline')" />
           </td>
           <td>
-            <p class="leading-[1.2]">{{ item?.organization_id?.code }}</p>
+
+            <n-tooltip
+                trigger="hover"
+            >
+              <template #trigger>
+                <p class="text-sm cursor-pointer">{{ item?.organization_id?.code }}</p>
+              </template>
+              {{item?.organization_id?.name }}
+            </n-tooltip>
           </td>
           <td class="!text-center">
             <n-icon size="26" :class="[item.log? 'text-success' : 'text-secondary']">

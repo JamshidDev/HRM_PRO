@@ -1,6 +1,6 @@
 
 
-export const useDebounce = (callback, delay=600) => {
+export const useDebounce = (callback, delay=900) => {
     let timeout = null
 
     function debounced(...args){

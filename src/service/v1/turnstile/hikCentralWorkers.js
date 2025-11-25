@@ -4,6 +4,11 @@ const _index =async (payload)=>{
     return await axios.get(`/v1/turnstile/hik-central/workers`, {params:payload.params})
 }
 
+const _workerAccessLevels =async (payload)=>{
+    return await axios.get(`/v1/turnstile/hik-central/worker-access-levels`, {params:payload.params})
+}
+
+
 const _add_worker = async (payload)=>{
     return await axios.post(`/v1/turnstile/hik-central/workers/add`, payload)
 }
@@ -37,4 +42,5 @@ export default {
     _updateFace,
     _delete,
     _error,
+    _workerAccessLevels,
 }

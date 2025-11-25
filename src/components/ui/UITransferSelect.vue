@@ -263,7 +263,10 @@ const sourceLabel = function({option}) {
   overflow: hidden;
   width: 600px;
 }
-.ui-transfer-select>.n-scrollbar, .n-base-select-menu__empty{
+.ui-transfer-select>.n-scrollbar{
+  display: none !important;
+}
+.ui-transfer-select>.n-base-select-menu__empty{
   display: none !important;
 }
 .ui-transfer-source>.n-transfer-list--target{

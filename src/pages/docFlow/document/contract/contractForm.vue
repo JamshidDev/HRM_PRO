@@ -50,7 +50,9 @@ onMounted(()=>{
   if(componentStore.groupList.length===0){
     componentStore._enums()
   }
-  componentStore._scheduleList()
+  componentStore._scheduleList((data)=>{
+    store.payload.schedule_id = data[0]?.id
+  })
 })
 
 onUnmounted(()=>{
@@ -141,7 +143,3 @@ onUnmounted(()=>{
     </div>
   </n-form>
 </template>
-
-<style scoped>
-
-</style>

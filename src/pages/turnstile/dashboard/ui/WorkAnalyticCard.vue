@@ -29,7 +29,7 @@ onBeforeUnmount(()=>{
   <div  class="w-full !h-full bg-surface-section px-3 py-2 rounded-lg border border-surface-line hover-effect-card">
     <div v-if="dashboardStore.workDuration" class="grid grid-cols-12">
       <div class="col-span-12 flex mb-2 justify-end">
-        <div class="px-2 py-1 rounded-lg bg-dark/10 text-dark text-[10px] font-medium">{{$t('content.tomorrow')}}</div>
+        <div class="px-2 py-1 rounded-lg bg-dark/10 text-dark text-[10px] font-medium">{{$t('content.yesterday')}}</div>
       </div>
 
       

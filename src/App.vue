@@ -6,11 +6,13 @@ import AppLayout from "@/layouts/AppLayout.vue";
 import {UIMainLoading} from "@/components/index.js"
 import SignatureInstance from "@/pages/app/e-imzo/SignatureInstance.vue"
 import { uzUZ, dateUzUZ, ruRU, dateRuRU, enUS, dateEnUS, }  from 'naive-ui'
-import {useAppStore, usePageInstructionStore} from "@/store/modules/index.js"
+import {useAppStore, useSocketStore} from "@/store/modules/index.js"
 import {naiveBreakpoints} from "@/assets/theme/theme.js"
 import i18n from "./i18n/index.js"
+import {useAppSetting} from "@/utils/index.js"
 
 const appStore = useAppStore()
+const socketStore = useSocketStore()
 
 const localProvider = computed(()=>{
   if(i18n.global.locale==='uz'){
@@ -32,8 +34,18 @@ const localProvider = computed(()=>{
 })
 
 onMounted(()=>{
+  const token = localStorage.getItem(useAppSetting.tokenKey) || null
+  const userId = localStorage.getItem(useAppSetting.accountUserId) || null
   appStore.initApp()
+  socketStore.initSocket(token, userId)
 })
+
+onBeforeUnmount(()=>{
+  socketStore.disconnect()
+})
+
+
+
 
 
 </script>

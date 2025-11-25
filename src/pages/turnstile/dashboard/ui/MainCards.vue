@@ -83,7 +83,7 @@ const onPreview = (v, yesterday = false)=>{
               <PersonDelete24Regular/>
             </n-icon>
           </div>
-          <div class="px-2 py-1 rounded-lg bg-success/10 text-success text-[10px] font-medium">{{$t('content.tomorrow')}}</div>
+          <div class="px-2 py-1 rounded-lg bg-success/10 text-success text-[10px] font-medium">{{$t('content.yesterday')}}</div>
         </div>
 
         <div class="z-10 text-right flex items-center justify-between mt-2">
@@ -111,7 +111,7 @@ const onPreview = (v, yesterday = false)=>{
               <PersonClock20Regular/>
             </n-icon>
           </div>
-          <div class="px-2 py-1 rounded-lg bg-primary/10 text-primary text-[10px] font-medium">{{$t('content.tomorrow')}}</div>
+          <div class="px-2 py-1 rounded-lg bg-primary/10 text-primary text-[10px] font-medium">{{$t('content.yesterday')}}</div>
         </div>
 
         <div class="z-10 text-right flex items-center justify-between mt-2">
@@ -140,7 +140,7 @@ const onPreview = (v, yesterday = false)=>{
               <WeatherSunnyLow48Filled/>
             </n-icon>
           </div>
-          <div class="px-2 py-1 rounded-lg bg-danger/10 text-danger text-[10px] font-medium">{{$t('content.tomorrow')}}</div>
+          <div class="px-2 py-1 rounded-lg bg-danger/10 text-danger text-[10px] font-medium">{{$t('content.yesterday')}}</div>
         </div>
 
         <div class="z-10 text-right flex items-center justify-between mt-2">

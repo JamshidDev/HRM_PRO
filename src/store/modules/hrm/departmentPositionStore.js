@@ -37,6 +37,20 @@ export const useDepartmentPositionStore = defineStore('departmentPositionStore',
             departments:[],
         },
 
+        filterDepParams:{
+            page:1,
+            per_page:1000,
+            search:null,
+            key:null,
+        },
+
+        depParams:{
+            page:1,
+            per_page:1000,
+            search:null,
+            key:'department-position-from-key',
+        },
+
     }),
     actions:{
         onChangeStructure(v){
@@ -113,7 +127,6 @@ export const useDepartmentPositionStore = defineStore('departmentPositionStore',
             this.payload.experience = null
             this.payload.education = null
         },
-
     }
 
 })

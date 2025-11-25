@@ -20,7 +20,6 @@ const props = defineProps({
   valueField:{
     type:String,
     default:"id",
-    required:true,
   },
   labelField:{
     type:String,
@@ -65,11 +64,16 @@ const props = defineProps({
   clearable:{
     type:Boolean,
     default:false,
+  },
+  totalCount:{
+    type:Number,
+    default:0,
   }
+
 
 })
 
-const emits = defineEmits(['onScroll', 'updateValue', 'onSearch'])
+const emits = defineEmits(['onScroll', 'updateValue', 'onSearch', 'onScrollEv', 'updateShow'])
 
 
 let timer = null
@@ -111,6 +115,15 @@ const onUpdateCheck = (v)=>{
   valueModel.value = v? computedOption.value.map(x=>x[props.valueField]):[]
 }
 
+const onScrollEv = (e)=>{
+  emits('onScroll',e)
+  if(props.totalCount === 0) return
+  const currentTarget = e.currentTarget;
+  if(currentTarget.scrollTop + currentTarget.offsetHeight >= currentTarget.scrollHeight && !props.loading && props.totalCount>props.options.length){
+    emits('onScrollEv')
+  }
+}
+
 onMounted(()=>{
   searchModel.value = props.query
 })
@@ -121,7 +134,8 @@ onMounted(()=>{
 <template>
   <n-select
       :clearable="clearable"
-      @scroll="e=>emits('onScroll',e)"
+      @scroll="onScrollEv"
+      @update:show="(e)=>emits('updateShow',e)"
       :multiple="multiple"
       v-model:value="valueModel"
       :options="computedOption"

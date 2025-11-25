@@ -1,13 +1,12 @@
 <script setup>
 import {useRouter} from "vue-router";
-import {useLoginStore, useAppStore, useSignatureStore, useAccountStore} from "@/store/modules/index.js"
+import {useLoginStore, useAppStore, useSignatureStore, useAccountStore, useSocketStore} from "@/store/modules/index.js"
 import validationRules from "@/utils/validationRules.js";
 import {Call16Filled, LockClosed16Filled, Eye24Regular,
   EyeOff20Filled, KeyMultiple20Filled, AppStore24Filled} from '@vicons/fluent'
 import LangDropdown from "@/components/general/LangDropdown.vue";
 import {AppPaths, useAppSetting} from "@/utils/index.js"
 import i18n from "@/i18n/index.js"
-
 const {t} = i18n.global
 
 const store = useLoginStore()

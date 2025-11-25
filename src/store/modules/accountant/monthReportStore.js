@@ -45,6 +45,7 @@ export const useMonthReportStore = defineStore('monthReportStore', {
             month:null,
             codes:[],
             organizations:[],
+            positions:[],
             byOrganization:true
         },
         exportVisible:false,
@@ -52,8 +53,24 @@ export const useMonthReportStore = defineStore('monthReportStore', {
         tabList:[1,2],
         exportType:null,
 
+        filterPosParams:{
+            page:1,
+            per_page:1000,
+            search:null,
+            key:null,
+        },
+
     }),
     actions:{
+        _exportByPosition(params){
+            this.showLoading = true
+            $ApiService.monthReportService._exportByPosition({params}).then(()=>{
+                this.exportVisible = false
+                router.push(Utils.routeHrmPathMaker(AppPaths.Export))
+            }).finally(()=>{
+                this.showLoading= false
+            })
+        },
         _exportMultiple(params){
             this.showLoading = true
             $ApiService.monthReportService._exportMultiple({params}).then(()=>{

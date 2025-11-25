@@ -8,11 +8,15 @@ const props = defineProps({
     type:String,
     default:''
   },
+  isButtonText:{
+    type:Boolean,
+    default:false
+  }
 })
 </script>
 
 <template>
-  <n-button :type="status? 'success' : 'error'" class="mr-1! mt-[2px]!" size="tiny" dashed bordered>
+  <n-button :text="isButtonText" :type="status? 'success' : 'error'" class="mr-1! mt-[2px]!" size="tiny" dashed bordered>
     {{text}}
     <template #icon>
                       <span class="relative flex size-2">

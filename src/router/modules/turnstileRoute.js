@@ -1,4 +1,4 @@
-import {AppPaths} from "@/utils/index.js"
+import {AppLayouts, AppPaths} from "@/utils/index.js"
 import Utils from "@/utils/Utils.js"
 import {
     TurnstileBuildingPage,
@@ -18,6 +18,8 @@ import {
     OthersPage,
     DevicesPage,
     HcEventV2Page,
+    SchedulePage,
+    ShiftTypePage,
 } from "@/pages/turnstile"
 
 
@@ -25,86 +27,134 @@ export default [
     {
         path:Utils.routeTurnstilePathMaker(AppPaths.Building),
         component: ()=>TurnstileBuildingPage,
-        children:[],
+        meta:{
+            layout:AppLayouts.main
+        },
     },
     {
         path:Utils.routeTurnstilePathMaker(AppPaths.Terminal),
         component: ()=>TurnstileTerminalPage,
-        children:[],
+        meta:{
+            layout:AppLayouts.main
+        },
     },
     {
         path:Utils.routeTurnstilePathMaker(AppPaths.Organizations),
         component: ()=>TurnstileOrganizationPage,
-        children:[],
+        meta:{
+            layout:AppLayouts.main
+        },
     },
     {
         path:Utils.routeTurnstilePathMaker(AppPaths.User),
         component: ()=>TurnstileTerminalUserPage,
-        children:[],
+        meta:{
+            layout:AppLayouts.main
+        },
     },
     {
         path:Utils.routeTurnstilePathMaker(AppPaths.WorkDuration),
         component: ()=>TurnstileWorkDurationPage,
-        children:[],
+        meta:{
+            layout:AppLayouts.main
+        },
     },
     {
         path:Utils.routeTurnstilePathMaker(AppPaths.AccessLevels),
         component: ()=>TurnstileAccessLevelsPage,
-        children:[],
+        meta:{
+            layout:AppLayouts.main
+        },
     },
     {
         path:Utils.routeTurnstilePathMaker(AppPaths.OrgAccessLevels),
         component: ()=>TurnstileOrgAccessLevelsPage,
-        children:[],
+        meta:{
+            layout:AppLayouts.main
+        },
     },
     {
         path:Utils.routeTurnstilePathMaker(AppPaths.HcWorkers),
         component: ()=>TurnstileHcWorkersPage,
-        children:[],
+        meta:{
+            layout:AppLayouts.main
+        },
     },
     {
         path:Utils.routeTurnstilePathMaker(AppPaths.HcServer),
         component: ()=>HcServerPage,
-        children:[],
+        meta:{
+            layout:AppLayouts.main
+        },
     },
     {
         path:Utils.routeTurnstilePathMaker(AppPaths.HcEvents),
         component: ()=>HcEventPage,
-        children:[],
+        meta:{
+            layout:AppLayouts.main
+        },
     },
     {
         path:Utils.routeTurnstilePathMaker(AppPaths.HcEventsV2),
         component: ()=>HcEventV2Page,
-        children:[],
+        meta:{
+            layout:AppLayouts.main
+        },
     },
     {
         path:Utils.routeTurnstilePathMaker(AppPaths.WorkerImage),
         component: ()=>WorkerImagePage,
-        children:[],
+        meta:{
+            layout:AppLayouts.main
+        },
     },
     {
         path:Utils.routeTurnstilePathMaker(AppPaths.SyncLog),
         component: ()=>SyncLogPage,
-        children:[],
+        meta:{
+            layout:AppLayouts.main
+        },
     },
     {
         path:Utils.routeTurnstilePathMaker(AppPaths.Dashboard),
         component: ()=>DashboardPage,
-        children:[],
+        meta:{
+            layout:AppLayouts.main
+        },
     },
     {
         path:Utils.routeTurnstilePathMaker(AppPaths.HCWorkDuration),
         component: ()=>HKWorkDurationPage,
-        children:[],
+        meta:{
+            layout:AppLayouts.main
+        },
     },
     {
         path:Utils.routeTurnstilePathMaker(AppPaths.Others),
         component: ()=>OthersPage,
-        children:[],
+        meta:{
+            layout:AppLayouts.main
+        },
     },
     {
         path:Utils.routeTurnstilePathMaker(AppPaths.Devices),
         component: ()=>DevicesPage,
-        children:[],
+        meta:{
+            layout:AppLayouts.main
+        },
+    },
+    {
+        path:Utils.routeTurnstilePathMaker(AppPaths.Schedule),
+        component: ()=>SchedulePage,
+        meta:{
+            layout:AppLayouts.main
+        },
+    },
+    {
+        path:Utils.routeTurnstilePathMaker(AppPaths.ShiftType),
+        component: ()=>ShiftTypePage,
+        meta:{
+            layout:AppLayouts.main
+        },
     },
 ]

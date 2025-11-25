@@ -2,6 +2,8 @@
 import {UIUser, UIPagination, UIMenuButton, NoDataPicture, UIStatus, UIBadge} from "@/components/index.js"
 import {useExamAttemptStore, useTopicExamResultStore} from "@/store/modules/index.js"
 import Utils from "@/utils/Utils.js"
+import UIHelper from "@/utils/UIHelper.js"
+import {ClockArrowDownload20Regular} from "@vicons/fluent"
 
 const store = useTopicExamResultStore()
 const attemptStore = useExamAttemptStore()
@@ -14,12 +16,18 @@ const changePage = (v) => {
 
 const onSelectEv = (v) => {
   if (v.key === Utils.ActionTypes.view) {
-    attemptStore.visible = true
     attemptStore.elementId = v.data.id
+    attemptStore.visible = true
     attemptStore._get_attempt()
   } else if (v.key === Utils.ActionTypes.delete) {
     store.elementId = v.data.id
     store._delete()
+  }else if(v.key === Utils.ActionTypes.download) {
+    attemptStore.elementId = v.data.id
+    const params = {
+      type:1,
+    }
+    attemptStore._downloadResult(params)
   }
 }
 
@@ -35,7 +43,7 @@ const resultClass = (allQuestion, correctAnswerCount) => {
 </script>
 <template>
 <div class="w-full overflow-x-auto">
-  <n-spin :show="store.loading">
+  <n-spin :show="store.loading || attemptStore.loading">
     <n-table
         v-if="store.list.length>0"
         size="small"
@@ -137,6 +145,14 @@ const resultClass = (allQuestion, correctAnswerCount) => {
               show-view
               :data="result"
               @select-ev="onSelectEv"
+              :extra-options="[
+                  {
+                         label: $t('content.download'),
+                         key: Utils.ActionTypes.download,
+                         icon: UIHelper.renderIcon(ClockArrowDownload20Regular),
+                         visible:true
+                      },
+              ]"
           />
         </td>
       </tr>

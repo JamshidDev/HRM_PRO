@@ -11,7 +11,7 @@
           v-model:page="page"
           v-model:page-size="pageSize"
           :page-count="page_count"
-          show-size-picker
+          :show-size-picker="showSizePicker"
           :page-sizes="pageSizes"
           @update:page-size="changePageSize"
           @update:page="changePage"
@@ -42,6 +42,10 @@ const props = defineProps({
   short:{
     type:Boolean,
     default:false,
+  },
+  showSizePicker:{
+    type:Boolean,
+    default:true,
   }
 
 })

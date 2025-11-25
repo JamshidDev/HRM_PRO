@@ -1,6 +1,6 @@
 <script setup>
 import {useComponentStore, useWorkerStore, useExportStore, useAccountStore} from "@/store/modules/index.js"
-import {UIPageFilter, UISelect} from "@/components/index.js"
+import {UINSelect, UIPageFilter, UISelect} from "@/components/index.js"
 import {
   HomePerson20Regular,
   CheckmarkCircle16Regular,
@@ -11,14 +11,44 @@ import {
   PremiumPerson20Regular,
   CloudArchive20Filled, Search48Filled,
 } from "@vicons/fluent"
-import Utils from "@/utils/Utils.js"
-import {AppPaths, appPermissions} from "@/utils/index.js"
+import Utils, {generateUUIDKey} from "@/utils/Utils.js"
+import {AppPaths, appPermissions, useDebounce} from "@/utils/index.js"
 
 
 const store = useWorkerStore()
 const accStore = useAccountStore()
 const exportStore = useExportStore()
 const componentStore = useComponentStore()
+
+const debounceIndexEv = useDebounce(store._index, 1000)
+
+const posParams = computed(()=>({
+  ...store.filterPosParams,
+  organizations:store.params.organizations.map(v=>v.id).toString(),
+  departments:store.params.departments.toString(),
+  key:undefined,
+}))
+const positionKey = store.filterPosParams.key ||= generateUUIDKey()
+const positionState = computed(()=>componentStore.getPositionState(positionKey))
+const fetchPosition = useDebounce(componentStore.createPositionFetcher(positionKey))
+const onScrollPosition = ()=>{
+  store.filterPosParams.page ++
+  fetchPosition(posParams.value, true)
+}
+
+const depParams = computed(()=>({
+  ...store.filterDepParams,
+  organizations:store.params.organizations.map(v=>v.id).toString(),
+  key:undefined,
+}))
+const detectKey = store.filterDepParams.key ||= generateUUIDKey()
+const departmentState = computed(()=>componentStore.getDepartmentState(detectKey))
+const fetchDepartment = useDebounce(componentStore.createDepartmentFetcher(detectKey))
+const onScrollDepartment = ()=>{
+  store.filterDepParams.page ++
+  fetchDepartment(depParams.value, true)
+}
+
 const router = useRouter()
 const onAdd = () => {
   if(!accStore.checkAction(accStore.pn.hrWorkersWrite)) return
@@ -35,18 +65,26 @@ const onSearch = () => {
 const filterEvent = (v) => {
   componentStore.depParams.page = 1
   store.params.page = 1
-  store._index()
+  debounceIndexEv()
 }
 
 const onChangeStructure = (v) => {
   store.params.organizations = v
-  componentStore.depParams.organizations = v.map((x) => x.id)
-  componentStore.filterPositionParams.organizations = v.map((x) => x.id)
-  componentStore.departmentList = []
+  store.params.departments = []
+  store.params.positions = []
+
+  departmentState.value.list = []
   componentStore.filterPositions = []
-  componentStore._filterPosition()
-  componentStore._departments()
+
   filterEvent()
+
+  if(v.length===0 ) return
+
+  store.filterDepParams.page = 1
+  fetchDepartment(depParams.value)
+
+  store.filterPosParams.page = 1
+  fetchPosition(posParams.value)
 }
 
 const marks = {
@@ -104,8 +142,9 @@ const clearFilter = () => {
 
 const onChangeDepartment = () => {
   componentStore.filterPositionParams.departments = store.params.departments.toString()
-  componentStore.filterPositions = []
-  componentStore._filterPosition()
+  store.params.positions = []
+  positionState.list = []
+  fetchPosition(posParams.value)
   filterEvent()
 }
 
@@ -183,12 +222,13 @@ const canWrite = computed(()=>accStore.checkAction(appPermissions.hrWorkersWrite
 
 const defaultEv = (v)=>{
   store.params.organizations=v
-  componentStore.depParams.organizations = v.map((x) => x.id)
-  componentStore.departmentList = []
-  componentStore._departments()
+  fetchDepartment(depParams.value)
+  fetchPosition(posParams.value)
+
 }
 
 const onKeyUp = Utils.useDebounce(filterEvent,1000)
+
 
 
 </script>
@@ -295,6 +335,8 @@ const onKeyUp = Utils.useDebounce(filterEvent,1000)
           <div class="col-span-6">
             <label class="mt-3 text-xs text-gray-500">{{ $t('workerPage.filter.organization') }}</label>
             <UISelect
+                multiple
+                clearable
                 :options="componentStore.structureList"
                 :modelV="store.params.organizations"
                 @defaultValue="defaultEv"
@@ -309,36 +351,30 @@ const onKeyUp = Utils.useDebounce(filterEvent,1000)
           </div>
           <div class="col-span-6">
             <label class="mt-3 text-xs text-gray-500">{{ $t('workerPage.filter.department') }}</label>
-            <n-select
-                :disabled="store.params.organizations.length === 0"
-                v-model:value="store.params.departments"
-                :options="componentStore.departmentList"
+            <UINSelect
                 multiple
-                filterable
-                label-field="name"
-                value-field="id"
                 clearable
+                :disabled="store.params.organizations.length === 0"
+                :loading="departmentState.loading"
+                :options="departmentState.list"
+                :total-count="departmentState.total"
+                v-model:value="store.params.departments"
                 @update:value="onChangeDepartment"
-                :max-tag-count="1"
-                :filter="()=>true"
-                :loading="componentStore.departmentLoading"
-                @search="componentStore._onSearchDepartment"
-                @scroll="componentStore._onScrollDepartment"
+                @onScrollEv="onScrollDepartment"
             />
           </div>
           <div class="col-span-6">
             <label class="mt-3 text-xs text-gray-500">{{ $t('workerPage.filter.position') }}</label>
-            <n-select
-                v-model:value="store.params.positions"
-                filterable
-                clearable
+            <UINSelect
                 multiple
-                :options="componentStore.filterPositions"
-                label-field="name"
-                value-field="id"
-                :loading="componentStore.filterPositionLoading"
+                clearable
+                :disabled="store.params.organizations.length === 0"
+                :loading="positionState.loading"
+                :options="positionState.list"
+                :total-count="positionState.total"
+                v-model:value="store.params.positions"
                 @update:value="filterEvent"
-                :max-tag-count="1"
+                @onScrollEv="onScrollPosition"
             />
           </div>
           <div class="col-span-6">
@@ -347,14 +383,13 @@ const onKeyUp = Utils.useDebounce(filterEvent,1000)
                 v-model:value="store.params.contract_type"
                 filterable
                 clearable
-
                 :options="componentStore.contractTypeList"
                 label-field="name"
                 value-field="id"
                 :loading="componentStore.enumLoading"
                 @update:value="filterEvent"
-                :ignore-composition="false"
-            />
+            >
+            </n-select>
           </div>
           <div class="col-span-3">
             <label class="mt-3 text-xs text-gray-500">{{ $t('workerPage.filter.birthday') }}</label>
@@ -362,7 +397,6 @@ const onKeyUp = Utils.useDebounce(filterEvent,1000)
                 v-model:value="store.params.birthday"
                 filterable
                 clearable
-
                 :options="Utils.monthList"
                 label-field="name"
                 value-field="id"

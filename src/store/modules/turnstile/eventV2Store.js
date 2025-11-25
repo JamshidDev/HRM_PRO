@@ -32,7 +32,7 @@ export const useEventV2Store = defineStore('eventV2Store', {
             direction:null,
             date:null,
             access_levels:[],
-            event:null
+            event:'yes'
         },
         cardList:[
             {

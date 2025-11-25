@@ -6,6 +6,7 @@ import {
     DocumentSignature,
     LoginPageV2,
     AIConversationPage,
+    PublicPage,
 } from "@/pages/app/index.js"
 
 export default [
@@ -38,6 +39,14 @@ export default [
         path:AppPaths.Login,
         name:AppPaths.Login.substring(1),
         component:LoginPageV2,
+        meta:{
+            layout:AppLayouts.empty
+        }
+    },
+    {
+        path:'/public/:model/:key',
+        name:'public-page',
+        component:PublicPage,
         meta:{
             layout:AppLayouts.empty
         }

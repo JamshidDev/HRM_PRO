@@ -119,12 +119,10 @@ const onChange = (v)=>{
         <div class="col-span-12">
           <n-form-item :label="$t(`documentPage.command.form.confirm`)" path="director_id">
             <n-select
-                :disabled="!store.payload.director_id"
                 size="large"
                 value-field="id"
                 multiple
                 v-model:value="store.payload.confirmations"
-
                 :options="confirmationList"
                 :loading="componentStore.confirmationLoading"
                 :render-label="renderLabel" />

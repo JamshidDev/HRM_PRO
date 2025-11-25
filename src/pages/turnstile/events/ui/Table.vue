@@ -80,8 +80,7 @@ const eventStatus = {
           <tr>
             <th class="text-center! min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
             <th class="min-w-[200px]">{{$t('content.worker')}}</th>
-            <th class="min-w-[130px] w-[130px] !text-center">{{$t('content.date')}}</th>
-            <th class="min-w-[90px] w-[90px] !text-center">{{$t('content.hour')}}</th>
+            <th class="min-w-[130px] w-[180px] !text-center">{{$t('content.date')}}</th>
             <th class="min-w-[100px] w-[100px]">{{$t('hcEvent.form.direction')}}</th>
             <th class="min-w-[100px] w-[300px]">{{$t('hcEvent.form.device')}}</th>
             <th class="min-w-[100px] w-[160px]">{{$t('hcEvent.form.device')}}</th>
@@ -108,10 +107,7 @@ const eventStatus = {
               </div>
             </td>
             <td class="!text-center">
-              <UIBadge :show-icon="false" :label="item?.event_date" />
-            </td>
-            <td class="!text-center">
-              <UIBadge :show-icon="false" :label="item?.event_time" :type="Utils.colorTypes.dark" />
+              <UIBadge :show-icon="false" :label="item?.event_date_and_time" />
             </td>
 
 

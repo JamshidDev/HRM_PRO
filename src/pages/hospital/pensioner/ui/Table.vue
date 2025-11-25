@@ -29,6 +29,7 @@ const changePage = (v)=>{
           <th class="text-center! min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
           <th class="min-w-[280px]">{{$t('confirmationPage.table.worker')}}</th>
           <th class="min-w-[100px] w-[200px]">{{$t('content.position')}}</th>
+          <th class="min-w-[100px] w-[200px]">{{$t('content.organization')}}</th>
           <th class="min-w-[100px] w-[140px]">{{$t('pensioner.form.pin')}}</th>
           <th class="min-w-[100px] w-[120px]">{{$t('pensioner.form.passport')}}</th>
           <th class="min-w-[100px] max-w-[240px]">{{$t('pensioner.form.address')}}</th>
@@ -74,7 +75,7 @@ const changePage = (v)=>{
               {{$t('pensioner.form.chernobyl')}}
             </n-tooltip>
           </th>
-          <th class="min-w-[40px] w-[40px]"></th>
+<!--          <th class="min-w-[40px] w-[40px]"></th>-->
         </tr>
         </thead>
         <tbody>
@@ -95,7 +96,16 @@ const changePage = (v)=>{
               />
             </div>
           </td>
-          <td>{{item.position}}</td>
+          <td>
+            <div class="leading-[1.2]">
+              {{item.position}}
+            </div>
+          </td>
+          <td>
+            <div class="leading-[1.2] text-sm">
+              {{item.organization?.name}}
+            </div>
+          </td>
           <td>{{item.pin}}</td>
           <td>{{item.passport}}</td>
           <td>
@@ -113,12 +123,12 @@ const changePage = (v)=>{
           <td>{{item.railway_title===1? $t('content.yes') : $t('content.no')}}</td>
           <td>{{item.afghan===1? $t('content.yes') : $t('content.no')}}</td>
           <td>{{item.chernobyl===1? $t('content.yes') : $t('content.no')}}</td>
-          <td>
-            <UIMenuButton
-                :data="item"
-                :show-edit="true"
-            />
-          </td>
+<!--          <td>-->
+<!--            <UIMenuButton-->
+<!--                :data="item"-->
+<!--                :show-edit="true"-->
+<!--            />-->
+<!--          </td>-->
         </tr>
         </tbody>
       </n-table>

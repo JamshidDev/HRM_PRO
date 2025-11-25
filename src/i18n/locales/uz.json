@@ -47,7 +47,7 @@
     "search": "Qidiruv",
     "mln": "mln",
     "today": "Bugun",
-    "tomorrow": "Kecha",
+    "yesterday": "Kecha",
     "piece": "ta",
     "person": "nafar",
     "searchWorker": "Xodimni qidirish uchun yozing...",
@@ -72,6 +72,7 @@
     "platform": "Platforma",
     "date": "Sana",
     "name": "Nomi",
+    "downloadReport": "Hisobot yuklash",
     "general": "Umumiy",
     "added": "Qo'shildi",
     "description": "Tavsif",
@@ -216,12 +217,14 @@
     "requiredField": "Maydon to'ldirilishi shart!",
     "requiredWorker": "Xodim tanlash shart!",
     "requiredImageField": "Rasm yuklanishi shart!",
+    "requiredSelectImageField": "Rasm tanlanishi shart!",
     "requiredFileField": "Fayl yuklanishi shart!",
     "requiredMinLength": "{n} ta belgidan kam bo'lmasligi kerak",
     "requiredMaxLength": "{n} ta belgidan ko'p bo'lmasligi kerak",
     "unExpectedFormat": "Noto'g'ri turdagi ma'lumot!",
     "requiredJSHSHIR": "Pasport JSHSHIR kiritilishi shart!",
-    "enterOverNumber": "{n}dan katta son kiriting"
+    "enterOverNumber": "{n}dan katta son kiriting",
+    "requiredHoursField": "Vaqt formati noto‘g‘ri (HH:MM)"
   },
   "message": {
     "successDone": "Muvofaqqiyatli bajarildi",
@@ -1495,6 +1498,7 @@
       "access_levels_count": "Guruhlar soni",
       "department": "Bo'linma",
       "added": "Biriktirilgan xodimlar",
+      "no-added": "Biriktirilmagan xodimlar",
       "device": "Qurilmalar"
     },
     "workDurationPage": {
@@ -1837,7 +1841,8 @@
     "refreshDescription": "JSHSHIRlarni qayta tekshirish",
     "tab": {
       "multipleSalary": "Birdan ortiq joydan oylik olayotgan xodimlarni ro'yxatini yuklash",
-      "exportWithCode": "To'lov kodi bo'yicha yuklash"
+      "exportWithCode": "To'lov kodi bo'yicha yuklash",
+      "exportWithPosition": "Lavozimlar kesimida yuklash"
     },
     "form": {
       "pin": "Pin",
@@ -2362,6 +2367,46 @@
     "attachedOrg": "Tashkilotga biriktirilgan",
     "noAttachedOrg": "Tashkilotga biriktirilmagan",
     "orgStatus": "Tashkilot bo'yicha"
+  },
+  "schedule": {
+    "name": "Navbatchilik grafigi",
+    "form": {
+      "starTimeSchedule":"Smena boshlanish vaqti",
+      "endTimeSchedule":"Smena tugash vaqti",
+      "allScheduleCount": "Barcha grafiklar soni",
+      "savingProcess": "Kuting yuklanmoqda...",
+      "changedScheduleCount": "O‘zgartirilgan grafiklar soni",
+      "scheduleType": "Navbatchilik turi",
+      "holiday": "Dam kuni",
+      "otherTime": "Boshqa soat",
+      "workerList": "Xodimlar ro'yhati",
+      "workTime": "Ish soati",
+      "startWork": "Ishni boshlash uchun navbatchilik turini tanlang"
+    }
+  },
+  "shiftType": {
+    "name": "Smenalar",
+    "createTitle": "Grafik generatsiya qilish",
+    "updateTitle": "Guruhni tahrirlash",
+    "form": {
+      "generate": "Generatsiya qilish",
+      "replaceWorker": "Xodimni o'zgartirish",
+      "groupCount": "Guruxlar soni",
+      "workerCount": "Xodimlar soni",
+      "createGroup": "Gurux yaratish",
+      "turnstileActive": "Turniket tizimida faol",
+      "turnstileUnActive": "Turniket tizimiga ulanmagan",
+      "showGroup": "Guruxlarni ko'rish",
+      "group": "Guruhlar"
+    }
+  },
+  "publicPage": {
+    "authentication": "Imtihon savollarini ko'rish",
+    "invalidDocument": "Hujjat topilmadi yoki o'chirib tashlangan!",
+    "closeQuestion": "Savollalrni ro'yhatini yopish"
+  },
+  "socketPage": {
+    "usersMOdalTitle": "Barcha online foydalanuvchilar ro'yhati"
   }
 }
 

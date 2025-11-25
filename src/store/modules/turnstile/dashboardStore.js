@@ -14,17 +14,14 @@ const {t} = i18n.global
 
 export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore', {
     state: () => ({
-        // Umumiy dashboard loading (butun sahifa uchun)
         dashboardLoading: false,
-        
-        // Har bir so'rov uchun alohida loading flaglar
+
         dashboardMainLoading: false,          // '/v1/turnstile/hik-central/dashboard'
         dailyAttendanceLoading: false,        // '/v1/turnstile/hik-central/dashboard/daily-attendance'
         workerStatsLoading: false,            // '/v1/turnstile/hik-central/dashboard/worker-stats'
         devicesLoading: false,                // '/v1/turnstile/hik-central/dashboard/devices'
         workDurationsLoading: false,          // '/v1/turnstile/hik-central/dashboard/work-durations'
 
-        // Dashboard ma'lumotlari
         dashboardObj: null,
         topOfflineDeviceList: [],
         dailyEvents: [],
@@ -34,7 +31,6 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
         deviceStatusList: [],
         workDuration: null,
 
-        // Dashboard parametrlari
         dashboardParams: {
             organizations: [],
             departments: [],
@@ -44,7 +40,6 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
         },
         structureCheck2: [],
 
-        // Preview ma'lumotlari
         previewList: [],
         previewTotal: 0,
         previewLoading: false,
@@ -136,7 +131,13 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
             not_come_yesterday:{
                 name:"turnStileDashboard.cards.not_come_yesterday",
             },
-          }
+          },
+          filterDepParams:{
+            page:1,
+            per_page:100,
+            search:null,
+            key:null,
+          },
     }),
     
     actions: {

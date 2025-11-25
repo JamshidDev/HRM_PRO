@@ -1,5 +1,6 @@
 
 import dayjs from "dayjs";
+import { v4 as uuidv4 } from 'uuid'
 import {AppPaths} from "@/utils/AppPaths.js";
 import CryptoJS from "crypto-js"
 import i18n from "@/i18n/index.js"
@@ -19,6 +20,8 @@ const fileToBase64 = (file)=>{
         reader.onerror = (error) => reject(error)
     })
 }
+
+export const generateUUIDKey = uuidv4
 
 const onlyAllowNumber = (value) => !value || /^\d+$/.test(value)
 

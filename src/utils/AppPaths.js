@@ -49,6 +49,7 @@ export const AppPaths = {
     DocumentSetting:"/document-setting",
     AdminOther:"/admin-others",
     Schedule:"/schedule",
+    ShiftType:"/shift-type",
     Workday:"/workday",
     WorkerProfile:"/worker-profile",
     ConfContract:"/conf-contract",

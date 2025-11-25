@@ -156,6 +156,12 @@ const filterCount = computed(()=>Number(Boolean(store.params.organizations.lengt
 
   <template #filterAction>
     <div class="col-span-12 md:col-span-6 flex justify-end gap-2">
+      <n-button type="success" @click="store._downloadReport()" :loading="store.downloading">
+        {{$t('content.downloadReport')}}
+        <template #icon>
+          <ArrowCircleDown12Regular/>
+        </template>
+      </n-button>
       <n-button type="success" @click="store._downloadDevices()" :loading="store.downloading">
         {{$t('content.download')}}
         <template #icon>

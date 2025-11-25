@@ -14,10 +14,10 @@ const isLoadApp = ref(false)
 
 const layout = computed(() => {
   switch (route?.meta?.layout) {
-    case AppLayouts.empty:
-      return Empty
-    default:
+    case AppLayouts.main:
       return Combo
+    default:
+      return Empty
   }
 })
 

@@ -41,7 +41,7 @@ $mobile_device_screen_size:900px;
         height: 40px;
         margin:16px auto 0px auto;
         cursor: pointer;
-        border-radius: 6px;
+        border-radius: 10px;
         i{
           font-size: 28px;
           color: var(--secondary-color);
@@ -75,7 +75,7 @@ $mobile_device_screen_size:900px;
         width: 100%;
         display: flex;
         align-items: center;
-        border-radius: 6px;
+        border-radius: 10px;
         border: 1px solid var(--sidebar-border);
         margin-bottom: 6px;
         cursor: pointer;

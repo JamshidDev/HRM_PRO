@@ -21,17 +21,23 @@ const onChangeDepartment = (v)=>{
   store.payload.department_id = v
   componentStore.departmentPositionList = []
   store.payload.department_position_id = null
+  if(v.length === 0) return
   componentStore._departmentPosition(v[0].id)
 }
 
+
 const onChangeStructure = (v)=>{
   store.payload.organization_id=v
-  if(v.length>0){
-    componentStore.departmentList = []
-    store.payload.department_id = []
-    componentStore.depParams.organizations =v[0].id
-    componentStore._departmentTree()
-  }
+  store.payload.department_id = []
+  componentStore.depParams.search = null
+  componentStore.departmentList = []
+
+  componentStore.departmentPositionList = []
+  store.payload.department_position_id = null
+
+  if(v.length === 0) return
+  componentStore.depParams.organizations =v[0].id
+  componentStore._departmentTree()
 }
 
 onMounted(()=>{
@@ -47,42 +53,23 @@ onMounted(()=>{
         <div class="col-span-12">
           <n-form-item :label="$t(`documentPage.form.organization`)" path="organization_id">
             <UISelect
+                :multiple="false"
+                :auto-select="true"
+                :checkedVal="store.structureCheck"
+                :loading="componentStore.structureLoading"
                 :options="componentStore.structureList"
                 :modelV="store.payload.organization_id"
                 @updateModel="onChangeStructure"
-                :checkedVal="store.structureCheck"
                 @updateCheck="(v)=>store.structureCheck=v"
-                v-model:search="componentStore.structureParams.search"
                 @onSearch="componentStore._structures"
-                :loading="componentStore.structureLoading"
-                :multiple="false"
-                :auto-select="true"
+                v-model:search="componentStore.structureParams.search"
             />
           </n-form-item>
         </div>
-<!--        <div v-if="showCheckBox" class="col-span-12 flex justify-end">-->
-<!--          <n-checkbox v-model:checked="store.payload.position_status" @update:checked="onChangeStatus">-->
-<!--            <span class="text-xs text-gray-500">{{$t(`documentPage.form.positionStatus`)}}</span>-->
-<!--          </n-checkbox>-->
-<!--        </div>-->
-<!--        <template v-if="!store.payload.position_status && showCheckBox">-->
-<!--          <div class="col-span-4">-->
-<!--            <n-form-item :label="$t(`documentPage.form.position`)" path="position_id">-->
-<!--              <n-select-->
-<!--                  v-model:value="store.payload.position_id"-->
-<!--                  filterable-->
-<!--                  -->
-<!--                  :options="componentStore.positionList"-->
-<!--                  label-field="name"-->
-<!--                  value-field="id"-->
-<!--                  :loading="componentStore.positionLoading"-->
-<!--              />-->
-<!--            </n-form-item>-->
-<!--          </div>-->
-<!--        </template>-->
         <div class="col-span-12 md:col-span-6">
           <n-form-item :label="$t(`documentPage.form.department`)" path="department_id">
             <UIDepartment
+                v-model:search="componentStore.depParams.search"
                 :modelV="store.payload.department_id"
                 @updateModel="onChangeDepartment"
                 :checkedVal="store.departmentCheck"
@@ -94,7 +81,7 @@ onMounted(()=>{
         <div class="col-span-12 md:col-span-6">
           <n-form-item :label="$t(`documentPage.form.position`)" path="department_position_id">
             <n-select
-                :disabled="!Boolean(store.payload.department_id)"
+                :disabled="!Boolean(store.payload.department_id.length)"
                 v-model:value="store.payload.department_position_id"
                 filterable
                 :options="componentStore.departmentPositionList"

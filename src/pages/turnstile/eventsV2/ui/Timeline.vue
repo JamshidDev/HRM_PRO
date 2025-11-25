@@ -24,7 +24,7 @@ const store = useEventV2Store()
         <div class="w-[200px] pb-4">
           <template v-if="!item.direction">
             <p class="text-danger  text-right">{{ $t('hcWorkDuration.form.exit')  }}</p>
-            <p class="text-secondary text-xs text-right">{{ item.event_date }} {{ item.event_time }}</p>
+            <p class="text-secondary text-xs text-right">{{ item.event_date_and_time }}</p>
             <p class="text-xs text-right"><span class="text-primary bg-primary/10 rounded-lg px-2 font-semibold">{{item.device}}</span></p>
           </template>
 
@@ -36,7 +36,7 @@ const store = useEventV2Store()
         <div class="w-[200px] pb-4">
           <template v-if="item.direction">
             <p class="text-success">{{ $t('hcWorkDuration.form.enter') }}</p>
-            <p class="text-secondary text-xs">{{ item.event_date }} {{ item.event_time }}</p>
+            <p class="text-secondary text-xs">{{ item.event_date_and_time }}</p>
             <p class="text-xs"><span class="text-primary bg-primary/10 rounded-lg px-2 font-semibold">{{item.device}}</span></p>
           </template>
         </div>

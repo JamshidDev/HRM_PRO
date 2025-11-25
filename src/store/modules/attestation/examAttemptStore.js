@@ -34,6 +34,14 @@ export const useExamAttemptStore = defineStore('examAttemptStore', {
         isCamera:false,
     }),
     actions: {
+        _downloadResult(params){
+            this.loading = true
+            $ApiService.workerExamService._downloadResult({id:this.elementId, params }).then((res)=>{
+                window.open(res.data.data.file, '_blank');
+            }).finally(()=>{
+                this.loading = false
+            })
+        },
         _showVideos(){
             this.videoLoading = true
             $ApiService.workerExamService._showVideos({id:this.elementId }).then((res)=>{

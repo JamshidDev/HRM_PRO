@@ -1,6 +1,6 @@
 
 import {createRouter, createWebHistory} from "vue-router"
-import {AppPaths, useAppSetting} from "@/utils/index.js"
+import {AppLayouts, AppPaths, useAppSetting} from "@/utils/index.js"
 import ProfilePage from "@/pages/app/profile/ProfilePage.vue";
 
 // routes
@@ -43,65 +43,95 @@ const routes = [
                 name:AppPaths.Admin.substring(1),
                 beforeEnter: beforeLogin,
                 redirect: AppPaths.Home,
-                children: [...adminRoute]
+                children: [...adminRoute],
+                meta:{
+                    layout:AppLayouts.main
+                },
             },
             {
                 path:AppPaths.Hrm,
                 name:AppPaths.Hrm.substring(1),
                 beforeEnter: beforeLogin,
                 redirect: AppPaths.Home,
-                children: [...hrmRoute]
+                children: [...hrmRoute],
+                meta:{
+                    layout:AppLayouts.main
+                },
             },
             {
                 path:AppPaths.Attestation,
                 name:AppPaths.Attestation.substring(1),
                 beforeEnter: beforeLogin,
                 redirect: AppPaths.Home,
-                children: [...attestationRoute]
+                children: [...attestationRoute],
+                meta:{
+                    layout:AppLayouts.main
+                },
             },
             {
                 path:AppPaths.Turnstile,
                 name:AppPaths.Turnstile.substring(1),
                 beforeEnter: beforeLogin,
                 redirect: AppPaths.Home,
-                children: [...turnstileRoute]
+                children: [...turnstileRoute],
+                meta:{
+                    layout:AppLayouts.main
+                },
             },
             {
                 path:AppPaths.DocFlow,
                 name:AppPaths.DocFlow.substring(1),
                 beforeEnter: beforeLogin,
                 redirect: AppPaths.Home,
-                children: [...docflowRoute]
+                children: [...docflowRoute],
+                meta:{
+                    layout:AppLayouts.main
+                },
             },
             {
                 path:AppPaths.Lms,
                 name:AppPaths.Lms.substring(1),
                 beforeEnter: beforeLogin,
                 redirect: AppPaths.Home,
-                children: [...lmsRoute]
+                children: [...lmsRoute],
+                meta:{
+                    layout:AppLayouts.main
+                },
             },
             {
                 path:AppPaths.Others,
                 beforeEnter: beforeLogin,
                 redirect: AppPaths.Home,
-                children: [...otherRoutes]
+                children: [...otherRoutes],
+                meta:{
+                    layout:AppLayouts.main
+                },
             },
             {
                 path:AppPaths.Accountant,
                 beforeEnter: beforeLogin,
                 redirect: AppPaths.Home,
-                children: [...accountantRoute]
+                children: [...accountantRoute],
+                meta:{
+                    layout:AppLayouts.main
+                },
             },
             {
                 path:AppPaths.Hospital,
                 beforeEnter: beforeLogin,
                 redirect: AppPaths.Home,
-                children: [...hospitalRoute]
+                children: [...hospitalRoute],
+                meta:{
+                    layout:AppLayouts.main
+                },
             },
             {
                 path:AppPaths.Profile,
                 name:AppPaths.Profile.substring(1),
                 component: ProfilePage,
+                meta:{
+                    layout:AppLayouts.main
+                },
             }
 
         ]

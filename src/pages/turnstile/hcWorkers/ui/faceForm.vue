@@ -15,7 +15,7 @@ const onSubmit = () => {
   formRef.value?.validate((error) => {
     if (!error) {
       store.editPayload.photo = store.payload.photo
-
+      store.editPayload.blob = store.payload.blob
       store.editPayload.photo_id = store.payload.photo_id
       store.editPayload.access_level_ids = store.payload.access_level_ids
       store.editPayload.to = store.payload.end_time? Utils.timeToZone(store.payload.end_time) : null
@@ -35,8 +35,10 @@ const toggleImage = (v) => {
     if (store.photos[v]?.id) {
       store.payload.photo_id = store.photos[v]?.id
       store.payload.photo = null
+      store.payload.blob = null
     } else {
       store.payload.photo = store.photos[v].photo
+      store.payload.blob = store.photos[v].blob
       store.payload.photo_id = null
     }
     store.payload.photo_index = v
@@ -51,7 +53,8 @@ const openCropper = () => {
 
 const onResult = (v) => {
   store.photos.push({
-    photo: v.imgUrl
+    photo: v.imgUrl,
+    blob:v.blob,
   })
 }
 
@@ -71,14 +74,14 @@ const onResult = (v) => {
                        rule-path="requiredMultiSelectField">
             <UITransferSelect
                 multiple
-                :loading="store.accessLevelsLoading"
+                :loading="store.accessLevelsLoading || store.moreAccessLevelsLoading"
                 v-model:value="store.payload.access_level_ids"
                 :options="store.accessLevels"
                 value-field="id"
                 />
           </n-form-item>
 
-        <n-form-item :label="$t(`content.photo`)" path="photo_index" rule-path="requiredNumberField">
+        <n-form-item :label="$t(`content.photo`)" path="photo_index" rule-path="requiredSelectImageField">
           <div class="h-[260px] max-h-[400px] p-2 border border-surface-line w-full rounded-md relative">
             <n-spin class="h-full w-full overflow-y-auto pr-1" :show="store.photosLoading">
               <NoDataIllustration v-if="!store.photos.length" class="w-full h-full"/>
@@ -96,7 +99,7 @@ const onResult = (v) => {
               </div>
             </n-spin>
             <div class="absolute bottom-[10px] right-[10px]">
-              <n-button :disabled="typeof store.payload.photo_index === 'number'" @click="openCropper" type="primary"
+              <n-button @click="openCropper" type="primary"
                         size="tiny">
                 {{ $t('content.upload') }}
                 <template #icon>

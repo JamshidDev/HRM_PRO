@@ -459,6 +459,20 @@ export const navigations = [
                 color: 'bg-primary',
                 permission: appPermissions.turnstileOthers,
             },
+            {
+                label: 'schedule.name',
+                path: Utils.routeTurnstilePathMaker(AppPaths.Schedule),
+                icon: DocumentBulletList24Filled,
+                color: 'bg-dark',
+                permission: appPermissions.admin,
+            },
+            {
+                label: 'shiftType.name',
+                path: Utils.routeTurnstilePathMaker(AppPaths.ShiftType),
+                icon: DocumentBulletList24Filled,
+                color: 'bg-dark',
+                permission: appPermissions.admin,
+            },
         ]
     },
     {

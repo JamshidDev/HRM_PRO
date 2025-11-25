@@ -1,4 +1,4 @@
-import {AppPaths} from "@/utils/index.js";
+import {AppLayouts, AppPaths} from "@/utils/index.js"
 import Utils from "@/utils/Utils.js";
 
 import{
@@ -28,91 +28,144 @@ export default  [
         path:Utils.routePathMaker(AppPaths.UserPermission),
         name:AppPaths.UserPermission.substring(1),
         component:PermissionPage,
+        meta:{
+            layout:AppLayouts.main
+        },
     },
     {
         path:Utils.routePathMaker(AppPaths.User),
         name:AppPaths.User.substring(1),
         component:UserPage,
+        meta:{
+            layout:AppLayouts.main
+        },
     },
     {
         path:Utils.routePathMaker(AppPaths.UserRole),
         name:AppPaths.UserRole.substring(1),
         component:RolePage,
+        meta:{
+            layout:AppLayouts.main
+        },
     },
     {
         path:Utils.routePathMaker(AppPaths.Country),
         name:AppPaths.Country.substring(1),
         component:CountryPage,
+        meta:{
+            layout:AppLayouts.main
+        },
     },
     {
         path:Utils.routePathMaker(AppPaths.Region),
         name:AppPaths.Region.substring(1),
         component:RegionPage,
+        meta:{
+            layout:AppLayouts.main
+        },
     },
     {
         path:Utils.routePathMaker(AppPaths.District),
         name:AppPaths.District.substring(1),
         component:DistrictPage,
+        meta:{
+            layout:AppLayouts.main
+        },
     },
     {
         path:Utils.routePathMaker(AppPaths.Nationality),
         name:AppPaths.Nationality.substring(1),
         component:NationalityPage,
+        meta:{
+            layout:AppLayouts.main
+        },
         
     },
     {
         path:Utils.routePathMaker(AppPaths.Position),
         name:AppPaths.Position.substring(1),
         component:PositionPage,
-       
+        meta:{
+            layout:AppLayouts.main
+        },
     },
     {
         path:Utils.routePathMaker(AppPaths.Organizations),
         name:AppPaths.Organizations.substring(1),
         component:OrganizationPage,
+        meta:{
+            layout:AppLayouts.main
+        },
     },
     {
         path:Utils.routePathMaker(AppPaths.ActionLog),
         name:AppPaths.ActionLog.substring(1),
         component:ActionLogPage,
+        meta:{
+            layout:AppLayouts.main
+        },
     },
     {
         path:Utils.routePathMaker(AppPaths.DocumentSetting),
         name:AppPaths.DocumentSetting.substring(1),
-        component:DocumentTemplate,             
+        component:DocumentTemplate,
+        meta:{
+            layout:AppLayouts.main
+        },
     },
     {
         path:Utils.routePathMaker(AppPaths.AdminOther),
         name:AppPaths.AdminOther.substring(1),
         component:OthersPage,
+        meta:{
+            layout:AppLayouts.main
+        },
     },
     {
         path:Utils.routePathMaker(AppPaths.Schedule),
         name:AppPaths.Schedule.substring(1),
         component:SchedulePage,
+        meta:{
+            layout:AppLayouts.main
+        },
     },
     {
         path:Utils.routePathMaker(AppPaths.Workday),
         name:AppPaths.Workday.substring(1),
         component:WorkdayPage,
+        meta:{
+            layout:AppLayouts.main
+        },
     },
     {
         path:Utils.routePathMaker(AppPaths.Holiday),
         name:AppPaths.Holiday.substring(1),
         component:HolidayPage,
+        meta:{
+            layout:AppLayouts.main
+        },
     },
     {
         path:Utils.routePathMaker(AppPaths.Telegram),
         component:TelegramPage,
+        meta:{
+            layout:AppLayouts.main
+        },
     },
     {
         path:Utils.routePathMaker(AppPaths.LearningCenter),
         name:AppPaths.LearningCenter.substring(1),
         component:LearningCenterPage,
+        meta:{
+            layout:AppLayouts.main
+        },
     },
     {
         path:Utils.routePathMaker(AppPaths.Instruction),
         name:AppPaths.Instruction.substring(1),
         component:InstructionPage,
+        meta:{
+            layout:AppLayouts.main
+        },
     },
 ]

@@ -2,12 +2,31 @@
 import validationRules from "@/utils/validationRules.js";
 const formRef = ref(null)
 import {useDepartmentPositionStore, useComponentStore} from "@/store/modules/index.js";
-import Utils from "@/utils/Utils.js"
+import Utils, {generateUUIDKey} from "@/utils/Utils.js"
 import UIHelper from "@/utils/UIHelper.js"
-import {UISelect} from "@/components/index.js"
+import {UINSelect, UISelect} from "@/components/index.js"
+import {useDebounce} from "@/utils/index.js"
 
 const store = useDepartmentPositionStore()
 const componentStore = useComponentStore()
+
+
+const depParams = computed(()=>({
+  ...store.depParams,
+  organizations:store.payload.organization_id.map(v=>v.id).toString(),
+  key:undefined,
+}))
+const departmentState = computed(()=>componentStore.getDepartmentState(store.depParams.key))
+const fetchDepartment = useDebounce(componentStore.createDepartmentFetcher(store.depParams.key))
+const onSearchDepartment = (v)=>{
+  store.depParams.page = 1
+  store.depParams.search = v
+  fetchDepartment(depParams.value)
+}
+const onScrollDepartment = ()=>{
+  store.depParams.page ++
+  fetchDepartment(depParams.value, true)
+}
 
 const onSubmit = ()=>{
   formRef.value?.validate((error)=>{
@@ -17,23 +36,34 @@ const onSubmit = ()=>{
       } else {
         store._update()
       }
-
-
     }
   })
 }
 
-const onPanelEv = (v)=>{
+
+const onChangeStructure = (v)=>{
+  store.payload.organization_id = v
+  departmentState.list =[]
+  store.payload.department_id = null
+  fetchDepartment(depParams.value)
+}
+
+const updateShowEv = (v)=>{
   if(!v) return
-  if(store.visibleType && !store.payload.department_id){
-    componentStore.onOpenDepartmentEv(v)
-  }
-  if(!store.visibleType && componentStore.departmentList.length === 1){
+  if(!store.visibleType && departmentState.value.list.length === 1){
     store.payload.department_id = null
-    componentStore.onOpenDepartmentEv(v)
+    fetchDepartment(depParams.value)
   }
 
 }
+
+onMounted(()=>{
+  store.depParams.search = null
+  if(store.visibleType){
+    departmentState.value.list = []
+  }
+})
+
 
 
 </script>
@@ -50,8 +80,7 @@ const onPanelEv = (v)=>{
           <UISelect
               :options="componentStore.structureList"
               :modelV="store.payload.organization_id"
-              @defaultValue="(v)=>store.payload.organization_id=v"
-              @updateModel="store.onChangeStructure"
+              @updateModel="onChangeStructure"
               :checkedVal="store.structureCheck"
               v-model:search="componentStore.structureParams.search"
               @onSearch="componentStore._structures"
@@ -62,21 +91,15 @@ const onPanelEv = (v)=>{
           />
         </n-form-item>
         <n-form-item class="col-span-12" :label="$t(`departmentPositionPage.form.department_id`)" path="department_id">
-          <n-select
-              :disabled="store.payload.organization_id.length === 0"
-              v-model:value="store.payload.department_id"
-              filterable
-              :filter="()=>true"
+          <UINSelect
               clearable
-              :options="componentStore.departmentList"
-              :render-label="UIHelper.selectRender.label"
-              :render-tag="UIHelper.selectRender.value"
-              value-field="id"
-              :loading="componentStore.departmentLoading"
-              @search="componentStore._onSearchDepartment"
-              @scroll="componentStore._onScrollDepartment"
-              @update:show="onPanelEv"
-              :ignore-composition="false"
+              :loading="departmentState.loading"
+              :options="departmentState.list"
+              :total-count="departmentState.total"
+              v-model:value="store.payload.department_id"
+              @onSearch="onSearchDepartment"
+              @onScrollEv="onScrollDepartment"
+              @updateShow="updateShowEv"
           />
         </n-form-item>
         <label class="col-span-12 text-secondary mb-2">{{$t(`departmentPositionPage.form.position_id`)}}
@@ -105,7 +128,6 @@ const onPanelEv = (v)=>{
               v-model:value="store.payload.group"
               filterable
               clearable
-
               :options="componentStore.groupList"
               label-field="name"
               value-field="id"
@@ -118,7 +140,6 @@ const onPanelEv = (v)=>{
               v-model:value="store.payload.rank"
               filterable
               clearable
-
               :options="componentStore.rankList"
               label-field="name"
               value-field="id"
@@ -130,7 +151,6 @@ const onPanelEv = (v)=>{
               v-model:value="store.payload.max_rank"
               filterable
               clearable
-
               :options="componentStore.rankList"
               label-field="name"
               value-field="id"
@@ -138,11 +158,21 @@ const onPanelEv = (v)=>{
           />
         </n-form-item>
         <n-form-item class="col-span-12 md:col-span-6 lg:col-span-4" :label="$t(`departmentPositionPage.form.rate`)" path="rate">
-          <n-input
-              v-model:value="store.payload.rate"
+<!--          <n-input-->
+<!--              v-model:value="store.payload.rate"-->
+<!--              type="text"-->
+<!--              :allow-input="Utils.onlyAllowNumber"-->
+
+<!--          />-->
+          <n-input-number
+              :max="300"
+              :min="0.1"
+              :step="0.1"
+              :show-button="false"
+              class="w-full"
               type="text"
               :allow-input="Utils.onlyAllowNumber"
-
+              v-model:value="store.payload.rate"
           />
         </n-form-item>
         <n-form-item class="col-span-12 md:col-span-6 lg:col-span-4" :label="$t(`departmentPositionPage.form.salary`)" path="salary">
@@ -150,7 +180,6 @@ const onPanelEv = (v)=>{
               v-model:value="store.payload.salary"
               type="text"
               :allow-input="Utils.onlyAllowNumber"
-
           >
             <template #suffix>
               {{$t('content.sum')}}

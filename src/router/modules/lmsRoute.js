@@ -1,4 +1,4 @@
-import {AppPaths} from "@/utils/index.js"
+import {AppLayouts, AppPaths} from "@/utils/index.js"
 import Utils from "@/utils/Utils.js"
 import {
     DirectionPage,
@@ -18,51 +18,71 @@ export default [
     {
         path:Utils.routeLmsPathMaker(AppPaths.Direction),
         component: DirectionPage,
-        children:[],
+        meta:{
+            layout:AppLayouts.main
+        },
     },
     {
         path:Utils.routeLmsPathMaker(AppPaths.Specialization),
         component: SpecializationPage,
-        children:[],
+        meta:{
+            layout:AppLayouts.main
+        },
     },
     {
         path:Utils.routeLmsPathMaker(AppPaths.Subject),
         component: SubjectPage,
-        children:[],
+        meta:{
+            layout:AppLayouts.main
+        },
     },
     {
         path:Utils.routeLmsPathMaker(AppPaths.EduPlan),
         component: EduPlanPage,
-        children:[],
+        meta:{
+            layout:AppLayouts.main
+        },
     },
     {
         path:Utils.routeLmsPathMaker(AppPaths.Teacher),
         component: TeacherPage,
-        children:[],
+        meta:{
+            layout:AppLayouts.main
+        },
     },
     {
         path:Utils.routeLmsPathMaker(AppPaths.Group)+'/:id',
         component: LmsGroupPage,
-        children:[],
+        meta:{
+            layout:AppLayouts.main
+        },
     },
     {
         path:Utils.routeLmsPathMaker(AppPaths.Lesson),
         component: LmsLessonPage,
-        children:[],
+        meta:{
+            layout:AppLayouts.main
+        },
     },
     {
         path:Utils.routeLmsPathMaker(AppPaths.TeacherLesson),
         component: TeacherLessonPage,
-        children:[],
+        meta:{
+            layout:AppLayouts.main
+        },
     },
     {
         path:Utils.routeLmsPathMaker(AppPaths.Listener),
         component: ListenerPage,
-        children:[],
+        meta:{
+            layout:AppLayouts.main
+        },
     },
     {
         path:Utils.routeLmsPathMaker(AppPaths.Result),
         component: LmsResultPage,
-        children:[],
+        meta:{
+            layout:AppLayouts.main
+        },
     },
 ]

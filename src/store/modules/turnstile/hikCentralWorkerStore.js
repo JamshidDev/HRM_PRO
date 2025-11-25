@@ -1,6 +1,8 @@
 import {defineStore} from "pinia";
 import Utils from "@/utils/Utils.js"
 import i18n from "@/i18n/index.js"
+import {compressImage} from "@/utils/index.js"
+
 const {t} = i18n.global
 
 export const useTurnstileHikCentralWorkerStore = defineStore('turnstileHikCentralWorkerStore', {
@@ -26,7 +28,7 @@ export const useTurnstileHikCentralWorkerStore = defineStore('turnstileHikCentra
             organizations:[],
             departments:[],
             access_level_id:null,
-            added:true,
+            added:'all',
             status:null,
         },
         payload: {
@@ -40,6 +42,7 @@ export const useTurnstileHikCentralWorkerStore = defineStore('turnstileHikCentra
             photo: null,
             end_time: null,
             isWorker: 1,
+            blob: null,
         },
         editPayload:{
             id:null,
@@ -48,6 +51,7 @@ export const useTurnstileHikCentralWorkerStore = defineStore('turnstileHikCentra
             to:null,
             access_level_ids:[],
             worker_id:null,
+            blob: null,
 
         },
         editVisible:false,
@@ -62,9 +66,32 @@ export const useTurnstileHikCentralWorkerStore = defineStore('turnstileHikCentra
         errorVisible:false,
         errorLoading:false,
         errorList:[],
+        moreAccessLevels:[],
+        moreAccessLevelsLoading:false,
 
     }),
     actions: {
+        _workerAccessLevels(worker_id, callback){
+            this.moreAccessLevelsLoading = true
+            const params ={
+                worker_id,
+            }
+            $ApiService.turnstileHikCentralWorkerService._workerAccessLevels({params}).then((res)=>{
+                const type = {
+                    1:'warning',
+                    2:'success',
+                    3:'error',
+                }
+                this.moreAccessLevels = res.data.data.map(v=>({
+                    ...v,
+                    type:type[v.status]
+                }))
+
+                callback?.(res.data.data)
+            }).finally(()=>{
+                this.moreAccessLevelsLoading = false
+            })
+        },
         _levels() {
             this.levelLoading = true
             $ApiService.hcServerService._accessLevels().then((res) => {
@@ -116,7 +143,7 @@ export const useTurnstileHikCentralWorkerStore = defineStore('turnstileHikCentra
                 ...this.params,
                 organizations:this.params.organizations.map(v=>v.id).toString() || undefined,
                 departments:this.params.departments.toString() || undefined,
-                added:this.params.added? 'yes' : 'no',
+                added:this.params.added==='all'? undefined : this.params.added,
             }
             $ApiService.turnstileHikCentralWorkerService._index({params}).then((res) => {
                 const type = {
@@ -135,11 +162,14 @@ export const useTurnstileHikCentralWorkerStore = defineStore('turnstileHikCentra
                 this.loading = false
             })
         },
-        _updateFace(){
+        async _updateFace(){
             this.editLoading = true
             let data = this.editPayload
+            if(data.blob){
+                data.photo = await compressImage(this.editPayload.blob)
+            }
+            data.blob= undefined
             $ApiService.turnstileHikCentralWorkerService._updateFace({data}).then((res) => {
-
                 this.editVisible = false
                 this._index()
             }).finally(() => {
@@ -147,7 +177,7 @@ export const useTurnstileHikCentralWorkerStore = defineStore('turnstileHikCentra
             })
 
         },
-        _add_worker(){
+        async _add_worker(){
             this.saveLoading = true
             let payload = {
                 access_level_ids: this.payload.access_level_ids,
@@ -155,7 +185,7 @@ export const useTurnstileHikCentralWorkerStore = defineStore('turnstileHikCentra
                 end_time: Utils.timeToZone(this.payload.end_time)
             }
             if(this.payload.photo){
-                payload.photo = this.payload.photo
+                payload.photo = await compressImage(this.payload.blob)
             }
             if(this.payload.photo_id){
                 payload.photo_id= this.payload.photo_id

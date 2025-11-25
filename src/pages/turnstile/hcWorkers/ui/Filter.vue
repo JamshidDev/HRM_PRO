@@ -57,16 +57,12 @@ const beforeShow = (v)=>{
 const resetFilter = ()=>{
   store.params.organizations = []
   store.params.access_level_id = null
-  store.params.added = true
+  store.params.added = 'all'
   store.params.departments = []
   store.params.status = null
   filterEvent()
 }
 
-const onChange = (v)=>{
-    store.params.added = v
-    filterEvent()
-}
 
 const statusOption = [
   {
@@ -83,7 +79,28 @@ const statusOption = [
   },
 ]
 
-const filterCount = computed(()=>Number(Boolean(store.params.organizations.length)) + Boolean(store.params.access_level_id))
+const workerOption = [
+  {
+    name:t('content.all'),
+    id:'all',
+  },
+  {
+    name:t('turnstile.hcWorkersPage.added'),
+    id:'yes',
+  },
+  {
+    name:t('turnstile.hcWorkersPage.no-added'),
+    id:'no',
+  },
+]
+
+const filterCount = computed(
+    ()=>Number(Boolean(store.params.organizations.length))
+        + Boolean(store.params.access_level_id)
+        + Boolean(store.params.departments.length)
+        + Boolean(store.params.status)
+        + Boolean(store.params.added)
+)
 
 </script>
 
@@ -103,7 +120,6 @@ const filterCount = computed(()=>Number(Boolean(store.params.organizations.lengt
       <UISelect
           :options="componentStore.structureList"
           :modelV="store.params.organizations"
-          @defaultValue="(v)=>store.params.organizations=v"
           @updateModel="onChangeStructure"
           :checkedVal="store.structureCheck2"
           @updateCheck="(v)=>store.structureCheck2=v"
@@ -142,11 +158,15 @@ const filterCount = computed(()=>Number(Boolean(store.params.organizations.lengt
           value-field="id"
           @update:value="filterEvent"
       />
-      <div @click.self="onChange(!store.params.added)" class="flex cursor-pointer py-1 px-3 border rounded-lg mt-4 border-surface-line">
-        <n-checkbox @update:checked="onChange" v-model:checked="store.params.added" >
-          <p class="line-clamp-1">{{$t('turnstile.hcWorkersPage.added')}}</p>
-        </n-checkbox>
-      </div>
+      <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{$t('content.status')}}</label>
+      <n-select
+          filterable
+          v-model:value="store.params.added"
+          :options="workerOption"
+          label-field="name"
+          value-field="id"
+          @update:value="filterEvent"
+      />
     </template>
 
   </UIPageFilter>

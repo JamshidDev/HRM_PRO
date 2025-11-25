@@ -1,13 +1,27 @@
 <script setup>
 import {useAccountStore, useComponentStore, useEventStore, useTurnstileDashboardStore} from "@/store/modules/index.js"
-import {UISelect} from "@/components/index.js"
-import {selectRender} from "@/utils/index.js"
+import {UINSelect, UISelect} from "@/components/index.js"
+import {generateUUIDKey,useDebounce} from "@/utils/index.js"
 
 
 const store = useEventStore()
 const dashboardStore = useTurnstileDashboardStore()
 const accStore = useAccountStore()
 const componentStore = useComponentStore()
+
+const depParams = computed(()=>({
+  ...dashboardStore.filterDepParams,
+  organizations:dashboardStore.dashboardParams.organizations.map(v=>v.id).toString(),
+  key:undefined,
+}))
+const detectKey = dashboardStore.filterDepParams.key ||= generateUUIDKey()
+const departmentState = computed(()=>componentStore.getDepartmentState(detectKey))
+const fetchDepartment = componentStore.createDepartmentFetcher(detectKey)
+const debounceFetchDepartment = useDebounce(fetchDepartment)
+const onScrollDepartment = ()=>{
+  dashboardStore.filterDepParams.page ++
+  fetchDepartment(depParams.value, true)
+}
 
 let timer = null
 const filterEvent = ()=>{
@@ -22,11 +36,11 @@ const filterEvent = ()=>{
 
 const onChangeStructure = (v)=>{
   dashboardStore.dashboardParams.organizations=v
-  componentStore.depParams.organizations = v.map((x) => x.id)
-  componentStore.departmentList = []
-  dashboardStore.dashboardParams.departments = []
+  dashboardStore.dashboardParams.departments=[]
+  departmentState.list = []
   filterEvent()
-  componentStore._departments()
+  dashboardStore.filterDepParams.page = 1
+  debounceFetchDepartment(depParams.value)
 }
 
 const handleTimeKeydownWithEnter = (event, key) => {
@@ -46,7 +60,6 @@ const onEnterTime = (key)=>{
 
 }
 const onChangeDepartment = ()=>{
-  console.log(dashboardStore.dashboardParams.departments)
   filterEvent()
 }
 
@@ -93,22 +106,43 @@ onBeforeUnmount(()=>{
         </div>
      <div class="lg:col-span-2 md:col-span-6 col-span-12">
        <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{$t('content.department')}}</label>
-       <n-select
-           v-model:value="dashboardStore.dashboardParams.departments"
-           :options="componentStore.departmentList"
+<!--       <n-select-->
+<!--           v-model:value="dashboardStore.dashboardParams.departments"-->
+<!--           :options="componentStore.departmentList"-->
+<!--           multiple-->
+<!--           filterable-->
+<!--           label-field="name"-->
+<!--           value-field="id"-->
+<!--           :render-label="selectRender.label"-->
+<!--           :render-tag ="selectRender.value"-->
+<!--           clearable-->
+<!--           @update:value="onChangeDepartment"-->
+<!--           :max-tag-count="1"-->
+<!--           :filter="()=>true"-->
+<!--           :loading="componentStore.departmentLoading"-->
+<!--           @search="componentStore._onSearchDepartment"-->
+<!--           @scroll="componentStore._onScrollDepartment"-->
+<!--       />-->
+
+<!--       <UINSelect-->
+<!--           multiple-->
+<!--           clearable-->
+<!--           :loading="componentStore.departmentLoading"-->
+<!--           v-model:value="dashboardStore.dashboardParams.departments"-->
+<!--           :options="componentStore.departmentList"-->
+<!--           :total-count="componentStore.totalDepartment"-->
+<!--           @update:value="onChangeDepartment"-->
+<!--       />-->
+
+       <UINSelect
            multiple
-           filterable
-           label-field="name"
-           value-field="id"
-           :render-label="selectRender.label"
-           :render-tag ="selectRender.value"
            clearable
+           :loading="departmentState.loading"
+           :options="departmentState.list"
+           :total-count="departmentState.total"
+           v-model:value="dashboardStore.dashboardParams.departments"
            @update:value="onChangeDepartment"
-           :max-tag-count="1"
-           :filter="()=>true"
-           :loading="componentStore.departmentLoading"
-           @search="componentStore._onSearchDepartment"
-           @scroll="componentStore._onScrollDepartment"
+           @onScrollEv="onScrollDepartment"
        />
      </div>
         <div class="lg:col-span-2 md:col-span-6 col-span-12">

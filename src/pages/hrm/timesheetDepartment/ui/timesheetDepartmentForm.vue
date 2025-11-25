@@ -7,11 +7,15 @@ import ValidationRules from "@/utils/validationRules.js";
 const store = useTimesheetDepartmentStore()
 const componentStore = useComponentStore()
 
-const changeOrgs = (v)=>{
+const changeOrg = (v)=>{
   store.payload.organizations=v
   store.payload.departments = []
+  componentStore.depParams.organizations = []
+  componentStore.depParams.search = null
+  componentStore.departmentList = []
   if(v.length){
-    componentStore._departmentTree(v[0].id)
+    componentStore.depParams.organizations = [v[0].id]
+    componentStore._departmentTree()
   }
 }
 
@@ -58,7 +62,7 @@ onMounted(()=>{
               :options="componentStore.structureList"
               :modelV="store.payload.organizations"
               @defaultValue="(v)=>store.payload.organizations=v"
-              @updateModel="changeOrgs"
+              @updateModel="changeOrg"
               :checkedVal="store.structureCheck"
               @updateCheck="(v)=>store.structureCheck=v"
               :loading="componentStore.structureLoading"
@@ -80,6 +84,7 @@ onMounted(()=>{
                 @updateModel="onChangeDepartment"
                 :checkedVal="store.departmentCheck"
                 @updateCheck="(v)=>store.departmentCheck=v"
+                v-model:search="componentStore.depParams.search"
             />
           </n-form-item>
         </template>

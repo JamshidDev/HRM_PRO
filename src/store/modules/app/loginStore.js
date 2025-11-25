@@ -2,8 +2,10 @@
 import {defineStore} from "pinia"
 import router from "@/router/index.js"
 import {AppPaths, useAppSetting} from "@/utils/index.js"
-import {useAccountStore} from "@/store/modules/index.js"
+import {useAccountStore, useSocketStore} from "@/store/modules/index.js"
 import {getActivePinia} from "pinia"
+import {useAnalytics} from "@/utils/index.js"
+
 export const useLoginStore = defineStore("loginStore", {
     state:()=>({
         phone:'+998',
@@ -22,9 +24,21 @@ export const useLoginStore = defineStore("loginStore", {
                 password:this.password,
             }
             $ApiService.authService._login({data}).then((res)=>{
+                const socketStore = useSocketStore()
+                const token = res.data.access_token
+                socketStore.disconnect()
                 getActivePinia().reset()
-                localStorage.setItem(useAppSetting.tokenKey,res.data.access_token)
-                accountStore._index(()=>{
+                localStorage.setItem(useAppSetting.tokenKey,token)
+                accountStore._index((data)=>{
+                    socketStore.initSocket(token, data?.id)
+                    localStorage.setItem(useAppSetting.accountUserId, data.id)
+                    const parameters = {
+                        role:data.role.name,
+                        orgName:data.organization?.name,
+                        phone:data.phone,
+                    }
+                    const analytics = useAnalytics(parameters )
+                    analytics.trackUserLogin()
                     router.push(AppPaths.Home)
                 })
 

@@ -28,6 +28,10 @@ const _showVideos =async (payload)=>{
     return await axios.get(`/v1/exam/results/worker-exam-videos/${payload.id}`, {params:payload.params})
 }
 
+const _downloadResult =async (payload)=>{
+    return await axios.get(`/v1/exam/worker-exams-download/${payload.id}`, {params:payload.params})
+}
+
 
 //
 // const _create = async (payload)=>{
@@ -57,6 +61,7 @@ export default {
     _send_result,
     _get_attempt,
     _showVideos,
+    _downloadResult,
     // _create,
     // _update,
     // _delete,
