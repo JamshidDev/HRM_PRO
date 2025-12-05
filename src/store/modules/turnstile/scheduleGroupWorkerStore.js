@@ -47,6 +47,11 @@ export const useScheduleGroupWorkerStore = defineStore('scheduleGroupWorkerStore
         },
         replaceLoading:false,
 
+        workerParams:{
+            page:1,
+            per_page:300,
+            search:null,
+        },
         workerList:[],
         totalWorker:0,
         workerLoading:false,
@@ -74,20 +79,24 @@ export const useScheduleGroupWorkerStore = defineStore('scheduleGroupWorkerStore
         },
         _workers(){
             const params = {
+                ...this.workerParams,
                 start_date:this.params.year1+'-'+this.params.month1.toString().padStart(2,"0")+'-01',
                 end_date:this.params.year2+'-'+this.params.month2.toString().padStart(2,"0")+'-01',
-                per_page:1000,
+
             }
             this.workerLoading = true
             $ApiService.shiftTypeService._getWorkers({params}).then((res)=>{
-                this.workerList = res.data.data.data.map(v=>({
+                const selectedData = this.workerList.filter(v=>v.positionId === this.replacePayload.positonId)
+
+                const data = res.data.data.data.map(v=>({
                     name:Utils.combineFullName(v.worker),
                     id:v.worker.id,
                     positionId:v.id,
-                    position:v.position,
+                    position:v.scheduleType?.name || t('shiftType.form.noGraphic'),
                     group:v.scheduleGroup,
                     type:v.scheduleType,
                 }))
+                this.workerList = [...new Map([...selectedData, ...data].map(v=>[v.positionId, v])).values()]
                 this.totalWorker = res.data.data.total
             }).finally(()=>{
                 this.workerLoading = false

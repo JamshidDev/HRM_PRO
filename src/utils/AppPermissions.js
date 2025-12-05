@@ -252,6 +252,16 @@ export const appPermissions = {
     turnstileHcpDurationWrite:"turnstile-hcp-duration-write",   
     turnstileHcpDurationRead:"turnstile-hcp-duration-read",
 
+    turnstileSheetsGroupsWrite: "turnstile-sheets-groups-write",
+    turnstileSheetsGroupsRead: "turnstile-sheets-groups-read",
+    turnstileSheetsGroups: "turnstile-sheets-groups",
+    turnstileSheetsWrite: "turnstile-sheets-write",
+    turnstileSheetsRead: "turnstile-sheets-read",
+    turnstileSheets: "turnstile-sheets",
+    turnstileSheetsWorkersWrite: "turnstile-sheets-workers-write",
+    turnstileSheetsWorkersRead: "turnstile-sheets-workers-read",
+    turnstileSheetsWorkers: "turnstile-sheets-workers",
+
     hospital: "hospital",
     hospitalExpired: "hospital-expired",
     hospitalExpiredWrite: "hospital-expired-write",

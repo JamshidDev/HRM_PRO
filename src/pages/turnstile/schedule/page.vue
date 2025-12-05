@@ -5,6 +5,8 @@ import Filter from "./ui/Filter.vue"
 import SettingModal from "./ui/SettingModal.vue"
 import SaveBox from "./ui/SaveBox.vue"
 import LoaderBox from "./ui/LoaderBox.vue"
+import GrandModal from "./ui/GrandModal.vue"
+
 
 
 import {useScheduleTableStore} from "@/store/modules/index.js"
@@ -15,6 +17,10 @@ const store = useScheduleTableStore()
 onMounted(()=>{
   store._initialData()
 })
+
+
+
+
 </script>
 
 <template>
@@ -29,5 +35,6 @@ onMounted(()=>{
   </Table>
   <SettingModal/>
   <SaveBox/>
+  <GrandModal/>
 </UIPageContent>
 </template>

@@ -33,25 +33,7 @@ const onClickBar = (v)=>{
 </script>
 
 <template>
-  <div class="grid grid-cols-12 gap-4">
 
-    <template v-if="dashboardStore.workerStatsLoading">
-      <div v-for="idx in 4" :key="idx"  class="lg:col-span-3 md:col-span-6 col-span-12">
-        <MiniCardSkeleton />
-      </div>
-    </template>
-    <template v-else>
-      <div v-for="(item, idx) in dashboardStore.workerStatuses" :key="idx" class="lg:col-span-3 md:col-span-6 col-span-12">
-        <MiniCard
-            @click="onPreview(item.previewType)"
-            :type="item.type"
-            :badge-text="item.status"
-            :count="item.count"
-            :description="item.description"
-            :icon="item.icon"
-        />
-      </div>
-    </template>
 
     <div class="lg:col-span-8 col-span-12">
       <DailyEventChartSkeleton v-if="dashboardStore.dailyAttendanceLoading" :height="240" :bars="12" />
@@ -90,5 +72,4 @@ const onClickBar = (v)=>{
       <TopDevicesSkeleton v-if="dashboardStore.devicesLoading" />
       <TopDevices  @click="onPreview('devices')" v-else />
     </div>
-  </div>
 </template>

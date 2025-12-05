@@ -26,12 +26,12 @@ app.use(naive)
 app.use(inputFormatter)
 app.use(dateMaskPlugin)
 app.use(router)
-app.use(VueGtag, {
-    property: {
-        id: import.meta.env.VITE_MEASUREMENT_ID
-    },
-    router: router
-})
+// app.use(VueGtag, {
+//     property: {
+//         id: import.meta.env.VITE_MEASUREMENT_ID
+//     },
+//     router: router
+// })
 app.use(pinia)
 app.component('RecycleScroller', RecycleScroller)
 

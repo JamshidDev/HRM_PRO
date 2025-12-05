@@ -43,6 +43,14 @@ const onChangeStructure = (v)=>{
   componentStore._departments()
 }
 
+const onDefaultEv = (v)=>{
+  store.params.organizations=v
+  componentStore.depParams.organizations = v.map((x) => x.id)
+  componentStore.departmentList = []
+  if(v.length === 0) return
+  componentStore._departments()
+}
+
 const onChangeDepartment = (v)=>{
   filterEvent()
 }
@@ -108,11 +116,11 @@ const filterCount = computed(
   <UIPageFilter
       v-model:search="store.params.search"
       @onSearch="onSearch"
-      :search-loading="store.loading"
       @show="beforeShow"
-      :filter-count="filterCount"
       @onClear="resetFilter"
       @onAdd="onAdd"
+      :search-loading="store.loading"
+      :filter-count="filterCount"
       :add-button-title="$t('turnstile.terminalUser.notCompanyWorker')"
   >
     <template #filterContent>
@@ -121,12 +129,13 @@ const filterCount = computed(
           :options="componentStore.structureList"
           :modelV="store.params.organizations"
           @updateModel="onChangeStructure"
-          :checkedVal="store.structureCheck2"
-          @updateCheck="(v)=>store.structureCheck2=v"
-          :loading="componentStore.structureLoading"
-          v-model:search="componentStore.structureParams.search"
+          @defaultValue="onDefaultEv"
           @onSearch="componentStore._structures"
           @onSubmit="filterEvent"
+          @updateCheck="(v)=>store.structureCheck2=v"
+          :checkedVal="store.structureCheck2"
+          :loading="componentStore.structureLoading"
+          v-model:search="componentStore.structureParams.search"
       />
       <label class="mt-3 text-xs text-gray-500 mb-1">{{ $t('workerPage.filter.department') }}</label>
       <UINSelect

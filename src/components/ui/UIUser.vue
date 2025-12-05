@@ -34,6 +34,10 @@ const props = defineProps({
   overLine:{
     type: Boolean,
     default: false
+  },
+  showOnlineBadge:{
+    type: Boolean,
+    default: false
   }
 })
 
@@ -51,7 +55,7 @@ const onOpen = ()=>{
 </script>
 
 <template>
-<div v-bind="$attrs" class="ui__user-component flex items-center gap-x-2 cursor-pointer" :class="short? 'w-[200px]' : 'w-full'">
+<div v-bind="$attrs" class="ui__user-component flex items-center gap-x-2 cursor-pointer relative" :class="short? 'w-[200px]' : 'w-full'">
   <n-avatar
       @click="onOpen"
       lazy
@@ -60,6 +64,10 @@ const onOpen = ()=>{
       :src="data?.photo || useAppSetting.noAvailableImage"
       :fallback-src="Utils.noAvailableImage"
   />
+  <span v-if="showOnlineBadge" class="absolute bottom-[0px] left-[32px] flex size-2">
+  <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-success/90 opacity-75"></span>
+  <span class="relative inline-flex size-2 rounded-full bg-success"></span>
+</span>
   <div @click="emits('onClickFullName')"  class="flex flex-col" style="width: calc(100% - 50px)">
     <slot name="name" :title="short? shortName:fullName">
       <n-tooltip

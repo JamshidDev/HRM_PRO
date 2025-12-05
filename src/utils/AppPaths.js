@@ -50,6 +50,8 @@ export const AppPaths = {
     AdminOther:"/admin-others",
     Schedule:"/schedule",
     ShiftType:"/shift-type",
+    ShiftTypeGroup:"/shift-type-group",
+    TurnstileSchedule:"/turnstile-schedule",
     Workday:"/workday",
     WorkerProfile:"/worker-profile",
     ConfContract:"/conf-contract",

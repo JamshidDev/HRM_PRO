@@ -1,8 +1,9 @@
 <script setup>
-import {NoDataPicture, UIActionButton, UIPagination, UIUser, UIMenuButton, UIWorkerView} from "@/components/index.js"
-import {useTimesheetDepartmentStore, useWorkerStore} from "@/store/modules/index.js"
+import {NoDataPicture, UIPagination, UIUser, UIMenuButton, UIWorkerView} from "@/components/index.js"
+import {useTimesheetDepartmentStore,} from "@/store/modules/index.js"
 import Utils from "@/utils/Utils.js"
 import {useAccountStore} from "@/store/modules/index.js"
+import {AppsList24Regular,} from "@vicons/fluent"
 const accStore = useAccountStore()
 
 const store = useTimesheetDepartmentStore()
@@ -16,8 +17,14 @@ const changePage = (v)=>{
 const onSelectEv = (v)=>{
   if(v.key === Utils.ActionTypes.delete){
     if(!accStore.checkAction(accStore.pn.hrTableWrite)) return
-    store.elementId = v.data.id
-    store._delete()
+    const data = {
+      worker_position_id:v.data.id
+    }
+    store._delete(data)
+  }else if(v.key === Utils.ActionTypes.view){
+    console.log(v.data.departments)
+    store.previewList = v.data.departments
+    store.listVisible = true
   }
 }
 
@@ -35,8 +42,8 @@ const onSelectEv = (v)=>{
         <thead>
         <tr>
           <th class="text-center! min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
-          <th class="min-w-[200px]">{{$t('content.worker')}}</th>
-          <th class="min-w-[200px]">{{$t('timesheetWorkerPage.work_place')}}</th>
+          <th class="min-w-[200px] w-[400px]">{{$t('content.worker')}}</th>
+          <th class="min-w-[200px]">{{$t('content.departments')}}</th>
           <th class="min-w-[40px] w-[40px]"></th>
         </tr>
         </thead>
@@ -45,25 +52,35 @@ const onSelectEv = (v)=>{
           <td><span class="text-center text-[12px] text-gray-600 block">{{ (store.params.page - 1) * store.params.per_page + idx + 1 }}</span></td>
           <td>
             <UIUser
+                :hide-tooltip="true"
                 class="cursor-pointer"
                 :short="false"
                 :data="{
-                    photo:item.worker_position?.worker.photo,
-                    firstName:item.worker_position?.worker.first_name,
-                    middleName:item.worker_position?.worker.middle_name,
-                    lastName:item.worker_position?.worker.last_name,
-                    position:item.worker_position?.post_name,
+                    photo:item?.worker.photo,
+                    firstName:item?.worker.first_name,
+                    middleName:item?.worker.middle_name,
+                    lastName:item?.worker.last_name,
+                    position:item?.position_name,
                   }"
             />
           </td>
           <td>
-            {{item.work_place?.name || item.department?.name}}
+            {{item.departments?.[0]?.department?.name}}
+            <n-button v-if="item.departments.length>1" class="!ml-2" size="small" secondary type="primary">+{{item.departments.length-1}}</n-button>
           </td>
           <td>
             <UIMenuButton
                 :loading="store.deleteLoading && store.elementId === item.id"
                 :data="item"
                 @selectEv="onSelectEv"
+                :extra-options="[
+                    {
+                  label: $t('content.departments'),
+                  key: Utils.ActionTypes.view,
+                  icon:AppsList24Regular,
+                  visible:true
+                }
+                ]"
             />
           </td>
         </tr>
@@ -80,7 +97,3 @@ const onSelectEv = (v)=>{
   </n-spin>
   <UIWorkerView ref="previewRef"/>
 </template>
-
-<style scoped>
-
-</style>

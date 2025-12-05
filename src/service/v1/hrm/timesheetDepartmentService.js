@@ -9,7 +9,7 @@ const _create = async (payload)=>{
 }
 
 const _delete = async (payload)=>{
-    return await axios.delete(`/v1/timesheet/worker-departments/${payload.id}`)
+    return await axios.post(`/v1/timesheet/worker-departments/detach`, payload.data)
 }
 
 

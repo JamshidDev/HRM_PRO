@@ -109,6 +109,7 @@ watchEffect(()=>{
   if(props.multiple){
     selectAll.value = computedOption.value.length === valueModel.value.length && computedOption.value.length>0
   }
+  searchModel.value = props.query
 })
 
 const onUpdateCheck = (v)=>{

@@ -11,7 +11,12 @@ const store = useShiftTypeStore()
 
 
 const onOpenModal = (v)=>{
+  if(v?.type?.id === 5){
+    $Toast.warning(t('shiftType.form.notAllowedThisAction'))
+    return
+  }
   store.isDailySchedule =v?.type?.id === 2
+  store.showGroupCountField =[1,3].includes(v?.type?.id)
   store._resetGenerateModal()
   store.elementId = v.id
   store.visibleType = true

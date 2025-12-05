@@ -29,6 +29,13 @@ const onSubmit = ()=>{
     }
   })
 }
+
+const onSearch = (v)=>{
+  store.workerParams.search = v
+  store.workerParams.page = 1
+  store._workers()
+
+}
 </script>
 
 <template>
@@ -54,6 +61,8 @@ const onSubmit = ()=>{
           path="positonId"
           :rule-path="validationRules.rulesNames.requiredNumberField">
         <UINSelect
+            @onSearch="onSearch"
+            :query="store.workerParams.search"
             :options="store.workerList"
             v-model:value="store.replacePayload.positonId"
             value-field="positionId"

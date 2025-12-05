@@ -22,31 +22,16 @@ const componentStore = useComponentStore()
 
 const debounceIndexEv = useDebounce(store._index, 1000)
 
-const posParams = computed(()=>({
-  ...store.filterPosParams,
-  organizations:store.params.organizations.map(v=>v.id).toString(),
-  departments:store.params.departments.toString(),
-  key:undefined,
-}))
-const positionKey = store.filterPosParams.key ||= generateUUIDKey()
-const positionState = computed(()=>componentStore.getPositionState(positionKey))
-const fetchPosition = useDebounce(componentStore.createPositionFetcher(positionKey))
-const onScrollPosition = ()=>{
-  store.filterPosParams.page ++
-  fetchPosition(posParams.value, true)
+const fetchPosition = useDebounce(store._getFilterPositions)
+const onSearchPositionEv = (v)=>{
+  store.filterPosParams.search = v
+  store._getFilterPositions()
 }
 
-const depParams = computed(()=>({
-  ...store.filterDepParams,
-  organizations:store.params.organizations.map(v=>v.id).toString(),
-  key:undefined,
-}))
-const detectKey = store.filterDepParams.key ||= generateUUIDKey()
-const departmentState = computed(()=>componentStore.getDepartmentState(detectKey))
-const fetchDepartment = useDebounce(componentStore.createDepartmentFetcher(detectKey))
-const onScrollDepartment = ()=>{
-  store.filterDepParams.page ++
-  fetchDepartment(depParams.value, true)
+const fetchDepartment = useDebounce(store._getFilterDepartments)
+const onSearchDepartmentEv = (v)=>{
+  store.filterDepParams.search = v
+  store._getFilterDepartments()
 }
 
 const router = useRouter()
@@ -73,18 +58,18 @@ const onChangeStructure = (v) => {
   store.params.departments = []
   store.params.positions = []
 
-  departmentState.value.list = []
-  componentStore.filterPositions = []
+  store.filterPositionList = []
+  store.filterDepartmentList = []
 
   filterEvent()
 
   if(v.length===0 ) return
 
   store.filterDepParams.page = 1
-  fetchDepartment(depParams.value)
+  fetchDepartment()
 
   store.filterPosParams.page = 1
-  fetchPosition(posParams.value)
+  fetchPosition()
 }
 
 const marks = {
@@ -143,8 +128,8 @@ const clearFilter = () => {
 const onChangeDepartment = () => {
   componentStore.filterPositionParams.departments = store.params.departments.toString()
   store.params.positions = []
-  positionState.list = []
-  fetchPosition(posParams.value)
+  store.filterPositionList = []
+  fetchPosition()
   filterEvent()
 }
 
@@ -222,8 +207,8 @@ const canWrite = computed(()=>accStore.checkAction(appPermissions.hrWorkersWrite
 
 const defaultEv = (v)=>{
   store.params.organizations=v
-  fetchDepartment(depParams.value)
-  fetchPosition(posParams.value)
+  fetchDepartment()
+  fetchPosition()
 
 }
 
@@ -355,12 +340,13 @@ const onKeyUp = Utils.useDebounce(filterEvent,1000)
                 multiple
                 clearable
                 :disabled="store.params.organizations.length === 0"
-                :loading="departmentState.loading"
-                :options="departmentState.list"
-                :total-count="departmentState.total"
+                :loading="store.filterDepartmentLoading"
+                :options="store.filterDepartmentList"
+                :total-count="store.filterDepartmentTotal"
                 v-model:value="store.params.departments"
                 @update:value="onChangeDepartment"
-                @onScrollEv="onScrollDepartment"
+                :query="store.filterDepParams.search"
+                @onSearch="onSearchDepartmentEv"
             />
           </div>
           <div class="col-span-6">
@@ -369,12 +355,13 @@ const onKeyUp = Utils.useDebounce(filterEvent,1000)
                 multiple
                 clearable
                 :disabled="store.params.organizations.length === 0"
-                :loading="positionState.loading"
-                :options="positionState.list"
-                :total-count="positionState.total"
+                :loading="store.filterPositionLoading"
+                :options="store.filterPositionList"
+                :total-count="store.filterPositionTotal"
+                :query="store.filterPosParams.search"
                 v-model:value="store.params.positions"
                 @update:value="filterEvent"
-                @onScrollEv="onScrollPosition"
+                @onSearch="onSearchPositionEv"
             />
           </div>
           <div class="col-span-6">
@@ -410,7 +397,6 @@ const onKeyUp = Utils.useDebounce(filterEvent,1000)
                 v-model:value="store.params.position_type"
                 filterable
                 clearable
-
                 :options="componentStore.positionCategory"
                 label-field="name"
                 value-field="id"

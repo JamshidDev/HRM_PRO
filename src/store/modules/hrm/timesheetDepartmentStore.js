@@ -37,8 +37,30 @@ export const useTimesheetDepartmentStore = defineStore('timesheetDepartmentStore
             search:null,
             organizations:[],
         },
+        listVisible:false,
+        previewList:[],
+
+        departmentList:[],
+        departmentLoading:false,
     }),
     actions:{
+        _department(){
+            this.departmentLoading = true
+            let params = {
+                page:1,
+                per_page:1000,
+                organizations:this.payload.organizations.map(v=>v.id).toString() || undefined,
+            }
+            $ApiService.componentService._departmentByOrganizations({params}).then((res)=>{
+                this.departmentList = res.data.data.data.map(v=>({
+                    id:v.id,
+                    name:v.name,
+                    position:v.organization?.name,
+                }))
+            }).finally(()=>{
+                this.departmentLoading = false
+            })
+        },
         _index(){
             this.loading = true
             let params = {
@@ -55,9 +77,9 @@ export const useTimesheetDepartmentStore = defineStore('timesheetDepartmentStore
         _create(){
             this.saveLoading = true
             let data = {
-                ...this.payload,
-                organizations: this.payload.organizations.map(i=>i.id),
-                departments: this.payload.departments.map(i=>i.id),
+                worker_position_id:this.payload.worker_position_id,
+                organization_id: this.payload.organizations.map(i=>i.id),
+                departments: this.payload.departments,
             }
             $ApiService.timesheetDepartmentService._create({data}).then((res)=>{
                 this.visible = false
@@ -66,10 +88,11 @@ export const useTimesheetDepartmentStore = defineStore('timesheetDepartmentStore
                 this.saveLoading = false
             })
         },
-        _delete(){
+        _delete(data, callback=null){
             this.deleteLoading = true
-            $ApiService.timesheetDepartmentService._delete({id: this.elementId}).then((res)=>{
+            $ApiService.timesheetDepartmentService._delete({data}).then((res)=>{
                 this._index()
+                callback?.()
             }).finally(()=>{
                 this.deleteLoading = false
             })

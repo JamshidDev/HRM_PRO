@@ -11,6 +11,7 @@ export const useSocketStore = defineStore('useSocketStore', {
         idleTimer: null,
         allOnlineUsers:[],
         userVisible:false,
+        reactionEmojiEv:null,
     }),
     actions:{
         initSocket(token, userId) {
@@ -52,6 +53,10 @@ export const useSocketStore = defineStore('useSocketStore', {
                 console.log(data)
                 $Toast.info('Export ready');
             })
+            this.socket.on('export_ready', (data) => {
+                console.log(data)
+                $Toast.info('Export ready');
+            })
 
             this.socket.on('online_users', (data) => {
                 for(let key in data){
@@ -60,11 +65,23 @@ export const useSocketStore = defineStore('useSocketStore', {
                 }
             })
 
+            this.socket.on('emoji', (data) => {
+                if(!this.reactionEmojiEv) return
+                this.reactionEmojiEv(data)
+            })
+
         },
 
         getAllOnlineUsers(){
             if(!this.socket) return
             this.socket.emit('get_online_users')
+        },
+        sendNotification(data){
+            if(!this.socket) return
+            this.socket.emit('emoji', data)
+        },
+        registerCallback(callback){
+            this.reactionEmojiEv = callback
         },
 
         setOnline(userId) {
@@ -90,12 +107,12 @@ export const useSocketStore = defineStore('useSocketStore', {
             }, 30 * 60 * 1000); // 30 minutes
         },
         addUserToOnlineUsers(user){
-            const existUser = this.allOnlineUsers.find(v=>v.id === user.id)
+            const existUser = this.allOnlineUsers.find(v=>Number(v.id) === Number(user.id))
             if(existUser) return
             this.allOnlineUsers.push(user)
         },
         removeUserFromOnlineUsers(user){
-            this.allOnlineUsers = this.allOnlineUsers.filter(v=>v.id !== user.id)
+            this.allOnlineUsers = this.allOnlineUsers.filter(v=>Number(v.id) !== Number(user.id))
         },
         setOffline() {
             if (this.socket && this.currentUserId) {

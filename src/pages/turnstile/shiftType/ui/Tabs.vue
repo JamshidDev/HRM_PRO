@@ -5,10 +5,32 @@ import ScheduleGroupPage from "@/pages/turnstile/scheduleGroup/page.vue"
 import ScheduleGroupWorkerPage from "@/pages/turnstile/scheduleWorker/page.vue"
 
 const store = useShiftTypeStore()
+const route = useRoute()
+
+
+watchEffect(()=>{
+  if(route.path === '/turnstile/shift-type-group'){
+    store.groupParams.schedule_type = null
+    store.activeTab = 2
+  }else{
+    store.activeTab =1
+    store.groupParams.organizations = []
+    store.groupParams.departments = []
+  }
+})
 
 
 onMounted(()=>{
-  store.activeTab =1
+  if(route.path === '/turnstile/shift-type-group'){
+    store.groupParams.schedule_type = null
+    store.activeTab = 2
+  }else{
+    store.activeTab = 1
+    store.groupParams.organizations = []
+    store.groupParams.departments = []
+  }
+
+
 })
 </script>
 

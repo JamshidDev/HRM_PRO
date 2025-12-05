@@ -30,10 +30,16 @@ const onSubmit = ()=>{
       })
 
       if(store.activeTab === 1){
-        fromData.append('worker_position_id',store.payload.worker_position_id)
         fromData.append('organization_id', store.payload.organization_id[0].id)
+        if(store.payload.worker_position_id){
+          fromData.append('worker_position_id',store.payload.worker_position_id)
+        }
+
       }else{
-        fromData.append('worker_id',store.payload.pin)
+        if(store.payload.pin){
+          fromData.append('worker_id',store.payload.pin)
+        }
+
       }
 
       if(store.visibleType){
@@ -162,7 +168,6 @@ onMounted(()=>{
           <n-input
               rows="2"
               type="textarea"
-
               v-model:value="store.payload.comment"
           />
         </n-form-item>

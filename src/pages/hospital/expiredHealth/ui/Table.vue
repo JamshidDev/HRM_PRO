@@ -36,6 +36,10 @@ const onSelectEv = (v)=>{
     onDelete(v.data)
   }
 }
+
+const openFileNewTab =(url)=>{
+  window.open(url, '_blank')
+}
 </script>
 
 <template>
@@ -55,6 +59,7 @@ const onSelectEv = (v)=>{
           <th class="min-w-[100px]">{{$t('medPage.form.organization')}}</th>
           <th class="min-w-[90px] w-[90px]">{{$t('medPage.form.from')}}</th>
           <th class="min-w-[90px] w-[90px]">{{$t('medPage.form.to')}}</th>
+          <th class="min-w-[90px] w-[90px]">{{$t('content.file')}}</th>
           <th class="min-w-[200px] w-[200px]">{{$t('medPage.form.comment')}}</th>
         </tr>
         </thead>
@@ -85,8 +90,16 @@ const onSelectEv = (v)=>{
             </div>
           </td>
           <td>
-            <div>
+            <div class="flex flex-col gap-1">
               <UIBadge
+                  class="!text-xs"
+                  v-if="item.vacation"
+                  :show-icon="false"
+                  :label="Utils.timeOnlyDate(item.vacation) + ' ' + $t('medPage.form.onVacation')"
+                  :type="Utils.colorTypes.info"
+              />
+              <UIBadge
+                  :class="[item.vacation && '!text-xs']"
                   :show-icon="false"
                   :label="Math.abs(item.days) + ' ' + $t('date.day')"
                   :type="item.days<0? Utils.colorTypes.error:Utils.colorTypes.success"
@@ -98,6 +111,9 @@ const onSelectEv = (v)=>{
           </td>
           <td>
             <UIBadge :show-icon="false" :type="Utils.colorTypes.dark" :label="Utils.timeOnlyDate(item.to)" />
+          </td>
+          <td>
+            <n-button size="small" v-if="item.file"  @click="openFileNewTab(item.file)">{{$t('content.download')}}</n-button>
           </td>
           <td>{{item.comment}}</td>
 

@@ -20,6 +20,9 @@ import {
     HcEventV2Page,
     SchedulePage,
     ShiftTypePage,
+    ShiftTypeGroupPage,
+    TurnstileSchedulePage,
+    StatsDashboardPage,
 } from "@/pages/turnstile"
 
 
@@ -123,6 +126,13 @@ export default [
         },
     },
     {
+        path:Utils.routeTurnstilePathMaker(AppPaths.DashboardV2),
+        component: ()=>StatsDashboardPage,
+        meta:{
+            layout:AppLayouts.main
+        },
+    },
+    {
         path:Utils.routeTurnstilePathMaker(AppPaths.HCWorkDuration),
         component: ()=>HKWorkDurationPage,
         meta:{
@@ -153,6 +163,20 @@ export default [
     {
         path:Utils.routeTurnstilePathMaker(AppPaths.ShiftType),
         component: ()=>ShiftTypePage,
+        meta:{
+            layout:AppLayouts.main
+        },
+    },
+    {
+        path:Utils.routeTurnstilePathMaker(AppPaths.ShiftTypeGroup),
+        component: ()=>ShiftTypeGroupPage,
+        meta:{
+            layout:AppLayouts.main
+        },
+    },
+    {
+        path:Utils.routeTurnstilePathMaker(AppPaths.TurnstileSchedule),
+        component: ()=>TurnstileSchedulePage,
         meta:{
             layout:AppLayouts.main
         },

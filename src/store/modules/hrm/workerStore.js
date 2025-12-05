@@ -55,22 +55,66 @@ export const useWorkerStore = defineStore('workerStore', {
         currentDistrictList:[],
         userRoleVisible:false,
 
-        filterDepParams:{
-            page:1,
-            per_page:100,
-            search:null,
-            key:null,
-        },
-
         filterPosParams:{
             page:1,
-            per_page:100,
+            per_page:500,
             search:null,
-            key:null,
         },
+        filterPositionList:[],
+        filterPositionLoading:false,
+        filterPositionTotal:0,
+
+        filterDepParams:{
+            page:1,
+            per_page:500,
+            search:null,
+        },
+        filterDepartmentList:[],
+        filterDepartmentLoading:false,
+        filterDepartmentTotal:0,
+
 
     }),
     actions:{
+        _getFilterDepartments(){
+            const params ={
+                ...this.filterDepParams,
+                organizations:this.params.organizations.map(v=>v.id).toString() || undefined,
+            }
+            this.filterDepartmentLoading = true
+            $ApiService.componentService._departmentByOrganizations({ params }).then((res)=>{
+                const values = this.params.departments
+                const selectedItems = this.filterDepartmentList.filter(v=>values.includes(v.id))
+                const data = res.data.data.data.map(v=>({
+                    ...v,
+                    position: v?.organization?.name
+                }))
+                this.filterDepartmentTotal = res.data.data.total
+                this.filterDepartmentList =[...new Map([...selectedItems, ...data].map(v=>[v.id, v])).values()]
+            }).finally(()=>{
+                this.filterDepartmentLoading = false
+            })
+
+        },
+        _getFilterPositions(){
+            const params ={
+                ...this.filterPosParams,
+                organizations:this.params.organizations.map(v=>v.id).toString() || undefined,
+                departments:this.params.departments.toString() || undefined,
+            }
+            this.filterPositionLoading = true
+            $ApiService.positionService._filterIndex({ params }).then((res)=>{
+                const values = this.params.positions
+                const selectedItems = this.filterPositionList.filter(v=>values.includes(v.id))
+                const data = res.data.data.data
+                this.filterPositionTotal = res.data.data.total
+                this.filterPositionList =[...new Map([...selectedItems, ...data].map(v=>[v.id, v])).values()]
+            }).finally(()=>{
+                this.filterPositionLoading = false
+            })
+
+
+        },
         _downloadRelative(){
             this.loading= true
             let params = this._params()

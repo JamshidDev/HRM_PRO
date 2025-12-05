@@ -2,6 +2,7 @@
 import {useTimesheetDepartmentStore, useAccountStore} from "@/store/modules";
 import Table from './ui/Table.vue'
 import Filter from './ui/Filter.vue'
+import ListModal from './ui/ListModal.vue'
 import {UIPageContent} from "@/components/index.js";
 
 const store = useTimesheetDepartmentStore()
@@ -20,5 +21,6 @@ onMounted(()=>{
 <UIPageContent>
  <Filter/>
   <Table />
+  <ListModal/>
 </UIPageContent>
 </template>

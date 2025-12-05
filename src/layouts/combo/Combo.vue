@@ -2,6 +2,7 @@
 import SidebarContent from "./ui/SidebarContent.vue";
 import PageContent from "./ui/PageContent.vue";
 import HelperLayout from "./ui/HelperLayout.vue"
+import ReactionScreen from '@/pages/app/home/ui/ReactionScreen.vue'
 import {useAccountStore} from "@/store/modules/index.js"
 const store = useAccountStore()
 
@@ -44,6 +45,7 @@ onBeforeMount(()=>{
     <SidebarContent @on-change="controlSidebar" @on-open="openSidebar" @on-close="closeSidebar"/>
     <PageContent @on-open="openSidebar" />
     <HelperLayout/>
+    <ReactionScreen/>
   </div>
 </template>
 

@@ -1,6 +1,8 @@
 {
   "content": {
     "deleted": "O'chirilgan",
+    "nowOnlineUsers": "Hozirda tizimdagi online foydalanuvchilar",
+    "onlineUsers": "Online foydalanuvchilar",
     "files": "Fayllar",
     "lastClickTime": " {n} daqiqadan so'ng qayta foydalanishingiz mumkin!",
     "deadline": "Yakunlanish vaqti",
@@ -33,6 +35,7 @@
     "no-data": "Ma'lumot yo'q",
     "cancel": "Bekor qilish",
     "code": "Kod",
+    "departments": "Bo'limlar",
     "questions": "Savollar",
     "videos": "Videolar",
     "confirmExit": "Chiqishni tasdiqlaysizmi?",
@@ -1531,6 +1534,7 @@
       "comment": "Izoh",
       "status": "Holati",
       "organization": "Korxona",
+      "onVacation": "gacha ta'tilda",
       "file": "Fayllar"
     },
     "panel": {
@@ -2254,6 +2258,7 @@
       "not_came_today": "Ishga kelmagan xodimlar",
       "current_in": "Ishxonadagi xodimlar",
       "current_out": "Ishxonada yo'q xodimlar",
+      "scheduled_workers_today": "Grafik bo'yicha xodimlar",
       "workdays": "Ishxonada yo'q xodimlar"
     },
     "work_durations": {
@@ -2373,30 +2378,52 @@
     "form": {
       "starTimeSchedule":"Smena boshlanish vaqti",
       "endTimeSchedule":"Smena tugash vaqti",
+      "breakStartTime":"Tanaffus boshlanish vaqti",
+      "breakEndTime":"Tanaffus tugash vaqti",
       "allScheduleCount": "Barcha grafiklar soni",
       "savingProcess": "Kuting yuklanmoqda...",
+      "addBreakTime": "Tanaffus vaqtini qo'shish",
       "changedScheduleCount": "O‘zgartirilgan grafiklar soni",
       "scheduleType": "Navbatchilik turi",
       "holiday": "Dam kuni",
       "otherTime": "Boshqa soat",
       "workerList": "Xodimlar ro'yhati",
       "workTime": "Ish soati",
+      "attachedWorker": "Biriktirilgan",
+      "noAttachedWorker": "Biriktirilmagan",
+      "filterByWorker": "Xodimlar bo'yicha",
+      "notExistChangeToSave": "Saqlash uchun o'zgarishlar yo'q",
       "startWork": "Ishni boshlash uchun navbatchilik turini tanlang"
     }
   },
   "shiftType": {
     "name": "Smenalar",
+    "groupName": "Smena guruhlari",
     "createTitle": "Grafik generatsiya qilish",
-    "updateTitle": "Guruhni tahrirlash",
+    "updateTitle": "Guruhni yakunlash",
     "form": {
+      "noGraphic": "Biriktirilmagan",
       "generate": "Generatsiya qilish",
+      "startWorkTime": "Ish boshlanish vaqtidan imtiyoz",
+      "endWorkTime": "Ish tugash vaqtidan imtiyoz",
       "replaceWorker": "Xodimni o'zgartirish",
-      "groupCount": "Guruxlar soni",
+      "groupCount": "Guruhlar soni",
       "workerCount": "Xodimlar soni",
-      "createGroup": "Gurux yaratish",
+      "createGroup": "Guruh yaratish",
       "turnstileActive": "Turniket tizimida faol",
       "turnstileUnActive": "Turniket tizimiga ulanmagan",
-      "showGroup": "Guruxlarni ko'rish",
+      "addGrand": "Xodimga imtiyoz berish",
+      "gradToReport": "Turniket hisobotlaridan ozod qilish",
+      "grandLabel": "Xodimga ishga kelish va ketish vaqtlariga imtiyoz berish uchun kelish va ketish vaqtlariga daqiqalarda qiymat bering. ",
+      "reportLabel": "Xodim turniket qurilmasidan foydalanganda uning ma'lumotlari hisobotlarda aks etmaydi",
+      "showGroup": "Guruhlarni ko'rish",
+      "addFacility": "Turniket boshqaruvi",
+      "checkFactOfWorkTime": "Faktni tekshirish",
+      "removeTurnstile": "Turniketdan o'chirish",
+      "addTurnstile": "Turniketga qo'shish",
+      "notAllowedThisAction": "Maxsus smena uchun Navbatchilik grafiki menyusida ishlang!",
+      "turnstileSetting": "Turniket boshqaruvi",
+      "howMuchGroup": "Nechta guruhga moslangan grafik tuzishni xohlaysiz?",
       "group": "Guruhlar"
     }
   },
@@ -2407,6 +2434,9 @@
   },
   "socketPage": {
     "usersMOdalTitle": "Barcha online foydalanuvchilar ro'yhati"
+  },
+  "turnstileSchedule": {
+    "name": "Turniket grafiki"
   }
 }
 

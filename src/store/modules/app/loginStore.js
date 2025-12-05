@@ -32,13 +32,13 @@ export const useLoginStore = defineStore("loginStore", {
                 accountStore._index((data)=>{
                     socketStore.initSocket(token, data?.id)
                     localStorage.setItem(useAppSetting.accountUserId, data.id)
-                    const parameters = {
-                        role:data.role.name,
-                        orgName:data.organization?.name,
-                        phone:data.phone,
-                    }
-                    const analytics = useAnalytics(parameters )
-                    analytics.trackUserLogin()
+                    // const parameters = {
+                    //     role:data.role.name,
+                    //     orgName:data.organization?.name,
+                    //     phone:data.phone,
+                    // }
+                    // const analytics = useAnalytics(parameters )
+                    // analytics.trackUserLogin()
                     router.push(AppPaths.Home)
                 })
 

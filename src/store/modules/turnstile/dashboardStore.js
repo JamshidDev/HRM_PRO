@@ -22,7 +22,7 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
         devicesLoading: false,                // '/v1/turnstile/hik-central/dashboard/devices'
         workDurationsLoading: false,          // '/v1/turnstile/hik-central/dashboard/work-durations'
 
-        dashboardObj: null,
+        dashboardObj: {},
         topOfflineDeviceList: [],
         dailyEvents: [],
         totalOfflineDeviceCount: 0,
@@ -138,9 +138,25 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
             search:null,
             key:null,
           },
+
+          statDashboardLoading:false,
+          workerInOut:[],
+
     }),
-    
+
     actions: {
+        _getStatDashboard(){
+            const params = {
+                date:'2025-12-01'
+            }
+            this.statDashboardLoading = true
+            $ApiService.turnstileDashboardService._statDashboard({params}).then(res => {
+                console.log(res.data)
+            }).finally(()=>{
+                this.statDashboardLoading = false
+            })
+
+        },
         async _dashboard() {
             // Umumiy va bo'linma bo'yicha loadinglarni yoqamiz
             this.dashboardLoading = true
@@ -153,13 +169,15 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
                 ...this._previewQueryParams(),
                 start_time:this.dashboardParams.start_time,
                 end_time:this.dashboardParams.end_time,
+                date:'2025-11-01',
             }
             const urls = [
-                '/v1/turnstile/hik-central/dashboard',
-                '/v1/turnstile/hik-central/dashboard/daily-attendance',
-                '/v1/turnstile/hik-central/dashboard/worker-stats',
-                '/v1/turnstile/hik-central/dashboard/devices',
+                '/v1/turnstile/schedule/stats-one',
+                '/v1/turnstile/schedule/stats-four',
+                '/v1/turnstile/schedule/stats-three',
+                '/v1/turnstile/schedule/stats-five',
                 '/v1/turnstile/hik-central/dashboard/work-durations',
+                '/v1/turnstile/schedule/stats-six',
             ]
 
             const requests = urls.map(async (url) => {
@@ -176,20 +194,22 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
                 for await (const result of requests) {
                     const data = result.data
                     if (result.url === urls[0]) {
-                        if (!result.error) this.dashboardObj = data
-                        this.dashboardMainLoading = false
-                    } else if (result.url === urls[1]) {
-                        if (!result.error) this.dailyEvents = data
-                        this.dailyAttendanceLoading = false
-                    } else if (result.url === urls[2]) {
                         if (!result.error) {
                             this.workerStatuses = [
                                 {
                                     type: "primary",
                                     icon: markRaw(DataUsage20Regular),
                                     status: "content.today",
+                                    description: "turnStileDashboard.form.scheduled_workers_today",
+                                    count: data?.scheduled_workers_today || 0,
+                                    previewType:'come',
+                                },
+                                {
+                                    type: "primary",
+                                    icon: markRaw(DataUsage20Regular),
+                                    status: "content.today",
                                     description: "turnStileDashboard.form.came_today",
-                                    count: data?.worker_stats?.came_today || 0,
+                                    count: data?.attended_workers_today || 0,
                                     previewType:'come',
                                 },
                                 {
@@ -197,9 +217,25 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
                                     icon: markRaw(DataUsage20Regular),
                                     status: "content.today",
                                     description: "turnStileDashboard.form.not_came_today",
-                                    count: data?.worker_stats?.not_came_today || 0,
+                                    count: data?.absent_workers_today || 0,
                                     previewType:'not_come',
                                 },
+                            ]
+                            this.dashboardObj.lateEarlyWorker = data.late_and_early
+                        }
+                        this.dashboardMainLoading = false
+                    } else if (result.url === urls[1]) {
+                        // daily chart
+                        if (!result.error){
+                            this.dailyEvents = data.daily_attendance_chart
+                            this.dashboardObj.vacation_workers = data.vacation_workers
+                        }
+                        this.dailyAttendanceLoading = false
+                    } else if (result.url === urls[2]) {
+                        // In - Out
+                        if (!result.error) {
+
+                            this.workerInOut = [
                                 {
                                     type: "success",
                                     icon: markRaw(DataUsage20Regular),
@@ -217,9 +253,11 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
                                     previewType:'current_out',
                                 },
                             ]
+
                         }
                         this.workerStatsLoading = false
                     } else if (result.url === urls[3]) {
+                        // devices
                         if (!result.error) {
                             this.topOfflineDeviceList = data.offline_devices?.top_offline
                             this.totalOfflineDeviceCount = data.offline_devices?.total_offline
@@ -258,9 +296,7 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
                     }
                 }
             } finally {
-                // Har qanday holatda ham umumiy loadingni o'chiramiz
                 this.dashboardLoading = false
-                // Agar biror joyda qolib ketgan bo'lsa, barchasini o'chirish
                 this.dashboardMainLoading = false
                 this.dailyAttendanceLoading = false
                 this.workerStatsLoading = false
@@ -271,18 +307,18 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
 
         // Preview method - har bir dashboard card uchun batafsil ma'lumot
         _preview(isPagination = false) {
-            
+
             if(!isPagination){
                 this.previewList = []
             }
             const params = this._previewQueryParams()
             this.previewLoading = true
-            
+
             $ApiService.eventService._preview({ params }).then((res) => {
                 // API response strukturasi bo'yicha ma'lumotlarni olish
                 let rawData = res.data.data
                 let total = res.data.data.total
-                
+
                 // Raw data ni formatlash va previewList ga berish
                 this.previewList = this._formatPreviewResponse(rawData, this.previewParams.type)
             }).finally(() => {
@@ -314,12 +350,12 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
             else{
                 responseDate = rawData[getTableConfig(cardType)?.responseField].data
             }
-          
+
             if(!responseDate || !Array.isArray(responseDate)) return []
             this.previewTotal = rawData[getTableConfig(cardType)?.responseField]?.total || 0
 
             let data = responseDate.map((v, index) => {
-            
+
                 if(cardType === 'late_come'){
                     return {
                         ...v,
@@ -365,13 +401,13 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
                     return {
                         ...v,
                         user:this._userContructor(v, v?.position_name),
-                    
+
                     }
                 }else return v
 
-            
+
             })
-            
+
             if(cardType === 'devices'){
 
                 return data.sort((a, b) => new Date(a.last_sync) - new Date(b.last_sync))
@@ -379,8 +415,8 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
                 const status = this.isOnlineDevice ? 1 : 2
                 return data.filter(v => v.status === status)
             }
-            
-            
+
+
             return data
         },
 
@@ -402,7 +438,7 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
                 ...this._previewQueryParams(),
                 download: 1,
             }
-            
+
             $ApiService.eventService._download({ params }).then(() => {
                 this.previewVisible = false
                 // You can add router navigation here if needed

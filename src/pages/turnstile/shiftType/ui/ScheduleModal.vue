@@ -13,6 +13,7 @@ const onSubmit = ()=>{
     start_date:`${store.generatePayload.year1}-${store.generatePayload.month1.toString().padStart(2, '0')}-01`,
     end_date:`${store.generatePayload.year2}-${store.generatePayload.month2.toString().padStart(2, '0')}-01`,
     schedule_type:store.elementId,
+    count:store.showGroupCountField? store.generatePayload.count : undefined,
     schedule_workers:store.workers.map((v, index)=>({
       worker_position_id:v.id,
       day:index+1,
@@ -50,6 +51,13 @@ const onChange = (v)=>{
   store.scheduleParams.year = v.split('-')[0]
   store.scheduleParams.month = v.split('-')[1]
   store._dayOfMonth()
+}
+
+const onSearch = (v)=>{
+  store.workerParams.search = v
+  store.workerParams.page = 1
+  store._getWorkers()
+
 }
 
 
@@ -103,9 +111,13 @@ const onChange = (v)=>{
               </div>
               <div class="border-r  border-l-[0] border-b border-t-0  border-surface-line  p-2 w-[320px] min-w-[260px] h-[50px] border sticky left-[60px] bg-surface-section flex-shrink-0 z-[5] flex flex-col">
                 <UINSelect
+                    clearable
+                    :query="store.workerParams.search"
                     :options="store.workerList"
                     :value-field="'id'"
                     v-model:value="store.workers[index].id"
+                    @onSearch="onSearch"
+                    :loading="store.workerLoading"
                 />
               </div>
 

@@ -1,5 +1,6 @@
 <script setup>
 import {useSocketStore} from "@/store/modules/index.js"
+import ReactionButton from "./ReactionButton.vue"
 import {useAppSetting, useDebounce} from "@/utils/index.js"
 import { ref, computed, watch } from 'vue'
 
@@ -19,6 +20,13 @@ const updateUsersEv = useDebounce((users)=>{
 const othersUserCount = computed(()=>(displayUsers.value.length - allowedUserCount))
 const allowedShowUsers = computed(()=>displayUsers.value.slice(-allowedUserCount))
 
+const onReactionEv = (emoji, v) => {
+  store.sendNotification({
+    emoji,
+    toUserId:v.id
+  })
+}
+
 onMounted(() => {
   displayUsers.value = store.allOnlineUsers
 
@@ -34,23 +42,30 @@ onMounted(() => {
             :key="user.id"
         >
           <div class="relative group">
-            <div
-                class="w-[80px] h-[80px] border-4 border-[#6f99ff] rounded-full
+           <div>
+             <div
+                 @click="store.userVisible = true"
+                 class="w-[80px] h-[80px] border-4 border-[#6f99ff] rounded-full
                  bg-surface-section flex justify-center items-center text-sm font-bold
-                 cursor-pointer transition-all overflow-hidden relative hover:scale-[1.2]"
-                :style="{
+                 cursor-pointer transition-all overflow-hidden relative hover:scale-[1.4]"
+                 :style="{
             marginLeft: index === 0 ? '0' : '-20px',
             zIndex:(50-index)
           }"
-                @mouseenter="$event.target.style.zIndex = 200"
-                @mouseleave="$event.target.style.zIndex = 50 - index"
-                :title="user.short_name">
+                 @mouseenter="$event.target.style.zIndex = 200"
+                 @mouseleave="$event.target.style.zIndex = 50 - index"
+                 :title="user.short_name">
 
-              <img class="w-full h-full object-cover object-top" :src="user?.photo || useAppSetting.noAvailableImage" alt="user image">
-              <div class="absolute inset-0 rounded-full" :style="{ background: 'radial-gradient(circle, rgba(0, 0, 0, 0) 48%, rgb(5 9 255 / 60%) 90%)' }"></div>
+               <img class="w-full h-full object-cover object-top" :src="user?.photo || useAppSetting.noAvailableImage" alt="user image">
+               <div class="absolute inset-0 rounded-full" :style="{ background: 'radial-gradient(circle, rgba(0, 0, 0, 0) 48%, rgb(5 9 255 / 60%) 90%)' }"></div>
 
-            </div>
-            <div class="absolute bottom-[10px] group-hover:bottom-[-50px] left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-[#6f99ff] text-white text-xs rounded opacity-0 group-hover:opacity-100 pointer-events-none whitespace-nowrap transition-all duration-250 line-clamp-1">
+             </div>
+             <div class=" group-hover:opacity-100 group-hover:bottom-[90px] pointer-events-none group-hover:pointer-events-auto  group-hover:z-[300] z-0  left-1/2 -translate-x-1/2 absolute bottom-0 opacity-0">
+               <ReactionButton @onReaction="onReactionEv($event,user)" />
+             </div>
+           </div>
+
+            <div class="pointer-events-none absolute bottom-[10px] group-hover:bottom-[-50px] left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-[#6f99ff] text-white text-xs rounded opacity-0  group-hover:opacity-100 whitespace-nowrap transition-all duration-250 line-clamp-1">
               {{ user.short_name }}
             </div>
 
@@ -59,12 +74,13 @@ onMounted(() => {
         </template>
 
         <transition name="count-fade" :key="`count-${othersUserCount}`">
-          <div v-if="othersUserCount>0" class="ml-2 text-[#6f99ff] font-bold text-lg cursor-pointer">+{{othersUserCount}}</div>
+          <div v-if="othersUserCount>0" @click="store.userVisible = true" class="ml-2 text-[#6f99ff] font-bold text-lg cursor-pointer">+{{othersUserCount}}</div>
         </transition>
       </transition-group>
     </div>
 
-    <h3 class="text-center text-lg mt-4 max-w-[400px] mx-auto font-bold"
+    <h3
+        class="text-center text-lg mt-4 max-w-[400px] mx-auto font-bold"
         :style="{
       backgroundImage: 'linear-gradient(135deg, rgb(59, 130, 246) 0px, rgb(139, 92, 246) 50%, rgb(6, 182, 212) 100%)',
       backgroundClip: 'text',
@@ -72,7 +88,7 @@ onMounted(() => {
       WebkitTextFillColor: 'transparent',
       color: 'transparent'
     }">
-      Hozirda tizimdagi online foydalanuvchilar
+      {{$t('content.nowOnlineUsers')}}
     </h3>
   </div>
 </template>

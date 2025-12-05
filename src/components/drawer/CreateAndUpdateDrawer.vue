@@ -29,6 +29,10 @@ const props = defineProps({
     type:Boolean,
     default:false,
   },
+  disableBodyPadding:{
+    type:Boolean,
+    default:false,
+  },
 })
 
 const visible = defineModel('visible', {type:Boolean, default:false })
@@ -59,7 +63,7 @@ const visible = defineModel('visible', {type:Boolean, default:false })
             </n-icon>
           </span>
         </div>
-        <div class="ui-drawer-content px-[20px] py-[10px]">
+        <div :class="disableBodyPadding? '' : 'px-[20px] py-[10px]'" class="ui-drawer-content">
           <slot name="content"></slot>
         </div>
 

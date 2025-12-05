@@ -114,6 +114,7 @@ export * from './turnstile/eventV2Store.js'
 export * from './turnstile/scheduleStore.js'
 export * from './turnstile/shiftTypeStore.js'
 export * from './turnstile/scheduleGroupWorkerStore.js'
+export * from './turnstile/trunstileScheduleStore.js'
 
 export * from './lms/directionStore.js'
 export * from './lms/specializationStore.js'

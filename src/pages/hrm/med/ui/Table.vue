@@ -10,6 +10,7 @@ const store = useMedStore()
 
 
 const onEdit = (v)=>{
+  store.resetForm()
   store.elementId = v.id
   store.visibleType = false
   store.visible = true
@@ -55,6 +56,10 @@ const onSelectEv = (v)=>{
     onDelete(v.data)
   }
 }
+
+const openFileNewTab =(url)=>{
+  window.open(url, '_blank')
+}
 </script>
 
 <template>
@@ -74,6 +79,7 @@ const onSelectEv = (v)=>{
           <th class="min-w-[100px]">{{$t('medPage.form.organization')}}</th>
           <th class="min-w-[90px] w-[90px]">{{$t('medPage.form.from')}}</th>
           <th class="min-w-[90px] w-[90px]">{{$t('medPage.form.to')}}</th>
+          <th class="min-w-[90px] w-[90px]">{{$t('content.file')}}</th>
           <th class="min-w-[200px] w-[200px]">{{$t('medPage.form.comment')}}</th>
           <th class="min-w-[40px] w-[40px]"></th>
         </tr>
@@ -104,8 +110,16 @@ const onSelectEv = (v)=>{
             </div>
           </td>
           <td>
-            <div>
+            <div class="flex flex-col gap-1">
               <UIBadge
+                  class="!text-xs"
+                  v-if="item.vacation"
+                  :show-icon="false"
+                  :label="Utils.timeOnlyDate(item.vacation) + ' ' + $t('medPage.form.onVacation')"
+                  :type="Utils.colorTypes.info"
+              />
+              <UIBadge
+                  :class="[item.vacation && '!text-xs']"
                   :show-icon="false"
                   :label="Math.abs(item.days) + ' ' + $t('date.day')"
                   :type="item.days<0? Utils.colorTypes.error:Utils.colorTypes.success"
@@ -118,7 +132,14 @@ const onSelectEv = (v)=>{
           <td>
             <UIBadge :show-icon="false" :type="Utils.colorTypes.dark" :label="Utils.timeOnlyDate(item.to)" />
           </td>
-          <td>{{item.comment}}</td>
+          <td>
+            <n-button size="small" v-if="item.file"  @click="openFileNewTab(item.file)">{{$t('content.download')}}</n-button>
+          </td>
+          <td>
+            <div class="line-clamp-3 leading-[1.2] text-xs">
+              {{item.comment}}
+            </div>
+          </td>
           <td>
             <UIMenuButton
                 :data="item"

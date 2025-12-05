@@ -10,6 +10,7 @@ const store = useWorkerProfileStore()
 const componentStore = useComponentStore()
 
 const onSubmit = ()=>{
+  console.log(store.rolePayload)
   formRef.value?.validate((error)=>{
     if(!error) {
       const id = route.query.id
@@ -46,7 +47,7 @@ onMounted(()=>{
           class="w-full"
           :label="$t(`documentPage.form.organization`)"
           path="organization_id"
-          :rule-path="validationRules.rulesNames.requiredNumberField"
+          :rule-path="validationRules.rulesNames.requiredMultiSelectField"
       >
         <UISelect
             :options="componentStore.structureList"
@@ -62,11 +63,10 @@ onMounted(()=>{
         />
 
       </n-form-item>
-      <n-form-item class="w-full" :label="$t(`content.role`)" path="role" :rule-path="validationRules.rulesNames.requiredNumberField">
+      <n-form-item class="w-full" :label="$t(`content.role`)" path="role" :rule-path="validationRules.rulesNames.requiredStringField">
         <n-select
             v-model:value="store.rolePayload.role"
             filterable
-
             :options="componentStore.roles"
             :loading="componentStore.enumLoading"
             label-field="name"

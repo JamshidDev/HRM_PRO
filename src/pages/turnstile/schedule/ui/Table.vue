@@ -1,93 +1,12 @@
 <script setup>
 import {useScheduleTableStore} from "@/store/modules/index.js"
-import {ScanCamera48Regular, ErrorCircle16Filled} from "@vicons/fluent"
 import {UIPagination} from "@/components/index.js"
 import SearchElement from "./SearchElement.vue"
+import DragSelectorV2 from "./DragSelectorV2.vue"
+import WorkerColumn from "./WorkerColumn.vue"
+import ScheduleBox from "./ScheduleBox.vue"
 const store = useScheduleTableStore()
 
-
-const ROW_HEIGHT = 50
-const BUFFER = 5
-
-const scrollContainer = ref(null)
-const scrollTop = ref(0)
-const containerHeight = ref(0)
-
-
-
-const visibleRange = computed(() => {
-  if (!containerHeight.value) return { start: 0, end: 0 }
-
-  const visibleCount = Math.ceil(containerHeight.value / ROW_HEIGHT)
-  const start = Math.max(0, Math.floor(scrollTop.value / ROW_HEIGHT) - BUFFER)
-  const end = Math.min(store.totalWorkerCount, start + visibleCount + BUFFER * 2)
-  return { start, end }
-})
-const visibleWorkers = computed(() => {
-  const { start, end } = visibleRange.value
-  return store.workerList.slice(start, end).map((worker, index) => {
-    const totalTime = worker.days?.reduce((sum, day) => {
-      return sum + (day?.workerTime || 0)
-    }, 0) || 0
-
-    return {
-      ...worker,
-      offsetTop: (start + index) * ROW_HEIGHT,
-      totalWorkTime: totalTime
-    }
-  })
-})
-
-const totalHeight = computed(() => store.totalWorkerCount * ROW_HEIGHT)
-
-const onHideColumnEv = ()=>{
-  scrollContainer.value.scrollBy({
-    left: 260,
-    behavior: 'smooth'
-  });
-}
-
-// Scroll handler with RAF
-let rafId = null
-const handleScroll = () => {
-  if (rafId) return
-
-  rafId = requestAnimationFrame(() => {
-    scrollTop.value = scrollContainer.value.scrollTop
-    rafId = null
-  })
-}
-
-
-
-// Resize observer
-let resizeObserver = null
-
-
-
-onMounted(() => {
-  if (scrollContainer.value) {
-    // Initial height
-    containerHeight.value = scrollContainer.value.clientHeight
-
-    // Scroll listener
-    scrollContainer.value.addEventListener('scroll', handleScroll, { passive: true })
-
-    // Resize observer
-    resizeObserver = new ResizeObserver((entries) => {
-      containerHeight.value = entries[0].contentRect.height
-    })
-    resizeObserver.observe(scrollContainer.value)
-  }
-})
-
-onUnmounted(() => {
-  if (scrollContainer.value) {
-    scrollContainer.value.removeEventListener('scroll', handleScroll)
-  }
-  resizeObserver?.disconnect()
-  if (rafId) cancelAnimationFrame(rafId)
-})
 
 
 
@@ -119,7 +38,6 @@ const handleContextMenu = (e, workerIndex, dayIndex) => {
 }
 
 const handleSelect = (key) => {
-
   store.selectedOption = store.contextOptions.find(v=>v.key === key)
 
   let dayOption = {
@@ -128,13 +46,22 @@ const handleSelect = (key) => {
     endTime:null,
     workTime:0,
     empty:false,
+    dayTime:0,
+    eveningTime:0,
   }
 
   if(store.selectedOption && store.selectedOption.key === 'otherTime'){
   //   other time
     store.timeVisible =true
+    store._resetTimePayload()
     showDropdown.value = false
     return
+  }
+  else if(store.selectedOption && store.selectedOption.key === 'clearTime'){
+    dayOption.empty = true
+  }
+  else if(store.selectedOption && store.selectedOption.key === 'copyTime'){
+    dayOption = store.workerList[store.workerIndex].days[store.dayIndex]
   }
   else if(store.selectedOption && store.selectedOption.key === 0){
   //   holiday
@@ -143,9 +70,13 @@ const handleSelect = (key) => {
     dayOption.startTime =store.selectedOption.startTime
     dayOption.endTime = store.selectedOption.endTime
     dayOption.workTime = store.selectedOption.workTime
+    dayOption.dayTime = store.selectedOption.dayTime
+    dayOption.eveningTime = store.selectedOption.eveningTime
 
   }
+  store.isSelectedContext = true
   store.workerList[store.workerIndex].isEdit = true
+  store.savedOption = dayOption
   store.workerList[store.workerIndex].days[store.dayIndex] = dayOption
 
 
@@ -159,20 +90,38 @@ const handleClickOutside = () => {
   showDropdown.value = false
 }
 
-const onSelectWorkDay = (day, index)=>{
-  store._generateSchedule(day, index)
-}
-
 const changePage = (v)=>{
     store.workerParams.page = v.page
     store._allWorkers()
 }
 
-const updateWorkerTurnstile = (v) =>{
-  store._updateTurnstile(v.id, v.canRecognize)
+const currentDay = new Date().getDate()
+
+const handleDragSelect = (v)=>{
+  if(!store.isSelectedContext) return
+
+  let dayOption = store.savedOption || {
+    isWorkDay:false,
+    startTime:null,
+    endTime:null,
+    workTime:0,
+    empty:false,
+  }
+  for(let item of v){
+    store.workerList[item.workerIndex].isEdit = true
+    store.workerList[item.workerIndex].days[item.dayIndex] = {...dayOption}
+  }
 }
 
-const currentDay = new Date().getDate()
+
+onMounted(() => {
+
+})
+
+onUnmounted(() => {
+
+})
+
 
 </script>
 
@@ -180,25 +129,20 @@ const currentDay = new Date().getDate()
   <div class="flex flex-col">
     <slot name="filter-section"></slot>
     <n-spin :show="store.workerLoading">
-      <div
-          @click="handleClickOutside"
-          ref="scrollContainer"
-          class="w-full flex flex-col overflow-x-auto overflow-y-auto h-[calc(100vh-256px)] relative rounded-tl-lg rounded-tr-lg"
-      >
-        <!-- Header Row - Sticky -->
-        <div class="schedule-header-row flex z-[10] w-fit min-w-full sticky top-0">
-          <div class="rounded-tl-lg border-r border-t border-l border-b border-surface-line p-2 w-[60px] min-w-[60px] h-[50px] sticky left-0 top-0 z-[20] bg-surface-section flex-shrink-0">
+      <DragSelectorV2
+          :live-selection="false"
+          :scroll-zone-left="400"
+          :scroll-zone-right="140"
+          :scroll-zone-top="120"
+          @selection-change="handleDragSelect">
+        <div class="no-selectable-item schedule-header-row flex z-[202] w-fit min-w-full sticky top-0">
+          <div class=" pt-3 text-center text-secondary rounded-tl-lg border-r border-t border-l border-b border-surface-line p-2 w-[60px] min-w-[60px] h-[50px] sticky left-0 top-0 z-[20] bg-surface-section flex-shrink-0">
             N0
           </div>
           <div class="border-r border-t border-l-[0] border-b border-surface-line flex text-secondary font-medium justify-center items-center w-[300px] min-w-[300px] h-[50px] sticky left-[60px] top-0 z-[20] bg-surface-section flex-shrink-0">
             <SearchElement/>
           </div>
-          <div class="border-r border-t border-l-[0] border-b flex gap-2 text-secondary font-medium justify-center items-center border-surface-line p-2 w-[260px] min-w-[260px] h-[50px] sticky top-0 z-[10] bg-surface-section flex-shrink-0">
-<!--            <div @click="onHideColumnEv" class="cursor-pointer bg-surface-ground w-[30px] h-[30px] rounded-lg flex justify-center items-center">-->
-<!--              <n-icon size="24">-->
-<!--                <ChevronLeft16Filled/>-->
-<!--              </n-icon>-->
-<!--            </div>-->
+          <div class="border-r border-t border-l-[0] border-b flex gap-2 text-secondary font-medium justify-center items-center border-surface-line p-2 w-[220px] min-w-[220px] h-[50px] sticky top-0 z-[10] bg-surface-section flex-shrink-0">
           </div>
           <template v-for="item in store.dayOfMonth" :key="`header-${item}`">
             <div
@@ -213,77 +157,50 @@ const currentDay = new Date().getDate()
           </div>
         </div>
 
-        <!-- Virtual Scroll Body -->
-        <div :style="{ height: totalHeight + 'px' }" class="relative">
+        <div class="relative">
           <div
-              v-for="worker in visibleWorkers"
+              v-for="worker in store.workerList"
               :key="worker?.id"
-              class="schedule-header-body-row absolute flex w-fit min-w-full bg-surface-section"
-              :style="{
-          transform: `translate3d(0, ${worker.offsetTop}px, 0)`,
-          height: ROW_HEIGHT + 'px'
-        }"
+              class=" schedule-header-body-row   flex w-fit min-w-full bg-surface-section select-none"
           >
-            <!-- Worker Name - Sticky Left -->
-            <div class="border-r  border-l border-b-0  border-surface-line text-center  p-2 w-[60px] min-w-[60px] h-[50px] border sticky left-0 bg-surface-section flex-shrink-0 z-[5] flex items-center justify-center">
+
+            <div class="no-selectable-item border-r  border-l border-b-0  border-surface-line text-center  p-2 w-[60px] min-w-[60px] h-[50px] border sticky left-0 bg-surface-section flex-shrink-0 z-[200] flex items-center justify-center">
               <span class="leading-[1.2] text-secondary font-medium">{{worker.number}}</span>
             </div>
-            <div class="border-r  border-l-[0] border-b-0  border-surface-line  p-2 w-[300px] min-w-[300px] h-[50px] border sticky left-[60px] bg-surface-section flex-shrink-0 z-[5] flex items-center">
 
-
-              <n-tooltip
-                  placement="top"
-                  trigger="hover"
-              >
-                <template #trigger>
-                  <n-icon @click="updateWorkerTurnstile(worker)"  size="26" class="mr-2 cursor-pointer" :class="[worker.canRecognize? 'text-success':'text-danger']">
-                    <ScanCamera48Regular v-if="worker.canRecognize"/>
-                    <ErrorCircle16Filled v-else/>
-                  </n-icon>
-                </template>
-                <span>{{$t(worker.canRecognize? 'shiftType.form.turnstileActive' : 'shiftType.form.turnstileUnActive')}}</span>
-              </n-tooltip>
-             <div class="flex flex-col w-[calc(100%-40px)]">
-               <span class="leading-[1.2] text-textColor2 font-medium text-xs line-clamp-1">{{ worker?.fullName }}</span>
-               <span class="leading-[1.2] text-textColor3 text-xs line-clamp-1">{{ worker?.position }}</span>
-             </div>
+            <div class="no-selectable-item  border-r  border-l-[0] border-b-0  border-surface-line  p-2 w-[300px] min-w-[300px] h-[50px] border sticky left-[60px] bg-surface-section flex-shrink-0 z-[200] flex items-center">
+              <WorkerColumn :worker="worker" />
             </div>
-            <div class="border-r  border-l-[0] border-b-0  border-surface-line  p-2 w-[260px] min-w-[260px] h-[50px] border sticky bg-surface-section flex-shrink-0 z-[4]">
+
+            <div class="border-r  border-l-[0] border-b-0  border-surface-line  p-2 w-[220px] min-w-[220px] h-[50px] border sticky bg-surface-section flex-shrink-0 z-[4]">
               <div class="leading-[1.2] line-clamp-1 font-medium text-xs">{{worker.scheduleType}}</div>
               <div class="leading-[1.2] line-clamp-1 text-xs text-secondary" >{{worker.type}}</div>
             </div>
 
-            <!-- Day Cells -->
             <template v-for="(day, dayIndex) in store.dayOfMonth" :key="`${worker.id}-${dayIndex}-${store.nextTickKey}`">
               <div
+                  data-selectable
+                  :data-day-index="dayIndex"
+                  :data-worker-index="worker.index"
                   @contextmenu="handleContextMenu($event,worker.index, dayIndex)"
-                  :class="[day.day === currentDay && '!bg-success/10', store.selectedCellSet.has(`${worker.index}-${dayIndex}`) && 'selected-cell-bg',worker.isEdit? 'bg-surface-ground/80':'bg-surface-ground/20']"
+                  :class="[day.day === currentDay && '!bg-success/10', store.selectedCellSet.has(`${worker.index}-${dayIndex}`) && 'selected-cell-bg']"
                   class="border-r text-center  border-l border-b-0 -ml-[1px] border-surface-line w-[60px] min-w-[60px] h-[50px] border text-xs text-secondary p-2 pb-0 flex-shrink-0 cursor-pointer relative"
               >
-                <template v-if="worker?.days?.[dayIndex]?.empty">
-<!--                  Empty box-->
-                </template>
-                <template v-else-if="worker?.days?.[dayIndex]?.isWorkDay">
-                  <div class="leading-[1.2] pt-3">{{worker?.days?.[dayIndex]?.startTime}}</div>
-                  <div class="leading-[1.2]">{{worker?.days?.[dayIndex]?.endTime}}</div>
-                  <div class="absolute top-[0] left-[0] w-[16px] h-[16px] bg-secondary/80 text-white text-xs rounded"> {{Math.floor(worker?.days?.[dayIndex]?.workTime/60)}}</div>
-                </template>
-                <template v-else>
-                  <div class="absolute top-[0] left-[0] w-[16px] h-[16px] bg-success/10 text-white text-xs rounded hover:bg-success/50"> D</div>
-                </template>
-
+                <ScheduleBox
+                    :worker="worker"
+                    :dayIndex="dayIndex"
+                />
               </div>
             </template>
 
-            <!-- Total - Sticky Right -->
-            <div class="border-r border-l border-t -ml-[1px] border-surface-line  w-[80px] min-w-[80px] h-[50px] sticky right-0 bg-surface-section flex-shrink-0 z-[5] flex items-center justify-center">
+
+            <div class="no-selectable-item border-r border-l border-t -ml-[1px] border-surface-line  w-[80px] min-w-[80px] h-[50px] sticky right-0 bg-surface-section flex-shrink-0 z-[200] flex items-center justify-center">
               {{store.calculateWorkTime(worker.index)}}
             </div>
           </div>
         </div>
+      </DragSelectorV2>
 
-
-      </div>
       <slot name="loading-place"></slot>
     </n-spin>
 

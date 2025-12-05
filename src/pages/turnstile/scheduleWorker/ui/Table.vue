@@ -75,7 +75,7 @@ const onReplace = (v)=>{
           v-model:date="selectedDate"
           @update:date="onChange"
       />
-      <div class="w-full overflow-auto relative h-[460px] mt-2">
+      <div class="w-full overflow-auto relative h-[calc(100vh-240px)] mt-2">
         <div class="schedule-header-row flex z-[10] w-fit min-w-full sticky top-0">
           <div class="rounded-tl-lg border-r border-t border-l border-b border-surface-line p-2 w-[60px] min-w-[60px] h-[50px] sticky left-0 top-0 z-[20] bg-surface-section flex-shrink-0">
             N0

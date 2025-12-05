@@ -10,7 +10,7 @@ const props = defineProps({
 </script>
 
 <template>
-  <div class="mt-4">
+  <div>
     <div class="w-full grid grid-cols-12 gap-4 border-dashed border-surface-line rounded-xl">
       <div
         v-for="index in count"

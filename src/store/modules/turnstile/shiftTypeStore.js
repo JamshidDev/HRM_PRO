@@ -14,11 +14,14 @@ export const useShiftTypeStore = defineStore('shiftTypeStore', {
         visibleType: false,
         elementId: null,
         totalItems: 0,
+        structureCheck2:[],
 
         params: {
             page: 1,
             per_page: 10,
             search: null,
+            organizations:[],
+            departments:[],
         },
         payload:{
             name:null,
@@ -33,6 +36,7 @@ export const useShiftTypeStore = defineStore('shiftTypeStore', {
             name:null,
             start_date:null,
             end_date:null,
+            count:1,
         },
         scheduleParams:{
             year:null,
@@ -58,12 +62,14 @@ export const useShiftTypeStore = defineStore('shiftTypeStore', {
         workerList:[],
         workerParams:{
             page:1,
-            per_page:1000,
+            per_page:200,
             search:null,
         },
         totalWorkerCount:0,
+        workerLoading:false,
 
         activeTab:1,
+        activeGroupTab:1,
 
         groupList:[],
         groupParams:{
@@ -71,7 +77,10 @@ export const useShiftTypeStore = defineStore('shiftTypeStore', {
             per_page:10,
             search:null,
             schedule_type:null,
+            organizations:[],
+            departments:[],
         },
+        groupId:null,
         groupLoading:false,
         totalGroup:0,
 
@@ -101,14 +110,55 @@ export const useShiftTypeStore = defineStore('shiftTypeStore', {
         isDailySchedule:false,
         selectedWorkers:[],
 
+        departmentLoading:false,
+        departmentList:[],
+
+        departmentGroupLoading:false,
+        departmentGroupList:[],
+        showGroupCountField:false,
+
     }),
     getters:{
         calculateWorkTime:(state)=>(workerIndex)=>{
             state.scheduleList
             return 0
-        }
+        },
     },
     actions: {
+        _departments(){
+            this.departmentLoading = true
+            const params = {
+                page:1,
+                per_page:1000,
+                organizations:this.params.organizations.map(v=>v.id).toString() || undefined,
+            }
+            $ApiService.workerScheduleService._department({params}).then((res)=>{
+                this.departmentList = res.data.data.data.map(v=>({
+                    id:v.id,
+                    name:v.name,
+                    position:v.organization.name,
+                }))
+            }).finally(()=>{
+                this.departmentLoading = false
+            })
+        },
+        _departmentGroup(){
+            this.departmentGroupLoading = true
+            const params = {
+                page:1,
+                per_page:1000,
+                organizations:this.groupParams.organizations.map(v=>v.id).toString() || undefined,
+            }
+            $ApiService.workerScheduleService._department({params}).then((res)=>{
+                this.departmentGroupList = res.data.data.data.map(v=>({
+                    id:v.id,
+                    name:v.name,
+                    position:v.organization.name,
+                }))
+            }).finally(()=>{
+                this.departmentGroupLoading = false
+            })
+        },
         _notScheduleWorker(){
             const params = {
                 ...this.notScheduleParams,
@@ -149,6 +199,8 @@ export const useShiftTypeStore = defineStore('shiftTypeStore', {
         _group(){
             const params = {
                 ...this.groupParams,
+                organizations:this.groupParams.organizations?.map(v=>v.id).toString() || undefined,
+                departments:this.groupParams.departments?.toString() || undefined,
             }
             this.groupLoading = true
             $ApiService.shiftTypeService._group({params}).then((res)=>{
@@ -162,13 +214,21 @@ export const useShiftTypeStore = defineStore('shiftTypeStore', {
             const params = {
                 ...this.workerParams,
             }
+            this.workerLoading = true
             $ApiService.shiftTypeService._getWorkers({params}).then((res)=>{
-                this.workerList = res.data.data.data.map(v=>({
+
+                const selectedIds = this.workers.map(v=>v.id)
+                const selectedItems = this.workerList.filter(v=>selectedIds.includes(v.id))
+                const data = res.data.data.data.map(v=>({
                     name:Utils.combineFullName(v.worker),
                     id:v.id,
                     position:v.position,
                 }))
+
+                this.workerList =   [...new Map([ ...data, ...selectedItems].map(v=>[v.id, v])).values()]
                 this.totalWorkerCount = res.data.data.total
+            }).finally(()=>{
+                this.workerLoading = false
             })
         },
         _dayOfMonth(callback){
@@ -189,6 +249,8 @@ export const useShiftTypeStore = defineStore('shiftTypeStore', {
             this.loading = true
             const params = {
                 ...this.params,
+                organizations:this.params.organizations?.map(v=>v.id).toString() || undefined,
+                departments:this.params.departments?.toString() || undefined,
             }
             $ApiService.shiftTypeService._index({params}).then((res) => {
                 this.list = res.data.data.data
@@ -228,19 +290,10 @@ export const useShiftTypeStore = defineStore('shiftTypeStore', {
         },
         _generateWorkerSchedule(data){
             this.saveLoading = true
-            // const data = {
-            //     start_date:`${this.generatePayload.year1}-${this.generatePayload.month1.toString().padStart(2, '0')}-01`,
-            //     end_date:`${this.generatePayload.year2}-${this.generatePayload.month2.toString().padStart(2, '0')}-01`,
-            //     schedule_type:this.elementId,
-            //     schedule_workers:this.workers.map((v, index)=>({
-            //         worker_position_id:v.id,
-            //         day:index+1,
-            //     }))
-            // }
             $ApiService.shiftTypeService._generateWorkerSchedule({data}).then((res)=>{
                 this.scheduleVisible = false
-                this.notScheduleVisible = false
-                store._index()
+                this.notScheduleVisible = false;
+                (this.activeTab === 1? this._index : this._group).call()
             }).finally(()=>{
                 this.saveLoading = false
             })
@@ -254,6 +307,7 @@ export const useShiftTypeStore = defineStore('shiftTypeStore', {
             this.generatePayload.year2 = currentYear+1
             this.generatePayload.month1 = currentMonth+1
             this.generatePayload.month2 = currentMonth+1
+            this.generatePayload.count =1
         },
         _deleteGroup(){
             this.groupLoading = true

@@ -47,6 +47,13 @@ const onChangeStructure = (v) => {
   filterEvent()
 }
 
+const onDefaultEv = (v)=>{
+  store.params.organizations = v
+  store.params.departments = []
+  componentStore.getDepartmentState(detectKey).list = []
+  fetchDepartment(depParams.value)
+}
+
 
 const filterCount = computed(()=>{
   return Number(Boolean(store.params.organizations.length>0))
@@ -102,6 +109,7 @@ onUnmounted(()=>{
           :options="componentStore.structureList"
           :modelV="store.params.organizations"
           @updateModel="onChangeStructure"
+          @defaultValue="onDefaultEv"
           :checkedVal="store.structureCheck"
           @updateCheck="(v)=>store.structureCheck=v"
           :loading="componentStore.structureLoading"

@@ -21,6 +21,7 @@ const onSave = ()=>{
     return
   }
   const data = {
+    group_id:store.groupId || undefined,
     schedule_type:store.elementId,
     start_date:store.notScheduleParams.start_date,
     end_date:store.notScheduleParams.end_date,
@@ -46,7 +47,7 @@ const onSearchEv = ()=>{
     <div>
       <n-spin :show="store.notScheduleLoading">
         <UIPageFilter @onSearch="onSearchEv" v-model:search="store.notScheduleParams.search" :search-loading="store.notScheduleLoading" :show-add-button="false" :show-filter-button="false" />
-        <div class="w-full overflow-y-auto h-[600px] pr-2"  v-if="store.list.length>0">
+        <div class="w-full overflow-y-auto h-[600px] pr-2"  v-if="store.notScheduleWorkerList.length>0">
           <n-checkbox-group v-model:value="store.selectedWorkers">
             <n-table
                 class="mt-4"

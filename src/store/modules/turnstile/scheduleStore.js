@@ -30,9 +30,13 @@ export const useScheduleTableStore = defineStore('scheduleStore', {
         totalWorkerCount:0,
         workerParams:{
             page:1,
-            per_page:100,
+            per_page:20,
             search:null,
+            organization_id:[],
+            department_id:null,
+            has_schedule:'all',
         },
+        structureCheck2:[],
         workDays:[],
         generateLoading:false,
         nextTickKey:0,
@@ -45,7 +49,19 @@ export const useScheduleTableStore = defineStore('scheduleStore', {
             workStatus:false,
             key:0,
             icon: () => '🏖️'
-        },
+            },
+            {
+                label:t('content.copy'),
+                workStatus:false,
+                key:'copyTime',
+                icon: () => '📑'
+            },
+            {
+                label:t('content.clear'),
+                workStatus:false,
+                key:'clearTime',
+                icon: () => '🧨'
+            },
             {
                 type: 'divider',
                 key: 'd1'
@@ -56,10 +72,23 @@ export const useScheduleTableStore = defineStore('scheduleStore', {
                 key: 'otherTime',
                 icon: () => '✏️'
             }],
+        savedOption:{
+            isWorkDay:false,
+            startTime:null,
+            endTime:null,
+            empty:true,
+            workTime:0,
+            dayTime:0,
+            eveningTime:0,
+        },
+        isSelectedContext:false,
         selectedOption:null,
         timePayload:{
             startTime:null,
             endTime:null,
+            breakStartTime:null,
+            breakEndTime:null,
+            status:false,
         },
         timeVisible:false,
         selectedCellSet:new Set(),
@@ -68,6 +97,20 @@ export const useScheduleTableStore = defineStore('scheduleStore', {
         savingLoading:false,
         savingPercent:0,
         activeSearch:false,
+
+        enumLoading:false,
+        grandPayload:{
+            is_turnstile:true,
+            grandToReport:false,
+            start_minute:null,
+            end_minute:null,
+            comment:null,
+        },
+        grandVisible:false,
+        elementId:null,
+
+        departmentList:[],
+        departmentLoading:false,
     }),
 
     getters:{
@@ -78,28 +121,90 @@ export const useScheduleTableStore = defineStore('scheduleStore', {
             }, 0)
 
             return Math.floor(workTimeMinute/60)
-        }
+        },
     },
 
     actions: {
-        _searchWorker(){
-            this.workerParams.page = 1
-            this._allWorkers()
-        },
-        _updateTurnstile(id, status){
+        _checkFactOfWorker(id){
             this.workerLoading = true
-            $ApiService.workerScheduleService._updateTurnstile({id, data:{is_turnstile:!status}}).then((res)=>{
+            const data = {
+                date:`${this.params.year}-${this.params.month}-01`,
+                worker_position_id:id
+            }
+            $ApiService.workerScheduleService._checkFactOfWorker({data}).then(()=>{
                 this._allWorkers()
             }).finally(()=>{
                 this.workerLoading = false
             })
         },
+        _departments(){
+            this.departmentLoading = true
+            const params = {
+                page:1,
+                per_page:1000,
+                organizations:this.workerParams.organization_id.map(v=>v.id).toString() || undefined,
+            }
+            $ApiService.workerScheduleService._department({params}).then((res)=>{
+                this.departmentList = res.data.data.data.map(v=>({
+                    id:v.id,
+                    name:v.name,
+                    position:v.organization.name,
+                }))
+            }).finally(()=>{
+                this.departmentLoading = false
+            })
+        },
+        _resetGrandpaPayload(){
+            this.grandPayload.start_minute = 0
+            this.grandPayload.end_minute = 0
+            this.grandPayload.is_turnstile = true
+            this.grandPayload.grandToReport = false
+        },
+        _searchWorker(){
+            this.workerParams.page = 1
+            this._allWorkers()
+        },
+        _updateTurnstile(data){
+            this.savingLoading = true
+            $ApiService.workerScheduleService._updateTurnstile({id:this.elementId,data}).then((res)=>{
+                this._allWorkers()
+                this.grandVisible = false
+            }).finally(()=>{
+                this.savingLoading = false
+            })
+        },
+        _enums(){
+            this.enumLoading = true
+            $ApiService.workerScheduleService._enums().then((res) => {
+
+                const options = res.data.data.times.map((item, index)=>({
+                    label: `${item.start_time} - ${item.end_time} (${Math.floor(item.daily_minutes/60)} - soat)`,
+                    startTime:item.start_time,
+                    endTime:item.end_time,
+                    dayTime:item.daytime,
+                    eveningTime:item.evening_time,
+                    workTime:item.daily_minutes,
+                    workStatus:true,
+                    key:index+1,
+                    icon: () => '⏱️'
+                }))
+
+                this.contextOptions = [...options, ...this.defaultOptions]
+            }).finally(() => {
+                this.enumLoading = false
+            })
+        },
         _allWorkers(){
+            const has_schedule = this.workerParams.has_schedule=== 'all'? undefined : this.workerParams.has_schedule
             this.workerLoading = true
             const params = {
                 ...this.workerParams,
+                type:undefined,
+                has_schedule,
                 date:`${this.params.year}-${this.params.month}-01`,
                 schedule_type:this.params.type,
+                organization_id:this.workerParams.organization_id?.map(v=>v.id).toString() || undefined,
+                department_id:this.workerParams.department_id?.toString() || undefined,
             }
             $ApiService.workerScheduleService._index({params}).then((res) => {
                 const defaultBox = {
@@ -108,6 +213,8 @@ export const useScheduleTableStore = defineStore('scheduleStore', {
                     endTime:null,
                     workTime:0,
                     empty:true,
+                    dayTime:0,
+                    eveningTime:0,
                 }
 
 
@@ -117,6 +224,9 @@ export const useScheduleTableStore = defineStore('scheduleStore', {
                     endTime:day.end_time?.slice(0,5) ?? null,
                     workTime:day.daily_minutes,
                     empty:day.id === null,
+                    dayTime:day.daytime || 0,
+                    eveningTime:day.evening_time || 0,
+
                 })
 
                 this.workerList = res.data.data.data.map((v, index)=>({
@@ -128,6 +238,8 @@ export const useScheduleTableStore = defineStore('scheduleStore', {
                     type:v?.schedule_type?.type?.name || null,
                     scheduleType:v?.schedule_type?.name || null,
                     canRecognize:v?.is_turnstile,
+                    turnstileEndTime:v.turnstile_privilege_end_minute,
+                    turnstileStartTime:v.turnstile_privilege_start_minute,
                     days:!v.schedules?.length?
                         Array.from({length: this.dayOfMonth.length},
                             () => ({...defaultBox})
@@ -191,60 +303,108 @@ export const useScheduleTableStore = defineStore('scheduleStore', {
             if(this.scheduleTypes.length>0) return
             this.params.year = new Date().getFullYear()
             this.params.month = new Date().getMonth() + 1
+            this._enums()
             this._dayOfMonth(()=>{
                 this._allWorkers()
             })
             this._scheduleType()
         },
-        _calculateMinute(startTime, endTime){
-            const [startHour, startMinute] = startTime.split(':').map(Number);
-            const [endHour, endMinute] = endTime.split(':').map(Number);
-            let start = startHour * 60 + startMinute;
-            let end = endHour * 60 + endMinute;
-            if (end < start) end += 24 * 60;
-            return end - start;
+        _calculateTimeIntervals:(startTime, endTime, breakStartTime = null, breakEndTime = null)=>{
+            const timeToMinutes = (time) => {
+                const [hours, minutes] = time.split(':').map(Number);
+                return hours * 60 + minutes;
+            };
+
+            let start = timeToMinutes(startTime);
+            let end = timeToMinutes(endTime);
+
+            if (end <= start) {
+                end += 24 * 60;
+            }
+
+            const EVENING_START = 22 * 60;
+            const EVENING_END = 6 * 60;
+
+            let breakOverlapStart = null;
+            let breakOverlapEnd = null;
+
+            // Agar break vaqti berilgan bo'lsa
+            if (breakStartTime && breakEndTime) {
+                let breakStart = timeToMinutes(breakStartTime);
+                let breakEnd = timeToMinutes(breakEndTime);
+
+                if (breakEnd <= breakStart) {
+                    breakEnd += 24 * 60;
+                }
+
+                breakOverlapStart = Math.max(start, breakStart);
+                breakOverlapEnd = Math.min(end, breakEnd);
+            }
+
+            let eveningMinutes = 0;
+            let dayMinutes = 0;
+
+            // Ish vaqtini minutdan minutga hisoblash
+            for (let time = start; time < end; time++) {
+                // Break vaqti ichiga kiramidimi?
+                if (breakOverlapStart !== null && time >= breakOverlapStart && time < breakOverlapEnd) {
+                    continue;
+                }
+
+                let normalizedTime = time % (24 * 60);
+                if (normalizedTime >= EVENING_START || normalizedTime < EVENING_END) {
+                    eveningMinutes++;
+                } else {
+                    dayMinutes++;
+                }
+            }
+
+            return {
+                eveningTime: eveningMinutes,
+                dayTime: dayMinutes
+            };
+        },
+        _resetTimePayload(){
+            this.timePayload.startTime = null
+            this.timePayload.endTime = null
+            this.timePayload.breakEndTime = null
+            this.timePayload.breakStartTime = null
+            this.timePayload.status = false
         },
         async _save(){
-            this.savingVisible = true
-            this.savingPercent = 0
+
             const workers = this.workerList.filter(v=>v.days.length > 0 && v.isEdit)
-            this.readyToSaveCount = workers.length
             if(workers.length === 0){
-                this.savingLoading = false
-                this.savingVisible = false
+                $Toast.info(t('schedule.form.notExistChangeToSave'))
+                return
             }
 
-            const date = `${this.params.year}-${this.params.month}-01`
+            const workerData = workers.map((w=>({
+                worker_position_id:w.id,
+                work_days:w.days.map((day, idx)=>({
+                    status:day.empty? 'delete':'create',
+                    date:`${this.params.year}-${this.params.month}-${(idx+1).toString().padStart(2,'0')}`,
+                    work_status:day.isWorkDay,
+                    start_time:day.startTime,
+                    end_time:day.endTime,
+                    daily_minutes:day.workTime,
+                    daytime:day.daytime,
+                    evening_time:day.eveningTime,
+                }))
+            })))
+            const data = {
+                status:'custom',
+                schedule_workers:workerData,
+            }
             this.savingLoading = true
-            for(let i=0;i<workers.length;i++){
-                const worker = workers[i]
-                const workerPayload = {
-                    worker_position_ids:[worker.id],
-                    schedule_type:this.params.type,
-                    work_days:worker.days.map((v,idx)=>({
-                        date:`${this.params.year}-${this.params.month}-${idx+1}`,
-                        work_status:v.isWorkDay,
-                        start_time:v.startTime,
-                        end_time:v.endTime,
-                        daily_minutes:v.workTime,
-                    }))
-                }
-
-                const data = {
-                    date,
-                    days:[workerPayload]
-                }
-                try{
-                    const res = await $ApiService.workerScheduleService._create({data})
-                    this.savingPercent = Math.floor((i+1)/workers.length*100)
-                }catch (error){
-                    console.log(error)
-                }
-
-
-            }
-            this.savingLoading = false
-            this.savingVisible = false
+            $ApiService.workerScheduleService._create({data}).then(res=>{
+                this.workerList =this.workerList.map(a=>({
+                    ...a,
+                    isEdit:false,
+                }))
+            }).finally(()=>{
+                this.savingLoading = false
+            })
         }
     }
 })

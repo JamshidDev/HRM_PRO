@@ -13,9 +13,10 @@ const onSubmit = ()=>{
   formRef.value?.validate((error)=>{
     if(!error) {
       const data = {
-        start_date:`${store.generatePayload.year1}-${store.generatePayload.month1.toString().padStart(2,'0')}-01`,
-        end_date:`${store.generatePayload.year2}-${store.generatePayload.month2.toString().padStart(2,'0')}-01`,
+        start_date:`${store.generatePayload.year1}-${store.generatePayload.month1?.toString()?.padStart(2,'0')}-01`,
+        end_date:`${store.generatePayload.year2}-${store.generatePayload.month2?.toString()?.padStart(2,'0')}-01`,
         schedule_type:store.elementId,
+        count:store.showGroupCountField? store.generatePayload.count : undefined,
       }
 
       if(store.isDailySchedule){
@@ -23,6 +24,7 @@ const onSubmit = ()=>{
         store.notScheduleParams.end_date = data.end_date
         store._notScheduleWorker()
         store.selectedWorkers = []
+        store.groupId = null
         store.notScheduleVisible = true
         store.visible = false
         return
@@ -33,9 +35,7 @@ const onSubmit = ()=>{
         store._generateSchedule(data)
       }else{
         const editDate = {
-          start_date:Utils.timeToZone(store.generatePayload.start_date),
           end_date:Utils.timeToZone(store.generatePayload.end_date),
-          name:store.generatePayload.name
         }
         store._editGroup(editDate)
 
@@ -44,6 +44,7 @@ const onSubmit = ()=>{
     }
   })
 }
+
 </script>
 
 
@@ -60,26 +61,8 @@ const onSubmit = ()=>{
     >
       <template  v-if="!store.visibleType">
         <n-form-item
-
             class="col-span-12"
-            :label="$t(`content.name`)"
-            path="name"
-            :rule-path="validationRules.rulesNames.requiredStringField">
-          <n-input
-              type="text"
-              v-model:value="store.generatePayload.name"
-          />
-        </n-form-item>
-        <n-form-item
-            class="col-span-6"
-            :label="$t(`content.from`)"
-            path="start_date"
-            :rule-path="validationRules.rulesNames.requiredNumberField">
-          <n-date-picker :format="useAppSetting.datePicketFormat" v-model:value="store.generatePayload.start_date" type="date" class="w-full" />
-        </n-form-item>
-        <n-form-item
-            class="col-span-6"
-            :label="$t(`content.from`)"
+            :label="$t(`content.date`)"
             path="end_date"
             :rule-path="validationRules.rulesNames.requiredNumberField">
           <n-date-picker :format="useAppSetting.datePicketFormat" v-model:value="store.generatePayload.end_date" type="date" class="w-full" />
@@ -143,11 +126,20 @@ const onSubmit = ()=>{
             />
           </n-form-item>
         </div>
+
+        <n-form-item v-if="store.showGroupCountField" class="col-span-12 mt-6" :label="$t(`shiftType.form.howMuchGroup`)" path="count" :rule-path="validationRules.rulesNames.requiredNumberField">
+          <n-input-number
+              :max="50"
+              :min="1"
+              :step="1"
+              :show-button="false"
+              class="w-full"
+              type="text"
+              :allow-input="Utils.onlyAllowNumber"
+              v-model:value="store.generatePayload.count"
+          />
+        </n-form-item>
       </template>
-
-
-
-
       <div class="grid grid-cols-1 gap-2 mt-8  col-span-12 px-4">
         <n-button
             @click="onSubmit"
