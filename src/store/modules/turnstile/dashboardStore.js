@@ -182,7 +182,6 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
 
         },
         async _dashboard() {
-            // Umumiy va bo'linma bo'yicha loadinglarni yoqamiz
             this.dashboardLoading = true
             this.dailyAttendanceLoading = true
             this.workerStatsLoading = true
@@ -196,6 +195,7 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
                 start_time:this.dashboardParams.start_time,
                 end_time: this.dashboardParams.end_time,
                 date:Utils.timeToZone(this.dashboardParams.date),
+                type:undefined,
             }
             const urls = [
                 '/v1/turnstile/schedule/stats-one',
@@ -230,6 +230,7 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
                                     badgeText:t('content.now'),
                                     count:data?.attended_workers_today || 0,
                                     icon:markRaw(CheckmarkCircle20Filled),
+                                    previewType:'come',
                                 },
                                 {
                                     type:'danger',
@@ -237,6 +238,7 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
                                     badgeText:t('content.now'),
                                     count:data?.absent_workers_today || 0,
                                     icon:markRaw(PersonClock20Filled),
+                                    previewType:'not_come',
                                 },
                             ]
 
@@ -343,11 +345,8 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
             this.previewLoading = true
 
             $ApiService.eventService._preview({ params }).then((res) => {
-                // API response strukturasi bo'yicha ma'lumotlarni olish
-                let rawData = res.data.data
-                let total = res.data.data.total
-
-                // Raw data ni formatlash va previewList ga berish
+                let rawData = res.data.data.data
+                this.previewTotal  = res.data.data.total
                 this.previewList = this._formatPreviewResponse(rawData, this.previewParams.type)
             }).finally(() => {
                 this.previewLoading = false
@@ -376,11 +375,11 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
                 responseDate = rawData
             }
             else{
-                responseDate = rawData[getTableConfig(cardType)?.responseField].data
+                responseDate = rawData
             }
 
             if(!responseDate || !Array.isArray(responseDate)) return []
-            this.previewTotal = rawData[getTableConfig(cardType)?.responseField]?.total || 0
+            // this.previewTotal = rawData[getTableConfig(cardType)?.responseField]?.total || 0
 
             let data = responseDate.map((v, index) => {
 

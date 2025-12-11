@@ -73,7 +73,7 @@ const option = ref({
         borderRadius: [5, 5, 0, 0]
       },
       label: {
-        show: true,
+        show: false,
         color:'#ffffff',
         fontWeight: 'bold',
         fontSize: 14,

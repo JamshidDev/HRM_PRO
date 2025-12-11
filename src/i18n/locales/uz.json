@@ -2307,7 +2307,7 @@
       "not_passed_turnstile_workers": "Turniketdan o'tmaydiganlar",
       "privilege_turnstile_workers": "Imtiyozli xodimlar",
       "lateCome": "Kech kelgan xodimlar",
-      "earlyCome": "Erta ketgan xodimlar",
+      "earlyGo": "Erta ketgan xodimlar",
       "allWorkers": "Barcha xodimlar",
       "workTimeTitle": "Ish vaqti analitikasi",
       "workTimeSubtitle": "Xodimlarning ishga kelish va ketish vaqtlari bo'yicha qisqa analitika",
