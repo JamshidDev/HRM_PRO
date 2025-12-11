@@ -56,6 +56,137 @@ export const getTableConfig = (cardType) => {
 
       ]
     },
+    privilege_turnstile_workers: {
+      responseField:'',
+      columns: [
+        {
+          headerName: 'content.worker',
+          key: 'user',
+          minWidth: '180px',
+          component: 'UIUser'
+        },
+        {
+          headerName: 'date.minute',
+          key: 'start_minute',
+          width: '80px',
+          minWidth: '80px',
+          component: 'UIBadge',
+          componentProps: {
+            showIcon: false,
+            type: Utils.colorTypes.error
+          }
+        },
+        {
+          headerName: 'date.minute',
+          key: 'end_minute',
+          width: '80px',
+          minWidth: '80px',
+          component: 'UIBadge',
+          componentProps: {
+            showIcon: false,
+            type: Utils.colorTypes.error
+          }
+        },
+
+        {
+          headerName: 'content.organization',
+          key: 'organization_name',
+          width: '300px',
+          minWidth: '200px'
+        },
+        {
+          headerName: 'content.department',
+          key: 'department_name',
+          width: '300px',
+          minWidth: '180px'
+        },
+
+      ]
+    },
+    not_passed_turnstile_workers: {
+      responseField:'',
+      columns: [
+        {
+          headerName: 'content.worker',
+          key: 'user',
+          minWidth: '180px',
+          component: 'UIUser'
+        },
+        {
+          headerName: 'content.organization',
+          key: 'organization_name',
+          width: '300px',
+          minWidth: '200px'
+        },
+        {
+          headerName: 'content.department',
+          key: 'department_name',
+          width: '300px',
+          minWidth: '180px'
+        },
+
+      ]
+    },
+    vacations: {
+      responseField:'',
+      columns: [
+        {
+          headerName: 'content.worker',
+          key: 'user',
+          minWidth: '180px',
+          component: 'UIUser'
+        },
+        {
+          headerName: 'content.organization',
+          key: 'worker_position.organization.name',
+          width: '300px',
+          minWidth: '200px'
+        },
+        {
+          headerName: 'content.type',
+          key: 'type.name',
+          width: '300px',
+          minWidth: '180px'
+        },
+        {
+          headerName: 'content.from',
+          key: 'from',
+          width: '100px',
+          minWidth: '180px'
+        },
+        {
+          headerName: 'content.to',
+          key: 'to',
+          width: '100px',
+          minWidth: '180px'
+        },
+
+      ]
+    },
+    casual_workers: {
+      responseField:'',
+      columns: [
+        {
+          headerName: 'content.worker',
+          key: 'user',
+          minWidth: '180px',
+          component: 'UIUser'
+        },
+        {
+          headerName: 'content.organization',
+          key: 'organization_name',
+          width: '300px',
+          minWidth: '200px'
+        },
+        {
+          headerName: 'content.department',
+          key: 'department_name',
+          width: '300px',
+          minWidth: '180px'
+        },
+
+      ]
+    },
     early_leave: {
       responseField: 'workers',
       columns: [
@@ -562,7 +693,33 @@ export const getTableConfig = (cardType) => {
         },
       ]
     },
-    device_status: {
+    online_devices: {
+      responseField: '',
+      columns: [
+        {
+          headerName: 'content.name',
+          key: 'area_name',
+          minWidth: '200px'
+        },
+        {
+          headerName: 'content.status',
+          key: 'status',
+          width: '200px',
+          minWidth: '120px',
+          component: 'UIBadge',
+          componentProps: (value) => {
+            return {
+              showIcon: false,
+              type:value===1? Utils.colorTypes.success : Utils.colorTypes.error
+            }
+          },
+          formatValue: (value) => {
+            return value===1? t('content.online') : t('content.offline')
+          },
+        },
+      ]
+    },
+    offline_devices: {
       responseField: '',
       columns: [
         {

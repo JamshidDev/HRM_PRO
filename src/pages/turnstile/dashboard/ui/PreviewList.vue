@@ -48,6 +48,8 @@ const handleRowClick = (item, index) => {
             :loading="dashboardStore.previewLoading"
             :show-index="true"
             :index-label="$t('content.number')"
+            :page="dashboardStore.previewParams.page"
+            :per-page="dashboardStore.previewParams.per_page"
             @row-click="handleRowClick"
           />
           

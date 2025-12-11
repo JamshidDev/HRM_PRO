@@ -78,7 +78,7 @@ const option = ref({
   },
   series: [
     {
-      name: t('turnStileDashboard.form.workerCount'),
+      name: t('turnStileDashboard.cards.lateCome'),
       type: 'bar',
       barWidth: '70%',
       barMaxWidth: 20,
@@ -92,7 +92,7 @@ const option = ref({
       },
     },
     {
-      name: t('turnStileDashboard.form.abdens'),
+      name: t('turnStileDashboard.cards.earlyGo'),
       type: 'bar',
       barWidth: '70%',
       barMaxWidth: 20,

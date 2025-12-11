@@ -9,7 +9,7 @@ const store = useTurnstileDashboardStore()
 </script>
 
 <template>
-      <div class="grid grid-cols-12 px-4 py-2 bg-surface-section border border-surface-line rounded-xl relative cursor-pointer">
+      <div class="grid grid-cols-12 px-4 py-2 bg-surface-section border border-surface-line rounded-xl cursor-pointer relative">
         <n-spin :show="store.monthlyLoading" class="col-span-12">
           <div class="col-span-12 grid grid-cols-12">
             <div class="col-span-6 mb-4">
@@ -28,19 +28,21 @@ const store = useTurnstileDashboardStore()
                   </div>
                   <UIUserGroup
                       @click.stop
-                      :max="4"
-                      :data="store.monthlyWorkers"
-                      :has-more="100"
+                      :max="6"
+                      :data="store.monthlyTotalWorkerCount<5? store.monthlyWorkers : [...store.monthlyWorkers,...store.monthlyWorkers]"
+                      :has-more="store.monthlyTotalWorkerCount-5"
                   />
                 </div>
               </div>
             </div>
-            <div class="col-span-6">
+            <div class="col-span-6 z-10">
               <BarChart/>
             </div>
           </div>
 
         </n-spin>
+        <span
+            class=" opacity-30 absolute top-0 right-0 w-[160px] h-full bg-no-repeat bg-[url(/effect/primary-card.svg)]"></span>
 
       </div>
 

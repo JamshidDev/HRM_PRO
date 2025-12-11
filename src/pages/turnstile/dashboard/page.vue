@@ -9,6 +9,7 @@ import {
   RowChart,
   DeviceCard,
   MonthlyCard,
+  FaceCard,
 } from "./ui/index.js"
 
 
@@ -20,19 +21,8 @@ import SimpleCardSketlon from "@/pages/turnstile/dashboard/ui/SimpleCardSketlon.
 import DailyEventChart from "@/pages/turnstile/dashboard/ui/DailyEventChart.vue"
 
 const typeTitle = computed(()=>{
-  let key = null
-
-  const cardType = dashboardStore.previewParams.type
-
-  if(cardType === 'device_status' && dashboardStore.isOnlineDevice !== null){
-    key = dashboardStore.isOnlineDevice ? 'device_status_online' : 'device_status_offline'
-  }else{
-    key = dashboardStore.yesterday ? dashboardStore.cardTypes[cardType]?.uiKey : dashboardStore.cardTypes[cardType]?.key
-  }
-  
-  
-  
-  return dashboardStore.cardTypes[key].name
+  const type = dashboardStore.previewParams.type
+  return dashboardStore.cardTypes[type].name
 })
 
 
@@ -96,16 +86,16 @@ onMounted(()=>{
     </div>
 
 
-    <InfoGraph class="xl:col-span-4 lg:col-span-6 md:col-span-6 col-span-12" />
+    <InfoGraph @onPreview="onPreview" class="xl:col-span-4 lg:col-span-6 md:col-span-6 col-span-12" />
 
-    <DeviceCard class="xl:col-span-4 lg:col-span-6 md:col-span-6 col-span-12"  />
+    <DeviceCard @onPreview="onPreview" class="xl:col-span-4 lg:col-span-6 md:col-span-6 col-span-12"  />
 
     <WorkTimeCard @onPreview="onPreview" class="xl:col-span-8 col-span-12" />
     <MonthlyCard class="col-span-6" />
+    <div class="col-span-6 p-2 border border-surface-line rounded-xl bg-surface-section relative">
+      <FaceCard/>
+    </div>
   </div>
-
-
-
 
   <UIModal
       v-model:visible="dashboardStore.previewVisible"

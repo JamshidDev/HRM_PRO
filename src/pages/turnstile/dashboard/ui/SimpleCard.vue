@@ -61,7 +61,7 @@ const badgeText = computed(()=>{
 
     <div class="content-between z-10 text-right flex items-center justify-between mt-2">
       <div>
-        <p class="text-left leading-[1.2] font-semibold text-textColor2 text-lg">{{count}}</p>
+        <p class="text-left leading-[1.2] font-bold text-textColor2 text-lg">{{count}}</p>
         <p class="text-secondary text-xs font-medium leading-[1.2] line-clamp-1 text-left">{{title}}</p>
       </div>
       <span class="flex items-center" v-if="listMore">

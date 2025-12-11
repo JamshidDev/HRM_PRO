@@ -2245,6 +2245,7 @@
   },
   "turnStileDashboard": {
     "name": "Dashboard",
+    "description": "Xodimlarning grafik jadvallari va turniket orqali olingan ma’lumotlar asosida real vaqtdagi analitika",
     "form": {
       "topOfflineDevices": "Sinxronizatsiyalangan qurilmalar",
       "lastSynchronizationTime": "Oxirgi sinxronizatsiya",
@@ -2328,8 +2329,13 @@
       "onlineDevices": "Onlayn qurilmalar soni",
       "offlineDevices": "Oflayn qurilmalar soni",
       "graphAnalytic": "Grafik bo'yicha analika",
+      "mobileFace": "Mobil qurilma",
+      "turnstileFace": "Turniket qurilma",
+      "allWorkerOfFace": "Umumiy xodimlar soni",
+      "turnstileAnalytic": "FACE ID analitikasi",
+      "turnstileAnalyticDescription": "Kunlik Face ID qaydnomasi",
       "graphAnalyticDescription": "Oxirgi 5 oydagi grafikga biriktirilmagan xodimlar soni",
-      "currentMonthWorkerCount": "Joriy oydagi xodimlar soni"
+      "currentMonthWorkerCount": "Joriy oyda grafik tuzilmagan xodimlar soni"
     },
     "options": {
       "status": "Ish soati bo'yicha",

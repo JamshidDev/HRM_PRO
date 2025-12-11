@@ -83,7 +83,7 @@ const controlFilterEv = (v)=>{
     dashboardStore.previewParams.date = null
     filterVisible.value.date = false
 
-  }else if(dashboardStore.cardTypes.device_status.key === cardType){
+  }else if(dashboardStore.cardTypes.online_devices.key === cardType){
     filterVisible.value.date = false
   }else if(dashboardStore.cardTypes.lesson_worked.key === cardType){
     filterVisible.value.norm_hours = true

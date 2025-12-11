@@ -25,28 +25,28 @@ const emits = defineEmits(['onPreview'])
             <div class="text-2xl text-textColor0 font-bold !leading-[0.8] mt-5" >{{store.deviceData?.all || 0}}</div>
             <small class="text-secondary text-xs leading-[1.2]">{{$t('turnStileDashboard.cards.allDevices')}}</small>
 
-            <div @click="emits('onPreview', 'come')" class="bg-transparent hover:bg-primary/6 transition-all duration-300 cursor-pointer p-2 rounded-xl relative group mt-6">
+            <div @click="emits('onPreview', 'online_devices')" class="bg-transparent hover:bg-primary/6 transition-all duration-300 cursor-pointer p-2 rounded-xl relative group mt-6">
               <div class="transition-all duration-500 scale-0   absolute left-1/2 top-1/2 -translate-1/2 text-xs font-medium text-primary opacity-0 group-hover:opacity-100 group-hover:scale-100">
                 <n-icon size="36">
                   <Eye20Filled/>
                 </n-icon>
               </div>
               <div class="flex gap-2 items-center content-between opacity-100 group-hover:opacity-[0.2] transition-all duration-300">
-                <div class="w-[10px] h-[10px] bg-gradient-to-l from-success to-success/60 rounded-xl"></div>
+                <div class="w-[10px] h-[10px] bg-gradient-to-l from-[#228EFD] to-[#228EFD]/60 rounded-xl"></div>
                 <small class="text-secondary text-xs">{{$t('turnStileDashboard.cards.onlineDevices')}}</small>
               </div>
               <h4 class="text-xl text-textColor0 font-bold opacity-100 group-hover:opacity-[0.2] transition-all duration-300">{{store.deviceData?.online || 0}}</h4>
             </div>
 
 
-            <div @click="emits('onPreview', 'come')" class="bg-transparent hover:bg-primary/6 transition-all duration-300 cursor-pointer p-2 rounded-xl relative group mt-2">
+            <div @click="emits('onPreview', 'offline_devices')" class="bg-transparent hover:bg-primary/6 transition-all duration-300 cursor-pointer p-2 rounded-xl relative group mt-2">
               <div class="transition-all duration-500 scale-0   absolute left-1/2 top-1/2 -translate-1/2 text-xs font-medium text-primary opacity-0 group-hover:opacity-100 group-hover:scale-100">
                 <n-icon size="36">
                   <Eye20Filled/>
                 </n-icon>
               </div>
               <div class="flex gap-2 items-center opacity-100 group-hover:opacity-[0.2] transition-all duration-300">
-                <div class="w-[10px] h-[10px] bg-gradient-to-l from-danger to-danger/60 rounded-xl"></div>
+                <div class="w-[10px] h-[10px] bg-gradient-to-l from-[#BCD8F7] to-[#BCD8F7] rounded-xl"></div>
                 <small class="text-secondary text-xs">{{$t('turnStileDashboard.cards.offlineDevices')}}</small>
               </div>
               <h4 class="text-xl text-textColor0 font-bold opacity-100 group-hover:opacity-[0.2] transition-all duration-300">{{store.deviceData?.offline || 0}}</h4>

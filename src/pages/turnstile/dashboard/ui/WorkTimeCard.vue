@@ -2,11 +2,11 @@
 import {PersonClock20Regular, ClockToolbox20Regular, Eye20Filled} from '@vicons/fluent'
 import WorkTimeChart from "@/pages/turnstile/dashboard/ui/WorkTimeChart.vue"
 import {useTurnstileDashboardStore} from "@/store/modules/index.js"
+import i18n from "@/i18n/index.js"
 const store = useTurnstileDashboardStore()
 
-const lateComeCount = computed(()=> store.workTime? store.workTime?.late_and_early?.late[4]?.count : 0)
-const earlyGoCount = computed(()=> store.workTime? store.workTime?.late_and_early?.early[4]?.count : 0)
-
+const lateComeCount = computed(()=> store.workTime? store.workTime?.late_and_early?.late[0]?.count : 0)
+const earlyGoCount = computed(()=> store.workTime? store.workTime?.late_and_early?.early[0]?.count : 0)
 const emits = defineEmits(['onPreview'])
 
 </script>

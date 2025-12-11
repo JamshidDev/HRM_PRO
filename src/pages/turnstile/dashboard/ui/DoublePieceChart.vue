@@ -37,7 +37,7 @@ const getOption = () => ({
       type: 'pie',
       radius: ['50%', '90%'],
       padAngle: 5,
-      itemStyle: { borderRadius:4 },
+      itemStyle: { borderRadius:12 },
       label: {
         show: true,
         position: 'inside',
@@ -47,8 +47,8 @@ const getOption = () => ({
         color: '#fff'
       },
       data: [
-        { value: props.online, name: 'Online', itemStyle: { color: '#22c55e' } },
-        { value: props.offline, name: 'Offline', itemStyle: { color: '#ef4444' } }
+        { value: props.online, name: 'Online', itemStyle: { color: '#228EFD' } },
+        { value: props.offline, name: 'Offline', itemStyle: { color: '#BCD8F7' } }
       ]
     }
   ]

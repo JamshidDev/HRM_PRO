@@ -90,11 +90,10 @@ onBeforeUnmount(()=>{
 
 <template>
    <div class="grid grid-cols-12 gap-2">
-        <div class="text-lg lg:col-span-2 md:col-span-6 col-span-12 flex items-center text-textColor2 font-medium">
-          {{ $t('turnStileDashboard.name') }}
+        <div class="text-lg lg:col-span-6 md:col-span-6 col-span-12 text-textColor2 ">
+         <h3 class="font-bold mb-0 leading-[1.2] mt-4"> {{ $t('turnStileDashboard.name')}}</h3>
+          <div class="text-xs leading-[1.2] text-secondary block font-medium">{{ $t('turnStileDashboard.description')}}</div>
         </div>
-     <div class="lg:col-span-2 md:col-span-6 col-span-12"></div>
-     <div class="lg:col-span-2 md:col-span-6 col-span-12"></div>
         <div class="lg:col-span-2 md:col-span-6 col-span-12">
           <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{$t('actionLog.table.structure')}}</label>
           <UISelect

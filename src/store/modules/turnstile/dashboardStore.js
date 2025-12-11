@@ -118,17 +118,31 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
                 name:"turnStileDashboard.cards.lesson_worked",
                 key:'lesson_worked'
             },
-            device_status:{
-                 name:"turnStileDashboard.cards.device_status",
-                 key:'device_status'
-            },
-
-            device_status_online:{
+            online_devices:{
                 name:"turnStileDashboard.cards.device_status_online",
+                key:'online_devices'
             },
-            device_status_offline:{
+            offline_devices:{
                 name:"turnStileDashboard.cards.device_status_offline",
+                key:'offline_devices'
            },
+           privilege_turnstile_workers:{
+               name:"turnStileDashboard.cards.privilege_turnstile_workers",
+               key:'privilege_turnstile_workers'
+           },
+           not_passed_turnstile_workers:{
+                  name:"turnStileDashboard.cards.not_passed_turnstile_workers",
+                  key:'not_passed_turnstile_workers'
+           },
+            vacations:{
+                  name:"turnStileDashboard.cards.vacations",
+                  key:'vacations'
+              },
+              casual_workers:{
+                  name:"turnStileDashboard.cards.casual_workers",
+                  key:'casual_workers'
+              },
+
             early_leave_yesterday:{
                 name:"turnStileDashboard.cards.early_leave_yesterday",
             },
@@ -165,7 +179,7 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
 
         grandWorkerData:null,
         grandLoading:false,
-
+        faceIdData:null,
     }),
 
     actions: {
@@ -241,7 +255,7 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
                                     previewType:'not_come',
                                 },
                             ]
-
+                            this.totalWorkerCount =data?.totalWorkers
                             this.mainChartLoading = false
                         }
 
@@ -250,6 +264,7 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
                         // daily chart
                         if (!result.error){
                             this.dailyEvents = data.daily_attendance_chart
+                            this.faceIdData = data.auth_type
 
                         }
                         this.dailyAttendanceLoading = false
@@ -298,9 +313,9 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
                     else if (result.url === urls[4]) {
                         if (!result.error){
                             this.workerDataWithSchedule = data
-                            this.totalWorkerCount =data?.total_workers
+
                             this.monthlyList =data?.stats
-                            this.monthlyTotalWorkerCount = data?.stats[0].workers_without_schedule
+                            this.monthlyTotalWorkerCount = data?.stats[0].without_schedule
                             this.monthlyWorkers = data?.workerList.map(v=>({
                                 ...v,
                                 fullName:Utils.combineFullName(v)
@@ -363,20 +378,11 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
             }
         },
 
-        // Preview responselarini formatlash methodi
         _formatPreviewResponse(rawData, cardType) {
             let responseDate =[]
             this.tableColumns  = getTableConfig(cardType).columns
 
-
-            if(cardType === 'devices'){
-                responseDate = rawData[getTableConfig(cardType)?.responseField]
-            }else if(cardType === 'device_status'){
-                responseDate = rawData
-            }
-            else{
-                responseDate = rawData
-            }
+            responseDate = rawData
 
             if(!responseDate || !Array.isArray(responseDate)) return []
             // this.previewTotal = rawData[getTableConfig(cardType)?.responseField]?.total || 0
@@ -430,24 +436,36 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
                         user:this._userContructor(v, v?.position_name),
 
                     }
-                }else return v
+                }
+                else if(cardType === 'vacations'){
+                    return {
+                        ...v,
+                        user:this._userContructor(v?.worker_position?.worker, v?.worker_position?.post_short_name),
+                    }
+                }
+                else if(['privilege_turnstile_workers','not_passed_turnstile_workers', 'casual_workers'].includes(cardType)){
+                    return {
+                        ...v,
+                        user:this._userContructor(v, v?.position_name),
+
+                    }
+                }
+                else return v
 
 
             })
 
-            if(cardType === 'devices'){
-
-                return data.sort((a, b) => new Date(a.last_sync) - new Date(b.last_sync))
-            }else if(cardType === 'device_status' && this.isOnlineDevice !== null){
-                const status = this.isOnlineDevice ? 1 : 2
-                return data.filter(v => v.status === status)
-            }
-
+            // if(cardType === 'devices'){
+            //
+            //     return data.sort((a, b) => new Date(a.last_sync) - new Date(b.last_sync))
+            // }else if(cardType === 'device_status' && this.isOnlineDevice !== null){
+            //     const status = this.isOnlineDevice ? 1 : 2
+            //     return data.filter(v => v.status === status)
+            // }
 
             return data
         },
 
-        // Yangi API response format uchun yordamchi methodlar
        _userContructor(v, position){
         return {
             photo:v?.photo,

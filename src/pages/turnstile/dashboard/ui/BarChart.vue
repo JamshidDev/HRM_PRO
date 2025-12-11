@@ -10,9 +10,10 @@ import { GridComponent } from 'echarts/components'
 import { CanvasRenderer } from 'echarts/renderers'
 import { graphic } from 'echarts/core'
 import {useTurnstileDashboardStore} from "@/store/modules/index.js"
+import i18n from "@/i18n/index.js"
 
 use([BarChart, GridComponent, CanvasRenderer])
-
+const {t} = i18n.global
 const store = useTurnstileDashboardStore()
 
 const option = ref({
@@ -22,6 +23,16 @@ const option = ref({
     top: 30,
     bottom: 0,
     containLabel: true
+  },
+  tooltip: {
+    trigger: 'axis',
+    axisPointer: {
+      type: 'shadow'
+    },
+    formatter: (params) => {
+      const data = params[0]
+      return `${data.seriesName}: <strong>${data.value.toLocaleString()}</strong>`
+    }
   },
   xAxis: {
     type: 'category',
@@ -57,6 +68,7 @@ const option = ref({
   },
   series: [
     {
+      name: t('turnStileDashboard.form.workerCount'),
       data: [],
       type: 'bar',
       barWidth: 20,
@@ -74,12 +86,6 @@ const option = ref({
       },
       label: {
         show: false,
-        color:'#ffffff',
-        fontWeight: 'bold',
-        fontSize: 14,
-        rotate: 90,
-        verticalAlign: 'middle',
-        align: 'center',
       }
     }
   ]
@@ -88,12 +94,10 @@ const option = ref({
 
 watchEffect(()=>{
   if(store.monthlyList?.length>0){
-    option.value.xAxis.data = store.monthlyList.map((v)=>{
-      return `${v.year}-${v.month.toString().padStart(2, "0")}`
-    })
+    option.value.xAxis.data = store.monthlyList.map((v)=>v.month)
 
     option.value.series[0].data = store.monthlyList.map((v)=>{
-      return v.workers_without_schedule
+      return v.without_schedule
     })
 
   }
