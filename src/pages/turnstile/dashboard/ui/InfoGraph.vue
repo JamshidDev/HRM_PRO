@@ -101,8 +101,8 @@ const emits = defineEmits(['onPreview'])
 
 
 
-          <div class="z-10 flex flex-col w-[70px] bg-transparent hover:bg-primary/6 transition-all duration-300 cursor-pointer p-2 rounded-xl relative group">
-            <div @click="emits('onPreview', 'casual_workers')" class="z-10 transition-all duration-500 scale-0   absolute left-1/2 top-1/2 -translate-1/2 text-xs font-medium text-primary opacity-0 group-hover:opacity-100 group-hover:scale-100">
+          <div @click="emits('onPreview', 'casual_workers')" class="z-10 flex flex-col w-[70px] bg-transparent hover:bg-primary/6 transition-all duration-300 cursor-pointer p-2 rounded-xl relative group">
+            <div class="z-10 transition-all duration-500 scale-0   absolute left-1/2 top-1/2 -translate-1/2 text-xs font-medium text-primary opacity-0 group-hover:opacity-100 group-hover:scale-100">
               <n-icon size="36">
                 <Eye20Filled/>
               </n-icon>
@@ -128,7 +128,7 @@ const emits = defineEmits(['onPreview'])
 
     </n-spin>
     <span
-        class=" opacity-30 absolute top-0 right-0 w-[160px] h-full bg-no-repeat bg-[url(/effect/primary-card.svg)]"></span>
+        class="z-[1] opacity-30 absolute top-0 right-0 w-[160px] h-full bg-no-repeat bg-[url(/effect/primary-card.svg)]"></span>
   </div>
 
 

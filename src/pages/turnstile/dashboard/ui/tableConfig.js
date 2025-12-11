@@ -20,8 +20,8 @@ export const getTableConfig = (cardType) => {
         {
           headerName: 'date.minute',
           key: 'minutes',
-          width: '80px',
-          minWidth: '80px',
+          width: '200px',
+          minWidth: '120px',
           component: 'UIBadge',
           componentProps: {
             showIcon: false,
@@ -30,8 +30,8 @@ export const getTableConfig = (cardType) => {
         },
         {
           headerName: 'content.time',
-          key: 'time_only',
-          width: '100px',
+          key: 'time',
+          width: '200px',
           minWidth: '80px',
           component: 'UIBadge',
           componentProps: (value) => {
@@ -199,8 +199,8 @@ export const getTableConfig = (cardType) => {
         {
           headerName: 'date.minute',
           key: 'minutes',
-          width: '80px',
-          minWidth: '80px',
+          width: '240px',
+          minWidth: '120px',
           component: 'UIBadge',
           componentProps: {
             showIcon: false,
@@ -209,9 +209,9 @@ export const getTableConfig = (cardType) => {
         },
         {
           headerName: 'content.time',
-          key: 'time_only',
-          width: '100px',
-          minWidth: '80px',
+          key: 'time',
+          width: '200px',
+          minWidth: '120px',
           component: 'UIBadge',
           componentProps: (value) => {
             return {
@@ -219,12 +219,6 @@ export const getTableConfig = (cardType) => {
               type: Utils.colorTypes.info
             }
           },
-        },
-        {
-          headerName: 'content.date',
-          key: 'time',
-          width: '200px',
-          minWidth: '100px'
         },
         {
           headerName: 'content.organization',

@@ -393,8 +393,18 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
                     return {
                         ...v,
                         user:this._userContructor(v, v.position_name),
+                        time:Utils.timeWithMonth(v.first_entry_time),
+                        minutes:`${v.minutes} ${t('date.minute')} (${v?.start_time || '-:-'})`
                     }
-                }else if(cardType === 'come'){
+                } else if(cardType === 'early_leave'){
+                    return {
+                        ...v,
+                        user:this._userContructor(v, v?.position_name),
+                        minutes:`${v.early_minutes} ${t('date.minute')} (${v?.end_time || '-:-'})`,
+                        time:Utils.timeWithMonth(v.last_exit_time),
+                    }
+                }
+                else if(cardType === 'come'){
                     return {
                         ...v,
                         user:this._userContructor(v, v.position_name),
@@ -428,13 +438,6 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
                         user:this._userContructor(v, v.position_name),
                         total_minutes: v.total_minutes + ' ' + t('date.minute'),
                         hours: v.hours + ' ' + t('date.hour'),
-                    }
-                }
-                else if(cardType === 'early_leave'){
-                    return {
-                        ...v,
-                        user:this._userContructor(v, v?.position_name),
-
                     }
                 }
                 else if(cardType === 'vacations'){

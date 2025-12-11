@@ -56,7 +56,6 @@ instance.interceptors.response.use(
         if (error.name === "CanceledError") {
             error.message = t('content.waitResponse')
         }
-        console.log(error.response.config.url)
         if(error.response?.status===401){
             if(!(error.response.request.responseURL.includes(AppPaths.Profile))){
                 $Toast.error(error.response.data.message)

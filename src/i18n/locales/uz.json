@@ -2291,9 +2291,9 @@
       "mask_status": "Niqob"
     },
     "cards": {
-      "late_come": "Kechikkan xodimlar",
-      "not_come_yesterday": "Ishga kelmagan xodimlar (kecha)",
-      "early_leave_yesterday": "Erta ketgan xodimlar (kecha)",
+      "late_come": "Kech kelgan xodimlar",
+      "not_come_yesterday": "Ishga kelmagan xodimlar",
+      "early_leave_yesterday": "Erta ketgan xodimlar",
       "not_come": "Ishga kelmagan xodimlar",
       "come": "Ishga kelgan xodimlar",
       "current_in": "Ishxonadagi xodimlar",
@@ -2333,6 +2333,8 @@
       "turnstileFace": "Turniket qurilma",
       "allWorkerOfFace": "Umumiy xodimlar soni",
       "turnstileAnalytic": "FACE ID analitikasi",
+      "vacations": "Ta'tildagi xodimlar",
+      "casual_workers": "Dam olish kunidagilar",
       "turnstileAnalyticDescription": "Kunlik Face ID qaydnomasi",
       "graphAnalyticDescription": "Oxirgi 5 oydagi grafikga biriktirilmagan xodimlar soni",
       "currentMonthWorkerCount": "Joriy oyda grafik tuzilmagan xodimlar soni"
