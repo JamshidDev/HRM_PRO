@@ -348,13 +348,6 @@ export const navigations = [
                 permission: appPermissions.turnstileDashboard,
             },
             {
-                label: 'turnStileDashboard.name',
-                path: Utils.routeTurnstilePathMaker(AppPaths.DashboardV2),
-                icon: Grid20Filled,
-                color: 'bg-warning',
-                permission: appPermissions.admin,
-            },
-            {
                 label: 'turnstile.buildingPage.title',
                 path: Utils.routeTurnstilePathMaker(AppPaths.Building),
                 icon: BuildingMultiple24Filled,

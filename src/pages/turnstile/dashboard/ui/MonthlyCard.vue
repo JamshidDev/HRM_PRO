@@ -15,8 +15,8 @@ const store = useTurnstileDashboardStore()
             <div class="col-span-6 mb-4">
               <div class="grid col-span-12">
                 <div class="col-span-12">
-                  <h3 class="font-bold text-lg leading-[1.2] mt-4 text-textColor0" >Grafik bo'yicha analika</h3>
-                  <div class="text-secondary leading-[1.2] text-xs">Oxirgi 5 oydagi grafikga biriktirilmagan xodimlar ma'lumotlari</div>
+                  <h3 class="font-bold text-lg leading-[1.2] mt-4 text-textColor0" >{{$t('turnStileDashboard.cards.graphAnalytic')}}</h3>
+                  <div class="text-secondary leading-[1.2] text-xs">{{$t('turnStileDashboard.cards.graphAnalyticDescription')}}</div>
                 </div>
 
                 <div class="col-span-12 flex flex-col justify-between">
@@ -24,7 +24,7 @@ const store = useTurnstileDashboardStore()
 
                   <div class="w-full mt-8">
                     <div class="text-2xl font-bold text-textColor0">{{store.monthlyTotalWorkerCount}}</div>
-                    <div class="leading-[1.1] text-xs text-secondary mb-2">Joriy oydagi xodimlar soni</div>
+                    <div class="leading-[1.1] text-xs text-secondary mb-2">{{$t('turnStileDashboard.cards.currentMonthWorkerCount')}}</div>
                   </div>
                   <UIUserGroup
                       @click.stop

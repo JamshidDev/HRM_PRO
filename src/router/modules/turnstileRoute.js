@@ -22,7 +22,6 @@ import {
     ShiftTypePage,
     ShiftTypeGroupPage,
     TurnstileSchedulePage,
-    StatsDashboardPage,
 } from "@/pages/turnstile"
 
 
@@ -121,13 +120,6 @@ export default [
     {
         path:Utils.routeTurnstilePathMaker(AppPaths.Dashboard),
         component: ()=>DashboardPage,
-        meta:{
-            layout:AppLayouts.main
-        },
-    },
-    {
-        path:Utils.routeTurnstilePathMaker(AppPaths.DashboardV2),
-        component: ()=>StatsDashboardPage,
         meta:{
             layout:AppLayouts.main
         },

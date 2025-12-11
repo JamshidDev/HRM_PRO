@@ -29,8 +29,8 @@ watchEffect(() => {
       <div class="grid grid-cols-12">
 
         <div class="col-span-12 my-4">
-          <h3 class="font-bold text-lg leading-[1.2] text-textColor0">Imtiyozli xodimlar</h3>
-          <small class="text-secondary leading-[1.2]">Ishga kelish va kelmasligi bo'yicha qisqa analitika</small>
+          <h3 class="font-bold text-lg leading-[1.2] text-textColor0">{{$t('turnStileDashboard.cards.privilege_turnstile_workers')}}</h3>
+          <small class="text-secondary leading-[1.2]">{{$t('turnStileDashboard.cards.privilegeSubtitle')}}</small>
         </div>
         <div class="col-span-12 flex flex-wrap gap-x-6 gap-y-2 justify-center content-end mb-2">
 
@@ -51,13 +51,13 @@ watchEffect(() => {
           </span>
               {{ store.grandWorkerData?.privilege_turnstile_workers_count || 0 }}
             </h3>
-            <h3 class="text-[10px] font-normal text-secondary pl-1 mt-3 mb-1 line-clamp-1 opacity-100 group-hover:opacity-[0.2] transition-all duration-300">Imtiyozli</h3>
+            <h3 class="text-[10px] font-normal text-secondary pl-1 mt-3 mb-1 line-clamp-1 opacity-100 group-hover:opacity-[0.2] transition-all duration-300">{{$t('turnStileDashboard.cards.privilege')}}</h3>
             <CircleChart :percent="grandPercent" type="success" class="opacity-100 group-hover:opacity-[0.2] transition-all duration-300"/>
           </div>
 
 
 
-          <div class="z-10 flex flex-col w-[70px] bg-transparent hover:bg-primary/6 transition-all duration-300 cursor-pointer p-2 rounded-xl relative group">
+          <div class="z-10 flex flex-col w-[90px] bg-transparent hover:bg-primary/6 transition-all duration-300 cursor-pointer p-2 rounded-xl relative group">
             <div class="z-10 transition-all duration-500 scale-0   absolute left-1/2 top-1/2 -translate-1/2 text-xs font-medium text-primary opacity-0 group-hover:opacity-100 group-hover:scale-100">
               <n-icon size="36">
                 <Eye20Filled/>
@@ -71,7 +71,7 @@ watchEffect(() => {
           </span>
               {{ store.grandWorkerData?.not_passed_turnstile_workers_count || 0 }}
             </h3>
-            <h3 class="text-[10px]  font-normal text-secondary pl-1 mt-3 mb-1 line-clamp-1 opacity-100 group-hover:opacity-[0.2] transition-all duration-300">O'tmaydigan</h3>
+            <h3 class="text-[10px]  font-normal text-secondary pl-1 mt-3 mb-1 line-clamp-1 opacity-100 group-hover:opacity-[0.2] transition-all duration-300">{{$t('turnStileDashboard.cards.dontPassFace')}}</h3>
             <CircleChart :percent="notPassedPercent" type="warning " class="opacity-100 group-hover:opacity-[0.2] transition-all duration-300"/>
           </div>
 
@@ -92,7 +92,7 @@ watchEffect(() => {
           </span>
               {{ store.grandWorkerData?.vacation_workers?.total || 0 }}
             </h3>
-            <h3 class="text-[10px]  font-normal text-secondary pl-1 mt-3 mb-1 line-clamp-1 opacity-100 group-hover:opacity-[0.2] transition-all duration-300">Ta'tilda</h3>
+            <h3 class="text-[10px]  font-normal text-secondary pl-1 mt-3 mb-1 line-clamp-1 opacity-100 group-hover:opacity-[0.2] transition-all duration-300">{{$t('turnStileDashboard.cards.onVacation')}}</h3>
             <CircleChart :percent="vacationPercent" type="dark" class="opacity-100 group-hover:opacity-[0.2] transition-all duration-300"/>
           </div>
 
@@ -113,7 +113,7 @@ watchEffect(() => {
           </span>
               {{ store.grandWorkerData?.casual_workers || 0 }}
             </h3>
-            <h3 class="text-[10px]  font-normal text-secondary pl-1 mt-3 mb-1 line-clamp-1 opacity-100 group-hover:opacity-[0.2] transition-all duration-300">Dam kuni</h3>
+            <h3 class="text-[10px]  font-normal text-secondary pl-1 mt-3 mb-1 line-clamp-1 opacity-100 group-hover:opacity-[0.2] transition-all duration-300">{{$t('turnStileDashboard.cards.onHoliday')}}</h3>
             <CircleChart :percent="casualPercent" type="primary" class="opacity-100 group-hover:opacity-[0.2] transition-all duration-300"/>
           </div>
 

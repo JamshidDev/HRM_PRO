@@ -13,12 +13,12 @@ const emits = defineEmits(['onPreview'])
   <n-spin :show="store.mainChartLoading">
     <div class="p-2 flex flex-col">
       <div>
-        <h3 class="font-bold text-lg leading-[1.2] text-textColor0">Xodimlar analitikasi</h3>
-        <small class="text-xs text-secondary leading-[1.2]">Ishga kelish va kelmasligi bo'yicha qisqa analitika</small>
+        <h3 class="font-bold text-lg leading-[1.2] text-textColor0">{{$t('turnStileDashboard.cards.workerAnalytic')}}</h3>
+        <small class="text-xs text-secondary leading-[1.2]">{{$t('turnStileDashboard.cards.workerAnalyticDescription')}}</small>
       </div>
       <div class="mt-6">
         <div class="font-bold text-4xl text-textColor0 leading-[1]">{{store?.totalWorkerCount}} <small class="text-xs text-success font-normal">+16 %</small></div>
-        <small class="text-xs text-secondary leading-[1.2]">Korxonaining umumiy xodimlarning soni</small>
+        <small class="text-xs text-secondary leading-[1.2]">{{$t('turnStileDashboard.cards.allWorkerOfCompany')}}</small>
       </div>
 
       <div class="flex gap-6 mt-10">
@@ -35,7 +35,7 @@ const emits = defineEmits(['onPreview'])
                   <ChartMultiple24Regular/>
                 </n-icon>
               </div>
-              <span class="font-semibold text-secondary text-xs">Kutilgan</span>
+              <span class="font-semibold text-secondary text-xs">{{$t('turnStileDashboard.cards.planned')}}</span>
             </div>
             <div class="font-bold text-2xl my-2 text-textColor0 opacity-100 group-hover:opacity-[0.2] transition-all duration-300">{{store.mainChart?.scheduled_workers_today || 0}}</div>
             <div class="w-full h-[4px] bg-primary/10 relative rounded-lg
@@ -57,7 +57,7 @@ const emits = defineEmits(['onPreview'])
                   <ChartMultiple24Regular/>
                 </n-icon>
               </div>
-              <span class="font-semibold text-secondary text-xs">Kelgan</span>
+              <span class="font-semibold text-secondary text-xs">{{$t('turnStileDashboard.cards.todayCome')}}</span>
             </div>
             <div class="font-bold text-2xl my-2 text-textColor0 opacity-100 group-hover:opacity-[0.2] transition-all duration-300">{{store.mainChart?.attended_workers_today || 0}}</div>
             <div class="opacity-100 group-hover:opacity-[0.2] transition-all duration-300 w-full h-[4px] bg-warning/10 relative rounded-lg
@@ -77,27 +77,13 @@ const emits = defineEmits(['onPreview'])
                   <ChartMultiple24Regular/>
                 </n-icon>
               </div>
-              <span class="font-semibold text-secondary text-xs">Kelmagan</span>
+              <span class="font-semibold text-secondary text-xs">{{$t('turnStileDashboard.cards.todayDontCome')}}</span>
             </div>
             <div class="font-bold text-2xl my-2 text-textColor0 opacity-100 group-hover:opacity-[0.2] transition-all duration-300">{{store.mainChart?.absent_workers_today || 0}}</div>
             <div class="opacity-100 group-hover:opacity-[0.2] transition-all duration-300 w-full h-[4px] bg-danger/10 relative rounded-lg
         before:content-[' '] before:w-[80%] before:h-full before:bg-danger/60 before:absolute before:left-0 before:top-0 overflow-hidden" ></div>
           </div>
         </div>
-        <!--    <div class="flex gap-4 items-center">-->
-        <!--      <CircleChart :percent="12" type="warning"/>-->
-        <!--      <div>-->
-        <!--        <div class="font-bold text-xl leading-[1.2] text-warning">346</div>-->
-        <!--        <div class="leading-[1.2] text-secondary line-clamp-1 text-xs">{{$t('turnStileDashboard.work_durations.workerCountWithSchedule')}}</div>-->
-        <!--      </div>-->
-        <!--    </div>-->
-        <!--    <div class="flex gap-4 items-center">-->
-        <!--      <CircleChart :percent="12" type="danger"/>-->
-        <!--      <div>-->
-        <!--        <div class="font-bold text-xl leading-[1.2] text-danger">346</div>-->
-        <!--        <div class="leading-[1.2] text-secondary line-clamp-1 text-xs">{{$t('turnStileDashboard.work_durations.workerCountWithoutSchedule')}}</div>-->
-        <!--      </div>-->
-        <!--    </div>-->
       </div>
     </div>
   </n-spin>

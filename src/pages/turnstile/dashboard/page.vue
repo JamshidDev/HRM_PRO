@@ -85,6 +85,7 @@ onMounted(()=>{
           @click="onPreview(item.previewType)"
       />
     </template>
+
     <div class="xl:col-span-8 lg:col-span-12 col-span-12 p-2 grid grid-cols-12 border border-surface-line rounded-xl bg-surface-section">
       <div class="xl:col-span-5 lg:col-span-5 col-span-12">
           <RowChart @onPreview="onPreview"/>
@@ -92,11 +93,10 @@ onMounted(()=>{
       <div class="xl:col-span-7 lg:col-span-7 col-span-12 overflow-hidden">
         <DailyEventChart/>
       </div>
-
-      <!-- @click="onPreview('daily_attendance')" -->
     </div>
-    <InfoGraph class="xl:col-span-4 lg:col-span-6 md:col-span-6 col-span-12" />
 
+
+    <InfoGraph class="xl:col-span-4 lg:col-span-6 md:col-span-6 col-span-12" />
 
     <DeviceCard class="xl:col-span-4 lg:col-span-6 md:col-span-6 col-span-12"  />
 
