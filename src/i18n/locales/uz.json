@@ -2252,6 +2252,7 @@
       "offlineDevice": "Offline qurilmalar",
       "onlineDevice": "Online qurilmalar",
       "left": "Chiqqan",
+      "analytic": "Analitika",
       "leftWorkplace": "Ishxonadan chiqqan xodimlar",
       "dailyEvent": "Bugungi turniket kirish-chiqish qaydnomasi (xodimlar bo‘yicha)",
       "came_today": "Ishga kelgan xodimlar",
@@ -2266,6 +2267,10 @@
       "max_worked_count": "Bajarilgan ish soati",
       "deficit": "Bajarilmagan ish soati",
       "min_workers": "Eng kam ish soati bajargan xodimlar",
+      "allWorker": "Barcha xodimlar soni",
+      "workerCountWithoutSchedule": "Garfikga biriktirilmagan xodimlar soni",
+      "workerCountWithSchedule": "Garfikga biriktirilgan xodimlar soni",
+
       "max_workers": "Eng ko'p ish soati bajargan xodimlar"
     },
     "device": {
@@ -2299,6 +2304,13 @@
       "device_status_online": "Online qurilmalar",
       "device_status_offline": "Ofline  qurilmalar",
       "lesson_worked": "Ish soati ko'rsatgichlari",
+      "not_passed_turnstile_workers": "Turniketdan o'tmaydiganlar",
+      "privilege_turnstile_workers": "Imtiyozli xodimlar",
+      "lateCome": "Kech kelgan xodimlar",
+      "earlyCome": "Erta ketgan xodimlar",
+      "allWorkers": "Barcha xodimlar",
+      "workTimeTitle": "Ish vaqti analitikasi",
+      "workTimeSubtitle": "Xodimlarning ishga kelish va ketish vaqtlari bo'yicha qisqa analitika",
       "devices": "Top offline qurilmalar"
     },
     "options": {

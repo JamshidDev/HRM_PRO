@@ -203,6 +203,7 @@ export const appPermissions = {
     hrJobs:"hr-jobs",
     hrJobsWrite:"hr-jobs-write",
     hrJobsRead:"hr-jobs-read",
+    exportWorkersZip:"export-workers-zip",
 
     turnstileAccessLevels: 'turnstile-access-levels',
     turnstileAccessLevelsRead: 'turnstile-access-levels-read',

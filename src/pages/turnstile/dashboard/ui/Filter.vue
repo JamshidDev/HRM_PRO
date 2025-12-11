@@ -1,7 +1,7 @@
 <script setup>
 import {useAccountStore, useComponentStore, useEventStore, useTurnstileDashboardStore} from "@/store/modules/index.js"
 import {UINSelect, UISelect} from "@/components/index.js"
-import {generateUUIDKey,useDebounce} from "@/utils/index.js"
+import {generateUUIDKey, useAppSetting, useDebounce} from "@/utils/index.js"
 
 
 const store = useEventStore()
@@ -63,15 +63,19 @@ const onChangeDepartment = ()=>{
   filterEvent()
 }
 
+const onChangeDate = ()=>{
+  filterEvent()
+}
+
 
 
 onMounted(()=>{
   if(componentStore.structureList.length === 0){
     componentStore._structures()
   }
-  if(store.levelList.length===0){
-    store._levels()
-  }
+  // if(store.levelList.length===0){
+  //   store._levels()
+  // }
 })
 
 onBeforeUnmount(()=>{
@@ -89,6 +93,8 @@ onBeforeUnmount(()=>{
         <div class="text-lg lg:col-span-2 md:col-span-6 col-span-12 flex items-center text-textColor2 font-medium">
           {{ $t('turnStileDashboard.name') }}
         </div>
+     <div class="lg:col-span-2 md:col-span-6 col-span-12"></div>
+     <div class="lg:col-span-2 md:col-span-6 col-span-12"></div>
         <div class="lg:col-span-2 md:col-span-6 col-span-12">
           <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{$t('actionLog.table.structure')}}</label>
           <UISelect
@@ -146,48 +152,56 @@ onBeforeUnmount(()=>{
        />
      </div>
         <div class="lg:col-span-2 md:col-span-6 col-span-12">
-          <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{$t('turnstile.hcWorkersPage.access_levels')}}</label>
-          <n-select
-              filterable
-              clearable 
-              multiple
-              v-model:value="dashboardStore.dashboardParams.access_levels"
-              :options="store.levelList"
-              :loading="store.levelLoading"
-              label-field="name"
-              value-field="id"
-              @update:value="filterEvent"
-              :max-tag-count="1"
+          <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{$t('content.date')}}</label>
+<!--          <n-select-->
+<!--              filterable-->
+<!--              clearable-->
+<!--              multiple-->
+<!--              v-model:value="dashboardStore.dashboardParams.access_levels"-->
+<!--              :options="store.levelList"-->
+<!--              :loading="store.levelLoading"-->
+<!--              label-field="name"-->
+<!--              value-field="id"-->
+<!--              @update:value="filterEvent"-->
+<!--              :max-tag-count="1"-->
+<!--          />-->
+          <n-date-picker
+              v-model:value="dashboardStore.dashboardParams.date"
+              @update:value="onChangeDate"
+              type="date"
+              update-value-on-close
+              :actions="null"
+              :format="useAppSetting.datePicketFormat"
           />
         </div>
-        <div class="lg:col-span-2 md:col-span-6 col-span-12">
-          <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{$t('hcEvent.form.start_time')}}</label>
-          <n-input
-              v-mask="'##:##'"
-              class="w-full"
-              type="text"
-              @keydown="handleTimeKeydownWithEnter($event, 'turnstile_start_time')"
-              v-model:value="dashboardStore.dashboardParams.start_time"
-              :loading="dashboardStore.loading"
-              :disabled="dashboardStore.loading"
-              placeholder="09:00"
-              maxlength="5"
-          />
-        </div>
-        <div class="lg:col-span-2 md:col-span-6 col-span-12">
-          <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{$t('hcEvent.form.end_time')}}</label>
-        <n-input
-            v-mask="'##:##'"
-            class="w-full"
-            type="text"
-            v-model:value="dashboardStore.dashboardParams.end_time"
-            @keydown="handleTimeKeydownWithEnter($event, 'turnstile_end_time')"
-            :loading="dashboardStore.loading"
-            :disabled="dashboardStore.loading"
-            placeholder="18:00"
-            maxlength="5"
-        />
-        </div>
+<!--        <div class="lg:col-span-2 md:col-span-6 col-span-12">-->
+<!--          <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{$t('hcEvent.form.start_time')}}</label>-->
+<!--          <n-input-->
+<!--              v-mask="'##:##'"-->
+<!--              class="w-full"-->
+<!--              type="text"-->
+<!--              @keydown="handleTimeKeydownWithEnter($event, 'turnstile_start_time')"-->
+<!--              v-model:value="dashboardStore.dashboardParams.start_time"-->
+<!--              :loading="dashboardStore.loading"-->
+<!--              :disabled="dashboardStore.loading"-->
+<!--              placeholder="09:00"-->
+<!--              maxlength="5"-->
+<!--          />-->
+<!--        </div>-->
+<!--        <div class="lg:col-span-2 md:col-span-6 col-span-12">-->
+<!--          <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{$t('hcEvent.form.end_time')}}</label>-->
+<!--        <n-input-->
+<!--            v-mask="'##:##'"-->
+<!--            class="w-full"-->
+<!--            type="text"-->
+<!--            v-model:value="dashboardStore.dashboardParams.end_time"-->
+<!--            @keydown="handleTimeKeydownWithEnter($event, 'turnstile_end_time')"-->
+<!--            :loading="dashboardStore.loading"-->
+<!--            :disabled="dashboardStore.loading"-->
+<!--            placeholder="18:00"-->
+<!--            maxlength="5"-->
+<!--        />-->
+<!--        </div>-->
         
       </div>
 </template>

@@ -2,18 +2,23 @@
 import {UIModal, UIPageContent} from "@/components/index.js"
 import {useAccountStore, useTurnstileDashboardStore} from "@/store/modules/index.js"
 import {
-  MainCard,
   Filter,
   PreviewList,
-  GridBox,
+  WorkTimeCard,
+  InfoGraph,
+  RowChart,
+  DeviceCard,
+  MonthlyCard,
 } from "./ui/index.js"
-import {MainCardsSkeleton, MiniCardSkeleton} from "@/pages/turnstile/dashboard/ui/skeleton/index.js"
 
 
 const dashboardStore = useTurnstileDashboardStore()
 const accStore = useAccountStore()
 import {computed, onMounted} from "vue"
-import MiniCard from "@/pages/turnstile/dashboard/ui/MiniCard.vue"
+import SimpleCard from "@/pages/turnstile/dashboard/ui/SimpleCard.vue"
+import SimpleCardSketlon from "@/pages/turnstile/dashboard/ui/SimpleCardSketlon.vue"
+import {DailyEventChartSkeleton} from "@/pages/turnstile/dashboard/ui/skeleton/index.js"
+import DailyEventChart from "@/pages/turnstile/dashboard/ui/DailyEventChart.vue"
 
 const typeTitle = computed(()=>{
   let key = null
@@ -33,6 +38,7 @@ const typeTitle = computed(()=>{
 
 onMounted(()=>{
   if(!accStore.checkAction(accStore.pn.turnstileDashboard)) return
+  dashboardStore.dashboardParams.date = new Date().getTime()
   dashboardStore._dashboard()
 })
 </script>
@@ -41,36 +47,85 @@ onMounted(()=>{
 <UIPageContent>
   <Filter/>
   <div class="grid grid-cols-12 gap-4 mt-4">
-    <MainCardsSkeleton class="col-span-9" v-if="dashboardStore.dashboardMainLoading" :count="4" />
-    <MainCard v-else />
-    <template v-if="dashboardStore.workerStatsLoading">
-      <div v-for="idx in 4" :key="idx"  class="lg:col-span-3 md:col-span-6 col-span-12">
-        <MiniCardSkeleton />
-      </div>
+    <SimpleCardSketlon v-if="dashboardStore.mainChartLoading" :count="2" class="col-span-3"  />
+    <template v-else v-for="(item, idx) in  dashboardStore.mainCards" :key="idx">
+      <SimpleCard
+          class="col-span-3"
+          :type="item.type"
+          :title="item.title"
+          :badge-text="item.badgeText"
+          :count="item.count"
+          :icon="item.icon"
+          :list="item.list"
+          :list-more="item.listMore"
+      />
     </template>
-    <template v-else>
-      <div v-for="(item, idx) in dashboardStore.workerStatuses" :key="idx" class="lg:col-span-3 md:col-span-6 col-span-12">
-        <MiniCard
-            @click="onPreview(item.previewType)"
-            :type="item.type"
-            :badge-text="item.status"
-            :count="item.count"
-            :description="item.description"
-            :icon="item.icon"
-        />
-      </div>
-      <div v-for="(item, idx) in dashboardStore.workerInOut" :key="idx" class="lg:col-span-3 md:col-span-6 col-span-12">
-        <MiniCard
-            @click="onPreview(item.previewType)"
-            :type="item.type"
-            :badge-text="item.status"
-            :count="item.count"
-            :description="item.description"
-            :icon="item.icon"
-        />
-      </div>
+
+
+
+
+<!--    Vacation card-->
+<!--    <SimpleCardSketlon v-if="dashboardStore.dailyAttendanceLoading" :count="1" class="col-span-3"  />-->
+<!--    <template v-else v-for="(item, idx) in  dashboardStore.onVacationWorkers" :key="idx">-->
+<!--      <SimpleCard-->
+<!--          class="col-span-3"-->
+<!--          :type="item.type"-->
+<!--          :title="item.title"-->
+<!--          :badge-text="item.badgeText"-->
+<!--          :count="item.count"-->
+<!--          :icon="item.icon"-->
+<!--          :list="item.list"-->
+<!--          :list-more="item.listMore"-->
+<!--          :sketlon-count="1"-->
+<!--      />-->
+<!--    </template>-->
+
+
+    <SimpleCardSketlon v-if="dashboardStore.workerStatsLoading" :count="2" class="col-span-3"  />
+    <template v-else v-for="(item, idx) in  dashboardStore.currentWorkers" :key="idx">
+      <SimpleCard
+          class="col-span-3"
+          :type="item.type"
+          :title="item.title"
+          :badge-text="item.badgeText"
+          :count="item.count"
+          :icon="item.icon"
+          :list="item.list"
+          :list-more="item.listMore"
+          :sketlon-count="1"
+      />
     </template>
-    <GridBox class="mt-4"/>
+<!--    <SimpleCardSketlon v-if="dashboardStore.dashboardMainLoading" :count="5" class="col-span-3"  />-->
+<!--    <template v-else v-for="(item, idx) in  dashboardStore.mainCards" :key="idx">-->
+<!--      <SimpleCard-->
+<!--          class="col-span-3"-->
+<!--          :type="item.type"-->
+<!--          :title="item.title"-->
+<!--          :badge-text="item.badgeText"-->
+<!--          :count="item.count"-->
+<!--          :icon="item.icon"-->
+<!--          :list="item.list"-->
+<!--          :list-more="item.listMore"-->
+<!--          :sketlon-count="1"-->
+<!--      />-->
+<!--    </template>-->
+    <div class="xl:col-span-8 lg:col-span-12 col-span-12 p-2 grid grid-cols-12 border border-surface-line rounded-xl bg-surface-section">
+      <div class="xl:col-span-5 lg:col-span-5 col-span-12">
+          <RowChart/>
+      </div>
+      <div class="xl:col-span-7 lg:col-span-7 col-span-12 overflow-hidden">
+        <DailyEventChart/>
+      </div>
+
+      <!-- @click="onPreview('daily_attendance')" -->
+    </div>
+    <InfoGraph class="xl:col-span-4 lg:col-span-6 md:col-span-6 col-span-12" />
+
+
+    <DeviceCard class="xl:col-span-4 lg:col-span-6 md:col-span-6 col-span-12"  />
+
+    <WorkTimeCard class="xl:col-span-8 col-span-12" />
+    <MonthlyCard class="col-span-6" />
   </div>
 
 

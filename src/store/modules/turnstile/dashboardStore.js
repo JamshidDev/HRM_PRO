@@ -2,6 +2,10 @@ import {
     CellularWarning24Filled,
     CellularData120Filled,
     DataUsage20Regular,
+    RibbonStar20Filled,
+    WeatherSunnyLow48Filled,
+    PersonClock20Filled,
+    CheckmarkCircle20Filled,
 } from "@vicons/fluent"
 import {defineStore} from "pinia";
 import i18n from "@/i18n/index.js"
@@ -20,15 +24,14 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
         dailyAttendanceLoading: false,        // '/v1/turnstile/hik-central/dashboard/daily-attendance'
         workerStatsLoading: false,            // '/v1/turnstile/hik-central/dashboard/worker-stats'
         devicesLoading: false,                // '/v1/turnstile/hik-central/dashboard/devices'
-        workDurationsLoading: false,          // '/v1/turnstile/hik-central/dashboard/work-durations'
+        sixLoading:false,// '/v1/turnstile/hik-central/dashboard/work-durations'
 
         dashboardObj: {},
         topOfflineDeviceList: [],
         dailyEvents: [],
         totalOfflineDeviceCount: 0,
-        devices: null,
+        deviceData: null,
         workerStatuses: [],
-        deviceStatusList: [],
         workDuration: null,
 
         dashboardParams: {
@@ -37,6 +40,7 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
             access_levels: [],
             end_time: localStorage.getItem('turnstile_end_time') || '18:00',
             start_time: localStorage.getItem('turnstile_start_time') || '09:00',
+            date:null,
         },
         structureCheck2: [],
 
@@ -141,6 +145,26 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
 
           statDashboardLoading:false,
           workerInOut:[],
+          workerDataWithSchedule:null,
+
+          turnStileWorkers:[],
+          onVacationWorkers:[],
+          currentWorkers:[],
+          mainCards:[],
+          mainChart:null,
+          mainChartLoading:false,
+          totalWorkerCount:0,
+
+          workTime:null,
+          workTimeLoading:false,
+
+          monthlyList:[],
+          monthlyWorkers:[],
+          monthlyTotalWorkerCount:0,
+          monthlyLoading: false,
+
+        grandWorkerData:null,
+        grandLoading:false,
 
     }),
 
@@ -160,24 +184,27 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
         async _dashboard() {
             // Umumiy va bo'linma bo'yicha loadinglarni yoqamiz
             this.dashboardLoading = true
-            this.dashboardMainLoading = true
             this.dailyAttendanceLoading = true
             this.workerStatsLoading = true
             this.devicesLoading = true
-            this.workDurationsLoading = true
+            this.monthlyLoading = true
+            this.workTimeLoading = true
+            this.grandLoading = true
+            this.mainChartLoading = true
             const params = {
                 ...this._previewQueryParams(),
                 start_time:this.dashboardParams.start_time,
-                end_time:this.dashboardParams.end_time,
-                date:'2025-11-01',
+                end_time: this.dashboardParams.end_time,
+                date:Utils.timeToZone(this.dashboardParams.date),
             }
             const urls = [
                 '/v1/turnstile/schedule/stats-one',
                 '/v1/turnstile/schedule/stats-four',
                 '/v1/turnstile/schedule/stats-three',
                 '/v1/turnstile/schedule/stats-five',
-                '/v1/turnstile/hik-central/dashboard/work-durations',
+                '/v1/turnstile/schedule/stats-two',
                 '/v1/turnstile/schedule/stats-six',
+                '/v1/turnstile/schedule/stats-seven',
             ]
 
             const requests = urls.map(async (url) => {
@@ -195,113 +222,114 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
                     const data = result.data
                     if (result.url === urls[0]) {
                         if (!result.error) {
-                            this.workerStatuses = [
+                            this.mainChart = data
+                            this.mainCards = [
                                 {
-                                    type: "primary",
-                                    icon: markRaw(DataUsage20Regular),
-                                    status: "content.today",
-                                    description: "turnStileDashboard.form.scheduled_workers_today",
-                                    count: data?.scheduled_workers_today || 0,
-                                    previewType:'come',
+                                    type:'primary',
+                                    title:t('turnStileDashboard.cards.come'),
+                                    badgeText:t('content.now'),
+                                    count:data?.attended_workers_today || 0,
+                                    icon:markRaw(CheckmarkCircle20Filled),
                                 },
                                 {
-                                    type: "primary",
-                                    icon: markRaw(DataUsage20Regular),
-                                    status: "content.today",
-                                    description: "turnStileDashboard.form.came_today",
-                                    count: data?.attended_workers_today || 0,
-                                    previewType:'come',
-                                },
-                                {
-                                    type: "danger",
-                                    icon: markRaw(DataUsage20Regular),
-                                    status: "content.today",
-                                    description: "turnStileDashboard.form.not_came_today",
-                                    count: data?.absent_workers_today || 0,
-                                    previewType:'not_come',
+                                    type:'danger',
+                                    title:t('turnStileDashboard.cards.not_come'),
+                                    badgeText:t('content.now'),
+                                    count:data?.absent_workers_today || 0,
+                                    icon:markRaw(PersonClock20Filled),
                                 },
                             ]
-                            this.dashboardObj.lateEarlyWorker = data.late_and_early
+
+                            this.mainChartLoading = false
                         }
-                        this.dashboardMainLoading = false
-                    } else if (result.url === urls[1]) {
+
+                    }
+                    else if (result.url === urls[1]) {
                         // daily chart
                         if (!result.error){
                             this.dailyEvents = data.daily_attendance_chart
-                            this.dashboardObj.vacation_workers = data.vacation_workers
+
                         }
                         this.dailyAttendanceLoading = false
-                    } else if (result.url === urls[2]) {
+                    }
+                    else if (result.url === urls[2]) {
                         // In - Out
                         if (!result.error) {
-
-                            this.workerInOut = [
+                            this.currentWorkers = [
                                 {
-                                    type: "success",
-                                    icon: markRaw(DataUsage20Regular),
-                                    status: "content.now",
-                                    description: "turnStileDashboard.form.current_in",
-                                    count: data?.worker_stats?.current_in || 0,
+                                    type:'success',
+                                    title:t('turnStileDashboard.form.current_in'),
+                                    badgeText:t('content.now'),
+                                    count:data?.worker_stats?.current_in || 0,
+                                    icon:markRaw(DataUsage20Regular),
+                                    listMore:data?.worker_stats?.current_in,
+                                    list:data?.worker_stats.top_in_workers?.map(v=>({
+                                        ...v,
+                                        fullName:Utils.combineFullName(v)
+                                    })),
                                     previewType:'current_in',
                                 },
                                 {
-                                    type: "warning",
-                                    icon: markRaw(DataUsage20Regular),
-                                    status: "content.now",
-                                    description: "turnStileDashboard.form.current_out",
-                                    count: data?.worker_stats?.current_out || 0,
+                                    type:'warning',
+                                    title:t('turnStileDashboard.form.current_out'),
+                                    badgeText:t('content.now'),
+                                    count:data?.worker_stats?.current_out || 0,
+                                    icon:markRaw(DataUsage20Regular),
+                                    listMore:data?.worker_stats?.current_out,
+                                    list:data?.worker_stats?.top_out_workers?.map(v=>({
+                                        ...v,
+                                        fullName:Utils.combineFullName(v)
+                                    })),
                                     previewType:'current_out',
                                 },
                             ]
 
                         }
                         this.workerStatsLoading = false
-                    } else if (result.url === urls[3]) {
-                        // devices
+                    }
+                    else if (result.url === urls[3]) {
                         if (!result.error) {
-                            this.topOfflineDeviceList = data.offline_devices?.top_offline
-                            this.totalOfflineDeviceCount = data.offline_devices?.total_offline
-                            this.devices = data.devices
-                            this.deviceStatusList = [
-                                {
-                                    type: "primary",
-                                    icon: markRaw(DataUsage20Regular),
-                                    status: "content.all",
-                                    description: "turnStileDashboard.device.all",
-                                    count: data.devices.all,
-                                    isOnlineDevice:null,
-                                },
-                                {
-                                    type: "success",
-                                    icon: markRaw(CellularData120Filled),
-                                    status: "content.online",
-                                    description: "turnStileDashboard.device.online",
-                                    count: data.devices?.online || 0,
-                                    isOnlineDevice:true,
-                                },
-                                {
-                                    type: "danger",
-                                    icon: markRaw(CellularWarning24Filled),
-                                    status: "content.offline",
-                                    description: "turnStileDashboard.device.offline",
-                                    count: data.devices?.offline || 0,
-                                    isOnlineDevice:false,
-                                },
-                            ]
+                            this.deviceData = data
+                            this.devicesLoading = false
                         }
-                        this.devicesLoading = false
-                    } else if (result.url === urls[4]) {
-                        if (!result.error) this.workDuration = data
-                        this.workDurationsLoading = false
+                    }
+                    else if (result.url === urls[4]) {
+                        if (!result.error){
+                            this.workerDataWithSchedule = data
+                            this.totalWorkerCount =data?.total_workers
+                            this.monthlyList =data?.stats
+                            this.monthlyTotalWorkerCount = data?.stats[0].workers_without_schedule
+                            this.monthlyWorkers = data?.workerList.map(v=>({
+                                ...v,
+                                fullName:Utils.combineFullName(v)
+                            }))
+                        }
+
+                        this.monthlyLoading = false
+                    }
+                    else if (result.url === urls[5]) {
+                        if (!result.error){
+                            this.grandWorkerData = data
+                            this.grandLoading = false
+
+                        }
+                    }
+                    else if (result.url === urls[6]) {
+                        if (!result.error){
+                           this.workTime = data
+                            this.workTimeLoading = false
+                        }
                     }
                 }
             } finally {
                 this.dashboardLoading = false
-                this.dashboardMainLoading = false
                 this.dailyAttendanceLoading = false
                 this.workerStatsLoading = false
                 this.devicesLoading = false
-                this.workDurationsLoading = false
+                this.monthlyLoading = false
+                this.workTimeLoading = false
+                this.grandLoading = false
+                this.mainChartLoading = false
             }
         },
 

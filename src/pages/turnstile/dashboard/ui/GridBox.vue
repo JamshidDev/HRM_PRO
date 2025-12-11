@@ -35,18 +35,12 @@ const onClickBar = (v)=>{
 <template>
 
 
-    <div class="lg:col-span-8 col-span-12">
-      <DailyEventChartSkeleton v-if="dashboardStore.dailyAttendanceLoading" :height="240" :bars="12" />
-      <DailyEventChart
-      @bar-click="onClickBar"
-       v-else />
-       <!-- @click="onPreview('daily_attendance')" -->
-    </div>
 
-    <div class="lg:col-span-4 col-span-12">
-      <WorkAnalyticCardSkeleton v-if="dashboardStore.workDurationsLoading" />
-      <WorkAnalyticCard @click="onPreview('lesson_worked')" v-else />
-    </div>
+
+<!--    <div class="lg:col-span-4 col-span-12">-->
+<!--      <WorkAnalyticCardSkeleton v-if="dashboardStore.workDurationsLoading" />-->
+<!--      <WorkAnalyticCard @click="onPreview('lesson_worked')" v-else />-->
+<!--    </div>-->
 
     <template v-if="dashboardStore.devicesLoading">
       <div v-for="idx in 3" :key="'device-skeleton-' + idx"  class="lg:col-span-3 md:col-span-6 col-span-12">

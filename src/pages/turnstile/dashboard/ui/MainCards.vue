@@ -133,34 +133,34 @@ const onPreview = (v, yesterday = false)=>{
       </div>
 
 
-      <div class="col-span-12 md:col-span-6 xl:col-span-3 border border-surface-line hover-effect-card px-4 py-2 rounded-xl bg-surface-section relative">
-        <div class="flex justify-between items-start">
-          <div
-              class="bg-danger/10 w-[40px] h-[40px] rounded-lg flex justify-center items-center">
-            <n-icon size="26" class="text-danger">
-              <WeatherSunnyLow48Filled/>
-            </n-icon>
-          </div>
-          <div class="px-2 py-1 rounded-lg bg-danger/10 text-danger text-[10px] font-medium">{{$t('content.yesterday')}}</div>
-        </div>
+<!--      <div class="col-span-12 md:col-span-6 xl:col-span-3 border border-surface-line hover-effect-card px-4 py-2 rounded-xl bg-surface-section relative">-->
+<!--        <div class="flex justify-between items-start">-->
+<!--          <div-->
+<!--              class="bg-danger/10 w-[40px] h-[40px] rounded-lg flex justify-center items-center">-->
+<!--            <n-icon size="26" class="text-danger">-->
+<!--              <WeatherSunnyLow48Filled/>-->
+<!--            </n-icon>-->
+<!--          </div>-->
+<!--          <div class="px-2 py-1 rounded-lg bg-danger/10 text-danger text-[10px] font-medium">{{$t('content.yesterday')}}</div>-->
+<!--        </div>-->
 
-        <div class="z-10 text-right flex items-center justify-between mt-2">
-          <div>
-            <p class="text-left leading-[1.2] font-semibold text-textColor2 text-lg">{{userFourObj.more}}</p>
-            <p class="text-secondary text-xs font-medium leading-[1.2] line-clamp-1 text-left">{{$t('hcEvent.cards.cardFour')}}</p>
-          </div>
-          <span class="flex items-center">
-            <UIUserGroup
-            @click.stop
-                      :max="4"
-                         :data="[...userFourObj.data, ...userFourObj.data]"
-                         :has-more="userFourObj.more-3"
-            />
-          </span>
+<!--        <div class="z-10 text-right flex items-center justify-between mt-2">-->
+<!--          <div>-->
+<!--            <p class="text-left leading-[1.2] font-semibold text-textColor2 text-lg">{{userFourObj.more}}</p>-->
+<!--            <p class="text-secondary text-xs font-medium leading-[1.2] line-clamp-1 text-left">{{$t('hcEvent.cards.cardFour')}}</p>-->
+<!--          </div>-->
+<!--          <span class="flex items-center">-->
+<!--            <UIUserGroup-->
+<!--            @click.stop-->
+<!--                      :max="4"-->
+<!--                         :data="[...userFourObj.data, ...userFourObj.data]"-->
+<!--                         :has-more="userFourObj.more-3"-->
+<!--            />-->
+<!--          </span>-->
 
-        </div>
-        <span class="z-1 opacity-30 absolute top-0 right-0 w-[160px] h-full bg-no-repeat bg-[url(/effect/primary-card.svg)]"></span>
-      </div>
+<!--        </div>-->
+<!--        <span class="z-1 opacity-30 absolute top-0 right-0 w-[160px] h-full bg-no-repeat bg-[url(/effect/primary-card.svg)]"></span>-->
+<!--      </div>-->
 
 
 

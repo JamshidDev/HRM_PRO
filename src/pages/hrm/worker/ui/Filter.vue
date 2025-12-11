@@ -203,7 +203,8 @@ const openUserListEv = ()=>{
   store.userRoleVisible=true
 }
 
-const canWrite = computed(()=>accStore.checkAction(appPermissions.hrWorkersWrite))
+const canWrite = computed(()=>accStore.checkAction(appPermissions.hrExport))
+const canZip = computed(()=>accStore.checkAction(appPermissions.exportWorkersZip))
 
 const defaultEv = (v)=>{
   store.params.organizations=v
@@ -255,13 +256,14 @@ const onKeyUp = Utils.useDebounce(filterEvent,1000)
           <PremiumPerson20Regular/>
         </template>
       </n-button>
+
       <n-button-group
           class="w-full! md:w-auto!">
         <n-button
             :class="[exportStore.isExportingResume? 'w-1/2! md:w-auto!':'w-full! md:w-auto!']"
             :disabled="!(exportStore.resumePayload.all ? store.totalItems : exportStore.resumePayload.worker_ids.length)"
             type="primary"
-            v-if="exportStore.isExportingResume && canWrite"
+            v-if="exportStore.isExportingResume && canZip"
             @click="onSubmitResumeExport">
             <span
                 class="font-semibold">{{$t('content.download')}} ({{ exportStore.resumePayload.all ? store.totalItems : exportStore.resumePayload.worker_ids.length }})</span>

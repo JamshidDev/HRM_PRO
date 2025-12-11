@@ -5,7 +5,7 @@ const _index =async (payload)=>{
 }
 
 const _preview =async (payload)=>{
-    return await axios.get(`/v1/turnstile/hik-central/dashboard/preview`, {params:payload?.params})
+    return await axios.get(`/v1/turnstile/schedule/stats-preview`, {params:payload?.params})
 }
 
 

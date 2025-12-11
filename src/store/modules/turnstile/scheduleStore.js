@@ -337,16 +337,25 @@ export const useScheduleTableStore = defineStore('scheduleStore', {
                     breakEnd += 24 * 60;
                 }
 
-                breakOverlapStart = Math.max(start, breakStart);
-                breakOverlapEnd = Math.min(end, breakEnd);
+                // Break tungi smenaga tegishli bo'lsa
+                if (breakStart < start) {
+                    breakStart += 24 * 60;
+                }
+                if (breakEnd <= start) {
+                    breakEnd += 24 * 60;
+                }
+
+                // Break to'liq ish vaqti ichida bo'lsagina hisobga ol
+                if (breakStart >= start && breakEnd <= end) {
+                    breakOverlapStart = breakStart;
+                    breakOverlapEnd = breakEnd;
+                }
             }
 
             let eveningMinutes = 0;
             let dayMinutes = 0;
 
-            // Ish vaqtini minutdan minutga hisoblash
             for (let time = start; time < end; time++) {
-                // Break vaqti ichiga kiramidimi?
                 if (breakOverlapStart !== null && time >= breakOverlapStart && time < breakOverlapEnd) {
                     continue;
                 }

@@ -11,10 +11,9 @@ import { onMounted, nextTick } from 'vue'
 
 use([TooltipComponent, GridComponent, BarChart, CanvasRenderer])
 
-const store = useTurnstileDashboardStore()
 
 const emit = defineEmits(['barClick'])
-const dashboardStore = useTurnstileDashboardStore()
+const store = useTurnstileDashboardStore()
 const {t} = i18n.global
 const chartRef = ref(null)
 
@@ -22,15 +21,15 @@ const chartRef = ref(null)
 const getTimeRange = (hour) => {
   // Parse the hour (e.g., "07:00" -> 7)
   const hourNum = parseInt(hour.split(':')[0])
-  
+
   // Calculate start_time (previous hour)
   const startHour = hourNum - 1
   const startTime = `${startHour.toString().padStart(2, '0')}:00`
-  
+
   // Calculate end_time (next hour)
   const endHour = hourNum + 1
   const endTime = `${endHour.toString().padStart(2, '0')}:00`
-  
+
   return {
     start_time: startTime,
     end_time: hour,
@@ -60,16 +59,13 @@ const option = ref({
   xAxis: {
     type: 'category',
     data: [],
-    axisLabel:{
-      show:false,
-    },
+    axisLabel: { show: false },
     axisLine: {
       lineStyle: {
         color: 'rgba(158,158,158,0.1)', // xira rang
         width: 1
       }
     },
-
   },
   yAxis: {
     type: 'value',
@@ -79,24 +75,32 @@ const option = ref({
         color: 'rgba(158,158,158,0.1)', // xira rang
       }
     },
-
-  },
-  axisTick: {
-    lineStyle: {
-      color: 'rgba(255,255,255,0.1)' // tick belgilar ham xira
-    }
   },
   series: [
     {
       name: t('turnStileDashboard.form.workerCount'),
       type: 'bar',
       barWidth: '70%',
-      barMaxWidth:20,
+      barMaxWidth: 20,
       data: [],
       itemStyle: {
         color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-          { offset: 0, color: '#1A84FF' },   // yuqoridan
-          { offset: 1, color: '#56CCF2' }    // pastga
+          { offset: 0, color: '#BCD8F7' },
+          { offset: 1, color: '#BCD8F7' }
+        ]),
+        borderRadius: [5, 5, 0, 0]
+      },
+    },
+    {
+      name: t('turnStileDashboard.form.abdens'),
+      type: 'bar',
+      barWidth: '70%',
+      barMaxWidth: 20,
+      data: [],
+      itemStyle: {
+        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+          { offset: 0, color: '#2D8BF2' },
+          { offset: 1, color: '#2D8BF2' }
         ]),
         borderRadius: [5, 5, 0, 0]
       },
@@ -113,21 +117,28 @@ const option = ref({
         offset: [0, 10]
       }
     },
-   
-   
-    
+
+
+
+
   ]
 })
 
 
-watch(()=> dashboardStore.dailyEvents, (newValue)=>{
-  if (!newValue || !Array.isArray(newValue)) return
-  
-  option.value.xAxis.data = newValue.map((v)=>{
-    return v.hour
+watch(()=> store.workTime, (newValue)=>{
+
+  if (!newValue) return
+
+  option.value.xAxis.data = newValue.late_and_early.late.map((v)=>{
+    return v.date.slice(-5)
   })
 
-  option.value.series[0].data = newValue.map((v)=>{
+
+  option.value.series[0].data = newValue.late_and_early.late.map((v)=>{
+    return v.count
+  })
+
+  option.value.series[1].data = newValue.late_and_early.early.map((v)=>{
     return v.count
   })
 
@@ -170,12 +181,12 @@ onMounted(() => {
 <template>
   <div class="w-full relative h-full">
     <span class="z-1 opacity-40 absolute top-0 right-0 w-[160px] h-full bg-no-repeat bg-[url(/effect/effect-card-2.svg)]" ></span>
-<!--    <div class="px-3 pt-2">-->
-<!--      <span class="text-sm text-textColor2 font-semibold">{{$t('turnStileDashboard.form.dailyEvent')}}</span>-->
-<!--    </div>-->
-    <n-spin :show="store.dailyAttendanceLoading" class="w-full h-[240px] relative z-2">
+    <!--    <div class="px-3 pt-2">-->
+    <!--      <span class="text-sm text-textColor2 font-semibold">{{$t('turnStileDashboard.form.dailyEvent')}}</span>-->
+    <!--    </div>-->
+    <div class="w-full h-[240px] relative z-2">
       <v-chart autoresize class="w-full" :option="option" ref="chartRef" />
-    </n-spin>
+    </div>
   </div>
 </template>
 
