@@ -14,6 +14,7 @@
     "view": "Ko'rish",
     "responsible": "Mas'ul xodim",
     "now": "Hozir",
+    "selected": "Tanlandi",
     "price": "Narx",
     "active": "Faol",
     "noActive": "No Faol",
@@ -190,6 +191,10 @@
     "untilNow": "h.v",
     "warningImageSave": "Asosiy rasm uchun yangi rasm tanlandi. O‘zgarishni saqlash uchun 'Saqlash' tugmasini bosing.",
     "selectAll": "Barchasini tanlash",
+    "selectList": "Ro'yhatni to'liq tanlash",
+    "unSelectList": "Ro'yhatni to'liq tozalash",
+    "unSelectAll": "Barchasini tozalash",
+    "forceUnSelectAll": "To'liq tozalash",
     "uz": "UZ",
     "ru": "RU",
     "en": "EN"

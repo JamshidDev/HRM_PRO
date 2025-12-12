@@ -50,35 +50,15 @@ const controlFilterEv = (v)=>{
   dashboardStore.resetPreviewParams()
   const cardType = dashboardStore.previewParams.type
 
-  const today = new Date()
-  const yesterday = new Date(today)
-  yesterday.setDate(yesterday.getDate() - 1)
-  
-  const todayTimestamp = today.getTime()
-  const yesterdayTimestamp = yesterday.getTime()
-  dashboardStore.previewParams.date = dashboardStore.yesterday? yesterdayTimestamp : todayTimestamp
   filterVisible.value.date = true
 
   if(dashboardStore.cardTypes.late_come.key === cardType){
-    filterVisible.value.start_time = true
 
-    dashboardStore.previewParams.start_time = localStorage.getItem('turnstile_start_time') || '09:00';
 
   }else if(dashboardStore.cardTypes.not_come.key === cardType && dashboardStore.yesterday){
   }else if(dashboardStore.cardTypes.early_leave.key === cardType && dashboardStore.yesterday){
-    filterVisible.value.end_time = true
-
-    dashboardStore.previewParams.end_time =localStorage.getItem('turnstile_end_time') || '18:00';
   }else if(dashboardStore.cardTypes.early_leave.key === cardType && dashboardStore.yesterday){
-    filterVisible.value.end_time = true
-
-    dashboardStore.previewParams.end_time = localStorage.getItem('turnstile_end_time') || '18:00';
   }else if(dashboardStore.cardTypes.daily_attendance.key === cardType){
-    filterVisible.value.start_time = true
-    filterVisible.value.end_time = true
-
-    dashboardStore.previewParams.start_time =dashboardStore.timeRange?.start_time || dashboardStore.previewParams.start_time
-    dashboardStore.previewParams.end_time =dashboardStore.timeRange?.end_time || dashboardStore.previewParams.end_time
   }else if(dashboardStore.cardTypes.devices.key === cardType){
     dashboardStore.previewParams.date = null
     filterVisible.value.date = false
@@ -181,20 +161,6 @@ onMounted(()=>{
             :disabled="dashboardStore.previewLoading"
         />
       </div>
-       <div v-if="filterVisible.start_time" class="col-span-2">
-         <label class="text-textColor3 ml-1">{{$t('hcEvent.form.start_time')}}</label>
-         <n-input
-             v-mask="'##:##'"
-             class="w-full"
-             type="text"
-             @keydown="handleTimeKeydownWithEnter($event, 'turnstile_start_time')"
-             v-model:value="dashboardStore.previewParams.start_time"
-             :loading="dashboardStore.previewLoading"
-             :disabled="dashboardStore.previewLoading"
-             placeholder="09:00"
-             maxlength="5"
-         />
-       </div>
        <div v-if="filterVisible.status" class="col-span-2">
         <label class="text-textColor3 ml-1">{{$t('turnStileDashboard.options.status')}}</label>
         <n-select
@@ -206,20 +172,6 @@ onMounted(()=>{
             label-field="name"
         />
        </div>
-      <div v-if="filterVisible.end_time" class="col-span-2">
-        <label class="text-textColor3 ml-1">{{$t('hcEvent.form.end_time')}}</label>
-        <n-input
-            v-mask="'##:##'"
-            class="w-full"
-            type="text"
-            v-model:value="dashboardStore.previewParams.end_time"
-            @keydown="handleTimeKeydownWithEnter($event, 'turnstile_end_time')"
-            :loading="dashboardStore.previewLoading"
-            :disabled="dashboardStore.previewLoading"
-            placeholder="18:00"
-            maxlength="5"
-        />
-      </div>
       <div class="col-span-2">
         <n-button @click="dashboardStore._download()" :loading="dashboardStore.previewLoading" type="default" class="!mt-5 !w-full">
           {{$t('content.download')}}

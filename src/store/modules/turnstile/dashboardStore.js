@@ -37,9 +37,6 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
         dashboardParams: {
             organizations: [],
             departments: [],
-            access_levels: [],
-            end_time: localStorage.getItem('turnstile_end_time') || '18:00',
-            start_time: localStorage.getItem('turnstile_start_time') || '09:00',
             date:null,
         },
         structureCheck2: [],
@@ -58,8 +55,6 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
 
             type: null,
             hours: null,
-            end_time: null,
-            start_time: null,
             date:null,
             norm_hours:null,
             status:null,
@@ -183,18 +178,6 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
     }),
 
     actions: {
-        _getStatDashboard(){
-            const params = {
-                date:'2025-12-01'
-            }
-            this.statDashboardLoading = true
-            $ApiService.turnstileDashboardService._statDashboard({params}).then(res => {
-                console.log(res.data)
-            }).finally(()=>{
-                this.statDashboardLoading = false
-            })
-
-        },
         async _dashboard() {
             this.dashboardLoading = true
             this.dailyAttendanceLoading = true
@@ -350,7 +333,6 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
             }
         },
 
-        // Preview method - har bir dashboard card uchun batafsil ma'lumot
         _preview(isPagination = false) {
 
             if(!isPagination){
@@ -373,7 +355,6 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
                 ...this.previewParams,
                 organizations: this.dashboardParams.organizations.map(v => v.id).toString() || undefined,
                 departments: this.dashboardParams.departments.toString() || undefined,
-                access_levels: this.dashboardParams.access_levels.toString() || undefined,
                 date:Utils.timeToZone(this.previewParams.date),
             }
         },
@@ -479,7 +460,6 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
         }
        },
 
-        // Download method - preview ma'lumotlarini yuklab olish
         _download() {
             this.previewLoading = true
             const params = {
@@ -497,23 +477,16 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
         },
         resetPreviewParams() {
             this.previewParams.organizations = []
-            this.previewParams.access_levels = []
             this.previewParams.page = 1
             this.previewParams.hours = null
             this.previewParams.search = null
-            this.previewParams.end_time = null
-            this.previewParams.start_time = null
             this.previewParams.status = null
         },
 
-        // Preview modalini ochish va card type ni o'rnatish
         openPreview(cardType) {
             this.resetPreviewParams()
             this.previewParams.type = cardType
             this.previewParams.organizations = [...this.dashboardParams.organizations]
-            this.previewParams.access_levels = [...this.dashboardParams.access_levels]
-            this.previewParams.start_date_and_time = this.dashboardParams.start
-            this.previewParams.end_date_and_time = this.dashboardParams.end
             this.previewVisible = true
             this._preview()
         },

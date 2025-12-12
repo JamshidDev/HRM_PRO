@@ -1,6 +1,7 @@
 import {defineStore} from "pinia";
-import i18n from "@/i18n/index.js"
 import Utils from "@/utils/Utils.js"
+import {AppPaths} from "@/utils/index.js"
+import router from "@/router/index.js"
 export const usePunishmentStore = defineStore('punishmentStore', {
     state:()=>({
         list:[],
@@ -13,6 +14,7 @@ export const usePunishmentStore = defineStore('punishmentStore', {
             organizations:[],
             created:null,
         },
+        downloading:false,
     }),
     actions:{
         _index(){
@@ -29,6 +31,20 @@ export const usePunishmentStore = defineStore('punishmentStore', {
                 this.loading= false
             })
         },
+        _download(){
+            this.downloading= true
+            const params = {
+                ...this.params,
+                created:Utils.timeToZone(this.params.created),
+                organizations:this.params.organizations.map(v=>v.id).toString() || undefined,
+                download:true
+            }
+            $ApiService.punishmentService._index({params}).then((res)=>{
+                router.push(Utils.routeHrmPathMaker(AppPaths.Export))
+            }).finally(()=>{
+                this.downloading= false
+            })
+        }
     }
 
 })

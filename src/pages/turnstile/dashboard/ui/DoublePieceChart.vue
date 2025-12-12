@@ -36,7 +36,7 @@ const getOption = () => ({
       name: 'Qurilmalar',
       type: 'pie',
       radius: ['50%', '90%'],
-      padAngle: 5,
+      padAngle: 8,
       itemStyle: { borderRadius:12 },
       label: {
         show: true,

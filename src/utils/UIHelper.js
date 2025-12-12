@@ -51,12 +51,16 @@ const selectLabel = (option)=>{
     ];
 }
 
-const selectValue = ({option})=>{
+const selectValue =(handleClose)=> ({option})=>{
     return [
         h(
             'span',
             {
-                class:'w-full !truncate line-clamp-1'
+                onClick: (e) => {
+                    e.stopPropagation()
+                    handleClose(option)
+                },
+                class:'w-full !truncate line-clamp-1 cursor-pointer border-1 border-transparent hover:border-surface-line hover:text-danger rounded-lg px-1 py-[1px]',
             },`${option?.name}`)
     ];
 }

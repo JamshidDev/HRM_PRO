@@ -1,6 +1,8 @@
 import {defineStore} from "pinia";
 import i18n from "@/i18n/index.js"
 import Utils from "@/utils/Utils.js"
+import router from "@/router/index.js"
+import {AppPaths} from "@/utils/index.js"
 const {t} = i18n.global
 export const useIncentiveStore = defineStore('incentiveStore', {
     state:()=>({
@@ -14,6 +16,7 @@ export const useIncentiveStore = defineStore('incentiveStore', {
             organizations:[],
             created:null,
         },
+        downloading:true,
     }),
     actions:{
         _index(){
@@ -30,6 +33,20 @@ export const useIncentiveStore = defineStore('incentiveStore', {
                 this.loading= false
             })
         },
+        _download(){
+            this.downloading= true
+            const params = {
+                ...this.params,
+                created:Utils.timeToZone(this.params.created),
+                organizations:this.params.organizations.map(v=>v.id).toString() || undefined,
+                download:true
+            }
+            $ApiService.incentiveService._index({params}).then((res)=>{
+                router.push(Utils.routeHrmPathMaker(AppPaths.Export))
+            }).finally(()=>{
+                this.downloading= false
+            })
+        }
     }
 
 })

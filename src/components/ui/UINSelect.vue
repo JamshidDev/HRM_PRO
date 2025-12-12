@@ -75,6 +75,9 @@ const props = defineProps({
 
 const emits = defineEmits(['onScroll', 'updateValue', 'onSearch', 'onScrollEv', 'updateShow'])
 
+const onCloseEv = (v)=>{
+  valueModel.value =props.multiple? valueModel.value.filter(x=>x!==v.id) : null
+}
 
 let timer = null
 const onSearchEv = ()=>{
@@ -144,12 +147,13 @@ onMounted(()=>{
       :loading="loading"
       :disabled="disabled"
       :render-label="renderLabel"
-      :render-tag="renderTag"
+      :render-tag="UIHelper.selectRender.value(onCloseEv)"
       :label-field="labelField"
       :value-field="valueField"
       :max-tag-count="maxTagCount"
       :reset-menu-on-options-change="false"
       :virtual-scroll="true"
+
 
   >
     <template #header>

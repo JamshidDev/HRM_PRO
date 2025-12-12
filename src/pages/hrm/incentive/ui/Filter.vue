@@ -3,6 +3,7 @@
 import {UIPageFilter, UISelect} from "@/components/index.js"
 import {useAccountStore, useComponentStore, useIncentiveStore, usePunishmentStore} from "@/store/modules/index.js"
 import {useAppSetting} from "@/utils/index.js"
+import {ArrowCircleDown32Regular} from "@vicons/fluent"
 
 
 const store = useIncentiveStore()
@@ -59,6 +60,17 @@ const resetFilter = ()=>{
       :search-loading="store.loading"
       :show-add-button="false"
   >
+    <template #filterAction>
+      <n-button
+          @click="store._download()"
+          :loading="store.loading"
+          type="success">
+        <template #icon>
+          <ArrowCircleDown32Regular/>
+        </template>
+        {{$t('content.download')}}
+      </n-button>
+    </template>
     <template #filterContent>
       <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{$t('actionLog.table.structure')}}</label>
       <UISelect

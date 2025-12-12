@@ -12,10 +12,12 @@ export const useTimesheetDepartmentStore = defineStore('timesheetDepartmentStore
         visible:false,
         elementId:null,
         deleteLoading: false,
-        tabs: [{
+        tabs: [
+            {
             type: 'organization',
             label: t('timesheet.type.organization')
-        }, {
+            },
+            {
             type: 'department',
             label: t('timesheet.type.department')
         }],
@@ -40,6 +42,11 @@ export const useTimesheetDepartmentStore = defineStore('timesheetDepartmentStore
         listVisible:false,
         previewList:[],
 
+        departmentParams:{
+            page:1,
+            per_page:1000,
+            search:null,
+        },
         departmentList:[],
         departmentLoading:false,
     }),
@@ -47,16 +54,19 @@ export const useTimesheetDepartmentStore = defineStore('timesheetDepartmentStore
         _department(){
             this.departmentLoading = true
             let params = {
-                page:1,
-                per_page:1000,
+                ...this.departmentParams,
                 organizations:this.payload.organizations.map(v=>v.id).toString() || undefined,
             }
             $ApiService.componentService._departmentByOrganizations({params}).then((res)=>{
-                this.departmentList = res.data.data.data.map(v=>({
+                const selectedData =this.departmentList.filter(v=>this.payload.departments.includes(v.id))
+
+                const data = res.data.data.data.map(v=>({
                     id:v.id,
                     name:v.name,
                     position:v.organization?.name,
                 }))
+
+                this.departmentList = [...new Map([...data, ...selectedData].map(v=>[v.id, v])).values()]
             }).finally(()=>{
                 this.departmentLoading = false
             })

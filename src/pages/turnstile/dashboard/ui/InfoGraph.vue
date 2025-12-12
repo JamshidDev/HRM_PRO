@@ -75,7 +75,7 @@ const emits = defineEmits(['onPreview'])
               {{ store.grandWorkerData?.not_passed_turnstile_workers_count || 0 }}
             </h3>
             <h3 class="text-[10px]  font-semibold text-secondary pl-1 mt-3 mb-1 line-clamp-1 opacity-100 group-hover:opacity-[0.2] transition-all duration-300">{{$t('turnStileDashboard.cards.dontPassFace')}}</h3>
-            <CircleChart :percent="notPassedPercent" type="warning " class="opacity-100 group-hover:opacity-[0.2] transition-all duration-300"/>
+            <CircleChart :percent="notPassedPercent" type="warning" class="opacity-100 group-hover:opacity-[0.2] transition-all duration-300"/>
           </div>
 
 

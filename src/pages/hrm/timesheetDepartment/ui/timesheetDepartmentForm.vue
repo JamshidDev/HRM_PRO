@@ -30,6 +30,13 @@ const onSubmit = ()=>{
   })
 }
 
+const onSearchEv = (v)=>{
+  store.departmentParams.search = v
+  store.departmentParams.page =  1
+  store._department()
+
+}
+
 onMounted(()=>{
   if(componentStore.structureList.length === 0){
     componentStore._structures()
@@ -69,19 +76,14 @@ onMounted(()=>{
         path="departments"
         rule-path="requiredMultiSelectField"
     >
-<!--      <UIDepartment-->
-<!--          :modelV="store.payload.departments"-->
-<!--          @updateModel="onChangeDepartment"-->
-<!--          :checkedVal="store.departmentCheck"-->
-<!--          @updateCheck="(v)=>store.departmentCheck=v"-->
-<!--          v-model:search="componentStore.depParams.search"-->
-<!--      />-->
       <UINSelect
           multiple
           clearable
           :loading="store.departmentLoading"
           :options="store.departmentList"
           v-model:value="store.payload.departments"
+          :query="store.departmentParams.search"
+          @onSearch="onSearchEv"
 
       />
     </n-form-item>
