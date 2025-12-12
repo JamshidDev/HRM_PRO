@@ -681,7 +681,7 @@ export const useComponentStore = defineStore('componentStore', {
         onSearchWorker(v){
             this.workerParams.page = 1
             this.workerParams.search = v
-            Utils.debouncedFn(this._workers)
+            this._workers()
         },
         onScrollWorker(e){
             const currentTarget = e.currentTarget;

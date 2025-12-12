@@ -366,9 +366,8 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
             responseDate = rawData
 
             if(!responseDate || !Array.isArray(responseDate)) return []
-            // this.previewTotal = rawData[getTableConfig(cardType)?.responseField]?.total || 0
 
-            let data = responseDate.map((v, index) => {
+            const data = responseDate.map((v, index) => {
 
                 if(cardType === 'late_come'){
                     return {
@@ -427,11 +426,18 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
                         user:this._userContructor(v?.worker_position?.worker, v?.worker_position?.post_short_name),
                     }
                 }
-                else if(['privilege_turnstile_workers','not_passed_turnstile_workers', 'casual_workers'].includes(cardType)){
+                else if([,'not_passed_turnstile_workers', 'casual_workers'].includes(cardType)){
                     return {
                         ...v,
                         user:this._userContructor(v, v?.position_name),
-
+                    }
+                }
+                else if(cardType === 'privilege_turnstile_workers'){
+                    return {
+                        ...v,
+                        user:this._userContructor(v, v.position_name),
+                        start_minute:v.start_minute +' '+  t('date.minute'),
+                        end_minute:v.end_minute +' '+  t('date.minute'),
                     }
                 }
                 else return v

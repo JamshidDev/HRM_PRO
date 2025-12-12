@@ -195,7 +195,6 @@ onMounted(() => {
             class="w-full"
             v-model:value="item.from"
             type="date"
-
             :format="useAppSetting.datePicketFormat"
         />
       </n-form-item>
@@ -284,7 +283,6 @@ onMounted(() => {
                   class="w-full"
                   v-model:value="item.result.to"
                   type="date"
-
                   :format="useAppSetting.datePicketFormat"
               />
             </n-form-item>
@@ -297,7 +295,6 @@ onMounted(() => {
                   class="w-full"
                   v-model:value="item.result.work_day"
                   type="date"
-
                   :format="useAppSetting.datePicketFormat"
               />
             </n-form-item>
@@ -310,7 +307,6 @@ onMounted(() => {
                   class="w-full"
                   v-model:value="item.result.period_from"
                   type="date"
-
                   :format="useAppSetting.datePicketFormat"
               />
             </n-form-item>
@@ -323,7 +319,6 @@ onMounted(() => {
                   class="w-full"
                   v-model:value="item.result.period_to"
                   type="date"
-
                   :format="useAppSetting.datePicketFormat"
               />
             </n-form-item>

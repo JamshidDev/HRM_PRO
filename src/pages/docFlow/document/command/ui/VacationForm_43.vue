@@ -125,7 +125,6 @@ defineExpose({
             class="w-full"
             v-model:value="store.form_43.new_date"
             type="date"
-
             :format="useAppSetting.datePicketFormat"
 
         />
@@ -137,7 +136,6 @@ defineExpose({
             class="w-full"
             v-model:value="store.form_43.work_day"
             type="date"
-
             :format="useAppSetting.datePicketFormat"
             :disabled="!store.form_43.new_date && !store.form_43.work_day"
             :is-date-disabled="(v)=>Utils.disablePasteDate(v,store.form_43.new_date)"

@@ -3,11 +3,8 @@ import i18n from "@/i18n/index.js"
 import Utils from "@/utils/Utils"
 
 const { t } = i18n.global
-// Dashboard preview table configurations for different card types
 export const getTableConfig = (cardType) => {
   const configs = {
-
-
     late_come: {
       responseField: 'workers',
       columns: [
@@ -66,25 +63,25 @@ export const getTableConfig = (cardType) => {
           component: 'UIUser'
         },
         {
-          headerName: 'date.minute',
+          headerName: 'turnStileDashboard.preview.startTime',
           key: 'start_minute',
           width: '80px',
           minWidth: '80px',
           component: 'UIBadge',
           componentProps: {
             showIcon: false,
-            type: Utils.colorTypes.error
+            type: Utils.colorTypes.success
           }
         },
         {
-          headerName: 'date.minute',
+          headerName: 'turnStileDashboard.preview.endTime',
           key: 'end_minute',
           width: '80px',
           minWidth: '80px',
           component: 'UIBadge',
           componentProps: {
             showIcon: false,
-            type: Utils.colorTypes.error
+            type: Utils.colorTypes.success
           }
         },
 
@@ -146,7 +143,12 @@ export const getTableConfig = (cardType) => {
           headerName: 'content.type',
           key: 'type.name',
           width: '300px',
-          minWidth: '180px'
+          minWidth: '180px',
+          component: 'UIBadge',
+          componentProps: {
+            showIcon: false,
+            type: Utils.colorTypes.info
+          }
         },
         {
           headerName: 'content.from',
@@ -197,7 +199,7 @@ export const getTableConfig = (cardType) => {
           component: 'UIUser'
         },
         {
-          headerName: 'date.minute',
+          headerName: 'content.time',
           key: 'minutes',
           width: '240px',
           minWidth: '120px',
@@ -208,7 +210,7 @@ export const getTableConfig = (cardType) => {
           }
         },
         {
-          headerName: 'content.time',
+          headerName: 'content.date',
           key: 'time',
           width: '200px',
           minWidth: '120px',
@@ -432,7 +434,7 @@ export const getTableConfig = (cardType) => {
           },
         },
         {
-          headerName: 'turnStileDashboard.perview.device',
+          headerName: 'turnStileDashboard.preview.device',
           key: 'device',
           width: '200px',
           minWidth: '180px'
@@ -444,7 +446,7 @@ export const getTableConfig = (cardType) => {
           minWidth: '100px'
         },
         {
-          headerName: 'turnStileDashboard.perview.auth_type',
+          headerName: 'turnStileDashboard.preview.auth_type',
           key: 'auth_type',
           width: '200px',
           minWidth: '180px',
@@ -461,7 +463,7 @@ export const getTableConfig = (cardType) => {
           }
         },
         {
-          headerName: 'turnStileDashboard.perview.mask_status',
+          headerName: 'turnStileDashboard.preview.mask_status',
           key: 'mask_status',
           width: '100px',
           minWidth: '120px',
@@ -546,13 +548,13 @@ export const getTableConfig = (cardType) => {
           minWidth: '100px'
         },
         {
-          headerName: 'turnStileDashboard.perview.device',
+          headerName: 'turnStileDashboard.preview.device',
           key: 'device',
           width: '200px',
           minWidth: '180px'
         },
         {
-          headerName: 'turnStileDashboard.perview.auth_type',
+          headerName: 'turnStileDashboard.preview.auth_type',
           key: 'auth_type',
           width: '200px',
           minWidth: '180px',
@@ -569,7 +571,7 @@ export const getTableConfig = (cardType) => {
           }
         },
         {
-          headerName: 'turnStileDashboard.perview.mask_status',
+          headerName: 'turnStileDashboard.preview.mask_status',
           key: 'mask_status',
           width: '100px',
           minWidth: '120px',
@@ -624,13 +626,13 @@ export const getTableConfig = (cardType) => {
           minWidth: '100px'
         },
         {
-          headerName: 'turnStileDashboard.perview.device',
+          headerName: 'turnStileDashboard.preview.device',
           key: 'device',
           width: '200px',
           minWidth: '180px'
         },
         {
-          headerName: 'turnStileDashboard.perview.auth_type',
+          headerName: 'turnStileDashboard.preview.auth_type',
           key: 'auth_type',
           width: '200px',
           minWidth: '180px',
@@ -647,7 +649,7 @@ export const getTableConfig = (cardType) => {
           }
         },
         {
-          headerName: 'turnStileDashboard.perview.mask_status',
+          headerName: 'turnStileDashboard.preview.mask_status',
           key: 'mask_status',
           width: '100px',
           minWidth: '120px',

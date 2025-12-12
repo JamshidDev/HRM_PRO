@@ -89,9 +89,12 @@ const onSelectEv = (v)=>{
         <tr>
           <th class="text-center! min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
           <th class="min-w-[30px] w-[30px]"></th>
-          <th class="min-w-[200px]">{{$t('departmentPage.form.name')}}</th>
+          <th class="min-w-[200px]">{{$t('content.nameUz')}}</th>
+          <th class="min-w-[100px] w-[300px]">{{$t('content.nameRu')}}</th>
+          <th class="min-w-[100px] w-[300px]">{{$t('content.nameEn')}}</th>
           <th class="min-w-[100px] w-[300px]">{{$t('content.organization')}}</th>
-          <th class="min-w-[100px] w-[200px]">{{$t('departmentPage.form.level')}}</th>
+          <th class="min-w-[100px] w-[160px]">{{$t('departmentPage.form.level')}}</th>
+          <th class="min-w-[100px] w-[160px]">{{$t('content.comment')}}</th>
           <th class="min-w-[40px] w-[40px]"></th>
         </tr>
         </thead>
@@ -115,8 +118,13 @@ const onSelectEv = (v)=>{
             </n-button>
           </td>
           <td>{{item.name}}</td>
+          <td>{{item.name_ru}}</td>
+          <td>{{item.name_en}}</td>
           <td>{{item.organization.name}}</td>
           <td>{{item.level?.name}}</td>
+          <td>
+            <div class="text-xs line-clamp-3">{{item.comment}}</div>
+          </td>
           <td>
             <MenuButton
                 :data="item"

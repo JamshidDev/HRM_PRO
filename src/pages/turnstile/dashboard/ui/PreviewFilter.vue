@@ -137,7 +137,7 @@ onMounted(()=>{
        </div>
 
       <div v-if="filterVisible.norm_hours" class="col-span-2">
-        <label class="text-textColor3 ml-1">{{$t('turnStileDashboard.perview.norm_hours')}}</label>
+        <label class="text-textColor3 ml-1">{{$t('turnStileDashboard.preview.norm_hours')}}</label>
         <n-input
             v-mask="'#'"
             class="w-full"

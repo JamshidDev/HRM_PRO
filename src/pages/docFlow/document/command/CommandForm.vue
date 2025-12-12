@@ -5,7 +5,7 @@ import {useCommandStore, useComponentStore} from "@/store/modules/index.js"
 import {NAvatar} from "naive-ui"
 import Utils from "@/utils/Utils.js"
 import VacationForm_41 from "@/pages/docFlow/document/command/ui/VacationForm_41.vue"
-import {UISelect} from "@/components/index.js"
+import {UINSelect, UISelect} from "@/components/index.js"
 import EmptyForm from "@/pages/docFlow/document/command/ui/EmptyForm.vue"
 import CancelForm_32 from "@/pages/docFlow/document/command/ui/CancelForm_32.vue"
 import VacationForm_44 from "@/pages/docFlow/document/command/ui/VacationForm_44.vue"
@@ -199,18 +199,20 @@ const validationComponent = ()=>{
 
 const onChangeStructure = (v)=>{
   store.payload.organization_id=v
+  store.workerList = []
+  store.workers = []
+  store.payload.worker = null
+  store.payload.workers = []
+  store.workerParams.page = 1
+  store.workerParams.search = null
   if(v.length>0){
-    componentStore.workerList = []
-    store.workers = []
-    store.payload.worker = null
-    store.payload.workers = []
     fillVacation()
     fillVacation55()
     fillVacation62()
     generationData(true)
 
-    componentStore.workerParams.organization_id= v[0].id
-    componentStore._workers()
+    store.workerParams.organization_id= v[0].id
+    store._workers()
   }
 }
 const onChangeCommandType = ()=>{
@@ -251,9 +253,7 @@ const onChangeCommandType = ()=>{
   }
 }
 
-const isSingleSelect = computed(()=>{
-  return singleSelectCommands.includes(store.payload.command_type)
-})
+store.isSingleSelect = computed(()=>singleSelectCommands.includes(store.payload.command_type))
 
 // vacation 41
 const generationVacation = ()=>{
@@ -444,12 +444,27 @@ const generationData = (isFill=false)=>{
 }
 
 
+const onScrollEv = ()=>{
+  store.workerParams.page +=1
+  store._workers(true)
+}
+
+const onSearchEv = (v)=>{
+  store.workerParams.page =1
+  store.workerParams.search =v
+  store._workers()
+}
+
+
+
+
 
 
 watchEffect(()=>{
   if(store.payload.director_id){
     store.payload.confirmations = store.payload.confirmations.filter(v=>v !==store.payload.director_id)
     confirmationList.value = componentStore.confirmationList.filter(v=>v.id !==store.payload.director_id)
+
   }
 })
 
@@ -491,7 +506,6 @@ onMounted(()=>{
                   class="w-full"
                   v-model:value="store.payload.command_date"
                   type="date"
-
                   :format="useAppSetting.datePicketFormat"
               />
             </n-form-item>
@@ -533,44 +547,73 @@ onMounted(()=>{
             </n-form-item>
           </div>
           <div class="col-span-12 md:col-span-6 flex">
-            <template v-if="isSingleSelect">
+            <template v-if="store.isSingleSelect">
               <n-form-item class="w-full" :label="$t(`documentPage.form.worker`)" path="worker">
-                <n-select
+<!--                <n-select-->
+<!--                    :disabled="store.payload.organization_id.length === 0"-->
+<!--                    v-model:value="store.payload.worker"-->
+<!--                    filterable-->
+<!--                    :placeholder="$t('content.searchWorker')"-->
+<!--                    :options="componentStore.workerList"-->
+<!--                    label-field="name"-->
+<!--                    value-field="id"-->
+<!--                    :render-label="workerRenderLabel"-->
+<!--                    :render-tag="workerRenderValue"-->
+<!--                    @update:value="onChangeWorker"-->
+<!--                    :loading="componentStore.workerLoading"-->
+<!--                    @scroll="componentStore.onScrollWorker"-->
+<!--                    @search="componentStore.onSearchWorker"-->
+<!--                />-->
+
+                <UINSelect
                     :disabled="store.payload.organization_id.length === 0"
                     v-model:value="store.payload.worker"
-                    filterable
-                    :placeholder="$t('content.searchWorker')"
-                    :options="componentStore.workerList"
-                    label-field="name"
                     value-field="id"
-                    :render-label="workerRenderLabel"
-                    :render-tag="workerRenderValue"
+                    :max-tag-count="1"
+                    :options="store.workerList"
+                    :loading="store.workerLoading"
                     @update:value="onChangeWorker"
-                    :loading="componentStore.workerLoading"
-                    @scroll="componentStore.onScrollWorker"
-                    @search="componentStore.onSearchWorker"
+                    :query="store.workerParams.search"
+                    :total-count="store.totalWorker"
+                    @onSearch="onSearchEv"
+                    @onScrollEv="onScrollEv"
                 />
+
               </n-form-item>
             </template>
             <template v-else>
               <n-form-item class="w-full" :label="$t(`documentPage.form.worker`)" path="workers">
-                <n-select
-                    :disabled="store.payload.organization_id.length === 0"
+<!--                <n-select-->
+<!--                    :disabled="store.payload.organization_id.length === 0"-->
+<!--                    multiple-->
+<!--                    v-model:value="store.payload.workers"-->
+<!--                    filterable-->
+<!--                    :placeholder="$t('content.searchWorker')"-->
+<!--                    :options="componentStore.workerList"-->
+<!--                    label-field="name"-->
+<!--                    value-field="id"-->
+<!--                    :render-label="workerRenderLabel"-->
+<!--                    :render-tag="workerRenderValue"-->
+<!--                    @update:value="onChangeWorkers"-->
+<!--                    :loading="componentStore.workerLoading"-->
+<!--                    @scroll="componentStore.onScrollWorker"-->
+<!--                    :filter="()=>true"-->
+<!--                    @search="componentStore.onSearchWorker"-->
+<!--                    :reset-menu-on-options-change="false"-->
+<!--                />-->
+                <UINSelect
                     multiple
+                    :disabled="store.payload.organization_id.length === 0"
                     v-model:value="store.payload.workers"
-                    filterable
-                    :placeholder="$t('content.searchWorker')"
-                    :options="componentStore.workerList"
-                    label-field="name"
                     value-field="id"
-                    :render-label="workerRenderLabel"
-                    :render-tag="workerRenderValue"
-                    @update:value="onChangeWorkers"
-                    :loading="componentStore.workerLoading"
-                    @scroll="componentStore.onScrollWorker"
-                    :filter="()=>true"
-                    @search="componentStore.onSearchWorker"
-                    :reset-menu-on-options-change="false"
+                    :max-tag-count="20"
+                    :options="store.workerList"
+                    :loading="store.workerLoading"
+                    @update:value="onChangeWorker"
+                    :query="store.workerParams.search"
+                    :total-count="store.totalWorker"
+                    @onSearch="onSearchEv"
+                    @onScrollEv="onScrollEv"
                 />
               </n-form-item>
             </template>
@@ -639,7 +682,6 @@ onMounted(()=>{
                   value-field="id"
                   label-field="last_name"
                   v-model:value="store.payload.director_id"
-
                   :options="componentStore.confirmationList"
                   :loading="componentStore.confirmationLoading"
                   :render-label="renderLabel"
@@ -654,7 +696,6 @@ onMounted(()=>{
                   value-field="id"
                   multiple
                   v-model:value="store.payload.confirmations"
-
                   :options="confirmationList"
                   :loading="componentStore.confirmationLoading"
                   :render-label="renderLabel"

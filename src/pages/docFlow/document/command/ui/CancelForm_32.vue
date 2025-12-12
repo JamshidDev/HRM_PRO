@@ -3,6 +3,7 @@ import {useCommandStore} from "@/store/modules/index.js"
 import Utils from "@/utils/Utils.js"
 import validationRules from "@/utils/validationRules.js"
 import i18n from "@/i18n/index.js"
+import {useAppSetting} from "@/utils/index.js"
 
 const store = useCommandStore()
 const formRef = ref(null)
@@ -47,6 +48,7 @@ defineExpose({
             class="w-full"
             v-model:value="store.form_32.contract_to_date"
             type="date"
+            :format="useAppSetting.datePicketFormat"
 
         />
       </n-form-item>

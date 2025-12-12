@@ -2,6 +2,7 @@
 import validationRules from "@/utils/validationRules.js";
 const formRef = ref(null)
 import {useDepartmentStore, useComponentStore} from "@/store/modules/index.js";
+import {UIMultipleLangItems} from "@/components/index.js"
 
 const store = useDepartmentStore()
 const componentStore = useComponentStore()
@@ -35,17 +36,32 @@ const onSubmit = ()=>{
         <span class="text-primary font-bold">{{store.parentElement?.name}}</span>
       </div>
       <n-form-item :label="$t(`departmentPage.form.name`)" path="name">
-        <n-input
-            type="text"
+        <UIMultipleLangItems>
+          <template #uz-content>
+            <n-input
+                type="text"
+                v-model:value="store.payload.name"
+            />
+          </template>
+          <template #ru-content>
+            <n-input
+                type="text"
+                v-model:value="store.payload.name_ru"
+            />
+          </template>
+          <template #en-content>
+            <n-input
+                type="text"
+                v-model:value="store.payload.name_en"
+            />
+          </template>
+        </UIMultipleLangItems>
 
-            v-model:value="store.payload.name"
-        />
       </n-form-item>
       <n-form-item :label="$t(`departmentPage.form.level`)" path="level">
         <n-select
             v-model:value="store.payload.level"
             filterable
-
             :options="store.levelList"
             label-field="name"
             value-field="id"
@@ -65,6 +81,14 @@ const onSubmit = ()=>{
             value-field="id"
             :loading="store.levelLoading"
 
+        />
+      </n-form-item>
+      <n-form-item
+          :label="$t(`content.comment`)">
+        <n-input
+            :rows="2"
+            type="textarea"
+            v-model:value="store.payload.comment"
         />
       </n-form-item>
     </div>

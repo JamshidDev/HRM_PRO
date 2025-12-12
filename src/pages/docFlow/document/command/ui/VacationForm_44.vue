@@ -123,7 +123,6 @@ defineExpose({
             class="w-full"
             v-model:value="store.form_44.new_date"
             type="date"
-
             :format="useAppSetting.datePicketFormat"
         />
       </n-form-item>
@@ -133,7 +132,6 @@ defineExpose({
         <n-input
             class="w-full"
             type="text"
-
             v-model:value="store.form_44.rest_day"
             :allow-input="Utils.onlyAllowNumber"
         />

@@ -120,7 +120,6 @@ defineExpose({
             class="w-full"
             v-model:value="store.form_45.from"
             type="date"
-
             :format="useAppSetting.datePicketFormat"
         />
       </n-form-item>
@@ -131,7 +130,6 @@ defineExpose({
             class="w-full"
             v-model:value="store.form_45.to"
             type="date"
-
             :format="useAppSetting.datePicketFormat"
             :disabled="!store.form_45.from && !store.form_45.to"
             :is-date-disabled="(v)=>Utils.disablePasteDate(v,store.form_45.from)"
@@ -144,7 +142,6 @@ defineExpose({
             class="w-full"
             v-model:value="store.form_45.work_day"
             type="date"
-
             :format="useAppSetting.datePicketFormat"
             :disabled="!store.form_45.to && !store.form_45.work_day"
             :is-date-disabled="(v)=>Utils.disablePasteDate(v,store.form_45.to)"

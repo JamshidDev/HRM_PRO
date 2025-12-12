@@ -2285,8 +2285,10 @@
       "offline": "Ofline  qurilmalar",
       "left": "Ishxonadan chiqqan xodimlar"
     },
-    "perview": {
+    "preview": {
       "time": "Sana",
+      "startTime": "Ish boshlanish vaqtidan",
+      "endTime": "Ish tugash vaqtidan",
       "workTime": "Ish boshlanish vaqti",
       "temperature": "Harorat",
       "device": "Qurilma",

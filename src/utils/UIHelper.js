@@ -51,18 +51,26 @@ const selectLabel = (option)=>{
     ];
 }
 
-const selectValue =(handleClose)=> ({option})=>{
+const selectValue =({option})=>{
     return [
         h(
             'span',
             {
-                onClick: (e) => {
-                    e.stopPropagation()
-                    handleClose(option)
-                },
-                class:'w-full !truncate line-clamp-1 cursor-pointer border-1 border-transparent hover:border-surface-line hover:text-danger rounded-lg px-1 py-[1px]',
+                class:'!truncate cursor-pointer',
             },`${option?.name}`)
     ];
+
+    // return [
+    //     h(
+    //         'span',
+    //         {
+    //             onClick: (e) => {
+    //                 e.stopPropagation()
+    //                 handleClose(option)
+    //             },
+    //             class:'w-full !truncate line-clamp-1 cursor-pointer border-1 border-transparent hover:border-surface-line hover:text-danger rounded-lg px-1 py-[1px]',
+    //         },`${option?.name}`)
+    // ];
 }
 
 

@@ -4,6 +4,7 @@ import {PersonNote20Regular, DismissCircle16Regular, Eye24Regular} from "@vicons
 import Utils from "../../../../../utils/Utils.js"
 import i18n from "@/i18n/index.js"
 import {UISelect} from "@/components/index.js"
+import {useAppSetting} from "@/utils/index.js"
 
 const store = useCommandStore()
 const componentStore = useComponentStore()
@@ -186,7 +187,7 @@ onMounted(()=>{
             class="w-full"
             v-model:value="item.from"
             type="date"
-
+            :format="useAppSetting.datePicketFormat"
         />
       </n-form-item>
     </div>
@@ -198,6 +199,7 @@ onMounted(()=>{
             class="w-full"
             v-model:value="item.to"
             type="date"
+            :format="useAppSetting.datePicketFormat"
 
         />
       </n-form-item>

@@ -81,8 +81,45 @@ export const useCommandStore = defineStore('commandStore', {
         vacationId:null,
         structureCheck2:[],
         viewLoading:false,
+
+        workerLoading:false,
+        workerList:[],
+        workerParams:{
+            organization_id:null,
+            page:1,
+            per_page:100,
+            search:null,
+        },
+        totalWorker:0,
+
+        isSingleSelect:false,
     }),
     actions:{
+
+        _workers(infinity=false){
+            this.workerLoading = true
+            let params ={
+                ...this.workerParams,
+            }
+            $ApiService.workerService._search({params}).then((res)=>{
+                const selectedData = this.isSingleSelect? this.workerList.filter(v=>v.id === this.payload.worker) : this.workerList.filter(v=>this.payload.workers.includes(v.id));
+
+                const data = res.data.data.data.map((v)=>({
+                    ...v,
+                    name:v.worker.last_name + ' '+v.worker.first_name+' '+v.worker.middle_name,
+                    position:v.position?.name || v?.post_name,
+                    id:v.id,
+                    typeId:v.contract?.type?.id,
+                    photo: v.worker?.photo
+                }))
+                this.totalWorker =res.data.data.total
+
+                this.workerList =infinity ? Array.from(new Map([...this.workerList,...data, ...selectedData].map(v => [v.id, v])).values()) :Array.from(new Map([...data, ...selectedData].map(v => [v.id, v])).values())
+
+            }).finally(()=>{
+                this.workerLoading = false
+            })
+        },
         _index(){
             this.loading= true
             const params = {
@@ -154,7 +191,7 @@ export const useCommandStore = defineStore('commandStore', {
             this.visible = data
         },
         resetForm(){
-                 this.payload.command_date = null
+                 this.payload.command_date = new Date().getTime()
                  this.payload.command_type = null
                 this.payload.command_number = null
                 this.payload.confirmations = []

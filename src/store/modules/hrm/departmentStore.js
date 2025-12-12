@@ -16,6 +16,9 @@ export const useDepartmentStore = defineStore('departmentStore', {
             parent_id:null,
             level:null,
             name:null,
+            name_ru:null,
+            name_en:null,
+            comment:null,
         },
         params:{
             page:1,
@@ -111,6 +114,9 @@ export const useDepartmentStore = defineStore('departmentStore', {
         resetForm(){
             this.elementId = null
             this.payload.name = null
+            this.payload.name_en = null
+            this.payload.name_ru = null
+            this.payload.comment = null
             this.payload.parent_id = null
             this.payload.level = null
         },

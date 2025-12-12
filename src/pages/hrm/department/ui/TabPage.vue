@@ -34,6 +34,9 @@ const onEdit = (v)=>{
   componentStore._departments()
   store._level()
   store.payload.name = v.name
+  store.payload.name_ru = v.name_ru
+  store.payload.name_en = v.name_en
+  store.payload.comment = v.comment
   store.payload.level = v.level.id
   store.payload.parent_id = v.parent?.id
 
