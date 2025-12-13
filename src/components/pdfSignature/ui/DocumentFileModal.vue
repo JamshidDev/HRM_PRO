@@ -2,7 +2,8 @@
 import {UIModal, UIUpload} from "@/components/index.js"
 import {MailAttach16Regular, AttachText20Regular, Save16Filled, ArrowCircleLeft24Regular} from "@vicons/fluent"
 import {usePdfViewerStore} from "@/store/modules/index.js"
-
+import { NAvatar } from 'naive-ui'
+import {useAppSetting} from "@/utils/index.js"
 
 const store = usePdfViewerStore()
 
@@ -55,6 +56,28 @@ const onNext = (v)=>{
   store.typeAttach = v
   store.attachActiveTab = 2
 
+}
+
+const renderLabel = (option) => {
+  return h(
+      'div',
+      { class: 'w-full' },
+      [
+        h('div', { class: 'flex items-center gap-2 w-full py-[2px]' }, [
+          h(NAvatar, {
+            class: 'flex-shrink-0',
+            src: option?.photo,
+            round: true,
+            size: 'small',
+            fallbackSrc: useAppSetting.noAvailableImage,
+          }),
+          h('div', { class: 'text-xs font-medium flex flex-col' }, [
+            h('span', { class:'text-xs text-secondary opacity-[0.7] leading-[1.2]'}, option.fullName),
+            h('span', { class:'font-semibold text-secondary leading-[1.2]'}, option.name),
+          ])
+        ])
+      ]
+  )
 }
 </script>
 
@@ -112,10 +135,10 @@ const onNext = (v)=>{
                   multiple
                   v-model:value="store.workerApplications"
                   filterable
-
                   :options="store.documentApplications"
                   label-field="name"
                   value-field="id"
+                  :render-label="renderLabel"
                   :loading="store.docApplicationLoading"
               />
             </template>
