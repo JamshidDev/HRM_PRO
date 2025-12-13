@@ -102,7 +102,8 @@ export const useCommandStore = defineStore('commandStore', {
                 ...this.workerParams,
             }
             $ApiService.workerService._search({params}).then((res)=>{
-                const selectedData = this.isSingleSelect? this.workerList.filter(v=>v.id === this.payload.worker) : this.workerList.filter(v=>this.payload.workers.includes(v.id));
+                const selectedData = []
+                // this.isSingleSelect? this.workerList.filter(v=>v.id === this.payload.worker) : this.workerList.filter(v=>this.payload.workers.includes(v.id));
 
                 const data = res.data.data.data.map((v)=>({
                     ...v,
@@ -136,6 +137,7 @@ export const useCommandStore = defineStore('commandStore', {
         },
         _create(data){
             this.saveLoading = true
+
             $ApiService.commandService._create({data}).then((res)=>{
                 this.visible = false
                 this._index()

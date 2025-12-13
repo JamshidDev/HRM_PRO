@@ -1,17 +1,13 @@
 <script setup>
 import UIHelper from "@/utils/UIHelper.js"
-const searchModel = ref('')
+const instance = getCurrentInstance()
 const selectAll = ref(false)
 const selectedOptions = ref([])
 
 const valueModel = defineModel('value', {type:[Array, Number, String, null], default:null})
+const searchModel = defineModel('search', {type:[String, null], default:null})
 
 const props = defineProps({
-  value:{
-    type:[Array, Number, String, null],
-    default:null,
-    required:true,
-  },
   options:{
     type:Array,
     default:[],
@@ -68,7 +64,11 @@ const props = defineProps({
   totalCount:{
     type:Number,
     default:0,
-  }
+  },
+  perPage:{
+    type:Number,
+    default:100,
+  },
 
 
 })
@@ -79,30 +79,34 @@ const onCloseEv = (v)=>{
   valueModel.value =props.multiple? valueModel.value.filter(x=>x!==v.id) : null
 }
 
-let timer = null
-const onSearchEv = ()=>{
-  if(props.query === undefined) return
-  clearTimeout(timer)
-  timer = setTimeout(()=>{
-    emits('onSearch', searchModel.value)
-  },1000)
+const localSearch = computed(()=>'onUpdate:search' in (instance?.vnode.props || {}))
+
+
+
+
+const fuzzySearch = (text, query) => {
+  if (!query || !text) return true
+
+  const words = query.toLowerCase().trim().split(/\s+/)
+  const target = text.toLowerCase()
+
+  return words.every(word => target.includes(word))
 }
 
 
 
 const computedOption =computed(()=>{
-  if(props.query !== undefined){
-    return props.options
-  }
+  selectedOptions.value = props.multiple? [...props.options, ...selectedOptions.value].filter(v=>valueModel.value.includes(v.id)) : [...props.options, ...selectedOptions.value].filter(v=>valueModel.value === v.id)
+
+  const options = Array.from(new Map([...props.options, ...selectedOptions.value].map(v => [v.id, v])).values())
+
+  if(localSearch.value) return options
 
   let query=searchModel.value?.toString()?.trim()?.toLowerCase()
-  if(!query){
-    return props.options
-  }
+  if(!query) return options
 
-  selectedOptions.value =props.multiple? [...props.options].filter(v=>valueModel.value.includes(v.id)) : [...props.options].filter(v=>valueModel.value === v.id)
 
-  const filtered = props.multipleSearch? props.options.filter(v=>v?.name?.toString()?.toLowerCase()?.includes(query) || v?.position?.toString()?.toLowerCase()?.includes(query)) : props.options.filter(v=>v?.name?.toString()?.toLowerCase()?.includes(query))
+  const filtered = props.multipleSearch? props.options.filter(v=>fuzzySearch(v.name, query) || fuzzySearch(v.position, query)) : props.options.filter(v=>fuzzySearch(v.name, query))
 
   return Array.from(new Map([...filtered, ...selectedOptions.value].map(v => [v.id, v])).values())
 
@@ -112,14 +116,16 @@ watchEffect(()=>{
   if(props.multiple){
     selectAll.value = computedOption.value.length === valueModel.value.length && computedOption.value.length>0
   }
-  searchModel.value = props.query
 })
 
 const onUpdateCheck = (v)=>{
   valueModel.value = v? computedOption.value.map(x=>x[props.valueField]):[]
 }
 
-const onScrollEv = (e)=>{
+const onScrollEv = (e) =>{
+
+  if(props.perPage>computedOption.value.length) return
+
   emits('onScroll',e)
   if(props.totalCount === 0) return
   const currentTarget = e.currentTarget;
@@ -128,9 +134,21 @@ const onScrollEv = (e)=>{
   }
 }
 
-onMounted(()=>{
-  searchModel.value = props.query
+
+
+let timer = null
+const onSearchEv = ()=>{
+  if(props.localSearch) return
+  clearTimeout(timer)
+  timer = setTimeout(()=>{
+    emits('onSearch', searchModel.value)
+  },800)
+}
+
+onUnmounted(()=>{
+  clearTimeout(timer)
 })
+
 
 
 </script>
@@ -173,7 +191,7 @@ onMounted(()=>{
     </template>
     <template v-if="multiple" #action>
       <n-checkbox @update:checked="onUpdateCheck" v-model:checked="selectAll">
-        <span class="text-secondary text-xs">{{$t('content.selectAll')}} - ({{options.length}})</span>
+        <span class="text-secondary text-xs">{{$t('content.selectAll')}} - ({{computedOption.length}})</span>
       </n-checkbox>
     </template>
   </n-select>

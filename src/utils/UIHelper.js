@@ -1,4 +1,5 @@
 import {NIcon} from "naive-ui"
+import {DismissCircle20Filled} from "@vicons/fluent"
 
 
 const scheduleLabel = (option)=>{
@@ -73,6 +74,28 @@ const selectValue =({option})=>{
     // ];
 }
 
+const selectValueV2 = (callbacks, allow)=> ({option})=>{
+    return [
+        h(
+            'span',
+            {
+                class:`w-full flex gap-2 items-center border border-transparent hover:border-surface-line rounded-lg  group line-clamp-1 cursor-pointer px-1 py-[1px]`,
+            },`${option?.name}`,
+            allow && h(
+                NIcon,
+                {
+                    size: 18,
+                    class: 'text-danger/80 opacity-0 group-hover:opacity-100 flex-shrink-0',
+                    onClick: (e) => {
+                        e.stopPropagation()
+                        callbacks(option)
+                    },
+                },
+                { default: () => h(DismissCircle20Filled) }
+            ),)
+    ];
+}
+
 
 export const scheduleRender = {
         label:scheduleLabel,
@@ -94,6 +117,7 @@ export default {
     selectRender:{
         label:selectLabel,
         value:selectValue,
+        value2:selectValueV2
     },
     renderIcon,
 }

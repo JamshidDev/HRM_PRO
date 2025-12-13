@@ -244,7 +244,6 @@ onMounted(()=>{
               :loading="componentStore.structureLoading"
               v-model:search="componentStore.structureParams.search"
               @onSearch="componentStore._structures"
-              @onSubmit="filterEvent"
               :multiple="false"
           />
         </n-form-item>

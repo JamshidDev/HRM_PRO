@@ -5,7 +5,7 @@ import {useCommandStore, useComponentStore} from "@/store/modules/index.js"
 import {NAvatar} from "naive-ui"
 import Utils from "@/utils/Utils.js"
 import VacationForm_41 from "@/pages/docFlow/document/command/ui/VacationForm_41.vue"
-import {UINSelect, UISelect} from "@/components/index.js"
+import {UINSelect, UISelect, SuperSelect} from "@/components/index.js"
 import EmptyForm from "@/pages/docFlow/document/command/ui/EmptyForm.vue"
 import CancelForm_32 from "@/pages/docFlow/document/command/ui/CancelForm_32.vue"
 import VacationForm_44 from "@/pages/docFlow/document/command/ui/VacationForm_44.vue"
@@ -79,21 +79,6 @@ const renderValue = ({option})=>{
         {
           class:'flex gap-2 my-1 items-center'
         },`${option?.last_name} ${option?.first_name} ${option?.middle_name}`),
-  ];
-}
-const workerRenderLabel = (option)=>{
-  return [
-    h('div',{ class:'flex flex-col pt-2'}, [
-      h('div',{ class:'text-xs font-medium text-gray-500'},option.name),
-      h('div',{ class:'text-xs text-primary'},option.position),
-    ])
-  ];
-}
-const workerRenderValue = ({option})=>{
-  return [
-    h('div',{ class:'flex flex-col'}, [
-      h('div',{ class:'text-sm font-medium text-gray-500'},option.name),
-    ])
   ];
 }
 const onChangeWorkers = ()=>{
@@ -204,7 +189,6 @@ const onChangeStructure = (v)=>{
   store.payload.worker = null
   store.payload.workers = []
   store.workerParams.page = 1
-  store.workerParams.search = null
   if(v.length>0){
     fillVacation()
     fillVacation55()
@@ -221,7 +205,7 @@ const onChangeCommandType = ()=>{
   const commandId = store.payload.command_type
   if(commandIdList.includes(commandId)){
     if(store.payload.workers.length>0){
-      const val = componentStore.workerList.filter(v=>v.id === store.payload.workers[0])[0]
+      const val = store.workerList.filter(v=>v.id === store.payload.workers[0])[0]
       store.payload.worker = val?.id
       store.payload.workers = []
     }
@@ -253,13 +237,16 @@ const onChangeCommandType = ()=>{
   }
 }
 
-store.isSingleSelect = computed(()=>singleSelectCommands.includes(store.payload.command_type))
+
+watch(()=>store.payload.command_type, (v)=>{
+  store.isSingleSelect = singleSelectCommands.includes(v)
+})
 
 // vacation 41
 const generationVacation = ()=>{
   const oldValues = store.vacations.map((v)=>v.id)
   const id = store.payload.workers[store.payload.workers?.length-1]
-  const worker = componentStore.workerList.filter(x=>x.id === id)[0]
+  const worker = store.workerList.filter(x=>x.id === id)[0]
   if(!oldValues.includes(id) &&  store.payload.workers.length > store.vacations.length){
     store.vacations.push({
       worker,
@@ -280,7 +267,7 @@ const generationVacation = ()=>{
 const fillVacation = ()=>{
   store.vacations = []
   store.vacations = store.payload.workers.map((id)=>{
-    const worker = componentStore.workerList.filter(v=>v.id === id)[0]
+    const worker = store.workerList.filter(v=>v.id === id)[0]
     return {
       worker,
       id,
@@ -299,7 +286,7 @@ const fillVacation = ()=>{
 const generationVacation55 = ()=>{
   const oldValues = store.vacations55.map((v)=>v.id)
   const id = store.payload.workers[store.payload.workers?.length-1]
-  const worker = componentStore.workerList.filter(x=>x.id === id)[0]
+  const worker = store.workerList.filter(x=>x.id === id)[0]
   if(!oldValues.includes(id) &&  store.payload.workers.length > store.vacations55.length){
     store.vacations55.push({
       worker,
@@ -318,7 +305,7 @@ const generationVacation55 = ()=>{
 const fillVacation55 = ()=>{
   store.vacations55 = []
   store.vacations55 = store.payload.workers.map((id)=>{
-    const worker = componentStore.workerList.filter(v=>v.id === id)[0]
+    const worker = store.workerList.filter(v=>v.id === id)[0]
     return {
       worker,
       id,
@@ -334,7 +321,7 @@ const fillVacation55 = ()=>{
 const generationVacation62 = ()=>{
   const oldValues = store.vacations62.map((v)=>v.id)
   const id = store.payload.workers[store.payload.workers?.length-1]
-  const worker = componentStore.workerList.filter(x=>x.id === id)[0]
+  const worker = store.workerList.filter(x=>x.id === id)[0]
   if(!oldValues.includes(id) &&  store.payload.workers.length > store.vacations62.length){
     store.vacations62.push({
       worker,
@@ -361,7 +348,7 @@ const generationVacation62 = ()=>{
 const fillVacation62 = ()=>{
   store.vacations62 = []
   store.vacations62 = store.payload.workers.map((id)=>{
-    const worker = componentStore.workerList.filter(v=>v.id === id)[0]
+    const worker = store.workerList.filter(v=>v.id === id)[0]
     return {
       worker,
       id,
@@ -410,7 +397,7 @@ const generationData = (isFill=false)=>{
 
     store.workerData = []
     store.workerData = store.payload.workers.map((id)=>{
-      const worker = componentStore.workerList.filter(v=>v.id === id)[0]
+      const worker = store.workerList.filter(v=>v.id === id)[0]
       return {
         worker,
         id,
@@ -422,7 +409,7 @@ const generationData = (isFill=false)=>{
 
     const oldValues = store.workerData.map((v)=>v.id)
     const id = store.payload.workers[store.payload.workers?.length-1]
-    const worker = componentStore.workerList.filter(x=>x.id === id)[0]
+    const worker = store.workerList.filter(x=>x.id === id)[0]
 
     if(!oldValues.includes(id) &&  store.payload.workers.length > store.workerData.length){
       store.workerData.push({
@@ -494,7 +481,6 @@ onMounted(()=>{
               <n-input
                   class="w-full"
                   type="text"
-
                   v-model:value="store.payload.command_number"
               />
             </n-form-item>
@@ -554,7 +540,7 @@ onMounted(()=>{
 <!--                    v-model:value="store.payload.worker"-->
 <!--                    filterable-->
 <!--                    :placeholder="$t('content.searchWorker')"-->
-<!--                    :options="componentStore.workerList"-->
+<!--                    :options="store.workerList"-->
 <!--                    label-field="name"-->
 <!--                    value-field="id"-->
 <!--                    :render-label="workerRenderLabel"-->
@@ -564,17 +550,17 @@ onMounted(()=>{
 <!--                    @scroll="componentStore.onScrollWorker"-->
 <!--                    @search="componentStore.onSearchWorker"-->
 <!--                />-->
-
-                <UINSelect
+                <SuperSelect
                     :disabled="store.payload.organization_id.length === 0"
-                    v-model:value="store.payload.worker"
-                    value-field="id"
                     :max-tag-count="1"
                     :options="store.workerList"
                     :loading="store.workerLoading"
-                    @update:value="onChangeWorker"
-                    :query="store.workerParams.search"
                     :total-count="store.totalWorker"
+                    :per-page="store.workerParams.per_page"
+                    v-model:value="store.payload.worker"
+                    v-model:search="store.workerParams.search"
+                    value-field="id"
+                    @update:value="onChangeWorker"
                     @onSearch="onSearchEv"
                     @onScrollEv="onScrollEv"
                 />
@@ -589,7 +575,7 @@ onMounted(()=>{
 <!--                    v-model:value="store.payload.workers"-->
 <!--                    filterable-->
 <!--                    :placeholder="$t('content.searchWorker')"-->
-<!--                    :options="componentStore.workerList"-->
+<!--                    :options="store.workerList"-->
 <!--                    label-field="name"-->
 <!--                    value-field="id"-->
 <!--                    :render-label="workerRenderLabel"-->
@@ -601,17 +587,18 @@ onMounted(()=>{
 <!--                    @search="componentStore.onSearchWorker"-->
 <!--                    :reset-menu-on-options-change="false"-->
 <!--                />-->
-                <UINSelect
+                <SuperSelect
                     multiple
                     :disabled="store.payload.organization_id.length === 0"
-                    v-model:value="store.payload.workers"
-                    value-field="id"
-                    :max-tag-count="20"
+                    :max-tag-count="1"
                     :options="store.workerList"
                     :loading="store.workerLoading"
-                    @update:value="onChangeWorker"
-                    :query="store.workerParams.search"
                     :total-count="store.totalWorker"
+                    :per-page="store.workerParams.per_page"
+                    v-model:value="store.payload.workers"
+                    v-model:search="store.workerParams.search"
+                    value-field="id"
+                    @update:value="onChangeWorkers"
                     @onSearch="onSearchEv"
                     @onScrollEv="onScrollEv"
                 />
