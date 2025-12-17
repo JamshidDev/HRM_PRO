@@ -58,6 +58,7 @@ onBeforeUnmount(()=>{
       :date-locale="localProvider.date">
     <n-message-provider placement="top-right">
       <n-dialog-provider>
+        Test app
         <AppLayout/>
         <ToastProvider/>
         <MediaViewer />
