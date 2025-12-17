@@ -33,6 +33,7 @@ onMounted(() => {
 
 
 const leftTime = computed(()=>{
+  console.log(store.worker_detail.created)
   const endTime = dayjs(store.worker_detail.created).add(store.exam_detail.minute, 'minutes')
   const diff = endTime.diff(dayjs(), 'seconds')
   return diff>0 ? diff : 0;
@@ -207,12 +208,6 @@ onBeforeRouteLeave((to, from, next) => {
                 ref="countDown"
                 v-slot="{ hours, minutes, seconds }"
                 :time="leftTime*1000"
-                :transform="(v)=>{
-                  Object.entries(v).map(([key, val])=>{
-                    v[key] = val < 10 ? `0${val}` : val;
-                  })
-                  return v
-                }"
                 @end="endAttempt"
             >
               <div class="text-xl text-textColor2 font-bold flex">

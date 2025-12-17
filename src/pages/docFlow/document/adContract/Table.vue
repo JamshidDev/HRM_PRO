@@ -77,11 +77,11 @@ const onSelect =(v)=>{
           <th class="min-w-[200px]">{{$t('contractPage.table.type')}}</th>
           <th class="w-[80px]">{{$t('contractPage.table.number')}}</th>
           <th class="min-w-[120px] w-[200px]">{{$t('contractPage.table.worker')}}</th>
+          <th class="w-[300px]">{{$t('contractPage.table.organization')}}</th>
           <th class="min-w-[100px] w-[100px]">{{$t('contractPage.table.command')}}</th>
           <th class="w-[120px]">{{$t('contractPage.table.status')}}</th>
-          <th class="w-[300px]">{{$t('contractPage.table.organization')}}</th>
-          <th class="w-[100px]">{{$t('contractPage.table.date')}}</th>
           <th class="w-[120px]">{{$t('content.document')}}</th>
+          <th class="w-[100px]">{{$t('contractPage.table.date')}}</th>
           <th class="min-w-[40px] w-[40px]"></th>
         </tr>
         </thead>
@@ -92,7 +92,7 @@ const onSelect =(v)=>{
               @click="onOpenFile(item)"
               class="text-sm hover:text-primary hover:underline cursor-pointer">{{item?.type?.name}}</span></td>
           <td>
-            <div class="flex justify-center"><n-button class="font-medium" round type="error" size="tiny">{{item?.number}}</n-button></div>
+            <div class="flex justify-center"><n-button class="font-medium" round type="primary" dashed size="tiny">{{item?.number}}</n-button></div>
           </td>
           <td>
             <UIUser
@@ -105,6 +105,8 @@ const onSelect =(v)=>{
                 }"
             />
           </td>
+
+          <td><span class="text-sm">{{item?.organization.name}}</span></td>
           <td><div class="flex justify-center">
             <n-button
                 :type="item?.command_status.id === 1? 'primary' : 'default'"
@@ -118,11 +120,10 @@ const onSelect =(v)=>{
           </div>
           </td>
           <td><UIStatus :status="item?.confirmation"/></td>
-          <td><span class="text-sm">{{item?.organization.name}}</span></td>
+          <td><UIStatus :status="Utils.documentStatus[item?.generate]"/></td>
           <td>
             <span class="text-sm">{{Utils.timeOnlyDate(item?.contract_date)}}</span>
           </td>
-          <td><UIStatus :status="Utils.documentStatus[item?.generate]"/></td>
           <td>
             <UIMenuButton
                 :show-view="true"

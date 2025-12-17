@@ -157,14 +157,15 @@ const openConfirmModal = (v)=>{
   store.appButtonType = v
   store.applicationComment = null
   store.applicationVisible = !v
-  if(v){
-    const data = {
+
+  if(!v) return
+
+  const data = {
       status:v,
       comment:null,
     }
-    const id = store.document_id
-    applicationStore._accept(data,id)
-  }
+  const id = store.document_id
+  applicationStore._accept(data,id)
 }
 
 
@@ -243,8 +244,31 @@ onUnmounted(()=>{
             <div class="w-full flex justify-between" style="height:calc(100vh - 0px)">
 
               <div class="hidden md:flex  flex-col w-[300px] h-full bg-surface-ground border-r border-surface-line px-2 py-4 relative pt-[70px]">
-                <div class="w-full" style="height: calc(100% - 100px)">
+                <div class="w-full" style="height: calc(100% - 200px)">
                   <LeftContent/>
+                </div>
+                <!--                Confirm buttons-->
+                <div v-if="showConfirmButtons" class="w-full mt-4 rounded-lg border border-surface-line flex flex-col gap-3 p-1">
+                  <n-button
+                      :loading="applicationStore.acceptLoading"
+                      @click="openConfirmModal(true)"
+                      class="shadow cursor-pointer"
+                      type="primary"
+                  >{{$t('content.confirm')}}
+                    <template #icon>
+                      <ClipboardCheckmark20Regular/>
+                    </template>
+                  </n-button>
+                  <n-button
+                      :loading="applicationStore.acceptLoading"
+                      @click="openConfirmModal(false)"
+                      class="shadow cursor-pointer"
+                      type="error"
+                  >{{$t('content.reject')}}
+                    <template #icon>
+                      <CalendarCancel20Regular/>
+                    </template>
+                  </n-button>
                 </div>
                 <ChatDrawer/>
                 <div v-if="store.permissions?.qrcode" class="bg-gray-300 rounded-xl border border-gray-400 h-[100px]"></div>
@@ -322,29 +346,6 @@ onUnmounted(()=>{
                   >{{$t('content.reject')}}
                     <template #icon>
                       <Signature20Filled/>
-                    </template>
-                  </n-button>
-                </div>
-<!--                Confirm buttons-->
-                <div v-if="showConfirmButtons" class="w-full  rounded-lg border border-gray-300 flex flex-col gap-3 p-1">
-                  <n-button
-                      :loading="applicationStore.acceptLoading"
-                      @click="openConfirmModal(true)"
-                      class="shadow cursor-pointer"
-                      type="primary"
-                  >{{$t('content.confirm')}}
-                    <template #icon>
-                      <ClipboardCheckmark20Regular/>
-                    </template>
-                  </n-button>
-                  <n-button
-                      :loading="applicationStore.acceptLoading"
-                      @click="openConfirmModal(false)"
-                      class="shadow cursor-pointer"
-                      type="error"
-                  >{{$t('content.reject')}}
-                    <template #icon>
-                      <CalendarCancel20Regular/>
                     </template>
                   </n-button>
                 </div>

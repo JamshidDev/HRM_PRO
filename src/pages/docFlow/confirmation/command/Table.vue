@@ -44,8 +44,8 @@ const onSelect = (v)=>{
           <th class="min-w-[60px] w-[60px]">{{$t('confirmation.contract.form.number')}}</th>
           <th class="min-w-[60px] w-[400px]">{{$t('confirmation.contract.form.organization')}}</th>
           <th class="min-w-[80px] w-[80px]">{{$t('content.status')}}</th>
-          <th class="min-w-[80px] w-[80px]">{{$t('content.date')}}</th>
           <th class="w-[120px]">{{$t('content.document')}}</th>
+          <th class="min-w-[80px] w-[80px]">{{$t('content.date')}}</th>
           <th class="min-w-[40px] w-[40px]"></th>
         </tr>
         </thead>
@@ -56,14 +56,13 @@ const onSelect = (v)=>{
             <span @click="onOpenFile(item?.command.id, item.id)" class="hover:text-primary hover:underline cursor-pointer">{{item?.command?.type.name}}</span>
           </td>
           <td>
-            <div class="flex justify-center"><n-button class="font-medium" round type="error" size="tiny">{{item?.command.command_number}}</n-button></div>
+            <div class="flex justify-center"><n-button class="font-medium" round type="primary" dashed size="tiny">{{item?.command.command_number}}</n-button></div>
           </td>
           <td>{{item?.command?.organization?.name}}</td>
 
           <td><UIStatus :status="item?.status"/></td>
-          <td>{{ Utils.timeOnlyDate(item?.command?.command_date) }}</td>
           <td><UIStatus :status="Utils.documentStatus[item?.generate]"/></td>
-
+          <td>{{ Utils.timeOnlyDate(item?.command?.command_date) }}</td>
           <td>
             <UIMenuButton
                 :show-view="true"

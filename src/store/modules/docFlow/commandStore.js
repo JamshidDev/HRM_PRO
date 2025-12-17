@@ -104,9 +104,6 @@ export const useCommandStore = defineStore('commandStore', {
                 ...this.workerParams,
             }
             $ApiService.workerService._search({params}).then((res)=>{
-                const selectedData = []
-                // this.isSingleSelect? this.workerList.filter(v=>v.id === this.payload.worker) : this.workerList.filter(v=>this.payload.workers.includes(v.id));
-
                 const data = res.data.data.data.map((v)=>({
                     ...v,
                     name:v.worker.last_name + ' '+v.worker.first_name+' '+v.worker.middle_name,
@@ -116,9 +113,7 @@ export const useCommandStore = defineStore('commandStore', {
                     photo: v.worker?.photo
                 }))
                 this.totalWorker =res.data.data.total
-
-                this.workerList =infinity ? Array.from(new Map([...this.workerList,...data, ...selectedData].map(v => [v.id, v])).values()) :Array.from(new Map([...data, ...selectedData].map(v => [v.id, v])).values())
-
+                this.workerList =infinity ? Array.from(new Map([...this.workerList,...data,].map(v => [v.id, v])).values()) :Array.from(new Map([...data,].map(v => [v.id, v])).values())
             }).finally(()=>{
                 this.workerLoading = false
             })

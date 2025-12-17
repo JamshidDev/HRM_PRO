@@ -1,6 +1,6 @@
 <script setup>
 import {useComponentStore, useTimesheetDepartmentStore} from "@/store/modules";
-import {UINSelect, UISelect} from "@/components/index.js"
+import {SuperSelect, UINSelect, UISelect} from "@/components/index.js"
 import UIDepartment from "@/components/ui/UIDepartment.vue"
 import ValidationRules from "@/utils/validationRules.js";
 
@@ -37,11 +37,19 @@ const onSearchEv = (v)=>{
 
 }
 
+const onScrollEv = ()=>{
+  store.departmentParams.page +=1
+  store._department(true)
+}
+
+
 onMounted(()=>{
   if(componentStore.structureList.length === 0){
     componentStore._structures()
   }
 })
+
+
 
 </script>
 <template>
@@ -76,15 +84,17 @@ onMounted(()=>{
         path="departments"
         rule-path="requiredMultiSelectField"
     >
-      <UINSelect
+      <SuperSelect
           multiple
-          clearable
-          :loading="store.departmentLoading"
           :options="store.departmentList"
+          :loading="store.departmentLoading"
+          :total-count="store.totalDepartmentCount"
+          :per-page="store.departmentParams.per_page"
           v-model:value="store.payload.departments"
-          :query="store.departmentParams.search"
+          v-model:search="store.departmentParams.search"
+          value-field="id"
           @onSearch="onSearchEv"
-
+          @onScrollEv="onScrollEv"
       />
     </n-form-item>
     <div class="mt-auto">

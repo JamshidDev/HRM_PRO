@@ -104,7 +104,16 @@ export const useApplicationStore = defineStore('applicationStore', {
         },
         _accept(data, id){
             this.acceptLoading= true
-            $ApiService.applicationService._accept({data,id}).then((res)=>{
+            const payload = {
+                data:{
+                    ...data,
+                    status:data.status? 1:2,
+                },
+                id
+            }
+
+
+            $ApiService.applicationService._accept(payload).then((res)=>{
             }).finally(()=>{
                 this.acceptLoading= false
             })

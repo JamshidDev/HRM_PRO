@@ -1,7 +1,7 @@
 <script setup>
 import {usePdfViewerStore} from "@/store/modules/index.js"
 const store = usePdfViewerStore()
-import {Chat24Filled} from "@vicons/fluent"
+import {Chat28Filled} from "@vicons/fluent"
 import ChatContent from "../chat/ChatCotent.vue"
 
 const openChat = ()=>{
@@ -25,13 +25,9 @@ const chatCount = computed(()=>{
       <template #trigger>
         <div class="absolute bottom-[50px] right-[20px]" :class="chatCount>0 && !store.chatVisible && 'shake-button'">
           <n-badge :value="chatCount">
-            <n-button circle text size="large">
-              <template #icon>
-                <n-icon size="32" class="text-primary">
-                  <Chat24Filled/>
-                </n-icon>
-              </template>
-            </n-button>
+            <n-icon size="20">
+              <Chat28Filled class="text-primary text-3xl cursor-pointer" />
+            </n-icon>
           </n-badge>
 
         </div>

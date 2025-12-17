@@ -44,29 +44,30 @@ export const useTimesheetDepartmentStore = defineStore('timesheetDepartmentStore
 
         departmentParams:{
             page:1,
-            per_page:1000,
+            per_page:100,
             search:null,
         },
         departmentList:[],
         departmentLoading:false,
+        totalDepartmentCount:0,
     }),
     actions:{
-        _department(){
+        _department(infinity=false){
             this.departmentLoading = true
             let params = {
                 ...this.departmentParams,
                 organizations:this.payload.organizations.map(v=>v.id).toString() || undefined,
             }
             $ApiService.componentService._departmentByOrganizations({params}).then((res)=>{
-                const selectedData =this.departmentList.filter(v=>this.payload.departments.includes(v.id))
-
                 const data = res.data.data.data.map(v=>({
                     id:v.id,
                     name:v.name,
                     position:v.organization?.name,
                 }))
 
-                this.departmentList = [...new Map([...data, ...selectedData].map(v=>[v.id, v])).values()]
+                this.totalDepartmentCount = res.data.data.total
+                const options = infinity? [ ...this.departmentList,...data] : data
+                this.departmentList = Array.from(new Map([...options,].map(v => [v.id, v])).values())
             }).finally(()=>{
                 this.departmentLoading = false
             })
