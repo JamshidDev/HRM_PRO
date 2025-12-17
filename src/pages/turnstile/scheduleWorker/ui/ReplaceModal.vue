@@ -20,7 +20,7 @@ const onSubmit = ()=>{
         worker_2:newWorker.id,
         worker_position_2:newWorker.positionId,
         group_2:newWorker.group || undefined,
-        status:false,
+        status:store.replacePayload.status,
         date:Utils.timeToZone(store.replacePayload.date)
       }
       console.log(data)
@@ -78,6 +78,11 @@ const onSearch = (v)=>{
           :rule-path="validationRules.rulesNames.requiredNumberField">
         <n-date-picker clearable v-model:value="store.replacePayload.date" type="date" class="w-full" />
       </n-form-item>
+      <div class="col-span-12 border-surface-line px-2 py-1 mb-6 rounded-lg">
+        <n-checkbox v-model:checked="store.replacePayload.status">
+          {{$t(store.replacePayload.status? 'shiftType.form.onlyThisDate' : 'shiftType.form.fromThisDate')}}
+        </n-checkbox>
+      </div>
       <div class="col-span-12 flex justify-end gap-4">
         <n-button @click="store.replaceVisible=false" type="error" secondary>
           {{$t('content.cancel')}}
