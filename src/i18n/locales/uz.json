@@ -2463,6 +2463,8 @@
       "startWorkTime": "Ish boshlanish vaqtidan imtiyoz",
       "endWorkTime": "Ish tugash vaqtidan imtiyoz",
       "replaceWorker": "Xodimni o'zgartirish",
+      "fromThisDate": "Shu sanadan boshlab",
+      "onlyThisDate": "Shu kunni o'zgartirish",
       "groupCount": "Guruhlar soni",
       "workerCount": "Xodimlar soni",
       "createGroup": "Guruh yaratish",
