@@ -126,7 +126,7 @@ onMounted(()=>{
                   id="password"
                   type="password"
                   show-password-on="click"
-                  :maxlength="16"
+                  :maxlength="32"
                   v-model:value="store.password"
               >
                 <template #prefix>
