@@ -29,6 +29,12 @@ const FlyUploadPlugin = {
       mounted(el, binding) {
         const config = { ...defaults, ...binding.value }
 
+        if (binding.modifiers.manual) {
+          el._flyConfig = config
+          el._triggerFly = () => flyToTarget(el, el._flyConfig)
+          return
+        }
+
         el._flyHandler = (e) => {
           e.stopPropagation()
           flyToTarget(el, config)

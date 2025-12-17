@@ -10,6 +10,7 @@
   const store = useMonthReportStore()
   const componentStore = useComponentStore()
   const formRef = ref(null)
+  const uploadBtn = ref()
 
   const posParams = computed(() => ({
     ...store.filterPosParams,
@@ -38,6 +39,7 @@
     if (store.exportType === 2) {
       formRef.value?.validate((error) => {
         if (!error) {
+
           const data = {
             ...store.exportParams,
             organizations:
@@ -46,6 +48,7 @@
             byOrganization: undefined
           }
           store._exportWithCode(data)
+          uploadBtn.value?.$el?._triggerFly?.()
         }
       })
     } else if (store.exportType === 1) {
@@ -56,6 +59,7 @@
         positions: store.exportParams.positions.toString() || undefined
       }
       store._exportMultiple(params)
+      uploadBtn.value?.$el?._triggerFly?.()
     } else {
       const params = {
         year: store.exportParams.year,
@@ -63,6 +67,7 @@
         positions: store.exportParams.positions.toString() || undefined
       }
       store._exportByPosition(params)
+      uploadBtn.value?.$el?._triggerFly?.()
     }
   }
 
@@ -224,7 +229,8 @@
 
         <div class="col-span-12 flex justify-center mb-4">
           <n-button
-            v-fly-upload
+              ref="uploadBtn"
+              v-fly-upload.manual
             :loading="store.showLoading"
             @click="onSubmit"
             type="success"

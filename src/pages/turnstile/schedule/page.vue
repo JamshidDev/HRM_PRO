@@ -6,6 +6,7 @@
   import SaveBox from './ui/SaveBox.vue'
   import LoaderBox from './ui/LoaderBox.vue'
   import GrandModal from './ui/GrandModal.vue'
+  import ExportModal from './ui/ExportModal.vue'
   import MultipleScheduleAttach from './ui/MultipleScheduleAttach.vue'
 
   import { useScheduleTableStore } from '@/store/modules/index.js'
@@ -30,6 +31,7 @@
     <SettingModal />
     <SaveBox />
     <GrandModal />
+    <ExportModal/>
     <MultipleScheduleAttach />
   </UIPageContent>
 </template>
