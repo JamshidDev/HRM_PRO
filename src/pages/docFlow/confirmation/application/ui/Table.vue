@@ -26,25 +26,38 @@ const editResponse = (v)=>{
   store.payload.to_time = Utils.timePickerFormatter(v.to_time)
   store.payload.contract_to_date = Utils.datePickerFormatter(v.contract_to_date)
   store.payload.univer_date = Utils.datePickerFormatter(v.univer_date)
+  store.payload.application_date = Utils.datePickerFormatter(v.application_date)
   store.payload.reason = v.reason
+  store.payload.rate = v.rate
   store.payload.department_position_id = v.department_position_id
   store.payload.temporarily_absent = v.temporarily_absent
   store.payload.education_type = v.education_type
   store.payload.univer_number = v.univer_number
   store.organization_id = v?.organization_id
   store.department_id = v?.department_id
-  componentStore._directors(store.organization_id?.[0]?.id || undefined)
+  store._directors(v.organization_id?.at(0) || undefined)
+
 
   store.confirmParams.director_id = v.director_id
+  store.confirmParams.organization_id = v.organization_id?.at(0) || undefined
   store.confirmParams.search = null
   store.confirmationList = []
   store._confirmation()
+  store._myPositions()
+  if(store.department_id?.length){
+    store._allPositions(store.department_id.at(0)?.id || undefined)
+  }
+
+  if(v.type === 6){
+    componentStore._departmentPosition(store.department_id.at(0)?.id || undefined)
+  }
+
 
 }
 
 const onEdit = (v)=>{
   store.visibleType = false
-  store.elementId = v.id
+  store.elementId = v.worker_application?.id
   store.visible = true
   store.activeTab = 101
   store.stepNumber = 1
@@ -64,7 +77,14 @@ const changePage = (v)=>{
 const onSelectEv = (v)=>{
   if(v.key === Utils.ActionTypes.edit){
     onEdit(v.data)
+  }else if(v.key === Utils.ActionTypes.delete){
+    onDelete(v.data)
   }
+}
+
+const onDelete = (v)=>{
+  store.elementId = v?.worker_application?.id
+  store._confDelete()
 }
 
 </script>
@@ -114,7 +134,6 @@ const onSelectEv = (v)=>{
            <MenuButton
                :data="item"
                :show-edit="true"
-               :show-delete="false"
                @selectEv="onSelectEv"
            />
           </td>

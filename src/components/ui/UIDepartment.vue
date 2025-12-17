@@ -111,7 +111,7 @@ const changeCheckVal = (v)=>{
 const inputVal = computed(()=>props.modelV.map((a)=>a.name).toString())
 
 const onFocusEv = ()=>{
-  if(store.structureList.length===0){
+  if(store.departmentList.length===0){
     store._departmentTree()
   }
 }

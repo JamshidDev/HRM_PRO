@@ -61,7 +61,5 @@ const emits = defineEmits(['onPreview'])
       </n-spin>
 
       <span class="z-1 opacity-30 absolute top-0 right-0 w-[160px] h-full bg-no-repeat bg-[url(/effect/primary-card.svg)]"></span>
-
-
     </div>
 </template>

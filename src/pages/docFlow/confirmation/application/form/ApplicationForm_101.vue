@@ -1,7 +1,6 @@
 <script setup>
 import {useComponentStore, useConfApplicationStore} from "@/store/modules/index.js"
-import {NAvatar} from "naive-ui"
-import {UISelect} from "@/components/index.js"
+import {UISelect, SuperSelect} from "@/components/index.js"
 import UIHelper from "@/utils/UIHelper.js"
 import {useAppSetting} from "@/utils/index.js"
 
@@ -12,9 +11,9 @@ const isPosition = computed(()=>!([1,2].includes(store.payload.type)))
 
 
 const onFocusDirector = ()=>{
-  if(componentStore.directorList.length === 0){x
-    getDirectors(store.organization_id?.[0]?.id )
-  }
+  // if(store.directorList.length === 0  && !store.directorLoading){
+  //   getDirectors(store.organization_id?.[0]?.id )
+  // }
 
 }
 const onFocusPosition = ()=>{
@@ -25,7 +24,7 @@ const onFocusPosition = ()=>{
         changePosition(list[0].id)
       }
     })
-  }else if(store.myPositionList.length===1){
+  }else if(store.myPositionList.length===1 && store.payload.worker_position_id === null){
     store.payload.worker_position_id = store.myPositionList[0].id
     changePosition(store.payload.worker_position_id)
   }
@@ -43,7 +42,7 @@ const onSelectDirector = ()=>{
   store._confirmation()
 }
 const onSelectApplication = (v)=>{
-  componentStore.directorList = []
+  store.directorList = []
   store.payload.director_id = null
   store.confirmationList = []
   store.payload.confirmations = []
@@ -55,9 +54,10 @@ const onSelectApplication = (v)=>{
 
 const onChangeStructure = (v)=>{
   store.organization_id=v
+  store.payload.director_id = null
+  store.payload.confirmations = []
   if(v.length>0){
-    componentStore.directorList = []
-    store.payload.director_id = null
+    store.directorList = []
     store.confirmParams.organization_id = v[0].id
     getDirectors(v[0].id)
   }
@@ -65,7 +65,7 @@ const onChangeStructure = (v)=>{
 
 const getDirectors = (id)=>{
   store.confirmParams.organization_id = id
-  componentStore._directors(id,(list)=>{
+  store._directors(id,(list)=>{
     if(list.length===1){
       store.payload.director_id = list[0].id
       store.confirmParams.director_id = list[0].id
@@ -81,6 +81,7 @@ const changePosition = (id)=>{
   let index = store.myPositionList.findIndex(v=>v.id === id)
   if(index !== -1){
     let orgId = store.myPositionList[index]?.organization?.id
+    store.organization_id = [orgId]
     getDirectors(orgId)
   }
 }
@@ -110,7 +111,6 @@ onMounted(()=>{
         <n-select
             v-model:value="store.payload.type"
             filterable
-
             :options="componentStore.workerApplicationTypes"
             label-field="name"
             value-field="id"
@@ -127,13 +127,11 @@ onMounted(()=>{
         <n-select
             @focus="onFocusPosition"
             v-model:value="store.payload.worker_position_id"
-
             :options="store.myPositionList"
             :loading="store.positionLoading"
             :render-label="UIHelper.selectRender.label"
             :render-tag="UIHelper.selectRender.value"
             @update:value="changePosition"
-
             label-field="name"
             value-field="id"
         />
@@ -143,14 +141,13 @@ onMounted(()=>{
       <n-form-item :label="$t(`documentPage.form.organization`)" path="organization_id">
         <UISelect
             :options="componentStore.allStructureList"
-
             :modelV="store.organization_id"
             @defaultValue="(v)=>store.organization_id=v"
             @updateModel="onChangeStructure"
             :checkedVal="store.structureCheck"
             @updateCheck="(v)=>store.structureCheck=v"
             v-model:search="componentStore.structureParams.search"
-            @onSearch="componentStore._structures"
+            @onSearch="componentStore._allStructures"
             :loading="componentStore.allStructureLoading"
             :multiple="false"
         />
@@ -158,38 +155,44 @@ onMounted(()=>{
     </div>
     <div class="col-span-12">
       <n-form-item :label="$t(`applicationPage.form.director_id`)" path="director_id">
-        <n-select
-            :disabled="disabledDirector"
-            @focus="onFocusDirector"
+        <SuperSelect
             v-model:value="store.payload.director_id"
-
-            :options="componentStore.directorList"
-            :loading="componentStore.directorLoading"
+            :disabled="disabledDirector"
+            :options="store.directorList"
+            :loading="store.directorLoading"
             @update:value="onSelectDirector"
-            :render-label="UIHelper.selectRender.label"
-            :render-tag="UIHelper.selectRender.value"
-            label-field="id"
-            value-field="id"
+            @focus="onFocusDirector"
         />
       </n-form-item>
     </div>
     <div class="col-span-12">
       <n-form-item :label="$t(`applicationPage.form.confirmations`)" path="confirmations">
-        <n-select
-            :disabled="!store.payload.director_id"
+<!--        <n-select-->
+<!--            :disabled="!store.payload.director_id"-->
+<!--            multiple-->
+<!--            v-model:value="store.payload.confirmations"-->
+<!--            @scroll="store.onScrollConfirmation"-->
+<!--            :options="store.confirmationList"-->
+<!--            :loading="store.confirmLoading"-->
+<!--            :render-label="UIHelper.selectRender.label"-->
+<!--            :render-tag="UIHelper.selectRender.value"-->
+<!--            label-field="id"-->
+<!--            value-field="id"-->
+<!--            :max-tag-count="1"-->
+<!--            filterable-->
+<!--            :filter="()=>true"-->
+<!--            @search="store.onSearchConfirmation"-->
+<!--        />-->
+
+        <SuperSelect
             multiple
             v-model:value="store.payload.confirmations"
-            @scroll="store.onScrollConfirmation"
+            v-model:search="store.confirmParams.search"
+            :disabled="!store.payload.director_id"
             :options="store.confirmationList"
             :loading="store.confirmLoading"
-            :render-label="UIHelper.selectRender.label"
-            :render-tag="UIHelper.selectRender.value"
-            label-field="id"
-            value-field="id"
-            :max-tag-count="1"
-            filterable
-            :filter="()=>true"
-            @search="store.onSearchConfirmation"
+            @onScrollEv="store.onScrollConfirmation"
+            @onSearch="store.onSearchConfirmation"
         />
       </n-form-item>
     </div>
@@ -199,7 +202,6 @@ onMounted(()=>{
             class="w-full"
             v-model:value="store.payload.application_date"
             type="date"
-
             :format="useAppSetting.datePicketFormat"
         />
       </n-form-item>

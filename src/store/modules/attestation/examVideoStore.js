@@ -102,7 +102,7 @@ export const useExamVideoStore = defineStore('examVideoStore', {
 
                                 const sizeInMB = (blob.size / (1024 * 1024)).toFixed(2)
 
-                                this.downloadBlob(blob)
+                                // this.downloadBlob(blob)
 
                                 this.arrayBuffer = await blob.arrayBuffer()
                                 this._uploadFile()

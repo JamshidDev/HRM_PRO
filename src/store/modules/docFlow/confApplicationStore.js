@@ -127,8 +127,31 @@ export const useConfApplicationStore = defineStore('confApplicationStore', {
         allPositions:[],
         allPositionLoading:false,
 
+        directorLoading:false,
+        directorList:[],
+
+
     }),
     actions:{
+        _directors(id=undefined, callback){
+            this.directorLoading = true
+            $ApiService.componentService._directors({
+                params:{
+                    organizations:id
+                }
+            })
+                .then((res)=>{
+                    this.directorList = res.data.data.map((v)=>({
+                        ...v,
+                        name:Utils.combineFullName(v.worker),
+                        subPosition:v?.organization?.name,
+                    }))
+                    callback?.(this.directorList)
+
+                }).finally(()=>{
+                this.directorLoading = false
+            })
+        },
 
         _index(){
             this.loading= true
@@ -137,6 +160,13 @@ export const useConfApplicationStore = defineStore('confApplicationStore', {
                 this.totalItems = res.data.data.total
             }).finally(()=>{
                 this.loading= false
+            })
+        },
+        _confDelete(){
+            this.loading= true
+            $ApiService.applicationService._deleteWorkerApplication({id:this.elementId}).finally(()=>{
+                this.loading= false
+                this._index()
             })
         },
         _statistic(){
@@ -191,6 +221,7 @@ export const useConfApplicationStore = defineStore('confApplicationStore', {
                     ...v,
                     name:Utils.combineFullName(v.worker),
                     position:v?.post_short_name,
+                    subPosition:v?.organization?.name,
                 }))
                 const oldData = this.confirmationList
                 const data = infinite ? [...oldData, ...newData] : [...newData]
@@ -209,14 +240,11 @@ export const useConfApplicationStore = defineStore('confApplicationStore', {
         onSearchConfirmation(v){
             this.confirmParams.page =1
             this.confirmParams.search =v
-            Utils.debouncedFn(this._confirmation)
+            this._confirmation()
         },
         onScrollConfirmation(e){
-            const currentTarget = e.currentTarget;
-            if(currentTarget.scrollTop + currentTarget.offsetHeight >= currentTarget.scrollHeight && !this.confirmLoading && this.confirmationListTotal>this.confirmationList.length){
-                this.confirmParams.page += 1
-                this._confirmation(true)
-            }
+            this.confirmParams.page += 1
+            this._confirmation(true)
         },
         _vacationWorker(id){
             this.vacationWorkerLoading = true

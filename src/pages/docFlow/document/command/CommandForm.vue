@@ -1,11 +1,11 @@
 <script setup>
-import {DocumentBulletList20Filled} from "@vicons/fluent"
+import {DocumentBulletList20Filled, Drag24Filled, DrawText24Regular} from "@vicons/fluent"
 import validationRules from "@/utils/validationRules.js"
 import {useCommandStore, useComponentStore} from "@/store/modules/index.js"
 import {NAvatar} from "naive-ui"
 import Utils from "@/utils/Utils.js"
 import VacationForm_41 from "@/pages/docFlow/document/command/ui/VacationForm_41.vue"
-import {UINSelect, UISelect, SuperSelect} from "@/components/index.js"
+import {UINSelect, UISelect, SuperSelect, UIUser} from "@/components/index.js"
 import EmptyForm from "@/pages/docFlow/document/command/ui/EmptyForm.vue"
 import CancelForm_32 from "@/pages/docFlow/document/command/ui/CancelForm_32.vue"
 import VacationForm_44 from "@/pages/docFlow/document/command/ui/VacationForm_44.vue"
@@ -20,6 +20,7 @@ import CommandForm_71 from "./ui/CommandForm_71.vue"
 import CommandForm_72 from "./ui/CommandForm_72.vue"
 import CommandForm_73 from "./ui/CommandForm_73.vue"
 import {useAppSetting} from "@/utils/index.js"
+import {VueDraggable} from "vue-draggable-plus"
 
 
 
@@ -98,7 +99,10 @@ const onSubmit = (status)=>{
         command_date:Utils.timeToZone(store.payload.command_date),
         director_id:store.payload.director_id,
         organization_id:store.payload.organization_id?.[0]?.id,
-        confirmations:store.payload.confirmations,
+        confirmations:store.sortableConfirmations.map((v,idx)=>({
+          id:v.id,
+          order:store.oneByOne? idx+1 : 1,
+        })),
         command_number:store.payload.command_number,
         command_type:store.payload.command_type,
         workers:store.payload.worker? [store.payload.worker] : store.payload.workers,
@@ -453,7 +457,20 @@ watchEffect(()=>{
     confirmationList.value = componentStore.confirmationList.filter(v=>v.id !==store.payload.director_id)
 
   }
+
+  store.sortableConfirmations = confirmationList.value.filter(v=>store.payload.confirmations.includes(v.id)).map((v)=>({
+    id:v.id,
+    data:{
+      firstName:v.first_name,
+      lastName:v.last_name,
+      middleName:v.middle_name,
+      photo:v.photo,
+      position:v?.position || '',
+    }
+  }))
+
 })
+
 
 
 
@@ -679,7 +696,7 @@ onMounted(()=>{
           <div class="col-span-12 mt-4">
             <n-form-item :label="$t(`documentPage.command.form.confirm`)" path="confirmations">
               <n-select
-                  :disabled="!store.payload.director_id"
+                  size="large"
                   value-field="id"
                   multiple
                   v-model:value="store.payload.confirmations"
@@ -689,6 +706,41 @@ onMounted(()=>{
               />
             </n-form-item>
           </div>
+          <template v-if="store.sortableConfirmations?.length">
+            <div class="col-span-12 pb-2 px-2 flex justify-between">
+              <span class="text-secondary">{{$t('documentPage.command.form.viewDescription')}}</span>
+              <n-checkbox v-model:checked="store.oneByOne">
+                {{$t(store.oneByOne? 'documentPage.command.form.viewOneByOne' : 'documentPage.command.form.viewSameTime')}}
+              </n-checkbox>
+            </div>
+            <div class="col-span-12">
+              <VueDraggable
+                  v-model="store.sortableConfirmations"
+              >
+                <div v-for="(item, index) in store.sortableConfirmations" :key="item.id" class="sort-target flex items-center gap-2 px-2 py-1 bg-surface-section border border-surface-line rounded-xl mb-1">
+                  <div class="handle">
+                    <n-icon size="24" class="text-secondary cursor-move scale-100 hover:scale-[1.2] mx-2">
+                      <Drag24Filled/>
+                    </n-icon>
+                  </div>
+
+                  <div class="w-[calc(100%-60px)] select-none">
+                    <UIUser class="!w-full" :data="item.data" :hide-tooltip="true" :short="false" />
+                  </div>
+                  <template v-if="store.oneByOne">
+                    <n-button type="primary" secondary :icon-placement="'right'" size="small">
+                      <template #icon>
+                        <DrawText24Regular/>
+                      </template>
+                      <span class="font-bold text-lg">{{index+1}}</span>
+                    </n-button>
+                  </template>
+
+                </div>
+              </VueDraggable>
+            </div>
+          </template>
+
         </div>
       </div>
     </n-form>

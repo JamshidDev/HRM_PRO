@@ -11,14 +11,14 @@ export const getTableConfig = (cardType) => {
         {
           headerName: 'content.worker',
           key: 'user',
-          minWidth: '180px',
+          minWidth: '200px',
           component: 'UIUser'
         },
         {
-          headerName: 'date.minute',
+          headerName: 'turnStileDashboard.cards.delay',
           key: 'minutes',
-          width: '200px',
-          minWidth: '120px',
+          width: '120px',
+          minWidth: '100px',
           component: 'UIBadge',
           componentProps: {
             showIcon: false,
@@ -26,28 +26,32 @@ export const getTableConfig = (cardType) => {
           }
         },
         {
-          headerName: 'content.time',
-          key: 'time',
-          width: '200px',
-          minWidth: '80px',
+          headerName: 'turnStileDashboard.cards.startTime',
+          key: 'start_time',
+          width: '100px',
+          minWidth: '100px',
           component: 'UIBadge',
-          componentProps: (value) => {
-            return {
-              showIcon: false,
-              type: Utils.colorTypes.info
-            }
-          },
+          componentProps: {
+            showIcon: false,
+            type: Utils.colorTypes.dark
+          }
+        },
+        {
+          headerName: 'turnStileDashboard.cards.firstComeToWork',
+          key: 'time',
+          width: '180px',
+          minWidth: '80px',
         },
         {
           headerName: 'content.organization',
           key: 'organization_name',
-          width: '300px',
+          width: '200px',
           minWidth: '200px'
         },
         {
           headerName: 'content.department',
           key: 'department_name',
-          width: '300px',
+          width: '200px',
           minWidth: '180px'
         },
 
@@ -199,9 +203,9 @@ export const getTableConfig = (cardType) => {
           component: 'UIUser'
         },
         {
-          headerName: 'content.time',
+          headerName: 'turnStileDashboard.cards.earlyTimeFromWorkTime',
           key: 'minutes',
-          width: '240px',
+          width: '200px',
           minWidth: '120px',
           component: 'UIBadge',
           componentProps: {
@@ -210,28 +214,32 @@ export const getTableConfig = (cardType) => {
           }
         },
         {
-          headerName: 'content.date',
-          key: 'time',
-          width: '200px',
-          minWidth: '120px',
+          headerName: 'turnStileDashboard.cards.startTime',
+          key: 'end_time',
+          width: '100px',
+          minWidth: '100px',
           component: 'UIBadge',
-          componentProps: (value) => {
-            return {
-              showIcon: false,
-              type: Utils.colorTypes.info
-            }
-          },
+          componentProps: {
+            showIcon: false,
+            type: Utils.colorTypes.dark
+          }
+        },
+        {
+          headerName: 'turnStileDashboard.cards.lastGoOut',
+          key: 'time',
+          width: '160px',
+          minWidth: '100px',
         },
         {
           headerName: 'content.organization',
           key: 'organization_name',
-          width: '300px',
+          width: '200px',
           minWidth: '200px'
         },
         {
           headerName: 'content.department',
           key: 'department_name',
-          width: '300px',
+          width: '200px',
           minWidth: '180px'
         },
 

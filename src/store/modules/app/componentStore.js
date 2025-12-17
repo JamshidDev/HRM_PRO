@@ -572,7 +572,7 @@ export const useComponentStore = defineStore('componentStore', {
 
         _allStructures(){
             this.allStructureLoading= true
-            $ApiService.componentService._allStructure({params:this.allStructureParams}).then((res)=>{
+            $ApiService.componentService._allStructure({params:this.structureParams}).then((res)=>{
                 this.allStructureList = res.data.data
             }).finally(()=>{
                 this.allStructureLoading= false

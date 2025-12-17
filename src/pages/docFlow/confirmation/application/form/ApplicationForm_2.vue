@@ -23,13 +23,13 @@ const renderLabel2 = (option)=>{
         },[
           h(NAvatar,
               {
-                class:'',
+                class:'flex-shrink-0',
                 src:option.worker.photo,
                 'fallback-src':Utils.noAvailableImage,
               },),
           h('div',{ class:'flex flex-col'}, [
-            h('div',{ class:'text-xs font-medium text-gray-500'},`${option.worker.last_name}.${option.worker.last_name[0]}.${option.worker.middle_name[0]}`),
-            h('div',{ class:'text-xs text-gray-400'},option.post_name),
+            h('div',{ class:'text-xs font-medium text-secondary line-clamp-1'},`${option.worker.last_name}.${option.worker.last_name[0]}.${option.worker.middle_name[0]}`),
+            h('div',{ class:'text-xs text-secondary line-clamp-1'},option.post_name),
           ])
         ]
     ),
@@ -85,7 +85,6 @@ onMounted(()=>{
             class="w-full"
             v-model:value="store.payload.from_date"
             type="date"
-
             :format="useAppSetting.datePicketFormat"
         />
       </n-form-item>

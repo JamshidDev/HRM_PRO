@@ -10,7 +10,6 @@ import {
 import {defineStore} from "pinia";
 import i18n from "@/i18n/index.js"
 import Utils from "@/utils/Utils.js"
-import { getTableConfig } from "@/pages/turnstile/dashboard/ui/tableConfig"
 import router from "@/router/index.js"
 import {AppPaths} from "@/utils/index.js"
 
@@ -20,11 +19,11 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
     state: () => ({
         dashboardLoading: false,
 
-        dashboardMainLoading: false,          // '/v1/turnstile/hik-central/dashboard'
-        dailyAttendanceLoading: false,        // '/v1/turnstile/hik-central/dashboard/daily-attendance'
-        workerStatsLoading: false,            // '/v1/turnstile/hik-central/dashboard/worker-stats'
-        devicesLoading: false,                // '/v1/turnstile/hik-central/dashboard/devices'
-        sixLoading:false,// '/v1/turnstile/hik-central/dashboard/work-durations'
+        dashboardMainLoading: false,
+        dailyAttendanceLoading: false,
+        workerStatsLoading: false,
+        devicesLoading: false,
+        sixLoading:false,
 
         dashboardObj: {},
         topOfflineDeviceList: [],
@@ -196,10 +195,10 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
             }
             const urls = [
                 '/v1/turnstile/schedule/stats-one',
-                '/v1/turnstile/schedule/stats-four',
-                '/v1/turnstile/schedule/stats-three',
-                '/v1/turnstile/schedule/stats-five',
                 '/v1/turnstile/schedule/stats-two',
+                '/v1/turnstile/schedule/stats-three',
+                '/v1/turnstile/schedule/stats-four',
+                // '/v1/turnstile/schedule/stats-five',
                 '/v1/turnstile/schedule/stats-six',
                 '/v1/turnstile/schedule/stats-seven',
             ]
@@ -244,13 +243,18 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
 
                     }
                     else if (result.url === urls[1]) {
-                        // daily chart
                         if (!result.error){
-                            this.dailyEvents = data.daily_attendance_chart
-                            this.faceIdData = data.auth_type
+                            this.workerDataWithSchedule = data
 
+                            this.monthlyList =data?.stats
+                            this.monthlyTotalWorkerCount = data?.stats[0].without_schedule
+                            this.monthlyWorkers = data?.workerList.map(v=>({
+                                ...v,
+                                fullName:Utils.combineFullName(v)
+                            }))
                         }
-                        this.dailyAttendanceLoading = false
+
+                        this.monthlyLoading = false
                     }
                     else if (result.url === urls[2]) {
                         // In - Out
@@ -288,33 +292,29 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
                         this.workerStatsLoading = false
                     }
                     else if (result.url === urls[3]) {
-                        if (!result.error) {
-                            this.deviceData = data
-                            this.devicesLoading = false
-                        }
-                    }
-                    else if (result.url === urls[4]) {
+                        // daily chart
                         if (!result.error){
-                            this.workerDataWithSchedule = data
+                            this.dailyEvents = data.daily_attendance_chart
+                            this.faceIdData = data.auth_type
+                            this.deviceData = data.devices
 
-                            this.monthlyList =data?.stats
-                            this.monthlyTotalWorkerCount = data?.stats[0].without_schedule
-                            this.monthlyWorkers = data?.workerList.map(v=>({
-                                ...v,
-                                fullName:Utils.combineFullName(v)
-                            }))
                         }
-
-                        this.monthlyLoading = false
+                        this.dailyAttendanceLoading = false
                     }
-                    else if (result.url === urls[5]) {
+                    // else if (result.url === urls[4]) {
+                    //     if (!result.error) {
+                    //         this.deviceData = data
+                    //         this.devicesLoading = false
+                    //     }
+                    // }
+                    else if (result.url === urls[4]) {
                         if (!result.error){
                             this.grandWorkerData = data
                             this.grandLoading = false
 
                         }
                     }
-                    else if (result.url === urls[6]) {
+                    else if (result.url === urls[5]) {
                         if (!result.error){
                            this.workTime = data
                             this.workTimeLoading = false
@@ -361,10 +361,7 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
 
         _formatPreviewResponse(rawData, cardType) {
             let responseDate =[]
-            this.tableColumns  = getTableConfig(cardType).columns
-
             responseDate = rawData
-
             if(!responseDate || !Array.isArray(responseDate)) return []
 
             const data = responseDate.map((v, index) => {
@@ -374,13 +371,14 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
                         ...v,
                         user:this._userContructor(v, v.position_name),
                         time:Utils.timeWithMonth(v.first_entry_time),
-                        minutes:`${v.minutes} ${t('date.minute')} (${v?.start_time || '-:-'})`
+                        minutes:`${v.minutes} ${t('date.minute')}`
                     }
-                } else if(cardType === 'early_leave'){
+                }
+                else if(cardType === 'early_leave'){
                     return {
                         ...v,
                         user:this._userContructor(v, v?.position_name),
-                        minutes:`${v.early_minutes} ${t('date.minute')} (${v?.end_time || '-:-'})`,
+                        minutes:`${v.early_minutes} ${t('date.minute')}`,
                         time:Utils.timeWithMonth(v.last_exit_time),
                     }
                 }

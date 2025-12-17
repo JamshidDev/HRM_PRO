@@ -50,7 +50,8 @@ const endAttempt = ()=>{
       examVideoStore._stopCameraAndFinishVideo(true, ()=>{
         // endWarningVisible.value=true
         store.finishLoading = false
-        router.push(Utils.routeAttestationPathMaker(AppPaths.Exam))
+        // router.push(Utils.routeAttestationPathMaker(AppPaths.Exam))
+
       })
     }else{
       store.finishLoading = false
@@ -59,6 +60,11 @@ const endAttempt = ()=>{
 
   })
 
+}
+
+const backToList = ()=>{
+  examVideoStore.isFinished = true
+  router.push(Utils.routeAttestationPathMaker(AppPaths.Exam))
 }
 
 const goBack = ()=>{
@@ -126,6 +132,7 @@ onBeforeRouteLeave((to, from, next) => {
           <h3 class="text-xl font-bold text-textColor3">{{$t('examPage.endSub')}}</h3>
           <p class="text-6xl font-bold text-">{{store.result?.result || 0}}</p>
           <p class="text-danger mt-10!">{{$t('examPage.endHead')}}</p>
+          <n-button @click="backToList" class="!w-full" type="error">{{$t('content.backToList')}}</n-button>
         </div>
       </n-spin>
     </UIModal>

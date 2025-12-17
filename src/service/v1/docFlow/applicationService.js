@@ -18,6 +18,9 @@ const _workerApplication =async (payload)=>{
 const _updateWorkerApplication =async (payload)=>{
     return await axios.put(`/v1/worker-application/applications/${payload.id}/update`,payload.data )
 }
+const _deleteWorkerApplication =async (payload)=>{
+    return await axios.delete(`/v1/worker-application/applications/${payload.id}`,payload.data )
+}
 const _myPositions =async (payload)=>{
     return await axios.get(`/v1/worker-application/positions`, {params:payload?.params})
 }
@@ -66,4 +69,5 @@ export default {
     _accept,
     _documentApplication,
     _statistic,
+    _deleteWorkerApplication,
 }

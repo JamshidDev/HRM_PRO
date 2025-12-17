@@ -1,5 +1,5 @@
 <script setup>
-import {UISelect} from "@/components/index.js"
+import {UISelect, UIUser} from "@/components/index.js"
 import UIHelper from "@/utils/UIHelper.js"
 import validationRules from "@/utils/validationRules.js";
 const formRef = ref(null)
@@ -8,6 +8,8 @@ import { NAvatar } from "naive-ui"
 import Utils from "@/utils/Utils.js"
 import UIDepartment from "@/components/ui/UIDepartment.vue"
 import {useAppSetting} from "@/utils/index.js"
+import {Drag24Filled, DrawText24Regular} from "@vicons/fluent"
+import {VueDraggable} from "vue-draggable-plus"
 
 const store = useAdContractStore()
 const componentStore = useComponentStore()
@@ -124,6 +126,18 @@ watchEffect(()=>{
     }
     componentStore._commandTypes(data)
   }
+
+  store.sortableConfirmations = confirmationList.value.filter(v=>store.payload.confirmations.includes(v.id)).map((v)=>({
+    id:v.id,
+    data:{
+      firstName:v.first_name,
+      lastName:v.last_name,
+      middleName:v.middle_name,
+      photo:v.photo,
+      position:v?.position || '',
+    }
+  }))
+
 })
 
 watchEffect(()=>{
@@ -463,7 +477,6 @@ const showForm = computed(()=>store.payload.type===null? true : [1,8].includes(s
                     :disabled="!Boolean(store.payload.type)"
                     v-model:value="store.payload.command_type"
                     filterable
-
                     :options="componentStore.commandTypeList"
                     label-field="name"
                     value-field="id"
@@ -502,12 +515,45 @@ const showForm = computed(()=>store.payload.type===null? true : [1,8].includes(s
                     value-field="id"
                     multiple
                     v-model:value="store.payload.confirmations"
-
                     :options="confirmationList"
                     :loading="componentStore.confirmationLoading"
                     :render-label="renderLabel" />
               </n-form-item>
             </div>
+            <template v-if="store.sortableConfirmations?.length">
+              <div class="col-span-12 pb-2 px-2 flex justify-between">
+                <span class="text-secondary">{{$t('documentPage.command.form.viewDescription')}}</span>
+                <n-checkbox v-model:checked="store.oneByOne">
+                  {{$t(store.oneByOne? 'documentPage.command.form.viewOneByOne' : 'documentPage.command.form.viewSameTime')}}
+                </n-checkbox>
+              </div>
+              <div class="col-span-12">
+                <VueDraggable
+                    v-model="store.sortableConfirmations"
+                >
+                  <div v-for="(item, index) in store.sortableConfirmations" :key="item.id" class="sort-target flex items-center gap-2 px-2 py-1 bg-surface-section border border-surface-line rounded-xl mb-1">
+                    <div class="handle">
+                      <n-icon size="24" class="text-secondary cursor-move scale-100 hover:scale-[1.2] mx-2">
+                        <Drag24Filled/>
+                      </n-icon>
+                    </div>
+
+                    <div class="w-[calc(100%-60px)] select-none">
+                      <UIUser class="!w-full" :data="item.data" :hide-tooltip="true" :short="false" />
+                    </div>
+                    <template v-if="store.oneByOne">
+                      <n-button type="primary" secondary :icon-placement="'right'" size="small">
+                        <template #icon>
+                          <DrawText24Regular/>
+                        </template>
+                        <span class="font-bold text-lg">{{index+1}}</span>
+                      </n-button>
+                    </template>
+
+                  </div>
+                </VueDraggable>
+              </div>
+            </template>
           </div>
         </div>
       </div>

@@ -79,26 +79,26 @@ const onEdit = (v)=>{
         <div class="col-span-12 p-2 border-b  md:border-r md:border-t border-dashed border-surface-line">
           <div class="grid grid-cols-12">
             <div class="col-span-12 md:col-span-6">
-              <span class="font-semibold">{{$t('workerProfile.position.contractType')}}</span> -  <n-button type="warning" dashed ghost size="tiny">{{item.contract.type.name}}</n-button>
+              <span class="font-semibold">{{$t('workerProfile.position.contractType')}}</span> -  <n-button type="warning" dashed ghost size="tiny">{{item.contract?.type.name}}</n-button>
             </div>
 
             <div class="col-span-12">
-              <span class="font-semibold">{{$t('workerProfile.position.position')}}</span> -  <span class="font-medium text-primary">{{item.post_name}}</span>
+              <span class="font-semibold">{{$t('workerProfile.position.position')}}</span> -  <span class="font-medium text-primary">{{item?.post_name}}</span>
             </div>
           </div>
 
         </div>
         <div class="col-span-12 md:col-span-6 border-b md:border-r border-dashed border-surface-line p-2">
-          <span class="font-semibold">{{$t('workerProfile.position.contractToDate')}}</span> -  <span class="font-medium mr-4">{{Utils.timeOnlyDate(item.contract.contract_to_date)}}</span>
+          <span class="font-semibold">{{$t('workerProfile.position.contractToDate')}}</span> -  <span class="font-medium mr-4">{{Utils.timeOnlyDate(item?.contract?.contract_to_date)}}</span>
         </div>
         <div class="col-span-12 md:col-span-6 border-b md:border-r border-dashed border-surface-line p-2">
-          <span class="font-semibold">{{$t('workerProfile.position.positionDate')}}</span> -  <span class="font-medium mr-4">{{Utils.timeOnlyDate(item.position_date)}}</span>
+          <span class="font-semibold">{{$t('workerProfile.position.positionDate')}}</span> -  <span class="font-medium mr-4">{{Utils.timeOnlyDate(item?.position_date)}}</span>
         </div>
         <div class="col-span-12 md:col-span-6 border-b md:border-r border-dashed border-surface-line p-2">
-          <span class="font-semibold">{{$t('workerProfile.position.contractNumber')}}</span> -  <span class="font-medium mr-4">{{item.contract.number}}</span>
+          <span class="font-semibold">{{$t('workerProfile.position.contractNumber')}}</span> -  <span class="font-medium mr-4">{{item.contract?.number}}</span>
         </div>
         <div class="col-span-12 md:col-span-6 border-b md:border-r border-dashed border-surface-line p-2">
-          <span class="font-semibold">{{$t('workerProfile.position.contractDate')}}</span> -  <span class="font-medium  mr-4">{{Utils.timeOnlyDate(item.contract.contract_date)}}</span>
+          <span class="font-semibold">{{$t('workerProfile.position.contractDate')}}</span> -  <span class="font-medium  mr-4">{{Utils.timeOnlyDate(item.contract?.contract_date)}}</span>
         </div>
         <div class="col-span-12 md:col-span-4 border-b md:border-r md:border-b-0 border-dashed border-surface-line p-2">
           {{$t('workerProfile.personal.positionGroup')}} - <span class="font-bold  text-success">{{item.group}}</span>

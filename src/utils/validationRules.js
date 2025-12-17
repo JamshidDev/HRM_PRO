@@ -1479,6 +1479,12 @@ export default {
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
+        temporarily_absent:{
+            type:'number',
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
         city_id:{
             type:'number',
             required: true,

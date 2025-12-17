@@ -81,6 +81,9 @@ export const useContractStore = defineStore('contractStore', {
         stepNumber:1,
         vacationWorkers:[],
         vacationLoading:false,
+
+        sortableConfirmations:[],
+        oneByOne:true
     }),
     actions:{
         _vacationWorkers(id){
@@ -125,6 +128,10 @@ export const useContractStore = defineStore('contractStore', {
                    department_id:this.payload.department_id.length>0? this.payload.department_id[0].id : null,
                    vacation_main_day:this.payload.vacation_main_day || 0,
                    additional_vacation_day:this.payload.additional_vacation_day || 0,
+                   confirmations:this.sortableConfirmations.map((v,idx)=>({
+                       id:v.id,
+                       order:this.oneByOne? idx+1 : 1,
+                   })),
                }
             }
             delete data.pin

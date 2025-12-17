@@ -60,6 +60,9 @@ export const useAdContractStore = defineStore('adContractStore', {
             per_page:1000,
             search:null,
         },
+
+        sortableConfirmations:[],
+        oneByOne:true
     }),
     actions:{
         _getStructures(){
@@ -97,6 +100,10 @@ export const useAdContractStore = defineStore('adContractStore', {
                     worker_position_id: this.payload.worker_position_id,
                     director_id:this.payload.director_id,
                     department_id:this.payload.department_id.length>0? this.payload.department_id[0].id : undefined,
+                    confirmations:this.sortableConfirmations.map((v,idx)=>({
+                        id:v.id,
+                        order:this.oneByOne? idx+1 : 1,
+                    })),
                 }
             }
 

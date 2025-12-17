@@ -93,6 +93,8 @@ export const useCommandStore = defineStore('commandStore', {
         totalWorker:0,
 
         isSingleSelect:false,
+        sortableConfirmations:[],
+        oneByOne:true
     }),
     actions:{
 

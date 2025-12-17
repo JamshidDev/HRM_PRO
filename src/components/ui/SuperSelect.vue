@@ -73,7 +73,7 @@ const props = defineProps({
 
 })
 
-const emits = defineEmits(['onScroll', 'updateValue', 'onSearch', 'onScrollEv', 'updateShow'])
+const emits = defineEmits(['onScroll', 'updateValue', 'onSearch', 'onScrollEv', 'updateShow', 'focus'])
 
 const onCloseEv = (v)=>{
   valueModel.value =props.multiple? valueModel.value.filter(x=>x!==v.id) : null
@@ -159,6 +159,7 @@ onUnmounted(()=>{
       :clearable="clearable"
       @scroll="onScrollEv"
       @update:show="(e)=>emits('updateShow',e)"
+      @focus="emits('focus')"
       :multiple="multiple"
       v-model:value="valueModel"
       :options="computedOption"
