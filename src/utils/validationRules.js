@@ -121,8 +121,8 @@ export default {
                 trigger: triggerEvents
             },
             {
-                max:16,
-                message: t(`rules.requiredMaxLength`, {n:16}),
+                max:32,
+                message: t(`rules.requiredMaxLength`, {n:32}),
                 trigger: triggerEvents
             },
         ],
