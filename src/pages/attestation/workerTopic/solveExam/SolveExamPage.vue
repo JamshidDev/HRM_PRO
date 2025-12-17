@@ -54,9 +54,10 @@ const endAttempt = ()=>{
         // router.push(Utils.routeAttestationPathMaker(AppPaths.Exam))
 
       })
-    }else{
+    }
+    else{
       store.finishLoading = false
-      router.push(Utils.routeAttestationPathMaker(AppPaths.Exam))
+      // router.push(Utils.routeAttestationPathMaker(AppPaths.Exam))
     }
 
   })
