@@ -1,11 +1,13 @@
 <script setup>
 import {NoDataPicture, UIPagination, UIStatus, UIUser} from "@/components/index.js"
 import {useConfApplicationStore, useComponentStore} from "@/store/modules/index.js"
-import Utils from "../../../../../utils/Utils.js"
+import Utils from "@/utils/Utils.js"
 import MenuButton from "@/components/buttons/MenuButton.vue"
+import i18n from "@/i18n"
 
 const store = useConfApplicationStore()
 const componentStore = useComponentStore()
+const t = i18n.global.t
 
 
 const emits = defineEmits([ 'openOffice',])
@@ -87,6 +89,21 @@ const onDelete = (v)=>{
   store._confDelete()
 }
 
+const checkingStatus = {
+  0:{
+    id:1,
+    name:t('content.Process')
+  },
+  1:{
+    id:3,
+    name:t('content.checked')
+  },
+  2:{
+    id:4,
+    name:t('content.Rejected')
+  },
+}
+
 </script>
 
 <template>
@@ -100,21 +117,24 @@ const onDelete = (v)=>{
         <thead>
         <tr>
           <th class="text-center! min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
-          <th class="min-w-[60px] w-[60px]">{{$t('applicationPage.form.number')}}</th>
           <th class="min-w-[200px]">{{$t('applicationPage.form.type')}}</th>
+          <th class="min-w-[60px] w-[60px]">{{$t('applicationPage.form.number')}}</th>
           <th class="min-w-[200px] w-[200px]">{{$t('applicationPage.form.director_id')}}</th>
+          <th class="min-w-[100px] w-[120px]">{{$t('content.checkLabel')}}</th>
           <th class="min-w-[100px] w-[120px]">{{$t('content.status')}}</th>
-          <th class="min-w-[100px] w-[100px]">{{$t('content.date')}}</th>
           <th class="w-[120px]">{{$t('content.document')}}</th>
+          <th class="min-w-[100px] w-[100px]">{{$t('content.date')}}</th>
           <th class="min-w-[40px] w-[40px]"></th>
         </tr>
         </thead>
         <tbody>
         <tr v-for="(item, idx) in store.list" :key="idx">
           <td><span class="text-center text-[12px] text-gray-600 block">{{ (store.params.page - 1) * store.params.per_page + idx + 1 }}</span></td>
-          <td>{{item?.worker_application.number}}</td>
           <td>
             <span @click="onOpenFile(item?.worker_application?.id, item?.id)" class="hover:text-primary hover:underline cursor-pointer">{{item?.worker_application?.type.name}}</span>
+          </td>
+          <td>
+            <div class="flex justify-center"><n-button class="font-medium" round type="primary" size="tiny" dashed>{{item?.worker_application.number}}</n-button></div>
           </td>
           <td>
             <UIUser
@@ -127,9 +147,10 @@ const onDelete = (v)=>{
                   }"
             />
           </td>
+          <td><UIStatus :status="checkingStatus[Number(item?.worker_application.status)]" /></td>
           <td><UIStatus :status="item?.worker_application.confirmation" /></td>
-          <td>{{Utils.timeOnlyDate(item?.worker_application.created_at)}}</td>
           <td><UIStatus :status="Utils.documentStatus[item?.worker_application.generate]"/></td>
+          <td>{{Utils.timeOnlyDate(item?.worker_application.created_at)}}</td>
           <td>
            <MenuButton
                :data="item"

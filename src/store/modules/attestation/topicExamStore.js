@@ -91,7 +91,6 @@ export const useTopicExamStore = defineStore('topicExamStore', {
                 ...this.workerParams,
             }
             $ApiService.topicExamService._worker({params, id: this.topicId}).then((res)=>{
-                const selectedOption = this.workerList.filter(v=>this.payload.whom_ids.includes(v.id))
                 let data = res.data.data.data.map((v)=>({
                     ...v,
                     name:v.worker.last_name + ' '+v.worker.first_name+' '+v.worker.middle_name,
@@ -100,16 +99,17 @@ export const useTopicExamStore = defineStore('topicExamStore', {
                     photo: v.worker?.photo
                 }))
                 this.totalWorker =res.data.data.total
-                this.workerList =infinity? Array.from(new Map([...data, ...selectedOption].map(v => [v.id, v])).values()) :Array.from(new Map([...data, ...selectedOption].map(v => [v.id, v])).values())
+                const options = infinity ? [...data, ...this.workerList] : data
+                this.workerList =Array.from(new Map([...options].map(v => [v.id, v])).values())
 
             }).finally(()=>{
                 this.workerLoading = false
             })
         },
-        onSearchWorker(v){
+        onSearchWorker(){
             this.workerParams.page = 1
-            this.workerParams.search = v
-            Utils.debouncedFn(this._workers)
+            this._workers()
+
         },
         onScrollWorker(e){
             const currentTarget = e.currentTarget;

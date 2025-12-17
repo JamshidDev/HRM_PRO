@@ -6,10 +6,9 @@ import {UIMainLoading} from "@/components/index.js"
 import SignatureInstance from "@/pages/app/e-imzo/SignatureInstance.vue"
 import {naiveBreakpoints} from "@/assets/theme/theme.js"
 import {useLocaleProvider, useAppInit} from "@/composables/index.js"
-
 const {localeProvider, theme} = useLocaleProvider()
-useAppInit()
 
+useAppInit()
 </script>
 <template>
   <n-config-provider
