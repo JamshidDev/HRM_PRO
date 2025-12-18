@@ -23,7 +23,9 @@ const getValueOfCssVariable = (variableName) => {
 }
 
 /** @returns {GlobalThemeOverrides} */
-export const customTheme = ()=>({
+export const customTheme = ()=>
+
+    ({
     common: {
 
         primaryColor:getValueOfCssVariable('--primary-color'),
@@ -39,6 +41,7 @@ export const customTheme = ()=>({
         textColor2:getValueOfCssVariable('--textColor2'),  // Ikkinchi darajali matn rangi (tavsiflar)
         textColor3:getValueOfCssVariable('--textColor3'),   // Uchinchi darajali matn rangi (maslahatlar)
         textColorDisabled:getValueOfCssVariable('--surface-text'),  // Nogiron holatdagi matn rangi
+
 
         cardColor:getValueOfCssVariable('--surface-section'), // Karta tipidagi komponentlar uchun fon rangi (masalan, <n-card>)
         modalColor:getValueOfCssVariable('--surface-section'), // Modal oynalar uchun fon rangi
