@@ -30,6 +30,22 @@ export const useCommandStore = defineStore('commandStore', {
         },
         form_32:{
             contract_to_date:null,
+            command_additional:[],
+            pension:{
+                year: 2025,
+                count:1
+            },
+            salary_withholding:{
+                period1:null,
+                period2:null,
+                all_day:0,
+                rest_day:0,
+            },
+            compensation:{
+                period1:null,
+                period2:null,
+                rest_day:0,
+            }
         },
         form_43:{
             new_date:null,
@@ -201,6 +217,14 @@ export const useCommandStore = defineStore('commandStore', {
                 this.vacations = []
 
                 this.form_32.contract_to_date = null
+            this.form_32.pension.year = 2025
+            this.form_32.salary_withholding.period1 = new Date().getTime()
+            this.form_32.salary_withholding.period2 = null
+            this.form_32.salary_withholding.all_day = 0
+            this.form_32.salary_withholding.rest_day = 0
+            this.form_32.compensation.period1 = new Date().getTime()
+            this.form_32.compensation.period2 = null
+            this.form_32.compensation.rest_day = 0
 
                 this.form_44.new_date = null
                 this.form_44.rest_day = null
