@@ -685,7 +685,7 @@
         "work_day": "Ishga chiqish sanasi",
         "main_day": "Asosiy ta'til kuni",
         "second_day": "Qo'shimcha ta'til kuni",
-        "additionals": "Qo'chimchalar",
+        "additional": "Qo'chimchalar",
         "calculateVacation": "Ta'tilni hisoblash",
         "no-calculate": "Ta'tilni kuni hisoblanmagan!",
         "all_day": "Ta'til kuni",
@@ -705,6 +705,7 @@
         "fine": "Jazo nomi",
         "amount": "Miqdori",
         "count": "Pul mukofot baravari",
+        "coefficient": "Fozi",
         "financeType": "Moddiy yordam turi",
         "command_number": "Buyruq raqami"
       }

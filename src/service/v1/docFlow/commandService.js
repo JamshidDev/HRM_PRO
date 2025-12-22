@@ -3,6 +3,11 @@ import axios from "../../index.js"
 const _index =async (payload)=>{
     return await axios.get(`/v1/hr/commands`, {params:payload.params})
 }
+
+const _additionalData = async (payload)=>{
+    return await axios.get(`/v1/hr/worker-additional/${payload?.id}`, {params:payload.params})
+}
+
 const _create = async (payload)=>{
     return await axios.post(`/v1/hr/commands`, payload?.data)
 }
@@ -21,4 +26,5 @@ export default {
     _create,
     _delete,
     _viewFile,
+    _additionalData,
 }

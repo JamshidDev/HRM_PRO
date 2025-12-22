@@ -178,7 +178,7 @@ onMounted(() => {
     <div class="col-span-12 md:col-span-6 lg:col-span-6">
       <n-form-item
           :show-feedback="false"
-          :label="$t(`documentPage.command.form.additionals`)" path="additional">
+          :label="$t(`documentPage.command.form.additional`)" path="additional">
         <n-select
             v-model:value="item.additional"
             filterable

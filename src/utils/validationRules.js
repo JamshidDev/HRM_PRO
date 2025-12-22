@@ -1123,13 +1123,13 @@ export default {
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
-        'pension.year':{
+        'pension_count.year':{
             type:'number',
             required: true,
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
-        'pension.count':{
+        'pension_count.count':{
             type:'number',
             required: true,
             message: t(`rules.requiredField`),
@@ -1177,6 +1177,13 @@ export default {
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
+        'salary_withholding.month':{
+            type:'number',
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+
     },
     form_44:{
         new_date:{
