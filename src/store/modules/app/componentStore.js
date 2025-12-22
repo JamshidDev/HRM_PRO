@@ -186,6 +186,7 @@ export const useComponentStore = defineStore('componentStore', {
         timesheetEnumsLoading: false,
         work_Types:[],
         reasonTypes:[],
+        deleteCommandEnum:[],
         reasonTypeLoading:false,
 
         workerApplicationTypes:[],
@@ -418,6 +419,11 @@ export const useComponentStore = defineStore('componentStore', {
                 this.fineTypes = res.data.data.fine_types
                 this.vacationTypes = res.data.data.vacation_types
                 this.work_Types = res.data.data.work_types
+                this.deleteCommandEnum = Object.entries(res.data.data.command_additional.delete_additional).map(([key, v])=>({
+                    id:key,
+                    name:v,
+                }))
+
                 callback?.()
             }).finally(()=>{
                 this.enumLoading= false

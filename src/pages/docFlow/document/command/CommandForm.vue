@@ -89,7 +89,9 @@ const onChangeWorkers = ()=>{
   generationData()
 }
 
-const onChangeWorker = ()=>{}
+const onChangeWorker = ()=>{
+  store.form_32.command_additional = []
+}
 
 const onSubmit = (status)=>{
   formRef.value?.validate( async (error)=>{
@@ -208,6 +210,7 @@ const onChangeCommandType = ()=>{
 
   const commandId = store.payload.command_type
   if(commandIdList.includes(commandId)){
+    componentStore._enums()
     if(store.payload.workers.length>0){
       const val = store.workerList.filter(v=>v.id === store.payload.workers[0])[0]
       store.payload.worker = val?.id
@@ -552,21 +555,6 @@ onMounted(()=>{
           <div class="col-span-12 md:col-span-6 flex">
             <template v-if="store.isSingleSelect">
               <n-form-item class="w-full" :label="$t(`documentPage.form.worker`)" path="worker">
-<!--                <n-select-->
-<!--                    :disabled="store.payload.organization_id.length === 0"-->
-<!--                    v-model:value="store.payload.worker"-->
-<!--                    filterable-->
-<!--                    :placeholder="$t('content.searchWorker')"-->
-<!--                    :options="store.workerList"-->
-<!--                    label-field="name"-->
-<!--                    value-field="id"-->
-<!--                    :render-label="workerRenderLabel"-->
-<!--                    :render-tag="workerRenderValue"-->
-<!--                    @update:value="onChangeWorker"-->
-<!--                    :loading="componentStore.workerLoading"-->
-<!--                    @scroll="componentStore.onScrollWorker"-->
-<!--                    @search="componentStore.onSearchWorker"-->
-<!--                />-->
                 <SuperSelect
                     :disabled="store.payload.organization_id.length === 0"
                     :max-tag-count="1"

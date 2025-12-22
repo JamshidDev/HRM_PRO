@@ -30,6 +30,27 @@ export const useCommandStore = defineStore('commandStore', {
         },
         form_32:{
             contract_to_date:null,
+            command_additional:[],
+            pension_count:{
+                year: 1,
+                count:1
+            },
+            pension_coefficient:{
+                year: 1,
+                coefficient:1
+            },
+            salary_withholding:{
+                period1:null,
+                period2:null,
+                all_day:0,
+                rest_day:0,
+                month:null,
+            },
+            compensation:{
+                period1:null,
+                period2:null,
+                rest_day:0,
+            }
         },
         form_43:{
             new_date:null,
@@ -97,7 +118,12 @@ export const useCommandStore = defineStore('commandStore', {
         oneByOne:true
     }),
     actions:{
-
+        _additionalData(params, callback){
+            const id = this.payload.worker
+            $ApiService.commandService._additionalData({id, params}).then((res)=>{
+                callback?.(res.data)
+            })
+        },
         _workers(infinity=false){
             this.workerLoading = true
             let params ={
@@ -201,6 +227,21 @@ export const useCommandStore = defineStore('commandStore', {
                 this.vacations = []
 
                 this.form_32.contract_to_date = null
+                this.form_32.pension_count.year = 1
+                this.form_32.pension_count.count = 1
+                this.form_32.pension_coefficient.year = 1
+                this.form_32.pension_coefficient.coefficient = 10
+
+
+            this.form_32.salary_withholding.period1 = null
+            this.form_32.salary_withholding.period2 = null
+            this.form_32.salary_withholding.all_day = null
+            this.form_32.salary_withholding.rest_day = null
+            this.form_32.salary_withholding.month = null
+            this.form_32.compensation.period1 = null
+            this.form_32.compensation.period2 = null
+            this.form_32.compensation.rest_day = null
+            this.form_32.compensation.command_additional = []
 
                 this.form_44.new_date = null
                 this.form_44.rest_day = null
