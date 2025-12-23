@@ -707,7 +707,41 @@
         "count": "Pul mukofot baravari",
         "coefficient": "Fozi",
         "financeType": "Moddiy yordam turi",
-        "command_number": "Buyruq raqami"
+        "warning_date": "Ogohlantirish xati sanasi",
+        "warning_number": "Ogohlantirish xati raqami",
+        "command_number": "Buyruq raqami",
+        "base": "Asos",
+        "warning_one": "Tashkilot tugatilganligi sababli",
+        "warning_two": "Texnologiyaning, ishlab chiqarish va mehnatni tashkil etishning o‘zgarishi, ishlar (mahsulot, xizmatlar) hajmining qisqarishi bilan bog‘liq bo‘lgan shtatining o‘zgarganligi sababli",
+        "warning_three": "Malakasi yetarli bo‘lmaganligi sababli",
+        "warning_four": "O‘z mehnat majburiyatlarini muntazam ravishda buzganligi sababli",
+        "warning_five": "O‘z mehnat majburiyatlarini bir marta qo‘pol ravishda buzganligi sababli",
+
+        "warning_seven": "Tashkilotning mulkdori almashganligi sababli",
+        "warning_eight": "Tashkilot qayta tashkil etilganligi sababli",
+        "warning_nine": "Uning idoraviy taalluqliligi (bo‘ysunuvi) o‘zgarganligi sababli",
+
+        "warning_ten": "Harbiy xizmatga chaqirilganligi sababli",
+        "warning_eleven": "Muqobil xizmatga chaqirilganligi sababli",
+        "warning_twelve": "Shu ishni ilgari bajarib kelgan xodimning avvalgi ishga qaytganligi sababli",
+        "warning_thirteen": "Sudning hukmi bilan avvalgi ishini davom ettirish imkoniyati bo‘lmaganligi sababli",
+        "warning_fourteen": "Ishga qabul qilishga doir belgilangan qoidalarning buzilganligi sababli",
+        "warning_fifteen": "Qonunchilikka muvofiq mehnatga oid munosabatlarni davom ettirishga monelik qiladigan holatlar yuzaga kelganligi sababli",
+        "warning_sixteen": "Tashkilot faoliyatini tugatish to‘g‘risidagi sud qarorining qonuniy kuchga kirganligi sababli",
+        "warning_seventeen": "Xodimni ishga tiklash haqidagi sud qarori bekor qilinganligi sababli",
+        "warning_eighteen": "O‘zbekiston Respublikasi Bandlik va mehnat munosabatlari vazirligi Davlat mehnat inspeksiyasining qarori bekor qilinganligi sababli",
+        "warning_nineteen": "Xodim vafot etganligi sababli",
+        "warning_twenty": "Sud tomonidan xodimning bedarak yo‘qolgan deb e’tirof etilganligi sababli",
+        "warning_twenty_one": "Qonunda nazarda tutilgan boshqa holatlar (qo‘lda yoziladi)",
+
+        "reason_one": "Birinchi marta qonuniy nikohdan o‘tishi munosabati bilan",
+        "reason_two": "Nogiron farzandni tarbiyalayotganligi uchun, nogironlar kuni munosabati bilan",
+        "reason_three": "Ota, ona, turmush o‘rtog‘i, farzandlari vafot etganligi munosabati bilan",
+        "reason_four": "Quyidagi saraton, leykoz, birinchi marta sil (tuberkulyoz) kasaligi, jigar serrozi dekompensasiya bosqichi, jigar transplantasiyasi, yurak qon-tomir kasalliklari, yurak klapanlarini almashtirish, yurak tomirlarini stendlash, AKSh (aorta koronar shuntlash), ablyasiya, yurak va buyrakdagi murakkab jarrohlik operatsiyalari, infarkt, insul't, o‘tkir buyrak yetishmovchiligi, dializ, buyrak transplantasiyasi, nefroskleroz, koksartroz III darajali endoprotezlash, bir yoki ikki ko‘zning terminal bosqichidagi glaukomasi kasalligiga chalinganligi munosabati bilan",
+        "reason_five": "50, 55, 60, 70, 80, 90, 100 yillik yubiley sanasiga etganligi munosabati bilan",
+        "reason_six": "Tabiiy ofatdan zarar ko‘rganligi munosabati bilan tasdiqlangan baholash dalolatnomasi muvofiq",
+        "reason_seven": "Maishiy ko‘mir yoqil‘isi sotib olishi munosabati bilan"
+
       }
     },
     "form": {
