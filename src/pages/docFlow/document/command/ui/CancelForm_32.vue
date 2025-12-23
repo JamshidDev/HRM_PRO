@@ -102,6 +102,18 @@ watch(()=>store.form_32.command_additional, (newValue, oldValue)=>{
   })
 })
 
+const pairs = {
+  'pension_count':'pension_coefficient',
+  'pension_coefficient':'pension_count',
+  'compensation':'salary_withholding',
+  'salary_withholding':'compensation',
+}
+
+const selectOptions = computed(()=>{
+  return componentStore.deleteCommandEnum.map(v=>({...v, disabled:store.form_32.command_additional.includes(pairs[v.id])}))
+})
+
+
 
 
 defineExpose({
@@ -134,10 +146,11 @@ defineExpose({
           :show-feedback="false"
           :label="$t(`documentPage.command.form.additional`)">
         <n-select
+            :consistent-menu-width="false"
             multiple
             v-model:value="store.form_32.command_additional"
             filterable
-            :options="componentStore.deleteCommandEnum"
+            :options="selectOptions"
             label-field="name"
             value-field="id"
             :loading="componentStore.enumLoading"
