@@ -1,6 +1,6 @@
 <script setup>
 import LangDropdown from "@/components/general/LangDropdown.vue";
-import {UIProfile, UIThemeSwitch} from "@/components/index.js"
+import {UIProfile, UIThemeSwitch, DownloadTask} from "@/components/index.js"
 import AIButtonV2 from "@/components/buttons/AIButtonV2.vue"
 import {Alert20Regular, ChevronDoubleRight16Filled, WifiWarning24Regular, Video28Filled} from "@vicons/fluent"
 import {useAccountStore, useExamVideoStore} from "@/store/modules/index.js"
@@ -73,6 +73,7 @@ const showVideo = ()=>{
         <Alert20Regular/>
       </n-icon>
    </n-badge>
+    <DownloadTask/>
     <UIThemeSwitch/>
     <n-button @click="showVideo()" v-if="examVideoStore.isRecording">
       <template #icon>
@@ -81,7 +82,6 @@ const showVideo = ()=>{
       <span class="hidden md:flex" >Recording</span>
     </n-button>
     <LangDropdown/>
-
     <UIProfile/>
 
   </div>
