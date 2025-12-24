@@ -71,8 +71,7 @@ onMounted(()=>{
                 <n-button v-if="item.status.id === 2" @click="onDownload(item.file)" class="!py-1" type="success" secondary size="tiny">
                   <template #icon>
                     <ArrowCircleDown24Regular/>
-                  </template>
-                  {{$t('content.download')}}</n-button>
+                  </template></n-button>
                 <n-button v-if="item.status.id === 1" class="!py-1" type="warning" secondary size="tiny">
                   <template #icon>
                     <Timer16Regular/>
