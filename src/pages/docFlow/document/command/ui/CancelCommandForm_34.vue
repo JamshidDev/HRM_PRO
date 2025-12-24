@@ -21,10 +21,10 @@ const onSubmit =async (mainData)=>{
           {
             ...mainData,
             contract_to_date:Utils.timeToZone(store.form_34.contract_to_date),
-            warning_date:Utils.timeToZone(store.form_34.warning_date),
-            reason:store.form_34.reason,
-            warning_number:store.form_34.warning_number,
             command_additional: {
+              warning_date:Utils.timeToZone(store.form_34.warning_date),
+              reason:store.form_34.reason,
+              warning_number:store.form_34.warning_number,
               pension_count: showPension.value? store.form_34.pension_count: undefined,
               salary_withholding: showSalaryWithholding.value? {
                 ...store.form_34.salary_withholding,
