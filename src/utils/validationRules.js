@@ -1183,22 +1183,22 @@ export default {
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
-        reason:{
-            required: true,
-            message: t(`rules.requiredField`),
-            trigger: triggerEvents
-        },
-        warning_date:{
-            type:'number',
-            required: true,
-            message: t(`rules.requiredField`),
-            trigger: triggerEvents
-        },
-        warning_number:{
-            required: true,
-            message: t(`rules.requiredField`),
-            trigger: triggerEvents
-        },
+        // reason:{
+        //     required: true,
+        //     message: t(`rules.requiredField`),
+        //     trigger: triggerEvents
+        // },
+        // warning_date:{
+        //     type:'number',
+        //     required: true,
+        //     message: t(`rules.requiredField`),
+        //     trigger: triggerEvents
+        // },
+        // warning_number:{
+        //     required: true,
+        //     message: t(`rules.requiredField`),
+        //     trigger: triggerEvents
+        // },
 
 
     },

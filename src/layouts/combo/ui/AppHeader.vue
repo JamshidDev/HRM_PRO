@@ -73,7 +73,7 @@ const showVideo = ()=>{
         <Alert20Regular/>
       </n-icon>
    </n-badge>
-    <DownloadTask/>
+<!--    <DownloadTask/>-->
     <UIThemeSwitch/>
     <n-button @click="showVideo()" v-if="examVideoStore.isRecording">
       <template #icon>

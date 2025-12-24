@@ -22,7 +22,7 @@ const onSubmit =async (mainData)=>{
       contract_to_date:Utils.timeToZone(store.form_32.contract_to_date),
       command_additional: {
         warning_date:Utils.timeToZone(store.form_32.warning_date),
-        warning_number:store.form_32.warning_number,
+        warning_number:store.form_32.warning_number || null,
         pension_count: showPension.value? store.form_32.pension_count: undefined,
         salary_withholding: showSalaryWithholding.value? {
           ...store.form_32.salary_withholding,
