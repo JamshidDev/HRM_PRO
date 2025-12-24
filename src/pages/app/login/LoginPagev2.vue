@@ -1,6 +1,6 @@
 <script setup>
-import {useRouter} from "vue-router";
-import {useLoginStore, useAppStore, useSignatureStore, useAccountStore, useSocketStore} from "@/store/modules/index.js"
+import {useRouter, useRoute} from "vue-router";
+import {useLoginStore, useAppStore, useSignatureStore, useAccountStore} from "@/store/modules/index.js"
 import validationRules from "@/utils/validationRules.js";
 import {Call16Filled, LockClosed16Filled, Eye24Regular,
   EyeOff20Filled, KeyMultiple20Filled, AppStore24Filled} from '@vicons/fluent'
@@ -14,6 +14,7 @@ const accountStore = useAccountStore()
 const appStore = useAppStore()
 const signatureStore = useSignatureStore()
 const router = useRouter()
+const route = useRoute()
 
 
 const formRef = ref(null)
@@ -57,6 +58,17 @@ const onComingSoon = ()=>{
 }
 
 onMounted(()=>{
+  const {client_id, state, scope} = route?.query
+  if(client_id && state && scope){
+    store.authPayload = {
+      client_id,
+      state,
+      scope,
+    }
+  }else{
+    store.authPayload = null
+  }
+
   const inputElement = document.querySelector('input[type="password"].n-input__input-el');
   inputElement.addEventListener('animationstart', function (e) {
     if (e.animationName === 'autofill-detected') {
@@ -126,7 +138,7 @@ onMounted(()=>{
                   id="password"
                   type="password"
                   show-password-on="click"
-                  :maxlength="16"
+                  :maxlength="32"
                   v-model:value="store.password"
               >
                 <template #prefix>

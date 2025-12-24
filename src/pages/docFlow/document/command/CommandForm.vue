@@ -8,6 +8,7 @@ import VacationForm_41 from "@/pages/docFlow/document/command/ui/VacationForm_41
 import {UINSelect, UISelect, SuperSelect, UIUser} from "@/components/index.js"
 import EmptyForm from "@/pages/docFlow/document/command/ui/EmptyForm.vue"
 import CancelForm_32 from "@/pages/docFlow/document/command/ui/CancelForm_32.vue"
+import CancelCommandForm_34 from "@/pages/docFlow/document/command/ui/CancelCommandForm_34.vue"
 import VacationForm_44 from "@/pages/docFlow/document/command/ui/VacationForm_44.vue"
 import VacationForm_43 from "@/pages/docFlow/document/command/ui/VacationForm_43.vue"
 import VacationForm_45 from "@/pages/docFlow/document/command/ui/VacationForm_45.vue"
@@ -36,6 +37,7 @@ const formRef = ref(null)
 const confirmationList = ref([])
 
 const cancelForm_32 = ref(null)
+const cancelCommandForm_34 = ref(null)
 const vacationForm_41 = ref(null)
 const vacationForm_43 = ref(null)
 const vacationForm_44 = ref(null)
@@ -89,7 +91,9 @@ const onChangeWorkers = ()=>{
   generationData()
 }
 
-const onChangeWorker = ()=>{}
+const onChangeWorker = ()=>{
+  store.form_32.command_additional = []
+}
 
 const onSubmit = (status)=>{
   formRef.value?.validate( async (error)=>{
@@ -111,8 +115,9 @@ const onSubmit = (status)=>{
       let validate = null
 
 
-
-      if(commandIdList.includes(store.payload.command_type)){
+     if([34,35, 39].includes(store.payload.command_type)){
+        validate = await cancelCommandForm_34.value?.onSubmit(mainData)
+      }else if(commandIdList.includes(store.payload.command_type)){
         validate =await cancelForm_32.value?.onSubmit(mainData)
       }
       else if(store.payload.command_type === 41){
@@ -150,6 +155,7 @@ const onSubmit = (status)=>{
         validate =await vacationForm_73.value?.onSubmit(mainData)
       }
 
+      console.log(validate?.isValid)
 
       if(validate?.isValid){
 
@@ -208,6 +214,7 @@ const onChangeCommandType = ()=>{
 
   const commandId = store.payload.command_type
   if(commandIdList.includes(commandId)){
+    componentStore._enums()
     if(store.payload.workers.length>0){
       const val = store.workerList.filter(v=>v.id === store.payload.workers[0])[0]
       store.payload.worker = val?.id
@@ -393,6 +400,7 @@ const generationData = (isFill=false)=>{
       reason:null,
       type:null,
       amount:null,
+      base:null,
     },
   }
 
@@ -552,21 +560,6 @@ onMounted(()=>{
           <div class="col-span-12 md:col-span-6 flex">
             <template v-if="store.isSingleSelect">
               <n-form-item class="w-full" :label="$t(`documentPage.form.worker`)" path="worker">
-<!--                <n-select-->
-<!--                    :disabled="store.payload.organization_id.length === 0"-->
-<!--                    v-model:value="store.payload.worker"-->
-<!--                    filterable-->
-<!--                    :placeholder="$t('content.searchWorker')"-->
-<!--                    :options="store.workerList"-->
-<!--                    label-field="name"-->
-<!--                    value-field="id"-->
-<!--                    :render-label="workerRenderLabel"-->
-<!--                    :render-tag="workerRenderValue"-->
-<!--                    @update:value="onChangeWorker"-->
-<!--                    :loading="componentStore.workerLoading"-->
-<!--                    @scroll="componentStore.onScrollWorker"-->
-<!--                    @search="componentStore.onSearchWorker"-->
-<!--                />-->
                 <SuperSelect
                     :disabled="store.payload.organization_id.length === 0"
                     :max-tag-count="1"
@@ -631,6 +624,9 @@ onMounted(()=>{
 
         <template v-if="store.payload.command_type === 41">
           <VacationForm_41 ref="vacationForm_41"/>
+        </template>
+        <template v-else-if="[34,35, 39].includes(store.payload.command_type)">
+          <CancelCommandForm_34 ref="cancelCommandForm_34" />
         </template>
         <template v-else-if="commandIdList.includes(store.payload.command_type )">
           <CancelForm_32 ref="cancelForm_32" />

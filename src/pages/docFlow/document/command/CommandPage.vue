@@ -6,7 +6,6 @@ import CommandForm from "./CommandForm.vue"
 import {UIModal} from "@/components/index.js"
 import Utils from "@/utils/Utils.js"
 import Filter from "./ui/Filter.vue"
-
 const officeAppRef = ref(null)
 const store = useCommandStore()
 const componentStore = useComponentStore()

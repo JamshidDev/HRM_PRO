@@ -74,12 +74,12 @@ const onPreview = (id)=>{
           <th class="min-w-[200px]">{{$t('contractPage.table.type')}}</th>
           <th class="w-[80px]">{{$t('contractPage.table.number')}}</th>
           <th class="min-w-[120px] w-[180px]">{{$t('contractPage.table.worker')}}</th>
+          <th class="w-[300px]">{{$t('contractPage.table.organization')}}</th>
           <th class="min-w-[100px] w-[100px]">{{$t('contractPage.table.command')}}</th>
           <th class="w-[120px]">{{$t('content.confirmStatus')}}</th>
-          <th class="w-[300px]">{{$t('contractPage.table.organization')}}</th>
-          <th class="w-[100px]">{{$t('contractPage.table.date')}}</th>
           <th class="w-[120px]">{{$t('contractPage.table.status')}}</th>
           <th class="w-[120px]">{{$t('content.document')}}</th>
+          <th class="w-[100px]">{{$t('contractPage.table.date')}}</th>
           <th class="min-w-[40px] w-[40px]"></th>
         </tr>
         </thead>
@@ -109,6 +109,8 @@ const onPreview = (id)=>{
                 }"
             />
           </td>
+
+          <td><span class="text-sm">{{item?.organization.name}}</span></td>
           <td><div class="flex justify-center">
             <n-button
                 dashed
@@ -124,16 +126,15 @@ const onPreview = (id)=>{
           </div>
           </td>
           <td><UIStatus :status="item?.confirmation"/></td>
-          <td><span class="text-sm">{{item?.organization.name}}</span></td>
-          <td>
-            <span class="text-sm">{{Utils.timeOnlyDate(item?.contract_date)}}</span>
-          </td>
           <td><UIStatus :status="{
             name:item?.status.name,
             id:item?.status.id ===2? 3:2,
           }"/></td>
 
           <td><UIStatus :status="Utils.documentStatus[item?.generate]"/></td>
+          <td>
+            <span class="text-sm">{{Utils.timeOnlyDate(item?.contract_date)}}</span>
+          </td>
           <td>
             <UIMenuButton
                 :show-view="true"

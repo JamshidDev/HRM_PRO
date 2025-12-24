@@ -121,8 +121,8 @@ export default {
                 trigger: triggerEvents
             },
             {
-                max:16,
-                message: t(`rules.requiredMaxLength`, {n:16}),
+                max:32,
+                message: t(`rules.requiredMaxLength`, {n:32}),
                 trigger: triggerEvents
             },
         ],
@@ -1123,6 +1123,84 @@ export default {
             message: t(`rules.requiredField`),
             trigger: triggerEvents
         },
+        'pension_count.year':{
+            type:'number',
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        'pension_count.count':{
+            type:'number',
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        'compensation.period1':{
+            type:'number',
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        'compensation.period2':{
+            type:'number',
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        'compensation.rest_day':{
+            type:'number',
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        'salary_withholding.period1':{
+            type:'number',
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        'salary_withholding.period2':{
+            type:'number',
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        'salary_withholding.all_day':{
+            type:'number',
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        'salary_withholding.rest_day':{
+            type:'number',
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        'salary_withholding.month':{
+            type:'number',
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        reason:{
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        warning_date:{
+            type:'number',
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+        warning_number:{
+            required: true,
+            message: t(`rules.requiredField`),
+            trigger: triggerEvents
+        },
+
+
     },
     form_44:{
         new_date:{

@@ -81,6 +81,7 @@ const show = ref(false)
               </div>
             </div>
             <div>
+
               <n-button v-if="item?.ended" size="small" tertiary type="info" @click="$emit('view', item)">
                 {{ $t('content.view') }}
                 <template #icon>
@@ -95,7 +96,7 @@ const show = ref(false)
                   type="warning"
                   @click="$emit('continue', item)"
               >
-                {{ $t('content.continue') }}
+                {{ $t('content.continue')  }}
                 <template #icon>
                   <n-icon :component="ArrowSyncCheckmark24Filled"/>
                 </template>

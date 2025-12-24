@@ -11,10 +11,10 @@ import mask from "./directives/mask.js"
 import VueSignature from "vue-signature-pad"
 import inputFormatter from "@/plugins/inputFormatter.js"
 import dateMaskPlugin from "@/plugins/dateMaskPlugin.js"
+import FlyUploadPlugin from "@/plugins/flyUploadPlugin.js"
 import {useAccountStore} from "@/store/modules/index.js"
 import { RecycleScroller } from 'vue3-virtual-scroller'
 import 'vue3-virtual-scroller/dist/vue3-virtual-scroller.css'
-import VueGtag from 'vue-gtag-next'
 
 const app = createApp(App);
 const meta = document.createElement('meta')
@@ -25,13 +25,8 @@ app.use(VueSignature)
 app.use(naive)
 app.use(inputFormatter)
 app.use(dateMaskPlugin)
+app.use(FlyUploadPlugin)
 app.use(router)
-// app.use(VueGtag, {
-//     property: {
-//         id: import.meta.env.VITE_MEASUREMENT_ID
-//     },
-//     router: router
-// })
 app.use(pinia)
 app.component('RecycleScroller', RecycleScroller)
 

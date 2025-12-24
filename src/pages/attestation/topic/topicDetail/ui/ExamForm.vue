@@ -3,7 +3,7 @@ import validationRules from "@/utils/validationRules.js";
 import { useComponentStore, useTopicExamStore } from "@/store/modules/index.js";
 import {useRoute} from "vue-router";
 import UIHelper from "@/utils/UIHelper.js"
-import {UINSelect} from "@/components/index.js"
+import {SuperSelect, UINSelect} from "@/components/index.js"
 
 const formRef = ref(null)
 const store = useTopicExamStore()
@@ -49,6 +49,12 @@ const onSearch = (v)=>{
       store._checkWorker(pin)
     },600)
   }
+
+}
+
+const onScrollEv = ()=>{
+  store.workerParams.page +=1
+  store._workers(true)
 
 }
 
@@ -156,22 +162,35 @@ const onSearch = (v)=>{
                           path="whom_ids"
                           rule-path="requiredMultiSelectField"
           >
-            <UINSelect
-                v-model:value="store.payload.whom_ids"
-                value-field="id"
-                :loading="store.workerLoading"
-                :query="store.workerParams.search"
-                :options="store.workerList"
-                @onSearch="store.onSearchWorker"
+<!--            <UINSelect-->
+<!--                v-model:value="store.payload.whom_ids"-->
+<!--                value-field="id"-->
+<!--                :loading="store.workerLoading"-->
+<!--                :query="store.workerParams.search"-->
+<!--                :options="store.workerList"-->
+<!--                @onSearch="store.onSearchWorker"-->
+<!--                multiple-->
+<!--            />-->
+            <SuperSelect
                 multiple
+                :options="store.workerList"
+                :loading="store.workerLoading"
+                :total-count="store.totalWorker"
+                :per-page="store.workerParams.per_page"
+                v-model:value="store.payload.whom_ids"
+                v-model:search="store.workerParams.search"
+                @onSearch="store.onSearchWorker"
+                @onScrollEv="onScrollEv"
             />
           </n-form-item-gi>
+
           <n-form-item-gi :span="2"
                           v-else-if="store.payload.whom===5"
                           :label="$t(`topicDetailsPage.exams.workers`)"
                           path="whom_ids"
                           rule-path="requiredMultiSelectField"
           >
+
             <UINSelect
                 v-model:value="store.payload.whom_ids"
                 value-field="id"

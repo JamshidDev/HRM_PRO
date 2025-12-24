@@ -45,6 +45,7 @@ export {default as PageInstruction} from './pageInstruction/pageInstruction.vue'
 export {default as UIDateViewer} from './general/UIDateViewer.vue'
 export {default as UIOnlineOffline} from './ui/OnlineOffline.vue'
 export {default as UIMultipleLangItems} from './ui/MultipleLangItems.vue'
+export {default as DownloadTask} from './ui/DownloadTask.vue'
 
 export * from './layoutTab'
 export * from './editor'

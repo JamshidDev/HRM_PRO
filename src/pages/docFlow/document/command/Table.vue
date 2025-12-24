@@ -68,12 +68,12 @@ const onSelect = (v)=>{
         <tr>
           <th class="text-center! min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
           <th class="min-w-[60px]">{{$t('content.type')}}</th>
-          <th class="min-w-[60px] w-[120px]">{{$t('content.worker')}}</th>
           <th class="min-w-[60px] w-[60px]">{{$t('confirmation.contract.form.number')}}</th>
+          <th class="min-w-[60px] w-[120px]">{{$t('content.worker')}}</th>
           <th class="min-w-[100px] w-[300px]">{{$t('confirmation.contract.form.organization')}}</th>
           <th class="min-w-[100px] w-[100px]">{{$t('content.status')}}</th>
-          <th class="min-w-[100px] w-[100px]">{{$t('content.date')}}</th>
           <th class="min-w-[100px] w-[100px]">{{$t('content.document')}}</th>
+          <th class="min-w-[100px] w-[100px]">{{$t('content.date')}}</th>
           <th class="min-w-[40px] w-[40px]"></th>
         </tr>
         </thead>
@@ -82,6 +82,9 @@ const onSelect = (v)=>{
           <td><span class="text-center text-[12px] text-gray-600 block">{{ (store.params.page - 1) * store.params.per_page + idx + 1 }}</span></td>
           <td>
             <span @click="onOpenFile(item.id)" class="hover:text-primary hover:underline cursor-pointer">{{item?.type?.name}}</span>
+          </td>
+          <td>
+            <div class="flex justify-center"> <n-button  type="primary" class="font-medium" round dashed size="tiny">{{item?.command_number}}</n-button></div>
           </td>
           <td>
            <div class="flex justify-center w-fullx">
@@ -106,13 +109,11 @@ const onSelect = (v)=>{
 
            </div>
           </td>
-          <td>
-            <div class="flex justify-center"> <n-button class="font-medium" round type="error" size="tiny">{{item?.command_number}}</n-button></div>
-          </td>
+
           <td>{{item?.organization?.name}}</td>
           <td><UIStatus :status="item?.confirmation"/> </td>
-          <td>{{ Utils.timeOnlyDate(item?.command_date) }}</td>
           <td><UIStatus :status="Utils.documentStatus[item?.generate]"/></td>
+          <td>{{ Utils.timeOnlyDate(item?.command_date) }}</td>
           <td>
             <UIMenuButton
                 :show-view="true"
