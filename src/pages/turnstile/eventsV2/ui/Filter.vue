@@ -2,7 +2,7 @@
 import {useAccountStore, useComponentStore, useEventStore, useEventV2Store} from "@/store/modules/index.js"
 import {UIPageFilter, UISelect} from "@/components/index.js"
 import i18n from "@/i18n/index.js"
-import {StarLineHorizontal320Regular} from "@vicons/fluent"
+import {ArrowCircleDown32Regular, StarLineHorizontal320Regular} from "@vicons/fluent"
 
 const {t} = i18n.global
 const store = useEventV2Store()
@@ -85,6 +85,17 @@ const eventOption = [
       @onClear="resetFilter"
       :show-add-button="false"
   >
+    <template #filterAction>
+      <n-button
+          @click="store._download()"
+          :loading="store.downloadLoading"
+          type="success">
+        <template #icon>
+          <ArrowCircleDown32Regular/>
+        </template>
+        {{$t('content.download')}}
+      </n-button>
+    </template>
     <template #filterContent>
       <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{$t('actionLog.table.structure')}}</label>
       <UISelect

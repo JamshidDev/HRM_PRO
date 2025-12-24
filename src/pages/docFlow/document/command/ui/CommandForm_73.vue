@@ -2,7 +2,7 @@
 <script setup>
 import {useCommandStore, useComponentStore} from "@/store/modules/index.js"
 import {
-  PersonNote20Regular, DismissCircle16Regular, Eye24Regular
+  PersonNote20Regular, DismissCircle16Regular, Eye24Regular, Info20Filled
 } from "@vicons/fluent"
 import Utils from "../../../../../utils/Utils.js"
 import i18n from "@/i18n/index.js"
@@ -10,6 +10,9 @@ import i18n from "@/i18n/index.js"
 const store = useCommandStore()
 const componentStore = useComponentStore()
 const {t} = i18n.global
+
+const base = ref(null)
+const loading = ref(false)
 
 
 
@@ -31,6 +34,10 @@ const onSubmit = (mainData) => {
       data: {
         ...mainData,
         worker_positions: data,
+        command_additional:{
+          base:base.value || '',
+        }
+
       },
       isValid: true,
     }
@@ -43,6 +50,38 @@ const onSubmit = (mainData) => {
   }
 
 
+}
+
+const options = [
+  { id: 1, name: t('documentPage.command.form.reason_one') },
+  { id: 2, name: t('documentPage.command.form.reason_two') },
+  { id: 3, name: t('documentPage.command.form.reason_three') },
+  { id: 4, name: t('documentPage.command.form.reason_four') },
+  { id: 5, name: t('documentPage.command.form.reason_five') },
+  { id: 6, name: t('documentPage.command.form.reason_six') },
+  { id: 7, name: t('documentPage.command.form.reason_seven') }
+]
+
+const onSelectReason = (index,v)=>{
+  store.workerData[index].reason = v
+}
+
+const onChange = (v, item, index)=>{
+  if(v === 2){
+    getAdditionalData(index, item.id)
+  }
+}
+
+const getAdditionalData = (index, id)=>{
+  loading.value = true
+  const params = {
+    type: 'financial_assistance',
+  }
+  $ApiService.commandService._additionalData({id, params}).then((res) => {
+    store.workerData[index].amount = res.data.data.data.experience_coefficient?.toString()
+  }).finally(()=>{
+    loading.value = false
+  })
 }
 
 
@@ -87,12 +126,39 @@ onMounted(() => {
       <n-form-item
           :show-feedback="false"
           :label="$t(`documentPage.command.form.reason`)" path="reason">
-        <n-input
-            class="w-full"
-            type="text"
+        <div class="!w-full flex gap-2">
+          <n-input
+              class="w-full"
+              type="textarea"
+              :autosize="true"
+              :rows="1"
+              v-model:value="item.reason"
+              clearable
+          />
+          <n-popover
+              placement="bottom"
+              trigger="click"
+          >
+            <template #trigger>
+              <n-button type="primary" secondary round>
+                <template #icon>
+                  <Info20Filled/>
+                </template>
+              </n-button>
+            </template>
+            <div class="max-w-[400px] h-[300px] overflow-y-auto">
+              <div
+                  v-for="item in options" :key="item.id"
+                  class="leading-[1.2] mb-1 text-[14px] text-secondary cursor-pointer p-2 bg-transparent hover:bg-primary/10 rounded-xl"
+                  @click="onSelectReason(idx,item.name)"
+              >
+                {{item.id}}. {{item.name}}
+              </div>
+            </div>
 
-            v-model:value="item.reason"
-        />
+          </n-popover>
+
+        </div>
       </n-form-item>
     </div>
     <div class="col-span-12 md:col-span-6 lg:col-span-4">
@@ -100,13 +166,14 @@ onMounted(() => {
           :show-feedback="false"
           :label="$t(`documentPage.command.form.financeType`)" path="financeType">
         <n-select
+            :disabled="loading"
             v-model:value="item.type"
             filterable
-
             :options="componentStore.financialAssistance"
             label-field="name"
             value-field="id"
             :loading="componentStore.enumLoading"
+            @update:value="onChange($event, item, idx)"
         />
       </n-form-item>
     </div>
@@ -118,12 +185,28 @@ onMounted(() => {
         <n-input
             class="w-full"
             :allow-input="Utils.onlyAllowNumber"
-
             v-model:value="item.amount"
+            :loading="loading"
         />
       </n-form-item>
     </div>
-
-
   </div>
+
+  <div class="grid grid-cols-12 mb-8 gap-x-4 border border-surface-line p-2 rounded-md bg-surface-ground">
+    <div class="col-span-12">
+      <n-form-item
+          :show-feedback="false"
+          :label="$t(`documentPage.command.form.base`)" path="base">
+        <n-input
+            class="w-full"
+            type="textarea"
+            :autosize="true"
+            :rows="1"
+            v-model:value="base"
+            clearable
+        />
+      </n-form-item>
+    </div>
+  </div>
+
 </template>

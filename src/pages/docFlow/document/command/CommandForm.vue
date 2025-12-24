@@ -8,6 +8,7 @@ import VacationForm_41 from "@/pages/docFlow/document/command/ui/VacationForm_41
 import {UINSelect, UISelect, SuperSelect, UIUser} from "@/components/index.js"
 import EmptyForm from "@/pages/docFlow/document/command/ui/EmptyForm.vue"
 import CancelForm_32 from "@/pages/docFlow/document/command/ui/CancelForm_32.vue"
+import CancelCommandForm_34 from "@/pages/docFlow/document/command/ui/CancelCommandForm_34.vue"
 import VacationForm_44 from "@/pages/docFlow/document/command/ui/VacationForm_44.vue"
 import VacationForm_43 from "@/pages/docFlow/document/command/ui/VacationForm_43.vue"
 import VacationForm_45 from "@/pages/docFlow/document/command/ui/VacationForm_45.vue"
@@ -36,6 +37,7 @@ const formRef = ref(null)
 const confirmationList = ref([])
 
 const cancelForm_32 = ref(null)
+const cancelCommandForm_34 = ref(null)
 const vacationForm_41 = ref(null)
 const vacationForm_43 = ref(null)
 const vacationForm_44 = ref(null)
@@ -113,8 +115,9 @@ const onSubmit = (status)=>{
       let validate = null
 
 
-
-      if(commandIdList.includes(store.payload.command_type)){
+     if([34,35, 39].includes(store.payload.command_type)){
+        validate = await cancelCommandForm_34.value?.onSubmit(mainData)
+      }else if(commandIdList.includes(store.payload.command_type)){
         validate =await cancelForm_32.value?.onSubmit(mainData)
       }
       else if(store.payload.command_type === 41){
@@ -152,6 +155,7 @@ const onSubmit = (status)=>{
         validate =await vacationForm_73.value?.onSubmit(mainData)
       }
 
+      console.log(validate?.isValid)
 
       if(validate?.isValid){
 
@@ -396,6 +400,7 @@ const generationData = (isFill=false)=>{
       reason:null,
       type:null,
       amount:null,
+      base:null,
     },
   }
 
@@ -619,6 +624,9 @@ onMounted(()=>{
 
         <template v-if="store.payload.command_type === 41">
           <VacationForm_41 ref="vacationForm_41"/>
+        </template>
+        <template v-else-if="[34,35, 39].includes(store.payload.command_type)">
+          <CancelCommandForm_34 ref="cancelCommandForm_34" />
         </template>
         <template v-else-if="commandIdList.includes(store.payload.command_type )">
           <CancelForm_32 ref="cancelForm_32" />

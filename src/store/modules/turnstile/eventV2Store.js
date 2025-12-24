@@ -160,6 +160,7 @@ export const useEventV2Store = defineStore('eventV2Store', {
         activeTab:1,
         tabs:[1,2],
         eventInDayList:[],
+        downloadLoading:false
 
     }),
     actions: {
@@ -194,6 +195,18 @@ export const useEventV2Store = defineStore('eventV2Store', {
                 access_levels:this.params.access_levels.toString() || undefined,
                 date:this.params.date? Utils.timeToZone(this.params.date): undefined,
             }
+        },
+        _download(){
+            this.downloadLoading = true
+            const params = {
+                ...this._params(),
+                download:true
+            }
+            $ApiService.eventV2Service._index({params}).then((res) => {
+                router.push(Utils.routeHrmPathMaker(AppPaths.Export))
+            }).finally(() => {
+                this.downloadLoading = false
+            })
         },
         _index() {
             this.loading = true
