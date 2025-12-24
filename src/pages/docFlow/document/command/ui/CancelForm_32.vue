@@ -11,7 +11,6 @@ const store = useCommandStore()
 const componentStore = useComponentStore()
 const formRef = ref(null)
 const lastVacationRef = ref(null)
-const lastVacationRef2 = ref(null)
 const {t} = i18n.global
 const onSubmit =async (mainData)=>{
    let data = null
@@ -22,6 +21,8 @@ const onSubmit =async (mainData)=>{
       ...mainData,
       contract_to_date:Utils.timeToZone(store.form_32.contract_to_date),
       command_additional: {
+        warning_date:Utils.timeToZone(store.form_32.warning_date),
+        warning_number:store.form_32.warning_number,
         pension_count: showPension.value? store.form_32.pension_count: undefined,
         salary_withholding: showSalaryWithholding.value? {
           ...store.form_32.salary_withholding,
