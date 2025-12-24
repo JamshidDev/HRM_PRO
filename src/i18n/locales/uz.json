@@ -203,7 +203,8 @@
     "forceUnSelectAll": "To'liq tozalash",
     "uz": "UZ",
     "ru": "RU",
-    "en": "EN"
+    "en": "EN",
+    "create": "Yaratish"
   },
   "date": {
     "day": "Kun",
@@ -1829,7 +1830,7 @@
     }
   },
   "report": {
-    "name": "Hisobot",
+    "name": "Plan va Fakt",
     "tooltip": {
       "P": "Plan",
       "F": "Fakt",
@@ -1851,6 +1852,10 @@
       "optimizationConfirm": "Ushbu amalni bajarish orqali bo'limdagi bir xil turdagi barcha lavozimlarni birlashtiriladi. Tasdiqlash orqali amalni bajaring",
       "byWorker": "Xodimlar kesimida"
     }
+  },
+  "specialReport": {
+    "name": "Hisobotlar",
+    "create": "Hisobot yaratish"
   },
   "uploadReport": {
     "name": "Hisobot yuklash",
