@@ -157,6 +157,10 @@ export const appPermissions = {
     hrReportWrite: 'hr-report-write',
     hrReportRead: 'hr-report-read',
 
+    hrReportExport: 'hr-report-export',
+    hrReportExportWrite: 'hr-report-export-write',
+    hrReportExportRead: 'hr-report-export-read',
+
     confirmation:"confirmation",
     confirmationContracts:"confirmation-contracts",
     confirmationAddContracts:"confirmation-contracts-additional",

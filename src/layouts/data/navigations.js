@@ -255,7 +255,7 @@ export const navigations = [
                 path: Utils.routeHrmPathMaker(AppPaths.SpecialReport),
                 icon: AppFolder20Filled,
                 color: 'bg-info',
-                permission: appPermissions.hrReport,
+                permission: appPermissions.hrReportExport,
             },
 
         ]
