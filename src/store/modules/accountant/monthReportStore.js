@@ -84,7 +84,7 @@ export const useMonthReportStore = defineStore('monthReportStore', {
             this.showLoading = true
             $ApiService.monthReportService._exportWithCode({data}).then(()=>{
                 this.exportVisible = false
-                router.push(Utils.routeHrmPathMaker(AppPaths.Export))
+                // router.push(Utils.routeHrmPathMaker(AppPaths.Export))
             }).finally(()=>{
                 this.showLoading= false
             })

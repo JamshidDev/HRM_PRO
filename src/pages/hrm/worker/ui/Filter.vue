@@ -240,14 +240,14 @@ const onKeyUp = Utils.useDebounce(filterEvent,1000)
           <CloudArchive20Filled/>
         </template>
       </n-button>
-      <n-button
-          @click="router.push(Utils.routeHrmPathMaker(AppPaths.Export))"
-          class="w-full! md:w-auto!"
-          type="warning">{{$t('exportPage.name')}}
-        <template #icon>
-          <CloudArchive20Filled/>
-        </template>
-      </n-button>
+<!--      <n-button-->
+<!--          @click="router.push(Utils.routeHrmPathMaker(AppPaths.Export))"-->
+<!--          class="w-full! md:w-auto!"-->
+<!--          type="warning">{{$t('exportPage.name')}}-->
+<!--        <template #icon>-->
+<!--          <CloudArchive20Filled/>-->
+<!--        </template>-->
+<!--      </n-button>-->
       <n-button
           @click="openUserListEv"
           class="w-full! md:w-auto!"

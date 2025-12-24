@@ -15,7 +15,7 @@ const icons = {
 let id = 0
 
 export const useNotify = () => {
-    const notify = (title,message=null, type = 'success', duration = 25000) => {
+    const notify = (title,message=null, type = 'success', duration = 5000) => {
         const item = {
             id: id++,
             type,

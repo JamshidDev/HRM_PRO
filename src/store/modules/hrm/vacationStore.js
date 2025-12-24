@@ -41,7 +41,7 @@ export const useVacationStore = defineStore('vacationStore', {
                 download:true,
             }
             $ApiService.vacationService._index({params}).then((res)=>{
-                router.push(Utils.routeHrmPathMaker(AppPaths.Export))
+                // router.push(Utils.routeHrmPathMaker(AppPaths.Export))
             }).finally(()=>{
                 this.loading= false
             })

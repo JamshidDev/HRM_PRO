@@ -80,6 +80,7 @@ onMounted(()=>{
           >{{ $t('content.no') }}
           </n-button>
           <n-button
+              v-fly-upload
               size="large"
               secondary
               @click="submitExportResume(true)"

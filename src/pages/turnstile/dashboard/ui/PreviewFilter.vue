@@ -173,7 +173,7 @@ onMounted(()=>{
         />
        </div>
       <div class="col-span-2">
-        <n-button @click="dashboardStore._download()" :loading="dashboardStore.previewLoading" type="default" class="!mt-5 !w-full">
+        <n-button v-fly-upload @click="dashboardStore._download()" :loading="dashboardStore.previewLoading" type="default" class="!mt-5 !w-full">
           {{$t('content.download')}}
           <template #icon>
             <ArrowCircleDown48Regular/>

@@ -90,6 +90,7 @@ const resetFilter = ()=>{
     </template>
     <template #filterAction>
       <n-button
+          v-fly-upload
           @click="store._download()"
           :loading="store.loading"
           type="success">

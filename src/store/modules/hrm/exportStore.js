@@ -92,7 +92,7 @@ export const useExportStore = defineStore('exportStore', {
             $ApiService.exportService._export_resume({data}).then((res) => {
                 this.resumeModalVisible = false
                 this.resetResumePayload()
-                router.push(Utils.routeHrmPathMaker(AppPaths.Export))
+                // router.push(Utils.routeHrmPathMaker(AppPaths.Export))
             }).finally(() => {
                 this.exportResumeLoading = false
             })

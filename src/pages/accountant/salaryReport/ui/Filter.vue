@@ -48,7 +48,7 @@ onMounted(()=>{
       :show-add-button="false"
   >
     <template #filterAction>
-      <n-button type="success" :loading="store.downloadLoading" @click="store._downloadExcel()">
+      <n-button v-fly-upload type="success" :loading="store.downloadLoading" @click="store._downloadExcel()">
         {{$t('content.download')}}
         <template #icon>
           <ArrowCircleDown48Regular/>
