@@ -1770,7 +1770,7 @@
     }
   },
   "report": {
-    "name": "Report",
+    "name": "Plan and Fact",
     "tooltip": {
       "P": "Plan",
       "F": "Fact",
@@ -1792,6 +1792,10 @@
       "optimizationConfirm": "This will merge same positions. Confirm.",
       "byWorker": "By employees"
     }
+  },
+  "specialReport": {
+    "name": "Reports",
+    "create": "Create report"
   },
   "uploadReport": {
     "name": "Upload reports",
