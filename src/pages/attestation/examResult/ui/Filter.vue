@@ -139,7 +139,7 @@ const accessFinishBtn = computed(()=>accStore.checkPermission(accStore.pn.admin)
         </n-tooltip>
       </template>
 
-      <n-button type="success" :loading="store.downloadLoading || store.loading" @click="store._downloadExam()">
+      <n-button v-fly-upload type="success" :loading="store.downloadLoading || store.loading" @click="store._downloadExam()">
         <template #icon>
           <n-icon size="24">
             <ArrowCircleDown24Regular/>
@@ -147,7 +147,7 @@ const accessFinishBtn = computed(()=>accStore.checkPermission(accStore.pn.admin)
         </template>
         {{$t('examPage.downloadResult')}}
       </n-button>
-      <n-button type="warning" :loading="store.downloadLoading || store.loading" @click="store._downloadNotPassedExam()">
+      <n-button v-fly-upload type="warning" :loading="store.downloadLoading || store.loading" @click="store._downloadNotPassedExam()">
         <template #icon>
           <n-icon size="24">
             <ArrowCircleDown24Regular/>

@@ -42,7 +42,7 @@ export const useIncentiveStore = defineStore('incentiveStore', {
                 download:true
             }
             $ApiService.incentiveService._index({params}).then((res)=>{
-                router.push(Utils.routeHrmPathMaker(AppPaths.Export))
+                // router.push(Utils.routeHrmPathMaker(AppPaths.Export))
             }).finally(()=>{
                 this.downloading= false
             })

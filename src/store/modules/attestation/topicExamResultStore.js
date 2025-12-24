@@ -31,7 +31,7 @@ export const useTopicExamResultStore = defineStore('topicExamResult', {
             this.downloadLoading= true
             const params = this._paramToQuery()
             $ApiService.topicExamResultService._downloadNoPassedWorker({params}).then(()=>{
-                router.push(Utils.routeHrmPathMaker(AppPaths.Export))
+                // router.push(Utils.routeHrmPathMaker(AppPaths.Export))
             }).finally(()=>{
                 this.downloadLoading= false
             })
@@ -40,7 +40,7 @@ export const useTopicExamResultStore = defineStore('topicExamResult', {
             this.downloadLoading= true
             const params = this._paramToQuery()
             $ApiService.topicExamResultService._downloadExam({params}).then(()=>{
-                router.push(Utils.routeHrmPathMaker(AppPaths.Export))
+                // router.push(Utils.routeHrmPathMaker(AppPaths.Export))
             }).finally(()=>{
                 this.downloadLoading= false
             })

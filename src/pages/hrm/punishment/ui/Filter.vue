@@ -60,7 +60,7 @@ const resetFilter = ()=>{
       :show-add-button="false"
   >
     <template #filterAction>
-      <n-button :loading="store.downloading" type="success" @click="store._download()">
+      <n-button v-fly-upload :loading="store.downloading" type="success" @click="store._download()">
         <template #icon>
           <ArrowCircleDown32Regular/>
         </template>

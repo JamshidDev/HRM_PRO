@@ -474,7 +474,7 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
             $ApiService.eventService._download({ params }).then(() => {
                 this.previewVisible = false
                 // You can add router navigation here if needed
-                router.push(Utils.routeHrmPathMaker(AppPaths.Export))
+                // router.push(Utils.routeHrmPathMaker(AppPaths.Export))
             }).finally(() => {
                 this.previewLoading = false
             })

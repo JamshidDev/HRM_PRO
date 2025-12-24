@@ -23,8 +23,8 @@ const onSubmit =async (mainData)=>{
             contract_to_date:Utils.timeToZone(store.form_34.contract_to_date),
             command_additional: {
               warning_date:Utils.timeToZone(store.form_34.warning_date),
-              reason:store.form_34.reason,
-              warning_number:store.form_34.warning_number,
+              reason:store.form_34.reason || null,
+              warning_number:store.form_34.warning_number || null,
               pension_count: showPension.value? store.form_34.pension_count: undefined,
               salary_withholding: showSalaryWithholding.value? {
                 ...store.form_34.salary_withholding,
@@ -226,7 +226,7 @@ defineExpose({
         />
       </n-form-item>
     </div>
-    <div class="col-span-12 md:col-span-6 lg:col-span-6">
+    <div class="col-span-12 md:col-span-12 lg:col-span-12">
       <n-form-item
           :show-feedback="false"
           :label="$t(`documentPage.command.form.reason`)"

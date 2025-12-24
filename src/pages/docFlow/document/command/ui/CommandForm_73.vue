@@ -35,7 +35,7 @@ const onSubmit = (mainData) => {
         ...mainData,
         worker_positions: data,
         command_additional:{
-          base:base.value || '',
+          base:base.value || null,
         }
 
       },

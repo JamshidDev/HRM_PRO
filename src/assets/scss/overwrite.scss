@@ -460,6 +460,12 @@ input:-webkit-autofill {
   color: var(--white-color);
 }
 
+.custom-notification> .n-message{
+  min-height: 80px !important;
+  display: flex;
+  align-items: start;
+}
+
 
 
 

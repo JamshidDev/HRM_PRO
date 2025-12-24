@@ -56,7 +56,7 @@ export const usePensionerStore = defineStore('pensionerStore', {
         _download(){
             this.loading= true
             $ApiService.pensionerService._index({params:{export:true}}).then((res)=>{
-                router.push(Utils.routeHrmPathMaker(AppPaths.Export))
+                // router.push(Utils.routeHrmPathMaker(AppPaths.Export))
             }).finally(()=>{
                 this.loading= false
             })

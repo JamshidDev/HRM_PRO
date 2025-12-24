@@ -212,7 +212,7 @@ onMounted(() => {
         </div>
 
         <div class="col-span-12 flex justify-center mb-4">
-          <n-button :loading="store.showLoading" @click="onSubmit" type="success" class="w-[200px]!">
+          <n-button v-fly-upload :loading="store.showLoading" @click="onSubmit" type="success" class="w-[200px]!">
             {{ $t('content.download') }}
           </n-button>
         </div>

@@ -91,6 +91,7 @@ const onSubmit = () => {
     </div>
     <n-space justify="end" class="mt-2">
       <n-button
+          v-fly-upload
           icon-placement="right"
           @click="onSubmit" type="primary" :loading="store.loading"
       >

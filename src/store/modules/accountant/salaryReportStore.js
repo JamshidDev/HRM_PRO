@@ -52,7 +52,7 @@ export const useSalaryReportStore = defineStore('salaryReportStore', {
             }
             const service = this.activeTab===1? $ApiService.salaryReportService._indexByMonth({params}) :  $ApiService.salaryReportService._indexByOrg({params})
             service.then((res)=>{
-                router.push(Utils.routeHrmPathMaker(AppPaths.Export))
+                // router.push(Utils.routeHrmPathMaker(AppPaths.Export))
             }).finally(()=>{
                 this.downloadLoading = false
             })
