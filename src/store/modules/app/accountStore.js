@@ -34,6 +34,9 @@ export const useAccountStore = defineStore('accountStore', {
         districtList:[],
         districtLoading:false,
         orgLoading:false,
+        notificationList:[],
+        notifyLoading:false,
+        unReadNotificationCount:0,
     }),
     getters:{
         checkPermission:(state)=>(permission)=>{
@@ -61,6 +64,34 @@ export const useAccountStore = defineStore('accountStore', {
         },
     },
     actions:{
+        incrementUnReadCount(){
+            this.unReadNotificationCount ++
+        },
+        _markRead(data){
+            this.notifyLoading = true
+            $ApiService.exportService._markRead({data}).then(res=>{
+                this.unReadNotificationCount = 0
+                this._fetchTask()
+            }).finally(()=>{
+                this.notifyLoading = false
+            })
+        },
+        _fetchTask(){
+            this.notifyLoading = true
+            $ApiService.exportService._tasks({params:{page:1, per_page:10}}).then(res=>{
+                this.notificationList = res.data.data.data
+            }).finally(()=>{
+                this.notifyLoading = false
+            })
+        },
+        _fetchUnReadNotificationCount(){
+            this.notifyLoading = true
+            $ApiService.exportService._unReadCount().then(res=>{
+                this.unReadNotificationCount = res.data.data.count
+            }).finally(()=>{
+                this.notifyLoading = false
+            })
+        },
         _getOrgInfo(){
             this.orgLoading = true
             $ApiService.accountService._orgInfo().then((res)=>{

@@ -1,5 +1,7 @@
 // plugins/flyUpload.js
 
+let piniaStore = null
+
 const FlyUploadPlugin = {
     install(app, globalOptions = {}) {
         const defaults = {
@@ -9,7 +11,15 @@ const FlyUploadPlugin = {
             size: globalOptions.size || 44,
             colors: globalOptions.colors || ['#2dcb73', '#2dcb73'],
             icon: globalOptions.icon || 'check',
-            trailEnabled: globalOptions.trailEnabled !== false
+            trailEnabled: globalOptions.trailEnabled !== false,
+            // Pinia store config
+            store: globalOptions.store || null,
+            storeAction: globalOptions.storeAction || 'increment',
+        }
+
+        // Store ni saqlash
+        if (globalOptions.store) {
+            piniaStore = globalOptions.store
         }
 
         injectKeyframes()
@@ -43,6 +53,11 @@ const FlyUploadPlugin = {
     }
 }
 
+// Qiymatni viewport ichida saqlash
+function clamp(value, min, max) {
+    return Math.max(min, Math.min(max, value))
+}
+
 function flyToTarget(sourceEl, config) {
     const targetEl = document.querySelector(config.target)
     if (!targetEl) {
@@ -52,6 +67,11 @@ function flyToTarget(sourceEl, config) {
 
     const sourceRect = sourceEl.getBoundingClientRect()
     const targetRect = targetEl.getBoundingClientRect()
+
+    // Viewport chegaralari
+    const vw = window.innerWidth
+    const vh = window.innerHeight
+    const padding = config.size / 2 + 10
 
     const start = {
         x: sourceRect.left + sourceRect.width / 2,
@@ -63,9 +83,21 @@ function flyToTarget(sourceEl, config) {
         y: targetRect.top + targetRect.height / 2
     }
 
+    // Arc yo'nalishini aniqlash
+    const goingDown = end.y > start.y + 50
+    let arcY
+
+    if (goingDown) {
+        // Pastga ketayotganda - arc pastda
+        arcY = clamp(Math.max(start.y, end.y) + config.arcHeight * 0.5, padding, vh - padding)
+    } else {
+        // Yuqoriga ketayotganda - arc yuqorida
+        arcY = clamp(Math.min(start.y, end.y) - config.arcHeight, padding, vh - padding)
+    }
+
     const cp = {
-        x: (start.x + end.x) / 2,
-        y: Math.min(start.y, end.y) - config.arcHeight
+        x: clamp((start.x + end.x) / 2, padding, vw - padding),
+        y: arcY
     }
 
     // Flying element - Tailwind classes
@@ -93,13 +125,17 @@ function flyToTarget(sourceEl, config) {
         const x = (1-t)**2 * start.x + 2*(1-t)*t * cp.x + t**2 * end.x
         const y = (1-t)**2 * start.y + 2*(1-t)*t * cp.y + t**2 * end.y
 
-        flyer.style.left = `${x - config.size / 2}px`
-        flyer.style.top = `${y - config.size / 2}px`
+        // Viewport ichida saqlash
+        const clampedX = clamp(x, padding, vw - padding)
+        const clampedY = clamp(y, padding, vh - padding)
+
+        flyer.style.left = `${clampedX - config.size / 2}px`
+        flyer.style.top = `${clampedY - config.size / 2}px`
         flyer.style.transform = `scale(${1 - progress * 0.4}) rotate(${progress * 360}deg)`
         flyer.style.opacity = 1 - progress * 0.3
 
         if (config.trailEnabled && now - lastTrail > 35) {
-            createTrail(x, y, config.colors[0])
+            createTrail(clampedX, clampedY, config.colors[0])
             lastTrail = now
         }
 
@@ -111,6 +147,19 @@ function flyToTarget(sourceEl, config) {
             // Pulse class qo'shish
             targetEl.classList.add('animate-fly-pulse')
             setTimeout(() => targetEl.classList.remove('animate-fly-pulse'), 600)
+
+            // Pinia store ni yangilash
+            if (config.store && config.storeAction) {
+                const store = typeof config.store === 'function' ? config.store() : config.store
+                if (store && typeof store[config.storeAction] === 'function') {
+                    store[config.storeAction]()
+                }
+            } else if (piniaStore && config.storeAction) {
+                const store = typeof piniaStore === 'function' ? piniaStore() : piniaStore
+                if (store && typeof store[config.storeAction] === 'function') {
+                    store[config.storeAction]()
+                }
+            }
 
             if (config.onComplete) config.onComplete(targetEl)
         }

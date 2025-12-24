@@ -2,6 +2,7 @@ import {defineStore} from "pinia";
 import io from 'socket.io-client';
 const socketUrl = import.meta.env.VITE_SOCKET_URL
 const socketSecret = import.meta.env.VITE_SOCKET_SECRET
+import { useNotify } from '@/composables/useNotify'
 
 export const useSocketStore = defineStore('useSocketStore', {
     state:()=>({
@@ -49,13 +50,14 @@ export const useSocketStore = defineStore('useSocketStore', {
                 this.removeUserFromOnlineUsers(data.user)
             });
 
-            this.socket.on('export_ready', (data) => {
-                console.log(data)
-                $Toast.info('Export ready');
-            })
-            this.socket.on('export_ready', (data) => {
-                console.log(data)
-                $Toast.info('Export ready');
+            this.socket.on('notification', (data) => {
+                const notify = useNotify()
+                notify.notify(data.title || 'Empty message',data?.message || null, data.type || 'info')
+                // $Toast.create(data.title || 'Empty message',{
+                //     type: data.type || 'info',
+                //     duration: 50000,
+                //     class: 'custom-notification'
+                // })
             })
 
             this.socket.on('online_users', (data) => {

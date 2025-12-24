@@ -39,9 +39,7 @@ export const usePunishmentStore = defineStore('punishmentStore', {
                 organizations:this.params.organizations.map(v=>v.id).toString() || undefined,
                 download:true
             }
-            $ApiService.punishmentService._index({params}).then((res)=>{
-                router.push(Utils.routeHrmPathMaker(AppPaths.Export))
-            }).finally(()=>{
+            $ApiService.punishmentService._index({params}).finally(()=>{
                 this.downloading= false
             })
         }

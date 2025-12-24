@@ -16,6 +16,7 @@ import {useAccountStore} from "@/store/modules/index.js"
 import { RecycleScroller } from 'vue3-virtual-scroller'
 import 'vue3-virtual-scroller/dist/vue3-virtual-scroller.css'
 
+
 const app = createApp(App);
 const meta = document.createElement('meta')
 meta.name = 'naive-ui-style'
@@ -25,12 +26,19 @@ app.use(VueSignature)
 app.use(naive)
 app.use(inputFormatter)
 app.use(dateMaskPlugin)
-app.use(FlyUploadPlugin)
 app.use(router)
 app.use(pinia)
+
+
+
 app.component('RecycleScroller', RecycleScroller)
 
 const store = useAccountStore()
+
+app.use(FlyUploadPlugin, {
+    store: store,
+    storeAction: 'incrementUnReadCount'
+})
 
 if(import.meta.env.VITE_APP_MODE === "development"){
     store.isModeDev = true

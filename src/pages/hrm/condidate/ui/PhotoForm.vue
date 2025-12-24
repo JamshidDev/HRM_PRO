@@ -76,7 +76,8 @@ watchEffect(()=>{
               alt=""
           >
           <div v-if="images.length>1" class="photo__delete-btn w-[30px] h-[30px] rounded-full bg-danger flex justify-center items-center absolute bottom-[-30px] transition-all z-10 left-1/2 translate-x-[-50%]">
-            <n-icon @click="deleteEv(img)" size="26" class="text-white">
+            <n-icon @click.stop="deleteEv(img)" size="26" class="text-white">
+
               <DismissCircle48Regular/>
             </n-icon>
           </div>

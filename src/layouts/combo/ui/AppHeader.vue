@@ -59,7 +59,7 @@ const showVideo = ()=>{
 
 
   </div>
-  <div class="flex justify-end items-center gap-4">
+  <div class="flex justify-end items-center gap-6">
     <n-button type="error" v-if="store.isModeDev" @click="deployProject" :loading="loading">
      <span class="hidden md:inline-block"> Build vs Deploy</span>
       <template #icon>
@@ -73,7 +73,7 @@ const showVideo = ()=>{
         <Alert20Regular/>
       </n-icon>
    </n-badge>
-<!--    <DownloadTask/>-->
+    <DownloadTask/>
     <UIThemeSwitch/>
     <n-button @click="showVideo()" v-if="examVideoStore.isRecording">
       <template #icon>
