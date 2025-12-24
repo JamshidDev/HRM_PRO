@@ -26,6 +26,7 @@ import {
     IncentivePage,
     ReportPage,
     OtherPage,
+    SpecialReportPage
 } from "@/pages/hrm/index.js"
 
 import {
@@ -263,6 +264,14 @@ export default [
         path:Utils.routeHrmPathMaker(AppPaths.Other),
         name:AppPaths.Other.substring(1),
         component:OtherPage,
+        meta:{
+            layout:AppLayouts.main
+        },
+    },
+    {
+        path:Utils.routeHrmPathMaker(AppPaths.SpecialReport),
+        name:AppPaths.SpecialReport.substring(1),
+        component:SpecialReportPage,
         meta:{
             layout:AppLayouts.main
         },

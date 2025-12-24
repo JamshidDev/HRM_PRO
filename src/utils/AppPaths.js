@@ -96,6 +96,7 @@ export const AppPaths = {
     Punishment: "/punishment",
     Incentive: "/incentive",
     Report: "/report",
+    SpecialReport: "/spectial-report",
     WorkDuration: "/work-duration",
     HCWorkDuration: "/hc-work-duration",
     AccessLevels: "/access-levels",
