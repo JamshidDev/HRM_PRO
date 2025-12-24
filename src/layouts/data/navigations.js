@@ -250,7 +250,13 @@ export const navigations = [
                 color: 'bg-success',
                 permission: appPermissions.lmsWorker,
             },
-
+            {
+                label: 'specialReport.name',
+                path: Utils.routeHrmPathMaker(AppPaths.SpecialReport),
+                icon: AppFolder20Filled,
+                color: 'bg-info',
+                permission: appPermissions.hrReport,
+            },
 
         ]
     },
