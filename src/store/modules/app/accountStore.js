@@ -67,13 +67,11 @@ export const useAccountStore = defineStore('accountStore', {
         incrementUnReadCount(){
             this.unReadNotificationCount ++
         },
-        _markRead(data){
+        _markRead(data, callback=null){
             this.notifyLoading = true
-            $ApiService.exportService._markRead({data}).then(res=>{
-                this.unReadNotificationCount = 0
-                this._fetchTask()
-            }).finally(()=>{
+            $ApiService.exportService._markRead({data}).finally(()=>{
                 this.notifyLoading = false
+                callback?.()
             })
         },
         _fetchTask(){

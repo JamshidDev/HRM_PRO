@@ -25,8 +25,8 @@ const changePage = (v)=>{
           <th class="text-center! min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
           <th class="min-w-[200px]">{{$t('content.type')}}</th>
           <th class="min-w-[200px] w-[300px] text-center!">{{$t('content.status')}}</th>
-          <th class="min-w-[130px] w-[130px]">{{$t('content.created')}}</th>
-          <th class="min-w-[130px] w-[130px]">{{$t('content.ended')}}</th>
+          <th class="min-w-[130px] w-[160px]">{{$t('content.created')}}</th>
+          <th class="min-w-[130px] w-[160px]">{{$t('content.ended')}}</th>
           <th class="min-w-[50px] w-[50px]">{{$t('content.action')}}</th>
         </tr>
         </thead>
@@ -34,6 +34,7 @@ const changePage = (v)=>{
         <tr v-for="(item, idx) in store.tasks" :key="idx">
           <td><span class="text-center text-[12px] text-gray-600 block">{{ (store.params.page - 1) * store.params.per_page + idx + 1 }}</span></td>
           <td>
+            <n-badge v-if="!item.read_at" class="mb-[2px]" type="info" dot />
             {{item.type}}
           </td>
           <td>
