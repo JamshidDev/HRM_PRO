@@ -1,15 +1,8 @@
 <script setup>
-import { AppPaths, useDebounce, eventBus, Events, Utils } from "@utils"
-import { useAccountStore} from '@stores'
+import {AppPaths, eventBus, Events, useDebounce, Utils} from "@utils"
+import {useAccountStore} from '@stores'
 import router from "@/router"
-import {
-  CloudArrowDown28Regular,
-  ArrowCircleDown24Regular,
-  Timer16Regular,
-  ErrorCircle12Filled
-} from "@vicons/fluent"
-
-
+import {ArrowCircleDown24Regular, CloudArrowDown28Regular, ErrorCircle12Filled, Timer16Regular} from "@vicons/fluent"
 
 const store = useAccountStore()
 
@@ -34,7 +27,7 @@ const setupObserver = () => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
         const notificationId = Number(entry.target.dataset.notificationId)
-        const isReadFlag =Number(entry.target.dataset.isRead)
+        const isReadFlag = Number(entry.target.dataset.isRead)
         if (!viewedNotifications.value.has(notificationId) && isReadFlag === 0) {
           viewedNotifications.value.add(notificationId)
           markAsRead()
@@ -51,21 +44,40 @@ const setupObserver = () => {
     }
   })
 }
-
-const markAsRead = useDebounce(()=>{
-  const data = [...viewedNotifications.value].filter(id=>!viewedIds.includes(id))
+const markAsRead = useDebounce(() => {
+  const data = [...viewedNotifications.value].filter(id => !viewedIds.includes(id))
   viewedIds = [...viewedNotifications.value]
-  store._markRead({ids:data})
+  store._markRead({ids: data})
 })
 const setNotificationRef = (el, index) => {
-    if(!el) return
-    notificationRefs.value[index] = el
+  if (!el) return
+  notificationRefs.value[index] = el
 }
-
 const onShow = (v) => {
   if (!v) return
   store._fetchTask()
   store._fetchUnReadNotificationCount()
+}
+const onDownload = (url) => {
+  window.open(url, '_blank')
+}
+const goViewAll = () => {
+  router.push(Utils.routeHrmPathMaker(AppPaths.Export))
+}
+const viewAll = () => {
+  const data = {
+    "all": true,
+  }
+  store._markRead(data, () => {
+    store._fetchUnReadNotificationCount()
+    store._fetchTask()
+  })
+}
+const updateNotification = (v) => {
+  const index = store.notificationList.findIndex(x => x.id === Number(v.taskId))
+  if (index === -1) return
+  store.notificationList[index].status.id = 2
+  store.notificationList[index].file = v.file
 }
 
 watch(
@@ -79,34 +91,9 @@ watch(
     }
 )
 
-const onDownload = (url) => {
-  window.open(url, '_blank')
-}
-
-const goViewAll = () => {
-  router.push(Utils.routeHrmPathMaker(AppPaths.Export))
-}
-
-const viewAll = () => {
-  const data = {
-    "all": true,
-  }
-  store._markRead(data,()=>{
-    store._fetchUnReadNotificationCount()
-    store._fetchTask()
-  })
-}
-
-const updateNotification = (v)=>{
-  const index = store.notificationList.findIndex(x=>x.id === Number(v.taskId))
-  if(index === -1) return
-  store.notificationList[index].status.id = 2
-  store.notificationList[index].file = v.file
-}
-
 onMounted(() => {
   store._fetchUnReadNotificationCount()
-  eventBus.on(Events.TASK_COMPLETED,updateNotification)
+  eventBus.on(Events.TASK_COMPLETED, updateNotification)
 })
 
 onBeforeUnmount(() => {
@@ -126,7 +113,7 @@ onBeforeUnmount(() => {
       @update:show="onShow"
   >
     <template #trigger>
-      <n-badge class="!text-[10px] header-app-badge"  :value="store.unReadNotificationCount" :offset="[4, -4]">
+      <n-badge class="!text-[10px] header-app-badge" :value="store.unReadNotificationCount" :offset="[4, -4]">
         <n-icon id="taskBtn" size="28" class="cursor-pointer text-textColor1">
           <CloudArrowDown28Regular/>
         </n-icon>
@@ -134,7 +121,8 @@ onBeforeUnmount(() => {
     </template>
 
     <div class="w-[300px] h-[300px] cursor-pointer overflow-hidden">
-      <div class="w-full border-b border-surface-line px-2 py-2 text-xs font-semibold flex justify-between items-center">
+      <div
+          class="w-full border-b border-surface-line px-2 py-2 text-xs font-semibold flex justify-between items-center">
         <span>{{ $t('content.notifications') }}</span>
         <n-button @click="viewAll" size="tiny">
           <span class="text-[10px]">{{ $t('content.markAsRead') }}</span>
@@ -142,7 +130,7 @@ onBeforeUnmount(() => {
       </div>
 
       <n-spin class="h-[calc(100%-66px)]" :show="store.notifyLoading">
-        <div  ref="scrollContainer" class="w-full h-full overflow-y-auto px-1">
+        <div ref="scrollContainer" class="w-full h-full overflow-y-auto px-1">
           <template v-for="(item, index) in store.notificationList" :key="item.id">
             <div
                 :ref="(el) => setNotificationRef(el, index)"
@@ -154,8 +142,9 @@ onBeforeUnmount(() => {
                 'bg-green-50/10 border-green-200': viewedNotifications.has(item.id.toString())
               }"
             >
-              <div class="w-full text-xs leading-[1]"><n-badge v-if="!item.read_at" class="mb-[2px]" type="info" dot />
-                 {{ item.type }}
+              <div class="w-full text-xs leading-[1]">
+                <n-badge v-if="!item.read_at" class="mb-[2px]" type="info" dot/>
+                {{ item.type }}
               </div>
 
               <div class="flex justify-between items-center mt-4 pb-1">
@@ -219,5 +208,4 @@ onBeforeUnmount(() => {
 .transition-all {
   transition: all 0.3s ease;
 }
-
 </style>
