@@ -155,8 +155,6 @@ const onSubmit = (status)=>{
         validate =await vacationForm_73.value?.onSubmit(mainData)
       }
 
-      console.log(validate?.isValid)
-
       if(validate?.isValid){
 
         if(store.visibleType){

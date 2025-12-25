@@ -80,16 +80,13 @@ const updateNotification = (v) => {
   store.notificationList[index].file = v.file
 }
 
-watch(
-    () => store.notificationList,
-    (newList) => {
-      if (newList && newList.length > 0) {
-        nextTick(() => {
-          setupObserver()
-        })
-      }
-    }
-)
+watch(() => store.notificationList, (newList) => {
+  if (newList && newList.length > 0) {
+    nextTick(() => {
+      setupObserver()
+    })
+  }
+})
 
 onMounted(() => {
   store._fetchUnReadNotificationCount()

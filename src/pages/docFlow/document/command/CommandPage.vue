@@ -6,6 +6,8 @@ import CommandForm from "./CommandForm.vue"
 import {UIModal} from "@/components/index.js"
 import Utils from "@/utils/Utils.js"
 import Filter from "./ui/Filter.vue"
+import {Events, eventBus} from "@utils"
+
 const officeAppRef = ref(null)
 const store = useCommandStore()
 const componentStore = useComponentStore()
@@ -21,12 +23,20 @@ const onSuccessEv = (v)=>{
   store._index()
 }
 
+const updateDocument = (v)=>{
+  const index = store.list.findIndex(x=>x.id === v.documentId)
+  if(index === 1) return
+  store.list[index].generate = 3
+}
+
 onMounted(()=>{
+  eventBus.on(Events.COMMAND_GENERATED,updateDocument)
   if(!accStore.checkAction(accStore.pn.hrCommandsRead)) return
   store._index()
 })
 
 onUnmounted(()=>{
+  eventBus.off(Events.COMMAND_GENERATED,updateDocument)
   componentStore.clearCache()
 })
 

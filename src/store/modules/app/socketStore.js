@@ -54,10 +54,18 @@ export const useSocketStore = defineStore('useSocketStore', {
 
             this.socket.on('notification', (data) => {
                 const notify = useNotify()
-                notify.notify(data.title || 'Empty message',data?.message || null, data.type || 'info')
+                console.log(data)
 
-                if(data?.taskId){
+                notify.notify(
+                    data.title || 'Empty message',
+                    data?.message || null,
+                    data?.alert || 'info'
+                )
+
+                if(Events.TASK_COMPLETED === data.type){
                     eventBus.emit(Events.TASK_COMPLETED, data)
+                }else if(Events.COMMAND_GENERATED === data.type){
+                    eventBus.emit(Events.COMMAND_GENERATED, data)
                 }
             })
 

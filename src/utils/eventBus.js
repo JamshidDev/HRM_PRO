@@ -1,11 +1,11 @@
 
 import mitt from 'mitt'
-
 export const eventBus = mitt()
-
 
 export const Events = {
     // Task events
-    TASK_COMPLETED: 'task:completed',
+    TASK_COMPLETED: 'task.completed',
+    // Command document events
+    COMMAND_GENERATED:'commands.generated',
 
 }
