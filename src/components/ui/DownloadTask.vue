@@ -1,15 +1,15 @@
 <script setup>
-import { ref, onMounted, onBeforeUnmount, nextTick } from 'vue'
+import { AppPaths, useDebounce, eventBus, Events, Utils } from "@utils"
+import { useAccountStore} from '@stores'
+import router from "@/router"
 import {
   CloudArrowDown28Regular,
   ArrowCircleDown24Regular,
   Timer16Regular,
   ErrorCircle12Filled
 } from "@vicons/fluent"
-import { useAccountStore } from '@stores'
-import Utils from "@/utils/Utils.js"
-import router from "@/router/index.js"
-import { AppPaths, useDebounce, eventBus, Events } from "@/utils/index.js"
+
+
 
 const store = useAccountStore()
 
