@@ -10,6 +10,7 @@ const store = useScheduleGroupWorkerStore()
 
 onMounted(()=>{
   store._dayOfMonth(()=>{
+    store.params.page = 1
     store._index()
   })
 })

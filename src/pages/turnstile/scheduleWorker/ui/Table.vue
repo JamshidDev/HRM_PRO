@@ -4,6 +4,7 @@ import SearchElement from "@/pages/turnstile/schedule/ui/SearchElement.vue"
 import Utils from "@/utils/Utils.js"
 import MonthTab from "./MonthTab.vue"
 import {MoreHorizontal32Filled} from "@vicons/fluent"
+import {UIPagination} from "@components"
 
 
 const store = useScheduleGroupWorkerStore()
@@ -53,6 +54,12 @@ const onChange = (v)=>{
   })
 }
 
+const onChangePage = (v)=>{
+  store.params.page = v.page
+  store.params.per_page = v.per_page
+  store._index()
+}
+
 const onReplace = (v)=>{
     store.selectedWorker = v
     store._workers()
@@ -65,7 +72,6 @@ const onReplace = (v)=>{
 
 <template>
   <div>
-
     <n-spin :show="store.dayOfMonthLoading || store.loading">
       <MonthTab
           v-if="selectedDate"
@@ -75,7 +81,7 @@ const onReplace = (v)=>{
           v-model:date="selectedDate"
           @update:date="onChange"
       />
-      <div class="w-full overflow-auto relative h-[calc(100vh-240px)] mt-2">
+      <div class="w-full overflow-auto relative h-[calc(100vh-290px)] mt-2">
         <div class="schedule-header-row flex z-[10] w-fit min-w-full sticky top-0">
           <div class="rounded-tl-lg border-r border-t border-l border-b border-surface-line p-2 w-[60px] min-w-[60px] h-[50px] sticky left-0 top-0 z-[20] bg-surface-section flex-shrink-0">
             N0
@@ -104,7 +110,7 @@ const onReplace = (v)=>{
           >
             <!-- Worker Name - Sticky Left -->
             <div class="border-r  border-l border-b border-t-0  border-surface-line text-center  p-2 w-[60px] min-w-[60px] h-[50px] border sticky left-0 bg-surface-section flex-shrink-0 z-[5] flex items-center justify-center">
-              <span class="leading-[1.2] text-secondary font-medium">{{index+1}}</span>
+              <span class="leading-[1.2] text-secondary font-medium">{{ (store.params.page - 1) * store.params.per_page + index + 1 }}</span>
             </div>
             <div class="border-r  border-l-[0] border-b border-t-0  border-surface-line  p-2 w-[340px] min-w-[320px] h-[50px] border sticky left-[60px] bg-surface-section flex-shrink-0 z-[5] flex items-center">
              <div class="w-[calc(100%-28px)]">
@@ -148,6 +154,13 @@ const onReplace = (v)=>{
         </template>
 
       </div>
+      <UIPagination
+          :page="store.params.page"
+          :per_page="store.params.per_page"
+          :total="store.totalItems"
+          @change-page="onChangePage"
+          :show-size-picker="false"
+      />
     </n-spin>
   </div>
 </template>

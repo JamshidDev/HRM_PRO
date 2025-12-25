@@ -14,7 +14,7 @@ export const useScheduleGroupWorkerStore = defineStore('scheduleGroupWorkerStore
 
         params: {
             page: 1,
-            per_page: 10,
+            per_page: 20,
             search: null,
             group:null,
             year1:null,
@@ -104,6 +104,8 @@ export const useScheduleGroupWorkerStore = defineStore('scheduleGroupWorkerStore
         },
         _index(){
             const params = {
+                page:this.params.page,
+                per_page:this.params.per_page,
                 year:this.params.year1,
                 month:Number(this.params.month1),
                 group:this.params.group,
