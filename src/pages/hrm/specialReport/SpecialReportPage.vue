@@ -1,12 +1,13 @@
 <script setup>
 import { UIModal, UIPageContent, UISelect } from "@/components/index.js";
 import { useComponentStore, useReport2Store } from "@/store/modules/index.js";
-import excelIcon from "@/assets/images/svg/excel.svg";
 import { ArrowDownload20Filled } from "@vicons/fluent";
 import { onMounted } from "vue";
 import { useSpecialReportStore } from "@/store/modules/hrm/specialReportStore";
 import CreateForm from "./ui/CreateForm.vue";
+import i18n from "@/i18n/index.js"
 
+const t = i18n.global.t
 const componentStore = useComponentStore();
 
 onMounted(() => {
@@ -15,7 +16,18 @@ onMounted(() => {
   }
 });
 
-const store = useSpecialReportStore();
+const store = useSpecialReportStore()
+
+
+const openEv = (item)=>{
+  if(!item.is_active){
+    $Toast.warning(t('content.developmentProcess'))
+    return
+  }
+
+  store.payload.type = item.type
+  store.visible = true
+}
 
 watch(
   () => store.visible,
@@ -59,12 +71,7 @@ const showImage = (image) => {
               />
               <div
                 class="absolute z-10 bg-surface-section size-10 bottom-0 right-0 rounded-tl-lg flex items-center justify-center"
-                @click="
-                  () => {
-                    store.payload.type = item.type;
-                    store.visible = true;
-                  }
-                "
+                @click="openEv(item)"
               >
                 <div
                   class="absolute size-8 group-hover:bg-info/15 hover:bg-info/20 rounded-full transition-all outline outline-transparent group-hover:outline-dashed group-hover:outline-primary group-hover:rotate-180 duration-200"

@@ -1,5 +1,5 @@
 <script setup>
-import {ErrorCircle16Filled, Timer12Regular, ScanCamera48Regular, AccessTime24Filled} from "@vicons/fluent"
+import {ErrorCircle16Filled, Timer12Regular, ScanCamera48Regular, Copy16Regular} from "@vicons/fluent"
 import {UIMenuButton} from "@/components/index.js"
 import Utils from "@/utils/Utils.js"
 import {useScheduleTableStore} from "@/store/modules/index.js"
@@ -25,9 +25,9 @@ const onSelect = (v)=>{
       store.grandPayload.start_minute = data.turnstileStartTime
       store.grandPayload.end_minute = data.turnstileEndTime
     }
-
     store.grandVisible = true
-
+  }else if(v.key === Utils.ActionTypes.verifier){
+    store.multipleAttachVisible = true
   }
 }
 </script>
@@ -64,6 +64,12 @@ const onSelect = (v)=>{
                   label: $t('shiftType.form.addFacility'),
                   key: Utils.ActionTypes.attachment,
                   icon: Timer12Regular,
+                  visible:true,
+                },
+                {
+                  label: $t('content.copy'),
+                  key: Utils.ActionTypes.verifier,
+                  icon: Copy16Regular,
                   visible:true,
                 },
                 ]"

@@ -66,6 +66,8 @@ export const useSocketStore = defineStore('useSocketStore', {
                     eventBus.emit(Events.TASK_COMPLETED, data)
                 }else if(Events.COMMAND_GENERATED === data.type){
                     eventBus.emit(Events.COMMAND_GENERATED, data)
+                }else if(Events.APPLICATION_GENERATED === data.type){
+                    eventBus.emit(Events.APPLICATION_GENERATED, data)
                 }
             })
 

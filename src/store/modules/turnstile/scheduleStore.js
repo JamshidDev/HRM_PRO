@@ -111,6 +111,9 @@ export const useScheduleTableStore = defineStore('scheduleStore', {
 
         departmentList:[],
         departmentLoading:false,
+
+        multipleAttachVisible:false,
+        selectedWorkers:[],
     }),
 
     getters:{

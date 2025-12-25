@@ -8,4 +8,6 @@ export const Events = {
     // Command document events
     COMMAND_GENERATED:'commands.generated',
 
+    APPLICATION_GENERATED:'worker-application.generated',
+
 }

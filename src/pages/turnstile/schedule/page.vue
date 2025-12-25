@@ -6,6 +6,7 @@ import SettingModal from "./ui/SettingModal.vue"
 import SaveBox from "./ui/SaveBox.vue"
 import LoaderBox from "./ui/LoaderBox.vue"
 import GrandModal from "./ui/GrandModal.vue"
+import MultipleScheduleAttach from "./ui/MultipleScheduleAttach.vue"
 
 
 
@@ -36,5 +37,6 @@ onMounted(()=>{
   <SettingModal/>
   <SaveBox/>
   <GrandModal/>
+  <MultipleScheduleAttach/>
 </UIPageContent>
 </template>
