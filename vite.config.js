@@ -1,13 +1,16 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
-import path from 'path'
 import AutoImport from 'unplugin-auto-import/vite';
 import tailwindcss from '@tailwindcss/vite'
+import { fileURLToPath } from 'url'
 
 export default defineConfig({
   resolve:{
     alias:{
-      "@": path.resolve(__dirname, 'src')
+      '@': fileURLToPath(new URL('./src', import.meta.url)),
+      '@components': fileURLToPath(new URL('./src/components', import.meta.url)),
+      '@utils': fileURLToPath(new URL('./src/utils', import.meta.url)),
+      '@stores': fileURLToPath(new URL('./src/store/modules', import.meta.url)),
     },
   },
   plugins: [
@@ -29,7 +32,7 @@ export default defineConfig({
           ],
         },
       ],
-      // dts: "auto-imports.d.ts",
+      dts: "auto-imports.d.ts",
     }),
   ],
   server:{

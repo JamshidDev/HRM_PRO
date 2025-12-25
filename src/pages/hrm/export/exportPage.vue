@@ -18,9 +18,4 @@ onMounted(()=>{
     <Filter/>
     <Table/>
   </UIPageContent>
-
 </template>
-
-<style scoped>
-
-</style>

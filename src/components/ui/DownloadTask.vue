@@ -1,12 +1,12 @@
 <script setup>
-import { ref, onMounted, onBeforeUnmount, nextTick } from 'vue' // ← QOSHILDI
+import { ref, onMounted, onBeforeUnmount, nextTick } from 'vue'
 import {
   CloudArrowDown28Regular,
   ArrowCircleDown24Regular,
   Timer16Regular,
   ErrorCircle12Filled
 } from "@vicons/fluent"
-import { useAccountStore } from "@/store/modules/index.js"
+import { useAccountStore } from '@stores'
 import Utils from "@/utils/Utils.js"
 import router from "@/router/index.js"
 import { AppPaths, useDebounce, eventBus, Events } from "@/utils/index.js"
@@ -106,14 +106,15 @@ const updateNotification = (v)=>{
 
 onMounted(() => {
   store._fetchUnReadNotificationCount()
-  eventBus.on(Events.TASK_COMPLETED,(payload)=>{
-    updateNotification(payload)
-  })
+  eventBus.on(Events.TASK_COMPLETED,updateNotification)
 })
+
 onBeforeUnmount(() => {
+  eventBus.off(Events.TASK_COMPLETED, updateNotification)
   if (observer.value) {
     observer.value.disconnect()
   }
+
 })
 </script>
 
@@ -125,7 +126,7 @@ onBeforeUnmount(() => {
       @update:show="onShow"
   >
     <template #trigger>
-      <n-badge class="!text-[10px]" type="info" :value="store.unReadNotificationCount" :offset="[8, -4]">
+      <n-badge class="!text-[10px] header-app-badge"  :value="store.unReadNotificationCount" :offset="[4, -4]">
         <n-icon id="taskBtn" size="28" class="cursor-pointer text-textColor1">
           <CloudArrowDown28Regular/>
         </n-icon>
@@ -218,4 +219,5 @@ onBeforeUnmount(() => {
 .transition-all {
   transition: all 0.3s ease;
 }
+
 </style>

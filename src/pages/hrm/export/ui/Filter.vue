@@ -1,10 +1,7 @@
 <script setup>
 
 import {UIPageFilter, UISelect} from "@/components/index.js"
-import {
-  useAccountStore,
-  useComponentStore, useExportStore, useOrganizationLeaderStore,
-} from "@/store/modules/index.js"
+import {useAccountStore,useComponentStore,useExportStore} from "@/store/modules/index.js"
 import {useAppSetting} from "@/utils/index.js"
 import {ArrowSync16Regular} from "@vicons/fluent"
 
@@ -74,7 +71,6 @@ const resetFilter = ()=>{
       <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{$t('actionLog.table.structure')}}</label>
       <UISelect
           :options="componentStore.structureList"
-
           :modelV="store.params.organizations"
           @defaultValue="(v)=>store.params.organizations=v"
           @updateModel="onChangeStructure"

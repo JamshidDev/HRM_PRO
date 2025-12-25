@@ -119,6 +119,7 @@ onMounted(()=>{
                   id="phone"
                   type="text"
                   v-mask="'+998(##)#######'"
+                  @keyup.enter="onSubmit"
 
                   @paste="(e)=>{
                     let a = (e.clipboardData.getData('text')).replaceAll(' ', '')
@@ -140,6 +141,7 @@ onMounted(()=>{
                   show-password-on="click"
                   :maxlength="32"
                   v-model:value="store.password"
+                  @keyup.enter="onSubmit"
               >
                 <template #prefix>
                   <n-icon class="text-textColor3!" size="24" :component="LockClosed16Filled" />

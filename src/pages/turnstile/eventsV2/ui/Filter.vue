@@ -87,6 +87,7 @@ const eventOption = [
   >
     <template #filterAction>
       <n-button
+          v-fly-upload
           @click="store._download()"
           :loading="store.downloadLoading"
           type="success">

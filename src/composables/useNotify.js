@@ -2,14 +2,14 @@
 import { ref, markRaw} from 'vue'
 
 const notifications = ref([])
-import {Info20Filled} from "@vicons/fluent"
+import {Info16Regular} from "@vicons/fluent"
 
 const icons = {
-    success:markRaw(Info20Filled),
-    danger:markRaw(Info20Filled),
-    warning:markRaw(Info20Filled),
-    info:markRaw(Info20Filled),
-    primary:markRaw(Info20Filled),
+    success:markRaw(Info16Regular),
+    danger:markRaw(Info16Regular),
+    warning:markRaw(Info16Regular),
+    info:markRaw(Info16Regular),
+    primary:markRaw(Info16Regular),
 }
 
 let id = 0

@@ -202,9 +202,7 @@ export const useEventV2Store = defineStore('eventV2Store', {
                 ...this._params(),
                 download:true
             }
-            $ApiService.eventV2Service._index({params}).then((res) => {
-                router.push(Utils.routeHrmPathMaker(AppPaths.Export))
-            }).finally(() => {
+            $ApiService.eventV2Service._index({params}).finally(() => {
                 this.downloadLoading = false
             })
         },

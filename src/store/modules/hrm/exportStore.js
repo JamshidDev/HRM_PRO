@@ -79,7 +79,6 @@ export const useExportStore = defineStore('exportStore', {
             }
             $ApiService.exportService._export_workers({data}).then((res) => {
                 this.visible = false
-                router.push(Utils.routeHrmPathMaker(AppPaths.Export))
             }).finally(() => {
                 this.saveLoading = false
             })

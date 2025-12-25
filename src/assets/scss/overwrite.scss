@@ -466,6 +466,13 @@ input:-webkit-autofill {
   align-items: start;
 }
 
+.header-app-badge .n-badge-sup{
+  background-color: transparent !important;
+  color: var(--textColor2) !important;
+  border: 1px solid var(--surface-line) !important;
+  font-size: 10px !important;
+}
+
 
 
 
