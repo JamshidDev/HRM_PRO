@@ -1,165 +1,176 @@
 <script setup>
-import {useAccountStore, useComponentStore, useEventStore, useEventV2Store} from "@/store/modules/index.js"
-import {UIPageFilter, UISelect} from "@/components/index.js"
-import i18n from "@/i18n/index.js"
-import {ArrowCircleDown32Regular, StarLineHorizontal320Regular} from "@vicons/fluent"
+  import {
+    useAccountStore,
+    useComponentStore,
+    useEventStore,
+    useEventV2Store
+  } from '@/store/modules/index.js'
+  import { UIPageFilter, UISelect } from '@/components/index.js'
+  import i18n from '@/i18n/index.js'
+  import { ArrowCircleDown32Regular, StarLineHorizontal320Regular } from '@vicons/fluent'
 
-const {t} = i18n.global
-const store = useEventV2Store()
-const eventStore = useEventStore()
-const accStore = useAccountStore()
+  const { t } = i18n.global
+  const store = useEventV2Store()
+  const eventStore = useEventStore()
+  const accStore = useAccountStore()
 
-const filterEvent = ()=>{
-  if(!accStore.checkAction(accStore.pn.turnstileHikCentralEventsRead)) return
-  store.params.page = 1
-  store._index()
-}
-
-const componentStore = useComponentStore()
-
-const onChangeStructure = (v)=>{
-  store.params.organizations=v
-  filterEvent()
-}
-
-const onChangeDate =()=>{
-  filterEvent()
-}
-
-const beforeShow = (v)=>{
-  if(componentStore.structureList.length === 0){
-    componentStore._structures()
-  }
-  if(store.levelList.length===0){
-    store._levels()
+  const filterEvent = () => {
+    if (!accStore.checkAction(accStore.pn.turnstileHikCentralEventsRead)) return
+    store.params.page = 1
+    store._index()
   }
 
-}
+  const componentStore = useComponentStore()
 
-const resetFilter = ()=>{
-  store.params.organizations = []
-  store.params.access_levels = []
-  store.params.direction = null
-  store.params.date = null
-  store.params.event = null
-  filterEvent()
-}
+  const onChangeStructure = (v) => {
+    store.params.organizations = v
+    filterEvent()
+  }
 
-const filterCount = computed(()=>Number(Boolean(store.params.organizations.length))
-    + Number(Boolean(store.params.access_levels.length))
-    + Number(Boolean(store.params.date))
-    + Number(Boolean(store.params.direction)) )
+  const onChangeDate = () => {
+    filterEvent()
+  }
 
-const directionList = [
-  {
-    name:t('turnstile.workDurationPage.enter'),
-    id:1,
-  },
-  {
-    name:t('turnstile.workDurationPage.exit'),
-    id:0,
-  },
-]
+  const beforeShow = (v) => {
+    if (componentStore.structureList.length === 0) {
+      componentStore._structures()
+    }
+    if (store.levelList.length === 0) {
+      store._levels()
+    }
+  }
 
-const eventOption = [
-  {
-    name:t('hcEvent.eventYes'),
-    id:'yes',
-  },
-  {
-    name:t('hcEvent.eventNo'),
-    id:'no',
-  },
-]
+  const resetFilter = () => {
+    store.params.organizations = []
+    store.params.access_levels = []
+    store.params.direction = null
+    store.params.date = null
+    store.params.event = null
+    filterEvent()
+  }
 
+  const filterCount = computed(
+    () =>
+      Number(Boolean(store.params.organizations.length)) +
+      Number(Boolean(store.params.access_levels.length)) +
+      Number(Boolean(store.params.date)) +
+      Number(Boolean(store.params.direction))
+  )
 
+  const directionList = [
+    {
+      name: t('turnstile.workDurationPage.enter'),
+      id: 1
+    },
+    {
+      name: t('turnstile.workDurationPage.exit'),
+      id: 0
+    }
+  ]
+
+  const eventOption = [
+    {
+      name: t('hcEvent.eventYes'),
+      id: 'yes'
+    },
+    {
+      name: t('hcEvent.eventNo'),
+      id: 'no'
+    }
+  ]
 </script>
 
 <template>
   <UIPageFilter
-      v-model:search="store.params.search"
-      :search-loading="store.loading"
-      @onSearch="filterEvent"
-      @show="beforeShow"
-      :filter-count="filterCount"
-      @onClear="resetFilter"
-      :show-add-button="false"
+    v-model:search="store.params.search"
+    :search-loading="store.loading"
+    @onSearch="filterEvent"
+    @show="beforeShow"
+    :filter-count="filterCount"
+    @onClear="resetFilter"
+    :show-add-button="false"
   >
     <template #filterAction>
       <n-button
-          v-fly-upload
-          @click="store._download()"
-          :loading="store.downloadLoading"
-          type="success">
+        v-fly-upload
+        @click="store._download()"
+        :loading="store.downloadLoading"
+        type="success"
+      >
         <template #icon>
-          <ArrowCircleDown32Regular/>
+          <ArrowCircleDown32Regular />
         </template>
-        {{$t('content.download')}}
+        {{ $t('content.download') }}
       </n-button>
     </template>
     <template #filterContent>
-      <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{$t('actionLog.table.structure')}}</label>
+      <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{
+        $t('actionLog.table.structure')
+      }}</label>
       <UISelect
-          :options="componentStore.structureList"
-          :modelV="store.params.organizations"
-          @defaultValue="(v)=>store.params.organizations=v"
-          @updateModel="onChangeStructure"
-          :checkedVal="store.structureCheck2"
-          @updateCheck="(v)=>store.structureCheck2=v"
-          :loading="componentStore.structureLoading"
-          v-model:search="componentStore.structureParams.search"
-          @onSearch="componentStore._structures"
-          @onSubmit="filterEvent"
+        :options="componentStore.structureList"
+        :modelV="store.params.organizations"
+        @defaultValue="(v) => (store.params.organizations = v)"
+        @updateModel="onChangeStructure"
+        :checkedVal="store.structureCheck2"
+        @updateCheck="(v) => (store.structureCheck2 = v)"
+        :loading="componentStore.structureLoading"
+        v-model:search="componentStore.structureParams.search"
+        @onSearch="componentStore._structures"
+        @onSubmit="filterEvent"
       />
-      <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{$t('turnstile.hcWorkersPage.access_levels')}}</label>
+      <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{
+        $t('turnstile.hcWorkersPage.access_levels')
+      }}</label>
       <n-select
-          multiple
-          clearable
-          filterable
-          v-model:value="store.params.access_levels"
-          :options="store.levelList"
-          :loading="store.levelLoading"
-          label-field="name"
-          value-field="id"
-          @update:value="filterEvent"
-          :max-tag-count="2"
+        multiple
+        clearable
+        filterable
+        v-model:value="store.params.access_levels"
+        :options="store.levelList"
+        :loading="store.levelLoading"
+        label-field="name"
+        value-field="id"
+        @update:value="filterEvent"
+        :max-tag-count="2"
       />
-      <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{$t('hcEvent.form.direction')}}</label>
+      <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{
+        $t('hcEvent.form.direction')
+      }}</label>
       <n-select
-          clearable
-          v-model:value="store.params.direction"
-          :options="directionList"
-          label-field="name"
-          value-field="id"
-          @update:value="filterEvent"
-
+        clearable
+        v-model:value="store.params.direction"
+        :options="directionList"
+        label-field="name"
+        value-field="id"
+        @update:value="filterEvent"
       />
       <label class="mt-3 text-xs text-gray-500">{{ $t('content.date') }}</label>
       <n-date-picker
-          class="mt-1"
-          v-model:value="store.params.date"
-          @update:value="onChangeDate"
-          type="date"
-          update-value-on-close
-          :actions="null"
-          clearable />
-      <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{$t('hcEvent.event')}}</label>
+        class="mt-1"
+        v-model:value="store.params.date"
+        @update:value="onChangeDate"
+        type="date"
+        update-value-on-close
+        :actions="null"
+        clearable
+      />
+      <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{ $t('hcEvent.event') }}</label>
       <n-select
-          clearable
-          v-model:value="store.params.event"
-          :options="eventOption"
-          label-field="name"
-          value-field="id"
-          @update:value="filterEvent"
-
+        clearable
+        v-model:value="store.params.event"
+        :options="eventOption"
+        label-field="name"
+        value-field="id"
+        @update:value="filterEvent"
       />
     </template>
     <template #filterSearch>
       <n-button @click="eventStore._changeView(1)" class="!ml-4" type="primary">
         <template #icon>
-          <StarLineHorizontal320Regular/>
+          <StarLineHorizontal320Regular />
         </template>
-        {{$t('hcEvent.oldView')}}
+        {{ $t('hcEvent.oldView') }}
       </n-button>
     </template>
   </UIPageFilter>

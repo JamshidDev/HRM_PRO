@@ -1,10 +1,12 @@
-import {AppLayouts, AppPaths} from "@/utils/index.js"
-import {InfoPage} from "@/pages/others/index.js";
+import { AppLayouts, AppPaths } from '@/utils/index.js'
+import { InfoPage } from '@/pages/others/index.js'
 
-export default [{
-    path:AppPaths.Info,
+export const othersRoutes = [
+  {
+    path: AppPaths.Info,
     component: InfoPage,
-    meta:{
-        layout:AppLayouts.main
-    },
-}]
+    meta: {
+      layout: AppLayouts.main
+    }
+  }
+]

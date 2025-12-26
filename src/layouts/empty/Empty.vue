@@ -1,4 +1,3 @@
-
 <template>
   <router-view v-slot="{ Component }">
     <transition name="slide-right" mode="out-in">

@@ -1,30 +1,28 @@
-import axios from "../../index.js"
+import axios from '../../index.js'
 
-const _index =async (payload)=>{
-    return await axios.get(`/v1/hr/commands`, {params:payload.params})
+const _index = async (payload) => {
+  return await axios.get(`/v1/hr/commands`, { params: payload.params })
 }
 
-const _additionalData = async (payload)=>{
-    return await axios.get(`/v1/hr/worker-additional/${payload?.id}`, {params:payload.params})
+const _additionalData = async (payload) => {
+  return await axios.get(`/v1/hr/worker-additional/${payload?.id}`, { params: payload.params })
 }
 
-const _create = async (payload)=>{
-    return await axios.post(`/v1/hr/commands`, payload?.data)
+const _create = async (payload) => {
+  return await axios.post(`/v1/hr/commands`, payload?.data)
 }
 
-const _viewFile = async (payload)=>{
-    return await axios.post(`/v1/hr/commands`, payload.data, {responseType:'blob'})
+const _viewFile = async (payload) => {
+  return await axios.post(`/v1/hr/commands`, payload.data, { responseType: 'blob' })
 }
-const _delete = async (payload)=>{
-    return await axios.delete(`/v1/hr/commands/${payload.id}`)
+const _delete = async (payload) => {
+  return await axios.delete(`/v1/hr/commands/${payload.id}`)
 }
-
-
 
 export default {
-    _index,
-    _create,
-    _delete,
-    _viewFile,
-    _additionalData,
+  _index,
+  _create,
+  _delete,
+  _viewFile,
+  _additionalData
 }

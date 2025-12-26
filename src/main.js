@@ -1,23 +1,22 @@
 import './style.css'
-import "./assets/index.scss"
+import './assets/index.scss'
 import { createApp } from 'vue'
 import App from './App.vue'
-import router from "./router"
-import i18n from "./i18n/index.js"
-import pinia from "./store/index.js"
-import ApiService from "@/service/ApiService.js";
+import router from './router'
+import i18n from './i18n/index.js'
+import pinia from './store/index.js'
+import ApiService from '@/service/ApiService.js'
 import naive from 'naive-ui'
-import mask from "./directives/mask.js"
-import VueSignature from "vue-signature-pad"
-import inputFormatter from "@/plugins/inputFormatter.js"
-import dateMaskPlugin from "@/plugins/dateMaskPlugin.js"
-import FlyUploadPlugin from "@/plugins/flyUploadPlugin.js"
-import {useAccountStore} from "@/store/modules/index.js"
+import mask from './directives/mask.js'
+import VueSignature from 'vue-signature-pad'
+import inputFormatter from '@/plugins/inputFormatter.js'
+import dateMaskPlugin from '@/plugins/dateMaskPlugin.js'
+import FlyUploadPlugin from '@/plugins/flyUploadPlugin.js'
+import { useAccountStore } from '@/store/modules/index.js'
 import { RecycleScroller } from 'vue3-virtual-scroller'
 import 'vue3-virtual-scroller/dist/vue3-virtual-scroller.css'
 
-
-const app = createApp(App);
+const app = createApp(App)
 const meta = document.createElement('meta')
 meta.name = 'naive-ui-style'
 document.head.appendChild(meta)
@@ -29,25 +28,22 @@ app.use(dateMaskPlugin)
 app.use(router)
 app.use(pinia)
 
-
-
 app.component('RecycleScroller', RecycleScroller)
 
 const store = useAccountStore()
 
 app.use(FlyUploadPlugin, {
-    store: store,
-    storeAction: 'incrementUnReadCount'
+  store: store,
+  storeAction: 'incrementUnReadCount'
 })
 
-if(import.meta.env.VITE_APP_MODE === "development"){
-    store.isModeDev = true
+if (import.meta.env.VITE_APP_MODE === 'development') {
+  store.isModeDev = true
 }
-
 
 window.$ApiService = ApiService
 
-app.directive('mask',mask)
+app.directive('mask', mask)
 
 app.use(i18n)
 

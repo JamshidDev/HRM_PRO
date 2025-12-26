@@ -1,18 +1,16 @@
 <script setup>
-import {usePdfViewerStore} from "@/store/modules/index.js"
-import PdfViewer from "@/components/pdfSignature/PdfViewer.vue"
+  import { usePdfViewerStore } from '@/store/modules/index.js'
+  import PdfViewer from '@/components/pdfSignature/PdfViewer.vue'
 
-const store = usePdfViewerStore()
+  const store = usePdfViewerStore()
 
-onMounted(()=>{
-  store.loadPdf()
-})
-
+  onMounted(() => {
+    store.loadPdf()
+  })
 </script>
 
 <template>
   <div class="w-full max-w-[1440px] mx-auto overflow-auto">
-    <PdfViewer :container="false"/>
+    <PdfViewer :container="false" />
   </div>
-
 </template>

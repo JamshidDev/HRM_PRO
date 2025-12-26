@@ -1,6 +1,6 @@
-import { DoorArrowRight20Regular, DoorArrowLeft20Regular } from "@vicons/fluent"
-import i18n from "@/i18n/index.js"
-import Utils from "@/utils/Utils"
+import { DoorArrowRight20Regular, DoorArrowLeft20Regular } from '@vicons/fluent'
+import i18n from '@/i18n/index.js'
+import Utils from '@/utils/Utils'
 
 const { t } = i18n.global
 export const getTableConfig = (cardType) => {
@@ -40,7 +40,7 @@ export const getTableConfig = (cardType) => {
           headerName: 'turnStileDashboard.cards.firstComeToWork',
           key: 'time',
           width: '180px',
-          minWidth: '80px',
+          minWidth: '80px'
         },
         {
           headerName: 'content.organization',
@@ -53,12 +53,11 @@ export const getTableConfig = (cardType) => {
           key: 'department_name',
           width: '200px',
           minWidth: '180px'
-        },
-
+        }
       ]
     },
     privilege_turnstile_workers: {
-      responseField:'',
+      responseField: '',
       columns: [
         {
           headerName: 'content.worker',
@@ -100,12 +99,11 @@ export const getTableConfig = (cardType) => {
           key: 'department_name',
           width: '300px',
           minWidth: '180px'
-        },
-
+        }
       ]
     },
     not_passed_turnstile_workers: {
-      responseField:'',
+      responseField: '',
       columns: [
         {
           headerName: 'content.worker',
@@ -124,12 +122,11 @@ export const getTableConfig = (cardType) => {
           key: 'department_name',
           width: '300px',
           minWidth: '180px'
-        },
-
+        }
       ]
     },
     vacations: {
-      responseField:'',
+      responseField: '',
       columns: [
         {
           headerName: 'content.worker',
@@ -165,12 +162,11 @@ export const getTableConfig = (cardType) => {
           key: 'to',
           width: '100px',
           minWidth: '180px'
-        },
-
+        }
       ]
     },
     casual_workers: {
-      responseField:'',
+      responseField: '',
       columns: [
         {
           headerName: 'content.worker',
@@ -189,8 +185,7 @@ export const getTableConfig = (cardType) => {
           key: 'department_name',
           width: '300px',
           minWidth: '180px'
-        },
-
+        }
       ]
     },
     early_leave: {
@@ -228,7 +223,7 @@ export const getTableConfig = (cardType) => {
           headerName: 'turnStileDashboard.cards.lastGoOut',
           key: 'time',
           width: '160px',
-          minWidth: '100px',
+          minWidth: '100px'
         },
         {
           headerName: 'content.organization',
@@ -241,8 +236,7 @@ export const getTableConfig = (cardType) => {
           key: 'department_name',
           width: '200px',
           minWidth: '180px'
-        },
-
+        }
       ]
     },
     not_come: {
@@ -265,8 +259,7 @@ export const getTableConfig = (cardType) => {
           key: 'department_name',
           width: '300px',
           minWidth: '180px'
-        },
-
+        }
       ]
     },
     come: {
@@ -292,7 +285,7 @@ export const getTableConfig = (cardType) => {
           },
           formatValue: (value) => {
             return value ? directionStatus.enter.name : directionStatus.exist.name
-          },
+          }
         },
         {
           headerName: 'content.date',
@@ -312,8 +305,7 @@ export const getTableConfig = (cardType) => {
           key: 'department_name',
           width: '300px',
           minWidth: '180px'
-        },
-
+        }
       ]
     },
     current_in: {
@@ -339,7 +331,7 @@ export const getTableConfig = (cardType) => {
           },
           formatValue: (value) => {
             return value ? directionStatus.enter.name : directionStatus.exist.name
-          },
+          }
         },
         {
           headerName: 'content.date',
@@ -359,8 +351,7 @@ export const getTableConfig = (cardType) => {
           key: 'department_name',
           width: '300px',
           minWidth: '180px'
-        },
-
+        }
       ]
     },
     current_out: {
@@ -386,7 +377,7 @@ export const getTableConfig = (cardType) => {
           },
           formatValue: (value) => {
             return value ? directionStatus.enter.name : directionStatus.exist.name
-          },
+          }
         },
         {
           headerName: 'content.date',
@@ -406,8 +397,7 @@ export const getTableConfig = (cardType) => {
           key: 'department_name',
           width: '300px',
           minWidth: '180px'
-        },
-
+        }
       ]
     },
     late_workers: {
@@ -439,7 +429,7 @@ export const getTableConfig = (cardType) => {
           },
           formatValue: (value) => {
             return value ? directionStatus.enter.name : directionStatus.exist.name
-          },
+          }
         },
         {
           headerName: 'turnStileDashboard.preview.device',
@@ -466,7 +456,7 @@ export const getTableConfig = (cardType) => {
           componentProps: (value) => {
             return {
               showIcon: false,
-              type: eventStatus[value]?.type || eventStatus['default']?.type,
+              type: eventStatus[value]?.type || eventStatus['default']?.type
             }
           }
         },
@@ -484,9 +474,8 @@ export const getTableConfig = (cardType) => {
           },
           formatValue: (value) => {
             return maskStatus[value]?.name || maskStatus['default']?.name
-          },
-        },
-
+          }
+        }
       ]
     },
     absent_workers: {
@@ -514,8 +503,8 @@ export const getTableConfig = (cardType) => {
           headerName: 'content.position',
           key: 'position.name',
           width: '400px',
-          minWidth: '200px',
-        },
+          minWidth: '200px'
+        }
       ]
     },
     early_leave_workers: {
@@ -541,7 +530,7 @@ export const getTableConfig = (cardType) => {
           },
           formatValue: (value) => {
             return value ? directionStatus.enter.name : directionStatus.exist.name
-          },
+          }
         },
         {
           headerName: 'date.hour',
@@ -574,7 +563,7 @@ export const getTableConfig = (cardType) => {
           componentProps: (value) => {
             return {
               showIcon: false,
-              type: eventStatus[value]?.type || eventStatus['default']?.type,
+              type: eventStatus[value]?.type || eventStatus['default']?.type
             }
           }
         },
@@ -592,8 +581,8 @@ export const getTableConfig = (cardType) => {
           },
           formatValue: (value) => {
             return maskStatus[value]?.name || maskStatus['default']?.name
-          },
-        },
+          }
+        }
       ]
     },
     daily_attendance: {
@@ -619,7 +608,7 @@ export const getTableConfig = (cardType) => {
           },
           formatValue: (value) => {
             return value ? directionStatus.enter.name : directionStatus.exist.name
-          },
+          }
         },
         {
           headerName: 'date.hour',
@@ -652,7 +641,7 @@ export const getTableConfig = (cardType) => {
           componentProps: (value) => {
             return {
               showIcon: false,
-              type: eventStatus[value]?.type || eventStatus['default']?.type,
+              type: eventStatus[value]?.type || eventStatus['default']?.type
             }
           }
         },
@@ -670,8 +659,8 @@ export const getTableConfig = (cardType) => {
           },
           formatValue: (value) => {
             return maskStatus[value]?.name || maskStatus['default']?.name
-          },
-        },
+          }
+        }
       ]
     },
     devices: {
@@ -691,10 +680,10 @@ export const getTableConfig = (cardType) => {
           componentProps: (value) => {
             return {
               showIcon: false,
-              type:Utils.colorTypes.info
+              type: Utils.colorTypes.info
             }
-          },
-        },
+          }
+        }
       ]
     },
     online_devices: {
@@ -714,13 +703,13 @@ export const getTableConfig = (cardType) => {
           componentProps: (value) => {
             return {
               showIcon: false,
-              type:value===1? Utils.colorTypes.success : Utils.colorTypes.error
+              type: value === 1 ? Utils.colorTypes.success : Utils.colorTypes.error
             }
           },
           formatValue: (value) => {
-            return value===1? t('content.online') : t('content.offline')
-          },
-        },
+            return value === 1 ? t('content.online') : t('content.offline')
+          }
+        }
       ]
     },
     offline_devices: {
@@ -740,16 +729,16 @@ export const getTableConfig = (cardType) => {
           componentProps: (value) => {
             return {
               showIcon: false,
-              type:value===1? Utils.colorTypes.success : Utils.colorTypes.error
+              type: value === 1 ? Utils.colorTypes.success : Utils.colorTypes.error
             }
           },
           formatValue: (value) => {
-            return value===1? t('content.online') : t('content.offline')
-          },
-        },
+            return value === 1 ? t('content.online') : t('content.offline')
+          }
+        }
       ]
     },
-    lesson_worked:{
+    lesson_worked: {
       responseField: 'workers',
       columns: [
         {
@@ -767,7 +756,7 @@ export const getTableConfig = (cardType) => {
           componentProps: {
             showIcon: false,
             type: Utils.colorTypes.info
-          },
+          }
         },
         {
           headerName: 'date.minute',
@@ -778,7 +767,7 @@ export const getTableConfig = (cardType) => {
           componentProps: {
             showIcon: false,
             type: Utils.colorTypes.secondary
-          },
+          }
         },
         {
           headerName: 'content.organization',
@@ -791,12 +780,9 @@ export const getTableConfig = (cardType) => {
           key: 'department_name',
           width: '300px',
           minWidth: '180px'
-        },
-        
-       
-
+        }
       ]
-    },
+    }
   }
 
   return configs[cardType]
@@ -804,58 +790,57 @@ export const getTableConfig = (cardType) => {
 
 const maskStatus = {
   1: {
-    name: t("hcEvent.form.withMask"),
-    type: "Success"
+    name: t('hcEvent.form.withMask'),
+    type: 'Success'
   },
   default: {
-    name: t("hcEvent.form.withMask"),
-    type: "Success"
+    name: t('hcEvent.form.withMask'),
+    type: 'Success'
   },
   2: {
-    name: t("hcEvent.form.NoMask"),
-    type: "Secondary"
+    name: t('hcEvent.form.NoMask'),
+    type: 'Secondary'
   },
   3: {
-    name: t("hcEvent.form.NoMask"),
-    type: "Secondary"
-  },
+    name: t('hcEvent.form.NoMask'),
+    type: 'Secondary'
+  }
 }
 
 const eventStatus = {
-  'default': {
-    name: t("hcEvent.form.face"),
-    type: "Success"
+  default: {
+    name: t('hcEvent.form.face'),
+    type: 'Success'
   },
-  'ACSEventFaceVerifyPass': {
-    name: t("hcEvent.form.face"),
-    type: "Secondary"
+  ACSEventFaceVerifyPass: {
+    name: t('hcEvent.form.face'),
+    type: 'Secondary'
   },
-  'ACSEventCardFingerThrough': {
-    name: t("hcEvent.form.finger"),
-    type: "Success"
+  ACSEventCardFingerThrough: {
+    name: t('hcEvent.form.finger'),
+    type: 'Success'
   },
-  'ACSEventFingerThrough': {
-    name: t("hcEvent.form.finger"),
-    type: "Success"
+  ACSEventFingerThrough: {
+    name: t('hcEvent.form.finger'),
+    type: 'Success'
   },
-  'ACSEventHumanDetectFail': {
-    name: t("hcEvent.form.face"),
-    type: "Success"
+  ACSEventHumanDetectFail: {
+    name: t('hcEvent.form.face'),
+    type: 'Success'
   },
-  'ACSEventLegalCardThrough': {
-    name: t("hcEvent.form.card"),
-    type: "Success"
-  },
+  ACSEventLegalCardThrough: {
+    name: t('hcEvent.form.card'),
+    type: 'Success'
+  }
 }
 
 const directionStatus = {
   enter: {
-    name: t("turnstile.workDurationPage.enter"),
-    type: "Success"
+    name: t('turnstile.workDurationPage.enter'),
+    type: 'Success'
   },
   exist: {
-    name: t("turnstile.workDurationPage.exit"),
-    type: "Error"
-  },
+    name: t('turnstile.workDurationPage.exit'),
+    type: 'Error'
+  }
 }
-

@@ -1,1 +1,1 @@
-export const OrganizationLeaderPage = ()=>import('./organizationLeaderPage.vue')
+export const OrganizationLeaderPage = () => import('./organizationLeaderPage.vue')

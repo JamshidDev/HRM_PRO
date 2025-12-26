@@ -1,402 +1,390 @@
 <script setup>
-import {useWorkerProfileStore, useComponentStore} from "@/store/modules/index.js"
-import validationRules from "@/utils/validationRules.js"
-import Utils from "@/utils/Utils.js"
-import PhotoForm from "@/pages/hrm/condidate/ui/PhotoForm.vue"
-import PhoneForm from "@/pages/hrm/condidate/ui/PhoneForm.vue"
-import PassportForm from "../ui/PasportList.vue"
-import PositionList from "../ui/PositionList.vue"
-import RolesList from "../ui/RolesList.vue"
-import {useRoute} from "vue-router"
-import {useAppSetting} from "@/utils/index.js"
-const route = useRoute()
-const store = useWorkerProfileStore()
-const componentStore = useComponentStore()
-const formRef = ref(null)
-const isSave = ref(false)
+  import { useWorkerProfileStore, useComponentStore } from '@/store/modules/index.js'
+  import validationRules from '@/utils/validationRules.js'
+  import Utils from '@/utils/Utils.js'
+  import PhotoForm from '@/pages/hrm/condidate/ui/PhotoForm.vue'
+  import PhoneForm from '@/pages/hrm/condidate/ui/PhoneForm.vue'
+  import PassportForm from '../ui/PasportList.vue'
+  import PositionList from '../ui/PositionList.vue'
+  import RolesList from '../ui/RolesList.vue'
+  import { useRoute } from 'vue-router'
+  import { useAppSetting } from '@/utils/index.js'
+  const route = useRoute()
+  const store = useWorkerProfileStore()
+  const componentStore = useComponentStore()
+  const formRef = ref(null)
+  const isSave = ref(false)
 
-const onDelete = (v)=>{
-  if(v.id.toString().length>10){
-    store.photos = store.photos.filter((x)=>x.id !== v.id )
-  }else{
-    store._deletePhoto(v.id)
+  const onDelete = (v) => {
+    if (v.id.toString().length > 10) {
+      store.photos = store.photos.filter((x) => x.id !== v.id)
+    } else {
+      store._deletePhoto(v.id)
+    }
   }
-}
 
-const onDeletePhone = (v)=>{
-  if(v.exist){
-    store._deletePhone(v.id)
+  const onDeletePhone = (v) => {
+    if (v.exist) {
+      store._deletePhone(v.id)
+    }
   }
-}
 
-const onCountry = ()=>{
-  if(componentStore.countryList.length<2){
-    componentStore._countries()
+  const onCountry = () => {
+    if (componentStore.countryList.length < 2) {
+      componentStore._countries()
+    }
   }
-}
 
-const onRegion = ()=>{
-  if(componentStore.regionList.length<3){
-    componentStore._regions()
+  const onRegion = () => {
+    if (componentStore.regionList.length < 3) {
+      componentStore._regions()
+    }
   }
-}
 
-const onDistrict = ()=>{
-  if(store.districts.length<2){
+  const onDistrict = () => {
+    if (store.districts.length < 2) {
+      store._district()
+    }
+  }
+
+  const changeDistrict = () => {
+    store.payload.city_id = null
+    store.districts = []
     store._district()
   }
-}
 
-const changeDistrict = ()=>{
-  store.payload.city_id = null
-  store.districts = []
-  store._district()
-}
-
-const onCurrentDistrict = ()=>{
-  if(store.currentDistricts.length<2){
-    store._currentDistrict()
-  }
-}
-
-const changeCurrentDistrict = ()=>{
-  store.payload.current_city_id = null
-  store.currentDistricts = []
-}
-
-
-const onSubmit = ()=>{
-  formRef.value?.validate((error)=>{
-    if(!error) {
-      store.savePersonalInfo()
+  const onCurrentDistrict = () => {
+    if (store.currentDistricts.length < 2) {
+      store._currentDistrict()
     }
+  }
+
+  const changeCurrentDistrict = () => {
+    store.payload.current_city_id = null
+    store.currentDistricts = []
+  }
+
+  const onSubmit = () => {
+    formRef.value?.validate((error) => {
+      if (!error) {
+        store.savePersonalInfo()
+      }
+    })
+  }
+
+  onMounted(() => {
+    store.elementId = route.query.id
+    store._index()
+    store._indexPassport()
+    componentStore._enums()
+    componentStore._nationality()
   })
-}
-
-
-onMounted(()=>{
-  store.elementId = route.query.id
-  store._index()
-  store._indexPassport()
-  componentStore._enums()
-  componentStore._nationality()
-})
-
 </script>
 
 <template>
   <n-form
-      class="w-full grid grid-cols-12 gap-x-4 px-2"
-      ref="formRef"
-      :rules="validationRules.workerProfileForm"
-      :model="store.payload"
+    class="w-full grid grid-cols-12 gap-x-4 px-2"
+    ref="formRef"
+    :rules="validationRules.workerProfileForm"
+    :model="store.payload"
   >
     <div class="col-span-12">
       <PhotoForm
-          v-model:images="store.photos"
-          v-model:main-image-id="store.mainImgId"
-          @onDelete="onDelete"
-          @onChangeMain="(v)=>{isSave=v}"
+        v-model:images="store.photos"
+        v-model:main-image-id="store.mainImgId"
+        @onDelete="onDelete"
+        @onChangeMain="
+          (v) => {
+            isSave = v
+          }
+        "
       />
     </div>
 
     <div class="col-span-12 mb-2">
-      <n-collapse-transition :show="isSave && store.photos.length>0">
+      <n-collapse-transition :show="isSave && store.photos.length > 0">
         <n-alert type="warning" size="small">
-         {{$t('content.warningImageSave')}}
+          {{ $t('content.warningImageSave') }}
         </n-alert>
-
       </n-collapse-transition>
     </div>
     <div class="col-span-12 flex flex-col">
       <div class="flex justify-between items-end">
-        <span class="text-xs text-gray-400">{{$t('createWorkerPage.ui.image')}}</span>
+        <span class="text-xs text-gray-400">{{ $t('createWorkerPage.ui.image') }}</span>
         <n-button
-            type="info"
-            class="ml-auto px-10"
-            @click="store.savePhoto(route.query.id)"
-            :loading="store.loading"
-        >{{$t(`content.save`)}}</n-button>
+          type="info"
+          class="ml-auto px-10"
+          @click="store.savePhoto(route.query.id)"
+          :loading="store.loading"
+          >{{ $t(`content.save`) }}</n-button
+        >
       </div>
       <div class="w-full border-b mt-2 mb-10 border-dashed border-surface-line"></div>
     </div>
     <n-form-item
-        class="w-full col-span-12 md:col-span-6 lg:col-span-4"
-        :label="$t(`createWorkerPage.form.lastName`)"
-        path="last_name">
-      <n-input
-          class="w-full"
-          type="text"
-
-          v-model:value="store.payload.last_name"
-      />
+      class="w-full col-span-12 md:col-span-6 lg:col-span-4"
+      :label="$t(`createWorkerPage.form.lastName`)"
+      path="last_name"
+    >
+      <n-input class="w-full" type="text" v-model:value="store.payload.last_name" />
     </n-form-item>
     <n-form-item
-        class="w-full col-span-12 md:col-span-6 lg:col-span-4"
-        :label="$t(`createWorkerPage.form.firstName`)"
-        path="first_name">
-      <n-input
-          class="w-full"
-          type="text"
-
-          v-model:value="store.payload.first_name"
-      />
+      class="w-full col-span-12 md:col-span-6 lg:col-span-4"
+      :label="$t(`createWorkerPage.form.firstName`)"
+      path="first_name"
+    >
+      <n-input class="w-full" type="text" v-model:value="store.payload.first_name" />
     </n-form-item>
     <n-form-item
-        class="w-full col-span-12 md:col-span-6 lg:col-span-4"
-        :label="$t(`createWorkerPage.form.middleName`)"
-        path="middle_name">
-      <n-input
-          class="w-full"
-          type="text"
-
-          v-model:value="store.payload.middle_name"
-      />
+      class="w-full col-span-12 md:col-span-6 lg:col-span-4"
+      :label="$t(`createWorkerPage.form.middleName`)"
+      path="middle_name"
+    >
+      <n-input class="w-full" type="text" v-model:value="store.payload.middle_name" />
     </n-form-item>
     <n-form-item
-        class="col-span-12 md:col-span-6 lg:col-span-4"
-        :label="$t(`createWorkerPage.form.birthday`)"
-        path="birthday">
+      class="col-span-12 md:col-span-6 lg:col-span-4"
+      :label="$t(`createWorkerPage.form.birthday`)"
+      path="birthday"
+    >
       <n-date-picker
-          class="w-full"
-          v-model:value="store.payload.birthday"
-          type="date"
-
-          :format="useAppSetting.datePicketFormat"
+        class="w-full"
+        v-model:value="store.payload.birthday"
+        type="date"
+        :format="useAppSetting.datePicketFormat"
       />
     </n-form-item>
     <n-form-item
-        class="col-span-12 md:col-span-6 lg:col-span-4"
-        :label="$t(`createWorkerPage.form.country`)"
-        path="country_id">
+      class="col-span-12 md:col-span-6 lg:col-span-4"
+      :label="$t(`createWorkerPage.form.country`)"
+      path="country_id"
+    >
       <n-select
-          v-model:value="store.payload.country_id"
-          @focus="onCountry"
-          filterable
-          :options="componentStore.countryList"
-          label-field="name"
-          value-field="id"
-          :loading="componentStore.countryLoading"
+        v-model:value="store.payload.country_id"
+        @focus="onCountry"
+        filterable
+        :options="componentStore.countryList"
+        label-field="name"
+        value-field="id"
+        :loading="componentStore.countryLoading"
       />
     </n-form-item>
     <n-form-item
-        class="col-span-12 md:col-span-6 lg:col-span-4"
-        :label="$t(`createWorkerPage.form.region`)"
-        path="region_id">
+      class="col-span-12 md:col-span-6 lg:col-span-4"
+      :label="$t(`createWorkerPage.form.region`)"
+      path="region_id"
+    >
       <n-select
-          @focus="onRegion"
-          v-model:value="store.payload.region_id"
-          @update:value="changeDistrict"
-          filterable
-          :options="componentStore.regionList"
-          label-field="name"
-          value-field="id"
-          :loading="componentStore.regionLoading"
+        @focus="onRegion"
+        v-model:value="store.payload.region_id"
+        @update:value="changeDistrict"
+        filterable
+        :options="componentStore.regionList"
+        label-field="name"
+        value-field="id"
+        :loading="componentStore.regionLoading"
       />
     </n-form-item>
     <n-form-item
-        class="col-span-12 md:col-span-6 lg:col-span-4"
-        :label="$t(`createWorkerPage.form.city`)"
-        path="city_id">
+      class="col-span-12 md:col-span-6 lg:col-span-4"
+      :label="$t(`createWorkerPage.form.city`)"
+      path="city_id"
+    >
       <n-select
-          @focus="onDistrict"
-          v-model:value="store.payload.city_id"
-          filterable
-
-          :options="store.districts"
-          label-field="name"
-          value-field="id"
-          :loading="store.districtLoading"
+        @focus="onDistrict"
+        v-model:value="store.payload.city_id"
+        filterable
+        :options="store.districts"
+        label-field="name"
+        value-field="id"
+        :loading="store.districtLoading"
       />
     </n-form-item>
     <n-form-item
-        class="col-span-12 md:col-span-6 lg:col-span-4"
-        :label="$t(`createWorkerPage.form.currentRegion`)"
-        path="current_region_id">
+      class="col-span-12 md:col-span-6 lg:col-span-4"
+      :label="$t(`createWorkerPage.form.currentRegion`)"
+      path="current_region_id"
+    >
       <n-select
-          @focus="onRegion"
-          v-model:value="store.payload.current_region_id"
-          @updateValue="changeCurrentDistrict"
-          filterable
-
-          :options="componentStore.regionList"
-          label-field="name"
-          value-field="id"
-          :loading="componentStore.regionLoading"
+        @focus="onRegion"
+        v-model:value="store.payload.current_region_id"
+        @updateValue="changeCurrentDistrict"
+        filterable
+        :options="componentStore.regionList"
+        label-field="name"
+        value-field="id"
+        :loading="componentStore.regionLoading"
       />
     </n-form-item>
     <n-form-item
-        class="col-span-12 md:col-span-6 lg:col-span-4"
-        :label="$t(`createWorkerPage.form.currentCity`)"
-        path="current_city_id">
+      class="col-span-12 md:col-span-6 lg:col-span-4"
+      :label="$t(`createWorkerPage.form.currentCity`)"
+      path="current_city_id"
+    >
       <n-select
-          @focus="onCurrentDistrict"
-          v-model:value="store.payload.current_city_id"
-          filterable
-
-          :options="store.currentDistricts"
-          label-field="name"
-          value-field="id"
-          :loading="store.currentDistrictLoading"
+        @focus="onCurrentDistrict"
+        v-model:value="store.payload.current_city_id"
+        filterable
+        :options="store.currentDistricts"
+        label-field="name"
+        value-field="id"
+        :loading="store.currentDistrictLoading"
       />
     </n-form-item>
     <n-form-item
-        class="col-span-12 md:col-span-6 lg:col-span-4"
-        :label="$t(`createWorkerPage.form.address`)"
-        path="address">
+      class="col-span-12 md:col-span-6 lg:col-span-4"
+      :label="$t(`createWorkerPage.form.address`)"
+      path="address"
+    >
+      <n-input class="w-full" type="text" v-model:value="store.payload.address" />
+    </n-form-item>
+    <n-form-item
+      class="col-span-12 md:col-span-6 lg:col-span-4"
+      :label="$t(`createWorkerPage.form.nationality_id`)"
+      path="nationality_id"
+    >
+      <n-select
+        v-model:value="store.payload.nationality_id"
+        filterable
+        :options="componentStore.nationalityList"
+        label-field="name"
+        value-field="id"
+        :loading="componentStore.nationalityLoading"
+      />
+    </n-form-item>
+    <n-form-item
+      class="col-span-12 md:col-span-6 lg:col-span-4"
+      :label="$t(`createWorkerPage.form.sex`)"
+      path="sex"
+    >
+      <n-select
+        v-model:value="store.payload.sex"
+        filterable
+        :options="componentStore.genderList"
+        label-field="name"
+        value-field="id"
+      />
+    </n-form-item>
+    <n-form-item
+      class="col-span-12 md:col-span-6 lg:col-span-4"
+      :label="$t(`createWorkerPage.form.pin`)"
+      path="pin"
+    >
       <n-input
-          class="w-full"
-          type="text"
-
-          v-model:value="store.payload.address"
+        class="w-full"
+        type="text"
+        v-model:value="store.payload.pin"
+        v-mask="`####-####-####-##`"
       />
     </n-form-item>
+    <!--    <n-form-item-->
+    <!--        class="col-span-12 md:col-span-6 lg:col-span-4"-->
+    <!--        :label="$t(`createWorkerPage.form.inn`)"-->
+    <!--        path="inn">-->
+    <!--      <n-input-->
+    <!--          class="w-full"-->
+    <!--          type="text"-->
+    <!--          -->
+    <!--          v-mask="`#########`"-->
+    <!--          v-model:value="store.payload.inn"-->
+    <!--          :allow-input="Utils.onlyAllowNumber"-->
+    <!--      />-->
+    <!--    </n-form-item>-->
     <n-form-item
-        class="col-span-12 md:col-span-6 lg:col-span-4"
-        :label="$t(`createWorkerPage.form.nationality_id`)"
-        path="nationality_id">
+      class="col-span-12 md:col-span-6 lg:col-span-4"
+      :label="$t(`createWorkerPage.form.marital_status`)"
+      path="marital_status"
+    >
       <n-select
-          v-model:value="store.payload.nationality_id"
-          filterable
-
-          :options="componentStore.nationalityList"
-          label-field="name"
-          value-field="id"
-          :loading="componentStore.nationalityLoading"
+        v-model:value="store.payload.marital_status"
+        filterable
+        :options="componentStore.maritalList"
+        label-field="name"
+        value-field="id"
+        :loading="componentStore.enumLoading"
       />
     </n-form-item>
     <n-form-item
-        class="col-span-12 md:col-span-6 lg:col-span-4"
-        :label="$t(`createWorkerPage.form.sex`)"
-        path="sex">
-      <n-select
-          v-model:value="store.payload.sex"
-          filterable
-
-          :options="componentStore.genderList"
-          label-field="name"
-          value-field="id"
-      />
-    </n-form-item>
-    <n-form-item
-        class="col-span-12 md:col-span-6 lg:col-span-4"
-        :label="$t(`createWorkerPage.form.pin`)"
-        path="pin">
+      class="col-span-12 md:col-span-6 lg:col-span-4"
+      :label="$t(`createWorkerPage.form.work_experience`)"
+      path="work_experience"
+    >
       <n-input
-          class="w-full"
-          type="text"
-
-          v-model:value="store.payload.pin"
-          v-mask="`####-####-####-##`"
-      />
-    </n-form-item>
-<!--    <n-form-item-->
-<!--        class="col-span-12 md:col-span-6 lg:col-span-4"-->
-<!--        :label="$t(`createWorkerPage.form.inn`)"-->
-<!--        path="inn">-->
-<!--      <n-input-->
-<!--          class="w-full"-->
-<!--          type="text"-->
-<!--          -->
-<!--          v-mask="`#########`"-->
-<!--          v-model:value="store.payload.inn"-->
-<!--          :allow-input="Utils.onlyAllowNumber"-->
-<!--      />-->
-<!--    </n-form-item>-->
-    <n-form-item
-        class="col-span-12 md:col-span-6 lg:col-span-4"
-        :label="$t(`createWorkerPage.form.marital_status`)"
-        path="marital_status">
-      <n-select
-          v-model:value="store.payload.marital_status"
-          filterable
-
-          :options="componentStore.maritalList"
-          label-field="name"
-          value-field="id"
-          :loading="componentStore.enumLoading"
+        class="w-full"
+        type="text"
+        v-model:value="store.payload.work_experience"
+        :allow-input="Utils.onlyAllowNumber"
       />
     </n-form-item>
     <n-form-item
-        class="col-span-12 md:col-span-6 lg:col-span-4"
-        :label="$t(`createWorkerPage.form.work_experience`)"
-        path="work_experience">
-      <n-input
-          class="w-full"
-          type="text"
-
-          v-model:value="store.payload.work_experience"
-          :allow-input="Utils.onlyAllowNumber"
-      />
-    </n-form-item>
-    <n-form-item
-        class="col-span-12 md:col-span-6 lg:col-span-4"
-        :label="$t(`createWorkerPage.form.experience_date`)"
-        path="birthday">
+      class="col-span-12 md:col-span-6 lg:col-span-4"
+      :label="$t(`createWorkerPage.form.experience_date`)"
+      path="birthday"
+    >
       <n-date-picker
-          class="w-full"
-          v-model:value="store.payload.experience_date"
-          type="date"
-          :format="useAppSetting.datePicketFormat"
+        class="w-full"
+        v-model:value="store.payload.experience_date"
+        type="date"
+        :format="useAppSetting.datePicketFormat"
       />
     </n-form-item>
     <n-form-item
-        class="col-span-12 md:col-span-6 lg:col-span-4"
-        :label="$t(`createWorkerPage.form.education`)"
-        path="education">
+      class="col-span-12 md:col-span-6 lg:col-span-4"
+      :label="$t(`createWorkerPage.form.education`)"
+      path="education"
+    >
       <n-select
-          v-model:value="store.payload.education"
-          filterable
-          :options="componentStore.educationList"
-          label-field="name"
-          value-field="id"
-          :loading="componentStore.enumLoading"
+        v-model:value="store.payload.education"
+        filterable
+        :options="componentStore.educationList"
+        label-field="name"
+        value-field="id"
+        :loading="componentStore.enumLoading"
       />
     </n-form-item>
-
-
-
 
     <div class="col-span-12 mt-10">
-      <PhoneForm
-          @onDelete="onDeletePhone"
-          v-model:phones="store.payload.phones"/>
+      <PhoneForm @onDelete="onDeletePhone" v-model:phones="store.payload.phones" />
     </div>
     <div class="col-span-12 mb-2">
       <n-collapse-transition :show="!store.isExistAccount">
         <n-alert type="error" size="small">
-          {{store.anotherProfile? $t('createWorkerPage.otherProfile', {n:`${Utils.combineFullName(store.anotherProfile?.worker)}`}) : $t('createWorkerPage.no-account')}}
+          {{
+            store.anotherProfile
+              ? $t('createWorkerPage.otherProfile', {
+                  n: `${Utils.combineFullName(store.anotherProfile?.worker)}`
+                })
+              : $t('createWorkerPage.no-account')
+          }}
         </n-alert>
-
       </n-collapse-transition>
     </div>
     <div class="col-span-12 flex flex-col">
       <div class="flex justify-between items-end">
-        <span class="text-xs text-gray-400">{{$t('createWorkerPage.ui.phone')}}</span>
-        <n-button
-            type="info"
-            class="ml-auto px-10"
-            @click="onSubmit"
-            :loading="store.loading"
-        >{{$t(`content.save`)}}</n-button>
+        <span class="text-xs text-gray-400">{{ $t('createWorkerPage.ui.phone') }}</span>
+        <n-button type="info" class="ml-auto px-10" @click="onSubmit" :loading="store.loading">{{
+          $t(`content.save`)
+        }}</n-button>
       </div>
       <div class="w-full border-b mt-2 mb-10 border-dashed border-surface-line"></div>
     </div>
-    <div class="col-span-12 flex justify-between px-2 py-2 border border-surface-line border-dashed rounded-lg">
-       <span>{{$t('createWorkerPage.updatePasswordWarning')}}</span>
-        <n-button @click="store.savePersonalInfo(true)" :loading="store.loading" type="error">{{$t('createWorkerPage.updatePassword')}}</n-button>
+    <div
+      class="col-span-12 flex justify-between px-2 py-2 border border-surface-line border-dashed rounded-lg"
+    >
+      <span>{{ $t('createWorkerPage.updatePasswordWarning') }}</span>
+      <n-button @click="store.savePersonalInfo(true)" :loading="store.loading" type="error">{{
+        $t('createWorkerPage.updatePassword')
+      }}</n-button>
     </div>
     <div class="col-span-12 mb-4 mt-16">
-      <RolesList/>
+      <RolesList />
     </div>
     <div class="col-span-12 mb-4 mt-16">
-      <PositionList/>
+      <PositionList />
     </div>
     <div class="col-span-12">
-      <PassportForm/>
+      <PassportForm />
     </div>
   </n-form>
-<div class="grid grid-cols-12">
-
-</div>
+  <div class="grid grid-cols-12"></div>
 </template>

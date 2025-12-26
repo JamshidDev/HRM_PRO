@@ -1,27 +1,27 @@
 <script setup>
-import {useDocumentArchiveStore} from "@/store/modules/index.js"
-import Table from "./Table.vue"
-import {useDebounceFn} from "@vueuse/core"
-import {ArrowSyncCircle16Regular, Filter20Filled} from "@vicons/fluent"
-import {useAppSetting} from "@/utils/index.js"
+  import { useDocumentArchiveStore } from '@/store/modules/index.js'
+  import Table from './Table.vue'
+  import { useDebounceFn } from '@vueuse/core'
+  import { ArrowSyncCircle16Regular, Filter20Filled } from '@vicons/fluent'
+  import { useAppSetting } from '@/utils/index.js'
 
-const store = useDocumentArchiveStore()
+  const store = useDocumentArchiveStore()
 
-const searchEvent = useDebounceFn(() => {
-  store.params.page = 1
-  store._index()
-}, 300, )
+  const searchEvent = useDebounceFn(() => {
+    store.params.page = 1
+    store._index()
+  }, 300)
 
-const loadMorePage = ()=>{
-  if(store.loading) return
+  const loadMorePage = () => {
+    if (store.loading) return
 
-  store.params.page ++
-  store._index(true)
-}
+    store.params.page++
+    store._index(true)
+  }
 
-onMounted(()=>{
-  store._index()
-})
+  onMounted(() => {
+    store._index()
+  })
 </script>
 
 <template>
@@ -31,66 +31,55 @@ onMounted(()=>{
         <div class="w-full max-w-[600px]">
           <n-input-group>
             <n-input
-                :loading="store.loading"
-                v-model:value="store.params.search"
-                type="text"
-
-                :on-keyup="searchEvent"
+              :loading="store.loading"
+              v-model:value="store.params.search"
+              type="text"
+              :on-keyup="searchEvent"
             />
 
-
-            <n-popover
-                trigger="click"
-                scrollable
-                placement="bottom"
-
-            >
+            <n-popover trigger="click" scrollable placement="bottom">
               <template #trigger>
-                <n-button type="primary" >
+                <n-button type="primary">
                   <template #icon>
-                    <Filter20Filled/>
+                    <Filter20Filled />
                   </template>
                 </n-button>
               </template>
               <div class="flex flex-col pb-6">
-                <span class="text-sm text-surface-400">{{$t('content.filterSetting')}}</span>
-                <p class="text-secondary mt-2">{{$t('content.date')}}</p>
+                <span class="text-sm text-surface-400">{{ $t('content.filterSetting') }}</span>
+                <p class="text-secondary mt-2">{{ $t('content.date') }}</p>
                 <n-date-picker
-                    clearable
-                    class="w-full"
-                    v-model:value="store.params.date"
-                    type="date"
-
-                    :format="useAppSetting.datePicketFormat"
+                  clearable
+                  class="w-full"
+                  v-model:value="store.params.date"
+                  type="date"
+                  :format="useAppSetting.datePicketFormat"
                 />
               </div>
             </n-popover>
           </n-input-group>
-
         </div>
       </div>
       <div class="col-span-12 mt-6">
-        <Table/>
+        <Table />
       </div>
       <div class="col-span-12 flex justify-center mt-6">
         <n-button
-            v-if="store.totalItems>store.list.length"
-            @click="loadMorePage()"
-            :loading="store.loading"
-            round>
+          v-if="store.totalItems > store.list.length"
+          @click="loadMorePage()"
+          :loading="store.loading"
+          round
+        >
           <template #icon>
             <n-icon size="24">
-              <ArrowSyncCircle16Regular/>
+              <ArrowSyncCircle16Regular />
             </n-icon>
           </template>
-          {{$t('content.more')}}
+          {{ $t('content.more') }}
         </n-button>
       </div>
     </div>
   </div>
-
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

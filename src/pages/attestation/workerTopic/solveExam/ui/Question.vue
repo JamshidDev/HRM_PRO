@@ -1,72 +1,75 @@
 <script setup>
-import {UIEditorViewer} from "@/components/index.js";
-import {useExamAttemptStore} from "@/store/modules";
+  import { UIEditorViewer } from '@/components/index.js'
+  import { useExamAttemptStore } from '@/store/modules'
 
-const store = useExamAttemptStore()
-defineProps({
-  question: {
-    type: Object,
-    required: true
-  },
-  number:{
-    type: Number,
-    required: true
+  const store = useExamAttemptStore()
+  defineProps({
+    question: {
+      type: Object,
+      required: true
+    },
+    number: {
+      type: Number,
+      required: true
+    }
+  })
+
+  const sendResult = (question_id, option_id) => {
+    if (!store.result) {
+      store.questionId = question_id
+      store.payload.result = option_id
+      store._send_result()
+    }
   }
-})
-
-const sendResult = (question_id, option_id) => {
-  if(!store.result){
-    store.questionId = question_id
-    store.payload.result = option_id
-    store._send_result()
-  }
-}
-
 </script>
 <template>
-  <div class="border bg-surface-section rounded-lg overflow-hidden border-surface-line p-2 shadow-blue-50 drop-shadow-xs"
+  <div
+    class="border bg-surface-section rounded-lg overflow-hidden border-surface-line p-2 shadow-blue-50 drop-shadow-xs"
   >
-    <p class="text-textColor2">{{number}}.</p>
+    <p class="text-textColor2">{{ number }}.</p>
     <UIEditorViewer :html="question.question"></UIEditorViewer>
-    <n-divider class="mb-0!"/>
-    <template
-        v-for="(option, idx) in question.answers"
-        :key="idx"
-    >
+    <n-divider class="mb-0!" />
+    <template v-for="(option, idx) in question.answers" :key="idx">
       <div class="flex gap-2 p-2">
         <div class="relative flex gap-1">
-          <span class="text-textColor2">{{store.options[idx]}}</span>
+          <span class="text-textColor2">{{ store.options[idx] }}</span>
           <div class="relative w-4!">
             <n-spin
-                v-if="store.sendResultLoading && store.questionId === question.id && store.payload.result===option.id"
-                :size="12"
+              v-if="
+                store.sendResultLoading &&
+                store.questionId === question.id &&
+                store.payload.result === option.id
+              "
+              :size="12"
             />
             <n-radio
-                v-else
-                :checked="option.id===question.result"
-                @click="sendResult(question.id, option.id)"
-                :disabled="store.sendResultLoading && store.questionId === question.id"
+              v-else
+              :checked="option.id === question.result"
+              @click="sendResult(question.id, option.id)"
+              :disabled="store.sendResultLoading && store.questionId === question.id"
             ></n-radio>
           </div>
         </div>
-        <UIEditorViewer
-            :html="option.text"
-        />
+        <UIEditorViewer :html="option.text" />
       </div>
     </template>
     <div
-        v-if="!store.result"
-        class="transition-all h-0 overflow-hidden"
-        :class="{'h-6': !!question.result}"
+      v-if="!store.result"
+      class="transition-all h-0 overflow-hidden"
+      :class="{ 'h-6': !!question.result }"
     >
       <n-button
-          :loading="store.sendResultLoading && store.questionId === question.id && store.payload.result===null"
-          @click="sendResult(question.id, null)"
-          type="error"
-          size="tiny"
-          secondary
-      >{{$t('solveExamPage.removeAnswer')}}</n-button>
+        :loading="
+          store.sendResultLoading &&
+          store.questionId === question.id &&
+          store.payload.result === null
+        "
+        @click="sendResult(question.id, null)"
+        type="error"
+        size="tiny"
+        secondary
+        >{{ $t('solveExamPage.removeAnswer') }}</n-button
+      >
     </div>
   </div>
-
 </template>

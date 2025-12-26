@@ -1,1 +1,1 @@
-export const InfoPage = ()=> import('./InfoPage.vue')
+export const InfoPage = () => import('./InfoPage.vue')

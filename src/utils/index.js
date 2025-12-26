@@ -1,10 +1,10 @@
-export * from "./AppPaths.js"
-export {default as Utils} from "./Utils.js"
-export * from "./Utils.js"
-export * from "./AppSetting.js"
-export * from "./AppPermissions.js"
-export * from "./methods.js"
-export * from "./UIHelper.js"
-export * from "./Analytics.js"
-export * from "./imageCompressor.js"
-export * from "./eventBus.js"
+export * from './AppPaths.js'
+export { default as Utils } from './Utils.js'
+export * from './Utils.js'
+export * from './AppSetting.js'
+export * from './AppPermissions.js'
+export * from './methods.js'
+export * from './UIHelper.js'
+export * from './Analytics.js'
+export * from './imageCompressor.js'
+export * from './eventBus.js'

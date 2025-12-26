@@ -1,10 +1,9 @@
-
-export {default as Filter} from "./Filter.vue"
-export {default as PreviewList} from "./PreviewList.vue"
-export {default as Table} from "./Table.vue"
-export {default as InfoGraph} from "./InfoGraph.vue"
-export {default as RowChart} from "./RowChart.vue"
-export {default as DeviceCard} from "./DeviceCard.vue"
-export {default as WorkTimeCard} from "./WorkTimeCard.vue"
-export {default as MonthlyCard} from "./MonthlyCard.vue"
-export {default as FaceCard} from "./FaceCard.vue"
+export { default as Filter } from './Filter.vue'
+export { default as PreviewList } from './PreviewList.vue'
+export { default as Table } from './Table.vue'
+export { default as InfoGraph } from './InfoGraph.vue'
+export { default as RowChart } from './RowChart.vue'
+export { default as DeviceCard } from './DeviceCard.vue'
+export { default as WorkTimeCard } from './WorkTimeCard.vue'
+export { default as MonthlyCard } from './MonthlyCard.vue'
+export { default as FaceCard } from './FaceCard.vue'

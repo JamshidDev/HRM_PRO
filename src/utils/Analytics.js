@@ -1,15 +1,13 @@
 import { useGtag } from 'vue-gtag-next'
 
-
 export function useAnalytics() {
-    const {event} = useGtag()
+  const { event } = useGtag()
 
-    return {
-        trackUserLogin(parameters){
-            event('userLogin',{
-                ...parameters,
-            })
-        }
+  return {
+    trackUserLogin(parameters) {
+      event('userLogin', {
+        ...parameters
+      })
     }
+  }
 }
-

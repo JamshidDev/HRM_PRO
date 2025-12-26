@@ -1,48 +1,47 @@
 <script setup>
-import { UIModal, UIPageContent, UISelect } from "@/components/index.js";
-import { useComponentStore, useReport2Store } from "@/store/modules/index.js";
-import { ArrowDownload20Filled } from "@vicons/fluent";
-import { onMounted } from "vue";
-import { useSpecialReportStore } from "@/store/modules/hrm/specialReportStore";
-import CreateForm from "./ui/CreateForm.vue";
-import i18n from "@/i18n/index.js"
+  import { UIModal, UIPageContent, UISelect } from '@/components/index.js'
+  import { useComponentStore, useReport2Store } from '@/store/modules/index.js'
+  import { ArrowDownload20Filled } from '@vicons/fluent'
+  import { onMounted } from 'vue'
+  import { useSpecialReportStore } from '@/store/modules/hrm/specialReportStore'
+  import CreateForm from './ui/CreateForm.vue'
+  import i18n from '@/i18n/index.js'
 
-const t = i18n.global.t
-const componentStore = useComponentStore();
+  const t = i18n.global.t
+  const componentStore = useComponentStore()
 
-onMounted(() => {
-  if (componentStore.structureList.length === 0) {
-    componentStore._structures();
+  onMounted(() => {
+    if (componentStore.structureList.length === 0) {
+      componentStore._structures()
+    }
+  })
+
+  const store = useSpecialReportStore()
+
+  const openEv = (item) => {
+    if (!item.is_active) {
+      $Toast.warning(t('content.developmentProcess'))
+      return
+    }
+
+    store.payload.type = item.type
+    store.visible = true
   }
-});
 
-const store = useSpecialReportStore()
+  watch(
+    () => store.visible,
+    (v) => {
+      if (!v) return
+      store.payload.organizations = []
+    }
+  )
 
-
-const openEv = (item)=>{
-  if(!item.is_active){
-    $Toast.warning(t('content.developmentProcess'))
-    return
+  onMounted(() => {
+    store._getList()
+  })
+  const showImage = (image) => {
+    $MediaViewer.showMediaViewer(image, 'jpg')
   }
-
-  store.payload.type = item.type
-  store.visible = true
-}
-
-watch(
-  () => store.visible,
-  (v) => {
-    if (!v) return;
-    store.payload.organizations = [];
-  }
-);
-
-onMounted(() => {
-  store._getList();
-});
-const showImage = (image) => {
-  $MediaViewer.showMediaViewer(image, "jpg");
-};
 </script>
 
 <template>
@@ -76,10 +75,7 @@ const showImage = (image) => {
                 <div
                   class="absolute size-8 group-hover:bg-info/15 hover:bg-info/20 rounded-full transition-all outline outline-transparent group-hover:outline-dashed group-hover:outline-primary group-hover:rotate-180 duration-200"
                 ></div>
-                <n-icon
-                  size="18"
-                  class="text-textColor3 group-hover:text-primary"
-                >
+                <n-icon size="18" class="text-textColor3 group-hover:text-primary">
                   <ArrowDownload20Filled />
                 </n-icon>
               </div>

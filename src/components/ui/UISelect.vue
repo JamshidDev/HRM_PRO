@@ -1,206 +1,207 @@
 <script setup>
-import {Search48Filled, Search32Filled} from "@vicons/fluent"
-import TreeOrg from "@/components/tree/TreeOrg.vue"
-import {useDebounceFn} from "@vueuse/core"
-import {useComponentStore} from "@/store/modules/index.js"
-const store = useComponentStore()
-const instance = getCurrentInstance();
-const props = defineProps({
-  multiple:{type:Boolean,default:true},
-  loading:{type:Boolean,default:false},
-  modelV:{type:Array,default:[]},
-  checkedVal:{type:Array,default:[]},
-  options:{type:Array, default:[]},
-})
+  import { Search48Filled, Search32Filled } from '@vicons/fluent'
+  import TreeOrg from '@/components/tree/TreeOrg.vue'
+  import { useDebounceFn } from '@vueuse/core'
+  import { useComponentStore } from '@/store/modules/index.js'
+  const store = useComponentStore()
+  const instance = getCurrentInstance()
+  const props = defineProps({
+    multiple: { type: Boolean, default: true },
+    loading: { type: Boolean, default: false },
+    modelV: { type: Array, default: [] },
+    checkedVal: { type: Array, default: [] },
+    options: { type: Array, default: [] }
+  })
 
+  const searchModel = defineModel('search', { type: String, default: null })
+  const emits = defineEmits(['onSearch', 'onSubmit', 'updateModel', 'updateCheck', 'defaultValue'])
 
-const searchModel = defineModel("search",{type:String,default:null })
-const emits = defineEmits(["onSearch", "onSubmit","updateModel", "updateCheck", "defaultValue"])
-
-const onSelect = (v)=>{
-  let list = []
-  if(props.modelV.map((a)=>a.id).includes(v.id)){
-    list = props.modelV.filter((x)=>x.id !== v.id)
-  }else{
-
-    if(props.multiple){
-      list = props.modelV
-      list.push(v)
-
-    }else{
-      list = [v]
-    }
-
-  }
-  emits('updateModel',list)
-}
-
-
-watch(()=>props.options, (v)=>{
-  if(isSingleOption.value){
-    if(isExistDefaultVal.value){
-      emits('defaultValue',props.options)
-    }else{
-      emits('updateModel',props.options)
-    }
-  }
-}, {deep:true})
-
-
-const isSingleOption = computed(()=> props.options.length===1 && (props.options[0]?.children? props.options[0].children?.length ===0 : true))
-
-const onSelectAll = (v)=>{
-
-  const idList = getChildIds(store.structureList, v.id)
-  let list = []
-
-  const checkRadio = (valList=[], idList=[])=>{
-    for(const id of idList){
-      if(!(valList.includes(id))){
-        return false
+  const onSelect = (v) => {
+    let list = []
+    if (props.modelV.map((a) => a.id).includes(v.id)) {
+      list = props.modelV.filter((x) => x.id !== v.id)
+    } else {
+      if (props.multiple) {
+        list = props.modelV
+        list.push(v)
+      } else {
+        list = [v]
       }
     }
-    return  true
+    emits('updateModel', list)
   }
 
-  if(checkRadio(props.modelV.map((a)=>a.id),idList.map(e=>e.id) )){
-    // Remove elements
-    list = props.modelV.filter((x)=>!(idList.map((a)=>a.id).includes(x.id)))
-  }
-  else{
-    // Add elements
-    idList.forEach((y)=>{
-      if(!(props.modelV.map((a)=>a.id).includes(y.id))){
-        list.push(y)
+  watch(
+    () => props.options,
+    (v) => {
+      if (isSingleOption.value) {
+        if (isExistDefaultVal.value) {
+          emits('defaultValue', props.options)
+        } else {
+          emits('updateModel', props.options)
+        }
       }
-    })
-    list = [...props.modelV, ...list]
-  }
-  emits('updateModel',list)
-}
+    },
+    { deep: true }
+  )
 
-const searchEvent = useDebounceFn(() => {
-  emits('onSearch', searchModel.value )
-}, 800,)
+  const isSingleOption = computed(
+    () =>
+      props.options.length === 1 &&
+      (props.options[0]?.children ? props.options[0].children?.length === 0 : true)
+  )
 
-const getChildIds = (tree, elementId)=>{
-  const result = []
+  const onSelectAll = (v) => {
+    const idList = getChildIds(store.structureList, v.id)
+    let list = []
 
-  const findAndCollect = (node)=>{
-    if(node.id === elementId){
-      collectChildIds(node)
+    const checkRadio = (valList = [], idList = []) => {
+      for (const id of idList) {
+        if (!valList.includes(id)) {
+          return false
+        }
+      }
       return true
     }
-    for(const child of node.children){
-      if(findAndCollect(child)) return true
+
+    if (
+      checkRadio(
+        props.modelV.map((a) => a.id),
+        idList.map((e) => e.id)
+      )
+    ) {
+      // Remove elements
+      list = props.modelV.filter((x) => !idList.map((a) => a.id).includes(x.id))
+    } else {
+      // Add elements
+      idList.forEach((y) => {
+        if (!props.modelV.map((a) => a.id).includes(y.id)) {
+          list.push(y)
+        }
+      })
+      list = [...props.modelV, ...list]
     }
-    return false
+    emits('updateModel', list)
   }
 
-  const collectChildIds = (node)=>{
-    result.push(node)
-    for (const child of node.children){
-      collectChildIds(child)
+  const searchEvent = useDebounceFn(() => {
+    emits('onSearch', searchModel.value)
+  }, 800)
+
+  const getChildIds = (tree, elementId) => {
+    const result = []
+
+    const findAndCollect = (node) => {
+      if (node.id === elementId) {
+        collectChildIds(node)
+        return true
+      }
+      for (const child of node.children) {
+        if (findAndCollect(child)) return true
+      }
+      return false
+    }
+
+    const collectChildIds = (node) => {
+      result.push(node)
+      for (const child of node.children) {
+        collectChildIds(child)
+      }
+    }
+
+    for (const items of tree) {
+      findAndCollect(items)
+    }
+
+    return result
+  }
+
+  const changeCheckVal = (v) => {
+    let list = []
+    if (props.checkedVal?.includes(v.id)) {
+      list = props.checkedVal.filter((x) => x !== v.id)
+    } else {
+      list = props.checkedVal
+      list.push(v.id)
+    }
+    emits('updateCheck', list)
+  }
+
+  const inputVal = computed(() => props.modelV.map((a) => a.name).toString())
+
+  const isExistDefaultVal = computed(() => instance.vnode.props?.onDefaultValue)
+
+  const callDefaultValue = () => {
+    if (isSingleOption.value && props.modelV.length === 0 && isExistDefaultVal.value) {
+      emits('defaultValue', props.options)
     }
   }
 
-  for(const items of tree){
-    findAndCollect(items)
-  }
-
-
-  return result
-}
-
-const changeCheckVal = (v)=>{
-  let list = []
-  if(props.checkedVal?.includes(v.id)){
-    list = props.checkedVal.filter((x)=>x !== v.id)
-  }else{
-    list = props.checkedVal
-    list.push(v.id)
-  }
-  emits('updateCheck',list)
-}
-
-const inputVal = computed(()=>props.modelV.map((a)=>a.name).toString())
-
-const isExistDefaultVal = computed(()=>instance.vnode.props?.onDefaultValue)
-
-const callDefaultValue = ()=>{
-  if(isSingleOption.value && props.modelV.length === 0 && isExistDefaultVal.value){
-    emits('defaultValue',props.options)
-  }
-}
-
-onMounted(()=>{
-  callDefaultValue()
-})
-
+  onMounted(() => {
+    callDefaultValue()
+  })
 </script>
 
 <template>
   <n-popover
-      placement="bottom"
-      trigger="click"
-      class="h-[400px] md:max-w-auto  py-0! px-0! max-w-(--top-activator-width) md:max-w-none! md:w-[400px]"
+    placement="bottom"
+    trigger="click"
+    class="h-[400px] md:max-w-auto py-0! px-0! max-w-(--top-activator-width) md:max-w-none! md:w-[400px]"
   >
     <template #trigger>
-      <n-badge class="w-full" :value="modelV.length" type="info" :offset="[-10,-4]">
-        <n-input :placeholder="$t('content.choose')" :loading="loading" class="ui__structure-input w-full"  type="text" :value="inputVal?.toString()"  />
+      <n-badge class="w-full" :value="modelV.length" type="info" :offset="[-10, -4]">
+        <n-input
+          :placeholder="$t('content.choose')"
+          :loading="loading"
+          class="ui__structure-input w-full"
+          type="text"
+          :value="inputVal?.toString()"
+        />
       </n-badge>
     </template>
     <div class="w-full h-[10px]"></div>
     <div class="w-full h-[344px] overflow-y-auto px-1">
       <n-spin :show="loading" class="w-full h-full">
         <TreeOrg
-            :short="store.structureShort"
-            :data="options"
-            :modelV="modelV"
-            :checkedVal="checkedVal"
-            :getChildIds="getChildIds"
-            :changeCheckVal="changeCheckVal"
-            :multiple="multiple"
-            @onSelect="onSelect"
-            @onSelectAll="onSelectAll"
+          :short="store.structureShort"
+          :data="options"
+          :modelV="modelV"
+          :checkedVal="checkedVal"
+          :getChildIds="getChildIds"
+          :changeCheckVal="changeCheckVal"
+          :multiple="multiple"
+          @onSelect="onSelect"
+          @onSelectAll="onSelectAll"
         />
       </n-spin>
     </div>
     <div class="w-full h-[40px] flex items-center px-1">
       <n-input-group>
-        <n-button
-            size="small">
+        <n-button size="small">
           <template #icon>
             <n-checkbox v-model:checked="store.structureShort" />
           </template>
-          {{store.structureShort? $t('content.long') : $t('content.short')}}
+          {{ store.structureShort ? $t('content.long') : $t('content.short') }}
         </n-button>
         <n-input
-            clearable
-            size="small"
-            v-model:value="searchModel"
-            round
-            :on-keyup="searchEvent"
-            @update:value="searchEvent"
-            :loading="loading"
+          clearable
+          size="small"
+          v-model:value="searchModel"
+          round
+          :on-keyup="searchEvent"
+          @update:value="searchEvent"
+          :loading="loading"
         >
           <template #prefix>
             <n-icon :component="Search48Filled" />
           </template>
         </n-input>
-        <n-button
-            @click="emits('onSubmit')"
-            type="primary"
-            size="small"
-            :loading="loading"
-        >
-         <template #icon>
-           <Search32Filled/>
-         </template>
+        <n-button @click="emits('onSubmit')" type="primary" size="small" :loading="loading">
+          <template #icon>
+            <Search32Filled />
+          </template>
         </n-button>
       </n-input-group>
     </div>
   </n-popover>
-
-
 </template>
