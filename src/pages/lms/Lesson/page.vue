@@ -1,55 +1,57 @@
 <script setup>
-import {useLmsLessonStore, useComponentStore, useAccountStore} from "@/store/modules/index.js"
-import Calendar from "./ui/Calendar.vue"
-import Filter from "./ui/Filter.vue"
-import createFrom from "./ui/createForm.vue"
-import Preview from "./ui/Preview.vue"
-import {UIModal, UIPageContent} from "@/components/index.js"
+  import { useLmsLessonStore, useComponentStore, useAccountStore } from '@/store/modules/index.js'
+  import Calendar from './ui/Calendar.vue'
+  import Filter from './ui/Filter.vue'
+  import createFrom from './ui/createForm.vue'
+  import Preview from './ui/Preview.vue'
+  import { UIModal, UIPageContent } from '@/components/index.js'
 
-const store = useLmsLessonStore()
-const componentStore = useComponentStore()
-const accStore = useAccountStore()
+  const store = useLmsLessonStore()
+  const componentStore = useComponentStore()
+  const accStore = useAccountStore()
 
+  onMounted(() => {
+    const now = new Date()
+    store.params.year = now.getFullYear()
+    store.params.month = now.getMonth() + 1
+    store.currentTime = now.getTime() || null
 
-onMounted(()=>{
-  const now = new Date()
-  store.params.year = now.getFullYear()
-  store.params.month = now.getMonth()+1
-  store.currentTime = now.getTime() || null
-
-  componentStore._lmsLearningCenter(()=>{
-    const existCenter = componentStore.lmsLearningCenters?.find(v=>v.id === store.params.learning_center_id)
-    store.params.learning_center_id =existCenter? store.params.learning_center_id : componentStore.lmsLearningCenters?.[0].id
-    if(!accStore.checkAction(accStore.pn.lmsLessonsRead)) return
-    store._index()
+    componentStore._lmsLearningCenter(() => {
+      const existCenter = componentStore.lmsLearningCenters?.find(
+        (v) => v.id === store.params.learning_center_id
+      )
+      store.params.learning_center_id = existCenter
+        ? store.params.learning_center_id
+        : componentStore.lmsLearningCenters?.[0].id
+      if (!accStore.checkAction(accStore.pn.lmsLessonsRead)) return
+      store._index()
+    })
   })
-})
-
 </script>
 
 <template>
   <UIPageContent>
-    <Filter/>
-    <Calendar/>
+    <Filter />
+    <Calendar />
     <UIModal
-        :width="900"
-        :visible="store.visible"
-        @update:visible="(v)=>store.visible = v"
-        :title="$t('lessonPage.createTitle')"
+      :width="900"
+      :visible="store.visible"
+      @update:visible="(v) => (store.visible = v)"
+      :title="$t('lessonPage.createTitle')"
     >
       <template #default>
-        <createFrom/>
+        <createFrom />
       </template>
     </UIModal>
-  <UIModal
+    <UIModal
       :width="600"
       :visible="store.previewVisible"
-      @update:visible="(v)=>store.previewVisible = v"
+      @update:visible="(v) => (store.previewVisible = v)"
       :title="$t('lessonPage.previewTitle')"
-  >
-    <template #default>
-      <Preview/>
-    </template>
-  </UIModal>
+    >
+      <template #default>
+        <Preview />
+      </template>
+    </UIModal>
   </UIPageContent>
 </template>

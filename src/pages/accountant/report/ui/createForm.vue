@@ -1,41 +1,38 @@
 <script setup>
-import { UIUpload } from "@/components/index.js"
-import validationRules from "@/utils/validationRules.js";
-import { CheckboxChecked24Filled } from "@vicons/fluent"
-import { useUploadReportStore, useComponentStore } from "@/store/modules/index.js"
-import ValidationRules from "@/utils/validationRules.js"
-import LockWrapper from "./LockWrapper.vue"
-import Utils from "@/utils/Utils.js"
-import i18n from "@/i18n/index.js"
+  import { UIUpload } from '@/components/index.js'
+  import validationRules from '@/utils/validationRules.js'
+  import { CheckboxChecked24Filled } from '@vicons/fluent'
+  import { useUploadReportStore, useComponentStore } from '@/store/modules/index.js'
+  import ValidationRules from '@/utils/validationRules.js'
+  import LockWrapper from './LockWrapper.vue'
+  import Utils from '@/utils/Utils.js'
+  import i18n from '@/i18n/index.js'
 
-const { t } = i18n.global
+  const { t } = i18n.global
 
-const formRef = ref(null)
+  const formRef = ref(null)
 
-const store = useUploadReportStore()
-const componentStore = useComponentStore()
+  const store = useUploadReportStore()
+  const componentStore = useComponentStore()
 
-
-const onSubmit = () => {
-  formRef.value?.validate((error) => {
-    if (!error) {
-      if (store.payload.file.length === 0) {
-        $Toast.warning(t('rules.requiredFileField'))
-        return
+  const onSubmit = () => {
+    formRef.value?.validate((error) => {
+      if (!error) {
+        if (store.payload.file.length === 0) {
+          $Toast.warning(t('rules.requiredFileField'))
+          return
+        }
+        store.saveLoading = true
+        if (store.visibleType) {
+          store._create()
+        }
       }
-      store.saveLoading = true
-      if (store.visibleType) {
-        store._create()
-      }
+    })
+  }
 
-    }
+  onMounted(() => {
+    componentStore._enumAccountant()
   })
-}
-
-onMounted(() => {
-  componentStore._enumAccountant()
-})
-
 </script>
 
 <template>
@@ -43,35 +40,57 @@ onMounted(() => {
     <LockWrapper />
     <div class="grid grid-cols-12 gap-x-2">
       <div class="col-span-12 mb-2">
-        <p class="px-2 py-1 bg-primary/5 border-primary/10 border rounded-lg relative">{{ store.selectedOrgName }}
+        <p class="px-2 py-1 bg-primary/5 border-primary/10 border rounded-lg relative">
+          {{ store.selectedOrgName }}
           <span class="absolute top-[6px] right-[8px]">
             <n-icon size="18" class="text-success">
               <CheckboxChecked24Filled />
             </n-icon>
           </span>
-
         </p>
       </div>
-      <n-form-item class="col-span-12" :label="$t(`uploadReport.form.type`)" path="type"
-        :rule-path="ValidationRules.rulesNames.requiredNumberField">
-        <n-select v-model:value="store.payload.type" :options="componentStore.uploadTypes" label-field="name"
-          value-field="id" :loading="componentStore.accountantEnumLoading" />
-
+      <n-form-item
+        class="col-span-12"
+        :label="$t(`uploadReport.form.type`)"
+        path="type"
+        :rule-path="ValidationRules.rulesNames.requiredNumberField"
+      >
+        <n-select
+          v-model:value="store.payload.type"
+          :options="componentStore.uploadTypes"
+          label-field="name"
+          value-field="id"
+          :loading="componentStore.accountantEnumLoading"
+        />
       </n-form-item>
-      <n-form-item class="col-span-6" :label="$t(`uploadReport.form.year`)" path="year"
-        :rule-path="ValidationRules.rulesNames.requiredNumberField">
-
-        <n-select v-model:value="store.payload.year" :options="Utils.yearList" label-field="name" value-field="id" />
-
+      <n-form-item
+        class="col-span-6"
+        :label="$t(`uploadReport.form.year`)"
+        path="year"
+        :rule-path="ValidationRules.rulesNames.requiredNumberField"
+      >
+        <n-select
+          v-model:value="store.payload.year"
+          :options="Utils.yearList"
+          label-field="name"
+          value-field="id"
+        />
       </n-form-item>
-      <n-form-item class="col-span-6" :label="$t(`uploadReport.form.month`)" path="month"
-        :rule-path="ValidationRules.rulesNames.requiredNumberField">
-        <n-select v-model:value="store.payload.month" :options="Utils.monthList" label-field="name" value-field="id" />
+      <n-form-item
+        class="col-span-6"
+        :label="$t(`uploadReport.form.month`)"
+        path="month"
+        :rule-path="ValidationRules.rulesNames.requiredNumberField"
+      >
+        <n-select
+          v-model:value="store.payload.month"
+          :options="Utils.monthList"
+          label-field="name"
+          value-field="id"
+        />
       </n-form-item>
       <UIUpload class="col-span-12 mb-[40px]" v-model:files="store.payload.file" :multiple="false">
       </UIUpload>
-
-
     </div>
 
     <div class="grid grid-cols-2 gap-2">

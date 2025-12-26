@@ -1,5 +1,5 @@
 <script setup>
-// HRM Other Page
+  // HRM Other Page
 </script>
 
 <template>
@@ -30,5 +30,5 @@
 </template>
 
 <style scoped>
-/* HRM Other page specific styles */
+  /* HRM Other page specific styles */
 </style>

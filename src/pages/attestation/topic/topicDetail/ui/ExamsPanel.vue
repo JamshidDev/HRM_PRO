@@ -1,4 +1,1 @@
-
-<template>
-That is exams panel
-</template>
+<template>That is exams panel</template>

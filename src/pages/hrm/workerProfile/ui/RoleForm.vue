@@ -1,97 +1,86 @@
 <script setup>
-import validationRules from "@/utils/validationRules.js";
-import {UISelect} from "@/components/index.js"
-const route = useRoute()
-const formRef = ref(null)
-import {useComponentStore, useWorkerProfileStore} from "@/store/modules/index.js"
-import {useRoute} from "vue-router"
+  import validationRules from '@/utils/validationRules.js'
+  import { UISelect } from '@/components/index.js'
+  const route = useRoute()
+  const formRef = ref(null)
+  import { useComponentStore, useWorkerProfileStore } from '@/store/modules/index.js'
+  import { useRoute } from 'vue-router'
 
-const store = useWorkerProfileStore()
-const componentStore = useComponentStore()
+  const store = useWorkerProfileStore()
+  const componentStore = useComponentStore()
 
-const onSubmit = ()=>{
-  console.log(store.rolePayload)
-  formRef.value?.validate((error)=>{
-    if(!error) {
-      const id = route.query.id
-      const data = {
-        ...store.rolePayload,
-        organization_id: store.rolePayload.organization_id[0].id,
+  const onSubmit = () => {
+    console.log(store.rolePayload)
+    formRef.value?.validate((error) => {
+      if (!error) {
+        const id = route.query.id
+        const data = {
+          ...store.rolePayload,
+          organization_id: store.rolePayload.organization_id[0].id
+        }
+        store._storeRole(data, id)
       }
-      store._storeRole(data, id)
+    })
+  }
+
+  onMounted(() => {
+    if (componentStore.roles.length === 0) {
+      componentStore._enums()
+    }
+    if (componentStore.structureList.length === 0) {
+      componentStore._structures()
     }
   })
-}
-
-
-onMounted(()=>{
-  if(componentStore.roles.length === 0){
-    componentStore._enums()
-  }
-  if(componentStore.structureList.length === 0){
-    componentStore._structures()
-  }
-})
-
-
 </script>
 
 <template>
-  <n-form
-      ref="formRef"
-      :rules="validationRules.common"
-      :model="store.rolePayload"
-  >
+  <n-form ref="formRef" :rules="validationRules.common" :model="store.rolePayload">
     <div class="pb-[60px]">
       <n-form-item
-          class="w-full"
-          :label="$t(`documentPage.form.organization`)"
-          path="organization_id"
-          :rule-path="validationRules.rulesNames.requiredMultiSelectField"
+        class="w-full"
+        :label="$t(`documentPage.form.organization`)"
+        path="organization_id"
+        :rule-path="validationRules.rulesNames.requiredMultiSelectField"
       >
         <UISelect
-            :options="componentStore.structureList"
-            :modelV="store.rolePayload.organization_id"
-            @defaultValue="(v)=>store.rolePayload.organization_id=v"
-            @updateModel="(v)=>store.rolePayload.organization_id=v"
-            :checkedVal="store.structureCheck"
-            @updateCheck="(v)=>store.structureCheck=v"
-            :loading="componentStore.structureLoading"
-            v-model:search="componentStore.structureParams.search"
-            @onSearch="componentStore._structures"
-            :multiple="false"
+          :options="componentStore.structureList"
+          :modelV="store.rolePayload.organization_id"
+          @defaultValue="(v) => (store.rolePayload.organization_id = v)"
+          @updateModel="(v) => (store.rolePayload.organization_id = v)"
+          :checkedVal="store.structureCheck"
+          @updateCheck="(v) => (store.structureCheck = v)"
+          :loading="componentStore.structureLoading"
+          v-model:search="componentStore.structureParams.search"
+          @onSearch="componentStore._structures"
+          :multiple="false"
         />
-
       </n-form-item>
-      <n-form-item class="w-full" :label="$t(`content.role`)" path="role" :rule-path="validationRules.rulesNames.requiredStringField">
+      <n-form-item
+        class="w-full"
+        :label="$t(`content.role`)"
+        path="role"
+        :rule-path="validationRules.rulesNames.requiredStringField"
+      >
         <n-select
-            v-model:value="store.rolePayload.role"
-            filterable
-            :options="componentStore.roles"
-            :loading="componentStore.enumLoading"
-            label-field="name"
-            value-field="id"
+          v-model:value="store.rolePayload.role"
+          filterable
+          :options="componentStore.roles"
+          :loading="componentStore.enumLoading"
+          label-field="name"
+          value-field="id"
         />
       </n-form-item>
-
-
-
     </div>
 
     <div class="grid grid-cols-2 gap-2">
-      <n-button @click="()=>store.roleVisible=false" type="error" ghost>
+      <n-button @click="() => (store.roleVisible = false)" type="error" ghost>
         {{ $t('content.cancel') }}
       </n-button>
-      <n-button
-          @click="onSubmit"
-          :loading="store.roleLoading"
-          type="primary">
+      <n-button @click="onSubmit" :loading="store.roleLoading" type="primary">
         {{ $t('content.save') }}
       </n-button>
     </div>
   </n-form>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

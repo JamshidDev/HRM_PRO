@@ -1,51 +1,51 @@
-export {default as UIDrawer} from "./drawer/CreateAndUpdateDrawer.vue"
-export {default as UILanguage} from "./general/LangDropdown.vue"
-export {default as UIActionButton} from "./buttons/ActionButtons.vue"
-export {default as NoDataPicture} from "./no-data/NoDataPicture.vue"
-export {default as NoDataIllustration} from "./no-data/NoDataIllustration.vue"
+export { default as UIDrawer } from './drawer/CreateAndUpdateDrawer.vue'
+export { default as UILanguage } from './general/LangDropdown.vue'
+export { default as UIActionButton } from './buttons/ActionButtons.vue'
+export { default as NoDataPicture } from './no-data/NoDataPicture.vue'
+export { default as NoDataIllustration } from './no-data/NoDataIllustration.vue'
 export { default as NoImage } from './no-data/NoImage.vue'
-export {default as UIPagination} from "./pagination/Pagination.vue"
-export {default as UIProfile} from "./ui/UIProfile.vue"
-export {default as UIPageContent} from "./ui/UIPageContent.vue"
-export {default as UIPageFilter} from "./ui/UIPageFilter.vue"
-export {default as UICropper} from "./ImageUploader/UICropper.vue"
-export {default as UITree} from "./ui/UITree.vue"
-export {default as UIMainLoading} from "./loading/MainLoading.vue"
-export {default as UIUser} from "./ui/UIUser.vue"
-export {default as UIStatus} from "./ui/UIStatus.vue"
-export {default as UINSelect} from "./ui/UINSelect.vue"
-export {default as SuperSelect} from "./ui/SuperSelect.vue"
-export {default as UITransferSelect} from "./ui/UITransferSelect.vue"
-export {default as UIDConfirm} from "./ui/UIDConfirm.vue"
-export {default as UITreeData} from "./ui/UITreeData.vue"
-export {default as UIModal} from "./ui/UIModal.vue"
-export {default as UIAutoComplete} from "./autoComplete/UIAutoComplete.vue"
-export {default as UIOnlyOfficeApp} from "./onlyOffice/onlyOfficeApp.vue"
-export {default as UIOnlyOfficeDrawer} from "./onlyOffice/onlyOfficeDrawer.vue"
-export {default as UIPdfSignatureDrawer} from "./pdfSignature/PdfSignatureDrawer.vue"
-export {default as UIOfficeApp} from "./ui/UIOfficeApp.vue"
-export {default as UIUserGroup} from "./ui/UIUserGroup.vue"
-export {default as UIUpload} from "./ui/UIUpload.vue"
-export {default as UIMenuButton} from "./buttons/MenuButton.vue"
-export {default as UIDrawSignature} from "./ui/UIDrawSignature.vue"
-export {default as UIWorkerView} from "./worker/UIWorkerView.vue"
-export {default as UIThemeSwitch} from "./ui/UIThemeSwitch.vue"
-export {default as UIBadge} from "./ui/UIBadge.vue"
-export {default as UIDepartment} from "./ui/UIDepartment.vue"
-export {default as UISelect} from "./ui/UISelect.vue"
-export {default as UILottieReader} from "./ui/UILottieReader.vue"
-export {default as TreeData} from "./ui/UITreeList.vue"
-export { default as UIPanZoomArea } from "./ui/UIPanZoomArea.vue"
-export { default as UIHierarchy } from "./ui/HierarchyNode.vue"
-export {default as AIButton} from "./buttons/AIButton.vue"
-export {default as UIConfirmByFile} from "./ui/UIConfirmByFile.vue"
-export {default as UIMore} from './ui/UIMore.vue'
-export {default as UIImageViewer} from './ui/UIImageViewer.vue'
-export {default as PageInstruction} from './pageInstruction/pageInstruction.vue'
-export {default as UIDateViewer} from './general/UIDateViewer.vue'
-export {default as UIOnlineOffline} from './ui/OnlineOffline.vue'
-export {default as UIMultipleLangItems} from './ui/MultipleLangItems.vue'
-export {default as DownloadTask} from './ui/DownloadTask.vue'
+export { default as UIPagination } from './pagination/Pagination.vue'
+export { default as UIProfile } from './ui/UIProfile.vue'
+export { default as UIPageContent } from './ui/UIPageContent.vue'
+export { default as UIPageFilter } from './ui/UIPageFilter.vue'
+export { default as UICropper } from './ImageUploader/UICropper.vue'
+export { default as UITree } from './ui/UITree.vue'
+export { default as UIMainLoading } from './loading/MainLoading.vue'
+export { default as UIUser } from './ui/UIUser.vue'
+export { default as UIStatus } from './ui/UIStatus.vue'
+export { default as UINSelect } from './ui/UINSelect.vue'
+export { default as SuperSelect } from './ui/SuperSelect.vue'
+export { default as UITransferSelect } from './ui/UITransferSelect.vue'
+export { default as UIDConfirm } from './ui/UIDConfirm.vue'
+export { default as UITreeData } from './ui/UITreeData.vue'
+export { default as UIModal } from './ui/UIModal.vue'
+export { default as UIAutoComplete } from './autoComplete/UIAutoComplete.vue'
+export { default as UIOnlyOfficeApp } from './onlyOffice/onlyOfficeApp.vue'
+export { default as UIOnlyOfficeDrawer } from './onlyOffice/onlyOfficeDrawer.vue'
+export { default as UIPdfSignatureDrawer } from './pdfSignature/PdfSignatureDrawer.vue'
+export { default as UIOfficeApp } from './ui/UIOfficeApp.vue'
+export { default as UIUserGroup } from './ui/UIUserGroup.vue'
+export { default as UIUpload } from './ui/UIUpload.vue'
+export { default as UIMenuButton } from './buttons/MenuButton.vue'
+export { default as UIDrawSignature } from './ui/UIDrawSignature.vue'
+export { default as UIWorkerView } from './worker/UIWorkerView.vue'
+export { default as UIThemeSwitch } from './ui/UIThemeSwitch.vue'
+export { default as UIBadge } from './ui/UIBadge.vue'
+export { default as UIDepartment } from './ui/UIDepartment.vue'
+export { default as UISelect } from './ui/UISelect.vue'
+export { default as UILottieReader } from './ui/UILottieReader.vue'
+export { default as TreeData } from './ui/UITreeList.vue'
+export { default as UIPanZoomArea } from './ui/UIPanZoomArea.vue'
+export { default as UIHierarchy } from './ui/HierarchyNode.vue'
+export { default as AIButton } from './buttons/AIButton.vue'
+export { default as UIConfirmByFile } from './ui/UIConfirmByFile.vue'
+export { default as UIMore } from './ui/UIMore.vue'
+export { default as UIImageViewer } from './ui/UIImageViewer.vue'
+export { default as PageInstruction } from './pageInstruction/pageInstruction.vue'
+export { default as UIDateViewer } from './general/UIDateViewer.vue'
+export { default as UIOnlineOffline } from './ui/OnlineOffline.vue'
+export { default as UIMultipleLangItems } from './ui/MultipleLangItems.vue'
+export { default as DownloadTask } from './ui/DownloadTask.vue'
 
 export * from './layoutTab'
 export * from './editor'

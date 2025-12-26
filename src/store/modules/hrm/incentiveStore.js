@@ -1,52 +1,57 @@
-import {defineStore} from "pinia";
-import i18n from "@/i18n/index.js"
-import Utils from "@/utils/Utils.js"
-import router from "@/router/index.js"
-import {AppPaths} from "@/utils/index.js"
-const {t} = i18n.global
+import { defineStore } from 'pinia'
+import i18n from '@/i18n/index.js'
+import Utils from '@/utils/Utils.js'
+import router from '@/router/index.js'
+import { AppPaths } from '@/utils/index.js'
+const { t } = i18n.global
 export const useIncentiveStore = defineStore('incentiveStore', {
-    state:()=>({
-        list:[],
-        loading:false,
-        totalItems:0,
-        params:{
-            page:1,
-            per_page:10,
-            search:null,
-            organizations:[],
-            created:null,
-        },
-        downloading:true,
-    }),
-    actions:{
-        _index(){
-            this.loading= true
-            const params = {
-                ...this.params,
-                created:Utils.timeToZone(this.params.created),
-                organizations:this.params.organizations.map(v=>v.id).toString() || undefined,
-            }
-            $ApiService.incentiveService._index({params}).then((res)=>{
-                this.list = res.data.data.data
-                this.totalItems = res.data.data.total
-            }).finally(()=>{
-                this.loading= false
-            })
-        },
-        _download(){
-            this.downloading= true
-            const params = {
-                ...this.params,
-                created:Utils.timeToZone(this.params.created),
-                organizations:this.params.organizations.map(v=>v.id).toString() || undefined,
-                download:true
-            }
-            $ApiService.incentiveService._index({params}).then((res)=>{
-                // router.push(Utils.routeHrmPathMaker(AppPaths.Export))
-            }).finally(()=>{
-                this.downloading= false
-            })
-        }
+  state: () => ({
+    list: [],
+    loading: false,
+    totalItems: 0,
+    params: {
+      page: 1,
+      per_page: 10,
+      search: null,
+      organizations: [],
+      created: null
+    },
+    downloading: true
+  }),
+  actions: {
+    _index() {
+      this.loading = true
+      const params = {
+        ...this.params,
+        created: Utils.timeToZone(this.params.created),
+        organizations: this.params.organizations.map((v) => v.id).toString() || undefined
+      }
+      $ApiService.incentiveService
+        ._index({ params })
+        .then((res) => {
+          this.list = res.data.data.data
+          this.totalItems = res.data.data.total
+        })
+        .finally(() => {
+          this.loading = false
+        })
+    },
+    _download() {
+      this.downloading = true
+      const params = {
+        ...this.params,
+        created: Utils.timeToZone(this.params.created),
+        organizations: this.params.organizations.map((v) => v.id).toString() || undefined,
+        download: true
+      }
+      $ApiService.incentiveService
+        ._index({ params })
+        .then((res) => {
+          // router.push(Utils.routeHrmPathMaker(AppPaths.Export))
+        })
+        .finally(() => {
+          this.downloading = false
+        })
     }
-
+  }
 })

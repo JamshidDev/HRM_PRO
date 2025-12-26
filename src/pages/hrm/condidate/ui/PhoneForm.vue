@@ -1,70 +1,65 @@
 <script setup>
-import {Delete28Regular, AddCircle28Regular} from "@vicons/fluent"
-import { v4 as uuidv4 } from 'uuid';
-import validationRules from "@/utils/validationRules.js"
+  import { Delete28Regular, AddCircle28Regular } from '@vicons/fluent'
+  import { v4 as uuidv4 } from 'uuid'
+  import validationRules from '@/utils/validationRules.js'
 
+  const emits = defineEmits(['onDelete'])
 
-const emits = defineEmits(['onDelete'])
-
-const phones = defineModel('phones', {
-  type:Array,
-  required:true,
-  default:[],
-})
-
-const onAdd = ()=>{
-  phones.value.push({
-    id:uuidv4(),
-    phone:'+998',
-    main:false,
-    exist:false,
+  const phones = defineModel('phones', {
+    type: Array,
+    required: true,
+    default: []
   })
-}
 
-const onChange = (value, item)=>{
-  if(value){
-    phones.value = phones.value.map((v)=>{
-      if(v.id !== item.id) return {...v, main:false}
-      else return v
+  const onAdd = () => {
+    phones.value.push({
+      id: uuidv4(),
+      phone: '+998',
+      main: false,
+      exist: false
     })
   }
 
-}
-
-watchEffect(()=>{
-  if(phones.value.length === 1){
-    phones.value[0].main = true
+  const onChange = (value, item) => {
+    if (value) {
+      phones.value = phones.value.map((v) => {
+        if (v.id !== item.id) return { ...v, main: false }
+        else return v
+      })
+    }
   }
-  if(!phones.value.some((x)=>x.main)){
-    if(phones.value[0]){
+
+  watchEffect(() => {
+    if (phones.value.length === 1) {
       phones.value[0].main = true
     }
+    if (!phones.value.some((x) => x.main)) {
+      if (phones.value[0]) {
+        phones.value[0].main = true
+      }
+    }
+  })
 
+  const onRemove = (v) => {
+    emits('onDelete', v)
+    phones.value = phones.value.filter((x) => x.id !== v.id)
   }
-})
-
-const onRemove = (v)=>{
-  emits('onDelete',v)
-  phones.value = phones.value.filter((x)=>x.id !== v.id)
-
-}
 </script>
 
 <template>
   <div class="grid grid-cols-12 gap-x-4">
     <template v-for="(item, idx) in phones" :key="idx">
-      <div
-          class="col-span-12 md:col-span-6 lg:col-span-4 mb-4"
-      >
+      <div class="col-span-12 md:col-span-6 lg:col-span-4 mb-4">
         <template v-if="idx === 0">
-          <n-form-item :show-label="false" path="phones"    :rule-path="validationRules.rulesNames.requiredPhonesField">
+          <n-form-item
+            :show-label="false"
+            path="phones"
+            :rule-path="validationRules.rulesNames.requiredPhonesField"
+          >
             <n-input-group>
-              <n-button
-                  v-if="idx>0"
-                  @click="onRemove(item.id)"
-                  type="error">
+              <n-button v-if="idx > 0" @click="onRemove(item.id)" type="error">
                 <template #icon>
-                  <Delete28Regular/>
+                  <Delete28Regular />
                 </template>
               </n-button>
 
@@ -72,18 +67,18 @@ const onRemove = (v)=>{
                 <n-checkbox v-model:checked="item.main" @update:checked="onChange($event, item)" />
               </n-button>
               <n-input
-                  class="w-full"
-                  type="text"
-
-                  v-model:value="item.phone"
-                  v-mask="`+998##-###-##-##`"
+                class="w-full"
+                type="text"
+                v-model:value="item.phone"
+                v-mask="`+998##-###-##-##`"
               />
               <n-button
-                  v-if="(idx+1)===phones.length && phones.length<3 "
-                  @click="onAdd"
-                  type="primary">
+                v-if="idx + 1 === phones.length && phones.length < 3"
+                @click="onAdd"
+                type="primary"
+              >
                 <template #icon>
-                  <AddCircle28Regular/>
+                  <AddCircle28Regular />
                 </template>
               </n-button>
             </n-input-group>
@@ -91,12 +86,9 @@ const onRemove = (v)=>{
         </template>
         <template v-else>
           <n-input-group>
-            <n-button
-                v-if="idx>0"
-                @click="onRemove(item)"
-                type="error">
+            <n-button v-if="idx > 0" @click="onRemove(item)" type="error">
               <template #icon>
-                <Delete28Regular/>
+                <Delete28Regular />
               </template>
             </n-button>
 
@@ -104,25 +96,22 @@ const onRemove = (v)=>{
               <n-checkbox v-model:checked="item.main" @update:checked="onChange($event, item)" />
             </n-button>
             <n-input
-                class="w-full"
-                type="text"
-
-                v-model:value="item.phone"
-                v-mask="`+998##-###-##-##`"
+              class="w-full"
+              type="text"
+              v-model:value="item.phone"
+              v-mask="`+998##-###-##-##`"
             />
             <n-button
-                v-if="(idx+1)===phones.length && phones.length<3 "
-                @click="onAdd"
-                type="primary">
+              v-if="idx + 1 === phones.length && phones.length < 3"
+              @click="onAdd"
+              type="primary"
+            >
               <template #icon>
-                <AddCircle28Regular/>
+                <AddCircle28Regular />
               </template>
             </n-button>
           </n-input-group>
         </template>
-
-
-
       </div>
     </template>
   </div>

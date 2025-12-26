@@ -1,21 +1,19 @@
+export const useDebounce = (callback, delay = 900) => {
+  let timeout = null
 
+  function debounced(...args) {
+    if (timeout) clearTimeout(timeout)
+    timeout = setTimeout(() => {
+      callback(...args)
+    }, delay)
+  }
 
-export const useDebounce = (callback, delay=900) => {
-    let timeout = null
-
-    function debounced(...args){
-        if(timeout) clearTimeout(timeout)
-        timeout = setTimeout(()=>{
-            callback(...args)
-        }, delay)
+  function clearDebounce() {
+    if (timeout) {
+      clearTimeout(timeout)
+      timeout = null
     }
-
-    function clearDebounce(){
-        if(timeout){
-            clearTimeout(timeout)
-            timeout = null
-        }
-    }
-    debounced.cancel = clearDebounce
-    return debounced
+  }
+  debounced.cancel = clearDebounce
+  return debounced
 }

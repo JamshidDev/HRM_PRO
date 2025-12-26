@@ -1,202 +1,192 @@
 <script setup>
-import validationRules from "@/utils/validationRules.js"
-import {useComponentStore, useWorkerProfileStore} from "@/store/modules/index.js"
-import {useAppSetting} from "@/utils/index.js"
-import Utils from "@/utils/Utils.js"
-import UIHelper from "@/utils/UIHelper.js"
-import {UISelect} from "@/components/index.js"
-import UIDepartment from "../../../../components/ui/UIDepartment.vue"
+  import validationRules from '@/utils/validationRules.js'
+  import { useComponentStore, useWorkerProfileStore } from '@/store/modules/index.js'
+  import { useAppSetting } from '@/utils/index.js'
+  import Utils from '@/utils/Utils.js'
+  import UIHelper from '@/utils/UIHelper.js'
+  import { UISelect } from '@/components/index.js'
+  import UIDepartment from '../../../../components/ui/UIDepartment.vue'
 
-const store = useWorkerProfileStore()
-const componentStore = useComponentStore()
-const formRef = ref(null)
+  const store = useWorkerProfileStore()
+  const componentStore = useComponentStore()
+  const formRef = ref(null)
 
-const onSubmit = ()=>{
-  formRef.value?.validate((error)=>{
-    if(!error){
-      store._updatePosition()
-    }
-  })
-}
-
-const onChangeStructure = (v)=>{
-  store.editPayload.organization_id=v
-  if(v.length>0){
-    componentStore.departmentList = []
-    store.editPayload.department_id = []
-    store.editPayload.department_position_id = null
-    componentStore.depParams.organizations =v[0].id
-    componentStore._departmentTree()
+  const onSubmit = () => {
+    formRef.value?.validate((error) => {
+      if (!error) {
+        store._updatePosition()
+      }
+    })
   }
-}
 
-const onChangeDepartment = (v)=>{
-  store.editPayload.department_id = v
-  componentStore.departmentPositionList = []
-  store.editPayload.department_position_id = null
-  componentStore._departmentPosition(v[0].id)
-}
+  const onChangeStructure = (v) => {
+    store.editPayload.organization_id = v
+    if (v.length > 0) {
+      componentStore.departmentList = []
+      store.editPayload.department_id = []
+      store.editPayload.department_position_id = null
+      componentStore.depParams.organizations = v[0].id
+      componentStore._departmentTree()
+    }
+  }
 
-onMounted(()=>{
-  componentStore._enums()
-  componentStore._scheduleList()
-  componentStore._structures()
-})
+  const onChangeDepartment = (v) => {
+    store.editPayload.department_id = v
+    componentStore.departmentPositionList = []
+    store.editPayload.department_position_id = null
+    componentStore._departmentPosition(v[0].id)
+  }
+
+  onMounted(() => {
+    componentStore._enums()
+    componentStore._scheduleList()
+    componentStore._structures()
+  })
 </script>
 
 <template>
-  <n-form
-      ref="formRef"
-      :rules="validationRules.common"
-      :model="store.editPayload"
-  >
+  <n-form ref="formRef" :rules="validationRules.common" :model="store.editPayload">
     <div class="grid grid-cols-12 gap-x-4">
       <div class="col-span-12 md:col-span-6 lg:col-span-2">
         <n-form-item
-            :label="$t(`documentPage.form.contractNumber`)"
-            path="contract_number"
-            :rule-path="validationRules.rulesNames.requiredStringField">
-          <n-input
-              class="w-full"
-              type="text"
-
-              v-model:value="store.editPayload.contract_number"
-          />
+          :label="$t(`documentPage.form.contractNumber`)"
+          path="contract_number"
+          :rule-path="validationRules.rulesNames.requiredStringField"
+        >
+          <n-input class="w-full" type="text" v-model:value="store.editPayload.contract_number" />
         </n-form-item>
       </div>
       <div class="col-span-12 md:col-span-6 lg:col-span-7">
         <n-form-item
-            :label="$t(`documentPage.form.type`)"
-            path="type"
-            :rule-path="validationRules.rulesNames.requiredNumberField">
+          :label="$t(`documentPage.form.type`)"
+          path="type"
+          :rule-path="validationRules.rulesNames.requiredNumberField"
+        >
           <n-select
-              v-model:value="store.editPayload.type"
-              filterable
-
-              :options="componentStore.contractTypeList"
-              label-field="name"
-              value-field="id"
-              :loading="componentStore.enumLoading"
+            v-model:value="store.editPayload.type"
+            filterable
+            :options="componentStore.contractTypeList"
+            label-field="name"
+            value-field="id"
+            :loading="componentStore.enumLoading"
           />
         </n-form-item>
       </div>
       <div class="col-span-12 md:col-span-6 lg:col-span-3">
         <n-form-item
-            :label="$t(`documentPage.form.contractDate`)"
-            path="contract_date"
-            :rule-path="validationRules.rulesNames.requiredDateTimeField">
+          :label="$t(`documentPage.form.contractDate`)"
+          path="contract_date"
+          :rule-path="validationRules.rulesNames.requiredDateTimeField"
+        >
           <n-date-picker
-              class="w-full"
-              v-model:value="store.editPayload.contract_date"
-              type="date"
-
-              :format="useAppSetting.datePicketFormat"
+            class="w-full"
+            v-model:value="store.editPayload.contract_date"
+            type="date"
+            :format="useAppSetting.datePicketFormat"
           />
         </n-form-item>
       </div>
 
       <div class="col-span-12 md:col-span-6 lg:col-span-2">
         <n-form-item
-            :label="$t(`documentPage.form.group`)"
-            path="group"
-            :rule-path="validationRules.rulesNames.requiredNumberField">
-          <n-select
-              v-model:value="store.editPayload.group"
-              filterable
-
-              :options="componentStore.groupList"
-              label-field="name"
-              value-field="id"
-              :loading="componentStore.enumLoading"
-              clearable
-          />
-        </n-form-item>
-      </div>
-      <div class="col-span-12 md:col-span-6 lg:col-span-2">
-        <n-form-item
-            :label="$t(`documentPage.form.rank`)"
-            path="rank"
-            :rule-path="validationRules.rulesNames.requiredStringField"
+          :label="$t(`documentPage.form.group`)"
+          path="group"
+          :rule-path="validationRules.rulesNames.requiredNumberField"
         >
           <n-select
-              v-model:value="store.editPayload.rank"
-              filterable
-              :options="componentStore.rankList"
-              label-field="name"
-              value-field="id"
-              :loading="componentStore.enumLoading"
-              clearable
+            v-model:value="store.editPayload.group"
+            filterable
+            :options="componentStore.groupList"
+            label-field="name"
+            value-field="id"
+            :loading="componentStore.enumLoading"
+            clearable
           />
         </n-form-item>
       </div>
       <div class="col-span-12 md:col-span-6 lg:col-span-2">
         <n-form-item
-            :label="$t(`documentPage.form.rate`)"
-            path="rate"
-            :rule-path="validationRules.rulesNames.requiredNumberField"
+          :label="$t(`documentPage.form.rank`)"
+          path="rank"
+          :rule-path="validationRules.rulesNames.requiredStringField"
+        >
+          <n-select
+            v-model:value="store.editPayload.rank"
+            filterable
+            :options="componentStore.rankList"
+            label-field="name"
+            value-field="id"
+            :loading="componentStore.enumLoading"
+            clearable
+          />
+        </n-form-item>
+      </div>
+      <div class="col-span-12 md:col-span-6 lg:col-span-2">
+        <n-form-item
+          :label="$t(`documentPage.form.rate`)"
+          path="rate"
+          :rule-path="validationRules.rulesNames.requiredNumberField"
         >
           <n-input-number
-              :max="1"
-              :min="0.1"
-              :step="0.1"
-              :show-button="false"
-              class="w-full"
-              type="text"
-              :allow-input="Utils.onlyAllowNumber"
-              v-model:value="store.editPayload.rate"
+            :max="1"
+            :min="0.1"
+            :step="0.1"
+            :show-button="false"
+            class="w-full"
+            type="text"
+            :allow-input="Utils.onlyAllowNumber"
+            v-model:value="store.editPayload.rate"
           />
         </n-form-item>
       </div>
       <div class="col-span-12 md:col-span-6 lg:col-span-2">
         <n-form-item
-            :label="$t(`documentPage.form.salary`)"
-            path="salary"
-            :rule-path="validationRules.rulesNames.requiredStringField"
+          :label="$t(`documentPage.form.salary`)"
+          path="salary"
+          :rule-path="validationRules.rulesNames.requiredStringField"
         >
           <n-input
-
-              class="w-full"
-              type="text"
-
-              :allow-input="Utils.onlyAllowNumber"
-              v-model:value="store.editPayload.salary"
+            class="w-full"
+            type="text"
+            :allow-input="Utils.onlyAllowNumber"
+            v-model:value="store.editPayload.salary"
           >
             <template #suffix>
-              {{$t('content.sum')}}
+              {{ $t('content.sum') }}
             </template>
           </n-input>
         </n-form-item>
       </div>
       <div class="col-span-12 md:col-span-6 lg:col-span-4">
         <n-form-item
-            :label="$t(`documentPage.form.schedule_id`)"
-            path="schedule_id"
-            :rule-path="validationRules.rulesNames.requiredNumberField"
+          :label="$t(`documentPage.form.schedule_id`)"
+          path="schedule_id"
+          :rule-path="validationRules.rulesNames.requiredNumberField"
         >
           <n-select
-              v-model:value="store.editPayload.schedule_id"
-              filterable
-
-              :options="componentStore.scheduleList"
-              value-field="id"
-              :loading="componentStore.scheduleLoading"
-              :render-label="UIHelper.scheduleRender.label"
-              :render-tag="UIHelper.scheduleRender.value"
-              clearable
+            v-model:value="store.editPayload.schedule_id"
+            filterable
+            :options="componentStore.scheduleList"
+            value-field="id"
+            :loading="componentStore.scheduleLoading"
+            :render-label="UIHelper.scheduleRender.label"
+            :render-tag="UIHelper.scheduleRender.value"
+            clearable
           />
         </n-form-item>
       </div>
 
       <div class="col-span-12 md:col-span-6 lg:col-span-3">
         <n-form-item
-            :label="$t(`documentPage.position_date`)"
-            path="position_date"
-            :rule-path="validationRules.rulesNames.requiredDateTimeField">
+          :label="$t(`documentPage.position_date`)"
+          path="position_date"
+          :rule-path="validationRules.rulesNames.requiredDateTimeField"
+        >
           <n-date-picker
-              class="w-full"
-              v-model:value="store.editPayload.position_date"
-              type="date"
-              :format="useAppSetting.datePicketFormat"
+            class="w-full"
+            v-model:value="store.editPayload.position_date"
+            type="date"
+            :format="useAppSetting.datePicketFormat"
           />
         </n-form-item>
       </div>
@@ -204,53 +194,49 @@ onMounted(()=>{
       <div class="col-span-12 md:col-span-9">
         <n-form-item :label="$t(`documentPage.form.organization`)" path="organization_id">
           <UISelect
-              :options="componentStore.structureList"
-              :modelV="store.editPayload.organization_id"
-              @updateModel="onChangeStructure"
-              :checkedVal="store.structureCheckV2"
-              @updateCheck="(v)=>store.structureCheckV2=v"
-              :loading="componentStore.structureLoading"
-              v-model:search="componentStore.structureParams.search"
-              @onSearch="componentStore._structures"
-              :multiple="false"
+            :options="componentStore.structureList"
+            :modelV="store.editPayload.organization_id"
+            @updateModel="onChangeStructure"
+            :checkedVal="store.structureCheckV2"
+            @updateCheck="(v) => (store.structureCheckV2 = v)"
+            :loading="componentStore.structureLoading"
+            v-model:search="componentStore.structureParams.search"
+            @onSearch="componentStore._structures"
+            :multiple="false"
           />
         </n-form-item>
       </div>
       <div class="col-span-12 md:col-span-6">
         <n-form-item :label="$t(`documentPage.form.department`)" path="department_id">
           <UIDepartment
-              :modelV="store.editPayload.department_id"
-              @updateModel="onChangeDepartment"
-              :checkedVal="store.departmentCheckV2"
-              @updateCheck="(v)=>store.departmentCheckV2=v"
-              :multiple="false"
+            :modelV="store.editPayload.department_id"
+            @updateModel="onChangeDepartment"
+            :checkedVal="store.departmentCheckV2"
+            @updateCheck="(v) => (store.departmentCheckV2 = v)"
+            :multiple="false"
           />
         </n-form-item>
       </div>
       <div class="col-span-12 md:col-span-6">
         <n-form-item :label="$t(`documentPage.form.position`)" path="department_position_id">
           <n-select
-              :disabled="!Boolean(store.editPayload.department_id.length)"
-              v-model:value="store.editPayload.department_position_id"
-              filterable
-
-              :options="componentStore.departmentPositionList"
-              label-field="name"
-              value-field="id"
-              :loading="componentStore.departmentPositionLoading"
+            :disabled="!Boolean(store.editPayload.department_id.length)"
+            v-model:value="store.editPayload.department_position_id"
+            filterable
+            :options="componentStore.departmentPositionList"
+            label-field="name"
+            value-field="id"
+            :loading="componentStore.departmentPositionLoading"
           />
         </n-form-item>
       </div>
       <div class="col-span-12">
         <div class="grid grid-cols-2 gap-2 mt-10">
-          <n-button @click="()=>store.editVisible=false" type="error" ghost>
-            {{$t('content.cancel')}}
+          <n-button @click="() => (store.editVisible = false)" type="error" ghost>
+            {{ $t('content.cancel') }}
           </n-button>
-          <n-button
-              @click="onSubmit"
-              :loading="store.positionLoading"
-              type="primary">
-            {{$t('content.save')}}
+          <n-button @click="onSubmit" :loading="store.positionLoading" type="primary">
+            {{ $t('content.save') }}
           </n-button>
         </div>
       </div>
@@ -258,6 +244,4 @@ onMounted(()=>{
   </n-form>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

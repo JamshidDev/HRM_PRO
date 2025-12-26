@@ -1,222 +1,232 @@
 <script setup>
-import VChart from "vue-echarts"
-import { useAppStore, useDashboardStore } from "@/store/modules/index.js"
-import i18n from "@/i18n/index.js"
-import { Eye24Regular } from "@vicons/fluent"
+  import VChart from 'vue-echarts'
+  import { useAppStore, useDashboardStore } from '@/store/modules/index.js'
+  import i18n from '@/i18n/index.js'
+  import { Eye24Regular } from '@vicons/fluent'
 
-defineEmits(["detail"])
+  defineEmits(['detail'])
 
-const store = useDashboardStore()
-const appStore = useAppStore()
-const { t } = i18n.global
+  const store = useDashboardStore()
+  const appStore = useAppStore()
+  const { t } = i18n.global
 
-const eduOption1 = ref({
-  title: {
-    text: '',
-    left: 'center',
-    top: 'middle',
-    textStyle: {
-      color: '#0f1114',
-      fontSize: 14,
-      fontWeight: '600'
-    }
-  },
-  tooltip: {
-    trigger: 'item',
-    show: false,
-  },
-  legend: {
-    top: '5%',
-    left: 'center',
-    show: false,
-  },
-  series: [
-    {
-      type: 'pie',
-      radius: ['60%', '90%'],
-      avoidLabelOverlap: false,
-      itemStyle: {
-        borderRadius: 4,
-        borderWidth: 2
-      },
-      label: {
-        show: false,
-      },
-      emphasis: {
+  const eduOption1 = ref({
+    title: {
+      text: '',
+      left: 'center',
+      top: 'middle',
+      textStyle: {
+        color: '#0f1114',
+        fontSize: 14,
+        fontWeight: '600'
+      }
+    },
+    tooltip: {
+      trigger: 'item',
+      show: false
+    },
+    legend: {
+      top: '5%',
+      left: 'center',
+      show: false
+    },
+    series: [
+      {
+        type: 'pie',
+        radius: ['60%', '90%'],
+        avoidLabelOverlap: false,
+        itemStyle: {
+          borderRadius: 4,
+          borderWidth: 2
+        },
         label: {
-          show: true,
-          fontSize: 20,
-          fontWeight: 'bold'
-        }
-      },
-      labelLine: {
-        show: false
-      },
-      data: [],
-    }
-  ]
-})
-const eduOption2 = ref({
-  title: {
-    text: '',
-    left: 'center',
-    top: 'middle',
-    textStyle: {
-      color: '#0f1114',
-      fontSize: 14,
-      fontWeight: '600'
-    }
-  },
-  tooltip: {
-    trigger: 'item',
-    show: false,
-  },
-  legend: {
-    top: '5%',
-    left: 'center',
-    show: false,
-  },
-  series: [
-    {
-      type: 'pie',
-      radius: ['60%', '90%'],
-      avoidLabelOverlap: false,
-      itemStyle: {
-        borderRadius: 4,
-        borderWidth: 2
-      },
-      label: {
-        show: false,
-      },
-      emphasis: {
+          show: false
+        },
+        emphasis: {
+          label: {
+            show: true,
+            fontSize: 20,
+            fontWeight: 'bold'
+          }
+        },
+        labelLine: {
+          show: false
+        },
+        data: []
+      }
+    ]
+  })
+  const eduOption2 = ref({
+    title: {
+      text: '',
+      left: 'center',
+      top: 'middle',
+      textStyle: {
+        color: '#0f1114',
+        fontSize: 14,
+        fontWeight: '600'
+      }
+    },
+    tooltip: {
+      trigger: 'item',
+      show: false
+    },
+    legend: {
+      top: '5%',
+      left: 'center',
+      show: false
+    },
+    series: [
+      {
+        type: 'pie',
+        radius: ['60%', '90%'],
+        avoidLabelOverlap: false,
+        itemStyle: {
+          borderRadius: 4,
+          borderWidth: 2
+        },
         label: {
-          show: true,
-          fontSize: 20,
-          fontWeight: 'bold'
-        }
-      },
-      labelLine: {
-        show: false
-      },
-      data: [],
-    }
-  ]
-})
-const eduOption3 = ref({
-  title: {
-    text: '',
-    left: 'center',
-    top: 'middle',
-    textStyle: {
-      color: '#0f1114',
-      fontSize: 14,
-      fontWeight: '600'
-    }
-  },
-  tooltip: {
-    trigger: 'item',
-    show: false,
-  },
-  legend: {
-    top: '5%',
-    left: 'center',
-    show: false,
-  },
-  series: [
-    {
-      type: 'pie',
-      radius: ['60%', '90%'],
-      avoidLabelOverlap: false,
-      itemStyle: {
-        borderRadius: 4,
-        borderWidth: 2
-      },
-      label: {
-        show: false,
-      },
-      emphasis: {
+          show: false
+        },
+        emphasis: {
+          label: {
+            show: true,
+            fontSize: 20,
+            fontWeight: 'bold'
+          }
+        },
+        labelLine: {
+          show: false
+        },
+        data: []
+      }
+    ]
+  })
+  const eduOption3 = ref({
+    title: {
+      text: '',
+      left: 'center',
+      top: 'middle',
+      textStyle: {
+        color: '#0f1114',
+        fontSize: 14,
+        fontWeight: '600'
+      }
+    },
+    tooltip: {
+      trigger: 'item',
+      show: false
+    },
+    legend: {
+      top: '5%',
+      left: 'center',
+      show: false
+    },
+    series: [
+      {
+        type: 'pie',
+        radius: ['60%', '90%'],
+        avoidLabelOverlap: false,
+        itemStyle: {
+          borderRadius: 4,
+          borderWidth: 2
+        },
         label: {
-          show: true,
-          fontSize: 20,
-          fontWeight: 'bold'
+          show: false
+        },
+        emphasis: {
+          label: {
+            show: true,
+            fontSize: 20,
+            fontWeight: 'bold'
+          }
+        },
+        labelLine: {
+          show: false
+        },
+        data: []
+      }
+    ]
+  })
+
+  watch(
+    () => appStore.themeSwitch,
+    (v) => {
+      if (v) {
+        eduOption1.value.title.textStyle.color = '#f3f3f3'
+        eduOption2.value.title.textStyle.color = '#f3f3f3'
+        eduOption3.value.title.textStyle.color = '#f3f3f3'
+      } else {
+        eduOption1.value.title.textStyle.color = '#0f1114'
+        eduOption2.value.title.textStyle.color = '#0f1114'
+        eduOption3.value.title.textStyle.color = '#0f1114'
+      }
+    },
+    {
+      immediate: true
+    }
+  )
+
+  watch(
+    () => store.dashboard.eduCard,
+    (newValue, oldValue) => {
+      eduOption1.value.series[0].data = [
+        {
+          value: newValue[0]?.count || 0,
+          name: t(newValue[0]?.title),
+          itemStyle: {
+            color: '#1A84FF'
+          },
+          selected: true
         }
-      },
-      labelLine: {
-        show: false
-      },
-      data: [],
-    }
-  ]
-})
+      ]
+      eduOption1.value.title.text = newValue[0].count
 
-watch(() => appStore.themeSwitch, (v) => {
-  if (v) {
-    eduOption1.value.title.textStyle.color = "#f3f3f3"
-    eduOption2.value.title.textStyle.color = "#f3f3f3"
-    eduOption3.value.title.textStyle.color = "#f3f3f3"
-  } else {
-    eduOption1.value.title.textStyle.color = "#0f1114"
-    eduOption2.value.title.textStyle.color = "#0f1114"
-    eduOption3.value.title.textStyle.color = "#0f1114"
-  }
-}, {
-  immediate: true
-})
+      eduOption2.value.series[0].data = [
+        {
+          value: newValue[1].count,
+          name: t(newValue[1].title),
+          itemStyle: {
+            color: '#0F1114'
+          },
+          selected: true
+        }
+      ]
+      eduOption2.value.title.text = newValue[1].count
 
-watch(() => store.dashboard.eduCard, (newValue, oldValue) => {
-  eduOption1.value.series[0].data = [
+      eduOption3.value.series[0].data = [
+        {
+          value: newValue[2].count,
+          name: t(newValue[2].title),
+          itemStyle: {
+            color: '#E53835'
+          },
+          selected: true
+        }
+      ]
+      eduOption3.value.title.text = newValue[2].count
+    },
     {
-      value: newValue[0]?.count || 0,
-      name: t(newValue[0]?.title),
-      itemStyle: {
-        color: '#1A84FF',
-      },
-      selected: true
+      immediate: true
     }
-  ]
-  eduOption1.value.title.text = newValue[0].count
-
-  eduOption2.value.series[0].data = [
-    {
-      value: newValue[1].count,
-      name: t(newValue[1].title),
-      itemStyle: {
-        color: '#0F1114',
-      },
-      selected: true
-    }
-  ]
-  eduOption2.value.title.text = newValue[1].count
-
-  eduOption3.value.series[0].data = [
-    {
-      value: newValue[2].count,
-      name: t(newValue[2].title),
-      itemStyle: {
-        color: '#E53835',
-      },
-      selected: true
-    }
-  ]
-  eduOption3.value.title.text = newValue[2].count
-}, {
-  immediate: true
-})
-
-
+  )
 </script>
 
 <template>
-
   <div
-    class="w-full h-full flex flex-col border border-surface-line p-4 rounded-lg bg-surface-section relative hover-effect-card text-textColor2">
+    class="w-full h-full flex flex-col border border-surface-line p-4 rounded-lg bg-surface-section relative hover-effect-card text-textColor2"
+  >
     <span
-      class="z-0 opacity-30 absolute top-0 right-0 w-[160px] h-full bg-no-repeat bg-[url(/effect/effect-card-1.svg)]"></span>
+      class="z-0 opacity-30 absolute top-0 right-0 w-[160px] h-full bg-no-repeat bg-[url(/effect/effect-card-1.svg)]"
+    ></span>
     <div class="flex justify-between items-center mb-4">
-      <p class="font-semibold  text-textColor2">{{ $t('dashboardPage.edu.title') }}</p>
-      <p @click="$emit('detail')"
-        class="text-primary border-b border-dashed border-primary z-[1] cursor-pointer transition-all hover:border-primary/80 hover:text-primary/80">
-        {{ $t("content.view") }}</p>
+      <p class="font-semibold text-textColor2">{{ $t('dashboardPage.edu.title') }}</p>
+      <p
+        @click="$emit('detail')"
+        class="text-primary border-b border-dashed border-primary z-[1] cursor-pointer transition-all hover:border-primary/80 hover:text-primary/80"
+      >
+        {{ $t('content.view') }}
+      </p>
 
       <!--      <n-button @click="$emit('detail')" type="primary" tertiary circle>-->
       <!--        <template #icon>-->
@@ -245,7 +255,7 @@ watch(() => store.dashboard.eduCard, (newValue, oldValue) => {
       </div>
     </div>
 
-    <div class="flex  items-center justify-around mt-2">
+    <div class="flex items-center justify-around mt-2">
       <div class="w-[90px] h-[90px]">
         <v-chart :option="eduOption3" />
       </div>
@@ -255,7 +265,6 @@ watch(() => store.dashboard.eduCard, (newValue, oldValue) => {
       </div>
     </div>
   </div>
-
 </template>
 
 <style scoped></style>

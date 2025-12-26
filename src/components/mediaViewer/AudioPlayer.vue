@@ -1,15 +1,14 @@
 <script setup xmlns="http://www.w3.org/1999/html">
-import 'player.style/tailwind-audio';
-import { Dismiss12Filled } from '@vicons/fluent'
-defineProps({
-  src: {
-    type: String,
-    required: true
-  }
-})
+  import 'player.style/tailwind-audio'
+  import { Dismiss12Filled } from '@vicons/fluent'
+  defineProps({
+    src: {
+      type: String,
+      required: true
+    }
+  })
 
-defineEmits(['close'])
-
+  defineEmits(['close'])
 </script>
 
 <template>
@@ -17,13 +16,7 @@ defineEmits(['close'])
     <div class="relative flex pt-7">
       <div class="p-1">
         <media-theme-tailwind-audio>
-          <audio
-              slot="media"
-              :src="src"
-              playsinline
-              crossorigin
-              autoplay
-          ></audio>
+          <audio slot="media" :src="src" playsinline crossorigin autoplay></audio>
         </media-theme-tailwind-audio>
       </div>
       <div class="absolute right-1 top-1">
@@ -34,7 +27,5 @@ defineEmits(['close'])
         </n-button>
       </div>
     </div>
-
-   </div>
-
+  </div>
 </template>

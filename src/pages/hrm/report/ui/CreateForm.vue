@@ -1,172 +1,190 @@
 <script setup>
-import validationRules from "@/utils/validationRules.js";
-const formRef = ref(null)
-import {useReport2Store, useComponentStore} from "@/store/modules/index.js";
-import Utils from "@/utils/Utils.js"
-import UIHelper from "@/utils/UIHelper.js"
+  import validationRules from '@/utils/validationRules.js'
+  const formRef = ref(null)
+  import { useReport2Store, useComponentStore } from '@/store/modules/index.js'
+  import Utils from '@/utils/Utils.js'
+  import UIHelper from '@/utils/UIHelper.js'
 
-const store = useReport2Store()
-const componentStore = useComponentStore()
+  const store = useReport2Store()
+  const componentStore = useComponentStore()
 
-const onSubmit = ()=>{
-  formRef.value?.validate((error)=>{
-    if(!error) {
-      store.onUpdatePosition()
-    }
+  const onSubmit = () => {
+    formRef.value?.validate((error) => {
+      if (!error) {
+        store.onUpdatePosition()
+      }
+    })
+  }
+
+  onMounted(() => {
+    componentStore._positions()
+    componentStore._enums()
   })
-}
-
-
-
-onMounted(()=>{
-  componentStore._positions()
-  componentStore._enums()
-})
-
 </script>
 
 <template>
   <n-form
-      ref="formRef"
-      :rules="validationRules.departmentPositionPage"
-      :model="store.positionPayload"
+    ref="formRef"
+    :rules="validationRules.departmentPositionPage"
+    :model="store.positionPayload"
   >
     <n-spin :show="store.showLoading">
       <div>
         <div class="grid grid-cols-12 gap-x-4 overflow-x-hidden">
-          <n-form-item class="col-span-12" :label="$t(`departmentPositionPage.form.position_id`)" path="position_id">
+          <n-form-item
+            class="col-span-12"
+            :label="$t(`departmentPositionPage.form.position_id`)"
+            path="position_id"
+          >
             <n-select
-                v-model:value="store.positionPayload.position_id"
-                filterable
-                clearable
-
-                :options="componentStore.positionList"
-                label-field="name"
-                value-field="id"
-                :loading="componentStore.positionLoading"
+              v-model:value="store.positionPayload.position_id"
+              filterable
+              clearable
+              :options="componentStore.positionList"
+              label-field="name"
+              value-field="id"
+              :loading="componentStore.positionLoading"
             />
           </n-form-item>
-          <n-form-item class="col-span-12" :label="$t(`departmentPositionPage.form.department_id`)" path="department_id">
+          <n-form-item
+            class="col-span-12"
+            :label="$t(`departmentPositionPage.form.department_id`)"
+            path="department_id"
+          >
             <n-select
-                v-model:value="store.positionPayload.department_id"
-                filterable
-                :filter="()=>true"
-                clearable
-                :options="componentStore.departmentList"
-                :render-label="UIHelper.selectRender.label"
-                :render-tag="UIHelper.selectRender.value"
-                value-field="id"
-                :loading="componentStore.departmentLoading"
-                @search="componentStore._onSearchDepartment"
-                @scroll="componentStore._onScrollDepartment"
-                :reset-menu-on-options-change="true"
+              v-model:value="store.positionPayload.department_id"
+              filterable
+              :filter="() => true"
+              clearable
+              :options="componentStore.departmentList"
+              :render-label="UIHelper.selectRender.label"
+              :render-tag="UIHelper.selectRender.value"
+              value-field="id"
+              :loading="componentStore.departmentLoading"
+              @search="componentStore._onSearchDepartment"
+              @scroll="componentStore._onScrollDepartment"
+              :reset-menu-on-options-change="true"
             />
           </n-form-item>
-          <n-form-item class="col-span-12 md:col-span-6 lg:col-span-4" :label="$t(`departmentPositionPage.form.group`)" path="group">
+          <n-form-item
+            class="col-span-12 md:col-span-6 lg:col-span-4"
+            :label="$t(`departmentPositionPage.form.group`)"
+            path="group"
+          >
             <n-select
-                v-model:value="store.positionPayload.group"
-                filterable
-                clearable
-
-                :options="componentStore.groupList"
-                label-field="name"
-                value-field="id"
-                :loading="componentStore.enumLoading"
-
+              v-model:value="store.positionPayload.group"
+              filterable
+              clearable
+              :options="componentStore.groupList"
+              label-field="name"
+              value-field="id"
+              :loading="componentStore.enumLoading"
             />
           </n-form-item>
-          <n-form-item class="col-span-12 md:col-span-6 lg:col-span-4" :label="$t(`departmentPositionPage.form.rank`)" path="rank">
+          <n-form-item
+            class="col-span-12 md:col-span-6 lg:col-span-4"
+            :label="$t(`departmentPositionPage.form.rank`)"
+            path="rank"
+          >
             <n-select
-                v-model:value="store.positionPayload.rank"
-                filterable
-                clearable
-
-                :options="componentStore.rankList"
-                label-field="name"
-                value-field="id"
-                :loading="componentStore.enumLoading"
+              v-model:value="store.positionPayload.rank"
+              filterable
+              clearable
+              :options="componentStore.rankList"
+              label-field="name"
+              value-field="id"
+              :loading="componentStore.enumLoading"
             />
           </n-form-item>
-          <n-form-item class="col-span-12 md:col-span-6 lg:col-span-4" :label="$t(`departmentPositionPage.form.max_rank`)" path="max_rank">
+          <n-form-item
+            class="col-span-12 md:col-span-6 lg:col-span-4"
+            :label="$t(`departmentPositionPage.form.max_rank`)"
+            path="max_rank"
+          >
             <n-select
-                v-model:value="store.positionPayload.max_rank"
-                filterable
-                clearable
-
-                :options="componentStore.rankList"
-                label-field="name"
-                value-field="id"
-                :loading="componentStore.enumLoading"
+              v-model:value="store.positionPayload.max_rank"
+              filterable
+              clearable
+              :options="componentStore.rankList"
+              label-field="name"
+              value-field="id"
+              :loading="componentStore.enumLoading"
             />
           </n-form-item>
-          <n-form-item class="col-span-12 md:col-span-6 lg:col-span-4" :label="$t(`departmentPositionPage.form.rate`)" path="rate">
-
+          <n-form-item
+            class="col-span-12 md:col-span-6 lg:col-span-4"
+            :label="$t(`departmentPositionPage.form.rate`)"
+            path="rate"
+          >
             <n-input-number
-                :max="300"
-                :min="0.1"
-                :step="0.1"
-                :show-button="false"
-                class="w-full"
-                type="text"
-                :allow-input="Utils.onlyAllowNumber"
-                v-model:value="store.positionPayload.rate"
+              :max="300"
+              :min="0.1"
+              :step="0.1"
+              :show-button="false"
+              class="w-full"
+              type="text"
+              :allow-input="Utils.onlyAllowNumber"
+              v-model:value="store.positionPayload.rate"
             />
           </n-form-item>
-          <n-form-item class="col-span-12 md:col-span-6 lg:col-span-4" :label="$t(`departmentPositionPage.form.salary`)" path="salary">
+          <n-form-item
+            class="col-span-12 md:col-span-6 lg:col-span-4"
+            :label="$t(`departmentPositionPage.form.salary`)"
+            path="salary"
+          >
             <n-input
-                v-model:value="store.positionPayload.salary"
-                type="text"
-                :allow-input="Utils.onlyAllowNumber"
-
+              v-model:value="store.positionPayload.salary"
+              type="text"
+              :allow-input="Utils.onlyAllowNumber"
             >
               <template #suffix>
-                {{$t('content.sum')}}
+                {{ $t('content.sum') }}
               </template>
             </n-input>
           </n-form-item>
-          <n-form-item class="col-span-12 md:col-span-6 lg:col-span-4" :label="$t(`departmentPositionPage.form.experience`)" path="experience">
+          <n-form-item
+            class="col-span-12 md:col-span-6 lg:col-span-4"
+            :label="$t(`departmentPositionPage.form.experience`)"
+            path="experience"
+          >
             <n-input
-                v-model:value="store.positionPayload.experience"
-                type="text"
-                :allow-input="Utils.onlyAllowNumber"
-
+              v-model:value="store.positionPayload.experience"
+              type="text"
+              :allow-input="Utils.onlyAllowNumber"
             >
               <template #suffix>
-                {{$t('content.month')}}
+                {{ $t('content.month') }}
               </template>
             </n-input>
           </n-form-item>
-          <n-form-item class="col-span-12 md:col-span-6 lg:col-span-4" :label="$t(`departmentPositionPage.form.educations`)" path="educations">
+          <n-form-item
+            class="col-span-12 md:col-span-6 lg:col-span-4"
+            :label="$t(`departmentPositionPage.form.educations`)"
+            path="educations"
+          >
             <n-select
-                v-model:value="store.positionPayload.education"
-                filterable
-                clearable
-
-                :options="componentStore.educationList"
-                label-field="name"
-                value-field="id"
-                :loading="componentStore.enumLoading"
+              v-model:value="store.positionPayload.education"
+              filterable
+              clearable
+              :options="componentStore.educationList"
+              label-field="name"
+              value-field="id"
+              :loading="componentStore.enumLoading"
             />
           </n-form-item>
         </div>
-
       </div>
     </n-spin>
 
     <div class="grid grid-cols-2 gap-2">
-      <n-button @click="store.visible=false" type="error" ghost>
+      <n-button @click="store.visible = false" type="error" ghost>
         {{ $t('content.cancel') }}
       </n-button>
-      <n-button
-          @click="onSubmit"
-          :loading="store.saveLoading"
-          type="primary">
+      <n-button @click="onSubmit" :loading="store.saveLoading" type="primary">
         {{ $t('content.save') }}
       </n-button>
     </div>
   </n-form>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>
