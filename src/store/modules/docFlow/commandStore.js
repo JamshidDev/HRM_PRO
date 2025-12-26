@@ -79,6 +79,7 @@ export const useCommandStore = defineStore('commandStore', {
         rest_day: 0
       },
       reason: null,
+      base: null,
       reasonId: null,
       warning_date: null,
       warning_number: null
@@ -92,6 +93,20 @@ export const useCommandStore = defineStore('commandStore', {
       new_date: null,
       rest_day: null,
       reason: null
+    },
+      form_47: {
+          work_day:null,
+          to:null,
+          vacation_reason_type:null,
+          vacation_reason_day:null,
+        type:null,
+        base:null,
+      },
+    form_50: {
+        work_day:null,
+        to:null,
+        vacation_status:null,
+        vacation_id:null,
     },
     form_45: {
       from: null,
@@ -146,9 +161,31 @@ export const useCommandStore = defineStore('commandStore', {
 
     isSingleSelect: false,
     sortableConfirmations: [],
-    oneByOne: true
+    oneByOne: true,
+    workerVacations:[],
+    workerVacationLoading:false,
+
+
   }),
   actions: {
+    _getWorkerVacation(){
+        const params = {
+            page:1,
+            per_page:100,
+            worker_position_id:this.payload.worker,
+        }
+        this.workerVacationLoading = true
+        $ApiService.vacationService._index({params}).then((res)=>{
+            console.log(res.data.data.data)
+            this.workerVacations = res.data.data.data.map(v=>({
+                id:v.id,
+                name:`${v.type.name} (${Utils.timeOnlyDate(v.from)}  ${Utils.timeOnlyDate(v.to)})`,
+            }))
+
+        }).finally(()=>{
+            this.workerVacationLoading = false
+        })
+    },
     _additionalData(params, callback) {
       const id = this.payload.worker
       $ApiService.commandService._additionalData({ id, params }).then((res) => {
@@ -273,6 +310,13 @@ export const useCommandStore = defineStore('commandStore', {
     },
     resetForm() {
       const today = new Date().getTime()
+
+      const addDayToDate = (date, days)=>{
+        const result = new Date(date)
+        result.setDate(result.getDate() + days)
+        return new Date(result).getTime()
+      }
+
       this.payload.command_date = today
       this.payload.command_type = null
       this.payload.command_number = null
@@ -326,10 +370,22 @@ export const useCommandStore = defineStore('commandStore', {
       this.form_34.reason = null
       this.form_34.reasonId = null
       this.form_34.warning_date = today
+      this.form_34.base = null
 
       this.form_44.new_date = null
       this.form_44.rest_day = null
       this.form_44.reason = null
+      this.form_50.to = today
+      this.form_50.work_day = today
+        this.form_50.vacation_status = 1
+      this.form_50.vacation_id = null
+
+      this.form_47.vacation_reason_day = '4'
+      this.form_47.vacation_reason_type = null
+      this.form_47.to = today
+      this.form_47.work_day = addDayToDate(today,4)
+      this.form_47.type = null
+      this.form_47.base = null
     },
     lastVacation(callback) {
       let data = {

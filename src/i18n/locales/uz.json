@@ -13,6 +13,9 @@
     "requiredField": "Maydon to'ldirilishi shart!",
     "miniOneWorker": "Kamida bitta xodim tanlash shart!",
     "save": "Saqlash",
+    "fullTime": "To'liq ish kuni",
+    "partTime": "To'liqsiz ish kuni",
+    "workTime": "Ish vaqti",
     "start": "Boshlash",
     "edit": "Tahrirlash",
     "delete": "O'chirish",
@@ -807,6 +810,11 @@
       "to": "Qachongacha",
       "work_day": "Ishga chiqish sanasi"
     },
+    "form_47": {
+      "optionOne": "O‘n ikki yoshga to‘lmagan ikki yoki undan ortiq farzandi borligi sababli",
+      "optionTwo": "O‘n olti yoshga to‘lmagan nogironligi bo‘lgan farzandi borligi sababli",
+      "vacation_reason_day": "Qo'shimcha ta'til kuni"
+    },
     "form_48": {
       "from": "Qachondan",
       "to": "Qachongacha",
@@ -818,6 +826,11 @@
       "from": "Qachondan",
       "to": "Qachongacha",
       "work_day": "Ishga chiqish sanasi"
+    },
+    "form_50": {
+      "to": "Ta'til tugash sanasi",
+      "from": "Ta'tilga chiqish sanasi",
+      "vacation_id": "Ta'til"
     },
     "form_55": {
       "from": "Qachondan",

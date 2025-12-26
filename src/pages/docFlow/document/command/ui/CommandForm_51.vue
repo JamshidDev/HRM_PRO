@@ -143,7 +143,7 @@
         />
       </n-form-item>
     </div>
-    <div class="col-span-12 md:col-span-6 lg:col-span-3">
+    <div class="col-span-12 md:col-span-6 lg:col-span-6">
       <n-form-item :label="$t(`commandPage.form_49.work_day`)" path="work_day">
         <n-date-picker
           class="w-full"
@@ -155,7 +155,7 @@
         />
       </n-form-item>
     </div>
-    <div class="col-span-12 md:col-span-6 lg:col-span-3">
+    <div class="col-span-12">
       <n-form-item :label="$t(`commandPage.form_48.reason`)" path="reason">
         <n-input class="w-full" type="text" v-model:value="store.form_51.reason" />
       </n-form-item>

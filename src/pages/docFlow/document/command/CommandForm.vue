@@ -5,7 +5,7 @@
   import { NAvatar } from 'naive-ui'
   import Utils from '@/utils/Utils.js'
   import VacationForm_41 from '@/pages/docFlow/document/command/ui/VacationForm_41.vue'
-  import { UINSelect, UISelect, SuperSelect, UIUser } from '@/components/index.js'
+  import {UISelect, SuperSelect, UIUser } from '@/components/index.js'
   import EmptyForm from '@/pages/docFlow/document/command/ui/EmptyForm.vue'
   import CancelForm_32 from '@/pages/docFlow/document/command/ui/CancelForm_32.vue'
   import CancelCommandForm_34 from '@/pages/docFlow/document/command/ui/CancelCommandForm_34.vue'
@@ -20,15 +20,17 @@
   import CommandForm_71 from './ui/CommandForm_71.vue'
   import CommandForm_72 from './ui/CommandForm_72.vue'
   import CommandForm_73 from './ui/CommandForm_73.vue'
+  import CommandForm_50 from './ui/CommandForm_50.vue'
+  import CommandForm_47 from './ui/CommandForm_47.vue'
   import { useAppSetting } from '@/utils/index.js'
   import { VueDraggable } from 'vue-draggable-plus'
 
   const store = useCommandStore()
   const componentStore = useComponentStore()
 
-  // command ids of only single select
+  // command ids of only a single select
   const commandIdList = [32, 33, 34, 35, 36, 37, 38, 39]
-  const singleSelectCommands = [32, 33, 34, 35, 36, 37, 38, 39, 44, 43, 45, 49, 48, 51, 52, 53, 54]
+  const singleSelectCommands = [32, 33, 34, 35, 36, 37, 38, 39, 44, 43, 45, 47, 49, 48, 50, 51, 52, 53, 54]
 
   const formRef = ref(null)
   const confirmationList = ref([])
@@ -41,6 +43,8 @@
   const vacationForm_45 = ref(null)
   const vacationForm_48 = ref(null)
   const vacationForm_49 = ref(null)
+  const commandForm_47 = ref(null)
+  const commandForm_50 = ref(null)
   const vacationForm_55 = ref(null)
   const vacationForm_62 = ref(null)
   const vacationForm_51 = ref(null)
@@ -133,9 +137,13 @@
           validate = await vacationForm_49.value?.onSubmit(mainData)
         } else if (store.payload.command_type === 48) {
           validate = await vacationForm_48.value?.onSubmit(mainData)
+        }else if (store.payload.command_type === 47) {
+          validate = await commandForm_47.value?.onSubmit(mainData)
+        } else if (store.payload.command_type === 50) {
+          validate = await commandForm_50.value?.onSubmit(mainData)
         } else if (store.payload.command_type === 55) {
           validate = await vacationForm_55.value?.onSubmit(mainData)
-        } else if (store.payload.command_type === 62 || store.payload.command_type === 61) {
+        } else if ([61, 62].includes(store.payload.command_type)) {
           validate = await vacationForm_62.value?.onSubmit(mainData)
         } else if ([51, 52, 53, 54].includes(store.payload.command_type)) {
           validate = await vacationForm_51.value?.onSubmit(mainData)
@@ -173,6 +181,10 @@
       vacationForm_48.value?.validateForm()
     } else if (store.payload.command_type === 49) {
       vacationForm_49.value?.validateForm()
+    } else if (store.payload.command_type === 50) {
+      commandForm_50.value?.validateForm()
+    }else if (store.payload.command_type === 47) {
+      commandForm_47.value?.validateForm()
     }
   }
 
@@ -603,6 +615,12 @@
         </template>
         <template v-else-if="store.payload.command_type === 49">
           <VacationForm_49 ref="vacationForm_49" />
+        </template>
+        <template v-else-if="store.payload.command_type === 47">
+          <CommandForm_47 ref="commandForm_47" />
+        </template>
+        <template v-else-if="store.payload.command_type === 50">
+          <CommandForm_50 ref="commandForm_50" />
         </template>
         <template v-else-if="store.payload.command_type === 55">
           <VacationForm_55 ref="vacationForm_55" />
