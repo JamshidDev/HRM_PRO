@@ -7,14 +7,9 @@ import WorkerColumn from "./WorkerColumn.vue"
 import ScheduleBox from "./ScheduleBox.vue"
 const store = useScheduleTableStore()
 
-
-
-
 const showDropdown = ref(false)
 const dropdownX = ref(0)
 const dropdownY = ref(0)
-
-
 
 const handleContextMenu = (e, workerIndex, dayIndex) => {
   e.preventDefault()
@@ -113,16 +108,6 @@ const handleDragSelect = (v)=>{
   }
 }
 
-
-onMounted(() => {
-
-})
-
-onUnmounted(() => {
-
-})
-
-
 </script>
 
 <template>
@@ -200,7 +185,6 @@ onUnmounted(() => {
           </div>
         </div>
       </DragSelectorV2>
-
       <slot name="loading-place"></slot>
     </n-spin>
 
@@ -223,11 +207,9 @@ onUnmounted(() => {
         :show-size-picker="false"
     />
   </div>
-
 </template>
 
 <style scoped>
-/* Optional: Scrollbar styling */
 .schedule-header-row,
 .schedule-header-body-row {
   scrollbar-width: thin;

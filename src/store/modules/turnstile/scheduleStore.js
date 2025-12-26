@@ -114,6 +114,16 @@ export const useScheduleTableStore = defineStore('scheduleStore', {
 
         multipleAttachVisible:false,
         selectedWorkers:[],
+        attachWorkers:[],
+        attachWorkerParams:{
+            page:1,
+            per_page:20,
+            search:null,
+        },
+        attachWorkerTotal:0,
+        attachWorkerLoading:false,
+        selectedDays:[],
+        selectedWorkerId:null,
     }),
 
     getters:{
@@ -196,6 +206,26 @@ export const useScheduleTableStore = defineStore('scheduleStore', {
             }).finally(() => {
                 this.enumLoading = false
             })
+        },
+        _attachWorkers(){
+            const has_schedule = this.workerParams.has_schedule=== 'all'? undefined : this.workerParams.has_schedule
+            const params = {
+                ...this.attachWorkerParams,
+                type:undefined,
+                has_schedule,
+                date:`${this.params.year}-${this.params.month}-01`,
+                schedule_type:this.params.type,
+                organization_id:this.workerParams.organization_id?.map(v=>v.id).toString() || undefined,
+                department_id:this.workerParams.department_id?.toString() || undefined,
+            }
+            this.attachWorkerLoading = true
+            $ApiService.workerScheduleService._index({params}).then(res=>{
+                this.attachWorkers = res.data.data.data
+                this.attachWorkerTotal = res.data.data.total
+            }).finally(()=>{
+                this.attachWorkerLoading = false
+            })
+
         },
         _allWorkers(){
             const has_schedule = this.workerParams.has_schedule=== 'all'? undefined : this.workerParams.has_schedule
@@ -400,7 +430,7 @@ export const useScheduleTableStore = defineStore('scheduleStore', {
                     start_time:day.startTime,
                     end_time:day.endTime,
                     daily_minutes:day.workTime,
-                    daytime:day.daytime,
+                    daytime:day.dayTime,
                     evening_time:day.eveningTime,
                 }))
             })))

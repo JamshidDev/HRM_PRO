@@ -57,7 +57,7 @@ const onOpen = ()=>{
 <template>
 <div v-bind="$attrs" class="ui__user-component flex items-center gap-x-2 cursor-pointer relative" :class="short? 'w-[200px]' : 'w-full'">
   <n-avatar
-      @click="onOpen"
+      @click.stop="onOpen"
       lazy
       size="large"
       :round="roundAvatar"

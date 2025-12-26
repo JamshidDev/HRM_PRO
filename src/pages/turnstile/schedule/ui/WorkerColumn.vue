@@ -27,6 +27,10 @@ const onSelect = (v)=>{
     }
     store.grandVisible = true
   }else if(v.key === Utils.ActionTypes.verifier){
+    store.selectedDays = v.data.days
+    store.selectedWorkerId = v.data.id
+    store.attachWorkerParams.page = 1
+    store._attachWorkers()
     store.multipleAttachVisible = true
   }
 }
