@@ -4,6 +4,7 @@
   import createFrom from './ui/createForm.vue'
   import Table from './ui/Table.vue'
   import Filter from './ui/Filter.vue'
+  import Preview from './ui/Preview.vue'
 
   const store = useDepartmentPositionStore()
   const accStore = useAccountStore()
@@ -33,5 +34,6 @@
         <createFrom />
       </template>
     </UIDrawer>
+    <Preview/>
   </UIPageContent>
 </template>

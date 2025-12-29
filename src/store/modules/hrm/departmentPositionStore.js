@@ -49,9 +49,31 @@ export const useDepartmentPositionStore = defineStore('departmentPositionStore',
       per_page: 1000,
       search: null,
       key: 'department-position-from-key'
+    },
+    previewVisible:false,
+    previewLoading:false,
+    previewTotal:0,
+    previewList:[],
+    previewParams:{
+      page:1,
+      per_page:10,
+      search:null,
     }
   }),
   actions: {
+    _preview(){
+      const params = {
+        ...this.previewParams,
+        positions:this.elementId,
+      }
+      this.previewLoading = true
+      $ApiService.workerService._index({ params }).then(res =>{
+        this.previewList = res.data.data.data
+        this.previewTotal = res.data.data.total
+      }).finally(()=>{
+        this.previewLoading = false
+      })
+    },
     onChangeStructure(v) {
       const store = useComponentStore()
       this.payload.organization_id = v

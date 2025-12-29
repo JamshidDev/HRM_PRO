@@ -6,6 +6,7 @@
     useDepartmentPositionStore
   } from '@/store/modules/index.js'
   import Utils from '@/utils/Utils.js'
+  import {Eye16Regular} from "@vicons/fluent"
 
   const store = useDepartmentPositionStore()
   const componentStore = useComponentStore()
@@ -53,6 +54,12 @@
       onEdit(v.data)
     } else if (Utils.ActionTypes.delete === v.key) {
       onDelete(v.data)
+    } else if (Utils.ActionTypes.view === v.key){
+      store.previewVisible = true
+      store.elementId = v.data.id
+      store.previewParams.page = 1
+      store.previewList = []
+      store._preview()
     }
   }
 </script>
@@ -123,7 +130,18 @@
               {{ Utils.formatNumberToMoney(item.salary) }}
             </td>
             <td>
-              <UIMenuButton :data="item" :show-edit="true" @selectEv="onSelectEv" />
+              <UIMenuButton
+                  :data="item"
+                  :show-edit="true"
+                  @selectEv="onSelectEv"
+                  :extra-options="[
+                      {
+                        label: $t('content.worker'),
+                        key: Utils.ActionTypes.view,
+                        icon: Eye16Regular
+                  },
+                  ]"
+              />
             </td>
           </tr>
         </tbody>
@@ -138,5 +156,3 @@
     <NoDataPicture v-if="store.list.length === 0 && !store.loading" />
   </n-spin>
 </template>
-
-<style scoped></style>
