@@ -113,6 +113,23 @@ export const useCommandStore = defineStore('commandStore', {
       to: null,
       work_day: null
     },
+    form_46: {
+      period_from: null,
+      period_to: null,
+      from: null,
+      to: null,
+      work_day: null,
+      all_day: null,
+      main_day: null,
+      second_day: null,
+      half_one_day: null,
+      half_two_day: null,
+      half_two_base: null,
+      half_two_date: null,
+      additional:null,
+      result:{},
+      addList:[],
+    },
     form_48: {
       from: null,
       to: null,
@@ -377,8 +394,13 @@ export const useCommandStore = defineStore('commandStore', {
       this.form_44.reason = null
       this.form_50.to = today
       this.form_50.work_day = today
-        this.form_50.vacation_status = 1
+      this.form_50.vacation_status = 1
       this.form_50.vacation_id = null
+
+      this.form_46.from = today
+      this.form_46.main_day = 21
+      this.form_46.second_day = 0
+      this.form_46.half_two_base = 1
 
       this.form_47.vacation_reason_day = '4'
       this.form_47.vacation_reason_type = null

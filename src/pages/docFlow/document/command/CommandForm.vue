@@ -12,6 +12,7 @@
   import VacationForm_44 from '@/pages/docFlow/document/command/ui/VacationForm_44.vue'
   import VacationForm_43 from '@/pages/docFlow/document/command/ui/VacationForm_43.vue'
   import VacationForm_45 from '@/pages/docFlow/document/command/ui/VacationForm_45.vue'
+  import CommandForm_46 from '@/pages/docFlow/document/command/ui/CommandForm_46.vue'
   import VacationForm_49 from '@/pages/docFlow/document/command/ui/VacationForm49.vue'
   import VacationForm_48 from '@/pages/docFlow/document/command/ui/VacationForm_48.vue'
   import VacationForm_55 from '@/pages/docFlow/document/command/ui/VacationForm_55.vue'
@@ -30,7 +31,7 @@
 
   // command ids of only a single select
   const commandIdList = [32, 33, 34, 35, 36, 37, 38, 39]
-  const singleSelectCommands = [32, 33, 34, 35, 36, 37, 38, 39, 44, 43, 45, 47, 49, 48, 50, 51, 52, 53, 54]
+  const singleSelectCommands = [32, 33, 34, 35, 36, 37, 38, 39, 44, 43, 45, 46, 47, 49, 48, 50, 51, 52, 53, 54]
 
   const formRef = ref(null)
   const confirmationList = ref([])
@@ -41,6 +42,7 @@
   const vacationForm_43 = ref(null)
   const vacationForm_44 = ref(null)
   const vacationForm_45 = ref(null)
+  const commandForm_46 = ref(null)
   const vacationForm_48 = ref(null)
   const vacationForm_49 = ref(null)
   const commandForm_47 = ref(null)
@@ -133,6 +135,8 @@
           validate = await vacationForm_43.value?.onSubmit(mainData)
         } else if (store.payload.command_type === 45) {
           validate = await vacationForm_45.value?.onSubmit(mainData)
+        } else if (store.payload.command_type === 46) {
+          validate = await commandForm_46.value?.onSubmit(mainData)
         } else if (store.payload.command_type === 49) {
           validate = await vacationForm_49.value?.onSubmit(mainData)
         } else if (store.payload.command_type === 48) {
@@ -177,7 +181,10 @@
       vacationForm_43.value?.validateForm()
     } else if (store.payload.command_type === 45) {
       vacationForm_45.value?.validateForm()
-    } else if (store.payload.command_type === 48) {
+    } else if (store.payload.command_type === 46) {
+      commandForm_46.value?.validateForm()
+    }
+    else if (store.payload.command_type === 48) {
       vacationForm_48.value?.validateForm()
     } else if (store.payload.command_type === 49) {
       vacationForm_49.value?.validateForm()
@@ -552,24 +559,6 @@
             </template>
             <template v-else>
               <n-form-item class="w-full" :label="$t(`documentPage.form.worker`)" path="workers">
-                <!--                <n-select-->
-                <!--                    :disabled="store.payload.organization_id.length === 0"-->
-                <!--                    multiple-->
-                <!--                    v-model:value="store.payload.workers"-->
-                <!--                    filterable-->
-                <!--                    :placeholder="$t('content.searchWorker')"-->
-                <!--                    :options="store.workerList"-->
-                <!--                    label-field="name"-->
-                <!--                    value-field="id"-->
-                <!--                    :render-label="workerRenderLabel"-->
-                <!--                    :render-tag="workerRenderValue"-->
-                <!--                    @update:value="onChangeWorkers"-->
-                <!--                    :loading="componentStore.workerLoading"-->
-                <!--                    @scroll="componentStore.onScrollWorker"-->
-                <!--                    :filter="()=>true"-->
-                <!--                    @search="componentStore.onSearchWorker"-->
-                <!--                    :reset-menu-on-options-change="false"-->
-                <!--                />-->
                 <SuperSelect
                   multiple
                   :disabled="store.payload.organization_id.length === 0"
@@ -609,6 +598,9 @@
         </template>
         <template v-else-if="store.payload.command_type === 45">
           <VacationForm_45 ref="vacationForm_45" />
+        </template>
+        <template v-else-if="store.payload.command_type === 46">
+          <CommandForm_46 ref="commandForm_46" />
         </template>
         <template v-else-if="store.payload.command_type === 48">
           <VacationForm_48 ref="vacationForm_48" />
