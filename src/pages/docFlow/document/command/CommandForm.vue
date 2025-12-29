@@ -374,7 +374,7 @@
     const objectSchema = {
       71: {
         by_whom: null,
-        reason: null,
+        reason: 'Ishdagi yutuqlari uchun',
         gift: null,
         gift_type: null
       },
@@ -461,7 +461,7 @@
 </script>
 
 <template>
-  <div style="height: calc(100vh - 120px)" class="overflow-y-auto overflow-x-hidden">
+  <div style="height: calc(100vh - 120px)" class="overflow-y-auto overflow-x-hidden px-1">
     <n-form
       ref="formRef"
       :model="store.payload"
