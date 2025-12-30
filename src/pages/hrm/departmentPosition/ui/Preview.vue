@@ -23,9 +23,13 @@ const store = useDepartmentPositionStore()
                   lastName: item?.worker?.last_name,
                   firstName: item?.worker?.first_name,
                   middleName: item?.worker?.middle_name,
-                  position: item?.position?.name
+                  position: '',
                 }"
-            />
+            >
+              <template #position>
+                <div class="text-xs text-secondary line-clamp-1"><n-button secondary type="primary" size="tiny" class="!h-[14px]"><span class="text-primary font-medium">{{$t('documentPage.form.rate')}} - {{item.rate}}</span></n-button> {{item?.position?.name}}</div>
+              </template>
+            </UIUser>
           </div>
         </template>
         <NoDataPicture v-if="store.preview.list.length === 0 && !store.preview.loading"/>
