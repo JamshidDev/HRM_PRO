@@ -7,6 +7,7 @@
   const store = useCommandStore()
   const componentStore = useComponentStore()
   const { t } = i18n.global
+  const base = ref(null)
 
   const onRemoveWorker = (id) => {
     store.workerData = store.workerData.filter((v) => v.id !== id)
@@ -18,7 +19,7 @@
         v.by_whom !== null &&
         v.reason !== null &&
         v.gift_type !== null &&
-        (v.gift_type === 4 ? v.gift !== null : true)
+        (v.gift_type === 5 ? v.gift !== null : true)
     )
     if (checkForm) {
       const data = store.workerData.map((v) => ({
@@ -26,13 +27,14 @@
         by_whom: v.by_whom,
         reason: v.reason,
         gift_type: v.gift_type,
-        gift: v.gift_type === 4 ? v.gift : componentStore.giftTypes[v.gift_type - 1]?.name
+        gift: v.gift_type === 5 ? v.gift : componentStore.giftTypes[v.gift_type - 1]?.name
       }))
 
       return {
         data: {
           ...mainData,
-          worker_positions: data
+          worker_positions: data,
+          base:base.value || null,
         },
         isValid: true
       }
@@ -108,9 +110,25 @@
         />
       </n-form-item>
     </div>
-    <div v-if="item.gift_type === 4" class="col-span-12 md:col-span-6 lg:col-span-4">
+    <div v-if="item.gift_type === 5" class="col-span-12 md:col-span-6 lg:col-span-4">
       <n-form-item :show-feedback="false" :label="$t(`documentPage.command.form.gift`)" path="gift">
         <n-input class="w-full" type="text" v-model:value="item.gift" />
+      </n-form-item>
+    </div>
+  </div>
+  <div
+      class="grid grid-cols-12 mb-8 gap-x-4 border border-surface-line p-2 rounded-md bg-surface-ground"
+  >
+    <div class="col-span-12">
+      <n-form-item :show-feedback="false" :label="$t(`documentPage.command.form.base`)" path="base">
+        <n-input
+            class="w-full"
+            type="textarea"
+            :autosize="true"
+            :rows="1"
+            v-model:value="base"
+            clearable
+        />
       </n-form-item>
     </div>
   </div>

@@ -1,12 +1,12 @@
 x
 <script setup>
-  import { NoDataPicture, UIPagination } from '@/components/index.js'
-  import { useDepartmentStore, useAccountStore } from '@/store/modules/index.js'
-  import { FlowchartCircle24Regular, Circle48Regular, ChevronRight12Regular } from '@vicons/fluent'
-  import MenuButton from '@/components/buttons/MenuButton.vue'
-  import Utils from '@/utils/Utils.js'
+  import { NoDataPicture, UIPagination, UIMenuButton } from '@components'
+  import { useDepartmentStore, useAccountStore } from '@stores'
+  import {ChevronRight12Regular, Eye16Regular} from '@vicons/fluent'
+  import { Utils } from '@utils'
 
   const store = useDepartmentStore()
+  const accStore = useAccountStore()
 
   const props = defineProps({
     data: {
@@ -28,6 +28,7 @@ x
   })
 
   const emits = defineEmits(['onDeep', 'onEdit', 'onDelete', 'onChangePage', 'onAdd'])
+  const hasWritePermission = computed(() => !accStore.checkAction(accStore.pn.hrDepartmentsWrite))
 
   const onDeep = (id) => {
     emits('onDeep', { deep: props.deep, id })
@@ -36,7 +37,6 @@ x
   const onEdit = (v) => {
     store.activeDeep = props.deep
     store.activeParentId = props.parentId
-
     emits('onEdit', v)
   }
 
@@ -58,18 +58,27 @@ x
     store._index()
   }
 
-  const accStore = useAccountStore()
+  const onPreview = (v) =>{
+    store.previewVisible = true
+    store.elementId = v.id
+    store.previewParams.page = 1
+    store.previewList = []
+    store.previewTotal = 0
+    store._preview()
+  }
 
   const onSelectEv = (v) => {
     if (v.key === Utils.ActionTypes.edit) {
-      if (!accStore.checkAction(accStore.pn.hrDepartmentsWrite)) return
+      if (hasWritePermission.value) return
       onEdit(v.data)
     } else if (v.key === Utils.ActionTypes.delete) {
-      if (!accStore.checkAction(accStore.pn.hrDepartmentsWrite)) return
+      if (hasWritePermission.value) return
       onDelete(v.data)
     } else if (v.key === Utils.ActionTypes.attachment) {
-      if (!accStore.checkAction(accStore.pn.hrDepartmentsWrite)) return
+      if (hasWritePermission.value) return
       onAdd(v.data)
+    }else if (v.key === Utils.ActionTypes.view) {
+      onPreview(v.data)
     }
   }
 </script>
@@ -87,6 +96,7 @@ x
             <th class="min-w-[100px] w-[300px]">{{ $t('content.nameEn') }}</th>
             <th class="min-w-[100px] w-[300px]">{{ $t('content.organization') }}</th>
             <th class="min-w-[100px] w-[160px]">{{ $t('departmentPage.form.level') }}</th>
+            <th class="min-w-[40px] w-[40px]">{{ $t('departmentPositionPage.table.fact') }}</th>
             <th class="min-w-[100px] w-[160px]">{{ $t('content.comment') }}</th>
             <th class="min-w-[40px] w-[40px]"></th>
           </tr>
@@ -120,14 +130,24 @@ x
             <td>{{ item.organization.name }}</td>
             <td>{{ item.level?.name }}</td>
             <td>
+              <n-button class="mx-auto" v-if="item.worker_rate" size="small" circle>{{ item.worker_rate }}</n-button>
+            </td>
+            <td>
               <div class="text-xs line-clamp-3">{{ item.comment }}</div>
             </td>
             <td>
-              <MenuButton
+              <UIMenuButton
                 :data="item"
                 :show-edit="true"
                 :show-attachment="true"
                 @selectEv="onSelectEv"
+                :extra-options="[
+                      {
+                        label: $t('content.worker'),
+                        key: Utils.ActionTypes.view,
+                        icon: Eye16Regular
+                       },
+                  ]"
               />
             </td>
           </tr>
@@ -144,5 +164,3 @@ x
     <NoDataPicture v-if="data.length === 0 && !store.loading" />
   </n-spin>
 </template>
-
-<style scoped></style>

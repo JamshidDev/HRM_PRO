@@ -1,16 +1,13 @@
 <script setup>
-  import { UIDrawer, UIPageContent } from '@/components/index.js'
-  import { useDepartmentPositionStore, useAccountStore } from '@/store/modules/index.js'
-  import createFrom from './ui/createForm.vue'
-  import Table from './ui/Table.vue'
-  import Filter from './ui/Filter.vue'
+  import { UIDrawer, UIPageContent } from '@components'
+  import { useDepartmentPositionStore, useAccountStore } from '@stores'
+  import {createFrom, Table, Filter, Preview} from "./ui"
 
   const store = useDepartmentPositionStore()
   const accStore = useAccountStore()
 
   onMounted(() => {
     if (!accStore.checkAction(accStore.pn.hrPositionsRead)) return
-
     store._index()
   })
 </script>
@@ -33,5 +30,6 @@
         <createFrom />
       </template>
     </UIDrawer>
+    <Preview/>
   </UIPageContent>
 </template>
