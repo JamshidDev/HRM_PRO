@@ -1,6 +1,6 @@
 <script setup>
   import Table from './Table.vue'
-  import { useDepartmentStore, useComponentStore } from '@/store/modules/index.js'
+  import { useDepartmentStore, useComponentStore } from '@stores'
 
   const store = useDepartmentStore()
   const componentStore = useComponentStore()
@@ -70,5 +70,3 @@
     </template>
   </n-tabs>
 </template>
-
-<style scoped></style>

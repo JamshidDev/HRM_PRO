@@ -1,11 +1,11 @@
 <script setup>
-  import validationRules from '@/utils/validationRules.js'
-  const formRef = ref(null)
-  import { useDepartmentStore, useComponentStore } from '@/store/modules/index.js'
-  import { UIMultipleLangItems } from '@/components/index.js'
+  import { validationRules } from '@utils'
+  import { useDepartmentStore, useComponentStore } from '@stores'
+  import { UIMultipleLangItems } from '@components'
 
   const store = useDepartmentStore()
   const componentStore = useComponentStore()
+  const formRef = ref(null)
 
   const onSubmit = () => {
     formRef.value?.validate((error) => {
@@ -22,7 +22,7 @@
 </script>
 
 <template>
-  <n-form ref="formRef" :rules="validationRules.departmentPage" :model="store.payload">
+  <n-form ref="formRef" :rules="validationRules.common" :model="store.payload">
     <div style="min-height: calc(100vh - 120px)">
       <div
         v-if="store.parentElement"
@@ -31,7 +31,7 @@
         <span class="text-xs text-gray-500">{{ $t(`organizationPage.selectedOrg`) }}</span>
         <span class="text-primary font-bold">{{ store.parentElement?.name }}</span>
       </div>
-      <n-form-item :label="$t(`departmentPage.form.name`)" path="name">
+      <n-form-item :label="$t(`departmentPage.form.name`)" path="name" :rule-path="validationRules.rulesNames.requiredStringField">
         <UIMultipleLangItems>
           <template #uz-content>
             <n-input type="text" v-model:value="store.payload.name" />
@@ -44,7 +44,7 @@
           </template>
         </UIMultipleLangItems>
       </n-form-item>
-      <n-form-item :label="$t(`departmentPage.form.level`)" path="level">
+      <n-form-item :label="$t(`departmentPage.form.level`)" path="level" :rule-path="validationRules.rulesNames.requiredNumberField">
         <n-select
           v-model:value="store.payload.level"
           filterable
@@ -57,6 +57,7 @@
       <n-form-item
         v-if="!Boolean(store.parentElement)"
         :label="$t(`departmentPage.form.parent_id`)"
+        :rule-path="validationRules.rulesNames.requiredNumberField"
         path="parent_id"
       >
         <n-select
@@ -84,5 +85,3 @@
     </div>
   </n-form>
 </template>
-
-<style scoped></style>

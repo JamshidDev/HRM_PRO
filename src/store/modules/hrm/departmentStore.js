@@ -42,9 +42,32 @@ export const useDepartmentStore = defineStore('departmentStore', {
     id: null,
 
     activeDeep: null,
-    activeParentId: null
+    activeParentId: null,
+
+    previewVisible:false,
+    previewLoading:false,
+    previewTotal:0,
+    previewList:[],
+    previewParams:{
+      page:1,
+      per_page:10,
+      search:null,
+    }
   }),
   actions: {
+    _preview(){
+      const params = {
+        ...this.previewParams,
+        departments:this.elementId,
+      }
+      this.previewLoading = true
+      $ApiService.workerService._index({ params }).then(res =>{
+        this.previewList = res.data.data.data
+        this.previewTotal = res.data.data.total
+      }).finally(()=>{
+        this.previewLoading = false
+      })
+    },
     _index() {
       this.loading = true
       const params = {

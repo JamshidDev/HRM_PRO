@@ -4,7 +4,7 @@ export const PensionerPage = () => import('./pensioner/page.vue')
 export const WorkerPage = () => import('./worker/WorkerPage.vue')
 export const DepartmentPage = () => import('./department/DepartmentPage.vue')
 export const DepartmentPositionPage = () =>
-  import('./departmentPosition/departmentPositionPage.vue')
+  import('@pages/hrm/departmentPosition/page.vue')
 export const CandidatePage = () => import('./condidate/CandidatePage.vue')
 export const ConfirmationPage = () => import('./confirmation/ConfirmationPage.vue')
 export const ProfilePage = () => import('./workerProfile/ProfilePage.vue')

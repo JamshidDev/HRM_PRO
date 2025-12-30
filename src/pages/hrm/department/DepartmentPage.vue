@@ -1,11 +1,11 @@
 <script setup>
-  import { UIDrawer, UIPageContent } from '@/components/index.js'
-  import TabPage from './ui/TabPage.vue'
-  import createForm from './ui/createForm.vue'
-  import { useDepartmentStore, useAccountStore } from '@/store/modules/index.js'
-  import Filter from './ui/Filter.vue'
-  const accStore = useAccountStore()
+  import { UIDrawer, UIPageContent } from '@components'
+  import { useDepartmentStore, useAccountStore } from '@stores'
+  import { Filter, createForm, TabPage, Preview} from "./ui"
 
+
+
+  const accStore = useAccountStore()
   const store = useDepartmentStore()
 
   onMounted(() => {
@@ -17,18 +17,15 @@
 <template>
   <UIPageContent>
     <Filter />
-
     <TabPage />
     <UIDrawer
-      :visible="store.visible"
-      @update:visible="(v) => (store.visible = v)"
-      :title="
-        store.visibleType ? $t('departmentPage.createTitle') : $t('departmentPage.updateTitle')
-      "
+        v-model:visible="store.visible"
+        :title="store.visibleType ? $t('departmentPage.createTitle') : $t('departmentPage.updateTitle')"
     >
       <template #content>
         <createForm />
       </template>
     </UIDrawer>
+    <Preview/>
   </UIPageContent>
 </template>

@@ -1,11 +1,13 @@
 <script setup>
-  import { NoDataPicture, UIPagination, UIMenuButton } from '@/components/index.js'
+  import {
+    NoDataPicture,
+    UIPagination,
+    UIMenuButton } from '@components'
   import {
     useAccountStore,
     useComponentStore,
-    useDepartmentPositionStore
-  } from '@/store/modules/index.js'
-  import Utils from '@/utils/Utils.js'
+    useDepartmentPositionStore,} from '@stores'
+  import {Utils} from '@utils'
   import {Eye16Regular} from "@vicons/fluent"
 
   const store = useDepartmentPositionStore()
@@ -14,7 +16,6 @@
 
   const onEdit = (v) => {
     componentStore.depParams.organizations = [v.organization?.id]
-    store.payload.organization_id = [v.organization]
     if (componentStore.educationList.length === 0) {
       componentStore._enums()
     }
@@ -24,15 +25,18 @@
     componentStore._positions()
     store.visibleType = false
     store.elementId = v.id
-    store.payload.position_id = v.position?.id
-    store.payload.department_id = v.department?.id
-    store.payload.group = v.group?.id
-    store.payload.rank = v.rank?.id
-    store.payload.max_rank = v?.max_rank?.id
-    store.payload.education = v.education?.id
-    store.payload.rate = v.rate
-    store.payload.salary = v.salary.toString()
-    store.payload.experience = v.experience.toString()
+    Object.assign(store.payload,{
+      organization_id:[v.organization],
+      position_id:v.position?.id,
+      department_id:v.department?.id,
+      group:v.group?.id,
+      rank:v.rank?.id,
+      max_rank:v.max_rank?.id,
+      education:v.education?.id,
+      rate:v.rate,
+      salary:v.salary.toString(),
+      experience:v.experience.toString(),
+    })
 
     store.visible = true
   }
@@ -40,6 +44,14 @@
   const onDelete = (v) => {
     store.elementId = v.id
     store._delete()
+  }
+
+  const onPreview = (v) => {
+    store.preview.visible = true
+    store.elementId = v.id
+    store.preview.params.page = 1
+    store.preview.list = []
+    store._preview()
   }
 
   const changePage = (v) => {
@@ -55,11 +67,7 @@
     } else if (Utils.ActionTypes.delete === v.key) {
       onDelete(v.data)
     } else if (Utils.ActionTypes.view === v.key){
-      store.previewVisible = true
-      store.elementId = v.data.id
-      store.previewParams.page = 1
-      store.previewList = []
-      store._preview()
+      onPreview(v.data)
     }
   }
 </script>
@@ -72,10 +80,10 @@
           <tr>
             <th class="text-center! min-w-[40px] w-[40px]">{{ $t('content.number') }}</th>
             <th class="min-w-[200px]">{{ $t('departmentPositionPage.table.position') }}</th>
-            <th class="min-w-[120px] w-[300px]">
+            <th class="min-w-[200px] w-[300px]">
               {{ $t('departmentPositionPage.table.department') }}
             </th>
-            <th class="min-w-[120px] w-[300px]">
+            <th class="min-w-[300px] w-[300px]">
               {{ $t('departmentPositionPage.table.organization') }}
             </th>
 
@@ -85,6 +93,7 @@
             <th class="min-w-[40px] w-[40px]">{{ $t('departmentPositionPage.table.group') }}</th>
             <th class="min-w-[40px] w-[40px]">{{ $t('departmentPositionPage.table.rank') }}</th>
             <th class="min-w-[40px] w-[40px]">{{ $t('departmentPositionPage.table.rate') }}</th>
+            <th class="min-w-[40px] w-[40px]">{{ $t('departmentPositionPage.table.fact') }}</th>
             <th class="min-w-[60px] w-[60px]">
               {{ $t('departmentPositionPage.table.experience') }}
             </th>
@@ -121,6 +130,11 @@
             </td>
             <td>
               <div class="w-full flex justify-center">
+                <n-button v-if="item.worker_rate" size="small" circle>{{ item.worker_rate }}</n-button>
+              </div>
+            </td>
+            <td>
+              <div class="w-full flex justify-center">
                 <n-button v-if="item.experience" circle size="small"
                   >{{ item.experience }}
                 </n-button>
@@ -139,20 +153,21 @@
                         label: $t('content.worker'),
                         key: Utils.ActionTypes.view,
                         icon: Eye16Regular
-                  },
+                       },
                   ]"
               />
             </td>
           </tr>
         </tbody>
       </n-table>
-      <UIPagination
+    </div>
+    <UIPagination
+        v-if="store.totalItems>0"
         :page="store.params.page"
         :per_page="store.params.per_page"
         :total="store.totalItems"
         @change-page="changePage"
-      />
-    </div>
+    />
     <NoDataPicture v-if="store.list.length === 0 && !store.loading" />
   </n-spin>
 </template>
