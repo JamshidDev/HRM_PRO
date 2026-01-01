@@ -1805,6 +1805,14 @@
     "createTitle": "Xodim biriktirish",
     "updateTitle": "Tahrirlash",
     "requiredMonth": "Xodimning ta'tilga chiqish oyini tanlang",
+    "form": {
+      "period_from": "Qachondan (Ta'til davri)",
+      "period_to": "Qachongacha (Ta'til davri)",
+      "plan_date": "Ta'tila sanasi",
+      "to_date": "Hujjat sanasi",
+      "all_days": "Ta'til kuni",
+      "table_number": "Tabel raqami"
+    },
     "otherList": {
       "btn": "Biriktirilmagan xodimlar",
       "name": "Xodimlar ro'yxati"

@@ -1,6 +1,25 @@
 import { defineStore } from 'pinia'
 import i18n from '@/i18n/index.js'
 const { t } = i18n.global
+
+const initialPayload = () => ({
+  year:null,
+  director_id:null,
+  trade_union_id:null,
+  creator_id:null,
+  date:null,
+  worker_position_ids: [
+    {
+      id:1,
+      table_number:null,
+      period_from:null,
+      period_to:null,
+      plan_date:null,
+      all_days:0,
+    }
+  ],
+})
+
 export const useVacationScheduleStore = defineStore('vacationScheduleStore', {
   state: () => ({
     list: [],
@@ -14,18 +33,13 @@ export const useVacationScheduleStore = defineStore('vacationScheduleStore', {
     allRegionList: [],
     allLoading: false,
     structureCheck: [],
-    payload: {
-      worker_position_id: null,
-      organization_id: [],
-      month: null
-    },
+    payload:initialPayload(),
     params: {
       page: 1,
       per_page: 10,
       search: null,
       organizations: []
     },
-
     othersList: [],
     otherLoading: false,
     otherVisible: false,
@@ -36,7 +50,17 @@ export const useVacationScheduleStore = defineStore('vacationScheduleStore', {
       organizations: []
     },
     otherTotal: 0,
-    structureCheck2: []
+    structureCheck2: [],
+    worker:{
+      list:[],
+      loading:false,
+      total:0,
+      params:{
+        page:1,
+        per_page:10,
+        search:null,
+      }
+    }
   }),
   actions: {
     _index() {
@@ -121,9 +145,7 @@ export const useVacationScheduleStore = defineStore('vacationScheduleStore', {
     },
     resetForm() {
       this.elementId = null
-      this.payload.worker_position_id = null
-      this.payload.month = null
-      this.payload.organization_id = []
+      this.payload = initialPayload()
     }
   }
 })
