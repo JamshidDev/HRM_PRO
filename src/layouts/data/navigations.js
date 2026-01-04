@@ -205,7 +205,7 @@ export const navigations = [
         path: Utils.routeHrmPathMaker(AppPaths.VacationSchedule),
         icon: BookDatabase24Regular,
         color: 'bg-info',
-        permission: appPermissions.hrVacationSchedule
+        permission: appPermissions.admin
       },
       {
         label: 'vacancy.name',
