@@ -1,6 +1,27 @@
 import { defineStore } from 'pinia'
 import i18n from '@/i18n/index.js'
+import {Utils} from "@utils"
+
 const { t } = i18n.global
+
+const initialPayload = () => ({
+  year:null,
+  director_id:null,
+  trade_union_id:null,
+  creator_id:null,
+  date:null,
+  worker_position_ids: [
+    {
+      id:1,
+      table_number:null,
+      period_from:null,
+      period_to:null,
+      plan_date:null,
+      all_days:0,
+    }
+  ],
+})
+
 export const useVacationScheduleStore = defineStore('vacationScheduleStore', {
   state: () => ({
     list: [],
@@ -14,18 +35,13 @@ export const useVacationScheduleStore = defineStore('vacationScheduleStore', {
     allRegionList: [],
     allLoading: false,
     structureCheck: [],
-    payload: {
-      worker_position_id: null,
-      organization_id: [],
-      month: null
-    },
+    payload:initialPayload(),
     params: {
       page: 1,
       per_page: 10,
       search: null,
       organizations: []
     },
-
     othersList: [],
     otherLoading: false,
     otherVisible: false,
@@ -36,7 +52,18 @@ export const useVacationScheduleStore = defineStore('vacationScheduleStore', {
       organizations: []
     },
     otherTotal: 0,
-    structureCheck2: []
+    structureCheck2: [],
+    worker:{
+      list:[],
+      loading:false,
+      total:0,
+      params:{
+        page:1,
+        per_page:10,
+        search:null,
+        year:null,
+      }
+    }
   }),
   actions: {
     _index() {
@@ -55,6 +82,29 @@ export const useVacationScheduleStore = defineStore('vacationScheduleStore', {
           this.loading = false
         })
     },
+    _fetchWorkers(){
+      const params = {
+        ...this.worker.params,
+      }
+      this.worker.loading = true
+      $ApiService.vacationScheduleService._workers({params}).then((res)=>{
+        this.worker.list = res.data.data.data.map(v =>({
+          id:v.id,
+          worker:v.worker,
+          position:v.position,
+
+          table_number:v.vacation_schedule?.table_number,
+          period_from:Utils.datePickerFormatter(v.vacation_schedule?.period_from),
+          period_to:Utils.datePickerFormatter(v.vacation_schedule?.period_to),
+          plan_date:Utils.datePickerFormatter(v.vacation_schedule?.plan_date),
+          all_days:v.vacation_schedule?.all_days || 0,
+        }))
+        this.worker.total = res.data.data.total
+      }).finally(()=>{
+        this.worker.loading = false
+      })
+
+    },
     _otherWorkers() {
       const params = {
         ...this.otherParam
@@ -70,20 +120,10 @@ export const useVacationScheduleStore = defineStore('vacationScheduleStore', {
           this.otherLoading = false
         })
     },
-    _create(callback = null) {
+    _create(data) {
       this.saveLoading = true
-      const data = {
-        ...this.payload,
-        organization_id: this.payload.organization_id?.[0]?.id,
-        month: this.payload.month
-      }
       $ApiService.vacationScheduleService
         ._create({ data })
-        .then((res) => {
-          this.visible = false
-          if (callback) return callback?.()
-          this._index()
-        })
         .finally(() => {
           this.saveLoading = false
         })
@@ -120,10 +160,13 @@ export const useVacationScheduleStore = defineStore('vacationScheduleStore', {
       this.visible = data
     },
     resetForm() {
+      const today = new Date().getTime()
       this.elementId = null
-      this.payload.worker_position_id = null
-      this.payload.month = null
-      this.payload.organization_id = []
+      this.payload = initialPayload()
+      this.payload.year = 2026
+      this.payload.date = today
+      this.worker.params.year = 2026
+      this.worker.params.page = 1
     }
   }
 })

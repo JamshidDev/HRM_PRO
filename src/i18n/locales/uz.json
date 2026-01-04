@@ -894,7 +894,6 @@
     "name": "Chat"
   },
 
-
   "adContractPage": {
     "createTitle": "Qo'shimcha kelishuv tuzish",
     "updateTitle": "Qo'shimcha kelishuvni tahrirlash",
@@ -1615,7 +1614,6 @@
     }
   },
 
-
   "medInspection": {
     "name": "Tekshiruvga yuborish",
     "createTitle": "Tibbiy ko'rikga xodimni yuborish",
@@ -1807,6 +1805,16 @@
     "createTitle": "Xodim biriktirish",
     "updateTitle": "Tahrirlash",
     "requiredMonth": "Xodimning ta'tilga chiqish oyini tanlang",
+    "form": {
+      "period_from": "Qachondan (Ta'til davri)",
+      "period_to": "Qachongacha (Ta'til davri)",
+      "plan_date": "Ta'til sanasi",
+      "to_date": "Hujjat sanasi",
+      "all_days": "Ta'til kuni",
+      "attachedWorkerCount": "Biriktirilgan xodimlar",
+      "unAttachedWorkerCount": "Biriktirilmagan xodimlar",
+      "table_number": "Tabel raqami"
+    },
     "otherList": {
       "btn": "Biriktirilmagan xodimlar",
       "name": "Xodimlar ro'yxati"
@@ -2184,8 +2192,7 @@
       "error": "Xatolik"
     }
   },
-
-
+  
   "workerImage": {
     "name": "(HC) Telegram rasmlari",
     "photo": "Rasm",

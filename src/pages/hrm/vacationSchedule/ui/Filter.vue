@@ -66,18 +66,6 @@
     @show="beforeShow"
     @onClear="resetFilter"
   >
-    <template #filterAction>
-      <n-button
-        class="w-full! md:w-auto!"
-        @click="store.otherVisible = !store.otherVisible"
-        type="error"
-      >
-        {{ $t('vacationSchedule.otherList.btn') }}
-        <template #icon>
-          <People32Filled />
-        </template>
-      </n-button>
-    </template>
     <template #filterContent>
       <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{
         $t('actionLog.table.structure')

@@ -1,5 +1,6 @@
-import { NIcon } from 'naive-ui'
+import {NAvatar, NIcon} from 'naive-ui'
 import { DismissCircle20Filled } from '@vicons/fluent'
+import Utils from "@utils/Utils.js"
 
 const scheduleLabel = (option) => {
   return [
@@ -113,6 +114,45 @@ const selectValueV2 =
     ]
   }
 
+
+const renderAvatarLabel = (option) => {
+  return [
+    h(
+        'div',
+        {
+          class: 'flex gap-2 my-1 items-center px-2'
+        },
+        [
+          h(NAvatar, {
+            class: 'flex-shrink-0',
+            src: option.photo,
+            'fallback-src': Utils.noAvailableImage
+          }),
+          h('div', { class: 'flex flex-col' }, [
+            h(
+                'div',
+                { class: 'text-xs font-medium text-gray-500 leading-[1.2]' },
+                option?.fullName
+            ),
+            h('div', { class: 'text-xs text-primary leading-[1.2]' }, option.position)
+          ])
+        ]
+    )
+  ]
+}
+
+const renderAvatarValue = ({ option }) => {
+  return [
+    h(
+        'div',
+        {
+          class: 'flex gap-2 my-1 items-center'
+        },
+        option?.fullName
+    )
+  ]
+}
+
 export const scheduleRender = {
   label: scheduleLabel,
   value: scheduleValue
@@ -124,6 +164,10 @@ export const selectRender = {
 }
 
 export default {
+  avatarRender:{
+    label: renderAvatarLabel,
+    value: renderAvatarValue
+  },
   scheduleRender: {
     label: scheduleLabel,
     value: scheduleValue
