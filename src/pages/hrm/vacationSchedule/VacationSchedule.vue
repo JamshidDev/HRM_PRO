@@ -1,6 +1,6 @@
 <script setup>
 import {UIModal, UIPageContent} from '@components'
-import {useAccountStore, useComponentStore, useVacationScheduleStore} from '@stores'
+import {useAccountStore, useVacationScheduleStore} from '@stores'
 import Table from './ui/Table.vue'
 import {createForm} from './ui'
 import Filter from './ui/Filter.vue'
@@ -8,15 +8,10 @@ import OtherList from './ui/OtherList.vue'
 
 const store = useVacationScheduleStore()
 const accStore = useAccountStore()
-const componentStore = useComponentStore()
 
 onMounted(() => {
   if (!accStore.checkAction(accStore.pn.hrVacationScheduleRead)) return
   store._index()
-})
-
-onUnmounted(() => {
-  componentStore.clearCache()
 })
 </script>
 

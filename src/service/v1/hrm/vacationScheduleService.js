@@ -1,7 +1,11 @@
 import axios from '@/service/index.js'
 
 const _index = async (payload) => {
-  return await axios.get(`/v1/hr/vacation-schedules`, { params: payload?.params })
+  return await axios.get(`/v1/hr/vacation-schedule`, { params: payload?.params })
+}
+
+const _workers = async (payload) => {
+  return await axios.get(`/v1/hr/vacation-schedule-workers`, { params: payload?.params })
 }
 
 const _notIncludes = async (payload) => {
@@ -9,7 +13,7 @@ const _notIncludes = async (payload) => {
 }
 
 const _create = async (payload) => {
-  return await axios.post(`/v1/hr/vacation-schedules`, payload.data)
+  return await axios.post(`/v1/hr/vacation-schedule`, payload.data)
 }
 
 const _update = async (payload) => {
@@ -25,5 +29,6 @@ export default {
   _create,
   _update,
   _delete,
-  _notIncludes
+  _notIncludes,
+  _workers,
 }

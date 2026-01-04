@@ -1808,9 +1808,11 @@
     "form": {
       "period_from": "Qachondan (Ta'til davri)",
       "period_to": "Qachongacha (Ta'til davri)",
-      "plan_date": "Ta'tila sanasi",
+      "plan_date": "Ta'til sanasi",
       "to_date": "Hujjat sanasi",
       "all_days": "Ta'til kuni",
+      "attachedWorkerCount": "Biriktirilgan xodimlar",
+      "unAttachedWorkerCount": "Biriktirilmagan xodimlar",
       "table_number": "Tabel raqami"
     },
     "otherList": {

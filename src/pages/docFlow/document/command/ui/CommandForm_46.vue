@@ -336,7 +336,7 @@ onMounted(() => {
       >
         <n-input-number
             class="w-full"
-            min="0"
+            min="15"
             max="100"
             v-model:value="store.form_46.half_one_day"
         />
