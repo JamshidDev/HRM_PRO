@@ -35,6 +35,7 @@
 
   const formRef = ref(null)
   const confirmationList = ref([])
+  const financeList = ref([])
 
   const cancelForm_32 = ref(null)
   const cancelCommandForm_34 = ref(null)
@@ -301,7 +302,9 @@
         to: null,
         from_time: null,
         to_time: null,
-        lastVacation: null
+        lastVacation: null,
+        group:1,
+
       })
     } else if (store.payload.workers.length < store.vacations55.length) {
       store.vacations55 = store.vacations55.filter((a) => store.payload.workers.includes(a.id))
@@ -318,7 +321,8 @@
         to: null,
         from_time: null,
         to_time: null,
-        lastVacation: null
+        lastVacation: null,
+        group:1,
       }
     })
   }
@@ -443,6 +447,11 @@
     store.payload.confirmations = store.sortableConfirmations.map((v) => v.id)
   }
 
+  const onRemoveEv = (id) =>{
+    store.sortableConfirmations = store.sortableConfirmations.filter(v=>v.id !== id)
+    store.payload.confirmations = store.payload.confirmations.filter(v=>v !== id)
+  }
+
   const onChangeConfirmation = () => {
     store.sortableConfirmations = confirmationList.value
         .filter((v) => store.payload.confirmations.includes(v.id))
@@ -458,14 +467,23 @@
         }))
   }
 
+  const onChangeFinance = () =>{
+    onRemoveEv(store.payload.finance_id)
+  }
+
   watchEffect(() => {
     if (store.payload.director_id) {
-      store.payload.confirmations = store.payload.confirmations.filter(
-        (v) => v !== store.payload.director_id
-      )
-      confirmationList.value = componentStore.confirmationList.filter(
-        (v) => v.id !== store.payload.director_id
-      )
+      if(store.payload.finance_id === store.payload.director_id) store.payload.finance_id = null
+      onRemoveEv(store.payload.director_id)
+
+      const ids = [store.payload.finance_id, store.payload.director_id]
+      financeList.value = componentStore.confirmationList.filter(v => v.id !== store.payload.director_id)
+      confirmationList.value = componentStore.confirmationList.filter(v => !ids.includes(v.id))
+    }
+
+    if(store.payload.finance_id){
+      const ids = [store.payload.finance_id, store.payload.director_id]
+      confirmationList.value = componentStore.confirmationList.filter(v => !ids.includes(v.id))
     }
   })
 
@@ -475,6 +493,8 @@
     componentStore._structures()
     fetchConfirmation()
   })
+
+
 </script>
 
 <template>
@@ -655,7 +675,7 @@
         <div
           class="grid grid-cols-12 gap-x-4 border border-surface-line border-dashed p-2 rounded-md bg-surface-ground"
         >
-          <div class="col-span-12 mt-4">
+          <div class="col-span-6">
             <n-form-item :label="$t(`documentPage.command.form.director_id`)" path="director_id">
               <n-select
                 value-field="id"
@@ -668,17 +688,18 @@
               />
             </n-form-item>
           </div>
-          <div class="col-span-12">
+          <div class="col-span-6">
             <n-form-item :label="$t(`documentPage.command.form.finance_id`)" path="finance_id">
               <n-select
                   :disabled="!store.payload.director_id"
                   value-field="id"
                   label-field="last_name"
                   v-model:value="store.payload.finance_id"
-                  :options="confirmationList"
+                  :options="financeList"
                   :loading="componentStore.confirmationLoading"
                   :render-label="renderLabel"
                   :render-tag="renderValue"
+                  @update:value="onChangeFinance"
               />
             </n-form-item>
           </div>
@@ -741,7 +762,7 @@
                       </template>
                       <span class="font-bold text-lg">{{ index + 1 }}</span>
                     </n-button>
-                    <n-button type="error" circle secondary>
+                    <n-button @click="onRemoveEv(item.id)" type="error" circle secondary>
                       <template #icon>
                         <DismissCircle28Filled />
                       </template>
@@ -778,4 +799,3 @@
   </div>
 </template>
 
-<style></style>

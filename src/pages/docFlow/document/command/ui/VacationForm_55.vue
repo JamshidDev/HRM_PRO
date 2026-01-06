@@ -15,14 +15,14 @@
   }
 
   const onSubmit = (mainData) => {
-    const checkForm = store.vacations55.every((v) => v.from && v.to)
+    const checkForm = store.vacations55.every((v) => v.from)
     if (checkForm) {
       const data = store.vacations55.map((v) => ({
         id: v.id,
         from: Utils.timeToZone(v.from),
-        from_time: Utils.timeOnlyHour(v.from_time) || undefined,
-        to_time: Utils.timeOnlyHour(v.to_time) || undefined,
-        to: Utils.timeToZone(v.to)
+        from_time: Utils.timeOnlyHour(v.from_time=== 0? null: v.from_time) || undefined,
+        to_time: Utils.timeOnlyHour(v.to_time === 0? null : v.to_time) || undefined,
+        to: Utils.timeToZone(v.to=== 0? null : v.to) || undefined
       }))
 
       return {
@@ -48,6 +48,61 @@
       if (index === -1) return
       store.vacations55[index].lastVacation = data.length > 0 ? data[0] : t('content.no-data')
     })
+  }
+
+  const options = [
+    {
+      name: "Soatlab (kun ichida)",
+      id: 1,
+    },
+    {
+      name: "Bir kunlik",
+      id: 2,
+    },
+    {
+      name: "Bir necha kunlik",
+      id: 3,
+    },
+    {
+      name: "Soatlik",
+      id: 4,
+    },
+  ]
+
+  const onChangeGroup = (group, idx) => {
+    const payloadConfig = {
+      1:{
+        from: null,
+        to: null,
+        from_time: null,
+        to_time: null,
+      },
+      2:{
+        from: null,
+        to: 0,
+        from_time: 0,
+        to_time: 0,
+      },
+      3:{
+        from: null,
+        to: null,
+        from_time: 0,
+        to_time: 0,
+      },
+      4:{
+        from: null,
+        to: 0,
+        from_time: null,
+        to_time: null,
+      },
+    }
+    const activePayload = payloadConfig[group]
+
+    store.vacations55[idx] ={
+      ...store.vacations55[idx],
+      ...activePayload,
+    }
+
   }
 
   defineExpose({
@@ -136,16 +191,30 @@
       >
     </div>
     <div class="col-span-12 md:col-span-6 lg:col-span-3">
+      <n-form-item :show-feedback="false" :label="$t(`content.type`)" path="from">
+        <n-select
+            v-model:value="item.group"
+            :options="options"
+            label-field="name"
+            value-field="id"
+            @update:value="onChangeGroup(item.group, idx)"
+        />
+      </n-form-item>
+
+    </div>
+
+    <div v-if="item.from !== 0" class="col-span-12 md:col-span-6 lg:col-span-2">
       <n-form-item :show-feedback="false" :label="$t(`commandPage.form_55.from`)" path="from">
         <n-date-picker
           class="w-full"
           v-model:value="item.from"
           type="date"
           :format="useAppSetting.datePicketFormat"
+
         />
       </n-form-item>
     </div>
-    <div class="col-span-12 md:col-span-6 lg:col-span-3">
+    <div v-if="item.from_time !== 0" class="col-span-12 md:col-span-6 lg:col-span-2">
       <n-form-item
         :show-feedback="false"
         :label="$t(`commandPage.form_55.from_time`)"
@@ -154,7 +223,7 @@
         <n-time-picker class="w-full" v-model:value="item.from_time" format="h:mm a" />
       </n-form-item>
     </div>
-    <div class="col-span-12 md:col-span-6 lg:col-span-3">
+    <div v-if="item.to !== 0" class="col-span-12 md:col-span-6 lg:col-span-3">
       <n-form-item :show-feedback="false" :label="$t(`commandPage.form_55.to`)" path="to">
         <n-date-picker
           class="w-full"
@@ -164,7 +233,7 @@
         />
       </n-form-item>
     </div>
-    <div class="col-span-12 md:col-span-6 lg:col-span-3">
+    <div v-if="item.to_time !== 0" class="col-span-12 md:col-span-6 lg:col-span-2">
       <n-form-item :show-feedback="false" :label="$t(`commandPage.form_55.to_time`)" path="to_time">
         <n-time-picker class="w-full" v-model:value="item.to_time" format="h:mm a" />
       </n-form-item>

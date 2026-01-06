@@ -682,11 +682,11 @@
       "form": {
         "command_date": "Buyruq sanasi",
         "viewSameTime": "Bir vaqtda tanishish",
-        "viewDescription": "Tasdiqlovchilar quyidagi tartibda yoki bir vaqtda ko'rib hujjatni imzolaydilar",
+        "viewDescription": "Kelishuvchilar quyidagi tartibda yoki bir vaqtda ko'rib hujjatni imzolaydilar",
         "viewOneByOne": "Tartib bo'yicha tanishish",
         "type": "Buyruq turi",
         "byContract": "{n} - raqamli shartnoma asosida",
-        "confirm": "Tasdiqlovchilar",
+        "confirm": "Kelishuvchilar",
         "director_id": "Rahbar",
         "finance_id": "Buxgalter",
         "day": "Kun",
@@ -857,7 +857,7 @@
     }
   },
   "confirmationPage": {
-    "name": "Tasdiqlovchilar",
+    "name": "Kelishuvchilar",
     "createTitle": "Tasdiqlovchi qo'shish",
     "updateTitle": "Tasdiqlovchini tahrirlash",
     "table": {
@@ -1450,7 +1450,7 @@
       "phones": "Telefon raqam",
       "number": "Raqami",
       "worker_position_id": "Lavozim",
-      "confirmations": "Tasdiqlovchilar",
+      "confirmations": "Kelishuvchilar",
       "period_from": "Ta'til davri (dan)",
       "period_to": "Ta'til davri (gacha)",
       "from": "Ta'tilga chiqish sanasi",
@@ -1505,7 +1505,7 @@
     "department": "Bo'lim",
     "total": "Umumiy",
     "hours": "Soat",
-    "verifiers": "Tasdiqlovchilar",
+    "verifiers": "Kelishuvchilar",
     "mainVerifier": "Asosiy tasdiqlovchi",
     "worked": "Ishlagan",
     "tableTitle": "Oy kuni bo'yicha ishda qatnashish va yo'qligi haqida eslatmalar",
