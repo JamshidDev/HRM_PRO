@@ -96,6 +96,8 @@ import lmsExamService from '@/service/v1/lms/examService.js'
 import teacherLessonService from '@/service/v1/lms/teacherLessonService.js'
 import listenerService from '@/service/v1/lms/listenerService.js'
 
+import notificationService from '@/service/v1/chat/notificationService.js'
+
 import {
   turnstileTerminalService,
   turnstileBuildingService,
@@ -253,5 +255,6 @@ export default {
   userImageLogsService,
   invalidUserService,
   eventV2Service,
-  workerScheduleService
+  workerScheduleService,
+  notificationService
 }

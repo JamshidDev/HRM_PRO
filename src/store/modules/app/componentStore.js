@@ -236,7 +236,7 @@ export const useComponentStore = defineStore('componentStore', {
     lmsLearningCenterLoading: false,
 
     departments: {},
-    positions: {}
+    positions: {},
   }),
   actions: {
     createDepartmentFetcher(key) {

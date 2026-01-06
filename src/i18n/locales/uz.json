@@ -1,5 +1,6 @@
 {
   "content": {
+    "title": "Sarlavha",
     "deleted": "O'chirilgan",
     "nowOnlineUsers": "Hozirda tizimdagi online foydalanuvchilar",
     "onlineUsers": "Online foydalanuvchilar",
@@ -158,6 +159,7 @@
     "return": "Ortga qaytish",
     "finish": "Yakunlash",
     "created": "Yaratilgan sana",
+    "read": "O'qilgan sana",
     "ended": "Yakunlangan sana",
     "move": "Siljitish",
     "listen": "Tinglash",
@@ -696,7 +698,7 @@
         "to": "Ta'til tugash sanasi",
         "work_day": "Ishga chiqish sanasi",
         "main_day": "Asosiy ta'til kuni",
-        "half_one_day":"Ta'til kuni (Birinchi yarmi)",
+        "half_one_day": "Ta'til kuni (Birinchi yarmi)",
         "half_two_day": "Ta'til kuni (Ikkinchi yarmi)",
         "half_two_date": "Ta'til sanasi (Ikkinchi yarmi)",
         "second_day": "Qo'shimcha ta'til kuni",
@@ -894,7 +896,6 @@
   "chatWindow": {
     "name": "Chat"
   },
-
   "adContractPage": {
     "createTitle": "Qo'shimcha kelishuv tuzish",
     "updateTitle": "Qo'shimcha kelishuvni tahrirlash",
@@ -1614,7 +1615,6 @@
       "selected": "Tanlangan"
     }
   },
-
   "medInspection": {
     "name": "Tekshiruvga yuborish",
     "createTitle": "Tibbiy ko'rikga xodimni yuborish",
@@ -2196,7 +2196,6 @@
       "error": "Xatolik"
     }
   },
-  
   "workerImage": {
     "name": "(HC) Telegram rasmlari",
     "photo": "Rasm",
@@ -2294,6 +2293,13 @@
     "form": {
       "user_id": "Xodim",
       "devices": "Qurilmalar"
+    },
+    "status": {
+      "info": "Ma’lumot",
+      "success": "Muvaffaqiyat",
+      "warning": "Ogohlantirish",
+      "error": "Xatolik",
+      "critical": "Jiddiy xatolik"
     }
   },
   "teacherLesson": {
@@ -2311,7 +2317,8 @@
     "lms": "O'quv boshqaruvi",
     "economist": "Iqtisodchi",
     "hospital": "Kasalxona",
-    "admin": "Admin"
+    "admin": "Admin",
+    "chat": "Chat"
   },
   "resultPage": {
     "name": "Natijalar",
@@ -2568,6 +2575,10 @@
   },
   "turnstileSchedule": {
     "name": "Turniket grafiki"
+  },
+  "notificationPage": {
+    "name": "Bildirishnomalar",
+    "create": "Bildirishnoma yaratish"
   }
 }
 

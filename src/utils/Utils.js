@@ -47,6 +47,11 @@ const timeToZone = (time) => {
 const timeWithMonth = (time) => {
   return time ? dayjs(time).format('YYYY-MM-DD HH:mm:ss') : null
 }
+
+const timeHHMMWithMonth = (time) => {
+  return time ? dayjs(time).format('YYYY-MM-DD HH:mm') : null
+}
+
 const timeOnlyDate = (time) => {
   return time ? dayjs(time).format('DD.MM.YYYY') : null
 }
@@ -541,5 +546,6 @@ export default {
   sumFormat,
   validateTime,
   isValidTimeChar,
-  handleTimeKeydown
+  handleTimeKeydown,
+  timeHHMMWithMonth
 }

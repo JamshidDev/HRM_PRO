@@ -13,7 +13,8 @@ import {
   lmsRoutes,
   accountantRoutes,
   turnstileRoutes,
-  hospitalRoutes
+  hospitalRoutes,
+  chatRoutes
 } from '@/router/modules'
 import { navigations } from '@/layouts/data/navigations.js'
 
@@ -125,6 +126,16 @@ const routes = [
         path: AppPaths.Profile,
         name: AppPaths.Profile.substring(1),
         component: ProfilePage,
+        meta: {
+          layout: AppLayouts.main
+        }
+      },
+      {
+        path: AppPaths.Chat,
+        name: AppPaths.Chat.substring(1),
+        beforeEnter: beforeLogin,
+        redirect: AppPaths.Home,
+        children: [...chatRoutes],
         meta: {
           layout: AppLayouts.main
         }
