@@ -244,7 +244,7 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
               this.workerDataWithSchedule = data
 
               this.monthlyList = data?.stats
-              this.monthlyTotalWorkerCount = data?.stats[0].without_schedule
+              this.monthlyTotalWorkerCount = data?.count
               this.monthlyWorkers = data?.workerList.map((v) => ({
                 ...v,
                 fullName: Utils.combineFullName(v)

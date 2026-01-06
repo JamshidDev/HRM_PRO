@@ -111,6 +111,7 @@
         const mainData = {
           command_date: Utils.timeToZone(store.payload.command_date),
           director_id: store.payload.director_id,
+          finance_id: store.payload.finance_id,
           organization_id: store.payload.organization_id?.[0]?.id,
           confirmations: store.sortableConfirmations.map((v, idx) => ({
             id: v.id,
@@ -659,9 +660,24 @@
               />
             </n-form-item>
           </div>
+          <div class="col-span-12">
+            <n-form-item :label="$t(`documentPage.command.form.finance_id`)" path="finance_id">
+              <n-select
+                  :disabled="!store.payload.director_id"
+                  value-field="id"
+                  label-field="last_name"
+                  v-model:value="store.payload.finance_id"
+                  :options="componentStore.confirmationList"
+                  :loading="componentStore.confirmationLoading"
+                  :render-label="renderLabel"
+                  :render-tag="renderValue"
+              />
+            </n-form-item>
+          </div>
           <div class="col-span-12 mt-4">
             <n-form-item :label="$t(`documentPage.command.form.confirm`)" path="confirmations">
               <n-select
+                :disabled="!store.payload.director_id"
                 size="large"
                 value-field="id"
                 multiple

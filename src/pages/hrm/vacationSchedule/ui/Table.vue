@@ -1,6 +1,6 @@
 <script setup>
   import { NoDataPicture, UIPagination, UIMenuButton, UIUser } from '@/components/index.js'
-  import { useComponentStore, useVacationScheduleStore } from '@/store/modules/index.js'
+  import { useVacationScheduleStore } from '@/store/modules/index.js'
   import Utils from '@/utils/Utils.js'
   import { useAccountStore } from '@stores'
   import {UIBadge, UIStatus} from "@components"
@@ -9,9 +9,15 @@
   const accStore = useAccountStore()
   const t = i18n.global.t
   const store = useVacationScheduleStore()
-  const componentStore = useComponentStore()
 
   const onEdit = (v) => {
+    store.creator.list = [{
+      id:v.creator.id,
+      name: Utils.combineFullName(v.creator.worker),
+      photo: v.creator.worker?.photo,
+      position: v.creator.position,
+    }]
+
     store.payload.year = v.year
     store.payload.date = Utils.datePickerFormatter(v.date)
     store.payload.director_id = v?.director?.id
@@ -53,7 +59,7 @@
             <th class="min-w-[60px] w-[80px]">{{ $t('content.year') }}</th>
             <th class="min-w-[60px] w-[120px]">{{ $t('vacationSchedule.form.to_date') }}</th>
             <th class="min-w-[200px] w-[220px]">{{ $t('documentPage.command.form.director_id') }}</th>
-            <th class="min-w-[200px] w-[220px]">{{ $t('documentPage.command.form.confirm') }}</th>
+            <th class="min-w-[200px] w-[220px]">{{ $t('vacationSchedule.form.tradeUnion') }}</th>
             <th class="min-w-[80px]">{{ $t('content.worker') }}</th>
             <th class="min-w-[80px] w-[200px]">{{ $t('content.organization') }}</th>
             <th class="min-w-[100px] w-[100px]">{{ $t('content.status') }}</th>

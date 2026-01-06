@@ -687,7 +687,8 @@
         "type": "Buyruq turi",
         "byContract": "{n} - raqamli shartnoma asosida",
         "confirm": "Tasdiqlovchilar",
-        "director_id": "Direktor",
+        "director_id": "Rahbar",
+        "finance_id": "Buxgalter",
         "day": "Kun",
         "from": "Ta'tilga chiqish sanasi",
         "period_from": "Ta'til davri (dan)",
@@ -772,7 +773,7 @@
       "rank": "Lavozim razryadi",
       "rate": "Stavka",
       "postName": "To'liq lavozim nomi",
-      "director": "Direktor",
+      "director": "Rahbar",
       "contract_to_date": "Shartnoma muddati",
       "position_date": "Ishga chiqish sanasi",
       "vacation_main_day": "Asosiy ta'til kuni",
@@ -1442,7 +1443,7 @@
     "createTitle": "Ariza uchun havola yaratish",
     "updateTitle": "Bayram kunini tahrirlash",
     "form": {
-      "director_id": "Direktor",
+      "director_id": "Rahbar",
       "type": "Ariza turi",
       "work_type": "Ish turi",
       "generateLink": "Havola yaratish",
@@ -1804,16 +1805,19 @@
     "name": "Ta'tillar grafigi",
     "createTitle": "Xodim biriktirish",
     "updateTitle": "Tahrirlash",
+    "autoGenerate": "Avtomatik hisoblash",
     "requiredMonth": "Xodimning ta'tilga chiqish oyini tanlang",
     "form": {
       "period_from": "Qachondan (Ta'til davri)",
       "period_to": "Qachongacha (Ta'til davri)",
       "plan_date": "Ta'til sanasi",
       "to_date": "Hujjat sanasi",
+      "tradeUnion": "Kasaba uyishma raisi",
       "all_days": "Ta'til kuni",
       "attachedWorkerCount": "Biriktirilgan xodimlar",
       "unAttachedWorkerCount": "Biriktirilmagan xodimlar",
-      "table_number": "Tabel raqami"
+      "table_number": "Tabel raqami",
+      "experience": "Ish tajribasi"
     },
     "otherList": {
       "btn": "Biriktirilmagan xodimlar",
@@ -2422,7 +2426,7 @@
       "vacations": "Ta’tildagi xodimlar",
       "casual_workers": "Dam olish kunidagi xodimlar",
       "turnstileAnalyticDescription": "Face ID bo‘yicha kunlik qaydnoma",
-      "graphAnalyticDescription": "So‘nggi 5 oyda grafik tuzilmagan xodimlar soni",
+      "graphAnalyticDescription": "Joriy oy bo'yicha qisqa tahlil",
       "currentMonthWorkerCount": "Joriy oyda grafik tuzilmagan xodimlar soni"
     },
     "options": {

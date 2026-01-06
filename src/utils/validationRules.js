@@ -1083,6 +1083,12 @@ export default {
       message: t(`rules.requiredField`),
       trigger: triggerEvents
     },
+    finance_id: {
+      type: 'number',
+      required: true,
+      message: t(`rules.requiredField`),
+      trigger: triggerEvents
+    },
     command_date: {
       type: 'number',
       required: true,

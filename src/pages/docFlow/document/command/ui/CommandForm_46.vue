@@ -29,7 +29,7 @@ const onSubmit = async (mainData) => {
         period_to:Utils.timeToZone(store.form_46.result.period_to),
         work_day:Utils.timeToZone(store.form_46.result.work_day),
         to:Utils.timeToZone(store.form_46.result.to),
-        all_day:Utils.timeToZone(store.form_46.result.all_day),
+        all_day:store.form_46.result.all_day,
 
         from:Utils.timeToZone(store.form_46.from),
         main_day:store.form_46.main_day,
@@ -80,18 +80,20 @@ const onCalculate = () =>{
       value: v.day
     }))
   }
+  store.calculateLoading = true
   $ApiService.vacationService._vacationCalculate({data: { worker_positions: [data] }}).then((res)=>{
     $Toast.success(t('message.successDone'))
     if(res.data.data?.[0]){
       const v = res.data.data?.[0]
       store.form_46.result.all_day = v.all_day
+      store.form_46.result.experience = v.experience?.toString()
       store.form_46.result.period_from = new Date(v.period_from).getTime()
       store.form_46.result.period_to = new Date(v.period_to).getTime()
       store.form_46.result.work_day = new Date(v.work_day).getTime()
       store.form_46.result.to = new Date(v.to).getTime()
-      return
     }
-    store.form_46.result = {}
+  }).finally(() => {
+    store.calculateLoading = false
   })
 }
 
@@ -113,6 +115,10 @@ const validateForm = async () => {
   }
   await formRef.value?.validate()
 }
+
+watchEffect(()=>{
+  store.form_46.half_two_day =Number(store.form_46.result.all_day) - Number(store.form_46.half_one_day)
+})
 
 defineExpose({
   onSubmit,
@@ -214,167 +220,180 @@ onMounted(() => {
         </div>
       </template>
     </div>
-    <div class="col-span-12 md:col-span-6 lg:col-span-2 flex justify-center pt-11">
-      <n-button
-          :loading="store.calculateLoading"
-          @click="onCalculate(idx)"
-          type="success"
-          secondary
-      >
-        <template #icon>
-          <Calculator24Regular />
-        </template>
-        {{ $t('documentPage.command.form.calculateVacation') }}
-      </n-button>
-    </div>
-    <div class="col-span-12 md:col-span-6 lg:col-span-10 flex items-end">
-      <template v-if="store.form_46.result && store.form_46.result?.all_day">
-        <div
-            class="grid mt-2 grid-cols-12 gap-x-4 w-full border border-dashed border-surface-line bg-surface-section rounded-md p-2"
+    <div
+        class="col-span-12 grid mt-2 grid-cols-12 gap-x-4 w-full border border-dashed border-surface-line bg-surface-section/40 rounded-md p-2"
+    >
+      <div class="col-span-12 flex justify-center mb-4">
+        <n-button
+            :loading="store.calculateLoading"
+            @click="onCalculate(idx)"
+            type="primary"
+            secondary
+            size="tiny"
         >
-          <div class="col-span-12 md:col-span-6 lg:col-span-3 mb-2 lg:mb-0">
-            <n-form-item
-                :show-feedback="false"
-                :label="$t(`documentPage.command.form.to`)"
-                path="to"
-            >
-              <n-date-picker
-                  class="w-full"
-                  v-model:value="store.form_46.result.to"
-                  type="date"
-                  :format="useAppSetting.datePicketFormat"
-              />
-            </n-form-item>
-          </div>
-          <div class="col-span-12 md:col-span-6 lg:col-span-3 mb-2 lg:mb-0">
-            <n-form-item
-                :show-feedback="false"
-                :label="$t(`documentPage.command.form.work_day`)"
-                path="work_day"
-            >
-              <n-date-picker
-                  class="w-full"
-                  v-model:value="store.form_46.result.work_day"
-                  type="date"
-                  :format="useAppSetting.datePicketFormat"
-              />
-            </n-form-item>
-          </div>
-          <div class="col-span-12 md:col-span-6 lg:col-span-2 mb-2 lg:mb-0">
-            <n-form-item
-                :show-feedback="false"
-                :label="$t(`documentPage.command.form.period_from`)"
-                path="period_from"
-            >
-              <n-date-picker
-                  class="w-full"
-                  v-model:value="store.form_46.result.period_from"
-                  type="date"
-                  :format="useAppSetting.datePicketFormat"
-              />
-            </n-form-item>
-          </div>
-          <div class="col-span-12 md:col-span-6 lg:col-span-2 mb-2 lg:mb-0">
-            <n-form-item
-                :show-feedback="false"
-                :label="$t(`documentPage.command.form.period_to`)"
-                path="period_to"
-            >
-              <n-date-picker
-                  class="w-full"
-                  v-model:value="store.form_46.result.period_to"
-                  type="date"
-                  :format="useAppSetting.datePicketFormat"
-              />
-            </n-form-item>
-          </div>
-          <div class="col-span-12 md:col-span-6 lg:col-span-2 mb-2 lg:mb-0">
-            <n-form-item
-                :show-feedback="false"
-                :label="$t(`documentPage.command.form.all_day`)"
-                path="all_day"
-            >
-              <n-input-number
-                  class="w-full"
-                  min="0"
-                  max="100"
-                  v-model:value="store.form_46.result.all_day"
-              />
-            </n-form-item>
-          </div>
-        </div>
-      </template>
-      <template v-else>
-        <span class="w-full text-center block text-xs font-medium text-danger mt-4">{{
-            $t('documentPage.command.form.no-calculate')
-          }}</span>
-      </template>
-    </div>
-
-
-    <div class="col-span-12 md:col-span-6 lg:col-span-4">
-      <n-form-item
-          :show-feedback="false"
-          :label="$t(`content.type`)"
-          path="additional"
-      >
-        <n-select
-            v-model:value="store.form_46.half_two_base"
-            filterable
-            :options="options"
-            label-field="name"
-            value-field="id"
-        />
-      </n-form-item>
-    </div>
-    <div class="col-span-12 md:col-span-6 lg:col-span-4">
-      <n-form-item
-          :show-feedback="false"
-          :label="$t(`documentPage.command.form.half_one_day`)"
-          path="half_one_day"
-          :rule-path="validationRules.rulesNames.requiredNumberField"
-      >
-        <n-input-number
-            class="w-full"
-            min="15"
-            max="100"
-            v-model:value="store.form_46.half_one_day"
-        />
-
-      </n-form-item>
-    </div>
-    <template v-if="store.form_46.half_two_base === 2">
-      <div class="col-span-12 md:col-span-6 lg:col-span-4">
+          <template #icon>
+            <Calculator24Regular />
+          </template>
+          {{ $t('documentPage.command.form.calculateVacation') }}
+        </n-button>
+      </div>
+      <div class="col-span-12 md:col-span-6 lg:col-span-3 mb-2 lg:mb-0">
         <n-form-item
             :show-feedback="false"
-            :label="$t(`documentPage.command.form.half_two_day`)"
-            path="half_two_day"
+            :label="$t(`documentPage.command.form.period_from`)"
+            path="result.period_from"
+            :rule-path="validationRules.rulesNames.requiredNumberField"
+        >
+          <n-date-picker
+              class="w-full"
+              v-model:value="store.form_46.result.period_from"
+              type="date"
+              :format="useAppSetting.datePicketFormat"
+          />
+        </n-form-item>
+      </div>
+      <div class="col-span-12 md:col-span-6 lg:col-span-3 mb-2 lg:mb-0">
+        <n-form-item
+            :show-feedback="false"
+            :label="$t(`documentPage.command.form.period_to`)"
+            path="result.period_to"
+            :rule-path="validationRules.rulesNames.requiredNumberField"
+        >
+          <n-date-picker
+              class="w-full"
+              v-model:value="store.form_46.result.period_to"
+              type="date"
+              :format="useAppSetting.datePicketFormat"
+          />
+        </n-form-item>
+      </div>
+      <div class="col-span-12 md:col-span-6 lg:col-span-3 mb-2 lg:mb-0">
+        <n-form-item
+            :show-feedback="false"
+            :label="$t(`documentPage.command.form.all_day`)"
+            path="result.all_day"
             :rule-path="validationRules.rulesNames.requiredNumberField"
         >
           <n-input-number
               class="w-full"
               min="0"
               max="100"
-              v-model:value="store.form_46.half_two_day"
+              v-model:value="store.form_46.result.all_day"
           />
         </n-form-item>
       </div>
-      <div class="col-span-12 md:col-span-6 lg:col-span-4">
+      <div class="col-span-12 md:col-span-6 lg:col-span-3 mb-2 lg:mb-0">
         <n-form-item
             :show-feedback="false"
-            :label="$t(`documentPage.command.form.half_two_date`)"
-            path="half_two_date"
-            :rule-path="validationRules.rulesNames.requiredNumberField">
+            :label="$t(`vacationSchedule.form.experience`)"
+            path="experience"
+        >
+          <n-input disabled v-model:value="store.form_46.result.experience">
+            <template #suffix>
+              {{$t('content.year')}}
+            </template>
+          </n-input>
+        </n-form-item>
+      </div>
+
+
+    </div>
+
+    <div
+        class="col-span-12 grid mt-2 grid-cols-12 gap-x-4 gap-y-2 w-full border border-dashed border-surface-line bg-surface-section/40 rounded-md p-2"
+    >
+      <div class="col-span-12 md:col-span-6 lg:col-span-3">
+        <n-form-item
+            :show-feedback="false"
+            :label="$t(`documentPage.command.form.half_one_day`)"
+            path="half_one_day"
+            :rule-path="validationRules.rulesNames.requiredNumberField"
+        >
+          <n-input-number
+              class="w-full"
+              min="15"
+              max="100"
+              v-model:value="store.form_46.half_one_day"
+          />
+
+        </n-form-item>
+      </div>
+      <div class="col-span-12 md:col-span-6 lg:col-span-3">
+        <n-form-item
+            :show-feedback="false"
+            :label="$t(`content.type`)"
+            path="additional"
+        >
+          <n-select
+              v-model:value="store.form_46.half_two_base"
+              filterable
+              :options="options"
+              label-field="name"
+              value-field="id"
+          />
+        </n-form-item>
+      </div>
+      <div class="col-span-12 md:col-span-6 lg:col-span-3">
+        <n-form-item
+            :show-feedback="false"
+            :label="$t(`documentPage.command.form.to`)"
+            path="result.to"
+            :rule-path="validationRules.rulesNames.requiredNumberField"
+        >
           <n-date-picker
               class="w-full"
-              v-model:value="store.form_46.half_two_date"
+              v-model:value="store.form_46.result.to"
               type="date"
               :format="useAppSetting.datePicketFormat"
           />
         </n-form-item>
       </div>
-    </template>
-
+      <div class="col-span-12 md:col-span-6 lg:col-span-3">
+        <n-form-item
+            :show-feedback="false"
+            :label="$t(`documentPage.command.form.work_day`)"
+            path="result.work_day"
+            :rule-path="validationRules.rulesNames.requiredNumberField"
+        >
+          <n-date-picker
+              class="w-full"
+              v-model:value="store.form_46.result.work_day"
+              type="date"
+              :format="useAppSetting.datePicketFormat"
+          />
+        </n-form-item>
+      </div>
+      <template v-if="store.form_46.half_two_base === 2">
+        <div class="col-span-12 md:col-span-6 lg:col-span-3">
+          <n-form-item
+              :show-feedback="false"
+              :label="$t(`documentPage.command.form.half_two_date`)"
+              path="half_two_date"
+              :rule-path="validationRules.rulesNames.requiredNumberField">
+            <n-date-picker
+                class="w-full"
+                v-model:value="store.form_46.half_two_date"
+                type="date"
+                :format="useAppSetting.datePicketFormat"
+            />
+          </n-form-item>
+        </div>
+        <div class="col-span-12 md:col-span-6 lg:col-span-3">
+          <n-form-item
+              :show-feedback="false"
+              :label="$t(`documentPage.command.form.half_two_day`)"
+          >
+            <n-input-number
+                :disabled="true"
+                class="w-full"
+                min="0"
+                max="100"
+                v-model:value="store.form_46.half_two_day"
+            />
+          </n-form-item>
+        </div>
+      </template>
+    </div>
 
 
   </n-form>

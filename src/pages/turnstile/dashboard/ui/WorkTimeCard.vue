@@ -95,7 +95,6 @@
           </div>
         </div>
         <div class="col-span-7 flex justify-end z-10">
-          <!--      <DoublePieceChart  :online="90" :offline="10"/>-->
           <WorkTimeChart class="z-10" />
         </div>
       </div>

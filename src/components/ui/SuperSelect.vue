@@ -1,8 +1,11 @@
 <script setup>
   import UIHelper from '@/utils/UIHelper.js'
+  import i18n from "@/i18n"
   const instance = getCurrentInstance()
   const selectAll = ref(false)
   const selectedOptions = ref([])
+  const t = i18n.global.t
+
 
   const valueModel = defineModel('value', { type: [Array, Number, String, null], default: null })
   const searchModel = defineModel('search', { type: [String, null], default: null })
@@ -68,6 +71,10 @@
     perPage: {
       type: Number,
       default: 100
+    },
+    placeholder: {
+      type: String,
+      default: 'content.choose'
     }
   })
 
@@ -160,6 +167,7 @@
 
 <template>
   <n-select
+     :placeholder="t(placeholder)"
     :clearable="clearable"
     @scroll="onScrollEv"
     @update:show="(e) => emits('updateShow', e)"

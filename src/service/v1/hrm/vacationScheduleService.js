@@ -8,6 +8,10 @@ const _workers = async (payload) => {
   return await axios.get(`/v1/hr/vacation-schedule-workers`, { params: payload?.params })
 }
 
+const _autoGenerate = async (payload) => {
+  return await axios.get(`/v1/hr/vacation-schedule/1/auto-generate`, { params: payload?.params })
+}
+
 const _notIncludes = async (payload) => {
   return await axios.get(`/v1/hr/vacation-schedules-not-included`, { params: payload?.params })
 }
@@ -31,4 +35,5 @@ export default {
   _delete,
   _notIncludes,
   _workers,
+  _autoGenerate,
 }

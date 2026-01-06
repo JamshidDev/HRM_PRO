@@ -1,10 +1,7 @@
 <script setup>
 import {UIModal, UIPageContent} from '@components'
 import {useAccountStore, useVacationScheduleStore} from '@stores'
-import Table from './ui/Table.vue'
-import {createForm} from './ui'
-import Filter from './ui/Filter.vue'
-import OtherList from './ui/OtherList.vue'
+import {createForm, Filter, Table} from './ui'
 
 const store = useVacationScheduleStore()
 const accStore = useAccountStore()
@@ -26,15 +23,5 @@ onMounted(() => {
     >
       <createForm/>
     </UIModal>
-    <UIModal
-        :width="1200"
-        :visible="store.otherVisible"
-        @update:visible="(v) => (store.otherVisible = v)"
-        :title="$t('vacationSchedule.otherList.name')"
-    >
-      <OtherList/>
-    </UIModal>
   </UIPageContent>
 </template>
-
-<style scoped></style>

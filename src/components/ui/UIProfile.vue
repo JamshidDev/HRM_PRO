@@ -64,8 +64,7 @@
     if (v === 'profile') {
       router.push(AppPaths.Profile)
     } else if (v === 'logout') {
-      socketStore.disconnect()
-      store._logOutApp()
+      onLogOutEv()
     } else if (v === 'changeAccount') {
       accountStore.openRoleModal()
     } else if (v === 'asAdmin') {
@@ -83,6 +82,12 @@
         getActivePinia().reset()
         router.push(AppPaths.Home)
       })
+    })
+  }
+  const onLogOutEv = () => {
+    accountStore._logOut(()=>{
+      socketStore.disconnect()
+      store._logOutApp()
     })
   }
 </script>

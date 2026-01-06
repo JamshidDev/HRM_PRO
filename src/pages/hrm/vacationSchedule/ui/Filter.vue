@@ -86,4 +86,3 @@
   </UIPageFilter>
 </template>
 
-<style scoped></style>

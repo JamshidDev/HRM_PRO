@@ -21,8 +21,13 @@ instance.interceptors.request.use(function (config) {
   config.headers['Accept-Language'] =
     localStorage.getItem(useAppSetting.languageKey) || useAppSetting.defaultLanguage
   config.headers['Access-Control-Allow-Origin'] = '*'
+
   if (token) {
     config.headers['Authorization'] = 'Bearer ' + token
+  }
+
+  if (config.url !== '/auth/login') {
+    config.headers['X-Auth-Type'] = 'sanctum'
   }
 
   return config

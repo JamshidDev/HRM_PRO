@@ -1,6 +1,106 @@
 import { defineStore } from 'pinia'
 import Utils from '@/utils/Utils.js'
 
+const today = new Date().getTime()
+
+const addDayToDate = (date, days)=>{
+  const result = new Date(date)
+  result.setDate(result.getDate() + days)
+  return new Date(result).getTime()
+}
+
+const initialPayload46 = ()=> ({
+  period_from: null,
+  period_to: null,
+  from: null,
+  to: null,
+  work_day: null,
+  all_day: null,
+  main_day: null,
+  second_day: null,
+  half_one_day: null,
+  half_two_day: null,
+  half_two_base: null,
+  half_two_date: null,
+  additional:null,
+  result:{
+    to:null,
+    work_day:null,
+    period_from:null,
+    period_to:null,
+    all_day:null,
+    experience:null,
+  },
+  addList:[],
+})
+const initialPayload34 = () => ( {
+  contract_to_date: null,
+  command_additional: [],
+  pension_count: {
+    year: 1,
+    count: 1
+  },
+  pension_coefficient: {
+    year: 1,
+    coefficient: 1
+  },
+  salary_withholding: {
+    period1: null,
+    period2: null,
+    all_day: 0,
+    rest_day: 0,
+    month: null
+  },
+  compensation: {
+    period1: null,
+    period2: null,
+    rest_day: 0
+  },
+  reason: null,
+  base: null,
+  reasonId: null,
+  warning_date: null,
+  warning_number: null
+})
+const initialPayload32 = () => ({
+  contract_to_date: null,
+  command_additional: [],
+  pension_count: {
+    year: 1,
+    count: 1
+  },
+  pension_coefficient: {
+    year: 1,
+    coefficient: 1
+  },
+  salary_withholding: {
+    period1: null,
+    period2: null,
+    all_day: 0,
+    rest_day: 0,
+    month: null
+  },
+  compensation: {
+    period1: null,
+    period2: null,
+    rest_day: 0
+  },
+  warning_date: null,
+  warning_number: null
+})
+const initialPayload = () => ({
+  workers: [],
+  worker: null,
+  organization_id: [],
+  command_date: null,
+  command_number: null,
+  command_type: null,
+  confirmations: [],
+  director_id: null,
+  finance_id: null,
+})
+
+
 export const useCommandStore = defineStore('commandStore', {
   state: () => ({
     list: [],
@@ -13,76 +113,15 @@ export const useCommandStore = defineStore('commandStore', {
     totalItems: 0,
     structureCheck: [],
 
-    payload: {
-      workers: [],
-      worker: null,
-      organization_id: [],
-      command_date: null,
-      command_number: null,
-      command_type: null,
-      confirmations: [],
-      director_id: null
-    },
+    payload: initialPayload(),
+    form_32: initialPayload32(),
+    form_34: initialPayload34(),
+    form_46: initialPayload46(),
     vacation: {
       from: null,
       main_day: null,
       second_day: null,
       additional: null
-    },
-    form_32: {
-      contract_to_date: null,
-      command_additional: [],
-      pension_count: {
-        year: 1,
-        count: 1
-      },
-      pension_coefficient: {
-        year: 1,
-        coefficient: 1
-      },
-      salary_withholding: {
-        period1: null,
-        period2: null,
-        all_day: 0,
-        rest_day: 0,
-        month: null
-      },
-      compensation: {
-        period1: null,
-        period2: null,
-        rest_day: 0
-      },
-      warning_date: null,
-      warning_number: null
-    },
-    form_34: {
-      contract_to_date: null,
-      command_additional: [],
-      pension_count: {
-        year: 1,
-        count: 1
-      },
-      pension_coefficient: {
-        year: 1,
-        coefficient: 1
-      },
-      salary_withholding: {
-        period1: null,
-        period2: null,
-        all_day: 0,
-        rest_day: 0,
-        month: null
-      },
-      compensation: {
-        period1: null,
-        period2: null,
-        rest_day: 0
-      },
-      reason: null,
-      base: null,
-      reasonId: null,
-      warning_date: null,
-      warning_number: null
     },
     form_43: {
       new_date: null,
@@ -94,14 +133,14 @@ export const useCommandStore = defineStore('commandStore', {
       rest_day: null,
       reason: null
     },
-      form_47: {
+    form_47: {
           work_day:null,
           to:null,
           vacation_reason_type:null,
           vacation_reason_day:null,
         type:null,
         base:null,
-      },
+    },
     form_50: {
         work_day:null,
         to:null,
@@ -112,23 +151,6 @@ export const useCommandStore = defineStore('commandStore', {
       from: null,
       to: null,
       work_day: null
-    },
-    form_46: {
-      period_from: null,
-      period_to: null,
-      from: null,
-      to: null,
-      work_day: null,
-      all_day: null,
-      main_day: null,
-      second_day: null,
-      half_one_day: null,
-      half_two_day: null,
-      half_two_base: null,
-      half_two_date: null,
-      additional:null,
-      result:{},
-      addList:[],
     },
     form_48: {
       from: null,
@@ -279,7 +301,6 @@ export const useCommandStore = defineStore('commandStore', {
           this.viewLoading = false
         })
     },
-
     _update() {
       this.saveLoading = true
       $ApiService.nationalityService
@@ -325,69 +346,15 @@ export const useCommandStore = defineStore('commandStore', {
     openVisible(data) {
       this.visible = data
     },
+
     resetForm() {
-      const today = new Date().getTime()
+      this.resetPayload()
+      this.resetPayload46()
+      this.resetPayload34()
+      this.resetPayload32()
 
-      const addDayToDate = (date, days)=>{
-        const result = new Date(date)
-        result.setDate(result.getDate() + days)
-        return new Date(result).getTime()
-      }
-
-      this.payload.command_date = today
-      this.payload.command_type = null
-      this.payload.command_number = null
-      this.payload.confirmations = []
-      this.payload.director_id = null
-      this.payload.workers = []
-      this.payload.worker = null
-      this.payload.organization_id = []
       this.vacations = []
 
-      this.form_32.contract_to_date = today
-      this.form_32.pension_count.year = 1
-      this.form_32.pension_count.count = 1
-      this.form_32.pension_coefficient.year = 1
-      this.form_32.pension_coefficient.coefficient = 10
-
-      this.form_32.salary_withholding.period1 = null
-      this.form_32.salary_withholding.period2 = null
-      this.form_32.salary_withholding.all_day = null
-      this.form_32.salary_withholding.rest_day = null
-      this.form_32.salary_withholding.month = null
-      this.form_32.compensation.period1 = null
-      this.form_32.compensation.period2 = null
-      this.form_32.compensation.rest_day = null
-      this.form_32.compensation.command_additional = []
-
-      this.form_32.contract_to_date = today
-      this.form_32.pension_count.year = 1
-      this.form_32.pension_count.count = 1
-      this.form_32.pension_coefficient.year = 1
-      this.form_32.pension_coefficient.coefficient = 10
-      this.form_32.warning_number = null
-      this.form_32.warning_date = today
-
-      this.form_34.salary_withholding.period1 = null
-      this.form_34.salary_withholding.period2 = null
-      this.form_34.salary_withholding.all_day = null
-      this.form_34.salary_withholding.rest_day = null
-      this.form_34.salary_withholding.month = null
-      this.form_34.compensation.period1 = null
-      this.form_34.compensation.period2 = null
-      this.form_34.compensation.rest_day = null
-      this.form_34.compensation.command_additional = []
-
-      this.form_34.contract_to_date = today
-      this.form_34.pension_count.year = 1
-      this.form_34.pension_count.count = 1
-      this.form_34.pension_coefficient.year = 1
-      this.form_34.pension_coefficient.coefficient = 10
-      this.form_34.warning_number = null
-      this.form_34.reason = null
-      this.form_34.reasonId = null
-      this.form_34.warning_date = today
-      this.form_34.base = null
 
       this.form_44.new_date = null
       this.form_44.rest_day = null
@@ -397,17 +364,41 @@ export const useCommandStore = defineStore('commandStore', {
       this.form_50.vacation_status = 1
       this.form_50.vacation_id = null
 
-      this.form_46.from = today
-      this.form_46.main_day = 21
-      this.form_46.second_day = 0
-      this.form_46.half_two_base = 1
-
       this.form_47.vacation_reason_day = '4'
       this.form_47.vacation_reason_type = null
       this.form_47.to = today
       this.form_47.work_day = addDayToDate(today,4)
       this.form_47.type = null
       this.form_47.base = null
+    },
+    resetPayload(){
+      this.payload = initialPayload()
+      this.payload.command_date = today
+    },
+    resetPayload46(){
+      this.form_46 = initialPayload46()
+      this.form_46.from = today
+      this.form_46.main_day = 21
+      this.form_46.second_day = 0
+      this.form_46.half_two_base = 1
+    },
+    resetPayload34(){
+      this.form_34 = initialPayload34()
+      this.form_34.contract_to_date = today
+      this.form_34.pension_count.year = 1
+      this.form_34.pension_count.count = 1
+      this.form_34.pension_coefficient.year = 1
+      this.form_34.pension_coefficient.coefficient = 10
+      this.form_34.warning_date = today
+    },
+    resetPayload32(){
+      this.form_32 = initialPayload32()
+      this.form_32.contract_to_date = today
+      this.form_32.pension_count.year = 1
+      this.form_32.pension_count.count = 1
+      this.form_32.pension_coefficient.year = 1
+      this.form_32.pension_coefficient.coefficient = 10
+      this.form_32.warning_date = today
     },
     lastVacation(callback) {
       let data = {
