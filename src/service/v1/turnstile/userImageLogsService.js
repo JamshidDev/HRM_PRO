@@ -1,9 +1,11 @@
-import axios from "@/service/index.js"
+import axios from '@/service/index.js'
 
 const _index = async (payload) => {
-    return await axios.get('/v1/turnstile/hik-central/workers/added-logs', {params: payload?.params})
+  return await axios.get('/v1/turnstile/hik-central/workers/added-logs', {
+    params: payload?.params
+  })
 }
 
 export default {
-    _index,
+  _index
 }

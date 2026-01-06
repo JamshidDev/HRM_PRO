@@ -1,53 +1,51 @@
 <script setup>
-import {ArrowCircleDown32Regular, ArrowSync20Filled} from "@vicons/fluent"
-import {UIPageFilter, UISelect} from "@/components/index.js"
-import {useAccountStore, useComponentStore, useTaxFourStore} from "@/store/modules/index.js"
-import Utils from "@/utils/Utils.js"
+  import { ArrowCircleDown32Regular, ArrowSync20Filled } from '@vicons/fluent'
+  import { UIPageFilter, UISelect } from '@/components/index.js'
+  import { useAccountStore, useComponentStore, useTaxFourStore } from '@/store/modules/index.js'
+  import Utils from '@/utils/Utils.js'
 
+  const store = useTaxFourStore()
+  const componentStore = useComponentStore()
+  const accStore = useAccountStore()
 
-const store = useTaxFourStore()
-const componentStore = useComponentStore()
-const accStore = useAccountStore()
-
-const filterEvent = ()=>{
-  if(!accStore.checkAction(accStore.pn.economistTaxFourRead)) return
-  store.params.page = 1
-  store._index()
-}
-
-const onChangeStructure = (v)=>{
-  store.params.organizations=v
-  filterEvent()
-}
-
-const beforeShow = (v)=>{
-  if(componentStore.structureList.length === 0){
-    componentStore._structures()
+  const filterEvent = () => {
+    if (!accStore.checkAction(accStore.pn.economistTaxFourRead)) return
+    store.params.page = 1
+    store._index()
   }
-}
 
-const resetFilter = ()=>{
-  store.params.organizations = []
-  filterEvent()
-}
-
-const filterCount = computed(()=>Number(Boolean(store.params.organizations.length)))
-const onRefreshEv = ()=>{
-  store.loading = true
-  const params = {
-    type:'tax-four-applications',
-    year:store.params.year,
-    month:store.params.month,
+  const onChangeStructure = (v) => {
+    store.params.organizations = v
+    filterEvent()
   }
-  componentStore._refreshPin(params, store._index, ()=>{
-    store.loading = false
-  })
-}
 
+  const beforeShow = (v) => {
+    if (componentStore.structureList.length === 0) {
+      componentStore._structures()
+    }
+  }
+
+  const resetFilter = () => {
+    store.params.organizations = []
+    filterEvent()
+  }
+
+  const filterCount = computed(() => Number(Boolean(store.params.organizations.length)))
+  const onRefreshEv = () => {
+    store.loading = true
+    const params = {
+      type: 'tax-four-applications',
+      year: store.params.year,
+      month: store.params.month
+    }
+    componentStore._refreshPin(params, store._index, () => {
+      store.loading = false
+    })
+  }
 </script>
 
 <template>
-<UIPageFilter
+  <UIPageFilter
     v-model:search="store.params.search"
     :search-loading="store.loading"
     :show-add-button="false"
@@ -55,69 +53,61 @@ const onRefreshEv = ()=>{
     @show="beforeShow"
     @onClear="resetFilter"
     :filter-count="filterCount"
->
-  <template #filterAction>
-    <n-tooltip :delay="1500" placement="bottom" trigger="hover">
-      <template #trigger>
-        <n-button
-            @click="onRefreshEv"
-            :loading="store.loading"
-            type="primary">
-          {{$t('content.refresh')}}
-          <template #icon>
-            <ArrowSync20Filled/>
-          </template>
-        </n-button>
-      </template>
-      <span>{{$t('monthReport.refreshDescription')}}</span>
-    </n-tooltip>
+  >
+    <template #filterAction>
+      <n-tooltip :delay="1500" placement="bottom" trigger="hover">
+        <template #trigger>
+          <n-button @click="onRefreshEv" :loading="store.loading" type="primary">
+            {{ $t('content.refresh') }}
+            <template #icon>
+              <ArrowSync20Filled />
+            </template>
+          </n-button>
+        </template>
+        <span>{{ $t('monthReport.refreshDescription') }}</span>
+      </n-tooltip>
 
-
-    <n-button
-        @click="store._download()"
-        :loading="store.downloadLoading"
-        type="success">
-      <template #icon>
-        <ArrowCircleDown32Regular/>
-      </template>
-      {{$t('content.template')}}
-    </n-button>
-    <n-select
+      <n-button @click="store._download()" :loading="store.downloadLoading" type="success">
+        <template #icon>
+          <ArrowCircleDown32Regular />
+        </template>
+        {{ $t('content.template') }}
+      </n-button>
+      <n-select
         class="w-full! md:w-[200px]!"
         v-model:value="store.params.year"
         :options="Utils.yearList"
         label-field="name"
         value-field="id"
         @update:value="filterEvent"
-    />
-    <n-select
+      />
+      <n-select
         class="w-full! md:w-[200px]!"
         v-model:value="store.params.month"
         :options="Utils.monthList"
         label-field="name"
         value-field="id"
         @update:value="filterEvent"
-    />
-  </template>
-  <template #filterContent>
-    <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{$t('actionLog.table.structure')}}</label>
-    <UISelect
+      />
+    </template>
+    <template #filterContent>
+      <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{
+        $t('actionLog.table.structure')
+      }}</label>
+      <UISelect
         :options="componentStore.structureList"
         :modelV="store.params.organizations"
-        @defaultValue="(v)=>store.params.organizations=v"
+        @defaultValue="(v) => (store.params.organizations = v)"
         @updateModel="onChangeStructure"
         :checkedVal="store.structureCheck2"
-        @updateCheck="(v)=>store.structureCheck2=v"
+        @updateCheck="(v) => (store.structureCheck2 = v)"
         :loading="componentStore.structureLoading"
         v-model:search="componentStore.structureParams.search"
         @onSearch="componentStore._structures"
         @onSubmit="filterEvent"
-    />
-  </template>
-</UIPageFilter>
-
+      />
+    </template>
+  </UIPageFilter>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

@@ -1,39 +1,33 @@
 <script setup>
+  defineProps({
+    data: {
+      type: Array,
+      required: true
+    },
+    width: {
+      type: [Number, String],
+      default: 'trigger'
+    },
+    height: {
+      type: Number,
+      default: 200
+    }
+  })
 
-defineProps({
-  data: {
-    type: Array,
-    required: true
-  },
-  width: {
-    type: [Number, String],
-    default: "trigger"
-  },
-  height: {
-    type: Number,
-    default: 200
-  }
-})
-
-const emits = defineEmits(['showEv'])
-
+  const emits = defineEmits(['showEv'])
 </script>
 <template>
   <div class="inline-block">
     <n-popover trigger="click" :width="width">
-      <slot name="content">
-
-      </slot>
+      <slot name="content"> </slot>
       <template #trigger>
-        <slot name="trigger">
-
-        </slot>
+        <slot name="trigger"> </slot>
       </template>
     </n-popover>
   </div>
 </template>
 <style scoped>
-.invisible{
-  visibility: hidden ;
-}
+  .invisible {
+    visibility: hidden;
+  }
 </style>

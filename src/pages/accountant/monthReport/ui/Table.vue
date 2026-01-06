@@ -1,210 +1,194 @@
 <script setup>
-import {NoDataPicture, UIMenuButton, UIPagination, UIUser} from "@/components/index.js"
-import {useMonthReportStore} from "@/store/modules/index.js"
-import {CheckmarkCircle24Filled, ErrorCircle24Filled} from "@vicons/fluent"
-import SortBtn from "./SortBtn.vue"
-const store = useMonthReportStore()
+  import { NoDataPicture, UIMenuButton, UIPagination, UIUser } from '@/components/index.js'
+  import { useMonthReportStore } from '@/store/modules/index.js'
+  import { CheckmarkCircle24Filled, ErrorCircle24Filled } from '@vicons/fluent'
+  import SortBtn from './SortBtn.vue'
+  const store = useMonthReportStore()
 
-const changePage = (v)=>{
-  store.params.page = v.page
-  store.params.per_page = v.per_page
-  store._index()
-}
+  const changePage = (v) => {
+    store.params.page = v.page
+    store.params.per_page = v.per_page
+    store._index()
+  }
 
-const onShow = (v) => {
-  store.visible = true
-  store.elementId = v.pin
-  store.showPrams.year = store.params.year
-  store.showPrams.month = store.params.month
-  store.workerPhotoUrl = v.worker?.photo
-  store._show()
-
-}
+  const onShow = (v) => {
+    store.visible = true
+    store.elementId = v.pin
+    store.showPrams.year = store.params.year
+    store.showPrams.month = store.params.month
+    store.workerPhotoUrl = v.worker?.photo
+    store._show()
+  }
 </script>
 
 <template>
   <n-spin :show="store.loading" style="min-height: 200px">
-    <div class="w-full overflow-x-auto"  v-if="store.list.length>0">
-      <n-table
-          class="mt-4"
-          :single-line="false"
-          size="small"
-      >
+    <div class="w-full overflow-x-auto" v-if="store.list.length > 0">
+      <n-table class="mt-4" :single-line="false" size="small">
         <thead>
-        <tr>
-          <th class="text-center! min-w-[40px] w-[40px]">{{$t('content.number')}}</th>
-          <th class="min-w-[200px]">
-            {{$t('content.fullName')}}
-          </th>
-          <th class="min-w-[60px] w-[60px]">
-            <SortBtn
+          <tr>
+            <th class="text-center! min-w-[40px] w-[40px]">{{ $t('content.number') }}</th>
+            <th class="min-w-[200px]">
+              {{ $t('content.fullName') }}
+            </th>
+            <th class="min-w-[60px] w-[60px]">
+              <SortBtn
                 @click="store._filterStatus('status')"
                 by="status"
                 :value="store.params.sort_by"
                 :order="store.params.sort_order"
-            >
-              {{$t('content.status')}}
-            </SortBtn>
-          </th>
-          <th class="min-w-[200px] w-[300px]">{{$t('content.organization')}}</th>
-          <th class="min-w-[200px] w-[200px]">
-            <SortBtn
+              >
+                {{ $t('content.status') }}
+              </SortBtn>
+            </th>
+            <th class="min-w-[200px] w-[300px]">{{ $t('content.organization') }}</th>
+            <th class="min-w-[200px] w-[200px]">
+              <SortBtn
                 @click="store._filterCol('main_salary')"
                 by="main_salary"
                 :value="store.params.sort_by"
                 :order="store.params.sort_order"
-            >
-              {{$t('monthReport.form.salary')}}
-            </SortBtn>
-          </th>
-          <th class="w-[130px] max-w-[130px] text-wrap!">
-            <n-tooltip
-                trigger="hover"
-            >
-              <template #trigger>
-
-                <SortBtn
+              >
+                {{ $t('monthReport.form.salary') }}
+              </SortBtn>
+            </th>
+            <th class="w-[130px] max-w-[130px] text-wrap!">
+              <n-tooltip trigger="hover">
+                <template #trigger>
+                  <SortBtn
                     @click="store._filterCol('total_one')"
                     by="total_one"
                     :value="store.params.sort_by"
                     :order="store.params.sort_order"
-                >
-                  <p class="text-sm text-textColor2 line-clamp-1 w-full leading-[1.2] truncate">
-                    {{$t('monthReport.form.totalOne')}}
-                  </p>
-                </SortBtn>
-              </template>
-              {{$t('monthReport.form.totalOne')}}
-            </n-tooltip>
-          </th>
-          <th class="min-w-[50px] w-[130px] max-w-[130px]">
-            <n-tooltip
-                trigger="hover"
-            >
-              <template #trigger>
-
-                <SortBtn
+                  >
+                    <p class="text-sm text-textColor2 line-clamp-1 w-full leading-[1.2] truncate">
+                      {{ $t('monthReport.form.totalOne') }}
+                    </p>
+                  </SortBtn>
+                </template>
+                {{ $t('monthReport.form.totalOne') }}
+              </n-tooltip>
+            </th>
+            <th class="min-w-[50px] w-[130px] max-w-[130px]">
+              <n-tooltip trigger="hover">
+                <template #trigger>
+                  <SortBtn
                     @click="store._filterCol('total_three')"
                     by="total_three"
                     :value="store.params.sort_by"
                     :order="store.params.sort_order"
-                >
-                  <p class="text-sm text-textColor2 line-clamp-1 w-full leading-[1.2] truncate">
-                    {{$t('monthReport.form.totalTwo')}}
-                  </p>
-                </SortBtn>
-              </template>
-              {{$t('monthReport.form.totalTwo')}}
-            </n-tooltip>
-          </th>
-          <th class="min-w-[50px] w-[120px] text-wrap!">
-
-            <SortBtn
+                  >
+                    <p class="text-sm text-textColor2 line-clamp-1 w-full leading-[1.2] truncate">
+                      {{ $t('monthReport.form.totalTwo') }}
+                    </p>
+                  </SortBtn>
+                </template>
+                {{ $t('monthReport.form.totalTwo') }}
+              </n-tooltip>
+            </th>
+            <th class="min-w-[50px] w-[120px] text-wrap!">
+              <SortBtn
                 @click="store._filterCol('total_four')"
                 by="total_four"
                 :value="store.params.sort_by"
                 :order="store.params.sort_order"
-            >
-              {{$t('monthReport.form.totalThree')}}
-            </SortBtn>
-          </th>
-          <th class="min-w-[50px] w-[130px] max-w-[130px]">
-            <n-tooltip
-                trigger="hover"
-            >
-              <template #trigger>
-
-                <SortBtn
+              >
+                {{ $t('monthReport.form.totalThree') }}
+              </SortBtn>
+            </th>
+            <th class="min-w-[50px] w-[130px] max-w-[130px]">
+              <n-tooltip trigger="hover">
+                <template #trigger>
+                  <SortBtn
                     @click="store._filterCol('total_five')"
                     by="total_five"
                     :value="store.params.sort_by"
                     :order="store.params.sort_order"
-                >
-                  <p class="text-sm text-textColor2 line-clamp-1 w-full leading-[1.2] truncate">
-                    {{$t('monthReport.form.totalFour')}}
-                  </p>
-                </SortBtn>
-              </template>
-              {{$t('monthReport.form.totalFour')}}
-            </n-tooltip>
-          </th>
-          <th class="min-w-[40px] w-[40px]"></th>
-        </tr>
+                  >
+                    <p class="text-sm text-textColor2 line-clamp-1 w-full leading-[1.2] truncate">
+                      {{ $t('monthReport.form.totalFour') }}
+                    </p>
+                  </SortBtn>
+                </template>
+                {{ $t('monthReport.form.totalFour') }}
+              </n-tooltip>
+            </th>
+            <th class="min-w-[40px] w-[40px]"></th>
+          </tr>
         </thead>
         <tbody>
-        <tr v-for="(item, idx) in store.list" :key="idx">
-          <td><span class="text-center text-[12px] text-gray-600 block">{{ (store.params.page - 1) * store.params.per_page + idx + 1 }}</span></td>
-          <td>
-            <UIUser
+          <tr v-for="(item, idx) in store.list" :key="idx">
+            <td>
+              <span class="text-center text-[12px] text-gray-600 block">{{
+                (store.params.page - 1) * store.params.per_page + idx + 1
+              }}</span>
+            </td>
+            <td>
+              <UIUser
                 v-if="item.worker"
                 :short="false"
                 :data="{
-                    photo:item?.worker.photo,
-                    firstName:item?.worker.first_name,
-                    middleName:item?.worker.middle_name,
-                    lastName:item?.worker.last_name,
-                    position:item?.pin,
-                  }"
-            />
-            <template v-else>
-              <UIUser
+                  photo: item?.worker.photo,
+                  firstName: item?.worker.first_name,
+                  middleName: item?.worker.middle_name,
+                  lastName: item?.worker.last_name,
+                  position: item?.pin
+                }"
+              />
+              <template v-else>
+                <UIUser
                   :short="false"
                   :data="{
-                    photo:'',
-                    firstName:'',
-                    middleName:'',
-                    lastName:'',
-                    position:'',
+                    photo: '',
+                    firstName: '',
+                    middleName: '',
+                    lastName: '',
+                    position: ''
                   }"
-              >
-                <template #name>
-                 <p class="truncate text-nowrap"> {{item.full_name}}</p>
-                </template>
-                <template #position>
-                 <span class="text-xs text-textColor3"> {{item?.pin}}</span>
-                </template>
-
-              </UIUser>
-            </template>
-          </td>
-          <td class="text-center">
-              <n-icon size="26" :class="[item.worker? 'text-success' : 'text-danger']">
-                <CheckmarkCircle24Filled v-if="item.worker"/>
-                <ErrorCircle24Filled v-else/>
+                >
+                  <template #name>
+                    <p class="truncate text-nowrap">{{ item.full_name }}</p>
+                  </template>
+                  <template #position>
+                    <span class="text-xs text-textColor3"> {{ item?.pin }}</span>
+                  </template>
+                </UIUser>
+              </template>
+            </td>
+            <td class="text-center">
+              <n-icon size="26" :class="[item.worker ? 'text-success' : 'text-danger']">
+                <CheckmarkCircle24Filled v-if="item.worker" />
+                <ErrorCircle24Filled v-else />
               </n-icon>
-          </td>
-          <td>{{item.organization.name}}</td>
-          <td>{{item.main_salary}}
-          </td>
-          <td>{{item.total_one}}</td>
-          <td>{{item.total_three}}</td>
-          <td>
-            <n-button
-
+            </td>
+            <td>{{ item.organization.name }}</td>
+            <td>{{ item.main_salary }}</td>
+            <td>{{ item.total_one }}</td>
+            <td>{{ item.total_three }}</td>
+            <td>
+              <n-button
                 size="tiny"
-                :type="item.diff? 'success' : 'error' "
+                :type="item.diff ? 'success' : 'error'"
                 dashed
                 @click="onShow(item)"
-            >
-              {{item.total_four}}
-            </n-button>
-          </td>
-          <td>{{item.total_five}}</td>
-          <td><UIMenuButton/></td>
-        </tr>
+              >
+                {{ item.total_four }}
+              </n-button>
+            </td>
+            <td>{{ item.total_five }}</td>
+            <td><UIMenuButton /></td>
+          </tr>
         </tbody>
       </n-table>
       <UIPagination
-          :page="store.params.page"
-          :per_page="store.params.per_page"
-          :total="store.totalItems"
-          @change-page="changePage"
+        :page="store.params.page"
+        :per_page="store.params.per_page"
+        :total="store.totalItems"
+        @change-page="changePage"
       />
     </div>
-    <NoDataPicture v-if="store.list.length===0 && !store.loading" />
+    <NoDataPicture v-if="store.list.length === 0 && !store.loading" />
   </n-spin>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

@@ -1,37 +1,46 @@
-import axios from "@/service/index.js"
+import axios from '@/service/index.js'
 
-const _index =async (payload)=>{
-    return await axios.get(`/v1/exam/worker-exams`, {params:payload.params})
+const _index = async (payload) => {
+  return await axios.get(`/v1/exam/worker-exams`, { params: payload.params })
 }
 
-const _start_exam = async (payload)=>{
-    return await axios.post(`/v1/exam/worker-exams/${payload.id}/start`)
+const _start_exam = async (payload) => {
+  return await axios.post(`/v1/exam/worker-exams/${payload.id}/start`)
 }
 
-const _finish_exam = async (payload)=>{
-    return await axios.get(`/v1/exam/worker-exams/${payload.id}/finished`, {headers: {'active-token': payload.token}})
+const _finish_exam = async (payload) => {
+  return await axios.get(`/v1/exam/worker-exams/${payload.id}/finished`, {
+    headers: { 'active-token': payload.token }
+  })
 }
 
-const _continue_exam = async (payload)=>{
-    return await axios.get(`/v1/exam/worker-exams/${payload.id}/continue`, {headers: {'active-token': payload.token}})
+const _continue_exam = async (payload) => {
+  return await axios.get(`/v1/exam/worker-exams/${payload.id}/continue`, {
+    headers: { 'active-token': payload.token }
+  })
 }
 
-const _send_result = async (payload)=>{
-    return await axios.post(`/v1/exam/worker-exams/${payload.id}/send-result/${payload.questionId}`,payload.data, {headers: {'active-token': payload.token}})
+const _send_result = async (payload) => {
+  return await axios.post(
+    `/v1/exam/worker-exams/${payload.id}/send-result/${payload.questionId}`,
+    payload.data,
+    { headers: { 'active-token': payload.token } }
+  )
 }
 
-const _get_attempt = async (payload)=>{
-    return await axios.get(`/v1/exam/worker-exams/${payload.id}/result`)
+const _get_attempt = async (payload) => {
+  return await axios.get(`/v1/exam/worker-exams/${payload.id}/result`)
 }
 
-const _showVideos =async (payload)=>{
-    return await axios.get(`/v1/exam/results/worker-exam-videos/${payload.id}`, {params:payload.params})
+const _showVideos = async (payload) => {
+  return await axios.get(`/v1/exam/results/worker-exam-videos/${payload.id}`, {
+    params: payload.params
+  })
 }
 
-const _downloadResult =async (payload)=>{
-    return await axios.get(`/v1/exam/worker-exams-download/${payload.id}`, {params:payload.params})
+const _downloadResult = async (payload) => {
+  return await axios.get(`/v1/exam/worker-exams-download/${payload.id}`, { params: payload.params })
 }
-
 
 //
 // const _create = async (payload)=>{
@@ -50,20 +59,17 @@ const _downloadResult =async (payload)=>{
 //     return await axios.get(`/v1/exam/categories/${payload.category_id}/questions/${payload.question_id}`)
 // }
 
-
-
-
 export default {
-    _index,
-    _start_exam,
-    _finish_exam,
-    _continue_exam,
-    _send_result,
-    _get_attempt,
-    _showVideos,
-    _downloadResult,
-    // _create,
-    // _update,
-    // _delete,
-    // _show
+  _index,
+  _start_exam,
+  _finish_exam,
+  _continue_exam,
+  _send_result,
+  _get_attempt,
+  _showVideos,
+  _downloadResult
+  // _create,
+  // _update,
+  // _delete,
+  // _show
 }

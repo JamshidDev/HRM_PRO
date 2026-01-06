@@ -1,62 +1,62 @@
 <script setup>
-import {UISelect} from "@/components/index.js"
-import {useComponentStore, useDashboardStore} from "@/store/modules/index.js"
-import {ArrowSync16Regular} from '@vicons/fluent'
+  import { UISelect } from '@/components/index.js'
+  import { useComponentStore, useDashboardStore } from '@/store/modules/index.js'
+  import { ArrowSync16Regular } from '@vicons/fluent'
 
-const componentStore = useComponentStore()
-const store = useDashboardStore()
+  const componentStore = useComponentStore()
+  const store = useDashboardStore()
 
-const updateModel = (v)=>{
-  store.params.organizations=v
-  if(store?.activeDetail){
-    store.params.page = 1
-    store._index_detail()
+  const updateModel = (v) => {
+    store.params.organizations = v
+    if (store?.activeDetail) {
+      store.params.page = 1
+      store._index_detail()
+    }
+    store._dashboard()
   }
-  store._dashboard()
-}
 
-const refresh = ()=>{
-  if(store?.activeDetail){
-    store._index_detail()
-    return
+  const refresh = () => {
+    if (store?.activeDetail) {
+      store._index_detail()
+      return
+    }
+    store._dashboard(true)
   }
-  store._dashboard(true)
-}
 
-onMounted(() => {
-  if(componentStore.structureList.length === 0){
-    componentStore._structures()
-  }
-})
-
-
+  onMounted(() => {
+    if (componentStore.structureList.length === 0) {
+      componentStore._structures()
+    }
+  })
 </script>
 
 <template>
   <div class="flex gap-3">
-    <n-button type="primary" tertiary @click="refresh" :disabled="store.loading || store.detailLoading">
-      {{$t('content.refresh')}}
+    <n-button
+      type="primary"
+      tertiary
+      @click="refresh"
+      :disabled="store.loading || store.detailLoading"
+    >
+      {{ $t('content.refresh') }}
       <template #icon>
         <ArrowSync16Regular />
       </template>
     </n-button>
     <div class="w-[400px]">
       <UISelect
-          :options="componentStore.structureList"
-          :modelV="store.params.organizations"
-          @defaultValue="(v)=>store.params.organizations=v"
-          @updateModel="updateModel"
-          v-model:search="componentStore.structureParams.search"
-          @onSearch="componentStore._structures"
-          :checkedVal="store.structureCheck"
-          @updateCheck="(v)=>store.structureCheck=v"
-          :loading="componentStore.structureLoading"
+        :options="componentStore.structureList"
+        :modelV="store.params.organizations"
+        @defaultValue="(v) => (store.params.organizations = v)"
+        @updateModel="updateModel"
+        v-model:search="componentStore.structureParams.search"
+        @onSearch="componentStore._structures"
+        :checkedVal="store.structureCheck"
+        @updateCheck="(v) => (store.structureCheck = v)"
+        :loading="componentStore.structureLoading"
       />
     </div>
   </div>
-
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

@@ -1,174 +1,184 @@
 <script setup>
-import  {useDashboardStore, useAppStore} from "@/store/modules/index.js"
-import VChart from "vue-echarts"
-import { use } from 'echarts/core'
-import { CanvasRenderer } from 'echarts/renderers'
-import { BarChart, PieChart } from 'echarts/charts'
+  import { useDashboardStore, useAppStore } from '@/store/modules/index.js'
+  import VChart from 'vue-echarts'
+  import { use } from 'echarts/core'
+  import { CanvasRenderer } from 'echarts/renderers'
+  import { BarChart, PieChart } from 'echarts/charts'
 
+  import {
+    TitleComponent,
+    TooltipComponent,
+    LegendComponent,
+    GridComponent
+  } from 'echarts/components'
+  import i18n from '@/i18n/index.js'
+  import { watch } from 'vue'
 
-import {
-  TitleComponent,
-  TooltipComponent,
-  LegendComponent,
-  GridComponent
-} from 'echarts/components';
-import i18n from "@/i18n/index.js"
-import { watch } from "vue"
+  use([
+    CanvasRenderer,
+    BarChart,
+    TitleComponent,
+    TooltipComponent,
+    LegendComponent,
+    GridComponent,
+    PieChart
+  ])
 
-use([
-  CanvasRenderer,
-  BarChart,
-  TitleComponent,
-  TooltipComponent,
-  LegendComponent,
-  GridComponent,
-  PieChart,
-]);
+  const store = useDashboardStore()
+  const appStore = useAppStore()
 
+  const { t } = i18n.global
 
-const store = useDashboardStore()
-const appStore = useAppStore()
-
-const {t} = i18n.global
-
-const contractOption = ref({
-  legend: {
-    top: 'bottom',
-    show: false,
-  },
-  tooltip: {
-    trigger: 'item', // Trigger tooltip on each item (segment)
-    formatter:(params)=>`${params.name} - ${store.dashboard.contractTypes?.[params.dataIndex]?.active_contracts}`, // Customize the tooltip content
-  },
-  series: [
-    {
-      name: '',
-      type: 'pie',
-      radius:['10%', '70%'],
-      center: ['50%', '50%'],
-      roseType: 'radius',
-      itemStyle: {
-        borderRadius: 8
-      },
-      data: [],
-      label: {
-        show: true,
-        position: 'inside',
-        formatter:(params)=>`${store.dashboard.contractTypes?.[params.dataIndex]?.active_contracts}`,
-        color: '#ffffff',
-        fontSize: 12,
-        align: 'center',
-        verticalAlign: 'middle'
-      },
+  const contractOption = ref({
+    legend: {
+      top: 'bottom',
+      show: false
     },
-    {
-      name: '',
-      type: 'pie',
-      radius:['10%', '70%'],
-      center: ['50%', '50%'],
-      roseType: 'radius',
-      itemStyle: {
-        borderRadius: 8
+    tooltip: {
+      trigger: 'item', // Trigger tooltip on each item (segment)
+      formatter: (params) =>
+        `${params.name} - ${store.dashboard.contractTypes?.[params.dataIndex]?.active_contracts}` // Customize the tooltip content
+    },
+    series: [
+      {
+        name: '',
+        type: 'pie',
+        radius: ['10%', '70%'],
+        center: ['50%', '50%'],
+        roseType: 'radius',
+        itemStyle: {
+          borderRadius: 8
+        },
+        data: [],
+        label: {
+          show: true,
+          position: 'inside',
+          formatter: (params) =>
+            `${store.dashboard.contractTypes?.[params.dataIndex]?.active_contracts}`,
+          color: '#ffffff',
+          fontSize: 12,
+          align: 'center',
+          verticalAlign: 'middle'
+        }
       },
-      data: [],
-      smooth: true,
-      label: {
-        show: true,
-        position: 'outside',
-        formatter:(params)=>`${params.name} - ${store.dashboard.contractTypes?.[params.dataIndex]?.active_contracts}`,
-        color: '#333',
-        fontSize: 12
-      },
-      labelLine: {
-        show: true,
-        length: 30,
+      {
+        name: '',
+        type: 'pie',
+        radius: ['10%', '70%'],
+        center: ['50%', '50%'],
+        roseType: 'radius',
+        itemStyle: {
+          borderRadius: 8
+        },
+        data: [],
         smooth: true,
-      },
-    }
-  ]
-})
-
-const colors = {
-  0:'#2dcb73',
-  1:'#E53835',
-  2:'#1A84FF',
-  3:'#8815bd',
-  4:'#000000',
-}
-
-
-const sortAndReIndex = (data, startIndex = 10, step = 2)=>{
-  data.sort((a, b) => a.active_contracts - b.active_contracts);
-  let currentIndex = startIndex;
-  let previousValue = null;
-
-  data.forEach((item, idx) => {
-    if (idx === 0 || item.active_contracts !== previousValue) {
-      item.index = currentIndex
-      if (idx !== 0){
-        item.index = currentIndex += step;
+        label: {
+          show: true,
+          position: 'outside',
+          formatter: (params) =>
+            `${params.name} - ${store.dashboard.contractTypes?.[params.dataIndex]?.active_contracts}`,
+          color: '#333',
+          fontSize: 12
+        },
+        labelLine: {
+          show: true,
+          length: 30,
+          smooth: true
+        }
       }
-    } else {
-      item.index = data[idx - 1].index;
-    }
-    previousValue = item.active_contracts;
-  });
-  return data;
-}
+    ]
+  })
 
-watch(()=> store.dashboard.contractTypes, (newValue, oldValue)=>{
-  contractOption.value.series[0].data =sortAndReIndex(newValue).map((v,idx)=>({
-    value:v.index,
-    name:v.type,
-    itemStyle:{
-      color:colors[idx]
-    },
-  }))
-  contractOption.value.series[1].data =sortAndReIndex(newValue).map((v,idx)=>({
-    value:v.index,
-    name:v.type,
-    itemStyle:{
-      color:colors[idx]
-    },
-  }))
-  contractOption.value.series[0].name = t('dashboardPage.contract.title')
-}, {
-  immediate: true
-})
-
-const totalCount = computed(()=>{
- return store.dashboard.contractTypes.reduce((total, num)=>{
-   return total + num.active_contracts
- },0)
-})
-
-watch(appStore, (v)=>{
-  if(v.themeSwitch){
-    contractOption.value.series[1].label.color = '#fff'
-  }else{
-    contractOption.value.series[1].label.color = '#333'
+  const colors = {
+    0: '#2dcb73',
+    1: '#E53835',
+    2: '#1A84FF',
+    3: '#8815bd',
+    4: '#000000'
   }
-}, {
-  immediate: true
-})
 
+  const sortAndReIndex = (data, startIndex = 10, step = 2) => {
+    data.sort((a, b) => a.active_contracts - b.active_contracts)
+    let currentIndex = startIndex
+    let previousValue = null
+
+    data.forEach((item, idx) => {
+      if (idx === 0 || item.active_contracts !== previousValue) {
+        item.index = currentIndex
+        if (idx !== 0) {
+          item.index = currentIndex += step
+        }
+      } else {
+        item.index = data[idx - 1].index
+      }
+      previousValue = item.active_contracts
+    })
+    return data
+  }
+
+  watch(
+    () => store.dashboard.contractTypes,
+    (newValue, oldValue) => {
+      contractOption.value.series[0].data = sortAndReIndex(newValue).map((v, idx) => ({
+        value: v.index,
+        name: v.type,
+        itemStyle: {
+          color: colors[idx]
+        }
+      }))
+      contractOption.value.series[1].data = sortAndReIndex(newValue).map((v, idx) => ({
+        value: v.index,
+        name: v.type,
+        itemStyle: {
+          color: colors[idx]
+        }
+      }))
+      contractOption.value.series[0].name = t('dashboardPage.contract.title')
+    },
+    {
+      immediate: true
+    }
+  )
+
+  const totalCount = computed(() => {
+    return store.dashboard.contractTypes.reduce((total, num) => {
+      return total + num.active_contracts
+    }, 0)
+  })
+
+  watch(
+    appStore,
+    (v) => {
+      if (v.themeSwitch) {
+        contractOption.value.series[1].label.color = '#fff'
+      } else {
+        contractOption.value.series[1].label.color = '#333'
+      }
+    },
+    {
+      immediate: true
+    }
+  )
 </script>
 
 <template>
-  <div class="w-full h-full border border-surface-line p-4 rounded-lg bg-surface-section relative hover-effect-card">
-    <span class="z-1 opacity-30 absolute top-0 right-0 w-[160px] h-full bg-no-repeat bg-[url(/effect/primary-card.svg)]" ></span>
+  <div
+    class="w-full h-full border border-surface-line p-4 rounded-lg bg-surface-section relative hover-effect-card"
+  >
+    <span
+      class="z-1 opacity-30 absolute top-0 right-0 w-[160px] h-full bg-no-repeat bg-[url(/effect/primary-card.svg)]"
+    ></span>
     <div class="flex items-center gap-2">
-      <span class="font-semibold text-nowrap text-textColor2">{{$t('dashboardPage.contract.title')}}</span>
-      <hr class="w-full h-[1px] text-surface-line">
-      <span class="font-semibold text-nowrap text-textColor2">{{totalCount}}</span>
+      <span class="font-semibold text-nowrap text-textColor2">{{
+        $t('dashboardPage.contract.title')
+      }}</span>
+      <hr class="w-full h-[1px] text-surface-line" />
+      <span class="font-semibold text-nowrap text-textColor2">{{ totalCount }}</span>
     </div>
     <div class="w-full h-[300px] relative z-1 mb-4">
       <v-chart autoresize :option="contractOption" />
     </div>
-
   </div>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

@@ -1,28 +1,31 @@
 <script setup>
-import {useSpecialityStore} from "@/store/modules/index.js"
-const store = useSpecialityStore()
-import {UIDrawer} from "@/components/index.js"
-import Table from "./ui/Table.vue"
-import createForm from "./ui/createForm.vue"
-import {useAccountStore} from "@/store/modules/index.js"
-const accStore = useAccountStore()
+  import { useSpecialityStore } from '@/store/modules/index.js'
+  const store = useSpecialityStore()
+  import { UIDrawer } from '@/components/index.js'
+  import Table from './ui/Table.vue'
+  import createForm from './ui/createForm.vue'
+  import { useAccountStore } from '@/store/modules/index.js'
+  const accStore = useAccountStore()
 
-onMounted(()=>{
-  if(!accStore.checkAction(accStore.pn.specialitiesRead)) return
-  store._index()
-})
-
+  onMounted(() => {
+    if (!accStore.checkAction(accStore.pn.specialitiesRead)) return
+    store._index()
+  })
 </script>
 <template>
   <div>
-    <Table/>
+    <Table />
     <UIDrawer
-        :visible="store.visible"
-        @update:visible="(v)=>store.visible = v"
-        :title="store.visibleType? $t('othersPage.speciality.createTitle') : $t('othersPage.speciality.updateTitle')"
+      :visible="store.visible"
+      @update:visible="(v) => (store.visible = v)"
+      :title="
+        store.visibleType
+          ? $t('othersPage.speciality.createTitle')
+          : $t('othersPage.speciality.updateTitle')
+      "
     >
       <template #content>
-        <createForm/>
+        <createForm />
       </template>
     </UIDrawer>
   </div>

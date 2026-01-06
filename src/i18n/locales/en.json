@@ -1,17 +1,31 @@
 {
   "content": {
     "deleted": "Deleted",
+    "nowOnlineUsers": "Hozirda tizimdagi online foydalanuvchilar",
+    "onlineUsers": "Online foydalanuvchilar",
     "files": "Files",
+    "developmentProcess": "Ishlab chiqish jarayonida",
+    "notifications": "Bildirishnomalar",
+    "markAsRead": "O‘qilgan deb belgilash",
+    "viewAll": "Barchasini ko‘rish",
     "lastClickTime": "You can try again in {n} minutes!",
     "deadline": "Deadline",
     "requiredField": "This field is required!",
+    "miniOneWorker": "Kamida bitta xodim tanlash shart!",
     "save": "Save",
+    "fullTime": "To‘liq ish kuni",
+    "partTime": "To‘liqsiz ish kuni",
+    "workTime": "Ish vaqti",
+    "workers": "Xodimlar",
     "start": "Start",
     "edit": "Edit",
     "delete": "Delete",
+    "checked": "Tekshirilgan",
     "view": "View",
+    "backToList": "Asosiy oynaga qaytish",
     "responsible": "Responsible person",
     "now": "Now",
+    "selected": "Tanlandi",
     "price": "Price",
     "active": "Active",
     "noActive": "Inactive",
@@ -33,6 +47,7 @@
     "no-data": "No data",
     "cancel": "Cancel",
     "code": "Code",
+    "departments": "Bo‘limlar",
     "questions": "Questions",
     "videos": "Videos",
     "confirmExit": "Confirm exit?",
@@ -121,6 +136,7 @@
     "message": "Write a message...",
     "no-message": "No conversations yet",
     "type": "Type",
+    "checkLabel": "Tekshiruv",
     "workplace": "Enterprise",
     "upload": "Upload file",
     "attachFile": "Attach file",
@@ -187,9 +203,14 @@
     "untilNow": "present",
     "warningImageSave": "New main photo selected. Click 'Save' to apply changes.",
     "selectAll": "Select all",
+    "selectList": "Ro‘yhatni to‘liq tanlash",
+    "unSelectList": "Ro‘yhatni to‘liq tozalash",
+    "unSelectAll": "Barchasini tozalash",
+    "forceUnSelectAll": "To‘liq tozalash",
     "uz": "UZ",
     "ru": "RU",
-    "en": "EN"
+    "en": "EN",
+    "create": "Yaratish"
   },
   "date": {
     "day": "Day",
@@ -399,10 +420,11 @@
     },
     "form": {
       "lastName": "Last name",
-      "fistName": "First name",
+      "firstName": "Ism",
       "middleName": "Middle name",
       "password": "Password",
-      "confirmPassword": "Confirm password"
+      "confirmPassword": "Confirm password",
+      "fistName": "First name"
     }
   },
   "positionPage": {
@@ -559,6 +581,7 @@
       "group": "G",
       "rank": "R",
       "rate": "K",
+      "fact": "F",
       "salary": "Salary",
       "department": "Department",
       "education": "Education",
@@ -640,8 +663,9 @@
     "linkText": "Document link",
     "acceptApplication": "Approve application",
     "comment": "Comment",
-    "mineApplication": "Reject application",
-    "pinfl": "PINFL"
+    "rejectApplication": "Arizani rad qilish",
+    "pinfl": "PINFL",
+    "mineApplication": "Reject application"
   },
   "documentPage": {
     "name": "Documents",
@@ -659,6 +683,9 @@
       "lastVacation": "View last vacation",
       "form": {
         "command_date": "Order date",
+        "viewSameTime": "Bir vaqtda tanishish",
+        "viewDescription": "Tasdiqlovchilar quyidagi tartibda yoki bir vaqtda ko‘rib hujjatni imzolaydilar",
+        "viewOneByOne": "Tartib bo‘yicha tanishish",
         "type": "Order type",
         "byContract": "Based on contract #{n}",
         "confirm": "Approvers",
@@ -670,8 +697,11 @@
         "to": "Vacation end",
         "work_day": "Return to work",
         "main_day": "Main vacation",
+        "half_one_day": "Ta’til kuni (Birinchi yarmi)",
+        "half_two_day": "Ta’til kuni (Ikkinchi yarmi)",
+        "half_two_date": "Ta’til sanasi (Ikkinchi yarmi)",
         "second_day": "Additional vacation",
-        "additionals": "Additions",
+        "additional": "Qo‘chimchalar",
         "calculateVacation": "Calculate vacation",
         "no-calculate": "Vacation not calculated!",
         "all_day": "Vacation days",
@@ -690,8 +720,44 @@
         "fine_type": "Penalty type",
         "fine": "Penalty name",
         "amount": "Amount",
+        "count": "Pul mukofot baravari",
+        "coefficient": "Foiz",
         "financeType": "Financial aid type",
-        "command_number": "Order number"
+        "warning_date": "Ogohlantirish xati sanasi",
+        "warning_number": "Ogohlantirish xati raqami",
+        "med_date": "Tibbiy ko‘rik xulosasi sanasi",
+        "med_number": "Tibbiy ko‘rik xulosasi raqami",
+        "command_number": "Order number",
+        "base": "Asos",
+        "warning_one": "Tashkilot tugatilganligi sababli",
+        "warning_two": "Texnologiyaning, ishlab chiqarish va mehnatni tashkil etishning o‘zgarishi, ishlar (mahsulot, xizmatlar) hajmining qisqarishi bilan bog‘liq bo‘lgan shtatining o‘zgarganligi sababli",
+        "warning_three": "Malakasi yetarli bo‘lmaganligi sababli",
+        "warning_four": "O‘z mehnat majburiyatlarini muntazam ravishda buzganligi sababli",
+        "warning_five": "O‘z mehnat majburiyatlarini bir marta qo‘pol ravishda buzganligi sababli",
+        "warning_six": "Ushbu Kodeks hamda boshqa qonun hujjatlarida nazarda tutilgan o‘zga sabablar",
+        "warning_seven": "Tashkilotning mulkdori almashganligi sababli",
+        "warning_eight": "Tashkilot qayta tashkil etilganligi sababli",
+        "warning_nine": "Uning idoraviy taalluqliligi (bo‘ysunuvi) o‘zgarganligi sababli",
+        "warning_ten": "Harbiy xizmatga chaqirilganligi sababli",
+        "warning_eleven": "Muqobil xizmatga chaqirilganligi sababli",
+        "warning_twelve": "Shu ishni ilgari bajarib kelgan xodimning avvalgi ishga qaytganligi sababli",
+        "warning_thirteen": "Sudning hukmi bilan avvalgi ishini davom ettirish imkoniyati bo‘lmaganligi sababli",
+        "warning_fourteen": "Ishga qabul qilishga doir belgilangan qoidalarning buzilganligi sababli",
+        "warning_fifteen": "Qonunchilikka muvofiq mehnatga oid munosabatlarni davom ettirishga monelik qiladigan holatlar yuzaga kelganligi sababli",
+        "warning_sixteen": "Tashkilot faoliyatini tugatish to‘g‘risidagi sud qarorining qonuniy kuchga kirganligi sababli",
+        "warning_seventeen": "Xodimni ishga tiklash haqidagi sud qarori bekor qilinganligi sababli",
+        "warning_eighteen": "O‘zbekiston Respublikasi Bandlik va mehnat munosabatlari vazirligi Davlat mehnat inspeksiyasining qarori bekor qilinganligi sababli",
+        "warning_nineteen": "Xodim vafot etganligi sababli",
+        "warning_twenty": "Sud tomonidan xodimning bedarak yo‘qolgan deb e’tirof etilganligi sababli",
+        "warning_twenty_one": "Qonunda nazarda tutilgan boshqa holatlar (qo‘lda yoziladi)",
+        "reason_one": "Birinchi marta qonuniy nikohdan o‘tishi munosabati bilan",
+        "reason_two": "Nogiron farzandni tarbiyalayotganligi uchun, nogironlar kuni munosabati bilan",
+        "reason_three": "Ota, ona, turmush o‘rtog‘i, farzandlari vafot etganligi munosabati bilan",
+        "reason_four": "Quyidagi saraton, leykoz, birinchi marta sil (tuberkulyoz) kasaligi, jigar serrozi dekompensasiya bosqichi, jigar transplantasiyasi, yurak qon-tomir kasalliklari, yurak klapanlarini almashtirish, yurak tomirlarini stendlash, AKSh (aorta koronar shuntlash), ablyasiya, yurak va buyrakdagi murakkab jarrohlik operatsiyalari, infarkt, insul’t, o‘tkir buyrak yetishmovchiligi, dializ, buyrak transplantasiyasi, nefroskleroz, koksartroz III darajali endoprotezlash, bir yoki ikki ko‘zning terminal bosqichidagi glaukomasi kasalligiga chalinganligi munosabati bilan",
+        "reason_five": "50, 55, 60, 70, 80, 90, 100 yillik yubiley sanasiga etganligi munosabati bilan",
+        "reason_six": "Tabiiy ofatdan zarar ko‘rganligi munosabati bilan tasdiqlangan baholash dalolatnomasi muvofiq",
+        "reason_seven": "Maishiy ko‘mir yoqil‘isi sotib olishi munosabati bilan",
+        "additionals": "Additions"
       }
     },
     "form": {
@@ -752,6 +818,11 @@
       "to": "To",
       "work_day": "Return date"
     },
+    "form_47": {
+      "optionOne": "O‘n ikki yoshga to‘lmagan ikki yoki undan ortiq farzandi borligi sababli",
+      "optionTwo": "O‘n olti yoshga to‘lmagan nogironligi bo‘lgan farzandi borligi sababli",
+      "vacation_reason_day": "Qo‘shimcha ta’til kuni"
+    },
     "form_48": {
       "from": "From",
       "to": "To",
@@ -763,6 +834,11 @@
       "from": "From",
       "to": "To",
       "work_day": "Return date"
+    },
+    "form_50": {
+      "to": "Ta’til tugash sanasi",
+      "from": "Ta’tilga chiqish sanasi",
+      "vacation_id": "Ta’til"
     },
     "form_55": {
       "from": "From",
@@ -1528,6 +1604,7 @@
       "comment": "Comment",
       "status": "Status",
       "organization": "Enterprise",
+      "onVacation": "gacha ta’tilda",
       "file": "Files"
     },
     "panel": {
@@ -1770,7 +1847,7 @@
     }
   },
   "report": {
-    "name": "Report",
+    "name": "Plan and Fact",
     "tooltip": {
       "P": "Plan",
       "F": "Fact",
@@ -1792,6 +1869,10 @@
       "optimizationConfirm": "This will merge same positions. Confirm.",
       "byWorker": "By employees"
     }
+  },
+  "specialReport": {
+    "name": "Reports",
+    "create": "Create report"
   },
   "uploadReport": {
     "name": "Upload reports",
@@ -2234,6 +2315,7 @@
   },
   "turnStileDashboard": {
     "name": "Dashboard",
+    "description": "Xodimlarning grafik jadvallari va turniket orqali olingan ma’lumotlar asosida real vaqtdagi analitika",
     "form": {
       "topOfflineDevices": "Synced devices",
       "lastSynchronizationTime": "Last sync",
@@ -2241,12 +2323,14 @@
       "offlineDevice": "Offline devices",
       "onlineDevice": "Online devices",
       "left": "Exited",
+      "analytic": "Analitika",
       "leftWorkplace": "Left workplace",
       "dailyEvent": "Today turnstile records",
       "came_today": "Arrived today",
       "not_came_today": "Not arrived today",
       "current_in": "At workplace",
       "current_out": "Outside workplace",
+      "scheduled_workers_today": "Grafik bo‘yicha xodimlar",
       "workdays": "Outside workplace"
     },
     "work_durations": {
@@ -2254,6 +2338,9 @@
       "max_worked_count": "Worked time",
       "deficit": "Shortfall",
       "min_workers": "Min time employees",
+      "allWorker": "Barcha xodimlar soni",
+      "workerCountWithoutSchedule": "Grafikga biriktirilmagan xodimlar soni",
+      "workerCountWithSchedule": "Grafikga biriktirilgan xodimlar soni",
       "max_workers": "Max time employees"
     },
     "device": {
@@ -2264,6 +2351,8 @@
     },
     "preview": {
       "time": "Date",
+      "startTime": "Ish boshlanish vaqtidan",
+      "endTime": "Ish tugash vaqtidan",
       "workTime": "Work start time",
       "temperature": "Temperature",
       "device": "Device",
@@ -2287,6 +2376,44 @@
       "device_status_online": "Online devices",
       "device_status_offline": "Offline devices",
       "lesson_worked": "Work time indicators",
+      "not_passed_turnstile_workers": "Turniketdan o‘tmagan xodimlar",
+      "privilege_turnstile_workers": "Imtiyozli xodimlar",
+      "privilegeSubtitle": "Ishga kelmaydigan va imtiyozli xodimlarning turlari bo‘yicha",
+      "privilege": "Imtiyozli",
+      "dontPassFace": "O‘tmaganlar",
+      "onVacation": "Ta’tildagi xodimlar",
+      "onHoliday": "Dam olish kunida",
+      "lateCome": "Kech kelgan xodimlar",
+      "earlyGo": "Erta ketgan xodimlar",
+      "allWorkers": "Barcha xodimlar",
+      "workTimeTitle": "Ish vaqti tahlili",
+      "workTimeSubtitle": "Xodimlarning ishga kelish va ketish vaqtlari bo‘yicha qisqa tahlil",
+      "workerAnalytic": "Xodimlar tahlili",
+      "workerAnalyticDescription": "Ishga kelish va kelmaslik bo‘yicha qisqa tahlil",
+      "allWorkerOfCompany": "Korxonaning umumiy xodimlar soni",
+      "planned": "Rejalashtirilgan",
+      "todayCome": "Kelganlar",
+      "todayDontCome": "Kelmaganlar",
+      "deviceAnalytic": "Qurilmalar tahlili",
+      "deviceAnalyticDescription": "Qurilmalar holati bo‘yicha qisqa tahlil",
+      "allDevices": "Barcha qurilmalar soni",
+      "onlineDevices": "Onlayn qurilmalar soni",
+      "offlineDevices": "Oflayn qurilmalar soni",
+      "graphAnalytic": "Grafik bo‘yicha tahlil",
+      "mobileFace": "Mobil qurilma",
+      "startTime": "Smena vaqti",
+      "firstComeToWork": "Ishga kelgan vaqt",
+      "lastGoOut": "Ishdan chiqish vaqti",
+      "delay": "Kechikish",
+      "earlyTimeFromWorkTime": "Ish vaqtidan oldin ketish",
+      "turnstileFace": "Turniket qurilmasi",
+      "allWorkerOfFace": "Umumiy xodimlar soni",
+      "turnstileAnalytic": "Face ID tahlili",
+      "vacations": "Ta’tildagi xodimlar",
+      "casual_workers": "Dam olish kunidagi xodimlar",
+      "turnstileAnalyticDescription": "Face ID bo‘yicha kunlik qaydnoma",
+      "graphAnalyticDescription": "So‘nggi 5 oyda grafik tuzilmagan xodimlar soni",
+      "currentMonthWorkerCount": "Joriy oyda grafik tuzilmagan xodimlar soni",
       "devices": "Top offline devices"
     },
     "options": {
@@ -2366,23 +2493,55 @@
     "form": {
       "starTimeSchedule": "Shift start",
       "endTimeSchedule": "Shift end",
+      "breakStartTime": "Tanaffus boshlanish vaqti",
+      "breakEndTime": "Tanaffus tugash vaqti",
       "allScheduleCount": "Total schedules",
       "savingProcess": "Please wait...",
+      "addBreakTime": "Tanaffus vaqtini qo‘shish",
       "changedScheduleCount": "Changed schedules",
       "scheduleType": "Duty type",
       "holiday": "Day off",
       "otherTime": "Other hours",
       "workerList": "Employee list",
       "workTime": "Work time",
+      "attachedWorker": "Biriktirilgan",
+      "noAttachedWorker": "Biriktirilmagan",
+      "filterByWorker": "Xodimlar bo‘yicha",
+      "notExistChangeToSave": "Saqlash uchun o‘zgarishlar yo‘q",
       "startWork": "Select duty type to start"
     }
   },
   "shiftType": {
     "name": "Shifts",
+    "groupName": "Smena guruhlari",
     "createTitle": "Add",
     "updateTitle": "Edit",
     "form": {
+      "noGraphic": "Biriktirilmagan",
+      "copySchedule": "Oylik grafikni nusxalash",
       "generate": "Generate",
+      "startWorkTime": "Ish boshlanish vaqtidan imtiyoz",
+      "endWorkTime": "Ish tugash vaqtidan imtiyoz",
+      "replaceWorker": "Xodimni o‘zgartirish",
+      "fromThisDate": "Shu sanadan boshlab",
+      "onlyThisDate": "Shu kunni o‘zgartirish",
+      "groupCount": "Guruhlar soni",
+      "workerCount": "Xodimlar soni",
+      "createGroup": "Guruh yaratish",
+      "turnstileActive": "Turniket tizimida faol",
+      "turnstileUnActive": "Turniket tizimiga ulanmagan",
+      "addGrand": "Xodimga imtiyoz berish",
+      "gradToReport": "Turniket hisobotlaridan ozod qilish",
+      "grandLabel": "Xodimga ishga kelish va ketish vaqtlariga imtiyoz berish uchun kelish va ketish vaqtlariga daqiqalarda qiymat bering.",
+      "reportLabel": "Xodim turniket qurilmasidan foydalanganda uning ma’lumotlari hisobotlarda aks etmaydi",
+      "showGroup": "Guruhlarni ko‘rish",
+      "addFacility": "Turniket boshqaruvi",
+      "checkFactOfWorkTime": "Faktni tekshirish",
+      "removeTurnstile": "Turniketdan o‘chirish",
+      "addTurnstile": "Turniketga qo‘shish",
+      "notAllowedThisAction": "Maxsus smena uchun Navbatchilik grafiki menyusida ishlang!",
+      "turnstileSetting": "Turniket boshqaruvi",
+      "howMuchGroup": "How many groups do you want to schedule for?",
       "group": "Groups"
     }
   },
@@ -2393,5 +2552,8 @@
   },
   "socketPage": {
     "usersMOdalTitle": "All online users list"
+  },
+  "turnstileSchedule": {
+    "name": "Turnstile schedule"
   }
 }

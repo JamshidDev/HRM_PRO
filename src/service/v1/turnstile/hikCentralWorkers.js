@@ -1,46 +1,46 @@
-import axios from "@/service/index.js"
+import axios from '@/service/index.js'
 
-const _index =async (payload)=>{
-    return await axios.get(`/v1/turnstile/hik-central/workers`, {params:payload.params})
+const _index = async (payload) => {
+  return await axios.get(`/v1/turnstile/hik-central/workers`, { params: payload.params })
 }
 
-const _workerAccessLevels =async (payload)=>{
-    return await axios.get(`/v1/turnstile/hik-central/worker-access-levels`, {params:payload.params})
+const _workerAccessLevels = async (payload) => {
+  return await axios.get(`/v1/turnstile/hik-central/worker-access-levels`, {
+    params: payload.params
+  })
 }
 
-
-const _add_worker = async (payload)=>{
-    return await axios.post(`/v1/turnstile/hik-central/workers/add`, payload)
+const _add_worker = async (payload) => {
+  return await axios.post(`/v1/turnstile/hik-central/workers/add`, payload)
 }
 
-const _refresh_worker = async(payload)=>{
-    return await axios.post(`/v1/turnstile/hik-central/workers/refresh`, payload.data)
+const _refresh_worker = async (payload) => {
+  return await axios.post(`/v1/turnstile/hik-central/workers/refresh`, payload.data)
 }
 
-const _access_levels = async (params)=>{
-    return await axios.get(`/v1/turnstile/hik-central/workers/access-levels`, {params})
+const _access_levels = async (params) => {
+  return await axios.get(`/v1/turnstile/hik-central/workers/access-levels`, { params })
 }
 
-const _updateFace = async (payload)=>{
-    return await axios.post(`/v1/turnstile/hik-central/workers/update-face`, payload?.data)
+const _updateFace = async (payload) => {
+  return await axios.post(`/v1/turnstile/hik-central/workers/update-face`, payload?.data)
 }
 
-const _delete = async (payload)=>{
-    return await axios.delete(`/v1/turnstile/hik-central/workers/destroy/${payload.id}`)
+const _delete = async (payload) => {
+  return await axios.delete(`/v1/turnstile/hik-central/workers/destroy/${payload.id}`)
 }
 
-const _error =async (payload)=>{
-    return await axios.get(`/v1/turnstile/hik-central/worker-errors`, {params:payload.params})
+const _error = async (payload) => {
+  return await axios.get(`/v1/turnstile/hik-central/worker-errors`, { params: payload.params })
 }
-
 
 export default {
-    _index,
-    _add_worker,
-    _refresh_worker,
-    _access_levels,
-    _updateFace,
-    _delete,
-    _error,
-    _workerAccessLevels,
+  _index,
+  _add_worker,
+  _refresh_worker,
+  _access_levels,
+  _updateFace,
+  _delete,
+  _error,
+  _workerAccessLevels
 }

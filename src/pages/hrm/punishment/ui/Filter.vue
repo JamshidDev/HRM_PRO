@@ -1,94 +1,91 @@
 <script setup>
-import {UIPageFilter, UISelect} from "@/components/index.js"
-import {useAccountStore, useComponentStore, usePunishmentStore} from "@/store/modules/index.js"
-import {useAppSetting} from "@/utils/index.js"
-import {ArrowCircleDown32Regular} from "@vicons/fluent"
+  import { UIPageFilter, UISelect } from '@/components/index.js'
+  import { useAccountStore, useComponentStore, usePunishmentStore } from '@/store/modules/index.js'
+  import { useAppSetting } from '@/utils/index.js'
+  import { ArrowCircleDown32Regular } from '@vicons/fluent'
 
+  const store = usePunishmentStore()
+  const accStore = useAccountStore()
+  const componentStore = useComponentStore()
 
-const store = usePunishmentStore()
-const accStore = useAccountStore()
-const componentStore = useComponentStore()
-
-const onSearch = ()=>{
-  if(!accStore.checkAction(accStore.pn.hrPunishmentRead)) return
-  store.params.page = 1
-  store._index()
-}
-
-
-const filterEvent = ()=>{
-  store._index()
-}
-
-const filterCount = computed(()=>Number(Boolean(store.params.organizations.length))
-    +Number(Boolean(store.params.created))
-)
-
-const beforeShow = (v)=>{
-  if(v && componentStore.confirmationStatusList.length === 0){
-    componentStore._enumsAdmin()
+  const onSearch = () => {
+    if (!accStore.checkAction(accStore.pn.hrPunishmentRead)) return
+    store.params.page = 1
+    store._index()
   }
-  if(componentStore.structureList.length === 0){
-    componentStore._structures()
+
+  const filterEvent = () => {
+    store._index()
   }
-}
 
-const onChangeStructure = (v)=>{
-  store.params.organizations=v
-  filterEvent()
-}
+  const filterCount = computed(
+    () => Number(Boolean(store.params.organizations.length)) + Number(Boolean(store.params.created))
+  )
 
+  const beforeShow = (v) => {
+    if (v && componentStore.confirmationStatusList.length === 0) {
+      componentStore._enumsAdmin()
+    }
+    if (componentStore.structureList.length === 0) {
+      componentStore._structures()
+    }
+  }
 
+  const onChangeStructure = (v) => {
+    store.params.organizations = v
+    filterEvent()
+  }
 
-const resetFilter = ()=>{
-  store.params.organizations = []
-  store.params.confirmation = null
-  store.params.created = null
-  filterEvent()
-}
-
+  const resetFilter = () => {
+    store.params.organizations = []
+    store.params.confirmation = null
+    store.params.created = null
+    filterEvent()
+  }
 </script>
 
 <template>
   <UIPageFilter
-      v-model:search="store.params.search"
-      @onSearch="onSearch"
-      @show="beforeShow"
-      @onClear="resetFilter"
-      :filter-count="filterCount"
-      :search-loading="store.loading"
-      :show-add-button="false"
+    v-model:search="store.params.search"
+    @onSearch="onSearch"
+    @show="beforeShow"
+    @onClear="resetFilter"
+    :filter-count="filterCount"
+    :search-loading="store.loading"
+    :show-add-button="false"
   >
     <template #filterAction>
-      <n-button :loading="store.downloading" type="success" @click="store._download()">
+      <n-button v-fly-upload :loading="store.downloading" type="success" @click="store._download()">
         <template #icon>
-          <ArrowCircleDown32Regular/>
+          <ArrowCircleDown32Regular />
         </template>
-        {{$t('content.download')}}
+        {{ $t('content.download') }}
       </n-button>
     </template>
     <template #filterContent>
-      <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{$t('actionLog.table.structure')}}</label>
+      <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{
+        $t('actionLog.table.structure')
+      }}</label>
       <UISelect
-          :options="componentStore.structureList"
-          :modelV="store.params.organizations"
-          @defaultValue="(v)=>store.params.organizations=v"
-          @updateModel="onChangeStructure"
-          :checkedVal="store.structureCheck2"
-          @updateCheck="(v)=>store.structureCheck2=v"
-          :loading="componentStore.structureLoading"
-          v-model:search="componentStore.structureParams.search"
-          @onSearch="componentStore._structures"
-          @onSubmit="filterEvent"
+        :options="componentStore.structureList"
+        :modelV="store.params.organizations"
+        @defaultValue="(v) => (store.params.organizations = v)"
+        @updateModel="onChangeStructure"
+        :checkedVal="store.structureCheck2"
+        @updateCheck="(v) => (store.structureCheck2 = v)"
+        :loading="componentStore.structureLoading"
+        v-model:search="componentStore.structureParams.search"
+        @onSearch="componentStore._structures"
+        @onSubmit="filterEvent"
       />
-      <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{$t('content.created')}}</label>
+      <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{ $t('content.created') }}</label>
       <n-date-picker
-          class="w-full"
-          v-model:value="store.params.created"
-          type="date"
-          :format="useAppSetting.datePicketFormat"
-          @update:value="filterEvent"
-          clearable
+        class="w-full"
+        v-model:value="store.params.created"
+        type="date"
+        :format="useAppSetting.datePicketFormat"
+        @update:value="filterEvent"
+        clearable
       />
     </template>
   </UIPageFilter>

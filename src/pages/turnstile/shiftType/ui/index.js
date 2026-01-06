@@ -1,5 +1,5 @@
-export {default as Filter} from "./Filter.vue"
-export {default as Table} from "./Table.vue"
-export {default as GenerateModal} from "./GenerateModal.vue"
-export {default as ScheduleModal} from "./ScheduleModal.vue"
-export {default as DailyScheduleModal} from "./DailyScheduleModal.vue"
+export { default as Filter } from './Filter.vue'
+export { default as Table } from './Table.vue'
+export { default as GenerateModal } from './GenerateModal.vue'
+export { default as ScheduleModal } from './ScheduleModal.vue'
+export { default as DailyScheduleModal } from './DailyScheduleModal.vue'

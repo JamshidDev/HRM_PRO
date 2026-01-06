@@ -1,37 +1,34 @@
-import axios from "@/service/index.js"
+import axios from '@/service/index.js'
 
-const _index =async (payload)=>{
-    return await axios.get(`/v1/structure/organizations`, {params:payload.params})
+const _index = async (payload) => {
+  return await axios.get(`/v1/structure/organizations`, { params: payload.params })
 }
 
-const _show =async (payload)=>{
-    return await axios.get(`/v1/structure/organizations/${payload.id}`, )
+const _show = async (payload) => {
+  return await axios.get(`/v1/structure/organizations/${payload.id}`)
 }
 
-const _level=async (payload)=>{
-    return await axios.get(`/v1/structure/organization-levels`, )
+const _level = async (payload) => {
+  return await axios.get(`/v1/structure/organization-levels`)
 }
 
-const _create = async (payload)=>{
-    return await axios.post(`/v1/structure/organizations`, payload.data)
+const _create = async (payload) => {
+  return await axios.post(`/v1/structure/organizations`, payload.data)
 }
 
-const _update = async (payload)=>{
-    return await axios.put(`/v1/structure/organizations/${payload.id}`, payload.data)
+const _update = async (payload) => {
+  return await axios.put(`/v1/structure/organizations/${payload.id}`, payload.data)
 }
 
-const _delete = async (payload)=>{
-    return await axios.delete(`/v1/structure/organizations/${payload.id}`)
+const _delete = async (payload) => {
+  return await axios.delete(`/v1/structure/organizations/${payload.id}`)
 }
-
-
-
 
 export default {
-    _index,
-    _create,
-    _update,
-    _delete,
-    _show,
-    _level,
+  _index,
+  _create,
+  _update,
+  _delete,
+  _show,
+  _level
 }

@@ -1,119 +1,121 @@
 <script setup>
-import {CameraAdd48Filled, DismissCircle48Regular} from "@vicons/fluent"
-import {UICropper} from "@/components/index.js"
-import { v4 as uuidv4 } from 'uuid';
-import validationRules from "@/utils/validationRules.js"
+  import { CameraAdd48Filled, DismissCircle48Regular } from '@vicons/fluent'
+  import { UICropper } from '@/components/index.js'
+  import { v4 as uuidv4 } from 'uuid'
+  import validationRules from '@/utils/validationRules.js'
 
-const images = defineModel('images',{
-  required:true,
-  default:[],
-  type:Array,
-})
-const mainImageId = defineModel('mainImageId',{
-  required:true,
-  default:null,
-})
-
-const cropper_ref = ref(null)
-
-const emits = defineEmits(['onDelete', 'onChangeMain'])
-
-const onOpenFile = ()=>{
-  cropper_ref.value.openFile()
-}
-
-const onResult = (v)=>{
-  let id  =uuidv4()
-  mainImageId.value = mainImageId.value || id
-  images.value.push({
-    id,
-    blob:v.blob,
-    base64:v.imgUrl,
-    url:null,
+  const images = defineModel('images', {
+    required: true,
+    default: [],
+    type: Array
   })
-}
+  const mainImageId = defineModel('mainImageId', {
+    required: true,
+    default: null
+  })
 
-const deleteEv = (v)=>{
-  emits('onDelete',v)
-}
+  const cropper_ref = ref(null)
 
-const onchangeMain = (id)=>{
-  mainImageId.value = id
-  onChange(id)
-}
+  const emits = defineEmits(['onDelete', 'onChangeMain'])
 
-const onChange = (id)=>{
-  const savedMainImageId = images.value.filter(v=>v.current)?.[0]?.id
-  let result = savedMainImageId === id
-  emits('onChangeMain', !result)
-}
+  const onOpenFile = () => {
+    cropper_ref.value.openFile()
+  }
 
-const fakeV = ref(null)
-watch(()=>images, (v)=>{
-  onChange(mainImageId.value)
-}, {deep:true})
+  const onResult = (v) => {
+    let id = uuidv4()
+    mainImageId.value = mainImageId.value || id
+    images.value.push({
+      id,
+      blob: v.blob,
+      base64: v.imgUrl,
+      url: null
+    })
+  }
 
-watchEffect(()=>{
-  fakeV.value = images?.[0]?.id
-})
+  const deleteEv = (v) => {
+    emits('onDelete', v)
+  }
 
+  const onchangeMain = (id) => {
+    mainImageId.value = id
+    onChange(id)
+  }
 
+  const onChange = (id) => {
+    const savedMainImageId = images.value.filter((v) => v.current)?.[0]?.id
+    let result = savedMainImageId === id
+    emits('onChangeMain', !result)
+  }
+
+  const fakeV = ref(null)
+  watch(
+    () => images,
+    (v) => {
+      onChange(mainImageId.value)
+    },
+    { deep: true }
+  )
+
+  watchEffect(() => {
+    fakeV.value = images?.[0]?.id
+  })
 </script>
 
 <template>
   <div>
     <div class="flex gap-4 flex-wrap w-full py-4">
-      <template v-for="(img,idx) in images" :key="idx">
+      <template v-for="(img, idx) in images" :key="idx">
         <div
-            @click="onchangeMain(img.id)"
-            class="w-[120px] h-[160px] overflow-hidden rounded-sm  cursor-pointer transition-all relative show__delete-image"
-            :class="[img.id === mainImageId? 'border-4 border-primary' : 'border border-surface-line']"
+          @click="onchangeMain(img.id)"
+          class="w-[120px] h-[160px] overflow-hidden rounded-sm cursor-pointer transition-all relative show__delete-image"
+          :class="[
+            img.id === mainImageId ? 'border-4 border-primary' : 'border border-surface-line'
+          ]"
         >
-          <span v-if="img.id === mainImageId" class="text-xs bg-primary text-white px-1 absolute z-[100] top-[4px] right-[2px] rounded">Asosiy rasm</span>
-          <img
-              class="w-full h-full object-cover"
-              :src="img.base64"
-              alt=""
+          <span
+            v-if="img.id === mainImageId"
+            class="text-xs bg-primary text-white px-1 absolute z-[100] top-[4px] right-[2px] rounded"
+            >Asosiy rasm</span
           >
-          <div v-if="images.length>1" class="photo__delete-btn w-[30px] h-[30px] rounded-full bg-danger flex justify-center items-center absolute bottom-[-30px] transition-all z-10 left-1/2 translate-x-[-50%]">
-            <n-icon @click="deleteEv(img)" size="26" class="text-white">
-              <DismissCircle48Regular/>
+          <img class="w-full h-full object-cover" :src="img.base64" alt="" />
+          <div
+            v-if="images.length > 1"
+            class="photo__delete-btn w-[30px] h-[30px] rounded-full bg-danger flex justify-center items-center absolute bottom-[-30px] transition-all z-10 left-1/2 translate-x-[-50%]"
+          >
+            <n-icon @click.stop="deleteEv(img)" size="26" class="text-white">
+              <DismissCircle48Regular />
             </n-icon>
           </div>
-
         </div>
       </template>
       <div
-          v-if="images.length<8"
-          @click="onOpenFile"
-          class="w-[120px] h-[160px] border border-dashed border-surface-line flex justify-center items-center cursor-pointer rounded-sm">
+        v-if="images.length < 8"
+        @click="onOpenFile"
+        class="w-[120px] h-[160px] border border-dashed border-surface-line flex justify-center items-center cursor-pointer rounded-sm"
+      >
         <n-icon size="80" class="text-secondary">
-          <CameraAdd48Filled/>
+          <CameraAdd48Filled />
         </n-icon>
       </div>
-      <UICropper
-          ref="cropper_ref"
-          @on-result="onResult"
-      />
+      <UICropper ref="cropper_ref" @on-result="onResult" />
     </div>
     <n-form-item
-        class="!block hidden-form-item"
-        path="photos"
-        :show-feedback="true"
-        :rule-path="validationRules.rulesNames.requiredPhotoField"
+      class="!block hidden-form-item"
+      path="photos"
+      :show-feedback="true"
+      :rule-path="validationRules.rulesNames.requiredPhotoField"
     >
       <n-select
-          v-show="false"
-          multiple
-          v-model:value="fakeV"
-          filterable
-          label-field="id"
-          value-field="id"
-          :options="images"
+        v-show="false"
+        multiple
+        v-model:value="fakeV"
+        filterable
+        label-field="id"
+        value-field="id"
+        :options="images"
       >
-
       </n-select>
     </n-form-item>
   </div>
-
 </template>

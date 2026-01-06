@@ -1,39 +1,39 @@
 <script setup>
-import {UIModal, UIPageContent} from "@/components/index.js"
-import {useAccountStore, useSyncLogStore} from "@/store/modules/index.js"
-import Filter from "./ui/Filter.vue"
-import Table from "./ui/Table.vue"
-import PreviewList from './ui/PreviewList.vue'
-import DeviceList from './ui/DeviceList.vue'
+  import { UIModal, UIPageContent } from '@/components/index.js'
+  import { useAccountStore, useSyncLogStore } from '@/store/modules/index.js'
+  import Filter from './ui/Filter.vue'
+  import Table from './ui/Table.vue'
+  import PreviewList from './ui/PreviewList.vue'
+  import DeviceList from './ui/DeviceList.vue'
 
-const store = useSyncLogStore()
-const accStore = useAccountStore()
+  const store = useSyncLogStore()
+  const accStore = useAccountStore()
 
-onMounted(()=>{
-  if(!accStore.checkAction(accStore.pn.turnstileHikCentralSyncRead)) return
-  store._index()
-})
+  onMounted(() => {
+    if (!accStore.checkAction(accStore.pn.turnstileHikCentralSyncRead)) return
+    store._index()
+  })
 </script>
 
 <template>
-<UIPageContent>
-  <Filter/>
-  <Table/>
-  <UIModal
+  <UIPageContent>
+    <Filter />
+    <Table />
+    <UIModal
       :width="1200"
       :visible="store.visible"
-      @update:visible="(v)=>store.visible = v"
+      @update:visible="(v) => (store.visible = v)"
       :title="$t('syncLog.createTitle')"
-  >
-    <PreviewList/>
-  </UIModal>
-  <UIModal
+    >
+      <PreviewList />
+    </UIModal>
+    <UIModal
       :width="1200"
       :visible="store.offlineDeviceVisible"
-      @update:visible="(v)=>store.offlineDeviceVisible = v"
+      @update:visible="(v) => (store.offlineDeviceVisible = v)"
       :title="$t('syncLog.offlineDevices')"
-  >
-    <DeviceList/>
-  </UIModal>
-</UIPageContent>
+    >
+      <DeviceList />
+    </UIModal>
+  </UIPageContent>
 </template>

@@ -1,21 +1,21 @@
 <script setup>
-import {UIModal, UIPageContent} from "@/components/index.js"
-import {Table, Filter, Preview} from "./ui/index.js"
-import {useHKWorkDurationStore} from "@/store/modules/index.js"
+  import { UIModal, UIPageContent } from '@/components/index.js'
+  import { Table, Filter, Preview } from './ui/index.js'
+  import { useHKWorkDurationStore } from '@/store/modules/index.js'
 
-const store = useHKWorkDurationStore()
-
+  const store = useHKWorkDurationStore()
 </script>
 
 <template>
-<UIPageContent>
-  <Filter/>
-  <Table/>
-  <UIModal
+  <UIPageContent>
+    <Filter />
+    <Table />
+    <UIModal
       v-model:visible="store.visible"
       :width="1000"
-      :title="$t('turnstile.workDurationPage.calendarTitle')">
-    <Preview/>
-  </UIModal>
-</UIPageContent>
+      :title="$t('turnstile.workDurationPage.calendarTitle')"
+    >
+      <Preview />
+    </UIModal>
+  </UIPageContent>
 </template>

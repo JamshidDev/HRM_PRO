@@ -1,149 +1,165 @@
 <script setup>
-import {useRoute, useRouter} from 'vue-router';
-import {UIModal} from "@/components/index.js";
-import {useExamAttemptStore, useExamVideoStore} from "@/store/modules";
-import QuestionCard from './ui/Question.vue'
-import Utils from "@/utils/Utils.js";
-import VueCountdown from '@chenfengyuan/vue-countdown'
-import CameraApp from "@/pages/attestation/Camera/CameraApp.vue"
-import {ChevronCircleLeft32Regular, ShieldError16Filled, ArrowStepBack16Regular, DocumentRibbon20Regular} from "@vicons/fluent";
-import dayjs from "dayjs";
-import {AppPaths, useAppSetting} from "@/utils/index.js"
-import { onBeforeRouteLeave } from "vue-router";
-import i18n from "@/i18n/index.js"
+  import { useRoute, useRouter } from 'vue-router'
+  import { UIModal } from '@/components/index.js'
+  import { useExamAttemptStore, useExamVideoStore } from '@/store/modules'
+  import QuestionCard from './ui/Question.vue'
+  import Utils from '@/utils/Utils.js'
+  import VueCountdown from '@chenfengyuan/vue-countdown'
+  import CameraApp from '@/pages/attestation/Camera/CameraApp.vue'
+  import {
+    ChevronCircleLeft32Regular,
+    ShieldError16Filled,
+    ArrowStepBack16Regular,
+    DocumentRibbon20Regular
+  } from '@vicons/fluent'
+  import dayjs from 'dayjs'
+  import { AppPaths, useAppSetting } from '@/utils/index.js'
+  import { onBeforeRouteLeave } from 'vue-router'
+  import i18n from '@/i18n/index.js'
 
-const t = i18n.global.t
-const store = useExamAttemptStore()
-const examVideoStore = useExamVideoStore()
-const router = useRouter()
-const route = useRoute()
-onMounted(() => {
-  store.finishLoading = false
-  store.result = null
-  examVideoStore.workerExamId = null
-  examVideoStore.isUnMounted = false
-  store.elementId = route.params.exam_id
-  store._config_localstorage()
-  store._continue_attempt((data)=>{
-    examVideoStore.examId = data.examId
-    examVideoStore.workerExamId = data.workerExamId
-    examVideoStore._start()
+  const t = i18n.global.t
+  const store = useExamAttemptStore()
+  const examVideoStore = useExamVideoStore()
+  const router = useRouter()
+  const route = useRoute()
+  onMounted(() => {
+    store.finishLoading = false
+    store.result = null
+    examVideoStore.workerExamId = null
+    examVideoStore.isUnMounted = false
+    store.elementId = route.params.exam_id
+    store._config_localstorage()
+    store._continue_attempt((data) => {
+      examVideoStore.examId = data.examId
+      examVideoStore.workerExamId = data.workerExamId
+      examVideoStore._start()
+    })
   })
-})
 
+  const leftTime = computed(() => {
+    console.log(store.worker_detail.created)
+    const endTime = dayjs(store.worker_detail.created).add(store.exam_detail.minute, 'minutes')
+    const diff = endTime.diff(dayjs(), 'seconds')
+    return diff > 0 ? diff : 0
+  })
 
-const leftTime = computed(()=>{
-  console.log(store.worker_detail.created)
-  const endTime = dayjs(store.worker_detail.created).add(store.exam_detail.minute, 'minutes')
-  const diff = endTime.diff(dayjs(), 'seconds')
-  return diff>0 ? diff : 0;
-})
+  const countDown = ref(null)
 
-const countDown = ref(null)
+  const endWarningVisible = ref(false)
 
-const endWarningVisible = ref(false)
-
-const endAttempt = ()=>{
-  store.finishLoading = true
-  store._finish_attempt(()=>{
-    if(examVideoStore.workerExamId){
-      examVideoStore.stopCanvasRender()
-      examVideoStore._stopCameraAndFinishVideo(true, ()=>{
-        // endWarningVisible.value=true
+  const endAttempt = () => {
+    store.finishLoading = true
+    store._finish_attempt(() => {
+      if (examVideoStore.workerExamId) {
+        examVideoStore.stopCanvasRender()
+        examVideoStore._stopCameraAndFinishVideo(true, () => {
+          // endWarningVisible.value=true
+          store.finishLoading = false
+          // router.push(Utils.routeAttestationPathMaker(AppPaths.Exam))
+        })
+      } else {
         store.finishLoading = false
         // router.push(Utils.routeAttestationPathMaker(AppPaths.Exam))
+      }
+    })
+  }
 
-      })
-    }
-    else{
-      store.finishLoading = false
-      // router.push(Utils.routeAttestationPathMaker(AppPaths.Exam))
-    }
+  const backToList = () => {
+    examVideoStore.isFinished = true
+    router.push(Utils.routeAttestationPathMaker(AppPaths.Exam))
+  }
 
+  const goBack = () => {
+    router.push(Utils.routeAttestationPathMaker(AppPaths.Exam))
+  }
+
+  const onChangeVisible = (v) => {
+    if (!v && !store.result) return
+    goBack()
+  }
+
+  onUnmounted(() => {
+    store.result = null
   })
-
-}
-
-const backToList = ()=>{
-  examVideoStore.isFinished = true
-  router.push(Utils.routeAttestationPathMaker(AppPaths.Exam))
-}
-
-const goBack = ()=>{
-  router.push(Utils.routeAttestationPathMaker(AppPaths.Exam))
-}
-
-const onChangeVisible = (v)=>{
-  if(!v && !store.result)  return
-  goBack()
-}
-
-
-onUnmounted(()=>{
-  store.result=null
-})
-onBeforeRouteLeave((to, from, next) => {
-  if(!examVideoStore.workerExamId || examVideoStore.isFinished) {
-    next()
-    return
-  }
-  const answer = window.confirm(t('content.confirmExit'));
-  if (answer) {
-    examVideoStore.isUnMounted = true
-    examVideoStore.stopCanvasRender()
-    examVideoStore._stopCameraAndFinishVideo()
-    next()
-  } else {
-    next(false)
-  }
-})
-
+  onBeforeRouteLeave((to, from, next) => {
+    if (!examVideoStore.workerExamId || examVideoStore.isFinished) {
+      next()
+      return
+    }
+    const answer = window.confirm(t('content.confirmExit'))
+    if (answer) {
+      examVideoStore.isUnMounted = true
+      examVideoStore.stopCanvasRender()
+      examVideoStore._stopCameraAndFinishVideo()
+      next()
+    } else {
+      next(false)
+    }
+  })
 </script>
 <template>
   <div class="h-full">
     <UIModal
-        :title="store?.result ? $t('examPage.result') : $t('content.warning')"
-        :width="500"
-        v-model:visible="endWarningVisible"
-        @update:visible="onChangeVisible"
-        :persistent="true"
+      :title="store?.result ? $t('examPage.result') : $t('content.warning')"
+      :width="500"
+      v-model:visible="endWarningVisible"
+      @update:visible="onChangeVisible"
+      :persistent="true"
     >
       <n-spin :show="store.finishLoading">
         <div class="flex flex-col gap-3" v-if="!store.result">
-          <p>{{$t('solveExamPage.endWarning')}}</p>
-          <n-alert type="warning" v-if="store.questions.findIndex(i=>!i.result)!==-1">
-            <p>{{$t('solveExamPage.notAnswered', {n: (()=>{
-                let k = 0;
-                for(let i of store.questions){
-                  k+=!i.result
-                }
-                return k
-              })()})}}</p>
+          <p>{{ $t('solveExamPage.endWarning') }}</p>
+          <n-alert type="warning" v-if="store.questions.findIndex((i) => !i.result) !== -1">
+            <p>
+              {{
+                $t('solveExamPage.notAnswered', {
+                  n: (() => {
+                    let k = 0
+                    for (let i of store.questions) {
+                      k += !i.result
+                    }
+                    return k
+                  })()
+                })
+              }}
+            </p>
           </n-alert>
           <n-space justify="end">
-            <n-button class="px-10!" @click="endAttempt" type="success">{{$t('content.yes')}}</n-button>
-            <n-button class="px-10!" @click="endWarningVisible=false" type="error">{{$t('content.no')}}</n-button>
+            <n-button class="px-10!" @click="endAttempt" type="success">{{
+              $t('content.yes')
+            }}</n-button>
+            <n-button class="px-10!" @click="endWarningVisible = false" type="error">{{
+              $t('content.no')
+            }}</n-button>
           </n-space>
         </div>
-        <div
-            v-else
-            class="flex items-center flex-col gap-2"
-        >
+        <div v-else class="flex items-center flex-col gap-2">
           <n-icon class="text-primary" size="84" :component="DocumentRibbon20Regular" />
-          <p class="text-primary">{{Utils.combineFullName(store.worker_detail?.user?.worker)}}</p>
-          <h3 class="text-xl font-bold text-textColor3">{{$t('examPage.endSub')}}</h3>
-          <p class="text-6xl font-bold text-">{{store.result?.result || 0}}</p>
-          <p class="text-danger mt-10!">{{$t('examPage.endHead')}}</p>
-          <n-button @click="backToList" class="!w-full" type="error">{{$t('content.backToList')}}</n-button>
+          <p class="text-primary">{{ Utils.combineFullName(store.worker_detail?.user?.worker) }}</p>
+          <h3 class="text-xl font-bold text-textColor3">{{ $t('examPage.endSub') }}</h3>
+          <p class="text-6xl font-bold text-">{{ store.result?.result || 0 }}</p>
+          <p class="text-danger mt-10!">{{ $t('examPage.endHead') }}</p>
+          <n-button @click="backToList" class="!w-full" type="error">{{
+            $t('content.backToList')
+          }}</n-button>
         </div>
       </n-spin>
     </UIModal>
     <n-spin :show="store.loading" class="h-full">
-      <div v-if="store.exam_detail && store.exam_token" class="h-full flex flex-col-reverse sm:flex-row gap-3">
-        <div class="flex flex-col gap-3 grow overflow-y-auto p-3 scroll-smooth question__section lg:mx-10 xl:mx-20">
+      <div
+        v-if="store.exam_detail && store.exam_token"
+        class="h-full flex flex-col-reverse sm:flex-row gap-3"
+      >
+        <div
+          class="flex flex-col gap-3 grow overflow-y-auto p-3 scroll-smooth question__section lg:mx-10 xl:mx-20"
+        >
           <div class="shrink-0 flex gap-3 flex-wrap">
             <div class="shrink-0 flex items-center basis-[200px] grow md:grow-0">
-              <img :src="store.worker_detail.user.worker.photo || useAppSetting.noAvailableImage" alt="img" class="h-[200px] object-contain rounded-md">
+              <img
+                :src="store.worker_detail.user.worker.photo || useAppSetting.noAvailableImage"
+                alt="img"
+                class="h-[200px] object-contain rounded-md"
+              />
             </div>
             <n-table class="grow shrink-0 basis-[230px]" size="small">
               <tr>
@@ -168,7 +184,7 @@ onBeforeRouteLeave((to, from, next) => {
               </tr>
             </n-table>
 
-            <n-table class="grow shrink-0 basis-[230px] " size="small">
+            <n-table class="grow shrink-0 basis-[230px]" size="small">
               <tr>
                 <th>{{ $t('solveExamPage.variant') }}</th>
                 <td>{{ store.exam_detail.variant }}</td>
@@ -190,79 +206,77 @@ onBeforeRouteLeave((to, from, next) => {
                 <td>{{ store.questions.length }}</td>
               </tr>
             </n-table>
-
           </div>
           <QuestionCard
-              v-for="(question, idx) in store.questions"
-              :id="`question-${idx+1}`"
-              :key="idx"
-              :question="question"
-              :number="idx+1"
-              class="shrink-0"
+            v-for="(question, idx) in store.questions"
+            :id="`question-${idx + 1}`"
+            :key="idx"
+            :question="question"
+            :number="idx + 1"
+            class="shrink-0"
           />
         </div>
         <div
-            class="bg-surface-section flex shrink-0 grow-1 justify-between sm:flex-col basis-auto md:basis-[300px] xl:basis-[400px] p-3">
+          class="bg-surface-section flex shrink-0 grow-1 justify-between sm:flex-col basis-auto md:basis-[300px] xl:basis-[400px] p-3"
+        >
           <div class="flex justify-between items-center">
             <vue-countdown
-                v-if="!store.loading && !store.result"
-                ref="countDown"
-                v-slot="{ hours, minutes, seconds }"
-                :time="leftTime*1000"
-                @end="endAttempt"
+              v-if="!store.loading && !store.result"
+              ref="countDown"
+              v-slot="{ hours, minutes, seconds }"
+              :time="leftTime * 1000"
+              @end="endAttempt"
             >
               <div class="text-xl text-textColor2 font-bold flex">
                 <p class="py-1 px-2 drop-shadow-lg border-surface-line border rounded-md">
                   {{ hours }}
                 </p>
-                <p class="py-1 px-2">
-                  :
-                </p>
+                <p class="py-1 px-2">:</p>
                 <p class="py-1 px-2 drop-shadow-lg border-surface-line border rounded-md">
                   {{ minutes }}
                 </p>
-                <p class="py-1 px-2">
-                  :
-                </p>
+                <p class="py-1 px-2">:</p>
                 <p class="py-1 px-2 drop-shadow-lg border-surface-line border rounded-md">
                   {{ seconds }}
                 </p>
               </div>
             </vue-countdown>
           </div>
-          <n-divider v-if="!store.loading && !store.result" class="hidden! sm:block!"/>
+          <n-divider v-if="!store.loading && !store.result" class="hidden! sm:block!" />
           <div
-              class="grow gap-2 grid-cols-[repeat(auto-fill,minmax(30px,1fr))] md:grid-cols-[repeat(auto-fill,minmax(40px,1fr))] grid-rows-[repeat(auto-fill,30px)] md:grid-rows-[repeat(auto-fill,40px)] hidden sm:grid">
-            <a v-for="(question, idx) in store.questions"
-               :key="idx"
-               :href="`#question-${idx+1}`"
-               class="text-lg flex justify-center items-center bg-surface-section border border-surface-line shadow-sm rounded-lg"
-               :class="{'bg-primary! text-white': !!question.result}"
+            class="grow gap-2 grid-cols-[repeat(auto-fill,minmax(30px,1fr))] md:grid-cols-[repeat(auto-fill,minmax(40px,1fr))] grid-rows-[repeat(auto-fill,30px)] md:grid-rows-[repeat(auto-fill,40px)] hidden sm:grid"
+          >
+            <a
+              v-for="(question, idx) in store.questions"
+              :key="idx"
+              :href="`#question-${idx + 1}`"
+              class="text-lg flex justify-center items-center bg-surface-section border border-surface-line shadow-sm rounded-lg"
+              :class="{ 'bg-primary! text-white': !!question.result }"
             >
               {{ idx + 1 }}
             </a>
           </div>
           <div>
             <n-button
-                @click="endWarningVisible=true"
-                class="md:h-14! md:text-xl!"
-                block
-                size="large"
-                type="primary"
-                :loading="store.finishLoading"
-                v-if="!store.result"
+              @click="endWarningVisible = true"
+              class="md:h-14! md:text-xl!"
+              block
+              size="large"
+              type="primary"
+              :loading="store.finishLoading"
+              v-if="!store.result"
             >
-                {{  $t('content.finish') }}
+              {{ $t('content.finish') }}
             </n-button>
             <n-button
-                @click="goBack()"
-                class="md:h-14! md:text-xl!"
-                block
-                size="large"
-                tertiary
-                v-else
+              @click="goBack()"
+              class="md:h-14! md:text-xl!"
+              block
+              size="large"
+              tertiary
+              v-else
             >
-              {{$t('content.return')}}
+              {{ $t('content.return') }}
               <template #icon>
                 <n-icon :component="ChevronCircleLeft32Regular" />
               </template>
@@ -271,11 +285,13 @@ onBeforeRouteLeave((to, from, next) => {
         </div>
       </div>
       <div v-else-if="!store.loading" class="h-full w-full flex justify-center items-center">
-        <div class="bg-surface-section rounded-md p-3 flex flex-col items-center gap-3 border border-surface-line">
+        <div
+          class="bg-surface-section rounded-md p-3 flex flex-col items-center gap-3 border border-surface-line"
+        >
           <n-icon class="text-red-700" :component="ShieldError16Filled" :size="100" />
-          <p class="text-xl font-bold text-center">{{$t('solveExamPage.notAllowed')}}</p>
+          <p class="text-xl font-bold text-center">{{ $t('solveExamPage.notAllowed') }}</p>
           <n-button type="primary" @click="router.back()">
-            {{$t('content.return')}}
+            {{ $t('content.return') }}
             <template #icon>
               <n-icon :component="ArrowStepBack16Regular" />
             </template>
@@ -283,30 +299,29 @@ onBeforeRouteLeave((to, from, next) => {
         </div>
       </div>
     </n-spin>
-    <CameraApp/>
+    <CameraApp />
   </div>
 </template>
 <style lang="scss" scoped>
-.question__section {
+  .question__section {
+    &::-webkit-scrollbar {
+      width: 8px;
+    }
 
-  &::-webkit-scrollbar {
-    width: 8px;
-  }
+    /* Track */
+    &::-webkit-scrollbar-track {
+      background: #f1f1f1;
+    }
 
-  /* Track */
-  &::-webkit-scrollbar-track {
-    background: #f1f1f1;
-  }
+    /* Handle */
+    &::-webkit-scrollbar-thumb {
+      background: #888;
+      border-radius: 5px;
+    }
 
-  /* Handle */
-  &::-webkit-scrollbar-thumb {
-    background: #888;
-    border-radius: 5px;
+    /* Handle on hover */
+    &::-webkit-scrollbar-thumb:hover {
+      background: #555;
+    }
   }
-
-  /* Handle on hover */
-  &::-webkit-scrollbar-thumb:hover {
-    background: #555;
-  }
-}
 </style>

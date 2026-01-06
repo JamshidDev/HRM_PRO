@@ -1,37 +1,36 @@
 <script setup>
-import {useAcademicDegreeStore} from "@/store/modules/index.js"
-import Table from "./ui/Table.vue"
-import createForm from "./ui/createForm.vue"
-import {UIDrawer} from "@/components/index.js"
-import {useRoute} from "vue-router"
+  import { useAcademicDegreeStore } from '@/store/modules/index.js'
+  import Table from './ui/Table.vue'
+  import createForm from './ui/createForm.vue'
+  import { UIDrawer } from '@/components/index.js'
+  import { useRoute } from 'vue-router'
 
+  const store = useAcademicDegreeStore()
+  const route = useRoute()
 
-
-const store = useAcademicDegreeStore()
-const route = useRoute()
-
-
-onMounted(()=>{
-  store.uuid = route.query.id
-  store._index()
-})
+  onMounted(() => {
+    store.uuid = route.query.id
+    store._index()
+  })
 </script>
 
 <template>
   <div>
-    <Table/>
+    <Table />
     <UIDrawer
-        :visible="store.visible"
-        @update:visible="(v)=>store.visible = v"
-        :title="store.visibleType? $t('academicDegreePage.createTitle') : $t('academicDegreePage.updateTitle')"
+      :visible="store.visible"
+      @update:visible="(v) => (store.visible = v)"
+      :title="
+        store.visibleType
+          ? $t('academicDegreePage.createTitle')
+          : $t('academicDegreePage.updateTitle')
+      "
     >
       <template #content>
-        <createForm/>
+        <createForm />
       </template>
     </UIDrawer>
   </div>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

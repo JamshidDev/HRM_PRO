@@ -1,6 +1,7 @@
 export const TurnstileBuildingPage = import('./building/TurnstileBuildingPage.vue')
 export const TurnstileTerminalPage = import('./terminal/TerminalPage.vue')
-export const TurnstileOrganizationPage = import('./organizationTerminal/OrganizationTerminalPage.vue')
+export const TurnstileOrganizationPage =
+  import('./organizationTerminal/OrganizationTerminalPage.vue')
 export const TurnstileTerminalUserPage = import('./terminalUser/TurnstileTerminalUserPage.vue')
 export const TurnstileWorkDurationPage = import('./workDuration/WorkDurationPage.vue')
 export const TurnstileAccessLevelsPage = import('./accessLevels/accessLevelsPage.vue')
