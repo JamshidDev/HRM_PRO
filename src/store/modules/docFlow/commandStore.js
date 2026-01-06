@@ -88,17 +88,6 @@ const initialPayload32 = () => ({
   warning_date: null,
   warning_number: null
 })
-const initialPayload = () => ({
-  workers: [],
-  worker: null,
-  organization_id: [],
-  command_date: null,
-  command_number: null,
-  command_type: null,
-  confirmations: [],
-  director_id: null,
-  finance_id: null,
-})
 
 
 export const useCommandStore = defineStore('commandStore', {
@@ -113,7 +102,17 @@ export const useCommandStore = defineStore('commandStore', {
     totalItems: 0,
     structureCheck: [],
 
-    payload: initialPayload(),
+    payload: {
+      workers: [],
+      worker: null,
+      organization_id: [],
+      command_date: null,
+      command_number: null,
+      command_type: null,
+      confirmations: [],
+      director_id: null,
+      finance_id: null,
+    },
     form_32: initialPayload32(),
     form_34: initialPayload34(),
     form_46: initialPayload46(),
@@ -372,7 +371,11 @@ export const useCommandStore = defineStore('commandStore', {
       this.form_47.base = null
     },
     resetPayload(){
-      this.payload = initialPayload()
+      this.payload.workers = []
+      this.payload.worker = null
+      this.payload.organization_id = []
+      this.payload.command_number = null
+      this.payload.command_type = null
       this.payload.command_date = today
     },
     resetPayload46(){

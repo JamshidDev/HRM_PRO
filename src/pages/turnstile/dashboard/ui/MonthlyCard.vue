@@ -46,7 +46,7 @@
           </div>
         </div>
         <div class="col-span-6 z-10">
-          <BarChart />
+<!--          <BarChart />-->
         </div>
       </div>
     </n-spin>

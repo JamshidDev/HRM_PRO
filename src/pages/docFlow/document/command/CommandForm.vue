@@ -1,5 +1,5 @@
 <script setup>
-  import { DocumentBulletList20Filled, Drag24Filled, DrawText24Regular } from '@vicons/fluent'
+  import { DocumentBulletList20Filled, Drag24Filled, DrawText24Regular, DismissCircle28Filled } from '@vicons/fluent'
   import validationRules from '@/utils/validationRules.js'
   import { useCommandStore, useComponentStore } from '@/store/modules/index.js'
   import { NAvatar } from 'naive-ui'
@@ -54,9 +54,6 @@
   const vacationForm_72 = ref(null)
   const vacationForm_73 = ref(null)
 
-  const onFocusConf = () => {
-    componentStore._confirmations()
-  }
   const renderLabel = (option) => {
     return [
       h(
@@ -437,6 +434,30 @@
     store._workers()
   }
 
+  const fetchConfirmation = () => {
+    if(componentStore.confirmationList.length>0) return
+    componentStore._confirmations()
+  }
+
+  const onChangeDraggle = () => {
+    store.payload.confirmations = store.sortableConfirmations.map((v) => v.id)
+  }
+
+  const onChangeConfirmation = () => {
+    store.sortableConfirmations = confirmationList.value
+        .filter((v) => store.payload.confirmations.includes(v.id))
+        .map((v) => ({
+          id: v.id,
+          data: {
+            firstName: v.first_name,
+            lastName: v.last_name,
+            middleName: v.middle_name,
+            photo: v.photo,
+            position: v?.position || ''
+          }
+        }))
+  }
+
   watchEffect(() => {
     if (store.payload.director_id) {
       store.payload.confirmations = store.payload.confirmations.filter(
@@ -446,25 +467,13 @@
         (v) => v.id !== store.payload.director_id
       )
     }
-
-    store.sortableConfirmations = confirmationList.value
-      .filter((v) => store.payload.confirmations.includes(v.id))
-      .map((v) => ({
-        id: v.id,
-        data: {
-          firstName: v.first_name,
-          lastName: v.last_name,
-          middleName: v.middle_name,
-          photo: v.photo,
-          position: v?.position || ''
-        }
-      }))
   })
 
   onMounted(() => {
     componentStore._commandTypes()
     store.resetForm()
     componentStore._structures()
+    fetchConfirmation()
   })
 </script>
 
@@ -649,7 +658,6 @@
           <div class="col-span-12 mt-4">
             <n-form-item :label="$t(`documentPage.command.form.director_id`)" path="director_id">
               <n-select
-                @focus="onFocusConf"
                 value-field="id"
                 label-field="last_name"
                 v-model:value="store.payload.director_id"
@@ -667,14 +675,14 @@
                   value-field="id"
                   label-field="last_name"
                   v-model:value="store.payload.finance_id"
-                  :options="componentStore.confirmationList"
+                  :options="confirmationList"
                   :loading="componentStore.confirmationLoading"
                   :render-label="renderLabel"
                   :render-tag="renderValue"
               />
             </n-form-item>
           </div>
-          <div class="col-span-12 mt-4">
+          <div class="col-span-12">
             <n-form-item :label="$t(`documentPage.command.form.confirm`)" path="confirmations">
               <n-select
                 :disabled="!store.payload.director_id"
@@ -685,6 +693,10 @@
                 :options="confirmationList"
                 :loading="componentStore.confirmationLoading"
                 :render-label="renderLabel"
+                :render-tag="renderValue"
+                @update:value="onChangeConfirmation"
+                :max-tag-count="1"
+
               />
             </n-form-item>
           </div>
@@ -704,7 +716,7 @@
               </n-checkbox>
             </div>
             <div class="col-span-12">
-              <VueDraggable v-model="store.sortableConfirmations">
+              <VueDraggable v-model="store.sortableConfirmations" @end="onChangeDraggle">
                 <div
                   v-for="(item, index) in store.sortableConfirmations"
                   :key="item.id"
@@ -719,7 +731,7 @@
                     </n-icon>
                   </div>
 
-                  <div class="w-[calc(100%-60px)] select-none">
+                  <div class="w-[calc(100%-60px)] select-none flex">
                     <UIUser class="!w-full" :data="item.data" :hide-tooltip="true" :short="false" />
                   </div>
                   <template v-if="store.oneByOne">
@@ -729,6 +741,12 @@
                       </template>
                       <span class="font-bold text-lg">{{ index + 1 }}</span>
                     </n-button>
+                    <n-button type="error" circle secondary>
+                      <template #icon>
+                        <DismissCircle28Filled />
+                      </template>
+                    </n-button>
+
                   </template>
                 </div>
               </VueDraggable>
