@@ -44,17 +44,7 @@
   <UIPageContent>
     <Filter />
     <Table @openOffice="openCommand" />
-    <UIModal
-      :title="
-        store.visibleType
-          ? $t('documentPage.command.createTitle')
-          : $t('documentPage.command.updateTitle')
-      "
-      :width="1200"
-      v-model:visible="store.visible"
-    >
-      <CommandForm />
-    </UIModal>
+    <CommandForm />
     <UIOfficeApp ref="officeAppRef" />
     <UIConfirmByFile
       :model="Utils.documentModels.command"
