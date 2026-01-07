@@ -18,8 +18,8 @@ const _refresh_worker = async (payload) => {
   return await axios.post(`/v1/turnstile/hik-central/workers/refresh`, payload.data)
 }
 
-const _access_levels = async (params) => {
-  return await axios.get(`/v1/turnstile/hik-central/workers/access-levels`, { params })
+const _access_levels = async (payload) => {
+  return await axios.get(`/v1/turnstile/hik-central/workers/access-levels`, { params: payload.params })
 }
 
 const _updateFace = async (payload) => {

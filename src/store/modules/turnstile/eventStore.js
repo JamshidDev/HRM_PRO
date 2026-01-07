@@ -30,8 +30,7 @@ export const useEventStore = defineStore('eventStore', {
       search: null,
       organizations: [],
       direction: null,
-      start: null,
-      end: null,
+      date: null,
       access_levels: []
     },
     cardList: [
@@ -178,8 +177,7 @@ export const useEventStore = defineStore('eventStore', {
         ...this.params,
         organizations: this.params.organizations.map((v) => v.id).toString() || undefined,
         access_levels: this.params.access_levels.toString() || undefined,
-        start: this.params.start ? Utils.timeWithMonth(this.params.start) : undefined,
-        end: this.params.end ? Utils.timeWithMonth(this.params.end) : undefined
+        date: Utils.timeToZone(this.params.date) || undefined
       }
     },
     _indexJob() {

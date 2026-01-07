@@ -24,8 +24,8 @@
                   med_number: store.form_32.warning_number || null
                 }
               : {
-                  warning_date: Utils.timeToZone(store.form_32.warning_date),
-                  warning_number: store.form_32.warning_number || null
+                  warning_date:isShowWarningItem.value? Utils.timeToZone(store.form_32.warning_date) : undefined,
+                  warning_number:isShowWarningItem.value? store.form_32.warning_number || null : undefined,
                 }),
             pension_count: showPension.value ? store.form_32.pension_count : undefined,
             salary_withholding: showSalaryWithholding.value
@@ -142,6 +142,8 @@
 
   const isMedCommand = computed(() => store.payload.command_type === 38)
 
+  const isShowWarningItem = computed(() => store.payload.command_type !== 33)
+
   defineExpose({
     onSubmit
   })
@@ -154,42 +156,45 @@
     :rules="validationRules.form_32"
     class="grid grid-cols-12 mb-8 gap-x-4 gap-y-2 border border-surface-line border-dashed p-2 rounded-md bg-surface-ground"
   >
-    <div class="col-span-12 md:col-span-6 lg:col-span-3">
-      <n-form-item
-        :show-feedback="false"
-        :label="
+    <template v-if="isShowWarningItem">
+      <div class="col-span-12 md:col-span-6 lg:col-span-3">
+        <n-form-item
+            :show-feedback="false"
+            :label="
           $t(
             isMedCommand
               ? `documentPage.command.form.med_number`
               : `documentPage.command.form.warning_number`
           )
         "
-        path="warning_number"
-      >
-        <n-input class="!w-full" type="text" v-model:value="store.form_32.warning_number" />
-      </n-form-item>
-    </div>
-    <div class="col-span-12 md:col-span-6 lg:col-span-3">
-      <n-form-item
-        :show-feedback="false"
-        :label="
+            path="warning_number"
+        >
+          <n-input class="!w-full" type="text" v-model:value="store.form_32.warning_number" />
+        </n-form-item>
+      </div>
+      <div class="col-span-12 md:col-span-6 lg:col-span-3">
+        <n-form-item
+            :show-feedback="false"
+            :label="
           $t(
             isMedCommand
               ? `documentPage.command.form.med_date`
               : `documentPage.command.form.warning_date`
           )
         "
-        path="warning_date"
-      >
-        <n-date-picker
-          class="w-full"
-          v-model:value="store.form_32.warning_date"
-          type="date"
-          :format="useAppSetting.datePicketFormat"
-        />
-      </n-form-item>
-    </div>
-    <div class="col-span-12 md:col-span-6 lg:col-span-6"></div>
+            path="warning_date"
+        >
+          <n-date-picker
+              class="w-full"
+              v-model:value="store.form_32.warning_date"
+              type="date"
+              :format="useAppSetting.datePicketFormat"
+          />
+        </n-form-item>
+      </div>
+      <div class="col-span-12 md:col-span-6 lg:col-span-6"></div>
+    </template>
+
 
     <div class="col-span-12 md:col-span-6 lg:col-span-3">
       <n-form-item

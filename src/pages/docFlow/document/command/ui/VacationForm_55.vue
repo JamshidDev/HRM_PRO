@@ -4,6 +4,7 @@
   import Utils from '../../../../../utils/Utils.js'
   import i18n from '@/i18n/index.js'
   import { useAppSetting } from '@/utils/index.js'
+  import UIHelper from "@utils/UIHelper.js"
 
   const store = useCommandStore()
   const componentStore = useComponentStore()
@@ -15,14 +16,15 @@
   }
 
   const onSubmit = (mainData) => {
-    const checkForm = store.vacations55.every((v) => v.from && v.to)
+    const checkForm = store.vacations55.every((v) => v.from && v.work_day)
     if (checkForm) {
       const data = store.vacations55.map((v) => ({
         id: v.id,
         from: Utils.timeToZone(v.from),
-        from_time: Utils.timeOnlyHour(v.from_time) || undefined,
-        to_time: Utils.timeOnlyHour(v.to_time) || undefined,
-        to: Utils.timeToZone(v.to)
+        from_time: Utils.timeOnlyHour(v.from_time=== 0? null: v.from_time) || undefined,
+        to_time: Utils.timeOnlyHour(v.to_time === 0? null : v.to_time) || undefined,
+        to: Utils.timeToZone(v.to=== 0? null : v.to) || Utils.timeToZone(v.from),
+        work_day: Utils.timeToZone(v.work_day),
       }))
 
       return {
@@ -50,6 +52,82 @@
     })
   }
 
+  const options = [
+    {
+      id: 1,
+      name: t('commandPage.form_55.range_with_time'),
+      position: "DD.MM.YYYY HH:mm → DD.MM.YYYY HH:mm",
+    },
+    {
+      id: 2,
+      name: t('commandPage.form_55.one_day'),
+      position: "DD.MM.YYYY",
+      example: "10.01.2026",
+    },
+    {
+      id: 3,
+      name: t('commandPage.form_55.multiple_days'),
+      position: "DD.MM.YYYY → DD.MM.YYYY",
+      example: "10.01.2026 → 15.01.2026",
+    },
+    {
+      id: 4,
+      name: t('commandPage.form_55.hourly'),
+      position: "DD.MM.YYYY HH:mm – HH:mm",
+      example: "10.01.2026 14:00 – 18:00",
+    },
+  ]
+
+
+  const onChangeGroup = (group, idx) => {
+    const payloadConfig = {
+      1:{
+        from: null,
+        to: null,
+        from_time: null,
+        to_time: null,
+
+      },
+      2:{
+        from: null,
+        to: 0,
+        from_time: 0,
+        to_time: 0,
+      },
+      3:{
+        from: null,
+        to: null,
+        from_time: 0,
+        to_time: 0,
+      },
+      4:{
+        from: null,
+        to: 0,
+        from_time: null,
+        to_time: null,
+      },
+    }
+    const activePayload = payloadConfig[group]
+
+    store.vacations55[idx] ={
+      ...store.vacations55[idx],
+      ...activePayload,
+      work_day: null
+    }
+
+  }
+
+  const onChangeDate = (index) => {
+    const activeDate = store.vacations55[index].to === 0? store.vacations55[index].from : store.vacations55[index].to
+    if(!activeDate){
+      store.vacations55[index].work_day = null
+      return
+    }
+    const nextDay = new Date(activeDate)
+    nextDay.setDate(nextDay.getDate() + 1)
+    store.vacations55[index].work_day = new Date(nextDay).getTime()
+  }
+
   defineExpose({
     onSubmit
   })
@@ -63,7 +141,7 @@
   <div
     v-for="(item, idx) in store.vacations55"
     :key="idx"
-    class="grid grid-cols-12 mb-8 gap-x-4 border border-surface-line border-dashed p-2 rounded-md bg-surface-ground"
+    class="grid grid-cols-12 mb-8 gap-x-2 border border-surface-line border-dashed p-2 rounded-md bg-surface-ground"
   >
     <div class="col-span-12">
       <template v-if="item?.lastVacation && item?.lastVacation?.period_from">
@@ -135,39 +213,69 @@
         {{ $t('documentPage.command.form.removeWorker') }}</n-button
       >
     </div>
-    <div class="col-span-12 md:col-span-6 lg:col-span-3">
+    <div class="col-span-12 md:col-span-6 lg:col-span-2">
+      <n-form-item :show-feedback="false" :label="$t(`content.type`)" path="from">
+        <n-select
+            v-model:value="item.group"
+            :options="options"
+            label-field="name"
+            value-field="id"
+            :render-label="UIHelper.selectRender.label"
+            :render-tag="UIHelper.selectRender.value"
+            @update:value="onChangeGroup(item.group, idx)"
+
+        />
+      </n-form-item>
+
+    </div>
+
+    <div v-if="item.from !== 0" class="col-span-12 md:col-span-6 lg:col-span-2">
       <n-form-item :show-feedback="false" :label="$t(`commandPage.form_55.from`)" path="from">
         <n-date-picker
           class="w-full"
           v-model:value="item.from"
           type="date"
           :format="useAppSetting.datePicketFormat"
+          @update:value="onChangeDate(idx)"
+
         />
       </n-form-item>
     </div>
-    <div class="col-span-12 md:col-span-6 lg:col-span-3">
+    <div v-if="item.from_time !== 0" class="col-span-12 md:col-span-6 lg:col-span-2">
       <n-form-item
         :show-feedback="false"
         :label="$t(`commandPage.form_55.from_time`)"
         path="from_time"
       >
-        <n-time-picker class="w-full" v-model:value="item.from_time" format="h:mm a" />
+        <n-time-picker format="HH:mm" class="w-full" v-model:value="item.from_time" />
       </n-form-item>
     </div>
-    <div class="col-span-12 md:col-span-6 lg:col-span-3">
+    <div v-if="item.to !== 0" class="col-span-12 md:col-span-6 lg:col-span-2">
       <n-form-item :show-feedback="false" :label="$t(`commandPage.form_55.to`)" path="to">
         <n-date-picker
           class="w-full"
           v-model:value="item.to"
           type="date"
           :format="useAppSetting.datePicketFormat"
+          @update:value="onChangeDate(idx)"
         />
       </n-form-item>
     </div>
-    <div class="col-span-12 md:col-span-6 lg:col-span-3">
+    <div v-if="item.to_time !== 0" class="col-span-12 md:col-span-6 lg:col-span-2">
       <n-form-item :show-feedback="false" :label="$t(`commandPage.form_55.to_time`)" path="to_time">
-        <n-time-picker class="w-full" v-model:value="item.to_time" format="h:mm a" />
+        <n-time-picker format="HH:mm" class="w-full" v-model:value="item.to_time" />
       </n-form-item>
     </div>
+    <div class="col-span-12 md:col-span-6 lg:col-span-2">
+      <n-form-item :show-feedback="false" :label="$t(`commandPage.form_55.work_day`)" path="work_date">
+        <n-date-picker
+            class="w-full"
+            v-model:value="item.work_day"
+            type="date"
+            :format="useAppSetting.datePicketFormat"
+        />
+      </n-form-item>
+    </div>
+
   </div>
 </template>

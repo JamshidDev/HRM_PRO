@@ -15,7 +15,9 @@
   const componentStore = useComponentStore()
 
   const showCheckBox = ref(false)
+
   const confirmationList = ref([])
+  const financeList = ref([])
 
   const props = defineProps({
     callBack: {
@@ -71,9 +73,6 @@
     store.workers = []
     store.payload.worker_position_id = null
     componentStore.workerParams.organization_id = v.length > 0 ? v?.[0]?.id : null
-  }
-  const onFocusConf = () => {
-    componentStore._confirmations()
   }
   const renderLabel = (option) => {
     return [
@@ -131,33 +130,13 @@
         status: 'contract-additional',
         type: store.payload.type
       }
-      componentStore._commandTypes(data)
+      componentStore._commandTypes(data, (id)=>{
+        store.payload.command_type = id
+      })
     }
-
-    store.sortableConfirmations = confirmationList.value
-      .filter((v) => store.payload.confirmations.includes(v.id))
-      .map((v) => ({
-        id: v.id,
-        data: {
-          firstName: v.first_name,
-          lastName: v.last_name,
-          middleName: v.middle_name,
-          photo: v.photo,
-          position: v?.position || ''
-        }
-      }))
   })
 
   watchEffect(() => {
-    if (store.payload.director_id) {
-      store.payload.confirmations = store.payload.confirmations.filter(
-        (v) => v !== store.payload.director_id
-      )
-      confirmationList.value = componentStore.confirmationList.filter(
-        (v) => v.id !== store.payload.director_id
-      )
-    }
-
     if (store.payload.type === 8) {
       store._getStructures()
     }
@@ -167,6 +146,57 @@
     if (!v) return
     store.payload.worker_position_id = null
     componentStore.onOpenWorkerEv(v)
+  }
+
+  const showPositionDate = computed(() => {
+    const show = [8].includes(store.payload.type)
+    if (!show) {
+      store.payload.position_date = null
+    }
+    return show
+  })
+
+  const showForm = computed(() =>
+      store.payload.type === null ? true : [1, 8].includes(store.payload.type)
+  )
+
+  const onChangeDraggle = () => {
+    store.payload.confirmations = store.sortableConfirmations.map((v) => v.id)
+  }
+  const fetchConfirmation = () => {
+    if(componentStore.confirmationList.length>0) return
+    componentStore._confirmations()
+  }
+  const onChangeConfirmation = () => {
+    fillSortableConfirmations()
+    syncConfirmationEv()
+  }
+  const syncConfirmationEv = () => {
+    if(store.payload.finance_id === store.payload.director_id) store.payload.finance_id = null
+    const ids = [store.payload.finance_id, store.payload.director_id]
+    financeList.value = componentStore.confirmationList.filter(v => v.id !== store.payload.director_id)
+    confirmationList.value = componentStore.confirmationList.filter(v => !ids.includes(v.id))
+
+    onRemoveEv(store.payload.finance_id)
+    onRemoveEv(store.payload.director_id)
+  }
+  const fillSortableConfirmations = () => {
+    store.sortableConfirmations = confirmationList.value
+        .filter((v) => store.payload.confirmations.includes(v.id))
+        .map((v) => ({
+          id: v.id,
+          data: {
+            firstName: v.first_name,
+            lastName: v.last_name,
+            middleName: v.middle_name,
+            photo: v.photo,
+            position: v?.position || ''
+          }
+        }))
+  }
+  const onRemoveEv = (id) =>{
+    store.sortableConfirmations = store.sortableConfirmations.filter(v=>v.id !== id)
+    store.payload.confirmations = store.payload.confirmations.filter(v=>v !== id)
   }
 
   onMounted(() => {
@@ -187,19 +217,10 @@
       componentStore._adContractType(componentStore.workerList[0].contractTypeId)
     }
     componentStore._structures()
-  })
 
-  const showPositionDate = computed(() => {
-    const show = [8].includes(store.payload.type)
-    if (!show) {
-      store.payload.position_date = null
-    }
-    return show
+    fetchConfirmation()
+    syncConfirmationEv()
   })
-
-  const showForm = computed(() =>
-    store.payload.type === null ? true : [1, 8].includes(store.payload.type)
-  )
 </script>
 
 <template>
@@ -463,7 +484,6 @@
         <div class="col-span-12">
           <n-form-item :label="$t(`documentPage.form.director`)" path="director_id">
             <n-select
-              @focus="onFocusConf"
               size="large"
               value-field="id"
               label-field="last_name"
@@ -472,6 +492,7 @@
               :loading="componentStore.confirmationLoading"
               :render-label="renderLabel"
               :render-tag="renderValue"
+              @update:value="syncConfirmationEv"
             />
           </n-form-item>
         </div>
@@ -526,7 +547,22 @@
               </n-form-item>
             </div>
             <div class="col-span-12">
-              <n-form-item :label="$t(`documentPage.command.form.confirm`)" path="director_id">
+              <n-form-item :label="$t(`documentPage.command.form.finance_id`)" path="finance_id">
+                <n-select
+                    :disabled="!store.payload.director_id"
+                    value-field="id"
+                    label-field="last_name"
+                    v-model:value="store.payload.finance_id"
+                    :options="financeList"
+                    :loading="componentStore.confirmationLoading"
+                    :render-label="renderLabel"
+                    :render-tag="renderValue"
+                    @update:value="syncConfirmationEv"
+                />
+              </n-form-item>
+            </div>
+            <div class="col-span-12">
+              <n-form-item :label="$t(`documentPage.command.form.confirm`)" path="confirmations">
                 <n-select
                   :disabled="!store.payload.director_id"
                   size="large"
@@ -536,6 +572,8 @@
                   :options="confirmationList"
                   :loading="componentStore.confirmationLoading"
                   :render-label="renderLabel"
+                  :render-tag="renderValue"
+                  @update:value="onChangeConfirmation"
                 />
               </n-form-item>
             </div>
@@ -555,7 +593,7 @@
                 </n-checkbox>
               </div>
               <div class="col-span-12">
-                <VueDraggable v-model="store.sortableConfirmations">
+                <VueDraggable @end="onChangeDraggle" v-model="store.sortableConfirmations">
                   <div
                     v-for="(item, index) in store.sortableConfirmations"
                     :key="item.id"

@@ -80,7 +80,8 @@ const buildAndDeploy = async () => {
                 const response = await axios.post(`${productionUrl}/v1/admin/deploy/upload`, formData, {
                     headers: {
                         ...formData.getHeaders(),
-                        'Authorization': 'Bearer '+token
+                        'Authorization': 'Bearer '+token,
+                        'X-Auth-Type': 'sanctum',
                     },
                 });
                 console.log(chalk.green.bold('Upload successful:', JSON.stringify(response.data)));

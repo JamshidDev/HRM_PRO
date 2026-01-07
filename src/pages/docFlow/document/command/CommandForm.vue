@@ -1,11 +1,11 @@
 <script setup>
-  import { DocumentBulletList20Filled, Drag24Filled, DrawText24Regular, DismissCircle28Filled } from '@vicons/fluent'
+  import { DocumentBulletList20Filled, Drag24Filled, DrawText24Regular, DismissCircle28Filled, Save16Regular, CalendarCancel16Regular, DismissCircle32Filled } from '@vicons/fluent'
   import validationRules from '@/utils/validationRules.js'
   import { useCommandStore, useComponentStore } from '@/store/modules/index.js'
   import { NAvatar } from 'naive-ui'
   import Utils from '@/utils/Utils.js'
   import VacationForm_41 from '@/pages/docFlow/document/command/ui/VacationForm_41.vue'
-  import {UISelect, SuperSelect, UIUser } from '@/components/index.js'
+  import {UISelect, SuperSelect, UIUser, UIModal} from '@/components/index.js'
   import EmptyForm from '@/pages/docFlow/document/command/ui/EmptyForm.vue'
   import CancelForm_32 from '@/pages/docFlow/document/command/ui/CancelForm_32.vue'
   import CancelCommandForm_34 from '@/pages/docFlow/document/command/ui/CancelCommandForm_34.vue'
@@ -35,6 +35,7 @@
 
   const formRef = ref(null)
   const confirmationList = ref([])
+  const financeList = ref([])
 
   const cancelForm_32 = ref(null)
   const cancelCommandForm_34 = ref(null)
@@ -301,7 +302,10 @@
         to: null,
         from_time: null,
         to_time: null,
-        lastVacation: null
+        lastVacation: null,
+        group:1,
+        work_day:null,
+
       })
     } else if (store.payload.workers.length < store.vacations55.length) {
       store.vacations55 = store.vacations55.filter((a) => store.payload.workers.includes(a.id))
@@ -318,7 +322,9 @@
         to: null,
         from_time: null,
         to_time: null,
-        lastVacation: null
+        lastVacation: null,
+        group:1,
+        work_day:null,
       }
     })
   }
@@ -444,6 +450,19 @@
   }
 
   const onChangeConfirmation = () => {
+    fillSortableConfirmations()
+    syncConfirmationEv()
+  }
+  const syncConfirmationEv = () => {
+    if(store.payload.finance_id === store.payload.director_id) store.payload.finance_id = null
+    const ids = [store.payload.finance_id, store.payload.director_id]
+    financeList.value = componentStore.confirmationList.filter(v => v.id !== store.payload.director_id)
+    confirmationList.value = componentStore.confirmationList.filter(v => !ids.includes(v.id))
+
+    onRemoveEv(store.payload.finance_id)
+    onRemoveEv(store.payload.director_id)
+  }
+  const fillSortableConfirmations = () => {
     store.sortableConfirmations = confirmationList.value
         .filter((v) => store.payload.confirmations.includes(v.id))
         .map((v) => ({
@@ -457,325 +476,415 @@
           }
         }))
   }
-
-  watchEffect(() => {
-    if (store.payload.director_id) {
-      store.payload.confirmations = store.payload.confirmations.filter(
-        (v) => v !== store.payload.director_id
-      )
-      confirmationList.value = componentStore.confirmationList.filter(
-        (v) => v.id !== store.payload.director_id
-      )
-    }
-  })
+  const onRemoveEv = (id) =>{
+    store.sortableConfirmations = store.sortableConfirmations.filter(v=>v.id !== id)
+    store.payload.confirmations = store.payload.confirmations.filter(v=>v !== id)
+  }
 
   onMounted(() => {
     componentStore._commandTypes()
     store.resetForm()
     componentStore._structures()
+
     fetchConfirmation()
+    syncConfirmationEv()
   })
 </script>
 
+
+
 <template>
-  <div style="height: calc(100vh - 120px)" class="overflow-y-auto overflow-x-hidden px-1">
-    <n-form
-      ref="formRef"
-      :model="store.payload"
-      :rules="validationRules.commandFrom"
-      class="grid grid-cols-12 gap-x-4"
-    >
-      <!--      Command header-->
-      <div class="col-span-12">
-        <div
-          class="grid grid-cols-12 gap-x-4 border border-surface-line border-dashed p-2 rounded-md bg-surface-ground"
-        >
-          <div class="col-span-12 md:col-span-6 lg:col-span-2">
-            <n-form-item
-              :label="$t(`documentPage.command.form.command_number`)"
-              path="command_number"
+  <UIModal
+      :width="1200"
+      v-model:visible="store.visible"
+  >
+    <template #header>
+      <div class="flex justify-between pb-2 px-4">
+        <h3 class="text-lg font-medium">{{store.visibleType
+            ? $t('documentPage.command.createTitle')
+            : $t('documentPage.command.updateTitle')}}</h3>
+        <div class="flex gap-4">
+          <div
+              class="
+    group
+    w-[40px]
+    hover:w-[120px]
+    transition-[width]
+    duration-500
+    ease-in-out
+    overflow-hidden
+  "
+          >
+            <n-button class="!w-full no-scale n-icon-mx-0" @click="onSubmit(true)" :loading="store.viewLoading" ghost>
+              <template #icon>
+                <DocumentBulletList20Filled />
+              </template>
+              <span
+                  class="
+        text-nowrap
+        opacity-0
+        translate-x-2
+        group-hover:opacity-100
+        group-hover:translate-x-0
+        transition-all
+        duration-300
+        delay-150 ml-2
+
+      "
+              >
+      {{$t('content.view')}}
+    </span>
+            </n-button>
+          </div>
+          <div
+              class="
+    group
+    w-[40px]
+    hover:w-[160px]
+    transition-[width]
+    duration-500
+    ease-in-out
+    overflow-hidden
+  "
+          >
+            <n-button
+                @click="onSubmit(false)"
+                :loading="store.saveLoading"
+                type="primary"
+                class="!w-full no-scale n-icon-mx-0"
             >
-              <n-input class="w-full" type="text" v-model:value="store.payload.command_number" />
-            </n-form-item>
+              <template #icon>
+                <Save16Regular />
+              </template>
+              <span
+                  class="
+        text-nowrap
+        opacity-0
+        translate-x-2
+        group-hover:opacity-100
+        group-hover:translate-x-0
+        transition-all
+        duration-300
+        delay-150 ml-2
+
+      "
+              >
+      {{$t('content.save')}}
+    </span>
+            </n-button>
           </div>
-          <div class="col-span-12 md:col-span-6 lg:col-span-2">
-            <n-form-item :label="$t(`documentPage.command.form.command_date`)" path="command_date">
-              <n-date-picker
-                class="w-full"
-                v-model:value="store.payload.command_date"
-                type="date"
-                :format="useAppSetting.datePicketFormat"
-              />
-            </n-form-item>
-          </div>
-          <div class="col-span-12 lg:col-span-8">
-            <n-form-item :label="$t(`documentPage.command.form.type`)" path="command_type">
-              <n-select
-                v-model:value="store.payload.command_type"
-                filterable
-                :options="componentStore.commandTypeList"
-                label-field="name"
-                value-field="id"
-                :loading="componentStore.commandTypeLoading"
-                @update:value="onChangeCommandType"
-              />
-            </n-form-item>
+          <div
+              class="
+    group
+    w-[40px]
+    hover:w-[160px]
+    transition-[width]
+    duration-500
+    ease-in-out
+    overflow-hidden
+  "
+          >
+            <n-button   class="!w-full no-scale n-icon-mx-0" @click="store.openVisible(false)" type="error" secondary>
+              <template #icon>
+                <DismissCircle32Filled/>
+              </template>
+              <span
+                  class="
+        text-nowrap
+        opacity-0
+        translate-x-2
+        group-hover:opacity-100
+        group-hover:translate-x-0
+        transition-all
+        duration-300
+        delay-150 ml-2
+
+      "
+              >
+      {{$t('content.cancel')}}
+    </span>
+            </n-button>
           </div>
         </div>
       </div>
-
-      <div class="col-span-12">
-        <div
-          class="grid grid-cols-12 gap-x-4 border border-surface-line border-dashed p-2 rounded-md bg-surface-ground mt-6"
-        >
-          <div class="col-span-12 md:col-span-6 flex">
-            <n-form-item
-              class="w-full"
-              :label="$t(`documentPage.form.organization`)"
-              path="organization_id"
-            >
-              <UISelect
-                :options="componentStore.structureList"
-                :modelV="store.payload.organization_id"
-                @updateModel="onChangeStructure"
-                :checkedVal="store.structureCheck"
-                @updateCheck="(v) => (store.structureCheck = v)"
-                v-model:search="componentStore.structureParams.search"
-                @onSearch="componentStore._structures"
-                :loading="componentStore.structureLoading"
-                :multiple="false"
-                :auto-select="true"
-              />
-            </n-form-item>
-          </div>
-          <div class="col-span-12 md:col-span-6 flex">
-            <template v-if="store.isSingleSelect">
-              <n-form-item class="w-full" :label="$t(`documentPage.form.worker`)" path="worker">
-                <SuperSelect
-                  :disabled="store.payload.organization_id.length === 0"
-                  :max-tag-count="1"
-                  :options="store.workerList"
-                  :loading="store.workerLoading"
-                  :total-count="store.totalWorker"
-                  :per-page="store.workerParams.per_page"
-                  v-model:value="store.payload.worker"
-                  v-model:search="store.workerParams.search"
-                  value-field="id"
-                  @update:value="onChangeWorker"
-                  @onSearch="onSearchEv"
-                  @onScrollEv="onScrollEv"
+    </template>
+    <div style="height: calc(100vh - 100px)" class="overflow-y-auto overflow-x-hidden px-1">
+      <n-form
+          ref="formRef"
+          :model="store.payload"
+          :rules="validationRules.commandFrom"
+          class="grid grid-cols-12 gap-x-4"
+      >
+        <!--      Command header-->
+        <div class="col-span-12">
+          <div
+              class="grid grid-cols-12 gap-x-4 border border-surface-line border-dashed p-2 rounded-md bg-surface-ground"
+          >
+            <div class="col-span-12 md:col-span-6 lg:col-span-2">
+              <n-form-item
+                  :label="$t(`documentPage.command.form.command_number`)"
+                  path="command_number"
+              >
+                <n-input class="w-full" type="text" v-model:value="store.payload.command_number" />
+              </n-form-item>
+            </div>
+            <div class="col-span-12 md:col-span-6 lg:col-span-2">
+              <n-form-item :label="$t(`documentPage.command.form.command_date`)" path="command_date">
+                <n-date-picker
+                    class="w-full"
+                    v-model:value="store.payload.command_date"
+                    type="date"
+                    :format="useAppSetting.datePicketFormat"
                 />
               </n-form-item>
-            </template>
-            <template v-else>
-              <n-form-item class="w-full" :label="$t(`documentPage.form.worker`)" path="workers">
-                <SuperSelect
-                  multiple
-                  :disabled="store.payload.organization_id.length === 0"
-                  :max-tag-count="1"
-                  :options="store.workerList"
-                  :loading="store.workerLoading"
-                  :total-count="store.totalWorker"
-                  :per-page="store.workerParams.per_page"
-                  v-model:value="store.payload.workers"
-                  v-model:search="store.workerParams.search"
-                  value-field="id"
-                  @update:value="onChangeWorkers"
-                  @onSearch="onSearchEv"
-                  @onScrollEv="onScrollEv"
+            </div>
+            <div class="col-span-12 lg:col-span-8">
+              <n-form-item :label="$t(`documentPage.command.form.type`)" path="command_type">
+                <n-select
+                    v-model:value="store.payload.command_type"
+                    filterable
+                    :options="componentStore.commandTypeList"
+                    label-field="name"
+                    value-field="id"
+                    :loading="componentStore.commandTypeLoading"
+                    @update:value="onChangeCommandType"
                 />
               </n-form-item>
-            </template>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div class="col-span-12 mt-4">
-        <template v-if="store.payload.command_type === 41">
-          <VacationForm_41 ref="vacationForm_41" />
-        </template>
-        <template v-else-if="[34, 35, 39].includes(store.payload.command_type)">
-          <CancelCommandForm_34 ref="cancelCommandForm_34" />
-        </template>
-        <template v-else-if="commandIdList.includes(store.payload.command_type)">
-          <CancelForm_32 ref="cancelForm_32" />
-        </template>
-        <template v-else-if="store.payload.command_type === 44">
-          <VacationForm_44 ref="vacationForm_44" />
-        </template>
-        <template v-else-if="store.payload.command_type === 43">
-          <VacationForm_43 ref="vacationForm_43" />
-        </template>
-        <template v-else-if="store.payload.command_type === 45">
-          <VacationForm_45 ref="vacationForm_45" />
-        </template>
-        <template v-else-if="store.payload.command_type === 46">
-          <CommandForm_46 ref="commandForm_46" />
-        </template>
-        <template v-else-if="store.payload.command_type === 48">
-          <VacationForm_48 ref="vacationForm_48" />
-        </template>
-        <template v-else-if="store.payload.command_type === 49">
-          <VacationForm_49 ref="vacationForm_49" />
-        </template>
-        <template v-else-if="store.payload.command_type === 47">
-          <CommandForm_47 ref="commandForm_47" />
-        </template>
-        <template v-else-if="store.payload.command_type === 50">
-          <CommandForm_50 ref="commandForm_50" />
-        </template>
-        <template v-else-if="store.payload.command_type === 55">
-          <VacationForm_55 ref="vacationForm_55" />
-        </template>
-        <template
-          v-else-if="store.payload.command_type === 62 || store.payload.command_type === 61"
-        >
-          <VacationForm_62 ref="vacationForm_62" />
-        </template>
-
-        <template v-else-if="[51, 52, 53, 54].includes(store.payload.command_type)">
-          <CommandFrom_51 ref="vacationForm_51" />
-        </template>
-        <template v-else-if="store.payload.command_type === 71">
-          <CommandForm_71 ref="vacationForm_71" />
-        </template>
-        <template v-else-if="store.payload.command_type === 72">
-          <CommandForm_72 ref="vacationForm_72" />
-        </template>
-        <template v-else-if="store.payload.command_type === 73">
-          <CommandForm_73 ref="vacationForm_73" />
-        </template>
-
-        <template v-else>
-          <EmptyForm />
-        </template>
-      </div>
-
-      <div class="col-span-12 mt-6 mb-6">
-        <div
-          class="grid grid-cols-12 gap-x-4 border border-surface-line border-dashed p-2 rounded-md bg-surface-ground"
-        >
-          <div class="col-span-12 mt-4">
-            <n-form-item :label="$t(`documentPage.command.form.director_id`)" path="director_id">
-              <n-select
-                value-field="id"
-                label-field="last_name"
-                v-model:value="store.payload.director_id"
-                :options="componentStore.confirmationList"
-                :loading="componentStore.confirmationLoading"
-                :render-label="renderLabel"
-                :render-tag="renderValue"
-              />
-            </n-form-item>
-          </div>
-          <div class="col-span-12">
-            <n-form-item :label="$t(`documentPage.command.form.finance_id`)" path="finance_id">
-              <n-select
-                  :disabled="!store.payload.director_id"
-                  value-field="id"
-                  label-field="last_name"
-                  v-model:value="store.payload.finance_id"
-                  :options="confirmationList"
-                  :loading="componentStore.confirmationLoading"
-                  :render-label="renderLabel"
-                  :render-tag="renderValue"
-              />
-            </n-form-item>
-          </div>
-          <div class="col-span-12">
-            <n-form-item :label="$t(`documentPage.command.form.confirm`)" path="confirmations">
-              <n-select
-                :disabled="!store.payload.director_id"
-                size="large"
-                value-field="id"
-                multiple
-                v-model:value="store.payload.confirmations"
-                :options="confirmationList"
-                :loading="componentStore.confirmationLoading"
-                :render-label="renderLabel"
-                :render-tag="renderValue"
-                @update:value="onChangeConfirmation"
-                :max-tag-count="1"
-
-              />
-            </n-form-item>
-          </div>
-          <template v-if="store.sortableConfirmations?.length">
-            <div class="col-span-12 pb-2 px-2 flex justify-between">
-              <span class="text-secondary">{{
-                $t('documentPage.command.form.viewDescription')
-              }}</span>
-              <n-checkbox v-model:checked="store.oneByOne">
-                {{
-                  $t(
-                    store.oneByOne
-                      ? 'documentPage.command.form.viewOneByOne'
-                      : 'documentPage.command.form.viewSameTime'
-                  )
-                }}
-              </n-checkbox>
+        <div class="col-span-12">
+          <div
+              class="grid grid-cols-12 gap-x-4 border border-surface-line border-dashed p-2 rounded-md bg-surface-ground mt-6"
+          >
+            <div class="col-span-12 md:col-span-6 flex">
+              <n-form-item
+                  class="w-full"
+                  :label="$t(`documentPage.form.organization`)"
+                  path="organization_id"
+              >
+                <UISelect
+                    :options="componentStore.structureList"
+                    :modelV="store.payload.organization_id"
+                    @updateModel="onChangeStructure"
+                    :checkedVal="store.structureCheck"
+                    @updateCheck="(v) => (store.structureCheck = v)"
+                    v-model:search="componentStore.structureParams.search"
+                    @onSearch="componentStore._structures"
+                    :loading="componentStore.structureLoading"
+                    :multiple="false"
+                    :auto-select="true"
+                />
+              </n-form-item>
             </div>
-            <div class="col-span-12">
-              <VueDraggable v-model="store.sortableConfirmations" @end="onChangeDraggle">
-                <div
-                  v-for="(item, index) in store.sortableConfirmations"
-                  :key="item.id"
-                  class="sort-target flex items-center gap-2 px-2 py-1 bg-surface-section border border-surface-line rounded-xl mb-1"
-                >
-                  <div class="handle">
-                    <n-icon
-                      size="24"
-                      class="text-secondary cursor-move scale-100 hover:scale-[1.2] mx-2"
-                    >
-                      <Drag24Filled />
-                    </n-icon>
-                  </div>
-
-                  <div class="w-[calc(100%-60px)] select-none flex">
-                    <UIUser class="!w-full" :data="item.data" :hide-tooltip="true" :short="false" />
-                  </div>
-                  <template v-if="store.oneByOne">
-                    <n-button type="primary" secondary :icon-placement="'right'" size="small">
-                      <template #icon>
-                        <DrawText24Regular />
-                      </template>
-                      <span class="font-bold text-lg">{{ index + 1 }}</span>
-                    </n-button>
-                    <n-button type="error" circle secondary>
-                      <template #icon>
-                        <DismissCircle28Filled />
-                      </template>
-                    </n-button>
-
-                  </template>
-                </div>
-              </VueDraggable>
+            <div class="col-span-12 md:col-span-6 flex">
+              <template v-if="store.isSingleSelect">
+                <n-form-item class="w-full" :label="$t(`documentPage.form.worker`)" path="worker">
+                  <SuperSelect
+                      :disabled="store.payload.organization_id.length === 0"
+                      :max-tag-count="1"
+                      :options="store.workerList"
+                      :loading="store.workerLoading"
+                      :total-count="store.totalWorker"
+                      :per-page="store.workerParams.per_page"
+                      v-model:value="store.payload.worker"
+                      v-model:search="store.workerParams.search"
+                      value-field="id"
+                      @update:value="onChangeWorker"
+                      @onSearch="onSearchEv"
+                      @onScrollEv="onScrollEv"
+                  />
+                </n-form-item>
+              </template>
+              <template v-else>
+                <n-form-item class="w-full" :label="$t(`documentPage.form.worker`)" path="workers">
+                  <SuperSelect
+                      multiple
+                      :disabled="store.payload.organization_id.length === 0"
+                      :max-tag-count="1"
+                      :options="store.workerList"
+                      :loading="store.workerLoading"
+                      :total-count="store.totalWorker"
+                      :per-page="store.workerParams.per_page"
+                      v-model:value="store.payload.workers"
+                      v-model:search="store.workerParams.search"
+                      value-field="id"
+                      @update:value="onChangeWorkers"
+                      @onSearch="onSearchEv"
+                      @onScrollEv="onScrollEv"
+                  />
+                </n-form-item>
+              </template>
             </div>
+          </div>
+        </div>
+        <div class="col-span-12 mt-4">
+          <template v-if="store.payload.command_type === 41">
+            <VacationForm_41 ref="vacationForm_41" />
+          </template>
+          <template v-else-if="[34, 35, 39].includes(store.payload.command_type)">
+            <CancelCommandForm_34 ref="cancelCommandForm_34" />
+          </template>
+          <template v-else-if="commandIdList.includes(store.payload.command_type)">
+            <CancelForm_32 ref="cancelForm_32" />
+          </template>
+          <template v-else-if="store.payload.command_type === 44">
+            <VacationForm_44 ref="vacationForm_44" />
+          </template>
+          <template v-else-if="store.payload.command_type === 43">
+            <VacationForm_43 ref="vacationForm_43" />
+          </template>
+          <template v-else-if="store.payload.command_type === 45">
+            <VacationForm_45 ref="vacationForm_45" />
+          </template>
+          <template v-else-if="store.payload.command_type === 46">
+            <CommandForm_46 ref="commandForm_46" />
+          </template>
+          <template v-else-if="store.payload.command_type === 48">
+            <VacationForm_48 ref="vacationForm_48" />
+          </template>
+          <template v-else-if="store.payload.command_type === 49">
+            <VacationForm_49 ref="vacationForm_49" />
+          </template>
+          <template v-else-if="store.payload.command_type === 47">
+            <CommandForm_47 ref="commandForm_47" />
+          </template>
+          <template v-else-if="store.payload.command_type === 50">
+            <CommandForm_50 ref="commandForm_50" />
+          </template>
+          <template v-else-if="store.payload.command_type === 55">
+            <VacationForm_55 ref="vacationForm_55" />
+          </template>
+          <template
+              v-else-if="store.payload.command_type === 62 || store.payload.command_type === 61"
+          >
+            <VacationForm_62 ref="vacationForm_62" />
+          </template>
+
+          <template v-else-if="[51, 52, 53, 54].includes(store.payload.command_type)">
+            <CommandFrom_51 ref="vacationForm_51" />
+          </template>
+          <template v-else-if="store.payload.command_type === 71">
+            <CommandForm_71 ref="vacationForm_71" />
+          </template>
+          <template v-else-if="store.payload.command_type === 72">
+            <CommandForm_72 ref="vacationForm_72" />
+          </template>
+          <template v-else-if="store.payload.command_type === 73">
+            <CommandForm_73 ref="vacationForm_73" />
+          </template>
+
+          <template v-else>
+            <EmptyForm />
           </template>
         </div>
-      </div>
-    </n-form>
-  </div>
-  <div class="grid grid-cols-12 gap-2">
-    <n-button @click="onSubmit(true)" :loading="store.viewLoading" class="col-span-3" ghost>
-      {{ $t('content.view') }}
-      <template #icon>
-        <DocumentBulletList20Filled />
-      </template>
-    </n-button>
-    <div class="col-span-3"></div>
-    <n-button class="col-span-3" @click="store.openVisible(false)" type="error" ghost>
-      {{ $t('content.cancel') }}
-    </n-button>
-    <n-button
-      class="col-span-3"
-      @click="onSubmit(false)"
-      :loading="store.saveLoading"
-      type="primary"
-    >
-      {{ $t('content.save') }}
-    </n-button>
-  </div>
+        <div class="col-span-12 mt-6 mb-6">
+          <div
+              class="grid grid-cols-12 gap-x-4 border border-surface-line border-dashed p-2 rounded-md bg-surface-ground"
+          >
+            <div class="col-span-6">
+              <n-form-item :label="$t(`documentPage.command.form.director_id`)" path="director_id">
+                <n-select
+                    value-field="id"
+                    label-field="last_name"
+                    v-model:value="store.payload.director_id"
+                    :options="componentStore.confirmationList"
+                    :loading="componentStore.confirmationLoading"
+                    :render-label="renderLabel"
+                    :render-tag="renderValue"
+                    @update:value="syncConfirmationEv"
+                />
+              </n-form-item>
+            </div>
+            <div class="col-span-6">
+              <n-form-item :label="$t(`documentPage.command.form.finance_id`)" path="finance_id">
+                <n-select
+                    :disabled="!store.payload.director_id"
+                    value-field="id"
+                    label-field="last_name"
+                    v-model:value="store.payload.finance_id"
+                    :options="financeList"
+                    :loading="componentStore.confirmationLoading"
+                    :render-label="renderLabel"
+                    :render-tag="renderValue"
+                    @update:value="syncConfirmationEv"
+                />
+              </n-form-item>
+            </div>
+            <div class="col-span-12">
+              <n-form-item :label="$t(`documentPage.command.form.confirm`)" path="confirmations">
+                <n-select
+                    :disabled="!store.payload.director_id"
+                    size="large"
+                    value-field="id"
+                    multiple
+                    v-model:value="store.payload.confirmations"
+                    :options="confirmationList"
+                    :loading="componentStore.confirmationLoading"
+                    :render-label="renderLabel"
+                    :render-tag="renderValue"
+                    @update:value="onChangeConfirmation"
+                    :max-tag-count="1"
+                />
+              </n-form-item>
+            </div>
+            <template v-if="store.sortableConfirmations?.length">
+              <div class="col-span-12 pb-2 px-2 flex justify-between">
+              <span class="text-secondary">{{
+                  $t('documentPage.command.form.viewDescription')
+                }}</span>
+                <n-checkbox v-model:checked="store.oneByOne">
+                  {{
+                    $t(
+                        store.oneByOne
+                            ? 'documentPage.command.form.viewOneByOne'
+                            : 'documentPage.command.form.viewSameTime'
+                    )
+                  }}
+                </n-checkbox>
+              </div>
+              <div class="col-span-12">
+                <VueDraggable v-model="store.sortableConfirmations" @end="onChangeDraggle">
+                  <div
+                      v-for="(item, index) in store.sortableConfirmations"
+                      :key="item.id"
+                      class="sort-target flex items-center gap-2 px-2 py-1 bg-surface-section border border-surface-line rounded-xl mb-1"
+                  >
+                    <div class="handle">
+                      <n-icon
+                          size="24"
+                          class="text-secondary cursor-move scale-100 hover:scale-[1.2] mx-2"
+                      >
+                        <Drag24Filled />
+                      </n-icon>
+                    </div>
+
+                    <div class="w-[calc(100%-60px)] select-none flex">
+                      <UIUser class="!w-full" :data="item.data" :hide-tooltip="true" :short="false" />
+                    </div>
+                    <template v-if="store.oneByOne">
+                      <n-button type="primary" secondary :icon-placement="'right'" size="small">
+                        <template #icon>
+                          <DrawText24Regular />
+                        </template>
+                        <span class="font-bold text-lg">{{ index + 1 }}</span>
+                      </n-button>
+                      <n-button @click="onRemoveEv(item.id)" type="error" circle secondary>
+                        <template #icon>
+                          <DismissCircle28Filled />
+                        </template>
+                      </n-button>
+
+                    </template>
+                  </div>
+                </VueDraggable>
+              </div>
+            </template>
+          </div>
+        </div>
+      </n-form>
+    </div>
+  </UIModal>
 </template>
 
-<style></style>
