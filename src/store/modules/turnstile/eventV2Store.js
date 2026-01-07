@@ -160,9 +160,29 @@ export const useEventV2Store = defineStore('eventV2Store', {
     activeTab: 1,
     tabs: [1, 2],
     eventInDayList: [],
-    downloadLoading: false
+    download: {
+      loading:false,
+      visible:false,
+      payload:{
+        from:null,
+        to:null,
+      }
+    }
   }),
   actions: {
+    _download() {
+      this.download.loading = true
+      const params = {
+        ...this._params(),
+        download: true,
+        from:Utils.timeToZone(this.download.payload.from),
+        to:Utils.timeToZone(this.download.payload.to),
+      }
+      $ApiService.eventV2Service._index({ params }).finally(() => {
+        this.download.loading = false
+        this.download.visible = false
+      })
+    },
     _showEventsInDay(date, id) {
       this.calendarLoading = true
       const params = {
@@ -199,16 +219,6 @@ export const useEventV2Store = defineStore('eventV2Store', {
         access_levels: this.params.access_levels.toString() || undefined,
         date: this.params.date ? Utils.timeToZone(this.params.date) : undefined
       }
-    },
-    _download() {
-      this.downloadLoading = true
-      const params = {
-        ...this._params(),
-        download: true
-      }
-      $ApiService.eventV2Service._index({ params }).finally(() => {
-        this.downloadLoading = false
-      })
     },
     _index() {
       this.loading = true

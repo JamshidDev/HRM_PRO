@@ -42,6 +42,7 @@ export const useAdContractStore = defineStore('adContractStore', {
       command_date: null,
       command_number: null,
       confirmations: [],
+      finance_id:null,
       position_date: null,
       contract_to_date: null
     },
@@ -108,6 +109,7 @@ export const useAdContractStore = defineStore('adContractStore', {
               : undefined,
           worker_position_id: this.payload.worker_position_id,
           director_id: this.payload.director_id,
+          finance_id: this.payload.finance_id,
           department_id:
             this.payload.department_id.length > 0 ? this.payload.department_id[0].id : undefined,
           confirmations: this.sortableConfirmations.map((v, idx) => ({
@@ -192,13 +194,15 @@ export const useAdContractStore = defineStore('adContractStore', {
       this.visible = data
     },
     resetForm() {
+      // this.payload.director_id = null
+      // this.payload.confirmations = []
+
       this.payload.worker_position_id = null
       this.payload.contract_date = new Date().getTime()
       this.payload.number = null
       this.payload.type = null
       this.payload.command_status = true
       this.payload.command_type = null
-      this.payload.director_id = null
       this.payload.organization_id = []
       this.payload.department_id = []
       this.payload.department_position_id = null
@@ -213,7 +217,6 @@ export const useAdContractStore = defineStore('adContractStore', {
 
       this.payload.command_date = new Date().getTime()
       this.payload.command_number = null
-      this.payload.confirmations = []
       this.payload.position_date = null
       this.payload.contract_to_date = new Date().getTime()
     }

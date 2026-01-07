@@ -4,11 +4,10 @@
     useComponentStore,
     useTurnstileHikCentralWorkerStore,
     useTurnstileTerminalUserStore
-  } from '@/store/modules/index.js'
-  import { UISelect, NoDataIllustration, UINSelect, UITransferSelect } from '@/components/index.js'
+  } from '@stores'
+  import { UISelect, NoDataIllustration, UINSelect, SuperSelect, UICropper } from '@components'
+  import { useAppSetting } from '@utils'
   import { Checkmark16Filled, AddCircle16Filled, AddCircle28Regular } from '@vicons/fluent'
-  import { UICropper } from '@/components/index.js'
-  import { useAppSetting } from '@/utils/index.js'
 
   const formRef = ref(null)
   const store = useTurnstileHikCentralWorkerStore()
@@ -29,6 +28,7 @@
   const changeAccessLevelOrg = (v) => {
     store.payload.level_org_id = v
     store.payload.access_level_id = null
+    store.accessLevels = []
     if (v[0]?.id) {
       store._access_levels()
     }
@@ -312,13 +312,14 @@
             path="access_level_ids"
             rule-path="requiredMultiSelectField"
           >
-            <UINSelect
-              multiple
-              :disabled="!store.payload.level_org_id.length"
-              v-model:value="store.payload.access_level_ids"
-              :options="store.accessLevels"
-              value-field="id"
+            <SuperSelect
+                :disabled="!store.payload.level_org_id.length"
+                multiple
+                :options="store.accessLevels"
+                v-model:value="store.payload.access_level_ids"
+                :loading="store.accessLevelsLoading"
             />
+
           </n-form-item>
         </div>
       </n-form>

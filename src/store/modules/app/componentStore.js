@@ -734,12 +734,15 @@ export const useComponentStore = defineStore('componentStore', {
           this.scheduleLoading = false
         })
     },
-    _commandTypes(data) {
+    _commandTypes(data, callback=null) {
       this.commandTypeLoading = true
       $ApiService.componentService
         ._commandTypes({ params: data })
         .then((res) => {
           this.commandTypeList = res.data.data.map((v) => ({ ...v, name: v.id + ' - ' + v.name }))
+          if( this.commandTypeList.length === 1){
+            callback?.(this.commandTypeList?.[0]?.id)
+          }
         })
         .finally(() => {
           this.commandTypeLoading = false

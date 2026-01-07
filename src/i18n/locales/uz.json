@@ -839,10 +839,15 @@
       "vacation_id": "Ta'til"
     },
     "form_55": {
+      "work_day": "Ishga chiqish sanasi",
       "from": "Qachondan",
       "to": "Qachongacha",
-      "from_time": "Qachondan (soat)",
-      "to_time": "Qachongacha (soat)"
+      "from_time": "Soatdan",
+      "to_time": "Soatgacha",
+      "range_with_time": "Kunlar bo‘yicha soat oralig‘i",
+      "one_day": "Bir kun",
+      "multiple_days": "Bir necha kun",
+      "hourly": "Soat bo‘yicha"
     },
     "form_62": {
       "from": "Qachondan",

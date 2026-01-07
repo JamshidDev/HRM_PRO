@@ -120,6 +120,26 @@ watchEffect(()=>{
   store.form_46.half_two_day =Number(store.form_46.result.all_day) - Number(store.form_46.half_one_day)
 })
 
+const autoCalculateTo = () =>{
+  if(store.form_46.from && store.form_46.half_one_day){
+    const from = new Date(store.form_46.from)
+    const half_one_day =  store.form_46.half_one_day
+    const to = new Date(from)
+    to.setDate(from.getDate() + half_one_day +1)
+    store.form_46.result.to = new Date(to).getTime()
+    autoCalculateWorkDay()
+  }
+}
+
+const autoCalculateWorkDay = () =>{
+  if(store.form_46.result.to){
+    const to =  new Date(store.form_46.result.to)
+    const work_day = new Date(to)
+    work_day.setDate(to.getDate()+1)
+    store.form_46.result.work_day = new Date(work_day).getTime()
+  }
+}
+
 defineExpose({
   onSubmit,
   validateForm,
@@ -151,6 +171,7 @@ onMounted(() => {
             v-model:value="store.form_46.from"
             type="date"
             :format="useAppSetting.datePicketFormat"
+            @update:value="autoCalculateTo"
 
         />
       </n-form-item>
@@ -314,6 +335,7 @@ onMounted(() => {
               min="15"
               max="100"
               v-model:value="store.form_46.half_one_day"
+              @update:value="autoCalculateTo"
           />
 
         </n-form-item>
@@ -345,6 +367,7 @@ onMounted(() => {
               v-model:value="store.form_46.result.to"
               type="date"
               :format="useAppSetting.datePicketFormat"
+              @update:value="autoCalculateWorkDay"
           />
         </n-form-item>
       </div>

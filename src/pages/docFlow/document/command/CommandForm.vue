@@ -304,6 +304,7 @@
         to_time: null,
         lastVacation: null,
         group:1,
+        work_day:null,
 
       })
     } else if (store.payload.workers.length < store.vacations55.length) {
@@ -323,6 +324,7 @@
         to_time: null,
         lastVacation: null,
         group:1,
+        work_day:null,
       }
     })
   }
@@ -447,12 +449,20 @@
     store.payload.confirmations = store.sortableConfirmations.map((v) => v.id)
   }
 
-  const onRemoveEv = (id) =>{
-    store.sortableConfirmations = store.sortableConfirmations.filter(v=>v.id !== id)
-    store.payload.confirmations = store.payload.confirmations.filter(v=>v !== id)
-  }
-
   const onChangeConfirmation = () => {
+    fillSortableConfirmations()
+    syncConfirmationEv()
+  }
+  const syncConfirmationEv = () => {
+    if(store.payload.finance_id === store.payload.director_id) store.payload.finance_id = null
+    const ids = [store.payload.finance_id, store.payload.director_id]
+    financeList.value = componentStore.confirmationList.filter(v => v.id !== store.payload.director_id)
+    confirmationList.value = componentStore.confirmationList.filter(v => !ids.includes(v.id))
+
+    onRemoveEv(store.payload.finance_id)
+    onRemoveEv(store.payload.director_id)
+  }
+  const fillSortableConfirmations = () => {
     store.sortableConfirmations = confirmationList.value
         .filter((v) => store.payload.confirmations.includes(v.id))
         .map((v) => ({
@@ -466,32 +476,18 @@
           }
         }))
   }
-
-  const onChangeFinance = () =>{
-    onRemoveEv(store.payload.finance_id)
+  const onRemoveEv = (id) =>{
+    store.sortableConfirmations = store.sortableConfirmations.filter(v=>v.id !== id)
+    store.payload.confirmations = store.payload.confirmations.filter(v=>v !== id)
   }
-
-  watchEffect(() => {
-    if (store.payload.director_id) {
-      if(store.payload.finance_id === store.payload.director_id) store.payload.finance_id = null
-      onRemoveEv(store.payload.director_id)
-
-      const ids = [store.payload.finance_id, store.payload.director_id]
-      financeList.value = componentStore.confirmationList.filter(v => v.id !== store.payload.director_id)
-      confirmationList.value = componentStore.confirmationList.filter(v => !ids.includes(v.id))
-    }
-
-    if(store.payload.finance_id){
-      const ids = [store.payload.finance_id, store.payload.director_id]
-      confirmationList.value = componentStore.confirmationList.filter(v => !ids.includes(v.id))
-    }
-  })
 
   onMounted(() => {
     componentStore._commandTypes()
     store.resetForm()
     componentStore._structures()
+
     fetchConfirmation()
+    syncConfirmationEv()
   })
 
 
@@ -685,6 +681,7 @@
                 :loading="componentStore.confirmationLoading"
                 :render-label="renderLabel"
                 :render-tag="renderValue"
+                @update:value="syncConfirmationEv"
               />
             </n-form-item>
           </div>
@@ -699,7 +696,7 @@
                   :loading="componentStore.confirmationLoading"
                   :render-label="renderLabel"
                   :render-tag="renderValue"
-                  @update:value="onChangeFinance"
+                  @update:value="syncConfirmationEv"
               />
             </n-form-item>
           </div>
@@ -717,7 +714,6 @@
                 :render-tag="renderValue"
                 @update:value="onChangeConfirmation"
                 :max-tag-count="1"
-
               />
             </n-form-item>
           </div>

@@ -3,6 +3,7 @@
   import { ArrowSync24Filled, StarEmphasis32Filled } from '@vicons/fluent'
   import { UIPageFilter, UISelect } from '@/components/index.js'
   import i18n from '@/i18n/index.js'
+  import {useAppSetting} from "@utils"
 
   const { t } = i18n.global
   const store = useEventStore()
@@ -22,6 +23,7 @@
   }
 
   const onChangeDate = () => {
+    console.log('eve')
     filterEvent()
   }
 
@@ -38,8 +40,7 @@
     store.params.organizations = []
     store.params.access_levels = []
     store.params.direction = null
-    store.params.start = null
-    store.params.end = null
+    store.params.date = null
     filterEvent()
   }
 
@@ -47,8 +48,7 @@
     () =>
       Number(Boolean(store.params.organizations.length)) +
       Number(Boolean(store.params.access_levels.length)) +
-      Number(Boolean(store.params.start)) +
-      Number(Boolean(store.params.end)) +
+      Number(Boolean(store.params.date)) +
       Number(Boolean(store.params.direction))
   )
 
@@ -140,26 +140,17 @@
         value-field="id"
         @update:value="filterEvent"
       />
-      <label class="mt-3 text-xs text-gray-500">{{ $t('content.from') }}</label>
+      <label class="mt-3 text-xs text-gray-500">{{ $t('content.date') }}</label>
       <n-date-picker
-        class="mt-1"
-        v-model:value="store.params.start"
-        @update:value="onChangeDate"
-        type="datetime"
-        update-value-on-close
-        :actions="null"
-        clearable
+          class="mt-1"
+          v-model:value="store.params.date"
+          @update:value="onChangeDate"
+          type="date"
+          :actions="null"
+          :format="useAppSetting.datePicketFormat"
+          clearable
       />
-      <label class="mt-3 text-xs text-gray-500">{{ $t('content.to') }}</label>
-      <n-date-picker
-        class="mt-1"
-        v-model:value="store.params.end"
-        @update:value="onChangeDate"
-        type="datetime"
-        update-value-on-close
-        :actions="null"
-        clearable
-      />
+
     </template>
     <template #filterAction>
       <n-button :loading="store.jobLoading" @click="onSync" type="primary">

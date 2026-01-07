@@ -1035,6 +1035,18 @@ export default {
       message: t(`rules.requiredField`),
       trigger: triggerEvents
     },
+    finance_id:{
+      type: 'number',
+      required: true,
+      message: t(`rules.requiredField`),
+      trigger: triggerEvents
+    },
+    confirmations: {
+      type: 'array',
+      required: true,
+      message: t(`rules.requiredField`),
+      trigger: triggerEvents
+    },
     schedule_id: {
       type: 'number',
       required: true,

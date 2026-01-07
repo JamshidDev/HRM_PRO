@@ -8,6 +8,7 @@
   import { UIPageFilter, UISelect } from '@/components/index.js'
   import i18n from '@/i18n/index.js'
   import { ArrowCircleDown32Regular, StarLineHorizontal320Regular } from '@vicons/fluent'
+  import {useAppSetting} from "@utils"
 
   const { t } = i18n.global
   const store = useEventV2Store()
@@ -78,6 +79,17 @@
       id: 'no'
     }
   ]
+
+  const onOpenDownloadModal = () =>{
+    if(!store.download.payload.from){
+      const today = new Date()
+      const tomorrow = new Date(today)
+      tomorrow.setDate(today.getDate() + 1)
+      store.download.payload.from = today.getTime()
+      store.download.payload.to = tomorrow.getTime()
+    }
+    store.download.visible = true
+  }
 </script>
 
 <template>
@@ -92,9 +104,8 @@
   >
     <template #filterAction>
       <n-button
-        v-fly-upload
-        @click="store._download()"
-        :loading="store.downloadLoading"
+        @click="onOpenDownloadModal"
+        :loading="store.download.loading"
         type="success"
       >
         <template #icon>
@@ -153,6 +164,7 @@
         type="date"
         update-value-on-close
         :actions="null"
+        :format="useAppSetting.datePicketFormat"
         clearable
       />
       <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{ $t('hcEvent.event') }}</label>

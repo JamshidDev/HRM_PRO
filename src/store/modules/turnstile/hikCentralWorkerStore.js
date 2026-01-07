@@ -200,6 +200,7 @@ export const useTurnstileHikCentralWorkerStore = defineStore('turnstileHikCentra
         worker_id: this.payload.worker_id,
         end_time: Utils.timeToZone(this.payload.end_time)
       }
+
       if (this.payload.photo) {
         payload.photo = await compressImage(this.payload.blob)
       }
@@ -232,10 +233,12 @@ export const useTurnstileHikCentralWorkerStore = defineStore('turnstileHikCentra
         })
     },
     _access_levels() {
-      this.accessLevels = []
       this.accessLevelsLoading = true
+      const params = {
+        organization_id: this.payload.level_org_id.map((v) => v.id).toString() || undefined,
+      }
       $ApiService.turnstileHikCentralWorkerService
-        ._access_levels()
+        ._access_levels({params})
         .then((res) => {
           this.accessLevels = res.data.data
         })
