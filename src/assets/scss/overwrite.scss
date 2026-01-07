@@ -451,6 +451,13 @@ input:-webkit-autofill {
   }
 
 }
+.n-button.no-scale {
+  transform: none !important;
+}
+.n-icon-mx-0 .n-button__icon {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
 
 .bg-primary{
   background-color: var(--primary-color);
