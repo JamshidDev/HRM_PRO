@@ -25,7 +25,11 @@ const props = defineProps({
   label: String,
   path: String,
   containerClass: String,
-  isFormItem: Boolean
+  isFormItem: Boolean,
+  toolBarExcludeKeys: {
+    type: Array,
+    default: []
+  }
 })
 
 const editorRef = shallowRef()
@@ -50,7 +54,8 @@ const toolbarConfig = props.showToolbar
         'fullScreen',
         'code',
         'divider',
-        'divider'
+        'divider',
+          ...props.toolBarExcludeKeys
       ]
     }
     : {

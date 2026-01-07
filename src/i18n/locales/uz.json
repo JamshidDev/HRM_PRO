@@ -212,7 +212,8 @@
     "uz": "UZ",
     "ru": "RU",
     "en": "EN",
-    "create": "Yaratish"
+    "create": "Yaratish",
+    "allSelected": "Barchasi tanlangan"
   },
   "date": {
     "day": "Kun",

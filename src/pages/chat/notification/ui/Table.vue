@@ -1,6 +1,6 @@
 <script setup>
 import {
-  NoDataPicture,
+  NoDataPicture, UIEditorViewer,
   UIPagination, UIUser,
 } from '@components'
 import {
@@ -53,7 +53,9 @@ const changePage = (v) => {
             </UIUser>
           </td>
           <td>{{ item?.data?.title }}</td>
-          <td>{{ item?.data?.message }}</td>
+          <td>
+            <UIEditorViewer :html="item?.data?.message"></UIEditorViewer>
+          </td>
           <td>{{ Utils.timeHHMMWithMonth(item.created_at) }}</td>
           <td>{{ Utils.timeHHMMWithMonth(item?.read_at) }}</td>
         </tr>
