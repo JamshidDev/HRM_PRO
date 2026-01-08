@@ -12,13 +12,14 @@ export const useDepartmentStore = defineStore('departmentStore', {
     visibleType: true,
     elementId: null,
     totalItems: 0,
+    showParent:false,
     payload: {
       parent_id: null,
       level: null,
       name: null,
       name_ru: null,
       name_en: null,
-      comment: null
+      comment: null,
     },
     params: {
       page: 1,
@@ -52,7 +53,7 @@ export const useDepartmentStore = defineStore('departmentStore', {
       page:1,
       per_page:10,
       search:null,
-    }
+    },
   }),
   actions: {
     _preview(){
@@ -97,7 +98,10 @@ export const useDepartmentStore = defineStore('departmentStore', {
     },
     _create() {
       this.saveLoading = true
-      let data = { ...this.payload }
+      let data = {
+        ...this.payload,
+        parent_id: this.showParent? this.payload.parent_id : undefined,
+      }
       $ApiService.departmentService
         ._create({ data })
         .then((res) => {
@@ -110,7 +114,10 @@ export const useDepartmentStore = defineStore('departmentStore', {
     },
     _update() {
       this.saveLoading = true
-      let data = { ...this.payload }
+      let data = {
+        ...this.payload,
+        parent_id: this.showParent? this.payload.parent_id : undefined,
+      }
       $ApiService.departmentService
         ._update({ data, id: this.elementId })
         .then((res) => {
@@ -137,7 +144,6 @@ export const useDepartmentStore = defineStore('departmentStore', {
           this.deleteLoading = false
         })
     },
-
     openVisible(data) {
       this.visible = data
     },

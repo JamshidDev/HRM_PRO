@@ -559,7 +559,8 @@
     "form": {
       "parent_id": "Bo'linma tanlang",
       "name": "Bo'linma nomi",
-      "level": "Bo'linma turi"
+      "level": "Bo'linma turi",
+      "attachmentParent": "Ichki bo'linmaga biriktirish"
     },
     "selectedOrg": "Tanlangan tashkilot",
     "deleteContent": "Haqiqatan ham bu tashkilotni o'chirmoqchimisiz?"

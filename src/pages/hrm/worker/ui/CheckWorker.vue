@@ -44,6 +44,13 @@
       workerStore.visible = true
     }, 200)
   }
+
+  onMounted(()=>{
+    store.worker = null
+  })
+  onBeforeUnmount(()=>{
+    store.worker = null
+  })
 </script>
 
 <template>
@@ -106,7 +113,7 @@
 
                 <UIUser :hide-tooltip="true" :short="false" :data="store.worker" />
 
-                <div v-if="store.worker?.positions" class="w-full border border-warning/60 bg-surface-section rounded-xl py-2 px-3">
+                <div v-if="store.worker?.positions && store.worker?.positions.length>0" class="w-full border border-warning/60 bg-surface-section rounded-xl py-2 px-3">
                   <h3 class="font-semibold text-center mb-4 uppercase">{{$t('workerPage.checkWorker.existPosition')}}</h3>
                    <template v-for="item in store.worker.positions" :key="item.id">
                      <div class="flex gap-2 items-center text-xs font-semibold leading-[1.2] mb-1 text-secondary">
