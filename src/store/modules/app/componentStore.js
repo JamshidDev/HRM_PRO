@@ -313,10 +313,10 @@ export const useComponentStore = defineStore('componentStore', {
     },
     _checkWorker(pin, type) {
       this.pinLoading = true
-      this.worker = null
       $ApiService.workerService
         ._checkWorker({ params: { pin, type } })
         .then((res) => {
+          this.worker = null
           if (!res.data.error) {
             let data = res.data.data
             this.worker = {
@@ -325,7 +325,8 @@ export const useComponentStore = defineStore('componentStore', {
               middleName: data?.middle_name,
               position: `${t('workerPage.checkWorker.born')} ${Utils.timeOnlyDate(data?.birthday)}`,
               photo: data?.photo,
-              pin: data.id.toString()
+              pin: data.id.toString(),
+              positions: data.positions,
             }
           }
         })
@@ -661,8 +662,11 @@ export const useComponentStore = defineStore('componentStore', {
         ._index({ params })
         .then((res) => {
           this.departmentPositionList = res.data.data.data.map((v) => ({
+            ...v,
             name: v.position?.name,
             position: v.department?.name,
+            subPosition:`${t('report.form.contingent')} - ${v.rate}; ${t('report.form.worker')} - ${v.worker_rate}`,
+            color:Number(v.rate) > Number(v.worker_rate)? 'text-success' : 'text-danger',
             id: v.id
           }))
         })

@@ -486,6 +486,7 @@
     "checkWorker": {
       "title": "Xodim izlash",
       "defaultText": "Izlashni boshlang...",
+      "existPosition": "Amaldagi mehnat faoliyati",
       "no-worker": "Tizimda xodim topilmadi!",
       "born": "Tug'ilgan sana",
       "addCandidate": "Kandidat qo'shish",

@@ -63,6 +63,26 @@ const selectLabel = (option) => {
   ]
 }
 
+const selectColorLabel = (option) => {
+  return [
+    h(
+        'div',
+        {
+          class: 'flex gap-2 my-1 items-center'
+        },
+        [
+          h('div', { class: 'flex flex-col' }, [
+            h('div', { class: `text-xs font-medium !text-wrap ${option.color}` }, `${option.name}`),
+            h('div', { class: 'text-xs text-textColor3 !text-wrap' }, option.position),
+            option.subPosition
+                ? h('div', { class: 'text-xs text-textColor3' }, option.subPosition)
+                : null
+          ])
+        ]
+    )
+  ]
+}
+
 const selectValue = ({ option }) => {
   return [
     h(
@@ -171,6 +191,7 @@ export default {
     value: scheduleValue
   },
   selectRender: {
+    labelColor:selectColorLabel,
     label: selectLabel,
     value: selectValue,
     value2: selectValueV2
