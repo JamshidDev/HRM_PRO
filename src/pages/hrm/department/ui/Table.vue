@@ -110,7 +110,7 @@ x
             </td>
             <td>
               <n-button
-                v-if="item.descendants > 0"
+                v-if="item.children"
                 :loading="loading === item.id"
                 quaternary
                 circle

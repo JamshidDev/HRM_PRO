@@ -5,6 +5,7 @@
   import validationRules from '@/utils/validationRules.js'
   import { useAppSetting } from '@/utils/index.js'
   import Utils from '@/utils/Utils'
+  import {SuperSelect} from "@components"
 
   const formRef = ref(null)
   const store = useWorkerImageStore()
@@ -57,13 +58,11 @@
           :label="$t('turnstile.hcWorkersPage.access_levels')"
           path="access_level_ids"
         >
-          <UINSelect
-            multiple
-            v-model:value="store.payload.access_level_ids"
-            :options="store.accessLevels"
-            value-field="id"
-            label-field="name"
-            :loading="store.accessLevelsLoading"
+          <SuperSelect
+              multiple
+              v-model:value="store.payload.access_level_ids"
+              :options="store.accessLevels"
+              :loading="store.accessLevelsLoading"
           />
         </n-form-item>
 

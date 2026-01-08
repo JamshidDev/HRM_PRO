@@ -67,7 +67,6 @@ export const useUserStore = defineStore('user', {
       $ApiService.userService
         ._loginByIdToSystem({ id })
         .then((res) => {
-          console.log(res.data)
           callback(res.data.access_token)
         })
         .finally(() => {

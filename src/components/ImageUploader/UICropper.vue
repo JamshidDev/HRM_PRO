@@ -90,10 +90,6 @@
       />
       <template #footer>
         <div class="grid grid-cols-2 gap-x-2">
-          <!--      <div class="col-span-2">-->
-          <!--        <p>Haqiqiy o'lchami: <span class="text-shadow-textColor2 font-semibold">{{originSize}} kB</span></p>-->
-          <!--        <p>Haqiqiy o'lchami: <span class="text-shadow-textColor2 font-semibold">{{croppedFileSizeInKB}} kB</span></p>-->
-          <!--      </div>-->
           <n-button ghost @click="onClose" type="error">
             {{ $t('content.cancel') }}
           </n-button>
