@@ -19,14 +19,16 @@
     :locale="localeProvider.lang"
     :date-locale="localeProvider.date"
   >
-    <n-message-provider placement="top-right">
-      <n-dialog-provider>
-        <AppLayout />
-        <ToastProvider />
-        <MediaViewer />
-        <SignatureInstance />
-      </n-dialog-provider>
-    </n-message-provider>
+    <n-notification-provider>
+      <n-message-provider placement="top-right">
+        <n-dialog-provider>
+          <AppLayout />
+          <ToastProvider />
+          <MediaViewer />
+          <SignatureInstance />
+        </n-dialog-provider>
+      </n-message-provider>
+    </n-notification-provider>
   </n-config-provider>
   <UIMainLoading />
 </template>

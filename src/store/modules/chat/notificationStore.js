@@ -4,9 +4,25 @@ const { t } = i18n.global
 export const useNotificationStore = defineStore('notificationStore', {
     state: () => ({
         list: [],
+        userNotifications: [],
+        userUnreadNotifications: [],
+        userNotificationsLoading: false,
+        userUnreadNotificationsLoading: false,
+        viewingNotification: null,
         loading: false,
         saveLoading: false,
-
+        userUnreadNotificationsCount: 0,
+        userNotificationsParams: {
+            page: 1,
+            per_page: 10,
+            search: null
+        },
+        userUnreadNotificationsParams: {
+            page: 1,
+            per_page: 10,
+            search: null,
+        },
+        userNotificationsTotal: 0,
         showLoading: false,
         visible: false,
         totalItems: 0,
@@ -31,6 +47,56 @@ export const useNotificationStore = defineStore('notificationStore', {
         }
     }),
     actions: {
+        _userUnreadNotificationsCount(){
+            $ApiService.notificationService
+                ._user_index({ params: {
+                        count: true,
+                        read_at: true
+                    } })
+                .then((res) => {
+                    this.userUnreadNotificationsCount = res.data.data
+                })
+        },
+        _userUnreadNotifications() {
+            this.userUnreadNotificationsLoading = true
+            $ApiService.notificationService
+                ._user_index({ params: {...this.userUnreadNotificationsParams, read_at: true} })
+                .then((res) => {
+                    this.userUnreadNotifications.push(...res.data.data.data)
+                })
+                .finally(() => {
+                    this.userUnreadNotificationsLoading = false
+                })
+        },
+        _user_index() {
+            this.userNotificationsLoading = true
+            $ApiService.notificationService
+                ._user_index({ params: this.userNotificationsParams })
+                .then((res) => {
+                    this.userNotifications = res.data.data.data
+                })
+                .finally(() => {
+                    this.userNotificationsLoading = false
+                })
+        },
+        _mark_read(payload = {ids: [], all: false}, callback){
+            $ApiService.notificationService._user_read({
+                data: payload
+            }).then(()=>{
+                if(payload.all){
+                    this.userUnreadNotifications = []
+                    this.userUnreadNotificationsCount = 0
+                }else if(payload.ids.length){
+                    const len = this.userUnreadNotifications.length
+                    this.userUnreadNotifications = this.userUnreadNotifications.filter(i=>!payload?.ids?.includes(i.id))
+                    if(len!==this.userUnreadNotifications.length){
+                        this.userUnreadNotificationsCount-=(len-this.userUnreadNotifications.length)
+                    }
+                }
+            }).finally(()=>{
+                callback?.()
+            })
+        },
         _index() {
             this.loading = true
             $ApiService.notificationService
@@ -50,7 +116,8 @@ export const useNotificationStore = defineStore('notificationStore', {
                 title: this.payload.title,
                 message: this.payload.message,
                 userId: undefined,
-                filter: undefined
+                filter: undefined,
+                alert: this.payload.alert
             }
             if(this.payload.userIds.length>1){
                 payload.filter = {
@@ -85,6 +152,14 @@ export const useNotificationStore = defineStore('notificationStore', {
         },
         openVisible(data) {
             this.visible = data
+        },
+        setViewingNotification(item){
+            this.viewingNotification = item
+            if(item?.id){
+                this._mark_read({
+                    ids: [item.id]
+                })
+            }
         },
         resetForm() {
             this.payload.filter.organizations = []

@@ -7,7 +7,7 @@ import UIHelper from '@/utils/UIHelper.js'
 const formRef = ref(null)
 import {useComponentStore, useNotificationStore} from '@/store/modules/index.js'
 import {UIEditor, UISelect} from "@components";
-import {notificationAlerts} from "@utils";
+import {notificationTypes} from "@utils";
 import NotificationBadge from "./NotificationBadge.vue";
 import UserRoleInfiniteSelect from "@pages/chat/notification/ui/UserRoleInfiniteSelect.vue";
 import i18n from "@/i18n/index.js";
@@ -66,7 +66,7 @@ onMounted(()=>{
                     :menuProps="{
                      class: 'p-2'
                   }"
-                    :options="Object.values(notificationAlerts)"
+                    :options="Object.values(notificationTypes)"
                     :render-option="renderNotificationBadge" :render-tag="renderNotificationLabel"/>
         </n-form-item>
         <n-form-item :label="$t('organizationPage.name')">
@@ -104,6 +104,7 @@ onMounted(()=>{
           <UserRoleInfiniteSelect />
         </n-form-item>
         <UIEditor
+            with-validation
             class="col-span-2"
             container-class="rounded-[10px] overflow-hidden"
             :label="$t('content.description')"

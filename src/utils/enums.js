@@ -9,30 +9,25 @@ import i18n from "@/i18n/index.js";
 
 const {t} = i18n.global
 
-export const notificationAlerts = {
+export const notificationTypes = {
     info: {
         value: "info",
         label: t("notification.status.info"),
-        icon: Info24Regular,
+        icon: markRaw(Info24Regular),
     },
     success: {
         value: "success",
         label: t("notification.status.success"),
-        icon: CheckmarkCircle24Regular,
+        icon: markRaw(CheckmarkCircle24Regular),
     },
     warning: {
         value: "warning",
         label: t("notification.status.warning"),
-        icon: Warning24Regular,
+        icon: markRaw(Warning24Regular),
     },
     error: {
         value: "error",
         label: t("notification.status.error"),
-        icon: ErrorCircle24Regular,
-    },
-    critical: {
-        value: "critical",
-        label: t("notification.status.critical"),
-        icon: ShieldError24Regular,
-    },
+        icon: markRaw(ErrorCircle24Regular),
+    }
 }
