@@ -4,6 +4,7 @@ const socketUrl = import.meta.env.VITE_SOCKET_URL
 const socketSecret = import.meta.env.VITE_SOCKET_SECRET
 import { useNotify } from '@/composables/useNotify'
 import { eventBus, Events } from '@/utils/index.js'
+import {useNotificationStore} from "@/store/modules/index.js";
 
 export const useSocketStore = defineStore('useSocketStore', {
   state: () => ({
@@ -13,10 +14,29 @@ export const useSocketStore = defineStore('useSocketStore', {
     idleTimer: null,
     allOnlineUsers: [],
     userVisible: false,
-    reactionEmojiEv: null
+    reactionEmojiEv: null,
+    notificationStore: useNotificationStore()
   }),
   actions: {
     initSocket(token, userId) {
+
+      let playAudioUnlocked = false
+
+      let notificationAudio = new Audio("/sounds/notification.mp3");
+
+      const unlockPlayNotification = () => {
+        notificationAudio.play().then(() => {
+          notificationAudio.pause();
+          notificationAudio.currentTime = 0;
+          playAudioUnlocked = true;
+        }).catch(() => {});
+
+        window.removeEventListener("click", unlockPlayNotification);
+      };
+
+      window.addEventListener("click", unlockPlayNotification);
+
+
       this.currentUserId = userId
       this.socket = io(socketUrl, {
         auth: {
@@ -51,10 +71,12 @@ export const useSocketStore = defineStore('useSocketStore', {
       })
 
       this.socket.on('notification', (data) => {
-        const notify = useNotify()
-        console.log(data)
+        if(playAudioUnlocked){
+          notificationAudio.currentTime = 0;
+          notificationAudio?.play();
+        }
 
-        notify.notify(data.title || 'Empty message', data?.message || null, data?.alert || 'info')
+        useNotify().notify(data.title || '', data.alert, {meta: data, persistent: true})
 
         if (Events.TASK_COMPLETED === data.type) {
           eventBus.emit(Events.TASK_COMPLETED, data)

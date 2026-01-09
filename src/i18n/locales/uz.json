@@ -2302,6 +2302,8 @@
       "user_id": "Xodim",
       "devices": "Qurilmalar"
     },
+    "markAllAsRead": "Barchasi o'qilgan deb belgilash",
+    "unreadPlural": "O'qilmagan bildirishnomalar",
     "status": {
       "info": "Ma’lumot",
       "success": "Muvaffaqiyat",

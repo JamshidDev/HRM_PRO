@@ -12,6 +12,7 @@
   import { appPermissions } from '@/utils/index.js'
   import { AppPaths } from '@/utils/index.js'
   import axios from 'axios'
+  import NotificationsWidget from "@components/ui/NotificationsWidget.vue";
   const emits = defineEmits(['onChange'])
   const router = useRouter()
   const store = useAccountStore()
@@ -73,6 +74,7 @@
           <Alert20Regular />
         </n-icon>
       </n-badge>
+      <NotificationsWidget />
       <DownloadTask />
       <UIThemeSwitch />
       <n-button @click="showVideo()" v-if="examVideoStore.isRecording">
