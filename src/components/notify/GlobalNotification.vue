@@ -48,7 +48,7 @@
         "
         @click="()=>onClickNotification(item)"
       >
-        <div @click.stop="()=>onClickClose(item)" class="hidden group-hover:block absolute top-0 left-0 -translate-1/2 p-0.5 rounded-full border border-surface/10 bg-danger/30 cursor-pointer transition-all hover:bg-danger/20 transition-all">
+        <div @click.stop="()=>onClickClose(item)" class="hidden group-hover:block absolute top-0 left-0 -translate-1/2 p-0.5 rounded-full border border-surface/10 bg-danger/30 cursor-pointer hover:bg-danger/20 dark:bg-surface-ground transition-all">
           <Dismiss20Filled class="size-3 text-danger" />
         </div>
         <div class="relative">
@@ -69,7 +69,7 @@
 
           </div>
         </div>
-        <span class="line-clamp-1 font-medium">{{ item.content }}</span>
+        <span class="line-clamp-1 font-medium text-textColor0">{{ item.content }}</span>
       </div>
     </TransitionGroup>
   </div>
@@ -103,6 +103,12 @@
     backdrop-filter: blur(8.3px);
     -webkit-backdrop-filter: blur(8.3px);
     border: 1px solid rgba(255, 255, 255, 0.56);
+  }
+
+  [data-theme="dark"] .notification-blurry-bg{
+    /* From https://css.glass */
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
   }
 
   .custom-animate-pulse {

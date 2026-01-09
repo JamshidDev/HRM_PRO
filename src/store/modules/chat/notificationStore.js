@@ -80,6 +80,7 @@ export const useNotificationStore = defineStore('notificationStore', {
                 })
         },
         _mark_read(payload = {ids: [], all: false}, callback){
+            if(!payload?.all && !payload?.ids.length) return
             $ApiService.notificationService._user_read({
                 data: payload
             }).then(()=>{
