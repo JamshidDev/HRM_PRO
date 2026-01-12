@@ -101,7 +101,9 @@ export const useShiftTypeStore = defineStore('shiftTypeStore', {
       search: null,
       start_date: null,
       end_date: null,
-      has_schedule: 'No'
+      has_schedule: 'No',
+      organization_id: [],
+      department_id: null,
     },
     notScheduleWorkerList: [],
     notScheduleWorkerCount: 0,

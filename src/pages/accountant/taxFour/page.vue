@@ -9,8 +9,9 @@
 
   onMounted(() => {
     if (!accStore.checkAction(accStore.pn.economistTaxFourRead)) return
-    store.params.year = new Date().getFullYear()
-    store.params.month = new Date().getMonth()
+    const today = new Date()
+    store.params.year = today.getFullYear()
+    store.params.month = new Date(today.setMonth(today.getMonth() - 1)).getMonth()+1
     store._index()
   })
 </script>

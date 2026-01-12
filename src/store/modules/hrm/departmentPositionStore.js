@@ -92,7 +92,10 @@ export const useDepartmentPositionStore = defineStore('departmentPositionStore',
       $ApiService.departmentPositionService
         ._index({ params })
         .then((res) => {
-          this.list = res.data.data.data
+          this.list = res.data.data.data.map(v =>({
+            ...v,
+            colorType:Number(v.rate)>Number(v.worker_rate) ? 'success':Number(v.rate) === Number(v.worker_rate)? 'default':'error'
+          }))
           this.totalItems = res.data.data.total
         })
         .finally(() => {

@@ -25,6 +25,7 @@ export const useContractStore = defineStore('contractStore', {
       table_number: null,
       type: null,
       director_id: null,
+      finance_id:null,
       department_id: [],
       department_position_id: null,
       position_status: true,
@@ -131,6 +132,7 @@ export const useContractStore = defineStore('contractStore', {
           organization_id: this.payload.organization_id[0].id,
           worker_id: compStore.isSelectedWorker ? Number(compStore.worker.pin) : this.payload.pin,
           director_id: this.payload.director_id,
+          finance_id: this.payload.finance_id || undefined,
           department_id:
             this.payload.department_id.length > 0 ? this.payload.department_id[0].id : null,
           vacation_main_day: this.payload.vacation_main_day || 0,
@@ -223,7 +225,7 @@ export const useContractStore = defineStore('contractStore', {
       this.payload.number = null
       this.payload.table_number = null
       this.payload.type = null
-      this.payload.director_id = null
+      // this.payload.director_id = null
       this.payload.department_id = []
       this.payload.department_position_id = null
       this.payload.position_status = true

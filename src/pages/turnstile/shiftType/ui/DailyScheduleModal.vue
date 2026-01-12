@@ -1,11 +1,12 @@
 <script setup>
   import { CheckmarkCircle24Filled, DismissCircle24Filled } from '@vicons/fluent'
-  import { useShiftTypeStore } from '@/store/modules/index.js'
-  import { UIModal, UIUser, UIPageFilter } from '@/components/index.js'
+  import { useShiftTypeStore, useComponentStore } from '@/store/modules/index.js'
+  import {UIModal, UIUser, UIPageFilter, UISelect, UINSelect} from '@/components/index.js'
   import { UIPagination } from '@/components/index.js'
   import i18n from '@/i18n/index.js'
 
   const store = useShiftTypeStore()
+  const componentStore = useComponentStore()
   const t = i18n.global.t
 
   const changePage = (v) => {
@@ -29,6 +30,11 @@
     store._generateWorkerSchedule(data)
   }
 
+  const filterEvent = () => {
+    store.notScheduleParams.page = 1
+    store._notScheduleWorker()
+  }
+
   const onSearchEv = () => {
     store.notScheduleParams.page = 1
     store._notScheduleWorker()
@@ -45,8 +51,33 @@
     return store.notScheduleWorkerList.every((v) => store.selectedWorkers.includes(v.id))
   })
 
+  const filterOption = [
+    {
+      name: t('schedule.form.attachedWorker'),
+      id: 'Yes'
+    },
+    {
+      name: t('schedule.form.noAttachedWorker'),
+      id: 'No'
+    }
+  ]
+
   const onForceUnSelect = () => {
     store.selectedWorkers = []
+  }
+
+  const onChangeStructure = (v) => {
+    store.notScheduleParams.organization_id = v
+    store.departmentList = []
+    store.notScheduleParams.department_id = null
+    filterEvent()
+    if (v.length === 0) return
+    store._departments()
+  }
+
+  const defaultEv = (v) => {
+    store.workerParams.organization_id = v
+    store._departments()
   }
 </script>
 
@@ -63,9 +94,16 @@
           v-model:search="store.notScheduleParams.search"
           :search-loading="store.notScheduleLoading"
           :show-add-button="false"
-          :show-filter-button="false"
         >
           <template #filterAction>
+            <n-select
+                class="!w-[200px]"
+                v-model:value="store.notScheduleParams.has_schedule"
+                :options="filterOption"
+                label-field="name"
+                value-field="id"
+                @update:value="onSearchEv"
+            />
             <n-button @click="onSelectAll" :type="isSelectedAll ? 'error' : 'primary'">
               <template #icon>
                 <DismissCircle24Filled v-if="isSelectedAll" />
@@ -74,6 +112,32 @@
               {{ $t(isSelectedAll ? 'content.unSelectList' : 'content.selectList') }}
             </n-button>
           </template>
+          <template #filterContent>
+            <label class="mt-3 text-xs mb-1 font-medium">{{ $t('actionLog.table.structure') }}</label>
+            <UISelect
+                :options="componentStore.structureList"
+                :modelV="store.notScheduleParams.organization_id"
+                @defaultValue="defaultEv"
+                @updateModel="onChangeStructure"
+                :checkedVal="store.structureCheck2"
+                @updateCheck="(v) => (store.structureCheck2 = v)"
+                :loading="componentStore.structureLoading"
+                v-model:search="componentStore.structureParams.search"
+                @onSearch="componentStore._structures"
+                @onSubmit="filterEvent"
+                :multiple="false"
+            />
+            <label class="mt-3 text-xs mb-1 font-medium">{{ $t('content.department') }}</label>
+            <UINSelect
+                clearable
+                :loading="store.departmentLoading"
+                :options="store.departmentList"
+                v-model:value="store.notScheduleParams.department_id"
+                @update:value="onChangeDepartment"
+            />
+          </template>
+
+
         </UIPageFilter>
         <div class="w-full overflow-y-auto h-[600px] pr-2 mt-4">
           <template v-if="store.notScheduleWorkerList.length > 0">

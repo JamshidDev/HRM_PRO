@@ -90,10 +90,46 @@
             <th class="min-w-[120px] w-[120px]">
               {{ $t('departmentPositionPage.table.education') }}
             </th>
-            <th class="min-w-[40px] w-[40px]">{{ $t('departmentPositionPage.table.group') }}</th>
-            <th class="min-w-[40px] w-[40px]">{{ $t('departmentPositionPage.table.rank') }}</th>
-            <th class="min-w-[40px] w-[40px]">{{ $t('departmentPositionPage.table.rate') }}</th>
-            <th class="min-w-[40px] w-[40px]">{{ $t('departmentPositionPage.table.fact') }}</th>
+            <th class="min-w-[40px] w-[40px]">
+              <n-tooltip trigger="hover">
+                <template #trigger>
+                  <p class="cursor-pointer text-sm text-textColor2 line-clamp-1 w-full leading-[1.2] truncate">
+                    {{ $t('departmentPositionPage.table.group') }}
+                  </p>
+                </template>
+                {{ $t('departmentPositionPage.form.group') }}
+              </n-tooltip>
+            </th>
+            <th class="min-w-[40px] w-[40px]">
+              <n-tooltip trigger="hover">
+                <template #trigger>
+                  <p class="cursor-pointer text-sm text-textColor2 line-clamp-1 w-full leading-[1.2] truncate">
+                    {{ $t('departmentPositionPage.table.rank') }}
+                  </p>
+                </template>
+                {{ $t('departmentPositionPage.form.rank') }}
+              </n-tooltip>
+            </th>
+            <th class="min-w-[40px] w-[40px]">
+              <n-tooltip trigger="hover">
+                <template #trigger>
+                  <p class="cursor-pointer text-sm text-textColor2 line-clamp-1 w-full leading-[1.2] truncate">
+                    {{ $t('departmentPositionPage.table.rate') }}
+                  </p>
+                </template>
+                {{ $t('departmentPositionPage.form.rate') }}
+              </n-tooltip>
+            </th>
+            <th class="min-w-[40px] w-[40px]">
+              <n-tooltip trigger="hover">
+                <template #trigger>
+                  <p class="cursor-pointer text-sm text-textColor2 line-clamp-1 w-full leading-[1.2] truncate">
+                    {{ $t('departmentPositionPage.table.fact') }}
+                  </p>
+                </template>
+                {{ $t('departmentPositionPage.form.fact') }}
+              </n-tooltip>
+            </th>
             <th class="min-w-[60px] w-[60px]">
               {{ $t('departmentPositionPage.table.experience') }}
             </th>
@@ -115,22 +151,22 @@
             <td>{{ item.education?.name }}</td>
             <td>
               <div class="w-full flex justify-center">
-                <n-button size="small" circle>{{ item.group?.name }}</n-button>
+                <n-button size="small" circle secondary>{{ item.group?.name }}</n-button>
               </div>
             </td>
             <td>
               <div class="w-full flex justify-center">
-                <n-button size="small" circle>{{ item.rank?.name }}</n-button>
+                <n-button size="small" circle secondary>{{ item.rank?.name }}</n-button>
               </div>
             </td>
             <td>
               <div class="w-full flex justify-center">
-                <n-button size="small" circle>{{ item.rate }}</n-button>
+                <n-button :type="item.colorType" secondary size="small" circle>{{ item.rate }}</n-button>
               </div>
             </td>
             <td>
               <div class="w-full flex justify-center">
-                <n-button v-if="item.worker_rate" size="small" circle>{{ item.worker_rate }}</n-button>
+                <n-button :type="item.colorType" secondary v-if="item.worker_rate" size="small" circle>{{ item.worker_rate }}</n-button>
               </div>
             </td>
             <td>
