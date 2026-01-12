@@ -57,7 +57,7 @@ import {
     ShiftsCheckmark20Regular,
     CellularData124Filled,
     Clock24Filled,
-    DocumentBulletList24Filled, Chat24Filled, Alert16Filled
+    DocumentBulletList24Filled, ChatMultiple16Filled, CommentLightning20Filled
 } from '@vicons/fluent'
 import { AppPaths } from '@/utils/index.js'
 import Utils from '@/utils/Utils.js'
@@ -808,13 +808,13 @@ export const navigations = [
     {
         label: 'navigation.chat',
         path: AppPaths.Chat,
-        icon: Chat24Filled,
+        icon: ChatMultiple16Filled,
         permission: appPermissions.admin,
         children: [
             {
                 label: 'notificationPage.name',
                 path: Utils.routeChatPathMaker(AppPaths.Notification),
-                icon: Alert16Filled,
+                icon: CommentLightning20Filled,
                 color: 'bg-dark',
                 permission: appPermissions.instructions
             }

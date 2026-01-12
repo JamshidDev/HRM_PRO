@@ -7,6 +7,7 @@ import {
   useNotificationStore,
 } from '@stores'
 import {Utils} from '@utils'
+import NotificationBadge from "@pages/chat/notification/ui/NotificationBadge.vue";
 
 const store = useNotificationStore()
 
@@ -30,6 +31,7 @@ const changePage = (v) => {
           <th class="min-w-[400px]">{{ $t('content.description') }}</th>
           <th class="min-w-[140px]">{{ $t('content.created') }}</th>
           <th class="min-w-[140px]">{{ $t('content.read') }}</th>
+          <th class="min-w-[140px]">{{ $t('content.type') }}</th>
 
         </tr>
         </thead>
@@ -58,6 +60,7 @@ const changePage = (v) => {
           </td>
           <td>{{ Utils.timeHHMMWithMonth(item.created_at) }}</td>
           <td>{{ Utils.timeHHMMWithMonth(item?.read_at) }}</td>
+          <td><NotificationBadge v-if="item.data?.alert" :alert="item.data?.alert" /></td>
         </tr>
         </tbody>
       </n-table>

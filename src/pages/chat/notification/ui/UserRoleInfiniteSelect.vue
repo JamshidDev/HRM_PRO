@@ -18,7 +18,6 @@ const userRoleOptionsLoading = ref(false)
 
 const getUserRoleOptions = ()=>{
   userRoleOptionsLoading.value = true
-  console.log(userRoleParams)
   $ApiService.workerService
       ._userRole({
         params: {
@@ -130,7 +129,8 @@ const renderAvatarOption = ({ option }) => {
             h(NAvatar, {
               class: 'flex-shrink-0',
               src: option.photo,
-              'fallback-src': Utils.noAvailableImage
+              'fallback-src': Utils.noAvailableImage,
+              objectFit: 'cover'
             }),
             h('div', { class: 'flex flex-col' }, [
               h(
