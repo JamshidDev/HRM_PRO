@@ -50,7 +50,10 @@ export const useEduPlanStore = defineStore('eduPlanStore', {
       search: null,
       name: null,
       learning_center_id: null,
-      organizations: []
+      organizations: [],
+      year: null,
+      month: null,
+
     },
     workerList: [],
     workerLoading: false,

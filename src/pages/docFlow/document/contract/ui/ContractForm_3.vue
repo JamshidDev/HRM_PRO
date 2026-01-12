@@ -4,67 +4,19 @@
   import Utils from '@/utils/Utils.js'
   import { useAppSetting } from '@/utils/index.js'
   import UIHelper from '@/utils/UIHelper.js'
-  import { Drag24Filled, DrawText24Regular } from '@vicons/fluent'
+  import {DismissCircle28Filled, Drag24Filled, DrawText24Regular} from '@vicons/fluent'
   import { UIUser } from '@/components/index.js'
   import { VueDraggable } from 'vue-draggable-plus'
 
   const store = useContractStore()
   const componentStore = useComponentStore()
   const confirmationList = ref([])
+  const financeList = ref([])
 
   const showVacationDay = computed(() => {
     return ![2].includes(store.payload.type)
   })
 
-  const renderLabel = (option) => {
-    return [
-      h(
-        'div',
-        {
-          class: 'flex gap-2 my-1 items-center'
-        },
-        [
-          h(NAvatar, {
-            class: '',
-            src: option.photo,
-            'fallback-src': Utils.noAvailableImage
-          }),
-          h('div', { class: 'flex flex-col' }, [
-            h(
-              'div',
-              { class: 'text-xs font-medium text-gray-500' },
-              `${option.last_name}.${option.last_name[0]}.${option.middle_name[0]}`
-            ),
-            h('div', { class: 'text-xs text-gray-400' }, option.position)
-          ])
-        ]
-      )
-    ]
-  }
-
-  watchEffect(() => {
-    if (store.payload.director_id) {
-      store.payload.confirmations = store.payload.confirmations.filter(
-        (v) => v !== store.payload.director_id
-      )
-      confirmationList.value = componentStore.confirmationList.filter(
-        (v) => v.id !== store.payload.director_id
-      )
-    }
-
-    store.sortableConfirmations = confirmationList.value
-      .filter((v) => store.payload.confirmations.includes(v.id))
-      .map((v) => ({
-        id: v.id,
-        data: {
-          firstName: v.first_name,
-          lastName: v.last_name,
-          middleName: v.middle_name,
-          photo: v.photo,
-          position: v?.position || ''
-        }
-      }))
-  })
 
   const onChange = (v) => {
     if (v === 6) {
@@ -73,6 +25,81 @@
       store._vacationWorkers(id)
     }
   }
+
+  const renderLabel = (option) => {
+    return [
+      h(
+          'div',
+          {
+            class: 'flex gap-2 my-1 items-center px-2'
+          },
+          [
+            h(NAvatar, {
+              class: '',
+              src: option.photo,
+              'fallback-src': Utils.noAvailableImage
+            }),
+            h('div', { class: 'flex flex-col' }, [
+              h(
+                  'div',
+                  { class: 'text-xs font-medium text-gray-500 leading-[1.2]' },
+                  `${option.last_name}.${option.last_name[0]}.${option.middle_name[0]}`
+              ),
+              h('div', { class: 'text-xs text-primary leading-[1.2]' }, option.position)
+            ])
+          ]
+      )
+    ]
+  }
+  const renderValue = ({ option }) => {
+    return [
+      h(
+          'div',
+          {
+            class: 'flex gap-2 my-1 items-center'
+          },
+          `${option?.last_name} ${option?.first_name} ${option?.middle_name}`
+      )
+    ]
+  }
+  const onChangeDraggle = () => {
+    store.payload.confirmations = store.sortableConfirmations.map((v) => v.id)
+  }
+  const onChangeConfirmation = () => {
+    fillSortableConfirmations()
+    syncConfirmationEv()
+  }
+  const syncConfirmationEv = () => {
+    if(store.payload.finance_id === store.payload.director_id) store.payload.finance_id = null
+    const ids = [store.payload.finance_id, store.payload.director_id]
+    financeList.value = componentStore.confirmationList.filter(v => v.id !== store.payload.director_id)
+    confirmationList.value = componentStore.confirmationList.filter(v => !ids.includes(v.id))
+
+    onRemoveEv(store.payload.finance_id)
+    onRemoveEv(store.payload.director_id)
+  }
+  const fillSortableConfirmations = () => {
+    store.sortableConfirmations = confirmationList.value
+        .filter((v) => store.payload.confirmations.includes(v.id))
+        .map((v) => ({
+          id: v.id,
+          data: {
+            firstName: v.first_name,
+            lastName: v.last_name,
+            middleName: v.middle_name,
+            photo: v.photo,
+            position: v?.position || ''
+          }
+        }))
+  }
+  const onRemoveEv = (id) =>{
+    store.sortableConfirmations = store.sortableConfirmations.filter(v=>v.id !== id)
+    store.payload.confirmations = store.payload.confirmations.filter(v=>v !== id)
+  }
+
+  onMounted(()=>{
+    syncConfirmationEv()
+  })
 </script>
 
 <template>
@@ -142,6 +169,23 @@
             />
           </n-form-item>
         </div>
+
+        <div class="col-span-12">
+          <n-form-item :label="$t(`documentPage.command.form.finance_id`)">
+            <n-select
+                :disabled="!store.payload.director_id"
+                value-field="id"
+                label-field="last_name"
+                v-model:value="store.payload.finance_id"
+                :options="financeList"
+                :loading="componentStore.confirmationLoading"
+                :render-label="renderLabel"
+                :render-tag="renderValue"
+                @update:value="syncConfirmationEv"
+                clearable
+            />
+          </n-form-item>
+        </div>
         <div class="col-span-12">
           <n-form-item :label="$t(`documentPage.command.form.confirm`)" path="director_id">
             <n-select
@@ -152,6 +196,9 @@
               :options="confirmationList"
               :loading="componentStore.confirmationLoading"
               :render-label="renderLabel"
+              :render-tag="renderValue"
+              :max-tag-count="1"
+              @update:value="onChangeConfirmation"
             />
           </n-form-item>
         </div>
@@ -171,7 +218,7 @@
             </n-checkbox>
           </div>
           <div class="col-span-12">
-            <VueDraggable v-model="store.sortableConfirmations">
+            <VueDraggable v-model="store.sortableConfirmations" @end="onChangeDraggle">
               <div
                 v-for="(item, index) in store.sortableConfirmations"
                 :key="item.id"
@@ -197,6 +244,11 @@
                     <span class="font-bold text-lg">{{ index + 1 }}</span>
                   </n-button>
                 </template>
+                <n-button @click="onRemoveEv(item.id)" type="error" circle secondary>
+                  <template #icon>
+                    <DismissCircle28Filled />
+                  </template>
+                </n-button>
               </div>
             </VueDraggable>
           </div>
@@ -205,5 +257,3 @@
     </div>
   </div>
 </template>
-
-<style scoped></style>

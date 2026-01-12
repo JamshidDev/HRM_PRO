@@ -54,22 +54,27 @@
           :loading="store.levelLoading"
         />
       </n-form-item>
-      <n-form-item
-        v-if="!Boolean(store.parentElement)"
-        :label="$t(`departmentPage.form.parent_id`)"
-        :rule-path="validationRules.rulesNames.requiredNumberField"
-        path="parent_id"
-      >
-        <n-select
-          v-model:value="store.payload.parent_id"
-          filterable
-          clearable
-          :options="componentStore.departmentList"
-          label-field="name"
-          value-field="id"
-          :loading="store.levelLoading"
-        />
-      </n-form-item>
+      <template v-if="!Boolean(store.parentElement)">
+        <n-checkbox class="border border-surface-line w-full px-2 py-1 rounded-lg mb-4" v-model:checked="store.showParent">{{$t(`departmentPage.form.attachmentParent`)}}</n-checkbox>
+        <template v-if="store.showParent">
+          <n-form-item
+              :label="$t(`departmentPage.form.parent_id`)"
+              path="parent_id"
+          >
+            <n-select
+                v-model:value="store.payload.parent_id"
+                filterable
+                clearable
+                :options="componentStore.departmentList"
+                label-field="name"
+                value-field="id"
+                :loading="store.levelLoading"
+            />
+          </n-form-item>
+        </template>
+      </template>
+
+
       <n-form-item :label="$t(`content.comment`)">
         <n-input :rows="2" type="textarea" v-model:value="store.payload.comment" />
       </n-form-item>

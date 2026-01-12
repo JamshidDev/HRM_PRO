@@ -37,6 +37,7 @@
     store.payload.name_en = v.name_en
     store.payload.comment = v.comment
     store.payload.level = v.level.id
+    store.showParent = Boolean(v.parent?.id)
     store.payload.parent_id = v.parent?.id
 
     store.visibleType = false

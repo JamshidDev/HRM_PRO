@@ -13,12 +13,10 @@
 
   const store = useAdContractStore()
   const componentStore = useComponentStore()
-
   const showCheckBox = ref(false)
-
   const confirmationList = ref([])
   const financeList = ref([])
-
+  const rankRangeTitle = ref('')
   const props = defineProps({
     callBack: {
       type: Function,
@@ -50,6 +48,7 @@
     store.payload.department_id = v
     componentStore.departmentPositionList = []
     store.payload.department_position_id = null
+    if(v.length === 0) return
     componentStore._departmentPosition(v[0].id)
   }
   const onChangeStatus = (v) => {
@@ -198,6 +197,16 @@
     store.sortableConfirmations = store.sortableConfirmations.filter(v=>v.id !== id)
     store.payload.confirmations = store.payload.confirmations.filter(v=>v !== id)
   }
+
+  const onChangePosition = (id) => {
+    const index = componentStore.departmentPositionList.findIndex(x=>x.id === id )
+    if(index === -1) return
+    const selectedP = componentStore.departmentPositionList[index]
+    store.payload.group = selectedP.group?.id
+    store.payload.rank =selectedP.rank?.id
+    rankRangeTitle.value = ` (${selectedP.rank.name} - ${selectedP.max_rank.name})`
+  }
+
 
   onMounted(() => {
     if (componentStore.groupList.length === 0) {
@@ -374,13 +383,16 @@
                       path="department_position_id"
                     >
                       <n-select
-                        :disabled="!Boolean(store.payload.department_id)"
-                        v-model:value="store.payload.department_position_id"
-                        filterable
-                        :options="componentStore.departmentPositionList"
-                        label-field="name"
-                        value-field="id"
-                        :loading="componentStore.departmentPositionLoading"
+                          :options="componentStore.departmentPositionList"
+                          :loading="componentStore.departmentPositionLoading"
+                          :disabled="!Boolean(store.payload.department_id?.length)"
+                          :render-label="UIHelper.selectRender.labelColor"
+                          :render-tag="UIHelper.selectRender.value"
+                          v-model:value="store.payload.department_position_id"
+                          @update:value="onChangePosition"
+                          filterable
+                          label-field="name"
+                          value-field="id"
                       />
                     </n-form-item>
                   </div>
@@ -400,7 +412,7 @@
                 </n-form-item>
               </div>
               <div class="col-span-12 md:col-span-6 lg:col-span-4">
-                <n-form-item :label="$t(`documentPage.form.rank`)" path="rank">
+                <n-form-item :label="$t(`documentPage.form.rank`) + rankRangeTitle" path="rank">
                   <n-select
                     v-model:value="store.payload.rank"
                     filterable

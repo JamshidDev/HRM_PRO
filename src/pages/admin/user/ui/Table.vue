@@ -1,6 +1,6 @@
 <script setup>
   import { NoDataPicture, UIPagination, UIUser, UIMenuButton, UIBadge } from '@/components/index.js'
-  import { useUserStore, useAccountStore } from '@/store/modules/index.js'
+  import { useUserStore, useAccountStore, useSocketStore } from '@/store/modules/index.js'
   import {
     RibbonStar24Filled,
     ShieldLock20Regular,
@@ -14,6 +14,7 @@
 
   const store = useUserStore()
   const accStore = useAccountStore()
+  const socketStore = useSocketStore()
 
   const onSelect = (v) => {
     store.elementId = v.data.uuid
@@ -40,8 +41,11 @@
 
   const onSuccessEv = (token) => {
     localStorage.setItem(useAppSetting.tokenKey, token)
-    accStore._index(() => {
+    accStore._index((data) => {
+      socketStore.disconnect()
       getActivePinia().reset()
+      localStorage.setItem(useAppSetting.accountUserId, data.id)
+      socketStore.initSocket(token, data?.id)
       router.push(AppPaths.Home)
     })
   }

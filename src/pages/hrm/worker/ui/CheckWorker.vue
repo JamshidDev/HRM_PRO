@@ -4,7 +4,10 @@
     GlobePerson24Regular,
     Warning24Filled,
     ArrowCircleRight20Regular,
-    PersonAdd20Regular
+    PersonAdd20Regular,
+    Building20Filled,
+    Handshake24Filled,
+    CheckmarkCircle20Filled,
   } from '@vicons/fluent'
   import { useComponentStore, useContractStore, useWorkerStore } from '@/store/modules/index.js'
   import { UIUser } from '@/components/index.js'
@@ -20,6 +23,7 @@
   const searchEvent = useDebounceFn(() => {
     store.submitted = false
     if (store.pin.length === 17) {
+      store.worker = null
       let pin = store.pin.split('-').join('')
       store._checkWorker(pin)
     }
@@ -40,12 +44,28 @@
       workerStore.visible = true
     }, 200)
   }
+
+  const showAlert = computed(()=>{
+    const existPosition = store.worker?.positions && Array.isArray(store.worker.positions) && store.worker.positions.length>0
+    if(!existPosition) return existPosition
+
+    console.log(store.worker?.positions)
+
+    return existPosition
+  })
+
+  onMounted(()=>{
+    store.worker = null
+  })
+  onBeforeUnmount(()=>{
+    store.worker = null
+  })
 </script>
 
 <template>
   <n-modal v-model:show="store.checkUserVisible">
     <n-card
-      style="width: 600px"
+      style="width:600px"
       :bordered="false"
       size="huge"
       role="dialog"
@@ -84,7 +104,7 @@
             </n-button>
           </n-input-group>
         </div>
-        <div class="flex h-[260px] py-4">
+        <div class="flex min-h-[380px] py-4">
           <n-spin :show="store.pinLoading" class="flex justify-center items-center w-full">
             <template v-if="!Boolean(store.pin)">
               <n-gradient-text
@@ -98,8 +118,33 @@
             </template>
 
             <template v-if="store.worker && Boolean(store.pin)">
-              <div class="w-[300px] cursor-pointer flex flex-col gap-y-4">
-                <UIUser :short="false" :data="store.worker" />
+              <div class="w-[400px] cursor-pointer flex flex-col gap-y-4">
+
+                <UIUser :hide-tooltip="true" :short="false" :data="store.worker" />
+
+                <div v-if="store.worker?.positions && store.worker?.positions.length>0" class="w-full border border-warning/60 bg-surface-section rounded-xl py-2 px-3">
+                  <h3 class="font-semibold text-center mb-4 uppercase">{{$t('workerPage.checkWorker.existPosition')}}</h3>
+                   <template v-for="item in store.worker.positions" :key="item.id">
+                     <div class="flex gap-2 items-center text-xs font-semibold leading-[1.2] mb-1 text-secondary">
+                       <n-icon size="16">
+                         <Building20Filled/>
+                       </n-icon>
+                       {{item.organization}}</div>
+                     <div class="flex gap-2 items-center text-xs leading-[1.2] mb-1 text-secondary">
+                       <n-icon size="16">
+                         <Handshake24Filled/>
+                       </n-icon>{{item.position}}</div>
+                     <n-button class="!mb-4" v-if="item.type" size="tiny" type="warning" secondary> <template #icon><n-icon><CheckmarkCircle20Filled/></n-icon></template> {{item.type}}</n-button>
+                   </template>
+
+                  <div class="border border-danger/30 rounded-lg bg-surface-section">
+                    <div class="p-2 leading-[1.2] text-danger bg-danger/3 text-center">
+                      {{$t('workerPage.checkWorker.alertCommandType')}}
+                    </div>
+                  </div>
+                </div>
+
+
                 <n-button @click="onContinue()" type="primary" icon-placement="right">
                   {{ $t('content.continue') }}
                   <template #icon>
@@ -108,7 +153,7 @@
                 </n-button>
               </div>
             </template>
-            <template v-if="Boolean(store.pin) && !Boolean(store.worker) && store.submitted">
+            <template v-if="!Boolean(store.worker) && Boolean(store.pin) && !store.pinLoading">
               <div
                 class="w-[400px] flex flex-col bg-surface-section border py-2 px-4 rounded-xl border-surface-line"
               >

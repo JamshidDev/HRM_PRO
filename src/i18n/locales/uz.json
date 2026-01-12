@@ -191,9 +191,9 @@
     "age": "Yosh",
     "pin": "Pasport JSHSHIR kiriting",
     "university": "Oliygoh",
-    "nameUz": "Nomi (UZ)",
-    "nameRu": "Nomi (RU)",
-    "nameEn": "Nomi (En)",
+    "nameUz": "Nomi (uz)",
+    "nameRu": "Nomi (ru)",
+    "nameEn": "Nomi (en)",
     "loginById": "Tizimga kirish",
     "detail": "Batafsil",
     "users": "Foydalanuvchilar",
@@ -489,6 +489,8 @@
     "checkWorker": {
       "title": "Xodim izlash",
       "defaultText": "Izlashni boshlang...",
+      "existPosition": "Amaldagi mehnat faoliyati",
+      "alertCommandType": "Mazkur xodim bilan nomuayyan turdagi mehnat shartnomasini tuza olmaysiz",
       "no-worker": "Tizimda xodim topilmadi!",
       "born": "Tug'ilgan sana",
       "addCandidate": "Kandidat qo'shish",
@@ -556,9 +558,10 @@
     "createTitle": "Bo'linma qo'shish",
     "updateTitle": "Bo'linmani tahrirlash",
     "form": {
-      "parent_id": "Bo'linma tanlang",
+      "parent_id": "Yuqori turuvchi bo'linma",
       "name": "Bo'linma nomi",
-      "level": "Bo'linma turi"
+      "level": "Bo'linma turi",
+      "attachmentParent": "Ichki bo'linma sifatida yaratish"
     },
     "selectedOrg": "Tanlangan tashkilot",
     "deleteContent": "Haqiqatan ham bu tashkilotni o'chirmoqchimisiz?"
@@ -574,6 +577,7 @@
       "rank": "Lavozim uchun razryad",
       "max_rank": "Lavozim uchun maksimal razryad",
       "rate": "Lavozim kontingenti",
+      "fact": "Lavozimdagi xodimlar soni",
       "salary": "Oylik maosh",
       "experience": "Ish tajribasi (oy)",
       "educations": "Talab qilinadigan minimal ma'lumot"
