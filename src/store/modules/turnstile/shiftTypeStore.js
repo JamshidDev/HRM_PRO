@@ -170,7 +170,9 @@ export const useShiftTypeStore = defineStore('shiftTypeStore', {
       const params = {
         ...this.notScheduleParams,
         start_date: Utils.timeToZone(this.notScheduleParams.start_date),
-        end_date: Utils.timeToZone(this.notScheduleParams.end_date)
+        end_date: Utils.timeToZone(this.notScheduleParams.end_date),
+        organization_id: this.notScheduleParams.organization_id.map((v) => v.id).toString() || undefined,
+        department_id: this.notScheduleParams.department_id,
       }
       this.notScheduleLoading = true
       $ApiService.shiftTypeService

@@ -16,6 +16,7 @@
           store.timePayload.breakEndTime
         )
         store.savedOption.isWorkDay = true
+        store.savedOption.isEdit = true
         store.savedOption.startTime = store.timePayload.startTime
         store.savedOption.endTime = store.timePayload.endTime
         store.savedOption.empty = false

@@ -41,7 +41,8 @@
       workTime: 0,
       empty: false,
       dayTime: 0,
-      eveningTime: 0
+      eveningTime: 0,
+      isEdit:true,
     }
 
     if (store.selectedOption && store.selectedOption.key === 'otherTime') {
@@ -93,7 +94,8 @@
       startTime: null,
       endTime: null,
       workTime: 0,
-      empty: false
+      empty: false,
+      isEdit:true,
     }
     for (let item of v) {
       store.workerList[item.workerIndex].isEdit = true
