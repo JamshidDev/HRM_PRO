@@ -102,7 +102,7 @@ export const useShiftTypeStore = defineStore('shiftTypeStore', {
       start_date: null,
       end_date: null,
       has_schedule: 'No',
-      organization_id: [],
+      organizations: [],
       department_id: null,
     },
     notScheduleWorkerList: [],
@@ -131,7 +131,7 @@ export const useShiftTypeStore = defineStore('shiftTypeStore', {
       const params = {
         page: 1,
         per_page: 1000,
-        organizations: this.params.organizations.map((v) => v.id).toString() || undefined
+        organizations: this.notScheduleParams.organizations.map((v) => v.id).toString() || undefined
       }
       $ApiService.workerScheduleService
         ._department({ params })
@@ -171,7 +171,7 @@ export const useShiftTypeStore = defineStore('shiftTypeStore', {
         ...this.notScheduleParams,
         start_date: Utils.timeToZone(this.notScheduleParams.start_date),
         end_date: Utils.timeToZone(this.notScheduleParams.end_date),
-        organization_id: this.notScheduleParams.organization_id.map((v) => v.id).toString() || undefined,
+        organizations: this.notScheduleParams.organizations.map((v) => v.id).toString() || undefined,
         department_id: this.notScheduleParams.department_id,
       }
       this.notScheduleLoading = true

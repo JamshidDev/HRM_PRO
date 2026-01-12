@@ -226,6 +226,7 @@
             :options="componentStore.departmentPositionList"
             label-field="name"
             value-field="id"
+            :render-label="UIHelper.selectRender.labelColor"
             :loading="componentStore.departmentPositionLoading"
           />
         </n-form-item>

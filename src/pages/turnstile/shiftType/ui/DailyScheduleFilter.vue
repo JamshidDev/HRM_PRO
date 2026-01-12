@@ -41,7 +41,7 @@ const filterOption = [
 ]
 
 const onChangeStructure = (v) => {
-  store.notScheduleParams.organization_id = v
+  store.notScheduleParams.organizations = v
   store.departmentList = []
   store.notScheduleParams.department_id = null
   filterEvent()
@@ -54,7 +54,7 @@ const onChangeDepartment = () => {
 }
 
 const defaultEv = (v) => {
-  store.notScheduleParams.organization_id = v
+  store.notScheduleParams.organizations = v
   store._departments()
 }
 
@@ -68,7 +68,7 @@ const onShow = (v) => {
 }
 
 const onReset = () => {
-  store.notScheduleParams.organization_id = []
+  store.notScheduleParams.organizations = []
   store.notScheduleParams.department_id = null
   filterEvent()
 }
@@ -104,7 +104,7 @@ const onReset = () => {
       <label class="mt-3 text-xs mb-1 font-medium">{{ $t('actionLog.table.structure') }}</label>
       <UISelect
           :options="componentStore.structureList"
-          :modelV="store.notScheduleParams.organization_id"
+          :modelV="store.notScheduleParams.organizations"
           @defaultValue="defaultEv"
           @updateModel="onChangeStructure"
           :checkedVal="store.structureCheck2"
@@ -113,7 +113,7 @@ const onReset = () => {
           v-model:search="componentStore.structureParams.search"
           @onSearch="componentStore._structures"
           @onSubmit="filterEvent"
-          :multiple="false"
+          :multiple="true"
       />
       <label class="mt-3 text-xs mb-1 font-medium">{{ $t('content.department') }}</label>
       <UINSelect
