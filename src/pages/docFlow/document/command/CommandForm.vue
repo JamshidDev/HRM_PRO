@@ -109,7 +109,7 @@
         const mainData = {
           command_date: Utils.timeToZone(store.payload.command_date),
           director_id: store.payload.director_id,
-          finance_id: store.payload.finance_id,
+          finance_id: store.payload.finance_id || undefined,
           organization_id: store.payload.organization_id?.[0]?.id,
           confirmations: store.sortableConfirmations.map((v, idx) => ({
             id: v.id,
@@ -799,7 +799,7 @@
               </n-form-item>
             </div>
             <div class="col-span-6">
-              <n-form-item :label="$t(`documentPage.command.form.finance_id`)" :path="existRuleOfFinanceInput? 'finance_id' : undefined">
+              <n-form-item :label="$t(`documentPage.command.form.finance_id`)">
                 <n-select
                     :disabled="!store.payload.director_id"
                     value-field="id"
