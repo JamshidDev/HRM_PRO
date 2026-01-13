@@ -109,7 +109,7 @@
         const mainData = {
           command_date: Utils.timeToZone(store.payload.command_date),
           director_id: store.payload.director_id,
-          finance_id: store.payload.finance_id,
+          finance_id: store.payload.finance_id || undefined,
           organization_id: store.payload.organization_id?.[0]?.id,
           confirmations: store.sortableConfirmations.map((v, idx) => ({
             id: v.id,
@@ -458,7 +458,6 @@
     const ids = [store.payload.finance_id, store.payload.director_id]
     financeList.value = componentStore.confirmationList.filter(v => v.id !== store.payload.director_id)
     confirmationList.value = componentStore.confirmationList.filter(v => !ids.includes(v.id))
-
     onRemoveEv(store.payload.finance_id)
     onRemoveEv(store.payload.director_id)
   }
@@ -480,6 +479,8 @@
     store.sortableConfirmations = store.sortableConfirmations.filter(v=>v.id !== id)
     store.payload.confirmations = store.payload.confirmations.filter(v=>v !== id)
   }
+
+  const existRuleOfFinanceInput = computed(() => store.payload.command_type !== 55)
 
   onMounted(() => {
     componentStore._commandTypes()
@@ -798,7 +799,7 @@
               </n-form-item>
             </div>
             <div class="col-span-6">
-              <n-form-item :label="$t(`documentPage.command.form.finance_id`)" path="finance_id">
+              <n-form-item :label="$t(`documentPage.command.form.finance_id`)">
                 <n-select
                     :disabled="!store.payload.director_id"
                     value-field="id"
@@ -870,13 +871,12 @@
                         </template>
                         <span class="font-bold text-lg">{{ index + 1 }}</span>
                       </n-button>
-                      <n-button @click="onRemoveEv(item.id)" type="error" circle secondary>
-                        <template #icon>
-                          <DismissCircle28Filled />
-                        </template>
-                      </n-button>
-
                     </template>
+                    <n-button @click="onRemoveEv(item.id)" type="error" circle secondary>
+                      <template #icon>
+                        <DismissCircle28Filled />
+                      </template>
+                    </n-button>
                   </div>
                 </VueDraggable>
               </div>

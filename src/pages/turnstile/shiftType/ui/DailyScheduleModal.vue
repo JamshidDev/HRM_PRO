@@ -1,8 +1,8 @@
 <script setup>
-  import { CheckmarkCircle24Filled, DismissCircle24Filled } from '@vicons/fluent'
-  import { useShiftTypeStore } from '@/store/modules/index.js'
-  import { UIModal, UIUser, UIPageFilter } from '@/components/index.js'
-  import { UIPagination } from '@/components/index.js'
+  import {DismissCircle24Filled } from '@vicons/fluent'
+  import { useShiftTypeStore} from '@stores'
+  import {UIModal, UIUser, UIPagination} from '@components'
+  import DailyScheduleFilter from "./DailyScheduleFilter.vue"
   import i18n from '@/i18n/index.js'
 
   const store = useShiftTypeStore()
@@ -29,25 +29,16 @@
     store._generateWorkerSchedule(data)
   }
 
-  const onSearchEv = () => {
-    store.notScheduleParams.page = 1
-    store._notScheduleWorker()
-  }
 
-  const onSelectAll = () => {
-    const idCollection = store.notScheduleWorkerList.map((item) => item.id)
-    const otherIds = store.selectedWorkers.filter((v) => !idCollection.includes(v))
 
-    store.selectedWorkers = isSelectedAll.value ? [...otherIds] : [...otherIds, ...idCollection]
-  }
-
-  const isSelectedAll = computed(() => {
-    return store.notScheduleWorkerList.every((v) => store.selectedWorkers.includes(v.id))
-  })
 
   const onForceUnSelect = () => {
     store.selectedWorkers = []
   }
+
+
+
+
 </script>
 
 <template>
@@ -58,23 +49,7 @@
   >
     <div>
       <n-spin :show="store.notScheduleLoading">
-        <UIPageFilter
-          @onSearch="onSearchEv"
-          v-model:search="store.notScheduleParams.search"
-          :search-loading="store.notScheduleLoading"
-          :show-add-button="false"
-          :show-filter-button="false"
-        >
-          <template #filterAction>
-            <n-button @click="onSelectAll" :type="isSelectedAll ? 'error' : 'primary'">
-              <template #icon>
-                <DismissCircle24Filled v-if="isSelectedAll" />
-                <CheckmarkCircle24Filled v-else />
-              </template>
-              {{ $t(isSelectedAll ? 'content.unSelectList' : 'content.selectList') }}
-            </n-button>
-          </template>
-        </UIPageFilter>
+        <DailyScheduleFilter/>
         <div class="w-full overflow-y-auto h-[600px] pr-2 mt-4">
           <template v-if="store.notScheduleWorkerList.length > 0">
             <n-checkbox-group v-model:value="store.selectedWorkers">

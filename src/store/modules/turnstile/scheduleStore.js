@@ -80,7 +80,8 @@ export const useScheduleTableStore = defineStore('scheduleStore', {
       empty: true,
       workTime: 0,
       dayTime: 0,
-      eveningTime: 0
+      eveningTime: 0,
+      isEdit:true,
     },
     isSelectedContext: false,
     selectedOption: null,
@@ -267,7 +268,8 @@ export const useScheduleTableStore = defineStore('scheduleStore', {
             workTime: 0,
             empty: true,
             dayTime: 0,
-            eveningTime: 0
+            eveningTime: 0,
+            isEdit:false,
           }
 
           const formatSchedule = (day) => ({
@@ -277,7 +279,8 @@ export const useScheduleTableStore = defineStore('scheduleStore', {
             workTime: day.daily_minutes,
             empty: day.id === null,
             dayTime: day.daytime || 0,
-            eveningTime: day.evening_time || 0
+            eveningTime: day.evening_time || 0,
+            isEdit:false,
           })
 
           this.workerList = res.data.data.data.map((v, index) => ({
@@ -445,6 +448,7 @@ export const useScheduleTableStore = defineStore('scheduleStore', {
         return
       }
 
+
       const workerData = workers.map((w) => ({
         worker_position_id: w.id,
         work_days: w.days.map((day, idx) => ({
@@ -455,24 +459,28 @@ export const useScheduleTableStore = defineStore('scheduleStore', {
           end_time: day.endTime,
           daily_minutes: day.workTime,
           daytime: day.dayTime,
-          evening_time: day.eveningTime
-        }))
+          evening_time: day.eveningTime,
+          isEdit: day.isEdit,
+        })).filter(f=>f.isEdit)
       }))
       const data = {
         status: 'custom',
         schedule_workers: workerData
       }
       this.savingLoading = true
+      this.workerLoading = true
       $ApiService.workerScheduleService
         ._create({ data })
         .then((res) => {
           this.workerList = this.workerList.map((a) => ({
             ...a,
-            isEdit: false
+            isEdit: false,
+            days: a.days.map(b=> ({...b, isEdit:false}))
           }))
         })
         .finally(() => {
           this.savingLoading = false
+          this.workerLoading = false
         })
     }
   }

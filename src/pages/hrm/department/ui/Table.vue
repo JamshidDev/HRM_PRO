@@ -4,9 +4,11 @@ x
   import { useDepartmentStore, useAccountStore } from '@stores'
   import {ChevronRight12Regular, Eye16Regular} from '@vicons/fluent'
   import { Utils } from '@utils'
+  import i18n from "@/i18n/index.js"
 
   const store = useDepartmentStore()
   const accStore = useAccountStore()
+  const t = i18n.global.t
 
   const props = defineProps({
     data: {
@@ -81,6 +83,21 @@ x
       onPreview(v.data)
     }
   }
+
+  const headerOption = [
+    {
+      name: t('content.nameUz'),
+      id:'uz'
+    },
+    {
+      name: t('content.nameRu'),
+      id:'ru'
+    },
+    {
+      name: t('content.nameEn'),
+      id:'en'
+    },
+  ]
 </script>
 
 <template>
@@ -91,9 +108,14 @@ x
           <tr>
             <th class="text-center! min-w-[40px] w-[40px]">{{ $t('content.number') }}</th>
             <th class="min-w-[30px] w-[30px]"></th>
-            <th class="min-w-[200px]">{{ $t('content.nameUz') }}</th>
-            <th class="min-w-[100px] w-[300px]">{{ $t('content.nameRu') }}</th>
-            <th class="min-w-[100px] w-[300px]">{{ $t('content.nameEn') }}</th>
+            <th class="min-w-[200px]">
+              <n-select
+                  v-model:value="store.headerLang"
+                  :options="headerOption"
+                  value-field="id"
+                  label-field="name"
+              />
+            </th>
             <th class="min-w-[100px] w-[300px]">{{ $t('content.organization') }}</th>
             <th class="min-w-[100px] w-[160px]">{{ $t('departmentPage.form.level') }}</th>
             <th class="min-w-[40px] w-[40px]">{{ $t('departmentPositionPage.table.fact') }}</th>
@@ -124,9 +146,7 @@ x
                 </template>
               </n-button>
             </td>
-            <td>{{ item.name }}</td>
-            <td>{{ item.name_ru }}</td>
-            <td>{{ item.name_en }}</td>
+            <td>{{ item?.[store.headerLang]}}</td>
             <td>{{ item.organization.name }}</td>
             <td>{{ item.level?.name }}</td>
             <td>

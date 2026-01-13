@@ -45,6 +45,15 @@
     }, 200)
   }
 
+  const showAlert = computed(()=>{
+    const existPosition = store.worker?.positions && Array.isArray(store.worker.positions) && store.worker.positions.length>0
+    if(!existPosition) return existPosition
+
+    console.log(store.worker?.positions)
+
+    return existPosition
+  })
+
   onMounted(()=>{
     store.worker = null
   })
@@ -95,7 +104,7 @@
             </n-button>
           </n-input-group>
         </div>
-        <div class="flex min-h-[260px] py-4">
+        <div class="flex min-h-[380px] py-4">
           <n-spin :show="store.pinLoading" class="flex justify-center items-center w-full">
             <template v-if="!Boolean(store.pin)">
               <n-gradient-text
@@ -109,7 +118,7 @@
             </template>
 
             <template v-if="store.worker && Boolean(store.pin)">
-              <div class="w-[300px] cursor-pointer flex flex-col gap-y-4">
+              <div class="w-[400px] cursor-pointer flex flex-col gap-y-4">
 
                 <UIUser :hide-tooltip="true" :short="false" :data="store.worker" />
 
@@ -127,7 +136,14 @@
                        </n-icon>{{item.position}}</div>
                      <n-button class="!mb-4" v-if="item.type" size="tiny" type="warning" secondary> <template #icon><n-icon><CheckmarkCircle20Filled/></n-icon></template> {{item.type}}</n-button>
                    </template>
+
+                  <div class="border border-danger/30 rounded-lg bg-surface-section">
+                    <div class="p-2 leading-[1.2] text-danger bg-danger/3 text-center">
+                      {{$t('workerPage.checkWorker.alertCommandType')}}
+                    </div>
+                  </div>
                 </div>
+
 
                 <n-button @click="onContinue()" type="primary" icon-placement="right">
                   {{ $t('content.continue') }}

@@ -50,7 +50,8 @@
     return ![2].includes(store.payload.type)
   })
 
-  const onFocusConf = () => {
+  const fetchConfirmation = () => {
+    if(componentStore.confirmationList.length> 0) return
     componentStore._confirmations()
   }
 
@@ -69,16 +70,16 @@
         status: Utils.documentModels.contract,
         type: store.payload.type
       }
-      componentStore._commandTypes(data)
+      componentStore._commandTypes(data, (id) => {
+        store.payload.command_type = id
+      })
     }
     store.payload.position_date = store.payload.contract_date
     store.payload.command_date = store.payload.contract_date
+  })
 
-    if (store.payload.director_id) {
-      store.payload.confirmations = componentStore.confirmationList
-        .filter((v) => v.id !== store.payload.director_id)
-        .map((v) => v.id)
-    }
+  onMounted(()=>{
+    fetchConfirmation()
   })
 </script>
 
@@ -211,7 +212,6 @@
     <div class="col-span-12 mt-10">
       <n-form-item :label="$t(`documentPage.form.director`)" path="director_id">
         <n-select
-          @focus="onFocusConf"
           size="large"
           v-model:value="store.payload.director_id"
           :options="componentStore.confirmationList"

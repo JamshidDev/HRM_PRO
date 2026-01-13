@@ -54,6 +54,7 @@ export const useDepartmentStore = defineStore('departmentStore', {
       per_page:10,
       search:null,
     },
+    headerLang:'uz',
   }),
   actions: {
     _preview(){
@@ -78,7 +79,12 @@ export const useDepartmentStore = defineStore('departmentStore', {
       $ApiService.departmentService
         ._index({ params })
         .then((res) => {
-          this.tabDataList[0] = res.data.data.data
+          this.tabDataList[0] = res.data.data.data.map(v => ({
+            ...v,
+            uz:v.name,
+            ru:v.name_ru,
+            en:v.name_en,
+          }))
           this.totalItems = res.data.data.total
         })
         .finally(() => {
@@ -169,7 +175,13 @@ export const useDepartmentStore = defineStore('departmentStore', {
             key: currentTab + 1,
             parentId: res.data.data.department.id
           })
-          this.tabDataList.push(res.data.data.children)
+          const children = res.data.data.children.map(v =>({
+            ...v,
+            uz:v.name,
+            ru:v.name_ru,
+            en:v.name_en,
+          }))
+          this.tabDataList.push(children)
           this.activeTab = currentTab + 1
         })
         .finally(() => {
