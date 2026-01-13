@@ -110,7 +110,7 @@
 </script>
 
 <template>
-  <n-popover class="!p-0 ![--n-border-radius:20px]" placement="bottom-start" trigger="click" @update:show="onShow">
+  <n-popover arrow-wrapper-class="![--n-arrow-offset:18px]" class="-translate-x-2 !p-0 ![--n-border-radius:20px]" placement="bottom-start" trigger="click" @update:show="onShow">
     <template #trigger>
       <n-badge
         class="!text-[10px] header-app-badge"
