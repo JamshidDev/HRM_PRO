@@ -1,10 +1,7 @@
 <script setup>
-  import { Circle16Filled, People20Filled } from '@vicons/fluent'
   import { NoDataPicture, TreeData } from '@/components/index.js'
   import { useReport2Store } from '@/store/modules/index.js'
 
-  import PositionCard from './PositionCard.vue'
-  import WorkerCard from './WorkerCard.vue'
   import DepartmentList from './DepartmentList.vue'
   import IndicatorTitle from '@/pages/hrm/report/ui/IndicatorTitle.vue'
 
@@ -25,8 +22,8 @@
 
 <template>
   <div class="w-full bg-surface-section border-surface-line border rounded-lg mt-4 p-2">
-    <n-spin :show="store.departmentLoading">
-      <template v-if="store.departmentList.length > 0">
+    <n-spin :show="store.department.loading">
+      <template v-if="store.department.list.length > 0">
         <div class="w-full flex justify-between bg-surface/2 p-2 rounded mb-4">
           <div>
             <n-switch :rail-style="style" @click="store.onChangeFilter" :value="store.byPosition">
@@ -43,12 +40,12 @@
           </div>
         </div>
         <TreeData
-          :options="store.departmentList"
-          :modelV="store.department"
+          :options="store.department.list"
+          :modelV="store.department.selectDepartments"
           :opened="true"
-          :checkedVal="store.depCheck"
+          :checkedVal="store.department.cache"
           @updateModel="store.onChangeDepartment"
-          @updateCheck="(v) => (store.depCheck = v)"
+          @updateCheck="(v) => (store.department.cache = v)"
           :multiple="false"
         >
           <template #title="{ data }">
@@ -63,4 +60,3 @@
   </div>
 </template>
 
-<style scoped></style>

@@ -2,6 +2,8 @@
   import { UIPageContent, UIModal, UIDConfirm } from '@/components/index.js'
   import Filter from './ui/Filter.vue'
   import Table from './ui/Table.vue'
+  import DeleteAlert from './ui/DeleteAlert.vue'
+  import EditDepartmentModal from './ui/EditDepartmentModal.vue'
   import CreateForm from './ui/CreateForm.vue'
   import { useReport2Store } from '@/store/modules/index.js'
 
@@ -10,8 +12,10 @@
 
 <template>
   <UIPageContent>
-    <Filter />
-    <Table />
+    <Filter/>
+    <Table/>
+    <DeleteAlert/>
+    <EditDepartmentModal/>
     <UIModal
       :width="900"
       v-model:visible="store.visible"

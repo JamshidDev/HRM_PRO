@@ -54,6 +54,8 @@
     }
     return true
   }
+
+  const slot = useSlots()
 </script>
 
 <template>
@@ -94,7 +96,11 @@
             :disabled="Boolean(item.group)"
             :checked="modelV.map((a) => a.id).includes(item.id)"
           ></n-checkbox>
-          <span class="text-xs ml-2">{{ short ? item.code : item.name }}</span>
+          <slot name="label" :data="item">
+            <span class="text-xs ml-2">
+            {{ short ? item.code : item.name }}</span>
+          </slot>
+
         </div>
         <div class="w-[20px] lex justify-center items-center">
           <n-radio
@@ -119,10 +125,13 @@
           :multiple="multiple"
           @onSelect="onSelect"
           @onSelectAll="onSelectRadio"
-        />
+        >
+          <template #label="{data}" v-if="slot.label">
+            <slot name="label" :data="data"></slot>
+          </template>
+        </TreeOrg>
+
       </n-collapse-transition>
     </template>
   </div>
 </template>
-
-<style scoped></style>

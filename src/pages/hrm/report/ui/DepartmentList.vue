@@ -1,5 +1,5 @@
 <script setup>
-  import { useReport2Store } from '@/store/modules/index.js'
+  import { useReport2Store, useDepartmentStore } from '@/store/modules/index.js'
   import PositionCard from './PositionCard.vue'
   import WorkerCard from './WorkerCard.vue'
   import Indicator from './Indicator.vue'
@@ -8,6 +8,7 @@
   const accStore = useAccountStore()
 
   const store = useReport2Store()
+  const dpStore = useDepartmentStore()
 
   defineProps({
     data: {
@@ -15,6 +16,28 @@
       default: []
     }
   })
+
+  const onDelete = (v) => {
+    store.department.elementId = v.id
+    store.department.deleteVisible = true
+
+  }
+
+  const onEdit = (v)=> {
+    console.log(v)
+    dpStore.elementId = v.id
+    dpStore.visibleType = false
+    store.department.visible = true
+    dpStore.payload.name = v.name
+    dpStore.payload.name_ru = v.name_ru
+    dpStore.payload.name_en = v.name_en
+    dpStore.payload.comment = v.comment
+    dpStore.payload.level = v.level.id
+    dpStore.showParent = Boolean(v.parent?.id)
+    dpStore.payload.parent_id = v.parent?.id
+    dpStore._level()
+
+  }
 
   const openConfirm = () => {
     if (!accStore.checkAction(accStore.pn.hrReportWrite)) return
@@ -25,33 +48,49 @@
 <template>
   <div
     @click="store.onChangeRadio(data)"
-    :class="[!(data.id === store.selectedDepId) && 'hover:bg-surface/3 rounded']"
+    :class="[!(data.id === store.department.selectedId) && 'hover:bg-surface/3 rounded']"
     class="grid grid-cols-12 border-b border-dashed border-surface-line py-1 w-full"
   >
     <div class="col-span-12 flex items-center">
-      <div class="flex w-[calc(100%-200px)]">
-        <n-radio :checked="data.id === store.selectedDepId">
+      <div class="flex w-[calc(100%-400px)]">
+        <n-radio :checked="data.id === store.department.selectedId">
           {{ data.name }}
         </n-radio>
       </div>
-      <div class="w-[200px] flex items-center justify-end h-full gap-2 pr-2">
+      <div class="w-[460px] flex items-center justify-end h-full gap-2 pr-2">
+        <n-button
+            size="tiny"
+            type="primary"
+            secondary
+            @click.stop="onEdit(data)"
+        >
+          {{$t('content.edit')}}
+        </n-button>
+        <n-button
+            @click.stop="onDelete(data)"
+            size="tiny"
+            type="error"
+            secondary
+        >
+          {{$t('content.delete')}}
+        </n-button>
         <n-button
           @click.stop="openConfirm"
           :loading="store.optimizationLoading"
-          v-if="data.id === store.selectedDepId"
+          v-if="data.id === store.department.selectedId"
           size="tiny"
           secondary
-          type="error"
+          type="warning"
           >{{ $t('report.form.optimization') }}
           <template #icon>
             <AppFolder20Regular />
           </template>
         </n-button>
-        <Indicator :data="data" />
+        <Indicator class="!w-[160px]" :data="data" />
       </div>
     </div>
-    <div class="col-span-12" :class="[data.id === store.selectedDepId && 'mt-6 mb-3']">
-      <n-collapse-transition :show="data.id === store.selectedDepId">
+    <div class="col-span-12" :class="[data.id === store.department.selectedId && 'mt-6 mb-3']">
+      <n-collapse-transition :show="data.id === store.department.selectedId">
         <PositionCard v-if="store.byPosition" />
         <WorkerCard v-else />
       </n-collapse-transition>

@@ -24,11 +24,12 @@ const _showPosition = async (payload) => {
   return await axios.get(`/v1/hr/department-positions/${payload.id}`, { params: payload?.params })
 }
 
+
 export default {
   _structure,
   _department,
   _position,
   _worker,
   _optimization,
-  _showPosition
+  _showPosition,
 }

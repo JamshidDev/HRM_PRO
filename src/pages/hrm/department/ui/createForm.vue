@@ -23,7 +23,7 @@
 
 <template>
   <n-form ref="formRef" :rules="validationRules.common" :model="store.payload">
-    <div style="min-height: calc(100vh - 120px)">
+    <div class="h-[calc(100vh-120px)]">
       <div
         v-if="store.parentElement"
         class="w-full text-sm px-2 py-2 border rounded-xl border-surface-line mb-4 flex flex-col cursor-pointer"

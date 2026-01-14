@@ -12,7 +12,6 @@ export const useReport2Store = defineStore('report2Store', {
       organization_id: []
     },
     departmentList: [],
-    department: [],
     departmentLoading: false,
     depCheck: [],
     selectedDepId: null,
@@ -61,10 +60,50 @@ export const useReport2Store = defineStore('report2Store', {
       organizations: [],
       departments: []
     },
+    confirmVisible: false,
+    structure: {
+      cache: [],
+      loading: false,
+      list: [],
+      params: {
+        search: null,
+      }
+    },
+    department: {
+      loading: false,
+      params: {
+        organization_id: [],
+      },
+      payload:{
+        parent_id: null,
+        level: null,
+        name: null,
+        name_ru: null,
+        name_en: null,
+        comment: null,
+      },
+      list:[],
+      cache: [],
+      selectedId: null,
+      elementId:null,
+      selectDepartments:[],
+      deleteVisible:false,
+      visible:false,
+    }
 
-    confirmVisible: false
   }),
   actions: {
+    _fetchStructure() {
+      const params = {
+        ...this.structure.params,
+      }
+      this.structure.loading = true
+      $ApiService.reportService._structure({ params }).then((res) => {
+        this.structure.list = res.data.data
+      }).finally(()=>{
+        this.structure.loading = false
+      })
+    },
     _getOptimization() {
       this.optimizationLoading = true
       const department_id = this.selectedDepId
@@ -79,30 +118,40 @@ export const useReport2Store = defineStore('report2Store', {
         })
     },
     _getDepartment() {
-      this.departmentLoading = true
+      this.department.loading = true
       let params = {
         ...this.positionParams,
-        organization_id: this.params.organization_id?.[0]?.id
+        organization_id: this.department.params.organization_id?.[0]?.id
       }
       $ApiService.reportService
         ._department({ params })
         .then((res) => {
-          this.departmentList = res.data.data.map((v) => ({
+          this.department.list = res.data.data.map((v) => ({
             ...v,
             name: v?.name,
             position: v?.organization?.name
           }))
         })
         .finally(() => {
-          this.departmentLoading = false
+          this.department.loading = false
         })
+    },
+    _deleteDepartment(){
+      const id = this.department.elementId
+      this.department.loading = true
+      $ApiService.departmentService._delete({id}).then((res)=>{
+        console.log(res.data.data)
+        this._getDepartment()
+      }).finally(()=>{
+        this.department.loading = false
+      })
     },
     getPosition() {
       this.positionLoading = true
       let params = {
         ...this.positionParams,
-        organization_id: this.params.organization_id?.[0]?.id,
-        department_id: this.selectedDepId
+        organization_id: this.department.params.organization_id?.[0]?.id,
+        department_id: this.department.selectedId
       }
       $ApiService.reportService
         ._position({ params })
@@ -118,8 +167,8 @@ export const useReport2Store = defineStore('report2Store', {
       this.workerLoading = true
       let params = {
         ...this.workerParams,
-        organization_id: this.params.organization_id?.[0]?.id,
-        department_id: this.selectedDepId,
+        organization_id: this.department.params.organization_id?.[0]?.id,
+        department_id: this.department.selectedId,
         department_position_id: this.byPosition ? this.selectedPosId : undefined
       }
       $ApiService.reportService
@@ -134,9 +183,9 @@ export const useReport2Store = defineStore('report2Store', {
     },
     onChangeDepartment(v) {},
     async onChangeRadio(v) {
-      this.selectedDepId = this.selectedDepId === v.id ? null : v.id
+      this.department.selectedId = this.department.selectedId === v.id ? null : v.id
       await nextTick()
-      if (this.selectedDepId) {
+      if (this.department.selectedId) {
         this.positionList = []
         this.workerList = []
         if (this.byPosition) {
@@ -155,7 +204,7 @@ export const useReport2Store = defineStore('report2Store', {
       }
     },
     onChangeFilter() {
-      this.selectedDepId = null
+      this.department.selectedId = null
       this.byPosition = !this.byPosition
     },
     onChangeOrg(v) {
