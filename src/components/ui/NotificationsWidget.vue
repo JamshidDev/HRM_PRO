@@ -122,7 +122,7 @@ const onShow = (v)=>{
 </script>
 
 <template>
-  <n-popover class="!p-0 ![--n-border-radius:20px]" placement="bottom-start" trigger="click" @update:show="onShow" :show="showPopover">
+  <n-popover arrow-wrapper-class="![--n-arrow-offset:18px]" class="!p-0 ![--n-border-radius:20px] -translate-x-2" placement="bottom-start" trigger="click" @update:show="onShow" :show="showPopover">
     <template #trigger>
       <n-badge
           class="!text-[10px] header-app-badge"
@@ -203,11 +203,11 @@ const onShow = (v)=>{
         </div>
       </n-spin>
 <!--          @click="goViewAll"-->
-      <div
-          class="w-full text-center border-t border-surface-line px-2 py-2 text-xs hover:bg-surface-ground/50 transition-colors"
-      >
-        {{ $t('content.viewAll') }}
-      </div>
+<!--      <div-->
+<!--          class="w-full text-center border-t border-surface-line px-2 py-2 text-xs hover:bg-surface-ground/50 transition-colors"-->
+<!--      >-->
+<!--        {{ $t('content.viewAll') }}-->
+<!--      </div>-->
     </div>
   </n-popover>
   <UIModal v-model:visible="showViewModal" :width="700">
