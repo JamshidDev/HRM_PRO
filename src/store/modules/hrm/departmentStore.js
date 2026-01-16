@@ -102,7 +102,7 @@ export const useDepartmentStore = defineStore('departmentStore', {
           this.levelLoading = false
         })
     },
-    _create() {
+    _create(callback) {
       this.saveLoading = true
       let data = {
         ...this.payload,
@@ -111,6 +111,10 @@ export const useDepartmentStore = defineStore('departmentStore', {
       $ApiService.departmentService
         ._create({ data })
         .then((res) => {
+          if(callback){
+            callback?.()
+            return
+          }
           this.visible = false
           this.updateList()
         })
@@ -118,7 +122,7 @@ export const useDepartmentStore = defineStore('departmentStore', {
           this.saveLoading = false
         })
     },
-    _update() {
+    _update(callback) {
       this.saveLoading = true
       let data = {
         ...this.payload,
@@ -127,6 +131,11 @@ export const useDepartmentStore = defineStore('departmentStore', {
       $ApiService.departmentService
         ._update({ data, id: this.elementId })
         .then((res) => {
+          if(callback){
+            callback?.()
+            return
+          }
+
           this.visible = false
           this.updateList()
         })

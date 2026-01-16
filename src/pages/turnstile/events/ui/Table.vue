@@ -29,12 +29,8 @@
       name: t('hcEvent.form.NoMask'),
       id: 2
     },
-    3: {
-      name: t('hcEvent.form.NoMask'),
-      id: 2
-    },
-    0: {
-      name: t('hcEvent.form.NoMask'),
+    unknown: {
+      name: t('hcEvent.form.unknown'),
       id: 2
     }
   }
@@ -63,7 +59,11 @@
     ACSEventLegalCardThrough: {
       name: t('hcEvent.form.card'),
       id: 9
-    }
+    },
+    MobileFaceEvent: {
+      name: t('hcEvent.form.mobile'),
+      id: 9
+    },
   }
 </script>
 
@@ -136,7 +136,7 @@
                 <UIStatus :status="eventStatus[item.auth_type]" />
               </td>
               <td class="!text-center">
-                <UIStatus :status="maskStatus[item.mask_status]" />
+                <UIStatus :status="maskStatus[item.mask_status] ?? maskStatus.unknown" />
               </td>
               <td class="!text-center">
                 <template v-if="[1, 2].includes(item.temperature)">

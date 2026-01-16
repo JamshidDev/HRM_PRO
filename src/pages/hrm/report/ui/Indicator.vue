@@ -12,8 +12,9 @@
 </script>
 
 <template>
-  <div class="flex justify-end gap-2">
+  <div :class="[isWorker? 'grid-cols-3 !w-[120px]' : 'grid-cols-4 !w-[160px]']" class="grid gap-1">
     <template v-if="isWorker">
+      <n-button round size="tiny" secondary>{{ data.group }}</n-button>
       <n-button round size="tiny" secondary>{{ data.rate }}</n-button>
       <n-button type="warning" round size="tiny" secondary>{{ data.rank }}</n-button>
     </template>

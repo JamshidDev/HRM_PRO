@@ -1,7 +1,7 @@
 <script setup>
   import { useAccountStore, useSalaryReportStore } from '@/store/modules/index.js'
   import Utils from '@/utils/Utils.js'
-  import { AppPaths } from '@/utils/index.js'
+  import {AppPaths, getOneMonthAgoYearMonth} from '@/utils/index.js'
   const router = useRouter()
   const store = useSalaryReportStore()
   const accStore = useAccountStore()
@@ -20,8 +20,9 @@
   onMounted(() => {
     if (!accStore.checkAction(accStore.pn.economistStatementsCode)) return
     if (store.list.length === 0) {
-      store.params.year = new Date().getFullYear()
-      store.params.month = new Date().getMonth()
+      const oneMonthAgo = getOneMonthAgoYearMonth()
+      store.params.year = oneMonthAgo.year
+      store.params.month = oneMonthAgo.month
       store._index()
     }
   })

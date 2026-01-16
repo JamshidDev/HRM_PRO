@@ -4,6 +4,7 @@
   import { DocumentArrowUp20Regular, LockClosed24Filled, LockOpen16Filled } from '@vicons/fluent'
   import { useAccountStore, useUploadReportStore } from '@/store/modules/index.js'
   import i18n from '@/i18n/index.js'
+  import {getOneMonthAgoYearMonth} from "@utils"
 
   const { t } = i18n.global
   const store = useUploadReportStore()
@@ -28,9 +29,9 @@
   }
 
   onMounted(() => {
-    const today = new Date()
-    store.params.year = today.getFullYear()
-    store.params.month = new Date(today.setMonth(today.getMonth() - 1)).getMonth()+1
+    const oneMonthAgo = getOneMonthAgoYearMonth()
+    store.params.year = oneMonthAgo.year
+    store.params.month = oneMonthAgo.month
   })
 </script>
 

@@ -10,6 +10,7 @@ import {
   SalaryReportPage,
   PensionPaymentPage
 } from '@/pages/accountant/index.js'
+import {  ReportPage} from "@pages/hrm/index.js"
 
 export const accountantRoutes = [
   {
@@ -64,6 +65,13 @@ export const accountantRoutes = [
   {
     path: Utils.routeAccountantPathMaker(AppPaths.PensionPayment),
     component: PensionPaymentPage,
+    meta: {
+      layout: AppLayouts.main
+    }
+  },
+  {
+    path: Utils.routeAccountantPathMaker(AppPaths.Report),
+    component: ReportPage,
     meta: {
       layout: AppLayouts.main
     }

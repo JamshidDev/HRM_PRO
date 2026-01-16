@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import i18n from '@/i18n/index.js'
 import Utils from '@/utils/Utils.js'
+import {getOneMonthAgoYearMonth} from "@utils"
 const { t } = i18n.global
 export const usePensionStore = defineStore('pensionStore', {
   state: () => ({
@@ -64,9 +65,11 @@ export const usePensionStore = defineStore('pensionStore', {
         })
     },
     resetParams() {
+      const oneMonthAgo = getOneMonthAgoYearMonth()
       this.params.organizations = []
-      this.params.year = new Date().getFullYear()
-      this.params.month = new Date().getMonth()
+
+      this.params.year = oneMonthAgo.year
+      this.params.month = oneMonthAgo.month
     },
 
     openVisible(data) {

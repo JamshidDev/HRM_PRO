@@ -102,12 +102,17 @@ export const useDepartmentPositionStore = defineStore('departmentPositionStore',
           this.loading = false
         })
     },
-    _create() {
-      this.saveLoading = true
+    _create(callback = null) {
       let data = {
         ...this.payload,
         organization_id: undefined
       }
+
+      if(callback){
+        callback?.(data)
+      }
+
+      this.saveLoading = true
       $ApiService.departmentPositionService
         ._create({ data })
         .then((res) => {

@@ -40,6 +40,8 @@
     store.showParent = Boolean(v.parent?.id)
     store.payload.parent_id = v.parent?.id
 
+    componentStore.departmentList = [v.parent]
+
     store.visibleType = false
     store.visible = true
   }

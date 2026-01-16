@@ -1,6 +1,8 @@
 import { defineStore } from 'pinia'
 import i18n from '@/i18n/index.js'
 const { t } = i18n.global
+import { getOneMonthAgoYearMonth} from "@utils"
+
 export const useUploadReportStore = defineStore('uploadReport', {
   state: () => ({
     list: [],
@@ -31,7 +33,7 @@ export const useUploadReportStore = defineStore('uploadReport', {
     structuresList: [],
     cards: [],
     cardLoading: false,
-    selectedTitle: null,
+    selectedIndex: null,
     selectedId: null,
     selectedOrgName: null,
     commentVisible: false,
@@ -75,7 +77,11 @@ export const useUploadReportStore = defineStore('uploadReport', {
       $ApiService.accountantService
         ._structure({ params })
         .then((res) => {
-          this.structuresList = res.data.data
+          const list = res.data.data
+          this.structuresList = list
+          if(list.length === 1 &&  list[0]?.children?.length === 0){
+            this.onChangeStructure(list[0])
+          }
         })
         .finally(() => {
           this.structuresLoading = false
@@ -90,7 +96,7 @@ export const useUploadReportStore = defineStore('uploadReport', {
         ._index({ params })
         .then((res) => {
           this.cards = res.data.data
-          this.list = []
+          this.list = this.selectedIndex === null ? [] : this.cards[this.selectedIndex].data;
         })
         .finally(() => {
           this.cardLoading = false
@@ -129,11 +135,12 @@ export const useUploadReportStore = defineStore('uploadReport', {
       this.visible = data
     },
     resetForm() {
+      const oneMonthAgo = getOneMonthAgoYearMonth()
       this.elementId = null
       this.payload.file = []
       this.payload.type = null
-      this.payload.year = new Date().getFullYear()
-      this.payload.month = new Date().getMonth()
+      this.payload.year = oneMonthAgo.year
+      this.payload.month = oneMonthAgo.month
     },
     onChangeStructure(v) {
       this.resetCards()

@@ -31,3 +31,14 @@ export const notificationTypes = {
         icon: markRaw(ErrorCircle24Regular),
     }
 }
+
+export const getOneMonthAgoYearMonth = (date=null)=>{
+    date = date || new Date()
+    const d = new Date(date)
+    d.setMonth(d.getMonth() - 1)
+    return {
+        year: d.getFullYear(),
+        month: d.getMonth() + 1, // 1- 12
+    }
+}
+

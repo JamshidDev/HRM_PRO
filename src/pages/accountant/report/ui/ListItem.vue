@@ -7,16 +7,15 @@
     CheckmarkCircle20Filled,
     CheckmarkCircle16Regular
   } from '@vicons/fluent'
-  import LockWrapper from './LockWrapper.vue'
   import i18n from '@/i18n/index.js'
 
   const { t } = i18n.global
   const store = useUploadReportStore()
   const accStore = useAccountStore()
 
-  const onSelect = (v) => {
+  const onSelect = (v, index) => {
     store.list = v.data
-    store.selectedTitle = v.name
+    store.selectedIndex = index
     if (v.data.length > 0) return
     $Toast.warning(t('content.no-data'))
   }
@@ -26,9 +25,9 @@
   <n-spin :show="store.cardLoading">
     <template v-if="store.cards.length > 0 && store.params.organization_id">
       <div class="w-full grid grid-cols-12 gap-3 relative">
-        <template v-for="item in store.cards" :key="item">
+        <template v-for="(item, index) in store.cards" :key="item">
           <div
-            class="col-span-6 bg-surface-section rounded-lg p-2 flex flex-col relative cursor-pointer drop-shadow-sm"
+            class="col-span-6 bg-surface-section rounded-xl p-2 flex flex-col relative cursor-pointer drop-shadow-sm"
           >
             <div class="flex justify-between">
               <span class="text-textColor2 font-semibold uppercase">{{ item.name }}</span>
@@ -55,7 +54,7 @@
               ]"
               class="rounded-full p-2 mx-auto my-4 flex justify-center items-center border border-dashed"
             >
-              <n-icon size="32" :class="[item.status ? 'text-success' : 'text-warning']">
+              <n-icon size="20" :class="[item.status ? 'text-success' : 'text-warning']">
                 <CheckmarkLock24Filled v-if="item.status" />
                 <Timer16Regular v-else />
               </n-icon>
@@ -65,7 +64,7 @@
                 {{ $t('uploadReport.form.uploadCount', { n: item.count }) }}
               </div>
               <div
-                @click="onSelect(item)"
+                @click="onSelect(item, index)"
                 class="text-textColor2 hover:bg-surface/5 px-2 py-1 rounded text-sm flex items-center gap-1 border-b border-dashed border-surface-line"
               >
                 {{ $t('content.detail') }}

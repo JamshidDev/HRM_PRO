@@ -31,19 +31,32 @@
           class="flex items-center border-b border-warning border-dashed py-2 hover:bg-warning/10"
         >
           <div class="w-[calc(100%-200px)] flex items-center">
-            <span class="inline-block pr-4 font-semibold">{{ idx + 1 }}</span>
+            <span class="inline-block font-semibold w-[30px] flex-shrink-0">{{ idx + 1 }}</span>
             <UIUser
+                :hide-tooltip="true"
               :short="false"
               :data="{
                 photo: item.worker.photo,
-                position: item.worker.birthday,
+                position: item.position_date + item.post_name,
                 lastName: item.worker.last_name,
                 firstName: item.worker.first_name,
                 middleName: item.worker.middle_name
               }"
-            />
+            >
+              <template #name>
+                <div class="flex items-center gap-2">
+                  <span>{{Utils.combineFullName(item.worker)}}</span>
+                  <n-button v-if="item.type" size="tiny" type="warning" secondary>{{item.type?.name}}</n-button></div>
+              </template>
+              <template #position>
+                <div class="flex gap-2 items-center">
+                  <n-button size="tiny" type="primary" secondary>{{item.position_date}}</n-button>
+                  <span class="text-secondary text-xs">{{item.post_name}}</span>
+                </div>
+              </template>
+            </UIUser>
           </div>
-          <div class="w-[200px] flex items-center justify-end h-full gap-2 pr-2 h-full">
+          <div class="w-[200px] flex items-center justify-end h-full gap-2 pr-2">
             <Indicator :is-worker="true" :data="item" />
           </div>
         </div>

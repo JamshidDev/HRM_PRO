@@ -30,7 +30,6 @@
     }
   })
 
-  // Nested object propertylarining qiymatini olish - soddalashtirilgan versiya
   const getNestedValue = (obj, path, defaultValue = null) => {
     if (!obj) return defaultValue
 
@@ -47,7 +46,6 @@
     return current ?? defaultValue
   }
 
-  // Component renderer
   const renderComponent = (componentName, value, componentProps = {}) => {
     switch (componentName) {
       case 'UIUser':

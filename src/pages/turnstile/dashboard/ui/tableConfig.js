@@ -308,6 +308,98 @@ export const getTableConfig = (cardType) => {
         }
       ]
     },
+    ACSEventFaceVerifyPass: {
+      responseField: 'workers',
+      columns: [
+        {
+          headerName: 'content.worker',
+          key: 'user',
+          minWidth: '180px',
+          component: 'UIUser'
+        },
+        {
+          headerName: 'hcEvent.form.direction',
+          key: 'direction',
+          width: '100px',
+          minWidth: '120px',
+          component: 'UIBadge',
+          componentProps: (value) => {
+            return {
+              icon: value ? DoorArrowRight20Regular : DoorArrowLeft20Regular,
+              type: value ? directionStatus.enter.type : directionStatus.exist.type
+            }
+          },
+          formatValue: (value) => {
+            return value ? directionStatus.enter.name : directionStatus.exist.name
+          }
+        },
+        {
+          headerName: 'content.date',
+          key: 'last_event',
+          width: '160px',
+          minWidth: '100px'
+        },
+
+        {
+          headerName: 'content.organization',
+          key: 'organization_name',
+          width: '300px',
+          minWidth: '200px'
+        },
+        {
+          headerName: 'content.department',
+          key: 'department_name',
+          width: '300px',
+          minWidth: '180px'
+        }
+      ]
+    },
+    MobileFaceEvent: {
+      responseField: 'workers',
+      columns: [
+        {
+          headerName: 'content.worker',
+          key: 'user',
+          minWidth: '180px',
+          component: 'UIUser'
+        },
+        {
+          headerName: 'hcEvent.form.direction',
+          key: 'direction',
+          width: '100px',
+          minWidth: '120px',
+          component: 'UIBadge',
+          componentProps: (value) => {
+            return {
+              icon: value ? DoorArrowRight20Regular : DoorArrowLeft20Regular,
+              type: value ? directionStatus.enter.type : directionStatus.exist.type
+            }
+          },
+          formatValue: (value) => {
+            return value ? directionStatus.enter.name : directionStatus.exist.name
+          }
+        },
+        {
+          headerName: 'content.date',
+          key: 'last_event',
+          width: '160px',
+          minWidth: '100px'
+        },
+
+        {
+          headerName: 'content.organization',
+          key: 'organization_name',
+          width: '300px',
+          minWidth: '200px'
+        },
+        {
+          headerName: 'content.department',
+          key: 'department_name',
+          width: '300px',
+          minWidth: '180px'
+        }
+      ]
+    },
     current_in: {
       responseField: 'workers',
       columns: [
@@ -768,6 +860,29 @@ export const getTableConfig = (cardType) => {
             showIcon: false,
             type: Utils.colorTypes.secondary
           }
+        },
+        {
+          headerName: 'content.organization',
+          key: 'organization_name',
+          width: '300px',
+          minWidth: '200px'
+        },
+        {
+          headerName: 'content.department',
+          key: 'department_name',
+          width: '300px',
+          minWidth: '180px'
+        }
+      ]
+    },
+    notIncludedSchedule:{
+      responseField: 'workers',
+      columns: [
+        {
+          headerName: 'content.worker',
+          key: 'user',
+          minWidth: '180px',
+          component: 'UIUser'
         },
         {
           headerName: 'content.organization',

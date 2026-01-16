@@ -109,11 +109,6 @@ const changeCheckVal = (v) => {
 
 const inputVal = computed(() =>modelV.value.map((a) => a.name).toString())
 
-const onFocusEv = () => {
-  if (store.structureList.length === 0) {
-    store._structures()
-  }
-}
 
 const slot = useSlots()
 </script>
@@ -130,10 +125,10 @@ const slot = useSlots()
       >
         <n-input
             :disabled="disabled"
-            @focus="onFocusEv"
             class="ui__structure-input w-full"
             type="text"
             :value="inputVal?.toString()"
+            :loading="loading"
         />
       </n-badge>
     </template>

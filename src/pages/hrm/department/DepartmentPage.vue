@@ -23,7 +23,7 @@
         :title="store.visibleType ? $t('departmentPage.createTitle') : $t('departmentPage.updateTitle')"
     >
       <template #content>
-        <createForm />
+        <createForm @onCancelEv="store.visible=false" />
       </template>
     </UIDrawer>
     <Preview/>

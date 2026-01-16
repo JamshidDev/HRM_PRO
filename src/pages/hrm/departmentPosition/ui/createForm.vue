@@ -10,6 +10,22 @@
   const store = useDepartmentPositionStore()
   const componentStore = useComponentStore()
 
+  const emits = defineEmits(['onCancelEv'])
+  const onCancelEv = () => {
+    emits('onCancelEv')
+  }
+
+  const props = defineProps({
+    callback: {
+      type:Function,
+      default: null,
+    },
+    heightFull:{
+      type:Boolean,
+      default:true
+    }
+  })
+
   const depParams = computed(() => ({
     ...store.depParams,
     organizations: store.payload.organization_id.map((v) => v.id).toString(),
@@ -31,9 +47,9 @@
     formRef.value?.validate((error) => {
       if (!error) {
         if (store.visibleType) {
-          store._create()
+          store._create(props.callback)
         } else {
-          store._update()
+          store._update(props.callback)
         }
       }
     })
@@ -54,6 +70,9 @@
     }
   }
 
+  const showStructureField = computed(()=> !Boolean(props.callback))
+
+
   onMounted(() => {
     store.depParams.search = null
     if (store.visibleType) {
@@ -63,10 +82,14 @@
 </script>
 
 <template>
-  <n-form ref="formRef" :rules="validationRules.departmentPositionPage" :model="store.payload">
-    <div style="min-height: calc(100vh - 120px)">
+  <n-form
+      ref="formRef"
+      :rules="validationRules.common"
+      :model="store.payload"
+  >
+    <div :class="[heightFull? 'h-[calc(100vh-120px)]' : '']">
       <div class="grid grid-cols-12 gap-x-4 overflow-x-hidden">
-        <n-form-item class="col-span-12" :label="$t(`content.organization`)">
+        <n-form-item v-if="showStructureField"  class="col-span-12" :label="$t(`content.organization`)">
           <UISelect
             :options="componentStore.structureList"
             :modelV="store.payload.organization_id"
@@ -84,6 +107,7 @@
           class="col-span-12"
           :label="$t(`departmentPositionPage.form.department_id`)"
           path="department_id"
+          :rule-path="validationRules.rulesNames.requiredNumberField"
         >
           <UINSelect
             clearable
@@ -109,6 +133,7 @@
           :show-label="false"
           :label="$t(`departmentPositionPage.form.position_id`)"
           path="position_id"
+          :rule-path="validationRules.rulesNames.requiredNumberField"
         >
           <div class="flex gap-2 w-full items-center">
             <n-select
@@ -129,6 +154,7 @@
           class="col-span-12 md:col-span-6 lg:col-span-4"
           :label="$t(`departmentPositionPage.form.group`)"
           path="group"
+          :rule-path="validationRules.rulesNames.requiredNumberField"
         >
           <n-select
             v-model:value="store.payload.group"
@@ -144,6 +170,7 @@
           class="col-span-12 md:col-span-6 lg:col-span-4"
           :label="$t(`departmentPositionPage.form.rank`)"
           path="rank"
+          :rule-path="validationRules.rulesNames.requiredStringField"
         >
           <n-select
             v-model:value="store.payload.rank"
@@ -159,6 +186,7 @@
           class="col-span-12 md:col-span-6 lg:col-span-4"
           :label="$t(`departmentPositionPage.form.max_rank`)"
           path="max_rank"
+          :rule-path="validationRules.rulesNames.requiredStringField"
         >
           <n-select
             v-model:value="store.payload.max_rank"
@@ -174,13 +202,8 @@
           class="col-span-12 md:col-span-6 lg:col-span-4"
           :label="$t(`departmentPositionPage.form.rate`)"
           path="rate"
+          :rule-path="validationRules.rulesNames.requiredNumberField"
         >
-          <!--          <n-input-->
-          <!--              v-model:value="store.payload.rate"-->
-          <!--              type="text"-->
-          <!--              :allow-input="Utils.onlyAllowNumber"-->
-
-          <!--          />-->
           <n-input-number
             :max="300"
             :min="0.1"
@@ -196,6 +219,7 @@
           class="col-span-12 md:col-span-6 lg:col-span-4"
           :label="$t(`departmentPositionPage.form.salary`)"
           path="salary"
+          :rule-path="validationRules.rulesNames.requiredStringField"
         >
           <n-input
             v-model:value="store.payload.salary"
@@ -211,6 +235,7 @@
           class="col-span-12 md:col-span-6 lg:col-span-4"
           :label="$t(`departmentPositionPage.form.experience`)"
           path="experience"
+          :rule-path="validationRules.rulesNames.requiredStringField"
         >
           <n-input
             v-model:value="store.payload.experience"
@@ -225,7 +250,8 @@
         <n-form-item
           class="col-span-12 md:col-span-6 lg:col-span-8"
           :label="$t(`departmentPositionPage.form.educations`)"
-          path="educations"
+          path="education"
+          :rule-path="validationRules.rulesNames.requiredNumberField"
         >
           <n-select
             v-model:value="store.payload.education"
@@ -241,7 +267,7 @@
     </div>
 
     <div class="grid grid-cols-2 gap-2">
-      <n-button @click="store.openVisible(false)" type="error" ghost>
+      <n-button @click="onCancelEv" type="error" ghost>
         {{ $t('content.cancel') }}
       </n-button>
       <n-button @click="onSubmit" :loading="store.saveLoading" type="primary">

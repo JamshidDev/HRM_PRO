@@ -7,6 +7,7 @@
   import SemiCircleChart from './ui/SemiCircleChart.vue'
   import Circle2Chart from './ui/Circle2Chart.vue'
   import { useAccDashboardStore, useAccountStore } from '@/store/modules/index.js'
+  import { getOneMonthAgoYearMonth} from "@utils"
 
   const store = useAccDashboardStore()
   const accStore = useAccountStore()
@@ -28,8 +29,9 @@
 
   onMounted(() => {
     if (!accStore.checkAction(accStore.pn.economistDashboard)) return
-    store.params.year = new Date().getFullYear()
-    store.params.month = new Date().getMonth() + 1
+    const oneMonthAgo = getOneMonthAgoYearMonth()
+    store.params.year = oneMonthAgo.year
+    store.params.month =oneMonthAgo.month
     store._index()
   })
 </script>

@@ -632,7 +632,14 @@ export const navigations = [
         icon: Calculator24Regular,
         color: 'bg-success',
         permission: appPermissions.economistPensionPayments
-      }
+      },
+      {
+        label: 'report.name',
+        path: Utils.routeAccountantPathMaker(AppPaths.Report),
+        icon: AppFolder20Filled,
+        color: 'bg-info',
+        permission: appPermissions.hrReport
+      },
     ]
   },
   {

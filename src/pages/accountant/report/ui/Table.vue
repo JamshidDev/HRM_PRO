@@ -2,7 +2,7 @@
   import { UIStatus } from '@/components/index.js'
   import { useUploadReportStore } from '@/store/modules/index.js'
   import Utils from '@/utils/Utils.js'
-  import { Info24Regular } from '@vicons/fluent'
+  import { Info24Regular, ArrowCircleDown12Regular } from '@vicons/fluent'
   import i18n from '@/i18n/index.js'
 
   const { t } = i18n.global
@@ -34,70 +34,61 @@
 </script>
 
 <template>
-  <n-spin :show="store.loading">
-    <div class="w-full overflow-y-auto h-[calc(100vh-510px)] mt-4">
-      <n-table v-if="store.list.length > 0" :single-line="false" size="small">
-        <thead>
-          <tr>
-            <th class="text-center! min-w-[40px] w-[40px]">{{ $t('content.number') }}</th>
-            <th class="min-w-[100px] !max-w-[400px]">
-              {{ $t('uploadReport.form.type') }} -
-              <span class="text-xs bg-primary/10 px-1 rounded">#{{ store.selectedTitle }}</span>
-            </th>
-            <th class="w-[100px]">{{ $t('content.status') }}</th>
-            <th class="w-[80px]">{{ $t('content.process') }}</th>
-            <th class="w-[80px]">{{ $t('content.date') }}</th>
-            <th class="w-[80px]">{{ $t('content.hour') }}</th>
-            <th class="min-w-[100px] w-[120px]">{{ $t('uploadReport.form.file') }}</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(item, idx) in store.list" :key="idx">
-            <td>
-              <span class="text-center text-[12px] text-gray-600 block">{{ idx + 1 }}</span>
-            </td>
-            <td>
-              <div class="flex flex-col w-full">
-                <div class="flex max-w-[400px]">
-                  <span class="text-sm font-medium"
-                    >{{ Utils.getMonthNameById(item.month) }} - {{ item.year }}</span
-                  >
-                  <div class="truncate text-textColor3 !w-[calc(100%-120px)] ml-1 text-xs">
-                    {{ item.comment }}
-                  </div>
-                  <n-button
+  <n-spin :show="store.cardLoading">
+    <div v-if="store.params?.organization_id" class="flex justify-between items-center mt-2">
+      <span class="font-semibold text-xl">{{$t('content.historyUpload')}} <span class="text-primary" v-if="store.cards[store.selectedIndex]">#{{ store.cards[store.selectedIndex]?.name }}</span></span>
+      <n-button @click="store._cards()" type="primary">{{$t('content.refresh')}}</n-button>
+    </div>
+    <div class="w-full overflow-y-auto h-[calc(100vh-520px)] mt-4">
+      <div class="grid grid-cols-2 gap-2">
+        <template v-for="item in store.list" :key="item">
+          <div class="col-span-1 bg-surface-section p-2 rounded-xl border border-surface-line">
+            <div class="grid grid-cols-2">
+              <div class="border-l-2 border-secondary pl-2">
+                <h1 class="font-semibold text-xs">{{ Utils.getMonthNameById(item.month) }} - {{ item.year }}</h1>
+                <div class="text-secondary text-xs">{{ Utils.timeOnlyDate(item.created_at) }} {{Utils.timeOnlyHour(item.created_at)}}</div>
+              </div>
+              <div class="flex justify-end gap-2">
+                <n-button v-if="item?.file" type="success" size="small" secondary circle @click="onDownload(item.file)">
+                    <template #icon>
+                      <ArrowCircleDown12Regular/>
+                    </template>
+                  </n-button>
+                <n-button
                     @click="showComment(item)"
                     size="small"
                     class="ml-2"
                     v-if="item.comment"
                     circle
-                    tertiary
-                  >
-                    <template #icon>
-                      <Info24Regular />
-                    </template>
-                  </n-button>
+                    secondary
+                >
+                  <template #icon>
+                    <Info24Regular />
+                  </template>
+                </n-button>
+              </div>
+            </div>
+
+
+            <div class="grid grid-cols-2 gap-x-2 mt-2">
+              <div class="bg-surface-ground/40 p-2 rounded-md border-surface-line">
+                <div class="text-xs text-secondary mb-1">{{$t('content.status')}}</div>
+                <div class="flex">
+                  <UIStatus :status="item.status"></UIStatus>
+                </div>
+
+              </div>
+              <div class="bg-surface-ground/40 p-2 rounded-md border-surface-line">
+                <div class="text-xs text-secondary mb-1">{{ $t('content.process')}}</div>
+                <div class="flex">
+                  <UIStatus :status="statusList[item.done]"></UIStatus>
                 </div>
               </div>
-            </td>
-            <td>
-              <UIStatus :status="item.status"></UIStatus>
-            </td>
-            <td>
-              <UIStatus :status="statusList[item.done]"></UIStatus>
-            </td>
-            <td>{{ Utils.timeOnlyDate(item.created_at) }}</td>
-            <td>{{ Utils.timeOnlyHour(item.created_at) }}</td>
-            <td>
-              <div v-if="item?.file" class="flex justify-center w-full">
-                <n-button size="small" @click="onDownload(item.file)">{{
-                  $t('content.download')
-                }}</n-button>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </n-table>
+            </div>
+
+          </div>
+        </template>
+      </div>
     </div>
   </n-spin>
 </template>

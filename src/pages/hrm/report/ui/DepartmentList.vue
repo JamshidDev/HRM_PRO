@@ -1,5 +1,11 @@
 <script setup>
-  import { useReport2Store, useDepartmentStore } from '@/store/modules/index.js'
+import {
+  useReport2Store,
+  useDepartmentStore,
+  useComponentStore,
+  useDepartmentPositionStore
+} from '@/store/modules/index.js'
+  import { Delete20Filled, Edit20Filled, Add16Filled} from '@vicons/fluent'
   import PositionCard from './PositionCard.vue'
   import WorkerCard from './WorkerCard.vue'
   import Indicator from './Indicator.vue'
@@ -9,6 +15,8 @@
 
   const store = useReport2Store()
   const dpStore = useDepartmentStore()
+  const componentStore = useComponentStore()
+  const pnStore = useDepartmentPositionStore()
 
   defineProps({
     data: {
@@ -18,13 +26,13 @@
   })
 
   const onDelete = (v) => {
+    store.isDpDelete = true
     store.department.elementId = v.id
     store.department.deleteVisible = true
 
   }
 
   const onEdit = (v)=> {
-    console.log(v)
     dpStore.elementId = v.id
     dpStore.visibleType = false
     store.department.visible = true
@@ -33,10 +41,19 @@
     dpStore.payload.name_en = v.name_en
     dpStore.payload.comment = v.comment
     dpStore.payload.level = v.level.id
-    dpStore.showParent = Boolean(v.parent?.id)
-    dpStore.payload.parent_id = v.parent?.id
+    dpStore.showParent = Boolean(v.parent_id)
+    dpStore.payload.parent_id = v.parent_id
     dpStore._level()
+    componentStore._departments()
+  }
 
+  const onAddPosition = (v) => {
+    store.position.visible = true
+    store.position.visibleType = true
+    store.resetPositionPayload()
+    store.positionPayload.department_id = v.id
+    componentStore.departmentList = [v]
+    componentStore._departments()
   }
 
   const openConfirm = () => {
@@ -58,28 +75,60 @@
         </n-radio>
       </div>
       <div class="w-[460px] flex items-center justify-end h-full gap-2 pr-2">
-        <n-button
-            size="tiny"
-            type="primary"
-            secondary
-            @click.stop="onEdit(data)"
-        >
-          {{$t('content.edit')}}
-        </n-button>
-        <n-button
-            @click.stop="onDelete(data)"
-            size="tiny"
-            type="error"
-            secondary
-        >
-          {{$t('content.delete')}}
-        </n-button>
+
+        <n-tooltip placement="top" trigger="hover">
+          <template #trigger>
+            <n-button
+                size="tiny"
+                type="primary"
+                @click.stop="onAddPosition(data)"
+                ghost
+            >
+              <template #icon>
+                <Add16Filled/>
+              </template>
+            </n-button>
+          </template>
+          <span>{{ $t('report.addPosition') }}</span>
+        </n-tooltip>
+        <n-tooltip placement="top" trigger="hover">
+          <template #trigger>
+            <n-button
+                size="tiny"
+                type="primary"
+                @click.stop="onEdit(data)"
+                ghost
+            >
+              <template #icon>
+                <Edit20Filled/>
+              </template>
+            </n-button>
+          </template>
+          <span>{{ $t('content.edit') }}</span>
+        </n-tooltip>
+        <n-tooltip placement="top" trigger="hover">
+          <template #trigger>
+            <n-button
+                @click.stop="onDelete(data)"
+                size="tiny"
+                type="error"
+                ghost
+            >
+              <template #icon>
+                <Delete20Filled/>
+              </template>
+            </n-button>
+          </template>
+          <span>{{ $t('content.delete') }}</span>
+        </n-tooltip>
+
+
         <n-button
           @click.stop="openConfirm"
           :loading="store.optimizationLoading"
           v-if="data.id === store.department.selectedId"
           size="tiny"
-          secondary
+          ghost
           type="warning"
           >{{ $t('report.form.optimization') }}
           <template #icon>
@@ -91,8 +140,8 @@
     </div>
     <div class="col-span-12" :class="[data.id === store.department.selectedId && 'mt-6 mb-3']">
       <n-collapse-transition :show="data.id === store.department.selectedId">
-        <PositionCard v-if="store.byPosition" />
-        <WorkerCard v-else />
+          <PositionCard v-if="store.byPosition" />
+          <WorkerCard v-else />
       </n-collapse-transition>
     </div>
   </div>

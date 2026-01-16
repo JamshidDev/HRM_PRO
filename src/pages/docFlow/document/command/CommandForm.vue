@@ -480,8 +480,6 @@
     store.payload.confirmations = store.payload.confirmations.filter(v=>v !== id)
   }
 
-  const existRuleOfFinanceInput = computed(() => store.payload.command_type !== 55)
-
   onMounted(() => {
     componentStore._commandTypes()
     store.resetForm()

@@ -109,7 +109,7 @@ export const useAdContractStore = defineStore('adContractStore', {
               : undefined,
           worker_position_id: this.payload.worker_position_id,
           director_id: this.payload.director_id,
-          finance_id: this.payload.finance_id,
+          finance_id: this.payload.finance_id || undefined,
           department_id:
             this.payload.department_id.length > 0 ? this.payload.department_id[0].id : undefined,
           confirmations: this.sortableConfirmations.map((v, idx) => ({

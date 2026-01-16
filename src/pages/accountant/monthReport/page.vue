@@ -5,6 +5,7 @@
   import ExportPanel from './ui/ExportPanel.vue'
   import ViewSalary from './ui/ViewSalary.vue'
   import { useAccountStore, useMonthReportStore } from '@/store/modules/index.js'
+  import {getOneMonthAgoYearMonth} from "@utils"
 
   const store = useMonthReportStore()
   const route = useRoute()
@@ -14,8 +15,9 @@
     if (!accStore.checkAction(accStore.pn.economistStatementsRead)) return
     const query = route.query
     const isHasQuery = Object.keys(route.query).length > 0
-    store.params.year = isHasQuery ? query.year : new Date().getFullYear()
-    store.params.month = isHasQuery ? Number(query.month) : new Date().getMonth()
+    const oneMonthAgo = getOneMonthAgoYearMonth()
+    store.params.year = isHasQuery ? query.year : oneMonthAgo.year
+    store.params.month = isHasQuery ? Number(query.month) : oneMonthAgo.month
     store.params.code = isHasQuery ? query.code : null
     store._index()
   })

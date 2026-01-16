@@ -30,6 +30,7 @@
       <div class="flex gap-6 mt-4">
         <div class="flex gap-4 items-center">
           <div
+              @click="emits('onPreview', 'ACSEventFaceVerifyPass')"
             class="bg-transparent hover:bg-primary/6 transition-all duration-300 cursor-pointer p-2 rounded-xl relative group"
           >
             <div
@@ -65,7 +66,7 @@
         </div>
         <div class="flex gap-4 items-center">
           <div
-            @click="emits('onPreview', 'come')"
+            @click="emits('onPreview', 'MobileFaceEvent')"
             class="bg-transparent hover:bg-primary/6 transition-all duration-300 cursor-pointer p-2 rounded-xl relative group"
           >
             <div

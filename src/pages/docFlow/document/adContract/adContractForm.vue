@@ -559,7 +559,7 @@
               </n-form-item>
             </div>
             <div class="col-span-12">
-              <n-form-item :label="$t(`documentPage.command.form.finance_id`)" path="finance_id">
+              <n-form-item :label="$t(`documentPage.command.form.finance_id`)">
                 <n-select
                     :disabled="!store.payload.director_id"
                     value-field="id"
@@ -570,6 +570,7 @@
                     :render-label="renderLabel"
                     :render-tag="renderValue"
                     @update:value="syncConfirmationEv"
+                    clearable
                 />
               </n-form-item>
             </div>

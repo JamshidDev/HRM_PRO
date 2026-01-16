@@ -3,14 +3,15 @@
   import Table from './ui/Table.vue'
   import Filter from './ui/Filter.vue'
   import { UIPageContent } from '@/components/index.js'
+  import {getOneMonthAgoYearMonth} from "@utils"
 
   const store = useTaxFiveStore()
   const accStore = useAccountStore()
   onMounted(() => {
     if (!accStore.checkAction(accStore.pn.economistTaxFiveRead)) return
-    const today = new Date()
-    store.params.year = today.getFullYear()
-    store.params.month = new Date(today.setMonth(today.getMonth() - 1)).getMonth()+1
+    const oneMonthAgo = getOneMonthAgoYearMonth()
+    store.params.year =oneMonthAgo.year
+    store.params.month =oneMonthAgo.month
     store._index()
   })
 </script>

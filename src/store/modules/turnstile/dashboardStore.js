@@ -55,7 +55,8 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
       hours: null,
       date: null,
       norm_hours: null,
-      status: null
+      status: null,
+      auth_type: null,
     },
     timeRange: null,
     tableColumns: [],
@@ -141,7 +142,19 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
       },
       not_come_yesterday: {
         name: 'turnStileDashboard.cards.not_come_yesterday'
-      }
+      },
+      notIncludedSchedule: {
+        name: 'turnStileDashboard.cards.notIncludedSchedule',
+        key: 'notIncludedSchedule'
+      },
+      ACSEventFaceVerifyPass:{
+        name: 'turnStileDashboard.cards.ACSEventFaceVerifyPass',
+        key: 'ACSEventFaceVerifyPass'
+      },
+      MobileFaceEvent:{
+        name: 'turnStileDashboard.cards.MobileFaceEvent',
+        key: 'MobileFaceEvent'
+      },
     },
     filterDepParams: {
       page: 1,
@@ -348,7 +361,8 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
         ...this.previewParams,
         organizations: this.dashboardParams.organizations.map((v) => v.id).toString() || undefined,
         departments: this.dashboardParams.departments.toString() || undefined,
-        date: Utils.timeToZone(this.previewParams.date)
+        date: Utils.timeToZone(this.previewParams.date),
+        type: ['ACSEventFaceVerifyPass', 'MobileFaceEvent'].includes(this.previewParams.type) ? 'come' : this.previewParams.type,
       }
     },
 
@@ -372,7 +386,7 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
             minutes: `${v.early_minutes} ${t('date.minute')}`,
             time: Utils.timeWithMonth(v.last_exit_time)
           }
-        } else if (cardType === 'come') {
+        } else if (['come', 'ACSEventFaceVerifyPass', 'MobileFaceEvent'].includes(cardType)) {
           return {
             ...v,
             user: this._userContructor(v, v.position_name)
@@ -397,7 +411,13 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
             ...v,
             user: this._userContructor(v, v.position_name)
           }
-        } else if (cardType === 'lesson_worked') {
+        }else if(cardType === 'notIncludedSchedule'){
+          return {
+            ...v,
+            user: this._userContructor(v, v.position_name)
+          }
+        }
+        else if (cardType === 'lesson_worked') {
           return {
             ...v,
             user: this._userContructor(v, v.position_name),
@@ -472,6 +492,7 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
       this.previewParams.hours = null
       this.previewParams.search = null
       this.previewParams.status = null
+      this.previewParams.auth_type = null
     },
 
     openPreview(cardType) {

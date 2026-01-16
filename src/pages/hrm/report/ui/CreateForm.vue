@@ -4,6 +4,7 @@
   import { useReport2Store, useComponentStore } from '@/store/modules/index.js'
   import Utils from '@/utils/Utils.js'
   import UIHelper from '@/utils/UIHelper.js'
+  import {SuperSelect} from "@components"
 
   const store = useReport2Store()
   const componentStore = useComponentStore()
@@ -11,7 +12,14 @@
   const onSubmit = () => {
     formRef.value?.validate((error) => {
       if (!error) {
-        store.onUpdatePosition()
+        let data = { ...store.positionPayload }
+
+        if(store.position.visibleType){
+          store.onCreatePosition(data)
+        }else{
+          store.onUpdatePosition(data)
+        }
+
       }
     })
   }
@@ -25,7 +33,7 @@
 <template>
   <n-form
     ref="formRef"
-    :rules="validationRules.departmentPositionPage"
+    :rules="validationRules.common"
     :model="store.positionPayload"
   >
     <n-spin :show="store.showLoading">
@@ -35,6 +43,7 @@
             class="col-span-12"
             :label="$t(`departmentPositionPage.form.position_id`)"
             path="position_id"
+            :rule-path="validationRules.rulesNames.requiredNumberField"
           >
             <n-select
               v-model:value="store.positionPayload.position_id"
@@ -50,26 +59,39 @@
             class="col-span-12"
             :label="$t(`departmentPositionPage.form.department_id`)"
             path="department_id"
+            :rule-path="validationRules.rulesNames.requiredNumberField"
           >
-            <n-select
-              v-model:value="store.positionPayload.department_id"
-              filterable
-              :filter="() => true"
-              clearable
-              :options="componentStore.departmentList"
-              :render-label="UIHelper.selectRender.label"
-              :render-tag="UIHelper.selectRender.value"
-              value-field="id"
-              :loading="componentStore.departmentLoading"
-              @search="componentStore._onSearchDepartment"
-              @scroll="componentStore._onScrollDepartment"
-              :reset-menu-on-options-change="true"
+            <SuperSelect
+                :options="componentStore.departmentList"
+                v-model:value="store.positionPayload.department_id"
+                v-model:search="componentStore.depParams.search"
+                @onSearch="componentStore._onSearchDepartment"
+                @onScroll="componentStore._onScrollDepartment"
+                value-field="id"
+                :loading="componentStore.departmentLoading"
+                :render-label="UIHelper.selectRender.label"
+                :render-tag="UIHelper.selectRender.value"
             />
+<!--            <n-select-->
+<!--              v-model:value="store.positionPayload.department_id"-->
+<!--              filterable-->
+<!--              :filter="() => true"-->
+<!--              clearable-->
+<!--              :options="componentStore.departmentList"-->
+<!--              :render-label="UIHelper.selectRender.label"-->
+<!--              :render-tag="UIHelper.selectRender.value"-->
+<!--              value-field="id"-->
+<!--              :loading="componentStore.departmentLoading"-->
+<!--              @search="componentStore._onSearchDepartment"-->
+<!--              @scroll="componentStore._onScrollDepartment"-->
+<!--              :reset-menu-on-options-change="true"-->
+<!--            />-->
           </n-form-item>
           <n-form-item
             class="col-span-12 md:col-span-6 lg:col-span-4"
             :label="$t(`departmentPositionPage.form.group`)"
             path="group"
+            :rule-path="validationRules.rulesNames.requiredNumberField"
           >
             <n-select
               v-model:value="store.positionPayload.group"
@@ -85,6 +107,7 @@
             class="col-span-12 md:col-span-6 lg:col-span-4"
             :label="$t(`departmentPositionPage.form.rank`)"
             path="rank"
+            :rule-path="validationRules.rulesNames.requiredStringField"
           >
             <n-select
               v-model:value="store.positionPayload.rank"
@@ -100,6 +123,7 @@
             class="col-span-12 md:col-span-6 lg:col-span-4"
             :label="$t(`departmentPositionPage.form.max_rank`)"
             path="max_rank"
+            :rule-path="validationRules.rulesNames.requiredStringField"
           >
             <n-select
               v-model:value="store.positionPayload.max_rank"
@@ -115,6 +139,7 @@
             class="col-span-12 md:col-span-6 lg:col-span-4"
             :label="$t(`departmentPositionPage.form.rate`)"
             path="rate"
+            :rule-path="validationRules.rulesNames.requiredNumberField"
           >
             <n-input-number
               :max="300"
@@ -131,6 +156,7 @@
             class="col-span-12 md:col-span-6 lg:col-span-4"
             :label="$t(`departmentPositionPage.form.salary`)"
             path="salary"
+            :rule-path="validationRules.rulesNames.requiredStringField"
           >
             <n-input
               v-model:value="store.positionPayload.salary"
@@ -146,6 +172,7 @@
             class="col-span-12 md:col-span-6 lg:col-span-4"
             :label="$t(`departmentPositionPage.form.experience`)"
             path="experience"
+            :rule-path="validationRules.rulesNames.requiredStringField"
           >
             <n-input
               v-model:value="store.positionPayload.experience"
@@ -160,7 +187,8 @@
           <n-form-item
             class="col-span-12 md:col-span-6 lg:col-span-4"
             :label="$t(`departmentPositionPage.form.educations`)"
-            path="educations"
+            path="education"
+            :rule-path="validationRules.rulesNames.requiredNumberField"
           >
             <n-select
               v-model:value="store.positionPayload.education"

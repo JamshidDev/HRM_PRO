@@ -67,7 +67,7 @@
           :rule-path="validationRules.rulesNames.requiredNumberField"
         >
           <n-input-number
-            :max="300"
+            :max="60"
             :min="0"
             :step="1"
             :show-button="false"
@@ -84,7 +84,7 @@
           :rule-path="validationRules.rulesNames.requiredNumberField"
         >
           <n-input-number
-            :max="300"
+            :max="60"
             :min="0"
             :step="1"
             :show-button="false"

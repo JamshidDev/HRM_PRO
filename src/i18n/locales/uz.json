@@ -5,6 +5,7 @@
     "nowOnlineUsers": "Hozirda tizimdagi online foydalanuvchilar",
     "onlineUsers": "Online foydalanuvchilar",
     "files": "Fayllar",
+    "historyUpload": "Yuklashlar tarixi",
     "developmentProcess": "Ishlab chiqish jarayonida",
     "notifications": "Bildirishnomalar",
     "markAsRead": "O'qilgan deb belgilash",
@@ -1564,18 +1565,18 @@
       "addBtn": "Foydalanuvchi qo'shish"
     },
     "accessLevelPage": {
-      "name": "(HC) Guruhlar",
+      "name": " Guruhlar",
       "deviceCount": "Qurilmalar soni",
       "sync": "Sinxronlash",
       "syncDepartment": "Bo'limlarni sinxronlash",
       "server": "Server"
     },
     "orgAccessLevelsPage": {
-      "name": "(HC) Tashkilot va guruhlar"
+      "name": " Tashkilot va guruhlar"
     },
     "hcWorkersPage": {
       "access_levels": "Guruhlar",
-      "name": "(HC) Xodimlar",
+      "name": " Xodimlar",
       "create": "Xodim qo'shish",
       "edit": "Xodimni tahrirlash",
       "access_levels_count": "Guruhlar soni",
@@ -1871,8 +1872,11 @@
   },
   "report": {
     "name": "Plan va Fakt",
+    "addDepartment": "Bo'linma qo'shish",
+    "addPosition": "Lavozim qo'shish",
     "tooltip": {
       "P": "Plan",
+      "G": "Guruh",
       "F": "Fakt",
       "V": "Vakant",
       "S": "Sverx",
@@ -2207,7 +2211,7 @@
     }
   },
   "workerImage": {
-    "name": "(HC) Telegram rasmlari",
+    "name": " Telegram rasmlari",
     "photo": "Rasm",
     "status": "Holati",
     "viewPhoto": "Rasmni ko'rish",
@@ -2234,8 +2238,8 @@
     }
   },
   "hcEvent": {
-    "name": "(HC) Hodisalar",
-    "nameV2": "(HC) Hodisalar V2",
+    "name": " Hodisalar",
+    "nameV2": " Hodisalar V2",
     "createTitle": "Yuklash",
     "updateTitle": "Tahrirlash",
     "syncTitle": "Sinxronlash",
@@ -2259,6 +2263,7 @@
       "NoMask": "Niqobsiz",
       "direction": "Turniket",
       "face": "FACE",
+      "mobile": "Mobil",
       "card": "Karta",
       "finger": "Barmoq izi",
       "unknown": "Noma'lum",
@@ -2396,6 +2401,9 @@
     },
     "cards": {
       "late_come": "Kech kelgan xodimlar",
+      "ACSEventFaceVerifyPass": "Turniketdan o'tgan xodimlar",
+      "MobileFaceEvent": "Mobil qurilmadan o'tgan xodimlar",
+      "notIncludedSchedule": "Grafik biriktirilmagan xodimlar",
       "not_come_yesterday": "Ishga kelmagan xodimlar",
       "early_leave_yesterday": "Erta ketgan xodimlar",
       "not_come": "Ishga kelmagan xodimlar",
@@ -2455,7 +2463,7 @@
     }
   },
   "hcWorkDuration": {
-    "name": "(HC) Ish vaqti",
+    "name": " Ish vaqti",
     "form": {
       "enter": "Kirish",
       "exit": "Chiqish"
@@ -2494,7 +2502,7 @@
     "more": "ta"
   },
   "devices": {
-    "name": "(HC) Qurilmalar",
+    "name": " Qurilmalar",
     "createTitle": "Qurilma qo'shish",
     "updateTitle": "Qurilmani tahrirlash",
     "deviceName": "Qurilma nomi",

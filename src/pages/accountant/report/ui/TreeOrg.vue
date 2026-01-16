@@ -1,7 +1,6 @@
 <script setup>
   import { useUploadReportStore } from '@/store/modules/index.js'
   import {
-    CheckmarkCircle32Filled,
     ChevronRight12Regular,
     DocumentBulletList24Filled,
     Folder20Filled,

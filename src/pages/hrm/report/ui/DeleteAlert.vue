@@ -6,8 +6,13 @@ const store = useReport2Store()
 
 const onDelete = () => {
   store.department.deleteVisible = false
-  store.department.selectedId = null
-  store._deleteDepartment()
+  if(store.isDpDelete){
+    store.department.selectedId = null
+    store._deleteDepartment()
+  }else{
+    store.position.selectedId = null
+    store._deletePosition()
+  }
 }
 </script>
 

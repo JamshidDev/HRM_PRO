@@ -74,6 +74,14 @@
     filterEvent()
   }
 
+  const onDefault = (v) => {
+    dashboardStore.dashboardParams.organizations = v
+    dashboardStore.dashboardParams.departments = []
+    departmentState.list = []
+    dashboardStore.filterDepParams.page = 1
+    debounceFetchDepartment(depParams.value)
+  }
+
   onMounted(() => {
     if (componentStore.structureList.length === 0) {
       componentStore._structures()
@@ -106,7 +114,7 @@
         :checkedVal="dashboardStore.structureCheck2"
         :loading="componentStore.structureLoading"
         v-model:search="componentStore.structureParams.search"
-        @defaultValue="(v) => (dashboardStore.dashboardParams.organizations = v)"
+        @defaultValue="onDefault"
         @updateModel="onChangeStructure"
         @updateCheck="(v) => (dashboardStore.structureCheck2 = v)"
         @onSearch="componentStore._structures"

@@ -1,4 +1,4 @@
-<script setup>
+ <script setup>
   import { NoDataPicture, TreeData } from '@/components/index.js'
   import { useReport2Store } from '@/store/modules/index.js'
 
@@ -36,7 +36,7 @@
             </n-switch>
           </div>
           <div class="flex gap-2">
-            <IndicatorTitle />
+            <IndicatorTitle class="!w-[160px]" />
           </div>
         </div>
         <TreeData

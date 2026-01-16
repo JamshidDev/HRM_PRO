@@ -26,7 +26,8 @@
     start_time: false,
     end_time: false,
     norm_hours: false,
-    status: false
+    status: false,
+    auth_type: false,
   })
   const resetFilterVisible = () => {
     Object.keys(filterVisible.value).forEach((key) => {
@@ -64,36 +65,37 @@
       filterVisible.value.status = true
       dashboardStore.previewParams.norm_hours = '8'
       dashboardStore.previewParams.status = 'max'
+    }else if (dashboardStore.cardTypes.notIncludedSchedule.key === cardType) {
+      dashboardStore.previewParams.date = null
+      filterVisible.value.date = false
+    }else if (dashboardStore.cardTypes.come.key === cardType) {
+      filterVisible.value.auth_type = true
+      dashboardStore.previewParams.auth_type = null
+    } else if (dashboardStore.cardTypes.MobileFaceEvent.key === cardType) {
+      dashboardStore.previewParams.auth_type = 'MobileFaceEvent'
+    } else if (dashboardStore.cardTypes.ACSEventFaceVerifyPass.key === cardType) {
+      dashboardStore.previewParams.auth_type = 'ACSEventFaceVerifyPass'
     }
 
     dashboardStore._preview()
+
   }
 
   const onEnter = () => {
     dashboardStore._preview()
   }
 
-  const handleTimeKeydownWithEnter = (event, key) => {
-    if (event.key === 'Enter') {
-      onEnterTime(key)
-    } else {
-      Utils.handleTimeKeydown(event)
+  const detectionOption = [
+    {
+      name:'Turniket qurilma ',
+      id:'ACSEventFaceVerifyPass'
+    },
+    {
+      name:'Mobil qurilma',
+      id:'MobileFaceEvent'
     }
-  }
 
-  const onEnterTime = (key) => {
-    if (
-      dashboardStore.previewParams.start_time?.length === 5 ||
-      dashboardStore.previewParams.end_time?.length === 5
-    ) {
-      const value =
-        key === 'turnstile_start_time'
-          ? dashboardStore.previewParams.start_time
-          : dashboardStore.previewParams.end_time
-      localStorage.setItem(key, value)
-      dashboardStore._preview()
-    }
-  }
+  ]
 
   onMounted(() => {
     controlFilterEv()
@@ -163,6 +165,18 @@
         :loading="dashboardStore.previewLoading"
         value-field="id"
         label-field="name"
+      />
+    </div>
+    <div v-if="filterVisible.auth_type" class="col-span-2">
+      <label class="text-textColor3 ml-1">{{ $t('content.type') }}</label>
+      <n-select
+          v-model:value="dashboardStore.previewParams.auth_type"
+          :options="detectionOption"
+          @update:value="filterEvent"
+          :loading="dashboardStore.previewLoading"
+          value-field="id"
+          label-field="name"
+          clearable
       />
     </div>
     <div class="col-span-2">

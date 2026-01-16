@@ -31,6 +31,11 @@
 
   const list2 = [
     {
+      tooltip: 'report.tooltip.G',
+      value: 'G',
+      type: 'default'
+    },
+    {
       tooltip: 'report.tooltip.P',
       value: 'P',
       type: 'default'
@@ -44,24 +49,26 @@
 </script>
 
 <template>
-  <template v-if="isWorker">
-    <template v-for="(item, idx) in list2" :key="idx">
-      <n-tooltip placement="top" trigger="hover">
-        <template #trigger>
-          <n-button :type="item.type" round size="tiny" secondary>{{ item.value }}</n-button>
-        </template>
-        <span>{{ $t(item.tooltip) }}</span>
-      </n-tooltip>
+  <div :class="[isWorker? 'grid-cols-3 !w-[120px]' : 'grid-cols-4 !w-[160px]']" class="grid gap-1">
+    <template v-if="isWorker">
+      <template v-for="(item, idx) in list2" :key="idx">
+        <n-tooltip placement="top" trigger="hover">
+          <template #trigger>
+            <n-button :type="item.type" round size="tiny" secondary>{{ item.value }}</n-button>
+          </template>
+          <span>{{ $t(item.tooltip) }}</span>
+        </n-tooltip>
+      </template>
     </template>
-  </template>
-  <template v-else>
-    <template v-for="(item, idx) in list" :key="idx">
-      <n-tooltip placement="top" trigger="hover">
-        <template #trigger>
-          <n-button :type="item.type" round size="tiny" secondary>{{ item.value }}</n-button>
-        </template>
-        <span>{{ $t(item.tooltip) }}</span>
-      </n-tooltip>
+    <template v-else>
+      <template v-for="(item, idx) in list" :key="idx">
+        <n-tooltip placement="top" trigger="hover">
+          <template #trigger>
+            <n-button :type="item.type" round size="tiny" secondary>{{ item.value }}</n-button>
+          </template>
+          <span>{{ $t(item.tooltip) }}</span>
+        </n-tooltip>
+      </template>
     </template>
-  </template>
+  </div>
 </template>

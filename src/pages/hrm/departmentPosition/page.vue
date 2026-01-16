@@ -27,7 +27,7 @@
       "
     >
       <template #content>
-        <createFrom />
+        <createFrom @onCancelEv="store.visible=false" />
       </template>
     </UIDrawer>
     <Preview/>

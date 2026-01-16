@@ -55,6 +55,7 @@
       dayOption.empty = true
     } else if (store.selectedOption && store.selectedOption.key === 'copyTime') {
       dayOption = store.workerList[store.workerIndex].days[store.dayIndex]
+      dayOption.isEdit = true
     } else if (store.selectedOption && store.selectedOption.key === 0) {
       //   holiday
     } else {
@@ -65,6 +66,8 @@
       dayOption.dayTime = store.selectedOption.dayTime
       dayOption.eveningTime = store.selectedOption.eveningTime
     }
+
+    console.log(dayOption)
     store.isSelectedContext = true
     store.workerList[store.workerIndex].isEdit = true
     store.savedOption = dayOption
@@ -88,7 +91,7 @@
 
   const handleDragSelect = (v) => {
     if (!store.isSelectedContext) return
-
+    console.log(store.savedOption)
     let dayOption = store.savedOption || {
       isWorkDay: false,
       startTime: null,

@@ -3,7 +3,8 @@
   import Filter from './ui/Filter.vue'
   import Table from './ui/Table.vue'
   import DeleteAlert from './ui/DeleteAlert.vue'
-  import EditDepartmentModal from './ui/EditDepartmentModal.vue'
+  import DepartmentModal from './ui/DepartmentModal.vue'
+  import PositionModal from './ui/PositionModal.vue'
   import CreateForm from './ui/CreateForm.vue'
   import { useReport2Store } from '@/store/modules/index.js'
 
@@ -15,14 +16,8 @@
     <Filter/>
     <Table/>
     <DeleteAlert/>
-    <EditDepartmentModal/>
-    <UIModal
-      :width="900"
-      v-model:visible="store.visible"
-      :title="$t('departmentPositionPage.updateTitle')"
-    >
-      <CreateForm />
-    </UIModal>
+    <DepartmentModal/>
+    <PositionModal/>
     <UIDConfirm
       :visible="store.confirmVisible"
       @onClose="() => (store.confirmVisible = false)"

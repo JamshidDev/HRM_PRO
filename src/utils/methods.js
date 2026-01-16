@@ -17,3 +17,4 @@ export const useDebounce = (callback, delay = 900) => {
   debounced.cancel = clearDebounce
   return debounced
 }
+

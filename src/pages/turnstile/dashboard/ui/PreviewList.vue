@@ -15,15 +15,13 @@
     dashboardStore._preview(true)
   }
 
-  // Get table configuration based on card type
   const tableConfig = computed(() => {
     return getTableConfig(dashboardStore.previewParams.type)
   })
 
-  // Handle row click
   const handleRowClick = (item, index) => {
-    // You can add custom row click logic here
   }
+
 </script>
 
 <template>

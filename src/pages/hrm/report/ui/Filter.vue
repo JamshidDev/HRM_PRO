@@ -1,12 +1,13 @@
 <script setup>
   import { SuperStructure} from '@/components/index.js'
-  import { useComponentStore, useReport2Store } from '@/store/modules/index.js'
+  import {useComponentStore, useDepartmentStore, useReport2Store} from '@/store/modules/index.js'
   import { useAccountStore } from '@/store/modules/index.js'
   import {useDebounce} from "@utils"
   const accStore = useAccountStore()
 
   const componentStore = useComponentStore()
   const store = useReport2Store()
+  const dpStore = useDepartmentStore()
 
   const onChangeOrg = (v) => {
     if (!accStore.checkAction(accStore.pn.hrReportRead)) return
@@ -22,9 +23,24 @@
 
   const selectedOrg = computed(()=>store.department.params.organization_id?.[0] || null )
 
+  const onDefaultEv = (list) =>{
+    if(list.length === 1 && (list?.[0].children === undefined || list?.[0]?.children?.length === 0)){
+      store.department.params.organization_id = [list[0]]
+      store._getDepartment()
+    }
+  }
+
+  const addDepartment = () => {
+    store.department.visible = true
+    dpStore.visibleType = true
+    dpStore._level()
+    componentStore._departments()
+    dpStore.resetForm()
+  }
+
 
   onMounted(() => {
-    store._fetchStructure()
+    store._fetchStructure(onDefaultEv)
   })
 </script>
 
@@ -54,13 +70,16 @@
         </template>
       </SuperStructure>
     </div>
-    <div class="col-span-9 flex mt-5 gap-2">
+    <div class="col-span-9 flex justify-end mt-5 gap-2">
       <template v-if="selectedOrg">
         <n-button secondary :type="selectedOrg.rate>selectedOrg.real_rate? 'success' : 'default'" >
           {{store.department.params.organization_id?.[0].rate}}
         </n-button>
         <n-button secondary :type="selectedOrg.real_rate>selectedOrg.rate? 'error' : 'default'">
           {{store.department.params.organization_id?.[0].real_rate}}
+        </n-button>
+        <n-button @click="addDepartment" type="primary">
+          {{$t('report.addDepartment')}}
         </n-button>
       </template>
 

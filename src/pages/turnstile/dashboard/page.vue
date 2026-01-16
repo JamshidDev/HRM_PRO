@@ -77,10 +77,10 @@
       <div
         class="xl:col-span-8 lg:col-span-12 col-span-12 p-2 grid grid-cols-12 border border-surface-line rounded-xl bg-surface-section"
       >
-        <div class="xl:col-span-5 lg:col-span-5 col-span-12">
+        <div class="xl:col-span-6 lg:col-span-5 col-span-12">
           <RowChart @onPreview="onPreview" />
         </div>
-        <div class="xl:col-span-7 lg:col-span-7 col-span-12 overflow-hidden">
+        <div class="xl:col-span-6 lg:col-span-7 col-span-12 overflow-hidden">
           <DailyEventChart />
         </div>
       </div>
@@ -96,9 +96,9 @@
       />
 
       <WorkTimeCard @onPreview="onPreview" class="xl:col-span-8 col-span-12" />
-      <MonthlyCard class="col-span-6" />
+      <MonthlyCard @onPreview="onPreview" class="col-span-6" />
       <div class="col-span-6 p-2 border border-surface-line rounded-xl bg-surface-section relative">
-        <FaceCard />
+        <FaceCard @onPreview="onPreview"/>
       </div>
     </div>
 
