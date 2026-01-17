@@ -175,7 +175,7 @@
             <p class="text-xs">Xodimlar soni</p>
             <div class="w-full flex justify-between mt-4">
               <span class="text-xs"
-                >Erkakalar - <span class="text-sm font-semibold">4509</span></span
+                >Erkaklar - <span class="text-sm font-semibold">4509</span></span
               >
               <span class="text-xs">Ayollar - <span class="text-sm font-semibold">4509</span></span>
             </div>

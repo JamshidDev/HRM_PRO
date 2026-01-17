@@ -473,6 +473,8 @@
     "name": "Tabelchilar",
     "work_place": "Tashkilot/Bo'lim"
   },
+
+
   "workerPage": {
     "name": "Xodimlar",
     "filter": {
@@ -1231,6 +1233,8 @@
       "punishment": "Intizomiy jazolari"
     }
   },
+
+
   "categoryPage": {
     "createCategory": "Kategoriya yaratish",
     "editCategory": "Kategoriyani tahrirlash",
@@ -1367,7 +1371,7 @@
     },
     "mainCard": {
       "totalWorker": "Xodimlar soni",
-      "man": "Erkakalar soni",
+      "man": "Erkaklar soni",
       "woman": "Ayollar soni"
     },
     "age": {
@@ -1794,6 +1798,8 @@
   "businessTrip": {
     "name": "Xizmat safari"
   },
+
+
   "documentArchive": {
     "name": "Hujjatlar bazasi",
     "createTitle": "Hujjat faylini qo'shish",

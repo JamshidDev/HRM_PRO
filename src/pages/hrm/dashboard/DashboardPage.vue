@@ -71,7 +71,7 @@
           count: 1067
         },
         {
-          label: 'Erkakalar',
+          label: 'Erkaklar',
           count: 1067
         },
         {

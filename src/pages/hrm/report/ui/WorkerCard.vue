@@ -1,9 +1,14 @@
 <script setup>
-  import { useReport2Store } from '@/store/modules/index.js'
+  import { useReport2Store, useAccountStore } from '@/store/modules/index.js'
   import Utils from '../../../../utils/Utils.js'
   import Indicator from '@/pages/hrm/report/ui/Indicator.vue'
   import IndicatorTitle from '@/pages/hrm/report/ui/IndicatorTitle.vue'
   import { UIUser } from '@/components/index.js'
+  import {AppPaths} from "@utils"
+  import router from "@/router/index.js"
+
+  const store = useReport2Store()
+  const accStore = useAccountStore()
 
   defineProps({
     bgFull: {
@@ -11,7 +16,20 @@
       default: false
     }
   })
-  const store = useReport2Store()
+
+  const goPush = (v) => {
+    router.push({
+      path: `${AppPaths.Hrm}${AppPaths.WorkerProfile}`,
+      query: { id: v.worker.uuid }
+    })
+  }
+
+ const onView = (v) =>{
+    if (!accStore.checkAction(accStore.pn.hrWorkersWrite)) return
+    goPush(v)
+  }
+
+
 </script>
 
 <template>
@@ -29,6 +47,7 @@
       <template v-for="(item, idx) in store.workerList" :key="idx">
         <div
           class="flex items-center border-b border-warning border-dashed py-2 hover:bg-warning/10"
+          @click="onView(item)"
         >
           <div class="w-[calc(100%-200px)] flex items-center">
             <span class="inline-block font-semibold w-[30px] flex-shrink-0">{{ idx + 1 }}</span>
