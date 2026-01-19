@@ -186,15 +186,6 @@ onMounted(()=>{
           :label="$t(`content.worker`)"
           path="creator_id"
           :rule-path="validationRules.rulesNames.requiredNumberField">
-<!--        <n-select-->
-<!--            value-field="id"-->
-<!--            label-field="last_name"-->
-<!--            v-model:value="store.payload.creator_id"-->
-<!--            :options="componentStore.confirmationList"-->
-<!--            :loading="componentStore.confirmationLoading"-->
-<!--            :render-label="UIHelper.avatarRender.label"-->
-<!--            :render-tag="UIHelper.avatarRender.value"-->
-<!--        />-->
         <SuperSelect
             :max-tag-count="1"
             :options="store.creator.list"

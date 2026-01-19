@@ -38,6 +38,11 @@ const _factIndex = async (payload) => {
   })
 }
 
+
+const _exportTable = async (payload) => {
+  return await axios.post(`/v1/turnstile/schedule/timesheet/export`, payload?.data)
+}
+
 export default {
   _generate,
   _create,
@@ -47,5 +52,6 @@ export default {
   _enums,
   _department,
   _checkFactOfWorker,
-  _factIndex
+  _factIndex,
+  _exportTable,
 }

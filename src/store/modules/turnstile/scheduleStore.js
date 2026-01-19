@@ -125,7 +125,28 @@ export const useScheduleTableStore = defineStore('scheduleStore', {
     attachWorkerTotal: 0,
     attachWorkerLoading: false,
     selectedDays: [],
-    selectedWorkerId: null
+    selectedWorkerId: null,
+    export:{
+      cache:[],
+      payload: {
+        organization_id: [],
+        departments: [],
+        year: null,
+        month: null,
+      },
+      visible: false,
+      loading: false,
+    },
+    department: {
+      loading:false,
+      totalItem:0,
+      params: {
+        page:1,
+        per_page: 100,
+        search:null,
+      },
+      list:[],
+    }
   }),
 
   getters: {
@@ -140,6 +161,34 @@ export const useScheduleTableStore = defineStore('scheduleStore', {
   },
 
   actions: {
+    _exportTable(data){
+      this.export.loading = true
+      $ApiService.workerScheduleService._exportTable({data}).finally(()=>{
+        this.export.visible = false
+        this.export.loading = false
+      })
+    },
+    _fetchDepartment(infinity = false){
+      const params = {
+        ...this.department.params,
+        organizations: this.export.payload.organization_id.map((v) => v.id).toString() || undefined
+      }
+      this.department.loading = true
+      $ApiService.componentService._departmentByOrganizations({params}).then((res)=>{
+        const data = res.data.data.data.map(v=> ({
+          id:v.id,
+          name:v.name,
+          position:v.organization.name,
+        }))
+
+        this.department.list = infinity
+            ? Array.from(new Map([...this.department.list, ...data].map((v) => [v.id, v])).values())
+            : Array.from(new Map([...data].map((v) => [v.id, v])).values())
+        this.department.total = res.data.data.total
+      }).finally(()=>{
+        this.department.loading = false
+      })
+    },
     _checkFactOfWorker(id) {
       this.workerLoading = true
       const data = {
@@ -361,9 +410,9 @@ export const useScheduleTableStore = defineStore('scheduleStore', {
         })
     },
     _initialData() {
-      if (this.scheduleTypes.length > 0) return
-      this.params.year = new Date().getFullYear()
-      this.params.month = new Date().getMonth() + 1
+      // if (this.scheduleTypes.length > 0) return
+      this.params.year =this.params.year ?? new Date().getFullYear()
+      this.params.month =this.params.month ?? new Date().getMonth() + 1
       this._enums()
       this._dayOfMonth(() => {
         this._allWorkers()

@@ -56,6 +56,16 @@
     store._departments()
   }
 
+  const openPanel = () => {
+    const today = new Date()
+    store.export.payload.year = store.export.payload.year ?? today.getFullYear()
+    store.export.payload.month = store.export.payload.month ?? today.getMonth()+1
+    store.export.payload.organization_id = []
+    store.export.payload.departments = []
+    store.export.visible = true
+
+  }
+
   onMounted(() => {
     if (componentStore.structureList.length === 0) {
       componentStore._structures()
@@ -122,6 +132,12 @@
           >{{ $t('content.save') }}</n-button
         >
       </div>
+    </template>
+    <template #filterAction>
+      <n-button @click="openPanel" type="success" >
+        {{$t('content.export')}}
+
+      </n-button>
     </template>
     <template #filterContent>
       <label class="mt-3 text-xs mb-1 font-medium">{{ $t('actionLog.table.structure') }}</label>
