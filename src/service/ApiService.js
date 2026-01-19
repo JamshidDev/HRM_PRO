@@ -70,6 +70,7 @@ import documentChatService from '@/service/v1/docFlow/documentChatService.js'
 import documentFileService from '@/service/v1/docFlow/documentFileService.js'
 import adContractService from '@/service/v1/docFlow/adContractService.js'
 import applicationService from '@/service/v1/docFlow/applicationService.js'
+import confVacationScheduleService from '@/service/v1/docFlow/vacationScheduleService.js'
 
 import topicService from '@/service/v1/attestation/topicService.js'
 import examVideoService from '@/service/v1/attestation/examVideoService.js'
@@ -256,5 +257,6 @@ export default {
   invalidUserService,
   eventV2Service,
   workerScheduleService,
-  notificationService
+  notificationService,
+  confVacationScheduleService,
 }

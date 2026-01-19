@@ -299,7 +299,14 @@ export const navigations = [
         icon: GridKanban20Filled,
         color: 'bg-secondary',
         permission: appPermissions.confirmationTable
-      }
+      },
+      {
+        label: 'vacationSchedule.name',
+        path: Utils.routeDocFlowPathMaker(AppPaths.VacationSchedule),
+        icon: BookDatabase24Regular,
+        color: 'bg-info',
+        permission: appPermissions.admin
+      },
     ]
   },
   {

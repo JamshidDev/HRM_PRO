@@ -6,14 +6,14 @@
     DocumentEdit24Regular,
     ClipboardCheckmark20Regular,
     CalendarCancel20Regular,
-    Settings20Regular
   } from '@vicons/fluent'
   import { UIUser, UILottieReader } from '@/components/index.js'
   import generateFile from '@/assets/json/generateFile.json'
   import {
     usePdfViewerStore,
     useSignatureStore,
-    useApplicationStore
+    useApplicationStore,
+    useAccountStore,
   } from '@/store/modules/index.js'
   import ConfirmationList from './ui/ConfirmationList.vue'
   import LeftContent from './ui/LeftContent.vue'
@@ -36,6 +36,7 @@
   ])
 
   const store = usePdfViewerStore()
+  const accountStore = useAccountStore()
   const signatureStore = useSignatureStore()
   const applicationStore = useApplicationStore()
 
@@ -96,9 +97,14 @@
         store.document.document.file_name = Utils.fileNameFromUrl(v.document?.doc_url)
         store.pdfUrl = v.document.url
         store.docxUrl = v.document?.doc_url
-        store.permissions.canEdit = v.document.confirmation.id !== 3
+        const accountRoleName = accountStore?.account?.role?.name
+        const accountOrgId = accountStore?.account?.organization?.id
+        const documentOrgId = v.document.organization_id
+
+        store.permissions.canEdit =  v.document.confirmation.id !== 3 && (accountRoleName === 'Admin' || accountOrgId === documentOrgId)
         store.permissions.canSignature = v.signature.signature
-        // store.permissions.canSignature =true
+
+
         const worker = v.signature?.current_user?.worker
         store.signatureMan = {
           photo: worker?.photo,

@@ -5,7 +5,8 @@ import {
   ConfAddContractPage,
   ConfApplicationPage,
   ConfCommandPage,
-  ConfTimeSheetPage
+  ConfTimeSheetPage,
+    ConfVacationSchedulePage,
 } from '@/pages/docFlow/index.js'
 
 export const docFlowRoutes = [
@@ -40,6 +41,13 @@ export const docFlowRoutes = [
   {
     path: Utils.routeDocFlowPathMaker(AppPaths.TimeSheet),
     component: ConfTimeSheetPage,
+    meta: {
+      layout: AppLayouts.main
+    }
+  },
+  {
+    path: Utils.routeDocFlowPathMaker(AppPaths.VacationSchedule),
+    component: ConfVacationSchedulePage,
     meta: {
       layout: AppLayouts.main
     }

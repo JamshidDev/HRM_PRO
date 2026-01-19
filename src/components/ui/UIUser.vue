@@ -44,11 +44,11 @@
   const emits = defineEmits(['onClickFullName'])
 
   const fullName = computed(
-    () => `${props.data.lastName} ${props.data.firstName} ${props.data.middleName} `
+    () => `${props.data?.lastName} ${props.data?.firstName} ${props.data?.middleName} `
   )
 
   const shortName = computed(
-    () => `${props.data.lastName}.${props.data.firstName[0]}.${props.data.middleName[0]} `
+    () => `${props.data?.lastName}.${props.data?.firstName?.[0]}.${props.data?.middleName?.[0]} `
   )
 
   const onOpen = () => {
