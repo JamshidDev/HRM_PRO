@@ -144,6 +144,7 @@ const documentModels = {
   adContract: 'contract-additional',
   workerApplication: 'worker-application',
   timesheet: 'timesheet',
+  vacationSchedule: 'vacation-schedule',
   med: 'med'
 }
 const copyToClipboard = async (text, callback) => {

@@ -8,7 +8,7 @@ export const DepartmentPositionPage = () =>
 export const CandidatePage = () => import('./condidate/CandidatePage.vue')
 export const ConfirmationPage = () => import('./confirmation/ConfirmationPage.vue')
 export const ProfilePage = () => import('./workerProfile/ProfilePage.vue')
-export const VacationPage = () => import('./vacation/VacationPage.vue')
+export const VacationPage = () => import('./vacation/page.vue')
 export const TimesheetDepartmentPage = () =>
   import('./timesheetDepartment/TimesheetDepartmentPage.vue')
 export const DashboardV3Page = () => import('./dashboardV3/DashboardV3Page.vue')
@@ -20,7 +20,7 @@ export const OrganizationLeaderPage = () =>
 export const ExportPage = () => import('./export/exportPage.vue')
 export const BusinessTripPage = () => import('./businessTrip/BusinessTripPage.vue')
 export const DocumentArchivePage = () => import('./documentArchive/DocumentArchivePage.vue')
-export const VacationSchedule = () => import('./vacationSchedule/VacationSchedule.vue')
+export const VacationSchedule = () => import('./vacationSchedule/page.vue')
 export const UserRolePage = () => import('./UserRole/UserRolePage.vue')
 export const PunishmentPage = () => import('./punishment/PunishmentPage.vue')
 export const IncentivePage = () => import('./incentive/IncentivePage.vue')

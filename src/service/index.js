@@ -10,11 +10,7 @@ const instance = axios.create({
   baseURL: `${apiUrl}/api`
 })
 
-const controllers = new Map()
-function generateKey(config) {
-  const { method, url } = config
-  return [method, url].join('&')
-}
+let isLoggingOut = false
 
 instance.interceptors.request.use(function (config) {
   let token = localStorage.getItem(useAppSetting.tokenKey) || null
@@ -35,10 +31,6 @@ instance.interceptors.request.use(function (config) {
 
 instance.interceptors.response.use(
   (response) => {
-    const key = generateKey(response.config)
-    if (!response.config.meta?.skipCancel) {
-      controllers.delete(key)
-    }
 
     if (
       [Utils.methodTypes.PUT, Utils.methodTypes.POST, Utils.methodTypes.DELETE].includes(
@@ -53,6 +45,7 @@ instance.interceptors.response.use(
         $Toast.success(response.data.message.toString())
       }
     }
+    isLoggingOut = false
     return Promise.resolve(response)
   },
   (error) => {
@@ -60,11 +53,16 @@ instance.interceptors.response.use(
       error.message = t('content.waitResponse')
     }
     if (error.response?.status === 401) {
+      if(isLoggingOut) return
+
       if (!error.response.request.responseURL.includes(AppPaths.Profile)) {
         $Toast.error(error.response.data.message)
       }
+      isLoggingOut = true
       localStorage.removeItem(useAppSetting.tokenKey)
-      router.push(AppPaths.Login)
+      router.push(AppPaths.Login).finally(()=>{
+
+      })
     } else if (error.response?.data?.message) {
       $Toast.error(error.response?.data?.message)
     } else if (error?.message) {
