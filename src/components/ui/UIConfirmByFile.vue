@@ -25,6 +25,7 @@
     }
     formData.append('model', props.model)
     formData.append('document_id', props.documentId)
+    console.log(formData)
     componentStore._confirmFile(formData, () => {
       componentStore.fileVisible = false
       emits('onSuccess')
@@ -67,4 +68,3 @@
   </UIModal>
 </template>
 
-<style scoped></style>

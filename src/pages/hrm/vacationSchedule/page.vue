@@ -1,5 +1,5 @@
 <script setup>
-import {UIModal, UIOfficeApp, UIPageContent} from '@components'
+import {UIConfirmByFile, UIModal, UIOfficeApp, UIPageContent} from '@components'
 import {useAccountStore, useVacationScheduleStore} from '@stores'
 import {createForm, Filter, Table} from './ui'
 import {Utils} from "@utils"
@@ -10,6 +10,10 @@ const officeAppRef = ref(null)
 
 const openOffice = (id) => {
   officeAppRef.value.openPdf(id, Utils.documentModels.vacationSchedule)
+}
+
+const onSuccessEv = (v) => {
+  store._index()
 }
 
 onMounted(() => {
@@ -30,5 +34,10 @@ onMounted(() => {
       <createForm/>
     </UIModal>
     <UIOfficeApp ref="officeAppRef" />
+    <UIConfirmByFile
+        :model="Utils.documentModels.vacationSchedule"
+        :document-id="store.elementId"
+        @onSuccess="onSuccessEv"
+    />
   </UIPageContent>
 </template>

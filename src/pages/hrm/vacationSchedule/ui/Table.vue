@@ -1,6 +1,6 @@
 <script setup>
   import { NoDataPicture, UIPagination, UIMenuButton, UIUser } from '@/components/index.js'
-  import { useVacationScheduleStore } from '@/store/modules/index.js'
+  import {useComponentStore, useVacationScheduleStore} from '@/store/modules/index.js'
   import Utils from '@/utils/Utils.js'
   import { useAccountStore } from '@stores'
   import {UIBadge, UIStatus} from "@components"
@@ -9,6 +9,7 @@
   const accStore = useAccountStore()
   const t = i18n.global.t
   const store = useVacationScheduleStore()
+  const componentStore = useComponentStore()
 
   const emits = defineEmits(['openOffice'])
 
@@ -46,12 +47,20 @@
     emits('openOffice', v.id)
   }
 
+  const onConfirm = (v) => {
+    store.elementId = v.id
+    componentStore.files = []
+    componentStore.fileVisible = true
+  }
+
   const onSelectEv = (v) => {
     if (!accStore.checkAction(accStore.pn.hrVacationScheduleWrite)) return
     if (Utils.ActionTypes.edit === v.key) {
       onEdit(v.data)
     }else if(Utils.ActionTypes.view === v.key){
       onShow(v.data)
+    }else if(Utils.ActionTypes.confirm === v.key){
+      onConfirm(v.data)
     }
   }
 
@@ -126,7 +135,7 @@
             <td><UIStatus :status="item?.confirmation" /></td>
             <td><UIStatus :status="Utils.documentStatus[item?.generate]" /></td>
             <td>
-              <UIMenuButton :data="item" show-edit show-view @selectEv="onSelectEv" />
+              <UIMenuButton :data="item" show-confirm show-edit show-view @selectEv="onSelectEv" />
             </td>
           </tr>
         </tbody>
