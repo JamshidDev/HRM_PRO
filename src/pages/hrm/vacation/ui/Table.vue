@@ -1,5 +1,5 @@
 <script setup>
-  import { NoDataPicture, UIPagination, UIUser, UIBadge } from '@/components/index.js'
+  import { NoDataPicture, UIPagination, UIUser, UIBadge, UIMenuButton } from '@/components/index.js'
   import { useVacationStore, useComponentStore, useAccountStore } from '@/store/modules/index.js'
   import Utils from '@/utils/Utils.js'
 
@@ -75,7 +75,7 @@
             <th class="min-w-[100px] w-[300px]">{{ $t('vacationPage.table.type') }}</th>
             <th class="min-w-[100px] w-[240px]">{{ $t('vacationPage.table.duration') }}</th>
             <th class="min-w-[100px] w-[120px]">{{ $t('vacationPage.table.workDay') }}</th>
-            <!--          <th class="min-w-[40px] w-[40px]"></th>-->
+<!--                      <th class="min-w-[40px] w-[40px]"></th>-->
           </tr>
         </thead>
         <tbody>
@@ -123,13 +123,13 @@
                 :type="Utils.colorTypes.success"
               />
             </td>
-            <!--          <td>-->
-            <!--            <UIMenuButton-->
-            <!--                :data="item"-->
-            <!--                :show-edit="true"-->
-            <!--                @selectEv="onSelectEv"-->
-            <!--            />-->
-            <!--          </td>-->
+<!--                      <td>-->
+<!--                        <UIMenuButton-->
+<!--                            :data="item"-->
+<!--                            :show-edit="true"-->
+<!--                            @selectEv="onSelectEv"-->
+<!--                        />-->
+<!--                      </td>-->
           </tr>
         </tbody>
       </n-table>
@@ -144,4 +144,3 @@
   </n-spin>
 </template>
 
-<style scoped></style>

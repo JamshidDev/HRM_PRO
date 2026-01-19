@@ -10,6 +10,8 @@
   const t = i18n.global.t
   const store = useVacationScheduleStore()
 
+  const emits = defineEmits(['openOffice'])
+
   const onEdit = (v) => {
     store.creator.list = [{
       id:v.creator.id,
@@ -40,12 +42,19 @@
     store._index()
   }
 
+  const onShow = (v) => {
+    emits('openOffice', v.id)
+  }
+
   const onSelectEv = (v) => {
     if (!accStore.checkAction(accStore.pn.hrVacationScheduleWrite)) return
     if (Utils.ActionTypes.edit === v.key) {
       onEdit(v.data)
+    }else if(Utils.ActionTypes.view === v.key){
+      onShow(v.data)
     }
   }
+
 
 </script>
 
