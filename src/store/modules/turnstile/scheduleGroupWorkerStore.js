@@ -54,7 +54,8 @@ export const useScheduleGroupWorkerStore = defineStore('scheduleGroupWorkerStore
     },
     workerList: [],
     totalWorker: 0,
-    workerLoading: false
+    workerLoading: false,
+    monthsList: [],
   }),
   getters: {
     calculateWorkTime: (state) => (workerIndex) => {

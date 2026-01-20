@@ -21,6 +21,7 @@
     "workers": "Xodimlar",
     "start": "Boshlash",
     "edit": "Tahrirlash",
+    "work_date": "Ishga chiqish sanasi",
     "delete": "O'chirish",
     "checked": "Tekshirilgan",
     "view": "Ko'rish",
@@ -2593,7 +2594,7 @@
       "addTurnstile": "Turniketga qo'shish",
       "notAllowedThisAction": "Maxsus smena uchun Navbatchilik grafiki menyusida ishlang!",
       "turnstileSetting": "Turniket boshqaruvi",
-      "howMuchGroup": "Nechta guruhga moslangan grafik tuzishni xohlaysiz?",
+      "howMuchGroup": "Grafikdagi guruhlar soni",
       "group": "Guruhlar"
     }
   },

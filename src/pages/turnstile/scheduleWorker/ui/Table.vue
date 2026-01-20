@@ -2,14 +2,14 @@
   import { useScheduleGroupWorkerStore } from '@/store/modules/index.js'
   import SearchElement from '@/pages/turnstile/schedule/ui/SearchElement.vue'
   import Utils from '@/utils/Utils.js'
+  import { getMonthOfRage} from "@utils"
   import MonthTab from './MonthTab.vue'
   import { MoreHorizontal32Filled } from '@vicons/fluent'
   import { UIPagination } from '@components'
 
   const store = useScheduleGroupWorkerStore()
+
   const currentScheduleList = ref([])
-  const start = ref(null)
-  const end = ref(null)
 
   watchEffect(() => {
     currentScheduleList.value = store.list.map((v) => {
@@ -42,9 +42,11 @@
   const selectedDate = ref(null)
 
   onMounted(() => {
-    start.value = store.params.year1 + '-' + store.params.month1
-    end.value = store.params.year2 + '-' + store.params.month2
-    selectedDate.value = store.params.year1 + '-' + store.params.month1.toString().padStart(2, '0')
+    const startDate = store.params.year1 + '-' + store.params.month1+'-01';
+    const lastDay = new Date(store.params.year1, store.params.month2, 0).getDate()
+    const endDate = store.params.year2 + '-' + store.params.month2+'-'+lastDay;
+    store.monthsList = getMonthOfRage(startDate, endDate)
+    selectedDate.value = store.monthsList[0].id
   })
 
   const onChange = (v) => {
@@ -76,8 +78,7 @@
       <MonthTab
         v-if="selectedDate"
         class="mt-4"
-        :start="start"
-        :end="end"
+        :options="store.monthsList"
         v-model:date="selectedDate"
         @update:date="onChange"
       />

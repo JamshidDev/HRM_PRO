@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import i18n from '@/i18n/index.js'
 import Utils from '@/utils/Utils.js'
+import {getMonthOfRage} from "@utils"
 const { t } = i18n.global
 
 export const useShiftTypeStore = defineStore('shiftTypeStore', {
@@ -29,13 +30,10 @@ export const useShiftTypeStore = defineStore('shiftTypeStore', {
       days: []
     },
     generatePayload: {
-      year1: null,
-      year2: null,
-      month1: null,
-      month2: null,
       name: null,
       start_date: null,
       end_date: null,
+      work_date: null,
       count: 1
     },
     scheduleParams: {
@@ -117,7 +115,10 @@ export const useShiftTypeStore = defineStore('shiftTypeStore', {
 
     departmentGroupLoading: false,
     departmentGroupList: [],
-    showGroupCountField: false
+    showGroupCountField: false,
+
+    monthsList:[],
+
   }),
   getters: {
     calculateWorkTime: (state) => (workerIndex) => {
@@ -303,14 +304,24 @@ export const useShiftTypeStore = defineStore('shiftTypeStore', {
     _generateSchedule(data) {
       this._getWorkers()
       this.saveLoading = true
+      this.monthsList = getMonthOfRage(this.generatePayload.start_date,this.generatePayload.end_date)
+      this.selectedDate = this.monthsList[0].id
       $ApiService.shiftTypeService
         ._generateSchedule({ data })
         .then((res) => {
-          this.scheduleList = res.data.data.work_days
+          this.scheduleList = res.data.data.work_days.map(v => {
+            return v.map(d => ({
+              ...d,
+              isEmpty:d.work_status === null,
+            }))
+          })
           this.workers = res.data.data.work_days.map((x) => ({ id: null }))
-          this.scheduleParams.year = this.generatePayload.year1
-          this.scheduleParams.month = this.generatePayload.month1
-          this.selectedDate = this.generatePayload.year1 + '-' + this.generatePayload.month1
+
+          const fromDate = new Date(this.generatePayload.start_date)
+          const year1 = fromDate.getFullYear()
+          const month1 = fromDate.getMonth()+1
+          this.scheduleParams.year = year1
+          this.scheduleParams.month = month1
           this._dayOfMonth()
           this.visible = false
           this.scheduleVisible = true
@@ -334,13 +345,13 @@ export const useShiftTypeStore = defineStore('shiftTypeStore', {
     },
 
     _resetGenerateModal() {
-      const currentYear = new Date().getFullYear()
-      const currentMonth = new Date().getMonth()
-      this.generatePayload.year1 = currentYear
-      this.generatePayload.year2 = currentYear + 1
-      this.generatePayload.month1 = currentMonth + 1
-      this.generatePayload.month2 = currentMonth + 1
-      this.generatePayload.count = 1
+      const today = new Date()
+      const nextMonth = new Date(today)
+      nextMonth.setMonth(today.getMonth() + 1)
+      this.generatePayload.start_date =this.generatePayload.start_date ?? today.getTime()
+      this.generatePayload.end_date =this.generatePayload.end_date ?? nextMonth.getTime()
+      this.generatePayload.work_date =this.generatePayload.work_date ?? today.getTime()
+      this.generatePayload.count =this.generatePayload.count ?? 1
     },
     _deleteGroup() {
       this.groupLoading = true
