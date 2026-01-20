@@ -135,8 +135,7 @@
     </template>
     <template #filterAction>
       <n-button @click="openPanel" type="success" >
-        {{$t('content.export')}}
-
+        {{$t('schedule.form.exportSchedule')}}
       </n-button>
     </template>
     <template #filterContent>

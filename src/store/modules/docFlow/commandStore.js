@@ -145,6 +145,9 @@ export const useCommandStore = defineStore('commandStore', {
         to:null,
         vacation_status:null,
         vacation_id:null,
+      vacation_finish_status: null,
+      child_age: null,
+
     },
     form_45: {
       from: null,
@@ -214,10 +217,10 @@ export const useCommandStore = defineStore('commandStore', {
         }
         this.workerVacationLoading = true
         $ApiService.vacationService._index({params}).then((res)=>{
-            console.log(res.data.data.data)
             this.workerVacations = res.data.data.data.map(v=>({
                 id:v.id,
                 name:`${v.type.name} (${Utils.timeOnlyDate(v.from)}  ${Utils.timeOnlyDate(v.to)})`,
+                to:v.to,
             }))
 
         }).finally(()=>{
@@ -358,9 +361,11 @@ export const useCommandStore = defineStore('commandStore', {
       this.form_44.new_date = null
       this.form_44.rest_day = null
       this.form_44.reason = null
-      this.form_50.to = today
-      this.form_50.work_day = today
+      this.form_50.to = null
+      this.form_50.work_day = null
       this.form_50.vacation_status = 1
+      this.form_50.vacation_finish_status = 1
+      this.form_50.child_age = 2
       this.form_50.vacation_id = null
 
       this.form_47.vacation_reason_day = '4'
