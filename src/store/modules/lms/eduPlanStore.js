@@ -42,7 +42,9 @@ export const useEduPlanStore = defineStore('eduPlanStore', {
       subjects: [],
       count_groups: null,
       count_workers: null,
-      type: null
+      type: null,
+      end_date: null,
+      serial: null,
     },
     params: {
       page: 1,
@@ -113,7 +115,8 @@ export const useEduPlanStore = defineStore('eduPlanStore', {
       this.saveLoading = true
       let data = {
         ...this.payload,
-        start_date: Utils.timeToZone(this.payload.start_date)
+        start_date: Utils.timeToZone(this.payload.start_date),
+        end_date: Utils.timeToZone(this.payload.end_date) || undefined,
       }
       $ApiService.eduPlanService
         ._create({ data })
@@ -129,7 +132,8 @@ export const useEduPlanStore = defineStore('eduPlanStore', {
       this.saveLoading = true
       let data = {
         ...this.payload,
-        start_date: Utils.timeToZone(this.payload.start_date)
+        start_date: Utils.timeToZone(this.payload.start_date),
+        end_date: Utils.timeToZone(this.payload.end_date) || undefined,
       }
       $ApiService.eduPlanService
         ._update({ data, id: this.elementId })
@@ -179,7 +183,9 @@ export const useEduPlanStore = defineStore('eduPlanStore', {
           const data = infinite ? [...oldData, ...newData] : [...newData]
           if (this.payload.specialization_id) {
             if (!data.find((i) => i.id === this.payload.specialization_id)) {
-              data.push(oldData.find((i) => i.id === this.payload.direction_id))
+              const item = oldData.find((i) => i.id === this.payload.specialization_id)
+              if(item) return
+              data.push(item)
             }
           }
           this.specializations = data

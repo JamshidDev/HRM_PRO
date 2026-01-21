@@ -24,6 +24,8 @@
     store.payload.learning_center_id = v.learning_center?.id
     store.payload.type = v.type?.id
     store.payload.name = v.name
+    store.payload.serial = v.serial || null
+    store.payload.end_date =v.end_date? new Date(v.end_date).getTime() : null
 
     store.visibleType = false
     store.visible = true
@@ -141,19 +143,19 @@
                     {
                       label: $t('eduPlanPage.attachmentGroup'),
                       key: Utils.ActionTypes.attachment,
-                      icon: UIHelper.renderIcon(ChannelAdd24Regular),
+                      icon: ChannelAdd24Regular,
                       visible: true
                     },
                     {
                       label: $t('eduPlanPage.workers'),
                       key: Utils.ActionTypes.finish,
-                      icon: UIHelper.renderIcon(People28Regular),
+                      icon: People28Regular,
                       visible: true
                     },
                     {
                       label: $t('content.exam'),
                       key: Utils.ActionTypes.open,
-                      icon: UIHelper.renderIcon(TextBulletListAdd20Regular),
+                      icon: TextBulletListAdd20Regular,
                       visible: true
                     }
                   ]"

@@ -4,7 +4,6 @@
   import Filter from './ui/Filter.vue'
   import SettingModal from './ui/SettingModal.vue'
   import SaveBox from './ui/SaveBox.vue'
-  import LoaderBox from './ui/LoaderBox.vue'
   import GrandModal from './ui/GrandModal.vue'
   import ExportModal from './ui/ExportModal.vue'
   import MultipleScheduleAttach from './ui/MultipleScheduleAttach.vue'
@@ -24,9 +23,6 @@
     <Table>
       <template #filter-section>
         <Filter />
-      </template>
-      <template #loading-place>
-        <LoaderBox />
       </template>
     </Table>
     <SettingModal />

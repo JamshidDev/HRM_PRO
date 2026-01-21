@@ -232,6 +232,7 @@ export const useComponentStore = defineStore('componentStore', {
     lmsEnumLoading: false,
     lmsEnumTypes: [],
     lmsEnumExamTypes: [],
+    lmsSerials: [],
     lmsLearningCenters: [],
     lmsLearningCenterLoading: false,
 
@@ -294,6 +295,7 @@ export const useComponentStore = defineStore('componentStore', {
         .then((res) => {
           this.lmsEnumTypes = res.data.data?.edu_plan_types
           this.lmsEnumExamTypes = res.data.data?.exam_types
+          this.lmsSerials = res.data.data?.serials
         })
         .finally(() => {
           this.lmsEnumLoading = false

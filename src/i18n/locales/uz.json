@@ -1704,6 +1704,8 @@
     "workers": "Xodimlar",
     "form": {
       "hours": "Soat",
+      "serial": "Sertifikat seriyasi",
+      "end_date": "Malaka oshirish tugash sanasi",
       "start_date": "Boshlanish vaqti",
       "specialization": "Ixtisoslik",
       "subjects": "Fanlar",

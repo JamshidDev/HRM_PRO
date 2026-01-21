@@ -21,7 +21,7 @@
 <template>
   <n-spin :show="store.workerLoading" style="min-height: 200px">
     <div v-if="store.workerList.length > 0">
-      <div class="w-full overflow-x-auto min-h-[calc(100vh-400px)]">
+      <div class="w-full overflow-x-auto h-[calc(100vh-260px)]">
         <n-table class="mt-5" :single-line="false" size="small">
           <thead>
             <tr>
@@ -39,6 +39,7 @@
               </td>
               <td>
                 <UIUser
+                    :hide-tooltip="true"
                   :short="false"
                   :data="{
                     photo: item?.worker.photo,
