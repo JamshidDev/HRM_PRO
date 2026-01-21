@@ -8,6 +8,7 @@
   import GrandModal from './ui/GrandModal.vue'
   import ExportModal from './ui/ExportModal.vue'
   import MultipleScheduleAttach from './ui/MultipleScheduleAttach.vue'
+  import ReplaceWorkerModal from './ui/ReplaceWorkerModal.vue'
 
   import { useScheduleTableStore } from '@/store/modules/index.js'
 
@@ -33,5 +34,6 @@
     <GrandModal />
     <ExportModal/>
     <MultipleScheduleAttach />
+    <ReplaceWorkerModal/>
   </UIPageContent>
 </template>

@@ -36,7 +36,7 @@
       @clear="onSearchEv"
     />
     <n-checkbox
-      class="w-[120px] border border-surface-line rounded-md flex justify-center pt-1"
+      class="w-[120px] border border-surface-line rounded-md flex justify-center pt-1 px-2"
       v-model:checked="store.short"
     >
       {{ store.short ? $t('content.long') : $t('content.short') }}

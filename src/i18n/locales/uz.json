@@ -2560,6 +2560,7 @@
       "noAttachedWorker": "Biriktirilmagan",
       "filterByWorker": "Xodimlar bo'yicha",
       "notExistChangeToSave": "Saqlash uchun o'zgarishlar yo'q",
+      "replaceWorker": "Xodimni almashtirish",
       "startWork": "Ishni boshlash uchun navbatchilik turini tanlang"
     }
   },

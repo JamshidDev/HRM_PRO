@@ -63,12 +63,12 @@
       />
     </div>
     <div class="flex justify-end items-center gap-6">
-      <n-button type="error" v-if="store.isModeDev" @click="deployProject" :loading="loading">
-        <span class="hidden md:inline-block"> Build vs Deploy</span>
-        <template #icon>
-          <WifiWarning24Regular />
-        </template>
-      </n-button>
+<!--      <n-button type="error" v-if="store.isModeDev" @click="deployProject" :loading="loading">-->
+<!--        <span class="hidden md:inline-block"> Build vs Deploy</span>-->
+<!--        <template #icon>-->
+<!--          <WifiWarning24Regular />-->
+<!--        </template>-->
+<!--      </n-button>-->
       <n-badge class="!hidden md:flex" :value="notification" :max="15" type="info">
         <n-icon size="26" class="text-secondary cursor-pointer">
           <Alert20Regular />

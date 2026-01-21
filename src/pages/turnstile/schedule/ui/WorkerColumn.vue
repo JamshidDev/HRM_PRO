@@ -3,7 +3,8 @@
     ErrorCircle16Filled,
     Timer12Regular,
     ScanCamera48Regular,
-    Copy16Regular
+    Copy16Regular,
+    ArrowSync16Filled
   } from '@vicons/fluent'
   import { UIMenuButton } from '@/components/index.js'
   import Utils from '@/utils/Utils.js'
@@ -37,6 +38,17 @@
       store.attachWorkerParams.page = 1
       store._attachWorkers()
       store.multipleAttachVisible = true
+    }else if(v.key === Utils.ActionTypes.edit) {
+      const {fullName, position, id, workerId} = v.data
+      store.replace.selectedWorker = {
+        fullName,
+        position,
+        workerId,
+        positionId:id,
+      }
+      store.replace.visible = true
+      store.worker.params.page = 1
+      store._workers()
     }
   }
 </script>
@@ -84,7 +96,13 @@
           key: Utils.ActionTypes.verifier,
           icon: Copy16Regular,
           visible: true
-        }
+        },
+        {
+          label: $t('schedule.form.replaceWorker'),
+          key: Utils.ActionTypes.edit,
+          icon: ArrowSync16Filled,
+          visible: true
+        },
       ]"
     />
   </div>

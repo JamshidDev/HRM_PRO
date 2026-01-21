@@ -108,7 +108,7 @@
 </script>
 
 <template>
-  <div class="flex flex-col">
+  <div class="flex flex-col relative z-[10]">
     <slot name="filter-section"></slot>
     <n-spin :show="store.workerLoading">
       <DragSelectorV2

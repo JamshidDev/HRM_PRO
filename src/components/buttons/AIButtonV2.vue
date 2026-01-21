@@ -17,7 +17,7 @@
         </n-icon>
       </span>
     </div>
-    <span class="ai-button-label">{{ $t('aiConversation.aiAssistant') }}</span>
+    <span class="ai-button-label line-clamp-1">{{ $t('aiConversation.aiAssistant') }}</span>
     <span class="bg-overall"></span>
   </div>
 </template>

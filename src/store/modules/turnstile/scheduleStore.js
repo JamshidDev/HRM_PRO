@@ -146,6 +146,26 @@ export const useScheduleTableStore = defineStore('scheduleStore', {
         search:null,
       },
       list:[],
+    },
+    replace:{
+      selectedWorker:null,
+      visible: false,
+      loading:false,
+      payload:{
+        positonId: null,
+        date: null,
+        status: false
+      }
+    },
+    worker:{
+      list:[],
+      params:{
+        page:1,
+        per_page:100,
+        search: null,
+      },
+      loading: false,
+      totalItem:0,
     }
   }),
 
@@ -161,6 +181,46 @@ export const useScheduleTableStore = defineStore('scheduleStore', {
   },
 
   actions: {
+    _replaceWorker(data){
+      this.replace.loading = true
+      $ApiService.shiftTypeService
+          ._replaceWorker({ data })
+          .then((res) => {
+            this.replace.visible = false
+            this._allWorkers()
+          })
+          .finally(() => {
+            this.replace.loading = false
+          })
+    },
+    _workers(infinity) {
+      const params = {
+        ...this.worker.params,
+        start_date:Utils.timeToZone(this.params.startDate),
+        end_date:Utils.timeToZone(this.params.endDate),
+      }
+      this.worker.loading = true
+      $ApiService.shiftTypeService
+          ._getWorkers({ params })
+          .then((res) => {
+            const data = res.data.data.data.map((v) => ({
+              name: Utils.combineFullName(v.worker),
+              id: v.id,
+              workerId: v.worker.id,
+              position: v.scheduleType?.name || t('shiftType.form.noGraphic'),
+              group: v.scheduleGroup,
+              type: v.scheduleType
+            }))
+
+            this.worker.list = infinity
+                ? Array.from(new Map([...this.worker.list, ...data].map((v) => [v.id, v])).values())
+                : Array.from(new Map([...data].map((v) => [v.id, v])).values())
+            this.worker.list.totalItem = res.data.data.total
+          })
+          .finally(() => {
+            this.worker.loading = false
+          })
+    },
     _exportTable(data){
       this.export.loading = true
       $ApiService.workerScheduleService._exportTable({data}).finally(()=>{
@@ -334,6 +394,7 @@ export const useScheduleTableStore = defineStore('scheduleStore', {
 
           this.workerList = res.data.data.data.map((v, index) => ({
             id: v.id,
+            workerId: v?.worker?.id,
             fullName: Utils.combineFullName(v.worker),
             position: v.position,
             index: index,
