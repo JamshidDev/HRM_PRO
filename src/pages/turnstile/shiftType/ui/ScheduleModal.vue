@@ -3,24 +3,16 @@
   import { UIModal, UINSelect } from '@/components/index.js'
   import SearchElement from '@/pages/turnstile/schedule/ui/SearchElement.vue'
   import MonthTab from '@/pages/turnstile/scheduleWorker/ui/MonthTab.vue'
-  import {Utils} from "@utils"
+import {Utils} from "@utils"
 
   const store = useShiftTypeStore()
 
   const currentScheduleList = ref([])
 
   const onSubmit = () => {
-    const index = store.monthsList.findIndex(m => m.id === store.selectedDate)
-    if(index === -1) return
-    const item = store.monthsList[index]
-    const [year, month] = item.id.split('-')
-
-    const startDate = year+'-'+month.padStart(2, '0')+'-'+item.from;
-    const endDate = year+'-'+month.padStart(2, '0')+'-'+item.to;
-
     const data = {
-      start_date: startDate,
-      end_date: endDate,
+      start_date: Utils.timeToZone(store.generatePayload.start_date),
+      end_date: Utils.timeToZone(store.generatePayload.end_date),
       schedule_type: store.elementId,
       count: store.showGroupCountField ? store.generatePayload.count : undefined,
       schedule_workers: store.workers.map((v, index) => ({
@@ -28,7 +20,6 @@
         day: index + 1
       }))
     }
-
     store._generateWorkerSchedule(data)
   }
 
@@ -72,6 +63,8 @@
     store._dayOfMonth()
   }
 
+
+
   const onSearch = (v) => {
     store.workerParams.search = v
     store.workerParams.page = 1
@@ -106,7 +99,7 @@
             <div
               class="border-r border-t border-l-[0] border-b border-surface-line flex text-secondary font-medium justify-center items-center w-[260px] min-w-[320px] h-[50px] sticky left-[60px] top-0 z-[20] bg-surface-section flex-shrink-0"
             >
-              <SearchElement />
+              <SearchElement :disable="true" />
             </div>
             <template v-for="item in store.dayOfMonth" :key="`header-${item}`">
               <div

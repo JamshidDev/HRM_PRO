@@ -17,10 +17,8 @@ export const useScheduleGroupWorkerStore = defineStore('scheduleGroupWorkerStore
       per_page: 20,
       search: null,
       group: null,
-      year1: null,
-      month1: null,
-      year2: null,
-      month2: null
+      startDate: null,
+      endDate: null,
     },
     uiParams: {
       year: null,
@@ -56,6 +54,7 @@ export const useScheduleGroupWorkerStore = defineStore('scheduleGroupWorkerStore
     totalWorker: 0,
     workerLoading: false,
     monthsList: [],
+    selectedDate:null,
   }),
   getters: {
     calculateWorkTime: (state) => (workerIndex) => {
@@ -81,9 +80,8 @@ export const useScheduleGroupWorkerStore = defineStore('scheduleGroupWorkerStore
     _workers() {
       const params = {
         ...this.workerParams,
-        start_date:
-          this.params.year1 + '-' + this.params.month1.toString().padStart(2, '0') + '-01',
-        end_date: this.params.year2 + '-' + this.params.month2.toString().padStart(2, '0') + '-01'
+        start_date:Utils.timeToZone(this.params.startDate),
+        end_date:Utils.timeToZone(this.params.endDate),
       }
       this.workerLoading = true
       $ApiService.shiftTypeService
@@ -111,11 +109,13 @@ export const useScheduleGroupWorkerStore = defineStore('scheduleGroupWorkerStore
         })
     },
     _index() {
+      const month = this.selectedDate.split('-')[1]
+      const year = this.selectedDate.split('-')[0]
       const params = {
         page: this.params.page,
         per_page: this.params.per_page,
-        year: this.params.year1,
-        month: Number(this.params.month1),
+        year: year,
+        month: month,
         group: this.params.group
       }
       this.loading = true
@@ -131,9 +131,10 @@ export const useScheduleGroupWorkerStore = defineStore('scheduleGroupWorkerStore
     },
     _dayOfMonth(callback) {
       this.dayOfMonthLoading = true
+      const month = this.selectedDate.split('-')[1]
       const params = {
         year: this.params.year1,
-        month: Number(this.params.month1)
+        month: month,
       }
       $ApiService.workerScheduleService
         ._daysOfMonth({ params })

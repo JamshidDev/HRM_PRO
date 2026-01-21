@@ -475,7 +475,6 @@
     "work_place": "Tashkilot/Bo'lim"
   },
 
-
   "workerPage": {
     "name": "Xodimlar",
     "filter": {
@@ -2573,8 +2572,8 @@
       "noGraphic": "Biriktirilmagan",
       "copySchedule": "Oylik grafikni nusxalash",
       "generate": "Generatsiya qilish",
-      "startWorkTime": "Ish boshlanish vaqtidan imtiyoz",
-      "endWorkTime": "Ish tugash vaqtidan imtiyoz",
+      "startWorkTime": "Ish boshlanish vaqtidan imtiyoz (daqiqa)",
+      "endWorkTime": "Ish tugash vaqtidan imtiyoz (daqiqa)",
       "replaceWorker": "Xodimni o'zgartirish",
       "fromThisDate": "Shu sanadan boshlab",
       "onlyThisDate": "Shu kunni o'zgartirish",

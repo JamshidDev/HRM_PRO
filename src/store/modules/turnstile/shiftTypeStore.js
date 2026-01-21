@@ -304,7 +304,7 @@ export const useShiftTypeStore = defineStore('shiftTypeStore', {
     _generateSchedule(data) {
       this._getWorkers()
       this.saveLoading = true
-      this.monthsList = getMonthOfRage(this.generatePayload.start_date,this.generatePayload.end_date)
+      this.monthsList = getMonthOfRage(this.generatePayload.start_date, this.generatePayload.end_date)
       this.selectedDate = this.monthsList[0].id
       $ApiService.shiftTypeService
         ._generateSchedule({ data })
@@ -343,7 +343,6 @@ export const useShiftTypeStore = defineStore('shiftTypeStore', {
           this.saveLoading = false
         })
     },
-
     _resetGenerateModal() {
       const today = new Date()
       const nextMonth = new Date(today)

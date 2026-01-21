@@ -42,11 +42,8 @@
   const selectedDate = ref(null)
 
   onMounted(() => {
-    const startDate = store.params.year1 + '-' + store.params.month1+'-01';
-    const lastDay = new Date(store.params.year1, store.params.month2, 0).getDate()
-    const endDate = store.params.year2 + '-' + store.params.month2+'-'+lastDay;
-    store.monthsList = getMonthOfRage(startDate, endDate)
-    selectedDate.value = store.monthsList[0].id
+    store.monthsList = getMonthOfRage(store.params.startDate, store.params.endDate)
+    store.selectedDate = store.monthsList[0].id
   })
 
   const onChange = (v) => {
@@ -76,10 +73,10 @@
   <div>
     <n-spin :show="store.dayOfMonthLoading || store.loading">
       <MonthTab
-        v-if="selectedDate"
+        v-if="store.selectedDate"
         class="mt-4"
         :options="store.monthsList"
-        v-model:date="selectedDate"
+        v-model:date="store.selectedDate"
         @update:date="onChange"
       />
       <div class="w-full overflow-auto relative h-[calc(100vh-290px)] mt-2">
@@ -92,7 +89,7 @@
           <div
             class="border-r border-t border-l-[0] border-b border-surface-line flex text-secondary font-medium justify-center items-center w-[320px] min-w-[340px] h-[50px] sticky left-[60px] top-0 z-[20] bg-surface-section flex-shrink-0"
           >
-            <SearchElement />
+            <SearchElement :disable="true" />
           </div>
           <template v-for="item in store.dayOfMonth" :key="`header-${item}`">
             <div

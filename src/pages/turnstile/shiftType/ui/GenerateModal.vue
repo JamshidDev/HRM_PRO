@@ -14,6 +14,7 @@
         const data = {
           start_date: Utils.timeToZone(store.generatePayload.start_date),
           end_date: Utils.timeToZone(store.generatePayload.end_date),
+          work_date: showWorkDate.value? Utils.timeToZone(store.generatePayload.work_date) : undefined,
           schedule_type: store.elementId,
           count: store.showGroupCountField ? store.generatePayload.count : undefined
         }
@@ -47,6 +48,10 @@
     const end = new Date(store.generatePayload.end_date).setHours(23, 59, 59, 999)
     return !(start <= date && date <= end)
   }
+
+  const showWorkDate = computed(() => store.elementId === 4)
+
+
 </script>
 
 <template>
@@ -109,6 +114,7 @@
             :label="$t(`content.work_date`)"
             path="work_date"
             :rule-path="validationRules.rulesNames.requiredNumberField"
+            v-if="showWorkDate"
         >
           <n-date-picker
               :disabled="!store.generatePayload.start_date || !store.generatePayload.end_date"

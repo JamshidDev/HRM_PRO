@@ -21,11 +21,10 @@
 
           worker_2: newWorker.id,
           worker_position_2: newWorker.positionId,
-          group_2: newWorker.group || undefined,
+          group_2: newWorker.group.id || undefined,
           status: store.replacePayload.status,
           date: Utils.timeToZone(store.replacePayload.date)
         }
-        console.log(data)
         store._replaceWorker(data)
       }
     })
