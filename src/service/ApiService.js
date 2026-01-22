@@ -96,7 +96,7 @@ import lmsLessonService from '@/service/v1/lms/lessonService.js'
 import lmsExamService from '@/service/v1/lms/examService.js'
 import teacherLessonService from '@/service/v1/lms/teacherLessonService.js'
 import listenerService from '@/service/v1/lms/listenerService.js'
-
+import certificateService from '@/service/v1/lms/certificateService.js'
 import notificationService from '@/service/v1/chat/notificationService.js'
 
 import {
@@ -259,4 +259,5 @@ export default {
   workerScheduleService,
   notificationService,
   confVacationScheduleService,
+  certificateService,
 }

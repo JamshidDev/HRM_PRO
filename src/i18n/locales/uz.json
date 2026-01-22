@@ -1740,6 +1740,7 @@
     "createTitle": "Guruh yaratish",
     "form": {
       "edu_plan_id": "O'quv rejasi",
+      "certificated": "Sertifikat",
       "workers": "Xodimlar soni"
     }
   },
@@ -2598,6 +2599,23 @@
       "turnstileSetting": "Turniket boshqaruvi",
       "howMuchGroup": "Grafikdagi guruhlar soni",
       "group": "Guruhlar"
+    }
+  },
+  "lmsCertificate": {
+    "name": "Sertifikatlar",
+    "createTitle": "Sertifikat qo'shish va tahrirlash",
+    "updateTitle": "Sertifikat tahrirlash",
+    "form": {
+      "protocol_date": "Protokol sanasi",
+      "cert_to": "Qachongacha",
+      "cert_from": "Qachondan",
+      "start_exam_result": "Kirish imtihoni",
+      "end_exam_result": "Chiqish imtihoni",
+      "enterExam": "Kirish/I",
+      "exitExam": "Chiqish/I"
+    },
+    "warning":{
+      "invalidResult": "Noto'g'ri ma'lumot kiritildi"
     }
   },
   "publicPage": {

@@ -116,8 +116,10 @@ export const useShiftTypeStore = defineStore('shiftTypeStore', {
     departmentGroupLoading: false,
     departmentGroupList: [],
     showGroupCountField: false,
+    showWorkDate:false,
 
     monthsList:[],
+
 
   }),
   getters: {
@@ -310,6 +312,7 @@ export const useShiftTypeStore = defineStore('shiftTypeStore', {
         ._generateSchedule({ data })
         .then((res) => {
           this.scheduleList = res.data.data.work_days.map(v => {
+            console.log(v)
             return v.map(d => ({
               ...d,
               isEmpty:d.work_status === null,

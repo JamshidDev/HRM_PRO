@@ -10,7 +10,7 @@ import {
   LmsLessonPage,
   TeacherLessonPage,
   ListenerPage,
-  LmsResultPage
+  LmsResultPage, LmsCertificatePage
 } from '@/pages/lms'
 
 export const lmsRoutes = [
@@ -83,5 +83,14 @@ export const lmsRoutes = [
     meta: {
       layout: AppLayouts.main
     }
+  },
+  {
+    path: Utils.routeLmsPathMaker(AppPaths.Certificate),
+    component: LmsCertificatePage,
+    meta: {
+      layout: AppLayouts.main
+    }
   }
+
+
 ]

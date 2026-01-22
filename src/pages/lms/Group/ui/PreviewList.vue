@@ -1,10 +1,8 @@
 <script setup>
   import { NoDataPicture, UIPagination, UIUser, UIBadge } from '@/components/index.js'
-  import { useComponentStore, useLmsGroupStore } from '@/store/modules/index.js'
-  import Utils from '@/utils/Utils.js'
+  import {useLmsGroupStore } from '@/store/modules/index.js'
 
   const store = useLmsGroupStore()
-  const componentStore = useComponentStore()
 
   const onDelete = (v) => {
     store.selectedWorkers = [v.worker_position_id]

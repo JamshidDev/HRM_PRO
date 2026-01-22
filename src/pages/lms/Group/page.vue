@@ -5,6 +5,7 @@
 
   import Table from './ui/Table.vue'
   import PreviewList from './ui/PreviewList.vue'
+  import CertificateCertificateUpdateModal from '@/pages/lms/Certificate/ui/CreateForm.vue'
   import Utils from '@/utils/Utils.js'
   import { AppPaths } from '@/utils/index.js'
 
@@ -53,5 +54,6 @@
         <PreviewList />
       </template>
     </UIModal>
+    <CertificateCertificateUpdateModal/>
   </UIPageContent>
 </template>

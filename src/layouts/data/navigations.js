@@ -575,6 +575,13 @@ export const navigations = [
         icon: AppsList24Filled,
         color: 'bg-info',
         permission: appPermissions.admin
+      },
+      {
+        label: 'lmsCertificate.name',
+        path: Utils.routeLmsPathMaker(AppPaths.Certificate),
+        icon: AppsList24Filled,
+        color: 'bg-info',
+        permission: appPermissions.admin
       }
     ]
   },

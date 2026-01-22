@@ -126,6 +126,7 @@ export * from './lms/lmsGroupStore.js'
 export * from './lms/lmsLessonStore.js'
 export * from './lms/teacherLessonStore.js'
 export * from './lms/listenerStore.js'
+export * from './lms/lmsCertificateStore.js'
 
 export * from './accountant/uploadReportStore.js'
 export * from './accountant/monthReportStore.js'

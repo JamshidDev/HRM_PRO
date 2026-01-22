@@ -13,6 +13,7 @@ import {Utils} from "@utils"
     const data = {
       start_date: Utils.timeToZone(store.generatePayload.start_date),
       end_date: Utils.timeToZone(store.generatePayload.end_date),
+      work_date:store.showWorkDate? Utils.timeToZone(store.generatePayload.work_date) : undefined,
       schedule_type: store.elementId,
       count: store.showGroupCountField ? store.generatePayload.count : undefined,
       schedule_workers: store.workers.map((v, index) => ({

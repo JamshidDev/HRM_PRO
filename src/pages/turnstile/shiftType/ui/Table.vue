@@ -13,7 +13,8 @@
       return
     }
     store.isDailySchedule = v?.type?.id === 2
-    store.showGroupCountField = [1, 3].includes(v?.type?.id)
+    store.showWorkDate = v?.type?.id === 4
+    store.showGroupCountField = [1, 3, 4].includes(v?.type?.id)
     store._resetGenerateModal()
     store.elementId = v.id
     store.visibleType = true
