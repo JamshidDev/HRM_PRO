@@ -26,8 +26,7 @@ import {
     DocumentEdit20Filled,
     AccessTime24Filled,
     SlideMultipleSearch24Filled,
-    BuildingMultiple24Filled,
-    ScanObject24Filled,
+  Certificate24Filled,
     Organization12Filled,
     BookDatabase24Regular,
     RibbonStar24Filled,
@@ -52,11 +51,8 @@ import {
     QrCode24Regular,
     ImageMultiple24Filled,
     AppsAddIn16Regular,
-    ArrowSyncCircle24Filled,
     AppFolder24Filled,
     ShiftsCheckmark20Regular,
-    CellularData124Filled,
-    Clock24Filled,
     DocumentBulletList24Filled, ChatMultiple16Filled, CommentLightning20Filled
 } from '@vicons/fluent'
 import { AppPaths } from '@/utils/index.js'
@@ -307,6 +303,13 @@ export const navigations = [
         color: 'bg-info',
         permission: appPermissions.admin
       },
+      {
+        label: 'lmsCertificate.name',
+        path: Utils.routeDocFlowPathMaker(AppPaths.Certificate),
+        icon: Certificate24Filled,
+        color: 'bg-info',
+        permission: appPermissions.confirmationLmsCertificate
+      }
     ]
   },
   {
@@ -579,9 +582,9 @@ export const navigations = [
       {
         label: 'lmsCertificate.name',
         path: Utils.routeLmsPathMaker(AppPaths.Certificate),
-        icon: AppsList24Filled,
+        icon: Certificate24Filled,
         color: 'bg-info',
-        permission: appPermissions.admin
+        permission: appPermissions.lmsCertificate
       }
     ]
   },

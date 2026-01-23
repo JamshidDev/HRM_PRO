@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import i18n from '@/i18n/index.js'
 import Utils from '@/utils/Utils.js'
+import router from "@/router"
 
 const { t } = i18n.global
 export const useLmsCertificateStore = defineStore('lmsCertificateStore', {
@@ -43,7 +44,7 @@ export const useLmsCertificateStore = defineStore('lmsCertificateStore', {
             totalItems:0,
             params:{
                 page:1,
-                per_page:1000,
+                per_page:100,
                 search:null,
             },
         },
@@ -53,7 +54,7 @@ export const useLmsCertificateStore = defineStore('lmsCertificateStore', {
             totalItems:0,
             params:{
                 page:1,
-                per_page:1000,
+                per_page:100,
                 search:null,
             },
         },
@@ -63,7 +64,7 @@ export const useLmsCertificateStore = defineStore('lmsCertificateStore', {
             totalItems:0,
             params:{
                 page:1,
-                per_page:1000,
+                per_page:100,
                 search:null,
             },
         },
@@ -73,12 +74,23 @@ export const useLmsCertificateStore = defineStore('lmsCertificateStore', {
             totalItems:0,
             params:{
                 page:1,
-                per_page:1000,
+                per_page:100,
                 search:null,
             },
         }
 
     }),
+    getters:{
+        canShowFilter:(state)=>{
+            const path = router.currentRoute.value.fullPath
+            const hasAccess = path !== '/docflow/certificate'
+            if(!hasAccess){
+                // reset params on confirmation module
+                state._resetParams()
+            }
+            return hasAccess
+        }
+    },
     actions: {
         _group(infinity){
             this.group.loading = true
@@ -99,11 +111,15 @@ export const useLmsCertificateStore = defineStore('lmsCertificateStore', {
                 ...this.eduPlan.params,
             }
             $ApiService.certificateService._eduPlan({params}).then((res)=>{
-                const data = res.data.data.data.map(v=>({id: v.id, name: v.code}))
-                this._eduPlan.list = infinity ? [...this._eduPlan.list,...data] : data
-                this._eduPlan.totalItems = res.data.data.total
+                const data = res.data.data.data.map(v=>({
+                    id: v.id,
+                    name: v.name,
+                    position:`${t('content.group')}-${v.count_groups};  ${t('content.worker')}-${v.count_workers}`
+                }))
+                this.eduPlan.list = infinity ? [...this.eduPlan.list,...data] : data
+                this.eduPlan.totalItems = res.data.data.total
             }).finally(()=>{
-                this._eduPlan.loading = false
+                this.eduPlan.loading = false
             })
         },
         _direction(infinity){
@@ -112,7 +128,7 @@ export const useLmsCertificateStore = defineStore('lmsCertificateStore', {
                 ...this.direction.params,
             }
             $ApiService.certificateService._direction({params}).then((res)=>{
-                const data = res.data.data.data.map(v=>({id: v.id, name: v.code}))
+                const data = res.data.data.data.map(v=>({id: v.id, name: v.name}))
                 this.direction.list = infinity ? [...this.direction.list,...data] : data
                 this.direction.totalItems = res.data.data.total
             }).finally(()=>{
@@ -124,8 +140,8 @@ export const useLmsCertificateStore = defineStore('lmsCertificateStore', {
             const params = {
                 ...this.spn.params,
             }
-            $ApiService.certificateService._direction({params}).then((res)=>{
-                const data = res.data.data.data.map(v=>({id: v.id, name: v.code}))
+            $ApiService.certificateService._specializations({params}).then((res)=>{
+                const data = res.data.data.data.map(v=>({id: v.id, name: v.name, position:v?.direction?.name}))
                 this.spn.list = infinity ? [...this.spn.list,...data] : data
                 this.spn.totalItems = res.data.data.total
             }).finally(()=>{
@@ -135,11 +151,12 @@ export const useLmsCertificateStore = defineStore('lmsCertificateStore', {
         _index(){
             const params = {
                 ...this.params,
+                organization_id:this.params.organization_id?.[0]?.id || undefined,
             }
             this.loading = true
             $ApiService.certificateService._index({params}).then((res)=>{
                 this.list = res.data.data.data
-                this.totalItems = res.data.data.totalItems
+                this.totalItems = res.data.data.total
             }).finally(()=>{
                 this.loading = false
             })
@@ -228,7 +245,7 @@ export const useLmsCertificateStore = defineStore('lmsCertificateStore', {
         },
         _delete() {
             this.deleteLoading = true
-            $ApiService.directionService
+            $ApiService.certificateService
                 ._delete({ id: this.elementId })
                 .then((res) => {
                     this._index()
@@ -237,5 +254,17 @@ export const useLmsCertificateStore = defineStore('lmsCertificateStore', {
                     this.deleteLoading = false
                 })
         },
+        _resetParams(){
+            Object.assign(this.params, {
+                organization_id: [],
+                search: null,
+                year: null,
+                month: null,
+                direction_id: null,
+                specialization_id: null,
+                edu_plan_id: null,
+                group_id: null,
+            })
+        }
     }
 })

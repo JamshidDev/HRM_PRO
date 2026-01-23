@@ -6,8 +6,9 @@ import {
   ConfApplicationPage,
   ConfCommandPage,
   ConfTimeSheetPage,
-    ConfVacationSchedulePage,
+  ConfVacationSchedulePage, ConfCertificatePage,
 } from '@/pages/docFlow/index.js'
+import {LmsCertificatePage} from "@pages/lms/index.js"
 
 export const docFlowRoutes = [
   {
@@ -48,6 +49,13 @@ export const docFlowRoutes = [
   {
     path: Utils.routeDocFlowPathMaker(AppPaths.VacationSchedule),
     component: ConfVacationSchedulePage,
+    meta: {
+      layout: AppLayouts.main
+    }
+  },
+  {
+    path: Utils.routeDocFlowPathMaker(AppPaths.Certificate),
+    component: ConfCertificatePage,
     meta: {
       layout: AppLayouts.main
     }

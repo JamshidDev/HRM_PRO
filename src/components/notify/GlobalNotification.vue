@@ -22,7 +22,6 @@
   }
 
   const onClickNotification = (item)=>{
-    console.log(item)
     store.setViewingNotification({
       id: item.meta.id,
       created_at: dayjs().format('YYYY-MM-DD HH:mm:ss'),

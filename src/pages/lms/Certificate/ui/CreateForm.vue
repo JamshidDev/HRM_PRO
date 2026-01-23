@@ -6,6 +6,7 @@ import {ArrowSyncCircle20Regular} from "@vicons/fluent"
 import UIHelper from "@utils/UIHelper.js"
 import {Utils} from "@utils"
 import i18n from "@/i18n/index.js"
+import {timestamp} from "@vueuse/core"
 
 const store = useLmsCertificateStore()
 const formRef = ref(null)
@@ -29,10 +30,7 @@ const onSubmit = () => {
             end_exam_result: v.showEndInput? v.end_exam_result : undefined,
           }))
 
-      if(!workerData?.length) {
-
-        return
-      }
+      if(!workerData?.length) return
 
       const data = {
         group_id:store.payload.group_id,
@@ -44,7 +42,6 @@ const onSubmit = () => {
       }
 
       store._create(data)
-
     }
   })
 }
@@ -57,19 +54,11 @@ const filterCallback = (w)=>{
 
 const customFormat = (val) => /^(0|[1-9]\d?)?(\/(([1-9]\d?)?)?)?$/.test(val)
 
-const onChangeStart = (idx)=>{
-  store.payload.workers[idx].showStartInput = !store.payload.workers[idx].showStartInput
-  const worker = store.payload.workers[idx]
-
-  if(worker.showStartInput) return
-  store._workerExam(idx, true)
-}
-
-const onChangeEnd = (idx)=>{
-  store.payload.workers[idx].showEndInput = !store.payload.workers[idx].showEndInput
-  const worker = store.payload.workers[idx]
-  if(worker.showEndInput) return
-  store._workerExam(idx, false)
+const onToggleInput = (idx, type)=>{
+  const key = type === 'start' ? 'showStartInput' : 'showEndInput'
+  store.payload.workers[idx][key] = !store.payload.workers[idx][key]
+  if(store.payload.workers[idx][key]) return
+  store._workerExam(idx, type === 'start')
 }
 
 const validateExam = (index, field) => {
@@ -78,6 +67,14 @@ const validateExam = (index, field) => {
     worker[field] = null
     $Toast.warning(t('lmsCertificate.warning.invalidResult'))
   }
+}
+
+const onDateChange = (date) => {
+  if(!date) return
+  const nextDate = new Date(date)
+  nextDate.setFullYear(nextDate.getFullYear() + 3)
+  store.payload.cert_to = nextDate.getTime()
+
 }
 
 </script>
@@ -113,6 +110,7 @@ const validateExam = (index, field) => {
               v-model:value="store.payload.cert_from"
               type="date"
               :format="useAppSetting.datePicketFormat"
+              @update:value="onDateChange"
           />
         </n-form-item>
         <n-form-item
@@ -161,7 +159,7 @@ const validateExam = (index, field) => {
                             filterable
                             clearable
                         />
-                        <n-button type="primary" @click="onChangeStart(idx)">
+                        <n-button type="primary" @click="onToggleInput(idx, 'start')">
                          <template #icon>
                            <n-icon :size="26">
                              <ArrowSyncCircle20Regular size="20"/>
@@ -193,7 +191,7 @@ const validateExam = (index, field) => {
                             filterable
                             clearable
                         />
-                        <n-button type="primary" @click="onChangeEnd(idx)">
+                        <n-button type="primary" @click="onToggleInput(idx, 'end')">
                           <template #icon>
                             <n-icon :size="26">
                               <ArrowSyncCircle20Regular size="20"/>

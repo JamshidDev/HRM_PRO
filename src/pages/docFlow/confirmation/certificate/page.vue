@@ -1,29 +1,29 @@
 <script setup>
-import {useAccountStore, useLmsCertificateStore} from "@stores"
+import {useAccountStore, useConfCertificateStore} from "@stores"
 import {UIOfficeApp, UIPageContent} from "@components"
 import Table from "./ui/Table.vue"
 import Filter from "./ui/Filter.vue"
 import {eventBus, Events, Utils} from "@utils"
 
 
-const store = useLmsCertificateStore()
+const store = useConfCertificateStore()
 const accStore = useAccountStore()
 
 const officeAppRef = ref(null)
 
-const openOffice = (id) => {
-  officeAppRef.value.openPdf(id, Utils.documentModels.lmsCertificate)
+const openOffice = (v) => {
+  officeAppRef.value.openPdf(v.documentId, Utils.documentModels.lmsCertificate, v.signatureId)
 }
 
 const onUpdateStatus = (v)=>{
   const index = store.list.findIndex((x) => x.id === v.documentId)
-  if (index === -1) return
+  if (index === 1) return
   store.list[index].generate = 3
 }
-x
+
 onMounted(()=>{
   eventBus.on(Events.CERTIFICATED_GENERATED, onUpdateStatus)
-  if (!accStore.checkAction(accStore.pn.lmsCertificateRead)) return
+  if (!accStore.checkAction(accStore.pn.confirmationLmsCertificateRead)) return
   store._index()
 })
 
@@ -35,7 +35,7 @@ onUnmounted(()=>{
 <template>
   <UIPageContent>
     <Filter/>
-   <Table @openOffice="openOffice"/>
+    <Table @openOffice="openOffice"/>
     <UIOfficeApp ref="officeAppRef" />
   </UIPageContent>
 </template>

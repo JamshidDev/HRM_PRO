@@ -6,6 +6,9 @@ import { useNotify } from '@/composables/useNotify'
 import { eventBus, Events } from '@/utils/index.js'
 import {useNotificationStore} from "@/store/modules/index.js";
 
+const allowedEvents = [Events.APPLICATION_GENERATED, Events.COMMAND_GENERATED, Events.CERTIFICATED_GENERATED, Events.TASK_COMPLETED]
+const allowedAlertTypes = ['success', 'error', 'info', 'warning']
+
 export const useSocketStore = defineStore('useSocketStore', {
   state: () => ({
     socket: null,
@@ -71,19 +74,20 @@ export const useSocketStore = defineStore('useSocketStore', {
       })
 
       this.socket.on('notification', (data) => {
-        if(playAudioUnlocked){
-          notificationAudio.currentTime = 0;
-          notificationAudio?.play();
+
+        if(allowedAlertTypes.includes(data?.alert)){
+          if(playAudioUnlocked){
+            notificationAudio.currentTime = 0;
+            notificationAudio?.play();
+          }
+
+          useNotify().notify(data.title || '', 'success' ?? data.alert, {meta: data,duration: data.duration || undefined,  persistent: false})
         }
 
-        useNotify().notify(data.title || '', data.alert, {meta: data, persistent: true})
 
-        if (Events.TASK_COMPLETED === data.type) {
-          eventBus.emit(Events.TASK_COMPLETED, data)
-        } else if (Events.COMMAND_GENERATED === data.type) {
-          eventBus.emit(Events.COMMAND_GENERATED, data)
-        } else if (Events.APPLICATION_GENERATED === data.type) {
-          eventBus.emit(Events.APPLICATION_GENERATED, data)
+
+        if(allowedEvents.includes(data.type)){
+          eventBus.emit(data.type, data)
         }
       })
 

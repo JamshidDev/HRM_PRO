@@ -372,6 +372,7 @@
                     <UIUser :short="false" :data="store.signatureMan" />
                   </div>
                   <n-button
+                      :loading="signatureStore.loading"
                     :disabled="!store.permissions?.canSignature"
                     @click="onSaveSignature"
                     class="shadow cursor-pointer"

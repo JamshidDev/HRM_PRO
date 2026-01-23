@@ -80,6 +80,7 @@ export * from './docFlow/applicationStore.js'
 export * from './docFlow/confApplicationStore.js'
 export * from './docFlow/timesheetStore.js'
 export * from './docFlow/confVacationScheduleStore.js'
+export * from './docFlow/confCertificateStore.js'
 
 export * from './attestation/topicStore.js'
 export * from './attestation/categoryStore.js'

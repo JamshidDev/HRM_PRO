@@ -166,6 +166,9 @@ export const appPermissions = {
   confirmationCommands: 'confirmation-commands',
   confirmationWorkerApplications: 'confirmation-worker-applications',
   confirmationTable: 'confirmation-table',
+  confirmationLmsCertificate: 'confirmation-lms-certificate',
+  confirmationLmsCertificateRead: 'confirmation-lms-certificate-read',
+  confirmationLmsCertificateWrite: 'confirmation-lms-certificate-write',
 
   exam: 'exam',
 
@@ -326,5 +329,8 @@ export const appPermissions = {
   lmsLessonsWrite: 'lms-lessons-write',
   lmsWorker: 'lms-worker',
   lmsWorkerRead: 'lms-worker-read',
-  lmsWorkerWrite: 'lms-worker-write'
+  lmsWorkerWrite: 'lms-worker-write',
+  lmsCertificate: 'lms-certificate',
+  lmsCertificateRead: 'lms-certificate-read',
+  lmsCertificateWrite: 'lms-certificate-write',
 }

@@ -6,10 +6,10 @@ import {
   UIStatus,
   UIUser,
 } from '@/components/index.js'
-import { useAccountStore, useLmsCertificateStore, useComponentStore } from '@/store/modules/index.js'
+import { useAccountStore,useConfCertificateStore } from '@/store/modules/index.js'
 import Utils from '@/utils/Utils.js'
 
-const store = useLmsCertificateStore()
+const store = useConfCertificateStore()
 const accStore = useAccountStore()
 const emits = defineEmits(['openOffice'])
 
@@ -19,27 +19,19 @@ const changePage = (v) => {
   store._index()
 }
 
-const onDelete = (v) => {
-  store.elementId = v.id
-  store._delete()
-}
-
-const onOpen = (id) => {
-  emits('openOffice', id)
+const onOpen =  (documentId, signatureId) => {
+  if (!accStore.checkAction(accStore.pn.confirmationLmsCertificateRead)) return
+  emits('openOffice', {documentId, signatureId })
 }
 
 const onSelect = (v) => {
   store.elementId = v.data.id
-  if (!accStore.checkAction(accStore.pn.lmsCertificateRead)) return
-
+  if (!accStore.checkAction(accStore.pn.confirmationLmsCertificateRead)) return
   if (v.key === 'view') {
-    onOpen(v.data.id)
-  } else if (v.key === Utils.ActionTypes.delete) {
-    onDelete(v.data)
+    onOpen(v.data?.certificate?.id, v.data.id)
   }
 }
 </script>
-
 <template>
   <n-spin :show="store.loading" style="min-height: 200px">
     <div class="w-full overflow-x-auto" v-if="store.list.length > 0">
@@ -73,37 +65,36 @@ const onSelect = (v) => {
                 :short="false"
                 :hide-tooltip="true"
                 :data="{
-                      photo: item.worker?.photo,
-                      lastName: item.worker?.last_name,
-                      firstName: item.worker?.first_name,
-                      middleName: item.worker?.middle_name,
-                      position:item?.position?.name,
+                      photo: item?.certificate?.worker_position?.worker?.photo,
+                      lastName: item?.certificate?.worker_position?.worker?.last_name,
+                      firstName: item?.certificate?.worker_position?.worker?.first_name,
+                      middleName: item?.certificate?.worker_position?.worker?.middle_name,
+                      position:item?.certificate?.worker_position?.post_short_name,
                     }"
             />
           </td>
-          <td @click="onOpen(item.id)">
+          <td @click="onOpen(item?.certificate?.id, item.id)">
             <div class="flex justify-center">
               <n-button type="primary" class="font-medium" round dashed size="tiny">{{
-                  item.serial+ '-' +item?.number
+                  item?.certificate?.serial+ '-' +item?.certificate?.number
                 }}</n-button>
             </div>
           </td>
           <td>
-            <n-button class="!mx-auto !w-fit !block" size="tiny">{{item.start_exam_result}}</n-button>
+            <n-button class="!mx-auto !w-fit !block" size="tiny">{{item?.certificate?.start_exam_result}}</n-button>
           </td>
           <td>
-            <n-button class="!mx-auto !w-fit !block" size="tiny">{{item.end_exam_result}}</n-button>
+            <n-button class="!mx-auto !w-fit !block" size="tiny">{{item?.certificate?.end_exam_result}}</n-button>
           </td>
 
-          <td>{{ item?.organization?.name }}</td>
-          <td><UIStatus :status="item?.confirmation" /></td>
+          <td>{{ item?.certificate?.organization?.name }}</td>
+          <td><UIStatus :status="item?.status" /></td>
           <td><UIStatus :status="Utils.documentStatus[item?.generate]" /></td>
-          <td>{{ Utils.timeOnlyDate(item?.cert_from) }}</td>
-          <td>{{ Utils.timeOnlyDate(item?.cert_to) }}</td>
+          <td>{{ Utils.timeOnlyDate(item?.certificate?.cert_from) }}</td>
+          <td>{{ Utils.timeOnlyDate(item?.certificate?.cert_to) }}</td>
           <td>
             <UIMenuButton
                 :show-view="true"
-                :show-delete="store.canShowFilter"
                 :data="item"
                 @selectEv="onSelect"
             />

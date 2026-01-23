@@ -137,7 +137,7 @@
               </n-button>
             </n-badge>
           </template>
-          <div class="flex flex-col w-full">
+          <div class="flex flex-col max-w-full">
             <div class="flex justify-between">
               <span class="text-sm text-surface-400">{{ $t('content.filterSetting') }}</span>
               <n-button

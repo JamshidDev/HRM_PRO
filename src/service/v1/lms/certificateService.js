@@ -31,6 +31,9 @@ const _direction = async (payload) => {
 const _specializations = async (payload) => {
     return await axios.get(`/v1/lms/list/specializations`, { params: payload?.params })
 }
+const _delete = async (payload) => {
+    return await axios.delete(`/v1/lms/certificates/${payload.id}`)
+}
 
 
 export default {
@@ -42,4 +45,5 @@ export default {
     _eduPlan,
     _direction,
     _specializations,
+    _delete,
 }

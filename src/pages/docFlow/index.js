@@ -4,6 +4,7 @@ export const ConfContractPage = () => import('./confirmation/contract/Confirmati
 export const ConfAddContractPage = () => import('./confirmation/adContract/AdContractPage.vue')
 export const ConfTimeSheetPage = () => import('./confirmation/timesheet/TimeSheetPage.vue')
 export const ConfVacationSchedulePage = () => import('./confirmation/vacationSchedule/page.vue')
+export const ConfCertificatePage = () => import('./confirmation/certificate/page.vue')
 
 // pages of hr module
 export const CommandPage = () => import('./document/command/page.vue')
