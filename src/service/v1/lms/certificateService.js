@@ -16,10 +16,30 @@ const _create = async (payload) => {
     return await axios.post(`/v1/lms/certificate/generate`, payload.data)
 }
 
+const _group = async (payload) => {
+    return await axios.get(`/v1/lms/list/groups`, { params: payload?.params })
+}
+
+const _eduPlan = async (payload) => {
+    return await axios.get(`/v1/lms/list/edu-plans`, { params: payload?.params })
+}
+
+const _direction = async (payload) => {
+    return await axios.get(`/v1/lms/list/directions`, { params: payload?.params })
+}
+
+const _specializations = async (payload) => {
+    return await axios.get(`/v1/lms/list/specializations`, { params: payload?.params })
+}
+
 
 export default {
     _workerExams,
     _create,
     _protocol,
     _index,
+    _group,
+    _eduPlan,
+    _direction,
+    _specializations,
 }

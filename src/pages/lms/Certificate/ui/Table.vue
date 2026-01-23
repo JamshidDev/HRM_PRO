@@ -5,7 +5,6 @@ import {
   UIPagination,
   UIStatus,
   UIUser,
-  UIUserGroup
 } from '@/components/index.js'
 import { useAccountStore, useLmsCertificateStore, useComponentStore } from '@/store/modules/index.js'
 import { CheckmarkCircle32Regular } from '@vicons/fluent'

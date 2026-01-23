@@ -1,6 +1,6 @@
 <script setup>
 import {useComponentStore, useLmsCertificateStore} from "@stores"
-import {UIPageFilter, UISelect} from "@components"
+import {SuperSelect, UIPageFilter, UISelect} from "@components"
 import Utils from "@utils/Utils.js"
 
 
@@ -27,8 +27,24 @@ const fetchStructure = ()=>{
   componentStore._structures()
 }
 
+const fetchGroups = ()=>{
+  if(store.group.list.length> 0) return
+  store._group()
+}
+
+const onSearchGr =()=>{
+  store.group.params.page = 1
+  store._group()
+}
+
+const onScrollGr =()=>{
+  store.group.params.page += 1
+  store._group()
+}
+
 onMounted(()=>{
   fetchStructure()
+  fetchGroups()
 })
 
 
@@ -41,6 +57,7 @@ onMounted(()=>{
       :search-loading="store.loading"
       :show-add-button="false"
       :show-filter-button="false"
+
   >
     <template #filterContent>
       <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{
@@ -58,6 +75,16 @@ onMounted(()=>{
           @onSearch="componentStore._structures"
           @onSubmit="filterEvent"
       />
+      <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{ $t('content.year') }}</label>
+      <SuperSelect
+          v-model:value="store.params.group_id"
+          v-model:search="store.group.params.search"
+          :options="store.group.list"
+          :loading="store.group.loading"
+          @onScrollEv="onScrollGr"
+          @onSearch="onSearchGr"
+      />
+
       <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{ $t('content.year') }}</label>
       <n-select
           class="w-full"

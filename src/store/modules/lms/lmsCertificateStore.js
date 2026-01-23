@@ -37,9 +37,101 @@ export const useLmsCertificateStore = defineStore('lmsCertificateStore', {
         exam:{
             loading:false,
         },
+        group:{
+            list:[],
+            loading:false,
+            totalItems:0,
+            params:{
+                page:1,
+                per_page:1000,
+                search:null,
+            },
+        },
+        eduPlan:{
+            list:[],
+            loading:false,
+            totalItems:0,
+            params:{
+                page:1,
+                per_page:1000,
+                search:null,
+            },
+        },
+        direction:{
+            list:[],
+            loading:false,
+            totalItems:0,
+            params:{
+                page:1,
+                per_page:1000,
+                search:null,
+            },
+        },
+        spn: {
+            list:[],
+            loading:false,
+            totalItems:0,
+            params:{
+                page:1,
+                per_page:1000,
+                search:null,
+            },
+        }
 
     }),
     actions: {
+        _group(infinity){
+            this.group.loading = true
+            const params = {
+                ...this.group.params,
+            }
+            $ApiService.certificateService._group({params}).then((res)=>{
+                const data = res.data.data.data.map(v=>({id: v.id, name: v.code}))
+                this.group.list = infinity ? [...this.group.list,...data] : data
+                this.group.totalItems = res.data.data.total
+            }).finally(()=>{
+                this.group.loading = false
+            })
+        },
+        _eduPlan(infinity){
+            this.eduPlan.loading = true
+            const params = {
+                ...this.eduPlan.params,
+            }
+            $ApiService.certificateService._eduPlan({params}).then((res)=>{
+                const data = res.data.data.data.map(v=>({id: v.id, name: v.code}))
+                this._eduPlan.list = infinity ? [...this._eduPlan.list,...data] : data
+                this._eduPlan.totalItems = res.data.data.total
+            }).finally(()=>{
+                this._eduPlan.loading = false
+            })
+        },
+        _direction(infinity){
+            this.direction.loading = true
+            const params = {
+                ...this.direction.params,
+            }
+            $ApiService.certificateService._direction({params}).then((res)=>{
+                const data = res.data.data.data.map(v=>({id: v.id, name: v.code}))
+                this.direction.list = infinity ? [...this.direction.list,...data] : data
+                this.direction.totalItems = res.data.data.total
+            }).finally(()=>{
+                this.direction.loading = false
+            })
+        },
+        _spn(infinity){
+            this.spn.loading = true
+            const params = {
+                ...this.spn.params,
+            }
+            $ApiService.certificateService._direction({params}).then((res)=>{
+                const data = res.data.data.data.map(v=>({id: v.id, name: v.code}))
+                this.spn.list = infinity ? [...this.spn.list,...data] : data
+                this.spn.totalItems = res.data.data.total
+            }).finally(()=>{
+                this.spn.loading = false
+            })
+        },
         _index(){
             const params = {
                 ...this.params,

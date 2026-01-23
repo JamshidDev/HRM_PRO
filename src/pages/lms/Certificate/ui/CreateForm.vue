@@ -148,6 +148,7 @@ const validateExam = (index, field) => {
                             v-model:value="worker.start_exam_result"
                             :allow-input="customFormat"
                             @blur="validateExam(idx, 'start_exam_result')"
+                            placeholder="##/##"
                         />
                         <n-select
                             v-else
@@ -179,6 +180,7 @@ const validateExam = (index, field) => {
                             v-model:value="worker.end_exam_result"
                             :allow-input="customFormat"
                             @blur="validateExam(idx, 'end_exam_result')"
+                            placeholder="##/##"
                         />
                         <n-select
                             v-else
