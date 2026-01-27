@@ -54,6 +54,7 @@ export const AppPaths = {
   ShiftTypeGroup: '/shift-type-group',
   TurnstileSchedule: '/turnstile-schedule',
   Workday: '/workday',
+  Approve: '/approve',
   WorkerProfile: '/worker-profile',
   ConfContract: '/conf-contract',
   ConfCommand: '/conf-command',

@@ -21,7 +21,8 @@ import {
   SchedulePage,
   ShiftTypePage,
   ShiftTypeGroupPage,
-  TurnstileSchedulePage
+  TurnstileSchedulePage,
+  ApprovePage,
 } from '@/pages/turnstile'
 
 export const turnstileRoutes = [
@@ -171,5 +172,12 @@ export const turnstileRoutes = [
     meta: {
       layout: AppLayouts.main
     }
-  }
+  },
+  {
+    path: Utils.routeTurnstilePathMaker(AppPaths.Approve),
+    component: () => ApprovePage,
+    meta: {
+      layout: AppLayouts.main
+    }
+  },
 ]

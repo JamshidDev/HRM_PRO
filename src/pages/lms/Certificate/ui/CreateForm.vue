@@ -6,7 +6,6 @@ import {ArrowSyncCircle20Regular} from "@vicons/fluent"
 import UIHelper from "@utils/UIHelper.js"
 import {Utils} from "@utils"
 import i18n from "@/i18n/index.js"
-import {timestamp} from "@vueuse/core"
 
 const store = useLmsCertificateStore()
 const formRef = ref(null)

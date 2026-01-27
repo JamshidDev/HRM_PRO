@@ -47,6 +47,7 @@ export { default as UIOnlineOffline } from './ui/OnlineOffline.vue'
 export { default as UIMultipleLangItems } from './ui/MultipleLangItems.vue'
 export { default as DownloadTask } from './ui/DownloadTask.vue'
 export { default as SuperStructure } from './ui/SuperStructure.vue'
+export { default as VTable } from './ui/Table.vue'
 
 export * from './layoutTab'
 export * from './editor'

@@ -45,7 +45,7 @@
     signatureStore.documentType = store.model
     signatureStore._signatureDocument(
       signatureStore.signatureTypes.contract,
-      store.document_id,
+       store.document_id,
       onSuccess
     )
   }

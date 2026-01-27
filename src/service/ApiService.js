@@ -119,7 +119,8 @@ import {
   invalidUserService,
   eventV2Service,
   shiftTypeService,
-  scheduleService as workerScheduleService
+  scheduleService as workerScheduleService,
+    approveService,
 } from './v1/turnstile'
 
 import accountantService from './v1/accountant/accountantService.js'
@@ -262,4 +263,5 @@ export default {
   confVacationScheduleService,
   certificateService,
   confCertificateService,
+  approveService,
 }

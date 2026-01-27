@@ -1,7 +1,7 @@
 <script setup>
   import { UIDrawer, UIPageContent } from '@components'
   import { useDepartmentStore, useAccountStore } from '@stores'
-  import { Filter, createForm, TabPage, Preview} from "./ui"
+  import { Filter, createForm, TabPage, Preview, DemoTable} from "./ui"
 
 
 
@@ -17,6 +17,7 @@
 <template>
   <UIPageContent>
     <Filter />
+<!--    <DemoTable/>-->
     <TabPage />
     <UIDrawer
         v-model:visible="store.visible"

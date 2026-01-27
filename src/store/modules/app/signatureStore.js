@@ -35,7 +35,8 @@ export const useSignatureStore = defineStore('signatureStore', {
           function (major, minor) {
             resolve({ major, minor })
           },
-          function (error, message) {
+           (error, message)=> {
+            this.loading = false
             $Toast.error(t('signature.connectionError'))
             reject(error, message)
           }
@@ -95,6 +96,7 @@ export const useSignatureStore = defineStore('signatureStore', {
             this.checkListKey()
             this.checkCardPluggedIn()
           } catch (err) {
+            this.loading = false
             // $Toast.error(t('signature.connectionError'))
           }
         })
@@ -113,7 +115,6 @@ export const useSignatureStore = defineStore('signatureStore', {
       this.allKeys = []
       for (const v in items) {
         let key = items[v]
-        console.log(key.validDate)
         this.allKeys.push({
           fullName: key.full_name,
           expired: key.expired,

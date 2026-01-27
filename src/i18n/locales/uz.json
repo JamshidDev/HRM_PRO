@@ -2633,6 +2633,16 @@
   "notificationPage": {
     "name": "Bildirishnomalar",
     "create": "Bildirishnoma yaratish"
+  },
+  "approve": {
+    "name": "Approve",
+    "createTitle": "Xodim qo'shish",
+    "confirmWorkers": "Xodimlarni turniketga qabul qilish",
+    "form": {
+      "sended": "Yuborilgan",
+      "selectedWorker": "Tanlanganlar",
+      "received": "Kelgan"
+    }
   }
 }
 

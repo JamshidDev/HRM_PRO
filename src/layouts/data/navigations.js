@@ -500,7 +500,14 @@ export const navigations = [
         icon: DocumentBulletList24Filled,
         color: 'bg-dark',
         permission: appPermissions.admin
-      }
+      },
+      {
+        label: 'approve.name',
+        path: Utils.routeTurnstilePathMaker(AppPaths.Approve),
+        icon: DocumentBulletList24Filled,
+        color: 'bg-dark',
+        permission: appPermissions.admin
+      },
     ]
   },
   {

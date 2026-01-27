@@ -12,7 +12,7 @@ const accStore = useAccountStore()
 const officeAppRef = ref(null)
 
 const openOffice = (v) => {
-  officeAppRef.value.openPdf(v.documentId, Utils.documentModels.lmsCertificate, v.signatureId)
+  officeAppRef.value.openPdf( v.documentId, Utils.documentModels.lmsCertificate, v.signatureId)
 }
 
 const onUpdateStatus = (v)=>{

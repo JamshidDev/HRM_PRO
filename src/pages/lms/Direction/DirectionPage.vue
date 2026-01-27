@@ -49,5 +49,3 @@
     </UIDrawer>
   </UIPageContent>
 </template>
-
-<style scoped></style>
