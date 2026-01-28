@@ -62,9 +62,9 @@ const workerAction  = {
 
   <UIModal
       :width="800"
-      :visible="store.visible"
-      @update:visible="(v) => (store.visible = v)"
-      :title="$t('approve.createTitle')"
+      v-model:visible="store.visible"
+
+      :title="$t(store.visibleType? 'approve.createTitle' : 'approve.updateTitle')"
   >
     <template #default>
       <n-spin :show="store.showLoading">

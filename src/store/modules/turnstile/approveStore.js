@@ -145,14 +145,12 @@ export const useApproveStore = defineStore('approveStore', {
                 })
         },
         _delete() {
-            this.deleteLoading = true
-            $ApiService.turnstileBuildingService
+            this.loading = true
+            $ApiService.approveService
                 ._delete({ id: this.elementId })
-                .then((res) => {
-                    this._index()
-                })
                 .finally(() => {
-                    this.deleteLoading = false
+                    this.loading = false
+                    this._index()
                 })
         },
         _resetForm(){

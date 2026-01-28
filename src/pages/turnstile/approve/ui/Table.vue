@@ -151,7 +151,13 @@ const approveStatus = {
             <UIStatus :status="actionStatus[item.status]" />
           </td>
           <td>
-            <UIMenuButton :show-confirm="item.status === 'received' && item.approved ===1" :data="item" :show-edit="true" @select-ev="onSelectEv"  :show-delete="false" />
+            <UIMenuButton
+                :show-delete="item.status === 'sended' && item.approved !==2"
+                :show-edit="item.status === 'sended' && item.approved ===1"
+                :show-confirm="item.status === 'received' && item.approved ===1"
+                :data="item"
+                @select-ev="onSelectEv"
+            />
           </td>
         </tr>
         </tbody>

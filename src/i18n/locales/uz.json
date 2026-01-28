@@ -2636,7 +2636,8 @@
   },
   "approve": {
     "name": "Approve",
-    "createTitle": "Xodim qo'shish",
+    "createTitle": "Xodimlarni yuborish",
+    "updateTitle": "Tahrirlash",
     "confirmWorkers": "Xodimlarni turniketga qabul qilish",
     "form": {
       "sended": "Yuborilgan",

@@ -22,7 +22,7 @@ const _approve = async (payload) => {
 }
 
 const _delete = async (payload) => {
-    return await axios.delete(`/v1/turnstile/buildings/${payload.id}`)
+    return await axios.delete(`/v1/turnstile/hik-central/approve-al/list/${payload.id}`)
 }
 
 export default {
