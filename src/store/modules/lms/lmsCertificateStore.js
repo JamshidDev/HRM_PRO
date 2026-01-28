@@ -77,20 +77,20 @@ export const useLmsCertificateStore = defineStore('lmsCertificateStore', {
                 per_page:100,
                 search:null,
             },
+        },
+        protocol:{
+            list:[],
+            params:{
+                page:1,
+                per_page:10,
+                search:null,
+            },
+            loading:false,
+            totalItems:0,
+            visible:false,
         }
 
     }),
-    getters:{
-        canShowFilter:(state)=>{
-            const path = router.currentRoute.value.fullPath
-            const hasAccess = path !== '/docflow/certificate'
-            if(!hasAccess){
-                // reset params on confirmation module
-                state._resetParams()
-            }
-            return hasAccess
-        }
-    },
     actions: {
         _group(infinity){
             this.group.loading = true
@@ -164,9 +164,9 @@ export const useLmsCertificateStore = defineStore('lmsCertificateStore', {
         },
         _openModal(v){
             this.payload.group_id  = v.id
-            this._getWorkers()
-            this._getProtocol()
-            this.visible = true
+            // this._getWorkers()
+            this._getProtocols()
+            this.protocol.visible = true
         },
         _workerExam(index, status) {
             this.workerLoading = true
@@ -185,25 +185,28 @@ export const useLmsCertificateStore = defineStore('lmsCertificateStore', {
                     this.workerLoading= false
                 })
         },
-        _getProtocol(){
-            const groupId = this.payload.group_id
+        _getProtocols(){
+            this.protocol.loading = true
+            const params = {
+                ...this.protocol.params,
+                group_id: this.payload.group_id
+            }
             $ApiService.certificateService
-                ._protocol({ params: {group_id:groupId}})
+                ._protocol({params})
                 .then((res) => {
-                    this.payload.protocol_id = res.data.data?.id ?? null
-                    this.payload.cert_from = Utils.datePickerFormatter(res.data.data?.cert_from)
-                    this.payload.cert_to = Utils.datePickerFormatter(res.data.data?.cert_to)
-                    this.payload.protocol_date = Utils.datePickerFormatter(res.data.data?.protocol_date)
+                    this.protocol.list = res.data.data.data
+                    this.protocol.totalItems = res.data.data.total
                 })
                 .finally(() => {
-                    this.workerLoading= false
+                    this.protocol.loading = false
                 })
         },
         _getWorkers(){
             const group_id = this.payload.group_id
+            const protocol_id = this.payload.protocol_id === 0?undefined : this.payload.protocol_id
             this.workerLoading = true
             $ApiService.lmsGroupService
-                ._groupWorkers({ params: {group_id, page:1, per_page:500}})
+                ._groupWorkers({ params: {group_id, protocol_id, page:1, per_page:500}})
                 .then((res) => {
                     this.payload.workers = res.data.data.data.map((v)=>({
                         id: v.id,

@@ -33,7 +33,7 @@ const onSubmit = () => {
 
       const data = {
         group_id:store.payload.group_id,
-        protocol_id:store.payload.protocol_id || null,
+        protocol_id:store.payload.protocol_id===0? undefined : store.payload.protocol_id,
         protocol_date: Utils.timeToZone(store.payload.protocol_date),
         cert_from: Utils.timeToZone(store.payload.cert_from),
         cert_to: Utils.timeToZone(store.payload.cert_to),

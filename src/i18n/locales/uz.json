@@ -2635,12 +2635,23 @@
     "create": "Bildirishnoma yaratish"
   },
   "approve": {
-    "name": "Approve",
+    "name": "Yuborilgan xodimlar",
     "createTitle": "Xodimlarni yuborish",
     "updateTitle": "Tahrirlash",
     "confirmWorkers": "Xodimlarni turniketga qabul qilish",
     "form": {
       "sended": "Yuborilgan",
+      "selectedWorker": "Tanlanganlar",
+      "received": "Kelgan"
+    }
+  },
+  "protocol": {
+    "name": "Protokollar",
+    "createTitle": "Xodimlarni yuborish",
+    "updateTitle": "Tahrirlash",
+    "createWarning": "Yangi sertifikat yaratish uchun **“Yangi protokol”**ni tanlang yoki mavjud protokolni tanlab “Davom etish” tugmasini bosing.",
+    "form": {
+      "newProtocol": "Yangi protokol",
       "selectedWorker": "Tanlanganlar",
       "received": "Kelgan"
     }

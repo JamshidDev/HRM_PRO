@@ -241,6 +241,9 @@ export const appPermissions = {
   turnstileDevicesRead: 'turnstile-devices-read',
   turnstileDevicesWrite: 'turnstile-devices-write',
   turnstileOthers: 'turnstile-others',
+  turnstileApprove:'turnstile-approve',
+  turnstileApproveRead:'turnstile-approve-read',
+  turnstileApproveWrite:'turnstile-approve-write',
 
   hrIncentives: 'hr-incentives',
   hrIncentivesWrite: 'hr-incentives-write',

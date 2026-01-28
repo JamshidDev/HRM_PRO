@@ -20,7 +20,7 @@ const onUpdateStatus = (v)=>{
   if (index === -1) return
   store.list[index].generate = 3
 }
-x
+
 onMounted(()=>{
   eventBus.on(Events.CERTIFICATED_GENERATED, onUpdateStatus)
   if (!accStore.checkAction(accStore.pn.lmsCertificateRead)) return

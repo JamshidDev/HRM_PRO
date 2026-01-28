@@ -6,6 +6,7 @@
   import Table from './ui/Table.vue'
   import PreviewList from './ui/PreviewList.vue'
   import CertificateCertificateUpdateModal from '@/pages/lms/Certificate/ui/CreateForm.vue'
+  import ProtocolModal from '@/pages/lms/Protocol/ui/CreateForm.vue'
   import Utils from '@/utils/Utils.js'
   import { AppPaths } from '@/utils/index.js'
 
@@ -55,5 +56,6 @@
       </template>
     </UIModal>
     <CertificateCertificateUpdateModal/>
+    <ProtocolModal/>
   </UIPageContent>
 </template>

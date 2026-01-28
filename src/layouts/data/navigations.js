@@ -53,7 +53,7 @@ import {
     AppsAddIn16Regular,
     AppFolder24Filled,
     ShiftsCheckmark20Regular,
-    DocumentBulletList24Filled, ChatMultiple16Filled, CommentLightning20Filled
+    DocumentBulletList24Filled, ChatMultiple16Filled, CommentLightning20Filled,PersonVoice20Filled
 } from '@vicons/fluent'
 import { AppPaths } from '@/utils/index.js'
 import Utils from '@/utils/Utils.js'
@@ -504,9 +504,9 @@ export const navigations = [
       {
         label: 'approve.name',
         path: Utils.routeTurnstilePathMaker(AppPaths.Approve),
-        icon: DocumentBulletList24Filled,
-        color: 'bg-dark',
-        permission: appPermissions.admin
+        icon: PersonVoice20Filled,
+        color: 'bg-success',
+        permission: appPermissions.turnstileApprove
       },
     ]
   },
@@ -836,7 +836,7 @@ export const navigations = [
       }
     ]
   },
-    {
+  {
         label: 'navigation.chat',
         path: AppPaths.Chat,
         icon: ChatMultiple16Filled,
