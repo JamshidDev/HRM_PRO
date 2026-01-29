@@ -1723,6 +1723,7 @@
     "updateTitle": "Tahrirlash",
     "form": {
       "eduPlan": "O'quv rejasi",
+      "certificate": "Sertifikat",
       "worker_position_ids": "Xodimlar"
     }
   },

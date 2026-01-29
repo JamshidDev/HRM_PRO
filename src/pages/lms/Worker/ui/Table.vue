@@ -1,6 +1,7 @@
 <script setup>
-  import { NoDataPicture, UIPagination, UIUser, UIMore, UIBadge } from '@/components/index.js'
+  import { NoDataPicture, UIPagination, UIUser} from '@/components/index.js'
   import { useAccountStore, useLmsWorkerStore } from '@/store/modules/index.js'
+  import { ArrowCircleDown16Filled} from "@vicons/fluent"
   import Utils from '@/utils/Utils.js'
   import MenuButton from '@/components/buttons/MenuButton.vue'
 
@@ -24,6 +25,10 @@
     store.params.per_page = v.per_page
     store._index()
   }
+
+  const onDownload = (url) => {
+    window.open(url, '_blank')
+  }
 </script>
 
 <template>
@@ -38,7 +43,8 @@
               <th class="w-[300px]">{{ $t('eduPlanPage.form.learning_center') }}</th>
               <th class="w-[160px]">{{ $t('content.type') }}</th>
               <th class="w-[300px]">{{ $t('lmsWorkerPage.form.eduPlan') }}</th>
-              <th class="w-[220px]">{{ $t('content.group') }}</th>
+              <th class="w-[220px]">{{ $t('content.group')}}</th>
+              <th class="w-[120px]">{{ $t('lmsWorkerPage.form.certificate')}}</th>
               <th class="min-w-[40px] w-[40px]"></th>
             </tr>
           </thead>
@@ -51,8 +57,7 @@
               </td>
               <td>
                 <UIUser
-                  :short="false"
-                  :hide-tooltip="true"
+                    :short="false"
                   :data="{
                     photo: item?.worker_position.worker.photo,
                     firstName: item?.worker_position.worker.first_name,
@@ -63,7 +68,7 @@
                 />
               </td>
               <td>
-                <n-tooltip placement="bottom" delay="1000" trigger="hover">
+                <n-tooltip placement="bottom" :delay="1000" trigger="hover">
                   <template #trigger>
                     <p class="leading-[1.2]">
                       {{ item?.learning_center?.name }}
@@ -81,7 +86,7 @@
                 </div>
               </td>
               <td>
-                <n-tooltip placement="left" delay="1000" trigger="hover">
+                <n-tooltip placement="left" :delay="1000" trigger="hover">
                   <template #trigger>
                     <div class="text-xs text-secondary leading-[1.2] line-clamp-1">
                       {{ item.edu_plan?.specialization?.name }}
@@ -89,7 +94,7 @@
                   </template>
                   <span> {{ item.edu_plan?.specialization?.name }} </span>
                 </n-tooltip>
-                <n-tooltip placement="left" delay="1000" trigger="hover">
+                <n-tooltip placement="left" :delay="1000" trigger="hover">
                   <template #trigger>
                     <div class="leading-[1.2] line-clamp-1">
                       {{ item.edu_plan?.name }}
@@ -118,6 +123,15 @@
                     }}
                   </p>
                 </div>
+              </td>
+              <td>
+                <n-button v-if="item?.certificate?.confirmation_file" @click="onDownload(item?.certificate?.confirmation_file)" type="success" secondary>
+                  <template #icon>
+                    <ArrowCircleDown16Filled/>
+                  </template>
+                  {{$t('content.download')}}
+                </n-button>
+
               </td>
 
               <td>
