@@ -6,6 +6,7 @@
   import validationRules from '@/utils/validationRules.js'
   import ValidationRules from '@/utils/validationRules.js'
   import { useDebounce } from '@/utils/index.js'
+  import {SuperSelect} from "@components"
 
   const store = useMonthReportStore()
   const componentStore = useComponentStore()
@@ -195,7 +196,7 @@
             path="codes"
             :rule-path="ValidationRules.rulesNames.requiredMultiSelectField"
           >
-            <UINSelect
+            <SuperSelect
               :multiple-search="true"
               multiple
               v-model:value="store.exportParams.codes"
