@@ -15,6 +15,10 @@ const _getDetailExam = async (payload) => {
     }
   })
 }
+const _getDocument = async (payload) => {
+  return await axios.post(`v1/document/view/${payload.model}/${payload.id}`)
+}
+
 
 const _loginToSystem = async (payload) => {
   return await axiosOrigin.post(baseURL + `/auth/login`, payload.data)
@@ -23,5 +27,6 @@ const _loginToSystem = async (payload) => {
 export default {
   _downloadDocument,
   _getDetailExam,
-  _loginToSystem
+  _loginToSystem,
+  _getDocument,
 }

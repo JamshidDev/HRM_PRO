@@ -1,6 +1,6 @@
 <script setup>
   import { usePdfViewerStore, usePublicStore } from '@/store/modules/index.js'
-  import { ToolBar, Document, Authectication, QuizItem } from './ui/index.js'
+  import { ToolBar, Document, Authectication, QuizItem, Confirmations } from './ui/index.js'
 
   const store = usePublicStore()
   const pdfViewerStore = usePdfViewerStore()
@@ -10,6 +10,7 @@
   onMounted(() => {
     const { key, model } = route.params
     store.elementId = key
+    store.selectedModel = model
     store.list = []
     store.isExist = false
     store._getDocument(async (url) => {
@@ -33,6 +34,8 @@
           :answers="item.answers"
         />
       </template>
+
+      <Confirmations/>
     </div>
   </div>
 </template>

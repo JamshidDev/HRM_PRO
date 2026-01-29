@@ -26,7 +26,7 @@ export const useConfCertificateStore = defineStore('confCertificateStore', {
             this.loading = true
             $ApiService.confCertificateService._index({params}).then((res)=>{
                 this.list = res.data.data.data
-                this.totalItems = res.data.data.totalItems
+                this.totalItems = res.data.data.total
             }).finally(()=>{
                 this.loading = false
             })

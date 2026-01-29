@@ -13,6 +13,7 @@
 
   const store = usePublicStore()
   const formRef = ref(null)
+  const route = useRoute()
 
   const onSubmit = () => {
     formRef.value?.validate((error) => {
@@ -25,11 +26,15 @@
   const closeQuizEv = () => {
     store.list = []
   }
+
+  const showAnswer = computed(() => {
+    return route.path.includes('worker-exams') && store.existFile
+  })
 </script>
 
 <template>
   <div class="w-full flex flex-col">
-    <div class="flex justify-center" v-if="store.isExist">
+    <div class="flex justify-center" v-if="showAnswer">
       <n-button
         @click="closeQuizEv"
         v-if="store.list.length > 0"
