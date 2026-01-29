@@ -707,7 +707,7 @@ export const useComponentStore = defineStore('componentStore', {
 
     _departmentTreeList(id, callback) {
       let params = {
-        organizations: [id]
+        organizations: [id].toString() || undefined,
       }
       $ApiService.componentService._departmentTree({ params }).then((res) => {
         this.departmentList = res.data.data
