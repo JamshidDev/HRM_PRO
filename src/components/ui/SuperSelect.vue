@@ -141,10 +141,10 @@
 
     emits('onScroll', e)
     if (props.totalCount === 0) return
-    const currentTarget = e.currentTarget
-    if (
-      currentTarget.scrollTop + currentTarget.offsetHeight >= currentTarget.scrollHeight &&
-      !props.loading &&
+
+    const { scrollTop, offsetHeight, scrollHeight } = e.currentTarget
+    const isAtBottom = scrollHeight - scrollTop - offsetHeight < 2
+    if (isAtBottom && !props.loading &&
       props.totalCount > props.options.length
     ) {
       emits('onScrollEv')
