@@ -1,92 +1,80 @@
 import { AppLayouts, AppPaths } from '@/utils/index.js'
 import Utils from '@/utils/Utils.js'
-import {
-  DirectionPage,
-  SpecializationPage,
-  SubjectPage,
-  EduPlanPage,
-  TeacherPage,
-  LmsGroupPage,
-  LmsLessonPage,
-  TeacherLessonPage,
-  ListenerPage,
-  LmsResultPage, LmsCertificatePage
-} from '@/pages/lms'
 
 export const lmsRoutes = [
   {
     path: Utils.routeLmsPathMaker(AppPaths.Direction),
-    component: DirectionPage,
+    component: ()=> import("@/pages/lms/Direction/DirectionPage.vue"),
     meta: {
       layout: AppLayouts.main
     }
   },
   {
     path: Utils.routeLmsPathMaker(AppPaths.Specialization),
-    component: SpecializationPage,
+    component: ()=> import("@/pages/lms/Specialization/SpecializationPage.vue"),
     meta: {
       layout: AppLayouts.main
     }
   },
   {
     path: Utils.routeLmsPathMaker(AppPaths.Subject),
-    component: SubjectPage,
+    component: ()=> import("@/pages/lms/Subject/SubjectPage.vue"),
     meta: {
       layout: AppLayouts.main
     }
   },
   {
     path: Utils.routeLmsPathMaker(AppPaths.EduPlan),
-    component: EduPlanPage,
+    component: ()=> import("@/pages/lms/EduPlan/EduPlan.vue"),
     meta: {
       layout: AppLayouts.main
     }
   },
   {
     path: Utils.routeLmsPathMaker(AppPaths.Teacher),
-    component: TeacherPage,
+    component: ()=> import("@/pages/lms/Teacher/TeacherPage.vue"),
     meta: {
       layout: AppLayouts.main
     }
   },
   {
     path: Utils.routeLmsPathMaker(AppPaths.Group) + '/:id',
-    component: LmsGroupPage,
+    component: ()=> import("@/pages/lms/Group/page.vue"),
     meta: {
       layout: AppLayouts.main
     }
   },
   {
     path: Utils.routeLmsPathMaker(AppPaths.Lesson),
-    component: LmsLessonPage,
+    component: ()=> import("@/pages/lms/Lesson/page.vue"),
     meta: {
       layout: AppLayouts.main
     }
   },
   {
     path: Utils.routeLmsPathMaker(AppPaths.TeacherLesson),
-    component: TeacherLessonPage,
+    component: ()=> import("@/pages/lms/TeacherLesson/page.vue"),
     meta: {
       layout: AppLayouts.main
     }
   },
   {
     path: Utils.routeLmsPathMaker(AppPaths.Listener),
-    component: ListenerPage,
+    component: ()=> import("@/pages/lms/Listener/page.vue"),
     meta: {
       layout: AppLayouts.main
     }
   },
   {
     path: Utils.routeLmsPathMaker(AppPaths.Result),
-    component: LmsResultPage,
+    component: ()=> import("@/pages/lms/Result/page.vue"),
     meta: {
       layout: AppLayouts.main
     }
   },
   {
     path: Utils.routeLmsPathMaker(AppPaths.Certificate),
-    component: LmsCertificatePage,
+    component: ()=> import("@/pages/lms/Certificate/page.vue"),
     meta: {
       layout: AppLayouts.main
     }
