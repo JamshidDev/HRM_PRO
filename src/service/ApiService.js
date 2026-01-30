@@ -131,6 +131,7 @@ import accDashboardService from './v1/accountant/accDashboardService.js'
 import salaryCategoryService from './v1/accountant/salaryCategoryService.js'
 import salaryReportService from './v1/accountant/salaryReportService.js'
 import pensionService from './v1/accountant/pensionService.js'
+import staffApprovalService from './v1/accountant/staffApprovalService.js'
 
 import expiredHealthService from './v1/hospital/expiredHealthService.js'
 import ticketService from './v1/hospital/ticketService.js'
@@ -264,4 +265,5 @@ export default {
   certificateService,
   confCertificateService,
   approveService,
+  staffApprovalService,
 }

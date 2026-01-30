@@ -1,5 +1,5 @@
 <script setup>
-import {Delete20Filled, Edit20Filled} from '@vicons/fluent'
+import {Delete20Filled, Edit20Filled, ErrorCircle20Filled} from '@vicons/fluent'
   import { useReport2Store } from '@/store/modules/index.js'
   import WorkerCard from './WorkerCard.vue'
   import Indicator from './Indicator.vue'
@@ -54,7 +54,12 @@ const onDraggleEnd = (v) =>{
               <div class="w-[calc(100%-260px)] text-wrap flex items-center">
                 <span class="inline-block font-semibold w-[30px]">{{ idx + 1 }}</span>
                 <n-radio :checked="item?.id === store.position.selectedId">
-                  {{ item?.position?.name }}
+                  <div class="flex items-center gap-2">
+                    <n-icon v-if="item?.status?.id === 1" size="18" class="text-warning" >
+                      <ErrorCircle20Filled/>
+                    </n-icon>
+                    {{ item?.position?.name }}
+                  </div>
                 </n-radio>
               </div>
               <div class="w-[260px] justify-end flex items-center h-full gap-2 pr-2">

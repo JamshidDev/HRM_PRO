@@ -90,11 +90,21 @@ export const useMonthReportStore = defineStore('monthReportStore', {
         ._exportWithCode({ data })
         .then(() => {
           this.exportVisible = false
-          // router.push(Utils.routeHrmPathMaker(AppPaths.Export))
         })
         .finally(() => {
           this.showLoading = false
         })
+    },
+    _exportWithCodeByYear(data) {
+      this.showLoading = true
+      $ApiService.monthReportService
+          ._exportWithCodeByYear({ data })
+          .then(() => {
+            this.exportVisible = false
+          })
+          .finally(() => {
+            this.showLoading = false
+          })
     },
     _index() {
       this.loading = true
