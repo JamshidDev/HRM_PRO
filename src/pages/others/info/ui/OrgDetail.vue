@@ -1,6 +1,6 @@
 <script setup>
-  import { useUsefulStore } from '@/store/modules/index.js'
-  import Utils from '@/utils/Utils.js'
+  import { useUsefulStore } from '@stores'
+  import Utils from '@utils/Utils.js'
   import { Mask } from 'maska'
 
   const mask = new Mask({ mask: ['##-###-##-##', '##-###'] })

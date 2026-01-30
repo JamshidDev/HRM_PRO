@@ -1,7 +1,7 @@
 <script setup>
   import { UIPageContent } from '@/components/index.js'
   import { useAccountStore, useDashboardStore } from '@/store/modules/index.js'
-  import HeaderCard from '@/pages/hrm/dashboardV3/ui/HeaderCard.vue'
+  import HeaderCard from '@/pages/hrm/dashboard/ui/HeaderCard.vue'
   import DetailFilters from './ui/Detail/Filter.vue'
   import Filter from './ui/Filter.vue'
 

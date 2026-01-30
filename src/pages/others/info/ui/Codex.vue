@@ -1,5 +1,5 @@
 <script setup>
-  import { useUsefulStore } from '@/store/modules/index.js'
+  import { useUsefulStore } from '@stores'
 
   const store = useUsefulStore()
 

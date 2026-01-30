@@ -1,7 +1,7 @@
 <script setup>
-  import { UIHierarchy, UIPanZoomArea, TreeData, UIUserGroup, UIUser } from '@/components/index.js'
+  import { UIHierarchy, UIPanZoomArea, TreeData, UIUserGroup, UIUser } from '@components'
   import { TextBulletListTree16Filled, Organization12Filled, Eye24Regular } from '@vicons/fluent'
-  import { useUsefulStore } from '@/store/modules/index.js'
+  import { useUsefulStore } from '@stores'
 
   const store = useUsefulStore()
 

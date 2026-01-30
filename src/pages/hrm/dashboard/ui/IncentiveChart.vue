@@ -13,7 +13,7 @@
   const { t } = i18n.global
 
   import { useAccountStore, useDashboardStore } from '@/store/modules/index.js'
-  import { InfoCardEnum } from '@/pages/hrm/dashboardV3/constants.js'
+  import { InfoCardEnum } from '@/pages/hrm/dashboard/constants.js'
 
   const store = useDashboardStore()
   const accStore = useAccountStore()

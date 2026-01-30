@@ -1,7 +1,7 @@
 <script setup>
   import InfoCardGrid from './ui/InfoCardGrid.vue'
-  import { useOrganizationLeaderStore, useUsefulStore } from '@/store/modules'
-  import { UIDrawer } from '@/components/index.js'
+  import {useUsefulStore } from '@stores'
+  import { UIDrawer } from '@components'
   import OrgDetail from './ui/OrgDetail.vue'
   const store = useUsefulStore()
 </script>

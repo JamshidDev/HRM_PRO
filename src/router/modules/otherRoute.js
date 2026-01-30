@@ -1,10 +1,9 @@
 import { AppLayouts, AppPaths } from '@/utils/index.js'
-import { InfoPage } from '@/pages/others/index.js'
 
 export const othersRoutes = [
   {
     path: AppPaths.Info,
-    component: InfoPage,
+    component: import("@pages/others/info/page.vue"),
     meta: {
       layout: AppLayouts.main
     }

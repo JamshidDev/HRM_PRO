@@ -7,10 +7,10 @@
     ChevronRight16Regular,
     ChevronLeft12Regular
   } from '@vicons/fluent'
-  import { AppPaths } from '@/utils/index.js'
+  import { AppPaths } from '@utils'
   import TreeTabs from './TreeTabs.vue'
   import CodexCard from './Codex.vue'
-  import DocumentArchive from '../DocumentArchive/DocumentArchive.vue'
+  import DocumentArchive from '../../DocumentArchive/DocumentArchive.vue'
 
   const list = [
     {
