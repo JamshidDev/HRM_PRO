@@ -32,7 +32,7 @@ export const turnstileRoutes = [
   },
   {
     path: Utils.routeTurnstilePathMaker(AppPaths.WorkDuration),
-    component: () => import('@turnstile/terminalUser/page.vue'),
+    component: () => import('@turnstile/workDuration/page.vue'),
     meta: {
       layout: AppLayouts.main
     }
