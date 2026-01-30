@@ -61,11 +61,38 @@ const onToggleInput = (idx, type)=>{
 }
 
 const validateExam = (index, field) => {
-  const worker = store.payload.workers?.[index]
-  if (worker[field] && !/^\d{1,2}\/\d{1,2}$/.test(worker[field])) {
-    worker[field] = null
-    $Toast.warning(t('lmsCertificate.warning.invalidResult'))
-  }
+  nextTick(() => {
+    const worker = store.payload.workers?.[index]
+    if (!worker?.[field]) return
+
+    const value = worker[field].trim()
+    const match = value.match(/^(\d{1,2})\/(\d{1,2})$/)
+
+    if (!match) {
+      worker[field] = null
+      $Toast.warning(t('lmsCertificate.warning.invalidResult'))
+      return
+    }
+
+    const [, score, total] = match.map(Number)
+
+    // Ball umumiy balldan katta bo'lmasligi kerak
+    if (score > total) {
+      worker[field] = null
+      $Toast.warning(t('lmsCertificate.warning.invalidResult'))
+      return
+    }
+
+    // Umumiy ball 0 bo'lmasligi kerak
+    if (total === 0) {
+      worker[field] = null
+      $Toast.warning(t('lmsCertificate.warning.invalidResult'))
+      return
+    }
+
+    // Formatni normalize qilish: "5/10" -> "5/10" (bo'sh joylarni olib tashlash)
+    worker[field] = `${score}/${total}`
+  })
 }
 
 const onDateChange = (date) => {
