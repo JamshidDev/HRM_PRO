@@ -8,7 +8,6 @@ import {
   ConfTimeSheetPage,
   ConfVacationSchedulePage, ConfCertificatePage,
 } from '@/pages/docFlow/index.js'
-import {LmsCertificatePage} from "@pages/lms/index.js"
 
 export const docFlowRoutes = [
   {
