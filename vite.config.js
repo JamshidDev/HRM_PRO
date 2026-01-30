@@ -12,6 +12,11 @@ export default defineConfig({
             "@stores": path.resolve(__dirname, './src/store/modules'),
             "@components": path.resolve(__dirname, './src/components'),
             "@pages": path.resolve(__dirname, './src/pages'),
+
+            // page modules
+            "@turnstile": path.resolve(__dirname, './src/pages/turnstile'),
+
+
         },
     },
     plugins: [
