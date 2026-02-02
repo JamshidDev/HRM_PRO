@@ -8,6 +8,7 @@ import DepartmentItem from "./DepartmentItem.vue"
 import {NAvatar} from "naive-ui"
 import Utils from "@utils/Utils.js"
 import i18n from "@/i18n/index.js"
+import {useAppSetting} from "@utils"
 
 const t = i18n.global.t
 const store = useStaffApprovalStore()
@@ -20,6 +21,7 @@ const onSubmit = ()=> {
     if (!error) {
       if(!store.payload.department_positions?.length){
         $Toast.warning(t('message.minimumOneItem'))
+        return
       }
       const data = {
         department_positions:store.payload.department_positions,
@@ -137,7 +139,7 @@ onMounted(()=>{
     <n-form
         ref="formRef"
         :model="store.payload"
-        :rules="validationRules.commandFrom"
+        :rules="validationRules.common"
     >
       <n-spin :show="store.generateLoading">
         <div class="w-full h-[calc(100vh-160px)] overflow-y-auto pb-10">
@@ -160,8 +162,22 @@ item.positions.filter(p=> store.payload.department_positions.includes(p.id)).len
                 </div>
               </n-checkbox-group>
             </div>
-            <div class="col-span-6">
-              <n-form-item :label="$t(`documentPage.command.form.director_id`)" path="director_id">
+            <div class="col-span-2">
+              <n-form-item :label="$t(`content.date`)" path="date" :rule-path="validationRules.rulesNames.requiredNumberField">
+                <n-date-picker
+                    class="w-full"
+                    v-model:value="store.payload.date"
+                    type="date"
+                    :format="useAppSetting.datePicketFormat"
+                />
+              </n-form-item>
+            </div>
+            <div class="col-span-5">
+              <n-form-item
+                  :label="$t(`documentPage.command.form.director_id`)"
+                  path="director_id"
+                  :rule-path="validationRules.rulesNames.requiredNumberField"
+              >
                 <n-select
                     value-field="id"
                     label-field="last_name"
@@ -174,7 +190,7 @@ item.positions.filter(p=> store.payload.department_positions.includes(p.id)).len
                 />
               </n-form-item>
             </div>
-            <div class="col-span-6">
+            <div class="col-span-5">
               <n-form-item :label="$t(`documentPage.command.form.finance_id`)">
                 <n-select
                     :disabled="!store.payload.director_id"
@@ -190,7 +206,11 @@ item.positions.filter(p=> store.payload.department_positions.includes(p.id)).len
               </n-form-item>
             </div>
             <div class="col-span-12">
-              <n-form-item :label="$t(`documentPage.command.form.confirm`)" path="confirmations">
+              <n-form-item
+                  :label="$t(`documentPage.command.form.confirm`)"
+                  path="confirmations"
+                  :rule-path="validationRules.rulesNames.requiredMultiSelectField"
+              >
                 <n-select
                     :disabled="!store.payload.director_id"
                     size="large"

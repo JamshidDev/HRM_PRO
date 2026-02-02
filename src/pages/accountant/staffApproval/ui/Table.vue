@@ -4,7 +4,6 @@ import {
   UIMenuButton,
   UIPagination,
   UIStatus,
-  UIUser,
 } from '@/components/index.js'
 import { useAccountStore, useStaffApprovalStore } from '@/store/modules/index.js'
 import Utils from '@/utils/Utils.js'
@@ -38,6 +37,7 @@ const onSelect = (v) => {
     onDelete(v.data)
   }
 }
+
 </script>
 
 <template>
@@ -47,9 +47,8 @@ const onSelect = (v) => {
         <thead>
         <tr>
           <th class="text-center! min-w-[40px] w-[40px]">{{ $t('content.number') }}</th>
-          <th class="min-w-[200px]">{{ $t('content.worker') }}</th>
           <th class="min-w-[60px] w-[60px]">{{ $t('confirmation.contract.form.number') }}</th>
-          <th class="min-w-[100px] w-[300px]">
+          <th class="min-w-[100px]">
             {{ $t('confirmation.contract.form.organization') }}
           </th>
           <th class="min-w-[100px] w-[100px]">{{ $t('content.status') }}</th>
@@ -65,19 +64,6 @@ const onSelect = (v) => {
                   (store.params.page - 1) * store.params.per_page + idx + 1
                 }}</span>
           </td>
-          <td>
-<!--            <UIUser-->
-<!--                :short="false"-->
-<!--                :hide-tooltip="true"-->
-<!--                :data="{-->
-<!--                      photo: item.worker?.photo,-->
-<!--                      lastName: item.worker?.last_name,-->
-<!--                      firstName: item.worker?.first_name,-->
-<!--                      middleName: item.worker?.middle_name,-->
-<!--                      position:item?.position?.name,-->
-<!--                    }"-->
-<!--            />-->
-          </td>
           <td @click="onOpen(item.id)">
             <div class="flex justify-center">
               <n-button type="primary" class="font-medium" round dashed size="tiny">{{
@@ -89,7 +75,7 @@ const onSelect = (v) => {
           <td>{{ item?.organization?.name }}</td>
           <td><UIStatus :status="item?.confirmation" /></td>
           <td><UIStatus :status="Utils.documentStatus[item?.generate]" /></td>
-          <td>{{ Utils.timeOnlyDate(item?.cert_to) }}</td>
+          <td>{{ Utils.timeOnlyDate(item?.date) }}</td>
           <td>
             <UIMenuButton
                 :show-view="true"

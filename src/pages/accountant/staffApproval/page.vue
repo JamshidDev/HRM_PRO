@@ -1,9 +1,15 @@
 <script setup>
 import { useStaffApprovalStore} from "@stores"
-import { UIPageContent } from "@components"
+import {UIOfficeApp, UIPageContent} from "@components"
 import { Filter, CreateModal, Table} from "./ui"
+import Utils from "@utils/Utils.js"
 
 const store = useStaffApprovalStore()
+const officeAppRef = ref(null)
+
+const openCommand = (id) => {
+  officeAppRef.value.openPdf(id, Utils.documentModels.command)
+}
 
 onMounted(() => {
   store._index()
@@ -14,6 +20,7 @@ onMounted(() => {
   <UIPageContent>
     <Filter/>
     <CreateModal/>
-    <Table/>
+    <Table @openOffice="openCommand" />
+    <UIOfficeApp ref="officeAppRef" />
   </UIPageContent>
 </template>

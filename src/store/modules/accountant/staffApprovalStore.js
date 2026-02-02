@@ -20,6 +20,7 @@ export const useStaffApprovalStore = defineStore('pensionStore', {
             confirmations: [],
             director_id: null,
             finance_id: null,
+            date: null,
             department_positions:[],
         },
         sortableConfirmations: [],
@@ -71,6 +72,7 @@ export const useStaffApprovalStore = defineStore('pensionStore', {
         resetForm() {
             this.elementId = null
             this.payload.department_positions = []
+            this.payload.date = Date.now()
         }
     }
 })

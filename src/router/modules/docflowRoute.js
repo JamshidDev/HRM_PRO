@@ -1,13 +1,5 @@
 import { AppLayouts, AppPaths } from '@/utils/index.js'
 import Utils from '@/utils/Utils.js'
-import {
-  ConfContractPage,
-  ConfAddContractPage,
-  ConfApplicationPage,
-  ConfCommandPage,
-  ConfTimeSheetPage,
-  ConfVacationSchedulePage, ConfCertificatePage,
-} from '@/pages/docFlow/index.js'
 
 export const docFlowRoutes = [
   {
