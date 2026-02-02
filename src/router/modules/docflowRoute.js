@@ -12,49 +12,49 @@ import {
 export const docFlowRoutes = [
   {
     path: Utils.routeDocFlowPathMaker(AppPaths.ConfContract),
-    component: ConfContractPage,
+    component: ()=> import("@/pages/docFlow/confirmation/contract/ConfirmationContract.vue"),
     meta: {
       layout: AppLayouts.main
     }
   },
   {
     path: Utils.routeDocFlowPathMaker(AppPaths.ConfCommand),
-    component: ConfCommandPage,
+    component: import("@/pages/docFlow/confirmation/command/ConfirmCommand.vue"),
     meta: {
       layout: AppLayouts.main
     }
   },
   {
     path: Utils.routeDocFlowPathMaker(AppPaths.ConfAdContract),
-    component: ConfAddContractPage,
+    component: import("@/pages/docFlow/confirmation/adContract/AdContractPage.vue"),
     meta: {
       layout: AppLayouts.main
     }
   },
   {
     path: Utils.routeDocFlowPathMaker(AppPaths.ConfApplication),
-    component: ConfApplicationPage,
+    component: import("@/pages/docFlow/confirmation/application/ConfApplication.vue"),
     meta: {
       layout: AppLayouts.main
     }
   },
   {
     path: Utils.routeDocFlowPathMaker(AppPaths.TimeSheet),
-    component: ConfTimeSheetPage,
+    component: import("@/pages/docFlow/confirmation/timesheet/TimeSheetPage.vue"),
     meta: {
       layout: AppLayouts.main
     }
   },
   {
     path: Utils.routeDocFlowPathMaker(AppPaths.VacationSchedule),
-    component: ConfVacationSchedulePage,
+    component: import("@/pages/docFlow/confirmation/vacationSchedule/page.vue"),
     meta: {
       layout: AppLayouts.main
     }
   },
   {
     path: Utils.routeDocFlowPathMaker(AppPaths.Certificate),
-    component: ConfCertificatePage,
+    component: import("@/pages/docFlow/confirmation/certificate/page.vue"),
     meta: {
       layout: AppLayouts.main
     }
