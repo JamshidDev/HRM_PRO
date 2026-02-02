@@ -444,11 +444,9 @@
     if(componentStore.confirmationList.length>0) return
     componentStore._confirmations()
   }
-
   const onChangeDraggle = () => {
     store.payload.confirmations = store.sortableConfirmations.map((v) => v.id)
   }
-
   const onChangeConfirmation = () => {
     fillSortableConfirmations()
     syncConfirmationEv()

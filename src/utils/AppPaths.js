@@ -98,6 +98,7 @@ export const AppPaths = {
   Punishment: '/punishment',
   Incentive: '/incentive',
   Report: '/report',
+  Approval: '/approval',
   SpecialReport: '/spectial-report',
   WorkDuration: '/work-duration',
   HCWorkDuration: '/hc-work-duration',

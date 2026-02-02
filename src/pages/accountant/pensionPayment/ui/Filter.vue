@@ -21,7 +21,7 @@
 
   const filterCount = computed(() => {
     return (
-      Number(Boolean(store.params.organizations.length)) +
+      Number(Boolean(store.params.organizations?.length)) +
       Number(Boolean(store.params.year)) +
       Number(Boolean(store.params.month))
     )

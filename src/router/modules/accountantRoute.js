@@ -60,7 +60,14 @@ export const accountantRoutes = [
   },
   {
     path: Utils.routeAccountantPathMaker(AppPaths.Report),
-    component: import("@/pages/hrm/report/ReportPage.vue"),
+    component:()=> import("@/pages/hrm/report/ReportPage.vue"),
+    meta: {
+      layout: AppLayouts.main
+    }
+  },
+  {
+    path: Utils.routeAccountantPathMaker(AppPaths.Approval),
+    component:()=> import("@/pages/accountant/staffApproval/page.vue"),
     meta: {
       layout: AppLayouts.main
     }

@@ -53,7 +53,8 @@ import {
     AppsAddIn16Regular,
     AppFolder24Filled,
     ShiftsCheckmark20Regular,
-    DocumentBulletList24Filled, ChatMultiple16Filled, CommentLightning20Filled,PersonVoice20Filled
+    DocumentBulletList24Filled, ChatMultiple16Filled, CommentLightning20Filled,PersonVoice20Filled,
+  AppsList20Regular
 } from '@vicons/fluent'
 import { AppPaths } from '@/utils/index.js'
 import Utils from '@/utils/Utils.js'
@@ -663,6 +664,13 @@ export const navigations = [
         icon: AppFolder20Filled,
         color: 'bg-info',
         permission: appPermissions.hrReport
+      },
+      {
+        label: 'staffApproval.name',
+        path: Utils.routeAccountantPathMaker(AppPaths.Approval),
+        icon: AppsList20Regular,
+        color: 'bg-info',
+        permission: appPermissions.admin
       },
     ]
   },

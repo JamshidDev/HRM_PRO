@@ -15,17 +15,27 @@ export const useStaffApprovalStore = defineStore('pensionStore', {
             page: 1,
             per_page: 10,
             search: null,
-
         },
+        payload:{
+            confirmations: [],
+            director_id: null,
+            finance_id: null,
+            department_positions:[],
+        },
+        sortableConfirmations: [],
+        oneByOne: true,
+        positions:[],
+        generateLoading: false,
+        saveLoading: false,
     }),
     actions:{
         _index() {
             this.loading = true
             const params = {
                 ...this.params,
-                organizations: this.params.organizations.map((v) => v.id).toString() || undefined
+                // organizations: this.params.organizations.map((v) => v.id).toString() || undefined
             }
-            $ApiService.pensionService
+            $ApiService.staffApprovalService
                 ._index({ params })
                 .then((res) => {
                     this.list = res.data.data.data
@@ -35,42 +45,32 @@ export const useStaffApprovalStore = defineStore('pensionStore', {
                     this.loading = false
                 })
         },
-        _show() {
-            this.showLoading = true
-            $ApiService.pensionService
-                ._show({ params: this.params })
+        _showGenerate() {
+            this.generateLoading = true
+            $ApiService.staffApprovalService
+                ._showGenerate({ params: this.params })
                 .then((res) => {
-                    this.list = res.data.data.data
-                    this.totalItems = res.data.data.total
+                    this.positions = res.data.data.positions
                 })
                 .finally(() => {
-                    this.showLoading = false
+                    this.generateLoading = false
                 })
         },
-        _download() {
-            this.downloadLoading = true
-            $ApiService.pensionService
-                ._example()
-                .then((res) => {
-                    Utils.downloadFileByUrl(res.data.data.url)
-                })
-                .finally(() => {
-                    this.downloadLoading = false
-                })
+        _create(data){
+            this.saveLoading = true
+            $ApiService.staffApprovalService._create({data}).then((res)=>{
+                this._index()
+            }).finally(()=>{
+                this.visible = false
+                this.saveLoading = false
+            })
         },
-        resetParams() {
-            const oneMonthAgo = getOneMonthAgoYearMonth()
-            this.params.organizations = []
-
-            this.params.year = oneMonthAgo.year
-            this.params.month = oneMonthAgo.month
-        },
-
         openVisible(data) {
             this.visible = data
         },
         resetForm() {
             this.elementId = null
+            this.payload.department_positions = []
         }
     }
 })

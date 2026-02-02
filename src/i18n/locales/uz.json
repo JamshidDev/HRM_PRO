@@ -258,6 +258,7 @@
     "clearedFields": "Maydonlar tozalandi!",
     "unExpectedError": "Kutilmagan xatolik yuz berdi!",
     "warning-data": "Ma'lumotlar yetarli emas!",
+    "minimumOneItem": "Kamida bitta lavozim tanlanishi shart!",
     "noPermission": "Ruxsat etilmadi!"
   },
   "enum": {
@@ -2656,6 +2657,13 @@
       "newProtocol": "Yangi protokol",
       "selectedWorker": "Tanlanganlar",
       "received": "Kelgan"
+    }
+  },
+  "staffApproval": {
+    "name": "Shtatlar",
+    "createTitle": "Shtatlarni tasdiqlashga yuborish",
+    "form": {
+
     }
   }
 }
