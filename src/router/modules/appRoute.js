@@ -1,27 +1,26 @@
 import { AppLayouts, AppPaths } from '@/utils/index.js'
 
-import {
-  HomePage,
-  NotFoundPage,
-  DocumentSignature,
-  LoginPageV2,
-  AIConversationPage,
-  PublicPage
-} from '@/pages/app/index.js'
-
 export const appRoutes = [
   {
     path: AppPaths.DocumentViewer + '/:status',
     name: AppPaths.DocumentViewer.substring(1),
-    component: DocumentSignature,
+    component: ()=> import('@/pages/app/documentSignature/DocumentSignature.vue'),
     meta: {
       layout: AppLayouts.empty
     }
   },
   {
+    path: AppPaths.Profile,
+    name: AppPaths.Profile.substring(1),
+    component: ()=> import('@/pages/app/profile/ProfilePage.vue'),
+    meta: {
+      layout: AppLayouts.main
+    }
+  },
+  {
     path: AppPaths.Home,
     name: AppPaths.Home.substring(1),
-    component: HomePage,
+    component: ()=> import('@/pages/app/home/page.vue'),
     meta: {
       layout: AppLayouts.main
     }
@@ -29,7 +28,7 @@ export const appRoutes = [
   {
     path: AppPaths.AIConversation,
     name: AppPaths.AIConversation.substring(1),
-    component: AIConversationPage,
+    component: ()=> import("@/pages/app/ai/AIConversationPage.vue"),
     meta: {
       layout: AppLayouts.main
     }
@@ -37,7 +36,7 @@ export const appRoutes = [
   {
     path: AppPaths.Login,
     name: AppPaths.Login.substring(1),
-    component: LoginPageV2,
+    component: ()=> import("@/pages/app/login/page.vue"),
     meta: {
       layout: AppLayouts.empty
     }
@@ -45,7 +44,7 @@ export const appRoutes = [
   {
     path: '/public/:model/:key',
     name: 'public-page',
-    component: PublicPage,
+    component: ()=> import("@/pages/app/public/page.vue"),
     meta: {
       layout: AppLayouts.empty
     }
@@ -53,7 +52,7 @@ export const appRoutes = [
   {
     path: '/:pathMatch(.*)*',
     name: 'NotFound',
-    component: NotFoundPage,
+    component: ()=> import("@/pages/app/notFound/page.vue"),
     meta: {
       layout: AppLayouts.empty
     }

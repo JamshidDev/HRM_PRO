@@ -3,7 +3,7 @@ import i18n from '@/i18n/index.js'
 import Utils from '@/utils/Utils.js'
 import {getOneMonthAgoYearMonth} from "@utils"
 const { t } = i18n.global
-export const useStaffApprovalStore = defineStore('pensionStore', {
+export const useStaffApprovalStore = defineStore('staffApprovalStore', {
     state: () => ({
         list: [],
         loading: false,

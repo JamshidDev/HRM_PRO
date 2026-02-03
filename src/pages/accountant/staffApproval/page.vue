@@ -8,7 +8,7 @@ const store = useStaffApprovalStore()
 const officeAppRef = ref(null)
 
 const openCommand = (id) => {
-  officeAppRef.value.openPdf(id, Utils.documentModels.command)
+  officeAppRef.value.openPdf(id, Utils.documentModels.staffingApprove)
 }
 
 onMounted(() => {

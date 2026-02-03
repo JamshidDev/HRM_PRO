@@ -61,7 +61,7 @@ const workerAction  = {
 <template>
 
   <UIModal
-      :width="800"
+      :width="900"
       v-model:visible="store.visible"
 
       :title="$t(store.visibleType? 'approve.createTitle' : 'approve.updateTitle')"
@@ -76,9 +76,6 @@ const workerAction  = {
         >
           <n-form-item class="col-span-6" :label="$t('content.name')" path="title" :rule-path="validationRules.rulesNames.requiredStringField">
             <n-input v-model:value="store.payload.title" />
-          </n-form-item>
-          <n-form-item class="col-span-6" :label="$t('content.description')" path="description">
-            <n-input type="textarea" :rows="1" v-model:value="store.payload.description" />
           </n-form-item>
           <n-form-item
               class="col-span-6"
@@ -116,7 +113,7 @@ const workerAction  = {
             />
           </n-form-item>
           <n-form-item
-              class="col-span-12"
+              class="col-span-6"
               :label="$t(`content.workers`)"
               path="worker_position_ids"
               :rule-path="validationRules.rulesNames.requiredMultiSelectField"
@@ -133,6 +130,9 @@ const workerAction  = {
                 :clearable="true"
                 multiple
             />
+          </n-form-item>
+          <n-form-item class="col-span-12" :label="$t('content.description')" path="description">
+            <n-input type="textarea" :rows="1" v-model:value="store.payload.description" />
           </n-form-item>
         </n-form>
       </n-spin>

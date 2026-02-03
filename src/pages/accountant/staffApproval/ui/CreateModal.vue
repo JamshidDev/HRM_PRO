@@ -24,7 +24,7 @@ const onSubmit = ()=> {
         return
       }
       const data = {
-        department_positions:store.payload.department_positions,
+        department_positions:store.payload?.department_positions,
         confirmations:store.payload.confirmations,
         director_id: store.payload.director_id,
         confirmatory_id: store.payload.finance_id ?? undefined,
