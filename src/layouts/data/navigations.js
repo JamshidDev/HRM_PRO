@@ -64,12 +64,31 @@ import i18n from '@/i18n/index.js'
 
 const { t } = i18n.global
 
+// {
+//   "confirmation": {
+//   "commands": 22,
+//       "contracts": 1,
+//       "contract-additional": 4,
+//       "worker-application": 0,
+//       "staffing-approve": 0,
+//       "lms-certificate": 0
+// },
+//   "hr": {
+//   "commands": 41,
+//       "contracts": 8,
+//       "contract-additional": 0,
+//       "worker-applications": 13
+// }
+// }
+
 export const navigations = [
   {
     label: 'navigation.hrm',
     path: AppPaths.Hrm,
     icon: Person32Filled,
     permission: appPermissions.hr,
+    name:'hr',
+
     children: [
       {
         label: 'dashboardPage.name',
@@ -104,28 +123,32 @@ export const navigations = [
         path: Utils.routeHrmPathMaker(AppPaths.Contract),
         icon: DocumentPerson20Filled,
         color: 'bg-success',
-        permission: appPermissions.hrContracts
+        permission: appPermissions.hrContracts,
+        name:'contracts',
       },
       {
         label: 'documentPage.tabs.command',
         path: Utils.routeHrmPathMaker(AppPaths.Command),
         icon: DocumentCopy24Filled,
         color: 'bg-secondary',
-        permission: appPermissions.hrCommands
+        permission: appPermissions.hrCommands,
+        name:'commands',
       },
       {
         label: 'documentPage.tabs.adContract',
         path: Utils.routeHrmPathMaker(AppPaths.AdContract),
         icon: DocumentAdd20Filled,
         color: 'bg-warning',
-        permission: appPermissions.hrContractAdditional
+        permission: appPermissions.hrContractAdditional,
+        name:'contract-additional',
       },
       {
         label: 'applicationPage.name',
         path: Utils.routeHrmPathMaker(AppPaths.Application),
         icon: DocumentEdit20Filled,
         color: 'bg-success',
-        permission: appPermissions.hrWorkerApplications
+        permission: appPermissions.hrWorkerApplications,
+        name:'worker-applications',
       },
       {
         label: 'confirmationPage.name',
@@ -261,41 +284,46 @@ export const navigations = [
     path: '/docflow',
     icon: DocumentPerson16Filled,
     permission: appPermissions.confirmation,
+    name:'confirmation',
     children: [
       {
         label: 'confirmation.name',
         path: Utils.routeDocFlowPathMaker(AppPaths.ConfContract),
         icon: DocumentPerson20Filled,
         color: 'bg-dark',
-        permission: appPermissions.confirmationContracts
+        permission: appPermissions.confirmationContracts,
+        name:'contracts',
       },
       {
         label: 'documentPage.tabs.command',
         path: Utils.routeDocFlowPathMaker(AppPaths.ConfCommand),
         icon: DocumentCopy24Filled,
         color: 'bg-primary',
-        permission: appPermissions.confirmationCommands
+        permission: appPermissions.confirmationCommands,
+        name:'commands',
       },
       {
         label: 'documentPage.tabs.adContract',
         path: Utils.routeDocFlowPathMaker(AppPaths.ConfAdContract),
         icon: DocumentAdd20Filled,
         color: 'bg-warning',
-        permission: appPermissions.confirmationAddContracts
+        permission: appPermissions.confirmationAddContracts,
+        name:'contract-additional',
       },
       {
         label: 'applicationPage.name',
         path: Utils.routeDocFlowPathMaker(AppPaths.ConfApplication),
         icon: DocumentEdit20Filled,
         color: 'bg-info',
-        permission: appPermissions.confirmationWorkerApplications
+        permission: appPermissions.confirmationWorkerApplications,
+        name:'worker-application',
       },
       {
         label: 'timesheetPage.name',
         path: Utils.routeDocFlowPathMaker(AppPaths.TimeSheet),
         icon: GridKanban20Filled,
         color: 'bg-secondary',
-        permission: appPermissions.confirmationTable
+        permission: appPermissions.confirmationTable,
       },
       {
         label: 'vacationSchedule.name',
@@ -309,14 +337,16 @@ export const navigations = [
         path: Utils.routeDocFlowPathMaker(AppPaths.Certificate),
         icon: Certificate24Filled,
         color: 'bg-info',
-        permission: appPermissions.confirmationLmsCertificate
+        permission: appPermissions.confirmationLmsCertificate,
+        name:'lms-certificate',
       },
       {
         label: 'staffingApproval.name',
         path: Utils.routeDocFlowPathMaker(AppPaths.Approval),
         icon: AppsList20Regular,
         color: 'bg-info',
-        permission: appPermissions.confirmationStaffingApproval
+        permission: appPermissions.confirmationStaffingApproval,
+        name:'staffing-approve',
       },
     ]
   },

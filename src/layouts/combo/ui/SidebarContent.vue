@@ -3,13 +3,11 @@
   import {
     ChevronDown12Regular,
     ChevronDoubleLeft16Filled,
-    ErrorCircle20Filled,
-    Bookmark16Filled
   } from '@vicons/fluent'
   import { useAccountStore } from '@/store/modules/index.js'
   import i18n from '@/i18n/index.js'
   import { AppPaths, useAppSetting } from '@/utils/index.js'
-  import { PageInstruction } from '@/components/index.js'
+  import { PageInstruction, MiniMenuBadge, MenuItemBadge } from '@components'
 
   const { t } = i18n.global
   const route = useRoute()
@@ -72,6 +70,7 @@
         label: v.label,
         path: v.path,
         icon: v.icon,
+        name: v?.name,
         permission: v.permission,
         allowed: store.checkPermission(v.permission)
       }))
@@ -118,6 +117,11 @@
     }
   }
 
+  const currentCategory = computed(() => {
+    const nav = navigations.find(n => n.path === menuPath.value)
+    return nav?.name || null
+  })
+
   const isComboxMenu = (path) => {
     // if (route.path.includes(path)) {
     //   menuPath.value = path
@@ -156,9 +160,10 @@
           <div class="flex flex-col relative group">
             <div
               :class="[isComboxMenu(item.path) && 'active-mini-content']"
-              class="main-menu-item"
+              class="main-menu-item border"
               @click="nextPanel(item.path)"
             >
+              <MiniMenuBadge :category="item?.name ?? undefined"/>
               <n-icon>
                 <component :is="item.icon" />
               </n-icon>
@@ -220,6 +225,7 @@
                   item?.disable && 'opacity-30'
                 ]"
               >
+                <MenuItemBadge :category="currentCategory"  :field="item?.name"/>
                 <div :class="[item?.color]" class="item-icon rounded-[10px] ml-[-2px]">
                   <n-icon size="20">
                     <component :is="item.icon" />

@@ -48,6 +48,8 @@ export { default as UIMultipleLangItems } from './ui/MultipleLangItems.vue'
 export { default as DownloadTask } from './ui/DownloadTask.vue'
 export { default as SuperStructure } from './ui/SuperStructure.vue'
 export { default as VTable } from './ui/Table.vue'
+export { default as MiniMenuBadge } from './chip/MiniMenuBadge.vue'
+export { default as MenuItemBadge } from './chip/MenuItemBadge.vue'
 
 export * from './layoutTab'
 export * from './editor'

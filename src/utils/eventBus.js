@@ -10,4 +10,5 @@ export const Events = {
   APPLICATION_GENERATED: 'worker.application.generated',
 
   CERTIFICATED_GENERATED: 'lms.certificate.generated',
+  DOCUMENT_COUNT: 'document.counts',
 }

@@ -18,8 +18,21 @@ export const useSocketStore = defineStore('useSocketStore', {
     allOnlineUsers: [],
     userVisible: false,
     reactionEmojiEv: null,
-    notificationStore: useNotificationStore()
+    counts: {
+      confirmation: {},
+      hr: {}
+    }
   }),
+  getters: {
+    getCategoryTotal: (state) => (category) => {
+      const fields = state.counts[category]
+      if (!fields) return 0
+      return Object.values(fields).reduce((sum, val) => sum + val, 0)
+    },
+    getCount: (state) => (category, field) => {
+      return state.counts[category]?.[field] || 0
+    },
+  },
   actions: {
     initSocket(token, userId) {
 
@@ -89,6 +102,28 @@ export const useSocketStore = defineStore('useSocketStore', {
         if(allowedEvents.includes(data.type)){
           eventBus.emit(data.type, data)
         }
+
+        if(data.type === Events.DOCUMENT_COUNT){
+          console.log(data.counts)
+          this.updateCount(data.counts)
+
+          // {
+          //   "confirmation": {
+          //   "commands": 22,
+          //       "contracts": 1,
+          //       "contract-additional": 4,
+          //       "worker-application": 0,
+          //       "staffing-approve": 0,
+          //       "lms-certificate": 0
+          // },
+          //   "hr": {
+          //   "commands": 41,
+          //       "contracts": 8,
+          //       "contract-additional": 0,
+          //       "worker-applications": 13
+          // }
+          // }
+        }
       })
 
       this.socket.on('online_users', (data) => {
@@ -153,6 +188,14 @@ export const useSocketStore = defineStore('useSocketStore', {
       if (this.socket && this.currentUserId) {
         this.socket.disconnect()
       }
+    },
+    updateCount(data){
+      Object.entries(data).forEach(([type, fields]) => {
+        if(!this.counts[type]){
+          this.counts[type] = {}
+        }
+        this.counts[type] = {...this.counts[type], ...fields}
+      })
     },
     disconnect() {
       if (this.socket) {
