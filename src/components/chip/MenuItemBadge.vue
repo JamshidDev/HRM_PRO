@@ -1,6 +1,7 @@
 <script setup>
 import { ref, watch, computed } from 'vue'
 import { useSocketStore } from "@stores"
+import SortBtn from "@pages/accountant/monthReport/ui/SortBtn.vue"
 
 const store = useSocketStore()
 const isRippling = ref(false)
@@ -31,7 +32,12 @@ watch(value, (newVal, oldVal) => {
 <template>
   <span v-if="value > 0" class="absolute top-[-4px] right-[-2px]">
     <span class="relative inline-flex">
-      <n-badge class="menu-item-badge" :value="value" :max="99" />
+       <n-tooltip trigger="hover">
+                <template #trigger>
+                 <n-badge class="menu-item-badge" :value="value" :max="99" />
+                </template>
+                {{ $t('message.unSignedDocumentCount') }}
+              </n-tooltip>
       <span
           v-if="isRippling"
           class="absolute inset-0 rounded-full animate-ping bg-primary opacity-75"
