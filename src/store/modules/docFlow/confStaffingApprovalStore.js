@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import i18n from '@/i18n/index.js'
 import Utils from "@utils/Utils.js"
 const { t } = i18n.global
-export const useStaffingApprovalStore = defineStore('confStaffingApprovalStore', {
+export const useConfStaffingApprovalStore = defineStore('confStaffingApprovalStore', {
     state: () => ({
         list: [],
         params: {
@@ -20,7 +20,7 @@ export const useStaffingApprovalStore = defineStore('confStaffingApprovalStore',
             const params = {
                 ...this.params,
             }
-            $ApiService.confVacationScheduleService
+            $ApiService.confStaffingApprovalService
                 ._index({ params })
                 .then((res) => {
                     this.list = res.data.data.data.map(v => ({

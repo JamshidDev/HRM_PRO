@@ -169,6 +169,7 @@ export const appPermissions = {
   confirmationLmsCertificate: 'confirmation-lms-certificate',
   confirmationLmsCertificateRead: 'confirmation-lms-certificate-read',
   confirmationLmsCertificateWrite: 'confirmation-lms-certificate-write',
+  confirmationStaffingApproval: 'confirmation-staffing-approval',
 
   exam: 'exam',
 
@@ -307,6 +308,9 @@ export const appPermissions = {
   economistUploadsRead: 'economist-uploads-read',
   economistUploadsConfirm: 'economist-uploads-confirm',
   economistUploadsStatus: 'economist-uploads-status',
+  economistStaffingApprove: 'economist-staffing-approve',
+  economistStaffingApproveRead: 'economist-staffing-approve-read',
+  economistStaffingApproveWrite: 'economist-staffing-approve-write',
 
   lms: 'lms',
   lmsDirection: 'lms-direction',

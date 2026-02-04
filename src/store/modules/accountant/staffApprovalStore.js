@@ -158,6 +158,15 @@ export const useStaffingApprovalStore = defineStore('staffingApprovalStore', {
                 this.saveLoading = false
             })
         },
+        _delete() {
+            this.loading = true
+            $ApiService.staffApprovalService
+                ._delete({ id: this.elementId })
+                .finally(() => {
+                    this.loading = false
+                    this._index()
+                })
+        },
         openVisible(data) {
             this.visible = data
         },

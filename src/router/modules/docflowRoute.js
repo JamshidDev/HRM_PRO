@@ -50,5 +50,12 @@ export const docFlowRoutes = [
     meta: {
       layout: AppLayouts.main
     }
+  },
+  {
+    path: Utils.routeDocFlowPathMaker(AppPaths.Approval),
+    component:()=> import("@/pages/docFlow/confirmation/staffingApproval/page.vue"),
+    meta: {
+      layout: AppLayouts.main
+    }
   }
 ]

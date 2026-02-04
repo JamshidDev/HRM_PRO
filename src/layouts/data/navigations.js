@@ -316,7 +316,7 @@ export const navigations = [
         path: Utils.routeDocFlowPathMaker(AppPaths.Approval),
         icon: AppsList20Regular,
         color: 'bg-info',
-        permission: appPermissions.admin
+        permission: appPermissions.confirmationStaffingApproval
       },
     ]
   },
@@ -677,7 +677,7 @@ export const navigations = [
         path: Utils.routeAccountantPathMaker(AppPaths.Approval),
         icon: AppsList20Regular,
         color: 'bg-info',
-        permission: appPermissions.admin
+        permission: appPermissions.economistStaffingApprove
       },
     ]
   },

@@ -1,10 +1,11 @@
 <script setup>
-import { useStaffingApprovalStore} from "@stores"
+import {useAccountStore, useStaffingApprovalStore} from "@stores"
 import {UIOfficeApp, UIPageContent} from "@components"
 import { Filter, CreateModal, Table} from "./ui"
 import Utils from "@utils/Utils.js"
 
 const store = useStaffingApprovalStore()
+const accStore = useAccountStore()
 const officeAppRef = ref(null)
 
 const openCommand = (id) => {
@@ -12,6 +13,7 @@ const openCommand = (id) => {
 }
 
 onMounted(() => {
+  if (!accStore.checkAction(accStore.pn.economistStaffingApproveRead)) return
   store._index()
 })
 </script>

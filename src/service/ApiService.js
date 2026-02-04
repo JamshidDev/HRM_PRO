@@ -72,6 +72,7 @@ import adContractService from '@/service/v1/docFlow/adContractService.js'
 import applicationService from '@/service/v1/docFlow/applicationService.js'
 import confVacationScheduleService from '@/service/v1/docFlow/vacationScheduleService.js'
 import confCertificateService from '@/service/v1/docFlow/confCertificateService.js'
+import confStaffingApprovalService from '@/service/v1/docFlow/confStaffingApprovalService.js'
 
 import topicService from '@/service/v1/attestation/topicService.js'
 import examVideoService from '@/service/v1/attestation/examVideoService.js'
@@ -266,4 +267,5 @@ export default {
   confCertificateService,
   approveService,
   staffApprovalService,
+  confStaffingApprovalService,
 }

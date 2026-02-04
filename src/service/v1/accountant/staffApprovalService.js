@@ -26,6 +26,10 @@ const confirmation = async (payload) => {
     return await axios.get(`/v1/structure/confirmations`, { params: payload?.params })
 }
 
+const _delete = async (payload) => {
+    return await axios.delete(`/v1/economist/staffing/approve/${payload.id}`)
+}
+
 export default {
     _index,
     _create,
@@ -33,4 +37,5 @@ export default {
     organizationParents,
     organizationLeaders,
     confirmation,
+    _delete,
 }

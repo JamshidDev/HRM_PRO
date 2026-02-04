@@ -5,10 +5,10 @@ import {
   UIPagination,
   UIStatus,
 } from '@/components/index.js'
-import { useAccountStore, useStaffingApprovalStore } from '@/store/modules/index.js'
+import { useAccountStore, useConfStaffingApprovalStore } from '@/store/modules/index.js'
 import Utils from '@/utils/Utils.js'
 
-const store = useStaffingApprovalStore()
+const store = useConfStaffingApprovalStore()
 const accStore = useAccountStore()
 const emits = defineEmits(['openOffice'])
 
@@ -18,24 +18,14 @@ const changePage = (v) => {
   store._index()
 }
 
-const onDelete = (v) => {
-  store.elementId = v.id
-  store._delete()
-}
-
 const onOpen = (id) => {
   emits('openOffice', id)
 }
 
 const onSelect = (v) => {
   store.elementId = v.data.id
-
   if (v.key === 'view') {
-    if (!accStore.checkAction(accStore.pn.economistStaffingApproveRead)) return
     onOpen(v.data.id)
-  } else if (v.key === Utils.ActionTypes.delete) {
-    if (!accStore.checkAction(accStore.pn.economistStaffingApproveWrite)) return
-    onDelete(v.data)
   }
 }
 
@@ -68,19 +58,19 @@ const onSelect = (v) => {
           <td @click="onOpen(item.id)">
             <div class="flex justify-center">
               <n-button type="primary" class="font-medium" round dashed size="tiny">{{
-                  item?.number
+                  item?.staffing_approve?.number
                 }}</n-button>
             </div>
           </td>
 
-          <td>{{ item?.organization?.name }}</td>
-          <td><UIStatus :status="item?.confirmation" /></td>
+          <td>{{ item?.staffing_approve?.organization?.name }}</td>
+          <td><UIStatus :status="item?.staffing_approve?.confirmation" /></td>
           <td><UIStatus :status="Utils.documentStatus[item?.generate]" /></td>
-          <td>{{ Utils.timeOnlyDate(item?.date) }}</td>
+          <td>{{ Utils.timeOnlyDate(item?.staffing_approve?.date) }}</td>
           <td>
             <UIMenuButton
                 :show-view="true"
-                :show-delete="store.canShowFilter"
+                :show-delete="false"
                 :data="item"
                 @selectEv="onSelect"
             />
