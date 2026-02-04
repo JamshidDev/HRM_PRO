@@ -310,7 +310,14 @@ export const navigations = [
         icon: Certificate24Filled,
         color: 'bg-info',
         permission: appPermissions.confirmationLmsCertificate
-      }
+      },
+      {
+        label: 'staffingApproval.name',
+        path: Utils.routeDocFlowPathMaker(AppPaths.Approval),
+        icon: AppsList20Regular,
+        color: 'bg-info',
+        permission: appPermissions.admin
+      },
     ]
   },
   {
@@ -666,7 +673,7 @@ export const navigations = [
         permission: appPermissions.hrReport
       },
       {
-        label: 'staffApproval.name',
+        label: 'staffingApproval.name',
         path: Utils.routeAccountantPathMaker(AppPaths.Approval),
         icon: AppsList20Regular,
         color: 'bg-info',

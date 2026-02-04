@@ -5,10 +5,10 @@ import {
   UIPagination,
   UIStatus,
 } from '@/components/index.js'
-import { useAccountStore, useStaffApprovalStore } from '@/store/modules/index.js'
+import { useAccountStore, useStaffingApprovalStore } from '@/store/modules/index.js'
 import Utils from '@/utils/Utils.js'
 
-const store = useStaffApprovalStore()
+const store = useStaffingApprovalStore()
 const accStore = useAccountStore()
 const emits = defineEmits(['openOffice'])
 

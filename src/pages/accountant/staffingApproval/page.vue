@@ -1,10 +1,10 @@
 <script setup>
-import { useStaffApprovalStore} from "@stores"
+import { useStaffingApprovalStore} from "@stores"
 import {UIOfficeApp, UIPageContent} from "@components"
 import { Filter, CreateModal, Table} from "./ui"
 import Utils from "@utils/Utils.js"
 
-const store = useStaffApprovalStore()
+const store = useStaffingApprovalStore()
 const officeAppRef = ref(null)
 
 const openCommand = (id) => {

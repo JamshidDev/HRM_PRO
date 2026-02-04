@@ -3,7 +3,7 @@ import i18n from '@/i18n/index.js'
 import Utils from '@/utils/Utils.js'
 import {getOneMonthAgoYearMonth} from "@utils"
 const { t } = i18n.global
-export const useStaffApprovalStore = defineStore('staffApprovalStore', {
+export const useStaffingApprovalStore = defineStore('staffingApprovalStore', {
     state: () => ({
         list: [],
         loading: false,
@@ -19,17 +19,109 @@ export const useStaffApprovalStore = defineStore('staffApprovalStore', {
         payload:{
             confirmations: [],
             director_id: null,
-            finance_id: null,
             date: null,
             department_positions:[],
+            confirmatory_id:null,
         },
         sortableConfirmations: [],
         oneByOne: true,
         positions:[],
         generateLoading: false,
         saveLoading: false,
+
+        worker:{
+            list:[],
+            loading: false,
+            totalItems: 0,
+            params:{
+                page:1,
+                per_page:100,
+                search:null,
+            }
+        },
+        parent:{
+            list:[],
+            loading: false,
+            totalItems: 0,
+            params:{
+                page:1,
+                per_page:100,
+                search:null,
+            }
+        },
+        leader:{
+            list:[],
+            loading: false,
+            totalItems: 0,
+            params:{
+                parent_id:null,
+                page:1,
+                per_page:100,
+                search:null,
+            }
+        },
+        confirmation:{
+            list:[],
+            loading: false,
+            totalItems: 0,
+            params:{
+                parent_id:null,
+                page:1,
+                per_page:100,
+                search:null,
+            }
+        }
     }),
     actions:{
+        _confirmation(infinity){
+            this.confirmation.loading = true
+            const params = {
+                ...this.confirmation.params
+            }
+            $ApiService.staffApprovalService.confirmation({params}).then((res)=>{
+                const data = res.data.data.data.map(v=>({id: v.id, name: Utils.combineFullName(v.worker), position: v.post_short_name}))
+                this.confirmation.list = infinity ? [...this.confirmation.list,...data] : data
+                this.confirmation.totalItems = res.data.data.total
+            }).finally(()=>{
+                this.confirmation.loading = false
+            })
+        },
+        _organizationParents(){
+            this.parent.loading = true
+            $ApiService.staffApprovalService.organizationParents().then((res)=>{
+                this.parent.list = res.data.data
+            }).finally(()=>{
+                this.parent.loading = false
+            })
+        },
+        _organizationLeader(infinity){
+            this.leader.loading = true
+            const params = {
+                ...this.leader.params
+            }
+            $ApiService.staffApprovalService.organizationLeaders({params}).then((res)=>{
+                const data = res.data.data.data.map(v=>({id: v.id, name: Utils.combineFullName(v.worker), position: v.post_short_name}))
+                this.leader.list = infinity ? [...this.leader.list,...data] : data
+                this.leader.totalItems = res.data.data.total
+            }).finally(()=>{
+                this.leader.loading = false
+            })
+        },
+
+        _workers(infinity){
+            this.worker.loading = true
+            const params = {
+                ...this.worker.params,
+            }
+            $ApiService.workerService._index({params}).then((res)=>{
+                const data = res.data.data.data.map(v=>({id: v.id, name: Utils.combineFullName(v.worker), position: v.position.name}))
+                this.worker.list = infinity ? [...this.worker.list,...data] : data
+                this.worker.totalItems = res.data.data.total
+            }).finally(()=>{
+                this.worker.loading = false
+            })
+
+        },
         _index() {
             this.loading = true
             const params = {
@@ -60,9 +152,9 @@ export const useStaffApprovalStore = defineStore('staffApprovalStore', {
         _create(data){
             this.saveLoading = true
             $ApiService.staffApprovalService._create({data}).then((res)=>{
+                this.visible = false
                 this._index()
             }).finally(()=>{
-                this.visible = false
                 this.saveLoading = false
             })
         },

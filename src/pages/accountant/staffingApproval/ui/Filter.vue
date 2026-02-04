@@ -1,8 +1,8 @@
 <script setup>
-import { useStaffApprovalStore} from "@stores"
+import { useStaffingApprovalStore} from "@stores"
 import { UIPageFilter} from "@components"
 
-const store = useStaffApprovalStore()
+const store = useStaffingApprovalStore()
 
 const filterEvent = (v) => {
   store._index()
@@ -18,6 +18,11 @@ const onAdd = ()=> {
   store.visibleType = true
   store.visible = true
   store._showGenerate()
+
+  store.worker.params.page = 1
+  store._workers()
+  store._organizationParents()
+  store._confirmation()
 }
 
 </script>

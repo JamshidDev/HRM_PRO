@@ -2659,11 +2659,13 @@
       "received": "Kelgan"
     }
   },
-  "staffApproval": {
+  "staffingApproval": {
     "name": "Shtatlar",
     "createTitle": "Shtatlarni tasdiqlashga yuborish",
     "form": {
-
+      "director_id": "Tasdiqlovchi xodim",
+      "confirmOrganization": "Tasdiqlovchi tashkilot",
+      "confirmatory_id": "Tashkilot rahbari"
     }
   }
 }
