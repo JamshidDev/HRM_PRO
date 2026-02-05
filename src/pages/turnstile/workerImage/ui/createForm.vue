@@ -5,7 +5,7 @@
   import validationRules from '@/utils/validationRules.js'
   import { useAppSetting } from '@/utils/index.js'
   import Utils from '@/utils/Utils'
-  import {SuperSelect} from "@components"
+  import { SuperSelect } from '@components'
 
   const formRef = ref(null)
   const store = useWorkerImageStore()
@@ -59,10 +59,10 @@
           path="access_level_ids"
         >
           <SuperSelect
-              multiple
-              v-model:value="store.payload.access_level_ids"
-              :options="store.accessLevels"
-              :loading="store.accessLevelsLoading"
+            multiple
+            v-model:value="store.payload.access_level_ids"
+            :options="store.accessLevels"
+            :loading="store.accessLevelsLoading"
           />
         </n-form-item>
 

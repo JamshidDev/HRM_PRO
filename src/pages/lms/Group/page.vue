@@ -55,7 +55,7 @@
         <PreviewList />
       </template>
     </UIModal>
-    <CertificateCertificateUpdateModal/>
-    <ProtocolModal/>
+    <CertificateCertificateUpdateModal />
+    <ProtocolModal />
   </UIPageContent>
 </template>

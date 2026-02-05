@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import i18n from '@/i18n/index.js'
 import Utils from '@/utils/Utils.js'
-import {getMonthOfRage} from "@utils"
+import { getMonthOfRage } from '@utils'
 const { t } = i18n.global
 
 export const useShiftTypeStore = defineStore('shiftTypeStore', {
@@ -101,7 +101,7 @@ export const useShiftTypeStore = defineStore('shiftTypeStore', {
       end_date: null,
       has_schedule: 'No',
       organizations: [],
-      department_id: null,
+      department_id: null
     },
     notScheduleWorkerList: [],
     notScheduleWorkerCount: 0,
@@ -116,11 +116,9 @@ export const useShiftTypeStore = defineStore('shiftTypeStore', {
     departmentGroupLoading: false,
     departmentGroupList: [],
     showGroupCountField: false,
-    showWorkDate:false,
+    showWorkDate: false,
 
-    monthsList:[],
-
-
+    monthsList: []
   }),
   getters: {
     calculateWorkTime: (state) => (workerIndex) => {
@@ -174,8 +172,9 @@ export const useShiftTypeStore = defineStore('shiftTypeStore', {
         ...this.notScheduleParams,
         start_date: Utils.timeToZone(this.notScheduleParams.start_date),
         end_date: Utils.timeToZone(this.notScheduleParams.end_date),
-        organizations: this.notScheduleParams.organizations.map((v) => v.id).toString() || undefined,
-        department_id: this.notScheduleParams.department_id,
+        organizations:
+          this.notScheduleParams.organizations.map((v) => v.id).toString() || undefined,
+        department_id: this.notScheduleParams.department_id
       }
       this.notScheduleLoading = true
       $ApiService.shiftTypeService
@@ -306,23 +305,26 @@ export const useShiftTypeStore = defineStore('shiftTypeStore', {
     _generateSchedule(data) {
       this._getWorkers()
       this.saveLoading = true
-      this.monthsList = getMonthOfRage(this.generatePayload.start_date, this.generatePayload.end_date)
+      this.monthsList = getMonthOfRage(
+        this.generatePayload.start_date,
+        this.generatePayload.end_date
+      )
       this.selectedDate = this.monthsList[0].id
       $ApiService.shiftTypeService
         ._generateSchedule({ data })
         .then((res) => {
-          this.scheduleList = res.data.data.work_days.map(v => {
+          this.scheduleList = res.data.data.work_days.map((v) => {
             console.log(v)
-            return v.map(d => ({
+            return v.map((d) => ({
               ...d,
-              isEmpty:d.work_status === null,
+              isEmpty: d.work_status === null
             }))
           })
           this.workers = res.data.data.work_days.map((x) => ({ id: null }))
 
           const fromDate = new Date(this.generatePayload.start_date)
           const year1 = fromDate.getFullYear()
-          const month1 = fromDate.getMonth()+1
+          const month1 = fromDate.getMonth() + 1
           this.scheduleParams.year = year1
           this.scheduleParams.month = month1
           this._dayOfMonth()
@@ -350,10 +352,10 @@ export const useShiftTypeStore = defineStore('shiftTypeStore', {
       const today = new Date()
       const nextMonth = new Date(today)
       nextMonth.setMonth(today.getMonth() + 1)
-      this.generatePayload.start_date =this.generatePayload.start_date ?? today.getTime()
-      this.generatePayload.end_date =this.generatePayload.end_date ?? nextMonth.getTime()
-      this.generatePayload.work_date =this.generatePayload.work_date ?? today.getTime()
-      this.generatePayload.count =this.generatePayload.count ?? 1
+      this.generatePayload.start_date = this.generatePayload.start_date ?? today.getTime()
+      this.generatePayload.end_date = this.generatePayload.end_date ?? nextMonth.getTime()
+      this.generatePayload.work_date = this.generatePayload.work_date ?? today.getTime()
+      this.generatePayload.count = this.generatePayload.count ?? 1
     },
     _deleteGroup() {
       this.groupLoading = true

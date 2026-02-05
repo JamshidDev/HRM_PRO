@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { AppLayouts, AppPaths, useAppSetting } from '@/utils/index.js'
 
-
 import {
   adminRoutes,
   appRoutes,
@@ -133,8 +132,6 @@ const routes = [
     ]
   }
 ]
-
-
 
 const router = createRouter({
   history: createWebHistory(),

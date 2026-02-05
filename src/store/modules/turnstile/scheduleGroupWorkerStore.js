@@ -18,7 +18,7 @@ export const useScheduleGroupWorkerStore = defineStore('scheduleGroupWorkerStore
       search: null,
       group: null,
       startDate: null,
-      endDate: null,
+      endDate: null
     },
     uiParams: {
       year: null,
@@ -54,7 +54,7 @@ export const useScheduleGroupWorkerStore = defineStore('scheduleGroupWorkerStore
     totalWorker: 0,
     workerLoading: false,
     monthsList: [],
-    selectedDate:null,
+    selectedDate: null
   }),
   getters: {
     calculateWorkTime: (state) => (workerIndex) => {
@@ -80,8 +80,8 @@ export const useScheduleGroupWorkerStore = defineStore('scheduleGroupWorkerStore
     _workers() {
       const params = {
         ...this.workerParams,
-        start_date:Utils.timeToZone(this.params.startDate),
-        end_date:Utils.timeToZone(this.params.endDate),
+        start_date: Utils.timeToZone(this.params.startDate),
+        end_date: Utils.timeToZone(this.params.endDate)
       }
       this.workerLoading = true
       $ApiService.shiftTypeService
@@ -134,7 +134,7 @@ export const useScheduleGroupWorkerStore = defineStore('scheduleGroupWorkerStore
       const month = this.selectedDate.split('-')[1]
       const params = {
         year: this.params.year1,
-        month: month,
+        month: month
       }
       $ApiService.workerScheduleService
         ._daysOfMonth({ params })

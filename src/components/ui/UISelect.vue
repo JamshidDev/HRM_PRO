@@ -132,7 +132,12 @@
   const isExistDefaultVal = computed(() => instance.vnode.props?.onDefaultValue)
 
   const callDefaultValue = () => {
-    if (isSingleOption.value && props.modelV.length === 0 && isExistDefaultVal.value && searchModel.value === null) {
+    if (
+      isSingleOption.value &&
+      props.modelV.length === 0 &&
+      isExistDefaultVal.value &&
+      searchModel.value === null
+    ) {
       emits('defaultValue', props.options)
     }
   }

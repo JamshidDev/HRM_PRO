@@ -66,7 +66,7 @@
     },
     extraOptions: {
       type: Array,
-      default: []
+      default:()=> []
     },
     loading: {
       type: Boolean,
@@ -182,19 +182,19 @@
       <template #action>
         <div class="grid grid-cols-12 gap-2">
           <div class="col-span-6">
-            <n-button secondary @click="visible = false" type="error" style="width: 100%"
-              >{{ $t('content.no') }}
+            <n-button secondary @click="visible = false" type="error" style="width: 100%">
+              {{ $t('content.no') }}
             </n-button>
           </div>
           <div class="col-span-6">
-            <n-button secondary @click="onDelete" type="primary" style="width: 100%">{{
-              $t('content.yes')
-            }}</n-button>
+            <n-button secondary @click="onDelete" type="primary" style="width: 100%">
+              {{
+                $t('content.yes')
+              }}
+            </n-button>
           </div>
         </div>
       </template>
     </UIDConfirm>
   </div>
 </template>
-
-<style scoped></style>

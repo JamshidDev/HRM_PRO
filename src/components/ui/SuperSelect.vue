@@ -1,11 +1,10 @@
 <script setup>
   import UIHelper from '@/utils/UIHelper.js'
-  import i18n from "@/i18n"
+  import i18n from '@/i18n'
   const instance = getCurrentInstance()
   const selectAll = ref(false)
   const selectedOptions = ref([])
   const t = i18n.global.t
-
 
   const valueModel = defineModel('value', { type: [Array, Number, String, null], default: null })
   const searchModel = defineModel('search', { type: [String, null], default: null })
@@ -144,9 +143,7 @@
 
     const { scrollTop, offsetHeight, scrollHeight } = e.currentTarget
     const isAtBottom = scrollHeight - scrollTop - offsetHeight < 2
-    if (isAtBottom && !props.loading &&
-      props.totalCount > props.options.length
-    ) {
+    if (isAtBottom && !props.loading && props.totalCount > props.options.length) {
       emits('onScrollEv')
     }
   }
@@ -167,7 +164,7 @@
 
 <template>
   <n-select
-     :placeholder="t(placeholder)"
+    :placeholder="t(placeholder)"
     :clearable="clearable"
     @scroll="onScrollEv"
     @update:show="(e) => emits('updateShow', e)"

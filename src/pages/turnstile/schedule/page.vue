@@ -28,8 +28,8 @@
     <SettingModal />
     <SaveBox />
     <GrandModal />
-    <ExportModal/>
+    <ExportModal />
     <MultipleScheduleAttach />
-    <ReplaceWorkerModal/>
+    <ReplaceWorkerModal />
   </UIPageContent>
 </template>

@@ -57,7 +57,7 @@ export const useAppStore = defineStore('appStore', {
     ],
     theme: customTheme(),
     themeSwitch: false,
-    skipReset: true,
+    skipReset: true
   }),
   actions: {
     _loginAsAdmin(token, callback) {

@@ -5,7 +5,7 @@
   import ExportPanel from './ui/ExportPanel.vue'
   import ViewSalary from './ui/ViewSalary.vue'
   import { useAccountStore, useMonthReportStore } from '@/store/modules/index.js'
-  import {getOneMonthAgoYearMonth} from "@utils"
+  import { getOneMonthAgoYearMonth } from '@utils'
 
   const store = useMonthReportStore()
   const route = useRoute()

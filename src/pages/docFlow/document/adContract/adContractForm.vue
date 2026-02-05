@@ -48,7 +48,7 @@
     store.payload.department_id = v
     componentStore.departmentPositionList = []
     store.payload.department_position_id = null
-    if(v.length === 0) return
+    if (v.length === 0) return
     componentStore._departmentPosition(v[0].id)
   }
   const onChangeStatus = (v) => {
@@ -129,7 +129,7 @@
         status: 'contract-additional',
         type: store.payload.type
       }
-      componentStore._commandTypes(data, (id)=>{
+      componentStore._commandTypes(data, (id) => {
         store.payload.command_type = id
       })
     }
@@ -156,14 +156,14 @@
   })
 
   const showForm = computed(() =>
-      store.payload.type === null ? true : [1, 8].includes(store.payload.type)
+    store.payload.type === null ? true : [1, 8].includes(store.payload.type)
   )
 
   const onChangeDraggle = () => {
     store.payload.confirmations = store.sortableConfirmations.map((v) => v.id)
   }
   const fetchConfirmation = () => {
-    if(componentStore.confirmationList.length>0) return
+    if (componentStore.confirmationList.length > 0) return
     componentStore._confirmations()
   }
   const onChangeConfirmation = () => {
@@ -171,42 +171,43 @@
     syncConfirmationEv()
   }
   const syncConfirmationEv = () => {
-    if(store.payload.finance_id === store.payload.director_id) store.payload.finance_id = null
+    if (store.payload.finance_id === store.payload.director_id) store.payload.finance_id = null
     const ids = [store.payload.finance_id, store.payload.director_id]
-    financeList.value = componentStore.confirmationList.filter(v => v.id !== store.payload.director_id)
-    confirmationList.value = componentStore.confirmationList.filter(v => !ids.includes(v.id))
+    financeList.value = componentStore.confirmationList.filter(
+      (v) => v.id !== store.payload.director_id
+    )
+    confirmationList.value = componentStore.confirmationList.filter((v) => !ids.includes(v.id))
 
     onRemoveEv(store.payload.finance_id)
     onRemoveEv(store.payload.director_id)
   }
   const fillSortableConfirmations = () => {
     store.sortableConfirmations = confirmationList.value
-        .filter((v) => store.payload.confirmations.includes(v.id))
-        .map((v) => ({
-          id: v.id,
-          data: {
-            firstName: v.first_name,
-            lastName: v.last_name,
-            middleName: v.middle_name,
-            photo: v.photo,
-            position: v?.position || ''
-          }
-        }))
+      .filter((v) => store.payload.confirmations.includes(v.id))
+      .map((v) => ({
+        id: v.id,
+        data: {
+          firstName: v.first_name,
+          lastName: v.last_name,
+          middleName: v.middle_name,
+          photo: v.photo,
+          position: v?.position || ''
+        }
+      }))
   }
-  const onRemoveEv = (id) =>{
-    store.sortableConfirmations = store.sortableConfirmations.filter(v=>v.id !== id)
-    store.payload.confirmations = store.payload.confirmations.filter(v=>v !== id)
+  const onRemoveEv = (id) => {
+    store.sortableConfirmations = store.sortableConfirmations.filter((v) => v.id !== id)
+    store.payload.confirmations = store.payload.confirmations.filter((v) => v !== id)
   }
 
   const onChangePosition = (id) => {
-    const index = componentStore.departmentPositionList.findIndex(x=>x.id === id )
-    if(index === -1) return
+    const index = componentStore.departmentPositionList.findIndex((x) => x.id === id)
+    if (index === -1) return
     const selectedP = componentStore.departmentPositionList[index]
     store.payload.group = selectedP.group?.id
-    store.payload.rank =selectedP.rank?.id
+    store.payload.rank = selectedP.rank?.id
     rankRangeTitle.value = ` (${selectedP.rank.name} - ${selectedP.max_rank.name})`
   }
-
 
   onMounted(() => {
     if (componentStore.groupList.length === 0) {
@@ -383,16 +384,16 @@
                       path="department_position_id"
                     >
                       <n-select
-                          :options="componentStore.departmentPositionList"
-                          :loading="componentStore.departmentPositionLoading"
-                          :disabled="!Boolean(store.payload.department_id?.length)"
-                          :render-label="UIHelper.selectRender.labelColor"
-                          :render-tag="UIHelper.selectRender.value"
-                          v-model:value="store.payload.department_position_id"
-                          @update:value="onChangePosition"
-                          filterable
-                          label-field="name"
-                          value-field="id"
+                        :options="componentStore.departmentPositionList"
+                        :loading="componentStore.departmentPositionLoading"
+                        :disabled="!Boolean(store.payload.department_id?.length)"
+                        :render-label="UIHelper.selectRender.labelColor"
+                        :render-tag="UIHelper.selectRender.value"
+                        v-model:value="store.payload.department_position_id"
+                        @update:value="onChangePosition"
+                        filterable
+                        label-field="name"
+                        value-field="id"
                       />
                     </n-form-item>
                   </div>
@@ -561,16 +562,16 @@
             <div class="col-span-12">
               <n-form-item :label="$t(`documentPage.command.form.finance_id`)">
                 <n-select
-                    :disabled="!store.payload.director_id"
-                    value-field="id"
-                    label-field="last_name"
-                    v-model:value="store.payload.finance_id"
-                    :options="financeList"
-                    :loading="componentStore.confirmationLoading"
-                    :render-label="renderLabel"
-                    :render-tag="renderValue"
-                    @update:value="syncConfirmationEv"
-                    clearable
+                  :disabled="!store.payload.director_id"
+                  value-field="id"
+                  label-field="last_name"
+                  v-model:value="store.payload.finance_id"
+                  :options="financeList"
+                  :loading="componentStore.confirmationLoading"
+                  :render-label="renderLabel"
+                  :render-tag="renderValue"
+                  @update:value="syncConfirmationEv"
+                  clearable
                 />
               </n-form-item>
             </div>

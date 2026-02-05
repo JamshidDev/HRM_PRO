@@ -35,5 +35,5 @@ export default {
   _delete,
   _notIncludes,
   _workers,
-  _autoGenerate,
+  _autoGenerate
 }

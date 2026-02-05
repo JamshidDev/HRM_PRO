@@ -3,7 +3,7 @@
   import Utils from '@/utils/Utils.js'
   import i18n from '@/i18n/index.js'
   import { UINSelect, UISelect, UIPageFilter } from '@/components/index.js'
-  import {Save16Filled} from '@vicons/fluent'
+  import { Save16Filled } from '@vicons/fluent'
 
   const store = useScheduleTableStore()
   const componentStore = useComponentStore()
@@ -60,11 +60,10 @@
   const openPanel = () => {
     const today = new Date()
     store.export.payload.year = store.export.payload.year ?? today.getFullYear()
-    store.export.payload.month = store.export.payload.month ?? today.getMonth()+1
+    store.export.payload.month = store.export.payload.month ?? today.getMonth() + 1
     store.export.payload.organization_id = []
     store.export.payload.departments = []
     store.export.visible = true
-
   }
 
   onMounted(() => {
@@ -77,7 +76,7 @@
 <template>
   <UIPageFilter class="mb-4" :show-search-input="false" :show-add-button="false">
     <template #filterSearch>
-      <div class="grid grid-cols-12 gap-2 ">
+      <div class="grid grid-cols-12 gap-2">
         <div class="col-span-3">
           <label class="mt-3 text-xs mb-1 font-medium">{{
             $t('schedule.form.filterByWorker')
@@ -125,22 +124,17 @@
             clearable
           />
         </div>
-
       </div>
     </template>
     <template #filterAction>
-      <n-button
-          type="primary"
-          @click="store._save()"
-          :loading="store.savingLoading"
-      >
+      <n-button type="primary" @click="store._save()" :loading="store.savingLoading">
         <template #icon>
-          <Save16Filled/>
+          <Save16Filled />
         </template>
         {{ $t('content.save') }}</n-button
       >
-      <n-button @click="openPanel" type="success" >
-        {{$t('schedule.form.exportSchedule')}}
+      <n-button @click="openPanel" type="success">
+        {{ $t('schedule.form.exportSchedule') }}
       </n-button>
     </template>
     <template #filterContent>

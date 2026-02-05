@@ -1,9 +1,7 @@
 <script setup>
   import { UIDrawer, UIPageContent } from '@components'
   import { useDepartmentStore, useAccountStore } from '@stores'
-  import { Filter, createForm, TabPage, Preview, DemoTable} from "./ui"
-
-
+  import { Filter, createForm, TabPage, Preview, DemoTable } from './ui'
 
   const accStore = useAccountStore()
   const store = useDepartmentStore()
@@ -17,16 +15,18 @@
 <template>
   <UIPageContent>
     <Filter />
-<!--    <DemoTable/>-->
+    <!--    <DemoTable/>-->
     <TabPage />
     <UIDrawer
-        v-model:visible="store.visible"
-        :title="store.visibleType ? $t('departmentPage.createTitle') : $t('departmentPage.updateTitle')"
+      v-model:visible="store.visible"
+      :title="
+        store.visibleType ? $t('departmentPage.createTitle') : $t('departmentPage.updateTitle')
+      "
     >
       <template #content>
-        <createForm @onCancelEv="store.visible=false" />
+        <createForm @onCancelEv="store.visible = false" />
       </template>
     </UIDrawer>
-    <Preview/>
+    <Preview />
   </UIPageContent>
 </template>

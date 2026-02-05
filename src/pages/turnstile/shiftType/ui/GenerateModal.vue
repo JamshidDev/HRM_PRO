@@ -14,7 +14,9 @@
         const data = {
           start_date: Utils.timeToZone(store.generatePayload.start_date),
           end_date: Utils.timeToZone(store.generatePayload.end_date),
-          work_date: store.showWorkDate? Utils.timeToZone(store.generatePayload.work_date) : undefined,
+          work_date: store.showWorkDate
+            ? Utils.timeToZone(store.generatePayload.work_date)
+            : undefined,
           schedule_type: store.elementId,
           count: store.showGroupCountField ? store.generatePayload.count : undefined
         }
@@ -42,15 +44,12 @@
     })
   }
 
-  const checkValidateRange = (v)=> {
+  const checkValidateRange = (v) => {
     const date = new Date(v).setHours(0, 0, 0, 0)
     const start = new Date(store.generatePayload.start_date).setHours(0, 0, 0, 0)
     const end = new Date(store.generatePayload.end_date).setHours(23, 59, 59, 999)
     return !(start <= date && date <= end)
   }
-
-
-
 </script>
 
 <template>
@@ -83,49 +82,47 @@
 
       <template v-else>
         <n-form-item
-            class="col-span-6"
-            :label="$t(`content.from`)"
-            path="start_date"
-            :rule-path="validationRules.rulesNames.requiredNumberField"
+          class="col-span-6"
+          :label="$t(`content.from`)"
+          path="start_date"
+          :rule-path="validationRules.rulesNames.requiredNumberField"
         >
           <n-date-picker
-              :format="useAppSetting.datePicketFormat"
-              v-model:value="store.generatePayload.start_date"
-              type="date"
-              class="w-full"
+            :format="useAppSetting.datePicketFormat"
+            v-model:value="store.generatePayload.start_date"
+            type="date"
+            class="w-full"
           />
         </n-form-item>
         <n-form-item
-            class="col-span-6"
-            :label="$t(`content.to`)"
-            path="end_date"
-            :rule-path="validationRules.rulesNames.requiredNumberField"
+          class="col-span-6"
+          :label="$t(`content.to`)"
+          path="end_date"
+          :rule-path="validationRules.rulesNames.requiredNumberField"
         >
           <n-date-picker
-              :format="useAppSetting.datePicketFormat"
-              v-model:value="store.generatePayload.end_date"
-              type="date"
-              class="w-full"
+            :format="useAppSetting.datePicketFormat"
+            v-model:value="store.generatePayload.end_date"
+            type="date"
+            class="w-full"
           />
         </n-form-item>
         <n-form-item
-            class="col-span-6"
-            :label="$t(`content.work_date`)"
-            path="work_date"
-            :rule-path="validationRules.rulesNames.requiredNumberField"
-            v-if="store.showWorkDate"
+          class="col-span-6"
+          :label="$t(`content.work_date`)"
+          path="work_date"
+          :rule-path="validationRules.rulesNames.requiredNumberField"
+          v-if="store.showWorkDate"
         >
           <n-date-picker
-              :disabled="!store.generatePayload.start_date || !store.generatePayload.end_date"
-              :format="useAppSetting.datePicketFormat"
-              v-model:value="store.generatePayload.work_date"
-              :is-date-disabled="checkValidateRange"
-              type="date"
-              class="w-full"
+            :disabled="!store.generatePayload.start_date || !store.generatePayload.end_date"
+            :format="useAppSetting.datePicketFormat"
+            v-model:value="store.generatePayload.work_date"
+            :is-date-disabled="checkValidateRange"
+            type="date"
+            class="w-full"
           />
         </n-form-item>
-
-
 
         <n-form-item
           v-if="store.showGroupCountField"

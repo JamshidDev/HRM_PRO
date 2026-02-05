@@ -1,6 +1,6 @@
 <script setup>
   import { NoDataPicture, UIPagination, UIUser, UIBadge } from '@/components/index.js'
-  import {useLmsGroupStore } from '@/store/modules/index.js'
+  import { useLmsGroupStore } from '@/store/modules/index.js'
 
   const store = useLmsGroupStore()
 
@@ -37,7 +37,7 @@
               </td>
               <td>
                 <UIUser
-                    :hide-tooltip="true"
+                  :hide-tooltip="true"
                   :short="false"
                   :data="{
                     photo: item?.worker.photo,

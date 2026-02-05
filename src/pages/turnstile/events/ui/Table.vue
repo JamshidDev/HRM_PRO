@@ -63,7 +63,7 @@
     MobileFaceEvent: {
       name: t('hcEvent.form.mobile'),
       id: 9
-    },
+    }
   }
 </script>
 

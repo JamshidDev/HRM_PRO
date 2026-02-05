@@ -1,11 +1,11 @@
 <script setup>
-import {
-  useReport2Store,
-  useDepartmentStore,
-  useComponentStore,
-  useDepartmentPositionStore
-} from '@/store/modules/index.js'
-  import { Delete20Filled, Edit20Filled, Add16Filled} from '@vicons/fluent'
+  import {
+    useReport2Store,
+    useDepartmentStore,
+    useComponentStore,
+    useDepartmentPositionStore
+  } from '@/store/modules/index.js'
+  import { Delete20Filled, Edit20Filled, Add16Filled } from '@vicons/fluent'
   import PositionCard from './PositionCard.vue'
   import WorkerCard from './WorkerCard.vue'
   import Indicator from './Indicator.vue'
@@ -29,10 +29,9 @@ import {
     store.isDpDelete = true
     store.department.elementId = v.id
     store.department.deleteVisible = true
-
   }
 
-  const onEdit = (v)=> {
+  const onEdit = (v) => {
     dpStore.elementId = v.id
     dpStore.visibleType = false
     store.department.visible = true
@@ -75,17 +74,11 @@ import {
         </n-radio>
       </div>
       <div class="w-[460px] flex items-center justify-end h-full gap-2 pr-2">
-
         <n-tooltip placement="top" trigger="hover">
           <template #trigger>
-            <n-button
-                size="tiny"
-                type="primary"
-                @click.stop="onAddPosition(data)"
-                ghost
-            >
+            <n-button size="tiny" type="primary" @click.stop="onAddPosition(data)" ghost>
               <template #icon>
-                <Add16Filled/>
+                <Add16Filled />
               </template>
             </n-button>
           </template>
@@ -93,14 +86,9 @@ import {
         </n-tooltip>
         <n-tooltip placement="top" trigger="hover">
           <template #trigger>
-            <n-button
-                size="tiny"
-                type="primary"
-                @click.stop="onEdit(data)"
-                ghost
-            >
+            <n-button size="tiny" type="primary" @click.stop="onEdit(data)" ghost>
               <template #icon>
-                <Edit20Filled/>
+                <Edit20Filled />
               </template>
             </n-button>
           </template>
@@ -108,20 +96,14 @@ import {
         </n-tooltip>
         <n-tooltip placement="top" trigger="hover">
           <template #trigger>
-            <n-button
-                @click.stop="onDelete(data)"
-                size="tiny"
-                type="error"
-                ghost
-            >
+            <n-button @click.stop="onDelete(data)" size="tiny" type="error" ghost>
               <template #icon>
-                <Delete20Filled/>
+                <Delete20Filled />
               </template>
             </n-button>
           </template>
           <span>{{ $t('content.delete') }}</span>
         </n-tooltip>
-
 
         <n-button
           @click.stop="openConfirm"
@@ -140,8 +122,8 @@ import {
     </div>
     <div class="col-span-12" :class="[data.id === store.department.selectedId && 'mt-6 mb-3']">
       <n-collapse-transition :show="data.id === store.department.selectedId">
-          <PositionCard v-if="store.byPosition" />
-          <WorkerCard v-else />
+        <PositionCard v-if="store.byPosition" />
+        <WorkerCard v-else />
       </n-collapse-transition>
     </div>
   </div>

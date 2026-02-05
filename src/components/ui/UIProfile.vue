@@ -85,7 +85,7 @@
     })
   }
   const onLogOutEv = () => {
-    accountStore._logOut(()=>{
+    accountStore._logOut(() => {
       socketStore.disconnect()
       store._logOutApp()
     })

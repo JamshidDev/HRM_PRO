@@ -28,7 +28,6 @@ const _orderable = async (payload) => {
   return await axios.post(`/v1/hr/report/orderable`, payload.data)
 }
 
-
 export default {
   _structure,
   _department,
@@ -36,5 +35,5 @@ export default {
   _worker,
   _optimization,
   _showPosition,
-  _orderable,
+  _orderable
 }

@@ -1,7 +1,7 @@
 <script setup>
   import { useAccountStore, useSalaryReportStore } from '@/store/modules/index.js'
   import Utils from '@/utils/Utils.js'
-  import {AppPaths, getOneMonthAgoYearMonth} from '@/utils/index.js'
+  import { AppPaths, getOneMonthAgoYearMonth } from '@/utils/index.js'
   const router = useRouter()
   const store = useSalaryReportStore()
   const accStore = useAccountStore()

@@ -39,7 +39,13 @@ export default defineConfig({
                 },
             ],
             dts: "auto-imports.d.ts",
+            eslintrc: {
+                enabled: true,
+                filepath: './.eslintrc-auto-import.json',
+                globalsPropValue: true
+            }
         }),
+
     ],
     server: {
         port: 8000,

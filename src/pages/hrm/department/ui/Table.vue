@@ -2,9 +2,9 @@ x
 <script setup>
   import { NoDataPicture, UIPagination, UIMenuButton } from '@components'
   import { useDepartmentStore, useAccountStore } from '@stores'
-  import {ChevronRight12Regular, Eye16Regular} from '@vicons/fluent'
+  import { ChevronRight12Regular, Eye16Regular } from '@vicons/fluent'
   import { Utils } from '@utils'
-  import i18n from "@/i18n/index.js"
+  import i18n from '@/i18n/index.js'
 
   const store = useDepartmentStore()
   const accStore = useAccountStore()
@@ -60,7 +60,7 @@ x
     store._index()
   }
 
-  const onPreview = (v) =>{
+  const onPreview = (v) => {
     store.previewVisible = true
     store.elementId = v.id
     store.previewParams.page = 1
@@ -79,7 +79,7 @@ x
     } else if (v.key === Utils.ActionTypes.attachment) {
       if (hasWritePermission.value) return
       onAdd(v.data)
-    }else if (v.key === Utils.ActionTypes.view) {
+    } else if (v.key === Utils.ActionTypes.view) {
       onPreview(v.data)
     }
   }
@@ -87,16 +87,16 @@ x
   const headerOption = [
     {
       name: t('content.nameUz'),
-      id:'uz'
+      id: 'uz'
     },
     {
       name: t('content.nameRu'),
-      id:'ru'
+      id: 'ru'
     },
     {
       name: t('content.nameEn'),
-      id:'en'
-    },
+      id: 'en'
+    }
   ]
 </script>
 
@@ -110,10 +110,10 @@ x
             <th class="min-w-[30px] w-[30px]"></th>
             <th class="min-w-[200px]">
               <n-select
-                  v-model:value="store.headerLang"
-                  :options="headerOption"
-                  value-field="id"
-                  label-field="name"
+                v-model:value="store.headerLang"
+                :options="headerOption"
+                value-field="id"
+                label-field="name"
               />
             </th>
             <th class="min-w-[100px] w-[300px]">{{ $t('content.organization') }}</th>
@@ -146,11 +146,13 @@ x
                 </template>
               </n-button>
             </td>
-            <td>{{ item?.[store.headerLang]}}</td>
+            <td>{{ item?.[store.headerLang] }}</td>
             <td>{{ item.organization.name }}</td>
             <td>{{ item.level?.name }}</td>
             <td>
-              <n-button class="mx-auto" v-if="item.worker_rate" size="small" circle>{{ item.worker_rate }}</n-button>
+              <n-button class="mx-auto" v-if="item.worker_rate" size="small" circle>{{
+                item.worker_rate
+              }}</n-button>
             </td>
             <td>
               <div class="text-xs line-clamp-3">{{ item.comment }}</div>
@@ -162,12 +164,12 @@ x
                 :show-attachment="true"
                 @selectEv="onSelectEv"
                 :extra-options="[
-                      {
-                        label: $t('content.worker'),
-                        key: Utils.ActionTypes.view,
-                        icon: Eye16Regular
-                       },
-                  ]"
+                  {
+                    label: $t('content.worker'),
+                    key: Utils.ActionTypes.view,
+                    icon: Eye16Regular
+                  }
+                ]"
               />
             </td>
           </tr>

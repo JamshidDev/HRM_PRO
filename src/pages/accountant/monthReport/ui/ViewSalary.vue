@@ -112,13 +112,10 @@
                           {{ store.cashedWorkerData?.position }}
                         </div>
                         <div class="col-span-12">
-                          <span class="text-primary"
-                            >{{ $t('monthReport.view.main_salary') }}: </span
-                          >-:-
+                          <span class="text-primary">{{ $t('monthReport.view.main_salary') }}: </span>-:-
                         </div>
                         <div class="col-span-6">
-                          <span class="text-primary">{{ $t('monthReport.view.work_time') }}: </span
-                          >-:-
+                          <span class="text-primary">{{ $t('monthReport.view.work_time') }}: </span>-:-
                         </div>
                         <div class="col-span-6 flex gap-4 justify-end"></div>
                       </div>
@@ -162,14 +159,12 @@
                             {{ item.worker?.position }}
                           </div>
                           <div class="col-span-12">
-                            <span class="text-primary"
-                              >{{ $t('monthReport.view.main_salary') }}:
+                            <span class="text-primary">{{ $t('monthReport.view.main_salary') }}:
                             </span>
                             {{ item.worker?.main_salary }}
                           </div>
                           <div class="col-span-6">
-                            <span class="text-primary"
-                              >{{ $t('monthReport.view.work_time') }}:
+                            <span class="text-primary">{{ $t('monthReport.view.work_time') }}:
                             </span>
                             {{ item.worker?.work_time }} {{ $t('content.hour') }}
                           </div>

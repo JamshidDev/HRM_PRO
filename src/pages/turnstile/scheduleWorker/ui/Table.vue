@@ -2,7 +2,7 @@
   import { useScheduleGroupWorkerStore } from '@/store/modules/index.js'
   import SearchElement from '@/pages/turnstile/schedule/ui/SearchElement.vue'
   import Utils from '@/utils/Utils.js'
-  import { getMonthOfRage} from "@utils"
+  import { getMonthOfRage } from '@utils'
   import MonthTab from './MonthTab.vue'
   import { MoreHorizontal32Filled } from '@vicons/fluent'
   import { UIPagination } from '@components'

@@ -16,7 +16,7 @@ export const usePublicStore = defineStore('usePublicStore', {
     loginLoading: false,
     detailLoading: false,
     confirmations: [],
-    existFile:false
+    existFile: false
   }),
   actions: {
     _loginToSystem() {
@@ -42,10 +42,10 @@ export const usePublicStore = defineStore('usePublicStore', {
     _getDocument(callback) {
       this.loading = true
       $ApiService.publicService
-        ._getDocument({model:this.selectedModel, id: this.elementId })
+        ._getDocument({ model: this.selectedModel, id: this.elementId })
         .then((res) => {
           this.existFile = true
-          this.confirmations = res.data.data?.confirmations ?? [];
+          this.confirmations = res.data.data?.confirmations ?? []
           callback?.(res.data.data.file)
         })
         .finally(() => {

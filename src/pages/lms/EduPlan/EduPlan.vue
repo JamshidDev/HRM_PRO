@@ -13,9 +13,9 @@
   onMounted(() => {
     if (!accStore.checkAction(accStore.pn.lmsEduPlanRead)) return
 
-    if(!store.params.year){
+    if (!store.params.year) {
       store.params.year = new Date().getFullYear()
-      store.params.month = new Date().getMonth()+1
+      store.params.month = new Date().getMonth() + 1
     }
     store._index()
   })

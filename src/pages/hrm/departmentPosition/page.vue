@@ -1,7 +1,7 @@
 <script setup>
   import { UIDrawer, UIPageContent } from '@components'
   import { useDepartmentPositionStore, useAccountStore } from '@stores'
-  import {createFrom, Table, Filter, Preview} from "./ui"
+  import { createFrom, Table, Filter, Preview } from './ui'
 
   const store = useDepartmentPositionStore()
   const accStore = useAccountStore()
@@ -27,9 +27,9 @@
       "
     >
       <template #content>
-        <createFrom @onCancelEv="store.visible=false" />
+        <createFrom @onCancelEv="store.visible = false" />
       </template>
     </UIDrawer>
-    <Preview/>
+    <Preview />
   </UIPageContent>
 </template>

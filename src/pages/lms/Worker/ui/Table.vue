@@ -1,7 +1,7 @@
 <script setup>
-  import { NoDataPicture, UIPagination, UIUser} from '@/components/index.js'
+  import { NoDataPicture, UIPagination, UIUser } from '@/components/index.js'
   import { useAccountStore, useLmsWorkerStore } from '@/store/modules/index.js'
-  import { ArrowCircleDown16Filled} from "@vicons/fluent"
+  import { ArrowCircleDown16Filled } from '@vicons/fluent'
   import Utils from '@/utils/Utils.js'
   import MenuButton from '@/components/buttons/MenuButton.vue'
 
@@ -43,8 +43,8 @@
               <th class="w-[300px]">{{ $t('eduPlanPage.form.learning_center') }}</th>
               <th class="w-[160px]">{{ $t('content.type') }}</th>
               <th class="w-[300px]">{{ $t('lmsWorkerPage.form.eduPlan') }}</th>
-              <th class="w-[220px]">{{ $t('content.group')}}</th>
-              <th class="w-[120px]">{{ $t('lmsWorkerPage.form.certificate')}}</th>
+              <th class="w-[220px]">{{ $t('content.group') }}</th>
+              <th class="w-[120px]">{{ $t('lmsWorkerPage.form.certificate') }}</th>
               <th class="min-w-[40px] w-[40px]"></th>
             </tr>
           </thead>
@@ -57,7 +57,7 @@
               </td>
               <td>
                 <UIUser
-                    :short="false"
+                  :short="false"
                   :data="{
                     photo: item?.worker_position.worker.photo,
                     firstName: item?.worker_position.worker.first_name,
@@ -125,13 +125,17 @@
                 </div>
               </td>
               <td>
-                <n-button v-if="item?.certificate?.confirmation_file" @click="onDownload(item?.certificate?.confirmation_file)" type="success" secondary>
+                <n-button
+                  v-if="item?.certificate?.confirmation_file"
+                  @click="onDownload(item?.certificate?.confirmation_file)"
+                  type="success"
+                  secondary
+                >
                   <template #icon>
-                    <ArrowCircleDown16Filled/>
+                    <ArrowCircleDown16Filled />
                   </template>
-                  {{$t('content.download')}}
+                  {{ $t('content.download') }}
                 </n-button>
-
               </td>
 
               <td>

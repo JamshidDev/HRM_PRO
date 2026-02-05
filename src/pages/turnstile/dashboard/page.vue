@@ -98,7 +98,7 @@
       <WorkTimeCard @onPreview="onPreview" class="xl:col-span-8 col-span-12" />
       <MonthlyCard @onPreview="onPreview" class="col-span-6" />
       <div class="col-span-6 p-2 border border-surface-line rounded-xl bg-surface-section relative">
-        <FaceCard @onPreview="onPreview"/>
+        <FaceCard @onPreview="onPreview" />
       </div>
     </div>
 

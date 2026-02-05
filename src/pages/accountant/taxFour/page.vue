@@ -3,7 +3,7 @@
   import { useAccountStore, useTaxFourStore } from '@/store/modules/index.js'
   import Table from './ui/Table.vue'
   import Filter from './ui/Filter.vue'
-  import {getOneMonthAgoYearMonth} from "@utils"
+  import { getOneMonthAgoYearMonth } from '@utils'
 
   const store = useTaxFourStore()
   const accStore = useAccountStore()

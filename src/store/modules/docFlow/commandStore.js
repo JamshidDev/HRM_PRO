@@ -3,13 +3,13 @@ import Utils from '@/utils/Utils.js'
 
 const today = new Date().getTime()
 
-const addDayToDate = (date, days)=>{
+const addDayToDate = (date, days) => {
   const result = new Date(date)
   result.setDate(result.getDate() + days)
   return new Date(result).getTime()
 }
 
-const initialPayload46 = ()=> ({
+const initialPayload46 = () => ({
   period_from: null,
   period_to: null,
   from: null,
@@ -22,18 +22,18 @@ const initialPayload46 = ()=> ({
   half_two_day: null,
   half_two_base: null,
   half_two_date: null,
-  additional:null,
-  result:{
-    to:null,
-    work_day:null,
-    period_from:null,
-    period_to:null,
-    all_day:null,
-    experience:null,
+  additional: null,
+  result: {
+    to: null,
+    work_day: null,
+    period_from: null,
+    period_to: null,
+    all_day: null,
+    experience: null
   },
-  addList:[],
+  addList: []
 })
-const initialPayload34 = () => ( {
+const initialPayload34 = () => ({
   contract_to_date: null,
   command_additional: [],
   pension_count: {
@@ -89,7 +89,6 @@ const initialPayload32 = () => ({
   warning_number: null
 })
 
-
 export const useCommandStore = defineStore('commandStore', {
   state: () => ({
     list: [],
@@ -111,7 +110,7 @@ export const useCommandStore = defineStore('commandStore', {
       command_type: null,
       confirmations: [],
       director_id: null,
-      finance_id: null,
+      finance_id: null
     },
     form_32: initialPayload32(),
     form_34: initialPayload34(),
@@ -133,21 +132,20 @@ export const useCommandStore = defineStore('commandStore', {
       reason: null
     },
     form_47: {
-          work_day:null,
-          to:null,
-          vacation_reason_type:null,
-          vacation_reason_day:null,
-        type:null,
-        base:null,
+      work_day: null,
+      to: null,
+      vacation_reason_type: null,
+      vacation_reason_day: null,
+      type: null,
+      base: null
     },
     form_50: {
-        work_day:null,
-        to:null,
-        vacation_status:null,
-        vacation_id:null,
+      work_day: null,
+      to: null,
+      vacation_status: null,
+      vacation_id: null,
       vacation_finish_status: null,
-      child_age: null,
-
+      child_age: null
     },
     form_45: {
       from: null,
@@ -203,28 +201,28 @@ export const useCommandStore = defineStore('commandStore', {
     isSingleSelect: false,
     sortableConfirmations: [],
     oneByOne: true,
-    workerVacations:[],
-    workerVacationLoading:false,
-
-
+    workerVacations: [],
+    workerVacationLoading: false
   }),
   actions: {
-    _getWorkerVacation(){
-        const params = {
-            page:1,
-            per_page:100,
-            worker_position_id:this.payload.worker,
-        }
-        this.workerVacationLoading = true
-        $ApiService.vacationService._index({params}).then((res)=>{
-            this.workerVacations = res.data.data.data.map(v=>({
-                id:v.id,
-                name:`${v.type.name} (${Utils.timeOnlyDate(v.from)}  ${Utils.timeOnlyDate(v.to)})`,
-                to:v.to,
-            }))
-
-        }).finally(()=>{
-            this.workerVacationLoading = false
+    _getWorkerVacation() {
+      const params = {
+        page: 1,
+        per_page: 100,
+        worker_position_id: this.payload.worker
+      }
+      this.workerVacationLoading = true
+      $ApiService.vacationService
+        ._index({ params })
+        .then((res) => {
+          this.workerVacations = res.data.data.data.map((v) => ({
+            id: v.id,
+            name: `${v.type.name} (${Utils.timeOnlyDate(v.from)}  ${Utils.timeOnlyDate(v.to)})`,
+            to: v.to
+          }))
+        })
+        .finally(() => {
+          this.workerVacationLoading = false
         })
     },
     _additionalData(params, callback) {
@@ -357,7 +355,6 @@ export const useCommandStore = defineStore('commandStore', {
 
       this.vacations = []
 
-
       this.form_44.new_date = null
       this.form_44.rest_day = null
       this.form_44.reason = null
@@ -371,11 +368,11 @@ export const useCommandStore = defineStore('commandStore', {
       this.form_47.vacation_reason_day = '4'
       this.form_47.vacation_reason_type = null
       this.form_47.to = today
-      this.form_47.work_day = addDayToDate(today,4)
+      this.form_47.work_day = addDayToDate(today, 4)
       this.form_47.type = null
       this.form_47.base = null
     },
-    resetPayload(){
+    resetPayload() {
       this.payload.workers = []
       this.payload.worker = null
       this.payload.organization_id = []
@@ -383,14 +380,14 @@ export const useCommandStore = defineStore('commandStore', {
       this.payload.command_type = null
       this.payload.command_date = today
     },
-    resetPayload46(){
+    resetPayload46() {
       this.form_46 = initialPayload46()
       this.form_46.from = today
       this.form_46.main_day = 21
       this.form_46.second_day = 0
       this.form_46.half_two_base = 1
     },
-    resetPayload34(){
+    resetPayload34() {
       this.form_34 = initialPayload34()
       this.form_34.contract_to_date = today
       this.form_34.pension_count.year = 1
@@ -399,7 +396,7 @@ export const useCommandStore = defineStore('commandStore', {
       this.form_34.pension_coefficient.coefficient = 10
       this.form_34.warning_date = today
     },
-    resetPayload32(){
+    resetPayload32() {
       this.form_32 = initialPayload32()
       this.form_32.contract_to_date = today
       this.form_32.pension_count.year = 1

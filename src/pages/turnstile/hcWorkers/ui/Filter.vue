@@ -7,7 +7,7 @@
   } from '@/store/modules/index.js'
 
   import i18n from '@/i18n/index.js'
-  import {SuperSelect} from "@components"
+  import { SuperSelect } from '@components'
   const t = i18n.global.t
 
   const store = useTurnstileHikCentralWorkerStore()
@@ -58,7 +58,7 @@
   }
 
   const beforeShow = (v) => {
-    if(!v) return
+    if (!v) return
     if (componentStore.structureList.length === 0) {
       componentStore._structures()
     }
@@ -114,9 +114,15 @@
   )
 
   const departmentAction = {
-    fetch:()=>store._department(),
-    onSearch:()=>{store.department.params.page = 1; store._department()},
-    onScroll:()=>{store.department.params.page++; store._department(true)}
+    fetch: () => store._department(),
+    onSearch: () => {
+      store.department.params.page = 1
+      store._department()
+    },
+    onScroll: () => {
+      store.department.params.page++
+      store._department(true)
+    }
   }
 </script>
 

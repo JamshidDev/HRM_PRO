@@ -4,9 +4,9 @@ const notifications = ref([])
 let id = 0
 
 export const useNotify = () => {
-  const notify = (content, type = 'success', options = {duration: 5000, persistent: false}) => {
-    id++;
-    const {duration} = options
+  const notify = (content, type = 'success', options = { duration: 5000, persistent: false }) => {
+    id++
+    const { duration } = options
     const item = {
       id,
       type,
@@ -15,7 +15,7 @@ export const useNotify = () => {
     }
 
     notifications.value.push(item)
-    if(options?.persistent) return
+    if (options?.persistent) return
     if (duration > 0) {
       setTimeout(() => remove(item.id), duration)
     }

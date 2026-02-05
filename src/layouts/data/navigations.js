@@ -1,59 +1,62 @@
 import {
-    Folder48Filled,
-    LockClosed16Filled,
-    Person32Filled,
-    DocumentPerson20Filled,
-    DocumentPerson16Filled,
-    PersonNote24Filled,
-    Person12Filled,
-    DocumentAdd20Filled,
-    TextBulletListSquare20Filled,
-    ChannelShare20Filled,
-    AirplaneTakeOff20Regular,
-    PeopleCheckmark24Filled,
-    PersonProhibited24Filled,
-    WeatherSunnyLow20Filled,
-    Grid20Filled,
-    DocumentCopy24Filled,
-    PersonClock24Filled,
-    GridKanban20Filled,
-    BriefcaseMedical20Filled,
-    PersonAccounts24Filled,
-    BookQuestionMark24Filled,
-    Book20Filled,
-    HatGraduation12Filled,
-    ClipboardBulletListLtr20Filled,
-    DocumentEdit20Filled,
-    AccessTime24Filled,
-    SlideMultipleSearch24Filled,
+  Folder48Filled,
+  LockClosed16Filled,
+  Person32Filled,
+  DocumentPerson20Filled,
+  DocumentPerson16Filled,
+  PersonNote24Filled,
+  Person12Filled,
+  DocumentAdd20Filled,
+  TextBulletListSquare20Filled,
+  ChannelShare20Filled,
+  AirplaneTakeOff20Regular,
+  PeopleCheckmark24Filled,
+  PersonProhibited24Filled,
+  WeatherSunnyLow20Filled,
+  Grid20Filled,
+  DocumentCopy24Filled,
+  PersonClock24Filled,
+  GridKanban20Filled,
+  BriefcaseMedical20Filled,
+  PersonAccounts24Filled,
+  BookQuestionMark24Filled,
+  Book20Filled,
+  HatGraduation12Filled,
+  ClipboardBulletListLtr20Filled,
+  DocumentEdit20Filled,
+  AccessTime24Filled,
+  SlideMultipleSearch24Filled,
   Certificate24Filled,
-    Organization12Filled,
-    BookDatabase24Regular,
-    RibbonStar24Filled,
-    PeopleToolbox20Filled,
-    ClockToolbox20Filled,
-    AppFolder20Filled,
-    HatGraduation24Filled,
-    AppsList24Filled,
-    RibbonStar20Filled,
-    PeopleMoney24Filled,
-    DocumentRibbon20Filled,
-    CalendarLtr20Filled,
-    Calculator24Regular,
-    ShareScreenPerson20Filled,
-    BuildingHome16Filled,
-    DocumentRibbon24Filled,
-    Briefcase48Filled,
-    AppTitle24Filled,
-    ContactCard16Filled,
-    ArrowUpload16Filled,
-    DesktopPulse24Filled,
-    QrCode24Regular,
-    ImageMultiple24Filled,
-    AppsAddIn16Regular,
-    AppFolder24Filled,
-    ShiftsCheckmark20Regular,
-    DocumentBulletList24Filled, ChatMultiple16Filled, CommentLightning20Filled,PersonVoice20Filled,
+  Organization12Filled,
+  BookDatabase24Regular,
+  RibbonStar24Filled,
+  PeopleToolbox20Filled,
+  ClockToolbox20Filled,
+  AppFolder20Filled,
+  HatGraduation24Filled,
+  AppsList24Filled,
+  RibbonStar20Filled,
+  PeopleMoney24Filled,
+  DocumentRibbon20Filled,
+  CalendarLtr20Filled,
+  Calculator24Regular,
+  ShareScreenPerson20Filled,
+  BuildingHome16Filled,
+  DocumentRibbon24Filled,
+  Briefcase48Filled,
+  AppTitle24Filled,
+  ContactCard16Filled,
+  ArrowUpload16Filled,
+  DesktopPulse24Filled,
+  QrCode24Regular,
+  ImageMultiple24Filled,
+  AppsAddIn16Regular,
+  AppFolder24Filled,
+  ShiftsCheckmark20Regular,
+  DocumentBulletList24Filled,
+  ChatMultiple16Filled,
+  CommentLightning20Filled,
+  PersonVoice20Filled,
   AppsList20Regular
 } from '@vicons/fluent'
 import { AppPaths } from '@/utils/index.js'
@@ -87,7 +90,7 @@ export const navigations = [
     path: AppPaths.Hrm,
     icon: Person32Filled,
     permission: appPermissions.hr,
-    name:'hr',
+    name: 'hr',
 
     children: [
       {
@@ -124,7 +127,7 @@ export const navigations = [
         icon: DocumentPerson20Filled,
         color: 'bg-success',
         permission: appPermissions.hrContracts,
-        name:'contracts',
+        name: 'contracts'
       },
       {
         label: 'documentPage.tabs.command',
@@ -132,7 +135,7 @@ export const navigations = [
         icon: DocumentCopy24Filled,
         color: 'bg-secondary',
         permission: appPermissions.hrCommands,
-        name:'commands',
+        name: 'commands'
       },
       {
         label: 'documentPage.tabs.adContract',
@@ -140,7 +143,7 @@ export const navigations = [
         icon: DocumentAdd20Filled,
         color: 'bg-warning',
         permission: appPermissions.hrContractAdditional,
-        name:'contract-additional',
+        name: 'contract-additional'
       },
       {
         label: 'applicationPage.name',
@@ -148,7 +151,7 @@ export const navigations = [
         icon: DocumentEdit20Filled,
         color: 'bg-success',
         permission: appPermissions.hrWorkerApplications,
-        name:'worker-applications',
+        name: 'worker-applications'
       },
       {
         label: 'confirmationPage.name',
@@ -284,7 +287,7 @@ export const navigations = [
     path: '/docflow',
     icon: DocumentPerson16Filled,
     permission: appPermissions.confirmation,
-    name:'confirmation',
+    name: 'confirmation',
     children: [
       {
         label: 'confirmation.name',
@@ -292,7 +295,7 @@ export const navigations = [
         icon: DocumentPerson20Filled,
         color: 'bg-dark',
         permission: appPermissions.confirmationContracts,
-        name:'contracts',
+        name: 'contracts'
       },
       {
         label: 'documentPage.tabs.command',
@@ -300,7 +303,7 @@ export const navigations = [
         icon: DocumentCopy24Filled,
         color: 'bg-primary',
         permission: appPermissions.confirmationCommands,
-        name:'commands',
+        name: 'commands'
       },
       {
         label: 'documentPage.tabs.adContract',
@@ -308,7 +311,7 @@ export const navigations = [
         icon: DocumentAdd20Filled,
         color: 'bg-warning',
         permission: appPermissions.confirmationAddContracts,
-        name:'contract-additional',
+        name: 'contract-additional'
       },
       {
         label: 'applicationPage.name',
@@ -316,14 +319,14 @@ export const navigations = [
         icon: DocumentEdit20Filled,
         color: 'bg-info',
         permission: appPermissions.confirmationWorkerApplications,
-        name:'worker-application',
+        name: 'worker-application'
       },
       {
         label: 'timesheetPage.name',
         path: Utils.routeDocFlowPathMaker(AppPaths.TimeSheet),
         icon: GridKanban20Filled,
         color: 'bg-secondary',
-        permission: appPermissions.confirmationTable,
+        permission: appPermissions.confirmationTable
       },
       {
         label: 'vacationSchedule.name',
@@ -338,7 +341,7 @@ export const navigations = [
         icon: Certificate24Filled,
         color: 'bg-info',
         permission: appPermissions.confirmationLmsCertificate,
-        name:'lms-certificate',
+        name: 'lms-certificate'
       },
       {
         label: 'staffingApproval.name',
@@ -346,8 +349,8 @@ export const navigations = [
         icon: AppsList20Regular,
         color: 'bg-info',
         permission: appPermissions.confirmationStaffingApproval,
-        name:'staffing-approve',
-      },
+        name: 'staffing-approve'
+      }
     ]
   },
   {
@@ -545,7 +548,7 @@ export const navigations = [
         icon: PersonVoice20Filled,
         color: 'bg-success',
         permission: appPermissions.turnstileApprove
-      },
+      }
     ]
   },
   {
@@ -708,7 +711,7 @@ export const navigations = [
         icon: AppsList20Regular,
         color: 'bg-info',
         permission: appPermissions.economistStaffingApprove
-      },
+      }
     ]
   },
   {
@@ -882,20 +885,20 @@ export const navigations = [
     ]
   },
   {
-        label: 'navigation.chat',
-        path: AppPaths.Chat,
-        icon: ChatMultiple16Filled,
-        permission: appPermissions.admin,
-        children: [
-            {
-                label: 'notificationPage.name',
-                path: Utils.routeChatPathMaker(AppPaths.Notification),
-                icon: CommentLightning20Filled,
-                color: 'bg-dark',
-                permission: appPermissions.instructions
-            }
-        ]
-    }
+    label: 'navigation.chat',
+    path: AppPaths.Chat,
+    icon: ChatMultiple16Filled,
+    permission: appPermissions.admin,
+    children: [
+      {
+        label: 'notificationPage.name',
+        path: Utils.routeChatPathMaker(AppPaths.Notification),
+        icon: CommentLightning20Filled,
+        color: 'bg-dark',
+        permission: appPermissions.instructions
+      }
+    ]
+  }
 ]
 
 export const otherNavigations = [

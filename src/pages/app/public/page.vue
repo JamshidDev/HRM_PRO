@@ -35,7 +35,7 @@
         />
       </template>
 
-      <Confirmations/>
+      <Confirmations />
     </div>
   </div>
 </template>

@@ -52,7 +52,7 @@ export const useLmsWorkerStore = defineStore('lmsWorkerStore', {
         .then((res) => {
           this.eduPlanList = res.data.data.data.map((v) => ({
             ...v,
-            name:` (${v?.start_date}) ` + v.name,
+            name: ` (${v?.start_date}) ` + v.name,
             position: v?.specialization?.name + `\n (${v.count_workers})`,
             subPosition: v?.learning_center?.name
           }))

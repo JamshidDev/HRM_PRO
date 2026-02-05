@@ -31,7 +31,6 @@ instance.interceptors.request.use(function (config) {
 
 instance.interceptors.response.use(
   (response) => {
-
     if (
       [Utils.methodTypes.PUT, Utils.methodTypes.POST, Utils.methodTypes.DELETE].includes(
         response.config.method
@@ -53,16 +52,14 @@ instance.interceptors.response.use(
       error.message = t('content.waitResponse')
     }
     if (error.response?.status === 401) {
-      if(isLoggingOut) return
+      if (isLoggingOut) return
 
       if (!error.response.request.responseURL.includes(AppPaths.Profile)) {
         $Toast.error(error.response.data.message)
       }
       isLoggingOut = true
       localStorage.removeItem(useAppSetting.tokenKey)
-      router.push(AppPaths.Login).finally(()=>{
-
-      })
+      router.push(AppPaths.Login).finally(() => {})
     } else if (error.response?.data?.message) {
       $Toast.error(error.response?.data?.message)
     } else if (error?.message) {

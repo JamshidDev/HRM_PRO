@@ -4,7 +4,7 @@
   import { useReport2Store, useComponentStore } from '@/store/modules/index.js'
   import Utils from '@/utils/Utils.js'
   import UIHelper from '@/utils/UIHelper.js'
-  import {SuperSelect} from "@components"
+  import { SuperSelect } from '@components'
 
   const store = useReport2Store()
   const componentStore = useComponentStore()
@@ -14,12 +14,11 @@
       if (!error) {
         let data = { ...store.positionPayload }
 
-        if(store.position.visibleType){
+        if (store.position.visibleType) {
           store.onCreatePosition(data)
-        }else{
+        } else {
           store.onUpdatePosition(data)
         }
-
       }
     })
   }
@@ -31,11 +30,7 @@
 </script>
 
 <template>
-  <n-form
-    ref="formRef"
-    :rules="validationRules.common"
-    :model="store.positionPayload"
-  >
+  <n-form ref="formRef" :rules="validationRules.common" :model="store.positionPayload">
     <n-spin :show="store.showLoading">
       <div>
         <div class="grid grid-cols-12 gap-x-4 overflow-x-hidden">
@@ -62,30 +57,30 @@
             :rule-path="validationRules.rulesNames.requiredNumberField"
           >
             <SuperSelect
-                :options="componentStore.departmentList"
-                v-model:value="store.positionPayload.department_id"
-                v-model:search="componentStore.depParams.search"
-                @onSearch="componentStore._onSearchDepartment"
-                @onScroll="componentStore._onScrollDepartment"
-                value-field="id"
-                :loading="componentStore.departmentLoading"
-                :render-label="UIHelper.selectRender.label"
-                :render-tag="UIHelper.selectRender.value"
+              :options="componentStore.departmentList"
+              v-model:value="store.positionPayload.department_id"
+              v-model:search="componentStore.depParams.search"
+              @onSearch="componentStore._onSearchDepartment"
+              @onScroll="componentStore._onScrollDepartment"
+              value-field="id"
+              :loading="componentStore.departmentLoading"
+              :render-label="UIHelper.selectRender.label"
+              :render-tag="UIHelper.selectRender.value"
             />
-<!--            <n-select-->
-<!--              v-model:value="store.positionPayload.department_id"-->
-<!--              filterable-->
-<!--              :filter="() => true"-->
-<!--              clearable-->
-<!--              :options="componentStore.departmentList"-->
-<!--              :render-label="UIHelper.selectRender.label"-->
-<!--              :render-tag="UIHelper.selectRender.value"-->
-<!--              value-field="id"-->
-<!--              :loading="componentStore.departmentLoading"-->
-<!--              @search="componentStore._onSearchDepartment"-->
-<!--              @scroll="componentStore._onScrollDepartment"-->
-<!--              :reset-menu-on-options-change="true"-->
-<!--            />-->
+            <!--            <n-select-->
+            <!--              v-model:value="store.positionPayload.department_id"-->
+            <!--              filterable-->
+            <!--              :filter="() => true"-->
+            <!--              clearable-->
+            <!--              :options="componentStore.departmentList"-->
+            <!--              :render-label="UIHelper.selectRender.label"-->
+            <!--              :render-tag="UIHelper.selectRender.value"-->
+            <!--              value-field="id"-->
+            <!--              :loading="componentStore.departmentLoading"-->
+            <!--              @search="componentStore._onSearchDepartment"-->
+            <!--              @scroll="componentStore._onScrollDepartment"-->
+            <!--              :reset-menu-on-options-change="true"-->
+            <!--            />-->
           </n-form-item>
           <n-form-item
             class="col-span-12 md:col-span-6 lg:col-span-4"

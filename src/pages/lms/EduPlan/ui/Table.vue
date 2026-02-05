@@ -25,7 +25,7 @@
     store.payload.type = v.type?.id
     store.payload.name = v.name
     store.payload.serial = v.serial || null
-    store.payload.end_date =v.end_date? new Date(v.end_date).getTime() : null
+    store.payload.end_date = v.end_date ? new Date(v.end_date).getTime() : null
 
     store.visibleType = false
     store.visible = true

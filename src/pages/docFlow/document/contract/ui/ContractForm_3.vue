@@ -4,7 +4,7 @@
   import Utils from '@/utils/Utils.js'
   import { useAppSetting } from '@/utils/index.js'
   import UIHelper from '@/utils/UIHelper.js'
-  import {DismissCircle28Filled, Drag24Filled, DrawText24Regular} from '@vicons/fluent'
+  import { DismissCircle28Filled, Drag24Filled, DrawText24Regular } from '@vicons/fluent'
   import { UIUser } from '@/components/index.js'
   import { VueDraggable } from 'vue-draggable-plus'
 
@@ -17,7 +17,6 @@
     return ![2].includes(store.payload.type)
   })
 
-
   const onChange = (v) => {
     if (v === 6) {
       store.payload.temporary_worker_id = null
@@ -29,36 +28,36 @@
   const renderLabel = (option) => {
     return [
       h(
-          'div',
-          {
-            class: 'flex gap-2 my-1 items-center px-2'
-          },
-          [
-            h(NAvatar, {
-              class: '',
-              src: option.photo,
-              'fallback-src': Utils.noAvailableImage
-            }),
-            h('div', { class: 'flex flex-col' }, [
-              h(
-                  'div',
-                  { class: 'text-xs font-medium text-gray-500 leading-[1.2]' },
-                  `${option.last_name}.${option.last_name[0]}.${option.middle_name[0]}`
-              ),
-              h('div', { class: 'text-xs text-primary leading-[1.2]' }, option.position)
-            ])
-          ]
+        'div',
+        {
+          class: 'flex gap-2 my-1 items-center px-2'
+        },
+        [
+          h(NAvatar, {
+            class: '',
+            src: option.photo,
+            'fallback-src': Utils.noAvailableImage
+          }),
+          h('div', { class: 'flex flex-col' }, [
+            h(
+              'div',
+              { class: 'text-xs font-medium text-gray-500 leading-[1.2]' },
+              `${option.last_name}.${option.last_name[0]}.${option.middle_name[0]}`
+            ),
+            h('div', { class: 'text-xs text-primary leading-[1.2]' }, option.position)
+          ])
+        ]
       )
     ]
   }
   const renderValue = ({ option }) => {
     return [
       h(
-          'div',
-          {
-            class: 'flex gap-2 my-1 items-center'
-          },
-          `${option?.last_name} ${option?.first_name} ${option?.middle_name}`
+        'div',
+        {
+          class: 'flex gap-2 my-1 items-center'
+        },
+        `${option?.last_name} ${option?.first_name} ${option?.middle_name}`
       )
     ]
   }
@@ -70,34 +69,36 @@
     syncConfirmationEv()
   }
   const syncConfirmationEv = () => {
-    if(store.payload.finance_id === store.payload.director_id) store.payload.finance_id = null
+    if (store.payload.finance_id === store.payload.director_id) store.payload.finance_id = null
     const ids = [store.payload.finance_id, store.payload.director_id]
-    financeList.value = componentStore.confirmationList.filter(v => v.id !== store.payload.director_id)
-    confirmationList.value = componentStore.confirmationList.filter(v => !ids.includes(v.id))
+    financeList.value = componentStore.confirmationList.filter(
+      (v) => v.id !== store.payload.director_id
+    )
+    confirmationList.value = componentStore.confirmationList.filter((v) => !ids.includes(v.id))
 
     onRemoveEv(store.payload.finance_id)
     onRemoveEv(store.payload.director_id)
   }
   const fillSortableConfirmations = () => {
     store.sortableConfirmations = confirmationList.value
-        .filter((v) => store.payload.confirmations.includes(v.id))
-        .map((v) => ({
-          id: v.id,
-          data: {
-            firstName: v.first_name,
-            lastName: v.last_name,
-            middleName: v.middle_name,
-            photo: v.photo,
-            position: v?.position || ''
-          }
-        }))
+      .filter((v) => store.payload.confirmations.includes(v.id))
+      .map((v) => ({
+        id: v.id,
+        data: {
+          firstName: v.first_name,
+          lastName: v.last_name,
+          middleName: v.middle_name,
+          photo: v.photo,
+          position: v?.position || ''
+        }
+      }))
   }
-  const onRemoveEv = (id) =>{
-    store.sortableConfirmations = store.sortableConfirmations.filter(v=>v.id !== id)
-    store.payload.confirmations = store.payload.confirmations.filter(v=>v !== id)
+  const onRemoveEv = (id) => {
+    store.sortableConfirmations = store.sortableConfirmations.filter((v) => v.id !== id)
+    store.payload.confirmations = store.payload.confirmations.filter((v) => v !== id)
   }
 
-  onMounted(()=>{
+  onMounted(() => {
     syncConfirmationEv()
   })
 </script>
@@ -173,16 +174,16 @@
         <div class="col-span-12">
           <n-form-item :label="$t(`documentPage.command.form.finance_id`)">
             <n-select
-                :disabled="!store.payload.director_id"
-                value-field="id"
-                label-field="last_name"
-                v-model:value="store.payload.finance_id"
-                :options="financeList"
-                :loading="componentStore.confirmationLoading"
-                :render-label="renderLabel"
-                :render-tag="renderValue"
-                @update:value="syncConfirmationEv"
-                clearable
+              :disabled="!store.payload.director_id"
+              value-field="id"
+              label-field="last_name"
+              v-model:value="store.payload.finance_id"
+              :options="financeList"
+              :loading="componentStore.confirmationLoading"
+              :render-label="renderLabel"
+              :render-tag="renderValue"
+              @update:value="syncConfirmationEv"
+              clearable
             />
           </n-form-item>
         </div>

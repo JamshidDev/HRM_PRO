@@ -3,7 +3,7 @@
   import { UIUpload, UISelect } from '@/components/index.js'
   import UIDepartment from '@/components/ui/UIDepartment.vue'
   import { useComponentStore, useContractStore } from '@/store/modules/index.js'
-  import UIHelper from "@utils/UIHelper.js"
+  import UIHelper from '@utils/UIHelper.js'
 
   const store = useContractStore()
   const componentStore = useComponentStore()

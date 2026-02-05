@@ -6,10 +6,10 @@
   const store = useScheduleTableStore()
   const debounceIndex = useDebounce(store._searchWorker)
 
-  const props =  defineProps({
-    disable:{
+  const props = defineProps({
+    disable: {
       type: Boolean,
-      default: false,
+      default: false
     }
   })
 
@@ -26,7 +26,7 @@
   }
 
   const onChange = () => {
-    if(props.disable) return
+    if (props.disable) return
     store.activeSearch = true
   }
   onUnmounted(() => {
@@ -36,7 +36,10 @@
 <template>
   <div class="flex items-center gap-3 w-full overflow-hidden h-full px-2">
     <Transition name="slide" mode="out-in">
-      <div v-if="store.activeSearch && !disable" class="flex gap-2 justify-between items-center w-full">
+      <div
+        v-if="store.activeSearch && !disable"
+        class="flex gap-2 justify-between items-center w-full"
+      >
         <n-input
           :on-keyup="searchEvent"
           @paste="searchEvent"

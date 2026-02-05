@@ -2,7 +2,7 @@
   import validationRules from '@/utils/validationRules.js'
   import { useEduPlanStore, useComponentStore } from '@/store/modules/index.js'
   import { useAppSetting } from '@/utils/index.js'
-  import {SuperSelect} from "@components"
+  import { SuperSelect } from '@components'
 
   const formRef = ref(null)
   const store = useEduPlanStore()
@@ -41,12 +41,27 @@
 </script>
 
 <template>
-  <n-form class="h-[calc(100vh-120px)]" ref="formRef" :rules="validationRules.common" :model="store.payload">
+  <n-form
+    class="h-[calc(100vh-120px)]"
+    ref="formRef"
+    :rules="validationRules.common"
+    :model="store.payload"
+  >
     <div class="grid grid-cols-12 gap-x-4">
-      <n-form-item class="col-span-12" :label="$t(`content.name`)" path="name" rule-path="requiredStringField">
+      <n-form-item
+        class="col-span-12"
+        :label="$t(`content.name`)"
+        path="name"
+        rule-path="requiredStringField"
+      >
         <n-input type="text" v-model:value="store.payload.name" />
       </n-form-item>
-      <n-form-item class="col-span-12"  :label="$t(`content.type`)" path="type" rule-path="requiredNumberField">
+      <n-form-item
+        class="col-span-12"
+        :label="$t(`content.type`)"
+        path="type"
+        rule-path="requiredNumberField"
+      >
         <n-select
           v-model:value="store.payload.type"
           :options="componentStore.lmsEnumTypes"
@@ -56,8 +71,9 @@
           filterable
         />
       </n-form-item>
-      <n-form-item class="col-span-12"
-                   :label="$t(`eduPlanPage.form.learning_center`)"
+      <n-form-item
+        class="col-span-12"
+        :label="$t(`eduPlanPage.form.learning_center`)"
         path="learning_center_id"
         rule-path="requiredNumberField"
       >
@@ -70,8 +86,9 @@
           filterable
         />
       </n-form-item>
-      <n-form-item class="col-span-12"
-                   :label="$t(`eduPlanPage.form.specialization`)"
+      <n-form-item
+        class="col-span-12"
+        :label="$t(`eduPlanPage.form.specialization`)"
         path="specialization_id"
         rule-path="requiredNumberField"
       >
@@ -89,8 +106,8 @@
         />
       </n-form-item>
       <n-form-item
-          class="col-span-12"
-          :label="$t(`eduPlanPage.form.subjects`)"
+        class="col-span-12"
+        :label="$t(`eduPlanPage.form.subjects`)"
         path="subjects"
         rule-path="requiredMultiSelectField"
       >
@@ -109,8 +126,8 @@
         />
       </n-form-item>
       <n-form-item
-          class="col-span-6"
-          :label="$t(`eduPlanPage.form.start_date`)"
+        class="col-span-6"
+        :label="$t(`eduPlanPage.form.start_date`)"
         path="start_date"
         rule-path="requiredNumberField"
       >
@@ -123,56 +140,53 @@
       </n-form-item>
 
       <n-form-item
-          class="col-span-6"
-          :label="$t(`eduPlanPage.form.hours`)"
+        class="col-span-6"
+        :label="$t(`eduPlanPage.form.hours`)"
         path="hours"
         rule-path="requiredNumberField"
       >
         <n-input-number class="w-full" min="1" v-model:value="store.payload.hours" />
       </n-form-item>
       <n-form-item
-          class="col-span-6"
-          :label="$t(`eduPlanPage.form.count_groups`)"
+        class="col-span-6"
+        :label="$t(`eduPlanPage.form.count_groups`)"
         path="count_groups"
         rule-path="requiredNumberField"
       >
         <n-input-number class="w-full" min="1" v-model:value="store.payload.count_groups" />
       </n-form-item>
       <n-form-item
-          class="col-span-6"
+        class="col-span-6"
         :label="$t(`eduPlanPage.form.count_workers`)"
         path="count_workers"
         rule-path="requiredNumberField"
       >
         <n-input-number class="w-full" min="1" v-model:value="store.payload.count_workers" />
       </n-form-item>
-      <n-form-item class="col-span-12"
-                   :label="$t(`eduPlanPage.form.serial`)"
-                   path="serial"
-                   rule-path="requiredNumberField"
+      <n-form-item
+        class="col-span-12"
+        :label="$t(`eduPlanPage.form.serial`)"
+        path="serial"
+        rule-path="requiredNumberField"
       >
         <n-select
-            v-model:value="store.payload.serial"
-            @scroll="store.onScrollSpecializations"
-            :options="componentStore.lmsSerials"
-            :loading="componentStore.lmsEnumLoading"
-            label-field="name"
-            value-field="id"
-            filterable
+          v-model:value="store.payload.serial"
+          @scroll="store.onScrollSpecializations"
+          :options="componentStore.lmsSerials"
+          :loading="componentStore.lmsEnumLoading"
+          label-field="name"
+          value-field="id"
+          filterable
         />
       </n-form-item>
-      <n-form-item
-          class="col-span-12"
-          :label="$t(`eduPlanPage.form.end_date`)"
-      >
+      <n-form-item class="col-span-12" :label="$t(`eduPlanPage.form.end_date`)">
         <n-date-picker
-            class="w-full"
-            v-model:value="store.payload.end_date"
-            type="date"
-            :format="useAppSetting.datePicketFormat"
+          class="w-full"
+          v-model:value="store.payload.end_date"
+          type="date"
+          :format="useAppSetting.datePicketFormat"
         />
       </n-form-item>
-
     </div>
   </n-form>
   <div class="grid grid-cols-2 gap-2">
@@ -184,4 +198,3 @@
     </n-button>
   </div>
 </template>
-

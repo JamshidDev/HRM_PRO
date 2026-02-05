@@ -98,13 +98,13 @@ export const useMonthReportStore = defineStore('monthReportStore', {
     _exportWithCodeByYear(data) {
       this.showLoading = true
       $ApiService.monthReportService
-          ._exportWithCodeByYear({ data })
-          .then(() => {
-            this.exportVisible = false
-          })
-          .finally(() => {
-            this.showLoading = false
-          })
+        ._exportWithCodeByYear({ data })
+        .then(() => {
+          this.exportVisible = false
+        })
+        .finally(() => {
+          this.showLoading = false
+        })
     },
     _index() {
       this.loading = true

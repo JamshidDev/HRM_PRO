@@ -25,7 +25,7 @@ export const useContractStore = defineStore('contractStore', {
       table_number: null,
       type: null,
       director_id: null,
-      finance_id:null,
+      finance_id: null,
       department_id: [],
       department_position_id: null,
       position_status: true,

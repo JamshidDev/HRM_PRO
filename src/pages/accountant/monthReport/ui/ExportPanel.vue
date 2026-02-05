@@ -6,7 +6,7 @@
   import validationRules from '@/utils/validationRules.js'
   import ValidationRules from '@/utils/validationRules.js'
   import { useDebounce } from '@/utils/index.js'
-  import {SuperSelect} from "@components"
+  import { SuperSelect } from '@components'
 
   const store = useMonthReportStore()
   const componentStore = useComponentStore()
@@ -40,7 +40,6 @@
     if (store.exportType === 2) {
       formRef.value?.validate((error) => {
         if (!error) {
-
           const data = {
             ...store.exportParams,
             organizations:
@@ -52,20 +51,18 @@
           uploadBtn.value?.$el?._triggerFly?.()
         }
       })
-    }else if(store.exportType === 4){
+    } else if (store.exportType === 4) {
       formRef.value?.validate((error) => {
         if (error) return
         const data = {
           organizations: store.exportParams.organizations.map((v) => v.id).toString() || undefined,
           year: store.exportParams.year,
-          codes: store.exportParams.codes,
+          codes: store.exportParams.codes
         }
         store._exportWithCodeByYear(data)
         uploadBtn.value?.$el?._triggerFly?.()
       })
-
-    }
-    else if (store.exportType === 1) {
+    } else if (store.exportType === 1) {
       const params = {
         year: store.exportParams.year,
         month: store.exportParams.month,
@@ -163,7 +160,7 @@
             @onSearch="componentStore._structures"
           />
         </div>
-        <div :class="[[3,4].includes(store.exportType)? 'col-span-12' : 'col-span-6']">
+        <div :class="[[3, 4].includes(store.exportType) ? 'col-span-12' : 'col-span-6']">
           <label class="text-xs mt-3 text-gray-500 mb-1 font-medium">{{
             $t('content.year')
           }}</label>
@@ -175,7 +172,7 @@
             value-field="id"
           />
         </div>
-        <div class="col-span-6" v-if="![3,4].includes(store.exportType)">
+        <div class="col-span-6" v-if="![3, 4].includes(store.exportType)">
           <label class="text-xs mt-3 text-gray-500 mb-1 font-medium">{{
             $t('content.month')
           }}</label>
@@ -187,9 +184,9 @@
             value-field="id"
           />
         </div>
-        <template v-if="[4,2].includes(store.exportType)">
+        <template v-if="[4, 2].includes(store.exportType)">
           <div
-              v-if="store.exportType===2"
+            v-if="store.exportType === 2"
             class="col-span-12 border border-surface-line rounded-lg py-1 px-2 flex justify-between items-center"
           >
             <span class="text-primary">
@@ -250,8 +247,8 @@
 
         <div class="col-span-12 flex justify-center mb-4">
           <n-button
-              ref="uploadBtn"
-              v-fly-upload.manual
+            ref="uploadBtn"
+            v-fly-upload.manual
             :loading="store.showLoading"
             @click="onSubmit"
             type="success"

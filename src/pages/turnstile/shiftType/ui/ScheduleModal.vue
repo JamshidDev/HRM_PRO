@@ -3,7 +3,7 @@
   import { UIModal, UINSelect } from '@/components/index.js'
   import SearchElement from '@/pages/turnstile/schedule/ui/SearchElement.vue'
   import MonthTab from '@/pages/turnstile/scheduleWorker/ui/MonthTab.vue'
-import {Utils} from "@utils"
+  import { Utils } from '@utils'
 
   const store = useShiftTypeStore()
 
@@ -13,7 +13,7 @@ import {Utils} from "@utils"
     const data = {
       start_date: Utils.timeToZone(store.generatePayload.start_date),
       end_date: Utils.timeToZone(store.generatePayload.end_date),
-      work_date:store.showWorkDate? Utils.timeToZone(store.generatePayload.work_date) : undefined,
+      work_date: store.showWorkDate ? Utils.timeToZone(store.generatePayload.work_date) : undefined,
       schedule_type: store.elementId,
       count: store.showGroupCountField ? store.generatePayload.count : undefined,
       schedule_workers: store.workers.map((v, index) => ({
@@ -40,10 +40,9 @@ import {Utils} from "@utils"
           startTime: e.start_time || null,
           endTime: e.end_time || null,
           workTime: e.daily_minutes,
-          isEmpty:e.isEmpty,
+          isEmpty: e.isEmpty
         }))
     })
-
   })
 
   const calculateWorkTime = (index) => {
@@ -53,7 +52,7 @@ import {Utils} from "@utils"
         : '0' + store.uiParams.month
     const date = `${store.uiParams.year}-${month}`
     const totalMinute = store.scheduleList[index]
-      .filter((x) => (x.date.startsWith(date) && !x.isEmpty))
+      .filter((x) => x.date.startsWith(date) && !x.isEmpty)
       .reduce((sum, item) => sum + item.daily_minutes, 0)
     return Math.floor(totalMinute / 60)
   }
@@ -63,8 +62,6 @@ import {Utils} from "@utils"
     store.scheduleParams.month = v.split('-')[1]
     store._dayOfMonth()
   }
-
-
 
   const onSearch = (v) => {
     store.workerParams.search = v
@@ -148,9 +145,7 @@ import {Utils} from "@utils"
                 <div
                   class="border-r text-center border-l border-b border-t-0 -ml-[1px] border-surface-line w-[60px] min-w-[60px] h-[50px] border text-xs text-secondary p-2 pb-0 flex-shrink-0 cursor-pointer relative"
                 >
-                  <template v-if="worker?.[dayIndex].isEmpty">
-
-                  </template>
+                  <template v-if="worker?.[dayIndex].isEmpty"> </template>
                   <template v-else-if="worker?.[dayIndex].isWorkDay">
                     <div class="leading-[1.2] pt-3">{{ worker?.[dayIndex]?.startTime }}</div>
                     <div class="leading-[1.2]">{{ worker?.[dayIndex]?.endTime }}</div>

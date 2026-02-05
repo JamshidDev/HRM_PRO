@@ -875,7 +875,7 @@ export const getTableConfig = (cardType) => {
         }
       ]
     },
-    notIncludedSchedule:{
+    notIncludedSchedule: {
       responseField: 'workers',
       columns: [
         {

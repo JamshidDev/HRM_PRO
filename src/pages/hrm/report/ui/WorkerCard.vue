@@ -4,8 +4,8 @@
   import Indicator from '@/pages/hrm/report/ui/Indicator.vue'
   import IndicatorTitle from '@/pages/hrm/report/ui/IndicatorTitle.vue'
   import { UIUser } from '@/components/index.js'
-  import {AppPaths} from "@utils"
-  import router from "@/router/index.js"
+  import { AppPaths } from '@utils'
+  import router from '@/router/index.js'
 
   const store = useReport2Store()
   const accStore = useAccountStore()
@@ -24,12 +24,10 @@
     })
   }
 
- const onView = (v) =>{
+  const onView = (v) => {
     if (!accStore.checkAction(accStore.pn.hrWorkersWrite)) return
     goPush(v)
   }
-
-
 </script>
 
 <template>
@@ -52,7 +50,7 @@
           <div class="w-[calc(100%-200px)] flex items-center">
             <span class="inline-block font-semibold w-[30px] flex-shrink-0">{{ idx + 1 }}</span>
             <UIUser
-                :hide-tooltip="true"
+              :hide-tooltip="true"
               :short="false"
               :data="{
                 photo: item.worker.photo,
@@ -64,13 +62,16 @@
             >
               <template #name>
                 <div class="flex items-center gap-2">
-                  <span>{{Utils.combineFullName(item.worker)}}</span>
-                  <n-button v-if="item.type" size="tiny" type="warning" secondary>{{item.type?.name}}</n-button></div>
+                  <span>{{ Utils.combineFullName(item.worker) }}</span>
+                  <n-button v-if="item.type" size="tiny" type="warning" secondary>{{
+                    item.type?.name
+                  }}</n-button>
+                </div>
               </template>
               <template #position>
                 <div class="flex gap-2 items-center">
-                  <n-button size="tiny" type="primary" secondary>{{item.position_date}}</n-button>
-                  <span class="text-secondary text-xs">{{item.post_name}}</span>
+                  <n-button size="tiny" type="primary" secondary>{{ item.position_date }}</n-button>
+                  <span class="text-secondary text-xs">{{ item.post_name }}</span>
                 </div>
               </template>
             </UIUser>

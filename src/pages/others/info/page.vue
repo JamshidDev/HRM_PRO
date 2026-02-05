@@ -1,6 +1,6 @@
 <script setup>
   import InfoCardGrid from './ui/InfoCardGrid.vue'
-  import {useUsefulStore } from '@stores'
+  import { useUsefulStore } from '@stores'
   import { UIDrawer } from '@components'
   import OrgDetail from './ui/OrgDetail.vue'
   const store = useUsefulStore()

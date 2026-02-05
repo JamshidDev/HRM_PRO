@@ -126,7 +126,7 @@
     store.params.last_name = null
     store.params.first_name = null
     store.params.middle_name = null
-    store.params.multiple_position=false
+    store.params.multiple_position = false
 
     filterEvent()
   }

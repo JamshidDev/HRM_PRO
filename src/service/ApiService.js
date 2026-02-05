@@ -121,7 +121,7 @@ import {
   eventV2Service,
   shiftTypeService,
   scheduleService as workerScheduleService,
-    approveService,
+  approveService
 } from './v1/turnstile'
 
 import accountantService from './v1/accountant/accountantService.js'
@@ -267,5 +267,5 @@ export default {
   confCertificateService,
   approveService,
   staffApprovalService,
-  confStaffingApprovalService,
+  confStaffingApprovalService
 }

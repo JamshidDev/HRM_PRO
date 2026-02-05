@@ -4,7 +4,7 @@
   import { DocumentArrowUp20Regular, LockClosed24Filled, LockOpen16Filled } from '@vicons/fluent'
   import { useAccountStore, useUploadReportStore } from '@/store/modules/index.js'
   import i18n from '@/i18n/index.js'
-  import {getOneMonthAgoYearMonth} from "@utils"
+  import { getOneMonthAgoYearMonth } from '@utils'
 
   const { t } = i18n.global
   const store = useUploadReportStore()

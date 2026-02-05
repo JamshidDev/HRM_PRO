@@ -38,13 +38,13 @@
       store.attachWorkerParams.page = 1
       store._attachWorkers()
       store.multipleAttachVisible = true
-    }else if(v.key === Utils.ActionTypes.edit) {
-      const {fullName, position, id, workerId} = v.data
+    } else if (v.key === Utils.ActionTypes.edit) {
+      const { fullName, position, id, workerId } = v.data
       store.replace.selectedWorker = {
         fullName,
         position,
         workerId,
-        positionId:id,
+        positionId: id
       }
       store.replace.visible = true
       store.worker.params.page = 1
@@ -102,7 +102,7 @@
           key: Utils.ActionTypes.edit,
           icon: ArrowSync16Filled,
           visible: true
-        },
+        }
       ]"
     />
   </div>

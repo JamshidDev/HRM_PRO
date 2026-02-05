@@ -4,9 +4,14 @@ const socketUrl = import.meta.env.VITE_SOCKET_URL
 const socketSecret = import.meta.env.VITE_SOCKET_SECRET
 import { useNotify } from '@/composables/useNotify'
 import { eventBus, Events } from '@/utils/index.js'
-import {useNotificationStore} from "@/store/modules/index.js";
+import { useNotificationStore } from '@/store/modules/index.js'
 
-const allowedEvents = [Events.APPLICATION_GENERATED, Events.COMMAND_GENERATED, Events.CERTIFICATED_GENERATED, Events.TASK_COMPLETED]
+const allowedEvents = [
+  Events.APPLICATION_GENERATED,
+  Events.COMMAND_GENERATED,
+  Events.CERTIFICATED_GENERATED,
+  Events.TASK_COMPLETED
+]
 const allowedAlertTypes = ['success', 'error', 'info', 'warning']
 
 export const useSocketStore = defineStore('useSocketStore', {
@@ -31,27 +36,28 @@ export const useSocketStore = defineStore('useSocketStore', {
     },
     getCount: (state) => (category, field) => {
       return state.counts[category]?.[field] || 0
-    },
+    }
   },
   actions: {
     initSocket(token, userId) {
-
       let playAudioUnlocked = false
 
-      let notificationAudio = new Audio("/sounds/notification.mp3");
+      let notificationAudio = new Audio('/sounds/notification.mp3')
 
       const unlockPlayNotification = () => {
-        notificationAudio.play().then(() => {
-          notificationAudio.pause();
-          notificationAudio.currentTime = 0;
-          playAudioUnlocked = true;
-        }).catch(() => {});
+        notificationAudio
+          .play()
+          .then(() => {
+            notificationAudio.pause()
+            notificationAudio.currentTime = 0
+            playAudioUnlocked = true
+          })
+          .catch(() => {})
 
-        window.removeEventListener("click", unlockPlayNotification);
-      };
+        window.removeEventListener('click', unlockPlayNotification)
+      }
 
-      window.addEventListener("click", unlockPlayNotification);
-
+      window.addEventListener('click', unlockPlayNotification)
 
       this.currentUserId = userId
       this.socket = io(socketUrl, {
@@ -87,23 +93,24 @@ export const useSocketStore = defineStore('useSocketStore', {
       })
 
       this.socket.on('notification', (data) => {
-
-        if(allowedAlertTypes.includes(data?.alert)){
-          if(playAudioUnlocked){
-            notificationAudio.currentTime = 0;
-            notificationAudio?.play();
+        if (allowedAlertTypes.includes(data?.alert)) {
+          if (playAudioUnlocked) {
+            notificationAudio.currentTime = 0
+            notificationAudio?.play()
           }
 
-          useNotify().notify(data.title || '', 'success' ?? data.alert, {meta: data,duration: data.duration || undefined,  persistent: false})
+          useNotify().notify(data.title || '', 'success' ?? data.alert, {
+            meta: data,
+            duration: data.duration || undefined,
+            persistent: false
+          })
         }
 
-
-
-        if(allowedEvents.includes(data.type)){
+        if (allowedEvents.includes(data.type)) {
           eventBus.emit(data.type, data)
         }
 
-        if(data.type === Events.DOCUMENT_COUNT){
+        if (data.type === Events.DOCUMENT_COUNT) {
           console.log(data.counts)
           this.updateCount(data.counts)
 
@@ -189,12 +196,12 @@ export const useSocketStore = defineStore('useSocketStore', {
         this.socket.disconnect()
       }
     },
-    updateCount(data){
+    updateCount(data) {
       Object.entries(data).forEach(([type, fields]) => {
-        if(!this.counts[type]){
+        if (!this.counts[type]) {
           this.counts[type] = {}
         }
-        this.counts[type] = {...this.counts[type], ...fields}
+        this.counts[type] = { ...this.counts[type], ...fields }
       })
     },
     disconnect() {

@@ -35,5 +35,5 @@ export default {
   _exportWithCode,
   _exportMultiple,
   _exportByPosition,
-  _exportWithCodeByYear,
+  _exportWithCodeByYear
 }

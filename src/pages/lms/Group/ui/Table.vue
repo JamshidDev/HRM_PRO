@@ -1,7 +1,11 @@
 <script setup>
   import { NoDataPicture } from '@/components/index.js'
-  import { useAccountStore, useLmsGroupStore, useLmsCertificateStore } from '@/store/modules/index.js'
-  import {AddCircle28Regular} from "@vicons/fluent"
+  import {
+    useAccountStore,
+    useLmsGroupStore,
+    useLmsCertificateStore
+  } from '@/store/modules/index.js'
+  import { AddCircle28Regular } from '@vicons/fluent'
 
   const store = useLmsGroupStore()
   const accStore = useAccountStore()
@@ -41,15 +45,11 @@
             </td>
             <td>{{ item?.code }}</td>
             <td class="text-center">
-              <n-button
-                  @click="onCertificate(item)"
-                  type="primary"
-                  secondary
-              >
+              <n-button @click="onCertificate(item)" type="primary" secondary>
                 <template #icon>
-                  <AddCircle28Regular/>
+                  <AddCircle28Regular />
                 </template>
-                {{$t('groupPage.form.certificated')}}</n-button
+                {{ $t('groupPage.form.certificated') }}</n-button
               >
             </td>
             <td class="text-center">

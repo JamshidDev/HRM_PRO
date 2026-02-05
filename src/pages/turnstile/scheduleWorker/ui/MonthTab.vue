@@ -2,14 +2,11 @@
   import { ChevronLeft16Filled, ChevronRight16Filled } from '@vicons/fluent'
 
   const props = defineProps({
-    options: { type: Array, default: [] },
-
+    options: { type: Array, default: [] }
   })
 
   const selectDate = defineModel('date', { type: String, default: null })
   const scrollContainer = ref(null)
-
-
 
   const onSelectEv = (v) => {
     selectDate.value = v
@@ -68,7 +65,15 @@
           class="select-none px-4 py-1 bg-surface-section border text-secondary border-surface-line rounded-lg min-w-[140px] w-[140px] cursor-pointer hover:bg-opacity-80 transition flex-shrink-0"
         >
           <div class="leading-[1.2] font-medium text-center">{{ item?.year }}</div>
-          <div v-if="item?.from" class="leading-[1.2] text-center text-xs flex items-center justify-center gap-1"><span class="font-medium bg-primary/10 px-1 rounded-xl">{{item?.from === item?.to ? item?.from : item?.from +' - '+ item?.to}}</span>  {{item?.month}}</div>
+          <div
+            v-if="item?.from"
+            class="leading-[1.2] text-center text-xs flex items-center justify-center gap-1"
+          >
+            <span class="font-medium bg-primary/10 px-1 rounded-xl">{{
+              item?.from === item?.to ? item?.from : item?.from + ' - ' + item?.to
+            }}</span>
+            {{ item?.month }}
+          </div>
           <div v-else class="leading-[1] text-xs text-center">{{ item?.month }}</div>
         </div>
       </template>

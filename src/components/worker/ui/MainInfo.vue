@@ -42,8 +42,8 @@
           <template #icon>
             <StarEmphasis32Filled />
           </template>
-          4.67</n-button
-        >
+          4.67
+        </n-button>
       </div>
 
       <div class="flex flex-wrap items-center gap-2 justify-end md:justify-start">
@@ -82,8 +82,7 @@
         {{ Utils.combineFullName(store.workerPreview?.worker) }}
       </div>
       <div class="col-span-12 md:col-span-6 font-bold items-center flex">
-        <span class="font-normal text-gray-400">{{ $t('workerView.general.passportJSHSHIR') }}</span
-        >:
+        <span class="font-normal text-gray-400">{{ $t('workerView.general.passportJSHSHIR') }}</span>:
         {{
           isHide
             ? Utils.maskText(store.workerPreview?.worker.pin, 3, 4)
@@ -98,8 +97,7 @@
         </n-icon>
       </div>
       <div class="col-span-12 md:col-span-6 font-bold items-center flex">
-        <span class="font-normal text-gray-400">{{ $t('workerView.general.phone') }}</span
-        >:
+        <span class="font-normal text-gray-400">{{ $t('workerView.general.phone') }}</span>:
         {{
           isHide
             ? Utils.maskText(store.workerPreview?.worker.phones[0].phone, 2, 2)
@@ -114,12 +112,10 @@
         </n-icon>
       </div>
       <div class="col-span-12 md:col-span-6 font-bold">
-        <span class="font-normal text-gray-400">{{ $t('workerView.general.department') }}</span
-        >: {{ store.workerPreview?.department?.name }}
+        <span class="font-normal text-gray-400">{{ $t('workerView.general.department') }}</span>: {{ store.workerPreview?.department?.name }}
       </div>
       <div class="col-span-12 md:col-span-6 font-bold">
-        <span class="font-normal text-gray-400">{{ $t('workerView.general.salary') }}</span
-        >:
+        <span class="font-normal text-gray-400">{{ $t('workerView.general.salary') }}</span>:
         {{
           isHide
             ? Utils.maskText(store.workerPreview?.salary, 0, 2)
@@ -128,11 +124,8 @@
         {{ $t('content.sum') }}
       </div>
       <div class="col-span-12 font-bold">
-        <span class="font-normal text-gray-400">{{ $t('workerView.general.position') }}</span
-        >: {{ store.workerPreview?.post_name }}
+        <span class="font-normal text-gray-400">{{ $t('workerView.general.position') }}</span>: {{ store.workerPreview?.post_name }}
       </div>
     </template>
   </div>
 </template>
-
-<style scoped></style>

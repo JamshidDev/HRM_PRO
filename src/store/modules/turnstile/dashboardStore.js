@@ -56,7 +56,7 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
       date: null,
       norm_hours: null,
       status: null,
-      auth_type: null,
+      auth_type: null
     },
     timeRange: null,
     tableColumns: [],
@@ -147,14 +147,14 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
         name: 'turnStileDashboard.cards.notIncludedSchedule',
         key: 'notIncludedSchedule'
       },
-      ACSEventFaceVerifyPass:{
+      ACSEventFaceVerifyPass: {
         name: 'turnStileDashboard.cards.ACSEventFaceVerifyPass',
         key: 'ACSEventFaceVerifyPass'
       },
-      MobileFaceEvent:{
+      MobileFaceEvent: {
         name: 'turnStileDashboard.cards.MobileFaceEvent',
         key: 'MobileFaceEvent'
-      },
+      }
     },
     filterDepParams: {
       page: 1,
@@ -362,7 +362,9 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
         organizations: this.dashboardParams.organizations.map((v) => v.id).toString() || undefined,
         departments: this.dashboardParams.departments.toString() || undefined,
         date: Utils.timeToZone(this.previewParams.date),
-        type: ['ACSEventFaceVerifyPass', 'MobileFaceEvent'].includes(this.previewParams.type) ? 'come' : this.previewParams.type,
+        type: ['ACSEventFaceVerifyPass', 'MobileFaceEvent'].includes(this.previewParams.type)
+          ? 'come'
+          : this.previewParams.type
       }
     },
 
@@ -411,13 +413,12 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
             ...v,
             user: this._userContructor(v, v.position_name)
           }
-        }else if(cardType === 'notIncludedSchedule'){
+        } else if (cardType === 'notIncludedSchedule') {
           return {
             ...v,
             user: this._userContructor(v, v.position_name)
           }
-        }
-        else if (cardType === 'lesson_worked') {
+        } else if (cardType === 'lesson_worked') {
           return {
             ...v,
             user: this._userContructor(v, v.position_name),

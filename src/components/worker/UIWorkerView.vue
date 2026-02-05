@@ -24,8 +24,8 @@
   const store = useComponentStore()
   const carouselRef = ref(null)
   const currentIndex = ref(1)
-  const visible = defineModel('visible', { type: Boolean, default: false })
-  const props = defineProps({
+  defineModel('visible', { type: Boolean, default: false })
+  defineProps({
     workerId: {
       type: String,
       default: null
@@ -160,11 +160,12 @@
                   <template
                     v-if="
                       store.workerPreview?.worker?.photos &&
-                      store.workerPreview?.worker?.photos.length > 0
+                        store.workerPreview?.worker?.photos.length > 0
                     "
                   >
                     <n-carousel-item
                       v-for="(item, idx) in store.workerPreview?.worker?.photos"
+                      :key="idx"
                       class="hover:scale-90 transition-all rounded-lg"
                     >
                       <img class="w-full" :src="item.photo" alt="worker image" />

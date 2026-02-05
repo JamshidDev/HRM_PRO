@@ -5,7 +5,7 @@
     PanelLeftContract20Filled,
     DocumentEdit24Regular,
     ClipboardCheckmark20Regular,
-    CalendarCancel20Regular,
+    CalendarCancel20Regular
   } from '@vicons/fluent'
   import { UIUser, UILottieReader } from '@/components/index.js'
   import generateFile from '@/assets/json/generateFile.json'
@@ -13,7 +13,7 @@
     usePdfViewerStore,
     useSignatureStore,
     useApplicationStore,
-    useAccountStore,
+    useAccountStore
   } from '@/store/modules/index.js'
   import ConfirmationList from './ui/ConfirmationList.vue'
   import LeftContent from './ui/LeftContent.vue'
@@ -45,7 +45,7 @@
     signatureStore.documentType = store.model
     signatureStore._signatureDocument(
       signatureStore.signatureTypes.contract,
-       store.document_id,
+      store.document_id,
       onSuccess
     )
   }
@@ -101,9 +101,10 @@
         const accountOrgId = accountStore?.account?.organization?.id
         const documentOrgId = v.document.organization_id
 
-        store.permissions.canEdit =  v.document.confirmation.id !== 3 && (accountRoleName === 'Admin' || accountOrgId === documentOrgId)
+        store.permissions.canEdit =
+          v.document.confirmation.id !== 3 &&
+          (accountRoleName === 'Admin' || accountOrgId === documentOrgId)
         store.permissions.canSignature = v.signature.signature
-
 
         const worker = v.signature?.current_user?.worker
         store.signatureMan = {
@@ -372,7 +373,7 @@
                     <UIUser :short="false" :data="store.signatureMan" />
                   </div>
                   <n-button
-                      :loading="signatureStore.loading"
+                    :loading="signatureStore.loading"
                     :disabled="!store.permissions?.canSignature"
                     @click="onSaveSignature"
                     class="shadow cursor-pointer"

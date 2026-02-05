@@ -1,9 +1,6 @@
 <script setup>
   import { navigations } from '../../data/navigations.js'
-  import {
-    ChevronDown12Regular,
-    ChevronDoubleLeft16Filled,
-  } from '@vicons/fluent'
+  import { ChevronDown12Regular, ChevronDoubleLeft16Filled } from '@vicons/fluent'
   import { useAccountStore } from '@/store/modules/index.js'
   import i18n from '@/i18n/index.js'
   import { AppPaths, useAppSetting } from '@/utils/index.js'
@@ -118,7 +115,7 @@
   }
 
   const currentCategory = computed(() => {
-    const nav = navigations.find(n => n.path === menuPath.value)
+    const nav = navigations.find((n) => n.path === menuPath.value)
     return nav?.name || null
   })
 
@@ -135,8 +132,8 @@
 
   onMounted(() => {
     checkPage(route.path)
-    const activeNav = navigations.find((nav) =>
-        route.path.startsWith(nav.path) && nav.children?.length
+    const activeNav = navigations.find(
+      (nav) => route.path.startsWith(nav.path) && nav.children?.length
     )
     if (activeNav) {
       menuPath.value = activeNav.path
@@ -163,7 +160,7 @@
               class="main-menu-item border"
               @click="nextPanel(item.path)"
             >
-              <MiniMenuBadge :category="item?.name ?? undefined"/>
+              <MiniMenuBadge :category="item?.name ?? undefined" />
               <n-icon>
                 <component :is="item.icon" />
               </n-icon>
@@ -225,7 +222,7 @@
                   item?.disable && 'opacity-30'
                 ]"
               >
-                <MenuItemBadge :category="currentCategory"  :field="item?.name"/>
+                <MenuItemBadge :category="currentCategory" :field="item?.name" />
                 <div :class="[item?.color]" class="item-icon rounded-[10px] ml-[-2px]">
                   <n-icon size="20">
                     <component :is="item.icon" />

@@ -47,9 +47,13 @@
               :class="[!key.isValid && 'bg-danger/6']"
               class="hover:bg-primary/3 grid grid-cols-12 gap-y-2 w-full bg-gray-50 mb-2 border border-surface-line rounded-sm px-4 py-4 cursor-pointer shadow-none transition-all"
             >
-              <div class="col-span-12 font-bold text-lg mb-1 text-textColor0 flex items-center gap-3">
+              <div
+                class="col-span-12 font-bold text-lg mb-1 text-textColor0 flex items-center gap-3"
+              >
                 {{ key?.fullName }}
-                <n-button v-if="!key.isValid" type="error" size="tiny" secondary>{{$t('signature.notValidDate')}}</n-button>
+                <n-button v-if="!key.isValid" type="error" size="tiny" secondary>{{
+                  $t('signature.notValidDate')
+                }}</n-button>
               </div>
 
               <div class="col-span-4 font-bold">
@@ -84,9 +88,11 @@
                 <span class="text-xs font-normal block text-textColor3">{{
                   $t('signature.validDate')
                 }}</span>
-                <span :class="[!key?.isValid && '!text-danger']" class="text-xs block font-semibold text-textColor2">{{
-                  Utils.timeWithMonth(key?.validDate)
-                }}</span>
+                <span
+                  :class="[!key?.isValid && '!text-danger']"
+                  class="text-xs block font-semibold text-textColor2"
+                  >{{ Utils.timeWithMonth(key?.validDate) }}</span
+                >
               </div>
             </div>
           </template>

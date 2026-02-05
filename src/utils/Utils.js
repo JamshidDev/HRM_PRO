@@ -147,7 +147,7 @@ const documentModels = {
   vacationSchedule: 'vacation-schedule',
   lmsCertificate: 'lms-certificate',
   med: 'med',
-  staffingApprove: 'staffing-approve',
+  staffingApprove: 'staffing-approve'
 }
 const copyToClipboard = async (text, callback) => {
   try {

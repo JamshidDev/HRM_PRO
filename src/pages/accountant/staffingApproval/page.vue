@@ -1,27 +1,27 @@
 <script setup>
-import {useAccountStore, useStaffingApprovalStore} from "@stores"
-import {UIOfficeApp, UIPageContent} from "@components"
-import { Filter, CreateModal, Table} from "./ui"
-import Utils from "@utils/Utils.js"
+  import { useAccountStore, useStaffingApprovalStore } from '@stores'
+  import { UIOfficeApp, UIPageContent } from '@components'
+  import { Filter, CreateModal, Table } from './ui'
+  import Utils from '@utils/Utils.js'
 
-const store = useStaffingApprovalStore()
-const accStore = useAccountStore()
-const officeAppRef = ref(null)
+  const store = useStaffingApprovalStore()
+  const accStore = useAccountStore()
+  const officeAppRef = ref(null)
 
-const openCommand = (id) => {
-  officeAppRef.value.openPdf(id, Utils.documentModels.staffingApprove)
-}
+  const openCommand = (id) => {
+    officeAppRef.value.openPdf(id, Utils.documentModels.staffingApprove)
+  }
 
-onMounted(() => {
-  if (!accStore.checkAction(accStore.pn.economistStaffingApproveRead)) return
-  store._index()
-})
+  onMounted(() => {
+    if (!accStore.checkAction(accStore.pn.economistStaffingApproveRead)) return
+    store._index()
+  })
 </script>
 
 <template>
   <UIPageContent>
-    <Filter/>
-    <CreateModal/>
+    <Filter />
+    <CreateModal />
     <Table @openOffice="openCommand" />
     <UIOfficeApp ref="officeAppRef" />
   </UIPageContent>

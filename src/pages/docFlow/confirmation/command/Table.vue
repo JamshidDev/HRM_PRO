@@ -1,28 +1,19 @@
 <script setup>
-  import {
-    NoDataPicture,
-    UIMenuButton,
-    UIPagination,
-    UIStatus,
-    UIUser
-  } from '@/components/index.js'
+  import { NoDataPicture, UIMenuButton, UIPagination, UIStatus } from '@/components/index.js'
   import { useConfirmCommandStore } from '@/store/modules/index.js'
   import Utils from '@/utils/Utils.js'
 
   const store = useConfirmCommandStore()
-
   const emits = defineEmits(['openOffice', 'onChangePage'])
 
   const onOpenFile = (documentId, signatureId) => {
     emits('openOffice', { documentId, signatureId })
   }
-
   const changePage = (v) => {
     store.params.page = v.page
     store.params.per_page = v.per_page
     store._index()
   }
-
   const onSelect = (v) => {
     if (v.key === 'view') {
       onOpenFile(v.data?.command.id, v.data.id)

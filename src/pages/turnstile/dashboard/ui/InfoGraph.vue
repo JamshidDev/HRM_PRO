@@ -104,7 +104,7 @@
               {{ store.grandWorkerData?.not_passed_turnstile_workers_count || 0 }}
             </h3>
             <span
-              class="text-center text-[10px] font-semibold text-secondary  mt-3 mb-1 line-clamp-1 opacity-100 group-hover:opacity-[0.2] transition-all duration-300"
+              class="text-center text-[10px] font-semibold text-secondary mt-3 mb-1 line-clamp-1 opacity-100 group-hover:opacity-[0.2] transition-all duration-300"
             >
               {{ $t('turnStileDashboard.cards.dontPassFace') }}
             </span>

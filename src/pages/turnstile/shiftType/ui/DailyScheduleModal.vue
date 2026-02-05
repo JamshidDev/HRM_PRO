@@ -1,8 +1,8 @@
 <script setup>
-  import {DismissCircle24Filled } from '@vicons/fluent'
-  import { useShiftTypeStore} from '@stores'
-  import {UIModal, UIUser, UIPagination} from '@components'
-  import DailyScheduleFilter from "./DailyScheduleFilter.vue"
+  import { DismissCircle24Filled } from '@vicons/fluent'
+  import { useShiftTypeStore } from '@stores'
+  import { UIModal, UIUser, UIPagination } from '@components'
+  import DailyScheduleFilter from './DailyScheduleFilter.vue'
   import i18n from '@/i18n/index.js'
 
   const store = useShiftTypeStore()
@@ -29,16 +29,9 @@
     store._generateWorkerSchedule(data)
   }
 
-
-
-
   const onForceUnSelect = () => {
     store.selectedWorkers = []
   }
-
-
-
-
 </script>
 
 <template>
@@ -49,7 +42,7 @@
   >
     <div>
       <n-spin :show="store.notScheduleLoading">
-        <DailyScheduleFilter/>
+        <DailyScheduleFilter />
         <div class="w-full overflow-y-auto h-[600px] pr-2 mt-4">
           <template v-if="store.notScheduleWorkerList.length > 0">
             <n-checkbox-group v-model:value="store.selectedWorkers">

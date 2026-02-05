@@ -51,7 +51,7 @@
   })
 
   const fetchConfirmation = () => {
-    if(componentStore.confirmationList.length> 0) return
+    if (componentStore.confirmationList.length > 0) return
     componentStore._confirmations()
   }
 
@@ -78,7 +78,7 @@
     store.payload.command_date = store.payload.contract_date
   })
 
-  onMounted(()=>{
+  onMounted(() => {
     fetchConfirmation()
   })
 </script>

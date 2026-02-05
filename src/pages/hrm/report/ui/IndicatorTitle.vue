@@ -49,7 +49,7 @@
 </script>
 
 <template>
-  <div :class="[isWorker? 'grid-cols-3 !w-[120px]' : 'grid-cols-4 !w-[160px]']" class="grid gap-1">
+  <div :class="[isWorker ? 'grid-cols-3 !w-[120px]' : 'grid-cols-4 !w-[160px]']" class="grid gap-1">
     <template v-if="isWorker">
       <template v-for="(item, idx) in list2" :key="idx">
         <n-tooltip placement="top" trigger="hover">

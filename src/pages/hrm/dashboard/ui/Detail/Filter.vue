@@ -107,8 +107,7 @@
     :show-filter-button="!!store.activeDetail?.filters?.length"
   >
     <template #filterAction>
-      <n-button type="success" icon-placement="right" >
-
+      <n-button type="success" icon-placement="right">
         <template #icon>
           <n-icon :component="DocumentTable16Regular" />
         </template>
