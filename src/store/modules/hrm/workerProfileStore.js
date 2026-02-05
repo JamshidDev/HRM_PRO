@@ -430,12 +430,12 @@ export const useWorkerProfileStore = defineStore('workerProfileStore', {
       this.positionLoading = true
       $ApiService.workerService
         ._updatePosition({ data, id })
-        .then((res) => {
+        .then(() => {
+          this.editVisible = false
           this._index()
         })
         .finally(() => {
           this.positionLoading = false
-          this.editVisible = false
         })
     },
 

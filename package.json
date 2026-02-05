@@ -73,6 +73,7 @@
     "concurrently": "^9.2.0",
     "eslint": "^9.39.2",
     "eslint-plugin-vue": "^10.7.0",
+    "express": "^5.2.1",
     "globals": "^17.3.0",
     "postcss": "^8.4.41",
     "prettier": "^3.7.4",

@@ -41,6 +41,7 @@ const onPreview = (v) => {
             <td>
               <div>
                 <UIUser
+                  :hide-tooltip="false"
                   :short="false"
                   :data="{
                     photo: item?.user?.worker.photo,

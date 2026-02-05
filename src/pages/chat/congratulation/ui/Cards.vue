@@ -45,7 +45,7 @@ onMounted(()=>{
       <div class="col-span-12 md:col-span-6 lg:col-span-3 bg-surface-section p-4 rounded-xl border border-surface-line">
         <div class="flex justify-between items-start">
           <div>
-            <p class="text-secondary text-xs font-medium">{{ item.type }}</p>
+            <p class="text-secondary text-xs font-bold">{{ item.type }}</p>
             <n-tooltip
               placement="bottom"
               trigger="hover"
