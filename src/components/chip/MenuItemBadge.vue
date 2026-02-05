@@ -8,8 +8,7 @@ const isRippling = ref(false)
 
 const props = defineProps({
   category: {
-    type: String,
-    required: true
+    type: [String, null],
   },
   field: {
     type: String,
