@@ -33,7 +33,7 @@
 <template>
   <n-spin :show="store.loading" style="min-height: 200px">
     <div class="w-full overflow-x-auto" v-if="store.list.length > 0">
-      <n-table class="mt-10" :single-line="false" size="small">
+      <n-table class="mt-4" :single-line="false" size="small">
         <thead>
           <tr>
             <th class="text-center! min-w-[40px] w-[40px]">{{ $t('content.number') }}</th>

@@ -89,7 +89,7 @@
         :loading="componentStore.structureLoading"
         @onSubmit="filterEvent"
       />
-      <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{ $t('content.status') }}</label>
+      <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{ $t('content.confirmStatus') }}</label>
       <n-select
         v-model:value="store.params.confirmation"
         :options="componentStore.confirmationStatusList"

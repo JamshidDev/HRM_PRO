@@ -1,7 +1,7 @@
 <script setup>
 import { useConfStaffingApprovalStore} from "@stores"
 import {UIOfficeApp, UIPageContent} from "@components"
-import { Table } from "./ui"
+import { Table, Filter } from "./ui"
 import Utils from "@utils/Utils.js"
 
 
@@ -20,6 +20,7 @@ onMounted(()=> {
 
 <template>
 <UIPageContent>
+  <Filter/>
   <Table @openOffice="openCommand" />
   <UIOfficeApp ref="officeAppRef" />
 </UIPageContent>
