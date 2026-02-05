@@ -1,1 +1,1 @@
-export const NotificationPage = () => import('./notification/NotificationPage.vue')
+export const NotificationPage = () => import('./notification/page.vue')

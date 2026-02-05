@@ -1,5 +1,4 @@
 <script setup>
-  import UIHelper from '@/utils/UIHelper.js'
   import { useNotificationStore } from '@stores'
   import { NAvatar, NIcon } from 'naive-ui'
   import Utils from '@utils/Utils.js'
@@ -229,9 +228,7 @@
       </template>
       <template #action>
         <n-checkbox @update:checked="() => onUpdateCheckAll()" v-model:checked="store.payload.all">
-          <span class="text-secondary text-xs"
-            >{{ $t('content.selectAll') }} - ({{ totalUserRolesCount }})</span
-          >
+          <span class="text-secondary text-xs">{{ $t('content.selectAll') }} - ({{ totalUserRolesCount }})</span>
         </n-checkbox>
       </template>
     </n-select>

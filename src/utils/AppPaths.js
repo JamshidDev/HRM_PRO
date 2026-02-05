@@ -124,6 +124,7 @@ export const AppPaths = {
   HcEventsV2: '/hc-events-v2',
   Pensioner: '/pensioner',
   Notification: '/notification',
+  Congratulation: '/congratulation',
   LmsWorker: '/education-worker',
   SyncLog: '/sync-log',
   UserImageLogs: '/user-image-logs',

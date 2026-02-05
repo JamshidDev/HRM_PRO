@@ -321,7 +321,9 @@ const blobFileDownload = (file, contentType, fileName) => {
     document.body.appendChild(link)
     link.click()
     document.body.removeChild(link)
-  } catch (e) {}
+  } catch (e) {
+    console.log(e)
+  }
 }
 
 const downloadFileByUrl = (url) => {

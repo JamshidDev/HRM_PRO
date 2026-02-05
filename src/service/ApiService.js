@@ -99,7 +99,9 @@ import lmsExamService from '@/service/v1/lms/examService.js'
 import teacherLessonService from '@/service/v1/lms/teacherLessonService.js'
 import listenerService from '@/service/v1/lms/listenerService.js'
 import certificateService from '@/service/v1/lms/certificateService.js'
+
 import notificationService from '@/service/v1/chat/notificationService.js'
+import congratulationService from '@/service/v1/chat/congratulationService.js'
 
 import {
   turnstileTerminalService,
@@ -267,5 +269,6 @@ export default {
   confCertificateService,
   approveService,
   staffApprovalService,
-  confStaffingApprovalService
+  confStaffingApprovalService,
+  congratulationService,
 }

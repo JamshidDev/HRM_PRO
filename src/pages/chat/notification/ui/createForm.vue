@@ -3,7 +3,6 @@
 
   import validationRules from '@/utils/validationRules.js'
 
-  import UIHelper from '@/utils/UIHelper.js'
   const formRef = ref(null)
   import { useComponentStore, useNotificationStore } from '@/store/modules/index.js'
   import { UIEditor, UISelect } from '@components'
@@ -76,7 +75,7 @@
           <n-select
             v-model:show="showNotificationAlertSelectMenu"
             v-model:value="store.payload.alert"
-            :menuProps="{
+            :menu-props="{
               class: 'p-2'
             }"
             :options="Object.values(notificationTypes)"
@@ -87,10 +86,10 @@
         <n-form-item :label="$t('organizationPage.name')">
           <UISelect
             :options="componentStore.structureList"
-            :modelV="store.payload.filter.organizations"
+            :model-v="store.payload.filter.organizations"
             @update-model="(v) => (store.payload.filter.organizations = v)"
             @defaultValue="(v) => (store.payload.filter.organizations = v)"
-            :checkedVal="store.structureCheck"
+            :checked-val="store.structureCheck"
             @updateCheck="(v) => (store.structureCheck = v)"
             v-model:search="componentStore.structureParams.search"
             @onSearch="componentStore._structures"

@@ -53,8 +53,8 @@
         <template #icon>
           <AddCircle28Regular />
         </template>
-        {{ $t(`content.add`) }}</n-button
-      >
+        {{ $t(`content.add`) }}
+      </n-button>
     </div>
     <div class="w-full overflow-x-auto" v-if="store.list.length > 0">
       <n-table class="mt-4" :single-line="false" size="small">
@@ -94,4 +94,3 @@
   </n-spin>
 </template>
 
-<style scoped></style>

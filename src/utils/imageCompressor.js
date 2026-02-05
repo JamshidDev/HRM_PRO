@@ -28,7 +28,7 @@ export async function compressImage(file) {
 
     let result = await imageCompression(file, options)
     if (result.size > 200 * 1024) {
-      const result = await imageCompression(compressed, {
+      await imageCompression(result, {
         maxSizeMB: 0.2,
         maxWidthOrHeight: 1280,
         maxIteration: 15,

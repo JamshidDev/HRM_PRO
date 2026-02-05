@@ -67,23 +67,6 @@ import i18n from '@/i18n/index.js'
 
 const { t } = i18n.global
 
-// {
-//   "confirmation": {
-//   "commands": 22,
-//       "contracts": 1,
-//       "contract-additional": 4,
-//       "worker-application": 0,
-//       "staffing-approve": 0,
-//       "lms-certificate": 0
-// },
-//   "hr": {
-//   "commands": 41,
-//       "contracts": 8,
-//       "contract-additional": 0,
-//       "worker-applications": 13
-// }
-// }
-
 export const navigations = [
   {
     label: 'navigation.hrm',
@@ -895,7 +878,14 @@ export const navigations = [
         path: Utils.routeChatPathMaker(AppPaths.Notification),
         icon: CommentLightning20Filled,
         color: 'bg-dark',
-        permission: appPermissions.instructions
+        permission: appPermissions.admin
+      },
+      {
+        label: 'congratulation.name',
+        path: Utils.routeChatPathMaker(AppPaths.Congratulation),
+        icon: CommentLightning20Filled,
+        color: 'bg-warning',
+        permission: appPermissions.admin
       }
     ]
   }

@@ -237,9 +237,19 @@ export const useComponentStore = defineStore('componentStore', {
     lmsLearningCenterLoading: false,
 
     departments: {},
-    positions: {}
+    positions: {},
+    chatEnumLoading: false,
+    chatEnums:[],
   }),
   actions: {
+    fetchChatEnums(){
+      this.chatEnumLoading = true
+      $ApiService.componentService._chatEnums().then((res)=>{
+        this.chatEnums = res.data.data.telegram_message_types
+      }).finally(()=>{
+        this.chatEnumLoading = false
+      })
+    },
     createDepartmentFetcher(key) {
       this.departments[key] ??= { list: [], total: 0, loading: false }
 

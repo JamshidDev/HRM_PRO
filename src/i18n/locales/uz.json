@@ -92,6 +92,9 @@
     "name": "Nomi",
     "downloadReport": "Hisobot yuklash",
     "general": "Umumiy",
+    "sent": "Yuborilgan",
+    "unSend": "Yuborilmagan",
+    "messageContent": "Xabar matni",
     "added": "Qo'shildi",
     "description": "Tavsif",
     "confirmDelete": "Haqiqatan ham o'chirmoqchimisiz?",
@@ -2667,6 +2670,15 @@
       "director_id": "Tasdiqlovchi xodim",
       "confirmOrganization": "Tasdiqlovchi tashkilot",
       "confirmatory_id": "Tashkilot rahbari"
+    }
+  },
+  "congratulation": {
+    "name": "Tabriklar",
+    "description": {
+      "birthday": "Tug‘ilgan kun bilan tabriklangan xodimlar soni",
+      "vacation": "Ta’til haqida ogohlantirilgan xodimlar soni",
+      "med": "Tibbiy ko‘rik haqida ogohlantirilgan xodimlar soni",
+      "passport": "Pasport muddati haqida ogohlantirilgan xodimlar soni"
     }
   }
 }

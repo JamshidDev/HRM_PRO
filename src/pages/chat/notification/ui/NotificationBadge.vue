@@ -1,7 +1,7 @@
 <script setup>
   import { cn, notificationTypes } from '@utils'
 
-  const props = defineProps({
+  defineProps({
     alert: {
       type: String,
       required: true
