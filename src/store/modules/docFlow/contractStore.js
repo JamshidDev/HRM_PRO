@@ -146,7 +146,7 @@ export const useContractStore = defineStore('contractStore', {
       delete data.pin
       $ApiService.contractService
         ._create({ data })
-        .then((res) => {
+        .then(() => {
           this.activeTab = 4
           this.stepNumber = 4
           this._index()
@@ -160,7 +160,7 @@ export const useContractStore = defineStore('contractStore', {
       this.saveLoading = true
       $ApiService.nationalityService
         ._update({ data: this.payload, id: this.elementId })
-        .then((res) => {
+        .then(() => {
           this.visible = false
           this._index()
         })
