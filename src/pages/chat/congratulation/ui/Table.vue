@@ -28,7 +28,7 @@ const onPreview = (v) => {
             <th class="min-w-[500px]">{{ $t('content.messageContent') }}</th>
             <th class="min-w-[130px]">{{ $t('content.type') }}</th>
             <th class="min-w-[100px]">{{ $t('content.status') }}</th>
-            <th class="min-w-[90px] w-[90px]">{{ $t('content.date') }}</th>
+            <th class="min-w-[200px] w-[200px]">{{ $t('content.date') }}</th>
           </tr>
         </thead>
         <tbody>
@@ -63,7 +63,7 @@ const onPreview = (v) => {
               <n-button :type="Boolean(item.status) ? 'success' : 'error'" size="tiny" secondary>{{ $t(item.status === 1? 'content.sent' : 'content.unSend') }}</n-button>
             </td>
             <td>
-              {{ Utils.timeOnlyDate(item.created_at) }}
+              <UIBadge :type="Utils.colorTypes.dark" :show-icon="false" :label="Utils.timeWithMonth(item.created_at)" />
             </td>
           </tr>
         </tbody>
