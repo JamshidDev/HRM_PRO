@@ -47,7 +47,7 @@ const onShow = (v) =>{
   >
     <template #filterContent>
       <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{
-        $t('turnstile.hcWorkersPage.access_levels')
+        $t('content.type')
       }}</label>
       <n-select
         clearable

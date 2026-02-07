@@ -15,12 +15,12 @@
   }
 
   const onSearch = () => {
-    if (!accStore.checkAction(accStore.pn.admin)) return
+    if (!accStore.checkAction(accStore.pn.chatNotification)) return
     filterEvent()
   }
 
   const onAdd = () => {
-    if (!accStore.checkAction(accStore.pn.admin)) return
+    if (!accStore.checkAction(accStore.pn.chatNotification)) return
     store.resetForm()
     store.visible = true
   }

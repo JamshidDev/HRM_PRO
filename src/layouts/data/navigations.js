@@ -871,21 +871,21 @@ export const navigations = [
     label: 'navigation.chat',
     path: AppPaths.Chat,
     icon: ChatMultiple16Filled,
-    permission: appPermissions.admin,
+    permission: appPermissions.chat,
     children: [
       {
         label: 'notificationPage.name',
         path: Utils.routeChatPathMaker(AppPaths.Notification),
         icon: CommentLightning20Filled,
         color: 'bg-dark',
-        permission: appPermissions.admin
+        permission: appPermissions.chatNotification
       },
       {
         label: 'congratulation.name',
         path: Utils.routeChatPathMaker(AppPaths.Congratulation),
         icon: CommentLightning20Filled,
         color: 'bg-warning',
-        permission: appPermissions.admin
+        permission: appPermissions.chatTelegramMessages
       }
     ]
   }

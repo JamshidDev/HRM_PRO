@@ -339,5 +339,9 @@ export const appPermissions = {
   lmsWorkerWrite: 'lms-worker-write',
   lmsCertificate: 'lms-certificate',
   lmsCertificateRead: 'lms-certificate-read',
-  lmsCertificateWrite: 'lms-certificate-write'
+  lmsCertificateWrite: 'lms-certificate-write',
+
+  chat:'chat',
+  chatTelegramMessages:'chat-telegram-messages',
+  chatNotification:'chat-notification',
 }

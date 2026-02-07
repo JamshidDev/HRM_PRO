@@ -7,7 +7,7 @@
   const accStore = useAccountStore()
 
   onMounted(() => {
-    if (!accStore.checkAction(accStore.pn.admin)) return
+    if (!accStore.checkAction(accStore.pn.chatNotification)) return
     store._index()
   })
 </script>
