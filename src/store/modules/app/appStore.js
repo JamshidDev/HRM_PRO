@@ -81,8 +81,7 @@ export const useAppStore = defineStore('appStore', {
     },
     initApp() {
       const mode = localStorage.getItem(useAppSetting.themeKey) || useAppSetting.defaultThemeKey
-      i18n.global.locale =
-        localStorage.getItem(useAppSetting.languageKey) || useAppSetting.defaultLanguage
+      i18n.global.locale = localStorage.getItem(useAppSetting.languageKey) || useAppSetting.defaultLanguage
 
       this.themeSwitch = mode === 'dark'
       const html = document.documentElement
