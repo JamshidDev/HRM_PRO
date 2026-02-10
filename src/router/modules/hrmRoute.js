@@ -41,7 +41,7 @@ export const hrmRoutes = [
   {
     path: Utils.routeHrmPathMaker(AppPaths.Application),
     name: AppPaths.Application.substring(1),
-    component: () => import('@/pages/docFlow/document/application/ApplicationPage.vue'),
+    component: () => import('@pages/docFlow/document/application/page.vue'),
     meta: { layout: AppLayouts.main }
   },
   {
@@ -53,7 +53,7 @@ export const hrmRoutes = [
   {
     path: Utils.routeHrmPathMaker(AppPaths.AdContract),
     name: AppPaths.AdContract.substring(1),
-    component: () => import('@/pages/docFlow/document/adContract/AdContractPage.vue'),
+    component: () => import('@pages/docFlow/document/adContract/page.vue'),
     meta: { layout: AppLayouts.main }
   },
   {

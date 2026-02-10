@@ -162,7 +162,7 @@ export const appPermissions = {
 
   confirmation: 'confirmation',
   confirmationContracts: 'confirmation-contracts',
-  confirmationAddContracts: 'confirmation-contracts-additional',
+  confirmationAddContracts: 'confirmation-contract-additional',
   confirmationCommands: 'confirmation-commands',
   confirmationWorkerApplications: 'confirmation-worker-applications',
   confirmationTable: 'confirmation-table',

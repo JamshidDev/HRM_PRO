@@ -4,7 +4,6 @@ const socketUrl = import.meta.env.VITE_SOCKET_URL
 const socketSecret = import.meta.env.VITE_SOCKET_SECRET
 import { useNotify } from '@/composables/useNotify'
 import { eventBus, Events } from '@/utils/index.js'
-import { useNotificationStore } from '@/store/modules/index.js'
 
 const allowedEvents = [
   Events.APPLICATION_GENERATED,
@@ -99,6 +98,7 @@ export const useSocketStore = defineStore('useSocketStore', {
             notificationAudio?.play()
           }
 
+          // eslint-disable-next-line no-constant-binary-expression
           useNotify().notify(data.title || '', 'success' ?? data.alert, {
             meta: data,
             duration: data.duration || undefined,
@@ -111,25 +111,7 @@ export const useSocketStore = defineStore('useSocketStore', {
         }
 
         if (data.type === Events.DOCUMENT_COUNT) {
-          console.log(data.counts)
           this.updateCount(data.counts)
-
-          // {
-          //   "confirmation": {
-          //   "commands": 22,
-          //       "contracts": 1,
-          //       "contract-additional": 4,
-          //       "worker-application": 0,
-          //       "staffing-approve": 0,
-          //       "lms-certificate": 0
-          // },
-          //   "hr": {
-          //   "commands": 41,
-          //       "contracts": 8,
-          //       "contract-additional": 0,
-          //       "worker-applications": 13
-          // }
-          // }
         }
       })
 
