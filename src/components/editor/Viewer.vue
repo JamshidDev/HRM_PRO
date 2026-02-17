@@ -1,15 +1,18 @@
 <script setup>
-  defineProps({
+  import DOMPurify from 'dompurify'
+  const props = defineProps({
     html: {
       type: String,
       required: true
     }
   })
+
+  const sanitizedHtml = computed(() => DOMPurify.sanitize(props.html))
 </script>
 
 <template>
   <div class="w-full">
-    <span class="editor-content-view text-textColor0" v-html="html" />
+    <span class="editor-content-view text-textColor0" v-html="sanitizedHtml" />
   </div>
 </template>
 

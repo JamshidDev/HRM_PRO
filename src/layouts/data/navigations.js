@@ -831,6 +831,12 @@ export const navigations = [
                 icon: CommentLightning20Filled,
                 color: 'bg-dark',
                 permission: appPermissions.instructions
+            },{
+                label: 'newsPage.name',
+                path: Utils.routeChatPathMaker(AppPaths.News),
+                icon: CommentLightning20Filled,
+                color: 'bg-dark',
+                permission: appPermissions.instructions
             }
         ]
     }

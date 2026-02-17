@@ -127,7 +127,8 @@ export const AppPaths = {
   InvalidUser: '/invalid-user',
   WorkerImage: '/worker-image',
   Devices: '/devices',
-  Other: '/other'
+  Other: '/other',
+  News: '/news'
 }
 
 export const AppLayouts = {

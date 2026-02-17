@@ -4,7 +4,7 @@ const socketUrl = import.meta.env.VITE_SOCKET_URL
 const socketSecret = import.meta.env.VITE_SOCKET_SECRET
 import { useNotify } from '@/composables/useNotify'
 import { eventBus, Events } from '@/utils/index.js'
-import {useNotificationStore} from "@/store/modules/index.js";
+import { useNotificationStore } from '@/store/modules/index.js'
 
 export const useSocketStore = defineStore('useSocketStore', {
   state: () => ({
@@ -19,23 +19,24 @@ export const useSocketStore = defineStore('useSocketStore', {
   }),
   actions: {
     initSocket(token, userId) {
-
       let playAudioUnlocked = false
 
-      let notificationAudio = new Audio("/sounds/notification.mp3");
+      let notificationAudio = new Audio('/sounds/notification.mp3')
 
       const unlockPlayNotification = () => {
-        notificationAudio.play().then(() => {
-          notificationAudio.pause();
-          notificationAudio.currentTime = 0;
-          playAudioUnlocked = true;
-        }).catch(() => {});
+        notificationAudio
+          .play()
+          .then(() => {
+            notificationAudio.pause()
+            notificationAudio.currentTime = 0
+            playAudioUnlocked = true
+          })
+          .catch(() => {})
 
-        window.removeEventListener("click", unlockPlayNotification);
-      };
+        window.removeEventListener('click', unlockPlayNotification)
+      }
 
-      window.addEventListener("click", unlockPlayNotification);
-
+      window.addEventListener('click', unlockPlayNotification)
 
       this.currentUserId = userId
       this.socket = io(socketUrl, {
@@ -71,12 +72,12 @@ export const useSocketStore = defineStore('useSocketStore', {
       })
 
       this.socket.on('notification', (data) => {
-        if(playAudioUnlocked){
-          notificationAudio.currentTime = 0;
-          notificationAudio?.play();
+        if (playAudioUnlocked) {
+          notificationAudio.currentTime = 0
+          notificationAudio?.play()
         }
 
-        useNotify().notify(data.title || '', data.alert, {meta: data, persistent: true})
+        useNotify().notify(data.title || '', data.alert, { meta: data, persistent: true })
 
         if (Events.TASK_COMPLETED === data.type) {
           eventBus.emit(Events.TASK_COMPLETED, data)
