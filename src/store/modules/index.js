@@ -142,3 +142,5 @@ export * from './hospital/medWorkerStore.js'
 export * from './hospital/medPensionerStore.js'
 
 export * from './chat/notificationStore.js'
+export * from './chat/newsCategoryStore.js'
+export * from './chat/newsStore.js'

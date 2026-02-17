@@ -1,5 +1,5 @@
 <script setup>
-  import NewsCard from './NewsCard.vue'
+  import NewsCard from './ui/NewsCard.vue'
   import { UIPageContent } from '@/components/index.js'
   import { News24Regular } from '@vicons/fluent'
 

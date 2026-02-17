@@ -57,7 +57,10 @@ import {
     ShiftsCheckmark20Regular,
     CellularData124Filled,
     Clock24Filled,
-    DocumentBulletList24Filled, ChatMultiple16Filled, CommentLightning20Filled
+    DocumentBulletList24Filled, 
+    ChatMultiple16Filled, 
+    CommentLightning20Filled,
+    Tag16Filled
 } from '@vicons/fluent'
 import { AppPaths } from '@/utils/index.js'
 import Utils from '@/utils/Utils.js'
@@ -837,7 +840,14 @@ export const navigations = [
                 icon: CommentLightning20Filled,
                 color: 'bg-dark',
                 permission: appPermissions.instructions
+            },{
+                label: 'newsCategoryPage.name',
+                path: Utils.routeChatPathMaker(AppPaths.NewsCategory),
+                icon: Tag16Filled,
+                color: 'bg-dark',
+                permission: appPermissions.instructions
             }
+            
         ]
     }
 ]

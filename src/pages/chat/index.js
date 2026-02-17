@@ -1,1 +1,5 @@
 export const NotificationPage = () => import('./notification/NotificationPage.vue')
+export const NewsPage = () => import('./news/Page.vue')
+export const CreateNewsPage = () => import('./news/create/Page.vue')
+export const ViewNewsPage = () => import('./news/view/index.vue')
+export const NewsCategoryPage = () => import('./news-category/page.vue')

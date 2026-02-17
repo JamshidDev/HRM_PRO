@@ -98,6 +98,8 @@ import teacherLessonService from '@/service/v1/lms/teacherLessonService.js'
 import listenerService from '@/service/v1/lms/listenerService.js'
 
 import notificationService from '@/service/v1/chat/notificationService.js'
+import newsCategoryService from '@/service/v1/chat/newsCategoryService.js'
+import newsService from '@/service/v1/chat/newsService.js'
 
 import {
   turnstileTerminalService,
@@ -259,4 +261,6 @@ export default {
   workerScheduleService,
   notificationService,
   confVacationScheduleService,
+  newsCategoryService,
+  newsService,
 }

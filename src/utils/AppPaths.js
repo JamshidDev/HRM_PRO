@@ -128,7 +128,8 @@ export const AppPaths = {
   WorkerImage: '/worker-image',
   Devices: '/devices',
   Other: '/other',
-  News: '/news'
+  News: '/news',
+  NewsCategory: '/news-category'
 }
 
 export const AppLayouts = {
