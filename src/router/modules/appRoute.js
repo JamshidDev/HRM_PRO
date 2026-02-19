@@ -50,6 +50,14 @@ export const appRoutes = [
     }
   },
   {
+    path: AppPaths.PrivacyPolicy,
+    name: 'privacy-policy',
+    component: () => import('@/pages/app/privacyPolicy/PrivacyPolicyPage.vue'),
+    meta: {
+      layout: AppLayouts.empty
+    }
+  },
+  {
     path: '/:pathMatch(.*)*',
     name: 'NotFound',
     component: () => import('@/pages/app/notFound/page.vue'),
