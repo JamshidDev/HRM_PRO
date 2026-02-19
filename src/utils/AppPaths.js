@@ -129,7 +129,8 @@ export const AppPaths = {
   Devices: '/devices',
   Other: '/other',
   News: '/news',
-  NewsCategory: '/news-category'
+  NewsCategory: '/news-category',
+  View: '/view'
 }
 
 export const AppLayouts = {

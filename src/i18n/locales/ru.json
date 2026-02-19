@@ -2397,5 +2397,58 @@
   },
   "socketPage": {
     "usersMOdalTitle": "Список всех онлайн пользователей"
+  },
+  "notificationPage": {
+    "name": "Уведомления"
+  },
+  "newsPage": {
+    "name": "Новости",
+    "create": "Создать новость",
+    "edit": "Редактировать новость",
+    "createSubtitle": "Заполните данные для создания новости",
+    "editSubtitle": "Редактируйте информацию",
+    "slug": "Slug",
+    "slugPlaceholder": "Введите slug для URL",
+    "slugHint": "Введите уникальный slug для URL (например: new-policy-2024)",
+    "tags": "Теги",
+    "tagPlaceholder": "Выберите или создайте теги",
+    "publishedAt": "Дата и время публикации",
+    "pinned": "Закрепить новость",
+    "language": "Язык",
+    "title": "Заголовок",
+    "titlePlaceholder": "Введите заголовок новости",
+    "shortDescription": "Краткое описание",
+    "shortDescriptionPlaceholder": "Краткое описание новости...",
+    "content": "Контент",
+    "contentPlaceholder": "Напишите контент новости здесь...",
+    "attachments": "Вложения",
+    "attachmentsHint": "Загрузите документы, PDF или другие файлы",
+    "statusDraft": "Черновик",
+    "statusPublished": "Опубликовано",
+    "statusArchived": "В архиве",
+    "noNews": "Новостей пока нет",
+    "noNewsSubtitle": "Опубликованные статьи появятся здесь",
+    "endOfList": "Вы достигли конца",
+    "readMore": "Читать далее",
+    "backToNews": "Вернуться к новостям",
+    "author": "Автор",
+    "viewAll": "Просмотреть все",
+    "media": "Медиа",
+    "downloadAll": "Скачать все",
+    "pin": "Закрепить",
+    "unpin": "Открепить",
+    "pinned": "Закреплено",
+    "video": "Видео",
+    "image": "Изображение"
+  },
+  "newsCategoryPage": {
+    "name": "Категории новостей",
+    "create": "Создать новый тег",
+    "edit": "Редактировать тег",
+    "createTag": "Создать новый тег",
+    "namePlaceholder": "Введите название тега",
+    "langUz": "Узбекский",
+    "langRu": "Русский",
+    "langEn": "Английский"
   }
 }

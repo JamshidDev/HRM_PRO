@@ -1,38 +1,11 @@
 import { defineStore } from 'pinia'
+import Utils from '@/utils/Utils.js'
 
 const makeTranslations = () => [
   { label: "O'zbek", locale: 'uz', title: '', short_description: '', content: '' },
   { label: 'Русский', locale: 'ru', title: '', short_description: '', content: '' },
   { label: 'English', locale: 'en', title: '', short_description: '', content: '' }
 ]
-
-const buildFormData = (payload) => {
-  const fd = new FormData()
-
-  fd.append('slug', payload.slug)
-  fd.append('published_at', payload.published_at)
-  fd.append('status', payload.status)
-  fd.append('is_pinned', payload.is_pinned ? 1 : 0)
-
-  payload.categories.forEach((id, i) => fd.append(`categories[${i}]`, id))
-
-  payload.translations.forEach((t, i) => {
-    fd.append(`translations[${i}][locale]`, t.locale)
-    fd.append(`translations[${i}][title]`, t.title)
-    fd.append(`translations[${i}][short_description]`, t.short_description)
-    fd.append(`translations[${i}][content]`, t.content)
-  })
-
-  payload.media.forEach((item, i) => {
-    const file = item.file ?? item
-    const isVideo = (file.type ?? '').startsWith('video/')
-    fd.append(`media[${i}][type]`, isVideo ? 'video' : 'image')
-    fd.append(`media[${i}][order]`, i)
-    fd.append(`media[${i}][file]`, file)
-  })
-
-  return fd
-}
 
 export const useNewsStore = defineStore('newsStore', {
   state: () => ({
@@ -56,8 +29,7 @@ export const useNewsStore = defineStore('newsStore', {
       published_at: Date.now(),
       status: 0,
       is_pinned: false
-    },
-    elementId: null
+    }
   }),
   actions: {
     _index() {
@@ -77,14 +49,14 @@ export const useNewsStore = defineStore('newsStore', {
       try {
         const res = await $ApiService.newsService._show({ id })
         this.instance = res.data.data
-        this.elementId = id
         this.fillPayload()
-        return res
+        return true
       } catch (error) {
         console.error(error)
       } finally {
         this.loading = false
       }
+      return false
     },
     fillPayload() {
       if (!this.instance) return
@@ -110,8 +82,27 @@ export const useNewsStore = defineStore('newsStore', {
     async _create() {
       try {
         this.saveLoading = true
-        const res = await $ApiService.newsService._create({ data: buildFormData(this.payload) })
-        this._index()
+        const fd = new FormData()
+        fd.append('slug', this.payload.slug)
+        fd.append('published_at', Utils.timeHHMMWithMonth(this.payload.published_at))
+        fd.append('status', this.payload.status)
+        fd.append('is_pinned', this.payload.is_pinned ? 1 : 0)
+        this.payload.categories.forEach((id, i) => fd.append(`categories[${i}]`, id))
+        this.payload.translations.forEach((t, i) => {
+          if (t.title) fd.append(`translations[${i}][locale]`, t.locale)
+          if (t.title) fd.append(`translations[${i}][title]`, t.title)
+          if (t.short_description)
+            fd.append(`translations[${i}][short_description]`, t.short_description)
+          if (t.content) fd.append(`translations[${i}][content]`, t.content)
+        })
+        this.payload.media.forEach((item, i) => {
+          const file = item.file ?? item
+          const isVideo = (file.type ?? '').startsWith('video/')
+          fd.append(`media[${i}][type]`, isVideo ? 'video' : 'image')
+          fd.append(`media[${i}][order]`, i)
+          fd.append(`media[${i}][file]`, file)
+        })
+        const res = await $ApiService.newsService._create({ data: fd })
         return res
       } catch (error) {
         console.error(error)
@@ -127,7 +118,15 @@ export const useNewsStore = defineStore('newsStore', {
         const inst = this.instance
         const promises = []
 
-        // Diff translations → update changed ones
+        const fd = new FormData()
+        fd.append('_method', 'PUT')
+        fd.append('slug', this.payload.slug)
+        fd.append('published_at', Utils.timeHHMMWithMonth(this.payload.published_at))
+        fd.append('status', this.payload.status)
+        fd.append('is_pinned', this.payload.is_pinned ? 1 : 0)
+        this.payload.categories.forEach((id, i) => fd.append(`categories[${i}]`, id))
+        promises.push($ApiService.newsService._update({ id: this.instance.id, data: fd }))
+
         for (const t of this.payload.translations) {
           const original = inst.translations?.find((r) => r.locale === t.locale) ?? {}
           const changed =
@@ -138,7 +137,7 @@ export const useNewsStore = defineStore('newsStore', {
             promises.push(
               $ApiService.newsService._update_translation({
                 data: {
-                  news_id: this.elementId,
+                  news_id: this.instance.id,
                   locale: t.locale,
                   title: t.title,
                   short_description: t.short_description,
@@ -159,14 +158,20 @@ export const useNewsStore = defineStore('newsStore', {
           }
         }
 
-        for (const file of this.payload.media) {
-          if (!file.id) {
-            promises.push($ApiService.newsService._create_media({ data: { news_id: this.elementId, file } }))
+        this.payload.media.forEach((file, i) => {
+          if (!originalIds.has(file.id)) {
+            const fd = new FormData()
+            const f = file.file ?? file
+            const isVideo = (f.type ?? '').startsWith('video/')
+            fd.append('news_id', this.instance.id)
+            fd.append('type', isVideo ? 'video' : 'image')
+            fd.append('order', i)
+            fd.append('file', f)
+            promises.push($ApiService.newsService._create_media({ data: fd }))
           }
-        }
+        })
 
         await Promise.all(promises)
-        this._index()
         return true
       } catch (error) {
         console.error(error)
@@ -177,14 +182,9 @@ export const useNewsStore = defineStore('newsStore', {
     },
     _delete() {
       this.deleteLoading = true
-      $ApiService.newsService
-        ._delete({ id: this.elementId })
-        .then(() => {
-          this._index()
-        })
-        .finally(() => {
-          this.deleteLoading = false
-        })
+      return $ApiService.newsService._delete({ id: this.instance.id }).finally(() => {
+        this.deleteLoading = false
+      })
     },
     resetForm() {
       this.payload = {
@@ -197,7 +197,6 @@ export const useNewsStore = defineStore('newsStore', {
         is_pinned: false
       }
       this.instance = null
-      this.elementId = null
     }
   }
 })

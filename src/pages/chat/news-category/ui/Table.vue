@@ -33,9 +33,9 @@
         <thead>
           <tr>
             <th class="text-center! w-[50px]">№</th>
-            <th>O'zbek</th>
-            <th>Русский</th>
-            <th>English</th>
+            <th>{{ $t('newsCategoryPage.langUz') }}</th>
+            <th>{{ $t('newsCategoryPage.langRu') }}</th>
+            <th>{{ $t('newsCategoryPage.langEn') }}</th>
             <th class="w-[50px]"></th>
           </tr>
         </thead>

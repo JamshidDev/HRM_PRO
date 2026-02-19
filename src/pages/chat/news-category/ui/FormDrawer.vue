@@ -26,7 +26,7 @@
 
 <template>
   <n-drawer v-model:show="store.visible" :width="500" placement="right">
-    <n-drawer-content :title="isEditing ? 'Tegni tahrirlash' : 'Yangi teg yaratish'" closable>
+    <n-drawer-content :title="isEditing ? $t('newsCategoryPage.edit') : $t('newsCategoryPage.create')" closable>
       <n-form
         ref="formRef"
         :model="store.payload.name"
@@ -35,39 +35,39 @@
         size="large"
       >
         <n-form-item
-          label="O'zbek nomi"
+          :label="$t('content.nameUz')"
           path="uz"
           :rule-path="validationRules.rulesNames.requiredStringField"
         >
           <n-input
             v-model:value="store.payload.name.uz"
-            placeholder="Teg nomini kiriting"
+            :placeholder="$t('newsCategoryPage.namePlaceholder')"
             :maxlength="100"
             show-count
           />
         </n-form-item>
 
         <n-form-item
-          label="Русское название"
+          :label="$t('content.nameRu')"
           path="ru"
           :rule-path="validationRules.rulesNames.requiredStringField"
         >
           <n-input
             v-model:value="store.payload.name.ru"
-            placeholder="Введите название тега"
+            :placeholder="$t('newsCategoryPage.namePlaceholder')"
             :maxlength="100"
             show-count
           />
         </n-form-item>
 
         <n-form-item
-          label="English name"
+          :label="$t('content.nameEn')"
           path="en"
           :rule-path="validationRules.rulesNames.requiredStringField"
         >
           <n-input
             v-model:value="store.payload.name.en"
-            placeholder="Enter tag name"
+            :placeholder="$t('newsCategoryPage.namePlaceholder')"
             :maxlength="100"
             show-count
           />
@@ -76,9 +76,9 @@
 
       <template #footer>
         <div class="flex gap-2">
-          <n-button @click="onCancel" :disabled="store.saveLoading" ghost>Bekor qilish</n-button>
+          <n-button @click="onCancel" :disabled="store.saveLoading" ghost>{{ $t('content.cancel') }}</n-button>
           <n-button @click="onSubmit" :loading="store.saveLoading" type="primary" class="flex-1">
-            Saqlash
+            {{ $t('content.save') }}
           </n-button>
         </div>
       </template>

@@ -2,6 +2,9 @@
   import { Add24Regular } from '@vicons/fluent'
   import FormDrawer from './FormDrawer.vue'
   import { useNewsCategoryStore } from '@/store/modules/index.js'
+  import i18n from '@/i18n/index.js'
+
+  const { t } = i18n.global
 
   const props = defineProps({
     maxTagCount: {
@@ -10,7 +13,7 @@
     },
     placeholder: {
       type: String,
-      default: 'Teglarni tanlang yoki yarating'
+      default: null
     },
     disabled: {
       type: Boolean,
@@ -21,6 +24,8 @@
   const selectedTags = defineModel({ type: Array, default: () => [] })
 
   const store = useNewsCategoryStore()
+
+  const effectivePlaceholder = computed(() => props.placeholder || t('newsPage.tagPlaceholder'))
 
   const availableTags = computed(() =>
     store.list.map((item) => ({
@@ -42,9 +47,7 @@
     store.resetForm()
     store.visibleType = true
     store.visible = true
-    nextTick(() => {
-      selectShow.value = true
-    })
+    selectShow.value = true
   }
 
   const onDrawerSave = (res) => {
@@ -69,7 +72,7 @@
     v-model:value="selectedTags"
     :show="selectShow"
     :options="availableTags"
-    :placeholder="placeholder"
+    :placeholder="effectivePlaceholder"
     :disabled="disabled"
     :loading="store.loading"
     :max-tag-count="maxTagCount"
@@ -77,17 +80,25 @@
     filterable
     clearable
     @update:show="onUpdateShow"
+    :menu-props="{
+      class: 'tag-select-menu'
+    }"
   >
     <template #action>
       <div
         @click="openDrawer"
-        class="px-3 py-2 cursor-pointer flex items-center gap-2 text-primary font-medium"
+        class="p-2 cursor-pointer flex items-center gap-2 text-primary font-medium rounded transition-all duration-150 hover:bg-primary/10 active:scale-95"
       >
         <n-icon size="18"><Add24Regular /></n-icon>
-        <span>Yangi teg yaratish</span>
+        <span>{{ $t('newsCategoryPage.createTag') }}</span>
       </div>
     </template>
   </n-select>
 
   <FormDrawer @save="onDrawerSave" />
 </template>
+<style>
+.tag-select-menu .n-base-select-menu__action{
+  padding: 0 !important;
+}
+</style>

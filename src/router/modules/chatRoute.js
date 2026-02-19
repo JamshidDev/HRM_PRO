@@ -4,7 +4,7 @@ import Utils from '@/utils/Utils.js'
 import {
   NotificationPage,
   NewsPage,
-  CreateNewsPage,
+  NewsFormPage,
   ViewNewsPage,
   NewsCategoryPage
 } from '@pages/chat/index.js'
@@ -25,14 +25,14 @@ export const chatRoutes = [
     }
   },
   {
-    path: Utils.routeChatPathMaker(`${AppPaths.News}${AppPaths.Create}`),
-    component: CreateNewsPage,
+    path: Utils.routeChatPathMaker(`${AppPaths.News}/:id`),
+    component: NewsFormPage,
     meta: {
       layout: AppLayouts.main
     }
   },
   {
-    path: Utils.routeChatPathMaker(`${AppPaths.News}/:id`),
+    path: Utils.routeChatPathMaker(`${AppPaths.News}${AppPaths.View}/:id`),
     component: ViewNewsPage,
     meta: {
       layout: AppLayouts.main

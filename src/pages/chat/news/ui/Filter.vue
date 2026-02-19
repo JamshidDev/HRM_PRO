@@ -1,41 +1,27 @@
 <script setup>
-import {
-  useAccountStore, useNotificationStore
-} from '@/store/modules/index.js'
+  import { UIPageFilter } from '@/components/index.js'
+  import { useNewsStore } from '@/store/modules/index.js'
+  import { useDebounce } from '@/utils/index.js'
+  import { useRouter } from 'vue-router'
+  import { AppPaths } from '@/utils/index.js'
+  import Utils from '@/utils/Utils.js'
 
-import {UIPageFilter} from '@/components/index.js'
-import {useDebounce} from '@/utils/index.js'
+  const emit = defineEmits(['filter'])
 
-const accStore = useAccountStore()
-const store = useNotificationStore()
+  const store = useNewsStore()
+  const router = useRouter()
 
-const debounceIndexEv = useDebounce(store._index)
+  const debounceSearch = useDebounce(() => emit('filter'))
 
-const filterEvent = () => {
-  store.params.page = 1
-  debounceIndexEv()
-}
-
-const onSearch = () => {
-  if (!accStore.checkAction(accStore.pn.admin)) return
-  filterEvent()
-}
-
-const onAdd = () => {
-  if (!accStore.checkAction(accStore.pn.admin)) return
-  store.resetForm()
-  store.visible = true
-}
-
+  const onAdd = () => router.push(Utils.routeChatPathMaker(`${AppPaths.News}/create`))
 </script>
+
 <template>
   <UIPageFilter
-      :show-filter-button="false"
-      :search-loading="store.loading"
-      v-model:search="store.params.search"
-      @onSearch="onSearch"
-      @onAdd="onAdd"
-      :show-add-button="true"
-  >
-  </UIPageFilter>
+    :show-filter-button="false"
+    :search-loading="store.loading"
+    v-model:search="store.params.search"
+    @onSearch="debounceSearch"
+    @onAdd="onAdd"
+  />
 </template>

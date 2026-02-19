@@ -83,9 +83,9 @@ export const useNewsCategoryStore = defineStore('newsCategoryStore', {
         })
     },
     resetForm() {
-      this.payload.uz = undefined
-      this.payload.ru = undefined
-      this.payload.en = undefined
+      this.payload.name.uz = undefined
+      this.payload.name.ru = undefined
+      this.payload.name.en = undefined
     }
   }
 })

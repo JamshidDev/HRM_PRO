@@ -1,34 +1,43 @@
 <script setup>
   import NewsCard from './ui/NewsCard.vue'
+  import Filter from './ui/Filter.vue'
   import { UIPageContent } from '@/components/index.js'
   import { News24Regular } from '@vicons/fluent'
+  import { useNewsStore } from '@/store/modules/index.js'
 
-  const PAGE_SIZE = 12
+  const store = useNewsStore()
 
-  const list = ref([])
-  const page = ref(0)
-  const loading = ref(false)
-  const hasMore = ref(true)
+  const items = ref([])
   const sentinel = ref(null)
+  const hasMore = computed(() => !store.totalItems || items.value.length < store.totalItems)
 
-  const loadMore = async () => {
-    if (loading.value || !hasMore.value) return
-    loading.value = true
+  watch(
+    () => store.list,
+    (newList) => {
+      items.value.push(...newList)
+    }
+  )
 
-    // Simulate API call
-    await new Promise((r) => setTimeout(r, 800))
+  const loadMore = () => {
+    if (store.loading || !hasMore.value) return
+    store._index()
+    store.params.page++
+  }
 
-    const nextPage = page.value + 1
-    const total = 50 // mock total
-    const newItems = Array.from({ length: PAGE_SIZE }, (_, i) => page.value * PAGE_SIZE + i + 1)
+  const onFilter = () => {
+    items.value = []
+    store.params.page = 1
+    loadMore()
+  }
 
-    list.value.push(...newItems)
-    page.value = nextPage
-    hasMore.value = list.value.length < total
-    loading.value = false
+  const onCardRemove = (id) => {
+    items.value = items.value.filter((i) => i.id !== id)
+    store.totalItems--
   }
 
   onMounted(() => {
+    store.params.page = 1
+    items.value = []
     loadMore()
 
     const observer = new IntersectionObserver(
@@ -48,15 +57,20 @@
 
 <template>
   <UIPageContent>
+    <Filter @filter="onFilter" class="mb-4" />
+
     <div
-      v-if="list.length"
+      v-if="items.length"
       class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5"
     >
-      <NewsCard v-for="i in list" :key="i" />
+      <NewsCard v-for="(item, index) in items" :key="item.id" v-model="items[index]" @remove="onCardRemove" />
     </div>
 
     <!-- Empty state -->
-    <div v-else-if="!loading" class="flex flex-col items-center justify-center py-24 text-center">
+    <div
+      v-else-if="!store.loading"
+      class="flex flex-col items-center justify-center py-24 text-center"
+    >
       <div
         class="w-16 h-16 rounded-2xl bg-surface-section border border-surface-line flex items-center justify-center mb-4"
       >
@@ -64,15 +78,15 @@
           <News24Regular />
         </n-icon>
       </div>
-      <p class="text-base font-semibold text-textColor1 mb-1">No news yet</p>
-      <p class="text-sm text-textColor3">Published articles will appear here</p>
+      <p class="text-base font-semibold text-textColor1 mb-1">{{ $t('newsPage.noNews') }}</p>
+      <p class="text-sm text-textColor3">{{ $t('newsPage.noNewsSubtitle') }}</p>
     </div>
 
     <!-- Sentinel + loader -->
     <div ref="sentinel" class="mt-8 flex justify-center">
-      <n-spin v-if="loading" size="medium" />
-      <p v-else-if="!hasMore && list.length" class="text-sm text-textColor3 py-4">
-        You've reached the end
+      <n-spin v-if="store.loading" size="medium" />
+      <p v-else-if="!hasMore && items.length" class="text-sm text-textColor3 py-4">
+        {{ $t('newsPage.endOfList') }}
       </p>
     </div>
   </UIPageContent>

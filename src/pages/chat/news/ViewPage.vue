@@ -8,118 +8,46 @@
     ArrowDownload24Regular,
     Eye24Regular,
     Tag24Regular,
-    Play24Regular
+    Play24Regular,
+    DocumentEdit24Regular,
+    Globe24Regular,
+    Archive24Regular,
+    Pin24Filled,
+    ThumbLike16Regular,
+    ThumbDislike16Regular,
+    Chat24Regular
   } from '@vicons/fluent'
+  import { useRoute, useRouter } from 'vue-router'
+  import { useNewsStore } from '@/store/modules/index.js'
+  import { AppPaths } from '@/utils/index.js'
+  import Utils from '@/utils/Utils.js'
+  import i18n from '@/i18n/index.js'
+  import dayjs from 'dayjs'
 
-  const news = ref({
-    id: 1,
-    slug: 'company-expansion-2025',
-    status: 1,
-    is_pinned: true,
-    published_at: 1739523000000,
-    author: {
-      id: 5,
-      name: 'Sarah Johnson',
-      avatar: 'https://i.pravatar.cc/150?img=47'
-    },
-    categories: [
-      { id: 1, name: { uz: 'Kompaniya yangiliklari', ru: 'Новости компании', en: 'Company News' } },
-      { id: 2, name: { uz: 'HR yangiliklari', ru: 'HR Обновления', en: 'HR Updates' } },
-      { id: 3, name: { uz: 'Kengayish', ru: 'Расширение', en: 'Expansion' } }
-    ],
-    translations: [
-      {
-        locale: 'uz',
-        title: "Kompaniya 2025 yilda katta kengayish rejalarini e'lon qildi",
-        short_description:
-          "Kompaniyamiz uchta yangi shaharda ofislar ochish va 2025 yil oxirigacha xodimlar sonini ikki baravar oshirish rejalarini e'lon qildi.",
-        content: `<h2>Yangi bob boshlanmoqda</h2><p>Kompaniyamiz yangi o'sish bosqichiga kirayotganini mamnuniyat bilan e'lon qilamiz.</p>`
-      },
-      {
-        locale: 'ru',
-        title: 'Компания объявляет о планах крупного расширения на 2025 год',
-        short_description:
-          'Наша компания объявила о планах открытия офисов в трёх новых городах и удвоения штата к концу 2025 года.',
-        content: `<h2>Начинается новая глава</h2><p>Мы рады объявить, что наша компания вступает в новую фазу роста.</p>`
-      },
-      {
-        locale: 'en',
-        title: 'Company Announces Major Expansion Plans for 2025: New Offices, Teams & Benefits',
-        short_description:
-          'Our company has announced plans to open offices in three new cities and double our workforce by the end of 2025.',
-        content: `
-          <h2>A New Chapter Begins</h2>
-          <p>We are thrilled to announce that our company is entering an exciting new phase of growth. After years of steady progress and incredible team effort, we are ready to expand our operations across three new cities and double our workforce by the end of 2025.</p>
-          <p>This milestone reflects the dedication of every single team member who has contributed to our success. The journey has not been without its challenges, but we have emerged stronger and more unified than ever before.</p>
-          <h2>What This Means for You</h2>
-          <p>As part of this expansion, we are rolling out a comprehensive new benefits package that includes:</p>
-          <ul>
-            <li>Flexible remote and hybrid work arrangements</li>
-            <li>Enhanced health and wellness coverage</li>
-            <li>Expanded parental leave policies</li>
-            <li>Professional development stipends of up to $2,000 per year</li>
-            <li>Stock option plans for all full-time employees</li>
-          </ul>
-          <p>We believe that investing in our people is the most important investment we can make.</p>
-          <h2>New Office Locations</h2>
-          <p>Our new offices will open in <strong>Tashkent</strong>, <strong>Dubai</strong>, and <strong>Berlin</strong> — carefully chosen to support our growing international client base.</p>
-          <blockquote>"Growth is never by mere chance; it is the result of forces working together." — CEO, Mark Reynolds</blockquote>
-          <h2>Next Steps</h2>
-          <p>Town hall meetings will be held across all existing offices during the week of February 24th.</p>
-        `
-      }
-    ],
-    media: [
-      {
-        id: 1,
-        type: 'image',
-        order: 0,
-        url: 'https://picsum.photos/seed/news1/1600/700',
-        name: 'hero-image.jpg',
-        size: '2.1 MB'
-      },
-      {
-        id: 2,
-        type: 'video',
-        order: 1,
-        url: 'https://www.w3schools.com/html/mov_bbb.mp4',
-        name: 'expansion-overview.mp4',
-        size: '8.4 MB'
-      },
-      {
-        id: 3,
-        type: 'image',
-        order: 2,
-        url: 'https://picsum.photos/seed/news3/800/500',
-        name: 'office-dubai.jpg',
-        size: '1.3 MB'
-      },
-      {
-        id: 4,
-        type: 'image',
-        order: 3,
-        url: 'https://picsum.photos/seed/news4/800/500',
-        name: 'team-photo.jpg',
-        size: '1.7 MB'
-      }
-    ]
+  const getCategoryName = (cat) => cat.name?.[i18n.global.locale] || Object.values(cat.name ?? {})[0] || ''
+
+  const route = useRoute()
+  const router = useRouter()
+  const store = useNewsStore()
+
+  const goBack = () => router.push(Utils.routeChatPathMaker(AppPaths.News))
+
+  onMounted(async () => {
+    const isAvailable = await store._show(route.params.id)
+    if (!isAvailable) goBack()
   })
 
-  const translation = computed(
-    () => news.value.translations.find((t) => t.locale === 'en') ?? news.value.translations[0]
-  )
+  const news = computed(() => store.instance)
 
-  const formattedDate = computed(() =>
-    new Date(news.value.published_at).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    })
-  )
+  const translation = computed(() => {
+    const tr = news.value?.translations ?? []
+    return tr.find((t) => t.locale === i18n.global.locale) || tr.find((t) => t.title) || tr[0] || {}
+  })
 
-  const sortedMedia = computed(() => [...news.value.media].sort((a, b) => a.order - b.order))
+
+  const sortedMedia = computed(() =>
+    [...(news.value?.media ?? [])].sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
+  )
 
   const activeMediaIndex = ref(0)
   const showGallery = ref(false)
@@ -127,6 +55,13 @@
 
   const mediaIcon = (type) => (type === 'video' ? Video24Regular : Image24Regular)
   const mediaColor = (type) => (type === 'video' ? '#E7000A' : '#74788d')
+
+  const statusMeta = {
+    0: { icon: DocumentEdit24Regular, color: '#FDC700', labelKey: 'newsPage.statusDraft' },
+    1: { icon: Globe24Regular, color: '#2dcb73', labelKey: 'newsPage.statusPublished' },
+    2: { icon: Archive24Regular, color: '#74788d', labelKey: 'newsPage.statusArchived' }
+  }
+  const currentStatus = computed(() => statusMeta[news.value?.status] ?? statusMeta[0])
 </script>
 
 <template>
@@ -134,15 +69,17 @@
     <!-- Back Button -->
     <div class="max-w-6xl mx-auto px-6 pt-6">
       <button
-        class="inline-flex items-center gap-2 text-sm text-textColor3 hover:text-primary transition-colors group"
+        class="cursor-pointer inline-flex items-center gap-2 text-sm text-textColor3 hover:text-primary transition-colors group"
+        @click="goBack"
       >
         <n-icon size="18" class="group-hover:-translate-x-1 transition-transform">
           <ArrowLeft24Regular />
         </n-icon>
-        Back to News
+        {{ $t('newsPage.backToNews') }}
       </button>
     </div>
 
+    <n-spin :show="store.loading">
     <!-- ── Hero Media ───────────────────────────────────────────────────────── -->
     <div v-if="sortedMedia.length" class="max-w-6xl mx-auto px-6 mt-4">
       <div class="relative rounded-2xl overflow-hidden shadow-xl">
@@ -150,13 +87,13 @@
         <div class="relative h-[480px] bg-surface-section overflow-hidden">
           <img
             v-if="activeMedia.type === 'image'"
-            :src="activeMedia.url"
-            :alt="activeMedia.name"
+            :src="activeMedia.path"
+            :alt="translation.title"
             class="w-full h-full object-cover transition-all duration-500"
           />
           <video
             v-else
-            :src="activeMedia.url"
+            :src="activeMedia.path"
             :key="activeMedia.id"
             class="w-full h-full object-cover"
             controls
@@ -185,7 +122,7 @@
             class="absolute top-4 left-4 px-3 py-1.5 bg-dark/60 backdrop-blur-sm rounded-full text-white text-xs font-medium flex items-center gap-1.5 hover:bg-dark/80 transition-colors"
           >
             <n-icon size="13"><Eye24Regular /></n-icon>
-            View all
+            {{ $t('newsPage.viewAll') }}
           </button>
         </div>
 
@@ -205,9 +142,9 @@
                 : 'border-white/40 opacity-60 hover:opacity-100'
             "
           >
-            <img v-if="item.type === 'image'" :src="item.url" class="w-full h-full object-cover" />
+            <img v-if="item.type === 'image'" :src="item.path" class="w-full h-full object-cover" />
             <template v-else>
-              <video :src="item.url" class="w-full h-full object-cover" preload="metadata" muted />
+              <video :src="item.path" class="w-full h-full object-cover" preload="metadata" muted />
               <div class="absolute inset-0 flex items-center justify-center bg-dark/40">
                 <n-icon size="18" color="#ffffff"><Play24Regular /></n-icon>
               </div>
@@ -223,14 +160,14 @@
         <!-- ── Article ───────────────────────────────────────────────────── -->
         <article class="flex-1 min-w-0">
           <!-- Categories -->
-          <div v-if="news.categories.length" class="flex flex-wrap gap-2 mb-4">
+          <div v-if="news?.categories?.length" class="flex flex-wrap gap-2 mb-4">
             <span
               v-for="cat in news.categories"
               :key="cat.id"
               class="inline-flex items-center gap-1.5 px-3 py-1 bg-primary/10 text-primary text-xs font-semibold rounded-full"
             >
               <n-icon size="11"><Tag24Regular /></n-icon>
-              {{ cat.name.en }}
+              {{ getCategoryName(cat) }}
             </span>
           </div>
 
@@ -239,21 +176,54 @@
             {{ translation.title }}
           </h1>
 
-          <!-- Author + Date -->
-          <div class="flex flex-wrap items-center gap-5 mb-8 pb-8 border-b border-surface-line">
-            <div v-if="news.author" class="flex items-center gap-2.5">
-              <img
-                :src="news.author.avatar"
-                class="w-9 h-9 rounded-full object-cover ring-2 ring-surface-line"
-              />
-              <div>
-                <p class="text-xs text-textColor3 leading-none mb-0.5">Author</p>
-                <p class="text-sm font-semibold text-textColor0">{{ news.author.name }}</p>
-              </div>
-            </div>
+          <!-- Meta row: date · status · pin · reactions -->
+          <div class="flex flex-wrap items-center gap-3 mb-8 pb-8 border-b border-surface-line">
+            <!-- Date -->
             <div class="flex items-center gap-1.5 text-sm text-textColor3">
               <n-icon size="15"><CalendarClock16Regular /></n-icon>
-              {{ formattedDate }}
+              {{ news?.published_at ? dayjs(news.published_at).format('MMMM D, YYYY HH:mm') : '' }}
+            </div>
+
+            <!-- Status badge -->
+            <div
+              v-if="currentStatus"
+              class="flex items-center gap-1 px-2.5 py-1 rounded-full bg-surface-section border border-surface-line"
+            >
+              <n-icon size="12" :color="currentStatus.color">
+                <component :is="currentStatus.icon" />
+              </n-icon>
+              <span class="text-xs font-semibold" :style="{ color: currentStatus.color }">
+                {{ $t(currentStatus.labelKey) }}
+              </span>
+            </div>
+
+            <!-- Pin badge -->
+            <div
+              v-if="news?.is_pinned"
+              class="flex items-center gap-1 px-2.5 py-1 rounded-full bg-surface-section border border-surface-line"
+            >
+              <n-icon size="12" color="#FDC700"><Pin24Filled /></n-icon>
+              <span class="text-xs font-semibold text-[#FDC700]">{{ $t('newsPage.pinned') }}</span>
+            </div>
+
+            <!-- Reactions -->
+            <div class="flex items-center gap-4 ml-auto">
+              <span class="flex items-center gap-1 text-sm text-textColor3">
+                <n-icon size="15"><Eye24Regular /></n-icon>
+                {{ news?.views_count ?? 0 }}
+              </span>
+              <span class="flex items-center gap-1 text-sm" style="color: #2dcb73">
+                <n-icon size="15" color="#2dcb73"><ThumbLike16Regular /></n-icon>
+                {{ news?.likes_count ?? 0 }}
+              </span>
+              <span class="flex items-center gap-1 text-sm" style="color: #e7000a">
+                <n-icon size="15" color="#E7000A"><ThumbDislike16Regular /></n-icon>
+                {{ news?.dislikes_count ?? 0 }}
+              </span>
+              <span class="flex items-center gap-1 text-sm text-textColor3">
+                <n-icon size="15"><Chat24Regular /></n-icon>
+                {{ news?.comments_count ?? 0 }}
+              </span>
             </div>
           </div>
 
@@ -273,7 +243,7 @@
               class="px-4 py-3.5 border-b border-surface-line bg-surface-ground/60 flex items-center gap-2"
             >
               <n-icon size="16" class="text-primary"><Document24Regular /></n-icon>
-              <h3 class="text-sm font-semibold text-textColor0 flex-1">Media</h3>
+              <h3 class="text-sm font-semibold text-textColor0 flex-1">{{ $t('newsPage.media') }}</h3>
               <span class="bg-primary/10 text-primary text-xs font-bold px-2 py-0.5 rounded-full">
                 {{ sortedMedia.length }}
               </span>
@@ -299,10 +269,9 @@
                   <component :is="mediaIcon(item.type)" />
                 </n-icon>
                 <div class="flex-1 min-w-0">
-                  <p class="text-xs font-medium text-textColor0 leading-snug line-clamp-2">
-                    {{ item.name }}
+                  <p class="text-xs font-medium text-textColor0 leading-snug">
+                    {{ item.type === 'video' ? $t('newsPage.video') : $t('newsPage.image') }} #{{ idx + 1 }}
                   </p>
-                  <p class="text-xs text-textColor3 mt-0.5">{{ item.size }}</p>
                 </div>
                 <n-icon
                   size="15"
@@ -317,13 +286,15 @@
             <div class="px-4 py-3 border-t border-surface-line">
               <n-button type="primary" ghost size="small" class="w-full">
                 <template #icon><ArrowDownload24Regular /></template>
-                Download All
+                {{ $t('newsPage.downloadAll') }}
               </n-button>
             </div>
           </div>
         </aside>
       </div>
     </div>
+
+    </n-spin>
 
     <!-- ── Gallery Modal ──────────────────────────────────────────────────── -->
     <n-modal v-model:show="showGallery" :mask-closable="true">
@@ -332,7 +303,7 @@
           <template v-for="(item, idx) in sortedMedia" :key="item.id">
             <n-image
               v-if="item.type === 'image'"
-              :src="item.url"
+              :src="item.path"
               object-fit="cover"
               :img-props="{
                 class: 'size-full'
@@ -342,7 +313,7 @@
             />
             <video
               v-else
-              :src="item.url"
+              :src="item.path"
               controls
               preload="metadata"
               class="w-full h-52 object-cover bg-black"

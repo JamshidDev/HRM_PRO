@@ -12,6 +12,10 @@ const _create = async (payload) => {
   return await axios.post(`/v1/chat/news`, payload.data)
 }
 
+const _update = async (payload) => {
+  return await axios.post(`/v1/chat/news/${payload.id}`, payload.data)
+}
+
 const _delete = async (payload) => {
   return await axios.delete(`/v1/chat/news/${payload.id}`)
 }
@@ -35,5 +39,6 @@ export default {
   _update_translation,
   _delete,
   _remove_media,
-  _create_media
+  _create_media,
+  _update
 }
