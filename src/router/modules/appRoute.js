@@ -6,7 +6,8 @@ import {
   DocumentSignature,
   LoginPageV2,
   AIConversationPage,
-  PublicPage
+  PublicPage,
+  PrivacyPolicyPage
 } from '@/pages/app/index.js'
 
 export const appRoutes = [
@@ -46,6 +47,14 @@ export const appRoutes = [
     path: '/public/:model/:key',
     name: 'public-page',
     component: PublicPage,
+    meta: {
+      layout: AppLayouts.empty
+    }
+  },
+  {
+    path: AppPaths.PrivacyPolicy,
+    name: 'privacy-policy',
+    component: PrivacyPolicyPage,
     meta: {
       layout: AppLayouts.empty
     }

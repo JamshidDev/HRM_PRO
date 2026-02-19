@@ -4,3 +4,4 @@ export const DocumentSignature = () => import('./documentSignature/DocumentSigna
 export const LoginPageV2 = () => import('./login/LoginPagev2.vue')
 export const PublicPage = () => import('./public/page.vue')
 export const AIConversationPage = () => import('./ai/AIConversationPage.vue')
+export const PrivacyPolicyPage = () => import('./privacyPolicy/PrivacyPolicyPage.vue')
