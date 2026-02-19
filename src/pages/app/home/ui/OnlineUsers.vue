@@ -3,6 +3,7 @@
   import ReactionButton from './ReactionButton.vue'
   import { useAppSetting, useDebounce } from '@/utils/index.js'
   import { ref, computed, watch } from 'vue'
+  import { Phone24Regular, Globe24Regular } from '@vicons/fluent'
 
   const store = useSocketStore()
 
@@ -45,7 +46,7 @@
             <div>
               <div
                 @click="store.userVisible = true"
-                class="w-[80px] h-[80px] border-4 border-[#6f99ff] rounded-full bg-surface-section flex justify-center items-center text-sm font-bold cursor-pointer transition-all overflow-hidden relative hover:scale-[1.4]"
+                class="bg-surface-section text-sm font-bold cursor-pointer transition-all rounded-full relative hover:scale-[1.4]"
                 :style="{
                   marginLeft: index === 0 ? '0' : '-20px',
                   zIndex: 50 - index
@@ -55,17 +56,25 @@
                 :title="user.short_name"
               >
                 <img
-                  class="w-full h-full object-cover object-top"
+                  class="border-4 border-[#6f99ff] rounded-full size-[80px] object-cover object-top"
                   :src="user?.photo || useAppSetting.noAvailableImage"
                   alt="user image"
-                />
-                <div
-                  class="absolute inset-0 rounded-full"
                   :style="{
                     background:
                       'radial-gradient(circle, rgba(0, 0, 0, 0) 48%, rgb(5 9 255 / 60%) 90%)'
                   }"
-                ></div>
+                />
+
+                <!-- Device badge -->
+                <div
+                  class="absolute bottom-1 right-1 z-10 w-5 h-5 rounded-full border-2 flex items-center justify-center border-[#6f99ff]"
+                  :class="user.type === 'mobile' ? 'bg-success' : 'bg-primary'"
+                >
+                  <n-icon size="10" class="text-white">
+                    <Phone24Regular v-if="user.type === 'mobile'" />
+                    <Globe24Regular v-else />
+                  </n-icon>
+                </div>
               </div>
               <div
                 class="group-hover:opacity-100 group-hover:bottom-[90px] pointer-events-none group-hover:pointer-events-auto group-hover:z-[300] z-0 left-1/2 -translate-x-1/2 absolute bottom-0 opacity-0"
