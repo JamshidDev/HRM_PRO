@@ -1245,7 +1245,6 @@
     }
   },
 
-
   "categoryPage": {
     "createCategory": "Kategoriya yaratish",
     "editCategory": "Kategoriyani tahrirlash",
@@ -1813,7 +1812,6 @@
   "businessTrip": {
     "name": "Xizmat safari"
   },
-
 
   "documentArchive": {
     "name": "Hujjatlar bazasi",
@@ -2622,7 +2620,7 @@
       "enterExam": "Kirish/I",
       "exitExam": "Chiqish/I"
     },
-    "warning":{
+    "warning": {
       "invalidResult": "Noto'g'ri ma'lumot kiritildi"
     }
   },
@@ -2680,8 +2678,55 @@
       "med": "Tibbiy ko‘rik haqida ogohlantirilgan xodimlar soni",
       "passport": "Pasport muddati haqida ogohlantirilgan xodimlar soni"
     }
+  },
+  "newsPage": {
+    "name": "Yangiliklar",
+    "create": "Yangilik yaratish",
+    "edit": "Yangilikni tahrirlash",
+    "createSubtitle": "Yangilik yaratish uchun ma'lumotlarni to'ldiring",
+    "editSubtitle": "Ma'lumotlarni tahrirlang",
+    "slug": "Slug",
+    "slugPlaceholder": "URL uchun slug kiriting",
+    "slugHint": "URL uchun noyob slug kiriting (masalan: yangi-siyosat-2024)",
+    "tags": "Teglar",
+    "tagPlaceholder": "Teglarni tanlang yoki yarating",
+    "publishedAt": "Nashr sanasi va vaqti",
+    "actionPin": "Yangilikni mahkamlash",
+    "language": "Til",
+    "title": "Sarlavha",
+    "titlePlaceholder": "Yangilik sarlavhasini kiriting",
+    "shortDescription": "Qisqa tavsif",
+    "shortDescriptionPlaceholder": "Yangilik haqida qisqacha...",
+    "content": "Kontent",
+    "contentPlaceholder": "Yangilik kontentini shu yerga yozing...",
+    "attachments": "Biriktirmalar",
+    "attachmentsHint": "Hujjatlar, PDF yoki boshqa fayllarni yuklang",
+    "statusDraft": "Qoralama",
+    "statusPublished": "Nashr etilgan",
+    "statusArchived": "Arxivlangan",
+    "noNews": "Yangiliklar yo'q",
+    "noNewsSubtitle": "Nashr etilgan maqolalar bu yerda ko'rinadi",
+    "endOfList": "Ro'yhat tugadi",
+    "readMore": "Ko'proq o'qish",
+    "backToNews": "Yangiliklarga qaytish",
+    "author": "Muallif",
+    "viewAll": "Barchasini ko'rish",
+    "media": "Media",
+    "downloadAll": "Hammasini yuklash",
+    "pin": "Mahkamlash",
+    "unpin": "Mahkamlashni olib tashlash",
+    "pinned": "Mahkamlangan",
+    "video": "Video",
+    "image": "Rasm"
+  },
+  "newsCategoryPage": {
+    "name": "Yangilik kategoriyalari",
+    "create": "Yangi teg yaratish",
+    "edit": "Tegni tahrirlash",
+    "createTag": "Yangi teg yaratish",
+    "namePlaceholder": "Teg nomini kiriting",
+    "langUz": "O'zbek",
+    "langRu": "Rus",
+    "langEn": "Ingliz"
   }
 }
-
-
-

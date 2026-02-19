@@ -29,6 +29,10 @@
     toolBarExcludeKeys: {
       type: Array,
       default: []
+    },
+    autoFocus: {
+      type: Boolean,
+      default: true
     }
   })
 
@@ -63,6 +67,7 @@
       }
 
   const editorConfig = ref({
+    autoFocus: props.autoFocus,
     placeholder: props.placeholder || t('content.enterField'),
     MENU_CONF: {
       uploadImage: {

@@ -102,6 +102,9 @@ import certificateService from '@/service/v1/lms/certificateService.js'
 
 import notificationService from '@/service/v1/chat/notificationService.js'
 import congratulationService from '@/service/v1/chat/congratulationService.js'
+import newsCategoryService from '@/service/v1/chat/newsCategoryService.js'
+import newsService from '@/service/v1/chat/newsService.js'
+
 
 import {
   turnstileTerminalService,
@@ -271,4 +274,6 @@ export default {
   staffApprovalService,
   confStaffingApprovalService,
   congratulationService,
+  newsCategoryService,
+  newsService,
 }

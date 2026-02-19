@@ -1,7 +1,7 @@
 <script setup>
   import { CloudArrowUp24Regular, DocumentLink24Regular, Delete48Filled } from '@vicons/fluent'
   import { v4 as uuidv4 } from 'uuid'
-
+  import { VueDraggable } from 'vue-draggable-plus'
   const props = defineProps({
     multiple: {
       type: Boolean,
@@ -15,6 +15,10 @@
       type: String
     },
     disabled: {
+      type: Boolean,
+      default: false
+    },
+    orderable: {
       type: Boolean,
       default: false
     }
@@ -80,7 +84,12 @@
     <template v-if="$slots.content">
       <slot name="content" :files="files" :onDelete="onDelete" />
     </template>
-    <div v-else class="flex flex-wrap mt-3 gap-2">
+    <component
+      :is="orderable ? VueDraggable : 'div'"
+      v-else
+      v-model="files"
+      class="flex flex-wrap mt-3 gap-2"
+    >
       <template v-for="(item, idx) in files" :key="idx">
         <div
           class="flex items-center gap-2 p-2 border border-surface-line rounded-md min-w-[100px] max-w-[300px] cursor-pointer bg-white hover:bg-surface-100 relative overflow-hidden ui__upload pr-6"
@@ -98,7 +107,7 @@
           </span>
         </div>
       </template>
-    </div>
+    </component>
   </div>
 </template>
 

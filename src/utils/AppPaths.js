@@ -132,7 +132,10 @@ export const AppPaths = {
   WorkerImage: '/worker-image',
   Devices: '/devices',
   Other: '/other',
-  PrivacyPolicy: '/privacy-policy'
+  PrivacyPolicy: '/privacy-policy',
+  News: '/news',
+  NewsCategory: '/news-category',
+  View: '/view'
 }
 
 export const AppLayouts = {

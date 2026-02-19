@@ -57,7 +57,9 @@ import {
   ChatMultiple16Filled,
   CommentLightning20Filled,
   PersonVoice20Filled,
-  AppsList20Regular
+  AppsList20Regular,
+  News24Regular,
+  Tag16Filled
 } from '@vicons/fluent'
 import { AppPaths } from '@/utils/index.js'
 import Utils from '@/utils/Utils.js'
@@ -871,21 +873,28 @@ export const navigations = [
     label: 'navigation.chat',
     path: AppPaths.Chat,
     icon: ChatMultiple16Filled,
-    permission: appPermissions.chat,
+    permission: appPermissions.admin,
     children: [
       {
         label: 'notificationPage.name',
         path: Utils.routeChatPathMaker(AppPaths.Notification),
         icon: CommentLightning20Filled,
         color: 'bg-dark',
-        permission: appPermissions.chatNotification
+        permission: appPermissions.instructions
       },
       {
-        label: 'congratulation.name',
-        path: Utils.routeChatPathMaker(AppPaths.Congratulation),
-        icon: CommentLightning20Filled,
-        color: 'bg-warning',
-        permission: appPermissions.chatTelegramMessages
+        label: 'newsPage.name',
+        path: Utils.routeChatPathMaker(AppPaths.News),
+        icon: News24Regular,
+        color: 'bg-dark',
+        permission: appPermissions.admin
+      },
+      {
+        label: 'newsCategoryPage.name',
+        path: Utils.routeChatPathMaker(AppPaths.NewsCategory),
+        icon: Tag16Filled,
+        color: 'bg-dark',
+        permission: appPermissions.admin
       }
     ]
   }
