@@ -47,19 +47,21 @@ instance.interceptors.response.use(
     isLoggingOut = false
     return Promise.resolve(response)
   },
-  (error) => {
+  async (error) => {
     if (error.name === 'CanceledError') {
       error.message = t('content.waitResponse')
     }
     if (error.response?.status === 401) {
-      if (isLoggingOut) return
+      if (isLoggingOut){
+        return Promise.reject(error)
+      }
 
       if (!error.response.request.responseURL.includes(AppPaths.Profile)) {
         $Toast.error(error.response.data.message)
       }
       isLoggingOut = true
       localStorage.removeItem(useAppSetting.tokenKey)
-      router.push(AppPaths.Login).finally(() => {})
+      await router.push(AppPaths.Login)
     } else if (error.response?.data?.message) {
       $Toast.error(error.response?.data?.message)
     } else if (error?.message) {
