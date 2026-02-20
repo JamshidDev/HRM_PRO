@@ -124,26 +124,25 @@ export const useNewsStore = defineStore('newsStore', {
         const fd = new FormData()
         fd.append('_method', 'PUT')
 
-        if (this.payload.slug !== inst.slug)
-          fd.append('slug', this.payload.slug)
+        if (this.payload.slug !== inst.slug) fd.append('slug', this.payload.slug)
 
         const fmtPayloadDate = Utils.timeHHMMWithMonth(this.payload.published_at)
         const fmtInstDate = Utils.timeHHMMWithMonth(new Date(inst.published_at).getTime())
-        if (fmtPayloadDate !== fmtInstDate)
-          fd.append('published_at', fmtPayloadDate)
+        if (fmtPayloadDate !== fmtInstDate) fd.append('published_at', fmtPayloadDate)
 
-        if (this.payload.status !== inst.status)
-          fd.append('status', this.payload.status)
+        if (this.payload.status !== inst.status) fd.append('status', this.payload.status)
 
         if (this.payload.is_pinned !== inst.is_pinned)
           fd.append('is_pinned', this.payload.is_pinned ? 1 : 0)
 
-        const origCatIds = (inst.categories ?? []).map((c) => c.id).sort().join(',')
+        const origCatIds = (inst.categories ?? [])
+          .map((c) => c.id)
+          .sort()
+          .join(',')
         const newCatIds = [...this.payload.categories].sort().join(',')
         if (newCatIds !== origCatIds)
           this.payload.categories.forEach((id, i) => fd.append(`categories[${i}]`, id))
-        
-        
+
         if ([...fd.keys()].length > 1)
           promises.push($ApiService.newsService._update({ id: this.instance.id, data: fd }))
 
