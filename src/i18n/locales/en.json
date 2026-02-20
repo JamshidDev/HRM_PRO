@@ -2650,7 +2650,8 @@
     "unpin": "Unpin",
     "pinned": "Pinned",
     "video": "Video",
-    "image": "Image"
+    "image": "Image",
+    "noMedia": "No media"
   },
   "newsCategoryPage": {
     "name": "News Categories",

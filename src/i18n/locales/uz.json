@@ -2717,7 +2717,8 @@
     "unpin": "Mahkamlashni olib tashlash",
     "pinned": "Mahkamlangan",
     "video": "Video",
-    "image": "Rasm"
+    "image": "Rasm",
+    "noMedia": "Media yo'q"
   },
   "newsCategoryPage": {
     "name": "Yangilik kategoriyalari",

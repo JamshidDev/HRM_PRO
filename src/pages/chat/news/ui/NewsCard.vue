@@ -13,7 +13,8 @@
     ThumbLike16Regular,
     ThumbDislike16Regular,
     Delete24Regular,
-    Edit24Regular
+    Edit24Regular,
+    Image24Regular
   } from '@vicons/fluent'
   import Utils from '@/utils/Utils.js'
   import { AppPaths } from '@/utils/index.js'
@@ -52,7 +53,7 @@
   const statusMeta = {
     0: { icon: DocumentEdit24Regular, color: '#FDC700', labelKey: 'newsPage.statusDraft' },
     1: { icon: Globe24Regular, color: '#2dcb73', labelKey: 'newsPage.statusPublished' },
-    2: { icon: Archive24Regular, color: '#74788d', labelKey: 'newsPage.statusArchived' }
+    2: { icon: Archive24Regular, color: '#94a3b8', labelKey: 'newsPage.statusArchived' }
   }
 
   const currentStatus = computed(() => statusMeta[localNews.value.status] ?? statusMeta[0])
@@ -118,7 +119,12 @@
   }
 
   // ── Media slider ─────────────────────────────────────────────────────────────
-  const media = computed(() => localNews.value.media ?? [])
+  const DOC_EXTS = ['pdf', 'doc', 'docx']
+  const media = computed(() =>
+    (localNews.value.media ?? []).filter(
+      (item) => !DOC_EXTS.includes(item.path?.split('.').pop()?.toLowerCase() ?? '')
+    )
+  )
   const currentMediaIndex = ref(0)
   const isHovered = ref(false)
   let hoverInterval = null
@@ -169,7 +175,10 @@
         autoplay
         class="w-full h-full object-cover"
       />
-      <div v-else class="w-full h-full bg-gradient-to-br from-primary/20 to-primary/5" />
+      <div v-else class="w-full h-full bg-gradient-to-br from-primary/20 to-primary/5 flex flex-col items-center justify-center gap-2">
+        <n-icon size="36" class="text-primary/40"><Image24Regular /></n-icon>
+        <span class="text-xs text-primary/40 font-medium">{{ $t('newsPage.noMedia') }}</span>
+      </div>
 
       <!-- Video play indicator -->
       <div
@@ -221,9 +230,15 @@
 
       <!-- Gradient + title overlay -->
       <div
-        class="z-10 absolute flex items-end inset-0 bg-gradient-to-b from-transparent to-dark pointer-events-none"
+        class="z-10 absolute flex items-end inset-0 pointer-events-none"
+        :class="currentMedia ? 'bg-gradient-to-b from-transparent to-dark' : ''"
       >
-        <h3 class="m-3 text-lg font-semibold text-white line-clamp-2">{{ title }}</h3>
+        <h3
+          class="m-3 text-lg font-semibold line-clamp-2"
+          :class="currentMedia ? 'text-white' : 'text-textColor0'"
+        >
+          {{ title }}
+        </h3>
       </div>
     </div>
 

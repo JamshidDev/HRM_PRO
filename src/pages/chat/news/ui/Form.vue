@@ -194,7 +194,12 @@
           orderable
           v-model:files="store.payload.media"
           :multiple="true"
-          accept="image/*,video/*"
+          accept=".pdf,.doc,.docx,.png,.jpg,.jpeg,.mp4,.mpeg,.avi"
+          crop
+          :cropAspect="4 / 3"
+          @onDelete="
+            (item) => (store.payload.media = store.payload.media.filter((m) => m.id !== item.id))
+          "
         />
         <template #feedback>
           <span class="text-xs text-textColor3">{{ $t('newsPage.attachmentsHint') }}</span>
@@ -206,7 +211,9 @@
       <div
         class="flex gap-4 items-center bg-surface-section border border-surface-line rounded-lg p-2 drop-shadow-md"
       >
-        <n-button @click="onCancel" type="default" size="large" ghost>{{ $t('content.cancel') }}</n-button>
+        <n-button @click="onCancel" type="default" size="large" ghost>{{
+          $t('content.cancel')
+        }}</n-button>
         <n-button @click="onSubmit" :loading="store.saveLoading" type="primary" size="large">
           {{ $t('content.save') }}
         </n-button>

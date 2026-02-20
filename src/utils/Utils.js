@@ -326,10 +326,13 @@ const blobFileDownload = (file, contentType, fileName) => {
   }
 }
 
-const downloadFileByUrl = (url) => {
+const downloadFileByUrl = (url, target) => {
   const link = document.createElement('a')
   link.href = url
   link.setAttribute('download', 'file')
+  if(target){
+    link.target = target
+  }
   document.body.appendChild(link)
   link.click()
   document.body.removeChild(link)

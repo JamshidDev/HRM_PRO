@@ -73,7 +73,10 @@ export const useNewsStore = defineStore('newsStore', {
           }
         }),
         categories: inst.categories?.map((c) => c.id) ?? [],
-        media: inst.media ?? [],
+        media: (inst.media || []).map((i) => ({
+          ...i,
+          name: i.path.slice(i.path.split('').findLastIndex((i) => i === '/') + 1)
+        })),
         published_at: inst.published_at ? new Date(inst.published_at).getTime() : Date.now(),
         status: inst.status ?? 0,
         is_pinned: inst.is_pinned ?? false
@@ -120,12 +123,29 @@ export const useNewsStore = defineStore('newsStore', {
 
         const fd = new FormData()
         fd.append('_method', 'PUT')
-        fd.append('slug', this.payload.slug)
-        fd.append('published_at', Utils.timeHHMMWithMonth(this.payload.published_at))
-        fd.append('status', this.payload.status)
-        fd.append('is_pinned', this.payload.is_pinned ? 1 : 0)
-        this.payload.categories.forEach((id, i) => fd.append(`categories[${i}]`, id))
-        promises.push($ApiService.newsService._update({ id: this.instance.id, data: fd }))
+
+        if (this.payload.slug !== inst.slug)
+          fd.append('slug', this.payload.slug)
+
+        const fmtPayloadDate = Utils.timeHHMMWithMonth(this.payload.published_at)
+        const fmtInstDate = Utils.timeHHMMWithMonth(new Date(inst.published_at).getTime())
+        if (fmtPayloadDate !== fmtInstDate)
+          fd.append('published_at', fmtPayloadDate)
+
+        if (this.payload.status !== inst.status)
+          fd.append('status', this.payload.status)
+
+        if (this.payload.is_pinned !== inst.is_pinned)
+          fd.append('is_pinned', this.payload.is_pinned ? 1 : 0)
+
+        const origCatIds = (inst.categories ?? []).map((c) => c.id).sort().join(',')
+        const newCatIds = [...this.payload.categories].sort().join(',')
+        if (newCatIds !== origCatIds)
+          this.payload.categories.forEach((id, i) => fd.append(`categories[${i}]`, id))
+        
+        
+        if ([...fd.keys()].length > 1)
+          promises.push($ApiService.newsService._update({ id: this.instance.id, data: fd }))
 
         for (const t of this.payload.translations) {
           const original = inst.translations?.find((r) => r.locale === t.locale) ?? {}
@@ -137,7 +157,7 @@ export const useNewsStore = defineStore('newsStore', {
             promises.push(
               $ApiService.newsService._update_translation({
                 data: {
-                  news_id: this.instance.id,
+                  chat_news_id: this.instance.id,
                   locale: t.locale,
                   title: t.title,
                   short_description: t.short_description,
@@ -151,7 +171,6 @@ export const useNewsStore = defineStore('newsStore', {
         // Diff media → remove deleted, add new
         const originalIds = new Set((inst.media ?? []).map((m) => m.id))
         const currentIds = new Set(this.payload.media.filter((m) => m.id).map((m) => m.id))
-
         for (const id of originalIds) {
           if (!currentIds.has(id)) {
             promises.push($ApiService.newsService._remove_media({ id }))
@@ -163,7 +182,7 @@ export const useNewsStore = defineStore('newsStore', {
             const fd = new FormData()
             const f = file.file ?? file
             const isVideo = (f.type ?? '').startsWith('video/')
-            fd.append('news_id', this.instance.id)
+            fd.append('chat_news_id', this.instance.id)
             fd.append('type', isVideo ? 'video' : 'image')
             fd.append('order', i)
             fd.append('file', f)

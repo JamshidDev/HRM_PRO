@@ -20,6 +20,7 @@
 
   onMounted(async () => {
     store.resetForm()
+    store.instance = null
     if (isEditing.value) {
       const isAvailable = await store._show(route.params.id)
       if (!isAvailable) goBack()
