@@ -895,6 +895,13 @@ export const navigations = [
         icon: Tag16Filled,
         color: 'bg-dark',
         permission: appPermissions.admin
+      },
+      {
+        label: 'congratulation.name',
+        path: Utils.routeChatPathMaker(AppPaths.Congratulation),
+        icon: CommentLightning20Filled,
+        color: 'bg-warning',
+        permission: appPermissions.chatTelegramMessages
       }
     ]
   }

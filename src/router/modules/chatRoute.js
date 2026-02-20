@@ -6,7 +6,8 @@ import {
   NewsPage,
   NewsFormPage,
   ViewNewsPage,
-  NewsCategoryPage
+  NewsCategoryPage,
+  CongratulationPage
 } from '@pages/chat/index.js'
 
 export const chatRoutes = [
@@ -41,6 +42,13 @@ export const chatRoutes = [
   {
     path: Utils.routeChatPathMaker(AppPaths.NewsCategory),
     component: NewsCategoryPage,
+    meta: {
+      layout: AppLayouts.main
+    }
+  },
+  {
+    path: Utils.routeChatPathMaker(AppPaths.Congratulation),
+    component: CongratulationPage,
     meta: {
       layout: AppLayouts.main
     }
