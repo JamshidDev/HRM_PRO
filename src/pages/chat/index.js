@@ -1,4 +1,4 @@
-export const NotificationPage = () => import('./notification/NotificationPage.vue')
+export const NotificationPage = () => import('./notification/page.vue')
 export const NewsPage = () => import('./news/Page.vue')
 export const NewsFormPage = () => import('./news/FormPage.vue')
 export const ViewNewsPage = () => import('./news/ViewPage.vue')
