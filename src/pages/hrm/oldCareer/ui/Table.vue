@@ -31,6 +31,17 @@
     }
   }
 
+  const onDeleteNewCareer = (v) => {
+    store.elementId = v.id
+    store._delete_new_career()
+  }
+
+  const selectNewCareerEv = (v) => {
+    if (v.key === 'delete') {
+      onDeleteNewCareer(v.data)
+    }
+  }
+
   const onDelete = (v) => {
     store.elementId = v.id
     store._delete()
@@ -74,7 +85,7 @@
               <th class="min-w-[100px]">{{ $t('oldCareerPage.form.post_name') }}</th>
               <th class="min-w-[100px] w-[160px]">{{ $t('oldCareerPage.form.from_date') }}</th>
               <th class="min-w-[100px] w-[160px]">{{ $t('oldCareerPage.form.to_date') }}</th>
-              <!--          <th class="min-w-[40px] w-[40px]"></th>-->
+              <th class="min-w-[40px] w-[40px]"></th>
             </tr>
           </thead>
           <tbody class="sort-target">
@@ -89,13 +100,9 @@
                 <span class="text-sm">{{ Utils.timeOnlyDate(item.from) }}</span>
               </td>
               <td>{{ Utils.timeOnlyDate(item.to) }}</td>
-              <!--          <td>-->
-              <!--            <UIMenuButton-->
-              <!--                :data="item"-->
-              <!--                :show-edit="true"-->
-              <!--                @selectEv="selectEv"-->
-              <!--            />-->
-              <!--          </td>-->
+              <td>
+                <UIMenuButton :data="item" :show-edit="false" @selectEv="selectNewCareerEv" />
+              </td>
             </tr>
           </tbody>
         </n-table>
