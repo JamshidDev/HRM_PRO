@@ -166,7 +166,7 @@
           }}</label>
           <n-select
             class="w-full"
-            v-model:value="store.params.year"
+            v-model:value="store.exportParams.year"
             :options="Utils.yearList"
             label-field="name"
             value-field="id"

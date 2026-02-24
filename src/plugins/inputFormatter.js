@@ -5,7 +5,7 @@ export default {
         this.$nextTick(() => {
           if (this.$el && this.$el?.querySelectorAll) {
             const formatInput = (value) => {
-              value = value.replace(/[а-яёқўғҳА-ЯЁҚЎҒҲ]/g, '')
+              value = value.replace(/[ёқўғҳЁҚЎҒҲ]/g, '')
 
               return value
                 .split('')
