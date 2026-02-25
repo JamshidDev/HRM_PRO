@@ -25,7 +25,11 @@ export const useSocketStore = defineStore('useSocketStore', {
     counts: {
       confirmation: {},
       hr: {}
-    }
+    },
+
+
+
+
   }),
   getters: {
     getCategoryTotal: (state) => (category) => {
