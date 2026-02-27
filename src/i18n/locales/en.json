@@ -1,5 +1,6 @@
 {
   "content": {
+    "user": "User",
     "title": "Title",
     "deleted": "Deleted",
     "nowOnlineUsers": "Currently online users",
@@ -1021,6 +1022,17 @@
       "name": "Document name"
     }
   },
+  "mobileUserPage": {
+    "name": "Mobile Users",
+    "deviceModel": "Device Model",
+    "platform": "Platform",
+    "verificationTime": "Verification Time",
+    "detailTitle": "Device Details",
+    "deviceInfo": "Device Info",
+    "sessions": "Sessions",
+    "noPhotos": "No photos",
+    "noSessions": "No sessions"
+  },
   "actionLog": {
     "name": "Action history",
     "tab": {
@@ -1956,6 +1968,7 @@
     "tab": {
       "multipleSalary": "Upload employees with multiple salaries",
       "exportWithCode": "Export by payment code",
+      "exportWithCodeByMonth": "Export by payment code by months",
       "exportWithPosition": "Export by position"
     },
     "form": {
@@ -1967,7 +1980,9 @@
       "code": "Payment code",
       "organizations": "By organization",
       "workers": "By employee",
-      "totalFour": "Deductions from salary"
+      "totalFour": "Deductions from salary",
+      "byPaymentCode": "By payment code",
+      "byTotalPayment": "By total calculated payment amount"
     },
     "view": {
       "main_salary": "Base salary",

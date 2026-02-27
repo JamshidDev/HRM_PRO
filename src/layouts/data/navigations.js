@@ -866,6 +866,13 @@ export const navigations = [
         icon: Folder48Filled,
         color: 'bg-dark',
         permission: appPermissions.instructions
+      },
+      {
+        label: 'mobileUserPage.name',
+        path: Utils.routePathMaker(AppPaths.MobileUsers),
+        icon: Folder48Filled,
+        color: 'bg-dark',
+        permission: appPermissions.admin
       }
     ]
   },

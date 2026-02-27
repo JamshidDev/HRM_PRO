@@ -45,7 +45,8 @@ export const useMonthReportStore = defineStore('monthReportStore', {
       codes: [],
       organizations: [],
       positions: [],
-      byOrganization: true
+      byOrganization: true,
+      type:'code'
     },
     exportVisible: false,
     activeTab: 1,

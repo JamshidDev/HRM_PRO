@@ -1,5 +1,6 @@
 {
   "content": {
+    "user": "Пользователь",
     "title": "Заголовок",
     "deleted": "Удалено",
     "nowOnlineUsers": "Пользователи онлайн сейчас",
@@ -1020,6 +1021,17 @@
       "name": "Название документа"
     }
   },
+  "mobileUserPage": {
+    "name": "Мобильные пользователи",
+    "deviceModel": "Модель устройства",
+    "platform": "Платформа",
+    "verificationTime": "Время верификации",
+    "detailTitle": "Информация об устройстве",
+    "deviceInfo": "Об устройстве",
+    "sessions": "Сессии",
+    "noPhotos": "Нет фотографий",
+    "noSessions": "Нет сессий"
+  },
   "actionLog": {
     "name": "История действий",
     "tab": {
@@ -1954,6 +1966,7 @@
     "tab": {
       "multipleSalary": "Загрузить сотрудников с несколькими зарплатами",
       "exportWithCode": "Экспорт по коду платежа",
+      "exportWithCodeByMonth": "Экспорт по коду платежа по месяцам",
       "exportWithPosition": "Экспорт по должностям"
     },
     "form": {
@@ -1965,7 +1978,9 @@
       "code": "Код платежа",
       "organizations": "По организациям",
       "workers": "По сотрудникам",
-      "totalFour": "Удержания из зарплаты"
+      "totalFour": "Удержания из зарплаты",
+      "byPaymentCode": "По коду платежа",
+      "byTotalPayment": "По общей сумме платежей"
     },
     "view": {
       "main_salary": "Оклад",

@@ -8,7 +8,7 @@
     "lint:fix": "eslint . --fix",
     "dev": "vite --mode development --host",
     "prod": "vite --mode production --host",
-    "build": "vite build",
+    "build": "NODE_OPTIONS='--max-old-space-size=4096' vite build",
     "server": "node buildAndDeploy.js",
     "preview": "vite preview",
     "format": "prettier --write \"src/**/*.{js,ts,vue,css,html}\"",

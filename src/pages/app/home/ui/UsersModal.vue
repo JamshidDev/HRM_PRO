@@ -15,9 +15,6 @@ const onReactionEv = (emoji, v) => {
   })
 }
 
-const onSearch = () => {
-
-}
 
 const onSelectType = (v)=> {
   loginType.value = loginType.value === v ? null : v
@@ -60,9 +57,6 @@ const filteredUsers = computed(()=>{
           v-model:value="searchQuery"
           type="text"
           :placeholder="$t('content.search')"
-          :on-keyup="onSearch"
-          @paste="onSearch"
-          @clear="onSearch"
         >
           <template #suffix>
             <n-icon :component="Search48Filled" />

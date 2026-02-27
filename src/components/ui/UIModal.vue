@@ -14,7 +14,7 @@
     },
     persistent: {
       type: Boolean,
-      default: false
+      default: true
     }
   })
 

@@ -144,5 +144,13 @@ export const adminRoutes = [
     meta: {
       layout: AppLayouts.main
     }
+  },
+  {
+    path: Utils.routePathMaker(AppPaths.MobileUsers),
+    name: AppPaths.MobileUsers.substring(1),
+    component: () => import('@pages/admin/mobileUser/page.vue'),
+    meta: {
+      layout: AppLayouts.main
+    }
   }
 ]

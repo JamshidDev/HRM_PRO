@@ -1,5 +1,6 @@
 {
   "content": {
+    "user": "Foydalanuvchi",
     "title": "Sarlavha",
     "deleted": "O'chirilgan",
     "nowOnlineUsers": "Hozirda tizimdagi online foydalanuvchilar",
@@ -218,6 +219,7 @@
     "ru": "RU",
     "en": "EN",
     "create": "Yaratish",
+    "successCopied": "Muvofaqiyatli nusxalandi",
     "allSelected": "Barchasi tanlangan"
   },
   "date": {
@@ -502,6 +504,7 @@
       "no-worker": "Tizimda xodim topilmadi!",
       "born": "Tug'ilgan sana",
       "addCandidate": "Kandidat qo'shish",
+      "hrContacts": "Korxona kadrlar bo‘limiga aloqaga chiqish",
       "add-worker": "Tizimda mavjud bo'lmagan xodimning ma'lumotlarini kandidat qo'shish tugmasi orqali qo'shing",
       "jshshir": "JSHSHIRni kiriting"
     },
@@ -1025,6 +1028,17 @@
       "file": "Andoza fayli",
       "name": "Hujjat nomi"
     }
+  },
+  "mobileUserPage": {
+    "name": "Mobil foydalanuvchilar",
+    "deviceModel": "Qurilma modeli",
+    "platform": "Platforma",
+    "verificationTime": "Tasdiqlash vaqti",
+    "detailTitle": "Qurilma ma'lumotlari",
+    "deviceInfo": "Qurilma haqida",
+    "sessions": "Sessiyalar",
+    "noPhotos": "Rasmlar yo'q",
+    "noSessions": "Sessiyalar yo'q"
   },
   "actionLog": {
     "name": "Amallar tarixi",
@@ -1976,7 +1990,9 @@
       "code": "To'lov kodi",
       "organizations": "Korxonalar kesimida",
       "workers": "Xodimlar kesimida",
-      "totalFour": "Ish haqidan ushlamalar"
+      "totalFour": "Ish haqidan ushlamalar",
+      "byPaymentCode": "To'lov kodi bo'yicha",
+      "byTotalPayment": "Umumiy hisoblangan to'lov miqdori bo'yicha"
     },
     "view": {
       "main_salary": "Oklad",

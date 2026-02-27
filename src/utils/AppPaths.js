@@ -135,7 +135,8 @@ export const AppPaths = {
   PrivacyPolicy: '/privacy-policy',
   News: '/news',
   NewsCategory: '/news-category',
-  View: '/view'
+  View: '/view',
+  MobileUsers: '/mobile-users'
 }
 
 export const AppLayouts = {
