@@ -12,7 +12,7 @@ const {t} = i18n.global
 const CHART_COLORS = ['#1A84FF', '#0F1114', '#E53835']
 const EDU_KEYS = ['higher', 'special', 'middle']
 
-const createEduOption = (color) => {
+const createEduOption = () => {
   return {
     title: {
       text: '',
@@ -45,19 +45,20 @@ watch(() => appStore.themeSwitch, (isDark) => {
 }, {immediate: true})
 
 watch(() => store.dashboard.eduCard,
-    (newValue, _) => {
+    (cards) => {
 
-      if (!Array.isArray(newValue) || newValue.length < 3) return
-      newValue.forEach((item, i) => {
-        eduOptions.value[i].series[0].data = [{
+      if (!cards?.length) return
+      cards.forEach((item, i) => {
+        const option =  eduOptions.value[i]
+
+        option.series[0].data = [{
           value: item?.count ?? 0,
           name: t(item?.title),
           itemStyle: {color: CHART_COLORS[i]},
-          selected: true
         }]
-        eduOptions.value[i].title.text = item?.count ?? 0
+        option.title.text = item?.count ?? 0
       })
-    }, {immediate: true, deep: true})
+    }, {immediate: true})
 
 const totalCount = computed(() => {
   if (!Array.isArray(store.dashboard.eduCard)) return 0

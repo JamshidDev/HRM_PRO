@@ -1,63 +1,69 @@
 <script setup>
-  import { useAccountStore, useComponentStore, useMonthReportStore } from '@/store/modules/index.js'
-  import { UIPageFilter, UISelect } from '@/components/index.js'
-  import Utils from '@/utils/Utils.js'
-  import UIHelper from '@/utils/UIHelper.js'
-  import { ArrowCircleDown32Regular, ArrowSync20Filled } from '@vicons/fluent'
+import {useAccountStore, useComponentStore, useMonthReportStore} from '@/store/modules/index.js'
+import {UIPageFilter, UISelect} from '@/components/index.js'
+import Utils from '@/utils/Utils.js'
+import UIHelper from '@/utils/UIHelper.js'
+import {ArrowCircleDown32Regular, ArrowSync20Filled} from '@vicons/fluent'
+import { useDebounce } from "@utils"
 
-  const store = useMonthReportStore()
-  const accStore = useAccountStore()
+const store = useMonthReportStore()
+const accStore = useAccountStore()
 
-  const filterEvent = () => {
-    if (!accStore.checkAction(accStore.pn.economistStatementsRead)) return
-    store.params.page = 1
-    store._index()
+
+const filterEvent = () => {
+  if (!accStore.checkAction(accStore.pn.economistStatementsRead)) return
+  store.params.page = 1
+  store._index()
+}
+
+const componentStore = useComponentStore()
+
+const onChangeStructure = (v) => {
+  store.params.organizations = v
+  filterEvent()
+}
+
+const beforeShow = (v) => {
+  if (componentStore.structureList.length === 0) {
+    componentStore._structures()
   }
 
-  const componentStore = useComponentStore()
-
-  const onChangeStructure = (v) => {
-    store.params.organizations = v
-    filterEvent()
+  if (store.codeList.length === 0) {
+    store._enum()
   }
+}
 
-  const beforeShow = (v) => {
-    if (componentStore.structureList.length === 0) {
-      componentStore._structures()
-    }
+const resetFilter = () => {
+  store.params.organizations = []
+  store.params.code = null
+  filterEvent()
+}
 
-    if (store.codeList.length === 0) {
-      store._enum()
-    }
-  }
-
-  const resetFilter = () => {
-    store.params.organizations = []
-    store.params.code = null
-    filterEvent()
-  }
-
-  const filterCount = computed(
+const filterCount = computed(
     () => Number(Boolean(store.params.organizations.length)) + Number(Boolean(store.params.code))
-  )
+)
 
-  const onRefreshEv = () => {
-    store.loading = true
-    const params = {
-      type: 'statements',
-      year: store.params.year,
-      month: store.params.month
-    }
-    componentStore._refreshPin(params, store._index, () => (store.loading = false))
+const onRefreshEv = () => {
+  store.loading = true
+  const params = {
+    type: 'statements',
+    year: store.params.year,
+    month: store.params.month
   }
-  const onExportPanel = () => {
-    store.activeTab = 1
-    store.exportParams.positions = []
-    store.exportParams.organizations = []
-    store.exportParams.codes = []
-    store.exportParams.byOrganization = true
-    store.exportVisible = true
-  }
+  componentStore._refreshPin(params, store._index, () => (store.loading = false))
+}
+const onExportPanel = () => {
+  store.activeTab = 1
+  store.exportParams.positions = []
+  store.exportParams.organizations = []
+  store.exportParams.codes = []
+  store.exportParams.byOrganization = true
+  store.exportVisible = true
+}
+
+const onChangeInput = useDebounce(filterEvent, 600)
+
+
 </script>
 
 <template>
@@ -76,10 +82,10 @@
       }}</label>
       <UISelect
         :options="componentStore.structureList"
-        :modelV="store.params.organizations"
+        :model-v="store.params.organizations"
         @defaultValue="(v) => (store.params.organizations = v)"
         @updateModel="onChangeStructure"
-        :checkedVal="store.structureCheck2"
+        :checked-val="store.structureCheck2"
         @updateCheck="(v) => (store.structureCheck2 = v)"
         :loading="componentStore.structureLoading"
         v-model:search="componentStore.structureParams.search"
@@ -118,6 +124,13 @@
         value-field="id"
         @update:value="filterEvent"
       />
+      <label class="text-xs mt-3 text-gray-500 mb-1 font-medium">{{ $t('monthReport.form.start_hours') }}</label>
+      <n-input-number
+        @update:value="onChangeInput" :min="1" :nax="100" v-model:value="store.params.start_hours"
+        clearable
+      />
+      <label class="text-xs mt-3 text-gray-500 mb-1 font-medium">{{ $t('monthReport.form.end_hours') }}</label>
+      <n-input-number @update:value="onChangeInput" :min="1" :nax="100" v-model:value="store.params.end_hours" clearable />
     </template>
     <template #filterAction>
       <n-button @click="onExportPanel" type="error">

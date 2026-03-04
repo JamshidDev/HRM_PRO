@@ -2009,6 +2009,8 @@
       "totalTwo": "Ish haqi fondiga kirmaydigan to'lov turlari",
       "totalThree": "Hisoblandi",
       "code": "To'lov kodi",
+      "start_hours": "Ish soati (dan)",
+      "end_hours": "Ish soati (gacha)",
       "organizations": "Korxonalar kesimida",
       "workers": "Xodimlar kesimida",
       "totalFour": "Ish haqidan ushlamalar",
