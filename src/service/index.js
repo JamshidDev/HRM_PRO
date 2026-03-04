@@ -51,7 +51,14 @@ instance.interceptors.response.use(
     if (error.name === 'CanceledError') {
       error.message = t('content.waitResponse')
     }
+
     if (error.response?.status === 401) {
+      const serviceUrl = error.response?.config?.url?.toString()
+      if(serviceUrl.includes('auth/login')){
+        $Toast.error(error.response?.data?.message ?? error.message)
+        return Promise.reject(error)
+      }
+
       if (isLoggingOut){
         return Promise.reject(error)
       }

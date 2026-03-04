@@ -1,6 +1,5 @@
 import { defineStore } from 'pinia'
 import i18n from '@/i18n/index.js'
-import Utils from '@/utils/Utils.js'
 const { t } = i18n.global
 export const useDepartmentStore = defineStore('departmentStore', {
   state: () => ({
@@ -77,7 +76,7 @@ export const useDepartmentStore = defineStore('departmentStore', {
       this.loading = true
       const params = {
         ...this.params,
-        organizations: this.params.organizations.map((v) => v.id).toString()
+        organizations: this.params.organizations.map((v) => v.id).toString() || undefined,
       }
       $ApiService.departmentService
         ._index({ params })

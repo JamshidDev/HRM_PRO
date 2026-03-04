@@ -556,6 +556,10 @@
     "roles": {
       "title": "Roles",
       "attachRole": "Assign role"
+    },
+    "disability": {
+      "title": "Disability information",
+      "noData": "No data"
     }
   },
   "departmentPage": {
@@ -1069,10 +1073,25 @@
       "post_name": "Position",
       "birthdayPlace": "Birth place",
       "birthday": "Date of birth",
-      "relative": "Relationship"
+      "relative": "Relationship",
+      "disability": "Disability"
     },
     "title": "Close relatives",
-    "no-data": "No relatives added!"
+    "no-data": "No relatives added!",
+    "disability": {
+      "createTitle": "Add disability information",
+      "updateTitle": "Edit disability information",
+      "number": "Medical certificate number",
+      "level": "Disability group",
+      "from": "Issue date",
+      "to": "Expiration date",
+      "comment": "Notes on limitations and capabilities",
+      "lifelong": "Lifelong",
+      "lifelongHint": "If the disability is lifelong, expiration date is not required",
+      "level1": "Group I",
+      "level2": "Group II",
+      "level3": "Group III"
+    }
   },
   "partyPage": {
     "createTitle": "Add party affiliation",

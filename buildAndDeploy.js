@@ -12,8 +12,8 @@ import { fileURLToPath } from 'url';
 
 
 const productionUrl = 'https://hrm-api.railway.uz/api'
-const LOGIN = '977226656'
-const PASSWORD = 'qZVxi&q$Fsj+oN@S$5PR'
+const LOGIN = "977226656";
+const PASSWORD = "qZVxi&q$Fsj+oN@S$5PR";
 
 
 
@@ -91,7 +91,6 @@ const buildAndDeploy = async () => {
                 rmSync('dist', { recursive: true, force: true });
                 console.log(chalk.red.green(('Temporary zip file removed.')))
             } catch (error) {
-                console.log(error)
                 console.log( error.message)
                 console.log(chalk.red.bold('Upload failed:', error.message));
             }
@@ -127,9 +126,9 @@ app.get('/', async (req, res) => {
     try {
         const fs = await import('fs');
         const path = await import('path');
-        
+
         const indexPath = path.join(process.cwd(), 'dist', 'index.html');
-        
+
         if (fs.existsSync(indexPath)) {
             const htmlContent = fs.readFileSync(indexPath, 'utf8');
             res.setHeader('Content-Type', 'text/html');

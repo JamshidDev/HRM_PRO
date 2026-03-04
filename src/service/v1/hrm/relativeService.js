@@ -20,10 +20,25 @@ const _sortable = async (payload) => {
   return await axios.put(`/v1/hr/worker-relatives-sortable`, payload.data)
 }
 
+const _createDisability = async (payload) => {
+  return await axios.post(`/v1/hr/worker-relative-disabilities`, payload.data)
+}
+
+const _updateDisability = async (payload) => {
+  return await axios.put(`/v1/hr/worker-relative-disabilities/${payload.id}`, payload.data)
+}
+
+const _deleteDisability = async (payload) => {
+  return await axios.delete(`/v1/hr/worker-relative-disabilities/${payload.id}`)
+}
+
 export default {
   _index,
   _create,
   _update,
   _delete,
-  _sortable
+  _sortable,
+  _createDisability,
+  _updateDisability,
+  _deleteDisability
 }

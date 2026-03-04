@@ -1,215 +1,73 @@
 <script setup>
-  import VChart from 'vue-echarts'
-  import { useAppStore, useDashboardStore } from '@/store/modules/index.js'
-  import i18n from '@/i18n/index.js'
-  import { Eye24Regular } from '@vicons/fluent'
+import VChart from 'vue-echarts'
+import {useAppStore, useDashboardStore} from '@/store/modules/index.js'
+import i18n from '@/i18n/index.js'
 
-  defineEmits(['detail'])
+defineEmits(['detail'])
 
-  const store = useDashboardStore()
-  const appStore = useAppStore()
-  const { t } = i18n.global
+const store = useDashboardStore()
+const appStore = useAppStore()
+const {t} = i18n.global
 
-  const eduOption1 = ref({
+const CHART_COLORS = ['#1A84FF', '#0F1114', '#E53835']
+const EDU_KEYS = ['higher', 'special', 'middle']
+
+const createEduOption = (color) => {
+  return {
     title: {
       text: '',
       left: 'center',
       top: 'middle',
-      textStyle: {
-        color: '#0f1114',
-        fontSize: 14,
-        fontWeight: '600'
-      }
+      textStyle: {color: '#0f1114', fontSize: 14, fontWeight: '600'}
     },
-    tooltip: {
-      trigger: 'item',
-      show: false
-    },
-    legend: {
-      top: '5%',
-      left: 'center',
-      show: false
-    },
-    series: [
-      {
-        type: 'pie',
-        radius: ['60%', '90%'],
-        avoidLabelOverlap: false,
-        itemStyle: {
-          borderRadius: 4,
-          borderWidth: 2
-        },
-        label: {
-          show: false
-        },
-        emphasis: {
-          label: {
-            show: true,
-            fontSize: 20,
-            fontWeight: 'bold'
-          }
-        },
-        labelLine: {
-          show: false
-        },
-        data: []
-      }
-    ]
+    tooltip: {trigger: 'item', show: false},
+    legend: {show: false},
+    series: [{
+      type: 'pie',
+      radius: ['60%', '90%'],
+      avoidLabelOverlap: false,
+      itemStyle: {borderRadius: 4, borderWidth: 2},
+      label: {show: false},
+      emphasis: {label: {show: true, fontSize: 20, fontWeight: 'bold'}},
+      labelLine: {show: false},
+      data: []
+    }]
+  }
+}
+
+const eduOptions = ref(CHART_COLORS.map(createEduOption))
+
+watch(() => appStore.themeSwitch, (isDark) => {
+  const color = isDark ? '#f3f3f3' : '#0f1114'
+  eduOptions.value.forEach(opt => {
+    opt.title.textStyle.color = color
   })
-  const eduOption2 = ref({
-    title: {
-      text: '',
-      left: 'center',
-      top: 'middle',
-      textStyle: {
-        color: '#0f1114',
-        fontSize: 14,
-        fontWeight: '600'
-      }
-    },
-    tooltip: {
-      trigger: 'item',
-      show: false
-    },
-    legend: {
-      top: '5%',
-      left: 'center',
-      show: false
-    },
-    series: [
-      {
-        type: 'pie',
-        radius: ['60%', '90%'],
-        avoidLabelOverlap: false,
-        itemStyle: {
-          borderRadius: 4,
-          borderWidth: 2
-        },
-        label: {
-          show: false
-        },
-        emphasis: {
-          label: {
-            show: true,
-            fontSize: 20,
-            fontWeight: 'bold'
-          }
-        },
-        labelLine: {
-          show: false
-        },
-        data: []
-      }
-    ]
-  })
-  const eduOption3 = ref({
-    title: {
-      text: '',
-      left: 'center',
-      top: 'middle',
-      textStyle: {
-        color: '#0f1114',
-        fontSize: 14,
-        fontWeight: '600'
-      }
-    },
-    tooltip: {
-      trigger: 'item',
-      show: false
-    },
-    legend: {
-      top: '5%',
-      left: 'center',
-      show: false
-    },
-    series: [
-      {
-        type: 'pie',
-        radius: ['60%', '90%'],
-        avoidLabelOverlap: false,
-        itemStyle: {
-          borderRadius: 4,
-          borderWidth: 2
-        },
-        label: {
-          show: false
-        },
-        emphasis: {
-          label: {
-            show: true,
-            fontSize: 20,
-            fontWeight: 'bold'
-          }
-        },
-        labelLine: {
-          show: false
-        },
-        data: []
-      }
-    ]
-  })
+}, {immediate: true})
 
-  watch(
-    () => appStore.themeSwitch,
-    (v) => {
-      if (v) {
-        eduOption1.value.title.textStyle.color = '#f3f3f3'
-        eduOption2.value.title.textStyle.color = '#f3f3f3'
-        eduOption3.value.title.textStyle.color = '#f3f3f3'
-      } else {
-        eduOption1.value.title.textStyle.color = '#0f1114'
-        eduOption2.value.title.textStyle.color = '#0f1114'
-        eduOption3.value.title.textStyle.color = '#0f1114'
-      }
-    },
-    {
-      immediate: true
-    }
-  )
+watch(() => store.dashboard.eduCard,
+    (newValue, _) => {
 
-  watch(
-    () => store.dashboard.eduCard,
-    (newValue, oldValue) => {
-      eduOption1.value.series[0].data = [
-        {
-          value: newValue[0]?.count || 0,
-          name: t(newValue[0]?.title),
-          itemStyle: {
-            color: '#1A84FF'
-          },
+      if (!Array.isArray(newValue) || newValue.length < 3) return
+      newValue.forEach((item, i) => {
+        eduOptions.value[i].series[0].data = [{
+          value: item?.count ?? 0,
+          name: t(item?.title),
+          itemStyle: {color: CHART_COLORS[i]},
           selected: true
-        }
-      ]
-      eduOption1.value.title.text = newValue[0].count
+        }]
+        eduOptions.value[i].title.text = item?.count ?? 0
+      })
+    }, {immediate: true, deep: true})
 
-      eduOption2.value.series[0].data = [
-        {
-          value: newValue[1].count,
-          name: t(newValue[1].title),
-          itemStyle: {
-            color: '#0F1114'
-          },
-          selected: true
-        }
-      ]
-      eduOption2.value.title.text = newValue[1].count
+const totalCount = computed(() => {
+  if (!Array.isArray(store.dashboard.eduCard)) return 0
+  return store.dashboard.eduCard.reduce((total, item) => (total + (item.count ?? 0)), 0)
+})
 
-      eduOption3.value.series[0].data = [
-        {
-          value: newValue[2].count,
-          name: t(newValue[2].title),
-          itemStyle: {
-            color: '#E53835'
-          },
-          selected: true
-        }
-      ]
-      eduOption3.value.title.text = newValue[2].count
-    },
-    {
-      immediate: true
-    }
-  )
+const getPercentage = (count) => {
+  if (!totalCount.value) return 0
+  return Math.round((count / totalCount.value) * 100)
+}
 </script>
 
 <template>
@@ -227,44 +85,24 @@
       >
         {{ $t('content.view') }}
       </p>
-
-      <!--      <n-button @click="$emit('detail')" type="primary" tertiary circle>-->
-      <!--        <template #icon>-->
-      <!--          <Eye24Regular/>-->
-      <!--        </template>-->
-      <!--      </n-button>-->
     </div>
     <div class="grid grid-cols-12 gap-2">
-      <div class="col-span-12 flex md:col-span-6 items-center justify-around">
-        <div class="w-[90px] h-[90px]">
-          <v-chart :option="eduOption1" />
+      <div
+        v-for="(item , idx) in store.dashboard.eduCard" :key="idx"
+        class="col-span-12 flex md:col-span-6 items-center justify-around"
+        :class="{ 'col-span-12 mt-2': idx === 2 }"
+      >
+        <div class="w-[90px] h-[90px]" :class="{ 'relative z-2': idx === 1 }">
+          <v-chart :option="eduOptions[idx]" />
         </div>
         <div style="width: calc(100% - 90px)" class="pl-2">
-          <p>{{ $t('dashboardPage.edu.higher') }}</p>
-          <n-progress type="line" status="info" :percentage="20">10%</n-progress>
+          <p>{{ $t(`dashboardPage.edu.${EDU_KEYS[idx]}`) }}</p>
+          <n-progress type="line" status="info" :color="CHART_COLORS[idx]" :percentage="getPercentage(item.count)">
+            {{ getPercentage(item.count) }} %
+          </n-progress>
         </div>
-      </div>
-      <div class="col-span-12 flex md:col-span-6 items-center justify-around">
-        <div class="w-[90px] h-[90px] relative z-2">
-          <v-chart :option="eduOption2" />
-        </div>
-        <div style="width: calc(100% - 90px)" class="pl-2">
-          <p>{{ $t('dashboardPage.edu.special') }}</p>
-          <n-progress type="line" :color="'#0f1114'" :percentage="20">10%</n-progress>
-        </div>
-      </div>
-    </div>
-
-    <div class="flex items-center justify-around mt-2">
-      <div class="w-[90px] h-[90px]">
-        <v-chart :option="eduOption3" />
-      </div>
-      <div style="width: calc(100% - 90px)" class="pl-2">
-        <p>{{ $t('dashboardPage.edu.middle') }}</p>
-        <n-progress type="line" status="error" :percentage="20">10%</n-progress>
       </div>
     </div>
   </div>
 </template>
 
-<style scoped></style>

@@ -1,4 +1,3 @@
-x
 <script setup>
   import { NoDataPicture, UIPagination, UIMenuButton } from '@components'
   import { useDepartmentStore, useAccountStore } from '@stores'
@@ -13,7 +12,7 @@ x
   const props = defineProps({
     data: {
       type: Array,
-      default: []
+      default:()=> []
     },
     deep: {
       type: Number,

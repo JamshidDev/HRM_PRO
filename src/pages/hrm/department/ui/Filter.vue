@@ -1,7 +1,6 @@
 <script setup>
   import { UIPageFilter, UISelect } from '@/components/index.js'
   import { useAccountStore, useComponentStore, useDepartmentStore } from '@/store/modules/index.js'
-  import Utils from '@/utils/Utils.js'
 
   const componentStore = useComponentStore()
   const accStore = useAccountStore()
@@ -29,6 +28,11 @@
 
     store.params.page = 1
     store._index()
+  }
+
+  const onUpdateOrg =(v)=>{
+    store.params.organizations = v
+    filterEvent()
   }
 
   const filterEvent = () => {
@@ -60,7 +64,7 @@
     @onAdd="onAdd"
     @onSearch="onSearchEv"
     v-model:search="store.params.search"
-    :searchLoading="store.loading"
+    :search-loading="store.loading"
     :filter-count="filterCount"
     @onClear="resetFilter"
     @show="onShow"
@@ -73,10 +77,10 @@
           }}</label>
           <UISelect
             :options="componentStore.structureList"
-            :modelV="store.params.organizations"
+            :model-v="store.params.organizations"
             @defaultValue="(v) => (store.params.organizations = v)"
-            @updateModel="(v) => (store.params.organizations = v)"
-            :checkedVal="store.structureCheck2"
+            @updateModel="onUpdateOrg"
+            :checked-val="store.structureCheck2"
             @updateCheck="(v) => (store.structureCheck2 = v)"
             v-model:search="componentStore.structureParams.search"
             @onSearch="componentStore._structures"

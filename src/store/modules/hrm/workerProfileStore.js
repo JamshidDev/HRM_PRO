@@ -121,7 +121,23 @@ export const useWorkerProfileStore = defineStore('workerProfileStore', {
     departmentCheckV2: [],
     structureCheck2: [],
     isExistAccount: false,
-    anotherProfile: null
+    anotherProfile: null,
+
+    workerDisabilityList: [],
+    workerDisabilityLoading: false,
+    workerDisabilityVisible: false,
+    workerDisabilityVisibleType: true,
+    workerDisabilityElementId: null,
+    workerDisabilitySaveLoading: false,
+    workerDisabilityDeleteLoading: false,
+    workerDisabilityPayload: {
+      number: null,
+      from: null,
+      to: null,
+      comment: null,
+      level: 1,
+      is_lifelong: false
+    }
   }),
   actions: {
     _index() {
@@ -460,6 +476,87 @@ export const useWorkerProfileStore = defineStore('workerProfileStore', {
       this.elementId = null
       // this.payload.pin = null
       this.payload.position = null
+    },
+
+    resetWorkerDisabilityForm() {
+      this.workerDisabilityElementId = null
+      this.workerDisabilityPayload.number = null
+      this.workerDisabilityPayload.from = new Date().setHours(0, 0, 0, 0)
+      this.workerDisabilityPayload.to = null
+      this.workerDisabilityPayload.comment = null
+      this.workerDisabilityPayload.level = 1
+      this.workerDisabilityPayload.is_lifelong = false
+    },
+
+    _indexWorkerDisability() {
+      this.workerDisabilityLoading = true
+      $ApiService.workerDisabilityService
+        ._index({ params: { uuid: this.data?.uuid } })
+        .then((res) => {
+          this.workerDisabilityList = res.data.data
+        })
+        .finally(() => {
+          this.workerDisabilityLoading = false
+        })
+    },
+
+    _createWorkerDisability() {
+      this.workerDisabilitySaveLoading = true
+      const { is_lifelong } = this.workerDisabilityPayload
+      const data = {
+        uuid: this.data?.uuid,
+        number: this.workerDisabilityPayload.number,
+        level: this.workerDisabilityPayload.level,
+        from: Utils.timeToZone(this.workerDisabilityPayload.from),
+        to: is_lifelong ? null : Utils.timeToZone(this.workerDisabilityPayload.to),
+        comment: this.workerDisabilityPayload.comment
+      }
+      $ApiService.workerDisabilityService
+        ._create({ data })
+        .then((res) => {
+          this.workerDisabilityVisible = false
+          this._indexWorkerDisability()
+        })
+        .finally(() => {
+          this.workerDisabilitySaveLoading = false
+        })
+    },
+
+    _updateWorkerDisability() {
+      this.workerDisabilitySaveLoading = true
+      const { is_lifelong } = this.workerDisabilityPayload
+      const data = {
+        uuid: this.data?.uuid,
+        number: this.workerDisabilityPayload.number,
+        level: this.workerDisabilityPayload.level,
+        from: Utils.timeToZone(this.workerDisabilityPayload.from),
+        to: is_lifelong ? null : Utils.timeToZone(this.workerDisabilityPayload.to),
+        comment: this.workerDisabilityPayload.comment
+      }
+      $ApiService.workerDisabilityService
+        ._update({ data, id: this.workerDisabilityElementId })
+        .then((res) => {
+          this.workerDisabilityVisible = false
+          this._indexWorkerDisability()
+        })
+        .finally(() => {
+          this.workerDisabilitySaveLoading = false
+        })
+    },
+
+    _deleteWorkerDisability() {
+      this.workerDisabilityDeleteLoading = true
+      $ApiService.workerDisabilityService
+        ._delete({ id: this.workerDisabilityElementId })
+        .then((res) => {
+          if (res.status === 200) {
+            this.workerDisabilityVisible = false
+            this._indexWorkerDisability()
+          }
+        })
+        .finally(() => {
+          this.workerDisabilityDeleteLoading = false
+        })
     }
   }
 })

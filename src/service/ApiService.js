@@ -39,6 +39,7 @@ import photoService from '@/service/v1/hrm/photoService.js'
 import phoneService from '@/service/v1/hrm/phoneService.js'
 import languageService from '@/service/v1/hrm/languageService.js'
 import relativeService from '@/service/v1/hrm/relativeService.js'
+import workerDisabilityService from '@/service/v1/hrm/workerDisabilityService.js'
 import universityService from '@/service/v1/hrm/universityService.js'
 import olCareerService from '@/service/v1/hrm/olCareerService.js'
 import partyService from '@/service/v1/hrm/partyService.js'
@@ -191,6 +192,7 @@ export default {
   categoryService,
   categoryQuestionService,
   relativeService,
+  workerDisabilityService,
   universityService,
   documentFileService,
   adContractService,

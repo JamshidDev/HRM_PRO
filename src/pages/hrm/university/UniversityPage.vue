@@ -30,5 +30,3 @@
     </UIDrawer>
   </div>
 </template>
-
-<style scoped></style>

@@ -45,7 +45,22 @@ export const useRelativeStore = defineStore('relativeStore', {
       }
     ],
     activeTab: 1,
-    sortableLoading: false
+    sortableLoading: false,
+
+    disabilityVisible: false,
+    disabilityVisibleType: true,
+    disabilityElementId: null,
+    disabilitySaveLoading: false,
+    disabilityDeleteLoading: false,
+    disabilityPayload: {
+      worker_relative_id: null,
+      number: null,
+      from: null,
+      to: null,
+      comment: null,
+      level: null,
+      is_lifelong: false
+    }
   }),
   actions: {
     _index() {
@@ -131,6 +146,70 @@ export const useRelativeStore = defineStore('relativeStore', {
       this.payload.post_name = null
       this.payload.address = null
       this.payload.marital_status = null
+    },
+
+    resetDisabilityForm() {
+      this.disabilityElementId = null
+      this.disabilityPayload.worker_relative_id = null
+      this.disabilityPayload.number = null
+      this.disabilityPayload.from = new Date().setHours(0, 0, 0, 0)
+      this.disabilityPayload.to = null
+      this.disabilityPayload.comment = null
+      this.disabilityPayload.level = 1
+      this.disabilityPayload.is_lifelong = false
+    },
+
+    _createDisability() {
+      this.disabilitySaveLoading = true
+      const { is_lifelong, ...payload } = this.disabilityPayload
+      const data = {
+        ...payload,
+        from: Utils.timeToZone(this.disabilityPayload.from),
+        to: is_lifelong ? null : Utils.timeToZone(this.disabilityPayload.to)
+      }
+      $ApiService.relativeService
+        ._createDisability({ data })
+        .then((res) => {
+          this.disabilityVisible = false
+          this._index()
+        })
+        .finally(() => {
+          this.disabilitySaveLoading = false
+        })
+    },
+
+    _updateDisability() {
+      this.disabilitySaveLoading = true
+      const { is_lifelong, ...payload } = this.disabilityPayload
+      const data = {
+        ...payload,
+        from: Utils.timeToZone(this.disabilityPayload.from),
+        to: is_lifelong ? null : Utils.timeToZone(this.disabilityPayload.to)
+      }
+      $ApiService.relativeService
+        ._updateDisability({ data, id: this.disabilityElementId })
+        .then((res) => {
+          this.disabilityVisible = false
+          this._index()
+        })
+        .finally(() => {
+          this.disabilitySaveLoading = false
+        })
+    },
+
+    _deleteDisability() {
+      this.disabilityDeleteLoading = true
+      $ApiService.relativeService
+        ._deleteDisability({ id: this.disabilityElementId })
+        .then((res) => {
+          if (res.status === 200) {
+            this.disabilityVisible = false
+            this._index()
+          }
+        })
+        .finally(() => {
+          this.disabilityDeleteLoading = false
+        })
     }
   }
 })

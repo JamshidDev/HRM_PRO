@@ -63,5 +63,3 @@
     </template>
   </UIModal>
 </template>
-
-<style scoped></style>
