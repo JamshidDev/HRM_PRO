@@ -776,7 +776,8 @@
         "reason_four": "Cancer, leukemia, first-time tuberculosis, liver cirrhosis decompensation, liver transplant, heart diseases, valve replacement, stenting, CABG, ablation, complex heart/kidney surgeries, infarction, stroke, acute kidney failure, dialysis, kidney transplant, nephrosclerosis, grade III coxarthrosis endoprosthesis, terminal glaucoma in one or both eyes",
         "reason_five": "50th, 55th, 60th, 70th, 80th, 90th, 100th anniversary",
         "reason_six": "Natural disaster damage (with confirmed assessment)",
-        "reason_seven": "Household coal purchase"
+        "reason_seven": "Household coal purchase",
+        "reason_eight": "To purchase agricultural products"
       }
     },
     "form": {

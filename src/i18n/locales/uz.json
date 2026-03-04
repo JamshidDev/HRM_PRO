@@ -785,7 +785,8 @@
         "reason_four": "Quyidagi saraton, leykoz, birinchi marta sil (tuberkulyoz) kasaligi, jigar serrozi dekompensasiya bosqichi, jigar transplantasiyasi, yurak qon-tomir kasalliklari, yurak klapanlarini almashtirish, yurak tomirlarini stendlash, AKSh (aorta koronar shuntlash), ablyasiya, yurak va buyrakdagi murakkab jarrohlik operatsiyalari, infarkt, insul't, o‘tkir buyrak yetishmovchiligi, dializ, buyrak transplantasiyasi, nefroskleroz, koksartroz III darajali endoprotezlash, bir yoki ikki ko‘zning terminal bosqichidagi glaukomasi kasalligiga chalinganligi munosabati bilan",
         "reason_five": "50, 55, 60, 70, 80, 90, 100 yillik yubiley sanasiga etganligi munosabati bilan",
         "reason_six": "Tabiiy ofatdan zarar ko‘rganligi munosabati bilan tasdiqlangan baholash dalolatnomasi muvofiq",
-        "reason_seven": "Maishiy ko‘mir yoqil‘isi sotib olishi munosabati bilan"
+        "reason_seven": "Maishiy ko‘mir yoqil‘isi sotib olishi munosabati bilan",
+        "reason_eight": "Qishloq xo‘jaligi mahsulotlarini sotib olish uchun"
       }
     },
     "form": {
@@ -2011,6 +2012,7 @@
       "code": "To'lov kodi",
       "start_hours": "Ish soati (dan)",
       "end_hours": "Ish soati (gacha)",
+      "work_time": "Ish soati",
       "organizations": "Korxonalar kesimida",
       "workers": "Xodimlar kesimida",
       "totalFour": "Ish haqidan ushlamalar",
