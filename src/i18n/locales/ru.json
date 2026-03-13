@@ -85,11 +85,13 @@
     "position": "Должность",
     "template": "Шаблон файла",
     "number": "№",
+    "count": "Итого",
     "photo": "Фото",
     "short": "Кратко",
     "long": "Полностью",
     "platform": "Платформа",
     "date": "Дата",
+    "createdDate": "Дата создания",
     "name": "Название",
     "downloadReport": "Скачать отчет",
     "general": "Общее",
@@ -1941,6 +1943,23 @@
   "specialReport": {
     "name": "Отчёты",
     "create": "Создать отчёт"
+  },
+  "structureReport": {
+    "name": "Оборот отчётов",
+    "tableTab": "Таблица",
+    "workersTab": "Сотрудники",
+    "position": "Должность",
+    "organization": "Организация",
+    "birthday": "Дата рождения",
+    "education": "Образование",
+    "oldOrganization": "Прежняя организация",
+    "oldPositionDate": "Дата прежней должности",
+    "oldPosition": "Прежняя должность",
+    "commandNumber": "Номер и дата приказа",
+    "commandReason": "Причина приказа"
+  },
+  "confirmationReport": {
+    "name": "Отчёты"
   },
   "uploadReport": {
     "name": "Загрузить отчёт",

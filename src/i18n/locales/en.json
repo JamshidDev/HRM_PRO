@@ -85,11 +85,13 @@
     "position": "Position",
     "template": "Template file",
     "number": "№",
+    "count": "Total",
     "photo": "Photo",
     "short": "Short",
     "long": "Full",
     "platform": "Platform",
     "date": "Date",
+    "createdDate": "Created date",
     "name": "Name",
     "downloadReport": "Download report",
     "general": "General",
@@ -1943,6 +1945,23 @@
   "specialReport": {
     "name": "Reports",
     "create": "Create report"
+  },
+  "structureReport": {
+    "name": "Report circulation",
+    "tableTab": "Table",
+    "workersTab": "Workers",
+    "position": "Position",
+    "organization": "Organization",
+    "birthday": "Date of birth",
+    "education": "Education",
+    "oldOrganization": "Previous organization",
+    "oldPositionDate": "Previous position date",
+    "oldPosition": "Previous position",
+    "commandNumber": "Order number and date",
+    "commandReason": "Order reason"
+  },
+  "confirmationReport": {
+    "name": "Reports"
   },
   "uploadReport": {
     "name": "Upload report",

@@ -136,7 +136,9 @@ export const AppPaths = {
   News: '/news',
   NewsCategory: '/news-category',
   View: '/view',
-  MobileUsers: '/mobile-users'
+  MobileUsers: '/mobile-users',
+  StructureReport: '/structure-report',
+  ConfReport: '/conf-report'
 }
 
 export const AppLayouts = {

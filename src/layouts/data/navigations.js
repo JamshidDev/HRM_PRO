@@ -264,6 +264,13 @@ export const navigations = [
         icon: AppFolder20Filled,
         color: 'bg-info',
         permission: appPermissions.hrReportExport
+      },
+      {
+        label: 'structureReport.name',
+        path: Utils.routeHrmPathMaker(AppPaths.StructureReport),
+        icon: DocumentBulletList24Filled,
+        color: 'bg-warning',
+        permission: appPermissions.admin
       }
     ]
   },
@@ -335,6 +342,14 @@ export const navigations = [
         color: 'bg-info',
         permission: appPermissions.confirmationStaffingApproval,
         name: 'staffing-approve'
+      },
+      {
+        label: 'confirmationReport.name',
+        path: Utils.routeDocFlowPathMaker(AppPaths.ConfReport),
+        icon: DocumentBulletList24Filled,
+        color: 'bg-warning',
+        permission: appPermissions.admin,
+        name: 'conf-report'
       }
     ]
   },

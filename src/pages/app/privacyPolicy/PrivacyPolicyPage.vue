@@ -7,7 +7,6 @@ const router = useRouter()
 
 <template>
   <div class="privacy-bg w-full min-h-screen flex flex-col items-center justify-start py-10 px-4">
-
     <!-- Header -->
     <div class="w-full max-w-[800px] flex items-center justify-between mb-8">
       <div class="flex items-center gap-3 cursor-pointer" @click="router.push(AppPaths.Login)">
@@ -25,14 +24,13 @@ const router = useRouter()
 
     <!-- Card -->
     <div class="privacy-card w-full max-w-[800px] rounded-[20px] overflow-hidden">
-
       <!-- Card Header -->
       <div class="privacy-card-header px-10 py-8">
         <div class="flex items-center gap-3 mb-2">
           <div class="privacy-shield-icon">
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
-              <path d="M12 2L3 7v5c0 5.25 3.75 10.15 9 11.25C17.25 22.15 21 17.25 21 12V7L12 2z" fill="white" opacity="0.9"/>
-              <path d="M9 12l2 2 4-4" stroke="#1279F0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M12 2L3 7v5c0 5.25 3.75 10.15 9 11.25C17.25 22.15 21 17.25 21 12V7L12 2z" fill="white" opacity="0.9" />
+              <path d="M9 12l2 2 4-4" stroke="#1279F0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
             </svg>
           </div>
           <h1 class="text-white text-3xl font-bold">Privacy Policy</h1>
@@ -46,7 +44,6 @@ const router = useRouter()
 
       <!-- Card Body -->
       <div class="privacy-card-body px-10 py-8 flex flex-col gap-8">
-
         <!-- Section: Information We Collect -->
         <div class="privacy-section">
           <div class="section-title-row">
@@ -154,7 +151,6 @@ const router = useRouter()
             organization's administrator.
           </p>
         </div>
-
       </div>
 
       <!-- Card Footer -->
@@ -168,7 +164,6 @@ const router = useRouter()
           Back to Login
         </n-button>
       </div>
-
     </div>
 
     <div class="h-10"></div>

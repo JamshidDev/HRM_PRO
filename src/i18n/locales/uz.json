@@ -85,11 +85,13 @@
     "position": "Lavozim",
     "template": "Shablon fayl",
     "number": "№",
+    "count": "Jami",
     "photo": "Rasm",
     "short": "Qisqa",
     "long": "To'liq",
     "platform": "Platforma",
     "date": "Sana",
+    "createdDate": "Yaratilgan sana",
     "name": "Nomi",
     "downloadReport": "Hisobot yuklash",
     "general": "Umumiy",
@@ -1955,6 +1957,23 @@
   "specialReport": {
     "name": "Hisobotlar",
     "create": "Hisobot yaratish"
+  },
+  "structureReport": {
+    "name": "Hisobot aylanmasi",
+    "tableTab": "Jadval",
+    "workersTab": "Xodimlar",
+    "position": "Lavozim",
+    "organization": "Tashkilot",
+    "birthday": "Tug'ilgan sana",
+    "education": "Ma'lumoti",
+    "oldOrganization": "Oldingi tashkilot",
+    "oldPositionDate": "Oldingi lavozim sanasi",
+    "oldPosition": "Oldingi lavozim",
+    "commandNumber": "Buyruq raqami va sanasi",
+    "commandReason": "Buyruq sababi"
+  },
+  "confirmationReport": {
+    "name": "Hisobotlar"
   },
   "uploadReport": {
     "name": "Hisobot yuklash",

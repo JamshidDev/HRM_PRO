@@ -64,6 +64,7 @@ import polyclinicService from '@/service/v1/hrm/polyclinicService.js'
 import vacancyService from '@/service/v1/hrm/vacancyService.js'
 import pensionerService from '@/service/v1/hrm/pensionerService.js'
 import specialReportService from './v1/hrm/specialReportService'
+import structureReportService from '@/service/v1/hrm/structureReportService.js'
 
 import documentService from '@/service/v1/docFlow/documentService.js'
 import contractService from '@/service/v1/docFlow/contractService.js'
@@ -75,6 +76,7 @@ import applicationService from '@/service/v1/docFlow/applicationService.js'
 import confVacationScheduleService from '@/service/v1/docFlow/vacationScheduleService.js'
 import confCertificateService from '@/service/v1/docFlow/confCertificateService.js'
 import confStaffingApprovalService from '@/service/v1/docFlow/confStaffingApprovalService.js'
+import confirmationReportService from '@/service/v1/docFlow/confirmationReportService.js'
 
 import topicService from '@/service/v1/attestation/topicService.js'
 import examVideoService from '@/service/v1/attestation/examVideoService.js'
@@ -280,4 +282,6 @@ export default {
   newsCategoryService,
   newsService,
   mobileUserService,
+  structureReportService,
+  confirmationReportService,
 }

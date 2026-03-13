@@ -84,17 +84,18 @@
               }}</span>
             </td>
             <td>
-              <span
-                @click="onPreview(item.id)"
-                class="text-sm hover:text-primary hover:underline cursor-pointer"
-                >{{ item?.type?.name }}</span
-              >
+              <div @click="onPreview(item.id)" class="group flex flex-col hover:!text-primary hover:underline cursor-pointer">
+                <span
+                  class="text-sm line-clamp-2 leading-[1.2] font-medium"
+                >{{ item?.type?.name }}</span>
+                <span class="text-xs rounded-2xl px-1 text-secondary group-hover:!text-primary">{{ Utils.timeHHMMWithMonth(item.created_at) }}</span>
+              </div>
             </td>
             <td>
               <div v-if="item?.number" class="flex justify-center">
                 <n-button dashed class="font-medium" round type="info" size="tiny">
-                  {{ item?.number }}</n-button
-                >
+                  {{ item?.number }}
+                </n-button>
               </div>
             </td>
             <td>
@@ -125,8 +126,8 @@
                     <ArrowSyncCheckmark20Filled v-else-if="item?.command_status.id === 2" />
                     <DocumentCheckmark24Regular v-else-if="item?.command_status.id === 3" />
                   </template>
-                  {{ item?.command_status?.name }}</n-button
-                >
+                  {{ item?.command_status?.name }}
+                </n-button>
               </div>
             </td>
             <td><UIStatus :status="item?.confirmation" /></td>

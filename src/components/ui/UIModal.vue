@@ -8,6 +8,10 @@
       type: [Number, String],
       default: 400
     },
+    height: {
+      type: [Number, String],
+      default: null
+    },
     title: {
       type: String,
       default: 'no-title'
@@ -37,12 +41,15 @@
       size="huge"
       role="dialog"
       aria-modal="true"
-      :style="{ width: isNaN(width) ? width : width + 'px' }"
+      :style="{
+        width: isNaN(width) ? width : width + 'px',
+        ...(height ? { height: isNaN(height) ? height : height + 'px' } : {})
+      }"
       closable
     >
       <template #default>
-        <div class="flex flex-col p-2">
-          <div class="w-full">
+        <div class="flex flex-col p-2 h-full">
+          <div class="w-full shrink-0">
             <slot name="header">
               <div class="flex justify-between px-4 py-2">
                 <h3 class="text-lg font-medium">
@@ -56,8 +63,14 @@
               </div>
             </slot>
           </div>
-          <div class="px-4">
+          <div
+            class="px-4 flex-1 min-h-0"
+            :style="height ? { overflowY: 'auto' } : {}"
+          >
             <slot name="default"> </slot>
+          </div>
+          <div class="shrink-0" v-if="$slots.footer">
+            <slot name="footer"> </slot>
           </div>
         </div>
       </template>

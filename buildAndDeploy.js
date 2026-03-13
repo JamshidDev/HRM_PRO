@@ -13,7 +13,7 @@ import { fileURLToPath } from 'url';
 
 const productionUrl = 'https://hrm-api.railway.uz/api'
 const LOGIN = "977226656";
-const PASSWORD = "qZVxi&q$Fsj+oN@S$5PR";
+const PASSWORD = "Hf5n35N&01=Vn39a9i\\x";
 
 
 
@@ -143,6 +143,6 @@ app.get('/', async (req, res) => {
 })
 
 
-app.listen(9000, () => {
-    console.log(chalk.green.bold('🚀  Deploy server is running on 9000 PORT'));
+app.listen(8001, () => {
+    console.log(chalk.green.bold('🚀  Deploy server is running on 8001 PORT'));
 })

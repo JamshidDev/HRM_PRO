@@ -250,7 +250,7 @@ export const useWorkerProfileStore = defineStore('workerProfileStore', {
       const id = this.workerId
       $ApiService.workerService
         ._update({ data, id })
-        .then((res) => {
+        .then(() => {
           this._index()
         })
         .finally(() => {
@@ -307,7 +307,7 @@ export const useWorkerProfileStore = defineStore('workerProfileStore', {
       this.loading = true
       $ApiService.photoService
         ._delete({ id })
-        .then((res) => {
+        .then(() => {
           this._index()
         })
         .finally(() => {
@@ -366,7 +366,7 @@ export const useWorkerProfileStore = defineStore('workerProfileStore', {
       this.passportLoading = true
       $ApiService.passportService
         ._create({ data })
-        .then((res) => {
+        .then(() => {
           this._indexPassport()
         })
         .finally(() => {
@@ -380,7 +380,7 @@ export const useWorkerProfileStore = defineStore('workerProfileStore', {
       }
       $ApiService.passportService
         ._update({ data, id, params })
-        .then((res) => {
+        .then(() => {
           this._indexPassport()
         })
         .finally(() => {
@@ -391,7 +391,7 @@ export const useWorkerProfileStore = defineStore('workerProfileStore', {
       this.passportLoading = true
       $ApiService.passportService
         ._delete({ id })
-        .then((res) => {
+        .then(() => {
           this._indexPassport()
         })
         .finally(() => {
@@ -402,7 +402,7 @@ export const useWorkerProfileStore = defineStore('workerProfileStore', {
       this.loading = true
       $ApiService.phoneService
         ._delete({ id })
-        .then((res) => {
+        .then(() => {
           this._index()
         })
         .finally(() => {})
@@ -411,7 +411,7 @@ export const useWorkerProfileStore = defineStore('workerProfileStore', {
       this.visible = data
     },
     _deleteRole(data, id) {
-      $ApiService.workerService._deleteRole({ data, id }).then((res) => {
+      $ApiService.workerService._deleteRole({ data, id }).then(() => {
         this._index()
       })
     },
@@ -419,7 +419,7 @@ export const useWorkerProfileStore = defineStore('workerProfileStore', {
       this.roleLoading = true
       $ApiService.workerService
         ._storeRole({ data, id })
-        .then((res) => {
+        .then(() => {
           this._index()
         })
         .finally(() => {
@@ -513,7 +513,7 @@ export const useWorkerProfileStore = defineStore('workerProfileStore', {
       }
       $ApiService.workerDisabilityService
         ._create({ data })
-        .then((res) => {
+        .then(() => {
           this.workerDisabilityVisible = false
           this._indexWorkerDisability()
         })
@@ -535,7 +535,7 @@ export const useWorkerProfileStore = defineStore('workerProfileStore', {
       }
       $ApiService.workerDisabilityService
         ._update({ data, id: this.workerDisabilityElementId })
-        .then((res) => {
+        .then(() => {
           this.workerDisabilityVisible = false
           this._indexWorkerDisability()
         })

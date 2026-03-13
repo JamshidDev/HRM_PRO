@@ -49,7 +49,7 @@ const timeWithMonth = (time) => {
 }
 
 const timeHHMMWithMonth = (time) => {
-  return time ? dayjs(time).format('YYYY-MM-DD HH:mm') : null
+  return time ? dayjs(time).format('YYYY.MM.DD HH:mm') : null
 }
 
 const timeOnlyDate = (time) => {
@@ -147,7 +147,8 @@ const documentModels = {
   vacationSchedule: 'vacation-schedule',
   lmsCertificate: 'lms-certificate',
   med: 'med',
-  staffingApprove: 'staffing-approve'
+  staffingApprove: 'staffing-approve',
+  report: 'report'
 }
 const copyToClipboard = async (text, callback) => {
   try {

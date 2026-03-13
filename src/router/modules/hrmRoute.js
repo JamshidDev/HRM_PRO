@@ -174,5 +174,11 @@ export const hrmRoutes = [
     name: AppPaths.SpecialReport.substring(1),
     component: () => import('@/pages/hrm/specialReport/SpecialReportPage.vue'),
     meta: { layout: AppLayouts.main }
+  },
+  {
+    path: Utils.routeHrmPathMaker(AppPaths.StructureReport),
+    name: AppPaths.StructureReport.substring(1),
+    component: () => import('@/pages/hrm/structureReport/page.vue'),
+    meta: { layout: AppLayouts.main }
   }
 ]
