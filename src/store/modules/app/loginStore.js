@@ -40,7 +40,7 @@ export const useLoginStore = defineStore('loginStore', {
           accountStore._index(async (data) => {
             socketStore.initSocket(token, data?.id)
             localStorage.setItem(useAppSetting.accountUserId, data.id)
-              await nextTick()
+            await nextTick()
             await router.push(AppPaths.Home)
           })
         })

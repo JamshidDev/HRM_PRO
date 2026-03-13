@@ -113,6 +113,23 @@
                 {{ $t('monthReport.form.totalFour') }}
               </n-tooltip>
             </th>
+            <th class="min-w-[50px] w-[130px] max-w-[130px]">
+              <n-tooltip trigger="hover">
+                <template #trigger>
+                  <SortBtn
+                      @click="store._filterCol('work_time')"
+                      by="work_time"
+                      :value="store.params.sort_by"
+                      :order="store.params.sort_order"
+                  >
+                    <p class="text-sm text-textColor2 line-clamp-1 w-full leading-[1.2] truncate">
+                      {{ $t('monthReport.form.work_time') }}
+                    </p>
+                  </SortBtn>
+                </template>
+                {{ $t('monthReport.form.work_time') }}
+              </n-tooltip>
+            </th>
             <th class="min-w-[40px] w-[40px]"></th>
           </tr>
         </thead>
@@ -176,6 +193,7 @@
               </n-button>
             </td>
             <td>{{ item.total_five }}</td>
+            <td>{{ item?.work_time }}</td>
             <td><UIMenuButton /></td>
           </tr>
         </tbody>

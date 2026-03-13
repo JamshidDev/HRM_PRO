@@ -3,7 +3,7 @@
   import { ArrowSync24Filled, StarEmphasis32Filled } from '@vicons/fluent'
   import { UIPageFilter, UISelect } from '@/components/index.js'
   import i18n from '@/i18n/index.js'
-  import {useAppSetting} from "@utils"
+  import { useAppSetting } from '@utils'
 
   const { t } = i18n.global
   const store = useEventStore()
@@ -104,10 +104,10 @@
       }}</label>
       <UISelect
         :options="componentStore.structureList"
-        :modelV="store.params.organizations"
+        :model-v="store.params.organizations"
         @defaultValue="(v) => (store.params.organizations = v)"
         @updateModel="onChangeStructure"
-        :checkedVal="store.structureCheck2"
+        :checked-val="store.structureCheck2"
         @updateCheck="(v) => (store.structureCheck2 = v)"
         :loading="componentStore.structureLoading"
         v-model:search="componentStore.structureParams.search"
@@ -142,15 +142,14 @@
       />
       <label class="mt-3 text-xs text-gray-500">{{ $t('content.date') }}</label>
       <n-date-picker
-          class="mt-1"
-          v-model:value="store.params.date"
-          @update:value="onChangeDate"
-          type="date"
-          :actions="null"
-          :format="useAppSetting.datePicketFormat"
-          clearable
+        class="mt-1"
+        v-model:value="store.params.date"
+        @update:value="onChangeDate"
+        type="date"
+        :actions="null"
+        :format="useAppSetting.datePicketFormat"
+        clearable
       />
-
     </template>
     <template #filterAction>
       <n-button :loading="store.jobLoading" @click="onSync" type="primary">

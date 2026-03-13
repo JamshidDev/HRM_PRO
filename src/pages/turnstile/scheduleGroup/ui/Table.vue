@@ -20,10 +20,8 @@
 
   const onViewWorkers = (v) => {
     scheduleGroupworkerStore.params.group = v.id
-    scheduleGroupworkerStore.params.year1 = +v.start_date.split('-')[0]
-    scheduleGroupworkerStore.params.month1 = +v.start_date.split('-')[1]
-    scheduleGroupworkerStore.params.year2 = +v.end_date.split('-')[0]
-    scheduleGroupworkerStore.params.month2 = +v.end_date.split('-')[1]
+    scheduleGroupworkerStore.params.startDate = v.start_date
+    scheduleGroupworkerStore.params.endDate = v.end_date
     store.activeTab = 3
   }
 

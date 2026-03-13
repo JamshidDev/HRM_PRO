@@ -23,7 +23,8 @@ export const useSignatureStore = defineStore('signatureStore', {
     documentType: null,
     rejectLoading: null,
     usbVisible: false,
-    keyType: useAppSetting.signatureUseType.pfx
+    keyType: useAppSetting.signatureUseType.pfx,
+    signatureBtnLoading: false
   }),
   actions: {
     async _checkVersion() {
@@ -34,7 +35,8 @@ export const useSignatureStore = defineStore('signatureStore', {
           function (major, minor) {
             resolve({ major, minor })
           },
-          function (error, message) {
+          (error, message) => {
+            this.loading = false
             $Toast.error(t('signature.connectionError'))
             reject(error, message)
           }
@@ -76,7 +78,7 @@ export const useSignatureStore = defineStore('signatureStore', {
       this.signatureType = signatureType
       this.successCallback = callback
       this.documentId = documentId
-      // this.loading = true
+      this.loading = true
 
       await this._checkVersion()
       $ApiService.documentService
@@ -93,11 +95,12 @@ export const useSignatureStore = defineStore('signatureStore', {
             this.checkListKey()
             this.checkCardPluggedIn()
           } catch (err) {
+            this.loading = false
             // $Toast.error(t('signature.connectionError'))
           }
         })
         .finally(() => {
-          // this.loading = false
+          this.loading = false
         })
     },
 
@@ -120,9 +123,11 @@ export const useSignatureStore = defineStore('signatureStore', {
           pinfl: key.vo.PINFL,
           certificate: key.vo.name,
           inn: key.vo.TIN,
-          vo: key.vo
+          vo: key.vo,
+          isValid: new Date(key.validDate).getTime() > Date.now()
         })
       }
+      this.allKeys.sort((a, b) => new Date(b.validDate) - new Date(a.validDate))
       this.visible = true
     },
     _failCallback(e, r) {

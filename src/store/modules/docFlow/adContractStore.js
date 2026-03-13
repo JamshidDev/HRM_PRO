@@ -42,7 +42,7 @@ export const useAdContractStore = defineStore('adContractStore', {
       command_date: null,
       command_number: null,
       confirmations: [],
-      finance_id:null,
+      finance_id: null,
       position_date: null,
       contract_to_date: null
     },

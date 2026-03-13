@@ -112,8 +112,7 @@
             <span
               @click="onDownload(item?.worker_application?.confirmation_file)"
               class="w-[220px] truncate hover:text-primary"
-              >{{ item?.worker_application?.number }}</span
-            >
+            >{{ item?.worker_application?.number }}</span>
           </div>
         </template>
       </template>

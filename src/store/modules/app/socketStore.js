@@ -4,7 +4,14 @@ const socketUrl = import.meta.env.VITE_SOCKET_URL
 const socketSecret = import.meta.env.VITE_SOCKET_SECRET
 import { useNotify } from '@/composables/useNotify'
 import { eventBus, Events } from '@/utils/index.js'
-import {useNotificationStore} from "@/store/modules/index.js";
+
+const allowedEvents = [
+  Events.APPLICATION_GENERATED,
+  Events.COMMAND_GENERATED,
+  Events.CERTIFICATED_GENERATED,
+  Events.TASK_COMPLETED
+]
+const allowedAlertTypes = ['success', 'error', 'info', 'warning']
 
 export const useSocketStore = defineStore('useSocketStore', {
   state: () => ({
@@ -15,27 +22,45 @@ export const useSocketStore = defineStore('useSocketStore', {
     allOnlineUsers: [],
     userVisible: false,
     reactionEmojiEv: null,
-    notificationStore: useNotificationStore()
+    counts: {
+      confirmation: {},
+      hr: {}
+    },
+
+
+
+
   }),
+  getters: {
+    getCategoryTotal: (state) => (category) => {
+      const fields = state.counts[category]
+      if (!fields) return 0
+      return Object.values(fields).reduce((sum, val) => sum + val, 0)
+    },
+    getCount: (state) => (category, field) => {
+      return state.counts[category]?.[field] || 0
+    }
+  },
   actions: {
     initSocket(token, userId) {
-
       let playAudioUnlocked = false
 
-      let notificationAudio = new Audio("/sounds/notification.mp3");
+      let notificationAudio = new Audio('/sounds/notification.mp3')
 
       const unlockPlayNotification = () => {
-        notificationAudio.play().then(() => {
-          notificationAudio.pause();
-          notificationAudio.currentTime = 0;
-          playAudioUnlocked = true;
-        }).catch(() => {});
+        notificationAudio
+          .play()
+          .then(() => {
+            notificationAudio.pause()
+            notificationAudio.currentTime = 0
+            playAudioUnlocked = true
+          })
+          .catch(() => {})
 
-        window.removeEventListener("click", unlockPlayNotification);
-      };
+        window.removeEventListener('click', unlockPlayNotification)
+      }
 
-      window.addEventListener("click", unlockPlayNotification);
-
+      window.addEventListener('click', unlockPlayNotification)
 
       this.currentUserId = userId
       this.socket = io(socketUrl, {
@@ -71,19 +96,26 @@ export const useSocketStore = defineStore('useSocketStore', {
       })
 
       this.socket.on('notification', (data) => {
-        if(playAudioUnlocked){
-          notificationAudio.currentTime = 0;
-          notificationAudio?.play();
+        if (allowedAlertTypes.includes(data?.alert)) {
+          if (playAudioUnlocked) {
+            notificationAudio.currentTime = 0
+            notificationAudio?.play()
+          }
+
+          // eslint-disable-next-line no-constant-binary-expression
+          useNotify().notify(data.title || '', 'success' ?? data.alert, {
+            meta: data,
+            duration: data.duration || undefined,
+            persistent: false
+          })
         }
 
-        useNotify().notify(data.title || '', data.alert, {meta: data, persistent: true})
+        if (allowedEvents.includes(data.type)) {
+          eventBus.emit(data.type, data)
+        }
 
-        if (Events.TASK_COMPLETED === data.type) {
-          eventBus.emit(Events.TASK_COMPLETED, data)
-        } else if (Events.COMMAND_GENERATED === data.type) {
-          eventBus.emit(Events.COMMAND_GENERATED, data)
-        } else if (Events.APPLICATION_GENERATED === data.type) {
-          eventBus.emit(Events.APPLICATION_GENERATED, data)
+        if (data.type === Events.DOCUMENT_COUNT) {
+          this.updateCount(data.counts)
         }
       })
 
@@ -149,6 +181,14 @@ export const useSocketStore = defineStore('useSocketStore', {
       if (this.socket && this.currentUserId) {
         this.socket.disconnect()
       }
+    },
+    updateCount(data) {
+      Object.entries(data).forEach(([type, fields]) => {
+        if (!this.counts[type]) {
+          this.counts[type] = {}
+        }
+        this.counts[type] = { ...this.counts[type], ...fields }
+      })
     },
     disconnect() {
       if (this.socket) {

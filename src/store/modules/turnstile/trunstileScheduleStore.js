@@ -183,7 +183,7 @@ export const useTurnstileScheduleStore = defineStore('turnstileScheduleStore', {
       this.savingLoading = true
       $ApiService.workerScheduleService
         ._updateTurnstile({ id: this.elementId, data })
-        .then((res) => {
+        .then(() => {
           this._allWorkers()
           this.grandVisible = false
         })
@@ -478,7 +478,7 @@ export const useTurnstileScheduleStore = defineStore('turnstileScheduleStore', {
       this.savingLoading = true
       $ApiService.workerScheduleService
         ._create({ data })
-        .then((res) => {
+        .then(() => {
           this.workerList = this.workerList.map((a) => ({
             ...a,
             isEdit: false

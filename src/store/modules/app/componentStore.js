@@ -232,13 +232,24 @@ export const useComponentStore = defineStore('componentStore', {
     lmsEnumLoading: false,
     lmsEnumTypes: [],
     lmsEnumExamTypes: [],
+    lmsSerials: [],
     lmsLearningCenters: [],
     lmsLearningCenterLoading: false,
 
     departments: {},
     positions: {},
+    chatEnumLoading: false,
+    chatEnums:[],
   }),
   actions: {
+    fetchChatEnums(){
+      this.chatEnumLoading = true
+      $ApiService.componentService._chatEnums().then((res)=>{
+        this.chatEnums = res.data.data.telegram_message_types
+      }).finally(()=>{
+        this.chatEnumLoading = false
+      })
+    },
     createDepartmentFetcher(key) {
       this.departments[key] ??= { list: [], total: 0, loading: false }
 
@@ -294,6 +305,7 @@ export const useComponentStore = defineStore('componentStore', {
         .then((res) => {
           this.lmsEnumTypes = res.data.data?.edu_plan_types
           this.lmsEnumExamTypes = res.data.data?.exam_types
+          this.lmsSerials = res.data.data?.serials
         })
         .finally(() => {
           this.lmsEnumLoading = false
@@ -326,7 +338,7 @@ export const useComponentStore = defineStore('componentStore', {
               position: `${t('workerPage.checkWorker.born')} ${Utils.timeOnlyDate(data?.birthday)}`,
               photo: data?.photo,
               pin: data.id.toString(),
-              positions: data.positions,
+              positions: data.positions
             }
           }
         })
@@ -665,8 +677,8 @@ export const useComponentStore = defineStore('componentStore', {
             ...v,
             name: v.position?.name,
             position: v.department?.name,
-            subPosition:`${t('report.form.contingent')} - ${v.rate}; ${t('report.form.worker')} - ${v.worker_rate}`,
-            color:Number(v.rate) > Number(v.worker_rate)? 'text-success' : 'text-danger',
+            subPosition: `${t('report.form.contingent')} - ${v.rate}; ${t('report.form.worker')} - ${v.worker_rate}`,
+            color: Number(v.rate) > Number(v.worker_rate) ? 'text-success' : 'text-danger',
             id: v.id
           }))
         })
@@ -705,7 +717,7 @@ export const useComponentStore = defineStore('componentStore', {
 
     _departmentTreeList(id, callback) {
       let params = {
-        organizations: [id]
+        organizations: [id].toString() || undefined
       }
       $ApiService.componentService._departmentTree({ params }).then((res) => {
         this.departmentList = res.data.data
@@ -738,13 +750,13 @@ export const useComponentStore = defineStore('componentStore', {
           this.scheduleLoading = false
         })
     },
-    _commandTypes(data, callback=null) {
+    _commandTypes(data, callback = null) {
       this.commandTypeLoading = true
       $ApiService.componentService
         ._commandTypes({ params: data })
         .then((res) => {
           this.commandTypeList = res.data.data.map((v) => ({ ...v, name: v.id + ' - ' + v.name }))
-          if( this.commandTypeList.length === 1){
+          if (this.commandTypeList.length === 1) {
             callback?.(this.commandTypeList?.[0]?.id)
           }
         })

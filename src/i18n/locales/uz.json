@@ -1,5 +1,6 @@
 {
   "content": {
+    "user": "Foydalanuvchi",
     "title": "Sarlavha",
     "deleted": "O'chirilgan",
     "nowOnlineUsers": "Hozirda tizimdagi online foydalanuvchilar",
@@ -21,6 +22,7 @@
     "workers": "Xodimlar",
     "start": "Boshlash",
     "edit": "Tahrirlash",
+    "work_date": "Ishga chiqish sanasi",
     "delete": "O'chirish",
     "checked": "Tekshirilgan",
     "view": "Ko'rish",
@@ -83,14 +85,19 @@
     "position": "Lavozim",
     "template": "Shablon fayl",
     "number": "№",
+    "count": "Jami",
     "photo": "Rasm",
     "short": "Qisqa",
     "long": "To'liq",
     "platform": "Platforma",
     "date": "Sana",
+    "createdDate": "Yaratilgan sana",
     "name": "Nomi",
     "downloadReport": "Hisobot yuklash",
     "general": "Umumiy",
+    "sent": "Yuborilgan",
+    "unSend": "Yuborilmagan",
+    "messageContent": "Xabar matni",
     "added": "Qo'shildi",
     "description": "Tavsif",
     "confirmDelete": "Haqiqatan ham o'chirmoqchimisiz?",
@@ -214,7 +221,10 @@
     "ru": "RU",
     "en": "EN",
     "create": "Yaratish",
-    "allSelected": "Barchasi tanlangan"
+    "successCopied": "Muvofaqiyatli nusxalandi",
+    "allSelected": "Barchasi tanlangan",
+    "sendToSign": "Imzolashga yuborish",
+    "rejectByMistake": "Xatolik sababli qaytarish"
   },
   "date": {
     "day": "Kun",
@@ -257,7 +267,9 @@
     "clearedFields": "Maydonlar tozalandi!",
     "unExpectedError": "Kutilmagan xatolik yuz berdi!",
     "warning-data": "Ma'lumotlar yetarli emas!",
-    "noPermission": "Ruxsat etilmadi!"
+    "minimumOneItem": "Kamida bitta lavozim tanlanishi shart!",
+    "noPermission": "Ruxsat etilmadi!",
+    "unSignedDocumentCount": "Tasdiqlanmagan hujjatlar soni"
   },
   "enum": {
     "man": "Erkak",
@@ -474,7 +486,6 @@
     "work_place": "Tashkilot/Bo'lim"
   },
 
-
   "workerPage": {
     "name": "Xodimlar",
     "filter": {
@@ -497,6 +508,7 @@
       "no-worker": "Tizimda xodim topilmadi!",
       "born": "Tug'ilgan sana",
       "addCandidate": "Kandidat qo'shish",
+      "hrContacts": "Korxona kadrlar bo‘limiga aloqaga chiqish",
       "add-worker": "Tizimda mavjud bo'lmagan xodimning ma'lumotlarini kandidat qo'shish tugmasi orqali qo'shing",
       "jshshir": "JSHSHIRni kiriting"
     },
@@ -554,6 +566,10 @@
     "roles": {
       "title": "Rollar",
       "attachRole": "Role biriktirish"
+    },
+    "disability": {
+      "title": "Nogironlik ma'lumotlari",
+      "noData": "Ma'lumot yo'q"
     }
   },
   "departmentPage": {
@@ -660,6 +676,7 @@
     "undo": "Orqaga",
     "certificate": "Sertifikat raqami",
     "validDate": "Muddati",
+    "notValidDate": "Muddati tugagan",
     "expiredKey": "Kalit muddati tugagan!",
     "legalPerson": "Yuridik shaxs",
     "naturalPerson": "Jismoniy shaxs",
@@ -690,6 +707,11 @@
       "updateTitle": "Buyruqni tahrirlash",
       "lastVacation": "Oxirgi ta'til ma'lumotlarini ko'rish",
       "form": {
+        "beforeFromDeadline": "Muddatidan avval",
+        "afterFromDeadline": "Muddati tugashi bilan",
+        "twoAgeChild": "Ikki yoshgacha",
+        "threeAgeChild": "Uch yoshgacha",
+        "deadlineOfVacation": "Ta'til muddati",
         "command_date": "Buyruq sanasi",
         "viewSameTime": "Bir vaqtda tanishish",
         "viewDescription": "Kelishuvchilar quyidagi tartibda yoki bir vaqtda ko'rib hujjatni imzolaydilar",
@@ -765,7 +787,8 @@
         "reason_four": "Quyidagi saraton, leykoz, birinchi marta sil (tuberkulyoz) kasaligi, jigar serrozi dekompensasiya bosqichi, jigar transplantasiyasi, yurak qon-tomir kasalliklari, yurak klapanlarini almashtirish, yurak tomirlarini stendlash, AKSh (aorta koronar shuntlash), ablyasiya, yurak va buyrakdagi murakkab jarrohlik operatsiyalari, infarkt, insul't, o‘tkir buyrak yetishmovchiligi, dializ, buyrak transplantasiyasi, nefroskleroz, koksartroz III darajali endoprotezlash, bir yoki ikki ko‘zning terminal bosqichidagi glaukomasi kasalligiga chalinganligi munosabati bilan",
         "reason_five": "50, 55, 60, 70, 80, 90, 100 yillik yubiley sanasiga etganligi munosabati bilan",
         "reason_six": "Tabiiy ofatdan zarar ko‘rganligi munosabati bilan tasdiqlangan baholash dalolatnomasi muvofiq",
-        "reason_seven": "Maishiy ko‘mir yoqil‘isi sotib olishi munosabati bilan"
+        "reason_seven": "Maishiy ko‘mir yoqil‘isi sotib olishi munosabati bilan",
+        "reason_eight": "Qishloq xo‘jaligi mahsulotlarini sotib olish uchun"
       }
     },
     "form": {
@@ -1015,6 +1038,17 @@
       "name": "Hujjat nomi"
     }
   },
+  "mobileUserPage": {
+    "name": "Mobil foydalanuvchilar",
+    "deviceModel": "Qurilma modeli",
+    "platform": "Platforma",
+    "verificationTime": "Tasdiqlash vaqti",
+    "detailTitle": "Qurilma ma'lumotlari",
+    "deviceInfo": "Qurilma haqida",
+    "sessions": "Sessiyalar",
+    "noPhotos": "Rasmlar yo'q",
+    "noSessions": "Sessiyalar yo'q"
+  },
   "actionLog": {
     "name": "Amallar tarixi",
     "tab": {
@@ -1051,10 +1085,25 @@
       "post_name": "Lavozimi",
       "birthdayPlace": "Tug'ilgan joyi",
       "birthday": "Tug'ilgan sanasi",
-      "relative": "Qarindoshligi"
+      "relative": "Qarindoshligi",
+      "disability": "Nogironligi"
     },
     "title": "Yaqin qarindosh ma'lumotlari",
-    "no-data": "Yaqin qarindoshlar qo'shilmagan!"
+    "no-data": "Yaqin qarindoshlar qo'shilmagan!",
+    "disability": {
+      "createTitle": "Nogironlik ma'lumotini qo'shish",
+      "updateTitle": "Nogironlik ma'lumotini tahrirlash",
+      "number": "Hujjat raqami",
+      "level": "Nogironlik toifasi",
+      "from": "Berilgan sana",
+      "to": "Amal qilish muddati",
+      "comment": "Cheklovlar va imkoniyatlar haqida izoh",
+      "lifelong": "Umrbod",
+      "lifelongHint": "Agar nogironlik umrbod belgilangan bo'lsa, amal qilish muddatini kiritish shart emas",
+      "level1": "I guruh",
+      "level2": "II guruh",
+      "level3": "III guruh"
+    }
   },
   "partyPage": {
     "createTitle": "Partiyaviylik ma'lumotini qo'shish",
@@ -1233,7 +1282,6 @@
       "punishment": "Intizomiy jazolari"
     }
   },
-
 
   "categoryPage": {
     "createCategory": "Kategoriya yaratish",
@@ -1699,6 +1747,8 @@
     "workers": "Xodimlar",
     "form": {
       "hours": "Soat",
+      "serial": "Sertifikat seriyasi",
+      "end_date": "Malaka oshirish tugash sanasi",
       "start_date": "Boshlanish vaqti",
       "specialization": "Ixtisoslik",
       "subjects": "Fanlar",
@@ -1715,6 +1765,7 @@
     "updateTitle": "Tahrirlash",
     "form": {
       "eduPlan": "O'quv rejasi",
+      "certificate": "Sertifikat",
       "worker_position_ids": "Xodimlar"
     }
   },
@@ -1733,6 +1784,7 @@
     "createTitle": "Guruh yaratish",
     "form": {
       "edu_plan_id": "O'quv rejasi",
+      "certificated": "Sertifikat",
       "workers": "Xodimlar soni"
     }
   },
@@ -1798,7 +1850,6 @@
   "businessTrip": {
     "name": "Xizmat safari"
   },
-
 
   "documentArchive": {
     "name": "Hujjatlar bazasi",
@@ -1907,6 +1958,23 @@
     "name": "Hisobotlar",
     "create": "Hisobot yaratish"
   },
+  "structureReport": {
+    "name": "Hisobot aylanmasi",
+    "tableTab": "Jadval",
+    "workersTab": "Xodimlar",
+    "position": "Lavozim",
+    "organization": "Tashkilot",
+    "birthday": "Tug'ilgan sana",
+    "education": "Ma'lumoti",
+    "oldOrganization": "Oldingi tashkilot",
+    "oldPositionDate": "Oldingi lavozim sanasi",
+    "oldPosition": "Oldingi lavozim",
+    "commandNumber": "Buyruq raqami va sanasi",
+    "commandReason": "Buyruq sababi"
+  },
+  "confirmationReport": {
+    "name": "Hisobotlar"
+  },
   "uploadReport": {
     "name": "Hisobot yuklash",
     "createTitle": "Hisobot yuklash",
@@ -1951,6 +2019,7 @@
     "tab": {
       "multipleSalary": "Birdan ortiq joydan oylik olayotgan xodimlarni ro'yxatini yuklash",
       "exportWithCode": "To'lov kodi bo'yicha yuklash",
+      "exportWithCodeByMonth": "To'lov kodi bo'yicha yuklash oylar kesimida",
       "exportWithPosition": "Lavozimlar kesimida yuklash"
     },
     "form": {
@@ -1960,9 +2029,14 @@
       "totalTwo": "Ish haqi fondiga kirmaydigan to'lov turlari",
       "totalThree": "Hisoblandi",
       "code": "To'lov kodi",
+      "start_hours": "Ish soati (dan)",
+      "end_hours": "Ish soati (gacha)",
+      "work_time": "Ish soati",
       "organizations": "Korxonalar kesimida",
       "workers": "Xodimlar kesimida",
-      "totalFour": "Ish haqidan ushlamalar"
+      "totalFour": "Ish haqidan ushlamalar",
+      "byPaymentCode": "To'lov kodi bo'yicha",
+      "byTotalPayment": "Umumiy hisoblangan to'lov miqdori bo'yicha"
     },
     "view": {
       "main_salary": "Oklad",
@@ -2427,7 +2501,7 @@
       "privilege_turnstile_workers": "Imtiyozli xodimlar",
       "privilegeSubtitle": "Ishga kelmaydigan va imtiyozli xodimlarning turlari bo‘yicha",
       "privilege": "Imtiyozli",
-      "dontPassFace": "O‘tmaganlar",
+      "dontPassFace": "O'tmaydiganlar",
       "onVacation": "Ta’tildagi xodimlar",
       "onHoliday": "Dam olish kunida",
       "lateCome": "Kech kelgan xodimlar",
@@ -2547,6 +2621,7 @@
       "changedScheduleCount": "O‘zgartirilgan grafiklar soni",
       "scheduleType": "Navbatchilik turi",
       "holiday": "Dam kuni",
+      "exportSchedule": "Tabelni yuklash",
       "otherTime": "Boshqa soat",
       "workerList": "Xodimlar ro'yxati",
       "workTime": "Ish soati",
@@ -2554,6 +2629,7 @@
       "noAttachedWorker": "Biriktirilmagan",
       "filterByWorker": "Xodimlar bo'yicha",
       "notExistChangeToSave": "Saqlash uchun o'zgarishlar yo'q",
+      "replaceWorker": "Xodimni almashtirish",
       "startWork": "Ishni boshlash uchun navbatchilik turini tanlang"
     }
   },
@@ -2566,8 +2642,8 @@
       "noGraphic": "Biriktirilmagan",
       "copySchedule": "Oylik grafikni nusxalash",
       "generate": "Generatsiya qilish",
-      "startWorkTime": "Ish boshlanish vaqtidan imtiyoz",
-      "endWorkTime": "Ish tugash vaqtidan imtiyoz",
+      "startWorkTime": "Ish boshlanish vaqtidan imtiyoz (daqiqa)",
+      "endWorkTime": "Ish tugash vaqtidan imtiyoz (daqiqa)",
       "replaceWorker": "Xodimni o'zgartirish",
       "fromThisDate": "Shu sanadan boshlab",
       "onlyThisDate": "Shu kunni o'zgartirish",
@@ -2587,8 +2663,25 @@
       "addTurnstile": "Turniketga qo'shish",
       "notAllowedThisAction": "Maxsus smena uchun Navbatchilik grafiki menyusida ishlang!",
       "turnstileSetting": "Turniket boshqaruvi",
-      "howMuchGroup": "Nechta guruhga moslangan grafik tuzishni xohlaysiz?",
+      "howMuchGroup": "Grafikdagi guruhlar soni",
       "group": "Guruhlar"
+    }
+  },
+  "lmsCertificate": {
+    "name": "Sertifikatlar",
+    "createTitle": "Sertifikat qo'shish va tahrirlash",
+    "updateTitle": "Sertifikat tahrirlash",
+    "form": {
+      "protocol_date": "Protokol sanasi",
+      "cert_to": "Qachongacha",
+      "cert_from": "Qachondan",
+      "start_exam_result": "Kirish imtihoni",
+      "end_exam_result": "Chiqish imtihoni",
+      "enterExam": "Kirish/I",
+      "exitExam": "Chiqish/I"
+    },
+    "warning": {
+      "invalidResult": "Noto'g'ri ma'lumot kiritildi"
     }
   },
   "publicPage": {
@@ -2605,8 +2698,97 @@
   "notificationPage": {
     "name": "Bildirishnomalar",
     "create": "Bildirishnoma yaratish"
+  },
+  "approve": {
+    "name": "Yuborilgan xodimlar",
+    "createTitle": "Xodimlarni yuborish",
+    "updateTitle": "Tahrirlash",
+    "confirmWorkers": "Xodimlarni turniketga qabul qilish",
+    "form": {
+      "sended": "Yuborilgan",
+      "selectedWorker": "Tanlanganlar",
+      "received": "Kelgan"
+    }
+  },
+  "protocol": {
+    "name": "Protokollar",
+    "createTitle": "Xodimlarni yuborish",
+    "updateTitle": "Tahrirlash",
+    "createWarning": "Yangi sertifikat yaratish uchun **“Yangi protokol”**ni tanlang yoki mavjud protokolni tanlab “Davom etish” tugmasini bosing.",
+    "form": {
+      "newProtocol": "Yangi protokol",
+      "selectedWorker": "Tanlanganlar",
+      "received": "Kelgan"
+    }
+  },
+  "staffingApproval": {
+    "name": "Shtatlar",
+    "createTitle": "Shtatlarni tasdiqlashga yuborish",
+    "form": {
+      "director_id": "Tasdiqlovchi xodim",
+      "confirmOrganization": "Tasdiqlovchi tashkilot",
+      "confirmatory_id": "Tashkilot rahbari"
+    }
+  },
+  "congratulation": {
+    "name": "Telegram xabarlar",
+    "description": {
+      "birthday": "Tug‘ilgan kun bilan tabriklangan xodimlar soni",
+      "vacation": "Ta’til haqida ogohlantirilgan xodimlar soni",
+      "med": "Tibbiy ko‘rik haqida ogohlantirilgan xodimlar soni",
+      "passport": "Pasport muddati haqida ogohlantirilgan xodimlar soni",
+      "mobile": "Mobil ilova orqali xabar yuborilgan xodimlar soni"
+    }
+  },
+  "newsPage": {
+    "name": "Yangiliklar",
+    "create": "Yangilik yaratish",
+    "edit": "Yangilikni tahrirlash",
+    "createSubtitle": "Yangilik yaratish uchun ma'lumotlarni to'ldiring",
+    "editSubtitle": "Ma'lumotlarni tahrirlang",
+    "slug": "Slug",
+    "slugPlaceholder": "URL uchun slug kiriting",
+    "slugHint": "URL uchun noyob slug kiriting (masalan: yangi-siyosat-2024)",
+    "tags": "Teglar",
+    "tagPlaceholder": "Teglarni tanlang yoki yarating",
+    "publishedAt": "Nashr sanasi va vaqti",
+    "actionPin": "Yangilikni mahkamlash",
+    "language": "Til",
+    "title": "Sarlavha",
+    "titlePlaceholder": "Yangilik sarlavhasini kiriting",
+    "shortDescription": "Qisqa tavsif",
+    "shortDescriptionPlaceholder": "Yangilik haqida qisqacha...",
+    "content": "Kontent",
+    "contentPlaceholder": "Yangilik kontentini shu yerga yozing...",
+    "attachments": "Biriktirmalar",
+    "attachmentsHint": "Hujjatlar, PDF yoki boshqa fayllarni yuklang",
+    "statusDraft": "Qoralama",
+    "statusPublished": "Nashr etilgan",
+    "statusArchived": "Arxivlangan",
+    "noNews": "Yangiliklar yo'q",
+    "noNewsSubtitle": "Nashr etilgan maqolalar bu yerda ko'rinadi",
+    "endOfList": "Ro'yhat tugadi",
+    "readMore": "Ko'proq o'qish",
+    "backToNews": "Yangiliklarga qaytish",
+    "author": "Muallif",
+    "viewAll": "Barchasini ko'rish",
+    "media": "Media",
+    "downloadAll": "Hammasini yuklash",
+    "pin": "Mahkamlash",
+    "unpin": "Mahkamlashni olib tashlash",
+    "pinned": "Mahkamlangan",
+    "video": "Video",
+    "image": "Rasm",
+    "noMedia": "Media yo'q"
+  },
+  "newsCategoryPage": {
+    "name": "Yangilik kategoriyalari",
+    "create": "Yangi teg yaratish",
+    "edit": "Tegni tahrirlash",
+    "createTag": "Yangi teg yaratish",
+    "namePlaceholder": "Teg nomini kiriting",
+    "langUz": "O'zbek",
+    "langRu": "Rus",
+    "langEn": "Ingliz"
   }
 }
-
-
-

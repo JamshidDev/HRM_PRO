@@ -1,37 +1,31 @@
 import Utils from '@/utils/Utils.js'
 import { AppLayouts, AppPaths } from '@/utils/index.js'
-import {
-  ExpiredHealthPage,
-  TicketPage,
-  MedWorkerPage,
-  MedPensionerPage
-} from '@/pages/hospital/index.js'
 
 export const hospitalRoutes = [
   {
     path: Utils.routeHospitalPathMaker(AppPaths.ExpiredHealth),
-    component: ExpiredHealthPage,
+    component: () => import('@/pages/hospital/expiredHealth/page.vue'),
     meta: {
       layout: AppLayouts.main
     }
   },
   {
     path: Utils.routeHospitalPathMaker(AppPaths.Ticket),
-    component: TicketPage,
+    component: () => import('@/pages/hospital/ticket/page.vue'),
     meta: {
       layout: AppLayouts.main
     }
   },
   {
     path: Utils.routeHospitalPathMaker(AppPaths.MedWorker),
-    component: MedWorkerPage,
+    component: () => import('@/pages/hospital/medWorker/page.vue'),
     meta: {
       layout: AppLayouts.main
     }
   },
   {
     path: Utils.routeHospitalPathMaker(AppPaths.Pensioner),
-    component: MedPensionerPage,
+    component: () => import('@/pages/hospital/pensioner/page.vue'),
     meta: {
       layout: AppLayouts.main
     }

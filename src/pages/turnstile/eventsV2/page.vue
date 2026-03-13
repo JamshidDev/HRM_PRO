@@ -26,6 +26,6 @@
     <UIModal v-model:visible="store.calendarVisible" :title="$t('content.view')" :width="1000">
       <CalendarAndTimelineTabs />
     </UIModal>
-    <DownloadModal/>
+    <DownloadModal />
   </UIPageContent>
 </template>

@@ -28,6 +28,7 @@ import holidayService from '@/service/v1/admin/holidayService.js'
 import quoteService from '@/service/v1/admin/quoteService.js'
 import telegramService from '@/service/v1/admin/telegramService.js'
 import instructionService from '@/service/v1/admin/instructionService.js'
+import mobileUserService from '@/service/v1/admin/mobileUserService.js'
 
 import confirmationService from '@/service/v1/hrm/confirmationService.js'
 import departmentService from '@/service/v1/hrm/departmentService.js'
@@ -38,6 +39,7 @@ import photoService from '@/service/v1/hrm/photoService.js'
 import phoneService from '@/service/v1/hrm/phoneService.js'
 import languageService from '@/service/v1/hrm/languageService.js'
 import relativeService from '@/service/v1/hrm/relativeService.js'
+import workerDisabilityService from '@/service/v1/hrm/workerDisabilityService.js'
 import universityService from '@/service/v1/hrm/universityService.js'
 import olCareerService from '@/service/v1/hrm/olCareerService.js'
 import partyService from '@/service/v1/hrm/partyService.js'
@@ -62,6 +64,7 @@ import polyclinicService from '@/service/v1/hrm/polyclinicService.js'
 import vacancyService from '@/service/v1/hrm/vacancyService.js'
 import pensionerService from '@/service/v1/hrm/pensionerService.js'
 import specialReportService from './v1/hrm/specialReportService'
+import structureReportService from '@/service/v1/hrm/structureReportService.js'
 
 import documentService from '@/service/v1/docFlow/documentService.js'
 import contractService from '@/service/v1/docFlow/contractService.js'
@@ -71,6 +74,9 @@ import documentFileService from '@/service/v1/docFlow/documentFileService.js'
 import adContractService from '@/service/v1/docFlow/adContractService.js'
 import applicationService from '@/service/v1/docFlow/applicationService.js'
 import confVacationScheduleService from '@/service/v1/docFlow/vacationScheduleService.js'
+import confCertificateService from '@/service/v1/docFlow/confCertificateService.js'
+import confStaffingApprovalService from '@/service/v1/docFlow/confStaffingApprovalService.js'
+import confirmationReportService from '@/service/v1/docFlow/confirmationReportService.js'
 
 import topicService from '@/service/v1/attestation/topicService.js'
 import examVideoService from '@/service/v1/attestation/examVideoService.js'
@@ -96,8 +102,13 @@ import lmsLessonService from '@/service/v1/lms/lessonService.js'
 import lmsExamService from '@/service/v1/lms/examService.js'
 import teacherLessonService from '@/service/v1/lms/teacherLessonService.js'
 import listenerService from '@/service/v1/lms/listenerService.js'
+import certificateService from '@/service/v1/lms/certificateService.js'
 
 import notificationService from '@/service/v1/chat/notificationService.js'
+import congratulationService from '@/service/v1/chat/congratulationService.js'
+import newsCategoryService from '@/service/v1/chat/newsCategoryService.js'
+import newsService from '@/service/v1/chat/newsService.js'
+
 
 import {
   turnstileTerminalService,
@@ -118,7 +129,8 @@ import {
   invalidUserService,
   eventV2Service,
   shiftTypeService,
-  scheduleService as workerScheduleService
+  scheduleService as workerScheduleService,
+  approveService
 } from './v1/turnstile'
 
 import accountantService from './v1/accountant/accountantService.js'
@@ -129,6 +141,7 @@ import accDashboardService from './v1/accountant/accDashboardService.js'
 import salaryCategoryService from './v1/accountant/salaryCategoryService.js'
 import salaryReportService from './v1/accountant/salaryReportService.js'
 import pensionService from './v1/accountant/pensionService.js'
+import staffApprovalService from './v1/accountant/staffApprovalService.js'
 
 import expiredHealthService from './v1/hospital/expiredHealthService.js'
 import ticketService from './v1/hospital/ticketService.js'
@@ -181,6 +194,7 @@ export default {
   categoryService,
   categoryQuestionService,
   relativeService,
+  workerDisabilityService,
   universityService,
   documentFileService,
   adContractService,
@@ -259,4 +273,15 @@ export default {
   workerScheduleService,
   notificationService,
   confVacationScheduleService,
+  certificateService,
+  confCertificateService,
+  approveService,
+  staffApprovalService,
+  confStaffingApprovalService,
+  congratulationService,
+  newsCategoryService,
+  newsService,
+  mobileUserService,
+  structureReportService,
+  confirmationReportService,
 }

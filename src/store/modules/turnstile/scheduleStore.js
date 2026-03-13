@@ -81,7 +81,7 @@ export const useScheduleTableStore = defineStore('scheduleStore', {
       workTime: 0,
       dayTime: 0,
       eveningTime: 0,
-      isEdit:true,
+      isEdit: true
     },
     isSelectedContext: false,
     selectedOption: null,
@@ -126,26 +126,46 @@ export const useScheduleTableStore = defineStore('scheduleStore', {
     attachWorkerLoading: false,
     selectedDays: [],
     selectedWorkerId: null,
-    export:{
-      cache:[],
+    export: {
+      cache: [],
       payload: {
         organization_id: [],
         departments: [],
         year: null,
-        month: null,
+        month: null
       },
       visible: false,
-      loading: false,
+      loading: false
     },
     department: {
-      loading:false,
-      totalItem:0,
+      loading: false,
+      totalItem: 0,
       params: {
-        page:1,
+        page: 1,
         per_page: 100,
-        search:null,
+        search: null
       },
-      list:[],
+      list: []
+    },
+    replace: {
+      selectedWorker: null,
+      visible: false,
+      loading: false,
+      payload: {
+        positonId: null,
+        date: null,
+        status: false
+      }
+    },
+    worker: {
+      list: [],
+      params: {
+        page: 1,
+        per_page: 100,
+        search: null
+      },
+      loading: false,
+      totalItem: 0
     }
   }),
 
@@ -161,33 +181,76 @@ export const useScheduleTableStore = defineStore('scheduleStore', {
   },
 
   actions: {
-    _exportTable(data){
+    _replaceWorker(data) {
+      this.replace.loading = true
+      $ApiService.shiftTypeService
+        ._replaceWorker({ data })
+        .then((res) => {
+          this.replace.visible = false
+          this._allWorkers()
+        })
+        .finally(() => {
+          this.replace.loading = false
+        })
+    },
+    _workers(infinity) {
+      const params = {
+        ...this.worker.params,
+        start_date: Utils.timeToZone(this.params.startDate),
+        end_date: Utils.timeToZone(this.params.endDate)
+      }
+      this.worker.loading = true
+      $ApiService.shiftTypeService
+        ._getWorkers({ params })
+        .then((res) => {
+          const data = res.data.data.data.map((v) => ({
+            name: Utils.combineFullName(v.worker),
+            id: v.id,
+            workerId: v.worker.id,
+            position: v.scheduleType?.name || t('shiftType.form.noGraphic'),
+            group: v.scheduleGroup,
+            type: v.scheduleType
+          }))
+
+          this.worker.list = infinity
+            ? Array.from(new Map([...this.worker.list, ...data].map((v) => [v.id, v])).values())
+            : Array.from(new Map([...data].map((v) => [v.id, v])).values())
+          this.worker.list.totalItem = res.data.data.total
+        })
+        .finally(() => {
+          this.worker.loading = false
+        })
+    },
+    _exportTable(data) {
       this.export.loading = true
-      $ApiService.workerScheduleService._exportTable({data}).finally(()=>{
+      $ApiService.workerScheduleService._exportTable({ data }).finally(() => {
         this.export.visible = false
         this.export.loading = false
       })
     },
-    _fetchDepartment(infinity = false){
+    _fetchDepartment(infinity = false) {
       const params = {
         ...this.department.params,
         organizations: this.export.payload.organization_id.map((v) => v.id).toString() || undefined
       }
       this.department.loading = true
-      $ApiService.componentService._departmentByOrganizations({params}).then((res)=>{
-        const data = res.data.data.data.map(v=> ({
-          id:v.id,
-          name:v.name,
-          position:v.organization.name,
-        }))
+      $ApiService.componentService
+        ._departmentByOrganizations({ params })
+        .then((res) => {
+          const data = res.data.data.data.map((v) => ({
+            id: v.id,
+            name: v.name,
+            position: v.organization.name
+          }))
 
-        this.department.list = infinity
+          this.department.list = infinity
             ? Array.from(new Map([...this.department.list, ...data].map((v) => [v.id, v])).values())
             : Array.from(new Map([...data].map((v) => [v.id, v])).values())
-        this.department.total = res.data.data.total
-      }).finally(()=>{
-        this.department.loading = false
-      })
+          this.department.total = res.data.data.total
+        })
+        .finally(() => {
+          this.department.loading = false
+        })
     },
     _checkFactOfWorker(id) {
       this.workerLoading = true
@@ -318,7 +381,7 @@ export const useScheduleTableStore = defineStore('scheduleStore', {
             empty: true,
             dayTime: 0,
             eveningTime: 0,
-            isEdit:false,
+            isEdit: false
           }
 
           const formatSchedule = (day) => ({
@@ -329,11 +392,12 @@ export const useScheduleTableStore = defineStore('scheduleStore', {
             empty: day.id === null,
             dayTime: day.daytime || 0,
             eveningTime: day.evening_time || 0,
-            isEdit:false,
+            isEdit: false
           })
 
           this.workerList = res.data.data.data.map((v, index) => ({
             id: v.id,
+            workerId: v?.worker?.id,
             fullName: Utils.combineFullName(v.worker),
             position: v.position,
             index: index,
@@ -411,8 +475,8 @@ export const useScheduleTableStore = defineStore('scheduleStore', {
     },
     _initialData() {
       // if (this.scheduleTypes.length > 0) return
-      this.params.year =this.params.year ?? new Date().getFullYear()
-      this.params.month =this.params.month ?? new Date().getMonth() + 1
+      this.params.year = this.params.year ?? new Date().getFullYear()
+      this.params.month = this.params.month ?? new Date().getMonth() + 1
       this._enums()
       this._dayOfMonth(() => {
         this._allWorkers()
@@ -497,20 +561,21 @@ export const useScheduleTableStore = defineStore('scheduleStore', {
         return
       }
 
-
       const workerData = workers.map((w) => ({
         worker_position_id: w.id,
-        work_days: w.days.map((day, idx) => ({
-          status: day.empty ? 'delete' : 'create',
-          date: `${this.params.year}-${this.params.month}-${(idx + 1).toString().padStart(2, '0')}`,
-          work_status: day.isWorkDay,
-          start_time: day.startTime,
-          end_time: day.endTime,
-          daily_minutes: day.workTime,
-          daytime: day.dayTime,
-          evening_time: day.eveningTime,
-          isEdit: day.isEdit,
-        })).filter(f=>f.isEdit)
+        work_days: w.days
+          .map((day, idx) => ({
+            status: day.empty ? 'delete' : 'create',
+            date: `${this.params.year}-${this.params.month}-${(idx + 1).toString().padStart(2, '0')}`,
+            work_status: day.isWorkDay,
+            start_time: day.startTime,
+            end_time: day.endTime,
+            daily_minutes: day.workTime,
+            daytime: day.dayTime,
+            evening_time: day.eveningTime,
+            isEdit: day.isEdit
+          }))
+          .filter((f) => f.isEdit)
       }))
       const data = {
         status: 'custom',
@@ -524,7 +589,7 @@ export const useScheduleTableStore = defineStore('scheduleStore', {
           this.workerList = this.workerList.map((a) => ({
             ...a,
             isEdit: false,
-            days: a.days.map(b=> ({...b, isEdit:false}))
+            days: a.days.map((b) => ({ ...b, isEdit: false }))
           }))
         })
         .finally(() => {

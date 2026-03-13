@@ -1,9 +1,15 @@
 <script setup>
   import { NoDataPicture } from '@/components/index.js'
-  import { useAccountStore, useLmsGroupStore } from '@/store/modules/index.js'
+  import {
+    useAccountStore,
+    useLmsGroupStore,
+    useLmsCertificateStore
+  } from '@/store/modules/index.js'
+  import { AddCircle28Regular } from '@vicons/fluent'
 
   const store = useLmsGroupStore()
   const accStore = useAccountStore()
+  const crtStore = useLmsCertificateStore()
 
   const onPreview = (v) => {
     if (!accStore.checkAction(accStore.pn.lmsGroupsWrite)) return
@@ -11,6 +17,10 @@
     store.visible = true
     store.visibleType = true
     store._workers(v.id)
+  }
+
+  const onCertificate = (v) => {
+    crtStore._openModal(v)
   }
 </script>
 
@@ -22,6 +32,7 @@
           <tr>
             <th class="text-center! min-w-[40px] w-[40px]">{{ $t('content.number') }}</th>
             <th class="min-w-[300px]">{{ $t('content.name') }}</th>
+            <th class="w-[200px]">{{ $t('groupPage.form.workers') }}</th>
             <th class="w-[80px]">{{ $t('groupPage.form.workers') }}</th>
           </tr>
         </thead>
@@ -33,6 +44,14 @@
               }}</span>
             </td>
             <td>{{ item?.code }}</td>
+            <td class="text-center">
+              <n-button @click="onCertificate(item)" type="primary" secondary>
+                <template #icon>
+                  <AddCircle28Regular />
+                </template>
+                {{ $t('groupPage.form.certificated') }}</n-button
+              >
+            </td>
             <td class="text-center">
               <n-button
                 @click="onPreview(item)"

@@ -8,7 +8,7 @@
   import { UIPageFilter, UISelect } from '@/components/index.js'
   import i18n from '@/i18n/index.js'
   import { ArrowCircleDown32Regular, StarLineHorizontal320Regular } from '@vicons/fluent'
-  import {useAppSetting} from "@utils"
+  import { useAppSetting } from '@utils'
 
   const { t } = i18n.global
   const store = useEventV2Store()
@@ -80,8 +80,8 @@
     }
   ]
 
-  const onOpenDownloadModal = () =>{
-    if(!store.download.payload.from){
+  const onOpenDownloadModal = () => {
+    if (!store.download.payload.from) {
       const today = new Date()
       const tomorrow = new Date(today)
       tomorrow.setDate(today.getDate() + 1)
@@ -103,11 +103,7 @@
     :show-add-button="false"
   >
     <template #filterAction>
-      <n-button
-        @click="onOpenDownloadModal"
-        :loading="store.download.loading"
-        type="success"
-      >
+      <n-button @click="onOpenDownloadModal" :loading="store.download.loading" type="success">
         <template #icon>
           <ArrowCircleDown32Regular />
         </template>

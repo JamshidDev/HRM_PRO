@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import i18n from '@/i18n/index.js'
-import {getOneMonthAgoYearMonth} from "@utils"
+import { getOneMonthAgoYearMonth } from '@utils'
 const { t } = i18n.global
 export const useSalaryCategoryStore = defineStore('salaryCategoryStore', {
   state: () => ({

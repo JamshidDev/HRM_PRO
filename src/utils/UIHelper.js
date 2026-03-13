@@ -1,6 +1,6 @@
-import {NAvatar, NIcon} from 'naive-ui'
+import { NAvatar, NIcon } from 'naive-ui'
 import { DismissCircle20Filled } from '@vicons/fluent'
-import Utils from "@utils/Utils.js"
+import Utils from '@utils/Utils.js'
 
 const scheduleLabel = (option) => {
   return [
@@ -55,7 +55,7 @@ const selectLabel = (option) => {
           h('div', { class: 'text-xs font-medium text-textColor2 !text-wrap' }, `${option.name}`),
           h('div', { class: 'text-xs text-textColor3 !text-wrap' }, option.position),
           option.subPosition
-            ? h('div', { class: 'text-xs text-textColor3' }, option.subPosition)
+            ? h('div', { class: 'text-xs text-textColor3 !text-wrap' }, option.subPosition)
             : null
         ])
       ]
@@ -66,19 +66,19 @@ const selectLabel = (option) => {
 const selectColorLabel = (option) => {
   return [
     h(
-        'div',
-        {
-          class: 'flex gap-2 my-1 items-center'
-        },
-        [
-          h('div', { class: 'flex flex-col' }, [
-            h('div', { class: `text-xs font-medium !text-wrap ${option.color}` }, `${option.name}`),
-            h('div', { class: 'text-xs text-textColor3 !text-wrap' }, option.position),
-            option.subPosition
-                ? h('div', { class: 'text-xs text-textColor3' }, option.subPosition)
-                : null
-          ])
-        ]
+      'div',
+      {
+        class: 'flex gap-2 my-1 items-center'
+      },
+      [
+        h('div', { class: 'flex flex-col' }, [
+          h('div', { class: `text-xs font-medium !text-wrap ${option.color}` }, `${option.name}`),
+          h('div', { class: 'text-xs text-textColor3 !text-wrap' }, option.position),
+          option.subPosition
+            ? h('div', { class: 'text-xs text-textColor3' }, option.subPosition)
+            : null
+        ])
+      ]
     )
   ]
 }
@@ -112,49 +112,49 @@ const selectValueV2 =
   ({ option }) => {
     return [
       h(
-          'span',
-          {
-            class: `w-full flex gap-2 items-center border border-transparent hover:border-surface-line rounded-lg group cursor-pointer px-1 py-[1px]`
-          },
-          [
-            h('span', { class: 'line-clamp-1 flex-1' }, `${option?.name}`),
+        'span',
+        {
+          class: `w-full flex gap-2 items-center border border-transparent hover:border-surface-line rounded-lg group cursor-pointer px-1 py-[1px]`
+        },
+        [
+          h('span', { class: 'line-clamp-1 flex-1' }, `${option?.name}`),
 
-            allow && h(NIcon, {
-              size: 18,
-              class: 'text-danger/80 opacity-0 group-hover:opacity-100 flex-shrink-0',
-              onClick: (e) => {
-                e.stopPropagation()
-                callbacks(option)
-              }
-            }, { default: () => h(DismissCircle20Filled) })
-          ]
+          allow &&
+            h(
+              NIcon,
+              {
+                size: 18,
+                class: 'text-danger/80 opacity-0 group-hover:opacity-100 flex-shrink-0',
+                onClick: (e) => {
+                  e.stopPropagation()
+                  callbacks(option)
+                }
+              },
+              { default: () => h(DismissCircle20Filled) }
+            )
+        ]
       )
     ]
   }
 
-
 const renderAvatarLabel = (option) => {
   return [
     h(
-        'div',
-        {
-          class: 'flex gap-2 my-1 items-center px-2'
-        },
-        [
-          h(NAvatar, {
-            class: 'flex-shrink-0',
-            src: option.photo,
-            'fallback-src': Utils.noAvailableImage
-          }),
-          h('div', { class: 'flex flex-col' }, [
-            h(
-                'div',
-                { class: 'text-xs font-medium text-gray-500 leading-[1.2]' },
-                option?.fullName
-            ),
-            h('div', { class: 'text-xs text-primary leading-[1.2]' }, option.position)
-          ])
-        ]
+      'div',
+      {
+        class: 'flex gap-2 my-1 items-center px-2'
+      },
+      [
+        h(NAvatar, {
+          class: 'flex-shrink-0',
+          src: option.photo,
+          'fallback-src': Utils.noAvailableImage
+        }),
+        h('div', { class: 'flex flex-col' }, [
+          h('div', { class: 'text-xs font-medium text-gray-500 leading-[1.2]' }, option?.fullName),
+          h('div', { class: 'text-xs text-primary leading-[1.2]' }, option.position)
+        ])
+      ]
     )
   ]
 }
@@ -162,11 +162,11 @@ const renderAvatarLabel = (option) => {
 const renderAvatarValue = ({ option }) => {
   return [
     h(
-        'div',
-        {
-          class: 'flex gap-2 my-1 items-center'
-        },
-        option?.fullName
+      'div',
+      {
+        class: 'flex gap-2 my-1 items-center'
+      },
+      option?.fullName
     )
   ]
 }
@@ -182,7 +182,7 @@ export const selectRender = {
 }
 
 export default {
-  avatarRender:{
+  avatarRender: {
     label: renderAvatarLabel,
     value: renderAvatarValue
   },
@@ -191,7 +191,7 @@ export default {
     value: scheduleValue
   },
   selectRender: {
-    labelColor:selectColorLabel,
+    labelColor: selectColorLabel,
     label: selectLabel,
     value: selectValue,
     value2: selectValueV2

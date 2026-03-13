@@ -2,8 +2,8 @@
   import { useWorkerProfileStore, useComponentStore } from '@/store/modules/index.js'
   import validationRules from '@/utils/validationRules.js'
   import Utils from '@/utils/Utils.js'
-  import PhotoForm from '@/pages/hrm/condidate/ui/PhotoForm.vue'
-  import PhoneForm from '@/pages/hrm/condidate/ui/PhoneForm.vue'
+  import PhotoForm from '@/pages/hrm/candidate/ui/PhotoForm.vue'
+  import PhoneForm from '@/pages/hrm/candidate/ui/PhoneForm.vue'
   import PassportForm from '../ui/PasportList.vue'
   import PositionList from '../ui/PositionList.vue'
   import RolesList from '../ui/RolesList.vue'
@@ -116,8 +116,9 @@
           class="ml-auto px-10"
           @click="store.savePhoto(route.query.id)"
           :loading="store.loading"
-          >{{ $t(`content.save`) }}</n-button
         >
+          {{ $t(`content.save`) }}
+        </n-button>
       </div>
       <div class="w-full border-b mt-2 mb-10 border-dashed border-surface-line"></div>
     </div>
@@ -352,8 +353,8 @@
           {{
             store.anotherProfile
               ? $t('createWorkerPage.otherProfile', {
-                  n: `${Utils.combineFullName(store.anotherProfile?.worker)}`
-                })
+                n: `${Utils.combineFullName(store.anotherProfile?.worker)}`
+              })
               : $t('createWorkerPage.no-account')
           }}
         </n-alert>
@@ -362,9 +363,11 @@
     <div class="col-span-12 flex flex-col">
       <div class="flex justify-between items-end">
         <span class="text-xs text-gray-400">{{ $t('createWorkerPage.ui.phone') }}</span>
-        <n-button type="info" class="ml-auto px-10" @click="onSubmit" :loading="store.loading">{{
-          $t(`content.save`)
-        }}</n-button>
+        <n-button type="info" class="ml-auto px-10" @click="onSubmit" :loading="store.loading">
+          {{
+            $t(`content.save`)
+          }}
+        </n-button>
       </div>
       <div class="w-full border-b mt-2 mb-10 border-dashed border-surface-line"></div>
     </div>
@@ -372,9 +375,11 @@
       class="col-span-12 flex justify-between px-2 py-2 border border-surface-line border-dashed rounded-lg"
     >
       <span>{{ $t('createWorkerPage.updatePasswordWarning') }}</span>
-      <n-button @click="store.savePersonalInfo(true)" :loading="store.loading" type="error">{{
-        $t('createWorkerPage.updatePassword')
-      }}</n-button>
+      <n-button @click="store.savePersonalInfo(true)" :loading="store.loading" type="error">
+        {{
+          $t('createWorkerPage.updatePassword')
+        }}
+      </n-button>
     </div>
     <div class="col-span-12 mb-4 mt-16">
       <RolesList />

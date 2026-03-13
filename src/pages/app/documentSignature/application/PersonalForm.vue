@@ -3,7 +3,7 @@
   import Utils from '@/utils/Utils.js'
   import Signature from './Signature.vue'
   import validationRules from '@/utils/validationRules.js'
-  import PhoneForm from '@/pages/hrm/condidate/ui/PhoneForm.vue'
+  import PhoneForm from '@/pages/hrm/candidate/ui/PhoneForm.vue'
   import { useRoute } from 'vue-router'
 
   const store = useApplicationStore()

@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import i18n from '@/i18n/index.js'
 const { t } = i18n.global
-import { getOneMonthAgoYearMonth} from "@utils"
+import { getOneMonthAgoYearMonth } from '@utils'
 
 export const useUploadReportStore = defineStore('uploadReport', {
   state: () => ({
@@ -79,7 +79,7 @@ export const useUploadReportStore = defineStore('uploadReport', {
         .then((res) => {
           const list = res.data.data
           this.structuresList = list
-          if(list.length === 1 &&  list[0]?.children?.length === 0){
+          if (list.length === 1 && list[0]?.children?.length === 0) {
             this.onChangeStructure(list[0])
           }
         })
@@ -96,7 +96,7 @@ export const useUploadReportStore = defineStore('uploadReport', {
         ._index({ params })
         .then((res) => {
           this.cards = res.data.data
-          this.list = this.selectedIndex === null ? [] : this.cards[this.selectedIndex].data;
+          this.list = this.selectedIndex === null ? [] : this.cards[this.selectedIndex].data
         })
         .finally(() => {
           this.cardLoading = false

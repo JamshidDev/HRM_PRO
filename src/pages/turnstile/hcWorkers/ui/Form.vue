@@ -313,13 +313,12 @@
             rule-path="requiredMultiSelectField"
           >
             <SuperSelect
-                :disabled="!store.payload.level_org_id.length"
-                multiple
-                :options="store.accessLevels"
-                v-model:value="store.payload.access_level_ids"
-                :loading="store.accessLevelsLoading"
+              :disabled="!store.payload.level_org_id.length"
+              multiple
+              :options="store.accessLevels"
+              v-model:value="store.payload.access_level_ids"
+              :loading="store.accessLevelsLoading"
             />
-
           </n-form-item>
         </div>
       </n-form>

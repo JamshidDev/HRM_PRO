@@ -65,6 +65,10 @@ const _confirmByFile = async (payload) => {
   return await axios.post(`/v1/document/document-confirm`, payload.data)
 }
 
+const _chatEnums = async (payload) => {
+  return await axios.get(`/v1/chat/enums`, { params: payload?.params })
+}
+
 export default {
   _enums,
   _organization,
@@ -83,5 +87,6 @@ export default {
   _allStructure,
   _allDepartmentTree,
   _allPosition,
-  _confirmByFile
+  _confirmByFile,
+  _chatEnums,
 }

@@ -82,10 +82,10 @@
 
           <div
             @click="emits('onPreview', 'not_passed_turnstile_workers')"
-            class="z-10 flex flex-col w-[90px] bg-transparent hover:bg-primary/6 transition-all duration-300 cursor-pointer p-2 rounded-xl relative group"
+            class="z-10 flex flex-col w-[90px] bg-transparent hover:bg-primary/6 transition-all duration-300 cursor-pointer pt-2 rounded-xl relative group"
           >
             <div
-              class="z-10 transition-all duration-500 scale-0 absolute left-1/2 top-1/2 -translate-1/2 text-xs font-medium text-primary opacity-0 group-hover:opacity-100 group-hover:scale-100"
+              class="ml-2 z-10 transition-all duration-500 scale-0 absolute left-1/2 top-1/2 -translate-1/2 text-xs font-medium text-primary opacity-0 group-hover:opacity-100 group-hover:scale-100"
             >
               <n-icon size="36">
                 <Eye20Filled />
@@ -103,15 +103,15 @@
               </span>
               {{ store.grandWorkerData?.not_passed_turnstile_workers_count || 0 }}
             </h3>
-            <h3
-              class="text-[10px] font-semibold text-secondary pl-1 mt-3 mb-1 line-clamp-1 opacity-100 group-hover:opacity-[0.2] transition-all duration-300"
+            <span
+              class="text-center text-[10px] font-semibold text-secondary mt-3 mb-1 line-clamp-1 opacity-100 group-hover:opacity-[0.2] transition-all duration-300"
             >
               {{ $t('turnStileDashboard.cards.dontPassFace') }}
-            </h3>
+            </span>
             <CircleChart
               :percent="notPassedPercent"
               type="warning"
-              class="opacity-100 group-hover:opacity-[0.2] transition-all duration-300"
+              class="opacity-100 group-hover:opacity-[0.2] transition-all duration-300 mx-auto block w-fit"
             />
           </div>
 

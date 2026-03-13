@@ -4,6 +4,7 @@
   import { useUniversityStore } from '@/store/modules/index.js'
   import Utils from '@/utils/Utils.js'
   import { useAppSetting } from '@/utils/index.js'
+  import UIHelper from "@utils/UIHelper.js"
 
   const store = useUniversityStore()
   const formRef = ref(null)
@@ -75,6 +76,7 @@
           @search="store.onSearchUniversity"
           @scroll="store.onScrollUniversity"
           :reset-menu-on-options-change="false"
+          :render-label="UIHelper.selectRender.label"
         />
       </n-form-item>
       <n-form-item
@@ -95,6 +97,7 @@
           @search="store.onSearchSpecial"
           @scroll="store.onScrollSpecial"
           :reset-menu-on-options-change="false"
+          :render-label="UIHelper.selectRender.label"
         />
       </n-form-item>
       <n-form-item

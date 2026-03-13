@@ -6,6 +6,7 @@
   import validationRules from '@/utils/validationRules.js'
   import ValidationRules from '@/utils/validationRules.js'
   import { useDebounce } from '@/utils/index.js'
+  import { SuperSelect } from '@components'
 
   const store = useMonthReportStore()
   const componentStore = useComponentStore()
@@ -39,17 +40,28 @@
     if (store.exportType === 2) {
       formRef.value?.validate((error) => {
         if (!error) {
-
           const data = {
             ...store.exportParams,
             organizations:
               store.exportParams.organizations.map((v) => v.id).toString() || undefined,
             type: store.exportParams.byOrganization ? 'organizations' : 'workers',
-            byOrganization: undefined
+            byOrganization: undefined,
           }
           store._exportWithCode(data)
           uploadBtn.value?.$el?._triggerFly?.()
         }
+      })
+    } else if (store.exportType === 4) {
+      formRef.value?.validate((error) => {
+        if (error) return
+        const data = {
+          organizations: store.exportParams.organizations.map((v) => v.id).toString() || undefined,
+          year: store.exportParams.year,
+          codes:store.exportParams.type === 'code'? store.exportParams.codes : undefined,
+          type: store.exportParams.type,
+        }
+        store._exportWithCodeByYear(data)
+        uploadBtn.value?.$el?._triggerFly?.()
       })
     } else if (store.exportType === 1) {
       const params = {
@@ -105,6 +117,12 @@
           </template>
           {{ $t('monthReport.tab.exportWithCode') }}
         </n-button>
+        <n-button @click="onSelect(4)" size="large" secondary type="success" class="w-full!">
+          <template #icon>
+            <ArrowCircleDown48Regular />
+          </template>
+          {{ $t('monthReport.tab.exportWithCodeByMonth') }}
+        </n-button>
 
         <n-button @click="onSelect(3)" size="large" secondary type="success" class="w-full!">
           <template #icon>
@@ -133,17 +151,17 @@
           }}</label>
           <UISelect
             :options="componentStore.structureList"
-            :modelV="store.exportParams.organizations"
+            :model-v="store.exportParams.organizations"
             @defaultValue="(v) => (store.exportParams.organizations = v)"
             @updateModel="onChange"
-            :checkedVal="store.structureCheck"
+            :checked-val="store.structureCheck"
             @updateCheck="(v) => (store.structureCheck = v)"
             :loading="componentStore.structureLoading"
             v-model:search="componentStore.structureParams.search"
             @onSearch="componentStore._structures"
           />
         </div>
-        <div :class="[store.exportType === 3 ? 'col-span-12' : 'col-span-6']">
+        <div :class="[[3, 4].includes(store.exportType) ? 'col-span-12' : 'col-span-6']">
           <label class="text-xs mt-3 text-gray-500 mb-1 font-medium">{{
             $t('content.year')
           }}</label>
@@ -155,7 +173,7 @@
             value-field="id"
           />
         </div>
-        <div class="col-span-6" v-if="store.exportType !== 3">
+        <div class="col-span-6" v-if="![3, 4].includes(store.exportType)">
           <label class="text-xs mt-3 text-gray-500 mb-1 font-medium">{{
             $t('content.month')
           }}</label>
@@ -167,8 +185,9 @@
             value-field="id"
           />
         </div>
-        <template v-if="store.exportType === 2">
+        <template v-if="[4, 2].includes(store.exportType)">
           <div
+            v-if="store.exportType === 2"
             class="col-span-12 border border-surface-line rounded-lg py-1 px-2 flex justify-between items-center"
           >
             <span class="text-primary">
@@ -178,8 +197,7 @@
                     ? 'monthReport.form.organizations'
                     : 'monthReport.form.workers'
                 )
-              }}</span
-            >
+              }}</span>
             <span
               @click="store.exportParams.byOrganization = !store.exportParams.byOrganization"
               class="bg-surface-ground p-1 rounded-lg flex justify-center items-center cursor-pointer"
@@ -189,13 +207,28 @@
               </n-icon>
             </span>
           </div>
+          <div class="col-span-12 " v-if="store.exportType===4">
+            <n-radio-group v-model:value="store.exportParams.type" name="radiogroup">
+              <n-radio
+                :value="'code'"
+                :label="$t('monthReport.form.byPaymentCode')"
+              />
+              <n-radio
+                :value="'total'"
+                :label="$t('monthReport.form.byTotalPayment')"
+              />
+            </n-radio-group>
+          </div>
+
+
           <n-form-item
             class="col-span-12"
             :label="$t(`monthReport.form.code`)"
             path="codes"
             :rule-path="ValidationRules.rulesNames.requiredMultiSelectField"
+            v-if="!(store.exportType===4 && store.exportParams.type=== 'total')"
           >
-            <UINSelect
+            <SuperSelect
               :multiple-search="true"
               multiple
               v-model:value="store.exportParams.codes"
@@ -229,8 +262,8 @@
 
         <div class="col-span-12 flex justify-center mb-4">
           <n-button
-              ref="uploadBtn"
-              v-fly-upload.manual
+            ref="uploadBtn"
+            v-fly-upload.manual
             :loading="store.showLoading"
             @click="onSubmit"
             type="success"

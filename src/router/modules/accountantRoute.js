@@ -1,77 +1,73 @@
 import Utils from '@/utils/Utils.js'
 import { AppLayouts, AppPaths } from '@/utils/index.js'
-import {
-  UploadReportPage,
-  MonthReportPage,
-  TaxFourPage,
-  TaxFivePage,
-  DashboardPage,
-  SalaryCategoryPage,
-  SalaryReportPage,
-  PensionPaymentPage
-} from '@/pages/accountant/index.js'
-import {  ReportPage} from "@pages/hrm/index.js"
 
 export const accountantRoutes = [
   {
     path: Utils.routeAccountantPathMaker(AppPaths.UploadReport),
-    component: UploadReportPage,
+    component: () => import('@/pages/accountant/report/page.vue'),
     meta: {
       layout: AppLayouts.main
     }
   },
   {
     path: Utils.routeAccountantPathMaker(AppPaths.MonthReport),
-    component: MonthReportPage,
+    component: () => import('@/pages/accountant/monthReport/page.vue'),
     meta: {
       layout: AppLayouts.main
     }
   },
   {
     path: Utils.routeAccountantPathMaker(AppPaths.TaxFour),
-    component: TaxFourPage,
+    component: () => import('@/pages/accountant/taxFour/page.vue'),
     meta: {
       layout: AppLayouts.main
     }
   },
   {
     path: Utils.routeAccountantPathMaker(AppPaths.TaxFive),
-    component: TaxFivePage,
+    component: () => import('@/pages/accountant/taxFive/page.vue'),
     meta: {
       layout: AppLayouts.main
     }
   },
   {
     path: Utils.routeAccountantPathMaker(AppPaths.Dashboard),
-    component: DashboardPage,
+    component: () => import('@/pages/accountant/dashboard/page.vue'),
     meta: {
       layout: AppLayouts.main
     }
   },
   {
     path: Utils.routeAccountantPathMaker(AppPaths.SalaryCategory),
-    component: SalaryCategoryPage,
+    component: () => import('@/pages/accountant/salaryCategory/page.vue'),
     meta: {
       layout: AppLayouts.main
     }
   },
   {
     path: Utils.routeAccountantPathMaker(AppPaths.SalaryReport),
-    component: SalaryReportPage,
+    component: () => import('@/pages/accountant/salaryReport/page.vue'),
     meta: {
       layout: AppLayouts.main
     }
   },
   {
     path: Utils.routeAccountantPathMaker(AppPaths.PensionPayment),
-    component: PensionPaymentPage,
+    component: () => import('@/pages/accountant/pensionPayment/page.vue'),
     meta: {
       layout: AppLayouts.main
     }
   },
   {
     path: Utils.routeAccountantPathMaker(AppPaths.Report),
-    component: ReportPage,
+    component: () => import('@/pages/hrm/report/ReportPage.vue'),
+    meta: {
+      layout: AppLayouts.main
+    }
+  },
+  {
+    path: Utils.routeAccountantPathMaker(AppPaths.Approval),
+    component: () => import('@pages/accountant/staffingApproval/page.vue'),
     meta: {
       layout: AppLayouts.main
     }

@@ -58,7 +58,8 @@
     { id: 4, name: t('documentPage.command.form.reason_four') },
     { id: 5, name: t('documentPage.command.form.reason_five') },
     { id: 6, name: t('documentPage.command.form.reason_six') },
-    { id: 7, name: t('documentPage.command.form.reason_seven') }
+    { id: 7, name: t('documentPage.command.form.reason_seven') },
+    { id: 9, name: t('documentPage.command.form.reason_eight') }
   ]
 
   const onSelectReason = (index, v) => {

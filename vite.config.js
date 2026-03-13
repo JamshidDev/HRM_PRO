@@ -12,6 +12,11 @@ export default defineConfig({
             "@stores": path.resolve(__dirname, './src/store/modules'),
             "@components": path.resolve(__dirname, './src/components'),
             "@pages": path.resolve(__dirname, './src/pages'),
+
+            // page modules
+            "@turnstile": path.resolve(__dirname, './src/pages/turnstile'),
+
+
         },
     },
     plugins: [
@@ -34,12 +39,22 @@ export default defineConfig({
                 },
             ],
             dts: "auto-imports.d.ts",
+            eslintrc: {
+                enabled: true,
+                filepath: './.eslintrc-auto-import.json',
+                globalsPropValue: true
+            }
         }),
+
     ],
     server: {
         port: 8000,
+        host: '0.0.0.0',
         watch: {
             ignored: ['dist/**', 'auto-imports.d.ts']
         },
+        allowedHosts: [
+            'jamcoder-mac.local',
+        ],
     },
 })

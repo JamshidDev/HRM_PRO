@@ -66,9 +66,37 @@ export const useTurnstileHikCentralWorkerStore = defineStore('turnstileHikCentra
     errorLoading: false,
     errorList: [],
     moreAccessLevels: [],
-    moreAccessLevelsLoading: false
+    moreAccessLevelsLoading: false,
+    department: {
+      list: [],
+      loading: false,
+      totalItems: 0,
+      params: {
+        page: 1,
+        per_page: 100,
+        search: null,
+        organizations: []
+      }
+    }
   }),
   actions: {
+    _department(infinity) {
+      this.department.loading = true
+      const params = {
+        ...this.department.params,
+        organizations: this.department.params.organizations?.toString() || undefined
+      }
+      $ApiService.componentService
+        ._departmentByOrganizations({ params })
+        .then((res) => {
+          const data = res.data.data.data.map((v) => ({ ...v, position: v?.organization?.name }))
+          this.department.totalItems = res.data.data.total
+          this.department.list = infinity ? [...this.department.list, ...data] : data
+        })
+        .finally(() => {
+          this.department.loading = false
+        })
+    },
     _workerAccessLevels(worker_id, callback) {
       this.moreAccessLevelsLoading = true
       const params = {
@@ -235,10 +263,10 @@ export const useTurnstileHikCentralWorkerStore = defineStore('turnstileHikCentra
     _access_levels() {
       this.accessLevelsLoading = true
       const params = {
-        organization_id: this.payload.level_org_id.map((v) => v.id).toString() || undefined,
+        organization_id: this.payload.level_org_id.map((v) => v.id).toString() || undefined
       }
       $ApiService.turnstileHikCentralWorkerService
-        ._access_levels({params})
+        ._access_levels({ params })
         .then((res) => {
           this.accessLevels = res.data.data
         })

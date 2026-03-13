@@ -1,23 +1,12 @@
-import { ref, markRaw } from 'vue'
+import { ref } from 'vue'
 
 const notifications = ref([])
-import { Info16Regular } from '@vicons/fluent'
-import {notificationTypes} from "@utils";
-
-// const icons = {
-//   success: markRaw(Info16Regular),
-//   danger: markRaw(Info16Regular),
-//   warning: markRaw(Info16Regular),
-//   info: markRaw(Info16Regular),
-//   primary: markRaw(Info16Regular)
-// }
-
 let id = 0
 
 export const useNotify = () => {
-  const notify = (content, type = 'success', options = {duration: 5000, persistent: false}) => {
-    id++;
-    const {duration} = options
+  const notify = (content, type = 'success', options = { duration: 5000, persistent: false }) => {
+    id++
+    const { duration } = options
     const item = {
       id,
       type,
@@ -26,7 +15,7 @@ export const useNotify = () => {
     }
 
     notifications.value.push(item)
-    if(options?.persistent) return
+    if (options?.persistent) return
     if (duration > 0) {
       setTimeout(() => remove(item.id), duration)
     }

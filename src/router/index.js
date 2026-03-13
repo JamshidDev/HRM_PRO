@@ -1,8 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { AppLayouts, AppPaths, useAppSetting } from '@/utils/index.js'
-import ProfilePage from '@/pages/app/profile/ProfilePage.vue'
 
-// routes
 import {
   adminRoutes,
   appRoutes,
@@ -16,7 +14,6 @@ import {
   hospitalRoutes,
   chatRoutes
 } from '@/router/modules'
-import { navigations } from '@/layouts/data/navigations.js'
 
 const beforeLogin = (to, from, next) => {
   const token = localStorage.getItem(useAppSetting.tokenKey)
@@ -40,7 +37,7 @@ const routes = [
         name: AppPaths.Admin.substring(1),
         beforeEnter: beforeLogin,
         redirect: AppPaths.Home,
-        children: [...adminRoutes],
+        children: adminRoutes,
         meta: {
           layout: AppLayouts.main
         }
@@ -50,7 +47,7 @@ const routes = [
         name: AppPaths.Hrm.substring(1),
         beforeEnter: beforeLogin,
         redirect: AppPaths.Home,
-        children: [...hrmRoutes],
+        children: hrmRoutes,
         meta: {
           layout: AppLayouts.main
         }
@@ -60,7 +57,7 @@ const routes = [
         name: AppPaths.Attestation.substring(1),
         beforeEnter: beforeLogin,
         redirect: AppPaths.Home,
-        children: [...attestationRoutes],
+        children: attestationRoutes,
         meta: {
           layout: AppLayouts.main
         }
@@ -70,7 +67,7 @@ const routes = [
         name: AppPaths.Turnstile.substring(1),
         beforeEnter: beforeLogin,
         redirect: AppPaths.Home,
-        children: [...turnstileRoutes],
+        children: turnstileRoutes,
         meta: {
           layout: AppLayouts.main
         }
@@ -80,7 +77,7 @@ const routes = [
         name: AppPaths.DocFlow.substring(1),
         beforeEnter: beforeLogin,
         redirect: AppPaths.Home,
-        children: [...docFlowRoutes],
+        children: docFlowRoutes,
         meta: {
           layout: AppLayouts.main
         }
@@ -90,7 +87,7 @@ const routes = [
         name: AppPaths.Lms.substring(1),
         beforeEnter: beforeLogin,
         redirect: AppPaths.Home,
-        children: [...lmsRoutes],
+        children: lmsRoutes,
         meta: {
           layout: AppLayouts.main
         }
@@ -99,7 +96,7 @@ const routes = [
         path: AppPaths.Others,
         beforeEnter: beforeLogin,
         redirect: AppPaths.Home,
-        children: [...othersRoutes],
+        children: othersRoutes,
         meta: {
           layout: AppLayouts.main
         }
@@ -108,7 +105,7 @@ const routes = [
         path: AppPaths.Accountant,
         beforeEnter: beforeLogin,
         redirect: AppPaths.Home,
-        children: [...accountantRoutes],
+        children: accountantRoutes,
         meta: {
           layout: AppLayouts.main
         }
@@ -117,15 +114,7 @@ const routes = [
         path: AppPaths.Hospital,
         beforeEnter: beforeLogin,
         redirect: AppPaths.Home,
-        children: [...hospitalRoutes],
-        meta: {
-          layout: AppLayouts.main
-        }
-      },
-      {
-        path: AppPaths.Profile,
-        name: AppPaths.Profile.substring(1),
-        component: ProfilePage,
+        children: hospitalRoutes,
         meta: {
           layout: AppLayouts.main
         }
@@ -135,7 +124,7 @@ const routes = [
         name: AppPaths.Chat.substring(1),
         beforeEnter: beforeLogin,
         redirect: AppPaths.Home,
-        children: [...chatRoutes],
+        children: chatRoutes,
         meta: {
           layout: AppLayouts.main
         }
@@ -143,36 +132,6 @@ const routes = [
     ]
   }
 ]
-
-const calculatePermission = () => {
-  let permissions = []
-  navigations.forEach((v) => {
-    const list = [...v.children.map((x) => ({ path: x.path, permission: x.permission }))]
-    permissions = [...permissions, ...list]
-  })
-  return [...permissions, ...navigations.map((x) => ({ path: x.path, permission: x.permission }))]
-}
-const allPermission = calculatePermission()
-const findPermissionByPath = (path) => {
-  const result = allPermission.filter((x) => x.path === path)
-  return result.length > 0 ? result[0].permission : null
-}
-const attachPermissionToRouter = (routes) => {
-  return routes.map((node) => {
-    const newNode = {
-      ...node,
-      meta: {
-        ...node.meta,
-        permission: findPermissionByPath(node.path)
-      }
-    }
-    if (node.children && node.children.length) {
-      newNode.children = attachPermissionToRouter(node.children)
-    }
-    return newNode
-  })
-}
-const newRouter = attachPermissionToRouter(routes)
 
 const router = createRouter({
   history: createWebHistory(),

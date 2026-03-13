@@ -27,6 +27,8 @@
       })
     )
   }
+  const isMounted = ref(false)
+
   const pages = computed(() => {
     return [
       // {
@@ -76,6 +78,7 @@
   onMounted(() => {
     store.pageOptions = pages.value.filter((page) => page.visible)
     store.activeTab = pages.value.filter((page) => page.visible)?.[0]?.key || null
+    isMounted.value = true
 
     emitTeleportEvent(true)
   })
@@ -87,7 +90,7 @@
 
 <template>
   <div>
-    <Teleport to="#layout-header-tab">
+    <Teleport v-if="isMounted" to="#layout-header-tab">
       <TabBar v-if="store.pageOptions.length > 0" />
     </Teleport>
     <Tabs />

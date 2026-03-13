@@ -69,13 +69,16 @@ export const useAccountStore = defineStore('accountStore', {
     }
   },
   actions: {
-    _logOut(callback){
+    _logOut(callback) {
       this.loading = true
-      $ApiService.accountService._logOut().then(()=>{
-        callback?.()
-      }).finally(()=>{
-        this.loading = false
-      })
+      $ApiService.accountService
+        ._logOut()
+        .then(() => {
+          callback?.()
+        })
+        .finally(() => {
+          this.loading = false
+        })
     },
     incrementUnReadCount() {
       this.unReadNotificationCount++

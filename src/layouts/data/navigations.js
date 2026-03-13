@@ -1,63 +1,65 @@
 import {
-    Folder48Filled,
-    LockClosed16Filled,
-    Person32Filled,
-    DocumentPerson20Filled,
-    DocumentPerson16Filled,
-    PersonNote24Filled,
-    Person12Filled,
-    DocumentAdd20Filled,
-    TextBulletListSquare20Filled,
-    ChannelShare20Filled,
-    AirplaneTakeOff20Regular,
-    PeopleCheckmark24Filled,
-    PersonProhibited24Filled,
-    WeatherSunnyLow20Filled,
-    Grid20Filled,
-    DocumentCopy24Filled,
-    PersonClock24Filled,
-    GridKanban20Filled,
-    BriefcaseMedical20Filled,
-    PersonAccounts24Filled,
-    BookQuestionMark24Filled,
-    Book20Filled,
-    HatGraduation12Filled,
-    ClipboardBulletListLtr20Filled,
-    DocumentEdit20Filled,
-    AccessTime24Filled,
-    SlideMultipleSearch24Filled,
-    BuildingMultiple24Filled,
-    ScanObject24Filled,
-    Organization12Filled,
-    BookDatabase24Regular,
-    RibbonStar24Filled,
-    PeopleToolbox20Filled,
-    ClockToolbox20Filled,
-    AppFolder20Filled,
-    HatGraduation24Filled,
-    AppsList24Filled,
-    RibbonStar20Filled,
-    PeopleMoney24Filled,
-    DocumentRibbon20Filled,
-    CalendarLtr20Filled,
-    Calculator24Regular,
-    ShareScreenPerson20Filled,
-    BuildingHome16Filled,
-    DocumentRibbon24Filled,
-    Briefcase48Filled,
-    AppTitle24Filled,
-    ContactCard16Filled,
-    ArrowUpload16Filled,
-    DesktopPulse24Filled,
-    QrCode24Regular,
-    ImageMultiple24Filled,
-    AppsAddIn16Regular,
-    ArrowSyncCircle24Filled,
-    AppFolder24Filled,
-    ShiftsCheckmark20Regular,
-    CellularData124Filled,
-    Clock24Filled,
-    DocumentBulletList24Filled, ChatMultiple16Filled, CommentLightning20Filled
+  Folder48Filled,
+  LockClosed16Filled,
+  Person32Filled,
+  DocumentPerson20Filled,
+  DocumentPerson16Filled,
+  PersonNote24Filled,
+  Person12Filled,
+  DocumentAdd20Filled,
+  TextBulletListSquare20Filled,
+  ChannelShare20Filled,
+  AirplaneTakeOff20Regular,
+  PeopleCheckmark24Filled,
+  PersonProhibited24Filled,
+  WeatherSunnyLow20Filled,
+  Grid20Filled,
+  DocumentCopy24Filled,
+  PersonClock24Filled,
+  GridKanban20Filled,
+  BriefcaseMedical20Filled,
+  PersonAccounts24Filled,
+  BookQuestionMark24Filled,
+  Book20Filled,
+  HatGraduation12Filled,
+  ClipboardBulletListLtr20Filled,
+  DocumentEdit20Filled,
+  AccessTime24Filled,
+  SlideMultipleSearch24Filled,
+  Certificate24Filled,
+  Organization12Filled,
+  BookDatabase24Regular,
+  RibbonStar24Filled,
+  PeopleToolbox20Filled,
+  ClockToolbox20Filled,
+  AppFolder20Filled,
+  HatGraduation24Filled,
+  AppsList24Filled,
+  RibbonStar20Filled,
+  PeopleMoney24Filled,
+  DocumentRibbon20Filled,
+  CalendarLtr20Filled,
+  Calculator24Regular,
+  ShareScreenPerson20Filled,
+  BuildingHome16Filled,
+  DocumentRibbon24Filled,
+  Briefcase48Filled,
+  AppTitle24Filled,
+  ContactCard16Filled,
+  ArrowUpload16Filled,
+  DesktopPulse24Filled,
+  QrCode24Regular,
+  ImageMultiple24Filled,
+  AppsAddIn16Regular,
+  AppFolder24Filled,
+  ShiftsCheckmark20Regular,
+  DocumentBulletList24Filled,
+  ChatMultiple16Filled,
+  CommentLightning20Filled,
+  PersonVoice20Filled,
+  AppsList20Regular,
+  News24Regular,
+  Tag16Filled
 } from '@vicons/fluent'
 import { AppPaths } from '@/utils/index.js'
 import Utils from '@/utils/Utils.js'
@@ -73,6 +75,8 @@ export const navigations = [
     path: AppPaths.Hrm,
     icon: Person32Filled,
     permission: appPermissions.hr,
+    name: 'hr',
+
     children: [
       {
         label: 'dashboardPage.name',
@@ -107,28 +111,32 @@ export const navigations = [
         path: Utils.routeHrmPathMaker(AppPaths.Contract),
         icon: DocumentPerson20Filled,
         color: 'bg-success',
-        permission: appPermissions.hrContracts
+        permission: appPermissions.hrContracts,
+        name: 'contracts'
       },
       {
         label: 'documentPage.tabs.command',
         path: Utils.routeHrmPathMaker(AppPaths.Command),
         icon: DocumentCopy24Filled,
         color: 'bg-secondary',
-        permission: appPermissions.hrCommands
+        permission: appPermissions.hrCommands,
+        name: 'commands'
       },
       {
         label: 'documentPage.tabs.adContract',
         path: Utils.routeHrmPathMaker(AppPaths.AdContract),
         icon: DocumentAdd20Filled,
         color: 'bg-warning',
-        permission: appPermissions.hrContractAdditional
+        permission: appPermissions.hrContractAdditional,
+        name: 'contract-additional'
       },
       {
         label: 'applicationPage.name',
         path: Utils.routeHrmPathMaker(AppPaths.Application),
         icon: DocumentEdit20Filled,
         color: 'bg-success',
-        permission: appPermissions.hrWorkerApplications
+        permission: appPermissions.hrWorkerApplications,
+        name: 'worker-applications'
       },
       {
         label: 'confirmationPage.name',
@@ -256,6 +264,13 @@ export const navigations = [
         icon: AppFolder20Filled,
         color: 'bg-info',
         permission: appPermissions.hrReportExport
+      },
+      {
+        label: 'structureReport.name',
+        path: Utils.routeHrmPathMaker(AppPaths.StructureReport),
+        icon: DocumentBulletList24Filled,
+        color: 'bg-warning',
+        permission: appPermissions.admin
       }
     ]
   },
@@ -264,34 +279,39 @@ export const navigations = [
     path: '/docflow',
     icon: DocumentPerson16Filled,
     permission: appPermissions.confirmation,
+    name: 'confirmation',
     children: [
       {
         label: 'confirmation.name',
         path: Utils.routeDocFlowPathMaker(AppPaths.ConfContract),
         icon: DocumentPerson20Filled,
         color: 'bg-dark',
-        permission: appPermissions.confirmationContracts
+        permission: appPermissions.confirmationContracts,
+        name: 'contracts'
       },
       {
         label: 'documentPage.tabs.command',
         path: Utils.routeDocFlowPathMaker(AppPaths.ConfCommand),
         icon: DocumentCopy24Filled,
         color: 'bg-primary',
-        permission: appPermissions.confirmationCommands
+        permission: appPermissions.confirmationCommands,
+        name: 'commands'
       },
       {
         label: 'documentPage.tabs.adContract',
         path: Utils.routeDocFlowPathMaker(AppPaths.ConfAdContract),
         icon: DocumentAdd20Filled,
         color: 'bg-warning',
-        permission: appPermissions.confirmationAddContracts
+        permission: appPermissions.confirmationAddContracts,
+        name: 'contract-additional'
       },
       {
         label: 'applicationPage.name',
         path: Utils.routeDocFlowPathMaker(AppPaths.ConfApplication),
         icon: DocumentEdit20Filled,
         color: 'bg-info',
-        permission: appPermissions.confirmationWorkerApplications
+        permission: appPermissions.confirmationWorkerApplications,
+        name: 'worker-application'
       },
       {
         label: 'timesheetPage.name',
@@ -307,6 +327,30 @@ export const navigations = [
         color: 'bg-info',
         permission: appPermissions.admin
       },
+      {
+        label: 'lmsCertificate.name',
+        path: Utils.routeDocFlowPathMaker(AppPaths.Certificate),
+        icon: Certificate24Filled,
+        color: 'bg-info',
+        permission: appPermissions.confirmationLmsCertificate,
+        name: 'lms-certificate'
+      },
+      {
+        label: 'staffingApproval.name',
+        path: Utils.routeDocFlowPathMaker(AppPaths.Approval),
+        icon: AppsList20Regular,
+        color: 'bg-info',
+        permission: appPermissions.confirmationStaffingApproval,
+        name: 'staffing-approve'
+      },
+      {
+        label: 'confirmationReport.name',
+        path: Utils.routeDocFlowPathMaker(AppPaths.ConfReport),
+        icon: DocumentBulletList24Filled,
+        color: 'bg-warning',
+        permission: appPermissions.admin,
+        name: 'conf-report'
+      }
     ]
   },
   {
@@ -497,6 +541,13 @@ export const navigations = [
         icon: DocumentBulletList24Filled,
         color: 'bg-dark',
         permission: appPermissions.admin
+      },
+      {
+        label: 'approve.name',
+        path: Utils.routeTurnstilePathMaker(AppPaths.Approve),
+        icon: PersonVoice20Filled,
+        color: 'bg-success',
+        permission: appPermissions.turnstileApprove
       }
     ]
   },
@@ -575,6 +626,13 @@ export const navigations = [
         icon: AppsList24Filled,
         color: 'bg-info',
         permission: appPermissions.admin
+      },
+      {
+        label: 'lmsCertificate.name',
+        path: Utils.routeLmsPathMaker(AppPaths.Certificate),
+        icon: Certificate24Filled,
+        color: 'bg-info',
+        permission: appPermissions.lmsCertificate
       }
     ]
   },
@@ -647,6 +705,13 @@ export const navigations = [
         color: 'bg-info',
         permission: appPermissions.hrReport
       },
+      {
+        label: 'staffingApproval.name',
+        path: Utils.routeAccountantPathMaker(AppPaths.Approval),
+        icon: AppsList20Regular,
+        color: 'bg-info',
+        permission: appPermissions.economistStaffingApprove
+      }
     ]
   },
   {
@@ -816,24 +881,52 @@ export const navigations = [
         icon: Folder48Filled,
         color: 'bg-dark',
         permission: appPermissions.instructions
+      },
+      {
+        label: 'mobileUserPage.name',
+        path: Utils.routePathMaker(AppPaths.MobileUsers),
+        icon: Folder48Filled,
+        color: 'bg-dark',
+        permission: appPermissions.admin
       }
     ]
   },
-    {
-        label: 'navigation.chat',
-        path: AppPaths.Chat,
-        icon: ChatMultiple16Filled,
-        permission: appPermissions.admin,
-        children: [
-            {
-                label: 'notificationPage.name',
-                path: Utils.routeChatPathMaker(AppPaths.Notification),
-                icon: CommentLightning20Filled,
-                color: 'bg-dark',
-                permission: appPermissions.instructions
-            }
-        ]
-    }
+  {
+    label: 'navigation.chat',
+    path: AppPaths.Chat,
+    icon: ChatMultiple16Filled,
+    permission: appPermissions.admin,
+    children: [
+      {
+        label: 'notificationPage.name',
+        path: Utils.routeChatPathMaker(AppPaths.Notification),
+        icon: CommentLightning20Filled,
+        color: 'bg-dark',
+        permission: appPermissions.instructions
+      },
+      {
+        label: 'newsPage.name',
+        path: Utils.routeChatPathMaker(AppPaths.News),
+        icon: News24Regular,
+        color: 'bg-dark',
+        permission: appPermissions.admin
+      },
+      {
+        label: 'newsCategoryPage.name',
+        path: Utils.routeChatPathMaker(AppPaths.NewsCategory),
+        icon: Tag16Filled,
+        color: 'bg-dark',
+        permission: appPermissions.admin
+      },
+      {
+        label: 'congratulation.name',
+        path: Utils.routeChatPathMaker(AppPaths.Congratulation),
+        icon: CommentLightning20Filled,
+        color: 'bg-warning',
+        permission: appPermissions.chatTelegramMessages
+      }
+    ]
+  }
 ]
 
 export const otherNavigations = [

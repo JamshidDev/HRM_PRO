@@ -33,6 +33,7 @@
     <UIPageFilter
       v-model:search="store.params.search"
       :show-add-button="false"
+      :show-filter-button="false"
       :search-loading="store.loading"
       @onSearch="onSearchEv"
     />

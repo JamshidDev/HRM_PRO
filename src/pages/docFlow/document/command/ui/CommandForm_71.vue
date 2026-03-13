@@ -34,7 +34,7 @@
         data: {
           ...mainData,
           worker_positions: data,
-          base:base.value || null,
+          base: base.value || null
         },
         isValid: true
       }
@@ -117,17 +117,17 @@
     </div>
   </div>
   <div
-      class="grid grid-cols-12 mb-8 gap-x-4 border border-surface-line p-2 rounded-md bg-surface-ground"
+    class="grid grid-cols-12 mb-8 gap-x-4 border border-surface-line p-2 rounded-md bg-surface-ground"
   >
     <div class="col-span-12">
       <n-form-item :show-feedback="false" :label="$t(`documentPage.command.form.base`)" path="base">
         <n-input
-            class="w-full"
-            type="textarea"
-            :autosize="true"
-            :rows="1"
-            v-model:value="base"
-            clearable
+          class="w-full"
+          type="textarea"
+          :autosize="true"
+          :rows="1"
+          v-model:value="base"
+          clearable
         />
       </n-form-item>
     </div>

@@ -149,11 +149,11 @@ export const useDashboardStore = defineStore('dashboardStore', {
           },
           data1: {
             title: 'dashboardPage.position.vakant',
-            count: Math.max(v.positions_rate - v.worker_positions_rate, 0)
+            count: parseFloat(Math.max(v.positions_rate - v.worker_positions_rate, 0).toFixed(2))
           },
           data2: {
             title: 'dashboardPage.position.sverx',
-            count: Math.max(v.worker_positions_rate - v.positions_rate, 0)
+            count: parseFloat(Math.max(v.worker_positions_rate - v.positions_rate, 0).toFixed(2))
           }
         },
         {

@@ -565,6 +565,25 @@ export default {
       trigger: triggerEvents
     }
   },
+  disabilityForm: {
+    number: {
+      required: true,
+      message: t(`rules.requiredField`),
+      trigger: triggerEvents
+    },
+    level: {
+      type: 'number',
+      required: true,
+      message: t(`rules.requiredField`),
+      trigger: triggerEvents
+    },
+    from: {
+      type: 'number',
+      required: true,
+      message: t(`rules.requiredField`),
+      trigger: triggerEvents
+    }
+  },
   personalForm: {
     last_name: {
       required: true,
@@ -1035,7 +1054,7 @@ export default {
       message: t(`rules.requiredField`),
       trigger: triggerEvents
     },
-    finance_id:{
+    finance_id: {
       type: 'number',
       required: true,
       message: t(`rules.requiredField`),

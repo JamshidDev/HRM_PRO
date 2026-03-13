@@ -28,7 +28,11 @@ export default {
               el.addEventListener('input', function (event) {
                 const formattedValue = formatInput(event.target.value)
                 if (formattedValue !== event.target.value) {
+                  const start = event.target.selectionStart
+                  const end = event.target.selectionEnd
+                  const diff = event.target.value.length - formattedValue.length
                   event.target.value = formattedValue
+                  event.target.setSelectionRange(start - diff, end - diff)
                   event.target.dispatchEvent(new Event('input', { bubbles: true }))
                 }
               })

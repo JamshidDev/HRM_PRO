@@ -23,6 +23,7 @@
       >
         <n-button-group>
           <n-button
+            class="no-scale"
             v-for="(item, idx) in store.tabs"
             :key="idx"
             type="primary"

@@ -1,8 +1,0 @@
-export const UploadReportPage = () => import('./report/page.vue')
-export const MonthReportPage = () => import('./monthReport/page.vue')
-export const TaxFourPage = () => import('./taxFour/page.vue')
-export const TaxFivePage = () => import('./taxFive/page.vue')
-export const DashboardPage = () => import('./dashboard/page.vue')
-export const SalaryCategoryPage = () => import('./salaryCategory/page.vue')
-export const SalaryReportPage = () => import('./salaryReport/page.vue')
-export const PensionPaymentPage = () => import('./pensionPayment/page.vue')

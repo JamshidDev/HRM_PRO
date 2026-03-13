@@ -1,4 +1,4 @@
- <script setup>
+<script setup>
   import { NoDataPicture, TreeData } from '@/components/index.js'
   import { useReport2Store } from '@/store/modules/index.js'
 
@@ -59,4 +59,3 @@
     </n-spin>
   </div>
 </template>
-

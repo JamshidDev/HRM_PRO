@@ -1,173 +1,157 @@
 import { AppLayouts, AppPaths } from '@/utils/index.js'
 import Utils from '@/utils/Utils.js'
-import {
-  TurnstileBuildingPage,
-  TurnstileTerminalPage,
-  TurnstileOrganizationPage,
-  TurnstileTerminalUserPage,
-  TurnstileWorkDurationPage,
-  TurnstileAccessLevelsPage,
-  TurnstileOrgAccessLevelsPage,
-  TurnstileHcWorkersPage,
-  HcServerPage,
-  HcEventPage,
-  WorkerImagePage,
-  SyncLogPage,
-  DashboardPage,
-  HKWorkDurationPage,
-  OthersPage,
-  DevicesPage,
-  HcEventV2Page,
-  SchedulePage,
-  ShiftTypePage,
-  ShiftTypeGroupPage,
-  TurnstileSchedulePage
-} from '@/pages/turnstile'
 
 export const turnstileRoutes = [
   {
     path: Utils.routeTurnstilePathMaker(AppPaths.Building),
-    component: () => TurnstileBuildingPage,
+    component: () => import('@turnstile/building/page.vue'),
     meta: {
       layout: AppLayouts.main
     }
   },
   {
     path: Utils.routeTurnstilePathMaker(AppPaths.Terminal),
-    component: () => TurnstileTerminalPage,
+    component: () => import('@turnstile/terminal/page.vue'),
     meta: {
       layout: AppLayouts.main
     }
   },
   {
     path: Utils.routeTurnstilePathMaker(AppPaths.Organizations),
-    component: () => TurnstileOrganizationPage,
+    component: () => import('@turnstile/organizationTerminal/page.vue'),
     meta: {
       layout: AppLayouts.main
     }
   },
   {
     path: Utils.routeTurnstilePathMaker(AppPaths.User),
-    component: () => TurnstileTerminalUserPage,
+    component: () => import('@turnstile/terminalUser/page.vue'),
     meta: {
       layout: AppLayouts.main
     }
   },
   {
     path: Utils.routeTurnstilePathMaker(AppPaths.WorkDuration),
-    component: () => TurnstileWorkDurationPage,
+    component: () => import('@turnstile/workDuration/page.vue'),
     meta: {
       layout: AppLayouts.main
     }
   },
   {
     path: Utils.routeTurnstilePathMaker(AppPaths.AccessLevels),
-    component: () => TurnstileAccessLevelsPage,
+    component: () => import('@turnstile/accessLevels/page.vue'),
     meta: {
       layout: AppLayouts.main
     }
   },
   {
     path: Utils.routeTurnstilePathMaker(AppPaths.OrgAccessLevels),
-    component: () => TurnstileOrgAccessLevelsPage,
+    component: () => import('@turnstile/orgAccessLevels/page.vue'),
     meta: {
       layout: AppLayouts.main
     }
   },
   {
     path: Utils.routeTurnstilePathMaker(AppPaths.HcWorkers),
-    component: () => TurnstileHcWorkersPage,
+    component: () => import('@turnstile/hcWorkers/page.vue'),
     meta: {
       layout: AppLayouts.main
     }
   },
   {
     path: Utils.routeTurnstilePathMaker(AppPaths.HcServer),
-    component: () => HcServerPage,
+    component: () => import('@turnstile/hcServer/page.vue'),
     meta: {
       layout: AppLayouts.main
     }
   },
   {
     path: Utils.routeTurnstilePathMaker(AppPaths.HcEvents),
-    component: () => HcEventPage,
+    component: () => import('@turnstile/events/ui/Tabs.vue'),
     meta: {
       layout: AppLayouts.main
     }
   },
   {
     path: Utils.routeTurnstilePathMaker(AppPaths.HcEventsV2),
-    component: () => HcEventV2Page,
+    component: () => import('@turnstile/eventsV2/page.vue'),
     meta: {
       layout: AppLayouts.main
     }
   },
   {
     path: Utils.routeTurnstilePathMaker(AppPaths.WorkerImage),
-    component: () => WorkerImagePage,
+    component: () => import('@turnstile/workerImage/page.vue'),
     meta: {
       layout: AppLayouts.main
     }
   },
   {
     path: Utils.routeTurnstilePathMaker(AppPaths.SyncLog),
-    component: () => SyncLogPage,
+    component: () => import('@turnstile/syncLog/page.vue'),
     meta: {
       layout: AppLayouts.main
     }
   },
   {
     path: Utils.routeTurnstilePathMaker(AppPaths.Dashboard),
-    component: () => DashboardPage,
+    component: () => import('@turnstile/dashboard/page.vue'),
     meta: {
       layout: AppLayouts.main
     }
   },
   {
     path: Utils.routeTurnstilePathMaker(AppPaths.HCWorkDuration),
-    component: () => HKWorkDurationPage,
+    component: () => import('@turnstile/HKWorkDuration/page.vue'),
     meta: {
       layout: AppLayouts.main
     }
   },
   {
     path: Utils.routeTurnstilePathMaker(AppPaths.Others),
-    component: () => OthersPage,
+    component: () => import('@turnstile/others/page.vue'),
     meta: {
       layout: AppLayouts.main
     }
   },
   {
     path: Utils.routeTurnstilePathMaker(AppPaths.Devices),
-    component: () => DevicesPage,
+    component: () => import('@turnstile/devices/page.vue'),
     meta: {
       layout: AppLayouts.main
     }
   },
   {
     path: Utils.routeTurnstilePathMaker(AppPaths.Schedule),
-    component: () => SchedulePage,
+    component: () => import('@turnstile/schedule/page.vue'),
     meta: {
       layout: AppLayouts.main
     }
   },
   {
     path: Utils.routeTurnstilePathMaker(AppPaths.ShiftType),
-    component: () => ShiftTypePage,
+    component: () => import('@turnstile/shiftType/ui/Tabs.vue'),
     meta: {
       layout: AppLayouts.main
     }
   },
   {
     path: Utils.routeTurnstilePathMaker(AppPaths.ShiftTypeGroup),
-    component: () => ShiftTypeGroupPage,
+    component: () => import('@turnstile/shiftType/ui/Tabs.vue'),
     meta: {
       layout: AppLayouts.main
     }
   },
   {
     path: Utils.routeTurnstilePathMaker(AppPaths.TurnstileSchedule),
-    component: () => TurnstileSchedulePage,
+    component: () => import('@turnstile/turnstileSchedule/page.vue'),
+    meta: {
+      layout: AppLayouts.main
+    }
+  },
+  {
+    path: Utils.routeTurnstilePathMaker(AppPaths.Approve),
+    component: () => import('@turnstile/approve/page.vue'),
     meta: {
       layout: AppLayouts.main
     }

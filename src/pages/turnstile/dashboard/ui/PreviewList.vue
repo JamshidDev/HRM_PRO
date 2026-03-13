@@ -19,9 +19,7 @@
     return getTableConfig(dashboardStore.previewParams.type)
   })
 
-  const handleRowClick = (item, index) => {
-  }
-
+  const handleRowClick = (item, index) => {}
 </script>
 
 <template>

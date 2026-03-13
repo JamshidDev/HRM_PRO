@@ -1,31 +1,35 @@
 {
   "content": {
+    "user": "User",
+    "title": "Title",
     "deleted": "Deleted",
-    "nowOnlineUsers": "Hozirda tizimdagi online foydalanuvchilar",
-    "onlineUsers": "Online foydalanuvchilar",
+    "nowOnlineUsers": "Currently online users",
+    "onlineUsers": "Online users",
     "files": "Files",
-    "developmentProcess": "Ishlab chiqish jarayonida",
-    "notifications": "Bildirishnomalar",
-    "markAsRead": "O‘qilgan deb belgilash",
-    "viewAll": "Barchasini ko‘rish",
+    "historyUpload": "Upload history",
+    "developmentProcess": "In development",
+    "notifications": "Notifications",
+    "markAsRead": "Mark as read",
+    "viewAll": "View all",
     "lastClickTime": "You can try again in {n} minutes!",
     "deadline": "Deadline",
     "requiredField": "This field is required!",
-    "miniOneWorker": "Kamida bitta xodim tanlash shart!",
+    "miniOneWorker": "At least one employee must be selected!",
     "save": "Save",
-    "fullTime": "To‘liq ish kuni",
-    "partTime": "To‘liqsiz ish kuni",
-    "workTime": "Ish vaqti",
-    "workers": "Xodimlar",
+    "fullTime": "Full-time",
+    "partTime": "Part-time",
+    "workTime": "Working hours",
+    "workers": "Employees",
     "start": "Start",
     "edit": "Edit",
+    "work_date": "Start date",
     "delete": "Delete",
-    "checked": "Tekshirilgan",
+    "checked": "Checked",
     "view": "View",
-    "backToList": "Asosiy oynaga qaytish",
+    "backToList": "Back to list",
     "responsible": "Responsible person",
     "now": "Now",
-    "selected": "Tanlandi",
+    "selected": "Selected",
     "price": "Price",
     "active": "Active",
     "noActive": "Inactive",
@@ -47,7 +51,7 @@
     "no-data": "No data",
     "cancel": "Cancel",
     "code": "Code",
-    "departments": "Bo‘limlar",
+    "departments": "Departments",
     "questions": "Questions",
     "videos": "Videos",
     "confirmExit": "Confirm exit?",
@@ -64,7 +68,7 @@
     "today": "Today",
     "yesterday": "Yesterday",
     "piece": "pcs",
-    "person": "people",
+    "person": "persons",
     "searchWorker": "Type to search employee...",
     "add": "Add",
     "filterSetting": "Filter settings",
@@ -77,15 +81,17 @@
     "deviceStatus": "Device status",
     "comment": "Comment",
     "commentPlaceholder": "Enter comment...",
-    "fullName": "Full name",
+    "fullName": "Name",
     "position": "Position",
     "template": "Template file",
     "number": "№",
+    "count": "Total",
     "photo": "Photo",
     "short": "Short",
     "long": "Full",
     "platform": "Platform",
     "date": "Date",
+    "createdDate": "Created date",
     "name": "Name",
     "downloadReport": "Download report",
     "general": "General",
@@ -109,7 +115,7 @@
     "or": "Or",
     "send": "Send",
     "file": "File",
-    "choose": "Select",
+    "choose": "Choose",
     "chooseFile": "Choose file",
     "signatureLogin": "Login with e-signature",
     "signatureDocument": "Sign and save",
@@ -126,8 +132,8 @@
     "noAvailable": "Not available",
     "worker": "Employee",
     "status": "Status",
-    "Process": "In process",
-    "Read": "Read",
+    "Process": "In progress",
+    "Read": "Reviewed",
     "Success": "Approved",
     "Rejected": "Rejected",
     "Deleted": "Deleted",
@@ -136,28 +142,29 @@
     "message": "Write a message...",
     "no-message": "No conversations yet",
     "type": "Type",
-    "checkLabel": "Tekshiruv",
-    "workplace": "Enterprise",
+    "checkLabel": "Check",
+    "workplace": "Organization",
     "upload": "Upload file",
     "attachFile": "Attach file",
     "document": "Document",
     "checking": "Checking...",
     "downloadCV": "Download certificate",
     "deleteWarning": "Are you sure you want to delete?",
-    "sum": "sum",
+    "sum": "UZS",
     "total": "Total: {n}",
-    "fromTa": "from",
+    "fromTa": "of",
     "main": "Main",
-    "untilShow": "shown until",
+    "untilShow": "shown",
     "next": "Next",
     "preview": "Previous",
     "warning": "Warning",
     "error": "Error",
-    "process": "In process",
-    "success": "Success",
+    "process": "In progress",
+    "success": "Completed",
     "return": "Return",
     "finish": "Finish",
     "created": "Created date",
+    "read": "Read date",
     "ended": "Ended date",
     "move": "Move",
     "listen": "Listen",
@@ -169,10 +176,10 @@
     "comingSoon": "Coming soon",
     "ip": "IP address",
     "url": "URL address",
-    "brief": "Details",
+    "brief": "Brief",
     "organization": "Organization",
-    "confirmStatus": "Approver",
-    "staff": "Staff",
+    "confirmStatus": "Confirmation",
+    "staff": "Employee",
     "export": "Export",
     "reference": "Reference",
     "from": "From",
@@ -180,37 +187,38 @@
     "more": "More",
     "role": "Role",
     "duration": "Duration",
-    "preparingDocument": "Document is being prepared...",
+    "preparingDocument": "Preparing document...",
     "later": "Later",
     "refresh": "Refresh",
-    "confirmFileText": "To approve the document, upload the signed PDF version.",
+    "confirmFileText": "To confirm the document, upload the signed PDF file.",
     "department": "Department",
     "birthday": "Date of birth",
     "age": "Age",
-    "pin": "Enter passport PINFL",
+    "pin": "Enter passport PIN",
     "university": "University",
-    "nameUz": "Name (UZ)",
-    "nameRu": "Name (RU)",
-    "nameEn": "Name (EN)",
-    "loginById": "Login to system",
+    "nameUz": "Name (uz)",
+    "nameRu": "Name (ru)",
+    "nameEn": "Name (en)",
+    "loginById": "Login",
     "detail": "Details",
     "users": "Users",
     "image": "Image",
-    "spam": "Spam",
+    "spam": "Mark as spam",
     "noSpam": "Remove from spam",
     "noImage": "No image",
     "waitResponse": "Please wait for response!",
     "untilNow": "present",
-    "warningImageSave": "New main photo selected. Click 'Save' to apply changes.",
+    "warningImageSave": "New image selected as main. Click 'Save' to apply changes.",
     "selectAll": "Select all",
-    "selectList": "Ro‘yhatni to‘liq tanlash",
-    "unSelectList": "Ro‘yhatni to‘liq tozalash",
-    "unSelectAll": "Barchasini tozalash",
-    "forceUnSelectAll": "To‘liq tozalash",
+    "selectList": "Select entire list",
+    "unSelectList": "Clear entire list",
+    "unSelectAll": "Clear all",
+    "forceUnSelectAll": "Force clear all",
     "uz": "UZ",
     "ru": "RU",
     "en": "EN",
-    "create": "Yaratish"
+    "create": "Create",
+    "allSelected": "All selected"
   },
   "date": {
     "day": "Day",
@@ -236,15 +244,15 @@
     "phone": "Phone number is required!",
     "password": "Password is required!",
     "requiredField": "This field is required!",
-    "requiredWorker": "Select employee!",
-    "requiredImageField": "Upload image!",
-    "requiredSelectImageField": "Select image!",
-    "requiredFileField": "Upload file!",
-    "requiredMinLength": "At least {n} characters",
-    "requiredMaxLength": "No more than {n} characters",
-    "unExpectedFormat": "Invalid data format!",
-    "requiredJSHSHIR": "Enter passport PINFL!",
-    "enterOverNumber": "Enter number greater than {n}",
+    "requiredWorker": "Employee selection is required!",
+    "requiredImageField": "Image upload is required!",
+    "requiredSelectImageField": "Image selection is required!",
+    "requiredFileField": "File upload is required!",
+    "requiredMinLength": "Must be at least {n} characters",
+    "requiredMaxLength": "Must not exceed {n} characters",
+    "unExpectedFormat": "Incorrect data format!",
+    "requiredJSHSHIR": "Passport PIN is required!",
+    "enterOverNumber": "Enter a number greater than {n}",
     "requiredHoursField": "Invalid time format (HH:MM)"
   },
   "message": {
@@ -253,64 +261,64 @@
     "clearedFields": "Fields cleared!",
     "unExpectedError": "Unexpected error occurred!",
     "warning-data": "Insufficient data!",
-    "noPermission": "No permission!"
+    "noPermission": "Permission denied!"
   },
   "enum": {
     "man": "Male",
     "woman": "Female",
     "noCreated": "Not created",
-    "working": "In process",
+    "working": "In progress",
     "bug": "Error",
     "done": "Created"
   },
   "account": {
     "changeAccount": "Change account!",
-    "changeRoleConfirm": "Select account and wait 20 seconds"
+    "changeRoleConfirm": "Select the desired account to switch and wait 20 seconds"
   },
   "sidebar": {
-    "hrm": "HR menu",
-    "admin": "Admin menu",
-    "chat": "Chat menu",
-    "docflow": "Documents menu",
-    "attestation": "Attestation menu",
+    "hrm": "HR Menu",
+    "admin": "Admin Menu",
+    "chat": "Chat Menu",
+    "docflow": "Documents Menu",
+    "attestation": "Certification Menu",
     "timesheet": "Timesheet",
-    "accountant": "Accountant menu",
-    "hospital": "Medical examination menu",
+    "accountant": "Accountant Menu",
+    "hospital": "Medical Examination Menu",
     "lms": "LMS"
   },
   "loginPage": {
     "name": "Welcome",
     "title": "Login",
-    "subtitle": "Enter phone and password to login.",
+    "subtitle": "Enter your phone number and password to log in.",
     "phone": "Phone number",
     "password": "Password",
-    "doYouHaveAccount": "No account?",
+    "doYouHaveAccount": "Don't have an account?",
     "singUp": "Sign up",
     "description": {
       "title": "HRMS",
-      "subtitle": "Modern personnel management system\n",
-      "text": "Convenient solution for efficient employee management, work time control, and document automation. Optimize HR processes and take your business to the next level!"
+      "subtitle": "Modern employee management system\n",
+      "text": "Convenient solution for efficient employee management, time tracking, and document automation. Optimize HR processes and take your business to the next level!"
     },
     "login": "Login"
   },
   "registerPage": {
-    "name": "Registration",
-    "title": "Registration",
+    "name": "Sign up",
+    "title": "Sign up",
     "subtitle": "Verification",
     "firstName": "First name",
     "lastName": "Last name",
     "middleName": "Middle name",
-    "pin": "Passport PINFL",
-    "doYouHaveAccount": "Have account?",
-    "loginToSystem": "Login to system!",
+    "pin": "Passport PIN",
+    "doYouHaveAccount": "Already have an account?",
+    "loginToSystem": "Log in!",
     "otp": "Code",
-    "verification": "We sent verification code to {n}",
-    "reSendOtp": "Get new code",
+    "verification": "We sent a verification code to your phone number {n} via SMS.",
+    "reSendOtp": "Resend verification code",
     "getOtp": "Get code"
   },
   "verificationEmail": {
     "title": "Account verification",
-    "subtitle": "We sent code to {email}",
+    "subtitle": "We sent a verification code to your email {email}",
     "placeholder": "Enter code here",
     "verification": "Verify"
   },
@@ -340,7 +348,7 @@
       "confirmSpam": "Mark as spam?",
       "cancelSpam": "Remove from spam?"
     },
-    "no-roles": "No assigned roles!"
+    "no-roles": "No roles assigned!"
   },
   "confirmation": {
     "name": "Contracts",
@@ -348,7 +356,7 @@
       "form": {
         "number": "Number",
         "type": "Type",
-        "organization": "Enterprise",
+        "organization": "Organization",
         "worker": "Employee"
       }
     }
@@ -392,8 +400,8 @@
   },
   "profilePage": {
     "account": {
-      "title": "Account info",
-      "warningText": "Regularly update account info for security. This protects from unauthorized access."
+      "title": "Account information",
+      "warningText": "For account security, regularly update your account details. This helps protect against unauthorized access."
     },
     "tabs": {
       "profileInfo": "Account info",
@@ -402,8 +410,8 @@
       "actionHistory": "Action history",
       "social": {
         "title": "Social networks",
-        "subtitle": "Join support groups",
-        "group": "HRM responsible group",
+        "subtitle": "Join our support groups",
+        "group": "HRM managers group",
         "bot": "HRMPRO bot",
         "copy": "Copy",
         "join": "Join",
@@ -412,19 +420,18 @@
       }
     },
     "org": {
-      "title": "Order blank info",
-      "command_name": "City/District (in order blank)",
+      "title": "Order form data",
+      "command_name": "City/District (in order form)",
       "address": "Full organization address",
       "city_id": "District",
       "region_id": "Region"
     },
     "form": {
       "lastName": "Last name",
-      "firstName": "Ism",
+      "firstName": "First name",
       "middleName": "Middle name",
       "password": "Password",
-      "confirmPassword": "Confirm password",
-      "fistName": "First name"
+      "confirmPassword": "Confirm password"
     }
   },
   "positionPage": {
@@ -452,13 +459,13 @@
       "level": "Organization type"
     },
     "selectedOrg": "Selected organization",
-    "deleteContent": "Delete this organization?"
+    "deleteContent": "Are you sure you want to delete this organization?"
   },
   "timesheet": {
     "name": "Timesheet",
     "status": "Timesheet status",
     "assignUser": "Assign to timesheet",
-    "finished": "Finished",
+    "finished": "Completed",
     "type": {
       "organization": "Organization",
       "department": "Department"
@@ -470,11 +477,13 @@
     "name": "Timesheet keepers",
     "work_place": "Organization/Department"
   },
+
+
   "workerPage": {
     "name": "Employees",
     "filter": {
-      "contract": "Contract signing",
-      "organization": "Enterprises",
+      "contract": "Contract creation",
+      "organization": "Organizations",
       "birthday": "Birth month",
       "contract_type": "Contract type",
       "department": "Departments",
@@ -485,13 +494,15 @@
       "downloadRelative": "Download relatives"
     },
     "checkWorker": {
-      "title": "Employee search",
-      "defaultText": "Start search...",
-      "no-worker": "Employee not found!",
-      "born": "Birth date",
+      "title": "Search employee",
+      "defaultText": "Start searching...",
+      "existPosition": "Current employment",
+      "alertCommandType": "Cannot create indefinite contract with this employee",
+      "no-worker": "Employee not found in system!",
+      "born": "Date of birth",
       "addCandidate": "Add candidate",
-      "add-worker": "Add missing employee via candidate button",
-      "jshshir": "Enter PINFL"
+      "add-worker": "Add non-existing employee data via candidate button",
+      "jshshir": "Enter PIN"
     },
     "table": {
       "department": "Department",
@@ -500,13 +511,13 @@
       "rank": "R",
       "rate": "S",
       "position_date": "Position date",
-      "birthday": "Birth date",
+      "birthday": "Date of birth",
       "position": "Position",
-      "organization": "Enterprise"
+      "organization": "Organization"
     }
   },
   "exportPage": {
-    "name": "Tasks",
+    "name": "Assignments",
     "exportAction": "Export",
     "checkAll": "Select all",
     "addPassport": "Include passport data?",
@@ -527,7 +538,7 @@
       "others": "Others"
     },
     "personal": {
-      "additionalContract": "Additional agreement",
+      "additionalContract": "Create additional agreement",
       "createOrder": "Create order",
       "positionGroup": "Position group",
       "positionRank": "Position rank",
@@ -539,14 +550,18 @@
       "contractType": "Contract type",
       "contractNumber": "Contract number",
       "contractDate": "Contract date",
-      "contractToDate": "Contract term",
+      "contractToDate": "Contract expiry",
       "positionDate": "Position date",
       "position": "Position",
-      "title": "Position info"
+      "title": "Position details"
     },
     "roles": {
       "title": "Roles",
       "attachRole": "Assign role"
+    },
+    "disability": {
+      "title": "Disability information",
+      "noData": "No data"
     }
   },
   "departmentPage": {
@@ -554,12 +569,13 @@
     "createTitle": "Add department",
     "updateTitle": "Edit department",
     "form": {
-      "parent_id": "Select department",
+      "parent_id": "Parent department",
       "name": "Department name",
-      "level": "Department type"
+      "level": "Department type",
+      "attachmentParent": "Create as sub-department"
     },
     "selectedOrg": "Selected organization",
-    "deleteContent": "Delete this department?"
+    "deleteContent": "Are you sure you want to delete this organization?"
   },
   "departmentPositionPage": {
     "name": "Positions",
@@ -570,34 +586,35 @@
       "department_id": "Select department",
       "group": "Position group",
       "rank": "Position rank",
-      "max_rank": "Max rank",
-      "rate": "Position contingent",
-      "salary": "Salary",
-      "experience": "Experience (months)",
-      "educations": "Minimum education"
+      "max_rank": "Maximum rank",
+      "rate": "Position quota",
+      "fact": "Actual employees",
+      "salary": "Monthly salary",
+      "experience": "Required experience (months)",
+      "educations": "Minimum education required"
     },
     "table": {
       "position": "Position",
       "group": "G",
       "rank": "R",
-      "rate": "K",
+      "rate": "Q",
       "fact": "F",
-      "salary": "Salary",
+      "salary": "Monthly salary",
       "department": "Department",
       "education": "Education",
-      "organization": "Enterprise  ",
+      "organization": "Organization",
       "experience": "Experience"
     }
   },
   "createWorkerPage": {
-    "updatePasswordWarning": "Click 'Update password' to change to PINFL",
+    "updatePasswordWarning": "Click 'Update password' to change employee password to PIN",
     "updatePassword": "Update password",
-    "no-account": "Account not created. Save to create!",
-    "otherProfile": "Account not created, number already linked to {n}!",
+    "no-account": "No account created. Click save to create!",
+    "otherProfile": "Account not created. Phone number already linked to {n}!",
     "name": "Add employee data",
     "ui": {
-      "image": "Upload 3 recent photos (last 3 months).",
-      "phone": "Set primary number as login."
+      "image": "Recommended to add 3 photos taken within last 3 months.",
+      "phone": "Mark primary phone number (used as login)."
     },
     "form": {
       "lastName": "Last name",
@@ -606,27 +623,27 @@
       "country": "Birth country",
       "region": "Birth region",
       "city": "Birth district",
-      "currentRegion": "Residence region",
-      "currentCity": "Residence district",
-      "birthday": "Birth date",
+      "currentRegion": "Current region",
+      "currentCity": "Current district",
+      "birthday": "Date of birth",
       "academicTitle": "Academic title",
       "academicDegree": "Academic degree",
       "nationality_id": "Nationality",
       "party": "Party affiliation",
-      "pin": "Passport PINFL",
+      "pin": "Passport PIN",
       "serial_number": "Series and number",
       "from_date": "Issue date",
       "to_date": "Expiry date",
       "passport_address": "Issued by",
       "passport_file": "Passport copy (.pdf)",
-      "inn": "INN",
+      "inn": "TIN",
       "sex": "Gender",
       "marital_status": "Marital status",
-      "address": "Residence address",
-      "experience_date": "Continuous experience",
-      "passportTitle": "Passport data",
+      "address": "Residential address",
+      "experience_date": "Continuous service",
+      "passportTitle": "Passport details",
       "education": "Education",
-      "work_experience": "Total experience (months)"
+      "work_experience": "Total experience (in months)"
     },
     "step": {
       "personal": "Personal data",
@@ -636,36 +653,35 @@
     },
     "toast": {
       "warning": {
-        "title": "Employee exists",
+        "title": "Existing employee",
         "subtitle": "No comment"
       },
       "success": {
         "title": "Candidate added",
-        "subtitle": "Continue to contract."
+        "subtitle": "Click continue to create contract."
       }
     }
   },
   "signature": {
     "keyType": "User type",
     "inn": "TIN",
-    "undo": "Back",
+    "undo": "Undo",
     "certificate": "Certificate number",
     "validDate": "Validity",
     "expiredKey": "Key expired!",
     "legalPerson": "Legal entity",
     "naturalPerson": "Individual",
-    "connectionError": "E-signature not installed or configured!",
+    "connectionError": "E-signature not installed or misconfigured!",
     "copyLink": "Copy link",
     "copied": "Link copied",
     "goSignature": "Sign",
     "signatureTitle": "Sign document electronically!",
-    "signatureWorker": "Signature link for {name}. Valid only after {name}'s signature.",
+    "signatureWorker": "Signature link created for {name}. Document valid only when signed by {name}.",
     "linkText": "Document link",
     "acceptApplication": "Approve application",
     "comment": "Comment",
-    "rejectApplication": "Arizani rad qilish",
-    "pinfl": "PINFL",
-    "mineApplication": "Reject application"
+    "rejectApplication": "Reject application",
+    "pinfl": "PIN"
   },
   "documentPage": {
     "name": "Documents",
@@ -674,126 +690,132 @@
     "position_date": "Position date",
     "tabs": {
       "contract": "Contracts",
-      "adContract": "Add. agreements",
+      "adContract": "Additional agreements",
       "command": "Orders"
     },
     "command": {
       "createTitle": "Create order",
       "updateTitle": "Edit order",
-      "lastVacation": "View last vacation",
+      "lastVacation": "View last vacation data",
       "form": {
+        "beforeFromDeadline": "Before deadline",
+        "afterFromDeadline": "After deadline",
+        "twoAgeChild": "Up to 2 years",
+        "threeAgeChild": "Up to 3 years",
+        "deadlineOfVacation": "Vacation duration",
         "command_date": "Order date",
-        "viewSameTime": "Bir vaqtda tanishish",
-        "viewDescription": "Tasdiqlovchilar quyidagi tartibda yoki bir vaqtda ko‘rib hujjatni imzolaydilar",
-        "viewOneByOne": "Tartib bo‘yicha tanishish",
+        "viewSameTime": "Review simultaneously",
+        "viewDescription": "Approvers review in order or simultaneously",
+        "viewOneByOne": "Review in order",
         "type": "Order type",
-        "byContract": "Based on contract #{n}",
+        "byContract": "Based on contract No. {n}",
         "confirm": "Approvers",
         "director_id": "Director",
+        "finance_id": "Accountant",
         "day": "Day",
-        "from": "Vacation start",
+        "from": "Vacation start date",
         "period_from": "Vacation period (from)",
         "period_to": "Vacation period (to)",
-        "to": "Vacation end",
-        "work_day": "Return to work",
-        "main_day": "Main vacation",
-        "half_one_day": "Ta’til kuni (Birinchi yarmi)",
-        "half_two_day": "Ta’til kuni (Ikkinchi yarmi)",
-        "half_two_date": "Ta’til sanasi (Ikkinchi yarmi)",
-        "second_day": "Additional vacation",
-        "additional": "Qo‘chimchalar",
+        "to": "Vacation end date",
+        "work_day": "Return to work date",
+        "main_day": "Main vacation days",
+        "half_one_day": "Vacation day (first half)",
+        "half_two_day": "Vacation day (second half)",
+        "half_two_date": "Vacation date (second half)",
+        "second_day": "Additional vacation days",
+        "additional": "Attachments",
         "calculateVacation": "Calculate vacation",
-        "no-calculate": "Vacation not calculated!",
+        "no-calculate": "Vacation days not calculated!",
         "all_day": "Vacation days",
-        "contract_to_date": "Contract end",
-        "isNotValid": "Insufficient data for vacation calculation!",
+        "contract_to_date": "Contract end date",
+        "isNotValid": "Insufficient data to calculate vacation!",
         "isNotCalculate": "Employee vacation data not calculated!",
-        "notSelectCommand": "Select order type!",
+        "notSelectCommand": "Select order type and continue!",
         "removeWorker": "Remove from list",
-        "calculateTitle": "Calculated vacation data. Editable if needed",
+        "calculateTitle": "Calculated vacation data. You can edit if incorrect",
         "requiredVacationData": "Enter employee vacation data!",
         "rest_day": "Remaining days",
         "by_whom": "By whom",
         "reason": "Reason",
-        "gift_type": "Reward type",
-        "gift": "Reward name",
+        "gift_type": "Gift type",
+        "gift": "Gift name",
         "fine_type": "Penalty type",
         "fine": "Penalty name",
         "amount": "Amount",
-        "count": "Pul mukofot baravari",
-        "coefficient": "Foiz",
+        "count": "Bonus equivalent",
+        "coefficient": "Percentage",
         "financeType": "Financial aid type",
-        "warning_date": "Ogohlantirish xati sanasi",
-        "warning_number": "Ogohlantirish xati raqami",
-        "med_date": "Tibbiy ko‘rik xulosasi sanasi",
-        "med_number": "Tibbiy ko‘rik xulosasi raqami",
+        "warning_date": "Warning letter date",
+        "warning_number": "Warning letter number",
+        "med_date": "Medical exam conclusion date",
+        "med_number": "Medical exam conclusion number",
         "command_number": "Order number",
-        "base": "Asos",
-        "warning_one": "Tashkilot tugatilganligi sababli",
-        "warning_two": "Texnologiyaning, ishlab chiqarish va mehnatni tashkil etishning o‘zgarishi, ishlar (mahsulot, xizmatlar) hajmining qisqarishi bilan bog‘liq bo‘lgan shtatining o‘zgarganligi sababli",
-        "warning_three": "Malakasi yetarli bo‘lmaganligi sababli",
-        "warning_four": "O‘z mehnat majburiyatlarini muntazam ravishda buzganligi sababli",
-        "warning_five": "O‘z mehnat majburiyatlarini bir marta qo‘pol ravishda buzganligi sababli",
-        "warning_six": "Ushbu Kodeks hamda boshqa qonun hujjatlarida nazarda tutilgan o‘zga sabablar",
-        "warning_seven": "Tashkilotning mulkdori almashganligi sababli",
-        "warning_eight": "Tashkilot qayta tashkil etilganligi sababli",
-        "warning_nine": "Uning idoraviy taalluqliligi (bo‘ysunuvi) o‘zgarganligi sababli",
-        "warning_ten": "Harbiy xizmatga chaqirilganligi sababli",
-        "warning_eleven": "Muqobil xizmatga chaqirilganligi sababli",
-        "warning_twelve": "Shu ishni ilgari bajarib kelgan xodimning avvalgi ishga qaytganligi sababli",
-        "warning_thirteen": "Sudning hukmi bilan avvalgi ishini davom ettirish imkoniyati bo‘lmaganligi sababli",
-        "warning_fourteen": "Ishga qabul qilishga doir belgilangan qoidalarning buzilganligi sababli",
-        "warning_fifteen": "Qonunchilikka muvofiq mehnatga oid munosabatlarni davom ettirishga monelik qiladigan holatlar yuzaga kelganligi sababli",
-        "warning_sixteen": "Tashkilot faoliyatini tugatish to‘g‘risidagi sud qarorining qonuniy kuchga kirganligi sababli",
-        "warning_seventeen": "Xodimni ishga tiklash haqidagi sud qarori bekor qilinganligi sababli",
-        "warning_eighteen": "O‘zbekiston Respublikasi Bandlik va mehnat munosabatlari vazirligi Davlat mehnat inspeksiyasining qarori bekor qilinganligi sababli",
-        "warning_nineteen": "Xodim vafot etganligi sababli",
-        "warning_twenty": "Sud tomonidan xodimning bedarak yo‘qolgan deb e’tirof etilganligi sababli",
-        "warning_twenty_one": "Qonunda nazarda tutilgan boshqa holatlar (qo‘lda yoziladi)",
-        "reason_one": "Birinchi marta qonuniy nikohdan o‘tishi munosabati bilan",
-        "reason_two": "Nogiron farzandni tarbiyalayotganligi uchun, nogironlar kuni munosabati bilan",
-        "reason_three": "Ota, ona, turmush o‘rtog‘i, farzandlari vafot etganligi munosabati bilan",
-        "reason_four": "Quyidagi saraton, leykoz, birinchi marta sil (tuberkulyoz) kasaligi, jigar serrozi dekompensasiya bosqichi, jigar transplantasiyasi, yurak qon-tomir kasalliklari, yurak klapanlarini almashtirish, yurak tomirlarini stendlash, AKSh (aorta koronar shuntlash), ablyasiya, yurak va buyrakdagi murakkab jarrohlik operatsiyalari, infarkt, insul’t, o‘tkir buyrak yetishmovchiligi, dializ, buyrak transplantasiyasi, nefroskleroz, koksartroz III darajali endoprotezlash, bir yoki ikki ko‘zning terminal bosqichidagi glaukomasi kasalligiga chalinganligi munosabati bilan",
-        "reason_five": "50, 55, 60, 70, 80, 90, 100 yillik yubiley sanasiga etganligi munosabati bilan",
-        "reason_six": "Tabiiy ofatdan zarar ko‘rganligi munosabati bilan tasdiqlangan baholash dalolatnomasi muvofiq",
-        "reason_seven": "Maishiy ko‘mir yoqil‘isi sotib olishi munosabati bilan",
-        "additionals": "Additions"
+        "base": "Basis",
+        "warning_one": "Due to organization liquidation",
+        "warning_two": "Due to changes in technology, production organization, or volume reduction",
+        "warning_three": "Due to insufficient qualification",
+        "warning_four": "Due to repeated violation of duties",
+        "warning_five": "Due to gross violation of duties",
+        "warning_six": "Other reasons specified in the Code and laws",
+        "warning_seven": "Due to change of owner",
+        "warning_eight": "Due to reorganization",
+        "warning_nine": "Due to change in subordination",
+        "warning_ten": "Due to military service call",
+        "warning_eleven": "Due to alternative service call",
+        "warning_twelve": "Due to return of previous employee",
+        "warning_thirteen": "Due to court ruling preventing continuation",
+        "warning_fourteen": "Due to violation of hiring rules",
+        "warning_fifteen": "Due to circumstances preventing continuation",
+        "warning_sixteen": "Due to court decision on liquidation",
+        "warning_seventeen": "Due to cancellation of reinstatement order",
+        "warning_eighteen": "Due to cancellation of labor inspection decision",
+        "warning_nineteen": "Due to employee death",
+        "warning_twenty": "Due to court declaring missing",
+        "warning_twenty_one": "Other cases specified by law (manual entry)",
+        "reason_one": "First legal marriage",
+        "reason_two": "Disabled child care or Disabled Persons Day",
+        "reason_three": "Death of parent, spouse, or child",
+        "reason_four": "Cancer, leukemia, first-time tuberculosis, liver cirrhosis decompensation, liver transplant, heart diseases, valve replacement, stenting, CABG, ablation, complex heart/kidney surgeries, infarction, stroke, acute kidney failure, dialysis, kidney transplant, nephrosclerosis, grade III coxarthrosis endoprosthesis, terminal glaucoma in one or both eyes",
+        "reason_five": "50th, 55th, 60th, 70th, 80th, 90th, 100th anniversary",
+        "reason_six": "Natural disaster damage (with confirmed assessment)",
+        "reason_seven": "Household coal purchase",
+        "reason_eight": "To purchase agricultural products"
       }
     },
     "form": {
       "candidate": "Employee",
       "contractDate": "Contract date",
       "contractNumber": "Contract number",
-      "tableNumber": "Table number",
+      "tableNumber": "Timesheet number",
       "type": "Contract type",
       "documentExampleId": "Document template",
       "department": "Department",
       "position": "Position",
       "positionStatus": "Hire to department position",
-      "salary": "Salary",
+      "salary": "Monthly salary",
       "group": "Group",
       "rank": "Rank",
       "rate": "Rate",
       "postName": "Full position name",
       "director": "Director",
-      "contract_to_date": "Contract term",
+      "contract_to_date": "Contract duration",
       "position_date": "Start date",
-      "vacation_main_day": "Main vacation",
-      "additional_vacation_day": "Additional vacation",
+      "vacation_main_day": "Main vacation days",
+      "additional_vacation_day": "Additional vacation days",
       "probation": "Probation period",
       "schedule_id": "Work schedule",
       "command_type": "Order type",
       "worker": "Select employee",
       "command_status": "Mark to create order based on contract",
-      "organization": "Enterprise"
+      "organization": "Organization"
     },
     "signature": {
-      "history": "Change history",
-      "viewer": "Familiarized",
+      "history": "View change history",
+      "viewer": "Document reviewers",
       "files": "Document files",
-      "checkDocument": "Check document status",
+      "checkDocument": "Click to check document status",
       "status": {
-        "Process": "In process"
+        "Process": "In progress"
       }
     },
     "attach": {
@@ -805,55 +827,60 @@
   "commandPage": {
     "form_43": {
       "new_date": "Vacation end date",
-      "work_day": "Return date",
+      "work_day": "Return to work date",
       "reason": "Reason"
     },
     "form_44": {
-      "new_date": "Return date",
+      "new_date": "Return to work date",
       "rest_day": "Unused vacation days",
       "reason": "Reason"
     },
     "form_45": {
       "from": "From",
       "to": "To",
-      "work_day": "Return date"
+      "work_day": "Return to work date"
     },
     "form_47": {
-      "optionOne": "O‘n ikki yoshga to‘lmagan ikki yoki undan ortiq farzandi borligi sababli",
-      "optionTwo": "O‘n olti yoshga to‘lmagan nogironligi bo‘lgan farzandi borligi sababli",
-      "vacation_reason_day": "Qo‘shimcha ta’til kuni"
+      "optionOne": "Has two or more children under 12",
+      "optionTwo": "Has disabled child under 16",
+      "vacation_reason_day": "Additional vacation days"
     },
     "form_48": {
       "from": "From",
       "to": "To",
-      "work_day": "Return date",
+      "work_day": "Return to work date",
       "all_day": "Vacation days",
       "reason": "Reason"
     },
     "form_49": {
       "from": "From",
       "to": "To",
-      "work_day": "Return date"
+      "work_day": "Return to work date"
     },
     "form_50": {
-      "to": "Ta’til tugash sanasi",
-      "from": "Ta’tilga chiqish sanasi",
-      "vacation_id": "Ta’til"
+      "to": "Vacation end date",
+      "from": "Vacation start date",
+      "vacation_id": "Vacation"
     },
     "form_55": {
+      "work_day": "Return to work date",
       "from": "From",
       "to": "To",
-      "from_time": "From (hour)",
-      "to_time": "To (hour)"
+      "from_time": "From time",
+      "to_time": "To time",
+      "range_with_time": "Time range by days",
+      "one_day": "One day",
+      "multiple_days": "Multiple days",
+      "hourly": "Hourly"
     },
     "form_62": {
       "from": "From",
       "to": "To",
       "reason": "Reason",
-      "work_place_id": "Enterprise name",
+      "work_place_id": "Organization name",
       "department_id": "Department",
-      "railwayOrg": "Railway enterprise",
-      "otherOrg": "Other enterprise",
+      "railwayOrg": "Railway organization",
+      "otherOrg": "Other organization",
       "orgType": "Organization type",
       "to_organization": "Organization name"
     }
@@ -877,7 +904,7 @@
       "type": "Type",
       "worker": "Employee",
       "date": "Date",
-      "organization": "Enterprise",
+      "organization": "Organization",
       "command": "Order",
       "status": "Status"
     },
@@ -886,12 +913,12 @@
     },
     "step": {
       "stepOne": "Contract type",
-      "stepTwo": "Contract data",
+      "stepTwo": "Contract details",
       "stepThree": "Attach order",
       "stepFour": "Status"
     },
-    "confirmText": "Create order based on contract #{n}?",
-    "confirmAdText": "Create order based on add. agreement #{n}?"
+    "confirmText": "Create order based on contract No. {n}?",
+    "confirmAdText": "Create order based on additional agreement No. {n}?"
   },
   "chatWindow": {
     "name": "Chat"
@@ -910,13 +937,13 @@
       "updateTitle": "Edit order template"
     },
     "tabs": {
-      "contract": "Contract template",
-      "command": "Order template",
+      "contract": "Contract templates",
+      "command": "Order templates",
       "service": "Services"
     },
     "form": {
-      "count": "{n} pcs",
-      "organization": "Organization count",
+      "count": "{n} items",
+      "organization": "Number of organizations",
       "organizations": "Organizations",
       "type": "Contract type",
       "commandType": "Order type",
@@ -960,11 +987,11 @@
     "university": {
       "createTitle": "Add university",
       "updateTitle": "Edit university",
-      "existName": "Name exists...",
+      "existName": "Name already exists...",
       "form": {
         "name_ru": "University name (ru)",
-        "region_id": "Location region",
-        "city_id": "Location district",
+        "region_id": "Region",
+        "city_id": "District",
         "education": "Education type",
         "type": "University type",
         "name": "University name"
@@ -995,12 +1022,23 @@
     "updateTitle": "Edit template",
     "form": {
       "signature": "E-signature",
-      "organization": "Organization count",
+      "organization": "Number of organizations",
       "organizations": "Organizations",
       "type": "Contract type",
       "file": "Template file",
       "name": "Document name"
     }
+  },
+  "mobileUserPage": {
+    "name": "Mobile Users",
+    "deviceModel": "Device Model",
+    "platform": "Platform",
+    "verificationTime": "Verification Time",
+    "detailTitle": "Device Details",
+    "deviceInfo": "Device Info",
+    "sessions": "Sessions",
+    "noPhotos": "No photos",
+    "noSessions": "No sessions"
   },
   "actionLog": {
     "name": "Action history",
@@ -1027,32 +1065,47 @@
     }
   },
   "relativePage": {
-    "createTitle": "Add relative data",
-    "updateTitle": "Edit relative data",
+    "createTitle": "Add relative",
+    "updateTitle": "Edit relative",
     "tab": {
-      "worker": "Railway worker",
+      "worker": "Railway employee",
       "notWorker": "Other profession"
     },
     "form": {
       "birth_place": "Birth address",
       "post_name": "Position",
       "birthdayPlace": "Birth place",
-      "birthday": "Birth date",
-      "relative": "Relation"
+      "birthday": "Date of birth",
+      "relative": "Relationship",
+      "disability": "Disability"
     },
-    "title": "Close relatives data",
-    "no-data": "No close relatives added!"
+    "title": "Close relatives",
+    "no-data": "No relatives added!",
+    "disability": {
+      "createTitle": "Add disability information",
+      "updateTitle": "Edit disability information",
+      "number": "Medical certificate number",
+      "level": "Disability group",
+      "from": "Issue date",
+      "to": "Expiration date",
+      "comment": "Notes on limitations and capabilities",
+      "lifelong": "Lifelong",
+      "lifelongHint": "If the disability is lifelong, expiration date is not required",
+      "level1": "Group I",
+      "level2": "Group II",
+      "level3": "Group III"
+    }
   },
   "partyPage": {
     "createTitle": "Add party affiliation",
     "updateTitle": "Edit party affiliation",
     "form": {
-      "to_date": "To",
+      "to_date": "Until",
       "from_date": "From",
       "party": "Party affiliation"
     },
-    "title": "Party affiliation data",
-    "no-data": "No party affiliation!"
+    "title": "Party affiliation",
+    "no-data": "No party affiliation added!"
   },
   "militaryPage": {
     "createTitle": "Add military record",
@@ -1061,11 +1114,11 @@
       "status": "Status",
       "name": "Name",
       "speciality": "Military specialty",
-      "commissariat": "Military commissariat",
+      "commissariat": "Local commissariat",
       "number": "Number"
     },
-    "title": "Military record data",
-    "no-data": "No military record!"
+    "title": "Military record",
+    "no-data": "No military record added!"
   },
   "academicTitlePage": {
     "createTitle": "Add academic title",
@@ -1074,8 +1127,8 @@
       "type": "Type",
       "file": "Academic title document"
     },
-    "title": "Academic title data",
-    "no-data": "No academic title!"
+    "title": "Academic titles",
+    "no-data": "No academic title added!"
   },
   "academicDegreePage": {
     "createTitle": "Add academic degree",
@@ -1084,42 +1137,42 @@
       "type": "Type",
       "file": "Academic degree document"
     },
-    "title": "Academic degree data",
-    "no-data": "No academic degree!"
+    "title": "Academic degrees",
+    "no-data": "No academic degree added!"
   },
   "oldCareerPage": {
-    "createTitle": "Add career",
-    "updateTitle": "Edit career",
+    "createTitle": "Add previous employment",
+    "updateTitle": "Edit previous employment",
     "form": {
       "from_date": "From",
       "post_name": "Position",
       "to_date": "To"
     },
-    "title": "Career data",
-    "systemTitle": "System career data",
-    "no-data": "No career added!"
+    "title": "Previous employment",
+    "systemTitle": "System employment records",
+    "no-data": "No previous employment added!"
   },
   "languagePage": {
-    "createTitle": "Add language data",
-    "updateTitle": "Edit language data",
+    "createTitle": "Add language proficiency",
+    "updateTitle": "Edit language proficiency",
     "form": {
       "certificateFile": "Certificate file"
     },
-    "title": "Language data",
+    "title": "Language proficiency",
     "no-language": "No language data!"
   },
   "universityPage": {
-    "createTitle": "Add university data",
-    "updateTitle": "Edit university data",
+    "createTitle": "Add higher education",
+    "updateTitle": "Edit higher education",
     "form": {
       "university_id": "University",
       "speciality_id": "Specialty",
       "from_date": "From",
       "to_date": "To",
-      "file": "Upload"
+      "file": "Upload document"
     },
-    "title": "University data",
-    "no-language": "No university data!"
+    "title": "Higher education",
+    "no-language": "No higher education data!"
   },
   "topicDetailsPage": {
     "categories": {
@@ -1140,16 +1193,16 @@
       "name": "Exams",
       "updateTitle": "Edit exam",
       "deadline": "Deadline",
-      "toWhom": "To whom",
-      "minute": "Duration (min)",
-      "variants": "Variants count",
+      "toWhom": "For whom",
+      "minute": "Duration (minutes)",
+      "variants": "Number of variants",
       "isActive": "Active status",
       "positions": "Positions",
       "organizations": "Organizations",
       "chances": "Attempts",
-      "tests_count": "Questions count",
+      "tests_count": "Number of questions",
       "workers": "Employees",
-      "camera": "Exam with camera",
+      "camera": "Take exam on camera",
       "categories": "Categories",
       "questionCount": "Questions: ({n})",
       "attachQuestion": "Attach question",
@@ -1182,67 +1235,68 @@
       "specialty": "Specialty",
       "educationPeriod": "Education period",
       "passportName": "Passport data",
-      "university": "University data",
+      "university": "Higher education",
       "fullName": "Full name",
       "passportNumber": "Passport series",
-      "passportJSHSHIR": "PINFL",
+      "passportJSHSHIR": "PIN",
       "fromDate": "Issue date",
       "toDate": "Expiry date",
       "who": "Issued by",
-      "phone": "Phone",
-      "birthday": "Birth date",
+      "phone": "Phone number",
+      "birthday": "Date of birth",
       "maritalStatus": "Marital status",
-      "address": "Address",
+      "address": "Residential address",
       "birthdayRegion": "Birth region",
       "birthdayCity": "Birth district",
-      "liveRegion": "Residence region",
-      "liveCity": "Residence district",
+      "liveRegion": "Current region",
+      "liveCity": "Current district",
       "academicTitle": "Academic title",
       "academicDegree": "Academic degree",
       "part": "Party affiliation",
-      "inn": "INN",
+      "inn": "TIN",
       "nationality": "Nationality",
       "position": "Position",
       "department": "Department",
-      "salary": "Salary",
+      "salary": "Monthly salary",
       "country": "Birth country"
     },
     "tabs": {
       "general": "General info",
-      "career": "Carrer",
-      "relative": "Relatives",
-      "med": "Medical",
-      "vacation": "Vacation",
+      "career": "Employment history",
+      "relative": "Close relatives",
+      "med": "Medical exam",
+      "vacation": "Vacation info",
       "incentive": "Incentives",
-      "attestation": "Attestation",
-      "checkSkill": "Skill check",
-      "checkKnowledge": "Knowledge check",
-      "punishment": "Punishments"
+      "attestation": "Certification",
+      "checkSkill": "Skill test",
+      "checkKnowledge": "Knowledge test",
+      "punishment": "Disciplinary actions"
     }
   },
+
   "categoryPage": {
     "createCategory": "Create category",
     "editCategory": "Edit category",
     "name": "Categories",
     "addQuestion": "Add question",
     "editQuestion": "Edit question",
-    "questionCount": "Questions count",
+    "questionCount": "Number of questions",
     "uploadExcel": "Upload test questions",
     "pressUpload": "Click to upload!",
     "checkingFile": "Checking file...",
     "question": "Question",
-    "upload": "Upload question",
+    "upload": "Upload questions",
     "answer": "Answer",
     "correctAnswer": "Correct answer",
     "warning": "Check selected question and answer columns!"
   },
   "examPage": {
     "downloadResult": "Download results",
-    "downloadNotPassed": "Download not passed",
+    "downloadNotPassed": "Download non-participants",
     "showDeleted": "Show deleted",
     "deletedResult": "Deleted exam result",
     "finishedProcess": "Finish",
-    "finishedDescription": "Finish expired exams",
+    "finishedDescription": "Finish overdue exams",
     "name": "Exams",
     "history": "Exam history",
     "topic": "Topic",
@@ -1250,15 +1304,15 @@
     "nVariant": "{n} variants",
     "variant_count": "Variants",
     "exam_duration": "Duration (min)",
-    "totalTime": "Time: {n} min",
+    "totalTime": "Given time: {n} minutes",
     "nMinute": "{n} min",
-    "totalMinute": "{n} min",
+    "totalMinute": "{n} minutes",
     "resources": "Resources",
     "exams": "Exams",
     "nExams": "{n} exams",
     "nFiles": "{n} files",
     "deadline": "Deadline: {n}",
-    "examBrief": "{variant} variants, {chances} attempts, {minute} min, deadline {deadline}",
+    "examBrief": "Exam has {variant} variants. {chances} attempts allowed. Must finish in {minute} minutes. Closes on {deadline}",
     "extra": "Extra: {n}",
     "start": "Start",
     "attempts": "Attempts",
@@ -1268,19 +1322,19 @@
     "question_count": "Questions",
     "nQuestions": "{n} questions",
     "examName": "Name: {n}",
-    "toWhom": "To whom",
+    "toWhom": "For whom",
     "attemptHistory": "Attempt history",
     "startTime": "Start time",
     "result": "Results",
     "endTime": "End time",
-    "leftAttempts": "Left attempts",
+    "leftAttempts": "Remaining attempts",
     "endHead": "Exam finished!",
     "endSub": "Your score",
-    "ip": "IP",
+    "ip": "IP address",
     "wrongAnswer": "Wrong answer",
-    "notChosen": "Not selected",
-    "finished": "Finished",
-    "inProgress": "In progress",
+    "notChosen": "No answer selected",
+    "finished": "Exam finished",
+    "inProgress": "Exam in progress",
     "attemptErrors": "Attempt errors",
     "device": "Device",
     "dashboard": {
@@ -1289,8 +1343,8 @@
     "materials": "Materials"
   },
   "solveExamPage": {
-    "alreadyStarted": "You started this exam. Continue?",
-    "restartWarning": "Restart will finish current attempt!!!",
+    "alreadyStarted": "You started this exam before. Continue?",
+    "restartWarning": "Restarting will end previous attempt!!!",
     "notAllowed": "You cannot take this exam!",
     "startedAt": "Started at",
     "firstName": "First name",
@@ -1298,16 +1352,16 @@
     "middleName": "Middle name",
     "exam": "Exam",
     "variant": "Variants",
-    "totalTime": "Time (min)",
-    "deadline": "Deadline",
+    "totalTime": "Given time (minutes)",
+    "deadline": "Closing time",
     "attempts": "Total attempts",
-    "questions": "Questions count",
+    "questions": "Number of questions",
     "removeAnswer": "Remove answer",
-    "notAnswered": "Unanswered {n} questions!!!",
-    "endWarning": "Sure to finish exam?",
-    "leftAttempts": "Left attempts",
+    "notAnswered": "You didn't answer {n} questions!!!",
+    "endWarning": "Sure you want to finish exam?",
+    "leftAttempts": "Remaining attempts",
     "welcomeTitle": "Welcome!",
-    "welcomeDesc": "All railway employees take certification tests here."
+    "welcomeDesc": "All railway employees take certification tests in their specialties."
   },
   "questionPage": {
     "form": {
@@ -1319,7 +1373,7 @@
     },
     "title": "Questions",
     "rules": {
-      "minOptions": "At least 3 options!",
+      "minOptions": "At least 3 options required!",
       "chooseCorrectAnswer": "Select correct answer!"
     }
   },
@@ -1337,8 +1391,8 @@
     "name": "Employees on vacation",
     "table": {
       "type": "Vacation type",
-      "durationDay": "Vacation {n} days",
-      "workDay": "Return date",
+      "durationDay": "Vacation duration {n} days",
+      "workDay": "Return to work date",
       "duration": "From - To"
     }
   },
@@ -1346,9 +1400,9 @@
     "name": "Dashboard",
     "card": {
       "type": "Vacation type",
-      "durationDay": "Vacation {n} days",
-      "workDay": "Return date",
-      "vacation": "On vacation",
+      "durationDay": "Vacation duration {n} days",
+      "workDay": "Return to work date",
+      "vacation": "Employees on vacation",
       "duration": "Vacation period"
     },
     "contract": {
@@ -1356,40 +1410,40 @@
     },
     "mainCard": {
       "totalWorker": "Total employees",
-      "man": "Men",
-      "woman": "Women"
+      "man": "Male employees",
+      "woman": "Female employees"
     },
     "age": {
-      "title": "Employee age",
+      "title": "Employee age distribution",
       "age31": "Under 30",
       "age32_45": "31-45",
       "age46": "Over 46"
     },
     "edu": {
       "title": "Employee education",
-      "higher": "Higher",
+      "higher": "Higher education",
       "middle": "Secondary",
-      "special": "Special secondary",
+      "special": "Vocational",
       "type": "Education type"
     },
     "password": {
-      "title": "Passport expiry",
-      "deadline": "Approaching",
+      "title": "Passport expiry dates",
+      "deadline": "Expiring soon",
       "expired": "Expired",
       "number": "Passport number",
-      "approaching": "Approaching",
-      "not_included": "Missing",
+      "approaching": "Approaching expiry",
+      "not_included": "Not available",
       "filter": "Passport status"
     },
     "pension": {
-      "title": "Pension age employees",
+      "title": "Pension-age employees",
       "men": "Men",
       "women": "Women"
     },
     "medical": {
       "title": "Medical examination dates",
-      "nextExamination": "Next examination",
-      "deadline": "Approaching",
+      "nextExamination": "Next exam date",
+      "deadline": "Expiring soon",
       "approaching": "Approaching",
       "finished": "Expired",
       "expired": "Expired"
@@ -1403,30 +1457,30 @@
     "position": {
       "title": "Staff units",
       "vakant": "Vacant",
-      "sverx": "Overstaff"
+      "sverx": "Overstaffed"
     },
     "yearly": {
-      "title": "Hired and fired",
+      "title": "Hired and dismissed employees",
       "incoming": "Hired",
-      "outgoing": "Fired"
+      "outgoing": "Dismissed"
     },
     "birthday": {
       "title": "Birthdays",
-      "today": "Today",
-      "tomorrow": "Tomorrow"
+      "today": "Today's birthdays",
+      "tomorrow": "Tomorrow's birthdays"
     },
     "rewardCard": {
       "reward": {
-        "title": "Rewards",
-        "typeOne": "Honored railway worker",
-        "typeTwo": "Other rewards",
-        "shortTypeOne": "Honored",
+        "title": "Incentives",
+        "typeOne": "Honorary Railway Worker title",
+        "typeTwo": "Other awards",
+        "shortTypeOne": "Honorary",
         "shortTypeTwo": "Other"
       },
       "punishment": {
-        "title": "Punishments",
+        "title": "Disciplinary actions",
         "typeOne": "Reprimand",
-        "typeTwo": "Other",
+        "typeTwo": "Other penalties",
         "shortTypeOne": "Reprimand",
         "shortTypeTwo": "Other"
       }
@@ -1437,57 +1491,57 @@
     "addApp": "Submit application",
     "createWorkerApplication": "Create application",
     "updateWorkerApplication": "Edit application",
-    "lastVacationTitle": "Last vacation",
+    "lastVacationTitle": "Last vacation details",
     "lastPeriod": "Vacation period: ",
     "lastPDate": "Vacation date: ",
-    "reason": "Family reasons",
+    "reason": "Due to family needs",
     "createTitle": "Create application link",
     "updateTitle": "Edit holiday",
     "form": {
-      "director_id": "Director",
+      "director_id": "Manager",
       "type": "Application type",
       "work_type": "Work type",
       "generateLink": "Generate link",
-      "phones": "Phones",
+      "phones": "Phone number",
       "number": "Number",
       "worker_position_id": "Position",
       "confirmations": "Approvers",
-      "period_from": "Vacation (from)",
-      "period_to": "Vacation (to)",
-      "from": "Vacation start",
-      "to": "Vacation end",
-      "temporarily_absent": "On vacation",
+      "period_from": "Vacation period (from)",
+      "period_to": "Vacation period (to)",
+      "from": "Vacation start date",
+      "to": "Vacation end date",
+      "temporarily_absent": "Employees on vacation",
       "reason": "Reason",
       "from_time": "Time (from)",
       "to_time": "Time (to)",
       "education_type": "Education form",
       "univer_number": "Letter number",
       "univer_date": "Letter date",
-      "contract_to_date": "Termination date",
+      "contract_to_date": "Cancellation date",
       "application_date": "Application date",
       "from_date": "From"
     },
     "step": {
       "stepOne": "Application type",
-      "stepTwo": "Application data",
+      "stepTwo": "Application details",
       "stepThree": "Status"
     },
-    "succeedApplication": "Application sent!",
-    "applicationTime": "Processed in 15 working days!",
+    "succeedApplication": "Application submitted successfully!",
+    "applicationTime": "Your application will be reviewed within 15 calendar days!",
     "client": {
       "name": "Write application",
       "user": "Recipient",
-      "sendApp": "Send application",
+      "sendApp": "Submit application",
       "type": "Application type"
     }
   },
   "userDepartmentPage": {
     "name": "Timesheet keepers",
     "level_name": "Level",
-    "user_count": "Employee count",
+    "user_count": "Number of employees",
     "attached_users": "Attached employees",
     "position": "Position",
-    "staff": "Staff",
+    "staff": "Employees",
     "timeTable": "Timesheets"
   },
   "shortWeek": {
@@ -1510,12 +1564,12 @@
     "mainVerifier": "Main approver",
     "worked": "Worked",
     "tableTitle": "Attendance notes by day",
-    "halfMonth": "Half month",
-    "pin": "Passport PINFL",
+    "halfMonth": "First half of month",
+    "pin": "Passport PIN",
     "addNewWorker": "Add new employee",
     "closeWarning": {
-      "title": "Close timesheet?",
-      "desc": "Irreversible action."
+      "title": "Sure you want to close timesheet?",
+      "desc": "This action cannot be undone."
     }
   },
   "turnstile": {
@@ -1544,34 +1598,34 @@
     },
     "terminalUser": {
       "title": "Terminal users",
-      "create": "Attach employee",
-      "edit": "Edit employee",
-      "companyWorker": "Enterprise employee",
+      "create": "Assign user",
+      "edit": "Edit user",
+      "companyWorker": "Company employee",
       "notCompanyWorker": "Add non-system employees",
-      "deadline_feedback": "Default 2 years",
+      "deadline_feedback": "Leave blank for 2 years",
       "terminals": "Terminals",
       "addUser": "Add user to terminal",
       "addBtn": "Add user"
     },
     "accessLevelPage": {
-      "name": "(HC) Groups",
-      "deviceCount": "Device count",
+      "name": "Groups",
+      "deviceCount": "Number of devices",
       "sync": "Sync",
       "syncDepartment": "Sync departments",
       "server": "Server"
     },
     "orgAccessLevelsPage": {
-      "name": "(HC) Organizations and groups"
+      "name": "Organizations and groups"
     },
     "hcWorkersPage": {
       "access_levels": "Groups",
-      "name": "(HC) Employees",
+      "name": "Employees",
       "create": "Add employee",
       "edit": "Edit employee",
-      "access_levels_count": "Group count",
+      "access_levels_count": "Number of groups",
       "department": "Department",
       "added": "Attached employees",
-      "no-added": "Not attached",
+      "no-added": "Not attached employees",
       "device": "Devices"
     },
     "workDurationPage": {
@@ -1583,19 +1637,19 @@
       "workTime": "Worked hours",
       "time": "Time",
       "at_work": "At work",
-      "outside": "Outside",
-      "calendarTitle": "Work time graph",
+      "outside": "Not at work",
+      "calendarTitle": "Work time chart",
       "latecomers": "Late employees",
       "startTime": "Work start time",
-      "lateTitle": "Late list"
+      "lateTitle": "Late employees list"
     }
   },
   "medPage": {
     "name": "Medical examination",
-    "createTitle": "Add medical data",
-    "updateTitle": "Edit medical data",
+    "createTitle": "Add medical examination",
+    "updateTitle": "Edit medical examination",
     "tab": {
-      "worker": "Railway worker",
+      "worker": "Railway employee",
       "candidate": "Candidate"
     },
     "form": {
@@ -1603,38 +1657,38 @@
       "to": "To",
       "comment": "Comment",
       "status": "Status",
-      "organization": "Enterprise",
-      "onVacation": "gacha ta’tilda",
+      "organization": "Organization",
+      "onVacation": "on vacation until",
       "file": "Files"
     },
     "panel": {
-      "panel_one": "Medical",
+      "panel_one": "Medical examination",
       "panel_two": "Clinics",
-      "panel_three": "On examination",
+      "panel_three": "Employees under examination",
       "panel_four": "Current year",
       "selected": "Selected"
     }
   },
   "medInspection": {
-    "name": "Send to examination",
-    "createTitle": "Send employee to medical",
-    "updateTitle": "Edit data",
+    "name": "Send for examination",
+    "createTitle": "Send employee for medical examination",
+    "updateTitle": "Edit details",
     "form": {
       "hospital": "Clinic",
       "status": "Doctor conclusion",
-      "start_date": "Send date"
+      "start_date": "Visit date"
     }
   },
   "organizationLeaderPage": {
-    "name": "Leadership",
-    "invalidPhone": "Invalid phone!",
-    "addLeader": "Add leadership",
-    "editLeader": "Edit leadership"
+    "name": "Management",
+    "invalidPhone": "Invalid phone number!",
+    "addLeader": "Add management",
+    "editLeader": "Edit management"
   },
   "reportPage": {
     "name": "Reports",
-    "createTitle": "Add medical data",
-    "updateTitle": "Edit medical data",
+    "createTitle": "Add medical examination data",
+    "updateTitle": "Edit medical examination data",
     "form": {
       "position": "Position",
       "rate": "P",
@@ -1688,15 +1742,15 @@
       "specialization": "Specialization",
       "subjects": "Subjects",
       "learning_center": "Training center",
-      "count_groups": "Group count",
+      "count_groups": "Number of groups",
       "count_workers": "Group size",
       "short_count_workers": "Employees",
-      "groupWorker": "Group/size"
+      "groupWorker": "Group number/size"
     }
   },
   "lmsWorkerPage": {
-    "name": "Training",
-    "createTitle": "Attach employee",
+    "name": "Professional development",
+    "createTitle": "Assign employee",
     "updateTitle": "Edit",
     "form": {
       "eduPlan": "Training plan",
@@ -1718,7 +1772,7 @@
     "createTitle": "Create group",
     "form": {
       "edu_plan_id": "Training plan",
-      "workers": "Employee count"
+      "workers": "Number of employees"
     }
   },
   "lessonPage": {
@@ -1727,7 +1781,7 @@
     "previewTitle": "Details",
     "form": {
       "edu_plan_id": "Training plan",
-      "workers": "Employee count",
+      "workers": "Number of employees",
       "lesson_date": "Start date",
       "group_id": "Groups",
       "teacher_id": "Teacher",
@@ -1738,32 +1792,32 @@
     "detail": {
       "name": "Lesson name",
       "group": "Group name",
-      "teacher": "Teacher",
+      "teacher": "Subject teacher",
       "time": "Lesson time",
-      "subject": "Subject",
+      "subject": "Lesson subject",
       "cancelLesson": "Cancel lesson",
-      "attachmentLesson": "Attach exam",
-      "attachedLesson": "Exam attached"
+      "attachmentLesson": "Attach exam to lesson",
+      "attachedLesson": "Exam already attached"
     }
   },
   "learningCenter": {
     "name": "Training center"
   },
   "aiConversation": {
-    "canIHelpYouToday": "How can I help today?",
+    "canIHelpYouToday": "How can I help you today?",
     "aiAssistant": "AI Assistant",
     "welcomeTo": "Welcome, {n}",
     "disclaimer": {
-      "cardOne": "### 🧪 Test mode\n\nAI assistant in **test mode**. Answers may be inaccurate.",
-      "cardTwo": "### 📚 Loading legal documents\n\nTrained on Uzbekistan Labor Code only.",
-      "cardThree": "### ⚖️ Labor questions only\n\nAsk labor-related questions only.",
-      "cardFour": "### 📌 Not official advice\n\nInformational only. Not legal advice."
+      "cardOne": "### 🧪 Test mode\n\nThis AI assistant is currently in **test mode**.  \nAnswers may be incomplete or _incorrect_.",
+      "cardTwo": "### 📚 Legal documents loading\n\nBot currently trained only on **Labor Code of Uzbekistan**.  \n_Other laws not fully loaded or trained._",
+      "cardThree": "### ⚖️ Labor questions only\n\nPlease ask only **labor-related** questions.  \n_Not designed for technical or personal advice._",
+      "cardFour": "### 📌 Not official advice\n\nBot answers provided for **information only**.  \n_Cannot replace official legal advice._"
     },
     "form": {
       "conversation": "Conversations",
-      "goChat": "Back to chat",
-      "feedback": "Thanks for feedback!",
-      "askQuestion": "Enter question..."
+      "goChat": "Return to chat",
+      "feedback": "Thank you for feedback!",
+      "askQuestion": "Enter your question..."
     }
   },
   "others": {
@@ -1771,43 +1825,58 @@
     "info": {
       "title": "Dashboard",
       "organizations": "Organizations",
-      "organizationsDesc": "Full info on Uzbekistan Railways organizations, branches, leaders.",
+      "organizationsDesc": "Full information about all organizations, branches and management in Uzbekistan Railways JSC. View location, hierarchy and structure.",
       "positions": "Positions",
-      "positionsDesc": "List of positions and duties in Uzbekistan Railways.",
+      "positionsDesc": "List of positions in Uzbekistan Railways JSC and their functions. Structural distribution by roles.",
       "laborCode": "Labor Code",
-      "laborCodeDesc": "Uzbekistan Labor Code explanations.",
+      "laborCodeDesc": "Labor relations, rights and obligations based on Uzbekistan Labor Code. Article explanations and legal norms.",
       "empty": "Empty",
-      "emptyDesc": "No info yet. New services coming soon."
+      "emptyDesc": "No information in this section yet. New services or content coming soon."
     }
   },
   "businessTrip": {
     "name": "Business trip"
   },
+
+
   "documentArchive": {
-    "name": "Document base",
+    "name": "Document archive",
     "createTitle": "Add document file",
     "updateTitle": "Edit document file",
     "form": {
-      "title": "Name",
-      "description": "Comment",
+      "title": "Title",
+      "description": "Description",
       "visibility_type": "Visibility",
-      "document_date": "Creation date",
+      "document_date": "Created date",
       "type": "Type",
       "file": "Document file"
     },
     "type": {
       "OWN": "This organization",
       "OWN_AND_BELOW": "Subordinate organizations",
-      "ALL": "All"
+      "ALL": "Everyone"
     }
   },
   "vacationSchedule": {
     "name": "Vacation schedule",
-    "createTitle": "Attach employee",
+    "createTitle": "Assign employee",
     "updateTitle": "Edit",
-    "requiredMonth": "Select vacation month",
+    "autoGenerate": "Auto calculate",
+    "requiredMonth": "Select employee's vacation month",
+    "form": {
+      "period_from": "From (vacation period)",
+      "period_to": "To (vacation period)",
+      "plan_date": "Vacation date",
+      "to_date": "Document date",
+      "tradeUnion": "Trade union chairman",
+      "all_days": "Vacation days",
+      "attachedWorkerCount": "Attached employees",
+      "unAttachedWorkerCount": "Unattached employees",
+      "table_number": "Timesheet number",
+      "experience": "Work experience"
+    },
     "otherList": {
-      "btn": "Not attached employees",
+      "btn": "Unattached employees",
       "name": "Employee list"
     }
   },
@@ -1819,20 +1888,20 @@
     }
   },
   "telegramPopup": {
-    "header": "Subscribe to Telegram bot for:",
+    "header": "Join our Telegram bot and enjoy these benefits:",
     "benefit": {
-      "1": "Document status updates",
-      "2": "Birthday congratulations",
-      "3": "Important reminders",
-      "4": "Real-time notifications",
-      "5": "Profile updates",
-      "header": "Subscribe for",
-      "footer": "All in one place!"
+      "1": "Document status updates – approvals, rejections, edits!",
+      "2": "Congratulations – birthdays and achievements!",
+      "3": "Important reminders – vacations, meetings, key info.",
+      "4": "Real-time notifications – nothing missed!",
+      "5": "Profile updates – instant alerts on changes!",
+      "header": "By subscribing to the bot",
+      "footer": "Everything in one place – just for you, on time!"
     },
     "subscribe": "Subscribe"
   },
   "punishment": {
-    "name": "Disciplinary punishments",
+    "name": "Disciplinary actions",
     "form": {
       "fine": ""
     }
@@ -1847,12 +1916,15 @@
     }
   },
   "report": {
-    "name": "Plan and Fact",
+    "name": "Plan vs Actual",
+    "addDepartment": "Add department",
+    "addPosition": "Add position",
     "tooltip": {
       "P": "Plan",
-      "F": "Fact",
+      "G": "Group",
+      "F": "Actual",
       "V": "Vacant",
-      "S": "Overstaff",
+      "S": "Overstaffed",
       "R": "Rank"
     },
     "form": {
@@ -1860,22 +1932,39 @@
       "optimization": "Optimization",
       "workers": "Employees",
       "vakant": "Vacant",
-      "sverx": "Overstaff",
-      "contingent": "Contingent",
-      "worker": "Employee count",
+      "sverx": "Overstaffed",
+      "contingent": "Quota",
+      "worker": "Number of employees",
       "who": "By whom",
       "reason": "Reason",
-      "byPosition": "By positions",
-      "optimizationConfirm": "This will merge same positions. Confirm.",
-      "byWorker": "By employees"
+      "byPosition": "By position",
+      "optimizationConfirm": "This will merge identical positions in department. Confirm to proceed",
+      "byWorker": "By employee"
     }
   },
   "specialReport": {
     "name": "Reports",
     "create": "Create report"
   },
+  "structureReport": {
+    "name": "Report circulation",
+    "tableTab": "Table",
+    "workersTab": "Workers",
+    "position": "Position",
+    "organization": "Organization",
+    "birthday": "Date of birth",
+    "education": "Education",
+    "oldOrganization": "Previous organization",
+    "oldPositionDate": "Previous position date",
+    "oldPosition": "Previous position",
+    "commandNumber": "Order number and date",
+    "commandReason": "Order reason"
+  },
+  "confirmationReport": {
+    "name": "Reports"
+  },
   "uploadReport": {
-    "name": "Upload reports",
+    "name": "Upload report",
     "createTitle": "Upload report",
     "form": {
       "type": "Report type",
@@ -1884,52 +1973,55 @@
       "file": "Report file",
       "uploadCount": "Uploaded {n}",
       "comment": "Description",
-      "requiredOrganization": "Select organization!",
+      "requiredOrganization": "Select organization to upload!",
       "uploadFile": "Upload report",
       "monthReport": "Monthly report",
       "applicationFour": "INPS Appendix 4",
       "applicationFive": "INPS Appendix 5",
       "INPSPayment": "INPS payments",
-      "notAllowedUploadByAdminsat": "Upload restricted by admin",
+      "notAllowedUploadByAdminsat": "Report upload restricted by admin",
       "confirmed": "Confirmed",
       "openFromBlock": "Unblock",
       "closeToBlock": "Block"
     }
   },
   "instructionPage": {
-    "name": "Instruction",
+    "name": "Instructions",
     "createTitle": "Upload report",
     "form": {
       "menu": "Menu",
       "subMenu": "Submenu",
-      "title": "Name",
+      "title": "Title",
       "file": "Report file",
       "uploadCount": "Uploaded {n}",
       "comment": "Description",
-      "requiredOrganization": "Select organization!",
+      "requiredOrganization": "Select organization to upload!",
       "uploadFile": "Upload report"
     }
   },
   "monthReport": {
     "name": "Monthly report",
-    "createTitle": "Details",
+    "createTitle": "Full details",
     "exportTitle": "Export panel",
-    "refreshDescription": "Recheck PINFL",
+    "refreshDescription": "Re-check PINs",
     "tab": {
-      "multipleSalary": "Download multiple salary list",
-      "exportWithCode": "Download by payment codes",
-      "exportWithPosition": "Download by positions"
+      "multipleSalary": "Upload employees with multiple salaries",
+      "exportWithCode": "Export by payment code",
+      "exportWithCodeByMonth": "Export by payment code by months",
+      "exportWithPosition": "Export by position"
     },
     "form": {
-      "pin": "PINFL",
+      "pin": "PIN",
       "salary": "Salary",
-      "totalOne": "Payroll fund payments",
-      "totalTwo": "Non-payroll payments",
-      "totalThree": "Accrued",
+      "totalOne": "Payments included in payroll fund",
+      "totalTwo": "Payments not included in payroll fund",
+      "totalThree": "Calculated",
       "code": "Payment code",
-      "organizations": "By organizations",
-      "workers": "By employees",
-      "totalFour": "Deductions"
+      "organizations": "By organization",
+      "workers": "By employee",
+      "totalFour": "Deductions from salary",
+      "byPaymentCode": "By payment code",
+      "byTotalPayment": "By total calculated payment amount"
     },
     "view": {
       "main_salary": "Base salary",
@@ -1939,8 +2031,8 @@
       "code": "Payment code",
       "type": "Payment type and name",
       "amount": "Amount",
-      "total": "Total accrued",
-      "out_total": "Total deducted"
+      "total": "Total calculated",
+      "out_total": "Total deductions"
     }
   },
   "polyclinic": {
@@ -1960,30 +2052,30 @@
     }
   },
   "ticket": {
-    "name": "Directions",
-    "createTitle": "Attach",
+    "name": "Tickets",
+    "createTitle": "Assign",
     "updateTitle": "Edit",
-    "attachCommission": "Attach commission members",
+    "attachCommission": "Assign commission members",
     "confirmTitle": "Confirm",
     "form": {
       "worker_positions": "Commission members",
       "tickets": "Selected employees",
       "no-data": "No employee selected!",
       "ticket": "Commission",
-      "warning": "Unattached employee!",
-      "requiredWorker": "Select employee!",
+      "warning": "Unassigned employee!",
+      "requiredWorker": "Employee required!",
       "commission_leader_id": "Commission leader"
     },
     "confirm": {
       "med_date": "Examination date",
-      "to": "Next examination",
+      "to": "Next examination date",
       "comment": "Comment",
-      "removeCommission": "Clear commission members?"
+      "removeCommission": "Remove commission members?"
     }
   },
   "medWorker": {
     "name": "All employees",
-    "createTitle": "Attach",
+    "createTitle": "Assign",
     "updateTitle": "Edit",
     "form": {
       "education": "Education",
@@ -1993,55 +2085,55 @@
     }
   },
   "taxFour": {
-    "name": "Appendix 4 PIT",
+    "name": "INPS Appendix 4",
     "form": {
-      "employee_status": "Employee status (1-working, 2-not)",
-      "contract_type": "Contract type (1-main, 2-part-time, 3-civil, 4-direction)",
-      "total_salary_income": "Total labor income",
-      "total_tax": "Total tax",
-      "reported_salary_income": "Period labor income",
-      "reported_tax": "Period tax"
+      "employee_status": "Employee status (1-working, 2-not working)",
+      "contract_type": "Contract type (1-main, 2-part-time, 3-individual, 4-assignment)",
+      "total_salary_income": "Total salary income",
+      "total_tax": "Total calculated tax",
+      "reported_salary_income": "Reported salary income",
+      "reported_tax": "Reported calculated tax"
     }
   },
   "taxFive": {
-    "name": "Appendix 5 PIT",
+    "name": "INPS Appendix 5",
     "form": {
-      "total_income": "Total income",
-      "reported_income": "Period income",
-      "income_type": "Income type (1-property, 2-rent, 3-benefit, 4-other)",
-      "total_tax": "Total tax",
-      "reported_tax": "Period tax"
+      "total_income": "Total calculated income",
+      "reported_income": "Reported income",
+      "income_type": "Income type (1-property, 2-rent, 3-material benefit, 4-other)",
+      "total_tax": "Total calculated tax",
+      "reported_tax": "Reported calculated tax"
     }
   },
   "accDashboard": {
     "name": "Dashboard",
     "form": {
-      "total_income": "Total income",
-      "reported_income": "Period income",
-      "income_type": "Income type (1-property, 2-rent, 3-benefit, 4-other)",
-      "total_tax": "Total tax",
-      "reported_tax": "Period tax"
+      "total_income": "Total calculated income",
+      "reported_income": "Reported income",
+      "income_type": "Income type (1-property, 2-rent, 3-material benefit, 4-other)",
+      "total_tax": "Total calculated tax",
+      "reported_tax": "Reported calculated tax"
     },
     "chart": {
-      "sum": "Sum",
-      "total_one": "Payroll fund payments",
-      "total_two": "Non-income payments",
-      "total_three": "Non-payroll payments",
+      "sum": "Total",
+      "total_one": "Payments included in payroll fund",
+      "total_two": "Payments not included in payroll fund",
+      "total_three": "Payments excluded from payroll fund",
       "total_four": "Total salary",
-      "total_five": "Deductions",
-      "statements": "Monthly reports",
+      "total_five": "Deductions from salary",
+      "statements": "Monthly report",
       "tax_four": "Tax report Appendix 4",
       "tax_five": "Tax report Appendix 5",
       "pension_payment": "INPS",
-      "reported_income": "Period income",
-      "reported_tax": "Period tax",
+      "reported_income": "Reported income",
+      "reported_tax": "Reported tax",
       "income_tax_paid": "Paid income tax amount",
       "total_contributions": "Total contributions",
-      "reported_salary_income": "Period labor income"
+      "reported_salary_income": "Reported salary income"
     },
     "tax_five": {
-      "reported_income": "Period income",
-      "reported_tax": "Period tax"
+      "reported_income": "Reported income",
+      "reported_tax": "Reported tax"
     }
   },
   "vacancy": {
@@ -2052,19 +2144,19 @@
       "department_position_id": "Vacancy positions",
       "region_id": "Region",
       "city_id": "District/City",
-      "work_type": "Work mode",
-      "address": "Work address (full)",
+      "work_type": "Work schedule",
+      "address": "Workplace address (full)",
       "education": "Minimum education",
-      "rate": "Vacant places",
-      "salary": "Salary (sum)",
+      "rate": "Vacant positions",
+      "salary": "Monthly salary (UZS)",
       "experience": "Required experience (years)",
       "short_experience": "Experience",
       "switch": "Status",
-      "to": "Vacancy term",
+      "to": "Vacancy duration",
       "position_obligations": "Position duties",
       "qualification_requirements": "Qualification requirements",
       "working_conditions": "Working conditions",
-      "specialties": "Specialty"
+      "specialties": "Specialties"
     }
   },
   "salaryCategory": {
@@ -2072,61 +2164,61 @@
     "createTitle": "Add",
     "updateTitle": "Edit",
     "tab": {
-      "month": "By months",
-      "organization": "By organizations"
+      "month": "By month",
+      "organization": "By organization"
     },
     "label": {
       "external": "Transportation (operation)",
       "capital": "Capital repair",
       "construction": "Construction works",
       "other": "Other works (auxiliary)",
-      "fromIt": "Including",
+      "fromIt": "Of which",
       "all": "Total",
       "area": "Area",
       "mediumWorkerCount": "Average employee count",
-      "mediumSalaryAmount": "Payroll fund, thousand sum",
-      "forOrganization": "For society organizations",
+      "mediumSalaryAmount": "Payroll fund (thousand UZS)",
+      "forOrganization": "For society enterprises",
       "forOwn": "For own needs",
-      "forForeign": "For third parties",
+      "forForeign": "For foreign company",
       "forLogistic": "Transportation related",
-      "forOther": "Other activities",
+      "forOther": "Other activities (industry, contracting etc.)",
       "fixed-term": "Fixed-term contract employees",
       "contract": "Civil contract employees",
-      "Housekeeper": "Housekeepers"
+      "Housekeeper": "Freelancers"
     },
     "form": {
-      "external_worker_count": "(Average count)",
-      "external_salary_fund": "(Payroll fund, thousand sum)",
-      "capital_society_worker_count": "Society - (Average count)",
-      "capital_society_salary_fund": "Society - (Payroll fund, thousand sum)",
-      "capital_own_use_worker_count": "Own - (Average count)",
-      "capital_own_use_salary_fund": "Own - (Payroll fund, thousand sum)",
-      "capital_foreign_company_worker_count": "Third party - (Average count)",
-      "capital_foreign_company_salary_fund": "Third party - (Payroll fund, thousand sum)",
-      "construction_society_worker_count": "Society - (Average count)",
-      "construction_society_salary_fund": "Society - (Payroll fund, thousand sum)",
-      "construction_own_use_worker_count": "Own - (Average count)",
-      "construction_own_use_salary_fund": "Own - (Payroll fund, thousand sum)",
-      "construction_foreign_company_worker_count": "Third party - (Average count)",
-      "construction_foreign_company_salary_fund": "Third party - (Payroll fund, thousand sum)",
-      "other_society_worker_count": "Other - (Average count)",
-      "other_society_salary_fund": "Other - (Payroll fund, thousand sum)",
-      "other_own_use_worker_count": "Transportation - (Average count)",
-      "other_own_use_salary_fund": "Transportation - (Payroll fund, thousand sum)",
-      "other_foreign_company_worker_count": "Third party - (Average count)",
-      "other_foreign_company_salary_fund": "Third party - (Payroll fund, thousand sum)",
-      "temporary_contract_worker_count": "Fixed-term - (Average count)",
-      "temporary_contract_salary_fund": "Fixed-term - (Payroll fund, thousand sum)",
-      "civil_contract_worker_count": "Civil - (Average count)",
-      "civil_contract_salary_fund": "Civil - (Payroll fund, thousand sum)",
-      "freelancer_worker_count": "Housekeepers - (Average count)",
-      "freelancer_salary_fund": "Housekeepers - (Payroll fund, thousand sum)"
+      "external_worker_count": "(Average employee count)",
+      "external_salary_fund": "(Payroll fund, thousand UZS)",
+      "capital_society_worker_count": "Society enterprises - (Average employee count)",
+      "capital_society_salary_fund": "Society enterprises - (Payroll fund, thousand UZS)",
+      "capital_own_use_worker_count": "Own needs - (Average employee count)",
+      "capital_own_use_salary_fund": "Own needs - (Payroll fund, thousand UZS)",
+      "capital_foreign_company_worker_count": "Foreign company - (Average employee count)",
+      "capital_foreign_company_salary_fund": "Foreign company - (Payroll fund, thousand UZS)",
+      "construction_society_worker_count": "Society enterprises - (Average employee count)",
+      "construction_society_salary_fund": "Society enterprises - (Payroll fund, thousand UZS)",
+      "construction_own_use_worker_count": "Own needs - (Average employee count)",
+      "construction_own_use_salary_fund": "Own needs - (Payroll fund, thousand UZS)",
+      "construction_foreign_company_worker_count": "Foreign company - (Average employee count)",
+      "construction_foreign_company_salary_fund": "Foreign company - (Payroll fund, thousand UZS)",
+      "other_society_worker_count": "Other activities - (Average employee count)",
+      "other_society_salary_fund": "Other activities - (Payroll fund, thousand UZS)",
+      "other_own_use_worker_count": "Transportation related - (Average employee count)",
+      "other_own_use_salary_fund": "Transportation related - (Payroll fund, thousand UZS)",
+      "other_foreign_company_worker_count": "Foreign company - (Average employee count)",
+      "other_foreign_company_salary_fund": "Foreign company - (Payroll fund, thousand UZS)",
+      "temporary_contract_worker_count": "Fixed-term employees - (Average employee count)",
+      "temporary_contract_salary_fund": "Fixed-term employees - (Payroll fund, thousand UZS)",
+      "civil_contract_worker_count": "Civil contract employees - (Average employee count)",
+      "civil_contract_salary_fund": "Civil contract employees - (Payroll fund, thousand UZS)",
+      "freelancer_worker_count": "Freelancers - (Average employee count)",
+      "freelancer_salary_fund": "Freelancers - (Payroll fund, thousand UZS)"
     }
   },
   "salaryReport": {
     "name": "Monthly report (code)",
-    "createTitle": "Upload salary report",
-    "updateTitle": "Edit salary report",
+    "createTitle": "Upload payroll report",
+    "updateTitle": "Edit payroll report",
     "form": {
       "title": "Payroll fund payment types breakdown",
       "name": "Payment type name",
@@ -2134,7 +2226,7 @@
       "fromYear": "From year start",
       "total": "Total",
       "code": "Code",
-      "salaryType": "Payroll fund in 1-T report"
+      "salaryType": "Payroll fund, reflected in 1-T report"
     }
   },
   "pensionPayment": {
@@ -2143,8 +2235,8 @@
     "updateTitle": "",
     "form": {
       "income_tax_paid": "Income tax",
-      "mandatory_pension_contribution": "Mandatory pension",
-      "voluntary_pension_contribution": "Voluntary pension",
+      "mandatory_pension_contribution": "Mandatory pension contribution",
+      "voluntary_pension_contribution": "Voluntary pension contribution",
       "total_contributions": "Total contributions"
     }
   },
@@ -2152,7 +2244,7 @@
     "name": "Turnstile",
     "createTitle": "Upload",
     "updateTitle": "Edit",
-    "errorTitle": "Error employees list",
+    "errorTitle": "List of employees with data errors",
     "form": {
       "name": "Name",
       "department": "Department",
@@ -2160,7 +2252,7 @@
       "workers_count": "Employee count",
       "exported_count": "Uploaded",
       "status": "Status",
-      "asFile": "Download as file",
+      "asFile": "Click to export to file",
       "error": "Error"
     }
   },
@@ -2168,10 +2260,10 @@
     "name": "Camera",
     "createTitle": "Upload",
     "updateTitle": "Edit",
-    "warningRecording": "Exam requirements",
-    "warningTextOne": "Camera and mic must be on during exam.",
-    "warningTextTwo": "Person must be fully visible.",
-    "warningTextThree": "Turning off may cancel exam.",
+    "warningRecording": "Exam process requirements",
+    "warningTextOne": "Camera and microphone must remain on during exam.",
+    "warningTextTwo": "Person must be fully visible in camera.",
+    "warningTextThree": "Turning off camera/microphone may cancel exam.",
     "form": {
       "name": "Name",
       "department": "Department",
@@ -2179,12 +2271,12 @@
       "workers_count": "Employee count",
       "exported_count": "Uploaded",
       "status": "Status",
-      "asFile": "Download as file",
+      "asFile": "Click to export to file",
       "error": "Error"
     }
   },
   "workerImage": {
-    "name": "(HC) Telegram photos",
+    "name": "Telegram images",
     "photo": "Photo",
     "status": "Status",
     "viewPhoto": "View photo",
@@ -2204,55 +2296,56 @@
       "workers_count": "Employee count",
       "exported_count": "Uploaded",
       "status": "Status",
-      "asFile": "Download as file",
+      "asFile": "Click to export to file",
       "error": "Error",
       "logId": "Log ID",
       "deviceId": "Device ID"
     }
   },
   "hcEvent": {
-    "name": "(HC) Events",
-    "nameV2": "(HC) Events V2",
+    "name": "Events",
+    "nameV2": "Events V2",
     "createTitle": "Upload",
     "updateTitle": "Edit",
     "syncTitle": "Sync",
-    "syncText": "Select time for sync. System syncs to end of day.",
+    "syncText": "Select time to sync. System will sync up to end of selected day.",
     "preview": "View",
     "availableEvent": "Available events",
     "newView": "By work time",
     "oldView": "By events",
-    "byMonth": "By months",
+    "byMonth": "By month",
     "event": "Events",
-    "eventYes": "Available",
-    "eventNo": "Unavailable",
+    "eventYes": "Available events",
+    "eventNo": "No events",
     "form": {
       "name": "Name",
       "temperature": "Temperature",
       "device": "Device",
       "mask_status": "Mask",
       "status": "Status",
-      "asFile": "Download as file",
+      "asFile": "Click to export to file",
       "withMask": "With mask",
       "NoMask": "Without mask",
       "direction": "Turnstile",
-      "face": "Face",
+      "face": "FACE",
+      "mobile": "Mobile",
       "card": "Card",
       "finger": "Fingerprint",
       "unknown": "Unknown",
       "normal": "Normal",
       "workTime": "Work time",
-      "noNormal": "Abnormal",
+      "noNormal": "Not normal",
       "start_time": "Start time",
       "hours": "Norm hours (/hour)",
       "on_vacation": "On vacation",
       "end_time": "End time"
     },
-    "detailShow": "Detailed view",
+    "detailShow": "View details",
     "cards": {
       "cardOne": "Late employees",
       "cardTwo": "Absent employees",
-      "cardThree": "Early leave employees",
-      "cardFour": "On vacation"
+      "cardThree": "Early leavers",
+      "cardFour": "Employees on vacation"
     }
   },
   "pensioner": {
@@ -2262,24 +2355,33 @@
     "form": {
       "position": "Position at retirement (full)",
       "passport": "Passport series",
-      "address": "Address",
-      "experience": "Railway experience",
+      "address": "Residential address",
+      "experience": "Continuous railway experience",
       "year": "Retirement year",
       "invalid": "Disability group (1; 2; 3;)",
-      "railway_title": "Honored railway worker?",
+      "railway_title": "Honorary railway worker title?",
       "afghan": "Afghan war participant?",
-      "pin": "PINFL",
-      "phone": "Phone",
-      "chernobyl": "Chernobyl participant?"
+      "pin": "PIN",
+      "phone": "Phone number",
+      "chernobyl": "Chernobyl cleanup participant?"
     }
   },
   "notification": {
-    "name": "Notification",
-    "createTitle": "Attach device",
+    "name": "Notifications",
+    "createTitle": "Assign device",
     "updateTitle": "Edit",
     "form": {
       "user_id": "Employee",
       "devices": "Devices"
+    },
+    "markAllAsRead": "Mark all as read",
+    "unreadPlural": "Unread notifications",
+    "status": {
+      "info": "Info",
+      "success": "Success",
+      "warning": "Warning",
+      "error": "Error",
+      "critical": "Critical error"
     }
   },
   "teacherLesson": {
@@ -2289,59 +2391,60 @@
     "name": "Listeners"
   },
   "navigation": {
-    "hrm": "HR management",
-    "docFlow": "Document flow",
-    "attestation": "Attestation",
+    "hrm": "HR Management",
+    "docFlow": "Document Flow",
+    "attestation": "Certification",
     "turnstile": "Turnstile",
     "general": "General",
-    "lms": "Training management",
+    "lms": "Training Management",
     "economist": "Economist",
     "hospital": "Hospital",
-    "admin": "Admin"
+    "admin": "Admin",
+    "chat": "Chat"
   },
   "resultPage": {
     "name": "Results",
-    "createTitle": "Upload salary report",
-    "updateTitle": "Edit salary report",
+    "createTitle": "Upload payroll report",
+    "updateTitle": "Edit payroll report",
     "form": {
-      "chances": "Attempts count",
+      "chances": "Number of attempts",
       "name": "Payment type name",
       "type": "Type",
       "fromYear": "From year start",
       "total": "Total",
       "code": "Code",
-      "salaryType": "Payroll fund in 1-T report"
+      "salaryType": "Payroll fund, reflected in 1-T report"
     }
   },
   "turnStileDashboard": {
     "name": "Dashboard",
-    "description": "Xodimlarning grafik jadvallari va turniket orqali olingan ma’lumotlar asosida real vaqtdagi analitika",
+    "description": "Real-time analytics based on employee schedules and turnstile data",
     "form": {
       "topOfflineDevices": "Synced devices",
       "lastSynchronizationTime": "Last sync",
       "workerCount": "Employee count",
       "offlineDevice": "Offline devices",
       "onlineDevice": "Online devices",
-      "left": "Exited",
-      "analytic": "Analitika",
+      "left": "Left",
+      "analytic": "Analytics",
       "leftWorkplace": "Left workplace",
-      "dailyEvent": "Today turnstile records",
+      "dailyEvent": "Today's turnstile records (by employee)",
       "came_today": "Arrived today",
-      "not_came_today": "Not arrived today",
+      "not_came_today": "Absent today",
       "current_in": "At workplace",
-      "current_out": "Outside workplace",
-      "scheduled_workers_today": "Grafik bo‘yicha xodimlar",
-      "workdays": "Outside workplace"
+      "current_out": "Not at workplace",
+      "scheduled_workers_today": "Scheduled employees",
+      "workdays": "Not at workplace"
     },
     "work_durations": {
-      "workdays": "Set work time",
-      "max_worked_count": "Worked time",
-      "deficit": "Shortfall",
-      "min_workers": "Min time employees",
-      "allWorker": "Barcha xodimlar soni",
-      "workerCountWithoutSchedule": "Grafikga biriktirilmagan xodimlar soni",
-      "workerCountWithSchedule": "Grafikga biriktirilgan xodimlar soni",
-      "max_workers": "Max time employees"
+      "workdays": "Scheduled work time",
+      "max_worked_count": "Worked hours",
+      "deficit": "Shortfall hours",
+      "min_workers": "Least hours worked",
+      "allWorker": "Total employees",
+      "workerCountWithoutSchedule": "Employees without schedule",
+      "workerCountWithSchedule": "Employees with schedule",
+      "max_workers": "Most hours worked"
     },
     "device": {
       "all": "All devices",
@@ -2351,86 +2454,88 @@
     },
     "preview": {
       "time": "Date",
-      "startTime": "Ish boshlanish vaqtidan",
-      "endTime": "Ish tugash vaqtidan",
+      "startTime": "From work start",
+      "endTime": "From work end",
       "workTime": "Work start time",
       "temperature": "Temperature",
       "device": "Device",
-      "direction": "Direction",
+      "direction": "Status",
       "norm_hours": "Norm hours",
       "auth_type": "Auth type",
       "mask_status": "Mask"
     },
     "cards": {
-      "late_come": "Late",
-      "not_come_yesterday": "Absent (yesterday)",
-      "early_leave_yesterday": "Early leave (yesterday)",
+      "late_come": "Late arrivals",
+      "ACSEventFaceVerifyPass": "Passed turnstile",
+      "MobileFaceEvent": "Passed via mobile",
+      "notIncludedSchedule": "No schedule assigned",
+      "not_come_yesterday": "Absent yesterday",
+      "early_leave_yesterday": "Early leave yesterday",
       "not_come": "Absent",
       "come": "Arrived",
       "current_in": "At workplace",
-      "current_out": "Outside",
-      "early_leave": "Early leave",
+      "current_out": "Not at workplace",
+      "early_leave": "Early leavers",
       "daily_attendance": "Turnstile records",
-      "work_hours": "Under norm hours",
+      "work_hours": "Below norm hours",
       "device_status": "All devices",
       "device_status_online": "Online devices",
       "device_status_offline": "Offline devices",
-      "lesson_worked": "Work time indicators",
-      "not_passed_turnstile_workers": "Turniketdan o‘tmagan xodimlar",
-      "privilege_turnstile_workers": "Imtiyozli xodimlar",
-      "privilegeSubtitle": "Ishga kelmaydigan va imtiyozli xodimlarning turlari bo‘yicha",
-      "privilege": "Imtiyozli",
-      "dontPassFace": "O‘tmaganlar",
-      "onVacation": "Ta’tildagi xodimlar",
-      "onHoliday": "Dam olish kunida",
-      "lateCome": "Kech kelgan xodimlar",
-      "earlyGo": "Erta ketgan xodimlar",
-      "allWorkers": "Barcha xodimlar",
-      "workTimeTitle": "Ish vaqti tahlili",
-      "workTimeSubtitle": "Xodimlarning ishga kelish va ketish vaqtlari bo‘yicha qisqa tahlil",
-      "workerAnalytic": "Xodimlar tahlili",
-      "workerAnalyticDescription": "Ishga kelish va kelmaslik bo‘yicha qisqa tahlil",
-      "allWorkerOfCompany": "Korxonaning umumiy xodimlar soni",
-      "planned": "Rejalashtirilgan",
-      "todayCome": "Kelganlar",
-      "todayDontCome": "Kelmaganlar",
-      "deviceAnalytic": "Qurilmalar tahlili",
-      "deviceAnalyticDescription": "Qurilmalar holati bo‘yicha qisqa tahlil",
-      "allDevices": "Barcha qurilmalar soni",
-      "onlineDevices": "Onlayn qurilmalar soni",
-      "offlineDevices": "Oflayn qurilmalar soni",
-      "graphAnalytic": "Grafik bo‘yicha tahlil",
-      "mobileFace": "Mobil qurilma",
-      "startTime": "Smena vaqti",
-      "firstComeToWork": "Ishga kelgan vaqt",
-      "lastGoOut": "Ishdan chiqish vaqti",
-      "delay": "Kechikish",
-      "earlyTimeFromWorkTime": "Ish vaqtidan oldin ketish",
-      "turnstileFace": "Turniket qurilmasi",
-      "allWorkerOfFace": "Umumiy xodimlar soni",
-      "turnstileAnalytic": "Face ID tahlili",
-      "vacations": "Ta’tildagi xodimlar",
-      "casual_workers": "Dam olish kunidagi xodimlar",
-      "turnstileAnalyticDescription": "Face ID bo‘yicha kunlik qaydnoma",
-      "graphAnalyticDescription": "So‘nggi 5 oyda grafik tuzilmagan xodimlar soni",
-      "currentMonthWorkerCount": "Joriy oyda grafik tuzilmagan xodimlar soni",
-      "devices": "Top offline devices"
+      "lesson_worked": "Work hour metrics",
+      "not_passed_turnstile_workers": "Not passed turnstile",
+      "privilege_turnstile_workers": "Privileged employees",
+      "privilegeSubtitle": "By privileged and absent types",
+      "privilege": "Privileged",
+      "dontPassFace": "Not passed",
+      "onVacation": "On vacation",
+      "onHoliday": "On holiday",
+      "lateCome": "Late arrivals",
+      "earlyGo": "Early leavers",
+      "allWorkers": "All employees",
+      "workTimeTitle": "Work time analysis",
+      "workTimeSubtitle": "Brief analysis of arrival/departure times",
+      "workerAnalytic": "Employee analysis",
+      "workerAnalyticDescription": "Brief arrival/absence analysis",
+      "allWorkerOfCompany": "Total company employees",
+      "planned": "Planned",
+      "todayCome": "Arrived",
+      "todayDontCome": "Absent",
+      "deviceAnalytic": "Device analysis",
+      "deviceAnalyticDescription": "Brief device status analysis",
+      "allDevices": "Total devices",
+      "onlineDevices": "Online devices",
+      "offlineDevices": "Offline devices",
+      "graphAnalytic": "Schedule analysis",
+      "mobileFace": "Mobile device",
+      "startTime": "Shift time",
+      "firstComeToWork": "Arrival time",
+      "lastGoOut": "Departure time",
+      "delay": "Delay",
+      "earlyTimeFromWorkTime": "Early departure",
+      "turnstileFace": "Turnstile device",
+      "allWorkerOfFace": "Total employees",
+      "turnstileAnalytic": "Face ID analysis",
+      "vacations": "On vacation",
+      "casual_workers": "On holiday",
+      "turnstileAnalyticDescription": "Daily Face ID records",
+      "graphAnalyticDescription": "Current month brief analysis",
+      "currentMonthWorkerCount": "Current month unscheduled employees"
     },
     "options": {
-      "status": "By work time",
-      "max": "Max",
-      "min": "Min"
+      "status": "By work hours",
+      "max": "Most",
+      "min": "Least"
     }
   },
   "hcWorkDuration": {
-    "name": "(HC) Work time",
+    "name": "Work time",
     "form": {
       "enter": "Entry",
       "exit": "Exit"
     }
   },
   "userImageLogs": {
-    "name": "Photo history",
+    "name": "Image history",
     "photo": "Photo",
     "noPhoto": "No photo",
     "status": {
@@ -2441,7 +2546,7 @@
     }
   },
   "invalidUser": {
-    "name": "Rejected photos",
+    "name": "Rejected images",
     "photo": "Photo",
     "noPhoto": "No photo",
     "syncTime": "Sync time"
@@ -2458,11 +2563,11 @@
     "expiryDate": "Expiry date",
     "status": "Status",
     "refresh": "Refresh",
-    "showing": "Shown",
+    "showing": "Showing",
     "more": "more"
   },
   "devices": {
-    "name": "(HC) Devices",
+    "name": "Devices",
     "createTitle": "Add device",
     "updateTitle": "Edit device",
     "deviceName": "Device name",
@@ -2473,87 +2578,143 @@
     "macAddressPlaceholder": "Enter MAC address",
     "serialNumber": "Serial number",
     "serialNumberPlaceholder": "Enter serial number",
-    "contractTitle": "Contract data",
+    "contractTitle": "Contract details",
     "status": "Status",
     "online": "Online",
     "offline": "Offline",
     "config": "C",
     "log": "L",
-    "contract_number": "Contract №",
+    "contract_number": "Contract number",
     "contract_date": "Contract date",
     "price": "Contract price",
     "upload_workers": "U",
     "device_code": "Device code",
-    "attachedOrg": "Attached to organization",
-    "noAttachedOrg": "Not attached",
+    "attachedOrg": "Assigned to organization",
+    "noAttachedOrg": "Not assigned",
     "orgStatus": "By organization"
   },
   "schedule": {
     "name": "Duty schedule",
     "form": {
-      "starTimeSchedule": "Shift start",
-      "endTimeSchedule": "Shift end",
-      "breakStartTime": "Tanaffus boshlanish vaqti",
-      "breakEndTime": "Tanaffus tugash vaqti",
+      "starTimeSchedule": "Shift start time",
+      "endTimeSchedule": "Shift end time",
+      "breakStartTime": "Break start time",
+      "breakEndTime": "Break end time",
       "allScheduleCount": "Total schedules",
-      "savingProcess": "Please wait...",
-      "addBreakTime": "Tanaffus vaqtini qo‘shish",
+      "savingProcess": "Uploading...",
+      "addBreakTime": "Add break time",
       "changedScheduleCount": "Changed schedules",
       "scheduleType": "Duty type",
-      "holiday": "Day off",
+      "holiday": "Holiday",
+      "exportSchedule": "Export timesheet",
       "otherTime": "Other hours",
       "workerList": "Employee list",
-      "workTime": "Work time",
-      "attachedWorker": "Biriktirilgan",
-      "noAttachedWorker": "Biriktirilmagan",
-      "filterByWorker": "Xodimlar bo‘yicha",
-      "notExistChangeToSave": "Saqlash uchun o‘zgarishlar yo‘q",
+      "workTime": "Work hours",
+      "attachedWorker": "Assigned",
+      "noAttachedWorker": "Unassigned",
+      "filterByWorker": "By employee",
+      "notExistChangeToSave": "No changes to save",
       "startWork": "Select duty type to start"
     }
   },
   "shiftType": {
     "name": "Shifts",
-    "groupName": "Smena guruhlari",
-    "createTitle": "Add",
-    "updateTitle": "Edit",
+    "groupName": "Shift groups",
+    "createTitle": "Generate schedule",
+    "updateTitle": "Complete group",
     "form": {
-      "noGraphic": "Biriktirilmagan",
-      "copySchedule": "Oylik grafikni nusxalash",
+      "noGraphic": "Unassigned",
+      "copySchedule": "Copy monthly schedule",
       "generate": "Generate",
-      "startWorkTime": "Ish boshlanish vaqtidan imtiyoz",
-      "endWorkTime": "Ish tugash vaqtidan imtiyoz",
-      "replaceWorker": "Xodimni o‘zgartirish",
-      "fromThisDate": "Shu sanadan boshlab",
-      "onlyThisDate": "Shu kunni o‘zgartirish",
-      "groupCount": "Guruhlar soni",
-      "workerCount": "Xodimlar soni",
-      "createGroup": "Guruh yaratish",
-      "turnstileActive": "Turniket tizimida faol",
-      "turnstileUnActive": "Turniket tizimiga ulanmagan",
-      "addGrand": "Xodimga imtiyoz berish",
-      "gradToReport": "Turniket hisobotlaridan ozod qilish",
-      "grandLabel": "Xodimga ishga kelish va ketish vaqtlariga imtiyoz berish uchun kelish va ketish vaqtlariga daqiqalarda qiymat bering.",
-      "reportLabel": "Xodim turniket qurilmasidan foydalanganda uning ma’lumotlari hisobotlarda aks etmaydi",
-      "showGroup": "Guruhlarni ko‘rish",
-      "addFacility": "Turniket boshqaruvi",
-      "checkFactOfWorkTime": "Faktni tekshirish",
-      "removeTurnstile": "Turniketdan o‘chirish",
-      "addTurnstile": "Turniketga qo‘shish",
-      "notAllowedThisAction": "Maxsus smena uchun Navbatchilik grafiki menyusida ishlang!",
-      "turnstileSetting": "Turniket boshqaruvi",
-      "howMuchGroup": "How many groups do you want to schedule for?",
+      "startWorkTime": "Grace minutes from start",
+      "endWorkTime": "Grace minutes from end",
+      "replaceWorker": "Replace employee",
+      "fromThisDate": "From this date",
+      "onlyThisDate": "This day only",
+      "groupCount": "Number of groups",
+      "workerCount": "Number of employees",
+      "createGroup": "Create group",
+      "turnstileActive": "Active in turnstile",
+      "turnstileUnActive": "Not connected to turnstile",
+      "addGrand": "Grant privilege",
+      "gradToReport": "Exclude from turnstile reports",
+      "grandLabel": "Grant grace minutes for arrival/departure",
+      "reportLabel": "Employee data excluded from reports",
+      "showGroup": "Show groups",
+      "addFacility": "Turnstile management",
+      "checkFactOfWorkTime": "Check actual time",
+      "removeTurnstile": "Remove from turnstile",
+      "addTurnstile": "Add to turnstile",
+      "notAllowedThisAction": "Use Duty Schedule menu for special shifts!",
+      "turnstileSetting": "Turnstile management",
+      "howMuchGroup": "Number of groups in schedule",
       "group": "Groups"
     }
   },
   "publicPage": {
     "authentication": "View exam questions",
     "invalidDocument": "Document not found or deleted!",
-    "closeQuestion": "Close questions list"
+    "closeQuestion": "Close question list"
   },
   "socketPage": {
     "usersMOdalTitle": "All online users list"
   },
   "turnstileSchedule": {
     "name": "Turnstile schedule"
+  },
+  "notificationPage": {
+    "name": "Notifications",
+    "create": "Create notification"
+  },
+  "newsPage": {
+    "name": "News",
+    "create": "Create News",
+    "edit": "Edit News",
+    "createSubtitle": "Fill in the details to create a news article",
+    "editSubtitle": "Edit the information",
+    "slug": "Slug",
+    "slugPlaceholder": "Enter slug for URL",
+    "slugHint": "Enter a unique slug for URL (e.g. new-policy-2024)",
+    "tags": "Tags",
+    "tagPlaceholder": "Select or create tags",
+    "publishedAt": "Published date and time",
+    "actionPin": "Pin the news",
+    "language": "Language",
+    "title": "Title",
+    "titlePlaceholder": "Enter news title",
+    "shortDescription": "Short description",
+    "shortDescriptionPlaceholder": "Brief about the news...",
+    "content": "Content",
+    "contentPlaceholder": "Write news content here...",
+    "attachments": "Attachments",
+    "attachmentsHint": "Upload documents, PDF or other files",
+    "statusDraft": "Draft",
+    "statusPublished": "Published",
+    "statusArchived": "Archived",
+    "noNews": "No news yet",
+    "noNewsSubtitle": "Published articles will appear here",
+    "endOfList": "You've reached the end",
+    "readMore": "Read More",
+    "backToNews": "Back to News",
+    "author": "Author",
+    "viewAll": "View all",
+    "media": "Media",
+    "downloadAll": "Download All",
+    "pin": "Pin",
+    "unpin": "Unpin",
+    "pinned": "Pinned",
+    "video": "Video",
+    "image": "Image",
+    "noMedia": "No media"
+  },
+  "newsCategoryPage": {
+    "name": "News Categories",
+    "create": "Create new tag",
+    "edit": "Edit tag",
+    "createTag": "Create new tag",
+    "namePlaceholder": "Enter tag name",
+    "langUz": "Uzbek",
+    "langRu": "Russian",
+    "langEn": "English"
   }
 }

@@ -3,8 +3,8 @@
   import { useComponentStore, useTurnstileTerminalUserStore } from '@/store/modules/index.js'
   import { useAppSetting } from '@/utils/index.js'
   import Utils from '@/utils/Utils.js'
-  import PhoneForm from '@/pages/hrm/condidate/ui/PhoneForm.vue'
-  import PhotoForm from '@/pages/hrm/condidate/ui/PhotoForm.vue'
+  import PhoneForm from '@/pages/hrm/candidate/ui/PhoneForm.vue'
+  import PhotoForm from '@/pages/hrm/candidate/ui/PhotoForm.vue'
 
   const emit = defineEmits(['onSuccess'])
 

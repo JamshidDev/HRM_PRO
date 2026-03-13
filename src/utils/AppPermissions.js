@@ -162,10 +162,14 @@ export const appPermissions = {
 
   confirmation: 'confirmation',
   confirmationContracts: 'confirmation-contracts',
-  confirmationAddContracts: 'confirmation-contracts-additional',
+  confirmationAddContracts: 'confirmation-contract-additional',
   confirmationCommands: 'confirmation-commands',
   confirmationWorkerApplications: 'confirmation-worker-applications',
   confirmationTable: 'confirmation-table',
+  confirmationLmsCertificate: 'confirmation-lms-certificate',
+  confirmationLmsCertificateRead: 'confirmation-lms-certificate-read',
+  confirmationLmsCertificateWrite: 'confirmation-lms-certificate-write',
+  confirmationStaffingApproval: 'confirmation-staffing-approval',
 
   exam: 'exam',
 
@@ -238,6 +242,9 @@ export const appPermissions = {
   turnstileDevicesRead: 'turnstile-devices-read',
   turnstileDevicesWrite: 'turnstile-devices-write',
   turnstileOthers: 'turnstile-others',
+  turnstileApprove: 'turnstile-approve',
+  turnstileApproveRead: 'turnstile-approve-read',
+  turnstileApproveWrite: 'turnstile-approve-write',
 
   hrIncentives: 'hr-incentives',
   hrIncentivesWrite: 'hr-incentives-write',
@@ -301,6 +308,9 @@ export const appPermissions = {
   economistUploadsRead: 'economist-uploads-read',
   economistUploadsConfirm: 'economist-uploads-confirm',
   economistUploadsStatus: 'economist-uploads-status',
+  economistStaffingApprove: 'economist-staffing-approve',
+  economistStaffingApproveRead: 'economist-staffing-approve-read',
+  economistStaffingApproveWrite: 'economist-staffing-approve-write',
 
   lms: 'lms',
   lmsDirection: 'lms-direction',
@@ -326,5 +336,12 @@ export const appPermissions = {
   lmsLessonsWrite: 'lms-lessons-write',
   lmsWorker: 'lms-worker',
   lmsWorkerRead: 'lms-worker-read',
-  lmsWorkerWrite: 'lms-worker-write'
+  lmsWorkerWrite: 'lms-worker-write',
+  lmsCertificate: 'lms-certificate',
+  lmsCertificateRead: 'lms-certificate-read',
+  lmsCertificateWrite: 'lms-certificate-write',
+
+  chat:'chat',
+  chatTelegramMessages:'chat-telegram-messages',
+  chatNotification:'chat-notification',
 }

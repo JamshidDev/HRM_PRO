@@ -1,7 +1,0 @@
-export const HomePage = () => import('./home/HomePage.vue')
-export const NotFoundPage = () => import('./notFound/NotFoundPage.vue')
-export const DocumentSignature = () => import('./documentSignature/DocumentSignature.vue')
-export const LoginPageV2 = () => import('./login/LoginPagev2.vue')
-export const PublicPage = () => import('./public/page.vue')
-export const AIConversationPage = () => import('./ai/AIConversationPage.vue')
-export const PrivacyPolicyPage = () => import('./privacyPolicy/PrivacyPolicyPage.vue')

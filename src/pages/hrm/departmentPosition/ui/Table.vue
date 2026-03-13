@@ -1,14 +1,8 @@
 <script setup>
-  import {
-    NoDataPicture,
-    UIPagination,
-    UIMenuButton } from '@components'
-  import {
-    useAccountStore,
-    useComponentStore,
-    useDepartmentPositionStore,} from '@stores'
-  import {Utils} from '@utils'
-  import {Eye16Regular} from "@vicons/fluent"
+  import { NoDataPicture, UIPagination, UIMenuButton } from '@components'
+  import { useAccountStore, useComponentStore, useDepartmentPositionStore } from '@stores'
+  import { Utils } from '@utils'
+  import { Eye16Regular } from '@vicons/fluent'
 
   const store = useDepartmentPositionStore()
   const componentStore = useComponentStore()
@@ -25,17 +19,17 @@
     componentStore._positions()
     store.visibleType = false
     store.elementId = v.id
-    Object.assign(store.payload,{
-      organization_id:[v.organization],
-      position_id:v.position?.id,
-      department_id:v.department?.id,
-      group:v.group?.id,
-      rank:v.rank?.id,
-      max_rank:v.max_rank?.id,
-      education:v.education?.id,
-      rate:v.rate,
-      salary:v.salary.toString(),
-      experience:v.experience.toString(),
+    Object.assign(store.payload, {
+      organization_id: [v.organization],
+      position_id: v.position?.id,
+      department_id: v.department?.id,
+      group: v.group?.id,
+      rank: v.rank?.id,
+      max_rank: v.max_rank?.id,
+      education: v.education?.id,
+      rate: v.rate,
+      salary: v.salary.toString(),
+      experience: v.experience.toString()
     })
 
     store.visible = true
@@ -66,7 +60,7 @@
       onEdit(v.data)
     } else if (Utils.ActionTypes.delete === v.key) {
       onDelete(v.data)
-    } else if (Utils.ActionTypes.view === v.key){
+    } else if (Utils.ActionTypes.view === v.key) {
       onPreview(v.data)
     }
   }
@@ -93,7 +87,9 @@
             <th class="min-w-[40px] w-[40px]">
               <n-tooltip trigger="hover">
                 <template #trigger>
-                  <p class="cursor-pointer text-sm text-textColor2 line-clamp-1 w-full leading-[1.2] truncate">
+                  <p
+                    class="cursor-pointer text-sm text-textColor2 line-clamp-1 w-full leading-[1.2] truncate"
+                  >
                     {{ $t('departmentPositionPage.table.group') }}
                   </p>
                 </template>
@@ -103,7 +99,9 @@
             <th class="min-w-[40px] w-[40px]">
               <n-tooltip trigger="hover">
                 <template #trigger>
-                  <p class="cursor-pointer text-sm text-textColor2 line-clamp-1 w-full leading-[1.2] truncate">
+                  <p
+                    class="cursor-pointer text-sm text-textColor2 line-clamp-1 w-full leading-[1.2] truncate"
+                  >
                     {{ $t('departmentPositionPage.table.rank') }}
                   </p>
                 </template>
@@ -113,7 +111,9 @@
             <th class="min-w-[40px] w-[40px]">
               <n-tooltip trigger="hover">
                 <template #trigger>
-                  <p class="cursor-pointer text-sm text-textColor2 line-clamp-1 w-full leading-[1.2] truncate">
+                  <p
+                    class="cursor-pointer text-sm text-textColor2 line-clamp-1 w-full leading-[1.2] truncate"
+                  >
                     {{ $t('departmentPositionPage.table.rate') }}
                   </p>
                 </template>
@@ -123,7 +123,9 @@
             <th class="min-w-[40px] w-[40px]">
               <n-tooltip trigger="hover">
                 <template #trigger>
-                  <p class="cursor-pointer text-sm text-textColor2 line-clamp-1 w-full leading-[1.2] truncate">
+                  <p
+                    class="cursor-pointer text-sm text-textColor2 line-clamp-1 w-full leading-[1.2] truncate"
+                  >
                     {{ $t('departmentPositionPage.table.fact') }}
                   </p>
                 </template>
@@ -161,12 +163,21 @@
             </td>
             <td>
               <div class="w-full flex justify-center">
-                <n-button :type="item.colorType" secondary size="small" circle>{{ item.rate }}</n-button>
+                <n-button :type="item.colorType" secondary size="small" circle>{{
+                  item.rate
+                }}</n-button>
               </div>
             </td>
             <td>
               <div class="w-full flex justify-center">
-                <n-button :type="item.colorType" secondary v-if="item.worker_rate" size="small" circle>{{ item.worker_rate }}</n-button>
+                <n-button
+                  :type="item.colorType"
+                  secondary
+                  v-if="item.worker_rate"
+                  size="small"
+                  circle
+                  >{{ item.worker_rate }}</n-button
+                >
               </div>
             </td>
             <td>
@@ -181,16 +192,16 @@
             </td>
             <td>
               <UIMenuButton
-                  :data="item"
-                  :show-edit="true"
-                  @selectEv="onSelectEv"
-                  :extra-options="[
-                      {
-                        label: $t('content.worker'),
-                        key: Utils.ActionTypes.view,
-                        icon: Eye16Regular
-                       },
-                  ]"
+                :data="item"
+                :show-edit="true"
+                @selectEv="onSelectEv"
+                :extra-options="[
+                  {
+                    label: $t('content.worker'),
+                    key: Utils.ActionTypes.view,
+                    icon: Eye16Regular
+                  }
+                ]"
               />
             </td>
           </tr>
@@ -198,11 +209,11 @@
       </n-table>
     </div>
     <UIPagination
-        v-if="store.totalItems>0"
-        :page="store.params.page"
-        :per_page="store.params.per_page"
-        :total="store.totalItems"
-        @change-page="changePage"
+      v-if="store.totalItems > 0"
+      :page="store.params.page"
+      :per_page="store.params.per_page"
+      :total="store.totalItems"
+      @change-page="changePage"
     />
     <NoDataPicture v-if="store.list.length === 0 && !store.loading" />
   </n-spin>

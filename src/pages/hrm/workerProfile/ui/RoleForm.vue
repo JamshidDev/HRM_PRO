@@ -44,10 +44,10 @@
       >
         <UISelect
           :options="componentStore.structureList"
-          :modelV="store.rolePayload.organization_id"
+          :model-v="store.rolePayload.organization_id"
           @defaultValue="(v) => (store.rolePayload.organization_id = v)"
           @updateModel="(v) => (store.rolePayload.organization_id = v)"
-          :checkedVal="store.structureCheck"
+          :checked-val="store.structureCheck"
           @updateCheck="(v) => (store.structureCheck = v)"
           :loading="componentStore.structureLoading"
           v-model:search="componentStore.structureParams.search"

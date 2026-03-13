@@ -1,15 +1,10 @@
 <script setup>
   import { navigations } from '../../data/navigations.js'
-  import {
-    ChevronDown12Regular,
-    ChevronDoubleLeft16Filled,
-    ErrorCircle20Filled,
-    Bookmark16Filled
-  } from '@vicons/fluent'
+  import { ChevronDown12Regular, ChevronDoubleLeft16Filled } from '@vicons/fluent'
   import { useAccountStore } from '@/store/modules/index.js'
   import i18n from '@/i18n/index.js'
   import { AppPaths, useAppSetting } from '@/utils/index.js'
-  import { PageInstruction } from '@/components/index.js'
+  import { PageInstruction, MiniMenuBadge, MenuItemBadge } from '@components'
 
   const { t } = i18n.global
   const route = useRoute()
@@ -44,11 +39,11 @@
     menuPath.value = path
     let index = navigations.findIndex((v) => v.path === path)
     if (navigations[index].children && navigations[index].children.length) {
-      router.push(
-        navigations[index].children.filter(
-          (v) => store.isModeDev || store.checkPermission(v.permission)
-        )?.[0]?.path
-      )
+      // router.push(
+      //   navigations[index].children.filter(
+      //     (v) => store.isModeDev || store.checkPermission(v.permission)
+      //   )?.[0]?.path
+      // )
       emits('onOpen')
     } else {
       router.push(navigations[index].path)
@@ -72,6 +67,7 @@
         label: v.label,
         path: v.path,
         icon: v.icon,
+        name: v?.name,
         permission: v.permission,
         allowed: store.checkPermission(v.permission)
       }))
@@ -118,11 +114,16 @@
     }
   }
 
+  const currentCategory = computed(() => {
+    const nav = navigations.find((n) => n.path === menuPath.value)
+    return nav?.name || null
+  })
+
   const isComboxMenu = (path) => {
-    if (route.path.includes(path)) {
-      menuPath.value = path
-    }
-    return route.path.includes(path)
+    // if (route.path.includes(path)) {
+    //   menuPath.value = path
+    // }
+    return menuPath.value === path || route.path.includes(path)
   }
 
   const isCurrentPath = (path) => {
@@ -131,6 +132,13 @@
 
   onMounted(() => {
     checkPage(route.path)
+    const activeNav = navigations.find(
+      (nav) => route.path.startsWith(nav.path) && nav.children?.length
+    )
+    if (activeNav) {
+      menuPath.value = activeNav.path
+      emits('onOpen')
+    }
   })
 </script>
 
@@ -149,9 +157,10 @@
           <div class="flex flex-col relative group">
             <div
               :class="[isComboxMenu(item.path) && 'active-mini-content']"
-              class="main-menu-item"
+              class="main-menu-item border"
               @click="nextPanel(item.path)"
             >
+              <MiniMenuBadge :category="item?.name ?? undefined" />
               <n-icon>
                 <component :is="item.icon" />
               </n-icon>
@@ -213,6 +222,7 @@
                   item?.disable && 'opacity-30'
                 ]"
               >
+                <MenuItemBadge :category="currentCategory" :field="item?.name" />
                 <div :class="[item?.color]" class="item-icon rounded-[10px] ml-[-2px]">
                   <n-icon size="20">
                     <component :is="item.icon" />
@@ -221,12 +231,6 @@
                 <div class="item-title truncate pl-2">
                   <span>{{ $t(item.label) }}</span>
                 </div>
-
-                <!--                <span class="absolute top-[-6px] right-[0px]">-->
-                <!--                  <n-icon size="18" class="text-success/60">-->
-                <!--                    <Bookmark16Filled/>-->
-                <!--                  </n-icon>-->
-                <!--                </span>-->
               </div>
             </template>
           </template>

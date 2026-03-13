@@ -1,6 +1,5 @@
 import { defineStore } from 'pinia'
 import i18n from '@/i18n/index.js'
-import Utils from '@/utils/Utils.js'
 const { t } = i18n.global
 export const useDepartmentStore = defineStore('departmentStore', {
   state: () => ({
@@ -12,14 +11,14 @@ export const useDepartmentStore = defineStore('departmentStore', {
     visibleType: true,
     elementId: null,
     totalItems: 0,
-    showParent:false,
+    showParent: false,
     payload: {
       parent_id: null,
       level: null,
       name: null,
       name_ru: null,
       name_en: null,
-      comment: null,
+      comment: null
     },
     params: {
       page: 1,
@@ -45,45 +44,48 @@ export const useDepartmentStore = defineStore('departmentStore', {
     activeDeep: null,
     activeParentId: null,
 
-    previewVisible:false,
-    previewLoading:false,
-    previewTotal:0,
-    previewList:[],
-    previewParams:{
-      page:1,
-      per_page:10,
-      search:null,
+    previewVisible: false,
+    previewLoading: false,
+    previewTotal: 0,
+    previewList: [],
+    previewParams: {
+      page: 1,
+      per_page: 10,
+      search: null
     },
-    headerLang:'uz',
+    headerLang: 'uz'
   }),
   actions: {
-    _preview(){
+    _preview() {
       const params = {
         ...this.previewParams,
-        departments:this.elementId,
+        departments: this.elementId
       }
       this.previewLoading = true
-      $ApiService.workerService._index({ params }).then(res =>{
-        this.previewList = res.data.data.data
-        this.previewTotal = res.data.data.total
-      }).finally(()=>{
-        this.previewLoading = false
-      })
+      $ApiService.workerService
+        ._index({ params })
+        .then((res) => {
+          this.previewList = res.data.data.data
+          this.previewTotal = res.data.data.total
+        })
+        .finally(() => {
+          this.previewLoading = false
+        })
     },
     _index() {
       this.loading = true
       const params = {
         ...this.params,
-        organizations: this.params.organizations.map((v) => v.id).toString()
+        organizations: this.params.organizations.map((v) => v.id).toString() || undefined,
       }
       $ApiService.departmentService
         ._index({ params })
         .then((res) => {
-          this.tabDataList[0] = res.data.data.data.map(v => ({
+          this.tabDataList[0] = res.data.data.data.map((v) => ({
             ...v,
-            uz:v.name,
-            ru:v.name_ru,
-            en:v.name_en,
+            uz: v.name,
+            ru: v.name_ru,
+            en: v.name_en
           }))
           this.totalItems = res.data.data.total
         })
@@ -106,12 +108,12 @@ export const useDepartmentStore = defineStore('departmentStore', {
       this.saveLoading = true
       let data = {
         ...this.payload,
-        parent_id: this.showParent? this.payload.parent_id : undefined,
+        parent_id: this.showParent ? this.payload.parent_id : undefined
       }
       $ApiService.departmentService
         ._create({ data })
         .then((res) => {
-          if(callback){
+          if (callback) {
             callback?.()
             return
           }
@@ -126,12 +128,12 @@ export const useDepartmentStore = defineStore('departmentStore', {
       this.saveLoading = true
       let data = {
         ...this.payload,
-        parent_id: this.showParent? this.payload.parent_id : undefined,
+        parent_id: this.showParent ? this.payload.parent_id : undefined
       }
       $ApiService.departmentService
         ._update({ data, id: this.elementId })
         .then((res) => {
-          if(callback){
+          if (callback) {
             callback?.()
             return
           }
@@ -184,11 +186,11 @@ export const useDepartmentStore = defineStore('departmentStore', {
             key: currentTab + 1,
             parentId: res.data.data.department.id
           })
-          const children = res.data.data.children.map(v =>({
+          const children = res.data.data.children.map((v) => ({
             ...v,
-            uz:v.name,
-            ru:v.name_ru,
-            en:v.name_en,
+            uz: v.name,
+            ru: v.name_ru,
+            en: v.name_en
           }))
           this.tabDataList.push(children)
           this.activeTab = currentTab + 1

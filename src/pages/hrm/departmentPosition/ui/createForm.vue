@@ -17,12 +17,12 @@
 
   const props = defineProps({
     callback: {
-      type:Function,
-      default: null,
+      type: Function,
+      default: null
     },
-    heightFull:{
-      type:Boolean,
-      default:true
+    heightFull: {
+      type: Boolean,
+      default: true
     }
   })
 
@@ -70,8 +70,7 @@
     }
   }
 
-  const showStructureField = computed(()=> !Boolean(props.callback))
-
+  const showStructureField = computed(() => !Boolean(props.callback))
 
   onMounted(() => {
     store.depParams.search = null
@@ -82,14 +81,14 @@
 </script>
 
 <template>
-  <n-form
-      ref="formRef"
-      :rules="validationRules.common"
-      :model="store.payload"
-  >
-    <div :class="[heightFull? 'h-[calc(100vh-120px)]' : '']">
+  <n-form ref="formRef" :rules="validationRules.common" :model="store.payload">
+    <div :class="[heightFull ? 'h-[calc(100vh-120px)]' : '']">
       <div class="grid grid-cols-12 gap-x-4 overflow-x-hidden">
-        <n-form-item v-if="showStructureField"  class="col-span-12" :label="$t(`content.organization`)">
+        <n-form-item
+          v-if="showStructureField"
+          class="col-span-12"
+          :label="$t(`content.organization`)"
+        >
           <UISelect
             :options="componentStore.structureList"
             :modelV="store.payload.organization_id"

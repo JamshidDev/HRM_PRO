@@ -1,7 +1,7 @@
 <script setup>
   import { useAccountStore, useComponentStore, useEduPlanStore } from '@/store/modules/index.js'
   import { UIPageFilter, UISelect } from '@/components/index.js'
-  import Utils from "@utils/Utils.js"
+  import Utils from '@utils/Utils.js'
   const store = useEduPlanStore()
   const accStore = useAccountStore()
   const componentStore = useComponentStore()
@@ -22,7 +22,7 @@
     store.params.name = null
     store.params.learning_center_id = null
     store.params.year = new Date().getFullYear()
-    store.params.month = new Date().getMonth()+1
+    store.params.month = new Date().getMonth() + 1
     filterEvent()
   }
 
@@ -103,21 +103,21 @@
       />
       <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{ $t('content.year') }}</label>
       <n-select
-          class="w-full"
-          v-model:value="store.params.year"
-          :options="Utils.yearList"
-          label-field="name"
-          value-field="id"
-          @update:value="filterEvent"
+        class="w-full"
+        v-model:value="store.params.year"
+        :options="Utils.yearList"
+        label-field="name"
+        value-field="id"
+        @update:value="filterEvent"
       />
       <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{ $t('content.month') }}</label>
       <n-select
-          class="w-full"
-          v-model:value="store.params.month"
-          :options="Utils.monthList"
-          label-field="name"
-          value-field="id"
-          @update:value="filterEvent"
+        class="w-full"
+        v-model:value="store.params.month"
+        :options="Utils.monthList"
+        label-field="name"
+        value-field="id"
+        @update:value="filterEvent"
       />
     </template>
   </UIPageFilter>

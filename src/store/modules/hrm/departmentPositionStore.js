@@ -33,7 +33,7 @@ export const useDepartmentPositionStore = defineStore('departmentPositionStore',
     visibleType: true,
     elementId: null,
     totalItems: 0,
-    payload:initialPayload(),
+    payload: initialPayload(),
     params: initialParams(),
 
     filterDepParams: {
@@ -49,31 +49,34 @@ export const useDepartmentPositionStore = defineStore('departmentPositionStore',
       search: null,
       key: 'department-position-from-key'
     },
-    preview:{
-      visible:false,
-      loading:false,
-      total:0,
-      list:[],
-      params:{
-        page:1,
-        per_page:10,
-        search:null,
+    preview: {
+      visible: false,
+      loading: false,
+      total: 0,
+      list: [],
+      params: {
+        page: 1,
+        per_page: 10,
+        search: null
       }
     }
   }),
   actions: {
-    _preview(){
+    _preview() {
       const params = {
         ...this.preview.params,
-        department_positions:this.elementId,
+        department_positions: this.elementId
       }
       this.preview.loading = true
-      $ApiService.workerService._index({ params }).then(res =>{
-        this.preview.list = res.data.data.data
-        this.preview.total = res.data.data.total
-      }).finally(()=>{
-        this.preview.loading = false
-      })
+      $ApiService.workerService
+        ._index({ params })
+        .then((res) => {
+          this.preview.list = res.data.data.data
+          this.preview.total = res.data.data.total
+        })
+        .finally(() => {
+          this.preview.loading = false
+        })
     },
     onChangeStructure(v) {
       const store = useComponentStore()
@@ -92,9 +95,14 @@ export const useDepartmentPositionStore = defineStore('departmentPositionStore',
       $ApiService.departmentPositionService
         ._index({ params })
         .then((res) => {
-          this.list = res.data.data.data.map(v =>({
+          this.list = res.data.data.data.map((v) => ({
             ...v,
-            colorType:Number(v.rate)>Number(v.worker_rate) ? 'success':Number(v.rate) === Number(v.worker_rate)? 'default':'error'
+            colorType:
+              Number(v.rate) > Number(v.worker_rate)
+                ? 'success'
+                : Number(v.rate) === Number(v.worker_rate)
+                  ? 'default'
+                  : 'error'
           }))
           this.totalItems = res.data.data.total
         })
@@ -108,7 +116,7 @@ export const useDepartmentPositionStore = defineStore('departmentPositionStore',
         organization_id: undefined
       }
 
-      if(callback){
+      if (callback) {
         callback?.(data)
       }
 
@@ -150,7 +158,7 @@ export const useDepartmentPositionStore = defineStore('departmentPositionStore',
           this.loading = false
         })
     },
-    changePreviewPage({page, per_page}){
+    changePreviewPage({ page, per_page }) {
       this.preview.params.page = page
       this.preview.params.per_page = per_page
       this._preview()

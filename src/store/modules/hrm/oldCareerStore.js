@@ -107,6 +107,11 @@ export const useOldCareerStore = defineStore('oldCareerStore', {
         this._index()
       })
     },
+    _delete_new_career() {
+      $ApiService.olCareerService._delete_new_career({ id: this.elementId }).then((res) => {
+        this._newCareer()
+      })
+    },    
     openVisible(data) {
       this.visible = data
     },

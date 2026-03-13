@@ -24,7 +24,7 @@
 
   const updateDocument = (v) => {
     const index = store.list.findIndex((x) => x.id === v.documentId)
-    if (index === 1) return
+    if (index === -1) return
     store.list[index].generate = 3
   }
 

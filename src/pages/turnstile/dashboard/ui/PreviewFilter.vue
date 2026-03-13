@@ -27,7 +27,7 @@
     end_time: false,
     norm_hours: false,
     status: false,
-    auth_type: false,
+    auth_type: false
   })
   const resetFilterVisible = () => {
     Object.keys(filterVisible.value).forEach((key) => {
@@ -65,10 +65,10 @@
       filterVisible.value.status = true
       dashboardStore.previewParams.norm_hours = '8'
       dashboardStore.previewParams.status = 'max'
-    }else if (dashboardStore.cardTypes.notIncludedSchedule.key === cardType) {
+    } else if (dashboardStore.cardTypes.notIncludedSchedule.key === cardType) {
       dashboardStore.previewParams.date = null
       filterVisible.value.date = false
-    }else if (dashboardStore.cardTypes.come.key === cardType) {
+    } else if (dashboardStore.cardTypes.come.key === cardType) {
       filterVisible.value.auth_type = true
       dashboardStore.previewParams.auth_type = null
     } else if (dashboardStore.cardTypes.MobileFaceEvent.key === cardType) {
@@ -78,7 +78,6 @@
     }
 
     dashboardStore._preview()
-
   }
 
   const onEnter = () => {
@@ -87,14 +86,13 @@
 
   const detectionOption = [
     {
-      name:'Turniket qurilma ',
-      id:'ACSEventFaceVerifyPass'
+      name: 'Turniket qurilma ',
+      id: 'ACSEventFaceVerifyPass'
     },
     {
-      name:'Mobil qurilma',
-      id:'MobileFaceEvent'
+      name: 'Mobil qurilma',
+      id: 'MobileFaceEvent'
     }
-
   ]
 
   onMounted(() => {
@@ -170,13 +168,13 @@
     <div v-if="filterVisible.auth_type" class="col-span-2">
       <label class="text-textColor3 ml-1">{{ $t('content.type') }}</label>
       <n-select
-          v-model:value="dashboardStore.previewParams.auth_type"
-          :options="detectionOption"
-          @update:value="filterEvent"
-          :loading="dashboardStore.previewLoading"
-          value-field="id"
-          label-field="name"
-          clearable
+        v-model:value="dashboardStore.previewParams.auth_type"
+        :options="detectionOption"
+        @update:value="filterEvent"
+        :loading="dashboardStore.previewLoading"
+        value-field="id"
+        label-field="name"
+        clearable
       />
     </div>
     <div class="col-span-2">

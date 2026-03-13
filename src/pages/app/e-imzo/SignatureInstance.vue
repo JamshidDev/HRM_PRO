@@ -26,7 +26,7 @@
       class="bg-surface-section"
     >
       <n-spin :show="store.loading" class="min-h-[100px]">
-        <div class="flex flex-col w-full max-h-[400px] overflow-y-auto">
+        <div class="flex flex-col w-full max-h-[400px] overflow-y-auto px-2">
           <div
             @click="store._accepted(useAppSetting.signatureUseType.idCard, activeCallback)"
             class="flex mb-2 justify-center gap-2 items-center bg-gray-50 border border-surface-line rounded-lg min-h-[60px]"
@@ -44,10 +44,16 @@
           <template v-for="(key, idx) in store.allKeys" :key="idx">
             <div
               @click="store._accepted(idx, activeCallback)"
+              :class="[!key.isValid && 'bg-danger/6']"
               class="hover:bg-primary/3 grid grid-cols-12 gap-y-2 w-full bg-gray-50 mb-2 border border-surface-line rounded-sm px-4 py-4 cursor-pointer shadow-none transition-all"
             >
-              <div class="col-span-12 font-bold text-lg mb-1 text-textColor0">
+              <div
+                class="col-span-12 font-bold text-lg mb-1 text-textColor0 flex items-center gap-3"
+              >
                 {{ key?.fullName }}
+                <n-button v-if="!key.isValid" type="error" size="tiny" secondary>{{
+                  $t('signature.notValidDate')
+                }}</n-button>
               </div>
 
               <div class="col-span-4 font-bold">
@@ -82,9 +88,11 @@
                 <span class="text-xs font-normal block text-textColor3">{{
                   $t('signature.validDate')
                 }}</span>
-                <span class="text-xs block font-semibold text-textColor2">{{
-                  Utils.timeWithMonth(key?.validDate)
-                }}</span>
+                <span
+                  :class="[!key?.isValid && '!text-danger']"
+                  class="text-xs block font-semibold text-textColor2"
+                  >{{ Utils.timeWithMonth(key?.validDate) }}</span
+                >
               </div>
             </div>
           </template>

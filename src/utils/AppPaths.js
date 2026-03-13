@@ -37,6 +37,7 @@ export const AppPaths = {
   Exam: '/exam',
   Camera: '/camera',
   Result: '/result',
+  Certificate: '/certificate',
   Department: '/department',
   TimeSheet: '/timesheet',
   TimesheetDepartment: '/timesheet-department',
@@ -53,6 +54,7 @@ export const AppPaths = {
   ShiftTypeGroup: '/shift-type-group',
   TurnstileSchedule: '/turnstile-schedule',
   Workday: '/workday',
+  Approve: '/approve',
   WorkerProfile: '/worker-profile',
   ConfContract: '/conf-contract',
   ConfCommand: '/conf-command',
@@ -96,6 +98,7 @@ export const AppPaths = {
   Punishment: '/punishment',
   Incentive: '/incentive',
   Report: '/report',
+  Approval: '/approval',
   SpecialReport: '/spectial-report',
   WorkDuration: '/work-duration',
   HCWorkDuration: '/hc-work-duration',
@@ -121,6 +124,7 @@ export const AppPaths = {
   HcEventsV2: '/hc-events-v2',
   Pensioner: '/pensioner',
   Notification: '/notification',
+  Congratulation: '/congratulation',
   LmsWorker: '/education-worker',
   SyncLog: '/sync-log',
   UserImageLogs: '/user-image-logs',
@@ -128,7 +132,13 @@ export const AppPaths = {
   WorkerImage: '/worker-image',
   Devices: '/devices',
   Other: '/other',
-  PrivacyPolicy: '/privacy-policy'
+  PrivacyPolicy: '/privacy-policy',
+  News: '/news',
+  NewsCategory: '/news-category',
+  View: '/view',
+  MobileUsers: '/mobile-users',
+  StructureReport: '/structure-report',
+  ConfReport: '/conf-report'
 }
 
 export const AppLayouts = {

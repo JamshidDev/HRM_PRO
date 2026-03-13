@@ -3,6 +3,7 @@
   import { UIModal, UINSelect } from '@/components/index.js'
   import SearchElement from '@/pages/turnstile/schedule/ui/SearchElement.vue'
   import MonthTab from '@/pages/turnstile/scheduleWorker/ui/MonthTab.vue'
+  import { Utils } from '@utils'
 
   const store = useShiftTypeStore()
 
@@ -10,8 +11,9 @@
 
   const onSubmit = () => {
     const data = {
-      start_date: `${store.generatePayload.year1}-${store.generatePayload.month1.toString().padStart(2, '0')}-01`,
-      end_date: `${store.generatePayload.year2}-${store.generatePayload.month2.toString().padStart(2, '0')}-01`,
+      start_date: Utils.timeToZone(store.generatePayload.start_date),
+      end_date: Utils.timeToZone(store.generatePayload.end_date),
+      work_date: store.showWorkDate ? Utils.timeToZone(store.generatePayload.work_date) : undefined,
       schedule_type: store.elementId,
       count: store.showGroupCountField ? store.generatePayload.count : undefined,
       schedule_workers: store.workers.map((v, index) => ({
@@ -37,7 +39,8 @@
           isWorkDay: e.work_status,
           startTime: e.start_time || null,
           endTime: e.end_time || null,
-          workTime: e.daily_minutes
+          workTime: e.daily_minutes,
+          isEmpty: e.isEmpty
         }))
     })
   })
@@ -49,7 +52,7 @@
         : '0' + store.uiParams.month
     const date = `${store.uiParams.year}-${month}`
     const totalMinute = store.scheduleList[index]
-      .filter((x) => x.date.startsWith(date))
+      .filter((x) => x.date.startsWith(date) && !x.isEmpty)
       .reduce((sum, item) => sum + item.daily_minutes, 0)
     return Math.floor(totalMinute / 60)
   }
@@ -78,8 +81,9 @@
         <MonthTab
           v-if="store.scheduleVisible"
           class="mt-4"
-          :start="store.generatePayload.year1 + '-' + store.generatePayload.month1"
-          :end="store.generatePayload.year2 + '-' + store.generatePayload.month2"
+          :start="store.generatePayload.start_date"
+          :end="store.generatePayload.end_date"
+          :options="store.monthsList"
           v-model:date="store.selectedDate"
           @update:date="onChange"
         />
@@ -93,7 +97,7 @@
             <div
               class="border-r border-t border-l-[0] border-b border-surface-line flex text-secondary font-medium justify-center items-center w-[260px] min-w-[320px] h-[50px] sticky left-[60px] top-0 z-[20] bg-surface-section flex-shrink-0"
             >
-              <SearchElement />
+              <SearchElement :disable="true" />
             </div>
             <template v-for="item in store.dayOfMonth" :key="`header-${item}`">
               <div
@@ -141,7 +145,8 @@
                 <div
                   class="border-r text-center border-l border-b border-t-0 -ml-[1px] border-surface-line w-[60px] min-w-[60px] h-[50px] border text-xs text-secondary p-2 pb-0 flex-shrink-0 cursor-pointer relative"
                 >
-                  <template v-if="worker?.[dayIndex].isWorkDay">
+                  <template v-if="worker?.[dayIndex].isEmpty"> </template>
+                  <template v-else-if="worker?.[dayIndex].isWorkDay">
                     <div class="leading-[1.2] pt-3">{{ worker?.[dayIndex]?.startTime }}</div>
                     <div class="leading-[1.2]">{{ worker?.[dayIndex]?.endTime }}</div>
                     <div

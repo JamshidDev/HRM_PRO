@@ -24,9 +24,9 @@
     <div id="layout-header-tab"></div>
 
     <div :class="mainContentClass" id="mainContent">
-      <router-view v-slot="{ Component }">
+      <router-view v-slot="{ Component, route }">
         <transition name="slide-right" mode="out-in">
-          <component :is="Component" />
+          <component :is="Component" :key="route.path" />
         </transition>
       </router-view>
     </div>

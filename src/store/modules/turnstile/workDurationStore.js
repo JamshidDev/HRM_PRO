@@ -5,7 +5,6 @@ import dayjs from 'dayjs'
 import router from '@/router/index.js'
 import { AppPaths } from '@/utils/index.js'
 
-const { t } = i18n.global
 export const useTurnstileWorkDurationStore = defineStore('turnstileWorkDurationStore', {
   state: () => ({
     loading: false,
@@ -64,7 +63,7 @@ export const useTurnstileWorkDurationStore = defineStore('turnstileWorkDurationS
       }
       $ApiService.turnstileWorkDurationService
         ._download({ params })
-        .then((res) => {})
+        .then((_) => {})
         .finally(() => {
           this.downloadLoading = false
           this.lateVisible = false

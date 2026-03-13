@@ -75,7 +75,7 @@
             <th class="min-w-[100px] w-[300px]">{{ $t('vacationPage.table.type') }}</th>
             <th class="min-w-[100px] w-[240px]">{{ $t('vacationPage.table.duration') }}</th>
             <th class="min-w-[100px] w-[120px]">{{ $t('vacationPage.table.workDay') }}</th>
-<!--                      <th class="min-w-[40px] w-[40px]"></th>-->
+            <!--                      <th class="min-w-[40px] w-[40px]"></th>-->
           </tr>
         </thead>
         <tbody>
@@ -123,13 +123,13 @@
                 :type="Utils.colorTypes.success"
               />
             </td>
-<!--                      <td>-->
-<!--                        <UIMenuButton-->
-<!--                            :data="item"-->
-<!--                            :show-edit="true"-->
-<!--                            @selectEv="onSelectEv"-->
-<!--                        />-->
-<!--                      </td>-->
+            <!--                      <td>-->
+            <!--                        <UIMenuButton-->
+            <!--                            :data="item"-->
+            <!--                            :show-edit="true"-->
+            <!--                            @selectEv="onSelectEv"-->
+            <!--                        />-->
+            <!--                      </td>-->
           </tr>
         </tbody>
       </n-table>
@@ -143,4 +143,3 @@
     <NoDataPicture v-if="store.list.length === 0 && !store.loading" />
   </n-spin>
 </template>
-

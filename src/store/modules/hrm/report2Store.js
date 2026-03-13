@@ -38,14 +38,14 @@ export const useReport2Store = defineStore('report2Store', {
       params: {
         page: 1,
         per_page: 1000,
-        search: null,
+        search: null
       },
-      list:[],
-      total:0,
-      selectedId:null,
+      list: [],
+      total: 0,
+      selectedId: null,
       elementId: null,
-      visible:false,
-      visibleType:false,
+      visible: false,
+      visibleType: false
     },
     positionPayload: {
       position_id: null,
@@ -66,58 +66,59 @@ export const useReport2Store = defineStore('report2Store', {
       loading: false,
       list: [],
       params: {
-        search: null,
+        search: null
       }
     },
     department: {
       loading: false,
       params: {
-        organization_id: [],
+        organization_id: []
       },
-      payload:{
+      payload: {
         parent_id: null,
         level: null,
         name: null,
         name_ru: null,
         name_en: null,
-        comment: null,
+        comment: null
       },
-      list:[],
+      list: [],
       cache: [],
       selectedId: null,
-      elementId:null,
-      selectDepartments:[],
-      deleteVisible:false,
-      visible:false,
+      elementId: null,
+      selectDepartments: [],
+      deleteVisible: false,
+      visible: false
     },
-    isDpDelete:true,
-
+    isDpDelete: true
   }),
   actions: {
-    _positionOrderable(order){
-        const data = {
-          type: "position",
-          organization_id:this.department.params.organization_id?.[0]?.id,
-          department_id: this.department.selectedId,
-          order:order
-        }
+    _positionOrderable(order) {
+      const data = {
+        type: 'position',
+        organization_id: this.department.params.organization_id?.[0]?.id,
+        department_id: this.department.selectedId,
+        order: order
+      }
 
-      $ApiService.reportService._orderable({data}).then((res) => {
+      $ApiService.reportService._orderable({ data }).then((res) => {
         console.log(res.data)
       })
-
     },
     _fetchStructure(callback) {
       const params = {
-        ...this.structure.params,
+        ...this.structure.params
       }
       this.structure.loading = true
-      $ApiService.reportService._structure({ params }).then((res) => {
-        this.structure.list = res.data.data
-        callback?.(res.data.data)
-      }).finally(()=>{
-        this.structure.loading = false
-      })
+      $ApiService.reportService
+        ._structure({ params })
+        .then((res) => {
+          this.structure.list = res.data.data
+          callback?.(res.data.data)
+        })
+        .finally(() => {
+          this.structure.loading = false
+        })
     },
     _getOptimization() {
       this.optimizationLoading = true
@@ -151,23 +152,24 @@ export const useReport2Store = defineStore('report2Store', {
           this.department.loading = false
         })
     },
-    _deleteDepartment(){
+    _deleteDepartment() {
       const id = this.department.elementId
       this.department.loading = true
-      $ApiService.departmentService._delete({id}).then((res)=>{
-        this._getDepartment()
-      }).finally(()=>{
-        this.department.loading = false
-      })
+      $ApiService.departmentService
+        ._delete({ id })
+        .then((res) => {
+          this._getDepartment()
+        })
+        .finally(() => {
+          this.department.loading = false
+        })
     },
-    _deletePosition(){
+    _deletePosition() {
       this.position.loading = true
-      $ApiService.departmentPositionService
-          ._delete({ id: this.position.elementId })
-          .finally(() => {
-            this.position.loading = false
-            this.getPosition()
-          })
+      $ApiService.departmentPositionService._delete({ id: this.position.elementId }).finally(() => {
+        this.position.loading = false
+        this.getPosition()
+      })
     },
     getPosition() {
       this.position.loading = true
@@ -265,16 +267,19 @@ export const useReport2Store = defineStore('report2Store', {
           this.showLoading = false
         })
     },
-    onCreatePosition(data){
+    onCreatePosition(data) {
       this.saveLoading = true
-      $ApiService.departmentPositionService._create({data}).then((res)=>{
-        this.position.visible = false
-        if(this.department.selectedId === this.positionPayload.department_id){
-          this.getPosition()
-        }
-      }).finally(()=>{
-        this.saveLoading = false
-      })
+      $ApiService.departmentPositionService
+        ._create({ data })
+        .then((res) => {
+          this.position.visible = false
+          if (this.department.selectedId === this.positionPayload.department_id) {
+            this.getPosition()
+          }
+        })
+        .finally(() => {
+          this.saveLoading = false
+        })
     },
     onUpdatePosition() {
       this.saveLoading = true
@@ -292,7 +297,7 @@ export const useReport2Store = defineStore('report2Store', {
           this.saveLoading = false
         })
     },
-    resetPositionPayload(){
+    resetPositionPayload() {
       Object.assign(this.positionPayload, {
         position_id: null,
         department_id: null,
@@ -302,9 +307,8 @@ export const useReport2Store = defineStore('report2Store', {
         rate: null,
         salary: null,
         experience: null,
-        education: null,
+        education: null
       })
-
     }
   }
 })

@@ -49,7 +49,7 @@ const timeWithMonth = (time) => {
 }
 
 const timeHHMMWithMonth = (time) => {
-  return time ? dayjs(time).format('YYYY-MM-DD HH:mm') : null
+  return time ? dayjs(time).format('YYYY.MM.DD HH:mm') : null
 }
 
 const timeOnlyDate = (time) => {
@@ -145,7 +145,10 @@ const documentModels = {
   workerApplication: 'worker-application',
   timesheet: 'timesheet',
   vacationSchedule: 'vacation-schedule',
-  med: 'med'
+  lmsCertificate: 'lms-certificate',
+  med: 'med',
+  staffingApprove: 'staffing-approve',
+  report: 'report'
 }
 const copyToClipboard = async (text, callback) => {
   try {
@@ -319,13 +322,18 @@ const blobFileDownload = (file, contentType, fileName) => {
     document.body.appendChild(link)
     link.click()
     document.body.removeChild(link)
-  } catch (e) {}
+  } catch (e) {
+    console.log(e)
+  }
 }
 
-const downloadFileByUrl = (url) => {
+const downloadFileByUrl = (url, target) => {
   const link = document.createElement('a')
   link.href = url
   link.setAttribute('download', 'file')
+  if(target){
+    link.target = target
+  }
   document.body.appendChild(link)
   link.click()
   document.body.removeChild(link)

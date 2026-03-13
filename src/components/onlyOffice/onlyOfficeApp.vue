@@ -17,10 +17,10 @@
       ref="officeRef"
       width="100%"
       id="docEditor"
-      :documentServerUrl="store.serverUrl"
+      :document-server-url="store.serverUrl"
       :config="config"
       :events_onDocumentReady="store._onDocumentReady"
-      :onLoadComponentError="store._onLoadComponentError"
+      :on-load-component-error="store._onLoadComponentError"
     />
   </div>
 </template>

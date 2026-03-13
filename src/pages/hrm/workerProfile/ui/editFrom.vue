@@ -227,6 +227,7 @@
             label-field="name"
             value-field="id"
             :render-label="UIHelper.selectRender.labelColor"
+            :render-tag="UIHelper.selectRender.value"
             :loading="componentStore.departmentPositionLoading"
           />
         </n-form-item>

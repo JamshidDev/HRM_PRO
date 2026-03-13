@@ -27,7 +27,7 @@
             reason: store.form_34.reason || null,
             reasonId: store.form_34.reasonId || null,
             pension_count: showPension.value ? store.form_34.pension_count : undefined,
-            base:store.payload.command_type === 39 ? store.form_34.base : undefined,
+            base: store.payload.command_type === 39 ? store.form_34.base : undefined,
             salary_withholding: showSalaryWithholding.value
               ? {
                   ...store.form_34.salary_withholding,
@@ -561,12 +561,12 @@
     <div v-if="store.payload.command_type === 39" class="col-span-12">
       <n-form-item :show-feedback="false" :label="$t(`documentPage.command.form.base`)">
         <n-input
-            class="w-full"
-            type="textarea"
-            :autosize="true"
-            :rows="1"
-            v-model:value="store.form_34.base"
-            clearable
+          class="w-full"
+          type="textarea"
+          :autosize="true"
+          :rows="1"
+          v-model:value="store.form_34.base"
+          clearable
         />
       </n-form-item>
     </div>

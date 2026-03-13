@@ -13,11 +13,11 @@
 
 <template>
   <UIPageContent>
-    <Filter/>
-    <Table/>
-    <DeleteAlert/>
-    <DepartmentModal/>
-    <PositionModal/>
+    <Filter />
+    <Table />
+    <DeleteAlert />
+    <DepartmentModal />
+    <PositionModal />
     <UIDConfirm
       :visible="store.confirmVisible"
       @onClose="() => (store.confirmVisible = false)"

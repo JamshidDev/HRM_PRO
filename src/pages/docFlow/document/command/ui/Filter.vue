@@ -28,6 +28,7 @@
   }
 
   const filterEvent = () => {
+    store.params.page = 1
     store._index()
   }
 

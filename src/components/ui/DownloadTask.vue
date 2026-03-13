@@ -110,14 +110,24 @@
 </script>
 
 <template>
-  <n-popover arrow-wrapper-class="![--n-arrow-offset:18px]" class="-translate-x-2 !p-0 ![--n-border-radius:20px]" placement="bottom-start" trigger="click" @update:show="onShow">
+  <n-popover
+    arrow-wrapper-class="![--n-arrow-offset:18px]"
+    class="-translate-x-2 !p-0 ![--n-border-radius:20px]"
+    placement="bottom-start"
+    trigger="click"
+    @update:show="onShow"
+  >
     <template #trigger>
       <n-badge
         class="!text-[10px] header-app-badge"
         :value="store.unReadNotificationCount"
         :offset="[4, -4]"
       >
-        <n-icon id="taskBtn" size="28" class="cursor-pointer text-primary transition-all hover:text-info/70">
+        <n-icon
+          id="taskBtn"
+          size="28"
+          class="cursor-pointer text-primary transition-all hover:text-info/70"
+        >
           <CloudArrowDown28Regular />
         </n-icon>
       </n-badge>

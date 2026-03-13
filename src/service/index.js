@@ -31,7 +31,6 @@ instance.interceptors.request.use(function (config) {
 
 instance.interceptors.response.use(
   (response) => {
-
     if (
       [Utils.methodTypes.PUT, Utils.methodTypes.POST, Utils.methodTypes.DELETE].includes(
         response.config.method
@@ -48,21 +47,28 @@ instance.interceptors.response.use(
     isLoggingOut = false
     return Promise.resolve(response)
   },
-  (error) => {
+  async (error) => {
     if (error.name === 'CanceledError') {
       error.message = t('content.waitResponse')
     }
+
     if (error.response?.status === 401) {
-      if(isLoggingOut) return
+      const serviceUrl = error.response?.config?.url?.toString()
+      if(serviceUrl.includes('auth/login')){
+        $Toast.error(error.response?.data?.message ?? error.message)
+        return Promise.reject(error)
+      }
+
+      if (isLoggingOut){
+        return Promise.reject(error)
+      }
 
       if (!error.response.request.responseURL.includes(AppPaths.Profile)) {
         $Toast.error(error.response.data.message)
       }
       isLoggingOut = true
       localStorage.removeItem(useAppSetting.tokenKey)
-      router.push(AppPaths.Login).finally(()=>{
-
-      })
+      await router.push(AppPaths.Login)
     } else if (error.response?.data?.message) {
       $Toast.error(error.response?.data?.message)
     } else if (error?.message) {

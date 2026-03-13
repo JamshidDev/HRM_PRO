@@ -161,11 +161,11 @@ export const useEventV2Store = defineStore('eventV2Store', {
     tabs: [1, 2],
     eventInDayList: [],
     download: {
-      loading:false,
-      visible:false,
-      payload:{
-        from:null,
-        to:null,
+      loading: false,
+      visible: false,
+      payload: {
+        from: null,
+        to: null
       }
     }
   }),
@@ -175,8 +175,8 @@ export const useEventV2Store = defineStore('eventV2Store', {
       const params = {
         ...this._params(),
         download: true,
-        from:Utils.timeToZone(this.download.payload.from),
-        to:Utils.timeToZone(this.download.payload.to),
+        from: Utils.timeToZone(this.download.payload.from),
+        to: Utils.timeToZone(this.download.payload.to)
       }
       $ApiService.eventV2Service._index({ params }).finally(() => {
         this.download.loading = false

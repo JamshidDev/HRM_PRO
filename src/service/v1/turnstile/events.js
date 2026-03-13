@@ -9,7 +9,7 @@ const _preview = async (payload) => {
 }
 
 const _download = async (payload) => {
-  return await axios.get(`/v1/turnstile/hik-central/dashboard/preview`, {
+  return await axios.get(`/v1/turnstile/schedule/stats-preview`, {
     responseType: 'blob',
     params: payload?.params
   })

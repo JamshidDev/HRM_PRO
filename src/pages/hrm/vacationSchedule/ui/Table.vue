@@ -1,10 +1,10 @@
 <script setup>
   import { NoDataPicture, UIPagination, UIMenuButton, UIUser } from '@/components/index.js'
-  import {useComponentStore, useVacationScheduleStore} from '@/store/modules/index.js'
+  import { useComponentStore, useVacationScheduleStore } from '@/store/modules/index.js'
   import Utils from '@/utils/Utils.js'
   import { useAccountStore } from '@stores'
-  import {UIBadge, UIStatus} from "@components"
-  import i18n from "@/i18n"
+  import { UIBadge, UIStatus } from '@components'
+  import i18n from '@/i18n'
 
   const accStore = useAccountStore()
   const t = i18n.global.t
@@ -14,20 +14,22 @@
   const emits = defineEmits(['openOffice'])
 
   const onEdit = (v) => {
-    store.creator.list = [{
-      id:v.creator.id,
-      name: Utils.combineFullName(v.creator.worker),
-      photo: v.creator.worker?.photo,
-      position: v.creator.position,
-    }]
+    store.creator.list = [
+      {
+        id: v.creator.id,
+        name: Utils.combineFullName(v.creator.worker),
+        photo: v.creator.worker?.photo,
+        position: v.creator.position
+      }
+    ]
 
     store.payload.year = v.year
     store.payload.date = Utils.datePickerFormatter(v.date)
     store.payload.director_id = v?.director?.id
     store.payload.trade_union_id = v?.tradeUnion?.id
     store.payload.creator_id = v?.creator?.id
-    store.worker.params.year =  v.year
-    store.worker.params.page =  1
+    store.worker.params.year = v.year
+    store.worker.params.page = 1
     store.visibleType = false
     store.visible = true
   }
@@ -57,14 +59,12 @@
     if (!accStore.checkAction(accStore.pn.hrVacationScheduleWrite)) return
     if (Utils.ActionTypes.edit === v.key) {
       onEdit(v.data)
-    }else if(Utils.ActionTypes.view === v.key){
+    } else if (Utils.ActionTypes.view === v.key) {
       onShow(v.data)
-    }else if(Utils.ActionTypes.confirm === v.key){
+    } else if (Utils.ActionTypes.confirm === v.key) {
       onConfirm(v.data)
     }
   }
-
-
 </script>
 
 <template>
@@ -76,7 +76,9 @@
             <th class="text-center! min-w-[40px] w-[40px]">{{ $t('content.number') }}</th>
             <th class="min-w-[60px] w-[80px]">{{ $t('content.year') }}</th>
             <th class="min-w-[60px] w-[120px]">{{ $t('vacationSchedule.form.to_date') }}</th>
-            <th class="min-w-[200px] w-[220px]">{{ $t('documentPage.command.form.director_id') }}</th>
+            <th class="min-w-[200px] w-[220px]">
+              {{ $t('documentPage.command.form.director_id') }}
+            </th>
             <th class="min-w-[200px] w-[220px]">{{ $t('vacationSchedule.form.tradeUnion') }}</th>
             <th class="min-w-[80px]">{{ $t('content.worker') }}</th>
             <th class="min-w-[80px] w-[200px]">{{ $t('content.organization') }}</th>
@@ -93,45 +95,45 @@
               }}</span>
             </td>
             <td>
-              <UIBadge :label="item.year" :show-icon="false"  />
+              <UIBadge :label="item.year" :show-icon="false" />
             </td>
             <td>
-              <UIBadge :label="Utils.timeOnlyDate(item.date)" :show-icon="false"  />
+              <UIBadge :label="Utils.timeOnlyDate(item.date)" :show-icon="false" />
             </td>
             <td>
               <UIUser
-                  :data="{
-                    photo: item?.director?.worker.photo,
-                    firstName: item?.director?.worker.first_name,
-                    middleName: item?.director?.worker.middle_name,
-                    lastName: item?.director?.worker.last_name,
-                    position: item?.director?.position
-                  }"
+                :data="{
+                  photo: item?.director?.worker.photo,
+                  firstName: item?.director?.worker.first_name,
+                  middleName: item?.director?.worker.middle_name,
+                  lastName: item?.director?.worker.last_name,
+                  position: item?.director?.position
+                }"
               />
             </td>
             <td>
               <UIUser
-                  :data="{
-                    photo: item?.tradeUnion?.worker.photo,
-                    firstName: item?.tradeUnion?.worker.first_name,
-                    middleName: item?.tradeUnion?.worker.middle_name,
-                    lastName: item?.tradeUnion?.worker.last_name,
-                    position: item?.tradeUnion?.position
-                  }"
+                :data="{
+                  photo: item?.tradeUnion?.worker.photo,
+                  firstName: item?.tradeUnion?.worker.first_name,
+                  middleName: item?.tradeUnion?.worker.middle_name,
+                  lastName: item?.tradeUnion?.worker.last_name,
+                  position: item?.tradeUnion?.position
+                }"
               />
             </td>
             <td>
               <UIUser
-                  :data="{
-                    photo: item?.creator?.worker.photo,
-                    firstName: item?.creator?.worker.first_name,
-                    middleName: item?.creator?.worker.middle_name,
-                    lastName: item?.creator?.worker.last_name,
-                    position: item?.creator?.position
-                  }"
+                :data="{
+                  photo: item?.creator?.worker.photo,
+                  firstName: item?.creator?.worker.first_name,
+                  middleName: item?.creator?.worker.middle_name,
+                  lastName: item?.creator?.worker.last_name,
+                  position: item?.creator?.position
+                }"
               />
             </td>
-            <td>{{item.organization?.name}}</td>
+            <td>{{ item.organization?.name }}</td>
             <td><UIStatus :status="item?.confirmation" /></td>
             <td><UIStatus :status="Utils.documentStatus[item?.generate]" /></td>
             <td>
@@ -150,4 +152,3 @@
     <NoDataPicture v-if="store.list.length === 0 && !store.loading" />
   </n-spin>
 </template>
-
