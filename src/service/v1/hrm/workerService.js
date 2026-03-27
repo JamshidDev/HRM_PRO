@@ -45,7 +45,23 @@ const _downloadRelative = async (payload) => {
 }
 
 const _userRole = async (payload) => {
-  return await axios.get(`/v1/hr/users`, { params: payload.params })
+  return await axios.get(`/v1/extra/users`, { params: payload.params })
+}
+
+const _detachUserRole = async (payload) => {
+  return await axios.post(`/v1/extra/users/detach-role`, payload.data)
+}
+
+const _attachUserRole = async (payload) => {
+  return await axios.post(`/v1/extra/users/attach-role`, payload.data)
+}
+
+const _updateUserPassword = async (payload) => {
+  return await axios.post(`/v1/extra/users/update-password`, payload.data)
+}
+
+const _updateUserPhones = async (payload) => {
+  return await axios.put(`/v1/extra/users/update`, payload.data)
 }
 
 const _updatePosition = async (payload) => {
@@ -65,5 +81,9 @@ export default {
   _storeRole,
   _userRole,
   _updatePosition,
+  _attachUserRole,
+  _detachUserRole,
+  _updateUserPassword,
+  _updateUserPhones,
   _downloadRelative
 }

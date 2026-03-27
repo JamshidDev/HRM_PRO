@@ -12,7 +12,8 @@ import {
   accountantRoutes,
   turnstileRoutes,
   hospitalRoutes,
-  chatRoutes
+  chatRoutes,
+  extraRoutes,
 } from '@/router/modules'
 
 const beforeLogin = (to, from, next) => {
@@ -125,6 +126,16 @@ const routes = [
         beforeEnter: beforeLogin,
         redirect: AppPaths.Home,
         children: chatRoutes,
+        meta: {
+          layout: AppLayouts.main
+        }
+      },
+      {
+        path: AppPaths.Extra,
+        name: AppPaths.Extra.substring(1),
+        beforeEnter: beforeLogin,
+        redirect: AppPaths.Home,
+        children: extraRoutes,
         meta: {
           layout: AppLayouts.main
         }

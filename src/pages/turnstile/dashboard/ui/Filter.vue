@@ -2,13 +2,11 @@
   import {
     useAccountStore,
     useComponentStore,
-    useEventStore,
     useTurnstileDashboardStore
   } from '@/store/modules/index.js'
   import { UINSelect, UISelect } from '@/components/index.js'
   import { generateUUIDKey, useAppSetting, useDebounce } from '@/utils/index.js'
 
-  const store = useEventStore()
   const dashboardStore = useTurnstileDashboardStore()
   const accStore = useAccountStore()
   const componentStore = useComponentStore()
@@ -27,6 +25,12 @@
     fetchDepartment(depParams.value, true)
   }
 
+  const onSearchDepartment = (v) => {
+    dashboardStore.filterDepParams.page = 1
+    dashboardStore.filterDepParams.search = v
+    fetchDepartment(depParams.value)
+  }
+
   let timer = null
   const filterEvent = () => {
     if (!accStore.checkAction(accStore.pn.turnstileDashboardRead)) return
@@ -39,33 +43,12 @@
   const onChangeStructure = (v) => {
     dashboardStore.dashboardParams.organizations = v
     dashboardStore.dashboardParams.departments = []
-    departmentState.list = []
+    departmentState.value.list = []
     filterEvent()
     dashboardStore.filterDepParams.page = 1
     debounceFetchDepartment(depParams.value)
   }
 
-  const handleTimeKeydownWithEnter = (event, key) => {
-    if (event.key === 'Enter') {
-      onEnterTime(key)
-    } else {
-      Utils.handleTimeKeydown(event)
-    }
-  }
-
-  const onEnterTime = (key) => {
-    if (
-      dashboardStore.dashboardParams.start_time?.length === 5 &&
-      dashboardStore.dashboardParams.end_time?.length === 5
-    ) {
-      const value =
-        key === 'turnstile_start_time'
-          ? dashboardStore.dashboardParams.start_time
-          : dashboardStore.dashboardParams.end_time
-      localStorage.setItem(key, value)
-      filterEvent()
-    }
-  }
   const onChangeDepartment = () => {
     filterEvent()
   }
@@ -77,7 +60,7 @@
   const onDefault = (v) => {
     dashboardStore.dashboardParams.organizations = v
     dashboardStore.dashboardParams.departments = []
-    departmentState.list = []
+    departmentState.value.list = []
     dashboardStore.filterDepParams.page = 1
     debounceFetchDepartment(depParams.value)
   }
@@ -86,9 +69,6 @@
     if (componentStore.structureList.length === 0) {
       componentStore._structures()
     }
-    // if(store.levelList.length===0){
-    //   store._levels()
-    // }
   })
 
   onBeforeUnmount(() => {
@@ -110,8 +90,8 @@
       }}</label>
       <UISelect
         :options="componentStore.structureList"
-        :modelV="dashboardStore.dashboardParams.organizations"
-        :checkedVal="dashboardStore.structureCheck2"
+        :model-v="dashboardStore.dashboardParams.organizations"
+        :checked-val="dashboardStore.structureCheck2"
         :loading="componentStore.structureLoading"
         v-model:search="componentStore.structureParams.search"
         @defaultValue="onDefault"
@@ -125,59 +105,21 @@
       <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{
         $t('content.department')
       }}</label>
-      <!--       <n-select-->
-      <!--           v-model:value="dashboardStore.dashboardParams.departments"-->
-      <!--           :options="componentStore.departmentList"-->
-      <!--           multiple-->
-      <!--           filterable-->
-      <!--           label-field="name"-->
-      <!--           value-field="id"-->
-      <!--           :render-label="selectRender.label"-->
-      <!--           :render-tag ="selectRender.value"-->
-      <!--           clearable-->
-      <!--           @update:value="onChangeDepartment"-->
-      <!--           :max-tag-count="1"-->
-      <!--           :filter="()=>true"-->
-      <!--           :loading="componentStore.departmentLoading"-->
-      <!--           @search="componentStore._onSearchDepartment"-->
-      <!--           @scroll="componentStore._onScrollDepartment"-->
-      <!--       />-->
-
-      <!--       <UINSelect-->
-      <!--           multiple-->
-      <!--           clearable-->
-      <!--           :loading="componentStore.departmentLoading"-->
-      <!--           v-model:value="dashboardStore.dashboardParams.departments"-->
-      <!--           :options="componentStore.departmentList"-->
-      <!--           :total-count="componentStore.totalDepartment"-->
-      <!--           @update:value="onChangeDepartment"-->
-      <!--       />-->
-
       <UINSelect
         multiple
         clearable
         :loading="departmentState.loading"
         :options="departmentState.list"
+        :query="dashboardStore.filterDepParams.search"
         :total-count="departmentState.total"
         v-model:value="dashboardStore.dashboardParams.departments"
         @update:value="onChangeDepartment"
         @onScrollEv="onScrollDepartment"
+        @onSearch="onSearchDepartment"
       />
     </div>
     <div class="lg:col-span-2 md:col-span-6 col-span-12">
       <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{ $t('content.date') }}</label>
-      <!--          <n-select-->
-      <!--              filterable-->
-      <!--              clearable-->
-      <!--              multiple-->
-      <!--              v-model:value="dashboardStore.dashboardParams.access_levels"-->
-      <!--              :options="store.levelList"-->
-      <!--              :loading="store.levelLoading"-->
-      <!--              label-field="name"-->
-      <!--              value-field="id"-->
-      <!--              @update:value="filterEvent"-->
-      <!--              :max-tag-count="1"-->
-      <!--          />-->
       <n-date-picker
         v-model:value="dashboardStore.dashboardParams.date"
         @update:value="onChangeDate"
@@ -187,33 +129,5 @@
         :format="useAppSetting.datePicketFormat"
       />
     </div>
-    <!--        <div class="lg:col-span-2 md:col-span-6 col-span-12">-->
-    <!--          <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{$t('hcEvent.form.start_time')}}</label>-->
-    <!--          <n-input-->
-    <!--              v-mask="'##:##'"-->
-    <!--              class="w-full"-->
-    <!--              type="text"-->
-    <!--              @keydown="handleTimeKeydownWithEnter($event, 'turnstile_start_time')"-->
-    <!--              v-model:value="dashboardStore.dashboardParams.start_time"-->
-    <!--              :loading="dashboardStore.loading"-->
-    <!--              :disabled="dashboardStore.loading"-->
-    <!--              placeholder="09:00"-->
-    <!--              maxlength="5"-->
-    <!--          />-->
-    <!--        </div>-->
-    <!--        <div class="lg:col-span-2 md:col-span-6 col-span-12">-->
-    <!--          <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{$t('hcEvent.form.end_time')}}</label>-->
-    <!--        <n-input-->
-    <!--            v-mask="'##:##'"-->
-    <!--            class="w-full"-->
-    <!--            type="text"-->
-    <!--            v-model:value="dashboardStore.dashboardParams.end_time"-->
-    <!--            @keydown="handleTimeKeydownWithEnter($event, 'turnstile_end_time')"-->
-    <!--            :loading="dashboardStore.loading"-->
-    <!--            :disabled="dashboardStore.loading"-->
-    <!--            placeholder="18:00"-->
-    <!--            maxlength="5"-->
-    <!--        />-->
-    <!--        </div>-->
   </div>
 </template>

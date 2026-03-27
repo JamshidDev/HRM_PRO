@@ -42,7 +42,7 @@
             <th rowspan="3" class="!text-center sticky-element !left-0">
               {{ $t('content.month') }}
             </th>
-            <th colspan="2" rowspan="2" class="!text-center sticky-element !left-[92px]">
+            <th colspan="2" rowspan="2" class="!text-center sticky-element !left-[87px]">
               {{ $t('salaryCategory.label.all') }}
             </th>
             <th rowspan="2" colspan="2" class="min-w-[100px] w-[100px] !text-center">
@@ -90,17 +90,17 @@
           </tr>
           <tr>
             <th
-              class="sticky-element !left-[92px] min-w-[140px] w-[140px] !text-wrap leading-[1.2] !font-normal text-xs !text-center !border-r"
+              class="sticky-element !left-[87px] min-w-[140px] w-[140px] !text-wrap leading-[1.2] !font-normal text-xs !text-center !border-r"
             >
               {{ $t('salaryCategory.label.mediumWorkerCount') }}
             </th>
             <th
-              class="sticky-element left-[232px] min-w-[140px] w-[140px] !text-wrap leading-[1.2] !font-normal text-xs !text-center !border-r"
+              class="sticky-element left-[227px] min-w-[140px] w-[140px] !text-wrap leading-[1.2] !font-normal text-xs !text-center !border-r"
             >
               {{ $t('salaryCategory.label.mediumSalaryAmount') }}
             </th>
 
-            <template v-for="item in 26">
+            <template v-for="item in 26" :key="item">
               <th
                 class="min-w-[140px] w-[140px] !text-wrap leading-[1.2] !font-normal text-xs !text-center !border-r"
               >
@@ -124,8 +124,8 @@
                   >
                 </div>
               </td>
-              <td class="sticky-element !left-[92px]">{{ item.data?.result_worker_count }}</td>
-              <td class="sticky-element left-[232px]">{{ item.data?.result_salary_fund }}</td>
+              <td class="sticky-element !left-[87px]">{{ item.data?.result_worker_count }}</td>
+              <td class="sticky-element left-[227px]">{{ item.data?.result_salary_fund }}</td>
 
               <td>{{ item.data?.external_worker_count }}</td>
               <td>{{ item.data?.external_salary_fund }}</td>

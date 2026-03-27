@@ -2,7 +2,7 @@
   import { ArrowSync12Filled, ArrowCircleDown48Regular, ArrowLeft28Filled } from '@vicons/fluent'
   import { useComponentStore, useMonthReportStore } from '@/store/modules/index.js'
   import Utils, { generateUUIDKey } from '@/utils/Utils.js'
-  import { UISelect, UINSelect } from '@/components/index.js'
+  import { UISelect, UINSelect, UIYearMonth } from '@/components/index.js'
   import validationRules from '@/utils/validationRules.js'
   import ValidationRules from '@/utils/validationRules.js'
   import { useDebounce } from '@/utils/index.js'
@@ -161,26 +161,24 @@
             @onSearch="componentStore._structures"
           />
         </div>
-        <div :class="[[3, 4].includes(store.exportType) ? 'col-span-12' : 'col-span-6']">
+        <div v-if="![3, 4].includes(store.exportType)" class="col-span-12">
+          <label class="text-xs mt-3 text-gray-500 mb-1 font-medium">{{
+            $t('content.year')
+          }}</label>
+          <UIYearMonth
+            v-model:year="store.exportParams.year"
+            v-model:month="store.exportParams.month"
+            :clearable="false"
+          />
+        </div>
+        <div v-else class="col-span-12">
           <label class="text-xs mt-3 text-gray-500 mb-1 font-medium">{{
             $t('content.year')
           }}</label>
           <n-select
             class="w-full"
-            v-model:value="store.params.year"
+            v-model:value="store.exportParams.year"
             :options="Utils.yearList"
-            label-field="name"
-            value-field="id"
-          />
-        </div>
-        <div class="col-span-6" v-if="![3, 4].includes(store.exportType)">
-          <label class="text-xs mt-3 text-gray-500 mb-1 font-medium">{{
-            $t('content.month')
-          }}</label>
-          <n-select
-            class="w-full"
-            v-model:value="store.exportParams.month"
-            :options="Utils.monthList"
             label-field="name"
             value-field="id"
           />

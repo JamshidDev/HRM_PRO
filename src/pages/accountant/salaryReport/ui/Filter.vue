@@ -1,12 +1,12 @@
 <script setup>
-  import { UIPageFilter, UISelect } from '@/components/index.js'
+  import { UIPageFilter, UISelect, UIYearMonth } from '@/components/index.js'
   import {
     useAccountStore,
     useComponentStore,
     useSalaryReportStore
   } from '@/store/modules/index.js'
-  import Utils from '@/utils/Utils.js'
   import { ArrowCircleDown48Regular } from '@vicons/fluent'
+  import { getOneMonthAgoYearMonth } from '@utils'
 
   const store = useSalaryReportStore()
   const componentStore = useComponentStore()
@@ -27,15 +27,18 @@
   }
 
   const filterCount = computed(() => {
+    const def = getOneMonthAgoYearMonth()
     return (
       Number(Boolean(store.params.organizations.length)) +
-      Number(Boolean(store.params.year)) +
-      Number(Boolean(store.params.month))
+      Number(store.params.year !== def.year || store.params.month !== def.month)
     )
   })
 
   const onClear = () => {
+    const def = getOneMonthAgoYearMonth()
     store.params.organizations = []
+    store.params.year = def.year
+    store.params.month = def.month
     filterEvent()
   }
 
@@ -90,23 +93,12 @@
         @onSearch="componentStore._structures"
         @onSubmit="filterEvent"
       />
-      <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{ $t('content.year') }}</label>
-      <n-select
-        class="w-full"
-        v-model:value="store.params.year"
-        :options="Utils.yearList"
-        label-field="name"
-        value-field="id"
-        @update:value="filterEvent"
-      />
-      <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{ $t('content.month') }}</label>
-      <n-select
-        class="w-full"
-        v-model:value="store.params.month"
-        :options="Utils.monthList"
-        label-field="name"
-        value-field="id"
-        @update:value="filterEvent"
+      <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{ $t('content.year') }} / {{ $t('content.month') }}</label>
+      <UIYearMonth
+        v-model:year="store.params.year"
+        v-model:month="store.params.month"
+        :clearable="false"
+        @change="filterEvent"
       />
     </template>
   </UIPageFilter>

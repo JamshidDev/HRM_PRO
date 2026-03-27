@@ -23,7 +23,8 @@ export const useDashboardStore = defineStore('dashboardStore', {
       ages: [1, 100],
       sex: null,
       type: null,
-      year: 2025,
+      year: new Date().getFullYear(),
+      month: null,
       birth_day: new Date().getDate(),
       birth_month: new Date().getMonth() + 1,
       // Passport state filter possible values were: expired, approaching, not_included
@@ -34,7 +35,8 @@ export const useDashboardStore = defineStore('dashboardStore', {
       page: 1,
       per_page: 10,
       search: null,
-      year: 2025,
+      year: new Date().getFullYear(),
+      month: null,
       age_start: 1,
       age_end: 100,
       ages: [1, 100],
@@ -73,7 +75,7 @@ export const useDashboardStore = defineStore('dashboardStore', {
     selectedFile: null,
     workerId: null,
     loadingPassport: false,
-    typeNames: ['med_type', 'disc_type', 'inc_type']
+    typeNames: ['med_type', 'disc_type', 'inc_type', 'contract_type']
   }),
   actions: {
     _updatePassport(data) {

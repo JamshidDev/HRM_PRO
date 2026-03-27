@@ -1,10 +1,9 @@
 <script setup>
 import {useAccountStore, useComponentStore, useMonthReportStore} from '@/store/modules/index.js'
-import {UIPageFilter, UISelect} from '@/components/index.js'
-import Utils from '@/utils/Utils.js'
+import {UIPageFilter, UISelect, UIYearMonth} from '@/components/index.js'
 import UIHelper from '@/utils/UIHelper.js'
 import {ArrowCircleDown32Regular, ArrowSync20Filled} from '@vicons/fluent'
-import { useDebounce } from "@utils"
+import { useDebounce, getOneMonthAgoYearMonth } from "@utils"
 
 const store = useMonthReportStore()
 const accStore = useAccountStore()
@@ -36,12 +35,20 @@ const beforeShow = (v) => {
 const resetFilter = () => {
   store.params.organizations = []
   store.params.code = null
+  const def = getOneMonthAgoYearMonth()
+  store.params.year = def.year
+  store.params.month = def.month
   filterEvent()
 }
 
-const filterCount = computed(
-    () => Number(Boolean(store.params.organizations.length)) + Number(Boolean(store.params.code))
-)
+const filterCount = computed(() => {
+  const def = getOneMonthAgoYearMonth()
+  return (
+    Number(Boolean(store.params.organizations.length)) +
+    Number(Boolean(store.params.code)) +
+    Number(store.params.year !== def.year || store.params.month !== def.month)
+  )
+})
 
 const onRefreshEv = () => {
   store.loading = true
@@ -106,23 +113,12 @@ const onChangeInput = useDebounce(filterEvent, 600)
         :render-tag="UIHelper.selectRender.value"
         @update:value="filterEvent"
       />
-      <label class="text-xs mt-3 text-gray-500 mb-1 font-medium">{{ $t('content.year') }}</label>
-      <n-select
-        class="w-full"
-        v-model:value="store.params.year"
-        :options="Utils.yearList"
-        label-field="name"
-        value-field="id"
-        @update:value="filterEvent"
-      />
-      <label class="text-xs mt-3 text-gray-500 mb-1 font-medium">{{ $t('content.month') }}</label>
-      <n-select
-        class="w-full"
-        v-model:value="store.params.month"
-        :options="Utils.monthList"
-        label-field="name"
-        value-field="id"
-        @update:value="filterEvent"
+      <label class="text-xs mt-3 text-gray-500 mb-1 font-medium">{{ $t('content.year') }} / {{ $t('content.month') }}</label>
+      <UIYearMonth
+        v-model:year="store.params.year"
+        v-model:month="store.params.month"
+        :clearable="false"
+        @change="filterEvent"
       />
       <label class="text-xs mt-3 text-gray-500 mb-1 font-medium">{{ $t('monthReport.form.start_hours') }}</label>
       <n-input-number

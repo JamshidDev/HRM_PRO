@@ -70,8 +70,8 @@
 
         <n-spin :show="exportStore.exportResumeLoading">
           <n-space justify="end">
-            <n-button secondary size="large" @click="submitExportResume(false)" type="error"
-              >{{ $t('content.no') }}
+            <n-button secondary size="large" @click="submitExportResume(false)" type="error">
+              {{ $t('content.no') }}
             </n-button>
             <n-button
               v-fly-upload
@@ -79,7 +79,8 @@
               secondary
               @click="submitExportResume(true)"
               type="primary"
-              >{{ $t('content.yes') }}
+            >
+              {{ $t('content.yes') }}
             </n-button>
           </n-space>
         </n-spin>
@@ -95,10 +96,10 @@
         <ExportForm />
       </template>
     </UIDrawer>
-    <UIModal :title="$t('workerRole.name')" :width="1200" v-model:visible="store.userRoleVisible">
-      <template #default>
-        <UserRolePage />
-      </template>
-    </UIModal>
+<!--    <UIModal :title="$t('workerRole.name')" :width="1200" v-model:visible="store.userRoleVisible">-->
+<!--      <template #default>-->
+<!--        <UserRolePage />-->
+<!--      </template>-->
+<!--    </UIModal>-->
   </UIPageContent>
 </template>

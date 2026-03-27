@@ -10,15 +10,24 @@
   const componentStore = useComponentStore()
 
   const onSubmit = () => {
-    console.log(store.rolePayload)
     formRef.value?.validate((error) => {
       if (!error) {
-        const id = route.query.id
-        const data = {
-          ...store.rolePayload,
-          organization_id: store.rolePayload.organization_id[0].id
+        const orgId = store.rolePayload.organization_id[0].id
+        const roleId = store.rolePayload.role
+
+        if (store.roleWorkerPositionId) {
+          const roleName = componentStore.roles.find((r) => r.id === roleId)?.name
+          const data = {
+            uuid: store.roleWorkerPositionId,
+            role_id: roleId,
+            role: roleName || roleId,
+            organization_id: Number(orgId)
+          }
+          store._attachUserRole(data)
+        } else if (route.query.id) {
+          const data = { organization_id: orgId, role: roleId }
+          store._storeRole(data, route.query.id)
         }
-        store._storeRole(data, id)
       }
     })
   }
@@ -83,4 +92,3 @@
   </n-form>
 </template>
 
-<style scoped></style>

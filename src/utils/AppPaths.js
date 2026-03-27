@@ -2,6 +2,7 @@ export const AppPaths = {
   Main: '/',
   Admin: '/admin',
   Chat: '/chat',
+  Extra: '/extra',
   Lms: '/lms',
   Attestation: '/attestation',
   DocFlow: '/docflow',

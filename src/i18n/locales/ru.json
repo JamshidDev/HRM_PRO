@@ -1883,6 +1883,22 @@
     "from": {
       "activeOrganization": "Активная организация",
       "role": "Роли"
+     },
+    "attachRole": "Прикрепить роль",
+    "deleteRole": "Удалить роль",
+    "selectRoleToDelete": "Выберите роль для удаления",
+    "updatePassword": "Обновить пароль",
+    "newPassword": "Новый пароль",
+    "enterPassword": "Введите пароль",
+    "phoneNumber": "Номер телефона",
+    "enterPhone": "Введите номер телефона",
+    "addPhone": "Добавить номер",
+    "primaryPhoneHint": "Нажмите на радиокнопку, чтобы выбрать основной номер",
+    "phoneInfo": "Используйте чекбокс для выбора основного номера телефона. Основной номер используется для входа в систему.",
+    "validation": {
+      "emptyPhone": "Номер телефона не может быть пустым",
+      "invalidFormat": "Проверьте правильность номера телефона",
+      "duplicate": "Введен дублирующий номер телефона"
     }
   },
   "telegramPopup": {
@@ -1956,7 +1972,28 @@
     "oldPositionDate": "Дата прежней должности",
     "oldPosition": "Прежняя должность",
     "commandNumber": "Номер и дата приказа",
-    "commandReason": "Причина приказа"
+    "commandReason": "Причина приказа",
+    "stat": "Статистика",
+    "organizations": "Организации",
+    "statTooltip": "Список организаций, не загрузивших отчёты. Отмеченные организации загрузили отчёты.",
+    "generate": "Генерация",
+    "download": "Скачать",
+    "excelDownload": "Скачать Excel",
+    "table1": "Таблица 1",
+    "table2": "Таблица 2",
+    "table3": "Таблица 3",
+    "staffSchedule": "Штатное расписание",
+    "structure": "Организационная структура",
+    "generalReport": "Общий отчёт",
+    "year": "Год",
+    "month": "Месяц",
+    "tableType": "Тип таблицы",
+    "reports": "Отчёты",
+    "addApprover": "Добавить утверждающего",
+    "saved": "Сохранено",
+    "deleted": "Удалено",
+    "downloaded": "Загружено",
+    "downloadFailed": "Не удалось загрузить"
   },
   "confirmationReport": {
     "name": "Отчёты"

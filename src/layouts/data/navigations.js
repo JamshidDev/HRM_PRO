@@ -59,7 +59,9 @@ import {
   PersonVoice20Filled,
   AppsList20Regular,
   News24Regular,
-  Tag16Filled
+  Tag16Filled,
+  AppRecent24Filled,
+
 } from '@vicons/fluent'
 import { AppPaths } from '@/utils/index.js'
 import Utils from '@/utils/Utils.js'
@@ -270,8 +272,8 @@ export const navigations = [
         path: Utils.routeHrmPathMaker(AppPaths.StructureReport),
         icon: DocumentBulletList24Filled,
         color: 'bg-warning',
-        permission: appPermissions.admin
-      }
+        permission: appPermissions.hrMonthlyReport
+      },
     ]
   },
   {
@@ -348,7 +350,7 @@ export const navigations = [
         path: Utils.routeDocFlowPathMaker(AppPaths.ConfReport),
         icon: DocumentBulletList24Filled,
         color: 'bg-warning',
-        permission: appPermissions.admin,
+        permission: appPermissions.confirmation,
         name: 'conf-report'
       }
     ]
@@ -751,6 +753,57 @@ export const navigations = [
     ]
   },
   {
+    label: 'navigation.chat',
+    path: AppPaths.Chat,
+    icon: ChatMultiple16Filled,
+    permission: appPermissions.admin,
+    children: [
+      {
+        label: 'notificationPage.name',
+        path: Utils.routeChatPathMaker(AppPaths.Notification),
+        icon: CommentLightning20Filled,
+        color: 'bg-dark',
+        permission: appPermissions.instructions
+      },
+      {
+        label: 'newsPage.name',
+        path: Utils.routeChatPathMaker(AppPaths.News),
+        icon: News24Regular,
+        color: 'bg-dark',
+        permission: appPermissions.admin
+      },
+      {
+        label: 'newsCategoryPage.name',
+        path: Utils.routeChatPathMaker(AppPaths.NewsCategory),
+        icon: Tag16Filled,
+        color: 'bg-dark',
+        permission: appPermissions.admin
+      },
+      {
+        label: 'congratulation.name',
+        path: Utils.routeChatPathMaker(AppPaths.Congratulation),
+        icon: CommentLightning20Filled,
+        color: 'bg-warning',
+        permission: appPermissions.chatTelegramMessages
+      }
+    ]
+  },
+  {
+    label: 'navigation.extra',
+    path: AppPaths.Extra,
+    icon: AppRecent24Filled,
+    permission: appPermissions.extra,
+    children: [
+      {
+        label: 'workerRole.name',
+        path: Utils.routeExtraPathMaker(AppPaths.WorkerRole),
+        icon: PeopleCheckmark24Filled,
+        color: 'bg-primary',
+        permission: appPermissions.extraWorkerUser
+      }
+    ]
+  },
+  {
     label: 'navigation.admin',
     path: AppPaths.Admin,
     icon: LockClosed16Filled,
@@ -891,42 +944,6 @@ export const navigations = [
       }
     ]
   },
-  {
-    label: 'navigation.chat',
-    path: AppPaths.Chat,
-    icon: ChatMultiple16Filled,
-    permission: appPermissions.admin,
-    children: [
-      {
-        label: 'notificationPage.name',
-        path: Utils.routeChatPathMaker(AppPaths.Notification),
-        icon: CommentLightning20Filled,
-        color: 'bg-dark',
-        permission: appPermissions.instructions
-      },
-      {
-        label: 'newsPage.name',
-        path: Utils.routeChatPathMaker(AppPaths.News),
-        icon: News24Regular,
-        color: 'bg-dark',
-        permission: appPermissions.admin
-      },
-      {
-        label: 'newsCategoryPage.name',
-        path: Utils.routeChatPathMaker(AppPaths.NewsCategory),
-        icon: Tag16Filled,
-        color: 'bg-dark',
-        permission: appPermissions.admin
-      },
-      {
-        label: 'congratulation.name',
-        path: Utils.routeChatPathMaker(AppPaths.Congratulation),
-        icon: CommentLightning20Filled,
-        color: 'bg-warning',
-        permission: appPermissions.chatTelegramMessages
-      }
-    ]
-  }
 ]
 
 export const otherNavigations = [

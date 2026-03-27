@@ -1,11 +1,11 @@
 <script setup>
-  import { UIUpload } from '@/components/index.js'
+  import { UIUpload, UIYearMonth } from '@/components/index.js'
   import validationRules from '@/utils/validationRules.js'
   import { CheckboxChecked24Filled } from '@vicons/fluent'
   import { useUploadReportStore, useComponentStore } from '@/store/modules/index.js'
   import ValidationRules from '@/utils/validationRules.js'
   import LockWrapper from './LockWrapper.vue'
-  import Utils from '@/utils/Utils.js'
+
   import i18n from '@/i18n/index.js'
 
   const { t } = i18n.global
@@ -64,29 +64,15 @@
         />
       </n-form-item>
       <n-form-item
-        class="col-span-6"
+        class="col-span-12"
         :label="$t(`uploadReport.form.year`)"
         path="year"
         :rule-path="ValidationRules.rulesNames.requiredNumberField"
       >
-        <n-select
-          v-model:value="store.payload.year"
-          :options="Utils.yearList"
-          label-field="name"
-          value-field="id"
-        />
-      </n-form-item>
-      <n-form-item
-        class="col-span-6"
-        :label="$t(`uploadReport.form.month`)"
-        path="month"
-        :rule-path="ValidationRules.rulesNames.requiredNumberField"
-      >
-        <n-select
-          v-model:value="store.payload.month"
-          :options="Utils.monthList"
-          label-field="name"
-          value-field="id"
+        <UIYearMonth
+          v-model:year="store.payload.year"
+          v-model:month="store.payload.month"
+          :clearable="false"
         />
       </n-form-item>
       <UIUpload class="col-span-12 mb-[40px]" v-model:files="store.payload.file" :multiple="false">

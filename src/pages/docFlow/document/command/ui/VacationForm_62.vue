@@ -1,6 +1,6 @@
 <script setup>
   import { useCommandStore, useComponentStore } from '@/store/modules/index.js'
-  import { PersonNote20Regular, DismissCircle16Regular, Eye24Regular } from '@vicons/fluent'
+  import { PersonNote20Regular, DismissCircle16Regular, Eye24Regular, Copy16Regular, ClipboardPaste20Regular } from '@vicons/fluent'
   import Utils from '../../../../../utils/Utils.js'
   import i18n from '@/i18n/index.js'
   import { UISelect } from '@/components/index.js'
@@ -9,10 +9,27 @@
   const store = useCommandStore()
   const componentStore = useComponentStore()
   const { t } = i18n.global
+  const clipboardStore = ref(null)
 
   const onRemoveWorker = (id) => {
     store.vacations62 = store.vacations62.filter((v) => v.id !== id)
     store.payload.workers = store.payload.workers.filter((workerId) => workerId !== id)
+  }
+
+  const onCopy = (v) => {
+    console.log(v)
+    clipboardStore.value = v
+    $Toast.info(t('content.successCopied'))
+  }
+
+  const onClearClipboard = () => {
+    clipboardStore.value = null
+  }
+
+  const onPaste = (idx) => {
+    const { id, worker} = store.vacations62[idx]
+    Object.assign(store.vacations62[idx], {...clipboardStore.value, id, worker})
+    $Toast.info(t('content.successPaste'))
   }
 
   const onSubmit = (mainData) => {
@@ -152,8 +169,8 @@
         <template #icon>
           <Eye24Regular />
         </template>
-        {{ $t('documentPage.command.lastVacation') }}</n-button
-      >
+        {{ $t('documentPage.command.lastVacation') }}
+      </n-button>
     </div>
 
     <div class="col-span-12 flex justify-between">
@@ -161,15 +178,22 @@
         <template #icon>
           <PersonNote20Regular />
         </template>
-        {{ Utils.combineFullName(item.worker.worker) }}</n-button
-      >
+        {{ Utils.combineFullName(item.worker.worker) }}
+      </n-button>
 
-      <n-button type="error" secondary size="tiny" @click="onRemoveWorker(item.id)">
-        <template #icon>
-          <DismissCircle16Regular />
-        </template>
-        {{ $t('documentPage.command.form.removeWorker') }}</n-button
-      >
+      <div class="flex gap-2">
+        <n-button type="error" secondary size="tiny" @click="onRemoveWorker(item.id)">
+          <template #icon>
+            <DismissCircle16Regular />
+          </template>
+          {{ $t('documentPage.command.form.removeWorker') }}
+        </n-button>
+        <n-button-group v-if="clipboardStore">
+          <n-button @click="onClearClipboard()" type="error" size="tiny" secondary><template #icon><DismissCircle16Regular /></template> {{ $t('content.cancel') }}</n-button>
+          <n-button @click="onPaste(idx)" type="success" size="tiny" secondary><template #icon><ClipboardPaste20Regular /></template> {{ $t('content.paste') }}</n-button>
+        </n-button-group>
+        <n-button v-else @click="onCopy(item)" type="primary" size="tiny" secondary><template #icon><Copy16Regular /></template> {{ $t('content.copy') }}</n-button>
+      </div>
     </div>
     <div class="col-span-12 md:col-span-6 lg:col-span-2">
       <n-form-item :show-feedback="false" :label="$t(`commandPage.form_62.from`)" path="from">
@@ -220,9 +244,9 @@
         >
           <UISelect
             :options="componentStore.structureList"
-            :modelV="item.work_place_id"
+            :model-v="item.work_place_id"
             @updateModel="onChangeStructure($event, item.id)"
-            :checkedVal="item.orgCheck"
+            :checked-val="item.orgCheck"
             @updateCheck="(v) => (item.orgCheck = v)"
             :loading="componentStore.structureLoading"
             v-model:search="componentStore.structureParams.search"
@@ -239,9 +263,9 @@
         >
           <UISelect
             :options="item.departmentList"
-            :modelV="item.department_id"
+            :model-v="item.department_id"
             @updateModel="(v) => (item.department_id = v)"
-            :checkedVal="item.depCheck"
+            :checked-val="item.depCheck"
             @updateCheck="(v) => (item.depCheck = v)"
             :multiple="false"
             :loading="item.loading"

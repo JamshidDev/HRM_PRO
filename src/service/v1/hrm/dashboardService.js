@@ -40,9 +40,14 @@ const _incentiveDetail = async (payload) => {
   return await axios.get(`/v1/hr/dashboard/incentive-actions`, { params: payload?.params })
 }
 
+const _contractDetail = async (payload) => {
+  return await axios.get(`/v1/hr/dashboard/contracts`, { params: payload?.params })
+}
+
 export default {
   _disciplinaryDetail,
   _incentiveDetail,
+  _contractDetail,
   _index,
   _birthdayDetail,
   _ageDetail,

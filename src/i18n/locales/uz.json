@@ -222,6 +222,8 @@
     "en": "EN",
     "create": "Yaratish",
     "successCopied": "Muvofaqiyatli nusxalandi",
+    "successPaste": "Muvofaqiyatli joylandi",
+    "paste": "Joylash",
     "allSelected": "Barchasi tanlangan",
     "sendToSign": "Imzolashga yuborish",
     "rejectByMistake": "Xatolik sababli qaytarish"
@@ -1897,6 +1899,22 @@
     "from": {
       "activeOrganization": "Aktiv korxonasi",
       "role": "Rollari"
+    },
+    "attachRole": "Rol biriktirish",
+    "deleteRole": "Rolni o'chirish",
+    "selectRoleToDelete": "O'chirmoqchi bo'lgan rolni tanlang",
+    "updatePassword": "Parolni yangilash",
+    "newPassword": "Yangi parol",
+    "enterPassword": "Parolni kiriting",
+    "phoneNumber": "Telefon raqam",
+    "enterPhone": "Telefon raqamni kiriting",
+    "addPhone": "Raqam qo'shish",
+    "primaryPhoneHint": "Asosiy raqamni belgilash uchun radio tugmasini bosing",
+    "phoneInfo": "Checkbox orqali asosiy telefon raqamni belgilang. Asosiy raqam tizimga kirish uchun ishlatiladi.",
+    "validation": {
+      "emptyPhone": "Telefon raqam bo'sh bo'lishi mumkin emas",
+      "invalidFormat": "Telefon raqamni to'g'riligini tekshiring",
+      "duplicate": "Bir xil telefon raqam kiritilgan"
     }
   },
   "telegramPopup": {
@@ -1970,7 +1988,28 @@
     "oldPositionDate": "Oldingi lavozim sanasi",
     "oldPosition": "Oldingi lavozim",
     "commandNumber": "Buyruq raqami va sanasi",
-    "commandReason": "Buyruq sababi"
+    "commandReason": "Buyruq sababi",
+    "stat": "Statistika",
+    "organizations": "Tashkilotlar",
+    "statTooltip": "Hisobot yuklamagan korxonalar ro'yxati. Belgilangan korxonalar hisobot yuklagan.",
+    "generate": "Generate",
+    "download": "Yuklash",
+    "excelDownload": "Excel yuklash",
+    "table1": "1 - Jadval",
+    "table2": "2 - Jadval",
+    "table3": "3 - Jadval",
+    "staffSchedule": "Shtat jadvali",
+    "structure": "Tarkibiy tuzilma",
+    "generalReport": "Umumiy hisobot",
+    "year": "Yil",
+    "month": "Oy",
+    "tableType": "Jadval turi",
+    "reports": "Hisobotlar",
+    "addApprover": "Tasdiqlovchi qo'shish",
+    "saved": "Saqlandi",
+    "deleted": "O'chirildi",
+    "downloaded": "Yuklandi",
+    "downloadFailed": "Yuklab bo'lmadi"
   },
   "confirmationReport": {
     "name": "Hisobotlar"
@@ -2415,6 +2454,7 @@
     "economist": "Iqtisodchi",
     "hospital": "Kasalxona",
     "admin": "Admin",
+    "extra": "Qo'shimchalar",
     "chat": "Chat"
   },
   "resultPage": {

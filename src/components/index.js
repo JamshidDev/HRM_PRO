@@ -50,6 +50,7 @@ export { default as SuperStructure } from './ui/SuperStructure.vue'
 export { default as VTable } from './ui/Table.vue'
 export { default as MiniMenuBadge } from './chip/MiniMenuBadge.vue'
 export { default as MenuItemBadge } from './chip/MenuItemBadge.vue'
+export { default as UIYearMonth } from './ui/UIYearMonth.vue'
 
 export * from './layoutTab'
 export * from './editor'

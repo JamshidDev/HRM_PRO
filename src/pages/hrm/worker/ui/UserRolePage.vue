@@ -1,7 +1,7 @@
 <script setup>
   import { useAccountStore, useWorkerProfileStore } from '@/store/modules/index.js'
 
-  import Filter from '@/pages/hrm/UserRole/ui/Filter.vue'
+  import Filter from '@pages/extra/UserRole/ui/Filter.vue'
   import Utils from '@/utils/Utils.js'
   import { NoDataPicture, UIBadge, UIMenuButton, UIPagination, UIUser } from '@/components/index.js'
   import { RibbonStar24Filled } from '@vicons/fluent'
