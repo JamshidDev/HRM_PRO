@@ -7,11 +7,15 @@
   import Filter from './ui/Filter.vue'
   import CommentModal from './ui/CommentModal.vue'
   import { useAccountStore, useUploadReportStore } from '@/store/modules/index.js'
+  import { getOneMonthAgoYearMonth } from '@utils'
 
   const store = useUploadReportStore()
   const accStore = useAccountStore()
 
   onMounted(() => {
+    const oneMonthAgo = getOneMonthAgoYearMonth()
+    store.params.year = oneMonthAgo.year
+    store.params.month = oneMonthAgo.month
     if (!accStore.checkAction(accStore.pn.economistUploadsRead)) return
     if (store.structuresList.length === 0) {
       store._structures()

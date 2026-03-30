@@ -110,6 +110,7 @@
     "logOutSystem": "Log out",
     "paginationSize": "Show {n} items",
     "confirm": "Confirm",
+    "understood": "Understood",
     "month": "Month",
     "year": "Year",
     "or": "Or",
@@ -1973,9 +1974,9 @@
     "organization": "Organization",
     "birthday": "Date of birth",
     "education": "Education",
-    "oldOrganization": "Previous organization",
-    "oldPositionDate": "Previous position date",
-    "oldPosition": "Previous position",
+    "oldOrganization": "Organization name",
+    "oldPositionDate": "Termination date",
+    "oldPosition": "Position name",
     "commandNumber": "Order number and date",
     "commandReason": "Order reason",
     "stat": "Statistics",
@@ -1998,7 +1999,13 @@
     "saved": "Saved",
     "deleted": "Deleted",
     "downloaded": "Downloaded",
-    "downloadFailed": "Download failed"
+    "downloadFailed": "Download failed",
+    "alertTitle": "Monthly report submission procedure",
+    "alertText1": "Organizations must submit reports for each month by the 10th of the following month.",
+    "alertText2": "If the report is submitted by the 10th — it is accepted for the corresponding month",
+    "alertText3": "If the report is submitted after the 10th — it is automatically transferred to the next month",
+    "alertNote": "Note: Timely report submission is important for accurate record keeping.",
+    "oldOrgInfo": "Previous organization information"
   },
   "confirmationReport": {
     "name": "Reports"

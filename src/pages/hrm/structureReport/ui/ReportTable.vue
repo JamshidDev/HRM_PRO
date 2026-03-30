@@ -40,34 +40,30 @@
         <tbody>
           <tr v-for="(item, idx) in store.reportLabels" :key="item.key">
             <td class="text-center">{{ idx + 1 }}</td>
-            <td>{{ item.name }}</td>
-            <td class="text-center font-medium">
-              <template v-if="item.man_woman && item.man_woman.length > 0">
-                <n-input-number
-                  v-if="item.change === true"
-                  :value="store.getStatValue(orgData, getMenKey(item))"
-                  @update:value="(v) => store.setStatValue(orgData, getMenKey(item), v)"
-                  size="small"
-                  :show-button="false"
-                  :min="0"
-                  class="input-editable"
-                />
-                <span v-else>{{ store.getStatValue(orgData, getMenKey(item)) || '' }}</span>
-              </template>
+            <td :colspan="item.man_woman && item.man_woman.length > 0 ? 1 : 3">{{ item.name }}</td>
+            <td v-if="item.man_woman && item.man_woman.length > 0" class="text-center font-medium">
+              <n-input-number
+                v-if="item.change === true"
+                :value="store.getStatValue(orgData, getMenKey(item))"
+                @update:value="(v) => store.setStatValue(orgData, getMenKey(item), v)"
+                size="small"
+                :show-button="false"
+                :min="0"
+                class="input-editable"
+              />
+              <span v-else>{{ store.getStatValue(orgData, getMenKey(item)) || '' }}</span>
             </td>
-            <td class="text-center font-medium">
-              <template v-if="item.man_woman && item.man_woman.length > 0">
-                <n-input-number
-                  v-if="item.change === true"
-                  :value="store.getStatValue(orgData, getWomenKey(item))"
-                  @update:value="(v) => store.setStatValue(orgData, getWomenKey(item), v)"
-                  size="small"
-                  :show-button="false"
-                  :min="0"
-                  class="input-editable"
-                />
-                <span v-else>{{ store.getStatValue(orgData, getWomenKey(item)) || '' }}</span>
-              </template>
+            <td v-if="item.man_woman && item.man_woman.length > 0" class="text-center font-medium">
+              <n-input-number
+                v-if="item.change === true"
+                :value="store.getStatValue(orgData, getWomenKey(item))"
+                @update:value="(v) => store.setStatValue(orgData, getWomenKey(item), v)"
+                size="small"
+                :show-button="false"
+                :min="0"
+                class="input-editable"
+              />
+              <span v-else>{{ store.getStatValue(orgData, getWomenKey(item)) || '' }}</span>
             </td>
             <td class="text-center font-medium">
               <n-input-number
@@ -79,7 +75,7 @@
                 :min="0"
                 class="input-editable"
               />
-              <span v-else>{{ store.getStatValue(orgData, item.key) ?? '—' }}</span>
+              <span v-else>{{ store.getStatValue(orgData, item.key) || '' }}</span>
             </td>
           </tr>
         </tbody>

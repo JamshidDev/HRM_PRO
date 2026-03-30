@@ -42,7 +42,7 @@
             </td>
             <td>
               <div
-                @click="emits('openOffice', item.report?.id || item.id)"
+                @click="emits('openOffice', emits('openOffice',{documentId:item.report?.id, signatureId:item.id }))"
                 class="group flex flex-col hover:!text-primary hover:underline cursor-pointer"
               >
                 <span class="text-sm line-clamp-2 leading-[1.2] font-medium">

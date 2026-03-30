@@ -2,7 +2,6 @@
   import { ArrowCircleDown32Regular, ArrowSync20Filled } from '@vicons/fluent'
   import { UIPageFilter, UISelect, UIYearMonth } from '@/components/index.js'
   import { useAccountStore, useComponentStore, useTaxFiveStore } from '@/store/modules/index.js'
-  import { getOneMonthAgoYearMonth } from '@utils'
 
   const store = useTaxFiveStore()
   const componentStore = useComponentStore()
@@ -26,19 +25,12 @@
   }
 
   const resetFilter = () => {
-    const def = getOneMonthAgoYearMonth()
     store.params.organizations = []
-    store.params.year = def.year
-    store.params.month = def.month
     filterEvent()
   }
 
   const filterCount = computed(() => {
-    const def = getOneMonthAgoYearMonth()
-    return (
-      Number(Boolean(store.params.organizations.length)) +
-      Number(store.params.year !== def.year || store.params.month !== def.month)
-    )
+    return Number(Boolean(store.params.organizations.length))
   })
   const onRefreshEv = () => {
     store.loading = true
@@ -64,6 +56,14 @@
     :filter-count="filterCount"
   >
     <template #filterAction>
+      <div class="max-w-[160px]">
+        <UIYearMonth
+          v-model:year="store.params.year"
+          v-model:month="store.params.month"
+          :clearable="false"
+          @change="filterEvent"
+        />
+      </div>
       <n-tooltip :delay="1500" placement="bottom" trigger="hover">
         <template #trigger>
           <n-button @click="onRefreshEv" :loading="store.loading" type="primary">
@@ -81,14 +81,6 @@
         </template>
         {{ $t('content.template') }}
       </n-button>
-      <div class="w-full! md:w-[200px]!">
-        <UIYearMonth
-          v-model:year="store.params.year"
-          v-model:month="store.params.month"
-          :clearable="false"
-          @change="filterEvent"
-        />
-      </div>
     </template>
     <template #filterContent>
       <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{

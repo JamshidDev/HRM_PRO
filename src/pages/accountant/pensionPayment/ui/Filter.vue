@@ -1,7 +1,6 @@
 <script setup>
   import { UIPageFilter, UISelect, UIYearMonth } from '@/components/index.js'
   import { useAccountStore, useComponentStore, usePensionStore } from '@/store/modules/index.js'
-  import { getOneMonthAgoYearMonth } from '@utils'
 
   import { ArrowCircleDown32Regular, ArrowSync20Filled } from '@vicons/fluent'
 
@@ -21,11 +20,7 @@
   }
 
   const filterCount = computed(() => {
-    const def = getOneMonthAgoYearMonth()
-    return (
-      Number(Boolean(store.params.organizations?.length)) +
-      Number(store.params.year !== def.year || store.params.month !== def.month)
-    )
+    return Number(Boolean(store.params.organizations?.length))
   })
 
   const beforeShow = (v) => {
@@ -35,7 +30,7 @@
   }
 
   const onClear = () => {
-    store.resetParams()
+    store.params.organizations = []
     filterEvent()
   }
 
@@ -62,6 +57,14 @@
     @onSearch="filterEvent"
   >
     <template #filterAction>
+      <div class="max-w-[160px]">
+        <UIYearMonth
+          v-model:year="store.params.year"
+          v-model:month="store.params.month"
+          :clearable="false"
+          @change="filterEvent"
+        />
+      </div>
       <n-tooltip :delay="1500" placement="bottom" trigger="hover">
         <template #trigger>
           <n-button @click="onRefreshEv" :loading="store.loading" type="primary">
@@ -95,13 +98,6 @@
         v-model:search="componentStore.structureParams.search"
         @onSearch="componentStore._structures"
         @onSubmit="filterEvent"
-      />
-      <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{ $t('content.year') }} / {{ $t('content.month') }}</label>
-      <UIYearMonth
-        v-model:year="store.params.year"
-        v-model:month="store.params.month"
-        :clearable="false"
-        @change="filterEvent"
       />
     </template>
   </UIPageFilter>

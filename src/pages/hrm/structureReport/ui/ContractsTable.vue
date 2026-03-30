@@ -58,36 +58,39 @@
             :status="!item.educations ? 'warning' : undefined"
           />
         </div>
-        <div class="flex flex-col gap-1">
-          <label class="contract-label">{{ $t('structureReport.oldOrganization') }}</label>
-          <n-input
-            v-model:value="item.old_organization_name"
-            size="small"
-            :placeholder="$t('structureReport.oldOrganization')"
-            :status="!item.old_organization_name ? 'warning' : undefined"
-          />
-        </div>
-        <div class="flex gap-3">
-          <div class="flex flex-col gap-1 w-1/4">
-            <label class="contract-label">{{ $t('structureReport.oldPositionDate') }}</label>
-            <n-date-picker
-              v-model:value="item.old_position_date"
-              type="date"
+        <div class="border border-surface-line rounded-lg p-3 flex flex-col gap-3">
+          <label class="text-xs font-medium text-textColor2">{{ $t('structureReport.oldOrgInfo') }}</label>
+          <div class="flex flex-col gap-1">
+            <label class="contract-label">{{ $t('structureReport.oldOrganization') }}</label>
+            <n-input
+              v-model:value="item.old_organization_name"
               size="small"
-              class="w-full"
-              :format="useAppSetting.datePicketFormat"
-              clearable
-              :status="!item.old_position_date ? 'warning' : undefined"
+              :placeholder="$t('structureReport.oldOrganization')"
+              :status="!item.old_organization_name ? 'warning' : undefined"
             />
           </div>
-          <div class="flex flex-col gap-1 w-3/4">
-            <label class="contract-label">{{ $t('structureReport.oldPosition') }}</label>
-            <n-input
-              v-model:value="item.old_position_name"
-              size="small"
-              :placeholder="$t('structureReport.oldPosition')"
-              :status="!item.old_position_name ? 'warning' : undefined"
-            />
+          <div class="flex gap-3">
+            <div class="flex flex-col gap-1 w-1/4">
+              <label class="contract-label">{{ $t('structureReport.oldPositionDate') }}</label>
+              <n-date-picker
+                v-model:value="item.old_position_date"
+                type="date"
+                size="small"
+                class="w-full"
+                :format="useAppSetting.datePicketFormat"
+                clearable
+                :status="!item.old_position_date ? 'warning' : undefined"
+              />
+            </div>
+            <div class="flex flex-col gap-1 w-3/4">
+              <label class="contract-label">{{ $t('structureReport.oldPosition') }}</label>
+              <n-input
+                v-model:value="item.old_position_name"
+                size="small"
+                :placeholder="$t('structureReport.oldPosition')"
+                :status="!item.old_position_name ? 'warning' : undefined"
+              />
+            </div>
           </div>
         </div>
         <div class="flex gap-3">

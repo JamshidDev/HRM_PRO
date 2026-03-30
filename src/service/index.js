@@ -4,7 +4,7 @@ import router from '../router/index'
 import Utils from '@/utils/Utils.js'
 import i18n from '@/i18n/index.js'
 const apiUrl = import.meta.env.VITE_API_URL
-
+console.log(apiUrl)
 const { t } = i18n.global
 const instance = axios.create({
   baseURL: `${apiUrl}/api`

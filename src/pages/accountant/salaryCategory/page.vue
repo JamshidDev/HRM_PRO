@@ -11,7 +11,6 @@
 <template>
   <UIPageContent>
     <Filter />
-
     <n-tabs animated v-model:value="store.activeTab" class="hidden-tab-header" type="segment">
       <n-tab-pane :name="store.tabs[0].id">
         <Table />

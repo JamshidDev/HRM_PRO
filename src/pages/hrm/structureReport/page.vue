@@ -9,6 +9,7 @@ import {ArrowDownload24Regular, ArrowSync20Filled} from '@vicons/fluent'
   import GeneralExcelModal from './ui/GeneralExcelModal.vue'
   import ReportListTable from './ui/ReportListTable.vue'
   import ReportStatModal from './ui/ReportStatModal.vue'
+  import AlertModal from './ui/AlertModal.vue'
 
   const store = useStructureReportStore()
   const componentStore = useComponentStore()
@@ -153,6 +154,7 @@ import {ArrowDownload24Regular, ArrowSync20Filled} from '@vicons/fluent'
     <ExcelDownloadModal />
     <GeneralExcelModal />
     <ReportStatModal />
+    <AlertModal />
     <UIOfficeApp ref="officeAppRef" />
   </UIPageContent>
 </template>

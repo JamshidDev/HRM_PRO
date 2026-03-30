@@ -4,7 +4,6 @@
   import Utils from '@/utils/Utils.js'
 
   const store = useConfStaffingApprovalStore()
-  const accStore = useAccountStore()
   const emits = defineEmits(['openOffice'])
 
   const changePage = (v) => {
@@ -14,6 +13,7 @@
   }
 
   const onOpen = (id) => {
+    console.log(id)
     emits('openOffice', id)
   }
 

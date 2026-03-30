@@ -5,7 +5,6 @@
     useAccountStore,
     useComponentStore
   } from '@/store/modules/index.js'
-  import { getOneMonthAgoYearMonth } from '@utils'
 
   const store = useAccDashboardStore()
   const componentStore = useComponentStore()
@@ -23,18 +22,11 @@
   }
 
   const filterCount = computed(() => {
-    const def = getOneMonthAgoYearMonth()
-    return (
-      Number(Boolean(store.params.organizations.length)) +
-      Number(store.params.year !== def.year || store.params.month !== def.month)
-    )
+    return Number(Boolean(store.params.organizations.length))
   })
 
   const resetFilter = () => {
-    const def = getOneMonthAgoYearMonth()
     store.params.organizations = []
-    store.params.year = def.year
-    store.params.month = def.month
     filterEvent()
   }
 
@@ -55,6 +47,16 @@
     :filterCount="filterCount"
     @onClear="resetFilter"
   >
+    <template #filterAction>
+      <div class="max-w-[160px]">
+        <UIYearMonth
+          v-model:year="store.params.year"
+          v-model:month="store.params.month"
+          :clearable="false"
+          @change="filterEvent"
+        />
+      </div>
+    </template>
     <template #filterContent>
       <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{
         $t('actionLog.table.structure')
@@ -70,13 +72,6 @@
         v-model:search="componentStore.structureParams.search"
         @onSearch="componentStore._structures"
         @onSubmit="filterEvent"
-      />
-      <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{ $t('content.year') }} / {{ $t('content.month') }}</label>
-      <UIYearMonth
-        v-model:year="store.params.year"
-        v-model:month="store.params.month"
-        :clearable="false"
-        @change="filterEvent"
       />
     </template>
   </UIPageFilter>

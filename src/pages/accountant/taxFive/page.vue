@@ -7,6 +7,7 @@
 
   const store = useTaxFiveStore()
   const accStore = useAccountStore()
+
   onMounted(() => {
     if (!accStore.checkAction(accStore.pn.economistTaxFiveRead)) return
     const oneMonthAgo = getOneMonthAgoYearMonth()

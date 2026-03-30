@@ -6,7 +6,6 @@
     useSalaryReportStore
   } from '@/store/modules/index.js'
   import { ArrowCircleDown48Regular } from '@vicons/fluent'
-  import { getOneMonthAgoYearMonth } from '@utils'
 
   const store = useSalaryReportStore()
   const componentStore = useComponentStore()
@@ -27,18 +26,11 @@
   }
 
   const filterCount = computed(() => {
-    const def = getOneMonthAgoYearMonth()
-    return (
-      Number(Boolean(store.params.organizations.length)) +
-      Number(store.params.year !== def.year || store.params.month !== def.month)
-    )
+    return Number(Boolean(store.params.organizations.length))
   })
 
   const onClear = () => {
-    const def = getOneMonthAgoYearMonth()
     store.params.organizations = []
-    store.params.year = def.year
-    store.params.month = def.month
     filterEvent()
   }
 
@@ -58,6 +50,14 @@
     :show-add-button="false"
   >
     <template #filterAction>
+      <div class="max-w-[160px]">
+        <UIYearMonth
+          v-model:year="store.params.year"
+          v-model:month="store.params.month"
+          :clearable="false"
+          @change="filterEvent"
+        />
+      </div>
       <n-button
         v-fly-upload
         type="success"
@@ -92,13 +92,6 @@
         v-model:search="componentStore.structureParams.search"
         @onSearch="componentStore._structures"
         @onSubmit="filterEvent"
-      />
-      <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{ $t('content.year') }} / {{ $t('content.month') }}</label>
-      <UIYearMonth
-        v-model:year="store.params.year"
-        v-model:month="store.params.month"
-        :clearable="false"
-        @change="filterEvent"
       />
     </template>
   </UIPageFilter>

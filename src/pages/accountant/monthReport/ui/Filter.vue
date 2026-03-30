@@ -3,7 +3,7 @@ import {useAccountStore, useComponentStore, useMonthReportStore} from '@/store/m
 import {UIPageFilter, UISelect, UIYearMonth} from '@/components/index.js'
 import UIHelper from '@/utils/UIHelper.js'
 import {ArrowCircleDown32Regular, ArrowSync20Filled} from '@vicons/fluent'
-import { useDebounce, getOneMonthAgoYearMonth } from "@utils"
+import { useDebounce } from "@utils"
 
 const store = useMonthReportStore()
 const accStore = useAccountStore()
@@ -35,18 +35,13 @@ const beforeShow = (v) => {
 const resetFilter = () => {
   store.params.organizations = []
   store.params.code = null
-  const def = getOneMonthAgoYearMonth()
-  store.params.year = def.year
-  store.params.month = def.month
   filterEvent()
 }
 
 const filterCount = computed(() => {
-  const def = getOneMonthAgoYearMonth()
   return (
     Number(Boolean(store.params.organizations.length)) +
-    Number(Boolean(store.params.code)) +
-    Number(store.params.year !== def.year || store.params.month !== def.month)
+    Number(Boolean(store.params.code))
   )
 })
 
@@ -113,13 +108,6 @@ const onChangeInput = useDebounce(filterEvent, 600)
         :render-tag="UIHelper.selectRender.value"
         @update:value="filterEvent"
       />
-      <label class="text-xs mt-3 text-gray-500 mb-1 font-medium">{{ $t('content.year') }} / {{ $t('content.month') }}</label>
-      <UIYearMonth
-        v-model:year="store.params.year"
-        v-model:month="store.params.month"
-        :clearable="false"
-        @change="filterEvent"
-      />
       <label class="text-xs mt-3 text-gray-500 mb-1 font-medium">{{ $t('monthReport.form.start_hours') }}</label>
       <n-input-number
         @update:value="onChangeInput" :min="1" :nax="100" v-model:value="store.params.start_hours"
@@ -129,6 +117,14 @@ const onChangeInput = useDebounce(filterEvent, 600)
       <n-input-number @update:value="onChangeInput" :min="1" :nax="100" v-model:value="store.params.end_hours" clearable />
     </template>
     <template #filterAction>
+      <div class="max-w-[160px]">
+        <UIYearMonth
+          v-model:year="store.params.year"
+          v-model:month="store.params.month"
+          :clearable="false"
+          @change="filterEvent"
+        />
+      </div>
       <n-button @click="onExportPanel" type="error">
         <template #icon>
           <ArrowSync20Filled />

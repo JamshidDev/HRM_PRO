@@ -3,11 +3,17 @@
   import { DocumentArrowUp20Regular, LockClosed24Filled, LockOpen16Filled } from '@vicons/fluent'
   import { useAccountStore, useUploadReportStore } from '@/store/modules/index.js'
   import i18n from '@/i18n/index.js'
-  import { getOneMonthAgoYearMonth } from '@utils'
 
   const { t } = i18n.global
   const store = useUploadReportStore()
   const accStore = useAccountStore()
+
+  const onYearMonthChange = () => {
+    if (!accStore.checkAction(accStore.pn.economistUploadsRead)) return
+    store.params.organization_id = null
+    store.resetCards()
+    store._structures()
+  }
 
   const onAdd = async () => {
     if (!accStore.checkAction(accStore.pn.economistUploadsWrite)) return
@@ -19,24 +25,19 @@
     store.visibleType = true
     store.visible = true
   }
-
-  const onChange = () => {
-    if (!accStore.checkAction(accStore.pn.economistUploadsRead)) return
-    store.params.organization_id = null
-    store.resetCards()
-    store._structures()
-  }
-
-  onMounted(() => {
-    const oneMonthAgo = getOneMonthAgoYearMonth()
-    store.params.year = oneMonthAgo.year
-    store.params.month = oneMonthAgo.month
-  })
 </script>
 
 <template>
   <UIPageFilter :show-filter-button="false" :show-add-button="false">
     <template #filterAction>
+      <div class="max-w-[160px]">
+        <UIYearMonth
+          v-model:year="store.params.year"
+          v-model:month="store.params.month"
+          :clearable="false"
+          @change="onYearMonthChange"
+        />
+      </div>
       <n-button
         v-if="
           store.params.organization_id &&
@@ -55,14 +56,6 @@
         </template>
       </n-button>
 
-      <div class="w-full! md:w-[200px]!">
-        <UIYearMonth
-          v-model:year="store.params.year"
-          v-model:month="store.params.month"
-          :clearable="false"
-          @change="onChange"
-        />
-      </div>
       <n-button @click="onAdd" type="success" class="w-full! md:w-auto!">
         {{ $t('uploadReport.form.uploadFile') }}
         <template #icon>
