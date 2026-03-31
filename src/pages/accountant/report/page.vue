@@ -39,8 +39,7 @@
       <div class="col-span-12">
         <UIModal
           :width="600"
-          :visible="store.visible"
-          @update:visible="(v) => (store.visible = v)"
+          v-model:visible="store.visible"
           :title="
             store.visibleType ? $t('uploadReport.createTitle') : $t('uploadReport.updateTitle')
           "

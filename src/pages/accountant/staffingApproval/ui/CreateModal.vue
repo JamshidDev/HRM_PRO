@@ -155,7 +155,7 @@
       <n-spin :show="store.generateLoading">
         <div class="w-full h-[calc(100vh-160px)] overflow-y-auto pb-10">
           <div class="grid grid-cols-12 gap-x-4">
-            <div class="col-span-12 mb-4">
+            <div class="col-span-12">
               <n-form-item :label="$t('content.organization')">
                 <UISelect
                   :multiple="false"
@@ -171,69 +171,99 @@
                 />
               </n-form-item>
             </div>
+            <div class="col-span-12 border border-surface-line rounded-xl p-2 bg-surface-ground/20">
+              <div class="grid grid-cols-12 gap-x-4 ">
+                <div class="col-span-4">
+                  <n-form-item
+                    :label="$t(`content.date`)"
+                    path="date"
+                    :rule-path="validationRules.rulesNames.requiredNumberField"
+                  >
+                    <n-date-picker
+                      class="w-full"
+                      v-model:value="store.payload.date"
+                      type="date"
+                      :format="useAppSetting.datePicketFormat"
+                    />
+                  </n-form-item>
+                </div>
+                <div class="col-span-8">
+                  <n-form-item
+                    :label="$t(`staffingApproval.form.confirmatory_id`)"
+                    path="confirmatory_id"
+                    :rule-path="validationRules.rulesNames.requiredNumberField"
+                  >
+                    <SuperSelect
+                      v-model:value="store.payload.confirmatory_id"
+                      v-model:search="store.worker.params.search"
+                      :options="store.worker.list"
+                      :loading="store.worker.loading"
+                      :total-count="store.worker.totalItems"
+                      :per-page="store.worker.params.per_page"
+                      :clearable="true"
+                      @onScrollEv="workerAction.onScroll"
+                      @onSearch="workerAction.onSearch"
+                    />
+                  </n-form-item>
+                </div>
+                <div class="col-span-12">
+                  <n-form-item
+                    :label="$t(`documentPage.command.form.confirm`)"
+                    path="confirmations"
+                    :rule-path="validationRules.rulesNames.requiredMultiSelectField"
+                  >
+                    <SuperSelect
+                      multiple
+                      v-model:value="store.payload.confirmations"
+                      v-model:search="store.confirmation.params.search"
+                      :options="store.confirmation.list"
+                      :loading="store.confirmation.loading"
+                      :total-count="store.confirmation.totalItems"
+                      :per-page="store.confirmation.params.per_page"
+                      :clearable="true"
+                      @onScrollEv="confirmationAction.onScroll"
+                      @onSearch="confirmationAction.onSearch"
+                    />
+                  </n-form-item>
+                </div>
+              </div>
+            </div>
             <div class="col-span-12">
               <div class="flex justify-between items-center mb-2">
-                <n-checkbox
-                  :checked="isAllDepartmentsSelected"
-                  :disabled="!store.payload.organization_id || store.positions.length === 0"
-                  @update:checked="toggleSelectAllDepartments"
-                >
-                  {{ $t('content.selectAll') }}
-                </n-checkbox>
               </div>
-              <n-checkbox-group v-model:value="store.payload.department_positions">
-                <div
-                  class="w-full h-[400px] bg-surface-ground border border-surface-line rounded-xl pl-2 pt-2 overflow-y-auto mb-4 [scrollbar-gutter:stable]"
-                  :class="{ 'opacity-50 pointer-events-none': !store.payload.organization_id }"
-                >
-                  <template v-for="item in store.positions" :key="item.id">
-                    <DepartmentItem
-                      :item="item"
-                      :expanded="expandedSet.has(item.id)"
-                      :selected-ids="store.payload.department_positions"
-                      @toggle="toggleExpand(item.id)"
-                      @selectAll="onSelectAll"
-                      @unselectAll="onUnselectAll"
-                    />
-                  </template>
+              <div class="mb-4 pl-2 pt-2  bg-surface-ground/20 border border-surface-line rounded-xl">
+                <div class="flex justify-end pr-4">
+                  <n-checkbox
+                    class="ml-auto"
+                    :checked="isAllDepartmentsSelected"
+                    :disabled="!store.payload.organization_id || store.positions.length === 0"
+                    @update:checked="toggleSelectAllDepartments"
+                  >
+                    {{ $t('content.selectAll') }}
+                  </n-checkbox>
                 </div>
-              </n-checkbox-group>
+                <n-checkbox-group v-model:value="store.payload.department_positions">
+                  <div
+                    class="w-full h-[400px] overflow-y-auto [scrollbar-gutter:stable] mt-2"
+                    :class="{ 'opacity-50 pointer-events-none': !store.payload.organization_id }"
+                  >
+                    <template v-for="item in store.positions" :key="item.id">
+                      <DepartmentItem
+                        :item="item"
+                        :expanded="expandedSet.has(item.id)"
+                        :selected-ids="store.payload.department_positions"
+                        @toggle="toggleExpand(item.id)"
+                        @selectAll="onSelectAll"
+                        @unselectAll="onUnselectAll"
+                      />
+                    </template>
+                  </div>
+                </n-checkbox-group>
+              </div>
             </div>
-            <div class="col-span-4">
-              <n-form-item
-                :label="$t(`content.date`)"
-                path="date"
-                :rule-path="validationRules.rulesNames.requiredNumberField"
-              >
-                <n-date-picker
-                  class="w-full"
-                  v-model:value="store.payload.date"
-                  type="date"
-                  :format="useAppSetting.datePicketFormat"
-                />
-              </n-form-item>
-            </div>
-            <div class="col-span-8">
-              <n-form-item
-                :label="$t(`staffingApproval.form.confirmatory_id`)"
-                path="confirmatory_id"
-                :rule-path="validationRules.rulesNames.requiredNumberField"
-              >
-                <SuperSelect
-                  v-model:value="store.payload.confirmatory_id"
-                  v-model:search="store.worker.params.search"
-                  :options="store.worker.list"
-                  :loading="store.worker.loading"
-                  :total-count="store.worker.totalItems"
-                  :per-page="store.worker.params.per_page"
-                  :clearable="true"
-                  @onScrollEv="workerAction.onScroll"
-                  @onSearch="workerAction.onSearch"
-                />
-              </n-form-item>
-            </div>
+
             <div
-              class="col-span-12 grid grid-cols-12 gap-x-4 border border-surface-line p-2 rounded-xl mb-1 bg-surface-ground/20"
+              class="col-span-12 grid grid-cols-12 gap-x-4 border border-surface-line p-2 rounded-xl"
             >
               <div class="col-span-6">
                 <n-form-item :label="$t(`staffingApproval.form.confirmOrganization`)">
@@ -265,26 +295,6 @@
                   />
                 </n-form-item>
               </div>
-            </div>
-            <div class="col-span-12">
-              <n-form-item
-                :label="$t(`documentPage.command.form.confirm`)"
-                path="confirmations"
-                :rule-path="validationRules.rulesNames.requiredMultiSelectField"
-              >
-                <SuperSelect
-                  multiple
-                  v-model:value="store.payload.confirmations"
-                  v-model:search="store.confirmation.params.search"
-                  :options="store.confirmation.list"
-                  :loading="store.confirmation.loading"
-                  :total-count="store.confirmation.totalItems"
-                  :per-page="store.confirmation.params.per_page"
-                  :clearable="true"
-                  @onScrollEv="confirmationAction.onScroll"
-                  @onSearch="confirmationAction.onSearch"
-                />
-              </n-form-item>
             </div>
           </div>
         </div>

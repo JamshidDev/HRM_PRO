@@ -14,6 +14,7 @@
     route,
     (v) => {
       if (v.matched.length > 2) {
+        console.log(v.matched[1])
         store.payload.menu = v.matched[1].meta.permission
         store.payload.sub_menu = v.meta.permission || 'hr-workers'
       } else {

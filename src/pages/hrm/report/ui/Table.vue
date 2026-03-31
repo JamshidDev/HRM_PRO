@@ -41,9 +41,9 @@
         </div>
         <TreeData
           :options="store.department.list"
-          :modelV="store.department.selectDepartments"
+          :model-v="store.department.selectDepartments"
           :opened="true"
-          :checkedVal="store.department.cache"
+          :checked-val="store.department.cache"
           @updateModel="store.onChangeDepartment"
           @updateCheck="(v) => (store.department.cache = v)"
           :multiple="false"

@@ -32,11 +32,16 @@ export const notificationTypes = {
 }
 
 export const getOneMonthAgoYearMonth = (date = null) => {
-  date = date || new Date()
-  const d = new Date(date)
-  d.setMonth(d.getMonth() - 1)
+  const d = new Date(date || new Date())
+
+  const year = d.getFullYear()
+  const month = d.getMonth() // 0-11
+
+  const prevMonth = month === 0 ? 11 : month - 1
+  const prevYear = month === 0 ? year - 1 : year
+
   return {
-    year: d.getFullYear(),
-    month: d.getMonth() + 1 // 1- 12
+    year: prevYear,
+    month: prevMonth + 1 // 1-12
   }
 }

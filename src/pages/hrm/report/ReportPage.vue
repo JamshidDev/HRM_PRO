@@ -1,11 +1,10 @@
 <script setup>
-  import { UIPageContent, UIModal, UIDConfirm } from '@/components/index.js'
+  import { UIPageContent, UIDConfirm } from '@/components/index.js'
   import Filter from './ui/Filter.vue'
   import Table from './ui/Table.vue'
   import DeleteAlert from './ui/DeleteAlert.vue'
   import DepartmentModal from './ui/DepartmentModal.vue'
   import PositionModal from './ui/PositionModal.vue'
-  import CreateForm from './ui/CreateForm.vue'
   import { useReport2Store } from '@/store/modules/index.js'
 
   const store = useReport2Store()
@@ -31,15 +30,17 @@
             @click="store.confirmVisible = false"
             type="error"
             secondary
-            >{{ $t('content.close') }}</n-button
           >
+            {{ $t('content.close') }}
+          </n-button>
           <n-button
             :loading="store.optimizationLoading"
             @click="store._getOptimization()"
             type="primary"
             secondary
-            >{{ $t('content.confirm') }}</n-button
           >
+            {{ $t('content.confirm') }}
+          </n-button>
         </div>
       </template>
     </UIDConfirm>

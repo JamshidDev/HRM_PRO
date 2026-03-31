@@ -154,7 +154,7 @@
     class="h-[400px] md:max-w-auto py-0! px-0! max-w-(--top-activator-width) md:max-w-none! md:w-[400px]"
   >
     <template #trigger>
-      <n-badge class="w-full" :value="modelV.length" type="info" :offset="[-10, -4]">
+      <n-badge class="w-full block" :value="modelV.length" type="info" :offset="[-10, -4]">
         <n-input
           :placeholder="$t('content.choose')"
           :loading="loading"

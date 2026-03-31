@@ -26,6 +26,8 @@ const beforeLogin = (to, from, next) => {
   }
 }
 
+import {navigations} from "@/layouts/data/navigations.js"
+
 const routes = [
   ...appRoutes,
   {
@@ -144,9 +146,40 @@ const routes = [
   }
 ]
 
+const calculatePermission = ()=> {
+  let permissions = []
+  navigations.forEach(v => {
+    const list = [...v.children.map(x => ({path: x.path, permission: x.permission}))]
+    permissions = [...permissions, ...list]
+  })
+  return [...permissions, ...navigations.map(x=>({path: x.path, permission: x.permission}))]
+}
+const allPermission =calculatePermission()
+const findPermissionByPath = (path)=> {
+  const result = allPermission.filter(x=>x.path === path)
+  return result.length > 0? result[0].permission : null
+}
+const attachPermissionToRouter = (routes)=>{
+  return routes.map(node=>{
+    const newNode = {
+      ...node,
+      meta:{
+        ...node.meta,
+        permission:findPermissionByPath(node.path)
+      }
+    }
+    if(node.children && node.children.length){
+      newNode.children = attachPermissionToRouter(node.children)
+    }
+    return newNode
+  })
+
+}
+const newRouter = attachPermissionToRouter(routes)
+
 const router = createRouter({
   history: createWebHistory(),
-  routes: routes
+  routes: newRouter
 })
 
 export default router
