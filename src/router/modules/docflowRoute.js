@@ -57,5 +57,12 @@ export const docFlowRoutes = [
     meta: {
       layout: AppLayouts.main
     }
+  },
+  {
+    path: Utils.routeDocFlowPathMaker(AppPaths.ConfReport),
+    component: () => import('@/pages/docFlow/confirmation/report/page.vue'),
+    meta: {
+      layout: AppLayouts.main
+    }
   }
 ]

@@ -1,8 +1,8 @@
 <script setup>
   import validationRules from '@/utils/validationRules.js'
-  const formRef = ref(null)
   import { useUniversityAdminStore, useComponentStore } from '@/store/modules/index.js'
 
+  const formRef = ref(null)
   const store = useUniversityAdminStore()
   const compStore = useComponentStore()
 
@@ -20,9 +20,7 @@
   }
 
   const onFocusRegion = () => {
-    if (compStore.regionList.length === 0) {
-      compStore._regions()
-    }
+    compStore._regions()
   }
 
   const onChangeRegion = (v) => {
@@ -37,7 +35,7 @@
     if (!store.visibleType) return
     clearTimeout(timeout)
 
-    if (!Boolean(store.payload.name)) {
+    if (!store.payload.name) {
       store.existUniversities = []
       return
     }
@@ -124,7 +122,6 @@
         {{ $t('content.cancel') }}
       </n-button>
       <n-button
-        :disabled="store.existUniversities.length > 0"
         @click="onSubmit"
         :loading="store.saveLoading || store.checkLoading"
         type="primary"

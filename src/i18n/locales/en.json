@@ -1,5 +1,6 @@
 {
   "content": {
+    "user": "User",
     "title": "Title",
     "deleted": "Deleted",
     "nowOnlineUsers": "Currently online users",
@@ -84,11 +85,13 @@
     "position": "Position",
     "template": "Template file",
     "number": "№",
+    "count": "Total",
     "photo": "Photo",
     "short": "Short",
     "long": "Full",
     "platform": "Platform",
     "date": "Date",
+    "createdDate": "Created date",
     "name": "Name",
     "downloadReport": "Download report",
     "general": "General",
@@ -555,6 +558,10 @@
     "roles": {
       "title": "Roles",
       "attachRole": "Assign role"
+    },
+    "disability": {
+      "title": "Disability information",
+      "noData": "No data"
     }
   },
   "departmentPage": {
@@ -771,7 +778,8 @@
         "reason_four": "Cancer, leukemia, first-time tuberculosis, liver cirrhosis decompensation, liver transplant, heart diseases, valve replacement, stenting, CABG, ablation, complex heart/kidney surgeries, infarction, stroke, acute kidney failure, dialysis, kidney transplant, nephrosclerosis, grade III coxarthrosis endoprosthesis, terminal glaucoma in one or both eyes",
         "reason_five": "50th, 55th, 60th, 70th, 80th, 90th, 100th anniversary",
         "reason_six": "Natural disaster damage (with confirmed assessment)",
-        "reason_seven": "Household coal purchase"
+        "reason_seven": "Household coal purchase",
+        "reason_eight": "To purchase agricultural products"
       }
     },
     "form": {
@@ -1021,6 +1029,17 @@
       "name": "Document name"
     }
   },
+  "mobileUserPage": {
+    "name": "Mobile Users",
+    "deviceModel": "Device Model",
+    "platform": "Platform",
+    "verificationTime": "Verification Time",
+    "detailTitle": "Device Details",
+    "deviceInfo": "Device Info",
+    "sessions": "Sessions",
+    "noPhotos": "No photos",
+    "noSessions": "No sessions"
+  },
   "actionLog": {
     "name": "Action history",
     "tab": {
@@ -1057,10 +1076,25 @@
       "post_name": "Position",
       "birthdayPlace": "Birth place",
       "birthday": "Date of birth",
-      "relative": "Relationship"
+      "relative": "Relationship",
+      "disability": "Disability"
     },
     "title": "Close relatives",
-    "no-data": "No relatives added!"
+    "no-data": "No relatives added!",
+    "disability": {
+      "createTitle": "Add disability information",
+      "updateTitle": "Edit disability information",
+      "number": "Medical certificate number",
+      "level": "Disability group",
+      "from": "Issue date",
+      "to": "Expiration date",
+      "comment": "Notes on limitations and capabilities",
+      "lifelong": "Lifelong",
+      "lifelongHint": "If the disability is lifelong, expiration date is not required",
+      "level1": "Group I",
+      "level2": "Group II",
+      "level3": "Group III"
+    }
   },
   "partyPage": {
     "createTitle": "Add party affiliation",
@@ -1851,6 +1885,22 @@
     "from": {
       "activeOrganization": "Active organization",
       "role": "Roles"
+    },
+    "attachRole": "Attach role",
+    "deleteRole": "Delete role",
+    "selectRoleToDelete": "Select role to delete",
+    "updatePassword": "Update password",
+    "newPassword": "New password",
+    "enterPassword": "Enter password",
+    "phoneNumber": "Phone number",
+    "enterPhone": "Enter phone number",
+    "addPhone": "Add number",
+    "primaryPhoneHint": "Click the radio button to set the primary number",
+    "phoneInfo": "Use the checkbox to select the primary phone number. The primary number is used for system login.",
+    "validation": {
+      "emptyPhone": "Phone number cannot be empty",
+      "invalidFormat": "Please check the phone number is correct",
+      "duplicate": "Duplicate phone number entered"
     }
   },
   "telegramPopup": {
@@ -1912,6 +1962,44 @@
     "name": "Reports",
     "create": "Create report"
   },
+  "structureReport": {
+    "name": "Report circulation",
+    "tableTab": "Table",
+    "workersTab": "Workers",
+    "position": "Position",
+    "organization": "Organization",
+    "birthday": "Date of birth",
+    "education": "Education",
+    "oldOrganization": "Previous organization",
+    "oldPositionDate": "Previous position date",
+    "oldPosition": "Previous position",
+    "commandNumber": "Order number and date",
+    "commandReason": "Order reason",
+    "stat": "Statistics",
+    "organizations": "Organizations",
+    "statTooltip": "List of organizations that have not uploaded reports. Checked organizations have uploaded reports.",
+    "generate": "Generate",
+    "download": "Download",
+    "excelDownload": "Download Excel",
+    "table1": "Table 1",
+    "table2": "Table 2",
+    "table3": "Table 3",
+    "staffSchedule": "Staff schedule",
+    "structure": "Organizational structure",
+    "generalReport": "General report",
+    "year": "Year",
+    "month": "Month",
+    "tableType": "Table type",
+    "reports": "Reports",
+    "addApprover": "Add approver",
+    "saved": "Saved",
+    "deleted": "Deleted",
+    "downloaded": "Downloaded",
+    "downloadFailed": "Download failed"
+  },
+  "confirmationReport": {
+    "name": "Reports"
+  },
   "uploadReport": {
     "name": "Upload report",
     "createTitle": "Upload report",
@@ -1956,6 +2044,7 @@
     "tab": {
       "multipleSalary": "Upload employees with multiple salaries",
       "exportWithCode": "Export by payment code",
+      "exportWithCodeByMonth": "Export by payment code by months",
       "exportWithPosition": "Export by position"
     },
     "form": {
@@ -1967,7 +2056,9 @@
       "code": "Payment code",
       "organizations": "By organization",
       "workers": "By employee",
-      "totalFour": "Deductions from salary"
+      "totalFour": "Deductions from salary",
+      "byPaymentCode": "By payment code",
+      "byTotalPayment": "By total calculated payment amount"
     },
     "view": {
       "main_salary": "Base salary",

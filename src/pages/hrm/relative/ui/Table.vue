@@ -1,11 +1,21 @@
 <script setup>
-  import { UIMenuButton } from '@/components/index.js'
+  import { UIMenuButton, UIBadge } from '@/components/index.js'
   import { useRelativeStore } from '@/store/modules/index.js'
-  import { AddCircle28Regular, Drag24Regular } from '@vicons/fluent'
+  import { AddCircle28Regular, Drag24Regular, Add16Regular } from '@vicons/fluent'
   import Utils from '@/utils/Utils.js'
   import { VueDraggable } from 'vue-draggable-plus'
+  import i18n from '@/i18n/index.js'
 
+  const { t } = i18n.global
   const store = useRelativeStore()
+
+  const levelLabels = {
+    1: t('relativePage.disability.level1'),
+    2: t('relativePage.disability.level2'),
+    3: t('relativePage.disability.level3')
+  }
+
+  const getLevelLabel = (level) => levelLabels[level] || level
 
   const onAdd = () => {
     store.visibleType = true
@@ -50,6 +60,27 @@
     }))
     store._sortable({ orders: data })
   }
+
+  const onAddDisability = (item) => {
+    store.resetDisabilityForm()
+    store.disabilityPayload.worker_relative_id = item.id
+    store.disabilityVisibleType = true
+    store.disabilityVisible = true
+  }
+
+  const onEditDisability = (item, disability) => {
+    store.resetDisabilityForm()
+    store.disabilityElementId = disability.id
+    store.disabilityPayload.worker_relative_id = item.id
+    store.disabilityPayload.number = disability.number
+    store.disabilityPayload.level = disability.level
+    store.disabilityPayload.from = disability.from ? new Date(disability.from).getTime() : null
+    store.disabilityPayload.to = disability.to ? new Date(disability.to).getTime() : null
+    store.disabilityPayload.comment = disability.comment
+    store.disabilityPayload.is_lifelong = !disability.to
+    store.disabilityVisibleType = false
+    store.disabilityVisible = true
+  }
 </script>
 
 <template>
@@ -89,6 +120,7 @@
               <th class="min-w-[120px] w-[120px]">{{ $t('relativePage.form.birthday') }}</th>
               <th class="min-w-[150px] w-[200px]">{{ $t('relativePage.form.birthdayPlace') }}</th>
               <th class="min-w-[150px] w-[300px]">{{ $t('createWorkerPage.form.address') }}</th>
+              <th class="min-w-[120px] w-[150px]">{{ $t('relativePage.form.disability') }}</th>
               <th class="min-w-[40px] w-[40px]"></th>
             </tr>
           </thead>
@@ -116,6 +148,26 @@
               <td>{{ Utils.timeOnlyDate(item.birthday) }}</td>
               <td>{{ item.birth_place }}</td>
               <td>{{ item.address }}</td>
+              <td>
+                <div class="flex flex-wrap gap-1 items-center justify-center">
+                  <UIBadge
+                    v-for="disability in item.disabilities"
+                    :key="disability.id"
+                    :label="getLevelLabel(disability.level)"
+                    :type="Utils.colorTypes.error"
+                    :show-icon="false"
+                    class="cursor-pointer"
+                    @click="onEditDisability(item, disability)"
+                  />
+                  <n-button
+                    size="tiny"
+                    type="default"
+                    @click="onAddDisability(item)"
+                  >
+                    {{ $t('content.add') }}
+                  </n-button>
+                </div>
+              </td>
               <td>
                 <UIMenuButton :data="item" :show-edit="true" @selectEv="onSelectEv" />
               </td>

@@ -1,17 +1,45 @@
 <script setup>
-  import { useSocketStore } from '@/store/modules/index.js'
-  import { UIDrawer, UIUser } from '@/components/index.js'
-  import ReactionButton from './ReactionButton.vue'
-  import { CheckmarkStarburst16Regular, Phone24Regular, Globe24Regular } from '@vicons/fluent'
+import {useSocketStore} from '@/store/modules/index.js'
+import {UIDrawer, UIUser} from '@/components/index.js'
+import ReactionButton from './ReactionButton.vue'
+import {CheckmarkStarburst16Regular, Search48Filled} from '@vicons/fluent'
 
-  const store = useSocketStore()
+const store = useSocketStore()
 
-  const onReactionEv = (emoji, v) => {
-    store.sendNotification({
-      emoji,
-      toUserId: v.id
-    })
+const searchQuery = ref(null)
+const loginType = ref(null)
+const onReactionEv = (emoji, v) => {
+  store.sendNotification({
+    emoji,
+    toUserId: v.id
+  })
+}
+
+
+const onSelectType = (v)=> {
+  loginType.value = loginType.value === v ? null : v
+}
+
+const filteredUsers = computed(()=>{
+  let options = store.allOnlineUsers
+
+  if (loginType.value === 'w') {
+    options = options.filter(item => item.type === 'sanctum')
+  } else if (loginType.value === 'm') {
+    options = options.filter(item => item.type !== 'sanctum')
   }
+
+  if (searchQuery.value) {
+    const query = searchQuery.value.toLowerCase()
+    options = options.filter(item =>
+        item.short_name.toLowerCase().includes(query)
+    )
+  }
+
+  return options
+})
+
+
 </script>
 
 <template>
@@ -22,8 +50,29 @@
     :disable-body-padding="true"
   >
     <template #content>
-      <div class="w-full h-[calc(100vh-80px)] overflow-y-auto pt-4 overflow-x-hidden">
-        <template v-for="user in store.allOnlineUsers">
+      <div class="px-2 pt-4 pb-1 flex gap-2">
+        <n-input
+          clearable
+          class="w-full md:max-w-[200px]! md:w-full! skip-format"
+          v-model:value="searchQuery"
+          type="text"
+          :placeholder="$t('content.search')"
+        >
+          <template #suffix>
+            <n-icon :component="Search48Filled" />
+          </template>
+        </n-input>
+        <n-button-group>
+          <n-button :type="loginType === 'w' ? 'primary' : 'default'" round @click="onSelectType('w')">
+            {{ loginType === 'w'? filteredUsers.length : ' W' }}
+          </n-button>
+          <n-button :type="loginType === 'm' ? 'success' : 'default'" round @click="onSelectType('m')">
+            {{ loginType === 'm'? filteredUsers.length : ' M' }}
+          </n-button>
+        </n-button-group>
+      </div>
+      <div class="w-full h-[calc(100vh-120px)] overflow-y-auto overflow-x-hidden">
+        <template v-for="user in filteredUsers" :key="user.id">
           <div class="pl-3 mb-1 py-1 group relative hover:bg-surface-ground">
             <div class="relative">
               <UIUser
@@ -54,13 +103,16 @@
 
               <!-- Device badge -->
               <div
-                class="absolute bottom-0 left-[28px] w-4 h-4 rounded-full border-2 border-[#6f99ff] flex items-center justify-center"
-                :class="user.type === 'mobile' ? 'bg-success' : 'bg-primary'"
+                class="p-1 absolute bottom-0 left-[28px] w-5 h-5 rounded-full border-2  flex items-center justify-center"
+                :class="user.type === 'mobile' ? 'bg-success border-[#2ca361]' : 'bg-primary border-[#6f99ff]'"
               >
-                <n-icon size="8" class="text-white">
-                  <Phone24Regular v-if="user.type === 'mobile'" />
-                  <Globe24Regular v-else />
-                </n-icon>
+                <div v-if="user.type === 'mobile'" class="text-white text-[10px]">M</div>
+                <div v-else class="text-white text-[10px]">W</div>
+
+                <!--                <n-icon size="8" class="text-white">-->
+                <!--                  <Phone24Regular v-if="user.type === 'mobile'" />-->
+                <!--                  <Globe24Regular v-else />-->
+                <!--                </n-icon>-->
               </div>
             </div>
             <div
@@ -70,6 +122,7 @@
             </div>
           </div>
         </template>
+        <div v-if="!filteredUsers?.length" class="w-full text-secondary text-center mt-10">{{ $t('content.no-data') }}</div>
       </div>
     </template>
   </UIDrawer>

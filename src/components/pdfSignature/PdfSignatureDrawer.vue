@@ -285,20 +285,17 @@
               <div
                 class="hidden md:flex flex-col w-[300px] h-full bg-surface-ground border-r border-surface-line px-2 py-4 relative pt-[70px]"
               >
-                <div class="w-full" style="height: calc(100% - 200px)">
-                  <LeftContent />
-                </div>
-                <!--                Confirm buttons-->
                 <div
                   v-if="showConfirmButtons"
-                  class="w-full mt-4 rounded-lg border border-surface-line flex flex-col gap-3 p-1"
+                  class="w-full mb-2 rounded-lg border border-surface-line flex flex-col gap-3 p-1"
                 >
                   <n-button
                     :loading="applicationStore.acceptLoading"
                     @click="openConfirmModal(true)"
                     class="shadow cursor-pointer"
                     type="primary"
-                    >{{ $t('content.confirm') }}
+                  >
+                    {{ $t('content.sendToSign') }}
                     <template #icon>
                       <ClipboardCheckmark20Regular />
                     </template>
@@ -308,12 +305,17 @@
                     @click="openConfirmModal(false)"
                     class="shadow cursor-pointer"
                     type="error"
-                    >{{ $t('content.reject') }}
+                  >
+                    {{ $t('content.rejectByMistake') }}
                     <template #icon>
                       <CalendarCancel20Regular />
                     </template>
                   </n-button>
                 </div>
+                <div class="w-full" style="height: calc(100% - 200px)">
+                  <LeftContent />
+                </div>
+                <!--                Confirm buttons-->
                 <ChatDrawer />
                 <div
                   v-if="store.permissions?.qrcode"
@@ -378,7 +380,8 @@
                     @click="onSaveSignature"
                     class="shadow cursor-pointer"
                     :type="store.permissions?.canSignature ? 'primary' : 'default'"
-                    >{{ $t('content.signatureDocument') }}
+                  >
+                    {{ $t('content.signatureDocument') }}
                     <template #icon>
                       <Signature20Filled />
                     </template>
@@ -387,7 +390,8 @@
                     @click="openRejectModal"
                     class="shadow cursor-pointer"
                     :type="store.permissions?.canSignature ? 'error' : 'default'"
-                    >{{ $t('content.reject') }}
+                  >
+                    {{ $t('content.reject') }}
                     <template #icon>
                       <Signature20Filled />
                     </template>

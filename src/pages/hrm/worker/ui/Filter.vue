@@ -233,7 +233,8 @@
         :loading="store.loading"
         class="w-full! md:w-auto!"
         type="error"
-        >{{ $t('workerPage.filter.downloadRelative') }}
+      >
+        {{ $t('workerPage.filter.downloadRelative') }}
         <template #icon>
           <CloudArchive20Filled />
         </template>
@@ -246,12 +247,12 @@
       <!--          <CloudArchive20Filled/>-->
       <!--        </template>-->
       <!--      </n-button>-->
-      <n-button @click="openUserListEv" class="w-full! md:w-auto!" type="primary"
-        >{{ $t('workerRole.name') }}
-        <template #icon>
-          <PremiumPerson20Regular />
-        </template>
-      </n-button>
+<!--      <n-button @click="openUserListEv" class="w-full! md:w-auto!" type="primary">-->
+<!--        {{ $t('workerRole.name') }}-->
+<!--        <template #icon>-->
+<!--          <PremiumPerson20Regular />-->
+<!--        </template>-->
+<!--      </n-button>-->
 
       <n-button-group class="w-full! md:w-auto!">
         <n-button
@@ -265,13 +266,11 @@
           v-if="exportStore.isExportingResume && canZip"
           @click="onSubmitResumeExport"
         >
-          <span class="font-semibold"
-            >{{ $t('content.download') }} ({{
-              exportStore.resumePayload.all
-                ? store.totalItems
-                : exportStore.resumePayload.worker_ids.length
-            }})</span
-          >
+          <span class="font-semibold">{{ $t('content.download') }} ({{
+            exportStore.resumePayload.all
+              ? store.totalItems
+              : exportStore.resumePayload.worker_ids.length
+          }})</span>
           <template #icon>
             <CheckmarkCircle16Regular />
           </template>
@@ -337,10 +336,10 @@
               multiple
               clearable
               :options="componentStore.structureList"
-              :modelV="store.params.organizations"
+              :model-v="store.params.organizations"
               @defaultValue="defaultEv"
               @updateModel="onChangeStructure"
-              :checkedVal="store.structureCheck"
+              :checked-val="store.structureCheck"
               @updateCheck="(v) => (store.structureCheck = v)"
               :loading="componentStore.structureLoading"
               v-model:search="componentStore.structureParams.search"

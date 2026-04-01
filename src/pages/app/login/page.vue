@@ -17,9 +17,6 @@
   } from '@vicons/fluent'
   import LangDropdown from '@/components/general/LangDropdown.vue'
   import { AppPaths, useAppSetting } from '@/utils/index.js'
-  import i18n from '@/i18n/index.js'
-
-  const { t } = i18n.global
 
   const store = useLoginStore()
   const accountStore = useAccountStore()
@@ -27,6 +24,9 @@
   const signatureStore = useSignatureStore()
   const router = useRouter()
   const route = useRoute()
+
+  const playMarketUrl = 'https://play.google.com/store/apps/details?id=hrms.railway.uz'
+  const appStoreUrl = 'https://apps.apple.com/us/app/hr-rail/id6759365016'
 
   const formRef = ref(null)
 
@@ -59,12 +59,8 @@
     })
   }
 
-  const onComingSoon = () => {
-    $Toast.info(t('content.comingSoon'))
-  }
-
   onMounted(() => {
-    const { client_id, state, scope } = route?.query
+    const { client_id, state, scope } = route.query
     if (client_id && state && scope) {
       store.authPayload = {
         client_id,
@@ -76,7 +72,7 @@
     }
 
     const inputElement = document.querySelector('input[type="password"].n-input__input-el')
-    inputElement.addEventListener('animationstart', function (e) {
+    inputElement?.addEventListener('animationstart', function (e) {
       if (e.animationName === 'autofill-detected') {
         onSubmit()
       }
@@ -185,7 +181,8 @@
                 size="large"
                 :loading="store.loading"
                 @click="onSubmit"
-                >{{ $t(`loginPage.login`) }}
+              >
+                {{ $t(`loginPage.login`) }}
               </n-button>
               <template v-if="appStore.appConfig.signatureLogin">
                 <n-divider class="my-2!" title-placement="center">{{ $t('content.or') }}</n-divider>
@@ -193,7 +190,8 @@
                   @click="onSignatureLogin"
                   size="large"
                   class="h-[50px]! rounded-2xl! font-bold! dark-border-button text-textColor1"
-                  >{{ $t(`content.signatureLogin`) }}
+                >
+                  {{ $t(`content.signatureLogin`) }}
                   <template #icon>
                     <n-icon class="text-textColor3!" size="24" :component="KeyMultiple20Filled" />
                   </template>
@@ -210,7 +208,7 @@
                       <template #trigger>
                         <div>
                           <a
-                            @click="onComingSoon"
+                            :href="appStoreUrl"
                             target="_blank"
                             class="flex items-center justify-center border border-surface-line p-1 gap-1 cursor-pointer rounded-lg bg-surface-section"
                           >
@@ -233,12 +231,12 @@
                         <div>
                           <a
                             target="_blank"
-                            @click="onComingSoon"
+                            :href="playMarketUrl"
                             class="w-full flex bg-surface-section items-center justify-center gap-2 ml-4 cursor-pointer border border-surface-line p-1 rounded-lg"
                           >
                             <img
                               class="h-[30px]"
-                              src="https://mobile.soliq.uz/image/google%20play.svg"
+                              src="@/assets/images/svg/playMarket.svg"
                               alt=""
                             />
 
@@ -418,7 +416,7 @@
     }
   }
 
-  @media only screen and (max-width: 1050.99px) {
+  @media only screen and (max-width: 1051px) {
     .store-container {
       margin-top: 20px;
     }
@@ -506,7 +504,7 @@
 
       .form-content-block {
         width: 100%;
-        padding: 0 40px 0px 40px;
+        padding: 0 40px 0 40px;
       }
     }
 

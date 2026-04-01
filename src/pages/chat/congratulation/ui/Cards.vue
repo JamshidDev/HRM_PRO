@@ -1,6 +1,6 @@
 <script setup>
 import {useCongratulationStore} from "@stores"
-import { HomeAdd24Regular, ContactCard16Regular, WeatherSunnyLow24Filled, Balloon12Regular } from "@vicons/fluent"
+import { HomeAdd24Regular, ContactCard16Regular, WeatherSunnyLow24Filled, Balloon12Regular, PersonChat16Regular } from "@vicons/fluent"
 import i18n from "@/i18n/index.js"
 
 const t = i18n.global.t
@@ -32,6 +32,12 @@ const cardColors = {
     icon:markRaw(ContactCard16Regular),
     description:t('congratulation.description.passport')
   },
+  5: {
+    iconColor:"text-danger",
+    box:"bg-danger/10",
+    icon:markRaw(PersonChat16Regular),
+    description:t('congratulation.description.mobile')
+  },
 }
 
 onMounted(()=>{
@@ -44,8 +50,8 @@ onMounted(()=>{
     <template v-for="item in store.dashboard.cards" :key="item.id">
       <div class="col-span-12 md:col-span-6 lg:col-span-3 bg-surface-section p-4 rounded-xl border border-surface-line">
         <div class="flex justify-between items-start">
-          <div>
-            <p class="text-secondary text-xs font-bold">{{ item.type }}</p>
+          <div class="w-[calc(100%-40px)]">
+            <div class="text-secondary text-xs font-bold line-clamp-1 pr-2">{{ item.type }}</div>
             <n-tooltip
               placement="bottom"
               trigger="hover"

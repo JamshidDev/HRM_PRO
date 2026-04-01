@@ -1,6 +1,6 @@
 <script setup>
   import { useMonthReportStore } from '@/store/modules/index.js'
-  import Utils from '../../../../utils/Utils.js'
+  import { UIYearMonth } from '@/components/index.js'
   import { useAppSetting } from '@/utils/index.js'
   import {
     ArrowCircleRight16Filled,
@@ -46,22 +46,14 @@
               </template>
             </div>
             <div class="col-span-4 flex justify-center gap-4 items-center">
-              <n-select
-                class="w-full! md:w-[100px]!"
-                v-model:value="store.showPrams.year"
-                :options="Utils.yearList"
-                label-field="name"
-                value-field="id"
-                @update:value="store._show"
-              />
-              <n-select
-                class="w-full! md:w-[120px]!"
-                v-model:value="store.showPrams.month"
-                :options="Utils.monthList"
-                label-field="name"
-                value-field="id"
-                @update:value="store._show"
-              />
+              <div class="w-full! md:w-[220px]!">
+                <UIYearMonth
+                  v-model:year="store.showPrams.year"
+                  v-model:month="store.showPrams.month"
+                  :clearable="false"
+                  @change="store._show"
+                />
+              </div>
             </div>
             <div class="col-span-4 flex justify-end gap-4">
               <template v-if="store.showList.length > 1">

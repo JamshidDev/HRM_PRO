@@ -7,18 +7,23 @@
     PersonAdd20Regular,
     Building20Filled,
     Handshake24Filled,
-    CheckmarkCircle20Filled
+    CheckmarkCircle20Filled,
+    Call20Filled,
+    Copy20Regular,
   } from '@vicons/fluent'
   import { useComponentStore, useContractStore, useWorkerStore } from '@/store/modules/index.js'
   import { UIUser } from '@/components/index.js'
   import { useDebounceFn } from '@vueuse/core'
   import { useRouter } from 'vue-router'
-  import { AppPaths } from '@/utils/index.js'
+  import { AppPaths, Utils } from '@/utils/index.js'
+  import i18n from "@/i18n"
 
   const router = useRouter()
   const store = useComponentStore()
   const workerStore = useWorkerStore()
   const contractStore = useContractStore()
+  const hrContacts = ref([])
+  const t = i18n.global.t
 
   const searchEvent = useDebounceFn(() => {
     store.submitted = false
@@ -45,17 +50,15 @@
     }, 200)
   }
 
-  const showAlert = computed(() => {
-    const existPosition =
-      store.worker?.positions &&
-      Array.isArray(store.worker.positions) &&
-      store.worker.positions.length > 0
-    if (!existPosition) return existPosition
+  const onShowHrContacts = (v) => {
+    hrContacts.value = v.hrs
+  }
 
-    console.log(store.worker?.positions)
-
-    return existPosition
-  })
+  const onCopyToClipboard = (text) => {
+    Utils.copyToClipboard(text, ()=>{
+      $Toast.info(t('content.successCopied'))
+    })
+  }
 
   onMounted(() => {
     store.worker = null
@@ -142,15 +145,49 @@
                     </div>
                     <div class="flex gap-2 items-center text-xs leading-[1.2] mb-1 text-secondary">
                       <n-icon size="16">
-                        <Handshake24Filled /> </n-icon
-                      >{{ item.position }}
+                        <Handshake24Filled />
+                      </n-icon>{{ item.position }}
                     </div>
-                    <n-button class="!mb-4" v-if="item.type" size="tiny" type="warning" secondary>
-                      <template #icon
-                        ><n-icon><CheckmarkCircle20Filled /></n-icon
-                      ></template>
-                      {{ item.type }}</n-button
+                    <n-button v-if="item.type" size="tiny" type="warning" secondary>
+                      <template #icon>
+                        <n-icon><CheckmarkCircle20Filled /></n-icon>
+                      </template>
+                      {{ item.type }}
+                    </n-button>
+
+                    <n-popover
+                      placement="bottom"
+                      trigger="click"
+                      class="!w-[360px] border border-surface-line"
                     >
+                      <template #trigger>
+                        <n-button @click="onShowHrContacts(item)" class="!mb-6 !mt-1" size="tiny" dashed type="info">
+                          <template #icon>
+                            <Call20Filled />
+                          </template>
+                          {{ $t('workerPage.checkWorker.hrContacts') }}
+                        </n-button>
+                      </template>
+                      <div>
+                        <template v-for="hr in hrContacts" :key="hr.id">
+                          <UIUser
+                            :short="false"
+                            :hide-tooltip="true"
+                            :data="{
+                              firstName: hr.worker.first_name,
+                              lastName: hr.worker.last_name,
+                              middleName: hr.worker.middle_name,
+                              photo: hr.worker.photo,
+                              position: ' ',
+                            }"
+                          >
+                            <template #position>
+                              <div @click="onCopyToClipboard(`+998${hr.phone}`)" class="flex gap-2 items-center text-xs font-medium bg-surface-ground border border-surface-line rounded-lg w-fit px-1 "> +998{{hr.phone}} <n-icon size="16"><Copy20Regular/></n-icon></div>
+                            </template>
+                          </UIUser>
+                        </template>
+                      </div>
+                    </n-popover>
                   </template>
 
                   <div class="border border-danger/30 rounded-lg bg-surface-section">
@@ -160,7 +197,9 @@
                   </div>
                 </div>
 
-                <n-button @click="onContinue()" type="primary" icon-placement="right">
+
+
+                <n-button class="!mt-10" @click="onContinue()" type="primary" icon-placement="right">
                   {{ $t('content.continue') }}
                   <template #icon>
                     <ArrowCircleRight20Regular />

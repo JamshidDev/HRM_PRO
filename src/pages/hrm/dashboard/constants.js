@@ -14,6 +14,7 @@ import PensionDetail from '@/pages/hrm/dashboard/ui/Detail/PensionDetail.vue'
 import MedDetail from '@/pages/hrm/dashboard/ui/Detail/MedDetail.vue'
 import IncentiveDetail from '@/pages/hrm/dashboard/ui/Detail/IncentiveDetail.vue'
 import DisciplinaryDetail from '@/pages/hrm/dashboard/ui/Detail/DisciplinaryDetail.vue'
+import ContractDetail from '@/pages/hrm/dashboard/ui/Detail/ContractDetail.vue'
 
 import ApiService from '@/service/ApiService.js'
 
@@ -66,7 +67,16 @@ export const cards = [
   },
   {
     component: markRaw(YearlyChart),
-    span: '12 l:6 xl:8'
+    span: '12 l:6 xl:8',
+    title: 'dashboardPage.yearly.title',
+    detail: markRaw(ContractDetail),
+    filters: ['contract_type', 'year', 'month'],
+    filterCallback: ApiService.dashboardService._contractDetail,
+    defaultValues: {
+      type: 'ended',
+      year: new Date().getFullYear(),
+      month: new Date().getMonth() || 12
+    }
   },
   {
     component: markRaw(BirthdayCard),

@@ -86,6 +86,7 @@ export const useWorkerProfileStore = defineStore('workerProfileStore', {
       role: null
     },
     roleVisible: false,
+    roleWorkerPositionId: null,
     structureCheck: [],
     roleLoading: false,
 
@@ -93,11 +94,18 @@ export const useWorkerProfileStore = defineStore('workerProfileStore', {
       page: 1,
       per_page: 10,
       search: null,
-      organizations: []
+      organizations: [],
+      role: null
     },
     userRoleList: [],
     userRoleLoading: false,
     userRoleTotal: 0,
+    passwordVisible: false,
+    passwordLoading: false,
+    passwordPayload: {
+      uuid: null,
+      password: null
+    },
 
     editVisible: false,
     editPayload: {
@@ -121,7 +129,23 @@ export const useWorkerProfileStore = defineStore('workerProfileStore', {
     departmentCheckV2: [],
     structureCheck2: [],
     isExistAccount: false,
-    anotherProfile: null
+    anotherProfile: null,
+
+    workerDisabilityList: [],
+    workerDisabilityLoading: false,
+    workerDisabilityVisible: false,
+    workerDisabilityVisibleType: true,
+    workerDisabilityElementId: null,
+    workerDisabilitySaveLoading: false,
+    workerDisabilityDeleteLoading: false,
+    workerDisabilityPayload: {
+      number: null,
+      from: null,
+      to: null,
+      comment: null,
+      level: 1,
+      is_lifelong: false
+    }
   }),
   actions: {
     _index() {
@@ -234,7 +258,7 @@ export const useWorkerProfileStore = defineStore('workerProfileStore', {
       const id = this.workerId
       $ApiService.workerService
         ._update({ data, id })
-        .then((res) => {
+        .then(() => {
           this._index()
         })
         .finally(() => {
@@ -291,7 +315,7 @@ export const useWorkerProfileStore = defineStore('workerProfileStore', {
       this.loading = true
       $ApiService.photoService
         ._delete({ id })
-        .then((res) => {
+        .then(() => {
           this._index()
         })
         .finally(() => {
@@ -350,7 +374,7 @@ export const useWorkerProfileStore = defineStore('workerProfileStore', {
       this.passportLoading = true
       $ApiService.passportService
         ._create({ data })
-        .then((res) => {
+        .then(() => {
           this._indexPassport()
         })
         .finally(() => {
@@ -364,7 +388,7 @@ export const useWorkerProfileStore = defineStore('workerProfileStore', {
       }
       $ApiService.passportService
         ._update({ data, id, params })
-        .then((res) => {
+        .then(() => {
           this._indexPassport()
         })
         .finally(() => {
@@ -375,7 +399,7 @@ export const useWorkerProfileStore = defineStore('workerProfileStore', {
       this.passportLoading = true
       $ApiService.passportService
         ._delete({ id })
-        .then((res) => {
+        .then(() => {
           this._indexPassport()
         })
         .finally(() => {
@@ -386,7 +410,7 @@ export const useWorkerProfileStore = defineStore('workerProfileStore', {
       this.loading = true
       $ApiService.phoneService
         ._delete({ id })
-        .then((res) => {
+        .then(() => {
           this._index()
         })
         .finally(() => {})
@@ -395,20 +419,67 @@ export const useWorkerProfileStore = defineStore('workerProfileStore', {
       this.visible = data
     },
     _deleteRole(data, id) {
-      $ApiService.workerService._deleteRole({ data, id }).then((res) => {
+      $ApiService.workerService._deleteRole({ data, id }).then(() => {
         this._index()
+        this._userRole()
       })
     },
     _storeRole(data, id) {
       this.roleLoading = true
       $ApiService.workerService
         ._storeRole({ data, id })
-        .then((res) => {
+        .then(() => {
           this._index()
+          this._userRole()
         })
         .finally(() => {
           this.roleLoading = false
           this.roleVisible = false
+          this.roleWorkerPositionId = null
+        })
+    },
+    _attachUserRole(data) {
+      this.roleLoading = true
+      $ApiService.workerService
+        ._attachUserRole({ data })
+        .then(() => {
+          this._userRole()
+        })
+        .finally(() => {
+          this.roleLoading = false
+          this.roleVisible = false
+          this.roleWorkerPositionId = null
+        })
+    },
+    _detachUserRole(data) {
+      return $ApiService.workerService
+        ._detachUserRole({ data })
+        .then(() => {
+          this._userRole()
+        })
+    },
+    _updatePassword(workerId) {
+      this.roleLoading = true
+      $ApiService.workerService
+        ._update({ data: { update_password: true }, id: workerId })
+        .then(() => {
+          window.$message?.success('Parol yangilandi')
+        })
+        .finally(() => {
+          this.roleLoading = false
+        })
+    },
+    _updateUserPassword() {
+      this.passwordLoading = true
+      $ApiService.workerService
+        ._updateUserPassword({ data: this.passwordPayload })
+        .then(() => {
+          window.$message?.success('Parol yangilandi')
+          this.passwordVisible = false
+          this.passwordPayload = { uuid: null, password: null }
+        })
+        .finally(() => {
+          this.passwordLoading = false
         })
     },
     _updatePosition() {
@@ -443,7 +514,8 @@ export const useWorkerProfileStore = defineStore('workerProfileStore', {
       this.userRoleLoading = true
       const params = {
         ...this.userRoleParams,
-        organizations: this.userRoleParams.organizations.map((v) => v.id).toString() || undefined
+        organizations: this.userRoleParams.organizations.map((v) => v.id).toString() || undefined,
+        role: this.userRoleParams.role || undefined
       }
       $ApiService.workerService
         ._userRole({ params })
@@ -460,6 +532,87 @@ export const useWorkerProfileStore = defineStore('workerProfileStore', {
       this.elementId = null
       // this.payload.pin = null
       this.payload.position = null
+    },
+
+    resetWorkerDisabilityForm() {
+      this.workerDisabilityElementId = null
+      this.workerDisabilityPayload.number = null
+      this.workerDisabilityPayload.from = new Date().setHours(0, 0, 0, 0)
+      this.workerDisabilityPayload.to = null
+      this.workerDisabilityPayload.comment = null
+      this.workerDisabilityPayload.level = 1
+      this.workerDisabilityPayload.is_lifelong = false
+    },
+
+    _indexWorkerDisability() {
+      this.workerDisabilityLoading = true
+      $ApiService.workerDisabilityService
+        ._index({ params: { uuid: this.data?.uuid } })
+        .then((res) => {
+          this.workerDisabilityList = res.data.data
+        })
+        .finally(() => {
+          this.workerDisabilityLoading = false
+        })
+    },
+
+    _createWorkerDisability() {
+      this.workerDisabilitySaveLoading = true
+      const { is_lifelong } = this.workerDisabilityPayload
+      const data = {
+        uuid: this.data?.uuid,
+        number: this.workerDisabilityPayload.number,
+        level: this.workerDisabilityPayload.level,
+        from: Utils.timeToZone(this.workerDisabilityPayload.from),
+        to: is_lifelong ? null : Utils.timeToZone(this.workerDisabilityPayload.to),
+        comment: this.workerDisabilityPayload.comment
+      }
+      $ApiService.workerDisabilityService
+        ._create({ data })
+        .then(() => {
+          this.workerDisabilityVisible = false
+          this._indexWorkerDisability()
+        })
+        .finally(() => {
+          this.workerDisabilitySaveLoading = false
+        })
+    },
+
+    _updateWorkerDisability() {
+      this.workerDisabilitySaveLoading = true
+      const { is_lifelong } = this.workerDisabilityPayload
+      const data = {
+        uuid: this.data?.uuid,
+        number: this.workerDisabilityPayload.number,
+        level: this.workerDisabilityPayload.level,
+        from: Utils.timeToZone(this.workerDisabilityPayload.from),
+        to: is_lifelong ? null : Utils.timeToZone(this.workerDisabilityPayload.to),
+        comment: this.workerDisabilityPayload.comment
+      }
+      $ApiService.workerDisabilityService
+        ._update({ data, id: this.workerDisabilityElementId })
+        .then(() => {
+          this.workerDisabilityVisible = false
+          this._indexWorkerDisability()
+        })
+        .finally(() => {
+          this.workerDisabilitySaveLoading = false
+        })
+    },
+
+    _deleteWorkerDisability() {
+      this.workerDisabilityDeleteLoading = true
+      $ApiService.workerDisabilityService
+        ._delete({ id: this.workerDisabilityElementId })
+        .then((res) => {
+          if (res.status === 200) {
+            this.workerDisabilityVisible = false
+            this._indexWorkerDisability()
+          }
+        })
+        .finally(() => {
+          this.workerDisabilityDeleteLoading = false
+        })
     }
   }
 })

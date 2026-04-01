@@ -1,5 +1,6 @@
 {
   "content": {
+    "user": "Foydalanuvchi",
     "title": "Sarlavha",
     "deleted": "O'chirilgan",
     "nowOnlineUsers": "Hozirda tizimdagi online foydalanuvchilar",
@@ -84,11 +85,13 @@
     "position": "Lavozim",
     "template": "Shablon fayl",
     "number": "№",
+    "count": "Jami",
     "photo": "Rasm",
     "short": "Qisqa",
     "long": "To'liq",
     "platform": "Platforma",
     "date": "Sana",
+    "createdDate": "Yaratilgan sana",
     "name": "Nomi",
     "downloadReport": "Hisobot yuklash",
     "general": "Umumiy",
@@ -218,7 +221,12 @@
     "ru": "RU",
     "en": "EN",
     "create": "Yaratish",
-    "allSelected": "Barchasi tanlangan"
+    "successCopied": "Muvofaqiyatli nusxalandi",
+    "successPaste": "Muvofaqiyatli joylandi",
+    "paste": "Joylash",
+    "allSelected": "Barchasi tanlangan",
+    "sendToSign": "Imzolashga yuborish",
+    "rejectByMistake": "Xatolik sababli qaytarish"
   },
   "date": {
     "day": "Kun",
@@ -502,6 +510,7 @@
       "no-worker": "Tizimda xodim topilmadi!",
       "born": "Tug'ilgan sana",
       "addCandidate": "Kandidat qo'shish",
+      "hrContacts": "Korxona kadrlar bo‘limiga aloqaga chiqish",
       "add-worker": "Tizimda mavjud bo'lmagan xodimning ma'lumotlarini kandidat qo'shish tugmasi orqali qo'shing",
       "jshshir": "JSHSHIRni kiriting"
     },
@@ -559,6 +568,10 @@
     "roles": {
       "title": "Rollar",
       "attachRole": "Role biriktirish"
+    },
+    "disability": {
+      "title": "Nogironlik ma'lumotlari",
+      "noData": "Ma'lumot yo'q"
     }
   },
   "departmentPage": {
@@ -776,7 +789,8 @@
         "reason_four": "Quyidagi saraton, leykoz, birinchi marta sil (tuberkulyoz) kasaligi, jigar serrozi dekompensasiya bosqichi, jigar transplantasiyasi, yurak qon-tomir kasalliklari, yurak klapanlarini almashtirish, yurak tomirlarini stendlash, AKSh (aorta koronar shuntlash), ablyasiya, yurak va buyrakdagi murakkab jarrohlik operatsiyalari, infarkt, insul't, o‘tkir buyrak yetishmovchiligi, dializ, buyrak transplantasiyasi, nefroskleroz, koksartroz III darajali endoprotezlash, bir yoki ikki ko‘zning terminal bosqichidagi glaukomasi kasalligiga chalinganligi munosabati bilan",
         "reason_five": "50, 55, 60, 70, 80, 90, 100 yillik yubiley sanasiga etganligi munosabati bilan",
         "reason_six": "Tabiiy ofatdan zarar ko‘rganligi munosabati bilan tasdiqlangan baholash dalolatnomasi muvofiq",
-        "reason_seven": "Maishiy ko‘mir yoqil‘isi sotib olishi munosabati bilan"
+        "reason_seven": "Maishiy ko‘mir yoqil‘isi sotib olishi munosabati bilan",
+        "reason_eight": "Qishloq xo‘jaligi mahsulotlarini sotib olish uchun"
       }
     },
     "form": {
@@ -1026,6 +1040,17 @@
       "name": "Hujjat nomi"
     }
   },
+  "mobileUserPage": {
+    "name": "Mobil foydalanuvchilar",
+    "deviceModel": "Qurilma modeli",
+    "platform": "Platforma",
+    "verificationTime": "Tasdiqlash vaqti",
+    "detailTitle": "Qurilma ma'lumotlari",
+    "deviceInfo": "Qurilma haqida",
+    "sessions": "Sessiyalar",
+    "noPhotos": "Rasmlar yo'q",
+    "noSessions": "Sessiyalar yo'q"
+  },
   "actionLog": {
     "name": "Amallar tarixi",
     "tab": {
@@ -1062,10 +1087,25 @@
       "post_name": "Lavozimi",
       "birthdayPlace": "Tug'ilgan joyi",
       "birthday": "Tug'ilgan sanasi",
-      "relative": "Qarindoshligi"
+      "relative": "Qarindoshligi",
+      "disability": "Nogironligi"
     },
     "title": "Yaqin qarindosh ma'lumotlari",
-    "no-data": "Yaqin qarindoshlar qo'shilmagan!"
+    "no-data": "Yaqin qarindoshlar qo'shilmagan!",
+    "disability": {
+      "createTitle": "Nogironlik ma'lumotini qo'shish",
+      "updateTitle": "Nogironlik ma'lumotini tahrirlash",
+      "number": "Hujjat raqami",
+      "level": "Nogironlik toifasi",
+      "from": "Berilgan sana",
+      "to": "Amal qilish muddati",
+      "comment": "Cheklovlar va imkoniyatlar haqida izoh",
+      "lifelong": "Umrbod",
+      "lifelongHint": "Agar nogironlik umrbod belgilangan bo'lsa, amal qilish muddatini kiritish shart emas",
+      "level1": "I guruh",
+      "level2": "II guruh",
+      "level3": "III guruh"
+    }
   },
   "partyPage": {
     "createTitle": "Partiyaviylik ma'lumotini qo'shish",
@@ -1859,6 +1899,22 @@
     "from": {
       "activeOrganization": "Aktiv korxonasi",
       "role": "Rollari"
+    },
+    "attachRole": "Rol biriktirish",
+    "deleteRole": "Rolni o'chirish",
+    "selectRoleToDelete": "O'chirmoqchi bo'lgan rolni tanlang",
+    "updatePassword": "Parolni yangilash",
+    "newPassword": "Yangi parol",
+    "enterPassword": "Parolni kiriting",
+    "phoneNumber": "Telefon raqam",
+    "enterPhone": "Telefon raqamni kiriting",
+    "addPhone": "Raqam qo'shish",
+    "primaryPhoneHint": "Asosiy raqamni belgilash uchun radio tugmasini bosing",
+    "phoneInfo": "Checkbox orqali asosiy telefon raqamni belgilang. Asosiy raqam tizimga kirish uchun ishlatiladi.",
+    "validation": {
+      "emptyPhone": "Telefon raqam bo'sh bo'lishi mumkin emas",
+      "invalidFormat": "Telefon raqamni to'g'riligini tekshiring",
+      "duplicate": "Bir xil telefon raqam kiritilgan"
     }
   },
   "telegramPopup": {
@@ -1920,6 +1976,44 @@
     "name": "Hisobotlar",
     "create": "Hisobot yaratish"
   },
+  "structureReport": {
+    "name": "Hisobot aylanmasi",
+    "tableTab": "Jadval",
+    "workersTab": "Xodimlar",
+    "position": "Lavozim",
+    "organization": "Tashkilot",
+    "birthday": "Tug'ilgan sana",
+    "education": "Ma'lumoti",
+    "oldOrganization": "Oldingi tashkilot",
+    "oldPositionDate": "Oldingi lavozim sanasi",
+    "oldPosition": "Oldingi lavozim",
+    "commandNumber": "Buyruq raqami va sanasi",
+    "commandReason": "Buyruq sababi",
+    "stat": "Statistika",
+    "organizations": "Tashkilotlar",
+    "statTooltip": "Hisobot yuklamagan korxonalar ro'yxati. Belgilangan korxonalar hisobot yuklagan.",
+    "generate": "Generate",
+    "download": "Yuklash",
+    "excelDownload": "Excel yuklash",
+    "table1": "1 - Jadval",
+    "table2": "2 - Jadval",
+    "table3": "3 - Jadval",
+    "staffSchedule": "Shtat jadvali",
+    "structure": "Tarkibiy tuzilma",
+    "generalReport": "Umumiy hisobot",
+    "year": "Yil",
+    "month": "Oy",
+    "tableType": "Jadval turi",
+    "reports": "Hisobotlar",
+    "addApprover": "Tasdiqlovchi qo'shish",
+    "saved": "Saqlandi",
+    "deleted": "O'chirildi",
+    "downloaded": "Yuklandi",
+    "downloadFailed": "Yuklab bo'lmadi"
+  },
+  "confirmationReport": {
+    "name": "Hisobotlar"
+  },
   "uploadReport": {
     "name": "Hisobot yuklash",
     "createTitle": "Hisobot yuklash",
@@ -1974,9 +2068,14 @@
       "totalTwo": "Ish haqi fondiga kirmaydigan to'lov turlari",
       "totalThree": "Hisoblandi",
       "code": "To'lov kodi",
+      "start_hours": "Ish soati (dan)",
+      "end_hours": "Ish soati (gacha)",
+      "work_time": "Ish soati",
       "organizations": "Korxonalar kesimida",
       "workers": "Xodimlar kesimida",
-      "totalFour": "Ish haqidan ushlamalar"
+      "totalFour": "Ish haqidan ushlamalar",
+      "byPaymentCode": "To'lov kodi bo'yicha",
+      "byTotalPayment": "Umumiy hisoblangan to'lov miqdori bo'yicha"
     },
     "view": {
       "main_salary": "Oklad",
@@ -2355,6 +2454,7 @@
     "economist": "Iqtisodchi",
     "hospital": "Kasalxona",
     "admin": "Admin",
+    "extra": "Qo'shimchalar",
     "chat": "Chat"
   },
   "resultPage": {
@@ -2676,7 +2776,8 @@
       "birthday": "Tug‘ilgan kun bilan tabriklangan xodimlar soni",
       "vacation": "Ta’til haqida ogohlantirilgan xodimlar soni",
       "med": "Tibbiy ko‘rik haqida ogohlantirilgan xodimlar soni",
-      "passport": "Pasport muddati haqida ogohlantirilgan xodimlar soni"
+      "passport": "Pasport muddati haqida ogohlantirilgan xodimlar soni",
+      "mobile": "Mobil ilova orqali xabar yuborilgan xodimlar soni"
     }
   },
   "newsPage": {

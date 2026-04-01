@@ -29,10 +29,22 @@ export const useEventV2Store = defineStore('eventV2Store', {
       per_page: 10,
       search: null,
       organizations: [],
+      departments: [],
       direction: null,
       date: null,
       access_levels: [],
       event: 'yes'
+    },
+    department: {
+      list: [],
+      loading: false,
+      totalItems: 0,
+      params: {
+        page: 1,
+        per_page: 100,
+        search: null,
+        organizations: []
+      }
     },
     cardList: [
       {
@@ -212,10 +224,35 @@ export const useEventV2Store = defineStore('eventV2Store', {
           this.calendarLoading = false
         })
     },
+    _department(infinity = false) {
+      this.department.loading = true
+      const params = {
+        ...this.department.params,
+        organizations: this.department.params.organizations?.toString()
+      }
+      $ApiService.componentService
+        ._departmentByOrganizations({ params })
+        .then((res) => {
+          this.department.totalItems = res.data.data.total
+          const data = res.data.data.data.map((v) => ({
+            ...v,
+            position: v?.organization?.name
+          }))
+          if (infinity) {
+            this.department.list = [...this.department.list, ...data]
+          } else {
+            this.department.list = data
+          }
+        })
+        .finally(() => {
+          this.department.loading = false
+        })
+    },
     _params() {
       return {
         ...this.params,
         organizations: this.params.organizations.map((v) => v.id).toString() || undefined,
+        departments: this.params.departments.toString() || undefined,
         access_levels: this.params.access_levels.toString() || undefined,
         date: this.params.date ? Utils.timeToZone(this.params.date) : undefined
       }

@@ -2,6 +2,7 @@ export const AppPaths = {
   Main: '/',
   Admin: '/admin',
   Chat: '/chat',
+  Extra: '/extra',
   Lms: '/lms',
   Attestation: '/attestation',
   DocFlow: '/docflow',
@@ -135,7 +136,10 @@ export const AppPaths = {
   PrivacyPolicy: '/privacy-policy',
   News: '/news',
   NewsCategory: '/news-category',
-  View: '/view'
+  View: '/view',
+  MobileUsers: '/mobile-users',
+  StructureReport: '/structure-report',
+  ConfReport: '/conf-report'
 }
 
 export const AppLayouts = {

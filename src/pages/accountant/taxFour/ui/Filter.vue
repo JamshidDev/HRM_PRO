@@ -1,8 +1,8 @@
 <script setup>
   import { ArrowCircleDown32Regular, ArrowSync20Filled } from '@vicons/fluent'
-  import { UIPageFilter, UISelect } from '@/components/index.js'
+  import { UIPageFilter, UISelect, UIYearMonth } from '@/components/index.js'
   import { useAccountStore, useComponentStore, useTaxFourStore } from '@/store/modules/index.js'
-  import Utils from '@/utils/Utils.js'
+  import { getOneMonthAgoYearMonth } from '@utils'
 
   const store = useTaxFourStore()
   const componentStore = useComponentStore()
@@ -26,11 +26,20 @@
   }
 
   const resetFilter = () => {
+    const def = getOneMonthAgoYearMonth()
     store.params.organizations = []
+    store.params.year = def.year
+    store.params.month = def.month
     filterEvent()
   }
 
-  const filterCount = computed(() => Number(Boolean(store.params.organizations.length)))
+  const filterCount = computed(() => {
+    const def = getOneMonthAgoYearMonth()
+    return (
+      Number(Boolean(store.params.organizations.length)) +
+      Number(store.params.year !== def.year || store.params.month !== def.month)
+    )
+  })
   const onRefreshEv = () => {
     store.loading = true
     const params = {
@@ -73,22 +82,14 @@
         </template>
         {{ $t('content.template') }}
       </n-button>
-      <n-select
-        class="w-full! md:w-[200px]!"
-        v-model:value="store.params.year"
-        :options="Utils.yearList"
-        label-field="name"
-        value-field="id"
-        @update:value="filterEvent"
-      />
-      <n-select
-        class="w-full! md:w-[200px]!"
-        v-model:value="store.params.month"
-        :options="Utils.monthList"
-        label-field="name"
-        value-field="id"
-        @update:value="filterEvent"
-      />
+      <div class="w-full! md:w-[200px]!">
+        <UIYearMonth
+          v-model:year="store.params.year"
+          v-model:month="store.params.month"
+          :clearable="false"
+          @change="filterEvent"
+        />
+      </div>
     </template>
     <template #filterContent>
       <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{

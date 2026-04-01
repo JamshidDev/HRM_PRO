@@ -49,7 +49,7 @@ const timeWithMonth = (time) => {
 }
 
 const timeHHMMWithMonth = (time) => {
-  return time ? dayjs(time).format('YYYY-MM-DD HH:mm') : null
+  return time ? dayjs(time).format('YYYY.MM.DD HH:mm') : null
 }
 
 const timeOnlyDate = (time) => {
@@ -135,6 +135,7 @@ const routeHospitalPathMaker = (mainPath) => `${AppPaths.Hospital}${mainPath}`
 const routeAttestationPathMaker = (mainPath) => `${AppPaths.Attestation}${mainPath}`
 const routeTurnstilePathMaker = (mainPath) => `${AppPaths.Turnstile}${mainPath}`
 const routeChatPathMaker = (mainPath) => `${AppPaths.Chat}${mainPath}`
+const routeExtraPathMaker = (mainPath) => `${AppPaths.Extra}${mainPath}`
 const routeDocFlowPathMaker = (mainPath) => `${AppPaths.DocFlow}${mainPath}`
 const routeTimesheetPathMaker = (mainPath) => `${AppPaths.TimeSheet}${mainPath}`
 
@@ -147,7 +148,8 @@ const documentModels = {
   vacationSchedule: 'vacation-schedule',
   lmsCertificate: 'lms-certificate',
   med: 'med',
-  staffingApprove: 'staffing-approve'
+  staffingApprove: 'staffing-approve',
+  report: 'report'
 }
 const copyToClipboard = async (text, callback) => {
   try {
@@ -526,6 +528,7 @@ export default {
   routeTurnstilePathMaker,
   routeAccountantPathMaker,
   routeHospitalPathMaker,
+  routeExtraPathMaker,
   generateJwtToken,
   fileNameFromUrl,
   documentModels,

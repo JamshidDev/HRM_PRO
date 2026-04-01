@@ -67,13 +67,15 @@
 
                 <!-- Device badge -->
                 <div
-                  class="absolute bottom-1 right-1 z-10 w-5 h-5 rounded-full border-2 flex items-center justify-center border-[#6f99ff]"
-                  :class="user.type === 'mobile' ? 'bg-success' : 'bg-primary'"
+                  class="absolute bottom-1 right-1 z-10 w-5 h-5 rounded-full border-2 flex items-center justify-center"
+                  :class="user.type === 'mobile' ? 'bg-success border-[#2ca361]' : 'bg-primary border-[#6f99ff]'"
                 >
-                  <n-icon size="10" class="text-white">
-                    <Phone24Regular v-if="user.type === 'mobile'" />
-                    <Globe24Regular v-else />
-                  </n-icon>
+                  <div v-if="user.type === 'mobile'" class="text-white text-[8px]">M</div>
+                  <div v-else class="text-white text-[8px]">W</div>
+<!--                  <n-icon size="10" class="text-white">-->
+<!--                    <Phone24Regular v-if="user.type === 'mobile'" />-->
+<!--                    <Globe24Regular v-else />-->
+<!--                  </n-icon>-->
                 </div>
               </div>
               <div

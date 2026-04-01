@@ -10,8 +10,9 @@
   } from '@vicons/fluent'
   import Utils from '../../../utils/Utils.js'
   import { UIUser } from '@/components/index.js'
-  import DocumentFileModal from '@/components/pdfSignature/ui/DocumentFileModal.vue'
+  import { useRoute } from 'vue-router'
 
+  const route = useRoute()
   const store = usePdfViewerStore()
 
   const getHistory = () => {
@@ -46,6 +47,23 @@
     store.fileShow = false
     store.show = false
   })
+
+  const showDocumentFiles = computed(() =>{
+
+    const allowedPaths = [
+      '/hrm/contract',
+      '/hrm/command',
+      '/hrm/ad-contract',
+      '/hrm/application',
+
+      '/docflow/conf-contract',
+      '/docflow/conf-command',
+      '/docflow/conf-ad-contract',
+      '/docflow/conf-application',
+
+    ]
+    return allowedPaths.includes(route.path)
+  })
 </script>
 
 <template>
@@ -67,7 +85,7 @@
         {{ store.show ? $t('content.hide') : $t('documentPage.signature.history') }}
       </n-button>
     </n-badge>
-    <n-input-group>
+    <n-input-group v-if="showDocumentFiles">
       <n-badge type="info" :value="store.fileShow ? 0 : store.document?.files" class="w-full">
         <n-button
           type="primary"
@@ -112,8 +130,7 @@
             <span
               @click="onDownload(item?.worker_application?.confirmation_file)"
               class="w-[220px] truncate hover:text-primary"
-              >{{ item?.worker_application?.number }}</span
-            >
+            >{{ item?.worker_application?.number }}</span>
           </div>
         </template>
       </template>

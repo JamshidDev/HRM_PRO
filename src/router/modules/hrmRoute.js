@@ -124,11 +124,6 @@ export const hrmRoutes = [
     meta: { layout: AppLayouts.main }
   },
   {
-    path: Utils.routeHrmPathMaker(AppPaths.WorkerRole),
-    component: () => import('@/pages/hrm/UserRole/UserRolePage.vue'),
-    meta: { layout: AppLayouts.main }
-  },
-  {
     path: Utils.routeHrmPathMaker(AppPaths.Punishment),
     component: () => import('@/pages/hrm/punishment/PunishmentPage.vue'),
     meta: { layout: AppLayouts.main }
@@ -173,6 +168,12 @@ export const hrmRoutes = [
     path: Utils.routeHrmPathMaker(AppPaths.SpecialReport),
     name: AppPaths.SpecialReport.substring(1),
     component: () => import('@/pages/hrm/specialReport/SpecialReportPage.vue'),
+    meta: { layout: AppLayouts.main }
+  },
+  {
+    path: Utils.routeHrmPathMaker(AppPaths.StructureReport),
+    name: AppPaths.StructureReport.substring(1),
+    component: () => import('@/pages/hrm/structureReport/page.vue'),
     meta: { layout: AppLayouts.main }
   }
 ]

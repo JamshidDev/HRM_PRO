@@ -92,11 +92,18 @@
               }}</span>
             </td>
             <td>
-              <span
-                @click="onOpenFile(item)"
-                class="text-sm hover:text-primary hover:underline cursor-pointer"
-                >{{ item?.type?.name }}</span
-              >
+<!--              <span-->
+<!--                @click="onOpenFile(item)"-->
+<!--                class="text-sm hover:text-primary hover:underline cursor-pointer"-->
+<!--                >{{ item?.type?.name }}</span-->
+<!--              >-->
+
+              <div @click="onOpenFile(item)" class="group flex flex-col hover:!text-primary hover:underline cursor-pointer">
+                <span
+                    class="text-sm line-clamp-2 leading-[1.2] font-medium"
+                >{{ item?.type?.name }}</span>
+                <span class="text-xs rounded-2xl px-1 text-secondary group-hover:!text-primary">{{ Utils.timeHHMMWithMonth(item.created_at) }}</span>
+              </div>
             </td>
             <td>
               <div class="flex justify-center">

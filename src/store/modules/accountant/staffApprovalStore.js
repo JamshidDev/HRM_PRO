@@ -17,6 +17,7 @@ export const useStaffingApprovalStore = defineStore('staffingApprovalStore', {
       search: null
     },
     payload: {
+      organization_id: null,
       confirmations: [],
       director_id: null,
       date: null,
@@ -162,9 +163,17 @@ export const useStaffingApprovalStore = defineStore('staffingApprovalStore', {
         })
     },
     _showGenerate() {
+      if (!this.payload.organization_id) {
+        this.positions = []
+        return
+      }
       this.generateLoading = true
+      const params = {
+        ...this.params,
+        organization_id: this.payload.organization_id
+      }
       $ApiService.staffApprovalService
-        ._showGenerate({ params: this.params })
+        ._showGenerate({ params })
         .then((res) => {
           this.positions = res.data.data.positions
         })
@@ -196,8 +205,10 @@ export const useStaffingApprovalStore = defineStore('staffingApprovalStore', {
     },
     resetForm() {
       this.elementId = null
+      this.payload.organization_id = null
       this.payload.department_positions = []
       this.payload.date = Date.now()
+      this.positions = []
     }
   }
 })

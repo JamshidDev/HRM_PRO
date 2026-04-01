@@ -28,6 +28,7 @@ import holidayService from '@/service/v1/admin/holidayService.js'
 import quoteService from '@/service/v1/admin/quoteService.js'
 import telegramService from '@/service/v1/admin/telegramService.js'
 import instructionService from '@/service/v1/admin/instructionService.js'
+import mobileUserService from '@/service/v1/admin/mobileUserService.js'
 
 import confirmationService from '@/service/v1/hrm/confirmationService.js'
 import departmentService from '@/service/v1/hrm/departmentService.js'
@@ -38,6 +39,7 @@ import photoService from '@/service/v1/hrm/photoService.js'
 import phoneService from '@/service/v1/hrm/phoneService.js'
 import languageService from '@/service/v1/hrm/languageService.js'
 import relativeService from '@/service/v1/hrm/relativeService.js'
+import workerDisabilityService from '@/service/v1/hrm/workerDisabilityService.js'
 import universityService from '@/service/v1/hrm/universityService.js'
 import olCareerService from '@/service/v1/hrm/olCareerService.js'
 import partyService from '@/service/v1/hrm/partyService.js'
@@ -62,6 +64,7 @@ import polyclinicService from '@/service/v1/hrm/polyclinicService.js'
 import vacancyService from '@/service/v1/hrm/vacancyService.js'
 import pensionerService from '@/service/v1/hrm/pensionerService.js'
 import specialReportService from './v1/hrm/specialReportService'
+import structureReportService from '@/service/v1/hrm/structureReportService.js'
 
 import documentService from '@/service/v1/docFlow/documentService.js'
 import contractService from '@/service/v1/docFlow/contractService.js'
@@ -73,6 +76,7 @@ import applicationService from '@/service/v1/docFlow/applicationService.js'
 import confVacationScheduleService from '@/service/v1/docFlow/vacationScheduleService.js'
 import confCertificateService from '@/service/v1/docFlow/confCertificateService.js'
 import confStaffingApprovalService from '@/service/v1/docFlow/confStaffingApprovalService.js'
+import confirmationReportService from '@/service/v1/docFlow/confirmationReportService.js'
 
 import topicService from '@/service/v1/attestation/topicService.js'
 import examVideoService from '@/service/v1/attestation/examVideoService.js'
@@ -190,6 +194,7 @@ export default {
   categoryService,
   categoryQuestionService,
   relativeService,
+  workerDisabilityService,
   universityService,
   documentFileService,
   adContractService,
@@ -276,4 +281,7 @@ export default {
   congratulationService,
   newsCategoryService,
   newsService,
+  mobileUserService,
+  structureReportService,
+  confirmationReportService,
 }

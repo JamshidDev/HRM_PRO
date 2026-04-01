@@ -1,6 +1,5 @@
 <script setup>
-  import { UIPageFilter } from '@/components/index.js'
-  import Utils from '@/utils/Utils.js'
+  import { UIPageFilter, UIYearMonth } from '@/components/index.js'
   import { DocumentArrowUp20Regular, LockClosed24Filled, LockOpen16Filled } from '@vicons/fluent'
   import { useAccountStore, useUploadReportStore } from '@/store/modules/index.js'
   import i18n from '@/i18n/index.js'
@@ -56,22 +55,14 @@
         </template>
       </n-button>
 
-      <n-select
-        class="w-full! md:w-[200px]!"
-        v-model:value="store.params.year"
-        :options="Utils.yearList"
-        label-field="name"
-        value-field="id"
-        @update:value="onChange"
-      />
-      <n-select
-        class="w-full! md:w-[200px]!"
-        v-model:value="store.params.month"
-        :options="Utils.monthList"
-        label-field="name"
-        value-field="id"
-        @update:value="onChange"
-      />
+      <div class="w-full! md:w-[200px]!">
+        <UIYearMonth
+          v-model:year="store.params.year"
+          v-model:month="store.params.month"
+          :clearable="false"
+          @change="onChange"
+        />
+      </div>
       <n-button @click="onAdd" type="success" class="w-full! md:w-auto!">
         {{ $t('uploadReport.form.uploadFile') }}
         <template #icon>

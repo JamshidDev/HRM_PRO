@@ -12,6 +12,8 @@
 
   const store = useDashboardStore()
   const { t } = i18n.global
+
+  defineEmits(['detail'])
   const option = ref({
     tooltip: {
       trigger: 'axis',
@@ -97,11 +99,18 @@
     <span
       class="z-1 opacity-40 absolute top-0 right-0 w-[160px] h-full bg-no-repeat bg-[url(/effect/effect-card-2.svg)]"
     ></span>
-    <p class="font-semibold text-lg text-textColor0">{{ $t('dashboardPage.yearly.title') }}</p>
+    <div class="flex justify-between items-center mb-4">
+      <p class="font-semibold text-lg text-textColor0">{{ $t('dashboardPage.yearly.title') }}</p>
+      <p
+        @click="$emit('detail')"
+        class="text-primary border-b border-dashed border-primary z-[1] cursor-pointer transition-all hover:border-primary/80 hover:text-primary/80"
+      >
+        {{ $t('content.view') }}
+      </p>
+    </div>
     <div class="w-full h-[300px] relative z-2">
       <v-chart autoresize class="w-full" :option="option" ref="chartRef" />
     </div>
   </div>
 </template>
 
-<style scoped></style>

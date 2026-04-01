@@ -12,8 +12,8 @@ import { fileURLToPath } from 'url';
 
 
 const productionUrl = 'https://hrm-api.railway.uz/api'
-const LOGIN = '995016004'
-const PASSWORD = 'Jamshid2@@@'
+const LOGIN = "977226656";
+const PASSWORD = "Hf5n35N&01=Vn39a9i\\x";
 
 
 
@@ -126,9 +126,9 @@ app.get('/', async (req, res) => {
     try {
         const fs = await import('fs');
         const path = await import('path');
-        
+
         const indexPath = path.join(process.cwd(), 'dist', 'index.html');
-        
+
         if (fs.existsSync(indexPath)) {
             const htmlContent = fs.readFileSync(indexPath, 'utf8');
             res.setHeader('Content-Type', 'text/html');
@@ -143,6 +143,6 @@ app.get('/', async (req, res) => {
 })
 
 
-app.listen(9000, () => {
-    console.log(chalk.green.bold('🚀  Deploy server is running on 9000 PORT'));
+app.listen(8001, () => {
+    console.log(chalk.green.bold('🚀  Deploy server is running on 8001 PORT'));
 })
