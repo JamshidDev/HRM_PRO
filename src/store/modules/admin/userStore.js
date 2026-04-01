@@ -14,6 +14,8 @@ export const useUserStore = defineStore('user', {
     elementId: null,
     totalItems: 0,
     structureCheck: [],
+    userPermissions: [],
+    savePermissionLoading: false,
     payload: {
       role_id: null,
       organization_id: []
@@ -32,7 +34,9 @@ export const useUserStore = defineStore('user', {
     myRoleLoading: false,
     loginLoading: false,
     confirmVisible: false,
-    isSpam: false
+    isSpam: false,
+    isPermissionsVisible: false,
+    userPermissionsLoading: false
   }),
   actions: {
     _onSpam() {
@@ -98,6 +102,46 @@ export const useUserStore = defineStore('user', {
         })
         .finally(() => {
           this.myRoleLoading = false
+        })
+    },
+    _userPermissions() {
+      this.userPermissionsLoading = true
+      this.userPermissions = []
+      $ApiService.userService
+        ._userPermissions({ id: this.elementId })
+        .then((res) => {
+          this.userPermissions = res.data.data
+        })
+        .finally(() => {
+          this.userPermissionsLoading = false
+        })
+    },
+    _updateUserPermissions(attach_ids, detach_ids, all_user_permissions) {
+      this.savePermissionLoading = true
+      const promiseList = []
+      if (attach_ids.length > 0) {
+        promiseList.push(
+          $ApiService.userService._attachPermissions({
+            id: this.elementId,
+            data: { permission_ids: attach_ids }
+          })
+        )
+      }
+      if (detach_ids.length > 0) {
+        promiseList.push(
+          $ApiService.userService._detachPermissions({
+            id: this.elementId,
+            data: { permission_ids: detach_ids }
+          })
+        )
+      }
+      Promise.all(promiseList)
+        .then((res) => {
+          this._index()
+          this.userPermissions = all_user_permissions
+        })
+        .finally(() => {
+          this.savePermissionLoading = false
         })
     },
     _create() {

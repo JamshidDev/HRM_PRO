@@ -353,8 +353,11 @@
     "name": "Foydalanuvchilar",
     "createTitle": "Rolni biriktirish",
     "updateTitle": "Rolni tahrirlash",
+    "permissions": "Huquqlar",
+    "availablePermissions": "Mavjud huquqlar",
+    "attachedPermissions": "Biriktirilgan huquqlar",
     "form": {
-      "role": "Huquqlar",
+      "role": "Rollar",
       "confirmSpam": "Haqiqatan ham spam qilmoqchimisiz?",
       "cancelSpam": "Haqiqatan ham spamdan chiqarilmoqchimisiz?"
     },

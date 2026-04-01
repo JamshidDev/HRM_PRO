@@ -5,7 +5,8 @@
     RibbonStar24Filled,
     ShieldLock20Regular,
     LockClosed12Filled,
-    LockOpen16Filled
+    LockOpen16Filled,
+    Add20Regular
   } from '@vicons/fluent'
   import Utils from '@/utils/Utils.js'
   import { AppPaths, useAppSetting } from '@/utils/index.js'
@@ -54,6 +55,13 @@
     store._getTemporaryToken({ user_uuid: v.uuid })
     store._loginById(v.uuid, onSuccessEv)
   }
+
+  const clickPermissionsEv = (v) => {
+    if (!accStore.checkAction(accStore.pn.usersWrite)) return
+    store.elementId = v.uuid
+    store._userPermissions()
+    store.isPermissionsVisible = true
+  }
 </script>
 
 <template>
@@ -67,6 +75,7 @@
             <th class="min-w-[60px] w-[100px]"></th>
             <th class="min-w-[200px] w-[300px]">{{ $t('content.workplace') }}</th>
             <th class="min-w-[120px] w-[120px]">{{ $t('userPage.form.role') }}</th>
+            <th class="min-w-[120px] w-[120px]">{{ $t('userPage.permissions') }}</th>
             <th class="min-w-[120px] w-[120px]">{{ $t('content.phone') }}</th>
             <th class="min-w-[40px] w-[40px]"></th>
           </tr>
@@ -131,6 +140,24 @@
                     </template>
                   </UIBadge>
                 </template>
+              </div>
+            </td>
+            <td>
+              <div class="flex justify-center">
+                <n-button
+                  @click="() => clickPermissionsEv(item)"
+                  size="small"
+                  dashed
+                  round
+                  type="primary"
+                >
+                  <span v-if="item?.permissions_count">{{ item?.permissions_count }}</span>
+                  <template #icon>
+                    <n-icon>
+                      <Add20Regular />
+                    </n-icon>
+                  </template>
+                </n-button>
               </div>
             </td>
             <td>{{ item?.phone }}</td>

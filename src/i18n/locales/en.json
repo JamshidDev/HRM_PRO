@@ -343,8 +343,11 @@
     "name": "Users",
     "createTitle": "Assign role",
     "updateTitle": "Edit role",
+    "permissions": "Permissions",
+    "availablePermissions": "Available Permissions",
+    "attachedPermissions": "Attached Permissions",
     "form": {
-      "role": "Permissions",
+      "role": "Roles",
       "confirmSpam": "Mark as spam?",
       "cancelSpam": "Remove from spam?"
     },

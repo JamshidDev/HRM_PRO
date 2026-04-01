@@ -343,6 +343,9 @@
     "name": "Пользователи",
     "createTitle": "Назначить роль",
     "updateTitle": "Редактировать роль",
+    "permissions": "Права",
+    "availablePermissions": "Доступные права",
+    "attachedPermissions": "Прикреплённые права",
     "form": {
       "role": "Права",
       "confirmSpam": "Отметить как спам?",
@@ -1883,7 +1886,7 @@
     "from": {
       "activeOrganization": "Активная организация",
       "role": "Роли"
-     },
+    },
     "attachRole": "Прикрепить роль",
     "deleteRole": "Удалить роль",
     "selectRoleToDelete": "Выберите роль для удаления",
