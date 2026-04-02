@@ -5,7 +5,7 @@
     useEventStore,
     useEventV2Store
   } from '@/store/modules/index.js'
-  import { UIPageFilter, UISelect } from '@/components/index.js'
+  import { UIPageFilter, UISelect, SuperSelect } from '@/components/index.js'
   import i18n from '@/i18n/index.js'
   import { ArrowCircleDown32Regular, StarLineHorizontal320Regular } from '@vicons/fluent'
   import { useAppSetting } from '@utils'
@@ -25,7 +25,30 @@
 
   const onChangeStructure = (v) => {
     store.params.organizations = v
+    store.department.params.organizations = v.map((x) => x.id)
+    store.params.departments = []
+    store.department.list = []
     filterEvent()
+    if (v.length === 0) return
+    store.department.params.page = 1
+    store.department.params.search = null
+    departmentAction.fetch()
+  }
+
+  const onChangeDepartment = () => {
+    filterEvent()
+  }
+
+  const departmentAction = {
+    fetch: () => store._department(),
+    onSearch: () => {
+      store.department.params.page = 1
+      store._department()
+    },
+    onScroll: () => {
+      store.department.params.page++
+      store._department(true)
+    }
   }
 
   const onChangeDate = () => {
@@ -43,6 +66,8 @@
 
   const resetFilter = () => {
     store.params.organizations = []
+    store.params.departments = []
+    store.department.list = []
     store.params.access_levels = []
     store.params.direction = null
     store.params.date = null
@@ -53,6 +78,7 @@
   const filterCount = computed(
     () =>
       Number(Boolean(store.params.organizations.length)) +
+      Number(Boolean(store.params.departments.length)) +
       Number(Boolean(store.params.access_levels.length)) +
       Number(Boolean(store.params.date)) +
       Number(Boolean(store.params.direction))
@@ -126,6 +152,25 @@
         @onSearch="componentStore._structures"
         @onSubmit="filterEvent"
       />
+      <label class="mt-3 text-xs text-gray-500 mb-1">{{
+        $t('workerPage.filter.department')
+      }}</label>
+      <div class="w-full max-w-[400px] overflow-hidden">
+        <SuperSelect
+          :disabled="store.params.organizations.length === 0"
+          v-model:value="store.params.departments"
+          v-model:search="store.department.params.search"
+          :options="store.department.list"
+          :per-page="store.department.params.per_page"
+          :total-count="store.department.totalItems"
+          @update:value="onChangeDepartment"
+          @onScrollEv="departmentAction.onScroll"
+          @onSearch="departmentAction.onSearch"
+          :loading="store.department.loading"
+          multiple
+          clearable
+        />
+      </div>
       <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{
         $t('turnstile.hcWorkersPage.access_levels')
       }}</label>

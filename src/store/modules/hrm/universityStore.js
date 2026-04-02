@@ -62,7 +62,7 @@ export const useUniversityStore = defineStore('universityStore', {
       this.saveLoading = true
       $ApiService.universityService
         ._create({ data })
-        .then((res) => {
+        .then(() => {
           this.visible = false
           this._index()
         })

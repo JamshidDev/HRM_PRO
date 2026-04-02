@@ -86,6 +86,7 @@ export const useWorkerProfileStore = defineStore('workerProfileStore', {
       role: null
     },
     roleVisible: false,
+    roleWorkerPositionId: null,
     structureCheck: [],
     roleLoading: false,
 
@@ -93,11 +94,18 @@ export const useWorkerProfileStore = defineStore('workerProfileStore', {
       page: 1,
       per_page: 10,
       search: null,
-      organizations: []
+      organizations: [],
+      role: null
     },
     userRoleList: [],
     userRoleLoading: false,
     userRoleTotal: 0,
+    passwordVisible: false,
+    passwordLoading: false,
+    passwordPayload: {
+      uuid: null,
+      password: null
+    },
 
     editVisible: false,
     editPayload: {
@@ -413,6 +421,7 @@ export const useWorkerProfileStore = defineStore('workerProfileStore', {
     _deleteRole(data, id) {
       $ApiService.workerService._deleteRole({ data, id }).then(() => {
         this._index()
+        this._userRole()
       })
     },
     _storeRole(data, id) {
@@ -421,10 +430,56 @@ export const useWorkerProfileStore = defineStore('workerProfileStore', {
         ._storeRole({ data, id })
         .then(() => {
           this._index()
+          this._userRole()
         })
         .finally(() => {
           this.roleLoading = false
           this.roleVisible = false
+          this.roleWorkerPositionId = null
+        })
+    },
+    _attachUserRole(data) {
+      this.roleLoading = true
+      $ApiService.workerService
+        ._attachUserRole({ data })
+        .then(() => {
+          this._userRole()
+        })
+        .finally(() => {
+          this.roleLoading = false
+          this.roleVisible = false
+          this.roleWorkerPositionId = null
+        })
+    },
+    _detachUserRole(data) {
+      return $ApiService.workerService
+        ._detachUserRole({ data })
+        .then(() => {
+          this._userRole()
+        })
+    },
+    _updatePassword(workerId) {
+      this.roleLoading = true
+      $ApiService.workerService
+        ._update({ data: { update_password: true }, id: workerId })
+        .then(() => {
+          window.$message?.success('Parol yangilandi')
+        })
+        .finally(() => {
+          this.roleLoading = false
+        })
+    },
+    _updateUserPassword() {
+      this.passwordLoading = true
+      $ApiService.workerService
+        ._updateUserPassword({ data: this.passwordPayload })
+        .then(() => {
+          window.$message?.success('Parol yangilandi')
+          this.passwordVisible = false
+          this.passwordPayload = { uuid: null, password: null }
+        })
+        .finally(() => {
+          this.passwordLoading = false
         })
     },
     _updatePosition() {
@@ -459,7 +514,8 @@ export const useWorkerProfileStore = defineStore('workerProfileStore', {
       this.userRoleLoading = true
       const params = {
         ...this.userRoleParams,
-        organizations: this.userRoleParams.organizations.map((v) => v.id).toString() || undefined
+        organizations: this.userRoleParams.organizations.map((v) => v.id).toString() || undefined,
+        role: this.userRoleParams.role || undefined
       }
       $ApiService.workerService
         ._userRole({ params })

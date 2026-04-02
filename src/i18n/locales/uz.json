@@ -113,6 +113,7 @@
     "logOutSystem": "Tizmdan chiqish",
     "paginationSize": "{n} tadan ko'rsatish",
     "confirm": "Tasdiqlash",
+    "understood": "Tushundim",
     "month": "Oy",
     "year": "Yil",
     "or": "Yoki",
@@ -222,6 +223,8 @@
     "en": "EN",
     "create": "Yaratish",
     "successCopied": "Muvofaqiyatli nusxalandi",
+    "successPaste": "Muvofaqiyatli joylandi",
+    "paste": "Joylash",
     "allSelected": "Barchasi tanlangan",
     "sendToSign": "Imzolashga yuborish",
     "rejectByMistake": "Xatolik sababli qaytarish"
@@ -351,8 +354,11 @@
     "name": "Foydalanuvchilar",
     "createTitle": "Rolni biriktirish",
     "updateTitle": "Rolni tahrirlash",
+    "permissions": "Huquqlar",
+    "availablePermissions": "Mavjud huquqlar",
+    "attachedPermissions": "Biriktirilgan huquqlar",
     "form": {
-      "role": "Huquqlar",
+      "role": "Rollar",
       "confirmSpam": "Haqiqatan ham spam qilmoqchimisiz?",
       "cancelSpam": "Haqiqatan ham spamdan chiqarilmoqchimisiz?"
     },
@@ -1897,6 +1903,22 @@
     "from": {
       "activeOrganization": "Aktiv korxonasi",
       "role": "Rollari"
+    },
+    "attachRole": "Rol biriktirish",
+    "deleteRole": "Rolni o'chirish",
+    "selectRoleToDelete": "O'chirmoqchi bo'lgan rolni tanlang",
+    "updatePassword": "Parolni yangilash",
+    "newPassword": "Yangi parol",
+    "enterPassword": "Parolni kiriting",
+    "phoneNumber": "Telefon raqam",
+    "enterPhone": "Telefon raqamni kiriting",
+    "addPhone": "Raqam qo'shish",
+    "primaryPhoneHint": "Asosiy raqamni belgilash uchun radio tugmasini bosing",
+    "phoneInfo": "Checkbox orqali asosiy telefon raqamni belgilang. Asosiy raqam tizimga kirish uchun ishlatiladi.",
+    "validation": {
+      "emptyPhone": "Telefon raqam bo'sh bo'lishi mumkin emas",
+      "invalidFormat": "Telefon raqamni to'g'riligini tekshiring",
+      "duplicate": "Bir xil telefon raqam kiritilgan"
     }
   },
   "telegramPopup": {
@@ -1966,11 +1988,38 @@
     "organization": "Tashkilot",
     "birthday": "Tug'ilgan sana",
     "education": "Ma'lumoti",
-    "oldOrganization": "Oldingi tashkilot",
-    "oldPositionDate": "Oldingi lavozim sanasi",
-    "oldPosition": "Oldingi lavozim",
+    "oldOrganization": "Tashkilot nomi",
+    "oldPositionDate": "Ishdan bo'shagan sanasi",
+    "oldPosition": "Lavozim nomi",
     "commandNumber": "Buyruq raqami va sanasi",
-    "commandReason": "Buyruq sababi"
+    "commandReason": "Buyruq sababi",
+    "stat": "Statistika",
+    "organizations": "Tashkilotlar",
+    "statTooltip": "Hisobot yuklamagan korxonalar ro'yxati. Belgilangan korxonalar hisobot yuklagan.",
+    "generate": "Generate",
+    "download": "Yuklash",
+    "excelDownload": "Excel yuklash",
+    "table1": "1 - Jadval",
+    "table2": "2 - Jadval",
+    "table3": "3 - Jadval",
+    "staffSchedule": "Shtat jadvali",
+    "structure": "Tarkibiy tuzilma",
+    "generalReport": "Umumiy hisobot",
+    "year": "Yil",
+    "month": "Oy",
+    "tableType": "Jadval turi",
+    "reports": "Hisobotlar",
+    "addApprover": "Tasdiqlovchi qo'shish",
+    "saved": "Saqlandi",
+    "deleted": "O'chirildi",
+    "downloaded": "Yuklandi",
+    "downloadFailed": "Yuklab bo'lmadi",
+    "alertTitle": "Oylik hisobot topshirish tartibi",
+    "alertText1": "Tashkilotlar har bir oy uchun hisobotni keyingi oyning 10-sanasigacha topshirishlari shart.",
+    "alertText2": "Agar hisobot 10-sanagacha topshirilsa — u tegishli oy hisobiga qabul qilinadi",
+    "alertText3": "Agar hisobot 10-sanadan kech topshirilsa — u avtomatik tarzda keyingi oy hisobiga o'tkaziladi",
+    "alertNote": "Eslatma: Hisobotni o'z vaqtida topshirish hisob-kitoblarning to'g'ri yuritilishi uchun muhim.",
+    "oldOrgInfo": "Oldingi tashkilot ma'lumotlari"
   },
   "confirmationReport": {
     "name": "Hisobotlar"
@@ -2415,6 +2464,7 @@
     "economist": "Iqtisodchi",
     "hospital": "Kasalxona",
     "admin": "Admin",
+    "extra": "Qo'shimchalar",
     "chat": "Chat"
   },
   "resultPage": {

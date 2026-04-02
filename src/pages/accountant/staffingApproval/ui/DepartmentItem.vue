@@ -2,7 +2,8 @@
   import {
     CheckmarkCircle24Regular,
     SubtractCircle16Regular,
-    ChevronRight12Regular
+    ChevronRight12Regular,
+    Checkmark16Filled
   } from '@vicons/fluent'
 
   const props = defineProps({
@@ -26,19 +27,50 @@
     3: 'error'
   }
 
-  const emits = defineEmits(['toggle'])
+  const emits = defineEmits(['toggle', 'selectAll', 'unselectAll'])
 
   const selectedSet = computed(() => new Set(props.selectedIds))
+
+  const positionIds = computed(() => props.item.positions.map((p) => p.id))
+
+  const isAllSelected = computed(() => {
+    if (positionIds.value.length === 0) return false
+    return positionIds.value.every((id) => selectedSet.value.has(id))
+  })
+
+  const isIndeterminate = computed(() => {
+    if (positionIds.value.length === 0) return false
+    const selectedCount = positionIds.value.filter((id) => selectedSet.value.has(id)).length
+    return selectedCount > 0 && selectedCount < positionIds.value.length
+  })
+
+  const onDepartmentCheck = () => {
+    if (isAllSelected.value) {
+      emits('unselectAll', positionIds.value)
+    } else {
+      emits('selectAll', positionIds.value)
+    }
+  }
 </script>
 
 <template>
   <div class="w-full flex flex-col mb-2">
     <div
-      @click="emits('toggle', item.id)"
       class="flex justify-between items-center cursor-pointer px-4 py-2 border border-surface-line rounded-xl bg-surface-section drop-shadow-sm text-secondary font-medium"
     >
-      <span class="line-clamp-1">{{ item.name }}</span>
-      <n-button circle size="small">
+      <div class="flex items-center gap-2 flex-1 min-w-0" @click.stop>
+        <div
+          class="w-4 h-4 flex items-center justify-center cursor-pointer rounded transition-all"
+          :class="isAllSelected ? 'bg-primary' : 'bg-white border border-surface-line hover:border-primary'"
+          @click="onDepartmentCheck"
+        >
+          <n-icon v-if="isAllSelected" size="14" class="text-white">
+            <Checkmark16Filled />
+          </n-icon>
+        </div>
+        <span class="line-clamp-1 cursor-pointer" @click="emits('toggle', item.id)">{{ item.name }}</span>
+      </div>
+      <n-button circle size="small" @click="emits('toggle', item.id)">
         <template #icon>
           <ChevronRight12Regular :class="[expanded && 'rotate-90']" />
         </template>

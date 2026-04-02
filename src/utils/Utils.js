@@ -135,6 +135,7 @@ const routeHospitalPathMaker = (mainPath) => `${AppPaths.Hospital}${mainPath}`
 const routeAttestationPathMaker = (mainPath) => `${AppPaths.Attestation}${mainPath}`
 const routeTurnstilePathMaker = (mainPath) => `${AppPaths.Turnstile}${mainPath}`
 const routeChatPathMaker = (mainPath) => `${AppPaths.Chat}${mainPath}`
+const routeExtraPathMaker = (mainPath) => `${AppPaths.Extra}${mainPath}`
 const routeDocFlowPathMaker = (mainPath) => `${AppPaths.DocFlow}${mainPath}`
 const routeTimesheetPathMaker = (mainPath) => `${AppPaths.TimeSheet}${mainPath}`
 
@@ -527,6 +528,7 @@ export default {
   routeTurnstilePathMaker,
   routeAccountantPathMaker,
   routeHospitalPathMaker,
+  routeExtraPathMaker,
   generateJwtToken,
   fileNameFromUrl,
   documentModels,

@@ -32,6 +32,18 @@ const _onSpam = async (payload) => {
   return await axios.post(`/v1/admin/users/${payload.id}/block`, payload?.data)
 }
 
+const _userPermissions = async (payload) => {
+  return await axios.get(`/v1/admin/users/${payload?.id}/permissions`)
+}
+
+const _attachPermissions = async (payload) => {
+  return await axios.post(`/v1/admin/users/${payload.id}/permissions/attach`, payload.data)
+}
+
+const _detachPermissions = async (payload) => {
+  return await axios.put(`/v1/admin/users/${payload.id}/permissions/detach`, payload.data)
+}
+
 export default {
   _index,
   _create,
@@ -40,5 +52,8 @@ export default {
   _loginByIdToSystem,
   _temporaryToken,
   _accessForAdmin,
-  _onSpam
+  _onSpam,
+  _userPermissions,
+  _attachPermissions,
+  _detachPermissions
 }

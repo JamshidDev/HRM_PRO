@@ -51,7 +51,7 @@
   }
 
   const isAdmin = computed(() => {
-    return accStore.checkAction(accStore.pn.admin)
+    return accStore.checkPermission(accStore.pn.instructionsWrite)
   })
 </script>
 <template>

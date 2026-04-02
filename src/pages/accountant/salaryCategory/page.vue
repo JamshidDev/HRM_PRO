@@ -1,17 +1,27 @@
 <script setup>
   import { UIModal, UIPageContent } from '@/components/index.js'
-  import { useSalaryCategoryStore } from '@/store/modules/index.js'
+  import { useAccountStore, useSalaryCategoryStore } from '@/store/modules/index.js'
+  import { getOneMonthAgoYearMonth } from '@utils'
   import Filter from './ui/Filter.vue'
   import createForm from './ui/createForm.vue'
   import Table from './ui/Table.vue'
   import TreeTable from './ui/TreeTable.vue'
+
   const store = useSalaryCategoryStore()
+  const accStore = useAccountStore()
+
+  onMounted(() => {
+    if (!accStore.checkAction(accStore.pn.economistWorkerCategoriesRead)) return
+    const oneMonthAgo = getOneMonthAgoYearMonth()
+    store.params.year = oneMonthAgo.year
+    store.params.month = oneMonthAgo.month
+    store._index()
+  })
 </script>
 
 <template>
   <UIPageContent>
     <Filter />
-
     <n-tabs animated v-model:value="store.activeTab" class="hidden-tab-header" type="segment">
       <n-tab-pane :name="store.tabs[0].id">
         <Table />

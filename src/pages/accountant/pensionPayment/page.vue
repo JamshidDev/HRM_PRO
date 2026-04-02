@@ -6,6 +6,7 @@
 
   const store = usePensionStore()
   const accStore = useAccountStore()
+
   onMounted(() => {
     if (!accStore.checkAction(accStore.pn.economistPensionPaymentsRead)) return
     if (store.list.length === 0) {

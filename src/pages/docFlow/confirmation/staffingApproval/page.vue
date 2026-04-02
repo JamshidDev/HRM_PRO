@@ -8,6 +8,7 @@
   const officeAppRef = ref(null)
 
   const openCommand = (id) => {
+    console.log(id)
     officeAppRef.value.openPdf(id, Utils.documentModels.staffingApprove)
   }
 

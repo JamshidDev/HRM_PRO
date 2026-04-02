@@ -14,8 +14,8 @@ const _create = async (payload) => {
   return await axios.post(`/v1/economist/staffing/generate`, payload?.data)
 }
 
-const organizationParents = async () => {
-  return await axios.get(`/v1/structure/parents`)
+const organizationParents = async (payload) => {
+  return await axios.get(`/v1/structure/parents`, { params: payload?.params })
 }
 
 const organizationLeaders = async (payload) => {

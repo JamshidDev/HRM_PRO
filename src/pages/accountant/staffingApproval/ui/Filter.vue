@@ -17,12 +17,6 @@
     store.resetForm()
     store.visibleType = true
     store.visible = true
-    store._showGenerate()
-
-    store.worker.params.page = 1
-    store._workers()
-    store._organizationParents()
-    store._confirmation()
   }
 </script>
 

@@ -1,7 +1,7 @@
 <script setup>
   import { Person32Regular, DocumentTable16Regular } from '@vicons/fluent'
   import { useComponentStore, useDashboardStore } from '@/store/modules/index.js'
-  import { UIPageFilter, UISelect } from '@/components/index.js'
+  import { UIPageFilter, UISelect, UIYearMonth } from '@/components/index.js'
   import isdeepequal from 'fast-deep-equal'
   import dayjs from 'dayjs'
   import i18n from '@/i18n/index.js'
@@ -11,12 +11,37 @@
   const store = useDashboardStore()
   const componentStore = useComponentStore()
 
+  const contractTypeOptions = [
+    {
+      name: t('dashboardPage.yearly.incoming'),
+      id: 'created'
+    },
+    {
+      name: t('dashboardPage.yearly.outgoing'),
+      id: 'ended'
+    }
+  ]
+
+  const getDefault = (filterName) => {
+    const dv = store.activeDetail?.defaultValues
+    if (store.typeNames.includes(filterName)) {
+      return dv?.type !== undefined ? dv.type : store.defaultParams.type
+    }
+    return dv?.[filterName] !== undefined ? dv[filterName] : store.defaultParams[filterName]
+  }
+
   const filtersCount = computed(() => {
     if (!store.activeDetail) return 0
     if (!store.activeDetail?.filters) return 0
     let a = 0
-    for (let i of store.activeDetail.filters) {
-      a += !isdeepequal(store.defaultParams[i], store.params[i])
+    const filters = store.activeDetail.filters
+    for (let i of filters) {
+      if (i === 'month' && filters.includes('year')) continue
+      if (store.typeNames.includes(i)) {
+        a += !isdeepequal(getDefault(i), store.params.type)
+      } else {
+        a += !isdeepequal(getDefault(i), store.params[i])
+      }
     }
     return a
   })
@@ -28,9 +53,9 @@
   const clearFilters = () => {
     for (let i of store.activeDetail.filters) {
       if (store.typeNames.includes(i)) {
-        store.params.type = store.defaultParams.type
+        store.params.type = getDefault(i)
       } else {
-        store.params[i] = store.defaultParams[i]
+        store.params[i] = getDefault(i)
       }
     }
     filterEvent()
@@ -157,17 +182,28 @@
             />
           </template>
           <template v-if="i === 'year'">
-            <label class="text-xs">{{ $t('content.year') }}</label>
-            <n-select
-              v-model:value="store.params.year"
-              filterable
-              @update:value="filterEvent"
-              clearablewA
-              :options="Utils.yearList"
-              label-field="name"
-              value-field="id"
-              :ignore-composition="false"
-            />
+            <template v-if="store.activeDetail?.filters?.includes('month')">
+              <label class="text-xs">{{ $t('content.year') }} / {{ $t('content.month') }}</label>
+              <UIYearMonth
+                v-model:year="store.params.year"
+                v-model:month="store.params.month"
+                :clearable="false"
+                @change="filterEvent"
+              />
+            </template>
+            <template v-else>
+              <label class="text-xs">{{ $t('content.year') }}</label>
+              <n-select
+                v-model:value="store.params.year"
+                filterable
+                @update:value="filterEvent"
+                clearablewA
+                :options="Utils.yearList"
+                label-field="name"
+                value-field="id"
+                :ignore-composition="false"
+              />
+            </template>
           </template>
           <template v-if="i === 'sex'">
             <label class="text-xs">{{ $t('workerPage.filter.sex') }}</label>
@@ -258,6 +294,28 @@
               @update:value="filterEvent"
               clearable
               :options="passportFilter"
+            />
+          </template>
+          <template v-if="i === 'contract_type'">
+            <label class="text-xs">{{ $t('content.type') }}</label>
+            <n-select
+              v-model:value="store.params.type"
+              filterable
+              @update:value="filterEvent"
+              :options="contractTypeOptions"
+              label-field="name"
+              value-field="id"
+            />
+          </template>
+          <template v-if="i === 'month' && !store.activeDetail?.filters?.includes('year')">
+            <label class="text-xs">{{ $t('content.month') }}</label>
+            <n-select
+              v-model:value="store.params.month"
+              @update:value="filterEvent"
+              clearable
+              :options="Utils.monthList"
+              label-field="name"
+              value-field="id"
             />
           </template>
         </div>

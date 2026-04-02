@@ -210,6 +210,7 @@ export const appPermissions = {
   hrJobs: 'hr-jobs',
   hrJobsWrite: 'hr-jobs-write',
   hrJobsRead: 'hr-jobs-read',
+  hrMonthlyReport: 'hr-monthly-report',
   exportWorkersZip: 'export-workers-zip',
 
   turnstileAccessLevels: 'turnstile-access-levels',
@@ -344,4 +345,7 @@ export const appPermissions = {
   chat:'chat',
   chatTelegramMessages:'chat-telegram-messages',
   chatNotification:'chat-notification',
+
+  extra:'extra',
+  extraWorkerUser:'extra-worker-user',
 }

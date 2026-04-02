@@ -8,6 +8,7 @@
 
   const store = useReport2Store()
   const componentStore = useComponentStore()
+  const defineEmits = defineEmits(['onCloseEv'])
 
   const onSubmit = () => {
     formRef.value?.validate((error) => {
@@ -67,20 +68,6 @@
               :render-label="UIHelper.selectRender.label"
               :render-tag="UIHelper.selectRender.value"
             />
-            <!--            <n-select-->
-            <!--              v-model:value="store.positionPayload.department_id"-->
-            <!--              filterable-->
-            <!--              :filter="() => true"-->
-            <!--              clearable-->
-            <!--              :options="componentStore.departmentList"-->
-            <!--              :render-label="UIHelper.selectRender.label"-->
-            <!--              :render-tag="UIHelper.selectRender.value"-->
-            <!--              value-field="id"-->
-            <!--              :loading="componentStore.departmentLoading"-->
-            <!--              @search="componentStore._onSearchDepartment"-->
-            <!--              @scroll="componentStore._onScrollDepartment"-->
-            <!--              :reset-menu-on-options-change="true"-->
-            <!--            />-->
           </n-form-item>
           <n-form-item
             class="col-span-12 md:col-span-6 lg:col-span-4"
@@ -200,7 +187,7 @@
     </n-spin>
 
     <div class="grid grid-cols-2 gap-2">
-      <n-button @click="store.visible = false" type="error" ghost>
+      <n-button @click="store.position.visible = false" type="error" ghost>
         {{ $t('content.cancel') }}
       </n-button>
       <n-button @click="onSubmit" :loading="store.saveLoading" type="primary">
@@ -210,4 +197,3 @@
   </n-form>
 </template>
 
-<style scoped></style>

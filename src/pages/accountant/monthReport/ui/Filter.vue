@@ -1,7 +1,6 @@
 <script setup>
 import {useAccountStore, useComponentStore, useMonthReportStore} from '@/store/modules/index.js'
-import {UIPageFilter, UISelect} from '@/components/index.js'
-import Utils from '@/utils/Utils.js'
+import {UIPageFilter, UISelect, UIYearMonth} from '@/components/index.js'
 import UIHelper from '@/utils/UIHelper.js'
 import {ArrowCircleDown32Regular, ArrowSync20Filled} from '@vicons/fluent'
 import { useDebounce } from "@utils"
@@ -39,9 +38,12 @@ const resetFilter = () => {
   filterEvent()
 }
 
-const filterCount = computed(
-    () => Number(Boolean(store.params.organizations.length)) + Number(Boolean(store.params.code))
-)
+const filterCount = computed(() => {
+  return (
+    Number(Boolean(store.params.organizations.length)) +
+    Number(Boolean(store.params.code))
+  )
+})
 
 const onRefreshEv = () => {
   store.loading = true
@@ -106,24 +108,6 @@ const onChangeInput = useDebounce(filterEvent, 600)
         :render-tag="UIHelper.selectRender.value"
         @update:value="filterEvent"
       />
-      <label class="text-xs mt-3 text-gray-500 mb-1 font-medium">{{ $t('content.year') }}</label>
-      <n-select
-        class="w-full"
-        v-model:value="store.params.year"
-        :options="Utils.yearList"
-        label-field="name"
-        value-field="id"
-        @update:value="filterEvent"
-      />
-      <label class="text-xs mt-3 text-gray-500 mb-1 font-medium">{{ $t('content.month') }}</label>
-      <n-select
-        class="w-full"
-        v-model:value="store.params.month"
-        :options="Utils.monthList"
-        label-field="name"
-        value-field="id"
-        @update:value="filterEvent"
-      />
       <label class="text-xs mt-3 text-gray-500 mb-1 font-medium">{{ $t('monthReport.form.start_hours') }}</label>
       <n-input-number
         @update:value="onChangeInput" :min="1" :nax="100" v-model:value="store.params.start_hours"
@@ -133,6 +117,14 @@ const onChangeInput = useDebounce(filterEvent, 600)
       <n-input-number @update:value="onChangeInput" :min="1" :nax="100" v-model:value="store.params.end_hours" clearable />
     </template>
     <template #filterAction>
+      <div class="max-w-[160px]">
+        <UIYearMonth
+          v-model:year="store.params.year"
+          v-model:month="store.params.month"
+          :clearable="false"
+          @change="filterEvent"
+        />
+      </div>
       <n-button @click="onExportPanel" type="error">
         <template #icon>
           <ArrowSync20Filled />

@@ -3,8 +3,20 @@
   import Filter from './ui/Filter.vue'
   import MonthTab from './ui/MonthTab.vue'
   import OrgTab from './ui/OrgTab.vue'
-  import { useSalaryReportStore } from '@/store/modules/index.js'
+  import { useAccountStore, useSalaryReportStore } from '@/store/modules/index.js'
+  import { getOneMonthAgoYearMonth } from '@utils'
+
   const store = useSalaryReportStore()
+  const accStore = useAccountStore()
+
+  onMounted(() => {
+    if (!accStore.checkAction(accStore.pn.economistStatementsCode)) return
+    const oneMonthAgo = getOneMonthAgoYearMonth()
+    console.log(oneMonthAgo)
+    store.params.year = oneMonthAgo.year
+    store.params.month = oneMonthAgo.month
+    store._index()
+  })
 </script>
 
 <template>

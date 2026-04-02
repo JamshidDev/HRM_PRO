@@ -1,7 +1,7 @@
 <script setup>
   import { useSalaryCategoryStore } from '@/store/modules/index.js'
+  import { UIYearMonth } from '@/components/index.js'
   import validationRules from '@/utils/validationRules.js'
-  import Utils from '@/utils/Utils.js'
 
   const store = useSalaryCategoryStore()
   const formRef = ref(null)
@@ -28,22 +28,14 @@
     <div class="h-[calc(100vh-160px)] overflow-y-auto">
       <div class="grid grid-cols-12">
         <div class="col-span-12 flex justify-center gap-4 mb-6">
-          <n-select
-            class="w-full! md:w-[200px]!"
-            v-model:value="store.payload.year"
-            :options="Utils.yearList"
-            label-field="name"
-            value-field="id"
-            @update:value="filterEvent"
-          />
-          <n-select
-            class="w-full! md:w-[200px]!"
-            v-model:value="store.payload.month"
-            :options="Utils.monthList"
-            label-field="name"
-            value-field="id"
-            @update:value="filterEvent"
-          />
+          <div class="w-full! md:w-[220px]!">
+            <UIYearMonth
+              v-model:year="store.payload.year"
+              v-model:month="store.payload.month"
+              :clearable="false"
+              @change="filterEvent"
+            />
+          </div>
         </div>
       </div>
 

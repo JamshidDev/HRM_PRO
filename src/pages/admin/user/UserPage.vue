@@ -1,17 +1,19 @@
 <script setup>
   import { LockClosed32Filled, LockOpen28Filled } from '@vicons/fluent'
-  import { UIDrawer, UIPageContent, UIDConfirm } from '@/components/index.js'
-  import { useUserStore, useAccountStore } from '@/store/modules/index.js'
+  import { UIDrawer, UIModal, UIPageContent, UIDConfirm } from '@/components/index.js'
+  import { useUserStore, useAccountStore, useUserRoleStore } from '@/store/modules/index.js'
   import Table from './ui/Table.vue'
   import createForm from './ui/createForm.vue'
   import Filter from './ui/Filter.vue'
+  import PermissionForm from './ui/permissionForm.vue'
 
   const store = useUserStore()
   const accStore = useAccountStore()
-
+  const roleStore = useUserRoleStore()
   onMounted(() => {
     if (!accStore.checkAction(accStore.pn.usersRead)) return
     store._index()
+    roleStore._getAllPermission()
   })
 </script>
 
@@ -19,6 +21,13 @@
   <UIPageContent>
     <Filter />
     <Table />
+    <UIModal
+      v-model:visible="store.isPermissionsVisible"
+      :width="960"
+      :title="$t('userPage.permissions')"
+    >
+      <PermissionForm />
+    </UIModal>
     <UIDrawer
       :visible="store.visible"
       @update:visible="(v) => (store.visible = v)"

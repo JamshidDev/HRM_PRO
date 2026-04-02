@@ -1,19 +1,19 @@
 <script setup>
-  import { UIPageContent, UIModal } from '@/components/index.js'
-  import Filter from './ui/Filter.vue'
-  import Table from './ui/Table.vue'
-  import Preview from './ui/Preview.vue'
-  import DownloadModal from './ui/DownloadModal.vue'
-  import CalendarAndTimelineTabs from './ui/CalendarAndTimelineTabs.vue'
-  import { useAccountStore, useEventV2Store } from '@/store/modules/index.js'
+import {UIModal, UIPageContent} from '@/components/index.js'
+import Filter from './ui/Filter.vue'
+import Table from './ui/Table.vue'
+import Preview from './ui/Preview.vue'
+import DownloadModal from './ui/DownloadModal.vue'
+import CalendarAndTimelineTabs from './ui/CalendarAndTimelineTabs.vue'
+import {useAccountStore, useEventV2Store} from '@/store/modules/index.js'
 
-  const store = useEventV2Store()
-  const accStore = useAccountStore()
+const store = useEventV2Store()
+const accStore = useAccountStore()
 
-  onMounted(() => {
-    if (!accStore.checkAction(accStore.pn.turnstileHikCentralEvents)) return
-    store._index()
-  })
+onMounted(() => {
+  if (!accStore.checkAction(accStore.pn.turnstileHikCentralEvents)) return
+  store._index()
+})
 </script>
 
 <template>
