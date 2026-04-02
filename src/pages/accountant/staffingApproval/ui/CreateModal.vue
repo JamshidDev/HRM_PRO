@@ -5,6 +5,8 @@
   import DepartmentItem from './DepartmentItem.vue'
   import i18n from '@/i18n/index.js'
   import { useAppSetting, Utils } from '@utils'
+  import { VueDraggable } from 'vue-draggable-plus'
+  import { Drag24Filled, DismissCircle28Filled } from '@vicons/fluent'
 
   const t = i18n.global.t
   const store = useStaffingApprovalStore()
@@ -14,20 +16,49 @@
   const selectedOrganization = ref([])
   const expandedKeys = ref([])
 
+  const loadOrgDependents = (orgId) => {
+    store.worker.params.organization_id = orgId
+    store.worker.params.page = 1
+    store.worker.params.search = null
+    store.worker.list = []
+    store.leader.params.organization_id = orgId
+    store.leader.params.parent_id = null
+    store.leader.params.page = 1
+    store.leader.params.search = null
+    store.leader.list = []
+    store.confirmation.params.organization_id = orgId
+    store.confirmation.params.page = 1
+    store.confirmation.params.search = null
+    store.confirmation.list = []
+    store.sortableConfirmations = []
+    store.parent.list = []
+    store._organizationParents(orgId)
+    store._workers()
+    store._confirmation()
+  }
+
   const onChangeOrganization = (v) => {
     selectedOrganization.value = v
-    store.payload.organization_id = v.length > 0 ? v[0].id : null
+    const orgId = v.length > 0 ? v[0].id : null
+    store.payload.organization_id = orgId
     store.payload.department_positions = []
+    store.payload.director_id = null
+    store.payload.confirmatory_id = null
+    store.payload.confirmations = []
+    store.leader.params.parent_id = null
     expandList.value = []
     store._showGenerate()
+    if (orgId) loadOrgDependents(orgId)
   }
 
   const onDefaultOrganization = (v) => {
     selectedOrganization.value = v
-    store.payload.organization_id = v.length > 0 ? v[0].id : null
+    const orgId = v.length > 0 ? v[0].id : null
+    store.payload.organization_id = orgId
     store.payload.department_positions = []
     expandList.value = []
     store._showGenerate()
+    if (orgId) loadOrgDependents(orgId)
   }
 
   const onSubmit = () => {
@@ -40,7 +71,7 @@
         const data = {
           organization_id: store.payload.organization_id,
           department_positions: store.payload?.department_positions,
-          confirmations: store.payload.confirmations,
+          confirmations: store.sortableConfirmations.map((v, idx) => ({ id: v.id, order: idx + 1 })),
           director_id: store.payload.director_id,
           confirmatory_id: store.payload.confirmatory_id,
           date: Utils.timeToZone(store.payload.date)
@@ -102,7 +133,7 @@
   }
 
   const leaderAction = {
-    fetch: () => store.leader.list.length || store._organizationLeader(),
+    fetch: () => !store.leader.params.parent_id || store.leader.list.length || store._organizationLeader(),
     onSearch: () => {
       store.leader.params.page = 1
       store._organizationLeader()
@@ -123,6 +154,21 @@
       store.confirmation.params.page++
       store._confirmation(true)
     }
+  }
+
+  const fillSortableConfirmations = () => {
+    store.sortableConfirmations = store.confirmation.list
+      .filter((v) => store.payload.confirmations.includes(v.id))
+      .map((v) => ({ id: v.id, name: v.name, position: v.position }))
+  }
+
+  const onChangeDraggle = () => {
+    store.payload.confirmations = store.sortableConfirmations.map((v) => v.id)
+  }
+
+  const onRemoveConfirmation = (id) => {
+    store.sortableConfirmations = store.sortableConfirmations.filter((v) => v.id !== id)
+    store.payload.confirmations = store.payload.confirmations.filter((v) => v !== id)
   }
 
   const onChangeParent = (v) => {
@@ -201,6 +247,7 @@
                       :total-count="store.worker.totalItems"
                       :per-page="store.worker.params.per_page"
                       :clearable="true"
+                      :disabled="!store.payload.organization_id"
                       @onScrollEv="workerAction.onScroll"
                       @onSearch="workerAction.onSearch"
                     />
@@ -212,18 +259,48 @@
                     path="confirmations"
                     :rule-path="validationRules.rulesNames.requiredMultiSelectField"
                   >
-                    <SuperSelect
-                      multiple
-                      v-model:value="store.payload.confirmations"
-                      v-model:search="store.confirmation.params.search"
-                      :options="store.confirmation.list"
-                      :loading="store.confirmation.loading"
-                      :total-count="store.confirmation.totalItems"
-                      :per-page="store.confirmation.params.per_page"
-                      :clearable="true"
-                      @onScrollEv="confirmationAction.onScroll"
-                      @onSearch="confirmationAction.onSearch"
-                    />
+                    <div class="w-full flex flex-col gap-2">
+                      <SuperSelect
+                        multiple
+                        v-model:value="store.payload.confirmations"
+                        v-model:search="store.confirmation.params.search"
+                        :options="store.confirmation.list"
+                        :loading="store.confirmation.loading"
+                        :total-count="store.confirmation.totalItems"
+                        :per-page="store.confirmation.params.per_page"
+                        :clearable="true"
+                        :disabled="!store.payload.organization_id"
+                        @onScrollEv="confirmationAction.onScroll"
+                        @onSearch="confirmationAction.onSearch"
+                        @update:value="fillSortableConfirmations"
+                      />
+                      <VueDraggable
+                        v-if="store.sortableConfirmations.length"
+                        v-model="store.sortableConfirmations"
+                        @end="onChangeDraggle"
+                        class="flex flex-col gap-1"
+                      >
+                        <div
+                          v-for="(item, index) in store.sortableConfirmations"
+                          :key="item.id"
+                          class="flex items-center gap-2 px-2 py-1 bg-surface-section border border-surface-line rounded-xl"
+                        >
+                          <n-icon size="20" class="text-secondary cursor-move">
+                            <Drag24Filled />
+                          </n-icon>
+                          <div class="flex-1 flex flex-col">
+                            <span class="text-sm font-medium">{{ item.name }}</span>
+                            <span class="text-xs text-secondary">{{ item.position }}</span>
+                          </div>
+                          <span class="text-sm font-bold text-secondary mr-1">{{ index + 1 }}</span>
+                          <n-button @click="onRemoveConfirmation(item.id)" type="error" circle secondary size="small">
+                            <template #icon>
+                              <DismissCircle28Filled />
+                            </template>
+                          </n-button>
+                        </div>
+                      </VueDraggable>
+                    </div>
                   </n-form-item>
                 </div>
               </div>
@@ -244,7 +321,7 @@
                 </div>
                 <n-checkbox-group v-model:value="store.payload.department_positions">
                   <div
-                    class="w-full h-[400px] overflow-y-auto [scrollbar-gutter:stable] mt-2"
+                    class="w-full h-[300px] overflow-y-auto [scrollbar-gutter:stable] mt-2"
                     :class="{ 'opacity-50 pointer-events-none': !store.payload.organization_id }"
                   >
                     <template v-for="item in store.positions" :key="item.id">
@@ -272,6 +349,7 @@
                     :options="store.parent.list"
                     :loading="store.parent.loading"
                     :clearable="true"
+                    :disabled="!store.payload.organization_id"
                     @update:value="onChangeParent"
                   />
                 </n-form-item>
@@ -290,6 +368,7 @@
                     :total-count="store.leader.totalItems"
                     :per-page="store.leader.params.per_page"
                     :clearable="true"
+                    :disabled="!store.payload.organization_id || !store.leader.params.parent_id"
                     @onScrollEv="leaderAction.onScroll"
                     @onSearch="leaderAction.onSearch"
                   />

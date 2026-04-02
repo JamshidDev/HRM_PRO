@@ -348,5 +348,4 @@ export const appPermissions = {
 
   extra:'extra',
   extraWorkerUser:'extra-worker-user',
-
 }

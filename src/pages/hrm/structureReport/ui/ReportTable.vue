@@ -15,13 +15,9 @@
     return store.reportData.find((v) => String(v.organization_id) === String(props.organizationId))
   })
 
-  const getMenKey = (item) => {
-    return item.man_woman?.find((k) => k.includes('men_count') && !k.includes('women'))
-  }
+  const getMenKey = (item) => item.man_woman?.[0]
 
-  const getWomenKey = (item) => {
-    return item.man_woman?.find((k) => k.includes('women_count'))
-  }
+  const getWomenKey = (item) => item.man_woman?.[1]
 </script>
 
 <template>
@@ -51,7 +47,7 @@
                 :min="0"
                 class="input-editable"
               />
-              <span v-else>{{ store.getStatValue(orgData, getMenKey(item)) || '' }}</span>
+              <span v-else>{{ store.getStatValue(orgData, getMenKey(item)) !== 0 ? store.getStatValue(orgData, getMenKey(item)) : '' }}</span>
             </td>
             <td v-if="item.man_woman && item.man_woman.length > 0" class="text-center font-medium">
               <n-input-number
@@ -63,7 +59,7 @@
                 :min="0"
                 class="input-editable"
               />
-              <span v-else>{{ store.getStatValue(orgData, getWomenKey(item)) || '' }}</span>
+              <span v-else>{{ store.getStatValue(orgData, getWomenKey(item)) !== 0 ? store.getStatValue(orgData, getWomenKey(item)) : '' }}</span>
             </td>
             <td class="text-center font-medium">
               <n-input-number
@@ -75,7 +71,7 @@
                 :min="0"
                 class="input-editable"
               />
-              <span v-else>{{ store.getStatValue(orgData, item.key) || '' }}</span>
+              <span v-else>{{ store.getStatValue(orgData, item.key) !== 0 ? store.getStatValue(orgData, item.key) : '' }}</span>
             </td>
           </tr>
         </tbody>

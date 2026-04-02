@@ -54,12 +54,12 @@ export const useAIConversationStore = defineStore('AIConversationStore', {
       let token = localStorage.getItem(useAppSetting.tokenKey) || null
       const index = this.messages.length
       this.loading = true
-
       try {
         const response = await fetch(`${apiUrl}/api/v1/ai/lawyer`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
+            'X-Auth-Type': 'sanctum',
             Accept: 'text/event-stream',
             Authorization: 'Bearer ' + token
           },

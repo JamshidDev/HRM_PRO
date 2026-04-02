@@ -25,7 +25,6 @@ export const useStaffingApprovalStore = defineStore('staffingApprovalStore', {
       confirmatory_id: null
     },
     sortableConfirmations: [],
-    oneByOne: true,
     positions: [],
     generateLoading: false,
     saveLoading: false,
@@ -35,6 +34,7 @@ export const useStaffingApprovalStore = defineStore('staffingApprovalStore', {
       loading: false,
       totalItems: 0,
       params: {
+        organization_id: null,
         page: 1,
         per_page: 100,
         search: null
@@ -55,6 +55,7 @@ export const useStaffingApprovalStore = defineStore('staffingApprovalStore', {
       loading: false,
       totalItems: 0,
       params: {
+        organization_id: null,
         parent_id: null,
         page: 1,
         per_page: 100,
@@ -66,6 +67,7 @@ export const useStaffingApprovalStore = defineStore('staffingApprovalStore', {
       loading: false,
       totalItems: 0,
       params: {
+        organization_id: null,
         parent_id: null,
         page: 1,
         per_page: 100,
@@ -94,10 +96,10 @@ export const useStaffingApprovalStore = defineStore('staffingApprovalStore', {
           this.confirmation.loading = false
         })
     },
-    _organizationParents() {
+    _organizationParents(organization_id) {
       this.parent.loading = true
       $ApiService.staffApprovalService
-        .organizationParents()
+        .organizationParents({ params: { organization_id } })
         .then((res) => {
           this.parent.list = res.data.data
         })

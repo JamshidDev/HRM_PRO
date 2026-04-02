@@ -14,7 +14,6 @@
     route,
     (v) => {
       if (v.matched.length > 2) {
-        console.log(v.matched[1])
         store.payload.menu = v.matched[1].meta.permission
         store.payload.sub_menu = v.meta.permission || 'hr-workers'
       } else {
@@ -52,7 +51,7 @@
   }
 
   const isAdmin = computed(() => {
-    return accStore.checkAction(accStore.pn.admin)
+    return accStore.checkPermission(accStore.pn.instructionsWrite)
   })
 </script>
 <template>

@@ -48,7 +48,7 @@ export const usePageInstructionStore = defineStore('pageInstructionStore', {
         .then((res) => {
           const data = res.data.data.data
           this.sections = data
-          if (accStore.checkAction(accStore.pn.admin)) {
+          if (accStore.checkPermission(accStore.pn.admin)) {
             this.activeSection = 99999
           } else if (data.length) {
             this.activeSection = data[0].id
