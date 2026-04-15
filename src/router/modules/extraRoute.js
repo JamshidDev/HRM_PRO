@@ -8,5 +8,12 @@ export const extraRoutes = [
         meta: {
             layout: AppLayouts.main
         }
+    },
+    {
+        path: Utils.routeExtraPathMaker(AppPaths.AdminOther),
+        component: () => import('@pages/extra/educationDirectory/EducationDirectoryPage.vue'),
+        meta: {
+            layout: AppLayouts.main
+        }
     }
 ]

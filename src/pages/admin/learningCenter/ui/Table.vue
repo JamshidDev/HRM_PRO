@@ -1,7 +1,6 @@
 <script setup>
   import {
     NoDataPicture,
-    UIActionButton,
     UIMenuButton,
     UIPagination,
     UIUser,

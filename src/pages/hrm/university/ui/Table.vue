@@ -28,7 +28,7 @@
     store.payload.university_id = v.university.id
     store.payload.speciality_id = v.speciality.id
     store.payload.from_date = new Date(v.from_date).getTime()
-    store.payload.to_date = new Date(v.from_date).getTime()
+    store.payload.to_date = new Date(v.to_date).getTime()
     store.payload.file = {
       name: v.file
     }

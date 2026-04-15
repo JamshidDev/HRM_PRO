@@ -1,12 +1,14 @@
 <script setup>
-  import { NoDataPicture, UIActionButton, UIPagination } from '@/components/index.js'
+  import { NoDataPicture, UIMenuButton, UIPagination } from '@/components/index.js'
   import { useCommandTempStore } from '@/store/modules/index.js'
 
   const store = useCommandTempStore()
 
-  const onDelete = (v) => {
-    store.elementId = v.id
-    store._delete()
+  const onSelectEv = (v) => {
+    if (v.key === 'delete') {
+      store.elementId = v.data.id
+      store._delete()
+    }
   }
 
   const changePage = (v) => {
@@ -24,7 +26,7 @@
           <tr>
             <th class="text-center! min-w-[40px] w-[40px]">{{ $t('content.number') }}</th>
             <th class="min-w-[200px]">{{ $t('documentSetting.form.name') }}</th>
-            <th class="min-w-[40px] w-[40px]">{{ $t('content.action') }}</th>
+            <th class="min-w-[40px] w-[40px]"></th>
           </tr>
         </thead>
         <tbody>
@@ -36,11 +38,11 @@
             </td>
             <td>{{ item.name }}</td>
             <td>
-              <UIActionButton
+              <UIMenuButton
                 :data="item"
-                :visible-edit-btn="false"
-                :loading-delete="item.id === store.elementId && store.deleteLoading"
-                @on-delete="onDelete"
+                :show-delete="true"
+                :loading="item.id === store.elementId && store.deleteLoading"
+                @selectEv="onSelectEv"
               />
             </td>
           </tr>

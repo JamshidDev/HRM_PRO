@@ -222,8 +222,8 @@ export const navigations = [
         path: Utils.routeHrmPathMaker(AppPaths.PublicVacancy),
         icon: Briefcase48Filled,
         color: 'bg-info',
-        permission: appPermissions.hrUsers,
-        disable: true
+        permission: appPermissions.hrPublicVacancy,
+        disable: false
       },
       {
         label: 'punishment.name',
@@ -800,6 +800,13 @@ export const navigations = [
         icon: PeopleCheckmark24Filled,
         color: 'bg-primary',
         permission: appPermissions.extraWorkerUser
+      },
+      {
+        label: 'educationDirectory.name',
+        path: Utils.routeExtraPathMaker(AppPaths.AdminOther),
+        icon: Folder48Filled,
+        color: 'bg-dark',
+        permission: appPermissions.educationsStructureMenu
       }
     ]
   },
@@ -938,6 +945,13 @@ export const navigations = [
       {
         label: 'mobileUserPage.name',
         path: Utils.routePathMaker(AppPaths.MobileUsers),
+        icon: Folder48Filled,
+        color: 'bg-dark',
+        permission: appPermissions.admin
+      },
+      {
+        label: 'vacancyApprovePage.menuName',
+        path: Utils.routePathMaker(AppPaths.VacancyApprove),
         icon: Folder48Filled,
         color: 'bg-dark',
         permission: appPermissions.admin

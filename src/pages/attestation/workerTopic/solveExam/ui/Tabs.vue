@@ -24,10 +24,10 @@
     </div>
     <div class="w-full">
       <n-tabs animated v-model:value="store.activeTab" class="hidden-tab-header" type="segment">
-        <n-tab-pane :name="1">
+        <n-tab-pane :name="1" display-directive="show">
           <slot name="questin-content"></slot>
         </n-tab-pane>
-        <n-tab-pane :name="2">
+        <n-tab-pane :name="2" display-directive="show">
           <slot name="video-content"></slot>
         </n-tab-pane>
       </n-tabs>

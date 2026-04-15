@@ -39,7 +39,25 @@ export const useVacancyStore = defineStore('vacancyStore', {
     vacancyPositions: [],
     cityList: [],
     cityLoading: false,
-    switchLoading: false
+    switchLoading: false,
+    // Tabs
+    activeTab: 'vacancies',
+    selectedVacancy: null,
+    // Applications
+    applicationsLoading: false,
+    applicationsList: [],
+    applicationsTotalItems: 0,
+    applicationsParams: {
+      page: 1,
+      per_page: 10
+    },
+    // Application View Modal
+    applicationViewVisible: false,
+    selectedApplication: null,
+    applicationActionLoading: false,
+    // Confirm Modal
+    confirmModalVisible: false,
+    confirmMessage: ''
   }),
   actions: {
     _index() {
@@ -185,6 +203,110 @@ export const useVacancyStore = defineStore('vacancyStore', {
       this.payload.qualification_requirements = ''
       this.payload.working_conditions = ''
       this.payload.specialties = ''
+    },
+    _applications() {
+      this.applicationsLoading = true
+      $ApiService.vacancyService
+        ._applications({ id: this.elementId, params: this.applicationsParams })
+        .then((res) => {
+          this.applicationsList = res.data.data.data
+          this.applicationsTotalItems = res.data.data.total
+        })
+        .finally(() => {
+          this.applicationsLoading = false
+        })
+    },
+    openApplicationsTab(item) {
+      this.elementId = item.id
+      this.selectedVacancy = item
+      this.applicationsParams.page = 1
+      this.applicationsList = []
+      this.activeTab = 'applications'
+      this._applications()
+    },
+    openApplicationView(item) {
+      this.selectedApplication = item
+      this.applicationViewVisible = true
+    },
+    closeApplicationView() {
+      this.applicationViewVisible = false
+      this.selectedApplication = null
+    },
+    _acceptApplication() {
+      this.applicationActionLoading = true
+      $ApiService.vacancyService
+        ._applicationAction({
+          vacancyId: this.elementId,
+          applicationId: this.selectedApplication.id,
+          data: { status: 2 }
+        })
+        .then(() => {
+          this.applicationViewVisible = false
+          this._applications()
+        })
+        .finally(() => {
+          this.applicationActionLoading = false
+        })
+    },
+    _rejectApplication() {
+      this.applicationActionLoading = true
+      $ApiService.vacancyService
+        ._applicationAction({
+          vacancyId: this.elementId,
+          applicationId: this.selectedApplication.id,
+          data: { status: 3 }
+        })
+        .then(() => {
+          this.applicationViewVisible = false
+          this._applications()
+        })
+        .finally(() => {
+          this.applicationActionLoading = false
+        })
+    },
+    openConfirmModal(item) {
+      this.selectedApplication = item
+      this.confirmMessage = ''
+      this.confirmModalVisible = true
+    },
+    closeConfirmModal() {
+      this.confirmModalVisible = false
+      this.selectedApplication = null
+      this.confirmMessage = ''
+    },
+    _acceptWithMessage() {
+      this.applicationActionLoading = true
+      $ApiService.vacancyService
+        ._applicationAction({
+          vacancyId: this.elementId,
+          applicationId: this.selectedApplication.id,
+          data: { status: 2, message: this.confirmMessage }
+        })
+        .then(() => {
+          this.confirmModalVisible = false
+          this.confirmMessage = ''
+          this._applications()
+        })
+        .finally(() => {
+          this.applicationActionLoading = false
+        })
+    },
+    _rejectWithMessage() {
+      this.applicationActionLoading = true
+      $ApiService.vacancyService
+        ._applicationAction({
+          vacancyId: this.elementId,
+          applicationId: this.selectedApplication.id,
+          data: { status: 3, message: this.confirmMessage }
+        })
+        .then(() => {
+          this.confirmModalVisible = false
+          this.confirmMessage = ''
+          this._applications()
+        })
+        .finally(() => {
+          this.applicationActionLoading = false
+        })
     }
   }
 })

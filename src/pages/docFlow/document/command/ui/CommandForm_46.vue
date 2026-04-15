@@ -326,7 +326,7 @@
         >
           <n-input-number
             class="w-full"
-            min="15"
+            min="1"
             max="100"
             v-model:value="store.form_46.half_one_day"
             @update:value="autoCalculateTo"
@@ -396,7 +396,7 @@
             <n-input-number
               :disabled="true"
               class="w-full"
-              min="0"
+              min="1"
               max="100"
               v-model:value="store.form_46.half_two_day"
             />

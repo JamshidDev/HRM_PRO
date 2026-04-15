@@ -1,5 +1,5 @@
 <script setup>
-  import { NoDataPicture, UIActionButton, UIPagination } from '@/components/index.js'
+  import { NoDataPicture, UIMenuButton, UIPagination } from '@/components/index.js'
   import { useWorkdayStore } from '@/store/modules/index.js'
 
   const store = useWorkdayStore()
@@ -14,20 +14,20 @@
     } else return null
   }
 
-  const onEdit = (v) => {
-    store.visibleType = false
-    store.elementId = v.id
-    store.payload.schedule_id = v.schedule.id
-    store.payload.type = v.type.id
-    store.payload.day_of_week = v.day_of_week.toString()
-    store.payload.start_time = format(v.start_time)
-    store.payload.end_time = format(v.end_time)
-    store.visible = true
-  }
-
-  const onDelete = (v) => {
-    store.elementId = v.id
-    store._delete()
+  const onSelectEv = (v) => {
+    if (v.key === 'edit') {
+      store.visibleType = false
+      store.elementId = v.data.id
+      store.payload.schedule_id = v.data.schedule.id
+      store.payload.type = v.data.type.id
+      store.payload.day_of_week = v.data.day_of_week.toString()
+      store.payload.start_time = format(v.data.start_time)
+      store.payload.end_time = format(v.data.end_time)
+      store.visible = true
+    } else if (v.key === 'delete') {
+      store.elementId = v.data.id
+      store._delete()
+    }
   }
 
   const changePage = (v) => {
@@ -49,7 +49,7 @@
             <th class="min-w-[200px]">{{ $t('workdayPage.form.day_of_week') }}</th>
             <th class="min-w-[200px]">{{ $t('workdayPage.form.start_time') }}</th>
             <th class="min-w-[200px]">{{ $t('workdayPage.form.end_time') }}</th>
-            <th class="min-w-[90px] w-[90px]">{{ $t('content.action') }}</th>
+            <th class="min-w-[40px] w-[40px]"></th>
           </tr>
         </thead>
         <tbody>
@@ -65,11 +65,12 @@
             <td>{{ item.start_time }}</td>
             <td>{{ item.end_time }}</td>
             <td>
-              <UIActionButton
+              <UIMenuButton
                 :data="item"
-                :loading-delete="item.id === store.elementId && store.deleteLoading"
-                @on-edit="onEdit"
-                @on-delete="onDelete"
+                :show-edit="true"
+                :show-delete="true"
+                :loading="item.id === store.elementId && store.deleteLoading"
+                @selectEv="onSelectEv"
               />
             </td>
           </tr>

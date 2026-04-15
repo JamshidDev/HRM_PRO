@@ -47,10 +47,10 @@
       <thead>
         <tr>
           <th class="text-center min-w-[40px] w-[40px]">{{ $t('content.number') }}</th>
-          <th class="text-center max-w-[210px] w-[210px]">{{ $t('content.worker') }}</th>
+          <th class="text-center  min-w-[110px]">{{ $t('content.worker') }}</th>
           <th class="max-w-[250px] w-[250px]">{{ $t('content.organization') }}</th>
           <th class="!text-center max-w-[210px] w-[210px]">{{ $t('content.department') }}</th>
-          <th class="min-w-[100px] !text-center">{{ $t('content.university') }}</th>
+          <th class="min-w-[100px] w-[300px] !text-center">{{ $t('content.university') }}</th>
           <th class="text-center! max-w-[80px] w-[80px]">{{ $t('content.action') }}</th>
         </tr>
       </thead>
@@ -63,14 +63,18 @@
           </td>
           <td>
             <UIUser
+              :short="false"
               :data="{
                 photo: item?.worker?.photo,
                 lastName: item?.worker?.last_name,
                 firstName: item?.worker?.first_name,
                 middleName: item?.worker?.middle_name,
-                position: item?.position?.name
               }"
-            />
+            >
+              <template #position>
+                <span class="text-xs text-textColor3 w-full">{{ item?.position?.name }}</span>
+              </template>
+            </UIUser>
           </td>
           <td>{{ item.organization.name }}</td>
           <td class="text-center">{{ item.department.name }}</td>

@@ -32,7 +32,8 @@ export const useActionLogStore = defineStore('actionLog', {
       per_page: 10,
       search: null
     },
-    structureCheck: []
+    structureCheck: [],
+    logViewerLoading: false
   }),
   actions: {
     _getActionLog() {
@@ -74,6 +75,18 @@ export const useActionLogStore = defineStore('actionLog', {
         })
         .finally(() => {
           this.authLoading = false
+        })
+    },
+    _generateLogViewer() {
+      this.logViewerLoading = true
+      $ApiService.logService
+        ._generateLogViewer()
+        .then((res) => {
+          const url = res.data?.url || res.data?.data?.url
+          window.open(url, '_blank')
+        })
+        .finally(() => {
+          this.logViewerLoading = false
         })
     },
     _filterEvent() {

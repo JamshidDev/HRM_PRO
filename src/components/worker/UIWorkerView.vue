@@ -17,6 +17,9 @@
   import MainInfo from './ui/MainInfo.vue'
   import MedList from './ui/MedList.vue'
   import VacationView from './ui/VacationView.vue'
+  import IncentiveInfo from './ui/IncentiveInfo.vue'
+  import DisciplinaryInfo from './ui/DisciplinaryInfo.vue'
+  import ExamInfo from './ui/ExamInfo.vue'
   import i18n from '@/i18n/index.js'
   import { useComponentStore } from '@/store/modules/index.js'
   import Utils from '@/utils/Utils.js'
@@ -70,18 +73,8 @@
       icon: NotepadPerson24Regular
     },
     {
-      name: t('workerView.tabs.attestation'),
+      name: t('workerView.tabs.exams'),
       id: 8,
-      icon: QuizNew48Regular
-    },
-    {
-      name: t('workerView.tabs.checkSkill'),
-      id: 9,
-      icon: QuizNew48Regular
-    },
-    {
-      name: t('workerView.tabs.checkKnowledge'),
-      id: 10,
       icon: QuizNew48Regular
     }
   ]
@@ -220,6 +213,15 @@
                 </template>
                 <template v-if="tabList[4].id === item.id">
                   <VacationView />
+                </template>
+                <template v-if="tabList[5].id === item.id">
+                  <IncentiveInfo />
+                </template>
+                <template v-if="tabList[6].id === item.id">
+                  <DisciplinaryInfo />
+                </template>
+                <template v-if="tabList[7].id === item.id">
+                  <ExamInfo />
                 </template>
               </n-tab-pane>
             </n-tabs>

@@ -90,6 +90,7 @@ export const AppPaths = {
   VacationSchedule: '/vacation-schedule',
   WorkerRole: '/worker-role',
   Telegram: '/telegram',
+  VacancyApprove: '/vacancy-approve',
   LearningCenter: '/learning-center',
   Direction: '/direction',
   Specialization: '/specialization',

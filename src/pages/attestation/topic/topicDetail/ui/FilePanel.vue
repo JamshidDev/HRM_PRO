@@ -1,6 +1,6 @@
 <script setup>
   import { useTopicFileStore } from '@/store/modules/index.js'
-  import { UIMenuButton } from '@/components/index.js'
+  import { UIMenuButton, NoDataPicture } from '@/components/index.js'
   import Utils from '@/utils/Utils.js'
   import { useAccountStore } from '@/store/modules/index.js'
   const accStore = useAccountStore()
@@ -33,7 +33,8 @@
 </script>
 <template>
   <div class="flex flex-col gap-3 px-1">
-    <n-grid cols="1 600:2" x-gap="20" y-gap="15">
+    <NoDataPicture v-if="!object.items?.length" />
+    <n-grid v-else cols="1 600:2" x-gap="20" y-gap="15">
       <template v-for="(file, idx) in object.items" :key="idx">
         <n-gi span="1">
           <div

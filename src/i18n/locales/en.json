@@ -977,6 +977,9 @@
       "type": "Type"
     }
   },
+  "educationDirectory": {
+    "name": "Education Directory"
+  },
   "othersPage": {
     "name": "Others",
     "language": {
@@ -2187,6 +2190,16 @@
     "name": "Open vacancies",
     "createTitle": "Create vacancy",
     "updateTitle": "Edit vacancy",
+    "applications": "Applications",
+    "accept": "Accept",
+    "applicationInfo": "Application Info",
+    "confirm": "Confirm",
+    "confirmInfo": "Write a message to accept or reject the application. The message will be sent to the applicant.",
+    "confirmMessage": "Message",
+    "confirmMessagePlaceholder": "Enter message...",
+    "birthPlace": "Birth place",
+    "livePlace": "Residence",
+    "gender": "Gender",
     "form": {
       "department_position_id": "Vacancy positions",
       "region_id": "Region",
@@ -2203,7 +2216,8 @@
       "position_obligations": "Position duties",
       "qualification_requirements": "Qualification requirements",
       "working_conditions": "Working conditions",
-      "specialties": "Specialties"
+      "specialties": "Specialties",
+      "applications_count": "Applications"
     }
   },
   "salaryCategory": {

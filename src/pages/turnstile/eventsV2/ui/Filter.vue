@@ -7,7 +7,7 @@
   } from '@/store/modules/index.js'
   import { UIPageFilter, UISelect, SuperSelect } from '@/components/index.js'
   import i18n from '@/i18n/index.js'
-  import { ArrowCircleDown32Regular, StarLineHorizontal320Regular } from '@vicons/fluent'
+  import { ArrowCircleDown32Regular, StarLineHorizontal320Regular, ArrowSync24Filled } from '@vicons/fluent'
   import { useAppSetting } from '@utils'
 
   const { t } = i18n.global
@@ -116,6 +116,29 @@
     }
     store.download.visible = true
   }
+
+  const checkLastClick = () => {
+    const TIMEOUT = 60
+    const now = Date.now()
+    const lastClickTime = localStorage.getItem('lastClickTime')
+    if (lastClickTime) {
+      const diffMs = now - parseInt(lastClickTime, 10)
+      const diffMinutes = Math.floor(diffMs / (1000 * 60))
+      if (diffMs < TIMEOUT * 60 * 1000) {
+        $Toast.warning(t('content.lastClickTime', { n: TIMEOUT - diffMinutes }))
+        return false
+      }
+    }
+    return true
+  }
+
+  const onSync = () => {
+    if (!checkLastClick()) return
+    eventStore.syncPayload.from_date = null
+    eventStore.syncPayload.to_date = null
+    eventStore.syncPayload.access_level_ids = []
+    eventStore.visible = true
+  }
 </script>
 
 <template>
@@ -129,6 +152,12 @@
     :show-add-button="false"
   >
     <template #filterAction>
+      <n-button :loading="eventStore.jobLoading" @click="onSync" type="primary">
+        {{ $t('turnstile.accessLevelPage.sync') }}
+        <template #icon>
+          <ArrowSync24Filled />
+        </template>
+      </n-button>
       <n-button @click="onOpenDownloadModal" :loading="store.download.loading" type="success">
         <template #icon>
           <ArrowCircleDown32Regular />

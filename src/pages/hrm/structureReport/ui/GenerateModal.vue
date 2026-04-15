@@ -1,5 +1,4 @@
 <script setup>
-  import { NAvatar } from 'naive-ui'
   import { CheckmarkCircle12Filled, Delete16Regular, DocumentBulletList24Regular, Organization12Filled, ArrowLeft16Regular, ArrowRight16Regular, Play16Filled, Save16Regular } from '@vicons/fluent'
   import { UIModal, UISelect, UIUser } from '@/components/index.js'
   import UIHelper from '@/utils/UIHelper.js'
@@ -40,6 +39,12 @@
   })
 
   // --- Director / Tasdiqlovchilar ---
+  const mapUser = (v) => ({
+    ...v,
+    fullName: `${v.last_name} ${v.first_name?.[0]}.${v.middle_name?.[0]}.`,
+    name: `${v.last_name} ${v.first_name} ${v.middle_name}`
+  })
+
   const excludeIds = computed(() => {
     const ids = new Set()
     if (store.editMode) {
@@ -50,8 +55,8 @@
   })
 
   const directorOptions = computed(() => {
-    if (!store.editMode) return componentStore.confirmationList
-    return componentStore.confirmationList.filter((v) => !excludeIds.value.has(v.id))
+    if (!store.editMode) return componentStore.confirmationList.map(mapUser)
+    return componentStore.confirmationList.filter((v) => !excludeIds.value.has(v.id)).map(mapUser)
   })
 
   const confirmationOptions = computed(() => {
@@ -62,38 +67,8 @@
     if (store.editMode) {
       list = list.filter((v) => !excludeIds.value.has(v.id))
     }
-    return list
+    return list.map(mapUser)
   })
-
-  const renderLabel = (option) => {
-    return [
-      h(
-        'div',
-        { class: 'flex gap-2 my-1 items-center px-2' },
-        [
-          h(NAvatar, {
-            src: option.photo,
-            'fallback-src': Utils.noAvailableImage
-          }),
-          h('div', { class: 'flex flex-col' }, [
-            h('div', { class: 'text-xs font-medium text-gray-500 leading-[1.2]' },
-              `${option.last_name} ${option.first_name?.[0]}.${option.middle_name?.[0]}.`
-            ),
-            h('div', { class: 'text-xs text-primary leading-[1.2]' }, option.position)
-          ])
-        ]
-      )
-    ]
-  }
-
-  const renderValue = ({ option }) => {
-    if (!option) return ''
-    return [
-      h('div', { class: 'flex gap-2 my-1 items-center' },
-        `${option?.last_name} ${option?.first_name} ${option?.middle_name}`
-      )
-    ]
-  }
 
   const directorLoading = ref(false)
 
@@ -267,8 +242,8 @@
             v-model:value="store.director_id"
             :options="directorOptions"
             :loading="componentStore.confirmationLoading"
-            :render-label="renderLabel"
-            :render-tag="renderValue"
+            :render-label="UIHelper.avatarRender.label"
+            :render-tag="UIHelper.avatarRender.value"
             filterable
             clearable
             @update:value="onDirectorChange"
@@ -300,7 +275,7 @@
             :value="null"
             :options="confirmationOptions"
             :loading="componentStore.confirmationLoading"
-            :render-label="renderLabel"
+            :render-label="UIHelper.avatarRender.label"
             filterable
             clearable
             :placeholder="$t('structureReport.addApprover')"
@@ -316,8 +291,8 @@
             v-model:value="store.confirmations"
             :options="confirmationOptions"
             :loading="componentStore.confirmationLoading"
-            :render-label="renderLabel"
-            :render-tag="renderValue"
+            :render-label="UIHelper.avatarRender.label"
+            :render-tag="UIHelper.avatarRender.value"
             filterable
             :max-tag-count="1"
           />

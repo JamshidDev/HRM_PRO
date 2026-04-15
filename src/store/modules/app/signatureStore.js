@@ -139,13 +139,13 @@ export const useSignatureStore = defineStore('signatureStore', {
     },
     _accepted(idx, callback) {
       let key = null
+      this.workerPin = key?.pinfl
       if (idx === useAppSetting.signatureUseType.idCard) {
         if (!this.usbVisible) return
 
         key = useAppSetting.signatureUseType.idCard
       } else {
         key = this.allKeys[idx]
-        this.workerPin = key.pinfl
         if (key.expired) {
           $Toast.error(t('signature.expiredKey'))
           return ''

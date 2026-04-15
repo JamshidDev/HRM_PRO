@@ -7,7 +7,12 @@ const _authLog = async (payload) => {
   return await axios.get(`/v1/admin/authentication-logs`, { params: payload.params })
 }
 
+const _generateLogViewer = async () => {
+  return await axios.get(`/v1/admin/generate-log-viewer`, { withCredentials: true })
+}
+
 export default {
   _actionLog,
-  _authLog
+  _authLog,
+  _generateLogViewer
 }

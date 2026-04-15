@@ -16,12 +16,17 @@ export const useOrganizationStore = defineStore('organizationStore', {
       city_id: null,
       level: null,
       name: null,
+      name_ru: null,
+      name_en: null,
       full_name: null,
+      full_name_ru: null,
+      full_name_en: null,
       lat: null,
       long: null,
       group: false,
       code: null
     },
+    headerLang: 'uz',
     params: {
       page: 1,
       per_page: 10,
@@ -40,9 +45,14 @@ export const useOrganizationStore = defineStore('organizationStore', {
       $ApiService.organizationService
         ._index({ params: this.params })
         .then((res) => {
+          const nameField = this.headerLang
+          const fullNameField = `full_${nameField}`
           this.list = res.data.data.data.map((v) => ({
-            name: v.name,
-            fullName: v.full_name,
+            name: v?.[nameField] || v.name,
+            fullName: v?.[fullNameField] || v.full_name,
+            uz: v.name,
+            ru: v.name_ru,
+            en: v.name_en,
             id: v.id,
             children: [],
             isHaveChild: Boolean(v?.descendants)
@@ -66,9 +76,14 @@ export const useOrganizationStore = defineStore('organizationStore', {
     },
     _show() {
       $ApiService.organizationService._show({ id: this.elementId }).then((res) => {
+        const nameField = this.headerLang
+        const fullNameField = `full_${nameField}`
         let node = res.data.data.children.map((v) => ({
-          name: v.name,
-          fullName: v?.full_name,
+          name: v?.[nameField] || v.name,
+          fullName: v?.[fullNameField] || v?.full_name,
+          uz: v.name,
+          ru: v.name_ru,
+          en: v.name_en,
           id: v.id,
           children: [],
           isHaveChild: Boolean(v?.descendants)
@@ -80,10 +95,14 @@ export const useOrganizationStore = defineStore('organizationStore', {
           let { organization } = res.data.data
           this.elementId = organization.id
           this.payload.name = organization.name
+          this.payload.name_ru = organization.name_ru
+          this.payload.name_en = organization.name_en
           this.payload.full_name = organization.full_name
+          this.payload.full_name_ru = organization.full_name_ru
+          this.payload.full_name_en = organization.full_name_en
           this.payload.level = organization.level
           this.payload.parent_id = organization.parent_id
-          this.payload.city_id = organization.city.id
+          this.payload.city_id = organization?.city?.id || null
           this.payload.group = Boolean(organization.group)
           this.payload.code = organization.code
           this.visible = true
@@ -108,7 +127,7 @@ export const useOrganizationStore = defineStore('organizationStore', {
     },
     _update() {
       this.saveLoading = true
-      let data = { ...this.payload }
+      let data = { ...this.payload, group: Number(this.payload.group) }
       $ApiService.organizationService
         ._update({ data, id: this.elementId })
         .then((res) => {
@@ -152,9 +171,13 @@ export const useOrganizationStore = defineStore('organizationStore', {
     resetForm() {
       this.elementId = null
       this.payload.name = null
+      this.payload.name_ru = null
+      this.payload.name_en = null
       this.payload.parent_id = null
       this.payload.level = null
       this.payload.full_name = null
+      this.payload.full_name_ru = null
+      this.payload.full_name_en = null
       this.payload.lat = null
       this.payload.long = null
       this.payload.city_id = null

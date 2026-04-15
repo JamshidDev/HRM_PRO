@@ -6,12 +6,6 @@ export const attestationRoutes = [
     path: Utils.routeAttestationPathMaker(AppPaths.Topic),
     name: AppPaths.Topic.substring(1),
     component: () => import('@/pages/attestation/topic/TopicPage.vue'),
-    children: [
-      {
-        path: ':id',
-        component: () => import('@/pages/attestation/topic/topicDetail/TopicDetailPage.vue')
-      }
-    ],
     meta: {
       layout: AppLayouts.main
     }

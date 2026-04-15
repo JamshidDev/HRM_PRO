@@ -13,6 +13,7 @@ export const useDepartmentStore = defineStore('departmentStore', {
     totalItems: 0,
     showParent: false,
     payload: {
+      organization_id: null,
       parent_id: null,
       level: null,
       name: null,
@@ -166,6 +167,7 @@ export const useDepartmentStore = defineStore('departmentStore', {
     },
     resetForm() {
       this.elementId = null
+      this.payload.organization_id = null
       this.payload.name = null
       this.payload.name_en = null
       this.payload.name_ru = null

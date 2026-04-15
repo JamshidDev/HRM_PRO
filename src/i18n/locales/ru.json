@@ -976,6 +976,9 @@
       "type": "Тип"
     }
   },
+  "educationDirectory": {
+    "name": "Справочник образования"
+  },
   "othersPage": {
     "name": "Другое",
     "language": {
@@ -1042,6 +1045,12 @@
     "sessions": "Сессии",
     "noPhotos": "Нет фотографий",
     "noSessions": "Нет сессий"
+  },
+  "vacancyApprovePage": {
+    "menuName": "Подтверждение",
+    "title": "Настройки подтверждения",
+    "from": "Подтверждает (from)",
+    "to": "Подтверждается (to)"
   },
   "actionLog": {
     "name": "История действий",
@@ -2185,6 +2194,16 @@
     "name": "Открытые вакансии",
     "createTitle": "Создать вакансию",
     "updateTitle": "Редактировать вакансию",
+    "applications": "Заявки",
+    "accept": "Принять",
+    "applicationInfo": "Информация о заявке",
+    "confirm": "Подтвердить",
+    "confirmInfo": "Напишите сообщение для принятия или отклонения заявки. Сообщение будет отправлено заявителю.",
+    "confirmMessage": "Сообщение",
+    "confirmMessagePlaceholder": "Введите сообщение...",
+    "birthPlace": "Место рождения",
+    "livePlace": "Место проживания",
+    "gender": "Пол",
     "form": {
       "department_position_id": "Вакантные должности",
       "region_id": "Регион",
@@ -2201,7 +2220,8 @@
       "position_obligations": "Обязанности должности",
       "qualification_requirements": "Квалификационные требования",
       "working_conditions": "Условия работы",
-      "specialties": "Специальности"
+      "specialties": "Специальности",
+      "applications_count": "Количество заявок"
     }
   },
   "salaryCategory": {

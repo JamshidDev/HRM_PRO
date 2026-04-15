@@ -5,6 +5,7 @@
   import { useAppSetting } from '@/utils/index.js'
   const store = useSignatureStore()
 
+  // eslint-disable-next-line vue/return-in-computed-property
   const activeCallback = computed(() => {
     if (store.signatureType === store.signatureTypes.auth) return store._auth
     if (store.signatureType === store.signatureTypes.contract) return store._contract
@@ -38,8 +39,7 @@
             <span
               class="font-semibold uppercase text-lg"
               :class="[store.usbVisible ? 'text-success' : 'text-textColor3 line-through']"
-              >{{ $t('content.loginByUsb') }}</span
-            >
+            >{{ $t('content.loginByUsb') }}</span>
           </div>
           <template v-for="(key, idx) in store.allKeys" :key="idx">
             <div
@@ -51,9 +51,11 @@
                 class="col-span-12 font-bold text-lg mb-1 text-textColor0 flex items-center gap-3"
               >
                 {{ key?.fullName }}
-                <n-button v-if="!key.isValid" type="error" size="tiny" secondary>{{
-                  $t('signature.notValidDate')
-                }}</n-button>
+                <n-button v-if="!key.isValid" type="error" size="tiny" secondary>
+                  {{
+                    $t('signature.notValidDate')
+                  }}
+                </n-button>
               </div>
 
               <div class="col-span-4 font-bold">
@@ -91,8 +93,7 @@
                 <span
                   :class="[!key?.isValid && '!text-danger']"
                   class="text-xs block font-semibold text-textColor2"
-                  >{{ Utils.timeWithMonth(key?.validDate) }}</span
-                >
+                >{{ Utils.timeWithMonth(key?.validDate) }}</span>
               </div>
             </div>
           </template>

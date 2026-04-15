@@ -29,6 +29,7 @@ import quoteService from '@/service/v1/admin/quoteService.js'
 import telegramService from '@/service/v1/admin/telegramService.js'
 import instructionService from '@/service/v1/admin/instructionService.js'
 import mobileUserService from '@/service/v1/admin/mobileUserService.js'
+import vacancyApproveService from '@/service/v1/admin/vacancyApproveService.js'
 
 import confirmationService from '@/service/v1/hrm/confirmationService.js'
 import departmentService from '@/service/v1/hrm/departmentService.js'
@@ -282,6 +283,7 @@ export default {
   newsCategoryService,
   newsService,
   mobileUserService,
+  vacancyApproveService,
   structureReportService,
   confirmationReportService,
 }

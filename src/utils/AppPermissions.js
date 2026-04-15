@@ -54,6 +54,9 @@ export const appPermissions = {
   telegram: 'telegram',
   telegramWrite: 'telegram-write',
   telegramRead: 'telegram-read',
+  vacancyApprove: 'vacancy-approve',
+  vacancyApproveWrite: 'vacancy-approve-write',
+  vacancyApproveRead: 'vacancy-approve-read',
   learningCenters: 'learning-centers',
   learningCentersWrite: 'learning-centers-write',
   learningCentersRead: 'learning-centers-read',
@@ -151,6 +154,10 @@ export const appPermissions = {
   hrUsers: 'hr-users',
   hrUsersWrite: 'hr-users-write',
   hrUsersRead: 'hr-users-read',
+
+  hrPublicVacancy: 'hr-public-vacancy',
+  hrPublicVacancyWrite: 'hr-public-vacancy-write',
+  hrPublicVacancyRead: 'hr-public-vacancy-read',
 
   hrReport: 'hr-report',
   hrReportWrite: 'hr-report-write',
@@ -348,4 +355,5 @@ export const appPermissions = {
 
   extra:'extra',
   extraWorkerUser:'extra-worker-user',
+  educationsStructureMenu: 'educations-structure-menu',
 }

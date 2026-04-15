@@ -106,5 +106,3 @@
     <NoDataPicture v-if="store.authList.length === 0 && !store.loading" />
   </n-spin>
 </template>
-
-<style scoped></style>

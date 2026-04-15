@@ -152,5 +152,13 @@ export const adminRoutes = [
     meta: {
       layout: AppLayouts.main
     }
+  },
+  {
+    path: Utils.routePathMaker(AppPaths.VacancyApprove),
+    name: AppPaths.VacancyApprove.substring(1),
+    component: () => import('@/pages/admin/vacancyApprove/VacancyApprovePage.vue'),
+    meta: {
+      layout: AppLayouts.main
+    }
   }
 ]

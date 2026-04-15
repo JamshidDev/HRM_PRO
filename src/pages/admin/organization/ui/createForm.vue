@@ -1,6 +1,7 @@
 <script setup>
   import validationRules from '@/utils/validationRules.js'
   const formRef = ref(null)
+  import { UIMultipleLangItems } from '@/components/index.js'
   import { useOrganizationStore, useComponentStore } from '@/store/modules/index.js'
 
   const store = useOrganizationStore()
@@ -36,11 +37,31 @@
         <span class="text-xs text-gray-500">{{ $t(`organizationPage.selectedOrg`) }}</span>
         <span class="text-primary font-bold">{{ store.parentElement?.name }}</span>
       </div>
-      <n-form-item :label="$t(`organizationPage.form.name`)" path="name">
-        <n-input type="text" v-model:value="store.payload.name" />
+      <n-form-item :label="$t(`organizationPage.form.name`)" path="name" :rule-path="validationRules.rulesNames.requiredStringField">
+        <UIMultipleLangItems>
+          <template #uz-content>
+            <n-input type="text" v-model:value="store.payload.name" />
+          </template>
+          <template #ru-content>
+            <n-input class="skip-format" type="text" v-model:value="store.payload.name_ru" />
+          </template>
+          <template #en-content>
+            <n-input type="text" v-model:value="store.payload.name_en" />
+          </template>
+        </UIMultipleLangItems>
       </n-form-item>
-      <n-form-item :label="$t(`organizationPage.form.full_name`)" path="full_name">
-        <n-input type="text" v-model:value="store.payload.full_name" />
+      <n-form-item :label="$t(`organizationPage.form.full_name`)" path="full_name" :rule-path="validationRules.rulesNames.requiredStringField">
+        <UIMultipleLangItems>
+          <template #uz-content>
+            <n-input type="text" v-model:value="store.payload.full_name" />
+          </template>
+          <template #ru-content>
+            <n-input class="skip-format" type="text" v-model:value="store.payload.full_name_ru" />
+          </template>
+          <template #en-content>
+            <n-input type="text" v-model:value="store.payload.full_name_en" />
+          </template>
+        </UIMultipleLangItems>
       </n-form-item>
       <n-form-item :label="$t(`organizationPage.form.level`)" path="level">
         <n-select

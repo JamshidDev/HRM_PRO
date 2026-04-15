@@ -42,15 +42,19 @@
           </td>
           <td>
             <UIUser
+              :short="false"
               :hide-tooltip="true"
               :data="{
                 photo: item?.worker_position?.worker.photo,
                 lastName: item?.worker_position?.worker.last_name,
                 firstName: item?.worker_position?.worker.first_name,
                 middleName: item?.worker_position?.worker.middle_name,
-                position: item?.worker_position?.post_short_name
               }"
-            />
+            >
+              <template #position>
+                <span class="text-xs text-textColor3 w-full">{{ item?.worker_position?.post_short_name }}</span>
+              </template>
+            </UIUser>
           </td>
           <td>{{ item?.fine }}</td>
           <td>{{ item?.organization?.name }}</td>

@@ -118,7 +118,10 @@
       selectAll.value =
         computedOption.value.length === valueModel.value.length && computedOption.value.length > 0
     }
-    searchModel.value = props.query
+  })
+
+  watch(() => props.query, (v) => {
+    searchModel.value = v
   })
 
   const onUpdateCheck = (v) => {

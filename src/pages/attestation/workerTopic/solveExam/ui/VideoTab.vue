@@ -6,8 +6,8 @@
 </script>
 
 <template>
-  <n-spin :show="store.videoLoading" class="h-[calc(100vh-160px)]">
-    <div class="!h-full overflow-hidden">
+  <n-spin :show="store.videoLoading">
+    <div class="overflow-y-auto max-h-[calc(90vh-180px)]">
       <div class="grid grid-cols-12 gap-4">
         <template v-for="item in store.videosList" :key="item.id">
           <div class="col-span-4 border border-surface-line overflow-hidden rounded-lg">

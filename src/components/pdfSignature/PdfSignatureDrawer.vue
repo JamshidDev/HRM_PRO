@@ -66,7 +66,7 @@
   }
 
   const showSignature = computed(() => {
-    const rejects = ['/hrm/contract', '/hrm/command', '/hrm/ad-contract', '/hrm/application']
+    const rejects = ['/hrm/contract', '/hrm/command', '/hrm/ad-contract', '/hrm/application', '/hrm/structure-report']
     return !rejects.includes(route.path)
   })
 

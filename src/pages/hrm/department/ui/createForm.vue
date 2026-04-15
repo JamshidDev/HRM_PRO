@@ -1,12 +1,35 @@
 <script setup>
   import { validationRules } from '@utils'
   import { useDepartmentStore, useComponentStore } from '@stores'
-  import { SuperSelect, UIMultipleLangItems } from '@components'
+  import { SuperSelect, UIMultipleLangItems, UISelect } from '@components'
   import UIHelper from '@utils/UIHelper.js'
 
   const store = useDepartmentStore()
   const componentStore = useComponentStore()
   const formRef = ref(null)
+
+  const selectedOrg = ref([])
+  const structureCheck = ref([])
+
+  const onDefaultOrg = (v) => {
+    selectedOrg.value = v
+    store.payload.organization_id = v[0]?.id ?? null
+  }
+
+  const onChangeOrg = (v) => {
+    selectedOrg.value = v
+    store.payload.organization_id = v[0]?.id ?? null
+  }
+
+  watch(
+    () => store.visible,
+    (v) => {
+      if (!v) {
+        selectedOrg.value = []
+        structureCheck.value = []
+      }
+    }
+  )
 
   const props = defineProps({
     callback: {
@@ -49,6 +72,21 @@
         <span class="text-xs text-gray-500">{{ $t(`organizationPage.selectedOrg`) }}</span>
         <span class="text-primary font-bold">{{ store.parentElement?.name }}</span>
       </div>
+      <n-form-item v-if="store.visibleType" :label="$t('content.organization')" path="organization_id">
+        <UISelect
+          :multiple="false"
+          :options="componentStore.structureList"
+          :model-v="selectedOrg"
+          :checked-val="structureCheck"
+          @updateModel="onChangeOrg"
+          @defaultValue="onDefaultOrg"
+          @updateCheck="(v) => (structureCheck = v)"
+          :loading="componentStore.structureLoading"
+          v-model:search="componentStore.structureParams.search"
+          @onSearch="componentStore._structures"
+        />
+      </n-form-item>
+
       <n-form-item
         :label="$t(`departmentPage.form.name`)"
         path="name"

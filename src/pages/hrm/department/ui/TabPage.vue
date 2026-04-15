@@ -16,6 +16,7 @@
 
   const onAdd = (v) => {
     componentStore._departments()
+    componentStore._structures()
     store._level()
     store.resetForm()
     store.elementId = v.id

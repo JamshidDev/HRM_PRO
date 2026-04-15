@@ -1,12 +1,16 @@
 <script setup>
-  import { UIDrawer, UIPageFilter } from '@/components/index.js'
-  import Cards from './ui/Cards.vue'
+  import { onMounted, computed } from 'vue'
+  import { UIDrawer, UIPageContent, UIPageFilter } from '@/components/index.js'
+  import { ArrowLeft24Regular } from '@vicons/fluent'
+  import Table from './ui/Table.vue'
   import createFrom from './ui/createForm.vue'
+  import TopicDetail from './topicDetail/TopicDetailPage.vue'
   import { useTopicStore, useAccountStore } from '@/store/modules/index.js'
-  import { useRoute } from 'vue-router'
 
   const store = useTopicStore()
   const accStore = useAccountStore()
+
+  const currentTopic = computed(() => store.list.find((t) => t.id === store.elementId))
 
   const onAdd = () => {
     if (!accStore.checkAction(accStore.pn.examTopicsWrite)) return
@@ -17,7 +21,6 @@
 
   const onSearch = () => {
     if (!accStore.checkAction(accStore.pn.examTopicsRead)) return
-
     store.params.page = 1
     store._index()
   }
@@ -26,48 +29,59 @@
     if (!accStore.checkAction(accStore.pn.examTopicsRead)) return
     store._index()
   })
-  const route = useRoute()
 </script>
 
 <template>
-  <div
-    class="mx-2 mt-4 mb-4 rounded-sm flex flex-col gap-3 relative"
-    style="min-height: calc(100vh - 100px); height: calc(100vh - 100px)"
+  <n-tabs
+    :value="store.activeTab"
+    :tab-style="{ display: 'none', margin: 0 }"
+    :pane-style="{ padding: 0, height: '100%' }"
+    class="h-full"
+    animated
   >
-    <div :style="{ gap: route.params?.id ? '10px' : 0 }" class="flex h-full">
-      <div class="basis-[40%] grow shrink-0 h-full flex flex-col gap-2">
+    <n-tab-pane name="list" style="height: 100%">
+      <UIPageContent>
         <UIPageFilter
-          class="shrink-0"
           v-model:search="store.params.search"
-          :show-search-input="false"
-          @onAdd="onAdd"
-          @onSearch="onSearch"
+          :show-filter-button="false"
+          @on-add="onAdd"
+          @on-search="onSearch"
+          :search-loading="store.loading"
         />
-        <div class="grow basis-auto">
-          <Cards />
+        <Table />
+        <UIDrawer
+          :title="store.visibleType ? $t('topicPage.createTitle') : $t('topicPage.updateTitle')"
+          :visible="store.visible"
+          :width="600"
+          @update:visible="(v) => (store.visible = v)"
+        >
+          <template #content>
+            <createFrom />
+          </template>
+        </UIDrawer>
+      </UIPageContent>
+    </n-tab-pane>
+    <n-tab-pane name="detail" style="height: 100%">
+      <div class="my-4 mx-1 md:mx-2 rounded-sm md:p-4 p-1 h-[calc(100%-32px)] flex flex-col bg-surface-section">
+        <div class="shrink-0 pb-3 flex items-center gap-3 border-b border-surface-line mb-3">
+          <n-button text @click="store.activeTab = 'list'">
+            <template #icon>
+              <n-icon :component="ArrowLeft24Regular" />
+            </template>
+            {{ $t('content.back') }}
+          </n-button>
+          <n-divider vertical />
+          <div class="flex items-center gap-2 min-w-0">
+            <p class="text-[15px] font-semibold text-textColor0 truncate">{{ currentTopic?.name }}</p>
+            <n-tag v-if="currentTopic?.type" size="small" round type="info">
+              {{ currentTopic.type.name }}
+            </n-tag>
+          </div>
+        </div>
+        <div class="grow min-h-0">
+          <TopicDetail />
         </div>
       </div>
-      <div
-        :style="{
-          'flex-basis': route.params?.id ? '60%' : 0,
-          grow: !!route.params?.id,
-          right: !!route.params?.id ? '0' : '-100%'
-        }"
-        class="transition-all rounded-xl shrink-1 overflow-hidden h-full absolute md:static top-0 w-full md:w-auto bottom-0 bg-surface-section"
-      >
-        <router-view :key="$route.fullPath" />
-      </div>
-    </div>
-
-    <UIDrawer
-      :title="store.visibleType ? $t('topicPage.createTitle') : $t('topicPage.updateTitle')"
-      :visible="store.visible"
-      :width="600"
-      @update:visible="(v) => (store.visible = v)"
-    >
-      <template #content>
-        <createFrom />
-      </template>
-    </UIDrawer>
-  </div>
+    </n-tab-pane>
+  </n-tabs>
 </template>

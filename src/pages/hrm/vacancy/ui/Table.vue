@@ -3,9 +3,21 @@
   import { useVacancyStore, useComponentStore, useAccountStore } from '@/store/modules/index.js'
   import Utils from '@/utils/Utils.js'
   import numeral from 'numeral'
+  import { PeopleTeam20Regular } from '@vicons/fluent'
+  import i18n from '@/i18n/index.js'
+
+  const { t } = i18n.global
   const store = useVacancyStore()
   const compStore = useComponentStore()
   const accStore = useAccountStore()
+
+  const extraOptions = [
+    {
+      label: t('vacancy.applications'),
+      key: Utils.ActionTypes.applications,
+      icon: PeopleTeam20Regular
+    }
+  ]
 
   const onDelete = (v) => {
     store._delete()
@@ -20,9 +32,13 @@
   const onSelectEv = (v) => {
     store.elementId = v.data.id
     if (Utils.ActionTypes.edit === v.key) {
+      if (!accStore.checkAction(accStore.pn.hrPublicVacancyWrite)) return
       store._show()
     } else if (Utils.ActionTypes.delete === v.key) {
+      if (!accStore.checkAction(accStore.pn.hrPublicVacancyWrite)) return
       onDelete(v.data)
+    } else if (Utils.ActionTypes.applications === v.key) {
+      store.openApplicationsTab(v.data)
     }
   }
 </script>
@@ -34,6 +50,7 @@
         <thead>
           <tr>
             <th class="text-center! min-w-[40px] w-[40px]">{{ $t('content.number') }}</th>
+            <th class="min-w-[150px]">{{ $t('content.organization') }}</th>
             <th class="min-w-[200px]">{{ $t('vacancy.form.department_position_id') }}</th>
             <th class="min-w-[40px] w-[80px] max-w-[80px]">
               <p class="line-clamp-1 truncate">{{ $t('vacancy.form.rate') }}</p>
@@ -46,6 +63,7 @@
             <th class="min-w-[100px] w-[120px]">{{ $t('medWorker.form.education') }}</th>
             <th class="min-w-[100px] w-[120px]">{{ $t('vacancy.form.work_type') }}</th>
             <th class="min-w-[60px] w-[80px]">{{ $t('vacancy.form.switch') }}</th>
+            <th class="min-w-[60px] w-[80px]">{{ $t('vacancy.form.applications_count') }}</th>
             <th class="min-w-[40px] w-[40px]"></th>
           </tr>
         </thead>
@@ -55,6 +73,12 @@
               <span class="text-center block">{{
                 (store.params.page - 1) * store.params.per_page + idx + 1
               }}</span>
+            </td>
+            <td>
+              <div class="flex items-center gap-1">
+                <span class="text-sm font-medium">{{ item.organization?.name }}</span>
+                <n-tag v-if="item.organization?.group" size="tiny" type="warning" round>group</n-tag>
+              </div>
             </td>
             <td>
               <div>
@@ -103,7 +127,14 @@
               </div>
             </td>
             <td>
-              <UIMenuButton :data="item" :show-edit="true" @selectEv="onSelectEv" />
+              <div class="flex justify-center">
+                <n-button class="mx-auto" bordered dashed circle size="small" type="primary">
+                  {{ item.applications_count ?? 0 }}
+                </n-button>
+              </div>
+            </td>
+            <td>
+              <UIMenuButton :data="item" :show-edit="true" :extra-options="extraOptions" @selectEv="onSelectEv" />
             </td>
           </tr>
         </tbody>

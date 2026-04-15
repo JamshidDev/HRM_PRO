@@ -24,11 +24,21 @@ const _vacancyPosition = async (payload) => {
   return await axios.get(`/v1/hr/vacancy/positions`, { params: payload.params })
 }
 
+const _applications = async (payload) => {
+  return await axios.get(`/v1/hr/vacancy/${payload.id}/applications`, { params: payload.params })
+}
+
+const _applicationAction = async (payload) => {
+  return await axios.put(`/v1/hr/vacancy/${payload.vacancyId}/applications/${payload.applicationId}`, payload.data)
+}
+
 export default {
   _index,
   _store,
   _show,
   _vacancyPosition,
   _update,
-  _delete
+  _delete,
+  _applications,
+  _applicationAction
 }

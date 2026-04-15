@@ -1,24 +1,23 @@
 <script setup>
-  import { NoDataPicture, UIActionButton, UIPagination } from '@/components/index.js'
+  import { NoDataPicture, UIMenuButton, UIPagination } from '@/components/index.js'
   import { useUserPermissionStore } from '@/store/modules/index.js'
   import { useAccountStore } from '@/store/modules/index.js'
   const accStore = useAccountStore()
 
   const store = useUserPermissionStore()
 
-  const onEdit = (v) => {
+  const onSelectEv = (v) => {
     if (!accStore.checkAction(accStore.pn.permissionsWrite)) return
 
-    store.visibleType = false
-    store.elementId = v.id
-    store.payload.name = v.name
-    store.visible = true
-  }
-
-  const onDelete = (v) => {
-    if (!accStore.checkAction(accStore.pn.permissionsWrite)) return
-    store.elementId = v.id
-    store._delete()
+    if (v.key === 'edit') {
+      store.visibleType = false
+      store.elementId = v.data.id
+      store.payload.name = v.data.name
+      store.visible = true
+    } else if (v.key === 'delete') {
+      store.elementId = v.data.id
+      store._delete()
+    }
   }
 
   const changePage = (v) => {
@@ -36,7 +35,7 @@
           <tr>
             <th class="text-center! min-w-[40px] w-[40px]">{{ $t('content.number') }}</th>
             <th class="min-w-[200px]">{{ $t('content.name') }}</th>
-            <th class="min-w-[90px] w-[90px]">{{ $t('content.action') }}</th>
+            <th class="min-w-[40px] w-[40px]"></th>
           </tr>
         </thead>
         <tbody>
@@ -48,11 +47,12 @@
             </td>
             <td>{{ item.name }}</td>
             <td>
-              <UIActionButton
+              <UIMenuButton
                 :data="item"
-                :loading-delete="item.id === store.elementId && store.deleteLoading"
-                @on-edit="onEdit"
-                @on-delete="onDelete"
+                :show-edit="true"
+                :show-delete="true"
+                :loading="item.id === store.elementId && store.deleteLoading"
+                @selectEv="onSelectEv"
               />
             </td>
           </tr>

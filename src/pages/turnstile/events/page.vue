@@ -3,7 +3,8 @@
   import Filter from './ui/Filter.vue'
   import Table from './ui/Table.vue'
   import syncForm from './ui/syncForm.vue'
-  import { useAccountStore, useEventStore } from '@/store/modules/index.js'
+  import DownloadModal from '../eventsV2/ui/DownloadModal.vue'
+  import { useAccountStore, useEventStore, useEventV2Store } from '@/store/modules/index.js'
 
   const store = useEventStore()
   const accStore = useAccountStore()
@@ -19,8 +20,8 @@
     <Filter />
     <Table />
     <UIModal v-model:visible="store.visible" :width="400" :title="$t('hcEvent.syncTitle')">
-      <!--    <jobForm/>-->
       <syncForm />
     </UIModal>
+    <DownloadModal />
   </UIPageContent>
 </template>

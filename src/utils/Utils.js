@@ -182,7 +182,8 @@ const ActionTypes = {
   verifier: 'verifier',
   close: 'close',
   confirm: 'confirm',
-  finish: 'finish'
+  finish: 'finish',
+  applications: 'applications'
 }
 const combineFullName = (user) => {
   if (!user) return

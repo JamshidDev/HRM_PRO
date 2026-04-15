@@ -129,6 +129,10 @@
     "finished": "Tugagan",
     "restart": "Qayta boshlash",
     "close": "Yopish",
+    "confirmDocument": "Hujjatni tasdiqlash",
+    "confirmDocumentWarning": "Hujjat tasdiqlashda uning ma'lumotlari to'g'riligiga ishonch hosil qiling. Ushbu jarayonni orqaga qaytarib bo'lmaydi!",
+    "confirmFileOptional": "Ixtiyoriy",
+    "confirmFileHint": "Hujjatni imzolangan variantini PDF fayli yuklash tavsiya qilinadi. Kerakli paytda faylni izlash va topish mumkin bo'lishi uchun.",
     "open": "Ochish",
     "hide": "Yashirish",
     "closeAndClear": "Yopish va tozalash",
@@ -988,6 +992,9 @@
       "type": "Turi"
     }
   },
+  "educationDirectory": {
+    "name": "Ta'lim katalogi"
+  },
   "othersPage": {
     "name": "Boshqalar",
     "language": {
@@ -1055,8 +1062,15 @@
     "noPhotos": "Rasmlar yo'q",
     "noSessions": "Sessiyalar yo'q"
   },
+  "vacancyApprovePage": {
+    "menuName": "Tasdiqlash",
+    "title": "Tasdiqlash sozlamalari",
+    "from": "Tasdiqlaydi (from)",
+    "to": "Tasdiqlanadi (to)"
+  },
   "actionLog": {
     "name": "Amallar tarixi",
+    "logViewer": "Log viewer",
     "tab": {
       "action": "Amallar tarixi",
       "auth": "Kirishlar tarixi"
@@ -1282,10 +1296,8 @@
       "med": "Tibbiy ko'rik",
       "vacation": "Ta'til ma'lumoti",
       "incentive": "Rag'batlantirishlari",
-      "attestation": "Attestatsiya",
-      "checkSkill": "Malaka sinovi",
-      "checkKnowledge": "Bilim sinovi",
-      "punishment": "Intizomiy jazolari"
+      "punishment": "Intizomiy jazolari",
+      "exams": "Imtihonlar"
     }
   },
 
@@ -1996,7 +2008,7 @@
     "stat": "Statistika",
     "organizations": "Tashkilotlar",
     "statTooltip": "Hisobot yuklamagan korxonalar ro'yxati. Belgilangan korxonalar hisobot yuklagan.",
-    "generate": "Generate",
+    "generate": "Hisobot yaratish",
     "download": "Yuklash",
     "excelDownload": "Excel yuklash",
     "table1": "1 - Jadval",
@@ -2204,6 +2216,16 @@
     "name": "Ochiq vakansiyalar",
     "createTitle": "Vakansiya yaratish",
     "updateTitle": "Vakansiya tahrirlash",
+    "applications": "Arizalar",
+    "accept": "Qabul qilish",
+    "applicationInfo": "Ariza ma'lumotlari",
+    "confirm": "Tasdiqlash",
+    "confirmInfo": "Arizani qabul qilish yoki rad etish uchun xabar yozing. Xabar ariza beruvchiga yuboriladi.",
+    "confirmMessage": "Xabar",
+    "confirmMessagePlaceholder": "Xabar kiriting...",
+    "birthPlace": "Tug'ilgan joyi",
+    "livePlace": "Yashash joyi",
+    "gender": "Jinsi",
     "form": {
       "department_position_id": "Vakansiya lavozimlari",
       "region_id": "Viloyat",
@@ -2220,7 +2242,8 @@
       "position_obligations": "Lavozim majburiyatlari",
       "qualification_requirements": "Malaka talablari",
       "working_conditions": "Ish sharoitlari",
-      "specialties": "Mutaxassisligi"
+      "specialties": "Mutaxassisligi",
+      "applications_count": "Arizalar soni"
     }
   },
   "salaryCategory": {
