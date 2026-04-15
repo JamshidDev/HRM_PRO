@@ -1,5 +1,5 @@
 <script setup>
-  import { useTopicExamStore } from '@/store/modules/index.js'
+  import { useTopicExamStore, useTopicStore } from '@/store/modules/index.js'
   import { UIMenuButton, UIPagination, NoDataPicture } from '@/components/index.js'
   import Utils from '@/utils/Utils.js'
   import {
@@ -15,8 +15,10 @@
   const accStore = useAccountStore()
 
   const store = useTopicExamStore()
+  const topicStore = useTopicStore()
 
   const changePage = (v) => {
+    store.topicId = topicStore.elementId
     store.params.page = v.page
     store.params.per_page = v.per_page
     store._index()
@@ -24,16 +26,15 @@
 
   const onSelect = (v) => {
     if (!accStore.checkAction(accStore.pn.examExamsWrite)) return
+    store.topicId = topicStore.elementId
+    store.elementId = v.data.id
     if (v.key === 'delete') {
-      store.elementId = v.data.id
       store._delete()
     } else if (v.key === 'edit') {
-      store.elementId = v.data.id
       store._show()
       store.visibleType = false
       store.visible = true
     } else if (v.key === 'attach_question') {
-      store.elementId = v.data.id
       store.attachCategoryVisible = true
       store.attachCategoryVisibleType = true
       store._get_attached_categories()
@@ -41,6 +42,7 @@
   }
 
   const updateStatus = (exam) => {
+    store.topicId = topicStore.elementId
     store.elementId = exam.id
     store.payload = { active: !exam.active }
     store._update()
@@ -72,7 +74,7 @@
                 <template #icon>
                   <n-icon :component="item.active ? Checkmark16Regular : Dismiss16Regular" />
                 </template>
-                {{ item.active ? $t('content.active') : $t('content.inactive') }}
+                {{ item.active ? $t('content.active') : $t('content.noActive') }}
               </n-tag>
             </div>
 

@@ -66,6 +66,7 @@ import vacancyService from '@/service/v1/hrm/vacancyService.js'
 import pensionerService from '@/service/v1/hrm/pensionerService.js'
 import specialReportService from './v1/hrm/specialReportService'
 import structureReportService from '@/service/v1/hrm/structureReportService.js'
+import departmentLocationService from '@/service/v1/hrm/departmentLocationService.js'
 
 import documentService from '@/service/v1/docFlow/documentService.js'
 import contractService from '@/service/v1/docFlow/contractService.js'
@@ -286,4 +287,5 @@ export default {
   vacancyApproveService,
   structureReportService,
   confirmationReportService,
+  departmentLocationService,
 }

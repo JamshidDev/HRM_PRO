@@ -26,7 +26,9 @@ export const useVacancyStore = defineStore('vacancyStore', {
       position_obligations: '',
       qualification_requirements: '',
       working_conditions: '',
-      specialties: ''
+      specialties: '',
+      salary_status: true,
+      phd_status: false
     },
     params: {
       page: 1,
@@ -80,7 +82,8 @@ export const useVacancyStore = defineStore('vacancyStore', {
       this.saveLoading = true
       const data = {
         ...this.payload,
-        to: Utils.timeToZone(this.payload.to)
+        to: Utils.timeToZone(this.payload.to),
+        salary: this.payload.salary_status ? this.payload.salary : 0
       }
       $ApiService.vacancyService
         ._store({ data })
@@ -102,7 +105,7 @@ export const useVacancyStore = defineStore('vacancyStore', {
           this.payload.city_id = v.city.id
           this.payload.education = v.education.id
           this.payload.rate = v.rate?.toString()
-          this.payload.salary = v.salary?.toString()
+          this.payload.salary = v.salary_status ? v.salary?.toString() : null
           this.payload.experience = v.experience?.toString()
           this.payload.to = Utils.datePickerFormatter(v.to)
           this.payload.work_type = v.work_type.id
@@ -111,6 +114,8 @@ export const useVacancyStore = defineStore('vacancyStore', {
           this.payload.qualification_requirements = v.qualification_requirements
           this.payload.working_conditions = v.working_conditions
           this.payload.specialties = v.specialties
+          this.payload.salary_status = v.salary_status || false
+          this.payload.phd_status = v.phd_status || false
           this._cities(this.payload.region_id)
           this.visibleType = false
           this.visible = true
@@ -148,7 +153,8 @@ export const useVacancyStore = defineStore('vacancyStore', {
       this.saveLoading = true
       const data = {
         ...this.payload,
-        to: Utils.timeToZone(this.payload.to)
+        to: Utils.timeToZone(this.payload.to),
+        salary: this.payload.salary_status ? this.payload.salary : 0
       }
       $ApiService.vacancyService
         ._update({ data, id: this.elementId })
@@ -203,6 +209,8 @@ export const useVacancyStore = defineStore('vacancyStore', {
       this.payload.qualification_requirements = ''
       this.payload.working_conditions = ''
       this.payload.specialties = ''
+      this.payload.salary_status = true
+      this.payload.phd_status = false
     },
     _applications() {
       this.applicationsLoading = true

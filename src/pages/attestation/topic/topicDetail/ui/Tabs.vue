@@ -3,19 +3,21 @@
   import FilePanel from './FilePanel.vue'
   import TopicExamsTable from './ExamsTable.vue'
   import { Add12Regular } from '@vicons/fluent'
-  import { useTopicExamStore, useTopicFileStore } from '@/store/modules/index.js'
+  import { useTopicExamStore, useTopicFileStore, useTopicStore } from '@/store/modules/index.js'
   import { TopicUtils } from '@/pages/attestation/Utils/index.js'
   import { useAccountStore } from '@/store/modules/index.js'
   const accStore = useAccountStore()
 
   const fileStore = useTopicFileStore()
   const examStore = useTopicExamStore()
+  const topicStore = useTopicStore()
 
   const examTabNumber = 0
   const activeTab = ref(examTabNumber)
 
   const onAdd = () => {
     if (!accStore.checkAction(accStore.pn.examTopicsRead)) return
+    fileStore.topicId = topicStore.elementId
     fileStore.accept = TopicUtils.getMediaProperty(activeTab.value).accept
     fileStore.resetForm()
     fileStore.visibleType = true
@@ -24,6 +26,7 @@
 
   const onAddExam = () => {
     if (!accStore.checkAction(accStore.pn.examTopicsWrite)) return
+    examStore.topicId = topicStore.elementId
     examStore.resetForm()
     examStore.visibleType = true
     examStore.visible = true

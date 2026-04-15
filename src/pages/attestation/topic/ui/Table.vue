@@ -45,7 +45,7 @@
             <th class="min-w-[40px] w-[40px]"></th>
           </tr>
         </thead>
-        <tbody>
+        <tbody>cla
           <tr
             v-for="(item, idx) in store.list"
             :key="idx"

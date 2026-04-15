@@ -140,7 +140,8 @@ export const AppPaths = {
   View: '/view',
   MobileUsers: '/mobile-users',
   StructureReport: '/structure-report',
-  ConfReport: '/conf-report'
+  ConfReport: '/conf-report',
+  DepartmentLocation: '/department-location'
 }
 
 export const AppLayouts = {

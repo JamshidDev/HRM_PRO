@@ -71,6 +71,7 @@ export * from './hrm/polyclinicStore.js'
 export * from './hrm/vacancyStore.js'
 export * from './hrm/pensionerStore.js'
 export * from './hrm/structureReportStore.js'
+export * from './hrm/departmentLocationStore.js'
 
 export * from './docFlow/contractStore.js'
 export * from './docFlow/documentStore.js'

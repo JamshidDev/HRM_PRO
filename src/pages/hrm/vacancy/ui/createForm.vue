@@ -126,6 +126,9 @@
                 :loading="componentStore.enumLoading"
               />
             </n-form-item>
+            <n-form-item class="w-full col-span-3" :label="$t(`vacancy.form.phd_status`)">
+              <n-switch v-model:value="store.payload.phd_status" />
+            </n-form-item>
             <n-form-item
               class="w-full col-span-3"
               :label="$t(`vacancy.form.work_type`)"
@@ -152,10 +155,22 @@
             <n-form-item
               class="w-full col-span-3"
               :label="$t(`vacancy.form.salary`)"
-              path="salary"
-              :rule-path="validationRules.rulesNames.requiredStringField"
+              :path="store.payload.salary_status ? 'salary' : undefined"
+              :rule-path="store.payload.salary_status ? validationRules.rulesNames.requiredStringField : undefined"
             >
-              <n-input class="w-full" type="text" v-model:value="store.payload.salary" />
+              <n-input
+                class="w-full"
+                type="text"
+                v-model:value="store.payload.salary"
+                :disabled="!store.payload.salary_status"
+                :placeholder="!store.payload.salary_status ? $t('vacancy.form.salary_status_hint') : ''"
+              />
+            </n-form-item>
+            <n-form-item class="w-full col-span-3" :label="$t(`vacancy.form.salary_status`)">
+              <n-switch
+                v-model:value="store.payload.salary_status"
+                @update:value="(v) => !v && (store.payload.salary = null)"
+              />
             </n-form-item>
             <n-form-item
               class="w-full col-span-3"

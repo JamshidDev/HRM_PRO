@@ -1,14 +1,12 @@
 <script setup>
   import validationRules from '@/utils/validationRules.js'
   import { useComponentStore, useTopicExamStore } from '@/store/modules/index.js'
-  import { useRoute } from 'vue-router'
   import UIHelper from '@/utils/UIHelper.js'
   import { SuperSelect, UINSelect } from '@/components/index.js'
 
   const formRef = ref(null)
   const store = useTopicExamStore()
   const componentStore = useComponentStore()
-  const route = useRoute()
 
   const onSubmit = () => {
     formRef.value?.validate((error) => {
@@ -24,7 +22,6 @@
   }
 
   onMounted(() => {
-    store.topicId = route.params.id
     if (componentStore.topicWhomList.length === 0) {
       componentStore._enumExam()
     }

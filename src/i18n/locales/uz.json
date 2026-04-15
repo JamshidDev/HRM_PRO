@@ -2243,7 +2243,10 @@
       "qualification_requirements": "Malaka talablari",
       "working_conditions": "Ish sharoitlari",
       "specialties": "Mutaxassisligi",
-      "applications_count": "Arizalar soni"
+      "applications_count": "Arizalar soni",
+      "salary_status": "Maosh belgilangan",
+      "salary_status_hint": "Suhbat asosida kelishiladi",
+      "phd_status": "PhD talab qilinadi"
     }
   },
   "salaryCategory": {
@@ -2863,5 +2866,60 @@
     "langUz": "O'zbek",
     "langRu": "Rus",
     "langEn": "Ingliz"
+  },
+  "departmentLocationPage": {
+    "name": "Bo'lim joylashuvi",
+    "createTitle": "Joylashuv qo'shish",
+    "updateTitle": "Joylashuvni tahrirlash",
+    "table": {
+      "department": "Bo'lim",
+      "organization": "Tashkilot",
+      "geoType": "Geo turi",
+      "lat": "Kenglik",
+      "lng": "Uzunlik",
+      "radius": "Radius",
+      "accuracy": "Aniqlik"
+    },
+    "form": {
+      "department": "Bo'lim",
+      "geoType": "Geo turi",
+      "lat": "Kenglik (Latitude)",
+      "lng": "Uzunlik (Longitude)",
+      "radius": "Radius (metr)",
+      "accuracy": "Aniqlik limiti",
+      "polygon": "Polygon",
+      "points": "ta nuqta",
+      "noPolygon": "Polygon belgilanmagan",
+      "markerInfoFull": "Xaritaga bosib joylashuvni belgilang. Markerni kerakli joyga suring yoki xaritaning boshqa joyiga bosing. Radius sozlamalari orqali belgilangan nuqta atrofidagi masofani aniqlashingiz mumkin.",
+      "polygonInfoFull": "Polygon rejimida xodimlar faqat belgilangan hudud ichida bo'lganda davomat belgilashi mumkin. Xaritada \"Polygon qo'shish\" tugmasini bosib, ketma-ket nuqtalarni belgilang (kamida 3, maksimal 12 ta nuqta).",
+      "autoCalculated": "Avtomatik",
+      "centerMarkerInfo": "Markerni surib markaziy nuqtani o'zgartirishingiz mumkin"
+    },
+    "validation": {
+      "departmentRequired": "Bo'limni tanlang",
+      "markerRequired": "Xaritada joylashuvni belgilang",
+      "polygonRequired": "Xaritada polygon belgilang (kamida 3 ta nuqta)",
+      "radiusRequired": "Radiusni kiriting",
+      "accuracyRequired": "Aniqlik limitini kiriting",
+      "minPoints": "kamida 3 ta kerak"
+    },
+    "map": {
+      "title": "Xaritada belgilash",
+      "clearMarker": "Markerni tozalash",
+      "clearPolygon": "Polygonni tozalash",
+      "myLocation": "Mening joylashuvim",
+      "myLocationTooltip": "Joriy joylashuvni aniqlash",
+      "clickToMark": "Xaritaga bosib marker qo'ying",
+      "setLocation": "Joylashuvni belgilash",
+      "addPolygon": "Polygon qo'shish",
+      "polygonMode": "Polygon rejimi",
+      "markerMode": "Marker rejimi",
+      "finishPolygon": "Tugatish",
+      "clickToAddPoint": "Nuqta qo'shish uchun xaritaga bosing",
+      "undo": "Ortga",
+      "save": "Saqlash",
+      "done": "Tayyor",
+      "points": "nuqta"
+    }
   }
 }

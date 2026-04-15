@@ -175,5 +175,11 @@ export const hrmRoutes = [
     name: AppPaths.StructureReport.substring(1),
     component: () => import('@/pages/hrm/structureReport/page.vue'),
     meta: { layout: AppLayouts.main }
+  },
+  {
+    path: Utils.routeHrmPathMaker(AppPaths.DepartmentLocation),
+    name: AppPaths.DepartmentLocation.substring(1),
+    component: () => import('@/pages/hrm/departmentLocation/page.vue'),
+    meta: { layout: AppLayouts.main }
   }
 ]

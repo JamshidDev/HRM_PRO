@@ -1,5 +1,5 @@
 <script setup>
-  import { useTopicFileStore } from '@/store/modules/index.js'
+  import { useTopicFileStore, useTopicStore } from '@/store/modules/index.js'
   import { UIMenuButton, NoDataPicture } from '@/components/index.js'
   import Utils from '@/utils/Utils.js'
   import { useAccountStore } from '@/store/modules/index.js'
@@ -9,6 +9,7 @@
     object: Object
   })
   const store = useTopicFileStore()
+  const topicStore = useTopicStore()
 
   const showFile = (file) => {
     $MediaViewer.showMediaViewer(file.file, file.file_extension)
@@ -20,12 +21,14 @@
       $MediaViewer.showMediaViewer(v.data.file, v.data.file_extension)
     } else if (v.key === Utils.ActionTypes.delete) {
       if (!accStore.checkAction(accStore.pn.examTopicsWrite)) return
+      store.topicId = topicStore.elementId
       store.elementId = v.data.id
       store._delete()
     }
   }
 
   const toggleActive = (v) => {
+    store.topicId = topicStore.elementId
     store.elementId = v.id
     store.payload.active = !v.active
     store._update()

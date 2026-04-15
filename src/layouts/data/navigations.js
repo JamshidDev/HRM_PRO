@@ -274,6 +274,13 @@ export const navigations = [
         color: 'bg-warning',
         permission: appPermissions.hrMonthlyReport
       },
+      {
+        label: 'departmentLocationPage.name',
+        path: Utils.routeHrmPathMaker(AppPaths.DepartmentLocation),
+        icon: ChannelShare20Filled,
+        color: 'bg-info',
+        permission: appPermissions.admin
+      },
     ]
   },
   {

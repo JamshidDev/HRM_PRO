@@ -2217,7 +2217,10 @@
       "qualification_requirements": "Qualification requirements",
       "working_conditions": "Working conditions",
       "specialties": "Specialties",
-      "applications_count": "Applications"
+      "applications_count": "Applications",
+      "salary_status": "Salary specified",
+      "salary_status_hint": "Based on interview",
+      "phd_status": "PhD required"
     }
   },
   "salaryCategory": {
@@ -2777,5 +2780,60 @@
     "langUz": "Uzbek",
     "langRu": "Russian",
     "langEn": "English"
+  },
+  "departmentLocationPage": {
+    "name": "Department Location",
+    "createTitle": "Add Location",
+    "updateTitle": "Edit Location",
+    "table": {
+      "department": "Department",
+      "organization": "Organization",
+      "geoType": "Geo Type",
+      "lat": "Latitude",
+      "lng": "Longitude",
+      "radius": "Radius",
+      "accuracy": "Accuracy"
+    },
+    "form": {
+      "department": "Department",
+      "geoType": "Geo Type",
+      "lat": "Latitude",
+      "lng": "Longitude",
+      "radius": "Radius (meter)",
+      "accuracy": "Accuracy Limit",
+      "polygon": "Polygon",
+      "points": "points",
+      "noPolygon": "No polygon set",
+      "markerInfoFull": "Click on the map to set the location. Drag the marker to the desired position or click on another location on the map. Use the radius settings to define the distance around the marked point.",
+      "polygonInfoFull": "In polygon mode, employees can only mark attendance when inside the designated area. Click \"Add Polygon\" on the map and mark points sequentially (minimum 3, maximum 12 points).",
+      "autoCalculated": "Auto",
+      "centerMarkerInfo": "Drag the marker to change the center point"
+    },
+    "validation": {
+      "departmentRequired": "Select a department",
+      "markerRequired": "Mark the location on the map",
+      "polygonRequired": "Draw a polygon on the map (minimum 3 points)",
+      "radiusRequired": "Enter the radius",
+      "accuracyRequired": "Enter the accuracy limit",
+      "minPoints": "minimum 3"
+    },
+    "map": {
+      "title": "Mark on Map",
+      "clearMarker": "Clear Marker",
+      "clearPolygon": "Clear Polygon",
+      "myLocation": "My Location",
+      "myLocationTooltip": "Get current location",
+      "clickToMark": "Click on map to place marker",
+      "setLocation": "Set Location",
+      "addPolygon": "Add Polygon",
+      "polygonMode": "Polygon mode",
+      "markerMode": "Marker mode",
+      "finishPolygon": "Finish",
+      "clickToAddPoint": "Click on map to add point",
+      "undo": "Undo",
+      "save": "Save",
+      "done": "Done",
+      "points": "points"
+    }
   }
 }
