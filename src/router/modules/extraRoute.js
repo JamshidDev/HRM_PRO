@@ -15,5 +15,12 @@ export const extraRoutes = [
         meta: {
             layout: AppLayouts.main
         }
+    },
+    {
+        path: Utils.routeExtraPathMaker(AppPaths.DepartmentLocation),
+        component: () => import('@pages/hrm/departmentLocation/page.vue'),
+        meta: {
+            layout: AppLayouts.main
+        }
     }
 ]

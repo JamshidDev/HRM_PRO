@@ -62,8 +62,8 @@
             <td>
               <UIBadge
                 :show-icon="false"
-                :label="item.geo_type ? $t('content.active') : $t('content.noActive')"
-                :type="item.geo_type ? Utils.colorTypes.success : Utils.colorTypes.secondary"
+                :label="item.geo_type ? $t('departmentLocationPage.form.area') : $t('departmentLocationPage.form.coordinate')"
+                :type="item.geo_type ? Utils.colorTypes.dark : Utils.colorTypes.primary"
               />
             </td>
             <td>

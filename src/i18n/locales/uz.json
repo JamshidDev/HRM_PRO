@@ -2389,7 +2389,11 @@
       "asFile": "Faylga yuklash uchun bosing",
       "error": "Xatolik",
       "logId": "Log ID",
-      "deviceId": "Qurilma ID"
+      "deviceId": "Qurilma ID",
+      "startedTime": "Boshlangan vaqt",
+      "finishedTime": "Tugagan vaqt",
+      "administrator": "Administrator",
+      "system": "Tizim"
     }
   },
   "hcEvent": {
@@ -2874,7 +2878,7 @@
     "table": {
       "department": "Bo'lim",
       "organization": "Tashkilot",
-      "geoType": "Geo turi",
+      "geoType": "Joylashuv turi",
       "lat": "Kenglik",
       "lng": "Uzunlik",
       "radius": "Radius",
@@ -2882,18 +2886,21 @@
     },
     "form": {
       "department": "Bo'lim",
-      "geoType": "Geo turi",
-      "lat": "Kenglik (Latitude)",
-      "lng": "Uzunlik (Longitude)",
+      "geoType": "Joylashuv turi",
+      "lat": "Lat",
+      "lng": "Lng",
       "radius": "Radius (metr)",
       "accuracy": "Aniqlik limiti",
       "polygon": "Polygon",
       "points": "ta nuqta",
       "noPolygon": "Polygon belgilanmagan",
+      "polygonReady": "Hudud tayyor",
       "markerInfoFull": "Xaritaga bosib joylashuvni belgilang. Markerni kerakli joyga suring yoki xaritaning boshqa joyiga bosing. Radius sozlamalari orqali belgilangan nuqta atrofidagi masofani aniqlashingiz mumkin.",
       "polygonInfoFull": "Polygon rejimida xodimlar faqat belgilangan hudud ichida bo'lganda davomat belgilashi mumkin. Xaritada \"Polygon qo'shish\" tugmasini bosib, ketma-ket nuqtalarni belgilang (kamida 3, maksimal 12 ta nuqta).",
       "autoCalculated": "Avtomatik",
-      "centerMarkerInfo": "Markerni surib markaziy nuqtani o'zgartirishingiz mumkin"
+      "centerMarkerInfo": "Markerni surib markaziy nuqtani o'zgartirishingiz mumkin",
+      "coordinate": "Kordinata",
+      "area": "Hudud"
     },
     "validation": {
       "departmentRequired": "Bo'limni tanlang",

@@ -2,7 +2,7 @@
   import { ref, watch, onMounted, onUnmounted } from 'vue'
   import L from 'leaflet'
   import 'leaflet/dist/leaflet.css'
-  import { Delete24Regular, Location24Regular, Checkmark24Regular, ArrowUndo24Regular } from '@vicons/fluent'
+  import { Location24Regular, Checkmark24Regular, ArrowUndo24Regular } from '@vicons/fluent'
 
   const props = defineProps({
     lat: {
@@ -110,6 +110,12 @@
       polygonLayer = null
     }
     polygonPoints.value = []
+
+    // Clear marker
+    if (marker) {
+      map.removeLayer(marker)
+      marker = null
+    }
   }
 
   const loadExistingPolygon = (points) => {
@@ -378,6 +384,28 @@
     }
   })
 
+  // Watch lat/lng changes - move marker and map
+  watch([() => props.lat, () => props.lng], ([newLat, newLng], [oldLat, oldLng]) => {
+    if (map && newLat && newLng) {
+      // Only update if values actually changed (not from marker drag)
+      const latChanged = newLat !== oldLat
+      const lngChanged = newLng !== oldLng
+
+      if (latChanged || lngChanged) {
+        if (props.geoType) {
+          // Polygon mode - update center marker
+          addCenterMarker(newLat, newLng)
+        } else {
+          // Marker mode - update marker and circle
+          addMarker(newLat, newLng)
+          addCircle(newLat, newLng, props.radius)
+        }
+        // Pan map to new location
+        map.setView([newLat, newLng], map.getZoom())
+      }
+    }
+  })
+
   // Watch geoType changes - switch mode and clear opposite data
   watch(() => props.geoType, (newValue) => {
     if (map) {
@@ -401,6 +429,14 @@
     }
     polygonPoints.value = []
     emit('update:polygon', [])
+
+    // Clear marker too
+    if (marker) {
+      map.removeLayer(marker)
+      marker = null
+    }
+    emit('update:lat', null)
+    emit('update:lng', null)
   }
 
   // Clear marker
@@ -486,24 +522,13 @@
           <n-button size="small" type="primary" @click="startPolygonDrawing">
             {{ $t('departmentLocationPage.map.addPolygon') }}
           </n-button>
-
-          <n-tooltip v-if="polygonPoints.length > 0 || (props.polygon && props.polygon.length > 0)" trigger="hover">
-            <template #trigger>
-              <n-button size="small" type="warning" secondary @click="clearPolygon">
-                <template #icon>
-                  <n-icon><Delete24Regular /></n-icon>
-                </template>
-              </n-button>
-            </template>
-            {{ $t('departmentLocationPage.map.clearPolygon') }}
-          </n-tooltip>
         </div>
 
         <!-- Drawing mode - show controls -->
         <div v-else class="flex items-center gap-2">
-          <n-tag :type="polygonPoints.length >= 3 ? 'success' : 'warning'" size="medium">
-            <b>{{ polygonPoints.length }}</b>/12 {{ $t('departmentLocationPage.map.points') }}
-          </n-tag>
+          <span class="points-badge">
+            <b>{{ polygonPoints.length }}</b>/12
+          </span>
 
           <n-tooltip trigger="hover">
             <template #trigger>
@@ -569,5 +594,14 @@
 .map-container {
   flex: 1;
   min-height: 300px;
+}
+
+.points-badge {
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 13px;
+  color: #374151;
+  background: #f3f4f6;
+  border: 1px solid #e5e7eb;
 }
 </style>

@@ -45,7 +45,7 @@ const timeToZone = (time) => {
 }
 
 const timeWithMonth = (time) => {
-  return time ? dayjs(time).format('YYYY-MM-DD HH:mm:ss') : null
+  return time ? dayjs(time).format('YYYY.MM.DD HH:mm:ss') : null
 }
 
 const timeHHMMWithMonth = (time) => {

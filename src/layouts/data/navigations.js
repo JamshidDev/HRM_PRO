@@ -273,14 +273,7 @@ export const navigations = [
         icon: DocumentBulletList24Filled,
         color: 'bg-warning',
         permission: appPermissions.hrMonthlyReport
-      },
-      {
-        label: 'departmentLocationPage.name',
-        path: Utils.routeHrmPathMaker(AppPaths.DepartmentLocation),
-        icon: ChannelShare20Filled,
-        color: 'bg-info',
-        permission: appPermissions.admin
-      },
+      }
     ]
   },
   {
@@ -814,6 +807,13 @@ export const navigations = [
         icon: Folder48Filled,
         color: 'bg-dark',
         permission: appPermissions.educationsStructureMenu
+      },
+      {
+        label: 'departmentLocationPage.name',
+        path: Utils.routeExtraPathMaker(AppPaths.DepartmentLocation),
+        icon: ChannelShare20Filled,
+        color: 'bg-info',
+        permission: appPermissions.admin
       }
     ]
   },
