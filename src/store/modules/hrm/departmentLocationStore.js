@@ -2,8 +2,12 @@ import { defineStore } from 'pinia'
 
 export const useDepartmentLocationStore = defineStore('departmentLocationStore', {
   state: () => ({
+    activeTab: 'departments',
     list: [],
     loading: false,
+    locationList: [],
+    locationLoading: false,
+    locationTotalItems: 0,
     showLoading: false,
     saveLoading: false,
     deleteLoading: false,
@@ -11,6 +15,7 @@ export const useDepartmentLocationStore = defineStore('departmentLocationStore',
     visibleType: true,
     elementId: null,
     totalItems: 0,
+    selectedDepartment: null,
     payload: {
       department_id: null,
       geo_type: false,
@@ -26,12 +31,12 @@ export const useDepartmentLocationStore = defineStore('departmentLocationStore',
       search: null,
       organizations: []
     },
-    departmentList: [],
-    departmentLoading: false,
-    departmentParams: {
+    locationParams: {
       page: 1,
-      per_page: 20,
-      search: null
+      per_page: 10,
+      search: null,
+      organizations: [],
+      department_id: null
     }
   }),
   actions: {
@@ -51,16 +56,21 @@ export const useDepartmentLocationStore = defineStore('departmentLocationStore',
           this.loading = false
         })
     },
-    _departmentList() {
-      this.departmentLoading = true
-      const params = { ...this.departmentParams }
+    _locationIndex() {
+      this.locationLoading = true
+      const params = {
+        ...this.locationParams,
+        organizations: this.locationParams.organizations.map((v) => v.id).toString() || undefined,
+        department_id: this.locationParams.department_id || undefined
+      }
       $ApiService.departmentLocationService
-        ._departmentList({ params })
+        ._locationIndex({ params })
         .then((res) => {
-          this.departmentList = res.data.data.data
+          this.locationList = res.data.data.data
+          this.locationTotalItems = res.data.data.total
         })
         .finally(() => {
-          this.departmentLoading = false
+          this.locationLoading = false
         })
     },
     _create() {
@@ -78,7 +88,11 @@ export const useDepartmentLocationStore = defineStore('departmentLocationStore',
         ._create({ data })
         .then((res) => {
           this.visible = false
-          this._index()
+          if (this.activeTab === 'departments') {
+            this._index()
+          } else {
+            this._locationIndex()
+          }
         })
         .finally(() => {
           this.saveLoading = false
@@ -99,45 +113,14 @@ export const useDepartmentLocationStore = defineStore('departmentLocationStore',
         ._update({ data, id: this.elementId })
         .then((res) => {
           this.visible = false
-          this._index()
-        })
-        .finally(() => {
-          this.saveLoading = false
-        })
-    },
-    _show(id) {
-      this.showLoading = true
-      this.elementId = id
-      this.visibleType = false
-      this.visible = true
-      $ApiService.departmentLocationService
-        ._show({ id })
-        .then((res) => {
-          const data = res.data.data
-          this.payload.department_id = data.department_id
-          this.payload.geo_type = data.geo_type
-          this.payload.lat = data.lat
-          this.payload.lng = data.lng
-          this.payload.radius = data.radius || 500
-          this.payload.polygon = data.polygon || []
-          this.payload.accuracy_limit = data.accuracy_limit || 3
-
-          // Add department to list if not exists
-          if (data.department) {
-            const exists = this.departmentList.find(d => d.id === data.department.id)
-            if (!exists) {
-              this.departmentList.unshift({
-                id: data.department.id,
-                name: data.department.name,
-                organization: {
-                  name: data.department.organization_name
-                }
-              })
-            }
+          if (this.activeTab === 'departments') {
+            this._index()
+          } else {
+            this._locationIndex()
           }
         })
         .finally(() => {
-          this.showLoading = false
+          this.saveLoading = false
         })
     },
     _delete() {
@@ -145,19 +128,72 @@ export const useDepartmentLocationStore = defineStore('departmentLocationStore',
       $ApiService.departmentLocationService
         ._delete({ id: this.elementId })
         .then((res) => {
-          this._index()
+          this.visible = false
+          if (this.activeTab === 'departments') {
+            this._index()
+          } else {
+            this._locationIndex()
+          }
         })
         .finally(() => {
           this.deleteLoading = false
         })
     },
-    openCreate() {
+    openAttach(department) {
+      // Locations tabga o'tish va department_id bilan filter qilish
+      this.activeTab = 'locations'
+      this.locationParams.department_id = department.id
+      this.selectedDepartment = department
+      this._locationIndex()
+    },
+    openLocationModal(department) {
       this.resetForm()
+      this.selectedDepartment = department
+      this.payload.department_id = department.id
       this.visibleType = true
       this.visible = true
     },
+    openEditModal(item) {
+      this.resetForm()
+      this.payload.department_id = item.department_id
+      this.elementId = item.id
+      this.visibleType = false
+      this.visible = true
+      this._showDetails(item.id)
+    },
+    _showDetails(locationId) {
+      this.showLoading = true
+      $ApiService.departmentLocationService
+        ._show({ id: locationId })
+        .then((res) => {
+          const data = res.data.data
+          if (data) {
+            this.payload.department_id = data.department_id
+            this.payload.geo_type = data.geo_type
+            this.payload.lat = data.lat
+            this.payload.lng = data.lng
+            this.payload.radius = data.radius || 500
+            this.payload.polygon = data.polygon || []
+            this.payload.accuracy_limit = data.accuracy_limit || 3
+            // Department ma'lumotlarini set qilish
+            if (data.department) {
+              this.selectedDepartment = {
+                id: data.department.id,
+                name: data.department.name,
+                organization: {
+                  name: data.department.organization_name
+                }
+              }
+            }
+          }
+        })
+        .finally(() => {
+          this.showLoading = false
+        })
+    },
     resetForm() {
       this.elementId = null
+      this.selectedDepartment = null
       this.payload.department_id = null
       this.payload.geo_type = false
       this.payload.lat = null
@@ -170,6 +206,13 @@ export const useDepartmentLocationStore = defineStore('departmentLocationStore',
       this.params.page = 1
       this.params.search = null
       this.params.organizations = []
+    },
+    resetLocationParams() {
+      this.locationParams.page = 1
+      this.locationParams.search = null
+      this.locationParams.organizations = []
+      this.locationParams.department_id = null
+      this.selectedDepartment = null
     }
   }
 })

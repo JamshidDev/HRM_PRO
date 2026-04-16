@@ -813,7 +813,7 @@ export const navigations = [
         path: Utils.routeExtraPathMaker(AppPaths.DepartmentLocation),
         icon: ChannelShare20Filled,
         color: 'bg-info',
-        permission: appPermissions.admin
+        permission: appPermissions.departmentLocation
       }
     ]
   },

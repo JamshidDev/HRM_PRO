@@ -1,4 +1,5 @@
-export { default as Table } from './Table.vue'
+export { default as DepartmentTable } from './DepartmentTable.vue'
+export { default as LocationTable } from './LocationTable.vue'
 export { default as Filter } from './Filter.vue'
 export { default as CreateForm } from './CreateForm.vue'
 export { default as LocationMap } from './LocationMap.vue'

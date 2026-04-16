@@ -2793,6 +2793,14 @@
     "name": "Местоположение отдела",
     "createTitle": "Добавить местоположение",
     "updateTitle": "Редактировать местоположение",
+    "attachTitle": "Привязать местоположение",
+    "addLocation": "Добавить местоположение",
+    "locationExists": "Есть",
+    "locationNotExists": "Нет",
+    "tabs": {
+      "departments": "Отделы",
+      "locations": "Местоположения"
+    },
     "table": {
       "department": "Отдел",
       "organization": "Организация",
@@ -2800,7 +2808,9 @@
       "lat": "Широта",
       "lng": "Долгота",
       "radius": "Радиус",
-      "accuracy": "Точность"
+      "accuracy": "Точность",
+      "hasLocation": "Местоположение",
+      "location": "Местоположение"
     },
     "form": {
       "department": "Отдел",

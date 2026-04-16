@@ -2789,6 +2789,14 @@
     "name": "Department Location",
     "createTitle": "Add Location",
     "updateTitle": "Edit Location",
+    "attachTitle": "Attach Location",
+    "addLocation": "Add Location",
+    "locationExists": "Yes",
+    "locationNotExists": "No",
+    "tabs": {
+      "departments": "Departments",
+      "locations": "Locations"
+    },
     "table": {
       "department": "Department",
       "organization": "Organization",
@@ -2796,7 +2804,9 @@
       "lat": "Latitude",
       "lng": "Longitude",
       "radius": "Radius",
-      "accuracy": "Accuracy"
+      "accuracy": "Accuracy",
+      "hasLocation": "Location",
+      "location": "Location"
     },
     "form": {
       "department": "Department",

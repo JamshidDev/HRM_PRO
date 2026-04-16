@@ -97,21 +97,21 @@
             <td>
               <div
                 v-if="item?.type?.id === 1"
-                class="flex items-center gap-2 bg-surface-ground/60 rounded-lg px-2 py-1 w-[200px] mx-auto"
+                class="flex items-center gap-x-2 bg-surface-ground/60 rounded-lg px-2 w-[200px] mx-auto"
               >
-                <div class="w-8 h-8 rounded-full bg-primary/20 border border-primary/40 flex items-center justify-center">
-                  <n-icon size="18" class="text-primary">
+                <div class="w-8 h-8 rounded-full bg-primary/20 border border-primary/40 flex items-center justify-center shrink-0">
+                  <n-icon size="16" class="text-primary">
                     <Desktop24Filled />
                   </n-icon>
                 </div>
-                <div class="flex flex-col">
-                  <span class="font-medium text-sm leading-tight">{{ $t('syncLog.form.administrator') }}</span>
-                  <span class="text-xs text-secondary">{{ $t('syncLog.form.system') }}</span>
+                <div class="flex flex-col" style="width: calc(100% - 42px)">
+                  <span class="text-sm text-textColor2 line-clamp-1 w-full leading-[1.2]">{{ $t('syncLog.form.administrator') }}</span>
+                  <span class="text-xs text-textColor3 line-clamp-1 w-full">{{ $t('syncLog.form.system') }}</span>
                 </div>
               </div>
               <template v-else>
                 <UIUser
-                  class="mx-auto bg-surface-ground/60 rounded-lg px-2"
+                  class="mx-auto bg-surface-ground/60 rounded-lg px-2 small-avatar"
                   :data="{
                     photo: item?.user?.worker.photo,
                     firstName: item?.user?.worker.first_name,
@@ -191,3 +191,11 @@
     <NoDataPicture v-if="store.list.length === 0 && !store.loading" />
   </n-spin>
 </template>
+
+<style scoped>
+.small-avatar :deep(.n-avatar) {
+  width: 32px !important;
+  height: 32px !important;
+  font-size: 14px !important;
+}
+</style>

@@ -2875,6 +2875,14 @@
     "name": "Bo'lim joylashuvi",
     "createTitle": "Joylashuv qo'shish",
     "updateTitle": "Joylashuvni tahrirlash",
+    "attachTitle": "Joylashuv biriktirish",
+    "addLocation": "Joylashuv qo'shish",
+    "locationExists": "Bor",
+    "locationNotExists": "Yo'q",
+    "tabs": {
+      "departments": "Bo'limlar",
+      "locations": "Joylashuvlar"
+    },
     "table": {
       "department": "Bo'lim",
       "organization": "Tashkilot",
@@ -2882,7 +2890,9 @@
       "lat": "Kenglik",
       "lng": "Uzunlik",
       "radius": "Radius",
-      "accuracy": "Aniqlik"
+      "accuracy": "Aniqlik",
+      "hasLocation": "Joylashuvlar",
+      "location": "Joylashuv"
     },
     "form": {
       "department": "Bo'lim",

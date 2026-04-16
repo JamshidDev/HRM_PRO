@@ -356,4 +356,8 @@ export const appPermissions = {
   extra:'extra',
   extraWorkerUser:'extra-worker-user',
   educationsStructureMenu: 'educations-structure-menu',
+
+  departmentLocation: 'department-location',
+  departmentLocationRead: 'department-location-read',
+  departmentLocationWrite: 'department-location-write',
 }

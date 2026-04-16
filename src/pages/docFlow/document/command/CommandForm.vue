@@ -488,13 +488,17 @@
     store.payload.confirmations = store.payload.confirmations.filter((v) => v !== id)
   }
 
-  onMounted(() => {
-    componentStore._commandTypes()
-    store.resetForm()
-    componentStore._structures()
+  watch(() => store.visible, (val) => {
+    if (val) {
+      componentStore._commandTypes()
+      componentStore._structures()
+      fetchConfirmation()
+      syncConfirmationEv()
+    }
+  })
 
-    fetchConfirmation()
-    syncConfirmationEv()
+  onMounted(() => {
+    store.resetForm()
   })
 </script>
 

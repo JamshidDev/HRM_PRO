@@ -1,38 +1,17 @@
 <script setup>
-  import { ref, watch, computed, getCurrentInstance, h } from 'vue'
-  import { UIModal, SuperSelect } from '@/components/index.js'
+  import { ref, computed, getCurrentInstance } from 'vue'
+  import { UIModal } from '@/components/index.js'
   import { useDepartmentLocationStore } from '@/store/modules/index.js'
   import LocationMap from './LocationMap.vue'
-  import UIHelper from '@/utils/UIHelper.js'
-  import { Map20Filled, Dismiss16Regular } from '@vicons/fluent'
+  import { Map20Filled, Dismiss16Regular, Location20Filled } from '@vicons/fluent'
 
   const { proxy } = getCurrentInstance()
   const store = useDepartmentLocationStore()
 
-  const renderDepartmentLabel = (option) => {
-    return h(
-      'div',
-      { class: 'flex gap-2 my-1 items-center' },
-      [
-        h('div', { class: 'flex flex-col' }, [
-          h('div', { class: 'text-xs font-medium text-textColor2 !text-wrap' }, option.name),
-          h('div', { class: 'text-xs text-textColor3 !text-wrap' }, option.organization?.name || '')
-        ])
-      ]
-    )
-  }
-
   const mapRef = ref(null)
   const formRef = ref(null)
 
-  // Validation rules
   const rules = computed(() => ({
-    department_id: {
-      required: true,
-      type: 'number',
-      message: proxy.$t('departmentLocationPage.validation.departmentRequired'),
-      trigger: ['blur', 'change']
-    },
     lat: {
       required: true,
       type: 'number',
@@ -65,7 +44,6 @@
         return
       }
 
-      // Additional validation for polygon mode
       if (store.payload.geo_type) {
         if (!store.payload.polygon || store.payload.polygon.length < 3) {
           window.$message?.warning(proxy.$t('departmentLocationPage.validation.polygonRequired'))
@@ -83,10 +61,6 @@
 
   const onCancel = () => {
     store.visible = false
-  }
-
-  const onSearchDepartment = () => {
-    store._departmentList()
   }
 
   const updateLat = (val) => {
@@ -109,22 +83,12 @@
       mapRef.value.clearPolygon()
     }
   }
-
-  watch(() => store.visible, (val) => {
-    if (val && store.departmentList.length === 0) {
-      store._departmentList()
-    }
-  })
 </script>
 
 <template>
   <UIModal
     v-model:visible="store.visible"
-    :title="
-      store.visibleType
-        ? $t('departmentLocationPage.createTitle')
-        : $t('departmentLocationPage.updateTitle')
-    "
+    :title="$t('departmentLocationPage.attachTitle')"
     width="95%"
     height="90vh"
   >
@@ -132,164 +96,164 @@
       <div class="flex flex-col lg:flex-row gap-6 h-full">
         <!-- Left side - Form -->
         <div class="w-full lg:w-[320px] shrink-0 flex flex-col gap-3">
-          <n-form
-          ref="formRef"
-          :model="store.payload"
-          :rules="rules"
-          label-placement="top"
-          size="medium"
-          require-mark-placement="right-hanging"
-        >
-          <n-form-item :label="$t('departmentLocationPage.form.department')" path="department_id">
-            <SuperSelect
-              v-model:value="store.payload.department_id"
-              v-model:search="store.departmentParams.search"
-              :options="store.departmentList"
-              :loading="store.departmentLoading"
-              value-field="id"
-              size="large"
-              :placeholder="$t('departmentLocationPage.form.department')"
-              @onSearch="onSearchDepartment"
-              :render-label="renderDepartmentLabel"
-              :render-tag="UIHelper.selectRender.value"
-            />
-          </n-form-item>
-
-          <!-- Geo Type Card -->
-          <div class="geo-type-card">
-            <div class="flex items-center justify-between">
-              <span class="text-gray-600">{{ $t('departmentLocationPage.form.geoType') }}</span>
-              <n-switch v-model:value="store.payload.geo_type" size="medium">
-                <template #checked>{{ $t('departmentLocationPage.form.area') }}</template>
-                <template #unchecked>{{ $t('departmentLocationPage.form.coordinate') }}</template>
-              </n-switch>
-            </div>
-          </div>
-
-          <!-- Polygon info (when geo_type = true) -->
-          <template v-if="store.payload.geo_type">
-            <div
-              class="polygon-card"
-              :class="{
-                'polygon-card--success': store.payload.polygon.length >= 3,
-                'polygon-card--warning': store.payload.polygon.length > 0 && store.payload.polygon.length < 3,
-                'polygon-card--error': store.payload.polygon.length === 0
-              }"
-            >
-              <div class="flex items-center justify-between">
-                <div class="flex items-center gap-2">
-                  <div class="polygon-card__icon">
-                    <n-icon size="18">
-                      <Map20Filled />
-                    </n-icon>
-                  </div>
-                  <div class="flex flex-col">
-                    <span class="polygon-card__title">{{ $t('departmentLocationPage.form.area') }}</span>
-                    <span class="polygon-card__subtitle">
-                      <template v-if="store.payload.polygon.length === 0">
-                        {{ $t('departmentLocationPage.form.noPolygon') }}
-                      </template>
-                      <template v-else-if="store.payload.polygon.length < 3">
-                        {{ $t('departmentLocationPage.validation.minPoints') }}
-                      </template>
-                      <template v-else>
-                        {{ $t('departmentLocationPage.form.polygonReady') }}
-                      </template>
-                    </span>
-                  </div>
-                </div>
-                <n-button
-                  v-if="store.payload.polygon.length > 0"
-                  size="tiny"
-                  secondary
-                  type="error"
-                  @click="clearPolygon"
-                >
-                  <template #icon>
-                    <n-icon size="14">
-                      <Dismiss16Regular />
-                    </n-icon>
-                  </template>
-                </n-button>
+          <!-- Selected Department Card -->
+          <div class="department-card" v-if="store.selectedDepartment">
+            <div class="flex items-center gap-3">
+              <div class="department-card__icon">
+                <n-icon size="20">
+                  <Location20Filled />
+                </n-icon>
+              </div>
+              <div class="flex flex-col">
+                <span class="department-card__title">{{ store.selectedDepartment.name }}</span>
+                <span class="department-card__subtitle">{{ store.selectedDepartment.organization?.name }}</span>
               </div>
             </div>
-          </template>
-
-          <!-- Radius (only for marker mode) -->
-          <n-form-item v-if="!store.payload.geo_type" :label="$t('departmentLocationPage.form.radius')" path="radius">
-            <n-input-number
-              v-model:value="store.payload.radius"
-              :min="1"
-              :max="5000"
-              class="w-full"
-              size="large"
-            >
-              <template #suffix>m</template>
-            </n-input-number>
-          </n-form-item>
-
-          <!-- Lat/Lng fields (both modes) -->
-          <div class="coordinates-card">
-            <div class="grid grid-cols-2 gap-2">
-              <n-form-item :label="$t('departmentLocationPage.form.lat')" path="lat" :show-feedback="false">
-                <n-input-number
-                  v-model:value="store.payload.lat"
-                  :precision="6"
-                  :step="0.000001"
-                  class="w-full"
-                  size="medium"
-                />
-              </n-form-item>
-
-              <n-form-item :label="$t('departmentLocationPage.form.lng')" path="lng" :show-feedback="false">
-                <n-input-number
-                  v-model:value="store.payload.lng"
-                  :precision="6"
-                  :step="0.000001"
-                  class="w-full"
-                  size="medium"
-                />
-              </n-form-item>
-            </div>
           </div>
 
-          <n-form-item :label="$t('departmentLocationPage.form.accuracy')" path="accuracy_limit">
-            <n-input-number
-              v-model:value="store.payload.accuracy_limit"
-              :min="1"
-              :max="100"
-              class="w-full"
-              size="large"
-            />
-          </n-form-item>
-        </n-form>
+          <n-form
+            ref="formRef"
+            :model="store.payload"
+            :rules="rules"
+            label-placement="top"
+            size="medium"
+            require-mark-placement="right-hanging"
+          >
+            <!-- Geo Type Card -->
+            <div class="geo-type-card">
+              <div class="flex items-center justify-between">
+                <span class="text-gray-600">{{ $t('departmentLocationPage.form.geoType') }}</span>
+                <n-switch v-model:value="store.payload.geo_type" size="medium">
+                  <template #checked>{{ $t('departmentLocationPage.form.area') }}</template>
+                  <template #unchecked>{{ $t('departmentLocationPage.form.coordinate') }}</template>
+                </n-switch>
+              </div>
+            </div>
 
-        <!-- Action buttons -->
-        <div class="flex gap-3 mt-auto pt-4">
-          <n-button size="large" class="flex-1" @click="onCancel">
-            {{ $t('content.cancel') }}
-          </n-button>
-          <n-button type="primary" size="large" class="flex-1" :loading="store.saveLoading" @click="onSubmit">
-            {{ $t('content.save') }}
-          </n-button>
+            <!-- Polygon info (when geo_type = true) -->
+            <template v-if="store.payload.geo_type">
+              <div
+                class="polygon-card"
+                :class="{
+                  'polygon-card--success': store.payload.polygon.length >= 3,
+                  'polygon-card--warning': store.payload.polygon.length > 0 && store.payload.polygon.length < 3,
+                  'polygon-card--error': store.payload.polygon.length === 0
+                }"
+              >
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-2">
+                    <div class="polygon-card__icon">
+                      <n-icon size="18">
+                        <Map20Filled />
+                      </n-icon>
+                    </div>
+                    <div class="flex flex-col">
+                      <span class="polygon-card__title">{{ $t('departmentLocationPage.form.area') }}</span>
+                      <span class="polygon-card__subtitle">
+                        <template v-if="store.payload.polygon.length === 0">
+                          {{ $t('departmentLocationPage.form.noPolygon') }}
+                        </template>
+                        <template v-else-if="store.payload.polygon.length < 3">
+                          {{ $t('departmentLocationPage.validation.minPoints') }}
+                        </template>
+                        <template v-else>
+                          {{ $t('departmentLocationPage.form.polygonReady') }}
+                        </template>
+                      </span>
+                    </div>
+                  </div>
+                  <n-button
+                    v-if="store.payload.polygon.length > 0"
+                    size="tiny"
+                    secondary
+                    type="error"
+                    @click="clearPolygon"
+                  >
+                    <template #icon>
+                      <n-icon size="14">
+                        <Dismiss16Regular />
+                      </n-icon>
+                    </template>
+                  </n-button>
+                </div>
+              </div>
+            </template>
+
+            <!-- Radius (only for marker mode) -->
+            <n-form-item v-if="!store.payload.geo_type" :label="$t('departmentLocationPage.form.radius')" path="radius">
+              <n-input-number
+                v-model:value="store.payload.radius"
+                :min="1"
+                :max="5000"
+                class="w-full"
+                size="large"
+              >
+                <template #suffix>m</template>
+              </n-input-number>
+            </n-form-item>
+
+            <!-- Lat/Lng fields (both modes) -->
+            <div class="coordinates-card">
+              <div class="grid grid-cols-2 gap-2">
+                <n-form-item :label="$t('departmentLocationPage.form.lat')" path="lat" :show-feedback="false">
+                  <n-input-number
+                    v-model:value="store.payload.lat"
+                    :precision="6"
+                    :step="0.000001"
+                    class="w-full"
+                    size="medium"
+                  />
+                </n-form-item>
+
+                <n-form-item :label="$t('departmentLocationPage.form.lng')" path="lng" :show-feedback="false">
+                  <n-input-number
+                    v-model:value="store.payload.lng"
+                    :precision="6"
+                    :step="0.000001"
+                    class="w-full"
+                    size="medium"
+                  />
+                </n-form-item>
+              </div>
+            </div>
+
+            <n-form-item :label="$t('departmentLocationPage.form.accuracy')" path="accuracy_limit">
+              <n-input-number
+                v-model:value="store.payload.accuracy_limit"
+                :min="1"
+                :max="100"
+                class="w-full"
+                size="large"
+              />
+            </n-form-item>
+          </n-form>
+
+          <!-- Action buttons -->
+          <div class="flex gap-3 mt-auto pt-4">
+            <n-button size="large" class="flex-1" @click="onCancel">
+              {{ $t('content.cancel') }}
+            </n-button>
+            <n-button type="primary" size="large" class="flex-1" :loading="store.saveLoading" @click="onSubmit">
+              {{ $t('content.save') }}
+            </n-button>
+          </div>
         </div>
-      </div>
 
-      <!-- Right side - Map -->
-      <div class="flex-1 min-h-[400px] lg:min-h-0">
-        <LocationMap
-          v-if="!store.showLoading"
-          ref="mapRef"
-          :key="store.elementId"
-          :lat="store.payload.lat"
-          :lng="store.payload.lng"
-          :radius="store.payload.radius"
-          :polygon="store.payload.polygon"
-          :geo-type="store.payload.geo_type"
-          @update:lat="updateLat"
-          @update:lng="updateLng"
-          @update:polygon="updatePolygon"
-        />
+        <!-- Right side - Map -->
+        <div class="flex-1 min-h-[400px] lg:min-h-0">
+          <LocationMap
+            v-if="!store.showLoading"
+            ref="mapRef"
+            :key="store.elementId"
+            :lat="store.payload.lat"
+            :lng="store.payload.lng"
+            :radius="store.payload.radius"
+            :polygon="store.payload.polygon"
+            :geo-type="store.payload.geo_type"
+            @update:lat="updateLat"
+            @update:lng="updateLng"
+            @update:polygon="updatePolygon"
+          />
         </div>
       </div>
     </n-spin>
@@ -297,6 +261,38 @@
 </template>
 
 <style scoped>
+.department-card {
+  padding: 12px 14px;
+  background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+  border: 1px solid #bae6fd;
+  border-radius: 8px;
+  margin-bottom: 12px;
+}
+
+.department-card__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: #0ea5e9;
+  color: white;
+}
+
+.department-card__title {
+  font-weight: 600;
+  font-size: 14px;
+  color: #0c4a6e;
+  line-height: 1.3;
+}
+
+.department-card__subtitle {
+  font-size: 12px;
+  color: #0369a1;
+  line-height: 1.3;
+}
+
 .geo-type-card {
   padding: 10px 12px;
   border: 1px solid #e5e7eb;
