@@ -76,13 +76,13 @@
   const changePosition = (id) => {
     let index = store.myPositionList.findIndex((v) => v.id === id)
     if (index !== -1) {
-      let orgId = store.myPositionList[index]?.organization?.id
-      store.organization_id = [orgId]
-      getDirectors(orgId)
+      const org = store.myPositionList[index]?.organization  // org - to'liq object
+      store.organization_id = org ? [org] : []
+      getDirectors(org?.id)
     }
   }
 
-  const disabledDirector = computed(() => {
+  const disabledDirector = computed(() => {2
     return store.typeList.includes(store.payload.type)
       ? !(store.organization_id.length > 0)
       : !store.payload.worker_position_id
@@ -199,5 +199,3 @@
     </div>
   </div>
 </template>
-
-<style scoped></style>

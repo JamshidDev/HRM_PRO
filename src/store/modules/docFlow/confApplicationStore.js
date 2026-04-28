@@ -35,6 +35,8 @@ export const useConfApplicationStore = defineStore('confApplicationStore', {
     editLoading: false,
     // typeList:[1,2,6,7],
     typeList: [1, 2],
+    // Muddatli ishga kirish turi: 1 - ta'tildagi xodim, 2 - muddatli shartnoma
+    employmentSelectedType: 1,
     payload: {
       director_id: null,
       worker_position_id: null,
@@ -186,6 +188,14 @@ export const useConfApplicationStore = defineStore('confApplicationStore', {
     },
     _create() {
       this.saveLoading = true
+      // Ariza turi 2 uchun: tanlangan turga qarab ikkinchisini tozalash
+      if (this.payload.type === 2) {
+        if (this.employmentSelectedType === 1) {
+          this.payload.contract_to_date = null
+        } else if (this.employmentSelectedType === 2) {
+          this.payload.temporarily_absent = null
+        }
+      }
       let data = {
         ...this.payload,
         period_from: Utils.timeToZone(this.payload.period_from),
@@ -301,6 +311,14 @@ export const useConfApplicationStore = defineStore('confApplicationStore', {
     },
     _update() {
       this.saveLoading = true
+      // Ariza turi 2 uchun: tanlangan turga qarab ikkinchisini tozalash
+      if (this.payload.type === 2) {
+        if (this.employmentSelectedType === 1) {
+          this.payload.contract_to_date = null
+        } else if (this.employmentSelectedType === 2) {
+          this.payload.temporarily_absent = null
+        }
+      }
       let data = {
         ...this.payload,
         period_from: Utils.timeToZone(this.payload.period_from),
@@ -365,8 +383,10 @@ export const useConfApplicationStore = defineStore('confApplicationStore', {
       this.payload.from_date = null
       this.payload.department_position_id = null
       this.payload.temporarily_absent = null
+      this.payload.contract_to_date = null
       this.payload.application_date = now
       this.payload.rate = 1
+      this.employmentSelectedType = 1
 
       this.activeTab = 101
       this.stepNumber = 1

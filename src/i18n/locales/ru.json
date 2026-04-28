@@ -1534,9 +1534,11 @@
       "education_type": "Форма обучения",
       "univer_number": "Номер письма",
       "univer_date": "Дата письма",
-      "contract_to_date": "Дата отмены",
+      "contract_to_date": "Дата окончания договора",
       "application_date": "Дата заявления",
-      "from_date": "С"
+      "from_date": "С",
+      "temporarily_option": "Вместо сотрудника в отпуске",
+      "contract_option": "Срочный договор"
     },
     "step": {
       "stepOne": "Тип заявления",

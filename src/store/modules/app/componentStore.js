@@ -704,7 +704,10 @@ export const useComponentStore = defineStore('componentStore', {
     },
     _departmentTree() {
       this.departmentLoading = true
-      let params = { ...this.depParams }
+      let params = {
+        ...this.depParams,
+        organizations: this.depParams.organizations?.id ?? this.depParams.organizations
+      }
       $ApiService.componentService
         ._departmentTree({ params })
         .then((res) => {

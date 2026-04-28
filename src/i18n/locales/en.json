@@ -1529,9 +1529,11 @@
       "education_type": "Education form",
       "univer_number": "Letter number",
       "univer_date": "Letter date",
-      "contract_to_date": "Cancellation date",
+      "contract_to_date": "Contract end date",
       "application_date": "Application date",
-      "from_date": "From"
+      "from_date": "From",
+      "temporarily_option": "Replacing employee on leave",
+      "contract_option": "Fixed-term contract"
     },
     "step": {
       "stepOne": "Application type",

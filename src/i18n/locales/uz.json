@@ -1549,9 +1549,11 @@
       "education_type": "Ta'lim shakli",
       "univer_number": "Xat raqami",
       "univer_date": "Xat sanasi",
-      "contract_to_date": "Bekor qilish sanasi",
+      "contract_to_date": "Shartnoma tugash sanasi",
       "application_date": "Ariza sanasi",
-      "from_date": "Qachondan"
+      "from_date": "Qachondan",
+      "temporarily_option": "Ta'tildagi xodim o'rniga",
+      "contract_option": "Muddatli shartnoma"
     },
     "step": {
       "stepOne": "Ariza turi",
