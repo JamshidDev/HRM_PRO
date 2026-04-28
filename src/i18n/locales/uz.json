@@ -49,6 +49,9 @@
     "download": "Yuklash",
     "attachment": "Biriktirish",
     "no-data": "Ma'lumot yo'q",
+    "emptyData": "Ma'lumot kiritilmagan",
+    "daysSelected": "Tanlangan kunlar",
+    "maxDaysHint": "Tanlangan kunlar {n} kundan oshmasligi kerak",
     "cancel": "Bekor qilish",
     "code": "Kod",
     "departments": "Bo'limlar",
@@ -192,6 +195,8 @@
     "reference": "Ma'lumotnoma",
     "from": "Qachondan",
     "to": "Qachongacha",
+    "dateRangeError": "Tugash sanasi boshlanish sanasidan katta bo'lishi kerak",
+    "maxDaysError": "Maksimal {days} kunlik oraliq tanlanishi mumkin",
     "more": "Ko'proq",
     "role": "Role",
     "duration": "Davomiyligi",
@@ -2008,6 +2013,9 @@
     "stat": "Statistika",
     "organizations": "Tashkilotlar",
     "statTooltip": "Hisobot yuklamagan korxonalar ro'yxati. Belgilangan korxonalar hisobot yuklagan.",
+    "statLegendProcess": "Yuklangan, tekshiruvda",
+    "statLegendApproved": "Tasdiqlangan",
+    "statLegendEmpty": "Hisobot yuklanmagan",
     "generate": "Hisobot yaratish",
     "download": "Yuklash",
     "excelDownload": "Excel yuklash",
@@ -2223,6 +2231,20 @@
     "confirmInfo": "Arizani qabul qilish yoki rad etish uchun xabar yozing. Xabar ariza beruvchiga yuboriladi.",
     "confirmMessage": "Xabar",
     "confirmMessagePlaceholder": "Xabar kiriting...",
+    "vacancyLevel": "Vakansiya bosqichlari",
+    "levels": {
+      "one":   "Ariza topshirish",
+      "two":   "Hujjat baholash",
+      "three": "Suhbat",
+      "four":  "Tibbiy ko'rik",
+      "five":  "Onlayn test",
+      "six":   "Tugatilgan"
+    },
+    "zoomStart": "Boshlash",
+    "zoomMeet": "Zoom suhbat",
+    "allApplications": "Barcha arizalar",
+    "noExperience": "Staj talab etilmaydi",
+    "viewDetail": "Batafsil ko'rish",
     "birthPlace": "Tug'ilgan joyi",
     "livePlace": "Yashash joyi",
     "gender": "Jinsi",
@@ -2247,6 +2269,117 @@
       "salary_status": "Maosh belgilangan",
       "salary_status_hint": "Suhbat asosida kelishiladi",
       "phd_status": "PhD talab qilinadi"
+    },
+    "phdRequired": "PhD talab",
+    "cancelBtn": "Bekor qilish",
+    "saveBtn": "Saqlash",
+    "confirmBtn": "Tasdiqlash",
+    "rejectBtn": "Rad qilish",
+    "acceptBtn": "Qabul qilish",
+    "zoom": "Zoom",
+    "joinZoom": "Qo'shilish",
+    "uploadDocBtn": "Bosqichga fayl yuklash",
+    "evaluateBtn": "Bosqichni baholash",
+    "nextStepGo": "ga o'tish",
+    "docsLabel": "Hujjatlar",
+    "examLabel": "Imtixon",
+    "offlineBadge": "Offline",
+    "removeBtn": "Olib tashlash",
+    "resultLabel": "Natija",
+    "ballUnit": "ball",
+    "startLabel": "Boshlanish",
+    "endLabel": "Tugash",
+    "pin": "JSHSHIR",
+    "applicationStatusLabel": "Ariza holati",
+    "applicationNumber": "Ariza raqami",
+    "nextStep": {
+      "title": "Keyingi bosqichga o'tish",
+      "text": "Hozirda {current} bosqichida jarayonda bo'lgan barcha arizalar avtomatik ravishda {next} bosqichiga o'tkaziladi. Bu amalni bekor qilib bo'lmaydi."
+    },
+    "rejectModal": {
+      "title": "Arizani rad qilish",
+      "text": "Siz ushbu arizani <strong>rad qilmoqdasiz</strong>. Tasdiqlangandan so'ng ariza to'liq rad etiladi va nomzodga rasmiy xabarnoma yuboriladi. Bu amalni ortga qaytarib bo'lmaydi.",
+      "confirmBtn": "Rad qilishni tasdiqlash"
+    },
+    "acceptModal": {
+      "title": "Arizani qabul qilish",
+      "text": "Siz ushbu arizani <strong>qabul qilmoqdasiz</strong>. Tasdiqlangandan so'ng nomzod muvaffaqiyatli qabul qilingan hisoblanadi va rasmiy xabarnoma yuboriladi.",
+      "confirmBtn": "Qabul qilishni tasdiqlash"
+    },
+    "finishModal": {
+      "title": "Vakansiyani tugatish",
+      "text": "Siz ushbu vakansiyani <strong>yakunlamoqdasiz</strong>. Tasdiqlangandan so'ng vakansiya rasman yopiladi va endi saytta ko'rsatilmaydi. Jarayondagi arizalar o'z holatida qoladi.",
+      "warningText": "Bu amalni ortga qaytarib bo'lmaydi.",
+      "confirmBtn": "Vakansiyani tugatish"
+    },
+    "finishBtn": "Vakansiyani tugatish",
+    "candidatesCount": "Nomzodlar soni",
+    "daysLeft": "Qolgan kunlar",
+    "daysLeftFull": "Qabul yopilishiga qolgan vaqt",
+    "expired": "Muddati tugagan",
+    "salaryNegotiable": "Kelishiladi",
+    "phdNotRequired": "PhD talab etilmaydi",
+    "minExp": "Kamida {n} yil staj",
+    "exam": {
+      "modalTitle": "Imtixon",
+      "onlineBadge": "Onlayn test",
+      "onlineTab": "Onlayn",
+      "offlineTab": "Offline",
+      "startTime": "Boshlanish vaqti",
+      "endTime": "Tugash vaqti",
+      "result": "Natija (ball)",
+      "resultPlaceholder": "Masalan: 85",
+      "offlineBadge": "Offline imtixon",
+      "resultTitle": "Natija kiritish",
+      "attachBtn": "Imtixonga biriktirish"
+    },
+    "upload": {
+      "title": "Hujjat yuklash",
+      "fieldLabel": "Hujjat",
+      "clickToSelect": "Hujjat tanlash uchun bosing",
+      "formats": "PDF, DOC, JPG, PNG, MP4",
+      "interview": {
+        "title": "Suhbat yozuvi",
+        "text": "Nomzod bilan o'tkazilgan suhbatning video yozuvini yuklang. Fayl MP4, MOV yoki boshqa video formatda bo'lishi mumkin."
+      },
+      "medical": {
+        "title": "Tibbiy ko'rik xulosasi",
+        "text": "Nomzodning tibbiy ko'rik natijalarini tasdiqlovchi rasmiy xulosa hujjatini yuklang. Fayl PDF formatida bo'lishi kerak."
+      },
+      "test": {
+        "title": "Test natijalari",
+        "text": "Nomzod tomonidan topshirilgan onlayn test natijalarini PDF formatda yuklang. Natijalar rasmiy tarzda tasdiqlanishi lozim."
+      }
+    },
+    "meet": {
+      "title": "Zoom suhbat belgilash",
+      "badge": "Suhbat",
+      "dateTime": "Sana va vaqt",
+      "dateTimePlaceholder": "Sana va vaqtni tanlang",
+      "duration": "Davomiyligi",
+      "privileged": "Imtiyozli suhbat",
+      "privilegedHint": "Maxsus sharoitlar bilan o'tkaziladi",
+      "dur30": "30 daqiqa",
+      "dur45": "45 daqiqa",
+      "dur60": "1 soat",
+      "dur90": "1.5 soat",
+      "dur120": "2 soat"
+    },
+    "action": {
+      "evaluateTitle": "baholash",
+      "decision": "Baholash",
+      "decisionHint": "Nomzodning ushbu bosqich natijasini belgilang",
+      "accept": "Qabul qilish",
+      "rejectOption": "Rad etish",
+      "nextLevel": "Keyingi bosqichga o'tkazish",
+      "nextLevelHint": "Ariza muvaffaqiyatli o'tganda keyingi bosqichga yuboriladi",
+      "docStatus": "Hujjatlar holati",
+      "comment": "Izoh",
+      "commentOptional": "(ixtiyoriy)",
+      "commentPlaceholder": "Qarorga izoh qoldiring...",
+      "uploaded": "Yuklangan",
+      "notUploaded": "Yuklanmagan",
+      "filePrefix": "Hujjat"
     }
   },
   "salaryCategory": {
@@ -2405,8 +2538,8 @@
     "syncText": "Iltimos, sinxronlash uchun kerakli vaqtni tanlang. Tizim ushbu kunni oxirigacha bo‘lgan vaqtni avtomatik ravishda sinxronlaydi.",
     "preview": "Ko'rish",
     "availableEvent": "Mavjud hodisalar",
-    "newView": "Ish vaqti kesimida",
-    "oldView": "Hodisalar kesimida",
+    "newView": "Ish vaqti",
+    "oldView": "Hodisalar",
     "byMonth": "Oy bo'yicha",
     "event": "Hodisalar",
     "eventYes": "Mavjud hodisalar",
@@ -2876,6 +3009,7 @@
     "createTitle": "Joylashuv qo'shish",
     "updateTitle": "Joylashuvni tahrirlash",
     "attachTitle": "Joylashuv biriktirish",
+    "viewTitle": "Joylashuvni ko'rish",
     "addLocation": "Joylashuv qo'shish",
     "locationExists": "Bor",
     "locationNotExists": "Yo'q",
@@ -2937,6 +3071,22 @@
       "save": "Saqlash",
       "done": "Tayyor",
       "points": "nuqta"
+    }
+  },
+  "integrationLog": {
+    "name": "Integratsiya loglari",
+    "filter": {
+      "apiType": "API turi",
+      "method": "Metod"
+    },
+    "table": {
+      "secret": "Secret",
+      "apiType": "API turi",
+      "method": "Metod",
+      "endpoint": "Endpoint",
+      "status": "Holat",
+      "duration": "Davomiyligi",
+      "detail": "Tafsilot"
     }
   }
 }

@@ -4,8 +4,9 @@
   import Filter from './ui/Filter.vue'
   import Table from './ui/Table.vue'
   import createForm from './ui/createForm.vue'
-  import ApplicationsTab from './ui/ApplicationsTab.vue'
   import ApplicationViewModal from './ui/ApplicationViewModal.vue'
+  import VacancyView from './ui/VacancyView.vue'
+  import VacancyPreviewModal from './ui/VacancyPreviewModal.vue'
   import { useVacancyStore, useAccountStore } from '@/store/modules/index.js'
 
   const store = useVacancyStore()
@@ -28,7 +29,7 @@
       <Filter />
       <Table />
     </template>
-    <template v-else-if="store.activeTab === 'applications'">
+    <template v-else-if="store.activeTab === 'view'">
       <div class="flex items-center gap-3 mb-4">
         <n-button size="small" @click="goBack">
           <template #icon>
@@ -36,14 +37,13 @@
           </template>
           {{ $t('content.back') }}
         </n-button>
-        <div>
-          <span class="text-lg font-medium">{{ $t('vacancy.applications') }}</span>
-          <span class="text-textColor3 mx-2">|</span>
-          <span class="text-textColor2">{{ store.selectedVacancy?.position?.name }}</span>
-          <span class="text-textColor3 text-sm ml-2">({{ store.selectedVacancy?.department?.name }})</span>
+        <div v-if="store.viewData">
+          <span class="text-lg font-medium text-textColor0">{{ store.viewData.position?.name }}</span>
+          <span class="text-textColor3 mx-2">—</span>
+          <span class="text-textColor2 text-sm">{{ store.viewData.department?.name }}</span>
         </div>
       </div>
-      <ApplicationsTab />
+      <VacancyView />
     </template>
     <UIModal
       :width="1200"
@@ -54,5 +54,6 @@
       <createForm />
     </UIModal>
     <ApplicationViewModal />
+    <VacancyPreviewModal />
   </UIPageContent>
 </template>

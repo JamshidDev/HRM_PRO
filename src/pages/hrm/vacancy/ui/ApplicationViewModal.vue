@@ -310,8 +310,6 @@
 .item-label {
   font-size: 11px;
   color: #94a3b8;
-  text-transform: uppercase;
-  letter-spacing: 0.3px;
   line-height: 1.2;
 }
 

@@ -136,7 +136,7 @@ export const useConfApplicationStore = defineStore('confApplicationStore', {
       $ApiService.componentService
         ._directors({
           params: {
-            organizations: id
+            organization_id: id
           }
         })
         .then((res) => {
@@ -203,7 +203,7 @@ export const useConfApplicationStore = defineStore('confApplicationStore', {
       }
       $ApiService.applicationService
         ._workerApplication({ data })
-        .then((res) => {
+        .then(() => {
           this.activeTab = 100
           this.stepNumber = 3
           this._index()

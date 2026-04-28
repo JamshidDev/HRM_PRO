@@ -210,6 +210,19 @@ export const useEventV2Store = defineStore('eventV2Store', {
           this.calendarLoading = false
         })
     },
+    _fetchPreview(id, date) {
+      this.previewLoading = true
+      const params = { date }
+      $ApiService.turnstileWorkDurationService
+        ._HKShowEventsInDay({ params, id })
+        .then((res) => {
+          this.selectedList = res.data.data
+          this.visible = true
+        })
+        .finally(() => {
+          this.previewLoading = false
+        })
+    },
     _calendar() {
       this.calendarLoading = true
       const params = {

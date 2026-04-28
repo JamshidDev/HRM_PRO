@@ -24,6 +24,10 @@
     geoType: {
       type: Boolean,
       default: false
+    },
+    readonly: {
+      type: Boolean,
+      default: false
     }
   })
 
@@ -69,6 +73,7 @@
       // Polygon mode - load existing polygon
       if (props.polygon && props.polygon.length > 0) {
         loadExistingPolygon(props.polygon)
+        if (props.readonly) fitToPolygon(props.polygon)
       }
     } else {
       // Marker mode - load existing marker
@@ -76,17 +81,21 @@
         addMarker(props.lat, props.lng)
         if (props.radius) {
           addCircle(props.lat, props.lng, props.radius)
+          if (props.readonly) fitToCircle(props.lat, props.lng, props.radius)
+        } else if (props.readonly) {
+          map.setView([props.lat, props.lng], 16)
         }
       }
     }
 
-    // Handle map click based on geoType
+    // Handle map click based on geoType (disabled in readonly mode)
+    if (props.readonly) return
     map.on('click', (e) => {
       const { lat, lng } = e.latlng
 
       if (props.geoType) {
         // Polygon mode - add point only when drawing
-        if (isDrawingPolygon.value && polygonPoints.value.length < 12) {
+        if (isDrawingPolygon.value && polygonPoints.value.length < 100) {
           addPolygonPoint(lat, lng)
         }
       } else {
@@ -311,7 +320,7 @@
       map.removeLayer(marker)
     }
 
-    marker = L.marker([lat, lng], { draggable: true }).addTo(map)
+    marker = L.marker([lat, lng], { draggable: !props.readonly }).addTo(map)
 
     marker.on('dragend', (e) => {
       const { lat, lng } = e.target.getLatLng()
@@ -352,7 +361,7 @@
     if (marker) {
       map.removeLayer(marker)
     }
-    marker = L.marker([lat, lng], { draggable: true }).addTo(map)
+    marker = L.marker([lat, lng], { draggable: !props.readonly }).addTo(map)
 
     marker.on('dragend', (e) => {
       const { lat, lng } = e.target.getLatLng()
@@ -474,6 +483,19 @@
     }
   }
 
+  const fitToPolygon = (points) => {
+    if (!map || !points || points.length < 2) return
+    const latLngs = points.map(p => [p.lat, p.lng])
+    map.fitBounds(L.latLngBounds(latLngs), { padding: [40, 40] })
+  }
+
+  const fitToCircle = (lat, lng, radius) => {
+    if (!map) return
+    const tempCircle = L.circle([lat, lng], { radius }).addTo(map)
+    map.fitBounds(tempCircle.getBounds(), { padding: [40, 40] })
+    map.removeLayer(tempCircle)
+  }
+
   defineExpose({ clearPolygon, clearMarker, getCurrentLocation })
 
   onMounted(() => {
@@ -493,7 +515,7 @@
 <template>
   <div class="location-map-wrapper">
     <!-- Map controls header -->
-    <div class="map-header">
+    <div class="map-header" v-if="!readonly">
       <div class="flex items-center gap-2">
         <n-icon size="20" color="#3b82f6">
           <Location24Regular />
@@ -501,67 +523,54 @@
         <span class="font-medium text-gray-700">{{ $t('departmentLocationPage.map.title') }}</span>
       </div>
 
-      <!-- MARKER MODE CONTROLS (geoType = false) -->
-      <template v-if="!geoType">
-        <n-tooltip trigger="hover">
-          <template #trigger>
-            <n-button size="small" type="info" secondary @click="getCurrentLocation">
-              <template #icon>
-                <n-icon><Location24Regular /></n-icon>
-              </template>
-            </n-button>
-          </template>
-          {{ $t('departmentLocationPage.map.myLocation') }}
-        </n-tooltip>
-      </template>
-
-      <!-- POLYGON MODE CONTROLS (geoType = true) -->
-      <template v-else>
-        <!-- Not drawing - show start button -->
-        <div v-if="!isDrawingPolygon" class="flex items-center gap-2">
-          <n-button size="small" type="primary" @click="startPolygonDrawing">
-            {{ $t('departmentLocationPage.map.addPolygon') }}
-          </n-button>
-        </div>
-
-        <!-- Drawing mode - show controls -->
-        <div v-else class="flex items-center gap-2">
-          <span class="points-badge">
-            <b>{{ polygonPoints.length }}</b>/12
-          </span>
-
+      <!-- Controls: hidden in readonly mode -->
+      <template v-if="!readonly">
+        <!-- MARKER MODE CONTROLS (geoType = false) -->
+        <template v-if="!geoType">
           <n-tooltip trigger="hover">
             <template #trigger>
-              <n-button
-                size="small"
-                type="warning"
-                :disabled="polygonPoints.length === 0"
-                @click="undoLastPoint"
-              >
+              <n-button size="small" type="info" secondary @click="getCurrentLocation">
                 <template #icon>
-                  <n-icon><ArrowUndo24Regular /></n-icon>
+                  <n-icon><Location24Regular /></n-icon>
                 </template>
               </n-button>
             </template>
-            {{ $t('departmentLocationPage.map.undo') }}
+            {{ $t('departmentLocationPage.map.myLocation') }}
           </n-tooltip>
+        </template>
 
-          <n-button
-            size="small"
-            type="success"
-            :disabled="polygonPoints.length < 3"
-            @click="finishPolygon"
-          >
-            <template #icon>
-              <n-icon><Checkmark24Regular /></n-icon>
-            </template>
-            {{ $t('departmentLocationPage.map.save') }}
-          </n-button>
-
-          <n-button size="small" type="error" secondary @click="cancelPolygonDrawing">
-            {{ $t('content.cancel') }}
-          </n-button>
-        </div>
+        <!-- POLYGON MODE CONTROLS (geoType = true) -->
+        <template v-else>
+          <div v-if="!isDrawingPolygon" class="flex items-center gap-2">
+            <n-button size="small" type="primary" @click="startPolygonDrawing">
+              {{ $t('departmentLocationPage.map.addPolygon') }}
+            </n-button>
+          </div>
+          <div v-else class="flex items-center gap-2">
+            <span class="points-badge">
+              <b>{{ polygonPoints.length }}</b>
+            </span>
+            <n-tooltip trigger="hover">
+              <template #trigger>
+                <n-button size="small" type="warning" :disabled="polygonPoints.length === 0" @click="undoLastPoint">
+                  <template #icon>
+                    <n-icon><ArrowUndo24Regular /></n-icon>
+                  </template>
+                </n-button>
+              </template>
+              {{ $t('departmentLocationPage.map.undo') }}
+            </n-tooltip>
+            <n-button size="small" type="success" :disabled="polygonPoints.length < 3" @click="finishPolygon">
+              <template #icon>
+                <n-icon><Checkmark24Regular /></n-icon>
+              </template>
+              {{ $t('departmentLocationPage.map.save') }}
+            </n-button>
+            <n-button size="small" type="error" secondary @click="cancelPolygonDrawing">
+              {{ $t('content.cancel') }}
+            </n-button>
+          </div>
+        </template>
       </template>
     </div>
 

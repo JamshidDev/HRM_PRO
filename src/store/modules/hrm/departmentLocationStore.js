@@ -13,6 +13,9 @@ export const useDepartmentLocationStore = defineStore('departmentLocationStore',
     deleteLoading: false,
     visible: false,
     visibleType: true,
+    viewVisible: false,
+    viewData: null,
+    viewLoading: false,
     elementId: null,
     totalItems: 0,
     selectedDepartment: null,
@@ -152,6 +155,19 @@ export const useDepartmentLocationStore = defineStore('departmentLocationStore',
       this.payload.department_id = department.id
       this.visibleType = true
       this.visible = true
+    },
+    openViewModal(item) {
+      this.viewData = null
+      this.viewVisible = true
+      this.viewLoading = true
+      $ApiService.departmentLocationService
+        ._show({ id: item.id })
+        .then((res) => {
+          this.viewData = res.data.data
+        })
+        .finally(() => {
+          this.viewLoading = false
+        })
     },
     openEditModal(item) {
       this.resetForm()

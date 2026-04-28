@@ -74,6 +74,11 @@
     return route.path === '/hrm/application'
   })
 
+  const showEditButton = computed(() => {
+    const rejects = ['/hrm/structure-report']
+    return !rejects.includes(route.path)
+  })
+
   const openRejectModal = () => {
     store.documentComment = null
     store.documentVisible = true
@@ -270,7 +275,7 @@
                     <span>{{ $t('content.download') }}</span>
                   </div>
                 </n-button>
-                <n-button v-if="store.permissions.canEdit" @click="onEdit" type="info" secondary>
+                <n-button v-if="store.permissions.canEdit && showEditButton" @click="onEdit" type="info" secondary>
                   {{ $t('content.edit') }}
                   <template #icon>
                     <n-icon size="28">

@@ -3,7 +3,7 @@
   import { useVacancyStore, useComponentStore, useAccountStore } from '@/store/modules/index.js'
   import Utils from '@/utils/Utils.js'
   import numeral from 'numeral'
-  import { PeopleTeam20Regular } from '@vicons/fluent'
+  import { Eye20Regular, DocumentSearch20Regular } from '@vicons/fluent'
   import i18n from '@/i18n/index.js'
 
   const { t } = i18n.global
@@ -13,9 +13,14 @@
 
   const extraOptions = [
     {
-      label: t('vacancy.applications'),
-      key: Utils.ActionTypes.applications,
-      icon: PeopleTeam20Regular
+      label: t('content.view'),
+      key: Utils.ActionTypes.view,
+      icon: Eye20Regular
+    },
+    {
+      label: t('vacancy.viewDetail'),
+      key: 'preview',
+      icon: DocumentSearch20Regular
     }
   ]
 
@@ -37,8 +42,10 @@
     } else if (Utils.ActionTypes.delete === v.key) {
       if (!accStore.checkAction(accStore.pn.hrPublicVacancyWrite)) return
       onDelete(v.data)
-    } else if (Utils.ActionTypes.applications === v.key) {
-      store.openApplicationsTab(v.data)
+    } else if (Utils.ActionTypes.view === v.key) {
+      store.openViewModal(v.data)
+    } else if (v.key === 'preview') {
+      store.openPreviewModal(v.data)
     }
   }
 </script>
@@ -128,9 +135,15 @@
             </td>
             <td>
               <div class="flex justify-center">
-                <n-button class="mx-auto" bordered dashed circle size="small" type="primary">
-                  {{ item.applications_count ?? 0 }}
+                <n-button
+                  v-if="item.applications_count > 0"
+                  class="mx-auto"
+                  bordered dashed circle size="small" type="primary"
+                  @click="store.openViewModal(item)"
+                >
+                  {{ item.applications_count }}
                 </n-button>
+                <span v-else></span>
               </div>
             </td>
             <td>

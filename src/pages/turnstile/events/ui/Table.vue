@@ -7,17 +7,56 @@
     UIMenuButton,
     UIStatus
   } from '@/components/index.js'
-  import { useEventStore } from '@/store/modules/index.js'
-  import { ArrowCircleDownRight20Regular, ArrowCircleUpLeft20Regular } from '@vicons/fluent'
+  import { useEventStore, useEventV2Store } from '@/store/modules/index.js'
+  import { ArrowCircleDownRight20Regular, ArrowCircleUpLeft20Regular, CalendarLtr24Regular } from '@vicons/fluent'
   import Utils from '@/utils/Utils.js'
   import i18n from '@/i18n/index.js'
   const { t } = i18n.global
   const store = useEventStore()
+  const v2Store = useEventV2Store()
 
   const changePage = (v) => {
     store.params.page = v.page
     store.params.per_page = v.per_page
     store._index()
+  }
+
+  const onCalendarViewEv = (item) => {
+    v2Store.selectedWorker = {
+      photo: item.worker?.photo,
+      firstName: item.worker?.first_name,
+      middleName: item.worker?.middle_name,
+      lastName: item.worker?.last_name,
+      position: item.worker?.id
+    }
+    v2Store.elementId = item.worker?.id
+    v2Store.calendarList = []
+    const date = new Date()
+    v2Store.currentTime = date.getTime()
+    v2Store.calendarParams.year = date.getFullYear()
+    v2Store.calendarParams.month = date.getMonth() + 1
+    v2Store._calendar()
+    v2Store.calendarVisible = true
+  }
+
+  const onPreviewEv = (item) => {
+    v2Store.selectedWorker = {
+      photo: item.worker?.photo,
+      firstName: item.worker?.first_name,
+      middleName: item.worker?.middle_name,
+      lastName: item.worker?.last_name,
+      position: item.worker?.id
+    }
+    const date = item.event_date_and_time?.split(' ')[0]
+    v2Store._fetchPreview(item.worker?.id, date)
+  }
+
+  const onSelectEv = (v) => {
+    if (v.key === Utils.ActionTypes.view) {
+      onPreviewEv(v.data)
+    } else if (v.key === Utils.ActionTypes.finish) {
+      onCalendarViewEv(v.data)
+    }
   }
 
   const maskStatus = {
@@ -86,6 +125,7 @@
               <th class="min-w-[100px] w-[100px] !text-center">
                 {{ $t('hcEvent.form.temperature') }}
               </th>
+              <th class="min-w-[40px] w-[40px]"></th>
             </tr>
           </thead>
           <tbody>
@@ -145,6 +185,22 @@
                 <template v-else>
                   <UIStatus :status="store.temperatureStatus[3]" />
                 </template>
+              </td>
+              <td>
+                <UIMenuButton
+                  @selectEv="onSelectEv"
+                  :data="item"
+                  :show-view="true"
+                  :show-edit="false"
+                  :show-delete="false"
+                  :extra-options="[
+                    {
+                      key: Utils.ActionTypes.finish,
+                      label: t('hcEvent.byMonth'),
+                      icon: CalendarLtr24Regular
+                    }
+                  ]"
+                />
               </td>
             </tr>
           </tbody>

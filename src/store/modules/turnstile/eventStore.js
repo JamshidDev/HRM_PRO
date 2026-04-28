@@ -146,6 +146,7 @@ export const useEventStore = defineStore('eventStore', {
     },
     syncPayload: {
       from_date: null,
+      to_date: null,
       access_level_ids: []
     },
     syncLoading: false,
@@ -170,7 +171,7 @@ export const useEventStore = defineStore('eventStore', {
       const data = {
         ...this.syncPayload,
         from_date: Utils.timeToZone(this.syncPayload.from_date),
-        to_date: Utils.timeToZone(this.syncPayload.from_date)
+        to_date: Utils.timeToZone(this.syncPayload.to_date)
       }
       $ApiService.eventService
         ._sync({ data })

@@ -49,6 +49,9 @@
     "download": "Download",
     "attachment": "Attach",
     "no-data": "No data",
+    "emptyData": "Not specified",
+    "daysSelected": "Days selected",
+    "maxDaysHint": "Selected period must not exceed {n} days",
     "cancel": "Cancel",
     "code": "Code",
     "departments": "Departments",
@@ -185,6 +188,8 @@
     "reference": "Reference",
     "from": "From",
     "to": "To",
+    "dateRangeError": "End date must be greater than start date",
+    "maxDaysError": "Maximum {days} days range can be selected",
     "more": "More",
     "role": "Role",
     "duration": "Duration",
@@ -2197,6 +2202,20 @@
     "confirmInfo": "Write a message to accept or reject the application. The message will be sent to the applicant.",
     "confirmMessage": "Message",
     "confirmMessagePlaceholder": "Enter message...",
+    "vacancyLevel": "Vacancy stages",
+    "levels": {
+      "one":   "Application submission",
+      "two":   "Document evaluation",
+      "three": "Interview",
+      "four":  "Medical check",
+      "five":  "Online test",
+      "six":   "Completed"
+    },
+    "zoomStart": "Start",
+    "zoomMeet": "Zoom interview",
+    "allApplications": "All applications",
+    "noExperience": "No experience required",
+    "viewDetail": "View details",
     "birthPlace": "Birth place",
     "livePlace": "Residence",
     "gender": "Gender",
@@ -2221,6 +2240,117 @@
       "salary_status": "Salary specified",
       "salary_status_hint": "Based on interview",
       "phd_status": "PhD required"
+    },
+    "phdRequired": "PhD required",
+    "cancelBtn": "Cancel",
+    "saveBtn": "Save",
+    "confirmBtn": "Confirm",
+    "rejectBtn": "Reject",
+    "acceptBtn": "Accept",
+    "zoom": "Zoom",
+    "joinZoom": "Join",
+    "uploadDocBtn": "Upload stage document",
+    "evaluateBtn": "Evaluate stage",
+    "nextStepGo": "proceed",
+    "docsLabel": "Documents",
+    "examLabel": "Exam",
+    "offlineBadge": "Offline",
+    "removeBtn": "Remove",
+    "resultLabel": "Result",
+    "ballUnit": "pts",
+    "startLabel": "Start",
+    "endLabel": "End",
+    "pin": "PINFL",
+    "applicationStatusLabel": "Application status",
+    "applicationNumber": "Application number",
+    "nextStep": {
+      "title": "Proceed to next stage",
+      "text": "All applications currently in progress at {current} stage will automatically be moved to {next} stage. This action cannot be undone."
+    },
+    "rejectModal": {
+      "title": "Reject application",
+      "text": "You are <strong>rejecting</strong> this application. Once confirmed, the application will be fully rejected and an official notification will be sent to the candidate. This action cannot be undone.",
+      "confirmBtn": "Confirm rejection"
+    },
+    "acceptModal": {
+      "title": "Accept application",
+      "text": "You are <strong>accepting</strong> this application. Once confirmed, the candidate will be considered successfully accepted and an official notification will be sent.",
+      "confirmBtn": "Confirm acceptance"
+    },
+    "finishModal": {
+      "title": "Finish vacancy",
+      "text": "You are <strong>finishing</strong> this vacancy. Once confirmed, the vacancy will be officially closed and will no longer be displayed on the site. Active applications will remain in their current status.",
+      "warningText": "This action cannot be undone.",
+      "confirmBtn": "Finish vacancy"
+    },
+    "finishBtn": "Finish vacancy",
+    "candidatesCount": "Candidates count",
+    "daysLeft": "Days left",
+    "daysLeftFull": "Time left until closing",
+    "expired": "Expired",
+    "salaryNegotiable": "Negotiable",
+    "phdNotRequired": "PhD not required",
+    "minExp": "Min. {n} year(s) experience",
+    "exam": {
+      "modalTitle": "Exam",
+      "onlineBadge": "Online test",
+      "onlineTab": "Online",
+      "offlineTab": "Offline",
+      "startTime": "Start time",
+      "endTime": "End time",
+      "result": "Result (score)",
+      "resultPlaceholder": "E.g.: 85",
+      "offlineBadge": "Offline exam",
+      "resultTitle": "Enter result",
+      "attachBtn": "Attach to exam"
+    },
+    "upload": {
+      "title": "Upload document",
+      "fieldLabel": "Document",
+      "clickToSelect": "Click to select document",
+      "formats": "PDF, DOC, JPG, PNG, MP4",
+      "interview": {
+        "title": "Interview recording",
+        "text": "Upload the video recording of the interview with the candidate. The file can be in MP4, MOV or other video format."
+      },
+      "medical": {
+        "title": "Medical examination report",
+        "text": "Upload the official medical examination report for the candidate. The file must be in PDF format."
+      },
+      "test": {
+        "title": "Test results",
+        "text": "Upload the candidate's online test results in PDF format. Results must be officially confirmed."
+      }
+    },
+    "meet": {
+      "title": "Schedule Zoom interview",
+      "badge": "Interview",
+      "dateTime": "Date and time",
+      "dateTimePlaceholder": "Select date and time",
+      "duration": "Duration",
+      "privileged": "Privileged interview",
+      "privilegedHint": "Conducted under special conditions",
+      "dur30": "30 minutes",
+      "dur45": "45 minutes",
+      "dur60": "1 hour",
+      "dur90": "1.5 hours",
+      "dur120": "2 hours"
+    },
+    "action": {
+      "evaluateTitle": "evaluation",
+      "decision": "Evaluation",
+      "decisionHint": "Set the candidate's result for this stage",
+      "accept": "Accept",
+      "rejectOption": "Reject",
+      "nextLevel": "Move to next stage",
+      "nextLevelHint": "Application will be sent to the next stage upon successful completion",
+      "docStatus": "Document status",
+      "comment": "Comment",
+      "commentOptional": "(optional)",
+      "commentPlaceholder": "Leave a comment on the decision...",
+      "uploaded": "Uploaded",
+      "notUploaded": "Not uploaded",
+      "filePrefix": "Document"
     }
   },
   "salaryCategory": {
@@ -2379,8 +2509,8 @@
     "syncText": "Select time to sync. System will sync up to end of selected day.",
     "preview": "View",
     "availableEvent": "Available events",
-    "newView": "By work time",
-    "oldView": "By events",
+    "newView": "Work time",
+    "oldView": "Events",
     "byMonth": "By month",
     "event": "Events",
     "eventYes": "Available events",
@@ -2851,6 +2981,22 @@
       "save": "Save",
       "done": "Done",
       "points": "points"
+    }
+  },
+  "integrationLog": {
+    "name": "Integration Logs",
+    "filter": {
+      "apiType": "API Type",
+      "method": "Method"
+    },
+    "table": {
+      "secret": "Secret",
+      "apiType": "API Type",
+      "method": "Method",
+      "endpoint": "Endpoint",
+      "status": "Status",
+      "duration": "Duration",
+      "detail": "Detail"
     }
   }
 }

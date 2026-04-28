@@ -28,7 +28,9 @@
   }
 
   const onSelectEv = (v) => {
-    if (Utils.ActionTypes.edit === v.key) {
+    if (Utils.ActionTypes.view === v.key) {
+      store.openViewModal(v.data)
+    } else if (Utils.ActionTypes.edit === v.key) {
       onEdit(v.data)
     } else if (Utils.ActionTypes.delete === v.key) {
       onDelete(v.data)
@@ -107,6 +109,7 @@
             <td>
               <UIMenuButton
                 :data="item"
+                :show-view="true"
                 :show-edit="true"
                 :show-delete="true"
                 @selectEv="onSelectEv"

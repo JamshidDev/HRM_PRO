@@ -12,7 +12,8 @@
     options: { type: Array, default: [] },
     minWidth: { type: Number, default: undefined },
     showCheck: { type: Boolean, default: false },
-    short: { type: Boolean, default: false }
+    short: { type: Boolean, default: false },
+    checkStyle: { type: Function, default: null }
   })
 
   const searchModel = defineModel('search', { type: String, default: null })
@@ -128,6 +129,7 @@
     :opened="opened"
     :showCheck="showCheck"
     :short="short"
+    :checkStyle="checkStyle"
   >
     <template #title="{ data }" v-if="slot.title">
       <slot name="title" :data="data"></slot>

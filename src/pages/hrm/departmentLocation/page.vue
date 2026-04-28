@@ -1,6 +1,7 @@
 <script setup>
   import { UIPageContent } from '@/components/index.js'
   import { DepartmentTable, LocationTable, Filter, CreateForm } from './ui'
+  import ViewModal from './ui/ViewModal.vue'
   import { useDepartmentLocationStore } from '@/store/modules/index.js'
 
   const store = useDepartmentLocationStore()
@@ -37,5 +38,6 @@
       </n-tab-pane>
     </n-tabs>
     <CreateForm />
+    <ViewModal />
   </UIPageContent>
 </template>

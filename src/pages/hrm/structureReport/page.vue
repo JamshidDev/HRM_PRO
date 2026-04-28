@@ -50,7 +50,7 @@ import {ArrowDownload24Regular, ArrowSync20Filled} from '@vicons/fluent'
     let count = 0
     const traverse = (nodes) => {
       for (const node of nodes) {
-        if (!node.report_detail_exists) count++
+        if (!node.children?.length && !node.report_for_period) count++
         if (node.children?.length) traverse(node.children)
       }
     }

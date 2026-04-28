@@ -84,8 +84,8 @@
 
   const disabledDirector = computed(() => {
     return store.typeList.includes(store.payload.type)
-      ? !Boolean(store.organization_id.length > 0)
-      : !Boolean(store.payload.worker_position_id)
+      ? !(store.organization_id.length > 0)
+      : !store.payload.worker_position_id
   })
 
   onMounted(() => {
@@ -132,10 +132,10 @@
       <n-form-item :label="$t(`documentPage.form.organization`)" path="organization_id">
         <UISelect
           :options="componentStore.allStructureList"
-          :modelV="store.organization_id"
+          :model-v="store.organization_id"
           @defaultValue="(v) => (store.organization_id = v)"
           @updateModel="onChangeStructure"
-          :checkedVal="store.structureCheck"
+          :checked-val="store.structureCheck"
           @updateCheck="(v) => (store.structureCheck = v)"
           v-model:search="componentStore.structureParams.search"
           @onSearch="componentStore._allStructures"

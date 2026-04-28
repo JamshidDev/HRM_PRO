@@ -141,7 +141,8 @@ export const AppPaths = {
   MobileUsers: '/mobile-users',
   StructureReport: '/structure-report',
   ConfReport: '/conf-report',
-  DepartmentLocation: '/department-location'
+  DepartmentLocation: '/department-location',
+  IntegrationLog: '/integration-log'
 }
 
 export const AppLayouts = {

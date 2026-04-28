@@ -1,6 +1,6 @@
 <script setup>
   import { useAccountStore, useComponentStore, useEventStore, useEventV2Store } from '@/store/modules/index.js'
-  import { ArrowSync24Filled, StarEmphasis32Filled, ArrowCircleDown32Regular } from '@vicons/fluent'
+  import { ArrowSync24Filled, ArrowCircleDown32Regular } from '@vicons/fluent'
   import { UIPageFilter, UISelect, SuperSelect } from '@/components/index.js'
   import i18n from '@/i18n/index.js'
   import { useAppSetting } from '@utils'
@@ -204,6 +204,20 @@
         clearable
       />
     </template>
+    <template #filterSearch>
+      <div class="tab-wrapper ml-2">
+        <n-tabs
+          class="tab-switcher"
+          :value="store.activeTab"
+          @update:value="store._changeView"
+          type="segment"
+          size="small"
+        >
+          <n-tab-pane :name="store.tabs[0]" :tab="$t('hcEvent.oldView')" />
+          <n-tab-pane :name="store.tabs[1]" :tab="$t('hcEvent.newView')" />
+        </n-tabs>
+      </div>
+    </template>
     <template #filterAction>
       <n-button :loading="store.jobLoading" @click="onSync" type="primary">
         {{ $t('turnstile.accessLevelPage.sync') }}
@@ -218,13 +232,39 @@
         {{ $t('content.download') }}
       </n-button>
     </template>
-    <template #filterSearch>
-      <n-button @click="store._changeView(2)" class="!ml-4" type="primary">
-        <template #icon>
-          <StarEmphasis32Filled />
-        </template>
-        {{ $t('hcEvent.newView') }}
-      </n-button>
-    </template>
   </UIPageFilter>
 </template>
+
+<style scoped>
+.tab-wrapper {
+  border: 1px solid var(--border-color, #e0e0e6);
+  border-radius: 6px;
+  padding: 1px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+}
+
+.tab-switcher {
+  width: 200px;
+  height: 100%;
+}
+
+.tab-switcher :deep(.n-tabs-pane-wrapper) {
+  display: none;
+}
+
+.tab-switcher :deep(.n-tabs-nav) {
+  height: 100%;
+}
+
+.tab-switcher :deep(.n-tabs-rail) {
+  height: 100%;
+}
+
+.tab-switcher :deep(.n-tabs-tab) {
+  height: 28px;
+  padding: 0 12px;
+  line-height: 28px;
+}
+</style>

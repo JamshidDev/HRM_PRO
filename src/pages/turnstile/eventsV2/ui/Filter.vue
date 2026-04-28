@@ -7,7 +7,7 @@
   } from '@/store/modules/index.js'
   import { UIPageFilter, UISelect, SuperSelect } from '@/components/index.js'
   import i18n from '@/i18n/index.js'
-  import { ArrowCircleDown32Regular, StarLineHorizontal320Regular, ArrowSync24Filled } from '@vicons/fluent'
+  import { ArrowCircleDown32Regular, ArrowSync24Filled } from '@vicons/fluent'
   import { useAppSetting } from '@utils'
 
   const { t } = i18n.global
@@ -151,6 +151,20 @@
     @onClear="resetFilter"
     :show-add-button="false"
   >
+    <template #filterSearch>
+      <div class="tab-wrapper ml-2">
+        <n-tabs
+          class="tab-switcher"
+          :value="eventStore.activeTab"
+          @update:value="eventStore._changeView"
+          type="segment"
+          size="small"
+        >
+          <n-tab-pane :name="eventStore.tabs[0]" :tab="$t('hcEvent.oldView')" />
+          <n-tab-pane :name="eventStore.tabs[1]" :tab="$t('hcEvent.newView')" />
+        </n-tabs>
+      </div>
+    </template>
     <template #filterAction>
       <n-button :loading="eventStore.jobLoading" @click="onSync" type="primary">
         {{ $t('turnstile.accessLevelPage.sync') }}
@@ -247,13 +261,39 @@
         @update:value="filterEvent"
       />
     </template>
-    <template #filterSearch>
-      <n-button @click="eventStore._changeView(1)" class="!ml-4" type="primary">
-        <template #icon>
-          <StarLineHorizontal320Regular />
-        </template>
-        {{ $t('hcEvent.oldView') }}
-      </n-button>
-    </template>
   </UIPageFilter>
 </template>
+
+<style scoped>
+.tab-wrapper {
+  border: 1px solid var(--border-color, #e0e0e6);
+  border-radius: 6px;
+  padding: 1px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+}
+
+.tab-switcher {
+  width: 200px;
+  height: 100%;
+}
+
+.tab-switcher :deep(.n-tabs-pane-wrapper) {
+  display: none;
+}
+
+.tab-switcher :deep(.n-tabs-nav) {
+  height: 100%;
+}
+
+.tab-switcher :deep(.n-tabs-rail) {
+  height: 100%;
+}
+
+.tab-switcher :deep(.n-tabs-tab) {
+  height: 28px;
+  padding: 0 12px;
+  line-height: 28px;
+}
+</style>
