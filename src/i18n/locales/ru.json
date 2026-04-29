@@ -2995,6 +2995,10 @@
   },
   "integrationLog": {
     "name": "Логи интеграции",
+    "tabs": {
+      "list": "Логи",
+      "dashboard": "Дашборд"
+    },
     "filter": {
       "apiType": "Тип API",
       "method": "Метод"
@@ -3007,6 +3011,37 @@
       "status": "Статус",
       "duration": "Длительность",
       "detail": "Детали"
+    },
+    "dashboard": {
+      "totalRequests": "Всего запросов",
+      "successRequests": "Успешных",
+      "errorRequests": "Ошибок",
+      "avgDuration": "Среднее время",
+      "maxDuration": "Макс время",
+      "uniqueClients": "Все клиенты",
+      "timeline": "Запросы по дням",
+      "methods": "Методы",
+      "statuses": "HTTP статусы",
+      "topClients": "Все клиенты",
+      "client": "Клиент",
+      "topEndpoints": "Топ эндпоинтов",
+      "requests": "Запросы",
+      "errorPct": "Ошибки %",
+      "avgMs": "Ср мс",
+      "total": "Всего",
+      "errors": "Ошибки",
+      "fast": "Быстро",
+      "medium": "Средне",
+      "slow": "Медленно",
+      "statusLabel": {
+        "ok": "OK",
+        "redirect": "Redirect",
+        "badRequest": "Bad Request",
+        "notFound": "Not Found",
+        "unprocessable": "Ошибка",
+        "serverError": "Ошибка сервера",
+        "unknown": "Неизвестно"
+      }
     }
   }
 }

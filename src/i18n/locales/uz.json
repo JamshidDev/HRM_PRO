@@ -3077,6 +3077,10 @@
   },
   "integrationLog": {
     "name": "Integratsiya loglari",
+    "tabs": {
+      "list": "Loglar",
+      "dashboard": "Dashboard"
+    },
     "filter": {
       "apiType": "API turi",
       "method": "Metod"
@@ -3089,6 +3093,37 @@
       "status": "Holat",
       "duration": "Davomiyligi",
       "detail": "Tafsilot"
+    },
+    "dashboard": {
+      "totalRequests": "Jami so'rovlar",
+      "successRequests": "Muvaffaqiyatli",
+      "errorRequests": "Xatoliklar",
+      "avgDuration": "O'rtacha vaqt",
+      "maxDuration": "Maks vaqt",
+      "uniqueClients": "Barcha clientlar",
+      "timeline": "Kunlik so'rovlar",
+      "methods": "Metodlar",
+      "statuses": "HTTP statuslar",
+      "topClients": "Barcha clientlar",
+      "client": "Client",
+      "topEndpoints": "Top endpointlar",
+      "requests": "So'rovlar",
+      "errorPct": "Xatolik %",
+      "avgMs": "O'rt ms",
+      "total": "Jami",
+      "errors": "Xatoliklar",
+      "fast": "Tez",
+      "medium": "O'rta",
+      "slow": "Sekin",
+      "statusLabel": {
+        "ok": "OK",
+        "redirect": "Redirect",
+        "badRequest": "Bad Request",
+        "notFound": "Not Found",
+        "unprocessable": "Xato",
+        "serverError": "Server xato",
+        "unknown": "Noma'lum"
+      }
     }
   }
 }

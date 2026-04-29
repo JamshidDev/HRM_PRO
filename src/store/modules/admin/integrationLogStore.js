@@ -6,13 +6,23 @@ export const useIntegrationLogStore = defineStore('integrationLog', {
     loading: false,
     activeCol: null,
     totalItems: 0,
+    tabs: ['list', 'dashboard'],
+    activeTab: 'dashboard',
     params: {
       page: 1,
       per_page: 10,
       search: null,
       api_type: null,
       method: null
-    }
+    },
+    // Dashboard
+    dashboardLoading: false,
+    summary: null,
+    timeline: [],
+    topClients: [],
+    topEndpoints: [],
+    methods: [],
+    statuses: []
   }),
   actions: {
     _index() {
@@ -38,6 +48,28 @@ export const useIntegrationLogStore = defineStore('integrationLog', {
       this.params.page = 1
       this.params.per_page = 10
       this._index()
+    },
+    _dashboard() {
+      this.dashboardLoading = true
+      Promise.all([
+        $ApiService.integrationLogService._summary(),
+        $ApiService.integrationLogService._timeline(),
+        $ApiService.integrationLogService._topClients(),
+        $ApiService.integrationLogService._topEndpoints(),
+        $ApiService.integrationLogService._methods(),
+        $ApiService.integrationLogService._statuses()
+      ])
+        .then(([summary, timeline, topClients, topEndpoints, methods, statuses]) => {
+          this.summary = summary.data.data
+          this.timeline = timeline.data.data
+          this.topClients = topClients.data.data
+          this.topEndpoints = topEndpoints.data.data
+          this.methods = methods.data.data
+          this.statuses = statuses.data.data
+        })
+        .finally(() => {
+          this.dashboardLoading = false
+        })
     },
     resetParams() {
       this.params = {

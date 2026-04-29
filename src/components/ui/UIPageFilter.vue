@@ -79,9 +79,10 @@
     </div>
     <div class="flex flex-col items-end md:flex-row gap-4">
       <div
-        :class="[slots.filterSearch ? 'md:max-w-full' : 'md:max-w-[200px]!']"
-        class="w-full flex items-start"
+        :class="[slots.filterSearch || slots.filterBefore ? 'md:max-w-full' : 'md:max-w-[200px]!']"
+        class="w-full flex items-center gap-2"
       >
+        <slot name="filterBefore"></slot>
         <n-input
           ref="searchInputRef"
           clearable

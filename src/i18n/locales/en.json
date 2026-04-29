@@ -2987,6 +2987,10 @@
   },
   "integrationLog": {
     "name": "Integration Logs",
+    "tabs": {
+      "list": "Logs",
+      "dashboard": "Dashboard"
+    },
     "filter": {
       "apiType": "API Type",
       "method": "Method"
@@ -2999,6 +3003,37 @@
       "status": "Status",
       "duration": "Duration",
       "detail": "Detail"
+    },
+    "dashboard": {
+      "totalRequests": "Total Requests",
+      "successRequests": "Successful",
+      "errorRequests": "Errors",
+      "avgDuration": "Avg Duration",
+      "maxDuration": "Max Duration",
+      "uniqueClients": "All Clients",
+      "timeline": "Daily Requests",
+      "methods": "Methods",
+      "statuses": "HTTP Statuses",
+      "topClients": "All Clients",
+      "client": "Client",
+      "topEndpoints": "Top Endpoints",
+      "requests": "Requests",
+      "errorPct": "Error %",
+      "avgMs": "Avg ms",
+      "total": "Total",
+      "errors": "Errors",
+      "fast": "Fast",
+      "medium": "Medium",
+      "slow": "Slow",
+      "statusLabel": {
+        "ok": "OK",
+        "redirect": "Redirect",
+        "badRequest": "Bad Request",
+        "notFound": "Not Found",
+        "unprocessable": "Unprocessable",
+        "serverError": "Server Error",
+        "unknown": "Unknown"
+      }
     }
   }
 }
