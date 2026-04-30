@@ -18,5 +18,6 @@ export const useAppSetting = {
   adminSecret: 'JAMACODER',
   adminExistSecret: 'EXIST',
   adminSecretKey: 'secretKey',
-  temporaryToken: 'temporarySecretKey'
+  temporaryToken: 'temporarySecretKey',
+  mustChangeKey: 'must-change-password'
 }

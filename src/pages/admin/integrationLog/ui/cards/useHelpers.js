@@ -30,9 +30,6 @@ export const methodBadgeBarClass = (method) => {
 
 export const secretTypeBadge = (type) => {
   const map = {
-    sanctum:      'bg-primary/10 text-primary',
-    bearer:       'bg-warning/10 text-warning',
-    user:         'bg-success/10 text-success',
     sanctum_user: 'bg-success/10 text-success',
     mobile_face:  'bg-info/10 text-info'
   }

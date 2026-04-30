@@ -36,7 +36,9 @@ export const useAccountStore = defineStore('accountStore', {
     orgLoading: false,
     notificationList: [],
     notifyLoading: false,
-    unReadNotificationCount: 0
+    unReadNotificationCount: 0,
+    mustChangePassword: localStorage.getItem(useAppSetting.mustChangeKey) === '1',
+    changePasswordLoading: false
   }),
   getters: {
     checkPermission: (state) => (permission) => {
@@ -189,6 +191,18 @@ export const useAccountStore = defineStore('accountStore', {
         })
         .finally(() => {
           this.saveLoading = false
+        })
+    },
+    _changePassword(password) {
+      this.changePasswordLoading = true
+      return $ApiService.accountService
+        ._update({ data: { password } })
+        .then(() => {
+          this.mustChangePassword = false
+          localStorage.removeItem(useAppSetting.mustChangeKey)
+        })
+        .finally(() => {
+          this.changePasswordLoading = false
         })
     },
     _updateAvatar() {

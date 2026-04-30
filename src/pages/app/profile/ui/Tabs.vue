@@ -4,6 +4,7 @@
   import Form from './Form.vue'
   import OrgForm from './OrgForm.vue'
   import SocialLink from './SocialLink.vue'
+  import PasswordForm from './PasswordForm.vue'
 
   const store = useAccountStore()
 </script>
@@ -14,8 +15,27 @@
       <div
         class="w-full border border-surface-line shadow bg-surface-section rounded-xl p-4 form--min-height"
       >
-        <div class="border border-surface-line border-dashed p-4 mb-4 rounded-lg bg-surface-ground">
-          <Form />
+        <!-- Password section -->
+        <div class="border border-surface-line rounded-xl overflow-hidden mb-4">
+          <div
+            class="px-5 pt-4 pb-3 border-b border-surface-line"
+            :class="store.mustChangePassword ? 'bg-warning/5' : ''"
+          >
+            <div v-if="store.mustChangePassword" class="flex items-center gap-2 mb-1">
+              <n-tag type="warning" size="small" round>{{ $t('passwordForm.required') }}</n-tag>
+            </div>
+            <h2 class="text-base font-semibold text-textColor0">
+              {{ store.mustChangePassword ? $t('passwordForm.mustChangeTitle') : $t('passwordForm.changeTitle') }}
+            </h2>
+            <p class="text-xs text-textColor3 mt-0.5">
+              {{ store.mustChangePassword ? $t('passwordForm.mustChangeDescProfile') : $t('passwordForm.changeDesc') }}
+            </p>
+          </div>
+          <div class="p-5 flex justify-center">
+            <div class="w-full max-w-[480px] border border-surface-line rounded-xl p-5">
+              <PasswordForm />
+            </div>
+          </div>
         </div>
         <div
           v-if="store.checkPermission(store.pn.hrCommandsBlank)"
@@ -48,9 +68,7 @@
       </div>
     </n-tab-pane>
     <n-tab-pane :name="store.tabs[2]" :tab="$t('profilePage.tabs.secure')">
-      <div
-        class="w-full border border-surface-line shadow bg-surface-section rounded-xl p-4 form--min-height"
-      >
+      <div class="w-full border border-surface-line shadow bg-surface-section rounded-xl p-4 form--min-height">
         {{ $t('profilePage.tabs.secure') }}
       </div>
     </n-tab-pane>

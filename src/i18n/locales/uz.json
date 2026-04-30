@@ -371,7 +371,9 @@
       "confirmSpam": "Haqiqatan ham spam qilmoqchimisiz?",
       "cancelSpam": "Haqiqatan ham spamdan chiqarilmoqchimisiz?"
     },
-    "no-roles": "Biriktirilgan rollar yo'q!"
+    "no-roles": "Biriktirilgan rollar yo'q!",
+    "passwordChangedAt": "Parol yangilangan",
+    "daysAgo": "kun oldin"
   },
   "confirmation": {
     "name": "Shartnomalar",
@@ -3079,11 +3081,23 @@
     "name": "Integratsiya loglari",
     "tabs": {
       "list": "Loglar",
-      "dashboard": "Dashboard"
+      "dashboard": "Dashboard",
+      "clients": "Clientlar"
+    },
+    "clients": {
+      "name": "Nomi",
+      "publicKey": "Ochiq kalit",
+      "secretKey": "Yopiq kalit",
+      "secretKeyPlaceholder": "O'zgartirmaslik uchun bo'sh qoldiring",
+      "secretType": "Tur",
+      "isActive": "Faol",
+      "edit": "Clientni tahrirlash"
     },
     "filter": {
       "apiType": "API turi",
-      "method": "Metod"
+      "method": "Metod",
+      "dateFrom": "Qachondan",
+      "dateTo": "Qachongacha"
     },
     "table": {
       "secret": "Secret",
@@ -3124,6 +3138,45 @@
         "serverError": "Server xato",
         "unknown": "Noma'lum"
       }
+    }
+  },
+  "changePassword": {
+    "title": "Parolni yangilash",
+    "description": "Xavfsizlik uchun parolingizni yangilashingiz shart.",
+    "newPassword": "Yangi parol",
+    "newPasswordPlaceholder": "Yangi parolni kiriting",
+    "confirmPassword": "Parolni tasdiqlang",
+    "confirmPasswordPlaceholder": "Parolni qayta kiriting",
+    "success": "Parol muvaffaqiyatli yangilandi",
+    "rules": {
+      "minLength": "Kamida 8 ta belgi",
+      "uppercase": "Kamida 1 ta katta harf (A-Z)",
+      "lowercase": "Kamida 1 ta kichik harf (a-z)",
+      "special": "Kamida 1 ta maxsus belgi ({'@'}!#$%^&*)",
+      "match": "Parollar mos keladi"
+    }
+  },
+  "passwordForm": {
+    "required": "Majburiy",
+    "changeTitle": "Parolni yangilash",
+    "changeDesc": "Xavfsizligingiz uchun parolingizni muntazam yangilab turing.",
+    "mustChangeTitle": "Parolni yangilash talab qilinadi",
+    "mustChangeDesc": "30 kundan ortiq parol o'zgartirilmagan. Iltimos, xavfsizlik uchun yangi parol o'rnating.",
+    "mustChangeDescProfile": "Parolingiz 30 kundan ortiq yangilanmagan. Quyidagi formadan yangi parol o'rnating.",
+    "policyTitle": "Parol siyosati",
+    "policyDesc": "Tizim xavfsizligini ta'minlash uchun parolingiz har 30 kunda bir marta yangilanishi kerak.",
+    "newPassword": "Yangi parol",
+    "newPasswordPlaceholder": "Yangi parolni kiriting",
+    "confirmPassword": "Parolni tasdiqlang",
+    "confirmPasswordPlaceholder": "Parolni qayta kiriting",
+    "requirements": "Parol talablari",
+    "success": "Parol muvaffaqiyatli yangilandi",
+    "rules": {
+      "minLength": "Kamida 8 ta belgi",
+      "uppercase": "Kamida 1 ta katta harf (A-Z)",
+      "lowercase": "Kamida 1 ta kichik harf (a-z)",
+      "special": "Kamida 1 ta maxsus belgi ({'@'}!#$%^&*)",
+      "match": "Parollar mos keladi"
     }
   }
 }

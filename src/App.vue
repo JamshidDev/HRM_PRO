@@ -19,7 +19,7 @@
     :date-locale="localeProvider.date"
   >
     <n-notification-provider>
-      <n-message-provider placement="top-right">
+      <n-message-provider placement="top-right" :container-style="{ zIndex: 10000 }">
         <n-dialog-provider>
           <AppLayout />
           <ToastProvider />

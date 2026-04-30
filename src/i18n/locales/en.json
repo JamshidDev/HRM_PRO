@@ -357,7 +357,9 @@
       "confirmSpam": "Mark as spam?",
       "cancelSpam": "Remove from spam?"
     },
-    "no-roles": "No roles assigned!"
+    "no-roles": "No roles assigned!",
+    "passwordChangedAt": "Password changed",
+    "daysAgo": "days ago"
   },
   "confirmation": {
     "name": "Contracts",
@@ -2989,11 +2991,23 @@
     "name": "Integration Logs",
     "tabs": {
       "list": "Logs",
-      "dashboard": "Dashboard"
+      "dashboard": "Dashboard",
+      "clients": "Clients"
+    },
+    "clients": {
+      "name": "Name",
+      "publicKey": "Public Key",
+      "secretKey": "Secret Key",
+      "secretKeyPlaceholder": "Leave empty to keep unchanged",
+      "secretType": "Type",
+      "isActive": "Active",
+      "edit": "Edit Client"
     },
     "filter": {
       "apiType": "API Type",
-      "method": "Method"
+      "method": "Method",
+      "dateFrom": "From",
+      "dateTo": "To"
     },
     "table": {
       "secret": "Secret",
@@ -3034,6 +3048,45 @@
         "serverError": "Server Error",
         "unknown": "Unknown"
       }
+    }
+  },
+  "changePassword": {
+    "title": "Update Password",
+    "description": "For security reasons, you must update your password.",
+    "newPassword": "New Password",
+    "newPasswordPlaceholder": "Enter new password",
+    "confirmPassword": "Confirm Password",
+    "confirmPasswordPlaceholder": "Re-enter password",
+    "success": "Password updated successfully",
+    "rules": {
+      "minLength": "At least 8 characters",
+      "uppercase": "At least 1 uppercase letter (A-Z)",
+      "lowercase": "At least 1 lowercase letter (a-z)",
+      "special": "At least 1 special character ({'@'}!#$%^&*)",
+      "match": "Passwords match"
+    }
+  },
+  "passwordForm": {
+    "required": "Required",
+    "changeTitle": "Change Password",
+    "changeDesc": "Keep your account secure by updating your password regularly.",
+    "mustChangeTitle": "Password update required",
+    "mustChangeDesc": "Your password has not been changed for over 30 days. Please set a new password for security.",
+    "mustChangeDescProfile": "Your password has not been updated for over 30 days. Please set a new password using the form below.",
+    "policyTitle": "Password Policy",
+    "policyDesc": "To ensure system security, your password must be updated every 30 days.",
+    "newPassword": "New Password",
+    "newPasswordPlaceholder": "Enter new password",
+    "confirmPassword": "Confirm Password",
+    "confirmPasswordPlaceholder": "Re-enter password",
+    "requirements": "Password requirements",
+    "success": "Password updated successfully",
+    "rules": {
+      "minLength": "At least 8 characters",
+      "uppercase": "At least 1 uppercase letter (A-Z)",
+      "lowercase": "At least 1 lowercase letter (a-z)",
+      "special": "At least 1 special character ({'@'}!#$%^&*)",
+      "match": "Passwords match"
     }
   }
 }

@@ -25,7 +25,14 @@ export const useLoginStore = defineStore('loginStore', {
         ._login({ data })
         .then((res) => {
           const token = res.data.access_token
+          const mustChange = res.data.must_change === true
           localStorage.setItem(useAppSetting.tokenKey, token)
+
+          if (mustChange) {
+            localStorage.setItem(useAppSetting.mustChangeKey, '1')
+          } else {
+            localStorage.removeItem(useAppSetting.mustChangeKey)
+          }
 
           if (this.authPayload) {
             this._getAuthCode()
@@ -36,6 +43,10 @@ export const useLoginStore = defineStore('loginStore', {
           socketStore.disconnect()
 
           getActivePinia().reset()
+
+          if (mustChange) {
+            accountStore.mustChangePassword = true
+          }
 
           accountStore._index(async (data) => {
             socketStore.initSocket(token, data?.id)

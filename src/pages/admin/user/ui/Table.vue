@@ -77,6 +77,7 @@
             <th class="min-w-[120px] w-[120px]">{{ $t('userPage.form.role') }}</th>
             <th class="min-w-[120px] w-[120px]">{{ $t('userPage.permissions') }}</th>
             <th class="min-w-[120px] w-[120px]">{{ $t('content.phone') }}</th>
+            <th class="min-w-[130px] w-[130px]">{{ $t('userPage.passwordChangedAt') }}</th>
             <th class="min-w-[40px] w-[40px]"></th>
           </tr>
         </thead>
@@ -161,6 +162,22 @@
               </div>
             </td>
             <td>{{ item?.phone }}</td>
+            <td>
+              <template v-if="item?.password_changed_at && Math.floor((Date.now() - new Date(item.password_changed_at)) / 86400000) > 0">
+                <n-tooltip placement="top">
+                  <template #trigger>
+                    <n-tag
+                      :type="Math.floor((Date.now() - new Date(item.password_changed_at)) / 86400000) > 30 ? 'error' : 'default'"
+                      size="small"
+                      round
+                    >
+                      {{ Math.floor((Date.now() - new Date(item.password_changed_at)) / 86400000) }} {{ $t('userPage.daysAgo') }}
+                    </n-tag>
+                  </template>
+                  {{ item.password_changed_at?.slice(0, 10) }}
+                </n-tooltip>
+              </template>
+            </td>
             <td>
               <UIMenuButton
                 :data="item"

@@ -5,10 +5,12 @@
   const store = useOnlyOfficeStore()
   const officeRef = ref(null)
 
-  const baseConfig = store.config
+  const baseConfig = JSON.parse(JSON.stringify(store.config))
   baseConfig.editorConfig.callbackUrl = store.callBackUrl
-  const token = Utils.generateJwtToken(store.config, store.secret)
+  // baseConfig.document.url = encodeURI(baseConfig.document.url)
+  const token = Utils.generateJwtToken(baseConfig, store.secret)
   const config = { ...baseConfig, token }
+  console.log(config)
 </script>
 
 <template>
