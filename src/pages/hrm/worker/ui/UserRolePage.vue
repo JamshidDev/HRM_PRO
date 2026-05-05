@@ -1,5 +1,5 @@
 <script setup>
-  import { useAccountStore, useWorkerProfileStore } from '@/store/modules/index.js'
+  import { useAccountStore, useWorkerProfileStore, useComponentStore } from '@/store/modules/index.js'
 
   import Filter from '@pages/extra/UserRole/ui/Filter.vue'
   import Utils from '@/utils/Utils.js'
@@ -8,6 +8,7 @@
 
   const store = useWorkerProfileStore()
   const accStore = useAccountStore()
+  const compStore = useComponentStore()
 
   const onEdit = (v) => {
     store.elementId = v.id
