@@ -1503,6 +1503,17 @@
       "today": "Bugungi tug'ilgan kunlar",
       "tomorrow": "Ertangi tug'ilgan kunlar"
     },
+    "disability": {
+      "workerTitle": "Ishchi nogironligi",
+      "relativeTitle": "Qarindosh nogironligi",
+      "sickLeaveTitle": "Kasallik varaqlari",
+      "group": "guruh",
+      "groupTitle": "Guruh",
+      "active": "Faol",
+      "finished": "Tugagan",
+      "number": "Guvohnoma raqami",
+      "period": "Muddat"
+    },
     "rewardCard": {
       "reward": {
         "title": "Rag'batlantirish",

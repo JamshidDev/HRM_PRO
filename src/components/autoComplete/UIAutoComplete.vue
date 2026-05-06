@@ -39,7 +39,7 @@
     pin.value = null
   }
 
-  const feedback = computed(() => !Boolean(pin.value))
+  const feedback = computed(() => !pin.value)
 </script>
 
 <template>

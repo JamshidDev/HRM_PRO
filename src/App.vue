@@ -7,7 +7,7 @@
   import { naiveBreakpoints } from '@/assets/theme/theme.js'
   import { useLocaleProvider, useAppInit } from '@/composables/index.js'
   import { useAppStore } from '@/store/modules/index.js'
-  const { localeProvider} = useLocaleProvider()
+  const { localeProvider } = useLocaleProvider()
   const appStore = useAppStore()
   useAppInit()
 </script>

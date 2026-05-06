@@ -60,13 +60,14 @@
       type: String,
       default: null
     },
+
     deleteOptionText: {
       type: String,
       default: null
     },
     extraOptions: {
       type: Array,
-      default:()=> []
+      default: () => []
     },
     loading: {
       type: Boolean,
@@ -188,9 +189,7 @@
           </div>
           <div class="col-span-6">
             <n-button secondary @click="onDelete" type="primary" style="width: 100%">
-              {{
-                $t('content.yes')
-              }}
+              {{ $t('content.yes') }}
             </n-button>
           </div>
         </div>

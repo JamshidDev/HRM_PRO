@@ -1,10 +1,8 @@
 <script setup>
-  import { UIPageContent, AIButton } from '@/components/index.js'
-  import { useQuoteStore } from '@/store/modules/index.js'
+  import { UIPageContent } from '@/components/index.js'
   import Quotes from './ui/Quotes.vue'
   import OnlineUsers from './ui/OnlineUsers.vue'
   import UsersModal from './ui/UsersModal.vue'
-  const store = useQuoteStore()
   import { useAppSetting } from '@/utils/index.js'
 
   const handleKeyDown = (e) => {
@@ -34,12 +32,10 @@
 
 <template>
   <UIPageContent>
-    <div class="w-full h-[60vh] flex justify-center items-center">
+    <div class="flex items-center justify-center w-full h-[60vh]">
       <Quotes />
     </div>
     <OnlineUsers />
     <UsersModal />
   </UIPageContent>
 </template>
-
-<style scoped></style>

@@ -1483,6 +1483,17 @@
       "today": "Today's birthdays",
       "tomorrow": "Tomorrow's birthdays"
     },
+    "disability": {
+      "workerTitle": "Worker disabilities",
+      "relativeTitle": "Relative disabilities",
+      "sickLeaveTitle": "Sick leaves",
+      "group": "group",
+      "groupTitle": "Group",
+      "active": "Active",
+      "finished": "Finished",
+      "number": "Certificate number",
+      "period": "Period"
+    },
     "rewardCard": {
       "reward": {
         "title": "Incentives",
