@@ -24,6 +24,7 @@
     "edit": "Edit",
     "work_date": "Start date",
     "delete": "Delete",
+    "deleteAll": "Delete all",
     "checked": "Checked",
     "view": "View",
     "backToList": "Back to list",
@@ -1492,7 +1493,11 @@
       "active": "Active",
       "finished": "Finished",
       "number": "Certificate number",
-      "period": "Period"
+      "period": "Period",
+      "relative": "Relative",
+      "unlimited": "Lifetime",
+      "fromDate": "From",
+      "toDate": "To"
     },
     "rewardCard": {
       "reward": {
@@ -2024,11 +2029,16 @@
     "downloaded": "Downloaded",
     "downloadFailed": "Download failed",
     "alertTitle": "Monthly report submission procedure",
-    "alertText1": "Organizations must submit reports for each month by the 10th of the following month.",
-    "alertText2": "If the report is submitted by the 10th — it is accepted for the corresponding month",
-    "alertText3": "If the report is submitted after the 10th — it is automatically transferred to the next month",
+    "alertText1": "Organizations must submit reports for each month by the 5th of the following month.",
+    "alertText2": "If the report is submitted by the 5th — it is accepted for the corresponding month",
+    "alertText3": "If the report is submitted after the 5th — it is automatically transferred to the next month",
     "alertNote": "Note: Timely report submission is important for accurate record keeping.",
-    "oldOrgInfo": "Previous organization information"
+    "oldOrgInfo": "Previous organization information",
+    "management": "Management",
+    "managementYear": "Year",
+    "managementMonth": "Month",
+    "managementGroup": "Group",
+    "managementAddHint": "Select an organization and add it. The added organization will be able to submit a report for the current month even if the deadline has already passed (after the 5th)."
   },
   "confirmationReport": {
     "name": "Reports"

@@ -1,7 +1,7 @@
 <script setup>
-import {ArrowDownload24Regular, ArrowSync20Filled} from '@vicons/fluent'
+import { ArrowDownload24Regular, ArrowSync20Filled, LockClosed20Regular } from '@vicons/fluent'
   import { UIPageContent, UIPageFilter, UIOfficeApp, UIYearMonth, UISelect } from '@/components/index.js'
-  import { useStructureReportStore, useComponentStore } from '@/store/modules/index.js'
+  import { useStructureReportStore, useComponentStore, useAccountStore } from '@/store/modules/index.js'
   import Utils from '@/utils/Utils.js'
   import { getOneMonthAgoYearMonth } from '@utils'
   import GenerateModal from './ui/GenerateModal.vue'
@@ -10,9 +10,11 @@ import {ArrowDownload24Regular, ArrowSync20Filled} from '@vicons/fluent'
   import ReportListTable from './ui/ReportListTable.vue'
   import ReportStatModal from './ui/ReportStatModal.vue'
   import AlertModal from './ui/AlertModal.vue'
+  import ManagementModal from './ui/ManagementModal.vue'
 
   const store = useStructureReportStore()
   const componentStore = useComponentStore()
+  const accStore = useAccountStore()
   const officeAppRef = ref(null)
 
   const onGenerate = () => {
@@ -137,6 +139,13 @@ import {ArrowDownload24Regular, ArrowSync20Filled} from '@vicons/fluent'
           <span>{{ $t('structureReport.statTooltip') }}</span>
         </n-tooltip>
 
+        <n-button v-if="accStore.checkPermission(accStore.pn.hrReportManagementWrite)" @click="store.openManagementModal()" type="error">
+          <template #icon>
+            <n-icon><LockClosed20Regular /></n-icon>
+          </template>
+          {{ $t('structureReport.management') }}
+        </n-button>
+
         <n-button @click="store.generalExcelModalVisible = true" type="success">
           <template #icon>
             <n-icon>
@@ -155,6 +164,7 @@ import {ArrowDownload24Regular, ArrowSync20Filled} from '@vicons/fluent'
     <GeneralExcelModal />
     <ReportStatModal />
     <AlertModal />
+    <ManagementModal />
     <UIOfficeApp ref="officeAppRef" />
   </UIPageContent>
 </template>

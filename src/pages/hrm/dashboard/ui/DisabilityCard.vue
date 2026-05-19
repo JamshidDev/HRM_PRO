@@ -90,7 +90,7 @@
         </n-button>
       </div>
       <p
-        v-if="props.type === 'worker'"
+        v-if="props.type !== 'sickLeave'"
         @click="emit('detail')"
         class="text-xs leading-[14px] text-primary border-b border-dashed border-primary cursor-pointer transition-all hover:border-primary/80 hover:text-primary/80"
       >

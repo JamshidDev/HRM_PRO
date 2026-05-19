@@ -51,7 +51,7 @@
         <tbody>
           <tr v-for="(item, idx) in store.list" :key="idx">
             <td>
-              <span class="text-center block">{{
+              <span class="block text-center">{{
                 (store.params.page - 1) * store.params.per_page + idx + 1
               }}</span>
             </td>
@@ -70,7 +70,7 @@
             <td>
               <span
                 @click="openDocument(item.id)"
-                class="hover:underline hover:text-primary cursor-pointer"
+                class="cursor-pointer hover:underline hover:text-primary"
                 >{{ item?.polyclinic?.name }}</span
               >
             </td>

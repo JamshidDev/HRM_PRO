@@ -1,7 +1,6 @@
 <script setup>
   import { UIUser, UIPagination, NoDataPicture, UIBadge } from '@/components/index.js'
   import { useDashboardStore } from '@/store/modules/index.js'
-  import Utils from '@/utils/Utils.js'
 
   const store = useDashboardStore()
 
@@ -27,8 +26,8 @@
         <tr>
           <th class="text-center! min-w-[40px] w-[40px]">{{ $t('content.number') }}</th>
           <th class="min-w-[240px]">{{ $t('content.worker') }}</th>
+          <th class="min-w-[200px]">{{ $t('dashboardPage.disability.relative') }}</th>
           <th class="min-w-[160px]">{{ $t('content.organization') }}</th>
-          <th class="min-w-[160px]">{{ $t('content.department') }}</th>
           <th class="min-w-[80px] w-[80px] text-center!">{{ $t('dashboardPage.disability.groupTitle') }}</th>
           <th class="min-w-[120px]">{{ $t('dashboardPage.disability.number') }}</th>
           <th class="min-w-[120px]">{{ $t('dashboardPage.disability.fromDate') }}</th>
@@ -58,10 +57,15 @@
             </UIUser>
           </td>
           <td>
-            <span class="text-[13px]">{{ item?.organization?.name }}</span>
+            <div class="flex flex-col gap-0.5">
+              <span class="text-[13px] font-medium text-textColor0">
+                {{ item.relative.last_name }} {{ item.relative.first_name }}
+              </span>
+              <span class="text-xs text-textColor3">{{ item.relative.relative_name }}</span>
+            </div>
           </td>
           <td>
-            <span class="text-[13px]">{{ item?.department?.name }}</span>
+            <span class="text-[13px]">{{ item?.organization?.name }}</span>
           </td>
           <td class="text-center!">
             <n-tag type="warning" size="small" round>

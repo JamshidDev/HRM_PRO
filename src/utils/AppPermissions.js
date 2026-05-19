@@ -162,6 +162,7 @@ export const appPermissions = {
   hrReport: 'hr-report',
   hrReportWrite: 'hr-report-write',
   hrReportRead: 'hr-report-read',
+  hrReportManagementWrite: 'hr-report-management-write',
 
   hrReportExport: 'hr-report-export',
   hrReportExportWrite: 'hr-report-export-write',

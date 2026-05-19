@@ -29,13 +29,14 @@
             @click="store.department.deleteVisible = false"
             type="error"
             style="width: 100%"
-            >{{ $t('content.no') }}
+          >
+            {{ $t('content.no') }}
           </n-button>
         </div>
         <div class="col-span-6">
-          <n-button secondary @click="onDelete" type="primary" style="width: 100%">{{
-            $t('content.yes')
-          }}</n-button>
+          <n-button secondary @click="onDelete" type="primary" style="width: 100%">
+            {{ $t('content.yes') }}
+          </n-button>
         </div>
       </div>
     </template>

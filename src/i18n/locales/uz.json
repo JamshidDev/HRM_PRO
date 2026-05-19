@@ -24,6 +24,7 @@
     "edit": "Tahrirlash",
     "work_date": "Ishga chiqish sanasi",
     "delete": "O'chirish",
+    "deleteAll": "Barchasini o'chirish",
     "checked": "Tekshirilgan",
     "view": "Ko'rish",
     "backToList": "Asosiy oynaga qaytish",
@@ -1512,7 +1513,11 @@
       "active": "Faol",
       "finished": "Tugagan",
       "number": "Guvohnoma raqami",
-      "period": "Muddat"
+      "period": "Muddat",
+      "relative": "Qarindosh",
+      "unlimited": "Umrbod",
+      "fromDate": "Qachondan",
+      "toDate": "Qachongacha"
     },
     "rewardCard": {
       "reward": {
@@ -2050,11 +2055,16 @@
     "downloaded": "Yuklandi",
     "downloadFailed": "Yuklab bo'lmadi",
     "alertTitle": "Oylik hisobot topshirish tartibi",
-    "alertText1": "Tashkilotlar har bir oy uchun hisobotni keyingi oyning 10-sanasigacha topshirishlari shart.",
-    "alertText2": "Agar hisobot 10-sanagacha topshirilsa — u tegishli oy hisobiga qabul qilinadi",
-    "alertText3": "Agar hisobot 10-sanadan kech topshirilsa — u avtomatik tarzda keyingi oy hisobiga o'tkaziladi",
+    "alertText1": "Tashkilotlar har bir oy uchun hisobotni keyingi oyning 5-sanasigacha topshirishlari shart.",
+    "alertText2": "Agar hisobot 5-sanagacha topshirilsa — u tegishli oy hisobiga qabul qilinadi",
+    "alertText3": "Agar hisobot 5-sanadan kech topshirilsa — u avtomatik tarzda keyingi oy hisobiga o'tkaziladi",
     "alertNote": "Eslatma: Hisobotni o'z vaqtida topshirish hisob-kitoblarning to'g'ri yuritilishi uchun muhim.",
-    "oldOrgInfo": "Oldingi tashkilot ma'lumotlari"
+    "oldOrgInfo": "Oldingi tashkilot ma'lumotlari",
+    "management": "Boshqaruv",
+    "managementYear": "Yil",
+    "managementMonth": "Oy",
+    "managementGroup": "Guruh",
+    "managementAddHint": "Tashkilotni tanlang va qo'shing. Qo'shilgan tashkilot hisobot topshirish muddati o'tgan bo'lsa ham (5-sanadan keyin), joriy oy uchun hisobot yuklash imkoniyatiga ega bo'ladi."
   },
   "confirmationReport": {
     "name": "Hisobotlar"

@@ -16,6 +16,10 @@ const _workerDisabilityDetail = async (payload) => {
   return await axios.get(`/v1/hr/dashboard/worker-disabilities/preview`, { params: payload?.params })
 }
 
+const _relativeDisabilityDetail = async (payload) => {
+  return await axios.get(`/v1/hr/dashboard/worker-relative-disabilities/preview`, { params: payload?.params })
+}
+
 const _birthdayDetail = async (payload) => {
   return await axios.get(`/v1/hr/dashboard/birthdays`, { params: payload.params })
 }
@@ -65,5 +69,6 @@ export default {
   _medDetail,
   _indexTwo,
   _indexThree,
-  _workerDisabilityDetail
+  _workerDisabilityDetail,
+  _relativeDisabilityDetail
 }
