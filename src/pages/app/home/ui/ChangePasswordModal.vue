@@ -31,6 +31,11 @@
       valid: /[a-z]/.test(password.value)
     },
     {
+      key: 'number',
+      label: t('changePassword.rules.number'),
+      valid: /[0-9]/.test(password.value)
+    },
+    {
       key: 'special',
       label: t('changePassword.rules.special'),
       valid: /[@!#$%^&*()_+\-=[\]{}|;':",.<>?/`~\\]/.test(password.value)

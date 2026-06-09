@@ -153,6 +153,31 @@
       <n-form-item :label="$t(`content.comment`)">
         <n-input :rows="2" type="textarea" v-model:value="store.payload.comment" />
       </n-form-item>
+
+      <n-form-item :label="$t(`departmentPage.form.region`)" path="region_id">
+        <n-select
+          v-model:value="store.payload.region_id"
+          @update:value="store.changeRegion"
+          filterable
+          clearable
+          :options="componentStore.regionList"
+          label-field="name"
+          value-field="id"
+          :loading="componentStore.regionLoading"
+        />
+      </n-form-item>
+      <n-form-item :label="$t(`departmentPage.form.city`)" path="city_id">
+        <n-select
+          :disabled="!store.payload.region_id"
+          v-model:value="store.payload.city_id"
+          filterable
+          clearable
+          :options="store.districtList"
+          label-field="name"
+          value-field="id"
+          :loading="store.districtLoading"
+        />
+      </n-form-item>
     </div>
 
     <div class="grid grid-cols-2 gap-2">

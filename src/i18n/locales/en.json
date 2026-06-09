@@ -1,4 +1,9 @@
 {
+  "homePage": {
+    "wrongWorkerPins": "Wrong worker PINs",
+    "downloaded": "File downloaded successfully",
+    "downloadFailed": "Failed to download file"
+  },
   "content": {
     "user": "User",
     "title": "Title",
@@ -584,6 +589,8 @@
       "parent_id": "Parent department",
       "name": "Department name",
       "level": "Department type",
+      "region": "Region",
+      "city": "District",
       "attachmentParent": "Create as sub-department"
     },
     "selectedOrg": "Selected organization",
@@ -2531,6 +2538,8 @@
     "createTitle": "Upload",
     "updateTitle": "Edit",
     "syncTitle": "Sync",
+    "tabDownload": "Download",
+    "tabAbsent": "Absent",
     "syncText": "Select time to sync. System will sync up to end of selected day.",
     "preview": "View",
     "availableEvent": "Available events",
@@ -3083,6 +3092,7 @@
       "minLength": "At least 8 characters",
       "uppercase": "At least 1 uppercase letter (A-Z)",
       "lowercase": "At least 1 lowercase letter (a-z)",
+      "number": "At least 1 digit (0-9)",
       "special": "At least 1 special character ({'@'}!#$%^&*)",
       "match": "Passwords match"
     }
@@ -3106,6 +3116,7 @@
       "minLength": "At least 8 characters",
       "uppercase": "At least 1 uppercase letter (A-Z)",
       "lowercase": "At least 1 lowercase letter (a-z)",
+      "number": "At least 1 digit (0-9)",
       "special": "At least 1 special character ({'@'}!#$%^&*)",
       "match": "Passwords match"
     }

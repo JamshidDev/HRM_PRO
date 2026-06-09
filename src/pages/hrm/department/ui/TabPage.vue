@@ -17,6 +17,7 @@
   const onAdd = (v) => {
     componentStore._departments()
     componentStore._structures()
+    componentStore._regions()
     store._level()
     store.resetForm()
     store.elementId = v.id
@@ -32,6 +33,7 @@
   const onEdit = (v) => {
     store.elementId = v.id
     componentStore._departments()
+    componentStore._regions()
     store._level()
     store.payload.name = v.name
     store.payload.name_ru = v.name_ru
@@ -40,6 +42,12 @@
     store.payload.level = v.level.id
     store.showParent = Boolean(v.parent?.id)
     store.payload.parent_id = v.parent?.id
+
+    store.payload.region_id = v.region?.id ?? v.region_id ?? null
+    store.payload.city_id = v.city?.id ?? v.city_id ?? null
+    if (store.payload.region_id) {
+      store._districts(store.payload.region_id)
+    }
 
     componentStore.departmentList = [v.parent]
 

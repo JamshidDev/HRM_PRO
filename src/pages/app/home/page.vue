@@ -4,6 +4,10 @@
   import OnlineUsers from './ui/OnlineUsers.vue'
   import UsersModal from './ui/UsersModal.vue'
   import { useAppSetting } from '@/utils/index.js'
+  import { useAppStore } from '@/store/modules/index.js'
+  import { DocumentTableArrowRight20Regular } from '@vicons/fluent'
+
+  const appStore = useAppStore()
 
   const handleKeyDown = (e) => {
     if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'p') {
@@ -32,6 +36,18 @@
 
 <template>
   <UIPageContent>
+    <!-- <div class="flex justify-end w-full">
+      <n-button
+        type="primary"
+        :loading="appStore.wrongPinsLoading"
+        @click="appStore._downloadWrongWorkerPins"
+      >
+        <template #icon>
+          <n-icon><DocumentTableArrowRight20Regular /></n-icon>
+        </template>
+        {{ $t('homePage.wrongWorkerPins') }}
+      </n-button>
+    </div> -->
     <div class="flex items-center justify-center w-full h-[60vh]">
       <Quotes />
     </div>

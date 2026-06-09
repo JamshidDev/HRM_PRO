@@ -236,6 +236,7 @@ export const appPermissions = {
   turnstileHikCentralEvents: 'turnstile-hik-central-events',
   turnstileHikCentralEventsRead: 'turnstile-hik-central-events-read',
   turnstileHikCentralEventsWrite: 'turnstile-hik-central-events-write',
+  turnstileAbsentWorkersExport: 'turnstile-absent-workers-export',
   turnstileHikCentralTgUser: 'turnstile-hik-central-tg-user',
   turnstileHikCentralTgUserRead: 'turnstile-hik-central-tg-user-read',
   turnstileHikCentralTgUserWrite: 'turnstile-hik-central-tg-user-write',

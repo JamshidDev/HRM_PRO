@@ -40,6 +40,11 @@
       valid: /[a-z]/.test(store.passwordPayload.password || '')
     },
     {
+      key: 'number',
+      label: t('passwordForm.rules.number'),
+      valid: /[0-9]/.test(store.passwordPayload.password || '')
+    },
+    {
       key: 'special',
       label: t('passwordForm.rules.special'),
       valid: /[@!#$%^&*()_+\-=[\]{}|;':",.<>?/`~\\]/.test(store.passwordPayload.password || '')

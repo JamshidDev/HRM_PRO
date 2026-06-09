@@ -1,4 +1,9 @@
 {
+  "homePage": {
+    "wrongWorkerPins": "Noto'g'ri xodim PIN-kodlari",
+    "downloaded": "Fayl muvaffaqiyatli yuklab olindi",
+    "downloadFailed": "Faylni yuklab olishda xatolik"
+  },
   "content": {
     "user": "Foydalanuvchi",
     "title": "Sarlavha",
@@ -598,6 +603,8 @@
       "parent_id": "Yuqori turuvchi bo'linma",
       "name": "Bo'linma nomi",
       "level": "Bo'linma turi",
+      "region": "Viloyat",
+      "city": "Tuman",
       "attachmentParent": "Ichki bo'linma sifatida yaratish"
     },
     "selectedOrg": "Tanlangan tashkilot",
@@ -2560,6 +2567,8 @@
     "createTitle": "Yuklash",
     "updateTitle": "Tahrirlash",
     "syncTitle": "Sinxronlash",
+    "tabDownload": "Yuklash",
+    "tabAbsent": "Kelmaganlar",
     "syncText": "Iltimos, sinxronlash uchun kerakli vaqtni tanlang. Tizim ushbu kunni oxirigacha bo‘lgan vaqtni avtomatik ravishda sinxronlaydi.",
     "preview": "Ko'rish",
     "availableEvent": "Mavjud hodisalar",
@@ -3173,6 +3182,7 @@
       "minLength": "Kamida 8 ta belgi",
       "uppercase": "Kamida 1 ta katta harf (A-Z)",
       "lowercase": "Kamida 1 ta kichik harf (a-z)",
+      "number": "Kamida 1 ta raqam (0-9)",
       "special": "Kamida 1 ta maxsus belgi ({'@'}!#$%^&*)",
       "match": "Parollar mos keladi"
     }
@@ -3196,6 +3206,7 @@
       "minLength": "Kamida 8 ta belgi",
       "uppercase": "Kamida 1 ta katta harf (A-Z)",
       "lowercase": "Kamida 1 ta kichik harf (a-z)",
+      "number": "Kamida 1 ta raqam (0-9)",
       "special": "Kamida 1 ta maxsus belgi ({'@'}!#$%^&*)",
       "match": "Parollar mos keladi"
     }
