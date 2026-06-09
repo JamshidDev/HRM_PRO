@@ -90,6 +90,7 @@ export const AppPaths = {
   VacationSchedule: '/vacation-schedule',
   WorkerRole: '/worker-role',
   Telegram: '/telegram',
+  VacancyApprove: '/vacancy-approve',
   LearningCenter: '/learning-center',
   Direction: '/direction',
   Specialization: '/specialization',
@@ -139,7 +140,9 @@ export const AppPaths = {
   View: '/view',
   MobileUsers: '/mobile-users',
   StructureReport: '/structure-report',
-  ConfReport: '/conf-report'
+  ConfReport: '/conf-report',
+  DepartmentLocation: '/department-location',
+  IntegrationLog: '/integration-log'
 }
 
 export const AppLayouts = {

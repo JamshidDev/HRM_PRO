@@ -62,14 +62,18 @@
             </td>
             <td>
               <UIUser
+                :short="false"
                 :data="{
                   photo: item?.worker?.photo,
                   lastName: item?.worker?.last_name,
                   firstName: item?.worker?.first_name,
                   middleName: item?.worker?.middle_name,
-                  position: item?.position?.name
                 }"
-              />
+              >
+                <template #position>
+                  <span class="text-xs text-textColor3 w-full">{{ item?.position?.name }}</span>
+                </template>
+              </UIUser>
             </td>
             <td>{{ item.organization.name }}</td>
             <td>{{ item.department.name }}</td>

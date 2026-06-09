@@ -34,7 +34,7 @@
     store.payload.univer_number = v.univer_number
     store.organization_id = v?.organization_id
     store.department_id = v?.department_id
-    store._directors(v.organization_id?.at(0) || undefined)
+    store._directors(v.organization_id?.at(0).id || undefined)
 
     store.confirmParams.director_id = v.director_id
     store.confirmParams.organization_id = v.organization_id?.at(0) || undefined

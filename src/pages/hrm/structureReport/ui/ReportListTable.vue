@@ -40,7 +40,8 @@
         <thead>
           <tr>
             <th class="text-center! min-w-[40px] w-[40px]">{{ $t('content.number') }}</th>
-            <th class="min-w-[200px]">{{ $t('content.date') }}</th>
+            <th class="min-w-[120px] w-[200px]">{{ $t('content.date') }}</th>
+            <th class="min-w-[200px]">{{ $t('content.organization') }}</th>
             <th class="min-w-[60px] w-[60px]">{{ $t('content.count') }}</th>
             <th class="min-w-[100px] w-[100px]">{{ $t('content.status') }}</th>
             <th class="min-w-[100px] w-[100px]">{{ $t('content.document') }}</th>
@@ -67,6 +68,9 @@
                   {{ Utils.timeHHMMWithMonth(item.created_at) }}
                 </span>
               </div>
+            </td>
+            <td>
+              <span class="text-sm">{{ item.organization?.name }}</span>
             </td>
             <td>
               <div class="flex justify-center">

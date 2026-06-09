@@ -11,7 +11,8 @@
   import {
     ErrorCircle24Filled,
     PersonAvailable20Filled,
-    CellularWarning20Regular
+    CellularWarning20Regular,
+    Desktop24Filled
   } from '@vicons/fluent'
   import Utils from '@/utils/Utils.js'
   import i18n from '@/i18n/index.js'
@@ -65,8 +66,8 @@
         <thead>
           <tr>
             <th class="text-center! min-w-[40px] w-[40px]">{{ $t('content.number') }}</th>
-            <th class="min-w-[100px] w-[300px]">{{ $t('content.date') }}</th>
-            <th class="min-w-[100px] w-[300px]">{{ $t('content.hour') }}</th>
+            <th class="min-w-[100px] w-[300px]">{{ $t('syncLog.form.startedTime') }}</th>
+            <th class="min-w-[100px] w-[300px]">{{ $t('syncLog.form.finishedTime') }}</th>
             <th class="min-w-[100px] w-[300px]">{{ $t('content.type') }}</th>
             <th class="min-w-[100px]">{{ $t('content.status') }}</th>
             <th class="min-w-[100px]">{{ $t('hcServer.form.exported_count') }}</th>
@@ -82,23 +83,35 @@
               }}</span>
             </td>
             <td>
-              {{
-                item.type.name === 'Foydalanuvchi'
-                  ? item?.day
-                  : item?.sync_datetime?.split(' ')?.[0]
-              }}
+              <div class="flex flex-col">
+                <div class="leading-[1.2] font-medium">{{ Utils.timeWithMonth(item.created_at) }}</div>
+                <div class="text-secondary">{{ Utils.timeOnlyDate(item.type.id === 2? item.day : null) }}</div>
+              </div>
             </td>
-            <td>{{ item?.sync_datetime?.split(' ')?.[1] }}</td>
             <td>
-              <UIBadge
-                v-if="item?.type?.name === 'Tizim'"
-                :type="Utils.colorTypes.dark"
-                :show-icon="false"
-                :label="item?.type?.name"
-              />
+              <div class="flex flex-col">
+                <div class="leading-[1.2] font-medium">{{ Utils.timeWithMonth(item.updated_at) }}</div>
+              </div>
+              {{ item?.sync_datetime?.split(' ')?.[1] }}
+</td>
+            <td>
+              <div
+                v-if="item?.type?.id === 1"
+                class="flex items-center gap-x-2 bg-surface-ground/60 rounded-lg px-2 w-[200px] mx-auto"
+              >
+                <div class="w-8 h-8 rounded-full bg-primary/20 border border-primary/40 flex items-center justify-center shrink-0">
+                  <n-icon size="16" class="text-primary">
+                    <Desktop24Filled />
+                  </n-icon>
+                </div>
+                <div class="flex flex-col" style="width: calc(100% - 42px)">
+                  <span class="text-sm text-textColor2 line-clamp-1 w-full leading-[1.2]">{{ $t('syncLog.form.administrator') }}</span>
+                  <span class="text-xs text-textColor3 line-clamp-1 w-full">{{ $t('syncLog.form.system') }}</span>
+                </div>
+              </div>
               <template v-else>
                 <UIUser
-                  class="mx-auto bg-surface-ground/60 rounded-lg px-2"
+                  class="mx-auto bg-surface-ground/60 rounded-lg px-2 small-avatar"
                   :data="{
                     photo: item?.user?.worker.photo,
                     firstName: item?.user?.worker.first_name,
@@ -178,3 +191,11 @@
     <NoDataPicture v-if="store.list.length === 0 && !store.loading" />
   </n-spin>
 </template>
+
+<style scoped>
+.small-avatar :deep(.n-avatar) {
+  width: 32px !important;
+  height: 32px !important;
+  font-size: 14px !important;
+}
+</style>

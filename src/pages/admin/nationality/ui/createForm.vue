@@ -1,6 +1,7 @@
 <script setup>
   import validationRules from '@/utils/validationRules.js'
   const formRef = ref(null)
+  import { UIMultipleLangItems } from '@/components/index.js'
   import { useNationalityStore } from '@/store/modules/index.js'
 
   const store = useNationalityStore()
@@ -20,10 +21,20 @@
 </script>
 
 <template>
-  <n-form ref="formRef" :rules="validationRules.userPermission" :model="store.payload">
+  <n-form ref="formRef" :rules="validationRules.common" :model="store.payload">
     <div style="min-height: calc(100vh - 120px)">
-      <n-form-item :label="$t(`nationalityPage.form.name`)" path="name">
-        <n-input type="text" v-model:value="store.payload.name" />
+      <n-form-item :label="$t(`nationalityPage.form.name`)" path="name" :rule-path="validationRules.rulesNames.requiredStringField">
+        <UIMultipleLangItems>
+          <template #uz-content>
+            <n-input type="text" v-model:value="store.payload.name" />
+          </template>
+          <template #ru-content>
+            <n-input class="skip-format" type="text" v-model:value="store.payload.name_ru" />
+          </template>
+          <template #en-content>
+            <n-input type="text" v-model:value="store.payload.name_en" />
+          </template>
+        </UIMultipleLangItems>
       </n-form-item>
     </div>
 

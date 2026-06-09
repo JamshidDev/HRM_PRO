@@ -1,26 +1,35 @@
 <script setup>
-  import { NoDataPicture, UIActionButton, UIPagination } from '@/components/index.js'
+  import { NoDataPicture, UIMenuButton, UIPagination } from '@/components/index.js'
   import { usePositionStore } from '@/store/modules/index.js'
   import { useAccountStore } from '@/store/modules/index.js'
+  import i18n from '@/i18n/index.js'
+  const { t } = i18n.global
   const accStore = useAccountStore()
 
   const store = usePositionStore()
 
-  const onEdit = (v) => {
-    if (!accStore.checkAction(accStore.pn.positionsWrite)) return
-    store.visibleType = false
-    store.elementId = v.id
-    store.payload.name = v.name
-    store.payload.name_ru = v.name_ru
-    store.payload.classification_index = v.classification_index?.toString()
-    store.payload.classification_code = v.classification_code?.toString()
-    store.visible = true
-  }
+  const headerOption = [
+    { name: t('content.nameUz'), id: 'uz' },
+    { name: t('content.nameRu'), id: 'ru' },
+    { name: t('content.nameEn'), id: 'en' }
+  ]
 
-  const onDelete = (v) => {
+  const onSelectEv = (v) => {
     if (!accStore.checkAction(accStore.pn.positionsWrite)) return
-    store.elementId = v.id
-    store._delete()
+
+    if (v.key === 'edit') {
+      store.visibleType = false
+      store.elementId = v.data.id
+      store.payload.name = v.data.name
+      store.payload.name_ru = v.data.name_ru
+      store.payload.name_en = v.data.name_en
+      store.payload.classification_index = v.data.classification_index?.toString()
+      store.payload.classification_code = v.data.classification_code?.toString()
+      store.visible = true
+    } else if (v.key === 'delete') {
+      store.elementId = v.data.id
+      store._delete()
+    }
   }
 
   const changePage = (v) => {
@@ -37,15 +46,21 @@
         <thead>
           <tr>
             <th class="text-center! min-w-[40px] w-[40px]">{{ $t('content.number') }}</th>
-            <th class="min-w-[200px]">{{ $t('positionPage.form.name') }}</th>
-            <th class="min-w-[100px] w-[200px]">{{ $t('positionPage.form.name_ru') }}</th>
+            <th class="min-w-[200px]">
+              <n-select
+                v-model:value="store.headerLang"
+                :options="headerOption"
+                value-field="id"
+                label-field="name"
+              />
+            </th>
             <th class="min-w-[200px] w-[200px]">
               {{ $t('positionPage.form.classification_index') }}
             </th>
             <th class="min-w-[200px] w-[200px]">
               {{ $t('positionPage.form.classification_code') }}
             </th>
-            <th class="min-w-[90px] w-[90px]">{{ $t('content.action') }}</th>
+            <th class="min-w-[40px] w-[40px]"></th>
           </tr>
         </thead>
         <tbody>
@@ -55,16 +70,16 @@
                 (store.params.page - 1) * store.params.per_page + idx + 1
               }}</span>
             </td>
-            <td>{{ item.name }}</td>
-            <td>{{ item.name_ru }}</td>
+            <td>{{ item?.[store.headerLang] }}</td>
             <td>{{ item.classification_index }}</td>
             <td>{{ item.classification_code }}</td>
             <td>
-              <UIActionButton
+              <UIMenuButton
                 :data="item"
-                :loading-delete="item.id === store.elementId && store.deleteLoading"
-                @on-edit="onEdit"
-                @on-delete="onDelete"
+                :show-edit="true"
+                :show-delete="true"
+                :loading="item.id === store.elementId && store.deleteLoading"
+                @selectEv="onSelectEv"
               />
             </td>
           </tr>

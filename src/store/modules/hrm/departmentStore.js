@@ -13,13 +13,18 @@ export const useDepartmentStore = defineStore('departmentStore', {
     totalItems: 0,
     showParent: false,
     payload: {
+      organization_id: null,
       parent_id: null,
       level: null,
+      region_id: null,
+      city_id: null,
       name: null,
       name_ru: null,
       name_en: null,
       comment: null
     },
+    districtList: [],
+    districtLoading: false,
     params: {
       page: 1,
       per_page: 10,
@@ -92,6 +97,23 @@ export const useDepartmentStore = defineStore('departmentStore', {
         .finally(() => {
           this.loading = false
         })
+    },
+    _districts(regionId) {
+      this.districtLoading = true
+      $ApiService.districtService
+        ._index({ params: { page: 1, per_page: 1000, region_id: regionId } })
+        .then((res) => {
+          this.districtList = res.data.data.data
+        })
+        .finally(() => {
+          this.districtLoading = false
+        })
+    },
+    changeRegion(v) {
+      this.payload.city_id = null
+      this.districtList = []
+      if (!v) return
+      this._districts(v)
     },
     _level() {
       this.levelLoading = true
@@ -166,12 +188,16 @@ export const useDepartmentStore = defineStore('departmentStore', {
     },
     resetForm() {
       this.elementId = null
+      this.payload.organization_id = null
       this.payload.name = null
       this.payload.name_en = null
       this.payload.name_ru = null
       this.payload.comment = null
       this.payload.parent_id = null
       this.payload.level = null
+      this.payload.region_id = null
+      this.payload.city_id = null
+      this.districtList = []
     },
     goDeep(v) {
       this.id = v.id

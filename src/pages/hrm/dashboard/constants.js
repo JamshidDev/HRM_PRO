@@ -1,3 +1,6 @@
+import DisabilityCard from '@/pages/hrm/dashboard/ui/DisabilityCard.vue'
+import WorkerDisabilityDetail from '@/pages/hrm/dashboard/ui/Detail/WorkerDisabilityDetail.vue'
+import RelativeDisabilityDetail from '@/pages/hrm/dashboard/ui/Detail/RelativeDisabilityDetail.vue'
 import AgeChart from '@/pages/hrm/dashboard/ui/AgeChart.vue'
 import AgeDetail from '@/pages/hrm/dashboard/ui/Detail/AgeDetail.vue'
 import EduChart from '@/pages/hrm/dashboard/ui/EduChart.vue'
@@ -126,5 +129,28 @@ export const cards = [
           }
       }
     }
+  },
+  {
+    component: markRaw(DisabilityCard),
+    span: '12 l:4 xl:4',
+    props: { type: 'worker' },
+    title: 'dashboardPage.disability.workerTitle',
+    detail: markRaw(WorkerDisabilityDetail),
+    filters: [],
+    filterCallback: ApiService.dashboardService._workerDisabilityDetail
+  },
+  {
+    component: markRaw(DisabilityCard),
+    span: '12 l:4 xl:4',
+    props: { type: 'relative' },
+    title: 'dashboardPage.disability.relativeTitle',
+    detail: markRaw(RelativeDisabilityDetail),
+    filters: [],
+    filterCallback: ApiService.dashboardService._relativeDisabilityDetail
+  },
+  {
+    component: markRaw(DisabilityCard),
+    span: '12 l:4 xl:4',
+    props: { type: 'sickLeave' }
   }
 ]

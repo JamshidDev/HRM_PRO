@@ -45,9 +45,12 @@
                 lastName: item?.last_name,
                 firstName: item?.first_name,
                 middleName: item?.middle_name,
-                position: item?.position_name
               }"
-            />
+            >
+              <template #position>
+                <span class="text-xs text-textColor3 w-full">{{ item?.position_name }}</span>
+              </template>
+            </UIUser>
           </td>
           <td>
             <UIBadge :show-icon="false" :label="item.to" />

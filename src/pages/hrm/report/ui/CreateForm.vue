@@ -125,7 +125,7 @@
           >
             <n-input-number
               :max="300"
-              :min="0.1"
+              :min="0"
               :step="0.1"
               :show-button="false"
               class="w-full"

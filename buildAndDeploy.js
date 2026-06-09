@@ -12,8 +12,8 @@ import { fileURLToPath } from 'url';
 
 
 const productionUrl = 'https://hrm-api.railway.uz/api'
-const LOGIN = "977226656";
-const PASSWORD = "Hf5n35N&01=Vn39a9i\\x";
+const LOGIN = "995016004";
+const PASSWORD = "Jamshid2@@@";
 
 
 

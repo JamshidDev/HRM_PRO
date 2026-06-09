@@ -1,4 +1,9 @@
 {
+  "homePage": {
+    "wrongWorkerPins": "Noto'g'ri xodim PIN-kodlari",
+    "downloaded": "Fayl muvaffaqiyatli yuklab olindi",
+    "downloadFailed": "Faylni yuklab olishda xatolik"
+  },
   "content": {
     "user": "Foydalanuvchi",
     "title": "Sarlavha",
@@ -24,6 +29,7 @@
     "edit": "Tahrirlash",
     "work_date": "Ishga chiqish sanasi",
     "delete": "O'chirish",
+    "deleteAll": "Barchasini o'chirish",
     "checked": "Tekshirilgan",
     "view": "Ko'rish",
     "backToList": "Asosiy oynaga qaytish",
@@ -49,6 +55,9 @@
     "download": "Yuklash",
     "attachment": "Biriktirish",
     "no-data": "Ma'lumot yo'q",
+    "emptyData": "Ma'lumot kiritilmagan",
+    "daysSelected": "Tanlangan kunlar",
+    "maxDaysHint": "Tanlangan kunlar {n} kundan oshmasligi kerak",
     "cancel": "Bekor qilish",
     "code": "Kod",
     "departments": "Bo'limlar",
@@ -129,6 +138,10 @@
     "finished": "Tugagan",
     "restart": "Qayta boshlash",
     "close": "Yopish",
+    "confirmDocument": "Hujjatni tasdiqlash",
+    "confirmDocumentWarning": "Hujjat tasdiqlashda uning ma'lumotlari to'g'riligiga ishonch hosil qiling. Ushbu jarayonni orqaga qaytarib bo'lmaydi!",
+    "confirmFileOptional": "Ixtiyoriy",
+    "confirmFileHint": "Hujjatni imzolangan variantini PDF fayli yuklash tavsiya qilinadi. Kerakli paytda faylni izlash va topish mumkin bo'lishi uchun.",
     "open": "Ochish",
     "hide": "Yashirish",
     "closeAndClear": "Yopish va tozalash",
@@ -188,6 +201,8 @@
     "reference": "Ma'lumotnoma",
     "from": "Qachondan",
     "to": "Qachongacha",
+    "dateRangeError": "Tugash sanasi boshlanish sanasidan katta bo'lishi kerak",
+    "maxDaysError": "Maksimal {days} kunlik oraliq tanlanishi mumkin",
     "more": "Ko'proq",
     "role": "Role",
     "duration": "Davomiyligi",
@@ -362,7 +377,9 @@
       "confirmSpam": "Haqiqatan ham spam qilmoqchimisiz?",
       "cancelSpam": "Haqiqatan ham spamdan chiqarilmoqchimisiz?"
     },
-    "no-roles": "Biriktirilgan rollar yo'q!"
+    "no-roles": "Biriktirilgan rollar yo'q!",
+    "passwordChangedAt": "Parol yangilangan",
+    "daysAgo": "kun oldin"
   },
   "confirmation": {
     "name": "Shartnomalar",
@@ -586,6 +603,8 @@
       "parent_id": "Yuqori turuvchi bo'linma",
       "name": "Bo'linma nomi",
       "level": "Bo'linma turi",
+      "region": "Viloyat",
+      "city": "Tuman",
       "attachmentParent": "Ichki bo'linma sifatida yaratish"
     },
     "selectedOrg": "Tanlangan tashkilot",
@@ -988,6 +1007,9 @@
       "type": "Turi"
     }
   },
+  "educationDirectory": {
+    "name": "Ta'lim katalogi"
+  },
   "othersPage": {
     "name": "Boshqalar",
     "language": {
@@ -1055,8 +1077,15 @@
     "noPhotos": "Rasmlar yo'q",
     "noSessions": "Sessiyalar yo'q"
   },
+  "vacancyApprovePage": {
+    "menuName": "Tasdiqlash",
+    "title": "Tasdiqlash sozlamalari",
+    "from": "Tasdiqlaydi (from)",
+    "to": "Tasdiqlanadi (to)"
+  },
   "actionLog": {
     "name": "Amallar tarixi",
+    "logViewer": "Log viewer",
     "tab": {
       "action": "Amallar tarixi",
       "auth": "Kirishlar tarixi"
@@ -1282,10 +1311,8 @@
       "med": "Tibbiy ko'rik",
       "vacation": "Ta'til ma'lumoti",
       "incentive": "Rag'batlantirishlari",
-      "attestation": "Attestatsiya",
-      "checkSkill": "Malaka sinovi",
-      "checkKnowledge": "Bilim sinovi",
-      "punishment": "Intizomiy jazolari"
+      "punishment": "Intizomiy jazolari",
+      "exams": "Imtihonlar"
     }
   },
 
@@ -1484,6 +1511,21 @@
       "today": "Bugungi tug'ilgan kunlar",
       "tomorrow": "Ertangi tug'ilgan kunlar"
     },
+    "disability": {
+      "workerTitle": "Ishchi nogironligi",
+      "relativeTitle": "Qarindosh nogironligi",
+      "sickLeaveTitle": "Kasallik varaqlari",
+      "group": "guruh",
+      "groupTitle": "Guruh",
+      "active": "Faol",
+      "finished": "Tugagan",
+      "number": "Guvohnoma raqami",
+      "period": "Muddat",
+      "relative": "Qarindosh",
+      "unlimited": "Umrbod",
+      "fromDate": "Qachondan",
+      "toDate": "Qachongacha"
+    },
     "rewardCard": {
       "reward": {
         "title": "Rag'batlantirish",
@@ -1532,9 +1574,11 @@
       "education_type": "Ta'lim shakli",
       "univer_number": "Xat raqami",
       "univer_date": "Xat sanasi",
-      "contract_to_date": "Bekor qilish sanasi",
+      "contract_to_date": "Shartnoma tugash sanasi",
       "application_date": "Ariza sanasi",
-      "from_date": "Qachondan"
+      "from_date": "Qachondan",
+      "temporarily_option": "Ta'tildagi xodim o'rniga",
+      "contract_option": "Muddatli shartnoma"
     },
     "step": {
       "stepOne": "Ariza turi",
@@ -1996,7 +2040,10 @@
     "stat": "Statistika",
     "organizations": "Tashkilotlar",
     "statTooltip": "Hisobot yuklamagan korxonalar ro'yxati. Belgilangan korxonalar hisobot yuklagan.",
-    "generate": "Generate",
+    "statLegendProcess": "Yuklangan, tekshiruvda",
+    "statLegendApproved": "Tasdiqlangan",
+    "statLegendEmpty": "Hisobot yuklanmagan",
+    "generate": "Hisobot yaratish",
     "download": "Yuklash",
     "excelDownload": "Excel yuklash",
     "table1": "1 - Jadval",
@@ -2015,11 +2062,16 @@
     "downloaded": "Yuklandi",
     "downloadFailed": "Yuklab bo'lmadi",
     "alertTitle": "Oylik hisobot topshirish tartibi",
-    "alertText1": "Tashkilotlar har bir oy uchun hisobotni keyingi oyning 10-sanasigacha topshirishlari shart.",
-    "alertText2": "Agar hisobot 10-sanagacha topshirilsa — u tegishli oy hisobiga qabul qilinadi",
-    "alertText3": "Agar hisobot 10-sanadan kech topshirilsa — u avtomatik tarzda keyingi oy hisobiga o'tkaziladi",
+    "alertText1": "Tashkilotlar har bir oy uchun hisobotni keyingi oyning 5-sanasigacha topshirishlari shart.",
+    "alertText2": "Agar hisobot 5-sanagacha topshirilsa — u tegishli oy hisobiga qabul qilinadi",
+    "alertText3": "Agar hisobot 5-sanadan kech topshirilsa — u avtomatik tarzda keyingi oy hisobiga o'tkaziladi",
     "alertNote": "Eslatma: Hisobotni o'z vaqtida topshirish hisob-kitoblarning to'g'ri yuritilishi uchun muhim.",
-    "oldOrgInfo": "Oldingi tashkilot ma'lumotlari"
+    "oldOrgInfo": "Oldingi tashkilot ma'lumotlari",
+    "management": "Boshqaruv",
+    "managementYear": "Yil",
+    "managementMonth": "Oy",
+    "managementGroup": "Guruh",
+    "managementAddHint": "Tashkilotni tanlang va qo'shing. Qo'shilgan tashkilot hisobot topshirish muddati o'tgan bo'lsa ham (5-sanadan keyin), joriy oy uchun hisobot yuklash imkoniyatiga ega bo'ladi."
   },
   "confirmationReport": {
     "name": "Hisobotlar"
@@ -2204,6 +2256,30 @@
     "name": "Ochiq vakansiyalar",
     "createTitle": "Vakansiya yaratish",
     "updateTitle": "Vakansiya tahrirlash",
+    "applications": "Arizalar",
+    "accept": "Qabul qilish",
+    "applicationInfo": "Ariza ma'lumotlari",
+    "confirm": "Tasdiqlash",
+    "confirmInfo": "Arizani qabul qilish yoki rad etish uchun xabar yozing. Xabar ariza beruvchiga yuboriladi.",
+    "confirmMessage": "Xabar",
+    "confirmMessagePlaceholder": "Xabar kiriting...",
+    "vacancyLevel": "Vakansiya bosqichlari",
+    "levels": {
+      "one":   "Ariza topshirish",
+      "two":   "Hujjat baholash",
+      "three": "Suhbat",
+      "four":  "Tibbiy ko'rik",
+      "five":  "Onlayn test",
+      "six":   "Tugatilgan"
+    },
+    "zoomStart": "Boshlash",
+    "zoomMeet": "Zoom suhbat",
+    "allApplications": "Barcha arizalar",
+    "noExperience": "Staj talab etilmaydi",
+    "viewDetail": "Batafsil ko'rish",
+    "birthPlace": "Tug'ilgan joyi",
+    "livePlace": "Yashash joyi",
+    "gender": "Jinsi",
     "form": {
       "department_position_id": "Vakansiya lavozimlari",
       "region_id": "Viloyat",
@@ -2220,7 +2296,122 @@
       "position_obligations": "Lavozim majburiyatlari",
       "qualification_requirements": "Malaka talablari",
       "working_conditions": "Ish sharoitlari",
-      "specialties": "Mutaxassisligi"
+      "specialties": "Mutaxassisligi",
+      "applications_count": "Arizalar soni",
+      "salary_status": "Maosh belgilangan",
+      "salary_status_hint": "Suhbat asosida kelishiladi",
+      "phd_status": "PhD talab qilinadi"
+    },
+    "phdRequired": "PhD talab",
+    "cancelBtn": "Bekor qilish",
+    "saveBtn": "Saqlash",
+    "confirmBtn": "Tasdiqlash",
+    "rejectBtn": "Rad qilish",
+    "acceptBtn": "Qabul qilish",
+    "zoom": "Zoom",
+    "joinZoom": "Qo'shilish",
+    "uploadDocBtn": "Bosqichga fayl yuklash",
+    "evaluateBtn": "Bosqichni baholash",
+    "nextStepGo": "ga o'tish",
+    "docsLabel": "Hujjatlar",
+    "examLabel": "Imtixon",
+    "offlineBadge": "Offline",
+    "removeBtn": "Olib tashlash",
+    "resultLabel": "Natija",
+    "ballUnit": "ball",
+    "startLabel": "Boshlanish",
+    "endLabel": "Tugash",
+    "pin": "JSHSHIR",
+    "applicationStatusLabel": "Ariza holati",
+    "applicationNumber": "Ariza raqami",
+    "nextStep": {
+      "title": "Keyingi bosqichga o'tish",
+      "text": "Hozirda {current} bosqichida jarayonda bo'lgan barcha arizalar avtomatik ravishda {next} bosqichiga o'tkaziladi. Bu amalni bekor qilib bo'lmaydi."
+    },
+    "rejectModal": {
+      "title": "Arizani rad qilish",
+      "text": "Siz ushbu arizani <strong>rad qilmoqdasiz</strong>. Tasdiqlangandan so'ng ariza to'liq rad etiladi va nomzodga rasmiy xabarnoma yuboriladi. Bu amalni ortga qaytarib bo'lmaydi.",
+      "confirmBtn": "Rad qilishni tasdiqlash"
+    },
+    "acceptModal": {
+      "title": "Arizani qabul qilish",
+      "text": "Siz ushbu arizani <strong>qabul qilmoqdasiz</strong>. Tasdiqlangandan so'ng nomzod muvaffaqiyatli qabul qilingan hisoblanadi va rasmiy xabarnoma yuboriladi.",
+      "confirmBtn": "Qabul qilishni tasdiqlash"
+    },
+    "finishModal": {
+      "title": "Vakansiyani tugatish",
+      "text": "Siz ushbu vakansiyani <strong>yakunlamoqdasiz</strong>. Tasdiqlangandan so'ng vakansiya rasman yopiladi va endi saytta ko'rsatilmaydi. Jarayondagi arizalar o'z holatida qoladi.",
+      "warningText": "Bu amalni ortga qaytarib bo'lmaydi.",
+      "confirmBtn": "Vakansiyani tugatish"
+    },
+    "finishBtn": "Vakansiyani tugatish",
+    "candidatesCount": "Nomzodlar soni",
+    "daysLeft": "Qolgan kunlar",
+    "daysLeftFull": "Qabul yopilishiga qolgan vaqt",
+    "expired": "Muddati tugagan",
+    "salaryNegotiable": "Kelishiladi",
+    "phdNotRequired": "PhD talab etilmaydi",
+    "minExp": "Kamida {n} yil staj",
+    "exam": {
+      "modalTitle": "Imtixon",
+      "onlineBadge": "Onlayn test",
+      "onlineTab": "Onlayn",
+      "offlineTab": "Offline",
+      "startTime": "Boshlanish vaqti",
+      "endTime": "Tugash vaqti",
+      "result": "Natija (ball)",
+      "resultPlaceholder": "Masalan: 85",
+      "offlineBadge": "Offline imtixon",
+      "resultTitle": "Natija kiritish",
+      "attachBtn": "Imtixonga biriktirish"
+    },
+    "upload": {
+      "title": "Hujjat yuklash",
+      "fieldLabel": "Hujjat",
+      "clickToSelect": "Hujjat tanlash uchun bosing",
+      "formats": "PDF, DOC, JPG, PNG, MP4",
+      "interview": {
+        "title": "Suhbat yozuvi",
+        "text": "Nomzod bilan o'tkazilgan suhbatning video yozuvini yuklang. Fayl MP4, MOV yoki boshqa video formatda bo'lishi mumkin."
+      },
+      "medical": {
+        "title": "Tibbiy ko'rik xulosasi",
+        "text": "Nomzodning tibbiy ko'rik natijalarini tasdiqlovchi rasmiy xulosa hujjatini yuklang. Fayl PDF formatida bo'lishi kerak."
+      },
+      "test": {
+        "title": "Test natijalari",
+        "text": "Nomzod tomonidan topshirilgan onlayn test natijalarini PDF formatda yuklang. Natijalar rasmiy tarzda tasdiqlanishi lozim."
+      }
+    },
+    "meet": {
+      "title": "Zoom suhbat belgilash",
+      "badge": "Suhbat",
+      "dateTime": "Sana va vaqt",
+      "dateTimePlaceholder": "Sana va vaqtni tanlang",
+      "duration": "Davomiyligi",
+      "privileged": "Imtiyozli suhbat",
+      "privilegedHint": "Maxsus sharoitlar bilan o'tkaziladi",
+      "dur30": "30 daqiqa",
+      "dur45": "45 daqiqa",
+      "dur60": "1 soat",
+      "dur90": "1.5 soat",
+      "dur120": "2 soat"
+    },
+    "action": {
+      "evaluateTitle": "baholash",
+      "decision": "Baholash",
+      "decisionHint": "Nomzodning ushbu bosqich natijasini belgilang",
+      "accept": "Qabul qilish",
+      "rejectOption": "Rad etish",
+      "nextLevel": "Keyingi bosqichga o'tkazish",
+      "nextLevelHint": "Ariza muvaffaqiyatli o'tganda keyingi bosqichga yuboriladi",
+      "docStatus": "Hujjatlar holati",
+      "comment": "Izoh",
+      "commentOptional": "(ixtiyoriy)",
+      "commentPlaceholder": "Qarorga izoh qoldiring...",
+      "uploaded": "Yuklangan",
+      "notUploaded": "Yuklanmagan",
+      "filePrefix": "Hujjat"
     }
   },
   "salaryCategory": {
@@ -2363,7 +2554,11 @@
       "asFile": "Faylga yuklash uchun bosing",
       "error": "Xatolik",
       "logId": "Log ID",
-      "deviceId": "Qurilma ID"
+      "deviceId": "Qurilma ID",
+      "startedTime": "Boshlangan vaqt",
+      "finishedTime": "Tugagan vaqt",
+      "administrator": "Administrator",
+      "system": "Tizim"
     }
   },
   "hcEvent": {
@@ -2372,11 +2567,13 @@
     "createTitle": "Yuklash",
     "updateTitle": "Tahrirlash",
     "syncTitle": "Sinxronlash",
+    "tabDownload": "Yuklash",
+    "tabAbsent": "Kelmaganlar",
     "syncText": "Iltimos, sinxronlash uchun kerakli vaqtni tanlang. Tizim ushbu kunni oxirigacha bo‘lgan vaqtni avtomatik ravishda sinxronlaydi.",
     "preview": "Ko'rish",
     "availableEvent": "Mavjud hodisalar",
-    "newView": "Ish vaqti kesimida",
-    "oldView": "Hodisalar kesimida",
+    "newView": "Ish vaqti",
+    "oldView": "Hodisalar",
     "byMonth": "Oy bo'yicha",
     "event": "Hodisalar",
     "eventYes": "Mavjud hodisalar",
@@ -2840,5 +3037,178 @@
     "langUz": "O'zbek",
     "langRu": "Rus",
     "langEn": "Ingliz"
+  },
+  "departmentLocationPage": {
+    "name": "Bo'lim joylashuvi",
+    "createTitle": "Joylashuv qo'shish",
+    "updateTitle": "Joylashuvni tahrirlash",
+    "attachTitle": "Joylashuv biriktirish",
+    "viewTitle": "Joylashuvni ko'rish",
+    "addLocation": "Joylashuv qo'shish",
+    "locationExists": "Bor",
+    "locationNotExists": "Yo'q",
+    "tabs": {
+      "departments": "Bo'limlar",
+      "locations": "Joylashuvlar"
+    },
+    "table": {
+      "department": "Bo'lim",
+      "organization": "Tashkilot",
+      "geoType": "Joylashuv turi",
+      "lat": "Kenglik",
+      "lng": "Uzunlik",
+      "radius": "Radius",
+      "accuracy": "Aniqlik",
+      "hasLocation": "Joylashuvlar",
+      "location": "Joylashuv"
+    },
+    "form": {
+      "department": "Bo'lim",
+      "geoType": "Joylashuv turi",
+      "lat": "Lat",
+      "lng": "Lng",
+      "radius": "Radius (metr)",
+      "accuracy": "Aniqlik limiti",
+      "polygon": "Polygon",
+      "points": "ta nuqta",
+      "noPolygon": "Polygon belgilanmagan",
+      "polygonReady": "Hudud tayyor",
+      "markerInfoFull": "Xaritaga bosib joylashuvni belgilang. Markerni kerakli joyga suring yoki xaritaning boshqa joyiga bosing. Radius sozlamalari orqali belgilangan nuqta atrofidagi masofani aniqlashingiz mumkin.",
+      "polygonInfoFull": "Polygon rejimida xodimlar faqat belgilangan hudud ichida bo'lganda davomat belgilashi mumkin. Xaritada \"Polygon qo'shish\" tugmasini bosib, ketma-ket nuqtalarni belgilang (kamida 3, maksimal 12 ta nuqta).",
+      "autoCalculated": "Avtomatik",
+      "centerMarkerInfo": "Markerni surib markaziy nuqtani o'zgartirishingiz mumkin",
+      "coordinate": "Kordinata",
+      "area": "Hudud"
+    },
+    "validation": {
+      "departmentRequired": "Bo'limni tanlang",
+      "markerRequired": "Xaritada joylashuvni belgilang",
+      "polygonRequired": "Xaritada polygon belgilang (kamida 3 ta nuqta)",
+      "radiusRequired": "Radiusni kiriting",
+      "accuracyRequired": "Aniqlik limitini kiriting",
+      "minPoints": "kamida 3 ta kerak"
+    },
+    "map": {
+      "title": "Xaritada belgilash",
+      "clearMarker": "Markerni tozalash",
+      "clearPolygon": "Polygonni tozalash",
+      "myLocation": "Mening joylashuvim",
+      "myLocationTooltip": "Joriy joylashuvni aniqlash",
+      "clickToMark": "Xaritaga bosib marker qo'ying",
+      "setLocation": "Joylashuvni belgilash",
+      "addPolygon": "Polygon qo'shish",
+      "polygonMode": "Polygon rejimi",
+      "markerMode": "Marker rejimi",
+      "finishPolygon": "Tugatish",
+      "clickToAddPoint": "Nuqta qo'shish uchun xaritaga bosing",
+      "undo": "Ortga",
+      "save": "Saqlash",
+      "done": "Tayyor",
+      "points": "nuqta"
+    }
+  },
+  "integrationLog": {
+    "name": "Integratsiya loglari",
+    "tabs": {
+      "list": "Loglar",
+      "dashboard": "Dashboard",
+      "clients": "Clientlar"
+    },
+    "clients": {
+      "name": "Nomi",
+      "publicKey": "Ochiq kalit",
+      "secretKey": "Yopiq kalit",
+      "secretKeyPlaceholder": "O'zgartirmaslik uchun bo'sh qoldiring",
+      "secretType": "Tur",
+      "isActive": "Faol",
+      "edit": "Clientni tahrirlash"
+    },
+    "filter": {
+      "apiType": "API turi",
+      "method": "Metod",
+      "dateFrom": "Qachondan",
+      "dateTo": "Qachongacha"
+    },
+    "table": {
+      "secret": "Secret",
+      "apiType": "API turi",
+      "method": "Metod",
+      "endpoint": "Endpoint",
+      "status": "Holat",
+      "duration": "Davomiyligi",
+      "detail": "Tafsilot"
+    },
+    "dashboard": {
+      "totalRequests": "Jami so'rovlar",
+      "successRequests": "Muvaffaqiyatli",
+      "errorRequests": "Xatoliklar",
+      "avgDuration": "O'rtacha vaqt",
+      "maxDuration": "Maks vaqt",
+      "uniqueClients": "Barcha clientlar",
+      "timeline": "Kunlik so'rovlar",
+      "methods": "Metodlar",
+      "statuses": "HTTP statuslar",
+      "topClients": "Barcha clientlar",
+      "client": "Client",
+      "topEndpoints": "Top endpointlar",
+      "requests": "So'rovlar",
+      "errorPct": "Xatolik %",
+      "avgMs": "O'rt ms",
+      "total": "Jami",
+      "errors": "Xatoliklar",
+      "fast": "Tez",
+      "medium": "O'rta",
+      "slow": "Sekin",
+      "statusLabel": {
+        "ok": "OK",
+        "redirect": "Redirect",
+        "badRequest": "Bad Request",
+        "notFound": "Not Found",
+        "unprocessable": "Xato",
+        "serverError": "Server xato",
+        "unknown": "Noma'lum"
+      }
+    }
+  },
+  "changePassword": {
+    "title": "Parolni yangilash",
+    "description": "Xavfsizlik uchun parolingizni yangilashingiz shart.",
+    "newPassword": "Yangi parol",
+    "newPasswordPlaceholder": "Yangi parolni kiriting",
+    "confirmPassword": "Parolni tasdiqlang",
+    "confirmPasswordPlaceholder": "Parolni qayta kiriting",
+    "success": "Parol muvaffaqiyatli yangilandi",
+    "rules": {
+      "minLength": "Kamida 8 ta belgi",
+      "uppercase": "Kamida 1 ta katta harf (A-Z)",
+      "lowercase": "Kamida 1 ta kichik harf (a-z)",
+      "number": "Kamida 1 ta raqam (0-9)",
+      "special": "Kamida 1 ta maxsus belgi ({'@'}!#$%^&*)",
+      "match": "Parollar mos keladi"
+    }
+  },
+  "passwordForm": {
+    "required": "Majburiy",
+    "changeTitle": "Parolni yangilash",
+    "changeDesc": "Xavfsizligingiz uchun parolingizni muntazam yangilab turing.",
+    "mustChangeTitle": "Parolni yangilash talab qilinadi",
+    "mustChangeDesc": "30 kundan ortiq parol o'zgartirilmagan. Iltimos, xavfsizlik uchun yangi parol o'rnating.",
+    "mustChangeDescProfile": "Parolingiz 30 kundan ortiq yangilanmagan. Quyidagi formadan yangi parol o'rnating.",
+    "policyTitle": "Parol siyosati",
+    "policyDesc": "Tizim xavfsizligini ta'minlash uchun parolingiz har 30 kunda bir marta yangilanishi kerak.",
+    "newPassword": "Yangi parol",
+    "newPasswordPlaceholder": "Yangi parolni kiriting",
+    "confirmPassword": "Parolni tasdiqlang",
+    "confirmPasswordPlaceholder": "Parolni qayta kiriting",
+    "requirements": "Parol talablari",
+    "success": "Parol muvaffaqiyatli yangilandi",
+    "rules": {
+      "minLength": "Kamida 8 ta belgi",
+      "uppercase": "Kamida 1 ta katta harf (A-Z)",
+      "lowercase": "Kamida 1 ta kichik harf (a-z)",
+      "number": "Kamida 1 ta raqam (0-9)",
+      "special": "Kamida 1 ta maxsus belgi ({'@'}!#$%^&*)",
+      "match": "Parollar mos keladi"
+    }
   }
 }

@@ -9,6 +9,8 @@
   import Table from './ui/Table.vue'
   import Filter from './ui/Filter.vue'
   import ViewAttemptModal from './ui/ViewResultModal.vue'
+  import Tabs from '@/pages/attestation/workerTopic/solveExam/ui/Tabs.vue'
+  import VideoTab from '@/pages/attestation/workerTopic/solveExam/ui/VideoTab.vue'
 
   const store = useTopicExamResultStore()
   const examStore = useExamAttemptStore()
@@ -26,9 +28,17 @@
     <UIModal
       v-model:visible="examStore.visible"
       :width="1000"
+      :height="'90vh'"
       :title="$t('examPage.attemptErrors')"
     >
-      <ViewAttemptModal />
+      <Tabs>
+        <template #questin-content>
+          <ViewAttemptModal />
+        </template>
+        <template #video-content>
+          <VideoTab />
+        </template>
+      </Tabs>
     </UIModal>
   </UIPageContent>
 </template>

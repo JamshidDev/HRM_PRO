@@ -27,7 +27,8 @@
       default: null
     },
     showCheck: { type: Boolean, default: false },
-    short: { type: Boolean, default: false }
+    short: { type: Boolean, default: false },
+    checkStyle: { type: Function, default: null }
   })
 
   const slot = useSlots()
@@ -103,6 +104,7 @@
             v-if="slot.title ? showCheck : !showCheck"
             :disabled="Boolean(item.group && !multiple)"
             :checked="modelV.map((a) => a.id).includes(item.id)"
+            :style="checkStyle ? checkStyle(item) : {}"
           ></n-checkbox>
           <span class="ml-2 w-full text-wrap py-1 text-textColor0">
             <slot name="title" :data="item">{{ short ? item.code : item.name }}</slot>
@@ -138,6 +140,7 @@
           @onSelectAll="onSelectRadio"
           :showCheck="showCheck"
           :short="short"
+          :checkStyle="checkStyle"
         >
           <template v-if="slot.title" #title="{ data }">
             <slot name="title" :data="data"></slot>

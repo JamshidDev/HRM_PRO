@@ -54,6 +54,9 @@ export const appPermissions = {
   telegram: 'telegram',
   telegramWrite: 'telegram-write',
   telegramRead: 'telegram-read',
+  vacancyApprove: 'vacancy-approve',
+  vacancyApproveWrite: 'vacancy-approve-write',
+  vacancyApproveRead: 'vacancy-approve-read',
   learningCenters: 'learning-centers',
   learningCentersWrite: 'learning-centers-write',
   learningCentersRead: 'learning-centers-read',
@@ -152,9 +155,14 @@ export const appPermissions = {
   hrUsersWrite: 'hr-users-write',
   hrUsersRead: 'hr-users-read',
 
+  hrPublicVacancy: 'hr-public-vacancy',
+  hrPublicVacancyWrite: 'hr-public-vacancy-write',
+  hrPublicVacancyRead: 'hr-public-vacancy-read',
+
   hrReport: 'hr-report',
   hrReportWrite: 'hr-report-write',
   hrReportRead: 'hr-report-read',
+  hrReportManagementWrite: 'hr-report-management-write',
 
   hrReportExport: 'hr-report-export',
   hrReportExportWrite: 'hr-report-export-write',
@@ -228,6 +236,7 @@ export const appPermissions = {
   turnstileHikCentralEvents: 'turnstile-hik-central-events',
   turnstileHikCentralEventsRead: 'turnstile-hik-central-events-read',
   turnstileHikCentralEventsWrite: 'turnstile-hik-central-events-write',
+  turnstileAbsentWorkersExport: 'turnstile-absent-workers-export',
   turnstileHikCentralTgUser: 'turnstile-hik-central-tg-user',
   turnstileHikCentralTgUserRead: 'turnstile-hik-central-tg-user-read',
   turnstileHikCentralTgUserWrite: 'turnstile-hik-central-tg-user-write',
@@ -348,4 +357,9 @@ export const appPermissions = {
 
   extra:'extra',
   extraWorkerUser:'extra-worker-user',
+  educationsStructureMenu: 'educations-structure-menu',
+
+  departmentLocation: 'department-location',
+  departmentLocationRead: 'department-location-read',
+  departmentLocationWrite: 'department-location-write',
 }

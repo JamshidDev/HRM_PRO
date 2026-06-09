@@ -1,8 +1,15 @@
 <script setup>
   import { CodeCircle20Regular, DismissCircle24Regular } from '@vicons/fluent'
-  import { NoDataPicture, UIStatus, UIPagination, UIUser } from '@/components/index.js'
+  import { NoDataPicture, UIPagination, UIUser } from '@/components/index.js'
   import { useActionLogStore } from '@/store/modules/index.js'
   import Utils from '@/utils/Utils.js'
+
+  const descriptionType = (desc) => {
+    if (desc === 'created') return 'info'
+    if (desc === 'updated') return 'warning'
+    if (desc === 'deleted') return 'error'
+    return 'default'
+  }
 
   const store = useActionLogStore()
 
@@ -49,7 +56,11 @@
               />
             </td>
             <td>
-              <UIStatus :color="`success`" :text="$t(`actionLog.status.${item.description}`)" />
+              <div class="flex justify-center">
+                <n-tag :type="descriptionType(item.description)" size="small" round>
+                  {{ $t(`actionLog.status.${item.description}`) }}
+                </n-tag>
+              </div>
             </td>
             <td>
               <div class="flex items-center justify-between">
@@ -102,4 +113,3 @@
   </n-spin>
 </template>
 
-<style scoped></style>

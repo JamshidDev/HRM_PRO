@@ -57,9 +57,33 @@ export const useAppStore = defineStore('appStore', {
     ],
     theme: customTheme(),
     themeSwitch: false,
-    skipReset: true
+    skipReset: true,
+    wrongPinsLoading: false
   }),
   actions: {
+    _downloadWrongWorkerPins() {
+      this.wrongPinsLoading = true
+      $ApiService.logService
+        ._wrongWorkerPins()
+        .then((res) => {
+          const blob = new Blob([res.data], {
+            type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+          })
+          const url = window.URL.createObjectURL(blob)
+          const link = document.createElement('a')
+          link.href = url
+          link.download = `wrong-worker-pins-${dayjs().format('YYYY-MM-DD')}.xlsx`
+          link.click()
+          window.URL.revokeObjectURL(url)
+          window.$message?.success(i18n.global.t('homePage.downloaded'))
+        })
+        .catch(() => {
+          window.$message?.error(i18n.global.t('homePage.downloadFailed'))
+        })
+        .finally(() => {
+          this.wrongPinsLoading = false
+        })
+    },
     _loginAsAdmin(token, callback) {
       $ApiService.userService._accessForAdmin({ data: { token } }).then((res) => {
         callback(res.data.data.access_token)

@@ -10,7 +10,7 @@
   import { useWorkerProfileStore } from '@stores'
   import Utils from '@utils/Utils.js'
   import RoleForm from '@pages/hrm/workerProfile/ui/RoleForm.vue'
-  import { RibbonStar24Filled, Delete20Regular, LockClosed16Filled, Phone24Regular, Delete28Regular, AddCircle28Regular } from '@vicons/fluent'
+  import { RibbonStar24Filled, Delete20Regular, LockClosed16Filled, Phone24Regular, Delete28Regular, AddCircle28Regular, Checkmark16Regular, Dismiss16Regular } from '@vicons/fluent'
   import { v4 as uuidv4 } from 'uuid'
   import i18n from '@/i18n/index.js'
 
@@ -20,6 +20,42 @@
   const deleteRoleVisible = ref(false)
   const selectedItem = ref(null)
   const selectedRoleId = ref(null)
+
+  // Password form
+  const confirmPass = ref('')
+  const passwordRules = computed(() => [
+    {
+      key: 'minLength',
+      label: t('passwordForm.rules.minLength'),
+      valid: (store.passwordPayload.password || '').length >= 8
+    },
+    {
+      key: 'uppercase',
+      label: t('passwordForm.rules.uppercase'),
+      valid: /[A-Z]/.test(store.passwordPayload.password || '')
+    },
+    {
+      key: 'lowercase',
+      label: t('passwordForm.rules.lowercase'),
+      valid: /[a-z]/.test(store.passwordPayload.password || '')
+    },
+    {
+      key: 'number',
+      label: t('passwordForm.rules.number'),
+      valid: /[0-9]/.test(store.passwordPayload.password || '')
+    },
+    {
+      key: 'special',
+      label: t('passwordForm.rules.special'),
+      valid: /[@!#$%^&*()_+\-=[\]{}|;':",.<>?/`~\\]/.test(store.passwordPayload.password || '')
+    },
+    {
+      key: 'match',
+      label: t('passwordForm.rules.match'),
+      valid: (store.passwordPayload.password || '').length > 0 && store.passwordPayload.password === confirmPass.value
+    }
+  ])
+  const passwordAllValid = computed(() => passwordRules.value.every(r => r.valid))
 
   // Phone modal
   const phoneVisible = ref(false)
@@ -66,6 +102,7 @@
     } else if (v.key === 'update_password') {
       store.passwordPayload.uuid = v.data.uuid
       store.passwordPayload.password = null
+      confirmPass.value = ''
       store.passwordVisible = true
     } else if (v.key === 'phone_number') {
       selectedUserUuid.value = v.data.uuid
@@ -296,21 +333,54 @@
 
   <!-- Parolni yangilash modal -->
   <UIModal
-    :width="400"
+    :width="420"
     :visible="store.passwordVisible"
     @update:visible="(v) => (store.passwordVisible = v)"
     :title="$t('workerRole.updatePassword')"
   >
-    <div class="pb-[60px]">
-      <n-form-item :label="$t('workerRole.newPassword')">
+    <div class="flex flex-col gap-3 pb-4">
+      <!-- Yangi parol -->
+      <div>
+        <label class="text-xs text-textColor3 mb-1 block">{{ $t('passwordForm.newPassword') }}</label>
         <n-input
           v-model:value="store.passwordPayload.password"
           type="password"
-          show-password-on="mousedown"
-          :placeholder="$t('workerRole.enterPassword')"
+          show-password-on="click"
+          :placeholder="$t('passwordForm.newPasswordPlaceholder')"
         />
-      </n-form-item>
+      </div>
+
+      <!-- Tasdiqlash -->
+      <div>
+        <label class="text-xs text-textColor3 mb-1 block">{{ $t('passwordForm.confirmPassword') }}</label>
+        <n-input
+          v-model:value="confirmPass"
+          type="password"
+          show-password-on="click"
+          :placeholder="$t('passwordForm.confirmPasswordPlaceholder')"
+        />
+      </div>
+
+      <!-- Talablar -->
+      <div class="border border-surface-line rounded-xl px-4 py-3 bg-surface-ground">
+        <p class="text-xs font-semibold text-textColor2 mb-2">{{ $t('passwordForm.requirements') }}</p>
+        <div class="flex flex-col gap-2">
+          <div
+            v-for="rule in passwordRules"
+            :key="rule.key"
+            class="flex items-center gap-2 text-xs transition-colors duration-200"
+            :class="rule.valid ? 'text-success' : 'text-textColor3'"
+          >
+            <n-icon size="14" class="shrink-0">
+              <Checkmark16Regular v-if="rule.valid" />
+              <Dismiss16Regular v-else />
+            </n-icon>
+            <span>{{ rule.label }}</span>
+          </div>
+        </div>
+      </div>
     </div>
+
     <div class="grid grid-cols-2 gap-2">
       <n-button @click="store.passwordVisible = false" type="error" ghost>
         {{ $t('content.cancel') }}
@@ -318,7 +388,7 @@
       <n-button
         @click="store._updateUserPassword()"
         :loading="store.passwordLoading"
-        :disabled="!store.passwordPayload.password"
+        :disabled="!passwordAllValid"
         type="primary"
       >
         {{ $t('content.save') }}

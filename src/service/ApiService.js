@@ -29,6 +29,8 @@ import quoteService from '@/service/v1/admin/quoteService.js'
 import telegramService from '@/service/v1/admin/telegramService.js'
 import instructionService from '@/service/v1/admin/instructionService.js'
 import mobileUserService from '@/service/v1/admin/mobileUserService.js'
+import vacancyApproveService from '@/service/v1/admin/vacancyApproveService.js'
+import integrationLogService from '@/service/v1/admin/integrationLogService.js'
 
 import confirmationService from '@/service/v1/hrm/confirmationService.js'
 import departmentService from '@/service/v1/hrm/departmentService.js'
@@ -65,6 +67,7 @@ import vacancyService from '@/service/v1/hrm/vacancyService.js'
 import pensionerService from '@/service/v1/hrm/pensionerService.js'
 import specialReportService from './v1/hrm/specialReportService'
 import structureReportService from '@/service/v1/hrm/structureReportService.js'
+import departmentLocationService from '@/service/v1/hrm/departmentLocationService.js'
 
 import documentService from '@/service/v1/docFlow/documentService.js'
 import contractService from '@/service/v1/docFlow/contractService.js'
@@ -282,6 +285,9 @@ export default {
   newsCategoryService,
   newsService,
   mobileUserService,
+  vacancyApproveService,
   structureReportService,
   confirmationReportService,
+  departmentLocationService,
+  integrationLogService,
 }

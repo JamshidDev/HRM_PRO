@@ -17,19 +17,19 @@ export class TopicUtils {
   static getMediaProperty = (typeId) => {
     switch (typeId) {
       case this.EXAM:
-        return { type: 'default', icon: PeopleEdit20Filled, color: '#8a8a8a' }
+        return { type: 'primary', icon: PeopleEdit20Filled, color: '#7c3aed' }
       case this.BOOK:
         return { type: 'info', icon: Book24Filled, color: '#2080f0', accept: '.pdf,.djvu' }
       case this.IMAGE:
-        return { type: 'success', icon: Image48Filled, color: '#1f2220', accept: 'image/*' }
+        return { type: 'success', icon: Image48Filled, color: '#E1306C', accept: 'image/*' }
       case this.VIDEO:
-        return { type: 'error', icon: VideoClip24Filled, color: '#d03050', accept: 'video/*' }
+        return { type: 'error', icon: VideoClip24Filled, color: '#FF0000', accept: 'video/*' }
       case this.AUDIO:
-        return { type: 'primary', icon: MusicNote224Filled, color: '#18a058', accept: 'audio/*' }
+        return { type: 'primary', icon: MusicNote224Filled, color: '#1DB954', accept: 'audio/*' }
       case this.RESOURCE:
-        return { type: 'info', icon: DocumentMultiple20Filled, color: '#2080f0' }
+        return { type: 'warning', icon: DocumentMultiple20Filled, color: '#f59e0b' }
       default:
-        return { type: 'default', icon: Add16Filled, color: '#8a8a8a' } // Default icon for unknown types
+        return { type: 'default', icon: Add16Filled, color: '#8a8a8a' }
     }
   }
 }

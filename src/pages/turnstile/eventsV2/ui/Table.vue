@@ -23,7 +23,6 @@
   }
 
   const onPreviewEv = (v) => {
-    store.selectedList = v.events
     store.selectedWorker = {
       photo: v.photo,
       firstName: v.first_name,
@@ -31,7 +30,10 @@
       lastName: v.last_name,
       position: v.id
     }
-    store.visible = true
+    const date = store.params.date
+      ? Utils.timeToZone(store.params.date)
+      : new Date().toISOString().split('T')[0]
+    store._fetchPreview(v.id, date)
   }
 
   const onCalendarViewEv = (v) => {

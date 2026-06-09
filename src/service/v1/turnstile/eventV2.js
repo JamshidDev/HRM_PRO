@@ -4,6 +4,11 @@ const _index = async (payload) => {
   return await axios.get(`/v1/turnstile/hik-central/events-new`, { params: payload?.params })
 }
 
+const _absentScheduledWorkers = async (payload) => {
+  return await axios.get(`/v1/turnstile/absent-scheduled-workers`, { params: payload?.params })
+}
+
 export default {
-  _index
+  _index,
+  _absentScheduledWorkers
 }

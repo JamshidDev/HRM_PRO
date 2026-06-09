@@ -182,4 +182,8 @@ const router = createRouter({
   routes: newRouter
 })
 
+router.beforeEach((to, from, next) => {
+  next()
+})
+
 export default router

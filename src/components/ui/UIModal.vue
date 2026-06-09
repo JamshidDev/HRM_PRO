@@ -43,8 +43,14 @@
       aria-modal="true"
       :style="{
         width: isNaN(width) ? width : width + 'px',
-        ...(height ? { height: isNaN(height) ? height : height + 'px' } : {})
+        ...(height ? {
+          height: isNaN(height) ? height : height + 'px',
+          display: 'flex',
+          flexDirection: 'column',
+          overflow: 'hidden',
+        } : {})
       }"
+      :content-style="height ? 'flex:1;min-height:0;overflow:hidden;padding:0;display:flex;flex-direction:column;' : ''"
       closable
     >
       <template #default>

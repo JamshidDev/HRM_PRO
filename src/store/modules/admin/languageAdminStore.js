@@ -17,6 +17,7 @@ export const useLanguageAdminStore = defineStore('languageAdminStore', {
       name_ru: null,
       name_en: null
     },
+    headerLang: 'uz',
     params: {
       page: 1,
       per_page: 10,
@@ -44,7 +45,12 @@ export const useLanguageAdminStore = defineStore('languageAdminStore', {
       $ApiService.languageServiceAdmin
         ._index({ params: this.params })
         .then((res) => {
-          this.list = res.data.data.data
+          this.list = res.data.data.data.map((v) => ({
+            ...v,
+            uz: v.name,
+            ru: v.name_ru,
+            en: v.name_en
+          }))
           this.totalItems = res.data.data.total
         })
         .finally(() => {
@@ -69,7 +75,7 @@ export const useLanguageAdminStore = defineStore('languageAdminStore', {
     _update() {
       this.saveLoading = true
       let data = {
-        name: this.payload.name
+        ...this.payload
       }
       $ApiService.languageServiceAdmin
         ._update({ data, id: this.elementId })
@@ -98,6 +104,8 @@ export const useLanguageAdminStore = defineStore('languageAdminStore', {
     resetForm() {
       this.elementId = null
       this.payload.name = null
+      this.payload.name_ru = null
+      this.payload.name_en = null
     }
   }
 })

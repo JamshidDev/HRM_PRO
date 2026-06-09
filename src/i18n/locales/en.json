@@ -1,4 +1,9 @@
 {
+  "homePage": {
+    "wrongWorkerPins": "Wrong worker PINs",
+    "downloaded": "File downloaded successfully",
+    "downloadFailed": "Failed to download file"
+  },
   "content": {
     "user": "User",
     "title": "Title",
@@ -24,6 +29,7 @@
     "edit": "Edit",
     "work_date": "Start date",
     "delete": "Delete",
+    "deleteAll": "Delete all",
     "checked": "Checked",
     "view": "View",
     "backToList": "Back to list",
@@ -49,6 +55,9 @@
     "download": "Download",
     "attachment": "Attach",
     "no-data": "No data",
+    "emptyData": "Not specified",
+    "daysSelected": "Days selected",
+    "maxDaysHint": "Selected period must not exceed {n} days",
     "cancel": "Cancel",
     "code": "Code",
     "departments": "Departments",
@@ -185,6 +194,8 @@
     "reference": "Reference",
     "from": "From",
     "to": "To",
+    "dateRangeError": "End date must be greater than start date",
+    "maxDaysError": "Maximum {days} days range can be selected",
     "more": "More",
     "role": "Role",
     "duration": "Duration",
@@ -352,7 +363,9 @@
       "confirmSpam": "Mark as spam?",
       "cancelSpam": "Remove from spam?"
     },
-    "no-roles": "No roles assigned!"
+    "no-roles": "No roles assigned!",
+    "passwordChangedAt": "Password changed",
+    "daysAgo": "days ago"
   },
   "confirmation": {
     "name": "Contracts",
@@ -576,6 +589,8 @@
       "parent_id": "Parent department",
       "name": "Department name",
       "level": "Department type",
+      "region": "Region",
+      "city": "District",
       "attachmentParent": "Create as sub-department"
     },
     "selectedOrg": "Selected organization",
@@ -976,6 +991,9 @@
       "end_time": "End time",
       "type": "Type"
     }
+  },
+  "educationDirectory": {
+    "name": "Education Directory"
   },
   "othersPage": {
     "name": "Others",
@@ -1473,6 +1491,21 @@
       "today": "Today's birthdays",
       "tomorrow": "Tomorrow's birthdays"
     },
+    "disability": {
+      "workerTitle": "Worker disabilities",
+      "relativeTitle": "Relative disabilities",
+      "sickLeaveTitle": "Sick leaves",
+      "group": "group",
+      "groupTitle": "Group",
+      "active": "Active",
+      "finished": "Finished",
+      "number": "Certificate number",
+      "period": "Period",
+      "relative": "Relative",
+      "unlimited": "Lifetime",
+      "fromDate": "From",
+      "toDate": "To"
+    },
     "rewardCard": {
       "reward": {
         "title": "Incentives",
@@ -1521,9 +1554,11 @@
       "education_type": "Education form",
       "univer_number": "Letter number",
       "univer_date": "Letter date",
-      "contract_to_date": "Cancellation date",
+      "contract_to_date": "Contract end date",
       "application_date": "Application date",
-      "from_date": "From"
+      "from_date": "From",
+      "temporarily_option": "Replacing employee on leave",
+      "contract_option": "Fixed-term contract"
     },
     "step": {
       "stepOne": "Application type",
@@ -2001,11 +2036,16 @@
     "downloaded": "Downloaded",
     "downloadFailed": "Download failed",
     "alertTitle": "Monthly report submission procedure",
-    "alertText1": "Organizations must submit reports for each month by the 10th of the following month.",
-    "alertText2": "If the report is submitted by the 10th — it is accepted for the corresponding month",
-    "alertText3": "If the report is submitted after the 10th — it is automatically transferred to the next month",
+    "alertText1": "Organizations must submit reports for each month by the 5th of the following month.",
+    "alertText2": "If the report is submitted by the 5th — it is accepted for the corresponding month",
+    "alertText3": "If the report is submitted after the 5th — it is automatically transferred to the next month",
     "alertNote": "Note: Timely report submission is important for accurate record keeping.",
-    "oldOrgInfo": "Previous organization information"
+    "oldOrgInfo": "Previous organization information",
+    "management": "Management",
+    "managementYear": "Year",
+    "managementMonth": "Month",
+    "managementGroup": "Group",
+    "managementAddHint": "Select an organization and add it. The added organization will be able to submit a report for the current month even if the deadline has already passed (after the 5th)."
   },
   "confirmationReport": {
     "name": "Reports"
@@ -2187,6 +2227,30 @@
     "name": "Open vacancies",
     "createTitle": "Create vacancy",
     "updateTitle": "Edit vacancy",
+    "applications": "Applications",
+    "accept": "Accept",
+    "applicationInfo": "Application Info",
+    "confirm": "Confirm",
+    "confirmInfo": "Write a message to accept or reject the application. The message will be sent to the applicant.",
+    "confirmMessage": "Message",
+    "confirmMessagePlaceholder": "Enter message...",
+    "vacancyLevel": "Vacancy stages",
+    "levels": {
+      "one":   "Application submission",
+      "two":   "Document evaluation",
+      "three": "Interview",
+      "four":  "Medical check",
+      "five":  "Online test",
+      "six":   "Completed"
+    },
+    "zoomStart": "Start",
+    "zoomMeet": "Zoom interview",
+    "allApplications": "All applications",
+    "noExperience": "No experience required",
+    "viewDetail": "View details",
+    "birthPlace": "Birth place",
+    "livePlace": "Residence",
+    "gender": "Gender",
     "form": {
       "department_position_id": "Vacancy positions",
       "region_id": "Region",
@@ -2203,7 +2267,122 @@
       "position_obligations": "Position duties",
       "qualification_requirements": "Qualification requirements",
       "working_conditions": "Working conditions",
-      "specialties": "Specialties"
+      "specialties": "Specialties",
+      "applications_count": "Applications",
+      "salary_status": "Salary specified",
+      "salary_status_hint": "Based on interview",
+      "phd_status": "PhD required"
+    },
+    "phdRequired": "PhD required",
+    "cancelBtn": "Cancel",
+    "saveBtn": "Save",
+    "confirmBtn": "Confirm",
+    "rejectBtn": "Reject",
+    "acceptBtn": "Accept",
+    "zoom": "Zoom",
+    "joinZoom": "Join",
+    "uploadDocBtn": "Upload stage document",
+    "evaluateBtn": "Evaluate stage",
+    "nextStepGo": "proceed",
+    "docsLabel": "Documents",
+    "examLabel": "Exam",
+    "offlineBadge": "Offline",
+    "removeBtn": "Remove",
+    "resultLabel": "Result",
+    "ballUnit": "pts",
+    "startLabel": "Start",
+    "endLabel": "End",
+    "pin": "PINFL",
+    "applicationStatusLabel": "Application status",
+    "applicationNumber": "Application number",
+    "nextStep": {
+      "title": "Proceed to next stage",
+      "text": "All applications currently in progress at {current} stage will automatically be moved to {next} stage. This action cannot be undone."
+    },
+    "rejectModal": {
+      "title": "Reject application",
+      "text": "You are <strong>rejecting</strong> this application. Once confirmed, the application will be fully rejected and an official notification will be sent to the candidate. This action cannot be undone.",
+      "confirmBtn": "Confirm rejection"
+    },
+    "acceptModal": {
+      "title": "Accept application",
+      "text": "You are <strong>accepting</strong> this application. Once confirmed, the candidate will be considered successfully accepted and an official notification will be sent.",
+      "confirmBtn": "Confirm acceptance"
+    },
+    "finishModal": {
+      "title": "Finish vacancy",
+      "text": "You are <strong>finishing</strong> this vacancy. Once confirmed, the vacancy will be officially closed and will no longer be displayed on the site. Active applications will remain in their current status.",
+      "warningText": "This action cannot be undone.",
+      "confirmBtn": "Finish vacancy"
+    },
+    "finishBtn": "Finish vacancy",
+    "candidatesCount": "Candidates count",
+    "daysLeft": "Days left",
+    "daysLeftFull": "Time left until closing",
+    "expired": "Expired",
+    "salaryNegotiable": "Negotiable",
+    "phdNotRequired": "PhD not required",
+    "minExp": "Min. {n} year(s) experience",
+    "exam": {
+      "modalTitle": "Exam",
+      "onlineBadge": "Online test",
+      "onlineTab": "Online",
+      "offlineTab": "Offline",
+      "startTime": "Start time",
+      "endTime": "End time",
+      "result": "Result (score)",
+      "resultPlaceholder": "E.g.: 85",
+      "offlineBadge": "Offline exam",
+      "resultTitle": "Enter result",
+      "attachBtn": "Attach to exam"
+    },
+    "upload": {
+      "title": "Upload document",
+      "fieldLabel": "Document",
+      "clickToSelect": "Click to select document",
+      "formats": "PDF, DOC, JPG, PNG, MP4",
+      "interview": {
+        "title": "Interview recording",
+        "text": "Upload the video recording of the interview with the candidate. The file can be in MP4, MOV or other video format."
+      },
+      "medical": {
+        "title": "Medical examination report",
+        "text": "Upload the official medical examination report for the candidate. The file must be in PDF format."
+      },
+      "test": {
+        "title": "Test results",
+        "text": "Upload the candidate's online test results in PDF format. Results must be officially confirmed."
+      }
+    },
+    "meet": {
+      "title": "Schedule Zoom interview",
+      "badge": "Interview",
+      "dateTime": "Date and time",
+      "dateTimePlaceholder": "Select date and time",
+      "duration": "Duration",
+      "privileged": "Privileged interview",
+      "privilegedHint": "Conducted under special conditions",
+      "dur30": "30 minutes",
+      "dur45": "45 minutes",
+      "dur60": "1 hour",
+      "dur90": "1.5 hours",
+      "dur120": "2 hours"
+    },
+    "action": {
+      "evaluateTitle": "evaluation",
+      "decision": "Evaluation",
+      "decisionHint": "Set the candidate's result for this stage",
+      "accept": "Accept",
+      "rejectOption": "Reject",
+      "nextLevel": "Move to next stage",
+      "nextLevelHint": "Application will be sent to the next stage upon successful completion",
+      "docStatus": "Document status",
+      "comment": "Comment",
+      "commentOptional": "(optional)",
+      "commentPlaceholder": "Leave a comment on the decision...",
+      "uploaded": "Uploaded",
+      "notUploaded": "Not uploaded",
+      "filePrefix": "Document"
     }
   },
   "salaryCategory": {
@@ -2346,7 +2525,11 @@
       "asFile": "Click to export to file",
       "error": "Error",
       "logId": "Log ID",
-      "deviceId": "Device ID"
+      "deviceId": "Device ID",
+      "startedTime": "Started time",
+      "finishedTime": "Finished time",
+      "administrator": "Administrator",
+      "system": "System"
     }
   },
   "hcEvent": {
@@ -2355,11 +2538,13 @@
     "createTitle": "Upload",
     "updateTitle": "Edit",
     "syncTitle": "Sync",
+    "tabDownload": "Download",
+    "tabAbsent": "Absent",
     "syncText": "Select time to sync. System will sync up to end of selected day.",
     "preview": "View",
     "availableEvent": "Available events",
-    "newView": "By work time",
-    "oldView": "By events",
+    "newView": "Work time",
+    "oldView": "Events",
     "byMonth": "By month",
     "event": "Events",
     "eventYes": "Available events",
@@ -2763,5 +2948,177 @@
     "langUz": "Uzbek",
     "langRu": "Russian",
     "langEn": "English"
+  },
+  "departmentLocationPage": {
+    "name": "Department Location",
+    "createTitle": "Add Location",
+    "updateTitle": "Edit Location",
+    "attachTitle": "Attach Location",
+    "addLocation": "Add Location",
+    "locationExists": "Yes",
+    "locationNotExists": "No",
+    "tabs": {
+      "departments": "Departments",
+      "locations": "Locations"
+    },
+    "table": {
+      "department": "Department",
+      "organization": "Organization",
+      "geoType": "Geo Type",
+      "lat": "Latitude",
+      "lng": "Longitude",
+      "radius": "Radius",
+      "accuracy": "Accuracy",
+      "hasLocation": "Location",
+      "location": "Location"
+    },
+    "form": {
+      "department": "Department",
+      "geoType": "Geo Type",
+      "lat": "Lat",
+      "lng": "Lng",
+      "radius": "Radius (meter)",
+      "accuracy": "Accuracy Limit",
+      "polygon": "Polygon",
+      "points": "points",
+      "noPolygon": "No polygon set",
+      "polygonReady": "Area ready",
+      "markerInfoFull": "Click on the map to set the location. Drag the marker to the desired position or click on another location on the map. Use the radius settings to define the distance around the marked point.",
+      "polygonInfoFull": "In polygon mode, employees can only mark attendance when inside the designated area. Click \"Add Polygon\" on the map and mark points sequentially (minimum 3, maximum 12 points).",
+      "autoCalculated": "Auto",
+      "centerMarkerInfo": "Drag the marker to change the center point",
+      "coordinate": "Coordinate",
+      "area": "Area"
+    },
+    "validation": {
+      "departmentRequired": "Select a department",
+      "markerRequired": "Mark the location on the map",
+      "polygonRequired": "Draw a polygon on the map (minimum 3 points)",
+      "radiusRequired": "Enter the radius",
+      "accuracyRequired": "Enter the accuracy limit",
+      "minPoints": "minimum 3"
+    },
+    "map": {
+      "title": "Mark on Map",
+      "clearMarker": "Clear Marker",
+      "clearPolygon": "Clear Polygon",
+      "myLocation": "My Location",
+      "myLocationTooltip": "Get current location",
+      "clickToMark": "Click on map to place marker",
+      "setLocation": "Set Location",
+      "addPolygon": "Add Polygon",
+      "polygonMode": "Polygon mode",
+      "markerMode": "Marker mode",
+      "finishPolygon": "Finish",
+      "clickToAddPoint": "Click on map to add point",
+      "undo": "Undo",
+      "save": "Save",
+      "done": "Done",
+      "points": "points"
+    }
+  },
+  "integrationLog": {
+    "name": "Integration Logs",
+    "tabs": {
+      "list": "Logs",
+      "dashboard": "Dashboard",
+      "clients": "Clients"
+    },
+    "clients": {
+      "name": "Name",
+      "publicKey": "Public Key",
+      "secretKey": "Secret Key",
+      "secretKeyPlaceholder": "Leave empty to keep unchanged",
+      "secretType": "Type",
+      "isActive": "Active",
+      "edit": "Edit Client"
+    },
+    "filter": {
+      "apiType": "API Type",
+      "method": "Method",
+      "dateFrom": "From",
+      "dateTo": "To"
+    },
+    "table": {
+      "secret": "Secret",
+      "apiType": "API Type",
+      "method": "Method",
+      "endpoint": "Endpoint",
+      "status": "Status",
+      "duration": "Duration",
+      "detail": "Detail"
+    },
+    "dashboard": {
+      "totalRequests": "Total Requests",
+      "successRequests": "Successful",
+      "errorRequests": "Errors",
+      "avgDuration": "Avg Duration",
+      "maxDuration": "Max Duration",
+      "uniqueClients": "All Clients",
+      "timeline": "Daily Requests",
+      "methods": "Methods",
+      "statuses": "HTTP Statuses",
+      "topClients": "All Clients",
+      "client": "Client",
+      "topEndpoints": "Top Endpoints",
+      "requests": "Requests",
+      "errorPct": "Error %",
+      "avgMs": "Avg ms",
+      "total": "Total",
+      "errors": "Errors",
+      "fast": "Fast",
+      "medium": "Medium",
+      "slow": "Slow",
+      "statusLabel": {
+        "ok": "OK",
+        "redirect": "Redirect",
+        "badRequest": "Bad Request",
+        "notFound": "Not Found",
+        "unprocessable": "Unprocessable",
+        "serverError": "Server Error",
+        "unknown": "Unknown"
+      }
+    }
+  },
+  "changePassword": {
+    "title": "Update Password",
+    "description": "For security reasons, you must update your password.",
+    "newPassword": "New Password",
+    "newPasswordPlaceholder": "Enter new password",
+    "confirmPassword": "Confirm Password",
+    "confirmPasswordPlaceholder": "Re-enter password",
+    "success": "Password updated successfully",
+    "rules": {
+      "minLength": "At least 8 characters",
+      "uppercase": "At least 1 uppercase letter (A-Z)",
+      "lowercase": "At least 1 lowercase letter (a-z)",
+      "number": "At least 1 digit (0-9)",
+      "special": "At least 1 special character ({'@'}!#$%^&*)",
+      "match": "Passwords match"
+    }
+  },
+  "passwordForm": {
+    "required": "Required",
+    "changeTitle": "Change Password",
+    "changeDesc": "Keep your account secure by updating your password regularly.",
+    "mustChangeTitle": "Password update required",
+    "mustChangeDesc": "Your password has not been changed for over 30 days. Please set a new password for security.",
+    "mustChangeDescProfile": "Your password has not been updated for over 30 days. Please set a new password using the form below.",
+    "policyTitle": "Password Policy",
+    "policyDesc": "To ensure system security, your password must be updated every 30 days.",
+    "newPassword": "New Password",
+    "newPasswordPlaceholder": "Enter new password",
+    "confirmPassword": "Confirm Password",
+    "confirmPasswordPlaceholder": "Re-enter password",
+    "requirements": "Password requirements",
+    "success": "Password updated successfully",
+    "rules": {
+      "minLength": "At least 8 characters",
+      "uppercase": "At least 1 uppercase letter (A-Z)",
+      "lowercase": "At least 1 lowercase letter (a-z)",
+      "number": "At least 1 digit (0-9)",
+      "special": "At least 1 special character ({'@'}!#$%^&*)",
+      "match": "Passwords match"
+    }
   }
 }

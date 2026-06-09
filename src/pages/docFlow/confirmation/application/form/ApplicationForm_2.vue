@@ -8,6 +8,7 @@
   const store = useConfApplicationStore()
   const componentStore = useComponentStore()
 
+
   const onChangeDepartment = (v) => {
     store.department_id = v
     componentStore.departmentPositionList = []
@@ -52,9 +53,17 @@
   }
 
   onMounted(() => {
-    componentStore.depParams.organizations = store.organization_id[0].id
+    // Edit qilganda turni aniqlash
+    if (store.payload.temporarily_absent) {
+      store.employmentSelectedType = 1
+    } else if (store.payload.contract_to_date) {
+      store.employmentSelectedType = 2
+    }
+
+    const orgId = store.organization_id?.[0]?.id ?? store.organization_id?.[0]
+    componentStore.depParams.organizations = orgId
     componentStore._departmentTree()
-    store._vacationWorker(store.organization_id[0].id)
+    store._vacationWorker(orgId)
   })
 </script>
 
@@ -95,17 +104,31 @@
       </n-form-item>
     </div>
     <div class="col-span-12">
-      <n-form-item :label="$t(`applicationPage.form.temporarily_absent`)" path="temporarily_absent">
-        <n-select
-          v-model:value="store.payload.temporarily_absent"
-          :options="store.vacationWorkerList"
-          :loading="store.vacationWorkerLoading"
-          :render-label="renderLabel2"
-          :render-tag="renderValue"
-          label-field="id"
-          value-field="id"
-        />
-      </n-form-item>
+      <n-tabs v-model:value="store.employmentSelectedType" type="segment" animated>
+        <n-tab-pane :name="1" :tab="$t('applicationPage.form.temporarily_option')">
+          <n-form-item :label="$t(`applicationPage.form.temporarily_absent`)" path="temporarily_absent">
+            <n-select
+              v-model:value="store.payload.temporarily_absent"
+              :options="store.vacationWorkerList"
+              :loading="store.vacationWorkerLoading"
+              :render-label="renderLabel2"
+              :render-tag="renderValue"
+              label-field="id"
+              value-field="id"
+            />
+          </n-form-item>
+        </n-tab-pane>
+        <n-tab-pane :name="2" :tab="$t('applicationPage.form.contract_option')">
+          <n-form-item :label="$t(`applicationPage.form.contract_to_date`)" path="contract_to_date">
+            <n-date-picker
+              class="w-full"
+              v-model:value="store.payload.contract_to_date"
+              type="date"
+              :format="useAppSetting.datePicketFormat"
+            />
+          </n-form-item>
+        </n-tab-pane>
+      </n-tabs>
     </div>
   </div>
 </template>

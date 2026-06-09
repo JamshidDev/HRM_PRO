@@ -16,9 +16,11 @@ export const usePositionStore = defineStore('positionStore', {
     payload: {
       name: null,
       name_ru: null,
+      name_en: null,
       classification_index: null,
       classification_code: null
     },
+    headerLang: 'uz',
     params: {
       page: 1,
       per_page: 10,
@@ -31,7 +33,12 @@ export const usePositionStore = defineStore('positionStore', {
       $ApiService.positionService
         ._index({ params: this.params })
         .then((res) => {
-          this.list = res.data.data.data
+          this.list = res.data.data.data.map((v) => ({
+            ...v,
+            uz: v.name,
+            ru: v.name_ru,
+            en: v.name_en
+          }))
           this.totalItems = res.data.data.total
         })
         .finally(() => {
@@ -98,6 +105,7 @@ export const usePositionStore = defineStore('positionStore', {
       this.elementId = null
       this.payload.name = null
       this.payload.name_ru = null
+      this.payload.name_en = null
       this.payload.classification_index = null
       this.payload.classification_code = null
     }

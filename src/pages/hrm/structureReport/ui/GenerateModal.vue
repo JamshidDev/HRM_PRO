@@ -1,5 +1,4 @@
 <script setup>
-  import { NAvatar } from 'naive-ui'
   import { CheckmarkCircle12Filled, Delete16Regular, DocumentBulletList24Regular, Organization12Filled, ArrowLeft16Regular, ArrowRight16Regular, Play16Filled, Save16Regular } from '@vicons/fluent'
   import { UIModal, UISelect, UIUser } from '@/components/index.js'
   import UIHelper from '@/utils/UIHelper.js'
@@ -40,6 +39,12 @@
   })
 
   // --- Director / Tasdiqlovchilar ---
+  const mapUser = (v) => ({
+    ...v,
+    fullName: `${v.last_name} ${v.first_name?.[0]}.${v.middle_name?.[0]}.`,
+    name: `${v.last_name} ${v.first_name} ${v.middle_name}`
+  })
+
   const excludeIds = computed(() => {
     const ids = new Set()
     if (store.editMode) {
@@ -50,8 +55,8 @@
   })
 
   const directorOptions = computed(() => {
-    if (!store.editMode) return componentStore.confirmationList
-    return componentStore.confirmationList.filter((v) => !excludeIds.value.has(v.id))
+    if (!store.editMode) return componentStore.confirmationList.map(mapUser)
+    return componentStore.confirmationList.filter((v) => !excludeIds.value.has(v.id)).map(mapUser)
   })
 
   const confirmationOptions = computed(() => {
@@ -62,38 +67,8 @@
     if (store.editMode) {
       list = list.filter((v) => !excludeIds.value.has(v.id))
     }
-    return list
+    return list.map(mapUser)
   })
-
-  const renderLabel = (option) => {
-    return [
-      h(
-        'div',
-        { class: 'flex gap-2 my-1 items-center px-2' },
-        [
-          h(NAvatar, {
-            src: option.photo,
-            'fallback-src': Utils.noAvailableImage
-          }),
-          h('div', { class: 'flex flex-col' }, [
-            h('div', { class: 'text-xs font-medium text-gray-500 leading-[1.2]' },
-              `${option.last_name} ${option.first_name?.[0]}.${option.middle_name?.[0]}.`
-            ),
-            h('div', { class: 'text-xs text-primary leading-[1.2]' }, option.position)
-          ])
-        ]
-      )
-    ]
-  }
-
-  const renderValue = ({ option }) => {
-    if (!option) return ''
-    return [
-      h('div', { class: 'flex gap-2 my-1 items-center' },
-        `${option?.last_name} ${option?.first_name} ${option?.middle_name}`
-      )
-    ]
-  }
 
   const directorLoading = ref(false)
 
@@ -267,26 +242,12 @@
             v-model:value="store.director_id"
             :options="directorOptions"
             :loading="componentStore.confirmationLoading"
-            :render-label="renderLabel"
-            :render-tag="renderValue"
+            :render-label="UIHelper.avatarRender.label"
+            :render-tag="UIHelper.avatarRender.value"
             filterable
             clearable
             @update:value="onDirectorChange"
           />
-          <n-spin :show="directorLoading" size="small">
-            <div v-if="store.editMode && store.editDirectorData" class="mt-2 bg-gray-50 rounded-lg px-1 py-1 inline-flex">
-              <UIUser
-                :short="true"
-                :data="{
-                  photo: store.editDirectorData.photo,
-                  lastName: store.editDirectorData.last_name,
-                  firstName: store.editDirectorData.first_name,
-                  middleName: store.editDirectorData.middle_name,
-                  position: store.editDirectorData.position
-                }"
-              />
-            </div>
-          </n-spin>
         </div>
         <div>
           <label class="text-xs text-gray-500 mb-1 font-medium">
@@ -300,7 +261,7 @@
             :value="null"
             :options="confirmationOptions"
             :loading="componentStore.confirmationLoading"
-            :render-label="renderLabel"
+            :render-label="UIHelper.avatarRender.label"
             filterable
             clearable
             :placeholder="$t('structureReport.addApprover')"
@@ -316,47 +277,76 @@
             v-model:value="store.confirmations"
             :options="confirmationOptions"
             :loading="componentStore.confirmationLoading"
-            :render-label="renderLabel"
-            :render-tag="renderValue"
+            :render-label="UIHelper.avatarRender.label"
+            :render-tag="UIHelper.avatarRender.value"
             filterable
             :max-tag-count="1"
           />
         </div>
       </div>
-      <n-spin :show="addConfirmationLoading || removeConfirmationLoading" size="small">
-      <div v-if="store.editMode && store.editConfirmationData.length > 0" class="flex flex-col gap-2">
-        <label class="text-xs text-gray-500 font-medium">
-          {{ $t('documentPage.command.form.confirm') }} ({{ store.editConfirmationData.length }})
-        </label>
-        <div class="flex flex-wrap gap-2">
-          <div
-            v-for="user in store.editConfirmationData"
-            :key="user.id"
-            class="flex items-center gap-2 bg-gray-50 border border-surface-line rounded-lg pl-1 pr-1 py-1"
-          >
-            <UIUser
-              :short="true"
-              :data="{
-                photo: user.photo,
-                lastName: user.last_name,
-                firstName: user.first_name,
-                middleName: user.middle_name,
-                position: user.position
-              }"
-            />
-            <n-button
-              text
-              type="error"
-              size="small"
-              @click="removeConfirmation(user.id)"
-            >
-              <template #icon>
-                <n-icon><Delete16Regular /></n-icon>
-              </template>
-            </n-button>
+
+      <!-- Director + Confirmation cards -->
+      <n-spin :show="directorLoading || addConfirmationLoading || removeConfirmationLoading" size="small">
+        <div
+          v-if="store.editMode && (store.editDirectorData || store.editConfirmationData.length > 0)"
+          class="flex flex-col gap-3"
+        >
+          <!-- Director card -->
+          <div v-if="store.editDirectorData" class="flex flex-col gap-1">
+            <label class="text-xs text-gray-500 font-medium">
+              {{ $t('documentPage.command.form.director_id') }}
+            </label>
+            <div class="grid grid-cols-2 gap-2">
+              <div class="flex items-center bg-gray-50 border border-surface-line rounded-lg px-2 py-1">
+                <UIUser
+                  :short="false"
+                  :data="{
+                    photo: store.editDirectorData.photo,
+                    lastName: store.editDirectorData.last_name,
+                    firstName: store.editDirectorData.first_name,
+                    middleName: store.editDirectorData.middle_name,
+                    position: store.editDirectorData.position
+                  }"
+                />
+              </div>
+            </div>
+          </div>
+
+          <!-- Confirmation cards -->
+          <div v-if="store.editConfirmationData.length > 0" class="flex flex-col gap-1">
+            <label class="text-xs text-gray-500 font-medium">
+              {{ $t('documentPage.command.form.confirm') }} ({{ store.editConfirmationData.length }})
+            </label>
+            <div class="grid grid-cols-2 gap-2">
+              <div
+                v-for="user in store.editConfirmationData"
+                :key="user.id"
+                class="flex items-center justify-between bg-gray-50 border border-surface-line rounded-lg px-2 py-1"
+              >
+                <UIUser
+                  :short="false"
+                  :data="{
+                    photo: user.photo,
+                    lastName: user.last_name,
+                    firstName: user.first_name,
+                    middleName: user.middle_name,
+                    position: user.position
+                  }"
+                />
+                <n-button
+                  text
+                  type="error"
+                  size="small"
+                  @click="removeConfirmation(user.id)"
+                >
+                  <template #icon>
+                    <n-icon><Delete16Regular /></n-icon>
+                  </template>
+                </n-button>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
       </n-spin>
     </div>
 

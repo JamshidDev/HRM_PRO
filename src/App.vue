@@ -7,7 +7,7 @@
   import { naiveBreakpoints } from '@/assets/theme/theme.js'
   import { useLocaleProvider, useAppInit } from '@/composables/index.js'
   import { useAppStore } from '@/store/modules/index.js'
-  const { localeProvider} = useLocaleProvider()
+  const { localeProvider } = useLocaleProvider()
   const appStore = useAppStore()
   useAppInit()
 </script>
@@ -19,7 +19,7 @@
     :date-locale="localeProvider.date"
   >
     <n-notification-provider>
-      <n-message-provider placement="top-right">
+      <n-message-provider placement="top-right" :container-style="{ zIndex: 10000 }">
         <n-dialog-provider>
           <AppLayout />
           <ToastProvider />

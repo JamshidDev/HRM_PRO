@@ -46,7 +46,19 @@ export const useStructureReportStore = defineStore('structureReportStore', {
     generalExcelModalVisible: false,
     statModalVisible: false,
     statLoading: false,
-    statTree: []
+    statTree: [],
+    managementModalVisible: false,
+    managementYear: null,
+    managementMonth: null,
+    reportsPerMonth: [],
+    reportsPerMonthLoading: false,
+    reportsPerMonthTotal: 0,
+    reportsPerMonthPage: 1,
+    reportsPerMonthPerPage: 10,
+    addOrganizations: [],
+    addOrganizationsCheck: [],
+    addLoading: false,
+    reportsPerMonthSearch: null
   }),
   actions: {
     _index() {
@@ -451,6 +463,91 @@ export const useStructureReportStore = defineStore('structureReportStore', {
       this.modalTab = 'organizations'
       this.modalVisible = true
       this._show(uuid)
+    },
+    _fetchReportsPerMonth() {
+      this.reportsPerMonthLoading = true
+      const params = {
+        year: this.managementYear,
+        month: this.managementMonth,
+        page: this.reportsPerMonthPage,
+        per_page: this.reportsPerMonthPerPage,
+        search: this.reportsPerMonthSearch || undefined
+      }
+      $ApiService.structureReportService
+        ._reportsPerMonth({ params })
+        .then((res) => {
+          this.reportsPerMonth = res.data?.data?.data || []
+          this.reportsPerMonthTotal = res.data?.data?.total || 0
+        })
+        .finally(() => {
+          this.reportsPerMonthLoading = false
+        })
+    },
+    openManagementModal() {
+      this.managementYear = this.params.year
+      this.managementMonth = this.params.month
+      this.reportsPerMonthPage = 1
+      this.reportsPerMonth = []
+      this.reportsPerMonthSearch = null
+      this.addOrganizations = []
+      this.addOrganizationsCheck = []
+      this.managementModalVisible = true
+      this._fetchReportsPerMonth()
+    },
+    _saveReportsPerMonth() {
+      if (!this.addOrganizations.length) return
+      this.addLoading = true
+      const existingIds = this.reportsPerMonth.map((v) => v.organization?.id).filter(Boolean)
+      const newIds = this.addOrganizations.map((v) => v.id)
+      const organizations = [...new Set([...existingIds, ...newIds])]
+      const data = {
+        organizations,
+        year: this.managementYear,
+        month: this.managementMonth
+      }
+      $ApiService.structureReportService
+        ._updateReportsPerMonth({ data })
+        .then(() => {
+          this.addOrganizations = []
+          this.addOrganizationsCheck = []
+          this.reportsPerMonthPage = 1
+          this._fetchReportsPerMonth()
+        })
+        .finally(() => {
+          this.addLoading = false
+        })
+    },
+    _deleteReportsPerMonth(id) {
+      return $ApiService.structureReportService
+        ._deleteReportsPerMonth({ id })
+        .then(() => {
+          this._fetchReportsPerMonth()
+        })
+    },
+    _deleteAllReportsPerMonth() {
+      this.reportsPerMonthLoading = true
+      const params = {
+        year: this.managementYear,
+        month: this.managementMonth,
+        page: 1,
+        per_page: 1000,
+        search: this.reportsPerMonthSearch || undefined
+      }
+      $ApiService.structureReportService
+        ._reportsPerMonth({ params })
+        .then((res) => {
+          const all = res.data?.data?.data || []
+          return Promise.all(all.map((item) =>
+            $ApiService.structureReportService._deleteReportsPerMonth({ id: item.id })
+          ))
+        })
+        .then(() => {
+          this.reportsPerMonthPage = 1
+          this._fetchReportsPerMonth()
+        })
+        .finally(() => {
+          this.reportsPerMonthLoading = false
+        })
     },
     _fetchReportsStat() {
       this.statLoading = true

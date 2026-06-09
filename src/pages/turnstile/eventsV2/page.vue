@@ -5,9 +5,11 @@ import Table from './ui/Table.vue'
 import Preview from './ui/Preview.vue'
 import DownloadModal from './ui/DownloadModal.vue'
 import CalendarAndTimelineTabs from './ui/CalendarAndTimelineTabs.vue'
-import {useAccountStore, useEventV2Store} from '@/store/modules/index.js'
+import syncForm from '../events/ui/syncForm.vue'
+import {useAccountStore, useEventV2Store, useEventStore} from '@/store/modules/index.js'
 
 const store = useEventV2Store()
+const eventStore = useEventStore()
 const accStore = useAccountStore()
 
 onMounted(() => {
@@ -27,5 +29,8 @@ onMounted(() => {
       <CalendarAndTimelineTabs />
     </UIModal>
     <DownloadModal />
+    <UIModal v-model:visible="eventStore.visible" :width="400" :title="$t('hcEvent.syncTitle')">
+      <syncForm />
+    </UIModal>
   </UIPageContent>
 </template>

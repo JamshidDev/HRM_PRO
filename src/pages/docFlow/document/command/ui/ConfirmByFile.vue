@@ -3,6 +3,7 @@
   import { useComponentStore } from '@/store/modules/index.js'
   import validationRules from '@/utils/validationRules.js'
   import i18n from '@/i18n/index.js'
+  import { Warning24Filled, DocumentCheckmark24Regular } from '@vicons/fluent'
 
   const { t } = i18n.global
   const componentStore = useComponentStore()
@@ -20,25 +21,44 @@
 </script>
 
 <template>
-  <UIModal :title="$t('content.file')" v-model:visible="componentStore.fileVisible">
+  <UIModal :title="$t('content.confirmDocument')" v-model:visible="componentStore.fileVisible">
     <n-form
       ref="formRef"
       :model="payload"
       :rules="validationRules.commandFrom"
-      class="grid grid-cols-12 gap-x-4"
+      class="flex flex-col gap-4"
     >
-      <UIUpload :multiple="false" class="col-span-12 mt-10 mb-4" v-model:files="payload.files" />
+      <!-- Warning info block -->
+      <div class="flex items-start gap-3 p-3 rounded-xl border border-danger/40 bg-danger/5">
+        <n-icon size="20" class="text-danger mt-[1px] shrink-0">
+          <Warning24Filled />
+        </n-icon>
+        <span class="text-sm text-danger leading-[1.5]">
+          {{ $t('content.confirmDocumentWarning') }}
+        </span>
+      </div>
+
+      <!-- File upload block -->
+      <div class="flex flex-col gap-2 p-4 rounded-xl border border-surface-line bg-surface-ground/20">
+        <div class="flex items-center gap-2 mb-1">
+          <n-icon size="18" class="text-secondary">
+            <DocumentCheckmark24Regular />
+          </n-icon>
+          <span class="text-sm font-medium text-secondary">{{ $t('content.attachFile') }}</span>
+        </div>
+        <UIUpload :multiple="false" v-model:files="payload.files" />
+      </div>
     </n-form>
 
-    <div class="grid grid-cols-2 gap-2">
-      <n-button @click="componentStore.fileVisible = false" type="error" ghost>
-        {{ $t('content.cancel') }}
-      </n-button>
-      <n-button @click="onSubmit" type="primary">
-        {{ $t('content.save') }}
-      </n-button>
-    </div>
+    <template #footer>
+      <div class="grid grid-cols-2 gap-3 pt-2">
+        <n-button @click="componentStore.fileVisible = false" type="error" ghost>
+          {{ $t('content.close') }}
+        </n-button>
+        <n-button @click="onSubmit" :loading="componentStore.fileLoading" type="primary">
+          {{ $t('content.confirm') }}
+        </n-button>
+      </div>
+    </template>
   </UIModal>
 </template>
-
-<style scoped></style>

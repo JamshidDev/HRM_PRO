@@ -1,12 +1,35 @@
 <script setup>
   import { validationRules } from '@utils'
   import { useDepartmentStore, useComponentStore } from '@stores'
-  import { SuperSelect, UIMultipleLangItems } from '@components'
+  import { SuperSelect, UIMultipleLangItems, UISelect } from '@components'
   import UIHelper from '@utils/UIHelper.js'
 
   const store = useDepartmentStore()
   const componentStore = useComponentStore()
   const formRef = ref(null)
+
+  const selectedOrg = ref([])
+  const structureCheck = ref([])
+
+  const onDefaultOrg = (v) => {
+    selectedOrg.value = v
+    store.payload.organization_id = v[0]?.id ?? null
+  }
+
+  const onChangeOrg = (v) => {
+    selectedOrg.value = v
+    store.payload.organization_id = v[0]?.id ?? null
+  }
+
+  watch(
+    () => store.visible,
+    (v) => {
+      if (!v) {
+        selectedOrg.value = []
+        structureCheck.value = []
+      }
+    }
+  )
 
   const props = defineProps({
     callback: {
@@ -49,6 +72,21 @@
         <span class="text-xs text-gray-500">{{ $t(`organizationPage.selectedOrg`) }}</span>
         <span class="text-primary font-bold">{{ store.parentElement?.name }}</span>
       </div>
+      <n-form-item v-if="store.visibleType" :label="$t('content.organization')" path="organization_id">
+        <UISelect
+          :multiple="false"
+          :options="componentStore.structureList"
+          :model-v="selectedOrg"
+          :checked-val="structureCheck"
+          @updateModel="onChangeOrg"
+          @defaultValue="onDefaultOrg"
+          @updateCheck="(v) => (structureCheck = v)"
+          :loading="componentStore.structureLoading"
+          v-model:search="componentStore.structureParams.search"
+          @onSearch="componentStore._structures"
+        />
+      </n-form-item>
+
       <n-form-item
         :label="$t(`departmentPage.form.name`)"
         path="name"
@@ -114,6 +152,31 @@
 
       <n-form-item :label="$t(`content.comment`)">
         <n-input :rows="2" type="textarea" v-model:value="store.payload.comment" />
+      </n-form-item>
+
+      <n-form-item :label="$t(`departmentPage.form.region`)" path="region_id">
+        <n-select
+          v-model:value="store.payload.region_id"
+          @update:value="store.changeRegion"
+          filterable
+          clearable
+          :options="componentStore.regionList"
+          label-field="name"
+          value-field="id"
+          :loading="componentStore.regionLoading"
+        />
+      </n-form-item>
+      <n-form-item :label="$t(`departmentPage.form.city`)" path="city_id">
+        <n-select
+          :disabled="!store.payload.region_id"
+          v-model:value="store.payload.city_id"
+          filterable
+          clearable
+          :options="store.districtList"
+          label-field="name"
+          value-field="id"
+          :loading="store.districtLoading"
+        />
       </n-form-item>
     </div>
 

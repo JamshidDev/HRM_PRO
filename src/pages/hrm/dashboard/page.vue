@@ -61,12 +61,10 @@
               </template>
               <n-grid-item v-for="(item, idx) in cards" :key="idx" :span="item.span">
                 <component
-                  v-if="item?.detail || item?.detailFactory"
-                  :key="idx"
                   :is="item.component"
+                  v-bind="item.props"
                   @detail="(key) => onDetailEv(item, key)"
                 />
-                <component v-else :is="item.component" />
               </n-grid-item>
             </n-grid>
           </n-spin>

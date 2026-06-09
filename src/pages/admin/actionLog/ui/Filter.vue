@@ -3,6 +3,7 @@
   import { useComponentStore, useActionLogStore } from '@/store/modules/index.js'
   import { useDebounceFn } from '@vueuse/core'
   import { useAccountStore } from '@/store/modules/index.js'
+  import { BookOpen24Regular } from '@vicons/fluent'
   const accStore = useAccountStore()
 
   const compStore = useComponentStore()
@@ -68,6 +69,12 @@
     @onClear="onClear"
     @onSearch="filterEvent"
   >
+    <template #filterAction>
+      <n-button :loading="store.logViewerLoading" @click="store._generateLogViewer()" type="primary">
+        <template #icon><n-icon><BookOpen24Regular /></n-icon></template>
+        {{ $t('actionLog.logViewer') }}
+      </n-button>
+    </template>
     <template #filterContent>
       <label class="mt-3 text-xs text-gray-500">{{ $t('actionLog.table.structure') }}</label>
       <UISelect

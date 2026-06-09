@@ -7,7 +7,17 @@ const _authLog = async (payload) => {
   return await axios.get(`/v1/admin/authentication-logs`, { params: payload.params })
 }
 
+const _generateLogViewer = async () => {
+  return await axios.get(`/v1/admin/generate-log-viewer`, { withCredentials: true })
+}
+
+const _wrongWorkerPins = async () => {
+  return await axios.get(`/v1/admin/wrong-worker-pins`, { responseType: 'blob' })
+}
+
 export default {
   _actionLog,
-  _authLog
+  _authLog,
+  _generateLogViewer,
+  _wrongWorkerPins
 }

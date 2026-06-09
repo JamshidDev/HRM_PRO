@@ -1,6 +1,6 @@
 <script setup>
-  import { useTopicFileStore } from '@/store/modules/index.js'
-  import { UIMenuButton } from '@/components/index.js'
+  import { useTopicFileStore, useTopicStore } from '@/store/modules/index.js'
+  import { UIMenuButton, NoDataPicture } from '@/components/index.js'
   import Utils from '@/utils/Utils.js'
   import { useAccountStore } from '@/store/modules/index.js'
   const accStore = useAccountStore()
@@ -9,6 +9,7 @@
     object: Object
   })
   const store = useTopicFileStore()
+  const topicStore = useTopicStore()
 
   const showFile = (file) => {
     $MediaViewer.showMediaViewer(file.file, file.file_extension)
@@ -20,12 +21,14 @@
       $MediaViewer.showMediaViewer(v.data.file, v.data.file_extension)
     } else if (v.key === Utils.ActionTypes.delete) {
       if (!accStore.checkAction(accStore.pn.examTopicsWrite)) return
+      store.topicId = topicStore.elementId
       store.elementId = v.data.id
       store._delete()
     }
   }
 
   const toggleActive = (v) => {
+    store.topicId = topicStore.elementId
     store.elementId = v.id
     store.payload.active = !v.active
     store._update()
@@ -33,7 +36,8 @@
 </script>
 <template>
   <div class="flex flex-col gap-3 px-1">
-    <n-grid cols="1 600:2" x-gap="20" y-gap="15">
+    <NoDataPicture v-if="!object.items?.length" />
+    <n-grid v-else cols="1 600:2" x-gap="20" y-gap="15">
       <template v-for="(file, idx) in object.items" :key="idx">
         <n-gi span="1">
           <div

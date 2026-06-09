@@ -65,15 +65,15 @@
   <div
     @click="store.onChangeRadio(data)"
     :class="[!(data.id === store.department.selectedId) && 'hover:bg-surface/3 rounded']"
-    class="grid grid-cols-12 border-b border-dashed border-surface-line py-1 w-full"
+    class="grid w-full grid-cols-12 py-1 border-b border-dashed border-surface-line"
   >
-    <div class="col-span-12 flex items-center">
+    <div class="flex items-center col-span-12">
       <div class="flex w-[calc(100%-400px)]">
         <n-radio :checked="data.id === store.department.selectedId">
           {{ data.name }}
         </n-radio>
       </div>
-      <div class="w-[460px] flex items-center justify-end h-full gap-2 pr-2">
+      <div class="flex items-center justify-end h-full gap-2 pr-2 w-[460px]">
         <n-tooltip placement="top" trigger="hover">
           <template #trigger>
             <n-button size="tiny" type="primary" @click.stop="onAddPosition(data)" ghost>

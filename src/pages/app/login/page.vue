@@ -159,7 +159,7 @@
                 id="password"
                 type="password"
                 show-password-on="click"
-                :maxlength="32"
+                :maxlength="60"
                 v-model:value="store.password"
                 @keyup.enter="onSubmit"
               >

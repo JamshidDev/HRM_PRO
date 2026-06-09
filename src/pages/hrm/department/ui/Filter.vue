@@ -12,6 +12,8 @@
     store.resetForm()
     store._level()
     componentStore._departments()
+    componentStore._structures()
+    componentStore._regions()
     store.activeDeep = 1
 
     store.parentElement = null

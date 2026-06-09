@@ -148,8 +148,10 @@ export const useCreateWorkerStore = defineStore('createWorkerStore', {
       formData.append('serial_number', this.payload.serial_number)
       formData.append('from_date', Utils.timeToZone(this.payload.from_date))
       formData.append('to_date', Utils.timeToZone(this.payload.to_date))
-      formData.append('address', this.payload.address)
-      formData.append('file', this.payload.passport_address ?? '')
+      formData.append('address', this.payload.passport_address ?? '')
+      if (this.payload.file) {
+        formData.append('file', this.payload.file)
+      }
       $ApiService.passportService
         ._create({ data: formData })
         .then((res) => {})

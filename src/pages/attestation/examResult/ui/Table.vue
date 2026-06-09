@@ -24,6 +24,8 @@
   const onSelectEv = (v) => {
     if (v.key === Utils.ActionTypes.view) {
       attemptStore.elementId = v.data.id
+      attemptStore.activeTab = 1
+      attemptStore.isCamera = !!v.data?.exam?.camera
       attemptStore.visible = true
       attemptStore._get_attempt()
     } else if (v.key === Utils.ActionTypes.delete) {

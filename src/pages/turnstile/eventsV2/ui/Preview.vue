@@ -21,7 +21,7 @@
             <p class="text-secondary text-xs text-right">{{ item.event_date_and_time }}</p>
             <p class="text-xs text-right">
               <span class="text-primary bg-primary/10 rounded-lg px-2 font-semibold">{{
-                item.device_name
+                item.device
               }}</span>
             </p>
           </template>
@@ -41,7 +41,7 @@
             <p class="text-secondary text-xs">{{ item.event_date_and_time }}</p>
             <p class="text-xs">
               <span class="text-primary bg-primary/10 rounded-lg px-2 font-semibold">{{
-                item.device_name
+                item.device
               }}</span>
             </p>
           </template>

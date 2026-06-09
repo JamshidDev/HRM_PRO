@@ -76,16 +76,16 @@
   const changePosition = (id) => {
     let index = store.myPositionList.findIndex((v) => v.id === id)
     if (index !== -1) {
-      let orgId = store.myPositionList[index]?.organization?.id
-      store.organization_id = [orgId]
-      getDirectors(orgId)
+      const org = store.myPositionList[index]?.organization  // org - to'liq object
+      store.organization_id = org ? [org] : []
+      getDirectors(org?.id)
     }
   }
 
-  const disabledDirector = computed(() => {
+  const disabledDirector = computed(() => {2
     return store.typeList.includes(store.payload.type)
-      ? !Boolean(store.organization_id.length > 0)
-      : !Boolean(store.payload.worker_position_id)
+      ? !(store.organization_id.length > 0)
+      : !store.payload.worker_position_id
   })
 
   onMounted(() => {
@@ -132,10 +132,10 @@
       <n-form-item :label="$t(`documentPage.form.organization`)" path="organization_id">
         <UISelect
           :options="componentStore.allStructureList"
-          :modelV="store.organization_id"
+          :model-v="store.organization_id"
           @defaultValue="(v) => (store.organization_id = v)"
           @updateModel="onChangeStructure"
-          :checkedVal="store.structureCheck"
+          :checked-val="store.structureCheck"
           @updateCheck="(v) => (store.structureCheck = v)"
           v-model:search="componentStore.structureParams.search"
           @onSearch="componentStore._allStructures"
@@ -199,5 +199,3 @@
     </div>
   </div>
 </template>
-
-<style scoped></style>

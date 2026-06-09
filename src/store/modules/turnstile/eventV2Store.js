@@ -175,13 +175,42 @@ export const useEventV2Store = defineStore('eventV2Store', {
     download: {
       loading: false,
       visible: false,
+      activeTab: 'download',
       payload: {
         from: null,
         to: null
       }
+    },
+    absent: {
+      loading: false,
+      structureCheck: [],
+      payload: {
+        from_date: null,
+        to_date: null,
+        organizations: []
+      }
     }
   }),
   actions: {
+    _downloadAbsent(onSuccess) {
+      this.absent.loading = true
+      const orgs = this.absent.payload.organizations.map((v) => v.id)
+      const params = {
+        from_date: Utils.timeToZone(this.absent.payload.from_date),
+        to_date: Utils.timeToZone(this.absent.payload.to_date),
+        ...(orgs.length ? { organizations: orgs.toString() } : {})
+      }
+      $ApiService.eventV2Service
+        ._absentScheduledWorkers({ params })
+        .then((res) => {
+          onSuccess?.()
+          window.$message?.success(res.data?.message || 'Yuborildi')
+          this.download.visible = false
+        })
+        .finally(() => {
+          this.absent.loading = false
+        })
+    },
     _download() {
       this.download.loading = true
       const params = {
@@ -208,6 +237,19 @@ export const useEventV2Store = defineStore('eventV2Store', {
         })
         .finally(() => {
           this.calendarLoading = false
+        })
+    },
+    _fetchPreview(id, date) {
+      this.previewLoading = true
+      const params = { date }
+      $ApiService.turnstileWorkDurationService
+        ._HKShowEventsInDay({ params, id })
+        .then((res) => {
+          this.selectedList = res.data.data
+          this.visible = true
+        })
+        .finally(() => {
+          this.previewLoading = false
         })
     },
     _calendar() {

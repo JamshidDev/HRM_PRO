@@ -59,7 +59,8 @@ export const useDashboardStore = defineStore('dashboardStore', {
       medicalCard: null,
       contracts: [],
       birthdays: null,
-      vacations: []
+      vacations: [],
+      disabilityCard: null
     },
     skipReset: true,
     passportPayload: {
@@ -98,12 +99,14 @@ export const useDashboardStore = defineStore('dashboardStore', {
       }
       params = this.appendParams(params)
 
-      const [responseOne, responseTwo] = await Promise.all([
+      const [responseOne, responseTwo, responseThree] = await Promise.all([
         $ApiService.dashboardService._index({ params }),
-        $ApiService.dashboardService._indexTwo({ params })
+        $ApiService.dashboardService._indexTwo({ params }),
+        $ApiService.dashboardService._indexThree({ params })
       ])
       this._responseOneAttach(responseOne)
       this._responseTwoAttach(responseTwo)
+      this._responseThreeAttach(responseThree)
       this.loading = false
     },
     _responseOneAttach(res) {
@@ -303,6 +306,14 @@ export const useDashboardStore = defineStore('dashboardStore', {
             count: v.meds_finished || 0
           }
         ]
+      }
+    },
+    _responseThreeAttach(res) {
+      const v = res.data.data
+      this.dashboard.disabilityCard = {
+        workerDisability: v.worker_disabilities,
+        relativeDisability: v.worker_relative_disabilities,
+        sickLeave: v.worker_sick_leaves
       }
     },
     _index_detail() {

@@ -1,6 +1,7 @@
 <script setup>
   import validationRules from '@/utils/validationRules.js'
   const formRef = ref(null)
+  import { UIMultipleLangItems } from '@/components/index.js'
   import { useRegionStore, useAppStore } from '@/store/modules/index.js'
   import Map from '@/components/yandexMap/Map.vue'
 
@@ -39,8 +40,18 @@
           :loading="store.allLoading"
         />
       </n-form-item>
-      <n-form-item :label="$t(`regionPage.form.name`)" path="name">
-        <n-input type="text" v-model:value="store.payload.name" />
+      <n-form-item :label="$t(`regionPage.form.name`)" path="name" :rule-path="validationRules.rulesNames.requiredStringField">
+        <UIMultipleLangItems>
+          <template #uz-content>
+            <n-input type="text" v-model:value="store.payload.name" />
+          </template>
+          <template #ru-content>
+            <n-input class="skip-format" type="text" v-model:value="store.payload.name_ru" />
+          </template>
+          <template #en-content>
+            <n-input type="text" v-model:value="store.payload.name_en" />
+          </template>
+        </UIMultipleLangItems>
       </n-form-item>
       <n-form-item :label="$t(`regionPage.form.coordinates`)">
         <Map

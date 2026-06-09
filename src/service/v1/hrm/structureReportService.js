@@ -52,6 +52,18 @@ const _reportsStat = async (payload) => {
   return await axios.get(`/v1/structure/reports-stat`, { params: payload.params })
 }
 
+const _reportsPerMonth = async (payload) => {
+  return await axios.get(`/v1/structure/reports-per-month`, { params: payload?.params })
+}
+
+const _deleteReportsPerMonth = async (payload) => {
+  return await axios.delete(`/v1/structure/reports-per-month/${payload.id}`)
+}
+
+const _updateReportsPerMonth = async (payload) => {
+  return await axios.put(`/v1/structure/reports-per-month`, payload.data)
+}
+
 export default {
   _index,
   _show,
@@ -65,5 +77,8 @@ export default {
   _updateDetail,
   _deleteDetail,
   _excel,
-  _reportsStat
+  _reportsStat,
+  _reportsPerMonth,
+  _deleteReportsPerMonth,
+  _updateReportsPerMonth
 }

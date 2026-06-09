@@ -1,13 +1,25 @@
 <script setup>
-  import { useAccountStore, useComponentStore, useEventStore } from '@/store/modules/index.js'
-  import { ArrowSync24Filled, StarEmphasis32Filled } from '@vicons/fluent'
-  import { UIPageFilter, UISelect } from '@/components/index.js'
+  import { useAccountStore, useComponentStore, useEventStore, useEventV2Store } from '@/store/modules/index.js'
+  import { ArrowSync24Filled, ArrowCircleDown32Regular } from '@vicons/fluent'
+  import { UIPageFilter, UISelect, SuperSelect } from '@/components/index.js'
   import i18n from '@/i18n/index.js'
   import { useAppSetting } from '@utils'
 
   const { t } = i18n.global
   const store = useEventStore()
+  const storeV2 = useEventV2Store()
   const accStore = useAccountStore()
+
+  const onOpenDownloadModal = () => {
+    if (!storeV2.download.payload.from) {
+      const today = new Date()
+      const tomorrow = new Date(today)
+      tomorrow.setDate(today.getDate() + 1)
+      storeV2.download.payload.from = today.getTime()
+      storeV2.download.payload.to = tomorrow.getTime()
+    }
+    storeV2.download.visible = true
+  }
 
   const filterEvent = () => {
     if (!accStore.checkAction(accStore.pn.turnstileHikCentralEventsRead)) return
@@ -19,7 +31,26 @@
 
   const onChangeStructure = (v) => {
     store.params.organizations = v
+    store.department.params.organizations = v.map((x) => x.id)
+    store.params.departments = []
+    store.department.list = []
     filterEvent()
+    if (v.length === 0) return
+    store.department.params.page = 1
+    store.department.params.search = null
+    departmentAction.fetch()
+  }
+
+  const departmentAction = {
+    fetch: () => store._department(),
+    onSearch: () => {
+      store.department.params.page = 1
+      store._department()
+    },
+    onScroll: () => {
+      store.department.params.page++
+      store._department(true)
+    }
   }
 
   const onChangeDate = () => {
@@ -38,6 +69,8 @@
 
   const resetFilter = () => {
     store.params.organizations = []
+    store.params.departments = []
+    store.department.list = []
     store.params.access_levels = []
     store.params.direction = null
     store.params.date = null
@@ -47,6 +80,7 @@
   const filterCount = computed(
     () =>
       Number(Boolean(store.params.organizations.length)) +
+      Number(Boolean(store.params.departments.length)) +
       Number(Boolean(store.params.access_levels.length)) +
       Number(Boolean(store.params.date)) +
       Number(Boolean(store.params.direction))
@@ -114,6 +148,25 @@
         @onSearch="componentStore._structures"
         @onSubmit="filterEvent"
       />
+      <label class="mt-3 text-xs text-gray-500 mb-1">{{
+        $t('workerPage.filter.department')
+      }}</label>
+      <div class="w-full max-w-[400px] overflow-hidden">
+        <SuperSelect
+          :disabled="store.params.organizations.length === 0"
+          v-model:value="store.params.departments"
+          v-model:search="store.department.params.search"
+          :options="store.department.list"
+          :per-page="store.department.params.per_page"
+          :total-count="store.department.totalItems"
+          @update:value="filterEvent"
+          @onScrollEv="departmentAction.onScroll"
+          @onSearch="departmentAction.onSearch"
+          :loading="store.department.loading"
+          multiple
+          clearable
+        />
+      </div>
       <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{
         $t('turnstile.hcWorkersPage.access_levels')
       }}</label>
@@ -151,6 +204,20 @@
         clearable
       />
     </template>
+    <template #filterSearch>
+      <div class="tab-wrapper ml-2">
+        <n-tabs
+          class="tab-switcher"
+          :value="store.activeTab"
+          @update:value="store._changeView"
+          type="segment"
+          size="small"
+        >
+          <n-tab-pane :name="store.tabs[0]" :tab="$t('hcEvent.oldView')" />
+          <n-tab-pane :name="store.tabs[1]" :tab="$t('hcEvent.newView')" />
+        </n-tabs>
+      </div>
+    </template>
     <template #filterAction>
       <n-button :loading="store.jobLoading" @click="onSync" type="primary">
         {{ $t('turnstile.accessLevelPage.sync') }}
@@ -158,14 +225,46 @@
           <ArrowSync24Filled />
         </template>
       </n-button>
-    </template>
-    <template #filterSearch>
-      <n-button @click="store._changeView(2)" class="!ml-4" type="primary">
+      <n-button @click="onOpenDownloadModal" :loading="storeV2.download.loading" type="success">
         <template #icon>
-          <StarEmphasis32Filled />
+          <ArrowCircleDown32Regular />
         </template>
-        {{ $t('hcEvent.newView') }}
+        {{ $t('content.download') }}
       </n-button>
     </template>
   </UIPageFilter>
 </template>
+
+<style scoped>
+.tab-wrapper {
+  border: 1px solid var(--border-color, #e0e0e6);
+  border-radius: 6px;
+  padding: 1px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+}
+
+.tab-switcher {
+  width: 200px;
+  height: 100%;
+}
+
+.tab-switcher :deep(.n-tabs-pane-wrapper) {
+  display: none;
+}
+
+.tab-switcher :deep(.n-tabs-nav) {
+  height: 100%;
+}
+
+.tab-switcher :deep(.n-tabs-rail) {
+  height: 100%;
+}
+
+.tab-switcher :deep(.n-tabs-tab) {
+  height: 28px;
+  padding: 0 12px;
+  line-height: 28px;
+}
+</style>

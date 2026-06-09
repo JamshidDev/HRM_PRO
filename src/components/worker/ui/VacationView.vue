@@ -28,7 +28,7 @@
             class="grid grid-cols-12 border border-surface-line rounded-lg px-4 py-2 border-dashed mb-2"
           >
             <div class="col-span-8 flex items-center text-textColor3">
-              <n-icon size="18" class="text-warning mr-1">
+              <n-icon size="18" class="text-primary mr-1">
                 <CalendarLtr32Regular />
               </n-icon>
               {{ $t('applicationPage.form.from') }}
@@ -37,7 +37,7 @@
               {{ Utils.timeOnlyDate(item.from) }}
             </div>
             <div class="col-span-8 text-textColor3 flex items-center">
-              <n-icon size="18" class="text-warning mr-1">
+              <n-icon size="18" class="text-primary mr-1">
                 <CalendarLtr32Regular />
               </n-icon>
               {{ $t('applicationPage.form.to') }}
@@ -46,21 +46,21 @@
               {{ Utils.timeOnlyDate(item.to) }}
             </div>
             <div class="col-span-8 text-textColor3 flex items-center">
-              <n-icon size="18" class="text-warning mr-1">
+              <n-icon size="18" class="text-primary mr-1">
                 <WeatherSunnyHigh48Filled />
               </n-icon>
               {{ $t('content.type') }}
             </div>
-            <div class="col-span-4 text-end font-medium text-warning">
+            <div class="col-span-4 text-end font-medium">
               {{ item.type.name }}
             </div>
             <div class="col-span-8 text-textColor3 flex items-center">
-              <n-icon size="18" class="text-warning mr-1">
+              <n-icon size="18" class="text-primary mr-1">
                 <TextWordCount24Filled />
               </n-icon>
               {{ $t('documentPage.command.form.all_day') }}
             </div>
-            <div class="col-span-4 text-end font-medium text-warning">
+            <div class="col-span-4 text-end font-medium">
               {{ item.all_day }}
             </div>
           </div>

@@ -37,7 +37,7 @@
 
   const onViewDetail = (v) => {
     if (!v.minute) return
-    store._showEventsInDay(v.date, v.id)
+    store._showEventsInDay(v.date, store.elementId)
   }
 </script>
 

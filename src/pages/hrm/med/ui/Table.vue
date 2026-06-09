@@ -86,7 +86,7 @@
         <tbody>
           <tr v-for="(item, idx) in store.list" :key="idx">
             <td>
-              <span class="text-center text-[12px] text-gray-600 block">{{
+              <span class="block text-center text-gray-600 text-[12px]">{{
                 (store.params.page - 1) * store.params.per_page + idx + 1
               }}</span>
             </td>
@@ -130,7 +130,7 @@
                 />
               </div>
             </td>
-            <td>{{ item.organization.name }}</td>
+            <td>{{ item.organization?.name }}</td>
             <td>
               <UIBadge
                 :show-icon="false"
@@ -146,12 +146,12 @@
               />
             </td>
             <td>
-              <n-button size="small" v-if="item.file" @click="openFileNewTab(item.file)">{{
-                $t('content.download')
-              }}</n-button>
+              <n-button size="small" v-if="item.file" @click="openFileNewTab(item.file)">
+                {{ $t('content.download') }}
+              </n-button>
             </td>
             <td>
-              <div class="line-clamp-3 leading-[1.2] text-xs">
+              <div class="text-xs line-clamp-3 leading-[1.2]">
                 {{ item.comment }}
               </div>
             </td>

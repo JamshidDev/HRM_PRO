@@ -145,7 +145,7 @@ export const useSignatureStore = defineStore('signatureStore', {
         key = useAppSetting.signatureUseType.idCard
       } else {
         key = this.allKeys[idx]
-        this.workerPin = key.pinfl
+        this.workerPin = key?.pinfl
         if (key.expired) {
           $Toast.error(t('signature.expiredKey'))
           return ''

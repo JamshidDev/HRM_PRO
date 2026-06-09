@@ -7,7 +7,7 @@
   const componentStore = useComponentStore()
 
   const onSearch = () => {
-    if (!accStore.checkAction(accStore.pn.hrConfirmationsRead)) return
+    if (!accStore.checkAction(accStore.pn.hrPublicVacancyRead)) return
     store.params.page = 1
     store._index()
   }
@@ -43,6 +43,7 @@
   }
 
   const onAdd = () => {
+    if (!accStore.checkAction(accStore.pn.hrPublicVacancyWrite)) return
     store.resetForm()
     store.visibleType = true
     store.visible = true
