@@ -16,6 +16,7 @@
     LockClosed16Filled
   } from '@vicons/fluent'
   import LangDropdown from '@/components/general/LangDropdown.vue'
+  import ReCaptcha from '@/components/general/ReCaptcha.vue'
   import { AppPaths, useAppSetting } from '@/utils/index.js'
 
   const store = useLoginStore()
@@ -29,11 +30,12 @@
   const appStoreUrl = 'https://apps.apple.com/us/app/hr-rail/id6759365016'
 
   const formRef = ref(null)
+  const captchaRef = ref(null)
 
   const onSubmit = () => {
     formRef.value?.validate((error) => {
       if (!error) {
-        store._auth()
+        store._auth(() => captchaRef.value?.reset())
       }
     })
   }
@@ -175,6 +177,13 @@
                 </template>
               </n-input>
             </n-form-item>
+            <n-form-item path="captchaAnswer">
+              <ReCaptcha
+                ref="captchaRef"
+                @update:answer="(val) => (store.captchaAnswer = val)"
+              />
+            </n-form-item>
+
             <div class="grid">
               <n-button
                 class="n-button-dark h-[50px]! rounded-2xl! overflow-hidden!"

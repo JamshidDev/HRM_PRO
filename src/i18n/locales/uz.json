@@ -277,7 +277,8 @@
     "unExpectedFormat": "Noto'g'ri turdagi ma'lumot!",
     "requiredJSHSHIR": "Pasport JSHSHIR kiritilishi shart!",
     "enterOverNumber": "{n}dan katta son kiriting",
-    "requiredHoursField": "Vaqt formati noto‘g‘ri (HH:MM)"
+    "requiredHoursField": "Vaqt formati noto’g’ri (HH:MM)",
+    "captchaRequired": "Captcha javobini kiriting!"
   },
   "message": {
     "successDone": "Muvofaqqiyatli bajarildi",
@@ -325,7 +326,11 @@
       "subtitle": "Xodimlarni boshqarishning zamonaviy tizimi\n",
       "text": "Xodimlaringizni samarali boshqarish, ish vaqtini nazorat qilish va hujjatlarni avtomatlashtirish uchun qulay yechim. HR jarayonlarini optimallashtiring va biznesingizni yangi bosqichga olib chiqing!"
     },
-    "login": "Kirish"
+    "login": "Kirish",
+    "captcha": "Captcha",
+    "captchaRefresh": "Yangilash",
+    "captchaPlaceholder": "Javobni kiriting",
+    "captchaWrong": "Noto'g'ri javob!"
   },
   "registerPage": {
     "name": "Ro'yhatdan o'tish",

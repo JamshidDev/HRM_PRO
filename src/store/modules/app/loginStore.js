@@ -9,17 +9,19 @@ export const useLoginStore = defineStore('loginStore', {
   state: () => ({
     phone: '+998',
     password: null,
+    captchaAnswer: null,
     loading: false,
     authPayload: null
   }),
   getters: {},
   actions: {
-    _auth() {
+    _auth(onError) {
       const accountStore = useAccountStore()
       this.loading = true
       let data = {
         phone: this.phone.slice(4).replace('(', '').replace(')', ''),
-        password: this.password
+        password: this.password,
+        'g-recaptcha-response': this.captchaAnswer
       }
       $ApiService.authService
         ._login({ data })
@@ -54,6 +56,10 @@ export const useLoginStore = defineStore('loginStore', {
             await nextTick()
             await router.push(AppPaths.Home)
           })
+        })
+        .catch(() => {
+          this.captchaAnswer = null
+          onError?.()
         })
         .finally(() => {
           this.loading = false
