@@ -327,6 +327,9 @@
       "text": "Xodimlaringizni samarali boshqarish, ish vaqtini nazorat qilish va hujjatlarni avtomatlashtirish uchun qulay yechim. HR jarayonlarini optimallashtiring va biznesingizni yangi bosqichga olib chiqing!"
     },
     "login": "Kirish",
+    "termsPrefix": "'Kirish' tugmasini bosib, siz",
+    "termsLink": "Ommaviy ofertaga",
+    "termsSuffix": "rozilik bildirasiz",
     "captcha": "Captcha",
     "captchaRefresh": "Yangilash",
     "captchaPlaceholder": "Javobni kiriting",

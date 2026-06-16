@@ -29,6 +29,16 @@
   const playMarketUrl = 'https://play.google.com/store/apps/details?id=hrms.railway.uz'
   const appStoreUrl = 'https://apps.apple.com/us/app/hr-rail/id6759365016'
 
+  const termsFiles = {
+    uz: '/terms/HRM_PRO_Legal_Document_UZ.pdf',
+    ru: '/terms/HRM_PRO_Legal_Document_RU.pdf',
+    en: '/terms/HRM_PRO_Legal_Document_EN.pdf'
+  }
+  const termsUrl = computed(() => {
+    const lang = localStorage.getItem(useAppSetting.languageKey) || 'uz'
+    return termsFiles[lang] ?? termsFiles.uz
+  })
+
   const formRef = ref(null)
   const captchaRef = ref(null)
   const captchaError = ref(false)
@@ -59,7 +69,7 @@
           router.push(AppPaths.Home)
         })
         resolve(true)
-      } catch (error) {
+      } catch {
         reject(false)
       }
     }).then((data) => {
@@ -124,10 +134,10 @@
           </div>
         </div>
         <div class="form-content-block">
-          <h3 class="leading-[1.2] mt-2 font-bold form-title uppercase pt-[20px]">
+          <h3 class="leading-[1.2] mt-2 font-bold form-title uppercase pt-[12px]">
             {{ $t(`loginPage.title`) }}
           </h3>
-          <p class="mb-4 leading-[1.2] form-description text-textColor2">
+          <p class="mb-2 leading-[1.2] form-description text-textColor2">
             {{ $t(`loginPage.subtitle`) }}
           </p>
 
@@ -135,7 +145,8 @@
             ref="formRef"
             :rules="validationRules.login"
             :model="store"
-            class="flex flex-col mt-4"
+            class="flex flex-col mt-2"
+            style="--n-item-padding-bottom: 8px"
           >
             <n-form-item class="text-textColor2!" :label="$t(`loginPage.phone`)" path="phone">
               <n-input
@@ -161,7 +172,8 @@
             <n-form-item
               :label="$t(`loginPage.password`)"
               path="password"
-              class="m6-8 text-textColor2!"
+              class="text-textColor2!"
+              style="--n-item-padding-bottom: 4px"
             >
               <n-input
                 size="large"
@@ -188,9 +200,22 @@
             <n-form-item
               :validation-status="captchaError ? 'error' : undefined"
               :feedback="captchaError ? $t('rules.captchaRequired') : undefined"
+              style="--n-blank-height: 0px; --n-item-padding-bottom: 4px"
             >
               <ReCaptcha ref="captchaRef" @update:answer="onCaptchaAnswer" />
             </n-form-item>
+
+            <p class="text-sm text-center text-textColor2 leading-5 mt-0 mb-1">
+              {{ $t('loginPage.termsPrefix') }}
+              <a
+                :href="termsUrl"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="hover:underline cursor-pointer font-medium"
+                style="color: #1677ff"
+              >{{ $t('loginPage.termsLink') }}</a>
+              {{ $t('loginPage.termsSuffix') }}
+            </p>
 
             <div class="grid">
               <n-button
@@ -202,7 +227,7 @@
                 {{ $t(`loginPage.login`) }}
               </n-button>
               <template v-if="appStore.appConfig.signatureLogin">
-                <n-divider class="my-2!" title-placement="center">{{ $t('content.or') }}</n-divider>
+                <n-divider class="my-1!" title-placement="center">{{ $t('content.or') }}</n-divider>
                 <n-button
                   @click="onSignatureLogin"
                   size="large"
@@ -215,12 +240,12 @@
                 </n-button>
 
                 <div
-                  class="flex flex-col border border-surface-line rounded-3xl p-2 pb-4 store-container bg-surface-ground"
+                  class="flex flex-col border border-surface-line rounded-2xl  p-2 store-container bg-surface-ground mt-3!"
                 >
-                  <p class="text-textColor0 font-semibold text-center">
+                  <!-- <p class="text-textColor0 font-semibold text-center">
                     {{ $t('content.downloadApp') }}
-                  </p>
-                  <div class="flex items-center mx-auto mt-4">
+                  </p> -->
+                  <div class="flex items-center mx-auto">
                     <n-tooltip placement="top" trigger="hover">
                       <template #trigger>
                         <div>
@@ -361,14 +386,14 @@
     }
 
     .store-container {
-      margin-top: 40px;
+      margin-top: 0;
     }
   }
 
   @media only screen and (min-width: 1051px) {
     .page-form-content {
       width: clamp(min(700px, 10%), 100%, 1200px);
-      height: 600px;
+      height: 700px;
       padding: 0 40px;
       margin: 0 20px;
 
@@ -401,7 +426,7 @@
     }
 
     .store-container {
-      margin-top: 40px;
+      margin-top: 0;
     }
 
     .circle-shape-1 {
@@ -435,7 +460,7 @@
 
   @media only screen and (max-width: 1051px) {
     .store-container {
-      margin-top: 20px;
+      margin-top: 0;
     }
 
     .page-form-content {

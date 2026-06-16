@@ -313,6 +313,9 @@
       "text": "Convenient solution for efficient employee management, time tracking, and document automation. Optimize HR processes and take your business to the next level!"
     },
     "login": "Login",
+    "termsPrefix": "By clicking \"Login\", you agree to our",
+    "termsLink": "Public Offer",
+    "termsSuffix": "",
     "captcha": "Captcha",
     "captchaRefresh": "Refresh",
     "captchaPlaceholder": "Enter your answer",
