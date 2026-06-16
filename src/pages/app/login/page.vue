@@ -31,10 +31,18 @@
 
   const formRef = ref(null)
   const captchaRef = ref(null)
+  const captchaError = ref(false)
+
+  const onCaptchaAnswer = (val) => {
+    store.captchaAnswer = val
+    if (val) captchaError.value = false
+  }
 
   const onSubmit = () => {
-    formRef.value?.validate((error) => {
-      if (!error) {
+    formRef.value?.validate((_error) => {
+      if (!store.captchaAnswer) captchaError.value = true
+      if (!_error && store.captchaAnswer) {
+        captchaError.value = false
         store._auth(() => captchaRef.value?.reset())
       }
     })
@@ -177,11 +185,11 @@
                 </template>
               </n-input>
             </n-form-item>
-            <n-form-item path="captchaAnswer">
-              <ReCaptcha
-                ref="captchaRef"
-                @update:answer="(val) => (store.captchaAnswer = val)"
-              />
+            <n-form-item
+              :validation-status="captchaError ? 'error' : undefined"
+              :feedback="captchaError ? $t('rules.captchaRequired') : undefined"
+            >
+              <ReCaptcha ref="captchaRef" @update:answer="onCaptchaAnswer" />
             </n-form-item>
 
             <div class="grid">

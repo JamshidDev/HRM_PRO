@@ -125,13 +125,6 @@ export default {
         message: t(`rules.requiredMaxLength`, { n: 32 }),
         trigger: triggerEvents
       }
-    ],
-    captchaAnswer: [
-      {
-        required: true,
-        message: t(`rules.captchaRequired`),
-        trigger: triggerEvents
-      }
     ]
   },
   register: {
