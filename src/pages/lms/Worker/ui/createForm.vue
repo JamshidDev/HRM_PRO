@@ -23,20 +23,28 @@
 
   const onChange = () => {
     store.payload.worker_position_ids = []
+    store.workerParams.page = 1
     if (!store.payload.edu_plan_id) return
     store._workers()
   }
 
   const onSearch = (v) => {
     store.workerParams.search = v
+    store.workerParams.page = 1
     store._workers()
   }
 
   const onChangeOrg = (v) => {
     store.payload.organizations = v
     store.payload.worker_position_ids = []
+    store.workerParams.page = 1
     if (!store.payload.organizations.length === 0) return
     store._workers()
+  }
+
+  const onScrollWorkers = () => {
+    store.workerParams.page += 1
+    store._workers(true)
   }
 
   onMounted(() => {
@@ -100,7 +108,9 @@
           :value-field="'id'"
           :options="store.workerList"
           :loading="store.workerLoading"
+          :total-count="store.totalWorker"
           @onSearch="onSearch"
+          @onScrollEv="onScrollWorkers"
         />
       </n-form-item>
     </div>
