@@ -48,6 +48,6 @@ export default defineConfig({
     watch: {
       ignored: ['dist/**', 'auto-imports.d.ts']
     },
-    allowedHosts: ['jamcoder-mac.local']
+    allowedHosts: ['jamcoder-mac.local', 'calculate-aloof-slot.ngrok-free.dev']
   }
 })

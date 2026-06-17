@@ -265,7 +265,8 @@
     "unExpectedFormat": "Incorrect data format!",
     "requiredJSHSHIR": "Passport PIN is required!",
     "enterOverNumber": "Enter a number greater than {n}",
-    "requiredHoursField": "Invalid time format (HH:MM)"
+    "requiredHoursField": "Invalid time format (HH:MM)",
+    "captchaRequired": "Please enter the captcha answer!"
   },
   "message": {
     "successDone": "Successfully completed",
@@ -311,7 +312,14 @@
       "subtitle": "Modern employee management system\n",
       "text": "Convenient solution for efficient employee management, time tracking, and document automation. Optimize HR processes and take your business to the next level!"
     },
-    "login": "Login"
+    "login": "Login",
+    "termsPrefix": "By clicking \"Login\", you agree to our",
+    "termsLink": "Public Offer",
+    "termsSuffix": "",
+    "captcha": "Captcha",
+    "captchaRefresh": "Refresh",
+    "captchaPlaceholder": "Enter your answer",
+    "captchaWrong": "Wrong answer!"
   },
   "registerPage": {
     "name": "Sign up",
