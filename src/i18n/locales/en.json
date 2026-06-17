@@ -3119,6 +3119,7 @@
     "confirmPassword": "Confirm Password",
     "confirmPasswordPlaceholder": "Re-enter password",
     "requirements": "Password requirements",
+    "generatePassword": "Generate password",
     "success": "Password updated successfully",
     "rules": {
       "minLength": "At least 8 characters",
