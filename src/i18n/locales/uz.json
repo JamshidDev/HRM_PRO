@@ -3209,7 +3209,7 @@
     "confirmPassword": "Parolni tasdiqlang",
     "confirmPasswordPlaceholder": "Parolni qayta kiriting",
     "requirements": "Parol talablari",
-    "generatePassword": "Parol generatsiya yaratish",
+    "generatePassword": "Parol generatsiya qilish",
     "success": "Parol muvaffaqiyatli yangilandi",
     "rules": {
       "minLength": "Kamida 8 ta belgi",
