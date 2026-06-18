@@ -10,7 +10,7 @@
   import { useWorkerProfileStore } from '@stores'
   import Utils from '@utils/Utils.js'
   import RoleForm from '@pages/hrm/workerProfile/ui/RoleForm.vue'
-  import { RibbonStar24Filled, Delete20Regular, LockClosed16Filled, Phone24Regular, Delete28Regular, AddCircle28Regular, Checkmark16Regular, Dismiss16Regular } from '@vicons/fluent'
+  import { RibbonStar24Filled, Delete20Regular, LockClosed16Filled, Phone24Regular, Delete28Regular, AddCircle28Regular, Checkmark16Regular, Dismiss16Regular, ArrowClockwise20Regular } from '@vicons/fluent'
   import { v4 as uuidv4 } from 'uuid'
   import i18n from '@/i18n/index.js'
 
@@ -56,6 +56,30 @@
     }
   ])
   const passwordAllValid = computed(() => passwordRules.value.every(r => r.valid))
+
+  const generatePassword = () => {
+    const upper = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+    const lower = 'abcdefghijklmnopqrstuvwxyz'
+    const digits = '0123456789'
+    const special = '@!#$%^&*'
+    const all = upper + lower + digits + special
+    const chars = [
+      upper[Math.floor(Math.random() * upper.length)],
+      lower[Math.floor(Math.random() * lower.length)],
+      digits[Math.floor(Math.random() * digits.length)],
+      special[Math.floor(Math.random() * special.length)]
+    ]
+    for (let i = 4; i < 8; i++) {
+      chars.push(all[Math.floor(Math.random() * all.length)])
+    }
+    for (let i = chars.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [chars[i], chars[j]] = [chars[j], chars[i]]
+    }
+    const generated = chars.join('')
+    store.passwordPayload.password = generated
+    confirmPass.value = generated
+  }
 
   // Phone modal
   const phoneVisible = ref(false)
@@ -341,7 +365,15 @@
     <div class="flex flex-col gap-3 pb-4">
       <!-- Yangi parol -->
       <div>
-        <label class="text-xs text-textColor3 mb-1 block">{{ $t('passwordForm.newPassword') }}</label>
+        <div class="flex items-center justify-between mb-1">
+          <label class="text-xs text-textColor3">{{ $t('passwordForm.newPassword') }}</label>
+          <n-button size="tiny" type="primary" text @click="generatePassword">
+            <template #icon>
+              <n-icon size="14"><ArrowClockwise20Regular /></n-icon>
+            </template>
+            {{ $t('passwordForm.generatePassword') }}
+          </n-button>
+        </div>
         <n-input
           v-model:value="store.passwordPayload.password"
           type="password"

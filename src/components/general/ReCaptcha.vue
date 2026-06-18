@@ -46,13 +46,23 @@
   }
 
   function reset() {
+    if (isLocalhost) {
+      emit('update:answer', 'localhost-bypass')
+      return
+    }
     if (widgetId.value !== null && window.grecaptcha) {
       window.grecaptcha.reset(widgetId.value)
       emit('update:answer', null)
     }
   }
 
+  const isLocalhost = ['localhost', '127.0.0.1'].includes(window.location.hostname)
+
   onMounted(async () => {
+    if (isLocalhost) {
+      emit('update:answer', 'localhost-bypass')
+      return
+    }
     await loadScript()
     await waitForGrecaptcha()
     renderWidget()

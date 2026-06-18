@@ -61,7 +61,7 @@ export const useLmsWorkerStore = defineStore('lmsWorkerStore', {
           this.eduPlanLoading = false
         })
     },
-    _workers() {
+    _workers(infinite = false) {
       this.workerLoading = true
       this.workerParams.edu_plan_id = this.payload.edu_plan_id
       this.workerParams.organizations =
@@ -69,17 +69,23 @@ export const useLmsWorkerStore = defineStore('lmsWorkerStore', {
       $ApiService.lmsWorkerService
         ._workers({ params: this.workerParams })
         .then((res) => {
-          const selectedData = this.workerList.filter((v) =>
-            this.payload.worker_position_ids.includes(v.id)
-          )
-          const data = res.data.data.data.map((v) => ({
+          const newData = res.data.data.data.map((v) => ({
             ...v,
             name: Utils.combineFullName(v.worker),
             position: v?.position
           }))
-          this.workerList = Array.from(
-            new Map([...data, ...selectedData].map((v) => [v.id, v])).values()
-          )
+          if (infinite) {
+            this.workerList = Array.from(
+              new Map([...this.workerList, ...newData].map((v) => [v.id, v])).values()
+            )
+          } else {
+            const selectedData = this.workerList.filter((v) =>
+              this.payload.worker_position_ids.includes(v.id)
+            )
+            this.workerList = Array.from(
+              new Map([...newData, ...selectedData].map((v) => [v.id, v])).values()
+            )
+          }
           this.totalWorker = res.data.data.total
         })
         .finally(() => {
@@ -128,6 +134,9 @@ export const useLmsWorkerStore = defineStore('lmsWorkerStore', {
       this.payload.edu_plan_id = null
       this.payload.organizations = []
       this.payload.worker_position_ids = []
+      this.workerParams.page = 1
+      this.workerList = []
+      this.totalWorker = 0
     }
   }
 })

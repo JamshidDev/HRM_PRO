@@ -3127,6 +3127,7 @@
     "confirmPassword": "Подтвердите пароль",
     "confirmPasswordPlaceholder": "Введите пароль повторно",
     "requirements": "Требования к паролю",
+    "generatePassword": "Создать пароль",
     "success": "Пароль успешно обновлён",
     "rules": {
       "minLength": "Не менее 8 символов",
