@@ -68,6 +68,12 @@
     totalCount: {
       type: Number,
       default: 0
+    },
+    // "Barchasini tanlash" uchun to'liq ro'yxat (options scrollda kesilgan bo'lsa).
+    // Berilmasa — ko'rinayotgan options ishlatiladi (eski xulq saqlanadi).
+    fullOptions: {
+      type: Array,
+      default: null
     }
   })
 
@@ -113,10 +119,14 @@
     )
   })
 
+  // "Barchasini tanlash" manbasi: to'liq ro'yxat berilgan bo'lsa o'shandan,
+  // aks holda ko'rinayotgan optionlardan (eski xulq).
+  const selectAllSource = computed(() => props.fullOptions ?? computedOption.value)
+
   watchEffect(() => {
     if (props.multiple) {
       selectAll.value =
-        computedOption.value.length === valueModel.value.length && computedOption.value.length > 0
+        selectAllSource.value.length === valueModel.value.length && selectAllSource.value.length > 0
     }
   })
 
@@ -125,7 +135,7 @@
   })
 
   const onUpdateCheck = (v) => {
-    valueModel.value = v ? computedOption.value.map((x) => x[props.valueField]) : []
+    valueModel.value = v ? selectAllSource.value.map((x) => x[props.valueField]) : []
   }
 
   const onScrollEv = (e) => {
@@ -182,7 +192,7 @@
     <template v-if="multiple" #action>
       <n-checkbox @update:checked="onUpdateCheck" v-model:checked="selectAll">
         <span class="text-secondary text-xs"
-          >{{ $t('content.selectAll') }} - ({{ options.length }})</span
+          >{{ $t('content.selectAll') }} - ({{ (fullOptions ?? options).length }})</span
         >
       </n-checkbox>
     </template>

@@ -46,7 +46,7 @@
   }
 
   function reset() {
-    if (isLocalhost) {
+    if (isDev) {
       emit('update:answer', 'localhost-bypass')
       return
     }
@@ -56,10 +56,10 @@
     }
   }
 
-  const isLocalhost = ['localhost', '127.0.0.1'].includes(window.location.hostname)
+  const isDev = import.meta.env.VITE_APP_MODE === 'development'
 
   onMounted(async () => {
-    if (isLocalhost) {
+    if (isDev) {
       emit('update:answer', 'localhost-bypass')
       return
     }

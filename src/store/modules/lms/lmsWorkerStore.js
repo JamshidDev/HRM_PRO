@@ -61,6 +61,10 @@ export const useLmsWorkerStore = defineStore('lmsWorkerStore', {
           this.eduPlanLoading = false
         })
     },
+    // infinite = true (scroll) → keyingi sahifa ro'yxatga QO'SHILADI; aks holda
+    // (birinchi yuklash / qidiruv) ro'yxat yangidan to'ldiriladi.
+    // Dedup QILINMAYDI — backend qaytargan barcha yozuvlar (id takror bo'lsa ham)
+    // option bo'lib chiqadi.
     _workers(infinite = false) {
       this.workerLoading = true
       this.workerParams.edu_plan_id = this.payload.edu_plan_id
@@ -75,16 +79,14 @@ export const useLmsWorkerStore = defineStore('lmsWorkerStore', {
             position: v?.position
           }))
           if (infinite) {
-            this.workerList = Array.from(
-              new Map([...this.workerList, ...newData].map((v) => [v.id, v])).values()
-            )
+            this.workerList = [...this.workerList, ...newData]
           } else {
-            const selectedData = this.workerList.filter((v) =>
-              this.payload.worker_position_ids.includes(v.id)
+            // qidiruvda tanlanganlar yo'qolmasin (natijada bo'lmaganlarini saqlaymiz)
+            const newIds = new Set(newData.map((v) => v.id))
+            const keepSelected = this.workerList.filter(
+              (v) => this.payload.worker_position_ids.includes(v.id) && !newIds.has(v.id)
             )
-            this.workerList = Array.from(
-              new Map([...newData, ...selectedData].map((v) => [v.id, v])).values()
-            )
+            this.workerList = [...newData, ...keepSelected]
           }
           this.totalWorker = res.data.data.total
         })
@@ -135,6 +137,7 @@ export const useLmsWorkerStore = defineStore('lmsWorkerStore', {
       this.payload.organizations = []
       this.payload.worker_position_ids = []
       this.workerParams.page = 1
+      this.workerParams.search = ''
       this.workerList = []
       this.totalWorker = 0
     }
