@@ -142,11 +142,14 @@
     emits('onScroll', e)
     if (props.totalCount === 0) return
     const currentTarget = e.currentTarget
-    if (
-      currentTarget.scrollTop + currentTarget.offsetHeight >= currentTarget.scrollHeight &&
-      !props.loading &&
-      props.totalCount > props.options.length
-    ) {
+    if (!currentTarget) return
+    // Eng past nuqtaga AYNAN yetishni talab qilmaymiz — sub-piksel yaxlitlash va
+    // virtual-scroll spacer'i sababli kichik ekranlarda `>=` hech qachon
+    // bajarilmasdi. Pastdan ~80px qolganda trigger qilamiz (har qanday o'lchamda
+    // ishlaydi, lekin yuqorida turganda erta ishlamaydi — scrollHeight katta).
+    const distanceToBottom =
+      currentTarget.scrollHeight - currentTarget.scrollTop - currentTarget.offsetHeight
+    if (distanceToBottom <= 80 && !props.loading && props.totalCount > props.options.length) {
       emits('onScrollEv')
     }
   }
