@@ -22,8 +22,8 @@ export const useLoginStore = defineStore('loginStore', {
       let data = {
         phone: this.phone.slice(4).replace('(', '').replace(')', ''),
         password: this.password,
-        captcha: this.captchaAnswer,
-        captcha_key: this.captchaKey
+        captcha_key: this.captchaKey,
+        captcha_answer: this.captchaAnswer
       }
       $ApiService.authService
         ._login({ data })
