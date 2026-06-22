@@ -48,6 +48,10 @@
     if (val) captchaError.value = false
   }
 
+  const onCaptchaKey = (val) => {
+    store.captchaKey = val
+  }
+
   const onSubmit = () => {
     formRef.value?.validate((_error) => {
       if (!store.captchaAnswer) captchaError.value = true
@@ -202,10 +206,15 @@
               :feedback="captchaError ? $t('rules.captchaRequired') : undefined"
               style="--n-blank-height: 0px; --n-item-padding-bottom: 4px"
             >
-              <ReCaptcha ref="captchaRef" @update:answer="onCaptchaAnswer" />
+              <ReCaptcha
+                ref="captchaRef"
+                @update:answer="onCaptchaAnswer"
+                @update:key="onCaptchaKey"
+                @submit="onSubmit"
+              />
             </n-form-item>
 
-            <p class="text-sm text-center text-textColor2 leading-5 mt-0 mb-1">
+            <p class="text-xs text-center text-textColor2 mt-0 mb-2">
               {{ $t('loginPage.termsPrefix') }}
               <a
                 :href="termsUrl"
