@@ -16,9 +16,14 @@ const _register = async (payload) => {
   return await axios.post('/auth/register', payload.data)
 }
 
+const _getCaptcha = async () => {
+  return await axios.get(`/auth/captcha`)
+}
+
 export default {
   _login,
   _registerOtp,
   _register,
-  _authCode
+  _authCode,
+  _getCaptcha
 }

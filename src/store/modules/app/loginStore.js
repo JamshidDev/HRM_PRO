@@ -10,6 +10,7 @@ export const useLoginStore = defineStore('loginStore', {
     phone: '+998',
     password: null,
     captchaAnswer: null,
+    captchaKey: null,
     loading: false,
     authPayload: null
   }),
@@ -21,7 +22,8 @@ export const useLoginStore = defineStore('loginStore', {
       let data = {
         phone: this.phone.slice(4).replace('(', '').replace(')', ''),
         password: this.password,
-        'g-recaptcha-response': this.captchaAnswer
+        captcha: this.captchaAnswer,
+        captcha_key: this.captchaKey
       }
       $ApiService.authService
         ._login({ data })
