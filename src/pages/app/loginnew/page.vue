@@ -1,12 +1,14 @@
 <script setup>
   import LangDropdown from '@/components/general/LangDropdown.vue'
   import { useAppSetting } from '@/utils/index.js'
-  import { useLoginNewStore, useResetPasswordStore } from '@/store/modules/index.js'
+  import { useAppStore, useLoginNewStore, useResetPasswordStore } from '@/store/modules/index.js'
   import i18n from '@/i18n/index.js'
   import LoginForm from './ui/LoginForm.vue'
   import TwoFactorForm from './ui/TwoFactorForm.vue'
   import ResetForm from './ui/ResetForm.vue'
+  import StoreLinks from './ui/StoreLinks.vue'
 
+  const appStore = useAppStore()
   const loginStore = useLoginNewStore()
   const resetStore = useResetPasswordStore()
 
@@ -48,12 +50,13 @@
 <template>
   <div class="login-new min-h-screen w-full flex text-textColor0">
     <!-- Left brand / hero panel -->
-    <div class="login-new__hero relative hidden lg:flex flex-col justify-between overflow-hidden">
+    <div class="login-new__hero relative hidden lg:flex flex-col justify-end overflow-hidden">
       <div class="login-new__glow login-new__glow-1"></div>
       <div class="login-new__glow login-new__glow-2"></div>
       <div class="login-new__grid"></div>
 
-      <div class="relative z-10 flex items-center gap-3 p-10">
+      <!-- Logo lang-select bilan bir qatorda (top-6) -->
+      <div class="absolute top-6 left-6 z-10 flex items-center gap-3">
         <img :src="useAppSetting.appLogoUrl" alt=" " class="h-12 object-center animation-logo" />
         <span class="text-white text-2xl font-bold uppercase tracking-wide">
           {{ $t('loginPage.description.title') }}
@@ -67,26 +70,34 @@
         <p class="text-white/80 text-base font-medium mt-6 leading-7">
           {{ $t('loginPage.description.text') }}
         </p>
+
+        <!-- Mobil ilovani yuklab olish — faqat desktop (mobile'da forma ichida ko'rsatiladi) -->
+        <div v-if="appStore.appConfig.signatureLogin" class="mt-10 max-w-[360px]">
+          <p class="text-white/80 text-sm font-medium mb-3">
+            {{ $t('content.downloadApp') }}
+          </p>
+          <StoreLinks />
+        </div>
       </div>
     </div>
 
     <!-- Right form panel -->
     <div
-      class="login-new__form-side relative flex-1 flex flex-col items-center justify-center px-6 py-10"
+      class="login-new__form-side relative flex-1 flex flex-col items-center justify-center px-6 pb-6 pt-16 lg:py-10"
     >
+      <!-- Mobile logo — lang-select bilan bir qatorda (faqat mobile) -->
+      <div class="absolute top-6 left-6 z-10 flex lg:hidden items-center gap-3">
+        <img :src="useAppSetting.appLogoUrl" alt=" " class="h-10 object-center" />
+        <span class="form-title text-xl font-bold uppercase">
+          {{ $t('loginPage.description.title') }}
+        </span>
+      </div>
+
       <div class="absolute top-6 right-6 z-10">
         <LangDropdown />
       </div>
 
       <div class="w-full max-w-[420px]">
-        <!-- Mobile logo -->
-        <div class="flex lg:hidden items-center gap-3 mb-10 justify-center">
-          <img :src="useAppSetting.appLogoUrl" alt=" " class="h-10 object-center" />
-          <span class="form-title text-xl font-bold uppercase">
-            {{ $t('loginPage.description.title') }}
-          </span>
-        </div>
-
         <!-- qadamlar yo'nalishli slide bilan almashadi -->
         <div class="login-new__viewport overflow-hidden">
           <Transition :name="transitionName" mode="out-in">

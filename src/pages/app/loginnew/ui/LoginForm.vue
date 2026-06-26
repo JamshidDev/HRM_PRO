@@ -8,7 +8,6 @@
   } from '@/store/modules/index.js'
   import validationRules from '@/utils/validationRules.js'
   import {
-    AppStore24Filled,
     Call16Filled,
     Eye24Regular,
     EyeOff20Filled,
@@ -17,6 +16,7 @@
   } from '@vicons/fluent'
   import { AppPaths, useAppSetting } from '@/utils/index.js'
   import ReCaptcha from '@/components/general/ReCaptcha.vue'
+  import StoreLinks from './StoreLinks.vue'
 
   const emit = defineEmits(['forgot'])
 
@@ -26,9 +26,6 @@
   const signatureStore = useSignatureStore()
   const router = useRouter()
   const route = useRoute()
-
-  const playMarketUrl = 'https://play.google.com/store/apps/details?id=hrms.railway.uz'
-  const appStoreUrl = 'https://apps.apple.com/us/app/hr-rail/id6759365016'
 
   const termsFiles = {
     uz: '/terms/HRM_PRO_Legal_Document_UZ.pdf',
@@ -110,16 +107,21 @@
 
 <template>
   <div class="w-full">
-    <div class="mb-8">
-      <h3 class="text-3xl font-bold uppercase leading-tight">
+    <div class="mb-4 lg:mb-8">
+      <h3 class="text-2xl lg:text-3xl font-bold uppercase leading-tight">
         {{ $t(`loginPage.title`) }}
       </h3>
-      <p class="text-textColor2 mt-2 leading-snug">
+      <p class="text-textColor2 mt-1 lg:mt-2 leading-snug">
         {{ $t(`loginPage.subtitle`) }}
       </p>
     </div>
 
-    <n-form ref="formRef" :rules="validationRules.login" :model="store" class="flex flex-col">
+    <n-form
+      ref="formRef"
+      :rules="validationRules.login"
+      :model="store"
+      class="flex flex-col login-new__form-compact"
+    >
       <n-form-item class="text-textColor2!" :label="$t(`loginPage.phone`)" path="phone">
         <n-input
           size="large"
@@ -165,13 +167,14 @@
         </n-input>
       </n-form-item>
 
-      <div class="flex justify-end -mt-1 mb-2">
+      <div class="flex justify-end -mt-2 mb-0 lg:-mt-1 lg:mb-2">
         <n-button text class="text-textColor3! hover:text-primary!" @click="onForgot">
           {{ $t('loginPage.forgotPassword') }}
         </n-button>
       </div>
 
       <n-form-item
+        class="-mt-3 lg:mt-0"
         :validation-status="captchaError ? 'error' : undefined"
         :feedback="captchaError ? $t('rules.captchaRequired') : undefined"
         style="--n-blank-height: 0px; --n-item-padding-bottom: 4px"
@@ -184,7 +187,7 @@
         />
       </n-form-item>
 
-      <p class="text-xs text-center text-textColor2 mt-0 mb-3">
+      <p class="text-xs text-center text-textColor2 mt-0 mb-2 lg:mb-3">
         {{ $t('loginPage.termsPrefix') }}
         <a
           :href="termsUrl"
@@ -198,7 +201,7 @@
 
       <div class="grid">
         <n-button
-          class="login-new__submit h-[52px]! rounded-2xl! overflow-hidden! font-semibold!"
+          class="login-new__submit h-[48px]! lg:h-[52px]! rounded-2xl! overflow-hidden! font-semibold!"
           size="large"
           :loading="store.loading"
           @click="onSubmit"
@@ -207,11 +210,11 @@
         </n-button>
 
         <template v-if="appStore.appConfig.signatureLogin">
-          <n-divider class="my-3!" title-placement="center">{{ $t('content.or') }}</n-divider>
+          <n-divider class="my-2! lg:my-3!" title-placement="center">{{ $t('content.or') }}</n-divider>
           <n-button
             @click="onSignatureLogin"
             size="large"
-            class="h-[52px]! rounded-2xl! font-semibold! dark-border-button text-textColor1"
+            class="h-[48px]! lg:h-[52px]! rounded-2xl! font-semibold! dark-border-button text-textColor1"
           >
             {{ $t(`content.signatureLogin`) }}
             <template #icon>
@@ -219,39 +222,24 @@
             </template>
           </n-button>
 
-          <div class="mt-6">
-            <p class="text-textColor2 text-sm font-medium text-center mb-3">
+          <!-- Mobil ilovani yuklab olish — faqat mobile'da (desktop'da hero panelda ko'rsatiladi) -->
+          <div class="mt-3 lg:hidden">
+            <p class="text-textColor2 text-sm font-medium text-center mb-2">
               {{ $t('content.downloadApp') }}
             </p>
-            <div class="grid grid-cols-2 gap-3">
-              <a
-                :href="appStoreUrl"
-                target="_blank"
-                class="login-new__store-card flex items-center justify-center gap-2 px-3 h-[52px] rounded-2xl border border-surface-line bg-surface-ground"
-              >
-                <n-icon size="30" color="#019ff9">
-                  <AppStore24Filled />
-                </n-icon>
-                <div class="leading-[1.15]">
-                  <p class="text-[11px] text-textColor3">Download on the</p>
-                  <p class="text-sm font-semibold text-textColor0">App Store</p>
-                </div>
-              </a>
-              <a
-                target="_blank"
-                :href="playMarketUrl"
-                class="login-new__store-card flex items-center justify-center gap-2 px-3 h-[52px] rounded-2xl border border-surface-line bg-surface-ground"
-              >
-                <img class="h-[28px]" src="@/assets/images/svg/playMarket.svg" alt="" />
-                <div class="leading-[1.15]">
-                  <p class="text-[11px] text-textColor3">Get it on</p>
-                  <p class="text-sm font-semibold text-textColor0">Google Play</p>
-                </div>
-              </a>
-            </div>
+            <StoreLinks />
           </div>
         </template>
       </div>
     </n-form>
   </div>
 </template>
+
+<style scoped>
+  /* faqat mobilda input'lar orasini zichlashtiramiz; desktop Naive default'ida qoladi */
+  @media (max-width: 1023px) {
+    .login-new__form-compact {
+      --n-item-padding-bottom: 8px;
+    }
+  }
+</style>
