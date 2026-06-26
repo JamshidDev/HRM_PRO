@@ -1415,7 +1415,12 @@
     "endWarning": "Sure you want to finish exam?",
     "leftAttempts": "Remaining attempts",
     "welcomeTitle": "Welcome!",
-    "welcomeDesc": "All railway employees take certification tests in their specialties."
+    "welcomeDesc": "All railway employees take certification tests in their specialties.",
+    "answeredProgress": "{answered}/{total} answered",
+    "info": "Information",
+    "palette": "Questions",
+    "legendAnswered": "Answered",
+    "legendEmpty": "Not answered"
   },
   "questionPage": {
     "form": {

@@ -1435,7 +1435,12 @@
     "endWarning": "Imtihonni yakunlashga ishonchingiz komilmi?",
     "leftAttempts": "Qolgan urinishlar",
     "welcomeTitle": "Xush kelibsiz!",
-    "welcomeDesc": "Barcha temir yo'l xodimlari sertifikatlashtirish bo'limida o'z mutaxassisliklari bo'yicha test imtihonlarini topshiradilar."
+    "welcomeDesc": "Barcha temir yo'l xodimlari sertifikatlashtirish bo'limida o'z mutaxassisliklari bo'yicha test imtihonlarini topshiradilar.",
+    "answeredProgress": "{answered}/{total} javob berildi",
+    "info": "Ma'lumot",
+    "palette": "Savollar",
+    "legendAnswered": "Javob berilgan",
+    "legendEmpty": "Javob berilmagan"
   },
   "questionPage": {
     "form": {
