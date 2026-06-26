@@ -50,33 +50,42 @@
 <template>
   <div class="login-new min-h-screen w-full flex text-textColor0">
     <!-- Left brand / hero panel -->
-    <div class="login-new__hero relative hidden lg:flex flex-col justify-end overflow-hidden">
+    <div
+      class="login-new__hero relative hidden lg:flex flex-col items-center justify-center overflow-hidden"
+    >
       <div class="login-new__glow login-new__glow-1"></div>
       <div class="login-new__glow login-new__glow-2"></div>
       <div class="login-new__grid"></div>
 
-      <!-- Logo lang-select bilan bir qatorda (top-6) -->
-      <div class="absolute top-6 left-6 z-10 flex items-center gap-3">
+      <!-- Logo lang-select bilan bir qatorda (top-6) — orqasida blur'li glass card -->
+      <div
+        class="absolute top-6 left-6 z-10 flex items-center gap-3 rounded-2xl border border-white/30  px-4 py-1 shadow-lg backdrop-blur-md"
+      >
         <img :src="useAppSetting.appLogoUrl" alt=" " class="h-12 object-center animation-logo" />
         <span class="text-white text-2xl font-bold uppercase tracking-wide">
           {{ $t('loginPage.description.title') }}
         </span>
       </div>
 
-      <div class="relative z-10 px-10 pb-16 max-w-[560px]">
+      <div class="relative z-10 px-10 max-w-[560px] text-center">
         <h1 class="text-white text-4xl xl:text-5xl font-bold uppercase leading-[1.15]">
           {{ $t('loginPage.description.subtitle') }}
         </h1>
         <p class="text-white/80 text-base font-medium mt-6 leading-7">
           {{ $t('loginPage.description.text') }}
         </p>
+      </div>
 
-        <!-- Mobil ilovani yuklab olish — faqat desktop (mobile'da forma ichida ko'rsatiladi) -->
-        <div v-if="appStore.appConfig.signatureLogin" class="mt-10 max-w-[360px]">
-          <p class="text-white/80 text-sm font-medium mb-3">
-            {{ $t('content.downloadApp') }}
-          </p>
-          <StoreLinks />
+      <!-- Mobil ilovani yuklab olish — hero pastida (faqat desktop) -->
+      <div
+        v-if="appStore.appConfig.signatureLogin"
+        class="absolute bottom-10 left-0 right-0 z-10 px-10"
+      >
+        <p class="text-white/80 text-sm font-medium mb-3 text-center">
+          {{ $t('content.downloadApp') }}
+        </p>
+        <div class="max-w-[360px] mx-auto">
+          <StoreLinks glass />
         </div>
       </div>
     </div>
@@ -114,7 +123,7 @@
 <style scoped>
   .login-new__hero {
     width: 48%;
-    background: linear-gradient(135deg, #0177d7 0%, #042440 100%);
+    background: linear-gradient(135deg, #01579e 0%, #042440 100%);
   }
 
   .login-new__form-side {

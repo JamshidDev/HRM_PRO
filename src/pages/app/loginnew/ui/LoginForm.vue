@@ -108,12 +108,9 @@
 <template>
   <div class="w-full">
     <div class="mb-4 lg:mb-8">
-      <h3 class="text-2xl lg:text-3xl font-bold uppercase leading-tight">
+      <h3 class="text-2xl lg:text-3xl font-bold uppercase leading-tight text-center">
         {{ $t(`loginPage.title`) }}
       </h3>
-      <p class="text-textColor2 mt-1 lg:mt-2 leading-snug">
-        {{ $t(`loginPage.subtitle`) }}
-      </p>
     </div>
 
     <n-form
@@ -167,14 +164,13 @@
         </n-input>
       </n-form-item>
 
-      <div class="flex justify-end -mt-2 mb-0 lg:-mt-1 lg:mb-2">
+      <div class="flex justify-end -mt-4">
         <n-button text class="text-textColor3! hover:text-primary!" @click="onForgot">
           {{ $t('loginPage.forgotPassword') }}
         </n-button>
       </div>
 
       <n-form-item
-        class="-mt-3 lg:mt-0"
         :validation-status="captchaError ? 'error' : undefined"
         :feedback="captchaError ? $t('rules.captchaRequired') : undefined"
         style="--n-blank-height: 0px; --n-item-padding-bottom: 4px"
@@ -187,7 +183,7 @@
         />
       </n-form-item>
 
-      <p class="text-xs text-center text-textColor2 mt-0 mb-2 lg:mb-3">
+      <p class="text-xs text-center text-textColor2 mt-10 mb-4 lg:mb-3">
         {{ $t('loginPage.termsPrefix') }}
         <a
           :href="termsUrl"
