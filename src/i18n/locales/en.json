@@ -301,6 +301,7 @@
     "lms": "LMS"
   },
   "loginPage": {
+    "copyright": "© DASUTY. All rights reserved. Developed by \"DAS UTY\" LLC.",
     "name": "Welcome",
     "title": "Login",
     "subtitle": "Enter your phone number and password to log in.",
