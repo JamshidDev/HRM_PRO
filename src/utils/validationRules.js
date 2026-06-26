@@ -262,6 +262,86 @@ export default {
       }
     ]
   },
+  twoFactor: {
+    code: [
+      {
+        required: true,
+        message: t(`rules.requiredField`),
+        trigger: triggerEvents
+      },
+      {
+        min: 6,
+        message: t(`rules.requiredMinLength`, { n: 6 }),
+        trigger: triggerEvents
+      },
+      {
+        max: 6,
+        message: t(`rules.requiredMaxLength`, { n: 6 }),
+        trigger: triggerEvents
+      }
+    ]
+  },
+  resetPassword: {
+    code: [
+      {
+        key: 'code',
+        required: true,
+        message: t(`rules.requiredField`),
+        trigger: triggerEvents
+      },
+      {
+        key: 'code',
+        min: 6,
+        message: t(`rules.requiredMinLength`, { n: 6 }),
+        trigger: triggerEvents
+      },
+      {
+        key: 'code',
+        max: 6,
+        message: t(`rules.requiredMaxLength`, { n: 6 }),
+        trigger: triggerEvents
+      }
+    ],
+    password: [
+      {
+        key: 'password',
+        required: true,
+        message: t(`rules.password`),
+        trigger: triggerEvents
+      },
+      {
+        key: 'password',
+        min: 8,
+        message: t(`rules.requiredMinLength`, { n: 8 }),
+        trigger: triggerEvents
+      },
+      {
+        key: 'password',
+        max: 32,
+        message: t(`rules.requiredMaxLength`, { n: 32 }),
+        trigger: triggerEvents
+      }
+    ],
+    confirmPassword: [
+      {
+        key: 'password',
+        required: true,
+        message: t(`rules.password`),
+        trigger: triggerEvents
+      },
+      {
+        key: 'password',
+        validator: (rule, value, callback, model) => {
+          // model — n-form :model (resetStore). Ikkala parol teng bo'lishi kerak
+          if (value && model?.password && value !== model.password) {
+            return new Error(t(`rules.passwordsNotMatch`))
+          }
+          return true
+        },
+        trigger: triggerEvents
+      }
+    ]
+  },
   userPermission: {
     name: {
       required: true,
