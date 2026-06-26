@@ -164,11 +164,11 @@
         </n-input>
       </n-form-item>
 
-      <div class="flex justify-end -mt-4">
+      <!-- <div class="flex justify-end -mt-4">
         <n-button text class="text-textColor3! hover:text-primary!" @click="onForgot">
           {{ $t('loginPage.forgotPassword') }}
         </n-button>
-      </div>
+      </div> -->
 
       <n-form-item
         :validation-status="captchaError ? 'error' : undefined"
@@ -183,7 +183,7 @@
         />
       </n-form-item>
 
-      <p class="text-xs text-center text-textColor2 mt-10 mb-4 lg:mb-3">
+      <p class="text-xs text-center text-textColor2 mt-16 mb-4 lg:mb-3">
         {{ $t('loginPage.termsPrefix') }}
         <a
           :href="termsUrl"
@@ -210,7 +210,7 @@
           <n-button
             @click="onSignatureLogin"
             size="large"
-            class="h-[48px]! lg:h-[52px]! rounded-2xl! font-semibold! dark-border-button text-textColor1"
+            class="h-[48px]! lg:h-[52px]! rounded-2xl! font-semibold! dark-border-button bg-surface-ground! text-textColor1"
           >
             {{ $t(`content.signatureLogin`) }}
             <template #icon>
