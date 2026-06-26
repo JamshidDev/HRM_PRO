@@ -1,13 +1,13 @@
 <script setup>
   import LangDropdown from '@/components/general/LangDropdown.vue'
   import { useAppSetting } from '@/utils/index.js'
-  import { useLoginStore, useResetPasswordStore } from '@/store/modules/index.js'
+  import { useLoginNewStore, useResetPasswordStore } from '@/store/modules/index.js'
   import i18n from '@/i18n/index.js'
   import LoginForm from './ui/LoginForm.vue'
   import TwoFactorForm from './ui/TwoFactorForm.vue'
   import ResetForm from './ui/ResetForm.vue'
 
-  const loginStore = useLoginStore()
+  const loginStore = useLoginNewStore()
   const resetStore = useResetPasswordStore()
 
   const steps = { login: 'login', twofa: 'twofa', reset: 'reset' }

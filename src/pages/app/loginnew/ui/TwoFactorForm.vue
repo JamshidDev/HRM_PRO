@@ -5,12 +5,12 @@
     QrCode20Filled,
     ErrorCircle12Filled
   } from '@vicons/fluent'
-  import { useLoginStore } from '@/store/modules/index.js'
+  import { useLoginNewStore } from '@/store/modules/index.js'
   import Utils from '@/utils/Utils.js'
 
   const emit = defineEmits(['back'])
 
-  const store = useLoginStore()
+  const store = useLoginNewStore()
   const formRef = ref(null)
 
   const maskedPhone = computed(() => Utils.maskText(store.phone || '', 0, 4))

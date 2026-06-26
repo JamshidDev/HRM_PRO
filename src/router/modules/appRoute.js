@@ -42,6 +42,14 @@ export const appRoutes = [
     }
   },
   {
+    path: AppPaths.LoginNew,
+    name: AppPaths.LoginNew.substring(1),
+    component: () => import('@/pages/app/loginnew/page.vue'),
+    meta: {
+      layout: AppLayouts.empty
+    }
+  },
+  {
     path: '/public/:model/:key',
     name: 'public-page',
     component: () => import('@/pages/app/public/page.vue'),

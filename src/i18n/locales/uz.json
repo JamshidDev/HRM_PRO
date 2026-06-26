@@ -278,7 +278,8 @@
     "requiredJSHSHIR": "Pasport JSHSHIR kiritilishi shart!",
     "enterOverNumber": "{n}dan katta son kiriting",
     "requiredHoursField": "Vaqt formati noto’g’ri (HH:MM)",
-    "captchaRequired": "Captcha javobini kiriting!"
+    "captchaRequired": "Captcha javobini kiriting!",
+    "passwordsNotMatch": "Parollar mos kelmadi!"
   },
   "message": {
     "successDone": "Muvofaqqiyatli bajarildi",
@@ -333,7 +334,30 @@
     "captcha": "Captcha",
     "captchaRefresh": "Yangilash",
     "captchaPlaceholder": "Javobni kiriting",
-    "captchaWrong": "Noto'g'ri javob!"
+    "captchaWrong": "Noto'g'ri javob!",
+    "forgotPassword": "Parolni unutdingizmi?",
+    "captchaRequired": "Iltimos, captcha tasdiqlashdan o'ting",
+    "twoFactor": {
+      "title": "Ikki bosqichli tasdiqlash",
+      "subtitle": "{n} raqamiga yuborilgan tasdiqlash kodini kiriting.",
+      "code": "Tasdiqlash kodi",
+      "verify": "Tasdiqlash",
+      "reSendCode": "Kodni qayta yuborish"
+    },
+    "resetPassword": {
+      "title": "Parolni tiklash",
+      "requestSubtitle": "Tasdiqlash kodini olish uchun telefon raqamingizni tasdiqlang.",
+      "codeSubtitle": "{n} raqamiga yuborilgan tasdiqlash kodini kiriting.",
+      "passwordSubtitle": "Yangi parolingizni kiriting.",
+      "code": "Tasdiqlash kodi",
+      "newPassword": "Yangi parol",
+      "confirmPassword": "Parolni takrorlang",
+      "sendCode": "Parolni tiklash",
+      "reSendCode": "Kodni qayta yuborish",
+      "verify": "Tasdiqlash",
+      "submit": "Parolni yangilash",
+      "success": "Parol muvaffaqiyatli yangilandi. Endi yangi parol bilan kiring."
+    }
   },
   "registerPage": {
     "name": "Ro'yhatdan o'tish",

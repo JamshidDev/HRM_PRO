@@ -266,7 +266,8 @@
     "requiredJSHSHIR": "ПИН паспорта обязателен!",
     "enterOverNumber": "Введите число больше {n}",
     "requiredHoursField": "Неверный формат времени (ЧЧ:ММ)",
-    "captchaRequired": "Введите ответ на капчу!"
+    "captchaRequired": "Введите ответ на капчу!",
+    "passwordsNotMatch": "Пароли не совпадают!"
   },
   "message": {
     "successDone": "Успешно выполнено",
@@ -319,7 +320,30 @@
     "captcha": "Капча",
     "captchaRefresh": "Обновить",
     "captchaPlaceholder": "Введите ответ",
-    "captchaWrong": "Неверный ответ!"
+    "captchaWrong": "Неверный ответ!",
+    "forgotPassword": "Забыли пароль?",
+    "captchaRequired": "Пожалуйста, пройдите проверку captcha",
+    "twoFactor": {
+      "title": "Двухэтапная проверка",
+      "subtitle": "Введите код подтверждения, отправленный на номер {n}.",
+      "code": "Код подтверждения",
+      "verify": "Подтвердить",
+      "reSendCode": "Отправить код повторно"
+    },
+    "resetPassword": {
+      "title": "Восстановление пароля",
+      "requestSubtitle": "Подтвердите номер телефона для получения кода подтверждения.",
+      "codeSubtitle": "Введите код подтверждения, отправленный на номер {n}.",
+      "passwordSubtitle": "Введите новый пароль.",
+      "code": "Код подтверждения",
+      "newPassword": "Новый пароль",
+      "confirmPassword": "Повторите пароль",
+      "sendCode": "Восстановить пароль",
+      "reSendCode": "Отправить код повторно",
+      "verify": "Подтвердить",
+      "submit": "Обновить пароль",
+      "success": "Пароль успешно обновлён. Войдите с новым паролем."
+    }
   },
   "registerPage": {
     "name": "Регистрация",
