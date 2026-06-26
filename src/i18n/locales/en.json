@@ -266,7 +266,8 @@
     "requiredJSHSHIR": "Passport PIN is required!",
     "enterOverNumber": "Enter a number greater than {n}",
     "requiredHoursField": "Invalid time format (HH:MM)",
-    "captchaRequired": "Please enter the captcha answer!"
+    "captchaRequired": "Please enter the captcha answer!",
+    "passwordsNotMatch": "Passwords do not match!"
   },
   "message": {
     "successDone": "Successfully completed",
@@ -300,6 +301,7 @@
     "lms": "LMS"
   },
   "loginPage": {
+    "copyright": "© DASUTY. All rights reserved. Developed by \"DAS UTY\" LLC.",
     "name": "Welcome",
     "title": "Login",
     "subtitle": "Enter your phone number and password to log in.",
@@ -319,7 +321,30 @@
     "captcha": "Captcha",
     "captchaRefresh": "Refresh",
     "captchaPlaceholder": "Enter your answer",
-    "captchaWrong": "Wrong answer!"
+    "captchaWrong": "Wrong answer!",
+    "forgotPassword": "Forgot password?",
+    "captchaRequired": "Please complete the captcha verification",
+    "twoFactor": {
+      "title": "Two-step verification",
+      "subtitle": "Enter the verification code sent to {n}.",
+      "code": "Verification code",
+      "verify": "Verify",
+      "reSendCode": "Resend code"
+    },
+    "resetPassword": {
+      "title": "Reset password",
+      "requestSubtitle": "Confirm your phone number to receive a verification code.",
+      "codeSubtitle": "Enter the verification code sent to {n}.",
+      "passwordSubtitle": "Enter your new password.",
+      "code": "Verification code",
+      "newPassword": "New password",
+      "confirmPassword": "Repeat password",
+      "sendCode": "Reset password",
+      "reSendCode": "Resend code",
+      "verify": "Verify",
+      "submit": "Update password",
+      "success": "Password updated successfully. Log in with your new password."
+    }
   },
   "registerPage": {
     "name": "Sign up",
@@ -1391,7 +1416,12 @@
     "endWarning": "Sure you want to finish exam?",
     "leftAttempts": "Remaining attempts",
     "welcomeTitle": "Welcome!",
-    "welcomeDesc": "All railway employees take certification tests in their specialties."
+    "welcomeDesc": "All railway employees take certification tests in their specialties.",
+    "answeredProgress": "{answered}/{total} answered",
+    "info": "Information",
+    "palette": "Questions",
+    "legendAnswered": "Answered",
+    "legendEmpty": "Not answered"
   },
   "questionPage": {
     "form": {

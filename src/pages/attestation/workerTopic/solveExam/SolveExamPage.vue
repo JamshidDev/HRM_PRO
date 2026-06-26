@@ -3,14 +3,17 @@
   import { UIModal } from '@/components/index.js'
   import { useExamAttemptStore, useExamVideoStore } from '@/store/modules'
   import QuestionCard from './ui/Question.vue'
+  import ExamTimer from './ui/ExamTimer.vue'
+  import QuestionPalette from './ui/QuestionPalette.vue'
+  import ExamInfoDrawer from './ui/ExamInfoDrawer.vue'
   import Utils from '@/utils/Utils.js'
-  import VueCountdown from '@chenfengyuan/vue-countdown'
   import CameraApp from '@/pages/attestation/Camera/CameraApp.vue'
   import {
     ChevronCircleLeft32Regular,
     ShieldError16Filled,
     ArrowStepBack16Regular,
-    DocumentRibbon20Regular
+    Info16Regular,
+    Apps16Regular
   } from '@vicons/fluent'
   import dayjs from 'dayjs'
   import { AppPaths, useAppSetting } from '@/utils/index.js'
@@ -37,15 +40,29 @@
   })
 
   const leftTime = computed(() => {
-    console.log(store.worker_detail.created)
     const endTime = dayjs(store.worker_detail.created).add(store.exam_detail.minute, 'minutes')
     const diff = endTime.diff(dayjs(), 'seconds')
     return diff > 0 ? diff : 0
   })
 
-  const countDown = ref(null)
+  const answeredCount = computed(() => store.questions.filter((q) => !!q.result).length)
+  const progressPercent = computed(() =>
+    store.questions.length ? Math.round((answeredCount.value / store.questions.length) * 100) : 0
+  )
+
+  const resultPercent = computed(() =>
+    Math.min(100, Math.max(0, Number(store.result?.result) || 0))
+  )
+  const scoreColor = computed(() => {
+    const v = resultPercent.value
+    if (v >= 80) return '#2dcb73'
+    if (v >= 60) return '#FDC700'
+    return '#E7000A'
+  })
 
   const endWarningVisible = ref(false)
+  const infoVisible = ref(false)
+  const paletteVisible = ref(false)
 
   const endAttempt = () => {
     store.finishLoading = true
@@ -53,13 +70,10 @@
       if (examVideoStore.workerExamId) {
         examVideoStore.stopCanvasRender()
         examVideoStore._stopCameraAndFinishVideo(true, () => {
-          // endWarningVisible.value=true
           store.finishLoading = false
-          // router.push(Utils.routeAttestationPathMaker(AppPaths.Exam))
         })
       } else {
         store.finishLoading = false
-        // router.push(Utils.routeAttestationPathMaker(AppPaths.Exam))
       }
     })
   }
@@ -133,162 +147,156 @@
             }}</n-button>
           </n-space>
         </div>
-        <div v-else class="flex items-center flex-col gap-2">
-          <n-icon class="text-primary" size="84" :component="DocumentRibbon20Regular" />
-          <p class="text-primary">{{ Utils.combineFullName(store.worker_detail?.user?.worker) }}</p>
-          <h3 class="text-xl font-bold text-textColor3">{{ $t('examPage.endSub') }}</h3>
-          <p class="text-6xl font-bold text-">{{ store.result?.result || 0 }}</p>
-          <p class="text-danger mt-10!">{{ $t('examPage.endHead') }}</p>
-          <n-button @click="backToList" class="!w-full" type="error">{{
+        <div v-else class="flex items-center flex-col gap-3 py-2">
+          <n-progress
+            type="circle"
+            :percentage="resultPercent"
+            :stroke-width="9"
+            :color="scoreColor"
+            style="width: 150px"
+          >
+            <div class="flex flex-col items-center">
+              <span class="text-4xl font-bold leading-none" :style="{ color: scoreColor }">
+                {{ store.result?.result || 0 }}
+              </span>
+              <span class="text-xs text-textColor3 mt-1">{{ $t('examPage.result') }}</span>
+            </div>
+          </n-progress>
+          <p class="font-semibold text-textColor0 text-center">
+            {{ Utils.combineFullName(store.worker_detail?.user?.worker) }}
+          </p>
+          <h3 class="text-base font-medium text-textColor3 text-center">
+            {{ $t('examPage.endSub') }}
+          </h3>
+          <p class="text-danger text-center text-sm">{{ $t('examPage.endHead') }}</p>
+          <n-button @click="backToList" class="w-full!" type="error">{{
             $t('content.backToList')
           }}</n-button>
         </div>
       </n-spin>
     </UIModal>
+
+    <ExamInfoDrawer
+      v-model:visible="infoVisible"
+      :exam-detail="store.exam_detail"
+      :worker-detail="store.worker_detail"
+      :questions-count="store.questions.length"
+    />
+
+    <n-drawer v-model:show="paletteVisible" :width="280" placement="right">
+      <n-drawer-content :title="$t('solveExamPage.palette')" closable>
+        <QuestionPalette :questions="store.questions" root-selector=".question__section" />
+      </n-drawer-content>
+    </n-drawer>
+
     <n-spin :show="store.loading" class="h-full">
-      <div
-        v-if="store.exam_detail && store.exam_token"
-        class="h-full flex flex-col-reverse sm:flex-row gap-3"
-      >
-        <div
-          class="flex flex-col gap-3 grow overflow-y-auto p-3 scroll-smooth question__section lg:mx-10 xl:mx-20"
-        >
-          <div class="shrink-0 flex gap-3 flex-wrap">
-            <div class="shrink-0 flex items-center basis-[200px] grow md:grow-0">
+      <div v-if="store.exam_detail && store.exam_token" class="h-full flex flex-col">
+        <!-- Header -->
+        <div class="shrink-0 bg-surface-section border-b border-surface-line px-3 py-2 sm:px-5">
+          <!-- Row 1: nomzod chip + amallar -->
+          <div class="flex items-center gap-2 sm:gap-3">
+            <div class="flex items-center gap-2 min-w-0 grow">
               <img
                 :src="store.worker_detail.user.worker.photo || useAppSetting.noAvailableImage"
                 alt="img"
-                class="h-[200px] object-contain rounded-md"
+                class="shrink-0 w-9 h-9 sm:w-10 sm:h-10 rounded-full object-cover border border-surface-line"
               />
-            </div>
-            <n-table class="grow shrink-0 basis-[230px]" size="small">
-              <tr>
-                <th>{{ $t('solveExamPage.exam') }}</th>
-                <td>{{ store.exam_detail.name }}</td>
-              </tr>
-              <tr>
-                <th>{{ $t('solveExamPage.startedAt') }}</th>
-                <td>{{ Utils.timeWithMonth(store.worker_detail.created) }}</td>
-              </tr>
-              <tr>
-                <th>{{ $t('solveExamPage.firstName') }}</th>
-                <td>{{ store.worker_detail.user.worker.first_name }}</td>
-              </tr>
-              <tr>
-                <th>{{ $t('solveExamPage.lastName') }}</th>
-                <td>{{ store.worker_detail.user.worker.last_name }}</td>
-              </tr>
-              <tr>
-                <th>{{ $t('solveExamPage.middleName') }}</th>
-                <td>{{ store.worker_detail.user.worker.middle_name }}</td>
-              </tr>
-            </n-table>
-
-            <n-table class="grow shrink-0 basis-[230px]" size="small">
-              <tr>
-                <th>{{ $t('solveExamPage.variant') }}</th>
-                <td>{{ store.exam_detail.variant }}</td>
-              </tr>
-              <tr>
-                <th>{{ $t('solveExamPage.totalTime') }}</th>
-                <td>{{ Utils.timeWithMonth(store.exam_detail.minute) }}</td>
-              </tr>
-              <tr>
-                <th>{{ $t('solveExamPage.deadline') }}</th>
-                <td>{{ Utils.timeWithMonth(store.exam_detail.deadline) }}</td>
-              </tr>
-              <tr>
-                <th>{{ $t('solveExamPage.attempts') }}</th>
-                <td>{{ store.exam_detail.chances }}</td>
-              </tr>
-              <tr>
-                <th>{{ $t('solveExamPage.questions') }}</th>
-                <td>{{ store.questions.length }}</td>
-              </tr>
-            </n-table>
-          </div>
-          <QuestionCard
-            v-for="(question, idx) in store.questions"
-            :id="`question-${idx + 1}`"
-            :key="idx"
-            :question="question"
-            :number="idx + 1"
-            class="shrink-0"
-          />
-        </div>
-        <div
-          class="bg-surface-section flex shrink-0 grow-1 justify-between sm:flex-col basis-auto md:basis-[300px] xl:basis-[400px] p-3"
-        >
-          <div class="flex justify-between items-center">
-            <vue-countdown
-              v-if="!store.loading && !store.result"
-              ref="countDown"
-              v-slot="{ hours, minutes, seconds }"
-              :time="leftTime * 1000"
-              @end="endAttempt"
-            >
-              <div class="text-xl text-textColor2 font-bold flex">
-                <p class="py-1 px-2 drop-shadow-lg border-surface-line border rounded-md">
-                  {{ hours }}
+              <div class="min-w-0">
+                <p
+                  class="truncate font-semibold text-textColor0 leading-tight text-sm sm:text-base"
+                >
+                  {{ Utils.combineFullName(store.worker_detail?.user?.worker) }}
                 </p>
-                <p class="py-1 px-2">:</p>
-                <p class="py-1 px-2 drop-shadow-lg border-surface-line border rounded-md">
-                  {{ minutes }}
-                </p>
-                <p class="py-1 px-2">:</p>
-                <p class="py-1 px-2 drop-shadow-lg border-surface-line border rounded-md">
-                  {{ seconds }}
+                <p class="truncate text-xs text-textColor3 leading-tight">
+                  {{ store.exam_detail.name }}
                 </p>
               </div>
-            </vue-countdown>
+            </div>
+
+            <div class="flex items-center gap-1.5 sm:gap-2 shrink-0">
+              <n-button quaternary circle @click="infoVisible = true">
+                <template #icon>
+                  <n-icon :component="Info16Regular" />
+                </template>
+              </n-button>
+
+              <n-button class="lg:hidden!" quaternary circle @click="paletteVisible = true">
+                <template #icon>
+                  <n-icon :component="Apps16Regular" />
+                </template>
+              </n-button>
+
+              <n-button
+                v-if="!store.result"
+                @click="endWarningVisible = true"
+                type="primary"
+                :loading="store.finishLoading"
+              >
+                {{ $t('content.finish') }}
+              </n-button>
+              <n-button v-else @click="goBack()" tertiary>
+                {{ $t('content.return') }}
+                <template #icon>
+                  <n-icon :component="ChevronCircleLeft32Regular" />
+                </template>
+              </n-button>
+            </div>
           </div>
-          <n-divider v-if="!store.loading && !store.result" class="hidden! sm:block!" />
-          <div
-            class="grow gap-2 grid-cols-[repeat(auto-fill,minmax(30px,1fr))] md:grid-cols-[repeat(auto-fill,minmax(40px,1fr))] grid-rows-[repeat(auto-fill,30px)] md:grid-rows-[repeat(auto-fill,40px)] hidden sm:grid"
-          >
-            <a
-              v-for="(question, idx) in store.questions"
-              :key="idx"
-              :href="`#question-${idx + 1}`"
-              class="text-lg flex justify-center items-center bg-surface-section border border-surface-line shadow-sm rounded-lg"
-              :class="{ 'bg-primary! text-white': !!question.result }"
-            >
-              {{ idx + 1 }}
-            </a>
-          </div>
-          <div>
-            <n-button
-              @click="endWarningVisible = true"
-              class="md:h-14! md:text-xl!"
-              block
-              size="large"
-              type="primary"
-              :loading="store.finishLoading"
-              v-if="!store.result"
-            >
-              {{ $t('content.finish') }}
-            </n-button>
-            <n-button
-              @click="goBack()"
-              class="md:h-14! md:text-xl!"
-              block
-              size="large"
-              tertiary
-              v-else
-            >
-              {{ $t('content.return') }}
-              <template #icon>
-                <n-icon :component="ChevronCircleLeft32Regular" />
-              </template>
-            </n-button>
+
+          <!-- Row 2: timer + progress (imtihon davom etayotganda) -->
+          <div v-if="!store.result" class="flex items-center gap-2 sm:gap-3 mt-2">
+            <ExamTimer class="shrink-0" :time="leftTime * 1000" @end="endAttempt" />
+            <n-progress
+              class="grow"
+              type="line"
+              :percentage="progressPercent"
+              :height="8"
+              :border-radius="4"
+              :show-indicator="false"
+            />
+            <span class="shrink-0 text-xs font-medium text-textColor3 whitespace-nowrap">
+              {{
+                $t('solveExamPage.answeredProgress', {
+                  answered: answeredCount,
+                  total: store.questions.length
+                })
+              }}
+            </span>
           </div>
         </div>
+
+        <!-- Body -->
+        <div class="grow min-h-0 flex gap-4 p-3 sm:px-5">
+          <div class="grow overflow-y-auto scroll-smooth question__section -mx-1 px-1">
+            <div class="mx-auto w-full max-w-3xl flex flex-col gap-3 py-1">
+              <QuestionCard
+                v-for="(question, idx) in store.questions"
+                :id="`question-${idx + 1}`"
+                :key="idx"
+                :question="question"
+                :number="idx + 1"
+                class="shrink-0"
+              />
+            </div>
+          </div>
+
+          <aside
+            class="hidden lg:flex shrink-0 basis-[300px] xl:basis-[340px] bg-surface-section border border-surface-line rounded-xl p-4"
+          >
+            <QuestionPalette
+              class="w-full"
+              :questions="store.questions"
+              root-selector=".question__section"
+            />
+          </aside>
+        </div>
       </div>
+
       <div v-else-if="!store.loading" class="h-full w-full flex justify-center items-center">
         <div
           class="bg-surface-section rounded-md p-3 flex flex-col items-center gap-3 border border-surface-line"
         >
-          <n-icon class="text-red-700" :component="ShieldError16Filled" :size="100" />
+          <n-icon class="text-danger" :component="ShieldError16Filled" :size="100" />
           <p class="text-xl font-bold text-center">{{ $t('solveExamPage.notAllowed') }}</p>
           <n-button type="primary" @click="router.back()">
             {{ $t('content.return') }}
@@ -310,18 +318,18 @@
 
     /* Track */
     &::-webkit-scrollbar-track {
-      background: #f1f1f1;
+      background: transparent;
     }
 
     /* Handle */
     &::-webkit-scrollbar-thumb {
-      background: #888;
+      background: var(--scrollbar-thumb);
       border-radius: 5px;
     }
 
     /* Handle on hover */
     &::-webkit-scrollbar-thumb:hover {
-      background: #555;
+      background: var(--surface-text);
     }
   }
 </style>
