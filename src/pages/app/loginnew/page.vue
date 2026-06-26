@@ -116,6 +116,11 @@
           </Transition>
         </div>
       </div>
+
+      <!-- Mualliflik huquqi -->
+      <p class="absolute bottom-4 left-0 right-0 px-6 text-center text-xs text-textColor3">
+        {{ $t('loginPage.copyright') }}
+      </p>
     </div>
   </div>
 </template>

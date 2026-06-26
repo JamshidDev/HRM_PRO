@@ -315,6 +315,7 @@
     "lms": "LMS"
   },
   "loginPage": {
+    "copyright": "© DASUTY. Barcha huquqlar himoyalangan. \"DAS UTY\" MCHJ tomonidan ishlab chiqilgan.",
     "name": "Xush kelibsiz",
     "title": "Kirish",
     "subtitle": "Tizimga kirish uchun telefon raqamingiz va parolingizni kiriting.",

@@ -307,6 +307,9 @@
           </n-form>
         </div>
       </div>
+
+      <!-- Mualliflik huquqi -->
+      <p class="login-copyright">{{ $t('loginPage.copyright') }}</p>
     </div>
   </div>
 </template>
@@ -314,6 +317,26 @@
 <style>
   .login-page-bg {
     background: linear-gradient(0deg, #042440 0%, #0177d7 100%);
+  }
+
+  .login-copyright {
+    position: absolute;
+    bottom: 12px;
+    right: 0;
+    width: 50%;
+    z-index: 3;
+    padding: 0 16px;
+    text-align: center;
+    font-size: 12px;
+    line-height: 1.4;
+    color: var(--color-textColor3);
+  }
+
+  /* matn bloki yashiringan paytda (mobil) footer to'liq kenglikda */
+  @media only screen and (max-width: 700px) {
+    .login-copyright {
+      width: 100%;
+    }
   }
 
   .circle-shape {
