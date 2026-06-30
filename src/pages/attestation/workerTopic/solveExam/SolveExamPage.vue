@@ -13,7 +13,9 @@
     ShieldError16Filled,
     ArrowStepBack16Regular,
     Info16Regular,
-    Apps16Regular
+    Apps16Regular,
+    Warning24Filled,
+    Warning16Filled
   } from '@vicons/fluent'
   import dayjs from 'dayjs'
   import { AppPaths, useAppSetting } from '@/utils/index.js'
@@ -46,17 +48,20 @@
   })
 
   const answeredCount = computed(() => store.questions.filter((q) => !!q.result).length)
+  const notAnsweredCount = computed(() => store.questions.length - answeredCount.value)
   const progressPercent = computed(() =>
     store.questions.length ? Math.round((answeredCount.value / store.questions.length) * 100) : 0
   )
 
-  const resultPercent = computed(() =>
-    Math.min(100, Math.max(0, Number(store.result?.result) || 0))
-  )
+  const resultPercent = computed(() => {
+    const total = store.questions.length
+    const correct = Number(store.result?.result) || 0
+    return total ? Math.round((correct / total) * 100) : 0
+  })
   const scoreColor = computed(() => {
     const v = resultPercent.value
-    if (v >= 80) return '#2dcb73'
-    if (v >= 60) return '#FDC700'
+    if (v >= 86) return '#2dcb73'
+    if (v >= 56) return '#FDC700'
     return '#E7000A'
   })
 
@@ -115,39 +120,48 @@
   <div class="h-full">
     <UIModal
       :title="store?.result ? $t('examPage.result') : $t('content.warning')"
-      :width="500"
+      :width="460"
       v-model:visible="endWarningVisible"
       @update:visible="onChangeVisible"
       :persistent="true"
     >
+      <template #header><span></span></template>
+
       <n-spin :show="store.finishLoading">
-        <div class="flex flex-col gap-3" v-if="!store.result">
-          <p>{{ $t('solveExamPage.endWarning') }}</p>
-          <n-alert type="warning" v-if="store.questions.findIndex((i) => !i.result) !== -1">
-            <p>
-              {{
-                $t('solveExamPage.notAnswered', {
-                  n: (() => {
-                    let k = 0
-                    for (let i of store.questions) {
-                      k += !i.result
-                    }
-                    return k
-                  })()
-                })
-              }}
+        <!-- Yakunlashni tasdiqlash -->
+        <div v-if="!store.result" class="flex flex-col items-center text-center gap-4 px-2 pb-1">
+          <div class="flex items-center justify-center w-16 h-16 rounded-full bg-warning/10">
+            <n-icon :component="Warning24Filled" :size="34" class="text-warning" />
+          </div>
+          <p class="text-base font-medium text-textColor0">
+            {{ $t('solveExamPage.endWarning') }}
+          </p>
+
+          <div
+            v-if="notAnsweredCount"
+            class="w-full flex items-start gap-2.5 rounded-xl border border-warning/30 bg-warning/10 p-3 text-left"
+          >
+            <n-icon :component="Warning16Filled" :size="18" class="shrink-0 mt-0.5 text-warning" />
+            <p class="text-sm text-textColor1">
+              {{ $t('solveExamPage.notAnswered', { n: notAnsweredCount }) }}
             </p>
-          </n-alert>
-          <n-space justify="end">
-            <n-button class="px-10!" @click="endAttempt" type="success">{{
-              $t('content.yes')
-            }}</n-button>
-            <n-button class="px-10!" @click="endWarningVisible = false" type="error">{{
-              $t('content.no')
-            }}</n-button>
-          </n-space>
+          </div>
+
+          <div class="grid grid-cols-2 gap-3 w-full mt-1">
+            <n-button class="h-11!" size="large" @click="endWarningVisible = false">
+              {{ $t('content.no') }}
+            </n-button>
+            <n-button class="h-11!" size="large" type="primary" @click="endAttempt">
+              {{ $t('content.yes') }}
+            </n-button>
+          </div>
         </div>
-        <div v-else class="flex items-center flex-col gap-3 py-2">
+
+        <!-- Natija -->
+        <div v-else class="flex flex-col items-center gap-3 px-2 pb-1">
+          <p class="text-lg font-semibold text-textColor0 text-center">
+            {{ Utils.combineFullName(store.worker_detail?.user?.worker) }}
+          </p>
           <n-progress
             type="circle"
             :percentage="resultPercent"
@@ -162,16 +176,36 @@
               <span class="text-xs text-textColor3 mt-1">{{ $t('examPage.result') }}</span>
             </div>
           </n-progress>
-          <p class="font-semibold text-textColor0 text-center">
-            {{ Utils.combineFullName(store.worker_detail?.user?.worker) }}
+          <p class="font-medium text-textColor1 text-center">
+            {{
+              $t('examPage.correctOfTotal', {
+                correct: store.result?.result || 0,
+                total: store.questions.length
+              })
+            }}
           </p>
-          <h3 class="text-base font-medium text-textColor3 text-center">
-            {{ $t('examPage.endSub') }}
-          </h3>
+          <div class="w-full rounded-lg bg-surface-ground px-3 py-2.5">
+            <p class="text-xs font-medium text-textColor3 text-center mb-2">
+              {{ $t('examPage.gradingScale') }}
+            </p>
+            <div
+              class="flex items-center justify-center gap-x-4 gap-y-1.5 flex-wrap text-xs text-textColor2"
+            >
+              <span class="flex items-center gap-1.5">
+                <span class="w-2.5 h-2.5 rounded-full bg-danger"></span>0–55%
+              </span>
+              <span class="flex items-center gap-1.5">
+                <span class="w-2.5 h-2.5 rounded-full bg-warning"></span>56–85%
+              </span>
+              <span class="flex items-center gap-1.5">
+                <span class="w-2.5 h-2.5 rounded-full bg-success"></span>86–100%
+              </span>
+            </div>
+          </div>
           <p class="text-danger text-center text-sm">{{ $t('examPage.endHead') }}</p>
-          <n-button @click="backToList" class="w-full!" type="error">{{
-            $t('content.backToList')
-          }}</n-button>
+          <n-button @click="backToList" class="w-full! h-11! mt-1" size="large" type="primary">
+            {{ $t('content.backToList') }}
+          </n-button>
         </div>
       </n-spin>
     </UIModal>
