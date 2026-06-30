@@ -31,7 +31,6 @@
         <n-tooltip>
           <template #trigger>
             <n-avatar
-              lazy
               round
               size="large"
               class="ui__user-group z-0"

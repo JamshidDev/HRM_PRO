@@ -315,9 +315,8 @@
                     <div class="flex gap-1 items-center w-full">
                       <n-avatar
                         :fallback-src="Utils.noAvailableImage"
-                        :src="item?.photo"
+                        :src="item?.photo || Utils.noAvailableImage"
                         circle
-                        lazy
                         size="large"
                       />
                       <div class="flex flex-col text-start" style="width: calc(100% - 50px)">
