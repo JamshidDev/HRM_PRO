@@ -17,7 +17,7 @@
 </script>
 
 <template>
-  <div class="bg-surface-section rounded-xl border border-surface-line p-4 shadow-sm">
+  <div class="bg-surface-section rounded-xl border border-surface-line p-4">
     <div class="flex gap-3">
       <span
         class="shrink-0 flex items-center justify-center w-8 h-8 rounded-lg bg-primary/10 text-primary font-bold text-sm"

@@ -110,7 +110,7 @@
   })
 </script>
 <template>
-  <div class="bg-surface-section h-full w-full rounded-md flex flex-col py-2">
+  <div class="bg-surface-section h-full w-full rounded-xl border border-surface-line shadow-[0_1px_2px_rgba(16,26,43,0.05)] flex flex-col py-2">
     <div class="grow">
       <v-chart :option="option" autoresize :loading="store.loading" />
     </div>
