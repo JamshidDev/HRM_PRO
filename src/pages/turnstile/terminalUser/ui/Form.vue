@@ -9,7 +9,7 @@
   import { Checkmark16Filled, CheckmarkCircle20Filled, AddCircle16Filled } from '@vicons/fluent'
   import checkWorkerSelect from '@/pages/lms/Teacher/ui/checkWorkerSelect.vue'
   import { UICropper } from '@/components/index.js'
-  import { useAppSetting } from '@/utils/index.js'
+  import { useAppSetting, Utils } from '@/utils/index.js'
 
   const formRef = ref(null)
   const store = useTurnstileTerminalUserStore()
@@ -261,7 +261,8 @@
                   <img
                     class="w-full h-full object-cover transition-all hover:scale-[1.1] cursor-pointer"
                     alt="worker-photo"
-                    :src="photo.photo"
+                    :src="photo.photo || Utils.noAvailableImage"
+                    @error="Utils.onImgError"
                   />
                   <n-icon-wrapper
                     class="absolute top-1 right-1"

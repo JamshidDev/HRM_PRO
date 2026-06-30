@@ -17,7 +17,8 @@
         <img
           class="w-full h-full object-cover object-top"
           :alt="Utils.combineFullName(item.worker)"
-          :src="item.worker.photo"
+          :src="item.worker.photo || Utils.noAvailableImage"
+          @error="Utils.onImgError"
         />
       </div>
       <div class="flex flex-col gap-2 p-2">

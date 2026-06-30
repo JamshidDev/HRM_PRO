@@ -95,7 +95,8 @@
             <img
               @click="showImage(item.photo)"
               class="page_instruction_image cursor-pointer"
-              :src="item.photo"
+              :src="item.photo || Utils.noAvailableImage"
+              @error="Utils.onImgError"
             />
           </n-carousel-item>
         </n-carousel>

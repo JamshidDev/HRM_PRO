@@ -81,7 +81,8 @@
       <!-- ══ HEADER ══ -->
       <div class="detail-header">
         <n-avatar
-          :src="user.photo"
+          :src="user.photo || Utils.noAvailableImage"
+          :fallback-src="Utils.noAvailableImage"
           :size="52"
           round
           object-fit="cover"

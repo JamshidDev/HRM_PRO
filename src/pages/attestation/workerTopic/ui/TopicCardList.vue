@@ -120,10 +120,10 @@
           :key="idx"
           class="bg-surface-section rounded-xl border border-surface-line shadow-[0_1px_2px_rgba(16,26,43,0.05)] overflow-hidden transition-colors hover:border-primary/40"
         >
-          <!-- asosiy qator -->
-          <div class="flex flex-col lg:flex-row lg:items-center gap-3 px-3 py-2.5">
-            <!-- chap: raqam + nom + mavzu -->
-            <div class="flex items-center gap-3 min-w-0 lg:flex-1">
+          <!-- asosiy qism -->
+          <div class="px-3 py-2.5 flex flex-col gap-2.5">
+            <!-- 1-zona: raqam + nom + mavzu -->
+            <div class="flex items-center gap-3 min-w-0">
               <span
                 class="shrink-0 w-9 h-9 rounded-lg bg-primary/10 text-primary font-bold text-sm flex items-center justify-center"
               >
@@ -149,90 +149,93 @@
               </div>
             </div>
 
-            <!-- o'rta: meta chiplar -->
-            <div class="flex flex-wrap gap-2">
-              <span
-                class="inline-flex items-center gap-1.5 text-xs font-semibold text-textColor0 bg-surface-ground border border-surface-line rounded-lg px-2.5 py-1"
-              >
-                <n-icon :component="Clock20Filled" class="text-textColor3" />
-                {{ $t('examPage.totalMinute', { n: item.minute }) }}
-              </span>
-              <span
-                class="inline-flex items-center gap-1.5 text-xs font-semibold text-textColor0 bg-surface-ground border border-surface-line rounded-lg px-2.5 py-1"
-              >
-                <n-icon :component="QuestionCircle16Regular" class="text-textColor3" />
-                {{ $t('examPage.nQuestions', { n: item.tests_count }) }}
-              </span>
-              <span
-                class="inline-flex items-center gap-1.5 text-xs font-semibold text-textColor2 bg-surface-ground border border-surface-line rounded-lg px-2.5 py-1"
-              >
-                <n-icon :component="CalendarLtr16Regular" class="text-textColor3" />
-                {{ item.deadline }}
-              </span>
-              <span
-                class="inline-flex items-center gap-1.5 text-xs font-semibold text-textColor2 bg-surface-ground border border-surface-line rounded-lg px-2.5 py-1"
-                :class="[existAttemptCount(item.results, item.chances) === 0 && 'line-through opacity-50']"
-              >
-                <n-icon :component="ArrowRepeatAll16Regular" class="text-textColor3" />
-                {{ $t('examPage.attemptsCount') }}:
-                <b class="text-textColor0">{{ existAttemptCount(item.results, item.chances) }}</b>
-              </span>
-            </div>
+            <!-- 2-zona: chiplar + holat/amallar (sig'maganda silliq o'raladi) -->
+            <div class="flex flex-wrap items-center gap-x-3 gap-y-2">
+              <!-- meta chiplar -->
+              <div class="flex flex-wrap gap-2 min-w-0">
+                <span
+                  class="inline-flex items-center gap-1.5 text-xs font-semibold text-textColor0 bg-surface-ground border border-surface-line rounded-lg px-2.5 py-1"
+                >
+                  <n-icon :component="Clock20Filled" class="text-textColor3" />
+                  {{ $t('examPage.totalMinute', { n: item.minute }) }}
+                </span>
+                <span
+                  class="inline-flex items-center gap-1.5 text-xs font-semibold text-textColor0 bg-surface-ground border border-surface-line rounded-lg px-2.5 py-1"
+                >
+                  <n-icon :component="QuestionCircle16Regular" class="text-textColor3" />
+                  {{ $t('examPage.nQuestions', { n: item.tests_count }) }}
+                </span>
+                <span
+                  class="inline-flex items-center gap-1.5 text-xs font-semibold text-textColor2 bg-surface-ground border border-surface-line rounded-lg px-2.5 py-1"
+                >
+                  <n-icon :component="CalendarLtr16Regular" class="text-textColor3" />
+                  {{ item.deadline }}
+                </span>
+                <span
+                  class="inline-flex items-center gap-1.5 text-xs font-semibold text-textColor2 bg-surface-ground border border-surface-line rounded-lg px-2.5 py-1"
+                  :class="[existAttemptCount(item.results, item.chances) === 0 && 'line-through opacity-50']"
+                >
+                  <n-icon :component="ArrowRepeatAll16Regular" class="text-textColor3" />
+                  {{ $t('examPage.attemptsCount') }}:
+                  <b class="text-textColor0">{{ existAttemptCount(item.results, item.chances) }}</b>
+                </span>
+              </div>
 
-            <!-- o'ng: holat + amallar -->
-            <div class="flex items-center gap-2 shrink-0 lg:justify-end flex-wrap">
-              <span
-                class="inline-flex items-center gap-1.5 text-xs font-bold px-2.5 py-1.5 rounded-full"
-                :class="examStatus(item).cls"
-              >
-                <span class="w-1.5 h-1.5 rounded-full bg-current"></span>
-                {{ $t(examStatus(item).label) }}
-              </span>
+              <!-- holat + amallar -->
+              <div class="flex items-center gap-2 flex-wrap sm:ml-auto">
+                <span
+                  class="inline-flex items-center gap-1.5 text-xs font-bold px-2.5 py-1.5 rounded-full"
+                  :class="examStatus(item).cls"
+                >
+                  <span class="w-1.5 h-1.5 rounded-full bg-current"></span>
+                  {{ $t(examStatus(item).label) }}
+                </span>
 
-              <n-button
-                quaternary
-                size="small"
-                :type="item.id === selectedRowId ? 'primary' : 'default'"
-                @click="onChangeCollapse(item.id)"
-                :disabled="item.results?.length === 0"
-                icon-placement="right"
-              >
-                {{ $t('examPage.viewResult') }}
-                <template #icon>
-                  <n-icon
-                    :component="ChevronDown16Filled"
-                    class="transition-transform"
-                    :class="item.id === selectedRowId ? 'rotate-180' : ''"
-                  />
-                </template>
-              </n-button>
+                <n-button
+                  quaternary
+                  size="small"
+                  :type="item.id === selectedRowId ? 'primary' : 'default'"
+                  @click="onChangeCollapse(item.id)"
+                  :disabled="item.results?.length === 0"
+                  icon-placement="right"
+                >
+                  {{ $t('examPage.viewResult') }}
+                  <template #icon>
+                    <n-icon
+                      :component="ChevronDown16Filled"
+                      class="transition-transform"
+                      :class="item.id === selectedRowId ? 'rotate-180' : ''"
+                    />
+                  </template>
+                </n-button>
 
-              <n-button
-                v-if="isCanContinue(item.results)"
-                :disabled="isRunDevice(item.results)"
-                @click="goContinue(item)"
-                type="success"
-                size="small"
-                icon-placement="right"
-              >
-                {{ $t('content.continue') }}
-                <template #icon>
-                  <n-icon :component="ArrowRight16Filled" />
-                </template>
-              </n-button>
-              <n-button
-                v-else-if="isCanStart(item.results, item.chances)"
-                @click="goStart(item)"
-                :loading="examStore.loading"
-                type="primary"
-                size="small"
-                icon-placement="right"
-              >
-                {{ $t('content.start') }}
-                <template #icon>
-                  <n-icon :component="ArrowRight16Filled" />
-                </template>
-              </n-button>
+                <n-button
+                  v-if="isCanContinue(item.results)"
+                  :disabled="isRunDevice(item.results)"
+                  @click="goContinue(item)"
+                  type="success"
+                  size="small"
+                  icon-placement="right"
+                >
+                  {{ $t('content.continue') }}
+                  <template #icon>
+                    <n-icon :component="ArrowRight16Filled" />
+                  </template>
+                </n-button>
+                <n-button
+                  v-else-if="isCanStart(item.results, item.chances)"
+                  @click="goStart(item)"
+                  :loading="examStore.loading"
+                  type="primary"
+                  size="small"
+                  icon-placement="right"
+                >
+                  {{ $t('content.start') }}
+                  <template #icon>
+                    <n-icon :component="ArrowRight16Filled" />
+                  </template>
+                </n-button>
+              </div>
             </div>
           </div>
 
@@ -262,14 +265,14 @@
                   </div>
 
                   <!-- vaqtlar -->
-                  <div class="grow min-w-0 flex flex-col gap-0.5 text-xs">
-                    <p class="flex gap-2 leading-tight">
-                      <span class="text-textColor3 w-[120px] shrink-0 whitespace-nowrap">{{ $t('examPage.startTime') }}</span>
-                      <span class="text-textColor0 font-semibold tabular-nums">{{ result.created }}</span>
+                  <div class="grow min-w-0 flex flex-col gap-1 sm:gap-0.5 text-xs">
+                    <p class="flex flex-col sm:flex-row sm:gap-2 leading-tight">
+                      <span class="text-textColor3 sm:w-[120px] shrink-0 whitespace-nowrap">{{ $t('examPage.startTime') }}</span>
+                      <span class="text-textColor0 font-semibold tabular-nums whitespace-nowrap">{{ result.created }}</span>
                     </p>
-                    <p v-if="result.ended" class="flex gap-2 leading-tight">
-                      <span class="text-textColor3 w-[120px] shrink-0 whitespace-nowrap">{{ $t('examPage.endTime') }}</span>
-                      <span class="text-textColor0 font-semibold tabular-nums">{{ result.ended }}</span>
+                    <p v-if="result.ended" class="flex flex-col sm:flex-row sm:gap-2 leading-tight">
+                      <span class="text-textColor3 sm:w-[120px] shrink-0 whitespace-nowrap">{{ $t('examPage.endTime') }}</span>
+                      <span class="text-textColor0 font-semibold tabular-nums whitespace-nowrap">{{ result.ended }}</span>
                     </p>
                     <p v-else class="text-warning font-medium leading-tight">
                       {{ $t('examPage.inProgress') }}

@@ -232,6 +232,7 @@
             <div class="flex items-center gap-2 min-w-0 grow">
               <img
                 :src="store.worker_detail.user.worker.photo || useAppSetting.noAvailableImage"
+                @error="Utils.onImgError"
                 alt="img"
                 class="shrink-0 w-9 h-9 sm:w-10 sm:h-10 rounded-full object-cover border border-surface-line"
               />

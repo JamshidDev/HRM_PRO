@@ -661,7 +661,8 @@
         <!-- Nomzod -->
         <div v-if="store.rejectConfirmApp?.user" class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-surface-50 border border-surface-line">
           <n-avatar
-            :src="store.rejectConfirmApp.user.photo"
+            :src="store.rejectConfirmApp.user.photo || Utils.noAvailableImage"
+            :fallback-src="Utils.noAvailableImage"
             :size="32"
             round
             object-fit="cover"
@@ -709,7 +710,8 @@
         <!-- Nomzod -->
         <div v-if="store.acceptConfirmApp?.user" class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-surface-50 border border-surface-line">
           <n-avatar
-            :src="store.acceptConfirmApp.user.photo"
+            :src="store.acceptConfirmApp.user.photo || Utils.noAvailableImage"
+            :fallback-src="Utils.noAvailableImage"
             :size="32"
             round
             object-fit="cover"

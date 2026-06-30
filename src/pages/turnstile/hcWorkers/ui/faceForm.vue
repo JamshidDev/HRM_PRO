@@ -107,7 +107,8 @@
                   <img
                     class="w-full h-full object-cover transition-all hover:scale-[1.1] cursor-pointer"
                     alt="worker-photo"
-                    :src="photo.photo"
+                    :src="photo.photo || Utils.noAvailableImage"
+                    @error="Utils.onImgError"
                   />
                   <n-icon-wrapper
                     class="absolute top-1 right-1"

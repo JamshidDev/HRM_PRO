@@ -112,7 +112,15 @@ const generateJwtToken = (payload, secret) => {
   return `${encodedHeader}.${encodedPayload}.${encodedSignature}`
 }
 
-const noAvailableImage = '/no-picture.jpg'
+const noAvailableImage = '/no-picture.png'
+
+const onImgError = (e) => {
+  const el = e?.target
+  if (el && !el.dataset.fallbackApplied) {
+    el.dataset.fallbackApplied = '1'
+    el.src = noAvailableImage
+  }
+}
 
 const fileNameFromUrl = (url) => {
   return url.split('/').pop()?.split('?')[0].split('#')[0] || ''
@@ -520,6 +528,7 @@ export default {
   datePickerFormatter,
   timePickerFormatter,
   noAvailableImage,
+  onImgError,
   routePathMaker,
   routeHrmPathMaker,
   routeLmsPathMaker,
