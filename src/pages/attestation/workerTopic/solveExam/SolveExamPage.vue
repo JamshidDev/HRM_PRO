@@ -326,17 +326,19 @@
         </div>
       </div>
 
-      <div v-else-if="!store.loading" class="h-full w-full flex justify-center items-center">
+      <div v-else-if="!store.loading" class="h-full w-full flex justify-center items-center p-4">
         <div
-          class="bg-surface-section rounded-md p-3 flex flex-col items-center gap-3 border border-surface-line"
+          class="w-full max-w-sm bg-surface-section rounded-2xl border border-surface-line shadow-sm p-8 flex flex-col items-center gap-5 text-center"
         >
-          <n-icon class="text-danger" :component="ShieldError16Filled" :size="100" />
-          <p class="text-xl font-bold text-center">{{ $t('solveExamPage.notAllowed') }}</p>
-          <n-button type="primary" @click="router.back()">
-            {{ $t('content.return') }}
+          <div class="flex items-center justify-center w-20 h-20 rounded-full bg-danger/10">
+            <n-icon class="text-danger" :component="ShieldError16Filled" :size="44" />
+          </div>
+          <p class="text-xl font-semibold text-textColor0">{{ $t('solveExamPage.notAllowed') }}</p>
+          <n-button type="primary" size="large" class="h-11! px-6!" @click="goBack()">
             <template #icon>
               <n-icon :component="ArrowStepBack16Regular" />
             </template>
+            {{ $t('content.return') }}
           </n-button>
         </div>
       </div>
