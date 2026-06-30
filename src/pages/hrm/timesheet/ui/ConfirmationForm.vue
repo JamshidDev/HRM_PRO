@@ -75,7 +75,7 @@
                     <n-avatar
                       size="large"
                       :fallback-src="Utils.noAvailableImage"
-                      :src="item.worker.photo"
+                      :src="item.worker.photo || Utils.noAvailableImage"
                     />
 
                     <div class="flex flex-col">
@@ -191,7 +191,7 @@
                   class="inline-flex justify-center items-center"
                   type="warning"
                 >
-                  <n-avatar :fallback-src="Utils.noAvailableImage" :src="item.photo"></n-avatar>
+                  <n-avatar :fallback-src="Utils.noAvailableImage" :src="item.photo || Utils.noAvailableImage"></n-avatar>
                   <template #value>
                     <n-icon :component="Star28Filled" />
                   </template>

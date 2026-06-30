@@ -144,7 +144,7 @@
         [
           h(NAvatar, {
             class: '',
-            src: option.worker.photo,
+            src: option.worker.photo || Utils.noAvailableImage,
             'fallback-src': Utils.noAvailableImage
           }),
           h('div', { class: 'flex flex-col' }, [

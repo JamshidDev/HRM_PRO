@@ -132,7 +132,7 @@
           [
             h(NAvatar, {
               class: 'flex-shrink-0',
-              src: option.photo,
+              src: option.photo || Utils.noAvailableImage,
               'fallback-src': Utils.noAvailableImage,
               objectFit: 'cover'
             }),
