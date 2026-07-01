@@ -70,3 +70,5 @@ Workflow `SERVER_ENV` yo'li: hozir `/var/www/hrm_front/.env` (prod boshqa bo'lsa
 
 > Eski `buildAndDeploy.js` va API-upload (`deploy-ci.js`) olib tashlandi — deploy
 > to'liq self-hosted runner + `rsync` orqali (dev va prod bir xil).
+
+<!-- prod deploy: self-hosted runner faollashtirildi -->
