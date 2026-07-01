@@ -2,6 +2,10 @@
 
 Avtomatik deploy GitHub Actions orqali (`.github/workflows/deploy.yml`).
 
+> **Trigger:** deploy FAQAT `dev`/`main`ga **PR merge** bo'lganda ishlaydi.
+> To'g'ridan-to'g'ri push deploy QILMAYDI. Qo'lda: Actions → **Run workflow**
+> (kerakli branchni tanlab). Shu sababli workflow fayli `dev` va `main`da bo'lishi shart.
+
 | Branch | Server | Build (mode) | Runner | Env manbai | Publish |
 |--------|--------|--------------|--------|-----------|---------|
 | `main` | PROD | `npm run build` (`--mode production`) | `ubuntu-latest` | Secret `PROD_ENV_FILE` | API upload (`/v1/admin/deploy/upload`) |

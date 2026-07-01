@@ -1,25 +1,33 @@
 name: Deploy
 
-# main ga merge/push  -> PROD serverga deploy
-# dev  ga merge/push  -> DEV  serverga deploy
+# Deploy FAQAT PR merge bo'lganda (to'g'ridan-to'g'ri push deploy QILMAYDI).
+#   main ga PR merge -> PROD serverga deploy
+#   dev  ga PR merge -> DEV  serverga deploy
+# workflow_dispatch — Actions'dan qo'lda qayta deploy (tanlangan branch bo'yicha).
 on:
-  push:
+  pull_request:
+    types: [closed]
     branches:
       - main
       - dev
+  workflow_dispatch:
 
 # Bir branchda bir vaqtda faqat bitta deploy ishlaydi
 concurrency:
-  group: deploy-${{ github.ref }}
+  group: deploy-${{ github.event.pull_request.base.ref || github.ref_name }}
   cancel-in-progress: true
 
 jobs:
   deploy-prod:
-    if: github.ref == 'refs/heads/main'
+    if: >-
+      (github.event_name == 'pull_request' && github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'main')
+      || (github.event_name == 'workflow_dispatch' && github.ref_name == 'main')
     runs-on: ubuntu-latest
     environment: production
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.ref || github.ref_name }}
 
       - uses: actions/setup-node@v4
         with:
@@ -49,11 +57,15 @@ jobs:
   # Env GitHub'dan emas — serverdagi mavjud /var/www/hrm_front/.env dan o'qiladi.
   # Hech qanday secret / commit kerak emas.
   deploy-dev:
-    if: github.ref == 'refs/heads/dev'
+    if: >-
+      (github.event_name == 'pull_request' && github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'dev')
+      || (github.event_name == 'workflow_dispatch' && github.ref_name == 'dev')
     runs-on: [self-hosted, dev]
     environment: development
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.ref || github.ref_name }}
 
       - uses: actions/setup-node@v4
         with:
