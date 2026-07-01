@@ -169,7 +169,8 @@
                   class="inline-flex items-center gap-1.5 text-xs font-semibold text-textColor2 bg-surface-ground border border-surface-line rounded-lg px-2.5 py-1"
                 >
                   <n-icon :component="CalendarLtr16Regular" class="text-textColor3" />
-                  {{ item.deadline }}
+                  {{ $t('solveExamPage.deadline') }}:
+                  <b class="text-textColor0">{{ item.deadline }}</b>
                 </span>
                 <span
                   class="inline-flex items-center gap-1.5 text-xs font-semibold text-textColor2 bg-surface-ground border border-surface-line rounded-lg px-2.5 py-1"
