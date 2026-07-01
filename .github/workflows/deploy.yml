@@ -43,6 +43,9 @@ jobs:
           cp "$SERVER_ENV" .env.production
 
       - name: Install dependencies
+        env:
+          # Ba'zi serverlarda IPv6 buzuq → npm ci osilib qoladi. IPv4 birinchi.
+          NODE_OPTIONS: --dns-result-order=ipv4first
         run: npm ci --no-audit --no-fund --prefer-offline
 
       - name: Build (production)
@@ -90,6 +93,9 @@ jobs:
           cp "$SERVER_ENV" .env.development
 
       - name: Install dependencies
+        env:
+          # Ba'zi serverlarda IPv6 buzuq → npm ci osilib qoladi. IPv4 birinchi.
+          NODE_OPTIONS: --dns-result-order=ipv4first
         run: npm ci --no-audit --no-fund --prefer-offline
 
       - name: Build (development)
