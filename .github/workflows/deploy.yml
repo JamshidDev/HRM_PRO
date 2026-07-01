@@ -43,7 +43,7 @@ jobs:
           cp "$SERVER_ENV" .env.production
 
       - name: Install dependencies
-        run: npm ci
+        run: npm ci --no-audit --no-fund --prefer-offline
 
       - name: Build (production)
         run: npm run build
@@ -90,7 +90,7 @@ jobs:
           cp "$SERVER_ENV" .env.development
 
       - name: Install dependencies
-        run: npm ci
+        run: npm ci --no-audit --no-fund --prefer-offline
 
       - name: Build (development)
         run: npm run build:dev
