@@ -1,6 +1,7 @@
 <script setup>
   import { UIModal } from '@/components/index.js'
   import { useVacancyStore } from '@/store/modules/index.js'
+  import Utils from '@/utils/Utils.js'
   import { ClipboardTask20Regular } from '@vicons/fluent'
 
   const store = useVacancyStore()
@@ -25,7 +26,7 @@
 
       <!-- User card -->
       <div v-if="user" class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-surface-50 border border-surface-line">
-        <n-avatar :src="user.photo" :size="32" round object-fit="cover" class="shrink-0 border border-surface-line" />
+        <n-avatar :src="user.photo || Utils.noAvailableImage" :fallback-src="Utils.noAvailableImage" :size="32" round object-fit="cover" class="shrink-0 border border-surface-line" />
         <div class="flex flex-col min-w-0">
           <span class="text-sm font-semibold text-textColor0 leading-tight truncate">
             {{ user.last_name }} {{ user.first_name }} {{ user.middle_name }}

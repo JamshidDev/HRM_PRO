@@ -13,6 +13,7 @@
         :id="`question-${idx + 1}`"
         :key="idx"
         :question="question"
+        :number="idx + 1"
         class="shrink-0"
       />
       <NoDataPicture v-if="store.questions.length === 0 && !store.loading" />

@@ -1,0 +1,99 @@
+name: Deploy
+
+# Deploy FAQAT PR merge bo'lganda (to'g'ridan-to'g'ri push deploy QILMAYDI).
+#   main ga PR merge -> PROD serverga deploy
+#   dev  ga PR merge -> DEV  serverga deploy
+# workflow_dispatch — Actions'dan qo'lda qayta deploy (tanlangan branch bo'yicha).
+on:
+  pull_request:
+    types: [closed]
+    branches:
+      - main
+      - dev
+  workflow_dispatch:
+
+# Bir branchda bir vaqtda faqat bitta deploy ishlaydi
+concurrency:
+  group: deploy-${{ github.event.pull_request.base.ref || github.ref_name }}
+  cancel-in-progress: true
+
+jobs:
+  deploy-prod:
+    if: >-
+      (github.event_name == 'pull_request' && github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'main')
+      || (github.event_name == 'workflow_dispatch' && github.ref_name == 'main')
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.ref || github.ref_name }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      # Prod ubuntu-latest'da build bo'ladi (server fayli yo'q) → env Secret'dan.
+      - name: Create .env.production
+        env:
+          ENV_FILE: ${{ secrets.PROD_ENV_FILE }}
+        run: printf '%s\n' "$ENV_FILE" > .env.production
+
+      - name: Build (production)
+        run: npm run build
+
+      # Deploy config (DEPLOY_API_URL/LOGIN/PASSWORD) .env.production ichida — deploy-ci.js o'qiydi.
+      - name: Deploy to production server
+        run: npm run deploy:ci
+
+  # DEV: dev serverdagi self-hosted runnerda build + publish.
+  # Env GitHub'dan emas — serverdagi mavjud /var/www/hrm_front/.env dan o'qiladi.
+  # Hech qanday secret / commit kerak emas.
+  deploy-dev:
+    if: >-
+      (github.event_name == 'pull_request' && github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'dev')
+      || (github.event_name == 'workflow_dispatch' && github.ref_name == 'dev')
+    runs-on: [self-hosted, dev]
+    environment: development
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.ref || github.ref_name }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      # Dev env — serverdagi haqiqiy .env fayldan (git'ga tushmaydi).
+      - name: Use dev server env file
+        env:
+          SERVER_ENV: /var/www/hrm_front/.env
+        run: |
+          test -f "$SERVER_ENV" || { echo "::error::$SERVER_ENV topilmadi"; exit 1; }
+          cp "$SERVER_ENV" .env.development
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build (development)
+        run: npm run build:dev
+
+      # Deploy target ham env'dan (server .env → .env.development) — GitHub Variable kerak emas.
+      # Serverdagi /var/www/hrm_front/.env ichida: DEPLOY_PATH=/var/www/hrm_front/dist
+      - name: Publish to web root
+        run: |
+          TARGET=$(grep -E '^[[:space:]]*DEPLOY_PATH[[:space:]]*=' .env.development | tail -1 | cut -d= -f2- | tr -d '"'\'' ')
+          if [ -z "$TARGET" ]; then
+            echo "::error::DEPLOY_PATH .env ichida yo'q (server /var/www/hrm_front/.env ga qo'shing)" && exit 1
+          fi
+          case "$TARGET" in
+            /|/var/www|/var/www/|/home|/root|/etc*|/usr*)
+              echo "::error::DEPLOY_PATH ($TARGET) xavfli — alohida frontend papka bo'lsin" && exit 1 ;;
+          esac
+          test -d "$TARGET" || { echo "::error::$TARGET papkasi yo'q"; exit 1; }
+          rsync -a --delete dist/ "$TARGET"/

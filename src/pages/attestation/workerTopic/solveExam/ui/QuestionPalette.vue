@@ -12,36 +12,102 @@
   })
 
   const currentIndex = ref(0)
-  let observer = null
+  let root = null
+  let rafId = null
+  let locked = false
 
   const answeredCount = computed(() => props.questions.filter((q) => !!q.result).length)
 
-  const setupObserver = () => {
-    if (observer) observer.disconnect()
-    const root = props.rootSelector ? document.querySelector(props.rootSelector) : null
-    observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const idx = Number(entry.target.id.replace('question-', '')) - 1
-            if (!Number.isNaN(idx)) currentIndex.value = idx
-          }
-        })
-      },
-      { root, rootMargin: '-45% 0px -45% 0px', threshold: 0 }
-    )
-    props.questions.forEach((_, idx) => {
-      const el = document.getElementById(`question-${idx + 1}`)
-      if (el) observer.observe(el)
+  const getRoot = () => (props.rootSelector ? document.querySelector(props.rootSelector) : null)
+
+  // Scroll-spy: chekkalarni (eng yuqori/eng past) ham hisobga oladi, shu sababli
+  // birinchi va oxirgi savol ham to'g'ri aktiv bo'ladi.
+  const updateActive = () => {
+    if (!root) return
+    const total = props.questions.length
+    if (!total) return
+
+    const { scrollTop, scrollHeight, clientHeight } = root
+
+    // Tepaga to'liq scroll qilinganda → birinchi savol
+    if (scrollTop <= 4) {
+      currentIndex.value = 0
+      return
+    }
+    // Pastga to'liq scroll qilinganda → oxirgi savol
+    if (scrollTop + clientHeight >= scrollHeight - 4) {
+      currentIndex.value = total - 1
+      return
+    }
+
+    // Aks holda: tepa qismdagi mos chiziqdan yuqorida boshlangan eng oxirgi savol.
+    // Anchor orqali o'tilganda savol tepaga scroll qilinadi, shu sababli markaz emas,
+    // tepa chiziq olinadi — aks holda aktiv bittaga siljib ketadi.
+    const refLine = root.getBoundingClientRect().top + 32
+    let active = 0
+    for (let i = 0; i < total; i++) {
+      const el = document.getElementById(`question-${i + 1}`)
+      if (!el) continue
+      if (el.getBoundingClientRect().top - refLine <= 0) {
+        active = i
+      } else {
+        break
+      }
+    }
+    currentIndex.value = active
+  }
+
+  const onScroll = () => {
+    // Palitradan bosilgan bo'lsa (locked), foydalanuvchi o'zi scroll qilguncha
+    // spy aralashmaydi — aks holda oxirgi savollarda (tail) aktiv siljib ketadi.
+    if (locked || rafId) return
+    rafId = requestAnimationFrame(() => {
+      rafId = null
+      updateActive()
     })
   }
 
-  onMounted(() => nextTick(setupObserver))
+  // Palitradagi raqam bosilganda o'sha savolni darhol aktiv qilamiz va spy'ni qulflaymiz
+  const onPaletteClick = (idx) => {
+    currentIndex.value = idx
+    locked = true
+  }
+
+  // Foydalanuvchi o'zi scroll qilsa (wheel/touch), qulfni ochamiz
+  const unlock = () => {
+    if (!locked) return
+    locked = false
+    updateActive()
+  }
+
+  const bindRoot = (el) => {
+    el.addEventListener('scroll', onScroll, { passive: true })
+    el.addEventListener('wheel', unlock, { passive: true })
+    el.addEventListener('touchmove', unlock, { passive: true })
+  }
+  const unbindRoot = (el) => {
+    el.removeEventListener('scroll', onScroll)
+    el.removeEventListener('wheel', unlock)
+    el.removeEventListener('touchmove', unlock)
+  }
+
+  const setupSpy = () => {
+    if (root) unbindRoot(root)
+    root = getRoot()
+    if (!root) return
+    bindRoot(root)
+    updateActive()
+  }
+
+  onMounted(() => nextTick(setupSpy))
   watch(
     () => props.questions.length,
-    () => nextTick(setupObserver)
+    () => nextTick(setupSpy)
   )
-  onBeforeUnmount(() => observer && observer.disconnect())
+  onBeforeUnmount(() => {
+    if (root) unbindRoot(root)
+    if (rafId) cancelAnimationFrame(rafId)
+  })
 </script>
 
 <template>
@@ -59,6 +125,7 @@
           v-for="(question, idx) in questions"
           :key="idx"
           :href="`#question-${idx + 1}`"
+          @click="onPaletteClick(idx)"
           class="aspect-square flex justify-center items-center text-sm font-semibold rounded-lg border transition-colors"
           :class="
             !!question.result

@@ -1,7 +1,7 @@
 <script setup>
   import { useMonthReportStore } from '@/store/modules/index.js'
   import { UIYearMonth } from '@/components/index.js'
-  import { useAppSetting } from '@/utils/index.js'
+  import { useAppSetting, Utils } from '@/utils/index.js'
   import {
     ArrowCircleRight16Filled,
     ArrowCircleLeft20Filled,
@@ -88,6 +88,7 @@
                         <img
                           class="w-full rounded-lg border border-surface-line"
                           :src="photoUrl"
+                          @error="Utils.onImgError"
                           alt="no photo"
                         />
                       </div>
@@ -135,6 +136,7 @@
                           <img
                             class="w-full rounded-lg border border-surface-line"
                             :src="photoUrl"
+                            @error="Utils.onImgError"
                             alt="no photo"
                           />
                         </div>

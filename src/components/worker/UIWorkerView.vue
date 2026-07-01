@@ -161,7 +161,7 @@
                       :key="idx"
                       class="hover:scale-90 transition-all rounded-lg"
                     >
-                      <img class="w-full" :src="item.photo" alt="worker image" />
+                      <img class="w-full" :src="item.photo || Utils.noAvailableImage" @error="Utils.onImgError" alt="worker image" />
                     </n-carousel-item>
                   </template>
                   <template v-else>

@@ -3,6 +3,7 @@
   import { SuperSelect, UIPageFilter, UISelect } from '@components'
   import Utils from '@utils/Utils.js'
   import { useRoute } from 'vue-router'
+  import { DocumentTable24Regular } from '@vicons/fluent'
 
   const store = useLmsCertificateStore()
   const componentStore = useComponentStore()
@@ -190,6 +191,21 @@
           @update:value="filterEvent"
         />
       </div>
+    </template>
+    <template #filterAction>
+      <n-button
+        v-fly-upload
+        type="info"
+        :loading="store.downloadLoading || store.loading"
+        @click="store._downloadReport()"
+      >
+        <template #icon>
+          <n-icon size="24">
+            <DocumentTable24Regular />
+          </n-icon>
+        </template>
+        {{ $t('content.report') }}
+      </n-button>
     </template>
   </UIPageFilter>
 </template>

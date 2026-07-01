@@ -31,11 +31,11 @@
         <n-tooltip>
           <template #trigger>
             <n-avatar
-              lazy
               round
               size="large"
               class="ui__user-group z-0"
               :src="photo || useAppSetting.noAvailableImage"
+              :fallback-src="useAppSetting.noAvailableImage"
               @click="onOpen(photo)"
             />
           </template>
