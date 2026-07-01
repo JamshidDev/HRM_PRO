@@ -1,0 +1,107 @@
+name: Deploy
+
+# main ga merge/push  -> PROD serverga deploy
+# dev  ga merge/push  -> DEV  serverga deploy
+on:
+  push:
+    branches:
+      - main
+      - dev
+
+# Bir branchda bir vaqtda faqat bitta deploy ishlaydi
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  deploy-prod:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Create .env.production
+        env:
+          ENV_FILE: ${{ secrets.PROD_ENV_FILE }}
+        run: printf '%s\n' "$ENV_FILE" > .env.production
+
+      - name: Build (production)
+        run: npm run build
+
+      - name: Deploy to production server
+        env:
+          DEPLOY_API_URL: ${{ secrets.PROD_DEPLOY_API_URL }}
+          DEPLOY_LOGIN: ${{ secrets.PROD_DEPLOY_LOGIN }}
+          DEPLOY_PASSWORD: ${{ secrets.PROD_DEPLOY_PASSWORD }}
+        run: npm run deploy:ci
+
+  # DEV = 2 bosqich:
+  #  1) build-dev  — GitHub runnerda (ubuntu-latest) build qilinadi (dev server diski to'la).
+  #  2) deploy-dev — dev serverdagi self-hosted runner faqat tayyor dist/ ni rsync qiladi.
+  # Shunday qilib serverda hech narsa build qilinmaydi, sudo ham kerak emas.
+  build-dev:
+    if: github.ref == 'refs/heads/dev'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Create .env.development
+        env:
+          ENV_FILE: ${{ secrets.DEV_ENV_FILE }}
+        run: printf '%s\n' "$ENV_FILE" > .env.development
+
+      - name: Build (development)
+        run: npm run build:dev
+
+      - name: Upload dist artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist-dev
+          path: dist/
+          retention-days: 1
+
+  deploy-dev:
+    needs: build-dev
+    if: github.ref == 'refs/heads/dev'
+    runs-on: [self-hosted, dev]
+    environment: development
+    steps:
+      - name: Download dist artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: dist-dev
+          path: dist
+
+      # Tayyor dist/ ni dev serverning web-root papkasiga nusxalaymiz.
+      # DEV_DEPLOY_PATH — repo Variables (masalan: /var/www/hrm_front).
+      # deploy user shu papkaga yozish huquqiga ega (build serverda emas).
+      - name: Publish to web root
+        env:
+          TARGET: ${{ vars.DEV_DEPLOY_PATH }}
+        run: |
+          if [ -z "$TARGET" ]; then
+            echo "::error::DEV_DEPLOY_PATH variable is not set" && exit 1
+          fi
+          case "$TARGET" in
+            /|/var/www|/var/www/|/home|/root|/etc*|/usr*)
+              echo "::error::DEV_DEPLOY_PATH ($TARGET) xavfli — alohida frontend papka bo'lsin" && exit 1 ;;
+          esac
+          test -d "$TARGET" || { echo "::error::$TARGET papkasi yo'q"; exit 1; }
+          rsync -a --delete dist/ "$TARGET"/
