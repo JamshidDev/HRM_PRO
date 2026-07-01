@@ -45,6 +45,7 @@
           <img
             v-if="store.payload.photo"
             :src="store.payload.photo"
+            @error="Utils.onImgError"
             alt="photo"
             class="rounded max-w-full h-[360px]"
             style="object-fit: contain"

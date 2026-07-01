@@ -79,6 +79,7 @@ const getTimelineType = (status, success) => {
                 >
                   <n-image
                     :src="photo"
+                    :fallback-src="Utils.noAvailableImage"
                     class="w-full h-full object-cover"
                     :previewed-img-props="{ style: { maxWidth: '90vw', maxHeight: '90vh' } }"
                   />

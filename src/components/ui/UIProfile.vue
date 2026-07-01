@@ -108,9 +108,10 @@
         </div>
       </div>
       <n-avatar
-        class="cursor-pointer"
+        class="cursor-pointer shrink-0"
         round
         size="large"
+        object-fit="cover"
         :src="accountStore.account?.worker?.photo || useAppSetting.noAvailableImage"
         :fallback-src="useAppSetting.noAvailableImage"
       />
@@ -118,4 +119,9 @@
   </n-dropdown>
 </template>
 
-<style scoped></style>
+<style scoped>
+  /* Portret (ID) rasmlarda bosh kesilmasligi uchun kesishni pastdan qilamiz */
+  :deep(.n-avatar img) {
+    object-position: top;
+  }
+</style>

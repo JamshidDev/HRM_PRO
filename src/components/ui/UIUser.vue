@@ -64,7 +64,6 @@
   >
     <n-avatar
       @click.stop="onOpen"
-      lazy
       size="large"
       :round="roundAvatar"
       :src="data?.photo || useAppSetting.noAvailableImage"

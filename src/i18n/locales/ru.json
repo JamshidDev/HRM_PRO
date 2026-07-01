@@ -1391,6 +1391,8 @@
     "leftAttempts": "Оставшиеся попытки",
     "endHead": "Экзамен завершён!",
     "endSub": "Ваш результат",
+    "correctOfTotal": "{correct} из {total} верных",
+    "gradingScale": "Шкала оценки",
     "ip": "IP адрес",
     "wrongAnswer": "Неправильный ответ",
     "notChosen": "Ответ не выбран",

@@ -27,6 +27,7 @@
     <img
       class="rounded-xl w-[110px] h-[150px]"
       :src="avatarSrc"
+      @error="Utils.onImgError"
       :alt="store.account?.worker?.first_name"
     />
 

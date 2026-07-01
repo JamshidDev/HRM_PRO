@@ -60,7 +60,7 @@
       h('div', { class: 'flex items-center gap-2 w-full py-[2px]' }, [
         h(NAvatar, {
           class: 'flex-shrink-0',
-          src: option?.photo,
+          src: option?.photo || useAppSetting.noAvailableImage,
           round: true,
           size: 'small',
           fallbackSrc: useAppSetting.noAvailableImage

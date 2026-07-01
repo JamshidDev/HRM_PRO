@@ -1386,6 +1386,8 @@
     "leftAttempts": "Remaining attempts",
     "endHead": "Exam finished!",
     "endSub": "Your score",
+    "correctOfTotal": "{correct} of {total} correct",
+    "gradingScale": "Grading scale",
     "ip": "IP address",
     "wrongAnswer": "Wrong answer",
     "notChosen": "No answer selected",

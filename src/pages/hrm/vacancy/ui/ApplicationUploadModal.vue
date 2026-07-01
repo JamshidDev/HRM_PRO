@@ -1,6 +1,7 @@
 <script setup>
   import { UIModal } from '@/components/index.js'
   import { useVacancyStore } from '@/store/modules/index.js'
+  import Utils from '@/utils/Utils.js'
   import { ArrowUpload20Regular, Document20Regular, Delete20Regular, Info20Regular } from '@vicons/fluent'
   import i18n from '@/i18n/index.js'
 
@@ -58,7 +59,8 @@
       <!-- User + level card -->
       <div v-if="user" class="user-card">
         <n-avatar
-          :src="user.photo"
+          :src="user.photo || Utils.noAvailableImage"
+          :fallback-src="Utils.noAvailableImage"
           :size="36"
           round
           object-fit="cover"

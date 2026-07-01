@@ -56,7 +56,6 @@
               >
                 <n-avatar
                   circle
-                  lazy
                   size="large"
                   :src="item?.teacher?.worker?.photo || useAppSetting.noAvailableImage"
                   :fallback-src="Utils.noAvailableImage"

@@ -147,7 +147,7 @@ const renderAvatarLabel = (option) => {
       [
         h(NAvatar, {
           class: 'flex-shrink-0',
-          src: option.photo,
+          src: option.photo || Utils.noAvailableImage,
           'fallback-src': Utils.noAvailableImage
         }),
         h('div', { class: 'flex flex-col' }, [

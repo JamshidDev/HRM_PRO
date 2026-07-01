@@ -26,6 +26,7 @@
       <div v-if="workerDetail && examDetail" class="flex flex-col gap-4">
         <img
           :src="workerDetail.user.worker.photo || useAppSetting.noAvailableImage"
+          @error="Utils.onImgError"
           alt="img"
           class="w-full h-[220px] object-contain rounded-lg border border-surface-line bg-surface-ground"
         />
