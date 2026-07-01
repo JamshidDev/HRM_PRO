@@ -37,7 +37,7 @@ jobs:
       # Prod env — prod serverdagi haqiqiy .env fayldan (git'ga tushmaydi).
       - name: Use prod server env file
         env:
-          SERVER_ENV: /var/www/hrm_front/.env
+          SERVER_ENV: /var/www/frontend/.env
         run: |
           test -f "$SERVER_ENV" || { echo "::error::$SERVER_ENV topilmadi"; exit 1; }
           cp "$SERVER_ENV" .env.production
