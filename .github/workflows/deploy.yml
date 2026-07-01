@@ -29,6 +29,7 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      # Prod ubuntu-latest'da build bo'ladi (server fayli yo'q) → env Secret'dan.
       - name: Create .env.production
         env:
           ENV_FILE: ${{ secrets.PROD_ENV_FILE }}
@@ -44,13 +45,13 @@ jobs:
           DEPLOY_PASSWORD: ${{ secrets.PROD_DEPLOY_PASSWORD }}
         run: npm run deploy:ci
 
-  # DEV = 2 bosqich:
-  #  1) build-dev  — GitHub runnerda (ubuntu-latest) build qilinadi (dev server diski to'la).
-  #  2) deploy-dev — dev serverdagi self-hosted runner faqat tayyor dist/ ni rsync qiladi.
-  # Shunday qilib serverda hech narsa build qilinmaydi, sudo ham kerak emas.
-  build-dev:
+  # DEV: dev serverdagi self-hosted runnerda build + publish.
+  # Env GitHub'dan emas — serverdagi mavjud /var/www/hrm_front/.env dan o'qiladi.
+  # Hech qanday secret / commit kerak emas.
+  deploy-dev:
     if: github.ref == 'refs/heads/dev'
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, dev]
+    environment: development
     steps:
       - uses: actions/checkout@v4
 
@@ -59,39 +60,21 @@ jobs:
           node-version: 20
           cache: npm
 
+      # Dev env — serverdagi haqiqiy .env fayldan (git'ga tushmaydi).
+      - name: Use dev server env file
+        env:
+          SERVER_ENV: /var/www/hrm_front/.env
+        run: |
+          test -f "$SERVER_ENV" || { echo "::error::$SERVER_ENV topilmadi"; exit 1; }
+          cp "$SERVER_ENV" .env.development
+
       - name: Install dependencies
         run: npm ci
-
-      - name: Create .env.development
-        env:
-          ENV_FILE: ${{ secrets.DEV_ENV_FILE }}
-        run: printf '%s\n' "$ENV_FILE" > .env.development
 
       - name: Build (development)
         run: npm run build:dev
 
-      - name: Upload dist artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: dist-dev
-          path: dist/
-          retention-days: 1
-
-  deploy-dev:
-    needs: build-dev
-    if: github.ref == 'refs/heads/dev'
-    runs-on: [self-hosted, dev]
-    environment: development
-    steps:
-      - name: Download dist artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: dist-dev
-          path: dist
-
-      # Tayyor dist/ ni dev serverning web-root papkasiga nusxalaymiz.
-      # DEV_DEPLOY_PATH — repo Variables (masalan: /var/www/hrm_front).
-      # deploy user shu papkaga yozish huquqiga ega (build serverda emas).
+      # Tayyor dist/ ni web-root papkaga nusxalaymiz (deploy user owns qiladi).
       - name: Publish to web root
         env:
           TARGET: ${{ vars.DEV_DEPLOY_PATH }}

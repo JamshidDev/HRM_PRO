@@ -2,31 +2,32 @@
 
 Avtomatik deploy GitHub Actions orqali (`.github/workflows/deploy.yml`).
 
-| Branch | Server | Build (mode) | Runner | Publish |
-|--------|--------|--------------|--------|---------|
-| `main` | PROD   | `npm run build` (`--mode production` → `.env.production`) | `ubuntu-latest` | API upload (`/v1/admin/deploy/upload`) |
-| `dev`  | DEV    | `npm run build:dev` (`--mode development` → `.env.development`) | build: `ubuntu-latest` → publish: **self-hosted** (dev server) | `dist/` → web-root (`rsync`) |
+| Branch | Server | Build (mode) | Runner | Env manbai | Publish |
+|--------|--------|--------------|--------|-----------|---------|
+| `main` | PROD | `npm run build` (`--mode production`) | `ubuntu-latest` | Secret `PROD_ENV_FILE` | API upload (`/v1/admin/deploy/upload`) |
+| `dev`  | DEV  | `npm run build:dev` (`--mode development`) | **self-hosted** (dev server) | serverdagi `/var/www/hrm_front/.env` | `dist/` → web-root (`rsync`) |
 
 ## ENV konventsiyasi
 
 Barcha `.env*` fayllar `.gitignore`da. Vite mode bo'yicha yuklaydi:
 
-| Fayl | Kim uchun | Ishlatilishi |
-|------|-----------|-------------|
-| `.env.local` | LOCAL developer | `npm run dev` (faqat mahalliy, git'da yo'q) |
-| `.env.development` | DEV server | `npm run build:dev` → `dev` branch → `DEV_ENV_FILE` secret |
-| `.env.production` | PROD server | `npm run build` → `main` branch → `PROD_ENV_FILE` secret |
+| Fayl | Kim uchun | Mode |
+|------|-----------|------|
+| `.env.local` | LOCAL developer (`npm run local`) | local |
+| `.env.development` | DEV server (`npm run build:dev`) | development |
+| `.env.production` | PROD server (`npm run build`) | production |
 
-CI build vaqtida `.env.*` faylini mos Secret'dan yaratadi.
+`isModeDev` (menyularni permission'siz ochish) `import.meta.env.MODE` bo'yicha:
+production → yopiq, development/local → ochiq (`src/main.js`).
 
 ---
 
-## DEV (`dev`) — 2 bosqichli
+## DEV (`dev`) — self-hosted runner (serverda build)
 
-Dev server diski band bo'lgani uchun **build GitHub runnerda**, publish esa dev serverdagi
-self-hosted runner orqali (faqat `rsync`, serverda build yo'q, sudo kerak emas).
+Build ham, publish ham dev serverning O'ZIDA. Env GitHub'dan emas —
+serverdagi mavjud `/var/www/hrm_front/.env` faylidan o'qiladi (commit/secret kerak emas).
 
-### 1. Serverda self-hosted runner o'rnatish
+### 1. Self-hosted runner o'rnatish (bir marta)
 Server terminalida (`deploy` user):
 
 ```bash
@@ -39,31 +40,30 @@ tar xzf runner.tar.gz && rm runner.tar.gz
 # token: GitHub → Settings → Actions → Runners → New self-hosted runner
 ./config.sh --url https://github.com/JamshidDev/HRM_PRO --token <TOKEN> --labels dev --name hrm-dev --unattended
 
-sudo ./svc.sh install deploy
-sudo ./svc.sh start
+sudo ./svc.sh install deploy && sudo ./svc.sh start
 ```
 
-### 2. Repo Variables va Secrets
-`Settings → Secrets and variables → Actions`
+### 2. Repo Variable (Secret kerak EMAS)
+`Settings → Secrets and variables → Actions → Variables`:
 
-**Variables:**
 | Variable | Qiymat |
 |----------|--------|
 | `DEV_DEPLOY_PATH` | `/var/www/hrm_front/dist` (nginx root) |
 
-**Secrets:**
-| Secret | Qiymat |
-|--------|--------|
-| `DEV_ENV_FILE` | `.env.development` faylining TO'LIQ mazmuni |
-
 ### 3. Serverdagi talablar
-- `deploy` user `DEV_DEPLOY_PATH`ga yozadi (owns qiladi) — sudo kerak emas.
+- `/var/www/hrm_front/.env` mavjud va dev qiymatlar bilan to'ldirilgan (dev env manbai).
+- `deploy` user `DEV_DEPLOY_PATH`ga yozadi (owns) — sudo kerak emas.
 - `rsync` o'rnatilgan (bor).
-- Nginx `DEV_DEPLOY_PATH`ni root qilib xizmat qiladi, SPA uchun `try_files $uri $uri/ /index.html`.
+- Nginx `DEV_DEPLOY_PATH`ni root qiladi, SPA: `try_files $uri $uri/ /index.html`.
+
+> Dev config'ni o'zgartirish: serverdagi `/var/www/hrm_front/.env` ni tahrirlab,
+> `dev` branchga qayta push qiling (yoki Actions'da qayta ishga tushiring).
 
 ---
 
 ## PROD (`main`) — GitHub runner + API upload
+
+Prod `ubuntu-latest`da build bo'ladi, shuning uchun env Secret'dan.
 
 **Secrets:**
 | Secret | Qiymat |
