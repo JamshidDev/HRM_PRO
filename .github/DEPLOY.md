@@ -74,3 +74,5 @@ Workflow `SERVER_ENV` yo'li: hozir `/var/www/hrm_front/.env` (prod boshqa bo'lsa
 <!-- prod deploy: self-hosted runner faollashtirildi -->
 
 <!-- retry: npm ci flags -->
+
+<!-- ipv4 fix retry -->
