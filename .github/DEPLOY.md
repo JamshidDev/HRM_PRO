@@ -47,16 +47,16 @@ tar xzf runner.tar.gz && rm runner.tar.gz
 sudo ./svc.sh install deploy && sudo ./svc.sh start
 ```
 
-### 2. Repo Variable (Secret kerak EMAS)
-`Settings → Secrets and variables → Actions → Variables`:
-
-| Variable | Qiymat |
-|----------|--------|
-| `DEV_DEPLOY_PATH` | `/var/www/hrm_front/dist` (nginx root) |
+### 2. GitHub'da hech narsa qo'shilmaydi
+Deploy target ham env ichida — server `/var/www/hrm_front/.env` fayliga qo'shing:
+```
+DEPLOY_PATH=/var/www/hrm_front/dist
+```
+(Variable ham, Secret ham kerak emas — hammasi shu `.env`da.)
 
 ### 3. Serverdagi talablar
-- `/var/www/hrm_front/.env` mavjud va dev qiymatlar bilan to'ldirilgan (dev env manbai).
-- `deploy` user `DEV_DEPLOY_PATH`ga yozadi (owns) — sudo kerak emas.
+- `/var/www/hrm_front/.env` mavjud: `VITE_*` (build) + `DEPLOY_PATH` (rsync target).
+- `deploy` user `DEPLOY_PATH`ga yozadi (owns) — sudo kerak emas.
 - `rsync` o'rnatilgan (bor).
 - Nginx `DEV_DEPLOY_PATH`ni root qiladi, SPA: `try_files $uri $uri/ /index.html`.
 

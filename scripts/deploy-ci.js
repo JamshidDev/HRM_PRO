@@ -1,16 +1,17 @@
 /**
- * CI deploy script.
+ * CI deploy script (PROD).
  *
  * dist/ papkasini zip qiladi, serverga login qiladi va deploy upload endpointiga yuklaydi.
- * Barcha maxfiy ma'lumotlar ENV orqali uzatiladi (GitHub Secrets):
+ * Deploy konfiguratsiyasi ENV faylidan (.env.production) o'qiladi — alohida secret emas:
  *   DEPLOY_API_URL  — masalan: https://hrm-api.railway.uz/api
  *   DEPLOY_LOGIN    — login (phone)
  *   DEPLOY_PASSWORD — parol
+ * (process.env ustuvor; fayl faqat yetishmaganini to'ldiradi.)
  *
- * Build (npm run build / build:dev) ALOHIDA, bu skriptdan OLDIN bajariladi.
+ * Build (npm run build) ALOHIDA, bu skriptdan OLDIN bajariladi.
  * Xato bo'lsa process.exit(1) — CI step fail bo'ladi.
  */
-import { createWriteStream, createReadStream, existsSync, unlinkSync } from 'fs'
+import { createWriteStream, createReadStream, existsSync, unlinkSync, readFileSync } from 'fs'
 import archiver from 'archiver'
 import axios from 'axios'
 import FormData from 'form-data'
@@ -20,6 +21,23 @@ import { fileURLToPath } from 'url'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 const root = path.resolve(__dirname, '..')
+
+// .env faylidan DEPLOY_* larni yuklash (process.env'da bo'lmaganini).
+// Fayl: DEPLOY_ENV_FILE yoki default .env.production
+function loadEnvFile(file) {
+  if (!existsSync(file)) return
+  for (const raw of readFileSync(file, 'utf8').split('\n')) {
+    const line = raw.trim()
+    if (!line || line.startsWith('#')) continue
+    const eq = line.indexOf('=')
+    if (eq === -1) continue
+    const key = line.slice(0, eq).trim()
+    let val = line.slice(eq + 1).trim().replace(/^["']|["']$/g, '')
+    if (process.env[key] === undefined) process.env[key] = val
+  }
+}
+
+loadEnvFile(path.join(root, process.env.DEPLOY_ENV_FILE || '.env.production'))
 
 const API_URL = process.env.DEPLOY_API_URL
 const LOGIN = process.env.DEPLOY_LOGIN
