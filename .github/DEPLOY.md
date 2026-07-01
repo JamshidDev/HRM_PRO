@@ -72,3 +72,5 @@ Workflow `SERVER_ENV` yo'li: hozir `/var/www/hrm_front/.env` (prod boshqa bo'lsa
 > to'liq self-hosted runner + `rsync` orqali (dev va prod bir xil).
 
 <!-- prod deploy: self-hosted runner faollashtirildi -->
+
+<!-- retry: npm ci flags -->
