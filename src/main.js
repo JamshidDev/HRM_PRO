@@ -37,7 +37,9 @@ app.use(FlyUploadPlugin, {
   storeAction: 'incrementUnReadCount'
 })
 
-if (import.meta.env.VITE_APP_MODE === 'development') {
+// Dev-mode (barcha menyular permission'siz ochiladi) — Vite mode bo'yicha.
+// production => yopiq, development/local => ochiq. Alohida env kerak emas.
+if (import.meta.env.MODE !== 'production') {
   store.isModeDev = true
 }
 

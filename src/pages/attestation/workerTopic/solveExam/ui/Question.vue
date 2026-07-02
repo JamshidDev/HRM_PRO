@@ -45,7 +45,7 @@
         :key="idx"
         type="button"
         :disabled="(store.sendResultLoading && store.questionId === question.id) || !!store.result"
-        class="group flex items-start gap-3 w-full text-left rounded-lg border p-2.5 transition-colors disabled:cursor-not-allowed"
+        class="group flex items-start gap-3 w-full text-left rounded-lg border p-2.5 transition-colors cursor-pointer disabled:cursor-not-allowed"
         :class="
           option.id === question.result
             ? 'border-primary bg-primary/5'

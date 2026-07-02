@@ -105,212 +105,217 @@
 </script>
 
 <template>
-  <div class="w-full min-h-screen login-page-bg flex justify-center items-center text-textColor0">
-    <div class="page-form-content relative overflow-hidden rounded-[20px] bg-no-repeat bg-cover">
-      <div class="absolute top-[20px] right-[20px] z-5">
-        <LangDropdown class="text-white!" />
-      </div>
-
-      <div class="circle-shape circle-shape-1 rounded-full z-2 absolute"></div>
-      <div class="circle-shape circle-shape-4 rounded-full z-2 absolute"></div>
-      <div class="circle-shape circle-shape-2 rounded-full z-2 absolute"></div>
-      <div class="circle-shape circle-shape-3 rounded-full z-2 absolute"></div>
-
-      <div class="w-full flex relative z-3 form-box">
-        <div class="form-text-block flex flex-col">
-          <div class="mt-[20px]">
-            <div class="flex gap-3 items-center">
-              <img
-                :src="useAppSetting.appLogoUrl"
-                alt=" "
-                class="app-logo-element object-center animation-logo"
-              />
-              <span class="text-white form-title font-bold uppercase">{{
-                $t('loginPage.description.title')
-              }}</span>
-            </div>
-            <h1 class="text-white form-subtitle font-semibold uppercase mt-4 mb-4 lg:w-[450px]">
-              {{ $t('loginPage.description.subtitle') }}
-            </h1>
-            <p class="text-white font-semibold mt-2 leading-6 form-description lg:w-[500px]">
-              {{ $t('loginPage.description.text') }}
-            </p>
-          </div>
+  <div class="w-full min-h-screen login-page-bg flex flex-col text-textColor0">
+    <div class="flex-1 flex justify-center items-center w-full min-h-0">
+      <div class="page-form-content relative overflow-hidden rounded-[20px] bg-no-repeat bg-cover">
+        <div class="absolute top-[20px] right-[20px] z-5">
+          <LangDropdown class="text-white!" />
         </div>
-        <div class="form-content-block">
-          <h3 class="leading-[1.2] mt-2 font-bold form-title uppercase pt-[12px]">
-            {{ $t(`loginPage.title`) }}
-          </h3>
-          <p class="mb-2 leading-[1.2] form-description text-textColor2">
-            {{ $t(`loginPage.subtitle`) }}
-          </p>
 
-          <n-form
-            ref="formRef"
-            :rules="validationRules.login"
-            :model="store"
-            class="flex flex-col mt-2"
-            style="--n-item-padding-bottom: 8px"
-          >
-            <n-form-item class="text-textColor2!" :label="$t(`loginPage.phone`)" path="phone">
-              <n-input
-                size="large"
-                name="phone"
-                id="phone"
-                type="text"
-                v-mask="'+998(##)#######'"
-                @keyup.enter="onSubmit"
-                @paste="
-                  (e) => {
-                    let a = e.clipboardData.getData('text').replaceAll(' ', '')
-                    if (a.length > 9) store.phone = ''
-                  }
-                "
-                v-model:value="store.phone"
-              >
-                <template #prefix>
-                  <n-icon class="text-textColor3!" size="24" :component="Call16Filled" />
-                </template>
-              </n-input>
-            </n-form-item>
-            <n-form-item
-              :label="$t(`loginPage.password`)"
-              path="password"
-              class="text-textColor2!"
-              style="--n-item-padding-bottom: 4px"
-            >
-              <n-input
-                size="large"
-                name="password"
-                id="password"
-                type="password"
-                show-password-on="click"
-                :maxlength="60"
-                v-model:value="store.password"
-                @keyup.enter="onSubmit"
-              >
-                <template #prefix>
-                  <n-icon class="text-textColor3!" size="24" :component="LockClosed16Filled" />
-                </template>
+        <div class="circle-shape circle-shape-1 rounded-full z-2 absolute"></div>
+        <div class="circle-shape circle-shape-4 rounded-full z-2 absolute"></div>
+        <div class="circle-shape circle-shape-2 rounded-full z-2 absolute"></div>
+        <div class="circle-shape circle-shape-3 rounded-full z-2 absolute"></div>
 
-                <template #password-visible-icon>
-                  <n-icon :size="20" :component="EyeOff20Filled" />
-                </template>
-                <template #password-invisible-icon>
-                  <n-icon :size="20" :component="Eye24Regular" />
-                </template>
-              </n-input>
-            </n-form-item>
-            <n-form-item
-              :validation-status="captchaError ? 'error' : undefined"
-              :feedback="captchaError ? $t('rules.captchaRequired') : undefined"
-              style="--n-blank-height: 0px; --n-item-padding-bottom: 4px"
-            >
-              <ReCaptcha
-                ref="captchaRef"
-                @update:answer="onCaptchaAnswer"
-                @update:key="onCaptchaKey"
-                @submit="onSubmit"
-              />
-            </n-form-item>
-
-            <p class="text-xs text-center text-textColor2 mt-0 mb-2">
-              {{ $t('loginPage.termsPrefix') }}
-              <a
-                :href="termsUrl"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="hover:underline cursor-pointer font-medium"
-                style="color: #1677ff"
-              >{{ $t('loginPage.termsLink') }}</a>
-              {{ $t('loginPage.termsSuffix') }}
+        <div class="w-full flex relative z-3 form-box">
+          <div class="form-text-block flex flex-col">
+            <div class="mt-[20px]">
+              <div class="flex gap-3 items-center">
+                <img
+                  :src="useAppSetting.appLogoUrl"
+                  alt=" "
+                  class="app-logo-element object-center animation-logo"
+                />
+                <span class="text-white form-title font-bold uppercase">{{
+                  $t('loginPage.description.title')
+                }}</span>
+              </div>
+              <h1 class="text-white form-subtitle font-semibold uppercase mt-4 mb-4 lg:w-[450px]">
+                {{ $t('loginPage.description.subtitle') }}
+              </h1>
+              <p class="text-white font-semibold mt-2 leading-6 form-description lg:w-[500px]">
+                {{ $t('loginPage.description.text') }}
+              </p>
+            </div>
+          </div>
+          <div class="form-content-block">
+            <h3 class="leading-[1.2] mt-2 font-bold form-title uppercase pt-[12px]">
+              {{ $t(`loginPage.title`) }}
+            </h3>
+            <p class="mb-2 leading-[1.2] form-description text-textColor2">
+              {{ $t(`loginPage.subtitle`) }}
             </p>
 
-            <div class="grid">
-              <n-button
-                class="n-button-dark h-[50px]! rounded-2xl! overflow-hidden!"
-                size="large"
-                :loading="store.loading"
-                @click="onSubmit"
-              >
-                {{ $t(`loginPage.login`) }}
-              </n-button>
-              <template v-if="appStore.appConfig.signatureLogin">
-                <n-divider class="my-1!" title-placement="center">{{ $t('content.or') }}</n-divider>
-                <n-button
-                  @click="onSignatureLogin"
+            <n-form
+              ref="formRef"
+              :rules="validationRules.login"
+              :model="store"
+              class="flex flex-col mt-2"
+              style="--n-item-padding-bottom: 8px"
+            >
+              <n-form-item class="text-textColor2!" :label="$t(`loginPage.phone`)" path="phone">
+                <n-input
                   size="large"
-                  class="h-[50px]! rounded-2xl! font-bold! dark-border-button text-textColor1"
+                  name="phone"
+                  id="phone"
+                  type="text"
+                  v-mask="'+998(##)#######'"
+                  @keyup.enter="onSubmit"
+                  @paste="
+                    (e) => {
+                      let a = e.clipboardData.getData('text').replaceAll(' ', '')
+                      if (a.length > 9) store.phone = ''
+                    }
+                  "
+                  v-model:value="store.phone"
                 >
-                  {{ $t(`content.signatureLogin`) }}
-                  <template #icon>
-                    <n-icon class="text-textColor3!" size="24" :component="KeyMultiple20Filled" />
+                  <template #prefix>
+                    <n-icon class="text-textColor3!" size="24" :component="Call16Filled" />
                   </template>
-                </n-button>
-
-                <div
-                  class="flex flex-col border border-surface-line rounded-2xl  p-2 store-container bg-surface-ground mt-3!"
+                </n-input>
+              </n-form-item>
+              <n-form-item
+                :label="$t(`loginPage.password`)"
+                path="password"
+                class="text-textColor2!"
+                style="--n-item-padding-bottom: 4px"
+              >
+                <n-input
+                  size="large"
+                  name="password"
+                  id="password"
+                  type="password"
+                  show-password-on="click"
+                  :maxlength="60"
+                  v-model:value="store.password"
+                  @keyup.enter="onSubmit"
                 >
-                  <!-- <p class="text-textColor0 font-semibold text-center">
+                  <template #prefix>
+                    <n-icon class="text-textColor3!" size="24" :component="LockClosed16Filled" />
+                  </template>
+
+                  <template #password-visible-icon>
+                    <n-icon :size="20" :component="EyeOff20Filled" />
+                  </template>
+                  <template #password-invisible-icon>
+                    <n-icon :size="20" :component="Eye24Regular" />
+                  </template>
+                </n-input>
+              </n-form-item>
+              <n-form-item
+                :validation-status="captchaError ? 'error' : undefined"
+                :feedback="captchaError ? $t('rules.captchaRequired') : undefined"
+                style="--n-blank-height: 0px; --n-item-padding-bottom: 4px"
+              >
+                <ReCaptcha
+                  ref="captchaRef"
+                  @update:answer="onCaptchaAnswer"
+                  @update:key="onCaptchaKey"
+                  @submit="onSubmit"
+                />
+              </n-form-item>
+
+              <p class="text-xs text-center text-textColor2 mt-0 mb-2">
+                {{ $t('loginPage.termsPrefix') }}
+                <a
+                  :href="termsUrl"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="hover:underline cursor-pointer font-medium"
+                  style="color: #1677ff"
+                  >{{ $t('loginPage.termsLink') }}</a
+                >
+                {{ $t('loginPage.termsSuffix') }}
+              </p>
+
+              <div class="grid">
+                <n-button
+                  class="n-button-dark h-[50px]! rounded-2xl! overflow-hidden!"
+                  size="large"
+                  :loading="store.loading"
+                  @click="onSubmit"
+                >
+                  {{ $t(`loginPage.login`) }}
+                </n-button>
+                <template v-if="appStore.appConfig.signatureLogin">
+                  <n-divider class="my-1!" title-placement="center">{{
+                    $t('content.or')
+                  }}</n-divider>
+                  <n-button
+                    @click="onSignatureLogin"
+                    size="large"
+                    class="h-[50px]! rounded-2xl! font-bold! dark-border-button text-textColor1"
+                  >
+                    {{ $t(`content.signatureLogin`) }}
+                    <template #icon>
+                      <n-icon class="text-textColor3!" size="24" :component="KeyMultiple20Filled" />
+                    </template>
+                  </n-button>
+
+                  <div
+                    class="flex flex-col border border-surface-line rounded-2xl p-2 store-container bg-surface-ground mt-3!"
+                  >
+                    <!-- <p class="text-textColor0 font-semibold text-center">
                     {{ $t('content.downloadApp') }}
                   </p> -->
-                  <div class="flex items-center mx-auto">
-                    <n-tooltip placement="top" trigger="hover">
-                      <template #trigger>
-                        <div>
-                          <a
-                            :href="appStoreUrl"
-                            target="_blank"
-                            class="flex items-center justify-center border border-surface-line p-1 gap-1 cursor-pointer rounded-lg bg-surface-section"
-                          >
-                            <n-icon size="32" color="#019ff9">
-                              <AppStore24Filled />
-                            </n-icon>
-                            <div>
-                              <p class="text-[12px] leading-[1.2] text-secondary">
-                                Download on the
-                              </p>
-                              <p class="font-semibold leading-[1.2]">App Store</p>
-                            </div>
-                          </a>
-                        </div>
-                      </template>
-                      <span>{{ $t('content.appStore') }}</span>
-                    </n-tooltip>
-                    <n-tooltip placement="top" trigger="hover">
-                      <template #trigger>
-                        <div>
-                          <a
-                            target="_blank"
-                            :href="playMarketUrl"
-                            class="w-full flex bg-surface-section items-center justify-center gap-2 ml-4 cursor-pointer border border-surface-line p-1 rounded-lg"
-                          >
-                            <img
-                              class="h-[30px]"
-                              src="@/assets/images/svg/playMarket.svg"
-                              alt=""
-                            />
+                    <div class="flex items-center mx-auto">
+                      <n-tooltip placement="top" trigger="hover">
+                        <template #trigger>
+                          <div>
+                            <a
+                              :href="appStoreUrl"
+                              target="_blank"
+                              class="flex items-center justify-center border border-surface-line p-1 gap-1 cursor-pointer rounded-lg bg-surface-section"
+                            >
+                              <n-icon size="32" color="#019ff9">
+                                <AppStore24Filled />
+                              </n-icon>
+                              <div>
+                                <p class="text-[12px] leading-[1.2] text-secondary">
+                                  Download on the
+                                </p>
+                                <p class="font-semibold leading-[1.2]">App Store</p>
+                              </div>
+                            </a>
+                          </div>
+                        </template>
+                        <span>{{ $t('content.appStore') }}</span>
+                      </n-tooltip>
+                      <n-tooltip placement="top" trigger="hover">
+                        <template #trigger>
+                          <div>
+                            <a
+                              target="_blank"
+                              :href="playMarketUrl"
+                              class="w-full flex bg-surface-section items-center justify-center gap-2 ml-4 cursor-pointer border border-surface-line p-1 rounded-lg"
+                            >
+                              <img
+                                class="h-[30px]"
+                                src="@/assets/images/svg/playMarket.svg"
+                                alt=""
+                              />
 
-                            <div>
-                              <p class="text-[12px] leading-[1.2] text-secondary">Get it on</p>
-                              <p class="font-semibold leading-[1.2]">Google Play</p>
-                            </div>
-                          </a>
-                        </div>
-                      </template>
-                      <span>{{ $t('content.googlePlay') }}</span>
-                    </n-tooltip>
+                              <div>
+                                <p class="text-[12px] leading-[1.2] text-secondary">Get it on</p>
+                                <p class="font-semibold leading-[1.2]">Google Play</p>
+                              </div>
+                            </a>
+                          </div>
+                        </template>
+                        <span>{{ $t('content.googlePlay') }}</span>
+                      </n-tooltip>
+                    </div>
                   </div>
-                </div>
-              </template>
-            </div>
-          </n-form>
+                </template>
+              </div>
+            </n-form>
+          </div>
         </div>
       </div>
-
-      <!-- Mualliflik huquqi -->
-      <p class="login-copyright">{{ $t('loginPage.copyright') }}</p>
     </div>
+
+    <!-- Mualliflik huquqi (card tashqarisida, sahifa pastida) -->
+    <p class="login-copyright">{{ $t('loginPage.copyright') }}</p>
   </div>
 </template>
 
@@ -320,23 +325,13 @@
   }
 
   .login-copyright {
-    position: absolute;
-    bottom: 12px;
-    right: 0;
-    width: 50%;
-    z-index: 3;
-    padding: 0 16px;
+    flex-shrink: 0;
+    width: 100%;
+    padding: 12px 16px;
     text-align: center;
     font-size: 12px;
     line-height: 1.4;
-    color: var(--color-textColor3);
-  }
-
-  /* matn bloki yashiringan paytda (mobil) footer to'liq kenglikda */
-  @media only screen and (max-width: 700px) {
-    .login-copyright {
-      width: 100%;
-    }
+    color: rgba(255, 255, 255, 0.75);
   }
 
   .circle-shape {

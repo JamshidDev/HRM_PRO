@@ -3,6 +3,7 @@
   import { UICropper } from '@/components/index.js'
   import { v4 as uuidv4 } from 'uuid'
   import validationRules from '@/utils/validationRules.js'
+  import Utils from '@/utils/Utils.js'
 
   const images = defineModel('images', {
     required: true,
@@ -78,7 +79,12 @@
             class="text-xs bg-primary text-white px-1 absolute z-[100] top-[4px] right-[2px] rounded"
             >Asosiy rasm</span
           >
-          <img class="w-full h-full object-cover" :src="img.base64" alt="" />
+          <img
+            class="w-full h-full object-cover"
+            :src="img.base64 || Utils.noAvailableImage"
+            @error="Utils.onImgError"
+            alt=""
+          />
           <div
             v-if="images.length > 1"
             class="photo__delete-btn w-[30px] h-[30px] rounded-full bg-danger flex justify-center items-center absolute bottom-[-30px] transition-all z-10 left-1/2 translate-x-[-50%]"

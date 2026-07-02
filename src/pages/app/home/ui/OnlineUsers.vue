@@ -1,7 +1,7 @@
 <script setup>
   import { useSocketStore } from '@/store/modules/index.js'
   import ReactionButton from './ReactionButton.vue'
-  import { useAppSetting, useDebounce } from '@/utils/index.js'
+  import { useAppSetting, useDebounce, Utils } from '@/utils/index.js'
   import { ref, computed, watch } from 'vue'
   import { Phone24Regular, Globe24Regular } from '@vicons/fluent'
 
@@ -58,6 +58,7 @@
                 <img
                   class="border-4 border-[#6f99ff] rounded-full size-[80px] object-cover object-top"
                   :src="user?.photo || useAppSetting.noAvailableImage"
+                  @error="Utils.onImgError"
                   alt="user image"
                   :style="{
                     background:

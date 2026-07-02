@@ -83,7 +83,7 @@
         [
           h(NAvatar, {
             class: '',
-            src: option.photo,
+            src: option.photo || Utils.noAvailableImage,
             'fallback-src': Utils.noAvailableImage
           }),
           h('div', { class: 'flex flex-col' }, [

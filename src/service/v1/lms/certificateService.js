@@ -8,6 +8,11 @@ const _index = async (payload) => {
   return await axios.get(`/v1/lms/certificates`, { params: payload?.params })
 }
 
+// Sertifikatlar Excel hisoboti (ixtisoslik kesimida) — fonda, "Eksport" bo'limiga.
+const _export = async (payload) => {
+  return await axios.get(`/v1/lms/certificates/export`, { params: payload?.params })
+}
+
 const _protocol = async (payload) => {
   return await axios.get(`/v1/lms/protocol`, { params: payload?.params })
 }
@@ -40,6 +45,7 @@ export default {
   _create,
   _protocol,
   _index,
+  _export,
   _group,
   _eduPlan,
   _direction,

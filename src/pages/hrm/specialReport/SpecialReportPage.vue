@@ -6,6 +6,7 @@
   import { useSpecialReportStore } from '@/store/modules/hrm/specialReportStore'
   import CreateForm from './ui/CreateForm.vue'
   import i18n from '@/i18n/index.js'
+  import Utils from '@/utils/Utils.js'
 
   const t = i18n.global.t
   const componentStore = useComponentStore()
@@ -65,7 +66,8 @@
             <div class="overflow-hidden rounded-lg relative">
               <img
                 @click="() => showImage(item.photo)"
-                :src="item.photo"
+                :src="item.photo || Utils.noAvailableImage"
+                @error="Utils.onImgError"
                 class="w-full aspect-[2/1.3] object-cover group-hover:scale-110 transition-all brightness-75 duration-300 ease-out"
               />
               <div

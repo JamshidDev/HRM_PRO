@@ -8,6 +8,7 @@ export const useLmsCertificateStore = defineStore('lmsCertificateStore', {
   state: () => ({
     list: [],
     loading: false,
+    downloadLoading: false,
     saveLoading: false,
     visible: false,
     visibleType: true,
@@ -177,6 +178,22 @@ export const useLmsCertificateStore = defineStore('lmsCertificateStore', {
         })
         .finally(() => {
           this.loading = false
+        })
+    },
+    // Hisobot — joriy filtrlarni (_index bilan bir xil) export endpointiga yuboradi.
+    // Modal yo'q; natija fonda yig'ilib "Eksport" bo'limida paydo bo'ladi.
+    _downloadReport() {
+      this.downloadLoading = true
+      const params = {
+        ...this.params,
+        page: undefined,
+        per_page: undefined,
+        organization_id: this.params.organization_id?.[0]?.id || undefined
+      }
+      $ApiService.certificateService
+        ._export({ params })
+        .finally(() => {
+          this.downloadLoading = false
         })
     },
     _openModal(v) {

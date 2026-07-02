@@ -1,5 +1,6 @@
 <script setup>
   import i18n from '@/i18n/index.js'
+  import { useAppSetting } from '@/utils/index.js'
   import { NIcon } from 'naive-ui'
   import { Delete16Regular, Edit16Regular } from '@vicons/fluent'
   const { t } = i18n.global
@@ -100,7 +101,7 @@
           </div>
         </div>
         <div class="w-[40px] ui__avatar-border">
-          <n-avatar class="mr-2 mt-4" circle :src="avatar" />
+          <n-avatar class="mr-2 mt-4" circle :src="avatar || useAppSetting.noAvailableImage" :fallback-src="useAppSetting.noAvailableImage" />
         </div>
       </div>
     </template>
@@ -108,7 +109,7 @@
     <template v-else>
       <div class="flex gap-x-2">
         <div class="w-[40px] ui__avatar-border">
-          <n-avatar class="ml-2 mt-4" circle :src="avatar" />
+          <n-avatar class="ml-2 mt-4" circle :src="avatar || useAppSetting.noAvailableImage" :fallback-src="useAppSetting.noAvailableImage" />
         </div>
         <div>
           <div class="text-xs font-medium text-surface-600">

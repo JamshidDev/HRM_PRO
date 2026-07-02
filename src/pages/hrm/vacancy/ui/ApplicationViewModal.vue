@@ -33,7 +33,8 @@
       <div class="header-section">
         <div class="header-content">
           <n-avatar
-            :src="user.photo"
+            :src="user.photo || Utils.noAvailableImage"
+            :fallback-src="Utils.noAvailableImage"
             :size="56"
             round
             object-fit="cover"

@@ -69,7 +69,7 @@
       </div>
 
       <div v-if="!isBot" class="flex items-end mx-2">
-        <n-avatar round size="large" src="empty.png" :fallback-src="data?.photo" />
+        <n-avatar round size="large" :src="data?.photo || useAppSetting.noAvailableImage" :fallback-src="useAppSetting.noAvailableImage" />
       </div>
     </div>
   </div>
