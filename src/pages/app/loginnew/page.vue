@@ -68,7 +68,7 @@
       </div>
 
       <div class="relative z-10 px-10 max-w-[560px] text-center">
-        <h1 class="text-white text-4xl xl:text-5xl font-bold uppercase leading-[1.15]">
+        <h1 class="login-new__shiny-text text-4xl xl:text-5xl font-bold uppercase leading-[1.15]">
           {{ $t('loginPage.description.subtitle') }}
         </h1>
         <p class="text-white/80 text-base font-medium mt-6 leading-7">
@@ -198,6 +198,32 @@
       linear-gradient(90deg, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
     background-size: 48px 48px;
     mask-image: radial-gradient(circle at 50% 40%, black, transparent 75%);
+  }
+
+  /* h1 sarlavhaga sirpanib o'tuvchi yaltiroq (shiny) effekt */
+  .login-new__shiny-text {
+    background-image: linear-gradient(
+      100deg,
+      rgba(255, 255, 255, 0.75) 0%,
+      #ffffff 35%,
+      #ffffff 50%,
+      rgba(255, 255, 255, 0.75) 65%,
+      rgba(255, 255, 255, 0.75) 100%
+    );
+    background-size: 200% 100%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: login-new-shiny 3.5s linear infinite;
+  }
+
+  @keyframes login-new-shiny {
+    0% {
+      background-position: 150% 0;
+    }
+    100% {
+      background-position: -50% 0;
+    }
   }
 </style>
 
