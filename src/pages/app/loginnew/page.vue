@@ -204,25 +204,26 @@
   .login-new__shiny-text {
     background-image: linear-gradient(
       100deg,
-      rgba(255, 255, 255, 0.75) 0%,
-      #ffffff 35%,
-      #ffffff 50%,
-      rgba(255, 255, 255, 0.75) 65%,
-      rgba(255, 255, 255, 0.75) 100%
+      rgba(255, 255, 255, 0.35) 0%,
+      rgba(255, 255, 255, 0.35) 35%,
+      #ffffff 47%,
+      #ffffff 53%,
+      rgba(255, 255, 255, 0.35) 65%,
+      rgba(255, 255, 255, 0.35) 100%
     );
     background-size: 200% 100%;
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    animation: login-new-shiny 3.5s linear infinite;
+    animation: login-new-shiny 4s linear infinite;
   }
 
   @keyframes login-new-shiny {
     0% {
-      background-position: 150% 0;
+      background-position: 100% 0;
     }
     100% {
-      background-position: -50% 0;
+      background-position: -100% 0;
     }
   }
 </style>
