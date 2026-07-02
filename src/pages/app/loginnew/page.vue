@@ -127,7 +127,7 @@
 
 <style scoped>
   .login-new__hero {
-    width: 48%;
+    width: 60%;
     background: linear-gradient(135deg, #01579e 0%, #042440 100%);
   }
 
