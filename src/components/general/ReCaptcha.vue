@@ -86,7 +86,7 @@
 
     <n-input
       size="large"
-      class="grow"
+      class="grow login-new__input"
       :value="answer"
       :placeholder="$t('loginPage.captchaPlaceholder')"
       :maxlength="10"
