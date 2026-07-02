@@ -36,14 +36,6 @@ export const appRoutes = [
   {
     path: AppPaths.Login,
     name: AppPaths.Login.substring(1),
-    component: () => import('@/pages/app/login/page.vue'),
-    meta: {
-      layout: AppLayouts.empty
-    }
-  },
-  {
-    path: AppPaths.LoginNew,
-    name: AppPaths.LoginNew.substring(1),
     component: () => import('@/pages/app/loginnew/page.vue'),
     meta: {
       layout: AppLayouts.empty
