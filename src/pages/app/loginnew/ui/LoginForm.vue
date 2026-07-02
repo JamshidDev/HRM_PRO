@@ -7,13 +7,7 @@
     useSignatureStore
   } from '@/store/modules/index.js'
   import validationRules from '@/utils/validationRules.js'
-  import {
-    Call16Filled,
-    Eye24Regular,
-    EyeOff20Filled,
-    KeyMultiple20Filled,
-    LockClosed16Filled
-  } from '@vicons/fluent'
+  import { Call24Regular, Eye24Regular, EyeOff24Regular, LockClosed24Regular } from '@vicons/fluent'
   import { AppPaths, useAppSetting } from '@/utils/index.js'
   import ReCaptcha from '@/components/general/ReCaptcha.vue'
   import StoreLinks from './StoreLinks.vue'
@@ -122,6 +116,7 @@
       <n-form-item class="text-textColor2!" :label="$t(`loginPage.phone`)" path="phone">
         <n-input
           size="large"
+          class="login-new__input"
           name="phone"
           id="phone"
           type="text"
@@ -136,13 +131,14 @@
           v-model:value="store.phone"
         >
           <template #prefix>
-            <n-icon class="text-textColor3!" size="24" :component="Call16Filled" />
+            <n-icon class="text-textColor3!" size="24" :component="Call24Regular" />
           </template>
         </n-input>
       </n-form-item>
       <n-form-item :label="$t(`loginPage.password`)" path="password" class="text-textColor2!">
         <n-input
           size="large"
+          class="login-new__input"
           name="password"
           id="password"
           type="password"
@@ -152,11 +148,11 @@
           @keyup.enter="onSubmit"
         >
           <template #prefix>
-            <n-icon class="text-textColor3!" size="24" :component="LockClosed16Filled" />
+            <n-icon class="text-textColor3!" size="24" :component="LockClosed24Regular" />
           </template>
 
           <template #password-visible-icon>
-            <n-icon :size="20" :component="EyeOff20Filled" />
+            <n-icon :size="20" :component="EyeOff24Regular" />
           </template>
           <template #password-invisible-icon>
             <n-icon :size="20" :component="Eye24Regular" />
@@ -207,15 +203,14 @@
 
         <template v-if="appStore.appConfig.signatureLogin">
           <n-divider class="my-2! lg:my-3!" title-placement="center">{{ $t('content.or') }}</n-divider>
+          
           <n-button
             @click="onSignatureLogin"
             size="large"
-            class="h-[48px]! lg:h-[52px]! rounded-2xl! font-semibold! dark-border-button bg-surface-ground! text-textColor1"
+            class="h-[48px]! lg:h-[52px]! rounded-2xl! font-semibold! dark-border-button login-new__signature-btn"
           >
+            <img src="/logo-e-imzo.png" alt="E-IMZO" class="h-6 w-auto object-contain mr-2.5" />
             {{ $t(`content.signatureLogin`) }}
-            <template #icon>
-              <n-icon class="text-textColor3!" size="24" :component="KeyMultiple20Filled" />
-            </template>
           </n-button>
 
           <!-- Mobil ilovani yuklab olish — faqat mobile'da (desktop'da hero panelda ko'rsatiladi) -->
