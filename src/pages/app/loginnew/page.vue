@@ -68,10 +68,14 @@
       </div>
 
       <div class="relative z-10 px-10 max-w-[560px] text-center">
-        <h1 class="login-new__shiny-text text-4xl xl:text-5xl font-bold uppercase leading-[1.15]">
+        <h1
+          class="login-new__shiny-text login-new__fade-in login-new__fade-in-delay-1 text-4xl xl:text-5xl font-bold uppercase leading-[1.15]"
+        >
           {{ $t('loginPage.description.subtitle') }}
         </h1>
-        <p class="text-white/80 text-base font-medium mt-6 leading-7">
+        <p
+          class="login-new__fade-in login-new__fade-in-delay-2 text-white/80 text-base font-medium mt-6 leading-7"
+        >
           {{ $t('loginPage.description.text') }}
         </p>
       </div>
@@ -106,7 +110,7 @@
         <LangDropdown />
       </div>
 
-      <div class="w-full max-w-[420px]">
+      <div class="w-full max-w-[420px] login-new__fade-in login-new__fade-in-delay-1">
         <!-- qadamlar yo'nalishli slide bilan almashadi -->
         <div class="login-new__viewport overflow-hidden">
           <Transition :name="transitionName" mode="out-in">
@@ -172,6 +176,7 @@
     border-radius: 9999px;
     filter: blur(80px);
     opacity: 0.55;
+    animation: login-new-float 12s ease-in-out infinite;
   }
 
   .login-new__glow-1 {
@@ -188,6 +193,41 @@
     bottom: -200px;
     left: -160px;
     background: radial-gradient(circle, #0177d7 0%, transparent 70%);
+    animation-delay: -6s;
+  }
+
+  @keyframes login-new-float {
+    0%,
+    100% {
+      transform: translate(0, 0) scale(1);
+    }
+    50% {
+      transform: translate(-40px, 30px) scale(1.1);
+    }
+  }
+
+  /* kirishda yumshoq paydo bo'lish (fade-in + slide-up), ketma-ket kechikish bilan */
+  .login-new__fade-in {
+    animation: login-new-fade-in 0.7s ease-out both;
+  }
+
+  .login-new__fade-in-delay-1 {
+    animation-delay: 0.1s;
+  }
+
+  .login-new__fade-in-delay-2 {
+    animation-delay: 0.25s;
+  }
+
+  @keyframes login-new-fade-in {
+    from {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
   .login-new__grid {
@@ -232,6 +272,15 @@
   .login-new__submit {
     background-color: var(--dark-color) !important;
     color: var(--white-color) !important;
+    transition: transform 0.15s ease !important;
+  }
+
+  .login-new__submit:not(.n-button--disabled):hover {
+    transform: translateY(-1px);
+  }
+
+  .login-new__submit:not(.n-button--disabled):active {
+    transform: scale(0.97);
   }
 
   [data-theme='dark'] .login-new__submit {
