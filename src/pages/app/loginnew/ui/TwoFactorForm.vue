@@ -2,7 +2,7 @@
   import validationRules from '@/utils/validationRules.js'
   import {
     ChevronLeft20Filled,
-    QrCode20Filled,
+    ShieldCheckmark24Regular,
     ErrorCircle12Filled
   } from '@vicons/fluent'
   import { useLoginNewStore } from '@/store/modules/index.js'
@@ -61,6 +61,7 @@
       <n-form-item class="text-textColor2!" :label="$t('loginPage.twoFactor.code')" path="code">
         <n-input
           size="large"
+          class="login-new__input"
           type="text"
           maxlength="6"
           v-mask="'######'"
@@ -68,7 +69,7 @@
           @keyup.enter="onVerify"
         >
           <template #prefix>
-            <n-icon class="text-textColor3!" size="24" :component="QrCode20Filled" />
+            <n-icon class="text-textColor3!" size="24" :component="ShieldCheckmark24Regular" />
           </template>
         </n-input>
       </n-form-item>

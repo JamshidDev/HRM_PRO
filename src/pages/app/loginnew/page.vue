@@ -74,7 +74,7 @@
           {{ $t('loginPage.description.subtitle') }}
         </h1>
         <p
-          class="login-new__fade-in login-new__fade-in-delay-2 text-white/80 text-base font-medium mt-6 leading-7"
+          class="login-new__subtitle-text login-new__fade-in login-new__fade-in-delay-2 text-white/80 text-base font-medium mt-6 leading-7"
         >
           {{ $t('loginPage.description.text') }}
         </p>
@@ -112,7 +112,7 @@
 
       <div class="w-full max-w-[420px] login-new__fade-in login-new__fade-in-delay-1">
         <!-- qadamlar yo'nalishli slide bilan almashadi -->
-        <div class="login-new__viewport overflow-hidden">
+        <div class="login-new__viewport overflow-hidden -mx-2 px-2">
           <Transition :name="transitionName" mode="out-in">
             <LoginForm v-if="step === steps.login" @forgot="onForgot" />
             <TwoFactorForm v-else-if="step === steps.twofa" @back="toLogin" />
@@ -266,25 +266,30 @@
       background-position: -100% 0;
     }
   }
+
+  /* h1 pastidagi matn uchun alohida shrift (sinov) */
+  .login-new__subtitle-text {
+    font-family: 'Noto Sans', sans-serif !important;
+    font-weight: 400 !important;
+  }
 </style>
 
 <style>
   .login-new__submit {
-    background-color: var(--dark-color) !important;
+    background: linear-gradient(135deg, #01579e 0%, #042440 100%) !important;
     color: var(--white-color) !important;
-    transition: transform 0.15s ease !important;
+    transition:
+      transform 0.15s ease,
+      filter 0.15s ease !important;
   }
 
   .login-new__submit:not(.n-button--disabled):hover {
     transform: translateY(-1px);
+    filter: brightness(1.1);
   }
 
   .login-new__submit:not(.n-button--disabled):active {
     transform: scale(0.97);
-  }
-
-  [data-theme='dark'] .login-new__submit {
-    background-color: var(--color-primary, #0177d7) !important;
   }
 
   .login-new__submit .n-button__border {
@@ -315,6 +320,19 @@
     border: unset !important;
   }
 
+  /* E-imzo orqali kirish tugmasi — brend rangida nozik tint */
+  .login-new .login-new__signature-btn {
+    background-color: color-mix(in srgb, var(--primary-color) 7%, var(--color-surface-ground)) !important;
+    color: var(--primary-color) !important;
+    border-color: color-mix(in srgb, var(--primary-color) 30%, var(--color-surface-line)) !important;
+  }
+
+  .login-new .login-new__signature-btn:not(.n-button--disabled):hover {
+    background-color: color-mix(in srgb, var(--primary-color) 14%, var(--color-surface-ground)) !important;
+    border-color: var(--primary-color) !important;
+    color: var(--primary-color) !important;
+  }
+
   .login-new__store-card {
     transition:
       border-color 0.2s ease,
@@ -331,5 +349,29 @@
   .login-new input:-webkit-autofill:focus {
     -webkit-box-shadow: 0 0 0px 1000px var(--color-surface-section) inset !important;
     -webkit-text-fill-color: var(--color-textColor2) !important;
+  }
+
+  /* === Login oqimidagi n-input'lar uchun yagona premium uslub === */
+  .login-new__input {
+    --n-border-radius: 16px !important;
+    --n-height: 48px !important;
+    --n-padding-left: 16px !important;
+    --n-padding-right: 16px !important;
+    --n-border: 1px solid var(--color-surface-line) !important;
+    --n-border-hover: 1px solid var(--primary-color) !important;
+    --n-border-focus: 1px solid var(--primary-color) !important;
+    --n-box-shadow-focus: 0 0 0 4px color-mix(in srgb, var(--primary-color) 16%, transparent) !important;
+    --n-caret-color: var(--primary-color) !important;
+  }
+
+  @media (min-width: 1024px) {
+    .login-new__input {
+      --n-height: 52px !important;
+    }
+  }
+
+  .login-new__input .n-input__input-el,
+  .login-new__input .n-input__textarea-el {
+    font-size: 15px;
   }
 </style>
