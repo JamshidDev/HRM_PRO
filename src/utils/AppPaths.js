@@ -13,7 +13,6 @@ export const AppPaths = {
   Product: '/product',
   Category: '/category',
   Login: '/login',
-  LoginNew: '/loginnew',
   Register: '/register',
   VerificationEmail: '/verification-email',
   RegisterService: '/register-service',
