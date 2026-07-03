@@ -7,6 +7,7 @@
   import TwoFactorForm from './ui/TwoFactorForm.vue'
   import ResetForm from './ui/ResetForm.vue'
   import StoreLinks from './ui/StoreLinks.vue'
+  import SeasonEffect from './ui/SeasonEffect.vue'
 
   const appStore = useAppStore()
   const loginStore = useLoginNewStore()
@@ -56,6 +57,7 @@
       <div class="login-new__glow login-new__glow-1"></div>
       <div class="login-new__glow login-new__glow-2"></div>
       <div class="login-new__grid"></div>
+      <SeasonEffect :season="useAppSetting.loginSeason" />
 
       <!-- Logo lang-select bilan bir qatorda (top-6) — orqasida blur'li glass card -->
       <div
