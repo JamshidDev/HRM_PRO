@@ -1,4 +1,5 @@
 <script setup>
+  import { computed } from 'vue'
   import { useComponentStore, useLmsCertificateStore } from '@stores'
   import { SuperSelect, UIPageFilter, UISelect } from '@components'
   import Utils from '@utils/Utils.js'
@@ -8,6 +9,11 @@
   const store = useLmsCertificateStore()
   const componentStore = useComponentStore()
   const route = useRoute()
+
+  // Imzolanish holati filtri — "O'chirilgan" (5) statusni chiqarib tashlaymiz.
+  const statusOptions = computed(() =>
+    componentStore.confirmationStatusList.filter((s) => s.id !== 5)
+  )
 
   const onSearch = () => {
     store.params.page = 1
@@ -84,6 +90,10 @@
     eduPlanAction.fetch()
     directionAction.fetch()
     spnAction.fetch()
+    // Imzolanish holati ro'yxati (command page bilan bir xil manba).
+    if (componentStore.confirmationStatusList.length === 0) {
+      componentStore._enumsAdmin()
+    }
   }
 </script>
 
@@ -111,6 +121,16 @@
           v-model:search="componentStore.structureParams.search"
           @onSearch="componentStore._structures"
           @onSubmit="filterEvent"
+        />
+        <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{ $t('content.status') }}</label>
+        <n-select
+          v-model:value="store.params.confirmation"
+          :options="statusOptions"
+          label-field="name"
+          value-field="id"
+          clearable
+          :loading="componentStore.enumAdminLoading"
+          @update:value="filterEvent"
         />
         <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{ $t('content.group') }}</label>
         <SuperSelect
