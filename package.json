@@ -6,13 +6,13 @@
   "scripts": {
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "local": "vite --mode local --host",
+    "local": "vite --mode localhost --host",
     "dev": "vite --mode development --host",
     "prod": "vite --mode production --host",
     "build": "NODE_OPTIONS='--max-old-space-size=4096' vite build --mode production",
     "build:prod": "NODE_OPTIONS='--max-old-space-size=4096' vite build --mode production",
     "build:dev": "NODE_OPTIONS='--max-old-space-size=4096' vite build --mode development",
-    "build:local": "NODE_OPTIONS='--max-old-space-size=4096' vite build --mode local",
+    "build:local": "NODE_OPTIONS='--max-old-space-size=4096' vite build --mode localhost",
     "preview": "vite preview",
     "format": "prettier --write \"src/**/*.{js,ts,vue,css,html}\"",
     "host": "vite --host"
