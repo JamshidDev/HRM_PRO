@@ -9,12 +9,10 @@ export const useConfCertificateStore = defineStore('confCertificateStore', {
     visibleType: true,
     elementId: null,
     totalItems: 0,
-    structureCheck2: false,
     params: {
       page: 1,
       per_page: 10,
       search: null,
-      organization_id: [],
       status: null,
       group_id: null,
       edu_plan_id: null,
@@ -28,7 +26,6 @@ export const useConfCertificateStore = defineStore('confCertificateStore', {
     _resetParams() {
       Object.assign(this.params, {
         search: null,
-        organization_id: [],
         status: null,
         group_id: null,
         edu_plan_id: null,
@@ -39,10 +36,7 @@ export const useConfCertificateStore = defineStore('confCertificateStore', {
       })
     },
     _index() {
-      const params = {
-        ...this.params,
-        organization_id: this.params.organization_id?.[0]?.id || undefined
-      }
+      const params = { ...this.params }
       this.loading = true
       $ApiService.confCertificateService
         ._index({ params })
