@@ -98,7 +98,13 @@
 
 <style scoped>
   .captcha-card {
-    height: 40px;
+    height: 48px;
+  }
+
+  @media (min-width: 1024px) {
+    .captcha-card {
+      height: 52px;
+    }
   }
 
   .captcha-image {
