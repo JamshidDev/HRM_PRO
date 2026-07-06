@@ -24,7 +24,8 @@ export const useLmsCertificateStore = defineStore('lmsCertificateStore', {
       month: null,
       direction_id: null,
       specialization_id: null,
-      edu_plan_id: null
+      edu_plan_id: null,
+      confirmation: null
     },
 
     payload: {
@@ -304,7 +305,8 @@ export const useLmsCertificateStore = defineStore('lmsCertificateStore', {
         direction_id: null,
         specialization_id: null,
         edu_plan_id: null,
-        group_id: null
+        group_id: null,
+        confirmation: null
       })
     }
   }

@@ -9,13 +9,35 @@ export const useConfCertificateStore = defineStore('confCertificateStore', {
     visibleType: true,
     elementId: null,
     totalItems: 0,
+    structureCheck2: false,
     params: {
       page: 1,
       per_page: 10,
-      search: null
+      search: null,
+      organization_id: [],
+      status: null,
+      group_id: null,
+      edu_plan_id: null,
+      direction_id: null,
+      specialization_id: null,
+      year: null,
+      month: null
     }
   }),
   actions: {
+    _resetParams() {
+      Object.assign(this.params, {
+        search: null,
+        organization_id: [],
+        status: null,
+        group_id: null,
+        edu_plan_id: null,
+        direction_id: null,
+        specialization_id: null,
+        year: null,
+        month: null
+      })
+    },
     _index() {
       const params = {
         ...this.params,
