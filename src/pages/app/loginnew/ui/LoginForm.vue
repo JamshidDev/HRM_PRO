@@ -179,7 +179,7 @@
         />
       </n-form-item>
 
-      <p class="text-xs text-center text-textColor2 mt-16 mb-4 lg:mb-3">
+      <p class="text-xs text-center text-textColor2 mt-4 lg:mt-16 mb-4 lg:mb-3">
         {{ $t('loginPage.termsPrefix') }}
         <a
           :href="termsUrl"
