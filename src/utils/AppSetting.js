@@ -19,5 +19,11 @@ export const useAppSetting = {
   adminExistSecret: 'EXIST',
   adminSecretKey: 'secretKey',
   temporaryToken: 'temporarySecretKey',
-  mustChangeKey: 'must-change-password'
+  mustChangeKey: 'must-change-password',
+  // Login sahifasi hero panelidagi mavsumiy dekoratsiya.
+  // Build vaqtida VITE_SEASON orqali qo'lda belgilanadi (admin tahrirlab, qayta deploy qiladi;
+  // sana asosida avtomatik hisoblanmaydi). Ruxsat etilgan qiymatlar: spring | summer | autumn | winter | null.
+  loginSeason: ['spring', 'summer', 'autumn', 'winter'].includes(import.meta.env.VITE_SEASON)
+    ? import.meta.env.VITE_SEASON
+    : null
 }

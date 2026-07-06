@@ -7,6 +7,7 @@
   import TwoFactorForm from './ui/TwoFactorForm.vue'
   import ResetForm from './ui/ResetForm.vue'
   import StoreLinks from './ui/StoreLinks.vue'
+  import SeasonEffect from './ui/SeasonEffect.vue'
 
   const appStore = useAppStore()
   const loginStore = useLoginNewStore()
@@ -56,6 +57,7 @@
       <div class="login-new__glow login-new__glow-1"></div>
       <div class="login-new__glow login-new__glow-2"></div>
       <div class="login-new__grid"></div>
+      <SeasonEffect :season="useAppSetting.loginSeason" />
 
       <!-- Logo lang-select bilan bir qatorda (top-6) — orqasida blur'li glass card -->
       <div
@@ -122,7 +124,9 @@
       </div>
 
       <!-- Mualliflik huquqi -->
-      <p class="absolute bottom-4 left-0 right-0 px-6 text-center text-xs text-textColor3">
+      <p
+        class="static lg:absolute mt-8 lg:mt-0 lg:bottom-4 lg:left-0 lg:right-0 px-6 text-center text-xs text-textColor3"
+      >
         {{ $t('loginPage.copyright') }}
       </p>
     </div>

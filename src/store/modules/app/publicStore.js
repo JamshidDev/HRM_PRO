@@ -44,9 +44,17 @@ export const usePublicStore = defineStore('usePublicStore', {
       $ApiService.publicService
         ._getDocument({ model: this.selectedModel, id: this.elementId })
         .then((res) => {
+          const file = res.data.data?.file
+          if (!file) {
+            this.existFile = false
+            return
+          }
           this.existFile = true
           this.confirmations = res.data.data?.confirmations ?? []
-          callback?.(res.data.data.file)
+          callback?.(file)
+        })
+        .catch(() => {
+          this.existFile = false
         })
         .finally(() => {
           this.loading = false
