@@ -3,13 +3,16 @@
 Avtomatik deploy GitHub Actions orqali (`.github/workflows/deploy.yml`).
 
 > **Trigger:** deploy FAQAT `dev`/`main`ga **PR merge** bo'lganda ishlaydi.
-> To'g'ridan-to'g'ri push deploy QILMAYDI. Qo'lda: Actions → **Run workflow**
-> (kerakli branchni tanlab). Shu sababli workflow fayli `dev` va `main`da bo'lishi shart.
+> To'g'ridan-to'g'ri push deploy QILMAYDI. Qo'lda: Actions → **Run workflow**.
+> Shu sababli workflow fayli `dev` va `main`da bo'lishi shart.
 
-| Branch | Server | Build (mode) | Runner | Env manbai | Publish |
-|--------|--------|--------------|--------|-----------|---------|
-| `main` | PROD | `npm run build` (`--mode production`) | `ubuntu-latest` | Secret `PROD_ENV_FILE` | API upload (`/v1/admin/deploy/upload`) |
-| `dev`  | DEV  | `npm run build:dev` (`--mode development`) | **self-hosted** (dev server) | serverdagi `/var/www/hrm_front/.env` | `dist/` → web-root (`rsync`) |
+| Branch | Server | Runner | Build (mode) | Env + deploy config | Publish |
+|--------|--------|--------|--------------|---------------------|---------|
+| `dev`  | DEV server  | self-hosted `[dev]`  | `npm run build:dev` | server `.env` | `rsync` → web-root |
+| `main` | PROD server | self-hosted `[prod]` | `npm run build`     | server `.env` | `rsync` → web-root |
+
+Dev ham, prod ham **bir xil naqsh**: har biri o'z serverida self-hosted runnerda
+build bo'ladi va o'sha serverdagi `.env` faylini o'qiydi. GitHub'da secret/variable KERAK EMAS.
 
 ## ENV konventsiyasi
 
@@ -24,15 +27,14 @@ Barcha `.env*` fayllar `.gitignore`da. Vite mode bo'yicha yuklaydi:
 `isModeDev` (menyularni permission'siz ochish) `import.meta.env.MODE` bo'yicha:
 production → yopiq, development/local → ochiq (`src/main.js`).
 
+Har bir serverdagi `.env` ichida `VITE_*` (build) + `DEPLOY_PATH` (rsync target) bo'ladi.
+
 ---
 
-## DEV (`dev`) — self-hosted runner (serverda build)
+## Har bir serverda (DEV va PROD) bir marta
 
-Build ham, publish ham dev serverning O'ZIDA. Env GitHub'dan emas —
-serverdagi mavjud `/var/www/hrm_front/.env` faylidan o'qiladi (commit/secret kerak emas).
-
-### 1. Self-hosted runner o'rnatish (bir marta)
-Server terminalida (`deploy` user):
+### 1. Self-hosted runner o'rnatish
+Server terminalida (`deploy` user). **Label** dev serverда `dev`, prod serverда `prod`:
 
 ```bash
 cd ~ && mkdir -p actions-runner && cd actions-runner
@@ -40,43 +42,37 @@ RUNNER_VER=$(curl -s https://api.github.com/repos/actions/runner/releases/latest
 curl -o runner.tar.gz -L https://github.com/actions/runner/releases/download/v${RUNNER_VER}/actions-runner-linux-x64-${RUNNER_VER}.tar.gz
 tar xzf runner.tar.gz && rm runner.tar.gz
 
-# --labels dev SHART (workflow: runs-on: [self-hosted, dev])
 # token: GitHub → Settings → Actions → Runners → New self-hosted runner
-./config.sh --url https://github.com/JamshidDev/HRM_PRO --token <TOKEN> --labels dev --name hrm-dev --unattended
+# DEV serverда:  --labels dev   --name hrm-dev
+# PROD serverда: --labels prod  --name hrm-prod
+./config.sh --url https://github.com/JamshidDev/HRM_PRO --token <TOKEN> --labels <dev|prod> --name <hrm-dev|hrm-prod> --unattended
 
 sudo ./svc.sh install deploy && sudo ./svc.sh start
 ```
 
-### 2. GitHub'da hech narsa qo'shilmaydi
-Deploy target ham env ichida — server `/var/www/hrm_front/.env` fayliga qo'shing:
+### 2. Server `.env` (frontend papkasida)
+Serverdagi frontend papkasidagi `.env` ichida `VITE_*` + `DEPLOY_PATH`:
+
 ```
-DEPLOY_PATH=/var/www/hrm_front/dist
+# ... VITE_* build o'zgaruvchilari ...
+DEPLOY_PATH=/var/www/hrm_front/dist   # rsync target (nginx root); prod'da o'z yo'li
 ```
-(Variable ham, Secret ham kerak emas — hammasi shu `.env`da.)
+
+Workflow `SERVER_ENV` yo'li: hozir `/var/www/hrm_front/.env` (prod boshqa bo'lsa —
+`deploy.yml` dagi `SERVER_ENV`ni prod job uchun to'g'rilang).
 
 ### 3. Serverdagi talablar
-- `/var/www/hrm_front/.env` mavjud: `VITE_*` (build) + `DEPLOY_PATH` (rsync target).
 - `deploy` user `DEPLOY_PATH`ga yozadi (owns) — sudo kerak emas.
-- `rsync` o'rnatilgan (bor).
-- Nginx `DEV_DEPLOY_PATH`ni root qiladi, SPA: `try_files $uri $uri/ /index.html`.
-
-> Dev config'ni o'zgartirish: serverdagi `/var/www/hrm_front/.env` ni tahrirlab,
-> `dev` branchga qayta push qiling (yoki Actions'da qayta ishga tushiring).
+- `rsync` o'rnatilgan.
+- Nginx `DEPLOY_PATH`ni root qiladi, SPA: `try_files $uri $uri/ /index.html`.
 
 ---
 
-## PROD (`main`) — GitHub runner + API upload
+> Eski `buildAndDeploy.js` va API-upload (`deploy-ci.js`) olib tashlandi — deploy
+> to'liq self-hosted runner + `rsync` orqali (dev va prod bir xil).
 
-Prod `ubuntu-latest`da build bo'ladi, shuning uchun env Secret'dan.
+<!-- prod deploy: self-hosted runner faollashtirildi -->
 
-**Secrets:**
-| Secret | Qiymat |
-|--------|--------|
-| `PROD_DEPLOY_API_URL`  | `https://hrm-api.railway.uz/api` |
-| `PROD_DEPLOY_LOGIN`    | login (phone), masalan `995016004` |
-| `PROD_DEPLOY_PASSWORD` | parol |
-| `PROD_ENV_FILE`        | `.env.production` faylining TO'LIQ mazmuni |
+<!-- retry: npm ci flags -->
 
----
-
-> Eski qo'lda `buildAndDeploy.js` (`npm run server`) olib tashlandi — deploy to'liq CI/CD orqali.
+<!-- ipv4 fix retry -->

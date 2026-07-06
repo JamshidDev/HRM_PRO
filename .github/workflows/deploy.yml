@@ -22,7 +22,7 @@ jobs:
     if: >-
       (github.event_name == 'pull_request' && github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'main')
       || (github.event_name == 'workflow_dispatch' && github.ref_name == 'main')
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, prod]
     environment: production
     steps:
       - uses: actions/checkout@v4
@@ -34,21 +34,36 @@ jobs:
           node-version: 20
           cache: npm
 
-      - name: Install dependencies
-        run: npm ci
-
-      # Prod ubuntu-latest'da build bo'ladi (server fayli yo'q) → env Secret'dan.
-      - name: Create .env.production
+      # Prod env — prod serverdagi haqiqiy .env fayldan (git'ga tushmaydi).
+      - name: Use prod server env file
         env:
-          ENV_FILE: ${{ secrets.PROD_ENV_FILE }}
-        run: printf '%s\n' "$ENV_FILE" > .env.production
+          SERVER_ENV: /var/www/frontend/.env
+        run: |
+          test -f "$SERVER_ENV" || { echo "::error::$SERVER_ENV topilmadi"; exit 1; }
+          cp "$SERVER_ENV" .env.production
+
+      - name: Install dependencies
+        env:
+          # Ba'zi serverlarda IPv6 buzuq → npm ci osilib qoladi. IPv4 birinchi.
+          NODE_OPTIONS: --dns-result-order=ipv4first
+        run: npm ci --no-audit --no-fund --prefer-offline
 
       - name: Build (production)
         run: npm run build
 
-      # Deploy config (DEPLOY_API_URL/LOGIN/PASSWORD) .env.production ichida — deploy-ci.js o'qiydi.
-      - name: Deploy to production server
-        run: npm run deploy:ci
+      # Deploy target ham env'dan: prod server .env ichida DEPLOY_PATH=...
+      - name: Publish to web root
+        run: |
+          TARGET=$(grep -E '^[[:space:]]*DEPLOY_PATH[[:space:]]*=' .env.production | tail -1 | cut -d= -f2- | tr -d '"'\'' ')
+          if [ -z "$TARGET" ]; then
+            echo "::error::DEPLOY_PATH .env ichida yo'q (prod server .env ga qo'shing)" && exit 1
+          fi
+          case "$TARGET" in
+            /|/var/www|/var/www/|/home|/root|/etc*|/usr*)
+              echo "::error::DEPLOY_PATH ($TARGET) xavfli — alohida frontend papka bo'lsin" && exit 1 ;;
+          esac
+          test -d "$TARGET" || { echo "::error::$TARGET papkasi yo'q"; exit 1; }
+          rsync -a --delete dist/ "$TARGET"/
 
   # DEV: dev serverdagi self-hosted runnerda build + publish.
   # Env GitHub'dan emas — serverdagi mavjud /var/www/hrm_front/.env dan o'qiladi.
@@ -78,7 +93,10 @@ jobs:
           cp "$SERVER_ENV" .env.development
 
       - name: Install dependencies
-        run: npm ci
+        env:
+          # Ba'zi serverlarda IPv6 buzuq → npm ci osilib qoladi. IPv4 birinchi.
+          NODE_OPTIONS: --dns-result-order=ipv4first
+        run: npm ci --no-audit --no-fund --prefer-offline
 
       - name: Build (development)
         run: npm run build:dev

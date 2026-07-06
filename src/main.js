@@ -37,9 +37,9 @@ app.use(FlyUploadPlugin, {
   storeAction: 'incrementUnReadCount'
 })
 
-// Dev-mode (barcha menyular permission'siz ochiladi) — Vite mode bo'yicha.
-// production => yopiq, development/local => ochiq. Alohida env kerak emas.
-if (import.meta.env.MODE !== 'production') {
+// Barcha menyular permission'siz ochiladi — faqat LOCAL mode'da (npm run local).
+// Dev va prod serverlarda menyular permission bo'yicha ishlaydi.
+if (import.meta.env.MODE === 'localhost') {
   store.isModeDev = true
 }
 
