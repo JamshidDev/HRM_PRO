@@ -1,7 +1,7 @@
 <script setup>
   import { computed } from 'vue'
   import { useComponentStore, useConfCertificateStore, useLmsCertificateStore } from '@stores'
-  import { SuperSelect, UIPageFilter, UISelect } from '@components'
+  import { SuperSelect, UIPageFilter } from '@components'
   import Utils from '@utils/Utils.js'
 
   const store = useConfCertificateStore()
@@ -23,16 +23,6 @@
   const filterEvent = () => {
     store.params.page = 1
     store._index()
-  }
-
-  const onChangeStructure = (v) => {
-    store.params.organization_id = v
-    filterEvent()
-  }
-
-  const fetchStructure = () => {
-    if (componentStore.structureList.length > 0) return
-    componentStore._structures()
   }
 
   const groupAction = {
@@ -85,7 +75,6 @@
 
   const onShow = (v) => {
     if (!v) return
-    fetchStructure()
     groupAction.fetch()
     eduPlanAction.fetch()
     directionAction.fetch()
@@ -107,21 +96,6 @@
   >
     <template #filterContent>
       <div class="flex flex-col max-w-[370px]">
-        <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{
-          $t('actionLog.table.structure')
-        }}</label>
-        <UISelect
-          :options="componentStore.structureList"
-          :modelV="store.params.organization_id"
-          @defaultValue="(v) => (store.params.organization_id = v)"
-          @updateModel="onChangeStructure"
-          :checkedVal="store.structureCheck2"
-          @updateCheck="(v) => (store.structureCheck2 = v)"
-          :loading="componentStore.structureLoading"
-          v-model:search="componentStore.structureParams.search"
-          @onSearch="componentStore._structures"
-          @onSubmit="filterEvent"
-        />
         <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{ $t('content.status') }}</label>
         <n-select
           v-model:value="store.params.status"
