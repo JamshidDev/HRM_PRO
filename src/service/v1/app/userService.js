@@ -44,6 +44,11 @@ const _detachPermissions = async (payload) => {
   return await axios.put(`/v1/admin/users/${payload.id}/permissions/detach`, payload.data)
 }
 
+// Soft-delete user (backend: DELETE /v1/admin/users/:id — deleted_at=NOW()).
+const _delete = async (payload) => {
+  return await axios.delete(`/v1/admin/users/${payload?.id}`)
+}
+
 export default {
   _index,
   _create,
@@ -55,5 +60,6 @@ export default {
   _onSpam,
   _userPermissions,
   _attachPermissions,
-  _detachPermissions
+  _detachPermissions,
+  _delete
 }

@@ -26,6 +26,11 @@
       store.visible = true
     } else if (v.key === Utils.ActionTypes.finish) {
       onSpam(v.data)
+    } else if (v.key === Utils.ActionTypes.delete) {
+      // Faqat Nomzod/Arxiv (organization null) qatorlarida ko'rinadi. Soft-delete.
+      if (!accStore.checkAction(accStore.pn.usersWrite)) return
+      store.elementId = v.data.id
+      store._delete()
     }
   }
 
@@ -129,7 +134,15 @@
                 </template>
               </n-button>
             </td>
-            <td>{{ item?.organization?.name }}</td>
+            <td>
+              <template v-if="item?.organization">{{ item.organization.name }}</template>
+              <n-tag v-else-if="item?.has_position" type="warning" size="small" round>
+                {{ $t('content.archive') }}
+              </n-tag>
+              <n-tag v-else type="info" size="small" round>
+                {{ $t('content.candidate') }}
+              </n-tag>
+            </td>
             <td>
               <div class="flex flex-wrap gap-1">
                 <template v-for="item in item?.roles" :key="item.id">
@@ -183,7 +196,8 @@
                 :data="item"
                 :show-edit="false"
                 :show-attachment="true"
-                :show-delete="false"
+                :show-delete="!item?.organization"
+                :delete-warning="$t('content.deleteConfirm')"
                 @selectEv="onSelect"
                 :extra-options="[
                   {

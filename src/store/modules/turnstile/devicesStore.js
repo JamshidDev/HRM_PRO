@@ -133,8 +133,15 @@ export const useDevicesStore = defineStore('devicesStore', {
     },
     _downloadDevices() {
       this.downloading = true
+      // Listdagi filtrlarni ham yuboramiz — Yuklash filtrlangan ro'yxatni beradi
+      // (backend `buildDevicesExcel` list bilan bir xil filtr qo'llaydi).
+      const params = {
+        ...this.params,
+        organizations: this.params.organizations.map((v) => v.id).toString() || undefined,
+        download: true
+      }
       $ApiService.turnstileHikCentralAccessService
-        ._downloadDevices({ params: { download: true } })
+        ._downloadDevices({ params })
         .then((res) => {
           Utils.blobFileDownload(
             res.data,

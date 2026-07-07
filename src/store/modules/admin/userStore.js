@@ -182,7 +182,9 @@ export const useUserStore = defineStore('user', {
       this.deleteLoading = true
       $ApiService.userService
         ._delete({ id: this.elementId })
-        .then((res) => {})
+        .then(() => {
+          this._index()
+        })
         .finally(() => {
           this.deleteLoading = false
         })
