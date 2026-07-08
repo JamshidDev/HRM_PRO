@@ -13,6 +13,12 @@ const _export = async (payload) => {
   return await axios.get(`/v1/lms/certificates/export`, { params: payload?.params })
 }
 
+// Imzolangan (QR bosilgan) sertifikat PDF'larini ZIP bilan yuklash — fonda,
+// "Eksport" bo'limiga. Korxona nomi = folder, ichida "{FIO} ({number}).pdf".
+const _downloadCertificates = async (payload) => {
+  return await axios.get(`/v1/lms/certificates/download`, { params: payload?.params })
+}
+
 const _protocol = async (payload) => {
   return await axios.get(`/v1/lms/protocol`, { params: payload?.params })
 }
@@ -46,6 +52,7 @@ export default {
   _protocol,
   _index,
   _export,
+  _downloadCertificates,
   _group,
   _eduPlan,
   _direction,
