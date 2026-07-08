@@ -9,6 +9,7 @@ export const useLmsCertificateStore = defineStore('lmsCertificateStore', {
     list: [],
     loading: false,
     downloadLoading: false,
+    zipLoading: false,
     saveLoading: false,
     visible: false,
     visibleType: true,
@@ -195,6 +196,22 @@ export const useLmsCertificateStore = defineStore('lmsCertificateStore', {
         ._export({ params })
         .finally(() => {
           this.downloadLoading = false
+        })
+    },
+    // Imzolangan sertifikatlarni ZIP bilan yuklash — joriy filtrlar (_index bilan
+    // bir xil). Fonda yig'ilib "Eksport" bo'limida paydo bo'ladi.
+    _downloadCertificates() {
+      this.zipLoading = true
+      const params = {
+        ...this.params,
+        page: undefined,
+        per_page: undefined,
+        organization_id: this.params.organization_id?.[0]?.id || undefined
+      }
+      $ApiService.certificateService
+        ._downloadCertificates({ params })
+        .finally(() => {
+          this.zipLoading = false
         })
     },
     _openModal(v) {

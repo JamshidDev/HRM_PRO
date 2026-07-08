@@ -4,7 +4,7 @@
   import { SuperSelect, UIPageFilter, UISelect } from '@components'
   import Utils from '@utils/Utils.js'
   import { useRoute } from 'vue-router'
-  import { DocumentTable24Regular } from '@vicons/fluent'
+  import { DocumentTable24Regular, ArrowDownload24Regular } from '@vicons/fluent'
 
   const store = useLmsCertificateStore()
   const componentStore = useComponentStore()
@@ -213,6 +213,19 @@
       </div>
     </template>
     <template #filterAction>
+      <n-button
+        v-fly-upload
+        type="success"
+        :loading="store.zipLoading || store.loading"
+        @click="store._downloadCertificates()"
+      >
+        <template #icon>
+          <n-icon size="24">
+            <ArrowDownload24Regular />
+          </n-icon>
+        </template>
+        {{ $t('content.download') }}
+      </n-button>
       <n-button
         v-fly-upload
         type="info"
