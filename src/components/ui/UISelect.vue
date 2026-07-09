@@ -31,6 +31,20 @@
     emits('updateModel', list)
   }
 
+  const collectParentIds = (nodes) => {
+    const ids = []
+    const walk = (list) => {
+      for (const node of list || []) {
+        if (Array.isArray(node.children) && node.children.length > 0) {
+          ids.push(node.id)
+          walk(node.children)
+        }
+      }
+    }
+    walk(nodes)
+    return ids
+  }
+
   watch(
     () => props.options,
     (v) => {
@@ -39,6 +53,14 @@
           emits('defaultValue', props.options)
         } else {
           emits('updateModel', props.options)
+        }
+      }
+
+      if (searchModel.value) {
+        const parentIds = collectParentIds(v)
+        const merged = Array.from(new Set([...(props.checkedVal || []), ...parentIds]))
+        if (merged.length !== (props.checkedVal || []).length) {
+          emits('updateCheck', merged)
         }
       }
     },
@@ -182,9 +204,9 @@
     </div>
     <div class="w-full h-[40px] flex items-center px-1">
       <n-input-group>
-        <n-button size="small">
+        <n-button size="small" @click="store.structureShort = !store.structureShort">
           <template #icon>
-            <n-checkbox v-model:checked="store.structureShort" />
+            <n-checkbox v-model:checked="store.structureShort" @click.stop />
           </template>
           {{ store.structureShort ? $t('content.long') : $t('content.short') }}
         </n-button>

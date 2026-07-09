@@ -124,7 +124,7 @@
           trigger="click"
           scrollable
           placement="bottom"
-          class="max-w-full w-(--v-target-width) md:w-auto md:min-w-[400px] h-[400px]"
+          class="max-w-[95vw] min-w-[280px] sm:min-w-[400px] md:min-w-[500px] w-(--v-target-width) md:w-auto"
           :style="{ '--top-activator-width': 'var(--v-target-width)' }"
         >
           <template #trigger>

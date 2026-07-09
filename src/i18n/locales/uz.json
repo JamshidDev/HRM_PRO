@@ -81,6 +81,13 @@
     "searchWorker": "Xodimni qidirish uchun yozing...",
     "add": "Qo'shish",
     "filterSetting": "Filter sozlamalar",
+    "showAdditionalFilters": "Qo'shimcha filterlarni ko'rsatish",
+    "hideAdditionalFilters": "Qo'shimcha filterlarni yashirish",
+    "ageRange": "Oraliq",
+    "ageExact": "Aniq",
+    "ageFrom": "Yoshdan",
+    "ageTo": "Yoshgacha",
+    "ageExactPlaceholder": "Yoshi",
     "news": "Yangi",
     "hour": "Soat",
     "group": "Guruh",
@@ -558,6 +565,7 @@
       "sex": "Jinsi",
       "multiple_position": "Birdan ortiq shartnomaga ega xodimlar",
       "position_type": "Lavozim turi",
+      "age": "Yoshi",
       "downloadRelative": "Qarindoshlarni yuklash"
     },
     "checkWorker": {
