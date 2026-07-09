@@ -9,13 +9,14 @@
   import {
     HomePerson20Regular,
     CheckmarkCircle16Regular,
-    Person32Regular,
     DocumentTable16Regular,
     DismissCircle28Regular,
     ShareScreenPersonOverlayInside16Regular,
     PremiumPerson20Regular,
     CloudArchive20Filled,
-    Search48Filled
+    Search48Filled,
+    ChevronDown20Regular,
+    ChevronUp20Regular
   } from '@vicons/fluent'
   import Utils, { generateUUIDKey } from '@/utils/Utils.js'
   import { AppPaths, appPermissions, useDebounce } from '@/utils/index.js'
@@ -77,12 +78,38 @@
     fetchPosition()
   }
 
-  const marks = {
-    1: '1',
-    25: '25',
-    50: '50',
-    75: '75',
-    100: '100'
+  const ageMode = ref('range')
+  const ageFrom = ref(null)
+  const ageTo = ref(null)
+  const exactAge = ref(null)
+
+  const blockDecimalKey = (e) => {
+    if (['.', ',', 'e', 'E', '+', '-'].includes(e.key)) {
+      e.preventDefault()
+    }
+  }
+
+  const onChangeAgeRange = Utils.useDebounce(() => {
+    store.params.age_start = ageFrom.value ?? undefined
+    store.params.age_end = ageTo.value ?? undefined
+    filterEvent()
+  }, 500)
+
+  const onChangeExactAge = Utils.useDebounce(() => {
+    store.params.age_start = exactAge.value ?? undefined
+    store.params.age_end = exactAge.value ?? undefined
+    filterEvent()
+  }, 500)
+
+  const onChangeAgeMode = (v) => {
+    if (v === 'exact') {
+      store.params.age_start = exactAge.value ?? undefined
+      store.params.age_end = exactAge.value ?? undefined
+    } else {
+      store.params.age_start = ageFrom.value ?? undefined
+      store.params.age_end = ageTo.value ?? undefined
+    }
+    filterEvent()
   }
 
   const filterCount = computed(() => {
@@ -120,9 +147,12 @@
     store.params.current_region_id = null
     store.params.current_city_id = null
     store.params.marital_status = null
-    store.params.ages = [1, 100]
     store.params.age_start = undefined
     store.params.age_end = undefined
+    ageMode.value = 'range'
+    ageFrom.value = null
+    ageTo.value = null
+    exactAge.value = null
     store.params.last_name = null
     store.params.first_name = null
     store.params.middle_name = null
@@ -139,14 +169,13 @@
     filterEvent()
   }
 
-  const onChangeAge = () => {
-    store.params.age_start = store.params.ages[0]
-    store.params.age_end = store.params.ages[1]
-    filterEvent()
-  }
+  const showAllFilters = ref(false)
 
   const onShow = (isOpen) => {
-    if (!isOpen) return
+    if (!isOpen) {
+      showAllFilters.value = false
+      return
+    }
     if (componentStore.structureList.length === 0) {
       componentStore._structures()
     }
@@ -247,12 +276,12 @@
       <!--          <CloudArchive20Filled/>-->
       <!--        </template>-->
       <!--      </n-button>-->
-<!--      <n-button @click="openUserListEv" class="w-full! md:w-auto!" type="primary">-->
-<!--        {{ $t('workerRole.name') }}-->
-<!--        <template #icon>-->
-<!--          <PremiumPerson20Regular />-->
-<!--        </template>-->
-<!--      </n-button>-->
+      <!--      <n-button @click="openUserListEv" class="w-full! md:w-auto!" type="primary">-->
+      <!--        {{ $t('workerRole.name') }}-->
+      <!--        <template #icon>-->
+      <!--          <PremiumPerson20Regular />-->
+      <!--        </template>-->
+      <!--      </n-button>-->
 
       <n-button-group class="w-full! md:w-auto!">
         <n-button
@@ -326,319 +355,386 @@
     </template>
 
     <template #filterContent>
-      <div class="flex pt-4 !w-[900px]">
-        <div class="grid grid-cols-12 gap-3 w-[calc(100%-100px)]">
-          <div class="col-span-6">
-            <label class="mt-3 text-xs text-gray-500">{{
-              $t('workerPage.filter.organization')
-            }}</label>
-            <UISelect
-              multiple
-              clearable
-              :options="componentStore.structureList"
-              :model-v="store.params.organizations"
-              @defaultValue="defaultEv"
-              @updateModel="onChangeStructure"
-              :checked-val="store.structureCheck"
-              @updateCheck="(v) => (store.structureCheck = v)"
-              :loading="componentStore.structureLoading"
-              v-model:search="componentStore.structureParams.search"
-              @onSearch="componentStore._structures"
-              @onSubmit="filterEvent"
-            />
-          </div>
-          <div class="col-span-6">
-            <label class="mt-3 text-xs text-gray-500">{{
-              $t('workerPage.filter.department')
-            }}</label>
-            <UINSelect
-              multiple
-              clearable
-              :disabled="store.params.organizations.length === 0"
-              :loading="store.filterDepartmentLoading"
-              :options="store.filterDepartmentList"
-              :total-count="store.filterDepartmentTotal"
-              v-model:value="store.params.departments"
-              @update:value="onChangeDepartment"
-              :query="store.filterDepParams.search"
-              @onSearch="onSearchDepartmentEv"
-            />
-          </div>
-          <div class="col-span-6">
-            <label class="mt-3 text-xs text-gray-500">{{ $t('workerPage.filter.position') }}</label>
-            <UINSelect
-              multiple
-              clearable
-              :disabled="store.params.organizations.length === 0"
-              :loading="store.filterPositionLoading"
-              :options="store.filterPositionList"
-              :total-count="store.filterPositionTotal"
-              :query="store.filterPosParams.search"
-              v-model:value="store.params.positions"
-              @update:value="filterEvent"
-              @onSearch="onSearchPositionEv"
-            />
-          </div>
-          <div class="col-span-6">
-            <label class="mt-3 text-xs text-gray-500">{{
-              $t('workerPage.filter.contract_type')
-            }}</label>
-            <n-select
-              v-model:value="store.params.contract_type"
-              filterable
-              clearable
-              :options="componentStore.contractTypeList"
-              label-field="name"
-              value-field="id"
-              :loading="componentStore.enumLoading"
-              @update:value="filterEvent"
-            >
-            </n-select>
-          </div>
-          <div class="col-span-3">
-            <label class="mt-3 text-xs text-gray-500">{{ $t('workerPage.filter.birthday') }}</label>
-            <n-select
-              v-model:value="store.params.birthday"
-              filterable
-              clearable
-              :options="Utils.monthList"
-              label-field="name"
-              value-field="id"
-              @update:value="filterEvent"
-              :ignore-composition="false"
-            />
-          </div>
-          <div class="col-span-3">
-            <label class="mt-3 text-xs text-gray-500">{{
-              $t('workerPage.filter.position_type')
-            }}</label>
-            <n-select
-              v-model:value="store.params.position_type"
-              filterable
-              clearable
-              :options="componentStore.positionCategory"
-              label-field="name"
-              value-field="id"
-              :loading="componentStore.enumAdminLoading"
-              @update:value="filterEvent"
-              :ignore-composition="false"
-            />
-          </div>
-          <div class="col-span-3">
-            <label class="text-xs text-gray-500">{{ $t('workerPage.filter.sex') }}</label>
-            <n-select
-              v-model:value="store.params.sex"
-              filterable
-              clearable
-              :options="componentStore.genderList"
-              label-field="name"
-              value-field="id"
-              @update:value="filterEvent"
-              :ignore-composition="false"
-            />
-          </div>
-          <div class="col-span-3">
-            <label class="text-xs text-gray-500">{{
-              $t(`createWorkerPage.form.marital_status`)
-            }}</label>
-            <n-select
-              v-model:value="store.params.marital_status"
-              filterable
-              clearable
-              :options="componentStore.maritalList"
-              label-field="name"
-              value-field="id"
-              :ignore-composition="false"
-              :loading="componentStore.enumLoading"
-              @update:value="filterEvent"
-            />
-          </div>
-          <div class="col-span-4">
-            <label class="text-xs text-gray-500">{{
-              $t(`createWorkerPage.form.nationality_id`)
-            }}</label>
-            <n-select
-              v-model:value="store.params.nationalities"
-              multiple
-              filterable
-              clearable
-              :options="componentStore.nationalityList"
-              label-field="name"
-              value-field="id"
-              @update:value="filterEvent"
-              :ignore-composition="false"
-              :loading="componentStore.nationalityLoading"
-            />
-          </div>
-          <div class="col-span-4">
-            <label class="text-xs text-gray-500">{{ $t(`createWorkerPage.form.education`) }}</label>
-            <n-select
-              v-model:value="store.params.educations"
-              multiple
-              filterable
-              clearable
-              :options="componentStore.educationList"
-              label-field="name"
-              value-field="id"
-              @update:value="filterEvent"
-              :ignore-composition="false"
-              :loading="componentStore.enumLoading"
-            />
-          </div>
-          <div class="col-span-4">
-            <label class="text-xs text-gray-500">{{ $t(`createWorkerPage.form.country`) }}</label>
-            <n-select
-              v-model:value="store.params.country_id"
-              filterable
-              clearable
-              :options="componentStore.countryList"
-              label-field="name"
-              value-field="id"
-              :ignore-composition="false"
-              :loading="componentStore.countryLoading"
-              @update:value="changeCountry"
-            />
-          </div>
-          <div class="col-span-3">
-            <label class="text-xs text-gray-500">{{ $t(`createWorkerPage.form.region`) }}</label>
-            <n-select
-              v-model:value="store.params.region_id"
-              filterable
-              clearable
-              :options="componentStore.regionList"
-              label-field="name"
-              value-field="id"
-              :ignore-composition="false"
-              :loading="componentStore.regionLoading"
-              @update:value="onChangeRegion"
-            />
-          </div>
-          <div class="col-span-3">
-            <label class="text-xs text-gray-500">{{ $t(`createWorkerPage.form.city`) }}</label>
-            <n-select
-              :disabled="!store.params.region_id"
-              v-model:value="store.params.city_id"
-              filterable
-              clearable
-              :options="store.districtList"
-              label-field="name"
-              value-field="id"
-              :ignore-composition="false"
-              :loading="store.districtLoading"
-              @update:value="filterEvent"
-            />
-          </div>
-          <div class="col-span-3">
-            <label class="text-xs text-gray-500">{{
-              $t(`createWorkerPage.form.currentRegion`)
-            }}</label>
-            <n-select
-              v-model:value="store.params.current_region_id"
-              filterable
-              clearable
-              :options="componentStore.regionList"
-              label-field="name"
-              value-field="id"
-              :ignore-composition="false"
-              :loading="componentStore.regionLoading"
-              @update:value="onChangeCurrentRegion"
-            />
-          </div>
-          <div class="col-span-3">
-            <label class="text-xs text-gray-500">{{
-              $t(`createWorkerPage.form.currentCity`)
-            }}</label>
-            <n-select
-              v-model:value="store.params.current_city_id"
-              :disabled="!store.params.current_region_id"
-              filterable
-              clearable
-              :options="store.currentDistrictList"
-              label-field="name"
-              value-field="id"
-              :ignore-composition="false"
-              :loading="store.currentDistrictLoading"
-              @update:value="filterEvent"
-            />
-          </div>
-          <div class="col-span-4">
-            <label class="text-xs text-gray-500">{{ $t(`registerPage.lastName`) }}</label>
-            <n-input
-              clearable
-              class="w-full! skip-format"
-              v-model:value="store.params.last_name"
-              type="text"
-              :placeholder="$t('content.search')"
-              :on-keyup="onKeyUp"
-              @clear="onKeyUp"
-            >
-              <template #suffix>
-                <n-icon :component="Search48Filled" />
-              </template>
-            </n-input>
-          </div>
-          <div class="col-span-4">
-            <label class="text-xs text-gray-500">{{ $t(`registerPage.firstName`) }}</label>
-            <n-input
-              clearable
-              class="w-full! skip-format"
-              v-model:value="store.params.first_name"
-              type="text"
-              :placeholder="$t('content.search')"
-              :on-keyup="onKeyUp"
-              @clear="onKeyUp"
-            >
-              <template #suffix>
-                <n-icon :component="Search48Filled" />
-              </template>
-            </n-input>
-          </div>
-          <div class="col-span-4">
-            <label class="text-xs text-gray-500">{{ $t(`registerPage.middleName`) }}</label>
-            <n-input
-              clearable
-              class="w-full! skip-format"
-              v-model:value="store.params.middle_name"
-              type="text"
-              :placeholder="$t('content.search')"
-              :on-keyup="onKeyUp"
-              @clear="onKeyUp"
-            >
-              <template #suffix>
-                <n-icon :component="Search48Filled" />
-              </template>
-            </n-input>
-          </div>
-          <div class="col-span-4">
-            <div class="border border-surface-line rounded-lg p-1">
-              <n-checkbox @change="filterEvent" v-model:checked="store.params.multiple_position">
-                <span class="text-secondary text-xs">{{
-                  $t('workerPage.filter.multiple_position')
-                }}</span>
-              </n-checkbox>
+      <div
+        class="pt-4 w-full md:w-[900px] transition-[min-height] duration-300 ease-in-out"
+        :class="showAllFilters ? 'min-h-[75vh]' : 'min-h-0'"
+      >
+        <div class="w-full">
+          <div class="grid grid-cols-12 gap-3">
+            <div class="col-span-12 md:col-span-6">
+              <label class="mt-3 text-xs text-gray-500">{{
+                $t('workerPage.filter.organization')
+              }}</label>
+              <UISelect
+                multiple
+                clearable
+                :options="componentStore.structureList"
+                :model-v="store.params.organizations"
+                @defaultValue="defaultEv"
+                @updateModel="onChangeStructure"
+                :checked-val="store.structureCheck"
+                @updateCheck="(v) => (store.structureCheck = v)"
+                :loading="componentStore.structureLoading"
+                v-model:search="componentStore.structureParams.search"
+                @onSearch="componentStore._structures"
+                @onSubmit="filterEvent"
+              />
+            </div>
+            <div class="col-span-12 md:col-span-6">
+              <label class="mt-3 text-xs text-gray-500">{{
+                $t('workerPage.filter.department')
+              }}</label>
+              <UINSelect
+                multiple
+                clearable
+                :disabled="store.params.organizations.length === 0"
+                :loading="store.filterDepartmentLoading"
+                :options="store.filterDepartmentList"
+                :total-count="store.filterDepartmentTotal"
+                v-model:value="store.params.departments"
+                @update:value="onChangeDepartment"
+                :query="store.filterDepParams.search"
+                @onSearch="onSearchDepartmentEv"
+              />
+            </div>
+            <div class="col-span-12 md:col-span-6">
+              <label class="mt-3 text-xs text-gray-500">{{ $t('workerPage.filter.position') }}</label>
+              <UINSelect
+                multiple
+                clearable
+                :disabled="store.params.organizations.length === 0"
+                :loading="store.filterPositionLoading"
+                :options="store.filterPositionList"
+                :total-count="store.filterPositionTotal"
+                :query="store.filterPosParams.search"
+                v-model:value="store.params.positions"
+                @update:value="filterEvent"
+                @onSearch="onSearchPositionEv"
+              />
+            </div>
+            <div class="col-span-12 md:col-span-6">
+              <label class="mt-3 text-xs text-gray-500">{{
+                $t('workerPage.filter.contract_type')
+              }}</label>
+              <n-select
+                v-model:value="store.params.contract_type"
+                filterable
+                clearable
+                :options="componentStore.contractTypeList"
+                label-field="name"
+                value-field="id"
+                :loading="componentStore.enumLoading"
+                @update:value="filterEvent"
+              >
+              </n-select>
+            </div>
+            <div class="col-span-12 md:col-span-6">
+              <label class="mt-3 text-xs text-gray-500">{{
+                $t('workerPage.filter.position_type')
+              }}</label>
+              <n-select
+                v-model:value="store.params.position_type"
+                filterable
+                clearable
+                :options="componentStore.positionCategory"
+                label-field="name"
+                value-field="id"
+                :loading="componentStore.enumAdminLoading"
+                @update:value="filterEvent"
+                :ignore-composition="false"
+              />
+            </div>
+            <div class="col-span-12 md:col-span-6">
+              <label class="text-xs text-gray-500">{{ $t(`createWorkerPage.form.education`) }}</label>
+              <n-select
+                v-model:value="store.params.educations"
+                multiple
+                filterable
+                clearable
+                :options="componentStore.educationList"
+                label-field="name"
+                value-field="id"
+                @update:value="filterEvent"
+                :ignore-composition="false"
+                :loading="componentStore.enumLoading"
+              />
+            </div>
+            <div class="col-span-12 md:col-span-6">
+              <label class="text-xs text-gray-500">{{ $t('workerPage.filter.age') }}</label>
+              <n-input-group>
+                <n-radio-group
+                  v-model:value="ageMode"
+                  @update:value="onChangeAgeMode"
+                  class="age-mode-group"
+                >
+                  <n-radio-button value="range">{{ $t('content.ageRange') }}</n-radio-button>
+                  <n-radio-button value="exact">{{ $t('content.ageExact') }}</n-radio-button>
+                </n-radio-group>
+                <template v-if="ageMode === 'range'">
+                  <n-input-number
+                    v-model:value="ageFrom"
+                    :min="1"
+                    :max="100"
+                    :precision="0"
+                    :input-props="{ onKeydown: blockDecimalKey }"
+                    clearable
+                    class="flex-1 min-w-0"
+                    :placeholder="$t('content.ageFrom')"
+                    @update:value="onChangeAgeRange"
+                  />
+                  <n-input-number
+                    v-model:value="ageTo"
+                    :min="1"
+                    :max="100"
+                    :precision="0"
+                    :input-props="{ onKeydown: blockDecimalKey }"
+                    clearable
+                    class="flex-1 min-w-0"
+                    :placeholder="$t('content.ageTo')"
+                    @update:value="onChangeAgeRange"
+                  />
+                </template>
+                <n-input-number
+                  v-else
+                  v-model:value="exactAge"
+                  :min="1"
+                  :max="100"
+                  :precision="0"
+                  :input-props="{ onKeydown: blockDecimalKey }"
+                  clearable
+                  class="flex-1 min-w-0"
+                  :placeholder="$t('content.ageExactPlaceholder')"
+                  @update:value="onChangeExactAge"
+                />
+              </n-input-group>
+            </div>
+            <div class="col-span-12 md:col-span-4">
+              <label class="text-xs text-gray-500">{{ $t(`registerPage.lastName`) }}</label>
+              <n-input
+                clearable
+                class="w-full! skip-format"
+                v-model:value="store.params.last_name"
+                type="text"
+                :placeholder="$t('content.search')"
+                :on-keyup="onKeyUp"
+                @clear="onKeyUp"
+              >
+                <template #suffix>
+                  <n-icon :component="Search48Filled" />
+                </template>
+              </n-input>
+            </div>
+            <div class="col-span-12 md:col-span-4">
+              <label class="text-xs text-gray-500">{{ $t(`registerPage.firstName`) }}</label>
+              <n-input
+                clearable
+                class="w-full! skip-format"
+                v-model:value="store.params.first_name"
+                type="text"
+                :placeholder="$t('content.search')"
+                :on-keyup="onKeyUp"
+                @clear="onKeyUp"
+              >
+                <template #suffix>
+                  <n-icon :component="Search48Filled" />
+                </template>
+              </n-input>
+            </div>
+            <div class="col-span-12 md:col-span-4">
+              <label class="text-xs text-gray-500">{{ $t(`registerPage.middleName`) }}</label>
+              <n-input
+                clearable
+                class="w-full! skip-format"
+                v-model:value="store.params.middle_name"
+                type="text"
+                :placeholder="$t('content.search')"
+                :on-keyup="onKeyUp"
+                @clear="onKeyUp"
+              >
+                <template #suffix>
+                  <n-icon :component="Search48Filled" />
+                </template>
+              </n-input>
+            </div>
+            <div class="col-span-12 md:col-span-4">
+              <label class="text-xs text-gray-500 select-none">&nbsp;</label>
+              <div
+                class="h-[34px] w-full flex items-center px-3 border border-surface-line rounded-lg"
+              >
+                <n-checkbox @change="filterEvent" v-model:checked="store.params.multiple_position">
+                  <span class="text-secondary text-xs">{{
+                    $t('workerPage.filter.multiple_position')
+                  }}</span>
+                </n-checkbox>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="w-[100px] pl-[20px]">
-          <n-slider
-            class="min-h-[200px]"
-            v-model:value="store.params.ages"
-            @dragend="onChangeAge"
-            :marks="marks"
-            vertical
-            range
-            :format-tooltip="(v) => `${v} - yosh`"
-          >
-            <template #thumb>
-              <n-icon-wrapper :size="24" :border-radius="12">
-                <n-icon :size="18">
-                  <Person32Regular />
-                </n-icon>
-              </n-icon-wrapper>
-            </template>
-          </n-slider>
+
+          <div class="mt-4 mb-2 flex items-center gap-2">
+            <n-divider class="flex-1! m-0!" />
+            <n-button
+              text
+              size="tiny"
+              class="text-xs text-center shrink-0"
+              @click="showAllFilters = !showAllFilters"
+            >
+              {{ showAllFilters ? $t('content.hideAdditionalFilters') : $t('content.showAdditionalFilters') }}
+              <template #icon>
+                <n-icon :component="showAllFilters ? ChevronUp20Regular : ChevronDown20Regular" />
+              </template>
+            </n-button>
+            <n-divider class="flex-1! m-0!" />
+          </div>
+
+          <n-collapse-transition :show="showAllFilters">
+            <div class="grid grid-cols-12 gap-3">
+              <div class="col-span-12 md:col-span-4">
+                <label class="mt-3 text-xs text-gray-500">{{ $t('workerPage.filter.birthday') }}</label>
+                <n-select
+                  v-model:value="store.params.birthday"
+                  filterable
+                  clearable
+                  :options="Utils.monthList"
+                  label-field="name"
+                  value-field="id"
+                  @update:value="filterEvent"
+                  :ignore-composition="false"
+                />
+              </div>
+              <div class="col-span-12 md:col-span-4">
+                <label class="text-xs text-gray-500">{{ $t('workerPage.filter.sex') }}</label>
+                <n-select
+                  v-model:value="store.params.sex"
+                  filterable
+                  clearable
+                  :options="componentStore.genderList"
+                  label-field="name"
+                  value-field="id"
+                  @update:value="filterEvent"
+                  :ignore-composition="false"
+                />
+              </div>
+              <div class="col-span-12 md:col-span-4">
+                <label class="text-xs text-gray-500">{{
+                  $t(`createWorkerPage.form.marital_status`)
+                }}</label>
+                <n-select
+                  v-model:value="store.params.marital_status"
+                  filterable
+                  clearable
+                  :options="componentStore.maritalList"
+                  label-field="name"
+                  value-field="id"
+                  :ignore-composition="false"
+                  :loading="componentStore.enumLoading"
+                  @update:value="filterEvent"
+                />
+              </div>
+              <div class="col-span-12 md:col-span-4">
+                <label class="text-xs text-gray-500">{{
+                  $t(`createWorkerPage.form.nationality_id`)
+                }}</label>
+                <n-select
+                  v-model:value="store.params.nationalities"
+                  multiple
+                  filterable
+                  clearable
+                  :options="componentStore.nationalityList"
+                  label-field="name"
+                  value-field="id"
+                  @update:value="filterEvent"
+                  :ignore-composition="false"
+                  :loading="componentStore.nationalityLoading"
+                />
+              </div>
+              <div class="col-span-12 md:col-span-4">
+                <label class="text-xs text-gray-500">{{ $t(`createWorkerPage.form.country`) }}</label>
+                <n-select
+                  v-model:value="store.params.country_id"
+                  filterable
+                  clearable
+                  :options="componentStore.countryList"
+                  label-field="name"
+                  value-field="id"
+                  :ignore-composition="false"
+                  :loading="componentStore.countryLoading"
+                  @update:value="changeCountry"
+                />
+              </div>
+              <div class="col-span-12 md:col-span-4">
+                <label class="text-xs text-gray-500">{{ $t(`createWorkerPage.form.region`) }}</label>
+                <n-select
+                  v-model:value="store.params.region_id"
+                  filterable
+                  clearable
+                  :options="componentStore.regionList"
+                  label-field="name"
+                  value-field="id"
+                  :ignore-composition="false"
+                  :loading="componentStore.regionLoading"
+                  @update:value="onChangeRegion"
+                />
+              </div>
+              <div class="col-span-12 md:col-span-4">
+                <label class="text-xs text-gray-500">{{ $t(`createWorkerPage.form.city`) }}</label>
+                <n-select
+                  :disabled="!store.params.region_id"
+                  v-model:value="store.params.city_id"
+                  filterable
+                  clearable
+                  :options="store.districtList"
+                  label-field="name"
+                  value-field="id"
+                  :ignore-composition="false"
+                  :loading="store.districtLoading"
+                  @update:value="filterEvent"
+                />
+              </div>
+              <div class="col-span-12 md:col-span-4">
+                <label class="text-xs text-gray-500">{{
+                  $t(`createWorkerPage.form.currentRegion`)
+                }}</label>
+                <n-select
+                  v-model:value="store.params.current_region_id"
+                  filterable
+                  clearable
+                  :options="componentStore.regionList"
+                  label-field="name"
+                  value-field="id"
+                  :ignore-composition="false"
+                  :loading="componentStore.regionLoading"
+                  @update:value="onChangeCurrentRegion"
+                />
+              </div>
+              <div class="col-span-12 md:col-span-4">
+                <label class="text-xs text-gray-500">{{
+                  $t(`createWorkerPage.form.currentCity`)
+                }}</label>
+                <n-select
+                  v-model:value="store.params.current_city_id"
+                  :disabled="!store.params.current_region_id"
+                  filterable
+                  clearable
+                  :options="store.currentDistrictList"
+                  label-field="name"
+                  value-field="id"
+                  :ignore-composition="false"
+                  :loading="store.currentDistrictLoading"
+                  @update:value="filterEvent"
+                />
+              </div>
+            </div>
+          </n-collapse-transition>
         </div>
       </div>
     </template>
   </UIPageFilter>
 </template>
+
+<style scoped>
+  .age-mode-group :deep(.n-radio-button:last-child),
+  .age-mode-group :deep(.n-radio-button:last-child .n-radio-button__state-border) {
+    border-top-right-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+  }
+</style>

@@ -81,6 +81,13 @@
     "searchWorker": "Type to search employee...",
     "add": "Add",
     "filterSetting": "Filter settings",
+    "showAdditionalFilters": "Show additional filters",
+    "hideAdditionalFilters": "Hide additional filters",
+    "ageRange": "Range",
+    "ageExact": "Exact",
+    "ageFrom": "Age from",
+    "ageTo": "Age to",
+    "ageExactPlaceholder": "Age",
     "news": "New",
     "hour": "Hour",
     "group": "Group",
@@ -545,6 +552,7 @@
       "sex": "Gender",
       "multiple_position": "Employees with multiple contracts",
       "position_type": "Position type",
+      "age": "Age",
       "downloadRelative": "Download relatives"
     },
     "checkWorker": {
