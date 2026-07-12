@@ -544,6 +544,7 @@
       "position": "Positions",
       "sex": "Gender",
       "multiple_position": "Employees with multiple contracts",
+      "pension_age": "Employees of retirement age",
       "position_type": "Position type",
       "downloadRelative": "Download relatives"
     },
@@ -3122,6 +3123,56 @@
         "serverError": "Server Error",
         "unknown": "Unknown"
       }
+    }
+  },
+  "integrationClients": {
+    "name": "Integration Clients",
+    "scope": {
+      "all": "All",
+      "subtree": "Subtree",
+      "exact": "Exact"
+    },
+    "clients": {
+      "name": "Name",
+      "description": "Description",
+      "publicKey": "Public key",
+      "secretKey": "Secret key",
+      "role": "Role",
+      "scope": "Organization scope",
+      "orgs": "Orgs",
+      "requests": "Requests",
+      "organizations": "Organizations",
+      "organizationsPlaceholder": "Select organizations",
+      "selectedCount": "Selected: {n}",
+      "expiresAt": "Expires at",
+      "expiresPlaceholder": "No expiry"
+    },
+    "validation": {
+      "name": "Name is required",
+      "role": "Select a role",
+      "scope": "Select a scope",
+      "organizations": "Select at least one organization"
+    },
+    "create": {
+      "button": "New client",
+      "title": "New integration client",
+      "editTitle": "Edit client"
+    },
+    "rotate": {
+      "title": "Rotate key",
+      "confirm": "The secret key for \"{name}\" will be regenerated. The old key stops working immediately. Continue?"
+    },
+    "delete": {
+      "title": "Delete",
+      "confirm": "\"{name}\" will be deleted and blocked immediately. Continue?"
+    },
+    "keys": {
+      "title": "Keys",
+      "copied": "Copied",
+      "warning": "The new secret key is shown here ONLY once. Store it securely — it will not be shown again after this dialog is closed.",
+      "secretHidden": "The secret key is not stored in readable form — it can only be regenerated via \"Rotate key\".",
+      "copyAll": "Copy all",
+      "copyHint": "Hidden on screen — pasted as plaintext when you use \"Copy all\"."
     }
   },
   "changePassword": {

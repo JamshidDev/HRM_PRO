@@ -969,6 +969,13 @@ export const navigations = [
         icon: Folder48Filled,
         color: 'bg-dark',
         permission: appPermissions.admin
+      },
+      {
+        label: 'integrationClients.name',
+        path: Utils.routePathMaker(AppPaths.IntegrationClients),
+        icon: Folder48Filled,
+        color: 'bg-dark',
+        permission: appPermissions.admin
       }
     ]
   },
