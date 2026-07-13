@@ -128,7 +128,8 @@
       store.params.current_region_id,
       store.params.current_city_id,
       store.params.marital_status,
-      store.params.multiple_position
+      store.params.multiple_position,
+      store.params.pension_age
     ].filter(Boolean).length
   })
 
@@ -157,6 +158,7 @@
     store.params.first_name = null
     store.params.middle_name = null
     store.params.multiple_position = false
+    store.params.pension_age = false
 
     filterEvent()
   }
@@ -564,6 +566,18 @@
                 <n-checkbox @change="filterEvent" v-model:checked="store.params.multiple_position">
                   <span class="text-secondary text-xs">{{
                     $t('workerPage.filter.multiple_position')
+                  }}</span>
+                </n-checkbox>
+              </div>
+            </div>
+            <div class="col-span-12 md:col-span-4">
+              <label class="text-xs text-gray-500 select-none">&nbsp;</label>
+              <div
+                class="h-[34px] w-full flex items-center px-3 border border-surface-line rounded-lg"
+              >
+                <n-checkbox @change="filterEvent" v-model:checked="store.params.pension_age">
+                  <span class="text-secondary text-xs">{{
+                    $t('workerPage.filter.pension_age')
                   }}</span>
                 </n-checkbox>
               </div>

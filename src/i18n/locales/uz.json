@@ -564,6 +564,7 @@
       "position": "Lavozimlar",
       "sex": "Jinsi",
       "multiple_position": "Birdan ortiq shartnomaga ega xodimlar",
+      "pension_age": "Pensiya yoshidagi xodimlar",
       "position_type": "Lavozim turi",
       "age": "Yoshi",
       "downloadRelative": "Qarindoshlarni yuklash"
@@ -3220,6 +3221,56 @@
         "serverError": "Server xato",
         "unknown": "Noma'lum"
       }
+    }
+  },
+  "integrationClients": {
+    "name": "Integratsiya clientlari",
+    "scope": {
+      "all": "Barchasi",
+      "subtree": "Shajara",
+      "exact": "Aniq"
+    },
+    "clients": {
+      "name": "Nomi",
+      "description": "Izoh",
+      "publicKey": "Ochiq kalit",
+      "secretKey": "Yopiq kalit",
+      "role": "Rol",
+      "scope": "Korxona qamrovi",
+      "orgs": "Korxona",
+      "requests": "So'rovlar",
+      "organizations": "Korxonalar",
+      "organizationsPlaceholder": "Korxonalarni tanlang",
+      "selectedCount": "Tanlangan: {n}",
+      "expiresAt": "Amal qilish muddati",
+      "expiresPlaceholder": "Muddatsiz"
+    },
+    "validation": {
+      "name": "Nom majburiy",
+      "role": "Rol tanlang",
+      "scope": "Qamrovni tanlang",
+      "organizations": "Kamida bitta korxona tanlang"
+    },
+    "create": {
+      "button": "Yangi client",
+      "title": "Yangi integratsiya client",
+      "editTitle": "Clientni tahrirlash"
+    },
+    "rotate": {
+      "title": "Kalitni almashtirish",
+      "confirm": "\"{name}\" uchun yopiq kalit qayta yaratiladi. Eski kalit darhol ishlamay qoladi. Davom etilsinmi?"
+    },
+    "delete": {
+      "title": "O'chirish",
+      "confirm": "\"{name}\" o'chiriladi va darhol bloklanadi. Davom etilsinmi?"
+    },
+    "keys": {
+      "title": "Kalitlar",
+      "copied": "Nusxalandi",
+      "warning": "Yangi yopiq kalit FAQAT shu yerda bir marta ko'rsatiladi. Uni xavfsiz saqlang — modal yopilgach qayta ko'rsatilmaydi.",
+      "secretHidden": "Yopiq kalit xavfsizlik uchun ochiq saqlanmaydi — uni faqat \"Kalitni almashtirish\" orqali yangilash mumkin.",
+      "copyAll": "Hammasini nusxalash",
+      "copyHint": "Ekranda yashirin — \"Hammasini nusxalash\"da ochiq holatda keladi."
     }
   },
   "changePassword": {

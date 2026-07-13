@@ -31,6 +31,7 @@ import instructionService from '@/service/v1/admin/instructionService.js'
 import mobileUserService from '@/service/v1/admin/mobileUserService.js'
 import vacancyApproveService from '@/service/v1/admin/vacancyApproveService.js'
 import integrationLogService from '@/service/v1/admin/integrationLogService.js'
+import integrationClientsService from '@/service/v1/admin/integrationClientsService.js'
 
 import confirmationService from '@/service/v1/hrm/confirmationService.js'
 import departmentService from '@/service/v1/hrm/departmentService.js'
@@ -290,4 +291,5 @@ export default {
   confirmationReportService,
   departmentLocationService,
   integrationLogService,
+  integrationClientsService,
 }
