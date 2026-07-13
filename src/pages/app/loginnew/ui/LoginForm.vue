@@ -117,9 +117,8 @@
         <n-input
           size="large"
           class="login-new__input"
-          name="phone"
-          id="phone"
           type="text"
+          :input-props="{ name: 'phone', id: 'phone', autocomplete: 'username' }"
           v-mask="'+998(##)#######'"
           @keyup.enter="onSubmit"
           @paste="
@@ -139,9 +138,8 @@
         <n-input
           size="large"
           class="login-new__input"
-          name="password"
-          id="password"
           type="password"
+          :input-props="{ name: 'password', id: 'password', autocomplete: 'current-password' }"
           show-password-on="click"
           :maxlength="60"
           v-model:value="store.password"
