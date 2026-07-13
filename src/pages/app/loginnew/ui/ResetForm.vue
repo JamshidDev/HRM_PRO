@@ -2,11 +2,11 @@
   import validationRules from '@/utils/validationRules.js'
   import {
     ChevronLeft20Filled,
-    Call16Filled,
-    QrCode20Filled,
-    LockClosed16Filled,
+    Call24Regular,
+    ShieldCheckmark24Regular,
+    LockClosed24Regular,
     Eye24Regular,
-    EyeOff20Filled,
+    EyeOff24Regular,
     ErrorCircle12Filled
   } from '@vicons/fluent'
   import { useResetPasswordStore, resetSteps } from '@/store/modules/index.js'
@@ -93,13 +93,14 @@
         <n-form-item class="text-textColor2!" :label="$t(`loginPage.phone`)" path="phone">
           <n-input
             size="large"
+            class="login-new__input"
             type="text"
             v-mask="'+998(##)#######'"
             v-model:value="store.phone"
             @keyup.enter="onSendCode"
           >
             <template #prefix>
-              <n-icon class="text-textColor3!" size="24" :component="Call16Filled" />
+              <n-icon class="text-textColor3!" size="24" :component="Call24Regular" />
             </template>
           </n-input>
         </n-form-item>
@@ -123,6 +124,7 @@
         >
           <n-input
             size="large"
+            class="login-new__input"
             type="text"
             maxlength="6"
             v-mask="'######'"
@@ -130,7 +132,7 @@
             @keyup.enter="onVerify"
           >
             <template #prefix>
-              <n-icon class="text-textColor3!" size="24" :component="QrCode20Filled" />
+              <n-icon class="text-textColor3!" size="24" :component="ShieldCheckmark24Regular" />
             </template>
           </n-input>
         </n-form-item>
@@ -171,16 +173,17 @@
         >
           <n-input
             size="large"
+            class="login-new__input"
             type="password"
             show-password-on="click"
             :maxlength="60"
             v-model:value="store.password"
           >
             <template #prefix>
-              <n-icon class="text-textColor3!" size="24" :component="LockClosed16Filled" />
+              <n-icon class="text-textColor3!" size="24" :component="LockClosed24Regular" />
             </template>
             <template #password-visible-icon>
-              <n-icon :size="20" :component="EyeOff20Filled" />
+              <n-icon :size="20" :component="EyeOff24Regular" />
             </template>
             <template #password-invisible-icon>
               <n-icon :size="20" :component="Eye24Regular" />
@@ -194,6 +197,7 @@
         >
           <n-input
             size="large"
+            class="login-new__input"
             type="password"
             show-password-on="click"
             :maxlength="60"
@@ -201,10 +205,10 @@
             @keyup.enter="onSubmit"
           >
             <template #prefix>
-              <n-icon class="text-textColor3!" size="24" :component="LockClosed16Filled" />
+              <n-icon class="text-textColor3!" size="24" :component="LockClosed24Regular" />
             </template>
             <template #password-visible-icon>
-              <n-icon :size="20" :component="EyeOff20Filled" />
+              <n-icon :size="20" :component="EyeOff24Regular" />
             </template>
             <template #password-invisible-icon>
               <n-icon :size="20" :component="Eye24Regular" />

@@ -95,6 +95,7 @@
           <n-checkbox
             :disabled="Boolean(item.group)"
             :checked="modelV.map((a) => a.id).includes(item.id)"
+            @click.stop="onSelect(item)"
           ></n-checkbox>
           <slot name="label" :data="item">
             <span class="text-xs ml-2"> {{ short ? item.code : item.name }}</span>

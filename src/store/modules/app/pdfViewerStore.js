@@ -101,11 +101,14 @@ export const usePdfViewerStore = defineStore('pdfViewerStore', {
     docApplicationLoading: false,
     workerApplications: [],
 
-    viewerLoading: false
+    viewerLoading: false,
+
+    loadError: false
   }),
   actions: {
     async loadPdf() {
       this.totalPdfPage = 0
+      this.loadError = false
       const pdfUrl = this.pdfUrl
       // const pdfUrl = "https://s3.dasuty.com/docflow/documents/timesheets/c4ca4238a0b923820dcc509a6f75849b.pdf"
       try {
@@ -116,6 +119,7 @@ export const usePdfViewerStore = defineStore('pdfViewerStore', {
         }
       } catch (err) {
         console.error('Error loading PDF:', err)
+        this.loadError = true
       }
     },
     async renderPdf(pageNumber) {

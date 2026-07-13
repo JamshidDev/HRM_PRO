@@ -10,7 +10,6 @@ const appStore = useAppStore()
 const {t} = i18n.global
 
 const CHART_COLORS = ['#1A84FF', '#0F1114', '#E53835']
-const EDU_KEYS = ['higher', 'special', 'middle']
 
 const createEduOption = () => {
   return {
@@ -97,7 +96,7 @@ const getPercentage = (count) => {
           <v-chart :option="eduOptions[idx]" />
         </div>
         <div style="width: calc(100% - 90px)" class="pl-2">
-          <p>{{ $t(`dashboardPage.edu.${EDU_KEYS[idx]}`) }}</p>
+          <p>{{ $t(item.title) }}</p>
           <n-progress type="line" status="info" :color="CHART_COLORS[idx]" :percentage="getPercentage(item.count)">
             {{ getPercentage(item.count) }} %
           </n-progress>

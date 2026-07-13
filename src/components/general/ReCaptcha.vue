@@ -58,7 +58,7 @@
 <template>
   <div class="captcha-block w-full flex items-center gap-2">
     <div
-      class="captcha-card flex items-stretch rounded-lg overflow-hidden border border-surface-line bg-surface-section shrink-0"
+      class="captcha-card flex items-stretch rounded-2xl overflow-hidden border border-surface-line bg-surface-section shrink-0"
     >
       <div class="captcha-image flex items-center justify-center">
         <n-spin v-if="loading" :size="20" />
@@ -86,7 +86,7 @@
 
     <n-input
       size="large"
-      class="grow"
+      class="grow login-new__input"
       :value="answer"
       :placeholder="$t('loginPage.captchaPlaceholder')"
       :maxlength="10"
@@ -98,7 +98,13 @@
 
 <style scoped>
   .captcha-card {
-    height: 40px;
+    height: 48px;
+  }
+
+  @media (min-width: 1024px) {
+    .captcha-card {
+      height: 52px;
+    }
   }
 
   .captcha-image {
