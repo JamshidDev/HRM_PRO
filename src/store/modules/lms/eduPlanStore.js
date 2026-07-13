@@ -54,7 +54,8 @@ export const useEduPlanStore = defineStore('eduPlanStore', {
       learning_center_id: null,
       organizations: [],
       year: null,
-      month: null
+      month: null,
+      start_date: null
     },
     workerList: [],
     workerLoading: false,
@@ -98,7 +99,9 @@ export const useEduPlanStore = defineStore('eduPlanStore', {
       this.loading = true
       const params = {
         ...this.params,
-        organizations: this.params.organizations.map((v) => v.id).toString() || undefined
+        organizations: this.params.organizations.map((v) => v.id).toString() || undefined,
+        // n-date-picker timestamp beradi → backend 'YYYY-MM-DD' kutadi (create bilan bir xil).
+        start_date: Utils.timeToZone(this.params.start_date) || undefined
       }
       $ApiService.eduPlanService
         ._index({ params })
