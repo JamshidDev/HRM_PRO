@@ -28,6 +28,7 @@ export const useMonthReportStore = defineStore('monthReportStore', {
       sort_order: 1,
       start_hours:null,
       end_hours:null,
+      sex: null,
     },
     structureCheck2: [],
     structureCheck: [],
@@ -126,7 +127,9 @@ export const useMonthReportStore = defineStore('monthReportStore', {
               ? 1
               : undefined
             : undefined,
-        sort_by: this.params.sort_by === 'status' ? undefined : this.params.sort_by
+        sort_by: this.params.sort_by === 'status' ? undefined : this.params.sort_by,
+        // sex=0 (ayol) ham to'g'ri qiymat → faqat null bo'lsa yubormaymiz (?? undefined).
+        sex: this.params.sex ?? undefined
       }
       $ApiService.monthReportService
         ._index({ params })
