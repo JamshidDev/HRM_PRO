@@ -78,8 +78,9 @@ export const useIntegrationClientsStore = defineStore('integrationClients', {
           search: this.clientsParams.search || undefined
         })
         .then((res) => {
-          this.clients = res.data.data.data
-          this.clientsTotalItems = res.data.data.total
+          // Paginatsiyalangan: { current_page, total, data } (boshqa admin API'lardek).
+          this.clients = res.data.data.data ?? []
+          this.clientsTotalItems = res.data.data.total ?? 0
         })
         .finally(() => {
           this.clientsLoading = false
