@@ -14,7 +14,7 @@ const _logs = async (payload) => await axios.get('/v1/admin/integration-clients/
 
 // --- CRUD ---
 const _meta = async () => await axios.get('/v1/admin/integration-clients/meta')
-const _list = async () => await axios.get('/v1/admin/integration-clients')
+const _list = async (params) => await axios.get('/v1/admin/integration-clients', { params })
 const _show = async (id) => await axios.get(`/v1/admin/integration-clients/${id}`)
 const _secret = async (id) => await axios.get(`/v1/admin/integration-clients/${id}/secret`)
 const _create = async (data) => await axios.post('/v1/admin/integration-clients', data)
