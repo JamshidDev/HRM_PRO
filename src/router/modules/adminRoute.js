@@ -176,5 +176,13 @@ export const adminRoutes = [
     meta: {
       layout: AppLayouts.main
     }
+  },
+  {
+    path: Utils.routePathMaker(AppPaths.LateWorkersReport),
+    name: AppPaths.LateWorkersReport.substring(1),
+    component: () => import('@pages/admin/lateWorkersReport/page.vue'),
+    meta: {
+      layout: AppLayouts.main
+    }
   }
 ]
