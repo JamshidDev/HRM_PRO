@@ -7,6 +7,7 @@
     usePunishmentStore
   } from '@/store/modules/index.js'
   import { useAppSetting } from '@/utils/index.js'
+  import Utils from '@utils/Utils.js'
   import { ArrowCircleDown32Regular } from '@vicons/fluent'
 
   const store = useIncentiveStore()
@@ -24,7 +25,11 @@
   }
 
   const filterCount = computed(
-    () => Number(Boolean(store.params.organizations.length)) + Number(Boolean(store.params.created))
+    () =>
+      Number(Boolean(store.params.organizations.length)) +
+      Number(Boolean(store.params.created)) +
+      Number(Boolean(store.params.year)) +
+      Number(Boolean(store.params.month))
   )
 
   const beforeShow = (v) => {
@@ -45,6 +50,8 @@
     store.params.organizations = []
     store.params.confirmation = null
     store.params.created = null
+    store.params.year = null
+    store.params.month = null
     filterEvent()
   }
 </script>
@@ -91,6 +98,26 @@
         :format="useAppSetting.datePicketFormat"
         @update:value="filterEvent"
         clearable
+      />
+      <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{ $t('content.year') }}</label>
+      <n-select
+        class="w-full"
+        v-model:value="store.params.year"
+        :options="Utils.yearList"
+        label-field="name"
+        value-field="id"
+        clearable
+        @update:value="filterEvent"
+      />
+      <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{ $t('content.month') }}</label>
+      <n-select
+        class="w-full"
+        v-model:value="store.params.month"
+        :options="Utils.monthList"
+        label-field="name"
+        value-field="id"
+        clearable
+        @update:value="filterEvent"
       />
     </template>
   </UIPageFilter>

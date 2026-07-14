@@ -23,6 +23,8 @@ export const useIntegrationClientsStore = defineStore('integrationClients', {
     // clients (CRUD)
     clients: [],
     clientsLoading: false,
+    clientsTotalItems: 0,
+    clientsParams: { page: 1, per_page: 10, search: null },
     saveLoading: false,
     meta: { roles: [], scope_modes: ['all', 'subtree', 'exact'] },
 
@@ -70,9 +72,14 @@ export const useIntegrationClientsStore = defineStore('integrationClients', {
     _clients() {
       this.clientsLoading = true
       $ApiService.integrationClientsService
-        ._list()
+        ._list({
+          page: this.clientsParams.page,
+          per_page: this.clientsParams.per_page,
+          search: this.clientsParams.search || undefined
+        })
         .then((res) => {
-          this.clients = res.data.data
+          this.clients = res.data.data.data
+          this.clientsTotalItems = res.data.data.total
         })
         .finally(() => {
           this.clientsLoading = false

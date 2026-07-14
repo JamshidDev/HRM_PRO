@@ -2,6 +2,7 @@
   import { useAccountStore, useComponentStore, useEduPlanStore } from '@/store/modules/index.js'
   import { UIPageFilter, UISelect } from '@/components/index.js'
   import Utils from '@utils/Utils.js'
+  import { useAppSetting } from '@/utils/index.js'
   const store = useEduPlanStore()
   const accStore = useAccountStore()
   const componentStore = useComponentStore()
@@ -23,6 +24,7 @@
     store.params.learning_center_id = null
     store.params.year = new Date().getFullYear()
     store.params.month = new Date().getMonth() + 1
+    store.params.start_date = null
     filterEvent()
   }
 
@@ -30,7 +32,8 @@
     () =>
       Number(Boolean(store.params.organizations.length)) +
       Number(Boolean(store.params.name)) +
-      Number(Boolean(store.params.learning_center_id))
+      Number(Boolean(store.params.learning_center_id)) +
+      Number(Boolean(store.params.start_date))
   )
 
   const onAdd = () => {
@@ -117,6 +120,17 @@
         :options="Utils.monthList"
         label-field="name"
         value-field="id"
+        @update:value="filterEvent"
+      />
+      <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{
+        $t('eduPlanPage.form.start_date')
+      }}</label>
+      <n-date-picker
+        class="w-full"
+        v-model:value="store.params.start_date"
+        type="date"
+        clearable
+        :format="useAppSetting.datePicketFormat"
         @update:value="filterEvent"
       />
     </template>

@@ -1,6 +1,6 @@
 <script setup>
   import { useIntegrationClientsStore, useComponentStore } from '@/store/modules/index.js'
-  import { UIModal, UISelect, UIMenuButton } from '@/components/index.js'
+  import { UIModal, UISelect, UIMenuButton, UIPagination } from '@/components/index.js'
   import {
     Checkmark16Regular,
     Dismiss16Regular,
@@ -35,6 +35,12 @@
     if (v.key === Utils.ActionTypes.edit) openEdit(v.data)
     else if (v.key === 'keys') openKeys(v.data)
     else if (v.key === Utils.ActionTypes.delete) store._delete(v.data.id).then(() => store._clients())
+  }
+
+  const changePage = (v) => {
+    store.clientsParams.page = v.page
+    store.clientsParams.per_page = v.per_page
+    store._clients()
   }
 
   const scopeModeOptions = computed(() =>
@@ -258,7 +264,9 @@
       </thead>
       <tbody>
         <tr v-for="(item, idx) in store.clients" :key="item.id">
-          <td class="text-center text-xs text-textColor3">{{ idx + 1 }}</td>
+          <td class="text-center text-xs text-textColor3">
+            {{ (store.clientsParams.page - 1) * store.clientsParams.per_page + idx + 1 }}
+          </td>
           <td>
             <p class="text-sm font-semibold text-textColor0">{{ item.name }}</p>
             <p v-if="item.description" class="text-[11px] text-textColor3">{{ item.description }}</p>
@@ -299,6 +307,13 @@
         </tr>
       </tbody>
     </n-table>
+    <UIPagination
+      v-if="store.clients.length"
+      :page="store.clientsParams.page"
+      :per_page="store.clientsParams.per_page"
+      :total="store.clientsTotalItems"
+      @change-page="changePage"
+    />
   </n-spin>
 
   <!-- Create / Edit modal -->

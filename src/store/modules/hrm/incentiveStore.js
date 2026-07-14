@@ -14,7 +14,9 @@ export const useIncentiveStore = defineStore('incentiveStore', {
       per_page: 10,
       search: null,
       organizations: [],
-      created: null
+      created: null,
+      year: null,
+      month: null
     },
     downloading: true
   }),
@@ -24,7 +26,9 @@ export const useIncentiveStore = defineStore('incentiveStore', {
       const params = {
         ...this.params,
         created: Utils.timeToZone(this.params.created),
-        organizations: this.params.organizations.map((v) => v.id).toString() || undefined
+        organizations: this.params.organizations.map((v) => v.id).toString() || undefined,
+        year: this.params.year || undefined,
+        month: this.params.month || undefined
       }
       $ApiService.incentiveService
         ._index({ params })
@@ -42,6 +46,8 @@ export const useIncentiveStore = defineStore('incentiveStore', {
         ...this.params,
         created: Utils.timeToZone(this.params.created),
         organizations: this.params.organizations.map((v) => v.id).toString() || undefined,
+        year: this.params.year || undefined,
+        month: this.params.month || undefined,
         download: true
       }
       $ApiService.incentiveService
