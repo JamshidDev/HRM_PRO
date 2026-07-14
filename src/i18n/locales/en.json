@@ -1,4 +1,24 @@
 {
+  "lateWorkersReport": {
+    "name": "Late-comers report",
+    "title": "Regular late-comers report",
+    "subtitle": "Employees who arrived after the work start time within a period, by selected organizations (Excel)",
+    "createButton": "Generate report",
+    "modalTitle": "Late-comers — Excel",
+    "organizations": "Organizations",
+    "from": "Start date",
+    "to": "End date",
+    "startTime": "Work start time",
+    "download": "Download",
+    "downloaded": "Report downloaded",
+    "failed": "Failed to download the report",
+    "validation": {
+      "organizations": "Select at least one organization",
+      "period": "Enter the period (date range)",
+      "startTime": "Enter the work start time",
+      "dateOrder": "End date must be on or after the start date"
+    }
+  },
   "homePage": {
     "wrongWorkerPins": "Wrong worker PINs",
     "downloaded": "File downloaded successfully",

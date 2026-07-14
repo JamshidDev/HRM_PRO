@@ -1,4 +1,24 @@
 {
+  "lateWorkersReport": {
+    "name": "Kech qoluvchilar hisoboti",
+    "title": "Muntazam kech qoluvchilar hisoboti",
+    "subtitle": "Tanlangan korxonalar bo'yicha davr ichida ish boshlanish vaqtidan kech kelgan xodimlar (Excel)",
+    "createButton": "Hisobot yaratish",
+    "modalTitle": "Kech qoluvchilar — Excel",
+    "organizations": "Korxonalar",
+    "from": "Boshlanish sanasi",
+    "to": "Tugash sanasi",
+    "startTime": "Ish boshlanish vaqti",
+    "download": "Yuklab olish",
+    "downloaded": "Hisobot yuklab olindi",
+    "failed": "Hisobotni yuklab bo'lmadi",
+    "validation": {
+      "organizations": "Kamida bitta korxona tanlang",
+      "period": "Davrni (sana oralig'ini) kiriting",
+      "startTime": "Ish boshlanish vaqtini kiriting",
+      "dateOrder": "Tugash sanasi boshlanishdan katta yoki teng bo'lsin"
+    }
+  },
   "homePage": {
     "wrongWorkerPins": "Noto'g'ri xodim PIN-kodlari",
     "downloaded": "Fayl muvaffaqiyatli yuklab olindi",

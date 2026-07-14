@@ -976,6 +976,13 @@ export const navigations = [
         icon: Folder48Filled,
         color: 'bg-dark',
         permission: appPermissions.admin
+      },
+      {
+        label: 'lateWorkersReport.name',
+        path: Utils.routePathMaker(AppPaths.LateWorkersReport),
+        icon: Folder48Filled,
+        color: 'bg-dark',
+        permission: appPermissions.admin
       }
     ]
   },
