@@ -28,12 +28,21 @@
     if (componentStore.structureList.length === 0) componentStore._structures()
   }
 
+  // Default davr — o'tgan oy TO'LIQ (1-kundan oxirgi kungacha). Lokal yarim tun.
+  const defaultPeriod = () => {
+    const now = new Date()
+    const from = new Date(now.getFullYear(), now.getMonth() - 1, 1) // o'tgan oy 1-kuni
+    const to = new Date(now.getFullYear(), now.getMonth(), 0) // o'tgan oy oxirgi kuni (bu oy 0-kuni)
+    return { from: from.getTime(), to: to.getTime() }
+  }
+
   const openModal = () => {
     orgs.value = []
     orgChecked.value = []
-    dateFrom.value = null
-    dateTo.value = null
-    startTime.value = '09:00'
+    const { from, to } = defaultPeriod()
+    dateFrom.value = from
+    dateTo.value = to
+    startTime.value = '09:00' // default ish boshlanish vaqti
     loadStructure()
     showModal.value = true
   }
