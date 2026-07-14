@@ -12,7 +12,9 @@ export const usePunishmentStore = defineStore('punishmentStore', {
       per_page: 10,
       search: null,
       organizations: [],
-      created: null
+      created: null,
+      year: null,
+      month: null
     },
     downloading: false
   }),
@@ -22,7 +24,9 @@ export const usePunishmentStore = defineStore('punishmentStore', {
       const params = {
         ...this.params,
         created: Utils.timeToZone(this.params.created),
-        organizations: this.params.organizations.map((v) => v.id).toString() || undefined
+        organizations: this.params.organizations.map((v) => v.id).toString() || undefined,
+        year: this.params.year || undefined,
+        month: this.params.month || undefined
       }
       $ApiService.punishmentService
         ._index({ params })
@@ -40,6 +44,8 @@ export const usePunishmentStore = defineStore('punishmentStore', {
         ...this.params,
         created: Utils.timeToZone(this.params.created),
         organizations: this.params.organizations.map((v) => v.id).toString() || undefined,
+        year: this.params.year || undefined,
+        month: this.params.month || undefined,
         download: true
       }
       $ApiService.punishmentService._index({ params }).finally(() => {
