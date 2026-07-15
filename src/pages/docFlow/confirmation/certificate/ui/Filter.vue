@@ -95,7 +95,7 @@
     @onClear="store._resetParams(), filterEvent()"
   >
     <template #filterContent>
-      <div class="flex flex-col max-w-[370px]">
+      <div class="flex flex-col">
         <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{ $t('content.status') }}</label>
         <n-select
           v-model:value="store.params.status"
