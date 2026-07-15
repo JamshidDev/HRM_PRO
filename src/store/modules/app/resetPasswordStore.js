@@ -1,7 +1,5 @@
 import { defineStore } from 'pinia'
 
-const otpExpireTime = import.meta.env.VITE_OTP_EXPIRE_TIME
-
 // Reset flow qadamlari
 export const resetSteps = {
   request: 'request',
@@ -18,13 +16,13 @@ export const useResetPasswordStore = defineStore('resetPasswordStore', {
     confirmPassword: null,
     loading: false,
     errorMessage: null,
-    resetToken: null,
-    showReSendButton: false,
-    otpExpireTime: otpExpireTime
+    resetToken: null
   }),
   getters: {
     // +998(90)1234567 -> 901234567
-    rawPhone: (state) => state.phone?.slice(4).replace('(', '').replace(')', '') || ''
+    rawPhone: (state) => state.phone?.slice(4).replace('(', '').replace(')', '') || '',
+    // +998(90)1234567 -> 998901234567 (password-reset/verify DTO shu formatni kutadi)
+    fullPhone: (state) => state.phone?.replace(/[+()]/g, '') || ''
   },
   actions: {
     // login formadan telefonni olib reset flowni boshlaydi
@@ -32,40 +30,24 @@ export const useResetPasswordStore = defineStore('resetPasswordStore', {
       this.$reset()
       if (phone) this.phone = phone
     },
-    // 1-qadam: tiklash kodini yuborish
+    // 1-qadam: telefonni tasdiqlab kod kiritish qadamiga o'tish (kod Telegram bot orqali keladi,
+    // backendda alohida "kod yuborish" endpointi yo'q)
     _sendCode() {
       this.errorMessage = null
-      this.loading = true
-      const data = { phone: this.rawPhone }
-      $ApiService.authService
-        ._forgotPassword({ data })
-        .then((res) => {
-          this.resetToken = res.data?.data?.user ?? res.data?.data ?? null
-          this.step = resetSteps.code
-          this.showReSendButton = false
-          this.otpExpireTime = otpExpireTime
-        })
-        .catch((error) => {
-          this.errorMessage = error.response?.data?.message
-        })
-        .finally(() => {
-          this.loading = false
-        })
+      this.step = resetSteps.code
     },
     // 2-qadam: kiritilgan kodni tekshirish
     _verifyCode() {
       this.errorMessage = null
       this.loading = true
       const data = {
-        phone: this.rawPhone,
-        code: this.code,
-        user: this.resetToken
+        phone: this.fullPhone,
+        code: this.code
       }
       $ApiService.authService
         ._verifyResetCode({ data })
         .then((res) => {
-          // backend yangi token qaytarsa saqlab qolamiz
-          this.resetToken = res.data?.data?.user ?? res.data?.data ?? this.resetToken
+          this.resetToken = res.data?.data?.reset_token ?? res.data?.reset_token ?? res.data?.data ?? null
           this.step = resetSteps.password
         })
         .catch((error) => {
@@ -80,10 +62,8 @@ export const useResetPasswordStore = defineStore('resetPasswordStore', {
       this.errorMessage = null
       this.loading = true
       const data = {
-        phone: this.rawPhone,
-        code: this.code,
-        user: this.resetToken,
-        password: this.password
+        reset_token: this.resetToken,
+        new_password: this.password
       }
       $ApiService.authService
         ._resetPassword({ data })
@@ -96,15 +76,6 @@ export const useResetPasswordStore = defineStore('resetPasswordStore', {
         .finally(() => {
           this.loading = false
         })
-    },
-    // kodni qayta yuborish
-    reSendCode() {
-      this.showReSendButton = false
-      this._sendCode()
-    },
-    onFinish() {
-      this.showReSendButton = true
-      this.otpExpireTime = otpExpireTime
     }
   }
 })

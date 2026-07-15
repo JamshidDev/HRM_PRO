@@ -364,14 +364,15 @@
     },
     "resetPassword": {
       "title": "Reset password",
-      "requestSubtitle": "Confirm your phone number to receive a verification code.",
-      "codeSubtitle": "Enter the verification code sent to {n}.",
+      "requestSubtitlePrefix": "Confirm your phone number and go to the Telegram bot ",
+      "requestSubtitleSuffix": " to get your verification code.",
+      "codeSubtitlePrefix": "Get the code from ",
+      "codeSubtitleSuffix": " and enter it here.",
       "passwordSubtitle": "Enter your new password.",
       "code": "Verification code",
       "newPassword": "New password",
       "confirmPassword": "Repeat password",
       "sendCode": "Reset password",
-      "reSendCode": "Resend code",
       "verify": "Verify",
       "submit": "Update password",
       "success": "Password updated successfully. Log in with your new password."

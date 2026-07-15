@@ -378,14 +378,15 @@
     },
     "resetPassword": {
       "title": "Parolni tiklash",
-      "requestSubtitle": "Tasdiqlash kodini olish uchun telefon raqamingizni tasdiqlang.",
-      "codeSubtitle": "{n} raqamiga yuborilgan tasdiqlash kodini kiriting.",
+      "requestSubtitlePrefix": "Tasdiqlash kodini olish uchun telefon raqamingizni tasdiqlang va ",
+      "requestSubtitleSuffix": " Telegram botiga kiring.",
+      "codeSubtitlePrefix": "Kodni ",
+      "codeSubtitleSuffix": " orqali oling va shu yerga kiriting.",
       "passwordSubtitle": "Yangi parolingizni kiriting.",
       "code": "Tasdiqlash kodi",
       "newPassword": "Yangi parol",
       "confirmPassword": "Parolni takrorlang",
       "sendCode": "Parolni tiklash",
-      "reSendCode": "Kodni qayta yuborish",
       "verify": "Tasdiqlash",
       "submit": "Parolni yangilash",
       "success": "Parol muvaffaqiyatli yangilandi. Endi yangi parol bilan kiring."
