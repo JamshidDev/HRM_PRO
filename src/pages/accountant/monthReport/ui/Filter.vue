@@ -99,7 +99,7 @@ const onChangeInput = useDebounce(filterEvent, 600)
         $t('monthReport.form.code')
       }}</label>
       <n-select
-        class="w-full max-w-[370px]"
+        class="w-full"
         clearable
         v-model:value="store.params.code"
         :options="store.codeList"
@@ -111,7 +111,7 @@ const onChangeInput = useDebounce(filterEvent, 600)
       />
       <label class="text-xs mt-3 text-gray-500 mb-1 font-medium">{{ $t('workerPage.filter.sex') }}</label>
       <n-select
-        class="w-full max-w-[370px]"
+        class="w-full"
         clearable
         v-model:value="store.params.sex"
         :options="componentStore.genderList"
