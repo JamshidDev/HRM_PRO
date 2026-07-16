@@ -694,7 +694,9 @@
       "positionRank": "Lavozim razryadi",
       "positionRate": "Lavozim stavkasi",
       "addPassport": "Passport nusxasini qo'shish",
-      "no-passport": "Passport ma'lumotlar yuklanmagan!"
+      "no-passport": "Passport ma'lumotlar yuklanmagan!",
+      "addForeignPassport": "Xorij pasporti nusxasini qo'shish",
+      "no-foreign-passport": "Xorij pasporti ma'lumotlari yuklanmagan!"
     },
     "position": {
       "contractType": "Shartnoma turi",
@@ -794,6 +796,7 @@
       "address": "Yashash manzili",
       "experience_date": "Uzliksiz ish staji",
       "passportTitle": "Pasport ma'lumotlari",
+      "foreignPassportTitle": "Xorijga chiqish pasporti ma'lumotlari",
       "education": "Ma'lumoti",
       "work_experience": "Umumiy staj (oylarda ko'rsating)"
     },

@@ -40,6 +40,7 @@ import departmentService from '@/service/v1/hrm/departmentService.js'
 import departmentPositionService from '@/service/v1/hrm/departmentPositionService.js'
 import workerService from '@/service/v1/hrm/workerService.js'
 import passportService from '@/service/v1/hrm/passportService.js'
+import foreignPassportService from '@/service/v1/hrm/foreignPassportService.js'
 import photoService from '@/service/v1/hrm/photoService.js'
 import phoneService from '@/service/v1/hrm/phoneService.js'
 import languageService from '@/service/v1/hrm/languageService.js'
@@ -176,6 +177,7 @@ export default {
   contractService,
   logService,
   passportService,
+  foreignPassportService,
   photoService,
   phoneService,
   languageService,

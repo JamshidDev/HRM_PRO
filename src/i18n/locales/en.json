@@ -680,7 +680,9 @@
       "positionRank": "Position rank",
       "positionRate": "Position rate",
       "addPassport": "Add passport copy",
-      "no-passport": "Passport data not uploaded!"
+      "no-passport": "Passport data not uploaded!",
+      "addForeignPassport": "Add foreign passport copy",
+      "no-foreign-passport": "Foreign passport data not uploaded!"
     },
     "position": {
       "contractType": "Contract type",
@@ -780,6 +782,7 @@
       "address": "Residential address",
       "experience_date": "Continuous service",
       "passportTitle": "Passport details",
+      "foreignPassportTitle": "Foreign travel passport details",
       "education": "Education",
       "work_experience": "Total experience (in months)"
     },

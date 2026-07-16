@@ -679,7 +679,9 @@
       "positionRank": "Разряд должности",
       "positionRate": "Ставка должности",
       "addPassport": "Добавить копию паспорта",
-      "no-passport": "Паспортные данные не загружены!"
+      "no-passport": "Паспортные данные не загружены!",
+      "addForeignPassport": "Добавить копию загранпаспорта",
+      "no-foreign-passport": "Данные загранпаспорта не загружены!"
     },
     "position": {
       "contractType": "Тип договора",
@@ -779,6 +781,7 @@
       "address": "Адрес проживания",
       "experience_date": "Непрерывный стаж",
       "passportTitle": "Паспортные данные",
+      "foreignPassportTitle": "Данные загранпаспорта",
       "education": "Образование",
       "work_experience": "Общий стаж (в месяцах)"
     },
