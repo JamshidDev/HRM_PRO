@@ -31,6 +31,7 @@
   import CommandForm_73 from './ui/CommandForm_73.vue'
   import CommandForm_50 from './ui/CommandForm_50.vue'
   import CommandForm_47 from './ui/CommandForm_47.vue'
+  import CommandForm_74 from './ui/CommandForm_74.vue'
   import { useAppSetting } from '@/utils/index.js'
   import { VueDraggable } from 'vue-draggable-plus'
 
@@ -40,7 +41,7 @@
   // command ids of only a single select
   const commandIdList = [32, 33, 34, 35, 36, 37, 38, 39]
   const singleSelectCommands = [
-    32, 33, 34, 35, 36, 37, 38, 39, 44, 43, 45, 46, 47, 49, 48, 50, 51, 52, 53, 54
+    32, 33, 34, 35, 36, 37, 38, 39, 44, 43, 45, 46, 47, 49, 48, 50, 51, 52, 53, 54, 74
   ]
 
   const formRef = ref(null)
@@ -64,6 +65,7 @@
   const vacationForm_71 = ref(null)
   const vacationForm_72 = ref(null)
   const vacationForm_73 = ref(null)
+  const commandForm_74 = ref(null)
 
   const renderLabel = (option) => {
     return [
@@ -166,6 +168,8 @@
           validate = await vacationForm_72.value?.onSubmit(mainData)
         } else if (store.payload.command_type === 73) {
           validate = await vacationForm_73.value?.onSubmit(mainData)
+        } else if (store.payload.command_type === 74) {
+          validate = await commandForm_74.value?.onSubmit(mainData)
         }
 
         if (validate?.isValid) {
@@ -200,6 +204,8 @@
       commandForm_50.value?.validateForm()
     } else if (store.payload.command_type === 47) {
       commandForm_47.value?.validateForm()
+    } else if (store.payload.command_type === 74) {
+      commandForm_74.value?.validateForm()
     }
   }
 
@@ -742,6 +748,9 @@
           </template>
           <template v-else-if="store.payload.command_type === 73">
             <CommandForm_73 ref="vacationForm_73" />
+          </template>
+          <template v-else-if="store.payload.command_type === 74">
+            <CommandForm_74 ref="commandForm_74" />
           </template>
 
           <template v-else>

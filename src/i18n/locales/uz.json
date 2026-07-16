@@ -19,6 +19,58 @@
       "dateOrder": "Tugash sanasi boshlanishdan katta yoki teng bo'lsin"
     }
   },
+  "lateWorkersHalfYearReport": {
+    "name": "Kech qoluvchilar (yarim yillik)",
+    "title": "Kech qoluvchilar yarim yillik hisoboti",
+    "subtitle": "Korxona × oy kesimida kech qolgan xodimlar soni — tanlangan access level qurilmalari bo'yicha (Excel, fon rejimida)",
+    "createButton": "Hisobot yaratish",
+    "modalTitle": "Kech qoluvchilar (korxona × oy) — Excel",
+    "organizations": "Korxonalar",
+    "accessLevels": "Access levellar",
+    "from": "Boshlanish oyi",
+    "to": "Tugash oyi",
+    "startTime": "Ish boshlanish vaqti",
+    "download": "Yuklab olish",
+    "queued": "Hisobot navbatga qo'shildi — yuklamalar ro'yxatidan oling",
+    "failed": "Hisobotni yaratib bo'lmadi",
+    "validation": {
+      "organizations": "Kamida bitta korxona tanlang",
+      "accessLevels": "Kamida bitta access level tanlang",
+      "period": "Davrni (oy oralig'ini) kiriting",
+      "startTime": "Ish boshlanish vaqtini kiriting",
+      "monthOrder": "Tugash oyi boshlanishdan katta yoki teng bo'lsin"
+    }
+  },
+  "workerReport": {
+    "name": "Xodim hisobotlari",
+    "createButton": "Hisobot yaratish",
+    "organizations": "Korxonalar",
+    "accessLevels": "Access levellar",
+    "from": "Boshlanish sanasi",
+    "to": "Tugash sanasi",
+    "fromMonth": "Boshlanish oyi",
+    "toMonth": "Tugash oyi",
+    "startTime": "Ish boshlanish vaqti",
+    "download": "Yuklab olish",
+    "queued": "Hisobot navbatga qo'shildi — yuklamalar ro'yxatidan oling",
+    "failed": "Hisobotni yaratib bo'lmadi",
+    "byDate": {
+      "title": "Kech qoluvchilar (davr bo'yicha)",
+      "subtitle": "Tanlangan korxona + access level bo'yicha davr ichida kech kelgan xodimlar detali (Excel, fon rejimida)"
+    },
+    "halfYear": {
+      "title": "Kech qoluvchilar (yarim yillik)",
+      "subtitle": "Korxona × oy kesimida kech qolgan xodimlar soni — tanlangan access level bo'yicha (Excel, fon rejimida)"
+    },
+    "validation": {
+      "organizations": "Kamida bitta korxona tanlang",
+      "accessLevels": "Kamida bitta access level tanlang",
+      "period": "Davrni kiriting",
+      "dateOrder": "Tugash sanasi boshlanishdan katta yoki teng bo'lsin",
+      "monthOrder": "Tugash oyi boshlanishdan katta yoki teng bo'lsin",
+      "startTime": "Ish boshlanish vaqtini kiriting"
+    }
+  },
   "homePage": {
     "wrongWorkerPins": "Noto'g'ri xodim PIN-kodlari",
     "downloaded": "Fayl muvaffaqiyatli yuklab olindi",
@@ -851,6 +903,15 @@
         "med_date": "Tibbiy ko'rik xulosasi sanasi",
         "med_number": "Tibbiy ko'rik xulosasi raqami",
         "command_number": "Buyruq raqami",
+        "new_last_name": "Yangi familiya",
+        "new_first_name": "Yangi ism",
+        "new_middle_name": "Yangi sharif",
+        "change_date": "O'zgarish sanasi",
+        "passport_authority": "Passportni bergan organ",
+        "passport_serial": "Passport seriya-raqami",
+        "passport_date": "Passport berilgan sana",
+        "certificate_serial": "Guvohnoma seriya-raqami",
+        "certificate_date": "Guvohnoma berilgan sana",
         "base": "Asos",
         "warning_one": "Tashkilot tugatilganligi sababli",
         "warning_two": "Texnologiyaning, ishlab chiqarish va mehnatni tashkil etishning o‘zgarishi, ishlar (mahsulot, xizmatlar) hajmining qisqarishi bilan bog‘liq bo‘lgan shtatining o‘zgarganligi sababli",

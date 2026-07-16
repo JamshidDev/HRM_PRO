@@ -170,6 +170,18 @@ export const useCommandStore = defineStore('commandStore', {
       work_day: null,
       reason: null
     },
+    // F.I.Sh o'zgartirish (74)
+    form_74: {
+      new_last_name: null,
+      new_first_name: null,
+      new_middle_name: null,
+      change_date: null,
+      passport_authority: null,
+      passport_serial: null,
+      passport_date: null,
+      certificate_serial: null,
+      certificate_date: null
+    },
     params: {
       page: 1,
       per_page: 10,
@@ -371,6 +383,16 @@ export const useCommandStore = defineStore('commandStore', {
       this.form_47.work_day = addDayToDate(today, 4)
       this.form_47.type = null
       this.form_47.base = null
+
+      this.form_74.new_last_name = null
+      this.form_74.new_first_name = null
+      this.form_74.new_middle_name = null
+      this.form_74.change_date = null
+      this.form_74.passport_authority = null
+      this.form_74.passport_serial = null
+      this.form_74.passport_date = null
+      this.form_74.certificate_serial = null
+      this.form_74.certificate_date = null
     },
     resetPayload() {
       this.payload.workers = []
