@@ -68,6 +68,7 @@
       "period": "Davrni kiriting",
       "dateOrder": "Tugash sanasi boshlanishdan katta yoki teng bo'lsin",
       "monthOrder": "Tugash oyi boshlanishdan katta yoki teng bo'lsin",
+      "maxSpan": "Davr eng ko'pi bilan 24 oy bo'lishi mumkin",
       "startTime": "Ish boshlanish vaqtini kiriting"
     }
   },

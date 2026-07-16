@@ -68,6 +68,7 @@
       "period": "Specify the period",
       "dateOrder": "End date must be greater than or equal to the start date",
       "monthOrder": "End month must be greater than or equal to the start month",
+      "maxSpan": "The period cannot exceed 24 months",
       "startTime": "Specify the work start time"
     }
   },
