@@ -19,6 +19,58 @@
       "dateOrder": "End date must be on or after the start date"
     }
   },
+  "lateWorkersHalfYearReport": {
+    "name": "Late workers (half-year)",
+    "title": "Half-year late workers report",
+    "subtitle": "Number of late workers per organization × month — by selected access level devices (Excel, background)",
+    "createButton": "Create report",
+    "modalTitle": "Late workers (organization × month) — Excel",
+    "organizations": "Organizations",
+    "accessLevels": "Access levels",
+    "from": "Start month",
+    "to": "End month",
+    "startTime": "Work start time",
+    "download": "Download",
+    "queued": "Report queued — get it from the downloads list",
+    "failed": "Failed to create the report",
+    "validation": {
+      "organizations": "Select at least one organization",
+      "accessLevels": "Select at least one access level",
+      "period": "Specify the period (month range)",
+      "startTime": "Specify the work start time",
+      "monthOrder": "End month must be greater than or equal to the start month"
+    }
+  },
+  "workerReport": {
+    "name": "Worker reports",
+    "createButton": "Create report",
+    "organizations": "Organizations",
+    "accessLevels": "Access levels",
+    "from": "Start date",
+    "to": "End date",
+    "fromMonth": "Start month",
+    "toMonth": "End month",
+    "startTime": "Work start time",
+    "download": "Download",
+    "queued": "Report queued — get it from the downloads list",
+    "failed": "Failed to create the report",
+    "byDate": {
+      "title": "Late workers (by period)",
+      "subtitle": "Per-worker detail of late arrivals in a period by selected organization + access level (Excel, background)"
+    },
+    "halfYear": {
+      "title": "Late workers (half-year)",
+      "subtitle": "Number of late workers per organization × month — by selected access level (Excel, background)"
+    },
+    "validation": {
+      "organizations": "Select at least one organization",
+      "accessLevels": "Select at least one access level",
+      "period": "Specify the period",
+      "dateOrder": "End date must be greater than or equal to the start date",
+      "monthOrder": "End month must be greater than or equal to the start month",
+      "startTime": "Specify the work start time"
+    }
+  },
   "homePage": {
     "wrongWorkerPins": "Wrong worker PINs",
     "downloaded": "File downloaded successfully",

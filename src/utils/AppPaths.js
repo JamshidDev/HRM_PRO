@@ -144,7 +144,7 @@ export const AppPaths = {
   DepartmentLocation: '/department-location',
   IntegrationLog: '/integration-log',
   IntegrationClients: '/integration-clients',
-  LateWorkersReport: '/late-workers-report'
+  WorkerReport: '/worker-report'
 }
 
 export const AppLayouts = {

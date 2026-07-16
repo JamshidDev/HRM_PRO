@@ -978,8 +978,8 @@ export const navigations = [
         permission: appPermissions.admin
       },
       {
-        label: 'lateWorkersReport.name',
-        path: Utils.routePathMaker(AppPaths.LateWorkersReport),
+        label: 'workerReport.name',
+        path: Utils.routePathMaker(AppPaths.WorkerReport),
         icon: Folder48Filled,
         color: 'bg-dark',
         permission: appPermissions.admin
