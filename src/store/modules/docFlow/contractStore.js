@@ -48,7 +48,14 @@ export const useContractStore = defineStore('contractStore', {
       command_date: null,
       command_number: null,
       confirmations: [],
-      temporary_worker_id: null
+      temporary_worker_id: null,
+      // Ishga qabul turlari (contract 1): 4 Tanlov / 9 To'liqsiz kun / 10 hafta.
+      competition_decision_date: null,
+      competition_decision_number: null,
+      work_day: null,
+      week_days: null,
+      start_time: null,
+      end_time: null
     },
     params: {
       page: 1,
@@ -129,6 +136,9 @@ export const useContractStore = defineStore('contractStore', {
           contract_date: Utils.timeToZone(this.payload.contract_date),
           contract_to_date: Utils.timeToZone(this.payload.contract_to_date),
           position_date: Utils.timeToZone(this.payload.position_date),
+          competition_decision_date: Utils.timeToZone(
+            this.payload.competition_decision_date
+          ),
           organization_id: this.payload.organization_id[0].id,
           worker_id: compStore.isSelectedWorker ? Number(compStore.worker.pin) : this.payload.pin,
           director_id: this.payload.director_id,
@@ -248,6 +258,12 @@ export const useContractStore = defineStore('contractStore', {
       this.payload.command_number = null
       this.payload.temporary_worker_id = null
       this.payload.confirmations = []
+      this.payload.competition_decision_date = null
+      this.payload.competition_decision_number = null
+      this.payload.work_day = null
+      this.payload.week_days = null
+      this.payload.start_time = null
+      this.payload.end_time = null
     }
   }
 })
