@@ -139,13 +139,12 @@ export const useLoginNewStore = defineStore('loginNewStore', {
       const socketStore = useSocketStore()
       socketStore.disconnect()
 
-      getActivePinia().reset()
-
       if (mustChange) {
         accountStore.mustChangePassword = true
       }
 
       accountStore._index(async (data) => {
+        getActivePinia().reset()
         socketStore.initSocket(token, data?.id)
         localStorage.setItem(useAppSetting.accountUserId, data.id)
         await nextTick()

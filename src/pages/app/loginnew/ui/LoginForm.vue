@@ -53,6 +53,12 @@
     })
   }
 
+  // native <form> submit orqali chaqiriladi (Chrome parolni saqlash uchun haqiqiy submit eventini kutadi)
+  const onFormSubmit = (e) => {
+    e.preventDefault()
+    onSubmit()
+  }
+
   const onForgot = () => {
     emit('forgot', store.phone)
   }
@@ -91,11 +97,15 @@
     }
 
     const inputElement = document.querySelector('input[type="password"].n-input__input-el')
-    inputElement?.addEventListener('animationstart', function (e) {
-      if (e.animationName === 'autofill-detected') {
-        onSubmit()
-      }
-    })
+    inputElement?.addEventListener(
+      'animationstart',
+      function (e) {
+        if (e.animationName === 'autofill-detected') {
+          onSubmit()
+        }
+      },
+      { once: true }
+    )
   })
 </script>
 
@@ -112,6 +122,7 @@
       :rules="validationRules.login"
       :model="store"
       class="flex flex-col login-new__form-compact"
+      @submit="onFormSubmit"
     >
       <n-form-item class="text-textColor2!" :label="$t(`loginPage.phone`)" path="phone">
         <n-input
@@ -120,7 +131,6 @@
           type="text"
           :input-props="{ name: 'phone', id: 'phone', autocomplete: 'username' }"
           v-mask="'+998(##)#######'"
-          @keyup.enter="onSubmit"
           @paste="
             (e) => {
               let a = e.clipboardData.getData('text').replaceAll(' ', '')
@@ -143,7 +153,6 @@
           show-password-on="click"
           :maxlength="60"
           v-model:value="store.password"
-          @keyup.enter="onSubmit"
         >
           <template #prefix>
             <n-icon class="text-textColor3!" size="24" :component="LockClosed24Regular" />
@@ -191,10 +200,10 @@
 
       <div class="grid">
         <n-button
+          attr-type="submit"
           class="login-new__submit h-[48px]! lg:h-[52px]! rounded-2xl! overflow-hidden! font-semibold!"
           size="large"
           :loading="store.loading"
-          @click="onSubmit"
         >
           {{ $t(`loginPage.login`) }}
         </n-button>
