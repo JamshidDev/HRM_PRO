@@ -66,6 +66,10 @@
       "title": "Yaqin qarindoshi kam xodimlar",
       "subtitle": "Yaqin qarindoshi 3 tadan kam (0/1/2) bo'lgan faol xodimlar ro'yxati — korxona, F.I.Sh, qarindoshlar soni (Excel, fon rejimida)"
     },
+    "jshshirAudit": {
+      "title": "JSHSHIR ma'lumot sifati",
+      "subtitle": "JSHSHIR (PINFL) xatosi bor faol xodimlar — uzunlik, jins, sana, asr, dublikat tekshiruvi (Excel, fon rejimida)"
+    },
     "validation": {
       "organizations": "Kamida bitta korxona tanlang",
       "accessLevels": "Kamida bitta access level tanlang",
