@@ -100,6 +100,35 @@
           changeLang('en')
         }
       }
+    },
+    {
+      key: 'header4',
+      type: 'render',
+      render: () => {
+        return h(
+          'div',
+          {
+            class: 'hover:bg-surface-200 p-1 m-1 rounded-sm',
+            style: 'display: flex; align-items: center; cursor:pointer'
+          },
+          [
+            h(NAvatar, {
+              round: true,
+              size: 'small',
+              class: 'w-[24px]! h-[24px]! mr-2',
+              src: uzFlag
+            }),
+            h('div', { class: 'text-[14px] font-medium' }, [
+              h(NText, { depth: 3 }, { default: () => t('content.langUzKr') })
+            ])
+          ]
+        )
+      },
+      props: {
+        onClick: () => {
+          changeLang('uz_kr')
+        }
+      }
     }
   ]
 
@@ -112,6 +141,7 @@
   const dropdown = computed(() => {
     if (currentLang.value === 'en') return { icon: enFlag, text: 'content.langEn' }
     else if (currentLang.value === 'ru') return { icon: ruFlag, text: 'content.langRu' }
+    else if (currentLang.value === 'uz_kr') return { icon: uzFlag, text: 'content.langUzKr' }
     else return { icon: uzFlag, text: 'content.langUz' }
   })
 
