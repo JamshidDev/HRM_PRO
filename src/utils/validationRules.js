@@ -328,17 +328,6 @@ export default {
         required: true,
         message: t(`rules.password`),
         trigger: triggerEvents
-      },
-      {
-        key: 'password',
-        validator: (rule, value, callback, model) => {
-          // model — n-form :model (resetStore). Ikkala parol teng bo'lishi kerak
-          if (value && model?.password && value !== model.password) {
-            return new Error(t(`rules.passwordsNotMatch`))
-          }
-          return true
-        },
-        trigger: triggerEvents
       }
     ]
   },

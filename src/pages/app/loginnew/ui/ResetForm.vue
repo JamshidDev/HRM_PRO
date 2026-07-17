@@ -1,5 +1,6 @@
 <script setup>
   import validationRules from '@/utils/validationRules.js'
+  import i18n from '@/i18n/index.js'
   import {
     ChevronLeft20Filled,
     Call24Regular,
@@ -49,7 +50,13 @@
   }
 
   const onSubmit = () => {
-    validateKey('password', () => store._resetPassword(() => emit('done')))
+    validateKey('password', () => {
+      if (store.password !== store.confirmPassword) {
+        store.errorMessage = i18n.global.t('rules.passwordsNotMatch')
+        return
+      }
+      store._resetPassword(() => emit('done'))
+    })
   }
 
   const onBack = () => {
