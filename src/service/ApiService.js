@@ -34,6 +34,8 @@ import integrationLogService from '@/service/v1/admin/integrationLogService.js'
 import integrationClientsService from '@/service/v1/admin/integrationClientsService.js'
 import lateWorkersReportService from '@/service/v1/admin/lateWorkersReportService.js'
 import lateWorkersHalfYearReportService from '@/service/v1/admin/lateWorkersHalfYearReportService.js'
+import relativesShortageReportService from '@/service/v1/admin/relativesShortageReportService.js'
+import jshshirAuditReportService from '@/service/v1/admin/jshshirAuditReportService.js'
 
 import confirmationService from '@/service/v1/hrm/confirmationService.js'
 import departmentService from '@/service/v1/hrm/departmentService.js'
@@ -298,4 +300,6 @@ export default {
   integrationClientsService,
   lateWorkersReportService,
   lateWorkersHalfYearReportService,
+  relativesShortageReportService,
+  jshshirAuditReportService,
 }

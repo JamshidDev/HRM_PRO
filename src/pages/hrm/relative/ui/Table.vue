@@ -143,7 +143,7 @@
               <td>
                 <span class="text-sm">{{ item.relative.name }}</span>
               </td>
-              <td>{{ item.last_name + ' ' + item.first_name + ' ' + item.middle_name }}</td>
+              <td>{{ [item.last_name, item.first_name, item.middle_name].filter(Boolean).join(' ') }}</td>
               <td>{{ item.post_name }}</td>
               <td>{{ Utils.timeOnlyDate(item.birthday) }}</td>
               <td>{{ item.birth_place }}</td>

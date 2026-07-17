@@ -62,6 +62,14 @@
       "title": "Late workers (half-year)",
       "subtitle": "Number of late workers per organization × month — by selected access level (Excel, background)"
     },
+    "relativesShortage": {
+      "title": "Workers with few relatives",
+      "subtitle": "List of active workers with fewer than 3 close relatives (0/1/2) — organization, full name, relatives count (Excel, background)"
+    },
+    "jshshirAudit": {
+      "title": "JSHSHIR data quality",
+      "subtitle": "Active workers with JSHSHIR (PINFL) errors — length, gender, date, century, duplicate checks (Excel, background)"
+    },
     "validation": {
       "organizations": "Select at least one organization",
       "accessLevels": "Select at least one access level",
