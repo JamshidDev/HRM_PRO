@@ -68,6 +68,7 @@
       "period": "Specify the period",
       "dateOrder": "End date must be greater than or equal to the start date",
       "monthOrder": "End month must be greater than or equal to the start month",
+      "maxSpan": "The period cannot exceed 24 months",
       "startTime": "Specify the work start time"
     }
   },
@@ -680,7 +681,9 @@
       "positionRank": "Position rank",
       "positionRate": "Position rate",
       "addPassport": "Add passport copy",
-      "no-passport": "Passport data not uploaded!"
+      "no-passport": "Passport data not uploaded!",
+      "addForeignPassport": "Add foreign passport copy",
+      "no-foreign-passport": "Foreign passport data not uploaded!"
     },
     "position": {
       "contractType": "Contract type",
@@ -780,6 +783,7 @@
       "address": "Residential address",
       "experience_date": "Continuous service",
       "passportTitle": "Passport details",
+      "foreignPassportTitle": "Foreign travel passport details",
       "education": "Education",
       "work_experience": "Total experience (in months)"
     },
@@ -888,6 +892,12 @@
         "med_date": "Medical exam conclusion date",
         "med_number": "Medical exam conclusion number",
         "command_number": "Order number",
+        "competition_decision_date": "Competition commission decision date",
+        "competition_decision_number": "Competition commission decision number",
+        "work_day_mode": "Working days mode",
+        "week_days": "Working week days",
+        "start_time": "Work start time",
+        "end_time": "Work end time",
         "new_last_name": "New last name",
         "new_first_name": "New first name",
         "new_middle_name": "New middle name",

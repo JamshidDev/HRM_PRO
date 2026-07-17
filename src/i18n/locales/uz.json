@@ -68,6 +68,7 @@
       "period": "Davrni kiriting",
       "dateOrder": "Tugash sanasi boshlanishdan katta yoki teng bo'lsin",
       "monthOrder": "Tugash oyi boshlanishdan katta yoki teng bo'lsin",
+      "maxSpan": "Davr eng ko'pi bilan 24 oy bo'lishi mumkin",
       "startTime": "Ish boshlanish vaqtini kiriting"
     }
   },
@@ -694,7 +695,9 @@
       "positionRank": "Lavozim razryadi",
       "positionRate": "Lavozim stavkasi",
       "addPassport": "Passport nusxasini qo'shish",
-      "no-passport": "Passport ma'lumotlar yuklanmagan!"
+      "no-passport": "Passport ma'lumotlar yuklanmagan!",
+      "addForeignPassport": "Xorij pasporti nusxasini qo'shish",
+      "no-foreign-passport": "Xorij pasporti ma'lumotlari yuklanmagan!"
     },
     "position": {
       "contractType": "Shartnoma turi",
@@ -794,6 +797,7 @@
       "address": "Yashash manzili",
       "experience_date": "Uzliksiz ish staji",
       "passportTitle": "Pasport ma'lumotlari",
+      "foreignPassportTitle": "Xorijga chiqish pasporti ma'lumotlari",
       "education": "Ma'lumoti",
       "work_experience": "Umumiy staj (oylarda ko'rsating)"
     },
@@ -903,6 +907,12 @@
         "med_date": "Tibbiy ko'rik xulosasi sanasi",
         "med_number": "Tibbiy ko'rik xulosasi raqami",
         "command_number": "Buyruq raqami",
+        "competition_decision_date": "Tanlov komissiyasi qarori sanasi",
+        "competition_decision_number": "Tanlov komissiyasi qarori raqami",
+        "work_day_mode": "Ish kunlari rejimi",
+        "week_days": "Ish haftasi kunlari",
+        "start_time": "Ish boshlanish vaqti",
+        "end_time": "Ish tugash vaqti",
         "new_last_name": "Yangi familiya",
         "new_first_name": "Yangi ism",
         "new_middle_name": "Yangi sharif",

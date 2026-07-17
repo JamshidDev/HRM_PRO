@@ -77,6 +77,9 @@ export const useWorkerProfileStore = defineStore('workerProfileStore', {
     passportLoading: false,
     passportList: [],
 
+    foreignPassportLoading: false,
+    foreignPassportList: [],
+
     positionList: [],
     previewLoading: false,
     workerPreview: false,
@@ -404,6 +407,66 @@ export const useWorkerProfileStore = defineStore('workerProfileStore', {
         })
         .finally(() => {
           this.passportLoading = false
+        })
+    },
+    _indexForeignPassport() {
+      this.foreignPassportLoading = true
+      const params = {
+        uuid: this.elementId
+      }
+      $ApiService.foreignPassportService
+        ._index({ params })
+        .then((res) => {
+          this.foreignPassportList = res.data.data.map((v) => ({
+            id: v.id,
+            serial_number: v.serial_number,
+            given_place: v.given_place,
+            from_date: new Date(v.from_date).getTime(),
+            to_date: new Date(v.to_date).getTime(),
+            file: {
+              name: v.file
+            },
+            exist: true
+          }))
+        })
+        .finally(() => {
+          this.foreignPassportLoading = false
+        })
+    },
+    _storeForeignPassport(data) {
+      this.foreignPassportLoading = true
+      $ApiService.foreignPassportService
+        ._create({ data })
+        .then(() => {
+          this._indexForeignPassport()
+        })
+        .finally(() => {
+          this.foreignPassportLoading = false
+        })
+    },
+    _updateForeignPassport(data, id) {
+      this.foreignPassportLoading = true
+      const params = {
+        _method: 'PUT'
+      }
+      $ApiService.foreignPassportService
+        ._update({ data, id, params })
+        .then(() => {
+          this._indexForeignPassport()
+        })
+        .finally(() => {
+          this.foreignPassportLoading = false
+        })
+    },
+    _deleteForeignPassport(id) {
+      this.foreignPassportLoading = true
+      $ApiService.foreignPassportService
+        ._delete({ id })
+        .then(() => {
+          this._indexForeignPassport()
+        })
+        .finally(() => {
+          this.foreignPassportLoading = false
         })
     },
     _deletePhone(id) {

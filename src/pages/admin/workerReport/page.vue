@@ -1,7 +1,11 @@
 <script setup>
   import { useComponentStore } from '@/store/modules/index.js'
   import { UIModal, UISelect } from '@/components/index.js'
-  import { ArrowDownload24Regular } from '@vicons/fluent'
+  import {
+    ArrowDownload24Regular,
+    CalendarClock24Regular,
+    Table24Regular
+  } from '@vicons/fluent'
   import { useMessage } from 'naive-ui'
   import { useAppSetting } from '@/utils/AppSetting.js'
   import i18n from '@/i18n/index.js'
@@ -9,6 +13,15 @@
   const componentStore = useComponentStore()
   const message = useMessage()
   const { t } = i18n.global
+  const { proxy } = getCurrentInstance()
+
+  // Submit tugmalari ref'i — $flyUpload (job navbatga uchish effekti) uchun.
+  const submitBtn1Ref = ref(null)
+  const submitBtn2Ref = ref(null)
+  const flyFrom = (btnRef) => {
+    const el = btnRef.value?.$el || btnRef.value
+    if (el) proxy.$flyUpload(el)
+  }
 
   // ===== Umumiy: access_level ro'yxati (eventsV2 bilan bir manba) =====
   const accessLevelOptions = ref([])
@@ -56,7 +69,7 @@
     access: [],
     from: null,
     to: null,
-    startTime: '09:00'
+    startTime: '09:10'
   })
   const openD1 = () => {
     const now = new Date()
@@ -68,7 +81,7 @@
       access: [],
       from: new Date(now.getFullYear(), now.getMonth() - 1, 1).getTime(),
       to: new Date(now.getFullYear(), now.getMonth(), 0).getTime(),
-      startTime: '09:00'
+      startTime: '09:10'
     })
     openCommon()
   }
@@ -83,6 +96,8 @@
       return message.error(t('workerReport.validation.dateOrder'))
     if (!d1.startTime)
       return message.error(t('workerReport.validation.startTime'))
+    // Validatsiyadan o'tdi → uchish effekti + so'rov.
+    flyFrom(submitBtn1Ref)
     d1.loading = true
     $ApiService.lateWorkersReportService
       ._lateWorkersExport({
@@ -111,7 +126,7 @@
     access: [],
     from: null,
     to: null,
-    startTime: '09:00'
+    startTime: '09:10'
   })
   const openD2 = () => {
     const now = new Date()
@@ -123,7 +138,7 @@
       access: [],
       from: new Date(now.getFullYear(), now.getMonth() - 5, 1).getTime(),
       to: new Date(now.getFullYear(), now.getMonth(), 1).getTime(),
-      startTime: '09:00'
+      startTime: '09:10'
     })
     openCommon()
   }
@@ -136,8 +151,17 @@
       return message.error(t('workerReport.validation.period'))
     if (d2.to < d2.from)
       return message.error(t('workerReport.validation.monthOrder'))
+    const spanMonths = (() => {
+      const a = new Date(d2.from)
+      const b = new Date(d2.to)
+      return (b.getFullYear() - a.getFullYear()) * 12 + (b.getMonth() - a.getMonth())
+    })()
+    if (spanMonths > 23)
+      return message.error(t('workerReport.validation.maxSpan'))
     if (!d2.startTime)
       return message.error(t('workerReport.validation.startTime'))
+    // Validatsiyadan o'tdi → uchish effekti + so'rov.
+    flyFrom(submitBtn2Ref)
     d2.loading = true
     $ApiService.lateWorkersHalfYearReportService
       ._export({
@@ -163,34 +187,58 @@
     <div class="grid grid-cols-12 gap-4">
       <!-- Card 1: davr bo'yicha -->
       <div
-        class="col-span-3 bg-surface-card border border-surface-line rounded-xl p-5 flex flex-col"
+        class="col-span-3 h-full bg-surface-section border border-surface-line rounded-2xl p-5 flex flex-col relative overflow-hidden"
       >
-        <h3 class="text-base font-semibold text-textColor0">
-          {{ $t('workerReport.byDate.title') }}
-        </h3>
-        <p class="text-xs text-textColor3 mt-1 mb-4 flex-1">
-          {{ $t('workerReport.byDate.subtitle') }}
-        </p>
-        <n-button type="primary" size="small" @click="openD1">
-          <template #icon><n-icon><ArrowDownload24Regular /></n-icon></template>
-          {{ $t('workerReport.createButton') }}
-        </n-button>
+        <div
+          class="absolute -bottom-8 right-3 text-[140px] font-black leading-none text-success/20 pointer-events-none select-none z-0"
+        >
+          1
+        </div>
+        <div class="relative z-[1] flex flex-col h-full">
+          <div class="flex items-center gap-3">
+            <div
+              class="w-11 h-11 shrink-0 flex items-center justify-center rounded-xl bg-success/10 text-success"
+            >
+              <n-icon size="24"><CalendarClock24Regular /></n-icon>
+            </div>
+            <h3 class="text-[15px] font-semibold text-textColor0 leading-snug">
+              {{ $t('workerReport.byDate.title') }}
+            </h3>
+          </div>
+          <div class="flex-1 min-h-[48px]"></div>
+          <n-button type="success" size="small" class="w-full" @click="openD1">
+            <template #icon><n-icon><ArrowDownload24Regular /></n-icon></template>
+            {{ $t('workerReport.createButton') }}
+          </n-button>
+        </div>
       </div>
 
       <!-- Card 2: yarim yillik -->
       <div
-        class="col-span-3 bg-surface-card border border-surface-line rounded-xl p-5 flex flex-col"
+        class="col-span-3 h-full bg-surface-section border border-surface-line rounded-2xl p-5 flex flex-col relative overflow-hidden"
       >
-        <h3 class="text-base font-semibold text-textColor0">
-          {{ $t('workerReport.halfYear.title') }}
-        </h3>
-        <p class="text-xs text-textColor3 mt-1 mb-4 flex-1">
-          {{ $t('workerReport.halfYear.subtitle') }}
-        </p>
-        <n-button type="primary" size="small" @click="openD2">
-          <template #icon><n-icon><ArrowDownload24Regular /></n-icon></template>
-          {{ $t('workerReport.createButton') }}
-        </n-button>
+        <div
+          class="absolute -bottom-8 right-3 text-[140px] font-black leading-none text-success/20 pointer-events-none select-none z-0"
+        >
+          2
+        </div>
+        <div class="relative z-[1] flex flex-col h-full">
+          <div class="flex items-center gap-3">
+            <div
+              class="w-11 h-11 shrink-0 flex items-center justify-center rounded-xl bg-success/10 text-success"
+            >
+              <n-icon size="24"><Table24Regular /></n-icon>
+            </div>
+            <h3 class="text-[15px] font-semibold text-textColor0 leading-snug">
+              {{ $t('workerReport.halfYear.title') }}
+            </h3>
+          </div>
+          <div class="flex-1 min-h-[48px]"></div>
+          <n-button type="success" size="small" class="w-full" @click="openD2">
+            <template #icon><n-icon><ArrowDownload24Regular /></n-icon></template>
+            {{ $t('workerReport.createButton') }}
+          </n-button>
+        </div>
       </div>
     </div>
 
@@ -273,7 +321,7 @@
           <n-button @click="d1.show = false" :disabled="d1.loading" type="error" ghost>
             {{ $t('content.cancel') }}
           </n-button>
-          <n-button type="primary" :loading="d1.loading" @click="submitD1">
+          <n-button ref="submitBtn1Ref" type="success" :loading="d1.loading" @click="submitD1">
             <template #icon><n-icon><ArrowDownload24Regular /></n-icon></template>
             {{ $t('workerReport.download') }}
           </n-button>
@@ -348,7 +396,7 @@
           <n-button @click="d2.show = false" :disabled="d2.loading" type="error" ghost>
             {{ $t('content.cancel') }}
           </n-button>
-          <n-button type="primary" :loading="d2.loading" @click="submitD2">
+          <n-button ref="submitBtn2Ref" type="success" :loading="d2.loading" @click="submitD2">
             <template #icon><n-icon><ArrowDownload24Regular /></n-icon></template>
             {{ $t('workerReport.download') }}
           </n-button>

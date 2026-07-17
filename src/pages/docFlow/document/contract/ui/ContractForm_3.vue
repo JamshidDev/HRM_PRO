@@ -18,6 +18,13 @@
   })
 
   const onChange = (v) => {
+    // Tur o'zgarganda oldingi tur-maxsus maydonlarni tozalaymiz (eski qiymat qolmasin).
+    store.payload.competition_decision_date = null
+    store.payload.competition_decision_number = null
+    store.payload.work_day = null
+    store.payload.week_days = null
+    store.payload.start_time = null
+    store.payload.end_time = null
     if (v === 6) {
       store.payload.temporary_worker_id = null
       const id = store.payload.organization_id[0].id
@@ -170,6 +177,91 @@
             />
           </n-form-item>
         </div>
+
+        <!-- Tanlov asosida (4) — komissiya qarori sanasi + raqami -->
+        <template v-if="store.payload.command_type === 4">
+          <div class="col-span-12 md:col-span-6">
+            <n-form-item
+              :label="$t(`documentPage.command.form.competition_decision_date`)"
+              path="competition_decision_date"
+            >
+              <n-date-picker
+                class="w-full"
+                v-model:value="store.payload.competition_decision_date"
+                type="date"
+                :format="useAppSetting.datePicketFormat"
+              />
+            </n-form-item>
+          </div>
+          <div class="col-span-12 md:col-span-6">
+            <n-form-item
+              :label="$t(`documentPage.command.form.competition_decision_number`)"
+              path="competition_decision_number"
+            >
+              <n-input
+                class="w-full"
+                v-model:value="store.payload.competition_decision_number"
+                placeholder="13-TK"
+              />
+            </n-form-item>
+          </div>
+        </template>
+
+        <!-- To'liqsiz ish kuni (9) / haftasi (10) — kun rejimi + ish vaqti -->
+        <template
+          v-if="store.payload.command_type === 9 || store.payload.command_type === 10"
+        >
+          <div class="col-span-12 md:col-span-4">
+            <n-form-item
+              v-if="store.payload.command_type === 9"
+              :label="$t(`documentPage.command.form.work_day_mode`)"
+              path="work_day"
+            >
+              <n-input
+                class="w-full"
+                v-model:value="store.payload.work_day"
+                placeholder="5 kunlik ish kuni"
+              />
+            </n-form-item>
+            <n-form-item
+              v-else
+              :label="$t(`documentPage.command.form.week_days`)"
+              path="week_days"
+            >
+              <n-input
+                class="w-full"
+                v-model:value="store.payload.week_days"
+                placeholder="Dushanba–Payshanba"
+              />
+            </n-form-item>
+          </div>
+          <div class="col-span-12 md:col-span-4">
+            <n-form-item
+              :label="$t(`documentPage.command.form.start_time`)"
+              path="start_time"
+            >
+              <n-time-picker
+                class="w-full"
+                v-model:formatted-value="store.payload.start_time"
+                format="HH:mm"
+                value-format="HH:mm"
+              />
+            </n-form-item>
+          </div>
+          <div class="col-span-12 md:col-span-4">
+            <n-form-item
+              :label="$t(`documentPage.command.form.end_time`)"
+              path="end_time"
+            >
+              <n-time-picker
+                class="w-full"
+                v-model:formatted-value="store.payload.end_time"
+                format="HH:mm"
+                value-format="HH:mm"
+              />
+            </n-form-item>
+          </div>
+        </template>
 
         <div class="col-span-12">
           <n-form-item :label="$t(`documentPage.command.form.finance_id`)">
