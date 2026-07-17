@@ -15,6 +15,7 @@ const isLetter = (ch) => ch != null && (/[a-zA-Z]/.test(ch) || isApostrophe(ch))
 
 const DIGRAPHS = [
   ['yo', 'ё'],
+  ['ye', 'е'],
   ['yu', 'ю'],
   ['ya', 'я'],
   ['sh', 'ш'],
@@ -51,6 +52,21 @@ const SINGLE = {
   c: 'к'
 }
 
+// Words that already appear in uz.json spelled as English/borrowed loanwords
+// (rather than in Uzbek phonetic spelling), so letter-by-letter transliteration
+// gets them wrong. Keyed by the word lowercased with apostrophes stripped.
+const WORD_EXCEPTIONS = {
+  online: 'онлайн',
+  role: 'рол',
+  passport: 'паспорт',
+  insult: 'инсульт' // "insul't" - medical term, apostrophe here is a soft sign, not tutuq belgisi
+}
+
+// Technical/brand tokens that should stay in Latin script even inside Cyrillic text.
+const KEEP_AS_IS = new Set(['pdf', 'excel'])
+
+const ROMAN_NUMERAL = /^M{0,4}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})$/
+
 const matchCase = (source, target) => {
   const letters = source.replace(/[^a-zA-Z]/g, '')
   if (!letters) return target
@@ -63,13 +79,21 @@ const matchCase = (source, target) => {
   return target
 }
 
-const transliterateWord = (word) => {
+const transliterateChars = (word) => {
   let out = ''
   let i = 0
   const n = word.length
   while (i < n) {
     const ch = word[i]
     const lower = ch.toLowerCase()
+
+    // y + o' (e.g. yo'q, yo'l) is y + the separate "o'" letter, NOT the
+    // "yo" diphthong - must not be merged into the "yo" -> ё digraph below.
+    if (lower === 'y' && word[i + 1]?.toLowerCase() === 'o' && isApostrophe(word[i + 2])) {
+      out += matchCase(ch, 'й')
+      i += 1
+      continue
+    }
 
     // o' / g' -> ў / ғ (letter + apostrophe variant)
     if ((lower === 'o' || lower === 'g') && isApostrophe(word[i + 1])) {
@@ -90,14 +114,13 @@ const transliterateWord = (word) => {
     const two = word.slice(i, i + 2).toLowerCase()
     const digraph = DIGRAPHS.find(([latin]) => latin === two)
     if (digraph) {
-      const [latin, cyr] = digraph
+      const [, cyr] = digraph
       out += matchCase(word.slice(i, i + 2), cyr)
       i += 2
       continue
     }
 
-    // word-initial standalone e -> э ; y directly followed by e already
-    // handled implicitly since "ye" is not a digraph above, so y->й, e->е
+    // word-initial standalone e -> э (mid-word e handled by SINGLE below)
     if (lower === 'e') {
       const prevIsLetter = isLetter(word[i - 1])
       out += matchCase(ch, !prevIsLetter ? 'э' : 'е')
@@ -119,11 +142,30 @@ const transliterateWord = (word) => {
   return out
 }
 
+const transliterateToken = (token) => {
+  const normalized = token.toLowerCase().replace(/['ʻ‘’`ʼ]/g, '')
+
+  if (KEEP_AS_IS.has(normalized)) return token
+  if (WORD_EXCEPTIONS[normalized]) return matchCase(token, WORD_EXCEPTIONS[normalized])
+  if (/^[IVXLCDM]+$/.test(token) && ROMAN_NUMERAL.test(token)) return token
+
+  return transliterateChars(token)
+}
+
+const transliterateSegment = (segment) => {
+  // split into letter/apostrophe "word" tokens vs everything else, so
+  // word-level exceptions and roman-numeral detection can apply per token
+  return segment
+    .split(/([a-zA-Zʻʼ'’‘`]+)/g)
+    .map((part) => (part && /[a-zA-Z]/.test(part) ? transliterateToken(part) : part))
+    .join('')
+}
+
 const transliterateText = (text) => {
   // keep {placeholders} untouched, transliterate everything else
   return text
     .split(/(\{[^}]*\})/g)
-    .map((part) => (part.startsWith('{') && part.endsWith('}') ? part : transliterateWord(part)))
+    .map((part) => (part.startsWith('{') && part.endsWith('}') ? part : transliterateSegment(part)))
     .join('')
 }
 
