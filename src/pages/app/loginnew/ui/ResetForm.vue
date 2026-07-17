@@ -3,21 +3,22 @@
   import {
     ChevronLeft20Filled,
     Call24Regular,
-    ShieldCheckmark24Regular,
     LockClosed24Regular,
     Eye24Regular,
     EyeOff24Regular,
     ErrorCircle12Filled
   } from '@vicons/fluent'
   import { useResetPasswordStore, resetSteps } from '@/store/modules/index.js'
-  import Utils from '@/utils/Utils.js'
+  import OtpBoxInput from './OtpBoxInput.vue'
+
+  // ?start= parametri Telegram deep-link: bot ochilganda "START" darhol yuboriladi
+  const resetBotUrl = 'https://t.me/developer_jr_bot?start=web-test123'
+  const resetBotHandle = '@developer_jr_bot'
 
   const emit = defineEmits(['back', 'done'])
 
   const store = useResetPasswordStore()
   const formRef = ref(null)
-
-  const maskedPhone = computed(() => Utils.maskText(store.phone || '', 0, 4))
 
   // +998(##)####### to'liq kiritilganda 15 ta belgi bo'ladi
   const phoneFilled = computed(() => (store.phone || '').length === 15)
@@ -38,6 +39,10 @@
 
   const onVerify = () => {
     validateKey('code', () => store._verifyCode())
+  }
+
+  const onCodeComplete = () => {
+    onVerify()
   }
 
   const onSubmit = () => {
@@ -66,10 +71,26 @@
       </h3>
       <p class="text-textColor2 mt-2 leading-snug">
         <template v-if="store.step === resetSteps.request">
-          {{ $t('loginPage.resetPassword.requestSubtitle') }}
+          {{ $t('loginPage.resetPassword.requestSubtitlePrefix') }}
+          <a
+            :href="resetBotUrl"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="font-medium hover:underline"
+            style="color: #1677ff"
+          >{{ resetBotHandle }}</a>
+          {{ $t('loginPage.resetPassword.requestSubtitleSuffix') }}
         </template>
         <template v-else-if="store.step === resetSteps.code">
-          {{ $t('loginPage.resetPassword.codeSubtitle', { n: maskedPhone }) }}
+          {{ $t('loginPage.resetPassword.codeSubtitlePrefix') }}
+          <a
+            :href="resetBotUrl"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="font-medium hover:underline"
+            style="color: #1677ff"
+          >{{ resetBotHandle }}</a>
+          {{ $t('loginPage.resetPassword.codeSubtitleSuffix') }}
         </template>
         <template v-else>
           {{ $t('loginPage.resetPassword.passwordSubtitle') }}
@@ -122,19 +143,7 @@
           :label="$t('loginPage.resetPassword.code')"
           path="code"
         >
-          <n-input
-            size="large"
-            class="login-new__input"
-            type="text"
-            maxlength="6"
-            v-mask="'######'"
-            v-model:value="store.code"
-            @keyup.enter="onVerify"
-          >
-            <template #prefix>
-              <n-icon class="text-textColor3!" size="24" :component="ShieldCheckmark24Regular" />
-            </template>
-          </n-input>
+          <OtpBoxInput v-model="store.code" :length="6" @complete="onCodeComplete" />
         </n-form-item>
         <n-button
           class="login-new__submit h-[52px]! rounded-2xl! overflow-hidden! font-semibold!"
@@ -144,24 +153,6 @@
         >
           {{ $t('loginPage.resetPassword.verify') }}
         </n-button>
-        <div class="flex justify-between items-center w-full text-xs text-textColor3 mt-4">
-          <span>{{ $t('loginPage.resetPassword.reSendCode') }}</span>
-          <n-countdown
-            v-if="!store.showReSendButton"
-            :duration="Number(store.otpExpireTime)"
-            :active="!store.showReSendButton"
-            @finish="store.onFinish"
-          />
-          <n-button
-            v-else
-            size="tiny"
-            type="primary"
-            :loading="store.loading"
-            @click="store.reSendCode()"
-          >
-            {{ $t('loginPage.resetPassword.reSendCode') }}
-          </n-button>
-        </div>
       </template>
 
       <!-- 3-qadam: yangi parol -->

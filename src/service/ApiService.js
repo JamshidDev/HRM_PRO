@@ -33,12 +33,16 @@ import vacancyApproveService from '@/service/v1/admin/vacancyApproveService.js'
 import integrationLogService from '@/service/v1/admin/integrationLogService.js'
 import integrationClientsService from '@/service/v1/admin/integrationClientsService.js'
 import lateWorkersReportService from '@/service/v1/admin/lateWorkersReportService.js'
+import lateWorkersHalfYearReportService from '@/service/v1/admin/lateWorkersHalfYearReportService.js'
+import relativesShortageReportService from '@/service/v1/admin/relativesShortageReportService.js'
+import jshshirAuditReportService from '@/service/v1/admin/jshshirAuditReportService.js'
 
 import confirmationService from '@/service/v1/hrm/confirmationService.js'
 import departmentService from '@/service/v1/hrm/departmentService.js'
 import departmentPositionService from '@/service/v1/hrm/departmentPositionService.js'
 import workerService from '@/service/v1/hrm/workerService.js'
 import passportService from '@/service/v1/hrm/passportService.js'
+import foreignPassportService from '@/service/v1/hrm/foreignPassportService.js'
 import photoService from '@/service/v1/hrm/photoService.js'
 import phoneService from '@/service/v1/hrm/phoneService.js'
 import languageService from '@/service/v1/hrm/languageService.js'
@@ -175,6 +179,7 @@ export default {
   contractService,
   logService,
   passportService,
+  foreignPassportService,
   photoService,
   phoneService,
   languageService,
@@ -294,4 +299,7 @@ export default {
   integrationLogService,
   integrationClientsService,
   lateWorkersReportService,
+  lateWorkersHalfYearReportService,
+  relativesShortageReportService,
+  jshshirAuditReportService,
 }

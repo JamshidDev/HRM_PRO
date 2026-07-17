@@ -145,7 +145,7 @@
           trigger="click"
           scrollable
           placement="bottom"
-          class="max-w-[95vw] min-w-[280px] sm:min-w-[400px] md:min-w-[500px] w-(--v-target-width) md:w-auto"
+          class="max-w-[95vw] min-w-[280px] sm:min-w-[400px] w-(--v-target-width) md:w-auto"
           :style="{ '--top-activator-width': 'var(--v-target-width)' }"
         >
           <template #trigger>
@@ -176,7 +176,7 @@
                 </template>
               </n-button>
             </div>
-            <div class="overflow-y-auto pr-1 -mr-1" :style="{ maxHeight: filterMaxHeight }">
+            <div class="ui-filter-content overflow-y-auto pr-1 -mr-1" :style="{ maxHeight: filterMaxHeight }">
               <slot name="filterContent"></slot>
             </div>
           </div>
@@ -188,3 +188,9 @@
     </div>
   </div>
 </template>
+
+<style scoped>
+.ui-filter-content :deep(:where(.n-select, .n-date-picker)) {
+  width: 100%;
+}
+</style>

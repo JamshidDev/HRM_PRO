@@ -158,11 +158,11 @@
         </n-input>
       </n-form-item>
 
-      <!-- <div class="flex justify-end -mt-4">
+      <div class="flex justify-end -mt-4">
         <n-button text class="text-textColor3! hover:text-primary!" @click="onForgot">
           {{ $t('loginPage.forgotPassword') }}
         </n-button>
-      </div> -->
+      </div>
 
       <n-form-item
         :validation-status="captchaError ? 'error' : undefined"

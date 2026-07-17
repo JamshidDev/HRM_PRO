@@ -5,6 +5,7 @@
   import PhotoForm from '@/pages/hrm/candidate/ui/PhotoForm.vue'
   import PhoneForm from '@/pages/hrm/candidate/ui/PhoneForm.vue'
   import PassportForm from '../ui/PasportList.vue'
+  import ForeignPassportForm from '../ui/ForeignPasportList.vue'
   import PositionList from '../ui/PositionList.vue'
   import { useRoute } from 'vue-router'
   import { useAppSetting } from '@/utils/index.js'
@@ -75,6 +76,7 @@
     store.elementId = route.query.id
     store._index()
     store._indexPassport()
+    store._indexForeignPassport()
     componentStore._enums()
     componentStore._nationality()
   })
@@ -375,6 +377,8 @@
     </div>
     <div class="col-span-12">
       <PassportForm />
+
+      <ForeignPassportForm />
     </div>
   </n-form>
   <div class="grid grid-cols-12"></div>

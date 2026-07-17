@@ -1000,6 +1000,37 @@ export default {
       message: t(`rules.requiredField`),
       trigger: triggerEvents
     },
+    competition_decision_date: {
+      type: 'number',
+      required: true,
+      message: t(`rules.requiredField`),
+      trigger: triggerEvents
+    },
+    competition_decision_number: {
+      required: true,
+      message: t(`rules.requiredField`),
+      trigger: triggerEvents
+    },
+    work_day: {
+      required: true,
+      message: t(`rules.requiredField`),
+      trigger: triggerEvents
+    },
+    week_days: {
+      required: true,
+      message: t(`rules.requiredField`),
+      trigger: triggerEvents
+    },
+    start_time: {
+      required: true,
+      message: t(`rules.requiredField`),
+      trigger: triggerEvents
+    },
+    end_time: {
+      required: true,
+      message: t(`rules.requiredField`),
+      trigger: triggerEvents
+    },
     department_id: {
       type: 'array',
       required: true,
@@ -1426,6 +1457,45 @@ export default {
       trigger: triggerEvents
     },
     reason: {
+      required: true,
+      message: t(`rules.requiredField`),
+      trigger: triggerEvents
+    }
+  },
+  // F.I.Sh o'zgartirish (74) — barcha maydon majburiy.
+  form_74: {
+    new_last_name: { required: true, message: t(`rules.requiredField`), trigger: triggerEvents },
+    new_first_name: { required: true, message: t(`rules.requiredField`), trigger: triggerEvents },
+    new_middle_name: { required: true, message: t(`rules.requiredField`), trigger: triggerEvents },
+    change_date: {
+      type: 'number',
+      required: true,
+      message: t(`rules.requiredField`),
+      trigger: triggerEvents
+    },
+    passport_authority: {
+      required: true,
+      message: t(`rules.requiredField`),
+      trigger: triggerEvents
+    },
+    passport_serial: {
+      required: true,
+      message: t(`rules.requiredField`),
+      trigger: triggerEvents
+    },
+    passport_date: {
+      type: 'number',
+      required: true,
+      message: t(`rules.requiredField`),
+      trigger: triggerEvents
+    },
+    certificate_serial: {
+      required: true,
+      message: t(`rules.requiredField`),
+      trigger: triggerEvents
+    },
+    certificate_date: {
+      type: 'number',
       required: true,
       message: t(`rules.requiredField`),
       trigger: triggerEvents

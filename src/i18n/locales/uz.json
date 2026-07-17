@@ -19,6 +19,67 @@
       "dateOrder": "Tugash sanasi boshlanishdan katta yoki teng bo'lsin"
     }
   },
+  "lateWorkersHalfYearReport": {
+    "name": "Kech qoluvchilar (yarim yillik)",
+    "title": "Kech qoluvchilar yarim yillik hisoboti",
+    "subtitle": "Korxona × oy kesimida kech qolgan xodimlar soni — tanlangan access level qurilmalari bo'yicha (Excel, fon rejimida)",
+    "createButton": "Hisobot yaratish",
+    "modalTitle": "Kech qoluvchilar (korxona × oy) — Excel",
+    "organizations": "Korxonalar",
+    "accessLevels": "Access levellar",
+    "from": "Boshlanish oyi",
+    "to": "Tugash oyi",
+    "startTime": "Ish boshlanish vaqti",
+    "download": "Yuklab olish",
+    "queued": "Hisobot navbatga qo'shildi — yuklamalar ro'yxatidan oling",
+    "failed": "Hisobotni yaratib bo'lmadi",
+    "validation": {
+      "organizations": "Kamida bitta korxona tanlang",
+      "accessLevels": "Kamida bitta access level tanlang",
+      "period": "Davrni (oy oralig'ini) kiriting",
+      "startTime": "Ish boshlanish vaqtini kiriting",
+      "monthOrder": "Tugash oyi boshlanishdan katta yoki teng bo'lsin"
+    }
+  },
+  "workerReport": {
+    "name": "Xodim hisobotlari",
+    "createButton": "Hisobot yaratish",
+    "organizations": "Korxonalar",
+    "accessLevels": "Access levellar",
+    "from": "Boshlanish sanasi",
+    "to": "Tugash sanasi",
+    "fromMonth": "Boshlanish oyi",
+    "toMonth": "Tugash oyi",
+    "startTime": "Ish boshlanish vaqti",
+    "download": "Yuklab olish",
+    "queued": "Hisobot navbatga qo'shildi — yuklamalar ro'yxatidan oling",
+    "failed": "Hisobotni yaratib bo'lmadi",
+    "byDate": {
+      "title": "Kech qoluvchilar (davr bo'yicha)",
+      "subtitle": "Tanlangan korxona + access level bo'yicha davr ichida kech kelgan xodimlar detali (Excel, fon rejimida)"
+    },
+    "halfYear": {
+      "title": "Kech qoluvchilar (yarim yillik)",
+      "subtitle": "Korxona × oy kesimida kech qolgan xodimlar soni — tanlangan access level bo'yicha (Excel, fon rejimida)"
+    },
+    "relativesShortage": {
+      "title": "Yaqin qarindoshi kam xodimlar",
+      "subtitle": "Yaqin qarindoshi 3 tadan kam (0/1/2) bo'lgan faol xodimlar ro'yxati — korxona, F.I.Sh, qarindoshlar soni (Excel, fon rejimida)"
+    },
+    "jshshirAudit": {
+      "title": "JSHSHIR ma'lumot sifati",
+      "subtitle": "JSHSHIR (PINFL) xatosi bor faol xodimlar — uzunlik, jins, sana, asr, dublikat tekshiruvi (Excel, fon rejimida)"
+    },
+    "validation": {
+      "organizations": "Kamida bitta korxona tanlang",
+      "accessLevels": "Kamida bitta access level tanlang",
+      "period": "Davrni kiriting",
+      "dateOrder": "Tugash sanasi boshlanishdan katta yoki teng bo'lsin",
+      "monthOrder": "Tugash oyi boshlanishdan katta yoki teng bo'lsin",
+      "maxSpan": "Davr eng ko'pi bilan 24 oy bo'lishi mumkin",
+      "startTime": "Ish boshlanish vaqtini kiriting"
+    }
+  },
   "homePage": {
     "wrongWorkerPins": "Noto'g'ri xodim PIN-kodlari",
     "downloaded": "Fayl muvaffaqiyatli yuklab olindi",
@@ -378,14 +439,15 @@
     },
     "resetPassword": {
       "title": "Parolni tiklash",
-      "requestSubtitle": "Tasdiqlash kodini olish uchun telefon raqamingizni tasdiqlang.",
-      "codeSubtitle": "{n} raqamiga yuborilgan tasdiqlash kodini kiriting.",
+      "requestSubtitlePrefix": "Tasdiqlash kodini olish uchun telefon raqamingizni tasdiqlang va ",
+      "requestSubtitleSuffix": " Telegram botiga kiring.",
+      "codeSubtitlePrefix": "Kodni ",
+      "codeSubtitleSuffix": " orqali oling va shu yerga kiriting.",
       "passwordSubtitle": "Yangi parolingizni kiriting.",
       "code": "Tasdiqlash kodi",
       "newPassword": "Yangi parol",
       "confirmPassword": "Parolni takrorlang",
       "sendCode": "Parolni tiklash",
-      "reSendCode": "Kodni qayta yuborish",
       "verify": "Tasdiqlash",
       "submit": "Parolni yangilash",
       "success": "Parol muvaffaqiyatli yangilandi. Endi yangi parol bilan kiring."
@@ -641,7 +703,9 @@
       "positionRank": "Lavozim razryadi",
       "positionRate": "Lavozim stavkasi",
       "addPassport": "Passport nusxasini qo'shish",
-      "no-passport": "Passport ma'lumotlar yuklanmagan!"
+      "no-passport": "Passport ma'lumotlar yuklanmagan!",
+      "addForeignPassport": "Xorij pasporti nusxasini qo'shish",
+      "no-foreign-passport": "Xorij pasporti ma'lumotlari yuklanmagan!"
     },
     "position": {
       "contractType": "Shartnoma turi",
@@ -741,6 +805,7 @@
       "address": "Yashash manzili",
       "experience_date": "Uzliksiz ish staji",
       "passportTitle": "Pasport ma'lumotlari",
+      "foreignPassportTitle": "Xorijga chiqish pasporti ma'lumotlari",
       "education": "Ma'lumoti",
       "work_experience": "Umumiy staj (oylarda ko'rsating)"
     },
@@ -850,6 +915,21 @@
         "med_date": "Tibbiy ko'rik xulosasi sanasi",
         "med_number": "Tibbiy ko'rik xulosasi raqami",
         "command_number": "Buyruq raqami",
+        "competition_decision_date": "Tanlov komissiyasi qarori sanasi",
+        "competition_decision_number": "Tanlov komissiyasi qarori raqami",
+        "work_day_mode": "Ish kunlari rejimi",
+        "week_days": "Ish haftasi kunlari",
+        "start_time": "Ish boshlanish vaqti",
+        "end_time": "Ish tugash vaqti",
+        "new_last_name": "Yangi familiya",
+        "new_first_name": "Yangi ism",
+        "new_middle_name": "Yangi sharif",
+        "change_date": "O'zgarish sanasi",
+        "passport_authority": "Passportni bergan organ",
+        "passport_serial": "Passport seriya-raqami",
+        "passport_date": "Passport berilgan sana",
+        "certificate_serial": "Guvohnoma seriya-raqami",
+        "certificate_date": "Guvohnoma berilgan sana",
         "base": "Asos",
         "warning_one": "Tashkilot tugatilganligi sababli",
         "warning_two": "Texnologiyaning, ishlab chiqarish va mehnatni tashkil etishning o‘zgarishi, ishlar (mahsulot, xizmatlar) hajmining qisqarishi bilan bog‘liq bo‘lgan shtatining o‘zgarganligi sababli",

@@ -178,9 +178,9 @@ export const adminRoutes = [
     }
   },
   {
-    path: Utils.routePathMaker(AppPaths.LateWorkersReport),
-    name: AppPaths.LateWorkersReport.substring(1),
-    component: () => import('@pages/admin/lateWorkersReport/page.vue'),
+    path: Utils.routePathMaker(AppPaths.WorkerReport),
+    name: AppPaths.WorkerReport.substring(1),
+    component: () => import('@pages/admin/workerReport/page.vue'),
     meta: {
       layout: AppLayouts.main
     }

@@ -20,19 +20,14 @@ const _getCaptcha = async () => {
   return await axios.get(`/auth/captcha`)
 }
 
-// loginnew: parolni tiklash oqimi — TODO: backend tayyor bo'lganda path/parametrlar moslanadi
-const _forgotPassword = async (payload) => {
-  return await axios.post('/auth/forgot-password', payload.data)
-}
-
-// loginnew: tiklash kodini tekshirish — TODO: backend tayyor bo'lganda moslanadi
+// loginnew: tiklash kodini tekshirish (kod Telegram bot orqali keladi)
 const _verifyResetCode = async (payload) => {
-  return await axios.post('/auth/verify-code', payload.data)
+  return await axios.post('/auth/password-reset/verify', payload.data)
 }
 
-// loginnew: yangi parolni saqlash — TODO: backend tayyor bo'lganda moslanadi
+// loginnew: yangi parolni saqlash
 const _resetPassword = async (payload) => {
-  return await axios.post('/auth/reset-password', payload.data)
+  return await axios.post('/auth/password-reset/confirm', payload.data)
 }
 
 // loginnew: 2FA kodini tekshirish — TODO: backend tayyor bo'lganda moslanadi
@@ -51,7 +46,6 @@ export default {
   _register,
   _authCode,
   _getCaptcha,
-  _forgotPassword,
   _verifyResetCode,
   _resetPassword,
   _verifyTwoFactor,

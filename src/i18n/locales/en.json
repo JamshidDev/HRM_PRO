@@ -19,6 +19,67 @@
       "dateOrder": "End date must be on or after the start date"
     }
   },
+  "lateWorkersHalfYearReport": {
+    "name": "Late workers (half-year)",
+    "title": "Half-year late workers report",
+    "subtitle": "Number of late workers per organization × month — by selected access level devices (Excel, background)",
+    "createButton": "Create report",
+    "modalTitle": "Late workers (organization × month) — Excel",
+    "organizations": "Organizations",
+    "accessLevels": "Access levels",
+    "from": "Start month",
+    "to": "End month",
+    "startTime": "Work start time",
+    "download": "Download",
+    "queued": "Report queued — get it from the downloads list",
+    "failed": "Failed to create the report",
+    "validation": {
+      "organizations": "Select at least one organization",
+      "accessLevels": "Select at least one access level",
+      "period": "Specify the period (month range)",
+      "startTime": "Specify the work start time",
+      "monthOrder": "End month must be greater than or equal to the start month"
+    }
+  },
+  "workerReport": {
+    "name": "Worker reports",
+    "createButton": "Create report",
+    "organizations": "Organizations",
+    "accessLevels": "Access levels",
+    "from": "Start date",
+    "to": "End date",
+    "fromMonth": "Start month",
+    "toMonth": "End month",
+    "startTime": "Work start time",
+    "download": "Download",
+    "queued": "Report queued — get it from the downloads list",
+    "failed": "Failed to create the report",
+    "byDate": {
+      "title": "Late workers (by period)",
+      "subtitle": "Per-worker detail of late arrivals in a period by selected organization + access level (Excel, background)"
+    },
+    "halfYear": {
+      "title": "Late workers (half-year)",
+      "subtitle": "Number of late workers per organization × month — by selected access level (Excel, background)"
+    },
+    "relativesShortage": {
+      "title": "Workers with few relatives",
+      "subtitle": "List of active workers with fewer than 3 close relatives (0/1/2) — organization, full name, relatives count (Excel, background)"
+    },
+    "jshshirAudit": {
+      "title": "JSHSHIR data quality",
+      "subtitle": "Active workers with JSHSHIR (PINFL) errors — length, gender, date, century, duplicate checks (Excel, background)"
+    },
+    "validation": {
+      "organizations": "Select at least one organization",
+      "accessLevels": "Select at least one access level",
+      "period": "Specify the period",
+      "dateOrder": "End date must be greater than or equal to the start date",
+      "monthOrder": "End month must be greater than or equal to the start month",
+      "maxSpan": "The period cannot exceed 24 months",
+      "startTime": "Specify the work start time"
+    }
+  },
   "homePage": {
     "wrongWorkerPins": "Wrong worker PINs",
     "downloaded": "File downloaded successfully",
@@ -364,14 +425,15 @@
     },
     "resetPassword": {
       "title": "Reset password",
-      "requestSubtitle": "Confirm your phone number to receive a verification code.",
-      "codeSubtitle": "Enter the verification code sent to {n}.",
+      "requestSubtitlePrefix": "Confirm your phone number and go to the Telegram bot ",
+      "requestSubtitleSuffix": " to get your verification code.",
+      "codeSubtitlePrefix": "Get the code from ",
+      "codeSubtitleSuffix": " and enter it here.",
       "passwordSubtitle": "Enter your new password.",
       "code": "Verification code",
       "newPassword": "New password",
       "confirmPassword": "Repeat password",
       "sendCode": "Reset password",
-      "reSendCode": "Resend code",
       "verify": "Verify",
       "submit": "Update password",
       "success": "Password updated successfully. Log in with your new password."
@@ -627,7 +689,9 @@
       "positionRank": "Position rank",
       "positionRate": "Position rate",
       "addPassport": "Add passport copy",
-      "no-passport": "Passport data not uploaded!"
+      "no-passport": "Passport data not uploaded!",
+      "addForeignPassport": "Add foreign passport copy",
+      "no-foreign-passport": "Foreign passport data not uploaded!"
     },
     "position": {
       "contractType": "Contract type",
@@ -727,6 +791,7 @@
       "address": "Residential address",
       "experience_date": "Continuous service",
       "passportTitle": "Passport details",
+      "foreignPassportTitle": "Foreign travel passport details",
       "education": "Education",
       "work_experience": "Total experience (in months)"
     },
@@ -835,6 +900,21 @@
         "med_date": "Medical exam conclusion date",
         "med_number": "Medical exam conclusion number",
         "command_number": "Order number",
+        "competition_decision_date": "Competition commission decision date",
+        "competition_decision_number": "Competition commission decision number",
+        "work_day_mode": "Working days mode",
+        "week_days": "Working week days",
+        "start_time": "Work start time",
+        "end_time": "Work end time",
+        "new_last_name": "New last name",
+        "new_first_name": "New first name",
+        "new_middle_name": "New middle name",
+        "change_date": "Change date",
+        "passport_authority": "Passport issuing authority",
+        "passport_serial": "Passport series/number",
+        "passport_date": "Passport issue date",
+        "certificate_serial": "Certificate series/number",
+        "certificate_date": "Certificate issue date",
         "base": "Basis",
         "warning_one": "Due to organization liquidation",
         "warning_two": "Due to changes in technology, production organization, or volume reduction",

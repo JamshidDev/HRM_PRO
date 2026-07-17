@@ -92,7 +92,7 @@
       />
       <label class="text-xs mt-3 text-gray-500 mb-1 font-medium">{{ $t('examPage.topic') }}</label>
       <n-select
-        class="w-full max-w-[370px]"
+        class="w-full"
         clearable
         multiple
         v-model:value="store.params.topics"
@@ -108,7 +108,7 @@
       <label class="text-xs mt-3 text-gray-500 mb-1 font-medium">{{ $t('examPage.exam') }}</label>
       <n-select
         :disabled="store.params.topics.length === 0"
-        class="w-full max-w-[370px]"
+        class="w-full"
         clearable
         multiple
         v-model:value="store.params.exams"
