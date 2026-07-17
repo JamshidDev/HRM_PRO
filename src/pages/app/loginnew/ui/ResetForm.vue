@@ -12,8 +12,11 @@
   import OtpBoxInput from './OtpBoxInput.vue'
 
   // ?start= parametri Telegram deep-link: bot ochilganda "START" darhol yuboriladi
-  const resetBotUrl = 'https://t.me/developer_jr_bot?start=web-test123'
-  const resetBotHandle = '@developer_jr_bot'
+  const isProdMode = import.meta.env.MODE === 'production'
+  const resetBotHandle = isProdMode ? '@hrmpro_robot' : '@developer_jr_bot'
+  const resetBotUrl = isProdMode
+    ? 'https://t.me/hrmpro_robot?start=web-test123'
+    : 'https://t.me/developer_jr_bot?start=web-test123'
 
   const emit = defineEmits(['back', 'done'])
 
@@ -65,7 +68,7 @@
       </n-button>
     </div>
 
-    <div class="mb-8">
+    <div class="mb-8 text-center">
       <h3 class="text-3xl font-bold uppercase leading-tight">
         {{ $t('loginPage.resetPassword.title') }}
       </h3>
@@ -139,7 +142,7 @@
       <!-- 2-qadam: tasdiqlash kodi -->
       <template v-else-if="store.step === resetSteps.code">
         <n-form-item
-          class="text-textColor2!"
+          class="text-textColor2! otp-form-item"
           :label="$t('loginPage.resetPassword.code')"
           path="code"
         >
@@ -218,3 +221,21 @@
     </n-form>
   </div>
 </template>
+
+<style scoped>
+  .otp-form-item :deep(.n-form-item-label) {
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .otp-form-item :deep(.n-form-item-blank) {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  .otp-form-item :deep(.n-form-item-feedback-wrapper) {
+    text-align: center;
+  }
+</style>
