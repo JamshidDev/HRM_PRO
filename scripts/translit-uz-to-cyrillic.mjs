@@ -11,7 +11,8 @@ const DEST = resolve(__dirname, '../src/i18n/locales/uz_kr.json')
 
 const APOSTROPHES = ["'", 'ʻ', '‘', '’', '`', 'ʼ']
 const isApostrophe = (ch) => APOSTROPHES.includes(ch)
-const isLetter = (ch) => ch != null && (/[a-zA-Z]/.test(ch) || isApostrophe(ch))
+const isPlainLetter = (ch) => ch != null && /[a-zA-Z]/.test(ch)
+const isLetter = (ch) => ch != null && (isPlainLetter(ch) || isApostrophe(ch))
 
 const DIGRAPHS = [
   ['yo', 'ё'],
@@ -57,13 +58,19 @@ const SINGLE = {
 // gets them wrong. Keyed by the word lowercased with apostrophes stripped.
 const WORD_EXCEPTIONS = {
   online: 'онлайн',
-  role: 'рол',
+  offline: 'оффлайн',
+  role: 'роль',
   passport: 'паспорт',
-  insult: 'инсульт' // "insul't" - medical term, apostrophe here is a soft sign, not tutuq belgisi
+  insult: 'инсульт', // "insul't" - medical term, apostrophe here is a soft sign, not tutuq belgisi
+  tsirrozi: 'циррози' // "ts" here isn't followed by "iya", so the general digraph rule wouldn't catch it
 }
 
 // Technical/brand tokens that should stay in Latin script even inside Cyrillic text.
-const KEEP_AS_IS = new Set(['pdf', 'excel'])
+const KEEP_AS_IS = new Set(['pdf', 'excel', 'id', 'face'])
+
+// Whole strings (exact match, case-insensitive) that are feature/brand names and
+// should stay fully in Latin script rather than being transliterated piecemeal.
+const FULL_TEXT_KEEP_AS_IS = new Set(['log viewer'])
 
 const ROMAN_NUMERAL = /^M{0,4}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})$/
 
@@ -103,16 +110,30 @@ const transliterateChars = (word) => {
       continue
     }
 
-    // bare apostrophe (tutuq belgisi), e.g. san'at -> санъат
+    // apostrophe: tutuq belgisi (ъ) only when sandwiched between letters,
+    // e.g. san'at -> санъат. Otherwise it's a quotation mark, e.g.
+    // "...uchun 'Saqlash' tugmasini..." -> "...учун «Сақлаш» тугмасини..."
     if (isApostrophe(ch)) {
-      out += 'ъ'
+      const prevIsWord = isPlainLetter(word[i - 1])
+      const nextIsWord = isPlainLetter(word[i + 1])
+      if (prevIsWord && nextIsWord) out += 'ъ'
+      else if (nextIsWord) out += '«'
+      else if (prevIsWord) out += '»'
+      else out += ch
       i += 1
       continue
     }
 
     // digraphs (longest match first)
     const two = word.slice(i, i + 2).toLowerCase()
-    const digraph = DIGRAPHS.find(([latin]) => latin === two)
+    const digraph = DIGRAPHS.find(([latin]) => {
+      if (latin !== two) return false
+      // "ts" only represents ц in the Russian-style "-tsiya" borrowing
+      // (operatsiya, integratsiya...) - elsewhere (ruxsatsiz, muddatsiz)
+      // it's just "t" + suffix-initial "s".
+      if (latin === 'ts') return word.slice(i, i + 4).toLowerCase() === 'tsiy'
+      return true
+    })
     if (digraph) {
       const [, cyr] = digraph
       out += matchCase(word.slice(i, i + 2), cyr)
@@ -162,6 +183,8 @@ const transliterateSegment = (segment) => {
 }
 
 const transliterateText = (text) => {
+  if (FULL_TEXT_KEEP_AS_IS.has(text.trim().toLowerCase())) return text
+
   // keep {placeholders} untouched, transliterate everything else
   return text
     .split(/(\{[^}]*\})/g)

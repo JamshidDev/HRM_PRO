@@ -261,16 +261,16 @@
     "untilNow": "h.v",
     "warningImageSave": "Asosiy rasm uchun yangi rasm tanlandi. O‘zgarishni saqlash uchun 'Saqlash' tugmasini bosing.",
     "selectAll": "Barchasini tanlash",
-    "selectList": "Ro'yhatni to'liq tanlash",
-    "unSelectList": "Ro'yhatni to'liq tozalash",
+    "selectList": "Ro'yxatni to'liq tanlash",
+    "unSelectList": "Ro'yxatni to'liq tozalash",
     "unSelectAll": "Barchasini tozalash",
     "forceUnSelectAll": "To'liq tozalash",
     "uz": "UZ",
     "ru": "RU",
     "en": "EN",
     "create": "Yaratish",
-    "successCopied": "Muvofaqiyatli nusxalandi",
-    "successPaste": "Muvofaqiyatli joylandi",
+    "successCopied": "Muvaffaqiyatli nusxalandi",
+    "successPaste": "Muvaffaqiyatli joylandi",
     "paste": "Joylash",
     "allSelected": "Barchasi tanlangan",
     "sendToSign": "Imzolashga yuborish",
@@ -314,7 +314,7 @@
     "passwordsNotMatch": "Parollar mos kelmadi!"
   },
   "message": {
-    "successDone": "Muvofaqqiyatli bajarildi",
+    "successDone": "Muvaffaqiyatli bajarildi",
     "requiredSignature": "Imzo maydoni bo'sh bo'lmasligi kerak!",
     "clearedFields": "Maydonlar tozalandi!",
     "unExpectedError": "Kutilmagan xatolik yuz berdi!",
@@ -354,7 +354,7 @@
     "phone": "Telefon raqam",
     "password": "Parol",
     "doYouHaveAccount": "Sizda hisob yo'qmi?",
-    "singUp": "Ro'yhatdan o'tish",
+    "singUp": "Ro'yxatdan o'tish",
     "description": {
       "title": "HRMS",
       "subtitle": "Xodimlarni boshqarishning zamonaviy tizimi\n",
@@ -394,8 +394,8 @@
     }
   },
   "registerPage": {
-    "name": "Ro'yhatdan o'tish",
-    "title": "Ro'yhatdan o'tish",
+    "name": "Ro'yxatdan o'tish",
+    "title": "Ro'yxatdan o'tish",
     "subtitle": "Tasdiqlash",
     "firstName": "Ism",
     "lastName": "Familiya",
@@ -503,12 +503,12 @@
     "tabs": {
       "profileInfo": "Hisob ma'lumotlar",
       "notification": "Bildirishnomalar",
-      "secure": "Xavsizlik",
+      "secure": "Xavfsizlik",
       "actionHistory": "Amallar tarixi",
       "social": {
         "title": "Ijtimoiy tarmoqlar",
         "subtitle": "Bizning qo'llab quvatlash guruhlarimizga qo'shiling",
-        "group": "HRM ma'sullari guruh",
+        "group": "HRM mas'ullari guruh",
         "bot": "HRMPRO bot",
         "copy": "Nusxa olish",
         "join": "Qo'shilish",
@@ -825,7 +825,7 @@
         "half_two_day": "Ta'til kuni (Ikkinchi yarmi)",
         "half_two_date": "Ta'til sanasi (Ikkinchi yarmi)",
         "second_day": "Qo'shimcha ta'til kuni",
-        "additional": "Qo'chimchalar",
+        "additional": "Qo'shimchalar",
         "calculateVacation": "Ta'tilni hisoblash",
         "no-calculate": "Ta'til kuni hisoblanmagan!",
         "all_day": "Ta'til kuni",
@@ -833,7 +833,7 @@
         "isNotValid": "Ta'tilni hisoblash uchun ma'lumotlar yetarli emas!",
         "isNotCalculate": "Xodimlarning ta'til ma'lumotlari hisoblanmagan!",
         "notSelectCommand": "Buyruq turini tanlang va davom eting!",
-        "removeWorker": "Ro'yhatdan olib tashlash",
+        "removeWorker": "Ro'yxatdan olib tashlash",
         "calculateTitle": "Hisoblangan ta'til ma'lumotlari. Agar ularni noto'g'ri deb bilsangiz tahrirlashingiz mumkin",
         "requiredVacationData": "Xodimlarning ta'til ma'lumotlarini kiring!",
         "rest_day": "Qolgan kun",
@@ -877,10 +877,10 @@
         "reason_one": "Birinchi marta qonuniy nikohdan o‘tishi munosabati bilan",
         "reason_two": "Nogiron farzandni tarbiyalayotganligi uchun, nogironlar kuni munosabati bilan",
         "reason_three": "Ota, ona, turmush o‘rtog‘i, farzandlari vafot etganligi munosabati bilan",
-        "reason_four": "Quyidagi saraton, leykoz, birinchi marta sil (tuberkulyoz) kasaligi, jigar serrozi dekompensasiya bosqichi, jigar transplantasiyasi, yurak qon-tomir kasalliklari, yurak klapanlarini almashtirish, yurak tomirlarini stendlash, AKSh (aorta koronar shuntlash), ablyasiya, yurak va buyrakdagi murakkab jarrohlik operatsiyalari, infarkt, insul't, o‘tkir buyrak yetishmovchiligi, dializ, buyrak transplantasiyasi, nefroskleroz, koksartroz III darajali endoprotezlash, bir yoki ikki ko‘zning terminal bosqichidagi glaukomasi kasalligiga chalinganligi munosabati bilan",
+        "reason_four": "Quyidagi saraton, leykoz, birinchi marta sil (tuberkulyoz) kasaligi, jigar tsirrozi dekompensasiya bosqichi, jigar transplantatsiyasi, yurak qon-tomir kasalliklari, yurak klapanlarini almashtirish, yurak tomirlarini stendlash, AKSh (aorta koronar shuntlash), ablyasiya, yurak va buyrakdagi murakkab jarrohlik operatsiyalari, infarkt, insul't, o‘tkir buyrak yetishmovchiligi, dializ, buyrak transplantatsiyasi, nefroskleroz, koksartroz III darajali endoprotezlash, bir yoki ikki ko‘zning terminal bosqichidagi glaukomasi kasalligiga chalinganligi munosabati bilan",
         "reason_five": "50, 55, 60, 70, 80, 90, 100 yillik yubiley sanasiga etganligi munosabati bilan",
         "reason_six": "Tabiiy ofatdan zarar ko‘rganligi munosabati bilan tasdiqlangan baholash dalolatnomasi muvofiq",
-        "reason_seven": "Maishiy ko‘mir yoqil‘isi sotib olishi munosabati bilan",
+        "reason_seven": "Maishiy ko‘mir yoqilg‘isi sotib olishi munosabati bilan",
         "reason_eight": "Qishloq xo‘jaligi mahsulotlarini sotib olish uchun"
       }
     },
@@ -1000,7 +1000,7 @@
   },
   "contractPage": {
     "name": "Shartnomalar",
-    "succeedText": "Shartnoma muvofaqiyatli ravishda yaratildi!",
+    "succeedText": "Shartnoma muvaffaqiyatli ravishda yaratildi!",
     "table": {
       "number": "Raqami",
       "type": "Turi",
@@ -1660,7 +1660,7 @@
       "stepTwo": "Ariza ma'lumotlari",
       "stepThree": "Holati"
     },
-    "succeedApplication": "Ariza muvofaqiyatli yuborildi!",
+    "succeedApplication": "Ariza muvaffaqiyatli yuborildi!",
     "applicationTime": "Arizangiz 15 kalendar ish kuni davomida ko'rib chiqiladi!",
     "client": {
       "name": "Ariza yozish",
@@ -1775,7 +1775,7 @@
       "calendarTitle": "Ish vaqti grafigi",
       "latecomers": "Kechikkan xodimlar",
       "startTime": "Ish boshlanish vaqti",
-      "lateTitle": "Kechikkan xodimlar ro'yhati"
+      "lateTitle": "Kechikkan xodimlar ro'yxati"
     }
   },
   "medPage": {
@@ -3009,7 +3009,7 @@
   "publicPage": {
     "authentication": "Imtihon savollarini ko'rish",
     "invalidDocument": "Hujjat topilmadi yoki o'chirib tashlangan!",
-    "closeQuestion": "Savollar ro'yhatini yopish"
+    "closeQuestion": "Savollar ro'yxatini yopish"
   },
   "socketPage": {
     "usersMOdalTitle": "Barcha onlayn foydalanuvchilar ro'yxati"
@@ -3089,7 +3089,7 @@
     "statusArchived": "Arxivlangan",
     "noNews": "Yangiliklar yo'q",
     "noNewsSubtitle": "Nashr etilgan maqolalar bu yerda ko'rinadi",
-    "endOfList": "Ro'yhat tugadi",
+    "endOfList": "Ro'yxat tugadi",
     "readMore": "Ko'proq o'qish",
     "backToNews": "Yangiliklarga qaytish",
     "author": "Muallif",
