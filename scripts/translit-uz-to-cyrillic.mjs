@@ -68,11 +68,16 @@ const WORD_EXCEPTIONS = {
 // Technical/brand tokens that should stay in Latin script even inside Cyrillic text.
 const KEEP_AS_IS = new Set(['pdf', 'excel', 'id', 'face'])
 
-// Whole strings (exact match, case-insensitive) that are feature/brand names and
-// should stay fully in Latin script rather than being transliterated piecemeal.
-const FULL_TEXT_KEEP_AS_IS = new Set(['log viewer'])
+// Whole strings (exact match, case-insensitive) that are feature/brand names, or
+// standard HTTP/technical status labels (kept alongside untranslated siblings like
+// "OK"/"Redirect"), and should stay fully in Latin script rather than being
+// transliterated piecemeal.
+const FULL_TEXT_KEEP_AS_IS = new Set(['log viewer', 'bad request', 'not found'])
 
 const ROMAN_NUMERAL = /^M{0,4}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})$/
+// Date/time format placeholders (HH:MM, DD.MM.YYYY) are all-uppercase runs of
+// letters that happen to overlap the roman-numeral alphabet - not real numerals.
+const NOT_ROMAN_NUMERAL = new Set(['MM', 'DD', 'SS', 'YY', 'YYYY'])
 
 const matchCase = (source, target) => {
   const letters = source.replace(/[^a-zA-Z]/g, '')
@@ -168,7 +173,7 @@ const transliterateToken = (token) => {
 
   if (KEEP_AS_IS.has(normalized)) return token
   if (WORD_EXCEPTIONS[normalized]) return matchCase(token, WORD_EXCEPTIONS[normalized])
-  if (/^[IVXLCDM]+$/.test(token) && ROMAN_NUMERAL.test(token)) return token
+  if (/^[IVXLCDM]+$/.test(token) && !NOT_ROMAN_NUMERAL.has(token) && ROMAN_NUMERAL.test(token)) return token
 
   return transliterateChars(token)
 }

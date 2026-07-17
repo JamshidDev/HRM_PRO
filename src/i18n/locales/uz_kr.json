@@ -10,7 +10,7 @@
     "to": "Тугаш санаси",
     "startTime": "Иш бошланиш вақти",
     "download": "Юклаб олиш",
-    "downloaded": "Ҳисобот юклаб олинди",
+    "downloaded": "Ҳисобот муваффақиятли юклаб олинди",
     "failed": "Ҳисоботни юклаб бўлмади",
     "validation": {
       "organizations": "Камида битта корхона танланг",
@@ -309,7 +309,7 @@
     "unExpectedFormat": "Нотўғри турдаги маълумот!",
     "requiredJSHSHIR": "Паспорт ЖШШИР киритилиши шарт!",
     "enterOverNumber": "{n}дан катта сон киритинг",
-    "requiredHoursField": "Вақт формати нотўғри (ҲҲ:MM)",
+    "requiredHoursField": "Вақт формати нотўғри (ҲҲ:ММ)",
     "captchaRequired": "Каптча жавобини киритинг!",
     "passwordsNotMatch": "Пароллар мос келмади!"
   },
@@ -1317,7 +1317,7 @@
       "categories": "Категориялар",
       "questionCount": "Саволлар сони: ({n})",
       "attachQuestion": "Савол бириктириш",
-      "count": "Барча имтиҳонлар: {n}та"
+      "count": "Барча имтиҳонлар: {n} та"
     },
     "questions": {
       "createTitle": "Савол қўшиш",
@@ -1409,7 +1409,7 @@
     "history": "Имтиҳон тарихи",
     "topic": "Мавзу",
     "exam": "Имтиҳон",
-    "nVariant": "{n}та вариант",
+    "nVariant": "{n} та вариант",
     "variant_count": "Вариантлар",
     "exam_duration": "Давомийлиги(мин)",
     "totalTime": "Берилган вақт: {n} дақиқа",
@@ -1420,15 +1420,15 @@
     "nExams": "{n} та имтиҳон",
     "nFiles": "{n} та файл",
     "deadline": "Тугаш вақти: {n}",
-    "examBrief": "Имтиҳонда саволларида {variant}та вариантлар мавжуд. Ечиш учун {chances}та имконият берилган. Имтиҳонни {minute} дақиқа ичида якунлаш керак. Имтиҳон {deadline}да ёпилади",
+    "examBrief": "Имтиҳонда {variant} та вариант мавжуд. Ечиш учун {chances} та имконият берилган. Имтиҳонни {minute} дақиқа ичида якунлаш керак. Имтиҳон {deadline}да ёпилади",
     "extra": "Қўшимча: {n}",
     "start": "Бошлаш",
     "attempts": "Уринишлар",
     "viewResult": "Натижани кўриш",
     "attemptsCount": "Мавжуд уринишлар",
-    "nAttempts": "{n}та уринишлар",
+    "nAttempts": "{n} та уриниш",
     "question_count": "Саволлар",
-    "nQuestions": "{n}та савол",
+    "nQuestions": "{n} та савол",
     "examName": "Номи: {n}",
     "toWhom": "Кимга",
     "attemptHistory": "Уринишлар тарихи",
@@ -1740,18 +1740,18 @@
       "addBtn": "Фойдаланувчи қўшиш"
     },
     "accessLevelPage": {
-      "name": " Гуруҳлар",
+      "name": "Гуруҳлар",
       "deviceCount": "Қурилмалар сони",
       "sync": "Синхронлаш",
       "syncDepartment": "Бўлимларни синхронлаш",
       "server": "Сервер"
     },
     "orgAccessLevelsPage": {
-      "name": " Ташкилот ва гуруҳлар"
+      "name": "Ташкилот ва гуруҳлар"
     },
     "hcWorkersPage": {
       "access_levels": "Гуруҳлар",
-      "name": " Ходимлар",
+      "name": "Ходимлар",
       "create": "Ходим қўшиш",
       "edit": "Ходимни таҳрирлаш",
       "access_levels_count": "Гуруҳлар сони",
@@ -2603,7 +2603,7 @@
     }
   },
   "workerImage": {
-    "name": " Телеграм расмлари",
+    "name": "Телеграм расмлари",
     "photo": "Расм",
     "status": "Ҳолати",
     "viewPhoto": "Расмни кўриш",
@@ -2634,8 +2634,8 @@
     }
   },
   "hcEvent": {
-    "name": " Ҳодисалар",
-    "nameV2": " Ҳодисалар V2",
+    "name": "Ҳодисалар",
+    "nameV2": "Ҳодисалар V2",
     "createTitle": "Юклаш",
     "updateTitle": "Таҳрирлаш",
     "syncTitle": "Синхронлаш",
@@ -2862,7 +2862,7 @@
     }
   },
   "hcWorkDuration": {
-    "name": " Иш вақти",
+    "name": "Иш вақти",
     "form": {
       "enter": "Кириш",
       "exit": "Чиқиш"
@@ -2901,7 +2901,7 @@
     "more": "та"
   },
   "devices": {
-    "name": " Қурилмалар",
+    "name": "Қурилмалар",
     "createTitle": "Қурилма қўшиш",
     "updateTitle": "Қурилмани таҳрирлаш",
     "deviceName": "Қурилма номи",
@@ -3234,10 +3234,10 @@
       "statusLabel": {
         "ok": "ОК",
         "redirect": "Редирект",
-        "badRequest": "Бад Реқуест",
-        "notFound": "Нот Фоунд",
+        "badRequest": "Bad Request",
+        "notFound": "Not Found",
         "unprocessable": "Хато",
-        "serverError": "Сервер хато",
+        "serverError": "Сервер хатоси",
         "unknown": "Номаълум"
       }
     }

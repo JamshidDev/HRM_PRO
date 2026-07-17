@@ -10,7 +10,7 @@
     "to": "Tugash sanasi",
     "startTime": "Ish boshlanish vaqti",
     "download": "Yuklab olish",
-    "downloaded": "Hisobot yuklab olindi",
+    "downloaded": "Hisobot muvaffaqiyatli yuklab olindi",
     "failed": "Hisobotni yuklab bo'lmadi",
     "validation": {
       "organizations": "Kamida bitta korxona tanlang",
@@ -1318,7 +1318,7 @@
       "categories": "Kategoriyalar",
       "questionCount": "Savollar soni: ({n})",
       "attachQuestion": "Savol biriktirish",
-      "count": "Barcha imtihonlar: {n}ta"
+      "count": "Barcha imtihonlar: {n} ta"
     },
     "questions": {
       "createTitle": "Savol qo'shish",
@@ -1411,7 +1411,7 @@
     "history": "Imtihon tarixi",
     "topic": "Mavzu",
     "exam": "Imtihon",
-    "nVariant": "{n}ta variant",
+    "nVariant": "{n} ta variant",
     "variant_count": "Variantlar",
     "exam_duration": "Davomiyligi(min)",
     "totalTime": "Berilgan vaqt: {n} daqiqa",
@@ -1422,15 +1422,15 @@
     "nExams": "{n} ta imtihon",
     "nFiles": "{n} ta fayl",
     "deadline": "Tugash vaqti: {n}",
-    "examBrief": "Imtihonda savollarida {variant}ta variantlar mavjud. Yechish uchun {chances}ta imkoniyat berilgan. Imtihonni {minute} daqiqa ichida yakunlash kerak. Imtihon {deadline}da yopiladi",
+    "examBrief": "Imtihonda {variant} ta variant mavjud. Yechish uchun {chances} ta imkoniyat berilgan. Imtihonni {minute} daqiqa ichida yakunlash kerak. Imtihon {deadline}da yopiladi",
     "extra": "Qo'shimcha: {n}",
     "start": "Boshlash",
     "attempts": "Urinishlar",
     "viewResult": "Natijani ko'rish",
     "attemptsCount": "Mavjud urinishlar",
-    "nAttempts": "{n}ta urinishlar",
+    "nAttempts": "{n} ta urinish",
     "question_count": "Savollar",
-    "nQuestions": "{n}ta savol",
+    "nQuestions": "{n} ta savol",
     "examName": "Nomi: {n}",
     "toWhom": "Kimga",
     "attemptHistory": "Urinishlar tarixi",
@@ -1742,18 +1742,18 @@
       "addBtn": "Foydalanuvchi qo'shish"
     },
     "accessLevelPage": {
-      "name": " Guruhlar",
+      "name": "Guruhlar",
       "deviceCount": "Qurilmalar soni",
       "sync": "Sinxronlash",
       "syncDepartment": "Bo'limlarni sinxronlash",
       "server": "Server"
     },
     "orgAccessLevelsPage": {
-      "name": " Tashkilot va guruhlar"
+      "name": "Tashkilot va guruhlar"
     },
     "hcWorkersPage": {
       "access_levels": "Guruhlar",
-      "name": " Xodimlar",
+      "name": "Xodimlar",
       "create": "Xodim qo'shish",
       "edit": "Xodimni tahrirlash",
       "access_levels_count": "Guruhlar soni",
@@ -2606,7 +2606,7 @@
     }
   },
   "workerImage": {
-    "name": " Telegram rasmlari",
+    "name": "Telegram rasmlari",
     "photo": "Rasm",
     "status": "Holati",
     "viewPhoto": "Rasmni ko'rish",
@@ -2637,8 +2637,8 @@
     }
   },
   "hcEvent": {
-    "name": " Hodisalar",
-    "nameV2": " Hodisalar V2",
+    "name": "Hodisalar",
+    "nameV2": "Hodisalar V2",
     "createTitle": "Yuklash",
     "updateTitle": "Tahrirlash",
     "syncTitle": "Sinxronlash",
@@ -2865,7 +2865,7 @@
     }
   },
   "hcWorkDuration": {
-    "name": " Ish vaqti",
+    "name": "Ish vaqti",
     "form": {
       "enter": "Kirish",
       "exit": "Chiqish"
@@ -2904,7 +2904,7 @@
     "more": "ta"
   },
   "devices": {
-    "name": " Qurilmalar",
+    "name": "Qurilmalar",
     "createTitle": "Qurilma qo'shish",
     "updateTitle": "Qurilmani tahrirlash",
     "deviceName": "Qurilma nomi",
@@ -3240,7 +3240,7 @@
         "badRequest": "Bad Request",
         "notFound": "Not Found",
         "unprocessable": "Xato",
-        "serverError": "Server xato",
+        "serverError": "Server xatosi",
         "unknown": "Noma'lum"
       }
     }
