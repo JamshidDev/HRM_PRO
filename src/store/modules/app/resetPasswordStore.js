@@ -19,9 +19,10 @@ export const useResetPasswordStore = defineStore('resetPasswordStore', {
     resetToken: null
   }),
   getters: {
-    // +998(90)1234567 -> 901234567
+    // +998(90)1234567 -> 901234567 (bot bilan bir xil standart: prefikssiz 9-xonali).
+    // password-reset/verify aynan shu formatni kutadi (backend baribir oxirgi 9 raqamni oladi).
     rawPhone: (state) => state.phone?.slice(4).replace('(', '').replace(')', '') || '',
-    // +998(90)1234567 -> 998901234567 (password-reset/verify DTO shu formatni kutadi)
+    // +998(90)1234567 -> 998901234567 (eski 12-xonali format; hozir ishlatilmaydi).
     fullPhone: (state) => state.phone?.replace(/[+()]/g, '') || ''
   },
   actions: {
@@ -41,7 +42,7 @@ export const useResetPasswordStore = defineStore('resetPasswordStore', {
       this.errorMessage = null
       this.loading = true
       const data = {
-        phone: this.fullPhone,
+        phone: this.rawPhone,
         code: this.code
       }
       $ApiService.authService
