@@ -151,7 +151,7 @@
       <label class="mt-3 text-xs text-gray-500 mb-1">{{
         $t('workerPage.filter.department')
       }}</label>
-      <div class="w-full max-w-[400px] overflow-hidden">
+      <div class="w-full overflow-hidden">
         <SuperSelect
           :disabled="store.params.organizations.length === 0"
           v-model:value="store.params.departments"

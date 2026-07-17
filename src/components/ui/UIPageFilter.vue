@@ -51,6 +51,8 @@
   const hasFullFilterSlot = !!slots.fullFilterContent
   const searchModel = defineModel('search', { type: String, default: null })
   const searchInputRef = ref(null)
+  const filterTriggerRef = ref(null)
+  const filterMaxHeight = ref('70vh')
 
   const emits = defineEmits(['onAdd', 'onSearch', 'onClear', 'show'])
 
@@ -66,9 +68,28 @@
     emits('onAdd')
   }
 
+  const updateFilterMaxHeight = () => {
+    const el = filterTriggerRef.value?.$el ?? filterTriggerRef.value
+    if (!el) return
+    const bottomMargin = 16
+    const available = window.innerHeight - el.getBoundingClientRect().bottom - bottomMargin
+    filterMaxHeight.value = `${Math.max(available, 200)}px`
+  }
+
+  const onFilterShow = (v) => {
+    emits('show', v)
+    if (!v) return
+    nextTick(updateFilterMaxHeight)
+    window.addEventListener('resize', updateFilterMaxHeight)
+  }
+
   onMounted(() => {
     if (!props.autoFocusInput) return
     searchInputRef.value?.focus()
+  })
+
+  onUnmounted(() => {
+    window.removeEventListener('resize', updateFilterMaxHeight)
   })
 </script>
 
@@ -119,16 +140,16 @@
           {{ addButtonTitle || $t('content.add') }}
         </n-button>
         <n-popover
-          @update:show="(v) => emits('show', v)"
+          @update:show="onFilterShow"
           v-if="showFilterButton"
           trigger="click"
           scrollable
           placement="bottom"
-          class="max-w-[95vw] min-w-[280px] sm:min-w-[400px] md:min-w-[500px] w-(--v-target-width) md:w-auto"
+          class="max-w-[95vw] min-w-[280px] sm:min-w-[400px] w-(--v-target-width) md:w-auto"
           :style="{ '--top-activator-width': 'var(--v-target-width)' }"
         >
           <template #trigger>
-            <n-badge class="w-full! md:w-auto!" :value="filterCount" processing type="info">
+            <n-badge ref="filterTriggerRef" class="w-full! md:w-auto!" :value="filterCount" processing type="info">
               <n-button class="w-full! md:w-auto!" type="primary" ghost icon-placement="right">
                 <template #icon>
                   <n-icon>
@@ -155,7 +176,9 @@
                 </template>
               </n-button>
             </div>
-            <slot name="filterContent"></slot>
+            <div class="ui-filter-content overflow-y-auto pr-1 -mr-1" :style="{ maxHeight: filterMaxHeight }">
+              <slot name="filterContent"></slot>
+            </div>
           </div>
         </n-popover>
       </div>
@@ -165,3 +188,9 @@
     </div>
   </div>
 </template>
+
+<style scoped>
+.ui-filter-content :deep(:where(.n-select, .n-date-picker)) {
+  width: 100%;
+}
+</style>
