@@ -971,6 +971,7 @@
       "schedule_id": "Work schedule",
       "command_type": "Order type",
       "worker": "Select employee",
+      "pensioner": "Select pensioner",
       "command_status": "Mark to create order based on contract",
       "organization": "Organization"
     },

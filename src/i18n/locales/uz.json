@@ -986,6 +986,7 @@
       "schedule_id": "Ish jadvali",
       "command_type": "Buyruq turi",
       "worker": "Xodimni tanlang",
+      "pensioner": "Pensionerni tanlang",
       "command_status": "Shartnoma asosida buyruq yaratish uchun belgilang",
       "organization": "Korxona"
     },

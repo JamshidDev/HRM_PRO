@@ -10,7 +10,7 @@
   } from '@vicons/fluent'
   import validationRules from '@/utils/validationRules.js'
   import { useCommandStore, useComponentStore } from '@/store/modules/index.js'
-  import { NAvatar } from 'naive-ui'
+  import { NAvatar, NSwitch } from 'naive-ui'
   import Utils from '@/utils/Utils.js'
   import VacationForm_41 from '@/pages/docFlow/document/command/ui/VacationForm_41.vue'
   import { UISelect, SuperSelect, UIUser, UIModal } from '@/components/index.js'
@@ -92,6 +92,35 @@
       )
     ]
   }
+  // Xodim/pensioner select'i uchun ALOHIDA renderer.
+  // ⚠️ Yuqoridagi `renderLabel` bu yerga YARAMAYDI: u `option.last_name[0]` va
+  // `option.middle_name[0]` ni o'qiydi (director/finance option shakli). Xodim
+  // option'ida ism `option.worker.*` ichида, pensionerda esa `middle_name` bo'sh
+  // bo'lishi mumkin → `undefined[0]` TypeError berib BUTUN ro'yxatni yo'q qilardi.
+  // Bu yerda ikkala rejimda ham mavjud `name`/`position`/`photo` ishlatiladi.
+  const renderRecipientLabel = (option) => {
+    return [
+      h('div', { class: 'flex gap-2 my-1 items-center px-2' }, [
+        // ⚠️ `flex-shrink-0` SHART: pensioner ismi/lavozimi uzun bo'lganda
+        // (masalan "Тилеубергенова Палымжан Суйиндыковна") avatar flex ichida
+        // nolga siqilib ko'rinmay qolardi. Matn esa `!text-wrap` bilan o'raladi.
+        h(NAvatar, {
+          class: 'flex-shrink-0',
+          src: option.photo || Utils.noAvailableImage,
+          'fallback-src': Utils.noAvailableImage
+        }),
+        h('div', { class: 'flex flex-col min-w-0' }, [
+          h(
+            'div',
+            { class: 'text-xs font-medium text-textColor2 !text-wrap' },
+            option.name || ''
+          ),
+          h('div', { class: 'text-xs text-textColor3 !text-wrap' }, option.position || '')
+        ])
+      ])
+    ]
+  }
+
   const renderValue = ({ option }) => {
     return [
       h(
@@ -108,6 +137,28 @@
     generationVacation()
     generationVacation62()
     generationData()
+  }
+
+  // Moddiy yordam (73) xodimga YOKI pensionerga beriladi. Select bitta —
+  // switch faqat manbani almashtiradi (qidiruv/scroll o'zgarmaydi), label ham
+  // mos ravishda yangilanadi.
+  const recipientLabelKey = computed(() =>
+    store.payload.command_type === 73 && store.recipientType === 'pensioner'
+      ? 'documentPage.form.pensioner'
+      : 'documentPage.form.worker'
+  )
+
+  const onToggleRecipient = (isPensioner) => {
+    store.recipientType = isPensioner ? 'pensioner' : 'worker'
+    // Bitta buyruq = bitta tur: almashganda tanlangan ro'yxat ham, qatorlar ham
+    // tozalanadi (aks holda aralash `worker_positions` yuborilardi).
+    store.payload.workers = []
+    store.workerData = []
+    store.workerList = []
+    store.totalWorker = 0
+    store.workerParams.page = 1
+    store.workerParams.search = null
+    if (store.payload.organization_id.length > 0) store._workers()
   }
 
   const onChangeWorker = () => {
@@ -228,6 +279,11 @@
   }
   const onChangeCommandType = () => {
     const commandId = store.payload.command_type
+    // Pensioner rejimi FAQAT 73 uchun. Boshqa turga o'tilsa xodimga qaytariladi,
+    // aks holda select pensionerlarni yuklashda davom etardi.
+    if (commandId !== 73 && store.recipientType !== 'worker') {
+      onToggleRecipient(false)
+    }
     if (commandIdList.includes(commandId)) {
       componentStore._enums()
       if (store.payload.workers.length > 0) {
@@ -673,22 +729,35 @@
                 </n-form-item>
               </template>
               <template v-else>
-                <n-form-item class="w-full" :label="$t(`documentPage.form.worker`)" path="workers">
-                  <SuperSelect
-                    multiple
-                    :disabled="store.payload.organization_id.length === 0"
-                    :max-tag-count="1"
-                    :options="store.workerList"
-                    :loading="store.workerLoading"
-                    :total-count="store.totalWorker"
-                    :per-page="store.workerParams.per_page"
-                    v-model:value="store.payload.workers"
-                    v-model:search="store.workerParams.search"
-                    value-field="id"
-                    @update:value="onChangeWorkers"
-                    @onSearch="onSearchEv"
-                    @onScrollEv="onScrollEv"
-                  />
+                <n-form-item class="w-full" :label="$t(recipientLabelKey)" path="workers">
+                  <div class="flex items-center gap-2 w-full">
+                    <SuperSelect
+                      class="flex-1 min-w-0"
+                      multiple
+                      :disabled="store.payload.organization_id.length === 0"
+                      :max-tag-count="1"
+                      :options="store.workerList"
+                      :loading="store.workerLoading"
+                      :total-count="store.totalWorker"
+                      :per-page="store.workerParams.per_page"
+                      v-model:value="store.payload.workers"
+                      v-model:search="store.workerParams.search"
+                      value-field="id"
+                      :render-label="renderRecipientLabel"
+                      @update:value="onChangeWorkers"
+                      @onSearch="onSearchEv"
+                      @onScrollEv="onScrollEv"
+                    />
+                    <!-- Moddiy yordam (73): xodim ↔ pensioner almashtirgich.
+                         Matnsiz — joriy rejim select LABELIDA ko'rinadi.
+                         Pensionerda foto yo'q — render fallback avatar qo'yadi. -->
+                    <n-switch
+                      v-if="store.payload.command_type === 73"
+                      :value="store.recipientType === 'pensioner'"
+                      :disabled="store.payload.organization_id.length === 0"
+                      @update:value="onToggleRecipient"
+                    />
+                  </div>
                 </n-form-item>
               </template>
             </div>
