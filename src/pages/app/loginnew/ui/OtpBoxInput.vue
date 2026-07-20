@@ -58,7 +58,7 @@
 </script>
 
 <template>
-  <div class="otp-box-input flex gap-2">
+  <div class="otp-box-input flex gap-2 justify-center">
     <input
       v-for="(digit, index) in digits"
       :key="index"

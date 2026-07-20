@@ -22,7 +22,7 @@
         <div class="col-span-12 md:col-span-6">
           <n-input
             v-model:value="store.searchModel"
-            class="w-full max-w-[300px]! skip-format"
+            class="w-full max-w-[300px]!"
             :placeholder="$t('content.search')"
             :on-keyup="onSearchEv"
             :loading="store.onlineDeviceLoading"

@@ -107,7 +107,7 @@
         <n-input
           ref="searchInputRef"
           clearable
-          class="w-full md:max-w-[200px]! md:w-full! skip-format"
+          class="w-full md:max-w-[200px]! md:w-full!"
           v-if="showSearchInput"
           v-model:value="searchModel"
           type="text"

@@ -217,7 +217,7 @@
           <n-input
             clearable
             v-model:value="searchModel"
-            class="w-full skip-format"
+            class="w-full"
             :placeholder="$t('content.search')"
             :on-keyup="onSearchEv"
             @paste="onSearchEv"

@@ -103,7 +103,7 @@
               <n-input
                 clearable
                 v-model:value="store.inputParam.search"
-                class="w-full skip-format"
+                class="w-full"
                 :placeholder="$t('content.search')"
                 :on-keyup="onSearchEv"
                 @clear="onSearchEv"

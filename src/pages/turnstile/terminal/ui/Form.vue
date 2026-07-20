@@ -58,7 +58,7 @@
         path="name_ru"
         rule-path="requiredStringField"
       >
-        <n-input type="text" v-model:value="store.payload.name_ru" />
+        <n-input class="skip-format" type="text" v-model:value="store.payload.name_ru" />
       </n-form-item>
       <n-form-item
         :label="$t(`turnstile.terminalPage.name_en`)"
