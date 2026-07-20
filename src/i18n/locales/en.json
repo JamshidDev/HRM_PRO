@@ -55,11 +55,11 @@
     "queued": "Report queued — get it from the downloads list",
     "failed": "Failed to create the report",
     "byDate": {
-      "title": "Late workers (by period)",
+      "title": "Late workers — monthly report",
       "subtitle": "Per-worker detail of late arrivals in a period by selected organization + access level (Excel, background)"
     },
     "halfYear": {
-      "title": "Late workers (half-year)",
+      "title": "Late workers — report by months",
       "subtitle": "Number of late workers per organization × month — by selected access level (Excel, background)"
     },
     "relativesShortage": {

@@ -116,7 +116,6 @@
         }
       })
       .then(() => {
-        message.success(t('workerReport.queued'))
         d1.show = false
       })
       .catch(() => message.error(t('workerReport.failed')))
@@ -180,7 +179,6 @@
         }
       })
       .then(() => {
-        message.success(t('workerReport.queued'))
         d2.show = false
       })
       .catch(() => message.error(t('workerReport.failed')))
@@ -195,7 +193,6 @@
     d3.loading = true
     $ApiService.relativesShortageReportService
       ._export()
-      .then(() => message.success(t('workerReport.queued')))
       .catch(() => message.error(t('workerReport.failed')))
       .finally(() => (d3.loading = false))
   }
@@ -207,7 +204,6 @@
     d4.loading = true
     $ApiService.jshshirAuditReportService
       ._export()
-      .then(() => message.success(t('workerReport.queued')))
       .catch(() => message.error(t('workerReport.failed')))
       .finally(() => (d4.loading = false))
   }
@@ -219,7 +215,6 @@
     d5.loading = true
     $ApiService.nameAuditReportService
       ._export()
-      .then(() => message.success(t('workerReport.queued')))
       .catch(() => message.error(t('workerReport.failed')))
       .finally(() => (d5.loading = false))
   }

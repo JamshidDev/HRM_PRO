@@ -55,11 +55,11 @@
     "queued": "Hisobot navbatga qo'shildi — yuklamalar ro'yxatidan oling",
     "failed": "Hisobotni yaratib bo'lmadi",
     "byDate": {
-      "title": "Kech qoluvchilar (davr bo'yicha)",
+      "title": "Kech qoluvchilar oylik hisobot",
       "subtitle": "Tanlangan korxona + access level bo'yicha davr ichida kech kelgan xodimlar detali (Excel, fon rejimida)"
     },
     "halfYear": {
-      "title": "Kech qoluvchilar (yarim yillik)",
+      "title": "Kech qoluvchilar oylar kesimida hisobot",
       "subtitle": "Korxona × oy kesimida kech qolgan xodimlar soni — tanlangan access level bo'yicha (Excel, fon rejimida)"
     },
     "relativesShortage": {
