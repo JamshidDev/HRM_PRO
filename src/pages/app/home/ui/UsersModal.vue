@@ -53,7 +53,7 @@ const filteredUsers = computed(()=>{
       <div class="px-2 pt-4 pb-1 flex gap-2">
         <n-input
           clearable
-          class="w-full md:max-w-[200px]! md:w-full! skip-format"
+          class="w-full md:max-w-[200px]! md:w-full!"
           v-model:value="searchQuery"
           type="text"
           :placeholder="$t('content.search')"

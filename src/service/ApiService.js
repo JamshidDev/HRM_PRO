@@ -36,6 +36,7 @@ import lateWorkersReportService from '@/service/v1/admin/lateWorkersReportServic
 import lateWorkersHalfYearReportService from '@/service/v1/admin/lateWorkersHalfYearReportService.js'
 import relativesShortageReportService from '@/service/v1/admin/relativesShortageReportService.js'
 import jshshirAuditReportService from '@/service/v1/admin/jshshirAuditReportService.js'
+import nameAuditReportService from '@/service/v1/admin/nameAuditReportService.js'
 
 import confirmationService from '@/service/v1/hrm/confirmationService.js'
 import departmentService from '@/service/v1/hrm/departmentService.js'
@@ -302,4 +303,5 @@ export default {
   lateWorkersHalfYearReportService,
   relativesShortageReportService,
   jshshirAuditReportService,
+  nameAuditReportService,
 }
