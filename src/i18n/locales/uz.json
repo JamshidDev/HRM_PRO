@@ -72,7 +72,7 @@
     },
     "nameAudit": {
       "title": "F.I.Sh ma'lumot sifati",
-      "subtitle": "Ism/familiyasida nuqsoni bor faol xodimlar — raqam, lotin/kiril aralash, nostandart apostrof, o'rinbosar qiymat (Excel, fon rejimida)"
+      "subtitle": "Ism/familiyasida nuqsoni bor faol xodimlar — raqam, lotin/kiril aralash, nostandart apostrof, mantiqiy xatolik (Excel, fon rejimida)"
     },
     "validation": {
       "organizations": "Kamida bitta korxona tanlang",

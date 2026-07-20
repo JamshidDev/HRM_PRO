@@ -72,7 +72,7 @@
     },
     "nameAudit": {
       "title": "Full name data quality",
-      "subtitle": "Active workers with name defects — digits, mixed Latin/Cyrillic, non-standard apostrophe, placeholder values (Excel, background job)"
+      "subtitle": "Active workers with name defects — digits, mixed Latin/Cyrillic, non-standard apostrophe, logical error (Excel, background job)"
     },
     "validation": {
       "organizations": "Select at least one organization",
