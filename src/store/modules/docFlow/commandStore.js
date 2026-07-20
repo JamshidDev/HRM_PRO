@@ -210,6 +210,12 @@ export const useCommandStore = defineStore('commandStore', {
     },
     totalWorker: 0,
 
+    // Moddiy yordam (73) kimga beriladi: 'worker' | 'pensioner'.
+    // Bitta buyruq = bitta tur (aralash emas). Select holati (workerList,
+    // workerParams, totalWorker) IKKALASI uchun umumiy — shu sabab qidiruv,
+    // scroll va loading ikkala rejimda ham bir xil ishlaydi.
+    recipientType: 'worker',
+
     isSingleSelect: false,
     sortableConfirmations: [],
     oneByOne: true,
@@ -243,7 +249,40 @@ export const useCommandStore = defineStore('commandStore', {
         callback?.(res.data)
       })
     },
+    // Pensioner rejimida ro'yxat `/hrm/pensioner` sahifasi bilan AYNI endpointdan
+    // keladi (org-scope backendda xodimlardek qo'llanadi), ustiga tanlangan
+    // korxona filtri. Pensionerda foto yo'q — `photo: null`, select fallback
+    // avatarni (`Utils.noAvailableImage`) o'zi ko'rsatadi.
+    _pensioners(infinity = false) {
+      this.workerLoading = true
+      const params = {
+        organization_id: this.workerParams.organization_id,
+        page: this.workerParams.page,
+        per_page: this.workerParams.per_page,
+        search: this.workerParams.search
+      }
+      $ApiService.pensionerService
+        ._index({ params })
+        .then((res) => {
+          const data = res.data.data.data.map((v) => ({
+            ...v,
+            name: [v.last_name, v.first_name, v.middle_name].filter(Boolean).join(' '),
+            position: v.position,
+            id: v.id,
+            photo: null
+          }))
+          this.totalWorker = res.data.data.total
+          this.workerList = infinity
+            ? Array.from(new Map([...this.workerList, ...data].map((v) => [v.id, v])).values())
+            : Array.from(new Map([...data].map((v) => [v.id, v])).values())
+        })
+        .finally(() => {
+          this.workerLoading = false
+        })
+    },
     _workers(infinity = false) {
+      // Select bitta — manba rejimga qarab almashadi (search/scroll o'zgarmaydi).
+      if (this.recipientType === 'pensioner') return this._pensioners(infinity)
       this.workerLoading = true
       let params = {
         ...this.workerParams
@@ -393,6 +432,10 @@ export const useCommandStore = defineStore('commandStore', {
       this.form_74.passport_date = null
       this.form_74.certificate_serial = null
       this.form_74.certificate_date = null
+
+      // Moddiy yordam (73) qabul qiluvchi turi — har doim xodimdan boshlanadi,
+      // aks holda oldingi buyruqdan "pensioner" rejimi qolib ketardi.
+      this.recipientType = 'worker'
     },
     resetPayload() {
       this.payload.workers = []

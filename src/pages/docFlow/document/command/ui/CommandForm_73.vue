@@ -35,6 +35,9 @@
       return {
         data: {
           ...mainData,
+          // Kimga berilyapti — backend `worker_positions[].id` ni shunga qarab
+          // resolve qiladi ('pensioner' bo'lsa id = pensioners.id).
+          recipient_type: store.recipientType,
           worker_positions: data,
           command_additional: {
             base: base.value || null
