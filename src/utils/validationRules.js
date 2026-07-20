@@ -1509,6 +1509,20 @@ export default {
       trigger: triggerEvents
     }
   },
+  languageCertificatePage: {
+    language_id: {
+      type: 'number',
+      required: true,
+      message: t(`rules.requiredField`),
+      trigger: triggerEvents
+    },
+    certificate_type: {
+      type: 'number',
+      required: true,
+      message: t(`rules.requiredField`),
+      trigger: triggerEvents
+    }
+  },
   universityPage: {
     university_id: {
       type: 'number',

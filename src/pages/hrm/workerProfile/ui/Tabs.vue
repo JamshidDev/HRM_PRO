@@ -4,6 +4,7 @@
   import DisabilityList from './DisabilityList.vue'
   import RelativesPage from '@/pages/hrm/relative/RelativesPage.vue'
   import LanguagePage from '@/pages/hrm/language/LanguagePage.vue'
+  import LanguageCertificatePage from '@/pages/hrm/languageCertificate/LanguageCertificatePage.vue'
   import UniversityPage from '@/pages/hrm/university/UniversityPage.vue'
   import PartyPage from '@/pages/hrm/party/PartyPage.vue'
   import OldCareerPage from '@/pages/hrm/oldCareer/OldCareerPage.vue'
@@ -35,6 +36,7 @@
     </n-tab-pane>
     <n-tab-pane :name="2">
       <LanguagePage />
+      <LanguageCertificatePage />
       <UniversityPage />
     </n-tab-pane>
     <n-tab-pane :name="3">

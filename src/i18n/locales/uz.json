@@ -1347,6 +1347,26 @@
     "systemTitle": "Tizimdagi mehnat faoliyati ma'lumotlari",
     "no-data": "Mehnat faoliyati qo'shilmagan!"
   },
+  "languageCertificatePage": {
+    "title": "Til sertifikatlari",
+    "no-data": "Til sertifikati ma'lumotlari yo'q!",
+    "createTitle": "Sertifikat qo'shish",
+    "updateTitle": "Sertifikatni tahrirlash",
+    "unlimited": "Muddatsiz",
+    "unlimitedHint": "Bo'sh qoldirilsa \u2014 muddatsiz",
+    "qualificationHint": "Bu sertifikat til darajasini bermaydi",
+    "scorePlaceholder": "Sertifikatdagi natija",
+    "form": {
+      "language": "Til",
+      "type": "Sertifikat turi",
+      "cefr": "Til darajasi",
+      "score": "Ball",
+      "certificateNumber": "Sertifikat raqami",
+      "issueDate": "Berilgan sana",
+      "expiryDate": "Amal qilish muddati",
+      "certificateFile": "Sertifikat fayli"
+    }
+  },
   "languagePage": {
     "createTitle": "Til ma'lumotini qo'shish",
     "updateTitle": "Til ma'lumotini tahrirlash",
