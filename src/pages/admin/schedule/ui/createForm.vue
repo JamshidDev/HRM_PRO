@@ -31,7 +31,7 @@
         <n-input type="text" v-model:value="store.payload.name" />
       </n-form-item>
       <n-form-item :label="$t(`schedulePage.form.name_ru`)" path="name_ru">
-        <n-input type="text" v-model:value="store.payload.name_ru" />
+        <n-input class="skip-format" type="text" v-model:value="store.payload.name_ru" />
       </n-form-item>
       <n-form-item :label="$t(`schedulePage.form.type`)" path="type">
         <n-select

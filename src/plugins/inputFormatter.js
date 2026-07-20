@@ -1,45 +1,41 @@
-export default {
-  install(app) {
-    app.mixin({
-      mounted() {
-        this.$nextTick(() => {
-          if (this.$el && this.$el?.querySelectorAll) {
-            const formatInput = (value) => {
-              value = value.replace(/[ёқўғҳЁҚЎҒҲ]/g, '')
+const formatInput = (value) => {
+  value = value.replace(/[а-яёқўғҳА-ЯЁҚЎҒҲ]/g, '')
 
-              return value
-                .split('')
-                .map((char, index, array) => {
-                  if (
-                    char === "'" &&
-                    (array[index - 1].toString().toLowerCase() === 'o' ||
-                      array[index - 1].toString().toLowerCase() === 'g')
-                  ) {
-                    return '’'
-                  }
-                  return char
-                })
-                .join('')
-            }
-            const inputs = this.$el.querySelectorAll(
-              '.n-input__input-el:not(.skip-format .n-input__input-el)'
-            )
-            inputs.forEach((el) => {
-              el.addEventListener('input', function (event) {
-                const formattedValue = formatInput(event.target.value)
-                if (formattedValue !== event.target.value) {
-                  const start = event.target.selectionStart
-                  const end = event.target.selectionEnd
-                  const diff = event.target.value.length - formattedValue.length
-                  event.target.value = formattedValue
-                  event.target.setSelectionRange(start - diff, end - diff)
-                  event.target.dispatchEvent(new Event('input', { bubbles: true }))
-                }
-              })
-            })
-          }
-        })
+  return value
+    .split('')
+    .map((char, index, array) => {
+      if (
+        char === "'" &&
+        (array[index - 1].toString().toLowerCase() === 'o' ||
+          array[index - 1].toString().toLowerCase() === 'g')
+      ) {
+        return '’'
       }
+      return char
     })
+    .join('')
+}
+
+export default {
+  install() {
+    document.addEventListener(
+      'input',
+      (event) => {
+        const target = event.target
+        if (!target?.classList?.contains('n-input__input-el')) return
+        if (target.closest('.skip-format')) return
+
+        const formattedValue = formatInput(target.value)
+        if (formattedValue !== target.value) {
+          const start = target.selectionStart
+          const end = target.selectionEnd
+          const diff = target.value.length - formattedValue.length
+          target.value = formattedValue
+          target.setSelectionRange(start - diff, end - diff)
+          target.dispatchEvent(new Event('input', { bubbles: true }))
+        }
+      },
+      true
+    )
   }
 }
