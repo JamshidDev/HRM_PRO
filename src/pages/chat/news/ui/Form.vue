@@ -155,6 +155,7 @@
       <n-form-item :label="$t('newsPage.title')" :path="`translations[${selectedLangIndex}].title`">
         <n-input
           v-model:value="activeLocale.title"
+          :class="{ 'skip-format': activeLocale.locale === 'ru' }"
           :placeholder="$t('newsPage.titlePlaceholder')"
           :maxlength="200"
           show-count
@@ -169,6 +170,7 @@
         <n-input
           v-model:value="activeLocale.short_description"
           type="textarea"
+          :class="{ 'skip-format': activeLocale.locale === 'ru' }"
           :placeholder="$t('newsPage.shortDescriptionPlaceholder')"
           :maxlength="300"
           :rows="3"
@@ -182,7 +184,7 @@
         show-toolbar
         :placeholder="$t('newsPage.contentPlaceholder')"
         :tool-bar-exclude-keys="[]"
-        class="md:col-span-2"
+        :class="['md:col-span-2', { 'skip-format': activeLocale.locale === 'ru' }]"
         is-form-item
         container-class="rounded-lg overflow-hidden border border-surface-line"
         :label="$t('newsPage.content')"
