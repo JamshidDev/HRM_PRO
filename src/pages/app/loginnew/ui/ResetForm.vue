@@ -16,8 +16,8 @@
   const isProdMode = import.meta.env.MODE === 'production'
   const resetBotHandle = isProdMode ? '@hrmpro_robot' : '@developer_jr_bot'
   const resetBotUrl = isProdMode
-    ? 'https://t.me/hrmpro_robot?start=web-test123'
-    : 'https://t.me/developer_jr_bot?start=web-test123'
+    ? 'https://t.me/hrmpro_robot?start=web'
+    : 'https://t.me/developer_jr_bot?start=web'
 
   const emit = defineEmits(['back', 'done'])
 
