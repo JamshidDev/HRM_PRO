@@ -6,7 +6,8 @@
     CalendarClock24Regular,
     Table24Regular,
     PeopleTeam24Regular,
-    Fingerprint24Regular
+    Fingerprint24Regular,
+    TextFont24Regular
   } from '@vicons/fluent'
   import { useMessage } from 'naive-ui'
   import { useAppSetting } from '@/utils/AppSetting.js'
@@ -22,6 +23,7 @@
   const submitBtn2Ref = ref(null)
   const submitBtn3Ref = ref(null)
   const submitBtn4Ref = ref(null)
+  const submitBtn5Ref = ref(null)
   const flyFrom = (btnRef) => {
     const el = btnRef.value?.$el || btnRef.value
     if (el) proxy.$flyUpload(el)
@@ -209,6 +211,18 @@
       .catch(() => message.error(t('workerReport.failed')))
       .finally(() => (d4.loading = false))
   }
+
+  // ===== Card 5: F.I.Sh ma'lumot sifati auditi (parametrsiz, to'g'ridan async) =====
+  const d5 = reactive({ loading: false })
+  const submitD5 = () => {
+    flyFrom(submitBtn5Ref)
+    d5.loading = true
+    $ApiService.nameAuditReportService
+      ._export()
+      .then(() => message.success(t('workerReport.queued')))
+      .catch(() => message.error(t('workerReport.failed')))
+      .finally(() => (d5.loading = false))
+  }
 </script>
 
 <template>
@@ -333,6 +347,41 @@
             class="w-full"
             :loading="d4.loading"
             @click="submitD4"
+          >
+            <template #icon><n-icon><ArrowDownload24Regular /></n-icon></template>
+            {{ $t('workerReport.createButton') }}
+          </n-button>
+        </div>
+      </div>
+
+      <!-- Card 5: F.I.Sh ma'lumot sifati auditi (parametrsiz) -->
+      <div
+        class="col-span-3 h-full bg-surface-section border border-surface-line rounded-2xl p-5 flex flex-col relative overflow-hidden"
+      >
+        <div
+          class="absolute -bottom-8 right-3 text-[140px] font-black leading-none text-success/20 pointer-events-none select-none z-0"
+        >
+          5
+        </div>
+        <div class="relative z-[1] flex flex-col h-full">
+          <div class="flex items-center gap-3">
+            <div
+              class="w-11 h-11 shrink-0 flex items-center justify-center rounded-xl bg-success/10 text-success"
+            >
+              <n-icon size="24"><TextFont24Regular /></n-icon>
+            </div>
+            <h3 class="text-[15px] font-semibold text-textColor0 leading-snug">
+              {{ $t('workerReport.nameAudit.title') }}
+            </h3>
+          </div>
+          <div class="flex-1 min-h-[48px]"></div>
+          <n-button
+            ref="submitBtn5Ref"
+            type="success"
+            size="small"
+            class="w-full"
+            :loading="d5.loading"
+            @click="submitD5"
           >
             <template #icon><n-icon><ArrowDownload24Regular /></n-icon></template>
             {{ $t('workerReport.createButton') }}

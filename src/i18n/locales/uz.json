@@ -70,6 +70,10 @@
       "title": "JSHSHIR ma'lumot sifati",
       "subtitle": "JSHSHIR (PINFL) xatosi bor faol xodimlar — uzunlik, jins, sana, asr, dublikat tekshiruvi (Excel, fon rejimida)"
     },
+    "nameAudit": {
+      "title": "F.I.Sh ma'lumot sifati",
+      "subtitle": "Ism/familiyasida nuqsoni bor faol xodimlar — raqam, lotin/kiril aralash, nostandart apostrof, o'rinbosar qiymat (Excel, fon rejimida)"
+    },
     "validation": {
       "organizations": "Kamida bitta korxona tanlang",
       "accessLevels": "Kamida bitta access level tanlang",
