@@ -1,12 +1,9 @@
 <script setup>
-  import {
-    VideoPersonSparkle28Regular,
-    Badge24Regular,
-    Airplane20Regular,
-    HatGraduation20Filled
-  } from '@vicons/fluent'
+  import { Airplane20Regular, HatGraduation20Filled } from '@vicons/fluent'
   import { useComponentStore } from '@/store/modules/index.js'
   import SectionHeader from './shared/SectionHeader.vue'
+  import UserIcon from '@/assets/icons/userIcon.svg'
+  import JshirIcon from '@/assets/icons/jshirIcon.svg'
   import InfoBox from './shared/InfoBox.vue'
   import UIBadge from '@/components/ui/UIBadge.vue'
   import Utils from '../../../utils/Utils.js'
@@ -16,7 +13,7 @@
 
 <template>
   <div v-if="store.workerPreview" class="w-full">
-    <SectionHeader :title="$t('workerView.general.name')" :icon="VideoPersonSparkle28Regular">
+    <SectionHeader :title="$t('workerView.general.name')" :icon="UserIcon">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
         <InfoBox
           :label="$t('workerView.general.fullName')"
@@ -53,7 +50,7 @@
       </div>
     </SectionHeader>
 
-    <SectionHeader :title="$t('workerView.general.passportName')" :icon="Badge24Regular">
+    <SectionHeader :title="$t('workerView.general.passportName')" :icon="JshirIcon">
       <div class="space-y-3">
         <div
           v-for="(item, idx) in store.workerPreview?.worker.passports"

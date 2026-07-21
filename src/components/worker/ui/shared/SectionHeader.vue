@@ -14,7 +14,7 @@
 <template>
   <div class="rounded-3xl overflow-hidden mb-6">
     <div
-      class="flex items-center justify-between gap-2 bg-gradient-to-r from-[#D1E9FF] to-[#EFF8FF] rounded-t-3xl  border-surface-line px-4 py-4"
+      class="section-header-bar flex items-center justify-between gap-2 bg-gradient-to-r from-[#D1E9FF] to-[#EFF8FF] rounded-t-3xl  border-surface-line px-4 py-4"
     >
       <div class="flex items-center gap-2 min-w-0">
         <n-icon v-if="icon" size="20" class="text-primary shrink-0">
@@ -31,3 +31,11 @@
     </div>
   </div>
 </template>
+
+<style lang="scss">
+  [data-theme='dark'] {
+    .section-header-bar {
+      background: linear-gradient(to right, #26334d, #212b42);
+    }
+  }
+</style>

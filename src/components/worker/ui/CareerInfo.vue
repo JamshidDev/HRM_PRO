@@ -1,5 +1,6 @@
 <script setup>
-  import { Settings24Regular, Mail24Regular, CheckmarkCircle20Filled } from '@vicons/fluent'
+  import { Settings24Regular, CheckmarkCircle20Filled } from '@vicons/fluent'
+  import PositionIcon from '@/assets/icons/positionIcon.svg'
   import { useComponentStore } from '@/store/modules/index.js'
   import SectionHeader from './shared/SectionHeader.vue'
   import UIBadge from '@/components/ui/UIBadge.vue'
@@ -40,7 +41,7 @@
       </h4>
     </SectionHeader>
 
-    <SectionHeader :title="$t('oldCareerPage.title')" :icon="Mail24Regular">
+    <SectionHeader :title="$t('oldCareerPage.title')" :icon="PositionIcon">
       <div v-if="store.workerPreview?.worker?.old_careers?.length" class="flex flex-col gap-2">
         <div
           v-for="(item, idx) in store.workerPreview?.worker?.old_careers"

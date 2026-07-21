@@ -3,7 +3,7 @@
   import TopBar from './ui/shared/TopBar.vue'
   import GeneralInfoIcon from '@/assets/icons/menuIcon.svg'
   import CareerIcon from '@/assets/icons/positionIcon.svg'
-  import RelativeIcon from '@/assets/icons/userIcon.svg'
+  import RelativeIcon from '@/assets/icons/usersIcon.svg'
   import MedIcon from '@/assets/icons/medicalExaminationIcon.svg'
   import VacationIcon from '@/assets/icons/calendarIcon.svg'
   import IncentiveIcon from '@/assets/icons/awardIcon.svg'

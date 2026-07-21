@@ -1,5 +1,4 @@
 <script setup>
-  import { CheckmarkCircle16Filled } from '@vicons/fluent'
   import { useComponentStore } from '@/store/modules/index.js'
   import UIBadge from '@/components/ui/UIBadge.vue'
   import Utils from '../../../utils/Utils.js'
@@ -12,6 +11,7 @@
   import WorkerPhoneIcon from '@/assets/icons/workerPhoneIcon.svg'
   import CopyIcon from '@/assets/icons/copyIcon.svg'
   import RatingStarIcon from '@/assets/icons/ratingStarIcon.png'
+  import VerifiedIcon from '@/assets/icons/verifiedIcon.svg'
 
   const { t } = i18n.global
   const store = useComponentStore()
@@ -77,8 +77,8 @@
           <span class="text-2xl font-bold text-textColor0">{{
             Utils.combineFullName(store.workerPreview?.worker)
           }}</span>
-          <n-icon size="20" class="text-primary shrink-0">
-            <CheckmarkCircle16Filled />
+          <n-icon size="20" class="text-primary shrink-0 self-center flex items-center">
+            <VerifiedIcon />
           </n-icon>
         </div>
         <div class="flex items-center gap-2 text-textColor3 mt-1">
