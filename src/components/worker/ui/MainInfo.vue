@@ -1,131 +1,203 @@
 <script setup>
   import {
-    ArrowCircleDown16Regular,
-    Eye24Filled,
-    StarEmphasis32Filled,
-    EyeOff20Filled,
-    DismissCircle32Filled,
+    CheckmarkCircle16Filled,
+    Mail16Regular,
+    Building20Regular,
+    Badge24Regular,
+    DocumentRibbon20Regular,
+    Phone24Regular,
+    PhoneDesktop20Regular,
     Copy16Regular,
-    List20Filled
+    StarEmphasis32Filled
   } from '@vicons/fluent'
   import { useComponentStore } from '@/store/modules/index.js'
+  import UIBadge from '@/components/ui/UIBadge.vue'
   import Utils from '../../../utils/Utils.js'
   import i18n from '@/i18n/index.js'
+
   const { t } = i18n.global
   const store = useComponentStore()
-  const isHide = ref(true)
+  const masked = defineModel('masked', { type: Boolean, default: true })
+
+  const activePhotoIndex = ref(0)
+
+  const photos = computed(() => store.workerPreview?.worker?.photos || [])
+
+  const avatarSrc = computed(() => {
+    return photos.value[activePhotoIndex.value]?.photo || store.workerPreview?.worker?.photo
+  })
 
   const onCopy = () => {
     $Toast.info(t('message.successDone'))
   }
+
+  const onOpenViewer = () => {
+    if (avatarSrc.value) window.$openViewer(avatarSrc.value)
+  }
 </script>
 
 <template>
-  <div class="grid col-span-12 w-full">
-    <div
-      class="col-span-12 border-b border-surface-line flex gap-4 justify-between pb-2 pt-10 mb-6"
-    >
-      <div class="flex flex-wrap gap-4 items-center">
-        <n-button
-          type="tertiary"
-          size="small"
-          class="inline-block md:hidden!"
-          @click="store.panelVisible = true"
-        >
-          <template #icon>
-            <n-icon>
-              <List20Filled />
-            </n-icon>
-          </template>
-        </n-button>
-        <n-button text type="warning" icon-placement="right">
-          <template #icon>
-            <StarEmphasis32Filled />
-          </template>
-          4.67
-        </n-button>
-      </div>
+  <div v-if="store.workerPreview" class="flex items-start gap-4">
+    <div class="relative flex-1 bg-surface-section rounded-xl p-5 min-w-0">
+      <div class="flex flex-wrap items-start gap-4">
+        <div class="flex flex-col items-center gap-2 shrink-0">
+          <n-avatar
+            :size="110"
+            round
+            class="cursor-pointer"
+            :src="avatarSrc || Utils.noAvailableImage"
+            :fallback-src="Utils.noAvailableImage"
+            :img-props="{ style: 'object-fit: cover' }"
+            @click="onOpenViewer"
+          />
+          <!-- TODO: backend real active/inactive field qo'shilganda ulanadi -->
+          <UIBadge
+            :label="$t('workerView.header.activeEmployee')"
+            :type="Utils.colorTypes.success"
+            :show-icon="false"
+            class="!w-auto"
+          />
+          <div v-if="photos.length > 1" class="flex gap-1">
+            <span
+              v-for="(item, idx) in photos"
+              :key="item.id ?? idx"
+              class="w-6 h-6 rounded-md overflow-hidden border-2 cursor-pointer"
+              :class="idx === activePhotoIndex ? 'border-primary' : 'border-transparent'"
+              @click="activePhotoIndex = idx"
+            >
+              <img
+                class="w-full h-full object-cover"
+                :src="item.photo || Utils.noAvailableImage"
+                @error="Utils.onImgError"
+                alt="worker thumbnail"
+              />
+            </span>
+          </div>
+        </div>
 
-      <div class="flex flex-wrap items-center gap-2 justify-end md:justify-start">
-        <n-button @click="isHide = !isHide" type="primary" secondary icon-placement="right">
-          <template #icon>
-            <EyeOff20Filled v-if="isHide" />
-            <Eye24Filled v-else />
-          </template>
-        </n-button>
-        <n-button
-          type="primary"
-          icon-placement="right"
-          :loading="store.resumeLoading"
-          @click="store._workerResume(Utils.combineFullName(store.workerPreview?.worker))"
-        >
-          <template #icon>
-            <ArrowCircleDown16Regular />
-          </template>
-          {{ $t('content.downloadCV') }}
-        </n-button>
-        <n-button
-          @click="store.previewVisible = false"
-          secondary
-          type="error"
-          icon-placement="right"
-        >
-          <template #icon>
-            <DismissCircle32Filled />
-          </template>
-          {{ $t('content.close') }}
-        </n-button>
+        <div class="min-w-0 flex-1">
+          <div class="flex items-center gap-2 flex-wrap">
+            <span class="text-2xl font-bold text-textColor0">{{
+              Utils.combineFullName(store.workerPreview?.worker)
+            }}</span>
+            <n-icon size="20" class="text-primary shrink-0">
+              <CheckmarkCircle16Filled />
+            </n-icon>
+          </div>
+          <div class="flex items-center gap-2 text-textColor3 mt-1">
+            <n-icon size="16">
+              <Mail16Regular />
+            </n-icon>
+            <span>{{ store.workerPreview?.department?.name }} — {{ store.workerPreview?.post_name }}</span>
+          </div>
+
+          <div class="flex divide-x divide-surface-line mt-4 pt-4 border-t border-surface-line">
+            <div class="flex-1 min-w-0 pr-4">
+              <div class="flex items-center gap-1.5 text-textColor3 text-sm mb-1">
+                <n-icon size="14">
+                  <Building20Regular />
+                </n-icon>
+                {{ $t('workerView.general.department') }}
+              </div>
+              <div class="font-semibold truncate">{{ store.workerPreview?.department?.name }}</div>
+            </div>
+
+            <!-- TODO: backend real field qo'shilganda ulanadi — hozircha statik placeholder -->
+            <div class="flex-1 min-w-0 px-4">
+              <div class="flex items-center gap-1.5 text-textColor3 text-sm mb-1">
+                <n-icon size="14">
+                  <DocumentRibbon20Regular />
+                </n-icon>
+                {{ $t('workerView.header.serviceCertificate') }}
+              </div>
+              <div class="font-semibold">000000</div>
+            </div>
+
+            <div class="flex-1 min-w-0 px-4">
+              <div class="flex items-center gap-1.5 text-textColor3 text-sm mb-1">
+                <n-icon size="14">
+                  <Badge24Regular />
+                </n-icon>
+                {{ $t('workerView.general.passportJSHSHIR') }}
+              </div>
+              <div class="font-semibold flex items-center gap-1">
+                {{
+                  masked
+                    ? Utils.maskText(store.workerPreview?.worker.pin, 3, 4)
+                    : store.workerPreview?.worker.pin
+                }}
+                <n-icon
+                  size="16"
+                  class="cursor-pointer text-textColor3"
+                  @click="Utils.copyToClipboard(store.workerPreview?.worker.pin, onCopy)"
+                >
+                  <Copy16Regular />
+                </n-icon>
+              </div>
+            </div>
+
+            <div class="flex-1 min-w-0 px-4">
+              <div class="flex items-center gap-1.5 text-textColor3 text-sm mb-1">
+                <n-icon size="14">
+                  <Phone24Regular />
+                </n-icon>
+                {{ $t('workerView.general.phone') }}
+              </div>
+              <div class="font-semibold flex items-center gap-1">
+                {{
+                  masked
+                    ? Utils.maskText(store.workerPreview?.worker.phones[0].phone, 2, 2)
+                    : Utils.formatPhoneWithMask(
+                      store.workerPreview?.worker.phones[0].phone,
+                      '## ### ## ##'
+                    )
+                }}
+                <n-icon
+                  size="16"
+                  class="cursor-pointer text-textColor3"
+                  @click="Utils.copyToClipboard(store.workerPreview?.worker.phones[0].phone, onCopy)"
+                >
+                  <Copy16Regular />
+                </n-icon>
+              </div>
+            </div>
+
+            <!-- TODO: backend real field qo'shilganda ulanadi — hozircha statik placeholder -->
+            <div class="flex-1 min-w-0 pl-4">
+              <div class="flex items-center gap-1.5 text-textColor3 text-sm mb-1">
+                <n-icon size="14">
+                  <PhoneDesktop20Regular />
+                </n-icon>
+                {{ $t('workerView.header.workNumber') }}
+              </div>
+              <div class="font-semibold flex items-center gap-1">
+                00 000
+                <n-icon
+                  size="16"
+                  class="cursor-pointer text-textColor3"
+                  @click="Utils.copyToClipboard('00 000', onCopy)"
+                >
+                  <Copy16Regular />
+                </n-icon>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-    <template v-if="store.workerPreview">
-      <div class="col-span-12 text-2xl text-primary font-bold mb-2 uppercase">
-        {{ Utils.combineFullName(store.workerPreview?.worker) }}
-      </div>
-      <div class="col-span-12 md:col-span-6 font-bold items-center flex">
-        <span class="font-normal text-gray-400">{{ $t('workerView.general.passportJSHSHIR') }}</span>:
-        {{
-          isHide
-            ? Utils.maskText(store.workerPreview?.worker.pin, 3, 4)
-            : store.workerPreview?.worker.pin
-        }}
-        <n-icon
-          @click="Utils.copyToClipboard(store.workerPreview?.worker.pin, onCopy)"
-          size="24"
-          class="cursor-pointer ml-2"
-        >
-          <Copy16Regular />
+
+    <!-- TODO: rating/count backend'dan kelmaydi, hozirgidek statik qoldirildi -->
+    <div
+      class="shrink-0 bg-warning/10 rounded-xl p-4 text-center flex flex-col items-center justify-center min-w-[160px]"
+    >
+      <div class="flex items-center justify-center gap-1 text-warning font-bold text-lg">
+        <n-icon size="20">
+          <StarEmphasis32Filled />
         </n-icon>
+        4.67
       </div>
-      <div class="col-span-12 md:col-span-6 font-bold items-center flex">
-        <span class="font-normal text-gray-400">{{ $t('workerView.general.phone') }}</span>:
-        {{
-          isHide
-            ? Utils.maskText(store.workerPreview?.worker.phones[0].phone, 2, 2)
-            : Utils.formatPhoneWithMask(store.workerPreview?.worker.phones[0].phone, '## ### ## ##')
-        }}
-        <n-icon
-          @click="Utils.copyToClipboard(store.workerPreview?.worker.phones[0].phone, onCopy)"
-          size="24"
-          class="cursor-pointer ml-2"
-        >
-          <Copy16Regular />
-        </n-icon>
-      </div>
-      <div class="col-span-12 md:col-span-6 font-bold">
-        <span class="font-normal text-gray-400">{{ $t('workerView.general.department') }}</span>: {{ store.workerPreview?.department?.name }}
-      </div>
-      <div class="col-span-12 md:col-span-6 font-bold">
-        <span class="font-normal text-gray-400">{{ $t('workerView.general.salary') }}</span>:
-        {{
-          isHide
-            ? Utils.maskText(store.workerPreview?.salary, 0, 2)
-            : Utils.formatNumberToMoney(store.workerPreview?.salary)
-        }}
-        {{ $t('content.sum') }}
-      </div>
-      <div class="col-span-12 font-bold">
-        <span class="font-normal text-gray-400">{{ $t('workerView.general.position') }}</span>: {{ store.workerPreview?.post_name }}
-      </div>
-    </template>
+      <div class="text-xs text-textColor3 mt-1">{{ $t('workerView.header.avgRating') }}</div>
+      <div class="text-xs text-textColor3">{{ $t('workerView.header.ratingBasedOn', { count: 148 }) }}</div>
+    </div>
   </div>
 </template>

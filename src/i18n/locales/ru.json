@@ -1431,7 +1431,10 @@
       "position": "Должность",
       "department": "Подразделение",
       "salary": "Месячная зарплата",
-      "country": "Страна рождения"
+      "country": "Страна рождения",
+      "passportValid": "Действителен",
+      "citizenship": "Гражданство",
+      "foreignPassport": "Загранпаспорт"
     },
     "tabs": {
       "general": "Общая информация",
@@ -1444,6 +1447,42 @@
       "checkSkill": "Проверка квалификации",
       "checkKnowledge": "Проверка знаний",
       "punishment": "Дисциплинарные взыскания"
+    },
+    "header": {
+      "title": "Профиль сотрудника",
+      "subtitle": "Общая информация, личные документы и история деятельности",
+      "activeEmployee": "Активный сотрудник",
+      "managementStaff": "Руководящий состав",
+      "avgRating": "Средний рейтинг",
+      "ratingBasedOn": "на основе {count} оценок",
+      "serviceCertificate": "Служебное удостоверение",
+      "workNumber": "Рабочий номер"
+    },
+    "sidebar": {
+      "title": "Разделы профиля"
+    },
+    "career": {
+      "currentLabel": "Текущий"
+    },
+    "med": {
+      "currentStatus": "Текущее состояние здоровья",
+      "validityPeriod": "Срок действия",
+      "started": "Начало",
+      "ends": "Окончание",
+      "progressSuffix": "пройдено",
+      "lastCheckDate": "Дата последнего осмотра",
+      "conclusion": "Медицинское заключение",
+      "fitForWork": "Пригоден к работе",
+      "monthsLeft": "≈{count} мес. осталось"
+    },
+    "vacation": {
+      "start": "Начало отпуска",
+      "end": "Окончание отпуска",
+      "duration": "Продолжительность",
+      "type": "Тип отпуска",
+      "daysLabel": "дн.",
+      "calendarLabel": "Дни отпуска",
+      "completed": "Завершён"
     }
   },
 

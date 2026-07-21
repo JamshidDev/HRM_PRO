@@ -1,120 +1,61 @@
 <script setup>
-  import {
-    Trophy24Filled,
-    CalendarLtr32Regular,
-    Building24Regular,
-    Person24Regular,
-    DocumentText24Regular,
-    Document24Regular
-  } from '@vicons/fluent'
+  import { Trophy24Filled } from '@vicons/fluent'
   import { useComponentStore } from '@/store/modules/index.js'
+  import SectionHeader from './shared/SectionHeader.vue'
+  import InfoBox from './shared/InfoBox.vue'
   import Utils from '../../../utils/Utils.js'
 
   const store = useComponentStore()
 </script>
 
 <template>
-  <template v-if="store.workerPreview?.worker">
-    <div class="grid grid-cols-12">
-      <div class="col-span-12 mt-6">
-        <span class="font-medium text-primary mb-2 uppercase flex items-center">
-          <n-icon size="18" class="text-primary mr-1">
-            <Trophy24Filled />
-          </n-icon>
-          {{ $t('workerView.tabs.incentive') }}
-        </span>
-      </div>
-      <div class="col-span-12">
-        <template v-for="(item, idx) in store.workerPreview?.worker?.incentives" :key="idx">
-          <div
-            class="grid grid-cols-12 border border-surface-line rounded-lg px-4 py-2 border-dashed mb-2"
-          >
-            <div class="col-span-12 mb-2">
-              <n-tooltip trigger="hover" :style="{ maxWidth: '300px' }">
-                <template #trigger>
-                  <span class="font-medium text-lg text-primary truncate-text cursor-pointer">{{ item.gift }}</span>
-                </template>
+  <div class="pt-4">
+    <SectionHeader :title="$t('workerView.tabs.incentive')" :icon="Trophy24Filled">
+      <div v-if="store.workerPreview?.worker?.incentives?.length" class="flex flex-col gap-4">
+        <div
+          v-for="(item, idx) in store.workerPreview?.worker?.incentives"
+          :key="idx"
+          class="bg-surface-section border border-surface-line rounded-lg p-4"
+        >
+          <n-tooltip trigger="hover" :style="{ maxWidth: '300px' }">
+            <template #trigger>
+              <div class="font-semibold text-lg text-primary truncate-text cursor-pointer mb-3">
                 {{ item.gift }}
-              </n-tooltip>
-            </div>
-            <div class="col-span-8 flex items-center text-textColor3">
-              <n-icon size="18" class="text-primary mr-1">
-                <CalendarLtr32Regular />
-              </n-icon>
-              {{ $t('content.date') }}
-            </div>
-            <div class="col-span-4 text-end font-medium truncate-text">
-              {{ Utils.timeOnlyDate(item.date) }}
-            </div>
-            <div class="col-span-8 text-textColor3 flex items-center">
-              <n-icon size="18" class="text-primary mr-1">
-                <Building24Regular />
-              </n-icon>
-              {{ $t('content.organization') }}
-            </div>
-            <div class="col-span-4 text-end font-medium">
-              <n-tooltip trigger="hover" :style="{ maxWidth: '300px' }">
-                <template #trigger>
-                  <span class="truncate-text cursor-pointer">{{ item.organization?.name }}</span>
-                </template>
-                {{ item.organization?.name }}
-              </n-tooltip>
-            </div>
-            <div class="col-span-8 text-textColor3 flex items-center">
-              <n-icon size="18" class="text-primary mr-1">
-                <Person24Regular />
-              </n-icon>
-              {{ $t('incentive.form.who') }}
-            </div>
-            <div class="col-span-4 text-end font-medium">
-              <n-tooltip trigger="hover" :style="{ maxWidth: '300px' }">
-                <template #trigger>
-                  <span class="truncate-text cursor-pointer">{{ item.by_whom }}</span>
-                </template>
-                {{ item.by_whom }}
-              </n-tooltip>
-            </div>
-            <div class="col-span-8 text-textColor3 flex items-center">
-              <n-icon size="18" class="text-primary mr-1">
-                <Document24Regular />
-              </n-icon>
-              {{ $t('content.number') }}
-            </div>
-            <div class="col-span-4 text-end font-medium truncate-text">
-              {{ item.number }}
-            </div>
-            <div class="col-span-8 text-textColor3 flex items-center">
-              <n-icon size="18" class="text-primary mr-1">
-                <DocumentText24Regular />
-              </n-icon>
-              {{ $t('incentive.form.reason') }}
-            </div>
-            <div class="col-span-4 text-end font-medium">
-              <n-tooltip trigger="hover" :style="{ maxWidth: '300px' }">
-                <template #trigger>
-                  <span class="truncate-text cursor-pointer">{{ item.reason }}</span>
-                </template>
-                {{ item.reason }}
-              </n-tooltip>
-            </div>
+              </div>
+            </template>
+            {{ item.gift }}
+          </n-tooltip>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <InfoBox :label="$t('content.date')" :value="Utils.timeOnlyDate(item.date)" />
+            <InfoBox :label="$t('content.organization')">
+              <template #value>
+                <n-tooltip trigger="hover" :style="{ maxWidth: '300px' }">
+                  <template #trigger>
+                    <span class="truncate-text cursor-pointer block">{{ item.organization?.name }}</span>
+                  </template>
+                  {{ item.organization?.name }}
+                </n-tooltip>
+              </template>
+            </InfoBox>
+            <InfoBox :label="$t('incentive.form.who')" :value="item.by_whom" />
+            <InfoBox :label="$t('content.number')" :value="item.number" />
+            <InfoBox :label="$t('incentive.form.reason')" :value="item.reason" class="md:col-span-2" />
           </div>
-        </template>
-        <template v-if="!store.workerPreview?.worker?.incentives || store.workerPreview?.worker?.incentives.length === 0">
-          <span class="w-full text-center text-sm inline-block text-textColor3">{{
-            $t('content.no-data')
-          }}</span>
-        </template>
+        </div>
       </div>
-    </div>
-  </template>
+      <span v-else class="w-full text-center text-sm inline-block text-textColor3">
+        {{ $t('content.no-data') }}
+      </span>
+    </SectionHeader>
+  </div>
 </template>
 
 <style scoped>
-.truncate-text {
-  display: inline-block;
-  max-width: 100%;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
+  .truncate-text {
+    display: inline-block;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 </style>

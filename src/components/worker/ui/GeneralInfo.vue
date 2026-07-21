@@ -1,120 +1,131 @@
 <script setup>
+  import {
+    VideoPersonSparkle28Regular,
+    Badge24Regular,
+    Airplane20Regular,
+    HatGraduation20Filled
+  } from '@vicons/fluent'
   import { useComponentStore } from '@/store/modules/index.js'
+  import SectionHeader from './shared/SectionHeader.vue'
+  import InfoBox from './shared/InfoBox.vue'
+  import UIBadge from '@/components/ui/UIBadge.vue'
   import Utils from '../../../utils/Utils.js'
 
   const store = useComponentStore()
 </script>
 
 <template>
-  <div v-if="store.workerPreview" class="w-full grid grid-cols-12">
-    <div class="col-span-12 mt-12">
-      <div class="text-sm uppercase mb-2 font-semibold text-primary">
-        {{ $t('workerView.general.name') }}
+  <div v-if="store.workerPreview" class="w-full pt-4">
+    <SectionHeader :title="$t('workerView.general.name')" :icon="VideoPersonSparkle28Regular">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+        <InfoBox
+          :label="$t('workerView.general.fullName')"
+          :value="Utils.combineFullName(store.workerPreview?.worker)"
+        />
+        <InfoBox
+          :label="$t('workerView.general.country')"
+          :value="store.workerPreview?.worker.country.name"
+        />
+        <InfoBox
+          :label="$t('workerView.general.birthday')"
+          :value="Utils.timeOnlyDate(store.workerPreview?.worker?.birthday)"
+        />
+        <InfoBox
+          :label="$t('workerView.general.birthdayRegion')"
+          :value="store.workerPreview?.worker.region.name"
+        />
+        <InfoBox
+          :label="$t('workerView.general.nationality')"
+          :value="store.workerPreview?.worker.nationality.name"
+        />
+        <InfoBox
+          :label="$t('workerView.general.birthdayCity')"
+          :value="store.workerPreview?.worker.city.name"
+        />
+        <InfoBox
+          :label="$t('workerView.general.maritalStatus')"
+          :value="store.workerPreview?.worker.marital_status.name"
+        />
+        <InfoBox
+          :label="$t('workerView.general.address')"
+          :value="store.workerPreview?.worker.address"
+        />
       </div>
-      <div class="grid grid-cols-12 border border-dashed rounded-md border-surface-line p-2">
-        <div class="col-span-12 md:col-span-6">
-          <span class="block p-1 leading-4 font-normal text-gray-400">{{ $t('workerView.general.fullName') }}:
-            <span class="font-semibold pl-2 text-gray-700">{{
-              store.workerPreview?.worker.last_name +
-                ' ' +
-                store.workerPreview?.worker.first_name +
-                ' ' +
-                store.workerPreview?.worker.middle_name
-            }}</span></span>
-          <span class="block p-1 leading-4 text-gray-400">{{ $t('workerView.general.birthday') }}:
-            <span class="font-semibold pl-2 text-gray-700">{{
-              Utils.timeOnlyDate(store.workerPreview?.worker?.birthday)
-            }}</span></span>
-          <span class="block p-1 leading-4 text-gray-400">{{ $t('workerView.general.birthdayRegion') }}:
-            <span class="font-semibold pl-2 text-gray-700">{{
-              store.workerPreview?.worker.region.name
-            }}</span></span>
-          <span class="block p-1 leading-4 text-gray-400">{{ $t('workerView.general.birthdayCity') }}:
-            <span class="font-semibold pl-2 text-gray-700">
-              {{ store.workerPreview?.worker.city.name }}</span></span>
-        </div>
-        <div class="col-span-12 md:col-span-6">
-          <!--          <span class="block p-1 leading-4 text-gray-400">{{$t('workerView.general.inn')}}: <span class="font-semibold pl-2 text-gray-700">{{store.workerPreview?.worker.inn}}</span></span>-->
-          <span class="block p-1 leading-4 text-gray-400">{{ $t('workerView.general.nationality') }}:
-            <span class="font-semibold pl-2 text-gray-700">{{
-              store.workerPreview?.worker.nationality.name
-            }}</span></span>
-          <span class="block p-1 leading-4 text-gray-400">{{ $t('workerView.general.country') }}:
-            <span class="font-semibold pl-2 text-gray-700">{{
-              store.workerPreview?.worker.country.name
-            }}</span></span>
-          <span class="block p-1 leading-4 text-gray-400">{{ $t('workerView.general.address') }}:
-            <span class="font-semibold pl-2 text-gray-700">{{
-              store.workerPreview?.worker.address
-            }}</span></span>
-          <span class="block p-1 leading-4 text-gray-400">{{ $t('workerView.general.maritalStatus') }}:
-            <span class="font-semibold pl-2 text-gray-700">{{
-              store.workerPreview?.worker.marital_status.name
-            }}</span></span>
-        </div>
-      </div>
-    </div>
+    </SectionHeader>
 
-    <div class="col-span-12 mt-12 mb-6">
-      <div class="text-sm uppercase mb-2 font-semibold text-primary">
-        {{ $t('workerView.general.passportName') }}
-      </div>
-      <div
-        v-for="(item, idx) in store.workerPreview?.worker.passports"
-        :key="idx"
-        class="grid grid-cols-12 border border-dashed rounded-md border-surface-line p-2"
-      >
-        <div class="col-span-12 md:col-span-6">
-          <span class="block p-1 leading-4 text-gray-400">{{ $t('workerView.general.passportNumber') }}:
-            <span class="font-semibold pl-2 text-gray-700">{{ item.serial_number }}</span></span>
-          <span class="block p-1 leading-4 text-gray-400">{{ $t('workerView.general.fromDate') }}:
-            <span class="font-semibold pl-2 text-gray-700">{{
-              Utils.timeOnlyDate(item.from_date)
-            }}</span></span>
+    <SectionHeader :title="$t('workerView.general.passportName')" :icon="Badge24Regular">
+      <div class="space-y-3">
+        <div
+          v-for="(item, idx) in store.workerPreview?.worker.passports"
+          :key="idx"
+          class="grid grid-cols-1 md:grid-cols-2 gap-3"
+        >
+          <InfoBox :label="$t('workerView.general.passportJSHSHIR')" :value="store.workerPreview?.worker.pin" />
+          <InfoBox :label="$t('workerView.general.fromDate')" :value="Utils.timeOnlyDate(item.from_date)" />
+          <InfoBox :label="$t('workerView.general.toDate')">
+            <template #value>
+              <div class="flex items-center gap-2">
+                {{ Utils.timeOnlyDate(item.to_date) }}
+                <UIBadge
+                  :label="$t('workerView.general.passportValid')"
+                  :type="Utils.colorTypes.success"
+                  :show-icon="false"
+                  class="!w-auto"
+                />
+              </div>
+            </template>
+          </InfoBox>
+          <InfoBox :label="$t('workerView.general.passportNumber')" :value="item.serial_number" />
+          <InfoBox
+            :label="$t('workerView.general.citizenship')"
+            :value="store.workerPreview?.worker.country.name"
+          />
         </div>
-        <div class="col-span-12 md:col-span-6">
-          <span class="block p-1 leading-4 text-gray-400">{{ $t('workerView.general.toDate') }}:
-            <span class="font-semibold pl-2 text-gray-700">{{
-              Utils.timeOnlyDate(item.to_date)
-            }}</span></span>
-          <span class="block p-1 leading-4 text-gray-400">{{ $t('workerView.general.who') }}:
-            <span class="font-semibold pl-2 text-gray-700">{{ item.address }}</span></span>
-        </div>
       </div>
-    </div>
+    </SectionHeader>
 
-    <div class="col-span-12 mt-12 mb-6">
-      <div class="text-sm uppercase mb-2 font-semibold text-primary">
-        {{ $t('workerView.general.university') }}
-      </div>
-      <div
-        v-for="(item, idx) in store.workerPreview?.worker.universities"
-        :key="idx"
-        class="grid grid-cols-12 border border-dashed rounded-md border-surface-line p-2"
-      >
-        <div class="col-span-12 md:col-span-6">
-          <span class="block p-1 leading-4 text-gray-400">{{ $t('content.name') }}:
-            <span class="font-semibold pl-2 text-gray-700">{{ item.university.name }} ({{ item?.university?.education?.name }})</span></span>
-          <span class="block p-1 leading-4 text-gray-400">{{ $t('workerView.general.specialty') }}:
-            <span class="font-semibold pl-2 text-gray-700">{{ item.speciality?.name }}</span></span>
-        </div>
-        <div class="col-span-12 md:col-span-6">
-          <span class="block p-1 leading-4 text-gray-400">{{ $t('workerView.general.educationPeriod') }}:
-            <span class="font-semibold pl-2 text-gray-700">{{
-              Utils.timeOnlyDate(item.from_date) + ' - ' + Utils.timeOnlyDate(item.to_date)
-            }}</span></span>
-          <span class="block p-1 leading-4 text-gray-400">{{ $t('content.organization') }}:
-            <span class="font-semibold pl-2 text-gray-700">{{
-              item.university?.type?.name
-            }}</span></span>
+    <SectionHeader
+      v-if="store.workerPreview?.worker.foreign_passports?.length"
+      :title="$t('workerView.general.foreignPassport')"
+      :icon="Airplane20Regular"
+    >
+      <div class="space-y-3">
+        <div
+          v-for="(item, idx) in store.workerPreview?.worker.foreign_passports"
+          :key="idx"
+          class="grid grid-cols-1 md:grid-cols-2 gap-3"
+        >
+          <InfoBox :label="$t('workerView.general.passportJSHSHIR')" :value="store.workerPreview?.worker.pin" />
+          <InfoBox :label="$t('workerView.general.passportNumber')" :value="item.serial_number" />
+          <InfoBox :label="$t('workerView.general.fromDate')" :value="Utils.timeOnlyDate(item.from_date)" />
+          <InfoBox :label="$t('workerView.general.toDate')" :value="Utils.timeOnlyDate(item.to_date)" />
+          <InfoBox :label="$t('workerView.general.who')" :value="item.given_place" />
         </div>
       </div>
-      <h4
-        v-if="store.workerPreview?.worker.universities.length === 0"
-        class="text-center text-secondary"
-      >
+    </SectionHeader>
+
+    <SectionHeader :title="$t('workerView.general.university')" :icon="HatGraduation20Filled">
+      <div v-if="store.workerPreview?.worker.universities.length" class="space-y-3">
+        <div
+          v-for="(item, idx) in store.workerPreview?.worker.universities"
+          :key="idx"
+          class="grid grid-cols-1 md:grid-cols-2 gap-3"
+        >
+          <InfoBox
+            :label="$t('content.name')"
+            :value="`${item.university.name} (${item?.university?.education?.name})`"
+          />
+          <InfoBox :label="$t('workerView.general.specialty')" :value="item.speciality?.name" />
+          <InfoBox
+            :label="$t('workerView.general.educationPeriod')"
+            :value="`${Utils.timeOnlyDate(item.from_date)} - ${Utils.timeOnlyDate(item.to_date)}`"
+          />
+          <InfoBox :label="$t('content.organization')" :value="item.university?.type?.name" />
+        </div>
+      </div>
+      <h4 v-else class="text-center text-secondary">
         {{ $t('content.no-data') }}
       </h4>
-    </div>
+    </SectionHeader>
   </div>
 </template>

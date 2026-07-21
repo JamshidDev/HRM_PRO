@@ -1448,7 +1448,10 @@
       "position": "Lavozim",
       "department": "Bo'limi",
       "salary": "Oylik maosh",
-      "country": "Tug'ilgan davlati"
+      "country": "Tug'ilgan davlati",
+      "passportValid": "Amal qiladi",
+      "citizenship": "Fuqarolik",
+      "foreignPassport": "Xorijga chiqish pasporti"
     },
     "tabs": {
       "general": "Umumiy ma'lumotlari",
@@ -1459,6 +1462,42 @@
       "incentive": "Rag'batlantirishlari",
       "punishment": "Intizomiy jazolari",
       "exams": "Imtihonlar"
+    },
+    "header": {
+      "title": "Xodim profili",
+      "subtitle": "Umumiy ma'lumotlar, shaxsiy hujjatlar va faoliyat tarixi",
+      "activeEmployee": "Faol xodim",
+      "managementStaff": "Boshqaruv xodimlari",
+      "avgRating": "O'rtacha reyting",
+      "ratingBasedOn": "{count} ta baholash asosida",
+      "serviceCertificate": "Xizmat guvohnomasi",
+      "workNumber": "Ishchi raqami"
+    },
+    "sidebar": {
+      "title": "Profil bo'limlari"
+    },
+    "career": {
+      "currentLabel": "Joriy"
+    },
+    "med": {
+      "currentStatus": "Joriy salomatlik holati",
+      "validityPeriod": "Amal qilish muddati",
+      "started": "Boshlangan",
+      "ends": "Tugaydi",
+      "progressSuffix": "o'tdi",
+      "lastCheckDate": "Oxirgi ko'rik sanasi",
+      "conclusion": "Tibbiy xulosa",
+      "fitForWork": "Mehnatga layoqatli",
+      "monthsLeft": "≈{count} oy qoldi"
+    },
+    "vacation": {
+      "start": "Ta'tilga chiqish",
+      "end": "Ta'tildan qaytish",
+      "duration": "Davomiyligi",
+      "type": "Ta'til turi",
+      "daysLabel": "kun",
+      "calendarLabel": "Ta'til kunlari",
+      "completed": "Yakunlangan"
     }
   },
 

@@ -1426,7 +1426,10 @@
       "position": "Position",
       "department": "Department",
       "salary": "Monthly salary",
-      "country": "Birth country"
+      "country": "Birth country",
+      "passportValid": "Valid",
+      "citizenship": "Citizenship",
+      "foreignPassport": "Foreign travel passport"
     },
     "tabs": {
       "general": "General info",
@@ -1439,6 +1442,42 @@
       "checkSkill": "Skill test",
       "checkKnowledge": "Knowledge test",
       "punishment": "Disciplinary actions"
+    },
+    "header": {
+      "title": "Employee profile",
+      "subtitle": "General information, personal documents and activity history",
+      "activeEmployee": "Active employee",
+      "managementStaff": "Management staff",
+      "avgRating": "Average rating",
+      "ratingBasedOn": "based on {count} reviews",
+      "serviceCertificate": "Service certificate",
+      "workNumber": "Work number"
+    },
+    "sidebar": {
+      "title": "Profile sections"
+    },
+    "career": {
+      "currentLabel": "Current"
+    },
+    "med": {
+      "currentStatus": "Current health status",
+      "validityPeriod": "Validity period",
+      "started": "Started",
+      "ends": "Ends",
+      "progressSuffix": "elapsed",
+      "lastCheckDate": "Last check-up date",
+      "conclusion": "Medical conclusion",
+      "fitForWork": "Fit for work",
+      "monthsLeft": "≈{count} months left"
+    },
+    "vacation": {
+      "start": "Vacation start",
+      "end": "Vacation end",
+      "duration": "Duration",
+      "type": "Vacation type",
+      "daysLabel": "days",
+      "calendarLabel": "Vacation days",
+      "completed": "Completed"
     }
   },
 
