@@ -11,6 +11,7 @@
   import MilitaryPage from '@/pages/hrm/military/MilitaryPage.vue'
   import AcademicTitlePage from '@/pages/hrm/academicTitle/AcademicTitlePage.vue'
   import AcademicDegreePage from '@/pages/hrm/academicDegree/AcademicDegreePage.vue'
+  import WorkerPositionCertificatePage from '@/pages/hrm/workerPositionCertificate/WorkerPositionCertificatePage.vue'
   import { useWorkerProfileStore } from '@/store/modules/index.js'
 
   const store = useWorkerProfileStore()
@@ -53,6 +54,7 @@
       <MilitaryPage />
       <AcademicTitlePage />
       <AcademicDegreePage />
+      <WorkerPositionCertificatePage />
     </n-tab-pane>
   </n-tabs>
 </template>
