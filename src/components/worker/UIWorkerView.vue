@@ -130,7 +130,7 @@
 
           <MainInfo v-model:masked="masked" class="mb-4" />
 
-          <div class="flex w-full flex-1 min-h-0 gap-4">
+          <div class="preview-body flex w-full flex-1 min-h-0 gap-4">
             <div
               class="preview-menu self-start max-h-full bg-surface-section rounded-3xl p-4 z-10 overflow-y-auto"
             >
@@ -228,6 +228,13 @@
 
   @media only screen and (max-width: 769px) {
     .ui-preview-window {
+      .preview-content {
+        overflow-y: auto;
+      }
+      .preview-body {
+        flex: none;
+        min-height: 0;
+      }
       .preview-menu {
         width: 260px;
         position: absolute;

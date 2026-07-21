@@ -25,8 +25,8 @@
 
 <template>
   <div v-if="store.workerPreview" class="bg-surface-section rounded-3xl p-4">
-    <div class="flex flex-wrap items-start gap-3">
-      <div class="flex flex-col items-center gap-2 shrink-0">
+    <div class="flex flex-wrap items-start justify-between gap-3">
+      <div class="flex flex-col items-center gap-2 shrink-0 order-1">
         <n-avatar
           :size="76"
           round
@@ -61,7 +61,15 @@
         </div>
       </div>
 
-      <div class="min-w-0 flex-1">
+      <!-- TODO: rating/count backend'dan kelmaydi, hozirgidek statik qoldirildi -->
+      <div
+        class="shrink-0 order-2 lg:order-3 flex items-center gap-2 bg-warning/10 rounded-xl px-4 py-2.5"
+      >
+        <img :src="RatingStarIcon" class="w-12 h-12 object-contain" alt="rating star" />
+        <span class="text-lg font-bold text-textColor0">4.67</span>
+      </div>
+
+      <div class="w-full lg:w-auto lg:flex-1 min-w-0 order-3 lg:order-2">
         <div>
           <span class="text-2xl font-bold text-textColor0">
             {{ Utils.combineFullName(store.workerPreview?.worker) }}
@@ -81,12 +89,6 @@
         <div class="hidden lg:block mt-3 pt-3 border-t border-surface-line">
           <WorkerStatsGrid :masked="masked" />
         </div>
-      </div>
-
-      <!-- TODO: rating/count backend'dan kelmaydi, hozirgidek statik qoldirildi -->
-      <div class="shrink-0 flex items-center gap-2 bg-warning/10 rounded-xl px-4 py-2.5">
-        <img :src="RatingStarIcon" class="w-12 h-12 object-contain" alt="rating star" />
-        <span class="text-lg font-bold text-textColor0">4.67</span>
       </div>
     </div>
 
