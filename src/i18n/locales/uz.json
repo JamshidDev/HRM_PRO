@@ -1347,6 +1347,22 @@
     "systemTitle": "Tizimdagi mehnat faoliyati ma'lumotlari",
     "no-data": "Mehnat faoliyati qo'shilmagan!"
   },
+  "workerPositionCertificatePage": {
+    "title": "Lavozim guvohnomalari",
+    "no-data": "Guvohnoma ma'lumotlari yo'q!",
+    "createTitle": "Guvohnoma qo'shish",
+    "updateTitle": "Guvohnomani tahrirlash",
+    "form": {
+      "postName": "Lavozim",
+      "number": "Guvohnoma raqami",
+      "issueDate": "Berilgan sana",
+      "expiryDate": "Amal qilish muddati",
+      "extendedDate": "Uzaytirilgan sana",
+      "verify": "Tasdiqlangan",
+      "returned": "Qaytarib olingan",
+      "certificateFile": "Guvohnoma fayli"
+    }
+  },
   "languageCertificatePage": {
     "title": "Til sertifikatlari",
     "no-data": "Til sertifikati ma'lumotlari yo'q!",

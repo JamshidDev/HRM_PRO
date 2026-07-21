@@ -1325,6 +1325,22 @@
     "systemTitle": "System employment records",
     "no-data": "No previous employment added!"
   },
+  "workerPositionCertificatePage": {
+    "title": "Position certificates",
+    "no-data": "No certificate data!",
+    "createTitle": "Add certificate",
+    "updateTitle": "Edit certificate",
+    "form": {
+      "postName": "Position",
+      "number": "Certificate number",
+      "issueDate": "Issue date",
+      "expiryDate": "Expiry date",
+      "extendedDate": "Extended date",
+      "verify": "Verified",
+      "returned": "Returned",
+      "certificateFile": "Certificate file"
+    }
+  },
   "languageCertificatePage": {
     "title": "Language certificates",
     "no-data": "No language certificate data!",
