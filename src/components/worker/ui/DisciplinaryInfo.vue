@@ -1,9 +1,10 @@
 <script setup>
-  import { Warning24Filled } from '@vicons/fluent'
+  import { Warning24Filled, NumberSymbol20Regular, QuestionCircle20Regular } from '@vicons/fluent'
   import { useComponentStore } from '@/store/modules/index.js'
   import SectionHeader from './shared/SectionHeader.vue'
-  import InfoBox from './shared/InfoBox.vue'
   import Utils from '../../../utils/Utils.js'
+  import CalendarIcon from '@/assets/icons/calendarIcon.svg'
+  import DepartmentIcon from '@/assets/icons/departmentIcon.svg'
 
   const store = useComponentStore()
 </script>
@@ -15,7 +16,7 @@
         <div
           v-for="(item, idx) in store.workerPreview?.worker?.disciplinary_actions"
           :key="idx"
-          class="bg-surface-section border border-surface-line rounded-3xl p-4"
+          class="bg-surface-section rounded-3xl p-4"
         >
           <n-tooltip trigger="hover" :style="{ maxWidth: '300px' }">
             <template #trigger>
@@ -26,19 +27,41 @@
             {{ item.fine }}
           </n-tooltip>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-            <InfoBox :label="$t('content.date')" :value="Utils.timeOnlyDate(item.date)" />
-            <InfoBox :label="$t('content.organization')">
-              <template #value>
-                <n-tooltip trigger="hover" :style="{ maxWidth: '300px' }">
-                  <template #trigger>
-                    <span class="truncate-text cursor-pointer block">{{ item.organization?.name }}</span>
-                  </template>
-                  {{ item.organization?.name }}
-                </n-tooltip>
-              </template>
-            </InfoBox>
-            <InfoBox :label="$t('content.number')" :value="item.number" />
-            <InfoBox :label="$t('incentive.form.reason')" :value="item.reason" />
+            <div class="bg-surface-ground-soft rounded-3xl px-4 py-3">
+              <div class="flex items-center gap-1.5 text-textColor3 text-sm mb-1">
+                <n-icon size="14"><CalendarIcon /></n-icon>
+                {{ $t('content.date') }}
+              </div>
+              <div class="font-semibold text-textColor0">{{ Utils.timeOnlyDate(item.date) }}</div>
+            </div>
+            <div class="bg-surface-ground-soft rounded-3xl px-4 py-3">
+              <div class="flex items-center gap-1.5 text-textColor3 text-sm mb-1">
+                <n-icon size="14"><DepartmentIcon /></n-icon>
+                {{ $t('content.organization') }}
+              </div>
+              <n-tooltip trigger="hover" :style="{ maxWidth: '300px' }">
+                <template #trigger>
+                  <div class="font-semibold text-textColor0 truncate-text cursor-pointer">
+                    {{ item.organization?.name }}
+                  </div>
+                </template>
+                {{ item.organization?.name }}
+              </n-tooltip>
+            </div>
+            <div class="bg-surface-ground-soft rounded-3xl px-4 py-3">
+              <div class="flex items-center gap-1.5 text-textColor3 text-sm mb-1">
+                <n-icon size="14"><NumberSymbol20Regular /></n-icon>
+                {{ $t('content.number') }}
+              </div>
+              <div class="font-semibold text-textColor0">{{ item.number }}</div>
+            </div>
+            <div class="bg-surface-ground-soft rounded-3xl px-4 py-3">
+              <div class="flex items-center gap-1.5 text-textColor3 text-sm mb-1">
+                <n-icon size="14"><QuestionCircle20Regular /></n-icon>
+                {{ $t('incentive.form.reason') }}
+              </div>
+              <div class="font-semibold text-textColor0">{{ item.reason }}</div>
+            </div>
           </div>
         </div>
       </div>

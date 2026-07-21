@@ -84,7 +84,7 @@
       id: 7,
       icon: DisciplinaryIcon,
       color: '#DC2626', // TODO: custom icon color
-      count: null
+      count: store.workerPreview?.worker?.disciplinary_actions?.length ?? null
     },
     {
       name: t('workerView.tabs.exams'),
