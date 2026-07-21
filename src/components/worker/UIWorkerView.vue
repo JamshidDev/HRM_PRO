@@ -118,6 +118,7 @@
         <div
           class="preview-content flex flex-col w-full h-full px-4 pt-4"
           :class="[store.panelVisible && 'preview-panel-active']"
+          @scroll="store.panelVisible = false"
         >
           <TopBar
             v-model:masked="masked"
@@ -151,7 +152,12 @@
                       }
                       : {}
                   "
-                  @click="activeTab = item.id"
+                  @click="
+                    () => {
+                      activeTab = item.id
+                      store.panelVisible = false
+                    }
+                  "
                 >
                   <span class="flex items-center gap-2 min-w-0">
                     <span
@@ -185,6 +191,7 @@
             <div
               ref="previewPanelRef"
               class="preview-panel overflow-x-hidden overflow-y-auto relative flex-1 pb-4"
+              @scroll="store.panelVisible = false"
             >
               <GeneralInfo v-if="activeTab === tabList[0].id" />
               <CareerInfo v-if="activeTab === tabList[1].id" />
