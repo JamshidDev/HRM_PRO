@@ -45,7 +45,7 @@
 <template>
   <n-spin :show="store.loading">
     <div
-      class="w-full flex justify-between items-end border-surface-line border-dashed pb-2"
+      class="w-full flex justify-between items-end border-surface-line border-dashed pb-2 mt-16"
       :class="store.list.length === 0 && 'border-b'"
     >
       <span class="text-lg font-medium" v-if="store.list.length > 0">{{

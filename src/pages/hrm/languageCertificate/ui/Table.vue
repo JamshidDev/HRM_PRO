@@ -47,7 +47,7 @@
 <template>
   <n-spin :show="store.loading">
     <div
-      class="w-full flex justify-between items-end border-surface-line border-dashed pb-2"
+      class="w-full flex justify-between items-end border-surface-line border-dashed pb-2 mt-16"
       :class="store.list.length === 0 && 'border-b'"
     >
       <span class="text-lg font-medium" v-if="store.list.length > 0">
@@ -100,14 +100,16 @@
               <span class="text-sm">{{ item.score }}</span>
             </td>
             <td>
-              <span class="text-sm">{{ item.issue_date }}</span>
+              <span class="text-sm">{{ Utils.timeOnlyDate(item.issue_date) }}</span>
             </td>
             <td>
               <!-- Muddati tugaganini server hisoblaydi (is_expired). Bo'sh = muddatsiz. -->
               <n-tag v-if="item.is_expired" size="small" type="error" round>
-                {{ item.expiry_date }}
+                {{ Utils.timeOnlyDate(item.expiry_date) }}
               </n-tag>
-              <span v-else-if="item.expiry_date" class="text-sm">{{ item.expiry_date }}</span>
+              <span v-else-if="item.expiry_date" class="text-sm">{{
+                Utils.timeOnlyDate(item.expiry_date)
+              }}</span>
               <span v-else class="text-xs text-gray-400">
                 {{ $t('languageCertificatePage.unlimited') }}
               </span>

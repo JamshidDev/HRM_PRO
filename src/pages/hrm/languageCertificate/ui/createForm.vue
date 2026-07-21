@@ -3,6 +3,7 @@
   import { CloudLink16Regular } from '@vicons/fluent'
   import { useLanguageCertificateStore, useComponentStore } from '@/store/modules/index.js'
   import Utils from '@/utils/Utils.js'
+  import { useAppSetting } from '@/utils/index.js'
   import i18n from '@/i18n/index.js'
 
   const { t } = i18n.global
@@ -134,11 +135,10 @@
       <!-- Qolgan maydonlar til + tur tanlangandan keyin ochiladi: qaysi maydon
            kerakligi aynan sertifikat turiga bog'liq (3318, 2-ilova). -->
       <template v-if="store.showDetails">
-        <!-- Daraja + ball + raqam bitta qatorda. Ball so'ralmaydigan turlarda
-             daraja va raqam qatorni teng bo'lishadi (6 + 6). -->
+        <!-- Daraja + sertifikat raqami (6 + 6). -->
         <div class="grid grid-cols-12 gap-2">
           <!-- Malaka sertifikatlarida daraja bo'lmaydi — select bloklanadi. -->
-          <div class="col-span-12" :class="store.showScore ? 'md:col-span-4' : 'md:col-span-6'">
+          <div class="col-span-12 md:col-span-6">
             <n-form-item :label="$t(`languageCertificatePage.form.cefr`)" path="cefr_level">
               <n-select
                 v-model:value="store.payload.cefr_level"
@@ -156,21 +156,7 @@
             </n-form-item>
           </div>
 
-          <!-- Ball faqat raqamli natija beradigan turlarda (IELTS, TOEIC, TOPIK,
-               Test DAF). HSK/N2/ТРКИ kabi turlarda natija darajadan kelib
-               chiqadi, Milliy/DELE da esa ball tushunchasi yo'q. -->
-          <div v-if="store.showScore" class="col-span-12 md:col-span-4">
-            <n-form-item :label="$t(`languageCertificatePage.form.score`)" path="score">
-              <n-input
-                v-model:value="store.payload.score"
-                :placeholder="
-                  store.selectedType?.score_hint || $t('languageCertificatePage.scorePlaceholder')
-                "
-              />
-            </n-form-item>
-          </div>
-
-          <div class="col-span-12" :class="store.showScore ? 'md:col-span-4' : 'md:col-span-6'">
+          <div class="col-span-12 md:col-span-6">
             <n-form-item
               :label="$t(`languageCertificatePage.form.certificateNumber`)"
               path="certificate_number"
@@ -187,6 +173,7 @@
               <n-date-picker
                 v-model:formatted-value="store.payload.issue_date"
                 value-format="yyyy-MM-dd"
+                :format="useAppSetting.datePicketFormat"
                 type="date"
                 class="w-full"
                 clearable
@@ -199,6 +186,7 @@
               <n-date-picker
                 v-model:formatted-value="store.payload.expiry_date"
                 value-format="yyyy-MM-dd"
+                :format="useAppSetting.datePicketFormat"
                 type="date"
                 class="w-full"
                 clearable
@@ -207,21 +195,48 @@
           </div>
         </div>
 
-        <n-form-item :label="$t(`content.file`)" path="file">
-          <n-button @click="onFile" style="width: 100%">
-            <template #icon>
-              <CloudLink16Regular />
-            </template>
-            {{
-              store.payload.file?.name
-                ? store.payload.file?.size
-                  ? store.payload.file?.name
-                  : Utils.fileNameFromUrl(store.payload.file?.name)
-                : $t('languageCertificatePage.form.certificateFile')
-            }}
-          </n-button>
-          <input @change="onUpload" type="file" v-show="false" ref="inputFileRef" />
-        </n-form-item>
+        <!-- Ball + sertifikat fayli bitta qatorda. Ball faqat raqamli natija
+             beradigan turlarda (IELTS, TOEIC, Test DAF) — HSK/N2/ТРКИ da natija
+             darajadan kelib chiqadi, Milliy/DELE da ball tushunchasi yo'q.
+             Ball yashiringanda fayl to'liq kenglikni oladi. -->
+        <div class="grid grid-cols-12 gap-2">
+          <div v-if="store.showScore" class="col-span-12 md:col-span-6">
+            <n-form-item :label="$t(`languageCertificatePage.form.score`)" path="score">
+              <n-input
+                v-model:value="store.payload.score"
+                :placeholder="$t('content.enterField')"
+              />
+            </n-form-item>
+          </div>
+
+          <!-- min-w-0: uzun fayl nomi katakni (va butun formani) kengaytirib
+               gorizontal scroll yaratmasligi uchun — grid item default
+               min-width:auto bo'lib, kontent kengligidan pastga qisqara olmaydi. -->
+          <div
+            class="col-span-12 min-w-0"
+            :class="store.showScore ? 'md:col-span-6' : 'md:col-span-12'"
+          >
+            <n-form-item :label="$t(`content.file`)" path="file">
+              <n-button @click="onFile" class="w-full" style="max-width: 100%">
+                <template #icon>
+                  <CloudLink16Regular />
+                </template>
+                <!-- truncate + min-w-0: uzun nom "..." bilan qisqaradi (flex ichida
+                     min-width:0 bo'lmasa kontent kengligidan qisqarmaydi). -->
+                <span class="file-name truncate min-w-0">
+                  {{
+                    store.payload.file?.name
+                      ? store.payload.file?.size
+                        ? store.payload.file?.name
+                        : Utils.fileNameFromUrl(store.payload.file?.name)
+                      : $t('languageCertificatePage.form.certificateFile')
+                  }}
+                </span>
+              </n-button>
+              <input @change="onUpload" type="file" v-show="false" ref="inputFileRef" />
+            </n-form-item>
+          </div>
+        </div>
       </template>
     </n-form>
   </div>
@@ -236,4 +251,16 @@
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+  /* n-button ichidagi kontent (ikonka + nom) flex — nom qisqarishi uchun
+   uni ham min-width:0 va overflow-hidden qilamiz, aks holda span truncate
+   bo'lsa ham tugma kontenti kengayib ketadi (Naive UI versiyasidan qat'i nazar). */
+  .file-name {
+    display: block;
+    max-width: 100%;
+  }
+  :deep(.n-button__content) {
+    min-width: 0;
+    overflow: hidden;
+  }
+</style>

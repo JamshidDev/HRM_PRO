@@ -21,11 +21,14 @@
     }
   })
 
-  watch(() => store.data?.uuid, (val) => {
-    if (val) {
-      store._indexWorkerDisability()
+  watch(
+    () => store.data?.uuid,
+    (val) => {
+      if (val) {
+        store._indexWorkerDisability()
+      }
     }
-  })
+  )
 </script>
 
 <template>
