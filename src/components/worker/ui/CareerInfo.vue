@@ -43,19 +43,17 @@
 
     <SectionHeader :title="$t('oldCareerPage.title')" :icon="PositionIcon">
       <div v-if="store.workerPreview?.worker?.old_careers?.length" class="flex flex-col gap-2">
-        <div
-          v-for="(item, idx) in store.workerPreview?.worker?.old_careers"
-          :key="idx"
-          class="relative flex items-center gap-3 bg-surface-ground rounded-3xl px-4 py-3"
-        >
-          <span
-            v-if="idx !== store.workerPreview?.worker?.old_careers?.length - 1"
-            class="absolute left-7 top-full h-2 z-20 w-px bg-surface-line"
-          ></span>
-          <n-icon size="24" class="text-primary shrink-0">
-            <CheckmarkCircle20Filled />
-          </n-icon>
-          <div>
+        <div v-for="(item, idx) in store.workerPreview?.worker?.old_careers" :key="idx" class="flex gap-3">
+          <div class="relative w-7 shrink-0">
+            <n-icon size="28" class="text-primary">
+              <CheckmarkCircle20Filled />
+            </n-icon>
+            <span
+              v-if="idx !== store.workerPreview?.worker?.old_careers?.length - 1"
+              class="absolute left-1/2 top-8 bottom-[8px] w-px -translate-x-1/2 bg-surface-line"
+            ></span>
+          </div>
+          <div class="flex-1 min-w-0 bg-surface-ground rounded-3xl px-4 py-3">
             <div class="font-semibold text-textColor0">
               {{ Utils.timeOnlyYear(item?.from_date) }} — {{ Utils.timeOnlyYear(item?.to_date) }}
             </div>
