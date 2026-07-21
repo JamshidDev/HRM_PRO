@@ -1485,6 +1485,12 @@
       "planned": "Запланирован",
       "upcomingTitle": "Очередной отпуск — {year} год",
       "viewCalendar": "Смотреть в календаре"
+    },
+    "incentive": {
+      "count": "{count} шт.",
+      "categoryMaterial": "Материальное поощрение",
+      "categoryState": "Государственная / ведомственная награда",
+      "categoryMoral": "Моральное поощрение"
     }
   },
   "categoryPage": {

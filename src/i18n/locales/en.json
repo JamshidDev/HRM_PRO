@@ -1479,6 +1479,12 @@
       "planned": "Planned",
       "upcomingTitle": "Upcoming leave — {year}",
       "viewCalendar": "View in calendar"
+    },
+    "incentive": {
+      "count": "{count} pcs",
+      "categoryMaterial": "Material incentive",
+      "categoryState": "State / departmental award",
+      "categoryMoral": "Moral incentive"
     }
   },
   "categoryPage": {

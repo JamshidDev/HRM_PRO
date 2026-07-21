@@ -1500,6 +1500,12 @@
       "planned": "Rejalashtirilgan",
       "upcomingTitle": "Navbatdagi mehnat ta'tili — {year}-yil",
       "viewCalendar": "Kalendardan ko'rish"
+    },
+    "incentive": {
+      "count": "{count} ta",
+      "categoryMaterial": "Moddiy rag'batlantirish",
+      "categoryState": "Davlat / idoraviy mukofot",
+      "categoryMoral": "Ma'naviy rag'batlantirish"
     }
   },
   "categoryPage": {
