@@ -58,7 +58,7 @@
         <div class="text-sm text-textColor3 truncate">{{ subtitle }}</div>
       </div>
     </div>
-    <div class="flex items-center gap-2">
+    <div class="flex items-center gap-2 ml-auto">
       <n-button
         size="large"
         class="!w-10 !h-10 !p-0 !rounded-xl !bg-white !border !border-surface-line !text-primary"
@@ -73,25 +73,31 @@
       </n-button>
       <n-button
         size="large"
-        class="!rounded-xl"
+        class="!rounded-xl !px-3 sm:!px-4"
         type="primary"
         :loading="resumeLoading"
         @click="emits('download')"
       >
-        <template #icon>
+        <span class="flex items-center justify-center gap-2">
           <n-icon size="20">
             <DownloadIcon />
           </n-icon>
-        </template>
-        {{ $t('content.downloadCV') }}
+          <span class="hidden sm:inline">{{ $t('content.downloadCV') }}</span>
+        </span>
       </n-button>
-      <n-button size="large" class="!rounded-xl" secondary type="error" @click="emits('close')">
-        <template #icon>
+      <n-button
+        size="large"
+        class="!rounded-xl !px-3 sm:!px-4"
+        secondary
+        type="error"
+        @click="emits('close')"
+      >
+        <span class="flex items-center justify-center gap-2">
           <n-icon size="20">
             <CloseIcon />
           </n-icon>
-        </template>
-        {{ $t('content.close') }}
+          <span class="hidden sm:inline">{{ $t('content.close') }}</span>
+        </span>
       </n-button>
     </div>
   </div>

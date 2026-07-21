@@ -73,13 +73,13 @@
       </div>
 
       <div class="min-w-0 flex-1">
-        <div class="flex items-center gap-2 flex-wrap">
-          <span class="text-2xl font-bold text-textColor0">{{
-            Utils.combineFullName(store.workerPreview?.worker)
-          }}</span>
-          <n-icon size="20" class="text-primary shrink-0 self-center flex items-center">
-            <VerifiedIcon />
-          </n-icon>
+        <div>
+          <span class="text-2xl font-bold text-textColor0">
+            {{ Utils.combineFullName(store.workerPreview?.worker) }}
+            <n-icon size="20" class="text-primary align-middle inline-flex">
+              <VerifiedIcon />
+            </n-icon>
+          </span>
         </div>
         <div class="flex items-center gap-2 text-textColor3 mt-1">
           <n-icon size="16">
@@ -88,44 +88,44 @@
           <span>{{ store.workerPreview?.department?.name }} — {{ store.workerPreview?.post_name }}</span>
         </div>
 
-        <div class="flex divide-x divide-surface-line mt-3 pt-3 border-t border-surface-line">
-          <div class="flex-1 min-w-0 pr-4">
-            <div class="flex items-center gap-1.5 text-textColor3 text-sm mb-1">
-              <n-icon size="14">
+        <div class="grid grid-cols-2 lg:grid-cols-5 gap-4 mt-3 pt-3 border-t border-surface-line">
+          <div class="min-w-0">
+            <div class="flex items-start gap-1.5 text-textColor3 text-sm mb-1">
+              <n-icon size="14" class="shrink-0 mt-0.5">
                 <DepartmentIcon />
               </n-icon>
-              {{ $t('workerView.general.department') }}
+              <span class="break-words">{{ $t('workerView.general.department') }}</span>
             </div>
-            <div class="font-semibold truncate">{{ store.workerPreview?.department?.name }}</div>
+            <div class="font-semibold break-words">{{ store.workerPreview?.department?.name }}</div>
           </div>
 
           <!-- TODO: backend real field qo'shilganda ulanadi — hozircha statik placeholder -->
-          <div class="flex-1 min-w-0 px-4">
-            <div class="flex items-center gap-1.5 text-textColor3 text-sm mb-1">
-              <n-icon size="14">
+          <div class="min-w-0">
+            <div class="flex items-start gap-1.5 text-textColor3 text-sm mb-1">
+              <n-icon size="14" class="shrink-0 mt-0.5">
                 <CertificateIcon />
               </n-icon>
-              {{ $t('workerView.header.serviceCertificate') }}
+              <span class="break-words">{{ $t('workerView.header.serviceCertificate') }}</span>
             </div>
-            <div class="font-semibold">000000</div>
+            <div class="font-semibold break-words">000000</div>
           </div>
 
-          <div class="flex-1 min-w-0 px-4">
-            <div class="flex items-center gap-1.5 text-textColor3 text-sm mb-1">
-              <n-icon size="14">
+          <div class="min-w-0">
+            <div class="flex items-start gap-1.5 text-textColor3 text-sm mb-1">
+              <n-icon size="14" class="shrink-0 mt-0.5">
                 <JshirIcon />
               </n-icon>
-              {{ $t('workerView.general.passportJSHSHIR') }}
+              <span class="break-words">{{ $t('workerView.general.passportJSHSHIR') }}</span>
             </div>
-            <div class="font-semibold flex items-center gap-1">
-              {{
+            <div class="font-semibold flex items-center gap-1 flex-wrap">
+              <span class="break-words">{{
                 masked
                   ? Utils.maskText(store.workerPreview?.worker.pin, 3, 4)
                   : store.workerPreview?.worker.pin
-              }}
+              }}</span>
               <n-icon
                 size="16"
-                class="cursor-pointer text-primary"
+                class="cursor-pointer text-primary shrink-0"
                 @click="Utils.copyToClipboard(store.workerPreview?.worker.pin, onCopy)"
               >
                 <CopyIcon />
@@ -133,25 +133,25 @@
             </div>
           </div>
 
-          <div class="flex-1 min-w-0 px-4">
-            <div class="flex items-center gap-1.5 text-textColor3 text-sm mb-1">
-              <n-icon size="14">
+          <div class="min-w-0">
+            <div class="flex items-start gap-1.5 text-textColor3 text-sm mb-1">
+              <n-icon size="14" class="shrink-0 mt-0.5">
                 <PhoneIcon />
               </n-icon>
-              {{ $t('workerView.general.phone') }}
+              <span class="break-words">{{ $t('workerView.general.phone') }}</span>
             </div>
-            <div class="font-semibold flex items-center gap-1">
-              {{
+            <div class="font-semibold flex items-center gap-1 flex-wrap">
+              <span class="break-words">{{
                 masked
                   ? Utils.maskText(store.workerPreview?.worker.phones[0].phone, 2, 2)
                   : Utils.formatPhoneWithMask(
                     store.workerPreview?.worker.phones[0].phone,
                     '## ### ## ##'
                   )
-              }}
+              }}</span>
               <n-icon
                 size="16"
-                class="cursor-pointer text-primary"
+                class="cursor-pointer text-primary shrink-0"
                 @click="Utils.copyToClipboard(store.workerPreview?.worker.phones[0].phone, onCopy)"
               >
                 <CopyIcon />
@@ -160,18 +160,18 @@
           </div>
 
           <!-- TODO: backend real field qo'shilganda ulanadi — hozircha statik placeholder -->
-          <div class="flex-1 min-w-0 pl-4">
-            <div class="flex items-center gap-1.5 text-textColor3 text-sm mb-1">
-              <n-icon size="14">
+          <div class="min-w-0">
+            <div class="flex items-start gap-1.5 text-textColor3 text-sm mb-1">
+              <n-icon size="14" class="shrink-0 mt-0.5">
                 <WorkerPhoneIcon />
               </n-icon>
-              {{ $t('workerView.header.workNumber') }}
+              <span class="break-words">{{ $t('workerView.header.workNumber') }}</span>
             </div>
-            <div class="font-semibold flex items-center gap-1">
-              00 000
+            <div class="font-semibold flex items-center gap-1 flex-wrap">
+              <span>00 000</span>
               <n-icon
                 size="16"
-                class="cursor-pointer text-primary"
+                class="cursor-pointer text-primary shrink-0"
                 @click="Utils.copyToClipboard('00 000', onCopy)"
               >
                 <CopyIcon />
