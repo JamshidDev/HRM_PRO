@@ -1481,7 +1481,10 @@
       "type": "Тип отпуска",
       "daysLabel": "дн.",
       "calendarLabel": "Дни отпуска",
-      "completed": "Завершён"
+      "completed": "Завершён",
+      "planned": "Запланирован",
+      "upcomingTitle": "Очередной отпуск — {year} год",
+      "viewCalendar": "Смотреть в календаре"
     }
   },
   "categoryPage": {

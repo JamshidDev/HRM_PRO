@@ -1496,7 +1496,10 @@
       "type": "Ta'til turi",
       "daysLabel": "kun",
       "calendarLabel": "Ta'til kunlari",
-      "completed": "Yakunlangan"
+      "completed": "Yakunlangan",
+      "planned": "Rejalashtirilgan",
+      "upcomingTitle": "Navbatdagi mehnat ta'tili — {year}-yil",
+      "viewCalendar": "Kalendardan ko'rish"
     }
   },
   "categoryPage": {

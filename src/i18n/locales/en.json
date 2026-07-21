@@ -1475,7 +1475,10 @@
       "type": "Vacation type",
       "daysLabel": "days",
       "calendarLabel": "Vacation days",
-      "completed": "Completed"
+      "completed": "Completed",
+      "planned": "Planned",
+      "upcomingTitle": "Upcoming leave — {year}",
+      "viewCalendar": "View in calendar"
     }
   },
   "categoryPage": {
