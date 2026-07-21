@@ -90,7 +90,7 @@
       name: t('workerView.tabs.exams'),
       id: 8,
       icon: ExamIcon,
-      chipColor: '#16A34A', // TODO: custom icon chip background
+      chipColor: '#A3C42A', // TODO: custom icon chip background
       count: store.workerPreview?.worker?.exams?.length ?? null
     }
   ])

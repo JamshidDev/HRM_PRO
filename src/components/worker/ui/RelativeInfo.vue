@@ -1,14 +1,11 @@
 <script setup>
-  import {
-    PeopleSearch24Regular,
-    Briefcase20Filled,
-    CalendarLtr24Regular,
-    Location24Regular,
-    Building20Regular
-  } from '@vicons/fluent'
+  import { PeopleSearch24Regular } from '@vicons/fluent'
   import { useComponentStore } from '@/store/modules/index.js'
   import SectionHeader from './shared/SectionHeader.vue'
-  import RelativeAvatar from './shared/RelativeAvatar.vue'
+  import DepartmentIcon from '@/assets/icons/departmentIcon.svg'
+  import HouseIcon from '@/assets/icons/houseIcon.svg'
+  import LocationIcon from '@/assets/icons/locationIcon.svg'
+  import CalendarIcon from '@/assets/icons/calendarIcon.svg'
   import Utils from '../../../utils/Utils.js'
 
   const store = useComponentStore()
@@ -17,49 +14,47 @@
 <template>
   <div>
     <SectionHeader :title="$t('workerView.tabs.relative')" :icon="PeopleSearch24Regular">
-      <div
-        v-if="store.workerPreview?.worker?.relatives?.length"
-        class="grid grid-cols-1 md:grid-cols-2 gap-4"
-      >
+      <div v-if="store.workerPreview?.worker?.relatives?.length" class="flex flex-col gap-4">
         <div
           v-for="(item, idx) in store.workerPreview?.worker?.relatives"
           :key="idx"
-          class="bg-surface-section border border-surface-line rounded-3xl p-4"
+          class="bg-surface-section p-4"
+          :class="idx !== store.workerPreview?.worker?.relatives?.length - 1 ? 'border-b border-surface-line' : ''"
         >
-          <RelativeAvatar
-            :full-name="Utils.combineFullName(item)"
-            :relation-name="item?.relative?.name"
-            class="mb-3"
-          />
-          <div class="font-semibold text-textColor0 mb-3">{{ Utils.combineFullName(item) }}</div>
-          <div class="flex flex-col gap-2">
-            <div class="flex items-start justify-between gap-2">
-              <span class="flex items-center gap-2 text-textColor3 text-sm">
-                <n-icon size="16"><Briefcase20Filled /></n-icon>
-                {{ $t('relativePage.form.post_name') }}
-              </span>
-              <span class="text-end font-medium text-textColor0">{{ item?.post_name }}</span>
-            </div>
-            <div class="flex items-start justify-between gap-2">
-              <span class="flex items-center gap-2 text-textColor3 text-sm">
-                <n-icon size="16"><CalendarLtr24Regular /></n-icon>
+          <div class="flex items-center gap-2 flex-wrap mb-3">
+            <span class="font-bold text-lg text-textColor0">{{ Utils.combineFullName(item) }}</span>
+            <span class="text-xs font-semibold text-primary bg-primary/10 rounded-full px-3 py-1">
+              {{ item?.relative?.name }}
+            </span>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div class="bg-surface-ground rounded-3xl px-4 py-3">
+              <div class="flex items-center gap-1.5 text-textColor3 text-sm mb-1">
+                <n-icon size="14"><CalendarIcon /></n-icon>
                 {{ $t('relativePage.form.birthday') }}
-              </span>
-              <span class="text-end font-medium text-textColor0">{{ item?.birthday }}</span>
+              </div>
+              <div class="font-semibold text-textColor0">{{ item?.birthday || '—' }}</div>
             </div>
-            <div class="flex items-start justify-between gap-2">
-              <span class="flex items-center gap-2 text-textColor3 text-sm">
-                <n-icon size="16"><Location24Regular /></n-icon>
+            <div class="bg-surface-ground rounded-3xl px-4 py-3">
+              <div class="flex items-center gap-1.5 text-textColor3 text-sm mb-1">
+                <n-icon size="14"><LocationIcon /></n-icon>
                 {{ $t('relativePage.form.birthdayPlace') }}
-              </span>
-              <span class="text-end font-medium text-textColor0">{{ item?.birth_place }}</span>
+              </div>
+              <div class="font-semibold text-textColor0">{{ item?.birth_place || '—' }}</div>
             </div>
-            <div class="flex items-start justify-between gap-2">
-              <span class="flex items-center gap-2 text-textColor3 text-sm">
-                <n-icon size="16"><Building20Regular /></n-icon>
+            <div class="bg-surface-ground rounded-3xl px-4 py-3">
+              <div class="flex items-center gap-1.5 text-textColor3 text-sm mb-1">
+                <n-icon size="14"><DepartmentIcon /></n-icon>
+                {{ $t('relativePage.form.post_name') }}
+              </div>
+              <div class="font-semibold text-textColor0">{{ item?.post_name || '—' }}</div>
+            </div>
+            <div class="bg-surface-ground rounded-3xl px-4 py-3">
+              <div class="flex items-center gap-1.5 text-textColor3 text-sm mb-1">
+                <n-icon size="14"><HouseIcon /></n-icon>
                 {{ $t('createWorkerPage.form.address') }}
-              </span>
-              <span class="text-end font-medium text-textColor0">{{ item?.address }}</span>
+              </div>
+              <div class="font-semibold text-textColor0">{{ item?.address || '—' }}</div>
             </div>
           </div>
         </div>
