@@ -1,13 +1,13 @@
 <script setup>
   import {
     ChevronLeft24Regular,
-    ArrowCircleDown16Regular,
     Eye24Filled,
     EyeOff20Filled,
-    DismissCircle32Filled,
     List20Filled
   } from '@vicons/fluent'
   import { useComponentStore } from '@/store/modules/index.js'
+  import DownloadIcon from '@/assets/icons/downloadIcon.svg'
+  import CloseIcon from '@/assets/icons/closeIcon.svg'
 
   const store = useComponentStore()
 
@@ -80,7 +80,7 @@
       >
         <template #icon>
           <n-icon size="20">
-            <ArrowCircleDown16Regular />
+            <DownloadIcon />
           </n-icon>
         </template>
         {{ $t('content.downloadCV') }}
@@ -88,7 +88,7 @@
       <n-button size="large" class="!rounded-xl" secondary type="error" @click="emits('close')">
         <template #icon>
           <n-icon size="20">
-            <DismissCircle32Filled />
+            <CloseIcon />
           </n-icon>
         </template>
         {{ $t('content.close') }}

@@ -1,19 +1,17 @@
 <script setup>
-  import {
-    CheckmarkCircle16Filled,
-    Mail16Regular,
-    Building20Regular,
-    Fingerprint24Regular,
-    Certificate20Regular,
-    Call20Regular,
-    Dialpad20Regular,
-    Copy16Regular,
-    Star28Filled
-  } from '@vicons/fluent'
+  import { CheckmarkCircle16Filled } from '@vicons/fluent'
   import { useComponentStore } from '@/store/modules/index.js'
   import UIBadge from '@/components/ui/UIBadge.vue'
   import Utils from '../../../utils/Utils.js'
   import i18n from '@/i18n/index.js'
+  import PositionIcon from '@/assets/icons/positionIcon.svg'
+  import DepartmentIcon from '@/assets/icons/departmentIcon.svg'
+  import CertificateIcon from '@/assets/icons/certificateIcon.svg'
+  import JshirIcon from '@/assets/icons/jshirIcon.svg'
+  import PhoneIcon from '@/assets/icons/phoneIcon.svg'
+  import WorkerPhoneIcon from '@/assets/icons/workerPhoneIcon.svg'
+  import CopyIcon from '@/assets/icons/copyIcon.svg'
+  import RatingStarIcon from '@/assets/icons/ratingStarIcon.png'
 
   const { t } = i18n.global
   const store = useComponentStore()
@@ -37,7 +35,7 @@
 </script>
 
 <template>
-  <div v-if="store.workerPreview" class="bg-surface-section rounded-xl p-4">
+  <div v-if="store.workerPreview" class="bg-surface-section rounded-3xl p-4">
     <div class="flex flex-wrap items-start gap-3">
       <div class="flex flex-col items-center gap-2 shrink-0">
         <n-avatar
@@ -85,7 +83,7 @@
         </div>
         <div class="flex items-center gap-2 text-textColor3 mt-1">
           <n-icon size="16">
-            <Mail16Regular />
+            <PositionIcon />
           </n-icon>
           <span>{{ store.workerPreview?.department?.name }} — {{ store.workerPreview?.post_name }}</span>
         </div>
@@ -94,7 +92,7 @@
           <div class="flex-1 min-w-0 pr-4">
             <div class="flex items-center gap-1.5 text-textColor3 text-sm mb-1">
               <n-icon size="14">
-                <Building20Regular />
+                <DepartmentIcon />
               </n-icon>
               {{ $t('workerView.general.department') }}
             </div>
@@ -105,7 +103,7 @@
           <div class="flex-1 min-w-0 px-4">
             <div class="flex items-center gap-1.5 text-textColor3 text-sm mb-1">
               <n-icon size="14">
-                <Certificate20Regular />
+                <CertificateIcon />
               </n-icon>
               {{ $t('workerView.header.serviceCertificate') }}
             </div>
@@ -115,7 +113,7 @@
           <div class="flex-1 min-w-0 px-4">
             <div class="flex items-center gap-1.5 text-textColor3 text-sm mb-1">
               <n-icon size="14">
-                <Fingerprint24Regular />
+                <JshirIcon />
               </n-icon>
               {{ $t('workerView.general.passportJSHSHIR') }}
             </div>
@@ -130,7 +128,7 @@
                 class="cursor-pointer text-primary"
                 @click="Utils.copyToClipboard(store.workerPreview?.worker.pin, onCopy)"
               >
-                <Copy16Regular />
+                <CopyIcon />
               </n-icon>
             </div>
           </div>
@@ -138,7 +136,7 @@
           <div class="flex-1 min-w-0 px-4">
             <div class="flex items-center gap-1.5 text-textColor3 text-sm mb-1">
               <n-icon size="14">
-                <Call20Regular />
+                <PhoneIcon />
               </n-icon>
               {{ $t('workerView.general.phone') }}
             </div>
@@ -156,7 +154,7 @@
                 class="cursor-pointer text-primary"
                 @click="Utils.copyToClipboard(store.workerPreview?.worker.phones[0].phone, onCopy)"
               >
-                <Copy16Regular />
+                <CopyIcon />
               </n-icon>
             </div>
           </div>
@@ -165,7 +163,7 @@
           <div class="flex-1 min-w-0 pl-4">
             <div class="flex items-center gap-1.5 text-textColor3 text-sm mb-1">
               <n-icon size="14">
-                <Dialpad20Regular />
+                <WorkerPhoneIcon />
               </n-icon>
               {{ $t('workerView.header.workNumber') }}
             </div>
@@ -176,7 +174,7 @@
                 class="cursor-pointer text-primary"
                 @click="Utils.copyToClipboard('00 000', onCopy)"
               >
-                <Copy16Regular />
+                <CopyIcon />
               </n-icon>
             </div>
           </div>
@@ -185,9 +183,7 @@
 
       <!-- TODO: rating/count backend'dan kelmaydi, hozirgidek statik qoldirildi -->
       <div class="shrink-0 flex items-center gap-2 bg-warning/10 rounded-xl px-4 py-2.5">
-        <n-icon size="20" class="text-warning">
-          <Star28Filled />
-        </n-icon>
+        <img :src="RatingStarIcon" class="w-12 h-12 object-contain" alt="rating star" />
         <span class="text-lg font-bold text-textColor0">4.67</span>
       </div>
     </div>

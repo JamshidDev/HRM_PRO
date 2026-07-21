@@ -15,7 +15,7 @@
         <div
           v-for="(item, idx) in store.workerPreview?.worker?.exams"
           :key="idx"
-          class="bg-surface-section border border-surface-line rounded-lg p-4"
+          class="bg-surface-section border border-surface-line rounded-3xl p-4"
         >
           <n-tooltip trigger="hover" :style="{ maxWidth: '300px' }">
             <template #trigger>
