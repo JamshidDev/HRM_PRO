@@ -1325,6 +1325,26 @@
     "systemTitle": "System employment records",
     "no-data": "No previous employment added!"
   },
+  "languageCertificatePage": {
+    "title": "Language certificates",
+    "no-data": "No language certificate data!",
+    "createTitle": "Add certificate",
+    "updateTitle": "Edit certificate",
+    "unlimited": "Unlimited",
+    "unlimitedHint": "Leave empty \u2014 no expiry",
+    "qualificationHint": "This certificate does not define a language level",
+    "scorePlaceholder": "Result from the certificate",
+    "form": {
+      "language": "Language",
+      "type": "Certificate type",
+      "cefr": "Language level",
+      "score": "Score",
+      "certificateNumber": "Certificate number",
+      "issueDate": "Issue date",
+      "expiryDate": "Expiry date",
+      "certificateFile": "Certificate file"
+    }
+  },
   "languagePage": {
     "createTitle": "Add language proficiency",
     "updateTitle": "Edit language proficiency",

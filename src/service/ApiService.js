@@ -47,6 +47,7 @@ import foreignPassportService from '@/service/v1/hrm/foreignPassportService.js'
 import photoService from '@/service/v1/hrm/photoService.js'
 import phoneService from '@/service/v1/hrm/phoneService.js'
 import languageService from '@/service/v1/hrm/languageService.js'
+import languageCertificateService from '@/service/v1/hrm/languageCertificateService.js'
 import relativeService from '@/service/v1/hrm/relativeService.js'
 import workerDisabilityService from '@/service/v1/hrm/workerDisabilityService.js'
 import universityService from '@/service/v1/hrm/universityService.js'
@@ -184,6 +185,7 @@ export default {
   photoService,
   phoneService,
   languageService,
+  languageCertificateService,
   confirmationService,
   docSettingService,
   serviceOrgService,
