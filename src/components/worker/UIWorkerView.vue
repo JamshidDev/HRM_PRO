@@ -131,7 +131,9 @@
           <MainInfo v-model:masked="masked" class="mb-4" />
 
           <div class="flex w-full flex-1 min-h-0 gap-4">
-            <div class="preview-menu self-start bg-surface-section rounded-3xl p-4 z-10 overflow-y-auto">
+            <div
+              class="preview-menu self-start max-h-full bg-surface-section rounded-3xl p-4 z-10 overflow-y-auto"
+            >
               <div class="text-xs uppercase text-textColor3 font-semibold mb-3">
                 {{ $t('workerView.sidebar.title') }}
               </div>
