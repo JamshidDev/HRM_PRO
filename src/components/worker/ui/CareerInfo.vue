@@ -16,7 +16,7 @@
         <div
           v-for="(item, idx) in store.workerPreview?.worker?.new_careers"
           :key="idx"
-          class="bg-surface-ground rounded-3xl px-4 py-3"
+          class="bg-surface-ground-soft rounded-3xl px-4 py-3"
         >
           <div class="flex items-center gap-2 flex-wrap">
             <div class="font-semibold text-textColor0">
@@ -53,7 +53,7 @@
               class="absolute left-1/2 top-8 bottom-[8px] w-px -translate-x-1/2 bg-surface-line"
             ></span>
           </div>
-          <div class="flex-1 min-w-0 bg-surface-ground rounded-3xl px-4 py-3">
+          <div class="flex-1 min-w-0 bg-surface-ground-soft rounded-3xl px-4 py-3">
             <div class="font-semibold text-textColor0">
               {{ Utils.timeOnlyYear(item?.from_date) }} — {{ Utils.timeOnlyYear(item?.to_date) }}
             </div>

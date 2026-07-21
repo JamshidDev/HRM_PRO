@@ -28,28 +28,28 @@
             </span>
           </div>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-            <div class="bg-surface-ground rounded-3xl px-4 py-3">
+            <div class="bg-surface-ground-soft rounded-3xl px-4 py-3">
               <div class="flex items-center gap-1.5 text-textColor3 text-sm mb-1">
                 <n-icon size="14"><CalendarIcon /></n-icon>
                 {{ $t('relativePage.form.birthday') }}
               </div>
               <div class="font-semibold text-textColor0">{{ item?.birthday || '—' }}</div>
             </div>
-            <div class="bg-surface-ground rounded-3xl px-4 py-3">
+            <div class="bg-surface-ground-soft rounded-3xl px-4 py-3">
               <div class="flex items-center gap-1.5 text-textColor3 text-sm mb-1">
                 <n-icon size="14"><LocationIcon /></n-icon>
                 {{ $t('relativePage.form.birthdayPlace') }}
               </div>
               <div class="font-semibold text-textColor0">{{ item?.birth_place || '—' }}</div>
             </div>
-            <div class="bg-surface-ground rounded-3xl px-4 py-3">
+            <div class="bg-surface-ground-soft rounded-3xl px-4 py-3">
               <div class="flex items-center gap-1.5 text-textColor3 text-sm mb-1">
                 <n-icon size="14"><DepartmentIcon /></n-icon>
                 {{ $t('relativePage.form.post_name') }}
               </div>
               <div class="font-semibold text-textColor0">{{ item?.post_name || '—' }}</div>
             </div>
-            <div class="bg-surface-ground rounded-3xl px-4 py-3">
+            <div class="bg-surface-ground-soft rounded-3xl px-4 py-3">
               <div class="flex items-center gap-1.5 text-textColor3 text-sm mb-1">
                 <n-icon size="14"><HouseIcon /></n-icon>
                 {{ $t('createWorkerPage.form.address') }}
