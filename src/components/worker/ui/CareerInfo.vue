@@ -16,16 +16,13 @@
         <div
           v-for="(item, idx) in store.workerPreview?.worker?.new_careers"
           :key="idx"
-          class="grid grid-cols-12 items-center gap-2 bg-primary/5 border border-primary/10 rounded-lg px-4 py-3"
+          class="bg-surface-ground rounded-3xl px-4 py-3"
         >
-          <div class="col-span-12 md:col-span-3 font-semibold text-textColor0">
-            {{ Utils.timeOnlyYear(item?.from) }} —
-            {{ Utils.timeOnlyYear(item?.to) || $t('content.untilNow') }}
-          </div>
-          <div class="col-span-12 md:col-span-7 text-textColor2">
-            {{ item.full_position }}
-          </div>
-          <div class="col-span-12 md:col-span-2 flex md:justify-end">
+          <div class="flex items-center gap-2 flex-wrap">
+            <div class="font-semibold text-textColor0">
+              {{ Utils.timeOnlyYear(item?.from) }} —
+              {{ Utils.timeOnlyYear(item?.to) || $t('content.untilNow') }}
+            </div>
             <UIBadge
               v-if="!item?.to"
               :label="$t('workerView.career.currentLabel')"
@@ -33,6 +30,9 @@
               :show-icon="false"
               class="!w-auto"
             />
+          </div>
+          <div class="text-textColor2 mt-1">
+            {{ item.full_position }}
           </div>
         </div>
       </div>
@@ -46,8 +46,12 @@
         <div
           v-for="(item, idx) in store.workerPreview?.worker?.old_careers"
           :key="idx"
-          class="flex items-center gap-3 bg-surface-ground rounded-lg px-4 py-3"
+          class="relative flex items-center gap-3 bg-surface-ground rounded-3xl px-4 py-3"
         >
+          <span
+            v-if="idx !== store.workerPreview?.worker?.old_careers?.length - 1"
+            class="absolute left-7 top-full h-2 z-20 w-px bg-surface-line"
+          ></span>
           <n-icon size="24" class="text-primary shrink-0">
             <CheckmarkCircle20Filled />
           </n-icon>

@@ -311,7 +311,7 @@
     "noSpam": "Remove from spam",
     "noImage": "No image",
     "waitResponse": "Please wait for response!",
-    "untilNow": "present",
+    "untilNow": "so far",
     "warningImageSave": "New image selected as main. Click 'Save' to apply changes.",
     "selectAll": "Select all",
     "selectList": "Select entire list",
@@ -620,8 +620,6 @@
     "name": "Timesheet keepers",
     "work_place": "Organization/Department"
   },
-
-
   "workerPage": {
     "name": "Employees",
     "filter": {
@@ -1480,7 +1478,6 @@
       "completed": "Completed"
     }
   },
-
   "categoryPage": {
     "createCategory": "Create category",
     "editCategory": "Edit category",
@@ -2068,8 +2065,6 @@
   "businessTrip": {
     "name": "Business trip"
   },
-
-
   "documentArchive": {
     "name": "Document archive",
     "createTitle": "Add document file",
@@ -2428,12 +2423,12 @@
     "confirmMessagePlaceholder": "Enter message...",
     "vacancyLevel": "Vacancy stages",
     "levels": {
-      "one":   "Application submission",
-      "two":   "Document evaluation",
+      "one": "Application submission",
+      "two": "Document evaluation",
       "three": "Interview",
-      "four":  "Medical check",
-      "five":  "Online test",
-      "six":   "Completed"
+      "four": "Medical check",
+      "five": "Online test",
+      "six": "Completed"
     },
     "zoomStart": "Start",
     "zoomMeet": "Zoom interview",
