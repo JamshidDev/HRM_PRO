@@ -31,7 +31,7 @@
 </script>
 
 <template>
-  <div class="pt-4">
+  <div>
     <SectionHeader :title="$t('medPage.name')" :icon="Doctor20Regular">
       <div v-if="store.workerPreview?.meds?.length" class="flex flex-col gap-4">
         <div

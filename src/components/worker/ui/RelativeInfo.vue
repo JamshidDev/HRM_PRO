@@ -15,7 +15,7 @@
 </script>
 
 <template>
-  <div class="pt-4">
+  <div>
     <SectionHeader :title="$t('workerView.tabs.relative')" :icon="PeopleSearch24Regular">
       <div
         v-if="store.workerPreview?.worker?.relatives?.length"

@@ -9,7 +9,7 @@
 </script>
 
 <template>
-  <div class="pt-4">
+  <div>
     <SectionHeader :title="$t('oldCareerPage.systemTitle')" :icon="Settings24Regular">
       <div v-if="store.workerPreview?.worker?.new_careers?.length" class="flex flex-col gap-2">
         <div

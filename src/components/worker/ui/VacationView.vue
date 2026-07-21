@@ -14,7 +14,7 @@
 </script>
 
 <template>
-  <div class="pt-4">
+  <div>
     <SectionHeader :title="$t('workerView.tabs.vacation')" :icon="WeatherSunny20Filled">
       <div v-if="store.workerPreview?.vacations?.length" class="flex flex-col gap-4">
         <div

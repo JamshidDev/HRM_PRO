@@ -25,7 +25,12 @@
   const store = useComponentStore()
   const masked = ref(true)
   const activeTab = ref(1)
+  const previewPanelRef = ref(null)
   const { t } = i18n.global
+
+  watch(activeTab, () => {
+    previewPanelRef.value?.scrollTo({ top: 0 })
+  })
 
   const tabList = computed(() => [
     {
@@ -90,6 +95,7 @@
     store.previewVisible = true
     activeTab.value = 1
     store._workerPreview(id)
+    nextTick(() => previewPanelRef.value?.scrollTo({ top: 0 }))
   }
 
   const onDownload = () => {
@@ -103,8 +109,8 @@
 
 <template>
   <n-modal v-model:show="store.previewVisible" style="width: 100vw; height: 100vh">
-    <div class="ui-preview-window w-full h-full grid grid-cols-12 bg-[#EFF8FF] overflow-hidden">
-      <n-spin :show="store.previewLoading" class="col-span-12 bg-[#EFF8FF] overflow-hidden">
+    <div class="ui-preview-window w-full h-full grid grid-cols-12 overflow-hidden">
+      <n-spin :show="store.previewLoading" class="preview-spin col-span-12 overflow-hidden">
         <div
           class="preview-content flex flex-col w-full h-full px-4 pt-4"
           :class="[store.panelVisible && 'preview-panel-active']"
@@ -153,35 +159,18 @@
               </template>
             </div>
 
-            <div class="preview-panel overflow-x-hidden overflow-y-auto relative flex-1 pb-4">
-              <n-tabs animated v-model:value="activeTab" class="hidden-tab-header" type="segment">
-                <n-tab-pane v-for="item in tabList" :name="item.id" :key="item.id">
-                  <template v-if="tabList[0].id === item.id">
-                    <GeneralInfo />
-                  </template>
-                  <template v-if="tabList[1].id === item.id">
-                    <CareerInfo />
-                  </template>
-                  <template v-if="tabList[2].id === item.id">
-                    <RelativeInfo />
-                  </template>
-                  <template v-if="tabList[3].id === item.id">
-                    <MedList />
-                  </template>
-                  <template v-if="tabList[4].id === item.id">
-                    <VacationView />
-                  </template>
-                  <template v-if="tabList[5].id === item.id">
-                    <IncentiveInfo />
-                  </template>
-                  <template v-if="tabList[6].id === item.id">
-                    <DisciplinaryInfo />
-                  </template>
-                  <template v-if="tabList[7].id === item.id">
-                    <ExamInfo />
-                  </template>
-                </n-tab-pane>
-              </n-tabs>
+            <div
+              ref="previewPanelRef"
+              class="preview-panel overflow-x-hidden overflow-y-auto relative flex-1 pb-4"
+            >
+              <GeneralInfo v-if="activeTab === tabList[0].id" />
+              <CareerInfo v-if="activeTab === tabList[1].id" />
+              <RelativeInfo v-if="activeTab === tabList[2].id" />
+              <MedList v-if="activeTab === tabList[3].id" />
+              <VacationView v-if="activeTab === tabList[4].id" />
+              <IncentiveInfo v-if="activeTab === tabList[5].id" />
+              <DisciplinaryInfo v-if="activeTab === tabList[6].id" />
+              <ExamInfo v-if="activeTab === tabList[7].id" />
             </div>
           </div>
           <div @click="() => (store.panelVisible = false)" class="preview-overall"></div>
@@ -192,6 +181,17 @@
 </template>
 
 <style lang="scss">
+  .ui-preview-window,
+  .preview-spin {
+    background-color: #eff8ff;
+  }
+  [data-theme='dark'] {
+    .ui-preview-window,
+    .preview-spin {
+      background-color: #0f172a;
+    }
+  }
+
   .ui-preview-window {
     .preview-content {
       position: relative;

@@ -15,7 +15,7 @@
 </script>
 
 <template>
-  <div v-if="store.workerPreview" class="w-full pt-4">
+  <div v-if="store.workerPreview" class="w-full">
     <SectionHeader :title="$t('workerView.general.name')" :icon="VideoPersonSparkle28Regular">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
         <InfoBox

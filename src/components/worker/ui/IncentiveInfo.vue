@@ -9,7 +9,7 @@
 </script>
 
 <template>
-  <div class="pt-4">
+  <div>
     <SectionHeader :title="$t('workerView.tabs.incentive')" :icon="Trophy24Filled">
       <div v-if="store.workerPreview?.worker?.incentives?.length" class="flex flex-col gap-4">
         <div
