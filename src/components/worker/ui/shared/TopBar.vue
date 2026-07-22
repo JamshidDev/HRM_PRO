@@ -61,7 +61,7 @@
     <div class="flex items-center gap-2 ml-auto">
       <n-button
         size="large"
-        class="!w-10 !h-10 !p-0 !rounded-xl !bg-white !border !border-surface-line !text-primary"
+        class="!w-10 !h-10 !p-0 !rounded-3xl !bg-white !border !border-surface-line !text-primary"
         @click="masked = !masked"
       >
         <template #icon>
@@ -73,7 +73,7 @@
       </n-button>
       <n-button
         size="large"
-        class="!rounded-xl !px-3 sm:!px-4"
+        class="!rounded-3xl !px-3 sm:!px-4"
         type="primary"
         :loading="resumeLoading"
         @click="emits('download')"
@@ -87,7 +87,7 @@
       </n-button>
       <n-button
         size="large"
-        class="!rounded-xl !px-3 sm:!px-4"
+        class="!rounded-3xl !px-3 sm:!px-4"
         secondary
         type="error"
         @click="emits('close')"
