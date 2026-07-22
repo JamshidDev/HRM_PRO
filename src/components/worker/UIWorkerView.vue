@@ -112,8 +112,11 @@
 </script>
 
 <template>
-  <n-modal v-model:show="store.previewVisible" style="width: 100vw; height: 100vh">
-    <div class="ui-preview-window w-full h-full grid grid-cols-12 overflow-hidden">
+  <n-modal
+    v-model:show="store.previewVisible"
+    class="w-screen h-screen lg:w-[92vw] lg:h-[90vh] lg:max-w-[1440px]"
+  >
+    <div class="ui-preview-window w-full h-full grid grid-cols-12 overflow-hidden lg:rounded-3xl">
       <n-spin :show="store.previewLoading" class="preview-spin col-span-12 overflow-hidden">
         <div
           class="preview-content flex flex-col w-full h-full px-4 pt-4"
