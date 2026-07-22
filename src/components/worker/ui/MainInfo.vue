@@ -1,131 +1,100 @@
 <script setup>
-  import {
-    ArrowCircleDown16Regular,
-    Eye24Filled,
-    StarEmphasis32Filled,
-    EyeOff20Filled,
-    DismissCircle32Filled,
-    Copy16Regular,
-    List20Filled
-  } from '@vicons/fluent'
   import { useComponentStore } from '@/store/modules/index.js'
+  import UIBadge from '@/components/ui/UIBadge.vue'
   import Utils from '../../../utils/Utils.js'
-  import i18n from '@/i18n/index.js'
-  const { t } = i18n.global
-  const store = useComponentStore()
-  const isHide = ref(true)
+  import PositionIcon from '@/assets/icons/positionIcon.svg'
+  import RatingStarIcon from '@/assets/icons/ratingStarIcon.png'
+  import VerifiedIcon from '@/assets/icons/verifiedIcon.svg'
+  import WorkerStatsGrid from './shared/WorkerStatsGrid.vue'
 
-  const onCopy = () => {
-    $Toast.info(t('message.successDone'))
+  const store = useComponentStore()
+  const masked = defineModel('masked', { type: Boolean, default: true })
+
+  const activePhotoIndex = ref(0)
+
+  const photos = computed(() => store.workerPreview?.worker?.photos || [])
+
+  const avatarSrc = computed(() => {
+    return photos.value[activePhotoIndex.value]?.photo || store.workerPreview?.worker?.photo
+  })
+
+  const onOpenViewer = () => {
+    if (avatarSrc.value) window.$openViewer(avatarSrc.value)
   }
 </script>
 
 <template>
-  <div class="grid col-span-12 w-full">
-    <div
-      class="col-span-12 border-b border-surface-line flex gap-4 justify-between pb-2 pt-10 mb-6"
-    >
-      <div class="flex flex-wrap gap-4 items-center">
-        <n-button
-          type="tertiary"
-          size="small"
-          class="inline-block md:hidden!"
-          @click="store.panelVisible = true"
-        >
-          <template #icon>
-            <n-icon>
-              <List20Filled />
-            </n-icon>
-          </template>
-        </n-button>
-        <n-button text type="warning" icon-placement="right">
-          <template #icon>
-            <StarEmphasis32Filled />
-          </template>
-          4.67
-        </n-button>
+  <div v-if="store.workerPreview" class="bg-surface-section rounded-3xl p-4">
+    <div class="flex flex-wrap items-start justify-between gap-3">
+      <div class="flex flex-col items-center gap-2 shrink-0 order-1">
+        <n-avatar
+          :size="76"
+          round
+          class="cursor-pointer"
+          :src="avatarSrc || Utils.noAvailableImage"
+          :fallback-src="Utils.noAvailableImage"
+          :img-props="{ style: 'object-fit: cover' }"
+          @click="onOpenViewer"
+        />
+        <!-- TODO: backend real active/inactive field qo'shilganda ulanadi -->
+        <UIBadge
+          :label="$t('workerView.header.activeEmployee')"
+          :type="Utils.colorTypes.success"
+          :show-icon="false"
+          class="!w-auto"
+        />
+        <div v-if="photos.length > 1" class="flex gap-1">
+          <span
+            v-for="(item, idx) in photos"
+            :key="item.id ?? idx"
+            class="w-6 h-6 rounded-md overflow-hidden border-2 cursor-pointer"
+            :class="idx === activePhotoIndex ? 'border-primary' : 'border-transparent'"
+            @click="activePhotoIndex = idx"
+          >
+            <img
+              class="w-full h-full object-cover"
+              :src="item.photo || Utils.noAvailableImage"
+              @error="Utils.onImgError"
+              alt="worker thumbnail"
+            />
+          </span>
+        </div>
       </div>
 
-      <div class="flex flex-wrap items-center gap-2 justify-end md:justify-start">
-        <n-button @click="isHide = !isHide" type="primary" secondary icon-placement="right">
-          <template #icon>
-            <EyeOff20Filled v-if="isHide" />
-            <Eye24Filled v-else />
-          </template>
-        </n-button>
-        <n-button
-          type="primary"
-          icon-placement="right"
-          :loading="store.resumeLoading"
-          @click="store._workerResume(Utils.combineFullName(store.workerPreview?.worker))"
-        >
-          <template #icon>
-            <ArrowCircleDown16Regular />
-          </template>
-          {{ $t('content.downloadCV') }}
-        </n-button>
-        <n-button
-          @click="store.previewVisible = false"
-          secondary
-          type="error"
-          icon-placement="right"
-        >
-          <template #icon>
-            <DismissCircle32Filled />
-          </template>
-          {{ $t('content.close') }}
-        </n-button>
+      <!-- TODO: rating/count backend'dan kelmaydi, hozirgidek statik qoldirildi -->
+      <div
+        class="shrink-0 order-2 lg:order-3 flex items-center gap-2 bg-warning/10 rounded-xl px-4 py-2.5"
+      >
+        <img :src="RatingStarIcon" class="w-12 h-12 object-contain" alt="rating star" />
+        <span class="text-lg font-bold text-textColor0">4.67</span>
+      </div>
+
+      <div class="w-full lg:w-auto lg:flex-1 min-w-0 order-3 lg:order-2">
+        <div>
+          <span class="text-2xl font-bold text-textColor0">
+            {{ Utils.combineFullName(store.workerPreview?.worker) }}
+            <n-icon size="20" class="text-primary align-middle inline-flex">
+              <VerifiedIcon />
+            </n-icon>
+          </span>
+        </div>
+        <div class="flex items-center gap-2 text-textColor3 mt-1">
+          <n-icon size="16">
+            <PositionIcon />
+          </n-icon>
+          <span>{{ store.workerPreview?.department?.name }} — {{ store.workerPreview?.post_name }}</span>
+        </div>
+
+        <!-- Large screens: stats sit inline next to the avatar, like before -->
+        <div class="hidden lg:block mt-3 pt-3 border-t border-surface-line">
+          <WorkerStatsGrid :masked="masked" />
+        </div>
       </div>
     </div>
-    <template v-if="store.workerPreview">
-      <div class="col-span-12 text-2xl text-primary font-bold mb-2 uppercase">
-        {{ Utils.combineFullName(store.workerPreview?.worker) }}
-      </div>
-      <div class="col-span-12 md:col-span-6 font-bold items-center flex">
-        <span class="font-normal text-gray-400">{{ $t('workerView.general.passportJSHSHIR') }}</span>:
-        {{
-          isHide
-            ? Utils.maskText(store.workerPreview?.worker.pin, 3, 4)
-            : store.workerPreview?.worker.pin
-        }}
-        <n-icon
-          @click="Utils.copyToClipboard(store.workerPreview?.worker.pin, onCopy)"
-          size="24"
-          class="cursor-pointer ml-2"
-        >
-          <Copy16Regular />
-        </n-icon>
-      </div>
-      <div class="col-span-12 md:col-span-6 font-bold items-center flex">
-        <span class="font-normal text-gray-400">{{ $t('workerView.general.phone') }}</span>:
-        {{
-          isHide
-            ? Utils.maskText(store.workerPreview?.worker.phones[0].phone, 2, 2)
-            : Utils.formatPhoneWithMask(store.workerPreview?.worker.phones[0].phone, '## ### ## ##')
-        }}
-        <n-icon
-          @click="Utils.copyToClipboard(store.workerPreview?.worker.phones[0].phone, onCopy)"
-          size="24"
-          class="cursor-pointer ml-2"
-        >
-          <Copy16Regular />
-        </n-icon>
-      </div>
-      <div class="col-span-12 md:col-span-6 font-bold">
-        <span class="font-normal text-gray-400">{{ $t('workerView.general.department') }}</span>: {{ store.workerPreview?.department?.name }}
-      </div>
-      <div class="col-span-12 md:col-span-6 font-bold">
-        <span class="font-normal text-gray-400">{{ $t('workerView.general.salary') }}</span>:
-        {{
-          isHide
-            ? Utils.maskText(store.workerPreview?.salary, 0, 2)
-            : Utils.formatNumberToMoney(store.workerPreview?.salary)
-        }}
-        {{ $t('content.sum') }}
-      </div>
-      <div class="col-span-12 font-bold">
-        <span class="font-normal text-gray-400">{{ $t('workerView.general.position') }}</span>: {{ store.workerPreview?.post_name }}
-      </div>
-    </template>
+
+    <!-- Smaller screens: stats break out to the full card width below the header -->
+    <div class="lg:hidden mt-3 pt-3 border-t border-surface-line">
+      <WorkerStatsGrid :masked="masked" />
+    </div>
   </div>
 </template>
