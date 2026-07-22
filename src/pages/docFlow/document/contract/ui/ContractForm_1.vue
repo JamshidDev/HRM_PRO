@@ -179,6 +179,9 @@
           </div>
         </template>
 
+        <!-- Sinov muddati + ish jadvali — mehnat shartnomasiga xos; FXSH (turi 2)
+             uchun so'ralmaydi (fuqarolik-huquqiy shartnomada ular yo'q). -->
+        <template v-if="store.payload.type !== 2">
         <div class="col-span-12 md:col-span-6 lg:col-span-3">
           <n-form-item :label="$t(`documentPage.form.probation`)" path="probation">
             <n-select
@@ -206,6 +209,7 @@
             />
           </n-form-item>
         </div>
+        </template>
       </div>
     </div>
 

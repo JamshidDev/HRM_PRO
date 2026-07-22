@@ -67,6 +67,9 @@
             />
           </n-form-item>
         </div>
+        <!-- FXSH (turi 2) shtatni band QILMAYDI — bo'lim/lavozim/maosh so'ralmaydi
+             (backend global "FXSH" anchor'ga bog'laydi). Faqat tashkilot qoladi. -->
+        <template v-if="store.payload.type !== 2">
         <div class="col-span-12 md:col-span-6">
           <n-form-item :label="$t(`documentPage.form.department`)" path="department_id">
             <UIDepartment
@@ -161,6 +164,7 @@
             />
           </n-form-item>
         </div>
+        </template>
 
         <!--        <div class="col-span-12">-->
         <!--          <n-form-item :label="$t(`documentPage.form.postName`)" path="post_name">-->
