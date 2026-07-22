@@ -22,6 +22,10 @@
     icon: {
       type: Object,
       default: null
+    },
+    paddingY: {
+      type: String,
+      default: ''
     }
   })
 
@@ -69,7 +73,7 @@
 <template>
   <div class="w-full flex justify-center items-center">
     <div
-      :class="[badgeType]"
+      :class="[badgeType, paddingY]"
       class="flex gap-1 border items-center px-3 rounded-2xl cursor-pointer"
     >
       <div v-if="showIcon" class="w-[20px] flex justify-center">

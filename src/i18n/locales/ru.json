@@ -315,7 +315,7 @@
     "noSpam": "Убрать из спама",
     "noImage": "Изображение отсутствует",
     "waitResponse": "Пожалуйста, ждите ответа!",
-    "untilNow": "н.в.",
+    "untilNow": "до сих пор",
     "warningImageSave": "Выбрано новое основное изображение. Нажмите «Сохранить» для применения изменений.",
     "selectAll": "Выбрать все",
     "selectList": "Выбрать весь список",
@@ -624,7 +624,6 @@
     "name": "Табельщики",
     "work_place": "Организация/Отдел"
   },
-
   "workerPage": {
     "name": "Сотрудники",
     "filter": {
@@ -1472,7 +1471,10 @@
       "position": "Должность",
       "department": "Подразделение",
       "salary": "Месячная зарплата",
-      "country": "Страна рождения"
+      "country": "Страна рождения",
+      "passportValid": "Действителен",
+      "citizenship": "Гражданство",
+      "foreignPassport": "Загранпаспорт"
     },
     "tabs": {
       "general": "Общая информация",
@@ -1485,9 +1487,53 @@
       "checkSkill": "Проверка квалификации",
       "checkKnowledge": "Проверка знаний",
       "punishment": "Дисциплинарные взыскания"
+    },
+    "header": {
+      "title": "Профиль сотрудника",
+      "subtitle": "Общая информация, личные документы и история деятельности",
+      "activeEmployee": "Активный сотрудник",
+      "managementStaff": "Руководящий состав",
+      "avgRating": "Средний рейтинг",
+      "ratingBasedOn": "на основе {count} оценок",
+      "serviceCertificate": "Служебное удостоверение",
+      "workNumber": "Рабочий номер"
+    },
+    "sidebar": {
+      "title": "Разделы профиля"
+    },
+    "career": {
+      "currentLabel": "Текущий"
+    },
+    "med": {
+      "currentStatus": "Текущее состояние здоровья",
+      "validityPeriod": "Срок действия",
+      "started": "Начало",
+      "ends": "Окончание",
+      "progressSuffix": "пройдено",
+      "lastCheckDate": "Дата последнего осмотра",
+      "conclusion": "Медицинское заключение",
+      "fitForWork": "Пригоден к работе",
+      "monthsLeft": "≈{count} мес. осталось"
+    },
+    "vacation": {
+      "start": "Начало отпуска",
+      "end": "Окончание отпуска",
+      "duration": "Продолжительность",
+      "type": "Тип отпуска",
+      "daysLabel": "дн.",
+      "calendarLabel": "Дни отпуска",
+      "completed": "Завершён",
+      "planned": "Запланирован",
+      "upcomingTitle": "Очередной отпуск — {year} год",
+      "viewCalendar": "Смотреть в календаре"
+    },
+    "incentive": {
+      "count": "{count} шт.",
+      "categoryMaterial": "Материальное поощрение",
+      "categoryState": "Государственная / ведомственная награда",
+      "categoryMoral": "Моральное поощрение"
     }
   },
-
   "categoryPage": {
     "createCategory": "Создать категорию",
     "editCategory": "Редактировать категорию",
@@ -2075,7 +2121,6 @@
   "businessTrip": {
     "name": "Командировка"
   },
-
   "documentArchive": {
     "name": "Архив документов",
     "createTitle": "Добавить файл документа",
@@ -2437,12 +2482,12 @@
     "confirmMessagePlaceholder": "Введите сообщение...",
     "vacancyLevel": "Этапы вакансии",
     "levels": {
-      "one":   "Подача заявки",
-      "two":   "Оценка документов",
+      "one": "Подача заявки",
+      "two": "Оценка документов",
       "three": "Собеседование",
-      "four":  "Медосмотр",
-      "five":  "Онлайн тест",
-      "six":   "Завершён"
+      "four": "Медосмотр",
+      "five": "Онлайн тест",
+      "six": "Завершён"
     },
     "zoomStart": "Начать",
     "zoomMeet": "Zoom интервью",
