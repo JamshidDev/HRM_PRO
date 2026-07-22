@@ -196,14 +196,18 @@
               class="preview-panel overflow-x-hidden overflow-y-auto relative flex-1 pb-4"
               @scroll="store.panelVisible = false"
             >
-              <GeneralInfo v-if="activeTab === tabList[0].id" />
-              <CareerInfo v-if="activeTab === tabList[1].id" />
-              <RelativeInfo v-if="activeTab === tabList[2].id" />
-              <MedList v-if="activeTab === tabList[3].id" />
-              <VacationView v-if="activeTab === tabList[4].id" />
-              <IncentiveInfo v-if="activeTab === tabList[5].id" />
-              <DisciplinaryInfo v-if="activeTab === tabList[6].id" />
-              <ExamInfo v-if="activeTab === tabList[7].id" />
+              <Transition name="tab-fade" mode="out-in">
+                <div :key="activeTab">
+                  <GeneralInfo v-if="activeTab === tabList[0].id" />
+                  <CareerInfo v-else-if="activeTab === tabList[1].id" />
+                  <RelativeInfo v-else-if="activeTab === tabList[2].id" />
+                  <MedList v-else-if="activeTab === tabList[3].id" />
+                  <VacationView v-else-if="activeTab === tabList[4].id" />
+                  <IncentiveInfo v-else-if="activeTab === tabList[5].id" />
+                  <DisciplinaryInfo v-else-if="activeTab === tabList[6].id" />
+                  <ExamInfo v-else-if="activeTab === tabList[7].id" />
+                </div>
+              </Transition>
             </div>
           </div>
           <div @click="() => (store.panelVisible = false)" class="preview-overall"></div>
@@ -214,6 +218,18 @@
 </template>
 
 <style lang="scss">
+  .tab-fade-enter-active,
+  .tab-fade-leave-active {
+    transition:
+      opacity 0.18s ease,
+      transform 0.18s ease;
+  }
+  .tab-fade-enter-from,
+  .tab-fade-leave-to {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+
   .ui-preview-window,
   .preview-spin {
     background-color: #eff8ff;
