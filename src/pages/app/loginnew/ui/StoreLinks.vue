@@ -1,6 +1,6 @@
 <script setup>
   import { AppStore24Filled } from '@vicons/fluent'
-  import playMarketSvg from '@/assets/images/svg/playMarket.svg'
+  import playMarketSvg from '@/assets/images/svg/playMarket.svg?url'
 
   // glass=true — qora hero panelda blur'li shaffof card; aks holda yorug' (mobil forma) card
   const props = defineProps({
