@@ -32,67 +32,15 @@
     previewPanelRef.value?.scrollTo({ top: 0 })
   })
 
-  // Derives a light tinted background from a tab's own icon color (same hue, low opacity)
-  // so the active-state pill background never needs to be set by hand per tab.
-  const withAlpha = (hex, alpha = '1A') => `${hex}${alpha}`
-
   const tabList = computed(() => [
-    {
-      name: t('workerView.tabs.general'),
-      id: 1,
-      icon: GeneralInfoIcon,
-      color: '#2E90FA', // TODO: custom icon color
-      count: null
-    },
-    {
-      name: t('workerView.tabs.career'),
-      id: 2,
-      icon: CareerIcon,
-      color: '#4F46E5', // TODO: custom icon color
-      count: null
-    },
-    {
-      name: t('workerView.tabs.relative'),
-      id: 3,
-      icon: RelativeIcon,
-      color: '#DB2777', // TODO: custom icon color
-      count: store.workerPreview?.worker?.relatives?.length ?? null
-    },
-    {
-      name: t('workerView.tabs.med'),
-      id: 4,
-      icon: MedIcon,
-      chipColor: '#16A34A', // TODO: custom icon chip background
-      count: null
-    },
-    {
-      name: t('workerView.tabs.vacation'),
-      id: 5,
-      icon: VacationIcon,
-      color: '#F59E0B', // TODO: custom icon color
-      count: null
-    },
-    {
-      name: t('workerView.tabs.incentive'),
-      id: 6,
-      icon: IncentiveIcon,
-      color: '#F97316', // TODO: custom icon color
-      count: store.workerPreview?.worker?.incentives?.length ?? null
-    },
-    {
-      name: t('workerView.tabs.punishment'),
-      id: 7,
-      icon: DisciplinaryIcon,
-      color: '#DC2626', // TODO: custom icon color
-      count: store.workerPreview?.worker?.disciplinary_actions?.length ?? null
-    },
-    {
-      name: t('workerView.tabs.exams'),
-      id: 8,
-      icon: ExamIcon,
-      chipColor: '#A3C42A', // TODO: custom icon chip background
-      count: store.workerPreview?.worker?.exams?.length ?? null
-    }
+    { name: t('workerView.tabs.general'), id: 1, icon: GeneralInfoIcon },
+    { name: t('workerView.tabs.career'), id: 2, icon: CareerIcon },
+    { name: t('workerView.tabs.relative'), id: 3, icon: RelativeIcon },
+    { name: t('workerView.tabs.med'), id: 4, icon: MedIcon },
+    { name: t('workerView.tabs.vacation'), id: 5, icon: VacationIcon },
+    { name: t('workerView.tabs.incentive'), id: 6, icon: IncentiveIcon },
+    { name: t('workerView.tabs.punishment'), id: 7, icon: DisciplinaryIcon },
+    { name: t('workerView.tabs.exams'), id: 8, icon: ExamIcon }
   ])
 
   const openPreview = (id) => {
@@ -136,25 +84,17 @@
 
           <div class="preview-body flex w-full flex-1 min-h-0 gap-4">
             <div
-              class="preview-menu self-start max-h-full bg-surface-section rounded-3xl p-4 z-10 overflow-y-auto"
+              class="preview-menu self-start max-h-full bg-surface-section rounded-3xl p-1 z-10 overflow-y-auto"
             >
-              <div class="text-xs uppercase text-textColor3 font-semibold mb-3">
+              <div class="sidebar-title-box bg-primary/10 text-primary text-lg font-semibold rounded-t-3xl px-1 text-center py-2 mb-2">
                 {{ $t('workerView.sidebar.title') }}
               </div>
               <template v-if="store.workerPreview">
                 <div
                   v-for="item in tabList"
                   :key="item.id"
-                  class="flex items-center justify-between gap-2 px-3 py-2 mb-1 rounded-2xl cursor-pointer transition-colors"
-                  :class="activeTab === item.id ? 'font-semibold' : 'text-textColor2 hover:bg-surface-ground'"
-                  :style="
-                    activeTab === item.id
-                      ? {
-                        backgroundColor: withAlpha(item.color || item.chipColor),
-                        color: item.color || item.chipColor
-                      }
-                      : {}
-                  "
+                  class="flex items-center gap-3 px-2 py-2 mb-1 rounded-xl cursor-pointer transition-colors"
+                  :class="activeTab === item.id ? 'bg-primary text-white font-semibold' : 'text-textColor2 hover:bg-surface-ground'"
                   @click="
                     () => {
                       activeTab = item.id
@@ -162,31 +102,15 @@
                     }
                   "
                 >
-                  <span class="flex items-center gap-2 min-w-0">
-                    <span
-                      v-if="item.chipColor"
-                      class="w-6 h-6 rounded-md flex items-center justify-center shrink-0"
-                      :style="{ backgroundColor: item.chipColor }"
-                    >
-                      <n-icon size="14" class="text-white">
-                        <component :is="item.icon" />
-                      </n-icon>
-                    </span>
-                    <n-icon v-else size="18" class="shrink-0" :color="item.color">
+                  <span
+                    class="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-colors"
+                    :class="activeTab === item.id ? 'bg-white/20' : ''"
+                  >
+                    <n-icon size="16" :color="activeTab === item.id ? '#ffffff' : undefined">
                       <component :is="item.icon" />
                     </n-icon>
-                    <span class="text-sm font-medium truncate">{{ item.name }}</span>
                   </span>
-                  <span class="flex items-center gap-1.5 shrink-0">
-                    <span
-                      v-if="item.count !== null"
-                      class="text-xs font-semibold rounded-full px-2 py-0.5"
-                      :class="activeTab === item.id ? 'text-white' : 'bg-surface-ground text-textColor0'"
-                      :style="activeTab === item.id ? { backgroundColor: item.color || item.chipColor } : {}"
-                    >
-                      {{ item.count }}
-                    </span>
-                  </span>
+                  <span class="text-sm font-medium truncate">{{ item.name }}</span>
                 </div>
               </template>
             </div>
@@ -238,6 +162,9 @@
     .ui-preview-window,
     .preview-spin {
       background-color: #0f172a;
+    }
+    .sidebar-title-box {
+      background-color: #1a2131;
     }
   }
 

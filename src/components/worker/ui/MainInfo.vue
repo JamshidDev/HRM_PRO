@@ -25,22 +25,24 @@
 </script>
 
 <template>
-  <div v-if="store.workerPreview" class="rounded-3xl overflow-hidden bg-[#ffffff] mt-4 p-1">
-    <div
-      class="main-info-header-bg flex flex-wrap items-start gap-3 p-4 bg-cover bg-no-repeat bg-right-top rounded-3xl"
-      :style="{ backgroundImage: `url(${HeaderBg})` }"
-    >
+  <div v-if="store.workerPreview" class="rounded-3xl overflow-hidden bg-surface-section mt-4 p-1">
+    <div class="main-info-header-bg relative overflow-hidden flex flex-wrap items-center gap-3 p-4 rounded-3xl">
+      <div
+        class="main-info-header-bg-image absolute inset-0 bg-cover bg-no-repeat rounded-3xl"
+        :style="{ backgroundImage: `url(${HeaderBg})` }"
+      ></div>
+
       <n-avatar
-        :size="76"
+        :size="96"
         round
-        class="cursor-pointer shrink-0"
+        class="relative z-10 cursor-pointer shrink-0"
         :src="avatarSrc || Utils.noAvailableImage"
         :fallback-src="Utils.noAvailableImage"
         :img-props="{ style: 'object-fit: cover' }"
         @click="onOpenViewer"
       />
 
-      <div class="min-w-0 flex-1">
+      <div class="relative z-10 min-w-0 flex-1">
         <div class="flex items-center gap-2 flex-wrap">
           <span class="text-2xl font-bold text-textColor0">
             {{ Utils.combineFullName(store.workerPreview?.worker) }}
@@ -96,11 +98,14 @@
 
 <style lang="scss">
   .main-info-header-bg {
-    background-color: #eff8ff;
+    background-color: #ffffff;
   }
   [data-theme='dark'] {
     .main-info-header-bg {
-      background-color: #0f172a;
+      background-color: #00000000;
+    }
+    .main-info-header-bg-image {
+      mix-blend-mode: screen;
     }
   }
 

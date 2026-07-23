@@ -1,30 +1,26 @@
 <script setup>
-  defineProps({
-    title: {
-      type: String,
-      required: true
-    },
-    icon: {
-      type: Object,
-      default: null
-    },
-    iconChip: {
-      type: Boolean,
-      default: false
-    }
-  })
+defineProps({
+  title: {
+    type: String,
+    required: true
+  },
+  icon: {
+    type: Object,
+    default: null
+  },
+  iconChip: {
+    type: Boolean,
+    default: false
+  }
+})
 </script>
 
 <template>
-  <div class="rounded-3xl overflow-hidden mb-6">
+  <div class="rounded-3xl overflow-hidden mb-6 section-header p-1">
     <div
-      class="section-header-bar flex items-center justify-between gap-2 bg-gradient-to-r from-[#D1E9FF] to-[#EFF8FF] rounded-t-3xl  border-surface-line px-4 py-4"
-    >
+      class="section-header-bar flex items-center justify-between gap-2  rounded-t-3xl border-surface-line px-4 py-3">
       <div class="flex items-center gap-2 min-w-0">
-        <span
-          v-if="icon && iconChip"
-          class="w-8 h-8 rounded-md bg-primary flex items-center justify-center shrink-0"
-        >
+        <span v-if="icon && iconChip" class="w-8 h-8 rounded-md bg-primary flex items-center justify-center shrink-0">
           <n-icon size="18" class="text-white">
             <component :is="icon" />
           </n-icon>
@@ -45,10 +41,23 @@
   </div>
 </template>
 
-<style lang="scss">
-  [data-theme='dark'] {
-    .section-header-bar {
-      background: linear-gradient(to right, #26334d, #212b42);
-    }
+<style lang="scss" scoped>
+.section-header {
+  background-color: #fff;
+}
+.section-header-bar {
+  background-color: #EFF8FF;
+}
+
+[data-theme='dark'] {
+  .section-header-bar {
+    background-color: #1a2131;
   }
+  .section-header {
+    background-color: #212b42;
+  }
+
+}
+
+
 </style>
