@@ -1,6 +1,6 @@
 <script setup>
   import Utils from '@/utils/Utils.js'
-  import { UIAutoComplete, UIUser } from '@/components/index.js'
+  import { UIAutoComplete, UIUser, UISelect } from '@/components/index.js'
   import { useComponentStore, useContractStore } from '@/store/modules/index.js'
   import { NAvatar } from 'naive-ui'
   import UIHelper from '@/utils/UIHelper.js'
@@ -60,7 +60,14 @@
       store.payload.command_status = false
       store.payload.vacation_main_day = 0
       store.payload.additional_vacation_day = 0
+      // FXSH bitta qadam — tashkilot shu qadamda so'raladi, ro'yxatni yuklaymiz.
+      if (componentStore.structureList.length === 0) componentStore._structures()
     }
+  }
+
+  // FXSH tashkilot tanlanganda — faqat organization_id (FXSH'da bo'lim/shtat yo'q).
+  const onChangeStructure = (v) => {
+    store.payload.organization_id = v
   }
 
   watchEffect(() => {
@@ -147,6 +154,24 @@
               v-model:value="store.payload.position_date"
               type="date"
               :format="useAppSetting.datePicketFormat"
+            />
+          </n-form-item>
+        </div>
+        <!-- FXSH (turi 2): tashkilot shu top-box ichida, "Ishga chiqish sanasi"dan
+             keyin (2-qadamdan ko'chirildi). Boshqa turlarda ko'rinmaydi. -->
+        <div class="col-span-12 md:col-span-6" v-if="store.payload.type === 2">
+          <n-form-item :label="$t(`documentPage.form.organization`)" path="organization_id">
+            <UISelect
+              :multiple="false"
+              :auto-select="true"
+              :checkedVal="store.structureCheck"
+              :loading="componentStore.structureLoading"
+              :options="componentStore.structureList"
+              :modelV="store.payload.organization_id"
+              @updateModel="onChangeStructure"
+              @updateCheck="(v) => (store.structureCheck = v)"
+              @onSearch="componentStore._structures"
+              v-model:search="componentStore.structureParams.search"
             />
           </n-form-item>
         </div>
