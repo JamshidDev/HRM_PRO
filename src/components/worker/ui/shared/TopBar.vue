@@ -96,7 +96,7 @@
           <n-icon size="20">
             <CloseIcon />
           </n-icon>
-          <span class="hidden sm:inline">{{ $t('content.close') }}</span>
+          <span class="hidden sm:inline">{{ $t('content.close') }} </span>
         </span>
       </n-button>
     </div>
