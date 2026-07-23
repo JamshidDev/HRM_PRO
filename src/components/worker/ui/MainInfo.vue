@@ -3,8 +3,9 @@
   import UIBadge from '@/components/ui/UIBadge.vue'
   import Utils from '../../../utils/Utils.js'
   import PositionIcon from '@/assets/icons/positionIcon.svg'
-  import RatingStarIcon from '@/assets/icons/ratingStarIcon.png'
+  import DepartmentIcon from '@/assets/icons/departmentIcon.svg'
   import VerifiedIcon from '@/assets/icons/verifiedIcon.svg'
+  import HeaderBg from '@/assets/icons/profile-preview-header.svg?url'
   import WorkerStatsGrid from './shared/WorkerStatsGrid.vue'
 
   const store = useComponentStore()
@@ -24,26 +25,51 @@
 </script>
 
 <template>
-  <div v-if="store.workerPreview" class="bg-surface-section rounded-3xl p-4">
-    <div class="flex flex-wrap items-start justify-between gap-3">
-      <div class="flex flex-col items-center gap-2 shrink-0 order-1">
-        <n-avatar
-          :size="76"
-          round
-          class="cursor-pointer"
-          :src="avatarSrc || Utils.noAvailableImage"
-          :fallback-src="Utils.noAvailableImage"
-          :img-props="{ style: 'object-fit: cover' }"
-          @click="onOpenViewer"
-        />
-        <!-- TODO: backend real active/inactive field qo'shilganda ulanadi -->
-        <UIBadge
-          :label="$t('workerView.header.activeEmployee')"
-          :type="Utils.colorTypes.success"
-          :show-icon="false"
-          class="!w-auto"
-        />
-        <div v-if="photos.length > 1" class="flex gap-1">
+  <div v-if="store.workerPreview" class="rounded-3xl overflow-hidden bg-[#ffffff] mt-4 p-1">
+    <div
+      class="main-info-header-bg flex flex-wrap items-start gap-3 p-4 bg-cover bg-no-repeat bg-right-top rounded-3xl"
+      :style="{ backgroundImage: `url(${HeaderBg})` }"
+    >
+      <n-avatar
+        :size="76"
+        round
+        class="cursor-pointer shrink-0"
+        :src="avatarSrc || Utils.noAvailableImage"
+        :fallback-src="Utils.noAvailableImage"
+        :img-props="{ style: 'object-fit: cover' }"
+        @click="onOpenViewer"
+      />
+
+      <div class="min-w-0 flex-1">
+        <div class="flex items-center gap-2 flex-wrap">
+          <span class="text-2xl font-bold text-textColor0">
+            {{ Utils.combineFullName(store.workerPreview?.worker) }}
+          </span>
+          <!-- TODO: backend real active/inactive field qo'shilganda ulanadi -->
+          <UIBadge
+            :label="$t('workerView.header.activeEmployee')"
+            :type="Utils.colorTypes.success"
+            :show-icon="false"
+            class="!w-auto active-employee-badge"
+          />
+          <n-icon size="20" class="text-primary shrink-0">
+            <VerifiedIcon />
+          </n-icon>
+        </div>
+        <div class="flex items-center gap-2 text-textColor2 mt-2">
+          <n-icon size="16">
+            <PositionIcon />
+          </n-icon>
+          <span>{{ store.workerPreview?.post_name }}</span>
+        </div>
+        <div class="flex items-center gap-2 text-textColor2 mt-1">
+          <n-icon size="16">
+            <DepartmentIcon />
+          </n-icon>
+          <span>{{ store.workerPreview?.department?.name }}</span>
+        </div>
+
+        <div v-if="photos.length > 1" class="flex gap-1 mt-2">
           <span
             v-for="(item, idx) in photos"
             :key="item.id ?? idx"
@@ -60,41 +86,31 @@
           </span>
         </div>
       </div>
-
-      <!-- TODO: rating/count backend'dan kelmaydi, hozirgidek statik qoldirildi -->
-      <div
-        class="shrink-0 order-2 lg:order-3 flex items-center gap-2 bg-warning/10 rounded-xl px-4 py-2.5"
-      >
-        <img :src="RatingStarIcon" class="w-12 h-12 object-contain" alt="rating star" />
-        <span class="text-lg font-bold text-textColor0">4.67</span>
-      </div>
-
-      <div class="w-full lg:w-auto lg:flex-1 min-w-0 order-3 lg:order-2">
-        <div>
-          <span class="text-2xl font-bold text-textColor0">
-            {{ Utils.combineFullName(store.workerPreview?.worker) }}
-            <n-icon size="20" class="text-primary align-middle inline-flex">
-              <VerifiedIcon />
-            </n-icon>
-          </span>
-        </div>
-        <div class="flex items-center gap-2 text-textColor3 mt-1">
-          <n-icon size="16">
-            <PositionIcon />
-          </n-icon>
-          <span>{{ store.workerPreview?.department?.name }} — {{ store.workerPreview?.post_name }}</span>
-        </div>
-
-        <!-- Large screens: stats sit inline next to the avatar, like before -->
-        <div class="hidden lg:block mt-3 pt-3 border-t border-surface-line">
-          <WorkerStatsGrid :masked="masked" />
-        </div>
-      </div>
     </div>
 
-    <!-- Smaller screens: stats break out to the full card width below the header -->
-    <div class="lg:hidden mt-3 pt-3 border-t border-surface-line">
+    <div class="bg-surface-section border-surface-line p-4">
       <WorkerStatsGrid :masked="masked" />
     </div>
   </div>
 </template>
+
+<style lang="scss">
+  .main-info-header-bg {
+    background-color: #eff8ff;
+  }
+  [data-theme='dark'] {
+    .main-info-header-bg {
+      background-color: #0f172a;
+    }
+  }
+
+  .active-employee-badge {
+    > div {
+      background-color: #f5fdf6;
+      border-color: #f5fdf6;
+    }
+    .ui--badge-label {
+      color: #14813c;
+    }
+  }
+</style>

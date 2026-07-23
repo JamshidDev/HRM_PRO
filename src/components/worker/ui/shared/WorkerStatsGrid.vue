@@ -2,7 +2,6 @@
   import { useComponentStore } from '@/store/modules/index.js'
   import Utils from '@/utils/Utils.js'
   import i18n from '@/i18n/index.js'
-  import DepartmentIcon from '@/assets/icons/departmentIcon.svg'
   import CertificateIcon from '@/assets/icons/certificateIcon.svg'
   import JshirIcon from '@/assets/icons/jshirIcon.svg'
   import PhoneIcon from '@/assets/icons/phoneIcon.svg'
@@ -25,34 +24,24 @@
 </script>
 
 <template>
-  <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
-    <div class="min-w-0">
-      <div class="flex items-start gap-1.5 text-textColor3 text-sm mb-1">
-        <n-icon size="14" class="shrink-0 mt-0.5">
-          <DepartmentIcon />
-        </n-icon>
-        <span class="break-words">{{ $t('workerView.general.department') }}</span>
-      </div>
-      <div class="font-semibold break-words">{{ store.workerPreview?.department?.name }}</div>
-    </div>
-
+  <div class="grid grid-cols-2 lg:flex lg:divide-x lg:divide-surface-line gap-4 lg:gap-0 ">
     <!-- TODO: backend real field qo'shilganda ulanadi — hozircha statik placeholder -->
-    <div class="min-w-0">
-      <div class="flex items-start gap-1.5 text-textColor3 text-sm mb-1">
-        <n-icon size="14" class="shrink-0 mt-0.5">
+    <div class="min-w-0 lg:flex-1 lg:pr-4">
+      <div class="flex items-center gap-1.5 text-textColor3 text-sm mb-1">
+        <n-icon size="14">
           <CertificateIcon />
         </n-icon>
-        <span class="break-words">{{ $t('workerView.header.serviceCertificate') }}</span>
+        {{ $t('workerView.header.serviceCertificate') }}
       </div>
       <div class="font-semibold break-words">000000</div>
     </div>
 
-    <div class="min-w-0">
-      <div class="flex items-start gap-1.5 text-textColor3 text-sm mb-1">
-        <n-icon size="14" class="shrink-0 mt-0.5">
+    <div class="min-w-0 lg:flex-1 lg:px-4">
+      <div class="flex items-center gap-1.5 text-textColor3 text-sm mb-1">
+        <n-icon size="14">
           <JshirIcon />
         </n-icon>
-        <span class="break-words">{{ $t('workerView.general.passportJSHSHIR') }}</span>
+        {{ $t('workerView.general.passportJSHSHIR') }}
       </div>
       <div class="font-semibold flex items-center gap-1 flex-wrap">
         <span class="break-words">{{
@@ -68,12 +57,12 @@
       </div>
     </div>
 
-    <div class="min-w-0">
-      <div class="flex items-start gap-1.5 text-textColor3 text-sm mb-1">
-        <n-icon size="14" class="shrink-0 mt-0.5">
+    <div class="min-w-0 lg:flex-1 lg:px-4">
+      <div class="flex items-center gap-1.5 text-textColor3 text-sm mb-1">
+        <n-icon size="14">
           <PhoneIcon />
         </n-icon>
-        <span class="break-words">{{ $t('workerView.general.phone') }}</span>
+        {{ $t('workerView.general.phone') }}
       </div>
       <div class="font-semibold flex items-center gap-1 flex-wrap">
         <span class="break-words">{{
@@ -92,12 +81,12 @@
     </div>
 
     <!-- TODO: backend real field qo'shilganda ulanadi — hozircha statik placeholder -->
-    <div class="min-w-0">
-      <div class="flex items-start gap-1.5 text-textColor3 text-sm mb-1">
-        <n-icon size="14" class="shrink-0 mt-0.5">
+    <div class="min-w-0 lg:flex-1 lg:pl-4">
+      <div class="flex items-center gap-1.5 text-textColor3 text-sm mb-1">
+        <n-icon size="14">
           <WorkerPhoneIcon />
         </n-icon>
-        <span class="break-words">{{ $t('workerView.header.workNumber') }}</span>
+        {{ $t('workerView.header.workNumber') }}
       </div>
       <div class="font-semibold flex items-center gap-1 flex-wrap">
         <span>00 000</span>

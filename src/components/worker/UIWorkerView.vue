@@ -112,25 +112,25 @@
 </script>
 
 <template>
-  <n-modal
-    v-model:show="store.previewVisible"
-    class="w-screen h-screen lg:w-[92vw] lg:h-[90vh] lg:max-w-[1440px]"
-  >
-    <div class="ui-preview-window w-full h-full grid grid-cols-12 overflow-hidden lg:rounded-3xl">
+  <n-modal v-model:show="store.previewVisible" draggable style="width: 100%; height: 96vh">
+    <div
+      class="ui-preview-window w-full h-full grid grid-cols-12 max-w-[1400px] bg-surface-ground rounded-3xl overflow-hidden"
+    >
       <n-spin :show="store.previewLoading" class="preview-spin col-span-12 overflow-hidden">
         <div
           class="preview-content flex flex-col w-full h-full px-4 pt-4"
           :class="[store.panelVisible && 'preview-panel-active']"
           @scroll="store.panelVisible = false"
         >
-          <TopBar
-            v-model:masked="masked"
-            :title="$t('workerView.header.title')"
-            :subtitle="$t('workerView.header.subtitle')"
-            :resume-loading="store.resumeLoading"
-            @close="store.previewVisible = false"
-            @download="onDownload"
-          />
+          <div class="bg-surface-section -mx-4 -mt-4 px-4 pt-4 rounded-t-3xl">
+            <TopBar
+              v-model:masked="masked"
+              :title="$t('workerView.header.title')"
+              :resume-loading="store.resumeLoading"
+              @close="store.previewVisible = false"
+              @download="onDownload"
+            />
+          </div>
 
           <MainInfo v-model:masked="masked" class="mb-4" />
 
