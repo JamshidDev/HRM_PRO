@@ -86,7 +86,7 @@
             <div
               class="preview-menu self-start max-h-full bg-surface-section rounded-3xl p-1 z-10 overflow-y-auto"
             >
-              <div class="sidebar-title-box bg-primary/10 text-primary text-lg font-semibold rounded-t-3xl px-1 text-center py-2 mb-2">
+              <div class="sidebar-title-box bg-primary/10 text-primary text-md font-semibold rounded-t-3xl px-1 text-center py-2 mb-2">
                 {{ $t('workerView.sidebar.title') }}
               </div>
               <template v-if="store.workerPreview">
@@ -142,6 +142,9 @@
 </template>
 
 <style lang="scss">
+.sidebar-title-box {
+  background-color: #EFF8FF;
+}
   .tab-fade-enter-active,
   .tab-fade-leave-active {
     transition:

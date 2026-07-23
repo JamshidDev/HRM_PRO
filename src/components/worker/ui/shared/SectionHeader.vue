@@ -18,7 +18,7 @@ defineProps({
 <template>
   <div class="rounded-3xl overflow-hidden mb-6 section-header p-1">
     <div
-      class="section-header-bar flex items-center justify-between gap-2  rounded-t-3xl border-surface-line px-4 py-3">
+      class="section-header-bar flex items-center justify-between gap-2  rounded-t-3xl border-surface-line px-4 py-2">
       <div class="flex items-center gap-2 min-w-0">
         <span v-if="icon && iconChip" class="w-8 h-8 rounded-md bg-primary flex items-center justify-center shrink-0">
           <n-icon size="18" class="text-white">
