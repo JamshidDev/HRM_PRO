@@ -1027,6 +1027,9 @@
       "to": "To",
       "work_day": "Return to work date"
     },
+    "form_51": {
+      "reason": "Basis letter"
+    },
     "form_50": {
       "to": "Vacation end date",
       "from": "Vacation start date",
