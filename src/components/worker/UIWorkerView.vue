@@ -70,7 +70,7 @@
           :class="[store.panelVisible && 'preview-panel-active']"
           @scroll="store.panelVisible = false"
         >
-          <div class="bg-surface-section -mx-4 -mt-4 px-4 pt-4 rounded-t-3xl">
+          <div class="shrink-0 bg-surface-section -mx-4 -mt-4 px-4 pt-4 rounded-t-3xl">
             <TopBar
               v-model:masked="masked"
               :title="$t('workerView.header.title')"
@@ -80,7 +80,7 @@
             />
           </div>
 
-          <MainInfo v-model:masked="masked" class="mb-4" />
+          <MainInfo v-model:masked="masked" class="shrink-0 mb-4" />
 
           <div class="preview-body flex w-full flex-1 min-h-0 gap-4">
             <div
