@@ -67,3 +67,7 @@
     background-color: var(--surface-ground);
   }
 }
+
+.bg-gray-soft {
+  background-color: #98A2B3;
+}
