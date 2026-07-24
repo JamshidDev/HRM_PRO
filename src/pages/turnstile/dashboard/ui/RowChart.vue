@@ -1,139 +1,102 @@
 <script setup>
-  import { ChartMultiple24Regular, Eye20Filled } from '@vicons/fluent'
+  import { Eye20Filled } from '@vicons/fluent'
   import { useTurnstileDashboardStore } from '@/store/modules/index.js'
 
   const store = useTurnstileDashboardStore()
 
   const emits = defineEmits(['onPreview'])
+
+  const percentOf = (count) => {
+    const total = store.mainChart?.scheduled_workers_today || 0
+    if (!total) return 0
+    return Math.min(Math.round((count / total) * 100), 100)
+  }
+
+  const rows = computed(() => [
+    {
+      label: 'turnStileDashboard.cards.planned',
+      count: store.mainChart?.scheduled_workers_today || 0,
+      color: 'primary',
+      previewType: null
+    },
+    {
+      label: 'turnStileDashboard.cards.todayCome',
+      count: store.mainChart?.attended_workers_today || 0,
+      color: 'warning',
+      previewType: 'come'
+    },
+    {
+      label: 'turnStileDashboard.cards.todayDontCome',
+      count: store.mainChart?.absent_workers_today || 0,
+      color: 'danger',
+      previewType: 'not_come'
+    }
+  ])
+
+  const colorClasses = {
+    primary: { dot: 'bg-primary', track: 'bg-primary/10', fill: 'bg-primary' },
+    warning: { dot: 'bg-warning', track: 'bg-warning/10', fill: 'bg-warning' },
+    danger: { dot: 'bg-danger', track: 'bg-danger/10', fill: 'bg-danger' }
+  }
 </script>
 
 <template>
   <n-spin :show="store.mainChartLoading">
-    <div class="p-2 flex flex-col">
+    <div class="flex flex-col h-full min-h-[280px]">
       <div>
-        <h3 class="font-bold text-lg leading-[1.2] text-textColor0">
+        <h3 class="font-bold text-[17px] leading-[1.2] text-textColor0">
           {{ $t('turnStileDashboard.cards.workerAnalytic') }}
         </h3>
         <small class="text-xs text-secondary leading-[1.2]">{{
           $t('turnStileDashboard.cards.workerAnalyticDescription')
         }}</small>
       </div>
-      <div class="mt-6">
-        <div class="font-bold text-4xl text-textColor0 leading-[1]">
+      <div class="mt-5">
+        <div class="font-bold text-4xl font-grotesk text-textColor0 leading-[1]">
           {{ store?.totalWorkerCount }}
-          <small class="text-xs text-success font-semibold">+16 %</small>
         </div>
         <small class="text-xs text-secondary leading-[1.2]">{{
           $t('turnStileDashboard.cards.allWorkerOfCompany')
         }}</small>
       </div>
 
-      <div class="flex gap-6 mt-10">
-        <div class="flex gap-4 items-center">
+      <div class="flex flex-col gap-2 mt-auto pt-5">
+        <div
+          v-for="(row, idx) in rows"
+          :key="idx"
+          @click="row.previewType && emits('onPreview', row.previewType)"
+          class="p-2 rounded-xl relative group transition-all duration-300"
+          :class="row.previewType ? 'cursor-pointer hover:bg-primary/6' : ''"
+        >
           <div
-            class="bg-transparent hover:bg-primary/6 transition-all duration-300 cursor-pointer p-2 rounded-xl relative group"
+            v-if="row.previewType"
+            class="transition-all duration-500 scale-0 absolute left-1/2 top-1/2 -translate-1/2 text-primary opacity-0 group-hover:opacity-100 group-hover:scale-100 z-10"
           >
-            <div
-              class="transition-all duration-500 scale-0 absolute left-1/2 top-1/2 -translate-1/2 text-xs font-medium text-primary opacity-0 group-hover:opacity-100 group-hover:scale-100"
-            >
-              <n-icon size="36">
-                <Eye20Filled />
-              </n-icon>
-            </div>
-            <div
-              class="flex items-center gap-2 opacity-100 group-hover:opacity-[0.2] transition-all duration-300"
-            >
-              <div
-                class="bg-primary/10 w-[20px] h-[20px] flex justify-center items-center rounded-lg"
-              >
-                <n-icon size="14" class="text-primary">
-                  <ChartMultiple24Regular />
-                </n-icon>
-              </div>
-              <span class="font-semibold text-secondary text-xs">{{
-                $t('turnStileDashboard.cards.planned')
-              }}</span>
-            </div>
-            <div
-              class="font-bold text-2xl my-2 text-textColor0 opacity-100 group-hover:opacity-[0.2] transition-all duration-300"
-            >
-              {{ store.mainChart?.scheduled_workers_today || 0 }}
-            </div>
-            <div
-              class="w-full h-[4px] bg-primary/10 relative rounded-lg before:content-[' '] before:w-[80%] before:h-full before:bg-primary/60 before:absolute before:left-0 before:top-0 overflow-hidden opacity-100 group-hover:opacity-[0.2] transition-all duration-300"
-            ></div>
+            <n-icon size="28">
+              <Eye20Filled />
+            </n-icon>
           </div>
-        </div>
-        <div class="flex gap-4 items-center">
           <div
-            @click="emits('onPreview', 'come')"
-            class="bg-transparent hover:bg-primary/6 transition-all duration-300 cursor-pointer p-2 rounded-xl relative group"
+            class="opacity-100 transition-all duration-300"
+            :class="row.previewType ? 'group-hover:opacity-[0.2]' : ''"
           >
-            <div
-              class="transition-all duration-500 scale-0 absolute left-1/2 top-1/2 -translate-1/2 text-xs font-medium text-primary opacity-0 group-hover:opacity-100 group-hover:scale-100"
-            >
-              <n-icon size="36">
-                <Eye20Filled />
-              </n-icon>
-            </div>
-            <div
-              class="flex items-center gap-2 opacity-100 group-hover:opacity-[0.2] transition-all duration-300"
-            >
-              <div
-                class="bg-warning/10 w-[20px] h-[20px] flex justify-center items-center rounded-lg"
-              >
-                <n-icon size="14" class="text-warning">
-                  <ChartMultiple24Regular />
-                </n-icon>
-              </div>
-              <span class="font-semibold text-secondary text-xs">{{
-                $t('turnStileDashboard.cards.todayCome')
+            <div class="flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full" :class="colorClasses[row.color].dot"></span>
+              <span class="font-medium text-secondary text-xs">{{ $t(row.label) }}</span>
+              <span class="ml-auto font-bold font-grotesk text-[15px] text-textColor0">{{
+                row.count
               }}</span>
             </div>
             <div
-              class="font-bold text-2xl my-2 text-textColor0 opacity-100 group-hover:opacity-[0.2] transition-all duration-300"
-            >
-              {{ store.mainChart?.attended_workers_today || 0 }}
-            </div>
-            <div
-              class="opacity-100 group-hover:opacity-[0.2] transition-all duration-300 w-full h-[4px] bg-warning/10 relative rounded-lg before:content-[' '] before:w-[80%] before:h-full before:bg-warning/60 before:absolute before:left-0 before:top-0 overflow-hidden"
-            ></div>
-          </div>
-        </div>
-        <div class="flex gap-4 items-center">
-          <div
-            @click="emits('onPreview', 'not_come')"
-            class="bg-transparent hover:bg-primary/6 transition-all duration-300 cursor-pointer p-2 rounded-xl relative group"
-          >
-            <div
-              class="transition-all duration-500 scale-0 absolute left-1/2 top-1/2 -translate-1/2 text-xs font-medium text-primary opacity-0 group-hover:opacity-100 group-hover:scale-100"
-            >
-              <n-icon size="36">
-                <Eye20Filled />
-              </n-icon>
-            </div>
-            <div
-              class="flex items-center gap-2 opacity-100 group-hover:opacity-[0.2] transition-all duration-300"
+              class="w-full h-[4px] relative rounded-lg overflow-hidden mt-2"
+              :class="colorClasses[row.color].track"
             >
               <div
-                class="bg-danger/10 w-[20px] h-[20px] flex justify-center items-center rounded-lg"
-              >
-                <n-icon size="14" class="text-danger">
-                  <ChartMultiple24Regular />
-                </n-icon>
-              </div>
-              <span class="font-semibold text-secondary text-xs">{{
-                $t('turnStileDashboard.cards.todayDontCome')
-              }}</span>
+                class="h-full rounded-lg"
+                :class="colorClasses[row.color].fill"
+                :style="{ width: percentOf(row.count) + '%' }"
+              ></div>
             </div>
-            <div
-              class="font-bold text-2xl my-2 text-textColor0 opacity-100 group-hover:opacity-[0.2] transition-all duration-300"
-            >
-              {{ store.mainChart?.absent_workers_today || 0 }}
-            </div>
-            <div
-              class="opacity-100 group-hover:opacity-[0.2] transition-all duration-300 w-full h-[4px] bg-danger/10 relative rounded-lg before:content-[' '] before:w-[80%] before:h-full before:bg-danger/60 before:absolute before:left-0 before:top-0 overflow-hidden"
-            ></div>
           </div>
         </div>
       </div>
