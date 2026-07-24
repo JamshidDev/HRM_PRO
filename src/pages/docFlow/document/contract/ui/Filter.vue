@@ -147,7 +147,7 @@
 
   .contract-filter-panel :deep(:where(.n-select, .n-date-picker)) {
     width: 100%;
-    --n-height: 44px !important;
+    --n-height: 40px !important;
     --n-border-radius: 16px !important;
   }
 </style>

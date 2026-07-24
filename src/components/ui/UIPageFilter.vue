@@ -27,12 +27,12 @@
     },
     filterPlacement: {
       type: String,
-      default: 'bottom'
+      default: 'bottom-end'
     },
     popoverStyle: {
       type: Object,
       default: () => ({
-        width: '360px',
+        width: '560px',
         maxWidth: 'calc(100vw - 32px)',
         minHeight: 'auto',
         padding: '0',
@@ -155,18 +155,18 @@
           :style="{ ...popoverStyle, '--top-activator-width': 'var(--v-target-width)' }"
         >
           <template #trigger>
-            <n-badge ref="filterTriggerRef" class="w-full! md:w-auto!" :value="filterCount" processing type="info">
-              <n-button
-                class="ui-page-filter-button w-full! md:w-auto!"
-                type="primary"
-                ghost
-              >
-                <template #icon>
-                  <img class="ui-page-filter-icon" :src="filterIcon" alt="" />
-                </template>
-                {{ $t('content.filters') }}
-              </n-button>
-            </n-badge>
+            <n-button
+              ref="filterTriggerRef"
+              class="ui-page-filter-button w-full! md:w-auto!"
+              type="primary"
+              ghost
+            >
+              <template #icon>
+                <img class="ui-page-filter-icon" :src="filterIcon" alt="" />
+              </template>
+              <span>{{ $t('content.filters') }}</span>
+              <span v-if="filterCount > 0" class="ui-page-filter-count">{{ filterCount }}</span>
+            </n-button>
           </template>
           <div class="flex flex-col max-w-full">
             <slot name="filterHeader">
@@ -236,9 +236,28 @@
   font-weight: 600;
 }
 
+.ui-page-filter-button :deep(.n-button__content) {
+  gap: 8px;
+}
+
 .ui-page-filter-icon {
   width: 20px;
   height: 20px;
+}
+
+.ui-page-filter-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 5px;
+  border-radius: 999px;
+  color: #fff;
+  background: #ef3e42;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1;
 }
 
 .ui-filter-header {
@@ -290,7 +309,76 @@
   overscroll-behavior: contain;
 }
 
-.ui-filter-content :deep(:where(.n-select, .n-date-picker)) {
+.ui-filter-content :deep(label) {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--textColor1);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.ui-filter-content :deep(:where(.n-select, .n-date-picker, .n-input-number, .ui__structure-input)) {
   width: 100%;
+  min-height: 40px;
+  --n-height: 40px !important;
+  --n-border-radius: 16px !important;
+}
+
+.ui-filter-content :deep(:where(.n-base-selection, .n-input, .n-input-number)) {
+  min-height: 40px;
+  --n-height: 40px !important;
+  --n-border-radius: 16px !important;
+  border-radius: 16px !important;
+}
+
+.ui-filter-content :deep(
+  :where(
+    .n-base-selection-label,
+    .n-base-selection__border,
+    .n-base-selection__state-border,
+    .n-input__border,
+    .n-input__state-border
+  )
+) {
+  border-radius: 16px !important;
+}
+
+.ui-filter-content :deep(.n-select) {
+  --n-padding-single: 0 12px !important;
+  --n-padding-multiple: 0 12px !important;
+}
+
+.ui-filter-content :deep(.n-base-selection-label),
+.ui-filter-content :deep(.ui__structure-input .n-input-wrapper),
+.ui-filter-content :deep(.n-input-number .n-input-wrapper) {
+  padding-left: 12px;
+  padding-right: 12px;
+}
+
+.ui-filter-content :deep(.ui-filter-grid label) {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--textColor1);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.ui-filter-content :deep(.ui-filter-grid :where(.n-select, .n-date-picker, .n-input-number)) {
+  width: 100%;
+  min-height: 40px;
+  --n-height: 40px !important;
+  --n-border-radius: 16px !important;
+}
+
+.ui-filter-content :deep(.ui-filter-grid .n-select) {
+  --n-padding-single: 0 12px !important;
+  --n-padding-multiple: 0 12px !important;
+}
+
+.ui-filter-content :deep(.ui-filter-grid .n-base-selection-label),
+.ui-filter-content :deep(.ui-filter-grid .ui__structure-input .n-input-wrapper),
+.ui-filter-content :deep(.ui-filter-grid .n-input-number .n-input-wrapper) {
+  padding-left: 12px;
+  padding-right: 12px;
 }
 </style>

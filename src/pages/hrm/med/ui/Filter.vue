@@ -13,7 +13,7 @@
   const componentStore = useComponentStore()
   const inspectionStore = useMedInspectionStore()
 
-  const onSearch = (v) => {
+  const onSearch = () => {
     if (!accStore.checkAction(accStore.pn.hrTableRead)) return
     store.params.page = 1
     store._index()
@@ -36,7 +36,7 @@
     Number(Boolean(store.params.organizations.length) + Number(Boolean(store.params.status)))
   )
 
-  const beforeShow = (v) => {
+  const beforeShow = () => {
     if (componentStore.structureList.length === 0) {
       componentStore._structures()
     }
@@ -73,6 +73,8 @@
     :filter-count="filterCount"
     :search-loading="store.loading"
     @onAdd="onAdd"
+    filter-placement="bottom-end"
+    :popover-style="{ width: '560px', maxWidth: 'calc(100vw - 32px)', padding: '0', borderRadius: '20px' }"
   >
     <template #filterAction>
       <n-button @click="openInspectionEv" secondary type="error">
@@ -83,33 +85,35 @@
       </n-button>
     </template>
     <template #filterContent>
-      <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{
-        $t('actionLog.table.structure')
-      }}</label>
-      <UISelect
-        :options="componentStore.structureList"
-        :modelV="store.params.organizations"
-        @defaultValue="(v) => (store.params.organizations = v)"
-        @updateModel="onChangeStructure"
-        :checkedVal="store.structureCheck2"
-        @updateCheck="(v) => (store.structureCheck2 = v)"
-        :loading="componentStore.structureLoading"
-        @onSubmit="filterEvent"
-        v-model:search="componentStore.structureParams.search"
-        @onSearch="componentStore._structures"
-      />
-      <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{
-        $t('medPage.form.status')
-      }}</label>
-      <n-select
-        v-model:value="store.params.status"
-        :options="componentStore.medStatus"
-        :loading="componentStore.enumExamLoading"
-        @update:value="filterEvent"
-        label-field="name"
-        value-field="id"
-        clearable
-      />
+      <div class="ui-filter-grid grid grid-cols-12 gap-x-5 gap-y-4">
+        <div class="col-span-12 md:col-span-6">
+          <label>{{ $t('actionLog.table.structure') }}</label>
+          <UISelect
+            :options="componentStore.structureList"
+            :model-v="store.params.organizations"
+            @defaultValue="(v) => (store.params.organizations = v)"
+            @updateModel="onChangeStructure"
+            :checked-val="store.structureCheck2"
+            @updateCheck="(v) => (store.structureCheck2 = v)"
+            :loading="componentStore.structureLoading"
+            @onSubmit="filterEvent"
+            v-model:search="componentStore.structureParams.search"
+            @onSearch="componentStore._structures"
+          />
+        </div>
+        <div class="col-span-12 md:col-span-6">
+          <label>{{ $t('medPage.form.status') }}</label>
+          <n-select
+            v-model:value="store.params.status"
+            :options="componentStore.medStatus"
+            :loading="componentStore.enumExamLoading"
+            @update:value="filterEvent"
+            label-field="name"
+            value-field="id"
+            clearable
+          />
+        </div>
+      </div>
     </template>
   </UIPageFilter>
 </template>

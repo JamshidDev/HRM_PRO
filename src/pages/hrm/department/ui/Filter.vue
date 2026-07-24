@@ -129,7 +129,7 @@
 
   .department-filter-panel :deep(.n-select) {
     width: 100%;
-    --n-height: 44px !important;
+    --n-height: 40px !important;
     --n-border-radius: 16px !important;
   }
 </style>

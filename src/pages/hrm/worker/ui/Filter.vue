@@ -591,8 +591,20 @@
 
   .worker-filter-panel :deep(:where(.n-select, .n-input-number)) {
     width: 100%;
-    --n-height: 44px !important;
+    --n-height: 40px !important;
     --n-border-radius: 16px !important;
+  }
+
+  .worker-filter-panel :deep(.n-select) {
+    --n-padding-single: 0 12px !important;
+    --n-padding-multiple: 0 12px !important;
+  }
+
+  .worker-filter-panel :deep(.n-base-selection-label),
+  .worker-filter-panel :deep(.ui__structure-input .n-input-wrapper),
+  .worker-filter-panel :deep(.n-input-number .n-input-wrapper) {
+    padding-left: 12px;
+    padding-right: 12px;
   }
 
   .worker-filter-check {
@@ -617,10 +629,32 @@
     display: flex;
     width: 100%;
     height: 44px;
+    overflow: hidden;
+    border: 1px solid var(--surface-line);
+    border-radius: 16px;
+    background: #eaecf0;
   }
 
   .age-mode-group :deep(.n-radio-button) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     flex: 1;
+    height: 100%;
+    padding: 0 12px;
+    border: 0;
+    background: transparent;
+    color: var(--textColor2);
+  }
+
+  .age-mode-group :deep(.n-radio-button--checked) {
+    border-color: transparent;
+    background: #fff;
+    color: #101828;
+  }
+
+  .age-mode-group :deep(.n-radio-button__state-border) {
+    display: none;
   }
 
   .age-mode-group :deep(.n-radio-button__label) {
@@ -628,6 +662,15 @@
     align-items: center;
     justify-content: center;
     width: 100%;
+    height: 100%;
+    padding: 0;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 400;
+  }
+
+  .age-mode-group :deep(.n-radio-button:not(:first-child)::before) {
+    display: none;
   }
 
   .worker-additional-toggle {
