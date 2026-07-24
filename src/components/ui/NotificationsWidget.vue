@@ -130,8 +130,8 @@
 <template>
   <n-popover
     arrow-wrapper-class="![--n-arrow-offset:18px]"
-    class="!p-0 ![--n-border-radius:20px] -translate-x-2"
-    placement="bottom-start"
+    class="!p-0 ![--n-border-radius:20px]"
+    placement="right-start"
     trigger="click"
     @update:show="onShow"
     :show="showPopover"
@@ -142,7 +142,7 @@
         :value="store.userUnreadNotificationsCount"
         :offset="[4, -4]"
       >
-        <n-icon id="taskBtn" size="28" class="cursor-pointer text-info">
+        <n-icon id="taskBtn" size="28" class="cursor-pointer text-white">
           <Alert16Filled />
         </n-icon>
       </n-badge>

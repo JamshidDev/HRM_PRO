@@ -8,6 +8,10 @@
   import { useAppSetting } from '@/utils/index.js'
   const { t } = i18n.global
 
+  defineProps({
+    compact: { type: Boolean, default: false }
+  })
+
   const currentLang = ref('uz')
   const options = [
     {
@@ -123,6 +127,13 @@
 <template>
   <n-dropdown trigger="click" :options="options">
     <div
+      v-if="compact"
+      class="flex items-center justify-center cursor-pointer w-10 h-10"
+    >
+      <n-avatar class="w-[26px]! h-[26px]!" round size="small" :src="dropdown.icon" />
+    </div>
+    <div
+      v-else
       class="flex items-center border-surface-line py-1 px-1 rounded-xl border w-[90px] cursor-pointer h-[34px] overflow-hidden"
     >
       <n-avatar class="w-[20px]! h-[20px]!" round size="small" :src="dropdown.icon" />
