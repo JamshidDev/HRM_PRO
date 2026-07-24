@@ -168,7 +168,7 @@
               <span v-if="filterCount > 0" class="ui-page-filter-count">{{ filterCount }}</span>
             </n-button>
           </template>
-          <div class="flex flex-col max-w-full">
+          <div class="ui-filter-panel-shell flex flex-col max-w-full">
             <slot name="filterHeader">
               <div class="ui-filter-header">
                 <div class="ui-filter-header-title">
@@ -393,5 +393,32 @@
 .ui-filter-content :deep(.ui-filter-grid .n-input-number .n-input-wrapper) {
   padding-left: 12px;
   padding-right: 12px;
+}
+
+:global([data-theme='dark'] .ui-filter-panel-shell) {
+  overflow: hidden;
+  border: 1px solid #1d2939;
+  border-radius: 20px;
+  background: #101828;
+}
+
+:global([data-theme='dark'] .ui-filter-header) {
+  color: var(--primary-color);
+  background: #344054;
+}
+
+:global([data-theme='dark'] .ui-filter-content) {
+  background: #101828;
+}
+
+:global([data-theme='dark'] .ui-filter-content label) {
+  color: #f2f4f7;
+}
+
+:global([data-theme='dark'] .ui-filter-content .n-base-selection-placeholder),
+:global([data-theme='dark'] .ui-filter-content .n-input__placeholder),
+:global([data-theme='dark'] .ui-filter-content .n-input__input-el::placeholder) {
+  color: #98a2b3;
+  opacity: 1;
 }
 </style>
