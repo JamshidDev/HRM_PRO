@@ -355,6 +355,14 @@
   padding-right: 12px;
 }
 
+.ui-filter-content :deep(.n-badge) {
+  --n-color: #ef3e42 !important;
+}
+
+.ui-filter-content :deep(.n-badge-sup) {
+  background-color: #ef3e42 !important;
+}
+
 .ui-filter-content :deep(.ui-filter-grid label) {
   display: block;
   margin-bottom: 6px;
