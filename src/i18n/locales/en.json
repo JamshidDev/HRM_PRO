@@ -2968,6 +2968,7 @@
       "allWorkers": "All employees",
       "workTimeTitle": "Work time analysis",
       "workTimeSubtitle": "Brief analysis of arrival/departure times",
+      "lastSevenDays": "7 days",
       "workerAnalytic": "Employee analysis",
       "workerAnalyticDescription": "Brief arrival/absence analysis",
       "allWorkerOfCompany": "Total company employees",

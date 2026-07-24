@@ -77,15 +77,17 @@
 </script>
 
 <template>
-  <div class="grid grid-cols-12 gap-2">
-    <div class="text-lg lg:col-span-6 md:col-span-6 col-span-12 text-textColor2">
-      <h3 class="font-bold mb-0 leading-[1.2] mt-4">{{ $t('turnStileDashboard.name') }}</h3>
-      <div class="text-xs leading-[1.2] text-secondary block font-medium">
+  <div class="flex flex-wrap items-end gap-3">
+    <div class="mr-auto">
+      <h3 class="text-2xl font-bold leading-[1.2] text-textColor0 mb-0">
+        {{ $t('turnStileDashboard.name') }}
+      </h3>
+      <div class="text-xs leading-[1.2] text-secondary font-medium mt-1">
         {{ $t('turnStileDashboard.description') }}
       </div>
     </div>
-    <div class="lg:col-span-2 md:col-span-6 col-span-12">
-      <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{
+    <div class="md:w-[200px] w-full">
+      <label class="block text-[11px] text-textColor3 mb-1 font-semibold">{{
         $t('actionLog.table.structure')
       }}</label>
       <UISelect
@@ -101,8 +103,8 @@
         @onSubmit="filterEvent"
       />
     </div>
-    <div class="lg:col-span-2 md:col-span-6 col-span-12">
-      <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{
+    <div class="md:w-[200px] w-full">
+      <label class="block text-[11px] text-textColor3 mb-1 font-semibold">{{
         $t('content.department')
       }}</label>
       <UINSelect
@@ -118,8 +120,10 @@
         @onSearch="onSearchDepartment"
       />
     </div>
-    <div class="lg:col-span-2 md:col-span-6 col-span-12">
-      <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{ $t('content.date') }}</label>
+    <div class="md:w-[160px] w-full">
+      <label class="block text-[11px] text-textColor3 mb-1 font-semibold">{{
+        $t('content.date')
+      }}</label>
       <n-date-picker
         v-model:value="dashboardStore.dashboardParams.date"
         @update:value="onChangeDate"
