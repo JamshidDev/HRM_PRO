@@ -38,7 +38,7 @@
 </script>
 
 <template>
-  <div class="app_header bg-surface-section flex justify-between items-center p-4">
+  <div class=" bg-surface-section flex justify-between items-center">
     <div class="flex items-center z-10">
       <div
         @click="controlBtn"
