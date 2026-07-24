@@ -3,8 +3,11 @@ import { navigations } from '../../data/navigations.js'
 import { ChevronDown12Regular, ChevronDoubleLeft16Filled } from '@vicons/fluent'
 import { useAccountStore } from '@/store/modules/index.js'
 import i18n from '@/i18n/index.js'
-import { AppPaths, useAppSetting } from '@/utils/index.js'
-import { PageInstruction, MiniMenuBadge, MenuItemBadge } from '@components'
+import { AppPaths, useAppSetting, appPermissions } from '@/utils/index.js'
+import { PageInstruction, MiniMenuBadge, MenuItemBadge, UIProfile, UIThemeSwitch, DownloadTask } from '@components'
+import LangDropdown from '@/components/general/LangDropdown.vue'
+import AIButtonV2 from '@/components/buttons/AIButtonV2.vue'
+import NotificationsWidget from '@components/ui/NotificationsWidget.vue'
 
 const { t } = i18n.global
 const route = useRoute()
@@ -168,7 +171,18 @@ onMounted(() => {
             </div>
           </template>
         </div>
-        <PageInstruction />
+        <div class="flex flex-col items-center gap-[10px]">
+          <AIButtonV2
+            v-if="store.checkPermission(appPermissions.ai)"
+            @click="() => router.push({ name: AppPaths.AIConversation.substring(1) })"
+          />
+          <NotificationsWidget />
+          <DownloadTask />
+          <UIThemeSwitch />
+          <LangDropdown :compact="true" />
+          <PageInstruction />
+          <UIProfile />
+        </div>
       </div>
       <div class="panel-content sidebar-panel overflow-y-auto! h-full" style="scrollbar-width: none">
         <transition name="slide-right" mode="out-in">
