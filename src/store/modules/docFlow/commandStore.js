@@ -170,6 +170,37 @@ export const useCommandStore = defineStore('commandStore', {
       work_day: null,
       reason: null
     },
+    // 56 — Ishlanmaydigan kunlarda ishga jalb etish (hujjatgina).
+    form_56: {
+      work_date: null,
+      start_time: null,
+      end_time: null,
+      duration: null,
+      reason: null,
+      responsible: null
+    },
+    // 57 — Ish vaqtidan tashqari ishga jalb (hujjatgina). pay_type: 1=oshirilgan haq,
+    // 2=qo'shimcha dam olish vaqti (2 tanlansa rest_* maydonlar so'raladi).
+    form_57: {
+      work_date: null,
+      start_time: null,
+      end_time: null,
+      duration: null,
+      reason: null,
+      responsible: null,
+      pay_type: 2,
+      rest_date: null,
+      rest_start_time: null,
+      rest_end_time: null
+    },
+    // 58 — Vaqtincha ishdan chetlashtirish (hujjatgina).
+    form_58: {
+      suspension_reason: null,
+      from: null,
+      to: null,
+      act_date: null,
+      responsible: null
+    },
     // F.I.Sh o'zgartirish (74)
     form_74: {
       new_last_name: null,
@@ -432,6 +463,35 @@ export const useCommandStore = defineStore('commandStore', {
       this.form_74.passport_date = null
       this.form_74.certificate_serial = null
       this.form_74.certificate_date = null
+
+      // 56/57/58 — hujjatgina buyruqlar
+      this.form_56 = {
+        work_date: null,
+        start_time: null,
+        end_time: null,
+        duration: null,
+        reason: null,
+        responsible: null
+      }
+      this.form_57 = {
+        work_date: null,
+        start_time: null,
+        end_time: null,
+        duration: null,
+        reason: null,
+        responsible: null,
+        pay_type: 2,
+        rest_date: null,
+        rest_start_time: null,
+        rest_end_time: null
+      }
+      this.form_58 = {
+        suspension_reason: null,
+        from: null,
+        to: null,
+        act_date: null,
+        responsible: null
+      }
 
       // Moddiy yordam (73) qabul qiluvchi turi — har doim xodimdan boshlanadi,
       // aks holda oldingi buyruqdan "pensioner" rejimi qolib ketardi.

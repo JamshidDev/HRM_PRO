@@ -1030,6 +1030,35 @@
     "form_51": {
       "reason": "Basis letter"
     },
+    "form_56": {
+      "work_date": "Engagement day",
+      "start_time": "Work start time",
+      "end_time": "Work end time",
+      "duration": "Duration",
+      "reason": "Engagement reason",
+      "responsible": "Responsible employee"
+    },
+    "form_57": {
+      "work_date": "Engagement day",
+      "start_time": "Work start time",
+      "end_time": "Work end time",
+      "duration": "Duration",
+      "reason": "Engagement reason",
+      "responsible": "Responsible employee",
+      "pay_type": "Compensation type",
+      "pay_option": "Increased pay",
+      "rest_option": "Additional rest time",
+      "rest_date": "Rest day",
+      "rest_start_time": "Rest start time",
+      "rest_end_time": "Rest end time"
+    },
+    "form_58": {
+      "suspension_reason": "Suspension ground",
+      "from": "Suspension start (from)",
+      "to": "Suspension end (to)",
+      "act_date": "Act date",
+      "responsible": "Responsible employee"
+    },
     "form_50": {
       "to": "Vacation end date",
       "from": "Vacation start date",

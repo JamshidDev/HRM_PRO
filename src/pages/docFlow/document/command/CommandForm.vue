@@ -32,6 +32,9 @@
   import CommandForm_50 from './ui/CommandForm_50.vue'
   import CommandForm_47 from './ui/CommandForm_47.vue'
   import CommandForm_74 from './ui/CommandForm_74.vue'
+  import CommandForm_56 from './ui/CommandForm_56.vue'
+  import CommandForm_57 from './ui/CommandForm_57.vue'
+  import CommandForm_58 from './ui/CommandForm_58.vue'
   import { useAppSetting } from '@/utils/index.js'
   import { VueDraggable } from 'vue-draggable-plus'
 
@@ -41,7 +44,8 @@
   // command ids of only a single select
   const commandIdList = [32, 33, 34, 35, 36, 37, 38, 39]
   const singleSelectCommands = [
-    32, 33, 34, 35, 36, 37, 38, 39, 44, 43, 45, 46, 47, 49, 48, 50, 51, 52, 53, 54, 74
+    32, 33, 34, 35, 36, 37, 38, 39, 44, 43, 45, 46, 47, 49, 48, 50, 51, 52, 53, 54, 74, 56,
+    57, 58
   ]
 
   const formRef = ref(null)
@@ -66,6 +70,9 @@
   const vacationForm_72 = ref(null)
   const vacationForm_73 = ref(null)
   const commandForm_74 = ref(null)
+  const commandForm_56 = ref(null)
+  const commandForm_57 = ref(null)
+  const commandForm_58 = ref(null)
 
   const renderLabel = (option) => {
     return [
@@ -221,6 +228,12 @@
           validate = await vacationForm_73.value?.onSubmit(mainData)
         } else if (store.payload.command_type === 74) {
           validate = await commandForm_74.value?.onSubmit(mainData)
+        } else if (store.payload.command_type === 56) {
+          validate = await commandForm_56.value?.onSubmit(mainData)
+        } else if (store.payload.command_type === 57) {
+          validate = await commandForm_57.value?.onSubmit(mainData)
+        } else if (store.payload.command_type === 58) {
+          validate = await commandForm_58.value?.onSubmit(mainData)
         }
 
         if (validate?.isValid) {
@@ -257,6 +270,12 @@
       commandForm_47.value?.validateForm()
     } else if (store.payload.command_type === 74) {
       commandForm_74.value?.validateForm()
+    } else if (store.payload.command_type === 56) {
+      commandForm_56.value?.validateForm()
+    } else if (store.payload.command_type === 57) {
+      commandForm_57.value?.validateForm()
+    } else if (store.payload.command_type === 58) {
+      commandForm_58.value?.validateForm()
     }
   }
 
@@ -308,7 +327,7 @@
       generationData(true)
     }
 
-    if ([44, 43, 48].includes(store.payload.command_type)) {
+    if ([44, 43, 48, 58].includes(store.payload.command_type)) {
       componentStore.reasonTypes = []
       componentStore._reasonTypes(store.payload.command_type)
     }
@@ -820,6 +839,15 @@
           </template>
           <template v-else-if="store.payload.command_type === 74">
             <CommandForm_74 ref="commandForm_74" />
+          </template>
+          <template v-else-if="store.payload.command_type === 56">
+            <CommandForm_56 ref="commandForm_56" />
+          </template>
+          <template v-else-if="store.payload.command_type === 57">
+            <CommandForm_57 ref="commandForm_57" />
+          </template>
+          <template v-else-if="store.payload.command_type === 58">
+            <CommandForm_58 ref="commandForm_58" />
           </template>
 
           <template v-else>
