@@ -315,7 +315,7 @@
     "noSpam": "Remove from spam",
     "noImage": "No image",
     "waitResponse": "Please wait for response!",
-    "untilNow": "present",
+    "untilNow": "so far",
     "warningImageSave": "New image selected as main. Click 'Save' to apply changes.",
     "selectAll": "Select all",
     "selectList": "Select entire list",
@@ -624,8 +624,6 @@
     "name": "Timesheet keepers",
     "work_place": "Organization/Department"
   },
-
-
   "workerPage": {
     "name": "Employees",
     "filter": {
@@ -1499,7 +1497,10 @@
       "position": "Position",
       "department": "Department",
       "salary": "Monthly salary",
-      "country": "Birth country"
+      "country": "Birth country",
+      "passportValid": "Valid",
+      "citizenship": "Citizenship",
+      "foreignPassport": "Foreign travel passport"
     },
     "tabs": {
       "general": "General info",
@@ -1512,9 +1513,53 @@
       "checkSkill": "Skill test",
       "checkKnowledge": "Knowledge test",
       "punishment": "Disciplinary actions"
+    },
+    "header": {
+      "title": "Employee profile",
+      "subtitle": "General information, personal documents and activity history",
+      "activeEmployee": "Active employee",
+      "managementStaff": "Management staff",
+      "avgRating": "Average rating",
+      "ratingBasedOn": "based on {count} reviews",
+      "serviceCertificate": "Service certificate",
+      "workNumber": "Work number"
+    },
+    "sidebar": {
+      "title": "Profile sections"
+    },
+    "career": {
+      "currentLabel": "Current"
+    },
+    "med": {
+      "currentStatus": "Current health status",
+      "validityPeriod": "Validity period",
+      "started": "Started",
+      "ends": "Ends",
+      "progressSuffix": "elapsed",
+      "lastCheckDate": "Last check-up date",
+      "conclusion": "Medical conclusion",
+      "fitForWork": "Fit for work",
+      "monthsLeft": "≈{count} months left"
+    },
+    "vacation": {
+      "start": "Vacation start",
+      "end": "Vacation end",
+      "duration": "Duration",
+      "type": "Vacation type",
+      "daysLabel": "days",
+      "calendarLabel": "Vacation days",
+      "completed": "Completed",
+      "planned": "Planned",
+      "upcomingTitle": "Upcoming leave — {year}",
+      "viewCalendar": "View in calendar"
+    },
+    "incentive": {
+      "count": "{count} pcs",
+      "categoryMaterial": "Material incentive",
+      "categoryState": "State / departmental award",
+      "categoryMoral": "Moral incentive"
     }
   },
-
   "categoryPage": {
     "createCategory": "Create category",
     "editCategory": "Edit category",
@@ -2102,8 +2147,6 @@
   "businessTrip": {
     "name": "Business trip"
   },
-
-
   "documentArchive": {
     "name": "Document archive",
     "createTitle": "Add document file",
@@ -2462,12 +2505,12 @@
     "confirmMessagePlaceholder": "Enter message...",
     "vacancyLevel": "Vacancy stages",
     "levels": {
-      "one":   "Application submission",
-      "two":   "Document evaluation",
+      "one": "Application submission",
+      "two": "Document evaluation",
       "three": "Interview",
-      "four":  "Medical check",
-      "five":  "Online test",
-      "six":   "Completed"
+      "four": "Medical check",
+      "five": "Online test",
+      "six": "Completed"
     },
     "zoomStart": "Start",
     "zoomMeet": "Zoom interview",

@@ -514,7 +514,7 @@
               <label class="text-xs text-gray-500">{{ $t(`registerPage.lastName`) }}</label>
               <n-input
                 clearable
-                class="w-full! skip-format"
+                class="w-full!"
                 v-model:value="store.params.last_name"
                 type="text"
                 :placeholder="$t('content.search')"
@@ -530,7 +530,7 @@
               <label class="text-xs text-gray-500">{{ $t(`registerPage.firstName`) }}</label>
               <n-input
                 clearable
-                class="w-full! skip-format"
+                class="w-full!"
                 v-model:value="store.params.first_name"
                 type="text"
                 :placeholder="$t('content.search')"
@@ -546,7 +546,7 @@
               <label class="text-xs text-gray-500">{{ $t(`registerPage.middleName`) }}</label>
               <n-input
                 clearable
-                class="w-full! skip-format"
+                class="w-full!"
                 v-model:value="store.params.middle_name"
                 type="text"
                 :placeholder="$t('content.search')"

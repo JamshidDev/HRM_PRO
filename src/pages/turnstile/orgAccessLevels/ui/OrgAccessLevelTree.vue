@@ -28,7 +28,7 @@
     <n-input
       :loading="componentStore.structureLoading"
       clearable
-      class="w-[calc(100%-200px)] skip-format"
+      class="w-[calc(100%-200px)]"
       v-model:value="componentStore.structureParams.search"
       type="text"
       :placeholder="$t('content.search')"

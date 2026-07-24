@@ -53,6 +53,7 @@
           :rule-path="validationRules.rulesNames.requiredStringField"
         >
           <n-input
+            class="skip-format"
             v-model:value="store.payload.name.ru"
             :placeholder="$t('newsCategoryPage.namePlaceholder')"
             :maxlength="100"

@@ -59,7 +59,7 @@
     <div class="flex">
       <n-input
         clearable
-        class="w-[calc(100%-200px)] skip-format"
+        class="w-[calc(100%-200px)]"
         v-model:value="store.query"
         type="text"
         :placeholder="$t('content.search')"

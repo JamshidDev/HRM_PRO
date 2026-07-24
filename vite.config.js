@@ -2,6 +2,7 @@ import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import AutoImport from 'unplugin-auto-import/vite'
 import tailwindcss from '@tailwindcss/vite'
+import svgLoader from 'vite-svg-loader'
 import path from 'path'
 
 export default defineConfig({
@@ -40,7 +41,8 @@ export default defineConfig({
         filepath: './.eslintrc-auto-import.json',
         globalsPropValue: true
       }
-    })
+    }),
+    svgLoader({ svgo: false })
   ],
   server: {
     port: 8000,

@@ -1,70 +1,74 @@
 <script setup>
-  import { CheckmarkCircle32Filled } from '@vicons/fluent'
+  import { Settings24Regular, CalendarCheckmark20Filled } from '@vicons/fluent'
+  import PositionIcon from '@/assets/icons/positionIcon.svg'
   import { useComponentStore } from '@/store/modules/index.js'
+  import SectionHeader from './shared/SectionHeader.vue'
+  import UIBadge from '@/components/ui/UIBadge.vue'
   import Utils from '../../../utils/Utils.js'
+
   const store = useComponentStore()
 </script>
 
 <template>
-  <h3 class="text-sm uppercase mb-2 font-semibold mt-12 text-primary">
-    {{ $t('oldCareerPage.systemTitle') }}
-  </h3>
-  <div class="w-full grid grid-cols-12 border p-6 rounded-sm border-surface-line border-dashed">
-    <div class="col-span-12"></div>
-    <template v-if="store.workerPreview?.worker && store.workerPreview?.worker?.new_careers">
-      <n-timeline class="w-full col-span-12">
-        <template v-for="(item, idx) in store.workerPreview?.worker?.new_careers" :key="idx">
-          <n-timeline-item
-            class="w-full"
-            type="info"
-            :title="
-              Utils.timeOnlyYear(item?.from) +
-              ' - ' +
-              (Utils.timeOnlyYear(item?.to) || $t('content.untilNow'))
-            "
-            line-type="dashed"
-          >
-            <div class="w-full pb-4">
+  <div>
+    <SectionHeader :title="$t('oldCareerPage.systemTitle')" :icon="Settings24Regular">
+      <div v-if="store.workerPreview?.worker?.new_careers?.length" class="flex flex-col gap-2">
+        <div v-for="(item, idx) in store.workerPreview?.worker?.new_careers" :key="idx" class="flex gap-3">
+          <div class="flex-1 min-w-0 bg-surface-ground-soft rounded-3xl px-5 py-4">
+            <div class="flex items-center gap-2 flex-wrap">
+              <div class="text-base font-bold text-textColor0">
+                {{ Utils.timeOnlyYear(item?.from) }} —
+                {{ Utils.timeOnlyYear(item?.to) || $t('content.untilNow') }}
+              </div>
+              <UIBadge
+                v-if="!item?.to"
+                :label="$t('workerView.career.currentLabel')"
+                :type="Utils.colorTypes.success"
+                :show-icon="false"
+                class="!w-auto"
+              />
+            </div>
+            <div class="text-textColor2 mt-1">
               {{ item.full_position }}
             </div>
-            <template #icon>
-              <n-icon size="24" class="text-primary">
-                <CheckmarkCircle32Filled />
-              </n-icon>
-            </template>
-          </n-timeline-item>
-        </template>
-      </n-timeline>
-    </template>
-  </div>
+          </div>
+        </div>
+      </div>
+      <h4 v-else class="text-center text-secondary">
+        {{ $t('content.no-data') }}
+      </h4>
+    </SectionHeader>
 
-  <h3 class="text-sm uppercase mb-2 font-semibold mt-12 text-primary">
-    {{ $t('oldCareerPage.title') }}
-  </h3>
-  <div
-    class="w-full grid grid-cols-12 border p-6 rounded-sm border-surface-line border-dashed mb-6"
-  >
-    <div class="col-span-12"></div>
-    <template v-if="store.workerPreview?.worker && store.workerPreview?.worker?.old_careers">
-      <n-timeline class="w-full col-span-12">
-        <template v-for="(item, idx) in store.workerPreview?.worker?.old_careers" :key="idx">
-          <n-timeline-item
-            class="w-full"
-            type="info"
-            :title="Utils.timeOnlyYear(item?.from_date) + ' - ' + Utils.timeOnlyYear(item?.to_date)"
-            line-type="dashed"
-          >
-            <div class="w-full pb-4">
-              {{ item.post_name }}
+    <SectionHeader :title="$t('oldCareerPage.title')" :icon="PositionIcon">
+      <div v-if="store.workerPreview?.worker?.old_careers?.length" class="flex flex-col">
+        <div v-for="(item, idx) in store.workerPreview?.worker?.old_careers" :key="idx" class="flex gap-3">
+          <div class="w-14 shrink-0 flex flex-col items-center">
+            <span class="flex-1 w-0.5" :class="idx === 0 ? 'bg-transparent' : 'bg-surface-line'"></span>
+            <span
+              class="w-14 h-14 rounded-full bg-surface-ground-soft border border-surface-line flex items-center justify-center shrink-0"
+            >
+              <span class="w-8 h-8 rounded-full bg-gray-soft flex items-center justify-center">
+                <n-icon size="18" class="text-white">
+                  <CalendarCheckmark20Filled />
+                </n-icon>
+              </span>
+            </span>
+            <span
+              class="flex-1 w-0.5"
+              :class="idx === store.workerPreview?.worker?.old_careers?.length - 1 ? 'bg-transparent' : 'bg-surface-line'"
+            ></span>
+          </div>
+          <div class="flex-1 min-w-0 bg-surface-ground-soft rounded-3xl px-5 py-4 mb-2">
+            <div class="text-base font-bold text-textColor0">
+              {{ Utils.timeOnlyYear(item?.from_date) }} — {{ Utils.timeOnlyYear(item?.to_date) }}
             </div>
-            <template #icon>
-              <n-icon size="24" class="text-primary">
-                <CheckmarkCircle32Filled />
-              </n-icon>
-            </template>
-          </n-timeline-item>
-        </template>
-      </n-timeline>
-    </template>
+            <div class="text-textColor2 mt-1">{{ item.post_name }}</div>
+          </div>
+        </div>
+      </div>
+      <h4 v-else class="text-center text-secondary">
+        {{ $t('content.no-data') }}
+      </h4>
+    </SectionHeader>
   </div>
 </template>

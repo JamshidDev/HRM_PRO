@@ -58,3 +58,16 @@
     border-color: var(--color-gray-200, currentcolor);
   }
 }
+
+@layer utilities {
+  .bg-surface-ground-soft {
+    background-color: #f9fafb;
+  }
+  [data-theme='dark'] .bg-surface-ground-soft {
+    background-color: var(--surface-ground);
+  }
+}
+
+.bg-gray-soft {
+  background-color: #98A2B3;
+}

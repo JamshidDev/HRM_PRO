@@ -322,7 +322,7 @@
     "noSpam": "Spamdan chiqarish",
     "noImage": "Rasm mavjud emas",
     "waitResponse": "Iltimos javobni kuting!",
-    "untilNow": "h.v",
+    "untilNow": "hozirgacha",
     "warningImageSave": "Asosiy rasm uchun yangi rasm tanlandi. O‘zgarishni saqlash uchun 'Saqlash' tugmasini bosing.",
     "selectAll": "Barchasini tanlash",
     "selectList": "Ro'yhatni to'liq tanlash",
@@ -638,7 +638,6 @@
     "name": "Tabelchilar",
     "work_place": "Tashkilot/Bo'lim"
   },
-
   "workerPage": {
     "name": "Xodimlar",
     "filter": {
@@ -1521,7 +1520,10 @@
       "position": "Lavozim",
       "department": "Bo'limi",
       "salary": "Oylik maosh",
-      "country": "Tug'ilgan davlati"
+      "country": "Tug'ilgan davlati",
+      "passportValid": "Amal qiladi",
+      "citizenship": "Fuqarolik",
+      "foreignPassport": "Xorijga chiqish pasporti"
     },
     "tabs": {
       "general": "Umumiy ma'lumotlari",
@@ -1532,9 +1534,53 @@
       "incentive": "Rag'batlantirishlari",
       "punishment": "Intizomiy jazolari",
       "exams": "Imtihonlar"
+    },
+    "header": {
+      "title": "Xodim profili",
+      "subtitle": "Umumiy ma'lumotlar, shaxsiy hujjatlar va faoliyat tarixi",
+      "activeEmployee": "Faol xodim",
+      "managementStaff": "Boshqaruv xodimlari",
+      "avgRating": "O'rtacha reyting",
+      "ratingBasedOn": "{count} ta baholash asosida",
+      "serviceCertificate": "Xizmat guvohnomasi",
+      "workNumber": "Ishchi raqami"
+    },
+    "sidebar": {
+      "title": "Profil bo'limlari"
+    },
+    "career": {
+      "currentLabel": "Joriy"
+    },
+    "med": {
+      "currentStatus": "Joriy salomatlik holati",
+      "validityPeriod": "Amal qilish muddati",
+      "started": "Boshlangan",
+      "ends": "Tugaydi",
+      "progressSuffix": "o'tdi",
+      "lastCheckDate": "Oxirgi ko'rik sanasi",
+      "conclusion": "Tibbiy xulosa",
+      "fitForWork": "Mehnatga layoqatli",
+      "monthsLeft": "≈{count} oy qoldi"
+    },
+    "vacation": {
+      "start": "Ta'tilga chiqish",
+      "end": "Ta'tildan qaytish",
+      "duration": "Davomiyligi",
+      "type": "Ta'til turi",
+      "daysLabel": "kun",
+      "calendarLabel": "Ta'til kunlari",
+      "completed": "Yakunlangan",
+      "planned": "Rejalashtirilgan",
+      "upcomingTitle": "Navbatdagi mehnat ta'tili — {year}-yil",
+      "viewCalendar": "Kalendardan ko'rish"
+    },
+    "incentive": {
+      "count": "{count} ta",
+      "categoryMaterial": "Moddiy rag'batlantirish",
+      "categoryState": "Davlat / idoraviy mukofot",
+      "categoryMoral": "Ma'naviy rag'batlantirish"
     }
   },
-
   "categoryPage": {
     "createCategory": "Kategoriya yaratish",
     "editCategory": "Kategoriyani tahrirlash",
@@ -2126,7 +2172,6 @@
   "businessTrip": {
     "name": "Xizmat safari"
   },
-
   "documentArchive": {
     "name": "Hujjatlar bazasi",
     "createTitle": "Hujjat faylini qo'shish",
@@ -2491,12 +2536,12 @@
     "confirmMessagePlaceholder": "Xabar kiriting...",
     "vacancyLevel": "Vakansiya bosqichlari",
     "levels": {
-      "one":   "Ariza topshirish",
-      "two":   "Hujjat baholash",
+      "one": "Ariza topshirish",
+      "two": "Hujjat baholash",
       "three": "Suhbat",
-      "four":  "Tibbiy ko'rik",
-      "five":  "Onlayn test",
-      "six":   "Tugatilgan"
+      "four": "Tibbiy ko'rik",
+      "five": "Onlayn test",
+      "six": "Tugatilgan"
     },
     "zoomStart": "Boshlash",
     "zoomMeet": "Zoom suhbat",

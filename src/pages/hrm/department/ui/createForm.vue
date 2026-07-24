@@ -97,7 +97,7 @@
             <n-input type="text" v-model:value="store.payload.name" />
           </template>
           <template #ru-content>
-            <n-input type="text" v-model:value="store.payload.name_ru" />
+            <n-input class="skip-format" type="text" v-model:value="store.payload.name_ru" />
           </template>
           <template #en-content>
             <n-input type="text" v-model:value="store.payload.name_en" />
