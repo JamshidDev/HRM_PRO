@@ -121,6 +121,18 @@ $dark-color: var(--dark-color);
 $secondary-color: var(--secondary-color);
 $white-color: var(--white-color);
 
+$primary-color: var(--primary-color);
+$info-color: var(--info-color);
+$success-color: var(--success-color);
+$warning-color: var(--warning-color);
+$danger-color: var(--danger-color);
+$dark-color: var(--dark-color);
+$secondary-color: var(--secondary-color);
+$white-color: var(--white-color);
+
 $sidebar-max-width: 260px;
-$sidebar-mini-width: 60px;
+$sidebar-mini-width: 70px;
+// .sidebar-card framing (margin 8px*2 + padding 4px*2 + border 1px*2) so the mini rail
+// keeps the same width whether the sidebar is open or collapsed
+$sidebar-card-gutter: 26px;
 $breakpoint-sidebar: 1000px;
