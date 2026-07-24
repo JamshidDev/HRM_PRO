@@ -104,34 +104,64 @@
     @onClear="clearFilter"
     @onAdd="onAdd"
     :show-add-button="true"
+    filter-placement="bottom-end"
+    :popover-style="{
+      width: '560px',
+      maxWidth: 'calc(100vw - 32px)',
+      minHeight: 'auto',
+      padding: '0',
+      borderRadius: '20px'
+    }"
   >
     <template #filterContent>
-      <label class="mt-3 text-xs text-gray-500">{{ $t('workerPage.filter.organization') }}</label>
-      <UISelect
-        :options="componentStore.structureList"
-        :modelV="store.params.organizations"
-        @updateModel="onChangeStructure"
-        @defaultValue="onDefaultEv"
-        :checkedVal="store.structureCheck"
-        @updateCheck="(v) => (store.structureCheck = v)"
-        :loading="componentStore.structureLoading"
-        @onSubmit="filterEvent"
-        v-model:search="componentStore.structureParams.search"
-        @onSearch="componentStore._structures"
-      />
-      <label class="mt-3 text-xs text-gray-500">{{ $t('workerPage.filter.department') }}</label>
-      <UINSelect
-        multiple
-        clearable
-        :disabled="store.params.organizations.length === 0"
-        :loading="departmentState.loading"
-        :options="departmentState.list"
-        :total-count="departmentState.total"
-        v-model:value="store.params.departments"
-        @update:value="onChangeDepartment"
-        @onSearch="onSearchDepartment"
-        @onScrollEv="onScrollDepartment"
-      />
+      <div class="department-position-filter-panel grid grid-cols-12 gap-x-5 gap-y-4">
+        <div class="col-span-12 md:col-span-6">
+          <label>{{ $t('workerPage.filter.organization') }}</label>
+          <UISelect
+            :options="componentStore.structureList"
+            :model-v="store.params.organizations"
+            @updateModel="onChangeStructure"
+            @defaultValue="onDefaultEv"
+            :checked-val="store.structureCheck"
+            @updateCheck="(v) => (store.structureCheck = v)"
+            :loading="componentStore.structureLoading"
+            @onSubmit="filterEvent"
+            v-model:search="componentStore.structureParams.search"
+            @onSearch="componentStore._structures"
+          />
+        </div>
+        <div class="col-span-12 md:col-span-6">
+          <label>{{ $t('workerPage.filter.department') }}</label>
+          <UINSelect
+            multiple
+            clearable
+            :disabled="store.params.organizations.length === 0"
+            :loading="departmentState.loading"
+            :options="departmentState.list"
+            :total-count="departmentState.total"
+            v-model:value="store.params.departments"
+            @update:value="onChangeDepartment"
+            @onSearch="onSearchDepartment"
+            @onScrollEv="onScrollDepartment"
+          />
+        </div>
+      </div>
     </template>
   </UIPageFilter>
 </template>
+
+<style scoped>
+  .department-position-filter-panel label {
+    display: block;
+    margin-bottom: 6px;
+    color: var(--textColor1);
+    font-size: 13px;
+    font-weight: 500;
+  }
+
+  .department-position-filter-panel :deep(.n-select) {
+    width: 100%;
+    --n-height: 44px !important;
+    --n-border-radius: 16px !important;
+  }
+</style>
