@@ -35,7 +35,7 @@
     { name: t('workerView.tabs.incentive'), id: 6, icon: icons.awardIcon },
     { name: t('workerView.tabs.punishment'), id: 7, icon: icons.punishmentIcon },
     { name: t('workerView.tabs.exams'), id: 8, icon: icons.examIcon },
-    { name: t('workerView.tabs.e_documents'), id: 9, icon: icons.JshirIcon },
+    { name: t('workerView.tabs.e_documents'), id: 9, icon: icons.jshirIcon },
   ])
 
   const openPreview = (id) => {
