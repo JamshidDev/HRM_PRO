@@ -112,8 +112,8 @@
 <template>
   <n-popover
     arrow-wrapper-class="![--n-arrow-offset:18px]"
-    class="-translate-x-2 !p-0 ![--n-border-radius:20px]"
-    placement="bottom-start"
+    class="!p-0 ![--n-border-radius:20px]"
+    placement="right-start"
     trigger="click"
     @update:show="onShow"
   >

@@ -1,21 +1,13 @@
 <script setup>
-  import LangDropdown from '@/components/general/LangDropdown.vue'
-  import { UIProfile, UIThemeSwitch, DownloadTask } from '@/components/index.js'
-  import AIButtonV2 from '@/components/buttons/AIButtonV2.vue'
   import {
     Alert20Regular,
     ChevronDoubleRight16Filled,
     WifiWarning24Regular,
     Video28Filled
   } from '@vicons/fluent'
-  import { useAccountStore, useExamVideoStore } from '@/store/modules/index.js'
-  import { appPermissions } from '@/utils/index.js'
-  import { AppPaths } from '@/utils/index.js'
+  import { useExamVideoStore } from '@/store/modules/index.js'
   import axios from 'axios'
-  import NotificationsWidget from '@components/ui/NotificationsWidget.vue'
   const emits = defineEmits(['onChange'])
-  const router = useRouter()
-  const store = useAccountStore()
   const examVideoStore = useExamVideoStore()
   const controlBtn = () => {
     emits('onChange')
@@ -56,11 +48,6 @@
           <ChevronDoubleRight16Filled />
         </n-icon>
       </div>
-
-      <AIButtonV2
-        v-if="store.checkPermission(appPermissions.ai)"
-        @click="() => router.push({ name: AppPaths.AIConversation.substring(1) })"
-      />
     </div>
     <div class="flex justify-end items-center gap-6">
       <!--      <n-button type="error" v-if="store.isModeDev" @click="deployProject" :loading="loading">-->
@@ -74,17 +61,12 @@
           <Alert20Regular />
         </n-icon>
       </n-badge>
-      <NotificationsWidget />
-      <DownloadTask />
-      <UIThemeSwitch />
       <n-button @click="showVideo()" v-if="examVideoStore.isRecording">
         <template #icon>
           <Video28Filled class="text-danger animate-pulse-fast" />
         </template>
         <span class="hidden md:flex">Recording</span>
       </n-button>
-      <LangDropdown />
-      <UIProfile />
     </div>
   </div>
 </template>
