@@ -1,11 +1,5 @@
 <script setup>
-  import {
-    NoDataPicture,
-    UIPagination,
-    UIUser,
-    UIMenuButton,
-    UIWorkerView
-  } from '@/components/index.js'
+  import { UIPagination, UIUser, UIWorkerView, UITable, UITableCard } from '@/components/index.js'
   import {
     useTimesheetDepartmentStore,
     useWorkerStore,
@@ -28,14 +22,6 @@
 
   const router = useRouter()
   const previewRef = ref(null)
-  const selectedItem = ref(null)
-
-  const goPush = (v) => {
-    router.push({
-      path: `${AppPaths.Hrm}${AppPaths.WorkerProfile}`,
-      query: { id: v.worker.uuid }
-    })
-  }
 
   const changePage = (v) => {
     store.params.page = v.page
@@ -43,192 +29,153 @@
     store._index()
   }
 
-  const onSelectEv = (v) => {
-    if (!accStore.checkAction(accStore.pn.hrWorkersRead)) return
-
-    if (v.key === Utils.ActionTypes.view) {
-      previewRef.value.openPreview(v.data.uuid)
-    } else if (v.key === Utils.ActionTypes.timesheet) {
-      if (!accStore.checkAction(accStore.pn.hrWorkersWrite)) return
-      timesheetDepartmentStore.payload.worker_position_id = v.data.id
-      timesheetDepartmentStore.visible = true
-    } else if (v.key === Utils.ActionTypes.edit) {
-      if (!accStore.checkAction(accStore.pn.hrWorkersWrite)) return
-      goPush(v.data)
-    }
-  }
-
   const onPreview = (uuid) => {
     if (!accStore.checkAction(accStore.pn.hrWorkersRead)) return
-
-    previewRef?.value.openPreview(uuid)
+    previewRef.value.openPreview(uuid)
   }
 
-  const options = [
+  const onEdit = (row) => {
+    if (!accStore.checkAction(accStore.pn.hrWorkersWrite)) return
+    router.push({
+      path: `${AppPaths.Hrm}${AppPaths.WorkerProfile}`,
+      query: { id: row.worker.uuid }
+    })
+  }
+
+  const onAssignTimesheet = (row) => {
+    if (!accStore.checkAction(accStore.pn.hrWorkersWrite)) return
+    timesheetDepartmentStore.payload.worker_position_id = row.id
+    timesheetDepartmentStore.visible = true
+  }
+
+  const actions = [
     {
       label: t('content.view'),
       key: Utils.ActionTypes.view,
-      icon: UIHelper.renderIcon(Eye16Regular)
+      icon: UIHelper.renderIcon(Eye16Regular),
+      action: (row) => onPreview(row.uuid)
     },
     {
       label: t('content.edit'),
       key: Utils.ActionTypes.edit,
-      icon: UIHelper.renderIcon(Edit32Regular)
+      icon: UIHelper.renderIcon(Edit32Regular),
+      action: onEdit
     },
     {
       label: t('timesheet.assignUser'),
       key: Utils.ActionTypes.timesheet,
-      icon: UIHelper.renderIcon(Table24Regular)
+      icon: UIHelper.renderIcon(Table24Regular),
+      action: onAssignTimesheet
     }
   ]
 
-  const showDropdownRef = ref(false)
-  const x = ref(0)
-  const y = ref(0)
-
-  const handleSelect = (key) => {
-    showDropdownRef.value = false
-    onSelectEv({ key, data: selectedItem.value })
-  }
-  const handleContextMenu = (e, v) => {
-    e.preventDefault()
-    selectedItem.value = v
-    showDropdownRef.value = false
-    nextTick().then(() => {
-      showDropdownRef.value = true
-      x.value = e.clientX
-      y.value = e.clientY
-    })
+  const onSelectEv = (key, row) => {
+    if (!accStore.checkAction(accStore.pn.hrWorkersRead)) return
+    actions.find((a) => a.key === key)?.action(row)
   }
 
-  const onClickoutside = () => {
-    showDropdownRef.value = false
-  }
+  const columns = computed(() => [
+    {
+      key: 'worker',
+      title: t('content.worker'),
+      minWidth: 260
+    },
+    {
+      key: 'department',
+      title: t('workerPage.table.department'),
+      minWidth: 160
+    },
+    {
+      key: 'position',
+      title: t('workerPage.table.position'),
+      minWidth: 160
+    },
+    {
+      key: 'organization',
+      title: t('workerPage.table.organization'),
+      minWidth: 160
+    },
+    {
+      key: 'group',
+      title: t('workerPage.table.group'),
+      width: 64,
+      align: 'center'
+    },
+    {
+      key: 'rank',
+      title: t('workerPage.table.rank'),
+      width: 64,
+      align: 'center'
+    },
+    {
+      key: 'rate',
+      title: t('workerPage.table.rate'),
+      width: 64,
+      align: 'center'
+    }
+  ])
 </script>
 
 <template>
-  <n-spin :show="store.loading" style="min-height: 200px">
-    <div class="w-full overflow-x-auto" v-if="store.list.length > 0">
-      <n-table class="mt-4" :single-line="false" size="small">
-        <thead>
-          <tr>
-            <th class="text-center! min-w-[40px] w-[40px]">
-              <n-tooltip v-if="exportStore.isExportingResume" trigger="hover">
-                {{ $t('exportPage.checkAll') }}
-                <template #trigger>
-                  <n-checkbox
-                    @click="exportStore.toggleAll"
-                    :checked="exportStore.resumePayload.all"
-                  />
-                </template>
-              </n-tooltip>
-              <span v-else>
-                {{ $t('content.number') }}
-              </span>
-            </th>
-            <th class="min-w-[200px] w-[360px]">{{ $t('content.worker') }}</th>
-            <th>{{ $t('workerPage.table.department') }}</th>
-            <th>{{ $t('workerPage.table.position') }}</th>
-            <th>{{ $t('workerPage.table.organization') }}</th>
-            <th class="min-w-[40px] w-[40px]">{{ $t('workerPage.table.group') }}</th>
-            <th class="min-w-[40px] w-[40px]">{{ $t('workerPage.table.rank') }}</th>
-            <th class="min-w-[40px] w-[40px]">{{ $t('workerPage.table.rate') }}</th>
-            <th class="min-w-[40px] w-[40px]"></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr
-            v-for="(item, idx) in store.list"
-            :key="idx"
-            @contextmenu="handleContextMenu($event, item)"
-          >
-            <td class="text-center">
-              <n-checkbox
-                @click="exportStore.toggleResumeWorker(item)"
-                :checked="
-                  exportStore.resumePayload.worker_ids.includes(item.id) ||
-                  exportStore.resumePayload.all
-                "
-                :disabled="exportStore.resumePayload.all"
-                v-if="exportStore.isExportingResume"
-              />
-              <span v-else class="text-[12px] text-gray-600">{{
-                (store.params.page - 1) * store.params.per_page + idx + 1
-              }}</span>
-            </td>
-            <td>
-              <UIUser
-                :hide-tooltip="true"
-                :short="false"
-                @onClickFullName="onPreview(item.uuid)"
-                :data="{
-                  photo: item?.worker.photo,
-                  firstName: item?.worker.first_name,
-                  middleName: item?.worker.middle_name,
-                  lastName: item?.worker.last_name,
-                  position: item?.type?.name
-                }"
-              >
-              </UIUser>
-            </td>
-            <td>{{ item?.department?.name }}</td>
-            <td>{{ item?.position?.name }}</td>
-            <td>{{ item?.organization?.name }}</td>
-            <td>
-              <div class="flex justify-center">
-                <n-button size="small" circle>{{ item?.group }}</n-button>
-              </div>
-            </td>
-            <td>
-              <div class="flex justify-center">
-                <n-button size="small" circle>{{ item?.rank }}</n-button>
-              </div>
-            </td>
-            <td>
-              <div class="flex justify-center">
-                <n-button size="small" circle>{{ item?.rate }}</n-button>
-              </div>
-            </td>
-
-            <td>
-              <UIMenuButton
-                :data="item"
-                show-view
-                show-edit
-                :show-delete="false"
-                @selectEv="onSelectEv"
-                :extra-options="[
-                  {
-                    label: $t('timesheet.assignUser'),
-                    key: Utils.ActionTypes.timesheet,
-                    icon: Table24Regular,
-                    visible: true
-                  }
-                ]"
-              />
-            </td>
-          </tr>
-        </tbody>
-      </n-table>
-      <UIPagination
-        :page="store.params.page"
-        :per_page="store.params.per_page"
-        :total="store.totalItems"
-        @change-page="changePage"
-      />
-      <n-dropdown
-        size="small"
-        placement="bottom-start"
-        trigger="manual"
-        :x="x"
-        :y="y"
-        :options="options"
-        :show="showDropdownRef"
-        :on-clickoutside="onClickoutside"
-        @select="handleSelect"
-      />
-    </div>
-    <NoDataPicture v-if="store.list.length === 0 && !store.loading" />
-  </n-spin>
   <UIWorkerView ref="previewRef" />
+
+  <div class="w-full mt-4">
+    <UITableCard :loading="store.loading" :empty="store.list.length === 0">
+      <template #default>
+        <UITable
+          :columns="columns"
+          :actions="actions"
+          :data="store.list"
+          :page="store.params.page"
+          :per-page="store.params.per_page"
+          :selectable="exportStore.isExportingResume"
+          :selected-keys="exportStore.resumePayload.worker_ids"
+          :all-selected="exportStore.resumePayload.all"
+          storage-key="hrm-worker"
+          @action="onSelectEv"
+          @toggle-row="exportStore.toggleResumeWorker"
+          @toggle-all="exportStore.toggleAll"
+        >
+          <template #cell-worker="{ row }">
+            <UIUser
+              @onClickFullName="onPreview(row.uuid)"
+              :short="false"
+              :data="{
+                photo: row?.worker.photo,
+                firstName: row?.worker.first_name,
+                middleName: row?.worker.middle_name,
+                lastName: row?.worker.last_name,
+                position: row?.type?.name
+              }"
+            />
+          </template>
+
+          <template #cell-department="{ row }">{{ row?.department?.name }}</template>
+          <template #cell-position="{ row }">{{ row?.position?.name }}</template>
+          <template #cell-organization="{ row }">{{ row?.organization?.name }}</template>
+
+          <template #cell-group="{ row }">
+            <n-button size="small" circle>{{ row?.group }}</n-button>
+          </template>
+
+          <template #cell-rank="{ row }">
+            <n-button size="small" circle>{{ row?.rank }}</n-button>
+          </template>
+
+          <template #cell-rate="{ row }">
+            <n-button size="small" circle>{{ row?.rate }}</n-button>
+          </template>
+        </UITable>
+      </template>
+
+      <template #footer>
+        <UIPagination
+          :page="store.params.page"
+          :per_page="store.params.per_page"
+          :total="store.totalItems"
+          @change-page="changePage"
+        />
+      </template>
+    </UITableCard>
+  </div>
 </template>

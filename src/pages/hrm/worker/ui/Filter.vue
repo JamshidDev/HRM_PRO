@@ -6,20 +6,10 @@
     useAccountStore
   } from '@/store/modules/index.js'
   import { UINSelect, UIPageFilter, UISelect } from '@/components/index.js'
-  import {
-    HomePerson20Regular,
-    CheckmarkCircle16Regular,
-    DocumentTable16Regular,
-    DismissCircle28Regular,
-    ShareScreenPersonOverlayInside16Regular,
-    PremiumPerson20Regular,
-    CloudArchive20Filled,
-    Search48Filled,
-    ChevronDown20Regular,
-    ChevronUp20Regular
-  } from '@vicons/fluent'
-  import Utils, { generateUUIDKey } from '@/utils/Utils.js'
-  import { AppPaths, appPermissions, useDebounce } from '@/utils/index.js'
+  import { ChevronDown20Regular, ChevronUp20Regular } from '@vicons/fluent'
+  import Utils from '@/utils/Utils.js'
+  import { appPermissions, useDebounce } from '@/utils/index.js'
+  import QuickActions from './QuickActions.vue'
 
   const store = useWorkerStore()
   const accStore = useAccountStore()
@@ -40,7 +30,6 @@
     store._getFilterDepartments()
   }
 
-  const router = useRouter()
   const onAdd = () => {
     if (!accStore.checkAction(accStore.pn.hrWorkersWrite)) return
     componentStore.checkUserVisible = true
@@ -53,7 +42,7 @@
     store._index()
   }
 
-  const filterEvent = (v) => {
+  const filterEvent = () => {
     componentStore.depParams.page = 1
     store.params.page = 1
     debounceIndexEv()
@@ -231,11 +220,6 @@
     exportStore.resumeModalVisible = true
   }
 
-  const openUserListEv = () => {
-    if (!accStore.checkAction(appPermissions.hrUsersRead)) return
-    store.userRoleVisible = true
-  }
-
   const canWrite = computed(() => accStore.checkAction(appPermissions.hrExport))
   const canZip = computed(() => accStore.checkAction(appPermissions.exportWorkersZip))
 
@@ -245,7 +229,6 @@
     fetchPosition()
   }
 
-  const onKeyUp = Utils.useDebounce(filterEvent, 1000)
 </script>
 
 <template>
@@ -257,498 +240,456 @@
     @onClear="clearFilter"
     @show="onShow"
     :show-add-button="false"
+    filter-placement="bottom-end"
+    :popover-style="{
+      width: '830px',
+      maxWidth: 'calc(100vw - 32px)',
+      padding: '0',
+      borderRadius: '20px'
+    }"
   >
     <template #filterAction>
-      <n-button
-        @click="store._downloadRelative"
-        :loading="store.loading"
-        class="w-full! md:w-auto!"
-        type="error"
-      >
-        {{ $t('workerPage.filter.downloadRelative') }}
-        <template #icon>
-          <CloudArchive20Filled />
-        </template>
-      </n-button>
-      <!--      <n-button-->
-      <!--          @click="router.push(Utils.routeHrmPathMaker(AppPaths.Export))"-->
-      <!--          class="w-full! md:w-auto!"-->
-      <!--          type="warning">{{$t('exportPage.name')}}-->
-      <!--        <template #icon>-->
-      <!--          <CloudArchive20Filled/>-->
-      <!--        </template>-->
-      <!--      </n-button>-->
-      <!--      <n-button @click="openUserListEv" class="w-full! md:w-auto!" type="primary">-->
-      <!--        {{ $t('workerRole.name') }}-->
-      <!--        <template #icon>-->
-      <!--          <PremiumPerson20Regular />-->
-      <!--        </template>-->
-      <!--      </n-button>-->
-
-      <n-button-group class="w-full! md:w-auto!">
-        <n-button
-          :class="[exportStore.isExportingResume ? 'w-1/2! md:w-auto!' : 'w-full! md:w-auto!']"
-          :disabled="
-            !(exportStore.resumePayload.all
-              ? store.totalItems
-              : exportStore.resumePayload.worker_ids.length)
-          "
-          type="primary"
-          v-if="exportStore.isExportingResume && canZip"
-          @click="onSubmitResumeExport"
-        >
-          <span class="font-semibold">{{ $t('content.download') }} ({{
+      <div class="order-2 w-full md:w-auto">
+        <QuickActions
+          :can-write="canWrite"
+          :can-zip="canZip"
+          :loading="store.loading"
+          :reference-active="exportStore.isExportingResume"
+          :selected-count="
             exportStore.resumePayload.all
               ? store.totalItems
               : exportStore.resumePayload.worker_ids.length
-          }})</span>
-          <template #icon>
-            <CheckmarkCircle16Regular />
-          </template>
-        </n-button>
-        <n-button
-          v-if="canWrite"
-          :class="[exportStore.isExportingResume ? 'w-1/2! md:w-auto!' : 'w-full! md:w-auto!']"
-          :color="exportStore.isExportingResume ? undefined : '#A020F0'"
-          :type="exportStore.isExportingResume ? 'error' : 'warning'"
-          icon-placement="right"
-          @click="onExportResume"
-        >
-          <template #icon>
-            <n-icon
-              :component="
-                exportStore.isExportingResume
-                  ? DismissCircle28Regular
-                  : ShareScreenPersonOverlayInside16Regular
-              "
-            />
-          </template>
-          {{ $t('content.reference') }}
-        </n-button>
-      </n-button-group>
-
-      <n-button
-        v-if="canWrite"
-        class="w-full! md:w-auto!"
-        type="success"
-        icon-placement="right"
-        @click="onExport"
-      >
-        <template #icon>
-          <n-icon :component="DocumentTable16Regular" />
-        </template>
-        {{ $t('content.export') }}
-      </n-button>
-
-      <n-button
-        v-if="canWrite"
-        class="w-full! md:w-auto!"
-        type="primary"
-        icon-placement="right"
-        @click="onAdd"
-      >
-        <template #icon>
-          <n-icon>
-            <HomePerson20Regular />
-          </n-icon>
-        </template>
-        {{ $t('workerPage.filter.contract') }}
-      </n-button>
+          "
+          @contract="onAdd"
+          @export="onExport"
+          @reference="onExportResume"
+          @download-reference="onSubmitResumeExport"
+          @relatives="store._downloadRelative"
+        />
+      </div>
     </template>
 
     <template #filterContent>
-      <div
-        class="pt-4 w-full md:w-[900px] transition-[min-height] duration-300 ease-in-out"
-        :class="showAllFilters ? 'min-h-[75vh]' : 'min-h-0'"
-      >
-        <div class="w-full">
-          <div class="grid grid-cols-12 gap-3">
-            <div class="col-span-12 md:col-span-6">
-              <label class="mt-3 text-xs text-gray-500">{{
-                $t('workerPage.filter.organization')
-              }}</label>
-              <UISelect
-                multiple
-                clearable
-                :options="componentStore.structureList"
-                :model-v="store.params.organizations"
-                @defaultValue="defaultEv"
-                @updateModel="onChangeStructure"
-                :checked-val="store.structureCheck"
-                @updateCheck="(v) => (store.structureCheck = v)"
-                :loading="componentStore.structureLoading"
-                v-model:search="componentStore.structureParams.search"
-                @onSearch="componentStore._structures"
-                @onSubmit="filterEvent"
-              />
-            </div>
-            <div class="col-span-12 md:col-span-6">
-              <label class="mt-3 text-xs text-gray-500">{{
-                $t('workerPage.filter.department')
-              }}</label>
-              <UINSelect
-                multiple
-                clearable
-                :disabled="store.params.organizations.length === 0"
-                :loading="store.filterDepartmentLoading"
-                :options="store.filterDepartmentList"
-                :total-count="store.filterDepartmentTotal"
-                v-model:value="store.params.departments"
-                @update:value="onChangeDepartment"
-                :query="store.filterDepParams.search"
-                @onSearch="onSearchDepartmentEv"
-              />
-            </div>
-            <div class="col-span-12 md:col-span-6">
-              <label class="mt-3 text-xs text-gray-500">{{ $t('workerPage.filter.position') }}</label>
-              <UINSelect
-                multiple
-                clearable
-                :disabled="store.params.organizations.length === 0"
-                :loading="store.filterPositionLoading"
-                :options="store.filterPositionList"
-                :total-count="store.filterPositionTotal"
-                :query="store.filterPosParams.search"
-                v-model:value="store.params.positions"
-                @update:value="filterEvent"
-                @onSearch="onSearchPositionEv"
-              />
-            </div>
-            <div class="col-span-12 md:col-span-6">
-              <label class="mt-3 text-xs text-gray-500">{{
-                $t('workerPage.filter.contract_type')
-              }}</label>
-              <n-select
-                v-model:value="store.params.contract_type"
-                filterable
-                clearable
-                :options="componentStore.contractTypeList"
-                label-field="name"
-                value-field="id"
-                :loading="componentStore.enumLoading"
-                @update:value="filterEvent"
-              >
-              </n-select>
-            </div>
-            <div class="col-span-12 md:col-span-6">
-              <label class="mt-3 text-xs text-gray-500">{{
-                $t('workerPage.filter.position_type')
-              }}</label>
-              <n-select
-                v-model:value="store.params.position_type"
-                filterable
-                clearable
-                :options="componentStore.positionCategory"
-                label-field="name"
-                value-field="id"
-                :loading="componentStore.enumAdminLoading"
-                @update:value="filterEvent"
-                :ignore-composition="false"
-              />
-            </div>
-            <div class="col-span-12 md:col-span-6">
-              <label class="text-xs text-gray-500">{{ $t(`createWorkerPage.form.education`) }}</label>
-              <n-select
-                v-model:value="store.params.educations"
-                multiple
-                filterable
-                clearable
-                :options="componentStore.educationList"
-                label-field="name"
-                value-field="id"
-                @update:value="filterEvent"
-                :ignore-composition="false"
-                :loading="componentStore.enumLoading"
-              />
-            </div>
-            <div class="col-span-12 md:col-span-6">
-              <label class="text-xs text-gray-500">{{ $t('workerPage.filter.age') }}</label>
-              <n-input-group>
-                <n-radio-group
-                  v-model:value="ageMode"
-                  @update:value="onChangeAgeMode"
-                  class="age-mode-group"
-                >
-                  <n-radio-button value="range">{{ $t('content.ageRange') }}</n-radio-button>
-                  <n-radio-button value="exact">{{ $t('content.ageExact') }}</n-radio-button>
-                </n-radio-group>
-                <template v-if="ageMode === 'range'">
-                  <n-input-number
-                    v-model:value="ageFrom"
-                    :min="1"
-                    :max="100"
-                    :precision="0"
-                    :input-props="{ onKeydown: blockDecimalKey }"
-                    clearable
-                    class="flex-1 min-w-0"
-                    :placeholder="$t('content.ageFrom')"
-                    @update:value="onChangeAgeRange"
-                  />
-                  <n-input-number
-                    v-model:value="ageTo"
-                    :min="1"
-                    :max="100"
-                    :precision="0"
-                    :input-props="{ onKeydown: blockDecimalKey }"
-                    clearable
-                    class="flex-1 min-w-0"
-                    :placeholder="$t('content.ageTo')"
-                    @update:value="onChangeAgeRange"
-                  />
-                </template>
-                <n-input-number
-                  v-else
-                  v-model:value="exactAge"
-                  :min="1"
-                  :max="100"
-                  :precision="0"
-                  :input-props="{ onKeydown: blockDecimalKey }"
-                  clearable
-                  class="flex-1 min-w-0"
-                  :placeholder="$t('content.ageExactPlaceholder')"
-                  @update:value="onChangeExactAge"
-                />
-              </n-input-group>
-            </div>
-            <div class="col-span-12 md:col-span-4">
-              <label class="text-xs text-gray-500">{{ $t(`registerPage.lastName`) }}</label>
-              <n-input
-                clearable
-                class="w-full!"
-                v-model:value="store.params.last_name"
-                type="text"
-                :placeholder="$t('content.search')"
-                :on-keyup="onKeyUp"
-                @clear="onKeyUp"
-              >
-                <template #suffix>
-                  <n-icon :component="Search48Filled" />
-                </template>
-              </n-input>
-            </div>
-            <div class="col-span-12 md:col-span-4">
-              <label class="text-xs text-gray-500">{{ $t(`registerPage.firstName`) }}</label>
-              <n-input
-                clearable
-                class="w-full!"
-                v-model:value="store.params.first_name"
-                type="text"
-                :placeholder="$t('content.search')"
-                :on-keyup="onKeyUp"
-                @clear="onKeyUp"
-              >
-                <template #suffix>
-                  <n-icon :component="Search48Filled" />
-                </template>
-              </n-input>
-            </div>
-            <div class="col-span-12 md:col-span-4">
-              <label class="text-xs text-gray-500">{{ $t(`registerPage.middleName`) }}</label>
-              <n-input
-                clearable
-                class="w-full!"
-                v-model:value="store.params.middle_name"
-                type="text"
-                :placeholder="$t('content.search')"
-                :on-keyup="onKeyUp"
-                @clear="onKeyUp"
-              >
-                <template #suffix>
-                  <n-icon :component="Search48Filled" />
-                </template>
-              </n-input>
-            </div>
-            <div class="col-span-12 md:col-span-4">
-              <label class="text-xs text-gray-500 select-none">&nbsp;</label>
-              <div
-                class="h-[34px] w-full flex items-center px-3 border border-surface-line rounded-lg"
-              >
-                <n-checkbox @change="filterEvent" v-model:checked="store.params.multiple_position">
-                  <span class="text-secondary text-xs">{{
-                    $t('workerPage.filter.multiple_position')
-                  }}</span>
-                </n-checkbox>
-              </div>
-            </div>
-            <div class="col-span-12 md:col-span-4">
-              <label class="text-xs text-gray-500 select-none">&nbsp;</label>
-              <div
-                class="h-[34px] w-full flex items-center px-3 border border-surface-line rounded-lg"
-              >
-                <n-checkbox @change="filterEvent" v-model:checked="store.params.pension_age">
-                  <span class="text-secondary text-xs">{{
-                    $t('workerPage.filter.pension_age')
-                  }}</span>
-                </n-checkbox>
-              </div>
-            </div>
+      <div class="worker-filter-panel">
+        <div class="grid grid-cols-12 gap-x-5 gap-y-4">
+          <div class="col-span-12 md:col-span-4">
+            <label>{{ $t('workerPage.filter.organization') }}</label>
+            <UISelect
+              multiple
+              clearable
+              :options="componentStore.structureList"
+              :model-v="store.params.organizations"
+              @defaultValue="defaultEv"
+              @updateModel="onChangeStructure"
+              :checked-val="store.structureCheck"
+              @updateCheck="(v) => (store.structureCheck = v)"
+              :loading="componentStore.structureLoading"
+              v-model:search="componentStore.structureParams.search"
+              @onSearch="componentStore._structures"
+              @onSubmit="filterEvent"
+            />
           </div>
 
-          <div class="mt-4 mb-2 flex items-center gap-2">
-            <n-divider class="flex-1! m-0!" />
-            <n-button
-              text
-              size="tiny"
-              class="text-xs text-center shrink-0"
-              @click="showAllFilters = !showAllFilters"
-            >
-              {{ showAllFilters ? $t('content.hideAdditionalFilters') : $t('content.showAdditionalFilters') }}
-              <template #icon>
-                <n-icon :component="showAllFilters ? ChevronUp20Regular : ChevronDown20Regular" />
-              </template>
-            </n-button>
-            <n-divider class="flex-1! m-0!" />
+          <div class="col-span-12 md:col-span-4">
+            <label>{{ $t('workerPage.filter.department') }}</label>
+            <UINSelect
+              multiple
+              clearable
+              :disabled="store.params.organizations.length === 0"
+              :loading="store.filterDepartmentLoading"
+              :options="store.filterDepartmentList"
+              :total-count="store.filterDepartmentTotal"
+              v-model:value="store.params.departments"
+              @update:value="onChangeDepartment"
+              :query="store.filterDepParams.search"
+              @onSearch="onSearchDepartmentEv"
+            />
           </div>
 
-          <n-collapse-transition :show="showAllFilters">
-            <div class="grid grid-cols-12 gap-3">
-              <div class="col-span-12 md:col-span-4">
-                <label class="mt-3 text-xs text-gray-500">{{ $t('workerPage.filter.birthday') }}</label>
-                <n-select
-                  v-model:value="store.params.birthday"
-                  filterable
-                  clearable
-                  :options="Utils.monthList"
-                  label-field="name"
-                  value-field="id"
-                  @update:value="filterEvent"
-                  :ignore-composition="false"
-                />
-              </div>
-              <div class="col-span-12 md:col-span-4">
-                <label class="text-xs text-gray-500">{{ $t('workerPage.filter.sex') }}</label>
-                <n-select
-                  v-model:value="store.params.sex"
-                  filterable
-                  clearable
-                  :options="componentStore.genderList"
-                  label-field="name"
-                  value-field="id"
-                  @update:value="filterEvent"
-                  :ignore-composition="false"
-                />
-              </div>
-              <div class="col-span-12 md:col-span-4">
-                <label class="text-xs text-gray-500">{{
-                  $t(`createWorkerPage.form.marital_status`)
-                }}</label>
-                <n-select
-                  v-model:value="store.params.marital_status"
-                  filterable
-                  clearable
-                  :options="componentStore.maritalList"
-                  label-field="name"
-                  value-field="id"
-                  :ignore-composition="false"
-                  :loading="componentStore.enumLoading"
-                  @update:value="filterEvent"
-                />
-              </div>
-              <div class="col-span-12 md:col-span-4">
-                <label class="text-xs text-gray-500">{{
-                  $t(`createWorkerPage.form.nationality_id`)
-                }}</label>
-                <n-select
-                  v-model:value="store.params.nationalities"
-                  multiple
-                  filterable
-                  clearable
-                  :options="componentStore.nationalityList"
-                  label-field="name"
-                  value-field="id"
-                  @update:value="filterEvent"
-                  :ignore-composition="false"
-                  :loading="componentStore.nationalityLoading"
-                />
-              </div>
-              <div class="col-span-12 md:col-span-4">
-                <label class="text-xs text-gray-500">{{ $t(`createWorkerPage.form.country`) }}</label>
-                <n-select
-                  v-model:value="store.params.country_id"
-                  filterable
-                  clearable
-                  :options="componentStore.countryList"
-                  label-field="name"
-                  value-field="id"
-                  :ignore-composition="false"
-                  :loading="componentStore.countryLoading"
-                  @update:value="changeCountry"
-                />
-              </div>
-              <div class="col-span-12 md:col-span-4">
-                <label class="text-xs text-gray-500">{{ $t(`createWorkerPage.form.region`) }}</label>
-                <n-select
-                  v-model:value="store.params.region_id"
-                  filterable
-                  clearable
-                  :options="componentStore.regionList"
-                  label-field="name"
-                  value-field="id"
-                  :ignore-composition="false"
-                  :loading="componentStore.regionLoading"
-                  @update:value="onChangeRegion"
-                />
-              </div>
-              <div class="col-span-12 md:col-span-4">
-                <label class="text-xs text-gray-500">{{ $t(`createWorkerPage.form.city`) }}</label>
-                <n-select
-                  :disabled="!store.params.region_id"
-                  v-model:value="store.params.city_id"
-                  filterable
-                  clearable
-                  :options="store.districtList"
-                  label-field="name"
-                  value-field="id"
-                  :ignore-composition="false"
-                  :loading="store.districtLoading"
-                  @update:value="filterEvent"
-                />
-              </div>
-              <div class="col-span-12 md:col-span-4">
-                <label class="text-xs text-gray-500">{{
-                  $t(`createWorkerPage.form.currentRegion`)
-                }}</label>
-                <n-select
-                  v-model:value="store.params.current_region_id"
-                  filterable
-                  clearable
-                  :options="componentStore.regionList"
-                  label-field="name"
-                  value-field="id"
-                  :ignore-composition="false"
-                  :loading="componentStore.regionLoading"
-                  @update:value="onChangeCurrentRegion"
-                />
-              </div>
-              <div class="col-span-12 md:col-span-4">
-                <label class="text-xs text-gray-500">{{
-                  $t(`createWorkerPage.form.currentCity`)
-                }}</label>
-                <n-select
-                  v-model:value="store.params.current_city_id"
-                  :disabled="!store.params.current_region_id"
-                  filterable
-                  clearable
-                  :options="store.currentDistrictList"
-                  label-field="name"
-                  value-field="id"
-                  :ignore-composition="false"
-                  :loading="store.currentDistrictLoading"
-                  @update:value="filterEvent"
-                />
-              </div>
-            </div>
-          </n-collapse-transition>
+          <div class="col-span-12 md:col-span-4">
+            <label>{{ $t('createWorkerPage.form.education') }}</label>
+            <n-select
+              v-model:value="store.params.educations"
+              multiple
+              filterable
+              clearable
+              :options="componentStore.educationList"
+              label-field="name"
+              value-field="id"
+              @update:value="filterEvent"
+              :loading="componentStore.enumLoading"
+            />
+          </div>
+
+          <div class="col-span-12 md:col-span-4">
+            <label>{{ $t('workerPage.filter.position') }}</label>
+            <UINSelect
+              multiple
+              clearable
+              :disabled="store.params.organizations.length === 0"
+              :loading="store.filterPositionLoading"
+              :options="store.filterPositionList"
+              :total-count="store.filterPositionTotal"
+              :query="store.filterPosParams.search"
+              v-model:value="store.params.positions"
+              @update:value="filterEvent"
+              @onSearch="onSearchPositionEv"
+            />
+          </div>
+
+          <div class="col-span-12 md:col-span-4">
+            <label>{{ $t('workerPage.filter.position_type') }}</label>
+            <n-select
+              v-model:value="store.params.position_type"
+              filterable
+              clearable
+              :options="componentStore.positionCategory"
+              label-field="name"
+              value-field="id"
+              :loading="componentStore.enumAdminLoading"
+              @update:value="filterEvent"
+            />
+          </div>
+
+          <div class="col-span-12 md:col-span-4">
+            <label>{{ $t('workerPage.filter.contract_type') }}</label>
+            <n-select
+              v-model:value="store.params.contract_type"
+              filterable
+              clearable
+              :options="componentStore.contractTypeList"
+              label-field="name"
+              value-field="id"
+              :loading="componentStore.enumLoading"
+              @update:value="filterEvent"
+            />
+          </div>
+
+          <div class="col-span-12 md:col-span-6 worker-filter-check">
+            <n-checkbox @change="filterEvent" v-model:checked="store.params.multiple_position">
+              {{ $t('workerPage.filter.multiple_position') }}
+            </n-checkbox>
+          </div>
+
+          <div class="col-span-12 md:col-span-6 worker-filter-check">
+            <n-checkbox @change="filterEvent" v-model:checked="store.params.pension_age">
+              {{ $t('workerPage.filter.pension_age') }}
+            </n-checkbox>
+          </div>
         </div>
+
+        <n-divider class="worker-filter-divider" />
+
+        <div class="grid grid-cols-12 gap-x-5 gap-y-4">
+          <div class="col-span-12 md:col-span-4">
+            <label>{{ $t('workerPage.filter.age') }}</label>
+            <n-radio-group
+              v-model:value="ageMode"
+              @update:value="onChangeAgeMode"
+              class="age-mode-group"
+            >
+              <n-radio-button value="range">{{ $t('content.ageRange') }}</n-radio-button>
+              <n-radio-button value="exact">{{ $t('content.ageExact') }}</n-radio-button>
+            </n-radio-group>
+          </div>
+
+          <div class="col-span-12 md:col-span-4">
+            <label>{{ ageMode === 'range' ? $t('content.from') : $t('content.ageExact') }}</label>
+            <n-input-number
+              v-if="ageMode === 'range'"
+              v-model:value="ageFrom"
+              :min="1"
+              :max="100"
+              :precision="0"
+              :input-props="{ onKeydown: blockDecimalKey }"
+              clearable
+              :placeholder="$t('content.ageFrom')"
+              @update:value="onChangeAgeRange"
+            />
+            <n-input-number
+              v-else
+              v-model:value="exactAge"
+              :min="1"
+              :max="100"
+              :precision="0"
+              :input-props="{ onKeydown: blockDecimalKey }"
+              clearable
+              :placeholder="$t('content.ageExactPlaceholder')"
+              @update:value="onChangeExactAge"
+            />
+          </div>
+
+          <div v-if="ageMode === 'range'" class="col-span-12 md:col-span-4">
+            <label>{{ $t('content.to') }}</label>
+            <n-input-number
+              v-model:value="ageTo"
+              :min="1"
+              :max="100"
+              :precision="0"
+              :input-props="{ onKeydown: blockDecimalKey }"
+              clearable
+              :placeholder="$t('content.ageTo')"
+              @update:value="onChangeAgeRange"
+            />
+          </div>
+        </div>
+
+        <n-button text class="worker-additional-toggle" @click="showAllFilters = !showAllFilters">
+          <template #icon>
+            <n-icon :component="showAllFilters ? ChevronUp20Regular : ChevronDown20Regular" />
+          </template>
+          {{
+            showAllFilters
+              ? $t('content.hideAdditionalFilters')
+              : $t('content.showAdditionalFilters')
+          }}
+        </n-button>
+
+        <n-collapse-transition :show="showAllFilters">
+          <div class="grid grid-cols-12 gap-x-5 gap-y-4 mt-4">
+            <div class="col-span-12 md:col-span-4">
+              <label>{{ $t('workerPage.filter.birthday') }}</label>
+              <n-select
+                v-model:value="store.params.birthday"
+                filterable
+                clearable
+                :options="Utils.monthList"
+                label-field="name"
+                value-field="id"
+                @update:value="filterEvent"
+              />
+            </div>
+
+            <div class="col-span-12 md:col-span-4">
+              <label>{{ $t('workerPage.filter.sex') }}</label>
+              <n-select
+                v-model:value="store.params.sex"
+                filterable
+                clearable
+                :options="componentStore.genderList"
+                label-field="name"
+                value-field="id"
+                @update:value="filterEvent"
+              />
+            </div>
+
+            <div class="col-span-12 md:col-span-4">
+              <label>{{ $t('createWorkerPage.form.marital_status') }}</label>
+              <n-select
+                v-model:value="store.params.marital_status"
+                filterable
+                clearable
+                :options="componentStore.maritalList"
+                label-field="name"
+                value-field="id"
+                :loading="componentStore.enumLoading"
+                @update:value="filterEvent"
+              />
+            </div>
+
+            <div class="col-span-12 md:col-span-4">
+              <label>{{ $t('createWorkerPage.form.nationality_id') }}</label>
+              <n-select
+                v-model:value="store.params.nationalities"
+                multiple
+                filterable
+                clearable
+                :options="componentStore.nationalityList"
+                label-field="name"
+                value-field="id"
+                @update:value="filterEvent"
+                :loading="componentStore.nationalityLoading"
+              />
+            </div>
+
+            <div class="col-span-12 md:col-span-4">
+              <label>{{ $t('createWorkerPage.form.country') }}</label>
+              <n-select
+                v-model:value="store.params.country_id"
+                filterable
+                clearable
+                :options="componentStore.countryList"
+                label-field="name"
+                value-field="id"
+                :loading="componentStore.countryLoading"
+                @update:value="changeCountry"
+              />
+            </div>
+
+            <div class="col-span-12 md:col-span-4">
+              <label>{{ $t('createWorkerPage.form.region') }}</label>
+              <n-select
+                v-model:value="store.params.region_id"
+                filterable
+                clearable
+                :options="componentStore.regionList"
+                label-field="name"
+                value-field="id"
+                :loading="componentStore.regionLoading"
+                @update:value="onChangeRegion"
+              />
+            </div>
+
+            <div class="col-span-12 md:col-span-4">
+              <label>{{ $t('createWorkerPage.form.city') }}</label>
+              <n-select
+                v-model:value="store.params.city_id"
+                :disabled="!store.params.region_id"
+                filterable
+                clearable
+                :options="store.districtList"
+                label-field="name"
+                value-field="id"
+                :loading="store.districtLoading"
+                @update:value="filterEvent"
+              />
+            </div>
+
+            <div class="col-span-12 md:col-span-4">
+              <label>{{ $t('createWorkerPage.form.currentRegion') }}</label>
+              <n-select
+                v-model:value="store.params.current_region_id"
+                filterable
+                clearable
+                :options="componentStore.regionList"
+                label-field="name"
+                value-field="id"
+                :loading="componentStore.regionLoading"
+                @update:value="onChangeCurrentRegion"
+              />
+            </div>
+
+            <div class="col-span-12 md:col-span-4">
+              <label>{{ $t('createWorkerPage.form.currentCity') }}</label>
+              <n-select
+                v-model:value="store.params.current_city_id"
+                :disabled="!store.params.current_region_id"
+                filterable
+                clearable
+                :options="store.currentDistrictList"
+                label-field="name"
+                value-field="id"
+                :loading="store.currentDistrictLoading"
+                @update:value="filterEvent"
+              />
+            </div>
+          </div>
+        </n-collapse-transition>
       </div>
     </template>
   </UIPageFilter>
 </template>
 
 <style scoped>
-  .age-mode-group :deep(.n-radio-button:last-child),
-  .age-mode-group :deep(.n-radio-button:last-child .n-radio-button__state-border) {
-    border-top-right-radius: 0 !important;
-    border-bottom-right-radius: 0 !important;
+  .worker-filter-panel label {
+    display: block;
+    margin-bottom: 6px;
+    color: var(--textColor1);
+    font-size: 13px;
+    font-weight: 500;
+  }
+
+  .worker-filter-panel :deep(:where(.n-select, .n-input-number)) {
+    width: 100%;
+    --n-height: 40px !important;
+    --n-border-radius: 16px !important;
+  }
+
+  .worker-filter-panel :deep(.n-select) {
+    --n-padding-single: 0 12px !important;
+    --n-padding-multiple: 0 12px !important;
+  }
+
+  .worker-filter-panel :deep(.n-base-selection-label),
+  .worker-filter-panel :deep(.ui__structure-input .n-input-wrapper),
+  .worker-filter-panel :deep(.n-input-number .n-input-wrapper) {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  .worker-filter-check {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0 14px;
+    border: 1px solid var(--surface-line);
+    border-radius: 16px;
+  }
+
+  .worker-filter-check :deep(.n-checkbox__label) {
+    color: var(--textColor2);
+    font-size: 13px;
+  }
+
+  .worker-filter-divider {
+    margin: 24px 0 !important;
+  }
+
+  .age-mode-group {
+    display: flex;
+    width: 100%;
+    height: 40px;
+    overflow: hidden;
+    border: 3px solid var(--surface-line);
+    border-radius: 12px;
+    background: #eaecf0;
+  }
+
+  .age-mode-group :deep(.n-radio-button) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    height: 100%;
+    padding: 0 12px;
+    border: 0;
+    background: transparent;
+    color: var(--textColor2);
+  }
+
+  .age-mode-group :deep(.n-radio-button--checked) {
+    border-color: transparent;
+    background: #fff;
+    color: #101828;
+  }
+
+  .age-mode-group :deep(.n-radio-button__state-border) {
+    display: none;
+  }
+
+  .age-mode-group :deep(.n-radio-button__label) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 400;
+  }
+
+  .age-mode-group :deep(.n-radio-button:not(:first-child)::before) {
+    display: none;
+  }
+
+  .worker-additional-toggle {
+    margin-top: 18px;
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  :global([data-theme='dark'] .age-mode-group) {
+    border-color: #344054;
+    background: #344054;
+  }
+
+  :global([data-theme='dark'] .age-mode-group .n-radio-button) {
+    color: #f2f4f7;
+  }
+
+  :global([data-theme='dark'] .age-mode-group .n-radio-button--checked) {
+    background: #101828;
+    color: #f2f4f7;
   }
 </style>

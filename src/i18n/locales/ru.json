@@ -117,6 +117,8 @@
     "deleteAll": "Удалить все",
     "checked": "Проверено",
     "view": "Просмотр",
+    "manageColumns": "Настройка столбцов",
+    "resetColumns": "Сбросить по умолчанию",
     "backToList": "Вернуться к списку",
     "responsible": "Ответственный",
     "now": "Сейчас",
@@ -165,7 +167,9 @@
     "person": "чел",
     "searchWorker": "Введите для поиска сотрудника...",
     "add": "Добавить",
+    "filters": "Фильтры",
     "filterSetting": "Настройки фильтра",
+    "clearFilters": "Очистить фильтры",
     "showAdditionalFilters": "Показать дополнительные фильтры",
     "hideAdditionalFilters": "Скрыть дополнительные фильтры",
     "ageRange": "Диапазон",
@@ -640,6 +644,7 @@
       "pension_age": "Сотрудники пенсионного возраста",
       "position_type": "Тип должности",
       "age": "Возраст",
+      "quickActions": "Быстрые действия",
       "downloadRelative": "Скачать родственников"
     },
     "checkWorker": {
