@@ -1,7 +1,8 @@
 <script setup>
   import CircleChart from './CircleChart.vue'
+  import CardDecor from './CardDecor.vue'
   import { useTurnstileDashboardStore } from '@/store/modules/index.js'
-  import { ChartMultiple24Regular, Eye20Filled } from '@vicons/fluent'
+  import { Eye20Filled } from '@vicons/fluent'
 
   const store = useTurnstileDashboardStore()
 
@@ -27,104 +28,81 @@
     }
   })
 
+  const cells = computed(() => [
+    {
+      previewType: 'privilege_turnstile_workers',
+      percent: grandPercent.value,
+      type: 'success',
+      count: store.grandWorkerData?.privilege_turnstile_workers_count || 0,
+      label: 'turnStileDashboard.cards.privilege'
+    },
+    {
+      previewType: 'not_passed_turnstile_workers',
+      percent: notPassedPercent.value,
+      type: 'warning',
+      count: store.grandWorkerData?.not_passed_turnstile_workers_count || 0,
+      label: 'turnStileDashboard.cards.dontPassFace'
+    },
+    {
+      previewType: 'vacations',
+      percent: vacationPercent.value,
+      type: 'secondary',
+      count: store.grandWorkerData?.vacation_workers?.total || 0,
+      label: 'turnStileDashboard.cards.onVacation'
+    },
+    {
+      previewType: 'casual_workers',
+      percent: casualPercent.value,
+      type: 'primary',
+      count: store.grandWorkerData?.casual_workers || 0,
+      label: 'turnStileDashboard.cards.onHoliday'
+    }
+  ])
+
   const emits = defineEmits(['onPreview'])
 </script>
 
 <template>
   <div
-    class="grid grid-cols-12 px-4 py-2 bg-surface-section border border-surface-line rounded-xl relative cursor-pointer"
+    class="p-4 bg-surface-section/75 border border-surface-line rounded-2xl relative overflow-hidden"
   >
-    <n-spin :show="store.grandLoading" class="col-span-12">
-      <div class="grid grid-cols-12">
-        <div class="col-span-12 my-4">
-          <h3 class="font-bold text-lg leading-[1.2] text-textColor0">
-            {{ $t('turnStileDashboard.cards.privilege_turnstile_workers') }}
-          </h3>
-          <small class="text-secondary leading-[1.2]">{{
-            $t('turnStileDashboard.cards.privilegeSubtitle')
-          }}</small>
-        </div>
-        <div class="col-span-12 flex flex-wrap gap-x-2 gap-y-2 justify-evenly items-end mb-2">
+    <CardDecor variant="dots" class="top-4 right-4 text-secondary" />
+    <n-spin :show="store.grandLoading">
+      <div>
+        <h3 class="font-bold text-[17px] leading-[1.2] text-textColor0">
+          {{ $t('turnStileDashboard.cards.privilege_turnstile_workers') }}
+        </h3>
+        <small class="text-xs text-secondary leading-[1.2]">{{
+          $t('turnStileDashboard.cards.privilegeSubtitle')
+        }}</small>
+      </div>
+      <div class="grid grid-cols-2 gap-3 mt-5">
+        <div
+          v-for="(cell, idx) in cells"
+          :key="idx"
+          @click="emits('onPreview', cell.previewType)"
+          class="z-10 flex items-center gap-3 min-w-0 bg-transparent hover:bg-primary/6 transition-all duration-300 cursor-pointer p-2 rounded-xl relative group"
+        >
           <div
-            @click="emits('onPreview', 'privilege_turnstile_workers')"
-            class="z-10 flex flex-col w-[80px] min-h-[150px] bg-transparent hover:bg-primary/6 transition-all duration-300 cursor-pointer p-2 rounded-xl relative group"
+            class="z-10 transition-all duration-500 scale-0 absolute left-1/2 top-1/2 -translate-1/2 text-primary opacity-0 group-hover:opacity-100 group-hover:scale-100"
           >
-            <div class="z-10 transition-all duration-500 scale-0 absolute left-1/2 top-1/2 -translate-1/2 text-xs font-medium text-primary opacity-0 group-hover:opacity-100 group-hover:scale-100">
-              <n-icon size="36"><Eye20Filled /></n-icon>
-            </div>
-            <h3 class="text-lg font-bold flex gap-1 items-center text-textColor0 opacity-100 group-hover:opacity-[0.2] transition-all duration-300">
-              <span class="bg-success/10 w-[20px] h-[20px] flex justify-center items-center rounded-lg">
-                <n-icon size="14" class="text-success"><ChartMultiple24Regular /></n-icon>
-              </span>
-              {{ store.grandWorkerData?.privilege_turnstile_workers_count || 0 }}
-            </h3>
-            <p class="text-[10px] font-semibold text-secondary pl-1 mt-2 leading-[1.3] grow opacity-100 group-hover:opacity-[0.2] transition-all duration-300">
-              {{ $t('turnStileDashboard.cards.privilege') }}
-            </p>
-            <CircleChart :percent="grandPercent" type="success" class="opacity-100 group-hover:opacity-[0.2] transition-all duration-300 mt-2" />
+            <n-icon size="30"><Eye20Filled /></n-icon>
           </div>
-
-          <div
-            @click="emits('onPreview', 'not_passed_turnstile_workers')"
-            class="z-10 flex flex-col w-[80px] min-h-[150px] bg-transparent hover:bg-primary/6 transition-all duration-300 cursor-pointer p-2 rounded-xl relative group"
-          >
-            <div class="z-10 transition-all duration-500 scale-0 absolute left-1/2 top-1/2 -translate-1/2 text-xs font-medium text-primary opacity-0 group-hover:opacity-100 group-hover:scale-100">
-              <n-icon size="36"><Eye20Filled /></n-icon>
+          <CircleChart
+            :percent="cell.percent"
+            :type="cell.type"
+            class="shrink-0 opacity-100 group-hover:opacity-[0.2] transition-all duration-300"
+          />
+          <div class="min-w-0 opacity-100 group-hover:opacity-[0.2] transition-all duration-300">
+            <div class="font-grotesk text-[19px] font-bold text-textColor0 leading-[1.2]">
+              {{ cell.count }}
             </div>
-            <h3 class="text-lg font-bold flex gap-1 items-center text-textColor0 opacity-100 group-hover:opacity-[0.2] transition-all duration-300">
-              <span class="bg-warning/10 w-[20px] h-[20px] flex justify-center items-center rounded-lg">
-                <n-icon size="14" class="text-warning"><ChartMultiple24Regular /></n-icon>
-              </span>
-              {{ store.grandWorkerData?.not_passed_turnstile_workers_count || 0 }}
-            </h3>
-            <p class="text-[10px] font-semibold text-secondary pl-1 mt-2 leading-[1.3] grow opacity-100 group-hover:opacity-[0.2] transition-all duration-300">
-              {{ $t('turnStileDashboard.cards.dontPassFace') }}
-            </p>
-            <CircleChart :percent="notPassedPercent" type="warning" class="opacity-100 group-hover:opacity-[0.2] transition-all duration-300 mt-2 mx-auto block w-fit" />
-          </div>
-
-          <div
-            @click="emits('onPreview', 'vacations')"
-            class="z-10 flex flex-col w-[80px] min-h-[150px] bg-transparent hover:bg-primary/6 transition-all duration-300 cursor-pointer p-2 rounded-xl relative group"
-          >
-            <div class="z-10 transition-all duration-500 scale-0 absolute left-1/2 top-1/2 -translate-1/2 text-xs font-medium text-primary opacity-0 group-hover:opacity-100 group-hover:scale-100">
-              <n-icon size="36"><Eye20Filled /></n-icon>
+            <div class="text-[11px] text-secondary leading-[1.3] line-clamp-2">
+              {{ $t(cell.label) }}
             </div>
-            <h3 class="text-lg font-bold flex gap-1 items-center text-textColor0 opacity-100 group-hover:opacity-[0.2] transition-all duration-300">
-              <span class="bg-dark/10 w-[20px] h-[20px] flex justify-center items-center rounded-lg">
-                <n-icon size="14" class="text-dark"><ChartMultiple24Regular /></n-icon>
-              </span>
-              {{ store.grandWorkerData?.vacation_workers?.total || 0 }}
-            </h3>
-            <p class="text-[10px] font-semibold text-secondary pl-1 mt-2 leading-[1.3] grow opacity-100 group-hover:opacity-[0.2] transition-all duration-300">
-              {{ $t('turnStileDashboard.cards.onVacation') }}
-            </p>
-            <CircleChart :percent="vacationPercent" type="dark" class="opacity-100 group-hover:opacity-[0.2] transition-all duration-300 mt-2" />
-          </div>
-
-          <div
-            @click="emits('onPreview', 'casual_workers')"
-            class="z-10 flex flex-col w-[80px] min-h-[150px] bg-transparent hover:bg-primary/6 transition-all duration-300 cursor-pointer p-2 rounded-xl relative group"
-          >
-            <div class="z-10 transition-all duration-500 scale-0 absolute left-1/2 top-1/2 -translate-1/2 text-xs font-medium text-primary opacity-0 group-hover:opacity-100 group-hover:scale-100">
-              <n-icon size="36"><Eye20Filled /></n-icon>
-            </div>
-            <h3 class="text-lg font-bold flex gap-1 items-center text-textColor0 opacity-100 group-hover:opacity-[0.2] transition-all duration-300">
-              <span class="bg-primary/10 w-[20px] h-[20px] flex justify-center items-center rounded-lg">
-                <n-icon size="14" class="text-primary"><ChartMultiple24Regular /></n-icon>
-              </span>
-              {{ store.grandWorkerData?.casual_workers || 0 }}
-            </h3>
-            <p class="text-[10px] font-semibold text-secondary pl-1 mt-2 leading-[1.3] grow opacity-100 group-hover:opacity-[0.2] transition-all duration-300">
-              {{ $t('turnStileDashboard.cards.onHoliday') }}
-            </p>
-            <CircleChart :percent="casualPercent" type="primary" class="opacity-100 group-hover:opacity-[0.2] transition-all duration-300 mt-2" />
           </div>
         </div>
       </div>
     </n-spin>
-    <span
-      class="z-[1] opacity-30 absolute top-0 right-0 w-[160px] h-full bg-no-repeat bg-[url(/effect/primary-card.svg)]"
-    ></span>
   </div>
 </template>

@@ -14,11 +14,12 @@
     type: {
       type: String,
       default: 'primary',
-      validator: (val) => ['primary', 'danger', 'dark', 'success', 'warning'].includes(val)
+      validator: (val) =>
+        ['primary', 'danger', 'dark', 'success', 'warning', 'secondary'].includes(val)
     },
     bgColor: {
       type: String,
-      default: '#f5f5f5'
+      default: null
     },
     width: {
       type: String,
@@ -30,15 +31,20 @@
     }
   })
 
-  const typeColors = {
-    primary: '#1D88FE',
-    danger: '#ef4444',
-    dark: '#1f2937',
-    success: '#10b981',
-    warning: '#f59e0b'
+  const tokenColor = (name) =>
+    getComputedStyle(document.documentElement).getPropertyValue(name).trim()
+
+  const hexToRgba = (hex, alpha) => {
+    const v = hex.replace('#', '')
+    const r = parseInt(v.substring(0, 2), 16)
+    const g = parseInt(v.substring(2, 4), 16)
+    const b = parseInt(v.substring(4, 6), 16)
+    return `rgba(${r}, ${g}, ${b}, ${alpha})`
   }
 
-  const activeColor = computed(() => typeColors[props.type])
+  const activeColor = computed(() => tokenColor(`--${props.type}-color`))
+
+  const trackColor = computed(() => props.bgColor || hexToRgba(activeColor.value, 0.15))
 
   const chartRef = ref(null)
   let chart = null
@@ -61,7 +67,7 @@
         axisLine: {
           lineStyle: {
             width: 8,
-            color: [[1, props.bgColor]]
+            color: [[1, trackColor.value]]
           }
         },
         axisTick: { show: false },
@@ -71,6 +77,7 @@
         detail: {
           fontSize: 12,
           fontWeight: 'bold',
+          fontFamily: 'Space Grotesk, sans-serif',
           formatter: `${props.percent}%`,
           offsetCenter: [0, 0],
           color: activeColor.value

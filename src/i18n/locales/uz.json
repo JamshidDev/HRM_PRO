@@ -1540,7 +1540,8 @@
       "vacation": "Ta'til ma'lumoti",
       "incentive": "Rag'batlantirishlari",
       "punishment": "Intizomiy jazolari",
-      "exams": "Imtihonlar"
+      "exams": "Imtihonlar",
+      "e_documents": "E-hujjatlar"
     },
     "header": {
       "title": "Xodim profili",
@@ -3034,6 +3035,7 @@
       "allWorkers": "Barcha xodimlar",
       "workTimeTitle": "Ish vaqti tahlili",
       "workTimeSubtitle": "Xodimlarning ishga kelish va ketish vaqtlari bo‘yicha qisqa tahlil",
+      "lastSevenDays": "7 kun",
       "workerAnalytic": "Xodimlar tahlili",
       "workerAnalyticDescription": "Ishga kelish va kelmaslik bo‘yicha qisqa tahlil",
       "allWorkerOfCompany": "Korxonaning umumiy xodimlar soni",
