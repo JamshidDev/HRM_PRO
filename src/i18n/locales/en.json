@@ -117,6 +117,8 @@
     "deleteAll": "Delete all",
     "checked": "Checked",
     "view": "View",
+    "manageColumns": "Manage columns",
+    "resetColumns": "Reset to default",
     "backToList": "Back to list",
     "responsible": "Responsible person",
     "now": "Now",
