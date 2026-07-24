@@ -40,7 +40,16 @@ $mobile_device_screen_size: 900px;
       padding-top: 0;
       border-radius: 24px;
 
-      > div:first-child {
+      .mini-top-group {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        flex: 1 1 auto;
+        min-height: 0;
+      }
+      .mini-menu-scroll {
+        width: 100%;
         overflow-y: auto;
         overflow-x: hidden;
         flex: 1 1 auto;
@@ -75,6 +84,7 @@ $mobile_device_screen_size: 900px;
         padding: 1px;
         border-radius: 4px;
         margin: 10px auto;
+        flex-shrink: 0;
         //background-image: linear-gradient(to right bottom, rgb(67, 128, 253), rgb(4, 12, 64));
         //border: 1px solid #2d6def;
         & > .animation-logo {
