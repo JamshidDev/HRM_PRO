@@ -142,7 +142,7 @@
         :value="store.userUnreadNotificationsCount"
         :offset="[4, -4]"
       >
-        <n-icon id="taskBtn" size="28" class="cursor-pointer text-info">
+        <n-icon id="taskBtn" size="28" class="cursor-pointer text-white">
           <Alert16Filled />
         </n-icon>
       </n-badge>

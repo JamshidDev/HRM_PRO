@@ -126,7 +126,7 @@
         <n-icon
           id="taskBtn"
           size="28"
-          class="cursor-pointer text-primary transition-all hover:text-info/70"
+          class="cursor-pointer text-white transition-all hover:text-white/70"
         >
           <CloudArrowDown28Regular />
         </n-icon>

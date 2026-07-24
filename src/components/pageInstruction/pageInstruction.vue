@@ -118,11 +118,11 @@
     </template>
   </UIDrawer>
   <div
-    class="page_instruction_activator z-[20] bg-secondary/10"
+    class="page_instruction_activator z-[20] bg-white/10"
     @click="openDrawer"
     v-show="store.payload.menu"
   >
-    <n-icon size="30" color="var(--secondary-color)">
+    <n-icon size="30" color="#fff">
       <CalendarQuestionMark20Regular />
     </n-icon>
   </div>
