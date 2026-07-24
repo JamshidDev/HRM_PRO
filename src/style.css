@@ -61,10 +61,7 @@
 
 @layer utilities {
   .bg-surface-ground-soft {
-    background-color: #f9fafb;
-  }
-  [data-theme='dark'] .bg-surface-ground-soft {
-    background-color: var(--surface-ground);
+    background-color: var(--surface-ground-soft);
   }
 }
 

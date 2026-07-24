@@ -117,6 +117,8 @@
     "deleteAll": "Barchasini o'chirish",
     "checked": "Tekshirilgan",
     "view": "Ko'rish",
+    "manageColumns": "Ustunlarni sozlash",
+    "resetColumns": "Standart holatga qaytarish",
     "backToList": "Asosiy oynaga qaytish",
     "responsible": "Mas'ul xodim",
     "now": "Hozir",
