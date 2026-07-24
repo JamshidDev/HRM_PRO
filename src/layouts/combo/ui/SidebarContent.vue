@@ -1,6 +1,6 @@
 <script setup>
 import { navigations } from '../../data/navigations.js'
-import { ChevronDown12Regular, ChevronDoubleLeft16Filled } from '@vicons/fluent'
+import { ChevronDown12Regular, ChevronDoubleLeft16Filled, SlideSettings24Regular } from '@vicons/fluent'
 import { useAccountStore } from '@/store/modules/index.js'
 import i18n from '@/i18n/index.js'
 import { AppPaths, useAppSetting, appPermissions } from '@/utils/index.js'
@@ -149,38 +149,49 @@ onMounted(() => {
   <div class="sidebar-content">
     <div class="sidebar-card m-2 rounded-3xl overflow-hidden flex">
       <div class="mini-content">
-        <div>
+        <div class="mini-top-group">
           <div @click="() => router.push({ name: AppPaths.Home.substring(1) })" class="logo-content cursor-pointer">
             <img :src="useAppSetting.appLogoUrl" alt=" " class="object-center animation-logo" />
           </div>
 
-          <template v-for="item in miniMenu" :key="item">
-            <div class="flex flex-col relative group">
-              <div :class="[isComboxMenu(item.path) && 'active-mini-content']" class="main-menu-item "
-                @click="nextPanel(item.path)">
-                <MiniMenuBadge :category="item?.name ?? undefined" />
-                <n-icon>
-                  <component :is="item.icon" />
-                </n-icon>
-              </div>
-              <div
-                class="absolute group-hover:opacity-100 group-hover:left-[60px] transition-all duration-300 pointer-events-none opacity-0 h-[32px] bg-dark border border-secondary left-[40px] rounded-3xl top-[20px] z-[999] text-center text-white flex items-center justify-center text-nowrap px-2">
-                <p class="tooltip-triangle line-clamp-1 absolute font-bold font-poppins"></p>
+          <div class="mini-menu-scroll">
+            <template v-for="item in miniMenu" :key="item">
+              <n-tooltip trigger="hover" placement="right">
+                <template #trigger>
+                  <div :class="[isComboxMenu(item.path) && 'active-mini-content']" class="main-menu-item "
+                    @click="nextPanel(item.path)">
+                    <MiniMenuBadge :category="item?.name ?? undefined" />
+                    <n-icon>
+                      <component :is="item.icon" />
+                    </n-icon>
+                  </div>
+                </template>
                 {{ $t(item.label) }}
-              </div>
-            </div>
-          </template>
+              </n-tooltip>
+            </template>
+          </div>
         </div>
         <div class="flex flex-col items-center gap-[10px]">
           <AIButtonV2
             v-if="store.checkPermission(appPermissions.ai)"
             @click="() => router.push({ name: AppPaths.AIConversation.substring(1) })"
           />
-          <NotificationsWidget />
           <DownloadTask />
-          <UIThemeSwitch />
-          <LangDropdown :compact="true" />
           <PageInstruction />
+          <n-popover trigger="click" placement="right-start" class="!p-2">
+            <template #trigger>
+              <div class="flex items-center justify-center w-10 h-10 cursor-pointer">
+                <n-icon size="24" color="#fff">
+                  <SlideSettings24Regular />
+                </n-icon>
+              </div>
+            </template>
+            <div class="flex flex-col gap-3">
+              <UIThemeSwitch />
+              <LangDropdown />
+            </div>
+          </n-popover>
+          <NotificationsWidget />
           <UIProfile />
         </div>
       </div>
@@ -247,16 +258,6 @@ onMounted(() => {
 </template>
 
 <style scoped>
-.tooltip-triangle {
-  width: 0;
-  height: 0;
-  border-top: 7px solid transparent;
-  border-right: 10px solid #020304;
-  border-bottom: 7px solid transparent;
-  left: -10px;
-  top: 8px;
-}
-
 .slide-right-enter-active {
   transition: all 0.2s ease;
 }
