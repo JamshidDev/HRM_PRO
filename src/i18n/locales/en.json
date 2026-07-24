@@ -1480,7 +1480,8 @@
       "attestation": "Certification",
       "checkSkill": "Skill test",
       "checkKnowledge": "Knowledge test",
-      "punishment": "Disciplinary actions"
+      "punishment": "Disciplinary actions",
+      "e_documents": "E-documents"
     },
     "header": {
       "title": "Employee profile",

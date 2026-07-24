@@ -9,6 +9,7 @@
   import IncentiveIcon from '@/assets/icons/awardIcon.svg'
   import DisciplinaryIcon from '@/assets/icons/punishmentIcon.svg'
   import ExamIcon from '@/assets/icons/examIcon.svg'
+  import JshirIcon from "@/assets/icons/jshirIcon.svg"
   import GeneralInfo from './ui/GeneralInfo.vue'
   import CareerInfo from './ui/CareerInfo.vue'
   import RelativeInfo from './ui/RelativeInfo.vue'
@@ -21,6 +22,7 @@
   import i18n from '@/i18n/index.js'
   import { useComponentStore } from '@/store/modules/index.js'
   import Utils from '@/utils/Utils.js'
+  import Edocument from './ui/Edocument.vue'
 
   const store = useComponentStore()
   const masked = ref(true)
@@ -40,7 +42,8 @@
     { name: t('workerView.tabs.vacation'), id: 5, icon: VacationIcon },
     { name: t('workerView.tabs.incentive'), id: 6, icon: IncentiveIcon },
     { name: t('workerView.tabs.punishment'), id: 7, icon: DisciplinaryIcon },
-    { name: t('workerView.tabs.exams'), id: 8, icon: ExamIcon }
+    { name: t('workerView.tabs.exams'), id: 8, icon: ExamIcon },
+    { name: t('workerView.tabs.e_documents'), id: 9, icon: JshirIcon }
   ])
 
   const openPreview = (id) => {
@@ -130,6 +133,7 @@
                   <IncentiveInfo v-else-if="activeTab === tabList[5].id" />
                   <DisciplinaryInfo v-else-if="activeTab === tabList[6].id" />
                   <ExamInfo v-else-if="activeTab === tabList[7].id" />
+                  <Edocument  v-else-if="activeTab === tabList[8].id"/>
                 </div>
               </Transition>
             </div>
