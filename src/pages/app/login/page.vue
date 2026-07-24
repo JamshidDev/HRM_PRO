@@ -291,7 +291,7 @@
                             >
                               <img
                                 class="h-[30px]"
-                                src="@/assets/images/svg/playMarket.svg"
+                                src="@/assets/images/svg/playMarket.svg?url"
                                 alt=""
                               />
 

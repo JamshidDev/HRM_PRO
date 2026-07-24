@@ -11,7 +11,7 @@
   import ViewAttemptModal from './solveExam/ViewAttemptModal.vue'
   import Tabs from './solveExam/ui/Tabs.vue'
   import VideoTab from './solveExam/ui/VideoTab.vue'
-  import stars from '@/assets/images/svg/stars.svg'
+  import stars from '@/assets/images/svg/stars.svg?url'
 
   const store = useWorkerExamStore()
   const examStore = useExamAttemptStore()
