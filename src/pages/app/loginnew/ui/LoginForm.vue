@@ -22,14 +22,18 @@
   const route = useRoute()
 
   const termsFiles = {
-    uz: '/terms/HRM_PRO_Legal_Document_UZ.pdf',
-    ru: '/terms/HRM_PRO_Legal_Document_RU.pdf',
-    en: '/terms/HRM_PRO_Legal_Document_EN.pdf'
+    uz: '/terms/HRM_PRO_Terms_UZ.pdf',
+    ru: '/terms/HRM_PRO_Terms_RU.pdf',
+    en: '/terms/HRM_PRO_Terms_EN.pdf'
   }
-  const termsUrl = computed(() => {
-    const lang = localStorage.getItem(useAppSetting.languageKey) || 'uz'
-    return termsFiles[lang] ?? termsFiles.uz
-  })
+  const privacyFiles = {
+    uz: '/terms/HRM_PRO_Privacy_UZ.pdf',
+    ru: '/terms/HRM_PRO_Privacy_RU.pdf',
+    en: '/terms/HRM_PRO_Privacy_EN.pdf'
+  }
+  const currentLang = () => localStorage.getItem(useAppSetting.languageKey) || 'uz'
+  const termsUrl = computed(() => termsFiles[currentLang()] ?? termsFiles.uz)
+  const privacyUrl = computed(() => privacyFiles[currentLang()] ?? privacyFiles.uz)
 
   const formRef = ref(null)
   const captchaRef = ref(null)
@@ -193,8 +197,14 @@
           target="_blank"
           rel="noopener noreferrer"
           class="hover:underline cursor-pointer font-medium text-login-link"
-          >{{ $t('loginPage.termsLink') }}</a
-        >
+        >{{ $t('loginPage.termsLink') }}</a>
+        {{ $t('loginPage.termsMiddle') }}
+        <a
+          :href="privacyUrl"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="hover:underline cursor-pointer font-medium text-login-link"
+        >{{ $t('loginPage.privacyLink') }}</a>
         {{ $t('loginPage.termsSuffix') }}
       </p>
 

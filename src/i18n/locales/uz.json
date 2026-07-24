@@ -430,8 +430,10 @@
     },
     "login": "Kirish",
     "termsPrefix": "'Kirish' tugmasini bosib, siz",
-    "termsLink": "Ommaviy ofertaga",
-    "termsSuffix": "rozilik bildirasiz",
+    "termsLink": "Foydalanish shartlari",
+    "termsMiddle": "va",
+    "privacyLink": "Maxfiylik siyosati",
+    "termsSuffix": "bilan rozilik bildirasiz",
     "captcha": "Captcha",
     "captchaRefresh": "Yangilash",
     "captchaPlaceholder": "Javobni kiriting",
@@ -1045,6 +1047,38 @@
       "from": "Qachondan",
       "to": "Qachongacha",
       "work_day": "Ishga chiqish sanasi"
+    },
+    "form_51": {
+      "reason": "Asos xati"
+    },
+    "form_56": {
+      "work_date": "Ishga jalb qilinadigan kun",
+      "start_time": "Ish boshlanish vaqti",
+      "end_time": "Ish tugash vaqti",
+      "duration": "Ish davomiyligi",
+      "reason": "Jalb etish sababi",
+      "responsible": "Mas'ul xodim"
+    },
+    "form_57": {
+      "work_date": "Ishga jalb qilinadigan kun",
+      "start_time": "Ish boshlanish vaqti",
+      "end_time": "Ish tugash vaqti",
+      "duration": "Ish davomiyligi",
+      "reason": "Jalb etish sababi",
+      "responsible": "Mas'ul xodim",
+      "pay_type": "Kompensatsiya turi",
+      "pay_option": "Oshirilgan haq to'lash",
+      "rest_option": "Qo'shimcha dam olish vaqti",
+      "rest_date": "Dam olish kuni",
+      "rest_start_time": "Dam boshlanish vaqti",
+      "rest_end_time": "Dam tugash vaqti"
+    },
+    "form_58": {
+      "suspension_reason": "Chetlashtirish asosi",
+      "from": "Chetlashtirish boshlanishi (dan)",
+      "to": "Chetlashtirish tugashi (gacha)",
+      "act_date": "Dalolatnoma sanasi",
+      "responsible": "Mas'ul xodim"
     },
     "form_50": {
       "to": "Ta'til tugash sanasi",

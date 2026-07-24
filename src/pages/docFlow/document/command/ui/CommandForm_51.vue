@@ -9,6 +9,12 @@
   const { t } = i18n.global
   const store = useCommandStore()
   const formRef = ref(null)
+
+  // Bu forma 51-54 (ijodiy/o'quv/qisman/to'liq ta'til) uchun umumiy. "Sababi"
+  // label FAQAT Ijodiy ta'til (command_type 51) uchun "Asos xati"ga o'zgaradi.
+  const reasonLabelKey = computed(() =>
+    store.payload.command_type === 51 ? 'commandPage.form_51.reason' : 'commandPage.form_48.reason'
+  )
   const onSubmit = async (mainData) => {
     let data = null
     await formRef.value?.validate(async (error) => {
@@ -156,7 +162,7 @@
       </n-form-item>
     </div>
     <div class="col-span-12">
-      <n-form-item :label="$t(`commandPage.form_48.reason`)" path="reason">
+      <n-form-item :label="$t(reasonLabelKey)" path="reason">
         <n-input class="w-full" type="text" v-model:value="store.form_51.reason" />
       </n-form-item>
     </div>
