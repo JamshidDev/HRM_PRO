@@ -1,5 +1,5 @@
 <script setup>
-  import { UINSelect, UIPageFilter, UISelect } from '@/components/index.js'
+  import { UIPageFilter, UISelect } from '@/components/index.js'
   import {
     useAccountStore,
     useComponentStore,
@@ -53,7 +53,7 @@
     componentStore._departments()
   }
 
-  const onChangeDepartment = (v) => {
+  const onChangeDepartment = () => {
     filterEvent()
   }
 
@@ -138,68 +138,74 @@
     :add-button-title="$t('turnstile.terminalUser.notCompanyWorker')"
   >
     <template #filterContent>
-      <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{
-        $t('actionLog.table.structure')
-      }}</label>
-      <UISelect
-        :options="componentStore.structureList"
-        :modelV="store.params.organizations"
-        @updateModel="onChangeStructure"
-        @defaultValue="onDefaultEv"
-        @onSearch="componentStore._structures"
-        @onSubmit="filterEvent"
-        @updateCheck="(v) => (store.structureCheck2 = v)"
-        :checkedVal="store.structureCheck2"
-        :loading="componentStore.structureLoading"
-        v-model:search="componentStore.structureParams.search"
-      />
-      <label class="mt-3 text-xs text-gray-500 mb-1">{{
-        $t('workerPage.filter.department')
-      }}</label>
-      <SuperSelect
-        :disabled="store.params.organizations.length === 0"
-        v-model:value="store.params.departments"
-        v-model:search="store.department.params.search"
-        :options="store.department.list"
-        :per-page="store.department.params.per_page"
-        :total-count="store.department.totalItems"
-        @update:value="onChangeDepartment"
-        @onScrollEv="departmentAction.onScroll"
-        @onSearch="departmentAction.onSearch"
-        :loading="store.department.loading"
-        multiple
-        clearable
-      />
-      <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{
-        $t('turnstile.hcWorkersPage.access_levels')
-      }}</label>
-      <n-select
-        filterable
-        v-model:value="store.params.access_level_id"
-        :options="store.levelList"
-        :loading="store.levelLoading"
-        label-field="name"
-        value-field="id"
-        @update:value="filterEvent"
-      />
-      <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{ $t('content.status') }}</label>
-      <n-select
-        filterable
-        v-model:value="store.params.status"
-        :options="statusOption"
-        label-field="name"
-        value-field="id"
-        @update:value="filterEvent"
-      />
-      <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{ $t('content.status') }}</label>
-      <n-select
-        filterable
-        v-model:value="store.params.added"
-        :options="workerOption"
-        label-field="name"
-        value-field="id"
-        @update:value="filterEvent"
-      />
+      <div class="ui-filter-grid grid grid-cols-12 gap-x-5 gap-y-4">
+        <div class="col-span-12 md:col-span-6">
+          <label>{{ $t('actionLog.table.structure') }}</label>
+          <UISelect
+            :options="componentStore.structureList"
+            :model-v="store.params.organizations"
+            @updateModel="onChangeStructure"
+            @defaultValue="onDefaultEv"
+            @onSearch="componentStore._structures"
+            @onSubmit="filterEvent"
+            @updateCheck="(v) => (store.structureCheck2 = v)"
+            :checked-val="store.structureCheck2"
+            :loading="componentStore.structureLoading"
+            v-model:search="componentStore.structureParams.search"
+          />
+        </div>
+        <div class="col-span-12 md:col-span-6">
+          <label>{{ $t('workerPage.filter.department') }}</label>
+          <SuperSelect
+            :disabled="store.params.organizations.length === 0"
+            v-model:value="store.params.departments"
+            v-model:search="store.department.params.search"
+            :options="store.department.list"
+            :per-page="store.department.params.per_page"
+            :total-count="store.department.totalItems"
+            @update:value="onChangeDepartment"
+            @onScrollEv="departmentAction.onScroll"
+            @onSearch="departmentAction.onSearch"
+            :loading="store.department.loading"
+            multiple
+            clearable
+          />
+        </div>
+        <div class="col-span-12 md:col-span-6">
+          <label>{{ $t('turnstile.hcWorkersPage.access_levels') }}</label>
+          <n-select
+            filterable
+            v-model:value="store.params.access_level_id"
+            :options="store.levelList"
+            :loading="store.levelLoading"
+            label-field="name"
+            value-field="id"
+            @update:value="filterEvent"
+          />
+        </div>
+        <div class="col-span-12 md:col-span-6">
+          <label>{{ $t('content.status') }}</label>
+          <n-select
+            filterable
+            v-model:value="store.params.status"
+            :options="statusOption"
+            label-field="name"
+            value-field="id"
+            @update:value="filterEvent"
+          />
+        </div>
+        <div class="col-span-12 md:col-span-6">
+          <label>{{ $t('content.status') }}</label>
+          <n-select
+            filterable
+            v-model:value="store.params.added"
+            :options="workerOption"
+            label-field="name"
+            value-field="id"
+            @update:value="filterEvent"
+          />
+        </div>
+      </div>
     </template>
   </UIPageFilter>
 </template>

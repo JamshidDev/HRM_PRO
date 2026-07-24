@@ -56,38 +56,42 @@
     @onClear="resetFilter"
     @onAdd="onAdd"
     @show="onShow"
+    filter-placement="bottom-end"
+    :popover-style="{ width: '560px', maxWidth: 'calc(100vw - 32px)', padding: '0', borderRadius: '20px' }"
   >
     <template #filterContent>
-      <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{
-        $t('actionLog.table.structure')
-      }}</label>
-      <UISelect
-        :options="componentStore.structureList"
-        :modelV="store.params.organizations"
-        @defaultValue="(v) => (store.params.organizations = v)"
-        @updateModel="onChangeStructure"
-        :checkedVal="store.structureCheck2"
-        @updateCheck="(v) => (store.structureCheck2 = v)"
-        :loading="componentStore.structureLoading"
-        v-model:search="componentStore.structureParams.search"
-        @onSearch="componentStore._structures"
-        @onSubmit="filterEvent"
-      />
-      <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{
-        $t('lmsWorkerPage.form.eduPlan')
-      }}</label>
-      <n-select
-        clearable
-        filterable
-        v-model:value="store.params.edu_plan_id"
-        :options="store.eduPlanList"
-        :loading="store.eduPlanLoading"
-        label-field="name"
-        value-field="id"
-        @update:value="filterEvent"
-        :render-label="UIHelper.selectRender.label"
-        :render-tag="UIHelper.selectRender.value"
-      />
+      <div class="ui-filter-grid grid grid-cols-12 gap-x-5 gap-y-4">
+        <div class="col-span-12 md:col-span-6">
+          <label>{{ $t('actionLog.table.structure') }}</label>
+          <UISelect
+            :options="componentStore.structureList"
+            :model-v="store.params.organizations"
+            @defaultValue="(v) => (store.params.organizations = v)"
+            @updateModel="onChangeStructure"
+            :checked-val="store.structureCheck2"
+            @updateCheck="(v) => (store.structureCheck2 = v)"
+            :loading="componentStore.structureLoading"
+            v-model:search="componentStore.structureParams.search"
+            @onSearch="componentStore._structures"
+            @onSubmit="filterEvent"
+          />
+        </div>
+        <div class="col-span-12 md:col-span-6">
+          <label>{{ $t('lmsWorkerPage.form.eduPlan') }}</label>
+          <n-select
+            clearable
+            filterable
+            v-model:value="store.params.edu_plan_id"
+            :options="store.eduPlanList"
+            :loading="store.eduPlanLoading"
+            label-field="name"
+            value-field="id"
+            @update:value="filterEvent"
+            :render-label="UIHelper.selectRender.label"
+            :render-tag="UIHelper.selectRender.value"
+          />
+        </div>
+      </div>
     </template>
   </UIPageFilter>
 </template>

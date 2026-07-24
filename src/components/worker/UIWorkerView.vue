@@ -1,15 +1,7 @@
 <script setup>
   import { ChevronRight16Filled } from '@vicons/fluent'
   import TopBar from './ui/shared/TopBar.vue'
-  import GeneralInfoIcon from '@/assets/icons/menuIcon.svg'
-  import CareerIcon from '@/assets/icons/positionIcon.svg'
-  import RelativeIcon from '@/assets/icons/usersIcon.svg'
-  import MedIcon from '@/assets/icons/medicalExaminationIcon.svg'
-  import VacationIcon from '@/assets/icons/calendarIcon.svg'
-  import IncentiveIcon from '@/assets/icons/awardIcon.svg'
-  import DisciplinaryIcon from '@/assets/icons/punishmentIcon.svg'
-  import ExamIcon from '@/assets/icons/examIcon.svg'
-  import JshirIcon from "@/assets/icons/jshirIcon.svg"
+  import icons from '@/assets/icons'
   import GeneralInfo from './ui/GeneralInfo.vue'
   import CareerInfo from './ui/CareerInfo.vue'
   import RelativeInfo from './ui/RelativeInfo.vue'
@@ -35,15 +27,15 @@
   })
 
   const tabList = computed(() => [
-    { name: t('workerView.tabs.general'), id: 1, icon: GeneralInfoIcon },
-    { name: t('workerView.tabs.career'), id: 2, icon: CareerIcon },
-    { name: t('workerView.tabs.relative'), id: 3, icon: RelativeIcon },
-    { name: t('workerView.tabs.med'), id: 4, icon: MedIcon },
-    { name: t('workerView.tabs.vacation'), id: 5, icon: VacationIcon },
-    { name: t('workerView.tabs.incentive'), id: 6, icon: IncentiveIcon },
-    { name: t('workerView.tabs.punishment'), id: 7, icon: DisciplinaryIcon },
-    { name: t('workerView.tabs.exams'), id: 8, icon: ExamIcon },
-    { name: t('workerView.tabs.e_documents'), id: 9, icon: JshirIcon }
+    { name: t('workerView.tabs.general'), id: 1, icon: icons.menuIcon },
+    { name: t('workerView.tabs.career'), id: 2, icon: icons.positionIcon },
+    { name: t('workerView.tabs.relative'), id: 3, icon: icons.usersIcon },
+    { name: t('workerView.tabs.med'), id: 4, icon: icons.medicalExaminationIcon },
+    { name: t('workerView.tabs.vacation'), id: 5, icon: icons.calendarIcon },
+    { name: t('workerView.tabs.incentive'), id: 6, icon: icons.awardIcon },
+    { name: t('workerView.tabs.punishment'), id: 7, icon: icons.punishmentIcon },
+    { name: t('workerView.tabs.exams'), id: 8, icon: icons.examIcon },
+    { name: t('workerView.tabs.e_documents'), id: 9, icon: icons.JshirIcon },
   ])
 
   const openPreview = (id) => {

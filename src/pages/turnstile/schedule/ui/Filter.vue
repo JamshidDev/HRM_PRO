@@ -28,7 +28,7 @@
     }
   ]
 
-  const onSelectWorkDay = (v) => {
+  const onSelectWorkDay = () => {
     filterEvent()
   }
 
@@ -131,35 +131,41 @@
         <template #icon>
           <Save16Filled />
         </template>
-        {{ $t('content.save') }}</n-button
-      >
+        {{ $t('content.save') }}
+      </n-button>
       <n-button @click="openPanel" type="success">
         {{ $t('schedule.form.exportSchedule') }}
       </n-button>
     </template>
     <template #filterContent>
-      <label class="mt-3 text-xs mb-1 font-medium">{{ $t('actionLog.table.structure') }}</label>
-      <UISelect
-        :options="componentStore.structureList"
-        :modelV="store.workerParams.organization_id"
-        @defaultValue="defaultEv"
-        @updateModel="onChangeStructure"
-        :checkedVal="store.structureCheck2"
-        @updateCheck="(v) => (store.structureCheck2 = v)"
-        :loading="componentStore.structureLoading"
-        v-model:search="componentStore.structureParams.search"
-        @onSearch="componentStore._structures"
-        @onSubmit="filterEvent"
-        :multiple="false"
-      />
-      <label class="mt-3 text-xs mb-1 font-medium">{{ $t('content.department') }}</label>
-      <UINSelect
-        clearable
-        :loading="store.departmentLoading"
-        :options="store.departmentList"
-        v-model:value="store.workerParams.department_id"
-        @update:value="onChangeDepartment"
-      />
+      <div class="ui-filter-grid grid grid-cols-12 gap-x-5 gap-y-4">
+        <div class="col-span-12 md:col-span-6">
+          <label>{{ $t('actionLog.table.structure') }}</label>
+          <UISelect
+            :options="componentStore.structureList"
+            :model-v="store.workerParams.organization_id"
+            @defaultValue="defaultEv"
+            @updateModel="onChangeStructure"
+            :checked-val="store.structureCheck2"
+            @updateCheck="(v) => (store.structureCheck2 = v)"
+            :loading="componentStore.structureLoading"
+            v-model:search="componentStore.structureParams.search"
+            @onSearch="componentStore._structures"
+            @onSubmit="filterEvent"
+            :multiple="false"
+          />
+        </div>
+        <div class="col-span-12 md:col-span-6">
+          <label>{{ $t('content.department') }}</label>
+          <UINSelect
+            clearable
+            :loading="store.departmentLoading"
+            :options="store.departmentList"
+            v-model:value="store.workerParams.department_id"
+            @update:value="onChangeDepartment"
+          />
+        </div>
+      </div>
     </template>
   </UIPageFilter>
 </template>

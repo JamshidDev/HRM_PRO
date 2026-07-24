@@ -59,47 +59,52 @@
     @onAdd="onAdd"
     @onSearch="onSearchEv"
     v-model:search="store.params.search"
-    :searchLoading="store.loading"
+    :search-loading="store.loading"
     :filter-count="filterCount"
     @show="beforeShow"
     @onClear="resetFilter"
+    filter-placement="bottom-end"
+    :popover-style="{ width: '560px', maxWidth: 'calc(100vw - 32px)', padding: '0', borderRadius: '20px' }"
   >
     <template #filterContent>
-      <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{
-        $t('actionLog.table.structure')
-      }}</label>
-      <UISelect
-        :options="componentStore.structureList"
-        :modelV="store.params.organizations"
-        @defaultValue="(v) => (store.params.organizations = v)"
-        @updateModel="onChangeStructure"
-        :checkedVal="store.structureCheck2"
-        @updateCheck="(v) => (store.structureCheck2 = v)"
-        v-model:search="componentStore.structureParams.search"
-        @onSearch="componentStore._structures"
-        :loading="componentStore.structureLoading"
-        @onSubmit="filterEvent"
-      />
-      <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{ $t('content.status') }}</label>
-      <n-select
-        v-model:value="store.params.confirmation"
-        :options="componentStore.confirmationStatusList"
-        label-field="name"
-        value-field="id"
-        clearable
-        @update:value="filterEvent"
-        :loading="componentStore.enumAdminLoading"
-      />
-      <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{ $t('content.created') }}</label>
-      <n-date-picker
-        class="w-full"
-        v-model:value="store.params.created"
-        type="date"
-        :format="useAppSetting.datePicketFormat"
-        @update:value="filterEvent"
-      />
+      <div class="ui-filter-grid grid grid-cols-12 gap-x-5 gap-y-4">
+        <div class="col-span-12 md:col-span-6">
+          <label>{{ $t('actionLog.table.structure') }}</label>
+          <UISelect
+            :options="componentStore.structureList"
+            :model-v="store.params.organizations"
+            @defaultValue="(v) => (store.params.organizations = v)"
+            @updateModel="onChangeStructure"
+            :checked-val="store.structureCheck2"
+            @updateCheck="(v) => (store.structureCheck2 = v)"
+            v-model:search="componentStore.structureParams.search"
+            @onSearch="componentStore._structures"
+            :loading="componentStore.structureLoading"
+            @onSubmit="filterEvent"
+          />
+        </div>
+        <div class="col-span-12 md:col-span-6">
+          <label>{{ $t('content.status') }}</label>
+          <n-select
+            v-model:value="store.params.confirmation"
+            :options="componentStore.confirmationStatusList"
+            label-field="name"
+            value-field="id"
+            clearable
+            @update:value="filterEvent"
+            :loading="componentStore.enumAdminLoading"
+          />
+        </div>
+        <div class="col-span-12 md:col-span-6">
+          <label>{{ $t('content.created') }}</label>
+          <n-date-picker
+            v-model:value="store.params.created"
+            type="date"
+            :format="useAppSetting.datePicketFormat"
+            @update:value="filterEvent"
+          />
+        </div>
+      </div>
     </template>
   </UIPageFilter>
 </template>
-
-<style scoped></style>

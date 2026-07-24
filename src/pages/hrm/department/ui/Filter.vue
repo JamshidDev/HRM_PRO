@@ -32,7 +32,7 @@
     store._index()
   }
 
-  const onUpdateOrg =(v)=>{
+  const onUpdateOrg = (v) => {
     store.params.organizations = v
     filterEvent()
   }
@@ -70,11 +70,19 @@
     :filter-count="filterCount"
     @onClear="resetFilter"
     @show="onShow"
+    filter-placement="bottom-end"
+    :popover-style="{
+      width: '560px',
+      maxWidth: 'calc(100vw - 32px)',
+      minHeight: 'auto',
+      padding: '0',
+      borderRadius: '20px'
+    }"
   >
     <template #filterContent>
-      <div class="w-full grid grid-cols-12">
-        <div class="col-span-12">
-          <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{
+      <div class="department-filter-panel grid grid-cols-12 gap-x-5 gap-y-4">
+        <div class="col-span-12 md:col-span-6">
+          <label>{{
             $t('actionLog.table.structure')
           }}</label>
           <UISelect
@@ -90,8 +98,8 @@
             @onSubmit="filterEvent"
           />
         </div>
-        <div class="col-span-12">
-          <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{
+        <div class="col-span-12 md:col-span-6">
+          <label>{{
             $t('departmentPage.form.level')
           }}</label>
           <n-select
@@ -110,4 +118,18 @@
   </UIPageFilter>
 </template>
 
-<style scoped></style>
+<style scoped>
+  .department-filter-panel label {
+    display: block;
+    margin-bottom: 6px;
+    color: var(--textColor1);
+    font-size: 13px;
+    font-weight: 500;
+  }
+
+  .department-filter-panel :deep(.n-select) {
+    width: 100%;
+    --n-height: 40px !important;
+    --n-border-radius: 16px !important;
+  }
+</style>

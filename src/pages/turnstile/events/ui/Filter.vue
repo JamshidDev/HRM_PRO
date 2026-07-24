@@ -58,7 +58,7 @@
     filterEvent()
   }
 
-  const beforeShow = (v) => {
+  const beforeShow = () => {
     if (componentStore.structureList.length === 0) {
       componentStore._structures()
     }

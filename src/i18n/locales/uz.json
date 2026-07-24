@@ -165,7 +165,9 @@
     "person": "nafar",
     "searchWorker": "Xodimni qidirish uchun yozing...",
     "add": "Qo'shish",
+    "filters": "Filtrlar",
     "filterSetting": "Filter sozlamalar",
+    "clearFilters": "Filterni tozalash",
     "showAdditionalFilters": "Qo'shimcha filterlarni ko'rsatish",
     "hideAdditionalFilters": "Qo'shimcha filterlarni yashirish",
     "ageRange": "Oraliq",
@@ -652,6 +654,7 @@
       "pension_age": "Pensiya yoshidagi xodimlar",
       "position_type": "Lavozim turi",
       "age": "Yoshi",
+      "quickActions": "Tezkor amallar",
       "downloadRelative": "Qarindoshlarni yuklash"
     },
     "checkWorker": {

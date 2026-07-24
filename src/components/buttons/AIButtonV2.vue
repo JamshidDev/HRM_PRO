@@ -1,6 +1,6 @@
 <template>
   <div
-    class="hidden md:flex ai-button py-2 px-4 rounded-2xl cursor-pointer items-center gap-2 relative overflow-hidden"
+    class="ai-button flex w-10 h-10 rounded-full cursor-pointer items-center justify-center relative overflow-hidden"
   >
     <div class="relative flex items-center justify-end border-white w-[20px] h-[20px] z-[2]">
       <n-icon class="text-sm text-[#FFFFFF66]">
@@ -17,7 +17,6 @@
         </n-icon>
       </span>
     </div>
-    <span class="ai-button-label line-clamp-1">{{ $t('aiConversation.aiAssistant') }}</span>
     <span class="bg-overall"></span>
   </div>
 </template>
@@ -34,7 +33,7 @@
       oklch(0.792 0.209 151.711) 0px,
       oklch(0.546 0.245 262.881) 100%
     );
-    border-radius: 16px;
+    border-radius: 50%;
     transition:
       transform 0.8s ease,
       box-shadow 0.8s ease;
@@ -56,7 +55,7 @@
     );
     opacity: 0;
     transition: opacity 0.8s ease;
-    border-radius: 16px;
+    border-radius: 50%;
     z-index: 1;
   }
 
@@ -66,7 +65,7 @@
     width: calc(100% - 2px);
     top: 1px;
     left: 1px;
-    border-radius: 16px;
+    border-radius: 50%;
     z-index: -1;
     background: linear-gradient(
       to right,
@@ -94,20 +93,6 @@
         rgb(116, 56, 255) 100%
       );
     }
-  }
-
-  .ai-button-label {
-    background-image: linear-gradient(90deg, rgb(255, 255, 255) 0%, rgba(255, 255, 255, 0.81) 100%);
-    background-clip: text;
-    color: transparent;
-    font-weight: 600;
-    transition: background-image 0.8s ease;
-    position: relative;
-    z-index: 3;
-  }
-
-  .ai-button:hover .ai-button-label {
-    background-image: linear-gradient(90deg, rgb(255, 255, 255) 0%, rgba(255, 255, 255, 0.81) 100%);
   }
 
   .ai-button:after {

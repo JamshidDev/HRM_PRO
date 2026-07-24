@@ -22,7 +22,7 @@
     Number(Boolean(store.params.organizations.length) + Number(Boolean(store.params.status)))
   )
 
-  const beforeShow = (v) => {
+  const beforeShow = () => {
     if (componentStore.structureList.length === 0) {
       componentStore._structures()
     }
@@ -55,7 +55,12 @@
     :show-add-button="false"
   >
     <template #filterAction>
-      <n-button type="primary" @click="store._tasks()" :loading="store.loading">
+      <n-button
+        class="export-refresh-button"
+        type="primary"
+        @click="store._tasks()"
+        :loading="store.loading"
+      >
         {{ $t('content.refresh') }}
         <template #icon>
           <ArrowSync16Regular />
@@ -68,10 +73,10 @@
       }}</label>
       <UISelect
         :options="componentStore.structureList"
-        :modelV="store.params.organizations"
+        :model-v="store.params.organizations"
         @defaultValue="(v) => (store.params.organizations = v)"
         @updateModel="onChangeStructure"
-        :checkedVal="store.structureCheck2"
+        :checked-val="store.structureCheck2"
         @updateCheck="(v) => (store.structureCheck2 = v)"
         v-model:search="componentStore.structureParams.search"
         @onSearch="componentStore._structures"
@@ -90,3 +95,12 @@
     </template>
   </UIPageFilter>
 </template>
+
+<style scoped>
+  .export-refresh-button {
+    --n-height: 44px !important;
+    --n-border-radius: 12px !important;
+    --n-padding: 0 16px !important;
+    font-weight: 600;
+  }
+</style>
