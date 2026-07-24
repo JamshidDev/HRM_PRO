@@ -296,19 +296,19 @@ $mobile_device_screen_size: 900px;
 
     .app_header {
       width: 100%;
-      height: 56px;
+      min-height: 44px;
       border-bottom: 1px solid var(--surface-line);
     }
 
     .main-content {
       overflow-x: hidden;
       overflow-y: auto;
-      height: calc(100vh - 60px);
+      height: calc(100vh - 48px);
     }
     .main-content-with-tabs {
       overflow-x: hidden;
       overflow-y: auto;
-      height: calc(100vh - 100px);
+      height: calc(100vh - 88px);
     }
   }
 }
