@@ -60,6 +60,8 @@
     :filter-count="filterCount"
     :search-loading="store.loading"
     :show-add-button="false"
+    filter-placement="bottom-end"
+    :popover-style="{ width: '560px', maxWidth: 'calc(100vw - 32px)', padding: '0', borderRadius: '20px' }"
   >
     <template #filterAction>
       <n-button v-fly-upload :loading="store.downloading" type="success" @click="store._download()">
@@ -70,50 +72,55 @@
       </n-button>
     </template>
     <template #filterContent>
-      <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{
-        $t('actionLog.table.structure')
-      }}</label>
-      <UISelect
-        :options="componentStore.structureList"
-        :modelV="store.params.organizations"
-        @defaultValue="(v) => (store.params.organizations = v)"
-        @updateModel="onChangeStructure"
-        :checkedVal="store.structureCheck2"
-        @updateCheck="(v) => (store.structureCheck2 = v)"
-        :loading="componentStore.structureLoading"
-        v-model:search="componentStore.structureParams.search"
-        @onSearch="componentStore._structures"
-        @onSubmit="filterEvent"
-      />
-      <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{ $t('content.created') }}</label>
-      <n-date-picker
-        class="w-full"
-        v-model:value="store.params.created"
-        type="date"
-        :format="useAppSetting.datePicketFormat"
-        @update:value="filterEvent"
-        clearable
-      />
-      <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{ $t('content.year') }}</label>
-      <n-select
-        class="w-full"
-        v-model:value="store.params.year"
-        :options="Utils.yearList"
-        label-field="name"
-        value-field="id"
-        clearable
-        @update:value="filterEvent"
-      />
-      <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{ $t('content.month') }}</label>
-      <n-select
-        class="w-full"
-        v-model:value="store.params.month"
-        :options="Utils.monthList"
-        label-field="name"
-        value-field="id"
-        clearable
-        @update:value="filterEvent"
-      />
+      <div class="ui-filter-grid grid grid-cols-12 gap-x-5 gap-y-4">
+        <div class="col-span-12 md:col-span-6">
+          <label>{{ $t('actionLog.table.structure') }}</label>
+          <UISelect
+            :options="componentStore.structureList"
+            :model-v="store.params.organizations"
+            @defaultValue="(v) => (store.params.organizations = v)"
+            @updateModel="onChangeStructure"
+            :checked-val="store.structureCheck2"
+            @updateCheck="(v) => (store.structureCheck2 = v)"
+            :loading="componentStore.structureLoading"
+            v-model:search="componentStore.structureParams.search"
+            @onSearch="componentStore._structures"
+            @onSubmit="filterEvent"
+          />
+        </div>
+        <div class="col-span-12 md:col-span-6">
+          <label>{{ $t('content.created') }}</label>
+          <n-date-picker
+            v-model:value="store.params.created"
+            type="date"
+            :format="useAppSetting.datePicketFormat"
+            @update:value="filterEvent"
+            clearable
+          />
+        </div>
+        <div class="col-span-12 md:col-span-6">
+          <label>{{ $t('content.year') }}</label>
+          <n-select
+            v-model:value="store.params.year"
+            :options="Utils.yearList"
+            label-field="name"
+            value-field="id"
+            clearable
+            @update:value="filterEvent"
+          />
+        </div>
+        <div class="col-span-12 md:col-span-6">
+          <label>{{ $t('content.month') }}</label>
+          <n-select
+            v-model:value="store.params.month"
+            :options="Utils.monthList"
+            label-field="name"
+            value-field="id"
+            clearable
+            @update:value="filterEvent"
+          />
+        </div>
+      </div>
     </template>
   </UIPageFilter>
 </template>

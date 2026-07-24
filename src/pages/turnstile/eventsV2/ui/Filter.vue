@@ -55,7 +55,7 @@
     filterEvent()
   }
 
-  const beforeShow = (v) => {
+  const beforeShow = () => {
     if (componentStore.structureList.length === 0) {
       componentStore._structures()
     }
@@ -185,10 +185,10 @@
       }}</label>
       <UISelect
         :options="componentStore.structureList"
-        :modelV="store.params.organizations"
+        :model-v="store.params.organizations"
         @defaultValue="(v) => (store.params.organizations = v)"
         @updateModel="onChangeStructure"
-        :checkedVal="store.structureCheck2"
+        :checked-val="store.structureCheck2"
         @updateCheck="(v) => (store.structureCheck2 = v)"
         :loading="componentStore.structureLoading"
         v-model:search="componentStore.structureParams.search"
