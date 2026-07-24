@@ -13,7 +13,7 @@
 
   const componentStore = useComponentStore()
 
-  const beforeShow = (v) => {
+  const beforeShow = () => {
     if (componentStore.structureList.length === 0) {
       componentStore._structures()
     }
@@ -51,36 +51,38 @@
     :show-add-button="false"
   >
     <template #filterContent>
-      <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{
-        $t('actionLog.table.structure')
-      }}</label>
-      <UISelect
-        :options="componentStore.structureList"
-        :modelV="store.params.organizations"
-        @defaultValue="(v) => (store.params.organizations = v)"
-        @updateModel="onChangeStructure"
-        :checkedVal="store.structureCheck2"
-        @updateCheck="(v) => (store.structureCheck2 = v)"
-        :loading="componentStore.structureLoading"
-        v-model:search="componentStore.structureParams.search"
-        @onSearch="componentStore._structures"
-        @onSubmit="filterEvent"
-      />
-      <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{
-        $t('turnstile.hcWorkersPage.access_levels')
-      }}</label>
-      <n-select
-        multiple
-        clearable
-        filterable
-        v-model:value="store.params.access_levels"
-        :options="store.levelList"
-        :loading="store.levelLoading"
-        label-field="name"
-        value-field="id"
-        @update:value="filterEvent"
-        :max-tag-count="2"
-      />
+      <div class="ui-filter-grid grid grid-cols-12 gap-x-5 gap-y-4">
+        <div class="col-span-12 md:col-span-6">
+          <label>{{ $t('actionLog.table.structure') }}</label>
+          <UISelect
+            :options="componentStore.structureList"
+            :model-v="store.params.organizations"
+            @defaultValue="(v) => (store.params.organizations = v)"
+            @updateModel="onChangeStructure"
+            :checked-val="store.structureCheck2"
+            @updateCheck="(v) => (store.structureCheck2 = v)"
+            :loading="componentStore.structureLoading"
+            v-model:search="componentStore.structureParams.search"
+            @onSearch="componentStore._structures"
+            @onSubmit="filterEvent"
+          />
+        </div>
+        <div class="col-span-12 md:col-span-6">
+          <label>{{ $t('turnstile.hcWorkersPage.access_levels') }}</label>
+          <n-select
+            multiple
+            clearable
+            filterable
+            v-model:value="store.params.access_levels"
+            :options="store.levelList"
+            :loading="store.levelLoading"
+            label-field="name"
+            value-field="id"
+            @update:value="filterEvent"
+            :max-tag-count="2"
+          />
+        </div>
+      </div>
     </template>
     <template #filterAction>
       <n-button type="primary" :loading="store.loading" @click="store._index()">
