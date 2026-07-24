@@ -165,7 +165,9 @@
     "person": "persons",
     "searchWorker": "Type to search employee...",
     "add": "Add",
+    "filters": "Filters",
     "filterSetting": "Filter settings",
+    "clearFilters": "Clear filters",
     "showAdditionalFilters": "Show additional filters",
     "hideAdditionalFilters": "Hide additional filters",
     "ageRange": "Range",
@@ -638,6 +640,7 @@
       "pension_age": "Employees of retirement age",
       "position_type": "Position type",
       "age": "Age",
+      "quickActions": "Quick actions",
       "downloadRelative": "Download relatives"
     },
     "checkWorker": {

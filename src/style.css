@@ -26,6 +26,10 @@
   --color-textColor2: var(--textColor2);
   --color-textColor3: var(--textColor3);
   --color-surface-text: var(--textColor3);
+  --color-brand-surface: #eff8ff;
+  --color-green-surface: #f0fdf4;
+  --color-indigo-surface: #f2f2ff;
+  --color-amber-surface: #fffaeb;
 
   --color-surface: var(--surface);
 

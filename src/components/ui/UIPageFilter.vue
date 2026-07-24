@@ -1,10 +1,8 @@
 <script setup>
-  import {
-    Search48Filled,
-    AddCircle24Regular,
-    Filter20Filled,
-    DeleteArrowBack20Regular
-  } from '@vicons/fluent'
+  import { AddCircle24Regular } from '@vicons/fluent'
+  import clearFilterIcon from '@/assets/icons/clear_filter.svg?url'
+  import filterIcon from '@/assets/icons/filter.svg?url'
+  import searchIcon from '@/assets/icons/search.svg?url'
   const slots = useSlots()
   const props = defineProps({
     title: {
@@ -27,13 +25,19 @@
       type: Number,
       default: 0
     },
+    filterPlacement: {
+      type: String,
+      default: 'bottom'
+    },
     popoverStyle: {
       type: Object,
-      default: {
-        width: '360px ',
-        maxWidth: '100%',
-        minHeight: '300px'
-      }
+      default: () => ({
+        width: '360px',
+        maxWidth: 'calc(100vw - 32px)',
+        minHeight: 'auto',
+        padding: '0',
+        borderRadius: '20px'
+      })
     },
     searchLoading: {
       type: Boolean,
@@ -73,7 +77,9 @@
     if (!el) return
     const bottomMargin = 16
     const available = window.innerHeight - el.getBoundingClientRect().bottom - bottomMargin
-    filterMaxHeight.value = `${Math.max(available, 200)}px`
+    const headerHeight = 48
+    const viewportLimit = window.innerHeight * 0.7
+    filterMaxHeight.value = `${Math.max(Math.min(available - headerHeight, viewportLimit), 200)}px`
   }
 
   const onFilterShow = (v) => {
@@ -100,14 +106,14 @@
     </div>
     <div class="flex flex-col items-end md:flex-row gap-4">
       <div
-        :class="[slots.filterSearch || slots.filterBefore ? 'md:max-w-full' : 'md:max-w-[200px]!']"
+        :class="[slots.filterSearch || slots.filterBefore ? 'md:max-w-full' : 'md:max-w-[264px]!']"
         class="w-full flex items-center gap-2"
       >
         <slot name="filterBefore"></slot>
         <n-input
           ref="searchInputRef"
           clearable
-          class="w-full md:max-w-[200px]! md:w-full!"
+          class="ui-page-search w-full md:max-w-[264px]! md:w-full!"
           v-if="showSearchInput"
           v-model:value="searchModel"
           type="text"
@@ -117,16 +123,16 @@
           @clear="searchEvent"
           :loading="searchLoading"
         >
-          <template #suffix>
-            <n-icon :component="Search48Filled" />
+          <template #prefix>
+            <img class="ui-page-search-icon" :src="searchIcon" alt="" />
           </template>
         </n-input>
         <slot name="filterSearch"></slot>
       </div>
-      <div class="flex flex-wrap w-full md:w-[calc(100%-200px)] justify-end gap-4">
+      <div class="flex flex-wrap w-full md:w-[calc(100%-264px)] justify-end gap-4">
         <slot name="filterAction"></slot>
         <n-button
-          class="w-full! md:w-auto!"
+          class="ui-page-action-button w-full! md:w-auto!"
           v-if="showAddButton"
           type="primary"
           icon-placement="right"
@@ -144,39 +150,38 @@
           v-if="showFilterButton"
           trigger="click"
           scrollable
-          placement="bottom"
+          :placement="filterPlacement"
           class="max-w-[95vw] min-w-[280px] sm:min-w-[400px] w-(--v-target-width) md:w-auto"
-          :style="{ '--top-activator-width': 'var(--v-target-width)' }"
+          :style="{ ...popoverStyle, '--top-activator-width': 'var(--v-target-width)' }"
         >
           <template #trigger>
             <n-badge ref="filterTriggerRef" class="w-full! md:w-auto!" :value="filterCount" processing type="info">
-              <n-button class="w-full! md:w-auto!" type="primary" ghost icon-placement="right">
+              <n-button
+                class="ui-page-filter-button w-full! md:w-auto!"
+                type="primary"
+                ghost
+              >
                 <template #icon>
-                  <n-icon>
-                    <Filter20Filled />
-                  </n-icon>
+                  <img class="ui-page-filter-icon" :src="filterIcon" alt="" />
                 </template>
+                {{ $t('content.filters') }}
               </n-button>
             </n-badge>
           </template>
           <div class="flex flex-col max-w-full">
-            <div class="flex justify-between">
-              <span class="text-sm text-surface-400">{{ $t('content.filterSetting') }}</span>
-              <n-button
-                @click="emits('onClear')"
-                strong
-                secondary
-                type="error"
-                size="tiny"
-                class="shadow"
-              >
-                {{ $t('content.clear') }}
-                <template #icon>
-                  <DeleteArrowBack20Regular />
-                </template>
-              </n-button>
-            </div>
-            <div class="ui-filter-content overflow-y-auto pr-1 -mr-1" :style="{ maxHeight: filterMaxHeight }">
+            <slot name="filterHeader">
+              <div class="ui-filter-header">
+                <div class="ui-filter-header-title">
+                  <img :src="filterIcon" alt="" />
+                  <span>{{ $t('content.filterSetting') }}</span>
+                </div>
+                <button type="button" class="ui-filter-clear" @click="emits('onClear')">
+                  <img :src="clearFilterIcon" alt="" />
+                  <span>{{ $t('content.clearFilters') }}</span>
+                </button>
+              </div>
+            </slot>
+            <div class="ui-filter-content overflow-y-auto" :style="{ maxHeight: filterMaxHeight }">
               <slot name="filterContent"></slot>
             </div>
           </div>
@@ -190,6 +195,101 @@
 </template>
 
 <style scoped>
+.ui-page-search {
+  --n-height: 44px !important;
+  --n-border-radius: 16px !important;
+  --n-font-size: 14px !important;
+}
+
+.ui-page-search :deep(.n-input-wrapper) {
+  padding: 0 16px;
+}
+
+.ui-page-search-icon {
+  width: 13.5px;
+  height: 13.5px;
+  flex-shrink: 0;
+  aspect-ratio: 1 / 1;
+  color: var(--textColor2);
+}
+
+.ui-page-search :deep(.n-input__prefix) {
+  margin-right: 8px;
+}
+
+.ui-page-search :deep(.n-input__placeholder) {
+  color: var(--textColor2);
+}
+
+.ui-page-action-button,
+.ui-page-filter-button {
+  --n-height: 44px !important;
+  --n-border-radius: 12px !important;
+}
+
+.ui-page-action-button {
+  --n-padding: 0 16px !important;
+}
+
+.ui-page-filter-button {
+  --n-padding: 0 16px !important;
+  font-weight: 600;
+}
+
+.ui-page-filter-icon {
+  width: 20px;
+  height: 20px;
+}
+
+.ui-filter-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 48px;
+  padding: 0 20px;
+  border-radius: 18px 18px 0 0;
+  color: var(--primary-color);
+  background: var(--color-brand-surface);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.ui-filter-header-title,
+.ui-filter-clear {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ui-filter-header-title img,
+.ui-filter-clear img {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+.ui-filter-clear {
+  flex-shrink: 0;
+  padding: 6px 8px;
+  border: 0;
+  border-radius: 8px;
+  color: #e5383b;
+  background: transparent;
+  cursor: pointer;
+  font: inherit;
+  transition: background-color 0.2s ease;
+}
+
+.ui-filter-clear:hover {
+  background: rgba(229, 56, 59, 0.08);
+}
+
+.ui-filter-content {
+  padding: 24px 32px 28px;
+  overscroll-behavior: contain;
+}
+
 .ui-filter-content :deep(:where(.n-select, .n-date-picker)) {
   width: 100%;
 }
