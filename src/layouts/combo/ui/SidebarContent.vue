@@ -208,7 +208,7 @@ onMounted(() => {
                   item?.disable && 'opacity-30'
                 ]">
                   <MenuItemBadge :category="currentCategory" :field="item?.name" />
-                  <div :class="[item?.color]" class="item-icon rounded-[10px] ml-[-2px]">
+                  <div class="item-icon rounded-[10px] ml-[-2px]">
                     <n-icon size="20">
                       <component :is="item.icon" />
                     </n-icon>
