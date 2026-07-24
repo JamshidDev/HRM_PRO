@@ -628,10 +628,10 @@
   .age-mode-group {
     display: flex;
     width: 100%;
-    height: 44px;
+    height: 40px;
     overflow: hidden;
-    border: 1px solid var(--surface-line);
-    border-radius: 16px;
+    border: 3px solid var(--surface-line);
+    border-radius: 12px;
     background: #eaecf0;
   }
 
@@ -677,5 +677,19 @@
     margin-top: 18px;
     font-size: 13px;
     font-weight: 600;
+  }
+
+  :global([data-theme='dark'] .age-mode-group) {
+    border-color: #344054;
+    background: #344054;
+  }
+
+  :global([data-theme='dark'] .age-mode-group .n-radio-button) {
+    color: #f2f4f7;
+  }
+
+  :global([data-theme='dark'] .age-mode-group .n-radio-button--checked) {
+    background: #101828;
+    color: #f2f4f7;
   }
 </style>
