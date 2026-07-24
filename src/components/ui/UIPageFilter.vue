@@ -218,7 +218,12 @@
 }
 
 .ui-page-search :deep(.n-input__placeholder) {
-  color: var(--textColor2);
+  color: #98a2b3;
+}
+
+.ui-page-search :deep(.n-input__input-el::placeholder) {
+  color: #98a2b3;
+  opacity: 1;
 }
 
 .ui-page-action-button,
