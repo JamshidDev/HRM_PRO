@@ -5,10 +5,14 @@
     WifiWarning24Regular,
     Video28Filled
   } from '@vicons/fluent'
-  import { useExamVideoStore } from '@/store/modules/index.js'
+  import { useExamVideoStore, useAccountStore } from '@/store/modules/index.js'
+  import { AppPaths, appPermissions } from '@/utils/index.js'
+  import AIButtonV2 from '@/components/buttons/AIButtonV2.vue'
   import axios from 'axios'
   const emits = defineEmits(['onChange'])
   const examVideoStore = useExamVideoStore()
+  const accountStore = useAccountStore()
+  const router = useRouter()
   const controlBtn = () => {
     emits('onChange')
   }
@@ -38,7 +42,13 @@
 </script>
 
 <template>
-  <div class=" bg-surface-section flex justify-between items-center">
+  <div class="relative  flex justify-between items-center">
+    <div
+      v-if="accountStore.checkPermission(appPermissions.ai)"
+      class="absolute left-1/2 bottom-0 -translate-x-1/2 translate-y-1/2 z-20"
+    >
+      <AIButtonV2 @click="() => router.push({ name: AppPaths.AIConversation.substring(1) })" />
+    </div>
     <div class="flex items-center z-10">
       <div
         @click="controlBtn"
