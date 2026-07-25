@@ -1,29 +1,39 @@
 <script setup>
+  import { useElementBounding, useMediaQuery, useWindowSize } from '@vueuse/core'
   import {
+    NoDataPicture,
+    UIPagination,
     UITableColumns,
     UITableSelectAll,
     UITableSelectRow,
     UITableActionsMenu
   } from '@/components/index.js'
-  import { TABLE_FILL_HEIGHT_KEY } from './tableFillHeightKey.js'
   import { useTableColumns } from '@/composables/index.js'
   import i18n from '@/i18n/index.js'
 
   const { t } = i18n.global
 
   const props = defineProps({
-    columns: { type: Array, required: true }, // [{ key, title, width, minWidth, maxWidth, align, fixed }]
+    // [{ key, title, fullTitle, width, minWidth, maxWidth, align, fixed, resizable }].
+    // Table uses a fixed layout: give a column `width` to pin its exact size, or only
+    // `minWidth` to let it grow into any leftover space (never below that floor, since
+    // the table's min-width already spans every column and scrolls instead of shrinking it).
+    columns: { type: Array, required: true },
     data: { type: Array, required: true },
     rowKey: { type: String, default: 'id' },
     bordered: { type: Boolean, default: false },
     columnBorder: { type: Boolean, default: false },
     rowBorder: { type: Boolean, default: false },
     striped: { type: Boolean, default: true },
-    radius: { type: [Number, String], default: 16 },
+
+    loading: { type: Boolean, default: false },
+    // Space to leave below the card, clearing the page wrapper's own padding.
+    bottomGap: { type: Number, default: 28 },
 
     showIndex: { type: Boolean, default: true },
     page: { type: Number, default: 1 },
     perPage: { type: Number, default: 0 },
+    total: { type: Number, default: null }, // renders the pagination footer when set
     selectable: { type: Boolean, default: false }, // swaps the row-number for a checkbox
     selectedKeys: { type: Array, default: () => [] },
     allSelected: { type: Boolean, default: false },
@@ -33,10 +43,32 @@
     storageKey: { type: String, default: null }
   })
 
-  const emit = defineEmits(['row-click', 'row-contextmenu', 'action', 'toggle-row', 'toggle-all'])
+  const emit = defineEmits([
+    'row-click',
+    'row-contextmenu',
+    'action',
+    'toggle-row',
+    'toggle-all',
+    'change-page'
+  ])
 
   const slots = useSlots()
-  const fillHeight = inject(TABLE_FILL_HEIGHT_KEY, ref(false))
+  const empty = computed(() => props.data.length === 0)
+
+  const cardRef = ref(null)
+  const isTabletUp = useMediaQuery('(min-width: 768px)')
+  const { top, update } = useElementBounding(cardRef, { windowScroll: false })
+  const { height: windowHeight } = useWindowSize()
+
+  // Fixed height (not a cap) so the footer stays pinned to the bottom
+  // regardless of row count. Tablet+ only; mobile keeps normal page scroll.
+  const cardHeight = computed(() => {
+    if (!isTabletUp.value) return null
+    return `${Math.max(windowHeight.value - top.value - props.bottomGap, 200)}px`
+  })
+
+  // Re-measure once layout above the card (e.g. filters) settles after mount.
+  onMounted(() => setTimeout(update, 100))
 
   const tableColumns = props.storageKey
     ? useTableColumns(
@@ -77,6 +109,15 @@
   const scrollX = computed(() => allCols.value.reduce((sum, c) => sum + colWidth(c), 0))
 
   const rowKeyFn = (row) => row[props.rowKey]
+
+  const onActionSelect = (key, option, row) => {
+    if (option.action) {
+      option.action(row)
+      return
+    }
+
+    emit('action', key, row)
+  }
 
   const renderIndexHeader = () => {
     if (props.selectable) {
@@ -125,7 +166,7 @@
       if (!visibleActions.value.length) return null
       return h(UITableActionsMenu, {
         options: visibleActions.value,
-        onSelect: (key) => emit('action', key, row)
+        onSelect: (key, option) => onActionSelect(key, option, row)
       })
     }
 
@@ -138,6 +179,7 @@
       width: col.width,
       minWidth: col.minWidth,
       maxWidth: col.maxWidth,
+      resizable: col.resizable,
       align: col.align,
       fixed: col.fixed,
       title: () => renderHeader(col),
@@ -165,37 +207,54 @@
     })
   }
 
-  const onSelectContextAction = (key) => {
+  const onSelectContextAction = (key, option) => {
     contextMenu.show = false
-    emit('action', key, contextMenu.row)
+
+    onActionSelect(key, option, contextMenu.row)
   }
 </script>
 
 <template>
-  <div class="ui-table" :class="{ 'ui-table--fill': fillHeight }">
-    <n-data-table
-      class="ui-table__table"
-      :columns="ndtColumns"
-      :data="data"
-      :row-key="rowKeyFn"
-      :bordered="bordered"
-      :single-column="!rowBorder"
-      :single-line="!columnBorder"
-      :bottom-bordered="rowBorder"
-      :striped="striped"
-      :scroll-x="scrollX"
-      :flex-height="fillHeight"
-      :row-props="rowProps"
+  <n-spin :show="loading">
+    <div
+      v-if="!empty"
+      ref="cardRef"
+      class="flex flex-col p-1 bg-surface-section rounded-[20px]"
+      :style="cardHeight ? { height: cardHeight, overflow: 'hidden' } : {}"
     >
-      <template #empty>
-        <div class="ui-table__empty">
-          <slot name="empty">
-            {{ $t('content.notFoundData') }}
-          </slot>
-        </div>
-      </template>
-    </n-data-table>
-  </div>
+      <n-data-table
+        class="ui-table__table flex-1"
+        :columns="ndtColumns"
+        :data="data"
+        :row-key="rowKeyFn"
+        :bordered="bordered"
+        :single-column="!rowBorder"
+        :single-line="!columnBorder"
+        :striped="striped"
+        :scroll-x="scrollX"
+        table-layout="fixed"
+        :flex-height="!!cardHeight"
+        :row-props="rowProps"
+      />
+
+      <div
+        v-if="total !== null || slots.footer"
+        class="rounded-b-2xl px-5"
+        style="background: var(--table-header)"
+      >
+        <slot name="footer">
+          <UIPagination
+            :page="page"
+            :per_page="perPage"
+            :total="total"
+            @change-page="(v) => emit('change-page', v)"
+          />
+        </slot>
+      </div>
+    </div>
+
+    <NoDataPicture v-if="empty" />
+  </n-spin>
 
   <n-dropdown
     v-if="visibleActions.length"
@@ -212,33 +271,11 @@
 </template>
 
 <style scoped>
-  .ui-table {
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .ui-table--fill {
-    flex: 1 1 0%;
-    min-height: 0;
-  }
-
-  .ui-table__table {
-    flex: 1 1 auto;
-    min-height: 0;
-  }
-
   .ui-table__table :deep(.n-data-table-th:first-child) {
     border-top-left-radius: 16px !important;
   }
 
   .ui-table__table :deep(.n-data-table-th:last-child) {
     border-top-right-radius: 16px !important;
-  }
-
-  .ui-table__empty {
-    padding: 48px 16px;
-    text-align: center;
-    color: var(--textColor3);
   }
 </style>

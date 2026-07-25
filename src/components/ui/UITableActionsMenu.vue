@@ -8,7 +8,7 @@
 </script>
 
 <template>
-  <n-dropdown trigger="click" :options="options" @select="(key) => $emit('select', key)">
+  <n-dropdown trigger="click" :options="options" @select="(key, option) => $emit('select', key, option)">
     <n-button tertiary circle size="small" @click.stop>
       <template #icon>
         <n-icon><MoreVertical24Filled /></n-icon>
