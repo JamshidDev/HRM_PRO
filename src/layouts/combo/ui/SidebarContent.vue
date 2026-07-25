@@ -3,10 +3,9 @@ import { navigations } from '../../data/navigations.js'
 import { ChevronDown12Regular, ChevronDoubleLeft16Filled, SlideSettings24Regular } from '@vicons/fluent'
 import { useAccountStore } from '@/store/modules/index.js'
 import i18n from '@/i18n/index.js'
-import { AppPaths, useAppSetting, appPermissions } from '@/utils/index.js'
+import { AppPaths, useAppSetting } from '@/utils/index.js'
 import { PageInstruction, MiniMenuBadge, MenuItemBadge, UIProfile, UIThemeSwitch, DownloadTask } from '@components'
 import LangDropdown from '@/components/general/LangDropdown.vue'
-import AIButtonV2 from '@/components/buttons/AIButtonV2.vue'
 import NotificationsWidget from '@components/ui/NotificationsWidget.vue'
 
 const { t } = i18n.global
@@ -147,7 +146,7 @@ onMounted(() => {
 
 <template>
   <div class="sidebar-content">
-    <div class="sidebar-card m-2 rounded-3xl overflow-hidden flex">
+    <div class="sidebar-card m-2 rounded-3xl overflow-hidden flex ">
       <div class="mini-content">
         <div class="mini-top-group">
           <div @click="() => router.push({ name: AppPaths.Home.substring(1) })" class="logo-content cursor-pointer">
@@ -172,10 +171,6 @@ onMounted(() => {
           </div>
         </div>
         <div class="flex flex-col items-center gap-[10px]">
-          <AIButtonV2
-            v-if="store.checkPermission(appPermissions.ai)"
-            @click="() => router.push({ name: AppPaths.AIConversation.substring(1) })"
-          />
           <DownloadTask />
           <PageInstruction />
           <n-popover trigger="click" placement="right-start" class="!p-2">

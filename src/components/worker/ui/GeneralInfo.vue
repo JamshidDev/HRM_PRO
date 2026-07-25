@@ -5,7 +5,6 @@
   import UserIcon from '@/assets/icons/userIcon.svg'
   import JshirIcon from '@/assets/icons/jshirIcon.svg'
   import InfoBox from './shared/InfoBox.vue'
-  import UIBadge from '@/components/ui/UIBadge.vue'
   import Utils from '../../../utils/Utils.js'
 
   const store = useComponentStore()
@@ -58,21 +57,9 @@
           class="grid grid-cols-1 md:grid-cols-2 gap-3"
         >
           <InfoBox :label="$t('workerView.general.passportJSHSHIR')" :value="store.workerPreview?.worker.pin" />
-          <InfoBox :label="$t('workerView.general.fromDate')" :value="Utils.timeOnlyDate(item.from_date)" />
-          <InfoBox :label="$t('workerView.general.toDate')">
-            <template #value>
-              <div class="flex items-center gap-2">
-                {{ Utils.timeOnlyDate(item.to_date) }}
-                <UIBadge
-                  :label="$t('workerView.general.passportValid')"
-                  :type="Utils.colorTypes.success"
-                  :show-icon="false"
-                  class="!w-auto"
-                />
-              </div>
-            </template>
-          </InfoBox>
           <InfoBox :label="$t('workerView.general.passportNumber')" :value="item.serial_number" />
+          <InfoBox :label="$t('workerView.general.fromDate')" :value="Utils.timeOnlyDate(item.from_date)" />
+          <InfoBox :label="$t('workerView.general.toDate')" :value="Utils.timeOnlyDate(item.to_date)" />
           <InfoBox
             :label="$t('workerView.general.citizenship')"
             :value="store.workerPreview?.worker.country.name"
@@ -107,6 +94,7 @@
           v-for="(item, idx) in store.workerPreview?.worker.universities"
           :key="idx"
           class="grid grid-cols-1 md:grid-cols-2 gap-3"
+          :class="[idx !== 0 && 'pt-3 border-t border-surface-ground']"
         >
           <InfoBox
             :label="$t('content.name')"

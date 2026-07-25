@@ -1360,7 +1360,9 @@
     },
     "title": "Previous employment",
     "systemTitle": "System employment records",
-    "no-data": "No previous employment added!"
+    "no-data": "No previous employment added!",
+    "sortOldestFirst": "Oldest to newest",
+    "sortNewestFirst": "Newest to oldest"
   },
   "workerPositionCertificatePage": {
     "title": "Position certificates",

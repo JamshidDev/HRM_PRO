@@ -1,5 +1,5 @@
 <script setup>
-  import { Settings24Regular, CalendarCheckmark20Filled } from '@vicons/fluent'
+  import { Settings24Regular, CalendarCheckmark20Filled, ArrowSort20Filled } from '@vicons/fluent'
   import PositionIcon from '@/assets/icons/positionIcon.svg'
   import { useComponentStore } from '@/store/modules/index.js'
   import SectionHeader from './shared/SectionHeader.vue'
@@ -7,6 +7,20 @@
   import Utils from '../../../utils/Utils.js'
 
   const store = useComponentStore()
+
+  const oldCareerSortDirection = ref('desc')
+
+  const sortedOldCareers = computed(() => {
+    const list = [...(store.workerPreview?.worker?.old_careers ?? [])]
+    return list.sort((a, b) => {
+      const diff = new Date(a.from_date) - new Date(b.from_date)
+      return oldCareerSortDirection.value === 'asc' ? diff : -diff
+    })
+  })
+
+  const toggleOldCareerSort = () => {
+    oldCareerSortDirection.value = oldCareerSortDirection.value === 'asc' ? 'desc' : 'asc'
+  }
 </script>
 
 <template>
@@ -40,8 +54,23 @@
     </SectionHeader>
 
     <SectionHeader :title="$t('oldCareerPage.title')" :icon="PositionIcon">
-      <div v-if="store.workerPreview?.worker?.old_careers?.length" class="flex flex-col">
-        <div v-for="(item, idx) in store.workerPreview?.worker?.old_careers" :key="idx" class="flex gap-3">
+      <template v-if="store.workerPreview?.worker?.old_careers?.length" #trailing>
+        <n-tooltip trigger="hover">
+          <template #trigger>
+            <div
+              @click="toggleOldCareerSort"
+              class="w-8 h-8 rounded-md flex items-center justify-center cursor-pointer hover:bg-surface-ground"
+            >
+              <n-icon size="18" class="text-primary">
+                <ArrowSort20Filled />
+              </n-icon>
+            </div>
+          </template>
+          {{ oldCareerSortDirection === 'asc' ? $t('oldCareerPage.sortNewestFirst') : $t('oldCareerPage.sortOldestFirst') }}
+        </n-tooltip>
+      </template>
+      <div v-if="sortedOldCareers.length" class="flex flex-col">
+        <div v-for="(item, idx) in sortedOldCareers" :key="item.id ?? idx" class="flex gap-3">
           <div class="w-14 shrink-0 flex flex-col items-center">
             <span class="flex-1 w-0.5" :class="idx === 0 ? 'bg-transparent' : 'bg-surface-line'"></span>
             <span
@@ -55,12 +84,12 @@
             </span>
             <span
               class="flex-1 w-0.5"
-              :class="idx === store.workerPreview?.worker?.old_careers?.length - 1 ? 'bg-transparent' : 'bg-surface-line'"
+              :class="idx === sortedOldCareers.length - 1 ? 'bg-transparent' : 'bg-surface-line'"
             ></span>
           </div>
           <div class="flex-1 min-w-0 bg-surface-ground-soft rounded-3xl px-5 py-4 mb-2">
             <div class="text-base font-bold text-textColor0">
-              {{ Utils.timeOnlyYear(item?.from_date) }} — {{ Utils.timeOnlyYear(item?.to_date) }}
+              {{ Utils.dayMonthYearLabel(item?.from_date) }} — {{ Utils.dayMonthYearLabel(item?.to_date) }}
             </div>
             <div class="text-textColor2 mt-1">{{ item.post_name }}</div>
           </div>
