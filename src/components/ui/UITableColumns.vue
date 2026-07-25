@@ -7,7 +7,7 @@
   const { t } = i18n.global
 
   const props = defineProps({
-    // Every customizable column: [{ key, title, visible }], in the order they'll render.
+    // Every customizable column: [{ key, title, fullTitle, visible }], in the order they'll render.
     columns: {
       type: Array,
       required: true
@@ -90,7 +90,7 @@
             class="flex-1 min-w-0"
             @update:checked="(v) => setVisible(col.key, v)"
           >
-            <span class="text-sm truncate">{{ col.title }}</span>
+            <span class="text-sm truncate">{{ col.fullTitle || col.title }}</span>
           </n-checkbox>
           <n-icon
             class="column-drag-handle cursor-grab shrink-0"
