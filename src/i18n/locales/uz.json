@@ -1505,7 +1505,7 @@
       "incentive": "Rag'batlantirishlari",
       "punishment": "Intizomiy jazolari",
       "exams": "Imtihonlar",
-      "e_documents": "E-hujjatlar"
+      "e_documents": "Raqamli-hujjatlar"
     },
     "header": {
       "title": "Xodim profili",
@@ -1551,6 +1551,20 @@
       "categoryMaterial": "Moddiy rag'batlantirish",
       "categoryState": "Davlat / idoraviy mukofot",
       "categoryMoral": "Ma'naviy rag'batlantirish"
+    },
+    "Edocument": {
+      "pasport": "Passport",
+      "railway_pasport": "Temiryo‘l guvohnoma",
+      "foreign_pasport": "Xorijiy passport",
+      "card_number": "Karta raqami",
+      "issue_date": "Berilgan sana",
+      "expiry_date": "Muddat o'tish sanasi",
+      "birth_date": "Tug'ilgan sanasi",
+      "nationality": "Millati",
+      "citizenship": "Fuqaroligi",
+      "issue_place": "Berilgan joyi",
+      "sex": "Jinsi",
+      "personal_number": "Shaxsiy raqami"
     }
   },
   "categoryPage": {

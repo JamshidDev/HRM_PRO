@@ -1348,7 +1348,7 @@
     "createTitle": "Add certificate",
     "updateTitle": "Edit certificate",
     "unlimited": "Unlimited",
-    "unlimitedHint": "Leave empty \u2014 no expiry",
+    "unlimitedHint": "Leave empty — no expiry",
     "qualificationHint": "This certificate does not define a language level",
     "scorePlaceholder": "Result from the certificate",
     "form": {
@@ -1484,7 +1484,8 @@
       "checkSkill": "Skill test",
       "checkKnowledge": "Knowledge test",
       "punishment": "Disciplinary actions",
-      "e_documents": "E-documents"
+      "e_documents": "E-documents",
+      "exams": "Exams"
     },
     "header": {
       "title": "Employee profile",
@@ -1530,6 +1531,20 @@
       "categoryMaterial": "Material incentive",
       "categoryState": "State / departmental award",
       "categoryMoral": "Moral incentive"
+    },
+    "Edocument": {
+      "pasport": "Passport",
+      "railway_pasport": "Railway ID",
+      "foreign_pasport": "Foreign Passport",
+      "card_number": "Card Number",
+      "issue_date": "Issue Date",
+      "expiry_date": "Expiry Date",
+      "birth_date": "Date of Birth",
+      "nationality": "Nationality",
+      "citizenship": "Citizenship",
+      "issue_place": "Place of Issue",
+      "sex": "Sex",
+      "personal_number": "Personal Number"
     }
   },
   "categoryPage": {
