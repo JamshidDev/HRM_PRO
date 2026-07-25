@@ -51,6 +51,10 @@
       class="col-span-12 border border-dashed p-2 rounded-xl border-surface-line bg-surface-ground mt-4"
     >
       <div class="grid grid-cols-12 gap-x-4">
+        <!-- FXSH (turi 2): tashkilot ham 1-qadamga (ContractForm_1) ko'chirildi —
+             2-qadam FXSH'da bo'sh qolmasin. Bo'lim/lavozim/maosh bilan birga
+             yashiriladi. Boshqa turlar (v-if type!==2) O'ZGARMAYDI. -->
+        <template v-if="store.payload.type !== 2">
         <div class="col-span-12">
           <n-form-item :label="$t(`documentPage.form.organization`)" path="organization_id">
             <UISelect
@@ -161,6 +165,7 @@
             />
           </n-form-item>
         </div>
+        </template>
 
         <!--        <div class="col-span-12">-->
         <!--          <n-form-item :label="$t(`documentPage.form.postName`)" path="post_name">-->

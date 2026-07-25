@@ -30,9 +30,9 @@
   const appStoreUrl = 'https://apps.apple.com/us/app/hr-rail/id6759365016'
 
   const termsFiles = {
-    uz: '/terms/HRM_PRO_Legal_Document_UZ.pdf',
-    ru: '/terms/HRM_PRO_Legal_Document_RU.pdf',
-    en: '/terms/HRM_PRO_Legal_Document_EN.pdf'
+    uz: '/terms/HRM_PRO_Terms_UZ.pdf',
+    ru: '/terms/HRM_PRO_Terms_RU.pdf',
+    en: '/terms/HRM_PRO_Terms_EN.pdf'
   }
   const termsUrl = computed(() => {
     const lang = localStorage.getItem(useAppSetting.languageKey) || 'uz'

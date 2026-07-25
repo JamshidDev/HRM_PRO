@@ -75,20 +75,20 @@
       </n-button>
     </div>
 
-    <div class="mb-8 text-center">
-      <h3 class="text-3xl font-bold uppercase leading-tight">
+    <div class="mb-8">
+      <h3 class="font-grotesk text-[30px] font-bold leading-tight text-login-ink">
         {{ $t('loginPage.resetPassword.title') }}
       </h3>
-      <p class="text-textColor2 mt-2 leading-snug">
+      <p class="text-login-body mt-2 leading-snug">
         <template v-if="store.step === resetSteps.request">
           {{ $t('loginPage.resetPassword.requestSubtitlePrefix') }}
           <a
             :href="resetBotUrl"
             target="_blank"
             rel="noopener noreferrer"
-            class="font-medium hover:underline"
-            style="color: #1677ff"
-          >{{ resetBotHandle }}</a>
+            class="font-medium hover:underline text-login-link"
+            >{{ resetBotHandle }}</a
+          >
           {{ $t('loginPage.resetPassword.requestSubtitleSuffix') }}
         </template>
         <template v-else-if="store.step === resetSteps.code">
@@ -97,9 +97,9 @@
             :href="resetBotUrl"
             target="_blank"
             rel="noopener noreferrer"
-            class="font-medium hover:underline"
-            style="color: #1677ff"
-          >{{ resetBotHandle }}</a>
+            class="font-medium hover:underline text-login-link"
+            >{{ resetBotHandle }}</a
+          >
           {{ $t('loginPage.resetPassword.codeSubtitleSuffix') }}
         </template>
         <template v-else>
@@ -118,7 +118,12 @@
       {{ store.errorMessage }}
     </div>
 
-    <n-form ref="formRef" :rules="validationRules.resetPassword" :model="store" class="flex flex-col">
+    <n-form
+      ref="formRef"
+      :rules="validationRules.resetPassword"
+      :model="store"
+      class="flex flex-col"
+    >
       <!-- 1-qadam: telefon raqamni tasdiqlab kod yuborish -->
       <template v-if="store.step === resetSteps.request">
         <n-form-item class="text-textColor2!" :label="$t(`loginPage.phone`)" path="phone">
@@ -136,7 +141,7 @@
           </n-input>
         </n-form-item>
         <n-button
-          class="login-new__submit h-[52px]! rounded-2xl! overflow-hidden! font-semibold!"
+          class="login-new__submit h-[52px]! rounded-[10px]! overflow-hidden! font-semibold!"
           size="large"
           :loading="store.loading"
           :disabled="!phoneFilled"
@@ -156,7 +161,7 @@
           <OtpBoxInput v-model="store.code" :length="6" @complete="onCodeComplete" />
         </n-form-item>
         <n-button
-          class="login-new__submit h-[52px]! rounded-2xl! overflow-hidden! font-semibold!"
+          class="login-new__submit h-[52px]! rounded-[10px]! overflow-hidden! font-semibold!"
           size="large"
           :loading="store.loading"
           @click="onVerify"
@@ -217,7 +222,7 @@
           </n-input>
         </n-form-item>
         <n-button
-          class="login-new__submit h-[52px]! rounded-2xl! overflow-hidden! font-semibold!"
+          class="login-new__submit h-[52px]! rounded-[10px]! overflow-hidden! font-semibold!"
           size="large"
           :loading="store.loading"
           @click="onSubmit"
