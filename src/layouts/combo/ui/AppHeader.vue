@@ -42,7 +42,7 @@
 </script>
 
 <template>
-  <div class="relative  flex justify-between items-center">
+  <div class="relative  flex justify-between items-center ">
     <div
       v-if="accountStore.checkPermission(appPermissions.ai)"
       class="absolute left-1/2 bottom-0 -translate-x-1/2 translate-y-1/2 z-20"
