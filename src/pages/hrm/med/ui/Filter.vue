@@ -77,7 +77,12 @@
     :popover-style="{ width: '560px', maxWidth: 'calc(100vw - 32px)', padding: '0', borderRadius: '20px' }"
   >
     <template #filterAction>
-      <n-button @click="openInspectionEv" secondary type="error">
+      <n-button
+        class="med-inspection-button w-full! md:w-auto!"
+        @click="openInspectionEv"
+        secondary
+        type="error"
+      >
         {{ $t('medInspection.name') }}
         <template #icon>
           <BuildingMultiple24Filled />
@@ -117,3 +122,9 @@
     </template>
   </UIPageFilter>
 </template>
+
+<style scoped>
+  .med-inspection-button {
+    --n-height: 44px !important;
+  }
+</style>

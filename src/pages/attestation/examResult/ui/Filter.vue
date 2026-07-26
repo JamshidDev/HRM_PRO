@@ -149,6 +149,7 @@
 
       <n-button
         v-fly-upload
+        class="h-[44px]!"
         type="success"
         :loading="store.downloadLoading || store.loading"
         @click="store._downloadExam()"
@@ -162,6 +163,7 @@
       </n-button>
       <n-button
         v-fly-upload
+        class="h-[44px]!"
         type="warning"
         :loading="store.downloadLoading || store.loading"
         @click="store._downloadNotPassedExam()"

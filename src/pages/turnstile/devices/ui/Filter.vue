@@ -162,19 +162,34 @@
 
     <template #filterAction>
       <div class="col-span-12 md:col-span-6 flex justify-end gap-2">
-        <n-button type="success" @click="store._downloadReport()" :loading="store.downloading">
+        <n-button
+          class="h-[44px]!"
+          type="success"
+          @click="store._downloadReport()"
+          :loading="store.downloading"
+        >
           {{ $t('content.downloadReport') }}
           <template #icon>
             <ArrowCircleDown12Regular />
           </template>
         </n-button>
-        <n-button type="success" @click="store._downloadDevices()" :loading="store.downloading">
+        <n-button
+          class="h-[44px]!"
+          type="success"
+          @click="store._downloadDevices()"
+          :loading="store.downloading"
+        >
           {{ $t('content.download') }}
           <template #icon>
             <ArrowCircleDown12Regular />
           </template>
         </n-button>
-        <n-button type="primary" @click="store._refreshDevice()" :loading="store.loading">
+        <n-button
+          class="h-[44px]!"
+          type="primary"
+          @click="store._refreshDevice()"
+          :loading="store.loading"
+        >
           {{ $t('content.refresh') }}
           <template #icon>
             <ArrowSync24Filled />
