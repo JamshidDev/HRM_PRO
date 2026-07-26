@@ -1,6 +1,9 @@
 <script setup>
-  import { UIUser, UIPagination, NoDataPicture } from '@/components/index.js'
+  import { UIUser, UITable } from '@/components/index.js'
   import { useDashboardStore } from '@/store/modules/index.js'
+  import i18n from '@/i18n/index.js'
+
+  const { t } = i18n.global
 
   const store = useDashboardStore()
 
@@ -17,61 +20,70 @@
     store.params.per_page = v.per_page
     filterEvent()
   }
+
+  const columns = computed(() => [
+    {
+      key: 'worker',
+      title: t('content.worker'),
+      minWidth: 200
+    },
+    {
+      key: 'organization.name',
+      title: t('content.organization'),
+      minWidth: 100
+    },
+    {
+      key: 'department.name',
+      title: t('content.department'),
+      minWidth: 100
+    },
+    {
+      key: 'birthday',
+      title: t('content.birthday'),
+      width: 140,
+      align: 'center'
+    },
+    {
+      key: 'age',
+      title: t('content.age'),
+      width: 140,
+      align: 'center'
+    }
+  ])
 </script>
 
 <template>
-  <n-spin :show="store.detailLoading" class="pt-2">
-    <n-table v-if="store.detailData?.length" class="mt-4" :single-line="false" size="small">
-      <thead>
-        <tr>
-          <th class="text-center! min-w-[40px] w-[40px]">{{ $t('content.number') }}</th>
-          <th class="text-center!">{{ $t('content.worker') }}</th>
-          <th class="min-w-[100px]">{{ $t('content.organization') }}</th>
-          <th class="min-w-[100px]">{{ $t('content.department') }}</th>
-          <th class="min-w-[100px] !text-center">{{ $t('content.birthday') }}</th>
-          <th class="min-w-[100px] !text-center">{{ $t('content.age') }}</th>
-        </tr>
-      </thead>
-      <tbody class="sort-target">
-        <tr v-for="(item, idx) in store.detailData" :key="idx">
-          <td>
-            <span class="text-center text-[12px] text-gray-600 block">{{
-              (store.params.page - 1) * store.params.per_page + idx + 1
-            }}</span>
-          </td>
-          <td>
-            <UIUser
-              :short="false"
-              :data="{
-                photo: item?.worker?.photo,
-                lastName: item?.worker?.last_name,
-                firstName: item?.worker?.first_name,
-                middleName: item?.worker?.middle_name,
-              }"
-            >
-              <template #position>
-                <span class="text-xs text-textColor3 w-full">{{ item?.position?.name }}</span>
-              </template>
-            </UIUser>
-          </td>
-          <td>{{ item.organization.name }}</td>
-          <td>{{ item.department.name }}</td>
-          <td class="!text-center">
-            <n-button type="primary" dashed round size="small">{{ item.worker.birthday }}</n-button>
-          </td>
-          <td class="!text-center">
-            <n-button circle size="small">{{ item.worker.age }}</n-button>
-          </td>
-        </tr>
-      </tbody>
-    </n-table>
-    <UIPagination
-      v-if="store.detailData?.length"
-      :page="store.params.page"
-      :per_page="store.params.per_page"
-      :total="store.detailDataTotal"
-      @change-page="changePage"
-    />
-    <NoDataPicture v-if="!store.detailData?.length && !store.detailLoading" />
-  </n-spin>
+  <UITable
+    :columns="columns"
+    :data="store.detailData || []"
+    :loading="store.detailLoading"
+    :page="store.params.page"
+    :per-page="store.params.per_page"
+    :total="store.detailDataTotal"
+    @change-page="changePage"
+  >
+    <template #cell-worker="{ row }">
+      <UIUser
+        :short="false"
+        :data="{
+          photo: row?.worker?.photo,
+          lastName: row?.worker?.last_name,
+          firstName: row?.worker?.first_name,
+          middleName: row?.worker?.middle_name
+        }"
+      >
+        <template #position>
+          <span class="text-xs text-textColor3 w-full">{{ row?.position?.name }}</span>
+        </template>
+      </UIUser>
+    </template>
+
+    <template #cell-birthday="{ row }">
+      <n-button type="primary" dashed round size="small">{{ row.worker.birthday }}</n-button>
+    </template>
+
+    <template #cell-age="{ row }">
+      <n-button circle size="small">{{ row.worker.age }}</n-button>
+    </template>
+  </UITable>
 </template>

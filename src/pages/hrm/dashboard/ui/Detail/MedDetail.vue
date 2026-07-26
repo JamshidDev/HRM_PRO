@@ -1,6 +1,9 @@
 <script setup>
-  import { UIUser, UIPagination, NoDataPicture, UIBadge } from '@/components/index.js'
+  import { UIUser, UIBadge, UITable } from '@/components/index.js'
   import { useDashboardStore } from '@/store/modules/index.js'
+  import i18n from '@/i18n/index.js'
+
+  const { t } = i18n.global
 
   const store = useDashboardStore()
 
@@ -17,54 +20,52 @@
     store.params.per_page = v.per_page
     filterEvent()
   }
+
+  const columns = computed(() => [
+    {
+      key: 'worker',
+      title: t('content.worker'),
+      minWidth: 200
+    },
+    {
+      key: 'to',
+      title: t('dashboardPage.medical.nextExamination'),
+      minWidth: 100,
+      width: 120
+    }
+  ])
 </script>
 
 <template>
-  <n-spin :show="store.detailLoading">
-    <n-table class="mt-4" :single-line="false" size="small" v-if="store.detailData?.length">
-      <thead>
-        <tr>
-          <th class="text-center! min-w-[40px] w-[40px]">{{ $t('content.number') }}</th>
-          <th>{{ $t('content.worker') }}</th>
-          <th class="min-w-[100px] w-[120px]">{{ $t('dashboardPage.medical.nextExamination') }}</th>
-        </tr>
-      </thead>
-      <tbody class="sort-target">
-        <tr v-for="(item, idx) in store.detailData" :key="idx">
-          <td>
-            <span class="text-center text-[12px] text-gray-600 block">{{
-              (store.params.page - 1) * store.params.per_page + idx + 1
-            }}</span>
-          </td>
-          <td>
-            <UIUser
-              :short="false"
-              :hide-tooltip="true"
-              :data="{
-                photo: item?.photo,
-                lastName: item?.last_name,
-                firstName: item?.first_name,
-                middleName: item?.middle_name,
-              }"
-            >
-              <template #position>
-                <span class="text-xs text-textColor3 w-full">{{ item?.position_name }}</span>
-              </template>
-            </UIUser>
-          </td>
-          <td>
-            <UIBadge :show-icon="false" :label="item.to" />
-          </td>
-        </tr>
-      </tbody>
-    </n-table>
-    <UIPagination
-      v-if="store.detailData?.length"
-      :page="store.params.page"
-      :per_page="store.params.per_page"
-      :total="store.detailDataTotal"
-      @change-page="changePage"
-    />
-    <NoDataPicture v-if="!store.detailData?.length && !store.detailLoading" />
-  </n-spin>
+  <UITable
+    class="mt-4"
+    :columns="columns"
+    :data="store.detailData || []"
+    :loading="store.detailLoading"
+    :page="store.params.page"
+    :per-page="store.params.per_page"
+    :total="store.detailDataTotal"
+    @change-page="changePage"
+  >
+    <template #cell-worker="{ row }">
+      <UIUser
+        :short="false"
+        :hide-tooltip="true"
+        :data="{
+          photo: row?.photo,
+          lastName: row?.last_name,
+          firstName: row?.first_name,
+          middleName: row?.middle_name
+        }"
+      >
+        <template #position>
+          <span class="text-xs text-textColor3 w-full">{{ row?.position_name }}</span>
+        </template>
+      </UIUser>
+    </template>
+
+    <template #cell-to="{ row }">
+      <UIBadge :show-icon="false" :label="row.to" />
+    </template>
+  </UITable>
 </template>
