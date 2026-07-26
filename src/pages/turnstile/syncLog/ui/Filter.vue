@@ -85,7 +85,12 @@
       </div>
     </template>
     <template #filterAction>
-      <n-button type="primary" :loading="store.loading" @click="store._index()">
+      <n-button
+        class="h-[44px]!"
+        type="primary"
+        :loading="store.loading"
+        @click="store._index()"
+      >
         {{ $t('content.refresh') }}
         <template #icon>
           <ArrowSync16Filled />

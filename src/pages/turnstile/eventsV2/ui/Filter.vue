@@ -166,13 +166,23 @@
       </div>
     </template>
     <template #filterAction>
-      <n-button :loading="eventStore.jobLoading" @click="onSync" type="primary">
+      <n-button
+        class="h-[44px]!"
+        :loading="eventStore.jobLoading"
+        @click="onSync"
+        type="primary"
+      >
         {{ $t('turnstile.accessLevelPage.sync') }}
         <template #icon>
           <ArrowSync24Filled />
         </template>
       </n-button>
-      <n-button @click="onOpenDownloadModal" :loading="store.download.loading" type="success">
+      <n-button
+        class="h-[44px]!"
+        @click="onOpenDownloadModal"
+        :loading="store.download.loading"
+        type="success"
+      >
         <template #icon>
           <ArrowCircleDown32Regular />
         </template>

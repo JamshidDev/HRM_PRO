@@ -127,7 +127,11 @@ import { ArrowDownload24Regular, ArrowSync20Filled, LockClosed20Regular } from '
         </div>
         <n-tooltip :delay="1500" placement="bottom" trigger="hover">
           <template #trigger>
-            <n-button @click="store.statModalVisible = true" type="info">
+            <n-button
+              class="h-[44px]!"
+              @click="store.statModalVisible = true"
+              type="info"
+            >
               <span class="inline-flex items-center gap-1.5">
                 {{ $t('structureReport.organizations') }}
                 <span v-if="notExistsCount > 0" class="text-[11px] font-medium bg-white/20 rounded-full px-1.5 py-0.5">
@@ -146,7 +150,11 @@ import { ArrowDownload24Regular, ArrowSync20Filled, LockClosed20Regular } from '
           {{ $t('structureReport.management') }}
         </n-button>
 
-        <n-button @click="store.generalExcelModalVisible = true" type="success">
+        <n-button
+          class="h-[44px]!"
+          @click="store.generalExcelModalVisible = true"
+          type="success"
+        >
           <template #icon>
             <n-icon>
               <ArrowDownload24Regular />

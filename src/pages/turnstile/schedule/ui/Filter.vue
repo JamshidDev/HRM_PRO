@@ -127,13 +127,18 @@
       </div>
     </template>
     <template #filterAction>
-      <n-button type="primary" @click="store._save()" :loading="store.savingLoading">
+      <n-button
+        class="h-[44px]!"
+        type="primary"
+        @click="store._save()"
+        :loading="store.savingLoading"
+      >
         <template #icon>
           <Save16Filled />
         </template>
         {{ $t('content.save') }}
       </n-button>
-      <n-button @click="openPanel" type="success">
+      <n-button class="h-[44px]!" @click="openPanel" type="success">
         {{ $t('schedule.form.exportSchedule') }}
       </n-button>
     </template>
