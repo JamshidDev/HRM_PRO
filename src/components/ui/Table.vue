@@ -1,5 +1,4 @@
 <script setup>
-  import { useElementBounding, useMediaQuery, useWindowSize } from '@vueuse/core'
   import {
     NoDataPicture,
     UIPagination,
@@ -14,33 +13,24 @@
   const { t } = i18n.global
 
   const props = defineProps({
-    // [{ key, title, fullTitle, width, minWidth, maxWidth, align, fixed, resizable }].
-    // Table uses a fixed layout: give a column `width` to pin its exact size, or only
-    // `minWidth` to let it grow into any leftover space (never below that floor, since
-    // the table's min-width already spans every column and scrolls instead of shrinking it).
-    columns: { type: Array, required: true },
+    columns: { type: Array, required: true }, // [{ key, title, fullTitle, width, minWidth, maxWidth, className, align, fixed }]
     data: { type: Array, required: true },
     rowKey: { type: String, default: 'id' },
     bordered: { type: Boolean, default: false },
     columnBorder: { type: Boolean, default: false },
     rowBorder: { type: Boolean, default: false },
     striped: { type: Boolean, default: true },
-
     loading: { type: Boolean, default: false },
-    // Space to leave below the card, clearing the page wrapper's own padding.
-    bottomGap: { type: Number, default: 28 },
-
+    bottomGap: { type: Number, default: 28 }, // gap below the card
     showIndex: { type: Boolean, default: true },
     page: { type: Number, default: 1 },
-    perPage: { type: Number, default: 0 },
+    perPage: { type: Number, default: 10 },
     total: { type: Number, default: null }, // renders the pagination footer when set
     selectable: { type: Boolean, default: false }, // swaps the row-number for a checkbox
     selectedKeys: { type: Array, default: () => [] },
     allSelected: { type: Boolean, default: false },
-
-    actions: { type: Array, default: () => [] }, // "..." menu + right-click context menu options
-    // Persists column visibility/order to localStorage under this key and renders the settings button.
-    storageKey: { type: String, default: null }
+    actions: { type: Array, default: () => [] }, // "..." menu + right-click options
+    storageKey: { type: String, default: null } // persists column visibility/order
   })
 
   const emit = defineEmits([
@@ -54,21 +44,6 @@
 
   const slots = useSlots()
   const empty = computed(() => props.data.length === 0)
-
-  const cardRef = ref(null)
-  const isTabletUp = useMediaQuery('(min-width: 768px)')
-  const { top, update } = useElementBounding(cardRef, { windowScroll: false })
-  const { height: windowHeight } = useWindowSize()
-
-  // Fixed height (not a cap) so the footer stays pinned to the bottom
-  // regardless of row count. Tablet+ only; mobile keeps normal page scroll.
-  const cardHeight = computed(() => {
-    if (!isTabletUp.value) return null
-    return `${Math.max(windowHeight.value - top.value - props.bottomGap, 200)}px`
-  })
-
-  // Re-measure once layout above the card (e.g. filters) settles after mount.
-  onMounted(() => setTimeout(update, 100))
 
   const tableColumns = props.storageKey
     ? useTableColumns(
@@ -86,27 +61,30 @@
   const allCols = computed(() => {
     const cols = [...(tableColumns ? tableColumns.columns.value : props.columns)]
     if (props.showIndex) {
-      cols.unshift({
-        key: '__index',
-        width: 56,
-        align: 'center',
-        fixed: 'left'
-      })
+      cols.unshift({ key: '__index', width: 56, align: 'center', fixed: 'left' })
     }
     if (visibleActions.value.length || tableColumns) {
-      cols.push({
-        key: '__actions',
-        width: 56,
-        align: 'center',
-        fixed: 'right'
-      })
+      cols.push({ key: '__actions', width: 56, align: 'center', fixed: 'right' })
     }
     return cols
   })
 
-  // n-data-table needs scroll-x set for `fixed` columns to work at all.
-  const colWidth = (col) => col.width || col.minWidth || 100
-  const scrollX = computed(() => allCols.value.reduce((sum, c) => sum + colWidth(c), 0))
+  const naturalWidth = (col) => col.width || col.minWidth || 100
+  const scrollX = computed(() => allCols.value.reduce((sum, c) => sum + naturalWidth(c), 0))
+
+  const ndtColumns = computed(() => {
+    return allCols.value.map((col) => ({
+      key: col.key,
+      width: col.width,
+      minWidth: col.minWidth,
+      maxWidth: col.maxWidth,
+      className: col.className,
+      align: col.align,
+      fixed: col.fixed,
+      title: () => renderHeader(col),
+      render: (row, index) => renderCell(col, row, index)
+    }))
+  })
 
   const rowKeyFn = (row) => row[props.rowKey]
 
@@ -115,7 +93,6 @@
       option.action(row)
       return
     }
-
     emit('action', key, row)
   }
 
@@ -173,20 +150,6 @@
     return getCellValue(row, col.key)
   }
 
-  const ndtColumns = computed(() =>
-    allCols.value.map((col) => ({
-      key: col.key,
-      width: col.width,
-      minWidth: col.minWidth,
-      maxWidth: col.maxWidth,
-      resizable: col.resizable,
-      align: col.align,
-      fixed: col.fixed,
-      title: () => renderHeader(col),
-      render: (row, index) => renderCell(col, row, index)
-    }))
-  )
-
   const rowProps = (row, index) => ({
     onClick: () => emit('row-click', row, index),
     onContextmenu: (e) => onRowContextmenu(e, row, index)
@@ -209,21 +172,18 @@
 
   const onSelectContextAction = (key, option) => {
     contextMenu.show = false
-
     onActionSelect(key, option, contextMenu.row)
   }
 </script>
 
 <template>
-  <n-spin :show="loading">
-    <div
-      v-if="!empty"
-      ref="cardRef"
-      class="flex flex-col p-1 bg-surface-section rounded-[20px]"
-      :style="cardHeight ? { height: cardHeight, overflow: 'hidden' } : {}"
-    >
+  <n-spin :show="loading" class="h-full">
+    <NoDataPicture v-if="empty" />
+
+    <div v-else class="h-full flex flex-col p-1 bg-surface-section rounded-[20px]">
       <n-data-table
         class="ui-table__table flex-1"
+        table-layout="fixed"
         :columns="ndtColumns"
         :data="data"
         :row-key="rowKeyFn"
@@ -232,9 +192,8 @@
         :single-line="!columnBorder"
         :striped="striped"
         :scroll-x="scrollX"
-        table-layout="fixed"
-        :flex-height="!!cardHeight"
         :row-props="rowProps"
+        flex-height
       />
 
       <div
@@ -252,8 +211,6 @@
         </slot>
       </div>
     </div>
-
-    <NoDataPicture v-if="empty" />
   </n-spin>
 
   <n-dropdown
