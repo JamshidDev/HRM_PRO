@@ -14,7 +14,7 @@
     componentStore._departments()
     componentStore._structures()
     componentStore._regions()
-    store.activeDeep = 1
+    store.refreshTarget = null
 
     store.parentElement = null
     store.visibleType = true

@@ -1,7 +1,7 @@
 <script setup>
   import { UIDrawer, UIPageContent } from '@components'
   import { useDepartmentStore, useAccountStore } from '@stores'
-  import { Filter, createForm, TabPage, Preview} from './ui'
+  import { Filter, createForm, Table, Preview} from './ui'
 
   const accStore = useAccountStore()
   const store = useDepartmentStore()
@@ -10,12 +10,17 @@
     if (!accStore.checkAction(accStore.pn.hrDepartmentsRead)) return
     store._index()
   })
+
+  const onSaved = () => {
+    store.visible = false
+    store.refreshNode(store.refreshTarget)
+  }
 </script>
 
 <template>
   <UIPageContent>
     <Filter />
-    <TabPage />
+    <Table />
     <UIDrawer
       v-model:visible="store.visible"
       :title="
@@ -23,7 +28,7 @@
       "
     >
       <template #content>
-        <createForm @onCancelEv="store.visible = false" />
+        <createForm @onCancelEv="store.visible = false" :callback="onSaved" />
       </template>
     </UIDrawer>
     <Preview />

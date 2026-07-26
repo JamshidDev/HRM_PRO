@@ -1,48 +1,46 @@
 <script setup>
-  import { NoDataPicture, UIPagination, UIUser, UIBadge, UIMenuButton } from '@/components/index.js'
-  import { useVacationStore, useComponentStore, useAccountStore } from '@/store/modules/index.js'
-  import Utils from '@/utils/Utils.js'
+  import { UIBadge, UITable, UIUser } from '@/components/index.js'
+import i18n from '@/i18n/index.js'
+import { useAccountStore, useComponentStore, useVacationStore } from '@/store/modules/index.js'
+import UIHelper from '@/utils/UIHelper.js'
+import Utils from '@/utils/Utils.js'
+import { Delete20Regular, Edit32Regular } from '@vicons/fluent'
+
+  const { t } = i18n.global
 
   const store = useVacationStore()
   const compStore = useComponentStore()
   const accStore = useAccountStore()
 
-  const onEdit = (v) => {
-    store.payload.position = v.position
+  const onEdit = (row) => {
+    if (!accStore.checkAction(accStore.pn.hrVacationsWrite)) return
+    store.payload.position = row.position
     compStore.selectedWorker = {
-      lastName: v.worker.last_name,
-      firstName: v.worker.first_name,
-      middleName: v.worker.middle_name,
-      position: v.position,
-      photo: v.worker.photo || Utils.noAvailableImage,
-      pin: v.worker.uuid
+      lastName: row.worker.last_name,
+      firstName: row.worker.first_name,
+      middleName: row.worker.middle_name,
+      position: row.position,
+      photo: row.worker.photo || Utils.noAvailableImage,
+      pin: row.worker.uuid
     }
     store.visibleType = false
-    store.elementId = v.id
-    store.payload.pin = v.worker.id.toString()
-    store.payload.full_position = v.full_position
-    store.payload.level = v.level.id
+    store.elementId = row.id
+    store.payload.pin = row.worker.id.toString()
+    store.payload.full_position = row.full_position
+    store.payload.level = row.level.id
     store.visible = true
   }
 
-  const onDelete = (v) => {
-    store.elementId = v.id
+  const onDelete = (row) => {
+    if (!accStore.checkAction(accStore.pn.hrVacationsWrite)) return
+    store.elementId = row.id
     store._delete()
   }
 
-  const changePage = (v) => {
-    store.params.page = v.page
-    store.params.per_page = v.per_page
+  const changePage = (row) => {
+    store.params.page = row.page
+    store.params.per_page = row.per_page
     store._index()
-  }
-
-  const onSelectEv = (v) => {
-    if (!accStore.checkAction(accStore.pn.hrVacationsWrite)) return
-    if (Utils.ActionTypes.edit === v.key) {
-      onEdit(v.data)
-    } else if (Utils.ActionTypes.delete === v.key) {
-      onDelete(v.data)
-    }
   }
 
   const vacationType = (id) => {
@@ -61,85 +59,104 @@
         return Utils.colorTypes.secondary
     }
   }
+
+  const columns = computed(() => [
+    {
+      key: 'worker',
+      title: t('confirmationPage.table.worker'),
+      minWidth: 200,
+    },
+    {
+      key: 'duration',
+      title: t('content.duration'),
+      width: 140
+    },
+    {
+      key: 'type',
+      title: t('vacationPage.table.type'),
+      minWidth: 300,
+    },
+    {
+      key: 'period',
+      title: t('vacationPage.table.duration'),
+      width: 240
+    },
+    {
+      key: 'workDay',
+      title: t('vacationPage.table.workDay'),
+      width: 160
+    }
+  ])
+
+  const actions = computed(() => [
+    {
+      label: t('content.edit'),
+      key: Utils.ActionTypes.edit,
+      icon: UIHelper.renderIcon(Edit32Regular),
+      visible: false,
+      action: onEdit
+    },
+    {
+      label: t('content.delete'),
+      key: Utils.ActionTypes.delete,
+      icon: UIHelper.renderIcon(Delete20Regular),
+      visible: false,
+      action: onDelete
+    }
+  ])
 </script>
 
 <template>
-  <n-spin :show="store.loading" style="min-height: 200px">
-    <div class="w-full overflow-x-auto" v-if="store.list.length > 0">
-      <n-table class="mt-4" :single-line="false" size="small">
-        <thead>
-          <tr>
-            <th class="text-center! min-w-[40px] w-[40px]">{{ $t('content.number') }}</th>
-            <th class="min-w-[200px]">{{ $t('confirmationPage.table.worker') }}</th>
-            <th class="min-w-[100px] w-[120px]">{{ $t('content.duration') }}</th>
-            <th class="min-w-[100px] w-[300px]">{{ $t('vacationPage.table.type') }}</th>
-            <th class="min-w-[100px] w-[240px]">{{ $t('vacationPage.table.duration') }}</th>
-            <th class="min-w-[100px] w-[120px]">{{ $t('vacationPage.table.workDay') }}</th>
-            <!--                      <th class="min-w-[40px] w-[40px]"></th>-->
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(item, idx) in store.list" :key="idx">
-            <td>
-              <span class="text-center block">{{
-                (store.params.page - 1) * store.params.per_page + idx + 1
-              }}</span>
-            </td>
-            <td>
-              <div>
-                <UIUser
-                  :short="false"
-                  :data="{
-                    photo: item?.worker_position?.worker.photo,
-                    firstName: item?.worker_position?.worker.first_name,
-                    middleName: item?.worker_position?.worker.middle_name,
-                    lastName: item?.worker_position?.worker.last_name,
-                    position: item?.worker_position?.post_short_name
-                  }"
-                />
-              </div>
-            </td>
-            <td>
-              <UIBadge
-                :show-icon="false"
-                :label="item.all_day + ' ' + $t('date.day')"
-                :type="Utils.colorTypes.success"
-              />
-            </td>
-            <td>
-              <UIBadge :label="item.type.name" :type="vacationType(item.type.id)" />
-            </td>
-            <td>
-              <div class="flex">
-                <UIBadge :show-icon="false" :label="Utils.timeOnlyDate(item.from)" />
-                <UIBadge :show-icon="false" :label="Utils.timeOnlyDate(item.to)" />
-              </div>
-            </td>
-            <td>
-              <UIBadge
-                v-if="item.work_day"
-                :show-icon="false"
-                :label="Utils.timeOnlyDate(item.work_day)"
-                :type="Utils.colorTypes.success"
-              />
-            </td>
-            <!--                      <td>-->
-            <!--                        <UIMenuButton-->
-            <!--                            :data="item"-->
-            <!--                            :show-edit="true"-->
-            <!--                            @selectEv="onSelectEv"-->
-            <!--                        />-->
-            <!--                      </td>-->
-          </tr>
-        </tbody>
-      </n-table>
-      <UIPagination
-        :page="store.params.page"
-        :per_page="store.params.per_page"
-        :total="store.totalItems"
-        @change-page="changePage"
+  <UITable
+    :columns="columns"
+    :actions="actions"
+    :data="store.list"
+    :loading="store.loading"
+    :page="store.params.page"
+    :per-page="store.params.per_page"
+    :total="store.totalItems"
+    storage-key="hrm-vacation"
+    @change-page="changePage"
+  >
+    <template #cell-worker="{ row }">
+      <UIUser
+        :short="false"
+        :data="{
+          photo: row?.worker_position?.worker.photo,
+          firstName: row?.worker_position?.worker.first_name,
+          middleName: row?.worker_position?.worker.middle_name,
+          lastName: row?.worker_position?.worker.last_name,
+          position: row?.worker_position?.post_short_name
+        }"
       />
-    </div>
-    <NoDataPicture v-if="store.list.length === 0 && !store.loading" />
-  </n-spin>
+    </template>
+
+    <template #cell-duration="{ row }">
+      <UIBadge
+        :show-icon="false"
+        :label="row.all_day + ' ' + $t('date.day')"
+        :type="Utils.colorTypes.success"
+      />
+    </template>
+
+    <template #cell-type="{ row }">
+      <UIBadge :label="row.type.name" :type="vacationType(row.type.id)" />
+    </template>
+
+    <template #cell-period="{ row }">
+      <div class="flex">
+        <UIBadge :show-icon="false" :label="Utils.timeOnlyDate(row.from)" />
+        <UIBadge :show-icon="false" :label="Utils.timeOnlyDate(row.to)" />
+      </div>
+    </template>
+
+    <template #cell-workDay="{ row }">
+      <UIBadge
+        v-if="row.work_day"
+        :show-icon="false"
+        :label="Utils.timeOnlyDate(row.work_day)"
+        :type="Utils.colorTypes.success"
+      />
+    </template>
+  </UITable>
 </template>

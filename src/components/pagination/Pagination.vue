@@ -4,13 +4,13 @@
       class="flex xl:justify-start lg:justify-start md:justify-start justify-center text-textColor2"
     >
       <template v-if="!short">
-        <span class="font-normal"
-          ><span class="font-bold text-primary">{{ total }}</span> {{ $t('content.fromTa') }}
-          <span class="font-bold text-primary"
-            >{{ (page - 1) * pageSize }}-{{ page * pageSize }}
+        <span class="font-normal">
+          <span class="font-bold text-primary">{{ total }}</span> {{ $t('content.fromTa') }}
+          <span class="font-bold text-primary">
+            {{ (page - 1) * pageSize + 1 }}-{{ page * pageSize }}
           </span>
-          {{ $t('content.untilShow') }}</span
-        >
+          {{ $t('content.untilShow') }}
+        </span>
       </template>
     </div>
     <div class="flex xl:justify-end lg:justify-end md:justify-end justify-center">

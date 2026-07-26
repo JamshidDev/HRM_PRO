@@ -1,48 +1,55 @@
 <script setup>
-  import { NoDataPicture, UIPagination, UIMenuButton } from '@components'
-  import { useAccountStore, useComponentStore, useDepartmentPositionStore } from '@stores'
-  import { Utils } from '@utils'
-  import { Eye16Regular } from '@vicons/fluent'
+  import { UITable } from '@/components/index.js'
+import i18n from '@/i18n/index.js'
+import UIHelper from '@/utils/UIHelper.js'
+import { useAccountStore, useComponentStore, useDepartmentPositionStore } from '@stores'
+import { Utils } from '@utils'
+import { Delete24Regular, Edit32Regular, Eye16Regular } from '@vicons/fluent'
+
+  const { t } = i18n.global
 
   const store = useDepartmentPositionStore()
   const componentStore = useComponentStore()
   const accStore = useAccountStore()
 
-  const onEdit = (v) => {
-    componentStore.depParams.organizations = [v.organization?.id]
+  const onEdit = (row) => {
+    if (!accStore.checkAction(accStore.pn.hrPositionsWrite)) return
+    componentStore.depParams.organizations = [row.organization?.id]
     if (componentStore.educationList.length === 0) {
       componentStore._enums()
     }
     componentStore._structures()
     componentStore.getDepartmentState(store.depParams.key)
-    componentStore.departments[store.depParams.key].list = [v.department]
+    componentStore.departments[store.depParams.key].list = [row.department]
     componentStore._positions()
     store.visibleType = false
-    store.elementId = v.id
+    store.elementId = row.id
     Object.assign(store.payload, {
-      organization_id: [v.organization],
-      position_id: v.position?.id,
-      department_id: v.department?.id,
-      group: v.group?.id,
-      rank: v.rank?.id,
-      max_rank: v.max_rank?.id,
-      education: v.education?.id,
-      rate: v.rate,
-      salary: v.salary.toString(),
-      experience: v.experience.toString()
+      organization_id: [row.organization],
+      position_id: row.position?.id,
+      department_id: row.department?.id,
+      group: row.group?.id,
+      rank: row.rank?.id,
+      max_rank: row.max_rank?.id,
+      education: row.education?.id,
+      rate: row.rate,
+      salary: row.salary.toString(),
+      experience: row.experience.toString()
     })
 
     store.visible = true
   }
 
-  const onDelete = (v) => {
-    store.elementId = v.id
+  const onDelete = (row) => {
+    if (!accStore.checkAction(accStore.pn.hrPositionsWrite)) return
+    store.elementId = row.id
     store._delete()
   }
 
-  const onPreview = (v) => {
+  const onPreview = (row) => {
+    if (!accStore.checkAction(accStore.pn.hrPositionsWrite)) return
     store.preview.visible = true
-    store.elementId = v.id
+    store.elementId = row.id
     store.preview.params.page = 1
     store.preview.list = []
     store._preview()
@@ -54,167 +61,129 @@
     store._index()
   }
 
-  const onSelectEv = (v) => {
-    if (!accStore.checkAction(accStore.pn.hrPositionsWrite)) return
-    if (Utils.ActionTypes.edit === v.key) {
-      onEdit(v.data)
-    } else if (Utils.ActionTypes.delete === v.key) {
-      onDelete(v.data)
-    } else if (Utils.ActionTypes.view === v.key) {
-      onPreview(v.data)
+  const columns = computed(() => [
+    {
+      key: 'position.name',
+      title: t('departmentPositionPage.table.position'),
+      minWidth: 200
+    },
+    {
+      key: 'department.name',
+      title: t('departmentPositionPage.table.department'),
+      minWidth: 200
+    },
+    {
+      key: 'organization.name',
+      title: t('departmentPositionPage.table.organization'),
+      minWidth: 300
+    },
+    {
+      key: 'education.name',
+      title: t('departmentPositionPage.table.education'),
+      width: 120
+    },
+    {
+      key: 'group',
+      title: t('departmentPositionPage.table.group'),
+      fullTitle: t('departmentPositionPage.form.group'),
+      width: 60,
+      align: 'center'
+    },
+    {
+      key: 'rank',
+      title: t('departmentPositionPage.table.rank'),
+      fullTitle: t('departmentPositionPage.form.rank'),
+      width: 60,
+      align: 'center'
+    },
+    {
+      key: 'rate',
+      title: t('departmentPositionPage.table.rate'),
+      fullTitle: t('departmentPositionPage.form.rate'),
+      width: 60,
+      align: 'center'
+    },
+    {
+      key: 'worker_rate',
+      title: t('departmentPositionPage.table.fact'),
+      fullTitle: t('departmentPositionPage.form.fact'),
+      width: 60,
+      align: 'center'
+    },
+    {
+      key: 'experience',
+      title: t('departmentPositionPage.table.experience'),
+      width: 80
+    },
+    {
+      key: 'salary',
+      title: t('departmentPositionPage.table.salary'),
+      width: 150
     }
-  }
+  ])
+
+  const actions = computed(() => [
+    {
+      label: t('content.view'),
+      key: Utils.ActionTypes.view,
+      icon: UIHelper.renderIcon(Eye16Regular),
+      action: onPreview
+    },
+    {
+      label: t('content.edit'),
+      key: Utils.ActionTypes.edit,
+      icon: UIHelper.renderIcon(Edit32Regular),
+      action: onEdit
+    },
+    {
+      label: t('content.delete'),
+      key: Utils.ActionTypes.delete,
+      icon: UIHelper.renderIcon(Delete24Regular),
+      action: onDelete
+    }
+  ])
 </script>
 
 <template>
-  <n-spin :show="store.loading" style="min-height: 200px">
-    <div class="w-full overflow-x-auto" v-if="store.list.length > 0">
-      <n-table class="mt-4" :single-line="false" size="small">
-        <thead>
-          <tr>
-            <th class="text-center! min-w-[40px] w-[40px]">{{ $t('content.number') }}</th>
-            <th class="min-w-[200px]">{{ $t('departmentPositionPage.table.position') }}</th>
-            <th class="min-w-[200px] w-[300px]">
-              {{ $t('departmentPositionPage.table.department') }}
-            </th>
-            <th class="min-w-[300px] w-[300px]">
-              {{ $t('departmentPositionPage.table.organization') }}
-            </th>
+  <UITable
+    :columns="columns"
+    :actions="actions"
+    :data="store.list"
+    :loading="store.loading"
+    :page="store.params.page"
+    :per-page="store.params.per_page"
+    :total="store.totalItems"
+    storage-key="hrm-department-position"
+    @change-page="changePage"
+  >
+    <template #cell-group="{ row }">
+      <n-button size="small" circle secondary>{{ row.group?.name }}</n-button>
+    </template>
 
-            <th class="min-w-[120px] w-[120px]">
-              {{ $t('departmentPositionPage.table.education') }}
-            </th>
-            <th class="min-w-[40px] w-[40px]">
-              <n-tooltip trigger="hover">
-                <template #trigger>
-                  <p
-                    class="cursor-pointer text-sm text-textColor2 line-clamp-1 w-full leading-[1.2] truncate"
-                  >
-                    {{ $t('departmentPositionPage.table.group') }}
-                  </p>
-                </template>
-                {{ $t('departmentPositionPage.form.group') }}
-              </n-tooltip>
-            </th>
-            <th class="min-w-[40px] w-[40px]">
-              <n-tooltip trigger="hover">
-                <template #trigger>
-                  <p
-                    class="cursor-pointer text-sm text-textColor2 line-clamp-1 w-full leading-[1.2] truncate"
-                  >
-                    {{ $t('departmentPositionPage.table.rank') }}
-                  </p>
-                </template>
-                {{ $t('departmentPositionPage.form.rank') }}
-              </n-tooltip>
-            </th>
-            <th class="min-w-[40px] w-[40px]">
-              <n-tooltip trigger="hover">
-                <template #trigger>
-                  <p
-                    class="cursor-pointer text-sm text-textColor2 line-clamp-1 w-full leading-[1.2] truncate"
-                  >
-                    {{ $t('departmentPositionPage.table.rate') }}
-                  </p>
-                </template>
-                {{ $t('departmentPositionPage.form.rate') }}
-              </n-tooltip>
-            </th>
-            <th class="min-w-[40px] w-[40px]">
-              <n-tooltip trigger="hover">
-                <template #trigger>
-                  <p
-                    class="cursor-pointer text-sm text-textColor2 line-clamp-1 w-full leading-[1.2] truncate"
-                  >
-                    {{ $t('departmentPositionPage.table.fact') }}
-                  </p>
-                </template>
-                {{ $t('departmentPositionPage.form.fact') }}
-              </n-tooltip>
-            </th>
-            <th class="min-w-[60px] w-[60px]">
-              {{ $t('departmentPositionPage.table.experience') }}
-            </th>
-            <th class="min-w-[60px] w-[100px]">{{ $t('departmentPositionPage.table.salary') }}</th>
-            <th class="min-w-[40px] w-[40px]"></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(item, idx) in store.list" :key="idx">
-            <td>
-              <span class="text-center text-[12px] text-gray-600 block">{{
-                (store.params.page - 1) * store.params.per_page + idx + 1
-              }}</span>
-            </td>
-            <td>{{ item.position?.name }}</td>
-            <td>{{ item.department?.name }}</td>
-            <td>{{ item.organization?.name }}</td>
+    <template #cell-rank="{ row }">
+      <n-button size="small" circle secondary>{{ row.rank?.name }}</n-button>
+    </template>
 
-            <td>{{ item.education?.name }}</td>
-            <td>
-              <div class="w-full flex justify-center">
-                <n-button size="small" circle secondary>{{ item.group?.name }}</n-button>
-              </div>
-            </td>
-            <td>
-              <div class="w-full flex justify-center">
-                <n-button size="small" circle secondary>{{ item.rank?.name }}</n-button>
-              </div>
-            </td>
-            <td>
-              <div class="w-full flex justify-center">
-                <n-button :type="item.colorType" secondary size="small" circle>{{
-                  item.rate
-                }}</n-button>
-              </div>
-            </td>
-            <td>
-              <div class="w-full flex justify-center">
-                <n-button
-                  :type="item.colorType"
-                  secondary
-                  v-if="item.worker_rate"
-                  size="small"
-                  circle
-                  >{{ item.worker_rate }}</n-button
-                >
-              </div>
-            </td>
-            <td>
-              <div class="w-full flex justify-center">
-                <n-button v-if="item.experience" circle size="small"
-                  >{{ item.experience }}
-                </n-button>
-              </div>
-            </td>
-            <td>
-              {{ Utils.formatNumberToMoney(item.salary) }}
-            </td>
-            <td>
-              <UIMenuButton
-                :data="item"
-                :show-edit="true"
-                @selectEv="onSelectEv"
-                :extra-options="[
-                  {
-                    label: $t('content.worker'),
-                    key: Utils.ActionTypes.view,
-                    icon: Eye16Regular
-                  }
-                ]"
-              />
-            </td>
-          </tr>
-        </tbody>
-      </n-table>
-    </div>
-    <UIPagination
-      v-if="store.totalItems > 0"
-      :page="store.params.page"
-      :per_page="store.params.per_page"
-      :total="store.totalItems"
-      @change-page="changePage"
-    />
-    <NoDataPicture v-if="store.list.length === 0 && !store.loading" />
-  </n-spin>
+    <template #cell-rate="{ row }">
+      <n-button :type="row.colorType" secondary size="small" circle>
+        {{ row.rate }}
+      </n-button>
+    </template>
+
+    <template #cell-worker_rate="{ row }">
+      <n-button :type="row.colorType" secondary v-if="row.worker_rate" size="small" circle>
+        {{ row.worker_rate }}
+      </n-button>
+    </template>
+
+    <template #cell-experience="{ row }">
+      <n-button v-if="row.experience" size="small" circle>
+        {{ row.experience }}
+      </n-button>
+    </template>
+
+    <template #cell-salary="{ row }">
+      {{ Utils.formatNumberToMoney(row.salary) }}
+    </template>
+  </UITable>
 </template>

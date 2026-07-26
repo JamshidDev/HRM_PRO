@@ -1,24 +1,62 @@
 <script setup>
-  import { NoDataPicture, UIMenuButton, UIPagination, UIStatus } from '@/components/index.js'
+  import { UIStatus, UITable } from '@/components/index.js'
+  import i18n from '@/i18n/index.js'
   import {
+    useAccountStore,
     useTimesheetConfirmStore,
     useTimesheetStore,
     useTimesheetWorkerStore
   } from '@/store/modules/index.js'
-  import {
-    Checkmark16Filled,
-    CalendarCheckmark28Filled,
-    CheckmarkCircle24Filled
-  } from '@vicons/fluent'
-  import { useAccountStore } from '@/store/modules/index.js'
-  const accStore = useAccountStore()
-
-  import dayjs from 'dayjs'
+  import UIHelper from '@/utils/UIHelper.js'
   import Utils from '@/utils/Utils.js'
+  import {
+    CalendarCheckmark28Filled,
+    Checkmark16Filled,
+    CheckmarkCircle24Filled,
+    Edit32Regular,
+    Eye16Regular
+  } from '@vicons/fluent'
+  import dayjs from 'dayjs'
+
+  const { t } = i18n.global
 
   const store = useTimesheetStore()
+  const accStore = useAccountStore()
   const timesheetWorkerStore = useTimesheetWorkerStore()
   const timesheetConfirmStore = useTimesheetConfirmStore()
+
+  const onView = (row) => {
+    timesheetWorkerStore.elementId = row.id
+    timesheetWorkerStore.visible = true
+    timesheetWorkerStore._index()
+  }
+
+  const onEdit = (row) => {
+    if (!accStore.checkAction(accStore.pn.hrTableWorkersWrite)) return
+    store.elementId = row.id
+    store.payload.department_id = row.department?.id
+    store.payload.work_place_id = row.work_place?.id
+    store.payload.active_tab = row.department?.id ? 'department' : 'organization'
+    store.payload.timestamp = dayjs()
+      .month(row.month - 1)
+      .year(row.year)
+      .valueOf()
+    store.visibleType = false
+    store.visible = true
+  }
+
+  const onVerifier = (row) => {
+    if (!accStore.checkAction(accStore.pn.hrTableWorkersWrite)) return
+    timesheetConfirmStore.elementId = row.id
+    timesheetConfirmStore.visible = true
+  }
+
+  const onFinish = (row) => {
+    if (row.status) return
+    if (!accStore.checkAction(accStore.pn.hrTableWorkersWrite)) return
+    store.warningVisible = true
+    store.elementId = row.id
+  }
 
   const changePage = (v) => {
     store.params.page = v.page
@@ -26,114 +64,96 @@
     store._index()
   }
 
-  const onSelect = (v) => {
-    if (v.key === Utils.ActionTypes.view) {
-      timesheetWorkerStore.elementId = v.data.id
-      timesheetWorkerStore.visible = true
-      timesheetWorkerStore._index()
-    } else if (v.key === Utils.ActionTypes.edit) {
-      if (!accStore.checkAction(accStore.pn.hrTableWorkersWrite)) return
-      store.elementId = v.data.id
-      store.payload.department_id = v.data.department?.id
-      store.payload.work_place_id = v.data.work_place?.id
-      store.payload.active_tab = v.data.department?.id ? 'department' : 'organization'
-      store.payload.timestamp = dayjs()
-        .month(v.data.month - 1)
-        .year(v.data.year)
-        .valueOf()
-      store.visibleType = false
-      store.visible = true
-    } else if (v.key === Utils.ActionTypes.verifier) {
-      if (!accStore.checkAction(accStore.pn.hrTableWorkersWrite)) return
-      timesheetConfirmStore.elementId = v.data.id
-      timesheetConfirmStore.visible = true
-    } else if (v.key === Utils.ActionTypes.finish) {
-      if (!accStore.checkAction(accStore.pn.hrTableWorkersWrite)) return
-      store.warningVisible = true
-      store.elementId = v.data.id
+  const columns = computed(() => [
+    {
+      key: 'work_place',
+      title: t('timesheetWorkerPage.work_place'),
+      minWidth: 500,
+    },
+    {
+      key: 'month',
+      title: t('content.month'),
+      width: 140,
+      align: 'center'
+    },
+    {
+      key: 'status',
+      title: t('timesheet.status'),
+      width: 140,
+      align: 'center'
+    },
+    {
+      key: 'confirmation',
+      title: t('content.status'),
+      width: 140,
+      align: 'center'
     }
-  }
+  ])
+
+  const actions = computed(() => [
+    {
+      label: t('content.view'),
+      key: Utils.ActionTypes.view,
+      icon: UIHelper.renderIcon(Eye16Regular),
+      action: onView
+    },
+    {
+      label: t('content.edit'),
+      key: Utils.ActionTypes.edit,
+      icon: UIHelper.renderIcon(Edit32Regular),
+      action: onEdit
+    },
+    {
+      label: t('timesheetPage.verifiers'),
+      key: Utils.ActionTypes.verifier,
+      icon: UIHelper.renderIcon(Checkmark16Filled),
+      action: onVerifier
+    },
+    {
+      label: t('content.finish'),
+      key: Utils.ActionTypes.finish,
+      icon: UIHelper.renderIcon(CalendarCheckmark28Filled),
+      action: onFinish
+    }
+  ])
 </script>
 
 <template>
-  <n-spin :show="store.loading" style="min-height: 200px">
-    <div class="w-full overflow-x-auto" v-if="store.list.length > 0">
-      <n-table class="mt-5 w-full table-fixed" :single-line="false" size="small">
-        <thead>
-          <tr>
-            <th class="text-center! w-[40px] max-w-[40px]">{{ $t('content.number') }}</th>
-            <th class="text-center! min-w-[500px]">{{ $t('timesheetWorkerPage.work_place') }}</th>
-            <th class="text-center!">{{ $t('content.month') }}</th>
-            <th class="text-center! max-w-[120px] w-[120px]">{{ $t('timesheet.status') }}</th>
-            <th class="text-center! max-w-[100px] w-[100px]">{{ $t('content.status') }}</th>
-            <th class="max-w-[40px] w-[40px]"></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(item, idx) in store.list" :key="idx">
-            <td class="w-[20px] max-w-[20px]">
-              <span class="text-center text-[12px] text-gray-600 block">{{
-                (store.params.page - 1) * store.params.per_page + idx + 1
-              }}</span>
-            </td>
-            <td>{{ item.department?.name || item.work_place?.name }}</td>
-            <td class="text-center!">
-              {{
-                dayjs()
-                  .year(item.year)
-                  .month(item.month - 1)
-                  .format('YYYY MMMM')
-              }}
-            </td>
-            <td class="text-center! max-w-[120px] w-[120px]">
-              <n-button v-if="!!item?.status" type="primary" size="tiny" dashed>
-                <template #icon>
-                  <n-icon :component="CheckmarkCircle24Filled" />
-                </template>
-                {{ $t('timesheet.finished') }}
-              </n-button>
-            </td>
-            <td class="text-center!"><UIStatus :status="item.confirmation" /></td>
-            <td>
-              <UIMenuButton
-                :show-view="true"
-                :data="item"
-                @select-ev="onSelect"
-                show-edit
-                :show-delete="false"
-                :extra-options="
-                  (() => {
-                    let options = [
-                      {
-                        label: $t('timesheetPage.verifiers'),
-                        key: Utils.ActionTypes.verifier,
-                        icon: Checkmark16Filled,
-                        visible: true
-                      }
-                    ]
-                    if (!item.status) {
-                      options.push({
-                        label: $t('content.finish'),
-                        key: Utils.ActionTypes.finish,
-                        icon: CalendarCheckmark28Filled,
-                        visible: true
-                      })
-                    }
-                    return options
-                  })()
-                "
-              />
-            </td>
-          </tr>
-        </tbody>
-      </n-table>
-      <UIPagination
-        :page="store.params.page"
-        :per_page="store.params.per_page"
-        :total="store.totalItems"
-        @change-page="changePage"
-      />
-    </div>
-    <NoDataPicture v-if="store.list.length === 0 && !store.loading" />
-  </n-spin>
+  <UITable
+    :columns="columns"
+    :actions="actions"
+    :data="store.list"
+    :loading="store.loading"
+    :page="store.params.page"
+    :per-page="store.params.per_page"
+    :total="store.totalItems"
+    storage-key="hrm-timesheet-department"
+    @change-page="changePage"
+  >
+    <template #cell-work_place="{ row }">
+      {{ row.department?.name || row.work_place?.name }}
+    </template>
+
+    <template #cell-month="{ row }">
+      {{
+        dayjs()
+          .year(row.year)
+          .month(row.month - 1)
+          .format('YYYY MMMM')
+      }}
+    </template>
+
+    <template #cell-status="{ row }">
+      <n-button v-if="!!row?.status" type="primary" size="tiny" dashed>
+        <template #icon>
+          <n-icon :component="CheckmarkCircle24Filled" />
+        </template>
+        {{ $t('timesheet.finished') }}
+      </n-button>
+    </template>
+
+    <template #cell-confirmation="{ row }">
+      <UIStatus :status="row.confirmation" />
+    </template>
+  </UITable>
 </template>

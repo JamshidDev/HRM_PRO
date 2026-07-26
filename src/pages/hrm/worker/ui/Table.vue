@@ -1,17 +1,17 @@
 <script setup>
-  import { UIUser, UIWorkerView, UITable } from '@/components/index.js'
-  import {
-    useTimesheetDepartmentStore,
-    useWorkerStore,
+  import { UITable, UIUser, UIWorkerView } from '@/components/index.js'
+import i18n from '@/i18n/index.js'
+import {
+    useAccountStore,
     useExportStore,
-    useAccountStore
-  } from '@/store/modules/index.js'
-  import { useRouter } from 'vue-router'
-  import { AppPaths } from '@/utils/index.js'
-  import Utils from '@/utils/Utils.js'
-  import { Edit32Regular, Eye16Regular, Table24Regular } from '@vicons/fluent'
-  import UIHelper from '@/utils/UIHelper.js'
-  import i18n from '@/i18n/index.js'
+    useTimesheetDepartmentStore,
+    useWorkerStore
+} from '@/store/modules/index.js'
+import { AppPaths } from '@/utils/index.js'
+import UIHelper from '@/utils/UIHelper.js'
+import Utils from '@/utils/Utils.js'
+import { Edit32Regular, Eye16Regular, Table24Regular } from '@vicons/fluent'
+import { useRouter } from 'vue-router'
 
   const { t } = i18n.global
 
@@ -22,6 +22,31 @@
   const accStore = useAccountStore()
   const exportStore = useExportStore()
   const timesheetDepartmentStore = useTimesheetDepartmentStore()
+
+  const onPreview = (row) => {
+    if (!accStore.checkAction(accStore.pn.hrWorkersRead)) return
+    previewRef?.value.openPreview(row.uuid)
+  }
+
+  const onEdit = (row) => {
+    if (!accStore.checkAction(accStore.pn.hrWorkersWrite)) return
+    router.push({
+      path: `${AppPaths.Hrm}${AppPaths.WorkerProfile}`,
+      query: { id: row.worker.uuid }
+    })
+  }
+
+  const onAssignTimesheet = (row) => {
+    if (!accStore.checkAction(accStore.pn.hrWorkersWrite)) return
+    timesheetDepartmentStore.payload.worker_position_id = row.id
+    timesheetDepartmentStore.visible = true
+  }
+
+  const changePage = (v) => {
+    store.params.page = v.page
+    store.params.per_page = v.per_page
+    store._index()
+  }
 
   const columns = computed(() => [
     {
@@ -66,31 +91,6 @@
       align: 'center'
     }
   ])
-
-  const changePage = (v) => {
-    store.params.page = v.page
-    store.params.per_page = v.per_page
-    store._index()
-  }
-
-  const onPreview = (row) => {
-    if (!accStore.checkAction(accStore.pn.hrWorkersRead)) return
-    previewRef?.value.openPreview(row.uuid)
-  }
-
-  const onEdit = (row) => {
-    if (!accStore.checkAction(accStore.pn.hrWorkersWrite)) return
-    router.push({
-      path: `${AppPaths.Hrm}${AppPaths.WorkerProfile}`,
-      query: { id: row.worker.uuid }
-    })
-  }
-
-  const onAssignTimesheet = (row) => {
-    if (!accStore.checkAction(accStore.pn.hrWorkersWrite)) return
-    timesheetDepartmentStore.payload.worker_position_id = row.id
-    timesheetDepartmentStore.visible = true
-  }
 
   const actions = computed(() => [
     {
