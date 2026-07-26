@@ -14,17 +14,15 @@
 </script>
 
 <template>
-  <div>
-    <Filter />
-    <Table @openEv="(v) => emits('openOffice', v)" />
-    <UIDrawer
-      :visible="store.visible"
-      @update:visible="(v) => (store.visible = v)"
-      :title="store.visibleType ? $t('medInspection.createTitle') : $t('medInspection.updateTitle')"
-    >
-      <template #content>
-        <createForm />
-      </template>
-    </UIDrawer>
-  </div>
+  <Filter />
+  <Table @openEv="(v) => emits('openOffice', v)" />
+  <UIDrawer
+    :visible="store.visible"
+    @update:visible="(v) => (store.visible = v)"
+    :title="store.visibleType ? $t('medInspection.createTitle') : $t('medInspection.updateTitle')"
+  >
+    <template #content>
+      <createForm />
+    </template>
+  </UIDrawer>
 </template>

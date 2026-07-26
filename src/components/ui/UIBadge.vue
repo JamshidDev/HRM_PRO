@@ -71,26 +71,31 @@
 </script>
 
 <template>
-  <div class="w-full flex justify-center items-center">
-    <div
-      :class="[badgeType, paddingY]"
-      class="flex gap-1 border items-center px-3 rounded-2xl cursor-pointer"
-    >
-      <div v-if="showIcon" class="w-[20px] flex justify-center">
-        <slot name="icon">
-          <n-icon size="12" class="ui--badge-icon">
-            <component :is="icon ? icon : badgeIcon" />
-          </n-icon>
-        </slot>
+  <n-tooltip style="max-width: 300px">
+    <span>
+      {{ label }}
+    </span>
+
+    <template #trigger>
+      <div class="w-full flex items-center">
+        <div
+          :class="[badgeType, paddingY]"
+          class="flex gap-1 border items-center px-3 rounded-2xl cursor-pointer truncate"
+        >
+          <div v-if="showIcon" class="w-[20px] flex justify-center">
+            <slot name="icon">
+              <n-icon size="12" class="ui--badge-icon">
+                <component :is="icon ? icon : badgeIcon" />
+              </n-icon>
+            </slot>
+          </div>
+          <div class="ui--badge-label leading-[1.2] flex-1 truncate">
+            {{ label }}
+          </div>
+        </div>
       </div>
-      <div
-        class="ui--badge-label leading-[1.2]"
-        v-bind:style="{ width: `calc(100% - ${showIcon ? 20 : 0}px)` }"
-      >
-        {{ label }}
-      </div>
-    </div>
-  </div>
+    </template>
+  </n-tooltip>
 </template>
 
 <style scoped>

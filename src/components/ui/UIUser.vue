@@ -81,7 +81,7 @@
           <template #trigger>
             <span
               :class="[overLine && 'line-through']"
-              class="text-sm text-textColor2 line-clamp-1 w-full leading-[1.2]"
+              class="text-sm text-textColor2 line-clamp-1 w-full leading-[1.2] truncate"
             >
               {{ short ? shortName : fullName }}
             </span>
@@ -90,7 +90,14 @@
         </n-tooltip>
       </slot>
       <slot name="position">
-        <span class="text-xs text-textColor3 line-clamp-1 w-full">{{ data?.position || '' }}</span>
+        <n-tooltip :disabled="hideTooltip" trigger="hover">
+          <template #trigger>
+            <span class="text-xs text-textColor3 line-clamp-1 w-full truncate">
+              {{ data?.position }}
+            </span>
+          </template>
+          <span>{{ data?.position }}</span>
+        </n-tooltip>
       </slot>
     </div>
   </div>

@@ -1,9 +1,17 @@
 <script setup>
-  import { UIPagination, NoDataPicture, UIUser, UIBadge, UIMenuButton, UIModal, UIStatus } from '@/components/index.js'
+  import { UIUser, UIBadge, UIModal, UIStatus, UITable } from '@/components/index.js'
   import { useVacancyStore } from '@/store/modules/index.js'
   import Utils from '@/utils/Utils.js'
+  import UIHelper from '@/utils/UIHelper.js'
   import validationRules from '@/utils/validationRules.js'
-  import { Attach16Regular, CheckmarkCircle20Regular, Info24Regular, Checkmark24Regular, Dismiss24Regular } from '@vicons/fluent'
+  import {
+    Attach16Regular,
+    CheckmarkCircle20Regular,
+    Info24Regular,
+    Checkmark24Regular,
+    Dismiss24Regular,
+    Eye16Regular
+  } from '@vicons/fluent'
   import i18n from '@/i18n/index.js'
 
   const { t } = i18n.global
@@ -21,20 +29,70 @@
     4: 'Magistr'
   }
 
-  const extraOptions = [
-    {
-      label: t('vacancy.confirm'),
-      key: 'confirm',
-      icon: CheckmarkCircle20Regular
-    }
-  ]
-
   const getStatusId = (statusId) => {
     if (statusId === 1) return 1 // Process (warning)
     if (statusId === 2) return 3 // Success (success)
     if (statusId === 3) return 4 // Rejected (error)
     return 1
   }
+
+  const columns = computed(() => [
+    {
+      key: 'worker',
+      title: t('content.worker'),
+      minWidth: 200
+    },
+    {
+      key: 'birthday',
+      title: t('content.birthday'),
+      minWidth: 100
+    },
+    {
+      key: 'education',
+      title: t('workerProfile.tabs.education'),
+      minWidth: 120
+    },
+    {
+      key: 'user.nationality.name',
+      title: t('workerView.general.nationality'),
+      minWidth: 150
+    },
+    {
+      key: 'address',
+      title: t('workerView.general.address'),
+      minWidth: 150
+    },
+    {
+      key: 'date',
+      title: t('content.date'),
+      minWidth: 100
+    },
+    {
+      key: 'status',
+      title: t('content.status'),
+      minWidth: 100
+    },
+    {
+      key: 'files',
+      title: t('content.files'),
+      minWidth: 80
+    }
+  ])
+
+  const actions = computed(() => [
+    {
+      label: t('content.view'),
+      key: Utils.ActionTypes.view,
+      icon: UIHelper.renderIcon(Eye16Regular),
+      action: (row) => store.openApplicationView(row)
+    },
+    {
+      label: t('vacancy.confirm'),
+      key: 'confirm',
+      icon: UIHelper.renderIcon(CheckmarkCircle20Regular),
+      action: (row) => store.openConfirmModal(row)
+    }
+  ])
 
   const changePage = (v) => {
     store.applicationsParams.page = v.page
@@ -44,14 +102,6 @@
 
   const openFile = (url) => {
     window.open(url, '_blank')
-  }
-
-  const onSelectEv = (v) => {
-    if (Utils.ActionTypes.view === v.key) {
-      store.openApplicationView(v.data)
-    } else if (v.key === 'confirm') {
-      store.openConfirmModal(v.data)
-    }
   }
 
   const handleAccept = () => {
@@ -72,113 +122,86 @@
 </script>
 
 <template>
-  <n-spin :show="store.applicationsLoading" style="min-height: 200px">
-    <div class="w-full overflow-x-auto" v-if="store.applicationsList.length > 0">
-      <n-table class="mt-4" :single-line="false" size="small">
-        <thead>
-          <tr>
-            <th class="text-center! min-w-[40px] w-[40px]">{{ $t('content.number') }}</th>
-            <th class="min-w-[200px]">{{ $t('content.worker') }}</th>
-            <th class="min-w-[100px]">{{ $t('content.birthday') }}</th>
-            <th class="min-w-[120px]">{{ $t('workerProfile.tabs.education') }}</th>
-            <th class="min-w-[150px]">{{ $t('workerView.general.nationality') }}</th>
-            <th class="min-w-[150px]">{{ $t('workerView.general.address') }}</th>
-            <th class="min-w-[100px]">{{ $t('content.date') }}</th>
-            <th class="min-w-[100px]">{{ $t('content.status') }}</th>
-            <th class="min-w-[80px]">{{ $t('content.files') }}</th>
-            <th class="min-w-[40px] w-[40px]"></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(item, idx) in store.applicationsList" :key="idx">
-            <td>
-              <span class="text-center block">{{
-                (store.applicationsParams.page - 1) * store.applicationsParams.per_page + idx + 1
-              }}</span>
-            </td>
-            <td>
-              <UIUser
-                :short="false"
-                :data="{
-                  photo: item.user?.photo,
-                  lastName: item.user?.last_name,
-                  firstName: item.user?.first_name,
-                  middleName: item.user?.middle_name
-                }"
-              >
-                <template #position>
-                  <span class="text-xs text-textColor3">{{ item.user?.pin }}</span>
-                </template>
-              </UIUser>
-            </td>
-            <td>
-              <UIBadge
-                :type="Utils.colorTypes.secondary"
-                :show-icon="false"
-                :label="Utils.timeOnlyDate(item.user?.birthday)"
-              />
-            </td>
-            <td>{{ educationLevels[item.user?.education] || '-' }}</td>
-            <td>{{ item.user?.nationality?.name || '-' }}</td>
-            <td>
-              <div class="text-xs">
-                <p class="text-textColor2">{{ item.user?.current_region?.name }}</p>
-                <p class="text-textColor3">{{ item.user?.current_city?.name }}</p>
-              </div>
-            </td>
-            <td>
-              <UIBadge
-                :type="Utils.colorTypes.secondary"
-                :show-icon="false"
-                :label="Utils.timeOnlyDate(item.created_at)"
-              />
-            </td>
-            <td>
-              <UIStatus
-                :status="{
-                  name: item.status?.name,
-                  id: getStatusId(item.status?.id)
-                }"
-              />
-            </td>
-            <td>
-              <div class="flex gap-1">
-                <n-button
-                  v-for="file in item.files"
-                  :key="file.id"
-                  size="tiny"
-                  type="primary"
-                  secondary
-                  @click="openFile(file.file)"
-                >
-                  <template #icon>
-                    <n-icon :component="Attach16Regular" />
-                  </template>
-                </n-button>
-                <span v-if="!item.files?.length">-</span>
-              </div>
-            </td>
-            <td>
-              <UIMenuButton
-                :data="item"
-                :show-view="true"
-                :show-delete="false"
-                :extra-options="extraOptions"
-                @selectEv="onSelectEv"
-              />
-            </td>
-          </tr>
-        </tbody>
-      </n-table>
-      <UIPagination
-        :page="store.applicationsParams.page"
-        :per_page="store.applicationsParams.per_page"
-        :total="store.applicationsTotalItems"
-        @change-page="changePage"
+  <UITable
+    :columns="columns"
+    :actions="actions"
+    :data="store.applicationsList"
+    :loading="store.applicationsLoading"
+    :page="store.applicationsParams.page"
+    :per-page="store.applicationsParams.per_page"
+    :total="store.applicationsTotalItems"
+    @change-page="changePage"
+  >
+    <template #cell-worker="{ row }">
+      <UIUser
+        :short="false"
+        :data="{
+          photo: row.user?.photo,
+          lastName: row.user?.last_name,
+          firstName: row.user?.first_name,
+          middleName: row.user?.middle_name
+        }"
+      >
+        <template #position>
+          <span class="text-xs text-textColor3">{{ row.user?.pin }}</span>
+        </template>
+      </UIUser>
+    </template>
+
+    <template #cell-birthday="{ row }">
+      <UIBadge
+        :type="Utils.colorTypes.secondary"
+        :show-icon="false"
+        :label="Utils.timeOnlyDate(row.user?.birthday)"
       />
-    </div>
-    <NoDataPicture v-if="store.applicationsList.length === 0 && !store.applicationsLoading" />
-  </n-spin>
+    </template>
+
+    <template #cell-education="{ row }">
+      {{ educationLevels[row.user?.education] || '-' }}
+    </template>
+
+    <template #cell-address="{ row }">
+      <div class="text-xs">
+        <p class="text-textColor2">{{ row.user?.current_region?.name }}</p>
+        <p class="text-textColor3">{{ row.user?.current_city?.name }}</p>
+      </div>
+    </template>
+
+    <template #cell-date="{ row }">
+      <UIBadge
+        :type="Utils.colorTypes.secondary"
+        :show-icon="false"
+        :label="Utils.timeOnlyDate(row.created_at)"
+      />
+    </template>
+
+    <template #cell-status="{ row }">
+      <UIStatus
+        :status="{
+          name: row.status?.name,
+          id: getStatusId(row.status?.id)
+        }"
+      />
+    </template>
+
+    <template #cell-files="{ row }">
+      <div class="flex gap-1">
+        <n-button
+          v-for="file in row.files"
+          :key="file.id"
+          size="tiny"
+          type="primary"
+          secondary
+          @click="openFile(file.file)"
+        >
+          <template #icon>
+            <n-icon :component="Attach16Regular" />
+          </template>
+        </n-button>
+        <span v-if="!row.files?.length">-</span>
+      </div>
+    </template>
+  </UITable>
 
   <!-- Confirm Modal -->
   <UIModal

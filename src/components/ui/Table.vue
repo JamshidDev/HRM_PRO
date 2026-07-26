@@ -2,10 +2,10 @@
   import {
     NoDataPicture,
     UIPagination,
+    UITableActionsMenu,
     UITableColumns,
     UITableSelectAll,
-    UITableSelectRow,
-    UITableActionsMenu
+    UITableSelectRow
   } from '@/components/index.js'
   import { useTableColumns } from '@/composables/index.js'
   import i18n from '@/i18n/index.js'
@@ -13,8 +13,8 @@
   const { t } = i18n.global
 
   const props = defineProps({
-    columns: { type: Array, required: true }, // [{ key, title, fullTitle, width, minWidth, maxWidth, className, align, fixed }]
-    data: { type: Array, required: true },
+    columns: { type: Array, required: true }, // [{ key, title, fullTitle, width, minWidth, maxWidth, className, resizable, ellipsis, align, fixed }]
+    data: { type: Array, default: () => [] },
     rowKey: { type: String, default: 'id' },
     bordered: { type: Boolean, default: false },
     columnBorder: { type: Boolean, default: false },
@@ -30,7 +30,8 @@
     selectedKeys: { type: Array, default: () => [] },
     allSelected: { type: Boolean, default: false },
     actions: { type: Array, default: () => [] }, // "..." menu + right-click options
-    storageKey: { type: String, default: null } // persists column visibility/order
+    storageKey: { type: String, default: null }, // persists column visibility/order
+    onLoad: { type: Function, default: null } // async tree children loader: (row) => Promise<void>
   })
 
   const emit = defineEmits([
@@ -79,8 +80,17 @@
       minWidth: col.minWidth,
       maxWidth: col.maxWidth,
       className: col.className,
+      resizable: col.resizable ?? col.minWidth !== undefined,
+      ellipsis: col.ellipsis ?? {
+        tooltip: {
+          style: {
+            maxWidth: '300px'
+          }
+        }
+      },
       align: col.align,
       fixed: col.fixed,
+      tree: col.tree,
       title: () => renderHeader(col),
       render: (row, index) => renderCell(col, row, index)
     }))
@@ -182,8 +192,7 @@
 
     <div v-else class="h-full flex flex-col p-1 bg-surface-section rounded-[20px]">
       <n-data-table
-        class="ui-table__table flex-1"
-        table-layout="fixed"
+        class="ui-table__table flex-1 min-h-96"
         :columns="ndtColumns"
         :data="data"
         :row-key="rowKeyFn"
@@ -193,6 +202,7 @@
         :striped="striped"
         :scroll-x="scrollX"
         :row-props="rowProps"
+        :on-load="onLoad"
         flex-height
       />
 

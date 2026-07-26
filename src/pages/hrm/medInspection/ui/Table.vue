@@ -1,19 +1,28 @@
 <script setup>
-  import {
-    NoDataPicture,
-    UIPagination,
-    UIMenuButton,
-    UIUser,
-    UIStatus
-  } from '@/components/index.js'
-  import { useMedInspectionStore } from '@/store/modules/index.js'
-  import Utils from '@/utils/Utils.js'
+  import { UIStatus, UITable, UIUser } from '@/components/index.js'
+import i18n from '@/i18n/index.js'
+import { useMedInspectionStore } from '@/store/modules/index.js'
+import UIHelper from '@/utils/UIHelper.js'
+import Utils from '@/utils/Utils.js'
+import { Delete20Regular, Eye16Regular } from '@vicons/fluent'
+
+  const { t } = i18n.global
 
   const store = useMedInspectionStore()
+
   const emits = defineEmits(['openEv'])
 
   const openDocument = (v) => {
     emits('openEv', v)
+  }
+
+  const onView = (row) => {
+    openDocument(row.id)
+  }
+
+  const onDelete = (row) => {
+    store.elementId = row.id
+    store._delete()
   }
 
   const changePage = (v) => {
@@ -22,84 +31,103 @@
     store._index()
   }
 
-  const onSelectEv = (v) => {
-    if (v.key === Utils.ActionTypes.delete) {
-      store.elementId = v.data.id
-      store._delete()
-    } else if (v.key === Utils.ActionTypes.view) {
-      openDocument(v.data.id)
+  const columns = computed(() => [
+    {
+      key: 'worker',
+      title: t('content.name'),
+      minWidth: 200
+    },
+    {
+      key: 'hospital',
+      title: t('medInspection.form.hospital'),
+      minWidth: 200
+    },
+    {
+      key: 'status',
+      title: t('medInspection.form.status'),
+      width: 160
+    },
+    {
+      key: 'start_date',
+      title: t('medInspection.form.start_date'),
+      width: 160
+    },
+    {
+      key: 'confirmation',
+      title: t('content.status'),
+      width: 160
+    },
+    {
+      key: 'generate',
+      title: t('content.document'),
+      width: 160
     }
-  }
+  ])
+
+  const actions = computed(() => [
+    {
+      label: t('content.view'),
+      key: Utils.ActionTypes.view,
+      icon: UIHelper.renderIcon(Eye16Regular),
+      action: onView
+    },
+    {
+      label: t('content.delete'),
+      key: Utils.ActionTypes.delete,
+      icon: UIHelper.renderIcon(Delete20Regular),
+      action: onDelete
+    }
+  ])
 </script>
 
 <template>
-  <n-spin :show="store.loading" style="min-height: 200px">
-    <div class="w-full overflow-x-auto" v-if="store.list.length > 0">
-      <n-table class="mt-4" :single-line="false" size="small">
-        <thead>
-          <tr>
-            <th class="text-center! min-w-[40px] w-[40px]">{{ $t('content.number') }}</th>
-            <th class="min-w-[200px]">{{ $t('content.name') }}</th>
-            <th class="min-w-[200px]">{{ $t('medInspection.form.hospital') }}</th>
-            <th class="w-[60px]">{{ $t('medInspection.form.status') }}</th>
-            <th class="w-[60px]">{{ $t('medInspection.form.start_date') }}</th>
-            <th class="w-[80px]">{{ $t('content.status') }}</th>
-            <th class="w-[120px]">{{ $t('content.document') }}</th>
-            <th class="min-w-[40px] w-[40px]"></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(item, idx) in store.list" :key="idx">
-            <td>
-              <span class="block text-center">{{
-                (store.params.page - 1) * store.params.per_page + idx + 1
-              }}</span>
-            </td>
-            <td>
-              <UIUser
-                :short="false"
-                :data="{
-                  photo: item?.worker.photo,
-                  lastName: item?.worker.last_name,
-                  firstName: item?.worker.first_name,
-                  middleName: item?.worker.middle_name,
-                  position: item?.position
-                }"
-              />
-            </td>
-            <td>
-              <span
-                @click="openDocument(item.id)"
-                class="cursor-pointer hover:underline hover:text-primary"
-                >{{ item?.polyclinic?.name }}</span
-              >
-            </td>
-            <td>
-              <UIStatus v-if="item?.status?.id" :status="item?.status" />
-              <UIStatus v-else :status="Utils.documentStatus[2]" />
-            </td>
-            <td>
-              {{ Utils.timeOnlyDate(item?.start_date) }}
-            </td>
-            <td>
-              <UIStatus :status="item.confirmation" />
-            </td>
-            <td><UIStatus :status="Utils.documentStatus[item?.generate]" /></td>
-            <td>
-              <UIMenuButton :data="item" :show-view="true" @selectEv="onSelectEv" />
-            </td>
-          </tr>
-        </tbody>
-      </n-table>
-      <UIPagination
-        :page="store.params.page"
-        :per_page="store.params.per_page"
-        :total="store.totalItems"
-        @change-page="changePage"
+  <UITable
+    :columns="columns"
+    :actions="actions"
+    :data="store.list"
+    :loading="store.loading"
+    :page="store.params.page"
+    :per-page="store.params.per_page"
+    :total="store.totalItems"
+    storage-key="hrm-med-inspection"
+    @change-page="changePage"
+  >
+    <template #cell-worker="{ row }">
+      <UIUser
+        :short="false"
+        :data="{
+          photo: row?.worker.photo,
+          lastName: row?.worker.last_name,
+          firstName: row?.worker.first_name,
+          middleName: row?.worker.middle_name,
+          position: row?.position
+        }"
       />
-    </div>
-    <NoDataPicture v-if="store.list.length === 0 && !store.loading" />
-  </n-spin>
+    </template>
+
+    <template #cell-hospital="{ row }">
+      <span @click="openDocument(row.id)" class="cursor-pointer hover:underline hover:text-primary">
+        {{ row?.polyclinic?.name }}
+      </span>
+    </template>
+
+    <template #cell-status="{ row }">
+      <UIStatus v-if="row?.status?.id" :status="row?.status" />
+      <UIStatus v-else :status="Utils.documentStatus[2]" />
+    </template>
+
+    <template #cell-start_date="{ row }">
+      {{ Utils.timeOnlyDate(row?.start_date) }}
+    </template>
+
+    <template #cell-confirmation="{ row }">
+      <UIStatus :status="row.confirmation" />
+    </template>
+
+    <template #cell-generate="{ row }">
+      <UIStatus :status="Utils.documentStatus[row?.generate]" />
+    </template>
+  </UITable>
 </template>
 
 <style scoped></style>

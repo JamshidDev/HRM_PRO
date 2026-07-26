@@ -83,7 +83,7 @@
 </script>
 
 <template>
-  <div>
+  <div class="absolute">
     <UIPdfSignatureDrawer
       ref="pdfSignatureRef"
       @onEdit="onEditPdf"

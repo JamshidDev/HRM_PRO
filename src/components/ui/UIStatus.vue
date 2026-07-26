@@ -85,7 +85,7 @@
 </script>
 
 <template>
-  <div class="flex justify-center items-center">
+  <div class="flex items-center">
     <n-button :type="type" :size="size" dashed>
       <template #icon>
         <component :is="icon" />
