@@ -6,7 +6,6 @@
   import { BarChart } from 'echarts/charts'
   import { TooltipComponent, GridComponent } from 'echarts/components'
   import { CanvasRenderer } from 'echarts/renderers'
-  import * as echarts from 'echarts'
   import { onMounted, nextTick } from 'vue'
 
   use([TooltipComponent, GridComponent, BarChart, CanvasRenderer])
@@ -15,6 +14,9 @@
   const store = useTurnstileDashboardStore()
   const { t } = i18n.global
   const chartRef = ref(null)
+
+  const tokenColor = (name) =>
+    getComputedStyle(document.documentElement).getPropertyValue(name).trim()
 
   // Method to get start_time and end_time for a given hour
   const getTimeRange = (hour) => {
@@ -46,19 +48,31 @@
       trigger: 'axis',
       axisPointer: {
         type: 'shadow'
+      },
+      backgroundColor: tokenColor('--surface-section'),
+      borderColor: tokenColor('--surface-line'),
+      textStyle: {
+        color: tokenColor('--textColor0')
       }
     },
     grid: {
       left: '1%',
       top: '10%',
       right: '1%',
-      bottom: '15%',
+      bottom: '3%',
       containLabel: true
     },
     xAxis: {
       type: 'category',
       data: [],
-      axisLabel: { show: false },
+      axisLabel: {
+        show: true,
+        fontSize: 10,
+        color: 'rgba(158,158,158,0.9)'
+      },
+      axisTick: {
+        show: false
+      },
       axisLine: {
         lineStyle: {
           color: 'rgba(158,158,158,0.1)', // xira rang
@@ -68,6 +82,10 @@
     },
     yAxis: {
       type: 'value',
+      axisLabel: {
+        fontSize: 10,
+        color: 'rgba(158,158,158,0.9)'
+      },
       splitLine: {
         show: true,
         lineStyle: {
@@ -79,41 +97,24 @@
       {
         name: t('turnStileDashboard.cards.lateCome'),
         type: 'bar',
-        barWidth: '70%',
-        barMaxWidth: 20,
+        barWidth: '30%',
+        barMaxWidth: 12,
+        barGap: '30%',
         data: [],
         itemStyle: {
-          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-            { offset: 0, color: '#BCD8F7' },
-            { offset: 1, color: '#BCD8F7' }
-          ]),
-          borderRadius: [5, 5, 0, 0]
+          color: tokenColor('--danger-color'),
+          borderRadius: [4, 4, 2, 2]
         }
       },
       {
         name: t('turnStileDashboard.cards.earlyGo'),
         type: 'bar',
-        barWidth: '70%',
-        barMaxWidth: 20,
+        barWidth: '30%',
+        barMaxWidth: 12,
         data: [],
         itemStyle: {
-          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-            { offset: 0, color: '#2D8BF2' },
-            { offset: 1, color: '#2D8BF2' }
-          ]),
-          borderRadius: [5, 5, 0, 0]
-        },
-        label: {
-          show: true,
-          position: 'bottom',
-          formatter: (params) => `${params.name}`, // "40", "25", "60"
-          fontSize: (value, index) => {
-            const width = window.innerWidth
-            if (width < 640) return 8 // telefon
-            if (width < 1024) return 10 // planshet
-            return 12 // desktop
-          },
-          offset: [0, 10]
+          color: tokenColor('--warning-color'),
+          borderRadius: [4, 4, 2, 2]
         }
       }
     ]
@@ -172,12 +173,6 @@
 
 <template>
   <div class="w-full relative h-full">
-    <span
-      class="z-1 opacity-40 absolute top-0 right-0 w-[160px] h-full bg-no-repeat bg-[url(/effect/effect-card-2.svg)]"
-    ></span>
-    <!--    <div class="px-3 pt-2">-->
-    <!--      <span class="text-sm text-textColor2 font-semibold">{{$t('turnStileDashboard.form.dailyEvent')}}</span>-->
-    <!--    </div>-->
     <div class="w-full h-[240px] relative z-2">
       <v-chart autoresize class="w-full" :option="option" ref="chartRef" />
     </div>

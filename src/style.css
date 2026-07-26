@@ -33,6 +33,15 @@
 
   --color-surface: var(--surface);
 
+  --color-login-page: var(--login-page-bg);
+  --color-login-form: var(--login-form-bg);
+  --color-login-border: var(--login-form-border);
+  --color-login-ink: var(--login-ink);
+  --color-login-body: var(--login-body);
+  --color-login-muted: var(--login-muted);
+  --color-login-foot: var(--login-foot);
+  --color-login-link: var(--login-link);
+
   --shadow-*: initial;
   --shadow-3d:
     inset -3px -3px 9px rgba(255, 255, 255, 0.25), inset 0px 3px 9px rgba(255, 255, 255, 0.3),
@@ -43,6 +52,7 @@
   --font-*: initial;
   --font-poppins: var(--poppins);
   --font-public-sans: var(--public-sans);
+  --font-grotesk: var(--space-grotesk);
 }
 
 /*

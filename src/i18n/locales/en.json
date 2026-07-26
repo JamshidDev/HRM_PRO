@@ -416,7 +416,9 @@
     },
     "login": "Login",
     "termsPrefix": "By clicking \"Login\", you agree to our",
-    "termsLink": "Public Offer",
+    "termsLink": "Terms of Use",
+    "termsMiddle": "and",
+    "privacyLink": "Privacy Policy",
     "termsSuffix": "",
     "captcha": "Captcha",
     "captchaRefresh": "Refresh",
@@ -662,6 +664,9 @@
       "group": "G",
       "rank": "R",
       "rate": "S",
+      "groupFull": "Group",
+      "rankFull": "Rank",
+      "rateFull": "Rate",
       "position_date": "Position date",
       "birthday": "Date of birth",
       "position": "Position",
@@ -1030,6 +1035,38 @@
       "to": "To",
       "work_day": "Return to work date"
     },
+    "form_51": {
+      "reason": "Basis letter"
+    },
+    "form_56": {
+      "work_date": "Engagement day",
+      "start_time": "Work start time",
+      "end_time": "Work end time",
+      "duration": "Duration",
+      "reason": "Engagement reason",
+      "responsible": "Responsible employee"
+    },
+    "form_57": {
+      "work_date": "Engagement day",
+      "start_time": "Work start time",
+      "end_time": "Work end time",
+      "duration": "Duration",
+      "reason": "Engagement reason",
+      "responsible": "Responsible employee",
+      "pay_type": "Compensation type",
+      "pay_option": "Increased pay",
+      "rest_option": "Additional rest time",
+      "rest_date": "Rest day",
+      "rest_start_time": "Rest start time",
+      "rest_end_time": "Rest end time"
+    },
+    "form_58": {
+      "suspension_reason": "Suspension ground",
+      "from": "Suspension start (from)",
+      "to": "Suspension end (to)",
+      "act_date": "Act date",
+      "responsible": "Responsible employee"
+    },
     "form_50": {
       "to": "Vacation end date",
       "from": "Vacation start date",
@@ -1326,7 +1363,9 @@
     },
     "title": "Previous employment",
     "systemTitle": "System employment records",
-    "no-data": "No previous employment added!"
+    "no-data": "No previous employment added!",
+    "sortOldestFirst": "Oldest to newest",
+    "sortNewestFirst": "Newest to oldest"
   },
   "workerPositionCertificatePage": {
     "title": "Position certificates",
@@ -1350,7 +1389,7 @@
     "createTitle": "Add certificate",
     "updateTitle": "Edit certificate",
     "unlimited": "Unlimited",
-    "unlimitedHint": "Leave empty \u2014 no expiry",
+    "unlimitedHint": "Leave empty — no expiry",
     "qualificationHint": "This certificate does not define a language level",
     "scorePlaceholder": "Result from the certificate",
     "form": {
@@ -1485,7 +1524,9 @@
       "attestation": "Certification",
       "checkSkill": "Skill test",
       "checkKnowledge": "Knowledge test",
-      "punishment": "Disciplinary actions"
+      "punishment": "Disciplinary actions",
+      "e_documents": "E-documents",
+      "exams": "Exams"
     },
     "header": {
       "title": "Employee profile",
@@ -1531,6 +1572,20 @@
       "categoryMaterial": "Material incentive",
       "categoryState": "State / departmental award",
       "categoryMoral": "Moral incentive"
+    },
+    "Edocument": {
+      "pasport": "Passport",
+      "railway_pasport": "Railway ID",
+      "foreign_pasport": "Foreign Passport",
+      "card_number": "Card Number",
+      "issue_date": "Issue Date",
+      "expiry_date": "Expiry Date",
+      "birth_date": "Date of Birth",
+      "nationality": "Nationality",
+      "citizenship": "Citizenship",
+      "issue_place": "Place of Issue",
+      "sex": "Sex",
+      "personal_number": "Personal Number"
     }
   },
   "categoryPage": {
@@ -2968,6 +3023,7 @@
       "allWorkers": "All employees",
       "workTimeTitle": "Work time analysis",
       "workTimeSubtitle": "Brief analysis of arrival/departure times",
+      "lastSevenDays": "7 days",
       "workerAnalytic": "Employee analysis",
       "workerAnalyticDescription": "Brief arrival/absence analysis",
       "allWorkerOfCompany": "Total company employees",

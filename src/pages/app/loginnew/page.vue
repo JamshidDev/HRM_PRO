@@ -1,5 +1,6 @@
 <script setup>
   import LangDropdown from '@/components/general/LangDropdown.vue'
+  import { UIThemeSwitch } from '@/components/index.js'
   import { useAppSetting } from '@/utils/index.js'
   import { useAppStore, useLoginNewStore, useResetPasswordStore } from '@/store/modules/index.js'
   import i18n from '@/i18n/index.js'
@@ -49,57 +50,49 @@
 </script>
 
 <template>
-  <div class="login-new min-h-screen w-full flex text-textColor0">
+  <div class="login-new min-h-screen w-full flex text-login-ink bg-login-page">
     <!-- Left brand / hero panel -->
-    <div
-      class="login-new__hero relative hidden lg:flex flex-col items-center justify-center overflow-hidden"
-    >
-      <div class="login-new__glow login-new__glow-1"></div>
-      <div class="login-new__glow login-new__glow-2"></div>
-      <div class="login-new__grid"></div>
+    <div class="login-new__hero relative hidden lg:flex flex-col overflow-hidden p-12 xl:px-14">
+      <div class="login-new__watermark" aria-hidden="true"></div>
       <SeasonEffect :season="useAppSetting.loginSeason" />
 
-      <!-- Logo lang-select bilan bir qatorda (top-6) — orqasida blur'li glass card -->
-      <div
-        class="absolute top-6 left-6 z-10 flex items-center gap-3 rounded-2xl border border-white/30  px-4 py-1 shadow-lg backdrop-blur-md"
-      >
-        <img :src="useAppSetting.appLogoUrl" alt=" " class="h-12 object-center animation-logo" />
-        <span class="text-white text-2xl font-bold uppercase tracking-wide">
+      <!-- Logo + so'z belgisi -->
+      <div class="relative z-10 flex items-center gap-3">
+        <img :src="useAppSetting.appLogoUrl" alt=" " class="h-11 object-center animation-logo" />
+        <span class="text-login-ink text-xl font-bold uppercase tracking-wide">
           {{ $t('loginPage.description.title') }}
         </span>
       </div>
 
-      <div class="relative z-10 px-10 max-w-[560px] text-center">
+      <div class="relative z-10 my-auto max-w-[560px]">
         <h1
-          class="login-new__shiny-text login-new__fade-in login-new__fade-in-delay-1 text-4xl xl:text-5xl font-bold uppercase leading-[1.15]"
+          class="login-new__fade-in login-new__fade-in-delay-1 font-grotesk text-4xl xl:text-[46px] font-bold text-login-ink leading-[1.15]"
         >
           {{ $t('loginPage.description.subtitle') }}
         </h1>
         <p
-          class="login-new__subtitle-text login-new__fade-in login-new__fade-in-delay-2 text-white/80 text-base font-medium mt-6 leading-7"
+          class="login-new__fade-in login-new__fade-in-delay-2 text-login-body text-[15px] leading-[1.65] mt-4 max-w-[480px]"
         >
           {{ $t('loginPage.description.text') }}
         </p>
       </div>
 
       <!-- Mobil ilovani yuklab olish — hero pastida (faqat desktop) -->
-      <div
-        v-if="appStore.appConfig.signatureLogin"
-        class="absolute bottom-10 left-0 right-0 z-10 px-10"
-      >
-        <p class="text-white/80 text-sm font-medium mb-3 text-center">
+      <div v-if="appStore.appConfig.signatureLogin" class="relative z-10">
+        <p class="text-login-body text-xs font-medium mb-2.5">
           {{ $t('content.downloadApp') }}
         </p>
-        <div class="max-w-[360px] mx-auto">
-          <StoreLinks glass />
+        <div class="max-w-[340px]">
+          <StoreLinks />
         </div>
       </div>
     </div>
 
     <!-- Right form panel -->
     <div
-      class="login-new__form-side relative flex-1 flex flex-col items-center justify-center px-6 pb-6 pt-16 lg:py-10"
+      class="login-new__form-side relative flex-1 flex flex-col items-center justify-center px-6 pb-6 pt-16 lg:py-10 overflow-hidden border-l border-login-border"
     >
+      <div class="login-new__pattern absolute inset-0 pointer-events-none" aria-hidden="true"></div>
       <!-- Mobile logo — lang-select bilan bir qatorda (faqat mobile) -->
       <div class="absolute top-6 left-6 z-10 flex lg:hidden items-center gap-3">
         <img :src="useAppSetting.appLogoUrl" alt=" " class="h-10 object-center" />
@@ -108,7 +101,8 @@
         </span>
       </div>
 
-      <div class="absolute top-6 right-6 z-10">
+      <div class="absolute top-6 right-6 z-10 flex items-center gap-2">
+        <UIThemeSwitch />
         <LangDropdown />
       </div>
 
@@ -125,7 +119,7 @@
 
       <!-- Mualliflik huquqi -->
       <p
-        class="static lg:absolute mt-8 lg:mt-0 lg:bottom-4 lg:left-0 lg:right-0 px-6 text-center text-xs text-textColor3"
+        class="static lg:absolute mt-8 lg:mt-0 lg:bottom-4 lg:left-0 lg:right-0 px-6 text-center text-xs text-login-foot"
       >
         {{ $t('loginPage.copyright') }}
       </p>
@@ -135,12 +129,47 @@
 
 <style scoped>
   .login-new__hero {
-    width: 60%;
-    background: linear-gradient(135deg, #01579e 0%, #042440 100%);
+    width: 52%;
+    background: radial-gradient(800px 600px at 30% 40%, var(--login-glow), transparent);
+    transition: background 0.25s;
+  }
+
+  /* Hero fonidagi UTY logo watermark — light'da rangli-grayscale, dark'da oq varianti */
+  .login-new__watermark {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: url(/effect/uty-logo.png);
+    background-size: 700px;
+    background-repeat: no-repeat;
+    background-position: center 55%;
+    opacity: 0.06;
+    filter: grayscale(1);
+  }
+
+  [data-theme='dark'] .login-new__watermark {
+    background-image: url(/effect/uty-logo-white.png);
+    opacity: 0.07;
+    filter: none;
   }
 
   .login-new__form-side {
-    background-color: var(--color-surface-section);
+    background-color: var(--login-form-bg);
+    transition: background-color 0.25s;
+  }
+
+  /* Girih (sharq yulduzi) naqshi — forma panelining o'ng tomonida, chapga qarab so'nadi */
+  .login-new__pattern {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cg fill='none' stroke='%230f1114' stroke-width='1.2'%3E%3Crect x='35' y='35' width='50' height='50'/%3E%3Crect x='35' y='35' width='50' height='50' transform='rotate(45 60 60)'/%3E%3Ccircle cx='60' cy='60' r='10'/%3E%3Cpath d='M0 60 H25 M95 60 H120 M60 0 V25 M60 95 V120'/%3E%3Ccircle cx='0' cy='0' r='8'/%3E%3Ccircle cx='120' cy='0' r='8'/%3E%3Ccircle cx='0' cy='120' r='8'/%3E%3Ccircle cx='120' cy='120' r='8'/%3E%3C/g%3E%3C/svg%3E");
+    background-size: 120px 120px;
+    -webkit-mask-image: linear-gradient(115deg, transparent 30%, rgba(0, 0, 0, 0.5) 60%, #000 100%);
+    mask-image: linear-gradient(115deg, transparent 30%, rgba(0, 0, 0, 0.5) 60%, #000 100%);
+    opacity: 0.06;
+  }
+
+  [data-theme='dark'] .login-new__pattern {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cg fill='none' stroke='%23ffffff' stroke-width='1.2'%3E%3Crect x='35' y='35' width='50' height='50'/%3E%3Crect x='35' y='35' width='50' height='50' transform='rotate(45 60 60)'/%3E%3Ccircle cx='60' cy='60' r='10'/%3E%3Cpath d='M0 60 H25 M95 60 H120 M60 0 V25 M60 95 V120'/%3E%3Ccircle cx='0' cy='0' r='8'/%3E%3Ccircle cx='120' cy='0' r='8'/%3E%3Ccircle cx='0' cy='120' r='8'/%3E%3Ccircle cx='120' cy='120' r='8'/%3E%3C/g%3E%3C/svg%3E");
+    opacity: 0.07;
   }
 
   /* yo'nalishli slide o'tishlari (tez) */
@@ -175,41 +204,6 @@
     opacity: 0;
   }
 
-  .login-new__glow {
-    position: absolute;
-    border-radius: 9999px;
-    filter: blur(80px);
-    opacity: 0.55;
-    animation: login-new-float 12s ease-in-out infinite;
-  }
-
-  .login-new__glow-1 {
-    width: 460px;
-    height: 460px;
-    top: -160px;
-    right: -120px;
-    background: radial-gradient(circle, #2ca8ff 0%, transparent 70%);
-  }
-
-  .login-new__glow-2 {
-    width: 520px;
-    height: 520px;
-    bottom: -200px;
-    left: -160px;
-    background: radial-gradient(circle, #0177d7 0%, transparent 70%);
-    animation-delay: -6s;
-  }
-
-  @keyframes login-new-float {
-    0%,
-    100% {
-      transform: translate(0, 0) scale(1);
-    }
-    50% {
-      transform: translate(-40px, 30px) scale(1.1);
-    }
-  }
-
   /* kirishda yumshoq paydo bo'lish (fade-in + slide-up), ketma-ket kechikish bilan */
   .login-new__fade-in {
     animation: login-new-fade-in 0.7s ease-out both;
@@ -233,63 +227,21 @@
       transform: translateY(0);
     }
   }
-
-  .login-new__grid {
-    position: absolute;
-    inset: 0;
-    background-image:
-      linear-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
-    background-size: 48px 48px;
-    mask-image: radial-gradient(circle at 50% 40%, black, transparent 75%);
-  }
-
-  /* h1 sarlavhaga sirpanib o'tuvchi yaltiroq (shiny) effekt */
-  .login-new__shiny-text {
-    background-image: linear-gradient(
-      100deg,
-      rgba(255, 255, 255, 0.35) 0%,
-      rgba(255, 255, 255, 0.35) 35%,
-      #ffffff 47%,
-      #ffffff 53%,
-      rgba(255, 255, 255, 0.35) 65%,
-      rgba(255, 255, 255, 0.35) 100%
-    );
-    background-size: 200% 100%;
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    animation: login-new-shiny 4s linear infinite;
-  }
-
-  @keyframes login-new-shiny {
-    0% {
-      background-position: 100% 0;
-    }
-    100% {
-      background-position: -100% 0;
-    }
-  }
-
-  /* h1 pastidagi matn uchun alohida shrift (sinov) */
-  .login-new__subtitle-text {
-    font-family: 'Noto Sans', sans-serif !important;
-    font-weight: 400 !important;
-  }
 </style>
 
 <style>
   .login-new__submit {
-    background: linear-gradient(135deg, #01579e 0%, #042440 100%) !important;
-    color: var(--white-color) !important;
+    background: var(--primary-color) !important;
+    color: #ffffff !important;
     transition:
       transform 0.15s ease,
+      background-color 0.15s ease,
       filter 0.15s ease !important;
   }
 
   .login-new__submit:not(.n-button--disabled):hover {
+    background: var(--login-link-hover) !important;
     transform: translateY(-1px);
-    filter: brightness(1.1);
   }
 
   .login-new__submit:not(.n-button--disabled):active {
@@ -305,7 +257,7 @@
   }
 
   .login-new .dark-border-button {
-    border: 1px solid var(--color-surface-line) !important;
+    border: 1px solid var(--login-field-border) !important;
   }
 
   .login-new .dark-border-button .n-base-wave {
@@ -324,17 +276,17 @@
     border: unset !important;
   }
 
-  /* E-imzo orqali kirish tugmasi — brend rangida nozik tint */
+  /* E-imzo orqali kirish tugmasi — dizayndagi aniq ranglar (--login-eimzo-*) */
   .login-new .login-new__signature-btn {
-    background-color: color-mix(in srgb, var(--primary-color) 7%, var(--color-surface-ground)) !important;
-    color: var(--primary-color) !important;
-    border-color: color-mix(in srgb, var(--primary-color) 30%, var(--color-surface-line)) !important;
+    background-color: var(--login-eimzo-bg) !important;
+    color: var(--login-eimzo-ink) !important;
+    border-color: var(--login-eimzo-border) !important;
   }
 
   .login-new .login-new__signature-btn:not(.n-button--disabled):hover {
-    background-color: color-mix(in srgb, var(--primary-color) 14%, var(--color-surface-ground)) !important;
-    border-color: var(--primary-color) !important;
-    color: var(--primary-color) !important;
+    background-color: color-mix(in srgb, var(--login-link) 14%, var(--login-form-bg)) !important;
+    border-color: var(--login-link) !important;
+    color: var(--login-eimzo-ink) !important;
   }
 
   .login-new__store-card {
@@ -351,21 +303,46 @@
   .login-new input:-webkit-autofill,
   .login-new input:-webkit-autofill:hover,
   .login-new input:-webkit-autofill:focus {
-    -webkit-box-shadow: 0 0 0px 1000px var(--color-surface-section) inset !important;
-    -webkit-text-fill-color: var(--color-textColor2) !important;
+    -webkit-box-shadow: 0 0 0px 1000px var(--login-form-bg) inset !important;
+    -webkit-text-fill-color: var(--login-field-ink) !important;
   }
 
-  /* === Login oqimidagi n-input'lar uchun yagona premium uslub === */
+  /* Forma label'lari va majburiylik yulduzchasi — dizayn ranglarida */
+  .login-new .n-form-item .n-form-item-label {
+    color: var(--login-label) !important;
+    font-weight: 600;
+  }
+
+  .login-new .n-form-item .n-form-item-label__asterisk {
+    color: var(--login-star) !important;
+  }
+
+  /* "Yoki" ajratkichi */
+  .login-new .n-divider .n-divider__line {
+    background-color: var(--login-divider) !important;
+  }
+
+  .login-new .n-divider .n-divider__title {
+    color: var(--login-muted) !important;
+    font-size: 12px;
+    font-weight: 500;
+  }
+
+  /* === Login oqimidagi n-input'lar uchun yagona uslub — dizayn ranglarida === */
   .login-new__input {
-    --n-border-radius: 16px !important;
+    --n-border-radius: 10px !important;
     --n-height: 48px !important;
     --n-padding-left: 16px !important;
     --n-padding-right: 16px !important;
-    --n-border: 1px solid var(--color-surface-line) !important;
-    --n-border-hover: 1px solid var(--primary-color) !important;
-    --n-border-focus: 1px solid var(--primary-color) !important;
-    --n-box-shadow-focus: 0 0 0 4px color-mix(in srgb, var(--primary-color) 16%, transparent) !important;
-    --n-caret-color: var(--primary-color) !important;
+    --n-color: var(--login-field-bg) !important;
+    --n-color-focus: var(--login-field-bg) !important;
+    --n-text-color: var(--login-field-ink) !important;
+    --n-placeholder-color: var(--login-ph) !important;
+    --n-border: 1px solid var(--login-field-border) !important;
+    --n-border-hover: 1px solid var(--login-link) !important;
+    --n-border-focus: 1px solid var(--login-link) !important;
+    --n-box-shadow-focus: 0 0 0 4px color-mix(in srgb, var(--login-link) 16%, transparent) !important;
+    --n-caret-color: var(--login-link) !important;
   }
 
   @media (min-width: 1024px) {

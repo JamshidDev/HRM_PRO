@@ -57,9 +57,7 @@
 
 <template>
   <div class="captcha-block w-full flex items-center gap-2">
-    <div
-      class="captcha-card flex items-stretch rounded-2xl overflow-hidden border border-surface-line bg-surface-section shrink-0"
-    >
+    <div class="captcha-card flex items-stretch rounded-[10px] overflow-hidden border shrink-0">
       <div class="captcha-image flex items-center justify-center">
         <n-spin v-if="loading" :size="20" />
         <img v-else-if="imgSrc" :src="imgSrc" alt="captcha" class="captcha-img object-contain" />
@@ -99,6 +97,8 @@
 <style scoped>
   .captcha-card {
     height: 48px;
+    background-color: var(--login-captcha-bg, var(--color-surface-section));
+    border-color: var(--login-field-border, var(--color-surface-line));
   }
 
   @media (min-width: 1024px) {
@@ -125,16 +125,16 @@
     justify-content: center;
     width: 40px;
     height: 100%;
-    border-left: 1px solid var(--color-surface-line);
-    background-color: var(--color-surface-ground);
-    color: var(--color-textColor2);
+    border-left: 1px solid var(--login-field-border, var(--color-surface-line));
+    background-color: transparent;
+    color: var(--login-muted, var(--color-textColor2));
     cursor: pointer;
     transition: background-color 0.2s ease;
   }
 
   .captcha-refresh:hover:not(:disabled) {
-    background-color: var(--color-surface-line);
-    color: var(--color-textColor0);
+    background-color: var(--login-field-border, var(--color-surface-line));
+    color: var(--login-ink, var(--color-textColor0));
   }
 
   .captcha-refresh:active:not(:disabled) {

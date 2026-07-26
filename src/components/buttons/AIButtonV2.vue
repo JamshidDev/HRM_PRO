@@ -1,43 +1,33 @@
 <template>
   <div
-    class="ai-button flex w-10 h-10 rounded-full cursor-pointer items-center justify-center relative overflow-hidden"
+    class="ai-button flex items-center gap-1.5 h-11 px-4 rounded-full cursor-pointer relative overflow-hidden"
   >
-    <div class="relative flex items-center justify-end border-white w-[20px] h-[20px] z-[2]">
-      <n-icon class="text-sm text-[#FFFFFF66]">
-        <Star20Filled />
-      </n-icon>
-      <span class="absolute left-[1px] bottom-[-4px]">
-        <n-icon class="text-[8px]" color="#ffffff30">
-          <Star20Filled />
-        </n-icon>
-      </span>
-      <span class="absolute left-[4px] top-[-8px]">
-        <n-icon class="text-[4px]" color="#ffffff30">
-          <Star20Filled />
-        </n-icon>
-      </span>
-    </div>
+    <n-icon class="text-base text-white top-2 relative z-[2]">
+      <Sparkle20Filled />
+    </n-icon>
+    <span class="text-white text-sm font-medium whitespace-nowrap relative top-2 z-[2]">{{
+      $t('aiConversation.aiAssistant')
+    }}</span>
     <span class="bg-overall"></span>
   </div>
 </template>
 
 <script setup>
-  import { Star20Filled } from '@vicons/fluent'
+  import { Sparkle20Filled } from '@vicons/fluent'
 </script>
 
 <style scoped>
   .ai-button {
-    position: relative;
     background: linear-gradient(
       to right,
       oklch(0.792 0.209 151.711) 0px,
       oklch(0.546 0.245 262.881) 100%
     );
-    border-radius: 50%;
+    border-radius: 999px;
     transition:
       transform 0.8s ease,
       box-shadow 0.8s ease;
-    z-index: 9999;
+    z-index: 20;
     overflow: hidden; /* Har qanday chiqib ketishni oldini olish uchun */
   }
 
@@ -55,7 +45,7 @@
     );
     opacity: 0;
     transition: opacity 0.8s ease;
-    border-radius: 50%;
+    border-radius: 999px;
     z-index: 1;
   }
 
@@ -65,7 +55,7 @@
     width: calc(100% - 2px);
     top: 1px;
     left: 1px;
-    border-radius: 50%;
+    border-radius: 999px;
     z-index: -1;
     background: linear-gradient(
       to right,

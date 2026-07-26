@@ -430,8 +430,10 @@
     },
     "login": "Kirish",
     "termsPrefix": "'Kirish' tugmasini bosib, siz",
-    "termsLink": "Ommaviy ofertaga",
-    "termsSuffix": "rozilik bildirasiz",
+    "termsLink": "Foydalanish shartlari",
+    "termsMiddle": "va",
+    "privacyLink": "Maxfiylik siyosati",
+    "termsSuffix": "bilan rozilik bildirasiz",
     "captcha": "Captcha",
     "captchaRefresh": "Yangilash",
     "captchaPlaceholder": "Javobni kiriting",
@@ -677,6 +679,9 @@
       "group": "G",
       "rank": "R",
       "rate": "S",
+      "groupFull": "Guruh",
+      "rankFull": "Razryad",
+      "rateFull": "Stavka",
       "position_date": "Lavozim sanasi",
       "birthday": "Tug'ilgan sanasi",
       "position": "Lavozim",
@@ -1046,6 +1051,38 @@
       "to": "Qachongacha",
       "work_day": "Ishga chiqish sanasi"
     },
+    "form_51": {
+      "reason": "Asos xati"
+    },
+    "form_56": {
+      "work_date": "Ishga jalb qilinadigan kun",
+      "start_time": "Ish boshlanish vaqti",
+      "end_time": "Ish tugash vaqti",
+      "duration": "Ish davomiyligi",
+      "reason": "Jalb etish sababi",
+      "responsible": "Mas'ul xodim"
+    },
+    "form_57": {
+      "work_date": "Ishga jalb qilinadigan kun",
+      "start_time": "Ish boshlanish vaqti",
+      "end_time": "Ish tugash vaqti",
+      "duration": "Ish davomiyligi",
+      "reason": "Jalb etish sababi",
+      "responsible": "Mas'ul xodim",
+      "pay_type": "Kompensatsiya turi",
+      "pay_option": "Oshirilgan haq to'lash",
+      "rest_option": "Qo'shimcha dam olish vaqti",
+      "rest_date": "Dam olish kuni",
+      "rest_start_time": "Dam boshlanish vaqti",
+      "rest_end_time": "Dam tugash vaqti"
+    },
+    "form_58": {
+      "suspension_reason": "Chetlashtirish asosi",
+      "from": "Chetlashtirish boshlanishi (dan)",
+      "to": "Chetlashtirish tugashi (gacha)",
+      "act_date": "Dalolatnoma sanasi",
+      "responsible": "Mas'ul xodim"
+    },
     "form_50": {
       "to": "Ta'til tugash sanasi",
       "from": "Ta'tilga chiqish sanasi",
@@ -1349,7 +1386,9 @@
     },
     "title": "Mehnat faoliyati ma'lumotlari",
     "systemTitle": "Tizimdagi mehnat faoliyati ma'lumotlari",
-    "no-data": "Mehnat faoliyati qo'shilmagan!"
+    "no-data": "Mehnat faoliyati qo'shilmagan!",
+    "sortOldestFirst": "Boshidan oxirigacha",
+    "sortNewestFirst": "Oxiridan boshigacha"
   },
   "workerPositionCertificatePage": {
     "title": "Lavozim guvohnomalari",
@@ -1506,7 +1545,8 @@
       "vacation": "Ta'til ma'lumoti",
       "incentive": "Rag'batlantirishlari",
       "punishment": "Intizomiy jazolari",
-      "exams": "Imtihonlar"
+      "exams": "Imtihonlar",
+      "e_documents": "Raqamli-hujjatlar"
     },
     "header": {
       "title": "Xodim profili",
@@ -1552,6 +1592,20 @@
       "categoryMaterial": "Moddiy rag'batlantirish",
       "categoryState": "Davlat / idoraviy mukofot",
       "categoryMoral": "Ma'naviy rag'batlantirish"
+    },
+    "Edocument": {
+      "pasport": "Passport",
+      "railway_pasport": "Temiryo‘l guvohnoma",
+      "foreign_pasport": "Xorijiy passport",
+      "card_number": "Karta raqami",
+      "issue_date": "Berilgan sana",
+      "expiry_date": "Muddat o'tish sanasi",
+      "birth_date": "Tug'ilgan sanasi",
+      "nationality": "Millati",
+      "citizenship": "Fuqaroligi",
+      "issue_place": "Berilgan joyi",
+      "sex": "Jinsi",
+      "personal_number": "Shaxsiy raqami"
     }
   },
   "categoryPage": {
@@ -3000,6 +3054,7 @@
       "allWorkers": "Barcha xodimlar",
       "workTimeTitle": "Ish vaqti tahlili",
       "workTimeSubtitle": "Xodimlarning ishga kelish va ketish vaqtlari bo‘yicha qisqa tahlil",
+      "lastSevenDays": "7 kun",
       "workerAnalytic": "Xodimlar tahlili",
       "workerAnalyticDescription": "Ishga kelish va kelmaslik bo‘yicha qisqa tahlil",
       "allWorkerOfCompany": "Korxonaning umumiy xodimlar soni",

@@ -22,14 +22,18 @@
   const route = useRoute()
 
   const termsFiles = {
-    uz: '/terms/HRM_PRO_Legal_Document_UZ.pdf',
-    ru: '/terms/HRM_PRO_Legal_Document_RU.pdf',
-    en: '/terms/HRM_PRO_Legal_Document_EN.pdf'
+    uz: '/terms/HRM_PRO_Terms_UZ.pdf',
+    ru: '/terms/HRM_PRO_Terms_RU.pdf',
+    en: '/terms/HRM_PRO_Terms_EN.pdf'
   }
-  const termsUrl = computed(() => {
-    const lang = localStorage.getItem(useAppSetting.languageKey) || 'uz'
-    return termsFiles[lang] ?? termsFiles.uz
-  })
+  const privacyFiles = {
+    uz: '/terms/HRM_PRO_Privacy_UZ.pdf',
+    ru: '/terms/HRM_PRO_Privacy_RU.pdf',
+    en: '/terms/HRM_PRO_Privacy_EN.pdf'
+  }
+  const currentLang = () => localStorage.getItem(useAppSetting.languageKey) || 'uz'
+  const termsUrl = computed(() => termsFiles[currentLang()] ?? termsFiles.uz)
+  const privacyUrl = computed(() => privacyFiles[currentLang()] ?? privacyFiles.uz)
 
   const formRef = ref(null)
   const captchaRef = ref(null)
@@ -111,8 +115,8 @@
 
 <template>
   <div class="w-full">
-    <div class="mb-4 lg:mb-8">
-      <h3 class="text-2xl lg:text-3xl font-bold uppercase leading-tight text-center">
+    <div class="mb-4 lg:mb-7">
+      <h3 class="font-grotesk text-2xl lg:text-[30px] font-bold leading-tight text-login-ink">
         {{ $t(`loginPage.title`) }}
       </h3>
     </div>
@@ -168,7 +172,7 @@
       </n-form-item>
 
       <div class="flex justify-end -mt-4">
-        <n-button text class="text-textColor3! hover:text-primary!" @click="onForgot">
+        <n-button text class="text-login-link! font-semibold! hover:opacity-80!" @click="onForgot">
           {{ $t('loginPage.forgotPassword') }}
         </n-button>
       </div>
@@ -186,22 +190,28 @@
         />
       </n-form-item>
 
-      <p class="text-xs text-center text-textColor2 mt-4 lg:mt-16 mb-4 lg:mb-3">
+      <p class="text-xs text-center text-login-muted mt-4 lg:mt-16 mb-4 lg:mb-3">
         {{ $t('loginPage.termsPrefix') }}
         <a
           :href="termsUrl"
           target="_blank"
           rel="noopener noreferrer"
-          class="hover:underline cursor-pointer font-medium"
-          style="color: #1677ff"
+          class="hover:underline cursor-pointer font-medium text-login-link"
         >{{ $t('loginPage.termsLink') }}</a>
+        {{ $t('loginPage.termsMiddle') }}
+        <a
+          :href="privacyUrl"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="hover:underline cursor-pointer font-medium text-login-link"
+        >{{ $t('loginPage.privacyLink') }}</a>
         {{ $t('loginPage.termsSuffix') }}
       </p>
 
       <div class="grid">
         <n-button
           attr-type="submit"
-          class="login-new__submit h-[48px]! lg:h-[52px]! rounded-2xl! overflow-hidden! font-semibold!"
+          class="login-new__submit h-[48px]! lg:h-[52px]! rounded-[10px]! overflow-hidden! font-semibold!"
           size="large"
           :loading="store.loading"
         >
@@ -209,12 +219,14 @@
         </n-button>
 
         <template v-if="appStore.appConfig.signatureLogin">
-          <n-divider class="my-2! lg:my-3!" title-placement="center">{{ $t('content.or') }}</n-divider>
-          
+          <n-divider class="my-2! lg:my-3!" title-placement="center">{{
+            $t('content.or')
+          }}</n-divider>
+
           <n-button
             @click="onSignatureLogin"
             size="large"
-            class="h-[48px]! lg:h-[52px]! rounded-2xl! font-semibold! dark-border-button login-new__signature-btn"
+            class="h-[48px]! lg:h-[52px]! rounded-[10px]! font-semibold! dark-border-button login-new__signature-btn"
           >
             <img src="/logo-e-imzo.png" alt="E-IMZO" class="h-6 w-auto object-contain mr-2.5" />
             {{ $t(`content.signatureLogin`) }}
@@ -222,7 +234,7 @@
 
           <!-- Mobil ilovani yuklab olish — faqat mobile'da (desktop'da hero panelda ko'rsatiladi) -->
           <div class="mt-3 lg:hidden">
-            <p class="text-textColor2 text-sm font-medium text-center mb-2">
+            <p class="text-login-body text-sm font-medium text-center mb-2">
               {{ $t('content.downloadApp') }}
             </p>
             <StoreLinks />

@@ -1,42 +1,49 @@
 <script setup>
   import {
+    NoDataPicture,
+    UIPagination,
     UITableColumns,
     UITableSelectAll,
     UITableSelectRow,
     UITableActionsMenu
   } from '@/components/index.js'
-  import { TABLE_FILL_HEIGHT_KEY } from './tableFillHeightKey.js'
   import { useTableColumns } from '@/composables/index.js'
   import i18n from '@/i18n/index.js'
 
   const { t } = i18n.global
 
   const props = defineProps({
-    columns: { type: Array, required: true }, // [{ key, title, width, minWidth, maxWidth, align, fixed }]
+    columns: { type: Array, required: true }, // [{ key, title, fullTitle, width, minWidth, maxWidth, className, align, fixed }]
     data: { type: Array, required: true },
     rowKey: { type: String, default: 'id' },
     bordered: { type: Boolean, default: false },
     columnBorder: { type: Boolean, default: false },
     rowBorder: { type: Boolean, default: false },
     striped: { type: Boolean, default: true },
-    radius: { type: [Number, String], default: 16 },
-
+    loading: { type: Boolean, default: false },
+    bottomGap: { type: Number, default: 28 }, // gap below the card
     showIndex: { type: Boolean, default: true },
     page: { type: Number, default: 1 },
-    perPage: { type: Number, default: 0 },
+    perPage: { type: Number, default: 10 },
+    total: { type: Number, default: null }, // renders the pagination footer when set
     selectable: { type: Boolean, default: false }, // swaps the row-number for a checkbox
     selectedKeys: { type: Array, default: () => [] },
     allSelected: { type: Boolean, default: false },
-
-    actions: { type: Array, default: () => [] }, // "..." menu + right-click context menu options
-    // Persists column visibility/order to localStorage under this key and renders the settings button.
-    storageKey: { type: String, default: null }
+    actions: { type: Array, default: () => [] }, // "..." menu + right-click options
+    storageKey: { type: String, default: null } // persists column visibility/order
   })
 
-  const emit = defineEmits(['row-click', 'row-contextmenu', 'action', 'toggle-row', 'toggle-all'])
+  const emit = defineEmits([
+    'row-click',
+    'row-contextmenu',
+    'action',
+    'toggle-row',
+    'toggle-all',
+    'change-page'
+  ])
 
   const slots = useSlots()
-  const fillHeight = inject(TABLE_FILL_HEIGHT_KEY, ref(false))
+  const empty = computed(() => props.data.length === 0)
 
   const tableColumns = props.storageKey
     ? useTableColumns(
@@ -54,29 +61,40 @@
   const allCols = computed(() => {
     const cols = [...(tableColumns ? tableColumns.columns.value : props.columns)]
     if (props.showIndex) {
-      cols.unshift({
-        key: '__index',
-        width: 56,
-        align: 'center',
-        fixed: 'left'
-      })
+      cols.unshift({ key: '__index', width: 56, align: 'center', fixed: 'left' })
     }
     if (visibleActions.value.length || tableColumns) {
-      cols.push({
-        key: '__actions',
-        width: 56,
-        align: 'center',
-        fixed: 'right'
-      })
+      cols.push({ key: '__actions', width: 56, align: 'center', fixed: 'right' })
     }
     return cols
   })
 
-  // n-data-table needs scroll-x set for `fixed` columns to work at all.
-  const colWidth = (col) => col.width || col.minWidth || 100
-  const scrollX = computed(() => allCols.value.reduce((sum, c) => sum + colWidth(c), 0))
+  const naturalWidth = (col) => col.width || col.minWidth || 100
+  const scrollX = computed(() => allCols.value.reduce((sum, c) => sum + naturalWidth(c), 0))
+
+  const ndtColumns = computed(() => {
+    return allCols.value.map((col) => ({
+      key: col.key,
+      width: col.width,
+      minWidth: col.minWidth,
+      maxWidth: col.maxWidth,
+      className: col.className,
+      align: col.align,
+      fixed: col.fixed,
+      title: () => renderHeader(col),
+      render: (row, index) => renderCell(col, row, index)
+    }))
+  })
 
   const rowKeyFn = (row) => row[props.rowKey]
+
+  const onActionSelect = (key, option, row) => {
+    if (option.action) {
+      option.action(row)
+      return
+    }
+    emit('action', key, row)
+  }
 
   const renderIndexHeader = () => {
     if (props.selectable) {
@@ -125,25 +143,12 @@
       if (!visibleActions.value.length) return null
       return h(UITableActionsMenu, {
         options: visibleActions.value,
-        onSelect: (key) => emit('action', key, row)
+        onSelect: (key, option) => onActionSelect(key, option, row)
       })
     }
 
     return getCellValue(row, col.key)
   }
-
-  const ndtColumns = computed(() =>
-    allCols.value.map((col) => ({
-      key: col.key,
-      width: col.width,
-      minWidth: col.minWidth,
-      maxWidth: col.maxWidth,
-      align: col.align,
-      fixed: col.fixed,
-      title: () => renderHeader(col),
-      render: (row, index) => renderCell(col, row, index)
-    }))
-  )
 
   const rowProps = (row, index) => ({
     onClick: () => emit('row-click', row, index),
@@ -165,37 +170,48 @@
     })
   }
 
-  const onSelectContextAction = (key) => {
+  const onSelectContextAction = (key, option) => {
     contextMenu.show = false
-    emit('action', key, contextMenu.row)
+    onActionSelect(key, option, contextMenu.row)
   }
 </script>
 
 <template>
-  <div class="ui-table" :class="{ 'ui-table--fill': fillHeight }">
-    <n-data-table
-      class="ui-table__table"
-      :columns="ndtColumns"
-      :data="data"
-      :row-key="rowKeyFn"
-      :bordered="bordered"
-      :single-column="!rowBorder"
-      :single-line="!columnBorder"
-      :bottom-bordered="rowBorder"
-      :striped="striped"
-      :scroll-x="scrollX"
-      :flex-height="fillHeight"
-      :row-props="rowProps"
-    >
-      <template #empty>
-        <div class="ui-table__empty">
-          <slot name="empty">
-            {{ $t('content.notFoundData') }}
-          </slot>
-        </div>
-      </template>
-    </n-data-table>
-  </div>
+  <n-spin :show="loading" class="h-full">
+    <NoDataPicture v-if="empty" />
+
+    <div v-else class="h-full flex flex-col p-1 bg-surface-section rounded-[20px]">
+      <n-data-table
+        class="ui-table__table flex-1"
+        table-layout="fixed"
+        :columns="ndtColumns"
+        :data="data"
+        :row-key="rowKeyFn"
+        :bordered="bordered"
+        :single-column="!rowBorder"
+        :single-line="!columnBorder"
+        :striped="striped"
+        :scroll-x="scrollX"
+        :row-props="rowProps"
+        flex-height
+      />
+
+      <div
+        v-if="total !== null || slots.footer"
+        class="rounded-b-2xl px-5"
+        style="background: var(--table-header)"
+      >
+        <slot name="footer">
+          <UIPagination
+            :page="page"
+            :per_page="perPage"
+            :total="total"
+            @change-page="(v) => emit('change-page', v)"
+          />
+        </slot>
+      </div>
+    </div>
+  </n-spin>
 
   <n-dropdown
     v-if="visibleActions.length"
@@ -212,33 +228,11 @@
 </template>
 
 <style scoped>
-  .ui-table {
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .ui-table--fill {
-    flex: 1 1 0%;
-    min-height: 0;
-  }
-
-  .ui-table__table {
-    flex: 1 1 auto;
-    min-height: 0;
-  }
-
   .ui-table__table :deep(.n-data-table-th:first-child) {
     border-top-left-radius: 16px !important;
   }
 
   .ui-table__table :deep(.n-data-table-th:last-child) {
     border-top-right-radius: 16px !important;
-  }
-
-  .ui-table__empty {
-    padding: 48px 16px;
-    text-align: center;
-    color: var(--textColor3);
   }
 </style>
