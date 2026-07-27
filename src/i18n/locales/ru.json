@@ -1594,7 +1594,10 @@
       "citizenship": "Гражданство",
       "issue_place": "Место выдачи",
       "sex": "Пол",
-      "personal_number": "Личный номер"
+      "personal_number": "Личный номер",
+      "birth_place": "Место рождения",
+      "male": "Мужской",
+      "female": "Женский"
     }
   },
   "categoryPage": {

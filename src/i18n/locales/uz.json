@@ -1608,7 +1608,10 @@
       "citizenship": "Fuqaroligi",
       "issue_place": "Berilgan joyi",
       "sex": "Jinsi",
-      "personal_number": "Shaxsiy raqami"
+      "personal_number": "Shaxsiy raqami",
+      "birth_place": "Tug'ilgan joyi",
+      "male": "Erkak",
+      "female": "Ayol"
     }
   },
   "categoryPage": {

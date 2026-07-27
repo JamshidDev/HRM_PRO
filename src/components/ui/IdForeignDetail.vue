@@ -1,12 +1,12 @@
 <script setup>
   import { ref } from 'vue'
+
   import i18n from '@/i18n/index.js'
+  const { t } = i18n.global
 
   const props = defineProps({
     data: { type: Object, required: true }
   })
-
-  const { t } = i18n.global
 
   function formatDate(iso) {
     if (!iso) return '-'
@@ -19,8 +19,7 @@
     { label: t('workerView.Edocument.issue_date'), value: (d) => formatDate(d.issueDate) },
     { label: t('workerView.Edocument.expiry_date'), value: (d) => formatDate(d.expiryDate) },
     { label: t('workerView.Edocument.birth_date'), value: (d) => formatDate(d.birthDate) },
-    { label: t('workerView.Edocument.nationality'), value: (d) => d.nationality },
-    { label: t('workerView.Edocument.citizenship'), value: (d) => d.nationality },
+    { label: t('workerView.Edocument.birth_place'), value: (d) => d.birthPlace },
     { label: t('workerView.Edocument.issue_place'), value: (d) => d.issuePlace },
     {
       label: t('workerView.Edocument.sex'),
@@ -33,23 +32,23 @@
     }
   ]
 
-  const copied = ref(false)
+  const copiedIndex = ref(null)
 
-  async function copyCardNumber() {
-    if (!props.data?.cardNumber) return
+  async function copyValue(text, index) {
+    if (!text) return
     try {
       if (navigator.clipboard && window.isSecureContext) {
-        await navigator.clipboard.writeText(props.data.cardNumber)
+        await navigator.clipboard.writeText(text)
       } else {
         const textArea = document.createElement('textarea')
-        textArea.value = props.data.cardNumber
+        textArea.value = text
         document.body.appendChild(textArea)
         textArea.select()
         document.execCommand('copy')
         document.body.removeChild(textArea)
       }
-      copied.value = true
-      setTimeout(() => (copied.value = false), 1500)
+      copiedIndex.value = index
+      setTimeout(() => (copiedIndex.value = null), 1500)
     } catch (err) {
       console.error('Copy failed', err)
     }
@@ -59,7 +58,7 @@
 <template>
   <div class="rounded-2xl border border-surface-line info-box-ground p-4">
     <div class="grid grid-cols-2 gap-2 h-full content-between">
-      <div v-for="field in fields" :key="field.label">
+      <div v-for="(field, index) in fields" :key="field.label">
         <span class="text-[8px] sm:text-xs text-textColor0/50">{{ field.label }}</span>
         <div class="flex items-center gap-2 mt-1">
           <span class="text-xs sm:text-sm font-semibold text-textColor0 truncate">
@@ -68,9 +67,9 @@
           <button
             v-if="field.copyable"
             type="button"
-            aria-label="Copy Card Number"
+            :aria-label="`Copy ${field.label}`"
             class="text-primary hover:opacity-70 transition-opacity shrink-0 cursor-pointer"
-            @click="copyCardNumber"
+            @click="copyValue(field.value(data), index)"
           >
             <svg
               width="13"
@@ -84,7 +83,9 @@
               <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
             </svg>
           </button>
-          <span v-if="field.copyable && copied" class="text-[8px] sm:text-xs text-primary shrink-0"
+          <span
+            v-if="field.copyable && copiedIndex === index"
+            class="text-[8px] sm:text-xs text-primary shrink-0"
             >✓</span
           >
         </div>
