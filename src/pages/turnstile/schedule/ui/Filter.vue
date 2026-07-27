@@ -128,7 +128,7 @@
     </template>
     <template #filterAction>
       <n-button
-        class="h-[44px]!"
+        class="h-[32px]!"
         type="primary"
         @click="store._save()"
         :loading="store.savingLoading"
@@ -138,7 +138,7 @@
         </template>
         {{ $t('content.save') }}
       </n-button>
-      <n-button class="h-[44px]!" @click="openPanel" type="success">
+      <n-button class="h-[32px]!" @click="openPanel" type="success">
         {{ $t('schedule.form.exportSchedule') }}
       </n-button>
     </template>

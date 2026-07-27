@@ -116,10 +116,10 @@
 <style scoped>
   .quick-actions-trigger {
     display: inline-flex;
-    height: 44px;
+    height: 32px;
     overflow: hidden;
     border: 0;
-    border-radius: 12px;
+    border-radius: 8px;
     color: #fff;
     background: var(--primary-color);
     box-shadow: 0 6px 16px color-mix(in srgb, var(--primary-color) 24%, transparent);

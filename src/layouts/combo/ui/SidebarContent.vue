@@ -172,7 +172,7 @@ onMounted(() => {
         </div>
         <div class="flex flex-col items-center gap-[10px]">
           <DownloadTask />
-          <PageInstruction />
+          <!-- <PageInstruction /> -->
           <n-popover trigger="click" placement="right-start" class="!p-2">
             <template #trigger>
               <div class="flex items-center justify-center w-10 h-10 cursor-pointer">
@@ -186,7 +186,7 @@ onMounted(() => {
               <LangDropdown />
             </div>
           </n-popover>
-          <NotificationsWidget />
+          <!-- <NotificationsWidget /> -->
           <UIProfile />
         </div>
       </div>

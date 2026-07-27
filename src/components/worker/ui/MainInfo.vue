@@ -47,8 +47,8 @@
       />
 
       <div class="relative z-10 min-w-0 flex-1">
-        <div class="flex items-center gap-2 flex-wrap">
-          <span class="text-2xl font-bold text-textColor0">
+        <div class="flex items-center gap-2 flex-nowrap min-w-0">
+          <span class="text-2xl font-bold text-textColor0 truncate min-w-0">
             {{ Utils.combineFullName(store.workerPreview?.worker) }}
           </span>
           <!-- TODO: backend real active/inactive field qo'shilganda ulanadi -->
@@ -56,7 +56,7 @@
             :label="$t('workerView.header.activeEmployee')"
             :type="Utils.colorTypes.success"
             :show-icon="false"
-            class="!w-auto active-employee-badge"
+            class="!w-auto active-employee-badge shrink-0"
           />
           <n-icon size="20" class="text-primary shrink-0">
             <VerifiedIcon />
