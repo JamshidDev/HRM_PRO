@@ -240,12 +240,13 @@
     @onClear="clearFilter"
     @show="onShow"
     :show-add-button="false"
-    filter-placement="bottom-end"
+    filter-placement="bottom-start"
     :popover-style="{
-      width: '830px',
+      width: '712px',
       maxWidth: 'calc(100vw - 32px)',
       padding: '0',
-      borderRadius: '20px'
+      borderRadius: '20px',
+      translate: '150px 12px'
     }"
   >
     <template #filterAction>
@@ -271,7 +272,7 @@
 
     <template #filterContent>
       <div class="worker-filter-panel">
-        <div class="grid grid-cols-12 gap-x-5 gap-y-4">
+        <div class="grid grid-cols-12 gap-6">
           <div class="col-span-12 md:col-span-4">
             <label>{{ $t('workerPage.filter.organization') }}</label>
             <UISelect
@@ -380,7 +381,7 @@
 
         <n-divider class="worker-filter-divider" />
 
-        <div class="grid grid-cols-12 gap-x-5 gap-y-4">
+        <div class="grid grid-cols-12 gap-6">
           <div class="col-span-12 md:col-span-4">
             <label>{{ $t('workerPage.filter.age') }}</label>
             <n-radio-group
@@ -446,7 +447,7 @@
         </n-button>
 
         <n-collapse-transition :show="showAllFilters">
-          <div class="grid grid-cols-12 gap-x-5 gap-y-4 mt-4">
+          <div class="grid grid-cols-12 gap-6 mt-6">
             <div class="col-span-12 md:col-span-4">
               <label>{{ $t('workerPage.filter.birthday') }}</label>
               <n-select
@@ -654,6 +655,10 @@
   }
 
   .age-mode-group :deep(.n-radio-button__state-border) {
+    display: none;
+  }
+
+  .age-mode-group :deep(.n-radio-group__splitor) {
     display: none;
   }
 

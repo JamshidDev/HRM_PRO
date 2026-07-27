@@ -9,7 +9,7 @@ $mobile_device_screen_size: 900px;
   height: 100vh;
   display: flex;
   position: relative;
-  background: var(--surface-section);
+  background: var(--surface-ground);
   .sidebar-content {
     width: $sidebar-max-width;
     min-height: 100%;
@@ -20,7 +20,7 @@ $mobile_device_screen_size: 900px;
     left: 0;
     bottom: 0;
     transition: all 0.3s ease;
-    background: var(--surface-section);
+    background: var(--surface-ground);
     .sidebar-card {
       width: calc(100% - 16px);
       height: calc(100% - 16px);
@@ -29,7 +29,7 @@ $mobile_device_screen_size: 900px;
       padding: 4px;
     }
     .mini-content {
-      width: $sidebar-mini-width;
+      width: $sidebar-mini-width - 16px;
       height: 100%;
       background: linear-gradient(#034f92, #002a53);
       padding: 10px 6px;
@@ -80,7 +80,7 @@ $mobile_device_screen_size: 900px;
       }
       .logo-content {
         overflow: hidden;
-        width: 80%;
+        width: 100%;
         padding: 1px;
         border-radius: 4px;
         margin: 10px auto;
@@ -99,11 +99,10 @@ $mobile_device_screen_size: 900px;
     .panel-content {
       width: calc(100% - $sidebar-mini-width);
       overflow: hidden;
-      padding: 10px;
+      padding: 10px 0 0 10px;
       transition: all 0.3s linear;
       .panel-item-single {
         padding: 2px;
-
         width: 100%;
         display: flex;
         align-items: center;
@@ -112,6 +111,7 @@ $mobile_device_screen_size: 900px;
         cursor: pointer;
         transition: background-color 0.15s ease;
         &:hover:not(.active-panel-item-single) {
+
           background-color: var(--surface-ground);
         }
         .item-icon {
@@ -126,7 +126,7 @@ $mobile_device_screen_size: 900px;
           }
         }
         .item-title {
-          width: calc(100% - 30px);
+          width: calc(100% + 24px);
           font-size: 14px;
           text-wrap: nowrap;
           overflow: hidden;
@@ -226,7 +226,7 @@ $mobile_device_screen_size: 900px;
               }
             }
             .item-title {
-              width: calc(100% - 30px);
+              width: calc(100%);
               font-size: 14px;
               text-wrap: nowrap;
               overflow: hidden;
@@ -250,12 +250,12 @@ $mobile_device_screen_size: 900px;
     .control-btn {
       transform: rotate(0deg);
       transition: transform 0.3s linear;
-      width: 30px;
+      width: 26px;
       height: 26px;
       border-radius: 8px;
       position: absolute;
       top: 30px;
-      right: -10px;
+      right: -6px;
       background: #fff;
       cursor: pointer;
       display: flex;

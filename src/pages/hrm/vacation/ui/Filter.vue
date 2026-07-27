@@ -88,7 +88,13 @@
       </div>
     </template>
     <template #filterAction>
-      <n-button v-fly-upload @click="store._download()" :loading="store.loading" type="success">
+      <n-button
+        v-fly-upload
+        class="vacation-download-button w-full! md:w-auto!"
+        @click="store._download()"
+        :loading="store.loading"
+        type="success"
+      >
         <template #icon>
           <ArrowCircleDown32Regular />
         </template>
@@ -97,3 +103,9 @@
     </template>
   </UIPageFilter>
 </template>
+
+<style scoped>
+  .vacation-download-button {
+    --n-height: 44px !important;
+  }
+</style>

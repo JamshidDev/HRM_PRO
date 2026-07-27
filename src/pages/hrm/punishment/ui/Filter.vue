@@ -64,7 +64,13 @@
     :popover-style="{ width: '560px', maxWidth: 'calc(100vw - 32px)', padding: '0', borderRadius: '20px' }"
   >
     <template #filterAction>
-      <n-button v-fly-upload :loading="store.downloading" type="success" @click="store._download()">
+      <n-button
+        v-fly-upload
+        class="h-[44px]!"
+        :loading="store.downloading"
+        type="success"
+        @click="store._download()"
+      >
         <template #icon>
           <ArrowCircleDown32Regular />
         </template>

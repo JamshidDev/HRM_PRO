@@ -20,7 +20,11 @@
   })
 
   const onOpenViewer = () => {
-    if (avatarSrc.value) window.$openViewer(avatarSrc.value)
+    if (photos.value.length) {
+      window.$openViewer(photos.value.map((p) => p.photo).filter(Boolean), activePhotoIndex.value)
+    } else if (avatarSrc.value) {
+      window.$openViewer(avatarSrc.value)
+    }
   }
 </script>
 
@@ -69,23 +73,6 @@
             <DepartmentIcon />
           </n-icon>
           <span>{{ store.workerPreview?.department?.name }}</span>
-        </div>
-
-        <div v-if="photos.length > 1" class="flex gap-1 mt-2">
-          <span
-            v-for="(item, idx) in photos"
-            :key="item.id ?? idx"
-            class="w-6 h-6 rounded-md overflow-hidden border-2 cursor-pointer"
-            :class="idx === activePhotoIndex ? 'border-primary' : 'border-transparent'"
-            @click="activePhotoIndex = idx"
-          >
-            <img
-              class="w-full h-full object-cover"
-              :src="item.photo || Utils.noAvailableImage"
-              @error="Utils.onImgError"
-              alt="worker thumbnail"
-            />
-          </span>
         </div>
       </div>
     </div>
