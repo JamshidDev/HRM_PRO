@@ -74,6 +74,10 @@
       "title": "F.I.Sh ma'lumot sifati",
       "subtitle": "Ism/familiyasida nuqsoni bor faol xodimlar — raqam, lotin/kiril aralash, nostandart apostrof, mantiqiy xatolik (Excel, fon rejimida)"
     },
+    "staffing": {
+      "title": "Korxona shtatkasi",
+      "subtitle": "Tanlangan korxona(lar) shtat jadvali — shtat ID, bo'lim, lavozim ID, lavozim (Excel, fon rejimida)"
+    },
     "validation": {
       "organizations": "Kamida bitta korxona tanlang",
       "accessLevels": "Kamida bitta access level tanlang",
