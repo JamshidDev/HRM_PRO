@@ -12,6 +12,7 @@
   import SectionHeader from './shared/SectionHeader.vue'
   import JshirIcon from '@/assets/icons/jshirIcon.svg'
   import IdRailWayDetail from '../../ui/IdRailWayDetail.vue'
+  import IdForeignDetail from '../../ui/IdForeignDetail.vue'
 
   const { t } = i18n.global
 
@@ -53,7 +54,20 @@
     issuePlace: 'Qo’qon MTU'
   }
 
-  const idForeignData = {}
+  const idForeignData = {
+    photoUrl: photo,
+    surname: 'ABDUSAMADOV',
+    givenName: 'SHAXZODBEK',
+    patronymic: 'OLIMJON OGLI',
+    sex: 'M',
+    cardNumber: 'FA1234567',
+    birthDate: '2006-01-10',
+    birthPlace: 'JIZZAX',
+    issueDate: '2025-09-18',
+    issuePlace: 'JIZZAX IIB',
+    expiryDate: '2030-09-18'
+  }
+  
 </script>
 
 <template>
@@ -79,7 +93,10 @@
           <IdRailWayDetail :data="idRailWayData" class="w-[100%] h-[100%] lg:w-[45%]" />
         </template>
 
-        <IdForeign v-else-if="activeId === 3" :data="idForeignData" />
+        <template v-else-if="activeId === 3">
+          <IdForeign :data="idForeignData" class="w-[100%] lg:w-[55%]" />
+          <IdForeignDetail :data="idForeignData" class="w-[100%] h-[100%] lg:w-[45%]" />
+        </template>
       </div>
     </SectionHeader>
   </div>
