@@ -1379,7 +1379,25 @@
       "vacation": "Таътил маълумоти",
       "incentive": "Рағбатлантиришлари",
       "punishment": "Интизомий жазолари",
-      "exams": "Имтиҳонлар"
+      "exams": "Имтиҳонлар",
+      "e_documents": "Рақамли-ҳужжатлар"
+    },
+    "Edocument": {
+      "pasport": "Паспорт",
+      "railway_pasport": "Темир йўл гувоҳнома",
+      "foreign_pasport": "Хорижий паспорт",
+      "card_number": "Карта рақами",
+      "issue_date": "Берилган сана",
+      "expiry_date": "Муддат ўтиш санаси",
+      "birth_date": "Туғилган санаси",
+      "nationality": "Миллати",
+      "citizenship": "Фуқаролиги",
+      "issue_place": "Берилган жойи",
+      "sex": "Жинси",
+      "personal_number": "Шахсий рақами",
+      "birth_place": "Туғилган жойи",
+      "male": "Эркак",
+      "female": "Аёл"
     }
   },
   "categoryPage": {

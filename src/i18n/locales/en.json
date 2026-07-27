@@ -1586,7 +1586,10 @@
       "citizenship": "Citizenship",
       "issue_place": "Place of Issue",
       "sex": "Sex",
-      "personal_number": "Personal Number"
+      "personal_number": "Personal Number",
+      "birth_place": "Place of birth",
+      "male": "Male",
+      "female": "Female"
     }
   },
   "categoryPage": {
