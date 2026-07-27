@@ -98,7 +98,7 @@
 
 <style scoped>
   .export-refresh-button {
-    --n-height: 44px !important;
+    --n-height: 32px !important;
     --n-border-radius: 12px !important;
     --n-padding: 0 16px !important;
     font-weight: 600;

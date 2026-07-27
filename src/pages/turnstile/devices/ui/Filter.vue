@@ -163,7 +163,7 @@
     <template #filterAction>
       <div class="col-span-12 md:col-span-6 flex justify-end gap-2">
         <n-button
-          class="h-[44px]!"
+          class="h-[32px]!"
           type="success"
           @click="store._downloadReport()"
           :loading="store.downloading"
@@ -174,7 +174,7 @@
           </template>
         </n-button>
         <n-button
-          class="h-[44px]!"
+          class="h-[32px]!"
           type="success"
           @click="store._downloadDevices()"
           :loading="store.downloading"
@@ -185,7 +185,7 @@
           </template>
         </n-button>
         <n-button
-          class="h-[44px]!"
+          class="h-[32px]!"
           type="primary"
           @click="store._refreshDevice()"
           :loading="store.loading"

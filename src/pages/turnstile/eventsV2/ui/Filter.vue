@@ -167,7 +167,7 @@
     </template>
     <template #filterAction>
       <n-button
-        class="h-[44px]!"
+        class="h-[32px]!"
         :loading="eventStore.jobLoading"
         @click="onSync"
         type="primary"
@@ -178,7 +178,7 @@
         </template>
       </n-button>
       <n-button
-        class="h-[44px]!"
+        class="h-[32px]!"
         @click="onOpenDownloadModal"
         :loading="store.download.loading"
         type="success"

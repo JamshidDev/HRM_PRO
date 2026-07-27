@@ -125,6 +125,6 @@
 
 <style scoped>
   .med-inspection-button {
-    --n-height: 44px !important;
+    --n-height: 32px !important;
   }
 </style>

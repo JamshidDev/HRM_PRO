@@ -86,7 +86,7 @@
     </template>
     <template #filterAction>
       <n-button
-        class="h-[44px]!"
+        class="h-[32px]!"
         type="primary"
         :loading="store.loading"
         @click="store._index()"

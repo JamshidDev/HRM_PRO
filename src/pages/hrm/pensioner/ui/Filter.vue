@@ -68,7 +68,7 @@
     <template #filterAction>
       <n-button
         v-fly-upload
-        class="h-[44px]!"
+        class="h-[32px]!"
         @click="store._download()"
         :loading="store.loading"
         type="success"

@@ -128,7 +128,7 @@ import { ArrowDownload24Regular, ArrowSync20Filled, LockClosed20Regular } from '
         <n-tooltip :delay="1500" placement="bottom" trigger="hover">
           <template #trigger>
             <n-button
-              class="h-[44px]!"
+              class="h-[32px]!"
               @click="store.statModalVisible = true"
               type="info"
             >
@@ -151,7 +151,7 @@ import { ArrowDownload24Regular, ArrowSync20Filled, LockClosed20Regular } from '
         </n-button>
 
         <n-button
-          class="h-[44px]!"
+          class="h-[32px]!"
           @click="store.generalExcelModalVisible = true"
           type="success"
         >
