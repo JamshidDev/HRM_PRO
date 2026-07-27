@@ -6,7 +6,8 @@ import { useAppStore } from '@/store/modules/index.js'
 const locales = {
   uz: { lang: uzUZ, date: dateUzUZ },
   en: { lang: enUS, date: dateEnUS },
-  ru: { lang: ruRU, date: dateRuRU }
+  ru: { lang: ruRU, date: dateRuRU },
+  uz_kr: { lang: uzUZ, date: dateUzUZ }
 }
 
 export const useLocaleProvider = () => {

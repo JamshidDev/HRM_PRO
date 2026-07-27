@@ -205,8 +205,8 @@
 
 <style scoped>
   .ui-page-search {
-    --n-height: 44px !important;
-    --n-border-radius: 16px !important;
+    --n-height: 32px !important;
+    --n-border-radius: 8px !important;
     --n-font-size: 14px !important;
   }
 
@@ -237,8 +237,8 @@
 
   .ui-page-action-button,
   .ui-page-filter-button {
-    --n-height: 44px !important;
-    --n-border-radius: 12px !important;
+    --n-height: 32px !important;
+    --n-border-radius: 8px !important;
   }
 
   .ui-page-action-button {

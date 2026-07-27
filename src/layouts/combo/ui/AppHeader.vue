@@ -47,7 +47,7 @@
       v-if="accountStore.checkPermission(appPermissions.ai)"
       class="absolute left-1/2 bottom-0 -translate-x-1/2 translate-y-1/2 z-20"
     >
-      <AIButtonV2 @click="() => router.push({ name: AppPaths.AIConversation.substring(1) })" />
+      <!-- <AIButtonV2 @click="() => router.push({ name: AppPaths.AIConversation.substring(1) })" /> -->
     </div>
     <div class="flex items-center z-10">
       <div

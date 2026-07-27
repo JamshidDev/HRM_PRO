@@ -33,7 +33,7 @@
   <SectionHeader v-if="store.workerPreview">
     <template #header>
       <div
-        class="main-info-header-bg relative overflow-hidden flex flex-wrap items-center gap-3 py-1 w-full rounded-t-3xl"
+        class="main-info-header-bg relative overflow-hidden flex max-md:flex-col items-center gap-3 py-1 w-full rounded-t-3xl"
       >
         <div
           class="main-info-header-bg-image absolute inset-0 bg-cover bg-no-repeat rounded-t-3xl bg-[180px_-100px]"
@@ -51,8 +51,8 @@
         />
 
         <div class="relative z-10 min-w-0 flex-1">
-          <div class="flex items-center gap-2">
-            <span class="text-2xl font-bold text-textColor0 truncate">
+          <div class="flex max-md:flex-wrap items-center max-md:justify-center gap-2">
+            <span class="md:text-2xl font-bold text-textColor0 md:truncate">
               {{ Utils.combineFullName(store.workerPreview?.worker) }}
             </span>
             <!-- TODO: backend real active/inactive field qo'shilganda ulanadi -->
@@ -67,13 +67,13 @@
               <VerifiedIcon />
             </n-icon>
           </div>
-          <div class="flex items-center gap-2 text-textColor2 mt-2">
+          <div class="flex items-center gap-2 text-textColor2 mt-2 text-pretty">
             <n-icon size="16">
               <PositionIcon />
             </n-icon>
             <span>{{ store.workerPreview?.post_name }}</span>
           </div>
-          <div class="flex items-center gap-2 text-textColor2 mt-1">
+          <div class="flex items-center gap-2 text-textColor2 mt-1 text-pretty">
             <n-icon size="16">
               <DepartmentIcon />
             </n-icon>

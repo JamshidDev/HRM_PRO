@@ -71,7 +71,7 @@
 </script>
 
 <template>
-  <div class="w-full flex items-center">
+  <div class="flex items-center max-w-full">
     <div
       :class="[badgeType, paddingY]"
       class="flex gap-1 border items-center px-3 rounded-2xl cursor-pointer truncate"

@@ -1,11 +1,10 @@
 <script setup>
 import { navigations } from '../../data/navigations.js'
-import { ChevronDown12Regular, ChevronDoubleLeft16Filled, SlideSettings24Regular } from '@vicons/fluent'
+import { ChevronDown12Regular, ChevronDoubleLeft16Filled } from '@vicons/fluent'
 import { useAccountStore } from '@/store/modules/index.js'
 import i18n from '@/i18n/index.js'
 import { AppPaths, useAppSetting } from '@/utils/index.js'
-import { PageInstruction, MiniMenuBadge, MenuItemBadge, UIProfile, UIThemeSwitch, DownloadTask } from '@components'
-import LangDropdown from '@/components/general/LangDropdown.vue'
+import { PageInstruction, MiniMenuBadge, MenuItemBadge, UIProfile, DownloadTask } from '@components'
 import NotificationsWidget from '@components/ui/NotificationsWidget.vue'
 
 const { t } = i18n.global
@@ -172,21 +171,8 @@ onMounted(() => {
         </div>
         <div class="flex flex-col items-center gap-[10px]">
           <DownloadTask />
-          <PageInstruction />
-          <n-popover trigger="click" placement="right-start" class="!p-2">
-            <template #trigger>
-              <div class="flex items-center justify-center w-10 h-10 cursor-pointer">
-                <n-icon size="24" color="#fff">
-                  <SlideSettings24Regular />
-                </n-icon>
-              </div>
-            </template>
-            <div class="flex flex-col gap-3">
-              <UIThemeSwitch />
-              <LangDropdown />
-            </div>
-          </n-popover>
-          <NotificationsWidget />
+          <!-- <PageInstruction /> -->
+          <!-- <NotificationsWidget /> -->
           <UIProfile />
         </div>
       </div>
