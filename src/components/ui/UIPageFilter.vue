@@ -113,7 +113,7 @@
         <n-input
           ref="searchInputRef"
           clearable
-          class="ui-page-search w-full md:max-w-[264px]! md:w-full!"
+          class="ui-page-search skip-format w-full md:max-w-[264px]! md:w-full!"
           v-if="showSearchInput"
           v-model:value="searchModel"
           type="text"

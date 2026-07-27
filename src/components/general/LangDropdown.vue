@@ -158,7 +158,7 @@
   <n-dropdown trigger="click" :options="options">
     <div
       v-if="compact"
-      class="flex items-center justify-center cursor-pointer w-10 h-10"
+      class="flex items-center justify-center cursor-pointer"
     >
       <n-avatar class="w-[26px]! h-[26px]!" round size="small" :src="dropdown.icon" />
     </div>
