@@ -107,12 +107,13 @@
         <n-input
           ref="searchInputRef"
           clearable
-          class="w-full md:max-w-[200px]! md:w-full!"
+          class="w-full md:max-w-[200px]! md:w-full! skip-format"
           v-if="showSearchInput"
           v-model:value="searchModel"
           type="text"
           :placeholder="$t('content.search')"
           :on-keyup="searchEvent"
+          
           @paste="searchEvent"
           @clear="searchEvent"
           :loading="searchLoading"
