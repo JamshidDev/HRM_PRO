@@ -24,7 +24,7 @@
 </script>
 
 <template>
-  <div class="grid grid-cols-2 lg:flex lg:divide-x lg:divide-surface-line gap-4 lg:gap-0 ">
+  <div class="grid md:grid-cols-2 lg:flex lg:divide-x lg:divide-surface-line gap-4 lg:gap-0">
     <!-- TODO: backend real field qo'shilganda ulanadi — hozircha statik placeholder -->
     <div class="min-w-0 lg:flex-1 lg:pr-4">
       <div class="flex items-center gap-1.5 text-textColor3 text-sm mb-1">
@@ -45,7 +45,9 @@
       </div>
       <div class="font-semibold flex items-center gap-1 flex-wrap">
         <span class="break-words">{{
-          masked ? Utils.maskText(store.workerPreview?.worker.pin, 3, 4) : store.workerPreview?.worker.pin
+          masked
+            ? Utils.maskText(store.workerPreview?.worker.pin, 3, 4)
+            : store.workerPreview?.worker.pin
         }}</span>
         <n-icon
           size="16"

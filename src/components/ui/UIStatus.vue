@@ -73,24 +73,27 @@
 
   const type = computed(() => {
     const v = statusList.filter((x) => x.id === props.status?.id)
-    if (Boolean(v.length)) return v[0].type
+    if (v.length) return v[0].type
     else return 'primary'
   })
 
   const icon = computed(() => {
     const v = statusList.filter((x) => x.id === props.status?.id)
-    if (Boolean(v.length)) return v[0].icon
+    if (v.length) return v[0].icon
     else return Eye16Filled
   })
 </script>
 
 <template>
   <div class="flex items-center">
-    <n-button :type="type" :size="size" dashed>
+    <n-button :type="type" :size="size" dashed class="truncate max-w-full">
       <template #icon>
         <component :is="icon" />
       </template>
-      {{ status?.name }}
+
+      <n-ellipsis :tooltip="{ style: { maxWidth: '300px' } }">
+        {{ status?.name }}
+      </n-ellipsis>
     </n-button>
   </div>
 </template>

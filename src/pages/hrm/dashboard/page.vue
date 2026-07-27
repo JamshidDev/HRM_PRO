@@ -38,7 +38,7 @@
       <Filter />
     </div>
     <n-tabs
-      class="max-h-[calc(100vh-120px)]"
+      class="max-h-[calc(100vh)]"
       :value="store.activeDetail ? 1 : 0"
       animated
       :tab-style="{ display: 'none' }"

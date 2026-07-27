@@ -37,7 +37,7 @@
 </script>
 
 <template>
-  <div>
+  <div class="flex flex-col gap-4">
     <SectionHeader :title="$t('workerView.tabs.incentive')" :icon="AwardIcon">
       <template #title-suffix>
         <span

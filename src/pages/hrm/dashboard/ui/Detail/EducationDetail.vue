@@ -1,16 +1,14 @@
 <script setup>
-  import {
-    UIUser,
-    UIPagination,
-    NoDataPicture,
-    UIPageFilter,
-    UIMenuButton,
-    UIDrawer
-  } from '@/components/index.js'
+  import { ref, computed, onMounted } from 'vue'
+  import { UIUser, UIDrawer, UITable } from '@/components/index.js'
   import { useComponentStore, useDashboardStore } from '@/store/modules/index.js'
 
   import Utils from '@/utils/Utils.js'
-  import { HatGraduation12Filled } from '@vicons/fluent'
+  import UIHelper from '@/utils/UIHelper.js'
+  import { HatGraduation12Filled, Eye16Regular } from '@vicons/fluent'
+  import i18n from '@/i18n/index.js'
+
+  const { t } = i18n.global
 
   const store = useDashboardStore()
   const componentStore = useComponentStore()
@@ -34,86 +32,96 @@
 
   const detail = ref(null)
 
-  const onSelectEv = (v) => {
-    if (v.key === Utils.ActionTypes.view) {
-      detail.value = v.data
-    }
+  const onView = (row) => {
+    detail.value = row
   }
+
+  const columns = computed(() => [
+    {
+      key: 'worker',
+      title: t('content.worker'),
+      minWidth: 200
+    },
+    {
+      key: 'organization.name',
+      title: t('content.organization'),
+      minWidth: 200
+    },
+    {
+      key: 'department.name',
+      title: t('content.department'),
+      minWidth: 180,
+      align: 'center'
+    },
+    {
+      key: 'university',
+      title: t('content.university'),
+      minWidth: 250,
+      align: 'center'
+    }
+  ])
+
+  const actions = computed(() => [
+    {
+      label: t('content.view'),
+      key: Utils.ActionTypes.view,
+      icon: UIHelper.renderIcon(Eye16Regular),
+      action: onView
+    }
+  ])
 </script>
 
 <template>
-  <n-spin :show="store.detailLoading" class="pt-2">
-    <n-table class="mt-4" :single-line="false" size="small">
-      <thead>
-        <tr>
-          <th class="text-center min-w-[40px] w-[40px]">{{ $t('content.number') }}</th>
-          <th class="text-center  min-w-[110px]">{{ $t('content.worker') }}</th>
-          <th class="max-w-[250px] w-[250px]">{{ $t('content.organization') }}</th>
-          <th class="!text-center max-w-[210px] w-[210px]">{{ $t('content.department') }}</th>
-          <th class="min-w-[100px] w-[300px] !text-center">{{ $t('content.university') }}</th>
-          <th class="text-center! max-w-[80px] w-[80px]">{{ $t('content.action') }}</th>
-        </tr>
-      </thead>
-      <tbody class="sort-target">
-        <tr v-for="(item, idx) in store.detailData" :key="idx">
-          <td>
-            <span class="text-center text-[12px] text-gray-600 block">{{
-              (store.params.page - 1) * store.params.per_page + idx + 1
-            }}</span>
-          </td>
-          <td>
-            <UIUser
-              :short="false"
-              :data="{
-                photo: item?.worker?.photo,
-                lastName: item?.worker?.last_name,
-                firstName: item?.worker?.first_name,
-                middleName: item?.worker?.middle_name,
-              }"
-            >
-              <template #position>
-                <span class="text-xs text-textColor3 w-full">{{ item?.position?.name }}</span>
-              </template>
-            </UIUser>
-          </td>
-          <td>{{ item.organization.name }}</td>
-          <td class="text-center">{{ item.department.name }}</td>
-          <td class="!text-center">
-            <p v-if="item.universities?.[0]">
-              {{ item.universities?.[0]?.university }} -
-              <span class="text-primary">{{ item.universities?.[0]?.education }}</span> -
-              <span class="text-secondary"
-                >({{
-                  Utils.timeOnlyYear(item.universities?.[0]?.from_date) +
-                  ' - ' +
-                  Utils.timeOnlyYear(item.universities?.[0]?.to_date)
-                }})</span
-              >
-              <n-button
-                v-if="item.universities.length > 1"
-                type="primary"
-                tertiary
-                circle
-                size="tiny"
-              >
-                +{{ item.universities.length - 1 }}
-              </n-button>
-            </p>
-          </td>
-          <td>
-            <UIMenuButton :show-delete="false" show-view :data="item" @select-ev="onSelectEv" />
-          </td>
-        </tr>
-      </tbody>
-    </n-table>
-    <UIPagination
-      :page="store.params.page"
-      :per_page="store.params.per_page"
-      :total="store.detailDataTotal"
-      @change-page="changePage"
-    />
-    <NoDataPicture v-if="!store.detailData?.length && !store.detailLoading" />
-  </n-spin>
+  <UITable
+    :columns="columns"
+    :actions="actions"
+    :data="store.detailData || []"
+    :loading="store.detailLoading"
+    :page="store.params.page"
+    :per-page="store.params.per_page"
+    :total="store.detailDataTotal"
+    @change-page="changePage"
+  >
+    <template #cell-worker="{ row }">
+      <UIUser
+        :short="false"
+        :data="{
+          photo: row?.worker?.photo,
+          lastName: row?.worker?.last_name,
+          firstName: row?.worker?.first_name,
+          middleName: row?.worker?.middle_name,
+        }"
+      >
+        <template #position>
+          <span class="text-xs text-textColor3 w-full">{{ row?.position?.name }}</span>
+        </template>
+      </UIUser>
+    </template>
+
+    <template #cell-university="{ row }">
+      <p v-if="row.universities?.[0]">
+        {{ row.universities?.[0]?.university }} -
+        <span class="text-primary">{{ row.universities?.[0]?.education }}</span> -
+        <span class="text-secondary">
+          ({{
+            Utils.timeOnlyYear(row.universities?.[0]?.from_date) +
+              ' - ' +
+              Utils.timeOnlyYear(row.universities?.[0]?.to_date)
+          }})
+        </span>
+        <n-button
+          v-if="row.universities.length > 1"
+          type="primary"
+          tertiary
+          circle
+          size="tiny"
+        >
+          +{{ row.universities.length - 1 }}
+        </n-button>
+      </p>
+    </template>
+  </UITable>
+
   <UIDrawer
     :visible="!!detail"
     @update:visible="() => (detail = null)"

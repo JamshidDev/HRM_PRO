@@ -3,12 +3,35 @@
 
   import Filter from '@pages/extra/UserRole/ui/Filter.vue'
   import Utils from '@/utils/Utils.js'
-  import { NoDataPicture, UIBadge, UIMenuButton, UIPagination, UIUser } from '@/components/index.js'
+  import { UIBadge, UITable, UIUser } from '@/components/index.js'
   import { RibbonStar24Filled } from '@vicons/fluent'
+  import i18n from '@/i18n/index.js'
+
+  const { t } = i18n.global
 
   const store = useWorkerProfileStore()
   const accStore = useAccountStore()
   const compStore = useComponentStore()
+
+  const columns = computed(() => [
+    {
+      key: 'worker',
+      title: t('confirmationPage.table.worker'),
+      minWidth: 200,
+      width: 360
+    },
+    {
+      key: 'roles',
+      title: t('workerRole.from.role'),
+      minWidth: 100
+    },
+    {
+      key: 'current_organization.name',
+      title: t('workerRole.from.activeOrganization'),
+      minWidth: 200,
+      width: 300
+    }
+  ])
 
   const onEdit = (v) => {
     store.elementId = v.id
@@ -95,71 +118,45 @@
   <div class="w-full">
     <Filter />
     <div class="h-[calc(100vh-200px)] overflow-y-auto mt-4">
-      <n-spin :show="store.userRoleLoading" style="min-height: 200px">
-        <div class="w-full overflow-x-auto" v-if="store.userRoleList.length > 0">
-          <n-table :single-line="false" size="small">
-            <thead>
-              <tr>
-                <th class="text-center! min-w-[40px] w-[40px]">{{ $t('content.number') }}</th>
-                <th class="min-w-[200px] w-[360px]">{{ $t('confirmationPage.table.worker') }}</th>
-                <th class="min-w-[100px]">{{ $t('workerRole.from.role') }}</th>
-                <th class="min-w-[200px] w-[300px]">
-                  {{ $t('workerRole.from.activeOrganization') }}
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(item, idx) in store.userRoleList" :key="idx">
-                <td>
-                  <span class="text-center text-[12px] text-gray-600 block">{{
-                    (store.userRoleParams.page - 1) * store.userRoleParams.per_page + idx + 1
-                  }}</span>
-                </td>
-                <td>
-                  <div>
-                    <UIUser
-                      :hide-tooltip="true"
-                      :short="false"
-                      :data="{
-                        photo: item?.worker.photo,
-                        firstName: item?.worker.first_name,
-                        middleName: item?.worker.middle_name,
-                        lastName: item?.worker.last_name,
-                        position: item?.position
-                      }"
-                    />
-                  </div>
-                </td>
-                <td>
-                  <div class="flex flex-wrap gap-2">
-                    <template v-for="(role, idx) in item.roles" :key="idx">
-                      <div>
-                        <UIBadge :label="role.name" :type="Utils.colorTypes.dark">
-                          <template #icon>
-                            <n-icon size="20">
-                              <RibbonStar24Filled />
-                            </n-icon>
-                          </template>
-                        </UIBadge>
-                      </div>
-                    </template>
-                  </div>
-                </td>
-                <td>
-                  <div>{{ item.current_organization?.name }}</div>
-                </td>
-              </tr>
-            </tbody>
-          </n-table>
-        </div>
-        <NoDataPicture v-if="store.userRoleList.length === 0 && !store.userRoleLoading" />
-      </n-spin>
+      <UITable
+        :columns="columns"
+        :data="store.userRoleList"
+        :loading="store.userRoleLoading"
+        :page="store.userRoleParams.page"
+        :per-page="store.userRoleParams.per_page"
+        :total="store.userRoleTotal"
+        @change-page="changePage"
+      >
+        <template #cell-worker="{ row }">
+          <UIUser
+            :hide-tooltip="true"
+            :short="false"
+            :data="{
+              photo: row?.worker.photo,
+              firstName: row?.worker.first_name,
+              middleName: row?.worker.middle_name,
+              lastName: row?.worker.last_name,
+              position: row?.position
+            }"
+          />
+        </template>
+
+        <template #cell-roles="{ row }">
+          <div class="flex flex-wrap gap-2">
+            <template v-for="(role, idx) in row.roles" :key="idx">
+              <div>
+                <UIBadge :label="role.name" :type="Utils.colorTypes.dark">
+                  <template #icon>
+                    <n-icon size="20">
+                      <RibbonStar24Filled />
+                    </n-icon>
+                  </template>
+                </UIBadge>
+              </div>
+            </template>
+          </div>
+        </template>
+      </UITable>
     </div>
-    <UIPagination
-      :page="store.userRoleParams.page"
-      :per_page="store.userRoleParams.per_page"
-      :total="store.userRoleTotal"
-      @change-page="changePage"
-    />
   </div>
 </template>

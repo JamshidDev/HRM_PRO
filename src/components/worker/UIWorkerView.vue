@@ -1,5 +1,4 @@
 <script setup>
-  import { ChevronRight16Filled } from '@vicons/fluent'
   import TopBar from './ui/shared/TopBar.vue'
   import icons from '@/assets/icons'
   import GeneralInfo from './ui/GeneralInfo.vue'
@@ -35,7 +34,7 @@
     { name: t('workerView.tabs.incentive'), id: 6, icon: icons.awardIcon },
     { name: t('workerView.tabs.punishment'), id: 7, icon: icons.punishmentIcon },
     { name: t('workerView.tabs.exams'), id: 8, icon: icons.examIcon },
-    { name: t('workerView.tabs.e_documents'), id: 9, icon: icons.jshirIcon },
+    { name: t('workerView.tabs.e_documents'), id: 9, icon: icons.jshirIcon }
   ])
 
   const openPreview = (id) => {
@@ -61,11 +60,11 @@
     >
       <n-spin :show="store.previewLoading" class="preview-spin col-span-12 overflow-hidden">
         <div
-          class="preview-content flex flex-col w-full h-full px-4 pt-4"
+          class="preview-content flex flex-col gap-4 w-full h-full p-4"
           :class="[store.panelVisible && 'preview-panel-active']"
           @scroll="store.panelVisible = false"
         >
-          <div class="shrink-0 bg-surface-section -mx-4 -mt-4 px-4 pt-4 rounded-t-3xl">
+          <div class="shrink-0 bg-(--table-header) -mx-4 -mt-4 px-4 pt-4 rounded-t-3xl">
             <TopBar
               v-model:masked="masked"
               :title="$t('workerView.header.title')"
@@ -75,13 +74,15 @@
             />
           </div>
 
-          <MainInfo v-model:masked="masked" class="shrink-0 mb-4" />
+          <MainInfo v-model:masked="masked" class="shrink-0" />
 
           <div class="preview-body flex w-full flex-1 min-h-0 gap-4">
             <div
               class="preview-menu self-start max-h-full bg-surface-section rounded-3xl p-1 z-10 overflow-y-auto"
             >
-              <div class="sidebar-title-box bg-primary/10 text-primary text-md font-semibold rounded-t-3xl px-1 text-center py-2 mb-2">
+              <div
+                class="sidebar-title-box bg-primary/10 text-primary text-md font-semibold rounded-t-3xl px-1 text-center py-2 mb-2"
+              >
                 {{ $t('workerView.sidebar.title') }}
               </div>
               <template v-if="store.workerPreview">
@@ -89,7 +90,11 @@
                   v-for="item in tabList"
                   :key="item.id"
                   class="flex items-center gap-3 px-2 py-2 mb-1 rounded-xl cursor-pointer transition-colors"
-                  :class="activeTab === item.id ? 'bg-primary text-white font-semibold' : 'text-textColor2 hover:bg-surface-ground'"
+                  :class="
+                    activeTab === item.id
+                      ? 'bg-primary text-white font-semibold'
+                      : 'text-textColor2 hover:bg-surface-ground'
+                  "
                   @click="
                     () => {
                       activeTab = item.id
@@ -125,7 +130,7 @@
                   <IncentiveInfo v-else-if="activeTab === tabList[5].id" />
                   <DisciplinaryInfo v-else-if="activeTab === tabList[6].id" />
                   <ExamInfo v-else-if="activeTab === tabList[7].id" />
-                  <Edocument  v-else-if="activeTab === tabList[8].id"/>
+                  <Edocument v-else-if="activeTab === tabList[8].id" />
                 </div>
               </Transition>
             </div>
@@ -138,9 +143,9 @@
 </template>
 
 <style lang="scss">
-.sidebar-title-box {
-  background-color: #EFF8FF;
-}
+  .sidebar-title-box {
+    background-color: #eff8ff;
+  }
   .tab-fade-enter-active,
   .tab-fade-leave-active {
     transition:
@@ -151,6 +156,14 @@
   .tab-fade-leave-to {
     opacity: 0;
     transform: translateY(6px);
+  }
+
+  .preview-content {
+    background: linear-gradient(180deg, #f9fafb 0%, #f5faff 50%, #eff8ff 100%);
+  }
+
+  [data-theme='dark'] .preview-content {
+    background: linear-gradient(180deg, #0f1115 0%, #111827 50%, #162033 100%);
   }
 
   .ui-preview-window,

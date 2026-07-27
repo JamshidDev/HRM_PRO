@@ -57,7 +57,7 @@
 </script>
 
 <template>
-  <div>
+  <div class="flex flex-col gap-4">
     <!-- <h2 class="text-xl sm:text-xl font-bold text-textColor0 mb-4">Hujjatlar</h2> -->
 
     <SectionHeader :title="$t('workerView.tabs.e_documents')" :icon="JshirIcon">

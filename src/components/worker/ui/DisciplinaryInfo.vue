@@ -10,7 +10,7 @@
 </script>
 
 <template>
-  <div>
+  <div class="flex flex-col gap-4">
     <SectionHeader :title="$t('workerView.tabs.punishment')" :icon="Warning24Filled">
       <div v-if="store.workerPreview?.worker?.disciplinary_actions?.length" class="flex flex-col gap-4">
         <div
