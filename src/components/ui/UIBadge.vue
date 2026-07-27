@@ -8,11 +8,11 @@
   import Utils from '@/utils/Utils.js'
   const props = defineProps({
     label: {
-      types: String,
+      type: String,
       default: ''
     },
     type: {
-      types: String,
+      type: String,
       default: Utils.colorTypes.info
     },
     showIcon: {
@@ -71,31 +71,23 @@
 </script>
 
 <template>
-  <n-tooltip style="max-width: 300px">
-    <span>
-      {{ label }}
-    </span>
-
-    <template #trigger>
-      <div class="w-full flex items-center">
-        <div
-          :class="[badgeType, paddingY]"
-          class="flex gap-1 border items-center px-3 rounded-2xl cursor-pointer truncate"
-        >
-          <div v-if="showIcon" class="w-[20px] flex justify-center">
-            <slot name="icon">
-              <n-icon size="12" class="ui--badge-icon">
-                <component :is="icon ? icon : badgeIcon" />
-              </n-icon>
-            </slot>
-          </div>
-          <div class="ui--badge-label leading-[1.2] flex-1 truncate">
-            {{ label }}
-          </div>
-        </div>
+  <div class="w-full flex items-center">
+    <div
+      :class="[badgeType, paddingY]"
+      class="flex gap-1 border items-center px-3 rounded-2xl cursor-pointer truncate"
+    >
+      <div v-if="showIcon" class="w-[20px] flex justify-center">
+        <slot name="icon">
+          <n-icon size="12" class="ui--badge-icon">
+            <component :is="icon ? icon : badgeIcon" />
+          </n-icon>
+        </slot>
       </div>
-    </template>
-  </n-tooltip>
+      <n-ellipsis class="flex-1" :tooltip="{ style: { maxWidth: '300px' } }">
+        <span class="ui--badge-label leading-[1.2]">{{ label }}</span>
+      </n-ellipsis>
+    </div>
+  </div>
 </template>
 
 <style scoped>

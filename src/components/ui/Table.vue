@@ -16,6 +16,7 @@
     columns: { type: Array, required: true }, // [{ key, title, fullTitle, width, minWidth, maxWidth, className, resizable, ellipsis, align, fixed }]
     data: { type: Array, default: () => [] },
     rowKey: { type: String, default: 'id' },
+    size: { type: String, default: 'small' }, // small | medium | large
     bordered: { type: Boolean, default: false },
     columnBorder: { type: Boolean, default: false },
     rowBorder: { type: Boolean, default: false },
@@ -81,13 +82,17 @@
       maxWidth: col.maxWidth,
       className: col.className,
       resizable: col.resizable ?? col.minWidth !== undefined,
-      ellipsis: col.ellipsis ?? {
-        tooltip: {
-          style: {
-            maxWidth: '300px'
-          }
-        }
-      },
+      ellipsis:
+        col.ellipsis ??
+        (slots[`cell-${col.key}`]
+          ? false
+          : {
+              tooltip: {
+                style: {
+                  maxWidth: '300px'
+                }
+              }
+            }),
       align: col.align,
       fixed: col.fixed,
       tree: col.tree,
@@ -192,9 +197,10 @@
 
     <div v-else class="h-full flex flex-col p-1 bg-surface-section rounded-[20px]">
       <n-data-table
-        class="ui-table__table flex-1 min-h-96"
+        class="ui-table__table flex-1 min-h-[clamp(200px,calc(100vh-140px),600px)]"
         :columns="ndtColumns"
         :data="data"
+        :size="size"
         :row-key="rowKeyFn"
         :bordered="bordered"
         :single-column="!rowBorder"
