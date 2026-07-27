@@ -1520,11 +1520,11 @@
       "relative": "Close relatives",
       "med": "Medical exam",
       "vacation": "Vacation info",
-      "incentive": "Incentives",
+      "incentive": "Incentive",
       "attestation": "Certification",
       "checkSkill": "Skill test",
       "checkKnowledge": "Knowledge test",
-      "punishment": "Disciplinary actions",
+      "punishment": "Disciplinary action",
       "e_documents": "E-documents",
       "exams": "Exams"
     },
