@@ -24,6 +24,22 @@ export const generateUUIDKey = uuidv4
 
 const onlyAllowNumber = (value) => !value || /^\d+$/.test(value)
 
+// Masklangan JSHSHIR ("1234-5678-9012-34") → raqamli qiymat (12345678901234) yoki null.
+const unmaskPin = (value) => {
+  if (value === null || value === undefined || value === '') return null
+  const digits = String(value).replace(/\D/g, '')
+  return digits ? Number(digits) : null
+}
+
+// Raqamli JSHSHIR (12345678901234) → masklangan ko'rinish ("1234-5678-9012-34"). Bo'sh → ''.
+const formatPin = (value) => {
+  if (value === null || value === undefined || value === '') return ''
+  const d = String(value).replace(/\D/g, '')
+  if (!d) return ''
+  const parts = [d.slice(0, 4), d.slice(4, 8), d.slice(8, 12), d.slice(12, 14)]
+  return parts.filter(Boolean).join('-')
+}
+
 const getMyLocation = () => {
   return new Promise((resolve, reject) => {
     if (navigator.geolocation) {
@@ -522,6 +538,8 @@ export default {
   disablePasteDate,
   fileToBase64,
   onlyAllowNumber,
+  unmaskPin,
+  formatPin,
   getMyLocation,
   timeToZone,
   timeWithMonth,
