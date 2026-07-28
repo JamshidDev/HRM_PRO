@@ -155,6 +155,14 @@ export const useAccountStore = defineStore('accountStore', {
           this.account = { ...res.data.data }
           this.permissions = res.data.data.role?.permissions?.map((v) => v.name)
           sessionStorage.setItem(useAppSetting.appPermission, JSON.stringify(this.permissions))
+          // must_change endi login javobida EMAS — profil (/user/profile) qaytaradi.
+          // true → parol muddati o'tgan → MustChangePasswordModal ochiladi.
+          this.mustChangePassword = res.data.data.must_change === true
+          if (this.mustChangePassword) {
+            localStorage.setItem(useAppSetting.mustChangeKey, '1')
+          } else {
+            localStorage.removeItem(useAppSetting.mustChangeKey)
+          }
           callback?.(this.account)
         })
         .finally(() => {
@@ -231,10 +239,13 @@ export const useAccountStore = defineStore('accountStore', {
           this.roleList = []
           res.data.data.map((v) => {
             v.organizations.forEach((x) => {
+              // Kompozit kalit: role_id-org_id (bir xil org'да bir nechta rol
+              // bo'lganда ajratish uchun). Active = backend `current` (is_active).
+              const key = `${v.id}-${x.id}`
               if (x.current) {
-                this.activeRole = x.id
+                this.activeRole = key
               }
-              this.roleList.push({ ...x, role: v.name })
+              this.roleList.push({ ...x, role_id: v.id, role: v.name, key })
             })
           })
         })
@@ -242,9 +253,12 @@ export const useAccountStore = defineStore('accountStore', {
           this.roleLoading = false
         })
     },
-    _changeRole(id) {
+    _changeRole(item) {
+      // Active rolni ko'chirish: org + aniq role_id (bir xil org'даgi rollarni
+      // ajratish uchun). Backend is_active'ni shu (role, org)ga o'rnatadi.
       let data = {
-        organization_id: id
+        organization_id: item.id,
+        role_id: item.role_id
       }
       $ApiService.accountService._changeRole({ data }).then((res) => {
         this._index()
@@ -263,10 +277,10 @@ export const useAccountStore = defineStore('accountStore', {
       this.organizationVisible = true
       this._roles()
     },
-    changeAccount(id) {
-      if (id !== this.activeRole) {
-        this.activeRole = id
-        this._changeRole(id)
+    changeAccount(item) {
+      if (item.key !== this.activeRole) {
+        this.activeRole = item.key
+        this._changeRole(item)
       }
     },
     hideTelegramPopup() {

@@ -30,7 +30,6 @@ import telegramService from '@/service/v1/admin/telegramService.js'
 import instructionService from '@/service/v1/admin/instructionService.js'
 import mobileUserService from '@/service/v1/admin/mobileUserService.js'
 import vacancyApproveService from '@/service/v1/admin/vacancyApproveService.js'
-import integrationLogService from '@/service/v1/admin/integrationLogService.js'
 import integrationClientsService from '@/service/v1/admin/integrationClientsService.js'
 import lateWorkersReportService from '@/service/v1/admin/lateWorkersReportService.js'
 import lateWorkersHalfYearReportService from '@/service/v1/admin/lateWorkersHalfYearReportService.js'
@@ -302,7 +301,6 @@ export default {
   structureReportService,
   confirmationReportService,
   departmentLocationService,
-  integrationLogService,
   integrationClientsService,
   lateWorkersReportService,
   lateWorkersHalfYearReportService,

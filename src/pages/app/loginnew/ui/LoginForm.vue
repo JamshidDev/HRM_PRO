@@ -21,16 +21,6 @@
   const router = useRouter()
   const route = useRoute()
 
-  const termsFiles = {
-    uz: '/terms/HRM_PRO_Legal_Document_UZ.pdf',
-    ru: '/terms/HRM_PRO_Legal_Document_RU.pdf',
-    en: '/terms/HRM_PRO_Legal_Document_EN.pdf'
-  }
-  const termsUrl = computed(() => {
-    const lang = localStorage.getItem(useAppSetting.languageKey) || 'uz'
-    return termsFiles[lang] ?? termsFiles.uz
-  })
-
   const formRef = ref(null)
   const captchaRef = ref(null)
   const captchaError = ref(false)
@@ -186,19 +176,7 @@
         />
       </n-form-item>
 
-      <p class="text-xs text-center text-textColor2 mt-4 lg:mt-16 mb-4 lg:mb-3">
-        {{ $t('loginPage.termsPrefix') }}
-        <a
-          :href="termsUrl"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="hover:underline cursor-pointer font-medium"
-          style="color: #1677ff"
-        >{{ $t('loginPage.termsLink') }}</a>
-        {{ $t('loginPage.termsSuffix') }}
-      </p>
-
-      <div class="grid">
+      <div class="grid mt-4 lg:mt-16">
         <n-button
           attr-type="submit"
           class="login-new__submit h-[48px]! lg:h-[52px]! rounded-2xl! overflow-hidden! font-semibold!"

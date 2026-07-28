@@ -964,13 +964,6 @@ export const navigations = [
         permission: appPermissions.admin
       },
       {
-        label: 'integrationLog.name',
-        path: Utils.routePathMaker(AppPaths.IntegrationLog),
-        icon: Folder48Filled,
-        color: 'bg-dark',
-        permission: appPermissions.admin
-      },
-      {
         label: 'integrationClients.name',
         path: Utils.routePathMaker(AppPaths.IntegrationClients),
         icon: Folder48Filled,

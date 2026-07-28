@@ -140,6 +140,7 @@
     store.params.birthday = null
     store.params.contract_type = null
     store.params.position_type = null
+    store.params.count_by = 'position'
     store.params.sex = null
     store.params.nationalities = []
     store.params.country_id = null
@@ -442,6 +443,20 @@
                 label-field="name"
                 value-field="id"
                 :loading="componentStore.enumAdminLoading"
+                @update:value="filterEvent"
+                :ignore-composition="false"
+              />
+            </div>
+            <div class="col-span-12 md:col-span-6">
+              <label class="mt-3 text-xs text-gray-500">{{
+                $t('workerPage.filter.countBy')
+              }}</label>
+              <n-select
+                v-model:value="store.params.count_by"
+                :options="[
+                  { value: 'position', label: $t('workerPage.filter.countByPosition') },
+                  { value: 'worker', label: $t('workerPage.filter.countByWorker') }
+                ]"
                 @update:value="filterEvent"
                 :ignore-composition="false"
               />

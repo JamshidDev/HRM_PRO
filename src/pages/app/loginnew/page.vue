@@ -8,6 +8,7 @@
   import ResetForm from './ui/ResetForm.vue'
   import StoreLinks from './ui/StoreLinks.vue'
   import SeasonEffect from './ui/SeasonEffect.vue'
+  import OfferModal from '@/components/OfferModal.vue'
 
   const appStore = useAppStore()
   const loginStore = useLoginNewStore()
@@ -130,6 +131,9 @@
         {{ $t('loginPage.copyright') }}
       </p>
     </div>
+
+    <!-- Offerta modali — login javobida `offer:true` kelsa ochiladi (teleport) -->
+    <OfferModal />
   </div>
 </template>
 
