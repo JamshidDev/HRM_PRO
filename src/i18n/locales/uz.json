@@ -349,7 +349,10 @@
     "paste": "Joylash",
     "allSelected": "Barchasi tanlangan",
     "sendToSign": "Imzolashga yuborish",
-    "rejectByMistake": "Xatolik sababli qaytarish"
+    "rejectByMistake": "Xatolik sababli qaytarish",
+    "themeLight": "Yorug'",
+    "themeDark": "Qorong'i",
+    "themeSystem": "Tizim"
   },
   "date": {
     "day": "Kun",
