@@ -397,10 +397,13 @@
     "lms": "LMS"
   },
   "offerModal": {
-    "title": "Terms of Use and Privacy Policy",
-    "desc": "Please review the offer below to continue.",
+    "title": "Review the documents",
+    "desc": "Please review the documents below to continue.",
+    "terms": "Terms of Use",
+    "privacy": "Privacy Policy",
     "accept": "I acknowledge",
-    "decline": "Decline"
+    "decline": "Decline",
+    "loadError": "Failed to load the document"
   },
   "loginPage": {
     "copyright": "© DASUTY. All rights reserved. Developed by \"DAS UTY\" LLC.",

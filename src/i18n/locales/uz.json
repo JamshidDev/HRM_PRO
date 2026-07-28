@@ -415,10 +415,13 @@
     "lms": "LMS"
   },
   "offerModal": {
-    "title": "Foydalanish shartlari va maxfiylik siyosati",
-    "desc": "Davom etish uchun quyidagi offerta bilan tanishib chiqing.",
+    "title": "Hujjatlar bilan tanishing",
+    "desc": "Davom etish uchun quyidagi hujjatlar bilan tanishib chiqing.",
+    "terms": "Foydalanish shartlari",
+    "privacy": "Maxfiylik siyosati",
     "accept": "Tanishdim",
-    "decline": "Rad etaman"
+    "decline": "Rad etaman",
+    "loadError": "Hujjatni yuklab bo'lmadi"
   },
   "loginPage": {
     "copyright": "© DASUTY. Barcha huquqlar himoyalangan. \"DAS UTY\" MCHJ tomonidan ishlab chiqilgan.",
