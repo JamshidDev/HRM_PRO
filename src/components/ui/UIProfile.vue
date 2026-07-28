@@ -1,5 +1,5 @@
 <script setup>
-  import { h } from 'vue'
+  import { h, computed } from 'vue'
   import { NIcon } from 'naive-ui'
   import { useRouter } from 'vue-router'
   import {
@@ -7,15 +7,14 @@
     Settings16Regular,
     SignOut20Regular,
     PeopleSync20Regular,
-    PeopleLock24Filled,
-    WeatherMoon28Filled,
-    WeatherSunny32Filled
+    PeopleLock24Filled
   } from '@vicons/fluent'
   import { useAppStore, useAccountStore, useSocketStore } from '@/store/modules/index.js'
   import i18n from '@/i18n/index.js'
   import { AppPaths, useAppSetting } from '@/utils/index.js'
   import { getActivePinia } from 'pinia'
-  import LangDropdown from '@/components/general/LangDropdown.vue'
+  import LangDropDownSecond from '../general/LangDropDownSecond.vue'
+  import ThemeDropDown from '../general/ThemeDropDown.vue'
 
   const { t } = i18n.global
   const router = useRouter()
@@ -32,28 +31,17 @@
   }
 
   const themeMenuItem = {
-    key: 'themeToggle',
+    key: 'themeSwitch',
     type: 'render',
     render: () =>
       h(
         'div',
         {
           class:
-            'flex items-center gap-2 hover:bg-surface-200 px-2 py-1.5 m-1 rounded-sm cursor-pointer text-textColor0'
+            'flex items-center gap-2 hover:bg-surface-200 px-2 py-1.5 m-1  rounded-sm text-textColor0'
         },
-        [
-          h(NIcon, { size: 20, class: 'text-textColor0' }, {
-            default: () => h(store.themeSwitch ? WeatherSunny32Filled : WeatherMoon28Filled)
-          }),
-          h('span', { class: 'text-sm text-textColor0' }, t('content.theme'))
-        ]
-      ),
-    props: {
-      onClick: () => {
-        store.themeSwitch = !store.themeSwitch
-        store.changeTheme()
-      }
-    }
+        [h(ThemeDropDown)]
+      )
   }
 
   const langMenuItem = {
@@ -63,48 +51,38 @@
       h(
         'div',
         {
-          class: 'flex items-center gap-2 hover:bg-surface-200 px-2 py-1.5 m-1 rounded-sm text-textColor0'
+          class:
+            'flex items-center gap-2 hover:bg-surface-200 px-2 py-1.5 m-1 rounded-sm text-textColor0'
         },
-        [
-          h(LangDropdown, { compact: true }),
-          h('span', { class: 'text-sm text-textColor0' }, t('content.language'))
-        ]
+        [h(LangDropDownSecond)]
       )
   }
 
-  const options = ref([
-    themeMenuItem,
-    langMenuItem,
-    {
-      label: t('content.profile'),
-      key: 'profile',
-      icon: renderIcon(Person24Regular)
-    },
-    {
-      label: t('content.changeAccount'),
-      key: 'changeAccount',
-      icon: renderIcon(PeopleSync20Regular)
-    },
-    {
-      label: t('content.setting'),
-      key: 'setting',
-      icon: renderIcon(Settings16Regular)
-    },
-    {
-      label: t('content.logOutSystem'),
-      key: 'logout',
-      icon: renderIcon(SignOut20Regular)
-    }
-  ])
+  const options = (() => {
+    const opts = [
+      themeMenuItem,
+      langMenuItem,
+      { label: t('content.profile'), key: 'profile', icon: renderIcon(Person24Regular) },
+      {
+        label: t('content.changeAccount'),
+        key: 'changeAccount',
+        icon: renderIcon(PeopleSync20Regular)
+      },
+      { label: t('content.setting'), key: 'setting', icon: renderIcon(Settings16Regular) },
+      { label: t('content.logOutSystem'), key: 'logout', icon: renderIcon(SignOut20Regular) }
+    ]
 
-  const secret = localStorage.getItem(useAppSetting.adminSecretKey)
-  if (secret === useAppSetting.adminSecret) {
-    options.value.unshift({
-      label: t('content.asAdmin'),
-      key: 'asAdmin',
-      icon: renderIcon(PeopleLock24Filled)
-    })
-  }
+    const secret = localStorage.getItem(useAppSetting.adminSecretKey)
+    if (secret === useAppSetting.adminSecret) {
+      opts.unshift({
+        label: t('content.asAdmin'),
+        key: 'asAdmin',
+        icon: renderIcon(PeopleLock24Filled)
+      })
+    }
+
+    return opts
+  })()
 
   const changeOption = (v) => {
     if (v === 'profile') {

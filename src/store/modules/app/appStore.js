@@ -40,6 +40,10 @@ dayjs.updateLocale('uz', {
   weekdays: ['Yakshanba', 'Dushanba', 'Seshanba', 'Chorshanba', 'Payshanba', 'Juma', 'Shanba'],
   weekdaysShort: ['Yak', 'Dush', 'Sesh', 'Chor', 'Pay', 'Jum', 'Shan']
 })
+
+const prefersDarkMedia = window.matchMedia('(prefers-color-scheme: dark)')
+const systemPrefersDark = () => prefersDarkMedia.matches
+
 export const useAppStore = defineStore('appStore', {
   state: () => ({
     appConfig: {
@@ -56,10 +60,11 @@ export const useAppStore = defineStore('appStore', {
       }
     ],
     theme: customTheme(),
-    themeSwitch: false,
+    themeMode: 'system',
     skipReset: true,
     wrongPinsLoading: false
   }),
+
   actions: {
     _downloadWrongWorkerPins() {
       this.wrongPinsLoading = true
@@ -96,23 +101,40 @@ export const useAppStore = defineStore('appStore', {
       router?.push(AppPaths.Login)
       getActivePinia().reset()
     },
-    changeTheme() {
-      const mode = this.themeSwitch ? 'dark' : 'light'
+
+    applyTheme() {
+      const resolved =
+        this.themeMode === 'system' ? (systemPrefersDark() ? 'dark' : 'light') : this.themeMode
       const html = document.documentElement
-      html.setAttribute('data-theme', mode)
+      html.setAttribute('data-theme', resolved)
       this.theme = customTheme()
-      localStorage.setItem(useAppSetting.themeKey, mode)
     },
+    setThemeMode(mode) {
+      this.themeMode = mode
+      localStorage.setItem(useAppSetting.themeKey, mode)
+      this.applyTheme()
+    },
+
     initApp() {
-      const mode = localStorage.getItem(useAppSetting.themeKey) || useAppSetting.defaultThemeKey
-      i18n.global.locale = localStorage.getItem(useAppSetting.languageKey) || useAppSetting.defaultLanguage
+      const savedMode = localStorage.getItem(useAppSetting.themeKey) || 'system'
+      i18n.global.locale =
+        localStorage.getItem(useAppSetting.languageKey) || useAppSetting.defaultLanguage
 
-      this.themeSwitch = mode === 'dark'
-      const html = document.documentElement
-      html.setAttribute('data-theme', mode)
+      this.themeMode = savedMode
+      this.applyTheme()
 
-      this.theme = customTheme()
+      prefersDarkMedia.addEventListener('change', () => {
+        if (this.themeMode === 'system') {
+          this.applyTheme()
+        }
+      })
+
       dayjs.locale(i18n.global.locale)
     }
+  },
+
+  getters: {
+    isDark: (state) =>
+      state.themeMode === 'system' ? systemPrefersDark() : state.themeMode === 'dark'
   }
 })
