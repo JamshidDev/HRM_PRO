@@ -396,6 +396,12 @@
     "hospital": "Medical Examination Menu",
     "lms": "LMS"
   },
+  "offerModal": {
+    "title": "Terms of Use and Privacy Policy",
+    "desc": "Please review the offer below to continue.",
+    "accept": "I acknowledge",
+    "decline": "Decline"
+  },
   "loginPage": {
     "copyright": "© DASUTY. All rights reserved. Developed by \"DAS UTY\" LLC.",
     "name": "Welcome",

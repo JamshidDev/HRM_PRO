@@ -155,6 +155,14 @@ export const useAccountStore = defineStore('accountStore', {
           this.account = { ...res.data.data }
           this.permissions = res.data.data.role?.permissions?.map((v) => v.name)
           sessionStorage.setItem(useAppSetting.appPermission, JSON.stringify(this.permissions))
+          // must_change endi login javobida EMAS — profil (/user/profile) qaytaradi.
+          // true → parol muddati o'tgan → MustChangePasswordModal ochiladi.
+          this.mustChangePassword = res.data.data.must_change === true
+          if (this.mustChangePassword) {
+            localStorage.setItem(useAppSetting.mustChangeKey, '1')
+          } else {
+            localStorage.removeItem(useAppSetting.mustChangeKey)
+          }
           callback?.(this.account)
         })
         .finally(() => {

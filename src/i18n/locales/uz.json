@@ -414,6 +414,12 @@
     "hospital": "Tibbiy ko'rik menyusi",
     "lms": "LMS"
   },
+  "offerModal": {
+    "title": "Foydalanish shartlari va maxfiylik siyosati",
+    "desc": "Davom etish uchun quyidagi offerta bilan tanishib chiqing.",
+    "accept": "Tanishdim",
+    "decline": "Rad etaman"
+  },
   "loginPage": {
     "copyright": "© DASUTY. Barcha huquqlar himoyalangan. \"DAS UTY\" MCHJ tomonidan ishlab chiqilgan.",
     "name": "Xush kelibsiz",
