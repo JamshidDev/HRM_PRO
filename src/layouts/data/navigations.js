@@ -997,6 +997,13 @@ export const navigations = [
         icon: Folder48Filled,
         color: 'bg-dark',
         permission: appPermissions.admin
+      },
+      {
+        label: 'holidayGreetingPage.name', // Bayramlar
+        path: Utils.routePathMaker(AppPaths.HolidayGreeting),
+        icon: Folder48Filled,
+        color: 'bg-dark',
+        permission: appPermissions.admin
       }
     ]
   }

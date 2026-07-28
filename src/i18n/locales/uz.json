@@ -1741,6 +1741,38 @@
       "type": "Bayram turi"
     }
   },
+  "holidayGreetingPage": {
+    "name": "Bayramlar",
+    "createTitle": "Bayram tabrigini qo'shish",
+    "updateTitle": "Bayram tabrigini tahrirlash",
+    "form": {
+      "name": "Bayram nomi",
+      "text": "Tabrik matni",
+      "holiday_date": "Bayram sanasi",
+      "is_recurring": "Har yili takrorlansin",
+      "is_active": "Faol",
+      "banner": "Banner"
+    },
+    "table": {
+      "name": "Nomi",
+      "date": "Sana",
+      "recurring": "Takrorlanadi",
+      "status": "Holati",
+      "banner": "Banner"
+    },
+    "overrides": {
+      "title": "Loyihalar uchun alohida tabrik",
+      "hint": "Har bir tashqi loyiha (masalan \"kpi\", \"noks\") uchun umumiy tabrikdan farqli alohida matn va banner belgilash mumkin. Loyiha o'zi yuboradigan erkin kalit so'z bilan aniqlanadi (login yoki foydalanuvchi emas).",
+      "add": "+ Loyiha qo'shish",
+      "createTitle": "Loyiha qo'shish",
+      "updateTitle": "Loyihani tahrirlash",
+      "clientKey": "Loyiha kaliti",
+      "clientKeyPlaceholder": "masalan: kpi",
+      "text": "Tabrik matni",
+      "banner": "Banner",
+      "empty": "Hozircha loyihalar uchun alohida tabrik yo'q"
+    }
+  },
   "vacationPage": {
     "name": "Ta'tildagi xodimlar",
     "table": {

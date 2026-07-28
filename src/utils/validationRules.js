@@ -929,6 +929,36 @@ export default {
       trigger: triggerEvents
     }
   },
+  holidayGreetingPage: {
+    name: {
+      required: true,
+      message: t(`rules.requiredField`),
+      trigger: triggerEvents
+    },
+    text: {
+      required: true,
+      message: t(`rules.requiredField`),
+      trigger: triggerEvents
+    },
+    holiday_date: {
+      type: 'number',
+      required: true,
+      message: t(`rules.requiredField`),
+      trigger: triggerEvents
+    }
+  },
+  holidayGreetingOverride: {
+    client_key: {
+      required: true,
+      message: t(`rules.requiredField`),
+      trigger: triggerEvents
+    },
+    text: {
+      required: true,
+      message: t(`rules.requiredField`),
+      trigger: triggerEvents
+    }
+  },
   workdayPage: {
     schedule_id: {
       type: 'number',
