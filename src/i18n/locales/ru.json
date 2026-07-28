@@ -337,7 +337,10 @@
     "ru": "РУ",
     "en": "АН",
     "create": "Создать",
-    "allSelected": "Все выбрано"
+    "allSelected": "Все выбрано",
+    "themeLight": "Светлая",
+    "themeDark": "Тёмная",
+    "themeSystem": "Системная"
   },
   "date": {
     "day": "День",

@@ -276,7 +276,10 @@
     "paste": "Жойлаш",
     "allSelected": "Барчаси танланган",
     "sendToSign": "Имзолашга юбориш",
-    "rejectByMistake": "Хатолик сабабли қайтариш"
+    "rejectByMistake": "Хатолик сабабли қайтариш",
+    "themeLight": "Ёруғ",
+    "themeDark": "Қоронғи",
+    "themeSystem": "Тизим"
   },
   "date": {
     "day": "Кун",
