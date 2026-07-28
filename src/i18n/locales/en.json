@@ -639,6 +639,9 @@
       "multiple_position": "Employees with multiple contracts",
       "pension_age": "Employees of retirement age",
       "position_type": "Position type",
+      "countBy": "Count by",
+      "countByPosition": "By position",
+      "countByWorker": "By worker",
       "age": "Age",
       "downloadRelative": "Download relatives"
     },
@@ -708,7 +711,9 @@
     },
     "roles": {
       "title": "Roles",
-      "attachRole": "Assign role"
+      "attachRole": "Assign role",
+      "active": "Active",
+      "setActive": "Make active"
     },
     "disability": {
       "title": "Disability information",
@@ -1626,6 +1631,7 @@
     },
     "mainCard": {
       "totalWorker": "Total employees",
+      "fxsh": "Civil-contract employees",
       "man": "Male employees",
       "woman": "Female employees"
     },

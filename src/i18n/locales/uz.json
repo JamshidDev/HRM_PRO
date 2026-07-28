@@ -656,6 +656,9 @@
       "multiple_position": "Birdan ortiq shartnomaga ega xodimlar",
       "pension_age": "Pensiya yoshidagi xodimlar",
       "position_type": "Lavozim turi",
+      "countBy": "Hisoblash kesimi",
+      "countByPosition": "Lavozim bo'yicha",
+      "countByWorker": "Xodim bo'yicha",
       "age": "Yoshi",
       "downloadRelative": "Qarindoshlarni yuklash"
     },
@@ -726,7 +729,9 @@
     },
     "roles": {
       "title": "Rollar",
-      "attachRole": "Role biriktirish"
+      "attachRole": "Role biriktirish",
+      "active": "Faol",
+      "setActive": "Faol qilish"
     },
     "disability": {
       "title": "Nogironlik ma'lumotlari",
@@ -1650,6 +1655,7 @@
     },
     "mainCard": {
       "totalWorker": "Xodimlar soni",
+      "fxsh": "FXSH xodimlari",
       "man": "Erkaklar soni",
       "woman": "Ayollar soni"
     },

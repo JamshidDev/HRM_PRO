@@ -28,6 +28,8 @@ export const useWorkerStore = defineStore('workerStore', {
       birthday: null,
       contract_type: null,
       position_type: null,
+      // Hisoblash kesimi: 'position' (standart) — lavozim bo'yicha; 'worker' — xodim bo'yicha.
+      count_by: 'position',
       ages: [1, 100],
       positions: [],
       sex: null,
