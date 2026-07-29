@@ -3126,8 +3126,13 @@
       "actionType": "Action type",
       "actionTypePlaceholder": "e.g. attendance",
       "publishedAt": "Publish date",
-      "slides": "Slides (image/video)"
-    }
+      "slides": "Slides (image/video)",
+      "addSlide": "Add slide",
+      "editFields": "Edit details",
+      "noSlides": "No slides yet — add using the button above"
+    },
+    "deleteConfirm": "Delete this story?",
+    "slideDeleteConfirm": "Delete this slide?"
   },
   "newsPage": {
     "name": "News",

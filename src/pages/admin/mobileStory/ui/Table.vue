@@ -1,11 +1,15 @@
 <script setup>
   import { ref } from 'vue'
+  import { useRouter } from 'vue-router'
   import { NoDataPicture, UIMenuButton, UIPagination } from '@/components/index.js'
   import { useMobileStoryStore } from '@/store/modules/index.js'
+  import { AppPaths } from '@/utils/index.js'
+  import Utils from '@/utils/Utils.js'
   import i18n from '@/i18n/index.js'
 
   const { t } = i18n.global
   const store = useMobileStoryStore()
+  const router = useRouter()
 
   const headerLang = ref('uz')
   const headerOption = [
@@ -14,15 +18,15 @@
     { name: t('content.nameEn'), id: 'en' }
   ]
 
+  const openStory = (id) => {
+    router.push(Utils.routePathMaker(`${AppPaths.MobileStories}/${id}`))
+  }
+
   const onSelectEv = (v) => {
     if (v.key === 'edit') {
-      store.visibleType = false
-      store._show(v.data.id).then(() => {
-        store.visible = true
-      })
+      openStory(v.data.id)
     } else if (v.key === 'delete') {
-      store.elementId = v.data.id
-      store._delete()
+      store._delete(v.data.id)
     }
   }
 
@@ -56,7 +60,11 @@
                 {{ (store.params.page - 1) * store.params.per_page + idx + 1 }}
               </span>
             </td>
-            <td>{{ item?.title?.[headerLang] ?? item?.title?.uz }}</td>
+            <td>
+              <span class="cursor-pointer text-primary hover:underline" @click="openStory(item.id)">
+                {{ item?.title?.[headerLang] ?? item?.title?.uz }}
+              </span>
+            </td>
             <td>
               <n-tag :type="item.status === 2 ? 'success' : 'default'" size="small" round>
                 {{ item.status === 2 ? $t('mobileStoryPage.status.published') : $t('mobileStoryPage.status.draft') }}

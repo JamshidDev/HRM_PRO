@@ -1,13 +1,14 @@
 <script setup>
   import { onMounted } from 'vue'
-  import { UIDrawer, UIPageContent, UIPageFilter } from '@/components/index.js'
+  import { useRouter } from 'vue-router'
+  import { UIPageContent, UIPageFilter } from '@/components/index.js'
   import Table from './ui/Table.vue'
-  import createForm from './ui/createForm.vue'
   import { useMobileStoryStore } from '@/store/modules/index.js'
-  import i18n from '@/i18n/index.js'
+  import { AppPaths } from '@/utils/index.js'
+  import Utils from '@/utils/Utils.js'
 
-  const { t } = i18n.global
   const store = useMobileStoryStore()
+  const router = useRouter()
 
   const onSearch = () => {
     store.params.page = 1
@@ -15,9 +16,7 @@
   }
 
   const onAdd = () => {
-    store.resetForm()
-    store.visibleType = true
-    store.visible = true
+    router.push(Utils.routePathMaker(`${AppPaths.MobileStories}/create`))
   }
 
   onMounted(() => {
@@ -35,15 +34,6 @@
       :show-filter-button="false"
     />
     <Table />
-    <UIDrawer
-      :visible="store.visible"
-      @update:visible="(v) => (store.visible = v)"
-      :title="store.visibleType ? t('mobileStoryPage.createTitle') : t('mobileStoryPage.updateTitle')"
-    >
-      <template #content>
-        <createForm />
-      </template>
-    </UIDrawer>
   </UIPageContent>
 </template>
 

@@ -3219,8 +3219,13 @@
       "actionType": "Action turi",
       "actionTypePlaceholder": "mas. attendance",
       "publishedAt": "Chop etish sanasi",
-      "slides": "Slaydlar (rasm/video)"
-    }
+      "slides": "Slaydlar (rasm/video)",
+      "addSlide": "Slayd qo'shish",
+      "editFields": "Ma'lumotlarni tahrirlash",
+      "noSlides": "Hali slayd yo'q — yuqoridagi tugma orqali qo'shing"
+    },
+    "deleteConfirm": "Ushbu story o'chirilsinmi?",
+    "slideDeleteConfirm": "Ushbu slayd o'chirilsinmi?"
   },
   "newsPage": {
     "name": "Yangiliklar",

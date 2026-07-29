@@ -3137,8 +3137,13 @@
       "actionType": "Тип действия",
       "actionTypePlaceholder": "напр. attendance",
       "publishedAt": "Дата публикации",
-      "slides": "Слайды (фото/видео)"
-    }
+      "slides": "Слайды (фото/видео)",
+      "addSlide": "Добавить слайд",
+      "editFields": "Редактировать данные",
+      "noSlides": "Слайдов пока нет — добавьте кнопкой выше"
+    },
+    "deleteConfirm": "Удалить эту story?",
+    "slideDeleteConfirm": "Удалить этот слайд?"
   },
   "newsPage": {
     "name": "Новости",
