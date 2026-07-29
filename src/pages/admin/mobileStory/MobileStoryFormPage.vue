@@ -31,11 +31,6 @@
     e.target.value = ''
   }
 
-  const onDeleteStory = async () => {
-    await store._deleteStory(store.elementId)
-    goBack()
-  }
-
   const goBack = () => router.push(Utils.routePathMaker(AppPaths.MobileStories))
 
   onMounted(() => {
@@ -59,14 +54,6 @@
           {{ store.payload.status === 2 ? $t('mobileStoryPage.status.published') : $t('mobileStoryPage.status.draft') }}
         </n-tag>
       </div>
-      <n-popconfirm v-if="!isCreate" @positive-click="onDeleteStory">
-        <template #trigger>
-          <n-button type="error" ghost :loading="store.deleteLoading">
-            <template #icon><n-icon :component="Delete24Regular" /></template>
-          </n-button>
-        </template>
-        {{ $t('mobileStoryPage.deleteConfirm') }}
-      </n-popconfirm>
     </div>
 
     <n-spin :show="store.detailLoading">
@@ -80,20 +67,24 @@
       <!-- EDIT: 2 panel — chap slideshow, o'ng ma'lumot+tahrir (ikkalasi card ichida) -->
       <div v-else class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
         <!-- CHAP: slaydlar slideshow (card) -->
-        <n-card :title="$t('mobileStoryPage.form.slides')" size="small" :bordered="true">
-          <template #header-extra>
+        <n-card size="small" :bordered="true">
+          <div class="flex justify-end mb-3">
             <n-button type="primary" ghost size="small" @click="triggerUpload" :loading="store.slideUploading">
               <template #icon><n-icon :component="Add24Regular" /></template>
               {{ $t('mobileStoryPage.form.addSlide') }}
             </n-button>
-          </template>
+          </div>
           <input ref="fileInput" type="file" class="hidden" multiple accept=".png,.jpg,.jpeg,.webp,.mp4,.mov,.webm" @change="onPickFiles" />
 
           <div v-if="store.slides.length > 0" class="flex justify-center">
-            <n-carousel :show-arrow="store.slides.length > 1" class="story-carousel" draggable>
+            <n-carousel effect="card" :show-arrow="store.slides.length > 1" class="story-carousel" draggable>
               <div v-for="s in store.slides" :key="s.id" class="story-slide">
                 <video v-if="s.media_type === 'video'" :src="s.url" class="story-media" muted playsinline controls />
                 <img v-else :src="s.url" class="story-media" alt="" />
+                <div class="story-views">
+                  <n-icon :component="Eye24Regular" :size="14" />
+                  <span>{{ store.viewsCount }}</span>
+                </div>
                 <div class="story-overlay">
                   <div class="story-text">
                     <h3 v-if="pick(store.payload.title)" class="story-title">{{ pick(store.payload.title) }}</h3>
@@ -120,14 +111,8 @@
           </div>
         </n-card>
 
-        <!-- O'NG: ma'lumot + tahrir + ko'rishlar (card) -->
+        <!-- O'NG: ma'lumot + tahrir (card) -->
         <n-card :title="$t('mobileStoryPage.updateTitle')" size="small" :bordered="true">
-          <template #header-extra>
-            <div class="flex items-center gap-1.5 text-textColor2">
-              <n-icon :component="Eye24Regular" :size="16" />
-              <span class="text-sm font-semibold text-textColor0">{{ store.viewsCount }}</span>
-            </div>
-          </template>
           <StoryFields @save="onSaveFields" />
         </n-card>
       </div>
@@ -184,5 +169,19 @@
     top: 10px;
     right: 10px;
     z-index: 5;
+  }
+  .story-views {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 9px;
+    border-radius: 12px;
+    background: rgba(0, 0, 0, 0.55);
+    color: #fff;
+    font-size: 12px;
   }
 </style>

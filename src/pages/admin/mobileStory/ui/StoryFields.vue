@@ -52,9 +52,6 @@
       <n-form-item :label="$t('mobileStoryPage.form.status')">
         <n-select v-model:value="store.payload.status" :options="statusOptions" />
       </n-form-item>
-      <n-form-item :label="$t('mobileStoryPage.form.sort')">
-        <n-input-number v-model:value="store.payload.sort" :min="1" class="w-full" />
-      </n-form-item>
       <n-form-item :label="$t('mobileStoryPage.form.actionType')">
         <n-input v-model:value="store.payload.action_type" :placeholder="$t('mobileStoryPage.form.actionTypePlaceholder')" />
       </n-form-item>
