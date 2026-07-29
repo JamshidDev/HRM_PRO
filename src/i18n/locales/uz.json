@@ -81,6 +81,9 @@
     "stationCodes": {
       "title": "Bo'limlar va station kodlar"
     },
+    "positions": {
+      "title": "Korxona kesimida lavozimlar (takrorsiz)"
+    },
     "validation": {
       "organizations": "Kamida bitta korxona tanlang",
       "accessLevels": "Kamida bitta access level tanlang",
@@ -3226,7 +3229,8 @@
       "detailsButton": "Batafsil"
     },
     "deleteConfirm": "Ushbu story o'chirilsinmi?",
-    "slideDeleteConfirm": "Ushbu slayd o'chirilsinmi?"
+    "slideDeleteConfirm": "Ushbu slayd o'chirilsinmi?",
+    "saved": "Saqlandi"
   },
   "newsPage": {
     "name": "Yangiliklar",

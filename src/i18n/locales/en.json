@@ -47,6 +47,9 @@
     "stationCodes": {
       "title": "Departments and station codes"
     },
+    "positions": {
+      "title": "Positions by organization (unique)"
+    },
     "organizations": "Organizations",
     "accessLevels": "Access levels",
     "from": "Start date",
@@ -3133,7 +3136,8 @@
       "detailsButton": "Details"
     },
     "deleteConfirm": "Delete this story?",
-    "slideDeleteConfirm": "Delete this slide?"
+    "slideDeleteConfirm": "Delete this slide?",
+    "saved": "Saved"
   },
   "newsPage": {
     "name": "News",

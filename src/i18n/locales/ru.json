@@ -81,6 +81,9 @@
     "stationCodes": {
       "title": "Отделы и станционные коды"
     },
+    "positions": {
+      "title": "Должности по предприятиям (без повторов)"
+    },
     "validation": {
       "organizations": "Выберите хотя бы одну организацию",
       "accessLevels": "Выберите хотя бы один access level",
@@ -3144,7 +3147,8 @@
       "detailsButton": "Подробнее"
     },
     "deleteConfirm": "Удалить эту story?",
-    "slideDeleteConfirm": "Удалить этот слайд?"
+    "slideDeleteConfirm": "Удалить этот слайд?",
+    "saved": "Сохранено"
   },
   "newsPage": {
     "name": "Новости",

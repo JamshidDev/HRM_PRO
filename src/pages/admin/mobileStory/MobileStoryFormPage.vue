@@ -22,9 +22,13 @@
   const langKey = () => localStorage.getItem('language') || localStorage.getItem('lang') || 'uz'
   const pick = (obj) => obj?.[langKey()] ?? obj?.uz ?? null
 
-  const onSaveFields = () => {
-    if (isCreate.value) store._create()
-    else store._update()
+  const onSaveFields = async () => {
+    if (isCreate.value) {
+      await store._create() // yaratadi + /:id ga o'tadi
+    } else {
+      await store._update()
+    }
+    window.$Toast?.success(t('mobileStoryPage.saved'))
   }
 
   const triggerUpload = () => fileInput.value?.click()
@@ -77,10 +81,10 @@
         </n-card>
       </div>
 
-      <!-- EDIT: 2 panel — chap slideshow, o'ng ma'lumot+tahrir (ikkalasi card ichida) -->
-      <div v-else class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+      <!-- EDIT: 2 panel — chap slideshow, o'ng ma'lumot+tahrir (ikkalasi card, bir xil balandlik) -->
+      <div v-else class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch">
         <!-- CHAP: slaydlar slideshow (card) -->
-        <n-card size="small" :bordered="true">
+        <n-card size="small" :bordered="true" class="h-full">
           <div class="flex justify-end mb-3">
             <n-button type="primary" ghost size="small" @click="triggerUpload" :loading="store.slideUploading">
               <template #icon><n-icon :component="Add24Regular" /></template>
@@ -142,7 +146,7 @@
         </n-card>
 
         <!-- O'NG: ma'lumot + tahrir (card) -->
-        <n-card :title="$t('mobileStoryPage.updateTitle')" size="small" :bordered="true">
+        <n-card :title="$t('mobileStoryPage.updateTitle')" size="small" :bordered="true" class="h-full">
           <StoryFields @save="onSaveFields" />
         </n-card>
       </div>
