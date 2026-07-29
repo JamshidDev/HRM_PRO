@@ -406,6 +406,16 @@
     "hospital": "Medical Examination Menu",
     "lms": "LMS"
   },
+  "offerModal": {
+    "title": "Review the documents",
+    "desc": "Please review the documents below to continue.",
+    "terms": "Terms of Use",
+    "privacy": "Privacy Policy",
+    "accept": "I acknowledge",
+    "decline": "Decline",
+    "loadError": "Failed to load the document",
+    "readHint": "Read the documents to the end to continue"
+  },
   "loginPage": {
     "copyright": "© DASUTY. All rights reserved. Developed by \"DAS UTY\" LLC.",
     "name": "Welcome",

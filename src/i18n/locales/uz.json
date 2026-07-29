@@ -424,6 +424,16 @@
     "hospital": "Tibbiy ko'rik menyusi",
     "lms": "LMS"
   },
+  "offerModal": {
+    "title": "Hujjatlar bilan tanishing",
+    "desc": "Davom etish uchun quyidagi hujjatlar bilan tanishib chiqing.",
+    "terms": "Foydalanish shartlari",
+    "privacy": "Maxfiylik siyosati",
+    "accept": "Tanishdim",
+    "decline": "Rad etaman",
+    "loadError": "Hujjatni yuklab bo'lmadi",
+    "readHint": "Davom etish uchun hujjatlarni oxirigacha o'qib chiqing"
+  },
   "loginPage": {
     "copyright": "© DASUTY. Barcha huquqlar himoyalangan. \"DAS UTY\" MCHJ tomonidan ishlab chiqilgan.",
     "name": "Xush kelibsiz",

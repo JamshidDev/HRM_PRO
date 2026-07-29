@@ -9,6 +9,7 @@ import TwoFactorForm from './ui/TwoFactorForm.vue'
 import ResetForm from './ui/ResetForm.vue'
 import StoreLinks from './ui/StoreLinks.vue'
 import SeasonEffect from './ui/SeasonEffect.vue'
+import OfferModal from '@/components/OfferModal.vue'
 import loginPatternUrl from '@/assets/images/svg/login-pattern.png?url'
 import loginPatternBottomUrl from '@/assets/images/svg/pattern-bottom.png?url'
 
@@ -120,6 +121,9 @@ const onDone = () => {
         </p>
       </div>
     </div>
+
+    <!-- Offerta modali — login javobida `offer:true` kelsa ochiladi (teleport) -->
+    <OfferModal />
   </div>
 </template>
 
