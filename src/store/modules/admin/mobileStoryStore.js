@@ -38,6 +38,7 @@ export const useMobileStoryStore = defineStore('mobileStory', {
     saveLoading: false,
     payload: emptyPayload(),
     slides: [], // {id, media_type, url, sort}
+    viewsCount: 0,
     slideUploading: false,
     slideDeletingId: null
   }),
@@ -82,6 +83,7 @@ export const useMobileStoryStore = defineStore('mobileStory', {
       this.elementId = null
       this.payload = emptyPayload()
       this.slides = []
+      this.viewsCount = 0
     },
 
     // Edit rejimi: story + slaydlarni (preview URL bilan) yuklaydi.
@@ -104,6 +106,7 @@ export const useMobileStoryStore = defineStore('mobileStory', {
             published_at: d.published_at,
             sort: d.sort
           }
+          this.viewsCount = d.views_count ?? 0
           this.slides = (d.slides ?? []).map((s) => ({
             id: s.id,
             media_type: s.media_type,

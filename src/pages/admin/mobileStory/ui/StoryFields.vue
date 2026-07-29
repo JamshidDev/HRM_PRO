@@ -21,9 +21,12 @@
   }
 
   const onSubmit = () => {
-    formRef.value?.validate((error) => {
-      if (!error) emits('save')
-    })
+    // Qo'lda tekshiruv — Naive nested-path (title.uz) validatsiyasiga tayanmaymiz.
+    if (!store.payload.title?.uz || !store.payload.title.uz.trim()) {
+      formRef.value?.validate(() => {}) // xatoni vizual ko'rsatish uchun
+      return
+    }
+    emits('save')
   }
 </script>
 
@@ -56,7 +59,7 @@
         <n-input v-model:value="store.payload.action_type" :placeholder="$t('mobileStoryPage.form.actionTypePlaceholder')" />
       </n-form-item>
       <n-form-item :label="$t('mobileStoryPage.form.publishedAt')">
-        <n-date-picker type="datetime" v-model:formatted-value="store.payload.published_at" value-format="yyyy-MM-dd HH:mm" class="w-full" clearable />
+        <n-date-picker type="datetime" v-model:formatted-value="store.payload.published_at" value-format="yyyy-MM-dd HH:mm:ss" class="w-full" clearable />
       </n-form-item>
     </div>
 
