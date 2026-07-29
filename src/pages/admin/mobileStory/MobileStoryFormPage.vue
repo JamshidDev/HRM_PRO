@@ -72,20 +72,21 @@
     <n-spin :show="store.detailLoading">
       <!-- CREATE: faqat maydon formasi -->
       <div v-if="isCreate" class="max-w-[640px]">
-        <StoryFields @save="onSaveFields" />
+        <n-card :bordered="true" size="small">
+          <StoryFields @save="onSaveFields" />
+        </n-card>
       </div>
 
-      <!-- EDIT: 2 panel — chap slideshow, o'ng ma'lumot+tahrir -->
+      <!-- EDIT: 2 panel — chap slideshow, o'ng ma'lumot+tahrir (ikkalasi card ichida) -->
       <div v-else class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
-        <!-- CHAP: slaydlar slideshow -->
-        <div>
-          <div class="flex items-center justify-between mb-3">
-            <h3 class="font-semibold text-textColor0">{{ $t('mobileStoryPage.form.slides') }}</h3>
+        <!-- CHAP: slaydlar slideshow (card) -->
+        <n-card :title="$t('mobileStoryPage.form.slides')" size="small" :bordered="true">
+          <template #header-extra>
             <n-button type="primary" ghost size="small" @click="triggerUpload" :loading="store.slideUploading">
               <template #icon><n-icon :component="Add24Regular" /></template>
               {{ $t('mobileStoryPage.form.addSlide') }}
             </n-button>
-          </div>
+          </template>
           <input ref="fileInput" type="file" class="hidden" multiple accept=".png,.jpg,.jpeg,.webp,.mp4,.mov,.webm" @change="onPickFiles" />
 
           <div v-if="store.slides.length > 0" class="flex justify-center">
@@ -99,7 +100,7 @@
                     <p v-if="pick(store.payload.subtitle)" class="story-subtitle">{{ pick(store.payload.subtitle) }}</p>
                   </div>
                   <n-button v-if="store.payload.action_type" size="small" type="primary" class="story-action">
-                    {{ store.payload.action_type }}
+                    {{ $t('mobileStoryPage.form.detailsButton') }}
                   </n-button>
                 </div>
                 <n-popconfirm @positive-click="store._deleteSlide(s.id)">
@@ -117,17 +118,18 @@
             <NoDataPicture />
             <p class="text-textColor3 text-sm mt-2">{{ $t('mobileStoryPage.form.noSlides') }}</p>
           </div>
-        </div>
+        </n-card>
 
-        <!-- O'NG: ma'lumot + tahrir + ko'rishlar -->
-        <div>
-          <div class="flex items-center gap-2 mb-4 text-textColor2">
-            <n-icon :component="Eye24Regular" :size="18" />
-            <span class="text-sm">{{ $t('mobileStoryPage.table.views') }}:</span>
-            <span class="font-semibold text-textColor0">{{ store.viewsCount }}</span>
-          </div>
+        <!-- O'NG: ma'lumot + tahrir + ko'rishlar (card) -->
+        <n-card :title="$t('mobileStoryPage.updateTitle')" size="small" :bordered="true">
+          <template #header-extra>
+            <div class="flex items-center gap-1.5 text-textColor2">
+              <n-icon :component="Eye24Regular" :size="16" />
+              <span class="text-sm font-semibold text-textColor0">{{ store.viewsCount }}</span>
+            </div>
+          </template>
           <StoryFields @save="onSaveFields" />
-        </div>
+        </n-card>
       </div>
     </n-spin>
   </UIPageContent>

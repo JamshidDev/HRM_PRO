@@ -3129,7 +3129,8 @@
       "slides": "Slides (image/video)",
       "addSlide": "Add slide",
       "editFields": "Edit details",
-      "noSlides": "No slides yet — add using the button above"
+      "noSlides": "No slides yet — add using the button above",
+      "detailsButton": "Details"
     },
     "deleteConfirm": "Delete this story?",
     "slideDeleteConfirm": "Delete this slide?"
