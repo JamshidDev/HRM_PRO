@@ -7,12 +7,7 @@
 
 <template>
   <n-button
-    @click="
-      () => {
-        store.themeSwitch = !store.themeSwitch
-        store.changeTheme()
-      }
-    "
+    @click="() => store.setThemeMode(store.isDark ? 'light' : 'dark')"
     circle
     quaternary
     size="large"
@@ -21,13 +16,13 @@
     <template #icon>
       <n-icon
         class="text-warning mode-button !absolute !rotate-[120deg]"
-        :class="{ 'mode-button-active': !store.themeSwitch }"
+        :class="{ 'mode-button-active': !store.isDark }"
       >
         <WeatherMoon28Filled />
       </n-icon>
       <n-icon
         class="text-warning mode-button !absolute"
-        :class="{ 'mode-button-active': store.themeSwitch }"
+        :class="{ 'mode-button-active': store.isDark }"
       >
         <WeatherSunny32Filled />
       </n-icon>
