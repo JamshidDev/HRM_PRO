@@ -1,52 +1,48 @@
-<script setup>
-  import { computed, h } from 'vue'
+<script>
+  import { h, computed } from 'vue'
   import { NIcon } from 'naive-ui'
   import { WeatherSunny32Filled, WeatherMoon28Filled, Desktop24Regular } from '@vicons/fluent'
   import { useAppStore } from '@/store/modules/index.js'
+  import icons from '@assets/icons'
   import i18n from '@/i18n/index.js'
 
   const { t } = i18n.global
-  const store = useAppStore()
 
-  const renderIcon = (icon, color) => () =>
-    h(NIcon, { color }, { default: () => h(icon, { class: 'text-lg' }) })
+  const renderIcon = (icon) => () =>
+    h(NIcon, null, { default: () => h(icon, { class: 'text-xl' }) })
 
-  const themeOptions = computed(() => [
-    {
-      label: t('content.themeLight'),
-      value: 'light',
-      icon: renderIcon(WeatherSunny32Filled, '#eab308')
-    },
-    {
-      label: t('content.themeDark'),
-      value: 'dark',
-      icon: renderIcon(WeatherMoon28Filled, '#818cf8')
-    },
-    {
-      label: t('content.themeSystem'),
-      value: 'system',
-      icon: renderIcon(Desktop24Regular, '#9ca3af')
+  export function useThemeMenu() {
+    const store = useAppStore()
+
+    const themeMenuItem = computed(() => ({
+      label: t('content.theme'),
+      key: 'theme-parent',
+      icon: renderIcon(icons.monitorIcon),
+      children: [
+        {
+          label: t('content.themeLight'),
+          key: 'theme:light',
+          icon: renderIcon(WeatherSunny32Filled)
+        },
+        {
+          label: t('content.themeDark'),
+          key: 'theme:dark',
+          icon: renderIcon(WeatherMoon28Filled)
+        },
+        {
+          label: t('content.themeSystem'),
+          key: 'theme:system',
+          icon: renderIcon(Desktop24Regular)
+        }
+      ]
+    }))
+
+    const selectTheme = (key) => {
+      if (!key.startsWith('theme:')) return false
+      store.setThemeMode(key.split(':')[1])
+      return true
     }
-  ])
 
-  const selectedTheme = computed({
-    get: () => store.themeMode,
-    set: (val) => store.setThemeMode(val)
-  })
-
-  const renderLabel = (option) => {
-    return h('div', { class: 'flex items-center gap-2' }, [
-      h(option.icon),
-      h('span', null, option.label)
-    ])
+    return { themeMenuItem, selectTheme }
   }
 </script>
-
-<template>
-  <n-select
-    v-model:value="selectedTheme"
-    :options="themeOptions"
-    :render-label="renderLabel"
-    class="w-full"
-  />
-</template>
