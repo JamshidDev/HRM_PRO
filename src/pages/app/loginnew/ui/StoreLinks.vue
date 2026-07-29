@@ -16,20 +16,26 @@
     <a
       :href="appStoreUrl"
       target="_blank"
-      class="login-new__store-card store-badge flex items-center justify-center gap-2 px-3 h-[42px] rounded-[9px] border"
+      class="login-new__store-card store-badge flex items-center justify-center gap-2 px-3 h-[46px] rounded-[9px] border"
     >
       <n-icon size="22">
         <AppStore24Filled />
       </n-icon>
-      <span class="text-xs font-semibold">App Store</span>
+      <span class="flex flex-col items-start leading-tight text-left">
+        <span class="text-[10px] opacity-80">Download on the</span>
+        <span class="text-xs font-semibold">App Store</span>
+      </span>
     </a>
     <a
       target="_blank"
       :href="playMarketUrl"
-      class="login-new__store-card store-badge flex items-center justify-center gap-2 px-3 h-[42px] rounded-[9px] border"
+      class="login-new__store-card store-badge flex items-center justify-center gap-2 px-3 h-[46px] rounded-[9px] border"
     >
-      <img class="h-[20px]" :src="playMarketSvg" alt="" />
-      <span class="text-xs font-semibold">Google Play</span>
+      <img class="h-[18px]" :src="playMarketSvg" alt="" />
+      <span class="flex flex-col items-start leading-tight text-left">
+        <span class="text-[10px] uppercase opacity-80">Get it on</span>
+        <span class="text-xs font-semibold">Google Play</span>
+      </span>
     </a>
   </div>
 </template>
