@@ -78,6 +78,9 @@
       "title": "Korxona shtatkasi",
       "subtitle": "Tanlangan korxona(lar) shtat jadvali — shtat ID, bo'lim, lavozim ID, lavozim (Excel, fon rejimida)"
     },
+    "stationCodes": {
+      "title": "Bo'limlar va station kodlar"
+    },
     "validation": {
       "organizations": "Kamida bitta korxona tanlang",
       "accessLevels": "Kamida bitta access level tanlang",

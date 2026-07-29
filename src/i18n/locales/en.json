@@ -44,6 +44,9 @@
   "workerReport": {
     "name": "Worker reports",
     "createButton": "Create report",
+    "stationCodes": {
+      "title": "Departments and station codes"
+    },
     "organizations": "Organizations",
     "accessLevels": "Access levels",
     "from": "Start date",
