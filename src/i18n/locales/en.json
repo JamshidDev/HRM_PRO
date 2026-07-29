@@ -47,6 +47,9 @@
     "stationCodes": {
       "title": "Departments and station codes"
     },
+    "positions": {
+      "title": "Positions by organization (unique)"
+    },
     "organizations": "Organizations",
     "accessLevels": "Access levels",
     "from": "Start date",
@@ -3110,6 +3113,31 @@
   "notificationPage": {
     "name": "Notifications",
     "create": "Create notification"
+  },
+  "mobileStoryPage": {
+    "name": "Story announcements",
+    "createTitle": "New story",
+    "updateTitle": "Edit story",
+    "status": { "draft": "Draft", "published": "Published" },
+    "table": { "status": "Status", "views": "Views" },
+    "form": {
+      "title": "Title",
+      "titleRequired": "Title (uz) is required",
+      "subtitle": "Subtitle",
+      "status": "Status",
+      "sort": "Order",
+      "actionType": "Action type",
+      "actionTypePlaceholder": "e.g. attendance",
+      "publishedAt": "Publish date",
+      "slides": "Slides (image/video)",
+      "addSlide": "Add slide",
+      "editFields": "Edit details",
+      "noSlides": "No slides yet — add using the button above",
+      "detailsButton": "Details"
+    },
+    "deleteConfirm": "Delete this story?",
+    "slideDeleteConfirm": "Delete this slide?",
+    "saved": "Saved"
   },
   "newsPage": {
     "name": "News",

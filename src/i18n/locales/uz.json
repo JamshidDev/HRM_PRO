@@ -81,6 +81,9 @@
     "stationCodes": {
       "title": "Bo'limlar va station kodlar"
     },
+    "positions": {
+      "title": "Korxona kesimida lavozimlar (takrorsiz)"
+    },
     "validation": {
       "organizations": "Kamida bitta korxona tanlang",
       "accessLevels": "Kamida bitta access level tanlang",
@@ -3203,6 +3206,31 @@
       "passport": "Pasport muddati haqida ogohlantirilgan xodimlar soni",
       "mobile": "Mobil ilova orqali xabar yuborilgan xodimlar soni"
     }
+  },
+  "mobileStoryPage": {
+    "name": "Story e'lonlari",
+    "createTitle": "Yangi story",
+    "updateTitle": "Story'ni tahrirlash",
+    "status": { "draft": "Qoralama", "published": "Chop etilgan" },
+    "table": { "status": "Holat", "views": "Ko'rilgan" },
+    "form": {
+      "title": "Sarlavha",
+      "titleRequired": "Sarlavha (uz) majburiy",
+      "subtitle": "Tavsif",
+      "status": "Holat",
+      "sort": "Tartib",
+      "actionType": "Action turi",
+      "actionTypePlaceholder": "mas. attendance",
+      "publishedAt": "Chop etish sanasi",
+      "slides": "Slaydlar (rasm/video)",
+      "addSlide": "Slayd qo'shish",
+      "editFields": "Ma'lumotlarni tahrirlash",
+      "noSlides": "Hali slayd yo'q — yuqoridagi tugma orqali qo'shing",
+      "detailsButton": "Batafsil"
+    },
+    "deleteConfirm": "Ushbu story o'chirilsinmi?",
+    "slideDeleteConfirm": "Ushbu slayd o'chirilsinmi?",
+    "saved": "Saqlandi"
   },
   "newsPage": {
     "name": "Yangiliklar",

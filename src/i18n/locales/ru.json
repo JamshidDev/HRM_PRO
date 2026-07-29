@@ -81,6 +81,9 @@
     "stationCodes": {
       "title": "Отделы и станционные коды"
     },
+    "positions": {
+      "title": "Должности по предприятиям (без повторов)"
+    },
     "validation": {
       "organizations": "Выберите хотя бы одну организацию",
       "accessLevels": "Выберите хотя бы один access level",
@@ -3121,6 +3124,31 @@
   "notificationPage": {
     "name": "Уведомления",
     "create": "Создать уведомление"
+  },
+  "mobileStoryPage": {
+    "name": "Story-объявления",
+    "createTitle": "Новая story",
+    "updateTitle": "Редактировать story",
+    "status": { "draft": "Черновик", "published": "Опубликовано" },
+    "table": { "status": "Статус", "views": "Просмотры" },
+    "form": {
+      "title": "Заголовок",
+      "titleRequired": "Заголовок (uz) обязателен",
+      "subtitle": "Описание",
+      "status": "Статус",
+      "sort": "Порядок",
+      "actionType": "Тип действия",
+      "actionTypePlaceholder": "напр. attendance",
+      "publishedAt": "Дата публикации",
+      "slides": "Слайды (фото/видео)",
+      "addSlide": "Добавить слайд",
+      "editFields": "Редактировать данные",
+      "noSlides": "Слайдов пока нет — добавьте кнопкой выше",
+      "detailsButton": "Подробнее"
+    },
+    "deleteConfirm": "Удалить эту story?",
+    "slideDeleteConfirm": "Удалить этот слайд?",
+    "saved": "Сохранено"
   },
   "newsPage": {
     "name": "Новости",
