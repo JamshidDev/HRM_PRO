@@ -2,25 +2,23 @@
 import { h, computed } from 'vue'
 import { NIcon } from 'naive-ui'
 import { useRouter } from 'vue-router'
-import {
-  Settings16Regular,
-  SignOut20Regular,
-  PeopleSync20Regular,
-  PeopleLock24Filled,
-  Person24Regular
-} from '@vicons/fluent'
+import { PeopleLock24Filled } from '@vicons/fluent'
+import icons from '@assets/icons'
 import { useAppStore, useAccountStore, useSocketStore } from '@/store/modules/index.js'
 import i18n from '@/i18n/index.js'
 import { AppPaths, useAppSetting } from '@/utils/index.js'
 import { getActivePinia } from 'pinia'
-import LangDropDownSecond from '../general/LangDropDownSecond.vue'
-import ThemeDropDown from '../general/ThemeDropDown.vue'
+import { useThemeMenu } from '@/components/general/ThemeDropDown.vue'
+import { useLangMenu } from '@/components/general/LangDropDownSecond.vue'
 
 const { t } = i18n.global
 const router = useRouter()
 const store = useAppStore()
 const accountStore = useAccountStore()
 const socketStore = useSocketStore()
+
+const { themeMenuItem, selectTheme } = useThemeMenu()
+const { langMenuItem, selectLang } = useLangMenu()
 
 const renderIcon = (icon) => {
   return () => {
@@ -30,46 +28,18 @@ const renderIcon = (icon) => {
   }
 }
 
-const themeMenuItem = {
-  key: 'themeSwitch',
-  type: 'render',
-  render: () =>
-    h(
-      'div',
-      {
-        class:
-          'flex items-center gap-2 hover:bg-surface-200 px-2 py-1.5 m-1  rounded-sm text-textColor0'
-      },
-      [h(ThemeDropDown)]
-    )
-}
-
-const langMenuItem = {
-  key: 'langSwitch',
-  type: 'render',
-  render: () =>
-    h(
-      'div',
-      {
-        class:
-          'flex items-center gap-2 hover:bg-surface-200 px-2 py-1.5 m-1 rounded-sm text-textColor0'
-      },
-      [h(LangDropDownSecond)]
-    )
-}
-
-const options = (() => {
+const options = computed(() => {
   const opts = [
-    themeMenuItem,
-    langMenuItem,
-    { label: t('content.profile'), key: 'profile', icon: renderIcon(Person24Regular) },
+    themeMenuItem.value,
+    langMenuItem.value,
+    { label: t('content.profile'), key: 'profile', icon: renderIcon(icons.userIcon) },
     {
       label: t('content.changeAccount'),
       key: 'changeAccount',
-      icon: renderIcon(PeopleSync20Regular)
+      icon: renderIcon(icons.usersIcon)
     },
-    { label: t('content.setting'), key: 'setting', icon: renderIcon(Settings16Regular) },
-    { label: t('content.logOutSystem'), key: 'logout', icon: renderIcon(SignOut20Regular) }
+    { label: t('content.setting'), key: 'setting', icon: renderIcon(icons.settingsIcon) },
+    { label: t('content.logOutSystem'), key: 'logout', icon: renderIcon(icons.logoutSystemIcon) }
   ]
 
   const secret = localStorage.getItem(useAppSetting.adminSecretKey)
@@ -82,7 +52,7 @@ const options = (() => {
   }
 
   return opts
-})()
+})
 
 const changeOption = (v) => {
   if (v === 'profile') {
@@ -96,6 +66,8 @@ const changeOption = (v) => {
     if (token) {
       loginAsAdmin(token)
     }
+  } else {
+    selectTheme(v) || selectLang(v)
   }
 }
 
@@ -119,9 +91,14 @@ const onLogOutEv = () => {
 <template>
   <n-dropdown :options="options" trigger="click" @select="changeOption">
     <div class="flex items-center gap-2">
-      <n-avatar class="cursor-pointer shrink-0" round size="large" object-fit="cover"
+      <n-avatar
+        class="cursor-pointer shrink-0"
+        round
+        size="large"
+        object-fit="cover"
         :src="accountStore.account?.worker?.photo || useAppSetting.noAvailableImage"
-        :fallback-src="useAppSetting.noAvailableImage" />
+        :fallback-src="useAppSetting.noAvailableImage"
+      />
     </div>
   </n-dropdown>
 </template>
