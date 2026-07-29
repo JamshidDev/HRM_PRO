@@ -60,8 +60,6 @@
 
   const options = (() => {
     const opts = [
-      themeMenuItem,
-      langMenuItem,
       { label: t('content.profile'), key: 'profile', icon: renderIcon(Person24Regular) },
       {
         label: t('content.changeAccount'),
@@ -69,7 +67,11 @@
         icon: renderIcon(PeopleSync20Regular)
       },
       { label: t('content.setting'), key: 'setting', icon: renderIcon(Settings16Regular) },
-      { label: t('content.logOutSystem'), key: 'logout', icon: renderIcon(SignOut20Regular) }
+      { label: t('content.logOutSystem'), key: 'logout', icon: renderIcon(SignOut20Regular) },
+
+      themeMenuItem,
+
+      langMenuItem
     ]
 
     const secret = localStorage.getItem(useAppSetting.adminSecretKey)
