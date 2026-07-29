@@ -2,7 +2,7 @@
   import { ref, computed, onMounted } from 'vue'
   import { useRoute, useRouter } from 'vue-router'
   import { UIPageContent, NoDataPicture } from '@/components/index.js'
-  import { ArrowLeft24Regular, Delete24Regular, Add24Regular, Eye24Regular } from '@vicons/fluent'
+  import { ArrowLeft24Regular, Delete24Regular, Add24Regular, Eye24Regular, ArrowSync24Regular } from '@vicons/fluent'
   import StoryFields from './ui/StoryFields.vue'
   import { useMobileStoryStore } from '@/store/modules/index.js'
   import { AppPaths } from '@/utils/index.js'
@@ -15,6 +15,8 @@
   const router = useRouter()
 
   const fileInput = ref(null)
+  const replaceInput = ref(null)
+  const replaceTargetId = ref(null)
   const isCreate = computed(() => route.params.id === 'create')
 
   const langKey = () => localStorage.getItem('language') || localStorage.getItem('lang') || 'uz'
@@ -29,6 +31,17 @@
   const onPickFiles = (e) => {
     Array.from(e.target.files ?? []).forEach((f) => store._addSlide(f))
     e.target.value = ''
+  }
+
+  const triggerReplace = (slideId) => {
+    replaceTargetId.value = slideId
+    replaceInput.value?.click()
+  }
+  const onReplaceFile = (e) => {
+    const f = e.target.files?.[0]
+    if (f && replaceTargetId.value != null) store._replaceSlide(replaceTargetId.value, f)
+    e.target.value = ''
+    replaceTargetId.value = null
   }
 
   const goBack = () => router.push(Utils.routePathMaker(AppPaths.MobileStories))
@@ -75,9 +88,16 @@
             </n-button>
           </div>
           <input ref="fileInput" type="file" class="hidden" multiple accept=".png,.jpg,.jpeg,.webp,.mp4,.mov,.webm" @change="onPickFiles" />
+          <input ref="replaceInput" type="file" class="hidden" accept=".png,.jpg,.jpeg,.webp,.mp4,.mov,.webm" @change="onReplaceFile" />
 
           <div v-if="store.slides.length > 0" class="flex justify-center">
-            <n-carousel effect="card" :show-arrow="store.slides.length > 1" class="story-carousel" draggable>
+            <n-carousel
+              :key="store.slides.map((s) => s.id).join('-')"
+              effect="card"
+              :show-arrow="store.slides.length > 1"
+              class="story-carousel"
+              draggable
+            >
               <div v-for="s in store.slides" :key="s.id" class="story-slide">
                 <video v-if="s.media_type === 'video'" :src="s.url" class="story-media" muted playsinline controls />
                 <img v-else :src="s.url" class="story-media" alt="" />
@@ -94,6 +114,16 @@
                     {{ $t('mobileStoryPage.form.detailsButton') }}
                   </n-button>
                 </div>
+                <n-button
+                  circle
+                  size="small"
+                  type="primary"
+                  class="story-change"
+                  :loading="store.slideUploading"
+                  @click="triggerReplace(s.id)"
+                >
+                  <template #icon><n-icon :component="ArrowSync24Regular" /></template>
+                </n-button>
                 <n-popconfirm @positive-click="store._deleteSlide(s.id)">
                   <template #trigger>
                     <n-button circle size="small" type="error" class="story-del" :loading="store.slideDeletingId === s.id">
@@ -168,6 +198,12 @@
     position: absolute;
     top: 10px;
     right: 10px;
+    z-index: 5;
+  }
+  .story-change {
+    position: absolute;
+    top: 10px;
+    right: 52px;
     z-index: 5;
   }
   .story-views {

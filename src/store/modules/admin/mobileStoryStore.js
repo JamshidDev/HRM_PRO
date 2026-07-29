@@ -173,6 +173,26 @@ export const useMobileStoryStore = defineStore('mobileStory', {
         })
     },
 
+    // Slayd media'sini almashtirish — darhol; ro'yxatdagi slaydni yangilaydi (id saqlanadi).
+    _replaceSlide(slideId, file) {
+      this.slideUploading = true
+      const fd = new FormData()
+      fd.append('file', file)
+      fd.append('media_type', (file.type ?? '').startsWith('video/') ? 'video' : 'image')
+      return $ApiService.mobileStoryService
+        ._replaceSlide({ slideId, data: fd })
+        .then((res) => {
+          const s = res.data.data
+          const idx = this.slides.findIndex((x) => x.id === slideId)
+          if (idx !== -1) {
+            this.slides[idx] = { id: s.id, media_type: s.media_type, url: s.url, sort: s.sort }
+          }
+        })
+        .finally(() => {
+          this.slideUploading = false
+        })
+    },
+
     // Slayd o'chirish — darhol.
     _deleteSlide(slideId) {
       this.slideDeletingId = slideId

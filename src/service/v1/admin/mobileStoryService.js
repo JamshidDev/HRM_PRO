@@ -21,6 +21,10 @@ const _delete = async (payload) => {
 const _createSlide = async (payload) => {
   return await axios.post(`/v1/admin/mobile-stories/${payload.id}/slides`, payload.data)
 }
+// Slayd media'sini almashtirish — multipart FormData (file). id/sort saqlanadi.
+const _replaceSlide = async (payload) => {
+  return await axios.post(`/v1/admin/mobile-stories/slides/${payload.slideId}`, payload.data)
+}
 const _removeSlide = async (payload) => {
   return await axios.delete(`/v1/admin/mobile-stories/slides/${payload.id}`)
 }
@@ -32,5 +36,6 @@ export default {
   _update,
   _delete,
   _createSlide,
+  _replaceSlide,
   _removeSlide
 }
