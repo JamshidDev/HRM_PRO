@@ -117,6 +117,9 @@ export const customTheme = () => {
       icons: {
         check: () => h(NIcon, null, { default: () => h(CheckmarkCircle24Regular) })
       }
+    },
+    Dropdown: {
+      optionTextColorHover: '#2E90FA'
     }
   }
 }

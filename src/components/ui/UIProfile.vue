@@ -3,14 +3,14 @@
   import { NIcon } from 'naive-ui'
   import { useRouter } from 'vue-router'
   import {
-    Person24Regular,
     Settings16Regular,
     SignOut20Regular,
     PeopleSync20Regular,
     PeopleLock24Filled,
     WeatherMoon28Filled,
     WeatherSunny32Filled
-  } from '@vicons/fluent'
+} from '@vicons/fluent'
+  import icons from '@assets/icons'
   import { useAppStore, useAccountStore, useSocketStore } from '@/store/modules/index.js'
   import i18n from '@/i18n/index.js'
   import { AppPaths, useAppSetting } from '@/utils/index.js'
@@ -39,13 +39,13 @@
         'div',
         {
           class:
-            'flex items-center gap-2 hover:bg-surface-200 px-2 py-1.5 m-1 rounded-sm cursor-pointer text-textColor0'
+            'group flex items-center gap-2 hover:bg-surface-200 px-2 py-1.5 m-1 rounded-sm cursor-pointer text-textColor0'
         },
         [
-          h(NIcon, { size: 20, class: 'text-textColor0' }, {
+          h(NIcon, { size: 20, class: 'text-textColor0 group-hover:text-[#2E90FA]' }, {
             default: () => h(store.themeSwitch ? WeatherSunny32Filled : WeatherMoon28Filled)
           }),
-          h('span', { class: 'text-sm text-textColor0' }, t('content.theme'))
+          h('span', { class: 'text-sm text-textColor0 group-hover:text-[#2E90FA]' }, t('content.theme'))
         ]
       ),
     props: {
@@ -63,11 +63,11 @@
       h(
         'div',
         {
-          class: 'flex items-center gap-2 hover:bg-surface-200 px-2 py-1.5 m-1 rounded-sm text-textColor0'
+          class: 'group flex items-center gap-2 hover:bg-surface-200 px-2 py-1.5 m-1 rounded-sm text-textColor0'
         },
         [
           h(LangDropdown, { compact: true }),
-          h('span', { class: 'text-sm text-textColor0' }, t('content.language'))
+          h('span', { class: 'text-sm text-textColor0 group-hover:text-[#2E90FA]' }, t('content.language'))
         ]
       )
   }
@@ -78,12 +78,12 @@
     {
       label: t('content.profile'),
       key: 'profile',
-      icon: renderIcon(Person24Regular)
+      icon: renderIcon(icons.userIcon)
     },
     {
       label: t('content.changeAccount'),
       key: 'changeAccount',
-      icon: renderIcon(PeopleSync20Regular)
+      icon: renderIcon(icons.usersIcon)
     },
     {
       label: t('content.setting'),
