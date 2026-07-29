@@ -184,5 +184,13 @@ export const adminRoutes = [
     meta: {
       layout: AppLayouts.main
     }
+  },
+  {
+    path: Utils.routePathMaker(AppPaths.HolidayGreeting),
+    name: AppPaths.HolidayGreeting.substring(1),
+    component: () => import('@/pages/admin/holidayGreeting/HolidayGreetingPage.vue'),
+    meta: {
+      layout: AppLayouts.main
+    }
   }
 ]

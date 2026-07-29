@@ -1,25 +1,61 @@
 <script setup>
-  import {
-    UIUser,
-    UIPagination,
-    NoDataPicture,
-    UIBadge,
-    UIMenuButton,
-    UIModal
-  } from '@/components/index.js'
+  import { computed, onMounted } from 'vue'
+  import { UIUser, UIBadge, UIModal, UITable } from '@/components/index.js'
   import { useDashboardStore } from '@/store/modules/index.js'
   import Utils from '@/utils/Utils.js'
+  import { Edit32Regular } from '@vicons/fluent'
+  import UIHelper from '@/utils/UIHelper.js'
+  import i18n from '@/i18n/index.js'
   import passportForm from '../pasportForm.vue'
+
+  const { t } = i18n.global
+
   const store = useDashboardStore()
 
-  const onSelectEv = (v) => {
-    if (v.key === Utils.ActionTypes.edit) {
-      store.resetPassportForm()
-      store.elementId = v.data.id
-      store.workerId = v.data?.worker?.id
-      store.visible = true
+  const columns = computed(() => [
+    {
+      key: 'worker',
+      title: t('content.worker'),
+      minWidth: 200
+    },
+    {
+      key: 'organization.name',
+      title: t('content.organization'),
+      minWidth: 100
+    },
+    {
+      key: 'department.name',
+      title: t('content.department'),
+      minWidth: 100
+    },
+    {
+      key: 'duration',
+      title: t('vacationPage.table.duration'),
+      minWidth: 240,
+      align: 'center'
+    },
+    {
+      key: 'password',
+      title: t('dashboardPage.password.number'),
+      align: 'center'
     }
+  ])
+
+  const onEdit = (row) => {
+    store.resetPassportForm()
+    store.elementId = row.id
+    store.workerId = row?.worker?.id
+    store.visible = true
   }
+
+  const actions = computed(() => [
+    {
+      label: t('content.edit'),
+      key: Utils.ActionTypes.edit,
+      icon: UIHelper.renderIcon(Edit32Regular),
+      action: onEdit
+    }
+  ])
 
   const filterEvent = () => {
     store._index_detail()
@@ -38,76 +74,46 @@
 
 <template>
   <div>
-    <n-spin :show="store.detailLoading" class="pt-2">
-      <n-table v-if="store.detailData?.length" class="mt-4" :single-line="false" size="small">
-        <thead>
-          <tr>
-            <th class="text-center! min-w-[40px] w-[40px]">{{ $t('content.number') }}</th>
-            <th class="text-center!">{{ $t('content.worker') }}</th>
-            <th class="min-w-[100px]">{{ $t('content.organization') }}</th>
-            <th class="min-w-[100px]">{{ $t('content.department') }}</th>
-            <th class="min-w-[100px] w-[240px] !text-center">
-              {{ $t('vacationPage.table.duration') }}
-            </th>
-            <th class="text-center!">{{ $t('dashboardPage.password.number') }}</th>
-            <th class="w-[40px] min-w-[40px]"></th>
-          </tr>
-        </thead>
-        <tbody class="sort-target">
-          <tr v-for="(item, idx) in store.detailData" :key="idx">
-            <td>
-              <span class="text-center text-[12px] text-gray-600 block">{{
-                (store.params.page - 1) * store.params.per_page + idx + 1
-              }}</span>
-            </td>
-            <td>
-              <UIUser
-                :short="false"
-                :data="{
-                  photo: item?.worker?.photo,
-                  lastName: item?.worker?.last_name,
-                  firstName: item?.worker?.first_name,
-                  middleName: item?.worker?.middle_name,
-                }"
-              >
-                <template #position>
-                  <span class="text-xs text-textColor3 w-full">{{ item?.position?.name }}</span>
-                </template>
-              </UIUser>
-            </td>
-            <td>{{ item.organization.name }}</td>
-            <td>{{ item.department.name }}</td>
-            <td class="!text-center">
-              <div class="flex">
-                <UIBadge :show-icon="false" :label="Utils.timeOnlyDate(item.passport.from_date)" />
-                <UIBadge :show-icon="false" :label="Utils.timeOnlyDate(item.passport.to_date)" />
-              </div>
-            </td>
-            <td class="!text-center">
-              <n-button dashed type="primary" round size="small">
-                {{ item.passport.serial_number }}
-              </n-button>
-            </td>
-            <td>
-              <UIMenuButton
-                :show-edit="true"
-                :show-delete="false"
-                :data="item"
-                @selectEv="onSelectEv"
-              />
-            </td>
-          </tr>
-        </tbody>
-      </n-table>
-      <UIPagination
-        v-if="store.detailData?.length"
-        :page="store.params.page"
-        :per_page="store.params.per_page"
-        :total="store.detailDataTotal"
-        @change-page="changePage"
-      />
-      <NoDataPicture v-if="!store.detailData?.length && !store.detailLoading" />
-    </n-spin>
+    <UITable
+      :columns="columns"
+      :actions="actions"
+      :data="store.detailData || []"
+      :loading="store.detailLoading"
+      :page="store.params.page"
+      :per-page="store.params.per_page"
+      :total="store.detailDataTotal"
+      @change-page="changePage"
+    >
+      <template #cell-worker="{ row }">
+        <UIUser
+          :short="false"
+          :data="{
+            photo: row?.worker?.photo,
+            lastName: row?.worker?.last_name,
+            firstName: row?.worker?.first_name,
+            middleName: row?.worker?.middle_name
+          }"
+        >
+          <template #position>
+            <span class="text-xs text-textColor3 w-full">{{ row?.position?.name }}</span>
+          </template>
+        </UIUser>
+      </template>
+
+      <template #cell-duration="{ row }">
+        <div class="flex">
+          <UIBadge :show-icon="false" :label="Utils.timeOnlyDate(row.passport.from_date)" />
+          <UIBadge :show-icon="false" :label="Utils.timeOnlyDate(row.passport.to_date)" />
+        </div>
+      </template>
+
+      <template #cell-password="{ row }">
+        <n-button dashed type="primary" round size="small">
+          {{ row.passport.serial_number }}
+        </n-button>
+      </template>
+    </UITable>
+
     <UIModal
       :width="600"
       :visible="store.visible"

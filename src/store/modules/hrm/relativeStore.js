@@ -34,17 +34,6 @@ export const useRelativeStore = defineStore('relativeStore', {
       search: null
     },
     uuid: null,
-    tabList: [
-      {
-        name: 'relativePage.tab.notWorker',
-        id: 1
-      },
-      {
-        name: 'relativePage.tab.worker',
-        id: 2
-      }
-    ],
-    activeTab: 1,
     sortableLoading: false,
 
     disabilityVisible: false,
@@ -79,6 +68,7 @@ export const useRelativeStore = defineStore('relativeStore', {
       let data = {
         ...this.payload,
         uuid: this.uuid,
+        pin: Utils.unmaskPin(this.payload.pin),
         birthday: Utils.timeToZone(this.payload.birthday),
         sort: 1
       }
@@ -97,6 +87,7 @@ export const useRelativeStore = defineStore('relativeStore', {
       let data = {
         ...this.payload,
         uuid: this.uuid,
+        pin: Utils.unmaskPin(this.payload.pin),
         birthday: Utils.timeToZone(this.payload.birthday)
       }
       $ApiService.relativeService

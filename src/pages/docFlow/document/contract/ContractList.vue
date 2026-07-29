@@ -1,17 +1,17 @@
 <script setup>
   import { UIStatus, UITable, UIUser } from '@/components/index.js'
-import i18n from '@/i18n/index.js'
-import { useAccountStore, useComponentStore, useContractStore } from '@/store/modules/index.js'
-import UIHelper from '@/utils/UIHelper.js'
-import Utils from '@/utils/Utils.js'
-import {
-  ArrowSyncCheckmark20Filled,
-  CheckmarkCircle32Regular,
-  Delete20Regular,
-  DocumentCheckmark24Regular,
-  Eye16Regular,
-  ReceiptAdd24Regular
-} from '@vicons/fluent'
+  import i18n from '@/i18n/index.js'
+  import { useAccountStore, useComponentStore, useContractStore } from '@/store/modules/index.js'
+  import UIHelper from '@/utils/UIHelper.js'
+  import Utils from '@/utils/Utils.js'
+  import {
+    ArrowSyncCheckmark20Filled,
+    CheckmarkCircle32Regular,
+    Delete20Regular,
+    DocumentCheckmark24Regular,
+    Eye16Regular,
+    ReceiptAdd24Regular
+  } from '@vicons/fluent'
 
   const { t } = i18n.global
 
@@ -59,8 +59,7 @@ import {
     {
       key: 'number',
       title: t('contractPage.table.number'),
-      width: 140,
-      align: 'center'
+      width: 140
     },
     {
       key: 'worker',
@@ -75,31 +74,27 @@ import {
     {
       key: 'command_status',
       title: t('contractPage.table.command'),
-      width: 110,
-      align: 'center'
+      width: 140,
     },
     {
       key: 'confirmation',
       title: t('content.confirmStatus'),
-      width: 120,
-      align: 'center'
+      width: 140,
     },
     {
       key: 'status',
       title: t('contractPage.table.status'),
-      width: 120,
-      align: 'center'
+      width: 140,
     },
     {
       key: 'generate',
       title: t('content.document'),
-      width: 120,
-      align: 'center'
+      width: 140,
     },
     {
       key: 'contract_date',
       title: t('contractPage.table.date'),
-      width: 120
+      width: 140
     }
   ])
 

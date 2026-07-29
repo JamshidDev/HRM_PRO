@@ -74,6 +74,10 @@
       "title": "F.I.Sh ma'lumot sifati",
       "subtitle": "Ism/familiyasida nuqsoni bor faol xodimlar — raqam, lotin/kiril aralash, nostandart apostrof, mantiqiy xatolik (Excel, fon rejimida)"
     },
+    "staffing": {
+      "title": "Korxona shtatkasi",
+      "subtitle": "Tanlangan korxona(lar) shtat jadvali — shtat ID, bo'lim, lavozim ID, lavozim (Excel, fon rejimida)"
+    },
     "validation": {
       "organizations": "Kamida bitta korxona tanlang",
       "accessLevels": "Kamida bitta access level tanlang",
@@ -345,7 +349,10 @@
     "paste": "Joylash",
     "allSelected": "Barchasi tanlangan",
     "sendToSign": "Imzolashga yuborish",
-    "rejectByMistake": "Xatolik sababli qaytarish"
+    "rejectByMistake": "Xatolik sababli qaytarish",
+    "themeLight": "Yorug'",
+    "themeDark": "Qorong'i",
+    "themeSystem": "Tizim"
   },
   "date": {
     "day": "Kun",
@@ -1546,8 +1553,8 @@
       "relative": "Yaqin qarindoshlari",
       "med": "Tibbiy ko'rik",
       "vacation": "Ta'til ma'lumoti",
-      "incentive": "Rag'batlantirishlari",
-      "punishment": "Intizomiy jazolari",
+      "incentive": "Rag'batlantirish",
+      "punishment": "Intizomiy jazo",
       "exams": "Imtihonlar",
       "e_documents": "Raqamli-hujjatlar"
     },
@@ -1608,7 +1615,10 @@
       "citizenship": "Fuqaroligi",
       "issue_place": "Berilgan joyi",
       "sex": "Jinsi",
-      "personal_number": "Shaxsiy raqami"
+      "personal_number": "Shaxsiy raqami",
+      "birth_place": "Tug'ilgan joyi",
+      "male": "Erkak",
+      "female": "Ayol"
     }
   },
   "categoryPage": {
@@ -1729,6 +1739,38 @@
       "name": "Bayram nomi",
       "holiday_date": "Bayram sanasi",
       "type": "Bayram turi"
+    }
+  },
+  "holidayGreetingPage": {
+    "name": "Bayramlar",
+    "createTitle": "Bayram tabrigini qo'shish",
+    "updateTitle": "Bayram tabrigini tahrirlash",
+    "form": {
+      "name": "Bayram nomi",
+      "text": "Tabrik matni",
+      "holiday_date": "Bayram sanasi",
+      "is_recurring": "Har yili takrorlansin",
+      "is_active": "Faol",
+      "banner": "Banner"
+    },
+    "table": {
+      "name": "Nomi",
+      "date": "Sana",
+      "recurring": "Takrorlanadi",
+      "status": "Holati",
+      "banner": "Banner"
+    },
+    "overrides": {
+      "title": "Loyihalar uchun alohida tabrik",
+      "hint": "Har bir tashqi loyiha (masalan \"kpi\", \"noks\") uchun umumiy tabrikdan farqli alohida matn va banner belgilash mumkin. Loyiha o'zi yuboradigan erkin kalit so'z bilan aniqlanadi (login yoki foydalanuvchi emas).",
+      "add": "+ Loyiha qo'shish",
+      "createTitle": "Loyiha qo'shish",
+      "updateTitle": "Loyihani tahrirlash",
+      "clientKey": "Loyiha kaliti",
+      "clientKeyPlaceholder": "masalan: kpi",
+      "text": "Tabrik matni",
+      "banner": "Banner",
+      "empty": "Hozircha loyihalar uchun alohida tabrik yo'q"
     }
   },
   "vacationPage": {

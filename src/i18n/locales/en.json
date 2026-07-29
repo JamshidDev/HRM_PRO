@@ -333,7 +333,10 @@
     "ru": "RU",
     "en": "EN",
     "create": "Create",
-    "allSelected": "All selected"
+    "allSelected": "All selected",
+    "themeLight": "Light",
+    "themeDark": "Dark",
+    "themeSystem": "System"
   },
   "date": {
     "day": "Day",
@@ -1523,11 +1526,11 @@
       "relative": "Close relatives",
       "med": "Medical exam",
       "vacation": "Vacation info",
-      "incentive": "Incentives",
+      "incentive": "Incentive",
       "attestation": "Certification",
       "checkSkill": "Skill test",
       "checkKnowledge": "Knowledge test",
-      "punishment": "Disciplinary actions",
+      "punishment": "Disciplinary action",
       "e_documents": "E-documents",
       "exams": "Exams"
     },
@@ -1588,7 +1591,10 @@
       "citizenship": "Citizenship",
       "issue_place": "Place of Issue",
       "sex": "Sex",
-      "personal_number": "Personal Number"
+      "personal_number": "Personal Number",
+      "birth_place": "Place of birth",
+      "male": "Male",
+      "female": "Female"
     }
   },
   "categoryPage": {
@@ -1709,6 +1715,38 @@
       "name": "Holiday name",
       "holiday_date": "Holiday date",
       "type": "Holiday type"
+    }
+  },
+  "holidayGreetingPage": {
+    "name": "Holiday greetings",
+    "createTitle": "Add holiday greeting",
+    "updateTitle": "Edit holiday greeting",
+    "form": {
+      "name": "Holiday name",
+      "text": "Greeting text",
+      "holiday_date": "Holiday date",
+      "is_recurring": "Repeat every year",
+      "is_active": "Active",
+      "banner": "Banner"
+    },
+    "table": {
+      "name": "Name",
+      "date": "Date",
+      "recurring": "Recurring",
+      "status": "Status",
+      "banner": "Banner"
+    },
+    "overrides": {
+      "title": "Custom greeting for projects",
+      "hint": "For each external project (e.g. \"kpi\", \"noks\") you can set a separate text and banner instead of the shared greeting. The project is identified by a free-form key it sends itself (not a login or user).",
+      "add": "+ Add project",
+      "createTitle": "Add project",
+      "updateTitle": "Edit project",
+      "clientKey": "Project key",
+      "clientKeyPlaceholder": "e.g. kpi",
+      "text": "Greeting text",
+      "banner": "Banner",
+      "empty": "No custom project greetings yet"
     }
   },
   "vacationPage": {

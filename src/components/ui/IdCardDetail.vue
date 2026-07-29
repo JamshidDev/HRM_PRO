@@ -24,12 +24,17 @@
     { label: t('workerView.Edocument.issue_place'), value: (d) => d.issuePlace },
     {
       label: t('workerView.Edocument.sex'),
-      value: (d) => (d.sex === 'M' ? 'Erkak' : d.sex === 'F' ? 'Ayol' : '-')
+      value: (d) =>
+        d.sex === 'M'
+          ? t('workerView.Edocument.male')
+          : d.sex === 'F'
+            ? t('workerView.Edocument.female')
+            : '-'
     }
   ]
 
   const copied = ref(false)
-  x``
+
   async function copyCardNumber() {
     if (!props.data?.cardNumber) return
     try {

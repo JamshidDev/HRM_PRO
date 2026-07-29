@@ -6,6 +6,7 @@
   import DepartmentIcon from '@/assets/icons/departmentIcon.svg'
   import VerifiedIcon from '@/assets/icons/verifiedIcon.svg'
   import HeaderBg from '@/assets/icons/profile-preview-header.svg?url'
+  import SectionHeader from './shared/SectionHeader.vue'
   import WorkerStatsGrid from './shared/WorkerStatsGrid.vue'
 
   const store = useComponentStore()
@@ -29,75 +30,72 @@
 </script>
 
 <template>
-  <div v-if="store.workerPreview" class="rounded-3xl overflow-hidden bg-surface-section mt-4 p-1">
-    <div class="main-info-header-bg relative overflow-hidden flex flex-wrap items-center gap-3 p-4 rounded-3xl">
+  <SectionHeader v-if="store.workerPreview">
+    <template #header>
       <div
-        class="main-info-header-bg-image absolute inset-0 bg-cover bg-no-repeat rounded-3xl"
-        :style="{ backgroundImage: `url(${HeaderBg})` }"
-      ></div>
+        class="main-info-header-bg relative overflow-hidden flex max-md:flex-col items-center gap-3 py-1 w-full rounded-t-3xl"
+      >
+        <div
+          class="main-info-header-bg-image absolute inset-0 bg-cover bg-no-repeat rounded-t-3xl bg-[180px_-100px]"
+          :style="{ backgroundImage: `url(${HeaderBg})` }"
+        ></div>
 
-      <n-avatar
-        :size="96"
-        round
-        class="relative z-10 cursor-pointer shrink-0"
-        :src="avatarSrc || Utils.noAvailableImage"
-        :fallback-src="Utils.noAvailableImage"
-        :img-props="{ style: 'object-fit: cover' }"
-        @click="onOpenViewer"
-      />
+        <n-avatar
+          :size="96"
+          round
+          class="relative z-10 cursor-pointer shrink-0"
+          :src="avatarSrc || Utils.noAvailableImage"
+          :fallback-src="Utils.noAvailableImage"
+          :img-props="{ style: 'object-fit: cover' }"
+          @click="onOpenViewer"
+        />
 
-      <div class="relative z-10 min-w-0 flex-1">
-        <div class="flex items-center gap-2 flex-nowrap min-w-0">
-          <span class="text-2xl font-bold text-textColor0 truncate min-w-0">
-            {{ Utils.combineFullName(store.workerPreview?.worker) }}
-          </span>
-          <!-- TODO: backend real active/inactive field qo'shilganda ulanadi -->
-          <UIBadge
-            :label="$t('workerView.header.activeEmployee')"
-            :type="Utils.colorTypes.success"
-            :show-icon="false"
-            class="!w-auto active-employee-badge shrink-0"
-          />
-          <n-icon size="20" class="text-primary shrink-0">
-            <VerifiedIcon />
-          </n-icon>
-        </div>
-        <div class="flex items-center gap-2 text-textColor2 mt-2">
-          <n-icon size="16">
-            <PositionIcon />
-          </n-icon>
-          <span>{{ store.workerPreview?.post_name }}</span>
-        </div>
-        <div class="flex items-center gap-2 text-textColor2 mt-1">
-          <n-icon size="16">
-            <DepartmentIcon />
-          </n-icon>
-          <span>{{ store.workerPreview?.department?.name }}</span>
+        <div class="relative z-10 min-w-0 flex-1">
+          <div class="flex max-md:flex-wrap items-center max-md:justify-center gap-2">
+            <span class="md:text-2xl font-bold text-textColor0 md:truncate">
+              {{ Utils.combineFullName(store.workerPreview?.worker) }}
+            </span>
+            <!-- TODO: backend real active/inactive field qo'shilganda ulanadi -->
+            <span class="shrink-0 active-employee-badge">
+              <UIBadge
+                :label="$t('workerView.header.activeEmployee')"
+                :type="Utils.colorTypes.success"
+                :show-icon="false"
+              />
+            </span>
+            <n-icon size="20" class="text-primary shrink-0">
+              <VerifiedIcon />
+            </n-icon>
+          </div>
+          <div class="flex items-center gap-2 text-textColor2 mt-2 text-pretty">
+            <n-icon size="16">
+              <PositionIcon />
+            </n-icon>
+            <span>{{ store.workerPreview?.post_name }}</span>
+          </div>
+          <div class="flex items-center gap-2 text-textColor2 mt-1 text-pretty">
+            <n-icon size="16">
+              <DepartmentIcon />
+            </n-icon>
+            <span>{{ store.workerPreview?.department?.name }}</span>
+          </div>
         </div>
       </div>
-    </div>
+    </template>
 
-    <div class="bg-surface-section border-surface-line p-4">
-      <WorkerStatsGrid :masked="masked" />
-    </div>
-  </div>
+    <WorkerStatsGrid :masked="masked" />
+  </SectionHeader>
 </template>
 
 <style lang="scss">
-  .main-info-header-bg {
-    background-color: #ffffff;
-  }
   [data-theme='dark'] {
-    .main-info-header-bg {
-      background-color: #00000000;
-    }
     .main-info-header-bg-image {
-      mix-blend-mode: screen;
+      mix-blend-mode: color;
     }
   }
 
   .active-employee-badge {
-    > div {
+    .ui--badge-success {
       background-color: #f5fdf6;
       border-color: #f5fdf6;
     }

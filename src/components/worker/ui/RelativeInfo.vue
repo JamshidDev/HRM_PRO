@@ -14,7 +14,7 @@
 </script>
 
 <template>
-  <div>
+  <div class="flex flex-col gap-4">
     <SectionHeader :title="$t('workerView.tabs.relative')" :icon="UsersIcon">
       <div v-if="store.workerPreview?.worker?.relatives?.length" class="overflow-x-auto">
         <table class="w-full text-sm">

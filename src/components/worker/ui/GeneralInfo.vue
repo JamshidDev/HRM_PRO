@@ -11,7 +11,7 @@
 </script>
 
 <template>
-  <div v-if="store.workerPreview" class="w-full">
+  <div v-if="store.workerPreview" class="flex flex-col gap-4">
     <SectionHeader :title="$t('workerView.general.name')" :icon="UserIcon">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
         <InfoBox

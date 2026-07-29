@@ -32,7 +32,7 @@
 </script>
 
 <template>
-  <div>
+  <div class="flex flex-col gap-4">
     <SectionHeader :title="$t('medPage.name')" :icon="MedicalExaminationIcon" icon-chip>
       <template #title-suffix>
         <UIBadge

@@ -24,7 +24,7 @@
 </script>
 
 <template>
-  <div>
+  <div class="flex flex-col gap-4">
     <SectionHeader :title="$t('oldCareerPage.systemTitle')" :icon="Settings24Regular">
       <div v-if="store.workerPreview?.worker?.new_careers?.length" class="flex flex-col gap-2">
         <div v-for="(item, idx) in store.workerPreview?.worker?.new_careers" :key="idx" class="flex gap-3">

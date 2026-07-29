@@ -25,6 +25,7 @@ import commandTempService from '@/service/v1/admin/commandTempService.js'
 import specialityService from '@/service/v1/admin/specialityService.js'
 import uploadService from '@/service/v1/admin/uploadService.js'
 import holidayService from '@/service/v1/admin/holidayService.js'
+import holidayGreetingService from '@/service/v1/admin/holidayGreetingService.js'
 import quoteService from '@/service/v1/admin/quoteService.js'
 import telegramService from '@/service/v1/admin/telegramService.js'
 import instructionService from '@/service/v1/admin/instructionService.js'
@@ -37,6 +38,7 @@ import lateWorkersHalfYearReportService from '@/service/v1/admin/lateWorkersHalf
 import relativesShortageReportService from '@/service/v1/admin/relativesShortageReportService.js'
 import jshshirAuditReportService from '@/service/v1/admin/jshshirAuditReportService.js'
 import nameAuditReportService from '@/service/v1/admin/nameAuditReportService.js'
+import staffingReportService from '@/service/v1/admin/staffingReportService.js'
 
 import confirmationService from '@/service/v1/hrm/confirmationService.js'
 import departmentService from '@/service/v1/hrm/departmentService.js'
@@ -219,6 +221,7 @@ export default {
   academicTitleService,
   academicDegreeService,
   holidayService,
+  holidayGreetingService,
   applicationService,
   vacationService,
   timesheetDepartmentService,
@@ -308,4 +311,5 @@ export default {
   relativesShortageReportService,
   jshshirAuditReportService,
   nameAuditReportService,
+  staffingReportService,
 }

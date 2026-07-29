@@ -99,7 +99,7 @@ $mobile_device_screen_size: 900px;
     .panel-content {
       width: calc(100% - $sidebar-mini-width);
       overflow: hidden;
-      padding: 10px 0 0 10px;
+      padding: 0 0 0 10px;
       transition: all 0.3s linear;
       .panel-item-single {
         padding: 2px;
