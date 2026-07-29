@@ -3122,6 +3122,24 @@
     "name": "Уведомления",
     "create": "Создать уведомление"
   },
+  "mobileStoryPage": {
+    "name": "Story-объявления",
+    "createTitle": "Новая story",
+    "updateTitle": "Редактировать story",
+    "status": { "draft": "Черновик", "published": "Опубликовано" },
+    "table": { "status": "Статус", "views": "Просмотры" },
+    "form": {
+      "title": "Заголовок",
+      "titleRequired": "Заголовок (uz) обязателен",
+      "subtitle": "Описание",
+      "status": "Статус",
+      "sort": "Порядок",
+      "actionType": "Тип действия",
+      "actionTypePlaceholder": "напр. attendance",
+      "publishedAt": "Дата публикации",
+      "slides": "Слайды (фото/видео)"
+    }
+  },
   "newsPage": {
     "name": "Новости",
     "create": "Создать новость",

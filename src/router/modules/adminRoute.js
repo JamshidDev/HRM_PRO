@@ -154,6 +154,14 @@ export const adminRoutes = [
     }
   },
   {
+    path: Utils.routePathMaker(AppPaths.MobileStories),
+    name: AppPaths.MobileStories.substring(1),
+    component: () => import('@pages/admin/mobileStory/MobileStoryPage.vue'),
+    meta: {
+      layout: AppLayouts.main
+    }
+  },
+  {
     path: Utils.routePathMaker(AppPaths.VacancyApprove),
     name: AppPaths.VacancyApprove.substring(1),
     component: () => import('@/pages/admin/vacancyApprove/VacancyApprovePage.vue'),

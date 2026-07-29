@@ -3204,6 +3204,24 @@
       "mobile": "Mobil ilova orqali xabar yuborilgan xodimlar soni"
     }
   },
+  "mobileStoryPage": {
+    "name": "Story e'lonlari",
+    "createTitle": "Yangi story",
+    "updateTitle": "Story'ni tahrirlash",
+    "status": { "draft": "Qoralama", "published": "Chop etilgan" },
+    "table": { "status": "Holat", "views": "Ko'rilgan" },
+    "form": {
+      "title": "Sarlavha",
+      "titleRequired": "Sarlavha (uz) majburiy",
+      "subtitle": "Tavsif",
+      "status": "Holat",
+      "sort": "Tartib",
+      "actionType": "Action turi",
+      "actionTypePlaceholder": "mas. attendance",
+      "publishedAt": "Chop etish sanasi",
+      "slides": "Slaydlar (rasm/video)"
+    }
+  },
   "newsPage": {
     "name": "Yangiliklar",
     "create": "Yangilik yaratish",

@@ -3111,6 +3111,24 @@
     "name": "Notifications",
     "create": "Create notification"
   },
+  "mobileStoryPage": {
+    "name": "Story announcements",
+    "createTitle": "New story",
+    "updateTitle": "Edit story",
+    "status": { "draft": "Draft", "published": "Published" },
+    "table": { "status": "Status", "views": "Views" },
+    "form": {
+      "title": "Title",
+      "titleRequired": "Title (uz) is required",
+      "subtitle": "Subtitle",
+      "status": "Status",
+      "sort": "Order",
+      "actionType": "Action type",
+      "actionTypePlaceholder": "e.g. attendance",
+      "publishedAt": "Publish date",
+      "slides": "Slides (image/video)"
+    }
+  },
   "newsPage": {
     "name": "News",
     "create": "Create News",
