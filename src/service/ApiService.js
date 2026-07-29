@@ -39,6 +39,7 @@ import jshshirAuditReportService from '@/service/v1/admin/jshshirAuditReportServ
 import nameAuditReportService from '@/service/v1/admin/nameAuditReportService.js'
 import staffingReportService from '@/service/v1/admin/staffingReportService.js'
 import stationCodeReportService from '@/service/v1/admin/stationCodeReportService.js'
+import organizationPositionsReportService from '@/service/v1/admin/organizationPositionsReportService.js'
 
 import confirmationService from '@/service/v1/hrm/confirmationService.js'
 import departmentService from '@/service/v1/hrm/departmentService.js'
@@ -312,4 +313,5 @@ export default {
   nameAuditReportService,
   staffingReportService,
   stationCodeReportService,
+  organizationPositionsReportService,
 }
