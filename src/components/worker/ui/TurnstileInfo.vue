@@ -94,6 +94,38 @@
     _showEventsInDay(v.date)
   }
 
+  const scrollContainerRef = ref(null)
+  const rowRefs = ref([])
+  let rowObserver = null
+
+  const setRowRef = (el, idx) => {
+    if (el) rowRefs.value[idx] = el
+  }
+
+  const observeRows = () => {
+    rowObserver?.disconnect()
+    if (!scrollContainerRef.value) return
+    rowObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible')
+            rowObserver.unobserve(entry.target)
+          }
+        })
+      },
+      { root: scrollContainerRef.value, threshold: 0.15, rootMargin: '0px 0px -10% 0px' }
+    )
+    rowRefs.value.forEach((el) => el && rowObserver.observe(el))
+  }
+
+  watch(eventInDayList, () => {
+    rowRefs.value = []
+    nextTick(observeRows)
+  })
+
+  onBeforeUnmount(() => rowObserver?.disconnect())
+
   watch(
     () => store.workerPreview,
     resolveWorkerId,
@@ -151,7 +183,7 @@
 
         <n-tab-pane :name="2">
           <div class="flex flex-col">
-            <n-button text @click="activeTab = 1" class="mb-4 shrink-0">
+            <n-button text @click="activeTab = 1" class="mb-4 shrink-0 self-start">
               {{ $t('content.back') }}
               <template #icon>
                 <ArrowCircleLeft28Regular />
@@ -159,9 +191,15 @@
             </n-button>
 
             <n-spin :show="eventInDayLoading" style="min-height: 200px">
-              <div class="max-h-[420px] overflow-y-auto pr-1">
+              <div ref="scrollContainerRef" class="max-h-[420px] overflow-y-auto pr-1">
                 <template v-if="eventInDayList.length">
-                  <div v-for="(item, idx) in eventInDayList" :key="idx" class="flex items-stretch">
+                  <div
+                    v-for="(item, idx) in eventInDayList"
+                    :key="idx"
+                    :ref="(el) => setRowRef(el, idx)"
+                    :style="{ '--i': idx % 6 }"
+                    class="flex items-stretch timeline-row"
+                  >
                     <div class="flex-1 flex justify-end pb-4">
                       <div
                         v-if="!item.direction"
@@ -219,6 +257,20 @@
 </template>
 
 <style lang="scss" scoped>
+  .timeline-row {
+    opacity: 0;
+    transform: translateY(18px);
+    transition:
+      opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+    transition-delay: calc(var(--i, 0) * 60ms);
+
+    &.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
   .compact-calendar {
     :deep(.n-calendar-header) {
       padding: 0 0 8px 0;
