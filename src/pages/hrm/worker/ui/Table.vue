@@ -1,18 +1,18 @@
 <script setup>
-  import { UITable, UIUser, UIWorkerView } from '@/components/index.js'
-import i18n from '@/i18n/index.js'
-import {
+  import { UIGender, UIPhoneNumber, UITable, UIUser, UIWorkerView } from '@/components/index.js'
+  import i18n from '@/i18n/index.js'
+  import {
     useAccountStore,
     useComponentStore,
     useExportStore,
     useTimesheetDepartmentStore,
     useWorkerStore
-} from '@/store/modules/index.js'
-import { AppPaths } from '@/utils/index.js'
-import UIHelper from '@/utils/UIHelper.js'
-import Utils from '@/utils/Utils.js'
-import { Edit32Regular, Eye16Regular, Table24Regular } from '@vicons/fluent'
-import { useRouter } from 'vue-router'
+  } from '@/store/modules/index.js'
+  import { AppPaths } from '@/utils/index.js'
+  import UIHelper from '@/utils/UIHelper.js'
+  import Utils from '@/utils/Utils.js'
+  import { Edit32Regular, Eye16Regular, Table24Regular } from '@vicons/fluent'
+  import { useRouter } from 'vue-router'
 
   const { t } = i18n.global
 
@@ -29,8 +29,7 @@ import { useRouter } from 'vue-router'
     if (componentStore.maritalList.length === 0) componentStore._enums()
   })
 
-  const maritalStatusName = (id) =>
-    componentStore.maritalList.find((v) => v.id === id)?.name ?? '-'
+  const maritalStatusName = (id) => componentStore.maritalList.find((v) => v.id === id)?.name ?? '-'
 
   const onPreview = (row) => {
     if (!accStore.checkAction(accStore.pn.hrWorkersRead)) return
@@ -61,22 +60,22 @@ import { useRouter } from 'vue-router'
     {
       key: 'worker',
       title: t('content.worker'),
-      minWidth: 260
+      minWidth: 280
     },
     {
       key: 'department.name',
       title: t('workerPage.table.department'),
-      minWidth: 160
+      minWidth: 200
     },
     {
       key: 'position.name',
       title: t('workerPage.table.position'),
-      minWidth: 160
+      minWidth: 200
     },
     {
       key: 'organization.name',
       title: t('workerPage.table.organization'),
-      minWidth: 160
+      minWidth: 200
     },
     {
       key: 'group',
@@ -138,25 +137,28 @@ import { useRouter } from 'vue-router'
     {
       key: 'worker.marital_status',
       title: t('createWorkerPage.form.marital_status'),
-      minWidth: 140,
+      minWidth: 200,
+      ellipsis: {
+        tooltip: true
+      },
       visible: false
     },
     {
       key: 'worker.work_experience',
       title: t('workerPage.table.workExperience'),
-      minWidth: 140,
+      minWidth: 100,
       visible: false
     },
     {
       key: 'worker.address',
       title: t('createWorkerPage.form.address'),
-      minWidth: 220,
+      minWidth: 260,
       visible: false
     },
     {
       key: 'worker.nationality.name',
       title: t('createWorkerPage.form.nationality_id'),
-      minWidth: 140,
+      minWidth: 100,
       visible: false
     },
     {
@@ -186,7 +188,7 @@ import { useRouter } from 'vue-router'
     {
       key: 'worker.phones',
       title: t('content.phone'),
-      minWidth: 160,
+      minWidth: 140,
       visible: false
     },
     {
@@ -204,13 +206,13 @@ import { useRouter } from 'vue-router'
     {
       key: 'worker.passport.to_date',
       title: t('createWorkerPage.form.to_date'),
-      minWidth: 140,
+      minWidth: 160,
       visible: false
     },
     {
       key: 'worker.passport.address',
       title: t('createWorkerPage.form.passport_address'),
-      minWidth: 200,
+      minWidth: 260,
       visible: false
     }
   ])
@@ -295,13 +297,7 @@ import { useRouter } from 'vue-router'
     </template>
 
     <template #[`cell-worker.sex`]="{ row }">
-      {{
-        row?.worker?.sex === null || row?.worker?.sex === undefined
-          ? '-'
-          : row.worker.sex
-            ? t('enum.man')
-            : t('enum.woman')
-      }}
+      <UIGender :sex="row?.worker?.sex" />
     </template>
 
     <template #[`cell-worker.marital_status`]="{ row }">
@@ -309,11 +305,7 @@ import { useRouter } from 'vue-router'
     </template>
 
     <template #[`cell-worker.phones`]="{ row }">
-      {{
-        row?.worker?.phones?.[0]?.phone
-          ? Utils.formatPhoneWithMask(row.worker.phones[0].phone, '## ### ## ##')
-          : '-'
-      }}
+      <UIPhoneNumber :phone="row?.worker?.phones?.[0]?.phone" />
     </template>
 
     <template #[`cell-worker.passport.from_date`]="{ row }">
