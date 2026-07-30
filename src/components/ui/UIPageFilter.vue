@@ -1,5 +1,5 @@
 <script setup>
-  import { AddCircle24Regular } from '@vicons/fluent'
+  import { AddCircle24Regular, Dismiss16Regular } from '@vicons/fluent'
   import clearFilterIcon from '@/assets/icons/clear_filter.svg?url'
   import filterIcon from '@/assets/icons/filter.svg?url'
   import searchIcon from '@/assets/icons/search.svg?url'
@@ -68,6 +68,11 @@
     }, 1000)
   }
 
+  const onSearchClear = () => {
+    searchModel.value = ''
+    searchEvent()
+  }
+
   const addEvent = () => {
     emits('onAdd')
   }
@@ -112,7 +117,6 @@
         <slot name="filterBefore"></slot>
         <n-input
           ref="searchInputRef"
-          clearable
           class="ui-page-search skip-format w-full md:max-w-[264px]! md:w-full!"
           v-if="showSearchInput"
           v-model:value="searchModel"
@@ -120,11 +124,20 @@
           :placeholder="$t('content.search')"
           :on-keyup="searchEvent"
           @paste="searchEvent"
-          @clear="searchEvent"
-          :loading="searchLoading"
         >
           <template #prefix>
             <img class="ui-page-search-icon" :src="searchIcon" alt="" />
+          </template>
+          <template #suffix>
+            <n-spin v-if="searchLoading" class="ui-page-search-spinner" :size="14" />
+            <n-icon
+              v-else-if="searchModel"
+              class="ui-page-search-clear"
+              :size="16"
+              @click="onSearchClear"
+            >
+              <Dismiss16Regular />
+            </n-icon>
           </template>
         </n-input>
         <slot name="filterSearch"></slot>
@@ -224,6 +237,21 @@
 
   .ui-page-search :deep(.n-input__prefix) {
     margin-right: 8px;
+  }
+
+  .ui-page-search-clear {
+    flex-shrink: 0;
+    cursor: pointer;
+    color: var(--textColor2);
+    transition: color 0.2s var(--n-bezier);
+  }
+
+  .ui-page-search-clear:hover {
+    color: var(--textColor0);
+  }
+
+  .ui-page-search-spinner {
+    flex-shrink: 0;
   }
 
   .ui-page-search :deep(.n-input__placeholder) {

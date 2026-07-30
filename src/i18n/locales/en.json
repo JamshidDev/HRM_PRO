@@ -1544,7 +1544,8 @@
       "checkKnowledge": "Knowledge test",
       "punishment": "Disciplinary action",
       "e_documents": "E-documents",
-      "exams": "Exams"
+      "exams": "Exams",
+      "turnstile": "Turnstile"
     },
     "header": {
       "title": "Employee profile",
