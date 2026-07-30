@@ -3,6 +3,7 @@
 import i18n from '@/i18n/index.js'
 import {
     useAccountStore,
+    useComponentStore,
     useExportStore,
     useTimesheetDepartmentStore,
     useWorkerStore
@@ -22,6 +23,14 @@ import { useRouter } from 'vue-router'
   const accStore = useAccountStore()
   const exportStore = useExportStore()
   const timesheetDepartmentStore = useTimesheetDepartmentStore()
+  const componentStore = useComponentStore()
+
+  onMounted(() => {
+    if (componentStore.maritalList.length === 0) componentStore._enums()
+  })
+
+  const maritalStatusName = (id) =>
+    componentStore.maritalList.find((v) => v.id === id)?.name ?? '-'
 
   const onPreview = (row) => {
     if (!accStore.checkAction(accStore.pn.hrWorkersRead)) return
@@ -89,6 +98,120 @@ import { useRouter } from 'vue-router'
       fullTitle: t('workerPage.table.rateFull'),
       width: 64,
       align: 'center'
+    },
+    {
+      key: 'type.name',
+      title: t('workerPage.filter.position_type'),
+      minWidth: 140,
+      visible: false
+    },
+    {
+      key: 'position_date',
+      title: t('workerPage.table.position_date'),
+      minWidth: 140,
+      visible: false
+    },
+    {
+      key: 'salary',
+      title: t('workerPage.table.salary'),
+      minWidth: 140,
+      visible: false
+    },
+    {
+      key: 'worker.birthday',
+      title: t('workerPage.table.birthday'),
+      minWidth: 140,
+      visible: false
+    },
+    {
+      key: 'worker.pin',
+      title: t('createWorkerPage.form.pin'),
+      minWidth: 160,
+      visible: false
+    },
+    {
+      key: 'worker.sex',
+      title: t('createWorkerPage.form.sex'),
+      minWidth: 100,
+      visible: false
+    },
+    {
+      key: 'worker.marital_status',
+      title: t('createWorkerPage.form.marital_status'),
+      minWidth: 140,
+      visible: false
+    },
+    {
+      key: 'worker.work_experience',
+      title: t('workerPage.table.workExperience'),
+      minWidth: 140,
+      visible: false
+    },
+    {
+      key: 'worker.address',
+      title: t('createWorkerPage.form.address'),
+      minWidth: 220,
+      visible: false
+    },
+    {
+      key: 'worker.nationality.name',
+      title: t('createWorkerPage.form.nationality_id'),
+      minWidth: 140,
+      visible: false
+    },
+    {
+      key: 'worker.region.name',
+      title: t('createWorkerPage.form.region'),
+      minWidth: 140,
+      visible: false
+    },
+    {
+      key: 'worker.city.name',
+      title: t('createWorkerPage.form.city'),
+      minWidth: 140,
+      visible: false
+    },
+    {
+      key: 'worker.current_region.name',
+      title: t('createWorkerPage.form.currentRegion'),
+      minWidth: 140,
+      visible: false
+    },
+    {
+      key: 'worker.current_city.name',
+      title: t('createWorkerPage.form.currentCity'),
+      minWidth: 140,
+      visible: false
+    },
+    {
+      key: 'worker.phones',
+      title: t('content.phone'),
+      minWidth: 160,
+      visible: false
+    },
+    {
+      key: 'worker.passport.serial_number',
+      title: t('createWorkerPage.form.serial_number'),
+      minWidth: 140,
+      visible: false
+    },
+    {
+      key: 'worker.passport.from_date',
+      title: t('createWorkerPage.form.from_date'),
+      minWidth: 140,
+      visible: false
+    },
+    {
+      key: 'worker.passport.to_date',
+      title: t('createWorkerPage.form.to_date'),
+      minWidth: 140,
+      visible: false
+    },
+    {
+      key: 'worker.passport.address',
+      title: t('createWorkerPage.form.passport_address'),
+      minWidth: 200,
+      visible: false
     }
   ])
 
@@ -157,6 +280,48 @@ import { useRouter } from 'vue-router'
 
     <template #cell-rate="{ row }">
       <n-button size="small" circle>{{ row?.rate }}</n-button>
+    </template>
+
+    <template #[`cell-position_date`]="{ row }">
+      {{ Utils.timeOnlyDate(row?.position_date) }}
+    </template>
+
+    <template #[`cell-salary`]="{ row }">
+      {{ Utils.formatNumberToMoney(row?.salary) }}
+    </template>
+
+    <template #[`cell-worker.birthday`]="{ row }">
+      {{ Utils.timeOnlyDate(row?.worker?.birthday) }}
+    </template>
+
+    <template #[`cell-worker.sex`]="{ row }">
+      {{
+        row?.worker?.sex === null || row?.worker?.sex === undefined
+          ? '-'
+          : row.worker.sex
+            ? t('enum.man')
+            : t('enum.woman')
+      }}
+    </template>
+
+    <template #[`cell-worker.marital_status`]="{ row }">
+      {{ maritalStatusName(row?.worker?.marital_status) }}
+    </template>
+
+    <template #[`cell-worker.phones`]="{ row }">
+      {{
+        row?.worker?.phones?.[0]?.phone
+          ? Utils.formatPhoneWithMask(row.worker.phones[0].phone, '## ### ## ##')
+          : '-'
+      }}
+    </template>
+
+    <template #[`cell-worker.passport.from_date`]="{ row }">
+      {{ Utils.timeOnlyDate(row?.worker?.passport?.from_date) }}
+    </template>
+
+    <template #[`cell-worker.passport.to_date`]="{ row }">
+      {{ Utils.timeOnlyDate(row?.worker?.passport?.to_date) }}
     </template>
   </UITable>
 </template>

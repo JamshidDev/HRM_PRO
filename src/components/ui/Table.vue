@@ -31,7 +31,7 @@
     selectedKeys: { type: Array, default: () => [] },
     allSelected: { type: Boolean, default: false },
     actions: { type: Array, default: () => [] }, // "..." menu + right-click options
-    storageKey: { type: String, default: null }, // persists column visibility/order
+    storageKey: { type: String, default: null }, // persists column visibility/order/width
     onLoad: { type: Function, default: null } // async tree children loader: (row) => Promise<void>
   })
 
@@ -56,6 +56,17 @@
 
   const getCellValue = (row, key) =>
     key.includes?.('.') ? key.split('.').reduce((o, k) => o?.[k], row) : row[key]
+
+  // Persisting on every drag tick would hammer localStorage, so only the last resize
+  // of a column within a short window is written.
+  const resizeTimers = {}
+  const onUnstableColumnResize = (resizedWidth, limitedWidth, column) => {
+    if (!tableColumns) return
+    clearTimeout(resizeTimers[column.key])
+    resizeTimers[column.key] = setTimeout(() => {
+      tableColumns.setColumnWidth(column.key, limitedWidth)
+    }, 300)
+  }
 
   const visibleActions = computed(() => props.actions.filter((a) => a.visible !== false))
   const indexOffset = computed(() => (props.page - 1) * props.perPage)
@@ -210,6 +221,7 @@
         :row-props="rowProps"
         :on-load="onLoad"
         flex-height
+        @unstable-column-resize="onUnstableColumnResize"
       />
 
       <div

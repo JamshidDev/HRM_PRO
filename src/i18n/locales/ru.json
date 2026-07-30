@@ -690,7 +690,9 @@
       "position_date": "Дата должности",
       "birthday": "Дата рождения",
       "position": "Должность",
-      "organization": "Организация"
+      "organization": "Организация",
+      "salary": "Месячная зарплата",
+      "workExperience": "Общий стаж (в месяцах)"
     }
   },
   "exportPage": {
