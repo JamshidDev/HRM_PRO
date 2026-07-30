@@ -37,7 +37,7 @@ defineProps({
         </div>
       </slot>
     </div>
-    <div class="bg-surface-section p-4">
+    <div class="bg-surface-ground rounded-b-3xl p-4">
       <slot />
     </div>
   </div>

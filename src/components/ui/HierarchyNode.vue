@@ -60,7 +60,7 @@
             <td>
               <div class="flex">
                 <div class="border-r border-t border-black basis-auto grow">&nbsp;</div>
-                <div class="basis-auto border-t grow">&nbsp;</div>
+                <div class="basis-auto border-t border-t-surface-line grow">&nbsp;</div>
               </div>
             </td>
           </template>
