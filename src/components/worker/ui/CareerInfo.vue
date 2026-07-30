@@ -36,8 +36,8 @@
           <div class="flex-1 min-w-0 bg-surface-ground-soft rounded-3xl px-5 py-4">
             <div class="flex items-center gap-2 flex-wrap">
               <div class="text-base font-bold text-textColor0">
-                {{ Utils.timeOnlyYear(item?.from) }} —
-                {{ Utils.timeOnlyYear(item?.to) || $t('content.untilNow') }}
+                {{ Utils.timeOnlyDate(item?.from) }} —
+                {{ Utils.timeOnlyDate(item?.to) || $t('content.untilNow') }}
               </div>
               <UIBadge
                 v-if="!item?.to"
