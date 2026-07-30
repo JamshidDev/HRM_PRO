@@ -70,6 +70,7 @@
               :label="$t('workerView.general.citizenship')"
               :value="store.workerPreview?.worker.country.name"
             />
+            <InfoBox :label="$t('workerView.general.who')" :value="item.address" />
           </div>
           <div v-if="item.file" class="flex justify-end mt-2">
             <n-button size="small" class="!rounded-full" type="primary" @click="onDownload(item.file)">
