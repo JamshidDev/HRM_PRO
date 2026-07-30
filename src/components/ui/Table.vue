@@ -88,11 +88,11 @@
   const ndtColumns = computed(() => {
     return allCols.value.map((col) => ({
       key: col.key,
-      width: col.width,
-      minWidth: col.minWidth,
+      width: col.width ?? col.minWidth,
+      minWidth: col.minWidth ?? col.width,
       maxWidth: col.maxWidth,
       className: col.className,
-      resizable: col.resizable ?? col.minWidth !== undefined,
+      resizable: col.resizable ?? true,
       ellipsis:
         col.ellipsis ??
         (slots[`cell-${col.key}`]
