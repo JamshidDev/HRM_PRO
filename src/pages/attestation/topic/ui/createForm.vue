@@ -22,7 +22,6 @@
 
   onMounted(() => {
     componentStore._enumExam()
-    // componentStore._structures()
     if (componentStore.structureList.length === 0) {
       componentStore._structures()
     }
@@ -31,8 +30,8 @@
 
 <template>
   <n-spin :show="store.showLoading">
-    <n-form ref="formRef" :rules="validationRules.topicPage" :model="store.payload">
-      <div style="min-height: calc(100vh - 120px)">
+    <n-form ref="formRef" label-placement="top" :rules="validationRules.topicPage" :model="store.payload">
+      <div class="grid grid-cols-2 gap-4">
         <n-form-item :label="$t(`content.name`)" path="name">
           <n-input type="text" v-model:value="store.payload.name" />
         </n-form-item>
@@ -46,22 +45,22 @@
             :loading="componentStore.enumExamLoading"
           />
         </n-form-item>
-        <n-form-item :label="$t(`content.workplace`)" path="organizations">
-          <UISelect
-            :options="componentStore.structureList"
-            :modelV="store.payload.organizations"
-            @defaultValue="(v) => (store.payload.organizations = v)"
-            @updateModel="(v) => (store.payload.organizations = v)"
-            v-model:search="componentStore.structureParams.search"
-            @onSearch="componentStore._structures"
-            :checkedVal="store.structureCheck"
-            @updateCheck="(v) => (store.structureCheck = v)"
-            :loading="componentStore.structureLoading"
-          />
-        </n-form-item>
       </div>
+      <n-form-item :label="$t(`content.workplace`)" path="organizations">
+        <UISelect
+          :options="componentStore.structureList"
+          :modelV="store.payload.organizations"
+          @defaultValue="(v) => (store.payload.organizations = v)"
+          @updateModel="(v) => (store.payload.organizations = v)"
+          v-model:search="componentStore.structureParams.search"
+          @onSearch="componentStore._structures"
+          :checkedVal="store.structureCheck"
+          @updateCheck="(v) => (store.structureCheck = v)"
+          :loading="componentStore.structureLoading"
+        />
+      </n-form-item>
 
-      <div class="grid grid-cols-2 gap-2">
+      <div class="flex justify-end gap-3 mt-2">
         <n-button @click="store.openVisible(false)" type="error" ghost>
           {{ $t('content.cancel') }}
         </n-button>
