@@ -33,8 +33,17 @@
     store.captchaKey = val
   }
 
+  // Captcha maydonida Enter bosilganda native <form> submit HAM, ReCaptcha'ning
+  // o'z @keyup.enter emiti HAM onSubmit'ni chaqiradi — natijada bitta Enter
+  // bosishda login so'rovi 2 marta ketib, ikkinchisi captcha allaqachon
+  // ishlatilgani uchun xato bilan qaytardi. `store.loading` validate() hali
+  // asinxron hal bo'lmagani uchun bu yerda kech — shuning uchun sinxron flag.
+  let submitInFlight = false
   const onSubmit = () => {
+    if (submitInFlight) return
+    submitInFlight = true
     formRef.value?.validate((_error) => {
+      submitInFlight = false
       if (!store.captchaAnswer) captchaError.value = true
       if (!_error && store.captchaAnswer) {
         captchaError.value = false
