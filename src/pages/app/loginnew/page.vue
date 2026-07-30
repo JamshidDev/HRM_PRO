@@ -12,6 +12,7 @@ import SeasonEffect from './ui/SeasonEffect.vue'
 import OfferModal from '@/components/OfferModal.vue'
 import loginPatternUrl from '@/assets/images/svg/login-pattern.png?url'
 import loginPatternBottomUrl from '@/assets/images/svg/pattern-bottom.png?url'
+import bannerRailwaysDayUrl from '@/assets/images/content/banner-railways-day.png?url'
 
 
 const appStore = useAppStore()
@@ -71,6 +72,11 @@ const onDone = () => {
           class="login-new__fade-in login-new__fade-in-delay-2 text-login-body text-[15px] leading-[1.65] mt-4 max-w-[480px]">
           {{ $t('loginPage.description.text') }}
         </p>
+        <img
+          :src="bannerRailwaysDayUrl"
+          alt=""
+          class="login-new__fade-in login-new__fade-in-delay-2 w-full max-w-[1020px] rounded-2xl mt-6 shadow-md"
+        />
       </div>
 
       <!-- Mobil ilovani yuklab olish — hero pastida (faqat desktop) -->
