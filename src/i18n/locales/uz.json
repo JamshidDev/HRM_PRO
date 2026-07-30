@@ -427,13 +427,10 @@
   "offerModal": {
     "title": "Ommaviy oferta",
     "desc": "Platformadan foydalanishdan oldin shartlar bilan tanishing",
-    "item1Title": "1. Ommaviy oferta",
-    "item1Text": "Ushbu ommaviy oferta «HRM PRO» platformasidan foydalanish tartibini belgilaydi. Tizimga kirish orqali foydalanuvchi quyidagi shartlarni to'liq qabul qilgan hisoblanadi.",
-    "item2Title": "2. Ma'lumotlar maxfiyligi",
-    "item2Text": "Foydalanuvchi kiritgan shaxsiy ma'lumotlar qonunchilikka muvofiq saqlanadi va uchinchi shaxslarga oshkor etilmaydi. Ma'lumotlardan faqat kadrlar boshqaruvi maqsadida foydalaniladi.",
-    "item3Title": "3. Foydalanuvchi majburiyatlari",
-    "item3Text": "Login va parolning maxfiyligini saqlash hamda ular orqali amalga oshirilgan barcha harakatlar uchun javobgarlik foydalanuvchi zimmasida bo'ladi. Tizimga ruxsatsiz kirish taqiqlanadi.",
+    "terms": "Foydalanish shartlari",
+    "privacy": "Maxfiylik siyosati",
     "downloadLabel": "To'liq hujjatni yuklab olish (PDF)",
+    "loadError": "Hujjatni yuklab bo'lmadi",
     "accept": "Roziman va davom etaman",
     "decline": "Rad etish"
   },
