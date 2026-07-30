@@ -64,6 +64,7 @@ export const useContractStore = defineStore('contractStore', {
       organizations: [],
       confirmation: null,
       status: null,
+      type: null,
       created: null
     },
     tabList: [

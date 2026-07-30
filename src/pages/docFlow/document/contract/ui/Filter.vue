@@ -24,6 +24,7 @@
       Number(Boolean(store.params.organizations.length)) +
       Number(Boolean(store.params.status)) +
       Number(Boolean(store.params.confirmation)) +
+      Number(Boolean(store.params.type)) +
       Number(Boolean(store.params.created))
   )
 
@@ -43,6 +44,7 @@
     store.params.organizations = []
     store.params.status = null
     store.params.confirmation = null
+    store.params.type = null
     store.params.created = null
     filterEvent()
   }
@@ -108,6 +110,17 @@
         label-field="name"
         value-field="id"
         clearable
+        @update:value="filterEvent"
+        :loading="componentStore.enumAdminLoading"
+      />
+      <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{ $t('content.type') }}</label>
+      <n-select
+        v-model:value="store.params.type"
+        :options="componentStore.contractTypes"
+        label-field="name"
+        value-field="id"
+        clearable
+        filterable
         @update:value="filterEvent"
         :loading="componentStore.enumAdminLoading"
       />
