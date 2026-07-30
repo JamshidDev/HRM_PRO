@@ -41,12 +41,12 @@
   }
 
   // sub-guruh switchlari: read/write/delete bo'lsa ular; bo'lmasa (faqat bazaviy
-  // slug — menyu ko'rinishi uchun) bitta "Ruxsat" switch.
+  // slug — bu ko'rish/list ruxsati) bitta "Ko'rish" switch.
   const groupSwitches = (g) => {
     const acts = actionsFor(g.prefix)
     if (acts.length)
       return acts.map((a) => ({ name: `${g.prefix}-${a}`, label: ACTION_LABELS[a] }))
-    if (has(g.prefix)) return [{ name: g.prefix, label: 'Ruxsat' }]
+    if (has(g.prefix)) return [{ name: g.prefix, label: ACTION_LABELS.read }]
     return []
   }
   const groupActions = (g) => groupSwitches(g).map((s) => s.name)
