@@ -96,6 +96,16 @@
 
   .main-info-avatar {
     border: 1px solid var(--surface-300);
+    width: 96px !important;
+    height: 96px !important;
+    flex-shrink: 0;
+
+    img {
+      width: 100% !important;
+      height: 100% !important;
+      object-fit: cover !important;
+      object-position: center top !important;
+    }
   }
 
   .active-employee-badge {
