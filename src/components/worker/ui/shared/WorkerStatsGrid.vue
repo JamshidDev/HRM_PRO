@@ -18,6 +18,10 @@
   const { t } = i18n.global
   const store = useComponentStore()
 
+  const certificateNumber = computed(
+    () => store.workerPreview?.worker?.certificates?.[0]?.number
+  )
+
   const onCopy = () => {
     $Toast.info(t('message.successDone'))
   }
@@ -25,7 +29,6 @@
 
 <template>
   <div class="grid md:grid-cols-2 lg:flex lg:divide-x lg:divide-surface-line gap-4 lg:gap-0">
-    <!-- TODO: backend real field qo'shilganda ulanadi — hozircha statik placeholder -->
     <div class="min-w-0 lg:flex-1 lg:pr-4">
       <div class="flex items-center gap-1.5 text-textColor3 text-sm mb-1">
         <n-icon size="14">
@@ -33,7 +36,17 @@
         </n-icon>
         {{ $t('workerView.header.serviceCertificate') }}
       </div>
-      <div class="font-semibold break-words">000000</div>
+      <div class="font-semibold flex items-center gap-1 flex-wrap">
+        <span class="break-words">{{ certificateNumber }}</span>
+        <n-icon
+          v-if="certificateNumber"
+          size="16"
+          class="cursor-pointer text-primary shrink-0"
+          @click="Utils.copyToClipboard(certificateNumber, onCopy)"
+        >
+          <CopyIcon />
+        </n-icon>
+      </div>
     </div>
 
     <div class="min-w-0 lg:flex-1 lg:px-4">

@@ -68,26 +68,6 @@
       </div>
     </SectionHeader>
 
-    <SectionHeader
-      v-if="store.workerPreview?.worker.foreign_passports?.length"
-      :title="$t('workerView.general.foreignPassport')"
-      :icon="Airplane20Regular"
-    >
-      <div class="space-y-3">
-        <div
-          v-for="(item, idx) in store.workerPreview?.worker.foreign_passports"
-          :key="idx"
-          class="grid grid-cols-1 md:grid-cols-2 gap-3"
-        >
-          <InfoBox :label="$t('workerView.general.passportJSHSHIR')" :value="store.workerPreview?.worker.pin" />
-          <InfoBox :label="$t('workerView.general.passportNumber')" :value="item.serial_number" />
-          <InfoBox :label="$t('workerView.general.fromDate')" :value="Utils.timeOnlyDate(item.from_date)" />
-          <InfoBox :label="$t('workerView.general.toDate')" :value="Utils.timeOnlyDate(item.to_date)" />
-          <InfoBox :label="$t('workerView.general.who')" :value="item.given_place" />
-        </div>
-      </div>
-    </SectionHeader>
-
     <SectionHeader :title="$t('workerView.general.university')" :icon="HatGraduation20Filled">
       <div v-if="store.workerPreview?.worker.universities.length" class="space-y-3">
         <div
@@ -106,6 +86,26 @@
             :value="`${Utils.timeOnlyDate(item.from_date)} - ${Utils.timeOnlyDate(item.to_date)}`"
           />
           <InfoBox :label="$t('content.organization')" :value="item.university?.type?.name" />
+        </div>
+      </div>
+      <h4 v-else class="text-center text-secondary">
+        {{ $t('content.no-data') }}
+      </h4>
+    </SectionHeader>
+
+    <SectionHeader :title="$t('workerView.general.foreignPassport')" :icon="Airplane20Regular">
+      <div v-if="store.workerPreview?.worker.foreign_passports?.length" class="space-y-3">
+        <div
+          v-for="(item, idx) in store.workerPreview?.worker.foreign_passports"
+          :key="idx"
+          class="grid grid-cols-1 md:grid-cols-2 gap-3"
+          :class="[idx !== 0 && 'pt-3 border-t border-surface-ground']"
+        >
+          <InfoBox :label="$t('workerView.general.passportJSHSHIR')" :value="store.workerPreview?.worker.pin" />
+          <InfoBox :label="$t('workerView.general.passportNumber')" :value="item.serial_number" />
+          <InfoBox :label="$t('workerView.general.fromDate')" :value="Utils.timeOnlyDate(item.from_date)" />
+          <InfoBox :label="$t('workerView.general.toDate')" :value="Utils.timeOnlyDate(item.to_date)" />
+          <InfoBox :label="$t('workerView.general.who')" :value="item.given_place" />
         </div>
       </div>
       <h4 v-else class="text-center text-secondary">

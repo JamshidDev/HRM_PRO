@@ -10,6 +10,11 @@
 
   const oldCareerSortDirection = ref('desc')
 
+  const sortedNewCareers = computed(() => {
+    const list = [...(store.workerPreview?.worker?.new_careers ?? [])]
+    return list.sort((a, b) => new Date(b.from) - new Date(a.from))
+  })
+
   const sortedOldCareers = computed(() => {
     const list = [...(store.workerPreview?.worker?.old_careers ?? [])]
     return list.sort((a, b) => {
@@ -26,8 +31,8 @@
 <template>
   <div class="flex flex-col gap-4">
     <SectionHeader :title="$t('oldCareerPage.systemTitle')" :icon="Settings24Regular">
-      <div v-if="store.workerPreview?.worker?.new_careers?.length" class="flex flex-col gap-2">
-        <div v-for="(item, idx) in store.workerPreview?.worker?.new_careers" :key="idx" class="flex gap-3">
+      <div v-if="sortedNewCareers.length" class="flex flex-col gap-2">
+        <div v-for="(item, idx) in sortedNewCareers" :key="idx" class="flex gap-3">
           <div class="flex-1 min-w-0 bg-surface-ground-soft rounded-3xl px-5 py-4">
             <div class="flex items-center gap-2 flex-wrap">
               <div class="text-base font-bold text-textColor0">
@@ -89,7 +94,7 @@
           </div>
           <div class="flex-1 min-w-0 bg-surface-ground-soft rounded-3xl px-5 py-4 mb-2">
             <div class="text-base font-bold text-textColor0">
-              {{ Utils.dayMonthYearLabel(item?.from_date) }} — {{ Utils.dayMonthYearLabel(item?.to_date) }}
+              {{ Utils.timeOnlyDate(item?.from_date) }} — {{ Utils.timeOnlyDate(item?.to_date) }}
             </div>
             <div class="text-textColor2 mt-1">{{ item.post_name }}</div>
           </div>

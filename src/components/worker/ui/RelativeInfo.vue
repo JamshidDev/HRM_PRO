@@ -71,8 +71,9 @@
               </td>
               <td class="align-top text-textColor2 px-2 py-4">{{ item?.birth_place || '—' }}</td>
               <td class="align-top text-textColor2 px-2 py-4">{{ item?.post_name || '—' }}</td>
-              <!-- TODO: backend real JSHSHIR maydoni qo'shilganda ulanadi -->
-              <td class="align-top text-textColor2 whitespace-nowrap px-2 py-4">000000000000</td>
+              <td class="align-top text-textColor2 whitespace-nowrap px-2 py-4">
+                {{ item?.pin ? Utils.formatPin(item.pin) : '*'.repeat(14) }}
+              </td>
             </tr>
           </tbody>
         </table>
