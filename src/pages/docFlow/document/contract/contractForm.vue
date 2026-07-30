@@ -22,9 +22,9 @@
   const onSubmit = () => {
     formRef.value?.validate((error) => {
       if (!error) {
-        if (store.activeTab === 2 && store.payload.type === 2) {
-          // store.activeTab = store.payload.type ===2? 4:3
-          // store.stepNumber = store.payload.type ===2? 4:3
+        // FXSH (turi 2) — bitta qadam: tashkilot ham 1-qadamda so'raladi, shu yerda
+        // yaratiladi (2-qadam bo'sh). Boshqa turlar avvalgidek 3-qadamda yaratadi.
+        if (store.activeTab === 1 && store.payload.type === 2) {
           store.saveLoading = true
           store._create(props.callBack)
         } else if (store.activeTab === 3) {
