@@ -1,5 +1,9 @@
 <script setup>
-  import { Circle12Regular, ArrowCircleLeft28Regular } from '@vicons/fluent'
+  import {
+    ArrowCircleLeft28Regular,
+    ArrowCircleDownRight20Regular,
+    ArrowCircleUpLeft20Regular
+  } from '@vicons/fluent'
   import { useComponentStore } from '@/store/modules/index.js'
   import SectionHeader from './shared/SectionHeader.vue'
   import TurnstileIcon from '@/assets/icons/turnstileIcon.svg'
@@ -90,6 +94,38 @@
     _showEventsInDay(v.date)
   }
 
+  const scrollContainerRef = ref(null)
+  const rowRefs = ref([])
+  let rowObserver = null
+
+  const setRowRef = (el, idx) => {
+    if (el) rowRefs.value[idx] = el
+  }
+
+  const observeRows = () => {
+    rowObserver?.disconnect()
+    if (!scrollContainerRef.value) return
+    rowObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible')
+            rowObserver.unobserve(entry.target)
+          }
+        })
+      },
+      { root: scrollContainerRef.value, threshold: 0.15, rootMargin: '0px 0px -10% 0px' }
+    )
+    rowRefs.value.forEach((el) => el && rowObserver.observe(el))
+  }
+
+  watch(eventInDayList, () => {
+    rowRefs.value = []
+    nextTick(observeRows)
+  })
+
+  onBeforeUnmount(() => rowObserver?.disconnect())
+
   watch(
     () => store.workerPreview,
     resolveWorkerId,
@@ -147,7 +183,7 @@
 
         <n-tab-pane :name="2">
           <div class="flex flex-col">
-            <n-button text @click="activeTab = 1" class="mb-4 shrink-0">
+            <n-button text @click="activeTab = 1" class="mb-4 shrink-0 self-start">
               {{ $t('content.back') }}
               <template #icon>
                 <ArrowCircleLeft28Regular />
@@ -155,43 +191,58 @@
             </n-button>
 
             <n-spin :show="eventInDayLoading" style="min-height: 200px">
-              <div class="max-h-[420px] overflow-y-auto flex flex-col">
+              <div ref="scrollContainerRef" class="max-h-[420px] overflow-y-auto pr-1">
                 <template v-if="eventInDayList.length">
-                  <template v-for="(item, idx) in eventInDayList" :key="idx">
-                    <div class="flex mx-auto">
-                      <div class="w-[200px] pb-4">
-                        <template v-if="!item.direction">
-                          <p class="text-danger text-right">{{ $t('hcWorkDuration.form.exit') }}</p>
-                          <p class="text-secondary text-xs text-right">{{ item.event_date_and_time }}</p>
-                          <p class="text-xs text-right">
-                            <span class="text-primary bg-primary/10 rounded-lg px-2 font-semibold">{{
-                              item.device
-                            }}</span>
-                          </p>
-                        </template>
-                      </div>
-                      <div class="w-[30px] flex flex-col">
-                        <n-icon
-                          :class="[item.direction ? 'text-success' : 'text-danger']"
-                          class="mx-auto"
-                          :size="20"
-                          :component="Circle12Regular"
-                        />
-                        <div class="h-full bg-surface-line w-[1px] mx-auto"></div>
-                      </div>
-                      <div class="w-[200px] pb-4">
-                        <template v-if="item.direction">
-                          <p class="text-success">{{ $t('hcWorkDuration.form.enter') }}</p>
-                          <p class="text-secondary text-xs">{{ item.event_date_and_time }}</p>
-                          <p class="text-xs">
-                            <span class="text-primary bg-primary/10 rounded-lg px-2 font-semibold">{{
-                              item.device
-                            }}</span>
-                          </p>
-                        </template>
+                  <div
+                    v-for="(item, idx) in eventInDayList"
+                    :key="idx"
+                    :ref="(el) => setRowRef(el, idx)"
+                    :style="{ '--i': idx % 6 }"
+                    class="flex items-stretch timeline-row"
+                  >
+                    <div class="flex-1 flex justify-end pb-4">
+                      <div
+                        v-if="!item.direction"
+                        class="max-w-[220px] rounded-2xl bg-surface-section px-3.5 py-3 text-right"
+                      >
+                        <p class="text-sm font-semibold text-danger">{{ $t('hcWorkDuration.form.exit') }}</p>
+                        <p class="text-xs text-secondary mt-0.5">{{ item.event_date_and_time }}</p>
+                        <span
+                          class="inline-block mt-1.5 text-primary bg-primary/10 rounded-lg px-2 py-1 text-xs font-semibold whitespace-nowrap"
+                        >
+                          {{ item.device }}
+                        </span>
                       </div>
                     </div>
-                  </template>
+
+                    <div class="flex flex-col items-center shrink-0 px-2">
+                      <span
+                        class="w-9 h-9 rounded-full flex items-center justify-center shrink-0"
+                        :class="item.direction ? 'bg-success/10 text-success' : 'bg-danger/10 text-danger'"
+                      >
+                        <n-icon size="18">
+                          <ArrowCircleDownRight20Regular v-if="item.direction" />
+                          <ArrowCircleUpLeft20Regular v-else />
+                        </n-icon>
+                      </span>
+                      <div
+                        v-if="idx !== eventInDayList.length - 1"
+                        class="w-[2px] flex-1 bg-surface-line my-1"
+                      ></div>
+                    </div>
+
+                    <div class="flex-1 flex justify-start pb-4">
+                      <div v-if="item.direction" class="max-w-[220px] rounded-2xl bg-surface-section px-3.5 py-3">
+                        <p class="text-sm font-semibold text-success">{{ $t('hcWorkDuration.form.enter') }}</p>
+                        <p class="text-xs text-secondary mt-0.5">{{ item.event_date_and_time }}</p>
+                        <span
+                          class="inline-block mt-1.5 text-primary bg-primary/10 rounded-lg px-2 py-1 text-xs font-semibold whitespace-nowrap"
+                        >
+                          {{ item.device }}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
                 </template>
                 <span v-else class="w-full text-center text-sm inline-block text-textColor3 py-6">
                   {{ $t('content.no-data') }}
@@ -206,6 +257,20 @@
 </template>
 
 <style lang="scss" scoped>
+  .timeline-row {
+    opacity: 0;
+    transform: translateY(18px);
+    transition:
+      opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+    transition-delay: calc(var(--i, 0) * 60ms);
+
+    &.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
   .compact-calendar {
     :deep(.n-calendar-header) {
       padding: 0 0 8px 0;
