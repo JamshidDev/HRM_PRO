@@ -110,7 +110,7 @@
 <template>
   <div class="flex flex-col gap-4">
     <SectionHeader :title="$t('workerView.tabs.turnstile')" :icon="TurnstileIcon">
-      <n-tabs v-model:value="activeTab" class="hidden-tab-header" type="segment">
+      <n-tabs animated v-model:value="activeTab" class="hidden-tab-header" type="segment">
         <n-tab-pane :name="1">
           <n-spin :show="calendarLoading">
             <n-calendar
