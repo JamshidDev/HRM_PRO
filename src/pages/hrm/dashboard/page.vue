@@ -37,7 +37,13 @@
       </n-breadcrumb>
       <Filter />
     </div>
-    <n-tabs :value="store.activeDetail ? 1 : 0" :tab-style="{ display: 'none' }">
+    <n-tabs
+      class="max-h-[calc(100vh-88px)]"
+      :value="store.activeDetail ? 1 : 0"
+      animated
+      :tab-style="{ display: 'none' }"
+      :pane-wrapper-style="{ 'overflow-y': 'auto', 'scrollbar-gutter': 'stable' }"
+    >
       <n-tab-pane :name="0" class="!p-0">
         <UIPageContent class="!pt-0 !px-4 !m-0">
           <n-spin :show="store.loading" class="min-h-[200px]">
