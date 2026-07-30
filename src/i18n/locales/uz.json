@@ -705,7 +705,9 @@
       "position_date": "Lavozim sanasi",
       "birthday": "Tug'ilgan sanasi",
       "position": "Lavozim",
-      "organization": "Korxona"
+      "organization": "Korxona",
+      "salary": "Oylik maosh",
+      "workExperience": "Umumiy staj (oylarda)"
     }
   },
   "exportPage": {

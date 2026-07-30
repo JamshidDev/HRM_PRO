@@ -686,7 +686,9 @@
       "position_date": "Position date",
       "birthday": "Date of birth",
       "position": "Position",
-      "organization": "Organization"
+      "organization": "Organization",
+      "salary": "Monthly salary",
+      "workExperience": "Total experience (in months)"
     }
   },
   "exportPage": {

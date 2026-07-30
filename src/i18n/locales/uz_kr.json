@@ -616,7 +616,9 @@
       "position_date": "Лавозим санаси",
       "birthday": "Туғилган санаси",
       "position": "Лавозим",
-      "organization": "Корхона"
+      "organization": "Корхона",
+      "salary": "Ойлик маош",
+      "workExperience": "Умумий стаж (ойларда)"
     }
   },
   "exportPage": {
