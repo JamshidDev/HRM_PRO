@@ -1,13 +1,15 @@
 <script setup>
-  import { ref, nextTick } from 'vue'
+  import { reactive, ref, nextTick, watch } from 'vue'
   import { useLoginNewStore } from '@/store/modules/index.js'
   import { useAppSetting } from '@/utils/index.js'
-  import { Document24Regular, ArrowDownload24Regular } from '@vicons/fluent'
+  import { Document24Regular } from '@vicons/fluent'
+  import * as pdfjsLib from 'pdfjs-dist'
+  pdfjsLib.GlobalWorkerOptions.workerSrc = 'pdfjs-dist/build/pdf.worker.min.js'
 
   const store = useLoginNewStore()
 
   // 2 hujjat — Foydalanish shartlari (Terms) + Maxfiylik siyosati (Privacy), bitta
-  // scroll qilinadigan ro'yxatda ketma-ket ko'rsatiladi (alohida tab emas).
+  // scroll qilinadigan ro'yxatda ketma-ket joylashtiriladi (tab emas).
   const docs = [
     { key: 'terms', labelKey: 'offerModal.terms', prefix: 'Terms' },
     { key: 'privacy', labelKey: 'offerModal.privacy', prefix: 'Privacy' }
@@ -17,47 +19,50 @@
     const l = localStorage.getItem(useAppSetting.languageKey) || 'uz'
     return l === 'ru' ? 'RU' : l === 'en' ? 'EN' : 'UZ'
   }
-  const fileBase = (key) => {
+  const urlFor = (key) => {
     const doc = docs.find((d) => d.key === key) ?? docs[0]
-    return `/terms/HRM_PRO_${doc.prefix}_${langSuffix()}`
-  }
-  const pdfUrl = (key) => `${fileBase(key)}.pdf`
-
-  // Har ikkala hujjat matni (headings/clauses/bullets) — PDF'lardan oldindan
-  // chiqarilgan JSON, shu bilan foydalanuvchi butun matnni modal ichida o'qiy oladi.
-  const docCache = {}
-  const termsBlocks = ref([])
-  const privacyBlocks = ref([])
-  const docLoading = ref(false)
-  const docLoadError = ref(false)
-
-  const fetchBlocks = async (key) => {
-    const cacheKey = `${key}_${langSuffix()}`
-    if (docCache[cacheKey]) return docCache[cacheKey]
-    const res = await fetch(`${fileBase(key)}.json`)
-    if (!res.ok) throw new Error('not ok')
-    const data = await res.json()
-    docCache[cacheKey] = data.blocks
-    return data.blocks
+    return `/terms/HRM_PRO_${doc.prefix}_${langSuffix()}.pdf`
   }
 
-  const loadDocs = async () => {
-    docLoading.value = true
-    docLoadError.value = false
+  // Har bir hujjat uchun mustaqil pdfjs render holati — bitta umumiy viewer o'rniga
+  // ikkalasini bir vaqtda, o'z canvaslari bilan bir konteynerda ketma-ket chizamiz.
+  const docState = reactive({
+    terms: { totalPages: 0, loading: false, loadError: false },
+    privacy: { totalPages: 0, loading: false, loadError: false }
+  })
+
+  const renderPage = async (pdfDocument, key, pageNumber) => {
+    const page = await pdfDocument.getPage(pageNumber)
+    const viewport = page.getViewport({ scale: 1.2 })
+    const canvas = document.querySelector(`#pdfCanvas-${key}-${pageNumber}`)
+    if (!canvas) return
+    canvas.height = viewport.height
+    canvas.width = viewport.width
+    await page.render({ canvasContext: canvas.getContext('2d'), viewport }).promise
+  }
+
+  const loadDoc = async (key) => {
+    const state = docState[key]
+    state.loading = true
+    state.loadError = false
+    state.totalPages = 0
     try {
-      const [terms, privacy] = await Promise.all([fetchBlocks('terms'), fetchBlocks('privacy')])
-      termsBlocks.value = terms
-      privacyBlocks.value = privacy
+      const pdfDocument = await pdfjsLib.getDocument(urlFor(key)).promise
+      state.totalPages = pdfDocument.numPages
+      await nextTick()
+      for (let pageNumber = 1; pageNumber <= state.totalPages; pageNumber++) {
+        await renderPage(pdfDocument, key, pageNumber)
+      }
     } catch {
-      docLoadError.value = true
-      termsBlocks.value = []
-      privacyBlocks.value = []
+      state.loadError = true
     } finally {
-      docLoading.value = false
+      state.loading = false
     }
   }
 
-  // Ikkala hujjat matni joylashgan konteyner oxirigacha scroll qilinmaguncha
+  const loadDocs = () => Promise.all(docs.map((d) => loadDoc(d.key)))
+
+  // Ikkala hujjat joylashgan konteyner oxirigacha scroll qilinmaguncha
   // "Roziman va davom etaman" tugmasi disabled turadi.
   const hasReadToEnd = ref(false)
   const bodyRef = ref(null)
@@ -84,7 +89,7 @@
     const el = bodyRef.value
     if (!el) return
     scrollElement = el
-    // Matn scroll qilmasdanoq to'liq ko'rinsa — o'qilgan deb hisoblaymiz.
+    // Hujjatlar scroll qilmasdanoq to'liq ko'rinsa — o'qilgan deb hisoblaymiz.
     if (isScrolledToBottom(el)) {
       hasReadToEnd.value = true
     }
@@ -130,77 +135,24 @@
         </div>
       </div>
 
-      <!-- Hujjatlar matni — scroll-gate shu konteynerda ishlaydi -->
+      <!-- Hujjatlar (PDF) — scroll-gate shu konteynerda ishlaydi -->
       <div ref="bodyRef" class="offer-modal-body flex-1 min-h-0 overflow-y-auto px-6 py-5">
-        <div v-if="docLoadError" class="text-sm text-textColor3 text-center py-10">
-          {{ $t('offerModal.loadError') }}
-        </div>
-        <div v-else-if="docLoading" class="flex items-center justify-center py-10">
-          <n-spin size="small" />
-        </div>
-        <template v-else>
-          <!-- Foydalanish shartlari -->
-          <section>
-            <h2 class="text-base font-bold text-textColor0 mb-3">
-              {{ $t('offerModal.terms') }}
-            </h2>
-            <template v-for="(block, idx) in termsBlocks" :key="`terms-${idx}`">
-              <h3
-                v-if="block.type === 'heading'"
-                class="text-sm font-semibold text-textColor0 mt-5 first:mt-0 mb-2"
-              >
-                {{ block.text }}
-              </h3>
-              <div v-else-if="block.type === 'bullet'" class="flex gap-2 mb-1.5">
-                <span class="text-sm text-textColor3 shrink-0">–</span>
-                <p class="text-sm text-textColor3 leading-6">{{ block.text }}</p>
-              </div>
-              <p v-else class="text-sm text-textColor3 leading-6 mb-2">
-                {{ block.text }}
-              </p>
-            </template>
-            <a
-              :href="pdfUrl('terms')"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="inline-flex items-center gap-2 text-sm font-medium text-primary hover:underline mt-4"
-            >
-              <n-icon :size="18" :component="ArrowDownload24Regular" />
-              {{ $t('offerModal.downloadLabel') }}
-            </a>
-          </section>
-
-          <!-- Maxfiylik siyosati -->
-          <section class="mt-8 pt-6 border-t border-surface-line">
-            <h2 class="text-base font-bold text-textColor0 mb-3">
-              {{ $t('offerModal.privacy') }}
-            </h2>
-            <template v-for="(block, idx) in privacyBlocks" :key="`privacy-${idx}`">
-              <h3
-                v-if="block.type === 'heading'"
-                class="text-sm font-semibold text-textColor0 mt-5 first:mt-0 mb-2"
-              >
-                {{ block.text }}
-              </h3>
-              <div v-else-if="block.type === 'bullet'" class="flex gap-2 mb-1.5">
-                <span class="text-sm text-textColor3 shrink-0">–</span>
-                <p class="text-sm text-textColor3 leading-6">{{ block.text }}</p>
-              </div>
-              <p v-else class="text-sm text-textColor3 leading-6 mb-2">
-                {{ block.text }}
-              </p>
-            </template>
-            <a
-              :href="pdfUrl('privacy')"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="inline-flex items-center gap-2 text-sm font-medium text-primary hover:underline mt-4"
-            >
-              <n-icon :size="18" :component="ArrowDownload24Regular" />
-              {{ $t('offerModal.downloadLabel') }}
-            </a>
-          </section>
-        </template>
+        <section v-for="(d, i) in docs" :key="d.key" :class="{ 'mt-8 pt-6 border-t border-surface-line': i > 0 }">
+          <h2 class="text-base font-bold text-textColor0 mb-3">
+            {{ $t(d.labelKey) }}
+          </h2>
+          <div v-if="docState[d.key].loadError" class="text-sm text-textColor3 text-center py-10">
+            {{ $t('offerModal.loadError') }}
+          </div>
+          <div v-else class="flex flex-col items-center gap-4">
+            <div v-for="idx in docState[d.key].totalPages" :key="idx">
+              <canvas class="border border-surface-line" :id="`pdfCanvas-${d.key}-${idx}`"></canvas>
+            </div>
+            <div v-if="docState[d.key].loading" class="flex items-center justify-center py-10 w-full">
+              <n-spin size="small" />
+            </div>
+          </div>
+        </section>
       </div>
 
       <!-- Footer -->
@@ -226,9 +178,9 @@
 <style scoped>
   .offer-modal-card {
     width: 94vw;
-    max-width: 560px;
-    height: 88vh;
-    max-height: 88vh;
+    max-width: 780px;
+    height: 92vh;
+    max-height: 92vh;
   }
 
   .offer-modal-decline {
