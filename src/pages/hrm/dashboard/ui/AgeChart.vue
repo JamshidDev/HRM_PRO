@@ -10,7 +10,7 @@
     GridComponent
   } from 'echarts/components'
   import i18n from '@/i18n/index.js'
-  import { useDashboardStore } from '@/store/modules/index.js'
+  import { useDashboardStore, useAppStore } from '@/store/modules/index.js'
 
   use([
     CanvasRenderer,
@@ -23,6 +23,7 @@
   ])
 
   const store = useDashboardStore()
+  const appStore = useAppStore()
   const { t } = i18n.global
 
   defineEmits(['detail'])
@@ -75,29 +76,31 @@
     ]
   })
 
-  const colors = {
+  const getColors = () => ({
     0: '#1A84FF',
-    1: '#0F1114',
+    1: appStore.isDark ? '#98a2b3' : '#0F1114',
     2: '#E53835'
+  })
+
+  const applyAgeData = () => {
+    const newValue = store.dashboard.ageCard
+    if (!newValue?.length) return
+    const colors = getColors()
+    ageOption.value.series[0].data = newValue.map((v, idx) => ({
+      value: v.count,
+      name: t(v.title),
+      itemStyle: {
+        color: colors[idx]
+      },
+      selected: true
+    }))
+    ageOption.value.series[0].name = t('dashboardPage.age.title')
   }
 
-  watch(
-    () => store.dashboard.ageCard,
-    (newValue) => {
-      ageOption.value.series[0].data = newValue.map((v, idx) => ({
-        value: v.count,
-        name: t(v.title),
-        itemStyle: {
-          color: colors[idx]
-        },
-        selected: true
-      }))
-      ageOption.value.series[0].name = t('dashboardPage.age.title')
-    },
-    {
-      immediate: true
-    }
-  )
+  watch(() => store.dashboard.ageCard, applyAgeData, {
+    immediate: true
+  })
+  watch(() => appStore.isDark, applyAgeData)
 </script>
 
 <template>
@@ -131,7 +134,7 @@
         </div>
         <div class="text-textColor3">
           <span
-            class="shadow-sm w-[30px] h-[18px] bg-dark inline-block rounded-sm font-semibold mt-2 mr-4"
+            class="shadow-sm w-[30px] h-[18px] bg-dark age-legend-mid inline-block rounded-sm font-semibold mt-2 mr-4"
           ></span>
           {{ $t('dashboardPage.age.age32_45') }}
         </div>
@@ -150,4 +153,8 @@
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+  [data-theme='dark'] .age-legend-mid {
+    background-color: #98a2b3;
+  }
+</style>

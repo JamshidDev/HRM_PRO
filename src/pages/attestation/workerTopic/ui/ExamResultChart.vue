@@ -95,7 +95,7 @@
   )
 
   watch(
-    () => appStore.themeSwitch,
+    () => appStore.isDark,
     (v) => {
       if (v) {
         option.value.title.textStyle.color = '#e5eaf1'
