@@ -5,6 +5,48 @@
 export const ACTION_LABELS = { read: "Ko'rish", write: 'Yaratish / Tahrirlash', delete: "O'chirish" }
 export const ACTION_ORDER = ['read', 'write', 'delete']
 
+// Backend @Permission bilan HAQIQATAN enforce qilinadigan sluglar. write/delete
+// switch faqat shu to'plamda bo'lsa ko'rsatiladi (mutatsiya real API talab qiladi).
+export const ENFORCED = new Set([
+  'activity-logs-read', 'admin', 'authentication-logs-read', 'chat-news-delete', 'cities-delete', 'cities-write',
+  'confirmation-documents-delete', 'confirmation-worker-applications-delete', 'countries-delete', 'countries-write', 'deploy-read', 'deploy-write',
+  'document-view-exam-results', 'economist', 'economist-dashboard-read', 'economist-pension-payments-delete', 'economist-pension-payments-read', 'economist-pension-payments-write',
+  'economist-staffing-delete', 'economist-staffing-read', 'economist-staffing-write', 'economist-statements-delete', 'economist-statements-read', 'economist-statements-write',
+  'economist-tax-five-delete', 'economist-tax-five-read', 'economist-tax-five-write', 'economist-tax-four-delete', 'economist-tax-four-read', 'economist-tax-four-write',
+  'economist-uploads-read', 'economist-uploads-write', 'economist-worker-categories-delete', 'economist-worker-categories-read', 'economist-worker-categories-write', 'exam-categories-delete',
+  'exam-categories-read', 'exam-categories-write', 'exam-exams-delete', 'exam-exams-read', 'exam-exams-write', 'exam-topics-delete',
+  'exam-topics-read', 'exam-topics-write', 'filter-search-workers', 'holiday-greetings-delete', 'holiday-greetings-read', 'holiday-greetings-write',
+  'holidays-delete', 'holidays-write', 'hr', 'hr-business-trip-read', 'hr-check-worker', 'hr-commands-delete',
+  'hr-commands-read', 'hr-commands-write', 'hr-confirmations-delete', 'hr-confirmations-read', 'hr-confirmations-write', 'hr-contract-additional-delete',
+  'hr-contract-additional-read', 'hr-contract-additional-write', 'hr-contracts-delete', 'hr-contracts-read', 'hr-contracts-write', 'hr-dashboard',
+  'hr-dashboard-read', 'hr-department-locations-delete', 'hr-department-locations-read', 'hr-department-locations-write', 'hr-departments-delete', 'hr-departments-read',
+  'hr-departments-write', 'hr-discips-read', 'hr-documents-delete', 'hr-documents-read', 'hr-documents-write', 'hr-edu-plans-read',
+  'hr-edu-plans-write', 'hr-incentives-read', 'hr-incentives-write', 'hr-language-certificates-delete', 'hr-language-certificates-read', 'hr-language-certificates-write',
+  'hr-leaders-delete', 'hr-leaders-read', 'hr-leaders-write', 'hr-med-delete', 'hr-med-read', 'hr-med-write',
+  'hr-monthly-report-delete', 'hr-nationalities-delete', 'hr-nationalities-write', 'hr-organization-phones-delete', 'hr-organization-phones-read', 'hr-organization-phones-write',
+  'hr-pensioners-delete', 'hr-pensioners-read', 'hr-pensioners-write', 'hr-polyclinics-delete', 'hr-polyclinics-read', 'hr-polyclinics-write',
+  'hr-positions-delete', 'hr-positions-read', 'hr-positions-write', 'hr-public-vacancy-delete', 'hr-public-vacancy-read', 'hr-public-vacancy-write',
+  'hr-report', 'hr-report-delete', 'hr-report-export-delete', 'hr-table-delete', 'hr-table-read', 'hr-table-write',
+  'hr-users-read', 'hr-users-write', 'hr-vacation-schedule-delete', 'hr-vacation-schedule-read', 'hr-vacation-schedule-write', 'hr-vacations-read',
+  'hr-vacations-write', 'hr-worker-applications-read', 'hr-worker-applications-write', 'hr-workers-delete', 'hr-workers-read', 'hr-workers-write',
+  'hr-zoom-write', 'instructions', 'instructions-delete', 'instructions-write', 'integration', 'integration-clients-delete',
+  'integration-clients-read', 'integration-clients-write', 'languages-delete', 'languages-write', 'learning-centers-delete', 'learning-centers-write',
+  'lms-certificate-delete', 'lms-certificate-read', 'lms-certificate-write', 'lms-direction-delete', 'lms-direction-read', 'lms-direction-write',
+  'lms-edu-plan-delete', 'lms-edu-plan-read', 'lms-edu-plan-write', 'lms-lessons-delete', 'lms-lessons-read', 'lms-lessons-write',
+  'lms-specialization-delete', 'lms-specialization-read', 'lms-specialization-write', 'lms-subjects-delete', 'lms-subjects-read', 'lms-subjects-write',
+  'lms-teachers-delete', 'lms-teachers-read', 'lms-teachers-write', 'log-viewer-read', 'mobile-stories-delete', 'mobile-users-read',
+  'organization-services-write', 'organizations-delete', 'organizations-write', 'permissions-delete', 'permissions-read', 'permissions-write',
+  'positions-delete', 'positions-write', 'quotes-delete', 'quotes-write', 'regions-delete', 'regions-write',
+  'roles-delete', 'roles-read', 'roles-write', 'schedules-delete', 'schedules-write', 'specialities-delete',
+  'specialities-write', 'telegram-read', 'telegram-write', 'turnstile-absent-workers-export', 'turnstile-approve-delete', 'turnstile-approve-read',
+  'turnstile-approve-write', 'turnstile-building-delete', 'turnstile-building-read', 'turnstile-building-write', 'turnstile-devices-delete', 'turnstile-devices-read',
+  'turnstile-devices-write', 'turnstile-hik-central-tg-user-delete', 'turnstile-hik-central-tg-user-read', 'turnstile-hik-central-tg-user-write', 'turnstile-hik-central-workers-delete', 'turnstile-hik-central-workers-read',
+  'turnstile-hik-central-workers-write', 'turnstile-sheets-delete', 'turnstile-sheets-groups-delete', 'turnstile-sheets-groups-read', 'turnstile-sheets-groups-write', 'turnstile-sheets-read',
+  'turnstile-sheets-workers-delete', 'turnstile-sheets-workers-read', 'turnstile-sheets-workers-write', 'turnstile-sheets-write', 'turnstile-terminal-delete', 'turnstile-terminal-read',
+  'turnstile-terminal-write', 'universities-delete', 'universities-write', 'users-delete', 'users-read', 'users-write',
+  'vacancy-approve-delete', 'work-day-delete', 'work-day-write',
+])
+
 // AVTO-GENERATSIYA: backend @Permission (enforce qilinadigan) + frontend AppPermissions
 // (haqiqatan ishlatilgan) sluglar birlashmasi. Forma faqat SHU sluglarga switch
 // ko'rsatadi — DB'da bor-u hech qayerda ishlatilmaydigan (spurious) sluglar yashiriladi.

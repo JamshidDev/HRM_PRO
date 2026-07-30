@@ -8,6 +8,7 @@
     ACTION_LABELS,
     ACTION_ORDER,
     MEANINGFUL,
+    ENFORCED,
   } from '@/utils/permissionGroups.js'
 
   const formRef = ref(null)
@@ -25,12 +26,6 @@
 
   const idOf = (name) => permByName.value.get(name)?.id ?? null
   const has = (name) => permByName.value.has(name)
-  // switch faqat backend enforce qiladigan / frontend ishlatadigan (MEANINGFUL) slug uchun
-  const actionsFor = (prefix) =>
-    ACTION_ORDER.filter(
-      (a) => has(`${prefix}-${a}`) && MEANINGFUL.has(`${prefix}-${a}`)
-    )
-
   const isOn = (name) => {
     const id = idOf(name)
     return id != null && selectedSet.value.has(id)
@@ -46,13 +41,21 @@
 
   // sub-guruh switchlari: read/write/delete bo'lsa ular; bo'lmasa (faqat bazaviy
   // slug — bu ko'rish/list ruxsati) bitta "Ko'rish" switch.
+  // read/ko'rish: '-read' meaningful bo'lsa u, aks holda base slug (menyu ko'rinishi).
+  // write/delete: FAQAT backend enforce qilsa (real mutatsiya API) — o'lik switch chiqmaydi.
+  const meaningfulReadName = (prefix) => {
+    if (has(`${prefix}-read`) && MEANINGFUL.has(`${prefix}-read`)) return `${prefix}-read`
+    if (has(prefix) && MEANINGFUL.has(prefix)) return prefix
+    return null
+  }
   const groupSwitches = (g) => {
-    const acts = actionsFor(g.prefix)
-    if (acts.length)
-      return acts.map((a) => ({ name: `${g.prefix}-${a}`, label: ACTION_LABELS[a] }))
-    if (has(g.prefix) && MEANINGFUL.has(g.prefix))
-      return [{ name: g.prefix, label: ACTION_LABELS.read }]
-    return []
+    const out = []
+    const rn = meaningfulReadName(g.prefix)
+    if (rn) out.push({ name: rn, label: ACTION_LABELS.read })
+    for (const a of ['write', 'delete'])
+      if (has(`${g.prefix}-${a}`) && ENFORCED.has(`${g.prefix}-${a}`))
+        out.push({ name: `${g.prefix}-${a}`, label: ACTION_LABELS[a] })
+    return out
   }
   const groupActions = (g) => groupSwitches(g).map((s) => s.name)
   const groupAllOn = (g) => {
