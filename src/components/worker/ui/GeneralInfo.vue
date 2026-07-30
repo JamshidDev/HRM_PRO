@@ -78,7 +78,13 @@
       </div>
       <template v-if="hasPassportFile" #footer>
         <template v-for="(item, idx) in store.workerPreview?.worker.passports" :key="idx">
-          <n-button v-if="item.file" size="small" class="!rounded-full" type="primary" @click="onDownload(item.file)">
+          <n-button
+            v-if="item.file"
+            size="small"
+            class="!rounded-full !text-white"
+            type="primary"
+            @click="onDownload(item.file)"
+          >
             <span class="flex items-center justify-center gap-2">
               <span>{{ $t('content.download') }}</span>
               <n-icon size="18">
@@ -110,7 +116,7 @@
           <InfoBox :label="$t('content.organization')" :value="item.university?.type?.name" />
         </div>
         <template v-if="item.file" #footer>
-          <n-button size="small" class="!rounded-full" type="primary" @click="onDownload(item.file)">
+          <n-button size="small" class="!rounded-full !text-white" type="primary" @click="onDownload(item.file)">
             <span class="flex items-center justify-center gap-2">
               <span>{{ $t('content.download') }}</span>
               <n-icon size="18">
@@ -148,7 +154,13 @@
       </h4>
       <template v-if="hasForeignPassportFile" #footer>
         <template v-for="(item, idx) in store.workerPreview?.worker.foreign_passports" :key="idx">
-          <n-button v-if="item.file" size="small" class="!rounded-full" type="primary" @click="onDownload(item.file)">
+          <n-button
+            v-if="item.file"
+            size="small"
+            class="!rounded-full !text-white"
+            type="primary"
+            @click="onDownload(item.file)"
+          >
             <span class="flex items-center justify-center gap-2">
               <span>{{ $t('content.download') }}</span>
               <n-icon size="18">
