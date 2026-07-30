@@ -407,14 +407,17 @@
     "lms": "LMS"
   },
   "offerModal": {
-    "title": "Review the documents",
-    "desc": "Please review the documents below to continue.",
-    "terms": "Terms of Use",
-    "privacy": "Privacy Policy",
-    "accept": "I acknowledge",
-    "decline": "Decline",
-    "loadError": "Failed to load the document",
-    "readHint": "Read the documents to the end to continue"
+    "title": "Public offer",
+    "desc": "Please review the terms before using the platform",
+    "item1Title": "1. Public offer",
+    "item1Text": "This public offer sets out the terms of use of the \"HRM PRO\" platform. By signing in, the user is deemed to have fully accepted the terms below.",
+    "item2Title": "2. Data privacy",
+    "item2Text": "Personal data entered by the user is stored in accordance with the law and is not disclosed to third parties. Data is used solely for HR management purposes.",
+    "item3Title": "3. User obligations",
+    "item3Text": "The user must keep their login and password confidential and is fully responsible for all actions performed with them. Unauthorized access to the system is prohibited.",
+    "downloadLabel": "Download the full document (PDF)",
+    "accept": "I agree and continue",
+    "decline": "Decline"
   },
   "loginPage": {
     "copyright": "© DASUTY. All rights reserved. Developed by \"DAS UTY\" LLC.",

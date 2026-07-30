@@ -1,75 +1,57 @@
 <script setup>
-  import { ref, computed, watch, nextTick } from 'vue'
-  import { useLoginNewStore, usePdfViewerStore } from '@/store/modules/index.js'
+  import { ref, nextTick } from 'vue'
+  import { useLoginNewStore } from '@/store/modules/index.js'
   import { useAppSetting } from '@/utils/index.js'
-  import { Dismiss24Regular } from '@vicons/fluent'
-  import PdfViewer from '@/components/pdfSignature/PdfViewer.vue'
+  import { Document24Regular, ArrowDownload24Regular } from '@vicons/fluent'
 
   const store = useLoginNewStore()
-  // Buyruqlar view'idagi bir xil PDF reader (pdfjs canvas) — usePdfViewerStore + PdfViewer.vue.
-  const pdfStore = usePdfViewerStore()
 
-  // 2 hujjat — Foydalanish shartlari (Terms) + Maxfiylik siyosati (Privacy), tilga moslab.
-  const docs = [
-    { key: 'terms', labelKey: 'offerModal.terms', prefix: 'Terms' },
-    { key: 'privacy', labelKey: 'offerModal.privacy', prefix: 'Privacy' }
-  ]
-  const activeKey = ref('terms')
+  const items = [1, 2, 3].map((n) => ({
+    titleKey: `offerModal.item${n}Title`,
+    textKey: `offerModal.item${n}Text`
+  }))
 
-  // Har bir hujjat oxirigacha скроll qilinganda `true` bo'ladi — ikkalasi ham
-  // o'qilmaguncha "Tanishdim" tugmasi disabled turadi (pastdagi canAccept).
-  const readState = ref({ terms: false, privacy: false })
-  const canAccept = computed(() => docs.every((d) => readState.value[d.key]))
+  const langSuffix = () => {
+    const l = localStorage.getItem(useAppSetting.languageKey) || 'uz'
+    return l === 'ru' ? 'RU' : l === 'en' ? 'EN' : 'UZ'
+  }
+  const termsUrl = () => `/terms/HRM_PRO_Terms_${langSuffix()}.pdf`
 
-  const viewerContainerRef = ref(null)
+  // Band matnlari joylashgan konteyner oxirigacha scroll qilinmaguncha
+  // "Roziman va davom etaman" tugmasi disabled turadi.
+  const bodyRef = ref(null)
+  const hasReadToEnd = ref(false)
   let scrollElement = null
   const SCROLL_BOTTOM_THRESHOLD = 24
 
   const isScrolledToBottom = (el) =>
     !!el && el.scrollTop + el.clientHeight >= el.scrollHeight - SCROLL_BOTTOM_THRESHOLD
 
-  const onViewerScroll = (e) => {
+  const onBodyScroll = (e) => {
     if (isScrolledToBottom(e.target)) {
-      readState.value[activeKey.value] = true
+      hasReadToEnd.value = true
     }
   }
 
   const detachScrollListener = () => {
-    scrollElement?.removeEventListener('scroll', onViewerScroll)
+    scrollElement?.removeEventListener('scroll', onBodyScroll)
     scrollElement = null
   }
 
-  // PDF render tugagach chaqiriladi — scroll konteynerini topib listener ulaymiz.
-  // Kontent scroll qilmasdanoq to'liq ko'rinsa (bir sahifalik qisqa hujjat),
-  // shu zahoti o'qilgan deb hisoblaymiz.
   const attachScrollListener = async () => {
     detachScrollListener()
     await nextTick()
-    const el = viewerContainerRef.value?.querySelector('.overflow-y-auto')
+    const el = bodyRef.value
     if (!el) return
     scrollElement = el
+    // Matn scroll qilmasdanoq to'liq ko'rinsa — o'qilgan deb hisoblaymiz.
     if (isScrolledToBottom(el)) {
-      readState.value[activeKey.value] = true
+      hasReadToEnd.value = true
     }
-    scrollElement.addEventListener('scroll', onViewerScroll)
+    scrollElement.addEventListener('scroll', onBodyScroll)
   }
 
-  const langSuffix = () => {
-    const l = localStorage.getItem(useAppSetting.languageKey) || 'uz'
-    return l === 'ru' ? 'RU' : l === 'en' ? 'EN' : 'UZ'
-  }
-  const urlFor = (key) => {
-    const doc = docs.find((d) => d.key === key) ?? docs[0]
-    return `/terms/HRM_PRO_${doc.prefix}_${langSuffix()}.pdf`
-  }
-
-  const loadActive = async () => {
-    pdfStore.pdfUrl = urlFor(activeKey.value)
-    await pdfStore.loadPdf()
-    await attachScrollListener()
-  }
-
-  // Modal ochilganда birinchi hujjatni (Terms) yuklaymiz, o'qilganlik holatini tozalaymiz.
+  // Modal ochilganda o'qilganlik holatini tozalab, scroll holatini qayta tekshiramiz.
   watch(
     () => store.showOfferModal,
     async (v) => {
@@ -77,18 +59,10 @@
         detachScrollListener()
         return
       }
-      activeKey.value = 'terms'
-      readState.value = { terms: false, privacy: false }
-      await nextTick()
-      await loadActive()
+      hasReadToEnd.value = false
+      await attachScrollListener()
     }
   )
-
-  const selectDoc = async (key) => {
-    if (key === activeKey.value) return
-    activeKey.value = key
-    await loadActive()
-  }
 </script>
 
 <template>
@@ -99,99 +73,77 @@
     :auto-focus="false"
     :trap-focus="false"
   >
-    <div
-      class="offer-modal-card bg-surface-section rounded-2xl shadow-2xl overflow-hidden flex flex-col"
-    >
-      <!-- Header: title + hujjat tablari (Terms/Privacy) + yopish -->
-      <div class="px-5 py-3 border-b border-surface-line flex items-center justify-between gap-3 flex-wrap">
-        <h2 class="text-sm md:text-base font-semibold text-textColor0 shrink-0">
-          {{ $t('offerModal.title') }}
-        </h2>
-        <div class="flex items-center gap-2">
-          <n-button
-            v-for="d in docs"
-            :key="d.key"
-            size="small"
-            :type="activeKey === d.key ? 'primary' : 'default'"
-            @click="selectDoc(d.key)"
-          >
-            {{ $t(d.labelKey) }}
-          </n-button>
-          <n-button quaternary circle size="small" @click="store._declineOffer()">
-            <template #icon>
-              <n-icon :size="18" :component="Dismiss24Regular" />
-            </template>
-          </n-button>
+    <div class="offer-modal-card bg-surface-section rounded-2xl shadow-2xl overflow-hidden flex flex-col">
+      <!-- Header: ikonka + sarlavha + subtitle -->
+      <div class="px-6 py-5 bg-surface-ground flex items-start gap-3.5 border-b border-surface-line">
+        <div class="offer-modal-icon shrink-0 w-11 h-11 rounded-full bg-primary/10 flex items-center justify-center">
+          <n-icon :size="22" :component="Document24Regular" class="text-primary" />
+        </div>
+        <div class="min-w-0">
+          <h2 class="text-base font-semibold text-textColor0">
+            {{ $t('offerModal.title') }}
+          </h2>
+          <p class="text-sm text-textColor3 mt-0.5">
+            {{ $t('offerModal.desc') }}
+          </p>
         </div>
       </div>
 
-      <!-- PDF reader (buyruqlar view'idagi bilan bir xil) -->
-      <div ref="viewerContainerRef" class="offer-viewer flex-1 min-h-0 bg-surface-base relative">
-        <div
-          v-if="pdfStore.loadError"
-          class="w-full h-full flex items-center justify-center text-textColor3 text-sm"
-        >
-          {{ $t('offerModal.loadError') }}
+      <!-- Band matnlari — scroll-gate shu konteynerda ishlaydi -->
+      <div ref="bodyRef" class="offer-modal-body flex-1 min-h-0 overflow-y-auto px-6 py-5">
+        <div v-for="item in items" :key="item.titleKey" class="mb-5 last:mb-0">
+          <h3 class="text-sm font-semibold text-textColor0 mb-1">
+            {{ $t(item.titleKey) }}
+          </h3>
+          <p class="text-sm text-textColor3 leading-6">
+            {{ $t(item.textKey) }}
+          </p>
         </div>
-        <PdfViewer v-else ref="viewerRef" :container="false" />
-        <div
-          v-if="pdfStore.loading"
-          class="absolute inset-0 flex items-center justify-center bg-surface-base/60"
+
+        <a
+          :href="termsUrl()"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-2 text-sm font-medium text-primary hover:underline"
         >
-          <n-spin size="large" />
-        </div>
+          <n-icon :size="18" :component="ArrowDownload24Regular" />
+          {{ $t('offerModal.downloadLabel') }}
+        </a>
       </div>
 
       <!-- Footer -->
-      <div class="px-6 py-4 border-t border-surface-line flex items-center justify-between gap-3">
-        <p v-if="!canAccept" class="text-xs text-textColor3">
-          {{ $t('offerModal.readHint') }}
-        </p>
-        <div class="flex items-center gap-3 ml-auto">
-          <n-button @click="store._declineOffer()">
-            {{ $t('offerModal.decline') }}
-          </n-button>
-          <n-button
-            type="primary"
-            :disabled="!canAccept"
-            :loading="store.offerLoading"
-            @click="store._acceptOfferAndContinue()"
-          >
-            {{ $t('offerModal.accept') }}
-          </n-button>
-        </div>
+      <div class="px-6 py-4 border-t border-surface-line flex items-center gap-3">
+        <n-button class="offer-modal-decline flex-1" round @click="store._declineOffer()">
+          {{ $t('offerModal.decline') }}
+        </n-button>
+        <n-button
+          type="primary"
+          round
+          class="flex-1"
+          :disabled="!hasReadToEnd"
+          :loading="store.offerLoading"
+          @click="store._acceptOfferAndContinue()"
+        >
+          {{ $t('offerModal.accept') }}
+        </n-button>
       </div>
     </div>
   </n-modal>
 </template>
 
 <style scoped>
-  /* Kenglik A4 PDF (scale 1.2 ≈ 714px) ga moslangan — juda keng emas */
   .offer-modal-card {
     width: 94vw;
-    max-width: 780px;
-    height: 92vh;
-    max-height: 92vh;
+    max-width: 460px;
+    max-height: 90vh;
   }
-  /* .offer-viewer flex-1 min-h-0 orqali aniq balandlikka ega; ichidagilarni
-     absolute bilan to'ldiramiz — PdfViewer'ning balandliksiz o'rta div'i (w-full flex)
-     % zanjirini uzganda ham ichki .overflow-y-auto aniq chegara olib scroll qiladi. */
-  .offer-viewer {
-    position: relative;
-    overflow: hidden;
+
+  .offer-modal-body {
+    max-height: 42vh;
   }
-  /* PdfViewer ildizi + overlaylar .offer-viewer'ni to'ldiradi */
-  .offer-viewer > :deep(div) {
-    position: absolute;
-    inset: 0;
-  }
-  /* Ichki scroll konteyneri — aniq chegara → vertikal scroll ishlaydi */
-  .offer-viewer :deep(.overflow-y-auto) {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: auto !important;
-    overflow-y: auto;
-    align-items: center;
+
+  .offer-modal-decline {
+    color: var(--error-color, #d03050) !important;
+    border-color: var(--error-color, #d03050) !important;
   }
 </style>
