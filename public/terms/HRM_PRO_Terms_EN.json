@@ -1,0 +1,633 @@
+{
+  "title": "TERMS OF USE “HRM PRO” Human Resources Management Information System Approval date: July 1, 2026. Version: 1.0",
+  "blocks": [
+    {
+      "type": "heading",
+      "text": "1. General Provisions and Acceptance"
+    },
+    {
+      "type": "clause",
+      "text": "1.1. These Terms of Use (hereinafter — the “Terms”) establish the procedure for using the “HRM PRO” human resources management information system (hereinafter — the “System”), developed by JSC “Uzbekistan Railways” (hereinafter — the “Company”)."
+    },
+    {
+      "type": "clause",
+      "text": "1.2. By logging into or otherwise using the System, the user is deemed to have fully read, understood, and accepted these Terms. If the user does not agree to these Terms, they must immediately stop using the System."
+    },
+    {
+      "type": "clause",
+      "text": "1.3. From the moment these Terms are accepted in the manner set out in clause 1.2, a relationship regarding the use of the System arises between the user and the Company, governed by these Terms, the Privacy Policy, and applicable legislation."
+    },
+    {
+      "type": "clause",
+      "text": "1.4. The Privacy Policy published in the System is an integral part of these Terms. By accepting the Terms, the user is also deemed to have reviewed the Privacy Policy and confirmed their understanding of it."
+    },
+    {
+      "type": "heading",
+      "text": "2. Terms and Definitions"
+    },
+    {
+      "type": "bullet",
+      "text": "System — the “HRM PRO” human resources management information system: a software suite designed for employee registration, working time and attendance tracking, and digitizing the circulation of personnel documents;"
+    },
+    {
+      "type": "bullet",
+      "text": "Company — JSC “Uzbekistan Railways,” the owner and administrator of the System;"
+    },
+    {
+      "type": "bullet",
+      "text": "Organization — JSC “Uzbekistan Railways” or an organization within its system that has an employment relationship with the user;"
+    },
+    {
+      "type": "bullet",
+      "text": "User — an individual (employee) registered in the System who uses it within the scope of their official duties;"
+    },
+    {
+      "type": "bullet",
+      "text": "Account — the set of login credentials, password, and associated rights that identify the user;"
+    },
+    {
+      "type": "bullet",
+      "text": "Administrator — a responsible person authorized to create accounts, assign rights, and administer the System;"
+    },
+    {
+      "type": "bullet",
+      "text": "Personnel data — employees' personal data and employment-related data stored in the System;"
+    },
+    {
+      "type": "bullet",
+      "text": "Privacy Policy — the document establishing the procedure for processing and protecting the personal data of System users, forming an integral part of these Terms;"
+    },
+    {
+      "type": "bullet",
+      "text": "Content — all data, documents, and reports entered into the System by the user."
+    },
+    {
+      "type": "heading",
+      "text": "3. Scope of Users"
+    },
+    {
+      "type": "clause",
+      "text": "3.1. The “HRM PRO” System is intended exclusively for officially registered employees of JSC “Uzbekistan Railways” and organizations within its system. Open (free) registration in the System is not provided."
+    },
+    {
+      "type": "clause",
+      "text": "3.2. To be entitled to use the System, a person must:"
+    },
+    {
+      "type": "bullet",
+      "text": "be an official employee of the organization;"
+    },
+    {
+      "type": "bullet",
+      "text": "have been entered into the System by a responsible person (administrator);"
+    },
+    {
+      "type": "bullet",
+      "text": "have been granted access rights (role) corresponding to their position and duties."
+    },
+    {
+      "type": "clause",
+      "text": "3.3. Attempts by unauthorized persons to access the System will result in liability as established by legislation."
+    },
+    {
+      "type": "heading",
+      "text": "4. Account Registration and Security"
+    },
+    {
+      "type": "clause",
+      "text": "4.1. Account creation User accounts are created and managed by the administrator. Each account is assigned access rights corresponding to the user's position. Complete and accurate information must be provided when creating an account; inaccurate information may result in the account being blocked or deleted."
+    },
+    {
+      "type": "clause",
+      "text": "4.2. Password management and user responsibility The security of the System largely depends on how carefully the user safeguards their password. Accordingly, except for rules specifically noted as recommendations, compliance with the following rules is mandatory:"
+    },
+    {
+      "type": "bullet",
+      "text": "Initial password. For a user's first login to the System, the administrator provides them with a login and a temporary (initial) password."
+    },
+    {
+      "type": "bullet",
+      "text": "Mandatory password change. Upon first logging into the System, the user must replace the initial password with a new password known only to them."
+    },
+    {
+      "type": "bullet",
+      "text": "Strong password requirements. The password must be at least 8 characters long and must include uppercase and lowercase letters, digits, and special characters. Passwords that do not meet these requirements, as well as passwords that are simple or easy to guess (e.g., a date of birth, a name, sequential digits), are prohibited."
+    },
+    {
+      "type": "bullet",
+      "text": "Regular password updates. For security purposes, the user is advised to update their password regularly (at least every 90 days)."
+    },
+    {
+      "type": "bullet",
+      "text": "Confidential storage of the password. The password is considered strictly confidential. Disclosing it to other persons, writing it down, storing it in a visible location, or sharing it jointly with third parties is strictly prohibited."
+    },
+    {
+      "type": "bullet",
+      "text": "Full responsibility. The user bears full responsibility for all actions performed in the System under their account, all data entered, and the consequences thereof."
+    },
+    {
+      "type": "bullet",
+      "text": "Liability for damage. The Company is not liable for any damage or unauthorized actions arising from the user's storage, disclosure, or transfer of the password to another person in violation of the rules set out in this clause."
+    },
+    {
+      "type": "bullet",
+      "text": "In the event of suspicion. If a user notices that their password has become known to others, or suspects unauthorized access to their account, they must immediately change the password and notify the administrator. Actions performed before such notification is given are deemed to have been performed by the user."
+    },
+    {
+      "type": "bullet",
+      "text": "Logging out of the System. Upon finishing work or before stepping away from a device, especially when using a shared or unfamiliar device, the user must fully log out of the System."
+    },
+    {
+      "type": "bullet",
+      "text": "Password recovery. If the password is forgotten, it is reset with the administrator's assistance or through the recovery function. The new password must also meet the strong password requirements established in this clause."
+    },
+    {
+      "type": "heading",
+      "text": "5. Legal Validity of Electronic Documents and Approval Actions"
+    },
+    {
+      "type": "clause",
+      "text": "5.1. The System serves as the Company's internal electronic document circulation tool. Approval, coordination, and submission actions performed by a user in the System through their own account are recognized as actions expressing their will and serve as a basis for internal personnel records and matters of performance discipline."
+    },
+    {
+      "type": "clause",
+      "text": "5.2. All significant user actions are recorded in the System's audit logs, indicating the date, time, and account involved. Such records may be used as evidence in internal investigations and dispute resolution. This logging is carried out on the basis of obligations arising from legislation and the employment relationship; the user is notified of this through these Terms."
+    },
+    {
+      "type": "clause",
+      "text": "5.3. A digital signature (DS) may be introduced into the System in the future. Once introduced, electronic documents (orders, contracts, etc.) signed using the digital signature will have legal force equal to that of a paper document, in accordance with the Law of the Republic of Uzbekistan “On Electronic Document Circulation” No. 611-II of April 29, 2004, and the Law “On Digital Signature” No. 562-II of December 11, 2003. Users will be notified in advance of the introduction of the digital signature."
+    },
+    {
+      "type": "heading",
+      "text": "6. Rules for Using the System"
+    },
+    {
+      "type": "clause",
+      "text": "6.1. Users are strictly prohibited from engaging in the following actions while using the System:"
+    },
+    {
+      "type": "bullet",
+      "text": "unauthorized access to the System or attempts to access other users' accounts;"
+    },
+    {
+      "type": "bullet",
+      "text": "performing actions that damage the System's operation, or distributing malicious code (viruses, trojans, etc.);"
+    },
+    {
+      "type": "bullet",
+      "text": "entering false, fabricated, or misleading data;"
+    },
+    {
+      "type": "bullet",
+      "text": "unauthorized interference with the System's software or attempts to bypass its security systems;"
+    },
+    {
+      "type": "bullet",
+      "text": "unauthorized use of the System for personal or commercial purposes;"
+    },
+    {
+      "type": "bullet",
+      "text": "attempting to access personnel data outside the scope of one's own authority;"
+    },
+    {
+      "type": "bullet",
+      "text": "unauthorized copying, downloading, or disclosure of the System's personnel data to third parties;"
+    },
+    {
+      "type": "bullet",
+      "text": "actions that damage the reputation of the Company or the organization."
+    },
+    {
+      "type": "clause",
+      "text": "6.2. The accounts of users who violate these rules may be restricted, blocked, or deleted without prior warning (when such a measure is applied, the user is notified in accordance with clause 15.1), and such users may also be held disciplinarily, materially, administratively, or criminally liable in the manner established by legislation."
+    },
+    {
+      "type": "heading",
+      "text": "7. Confidentiality. Confidentiality of Personnel Data"
+    },
+    {
+      "type": "clause",
+      "text": "7.1. The personnel data contained in the System — employees' personal data, employment contracts, orders, and data on salaries and positions — constitutes confidential information protected by law."
+    },
+    {
+      "type": "clause",
+      "text": "7.2. Users who have access to personnel data by virtue of their official duties (HR department employees, managers, etc.) undertake not to disclose such information to third parties, not to publish it in the media or on social networks, and to use it solely for the performance of their official duties."
+    },
+    {
+      "type": "clause",
+      "text": "7.3. This confidentiality obligation remains in effect even after the user's right to use the System ends (i.e., after their account is deleted)."
+    },
+    {
+      "type": "clause",
+      "text": "7.4. Unlawful disclosure of other employees' personal data results in disciplinary, material, administrative, or criminal liability as established by legislation."
+    },
+    {
+      "type": "heading",
+      "text": "8. Content and Rights Thereto"
+    },
+    {
+      "type": "clause",
+      "text": "8.1. The user is solely responsible for all data and documents they enter into the System. The user warrants that:"
+    },
+    {
+      "type": "bullet",
+      "text": "the data entered is accurate, precise, and up to date;"
+    },
+    {
+      "type": "bullet",
+      "text": "the data does not contravene the legislation of the Republic of Uzbekistan;"
+    },
+    {
+      "type": "bullet",
+      "text": "the data does not infringe the rights and legitimate interests of other persons;"
+    },
+    {
+      "type": "bullet",
+      "text": "they do not enter, without authorization, information constituting a state secret or other secret protected by law."
+    },
+    {
+      "type": "clause",
+      "text": "8.2. All Content (personnel documents, reports, orders, etc.) entered into the System by the user in the course of performing their official duties is the property of the Company (or the relevant organization). The user has no right to assert a proprietary claim to such Content even after the employment relationship has ended. The employee's rights with respect to their own personal data, as established by the Privacy Policy, remain unaffected."
+    },
+    {
+      "type": "clause",
+      "text": "8.3. The Company is not responsible for the content or accuracy of data entered by the user, but retains the right to verify data based on legal requirements or instructions from authorized bodies."
+    },
+    {
+      "type": "heading",
+      "text": "9. System Services and Functions"
+    },
+    {
+      "type": "clause",
+      "text": "9.1. Within the System, the Company provides the following functional capabilities:"
+    },
+    {
+      "type": "bullet",
+      "text": "registering employees and maintaining personal files;"
+    },
+    {
+      "type": "bullet",
+      "text": "automatic calculation of working time and attendance;"
+    },
+    {
+      "type": "bullet",
+      "text": "recording of leave, temporary incapacity, and days off;"
+    },
+    {
+      "type": "bullet",
+      "text": "electronic preparation of personnel reports and multi-stage approval;"
+    },
+    {
+      "type": "bullet",
+      "text": "creating, coordinating, and archiving orders, contracts, and documents;"
+    },
+    {
+      "type": "bullet",
+      "text": "obtaining statistical and analytical data through the dashboard;"
+    },
+    {
+      "type": "bullet",
+      "text": "notification through push notifications."
+    },
+    {
+      "type": "clause",
+      "text": "9.2. The Company reserves the right to change, suspend, or update the composition of its services. Users are notified in advance of material changes."
+    },
+    {
+      "type": "heading",
+      "text": "10. System Updates and Technical Maintenance"
+    },
+    {
+      "type": "clause",
+      "text": "10.1. To ensure the proper and secure operation of the System, the Company updates it regularly. Web-system updates are performed automatically on the server side and require no additional action from the user."
+    },
+    {
+      "type": "clause",
+      "text": "10.2. Where a mobile application is available, the user must install updates as promptly as possible. The Company is not liable for problems arising in an outdated version and reserves the right to discontinue support for older versions (with at least 14 days' notice)."
+    },
+    {
+      "type": "clause",
+      "text": "10.3. The Company has the right to temporarily suspend the System's operation for preventive and technical maintenance. Users are notified of planned technical maintenance at least 24 hours in advance."
+    },
+    {
+      "type": "heading",
+      "text": "11. Warranty and Service Level"
+    },
+    {
+      "type": "clause",
+      "text": "11.1. The Company strives to maintain the following service level:"
+    },
+    {
+      "type": "bullet",
+      "text": "System uptime — uninterrupted operation of the System at least 99% of the time per year;"
+    },
+    {
+      "type": "bullet",
+      "text": "Technical maintenance — notifying users of planned technical maintenance at least 24 hours in advance;"
+    },
+    {
+      "type": "bullet",
+      "text": "Fault resolution — resolving critical faults within 24 hours of detection;"
+    },
+    {
+      "type": "bullet",
+      "text": "Support — reviewing technical support requests within 2 business days."
+    },
+    {
+      "type": "clause",
+      "text": "11.2. Except for the service level indicators provided for in clause 11.1, the System is provided on an “as is” basis. The Company does not guarantee that the System will meet all of a user's individual expectations, but strives for its continuous improvement."
+    },
+    {
+      "type": "heading",
+      "text": "12. Free Provision of the System"
+    },
+    {
+      "type": "clause",
+      "text": "12.1. The “HRM PRO” System is provided to the organization's employees free of charge as a corporate tool. No payment is required from employees to use the System."
+    },
+    {
+      "type": "heading",
+      "text": "13. Rights and Obligations of the Parties"
+    },
+    {
+      "type": "clause",
+      "text": "13.1. The Company is obligated to:"
+    },
+    {
+      "type": "bullet",
+      "text": "take the necessary measures to ensure the uninterrupted and stable operation of the System;"
+    },
+    {
+      "type": "bullet",
+      "text": "ensure the protection of employee data in accordance with the Privacy Policy;"
+    },
+    {
+      "type": "bullet",
+      "text": "provide users with technical support;"
+    },
+    {
+      "type": "bullet",
+      "text": "notify users of the Terms and of material changes made to the System."
+    },
+    {
+      "type": "clause",
+      "text": "13.2. The Company has the right to:"
+    },
+    {
+      "type": "bullet",
+      "text": "temporarily suspend the operation of the System to carry out preventive maintenance;"
+    },
+    {
+      "type": "bullet",
+      "text": "restrict or block the account of a user who has violated the Terms;"
+    },
+    {
+      "type": "bullet",
+      "text": "unilaterally amend the Terms and the functions of the System;"
+    },
+    {
+      "type": "bullet",
+      "text": "verify user actions in cases established by legislation."
+    },
+    {
+      "type": "clause",
+      "text": "13.3. The user is obligated to:"
+    },
+    {
+      "type": "bullet",
+      "text": "provide reliable and complete information for creating and maintaining their account;"
+    },
+    {
+      "type": "bullet",
+      "text": "use the System solely for official duties and lawful purposes;"
+    },
+    {
+      "type": "bullet",
+      "text": "refrain from entering inaccurate, fabricated, or misleading data into the System;"
+    },
+    {
+      "type": "bullet",
+      "text": "refrain from unauthorized interference with the System's software, distributing malicious code, or attempting to bypass its security systems;"
+    },
+    {
+      "type": "bullet",
+      "text": "ensure the confidentiality of their login and password, as well as the confidentiality of personnel data;"
+    },
+    {
+      "type": "bullet",
+      "text": "comply with the requirements of the Terms, the Privacy Policy, and applicable legislation."
+    },
+    {
+      "type": "clause",
+      "text": "13.4. The user has the right to:"
+    },
+    {
+      "type": "bullet",
+      "text": "use the System within the scope of its functional capabilities;"
+    },
+    {
+      "type": "bullet",
+      "text": "receive technical support and submit inquiries;"
+    },
+    {
+      "type": "bullet",
+      "text": "exercise the rights established by the Privacy Policy with respect to their own data;"
+    },
+    {
+      "type": "bullet",
+      "text": "stop using the System on their own initiative by submitting a written request to the administrator (see clause 15.3)."
+    },
+    {
+      "type": "heading",
+      "text": "14. Liability of the Parties"
+    },
+    {
+      "type": "clause",
+      "text": "14.1. The parties are liable for failure to perform or improper performance of their obligations in accordance with the legislation of the Republic of Uzbekistan."
+    },
+    {
+      "type": "clause",
+      "text": "14.2. The Company is liable, in the manner and to the extent established by legislation, where it is at fault, in the following cases:"
+    },
+    {
+      "type": "bullet",
+      "text": "Technical malfunctions — where actions were not performed or were delayed due to a server or System error;"
+    },
+    {
+      "type": "bullet",
+      "text": "Data loss — where data was lost due to the Company's fault;"
+    },
+    {
+      "type": "bullet",
+      "text": "Security breach — where the protective measures taken by the Company proved insufficient."
+    },
+    {
+      "type": "clause",
+      "text": "14.3. The Company is not liable for:"
+    },
+    {
+      "type": "bullet",
+      "text": "the content and accuracy of data entered into the System by the user;"
+    },
+    {
+      "type": "bullet",
+      "text": "the consequences of the user's violation of the rules for safeguarding their login and password;"
+    },
+    {
+      "type": "bullet",
+      "text": "problems arising from the user's own error or negligence;"
+    },
+    {
+      "type": "bullet",
+      "text": "interruptions in the services of telecommunications operators, power supply, or third-party service providers;"
+    },
+    {
+      "type": "bullet",
+      "text": "interruption of internet connectivity or malfunction of the user's device;"
+    },
+    {
+      "type": "bullet",
+      "text": "damage caused as a result of force majeure circumstances."
+    },
+    {
+      "type": "heading",
+      "text": "15. Account Blocking and Termination of Use"
+    },
+    {
+      "type": "clause",
+      "text": "15.1. The Company has the right to restrict, block, or delete a user's account in the following cases:"
+    },
+    {
+      "type": "bullet",
+      "text": "violation of these Terms;"
+    },
+    {
+      "type": "bullet",
+      "text": "termination of the user's employment relationship with the organization;"
+    },
+    {
+      "type": "bullet",
+      "text": "prolonged inactivity of the account (6 months or more);"
+    },
+    {
+      "type": "bullet",
+      "text": "a reasoned instruction from the management of the Company or the organization. The user is notified of the blocking or deletion as far in advance as possible, or immediately."
+    },
+    {
+      "type": "clause",
+      "text": "15.2. After an account is deleted, the employee's personal data is deleted or transferred to the archive within the time limits and in the manner established by the Privacy Policy. Personnel documents are retained for the archiving periods established by legislation."
+    },
+    {
+      "type": "clause",
+      "text": "15.3. The user has the right to stop using the System on their own initiative. To do so, they must submit a written or electronic request to the System administrator; the account will be deleted or deactivated within a reasonable time based on the request. The confidentiality obligations set out in Section 7 remain in effect in this case."
+    },
+    {
+      "type": "heading",
+      "text": "16. Force Majeure"
+    },
+    {
+      "type": "clause",
+      "text": "16.1. The Company is not liable for service interruptions arising from the following circumstances beyond its control:"
+    },
+    {
+      "type": "bullet",
+      "text": "natural disasters — earthquakes, mudslides, storms, etc.;"
+    },
+    {
+      "type": "bullet",
+      "text": "war, terrorist attacks, or civil unrest;"
+    },
+    {
+      "type": "bullet",
+      "text": "restriction of internet access or services by state authorities;"
+    },
+    {
+      "type": "bullet",
+      "text": "widespread power outages or internet infrastructure failures;"
+    },
+    {
+      "type": "bullet",
+      "text": "malfunctions on the part of third-party service providers."
+    },
+    {
+      "type": "clause",
+      "text": "16.2. In the event of force majeure, the Company will notify users as promptly as possible, and the service will be fully restored once the issue has been resolved."
+    },
+    {
+      "type": "heading",
+      "text": "17. Intellectual Property"
+    },
+    {
+      "type": "clause",
+      "text": "17.1. The System, its design, source code, logo, database structure, and all constituent parts are the intellectual property of JSC “Uzbekistan Railways” and are protected by the Law of the Republic of Uzbekistan “On Copyright and Related Rights.”"
+    },
+    {
+      "type": "clause",
+      "text": "17.2. The user is not entitled to:"
+    },
+    {
+      "type": "bullet",
+      "text": "copy, distribute, sell, or lease the System or any part thereof;"
+    },
+    {
+      "type": "bullet",
+      "text": "modify, decompile, or attempt to reverse-engineer the System's source code;"
+    },
+    {
+      "type": "bullet",
+      "text": "use the Company's logo or brand without authorization."
+    },
+    {
+      "type": "heading",
+      "text": "18. Validity and Amendment of the Terms"
+    },
+    {
+      "type": "clause",
+      "text": "18.1. The Terms take effect from the moment they are published in the System and remain in effect indefinitely."
+    },
+    {
+      "type": "clause",
+      "text": "18.2. The Company has the right to unilaterally amend these Terms. Amendments take effect from the moment they are published in the System. Users are notified of material amendments through an in- System notification or by email."
+    },
+    {
+      "type": "clause",
+      "text": "18.3. Continued use of the System after amendments are made constitutes full acceptance of the new version. A user who does not agree with the new version must stop using the System."
+    },
+    {
+      "type": "clause",
+      "text": "18.4. If any provision of the Terms is found invalid by a court or authorized body, this does not affect the validity of the remaining provisions — they remain in effect (severability of provisions)."
+    },
+    {
+      "type": "heading",
+      "text": "19. Dispute Resolution and Applicable Law"
+    },
+    {
+      "type": "clause",
+      "text": "19.1. These Terms are governed by the legislation of the Republic of Uzbekistan."
+    },
+    {
+      "type": "clause",
+      "text": "19.2. Disputes arising from these Terms are resolved primarily through negotiation. A claims procedure is mandatory in this regard: a written claim is reviewed within 15 business days from the date of its receipt."
+    },
+    {
+      "type": "clause",
+      "text": "19.3. If negotiations do not produce a result, the dispute is resolved by the competent court at the location of the Company — in the city of Tashkent — in the manner established by the legislation of the Republic of Uzbekistan. Disputes arising from employment relationships are reviewed in the manner established by labor legislation."
+    },
+    {
+      "type": "clause",
+      "text": "19.4. Relations not regulated by the Terms are governed by the applicable legislation of the Republic of Uzbekistan."
+    },
+    {
+      "type": "clause",
+      "text": "19.5. These Terms have been drawn up in the Uzbek language. Where the Terms are translated into other languages, in the event of any discrepancy, the text in the Uzbek language shall prevail."
+    },
+    {
+      "type": "heading",
+      "text": "20. Contact"
+    },
+    {
+      "type": "clause",
+      "text": "20.1. Feedback, inquiries, requests, complaints, and suggestions regarding the System and the services provided through it are accepted through the official communication channels of JSC “Uzbekistan Railways.”"
+    }
+  ]
+}
