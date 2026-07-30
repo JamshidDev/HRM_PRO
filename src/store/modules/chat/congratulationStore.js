@@ -9,7 +9,7 @@ export const useCongratulationStore = defineStore('congratulationStore', {
         visible:false,
         params: {
             page: 1,
-            per_page: 10,
+            per_page: 15,
             search: null,
             date:null,
             type:null,

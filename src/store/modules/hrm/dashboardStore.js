@@ -16,7 +16,7 @@ export const useDashboardStore = defineStore('dashboardStore', {
     },
     defaultParams: {
       page: 1,
-      per_page: 10,
+      per_page: 15,
       search: null,
       age_start: 1,
       age_end: 100,
@@ -33,7 +33,7 @@ export const useDashboardStore = defineStore('dashboardStore', {
     params: {
       organizations: [],
       page: 1,
-      per_page: 10,
+      per_page: 15,
       search: null,
       year: new Date().getFullYear(),
       month: null,

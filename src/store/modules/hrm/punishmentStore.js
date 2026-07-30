@@ -9,7 +9,7 @@ export const usePunishmentStore = defineStore('punishmentStore', {
     totalItems: 0,
     params: {
       page: 1,
-      per_page: 10,
+      per_page: 15,
       search: null,
       organizations: [],
       created: null,

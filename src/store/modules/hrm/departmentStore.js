@@ -25,7 +25,7 @@ export const useDepartmentStore = defineStore('departmentStore', {
     districtLoading: false,
     params: {
       page: 1,
-      per_page: 10,
+      per_page: 15,
       search: null,
       organizations: [],
       level: null
@@ -41,7 +41,7 @@ export const useDepartmentStore = defineStore('departmentStore', {
     previewList: [],
     previewParams: {
       page: 1,
-      per_page: 10,
+      per_page: 15,
       search: null
     },
     headerLang: 'uz'

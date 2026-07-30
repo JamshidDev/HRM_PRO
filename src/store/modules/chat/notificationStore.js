@@ -14,12 +14,12 @@ export const useNotificationStore = defineStore('notificationStore', {
     userUnreadNotificationsCount: 0,
     userNotificationsParams: {
       page: 1,
-      per_page: 10,
+      per_page: 15,
       search: null
     },
     userUnreadNotificationsParams: {
       page: 1,
-      per_page: 10,
+      per_page: 15,
       search: null
     },
     userNotificationsTotal: 0,
@@ -42,7 +42,7 @@ export const useNotificationStore = defineStore('notificationStore', {
     },
     params: {
       page: 1,
-      per_page: 10,
+      per_page: 15,
       search: null
     }
   }),

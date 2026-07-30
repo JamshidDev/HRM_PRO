@@ -33,7 +33,7 @@ export const useTurnstileWorkDurationStore = defineStore('turnstileWorkDurationS
     },
     params: {
       page: 1,
-      per_page: 10,
+      per_page: 15,
       search: null,
       start: null,
       end: null
@@ -44,7 +44,7 @@ export const useTurnstileWorkDurationStore = defineStore('turnstileWorkDurationS
     lateList: [],
     lateParams: {
       page: 1,
-      per_page: 10,
+      per_page: 15,
       search: null,
       from: null,
       to: null,

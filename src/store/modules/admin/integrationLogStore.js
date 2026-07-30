@@ -10,7 +10,7 @@ export const useIntegrationLogStore = defineStore('integrationLog', {
     activeTab: 'dashboard',
     params: {
       page: 1,
-      per_page: 10,
+      per_page: 15,
       search: null,
       api_type: null,
       method: null
@@ -109,7 +109,7 @@ export const useIntegrationLogStore = defineStore('integrationLog', {
     resetParams() {
       this.params = {
         page: 1,
-        per_page: 10,
+        per_page: 15,
         search: null,
         api_type: null,
         method: null

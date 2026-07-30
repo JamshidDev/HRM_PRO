@@ -22,7 +22,7 @@ export const useQuoteStore = defineStore('quoteStore', {
     },
     params: {
       page: 1,
-      per_page: 10,
+      per_page: 15,
       search: null,
       month: null,
       year: null

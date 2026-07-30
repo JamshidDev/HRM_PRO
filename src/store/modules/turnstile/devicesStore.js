@@ -31,7 +31,7 @@ export const useDevicesStore = defineStore('devicesStore', {
     },
     params: {
       page: 1,
-      per_page: 10,
+      per_page: 15,
       search: null,
       organizations: [],
       attached: null,

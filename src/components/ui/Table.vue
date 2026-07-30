@@ -25,7 +25,7 @@
     bottomGap: { type: Number, default: 28 }, // gap below the card
     showIndex: { type: Boolean, default: true },
     page: { type: Number, default: 1 },
-    perPage: { type: Number, default: 10 },
+    perPage: { type: Number, default: 15 },
     total: { type: Number, default: null }, // renders the pagination footer when set
     selectable: { type: Boolean, default: false }, // swaps the row-number for a checkbox
     selectedKeys: { type: Array, default: () => [] },

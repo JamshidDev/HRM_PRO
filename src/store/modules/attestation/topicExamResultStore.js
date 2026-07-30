@@ -13,7 +13,7 @@ export const useTopicExamResultStore = defineStore('topicExamResult', {
     structureCheck2: [],
     params: {
       page: 1,
-      per_page: 10,
+      per_page: 15,
       search: null,
       organizations: [],
       topics: [],

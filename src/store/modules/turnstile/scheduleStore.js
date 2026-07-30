@@ -7,7 +7,7 @@ export const useScheduleTableStore = defineStore('scheduleStore', {
   state: () => ({
     params: {
       page: 1,
-      per_page: 10,
+      per_page: 15,
       type: null,
       year: null,
       month: null
