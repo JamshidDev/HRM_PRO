@@ -56,7 +56,7 @@
       </n-button>
       <n-button
         size="large"
-        class="!rounded-full !px-3 sm:!px-4"
+        class="!rounded-full !px-3 sm:!px-4 !text-white"
         type="primary"
         :loading="resumeLoading"
         @click="emits('download')"
