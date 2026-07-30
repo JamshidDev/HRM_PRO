@@ -14,6 +14,7 @@
   import { useComponentStore } from '@/store/modules/index.js'
   import Utils from '@/utils/Utils.js'
   import Edocument from './ui/Edocument.vue'
+  import TurnstileInfo from './ui/TurnstileInfo.vue'
 
   const store = useComponentStore()
   const masked = ref(true)
@@ -34,7 +35,8 @@
     { name: t('workerView.tabs.incentive'), id: 6, icon: icons.awardIcon },
     { name: t('workerView.tabs.punishment'), id: 7, icon: icons.punishmentIcon },
     { name: t('workerView.tabs.exams'), id: 8, icon: icons.examIcon },
-    { name: t('workerView.tabs.e_documents'), id: 9, icon: icons.jshirIcon }
+    { name: t('workerView.tabs.e_documents'), id: 9, icon: icons.jshirIcon },
+    { name: t('workerView.tabs.turnstile'), id: 10, icon: icons.turnstileIcon }
   ])
 
   const openPreview = (id) => {
@@ -131,6 +133,7 @@
                   <DisciplinaryInfo v-else-if="activeTab === tabList[6].id" />
                   <ExamInfo v-else-if="activeTab === tabList[7].id" />
                   <Edocument v-else-if="activeTab === tabList[8].id" />
+                  <TurnstileInfo v-else-if="activeTab === tabList[9].id" />
                 </div>
               </Transition>
             </div>
