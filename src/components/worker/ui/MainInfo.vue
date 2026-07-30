@@ -43,7 +43,7 @@
         <n-avatar
           :size="96"
           round
-          class="relative z-10 cursor-pointer shrink-0"
+          class="main-info-avatar relative z-10 cursor-pointer shrink-0"
           :src="avatarSrc || Utils.noAvailableImage"
           :fallback-src="Utils.noAvailableImage"
           :img-props="{ style: 'object-fit: cover' }"
@@ -92,6 +92,10 @@
     .main-info-header-bg-image {
       mix-blend-mode: color;
     }
+  }
+
+  .main-info-avatar {
+    border: 1px solid var(--surface-300);
   }
 
   .active-employee-badge {
