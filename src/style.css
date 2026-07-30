@@ -81,7 +81,7 @@
 
 html,
 body {
-  background-color: #eff8ff;
+  background-color: var(--surface-ground);
 }
 
 .bg-gray-soft {
