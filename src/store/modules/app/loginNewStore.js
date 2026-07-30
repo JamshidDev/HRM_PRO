@@ -26,7 +26,12 @@ export const useLoginNewStore = defineStore('loginNewStore', {
     code: null,
     codeError: null,
     showReSendButton: false,
-    otpExpireTime: otpExpireTime
+    otpExpireTime: otpExpireTime,
+    // Offerta oqimi — login javobida `offer:true` kelsa modal ochiladi va login
+    // yakunlanmaydi. Token "Tanishdim" bosilgunча localStorage'ga saqlanmaydi.
+    showOfferModal: false,
+    pendingToken: null,
+    offerLoading: false
   }),
   getters: {
     // +998(90)1234567 -> 901234567
@@ -120,28 +125,34 @@ export const useLoginNewStore = defineStore('loginNewStore', {
     },
     // login va 2FA muvaffaqiyatli token olgandan keyingi umumiy oqim
     _handleAuthSuccess(res) {
-      const accountStore = useAccountStore()
       const token = res.data.access_token
-      const mustChange = res.data.must_change === true
-      localStorage.setItem(useAppSetting.tokenKey, token)
 
-      if (mustChange) {
-        localStorage.setItem(useAppSetting.mustChangeKey, '1')
-      } else {
-        localStorage.removeItem(useAppSetting.mustChangeKey)
+      // offer=true → offerta HALI qabul qilinmagan. Login yakunlanmaydi:
+      // token'ni vaqtincha ushlaymiz (localStorage'ga YOZMAYMIZ) va modalni ochamiz.
+      // "Tanishdim"да `_acceptOfferAndContinue` login'ni davom ettiradi;
+      // rad etsa `_declineOffer` — modal yopiladi, shu sahifada qoladi.
+      if (res.data.offer === true) {
+        this.pendingToken = token
+        this.showOfferModal = true
+        return
       }
+
+      this._finalizeLogin(token)
+    },
+    // Token'ni saqlab, login'ni yakunlaydi (offer tekshiruvidan keyin chaqiriladi).
+    // must_change endi login javobida EMAS — `/user/profile` orqali keladi
+    // (accountStore._index uni o'rnatadi).
+    _finalizeLogin(token) {
+      localStorage.setItem(useAppSetting.tokenKey, token)
 
       if (this.authPayload) {
         this._getAuthCode()
         return
       }
 
+      const accountStore = useAccountStore()
       const socketStore = useSocketStore()
       socketStore.disconnect()
-
-      if (mustChange) {
-        accountStore.mustChangePassword = true
-      }
 
       accountStore._index(async (data) => {
         getActivePinia().reset()
@@ -150,6 +161,27 @@ export const useLoginNewStore = defineStore('loginNewStore', {
         await nextTick()
         await router.push(AppPaths.Home)
       })
+    },
+    // Offerta modalidagi "Tanishdim" — bazaga yozadi, keyin login davom etadi.
+    _acceptOfferAndContinue() {
+      if (!this.pendingToken) return
+      this.offerLoading = true
+      $ApiService.accountService
+        ._acceptOffer({ token: this.pendingToken })
+        .then(() => {
+          const token = this.pendingToken
+          this.showOfferModal = false
+          this.pendingToken = null
+          this._finalizeLogin(token)
+        })
+        .finally(() => {
+          this.offerLoading = false
+        })
+    },
+    // Offerta rad etildi — modal yopiladi, login yakunlanmaydi (shu sahifada qoladi).
+    _declineOffer() {
+      this.showOfferModal = false
+      this.pendingToken = null
     },
     _getAuthCode() {
       this.loading = true

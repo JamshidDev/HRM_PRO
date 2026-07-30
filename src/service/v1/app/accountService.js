@@ -24,6 +24,14 @@ const _updateOrgInfo = async (payload) => {
   return await axios.put(`/v1/user/organization-info`, payload?.data)
 }
 
+// Offertani qabul qilish. Login vaqtida token hali localStorage'ga saqlanmagan bo'ladi
+// (foydalanuvchi "Tanishdim" bosmaguncha kirmaydi), shuning uchun token'ni bevosita
+// Authorization header sifatida uzatamiz — interceptor localStorage bo'sh bo'lsa uni bosmaydi.
+const _acceptOffer = async (payload) => {
+  const config = payload?.token ? { headers: { Authorization: 'Bearer ' + payload.token } } : {}
+  return await axios.post(`/v1/user/accept-offer`, {}, config)
+}
+
 export default {
   _index,
   _update,
@@ -31,5 +39,6 @@ export default {
   _roles,
   _changeRole,
   _orgInfo,
-  _updateOrgInfo
+  _updateOrgInfo,
+  _acceptOffer
 }

@@ -21,20 +21,6 @@
   const router = useRouter()
   const route = useRoute()
 
-  const termsFiles = {
-    uz: '/terms/HRM_PRO_Terms_UZ.pdf',
-    ru: '/terms/HRM_PRO_Terms_RU.pdf',
-    en: '/terms/HRM_PRO_Terms_EN.pdf'
-  }
-  const privacyFiles = {
-    uz: '/terms/HRM_PRO_Privacy_UZ.pdf',
-    ru: '/terms/HRM_PRO_Privacy_RU.pdf',
-    en: '/terms/HRM_PRO_Privacy_EN.pdf'
-  }
-  const currentLang = () => localStorage.getItem(useAppSetting.languageKey) || 'uz'
-  const termsUrl = computed(() => termsFiles[currentLang()] ?? termsFiles.uz)
-  const privacyUrl = computed(() => privacyFiles[currentLang()] ?? privacyFiles.uz)
-
   const formRef = ref(null)
   const captchaRef = ref(null)
   const captchaError = ref(false)
@@ -190,25 +176,7 @@
         />
       </n-form-item>
 
-      <p class="text-xs text-center text-login-muted mt-4 lg:mt-16 mb-4 lg:mb-3">
-        {{ $t('loginPage.termsPrefix') }}
-        <a
-          :href="termsUrl"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="hover:underline cursor-pointer font-medium text-login-link"
-        >{{ $t('loginPage.termsLink') }}</a>
-        {{ $t('loginPage.termsMiddle') }}
-        <a
-          :href="privacyUrl"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="hover:underline cursor-pointer font-medium text-login-link"
-        >{{ $t('loginPage.privacyLink') }}</a>
-        {{ $t('loginPage.termsSuffix') }}
-      </p>
-
-      <div class="grid">
+      <div class="grid mt-4 lg:mt-16">
         <n-button
           attr-type="submit"
           class="login-new__submit h-[48px]! lg:h-[52px]! rounded-[10px]! overflow-hidden! font-semibold!"
