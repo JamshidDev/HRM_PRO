@@ -24,7 +24,7 @@ export const useUniversityStore = defineStore('universityStore', {
     },
     params: {
       page: 1,
-      per_page: 10,
+      per_page: 15,
       search: null
     },
     uuid: null,

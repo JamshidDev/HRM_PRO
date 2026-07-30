@@ -18,7 +18,7 @@ export const useSpecializationStore = defineStore('specializationStore', {
     structureCheck: [],
     directionListParams: {
       page: 1,
-      per_page: 10,
+      per_page: 15,
       search: null
     },
     directionList: [],
@@ -33,7 +33,7 @@ export const useSpecializationStore = defineStore('specializationStore', {
     },
     params: {
       page: 1,
-      per_page: 10,
+      per_page: 15,
       search: null
     }
   }),

@@ -19,7 +19,7 @@ export const useShiftTypeStore = defineStore('shiftTypeStore', {
 
     params: {
       page: 1,
-      per_page: 10,
+      per_page: 15,
       search: null,
       organizations: [],
       departments: []
@@ -72,7 +72,7 @@ export const useShiftTypeStore = defineStore('shiftTypeStore', {
     groupList: [],
     groupParams: {
       page: 1,
-      per_page: 10,
+      per_page: 15,
       search: null,
       schedule_type: null,
       organizations: [],
@@ -87,7 +87,7 @@ export const useShiftTypeStore = defineStore('shiftTypeStore', {
     totalGroupWorkerCount: 0,
     groupWorkerParams: {
       page: 1,
-      per_page: 10,
+      per_page: 15,
       search: null,
       group: null
     },

@@ -25,7 +25,7 @@ export const useHcServerStore = defineStore('hcServerStore', {
     },
     params: {
       page: 1,
-      per_page: 10,
+      per_page: 15,
       search: null,
       organizations: []
     },
@@ -35,7 +35,7 @@ export const useHcServerStore = defineStore('hcServerStore', {
     workerLoading: false,
     workerParams: {
       page: 1,
-      per_page: 10,
+      per_page: 15,
       search: null,
       organization_id: null,
       departments: [],
@@ -52,7 +52,7 @@ export const useHcServerStore = defineStore('hcServerStore', {
     errorVisible: false,
     errorParams: {
       page: 1,
-      per_page: 10,
+      per_page: 15,
       search: null,
       job_id: null
     }

@@ -23,7 +23,7 @@ export const useTurnstileHikCentralWorkerStore = defineStore('turnstileHikCentra
     photosLoading: false,
     params: {
       page: 1,
-      per_page: 10,
+      per_page: 15,
       search: null,
       organizations: [],
       departments: [],

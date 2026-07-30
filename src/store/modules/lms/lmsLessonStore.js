@@ -30,7 +30,7 @@ export const useLmsLessonStore = defineStore('lmsLessonStore', {
     },
     params: {
       page: 1,
-      per_page: 10,
+      per_page: 15,
       search: null,
       learning_center_id: null,
       start_date: null,
@@ -59,7 +59,7 @@ export const useLmsLessonStore = defineStore('lmsLessonStore', {
     resultList: [],
     resultParams: {
       page: 1,
-      per_page: 10,
+      per_page: 15,
       search: null
     },
     totalResult: 0,

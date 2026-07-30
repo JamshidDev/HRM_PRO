@@ -7,7 +7,7 @@
         <span class="font-normal">
           <span class="font-bold text-primary">{{ total }}</span> {{ $t('content.fromTa') }}
           <span class="font-bold text-primary">
-            {{ (page - 1) * pageSize + 1 }}-{{ page * pageSize }}
+            {{ (currentPage - 1) * pageSize + 1 }}-{{ Math.min(currentPage * pageSize, total) }}
           </span>
           {{ $t('content.untilShow') }}
         </span>
@@ -15,7 +15,7 @@
     </div>
     <div class="flex xl:justify-end lg:justify-end md:justify-end justify-center">
       <n-pagination
-        v-model:page="page"
+        v-model:page="currentPage"
         v-model:page-size="pageSize"
         :page-count="page_count"
         :show-size-picker="showSizePicker"
@@ -40,9 +40,10 @@
       type: Number,
       default: 1
     },
+    // eslint-disable-next-line vue/prop-name-casing
     per_page: {
       type: Number,
-      default: 10
+      default: 15
     },
     short: {
       type: Boolean,
@@ -56,12 +57,12 @@
 
   const emits = defineEmits(['changePage'])
 
-  const page = ref(1)
-  const pageSize = ref(10)
+  const currentPage = ref(1)
+  const pageSize = ref(15)
   const pageSizes = [
     {
-      label: t('content.paginationSize', { n: 10 }),
-      value: 10
+      label: t('content.paginationSize', { n: 15 }),
+      value: 15
     },
     {
       label: t('content.paginationSize', { n: 20 }),
@@ -84,22 +85,22 @@
 
   watch(
     () => props.page,
-    (new_val, old_val) => {
-      page.value = new_val
+    (new_val) => {
+      currentPage.value = new_val
     }
   )
 
   watch(
     () => props.total,
-    (new_val, old_val) => {
+    (new_val) => {
       page_count.value = Math.ceil(Math.ceil(new_val / pageSize.value))
     }
   )
   const changePageSize = (per_page) => {
-    page.value = 1
+    currentPage.value = 1
     page_count.value = Math.ceil(Math.ceil(props.total / per_page))
     emits('changePage', {
-      page: page.value,
+      page: currentPage.value,
       per_page: per_page
     })
   }
@@ -112,7 +113,7 @@
   }
 
   onMounted(() => {
-    page.value = props.page
+    currentPage.value = props.page
     pageSize.value = props.per_page
     pageSizes.value = props.total
     page_count.value = Math.ceil(Math.ceil(props.total / pageSize.value))

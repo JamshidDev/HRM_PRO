@@ -7,7 +7,7 @@ export const useConfVacationScheduleStore = defineStore('confVacationScheduleSto
     list: [],
     params: {
       page: 1,
-      per_page: 10,
+      per_page: 15,
       search: null
     },
     loading: false,

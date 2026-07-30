@@ -24,7 +24,7 @@ export const useIntegrationClientsStore = defineStore('integrationClients', {
     clients: [],
     clientsLoading: false,
     clientsTotalItems: 0,
-    clientsParams: { page: 1, per_page: 10, search: null },
+    clientsParams: { page: 1, per_page: 15, search: null },
     saveLoading: false,
     meta: { roles: [], scope_modes: ['all', 'subtree', 'exact'] },
 
@@ -32,7 +32,7 @@ export const useIntegrationClientsStore = defineStore('integrationClients', {
     list: [],
     loading: false,
     totalItems: 0,
-    params: { page: 1, per_page: 10, search: null, method: null }
+    params: { page: 1, per_page: 15, search: null, method: null }
   }),
 
   actions: {

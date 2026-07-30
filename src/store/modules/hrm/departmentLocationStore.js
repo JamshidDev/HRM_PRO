@@ -30,13 +30,13 @@ export const useDepartmentLocationStore = defineStore('departmentLocationStore',
     },
     params: {
       page: 1,
-      per_page: 10,
+      per_page: 15,
       search: null,
       organizations: []
     },
     locationParams: {
       page: 1,
-      per_page: 10,
+      per_page: 15,
       search: null,
       organizations: [],
       department_id: null

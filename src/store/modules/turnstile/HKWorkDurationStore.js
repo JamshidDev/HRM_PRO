@@ -13,7 +13,7 @@ export const useHKWorkDurationStore = defineStore('HKWorkDurationStore', {
 
     params: {
       page: 1,
-      per_page: 10,
+      per_page: 15,
       search: null,
       date: null,
       access_levels: [],

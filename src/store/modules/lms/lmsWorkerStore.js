@@ -23,7 +23,7 @@ export const useLmsWorkerStore = defineStore('lmsWorkerStore', {
     },
     params: {
       page: 1,
-      per_page: 10,
+      per_page: 15,
       search: null,
       edu_plan_id: null,
       organizations: []
