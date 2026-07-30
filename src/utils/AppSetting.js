@@ -7,7 +7,7 @@ export const useAppSetting = {
   accountUserId: 'account-user-id',
   telegramPopup: 'telegramPopup',
   noAvailableImage: '/no-picture.png',
-  appLogoUrl: '/logo.png',
+  appLogoUrl: '/main-logo.svg',
   datePicketFormat: 'dd.MM.yyyy',
   timePicketFormat: 'dd.MM.yyyy hh:mm',
   signatureUseType: {
