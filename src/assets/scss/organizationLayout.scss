@@ -87,13 +87,6 @@ $mobile_device_screen_size: 900px;
         flex-shrink: 0;
         //background-image: linear-gradient(to right bottom, rgb(67, 128, 253), rgb(4, 12, 64));
         //border: 1px solid #2d6def;
-        & > .animation-logo {
-          transform: rotate(0deg);
-          transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1) 0.1s;
-          &:hover {
-            transform: rotate(360deg);
-          }
-        }
       }
     }
     .panel-content {
