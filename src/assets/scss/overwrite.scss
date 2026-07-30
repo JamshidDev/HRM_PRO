@@ -1,6 +1,7 @@
 *{
   //font-family:"Poppins", sans-serif !important;
   font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Segoe UI", Roboto, sans-serif !important;
+  scrollbar-color: var(--scrollbar-thumb) var(--surface-ground);
 
   &::-webkit-scrollbar-button {
     display: none;

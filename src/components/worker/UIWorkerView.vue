@@ -146,9 +146,6 @@
 </template>
 
 <style lang="scss">
-  .sidebar-title-box {
-    background-color: #eff8ff;
-  }
   .tab-fade-enter-active,
   .tab-fade-leave-active {
     transition:
@@ -162,25 +159,7 @@
   }
 
   .preview-content {
-    background: linear-gradient(180deg, #f9fafb 0%, #f5faff 50%, #eff8ff 100%);
-  }
-
-  [data-theme='dark'] .preview-content {
-    background: linear-gradient(180deg, #0f1115 0%, #111827 50%, #162033 100%);
-  }
-
-  .ui-preview-window,
-  .preview-spin {
-    background-color: #eff8ff;
-  }
-  [data-theme='dark'] {
-    .ui-preview-window,
-    .preview-spin {
-      background-color: #0f172a;
-    }
-    .sidebar-title-box {
-      background-color: #1a2131;
-    }
+    background: var(--surface-ground);
   }
 
   .ui-preview-window {

@@ -19,7 +19,7 @@
   <div class="w-full flex bg-surface-section rounded-sm border-surface-line p-2 pt-8">
     <div class="flex flex-col" style="width: calc(100% - 0px)">
       <div
-        class="mx-auto mb-16 md:sticky top-[10px] z-50 bg-white rounded-2xl overflow-auto w-full md:w-auto"
+        class="mx-auto mb-16 md:sticky top-[10px] z-50 bg-surface-section rounded-2xl overflow-auto w-full md:w-auto"
       >
         <n-button-group>
           <n-button

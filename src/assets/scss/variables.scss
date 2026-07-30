@@ -1,5 +1,6 @@
 :root {
-  --surface-ground: #EFF8FF;
+  color-scheme: light;
+  --surface-ground: #eff3f7;
   --surface-section: #ffffff;
   --surface-line: #e2e8f0;
   --surface-text: #4b5675;
@@ -55,6 +56,7 @@
 }
 
 [data-theme='dark'] {
+  color-scheme: dark;
   --surface-ground: #101828;
   --surface-section: #1d2939;
   --table-header: #344054;
