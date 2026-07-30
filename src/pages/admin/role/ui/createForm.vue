@@ -7,6 +7,7 @@
     PERMISSION_GROUPS,
     ACTION_LABELS,
     ACTION_ORDER,
+    MEANINGFUL,
   } from '@/utils/permissionGroups.js'
 
   const formRef = ref(null)
@@ -24,8 +25,11 @@
 
   const idOf = (name) => permByName.value.get(name)?.id ?? null
   const has = (name) => permByName.value.has(name)
+  // switch faqat backend enforce qiladigan / frontend ishlatadigan (MEANINGFUL) slug uchun
   const actionsFor = (prefix) =>
-    ACTION_ORDER.filter((a) => has(`${prefix}-${a}`))
+    ACTION_ORDER.filter(
+      (a) => has(`${prefix}-${a}`) && MEANINGFUL.has(`${prefix}-${a}`)
+    )
 
   const isOn = (name) => {
     const id = idOf(name)
@@ -46,7 +50,8 @@
     const acts = actionsFor(g.prefix)
     if (acts.length)
       return acts.map((a) => ({ name: `${g.prefix}-${a}`, label: ACTION_LABELS[a] }))
-    if (has(g.prefix)) return [{ name: g.prefix, label: ACTION_LABELS.read }]
+    if (has(g.prefix) && MEANINGFUL.has(g.prefix))
+      return [{ name: g.prefix, label: ACTION_LABELS.read }]
     return []
   }
   const groupActions = (g) => groupSwitches(g).map((s) => s.name)
@@ -90,7 +95,10 @@
   const otherPerms = computed(() => {
     const q = query.value.trim().toLowerCase()
     return (store.originAllPermissionList || []).filter(
-      (p) => !mappedNames.value.has(p.name) && (!q || p.name.toLowerCase().includes(q))
+      (p) =>
+        !mappedNames.value.has(p.name) &&
+        MEANINGFUL.has(p.name) &&
+        (!q || p.name.toLowerCase().includes(q))
     )
   })
   const otherCount = computed(
