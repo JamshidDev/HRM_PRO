@@ -106,6 +106,6 @@
 
 <style scoped>
   .vacation-download-button {
-    --n-height: 44px !important;
+    --n-height: 32px !important;
   }
 </style>

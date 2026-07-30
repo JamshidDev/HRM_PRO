@@ -32,7 +32,7 @@
     popoverStyle: {
       type: Object,
       default: () => ({
-        width: '560px',
+        width: '360px',
         maxWidth: 'calc(100vw - 32px)',
         minHeight: 'auto',
         padding: '0',
