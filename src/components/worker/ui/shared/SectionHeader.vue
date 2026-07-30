@@ -53,10 +53,10 @@ defineProps({
 
 [data-theme='dark'] {
   .section-header-bar {
-    background-color: #1a2131;
+    background-color: var(--table-header);
   }
   .section-header {
-    background-color: #212b42;
+    background-color: var(--surface-section);
   }
 
 }

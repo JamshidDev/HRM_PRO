@@ -147,7 +147,7 @@
   grid-template-columns: 1fr 1fr;
   align-items: center;
   padding: 9px 14px;
-  background: white;
+  background: var(--surface-section);
   gap: 8px;
 }
 
@@ -155,7 +155,7 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  color: var(--n-text-color-3, #9ca3af);
+  color: var(--textColor3);
   font-size: 12px;
   white-space: nowrap;
 }
@@ -163,7 +163,7 @@
 .info-value-col {
   font-size: 13px;
   font-weight: 500;
-  color: var(--n-text-color, #1f2937);
+  color: var(--textColor0);
   text-align: right;
   display: flex;
   justify-content: flex-end;

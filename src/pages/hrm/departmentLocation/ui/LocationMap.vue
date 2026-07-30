@@ -517,10 +517,10 @@
     <!-- Map controls header -->
     <div class="map-header" v-if="!readonly">
       <div class="flex items-center gap-2">
-        <n-icon size="20" color="#3b82f6">
+        <n-icon size="20" color="var(--primary-color)">
           <Location24Regular />
         </n-icon>
-        <span class="font-medium text-gray-700">{{ $t('departmentLocationPage.map.title') }}</span>
+        <span class="font-medium text-textColor0">{{ $t('departmentLocationPage.map.title') }}</span>
       </div>
 
       <!-- Controls: hidden in readonly mode -->
@@ -612,5 +612,23 @@
   color: #374151;
   background: #f3f4f6;
   border: 1px solid #e5e7eb;
+}
+
+[data-theme='dark'] {
+  .location-map-wrapper {
+    background: var(--surface-ground);
+    border-color: var(--surface-line);
+  }
+
+  .map-header {
+    background: var(--surface-section);
+    border-bottom-color: var(--surface-line);
+  }
+
+  .points-badge {
+    color: var(--textColor0);
+    background: var(--table-header);
+    border-color: var(--surface-line);
+  }
 }
 </style>
