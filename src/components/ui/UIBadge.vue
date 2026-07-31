@@ -8,11 +8,11 @@
   import Utils from '@/utils/Utils.js'
   const props = defineProps({
     label: {
-      types: String,
+      type: String,
       default: ''
     },
     type: {
-      types: String,
+      type: String,
       default: Utils.colorTypes.info
     },
     showIcon: {
@@ -22,6 +22,10 @@
     icon: {
       type: Object,
       default: null
+    },
+    paddingY: {
+      type: String,
+      default: ''
     }
   })
 
@@ -67,10 +71,10 @@
 </script>
 
 <template>
-  <div class="w-full flex justify-center items-center">
+  <div class="flex items-center max-w-full">
     <div
-      :class="[badgeType]"
-      class="flex gap-1 border items-center px-3 rounded-2xl cursor-pointer"
+      :class="[badgeType, paddingY]"
+      class="flex gap-1 border items-center px-3 rounded-2xl cursor-pointer truncate"
     >
       <div v-if="showIcon" class="w-[20px] flex justify-center">
         <slot name="icon">
@@ -79,12 +83,9 @@
           </n-icon>
         </slot>
       </div>
-      <div
-        class="ui--badge-label leading-[1.2]"
-        v-bind:style="{ width: `calc(100% - ${showIcon ? 20 : 0}px)` }"
-      >
-        {{ label }}
-      </div>
+      <n-ellipsis class="flex-1" :tooltip="{ style: { maxWidth: '300px' } }">
+        <span class="ui--badge-label leading-[1.2]">{{ label }}</span>
+      </n-ellipsis>
     </div>
   </div>
 </template>

@@ -1,11 +1,11 @@
 import {
   CellularWarning24Filled,
   CellularData120Filled,
-  DataUsage20Regular,
   RibbonStar20Filled,
   WeatherSunnyLow48Filled,
+  CheckmarkCircle20Filled,
   PersonClock20Filled,
-  CheckmarkCircle20Filled
+  DataUsage20Regular
 } from '@vicons/fluent'
 import { defineStore } from 'pinia'
 import i18n from '@/i18n/index.js'
@@ -46,7 +46,7 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
     previewVisible: false,
     previewParams: {
       page: 1,
-      per_page: 10,
+      per_page: 15,
       search: null,
       organizations: [],
       access_levels: [],

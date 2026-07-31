@@ -4,7 +4,7 @@
   import { useAccountStore } from '@/store/modules/index.js'
   import i18n from '@/i18n/index.js'
   import { AppPaths, useAppSetting } from '@/utils/index.js'
-  import { PageInstruction, MiniMenuBadge, MenuItemBadge } from '@components'
+  import { MiniMenuBadge, MenuItemBadge, UIProfile, DownloadTask } from '@components'
 
   const { t } = i18n.global
   const route = useRoute()
@@ -76,17 +76,32 @@
       })
   })
 
+  /**
+   * When no module is selected yet (e.g. on the home page right after load),
+   * fall back to the first module the user has access to so the sidebar panel
+   * has something to show and the toggle button remains functional.
+   */
+  const fallbackMenuPath = computed(() => {
+    const nav = navigations.find(
+      (v) => (store.isModeDev || store.checkPermission(v.permission)) && v.children?.length
+    )
+    return nav?.path ?? null
+  })
+
+  const effectiveMenuPath = computed(() => menuPath.value ?? fallbackMenuPath.value)
+
   const panelMenu = computed(() => {
-    if (menuPath.value == null) {
+    if (effectiveMenuPath.value == null) {
       return []
     }
     /**
      * It is impossible the navigation find returns undefined value
-     * since menuPath variable is only set when clicking one of the mini menus
+     * since effectiveMenuPath is either set when clicking one of the mini menus
+     * or falls back to the first accessible module
      * if you think about the user typing from the router you have to implement navigation guard for routes
      */
     return navigations
-      .find((v) => v.path === menuPath.value)
+      .find((v) => v.path === effectiveMenuPath.value)
       .children.map((v) => ({
         ...v,
         allowed: store.checkPermission(v.permission)
@@ -95,16 +110,16 @@
   })
 
   const menuName = computed(() => {
-    if (menuPath.value === '/hrm') return t('sidebar.hrm')
-    else if (menuPath.value === '/attestation') return t('sidebar.attestation')
-    else if (menuPath.value === '/admin') return t('sidebar.admin')
-    else if (menuPath.value === '/chat') return t('sidebar.chat')
-    else if (menuPath.value === '/docflow') return t('sidebar.docflow')
-    else if (menuPath.value === '/timesheet') return t('sidebar.timesheet')
-    else if (menuPath.value === '/turnstile') return t('turnstile.title')
-    else if (menuPath.value === '/lms') return t('sidebar.lms')
-    else if (menuPath.value === AppPaths.Hospital) return t('sidebar.hospital')
-    else if (menuPath.value === AppPaths.Accountant) return t('sidebar.accountant')
+    if (effectiveMenuPath.value === '/hrm') return t('sidebar.hrm')
+    else if (effectiveMenuPath.value === '/attestation') return t('sidebar.attestation')
+    else if (effectiveMenuPath.value === '/admin') return t('sidebar.admin')
+    else if (effectiveMenuPath.value === '/chat') return t('sidebar.chat')
+    else if (effectiveMenuPath.value === '/docflow') return t('sidebar.docflow')
+    else if (effectiveMenuPath.value === '/timesheet') return t('sidebar.timesheet')
+    else if (effectiveMenuPath.value === '/turnstile') return t('turnstile.title')
+    else if (effectiveMenuPath.value === '/lms') return t('sidebar.lms')
+    else if (effectiveMenuPath.value === AppPaths.Hospital) return t('sidebar.hospital')
+    else if (effectiveMenuPath.value === AppPaths.Accountant) return t('sidebar.accountant')
     else return ''
   })
 
@@ -115,7 +130,7 @@
   }
 
   const currentCategory = computed(() => {
-    const nav = navigations.find((n) => n.path === menuPath.value)
+    const nav = navigations.find((n) => n.path === effectiveMenuPath.value)
     return nav?.name || null
   })
 
@@ -123,7 +138,7 @@
     // if (route.path.includes(path)) {
     //   menuPath.value = path
     // }
-    return menuPath.value === path || route.path.includes(path)
+    return effectiveMenuPath.value === path || route.path.includes(path)
   }
 
   const isCurrentPath = (path) => {
@@ -144,98 +159,107 @@
 
 <template>
   <div class="sidebar-content">
-    <div class="mini-content">
-      <div>
-        <div
-          @click="() => router.push({ name: AppPaths.Home.substring(1) })"
-          class="logo-content cursor-pointer"
-        >
-          <img :src="useAppSetting.appLogoUrl" alt=" " class="object-center animation-logo" />
-        </div>
-
-        <template v-for="item in miniMenu" :key="item">
-          <div class="flex flex-col relative group">
-            <div
-              :class="[isComboxMenu(item.path) && 'active-mini-content']"
-              class="main-menu-item border"
-              @click="nextPanel(item.path)"
-            >
-              <MiniMenuBadge :category="item?.name ?? undefined" />
-              <n-icon>
-                <component :is="item.icon" />
-              </n-icon>
-            </div>
-            <div
-              class="absolute group-hover:opacity-100 group-hover:left-[60px] transition-all duration-300 pointer-events-none opacity-0 h-[32px] bg-dark border border-secondary left-[40px] rounded-lg top-[20px] z-[999] text-center text-white flex items-center justify-center text-nowrap px-2"
-            >
-              <p class="tooltip-triangle line-clamp-1 absolute font-bold font-poppins"></p>
-              {{ $t(item.label) }}
-            </div>
+    <div class="sidebar-card m-2 rounded-3xl overflow-hidden flex">
+      <div class="mini-content">
+        <div class="mini-top-group">
+          <div
+            @click="() => router.push({ name: AppPaths.Home.substring(1) })"
+            class="logo-content cursor-pointer"
+          >
+            <img :src="useAppSetting.appLogoUrl" alt=" " class="object-center animation-logo" />
           </div>
-        </template>
-      </div>
-      <PageInstruction />
-    </div>
-    <div
-      class="panel-content sidebar-panel overflow-y-auto! h-screen"
-      style="scrollbar-width: none"
-    >
-      <transition name="slide-right" mode="out-in">
-        <div v-if="showPanel && panelMenu?.length">
-          <span class="text-sm block text-textColor2 truncate font-semibold pl-4 mb-3 mt-3">{{
-            menuName
-          }}</span>
-          <template v-for="item in panelMenu" :key="item">
-            <template v-if="item?.children && item.children.length > 0">
-              <div class="panel-item-multiple">
-                <div class="panel-header" @click="controlCollapse">
-                  <div class="item-icon">
-                    <i :class="item.icon"></i>
-                  </div>
-                  <div class="item-title">
-                    <span>{{ $t(item.label) }}</span>
-                    <n-icon size="18">
-                      <ChevronDown12Regular />
+
+          <div class="mini-menu-scroll">
+            <template v-for="item in miniMenu" :key="item">
+              <n-tooltip trigger="hover" placement="right">
+                <template #trigger>
+                  <div
+                    :class="[isComboxMenu(item.path) && 'active-mini-content']"
+                    class="main-menu-item"
+                    @click="nextPanel(item.path)"
+                  >
+                    <MiniMenuBadge :category="item?.name ?? undefined" />
+                    <n-icon>
+                      <component :is="item.icon" /> 
                     </n-icon>
                   </div>
-                </div>
-                <div
-                  class="panel-body pl-2"
-                  :style="{ height: collapse ? item.children.length * 38 + 'px' : '0px' }"
-                >
-                  <div v-for="subMenu in item.children" class="panel-item">
+                </template>
+                {{ $t(item.label) }} 
+              </n-tooltip>
+            </template>
+          </div>
+        </div>
+        <div class="flex flex-col items-center gap-[10px]">
+          <DownloadTask />
+          <!-- <PageInstruction /> -->
+          <!-- <NotificationsWidget /> -->
+          <UIProfile /> 
+        </div>
+      </div>
+      <div
+        class="panel-content sidebar-panel overflow-y-auto! h-full"
+        style="scrollbar-width: none"
+      >
+        <transition name="slide-right" mode="out-in">
+          <div v-if="showPanel && panelMenu?.length">
+            <div class="sticky top-0 z-10 bg-surface-section pt-[10px] -mt-[10px]">
+              <span class="text-sm block text-textColor2 truncate font-semibold pl-4 mb-3">
+                {{ menuName }}
+              </span>
+              <div class="border-b border-surface-line -mx-[10px] mb-5"></div>
+            </div>
+            <template v-for="item in panelMenu" :key="item">
+              <template v-if="item?.children && item.children.length > 0">
+                <div class="panel-item-multiple">
+                  <div class="panel-header" @click="controlCollapse">
                     <div class="item-icon">
-                      <i :class="subMenu.icon"></i>
+                      <i :class="item.icon"></i>
                     </div>
-                    <div class="item-title">{{ $t(subMenu.label) }}</div>
+                    <div class="item-title">
+                      <span>{{ $t(item.label) }}</span>
+                      <n-icon size="18">
+                        <ChevronDown12Regular /> 
+                      </n-icon>
+                    </div>
+                  </div>
+                  <div
+                    class="panel-body pl-2"
+                    :style="{ height: collapse ? item.children.length * 38 + 'px' : '0px' }"
+                  >
+                    <div v-for="subMenu in item.children" :key="subMenu.path" class="panel-item">
+                      <div class="item-icon">
+                        <i :class="subMenu.icon"></i>
+                      </div>
+                      <div class="item-title">{{ $t(subMenu.label) }}</div>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </template>
+              </template>
 
-            <template v-else>
-              <div
-                @click="onChangePath(item)"
-                class="panel-item-single relative"
-                :class="[
-                  isCurrentPath(item.path) && 'active-panel-item-single',
-                  item?.disable && 'opacity-30'
-                ]"
-              >
-                <MenuItemBadge :category="currentCategory" :field="item?.name" />
-                <div :class="[item?.color]" class="item-icon rounded-[10px] ml-[-2px]">
-                  <n-icon size="20">
-                    <component :is="item.icon" />
-                  </n-icon>
+              <template v-else>
+                <div
+                  @click="onChangePath(item)"
+                  class="panel-item-single relative"
+                  :class="[
+                    isCurrentPath(item.path) && 'active-panel-item-single',
+                    item?.disable && 'opacity-30'
+                  ]"
+                >
+                  <MenuItemBadge :category="currentCategory" :field="item?.name" />
+                  <div class="item-icon rounded-[10px] ml-[-2px]">
+                    <n-icon size="20">
+                      <component :is="item.icon" /> 
+                    </n-icon>
+                  </div>
+                  <div class="item-title truncate pl-2">
+                    <span>{{ $t(item.label) }}</span>
+                  </div>
                 </div>
-                <div class="item-title truncate pl-2">
-                  <span>{{ $t(item.label) }}</span>
-                </div>
-              </div>
+              </template>
             </template>
-          </template>
-        </div>
-      </transition>
+          </div>
+        </transition>
+      </div>
     </div>
 
     <div @click="onClick" class="control-btn border border-surface-line">
@@ -247,16 +271,6 @@
 </template>
 
 <style scoped>
-  .tooltip-triangle {
-    width: 0;
-    height: 0;
-    border-top: 7px solid transparent;
-    border-right: 10px solid #020304;
-    border-bottom: 7px solid transparent;
-    left: -10px;
-    top: 8px;
-  }
-
   .slide-right-enter-active {
     transition: all 0.2s ease;
   }
@@ -284,5 +298,15 @@
   .slide-right-leave-to {
     transform: translateX(20px);
     opacity: 0;
+  }
+
+  .sidebar-card {
+    border: 1px solid #eaecf0;
+  }
+
+  [data-theme='dark'] {
+    .sidebar-card {
+      border: 1px solid #2b3d55;
+    }
   }
 </style>

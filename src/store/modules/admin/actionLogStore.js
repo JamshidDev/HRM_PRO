@@ -18,7 +18,7 @@ export const useActionLogStore = defineStore('actionLog', {
     },
     params: {
       page: 1,
-      per_page: 10,
+      per_page: 15,
       search: null,
       organizations: [],
       created_at: null,
@@ -29,7 +29,7 @@ export const useActionLogStore = defineStore('actionLog', {
     },
     authParams: {
       page: 1,
-      per_page: 10,
+      per_page: 15,
       search: null
     },
     structureCheck: [],

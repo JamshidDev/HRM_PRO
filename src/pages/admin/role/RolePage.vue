@@ -18,6 +18,9 @@
   const onAdd = () => {
     if (!accStore.checkAction(accStore.pn.rolesWrite)) return
     store.resetForm()
+    // resetForm guard'ni 'sanctum'ga qaytaradi — mos permission ro'yxatini qayta yuklaymiz
+    // (avvalgi integration tahriridan qolgan bo'lishi mumkin).
+    store._getAllPermission()
     store.visibleType = true
     store.visible = true
   }

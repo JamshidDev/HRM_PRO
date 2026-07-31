@@ -38,7 +38,7 @@ export const useVacationScheduleStore = defineStore('vacationScheduleStore', {
     payload: initialPayload(),
     params: {
       page: 1,
-      per_page: 10,
+      per_page: 15,
       search: null,
       organizations: []
     },
@@ -59,7 +59,7 @@ export const useVacationScheduleStore = defineStore('vacationScheduleStore', {
       total: 0,
       params: {
         page: 1,
-        per_page: 10,
+        per_page: 15,
         search: null,
         year: null,
         organizations: [],
@@ -72,7 +72,7 @@ export const useVacationScheduleStore = defineStore('vacationScheduleStore', {
       total: 0,
       params: {
         page: 1,
-        per_page: 10,
+        per_page: 15,
         search: null
       }
     },
@@ -82,7 +82,7 @@ export const useVacationScheduleStore = defineStore('vacationScheduleStore', {
       total: 0,
       params: {
         page: 1,
-        per_page: 10,
+        per_page: 15,
         search: null
       }
     }

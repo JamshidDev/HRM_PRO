@@ -1,14 +1,14 @@
 2
 <script setup>
-  import { useComponentStore, useMedStore, useAccountStore } from '@/store/modules/index.js'
-  import Table from './ui/Table.vue'
+  import { UIDrawer, UIOfficeApp, UIPageContent } from '@/components/index.js'
+  import { useAccountStore, useComponentStore, useMedStore } from '@/store/modules/index.js'
+  import Utils from '@/utils/Utils.js'
+  import MedInspectionPage from '../medInspection/page.vue'
+  import PolyclinicPage from '../polyclinic/page.vue'
   import createForm from './ui/createForm.vue'
   import Filter from './ui/Filter.vue'
   import IndicatorBoxes from './ui/IndicatorBoxes.vue'
-  import { UIDrawer, UIPageContent, UIOnlyOfficeApp, UIOfficeApp } from '@/components/index.js'
-  import PolyclinicPage from '../polyclinic/page.vue'
-  import MedInspectionPage from '../medInspection/page.vue'
-  import Utils from '@/utils/Utils.js'
+  import Table from './ui/Table.vue'
 
   const store = useMedStore()
   const componentStore = useComponentStore()
@@ -39,9 +39,7 @@
         <Table />
       </template>
       <template #panel-2>
-        <div>
-          <PolyclinicPage />
-        </div>
+        <PolyclinicPage />
       </template>
       <template #panel-3>
         <MedInspectionPage @openOffice="openOffice" />

@@ -9,7 +9,8 @@
     RowChart,
     DeviceCard,
     MonthlyCard,
-    FaceCard
+    FaceCard,
+    CardDecor
   } from './ui/index.js'
 
   const dashboardStore = useTurnstileDashboardStore()
@@ -43,62 +44,71 @@
 
 <template>
   <UIPageContent>
-    <Filter />
-    <div class="grid grid-cols-12 gap-4 mt-4">
-      <SimpleCardSketlon v-if="dashboardStore.mainChartLoading" :count="2" class="col-span-3" />
-      <template v-else v-for="(item, idx) in dashboardStore.mainCards" :key="idx">
-        <SimpleCard
-          class="col-span-3"
-          :type="item.type"
-          :title="item.title"
-          :badge-text="item.badgeText"
-          :count="item.count"
-          :icon="item.icon"
-          :list="item.list"
-          :list-more="item.listMore"
-          @click="onPreview(item.previewType)"
+    <div>
+      <Filter />
+      <div class="grid grid-cols-12 gap-4 mt-4">
+        <SimpleCardSketlon
+          v-if="dashboardStore.mainChartLoading"
+          :count="2"
+          class="xl:col-span-3 md:col-span-6 col-span-12"
         />
-      </template>
-      <SimpleCardSketlon v-if="dashboardStore.workerStatsLoading" :count="2" class="col-span-3" />
-      <template v-else v-for="(item, idx) in dashboardStore.currentWorkers" :key="idx">
-        <SimpleCard
-          class="col-span-3"
-          :type="item.type"
-          :title="item.title"
-          :badge-text="item.badgeText"
-          :count="item.count"
-          :icon="item.icon"
-          :list="item.list"
-          :list-more="item.listMore"
-          @click="onPreview(item.previewType)"
+        <template v-else v-for="(item, idx) in dashboardStore.mainCards" :key="idx">
+          <SimpleCard
+            class="xl:col-span-3 md:col-span-6 col-span-12"
+            :type="item.type"
+            :title="item.title"
+            :badge-text="item.badgeText"
+            :count="item.count"
+            :icon="item.icon"
+            :list="item.list"
+            :list-more="item.listMore"
+            @click="onPreview(item.previewType)"
+          />
+        </template>
+        <SimpleCardSketlon
+          v-if="dashboardStore.workerStatsLoading"
+          :count="2"
+          class="xl:col-span-3 md:col-span-6 col-span-12"
         />
-      </template>
+        <template v-else v-for="(item, idx) in dashboardStore.currentWorkers" :key="idx">
+          <SimpleCard
+            class="xl:col-span-3 md:col-span-6 col-span-12"
+            :type="item.type"
+            :title="item.title"
+            :badge-text="item.badgeText"
+            :count="item.count"
+            :icon="item.icon"
+            :list="item.list"
+            :list-more="item.listMore"
+            @click="onPreview(item.previewType)"
+          />
+        </template>
 
-      <div
-        class="xl:col-span-8 lg:col-span-12 col-span-12 p-2 grid grid-cols-12 border border-surface-line rounded-xl bg-surface-section"
-      >
-        <div class="xl:col-span-6 lg:col-span-5 col-span-12">
-          <RowChart @onPreview="onPreview" />
+        <div
+          class="xl:col-span-8 lg:col-span-12 col-span-12 p-4 grid grid-cols-12 gap-4 border border-surface-line rounded-2xl bg-surface-section/75 relative overflow-hidden"
+        >
+          <CardDecor variant="circles" class="top-0 right-0 text-primary" />
+          <div class="xl:col-span-5 lg:col-span-5 col-span-12">
+            <RowChart @onPreview="onPreview" />
+          </div>
+          <div class="xl:col-span-7 lg:col-span-7 col-span-12 overflow-hidden">
+            <DailyEventChart />
+          </div>
         </div>
-        <div class="xl:col-span-6 lg:col-span-7 col-span-12 overflow-hidden">
-          <DailyEventChart />
-        </div>
-      </div>
 
-      <InfoGraph
-        @onPreview="onPreview"
-        class="xl:col-span-4 lg:col-span-6 md:col-span-6 col-span-12"
-      />
+        <InfoGraph
+          @onPreview="onPreview"
+          class="xl:col-span-4 lg:col-span-6 md:col-span-6 col-span-12"
+        />
 
-      <WorkTimeCard @onPreview="onPreview" class="xl:col-span-8 col-span-12" />
+        <WorkTimeCard @onPreview="onPreview" class="xl:col-span-8 col-span-12" />
 
-      <DeviceCard
-        @onPreview="onPreview"
-        class="xl:col-span-4 lg:col-span-6 md:col-span-6 col-span-12"
-      />
-      <MonthlyCard @onPreview="onPreview" class="col-span-6" />
-      <div class="col-span-6 p-2 border border-surface-line rounded-xl bg-surface-section relative">
-        <FaceCard @onPreview="onPreview" />
+        <DeviceCard
+          @onPreview="onPreview"
+          class="xl:col-span-4 lg:col-span-6 md:col-span-6 col-span-12"
+        />
+        <MonthlyCard @onPreview="onPreview" class="lg:col-span-6 col-span-12" />
+        <FaceCard @onPreview="onPreview" class="lg:col-span-6 col-span-12" />
       </div>
     </div>
 

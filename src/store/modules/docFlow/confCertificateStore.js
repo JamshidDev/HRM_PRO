@@ -11,7 +11,7 @@ export const useConfCertificateStore = defineStore('confCertificateStore', {
     totalItems: 0,
     params: {
       page: 1,
-      per_page: 10,
+      per_page: 15,
       search: null,
       status: null,
       learning_center_id: null,

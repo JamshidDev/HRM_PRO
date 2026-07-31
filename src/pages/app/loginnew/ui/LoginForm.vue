@@ -33,8 +33,20 @@
     store.captchaKey = val
   }
 
+  // Captcha maydonida Enter bosilganda native <form> submit HAM, ReCaptcha'ning
+  // o'z @keyup.enter emiti HAM onSubmit'ni chaqiradi — natijada bitta Enter
+  // bosishda login so'rovi 2 marta ketib, ikkinchisi captcha allaqachon
+  // ishlatilgani uchun xato bilan qaytardi. `store.loading` validate() hali
+  // asinxron hal bo'lmagani uchun bu yerda kech — shuning uchun sinxron flag.
+  // `store.loading` esa alohida tekshiriladi — u so'rov tarmoqdan javob
+  // qaytarmaguncha true turadi, shu bilan ketma-ket Enter/tugma bosishlarda ham
+  // birinchi so'rov tugamaguncha ikkinchisi yuborilmaydi.
+  let submitInFlight = false
   const onSubmit = () => {
+    if (submitInFlight || store.loading) return
+    submitInFlight = true
     formRef.value?.validate((_error) => {
+      submitInFlight = false
       if (!store.captchaAnswer) captchaError.value = true
       if (!_error && store.captchaAnswer) {
         captchaError.value = false
@@ -101,8 +113,8 @@
 
 <template>
   <div class="w-full">
-    <div class="mb-4 lg:mb-8">
-      <h3 class="text-2xl lg:text-3xl font-bold uppercase leading-tight text-center">
+    <div class="mb-4 lg:mb-7">
+      <h3 class="font-grotesk text-2xl lg:text-[30px] font-bold leading-tight text-login-ink">
         {{ $t(`loginPage.title`) }}
       </h3>
     </div>
@@ -158,7 +170,7 @@
       </n-form-item>
 
       <div class="flex justify-end -mt-4">
-        <n-button text class="text-textColor3! hover:text-primary!" @click="onForgot">
+        <n-button text class="text-login-link! font-semibold! hover:opacity-80!" @click="onForgot">
           {{ $t('loginPage.forgotPassword') }}
         </n-button>
       </div>
@@ -179,20 +191,23 @@
       <div class="grid mt-4 lg:mt-16">
         <n-button
           attr-type="submit"
-          class="login-new__submit h-[48px]! lg:h-[52px]! rounded-2xl! overflow-hidden! font-semibold!"
+          class="login-new__submit h-[48px]! lg:h-[52px]! rounded-[10px]! overflow-hidden! font-semibold!"
           size="large"
           :loading="store.loading"
+          :disabled="store.loading"
         >
           {{ $t(`loginPage.login`) }}
         </n-button>
 
         <template v-if="appStore.appConfig.signatureLogin">
-          <n-divider class="my-2! lg:my-3!" title-placement="center">{{ $t('content.or') }}</n-divider>
-          
+          <n-divider class="my-2! lg:my-3!" title-placement="center">{{
+            $t('content.or')
+          }}</n-divider>
+
           <n-button
             @click="onSignatureLogin"
             size="large"
-            class="h-[48px]! lg:h-[52px]! rounded-2xl! font-semibold! dark-border-button login-new__signature-btn"
+            class="h-[48px]! lg:h-[52px]! rounded-[10px]! font-semibold! dark-border-button login-new__signature-btn"
           >
             <img src="/logo-e-imzo.png" alt="E-IMZO" class="h-6 w-auto object-contain mr-2.5" />
             {{ $t(`content.signatureLogin`) }}
@@ -200,7 +215,7 @@
 
           <!-- Mobil ilovani yuklab olish — faqat mobile'da (desktop'da hero panelda ko'rsatiladi) -->
           <div class="mt-3 lg:hidden">
-            <p class="text-textColor2 text-sm font-medium text-center mb-2">
+            <p class="text-login-body text-sm font-medium text-center mb-2">
               {{ $t('content.downloadApp') }}
             </p>
             <StoreLinks />

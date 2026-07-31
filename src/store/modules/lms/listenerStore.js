@@ -17,7 +17,7 @@ export const useListenerStore = defineStore('listenerStore', {
     payload: {},
     params: {
       page: 1,
-      per_page: 10,
+      per_page: 15,
       search: null,
       year: null,
       month: null

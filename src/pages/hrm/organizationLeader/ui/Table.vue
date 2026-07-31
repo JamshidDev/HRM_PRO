@@ -1,14 +1,32 @@
 <script setup>
-  import { CodeCircle20Regular, DismissCircle24Regular } from '@vicons/fluent'
-  import { NoDataPicture, UIMenuButton, UIPagination, UIUser } from '@/components/index.js'
-  import { useOrganizationLeaderStore } from '@/store/modules/index.js'
-  import Utils from '@/utils/Utils.js'
-  import { Mask } from 'maska'
-  import { useAccountStore } from '@/store/modules/index.js'
+  import { UITable, UIUser } from '@/components/index.js'
+import i18n from '@/i18n/index.js'
+import { useAccountStore, useOrganizationLeaderStore } from '@/store/modules/index.js'
+import UIHelper from '@/utils/UIHelper.js'
+import Utils from '@/utils/Utils.js'
+import { Delete20Regular, Edit32Regular } from '@vicons/fluent'
+import { Mask } from 'maska'
+
+  const { t } = i18n.global
+
   const accStore = useAccountStore()
 
   const mask = new Mask({ mask: ['##-###-##-##', '##-###'] })
   const store = useOrganizationLeaderStore()
+
+  const onEdit = (row) => {
+    if (!accStore.checkAction(accStore.pn.hrLeadersWrite)) return
+    store.elementId = row.id
+    store.visibleType = false
+    store.visible = true
+    store.payload.phones = [...row.phone]
+  }
+
+  const onDelete = (row) => {
+    if (!accStore.checkAction(accStore.pn.hrLeadersWrite)) return
+    store.elementId = row.id
+    store._delete()
+  }
 
   const changePage = (v) => {
     store.params.page = v.page
@@ -16,85 +34,69 @@
     store._index()
   }
 
-  const onSelect = (v) => {
-    if (v.key === 'delete') {
-      if (!accStore.checkAction(accStore.pn.hrLeadersWrite)) return
-      store.elementId = v.data.id
-      store._delete()
-    } else if (v.key === 'edit') {
-      if (!accStore.checkAction(accStore.pn.hrLeadersWrite)) return
-      store.elementId = v.data.id
-      store.visibleType = false
-      store.visible = true
-      store.payload.phones = [...v.data.phone]
+  const columns = computed(() => [
+    {
+      key: 'worker',
+      title: t('content.worker'),
+      minWidth: 200
+    },
+    {
+      key: 'organization.name',
+      title: t('content.organization'),
+      minWidth: 200
+    },
+    {
+      key: 'phone',
+      title: t('content.phone'),
+      minWidth: 200
     }
-  }
+  ])
+
+  const actions = computed(() => [
+    {
+      label: t('content.edit'),
+      key: Utils.ActionTypes.edit,
+      icon: UIHelper.renderIcon(Edit32Regular),
+      action: onEdit
+    },
+    {
+      label: t('content.delete'),
+      key: Utils.ActionTypes.delete,
+      icon: UIHelper.renderIcon(Delete20Regular),
+      action: onDelete
+    }
+  ])
 </script>
 
 <template>
-  <n-spin :show="store.loading" style="min-height: 200px">
-    <div class="w-full overflow-x-auto" v-if="store.list.length > 0">
-      <n-table class="mt-4" :single-line="false" size="small">
-        <thead>
-          <tr>
-            <th class="text-center! min-w-[40px] w-[40px]">{{ $t('content.number') }}</th>
-            <th class="w-[200px]">{{ $t('content.worker') }}</th>
-            <th class="min-w-[200px]">{{ $t('content.organization') }}</th>
-            <th class="min-w-[200px]">{{ $t('content.phone') }}</th>
-            <th class="w-[40px]">{{ $t('content.action') }}</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(item, idx) in store.list" :key="idx">
-            <td>
-              <span class="text-center text-[12px] text-gray-600 block">{{
-                (store.params.page - 1) * store.params.per_page + idx + 1
-              }}</span>
-            </td>
-            <td>
-              <UIUser
-                :data="{
-                  photo: item?.worker_position.worker?.photo,
-                  lastName: item?.worker_position.worker?.last_name,
-                  firstName: item?.worker_position.worker?.first_name,
-                  middleName: item?.worker_position.worker?.middle_name
-                }"
-              />
-            </td>
-            <td>{{ item.organization.name }}</td>
-            <td>
-              <div class="flex gap-2 flex-wrap">
-                <n-button
-                  v-for="(i, idx) in item.phone"
-                  :key="idx"
-                  type="primary"
-                  dashed
-                  size="tiny"
-                >
-                  {{ mask.masked(i) }}
-                </n-button>
-              </div>
-            </td>
-            <td>
-              <UIMenuButton
-                :loading="store.elementId === item.id && store.deleteLoading"
-                :data="item"
-                show-edit
-                @selectEv="onSelect"
-              />
-            </td>
-          </tr>
-        </tbody>
-      </n-table>
-      <UIPagination
-        :page="store.params.page"
-        :per_page="store.params.per_page"
-        :total="store.totalItems"
-        @change-page="changePage"
+  <UITable
+    :columns="columns"
+    :actions="actions"
+    :data="store.list"
+    :loading="store.loading"
+    :page="store.params.page"
+    :per-page="store.params.per_page"
+    :total="store.totalItems"
+    storage-key="hrm-organization-leader"
+    @change-page="changePage"
+  >
+    <template #cell-worker="{ row }">
+      <UIUser
+        :data="{
+          photo: row?.worker_position.worker?.photo,
+          lastName: row?.worker_position.worker?.last_name,
+          firstName: row?.worker_position.worker?.first_name,
+          middleName: row?.worker_position.worker?.middle_name
+        }"
       />
-    </div>
-    <NoDataPicture v-if="store.list.length === 0 && !store.loading" />
-  </n-spin>
-</template>
+    </template>
 
-<style scoped></style>
+    <template #cell-phone="{ row }">
+      <div class="flex gap-2 flex-wrap">
+        <n-button v-for="(i, idx) in row.phone" :key="idx" type="primary" dashed size="tiny">
+          {{ mask.masked(i) }}
+        </n-button>
+      </div>
+    </template>
+  </UITable>
+</template>

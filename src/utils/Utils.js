@@ -309,6 +309,10 @@ const getMonthNameByKey = (key) => {
   return monthList.filter((v) => v.key === key)?.[0]?.name
 }
 
+const dayMonthYearLabel = (time) => {
+  return time ? `${dayjs(time).format('DD')}-${getMonthNameById(dayjs(time).month() + 1)} ${dayjs(time).format('YYYY')}` : null
+}
+
 const maskText = (text, start, end, sign = '*') => {
   const str = text.toString()
   if (str.length <= start + end) return str
@@ -568,6 +572,7 @@ export default {
   yearList,
   getMonthNameById,
   getMonthNameByKey,
+  dayMonthYearLabel,
   maskText,
   convertFromUrlToQuery,
   viewerStatus,

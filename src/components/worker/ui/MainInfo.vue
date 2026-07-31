@@ -1,131 +1,120 @@
 <script setup>
-  import {
-    ArrowCircleDown16Regular,
-    Eye24Filled,
-    StarEmphasis32Filled,
-    EyeOff20Filled,
-    DismissCircle32Filled,
-    Copy16Regular,
-    List20Filled
-  } from '@vicons/fluent'
   import { useComponentStore } from '@/store/modules/index.js'
+  import UIBadge from '@/components/ui/UIBadge.vue'
   import Utils from '../../../utils/Utils.js'
-  import i18n from '@/i18n/index.js'
-  const { t } = i18n.global
-  const store = useComponentStore()
-  const isHide = ref(true)
+  import PositionIcon from '@/assets/icons/positionIcon.svg'
+  import DepartmentIcon from '@/assets/icons/departmentIcon.svg'
+  import VerifiedIcon from '@/assets/icons/verifiedIcon.svg'
+  import HeaderBg from '@/assets/icons/profile-preview-header.svg?url'
+  import SectionHeader from './shared/SectionHeader.vue'
+  import WorkerStatsGrid from './shared/WorkerStatsGrid.vue'
 
-  const onCopy = () => {
-    $Toast.info(t('message.successDone'))
+  const store = useComponentStore()
+  const masked = defineModel('masked', { type: Boolean, default: true })
+
+  const activePhotoIndex = ref(0)
+
+  const photos = computed(() => store.workerPreview?.worker?.photos || [])
+
+  const avatarSrc = computed(() => {
+    return photos.value[activePhotoIndex.value]?.photo || store.workerPreview?.worker?.photo
+  })
+
+  const onOpenViewer = () => {
+    if (photos.value.length) {
+      window.$openViewer(photos.value.map((p) => p.photo).filter(Boolean), activePhotoIndex.value)
+    } else if (avatarSrc.value) {
+      window.$openViewer(avatarSrc.value)
+    }
   }
 </script>
 
 <template>
-  <div class="grid col-span-12 w-full">
-    <div
-      class="col-span-12 border-b border-surface-line flex gap-4 justify-between pb-2 pt-10 mb-6"
-    >
-      <div class="flex flex-wrap gap-4 items-center">
-        <n-button
-          type="tertiary"
-          size="small"
-          class="inline-block md:hidden!"
-          @click="store.panelVisible = true"
-        >
-          <template #icon>
-            <n-icon>
-              <List20Filled />
-            </n-icon>
-          </template>
-        </n-button>
-        <n-button text type="warning" icon-placement="right">
-          <template #icon>
-            <StarEmphasis32Filled />
-          </template>
-          4.67
-        </n-button>
-      </div>
+  <SectionHeader v-if="store.workerPreview">
+    <template #header>
+      <div
+        class="main-info-header-bg relative overflow-hidden flex max-md:flex-col items-center gap-3 py-1 w-full rounded-t-3xl"
+      >
+        <div
+          class="main-info-header-bg-image absolute inset-0 bg-cover bg-no-repeat rounded-t-3xl bg-[180px_-100px]"
+          :style="{ backgroundImage: `url(${HeaderBg})` }"
+        ></div>
 
-      <div class="flex flex-wrap items-center gap-2 justify-end md:justify-start">
-        <n-button @click="isHide = !isHide" type="primary" secondary icon-placement="right">
-          <template #icon>
-            <EyeOff20Filled v-if="isHide" />
-            <Eye24Filled v-else />
-          </template>
-        </n-button>
-        <n-button
-          type="primary"
-          icon-placement="right"
-          :loading="store.resumeLoading"
-          @click="store._workerResume(Utils.combineFullName(store.workerPreview?.worker))"
-        >
-          <template #icon>
-            <ArrowCircleDown16Regular />
-          </template>
-          {{ $t('content.downloadCV') }}
-        </n-button>
-        <n-button
-          @click="store.previewVisible = false"
-          secondary
-          type="error"
-          icon-placement="right"
-        >
-          <template #icon>
-            <DismissCircle32Filled />
-          </template>
-          {{ $t('content.close') }}
-        </n-button>
-      </div>
-    </div>
-    <template v-if="store.workerPreview">
-      <div class="col-span-12 text-2xl text-primary font-bold mb-2 uppercase">
-        {{ Utils.combineFullName(store.workerPreview?.worker) }}
-      </div>
-      <div class="col-span-12 md:col-span-6 font-bold items-center flex">
-        <span class="font-normal text-gray-400">{{ $t('workerView.general.passportJSHSHIR') }}</span>:
-        {{
-          isHide
-            ? Utils.maskText(store.workerPreview?.worker.pin, 3, 4)
-            : store.workerPreview?.worker.pin
-        }}
-        <n-icon
-          @click="Utils.copyToClipboard(store.workerPreview?.worker.pin, onCopy)"
-          size="24"
-          class="cursor-pointer ml-2"
-        >
-          <Copy16Regular />
-        </n-icon>
-      </div>
-      <div class="col-span-12 md:col-span-6 font-bold items-center flex">
-        <span class="font-normal text-gray-400">{{ $t('workerView.general.phone') }}</span>:
-        {{
-          isHide
-            ? Utils.maskText(store.workerPreview?.worker.phones[0].phone, 2, 2)
-            : Utils.formatPhoneWithMask(store.workerPreview?.worker.phones[0].phone, '## ### ## ##')
-        }}
-        <n-icon
-          @click="Utils.copyToClipboard(store.workerPreview?.worker.phones[0].phone, onCopy)"
-          size="24"
-          class="cursor-pointer ml-2"
-        >
-          <Copy16Regular />
-        </n-icon>
-      </div>
-      <div class="col-span-12 md:col-span-6 font-bold">
-        <span class="font-normal text-gray-400">{{ $t('workerView.general.department') }}</span>: {{ store.workerPreview?.department?.name }}
-      </div>
-      <div class="col-span-12 md:col-span-6 font-bold">
-        <span class="font-normal text-gray-400">{{ $t('workerView.general.salary') }}</span>:
-        {{
-          isHide
-            ? Utils.maskText(store.workerPreview?.salary, 0, 2)
-            : Utils.formatNumberToMoney(store.workerPreview?.salary)
-        }}
-        {{ $t('content.sum') }}
-      </div>
-      <div class="col-span-12 font-bold">
-        <span class="font-normal text-gray-400">{{ $t('workerView.general.position') }}</span>: {{ store.workerPreview?.post_name }}
+        <n-avatar
+          :size="96"
+          round
+          class="main-info-avatar relative z-10 cursor-pointer shrink-0"
+          :src="avatarSrc || Utils.noAvailableImage"
+          :fallback-src="Utils.noAvailableImage"
+          :img-props="{ style: 'object-fit: cover' }"
+          @click="onOpenViewer"
+        />
+
+        <div class="relative z-10 min-w-0 flex-1">
+          <div class="flex max-md:flex-wrap items-center max-md:justify-center gap-2">
+            <span class="md:text-2xl font-bold text-textColor0 md:truncate">
+              {{ Utils.combineFullName(store.workerPreview?.worker) }}
+            </span>
+            <!-- TODO: backend real active/inactive field qo'shilganda ulanadi -->
+            <span class="shrink-0 active-employee-badge">
+              <UIBadge
+                :label="$t('workerView.header.activeEmployee')"
+                :type="Utils.colorTypes.success"
+                :show-icon="false"
+              />
+            </span>
+            <n-icon size="20" class="text-primary shrink-0">
+              <VerifiedIcon />
+            </n-icon>
+          </div>
+          <div class="flex items-center gap-2 text-textColor2 mt-2 text-pretty">
+            <n-icon size="16">
+              <PositionIcon />
+            </n-icon>
+            <span>{{ store.workerPreview?.post_name }}</span>
+          </div>
+          <div class="flex items-center gap-2 text-textColor2 mt-1 text-pretty">
+            <n-icon size="16">
+              <DepartmentIcon />
+            </n-icon>
+            <span>{{ store.workerPreview?.department?.name }}</span>
+          </div>
+        </div>
       </div>
     </template>
-  </div>
+
+    <WorkerStatsGrid :masked="masked" />
+  </SectionHeader>
 </template>
+
+<style lang="scss">
+  [data-theme='dark'] {
+    .main-info-header-bg-image {
+      mix-blend-mode: color;
+    }
+  }
+
+  .main-info-avatar {
+    border: 1px solid var(--surface-300);
+    width: 96px !important;
+    height: 96px !important;
+    flex-shrink: 0;
+
+    img {
+      width: 100% !important;
+      height: 100% !important;
+      object-fit: cover !important;
+      object-position: center top !important;
+    }
+  }
+
+  .active-employee-badge {
+    .ui--badge-success {
+      background-color: #f5fdf6;
+      border-color: #f5fdf6;
+    }
+    .ui--badge-label {
+      color: #14813c;
+    }
+  }
+</style>

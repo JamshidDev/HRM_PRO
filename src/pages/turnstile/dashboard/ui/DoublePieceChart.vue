@@ -17,42 +17,58 @@
   const chartRef = ref(null)
   let chart = null
 
-  const getOption = () => ({
-    graphic: {
-      elements: [
+  const tokenColor = (name) =>
+    getComputedStyle(document.documentElement).getPropertyValue(name).trim()
+
+  const hexToRgba = (hex, alpha) => {
+    const v = hex.replace('#', '')
+    const r = parseInt(v.substring(0, 2), 16)
+    const g = parseInt(v.substring(2, 4), 16)
+    const b = parseInt(v.substring(4, 6), 16)
+    return `rgba(${r}, ${g}, ${b}, ${alpha})`
+  }
+
+  const getOption = () => {
+    const primary = tokenColor('--primary-color')
+    return {
+      graphic: {
+        elements: [
+          {
+            type: 'text',
+            style: {
+              text: `${Number(props.online).toFixed(1)}%`,
+              fontSize: 20,
+              fontWeight: 'bold',
+              fontFamily: 'Space Grotesk, sans-serif',
+              fill: tokenColor('--textColor0'),
+              textAlign: 'center'
+            },
+            left: 'center',
+            top: 'center'
+          }
+        ]
+      },
+      series: [
         {
-          type: 'text',
-          style: {
-            text: props.icon,
-            fontSize: 30
+          name: 'Qurilmalar',
+          type: 'pie',
+          radius: ['58%', '90%'],
+          itemStyle: { borderRadius: 4 },
+          label: {
+            show: false
           },
-          left: 'center',
-          top: 'center'
+          data: [
+            { value: props.online, name: 'Online', itemStyle: { color: primary } },
+            {
+              value: props.offline,
+              name: 'Offline',
+              itemStyle: { color: hexToRgba(primary, 0.25) }
+            }
+          ]
         }
       ]
-    },
-    series: [
-      {
-        name: 'Qurilmalar',
-        type: 'pie',
-        radius: ['50%', '90%'],
-        padAngle: 8,
-        itemStyle: { borderRadius: 12 },
-        label: {
-          show: true,
-          position: 'inside',
-          formatter: '{d}%',
-          fontSize: 10,
-          fontWeight: 'bold',
-          color: '#fff'
-        },
-        data: [
-          { value: props.online, name: 'Online', itemStyle: { color: '#228EFD' } },
-          { value: props.offline, name: 'Offline', itemStyle: { color: '#BCD8F7' } }
-        ]
-      }
-    ]
-  })
+    }
+  }
 
   onMounted(() => {
     chart = echarts.init(chartRef.value)

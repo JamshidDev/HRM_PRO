@@ -1,11 +1,6 @@
 <script setup>
   import { UIUserGroup } from '@/components/index.js'
-  import { useTurnstileDashboardStore } from '@/store/modules/index.js'
-  import Utils from '@/utils/Utils.js'
-  import i18n from '@/i18n/index.js'
-
-  const store = useTurnstileDashboardStore()
-  const t = i18n.global.t
+  import CardDecor from './CardDecor.vue'
 
   const props = defineProps({
     type: {
@@ -36,41 +31,30 @@
     }
     return classes[props.type]
   })
-
-  const badgeText = computed(() => {
-    const today = Utils.timeToZone(new Date().getTime())
-    return Utils.timeToZone(store.dashboardParams.date) === today
-      ? t('content.today')
-      : Utils.timeOnlyDate(store.dashboardParams.date)
-  })
 </script>
 
 <template>
   <div
-    class="grid cursor-pointer border border-surface-line hover-effect-card px-4 py-2 rounded-xl bg-surface-section relative overflow-hidden"
+    class="grid cursor-pointer border border-surface-line hover-effect-card p-4 rounded-2xl bg-surface-section/75 relative overflow-hidden"
   >
-    <div class="flex justify-between items-start bg-surface-section">
+    <CardDecor variant="chevrons" class="-top-3 -right-3" :class="typeClass.split(' ')[0]" />
+    <div class="flex justify-between items-start">
       <div
         :class="[typeClass]"
-        class="w-[40px] h-[40px] rounded-lg flex justify-center items-center"
+        class="w-[40px] h-[40px] rounded-xl flex justify-center items-center"
       >
-        <n-icon size="26">
+        <n-icon size="24">
           <component :is="icon" />
         </n-icon>
       </div>
-      <div
-        v-if="badgeText"
-        :class="[typeClass]"
-        class="px-2 py-1 rounded-lg text-[10px] font-medium"
-      >
-        {{ badgeText }}
-      </div>
     </div>
 
-    <div class="content-between z-10 text-right flex items-center justify-between mt-2">
+    <div class="z-10 flex items-end justify-between mt-3">
       <div>
-        <p class="text-left leading-[1.2] font-bold text-textColor2 text-lg">{{ count }}</p>
-        <p class="text-secondary text-xs font-medium leading-[1.2] line-clamp-1 text-left">
+        <p class="text-left leading-[1.2] font-bold text-textColor0 text-[26px] font-grotesk">
+          {{ count }}
+        </p>
+        <p class="text-secondary text-xs font-medium leading-[1.2] line-clamp-1 text-left mt-1">
           {{ title }}
         </p>
       </div>
@@ -83,9 +67,5 @@
         />
       </span>
     </div>
-
-    <span
-      class="z-1 opacity-30 absolute top-0 right-0 w-[160px] h-full bg-no-repeat bg-[url(/effect/primary-card.svg)]"
-    ></span>
   </div>
 </template>

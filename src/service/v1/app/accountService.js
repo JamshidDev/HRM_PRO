@@ -28,9 +28,7 @@ const _updateOrgInfo = async (payload) => {
 // (foydalanuvchi "Tanishdim" bosmaguncha kirmaydi), shuning uchun token'ni bevosita
 // Authorization header sifatida uzatamiz — interceptor localStorage bo'sh bo'lsa uni bosmaydi.
 const _acceptOffer = async (payload) => {
-  const config = payload?.token
-    ? { headers: { Authorization: 'Bearer ' + payload.token } }
-    : {}
+  const config = payload?.token ? { headers: { Authorization: 'Bearer ' + payload.token } } : {}
   return await axios.post(`/v1/user/accept-offer`, {}, config)
 }
 

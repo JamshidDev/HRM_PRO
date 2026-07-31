@@ -9,7 +9,7 @@ const store = useDashboardStore()
 const appStore = useAppStore()
 const {t} = i18n.global
 
-const CHART_COLORS = ['#1A84FF', '#0F1114', '#E53835']
+const CHART_COLORS = computed(() => ['#1A84FF', appStore.isDark ? '#98a2b3' : '#0F1114', '#E53835'])
 
 const createEduOption = () => {
   return {
@@ -34,30 +34,32 @@ const createEduOption = () => {
   }
 }
 
-const eduOptions = ref(CHART_COLORS.map(createEduOption))
+const eduOptions = ref(CHART_COLORS.value.map(createEduOption))
 
-watch(() => appStore.themeSwitch, (isDark) => {
+watch(() => appStore.isDark, (isDark) => {
   const color = isDark ? '#f3f3f3' : '#0f1114'
   eduOptions.value.forEach(opt => {
     opt.title.textStyle.color = color
   })
 }, {immediate: true})
 
-watch(() => store.dashboard.eduCard,
-    (cards) => {
+const applyEduData = () => {
+  const cards = store.dashboard.eduCard
+  if (!cards?.length) return
+  cards.forEach((item, i) => {
+    const option = eduOptions.value[i]
 
-      if (!cards?.length) return
-      cards.forEach((item, i) => {
-        const option =  eduOptions.value[i]
+    option.series[0].data = [{
+      value: item?.count ?? 0,
+      name: t(item?.title),
+      itemStyle: {color: CHART_COLORS.value[i]},
+    }]
+    option.title.text = item?.count ?? 0
+  })
+}
 
-        option.series[0].data = [{
-          value: item?.count ?? 0,
-          name: t(item?.title),
-          itemStyle: {color: CHART_COLORS[i]},
-        }]
-        option.title.text = item?.count ?? 0
-      })
-    }, {immediate: true})
+watch(() => store.dashboard.eduCard, applyEduData, {immediate: true})
+watch(() => appStore.isDark, applyEduData)
 
 const totalCount = computed(() => {
   if (!Array.isArray(store.dashboard.eduCard)) return 0

@@ -22,65 +22,139 @@ const getValueOfCssVariable = (variableName) => {
 }
 
 /** @returns {GlobalThemeOverrides} */
-export const customTheme = () => ({
-  common: {
-    primaryColor: getValueOfCssVariable('--primary-color'),
-    primaryColorHover: getValueOfCssVariable('--primary-color'),
-    primaryColorPressed: getValueOfCssVariable('--primary-color'),
+export const customTheme = () => {
+  return {
+    common: {
+      baseColor: '#ffffff',
+      opacityDisabled: '0.5',
+      primaryColor: getValueOfCssVariable('--primary-color'),
+      primaryColorHover: getValueOfCssVariable('--primary-color'),
+      primaryColorPressed: getValueOfCssVariable('--primary-color'),
 
-    errorColor: getValueOfCssVariable('--danger-color'),
-    errorColorHover: getValueOfCssVariable('--danger-color'),
-    errorColorPressed: getValueOfCssVariable('--danger-color'),
+      errorColor: getValueOfCssVariable('--danger-color'),
+      errorColorHover: getValueOfCssVariable('--danger-color'),
+      errorColorPressed: getValueOfCssVariable('--danger-color'),
 
-    textColorBase: getValueOfCssVariable('--textColor0'), //Standart matn rangi
-    textColor1: getValueOfCssVariable('--textColor1'), // Birlamchi matn rangi (muhim matnlar)
-    textColor2: getValueOfCssVariable('--textColor2'), // Ikkinchi darajali matn rangi (tavsiflar)
-    textColor3: getValueOfCssVariable('--textColor3'), // Uchinchi darajali matn rangi (maslahatlar)
-    textColorDisabled: getValueOfCssVariable('--surface-text'), // Nogiron holatdagi matn rangi
+      textColorBase: getValueOfCssVariable('--textColor0'), //Standart matn rangi
+      textColor1: getValueOfCssVariable('--textColor1'), // Birlamchi matn rangi (muhim matnlar)
+      textColor2: getValueOfCssVariable('--textColor2'), // Ikkinchi darajali matn rangi (tavsiflar)
+      textColor3: getValueOfCssVariable('--textColor3'), // Uchinchi darajali matn rangi (maslahatlar)
+      textColorDisabled: getValueOfCssVariable('--surface-text'), // Nogiron holatdagi matn rangi
 
-    cardColor: getValueOfCssVariable('--surface-section'), // Karta tipidagi komponentlar uchun fon rangi (masalan, <n-card>)
-    modalColor: getValueOfCssVariable('--surface-section'), // Modal oynalar uchun fon rangi
-    popoverColor: getValueOfCssVariable('--surface-section'), // Qalqib chiquvchi oynalar uchun fon rangi
-    tableColor: getValueOfCssVariable('--surface-section'), // Jadvallar uchun fon rangi
-    tableColorHover: '#f5f5f5',
+      cardColor: getValueOfCssVariable('--surface-section'), // Karta tipidagi komponentlar uchun fon rangi (masalan, <n-card>)
+      modalColor: getValueOfCssVariable('--surface-section'), // Modal oynalar uchun fon rangi
+      popoverColor: getValueOfCssVariable('--surface-section'), // Qalqib chiquvchi oynalar uchun fon rangi
+      tableColor: getValueOfCssVariable('--surface-section'), // Jadvallar uchun fon rangi
+      tableColorHover: getValueOfCssVariable('--surface-ground'), // Jadval qatori hover fon rangi
+      tableColorStriped: getValueOfCssVariable('--surface-ground-soft'), // Juft qatorlar fon rangi
 
-    // Joylashtiruvchi va kiritish ranglari
-    placeholderColor: getValueOfCssVariable('--textColor3'), // Kiritish maydonlaridagi joylashtiruvchi matn rangi
-    inputColor: getValueOfCssVariable('--surface-section'), // Kiritish maydonlari uchun fon rangi
-    inputColorDisabled: getValueOfCssVariable('--surface-section'), // Nogiron kiritish maydonlari uchun fon rangi
+      // Joylashtiruvchi va kiritish ranglari
+      placeholderColor: getValueOfCssVariable('--textColor3'), // Kiritish maydonlaridagi joylashtiruvchi matn rangi
+      inputColor: getValueOfCssVariable('--surface-section'), // Kiritish maydonlari uchun fon rangi
+      inputColorDisabled: getValueOfCssVariable('--surface-section'), // Nogiron kiritish maydonlari uchun fon rangi
 
-    borderRadius: '10px',
+      borderRadius: '10px',
 
-    borderColor: getValueOfCssVariable('--surface-line'), // Komponentlar uchun standart chegara rangi
-    dividerColor: getValueOfCssVariable('--surface-line'),
+      borderColor: getValueOfCssVariable('--surface-line'), // Komponentlar uchun standart chegara rangi
+      dividerColor: getValueOfCssVariable('--surface-line'),
 
-    hoverColor: getValueOfCssVariable('--primary-color') + '1a', // Hover holati uchun fon rangi
-    activeColor: 'rgba(0, 0, 0, 0.1)' // Aktiv holat uchun fon rangi,
-  },
-  Table: {
-    thColor: getValueOfCssVariable('--table-header'),
-    tdColor: getValueOfCssVariable('--surface-section'),
-    borderColor: getValueOfCssVariable('--surface-line'),
-    thTextColor: getValueOfCssVariable('--textColor2'),
-    tdTextColor: getValueOfCssVariable('--textColor2')
-  },
-  Checkbox: {
-    colorHover: getValueOfCssVariable('--surface-line'),
-    borderRadius: '5px',
-    color: getValueOfCssVariable('--surface-ground')
-  },
-  Radio: {
-    color: getValueOfCssVariable('--surface-ground'),
-    border: '1px solid' + getValueOfCssVariable('--surface-line')
-  },
-  Tabs: {
-    tabColorSegment: getValueOfCssVariable('--surface-section'),
-    colorSegment: getValueOfCssVariable('--surface-ground'),
-    tabColor: getValueOfCssVariable('--surface-section')
-  },
-  Select: {
-    icons: {
-      check: () => h(NIcon, null, { default: () => h(CheckmarkCircle24Regular) })
+      hoverColor: getValueOfCssVariable('--primary-color') + '1a', // Hover holati uchun fon rangi
+      activeColor: 'rgba(0, 0, 0, 0.1)' // Aktiv holat uchun fon rangi
+    },
+    Table: {
+      thColor: getValueOfCssVariable('--table-header'),
+      tdColor: getValueOfCssVariable('--surface-section'),
+      borderColor: getValueOfCssVariable('--surface-line'),
+      thTextColor: getValueOfCssVariable('--textColor2'),
+      tdTextColor: getValueOfCssVariable('--textColor2')
+    },
+    DataTable: {
+      thColor: getValueOfCssVariable('--table-header'),
+      tdColor: getValueOfCssVariable('--surface-section'),
+      borderColor: getValueOfCssVariable('--surface-line'),
+      thTextColor: getValueOfCssVariable('--textColor2'),
+      tdTextColor: getValueOfCssVariable('--textColor2')
+    },
+    Pagination: {
+      itemColor: getValueOfCssVariable('--table-header'),
+      itemColorHover: getValueOfCssVariable('--table-header'),
+      itemColorActive: getValueOfCssVariable('--primary-color'),
+      itemColorActiveHover: getValueOfCssVariable('--primary-color'),
+      itemColorDisabled: getValueOfCssVariable('--table-header'),
+      itemTextColorActive: '#ffffff',
+      itemTextColorActiveHover: '#ffffff',
+      itemBorder: `1px solid ${getValueOfCssVariable('--surface-line')}`,
+      itemBorderHover: `1px solid ${getValueOfCssVariable('--surface-line')}`,
+      itemBorderDisabled: `1px solid ${getValueOfCssVariable('--surface-line')}`,
+      buttonColor: getValueOfCssVariable('--table-header'),
+      buttonColorHover: getValueOfCssVariable('--table-header'),
+      buttonBorder: `1px solid ${getValueOfCssVariable('--surface-line')}`,
+      buttonBorderHover: `1px solid ${getValueOfCssVariable('--surface-line')}`,
+      peers: {
+        Select: {
+          peers: {
+            InternalSelection: {
+              color: getValueOfCssVariable('--table-header'),
+              colorActive: getValueOfCssVariable('--table-header')
+            }
+          }
+        }
+      }
+    },
+    Checkbox: {
+      colorHover: getValueOfCssVariable('--surface-line'),
+      borderRadius: '5px',
+      color: getValueOfCssVariable('--surface-ground')
+    },
+    Radio: {
+      color: getValueOfCssVariable('--surface-ground'),
+      border: '1px solid' + getValueOfCssVariable('--surface-line')
+    },
+    Tabs: {
+      tabColorSegment: getValueOfCssVariable('--surface-section'),
+      colorSegment: getValueOfCssVariable('--surface-ground'),
+      tabColor: getValueOfCssVariable('--surface-section')
+    },
+    Select: {
+      icons: {
+        check: () => h(NIcon, null, { default: () => h(CheckmarkCircle24Regular) })
+      }
+    },
+    InternalSelection: {
+      border: `1px solid ${getValueOfCssVariable('--surface-line')}`
+    },
+    Input: {
+      border: `1px solid ${getValueOfCssVariable('--surface-line')}`
+    },
+    Dropdown: {
+      optionTextColorHover: '#2E90FA'
+    },
+    Button: {
+      textColorPrimary: '#ffffff',
+      textColorHoverPrimary: '#ffffff',
+      textColorPressedPrimary: '#ffffff',
+      textColorFocusPrimary: '#ffffff',
+      textColorDisabledPrimary: '#ffffff',
+      textColorInfo: '#ffffff',
+      textColorHoverInfo: '#ffffff',
+      textColorPressedInfo: '#ffffff',
+      textColorFocusInfo: '#ffffff',
+      textColorDisabledInfo: '#ffffff',
+      textColorSuccess: '#ffffff',
+      textColorHoverSuccess: '#ffffff',
+      textColorPressedSuccess: '#ffffff',
+      textColorFocusSuccess: '#ffffff',
+      textColorDisabledSuccess: '#ffffff',
+      textColorWarning: '#ffffff',
+      textColorHoverWarning: '#ffffff',
+      textColorPressedWarning: '#ffffff',
+      textColorFocusWarning: '#ffffff',
+      textColorDisabledWarning: '#ffffff',
+      textColorError: '#ffffff',
+      textColorHoverError: '#ffffff',
+      textColorPressedError: '#ffffff',
+      textColorFocusError: '#ffffff',
+      textColorDisabledError: '#ffffff'
     }
   }
-})
+}

@@ -15,7 +15,7 @@ export const useNewsStore = defineStore('newsStore', {
     deleteLoading: false,
     params: {
       page: 1,
-      per_page: 10,
+      per_page: 15,
       search: null,
       status: null
     },

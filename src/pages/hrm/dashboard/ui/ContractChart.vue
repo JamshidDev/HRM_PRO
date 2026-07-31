@@ -89,13 +89,13 @@
     ]
   })
 
-  const colors = {
+  const getColors = () => ({
     0: '#2dcb73',
     1: '#E53835',
     2: '#1A84FF',
     3: '#8815bd',
-    4: '#000000'
-  }
+    4: appStore.isDark ? '#e5e7eb' : '#000000'
+  })
 
   const sortAndReIndex = (data, startIndex = 10, step = 2) => {
     data.sort((a, b) => a.active_contracts - b.active_contracts)
@@ -116,29 +116,31 @@
     return data
   }
 
-  watch(
-    () => store.dashboard.contractTypes,
-    (newValue, oldValue) => {
-      contractOption.value.series[0].data = sortAndReIndex(newValue).map((v, idx) => ({
-        value: v.index,
-        name: v.type,
-        itemStyle: {
-          color: colors[idx]
-        }
-      }))
-      contractOption.value.series[1].data = sortAndReIndex(newValue).map((v, idx) => ({
-        value: v.index,
-        name: v.type,
-        itemStyle: {
-          color: colors[idx]
-        }
-      }))
-      contractOption.value.series[0].name = t('dashboardPage.contract.title')
-    },
-    {
-      immediate: true
-    }
-  )
+  const applyContractData = () => {
+    const newValue = store.dashboard.contractTypes
+    if (!newValue?.length) return
+    const colors = getColors()
+    contractOption.value.series[0].data = sortAndReIndex(newValue).map((v, idx) => ({
+      value: v.index,
+      name: v.type,
+      itemStyle: {
+        color: colors[idx]
+      }
+    }))
+    contractOption.value.series[1].data = sortAndReIndex(newValue).map((v, idx) => ({
+      value: v.index,
+      name: v.type,
+      itemStyle: {
+        color: colors[idx]
+      }
+    }))
+    contractOption.value.series[0].name = t('dashboardPage.contract.title')
+  }
+
+  watch(() => store.dashboard.contractTypes, applyContractData, {
+    immediate: true
+  })
+  watch(() => appStore.isDark, applyContractData)
 
   const totalCount = computed(() => {
     return store.dashboard.contractTypes.reduce((total, num) => {
@@ -147,13 +149,9 @@
   })
 
   watch(
-    appStore,
-    (v) => {
-      if (v.themeSwitch) {
-        contractOption.value.series[1].label.color = '#fff'
-      } else {
-        contractOption.value.series[1].label.color = '#333'
-      }
+    () => appStore.isDark,
+    (isDark) => {
+      contractOption.value.series[1].label.color = isDark ? '#fff' : '#333'
     },
     {
       immediate: true

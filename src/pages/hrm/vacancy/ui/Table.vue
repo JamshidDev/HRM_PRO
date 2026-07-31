@@ -1,31 +1,44 @@
 <script setup>
-  import { NoDataPicture, UIPagination, UIMenuButton, UIBadge } from '@/components/index.js'
-  import { useVacancyStore, useComponentStore, useAccountStore } from '@/store/modules/index.js'
-  import Utils from '@/utils/Utils.js'
-  import numeral from 'numeral'
-  import { Eye20Regular, DocumentSearch20Regular } from '@vicons/fluent'
+  import { UIBadge, UITable } from '@/components/index.js'
   import i18n from '@/i18n/index.js'
+  import { useAccountStore, useVacancyStore } from '@/store/modules/index.js'
+  import UIHelper from '@/utils/UIHelper.js'
+  import Utils from '@/utils/Utils.js'
+  import {
+    Delete20Regular,
+    DocumentSearch20Regular,
+    Edit32Regular,
+    Eye20Regular
+  } from '@vicons/fluent'
+  import numeral from 'numeral'
 
   const { t } = i18n.global
+
   const store = useVacancyStore()
-  const compStore = useComponentStore()
   const accStore = useAccountStore()
 
-  const extraOptions = [
-    {
-      label: t('content.view'),
-      key: Utils.ActionTypes.view,
-      icon: Eye20Regular
-    },
-    {
-      label: t('vacancy.viewDetail'),
-      key: 'preview',
-      icon: DocumentSearch20Regular
-    }
-  ]
+  const onEdit = (row) => {
+    if (!accStore.checkAction(accStore.pn.hrPublicVacancyWrite)) return
+    store.elementId = row.id
+    store._show()
+  }
 
-  const onDelete = (v) => {
+  const onDelete = (row) => {
+    if (!accStore.checkAction(accStore.pn.hrPublicVacancyWrite)) return
+    store.elementId = row.id
     store._delete()
+  }
+
+  const onView = (row) => {
+    if (!accStore.checkAction(accStore.pn.hrPublicVacancyRead)) return
+    store.elementId = row.id
+    store.openViewModal(row)
+  }
+
+  const onPreview = (row) => {
+    if (!accStore.checkAction(accStore.pn.hrPublicVacancyRead)) return
+    store.elementId = row.id
+    store.openPreviewModal(row)
   }
 
   const changePage = (v) => {
@@ -34,133 +47,162 @@
     store._index()
   }
 
-  const onSelectEv = (v) => {
-    store.elementId = v.data.id
-    if (Utils.ActionTypes.edit === v.key) {
-      if (!accStore.checkAction(accStore.pn.hrPublicVacancyWrite)) return
-      store._show()
-    } else if (Utils.ActionTypes.delete === v.key) {
-      if (!accStore.checkAction(accStore.pn.hrPublicVacancyWrite)) return
-      onDelete(v.data)
-    } else if (Utils.ActionTypes.view === v.key) {
-      store.openViewModal(v.data)
-    } else if (v.key === 'preview') {
-      store.openPreviewModal(v.data)
+  const columns = computed(() => [
+    {
+      key: 'organization',
+      title: t('content.organization'),
+      minWidth: 150
+    },
+    {
+      key: 'department_position',
+      title: t('vacancy.form.department_position_id'),
+      minWidth: 200
+    },
+    {
+      key: 'rate',
+      title: t('vacancy.form.rate'),
+      width: 120,
+      align: 'center'
+    },
+    {
+      key: 'to',
+      title: t('vacancy.form.to'),
+      width: 160
+    },
+    {
+      key: 'salary',
+      title: t('departmentPositionPage.form.salary'),
+      width: 120
+    },
+    {
+      key: 'experience',
+      title: t('vacancy.form.short_experience'),
+      width: 120
+    },
+    {
+      key: 'education.name',
+      title: t('medWorker.form.education'),
+      width: 120
+    },
+    {
+      key: 'work_type.name',
+      title: t('vacancy.form.work_type'),
+      width: 120
+    },
+    {
+      key: 'switch',
+      title: t('vacancy.form.switch'),
+      width: 80,
+      align: 'center'
+    },
+    {
+      key: 'applications_count',
+      title: t('vacancy.form.applications_count'),
+      width: 120,
+      align: 'center'
     }
-  }
+  ])
+
+  const actions = computed(() => [
+    {
+      label: t('content.edit'),
+      key: Utils.ActionTypes.edit,
+      icon: UIHelper.renderIcon(Edit32Regular),
+      action: onEdit
+    },
+    {
+      label: t('content.delete'),
+      key: Utils.ActionTypes.delete,
+      icon: UIHelper.renderIcon(Delete20Regular),
+      action: onDelete
+    },
+    {
+      label: t('content.view'),
+      key: Utils.ActionTypes.view,
+      icon: UIHelper.renderIcon(Eye20Regular),
+      action: onView
+    },
+    {
+      label: t('vacancy.viewDetail'),
+      key: 'preview',
+      icon: UIHelper.renderIcon(DocumentSearch20Regular),
+      action: onPreview
+    }
+  ])
 </script>
 
 <template>
-  <n-spin :show="store.loading" style="min-height: 200px">
-    <div class="w-full overflow-x-auto" v-if="store.list.length > 0">
-      <n-table class="mt-4" :single-line="false" size="small">
-        <thead>
-          <tr>
-            <th class="text-center! min-w-[40px] w-[40px]">{{ $t('content.number') }}</th>
-            <th class="min-w-[150px]">{{ $t('content.organization') }}</th>
-            <th class="min-w-[200px]">{{ $t('vacancy.form.department_position_id') }}</th>
-            <th class="min-w-[40px] w-[80px] max-w-[80px]">
-              <p class="line-clamp-1 truncate">{{ $t('vacancy.form.rate') }}</p>
-            </th>
-            <th class="min-w-[100px] w-[120px] max-w-[120px]">
-              <p class="line-clamp-1 truncate">{{ $t('vacancy.form.to') }}</p>
-            </th>
-            <th class="min-w-[100px] w-[120px]">{{ $t('departmentPositionPage.form.salary') }}</th>
-            <th class="min-w-[60px] w-[80px]">{{ $t('vacancy.form.short_experience') }}</th>
-            <th class="min-w-[100px] w-[120px]">{{ $t('medWorker.form.education') }}</th>
-            <th class="min-w-[100px] w-[120px]">{{ $t('vacancy.form.work_type') }}</th>
-            <th class="min-w-[60px] w-[80px]">{{ $t('vacancy.form.switch') }}</th>
-            <th class="min-w-[60px] w-[80px]">{{ $t('vacancy.form.applications_count') }}</th>
-            <th class="min-w-[40px] w-[40px]"></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(item, idx) in store.list" :key="idx">
-            <td>
-              <span class="text-center block">{{
-                (store.params.page - 1) * store.params.per_page + idx + 1
-              }}</span>
-            </td>
-            <td>
-              <div class="flex items-center gap-1">
-                <span class="text-sm font-medium">{{ item.organization?.name }}</span>
-                <n-tag v-if="item.organization?.group" size="tiny" type="warning" round>group</n-tag>
-              </div>
-            </td>
-            <td>
-              <div>
-                <p class="line-clamp-2 text-textColor2 leading-[1]">
-                  {{ item.position.name }}
-                </p>
-                <p class="line-clamp-1 text-textColor3 text-xs leading-[1]">
-                  {{ item.department.name }}
-                </p>
-              </div>
-            </td>
-            <td>
-              <div class="flex justify-center">
-                <n-button class="mx-auto" bordered dashed circle size="small" type="primary">
-                  {{ item.rate }}
-                </n-button>
-              </div>
-            </td>
-            <td>
-              <UIBadge
-                :type="Utils.colorTypes.secondary"
-                :show-icon="false"
-                :label="Utils.timeOnlyDate(item.to)"
-              />
-            </td>
-            <td>
-              {{ numeral(item.salary).format('0,0.0') }}
-              <span class="text-textColor3 text-xs">{{ $t('content.sum') }}</span>
-            </td>
-            <td>
-              {{ item.experience }}
-            </td>
-            <td>
-              {{ item.education?.name }}
-            </td>
-            <td>
-              {{ item.work_type?.name }}
-            </td>
-            <td>
-              <div class="flex justify-center">
-                <n-switch
-                  :loading="store.switchLoading"
-                  v-model:value="item.status"
-                  @update:value="store._changePublic($event, item)"
-                />
-              </div>
-            </td>
-            <td>
-              <div class="flex justify-center">
-                <n-button
-                  v-if="item.applications_count > 0"
-                  class="mx-auto"
-                  bordered dashed circle size="small" type="primary"
-                  @click="store.openViewModal(item)"
-                >
-                  {{ item.applications_count }}
-                </n-button>
-                <span v-else></span>
-              </div>
-            </td>
-            <td>
-              <UIMenuButton :data="item" :show-edit="true" :extra-options="extraOptions" @selectEv="onSelectEv" />
-            </td>
-          </tr>
-        </tbody>
-      </n-table>
-      <UIPagination
-        :page="store.params.page"
-        :per_page="store.params.per_page"
-        :total="store.totalItems"
-        @change-page="changePage"
+  <UITable
+    :columns="columns"
+    :actions="actions"
+    :data="store.list"
+    :loading="store.loading"
+    :page="store.params.page"
+    :per-page="store.params.per_page"
+    :total="store.totalItems"
+    storage-key="hrm-public-vacancy"
+    @change-page="changePage"
+  >
+    <template #cell-organization="{ row }">
+      <span class="text-sm font-medium">{{ row.organization?.name }}</span>
+      <template v-if="row.organization?.group">
+        <br />
+        <n-tag size="tiny" type="warning" round>group</n-tag>
+      </template>
+    </template>
+
+    <template #cell-department_position="{ row }">
+      <span class="opacity-85">
+        {{ row.position.name }}
+      </span>
+      <br />
+      <span class="opacity-65 text-xs">
+        {{ row.department.name }}
+      </span>
+    </template>
+
+    <template #cell-rate="{ row }">
+      <n-button size="small" type="primary" circle bordered dashed>
+        {{ row.rate }}
+      </n-button>
+    </template>
+
+    <template #cell-to="{ row }">
+      <UIBadge
+        :type="Utils.colorTypes.secondary"
+        :show-icon="false"
+        :label="Utils.timeOnlyDate(row.to)"
       />
-    </div>
-    <NoDataPicture v-if="store.list.length === 0 && !store.loading" />
-  </n-spin>
+    </template>
+
+    <template #cell-salary="{ row }">
+      {{ numeral(row.salary).format('0,0.0') }}
+      <span class="text-textColor3 text-xs">{{ $t('content.sum') }}</span>
+    </template>
+
+    <template #cell-switch="{ row }">
+      <n-switch
+        v-model:value="row.status"
+        :loading="store.switchLoading"
+        @update:value="store._changePublic($event, row)"
+      />
+    </template>
+
+    <template #cell-applications_count="{ row }">
+      <n-button
+        v-if="row.applications_count > 0"
+        size="small"
+        type="primary"
+        circle
+        bordered
+        dashed
+        @click="store.openViewModal(row)"
+      >
+        {{ row.applications_count }}
+      </n-button>
+      <span v-else></span>
+    </template>
+  </UITable>
 </template>
 
 <style scoped></style>
