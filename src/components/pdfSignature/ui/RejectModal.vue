@@ -7,7 +7,10 @@
 
   const emits = defineEmits(['onSuccessEv'])
 
+  const isValid = computed(() => (store.documentComment || '').trim().length >= 10)
+
   const onSubmit = () => {
+    if (!isValid.value) return
     store.documentVisible = false
     const data = {
       status: 4,
@@ -26,16 +29,29 @@
     :width="500"
     :visible="store.documentVisible"
     @update:visible="(v) => (store.documentVisible = v)"
-    :title="$t('signature.rejectApplication')"
+    :title="$t('documentPage.signature.rejectTitle')"
   >
     <template #default>
-      <n-form ref="formRef" class="w-full grid grid-cols-12 gap-x-4 px-2">
-        <n-form-item class="col-span-12" :label="$t(`signature.comment`)" path="first_name">
-          <n-input class="w-full" type="textarea" v-model:value="store.documentComment" />
-        </n-form-item>
+      <div class="w-full px-2">
+        <p class="text-sm text-gray-400 mb-4">
+          {{ $t('documentPage.signature.rejectDesc') }}
+        </p>
+        <n-form ref="formRef" class="w-full">
+          <n-form-item :label="$t('documentPage.signature.rejectReasonLabel')">
+            <n-input
+              class="w-full"
+              type="textarea"
+              :rows="4"
+              :placeholder="$t('documentPage.signature.rejectReasonPlaceholder')"
+              v-model:value="store.documentComment"
+              :status="!isValid && store.documentComment ? 'error' : undefined"
+            />
+          </n-form-item>
+          <p v-if="!isValid" class="text-xs text-error -mt-2 mb-2">
+            {{ $t('documentPage.signature.rejectReasonRequired') }}
+          </p>
 
-        <div class="col-span-12 mt-[10px]">
-          <div class="grid grid-cols-12 gap-4">
+          <div class="grid grid-cols-12 gap-4 mt-2">
             <div class="col-span-6">
               <n-button
                 @click="store.documentVisible = false"
@@ -52,14 +68,15 @@
                 style="width: 100%"
                 @click="onSubmit"
                 :loading="signatureStore.rejectLoading"
+                :disabled="!isValid"
                 type="primary"
               >
-                {{ $t('content.save') }}
+                {{ $t('documentPage.signature.rejectSubmit') }}
               </n-button>
             </div>
           </div>
-        </div>
-      </n-form>
+        </n-form>
+      </div>
     </template>
   </UIModal>
 </template>
