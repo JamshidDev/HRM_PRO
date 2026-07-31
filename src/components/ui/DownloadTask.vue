@@ -121,7 +121,7 @@
       <n-badge
         class="!text-[10px] header-app-badge"
         :value="store.unReadNotificationCount"
-        :offset="[4, -4]"
+        :offset="[-4, -4]"
       >
         <n-icon
           id="taskBtn"

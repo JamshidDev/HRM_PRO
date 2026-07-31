@@ -37,7 +37,7 @@ defineProps({
         </div>
       </slot>
     </div>
-    <div class="bg-surface-ground rounded-b-3xl p-4">
+    <div class="bg-surface-ground p-4" :class="[!$slots.footer && 'rounded-b-3xl']">
       <slot />
     </div>
     <div
