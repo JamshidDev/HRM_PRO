@@ -511,7 +511,11 @@
     "updateTitle": "Редактировать роль",
     "form": {
       "name": "Название роли",
-      "permissions": "Права"
+      "permissions": "Права",
+      "moduleAccess": "Доступ к модулю",
+      "type": "Тип роли",
+      "typeSanctum": "Пользователь",
+      "typeIntegration": "Integration"
     }
   },
   "userPage": {
@@ -3575,5 +3579,40 @@
       "special": "Не менее 1 специального символа ({'@'}!#$%^&*)",
       "match": "Пароли совпадают"
     }
+  },
+  "integrationPerm": {
+    "enums": "Справочники",
+    "dashboard": "Дашборд",
+    "structure": "Структура",
+    "leaders": "Руководители",
+    "departments": "Отделы",
+    "departmentsList": "Список отделов",
+    "positions": "Должности",
+    "positionsList": "Список должностей",
+    "kpi": "KPI",
+    "classifications": "Классификаторы",
+    "contracts": "Договоры",
+    "workers": "Сотрудники",
+    "workersDashboard": "Дашборд сотрудников",
+    "workersPins": "ПИН сотрудников",
+    "workerPin": "ПИН сотрудника",
+    "workerShow": "Данные сотрудника",
+    "workerCheck": "Проверка сотрудника",
+    "workerEventsMonth": "Турникет сотрудника (месяц)",
+    "workerEventsDay": "Турникет сотрудника (день)",
+    "turnstileEvents": "События турникета",
+    "stationWorkers": "Сотрудники станции",
+    "stationWorker": "Сотрудник станции",
+    "stationResume": "Резюме станции",
+    "stationStats": "Статистика станции",
+    "meds": "Медосмотры",
+    "workerMeds": "Медосмотры сотрудника",
+    "workerSalary": "Зарплата сотрудника",
+    "workerSalaryMonths": "Месяцы зарплаты",
+    "mobileFaceSendEvent": "Mobile face: отправка события",
+    "mobileFaceCheckWorker": "Mobile face: проверка сотрудника",
+    "mobileFaceSchedules": "Mobile face: графики",
+    "otpVerify": "Проверка OTP",
+    "holidayGreetings": "Праздничные поздравления"
   }
 }

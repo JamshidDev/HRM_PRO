@@ -525,7 +525,11 @@
     "updateTitle": "Role tahrirlash",
     "form": {
       "name": "Role nomi",
-      "permissions": "Permission"
+      "permissions": "Permission",
+      "moduleAccess": "Modul ruxsati",
+      "type": "Rol turi",
+      "typeSanctum": "Foydalanuvchi",
+      "typeIntegration": "Integration"
     }
   },
   "userPage": {
@@ -3656,5 +3660,40 @@
       "special": "Kamida 1 ta maxsus belgi ({'@'}!#$%^&*)",
       "match": "Parollar mos keladi"
     }
+  },
+  "integrationPerm": {
+    "enums": "Ma'lumotnomalar",
+    "dashboard": "Dashboard",
+    "structure": "Tuzilma",
+    "leaders": "Rahbarlar",
+    "departments": "Bo'limlar",
+    "departmentsList": "Bo'limlar ro'yxati",
+    "positions": "Lavozimlar",
+    "positionsList": "Lavozimlar ro'yxati",
+    "kpi": "KPI",
+    "classifications": "Klassifikatorlar",
+    "contracts": "Shartnomalar",
+    "workers": "Xodimlar",
+    "workersDashboard": "Xodimlar dashboard",
+    "workersPins": "Xodimlar PIN'lari",
+    "workerPin": "Xodim PIN",
+    "workerShow": "Xodim ma'lumoti",
+    "workerCheck": "Xodim tekshiruvi",
+    "workerEventsMonth": "Xodim turniket (oy)",
+    "workerEventsDay": "Xodim turniket (kun)",
+    "turnstileEvents": "Turniket eventlari",
+    "stationWorkers": "Stansiya xodimlari",
+    "stationWorker": "Stansiya xodimi",
+    "stationResume": "Stansiya rezyume",
+    "stationStats": "Stansiya statistikasi",
+    "meds": "Tibbiy ko'riklar",
+    "workerMeds": "Xodim tibbiy ko'riklari",
+    "workerSalary": "Xodim maoshi",
+    "workerSalaryMonths": "Xodim maosh oylari",
+    "mobileFaceSendEvent": "Mobil face: event yuborish",
+    "mobileFaceCheckWorker": "Mobil face: xodim tekshirish",
+    "mobileFaceSchedules": "Mobil face: jadvallar",
+    "otpVerify": "OTP tekshirish",
+    "holidayGreetings": "Bayram tabriklari"
   }
 }
