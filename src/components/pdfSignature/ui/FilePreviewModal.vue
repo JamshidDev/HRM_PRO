@@ -1,8 +1,9 @@
 <script setup>
   import { UIModal } from '@/components/index.js'
-  import { ArrowSyncDismiss24Filled, CloudArrowDown16Regular, ErrorCircle24Filled } from '@vicons/fluent'
+  import { Dismiss24Regular, CloudArrowDown16Regular, ErrorCircle24Filled } from '@vicons/fluent'
   import Utils from '@/utils/Utils.js'
   import DocxViewer from './DocxViewer.vue'
+  import PdfCanvasViewer from './PdfCanvasViewer.vue'
 
   const props = defineProps({
     file: {
@@ -18,10 +19,36 @@
   const loading = ref(false)
   const loadError = ref(false)
 
+  const isPdf = computed(() => /\.pdf($|\?)/i.test(props.file?.original_name || props.file?.file || ''))
+  const isImage = computed(() =>
+    /\.(png|jpe?g|gif|webp|svg|bmp)($|\?)/i.test(props.file?.original_name || props.file?.file || '')
+  )
+
+  const onPdfLoaded = (pages) => {
+    pageCount.value = pages
+    loading.value = false
+  }
+
+  const onPdfError = () => {
+    loadError.value = true
+    loading.value = false
+  }
+
   const openFile = () => {
     if (!props.file?.file) return
     pageCount.value = 0
     loadError.value = false
+
+    if (isImage.value) {
+      loading.value = false
+      return
+    }
+
+    if (isPdf.value) {
+      loading.value = true
+      return
+    }
+
     loading.value = true
     nextTick(() => {
       docxRef.value
@@ -73,9 +100,14 @@
             </template>
             {{ $t('content.download') }}
           </n-button>
-          <n-icon @click="visible = false" class="text-[28px] text-red-500 cursor-pointer">
-            <ArrowSyncDismiss24Filled />
-          </n-icon>
+          <div
+            @click="visible = false"
+            class="w-8 h-8 rounded-full bg-surface-ground hover:bg-surface-line flex items-center justify-center cursor-pointer shrink-0 transition-colors"
+          >
+            <n-icon size="16" class="text-textColor2">
+              <Dismiss24Regular />
+            </n-icon>
+          </div>
         </div>
       </div>
     </template>
@@ -98,6 +130,12 @@
             {{ $t('content.download') }}
           </n-button>
         </div>
+      </div>
+      <n-spin v-else-if="isPdf" :show="loading" class="w-full h-full">
+        <PdfCanvasViewer :url="file?.file" @loaded="onPdfLoaded" @error="onPdfError" />
+      </n-spin>
+      <div v-else-if="isImage" class="w-full h-full flex items-center justify-center overflow-auto p-4">
+        <img :src="file?.file" :alt="file?.original_name" class="max-w-full max-h-full object-contain" />
       </div>
       <n-spin v-else :show="loading">
         <DocxViewer ref="docxRef" />

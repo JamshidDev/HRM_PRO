@@ -82,7 +82,7 @@
     class="w-full"
   >
     <div class="flex flex-col gap-4">
-      <div class="flex flex-col gap-2">
+      <div v-if="store.fileList.length" class="flex flex-col gap-2">
         <template v-for="(item, idx) in store.fileList" :key="idx">
           <div class="flex items-center gap-2 p-2 -mx-2 rounded-lg hover:bg-surface-ground">
             <div
@@ -131,7 +131,7 @@
 
         <FilePreviewModal v-model:visible="previewVisible" :file="previewFile" />
 
-        <n-badge :value="store.show ? 0 : store.document?.histories">
+        <n-badge :value="store.show ? 0 : store.document?.histories" :offset="[-10, 8]">
           <n-button
             type="tertiary"
             secondary
@@ -162,10 +162,10 @@
               <UIUser
                 :short="false"
                 :data="{
-                  photo: item.user?.worker.photo,
-                  lastName: item.user.worker.last_name,
-                  firstName: item.user.worker.first_name,
-                  middleName: item.user.worker.middle_name,
+                  photo: item.user?.worker?.photo,
+                  lastName: item.user?.worker?.last_name,
+                  firstName: item.user?.worker?.first_name,
+                  middleName: item.user?.worker?.middle_name,
                   position: null
                 }"
               >
@@ -175,7 +175,7 @@
                     class="text-[10px] text-end text-primary underline flex items-center cursor-pointer hover:text-primary"
                   >
                     <n-icon class="mr-1" size="16"><DocumentArrowDown16Regular /></n-icon>
-                    {{ item.status.name }}
+                    {{ item.status?.name }}
                   </span>
                 </template>
               </UIUser>

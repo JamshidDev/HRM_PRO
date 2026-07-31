@@ -902,6 +902,9 @@
     "acceptApplication": "Arizani tasdiqlash",
     "comment": "Izoh",
     "rejectApplication": "Arizani rad qilish",
+    "applicationAcceptDesc": "Izohingizni qoldirishingiz mumkin (ixtiyoriy).",
+    "applicationRejectDesc": "Rad etish sababini yozing. Sabab arizani yuborgan xodimga ko'rinadi.",
+    "applicationCommentPlaceholder": "Izohingizni kiriting...",
     "pinfl": "JSHSHIR"
   },
   "documentPage": {

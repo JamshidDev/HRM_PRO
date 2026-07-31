@@ -343,6 +343,8 @@
     "en": "EN",
     "create": "Create",
     "allSelected": "All selected",
+    "sendToSign": "Send to sign",
+    "rejectByMistake": "Return due to error",
     "themeLight": "Light",
     "themeDark": "Dark",
     "themeSystem": "System",
@@ -882,6 +884,9 @@
     "acceptApplication": "Approve application",
     "comment": "Comment",
     "rejectApplication": "Reject application",
+    "applicationAcceptDesc": "You can leave a comment (optional).",
+    "applicationRejectDesc": "Write the reason for rejection. It will be visible to the employee who submitted the application.",
+    "applicationCommentPlaceholder": "Enter your comment...",
     "pinfl": "PIN"
   },
   "documentPage": {

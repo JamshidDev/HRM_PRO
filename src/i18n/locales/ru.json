@@ -886,6 +886,9 @@
     "acceptApplication": "Одобрить заявление",
     "comment": "Комментарий",
     "rejectApplication": "Отклонить заявление",
+    "applicationAcceptDesc": "Вы можете оставить комментарий (необязательно).",
+    "applicationRejectDesc": "Напишите причину отклонения. Причина будет видна сотруднику, отправившему заявление.",
+    "applicationCommentPlaceholder": "Введите комментарий...",
     "pinfl": "ПИНФЛ"
   },
   "documentPage": {
