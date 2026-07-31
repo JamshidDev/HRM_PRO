@@ -74,7 +74,7 @@
             <p class="text-lg font-bold">{{ $t(item.title) }}</p>
             <p class="max-w-[300px] font-medium">{{ $t(item.info) }}</p>
             <div class="basis-auto grow flex items-end justify-end">
-              <p class="text-primary border-b border-dashed">
+              <p class="text-primary border-b border-dashed border-primary">
                 {{ $t('content.brief') }}
               </p>
             </div>

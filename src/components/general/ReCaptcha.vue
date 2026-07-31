@@ -57,7 +57,9 @@
 
 <template>
   <div class="captcha-block w-full flex items-center gap-2">
-    <div class="captcha-card flex items-stretch rounded-[10px] overflow-hidden border shrink-0">
+    <div
+      class="captcha-card flex items-stretch rounded-[10px] overflow-hidden border border-surface-line shrink-0"
+    >
       <div class="captcha-image flex items-center justify-center">
         <n-spin v-if="loading" :size="20" />
         <img v-else-if="imgSrc" :src="imgSrc" alt="captcha" class="captcha-img object-contain" />
