@@ -14,6 +14,8 @@
   import { computed } from 'vue'
   import RevertIcon from '@/assets/icons/revertIcon.svg'
 
+  const OLD_SITE_URL = 'https://hrm.railway.uz/old/'
+
   const props = defineProps({
     mode: {
       type: String,
@@ -27,7 +29,7 @@
   })
 
   const targetUrl = computed(
-    () => props.href || (props.mode === 'old' ? import.meta.env.VITE_OLD_SITE_URL : import.meta.env.VITE_NEW_SITE_URL)
+    () => props.href || (props.mode === 'old' ? OLD_SITE_URL : import.meta.env.VITE_NEW_SITE_URL)
   )
 
   const labelKey = computed(() => (props.mode === 'old' ? 'content.oldVersionButton' : 'content.newVersionButton'))
