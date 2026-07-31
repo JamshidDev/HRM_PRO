@@ -219,13 +219,23 @@
       </div>
     </template>
     <template #filterAction>
-      <n-button :loading="store.jobLoading" @click="onSync" type="primary">
+      <n-button
+        v-if="accStore.checkAction(accStore.pn.turnstileHikCentralSyncWrite)"
+        :loading="store.jobLoading"
+        @click="onSync"
+        type="primary"
+      >
         {{ $t('turnstile.accessLevelPage.sync') }}
         <template #icon>
           <ArrowSync24Filled />
         </template>
       </n-button>
-      <n-button @click="onOpenDownloadModal" :loading="storeV2.download.loading" type="success">
+      <n-button
+        v-if="accStore.checkAction(accStore.pn.turnstileAbsentWorkersExport)"
+        @click="onOpenDownloadModal"
+        :loading="storeV2.download.loading"
+        type="success"
+      >
         <template #icon>
           <ArrowCircleDown32Regular />
         </template>

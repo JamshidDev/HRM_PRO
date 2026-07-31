@@ -163,16 +163,16 @@ export const useDashboardStore = defineStore('dashboardStore', {
         },
         {
           total: {
-            title: 'dashboardPage.mainCard.totalWorker',
-            count: v.workers_count
+            title: 'dashboardPage.mainCard.fxsh',
+            count: v.fxsh_count
           },
           data1: {
             title: 'dashboardPage.mainCard.man',
-            count: v.mans_count
+            count: v.fxsh_mans_count
           },
           data2: {
             title: 'dashboardPage.mainCard.woman',
-            count: v.woman_count
+            count: v.fxsh_woman_count
           }
         }
       ]

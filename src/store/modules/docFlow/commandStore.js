@@ -219,6 +219,7 @@ export const useCommandStore = defineStore('commandStore', {
       search: null,
       organizations: [],
       confirmation: null,
+      type: null,
       created: null
     },
     vacations: [],

@@ -193,14 +193,14 @@ const onDone = () => {
   background-repeat: no-repeat;
   background-position: left center;
   background-size: auto 105%;
-  opacity: 0.15;
+  opacity: 1;
   -webkit-mask-image: linear-gradient(to right, #000 45%, transparent 85%);
   mask-image: linear-gradient(to right, #000 45%, transparent 85%);
   transition: opacity 0.25s;
 }
 
 [data-theme='dark'] .login-new__hero-pattern {
-  opacity: 0.15;
+  opacity: 1;
 }
 
 /* Karta pastki qismidagi mandala naqshi — pastga tiqilgan, tepaga qarab so'nadi */
@@ -217,7 +217,7 @@ const onDone = () => {
 }
 
 [data-theme='dark'] .login-new__card-pattern {
-  opacity: 0.4;
+  opacity: 1;
 }
 
 .login-new__card {

@@ -51,11 +51,11 @@ defineProps({
       </slot>
     </div>
     <div
-      class="rounded-b-3xl"
       :class="[
         plain ? 'bg-surface-section' : 'bg-surface-ground',
         fullHeight && 'flex-1 overflow-auto',
-        tightBody ? 'px-2 py-3' : 'p-4'
+        tightBody ? 'px-2 py-3' : 'p-4',
+        !$slots.footer && 'rounded-b-3xl'
       ]"
     >
       <slot />

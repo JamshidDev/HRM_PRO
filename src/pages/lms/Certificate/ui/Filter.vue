@@ -35,15 +35,15 @@
     componentStore._structures()
   }
 
-  const groupAction = {
-    fetch: () => store.group.list.length || store._group(),
+  const learningCenterAction = {
+    fetch: () => store.learningCenter.list.length || store._learningCenter(),
     onSearch: () => {
-      store.group.params.page = 1
-      store._group()
+      store.learningCenter.params.page = 1
+      store._learningCenter()
     },
     onScroll: () => {
-      store.group.params.page++
-      store._group(true)
+      store.learningCenter.params.page++
+      store._learningCenter(true)
     }
   }
 
@@ -86,7 +86,7 @@
   const onShow = (v) => {
     if (!v) return
     fetchStructure()
-    groupAction.fetch()
+    learningCenterAction.fetch()
     eduPlanAction.fetch()
     directionAction.fetch()
     spnAction.fetch()
@@ -132,17 +132,19 @@
           :loading="componentStore.enumAdminLoading"
           @update:value="filterEvent"
         />
-        <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{ $t('content.group') }}</label>
+        <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{
+          $t('content.learningCenter')
+        }}</label>
         <SuperSelect
-          v-model:value="store.params.group_id"
-          v-model:search="store.group.params.search"
-          :options="store.group.list"
-          :loading="store.group.loading"
-          :total-count="store.group.totalItems"
-          :per-page="store.group.params.per_page"
+          v-model:value="store.params.learning_center_id"
+          v-model:search="store.learningCenter.params.search"
+          :options="store.learningCenter.list"
+          :loading="store.learningCenter.loading"
+          :total-count="store.learningCenter.totalItems"
+          :per-page="store.learningCenter.params.per_page"
           :clearable="true"
-          @onScrollEv="groupAction.onScroll"
-          @onSearch="groupAction.onSearch"
+          @onScrollEv="learningCenterAction.onScroll"
+          @onSearch="learningCenterAction.onSearch"
           @update:value="filterEvent()"
         />
         <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{

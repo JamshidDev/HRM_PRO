@@ -29,11 +29,11 @@
       <n-radio-group v-model:value="store.activeRole" class="w-full">
         <template v-for="(item, idx) in store.roleList" :key="idx">
           <div
-            @click="store.changeAccount(item.id)"
+            @click="store.changeAccount(item)"
             class="w-full border border-primary/30 rounded-sm mb-2 p-2 flex cursor-pointer relative bg-gradient-to-b from-primary/10 to-success/3"
           >
             <span style="width: 30px" class="flex justify-center items-center">
-              <n-radio size="large" :value="item.id" class="pointer-events-none" />
+              <n-radio size="large" :value="item.key" class="pointer-events-none" />
             </span>
             <span class="flex flex-col pl-1" style="width: calc(100% - 30px)">
               <span class="text-sm font-semibold text-textColor2">{{ item.name }}</span>

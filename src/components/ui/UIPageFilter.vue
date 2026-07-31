@@ -123,6 +123,7 @@
           type="text"
           :placeholder="$t('content.search')"
           :on-keyup="searchEvent"
+          
           @paste="searchEvent"
         >
           <template #prefix>

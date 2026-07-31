@@ -78,6 +78,12 @@
       "title": "Korxona shtatkasi",
       "subtitle": "Tanlangan korxona(lar) shtat jadvali — shtat ID, bo'lim, lavozim ID, lavozim (Excel, fon rejimida)"
     },
+    "stationCodes": {
+      "title": "Bo'limlar va station kodlar"
+    },
+    "positions": {
+      "title": "Korxona kesimida lavozimlar (takrorsiz)"
+    },
     "validation": {
       "organizations": "Kamida bitta korxona tanlang",
       "accessLevels": "Kamida bitta access level tanlang",
@@ -187,6 +193,7 @@
     "news": "Yangi",
     "hour": "Soat",
     "group": "Guruh",
+    "learningCenter": "O'quv markaz",
     "action": "Amallar",
     "expiryDate": "Muddati",
     "updatedAt": "Yangilangan",
@@ -520,7 +527,11 @@
     "updateTitle": "Role tahrirlash",
     "form": {
       "name": "Role nomi",
-      "permissions": "Permission"
+      "permissions": "Permission",
+      "moduleAccess": "Modul ruxsati",
+      "type": "Rol turi",
+      "typeSanctum": "Foydalanuvchi",
+      "typeIntegration": "Integration"
     }
   },
   "userPage": {
@@ -679,6 +690,9 @@
       "multiple_position": "Birdan ortiq shartnomaga ega xodimlar",
       "pension_age": "Pensiya yoshidagi xodimlar",
       "position_type": "Lavozim turi",
+      "countBy": "Hisoblash kesimi",
+      "countByPosition": "Lavozim bo'yicha",
+      "countByWorker": "Xodim bo'yicha",
       "age": "Yoshi",
       "quickActions": "Tezkor amallar",
       "downloadRelative": "Qarindoshlarni yuklash"
@@ -755,7 +769,9 @@
     },
     "roles": {
       "title": "Rollar",
-      "attachRole": "Role biriktirish"
+      "attachRole": "Role biriktirish",
+      "active": "Faol",
+      "setActive": "Faol qilish"
     },
     "disability": {
       "title": "Nogironlik ma'lumotlari",
@@ -1840,6 +1856,7 @@
     },
     "mainCard": {
       "totalWorker": "Xodimlar soni",
+      "fxsh": "FXSH xodimlari",
       "man": "Erkaklar soni",
       "woman": "Ayollar soni"
     },
@@ -3375,6 +3392,31 @@
       "mobile": "Mobil ilova orqali xabar yuborilgan xodimlar soni"
     }
   },
+  "mobileStoryPage": {
+    "name": "Story e'lonlari",
+    "createTitle": "Yangi story",
+    "updateTitle": "Story'ni tahrirlash",
+    "status": { "draft": "Qoralama", "published": "Chop etilgan" },
+    "table": { "status": "Holat", "views": "Ko'rilgan" },
+    "form": {
+      "title": "Sarlavha",
+      "titleRequired": "Sarlavha (uz) majburiy",
+      "subtitle": "Tavsif",
+      "status": "Holat",
+      "sort": "Tartib",
+      "actionType": "Action turi",
+      "actionTypePlaceholder": "mas. attendance",
+      "publishedAt": "Chop etish sanasi",
+      "slides": "Slaydlar (rasm/video)",
+      "addSlide": "Slayd qo'shish",
+      "editFields": "Ma'lumotlarni tahrirlash",
+      "noSlides": "Hali slayd yo'q — yuqoridagi tugma orqali qo'shing",
+      "detailsButton": "Batafsil"
+    },
+    "deleteConfirm": "Ushbu story o'chirilsinmi?",
+    "slideDeleteConfirm": "Ushbu slayd o'chirilsinmi?",
+    "saved": "Saqlandi"
+  },
   "newsPage": {
     "name": "Yangiliklar",
     "create": "Yangilik yaratish",
@@ -3649,5 +3691,40 @@
       "special": "Kamida 1 ta maxsus belgi ({'@'}!#$%^&*)",
       "match": "Parollar mos keladi"
     }
+  },
+  "integrationPerm": {
+    "enums": "Ma'lumotnomalar",
+    "dashboard": "Dashboard",
+    "structure": "Tuzilma",
+    "leaders": "Rahbarlar",
+    "departments": "Bo'limlar",
+    "departmentsList": "Bo'limlar ro'yxati",
+    "positions": "Lavozimlar",
+    "positionsList": "Lavozimlar ro'yxati",
+    "kpi": "KPI",
+    "classifications": "Klassifikatorlar",
+    "contracts": "Shartnomalar",
+    "workers": "Xodimlar",
+    "workersDashboard": "Xodimlar dashboard",
+    "workersPins": "Xodimlar PIN'lari",
+    "workerPin": "Xodim PIN",
+    "workerShow": "Xodim ma'lumoti",
+    "workerCheck": "Xodim tekshiruvi",
+    "workerEventsMonth": "Xodim turniket (oy)",
+    "workerEventsDay": "Xodim turniket (kun)",
+    "turnstileEvents": "Turniket eventlari",
+    "stationWorkers": "Stansiya xodimlari",
+    "stationWorker": "Stansiya xodimi",
+    "stationResume": "Stansiya rezyume",
+    "stationStats": "Stansiya statistikasi",
+    "meds": "Tibbiy ko'riklar",
+    "workerMeds": "Xodim tibbiy ko'riklari",
+    "workerSalary": "Xodim maoshi",
+    "workerSalaryMonths": "Xodim maosh oylari",
+    "mobileFaceSendEvent": "Mobil face: event yuborish",
+    "mobileFaceCheckWorker": "Mobil face: xodim tekshirish",
+    "mobileFaceSchedules": "Mobil face: jadvallar",
+    "otpVerify": "OTP tekshirish",
+    "holidayGreetings": "Bayram tabriklari"
   }
 }
