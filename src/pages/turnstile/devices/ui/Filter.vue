@@ -43,7 +43,7 @@
     filterEvent()
   }
 
-  const beforeShow = (v) => {
+  const beforeShow = () => {
     if (componentStore.structureList.length === 0) {
       componentStore._structures()
     }
@@ -99,7 +99,7 @@
     :search-loading="store.loading"
     @onClear="resetFilter"
     :show-add-button="isAdmin"
-    :filterCount="filterCount"
+    :filter-count="filterCount"
     @onAdd="onAdd"
     @show="beforeShow"
   >
@@ -109,10 +109,10 @@
       }}</label>
       <UISelect
         :options="componentStore.structureList"
-        :modelV="store.params.organizations"
+        :model-v="store.params.organizations"
         @defaultValue="(v) => (store.params.organizations = v)"
         @updateModel="onChangeStructure"
-        :checkedVal="store.structureCheck2"
+        :checked-val="store.structureCheck2"
         @updateCheck="(v) => (store.structureCheck2 = v)"
         :loading="componentStore.structureLoading"
         v-model:search="componentStore.structureParams.search"
@@ -162,19 +162,34 @@
 
     <template #filterAction>
       <div class="col-span-12 md:col-span-6 flex justify-end gap-2">
-        <n-button type="success" @click="store._downloadReport()" :loading="store.downloading">
+        <n-button
+          class="h-[32px]!"
+          type="success"
+          @click="store._downloadReport()"
+          :loading="store.downloading"
+        >
           {{ $t('content.downloadReport') }}
           <template #icon>
             <ArrowCircleDown12Regular />
           </template>
         </n-button>
-        <n-button type="success" @click="store._downloadDevices()" :loading="store.downloading">
+        <n-button
+          class="h-[32px]!"
+          type="success"
+          @click="store._downloadDevices()"
+          :loading="store.downloading"
+        >
           {{ $t('content.download') }}
           <template #icon>
             <ArrowCircleDown12Regular />
           </template>
         </n-button>
-        <n-button type="primary" @click="store._refreshDevice()" :loading="store.loading">
+        <n-button
+          class="h-[32px]!"
+          type="primary"
+          @click="store._refreshDevice()"
+          :loading="store.loading"
+        >
           {{ $t('content.refresh') }}
           <template #icon>
             <ArrowSync24Filled />

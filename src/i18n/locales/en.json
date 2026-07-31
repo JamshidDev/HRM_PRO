@@ -123,6 +123,8 @@
     "deleteAll": "Delete all",
     "checked": "Checked",
     "view": "View",
+    "manageColumns": "Manage columns",
+    "resetColumns": "Reset to default",
     "backToList": "Back to list",
     "responsible": "Responsible person",
     "now": "Now",
@@ -163,6 +165,7 @@
     "langUz": "UZB",
     "langRu": "RUS",
     "langEn": "ENG",
+    "langUzKr": "CYR",
     "search": "Search",
     "mln": "mln",
     "today": "Today",
@@ -171,7 +174,9 @@
     "person": "persons",
     "searchWorker": "Type to search employee...",
     "add": "Add",
+    "filters": "Filters",
     "filterSetting": "Filter settings",
+    "clearFilters": "Clear filters",
     "showAdditionalFilters": "Show additional filters",
     "hideAdditionalFilters": "Hide additional filters",
     "ageRange": "Range",
@@ -211,6 +216,8 @@
     "notFoundData": "Data not found!",
     "noResultYourRequest": "No results found for your request...",
     "back": "Back",
+    "theme": "Theme",
+    "language": "Language",
     "profile": "Profile",
     "asAdmin": "Super admin",
     "setting": "Settings",
@@ -322,7 +329,7 @@
     "noSpam": "Remove from spam",
     "noImage": "No image",
     "waitResponse": "Please wait for response!",
-    "untilNow": "present",
+    "untilNow": "so far",
     "warningImageSave": "New image selected as main. Click 'Save' to apply changes.",
     "selectAll": "Select all",
     "selectList": "Select entire list",
@@ -333,7 +340,10 @@
     "ru": "RU",
     "en": "EN",
     "create": "Create",
-    "allSelected": "All selected"
+    "allSelected": "All selected",
+    "themeLight": "Light",
+    "themeDark": "Dark",
+    "themeSystem": "System"
   },
   "date": {
     "day": "Day",
@@ -404,13 +414,14 @@
     "lms": "LMS"
   },
   "offerModal": {
-    "title": "Review the documents",
-    "desc": "Please review the documents below to continue.",
+    "title": "Public offer",
+    "desc": "Please review the terms before using the platform",
     "terms": "Terms of Use",
     "privacy": "Privacy Policy",
-    "accept": "I acknowledge",
-    "decline": "Decline",
-    "loadError": "Failed to load the document"
+    "downloadLabel": "Download the full document (PDF)",
+    "loadError": "Failed to load the document",
+    "accept": "I agree and continue",
+    "decline": "Decline"
   },
   "loginPage": {
     "copyright": "© DASUTY. All rights reserved. Developed by \"DAS UTY\" LLC.",
@@ -428,7 +439,9 @@
     },
     "login": "Login",
     "termsPrefix": "By clicking \"Login\", you agree to our",
-    "termsLink": "Public Offer",
+    "termsLink": "Terms of Use",
+    "termsMiddle": "and",
+    "privacyLink": "Privacy Policy",
     "termsSuffix": "",
     "captcha": "Captcha",
     "captchaRefresh": "Refresh",
@@ -640,8 +653,6 @@
     "name": "Timesheet keepers",
     "work_place": "Organization/Department"
   },
-
-
   "workerPage": {
     "name": "Employees",
     "filter": {
@@ -659,6 +670,7 @@
       "countByPosition": "By position",
       "countByWorker": "By worker",
       "age": "Age",
+      "quickActions": "Quick actions",
       "downloadRelative": "Download relatives"
     },
     "checkWorker": {
@@ -678,10 +690,15 @@
       "group": "G",
       "rank": "R",
       "rate": "S",
+      "groupFull": "Group",
+      "rankFull": "Rank",
+      "rateFull": "Rate",
       "position_date": "Position date",
       "birthday": "Date of birth",
       "position": "Position",
-      "organization": "Organization"
+      "organization": "Organization",
+      "salary": "Monthly salary",
+      "workExperience": "Total experience (in months)"
     }
   },
   "exportPage": {
@@ -1048,6 +1065,38 @@
       "to": "To",
       "work_day": "Return to work date"
     },
+    "form_51": {
+      "reason": "Basis letter"
+    },
+    "form_56": {
+      "work_date": "Engagement day",
+      "start_time": "Work start time",
+      "end_time": "Work end time",
+      "duration": "Duration",
+      "reason": "Engagement reason",
+      "responsible": "Responsible employee"
+    },
+    "form_57": {
+      "work_date": "Engagement day",
+      "start_time": "Work start time",
+      "end_time": "Work end time",
+      "duration": "Duration",
+      "reason": "Engagement reason",
+      "responsible": "Responsible employee",
+      "pay_type": "Compensation type",
+      "pay_option": "Increased pay",
+      "rest_option": "Additional rest time",
+      "rest_date": "Rest day",
+      "rest_start_time": "Rest start time",
+      "rest_end_time": "Rest end time"
+    },
+    "form_58": {
+      "suspension_reason": "Suspension ground",
+      "from": "Suspension start (from)",
+      "to": "Suspension end (to)",
+      "act_date": "Act date",
+      "responsible": "Responsible employee"
+    },
     "form_50": {
       "to": "Vacation end date",
       "from": "Vacation start date",
@@ -1344,7 +1393,9 @@
     },
     "title": "Previous employment",
     "systemTitle": "System employment records",
-    "no-data": "No previous employment added!"
+    "no-data": "No previous employment added!",
+    "sortOldestFirst": "Oldest to newest",
+    "sortNewestFirst": "Newest to oldest"
   },
   "workerPositionCertificatePage": {
     "title": "Position certificates",
@@ -1368,7 +1419,7 @@
     "createTitle": "Add certificate",
     "updateTitle": "Edit certificate",
     "unlimited": "Unlimited",
-    "unlimitedHint": "Leave empty \u2014 no expiry",
+    "unlimitedHint": "Leave empty — no expiry",
     "qualificationHint": "This certificate does not define a language level",
     "scorePlaceholder": "Result from the certificate",
     "form": {
@@ -1488,7 +1539,10 @@
       "position": "Position",
       "department": "Department",
       "salary": "Monthly salary",
-      "country": "Birth country"
+      "country": "Birth country",
+      "passportValid": "Valid",
+      "citizenship": "Citizenship",
+      "foreignPassport": "Foreign travel passport"
     },
     "tabs": {
       "general": "General info",
@@ -1496,14 +1550,78 @@
       "relative": "Close relatives",
       "med": "Medical exam",
       "vacation": "Vacation info",
-      "incentive": "Incentives",
+      "incentive": "Incentive",
       "attestation": "Certification",
       "checkSkill": "Skill test",
       "checkKnowledge": "Knowledge test",
-      "punishment": "Disciplinary actions"
+      "punishment": "Disciplinary action",
+      "e_documents": "E-documents",
+      "exams": "Exams",
+      "turnstile": "Turnstile"
+    },
+    "header": {
+      "title": "Employee profile",
+      "subtitle": "General information, personal documents and activity history",
+      "activeEmployee": "Active employee",
+      "managementStaff": "Management staff",
+      "avgRating": "Average rating",
+      "ratingBasedOn": "based on {count} reviews",
+      "serviceCertificate": "Service certificate",
+      "workNumber": "Work number"
+    },
+    "sidebar": {
+      "title": "Profile sections"
+    },
+    "career": {
+      "currentLabel": "Current"
+    },
+    "med": {
+      "currentStatus": "Current health status",
+      "validityPeriod": "Validity period",
+      "started": "Started",
+      "ends": "Ends",
+      "progressSuffix": "elapsed",
+      "lastCheckDate": "Last check-up date",
+      "conclusion": "Medical conclusion",
+      "fitForWork": "Fit for work",
+      "monthsLeft": "≈{count} months left"
+    },
+    "vacation": {
+      "start": "Vacation start",
+      "end": "Vacation end",
+      "duration": "Duration",
+      "type": "Vacation type",
+      "daysLabel": "days",
+      "calendarLabel": "Vacation days",
+      "completed": "Completed",
+      "planned": "Planned",
+      "upcomingTitle": "Upcoming leave — {year}",
+      "viewCalendar": "View in calendar"
+    },
+    "incentive": {
+      "count": "{count} pcs",
+      "categoryMaterial": "Material incentive",
+      "categoryState": "State / departmental award",
+      "categoryMoral": "Moral incentive"
+    },
+    "Edocument": {
+      "pasport": "Passport",
+      "railway_pasport": "Railway ID",
+      "foreign_pasport": "Foreign Passport",
+      "card_number": "Card Number",
+      "issue_date": "Issue Date",
+      "expiry_date": "Expiry Date",
+      "birth_date": "Date of Birth",
+      "nationality": "Nationality",
+      "citizenship": "Citizenship",
+      "issue_place": "Place of Issue",
+      "sex": "Sex",
+      "personal_number": "Personal Number",
+      "birth_place": "Place of birth",
+      "male": "Male",
+      "female": "Female"
     }
   },
-
   "categoryPage": {
     "createCategory": "Create category",
     "editCategory": "Edit category",
@@ -1622,6 +1740,38 @@
       "name": "Holiday name",
       "holiday_date": "Holiday date",
       "type": "Holiday type"
+    }
+  },
+  "holidayGreetingPage": {
+    "name": "Holiday greetings",
+    "createTitle": "Add holiday greeting",
+    "updateTitle": "Edit holiday greeting",
+    "form": {
+      "name": "Holiday name",
+      "text": "Greeting text",
+      "holiday_date": "Holiday date",
+      "is_recurring": "Repeat every year",
+      "is_active": "Active",
+      "banner": "Banner"
+    },
+    "table": {
+      "name": "Name",
+      "date": "Date",
+      "recurring": "Recurring",
+      "status": "Status",
+      "banner": "Banner"
+    },
+    "overrides": {
+      "title": "Custom greeting for projects",
+      "hint": "For each external project (e.g. \"kpi\", \"noks\") you can set a separate text and banner instead of the shared greeting. The project is identified by a free-form key it sends itself (not a login or user).",
+      "add": "+ Add project",
+      "createTitle": "Add project",
+      "updateTitle": "Edit project",
+      "clientKey": "Project key",
+      "clientKeyPlaceholder": "e.g. kpi",
+      "text": "Greeting text",
+      "banner": "Banner",
+      "empty": "No custom project greetings yet"
     }
   },
   "vacationPage": {
@@ -2092,8 +2242,6 @@
   "businessTrip": {
     "name": "Business trip"
   },
-
-
   "documentArchive": {
     "name": "Document archive",
     "createTitle": "Add document file",
@@ -2452,12 +2600,12 @@
     "confirmMessagePlaceholder": "Enter message...",
     "vacancyLevel": "Vacancy stages",
     "levels": {
-      "one":   "Application submission",
-      "two":   "Document evaluation",
+      "one": "Application submission",
+      "two": "Document evaluation",
       "three": "Interview",
-      "four":  "Medical check",
-      "five":  "Online test",
-      "six":   "Completed"
+      "four": "Medical check",
+      "five": "Online test",
+      "six": "Completed"
     },
     "zoomStart": "Start",
     "zoomMeet": "Zoom interview",
@@ -2942,6 +3090,7 @@
       "allWorkers": "All employees",
       "workTimeTitle": "Work time analysis",
       "workTimeSubtitle": "Brief analysis of arrival/departure times",
+      "lastSevenDays": "7 days",
       "workerAnalytic": "Employee analysis",
       "workerAnalyticDescription": "Brief arrival/absence analysis",
       "allWorkerOfCompany": "Total company employees",

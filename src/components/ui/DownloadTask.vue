@@ -112,8 +112,8 @@
 <template>
   <n-popover
     arrow-wrapper-class="![--n-arrow-offset:18px]"
-    class="-translate-x-2 !p-0 ![--n-border-radius:20px]"
-    placement="bottom-start"
+    class="!p-0 ![--n-border-radius:20px]"
+    placement="right-start"
     trigger="click"
     @update:show="onShow"
   >
@@ -126,7 +126,7 @@
         <n-icon
           id="taskBtn"
           size="28"
-          class="cursor-pointer text-primary transition-all hover:text-info/70"
+          class="cursor-pointer text-white transition-all hover:text-white/70"
         >
           <CloudArrowDown28Regular />
         </n-icon>

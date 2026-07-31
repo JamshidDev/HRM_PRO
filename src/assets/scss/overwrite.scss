@@ -32,12 +32,6 @@
   }
 }
 
-.image-viewer-container{
-  .vel-img{
-    width: 600px !important;
-  }
-}
-
 .ui-drawer{
   .n-drawer-header{
     width: 0 !important;
@@ -420,7 +414,11 @@ input:-webkit-autofill {
 }
 
 .image-viewer-container .vel-img {
-  width: unset !important;
+  width: auto !important;
+  height: auto !important;
+  max-width: 90vw !important;
+  max-height: 85vh !important;
+  object-fit: contain;
 }
 
 .hidden-drawer-header{
@@ -475,9 +473,9 @@ input:-webkit-autofill {
 }
 
 .header-app-badge .n-badge-sup{
-  background-color: transparent !important;
-  color: var(--textColor2) !important;
-  border: 1px solid var(--surface-line) !important;
+  background-color: var(--danger-color) !important;
+  color: #fff !important;
+  border: none !important;
   font-size: 10px !important;
 }
 

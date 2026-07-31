@@ -2,10 +2,12 @@
   import VueEasyLightbox from 'vue-easy-lightbox'
 
   const visible = ref(false)
-  const imageUrl = ref(null)
+  const imgs = ref([])
+  const index = ref(0)
 
-  const openEv = (v) => {
-    imageUrl.value = v
+  const openEv = (v, startIndex = 0) => {
+    imgs.value = Array.isArray(v) ? v : [v]
+    index.value = startIndex
     visible.value = true
   }
 
@@ -18,7 +20,8 @@
   <vue-easy-lightbox
     class="image-viewer-container"
     :visible="visible"
-    :imgs="[imageUrl]"
+    :imgs="imgs"
+    :index="index"
     @hide="visible = false"
   />
 </template>

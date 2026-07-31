@@ -25,7 +25,7 @@ export const useTurnstileHikCentralStore = defineStore('turnstileHikCentralStore
     structureCheck: [],
     params: {
       page: 1,
-      per_page: 10,
+      per_page: 15,
       search: null
     },
     payload: {

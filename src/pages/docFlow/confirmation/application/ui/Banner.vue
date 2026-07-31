@@ -1,6 +1,6 @@
 <script setup>
   import { useConfApplicationStore } from '@/store/modules/index.js'
-  import stars from '@/assets/images/svg/stars.svg'
+  import stars from '@/assets/images/svg/stars.svg?url'
   import VChart from 'vue-echarts'
   import { use } from 'echarts/core'
   import { CanvasRenderer } from 'echarts/renderers'

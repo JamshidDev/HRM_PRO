@@ -35,7 +35,7 @@
     <img
       :class="[`position-${index}`]"
       class="absolute z-[1]"
-      src="@/assets/images/svg/circle-shape.svg"
+      src="@/assets/images/svg/circle-shape.svg?url"
       alt="shape-svg"
     />
     <span

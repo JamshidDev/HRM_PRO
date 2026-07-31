@@ -57,17 +57,13 @@
 </script>
 
 <template>
-  <div
-    v-bind="$attrs"
-    class="ui__user-component flex items-center gap-x-2 cursor-pointer relative"
-    :class="short ? 'w-[200px]' : 'w-full'"
-  >
+  <div v-bind="$attrs" class="ui__user-component flex items-center gap-x-2 cursor-pointer relative">
     <n-avatar
-      @click.stop="onOpen"
       size="large"
       :round="roundAvatar"
       :src="data?.photo || useAppSetting.noAvailableImage"
       :fallback-src="Utils.noAvailableImage"
+      @click.stop="onOpen"
     />
     <span v-if="showOnlineBadge" class="absolute bottom-[0px] left-[32px] flex size-2">
       <span
@@ -75,21 +71,35 @@
       ></span>
       <span class="relative inline-flex size-2 rounded-full bg-success"></span>
     </span>
+
     <div @click="emits('onClickFullName')" class="flex flex-col" style="width: calc(100% - 50px)">
       <slot name="name" :title="short ? shortName : fullName">
-        <n-tooltip :disabled="hideTooltip" trigger="hover">
+        <n-tooltip v-if="short" :disabled="hideTooltip" trigger="hover">
           <template #trigger>
             <span
               :class="[overLine && 'line-through']"
-              class="text-sm text-textColor2 line-clamp-1 w-full leading-[1.2]"
-              >{{ short ? shortName : fullName }}</span
+              class="text-sm text-textColor2 leading-[1.2] w-full truncate"
             >
+              {{ shortName }}
+            </span>
           </template>
           <span>{{ fullName }}</span>
         </n-tooltip>
+
+        <n-ellipsis
+          v-else
+          :tooltip="!hideTooltip"
+          :class="[overLine && 'line-through']"
+          class="w-full text-sm text-textColor2 leading-[1.2]"
+        >
+          {{ fullName }}
+        </n-ellipsis>
       </slot>
+
       <slot name="position">
-        <span class="text-xs text-textColor3 line-clamp-1 w-full">{{ data?.position || '' }}</span>
+        <n-ellipsis :tooltip="!hideTooltip" class="w-full text-xs text-textColor3">
+          {{ data?.position }}
+        </n-ellipsis>
       </slot>
     </div>
   </div>

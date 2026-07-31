@@ -7,7 +7,7 @@ export const useNewsCategoryStore = defineStore('newsCategoryStore', {
     saveLoading: false,
     params: {
       page: 1,
-      per_page: 10,
+      per_page: 15,
       search: null
     },
     totalItems: 0,

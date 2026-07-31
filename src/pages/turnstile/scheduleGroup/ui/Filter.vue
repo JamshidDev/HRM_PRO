@@ -33,10 +33,17 @@
     store._departmentGroup()
   }
 
-  const beforeShow = (v) => {
+  const beforeShow = () => {
     if (componentStore.structureList.length === 0) {
       componentStore._structures()
     }
+  }
+
+  const resetFilter = () => {
+    store.groupParams.organizations = []
+    store.groupParams.departments = []
+    store.departmentGroupList = []
+    filterEvent()
   }
 </script>
 
@@ -48,6 +55,7 @@
     :show-filter-button="!store.groupParams.schedule_type"
     @onSearch="onSearchEv"
     @show="beforeShow"
+    @onClear="resetFilter"
   >
     <template #filterAction>
       <n-button v-if="store.groupParams.schedule_type" type="error" @click="store.activeTab = 1">
@@ -58,31 +66,35 @@
       </n-button>
     </template>
     <template #filterContent>
-      <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{
-        $t('actionLog.table.structure')
-      }}</label>
-      <UISelect
-        :options="componentStore.structureList"
-        :modelV="store.groupParams.organizations"
-        @updateModel="onChangeStructure"
-        @defaultValue="onDefaultEv"
-        :checkedVal="store.structureCheck2"
-        @updateCheck="(v) => (store.structureCheck2 = v)"
-        :loading="componentStore.structureLoading"
-        v-model:search="componentStore.structureParams.search"
-        @onSearch="componentStore._structures"
-        @onSubmit="filterEvent"
-        :multiple="false"
-      />
-      <label class="mt-3 text-xs mb-1 font-medium">{{ $t('content.department') }}</label>
-      <UINSelect
-        multiple
-        clearable
-        :loading="store.departmentGroupLoading"
-        :options="store.departmentGroupList"
-        v-model:value="store.groupParams.departments"
-        @update:value="filterEvent"
-      />
+      <div class="ui-filter-grid grid grid-cols-12 gap-x-5 gap-y-4">
+        <div class="col-span-12 md:col-span-6">
+          <label>{{ $t('actionLog.table.structure') }}</label>
+          <UISelect
+            :options="componentStore.structureList"
+            :model-v="store.groupParams.organizations"
+            @updateModel="onChangeStructure"
+            @defaultValue="onDefaultEv"
+            :checked-val="store.structureCheck2"
+            @updateCheck="(v) => (store.structureCheck2 = v)"
+            :loading="componentStore.structureLoading"
+            v-model:search="componentStore.structureParams.search"
+            @onSearch="componentStore._structures"
+            @onSubmit="filterEvent"
+            :multiple="false"
+          />
+        </div>
+        <div class="col-span-12 md:col-span-6">
+          <label>{{ $t('content.department') }}</label>
+          <UINSelect
+            multiple
+            clearable
+            :loading="store.departmentGroupLoading"
+            :options="store.departmentGroupList"
+            v-model:value="store.groupParams.departments"
+            @update:value="filterEvent"
+          />
+        </div>
+      </div>
     </template>
   </UIPageFilter>
 </template>

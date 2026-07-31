@@ -23,7 +23,7 @@ export const useCategoryQuestionStore = defineStore('categoryQuestionStore', {
     },
     params: {
       page: 1,
-      per_page: 10,
+      per_page: 15,
       search: null
     },
     excelPreviewList: [],

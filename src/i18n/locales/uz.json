@@ -10,7 +10,7 @@
     "to": "Tugash sanasi",
     "startTime": "Ish boshlanish vaqti",
     "download": "Yuklab olish",
-    "downloaded": "Hisobot yuklab olindi",
+    "downloaded": "Hisobot muvaffaqiyatli yuklab olindi",
     "failed": "Hisobotni yuklab bo'lmadi",
     "validation": {
       "organizations": "Kamida bitta korxona tanlang",
@@ -127,6 +127,8 @@
     "deleteAll": "Barchasini o'chirish",
     "checked": "Tekshirilgan",
     "view": "Ko'rish",
+    "manageColumns": "Ustunlarni sozlash",
+    "resetColumns": "Standart holatga qaytarish",
     "backToList": "Asosiy oynaga qaytish",
     "responsible": "Mas'ul xodim",
     "now": "Hozir",
@@ -167,6 +169,7 @@
     "langUz": "O’ZB",
     "langRu": "RUS",
     "langEn": "ENG",
+    "langUzKr": "KRIL",
     "search": "Qidiruv",
     "mln": "mln",
     "today": "Bugun",
@@ -175,7 +178,9 @@
     "person": "nafar",
     "searchWorker": "Xodimni qidirish uchun yozing...",
     "add": "Qo'shish",
+    "filters": "Filterlar",
     "filterSetting": "Filter sozlamalar",
+    "clearFilters": "Filterni tozalash",
     "showAdditionalFilters": "Qo'shimcha filterlarni ko'rsatish",
     "hideAdditionalFilters": "Qo'shimcha filterlarni yashirish",
     "ageRange": "Oraliq",
@@ -218,6 +223,8 @@
     "notFoundData": "Ma'lumot topilmadi!",
     "noResultYourRequest": "Sizning so‘rovingiz bo‘yicha hech qanday ma'lumot topilmadi...",
     "back": "Orqaga",
+    "theme": "Mavzu",
+    "language": "Til",
     "profile": "Kabinet",
     "asAdmin": "Super admin",
     "setting": "Sozlamalar",
@@ -333,23 +340,26 @@
     "noSpam": "Spamdan chiqarish",
     "noImage": "Rasm mavjud emas",
     "waitResponse": "Iltimos javobni kuting!",
-    "untilNow": "h.v",
+    "untilNow": "hozirgacha",
     "warningImageSave": "Asosiy rasm uchun yangi rasm tanlandi. O‘zgarishni saqlash uchun 'Saqlash' tugmasini bosing.",
     "selectAll": "Barchasini tanlash",
-    "selectList": "Ro'yhatni to'liq tanlash",
-    "unSelectList": "Ro'yhatni to'liq tozalash",
+    "selectList": "Ro'yxatni to'liq tanlash",
+    "unSelectList": "Ro'yxatni to'liq tozalash",
     "unSelectAll": "Barchasini tozalash",
     "forceUnSelectAll": "To'liq tozalash",
     "uz": "UZ",
     "ru": "RU",
     "en": "EN",
     "create": "Yaratish",
-    "successCopied": "Muvofaqiyatli nusxalandi",
-    "successPaste": "Muvofaqiyatli joylandi",
+    "successCopied": "Muvaffaqiyatli nusxalandi",
+    "successPaste": "Muvaffaqiyatli joylandi",
     "paste": "Joylash",
     "allSelected": "Barchasi tanlangan",
     "sendToSign": "Imzolashga yuborish",
-    "rejectByMistake": "Xatolik sababli qaytarish"
+    "rejectByMistake": "Xatolik sababli qaytarish",
+    "themeLight": "Yorug'",
+    "themeDark": "Qorong'i",
+    "themeSystem": "Tizim"
   },
   "date": {
     "day": "Kun",
@@ -389,7 +399,7 @@
     "passwordsNotMatch": "Parollar mos kelmadi!"
   },
   "message": {
-    "successDone": "Muvofaqqiyatli bajarildi",
+    "successDone": "Muvaffaqiyatli bajarildi",
     "requiredSignature": "Imzo maydoni bo'sh bo'lmasligi kerak!",
     "clearedFields": "Maydonlar tozalandi!",
     "unExpectedError": "Kutilmagan xatolik yuz berdi!",
@@ -422,13 +432,14 @@
     "lms": "LMS"
   },
   "offerModal": {
-    "title": "Hujjatlar bilan tanishing",
-    "desc": "Davom etish uchun quyidagi hujjatlar bilan tanishib chiqing.",
+    "title": "Ommaviy oferta",
+    "desc": "Platformadan foydalanishdan oldin shartlar bilan tanishing",
     "terms": "Foydalanish shartlari",
     "privacy": "Maxfiylik siyosati",
-    "accept": "Tanishdim",
-    "decline": "Rad etaman",
-    "loadError": "Hujjatni yuklab bo'lmadi"
+    "downloadLabel": "To'liq hujjatni yuklab olish (PDF)",
+    "loadError": "Hujjatni yuklab bo'lmadi",
+    "accept": "Roziman va davom etaman",
+    "decline": "Rad etish"
   },
   "loginPage": {
     "copyright": "© DASUTY. Barcha huquqlar himoyalangan. \"DAS UTY\" MCHJ tomonidan ishlab chiqilgan.",
@@ -438,7 +449,7 @@
     "phone": "Telefon raqam",
     "password": "Parol",
     "doYouHaveAccount": "Sizda hisob yo'qmi?",
-    "singUp": "Ro'yhatdan o'tish",
+    "singUp": "Ro'yxatdan o'tish",
     "description": {
       "title": "HRMS",
       "subtitle": "Xodimlarni boshqarishning zamonaviy tizimi\n",
@@ -446,8 +457,10 @@
     },
     "login": "Kirish",
     "termsPrefix": "'Kirish' tugmasini bosib, siz",
-    "termsLink": "Ommaviy ofertaga",
-    "termsSuffix": "rozilik bildirasiz",
+    "termsLink": "Foydalanish shartlari",
+    "termsMiddle": "va",
+    "privacyLink": "Maxfiylik siyosati",
+    "termsSuffix": "bilan rozilik bildirasiz",
     "captcha": "Captcha",
     "captchaRefresh": "Yangilash",
     "captchaPlaceholder": "Javobni kiriting",
@@ -478,8 +491,8 @@
     }
   },
   "registerPage": {
-    "name": "Ro'yhatdan o'tish",
-    "title": "Ro'yhatdan o'tish",
+    "name": "Ro'yxatdan o'tish",
+    "title": "Ro'yxatdan o'tish",
     "subtitle": "Tasdiqlash",
     "firstName": "Ism",
     "lastName": "Familiya",
@@ -587,12 +600,12 @@
     "tabs": {
       "profileInfo": "Hisob ma'lumotlar",
       "notification": "Bildirishnomalar",
-      "secure": "Xavsizlik",
+      "secure": "Xavfsizlik",
       "actionHistory": "Amallar tarixi",
       "social": {
         "title": "Ijtimoiy tarmoqlar",
         "subtitle": "Bizning qo'llab quvatlash guruhlarimizga qo'shiling",
-        "group": "HRM ma'sullari guruh",
+        "group": "HRM mas'ullari guruh",
         "bot": "HRMPRO bot",
         "copy": "Nusxa olish",
         "join": "Qo'shilish",
@@ -658,7 +671,6 @@
     "name": "Tabelchilar",
     "work_place": "Tashkilot/Bo'lim"
   },
-
   "workerPage": {
     "name": "Xodimlar",
     "filter": {
@@ -676,6 +688,7 @@
       "countByPosition": "Lavozim bo'yicha",
       "countByWorker": "Xodim bo'yicha",
       "age": "Yoshi",
+      "quickActions": "Tezkor amallar",
       "downloadRelative": "Qarindoshlarni yuklash"
     },
     "checkWorker": {
@@ -696,10 +709,15 @@
       "group": "G",
       "rank": "R",
       "rate": "S",
+      "groupFull": "Guruh",
+      "rankFull": "Razryad",
+      "rateFull": "Stavka",
       "position_date": "Lavozim sanasi",
       "birthday": "Tug'ilgan sanasi",
       "position": "Lavozim",
-      "organization": "Korxona"
+      "organization": "Korxona",
+      "salary": "Oylik maosh",
+      "workExperience": "Umumiy staj (oylarda)"
     }
   },
   "exportPage": {
@@ -917,7 +935,7 @@
         "half_two_day": "Ta'til kuni (Ikkinchi yarmi)",
         "half_two_date": "Ta'til sanasi (Ikkinchi yarmi)",
         "second_day": "Qo'shimcha ta'til kuni",
-        "additional": "Qo'chimchalar",
+        "additional": "Qo'shimchalar",
         "calculateVacation": "Ta'tilni hisoblash",
         "no-calculate": "Ta'til kuni hisoblanmagan!",
         "all_day": "Ta'til kuni",
@@ -925,7 +943,7 @@
         "isNotValid": "Ta'tilni hisoblash uchun ma'lumotlar yetarli emas!",
         "isNotCalculate": "Xodimlarning ta'til ma'lumotlari hisoblanmagan!",
         "notSelectCommand": "Buyruq turini tanlang va davom eting!",
-        "removeWorker": "Ro'yhatdan olib tashlash",
+        "removeWorker": "Ro'yxatdan olib tashlash",
         "calculateTitle": "Hisoblangan ta'til ma'lumotlari. Agar ularni noto'g'ri deb bilsangiz tahrirlashingiz mumkin",
         "requiredVacationData": "Xodimlarning ta'til ma'lumotlarini kiring!",
         "rest_day": "Qolgan kun",
@@ -984,10 +1002,10 @@
         "reason_one": "Birinchi marta qonuniy nikohdan o‘tishi munosabati bilan",
         "reason_two": "Nogiron farzandni tarbiyalayotganligi uchun, nogironlar kuni munosabati bilan",
         "reason_three": "Ota, ona, turmush o‘rtog‘i, farzandlari vafot etganligi munosabati bilan",
-        "reason_four": "Quyidagi saraton, leykoz, birinchi marta sil (tuberkulyoz) kasaligi, jigar serrozi dekompensasiya bosqichi, jigar transplantasiyasi, yurak qon-tomir kasalliklari, yurak klapanlarini almashtirish, yurak tomirlarini stendlash, AKSh (aorta koronar shuntlash), ablyasiya, yurak va buyrakdagi murakkab jarrohlik operatsiyalari, infarkt, insul't, o‘tkir buyrak yetishmovchiligi, dializ, buyrak transplantasiyasi, nefroskleroz, koksartroz III darajali endoprotezlash, bir yoki ikki ko‘zning terminal bosqichidagi glaukomasi kasalligiga chalinganligi munosabati bilan",
+        "reason_four": "Quyidagi saraton, leykoz, birinchi marta sil (tuberkulyoz) kasaligi, jigar tsirrozi dekompensasiya bosqichi, jigar transplantatsiyasi, yurak qon-tomir kasalliklari, yurak klapanlarini almashtirish, yurak tomirlarini stendlash, AKSh (aorta koronar shuntlash), ablyasiya, yurak va buyrakdagi murakkab jarrohlik operatsiyalari, infarkt, insul't, o‘tkir buyrak yetishmovchiligi, dializ, buyrak transplantatsiyasi, nefroskleroz, koksartroz III darajali endoprotezlash, bir yoki ikki ko‘zning terminal bosqichidagi glaukomasi kasalligiga chalinganligi munosabati bilan",
         "reason_five": "50, 55, 60, 70, 80, 90, 100 yillik yubiley sanasiga etganligi munosabati bilan",
         "reason_six": "Tabiiy ofatdan zarar ko‘rganligi munosabati bilan tasdiqlangan baholash dalolatnomasi muvofiq",
-        "reason_seven": "Maishiy ko‘mir yoqil‘isi sotib olishi munosabati bilan",
+        "reason_seven": "Maishiy ko‘mir yoqilg‘isi sotib olishi munosabati bilan",
         "reason_eight": "Qishloq xo‘jaligi mahsulotlarini sotib olish uchun"
       }
     },
@@ -1067,6 +1085,38 @@
       "to": "Qachongacha",
       "work_day": "Ishga chiqish sanasi"
     },
+    "form_51": {
+      "reason": "Asos xati"
+    },
+    "form_56": {
+      "work_date": "Ishga jalb qilinadigan kun",
+      "start_time": "Ish boshlanish vaqti",
+      "end_time": "Ish tugash vaqti",
+      "duration": "Ish davomiyligi",
+      "reason": "Jalb etish sababi",
+      "responsible": "Mas'ul xodim"
+    },
+    "form_57": {
+      "work_date": "Ishga jalb qilinadigan kun",
+      "start_time": "Ish boshlanish vaqti",
+      "end_time": "Ish tugash vaqti",
+      "duration": "Ish davomiyligi",
+      "reason": "Jalb etish sababi",
+      "responsible": "Mas'ul xodim",
+      "pay_type": "Kompensatsiya turi",
+      "pay_option": "Oshirilgan haq to'lash",
+      "rest_option": "Qo'shimcha dam olish vaqti",
+      "rest_date": "Dam olish kuni",
+      "rest_start_time": "Dam boshlanish vaqti",
+      "rest_end_time": "Dam tugash vaqti"
+    },
+    "form_58": {
+      "suspension_reason": "Chetlashtirish asosi",
+      "from": "Chetlashtirish boshlanishi (dan)",
+      "to": "Chetlashtirish tugashi (gacha)",
+      "act_date": "Dalolatnoma sanasi",
+      "responsible": "Mas'ul xodim"
+    },
     "form_50": {
       "to": "Ta'til tugash sanasi",
       "from": "Ta'tilga chiqish sanasi",
@@ -1108,7 +1158,7 @@
   },
   "contractPage": {
     "name": "Shartnomalar",
-    "succeedText": "Shartnoma muvofaqiyatli ravishda yaratildi!",
+    "succeedText": "Shartnoma muvaffaqiyatli ravishda yaratildi!",
     "table": {
       "number": "Raqami",
       "type": "Turi",
@@ -1370,7 +1420,9 @@
     },
     "title": "Mehnat faoliyati ma'lumotlari",
     "systemTitle": "Tizimdagi mehnat faoliyati ma'lumotlari",
-    "no-data": "Mehnat faoliyati qo'shilmagan!"
+    "no-data": "Mehnat faoliyati qo'shilmagan!",
+    "sortOldestFirst": "Boshidan oxirigacha",
+    "sortNewestFirst": "Oxiridan boshigacha"
   },
   "workerPositionCertificatePage": {
     "title": "Lavozim guvohnomalari",
@@ -1462,7 +1514,7 @@
       "categories": "Kategoriyalar",
       "questionCount": "Savollar soni: ({n})",
       "attachQuestion": "Savol biriktirish",
-      "count": "Barcha imtihonlar: {n}ta"
+      "count": "Barcha imtihonlar: {n} ta"
     },
     "questions": {
       "createTitle": "Savol qo'shish",
@@ -1514,7 +1566,10 @@
       "position": "Lavozim",
       "department": "Bo'limi",
       "salary": "Oylik maosh",
-      "country": "Tug'ilgan davlati"
+      "country": "Tug'ilgan davlati",
+      "passportValid": "Amal qiladi",
+      "citizenship": "Fuqarolik",
+      "foreignPassport": "Xorijga chiqish pasporti"
     },
     "tabs": {
       "general": "Umumiy ma'lumotlari",
@@ -1522,12 +1577,75 @@
       "relative": "Yaqin qarindoshlari",
       "med": "Tibbiy ko'rik",
       "vacation": "Ta'til ma'lumoti",
-      "incentive": "Rag'batlantirishlari",
-      "punishment": "Intizomiy jazolari",
-      "exams": "Imtihonlar"
+      "incentive": "Rag'batlantirish",
+      "punishment": "Intizomiy jazo",
+      "exams": "Imtihonlar",
+      "e_documents": "Raqamli-hujjatlar",
+      "turnstile": "Turniket"
+    },
+    "header": {
+      "title": "Xodim profili",
+      "subtitle": "Umumiy ma'lumotlar, shaxsiy hujjatlar va faoliyat tarixi",
+      "activeEmployee": "Faol xodim",
+      "managementStaff": "Boshqaruv xodimlari",
+      "avgRating": "O'rtacha reyting",
+      "ratingBasedOn": "{count} ta baholash asosida",
+      "serviceCertificate": "Xizmat guvohnomasi",
+      "workNumber": "Ishchi raqami"
+    },
+    "sidebar": {
+      "title": "Profil bo'limlari"
+    },
+    "career": {
+      "currentLabel": "Joriy"
+    },
+    "med": {
+      "currentStatus": "Joriy salomatlik holati",
+      "validityPeriod": "Amal qilish muddati",
+      "started": "Boshlangan",
+      "ends": "Tugaydi",
+      "progressSuffix": "o'tdi",
+      "lastCheckDate": "Oxirgi ko'rik sanasi",
+      "conclusion": "Tibbiy xulosa",
+      "fitForWork": "Mehnatga layoqatli",
+      "monthsLeft": "≈{count} oy qoldi"
+    },
+    "vacation": {
+      "start": "Ta'tilga chiqish",
+      "end": "Ta'tildan qaytish",
+      "duration": "Davomiyligi",
+      "type": "Ta'til turi",
+      "daysLabel": "kun",
+      "calendarLabel": "Ta'til kunlari",
+      "completed": "Yakunlangan",
+      "planned": "Rejalashtirilgan",
+      "upcomingTitle": "Navbatdagi mehnat ta'tili — {year}-yil",
+      "viewCalendar": "Kalendardan ko'rish"
+    },
+    "incentive": {
+      "count": "{count} ta",
+      "categoryMaterial": "Moddiy rag'batlantirish",
+      "categoryState": "Davlat / idoraviy mukofot",
+      "categoryMoral": "Ma'naviy rag'batlantirish"
+    },
+    "Edocument": {
+      "pasport": "Passport",
+      "railway_pasport": "Temiryo‘l guvohnoma",
+      "foreign_pasport": "Xorijiy passport",
+      "card_number": "Karta raqami",
+      "issue_date": "Berilgan sana",
+      "expiry_date": "Muddat o'tish sanasi",
+      "birth_date": "Tug'ilgan sanasi",
+      "nationality": "Millati",
+      "citizenship": "Fuqaroligi",
+      "issue_place": "Berilgan joyi",
+      "sex": "Jinsi",
+      "personal_number": "Shaxsiy raqami",
+      "birth_place": "Tug'ilgan joyi",
+      "male": "Erkak",
+      "female": "Ayol"
     }
   },
-
   "categoryPage": {
     "createCategory": "Kategoriya yaratish",
     "editCategory": "Kategoriyani tahrirlash",
@@ -1555,7 +1673,7 @@
     "history": "Imtihon tarixi",
     "topic": "Mavzu",
     "exam": "Imtihon",
-    "nVariant": "{n}ta variant",
+    "nVariant": "{n} ta variant",
     "variant_count": "Variantlar",
     "exam_duration": "Davomiyligi(min)",
     "totalTime": "Berilgan vaqt: {n} daqiqa",
@@ -1566,15 +1684,15 @@
     "nExams": "{n} ta imtihon",
     "nFiles": "{n} ta fayl",
     "deadline": "Tugash vaqti: {n}",
-    "examBrief": "Imtihonda savollarida {variant}ta variantlar mavjud. Yechish uchun {chances}ta imkoniyat berilgan. Imtihonni {minute} daqiqa ichida yakunlash kerak. Imtihon {deadline}da yopiladi",
+    "examBrief": "Imtihonda {variant} ta variant mavjud. Yechish uchun {chances} ta imkoniyat berilgan. Imtihonni {minute} daqiqa ichida yakunlash kerak. Imtihon {deadline}da yopiladi",
     "extra": "Qo'shimcha: {n}",
     "start": "Boshlash",
     "attempts": "Urinishlar",
     "viewResult": "Natijani ko'rish",
     "attemptsCount": "Mavjud urinishlar",
-    "nAttempts": "{n}ta urinishlar",
+    "nAttempts": "{n} ta urinish",
     "question_count": "Savollar",
-    "nQuestions": "{n}ta savol",
+    "nQuestions": "{n} ta savol",
     "examName": "Nomi: {n}",
     "toWhom": "Kimga",
     "attemptHistory": "Urinishlar tarixi",
@@ -1646,6 +1764,38 @@
       "name": "Bayram nomi",
       "holiday_date": "Bayram sanasi",
       "type": "Bayram turi"
+    }
+  },
+  "holidayGreetingPage": {
+    "name": "Bayramlar",
+    "createTitle": "Bayram tabrigini qo'shish",
+    "updateTitle": "Bayram tabrigini tahrirlash",
+    "form": {
+      "name": "Bayram nomi",
+      "text": "Tabrik matni",
+      "holiday_date": "Bayram sanasi",
+      "is_recurring": "Har yili takrorlansin",
+      "is_active": "Faol",
+      "banner": "Banner"
+    },
+    "table": {
+      "name": "Nomi",
+      "date": "Sana",
+      "recurring": "Takrorlanadi",
+      "status": "Holati",
+      "banner": "Banner"
+    },
+    "overrides": {
+      "title": "Loyihalar uchun alohida tabrik",
+      "hint": "Har bir tashqi loyiha (masalan \"kpi\", \"noks\") uchun umumiy tabrikdan farqli alohida matn va banner belgilash mumkin. Loyiha o'zi yuboradigan erkin kalit so'z bilan aniqlanadi (login yoki foydalanuvchi emas).",
+      "add": "+ Loyiha qo'shish",
+      "createTitle": "Loyiha qo'shish",
+      "updateTitle": "Loyihani tahrirlash",
+      "clientKey": "Loyiha kaliti",
+      "clientKeyPlaceholder": "masalan: kpi",
+      "text": "Tabrik matni",
+      "banner": "Banner",
+      "empty": "Hozircha loyihalar uchun alohida tabrik yo'q"
     }
   },
   "vacationPage": {
@@ -1805,7 +1955,7 @@
       "stepTwo": "Ariza ma'lumotlari",
       "stepThree": "Holati"
     },
-    "succeedApplication": "Ariza muvofaqiyatli yuborildi!",
+    "succeedApplication": "Ariza muvaffaqiyatli yuborildi!",
     "applicationTime": "Arizangiz 15 kalendar ish kuni davomida ko'rib chiqiladi!",
     "client": {
       "name": "Ariza yozish",
@@ -1887,18 +2037,18 @@
       "addBtn": "Foydalanuvchi qo'shish"
     },
     "accessLevelPage": {
-      "name": " Guruhlar",
+      "name": "Guruhlar",
       "deviceCount": "Qurilmalar soni",
       "sync": "Sinxronlash",
       "syncDepartment": "Bo'limlarni sinxronlash",
       "server": "Server"
     },
     "orgAccessLevelsPage": {
-      "name": " Tashkilot va guruhlar"
+      "name": "Tashkilot va guruhlar"
     },
     "hcWorkersPage": {
       "access_levels": "Guruhlar",
-      "name": " Xodimlar",
+      "name": "Xodimlar",
       "create": "Xodim qo'shish",
       "edit": "Xodimni tahrirlash",
       "access_levels_count": "Guruhlar soni",
@@ -1920,7 +2070,7 @@
       "calendarTitle": "Ish vaqti grafigi",
       "latecomers": "Kechikkan xodimlar",
       "startTime": "Ish boshlanish vaqti",
-      "lateTitle": "Kechikkan xodimlar ro'yhati"
+      "lateTitle": "Kechikkan xodimlar ro'yxati"
     }
   },
   "medPage": {
@@ -2120,7 +2270,6 @@
   "businessTrip": {
     "name": "Xizmat safari"
   },
-
   "documentArchive": {
     "name": "Hujjatlar bazasi",
     "createTitle": "Hujjat faylini qo'shish",
@@ -2485,12 +2634,12 @@
     "confirmMessagePlaceholder": "Xabar kiriting...",
     "vacancyLevel": "Vakansiya bosqichlari",
     "levels": {
-      "one":   "Ariza topshirish",
-      "two":   "Hujjat baholash",
+      "one": "Ariza topshirish",
+      "two": "Hujjat baholash",
       "three": "Suhbat",
-      "four":  "Tibbiy ko'rik",
-      "five":  "Onlayn test",
-      "six":   "Tugatilgan"
+      "four": "Tibbiy ko'rik",
+      "five": "Onlayn test",
+      "six": "Tugatilgan"
     },
     "zoomStart": "Boshlash",
     "zoomMeet": "Zoom suhbat",
@@ -2751,7 +2900,7 @@
     }
   },
   "workerImage": {
-    "name": " Telegram rasmlari",
+    "name": "Telegram rasmlari",
     "photo": "Rasm",
     "status": "Holati",
     "viewPhoto": "Rasmni ko'rish",
@@ -2782,8 +2931,8 @@
     }
   },
   "hcEvent": {
-    "name": " Hodisalar",
-    "nameV2": " Hodisalar V2",
+    "name": "Hodisalar",
+    "nameV2": "Hodisalar V2",
     "createTitle": "Yuklash",
     "updateTitle": "Tahrirlash",
     "syncTitle": "Sinxronlash",
@@ -2976,6 +3125,7 @@
       "allWorkers": "Barcha xodimlar",
       "workTimeTitle": "Ish vaqti tahlili",
       "workTimeSubtitle": "Xodimlarning ishga kelish va ketish vaqtlari bo‘yicha qisqa tahlil",
+      "lastSevenDays": "7 kun",
       "workerAnalytic": "Xodimlar tahlili",
       "workerAnalyticDescription": "Ishga kelish va kelmaslik bo‘yicha qisqa tahlil",
       "allWorkerOfCompany": "Korxonaning umumiy xodimlar soni",
@@ -3010,7 +3160,7 @@
     }
   },
   "hcWorkDuration": {
-    "name": " Ish vaqti",
+    "name": "Ish vaqti",
     "form": {
       "enter": "Kirish",
       "exit": "Chiqish"
@@ -3049,7 +3199,7 @@
     "more": "ta"
   },
   "devices": {
-    "name": " Qurilmalar",
+    "name": "Qurilmalar",
     "createTitle": "Qurilma qo'shish",
     "updateTitle": "Qurilmani tahrirlash",
     "deviceName": "Qurilma nomi",
@@ -3154,7 +3304,7 @@
   "publicPage": {
     "authentication": "Imtihon savollarini ko'rish",
     "invalidDocument": "Hujjat topilmadi yoki o'chirib tashlangan!",
-    "closeQuestion": "Savollar ro'yhatini yopish"
+    "closeQuestion": "Savollar ro'yxatini yopish"
   },
   "socketPage": {
     "usersMOdalTitle": "Barcha onlayn foydalanuvchilar ro'yxati"
@@ -3259,7 +3409,7 @@
     "statusArchived": "Arxivlangan",
     "noNews": "Yangiliklar yo'q",
     "noNewsSubtitle": "Nashr etilgan maqolalar bu yerda ko'rinadi",
-    "endOfList": "Ro'yhat tugadi",
+    "endOfList": "Ro'yxat tugadi",
     "readMore": "Ko'proq o'qish",
     "backToNews": "Yangiliklarga qaytish",
     "author": "Muallif",
@@ -3410,7 +3560,7 @@
         "badRequest": "Bad Request",
         "notFound": "Not Found",
         "unprocessable": "Xato",
-        "serverError": "Server xato",
+        "serverError": "Server xatosi",
         "unknown": "Noma'lum"
       }
     }

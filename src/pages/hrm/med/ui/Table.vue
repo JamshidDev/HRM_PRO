@@ -1,20 +1,18 @@
 <script setup>
-  import {
-    NoDataPicture,
-    UIPagination,
-    UIUser,
-    UIMenuButton,
-    UIStatus,
-    UIBadge
-  } from '@/components/index.js'
-  import { useComponentStore, useMedStore } from '@/store/modules/index.js'
-  import Utils from '@/utils/Utils.js'
-  import { useAccountStore } from '@/store/modules/index.js'
-  const accStore = useAccountStore()
+  import { UIBadge, UIStatus, UITable, UIUser } from '@/components/index.js'
+import i18n from '@/i18n/index.js'
+import { useAccountStore, useMedStore } from '@/store/modules/index.js'
+import UIHelper from '@/utils/UIHelper.js'
+import Utils from '@/utils/Utils.js'
+import { Delete20Regular, Edit32Regular } from '@vicons/fluent'
+
+  const { t } = i18n.global
 
   const store = useMedStore()
+  const accStore = useAccountStore()
 
   const onEdit = (v) => {
+    if (!accStore.checkAction(accStore.pn.hrMedWrite)) return
     store.resetForm()
     store.elementId = v.id
     store.visibleType = false
@@ -40,8 +38,13 @@
   }
 
   const onDelete = (v) => {
+    if (!accStore.checkAction(accStore.pn.hrMedWrite)) return
     store.elementId = v.id
     store._delete()
+  }
+
+  const openFileNewTab = (url) => {
+    window.open(url, '_blank')
   }
 
   const changePage = (v) => {
@@ -50,126 +53,146 @@
     store._index()
   }
 
-  const onSelectEv = (v) => {
-    if (Utils.ActionTypes.edit === v.key) {
-      if (!accStore.checkAction(accStore.pn.hrMedWrite)) return
-      onEdit(v.data)
-    } else if (Utils.ActionTypes.delete === v.key) {
-      if (!accStore.checkAction(accStore.pn.hrMedWrite)) return
-      onDelete(v.data)
+  const columns = computed(() => [
+    {
+      key: 'worker',
+      title: t('confirmationPage.table.worker'),
+      minWidth: 200
+    },
+    {
+      key: 'status',
+      title: t('medPage.form.status'),
+      width: 120
+    },
+    {
+      key: 'days',
+      title: t('date.day'),
+      width: 200
+    },
+    {
+      key: 'organization.name',
+      title: t('medPage.form.organization'),
+      minWidth: 200
+    },
+    {
+      key: 'from',
+      title: t('medPage.form.from'),
+      width: 120
+    },
+    {
+      key: 'to',
+      title: t('medPage.form.to'),
+      width: 120
+    },
+    {
+      key: 'file',
+      title: t('content.file'),
+      width: 120
+    },
+    {
+      key: 'comment',
+      title: t('medPage.form.comment'),
+      width: 200
     }
-  }
+  ])
 
-  const openFileNewTab = (url) => {
-    window.open(url, '_blank')
-  }
+  const actions = computed(() => [
+    {
+      label: t('content.edit'),
+      key: Utils.ActionTypes.edit,
+      icon: UIHelper.renderIcon(Edit32Regular),
+      action: onEdit
+    },
+    {
+      label: t('content.delete'),
+      key: Utils.ActionTypes.delete,
+      icon: UIHelper.renderIcon(Delete20Regular),
+      action: onDelete
+    }
+  ])
 </script>
 
 <template>
-  <n-spin :show="store.loading" style="min-height: 200px">
-    <div class="w-full overflow-x-auto" v-if="store.list.length > 0">
-      <n-table class="mt-4" :single-line="false" size="small">
-        <thead>
-          <tr>
-            <th class="text-center! min-w-[40px] w-[40px]">{{ $t('content.number') }}</th>
-            <th class="min-w-[200px] w-[250px]">{{ $t('confirmationPage.table.worker') }}</th>
-            <th class="min-w-[100px] w-[100px]">{{ $t('medPage.form.status') }}</th>
-            <th class="min-w-[100px] w-[200px]">{{ $t('date.day') }}</th>
-            <th class="min-w-[100px]">{{ $t('medPage.form.organization') }}</th>
-            <th class="min-w-[90px] w-[90px]">{{ $t('medPage.form.from') }}</th>
-            <th class="min-w-[90px] w-[90px]">{{ $t('medPage.form.to') }}</th>
-            <th class="min-w-[90px] w-[90px]">{{ $t('content.file') }}</th>
-            <th class="min-w-[200px] w-[200px]">{{ $t('medPage.form.comment') }}</th>
-            <th class="min-w-[40px] w-[40px]"></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(item, idx) in store.list" :key="idx">
-            <td>
-              <span class="block text-center text-gray-600 text-[12px]">{{
-                (store.params.page - 1) * store.params.per_page + idx + 1
-              }}</span>
-            </td>
-            <td>
-              <div>
-                <UIUser
-                  :data="{
-                    photo: item?.worker.photo,
-                    firstName: item?.worker.first_name,
-                    middleName: item?.worker.middle_name,
-                    lastName: item?.worker.last_name,
-                    position: item?.position
-                  }"
-                />
-              </div>
-            </td>
-            <td>
-              <div>
-                <UIStatus
-                  :status="{
-                    name: item.status.name,
-                    id: item.status.id === 1 ? 6 : 5
-                  }"
-                />
-              </div>
-            </td>
-            <td>
-              <div class="flex flex-col gap-1">
-                <UIBadge
-                  class="!text-xs"
-                  v-if="item.vacation"
-                  :show-icon="false"
-                  :label="Utils.timeOnlyDate(item.vacation) + ' ' + $t('medPage.form.onVacation')"
-                  :type="Utils.colorTypes.info"
-                />
-                <UIBadge
-                  :class="[item.vacation && '!text-xs']"
-                  :show-icon="false"
-                  :label="Math.abs(item.days) + ' ' + $t('date.day')"
-                  :type="item.days < 0 ? Utils.colorTypes.error : Utils.colorTypes.success"
-                />
-              </div>
-            </td>
-            <td>{{ item.organization?.name }}</td>
-            <td>
-              <UIBadge
-                :show-icon="false"
-                :type="Utils.colorTypes.dark"
-                :label="Utils.timeOnlyDate(item.from)"
-              />
-            </td>
-            <td>
-              <UIBadge
-                :show-icon="false"
-                :type="Utils.colorTypes.dark"
-                :label="Utils.timeOnlyDate(item.to)"
-              />
-            </td>
-            <td>
-              <n-button size="small" v-if="item.file" @click="openFileNewTab(item.file)">
-                {{ $t('content.download') }}
-              </n-button>
-            </td>
-            <td>
-              <div class="text-xs line-clamp-3 leading-[1.2]">
-                {{ item.comment }}
-              </div>
-            </td>
-            <td>
-              <UIMenuButton :data="item" :show-edit="true" @selectEv="onSelectEv" />
-            </td>
-          </tr>
-        </tbody>
-      </n-table>
-      <UIPagination
-        :page="store.params.page"
-        :per_page="store.params.per_page"
-        :total="store.totalItems"
-        @change-page="changePage"
-      />
-    </div>
-    <NoDataPicture v-if="store.list.length === 0 && !store.loading" />
-  </n-spin>
-</template>
+  <UITable
+    :columns="columns"
+    :actions="actions"
+    :data="store.list"
+    :loading="store.loading"
+    :page="store.params.page"
+    :per-page="store.params.per_page"
+    :total="store.totalItems"
+    storage-key="hrm-med"
+    @change-page="changePage"
+  >
+    <template #cell-worker="{ row }">
+      <div>
+        <UIUser
+          :data="{
+            photo: row?.worker.photo,
+            firstName: row?.worker.first_name,
+            middleName: row?.worker.middle_name,
+            lastName: row?.worker.last_name,
+            position: row?.position
+          }"
+        />
+      </div>
+    </template>
 
-<style scoped></style>
+    <template #cell-status="{ row }">
+      <div>
+        <UIStatus
+          :status="{
+            name: row.status.name,
+            id: row.status.id === 1 ? 6 : 5
+          }"
+        />
+      </div>
+    </template>
+
+    <template #cell-days="{ row }">
+      <div class="flex flex-col gap-1">
+        <UIBadge
+          class="!text-xs"
+          v-if="row.vacation"
+          :show-icon="false"
+          :label="Utils.timeOnlyDate(row.vacation) + ' ' + $t('medPage.form.onVacation')"
+          :type="Utils.colorTypes.info"
+        />
+        <UIBadge
+          :class="[row.vacation && '!text-xs']"
+          :show-icon="false"
+          :label="Math.abs(row.days) + ' ' + $t('date.day')"
+          :type="row.days < 0 ? Utils.colorTypes.error : Utils.colorTypes.success"
+        />
+      </div>
+    </template>
+
+    <template #cell-from="{ row }">
+      <UIBadge
+        :show-icon="false"
+        :type="Utils.colorTypes.dark"
+        :label="Utils.timeOnlyDate(row.from)"
+      />
+    </template>
+
+    <template #cell-to="{ row }">
+      <UIBadge
+        :show-icon="false"
+        :type="Utils.colorTypes.dark"
+        :label="Utils.timeOnlyDate(row.to)"
+      />
+    </template>
+
+    <template #cell-file="{ row }">
+      <n-button size="small" v-if="row.file" @click="openFileNewTab(row.file)">
+        {{ $t('content.download') }}
+      </n-button>
+    </template>
+
+    <template #cell-comment="{ row }">
+      <div class="text-xs line-clamp-3 leading-[1.2]">
+        {{ row.comment }}
+      </div>
+    </template>
+  </UITable>
+</template>

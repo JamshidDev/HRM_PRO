@@ -1,8 +1,9 @@
 <script setup>
   import VChart from 'vue-echarts'
-  import { useDashboardStore } from '@/store/modules/index.js'
+  import { useDashboardStore, useAppStore } from '@/store/modules/index.js'
 
   const store = useDashboardStore()
+  const appStore = useAppStore()
   const vacationOption = ref({
     title: {
       show: false
@@ -61,16 +62,16 @@
     ]
   })
 
-  const colors = {
+  const colors = computed(() => ({
     0: '#2dcb73',
     1: '#E53835',
     2: '#1A84FF',
     3: '#dae5f5',
-    4: '#000000',
+    4: appStore.isDark ? '#98a2b3' : '#000000',
     5: '#c87606',
     6: '#E53835',
     7: '#1A84FF'
-  }
+  }))
 
   watch(
     () => store.dashboard.vacations,
@@ -79,7 +80,7 @@
         value: v.active_vacations,
         name: v.type,
         itemStyle: {
-          color: colors[idx]
+          color: colors.value[idx]
         }
       }))
       vacationOption.value.yAxis.data = newValue.map((v) => v.name)

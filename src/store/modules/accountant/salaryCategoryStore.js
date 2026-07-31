@@ -45,7 +45,7 @@ export const useSalaryCategoryStore = defineStore('salaryCategoryStore', {
     },
     params: {
       page: 1,
-      per_page: 10,
+      per_page: 15,
       search: null,
       organizations: [],
       year: null,

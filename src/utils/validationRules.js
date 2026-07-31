@@ -925,6 +925,36 @@ export default {
       trigger: triggerEvents
     }
   },
+  holidayGreetingPage: {
+    name: {
+      required: true,
+      message: t(`rules.requiredField`),
+      trigger: triggerEvents
+    },
+    text: {
+      required: true,
+      message: t(`rules.requiredField`),
+      trigger: triggerEvents
+    },
+    holiday_date: {
+      type: 'number',
+      required: true,
+      message: t(`rules.requiredField`),
+      trigger: triggerEvents
+    }
+  },
+  holidayGreetingOverride: {
+    client_key: {
+      required: true,
+      message: t(`rules.requiredField`),
+      trigger: triggerEvents
+    },
+    text: {
+      required: true,
+      message: t(`rules.requiredField`),
+      trigger: triggerEvents
+    }
+  },
   workdayPage: {
     schedule_id: {
       type: 'number',
@@ -1446,6 +1476,30 @@ export default {
       message: t(`rules.requiredField`),
       trigger: triggerEvents
     }
+  },
+  // 56 — Ishlanmaydigan kunlarda ishga jalb etish.
+  form_56: {
+    work_date: { type: 'number', required: true, message: t(`rules.requiredField`), trigger: triggerEvents },
+    start_time: { type: 'number', required: true, message: t(`rules.requiredField`), trigger: triggerEvents },
+    end_time: { type: 'number', required: true, message: t(`rules.requiredField`), trigger: triggerEvents },
+    reason: { required: true, message: t(`rules.requiredField`), trigger: triggerEvents },
+    responsible: { required: true, message: t(`rules.requiredField`), trigger: triggerEvents }
+  },
+  // 57 — Ish vaqtidan tashqari (rest_* shartli — onSubmit'da tekshiriladi).
+  form_57: {
+    work_date: { type: 'number', required: true, message: t(`rules.requiredField`), trigger: triggerEvents },
+    start_time: { type: 'number', required: true, message: t(`rules.requiredField`), trigger: triggerEvents },
+    end_time: { type: 'number', required: true, message: t(`rules.requiredField`), trigger: triggerEvents },
+    reason: { required: true, message: t(`rules.requiredField`), trigger: triggerEvents },
+    responsible: { required: true, message: t(`rules.requiredField`), trigger: triggerEvents }
+  },
+  // 58 — Vaqtincha ishdan chetlashtirish.
+  form_58: {
+    suspension_reason: { type: 'number', required: true, message: t(`rules.requiredField`), trigger: [...triggerEvents, 'change'] },
+    from: { type: 'number', required: true, message: t(`rules.requiredField`), trigger: triggerEvents },
+    to: { type: 'number', required: true, message: t(`rules.requiredField`), trigger: triggerEvents },
+    act_date: { type: 'number', required: true, message: t(`rules.requiredField`), trigger: triggerEvents },
+    responsible: { required: true, message: t(`rules.requiredField`), trigger: triggerEvents }
   },
   // F.I.Sh o'zgartirish (74) — barcha maydon majburiy.
   form_74: {

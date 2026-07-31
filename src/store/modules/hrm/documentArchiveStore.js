@@ -26,7 +26,7 @@ export const useDocumentArchiveStore = defineStore('documentArchiveStore', {
     structureCheck2: [],
     params: {
       page: 1,
-      per_page: 10,
+      per_page: 15,
       search: null,
       date: null,
       organizations: []

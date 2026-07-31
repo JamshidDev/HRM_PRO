@@ -18,7 +18,7 @@ export const useMonthReportStore = defineStore('monthReportStore', {
     payload: {},
     params: {
       page: 1,
-      per_page: 10,
+      per_page: 15,
       search: null,
       organizations: [],
       code: null,

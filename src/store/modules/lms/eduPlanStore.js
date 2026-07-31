@@ -19,7 +19,7 @@ export const useEduPlanStore = defineStore('eduPlanStore', {
     structureCheck2: [],
     specializationsParams: {
       page: 1,
-      per_page: 10,
+      per_page: 15,
       search: null
     },
     specializations: [],
@@ -27,7 +27,7 @@ export const useEduPlanStore = defineStore('eduPlanStore', {
     specializationsTotal: 0,
     subjectsParams: {
       page: 1,
-      per_page: 10,
+      per_page: 15,
       search: null
     },
     subjects: [],
@@ -48,7 +48,7 @@ export const useEduPlanStore = defineStore('eduPlanStore', {
     },
     params: {
       page: 1,
-      per_page: 10,
+      per_page: 15,
       search: null,
       name: null,
       learning_center_id: null,
@@ -62,7 +62,7 @@ export const useEduPlanStore = defineStore('eduPlanStore', {
     workerVisible: false,
     workerParams: {
       page: 1,
-      per_page: 10,
+      per_page: 15,
       search: null
     },
     totalWorker: 0,

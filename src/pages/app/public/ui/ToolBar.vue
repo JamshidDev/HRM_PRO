@@ -16,7 +16,7 @@
         @click="router.push(AppPaths.Home)"
         class="w-[50px] h-[50px] overflow-hidden cursor-pointer"
       >
-        <img class="w-full object-cover" src="/logo.png" alt="app logo" />
+        <img class="w-full object-cover" src="/main-logo.svg" alt="app logo" />
       </div>
       <div class="flex gap-4">
         <UILanguage />

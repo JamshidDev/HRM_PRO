@@ -17,7 +17,7 @@ export const useLmsCertificateStore = defineStore('lmsCertificateStore', {
     totalItems: 0,
     params: {
       page: 1,
-      per_page: 10,
+      per_page: 15,
       search: null,
       learning_center_id: null,
       organization_id: [],
@@ -96,7 +96,7 @@ export const useLmsCertificateStore = defineStore('lmsCertificateStore', {
       list: [],
       params: {
         page: 1,
-        per_page: 10,
+        per_page: 15,
         search: null
       },
       loading: false,

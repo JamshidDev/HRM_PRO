@@ -1,20 +1,17 @@
 <script setup>
-  import {
-    ReceiptAdd24Regular,
-    DocumentCheckmark24Regular,
-    ArrowSyncCheckmark20Filled,
-    CheckmarkCircle32Regular
-  } from '@vicons/fluent'
-  import {
-    NoDataPicture,
-    UIPagination,
-    UIUser,
-    UIStatus,
-    UIMenuButton
-  } from '@/components/index.js'
-  import { useAccountStore, useComponentStore, useContractStore } from '@/store/modules/index.js'
-  import Utils from '@/utils/Utils.js'
+  import { UIStatus, UITable, UIUser } from '@/components/index.js'
   import i18n from '@/i18n/index.js'
+  import { useAccountStore, useComponentStore, useContractStore } from '@/store/modules/index.js'
+  import UIHelper from '@/utils/UIHelper.js'
+  import Utils from '@/utils/Utils.js'
+  import {
+    ArrowSyncCheckmark20Filled,
+    CheckmarkCircle32Regular,
+    Delete20Regular,
+    DocumentCheckmark24Regular,
+    Eye16Regular,
+    ReceiptAdd24Regular
+  } from '@vicons/fluent'
 
   const { t } = i18n.global
 
@@ -30,146 +27,176 @@
     store._index()
   }
 
-  const openContract = (v, statusId) => {
-    // if(statusId !== 2){
-    //   emits('commandEv',v)
-    // }
-  }
-
-  const onSelect = (v) => {
-    if (v.key === 'view') {
-      onPreview(v.data.id)
-    } else if (v.key === 'delete') {
-      if (!accStore.checkAction(accStore.pn.hrContractsWrite)) return
-      store.elementId = v.data.id
-      store._delete()
-    } else if (v.key === Utils.ActionTypes.confirm) {
-      if (!accStore.checkAction(accStore.pn.hrContractsWrite)) return
-      store.elementId = v.data.id
-      componentStore.files = []
-      componentStore.fileVisible = true
-    }
-  }
-
-  const onPreview = (id) => {
+  const onPreview = (row) => {
     if (!accStore.checkAction(accStore.pn.hrContractsRead)) return
-    emits('openOffice', id)
+    emits('openOffice', row.id)
   }
+
+  const onDelete = (row) => {
+    if (!accStore.checkAction(accStore.pn.hrContractsWrite)) return
+    store.elementId = row.id
+    store._delete()
+  }
+
+  const onConfirm = (row) => {
+    if (!accStore.checkAction(accStore.pn.hrContractsWrite)) return
+    store.elementId = row.id
+    componentStore.files = []
+    componentStore.fileVisible = true
+  }
+
+  const onOpenCommand = (row) => {
+    if (row?.command_status?.id === 2) return
+    emits('commandEv', row)
+  }
+
+  const columns = computed(() => [
+    {
+      key: 'type',
+      title: t('contractPage.table.type'),
+      minWidth: 280
+    },
+    {
+      key: 'number',
+      title: t('contractPage.table.number'),
+      width: 140
+    },
+    {
+      key: 'worker',
+      title: t('contractPage.table.worker'),
+      minWidth: 200
+    },
+    {
+      key: 'organization.name',
+      title: t('contractPage.table.organization'),
+      minWidth: 260
+    },
+    {
+      key: 'command_status',
+      title: t('contractPage.table.command'),
+      width: 140,
+    },
+    {
+      key: 'confirmation',
+      title: t('content.confirmStatus'),
+      width: 140,
+    },
+    {
+      key: 'status',
+      title: t('contractPage.table.status'),
+      width: 140,
+    },
+    {
+      key: 'generate',
+      title: t('content.document'),
+      width: 140,
+    },
+    {
+      key: 'contract_date',
+      title: t('contractPage.table.date'),
+      width: 140
+    }
+  ])
+
+  const actions = computed(() => [
+    {
+      label: t('content.view'),
+      key: Utils.ActionTypes.view,
+      icon: UIHelper.renderIcon(Eye16Regular),
+      action: onPreview
+    },
+    {
+      label: t('content.delete'),
+      key: Utils.ActionTypes.delete,
+      icon: UIHelper.renderIcon(Delete20Regular),
+      action: onDelete
+    },
+    {
+      label: t('content.confirm'),
+      key: Utils.ActionTypes.confirm,
+      icon: UIHelper.renderIcon(CheckmarkCircle32Regular),
+      action: onConfirm
+    }
+  ])
 </script>
 
 <template>
-  <n-spin :show="store.loading" style="min-height: 200px">
-    <div class="w-full overflow-x-auto" v-if="store.list?.length > 0">
-      <n-table class="mt-4" :single-line="false" size="small">
-        <thead>
-          <tr>
-            <th class="text-center! min-w-[40px] w-[40px]">{{ $t('content.number') }}</th>
-            <th class="min-w-[200px]">{{ $t('contractPage.table.type') }}</th>
-            <th class="w-[80px]">{{ $t('contractPage.table.number') }}</th>
-            <th class="min-w-[120px] w-[180px]">{{ $t('contractPage.table.worker') }}</th>
-            <th class="w-[300px]">{{ $t('contractPage.table.organization') }}</th>
-            <th class="min-w-[100px] w-[100px]">{{ $t('contractPage.table.command') }}</th>
-            <th class="w-[120px]">{{ $t('content.confirmStatus') }}</th>
-            <th class="w-[120px]">{{ $t('contractPage.table.status') }}</th>
-            <th class="w-[120px]">{{ $t('content.document') }}</th>
-            <th class="w-[100px]">{{ $t('contractPage.table.date') }}</th>
-            <th class="min-w-[40px] w-[40px]"></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(item, idx) in store.list" :key="idx">
-            <td>
-              <span class="text-center text-[12px] text-gray-600 block">{{
-                (store.params.page - 1) * store.params.per_page + idx + 1
-              }}</span>
-            </td>
-            <td>
-              <div @click="onPreview(item.id)" class="group flex flex-col hover:!text-primary hover:underline cursor-pointer">
-                <span
-                  class="text-sm line-clamp-2 leading-[1.2] font-medium"
-                >{{ item?.type?.name }}</span>
-                <span class="text-xs rounded-2xl px-1 text-secondary group-hover:!text-primary">{{ Utils.timeHHMMWithMonth(item.created_at) }}</span>
-              </div>
-            </td>
-            <td>
-              <div v-if="item?.number" class="flex justify-center">
-                <n-button dashed class="font-medium" round type="info" size="tiny">
-                  {{ item?.number }}
-                </n-button>
-              </div>
-            </td>
-            <td>
-              <UIUser
-                :data="{
-                  photo: item.worker.photo,
-                  position: item.worker.birthday,
-                  lastName: item.worker.last_name,
-                  firstName: item.worker.first_name,
-                  middleName: item.worker.middle_name
-                }"
-              />
-            </td>
+  <UITable
+    :columns="columns"
+    :actions="actions"
+    :data="store.list"
+    :loading="store.loading"
+    :page="store.params.page"
+    :per-page="store.params.per_page"
+    :total="store.totalItems"
+    storage-key="hrm-contract"
+    @change-page="changePage"
+  >
+    <template #cell-type="{ row }">
+      <div
+        @click="onPreview(row)"
+        class="group flex flex-col hover:!text-primary hover:underline cursor-pointer"
+      >
+        <span class="text-sm line-clamp-2 leading-[1.2] font-medium">{{ row?.type?.name }}</span>
+        <span class="text-xs rounded-2xl text-secondary group-hover:!text-primary">
+          {{ Utils.timeHHMMWithMonth(row.created_at) }}
+        </span>
+      </div>
+    </template>
 
-            <td>
-              <span class="text-sm">{{ item?.organization.name }}</span>
-            </td>
-            <td>
-              <div class="flex justify-center">
-                <n-button
-                  dashed
-                  :type="item?.command_status.id === 1 ? 'primary' : 'default'"
-                  @click="openContract(item, item?.command_status.id)"
-                  size="tiny"
-                >
-                  <template #icon>
-                    <ReceiptAdd24Regular v-if="item?.command_status.id === 1" />
-                    <ArrowSyncCheckmark20Filled v-else-if="item?.command_status.id === 2" />
-                    <DocumentCheckmark24Regular v-else-if="item?.command_status.id === 3" />
-                  </template>
-                  {{ item?.command_status?.name }}
-                </n-button>
-              </div>
-            </td>
-            <td><UIStatus :status="item?.confirmation" /></td>
-            <td>
-              <UIStatus
-                :status="{
-                  name: item?.status.name,
-                  id: item?.status.id === 2 ? 3 : 2
-                }"
-              />
-            </td>
+    <template #cell-number="{ row }">
+      <n-button v-if="row?.number" class="font-medium" type="info" size="tiny" round dashed>
+        {{ row?.number }}
+      </n-button>
+    </template>
 
-            <td><UIStatus :status="Utils.documentStatus[item?.generate]" /></td>
-            <td>
-              <span class="text-sm">{{ Utils.timeOnlyDate(item?.contract_date) }}</span>
-            </td>
-            <td>
-              <UIMenuButton
-                :show-view="true"
-                :show-edit="true"
-                :data="item"
-                @selectEv="onSelect"
-                :extra-options="[
-                  {
-                    label: t('content.confirm'),
-                    key: Utils.ActionTypes.confirm,
-                    icon: CheckmarkCircle32Regular,
-                    visible: true
-                  }
-                ]"
-              />
-            </td>
-          </tr>
-        </tbody>
-      </n-table>
-      <UIPagination
-        :page="store.params.page"
-        :per_page="store.params.per_page"
-        :total="store.totalItems"
-        @change-page="changePage"
+    <template #cell-worker="{ row }">
+      <UIUser
+        :data="{
+          photo: row.worker.photo,
+          position: row.worker.birthday,
+          lastName: row.worker.last_name,
+          firstName: row.worker.first_name,
+          middleName: row.worker.middle_name
+        }"
       />
-    </div>
-    <NoDataPicture v-if="store.list?.length === 0 && !store.loading" />
-  </n-spin>
+    </template>
+
+    <template #cell-command_status="{ row }">
+      <n-button
+        dashed
+        :type="row?.command_status.id === 1 ? 'primary' : 'default'"
+        @click="onOpenCommand(row)"
+        size="tiny"
+      >
+        <template #icon>
+          <ReceiptAdd24Regular v-if="row?.command_status.id === 1" />
+          <ArrowSyncCheckmark20Filled v-else-if="row?.command_status.id === 2" />
+          <DocumentCheckmark24Regular v-else-if="row?.command_status.id === 3" />
+        </template>
+        {{ row?.command_status?.name }}
+      </n-button>
+    </template>
+
+    <template #cell-confirmation="{ row }">
+      <UIStatus :status="row?.confirmation" />
+    </template>
+
+    <template #cell-status="{ row }">
+      <UIStatus
+        :status="{
+          name: row?.status.name,
+          id: row?.status.id === 2 ? 3 : 2
+        }"
+      />
+    </template>
+
+    <template #cell-generate="{ row }">
+      <UIStatus :status="Utils.documentStatus[row?.generate]" />
+    </template>
+
+    <template #cell-contract_date="{ row }">
+      {{ Utils.timeOnlyDate(row?.contract_date) }}
+    </template>
+  </UITable>
 </template>

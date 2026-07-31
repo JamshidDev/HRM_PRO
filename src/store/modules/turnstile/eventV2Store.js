@@ -26,7 +26,7 @@ export const useEventV2Store = defineStore('eventV2Store', {
 
     params: {
       page: 1,
-      per_page: 10,
+      per_page: 15,
       search: null,
       organizations: [],
       departments: [],
@@ -79,7 +79,7 @@ export const useEventV2Store = defineStore('eventV2Store', {
     previewTotal: 0,
     previewParams: {
       page: 1,
-      per_page: 10,
+      per_page: 15,
       search: null,
       organizations: [],
       access_levels: [],
@@ -142,7 +142,7 @@ export const useEventV2Store = defineStore('eventV2Store', {
     },
     jobParams: {
       page: 1,
-      per_page: 10,
+      per_page: 15,
       search: null
     },
     syncPayload: {

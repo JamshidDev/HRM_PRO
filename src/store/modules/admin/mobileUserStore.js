@@ -10,7 +10,7 @@ export const useMobileUserStore = defineStore('mobileUser', {
     detail: null,
     params: {
       page: 1,
-      per_page: 10,
+      per_page: 15,
       search: null
     }
   }),

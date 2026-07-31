@@ -81,7 +81,7 @@ export const useVacancyStore = defineStore('vacancyStore', {
     },
     params: {
       page: 1,
-      per_page: 10,
+      per_page: 15,
       search: null,
       organizations: [],
       vacation_type: null

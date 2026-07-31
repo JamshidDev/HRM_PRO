@@ -1,36 +1,42 @@
 <script setup>
-  import { NoDataPicture, UIPagination, UIUser, UIMenuButton } from '@/components/index.js'
-  import { usePensionerStore, useComponentStore, useAccountStore } from '@/store/modules/index.js'
+  import { UITable, UIUser } from '@/components/index.js'
+  import i18n from '@/i18n/index.js'
+  import { useAccountStore, usePensionerStore } from '@/store/modules/index.js'
+  import UIHelper from '@/utils/UIHelper.js'
   import Utils from '@/utils/Utils.js'
+  import { Delete20Regular, Edit32Regular } from '@vicons/fluent'
+
+  const { t } = i18n.global
 
   const store = usePensionerStore()
-  const compStore = useComponentStore()
   const accStore = useAccountStore()
 
-  const onEdit = (v) => {
-    store.payload.first_name = v.first_name
-    store.payload.last_name = v.last_name
-    store.payload.middle_name = v.middle_name
-    store.payload.sex = Number(v.sex)
-    store.payload.experience = v.experience?.toString()
-    store.payload.passport = v.passport
-    store.payload.pin = v.pin?.toString()
-    store.payload.address = v.address
-    store.payload.position = v.position
-    store.payload.year = new Date().setFullYear(v.year)
-    store.payload.phone = v.phone
-    store.payload.invalid = Number(v.invalid)
-    store.payload.railway_title = Number(v.railway_title)
-    store.payload.afghan = Number(v.afghan)
-    store.payload.chernobyl = Number(v.chernobyl)
+  const onEdit = (row) => {
+    if (!accStore.checkAction(accStore.pn.hrVacationsWrite)) return
+    store.payload.first_name = row.first_name
+    store.payload.last_name = row.last_name
+    store.payload.middle_name = row.middle_name
+    store.payload.sex = Number(row.sex)
+    store.payload.experience = row.experience?.toString()
+    store.payload.passport = row.passport
+    store.payload.pin = row.pin?.toString()
+    store.payload.address = row.address
+    store.payload.position = row.position
+    store.payload.year = new Date().setFullYear(row.year)
+    store.payload.phone = row.phone
+    store.payload.invalid = Number(row.invalid)
+    store.payload.railway_title = Number(row.railway_title)
+    store.payload.afghan = Number(row.afghan)
+    store.payload.chernobyl = Number(row.chernobyl)
 
     store.visibleType = false
-    store.elementId = v.id
+    store.elementId = row.id
     store.visible = true
   }
 
-  const onDelete = (v) => {
-    store.elementId = v.id
+  const onDelete = (row) => {
+    if (!accStore.checkAction(accStore.pn.hrVacationsWrite)) return
+    store.elementId = row.id
     store._delete()
   }
 
@@ -40,142 +46,126 @@
     store._index()
   }
 
-  const onSelectEv = (v) => {
-    if (!accStore.checkAction(accStore.pn.hrVacationsWrite)) return
-    if (Utils.ActionTypes.edit === v.key) {
-      onEdit(v.data)
-    } else if (Utils.ActionTypes.delete === v.key) {
-      onDelete(v.data)
+  const columns = computed(() => [
+    {
+      key: 'worker',
+      title: t('confirmationPage.table.worker'),
+      minWidth: 200
+    },
+    {
+      key: 'position',
+      title: t('content.position'),
+      minWidth: 200
+    },
+    {
+      key: 'pin',
+      title: t('pensioner.form.pin'),
+      width: 140
+    },
+    {
+      key: 'passport',
+      title: t('pensioner.form.passport'),
+      width: 140
+    },
+    {
+      key: 'address',
+      title: t('pensioner.form.address'),
+      minWidth: 200
+    },
+    {
+      key: 'experience',
+      title: t('pensioner.form.experience'),
+      width: 140
+    },
+    {
+      key: 'year',
+      title: t('pensioner.form.year'),
+      width: 140
+    },
+    {
+      key: 'phone',
+      title: t('pensioner.form.phone'),
+      width: 140
+    },
+    {
+      key: 'invalid',
+      title: t('pensioner.form.invalid'),
+      width: 140
+    },
+    {
+      key: 'railway_title',
+      title: t('pensioner.form.railway_title'),
+      width: 140
+    },
+    {
+      key: 'afghan',
+      title: t('pensioner.form.afghan'),
+      width: 140
+    },
+    {
+      key: 'chernobyl',
+      title: t('pensioner.form.chernobyl'),
+      width: 140
     }
-  }
+  ])
+
+  const actions = computed(() => [
+    {
+      label: t('content.edit'),
+      key: Utils.ActionTypes.edit,
+      icon: UIHelper.renderIcon(Edit32Regular),
+      action: onEdit
+    },
+    {
+      label: t('content.delete'),
+      key: Utils.ActionTypes.delete,
+      icon: UIHelper.renderIcon(Delete20Regular),
+      action: onDelete
+    }
+  ])
 </script>
 
 <template>
-  <n-spin :show="store.loading" style="min-height: 200px">
-    <div class="w-full overflow-x-auto" v-if="store.list.length > 0">
-      <n-table class="mt-4" :single-line="false" size="small">
-        <thead>
-          <tr>
-            <th class="text-center! min-w-[40px] w-[40px]">{{ $t('content.number') }}</th>
-            <th class="min-w-[280px]">{{ $t('confirmationPage.table.worker') }}</th>
-            <th class="min-w-[100px] w-[200px]">{{ $t('content.position') }}</th>
-            <th class="min-w-[100px] w-[140px]">{{ $t('pensioner.form.pin') }}</th>
-            <th class="min-w-[100px] w-[120px]">{{ $t('pensioner.form.passport') }}</th>
-            <th class="min-w-[100px] max-w-[240px]">{{ $t('pensioner.form.address') }}</th>
-            <th class="min-w-[100px] max-w-[120px] !text-wrap">
-              <n-tooltip trigger="hover">
-                <template #trigger>
-                  <p class="text-sm text-textColor2 line-clamp-1 w-full leading-[1.2] truncate">
-                    {{ $t('pensioner.form.experience') }}
-                  </p>
-                </template>
-                {{ $t('pensioner.form.experience') }}
-              </n-tooltip>
-            </th>
-            <th class="min-w-[100px] w-[100px] !text-wrap">{{ $t('pensioner.form.year') }}</th>
-            <th class="min-w-[100px] w-[100px] !text-wrap">{{ $t('pensioner.form.phone') }}</th>
-            <th class="min-w-[100px] max-w-[100px] !text-wrap">
-              <n-tooltip trigger="hover">
-                <template #trigger>
-                  <p class="text-sm text-textColor2 line-clamp-1 w-full leading-[1.2] truncate">
-                    {{ $t('pensioner.form.invalid') }}
-                  </p>
-                </template>
-                {{ $t('pensioner.form.invalid') }}
-              </n-tooltip>
-            </th>
-            <th class="min-w-[100px] max-w-[100px] !text-wrap">
-              <n-tooltip trigger="hover">
-                <template #trigger>
-                  <p class="text-sm text-textColor2 line-clamp-1 w-full leading-[1.2] truncate">
-                    {{ $t('pensioner.form.railway_title') }}
-                  </p>
-                </template>
-                {{ $t('pensioner.form.railway_title') }}
-              </n-tooltip>
-            </th>
-            <th class="min-w-[100px] max-w-[100px] !text-wrap">
-              <n-tooltip trigger="hover">
-                <template #trigger>
-                  <p class="text-sm text-textColor2 line-clamp-1 w-full leading-[1.2] truncate">
-                    {{ $t('pensioner.form.afghan') }}
-                  </p>
-                </template>
-                {{ $t('pensioner.form.afghan') }}
-              </n-tooltip>
-            </th>
-            <th class="min-w-[100px] max-w-[100px] !text-wrap">
-              <n-tooltip trigger="hover">
-                <template #trigger>
-                  <p class="text-sm text-textColor2 line-clamp-1 w-full leading-[1.2] truncate">
-                    {{ $t('pensioner.form.chernobyl') }}
-                  </p>
-                </template>
-                {{ $t('pensioner.form.chernobyl') }}
-              </n-tooltip>
-            </th>
-            <th class="min-w-[40px] w-[40px]"></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(item, idx) in store.list" :key="idx">
-            <td>
-              <span class="text-center block">{{
-                (store.params.page - 1) * store.params.per_page + idx + 1
-              }}</span>
-            </td>
-            <td>
-              <div>
-                <UIUser
-                  :hide-tooltip="true"
-                  :short="false"
-                  :data="{
-                    photo: null,
-                    firstName: item?.first_name,
-                    middleName: item?.middle_name,
-                    lastName: item?.last_name,
-                    position: item?.phone
-                  }"
-                />
-              </div>
-            </td>
-            <td>{{ item.position }}</td>
-            <td>{{ item.pin }}</td>
-            <td>{{ item.passport }}</td>
-            <td>
-              <n-tooltip trigger="hover">
-                <template #trigger>
-                  <p
-                    class="text-sm text-textColor2 line-clamp-1 w-full leading-[1.2] truncate max-w-[140px]"
-                  >
-                    {{ item.address }}
-                  </p>
-                </template>
-                {{ item.address }}
-              </n-tooltip>
-            </td>
-            <td>{{ item.experience }} {{ $t('content.year') }}</td>
-            <td>{{ item.year }}</td>
-            <td>{{ item.phone }}</td>
-            <td>{{ item.invalid === 1 ? $t('content.yes') : $t('content.no') }}</td>
-            <td>{{ item.railway_title === 1 ? $t('content.yes') : $t('content.no') }}</td>
-            <td>{{ item.afghan === 1 ? $t('content.yes') : $t('content.no') }}</td>
-            <td>{{ item.chernobyl === 1 ? $t('content.yes') : $t('content.no') }}</td>
-            <td>
-              <UIMenuButton :data="item" :show-edit="true" @selectEv="onSelectEv" />
-            </td>
-          </tr>
-        </tbody>
-      </n-table>
-      <UIPagination
-        :page="store.params.page"
-        :per_page="store.params.per_page"
-        :total="store.totalItems"
-        @change-page="changePage"
+  <UITable
+    :columns="columns"
+    :actions="actions"
+    :data="store.list"
+    :loading="store.loading"
+    :page="store.params.page"
+    :per-page="store.params.per_page"
+    :total="store.totalItems"
+    storage-key="hrm-pensioner"
+    @change-page="changePage"
+  >
+    <template #cell-worker="{ row }">
+      <UIUser
+        :short="false"
+        :data="{
+          photo: null,
+          firstName: row?.first_name,
+          middleName: row?.middle_name,
+          lastName: row?.last_name,
+          position: row?.phone
+        }"
       />
-    </div>
-    <NoDataPicture v-if="store.list.length === 0 && !store.loading" />
-  </n-spin>
-</template>
+    </template>
 
-<style scoped></style>
+    <template #cell-experience="{ row }"> {{ row.experience }} {{ $t('content.year') }} </template>
+
+    <template #cell-invalid="{ row }">
+      {{ row.invalid === 1 ? $t('content.yes') : $t('content.no') }}
+    </template>
+
+    <template #cell-railway_title="{ row }">
+      {{ row.railway_title === 1 ? $t('content.yes') : $t('content.no') }}
+    </template>
+
+    <template #cell-afghan="{ row }">
+      {{ row.afghan === 1 ? $t('content.yes') : $t('content.no') }}
+    </template>
+
+    <template #cell-chernobyl="{ row }">
+      {{ row.chernobyl === 1 ? $t('content.yes') : $t('content.no') }}
+    </template>
+  </UITable>
+</template>

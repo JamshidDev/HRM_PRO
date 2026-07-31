@@ -122,7 +122,7 @@
             <!-- Geo Type Card -->
             <div class="geo-type-card">
               <div class="flex items-center justify-between">
-                <span class="text-gray-600">{{ $t('departmentLocationPage.form.geoType') }}</span>
+                <span class="text-textColor2">{{ $t('departmentLocationPage.form.geoType') }}</span>
                 <n-switch v-model:value="store.payload.geo_type" size="medium">
                   <template #checked>{{ $t('departmentLocationPage.form.area') }}</template>
                   <template #unchecked>{{ $t('departmentLocationPage.form.coordinate') }}</template>
@@ -364,5 +364,67 @@
   font-size: 11px;
   color: #6b7280;
   line-height: 1.2;
+}
+
+[data-theme='dark'] {
+  .department-card {
+    background: var(--surface-section);
+    border-color: var(--surface-line);
+  }
+
+  .department-card__icon {
+    background: var(--primary-color);
+  }
+
+  .department-card__title {
+    color: var(--textColor0);
+  }
+
+  .department-card__subtitle {
+    color: var(--textColor2);
+  }
+
+  .geo-type-card,
+  .coordinates-card {
+    border-color: var(--surface-line);
+  }
+
+  .polygon-card--success {
+    background: rgba(45, 203, 115, 0.08);
+    border-color: rgba(45, 203, 115, 0.4);
+  }
+
+  .polygon-card--warning {
+    background: rgba(253, 199, 0, 0.08);
+    border-color: rgba(253, 199, 0, 0.4);
+  }
+
+  .polygon-card--error {
+    background: rgba(231, 0, 10, 0.08);
+    border-color: rgba(231, 0, 10, 0.4);
+  }
+
+  .polygon-card--success .polygon-card__icon {
+    background: rgba(45, 203, 115, 0.16);
+    color: var(--success-color);
+  }
+
+  .polygon-card--warning .polygon-card__icon {
+    background: rgba(253, 199, 0, 0.16);
+    color: var(--warning-color);
+  }
+
+  .polygon-card--error .polygon-card__icon {
+    background: rgba(231, 0, 10, 0.16);
+    color: var(--danger-color);
+  }
+
+  .polygon-card__title {
+    color: var(--textColor0);
+  }
+
+  .polygon-card__subtitle {
+    color: var(--textColor3);
+  }
 }
 </style>

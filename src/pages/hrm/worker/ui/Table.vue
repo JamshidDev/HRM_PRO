@@ -1,40 +1,53 @@
 <script setup>
+  import { UIGender, UIPhoneNumber, UITable, UIUser, UIWorkerView } from '@/components/index.js'
+  import i18n from '@/i18n/index.js'
   import {
-    NoDataPicture,
-    UIPagination,
-    UIUser,
-    UIMenuButton,
-    UIWorkerView
-  } from '@/components/index.js'
-  import {
-    useTimesheetDepartmentStore,
-    useWorkerStore,
+    useAccountStore,
+    useComponentStore,
     useExportStore,
-    useAccountStore
+    useTimesheetDepartmentStore,
+    useWorkerStore
   } from '@/store/modules/index.js'
-  import { useRouter } from 'vue-router'
   import { AppPaths } from '@/utils/index.js'
+  import UIHelper from '@/utils/UIHelper.js'
   import Utils from '@/utils/Utils.js'
   import { Edit32Regular, Eye16Regular, Table24Regular } from '@vicons/fluent'
-  import UIHelper from '@/utils/UIHelper.js'
-  import i18n from '@/i18n/index.js'
+  import { useRouter } from 'vue-router'
 
-  const store = useWorkerStore()
-  const accStore = useAccountStore()
-  const exportStore = useExportStore()
-
-  const timesheetDepartmentStore = useTimesheetDepartmentStore()
   const { t } = i18n.global
 
   const router = useRouter()
   const previewRef = ref(null)
-  const selectedItem = ref(null)
 
-  const goPush = (v) => {
+  const store = useWorkerStore()
+  const accStore = useAccountStore()
+  const exportStore = useExportStore()
+  const timesheetDepartmentStore = useTimesheetDepartmentStore()
+  const componentStore = useComponentStore()
+
+  onMounted(() => {
+    if (componentStore.maritalList.length === 0) componentStore._enums()
+  })
+
+  const maritalStatusName = (id) => componentStore.maritalList.find((v) => v.id === id)?.name ?? '-'
+
+  const onPreview = (row) => {
+    if (!accStore.checkAction(accStore.pn.hrWorkersRead)) return
+    previewRef?.value.openPreview(row.uuid)
+  }
+
+  const onEdit = (row) => {
+    if (!accStore.checkAction(accStore.pn.hrWorkersWrite)) return
     router.push({
       path: `${AppPaths.Hrm}${AppPaths.WorkerProfile}`,
-      query: { id: v.worker.uuid }
+      query: { id: row.worker.uuid }
     })
+  }
+
+  const onAssignTimesheet = (row) => {
+    if (!accStore.checkAction(accStore.pn.hrWorkersWrite)) return
+    timesheetDepartmentStore.payload.worker_position_id = row.id
+    timesheetDepartmentStore.visible = true
   }
 
   const changePage = (v) => {
@@ -43,192 +56,264 @@
     store._index()
   }
 
-  const onSelectEv = (v) => {
-    if (!accStore.checkAction(accStore.pn.hrWorkersRead)) return
-
-    if (v.key === Utils.ActionTypes.view) {
-      previewRef.value.openPreview(v.data.uuid)
-    } else if (v.key === Utils.ActionTypes.timesheet) {
-      if (!accStore.checkAction(accStore.pn.hrWorkersWrite)) return
-      timesheetDepartmentStore.payload.worker_position_id = v.data.id
-      timesheetDepartmentStore.visible = true
-    } else if (v.key === Utils.ActionTypes.edit) {
-      if (!accStore.checkAction(accStore.pn.hrWorkersWrite)) return
-      goPush(v.data)
+  const columns = computed(() => [
+    {
+      key: 'worker',
+      title: t('content.worker'),
+      minWidth: 280
+    },
+    {
+      key: 'department.name',
+      title: t('workerPage.table.department'),
+      minWidth: 200
+    },
+    {
+      key: 'position.name',
+      title: t('workerPage.table.position'),
+      minWidth: 200
+    },
+    {
+      key: 'organization.name',
+      title: t('workerPage.table.organization'),
+      minWidth: 200
+    },
+    {
+      key: 'group',
+      title: t('workerPage.table.group'),
+      fullTitle: t('workerPage.table.groupFull'),
+      width: 64,
+      align: 'center'
+    },
+    {
+      key: 'rank',
+      title: t('workerPage.table.rank'),
+      fullTitle: t('workerPage.table.rankFull'),
+      width: 64,
+      align: 'center'
+    },
+    {
+      key: 'rate',
+      title: t('workerPage.table.rate'),
+      fullTitle: t('workerPage.table.rateFull'),
+      width: 64,
+      align: 'center'
+    },
+    {
+      key: 'type.name',
+      title: t('workerPage.filter.position_type'),
+      minWidth: 140,
+      visible: false
+    },
+    {
+      key: 'position_date',
+      title: t('workerPage.table.position_date'),
+      minWidth: 140,
+      visible: false
+    },
+    {
+      key: 'salary',
+      title: t('workerPage.table.salary'),
+      minWidth: 140,
+      visible: false
+    },
+    {
+      key: 'worker.birthday',
+      title: t('workerPage.table.birthday'),
+      minWidth: 140,
+      visible: false
+    },
+    {
+      key: 'worker.pin',
+      title: t('createWorkerPage.form.pin'),
+      minWidth: 160,
+      visible: false
+    },
+    {
+      key: 'worker.sex',
+      title: t('createWorkerPage.form.sex'),
+      minWidth: 100,
+      visible: false
+    },
+    {
+      key: 'worker.marital_status',
+      title: t('createWorkerPage.form.marital_status'),
+      minWidth: 200,
+      ellipsis: {
+        tooltip: true
+      },
+      visible: false
+    },
+    {
+      key: 'worker.work_experience',
+      title: t('workerPage.table.workExperience'),
+      minWidth: 100,
+      visible: false
+    },
+    {
+      key: 'worker.address',
+      title: t('createWorkerPage.form.address'),
+      minWidth: 260,
+      visible: false
+    },
+    {
+      key: 'worker.nationality.name',
+      title: t('createWorkerPage.form.nationality_id'),
+      minWidth: 100,
+      visible: false
+    },
+    {
+      key: 'worker.region.name',
+      title: t('createWorkerPage.form.region'),
+      minWidth: 140,
+      visible: false
+    },
+    {
+      key: 'worker.city.name',
+      title: t('createWorkerPage.form.city'),
+      minWidth: 140,
+      visible: false
+    },
+    {
+      key: 'worker.current_region.name',
+      title: t('createWorkerPage.form.currentRegion'),
+      minWidth: 140,
+      visible: false
+    },
+    {
+      key: 'worker.current_city.name',
+      title: t('createWorkerPage.form.currentCity'),
+      minWidth: 140,
+      visible: false
+    },
+    {
+      key: 'worker.phones',
+      title: t('content.phone'),
+      minWidth: 140,
+      visible: false
+    },
+    {
+      key: 'worker.passport.serial_number',
+      title: t('createWorkerPage.form.serial_number'),
+      minWidth: 140,
+      visible: false
+    },
+    {
+      key: 'worker.passport.from_date',
+      title: t('createWorkerPage.form.from_date'),
+      minWidth: 140,
+      visible: false
+    },
+    {
+      key: 'worker.passport.to_date',
+      title: t('createWorkerPage.form.to_date'),
+      minWidth: 160,
+      visible: false
+    },
+    {
+      key: 'worker.passport.address',
+      title: t('createWorkerPage.form.passport_address'),
+      minWidth: 260,
+      visible: false
     }
-  }
+  ])
 
-  const onPreview = (uuid) => {
-    if (!accStore.checkAction(accStore.pn.hrWorkersRead)) return
-
-    previewRef?.value.openPreview(uuid)
-  }
-
-  const options = [
+  const actions = computed(() => [
     {
       label: t('content.view'),
       key: Utils.ActionTypes.view,
-      icon: UIHelper.renderIcon(Eye16Regular)
+      icon: UIHelper.renderIcon(Eye16Regular),
+      action: onPreview
     },
     {
       label: t('content.edit'),
       key: Utils.ActionTypes.edit,
-      icon: UIHelper.renderIcon(Edit32Regular)
+      icon: UIHelper.renderIcon(Edit32Regular),
+      action: onEdit
     },
     {
       label: t('timesheet.assignUser'),
       key: Utils.ActionTypes.timesheet,
-      icon: UIHelper.renderIcon(Table24Regular)
+      icon: UIHelper.renderIcon(Table24Regular),
+      action: onAssignTimesheet
     }
-  ]
-
-  const showDropdownRef = ref(false)
-  const x = ref(0)
-  const y = ref(0)
-
-  const handleSelect = (key) => {
-    showDropdownRef.value = false
-    onSelectEv({ key, data: selectedItem.value })
-  }
-  const handleContextMenu = (e, v) => {
-    e.preventDefault()
-    selectedItem.value = v
-    showDropdownRef.value = false
-    nextTick().then(() => {
-      showDropdownRef.value = true
-      x.value = e.clientX
-      y.value = e.clientY
-    })
-  }
-
-  const onClickoutside = () => {
-    showDropdownRef.value = false
-  }
+  ])
 </script>
 
 <template>
-  <n-spin :show="store.loading" style="min-height: 200px">
-    <div class="w-full overflow-x-auto" v-if="store.list.length > 0">
-      <n-table class="mt-4" :single-line="false" size="small">
-        <thead>
-          <tr>
-            <th class="text-center! min-w-[40px] w-[40px]">
-              <n-tooltip v-if="exportStore.isExportingResume" trigger="hover">
-                {{ $t('exportPage.checkAll') }}
-                <template #trigger>
-                  <n-checkbox
-                    @click="exportStore.toggleAll"
-                    :checked="exportStore.resumePayload.all"
-                  />
-                </template>
-              </n-tooltip>
-              <span v-else>
-                {{ $t('content.number') }}
-              </span>
-            </th>
-            <th class="min-w-[200px] w-[360px]">{{ $t('content.worker') }}</th>
-            <th>{{ $t('workerPage.table.department') }}</th>
-            <th>{{ $t('workerPage.table.position') }}</th>
-            <th>{{ $t('workerPage.table.organization') }}</th>
-            <th class="min-w-[40px] w-[40px]">{{ $t('workerPage.table.group') }}</th>
-            <th class="min-w-[40px] w-[40px]">{{ $t('workerPage.table.rank') }}</th>
-            <th class="min-w-[40px] w-[40px]">{{ $t('workerPage.table.rate') }}</th>
-            <th class="min-w-[40px] w-[40px]"></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr
-            v-for="(item, idx) in store.list"
-            :key="idx"
-            @contextmenu="handleContextMenu($event, item)"
-          >
-            <td class="text-center">
-              <n-checkbox
-                @click="exportStore.toggleResumeWorker(item)"
-                :checked="
-                  exportStore.resumePayload.worker_ids.includes(item.id) ||
-                  exportStore.resumePayload.all
-                "
-                :disabled="exportStore.resumePayload.all"
-                v-if="exportStore.isExportingResume"
-              />
-              <span v-else class="text-[12px] text-gray-600">{{
-                (store.params.page - 1) * store.params.per_page + idx + 1
-              }}</span>
-            </td>
-            <td>
-              <UIUser
-                :hide-tooltip="true"
-                :short="false"
-                @onClickFullName="onPreview(item.uuid)"
-                :data="{
-                  photo: item?.worker.photo,
-                  firstName: item?.worker.first_name,
-                  middleName: item?.worker.middle_name,
-                  lastName: item?.worker.last_name,
-                  position: item?.type?.name
-                }"
-              >
-              </UIUser>
-            </td>
-            <td>{{ item?.department?.name }}</td>
-            <td>{{ item?.position?.name }}</td>
-            <td>{{ item?.organization?.name }}</td>
-            <td>
-              <div class="flex justify-center">
-                <n-button size="small" circle>{{ item?.group }}</n-button>
-              </div>
-            </td>
-            <td>
-              <div class="flex justify-center">
-                <n-button size="small" circle>{{ item?.rank }}</n-button>
-              </div>
-            </td>
-            <td>
-              <div class="flex justify-center">
-                <n-button size="small" circle>{{ item?.rate }}</n-button>
-              </div>
-            </td>
-
-            <td>
-              <UIMenuButton
-                :data="item"
-                show-view
-                show-edit
-                :show-delete="false"
-                @selectEv="onSelectEv"
-                :extra-options="[
-                  {
-                    label: $t('timesheet.assignUser'),
-                    key: Utils.ActionTypes.timesheet,
-                    icon: Table24Regular,
-                    visible: true
-                  }
-                ]"
-              />
-            </td>
-          </tr>
-        </tbody>
-      </n-table>
-      <UIPagination
-        :page="store.params.page"
-        :per_page="store.params.per_page"
-        :total="store.totalItems"
-        @change-page="changePage"
-      />
-      <n-dropdown
-        size="small"
-        placement="bottom-start"
-        trigger="manual"
-        :x="x"
-        :y="y"
-        :options="options"
-        :show="showDropdownRef"
-        :on-clickoutside="onClickoutside"
-        @select="handleSelect"
-      />
-    </div>
-    <NoDataPicture v-if="store.list.length === 0 && !store.loading" />
-  </n-spin>
   <UIWorkerView ref="previewRef" />
+
+  <UITable
+    :columns="columns"
+    :actions="actions"
+    :data="store.list"
+    :loading="store.loading"
+    :page="store.params.page"
+    :per-page="store.params.per_page"
+    :total="store.totalItems"
+    :selectable="exportStore.isExportingResume"
+    :selected-keys="exportStore.resumePayload.worker_ids"
+    :all-selected="exportStore.resumePayload.all"
+    storage-key="hrm-worker"
+    @change-page="changePage"
+    @toggle-row="exportStore.toggleResumeWorker"
+    @toggle-all="exportStore.toggleAll"
+  >
+    <template #cell-worker="{ row }">
+      <UIUser
+        @onClickFullName="onPreview(row)"
+        :short="false"
+        :data="{
+          photo: row?.worker.photo,
+          firstName: row?.worker.first_name,
+          middleName: row?.worker.middle_name,
+          lastName: row?.worker.last_name,
+          position: row?.type?.name
+        }"
+      />
+    </template>
+
+    <template #cell-group="{ row }">
+      <n-button size="small" circle>{{ row?.group }}</n-button>
+    </template>
+
+    <template #cell-rank="{ row }">
+      <n-button size="small" circle>{{ row?.rank }}</n-button>
+    </template>
+
+    <template #cell-rate="{ row }">
+      <n-button size="small" circle>{{ row?.rate }}</n-button>
+    </template>
+
+    <template #[`cell-position_date`]="{ row }">
+      {{ Utils.timeOnlyDate(row?.position_date) }}
+    </template>
+
+    <template #[`cell-salary`]="{ row }">
+      {{ Utils.formatNumberToMoney(row?.salary) }}
+    </template>
+
+    <template #[`cell-worker.birthday`]="{ row }">
+      {{ Utils.timeOnlyDate(row?.worker?.birthday) }}
+    </template>
+
+    <template #[`cell-worker.sex`]="{ row }">
+      <UIGender :sex="row?.worker?.sex" />
+    </template>
+
+    <template #[`cell-worker.marital_status`]="{ row }">
+      {{ maritalStatusName(row?.worker?.marital_status) }}
+    </template>
+
+    <template #[`cell-worker.phones`]="{ row }">
+      <UIPhoneNumber :phone="row?.worker?.phones?.[0]?.phone" />
+    </template>
+
+    <template #[`cell-worker.passport.from_date`]="{ row }">
+      {{ Utils.timeOnlyDate(row?.worker?.passport?.from_date) }}
+    </template>
+
+    <template #[`cell-worker.passport.to_date`]="{ row }">
+      {{ Utils.timeOnlyDate(row?.worker?.passport?.to_date) }}
+    </template>
+  </UITable>
 </template>
