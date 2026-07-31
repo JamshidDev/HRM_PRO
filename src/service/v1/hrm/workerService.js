@@ -40,6 +40,13 @@ const _storeRole = async (payload) => {
   return await axios.post(`/v1/hr/worker-positions/${payload.id}/edit/attach-role`, payload.data)
 }
 
+const _setActiveRole = async (payload) => {
+  return await axios.post(
+    `/v1/hr/worker-positions/${payload.id}/edit/set-active-role`,
+    payload.data
+  )
+}
+
 const _downloadRelative = async (payload) => {
   return await axios.post(`/v1/hr/export/relatives`, {}, { params: payload.params })
 }
@@ -79,6 +86,7 @@ export default {
   _resume,
   _deleteRole,
   _storeRole,
+  _setActiveRole,
   _userRole,
   _updatePosition,
   _attachUserRole,

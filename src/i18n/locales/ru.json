@@ -78,6 +78,12 @@
       "title": "Штатное расписание",
       "subtitle": "Штатное расписание выбранных организаций — ID штата, отдел, ID должности, должность (Excel, в фоне)"
     },
+    "stationCodes": {
+      "title": "Отделы и станционные коды"
+    },
+    "positions": {
+      "title": "Должности по предприятиям (без повторов)"
+    },
     "validation": {
       "organizations": "Выберите хотя бы одну организацию",
       "accessLevels": "Выберите хотя бы один access level",
@@ -185,6 +191,7 @@
     "news": "Новое",
     "hour": "Час",
     "group": "Группа",
+    "learningCenter": "Учебный центр",
     "action": "Действия",
     "expiryDate": "Срок действия",
     "updatedAt": "Обновлено",
@@ -663,6 +670,9 @@
       "multiple_position": "Сотрудники с несколькими договорами",
       "pension_age": "Сотрудники пенсионного возраста",
       "position_type": "Тип должности",
+      "countBy": "Разрез подсчёта",
+      "countByPosition": "По должностям",
+      "countByWorker": "По сотрудникам",
       "age": "Возраст",
       "quickActions": "Быстрые действия",
       "downloadRelative": "Скачать родственников"
@@ -738,7 +748,9 @@
     },
     "roles": {
       "title": "Роли",
-      "attachRole": "Назначить роль"
+      "attachRole": "Назначить роль",
+      "active": "Активная",
+      "setActive": "Сделать активной"
     },
     "disability": {
       "title": "Данные об инвалидности",
@@ -1795,6 +1807,7 @@
     },
     "mainCard": {
       "totalWorker": "Всего сотрудников",
+      "fxsh": "Сотрудники ГПХ",
       "man": "Мужчин",
       "woman": "Женщин"
     },
@@ -3262,6 +3275,31 @@
   "notificationPage": {
     "name": "Уведомления",
     "create": "Создать уведомление"
+  },
+  "mobileStoryPage": {
+    "name": "Story-объявления",
+    "createTitle": "Новая story",
+    "updateTitle": "Редактировать story",
+    "status": { "draft": "Черновик", "published": "Опубликовано" },
+    "table": { "status": "Статус", "views": "Просмотры" },
+    "form": {
+      "title": "Заголовок",
+      "titleRequired": "Заголовок (uz) обязателен",
+      "subtitle": "Описание",
+      "status": "Статус",
+      "sort": "Порядок",
+      "actionType": "Тип действия",
+      "actionTypePlaceholder": "напр. attendance",
+      "publishedAt": "Дата публикации",
+      "slides": "Слайды (фото/видео)",
+      "addSlide": "Добавить слайд",
+      "editFields": "Редактировать данные",
+      "noSlides": "Слайдов пока нет — добавьте кнопкой выше",
+      "detailsButton": "Подробнее"
+    },
+    "deleteConfirm": "Удалить эту story?",
+    "slideDeleteConfirm": "Удалить этот слайд?",
+    "saved": "Сохранено"
   },
   "newsPage": {
     "name": "Новости",

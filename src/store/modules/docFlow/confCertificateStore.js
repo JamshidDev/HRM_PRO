@@ -14,7 +14,7 @@ export const useConfCertificateStore = defineStore('confCertificateStore', {
       per_page: 15,
       search: null,
       status: null,
-      group_id: null,
+      learning_center_id: null,
       edu_plan_id: null,
       direction_id: null,
       specialization_id: null,
@@ -27,7 +27,7 @@ export const useConfCertificateStore = defineStore('confCertificateStore', {
       Object.assign(this.params, {
         search: null,
         status: null,
-        group_id: null,
+        learning_center_id: null,
         edu_plan_id: null,
         direction_id: null,
         specialization_id: null,

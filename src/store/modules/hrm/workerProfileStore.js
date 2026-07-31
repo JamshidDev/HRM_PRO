@@ -487,6 +487,12 @@ export const useWorkerProfileStore = defineStore('workerProfileStore', {
         this._userRole()
       })
     },
+    _setActiveRole(data, id) {
+      $ApiService.workerService._setActiveRole({ data, id }).then(() => {
+        this._index()
+        this._userRole()
+      })
+    },
     _storeRole(data, id) {
       this.roleLoading = true
       $ApiService.workerService
