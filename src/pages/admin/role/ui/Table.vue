@@ -12,7 +12,10 @@
     store.visibleType = false
     store.elementId = v.id
     store.payload.name = v.name
+    // Rol guard'i — permission olamini belgilaydi; shu guard bo'yicha ro'yxat qayta yuklanadi.
+    store.payload.guard_name = v.guard_name || 'sanctum'
     store.payload.permissions = v.permissions.map((x) => x.id)
+    store._getAllPermission()
     store.visible = true
   }
 
@@ -45,6 +48,7 @@
           <tr>
             <th class="text-center! min-w-[40px] w-[40px]">{{ $t('content.number') }}</th>
             <th class="min-w-[200px]">{{ $t('content.name') }}</th>
+            <th class="min-w-[120px] w-[140px]">{{ $t('userRole.form.type') }}</th>
             <th class="min-w-[40px] w-[40px]"></th>
           </tr>
         </thead>
@@ -65,6 +69,19 @@
                   </template>
                 </UIBadge>
               </div>
+            </td>
+            <td>
+              <n-tag
+                size="small"
+                round
+                :type="item.guard_name === 'integration' ? 'warning' : 'default'"
+              >
+                {{
+                  item.guard_name === 'integration'
+                    ? $t('userRole.form.typeIntegration')
+                    : $t('userRole.form.typeSanctum')
+                }}
+              </n-tag>
             </td>
             <td>
               <UIMenuButton :data="item" :show-edit="true" @selectEv="onSelect" />
