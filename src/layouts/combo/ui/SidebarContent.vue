@@ -60,21 +60,37 @@
     router.push(item.path)
   }
 
-  const miniMenu = computed(() => {
-    return navigations
+  /**
+   * Menyu ko'rish ruxsati: bare slug YOKI uning '-read' varianti yetarli.
+   * Fine-grained migratsiyadan keyin rollar 'hr-departments-read' oladi, menyu esa
+   * tarixan bare 'hr-departments' tekshirardi — natijada faqat -read'ga ega rol
+   * sahifani ochsa ham menyu yashirilardi. Ikkovini ham qamraymiz.
+   */
+  const canView = (permission) =>
+    store.checkPermission(permission) || store.checkPermission(`${permission}-read`)
+
+  /**
+   * Modul (mini-menyu) ko'rinadi: o'z ruxsati bo'lsa YOKI kamida bitta ko'rinadigan
+   * bola menyusi bo'lsa. Shu bilan faqat child-ruxsatga ega (coarse modul ruxsatisiz)
+   * foydalanuvchi ham modulni ko'rib, ichidagi sahifasiga o'ta oladi.
+   */
+  const moduleVisible = (mod) =>
+    store.isModeDev ||
+    canView(mod.permission) ||
+    (mod.children?.some((c) => canView(c.permission)) ?? false)
+
+  const miniMenu = computed(() =>
+    navigations
+      .filter((v) => moduleVisible(v))
       .map((v) => ({
         index: v.index,
         label: v.label,
         path: v.path,
         icon: v.icon,
         name: v?.name,
-        permission: v.permission,
-        allowed: store.checkPermission(v.permission)
+        permission: v.permission
       }))
-      .filter((v) => {
-        return store.isModeDev || v.allowed
-      })
-  })
+  )
 
   /**
    * When no module is selected yet (e.g. on the home page right after load),
@@ -82,9 +98,7 @@
    * has something to show and the toggle button remains functional.
    */
   const fallbackMenuPath = computed(() => {
-    const nav = navigations.find(
-      (v) => (store.isModeDev || store.checkPermission(v.permission)) && v.children?.length
-    )
+    const nav = navigations.find((v) => moduleVisible(v) && v.children?.length)
     return nav?.path ?? null
   })
 
@@ -104,7 +118,7 @@
       .find((v) => v.path === effectiveMenuPath.value)
       .children.map((v) => ({
         ...v,
-        allowed: store.checkPermission(v.permission)
+        allowed: canView(v.permission)
       }))
       .filter((v) => store.isModeDev || v.allowed)
   })
