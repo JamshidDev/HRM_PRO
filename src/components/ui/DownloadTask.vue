@@ -121,7 +121,7 @@
       <n-badge
         class="!text-[10px] header-app-badge"
         :value="store.unReadNotificationCount"
-        :offset="[4, -4]"
+        :offset="[-4, -4]"
       >
         <n-icon
           id="taskBtn"
@@ -133,87 +133,78 @@
       </n-badge>
     </template>
 
-    <div class="w-[300px] h-[300px] cursor-pointer overflow-hidden">
-      <div
-        class="w-full border-b border-surface-line px-2 py-2 text-xs font-semibold flex justify-between items-center"
-      >
-        <span>{{ $t('content.notifications') }}</span>
-        <n-button @click="viewAll" size="tiny">
-          <span class="text-[10px]">{{ $t('content.markAsRead') }}</span>
-        </n-button>
+    <div class="w-[320px] h-[300px] rounded-3xl overflow-hidden cursor-pointer notif-panel flex flex-col">
+      <div class="notif-bar shrink-0 flex items-center justify-between gap-2 px-4 py-2.5">
+        <span class="text-sm font-semibold text-textColor0">{{ $t('content.notifications') }}</span>
+        <button
+          type="button"
+          class="text-xs font-medium text-primary hover:opacity-70 transition-opacity"
+          @click="viewAll"
+        >
+          {{ $t('content.markAsRead') }}
+        </button>
       </div>
 
-      <n-spin class="h-[calc(100%-66px)]" :show="store.notifyLoading">
-        <div ref="scrollContainer" class="w-full h-full overflow-y-auto px-1">
+      <n-spin class="notif-body flex-1 min-h-0" :show="store.notifyLoading">
+        <div ref="scrollContainer" class="w-full h-full overflow-y-auto px-3 py-2 space-y-2">
           <template v-for="(item, index) in store.notificationList" :key="item.id">
             <div
               :ref="(el) => setNotificationRef(el, index)"
               :data-notification-id="item.id"
               :data-is-read="item.read_at ? 1 : 0"
-              class="px-2 my-1 border border-surface-line rounded-lg pt-2 transition-all duration-300"
+              class="notif-item flex items-center gap-3 rounded-2xl px-3 py-2.5 transition-all duration-300"
               :class="{
-                'bg-surface-ground/30 hover:bg-surface-ground/80': !viewedNotifications.has(
-                  item.id.toString()
-                ),
-                'bg-green-50/10 border-green-200': viewedNotifications.has(item.id.toString())
+                'notif-item-viewed': viewedNotifications.has(item.id.toString())
               }"
             >
-              <div class="w-full text-xs leading-[1]">
-                <n-badge v-if="!item.read_at" class="mb-[2px]" type="info" dot />
-                {{ item.type }}
-              </div>
-
-              <div class="flex justify-between items-center mt-4 pb-1">
-                <div class="text-[10px] text-textColor3">
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center gap-1.5 text-xs font-medium text-textColor0 leading-tight">
+                  <n-badge v-if="!item.read_at" type="info" dot />
+                  <span>{{ item.type }}</span>
+                </div>
+                <div class="text-[10px] text-textColor3 mt-1.5">
                   {{ Utils.timeWithMonth(item.created_at) }}
                 </div>
-
-                <n-button
-                  v-if="item.status.id === 2"
-                  @click="onDownload(item.file)"
-                  class="!py-1"
-                  type="success"
-                  secondary
-                  size="tiny"
-                >
-                  <template #icon>
-                    <ArrowCircleDown24Regular />
-                  </template>
-                </n-button>
-
-                <n-button
-                  v-if="item.status.id === 1"
-                  class="!py-1"
-                  type="warning"
-                  secondary
-                  size="tiny"
-                  :loading="true"
-                >
-                  <template #icon>
-                    <Timer16Regular />
-                  </template>
-                </n-button>
-                <n-button
-                  v-if="item.status.id === 3"
-                  class="!py-1"
-                  type="error"
-                  secondary
-                  size="tiny"
-                >
-                  <template #icon>
-                    <ErrorCircle12Filled />
-                  </template>
-                  {{ $t('content.Error') }}
-                </n-button>
               </div>
+
+              <button
+                v-if="item.status.id === 2"
+                type="button"
+                class="status-circle status-circle-success shrink-0"
+                @click="onDownload(item.file)"
+              >
+                <n-icon size="16">
+                  <ArrowCircleDown24Regular />
+                </n-icon>
+              </button>
+
+              <n-tooltip v-else-if="item.status.id === 1" trigger="hover">
+                <template #trigger>
+                  <div class="status-circle status-circle-warning shrink-0">
+                    <n-icon size="16" class="animate-spin">
+                      <Timer16Regular />
+                    </n-icon>
+                  </div>
+                </template>
+                {{ $t('content.process') }}
+              </n-tooltip>
+
+              <n-tooltip v-else-if="item.status.id === 3" trigger="hover">
+                <template #trigger>
+                  <div class="status-circle status-circle-error shrink-0">
+                    <n-icon size="16">
+                      <ErrorCircle12Filled />
+                    </n-icon>
+                  </div>
+                </template>
+                {{ $t('content.error') }}
+              </n-tooltip>
             </div>
           </template>
         </div>
       </n-spin>
-      <div
-        @click="goViewAll"
-        class="w-full text-center border-t border-surface-line px-2 py-1 text-xs hover:bg-surface-ground/50 transition-colors"
-      >
+
+      <div @click="goViewAll" class="notif-bar shrink-0 text-center px-3 py-2.5 text-xs font-semibold text-primary hover:opacity-70 transition-opacity">
         {{ $t('content.viewAll') }}
       </div>
     </div>
@@ -223,5 +214,51 @@
 <style scoped>
   .transition-all {
     transition: all 0.3s ease;
+  }
+
+  .notif-panel {
+    background-color: #fff;
+  }
+  .notif-bar {
+    background-color: #eff8ff;
+  }
+  .notif-item {
+    background-color: #f9fafb;
+  }
+  .notif-item-viewed {
+    background-color: rgba(45, 203, 115, 0.08);
+  }
+
+  .status-circle {
+    width: 32px;
+    height: 32px;
+    border-radius: 9999px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .status-circle-success {
+    background-color: rgba(45, 203, 115, 0.12);
+    color: var(--success-color);
+  }
+  .status-circle-warning {
+    background-color: rgba(253, 199, 0, 0.14);
+    color: var(--warning-color);
+  }
+  .status-circle-error {
+    background-color: rgba(231, 0, 10, 0.1);
+    color: var(--danger-color);
+  }
+
+  [data-theme='dark'] {
+    .notif-panel {
+      background-color: var(--surface-section);
+    }
+    .notif-bar {
+      background-color: var(--table-header);
+    }
+    .notif-item {
+      background-color: var(--surface-ground);
+    }
   }
 </style>
