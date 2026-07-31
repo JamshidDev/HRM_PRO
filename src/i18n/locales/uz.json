@@ -359,7 +359,9 @@
     "rejectByMistake": "Xatolik sababli qaytarish",
     "themeLight": "Yorug'",
     "themeDark": "Qorong'i",
-    "themeSystem": "Tizim"
+    "themeSystem": "Tizim",
+    "oldVersionButton": "Eski talqinga qaytish",
+    "newVersionButton": "Yangi talqinga o'tish"
   },
   "date": {
     "day": "Kun",
@@ -1446,7 +1448,7 @@
     "createTitle": "Sertifikat qo'shish",
     "updateTitle": "Sertifikatni tahrirlash",
     "unlimited": "Muddatsiz",
-    "unlimitedHint": "Bo'sh qoldirilsa \u2014 muddatsiz",
+    "unlimitedHint": "Bo'sh qoldirilsa — muddatsiz",
     "qualificationHint": "Bu sertifikat til darajasini bermaydi",
     "scorePlaceholder": "Sertifikatdagi natija",
     "form": {
@@ -3361,8 +3363,14 @@
     "name": "Story e'lonlari",
     "createTitle": "Yangi story",
     "updateTitle": "Story'ni tahrirlash",
-    "status": { "draft": "Qoralama", "published": "Chop etilgan" },
-    "table": { "status": "Holat", "views": "Ko'rilgan" },
+    "status": {
+      "draft": "Qoralama",
+      "published": "Chop etilgan"
+    },
+    "table": {
+      "status": "Holat",
+      "views": "Ko'rilgan"
+    },
     "form": {
       "title": "Sarlavha",
       "titleRequired": "Sarlavha (uz) majburiy",

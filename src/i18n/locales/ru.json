@@ -347,7 +347,9 @@
     "allSelected": "Все выбрано",
     "themeLight": "Светлая",
     "themeDark": "Тёмная",
-    "themeSystem": "Системная"
+    "themeSystem": "Системная",
+    "oldVersionButton": "Вернуться к старой версии",
+    "newVersionButton": "Перейти на новую версию"
   },
   "date": {
     "day": "День",
@@ -3280,8 +3282,14 @@
     "name": "Story-объявления",
     "createTitle": "Новая story",
     "updateTitle": "Редактировать story",
-    "status": { "draft": "Черновик", "published": "Опубликовано" },
-    "table": { "status": "Статус", "views": "Просмотры" },
+    "status": {
+      "draft": "Черновик",
+      "published": "Опубликовано"
+    },
+    "table": {
+      "status": "Статус",
+      "views": "Просмотры"
+    },
     "form": {
       "title": "Заголовок",
       "titleRequired": "Заголовок (uz) обязателен",

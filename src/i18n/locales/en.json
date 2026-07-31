@@ -343,7 +343,9 @@
     "allSelected": "All selected",
     "themeLight": "Light",
     "themeDark": "Dark",
-    "themeSystem": "System"
+    "themeSystem": "System",
+    "oldVersionButton": "Return to old version",
+    "newVersionButton": "Switch to new version"
   },
   "date": {
     "day": "Day",
@@ -3267,8 +3269,14 @@
     "name": "Story announcements",
     "createTitle": "New story",
     "updateTitle": "Edit story",
-    "status": { "draft": "Draft", "published": "Published" },
-    "table": { "status": "Status", "views": "Views" },
+    "status": {
+      "draft": "Draft",
+      "published": "Published"
+    },
+    "table": {
+      "status": "Status",
+      "views": "Views"
+    },
     "form": {
       "title": "Title",
       "titleRequired": "Title (uz) is required",

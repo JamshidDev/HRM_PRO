@@ -279,7 +279,9 @@
     "rejectByMistake": "Хатолик сабабли қайтариш",
     "themeLight": "Ёруғ",
     "themeDark": "Қоронғи",
-    "themeSystem": "Тизим"
+    "themeSystem": "Тизим",
+    "oldVersionButton": "Эски талқинга қайтиш",
+    "newVersionButton": "Янги талқинга ўтиш"
   },
   "date": {
     "day": "Кун",

@@ -4,6 +4,7 @@
   import HelperLayout from './ui/HelperLayout.vue'
   import ReactionScreen from '@/pages/app/home/ui/ReactionScreen.vue'
   import MustChangePasswordModal from '@/components/MustChangePasswordModal.vue'
+  import OldVersionButton from '@/components/buttons/OldVersionButton.vue'
   import { useAccountStore } from '@/store/modules/index.js'
   const store = useAccountStore()
 
@@ -40,6 +41,7 @@
 
 <template>
   <div :class="layoutClass" class="organization-layout">
+    <OldVersionButton />
     <SidebarContent @on-change="controlSidebar" @on-open="openSidebar" @on-close="closeSidebar" />
     <PageContent @on-open="openSidebar" />
     <HelperLayout />
