@@ -12,7 +12,6 @@ export const useTopicStore = defineStore('topicStore', {
     visibleType: true,
     detailVisible: false,
     activeTab: 'list',
-    mediaTab: 0,
     elementId: null,
     totalItems: 0,
     allPermissionList: [],

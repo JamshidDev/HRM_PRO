@@ -24,7 +24,7 @@
 </script>
 
 <template>
-  <div class="h-full flex flex-col ">
+  <div class="h-full flex flex-col">
     <div class="grow basis-auto overflow-hidden min-h-0">
       <Tabs />
     </div>
