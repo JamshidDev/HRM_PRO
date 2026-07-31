@@ -11,6 +11,10 @@
     size: {
       type: String,
       default: 'tiny'
+    },
+    pill: {
+      type: Boolean,
+      default: false
     }
   })
 
@@ -86,7 +90,14 @@
 
 <template>
   <div class="flex items-center">
-    <n-button :type="type" :size="size" dashed class="truncate max-w-full">
+    <n-button
+      :type="type"
+      :size="size"
+      :dashed="!pill"
+      :secondary="pill"
+      :round="pill"
+      class="truncate max-w-full"
+    >
       <template #icon>
         <component :is="icon" />
       </template>

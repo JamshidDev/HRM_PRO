@@ -9,7 +9,7 @@
 </script>
 
 <template>
-  <div class="w-full flex items-start border border-surface-line rounded-lg bg-white">
+  <div class="w-full flex items-start border border-surface-line rounded-lg bg-surface-section">
     <div class="chat__input" style="width: calc(100% - 36px)">
       <n-input
         class="w-full border-none!"
