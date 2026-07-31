@@ -13,7 +13,7 @@
       comment: store.applicationComment
     }
     const id = store.document_id
-    applicationStore._accept(data, id)
+    applicationStore._accept(data, id, 'modalLoading')
   }
 </script>
 
@@ -27,39 +27,44 @@
     "
   >
     <template #default>
-      <n-form ref="formRef" class="w-full grid grid-cols-12 gap-x-4 px-2">
-        <n-form-item class="col-span-12" :label="$t(`signature.comment`)" path="first_name">
-          <n-input class="w-full" type="textarea" v-model:value="store.applicationComment" />
-        </n-form-item>
+      <div class="w-full">
+        <p class="text-sm text-gray-400 mb-4">
+          {{
+            store.appButtonType
+              ? $t('signature.applicationAcceptDesc')
+              : $t('signature.applicationRejectDesc')
+          }}
+        </p>
+        <n-form ref="formRef" class="w-full">
+          <n-form-item :label="$t('signature.comment')">
+            <n-input
+              class="w-full"
+              type="textarea"
+              :rows="4"
+              :placeholder="$t('signature.applicationCommentPlaceholder')"
+              v-model:value="store.applicationComment"
+            />
+          </n-form-item>
 
-        <div class="col-span-12 mt-[10px]">
-          <div class="grid grid-cols-12 gap-4">
-            <div class="col-span-6">
-              <n-button
-                @click="store.applicationVisible = false"
-                :loading="applicationStore.acceptLoading"
-                type="error"
-                style="width: 100%"
-                ghost
-              >
-                {{ $t('content.cancel') }}
-              </n-button>
-            </div>
-            <div class="col-span-6">
-              <n-button
-                style="width: 100%"
-                @click="onSubmit"
-                :loading="applicationStore.acceptLoading"
-                type="primary"
-              >
-                {{ $t('content.save') }}
-              </n-button>
-            </div>
+          <div class="flex justify-end gap-3 mt-2">
+            <n-button
+              @click="store.applicationVisible = false"
+              :disabled="applicationStore.modalLoading"
+              secondary
+            >
+              {{ $t('content.cancel') }}
+            </n-button>
+            <n-button
+              @click="onSubmit"
+              :loading="applicationStore.modalLoading"
+              :disabled="applicationStore.modalLoading"
+              :type="store.appButtonType ? 'success' : 'error'"
+            >
+              {{ store.appButtonType ? $t('content.confirm') : $t('signature.rejectApplication') }}
+            </n-button>
           </div>
-        </div>
-      </n-form>
+        </n-form>
+      </div>
     </template>
   </UIModal>
 </template>
-
-<style scoped></style>

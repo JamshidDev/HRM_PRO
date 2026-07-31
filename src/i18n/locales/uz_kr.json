@@ -792,6 +792,9 @@
     "acceptApplication": "Аризани тасдиқлаш",
     "comment": "Изоҳ",
     "rejectApplication": "Аризани рад қилиш",
+    "applicationAcceptDesc": "Изоҳингизни қолдиришингиз мумкин (ихтиёрий).",
+    "applicationRejectDesc": "Рад этиш сабабини ёзинг. Сабаб аризани юборган ходимга кўринади.",
+    "applicationCommentPlaceholder": "Изоҳингизни киритинг...",
     "pinfl": "ЖШШИР"
   },
   "documentPage": {

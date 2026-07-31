@@ -32,7 +32,7 @@
     :title="$t('documentPage.signature.rejectTitle')"
   >
     <template #default>
-      <div class="w-full px-2">
+      <div class="w-full">
         <p class="text-sm text-gray-400 mb-4">
           {{ $t('documentPage.signature.rejectDesc') }}
         </p>
