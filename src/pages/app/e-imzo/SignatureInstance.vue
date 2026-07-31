@@ -1,6 +1,6 @@
 <script setup>
   import { useSignatureStore } from '@/store/modules/index.js'
-  import { UsbStick24Filled } from '@vicons/fluent'
+  import { UsbStick24Filled, CheckmarkCircle16Filled } from '@vicons/fluent'
   import Utils from '@/utils/Utils.js'
   import { useAppSetting } from '@/utils/index.js'
   const store = useSignatureStore()
@@ -24,8 +24,18 @@
       size="huge"
       role="dialog"
       aria-modal="true"
+      closable
+      @close="store.visible = false"
       class="bg-surface-section shadow-lg! overflow-hidden!"
     >
+      <template v-if="store.signatureType === store.signatureTypes.contract" #header>
+        <div class="text-lg font-semibold text-textColor1">
+          {{ $t('documentPage.signature.keySelectTitle') }}
+        </div>
+      </template>
+      <p v-if="store.signatureType === store.signatureTypes.contract" class="text-sm text-gray-400 mb-3">
+        {{ $t('documentPage.signature.keySelectDesc') }}
+      </p>
       <n-spin :show="store.loading" class="min-h-[100px]">
         <div class="flex flex-col w-full max-h-[420px] overflow-y-auto px-1 space-y-2.5">
           <div
@@ -59,6 +69,14 @@
                   {{
                     $t('signature.notValidDate')
                   }}
+                </n-button>
+                <n-button v-else type="success" size="tiny" secondary>
+                  <template #icon>
+                    <n-icon>
+                      <CheckmarkCircle16Filled />
+                    </n-icon>
+                  </template>
+                  {{ $t('signature.validKey') }}
                 </n-button>
               </div>
 
