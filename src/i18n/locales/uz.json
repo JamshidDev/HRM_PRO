@@ -78,6 +78,12 @@
       "title": "Korxona shtatkasi",
       "subtitle": "Tanlangan korxona(lar) shtat jadvali — shtat ID, bo'lim, lavozim ID, lavozim (Excel, fon rejimida)"
     },
+    "stationCodes": {
+      "title": "Bo'limlar va station kodlar"
+    },
+    "positions": {
+      "title": "Korxona kesimida lavozimlar (takrorsiz)"
+    },
     "validation": {
       "organizations": "Kamida bitta korxona tanlang",
       "accessLevels": "Kamida bitta access level tanlang",
@@ -185,6 +191,7 @@
     "news": "Yangi",
     "hour": "Soat",
     "group": "Guruh",
+    "learningCenter": "O'quv markaz",
     "action": "Amallar",
     "expiryDate": "Muddati",
     "updatedAt": "Yangilangan",
@@ -677,6 +684,9 @@
       "multiple_position": "Birdan ortiq shartnomaga ega xodimlar",
       "pension_age": "Pensiya yoshidagi xodimlar",
       "position_type": "Lavozim turi",
+      "countBy": "Hisoblash kesimi",
+      "countByPosition": "Lavozim bo'yicha",
+      "countByWorker": "Xodim bo'yicha",
       "age": "Yoshi",
       "quickActions": "Tezkor amallar",
       "downloadRelative": "Qarindoshlarni yuklash"
@@ -753,7 +763,9 @@
     },
     "roles": {
       "title": "Rollar",
-      "attachRole": "Role biriktirish"
+      "attachRole": "Role biriktirish",
+      "active": "Faol",
+      "setActive": "Faol qilish"
     },
     "disability": {
       "title": "Nogironlik ma'lumotlari",
@@ -1809,6 +1821,7 @@
     },
     "mainCard": {
       "totalWorker": "Xodimlar soni",
+      "fxsh": "FXSH xodimlari",
       "man": "Erkaklar soni",
       "woman": "Ayollar soni"
     },
@@ -3343,6 +3356,31 @@
       "passport": "Pasport muddati haqida ogohlantirilgan xodimlar soni",
       "mobile": "Mobil ilova orqali xabar yuborilgan xodimlar soni"
     }
+  },
+  "mobileStoryPage": {
+    "name": "Story e'lonlari",
+    "createTitle": "Yangi story",
+    "updateTitle": "Story'ni tahrirlash",
+    "status": { "draft": "Qoralama", "published": "Chop etilgan" },
+    "table": { "status": "Holat", "views": "Ko'rilgan" },
+    "form": {
+      "title": "Sarlavha",
+      "titleRequired": "Sarlavha (uz) majburiy",
+      "subtitle": "Tavsif",
+      "status": "Holat",
+      "sort": "Tartib",
+      "actionType": "Action turi",
+      "actionTypePlaceholder": "mas. attendance",
+      "publishedAt": "Chop etish sanasi",
+      "slides": "Slaydlar (rasm/video)",
+      "addSlide": "Slayd qo'shish",
+      "editFields": "Ma'lumotlarni tahrirlash",
+      "noSlides": "Hali slayd yo'q — yuqoridagi tugma orqali qo'shing",
+      "detailsButton": "Batafsil"
+    },
+    "deleteConfirm": "Ushbu story o'chirilsinmi?",
+    "slideDeleteConfirm": "Ushbu slayd o'chirilsinmi?",
+    "saved": "Saqlandi"
   },
   "newsPage": {
     "name": "Yangiliklar",

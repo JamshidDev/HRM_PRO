@@ -37,8 +37,13 @@ defineProps({
         </div>
       </slot>
     </div>
-    <div class="bg-surface-section p-4">
+    <div class="bg-surface-ground rounded-b-3xl p-4">
       <slot />
+    </div>
+    <div
+      v-if="$slots.footer"
+      class="section-header-bar flex items-center justify-end gap-2 rounded-b-3xl border-surface-line px-4 py-2">
+      <slot name="footer" />
     </div>
   </div>
 </template>
@@ -53,10 +58,10 @@ defineProps({
 
 [data-theme='dark'] {
   .section-header-bar {
-    background-color: #1a2131;
+    background-color: var(--table-header);
   }
   .section-header {
-    background-color: #212b42;
+    background-color: var(--surface-section);
   }
 
 }

@@ -25,7 +25,8 @@
   const submitBtn3Ref = ref(null)
   const submitBtn4Ref = ref(null)
   const submitBtn5Ref = ref(null)
-  const submitBtn6Ref = ref(null)
+  const submitBtn7Ref = ref(null)
+  const submitBtn8Ref = ref(null)
   const flyFrom = (btnRef) => {
     const el = btnRef.value?.$el || btnRef.value
     if (el) proxy.$flyUpload(el)
@@ -221,27 +222,37 @@
       .finally(() => (d5.loading = false))
   }
 
-  // ===== Card 6: korxona shtatkasi (korxona tanlab, async job) =====
-  const d6 = reactive({ show: false, loading: false, orgs: [], orgChecked: [] })
-  const openD6 = () => {
-    Object.assign(d6, { show: true, loading: false, orgs: [], orgChecked: [] })
+  // ===== Card 7: bo'limlar + station kodlar (parametrsiz, to'g'ridan async) =====
+  const d7 = reactive({ loading: false })
+  const submitD7 = () => {
+    flyFrom(submitBtn7Ref)
+    d7.loading = true
+    $ApiService.stationCodeReportService
+      ._export()
+      .catch(() => message.error(t('workerReport.failed')))
+      .finally(() => (d7.loading = false))
+  }
+
+  // ===== Card 8: korxona kesimida lavozimlar (takrorsiz, korxona tanlab) =====
+  const d8 = reactive({ show: false, loading: false, orgs: [], orgChecked: [] })
+  const openD8 = () => {
+    Object.assign(d8, { show: true, loading: false, orgs: [], orgChecked: [] })
     loadStructure()
   }
-  const submitD6 = () => {
-    if (d6.orgs.length === 0)
+  const submitD8 = () => {
+    if (d8.orgs.length === 0)
       return message.error(t('workerReport.validation.organizations'))
-    // Validatsiyadan o'tdi → uchish effekti + so'rov.
-    flyFrom(submitBtn6Ref)
-    d6.loading = true
-    $ApiService.staffingReportService
+    flyFrom(submitBtn8Ref)
+    d8.loading = true
+    $ApiService.organizationPositionsReportService
       ._export({
-        params: { organizations: d6.orgs.map((o) => o.id).join(',') }
+        params: { organizations: d8.orgs.map((o) => o.id).join(',') }
       })
       .then(() => {
-        d6.show = false
+        d8.show = false
       })
       .catch(() => message.error(t('workerReport.failed')))
-      .finally(() => (d6.loading = false))
+      .finally(() => (d8.loading = false))
   }
 </script>
 
@@ -409,14 +420,14 @@
         </div>
       </div>
 
-      <!-- Card 6: korxona shtatkasi (korxona tanlab) -->
+      <!-- Card 7: bo'limlar + station kodlar (parametrsiz) -->
       <div
         class="col-span-3 h-full bg-surface-section border border-surface-line rounded-2xl p-5 flex flex-col relative overflow-hidden"
       >
         <div
           class="absolute -bottom-8 right-3 text-[140px] font-black leading-none text-success/20 pointer-events-none select-none z-0"
         >
-          6
+          7
         </div>
         <div class="relative z-[1] flex flex-col h-full">
           <div class="flex items-center gap-3">
@@ -426,11 +437,46 @@
               <n-icon size="24"><BuildingMultiple24Regular /></n-icon>
             </div>
             <h3 class="text-[15px] font-semibold text-textColor0 leading-snug">
-              {{ $t('workerReport.staffing.title') }}
+              {{ $t('workerReport.stationCodes.title') }}
             </h3>
           </div>
           <div class="flex-1 min-h-[48px]"></div>
-          <n-button type="success" size="small" class="w-full" @click="openD6">
+          <n-button
+            ref="submitBtn7Ref"
+            type="success"
+            size="small"
+            class="w-full"
+            :loading="d7.loading"
+            @click="submitD7"
+          >
+            <template #icon><n-icon><ArrowDownload24Regular /></n-icon></template>
+            {{ $t('workerReport.createButton') }}
+          </n-button>
+        </div>
+      </div>
+
+      <!-- Card 8: korxona kesimida lavozimlar (takrorsiz, korxona tanlab) -->
+      <div
+        class="col-span-3 h-full bg-surface-section border border-surface-line rounded-2xl p-5 flex flex-col relative overflow-hidden"
+      >
+        <div
+          class="absolute -bottom-8 right-3 text-[140px] font-black leading-none text-success/20 pointer-events-none select-none z-0"
+        >
+          8
+        </div>
+        <div class="relative z-[1] flex flex-col h-full">
+          <div class="flex items-center gap-3">
+            <div
+              class="w-11 h-11 shrink-0 flex items-center justify-center rounded-xl bg-success/10 text-success"
+            >
+              <n-icon size="24"><PeopleTeam24Regular /></n-icon>
+            </div>
+            <h3 class="text-[15px] font-semibold text-textColor0 leading-snug">
+              {{ $t('workerReport.positions.title') }}
+            </h3>
+          </div>
+          <div class="flex-1 min-h-[48px]"></div>
+          <n-button type="success" size="small" class="w-full" @click="openD8">
             <template #icon><n-icon><ArrowDownload24Regular /></n-icon></template>
             {{ $t('workerReport.createButton') }}
           </n-button>
@@ -600,10 +646,10 @@
       </template>
     </UIModal>
 
-    <!-- Modal 6: korxona shtatkasi -->
+    <!-- Modal 8: korxona kesimida lavozimlar (takrorsiz) -->
     <UIModal
-      v-model:visible="d6.show"
-      :title="$t('workerReport.staffing.title')"
+      v-model:visible="d8.show"
+      :title="$t('workerReport.positions.title')"
       width="560"
     >
       <div class="py-1 flex flex-col gap-4">
@@ -613,23 +659,23 @@
           </label>
           <UISelect
             :options="componentStore.structureList"
-            :modelV="d6.orgs"
-            :checkedVal="d6.orgChecked"
+            :modelV="d8.orgs"
+            :checkedVal="d8.orgChecked"
             :multiple="true"
             :loading="componentStore.structureLoading"
             v-model:search="componentStore.structureParams.search"
-            @updateModel="(v) => (d6.orgs = v)"
-            @updateCheck="(v) => (d6.orgChecked = v)"
+            @updateModel="(v) => (d8.orgs = v)"
+            @updateCheck="(v) => (d8.orgChecked = v)"
             @onSearch="componentStore._structures"
           />
         </div>
       </div>
       <template #footer>
         <div class="grid grid-cols-2 gap-3 pt-2">
-          <n-button @click="d6.show = false" :disabled="d6.loading" type="error" ghost>
+          <n-button @click="d8.show = false" :disabled="d8.loading" type="error" ghost>
             {{ $t('content.cancel') }}
           </n-button>
-          <n-button ref="submitBtn6Ref" type="success" :loading="d6.loading" @click="submitD6">
+          <n-button ref="submitBtn8Ref" type="success" :loading="d8.loading" @click="submitD8">
             <template #icon><n-icon><ArrowDownload24Regular /></n-icon></template>
             {{ $t('workerReport.download') }}
           </n-button>

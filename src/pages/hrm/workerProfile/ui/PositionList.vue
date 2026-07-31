@@ -68,7 +68,7 @@
     <div
       v-for="(item, idx) in store.positionList"
       :key="idx"
-      class="grid p-4 grid-cols-12 w-full border border-dashed rounded-2xl mb-4"
+      class="grid p-4 grid-cols-12 w-full border border-dashed border-surface-line rounded-2xl mb-4"
     >
       <div class="col-span-12 p-2">
         <span class="font-medium block">{{ $t('workerProfile.position.title') }}</span>

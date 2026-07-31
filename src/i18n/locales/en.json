@@ -44,6 +44,12 @@
   "workerReport": {
     "name": "Worker reports",
     "createButton": "Create report",
+    "stationCodes": {
+      "title": "Departments and station codes"
+    },
+    "positions": {
+      "title": "Positions by organization (unique)"
+    },
     "organizations": "Organizations",
     "accessLevels": "Access levels",
     "from": "Start date",
@@ -181,6 +187,7 @@
     "news": "New",
     "hour": "Hour",
     "group": "Group",
+    "learningCenter": "Learning center",
     "action": "Actions",
     "expiryDate": "Expiry date",
     "updatedAt": "Updated",
@@ -659,6 +666,9 @@
       "multiple_position": "Employees with multiple contracts",
       "pension_age": "Employees of retirement age",
       "position_type": "Position type",
+      "countBy": "Count by",
+      "countByPosition": "By position",
+      "countByWorker": "By worker",
       "age": "Age",
       "quickActions": "Quick actions",
       "downloadRelative": "Download relatives"
@@ -734,7 +744,9 @@
     },
     "roles": {
       "title": "Roles",
-      "attachRole": "Assign role"
+      "attachRole": "Assign role",
+      "active": "Active",
+      "setActive": "Make active"
     },
     "disability": {
       "title": "Disability information",
@@ -1785,6 +1797,7 @@
     },
     "mainCard": {
       "totalWorker": "Total employees",
+      "fxsh": "Civil-contract employees",
       "man": "Male employees",
       "woman": "Female employees"
     },
@@ -3249,6 +3262,31 @@
   "notificationPage": {
     "name": "Notifications",
     "create": "Create notification"
+  },
+  "mobileStoryPage": {
+    "name": "Story announcements",
+    "createTitle": "New story",
+    "updateTitle": "Edit story",
+    "status": { "draft": "Draft", "published": "Published" },
+    "table": { "status": "Status", "views": "Views" },
+    "form": {
+      "title": "Title",
+      "titleRequired": "Title (uz) is required",
+      "subtitle": "Subtitle",
+      "status": "Status",
+      "sort": "Order",
+      "actionType": "Action type",
+      "actionTypePlaceholder": "e.g. attendance",
+      "publishedAt": "Publish date",
+      "slides": "Slides (image/video)",
+      "addSlide": "Add slide",
+      "editFields": "Edit details",
+      "noSlides": "No slides yet — add using the button above",
+      "detailsButton": "Details"
+    },
+    "deleteConfirm": "Delete this story?",
+    "slideDeleteConfirm": "Delete this slide?",
+    "saved": "Saved"
   },
   "newsPage": {
     "name": "News",

@@ -787,6 +787,13 @@ export const navigations = [
         permission: appPermissions.admin
       },
       {
+        label: 'mobileStoryPage.name',
+        path: Utils.routePathMaker(AppPaths.MobileStories),
+        icon: News24Regular,
+        color: 'bg-dark',
+        permission: appPermissions.admin
+      },
+      {
         label: 'newsCategoryPage.name', // Yangilik kategoriyalari
         path: Utils.routeChatPathMaker(AppPaths.NewsCategory),
         icon: Tag16Filled,

@@ -27,14 +27,14 @@
             {{ item.fine }}
           </n-tooltip>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-            <div class="bg-surface-ground-soft rounded-3xl px-4 py-3">
+            <div class="bg-surface-section rounded-3xl px-4 py-3">
               <div class="flex items-center gap-1.5 text-textColor3 text-sm mb-1">
                 <n-icon size="14"><CalendarIcon /></n-icon>
                 {{ $t('content.date') }}
               </div>
               <div class="font-semibold text-textColor0">{{ Utils.timeOnlyDate(item.date) }}</div>
             </div>
-            <div class="bg-surface-ground-soft rounded-3xl px-4 py-3">
+            <div class="bg-surface-section rounded-3xl px-4 py-3">
               <div class="flex items-center gap-1.5 text-textColor3 text-sm mb-1">
                 <n-icon size="14"><DepartmentIcon /></n-icon>
                 {{ $t('content.organization') }}
@@ -48,14 +48,14 @@
                 {{ item.organization?.name }}
               </n-tooltip>
             </div>
-            <div class="bg-surface-ground-soft rounded-3xl px-4 py-3">
+            <div class="bg-surface-section rounded-3xl px-4 py-3">
               <div class="flex items-center gap-1.5 text-textColor3 text-sm mb-1">
                 <n-icon size="14"><NumberSymbol20Regular /></n-icon>
                 {{ $t('content.number') }}
               </div>
               <div class="font-semibold text-textColor0">{{ item.number }}</div>
             </div>
-            <div class="bg-surface-ground-soft rounded-3xl px-4 py-3">
+            <div class="bg-surface-section rounded-3xl px-4 py-3">
               <div class="flex items-center gap-1.5 text-textColor3 text-sm mb-1">
                 <n-icon size="14"><QuestionCircle20Regular /></n-icon>
                 {{ $t('incentive.form.reason') }}

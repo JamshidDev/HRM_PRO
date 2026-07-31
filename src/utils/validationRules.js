@@ -420,13 +420,9 @@ export default {
       required: true,
       message: t(`rules.requiredField`),
       trigger: triggerEvents
-    },
-    permissions: {
-      type: 'array',
-      required: true,
-      message: t(`rules.requiredField`),
-      trigger: triggerEvents
     }
+    // permissions validatsiyasi OLIB TASHLANDI — rolni permissionsiz saqlash
+    // mumkin (tahrirlashda barcha permissionlarni olib tashlab saqlash uchun).
   },
   userForm: {
     role_id: {

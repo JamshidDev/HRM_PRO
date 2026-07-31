@@ -91,7 +91,7 @@ const onDownload = (v) => {
 
 <template>
   <n-spin :show="store.foreignPassportLoading">
-    <div class="grid grid-cols-12 mb-16 mt-16 gap-x-4 border border-dashed p-4 rounded-2xl">
+    <div class="grid grid-cols-12 mb-16 mt-16 gap-x-4 border border-dashed border-surface-line p-4 rounded-2xl">
       <div class="col-span-12 mb-4">
         <p class="text-textColor0 font-medium">
           {{ $t(`createWorkerPage.form.foreignPassportTitle`) }}

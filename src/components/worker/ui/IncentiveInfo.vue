@@ -75,28 +75,28 @@
           </div>
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-            <div class="bg-surface-ground-soft rounded-3xl px-4 py-3">
+            <div class="bg-surface-section rounded-3xl px-4 py-3">
               <div class="flex items-center gap-1.5 text-textColor3 text-sm mb-1">
                 <n-icon size="14"><QuestionCircle20Regular /></n-icon>
                 {{ $t('incentive.form.reason') }}
               </div>
               <div class="font-semibold text-textColor0">{{ item.reason }}</div>
             </div>
-            <div class="bg-surface-ground-soft rounded-3xl px-4 py-3">
+            <div class="bg-surface-section rounded-3xl px-4 py-3">
               <div class="flex items-center gap-1.5 text-textColor3 text-sm mb-1">
                 <n-icon size="14"><DepartmentIcon /></n-icon>
                 {{ $t('content.organization') }}
               </div>
               <div class="font-semibold text-textColor0">{{ item.organization?.name }}</div>
             </div>
-            <div class="bg-surface-ground-soft rounded-3xl px-4 py-3">
+            <div class="bg-surface-section rounded-3xl px-4 py-3">
               <div class="flex items-center gap-1.5 text-textColor3 text-sm mb-1">
                 <n-icon size="14"><People20Regular /></n-icon>
                 {{ $t('incentive.form.who') }}
               </div>
               <div class="font-semibold text-textColor0">{{ item.by_whom }}</div>
             </div>
-            <div class="bg-surface-ground-soft rounded-3xl px-4 py-3">
+            <div class="bg-surface-section rounded-3xl px-4 py-3">
               <div class="flex items-center gap-1.5 text-textColor3 text-sm mb-1">
                 <n-icon size="14"><CalendarIcon /></n-icon>
                 {{ $t('content.date') }}

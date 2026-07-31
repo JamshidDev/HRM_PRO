@@ -30,8 +30,8 @@ import quoteService from '@/service/v1/admin/quoteService.js'
 import telegramService from '@/service/v1/admin/telegramService.js'
 import instructionService from '@/service/v1/admin/instructionService.js'
 import mobileUserService from '@/service/v1/admin/mobileUserService.js'
+import mobileStoryService from '@/service/v1/admin/mobileStoryService.js'
 import vacancyApproveService from '@/service/v1/admin/vacancyApproveService.js'
-import integrationLogService from '@/service/v1/admin/integrationLogService.js'
 import integrationClientsService from '@/service/v1/admin/integrationClientsService.js'
 import lateWorkersReportService from '@/service/v1/admin/lateWorkersReportService.js'
 import lateWorkersHalfYearReportService from '@/service/v1/admin/lateWorkersHalfYearReportService.js'
@@ -39,6 +39,8 @@ import relativesShortageReportService from '@/service/v1/admin/relativesShortage
 import jshshirAuditReportService from '@/service/v1/admin/jshshirAuditReportService.js'
 import nameAuditReportService from '@/service/v1/admin/nameAuditReportService.js'
 import staffingReportService from '@/service/v1/admin/staffingReportService.js'
+import stationCodeReportService from '@/service/v1/admin/stationCodeReportService.js'
+import organizationPositionsReportService from '@/service/v1/admin/organizationPositionsReportService.js'
 
 import confirmationService from '@/service/v1/hrm/confirmationService.js'
 import departmentService from '@/service/v1/hrm/departmentService.js'
@@ -300,11 +302,11 @@ export default {
   newsCategoryService,
   newsService,
   mobileUserService,
+  mobileStoryService,
   vacancyApproveService,
   structureReportService,
   confirmationReportService,
   departmentLocationService,
-  integrationLogService,
   integrationClientsService,
   lateWorkersReportService,
   lateWorkersHalfYearReportService,
@@ -312,4 +314,6 @@ export default {
   jshshirAuditReportService,
   nameAuditReportService,
   staffingReportService,
+  stationCodeReportService,
+  organizationPositionsReportService,
 }
