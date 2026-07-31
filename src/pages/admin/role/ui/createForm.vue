@@ -82,19 +82,33 @@
     )
   }
 
-  // faqat mavjud slug'ga ega guruhi bor modullar
+  // faqat rol guard'iga mos + mavjud slug'ga ega guruhi bor modullar.
+  // Modul guard'i default 'sanctum'; Integration moduli guard='integration'.
   const visibleModules = computed(() =>
-    PERMISSION_GROUPS.filter((m) => m.groups.some((g) => groupSwitches(g).length > 0))
+    PERMISSION_GROUPS.filter(
+      (m) =>
+        (m.guard ?? 'sanctum') === (store.payload.guard_name || 'sanctum') &&
+        m.groups.some((g) => groupSwitches(g).length > 0)
+    )
   )
 
   // xaritada YO'Q permissionlar -> "Boshqa" tab
   const mappedNames = computed(() => {
     const s = new Set()
     for (const mod of PERMISSION_GROUPS)
-      for (const g of mod.groups)
+      for (const g of mod.groups) {
+        s.add(g.prefix) // bare slug (integration-* va boshqa yakka permissionlar)
         for (const a of ACTION_ORDER) s.add(`${g.prefix}-${a}`)
+      }
     return s
   })
+
+  // Rol turi (guard) o'zgarganда: mos permission ro'yxatini qayta yuklab,
+  // tanlangan permissionlarni tozalaymiz (boshqa guard permissioni yaramaydi).
+  const onGuardChange = () => {
+    store.payload.permissions = []
+    store._getAllPermission()
+  }
   const otherPerms = computed(() => {
     const q = query.value.trim().toLowerCase()
     return (store.originAllPermissionList || []).filter(
@@ -124,6 +138,18 @@
     <div style="min-height: calc(100vh - 120px)">
       <n-form-item :label="$t(`userRole.form.name`)" path="name">
         <n-input type="text" v-model:value="store.payload.name" />
+      </n-form-item>
+
+      <!-- Rol turi (guard) — faqat yaratishda tanlanadi, keyin o'zgarmaydi -->
+      <n-form-item :label="$t('userRole.form.type')">
+        <n-radio-group
+          v-model:value="store.payload.guard_name"
+          :disabled="!store.visibleType"
+          @update:value="onGuardChange"
+        >
+          <n-radio value="sanctum">{{ $t('userRole.form.typeSanctum') }}</n-radio>
+          <n-radio value="integration">{{ $t('userRole.form.typeIntegration') }}</n-radio>
+        </n-radio-group>
       </n-form-item>
 
       <n-form-item :label="$t(`userRole.form.permissions`)" path="permissions">

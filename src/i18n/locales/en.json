@@ -507,7 +507,11 @@
     "updateTitle": "Edit role",
     "form": {
       "name": "Role name",
-      "permissions": "Permissions"
+      "permissions": "Permissions",
+      "moduleAccess": "Module access",
+      "type": "Role type",
+      "typeSanctum": "User",
+      "typeIntegration": "Integration"
     }
   },
   "userPage": {
@@ -3561,5 +3565,40 @@
       "special": "At least 1 special character ({'@'}!#$%^&*)",
       "match": "Passwords match"
     }
+  },
+  "integrationPerm": {
+    "enums": "References",
+    "dashboard": "Dashboard",
+    "structure": "Structure",
+    "leaders": "Leaders",
+    "departments": "Departments",
+    "departmentsList": "Departments list",
+    "positions": "Positions",
+    "positionsList": "Positions list",
+    "kpi": "KPI",
+    "classifications": "Classifications",
+    "contracts": "Contracts",
+    "workers": "Workers",
+    "workersDashboard": "Workers dashboard",
+    "workersPins": "Workers PINs",
+    "workerPin": "Worker PIN",
+    "workerShow": "Worker details",
+    "workerCheck": "Worker check",
+    "workerEventsMonth": "Worker turnstile (month)",
+    "workerEventsDay": "Worker turnstile (day)",
+    "turnstileEvents": "Turnstile events",
+    "stationWorkers": "Station workers",
+    "stationWorker": "Station worker",
+    "stationResume": "Station resume",
+    "stationStats": "Station stats",
+    "meds": "Medical checks",
+    "workerMeds": "Worker medical checks",
+    "workerSalary": "Worker salary",
+    "workerSalaryMonths": "Worker salary months",
+    "mobileFaceSendEvent": "Mobile face: send event",
+    "mobileFaceCheckWorker": "Mobile face: check worker",
+    "mobileFaceSchedules": "Mobile face: schedules",
+    "otpVerify": "OTP verify",
+    "holidayGreetings": "Holiday greetings"
   }
 }
