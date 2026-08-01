@@ -8,13 +8,21 @@
   const appStore = useAppStore()
   const notificationSound = useNotificationSound()
 
-  const originalSuccess = message.success.bind(message)
-  message.success = (...args) => {
-    if (appStore.soundEnabled) {
-      notificationSound.play()
-    }
-    return originalSuccess(...args)
+  const soundByMessageType = {
+    success: 'success',
+    error: 'error',
+    warning: 'notice',
+    info: 'notice'
   }
+  Object.entries(soundByMessageType).forEach(([type, sound]) => {
+    const original = message[type].bind(message)
+    message[type] = (...args) => {
+      if (appStore.soundEnabled) {
+        notificationSound.play(sound)
+      }
+      return original(...args)
+    }
+  })
 
   window.$Toast = message
 </script>

@@ -1,13 +1,27 @@
-let notificationAudio = null
+const soundFiles = {
+  success: '/sounds/notification.mp3',
+  error: '/sounds/error.wav',
+  notice: '/sounds/notice.wav'
+}
+
+const audioCache = {}
 let playAudioUnlocked = false
 
+const getAudio = (type) => {
+  const src = soundFiles[type] || soundFiles.success
+  if (!audioCache[src]) {
+    audioCache[src] = new Audio(src)
+  }
+  return audioCache[src]
+}
+
 const unlock = () => {
-  notificationAudio = new Audio('/sounds/notification.mp3')
-  notificationAudio
+  const audio = getAudio('success')
+  audio
     .play()
     .then(() => {
-      notificationAudio.pause()
-      notificationAudio.currentTime = 0
+      audio.pause()
+      audio.currentTime = 0
       playAudioUnlocked = true
     })
     .catch(() => {})
@@ -17,10 +31,11 @@ const unlock = () => {
 window.addEventListener('click', unlock)
 
 export const useNotificationSound = () => {
-  const play = () => {
-    if (!playAudioUnlocked || !notificationAudio) return
-    notificationAudio.currentTime = 0
-    notificationAudio.play().catch(() => {})
+  const play = (type = 'success') => {
+    if (!playAudioUnlocked) return
+    const audio = getAudio(type)
+    audio.currentTime = 0
+    audio.play().catch(() => {})
   }
 
   return { play }

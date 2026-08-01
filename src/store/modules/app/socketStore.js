@@ -84,7 +84,8 @@ export const useSocketStore = defineStore('useSocketStore', {
       this.socket.on('notification', (data) => {
         if (allowedAlertTypes.includes(data?.alert)) {
           if (appStore.soundEnabled) {
-            notificationSound.play()
+            const soundByAlert = { error: 'error', warning: 'notice', info: 'notice' }
+            notificationSound.play(soundByAlert[data?.alert] || 'success')
           }
 
           // eslint-disable-next-line no-constant-binary-expression
