@@ -1,0 +1,13 @@
+// Ekran filtri — bir-birini almashtiradigan (mutually exclusive) rejimlar,
+// `<html>`ga mos klass qo'shish orqali ishlaydi (appStore.js: applyScreenFilter).
+.bwMode {
+  filter: grayscale(100%);
+}
+
+.lowMode {
+  filter: saturate(30%);
+}
+
+.highMode {
+  filter: saturate(230%);
+}

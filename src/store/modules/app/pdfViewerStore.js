@@ -48,6 +48,9 @@ export const usePdfViewerStore = defineStore('pdfViewerStore', {
     msg: null,
     messageList: [],
     chatLoading: false,
+    messagesPage: 1,
+    messagesTotal: 0,
+    messagesLoadingMore: false,
     userList: [],
     userLoading: false,
     payload: {
@@ -181,7 +184,8 @@ export const usePdfViewerStore = defineStore('pdfViewerStore', {
       $ApiService.documentService
         ._history({ params })
         .then((res) => {
-          this.historyList = res.data.data
+          const data = res.data.data
+          this.historyList = Array.isArray(data) ? data : (data?.data ?? [])
         })
         .finally(() => {
           this.show = true
@@ -210,6 +214,10 @@ export const usePdfViewerStore = defineStore('pdfViewerStore', {
       this.historyList = []
       this.show = false
       this.totalPdfPage = 0
+      this.messageList = []
+      this.messagesPage = 1
+      this.messagesTotal = 0
+      this.fileList = []
     },
     _addMessage(msg) {
       if (msg.trim().length > 0) {
@@ -217,20 +225,31 @@ export const usePdfViewerStore = defineStore('pdfViewerStore', {
         this.msg = ''
       }
     },
-    _messages() {
-      this.chatLoading = true
+    _messages(page = 1) {
+      if (this.chatLoading || this.messagesLoadingMore) return
+      if (page === 1) {
+        this.chatLoading = true
+      } else {
+        this.messagesLoadingMore = true
+      }
       $ApiService.documentChatService
         ._messages({
           params: {
             document_id: this.document_id,
-            model: this.model
+            model: this.model,
+            recipient_id: this.payload.recipient_id,
+            page
           }
         })
         .then((res) => {
-          this.messageList = res.data.data.data
+          const data = res.data.data
+          this.messageList = page === 1 ? data.data : [...this.messageList, ...data.data]
+          this.messagesPage = data.current_page
+          this.messagesTotal = data.data.length === 0 ? this.messageList.length : data.total
         })
         .finally(() => {
           this.chatLoading = false
+          this.messagesLoadingMore = false
         })
     },
     _chatUsers() {
@@ -245,7 +264,8 @@ export const usePdfViewerStore = defineStore('pdfViewerStore', {
         .then((res) => {
           this.userList = res.data.data.map((v) => ({
             name: v.worker.last_name + ' ' + v.worker.first_name,
-            id: v.id
+            id: v.id,
+            workerId: v.worker.id
           }))
         })
         .finally(() => {
