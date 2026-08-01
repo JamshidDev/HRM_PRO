@@ -7,6 +7,10 @@
   const goHome = () => {
     router.push('/')
   }
+
+  const goBack = () => {
+    router.go(-1)
+  }
 </script>
 
 <template>
@@ -14,7 +18,10 @@
     <img :src="notFoundImg" class="not-found-img" alt="404" />
     <h1 class="title">Sahifa topilmadi</h1>
     <p class="description">Manzil noto'g'ri yoki o'chirilgan</p>
-    <n-button type="primary" size="large" @click="goHome">Bosh sahifaga qaytish</n-button>
+    <div class="actions">
+      <n-button size="large" @click="goBack">Orqaga qaytish</n-button>
+      <n-button type="primary" size="large" @click="goHome">Bosh sahifaga qaytish</n-button>
+    </div>
   </div>
 </template>
 
@@ -49,6 +56,13 @@
     margin: 0 0 2rem;
   }
 
+  .actions {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
   @media (max-width: 480px) {
     .not-found-img {
       max-width: 200px;
@@ -56,6 +70,12 @@
 
     .title {
       font-size: 1.5rem;
+    }
+
+    .actions {
+      flex-direction: column;
+      width: 100%;
+      max-width: 260px;
     }
   }
 </style>
