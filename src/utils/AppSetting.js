@@ -23,6 +23,8 @@ export const useAppSetting = {
   soundEnabledKey: 'app-sound-enabled',
   sidebarThemeKey: 'app-sidebar-theme',
   defaultSidebarTheme: 'default',
+  screenFilterKey: 'app-screen-filter',
+  defaultScreenFilter: 'none',
   // Login sahifasi hero panelidagi mavsumiy dekoratsiya.
   // Build vaqtida VITE_SEASON orqali qo'lda belgilanadi (admin tahrirlab, qayta deploy qiladi;
   // sana asosida avtomatik hisoblanmaydi). Ruxsat etilgan qiymatlar: spring | summer | autumn | winter | null.

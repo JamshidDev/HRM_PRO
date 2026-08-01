@@ -1,5 +1,12 @@
 <script setup>
-  import { Speaker224Filled, SpeakerMute24Filled } from '@vicons/fluent'
+  import {
+    Speaker224Filled,
+    SpeakerMute24Filled,
+    Color24Regular,
+    ColorBackground24Regular,
+    BrightnessLow24Regular,
+    BrightnessHigh24Regular
+  } from '@vicons/fluent'
   import { useAppStore } from '@/store/modules/index.js'
   import i18n from '@/i18n/index.js'
   import { UIModal } from '@components'
@@ -14,12 +21,29 @@
     { key: 'green', labelKey: 'content.sidebarThemeGreen', from: '#008838', to: '#00220E' }
   ]
 
+  const screenFilters = [
+    { key: 'grayscale', labelKey: 'content.filterGrayscale', icon: ColorBackground24Regular },
+    { key: 'low-brightness', labelKey: 'content.filterLowBrightness', icon: BrightnessLow24Regular },
+    { key: 'high-brightness', labelKey: 'content.filterHighBrightness', icon: BrightnessHigh24Regular }
+  ]
+
+  const onClickScreenFilter = (key) => {
+    store.setScreenFilter(store.screenFilter === key ? 'none' : key)
+  }
+
   const visible = computed({
     get: () => store.profileSettingsVisible,
     set: (v) => {
       store.profileSettingsVisible = v
     }
   })
+
+  const onToggleSound = (value) => {
+    store.setSoundEnabled(value)
+    if (value) {
+      new Audio('/sounds/notification.mp3').play().catch(() => {})
+    }
+  }
 </script>
 
 <template>
@@ -29,7 +53,7 @@
         <span class="text-sm text-textColor0 font-medium">{{ t('content.soundNotification') }}</span>
         <n-switch
           :value="store.soundEnabled"
-          @update:value="store.setSoundEnabled"
+          @update:value="onToggleSound"
         >
           <template #checked-icon>
             <n-icon :component="Speaker224Filled" />
@@ -62,6 +86,43 @@
           </div>
         </div>
       </div>
+
+      <div class="flex flex-col gap-2">
+        <div class="flex items-center gap-2">
+          <n-icon size="18" class="text-textColor3">
+            <Color24Regular />
+          </n-icon>
+          <span class="text-sm text-textColor0 font-medium">{{ t('content.customColor') }}</span>
+        </div>
+        <span class="text-xs text-textColor3">{{ t('content.customColorDesc') }}</span>
+        <div class="grid grid-cols-3 gap-3">
+          <button
+            v-for="item in screenFilters"
+            :key="item.key"
+            type="button"
+            class="flex flex-col items-center gap-2 py-4 rounded-xl border transition-all cursor-pointer"
+            :class="
+              store.screenFilter === item.key
+                ? 'border-primary bg-primary/10 text-primary'
+                : 'border-surface-line text-textColor2'
+            "
+            @click="onClickScreenFilter(item.key)"
+          >
+            <n-icon size="24">
+              <component :is="item.icon" />
+            </n-icon>
+            <span class="text-xs font-medium text-center">{{ t(item.labelKey) }}</span>
+          </button>
+        </div>
+      </div>
     </div>
+
+    <template #footer>
+      <div class="px-4 pb-4 pt-1">
+        <n-button type="error" secondary block @click="store.resetAccessibilitySettings()">
+          {{ t('content.resetChanges') }}
+        </n-button>
+      </div>
+    </template>
   </UIModal>
 </template>

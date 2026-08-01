@@ -3,6 +3,7 @@ import io from 'socket.io-client'
 const socketUrl = import.meta.env.VITE_SOCKET_URL
 const socketSecret = import.meta.env.VITE_SOCKET_SECRET
 import { useNotify } from '@/composables/useNotify'
+import { useNotificationSound } from '@/composables/useNotificationSound.js'
 import { eventBus, Events } from '@/utils/index.js'
 import { useAppStore } from '@/store/modules/app/appStore.js'
 
@@ -45,24 +46,7 @@ export const useSocketStore = defineStore('useSocketStore', {
   actions: {
     initSocket(token, userId) {
       const appStore = useAppStore()
-      let playAudioUnlocked = false
-
-      let notificationAudio = new Audio('/sounds/notification.mp3')
-
-      const unlockPlayNotification = () => {
-        notificationAudio
-          .play()
-          .then(() => {
-            notificationAudio.pause()
-            notificationAudio.currentTime = 0
-            playAudioUnlocked = true
-          })
-          .catch(() => {})
-
-        window.removeEventListener('click', unlockPlayNotification)
-      }
-
-      window.addEventListener('click', unlockPlayNotification)
+      const notificationSound = useNotificationSound()
 
       this.currentUserId = userId
       this.socket = io(socketUrl, {
@@ -99,9 +83,9 @@ export const useSocketStore = defineStore('useSocketStore', {
 
       this.socket.on('notification', (data) => {
         if (allowedAlertTypes.includes(data?.alert)) {
-          if (playAudioUnlocked && appStore.soundEnabled) {
-            notificationAudio.currentTime = 0
-            notificationAudio?.play()
+          if (appStore.soundEnabled) {
+            const soundByAlert = { error: 'error', warning: 'notice', info: 'notice' }
+            notificationSound.play(soundByAlert[data?.alert] || 'success')
           }
 
           // eslint-disable-next-line no-constant-binary-expression
