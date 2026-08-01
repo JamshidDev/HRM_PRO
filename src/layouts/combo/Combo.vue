@@ -41,7 +41,7 @@
 
 <template>
   <div :class="layoutClass" class="organization-layout">
-    <OldVersionButton />
+    <OldVersionButton :is-sidebar-open="open" />
     <SidebarContent @on-change="controlSidebar" @on-open="openSidebar" @on-close="closeSidebar" />
     <PageContent @on-open="openSidebar" />
     <HelperLayout />
