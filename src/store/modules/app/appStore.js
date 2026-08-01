@@ -63,6 +63,7 @@ export const useAppStore = defineStore('appStore', {
     themeMode: 'system',
     sidebarTheme: useAppSetting.defaultSidebarTheme,
     soundEnabled: true,
+    screenFilter: useAppSetting.defaultScreenFilter,
     profileSettingsVisible: false,
     skipReset: true,
     wrongPinsLoading: false
@@ -130,6 +131,24 @@ export const useAppStore = defineStore('appStore', {
       this.soundEnabled = value
       localStorage.setItem(useAppSetting.soundEnabledKey, value ? '1' : '0')
     },
+
+    applyScreenFilter() {
+      const filterClasses = { grayscale: 'bwMode', 'low-brightness': 'lowMode', 'high-brightness': 'highMode' }
+      const html = document.documentElement
+      html.classList.remove('bwMode', 'lowMode', 'highMode')
+      const cls = filterClasses[this.screenFilter]
+      if (cls) html.classList.add(cls)
+    },
+    setScreenFilter(value) {
+      this.screenFilter = value
+      localStorage.setItem(useAppSetting.screenFilterKey, value)
+      this.applyScreenFilter()
+    },
+
+    resetAccessibilitySettings() {
+      this.setScreenFilter(useAppSetting.defaultScreenFilter)
+    },
+
     openProfileSettings() {
       this.profileSettingsVisible = true
     },
@@ -147,6 +166,10 @@ export const useAppStore = defineStore('appStore', {
       this.applySidebarTheme()
 
       this.soundEnabled = localStorage.getItem(useAppSetting.soundEnabledKey) !== '0'
+
+      this.screenFilter =
+        localStorage.getItem(useAppSetting.screenFilterKey) || useAppSetting.defaultScreenFilter
+      this.applyScreenFilter()
 
       prefersDarkMedia.addEventListener('change', () => {
         if (this.themeMode === 'system') {
