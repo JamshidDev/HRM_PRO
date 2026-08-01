@@ -20,6 +20,9 @@ export const useAppSetting = {
   adminSecretKey: 'secretKey',
   temporaryToken: 'temporarySecretKey',
   mustChangeKey: 'must-change-password',
+  soundEnabledKey: 'app-sound-enabled',
+  sidebarThemeKey: 'app-sidebar-theme',
+  defaultSidebarTheme: 'default',
   // Login sahifasi hero panelidagi mavsumiy dekoratsiya.
   // Build vaqtida VITE_SEASON orqali qo'lda belgilanadi (admin tahrirlab, qayta deploy qiladi;
   // sana asosida avtomatik hisoblanmaydi). Ruxsat etilgan qiymatlar: spring | summer | autumn | winter | null.

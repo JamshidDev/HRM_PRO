@@ -61,6 +61,9 @@ export const useAppStore = defineStore('appStore', {
     ],
     theme: customTheme(),
     themeMode: 'system',
+    sidebarTheme: useAppSetting.defaultSidebarTheme,
+    soundEnabled: true,
+    profileSettingsVisible: false,
     skipReset: true,
     wrongPinsLoading: false
   }),
@@ -115,6 +118,22 @@ export const useAppStore = defineStore('appStore', {
       this.applyTheme()
     },
 
+    applySidebarTheme() {
+      document.documentElement.setAttribute('data-sidebar-theme', this.sidebarTheme)
+    },
+    setSidebarTheme(theme) {
+      this.sidebarTheme = theme
+      localStorage.setItem(useAppSetting.sidebarThemeKey, theme)
+      this.applySidebarTheme()
+    },
+    setSoundEnabled(value) {
+      this.soundEnabled = value
+      localStorage.setItem(useAppSetting.soundEnabledKey, value ? '1' : '0')
+    },
+    openProfileSettings() {
+      this.profileSettingsVisible = true
+    },
+
     initApp() {
       const savedMode = localStorage.getItem(useAppSetting.themeKey) || 'system'
       i18n.global.locale =
@@ -122,6 +141,12 @@ export const useAppStore = defineStore('appStore', {
 
       this.themeMode = savedMode
       this.applyTheme()
+
+      this.sidebarTheme =
+        localStorage.getItem(useAppSetting.sidebarThemeKey) || useAppSetting.defaultSidebarTheme
+      this.applySidebarTheme()
+
+      this.soundEnabled = localStorage.getItem(useAppSetting.soundEnabledKey) !== '0'
 
       prefersDarkMedia.addEventListener('change', () => {
         if (this.themeMode === 'system') {
