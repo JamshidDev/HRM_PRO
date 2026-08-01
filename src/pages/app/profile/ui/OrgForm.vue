@@ -20,24 +20,25 @@
 </script>
 
 <template>
-  <n-form ref="formRef" :rules="validationRules.common" :model="store.orgPayload">
-    <div class="grid xl:grid-cols-3 lg:grid-cols-3 grid-cols-1 gap-x-4">
+  <n-form ref="formRef" class="profile-input-gray" :rules="validationRules.common" :model="store.orgPayload">
+    <div class="grid lg:grid-cols-2 grid-cols-1 gap-x-4">
       <n-form-item
         :label="$t(`profilePage.org.command_name`)"
         path="command_address"
         :rule-path="validationRules.rulesNames.requiredStringField"
       >
-        <n-input type="text" v-model:value="store.orgPayload.command_address" />
+        <n-input size="large" type="text" v-model:value="store.orgPayload.command_address" />
       </n-form-item>
       <n-form-item
         :label="$t(`profilePage.org.address`)"
         path="address"
         :rule-path="validationRules.rulesNames.requiredStringField"
       >
-        <n-input type="text" v-model:value="store.orgPayload.address" />
+        <n-input size="large" type="text" v-model:value="store.orgPayload.address" />
       </n-form-item>
       <n-form-item :label="$t(`profilePage.org.region_id`)">
         <n-select
+          size="large"
           v-model:value="store.region_id"
           @update:value="store.changeRegion"
           filterable
@@ -54,6 +55,7 @@
         path="city_id"
       >
         <n-select
+          size="large"
           v-model:value="store.orgPayload.city_id"
           filterable
           clearable
@@ -65,9 +67,31 @@
       </n-form-item>
     </div>
     <div class="flex justify-end">
-      <n-button @click="onSubmit" :loading="store.saveLoading || store.orgLoading" type="primary">
+      <n-button
+        size="large"
+        @click="onSubmit"
+        :loading="store.saveLoading || store.orgLoading"
+        type="primary"
+      >
         {{ $t('content.save') }}
       </n-button>
     </div>
   </n-form>
 </template>
+
+<style scoped>
+  .profile-input-gray :deep(.n-input),
+  .profile-input-gray :deep(.n-base-selection) {
+    --n-color: var(--surface-ground) !important;
+    --n-color-focus: var(--surface-ground) !important;
+  }
+
+  .profile-input-gray :deep(.n-form-item-label) {
+    --n-label-text-color: var(--textColor0) !important;
+    --n-label-font-size-top: 14px !important;
+  }
+
+  .profile-input-gray :deep(.n-form-item-label__text) {
+    font-weight: 500;
+  }
+</style>

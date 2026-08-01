@@ -601,6 +601,9 @@
       "title": "Account information",
       "warningText": "For account security, regularly update your account details. This helps protect against unauthorized access."
     },
+    "sidebar": {
+      "title": "Profile sections"
+    },
     "tabs": {
       "profileInfo": "Account info",
       "notification": "Notifications",

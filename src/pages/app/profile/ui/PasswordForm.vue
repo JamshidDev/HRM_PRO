@@ -54,40 +54,18 @@
 </script>
 
 <template>
-  <div class="flex flex-col gap-3">
-    <!-- New password -->
-    <div>
-      <label class="text-xs text-textColor3 mb-1 block">{{ $t('passwordForm.newPassword') }}</label>
-      <n-input
-        v-model:value="password"
-        type="password"
-        show-password-on="click"
-        :placeholder="$t('passwordForm.newPasswordPlaceholder')"
-      />
-    </div>
-
-    <!-- Confirm password -->
-    <div>
-      <label class="text-xs text-textColor3 mb-1 block">{{ $t('passwordForm.confirmPassword') }}</label>
-      <n-input
-        v-model:value="confirmPass"
-        type="password"
-        show-password-on="click"
-        :placeholder="$t('passwordForm.confirmPasswordPlaceholder')"
-      />
-    </div>
-
+  <div class="profile-input-gray grid grid-cols-1 md:grid-cols-2 gap-6">
     <!-- Validation checklist -->
-    <div class="border border-surface-line rounded-xl px-4 py-3 bg-surface-ground">
-      <p class="text-xs font-semibold text-textColor2 mb-2">{{ $t('passwordForm.requirements') }}</p>
+    <div>
+      <p class="text-sm font-semibold text-textColor0 mb-3">{{ $t('passwordForm.requirements') }}</p>
       <div class="flex flex-col gap-2">
         <div
           v-for="rule in rules"
           :key="rule.key"
-          class="flex items-center gap-2 text-xs transition-colors duration-200"
+          class="flex items-center gap-2 text-sm transition-colors duration-200"
           :class="rule.valid ? 'text-success' : 'text-textColor3'"
         >
-          <n-icon size="14" class="shrink-0">
+          <n-icon size="16" class="shrink-0">
             <Checkmark16Regular v-if="rule.valid" />
             <Dismiss16Regular v-else />
           </n-icon>
@@ -96,16 +74,49 @@
       </div>
     </div>
 
-    <!-- Save button -->
-    <div class="flex justify-end">
-      <n-button
-        type="primary"
-        :loading="store.changePasswordLoading"
-        :disabled="!allValid"
-        @click="onSave"
-      >
-        {{ $t('content.save') }}
-      </n-button>
+    <!-- Fields -->
+    <div class="flex flex-col gap-3">
+      <div>
+        <label class="text-sm text-textColor0 mb-1 block">{{ $t('passwordForm.newPassword') }}</label>
+        <n-input
+          size="large"
+          v-model:value="password"
+          type="password"
+          show-password-on="click"
+          :placeholder="$t('passwordForm.newPasswordPlaceholder')"
+        />
+      </div>
+
+      <div>
+        <label class="text-sm text-textColor0 mb-1 block">{{ $t('passwordForm.confirmPassword') }}</label>
+        <n-input
+          size="large"
+          v-model:value="confirmPass"
+          type="password"
+          show-password-on="click"
+          :placeholder="$t('passwordForm.confirmPasswordPlaceholder')"
+        />
+      </div>
+
+      <!-- Save button -->
+      <div class="flex justify-end">
+        <n-button
+          size="large"
+          type="primary"
+          :loading="store.changePasswordLoading"
+          :disabled="!allValid"
+          @click="onSave"
+        >
+          {{ $t('content.save') }}
+        </n-button>
+      </div>
     </div>
   </div>
 </template>
+
+<style scoped>
+  .profile-input-gray :deep(.n-input) {
+    --n-color: var(--surface-ground) !important;
+    --n-color-focus: var(--surface-ground) !important;
+  }
+</style>

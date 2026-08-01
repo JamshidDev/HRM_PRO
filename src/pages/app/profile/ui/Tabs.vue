@@ -1,82 +1,110 @@
 <script setup>
   import { useAccountStore } from '@/store/modules/app/accountStore.js'
+  import {
+    Password20Regular,
+    DocumentEdit20Regular,
+    Person20Regular,
+    Send20Regular,
+    Alert20Regular
+  } from '@vicons/fluent'
+  import SectionHeader from '@/components/worker/ui/shared/SectionHeader.vue'
+  import i18n from '@/i18n/index.js'
 
-  import Form from './Form.vue'
   import OrgForm from './OrgForm.vue'
   import SocialLink from './SocialLink.vue'
   import PasswordForm from './PasswordForm.vue'
+  import Notifications from './Notifications.vue'
 
+  const { t } = i18n.global
   const store = useAccountStore()
+
+  const tabList = computed(() => [
+    { id: store.tabs[0], name: t('profilePage.tabs.profileInfo'), icon: Person20Regular },
+    { id: store.tabs[4], name: t('profilePage.tabs.social.title'), icon: Send20Regular },
+    { id: store.tabs[1], name: t('profilePage.tabs.notification'), icon: Alert20Regular }
+  ])
 </script>
 
 <template>
-  <n-tabs animated v-model:value="store.activeTab" type="bar">
-    <n-tab-pane :name="store.tabs[0]" :tab="$t('profilePage.tabs.profileInfo')">
+  <div class="w-full flex items-start gap-4">
+    <div class="w-[280px] shrink-0 bg-surface-section rounded-3xl p-1">
+      <div class="bg-primary/10 text-primary text-base font-semibold rounded-2xl px-4 py-3 mb-2">
+        {{ $t('profilePage.sidebar.title') }}
+      </div>
       <div
-        class="w-full border border-surface-line shadow bg-surface-section rounded-xl p-4 form--min-height"
+        v-for="item in tabList"
+        :key="item.id"
+        class="flex items-center gap-3 px-2 py-2 mb-1 rounded-xl cursor-pointer transition-colors"
+        :class="
+          store.activeTab === item.id
+            ? 'bg-primary text-white font-semibold'
+            : 'text-textColor2 hover:bg-surface-ground'
+        "
+        @click="store.activeTab = item.id"
       >
-        <!-- Password section -->
-        <div class="border border-surface-line rounded-xl overflow-hidden mb-4">
-          <div
-            class="px-5 pt-4 pb-3 border-b border-surface-line"
-            :class="store.mustChangePassword ? 'bg-warning/5' : ''"
-          >
-            <div v-if="store.mustChangePassword" class="flex items-center gap-2 mb-1">
-              <n-tag type="warning" size="small" round>{{ $t('passwordForm.required') }}</n-tag>
-            </div>
-            <h2 class="text-base font-semibold text-textColor0">
-              {{ store.mustChangePassword ? $t('passwordForm.mustChangeTitle') : $t('passwordForm.changeTitle') }}
-            </h2>
-            <p class="text-xs text-textColor3 mt-0.5">
-              {{ store.mustChangePassword ? $t('passwordForm.mustChangeDescProfile') : $t('passwordForm.changeDesc') }}
-            </p>
-          </div>
-          <div class="p-5 flex justify-center">
-            <div class="w-full max-w-[480px] border border-surface-line rounded-xl p-5">
-              <PasswordForm />
-            </div>
-          </div>
-        </div>
-        <div
-          v-if="store.checkPermission(store.pn.hrCommandsBlank)"
-          class="border border-surface-line border-dashed p-4 mb-2 rounded-lg bg-surface-ground"
+        <span
+          class="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-colors"
+          :class="store.activeTab === item.id ? 'bg-white/20' : ''"
         >
-          <h2 class="mb-4 text-xl text-primary text-center">
-            {{ $t('profilePage.org.title') }}
-          </h2>
-          <OrgForm />
+          <n-icon size="16" :color="store.activeTab === item.id ? '#ffffff' : undefined">
+            <component :is="item.icon" />
+          </n-icon>
+        </span>
+        <span class="text-sm truncate">{{ item.name }}</span>
+      </div>
+    </div>
+
+    <div class="flex-1 min-w-0">
+      <Transition name="tab-fade" mode="out-in">
+        <div :key="store.activeTab">
+          <div v-if="store.activeTab === store.tabs[0]">
+            <SectionHeader
+              v-if="store.checkPermission(store.pn.hrCommandsBlank)"
+              :title="$t('profilePage.org.title')"
+              :icon="DocumentEdit20Regular"
+              plain
+              large
+              class="mb-4"
+            >
+              <OrgForm />
+            </SectionHeader>
+
+            <SectionHeader
+              :title="
+                store.mustChangePassword
+                  ? $t('passwordForm.mustChangeTitle')
+                  : $t('passwordForm.changeTitle')
+              "
+              :icon="Password20Regular"
+              plain
+              large
+            >
+              <template v-if="store.mustChangePassword" #title-suffix>
+                <n-tag type="warning" size="small" round>{{ $t('passwordForm.required') }}</n-tag>
+              </template>
+              <PasswordForm />
+            </SectionHeader>
+          </div>
+
+          <SocialLink v-else-if="store.activeTab === store.tabs[4]" />
+
+          <Notifications v-else-if="store.activeTab === store.tabs[1]" />
         </div>
-      </div>
-    </n-tab-pane>
-    <n-tab-pane :name="store.tabs[4]" :tab="$t('profilePage.tabs.social.title')">
-      <div
-        class="w-full border border-surface-line shadow bg-surface-section rounded-xl p-4 form--min-height"
-      >
-        <SocialLink />
-      </div>
-    </n-tab-pane>
-    <n-tab-pane :name="store.tabs[1]" :tab="$t('profilePage.tabs.notification')">
-      <template #tab>
-        <n-badge type="info" :offset="[12, 0]">
-          {{ $t('profilePage.tabs.notification') }}
-        </n-badge>
-      </template>
-      <div
-        class="w-full border border-surface-line shadow bg-surface-section rounded-xl p-4 form--min-height"
-      >
-        {{ $t('profilePage.tabs.notification') }}
-      </div>
-    </n-tab-pane>
-    <n-tab-pane :name="store.tabs[2]" :tab="$t('profilePage.tabs.secure')">
-      <div class="w-full border border-surface-line shadow bg-surface-section rounded-xl p-4 form--min-height">
-        {{ $t('profilePage.tabs.secure') }}
-      </div>
-    </n-tab-pane>
-  </n-tabs>
+      </Transition>
+    </div>
+  </div>
 </template>
 
 <style scoped>
-  .form--min-height {
-    min-height: calc(100vh - 340px);
+  .tab-fade-enter-active,
+  .tab-fade-leave-active {
+    transition:
+      opacity 0.18s ease,
+      transform 0.18s ease;
+  }
+  .tab-fade-enter-from,
+  .tab-fade-leave-to {
+    opacity: 0;
+    transform: translateY(6px);
   }
 </style>
