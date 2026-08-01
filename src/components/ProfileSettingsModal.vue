@@ -20,6 +20,13 @@
       store.profileSettingsVisible = v
     }
   })
+
+  const onToggleSound = (value) => {
+    store.setSoundEnabled(value)
+    if (value) {
+      new Audio('/sounds/notification.mp3').play().catch(() => {})
+    }
+  }
 </script>
 
 <template>
@@ -29,7 +36,7 @@
         <span class="text-sm text-textColor0 font-medium">{{ t('content.soundNotification') }}</span>
         <n-switch
           :value="store.soundEnabled"
-          @update:value="store.setSoundEnabled"
+          @update:value="onToggleSound"
         >
           <template #checked-icon>
             <n-icon :component="Speaker224Filled" />

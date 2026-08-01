@@ -16,6 +16,19 @@
     }
 
     .panel-content {
+      // `.sticky` (panel sarlavhasi) `position: sticky` — skroll paytida ostidagi menyu
+      // elementlarini yashirishi kerak, shuning uchun `transparent` emas, tema paneli
+      // gradientining boshlang'ich (tepadagi) rangi bilan **solid** (shaffof emas) fon beriladi.
+      .sidebar-themed-sticky {
+        background: $panel-from !important;
+        span {
+          color: #fff !important;
+        }
+        .border-b {
+          border-color: rgba(255, 255, 255, 0.2) !important;
+        }
+      }
+
       .panel-item-single {
         .item-icon i {
           color: #fff !important;
@@ -91,20 +104,4 @@
 
 [data-sidebar-theme='green'] {
   @include sidebar-color-theme(#008838, #00220e, #005222, #006c2d, #00a652);
-}
-
-// `position: sticky` elementlar uchun Chromium'da ma'lum repaint muammosi bor: faqat
-// ota-element atributi (`[data-sidebar-theme]`) o'zgarsa, sticky element ba'zan darhol
-// qayta chizilmaydi (runtime'da tema almashtirilganda "eski" oq fon bir muddat qolib ketishi
-// mumkin). Shu sabab bu yerda element'ning o'zidagi klassga bog'laymiz (SidebarContent.vue
-// :class="{ 'sidebar-themed-sticky': ... }") — Vue shu klassni to'g'ridan-to'g'ri elementga
-// qo'yib/olib tashlagani uchun repaint ishonchli ishlaydi.
-.sidebar-themed-sticky {
-  background: transparent !important;
-  span {
-    color: #fff !important;
-  }
-  .border-b {
-    border-color: rgba(255, 255, 255, 0.2) !important;
-  }
 }
