@@ -142,7 +142,7 @@
     </template>
 
     <template #cell-number="{ row }">
-      <n-button circle size="tiny" type="error" dashed>{{ row?.number }}</n-button>
+      <n-button round size="tiny" type="error" dashed>{{ row?.number }}</n-button>
     </template>
 
     <template #cell-worker="{ row }">

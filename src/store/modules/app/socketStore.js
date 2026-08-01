@@ -4,6 +4,7 @@ const socketUrl = import.meta.env.VITE_SOCKET_URL
 const socketSecret = import.meta.env.VITE_SOCKET_SECRET
 import { useNotify } from '@/composables/useNotify'
 import { eventBus, Events } from '@/utils/index.js'
+import { useAppStore } from '@/store/modules/app/appStore.js'
 
 const allowedEvents = [
   Events.APPLICATION_GENERATED,
@@ -43,6 +44,7 @@ export const useSocketStore = defineStore('useSocketStore', {
   },
   actions: {
     initSocket(token, userId) {
+      const appStore = useAppStore()
       let playAudioUnlocked = false
 
       let notificationAudio = new Audio('/sounds/notification.mp3')
@@ -97,7 +99,7 @@ export const useSocketStore = defineStore('useSocketStore', {
 
       this.socket.on('notification', (data) => {
         if (allowedAlertTypes.includes(data?.alert)) {
-          if (playAudioUnlocked) {
+          if (playAudioUnlocked && appStore.soundEnabled) {
             notificationAudio.currentTime = 0
             notificationAudio?.play()
           }

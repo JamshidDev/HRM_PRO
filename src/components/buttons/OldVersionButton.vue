@@ -3,7 +3,8 @@
     :href="targetUrl"
     target="_blank"
     rel="noopener noreferrer"
-    class="old-version-btn flex items-center gap-1.5 h-9 px-4 bg-success rounded-full cursor-pointer fixed top-0 left-1/2 -translate-x-1/2 z-[200] shadow-md"
+    class="old-version-btn flex items-center gap-1.5 h-9 px-4 bg-success rounded-full cursor-pointer fixed top-0 left-1/2 -translate-x-1/2 shadow-md"
+    :class="isSidebarOpen ? 'z-[90]' : 'z-[200]'"
   >
     <span class="text-white text-sm font-medium whitespace-nowrap">{{ $t(labelKey) }}</span>
     <RevertIcon class="text-white w-4 h-4" :class="{ '[transform:rotateY(180deg)]': mode === 'old' }" />
@@ -25,6 +26,10 @@
     href: {
       type: String,
       default: ''
+    },
+    isSidebarOpen: {
+      type: Boolean,
+      default: false
     }
   })
 

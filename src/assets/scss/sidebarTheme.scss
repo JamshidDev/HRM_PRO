@@ -1,0 +1,110 @@
+// Sidebar rang temalari ("Odatiy" — organizationLayout.scss'dagi standart ko'rinish, bu yerda
+// hech qanday qoida yo'q). Har bir tema: rail (mini-content) gradienti, ochilgandagi ichki panel
+// (sidebar-card) gradienti, tanlangan/hover element rangi.
+// MUHIM: organizationLayout.scss'dagi HAMMA qoida `.organization-layout .sidebar-content ...`
+// ko'rinishida (tashqi `.organization-layout` bilan) kompilyatsiya bo'ladi — shu ustuvorlik
+// darajasini yengish uchun bu yerda ham xuddi shu `.organization-layout` prefiksi ishlatiladi,
+// aks holda `[data-theme='dark']` (6 daraja) bizning qoidamizdan (5 daraja) ustun chiqib qolardi.
+@mixin sidebar-color-theme($rail-from, $rail-to, $panel-from, $panel-to, $accent) {
+  .organization-layout .sidebar-content {
+    .mini-content {
+      background: linear-gradient($rail-from, $rail-to) !important;
+    }
+
+    .sidebar-card {
+      background: linear-gradient($panel-from, $panel-to) !important;
+    }
+
+    .panel-content {
+      .panel-item-single {
+        .item-icon i {
+          color: #fff !important;
+        }
+        .item-title {
+          color: #fff !important;
+        }
+        &:hover:not(.active-panel-item-single) {
+          background-color: rgba(255, 255, 255, 0.08) !important;
+        }
+      }
+
+      .active-panel-item-single {
+        background-color: $accent !important;
+        .item-title {
+          color: #fff !important;
+        }
+        .item-icon i {
+          color: #fff !important;
+        }
+      }
+
+      .panel-header {
+        background-color: rgba(255, 255, 255, 0.08) !important;
+        border-color: rgba(255, 255, 255, 0.2) !important;
+        .item-icon i {
+          color: #fff !important;
+        }
+        .item-title {
+          color: #fff !important;
+          .n-icon {
+            color: #fff !important;
+          }
+        }
+      }
+
+      .panel-body .panel-item {
+        background-color: rgba(255, 255, 255, 0.08) !important;
+        border-color: rgba(255, 255, 255, 0.2) !important;
+        .item-icon i {
+          color: #fff !important;
+        }
+        .item-title {
+          color: #fff !important;
+        }
+      }
+    }
+
+    .active-mini-content {
+      background-color: rgba(255, 255, 255, 0.2) !important;
+      i {
+        color: #fff !important;
+      }
+    }
+
+    .mini-content .n-avatar {
+      background-color: rgba(255, 255, 255, 0.25) !important;
+    }
+
+    .control-btn {
+      background: #ffffff !important;
+    }
+  }
+}
+
+[data-sidebar-theme='indigo'] {
+  @include sidebar-color-theme(#5550e5, #2f2c7f, #4545b6, #1e1e50, #5550e5);
+}
+
+[data-sidebar-theme='blue'] {
+  @include sidebar-color-theme(#1570ef, #0c4089, #175cd3, #0c306d, #2e90fa);
+}
+
+[data-sidebar-theme='green'] {
+  @include sidebar-color-theme(#008838, #00220e, #005222, #006c2d, #00a652);
+}
+
+// `position: sticky` elementlar uchun Chromium'da ma'lum repaint muammosi bor: faqat
+// ota-element atributi (`[data-sidebar-theme]`) o'zgarsa, sticky element ba'zan darhol
+// qayta chizilmaydi (runtime'da tema almashtirilganda "eski" oq fon bir muddat qolib ketishi
+// mumkin). Shu sabab bu yerda element'ning o'zidagi klassga bog'laymiz (SidebarContent.vue
+// :class="{ 'sidebar-themed-sticky': ... }") — Vue shu klassni to'g'ridan-to'g'ri elementga
+// qo'yib/olib tashlagani uchun repaint ishonchli ishlaydi.
+.sidebar-themed-sticky {
+  background: transparent !important;
+  span {
+    color: #fff !important;
+  }
+  .border-b {
+    border-color: rgba(255, 255, 255, 0.2) !important;
+  }
+}
