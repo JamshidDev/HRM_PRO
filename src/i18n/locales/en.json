@@ -696,7 +696,12 @@
       "countByWorker": "By worker",
       "age": "Age",
       "quickActions": "Quick actions",
-      "downloadRelative": "Download relatives"
+      "downloadRelative": "Download relatives",
+      "generateReport": "Generate report",
+      "generateReportDesc": "Select employees to generate a report",
+      "relativesReport": "By relatives",
+      "excelFile": "Excel file",
+      "downloadInfo": "Download info"
     },
     "checkWorker": {
       "title": "Search employee",
@@ -731,7 +736,12 @@
     "exportAction": "Export",
     "checkAll": "Select all",
     "addPassport": "Include passport data?",
-    "chooseExport": "Select fields"
+    "passportYes": "Yes, include it",
+    "passportNo": "No, data only",
+    "chooseExport": "Select fields",
+    "excelSettings": "Set up Excel table",
+    "selectColumns": "Select table columns",
+    "columnOrder": "Arrange column order"
   },
   "contactPage": {
     "name": "Contacts"

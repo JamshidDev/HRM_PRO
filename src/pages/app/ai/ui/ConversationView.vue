@@ -78,7 +78,7 @@
         </div>
         <Keyboard
           style="transform: translateX(-50%); left: 50%"
-          class="absolute bottom-0 w-full max-w-[800px]"
+          class="absolute bottom-2 w-full max-w-[800px]"
         />
       </div>
     </div>
