@@ -3,7 +3,8 @@
     ArrowSyncCircle16Filled,
     ArrowLeft20Filled,
     ClipboardCheckmark20Regular,
-    CalendarCancel20Regular
+    CalendarCancel20Regular,
+    Dismiss20Regular
   } from '@vicons/fluent'
   import { UIUser, UILottieReader } from '@/components/index.js'
   import EditRefreshIcon from '@/assets/icons/editRefreshIcon.svg'
@@ -49,9 +50,17 @@
 
   const confirmSignatureVisible = ref(false)
   const signatureInfoVisible = ref(false)
+  const resendActionsVisible = ref(false)
 
   const isSigned = computed(() => store.document?.document?.confirmation?.id === 3)
   const isRejected = computed(() => store.document?.document?.confirmation?.id === 4)
+  const rejectReason = computed(() => {
+    return (
+      store.document?.document?.comment ||
+      store.confirmations?.find((v) => v.status?.id === 4)?.comment ||
+      null
+    )
+  })
   const hasFiles = computed(() => (store.document?.files ?? 0) > 0)
   const hasDocumentFile = computed(() => !!store.pdfUrl)
 
@@ -74,7 +83,7 @@
     )
   }
 
-  const onSuccess = (v) => {
+  const onSuccess = () => {
     signatureStore.visible = false
     notify.success(t('documentPage.signature.confirmedNotification'))
     emits('signatureEv')
@@ -91,7 +100,13 @@
   }
 
   const showSignature = computed(() => {
-    const rejects = ['/hrm/contract', '/hrm/command', '/hrm/ad-contract', '/hrm/application', '/hrm/structure-report']
+    const rejects = [
+      '/hrm/contract',
+      '/hrm/command',
+      '/hrm/ad-contract',
+      '/hrm/application',
+      '/hrm/structure-report'
+    ]
     return !rejects.includes(route.path)
   })
 
@@ -109,14 +124,18 @@
     store.documentVisible = true
   }
 
+  const MIN_LOADING_TIME = 1000
+
   const getDocument = async (document_id, model) => {
     store.document_id = document_id
     store.model = model
     store._resetForm()
+    resendActionsVisible.value = false
 
     store.visible = true
     store.loading = true
     store.viewerLoading = false
+    const startedAt = Date.now()
     $ApiService.documentService
       ._openDocument({ params: { model, document_id } })
       .then((res) => {
@@ -149,7 +168,7 @@
         if ([1, 4].includes(key)) {
           store.permissions.canSignature = false
           autoClose()
-        } else if (key === 2) {
+        } else if (key === 2 || !store.pdfUrl) {
           store.viewerLoading = true
           store.permissions.canSignature = false
           store.permissions.canEdit = false
@@ -157,11 +176,18 @@
           store.loadPdf()
         }
       })
-      .catch((error) => {
+      .catch(() => {
         autoClose()
       })
       .finally(() => {
-        store.loading = false
+        const remaining = MIN_LOADING_TIME - (Date.now() - startedAt)
+        if (remaining > 0) {
+          setTimeout(() => {
+            store.loading = false
+          }, remaining)
+        } else {
+          store.loading = false
+        }
       })
   }
 
@@ -176,9 +202,9 @@
     getDocument(store.document_id, store.model)
   }
 
-  const clearInterval = () => {
-    emits('onCancelInterval')
-  }
+  // const clearInterval = () => {
+  //   emits('onCancelInterval')
+  // }
 
   const onWheelEv = async (event) => {
     if (!store.isCtrlPressed) return
@@ -251,7 +277,13 @@
             class="w-full h-[60px] shrink-0 rounded-2xl border border-surface-line flex items-center justify-between px-4 bg-surface-section"
           >
             <div class="flex items-center gap-x-3">
-              <n-button @click="onClose()" quaternary circle size="large" class="bg-surface-ground!">
+              <n-button
+                @click="onClose()"
+                quaternary
+                circle
+                size="large"
+                class="bg-surface-ground!"
+              >
                 <template #icon>
                   <n-icon size="20">
                     <ArrowLeft20Filled />
@@ -278,18 +310,6 @@
               <n-skeleton width="110px" height="34px" :sharp="false" class="rounded-md" />
             </div>
             <div v-else class="flex gap-3">
-              <n-tooltip trigger="hover">
-                <template #trigger>
-                  <n-button @click="onRefresh" quaternary circle>
-                    <template #icon>
-                      <n-icon size="18">
-                        <ArrowSyncCircle16Filled />
-                      </n-icon>
-                    </template>
-                  </n-button>
-                </template>
-                {{ $t('content.refresh') }}
-              </n-tooltip>
               <n-button v-if="store.permissions.canEdit && showEditButton" @click="onEdit" tertiary>
                 {{ $t('content.edit') }}
                 <template #icon>
@@ -388,7 +408,9 @@
                 </div>
 
                 <div
-                  v-else-if="store.permissions?.canSignature && showSignature && !isSigned && !isRejected"
+                  v-else-if="
+                    store.permissions?.canSignature && showSignature && !isSigned && !isRejected
+                  "
                   class="w-full shrink-0 rounded-2xl bg-surface-section px-4 py-3 flex items-center justify-between gap-4 mb-3"
                 >
                   <div class="min-w-0">
@@ -421,13 +443,18 @@
                       {{ Utils.timeOnlyDate(store.document?.document?.created) }} ·
                       {{ $t('documentPage.signature.confirmedWithSignature') }}
                       <template v-if="store.signatureMan?.lastName">
-                        · {{ store.signatureMan.lastName }} {{ store.signatureMan.firstName?.[0] }}.{{
+                        · {{ store.signatureMan.lastName }}
+                        {{ store.signatureMan.firstName?.[0] }}.{{
                           store.signatureMan.middleName?.[0]
                         }}.
                       </template>
                     </div>
                   </div>
-                  <n-popover trigger="click" placement="bottom-end" v-model:show="signatureInfoVisible">
+                  <n-popover
+                    trigger="click"
+                    placement="bottom-end"
+                    v-model:show="signatureInfoVisible"
+                  >
                     <template #trigger>
                       <n-button tertiary class="shrink-0">
                         {{ $t('documentPage.signature.signatureInfo') }}
@@ -447,16 +474,36 @@
                     <div class="font-semibold text-textColor1 truncate">
                       {{ $t('documentPage.signature.rejected') }}
                     </div>
-                    <div class="text-xs text-gray-400 truncate">
+                    <div class="text-xs text-gray-400">
                       {{ Utils.timeOnlyDate(store.document?.document?.created) }}
-                      <template v-if="store.document?.document?.comment">
-                        · {{ $t('documentPage.signature.rejectedReason') }}: {{ store.document.document.comment }}
+                      <template v-if="rejectReason">
+                        · {{ $t('documentPage.signature.rejectedReason') }}: {{ rejectReason }}
                       </template>
                     </div>
                   </div>
-                  <n-button type="success" class="shrink-0" @click="onEdit">
+                  <n-button
+                    v-if="!resendActionsVisible"
+                    type="success"
+                    class="shrink-0"
+                    @click="resendActionsVisible = true"
+                  >
                     {{ $t('documentPage.signature.resend') }}
                   </n-button>
+                  <div v-else class="flex items-center gap-2 shrink-0">
+                    <n-button quaternary circle size="small" @click="resendActionsVisible = false">
+                      <template #icon>
+                        <n-icon size="16">
+                          <Dismiss20Regular />
+                        </n-icon>
+                      </template>
+                    </n-button>
+                    <n-button type="error" ghost :disabled="!hasFiles" @click="openRejectModal">
+                      {{ $t('content.cancel') }}
+                    </n-button>
+                    <n-button type="success" :disabled="!hasFiles" @click="onOpenConfirmSignature">
+                      {{ $t('content.confirm') }}
+                    </n-button>
+                  </div>
                 </div>
 
                 <div @wheel="onWheelEv" class="flex-1 min-h-0 overflow-auto">
@@ -485,8 +532,12 @@
                     </div>
                   </template>
                   <template v-else-if="!hasDocumentFile || store.loadError">
-                    <div class="w-full h-full flex flex-col items-center justify-center text-center px-8">
-                      <div class="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center mb-4">
+                    <div
+                      class="w-full h-full flex flex-col items-center justify-center text-center px-8"
+                    >
+                      <div
+                        class="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center mb-4"
+                      >
                         <n-icon size="26" class="text-primary">
                           <FileContractIcon />
                         </n-icon>
@@ -498,7 +549,7 @@
                             : $t('documentPage.signature.emptyFilesTitle')
                         }}
                       </h3>
-                      <p class="text-sm text-gray-400 max-w-[360px] mb-3">
+                      <p class="text-sm text-gray-400 max-w-[360px] mb-3 text-pretty">
                         {{
                           store.loadError
                             ? $t('documentPage.signature.loadErrorDesc')
@@ -544,7 +595,10 @@
     </n-drawer>
     <ConformAndRejectModal />
     <DocumentFileModal @onUpdate="emits('onUpdate')" />
-    <ConfirmSignatureModal v-model:visible="confirmSignatureVisible" @onConfirm="onConfirmSignature" />
+    <ConfirmSignatureModal
+      v-model:visible="confirmSignatureVisible"
+      @onConfirm="onConfirmSignature"
+    />
   </div>
 </template>
 
