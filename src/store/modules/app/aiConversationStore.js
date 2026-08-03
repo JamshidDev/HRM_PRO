@@ -47,9 +47,23 @@ export const useAIConversationStore = defineStore('AIConversationStore', {
     historyMode: false,
     archiveMessage: [],
     scrollHeight: 0,
-    scrollContainer: null
+    scrollContainer: null,
+
+    visible: false,
+    fullScreen: false
   }),
   actions: {
+    openModal() {
+      this.visible = true
+    },
+    closeModal() {
+      this.visible = false
+      this.fullScreen = false
+    },
+    toggleFullScreen() {
+      this.fullScreen = !this.fullScreen
+    },
+
     async conversation(data) {
       let token = localStorage.getItem(useAppSetting.tokenKey) || null
       const index = this.messages.length

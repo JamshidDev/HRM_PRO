@@ -48,7 +48,6 @@ import {
   PeopleToolbox20Filled,
   Person32Filled,
   PersonNote24Filled,
-  PersonProhibited24Filled,
   PersonVoice20Filled,
   QrCode24Regular,
   RibbonStar20Filled,
@@ -76,8 +75,13 @@ const {
   crownIcon,
   businessTripIcon,
   documentsIcon,
-  openVacanciesIcon
-  // organizationIcon
+  openVacanciesIcon,
+  punishmentIcon,
+  planAndFactIcon,
+  pensionaryIcon,
+  qualificationIcon,
+  reportIcon,
+  reportRefreshIcon,
 } = icons
 
 import i18n from '@/i18n/index.js'
@@ -242,7 +246,7 @@ export const navigations = [
       {
         label: 'punishment.name', // Intizomiy jazolar
         path: Utils.routeHrmPathMaker(AppPaths.Punishment),
-        icon: PersonProhibited24Filled,
+        icon: punishmentIcon,
         color: 'bg-warning',
         permission: appPermissions.hrPunishment
       },
@@ -256,35 +260,35 @@ export const navigations = [
       {
         label: 'report.name', // Plan va Fakt
         path: Utils.routeHrmPathMaker(AppPaths.Report),
-        icon: AppFolder20Filled,
+        icon: planAndFactIcon,
         color: 'bg-info',
         permission: appPermissions.hrReport
       },
       {
         label: 'pensioner.name', // Pensionerlar
         path: Utils.routeHrmPathMaker(AppPaths.Pensioner),
-        icon: AppFolder20Filled,
+        icon: pensionaryIcon,
         color: 'bg-info',
         permission: appPermissions.hrReport
       },
       {
         label: 'lmsWorkerPage.name', // Malaka oshirish
         path: Utils.routeHrmPathMaker(AppPaths.LmsWorker),
-        icon: AppsAddIn16Regular,
+        icon: qualificationIcon,
         color: 'bg-success',
         permission: appPermissions.lmsWorker
       },
       {
         label: 'specialReport.name', // Hisobotlar
         path: Utils.routeHrmPathMaker(AppPaths.SpecialReport),
-        icon: AppFolder20Filled,
+        icon: reportIcon,
         color: 'bg-info',
         permission: appPermissions.hrReportExport
       },
       {
         label: 'structureReport.name', // Hisobot aylanmasi
         path: Utils.routeHrmPathMaker(AppPaths.StructureReport),
-        icon: DocumentBulletList24Filled,
+        icon: reportRefreshIcon,
         color: 'bg-warning',
         permission: appPermissions.hrMonthlyReport
       }

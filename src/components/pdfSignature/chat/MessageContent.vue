@@ -67,19 +67,6 @@
       emits('onDelete')
     }
   }
-
-  const initialObserver = () => {
-    const options = {
-      threshold: 0.9
-    }
-    const callBack = (entries, observer) => {}
-    const observer = new IntersectionObserver(callBack, options)
-    document.querySelectorAll('.chat-message-element').forEach((el) => observer.observe(el))
-  }
-
-  onMounted(() => {
-    initialObserver()
-  })
 </script>
 
 <template>
@@ -87,14 +74,14 @@
     <template v-if="author">
       <div class="flex gap-x-2 justify-end">
         <div>
-          <div class="text-xs font-medium text-surface-600 flex justify-end">
-            <span class="text-[12px] font-normal text-surface-400 mr-1"> {{ time }} </span>
+          <div class="text-xs font-medium text-textColor1 flex justify-end">
+            <span class="text-[12px] font-normal text-textColor3 mr-1"> {{ time }} </span>
             {{ fullName }}
           </div>
           <div class="w-full flex justify-end">
             <div
               @contextmenu="handleContextMenu($event)"
-              class="border max-w-[280px] text-surface-600 rounded-lg text-sm px-2 py-1 border-surface-line inline-block bg-surface-section"
+              class="max-w-[280px] text-textColor1 rounded-lg text-sm px-2 py-1 inline-block bg-primary/10"
             >
               <pre class="font-poppins text-wrap">{{ message }}</pre>
             </div>
@@ -112,11 +99,11 @@
           <n-avatar class="ml-2 mt-4" circle :src="avatar || useAppSetting.noAvailableImage" :fallback-src="useAppSetting.noAvailableImage" />
         </div>
         <div>
-          <div class="text-xs font-medium text-surface-600">
-            {{ fullName }} <span class="text-[12px] font-normal text-surface-400">{{ time }}</span>
+          <div class="text-xs font-medium text-textColor1">
+            {{ fullName }} <span class="text-[12px] font-normal text-textColor3">{{ time }}</span>
           </div>
           <div
-            class="border max-w-[280px] text-surface-600 rounded-lg text-sm px-2 py-1 border-surface-line inline-block bg-surface-section"
+            class="max-w-[280px] text-textColor1 rounded-lg text-sm px-2 py-1 inline-block bg-surface-ground"
           >
             <pre class="font-poppins text-wrap">{{ message }}</pre>
           </div>

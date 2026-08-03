@@ -99,6 +99,7 @@ const dateMaskPlugin = {
 }
 
 function validateDate(day, month, year) {
+  if (year < 1900 || year > 2100) return false
   const date = new Date(year, month - 1, day)
   return date.getFullYear() === year && date.getMonth() === month - 1 && date.getDate() === day
 }

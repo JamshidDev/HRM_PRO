@@ -34,7 +34,6 @@
           :answers="item.answers"
         />
       </template>
-
       <Confirmations />
     </div>
   </div>

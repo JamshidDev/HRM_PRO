@@ -35,6 +35,18 @@ export const customTheme = () => {
       errorColorHover: getValueOfCssVariable('--danger-color'),
       errorColorPressed: getValueOfCssVariable('--danger-color'),
 
+      infoColor: getValueOfCssVariable('--info-color'),
+      infoColorHover: getValueOfCssVariable('--info-color'),
+      infoColorPressed: getValueOfCssVariable('--info-color'),
+
+      successColor: getValueOfCssVariable('--success-color'),
+      successColorHover: getValueOfCssVariable('--success-color'),
+      successColorPressed: getValueOfCssVariable('--success-color'),
+
+      warningColor: getValueOfCssVariable('--warning-color'),
+      warningColorHover: getValueOfCssVariable('--warning-color'),
+      warningColorPressed: getValueOfCssVariable('--warning-color'),
+
       textColorBase: getValueOfCssVariable('--textColor0'), //Standart matn rangi
       textColor1: getValueOfCssVariable('--textColor1'), // Birlamchi matn rangi (muhim matnlar)
       textColor2: getValueOfCssVariable('--textColor2'), // Ikkinchi darajali matn rangi (tavsiflar)

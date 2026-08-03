@@ -12,12 +12,10 @@
   const openWord = async (url) => {
     const response = await fetch(url)
     const arrayBuffer = await response.arrayBuffer()
-    docx
-      .renderAsync(arrayBuffer, docxContainer.value, docxContainer.value, {
-        breakPages: true,
-        ignoreLastRenderedPageBreak: false
-      })
-      .then((res) => {})
+    await docx.renderAsync(arrayBuffer, docxContainer.value, docxContainer.value, {
+      breakPages: true,
+      ignoreLastRenderedPageBreak: false
+    })
   }
 
   defineExpose({

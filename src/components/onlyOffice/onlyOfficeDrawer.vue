@@ -1,7 +1,7 @@
 <script setup>
   import onlyOfficeApp from './onlyOfficeApp.vue'
   import { useOnlyOfficeStore } from '@/store/modules/index.js'
-  import { PanelLeftContract16Filled } from '@vicons/fluent'
+  import { ArrowLeft20Filled } from '@vicons/fluent'
   const store = useOnlyOfficeStore()
 
   const emits = defineEmits(['onBack'])
@@ -25,11 +25,10 @@
       <div class="w-full flex-col flex">
         <div class="w-full h-[50px] flex justify-between items-center px-4">
           <div class="flex">
-            <n-button @click="onBack" type="error" secondary>
-              {{ $t('content.back') }}
+            <n-button @click="onBack" quaternary circle size="large" class="bg-surface-ground!">
               <template #icon>
-                <n-icon size="24">
-                  <PanelLeftContract16Filled />
+                <n-icon size="20">
+                  <ArrowLeft20Filled />
                 </n-icon>
               </template>
             </n-button>

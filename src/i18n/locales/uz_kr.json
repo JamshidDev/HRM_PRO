@@ -73,6 +73,8 @@
     "result": "Натижа",
     "category": "Категория",
     "download": "Юклаш",
+    "page": "бет",
+    "retry": "Қайта уриниш",
     "attachment": "Бириктириш",
     "no-data": "Маълумот йўқ",
     "emptyData": "Маълумот киритилмаган",
@@ -148,6 +150,18 @@
     "profile": "Кабинет",
     "asAdmin": "Супер админ",
     "setting": "Созламалар",
+    "soundNotification": "Овозли билдиришнома",
+    "sidebarColor": "Сидебар ранги",
+    "sidebarThemeDefault": "Одатий",
+    "sidebarThemeIndigo": "Индиго",
+    "sidebarThemeBlue": "Блю",
+    "sidebarThemeGreen": "Грин",
+    "customColor": "Махсус ранг",
+    "customColorDesc": "Сайт рангларини ўзгартиринг",
+    "filterGrayscale": "Рангсиз кўриниш",
+    "filterLowBrightness": "Паст ёруғлик",
+    "filterHighBrightness": "Баланд ёруғлик",
+    "resetChanges": "Ўзгаришларни бекор қилиш",
     "changeAccount": "Ҳисобларим",
     "logOutSystem": "Тизмдан чиқиш",
     "paginationSize": "{n} тадан кўрсатиш",
@@ -279,7 +293,9 @@
     "rejectByMistake": "Хатолик сабабли қайтариш",
     "themeLight": "Ёруғ",
     "themeDark": "Қоронғи",
-    "themeSystem": "Тизим"
+    "themeSystem": "Тизим",
+    "oldVersionButton": "Эски талқинга қайтиш",
+    "newVersionButton": "Янги талқинга ўтиш"
   },
   "date": {
     "day": "Кун",
@@ -504,6 +520,9 @@
     "account": {
       "title": "Ҳисоб маълумотлари",
       "warningText": "Ҳисобингиз хавфсизлигини таъминлаш мақсадида аккаунт маълумотларингизни мунтазам равишда янгилаб туришингиз тавсия этилади. Бу чоралар ҳисобингизни рухсатсиз киришлардан ҳимоя қилишга ёрдам беради."
+    },
+    "sidebar": {
+      "title": "Профил бўлимлари"
     },
     "tabs": {
       "profileInfo": "Ҳисоб маълумотлар",
@@ -776,6 +795,7 @@
     "certificate": "Сертификат рақами",
     "validDate": "Муддати",
     "notValidDate": "Муддати тугаган",
+    "validKey": "Амал қилади",
     "expiredKey": "Калит муддати тугаган!",
     "legalPerson": "Юридик шахс",
     "naturalPerson": "Жисмоний шахс",
@@ -789,7 +809,13 @@
     "acceptApplication": "Аризани тасдиқлаш",
     "comment": "Изоҳ",
     "rejectApplication": "Аризани рад қилиш",
-    "pinfl": "ЖШШИР"
+    "applicationAcceptDesc": "Изоҳингизни қолдиришингиз мумкин (ихтиёрий).",
+    "applicationRejectDesc": "Рад этиш сабабини ёзинг. Сабаб аризани юборган ходимга кўринади.",
+    "applicationCommentPlaceholder": "Изоҳингизни киритинг...",
+    "pinfl": "ЖШШИР",
+    "sealKeyLabel": "муҳрли калит",
+    "noKeysTitle": "Калитлар топилмади",
+    "noKeysDesc": "USB токен ёки ID карта уланганини текширинг."
   },
   "documentPage": {
     "name": "Ҳужжатлар",
@@ -922,6 +948,36 @@
       "viewer": "Ҳужжат билан танишувчилар",
       "files": "Ҳужжат файллари",
       "checkDocument": "Ҳужжат ҳолатини текшириш учун босинг",
+      "attachedDocuments": "Бириктирилган ҳужжатлар",
+      "attachDocument": "Ҳужжат бириктириш",
+      "downloadPdf": "PDF юклаш",
+      "downloadWord": "Word юклаш",
+      "confirmDocument": "Ҳужжатни тасдиқлаш",
+      "confirmDocumentDesc": "{id} рақамли ҳужжатни тасдиқлайсизми? Тасдиқлангандан сўнг ҳужжат электрон имзо билан мустаҳкамланади ва уни таҳрирлаш имкони бўлмайди.",
+      "confirmed": "Ҳужжат тасдиқланди",
+      "confirmedWithSignature": "Электрон имзо билан мустаҳкамланган",
+      "confirmedNotification": "Ҳужжат электрон имзо билан мустаҳкамланди. PDF нусхасини юклаб олишингиз мумкин.",
+      "signatureInfo": "Имзо маълумотлари",
+      "rejected": "Ҳужжат рад этилди",
+      "rejectedReason": "Сабаб",
+      "resend": "Қайта юбориш",
+      "rejectTitle": "Ҳужжатни рад этиш",
+      "rejectDesc": "Рад этиш сабабини ёзинг. Сабаб ҳужжат муаллифига ва ҳужжат билан танишувчиларга кўринади.",
+      "rejectReasonLabel": "Рад этиш сабаби",
+      "rejectReasonPlaceholder": "Масалан: 4-бандда кўрсатилган сумма шартномага мос келмайди, қайта кўриб чиқиш сўралади.",
+      "rejectReasonRequired": "Рад этиш сабабини киритинг — камида 10 белги.",
+      "rejectSubmit": "Рад этиш",
+      "link": "Ҳавола",
+      "keySelectTitle": "Э-имзо калитини танлаш",
+      "keySelectDesc": "Ҳужжатни имзолаш учун ЭРИ (электрон рақамли имзо) калитини танланг.",
+      "continue": "Давом этиш",
+      "emptyFilesTitle": "Ҳужжат бириктирилмаган",
+      "emptyFilesDesc": "Бу ҳужжатга ҳали файл бириктирилмаган. Тасдиқлаш учун камида битта файл бириктирилиши керак.",
+      "loadErrorTitle": "Ҳужжатни юклаб бўлмади",
+      "loadErrorDesc": "Ҳужжатни юклашда хатолик юз берди. Янгилашга уриниб кўринг.",
+      "fileOpenError": "Файлни очиб бўлмади",
+      "fileOpenErrorDesc": "Файл формати қўллаб-қувватланмайди ёки файл сервердан юкланмади. Қайта уриниб кўринг ёки файлни юклаб олинг.",
+      "fileOpenErrorSubtitle": "Файлни очиш имкони бўлмади",
       "status": {
         "Process": "Жараёнда"
       }

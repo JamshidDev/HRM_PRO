@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { AppLayouts, AppPaths, useAppSetting } from '@/utils/index.js'
+import { useAccountStore } from '@/store/modules/app/accountStore.js'
 
 import {
   adminRoutes,
@@ -16,9 +17,17 @@ import {
   extraRoutes,
 } from '@/router/modules'
 
-const beforeLogin = (to, from, next) => {
+const beforeLogin = async (to, from, next) => {
   const token = localStorage.getItem(useAppSetting.tokenKey)
   if (token) {
+    const accountStore = useAccountStore()
+    const permissionsLoaded =
+      accountStore.permissions.length > 0 || !!sessionStorage.getItem(useAppSetting.appPermission)
+    if (!permissionsLoaded) {
+      // 401 bo'lsa axios interceptor Login'ga o'zi yo'naltiradi (service/index.js);
+      // shu yerda xatoni yutib, navigatsiyani "osilib qolishdan" saqlaymiz.
+      await accountStore._index().catch(() => {})
+    }
     next()
   } else {
     localStorage.removeItem(useAppSetting.tokenKey)

@@ -146,6 +146,8 @@
     "result": "Result",
     "category": "Category",
     "download": "Download",
+    "page": "p.",
+    "retry": "Retry",
     "attachment": "Attach",
     "no-data": "No data",
     "emptyData": "Not specified",
@@ -221,6 +223,18 @@
     "profile": "Profile",
     "asAdmin": "Super admin",
     "setting": "Settings",
+    "soundNotification": "Notification sound",
+    "sidebarColor": "Sidebar color",
+    "sidebarThemeDefault": "Default",
+    "sidebarThemeIndigo": "Indigo",
+    "sidebarThemeBlue": "Blue",
+    "sidebarThemeGreen": "Green",
+    "customColor": "Custom color",
+    "customColorDesc": "Change the site's colors",
+    "filterGrayscale": "Grayscale",
+    "filterLowBrightness": "Low brightness",
+    "filterHighBrightness": "High brightness",
+    "resetChanges": "Reset changes",
     "changeAccount": "My accounts",
     "logOutSystem": "Log out",
     "paginationSize": "Show {n} items",
@@ -341,9 +355,13 @@
     "en": "EN",
     "create": "Create",
     "allSelected": "All selected",
+    "sendToSign": "Send to sign",
+    "rejectByMistake": "Return due to error",
     "themeLight": "Light",
     "themeDark": "Dark",
-    "themeSystem": "System"
+    "themeSystem": "System",
+    "oldVersionButton": "Return to old version",
+    "newVersionButton": "Switch to new version"
   },
   "date": {
     "day": "Day",
@@ -582,6 +600,9 @@
     "account": {
       "title": "Account information",
       "warningText": "For account security, regularly update your account details. This helps protect against unauthorized access."
+    },
+    "sidebar": {
+      "title": "Profile sections"
     },
     "tabs": {
       "profileInfo": "Account info",
@@ -864,6 +885,7 @@
     "undo": "Undo",
     "certificate": "Certificate number",
     "validDate": "Validity",
+    "validKey": "Valid",
     "expiredKey": "Key expired!",
     "legalPerson": "Legal entity",
     "naturalPerson": "Individual",
@@ -877,7 +899,13 @@
     "acceptApplication": "Approve application",
     "comment": "Comment",
     "rejectApplication": "Reject application",
-    "pinfl": "PIN"
+    "applicationAcceptDesc": "You can leave a comment (optional).",
+    "applicationRejectDesc": "Write the reason for rejection. It will be visible to the employee who submitted the application.",
+    "applicationCommentPlaceholder": "Enter your comment...",
+    "pinfl": "PIN",
+    "sealKeyLabel": "seal key",
+    "noKeysTitle": "No keys found",
+    "noKeysDesc": "Check that your USB token or ID card is connected."
   },
   "documentPage": {
     "name": "Documents",
@@ -1026,6 +1054,36 @@
       "viewer": "Document reviewers",
       "files": "Document files",
       "checkDocument": "Click to check document status",
+      "attachedDocuments": "Attached documents",
+      "attachDocument": "Attach document",
+      "downloadPdf": "Download PDF",
+      "downloadWord": "Download Word",
+      "confirmDocument": "Confirm document",
+      "confirmDocumentDesc": "Confirm document {id}? Once confirmed, the document will be secured with an electronic signature and can no longer be edited.",
+      "confirmed": "Document confirmed",
+      "confirmedWithSignature": "Secured with electronic signature",
+      "confirmedNotification": "The document has been secured with an electronic signature. You can download a PDF copy.",
+      "signatureInfo": "Signature info",
+      "rejected": "Document rejected",
+      "rejectedReason": "Reason",
+      "resend": "Resend",
+      "rejectTitle": "Reject document",
+      "rejectDesc": "Write the reason for rejection. It will be visible to the document author and reviewers.",
+      "rejectReasonLabel": "Rejection reason",
+      "rejectReasonPlaceholder": "E.g.: the amount stated in clause 4 doesn't match the contract, please review.",
+      "rejectReasonRequired": "Enter a rejection reason — at least 10 characters.",
+      "rejectSubmit": "Reject",
+      "link": "Link",
+      "keySelectTitle": "Select e-signature key",
+      "keySelectDesc": "Select a digital signature (ERI) key to sign the document.",
+      "continue": "Continue",
+      "emptyFilesTitle": "No document attached",
+      "emptyFilesDesc": "No file has been attached to this document yet. At least one file must be attached to confirm it.",
+      "loadErrorTitle": "Failed to load document",
+      "loadErrorDesc": "The document could not be loaded. Please try refreshing.",
+      "fileOpenError": "Couldn't open the file",
+      "fileOpenErrorDesc": "The file format isn't supported or the file failed to load from the server. Try again or download the file.",
+      "fileOpenErrorSubtitle": "Couldn't open the file",
       "status": {
         "Process": "In progress"
       }
@@ -3271,8 +3329,14 @@
     "name": "Story announcements",
     "createTitle": "New story",
     "updateTitle": "Edit story",
-    "status": { "draft": "Draft", "published": "Published" },
-    "table": { "status": "Status", "views": "Views" },
+    "status": {
+      "draft": "Draft",
+      "published": "Published"
+    },
+    "table": {
+      "status": "Status",
+      "views": "Views"
+    },
     "form": {
       "title": "Title",
       "titleRequired": "Title (uz) is required",
