@@ -117,7 +117,7 @@
         icon: Phone24Regular,
         perm: accStore.pn.hrUsersUpdate
       }
-    ].filter((o) => accStore.checkAction(o.perm))
+    ].filter((o) => accStore.checkPermission(o.perm) || accStore.isModeDev)
   )
 
   const onSelectEv = (v) => {
