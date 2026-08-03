@@ -1094,6 +1094,8 @@
       "continue": "Davom etish",
       "emptyFilesTitle": "Hujjat biriktirilmagan",
       "emptyFilesDesc": "Bu hujjatga hali fayl biriktirilmagan. Tasdiqlash uchun kamida bitta fayl biriktirilishi kerak.",
+      "loadErrorTitle": "Hujjatni yuklab bo'lmadi",
+      "loadErrorDesc": "Hujjatni yuklashda xatolik yuz berdi. Yangilashga urinib ko'ring.",
       "fileOpenError": "Faylni ochib bo'lmadi",
       "fileOpenErrorDesc": "Fayl formati qo'llab-quvvatlanmaydi yoki fayl serverdan yuklanmadi. Qayta urinib ko'ring yoki faylni yuklab oling.",
       "fileOpenErrorSubtitle": "Faylni ochish imkoni bo'lmadi",

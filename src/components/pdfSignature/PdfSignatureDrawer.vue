@@ -171,6 +171,11 @@
     }, 200)
   }
 
+  const onRefresh = () => {
+    if (!store.document_id) return
+    getDocument(store.document_id, store.model)
+  }
+
   const clearInterval = () => {
     emits('onCancelInterval')
   }
@@ -273,6 +278,18 @@
               <n-skeleton width="110px" height="34px" :sharp="false" class="rounded-md" />
             </div>
             <div v-else class="flex gap-3">
+              <n-tooltip trigger="hover">
+                <template #trigger>
+                  <n-button @click="onRefresh" quaternary circle>
+                    <template #icon>
+                      <n-icon size="18">
+                        <ArrowSyncCircle16Filled />
+                      </n-icon>
+                    </template>
+                  </n-button>
+                </template>
+                {{ $t('content.refresh') }}
+              </n-tooltip>
               <n-button v-if="store.permissions.canEdit && showEditButton" @click="onEdit" tertiary>
                 {{ $t('content.edit') }}
                 <template #icon>
@@ -467,7 +484,7 @@
                       </div>
                     </div>
                   </template>
-                  <template v-else-if="!hasFiles || !hasDocumentFile || store.loadError">
+                  <template v-else-if="!hasDocumentFile || store.loadError">
                     <div class="w-full h-full flex flex-col items-center justify-center text-center px-8">
                       <div class="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center mb-4">
                         <n-icon size="26" class="text-primary">
@@ -475,12 +492,29 @@
                         </n-icon>
                       </div>
                       <h3 class="text-lg font-semibold text-textColor1 mb-2">
-                        {{ $t('documentPage.signature.emptyFilesTitle') }}
+                        {{
+                          store.loadError
+                            ? $t('documentPage.signature.loadErrorTitle')
+                            : $t('documentPage.signature.emptyFilesTitle')
+                        }}
                       </h3>
                       <p class="text-sm text-gray-400 max-w-[360px] mb-3">
-                        {{ $t('documentPage.signature.emptyFilesDesc') }}
+                        {{
+                          store.loadError
+                            ? $t('documentPage.signature.loadErrorDesc')
+                            : $t('documentPage.signature.emptyFilesDesc')
+                        }}
                       </p>
+                      <n-button v-if="store.loadError" @click="onRefresh" tertiary size="small">
+                        <template #icon>
+                          <n-icon size="16">
+                            <ArrowSyncCircle16Filled />
+                          </n-icon>
+                        </template>
+                        {{ $t('content.refresh') }}
+                      </n-button>
                       <span
+                        v-else
                         @click="
                           () => {
                             store.workerApplications = []
