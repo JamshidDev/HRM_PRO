@@ -412,9 +412,7 @@
                 </div>
 
                 <div
-                  v-else-if="
-                    store.permissions?.canSignature && showSignature && !isSigned && !isRejected
-                  "
+                  v-else-if="store.permissions?.canSignature && showSignature"
                   class="w-full shrink-0 rounded-2xl bg-surface-section px-4 py-3 flex items-center justify-between gap-4 mb-3"
                 >
                   <div class="min-w-0">
