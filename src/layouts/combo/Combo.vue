@@ -5,6 +5,7 @@
   import ReactionScreen from '@/pages/app/home/ui/ReactionScreen.vue'
   import MustChangePasswordModal from '@/components/MustChangePasswordModal.vue'
   import OldVersionButton from '@/components/buttons/OldVersionButton.vue'
+  import AIFloatingButton from '@/components/buttons/AIFloatingButton.vue'
   import { useAccountStore } from '@/store/modules/index.js'
   const store = useAccountStore()
 
@@ -47,5 +48,6 @@
     <HelperLayout />
     <ReactionScreen />
     <MustChangePasswordModal />
+    <AIFloatingButton />
   </div>
 </template>

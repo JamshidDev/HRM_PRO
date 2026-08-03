@@ -65,90 +65,93 @@
 
 <template>
   <div>
-    <div
-      v-for="(item, idx) in store.positionList"
-      :key="idx"
-      class="grid p-4 grid-cols-12 w-full border border-dashed border-surface-line rounded-2xl mb-4"
-    >
-      <div class="col-span-12 p-2">
-        <span class="font-medium block">{{ $t('workerProfile.position.title') }}</span>
-      </div>
-      <div class="col-span-12 md:col-span-9 flex-col flex">
-        <div class="grid grid-cols-12">
-          <div
-            class="col-span-12 p-2 border-b md:border-r md:border-t border-dashed border-surface-line"
-          >
-            <div class="grid grid-cols-12">
-              <div class="col-span-12 md:col-span-6">
-                <span class="font-semibold">{{ $t('workerProfile.position.contractType') }}</span> -
-                <n-button type="warning" dashed ghost size="tiny">{{
-                  item.contract?.type.name
-                }}</n-button>
-              </div>
+    <template v-for="(item, idx) in store.positionList" :key="idx">
+      <!-- FXSH (shartnoma turi 2) — lavozim cardi ko'rsatilmaydi (FXSH'da shtat/lavozim yo'q) -->
+      <div
+        v-if="item.contract?.type?.id !== 2"
+        class="grid p-4 grid-cols-12 w-full border border-dashed border-surface-line rounded-2xl mb-4"
+      >
+        <div class="col-span-12 p-2">
+          <span class="font-medium block">{{ $t('workerProfile.position.title') }}</span>
+        </div>
+        <div class="col-span-12 md:col-span-9 flex-col flex">
+          <div class="grid grid-cols-12">
+            <div
+              class="col-span-12 p-2 border-b md:border-r md:border-t border-dashed border-surface-line"
+            >
+              <div class="grid grid-cols-12">
+                <div class="col-span-12 md:col-span-6">
+                  <span class="font-semibold">{{ $t('workerProfile.position.contractType') }}</span> -
+                  <n-button type="warning" dashed ghost size="tiny">
+                    {{
+                      item.contract?.type.name
+                    }}
+                  </n-button>
+                </div>
 
-              <div class="col-span-12">
-                <span class="font-semibold">{{ $t('workerProfile.position.position') }}</span> -
-                <span class="font-medium text-primary">{{ item?.post_name }}</span>
+                <div class="col-span-12">
+                  <span class="font-semibold">{{ $t('workerProfile.position.position') }}</span> -
+                  <span class="font-medium text-primary">{{ item?.post_name }}</span>
+                </div>
               </div>
             </div>
-          </div>
-          <div
-            class="col-span-12 md:col-span-6 border-b md:border-r border-dashed border-surface-line p-2"
-          >
-            <span class="font-semibold">{{ $t('workerProfile.position.contractToDate') }}</span> -
-            <span class="font-medium mr-4">{{
-              Utils.timeOnlyDate(item?.contract?.contract_to_date)
-            }}</span>
-          </div>
-          <div
-            class="col-span-12 md:col-span-6 border-b md:border-r border-dashed border-surface-line p-2"
-          >
-            <span class="font-semibold">{{ $t('workerProfile.position.positionDate') }}</span> -
-            <span class="font-medium mr-4">{{ Utils.timeOnlyDate(item?.position_date) }}</span>
-          </div>
-          <div
-            class="col-span-12 md:col-span-6 border-b md:border-r border-dashed border-surface-line p-2"
-          >
-            <span class="font-semibold">{{ $t('workerProfile.position.contractNumber') }}</span> -
-            <span class="font-medium mr-4">{{ item.contract?.number }}</span>
-          </div>
-          <div
-            class="col-span-12 md:col-span-6 border-b md:border-r border-dashed border-surface-line p-2"
-          >
-            <span class="font-semibold">{{ $t('workerProfile.position.contractDate') }}</span> -
-            <span class="font-medium mr-4">{{
-              Utils.timeOnlyDate(item.contract?.contract_date)
-            }}</span>
-          </div>
-          <div
-            class="col-span-12 md:col-span-4 border-b md:border-r md:border-b-0 border-dashed border-surface-line p-2"
-          >
-            {{ $t('workerProfile.personal.positionGroup') }} -
-            <span class="font-bold text-success">{{ item.group }}</span>
-          </div>
-          <div
-            class="col-span-12 md:col-span-4 border-b md:border-r md:border-b-0 border-dashed border-surface-line p-2"
-          >
-            {{ $t('workerProfile.personal.positionRank') }} -
-            <span class="font-bold text-warning">{{ item.rank }}</span>
-          </div>
-          <div
-            class="col-span-12 md:col-span-4 border-b md:border-r md:border-b-0 border-dashed border-surface-line p-2"
-          >
-            {{ $t('workerProfile.personal.positionRate') }} -
-            <span class="font-bold text-danger">{{ item.rate }}</span>
+            <div
+              class="col-span-12 md:col-span-6 border-b md:border-r border-dashed border-surface-line p-2"
+            >
+              <span class="font-semibold">{{ $t('workerProfile.position.contractToDate') }}</span> -
+              <span class="font-medium mr-4">{{
+                Utils.timeOnlyDate(item?.contract?.contract_to_date)
+              }}</span>
+            </div>
+            <div
+              class="col-span-12 md:col-span-6 border-b md:border-r border-dashed border-surface-line p-2"
+            >
+              <span class="font-semibold">{{ $t('workerProfile.position.positionDate') }}</span> -
+              <span class="font-medium mr-4">{{ Utils.timeOnlyDate(item?.position_date) }}</span>
+            </div>
+            <div
+              class="col-span-12 md:col-span-6 border-b md:border-r border-dashed border-surface-line p-2"
+            >
+              <span class="font-semibold">{{ $t('workerProfile.position.contractNumber') }}</span> -
+              <span class="font-medium mr-4">{{ item.contract?.number }}</span>
+            </div>
+            <div
+              class="col-span-12 md:col-span-6 border-b md:border-r border-dashed border-surface-line p-2"
+            >
+              <span class="font-semibold">{{ $t('workerProfile.position.contractDate') }}</span> -
+              <span class="font-medium mr-4">{{
+                Utils.timeOnlyDate(item.contract?.contract_date)
+              }}</span>
+            </div>
+            <div
+              class="col-span-12 md:col-span-4 border-b md:border-r md:border-b-0 border-dashed border-surface-line p-2"
+            >
+              {{ $t('workerProfile.personal.positionGroup') }} -
+              <span class="font-bold text-success">{{ item.group }}</span>
+            </div>
+            <div
+              class="col-span-12 md:col-span-4 border-b md:border-r md:border-b-0 border-dashed border-surface-line p-2"
+            >
+              {{ $t('workerProfile.personal.positionRank') }} -
+              <span class="font-bold text-warning">{{ item.rank }}</span>
+            </div>
+            <div
+              class="col-span-12 md:col-span-4 border-b md:border-r md:border-b-0 border-dashed border-surface-line p-2"
+            >
+              {{ $t('workerProfile.personal.positionRate') }} -
+              <span class="font-bold text-danger">{{ item.rate }}</span>
+            </div>
           </div>
         </div>
-      </div>
-      <div
-        class="col-span-12 md:col-span-3 flex flex-col-reverse gap-y-2 p-2 border-t border-dashed border-surface-line"
-      >
-        <n-button @click="onEdit(item)" size="small" type="success" secondary>
-          <template #icon>
-            <Edit20Regular />
-          </template>
-          {{ $t('content.edit') }}
-        </n-button>
+        <div
+          class="col-span-12 md:col-span-3 flex flex-col-reverse gap-y-2 p-2 border-t border-dashed border-surface-line"
+        >
+          <n-button @click="onEdit(item)" size="small" type="success" secondary>
+            <template #icon>
+              <Edit20Regular />
+            </template>
+            {{ $t('content.edit') }}
+          </n-button>
         <!--      <n-button-->
         <!--          @click="onOpen(item)"-->
         <!--          size="small"-->
@@ -171,8 +174,9 @@
         <!--        </template>-->
         <!--        {{$t('workerProfile.personal.createOrder')}}-->
         <!--      </n-button>-->
+        </div>
       </div>
-    </div>
+    </template>
     <UIModal
       :title="$t('adContractPage.createTitle')"
       :width="1200"

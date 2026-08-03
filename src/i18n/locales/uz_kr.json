@@ -812,7 +812,10 @@
     "applicationAcceptDesc": "Изоҳингизни қолдиришингиз мумкин (ихтиёрий).",
     "applicationRejectDesc": "Рад этиш сабабини ёзинг. Сабаб аризани юборган ходимга кўринади.",
     "applicationCommentPlaceholder": "Изоҳингизни киритинг...",
-    "pinfl": "ЖШШИР"
+    "pinfl": "ЖШШИР",
+    "sealKeyLabel": "муҳрли калит",
+    "noKeysTitle": "Калитлар топилмади",
+    "noKeysDesc": "USB токен ёки ID карта уланганини текширинг."
   },
   "documentPage": {
     "name": "Ҳужжатлар",

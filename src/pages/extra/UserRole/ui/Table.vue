@@ -7,7 +7,7 @@
     UIBadge,
     UIModal
   } from '@components'
-  import { useWorkerProfileStore } from '@stores'
+  import { useWorkerProfileStore, useAccountStore } from '@stores'
   import Utils from '@utils/Utils.js'
   import RoleForm from '@pages/hrm/workerProfile/ui/RoleForm.vue'
   import { RibbonStar24Filled, Delete20Regular, LockClosed16Filled, Phone24Regular, Delete28Regular, AddCircle28Regular, Checkmark16Regular, Dismiss16Regular, ArrowClockwise20Regular } from '@vicons/fluent'
@@ -16,6 +16,7 @@
 
   const { t } = i18n.global
   const store = useWorkerProfileStore()
+  const accStore = useAccountStore()
 
   const deleteRoleVisible = ref(false)
   const selectedItem = ref(null)
@@ -88,28 +89,36 @@
   const phoneErrors = ref({})
   const selectedUserUuid = ref(null)
 
-  const extraOptions = computed(() => [
-    {
-      label: t('workerRole.attachRole'),
-      key: 'attach_role',
-      icon: RibbonStar24Filled
-    },
-    {
-      label: t('workerRole.deleteRole'),
-      key: 'delete_role',
-      icon: Delete20Regular
-    },
-    {
-      label: t('workerRole.updatePassword'),
-      key: 'update_password',
-      icon: LockClosed16Filled
-    },
-    {
-      label: t('workerRole.phoneNumber'),
-      key: 'phone_number',
-      icon: Phone24Regular
-    }
-  ])
+  // Har option o'z ruxsatiga bog'landi — ruxsat bo'lmasa menyuда ko'rinmaydi
+  // (backend ham mos slug bilan enforce qiladi).
+  const extraOptions = computed(() =>
+    [
+      {
+        label: t('workerRole.attachRole'),
+        key: 'attach_role',
+        icon: RibbonStar24Filled,
+        perm: accStore.pn.hrUsersAttachRole
+      },
+      {
+        label: t('workerRole.deleteRole'),
+        key: 'delete_role',
+        icon: Delete20Regular,
+        perm: accStore.pn.hrUsersDetachRole
+      },
+      {
+        label: t('workerRole.updatePassword'),
+        key: 'update_password',
+        icon: LockClosed16Filled,
+        perm: accStore.pn.hrUsersPassword
+      },
+      {
+        label: t('workerRole.phoneNumber'),
+        key: 'phone_number',
+        icon: Phone24Regular,
+        perm: accStore.pn.hrUsersUpdate
+      }
+    ].filter((o) => accStore.checkPermission(o.perm) || accStore.isModeDev)
+  )
 
   const onSelectEv = (v) => {
     if (v.key === 'attach_role') {

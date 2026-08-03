@@ -19,6 +19,10 @@
     persistent: {
       type: Boolean,
       default: true
+    },
+    cardClass: {
+      type: [String, Array, Object],
+      default: null
     }
   })
 
@@ -37,6 +41,7 @@
   >
     <n-card
       title="Modal"
+      :class="cardClass"
       :bordered="false"
       size="huge"
       role="dialog"

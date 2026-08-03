@@ -920,7 +920,10 @@
     "applicationAcceptDesc": "Izohingizni qoldirishingiz mumkin (ixtiyoriy).",
     "applicationRejectDesc": "Rad etish sababini yozing. Sabab arizani yuborgan xodimga ko'rinadi.",
     "applicationCommentPlaceholder": "Izohingizni kiriting...",
-    "pinfl": "JSHSHIR"
+    "pinfl": "JSHSHIR",
+    "sealKeyLabel": "muhrli kalit",
+    "noKeysTitle": "Kalitlar topilmadi",
+    "noKeysDesc": "USB token yoki ID karta ulanganini tekshiring."
   },
   "documentPage": {
     "name": "Hujjatlar",
