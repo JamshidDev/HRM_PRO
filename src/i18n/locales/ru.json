@@ -698,7 +698,12 @@
       "countByWorker": "По сотрудникам",
       "age": "Возраст",
       "quickActions": "Быстрые действия",
-      "downloadRelative": "Скачать родственников"
+      "downloadRelative": "Скачать родственников",
+      "generateReport": "Создать отчёт",
+      "generateReportDesc": "Выберите сотрудников для создания отчёта",
+      "relativesReport": "По родственникам",
+      "excelFile": "Excel файл",
+      "downloadInfo": "Скачать данные"
     },
     "checkWorker": {
       "title": "Поиск сотрудника",
@@ -733,7 +738,12 @@
     "exportAction": "Экспорт",
     "checkAll": "Выбрать все",
     "addPassport": "Включить паспортные данные?",
-    "chooseExport": "Выбрать поля"
+    "passportYes": "Да, добавить",
+    "passportNo": "Нет, только данные",
+    "chooseExport": "Выбрать поля",
+    "excelSettings": "Настройка таблицы Excel",
+    "selectColumns": "Выберите столбцы таблицы",
+    "columnOrder": "Настройте порядок столбцов"
   },
   "contactPage": {
     "name": "Контакты"
