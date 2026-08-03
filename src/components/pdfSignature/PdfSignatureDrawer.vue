@@ -61,7 +61,6 @@
       null
     )
   })
-  const hasFiles = computed(() => (store.document?.files ?? 0) > 0)
   const hasDocumentFile = computed(() => !!store.pdfUrl)
 
   const onOpenConfirmSignature = () => {
@@ -427,10 +426,10 @@
                     </div>
                   </div>
                   <div class="flex gap-2 shrink-0">
-                    <n-button type="error" ghost :disabled="!hasFiles" @click="openRejectModal">
+                    <n-button type="error" ghost @click="openRejectModal">
                       {{ $t('content.cancel') }}
                     </n-button>
-                    <n-button type="success" :disabled="!hasFiles" @click="onOpenConfirmSignature">
+                    <n-button type="success" @click="onOpenConfirmSignature">
                       {{ $t('content.confirm') }}
                     </n-button>
                   </div>
@@ -502,10 +501,10 @@
                         </n-icon>
                       </template>
                     </n-button>
-                    <n-button type="error" ghost :disabled="!hasFiles" @click="openRejectModal">
+                    <n-button type="error" ghost @click="openRejectModal">
                       {{ $t('content.cancel') }}
                     </n-button>
-                    <n-button type="success" :disabled="!hasFiles" @click="onOpenConfirmSignature">
+                    <n-button type="success" @click="onOpenConfirmSignature">
                       {{ $t('content.confirm') }}
                     </n-button>
                   </div>
@@ -570,7 +569,7 @@
                         {{ $t('content.refresh') }}
                       </n-button>
                       <span
-                        v-else
+                        v-else-if="store.permissions?.canSignature && showSignature"
                         @click="
                           () => {
                             store.workerApplications = []

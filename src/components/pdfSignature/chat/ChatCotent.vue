@@ -21,9 +21,14 @@
 
   const hasMoreMessages = computed(() => store.messageList.length < store.messagesTotal)
 
-  const loadMoreMessages = () => {
+  // keeps loading pages until the whole history is fetched
+  const topUpIfNeeded = (recipientId) => {
+    if (hasMoreMessages.value) loadMoreMessages(recipientId)
+  }
+
+  const loadMoreMessages = (recipientId = store.payload.recipient_id) => {
     if (store.messagesLoadingMore || !hasMoreMessages.value) return
-    store._messages(store.messagesPage + 1)
+    store._messages(store.messagesPage + 1, recipientId).then(() => topUpIfNeeded(recipientId))
   }
 
   onMounted(() => {
@@ -42,29 +47,6 @@
   onUnmounted(() => {
     loadMoreObserver?.disconnect()
   })
-
-  // Some recipients only have a handful of messages among the document's full
-  // history, so the panel can end up not scrollable even though older pages
-  // still exist — in that case the sentinel is permanently visible and the
-  // IntersectionObserver above never fires again. Top this up until either the
-  // panel actually overflows or the store itself reports no more pages.
-  watch(
-    () => [store.messageList.length, store.messagesLoadingMore, store.chatLoading],
-    () => {
-      nextTick(() => {
-        const el = messagesContainerRef.value
-        if (
-          el &&
-          hasMoreMessages.value &&
-          !store.messagesLoadingMore &&
-          !store.chatLoading &&
-          el.scrollHeight <= el.clientHeight
-        ) {
-          loadMoreMessages()
-        }
-      })
-    }
-  )
 
   const users = computed(() => {
     return store.userList.filter((v) => v.id !== accountStore.account?.id)
@@ -103,7 +85,7 @@
       store.messageList = []
       store.messagesPage = 1
       store.messagesTotal = 0
-      store._messages()
+      store._messages(1, id).then(() => topUpIfNeeded(id))
     }
   )
 
@@ -186,7 +168,7 @@
       </div>
     </div>
 
-    <ChatInput />
+    <ChatInput v-if="!notFoundRecipient" />
   </div>
 </template>
 

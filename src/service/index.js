@@ -70,7 +70,9 @@ instance.interceptors.response.use(
       localStorage.removeItem(useAppSetting.tokenKey)
       await router.push(AppPaths.Login)
     } else if (error.response?.data?.message) {
-      $Toast.error(error.response?.data?.message)
+      if (!error.config?.silentError) {
+        $Toast.error(error.response?.data?.message)
+      }
     } else if (error?.message) {
       $Toast.warning(error.message)
     }
