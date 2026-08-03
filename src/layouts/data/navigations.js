@@ -824,7 +824,9 @@ export const navigations = [
         path: Utils.routeExtraPathMaker(AppPaths.WorkerRole),
         icon: PeopleCheckmark24Filled,
         color: 'bg-primary',
-        permission: appPermissions.extraWorkerUser
+        // Backend real ruxsat = hr-users (route /extra/users, @Permission('hr-users-*')).
+        // extra-worker-user o'lik slug edi — canView(hr-users) endi -read bilan tekshiradi.
+        permission: appPermissions.hrUsers
       },
       {
         label: 'educationDirectory.name', // Ta'lim katalogi

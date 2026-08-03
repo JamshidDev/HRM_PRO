@@ -352,6 +352,19 @@
             />
           </div>
 
+          <!-- Hisoblash kesimi: lavozim (har lavozim qator) yoki xodim (har xodim 1 qator) -->
+          <div class="col-span-12 md:col-span-4">
+            <label>{{ $t('workerPage.filter.countBy') }}</label>
+            <n-select
+              v-model:value="store.params.count_by"
+              :options="[
+                { value: 'position', label: $t('workerPage.filter.countByPosition') },
+                { value: 'worker', label: $t('workerPage.filter.countByWorker') }
+              ]"
+              @update:value="filterEvent"
+            />
+          </div>
+
           <div class="col-span-12 md:col-span-4">
             <label>{{ $t('workerPage.filter.contract_type') }}</label>
             <n-select

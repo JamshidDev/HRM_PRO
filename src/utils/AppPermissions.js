@@ -154,6 +154,12 @@ export const appPermissions = {
   hrUsers: 'hr-users',
   hrUsersWrite: 'hr-users-write',
   hrUsersRead: 'hr-users-read',
+  // Foydalanuvchilar menyusi — per-option (har amal alohida ruxsat)
+  hrUsersAttachRole: 'hr-users-attach-role',
+  hrUsersDetachRole: 'hr-users-detach-role',
+  hrUsersActiveRole: 'hr-users-active-role',
+  hrUsersPassword: 'hr-users-password',
+  hrUsersUpdate: 'hr-users-update',
 
   hrPublicVacancy: 'hr-public-vacancy',
   hrPublicVacancyWrite: 'hr-public-vacancy-write',

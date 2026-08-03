@@ -49,6 +49,12 @@
     return null
   }
   const groupSwitches = (g) => {
+    // Custom per-option guruh (masalan Foydalanuvchilar): har amal alohida switch
+    if (g.actions) {
+      return g.actions
+        .filter((a) => has(a.slug) && (ENFORCED.has(a.slug) || MEANINGFUL.has(a.slug)))
+        .map((a) => ({ name: a.slug, label: a.labelKey ? t(a.labelKey) : a.label }))
+    }
     const out = []
     const rn = meaningfulReadName(g.prefix)
     if (rn) out.push({ name: rn, label: ACTION_LABELS.read })
@@ -99,6 +105,7 @@
       for (const g of mod.groups) {
         s.add(g.prefix) // bare slug (integration-* va boshqa yakka permissionlar)
         for (const a of ACTION_ORDER) s.add(`${g.prefix}-${a}`)
+        if (g.actions) for (const a of g.actions) s.add(a.slug) // custom per-option
       }
     return s
   })
