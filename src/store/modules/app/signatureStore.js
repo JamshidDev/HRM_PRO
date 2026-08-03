@@ -255,12 +255,15 @@ export const useSignatureStore = defineStore('signatureStore', {
         pin: this.workerPin
       }
       $ApiService.documentService
-        ._confirmationDocument({ data })
+        ._confirmationDocument({ data, silentError: true })
         .then((res) => {
           this.loading = false
           callback(res.data)
         })
-        .catch((err) => {})
+        .catch(() => {
+          this.loading = false
+          $Toast.error(t('signature.confirmError'))
+        })
     },
     uiCreateItem(itemKey, vo) {
       let now = new Date()

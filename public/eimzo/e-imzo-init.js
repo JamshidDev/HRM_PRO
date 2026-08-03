@@ -1,11 +1,42 @@
 let EIMZO_MAJOR = 3;
 let EIMZO_MINOR = 37;
 
+var EIMZO_MESSAGES = {
+    uz: {
+        errorCAPIWS: "E-IMZO ga ulanishda xatolik yuz berdi. Sizda E-IMZO moduli yoki E-IMZO brauzeri o'rnatilmagan bo'lishi mumkin!",
+        errorBrowserWS: "Brauzer WebSocket texnologiyasini qo'llab-quvvatlamaydi. Brauzeringizning eng so'nggi versiyasini o'rnating.",
+        errorUpdateApp: "DIQQAT!!! E-IMZO ilovasining yangi versiyasini yoki E-IMZO brauzerini o'rnating.",
+        errorWrongPassword: "Parol noto'g'ri terildi"
+    },
+    ru: {
+        errorCAPIWS: "Ошибка подключения к E-IMZO. Возможно, у вас не установлен модуль или браузер E-IMZO!",
+        errorBrowserWS: "Ваш браузер не поддерживает технологию WebSocket. Установите последнюю версию браузера.",
+        errorUpdateApp: "ВНИМАНИЕ!!! Установите новую версию приложения E-IMZO или браузера E-IMZO.",
+        errorWrongPassword: "Неверно введён пароль"
+    },
+    en: {
+        errorCAPIWS: "Failed to connect to E-IMZO. The E-IMZO module or E-IMZO browser may not be installed!",
+        errorBrowserWS: "Your browser does not support WebSocket. Please install the latest version of your browser.",
+        errorUpdateApp: "ATTENTION!!! Please install a new version of the E-IMZO app or E-IMZO browser.",
+        errorWrongPassword: "Incorrect password entered"
+    },
+    uz_kr: {
+        errorCAPIWS: "Э-ИМЗО га уланишда хатолик юз берди. Сизда Э-ИМЗО модули ёки Э-ИМЗО браузери ўрнатилмаган бўлиши мумкин!",
+        errorBrowserWS: "Браузер WebSocket технологиясини қўллаб-қувватламайди. Браузерингизнинг энг сўнгги версиясини ўрнатинг.",
+        errorUpdateApp: "ДИҚҚАТ!!! Э-ИМЗО иловасининг янги версиясини ёки Э-ИМЗО браузерини ўрнатинг.",
+        errorWrongPassword: "Парол нотўғри терилди"
+    }
+};
 
-let errorCAPIWS = "E-IMZO ga ulanishda xatolik yuz berdi. Sizda E-IMZO moduli yoki E-IMZO brauzeri oʻrnatilmagan boʻlishi mumkin!.";
-let errorBrowserWS = "Brauzer WebSocket texnologiyasini qo'llab-quvvatlamaydi. Brauzeringizning eng so'nggi versiyasini o'rnating.";
-let errorUpdateApp = "DIQQAT!!! E-IMZO ilovasining yangi versiyasini yoki E-IMZO brauzerini o'rnating.";
-let errorWrongPassword = "Parol noto'g'ri terildi";
+function getEimzoLang() {
+    var lang = (typeof localStorage !== 'undefined' && localStorage.getItem('app-language')) || 'uz';
+    return EIMZO_MESSAGES[lang] ? lang : 'uz';
+}
+
+var errorCAPIWS = EIMZO_MESSAGES[getEimzoLang()].errorCAPIWS;
+var errorBrowserWS = EIMZO_MESSAGES[getEimzoLang()].errorBrowserWS;
+var errorUpdateApp = EIMZO_MESSAGES[getEimzoLang()].errorUpdateApp;
+var errorWrongPassword = EIMZO_MESSAGES[getEimzoLang()].errorWrongPassword;
 
 function AppLoad() {
     EIMZOClient.API_KEYS = [
@@ -52,7 +83,9 @@ function uiLoaded() {
 }
 
 function uiShowMessage(message) {
-    // $Toast.error(message)
+    if (typeof window !== 'undefined' && window.$Toast && window.$Toast.error) {
+        window.$Toast.error(message);
+    }
 }
 
 function uiUpdateApp() {

@@ -7,10 +7,7 @@
 
   const emits = defineEmits(['onSuccessEv'])
 
-  const isValid = computed(() => (store.documentComment || '').trim().length >= 10)
-
   const onSubmit = () => {
-    if (!isValid.value) return
     store.documentVisible = false
     const data = {
       status: 4,
@@ -44,12 +41,8 @@
               :rows="4"
               :placeholder="$t('documentPage.signature.rejectReasonPlaceholder')"
               v-model:value="store.documentComment"
-              :status="!isValid && store.documentComment ? 'error' : undefined"
             />
           </n-form-item>
-          <p v-if="!isValid" class="text-xs text-error -mt-2 mb-2">
-            {{ $t('documentPage.signature.rejectReasonRequired') }}
-          </p>
 
           <div class="grid grid-cols-12 gap-4 mt-2">
             <div class="col-span-6">
@@ -67,7 +60,6 @@
                 style="width: 100%"
                 @click="onSubmit"
                 :loading="signatureStore.rejectLoading"
-                :disabled="!isValid"
                 type="error"
               >
                 {{ $t('documentPage.signature.rejectSubmit') }}
