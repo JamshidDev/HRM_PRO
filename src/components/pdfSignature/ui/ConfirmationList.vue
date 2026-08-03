@@ -1,6 +1,6 @@
 <script setup>
   import { UIUser, UIStatus, UIDConfirm } from '@/components/index.js'
-  import { usePdfViewerStore } from '@/store/modules/index.js'
+  import { usePdfViewerStore, useAccountStore } from '@/store/modules/index.js'
   import { Copy20Regular, Link28Filled, Chat20Filled, ArrowLeft20Filled } from '@vicons/fluent'
   import i18 from '@/i18n/index.js'
   import Utils from '@/utils/Utils.js'
@@ -11,7 +11,10 @@
   const { t } = i18.global
 
   const store = usePdfViewerStore()
+  const accountStore = useAccountStore()
   const route = useRoute()
+
+  const isSelf = (item) => item.worker?.id === accountStore.account?.worker?.id
 
   const chatWith = ref(null)
 
@@ -62,6 +65,7 @@
       </div>
       <div v-else class="flex items-center gap-2 min-w-0">
         <span class="font-semibold text-textColor0 truncate">{{ $t('documentPage.signature.viewer') }}</span>
+        <n-badge v-if="store.document?.chats" :value="store.document.chats" :max="99" />
       </div>
     </template>
 
@@ -107,6 +111,7 @@
                 </template>
               </n-button>
               <div
+                v-if="!isSelf(item)"
                 @click="onOpenChat(item)"
                 class="w-8 h-8 rounded-full bg-surface-ground flex items-center justify-center shrink-0 cursor-pointer hover:bg-primary/10 ml-auto"
               >

@@ -36,26 +36,30 @@
       class="organization-modal-tray -mx-6 -mb-6 px-6 pt-6 pb-5 rounded-b-[28px] flex flex-col gap-4"
     >
       <div
-        v-for="(item, idx) in store.roleList"
-        :key="idx"
-        class="organization-modal-row relative overflow-hidden rounded-3xl border-2 p-5 cursor-pointer transition-colors hover:bg-surface-line/40"
-        :class="item.key === store.activeRole ? 'border-primary' : 'border-transparent'"
-        @click="store.changeAccount(item)"
+        class="organization-modal-scroll flex flex-col gap-4 min-h-0 overflow-y-auto"
+        style="max-height: 350px"
       >
-        <img
-          :src="item.key === store.activeRole ? TickIllustration : UserAroundIllustration"
-          alt=""
-          class="pointer-events-none select-none absolute right-4 top-1/2 -translate-y-1/2 object-contain w-20 h-20"
-        />
-        <div class="relative z-10 flex items-center gap-2">
-          <span class="text-lg font-semibold text-textColor0">{{ item.name }}</span>
-          <span class="text-sm font-semibold text-primary bg-primary/10 rounded-full px-3 py-1">
-            {{ item.role }}
-          </span>
-        </div>
-        <div class="relative z-10 flex items-center gap-2 mt-1.5 text-sm text-textColor3">
-          <component :is="portifel" size="16" class="shrink-0" />
-          <span>{{ item.full_name }}</span>
+        <div
+          v-for="(item, idx) in store.roleList"
+          :key="idx"
+          class="organization-modal-row shrink-0 relative overflow-hidden rounded-3xl border-2 border-transparent hover:border-primary p-5 cursor-pointer transition-colors hover:bg-surface-line/40"
+          @click="store.changeAccount(item)"
+        >
+          <img
+            :src="item.key === store.activeRole ? TickIllustration : UserAroundIllustration"
+            alt=""
+            class="pointer-events-none select-none absolute right-4 top-1/2 -translate-y-1/2 object-contain w-20 h-20"
+          />
+          <div class="relative z-10 flex items-center gap-2">
+            <span class="text-lg font-semibold text-textColor0">{{ item.name }}</span>
+            <span class="text-sm font-semibold text-primary bg-primary/10 rounded-full px-3 py-1">
+              {{ item.role }}
+            </span>
+          </div>
+          <div class="relative z-10 flex items-center gap-2 mt-1.5 text-sm text-textColor3">
+            <component :is="portifel" size="16" class="shrink-0" />
+            <span>{{ item.full_name }}</span>
+          </div>
         </div>
       </div>
     </div>
@@ -96,5 +100,19 @@
     .organization-modal-row {
       background-color: var(--surface-ground-soft);
     }
+  }
+
+  /*
+    Native scrollbar rendering (arrow buttons, track length) varies too much
+    across browsers to style reliably here, so it's hidden outright — the
+    list still scrolls fine via wheel/trackpad/touch, just with no visible
+    bar, which sidesteps the cross-browser inconsistency entirely.
+  */
+  .organization-modal-scroll {
+    scrollbar-width: none;
+  }
+
+  .organization-modal-scroll::-webkit-scrollbar {
+    display: none;
   }
 </style>

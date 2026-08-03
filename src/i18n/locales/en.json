@@ -890,6 +890,7 @@
     "legalPerson": "Legal entity",
     "naturalPerson": "Individual",
     "connectionError": "E-signature not installed or misconfigured!",
+    "confirmError": "An error occurred while confirming the document. Please try again shortly.",
     "copyLink": "Copy link",
     "copied": "Link copied",
     "goSignature": "Sign",
