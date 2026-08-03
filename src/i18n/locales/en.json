@@ -902,7 +902,10 @@
     "applicationAcceptDesc": "You can leave a comment (optional).",
     "applicationRejectDesc": "Write the reason for rejection. It will be visible to the employee who submitted the application.",
     "applicationCommentPlaceholder": "Enter your comment...",
-    "pinfl": "PIN"
+    "pinfl": "PIN",
+    "sealKeyLabel": "seal key",
+    "noKeysTitle": "No keys found",
+    "noKeysDesc": "Check that your USB token or ID card is connected."
   },
   "documentPage": {
     "name": "Documents",
