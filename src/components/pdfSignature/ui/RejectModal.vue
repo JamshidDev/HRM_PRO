@@ -56,9 +56,8 @@
               <n-button
                 @click="store.documentVisible = false"
                 :loading="signatureStore.rejectLoading"
-                type="error"
+                secondary
                 style="width: 100%"
-                ghost
               >
                 {{ $t('content.cancel') }}
               </n-button>
@@ -69,7 +68,7 @@
                 @click="onSubmit"
                 :loading="signatureStore.rejectLoading"
                 :disabled="!isValid"
-                type="primary"
+                type="error"
               >
                 {{ $t('documentPage.signature.rejectSubmit') }}
               </n-button>
