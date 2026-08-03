@@ -225,19 +225,19 @@ export const usePdfViewerStore = defineStore('pdfViewerStore', {
         this.msg = ''
       }
     },
-    _messages(page = 1) {
-      if (this.chatLoading || this.messagesLoadingMore) return
+    _messages(page = 1, recipientId = this.payload.recipient_id) {
+      if (this.chatLoading || this.messagesLoadingMore) return Promise.resolve()
       if (page === 1) {
         this.chatLoading = true
       } else {
         this.messagesLoadingMore = true
       }
-      $ApiService.documentChatService
+      return $ApiService.documentChatService
         ._messages({
           params: {
             document_id: this.document_id,
             model: this.model,
-            recipient_id: this.payload.recipient_id,
+            recipient_id: recipientId,
             page
           }
         })
@@ -281,9 +281,13 @@ export const usePdfViewerStore = defineStore('pdfViewerStore', {
       $ApiService.documentChatService
         ._sendMessage({ data })
         .then((res) => {
+          this.chatLoading = false
+          if (this.document) {
+            this.document.chats = (this.document.chats || 0) + 1
+          }
           this._messages()
         })
-        .finally(() => {
+        .catch(() => {
           this.chatLoading = false
         })
     },
