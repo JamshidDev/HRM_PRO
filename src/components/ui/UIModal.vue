@@ -1,5 +1,5 @@
 <script setup>
-  import { ArrowSyncDismiss24Filled } from '@vicons/fluent'
+  import { Dismiss24Regular } from '@vicons/fluent'
 
   const visible = defineModel('visible', { type: Boolean, default: false })
   const emit = defineEmits(['click:close'])
@@ -50,29 +50,31 @@
           overflow: 'hidden',
         } : {})
       }"
-      :content-style="height ? 'flex:1;min-height:0;overflow:hidden;padding:0;display:flex;flex-direction:column;' : ''"
+      :content-style="height ? 'flex:1;min-height:0;overflow:hidden;padding:0;display:flex;flex-direction:column;' : 'padding:0;'"
       closable
     >
       <template #default>
-        <div class="flex flex-col p-2 h-full">
+        <div class="flex flex-col p-2" :class="[height && 'h-full']">
           <div class="w-full shrink-0">
             <slot name="header">
-              <div class="flex justify-between px-4 py-2">
-                <h3 class="text-lg font-medium">
+              <div class="flex items-center justify-between px-4 py-2">
+                <h3 class="text-lg font-semibold text-textColor1">
                   <slot name="header-title">
                     {{ title }}
                   </slot>
                 </h3>
-                <n-icon @click="onClickClose" class="text-[34px] text-red-500 cursor-pointer">
-                  <ArrowSyncDismiss24Filled />
-                </n-icon>
+                <div
+                  @click="onClickClose"
+                  class="w-8 h-8 rounded-full bg-surface-ground hover:bg-surface-line flex items-center justify-center cursor-pointer shrink-0 transition-colors"
+                >
+                  <n-icon size="16" class="text-textColor2">
+                    <Dismiss24Regular />
+                  </n-icon>
+                </div>
               </div>
             </slot>
           </div>
-          <div
-            class="px-4 flex-1 min-h-0"
-            :style="height ? { overflowY: 'auto' } : {}"
-          >
+          <div class="px-4 pb-4" :class="[height && 'flex-1 min-h-0 overflow-y-auto']">
             <slot name="default"> </slot>
           </div>
           <div class="shrink-0" v-if="$slots.footer">

@@ -148,7 +148,7 @@ export const useAccountStore = defineStore('accountStore', {
     _index(callback) {
       const startDate = Date.now()
       this.loading = true
-      $ApiService.accountService
+      return $ApiService.accountService
         ._index({ data: this.payload })
         .then((res) => {
           this.payload = { ...res.data.data.worker, password: null }

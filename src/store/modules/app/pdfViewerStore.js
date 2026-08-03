@@ -184,7 +184,8 @@ export const usePdfViewerStore = defineStore('pdfViewerStore', {
       $ApiService.documentService
         ._history({ params })
         .then((res) => {
-          this.historyList = res.data.data
+          const data = res.data.data
+          this.historyList = Array.isArray(data) ? data : (data?.data ?? [])
         })
         .finally(() => {
           this.show = true
@@ -216,6 +217,7 @@ export const usePdfViewerStore = defineStore('pdfViewerStore', {
       this.messageList = []
       this.messagesPage = 1
       this.messagesTotal = 0
+      this.fileList = []
     },
     _addMessage(msg) {
       if (msg.trim().length > 0) {

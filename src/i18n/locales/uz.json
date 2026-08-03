@@ -230,6 +230,18 @@
     "profile": "Kabinet",
     "asAdmin": "Super admin",
     "setting": "Sozlamalar",
+    "soundNotification": "Ovozli bildirishnoma",
+    "sidebarColor": "Sidebar rangi",
+    "sidebarThemeDefault": "Odatiy",
+    "sidebarThemeIndigo": "Indigo",
+    "sidebarThemeBlue": "Blue",
+    "sidebarThemeGreen": "Green",
+    "customColor": "Maxsus rang",
+    "customColorDesc": "Sayt ranglarini o'zgartiring",
+    "filterGrayscale": "Rangsiz ko'rinish",
+    "filterLowBrightness": "Past yorug'lik",
+    "filterHighBrightness": "Baland yorug'lik",
+    "resetChanges": "O'zgarishlarni bekor qilish",
     "changeAccount": "Hisoblarim",
     "logOutSystem": "Tizmdan chiqish",
     "paginationSize": "{n} tadan ko'rsatish",
@@ -605,6 +617,9 @@
       "title": "Hisob ma'lumotlari",
       "warningText": "Hisobingiz xavfsizligini ta'minlash maqsadida akkaunt ma'lumotlaringizni muntazam ravishda yangilab turishingiz tavsiya etiladi. Bu choralar hisobingizni ruxsatsiz kirishlardan himoya qilishga yordam beradi."
     },
+    "sidebar": {
+      "title": "Profil bo'limlari"
+    },
     "tabs": {
       "profileInfo": "Hisob ma'lumotlar",
       "notification": "Bildirishnomalar",
@@ -902,6 +917,9 @@
     "acceptApplication": "Arizani tasdiqlash",
     "comment": "Izoh",
     "rejectApplication": "Arizani rad qilish",
+    "applicationAcceptDesc": "Izohingizni qoldirishingiz mumkin (ixtiyoriy).",
+    "applicationRejectDesc": "Rad etish sababini yozing. Sabab arizani yuborgan xodimga ko'rinadi.",
+    "applicationCommentPlaceholder": "Izohingizni kiriting...",
     "pinfl": "JSHSHIR"
   },
   "documentPage": {

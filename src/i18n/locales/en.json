@@ -223,6 +223,18 @@
     "profile": "Profile",
     "asAdmin": "Super admin",
     "setting": "Settings",
+    "soundNotification": "Notification sound",
+    "sidebarColor": "Sidebar color",
+    "sidebarThemeDefault": "Default",
+    "sidebarThemeIndigo": "Indigo",
+    "sidebarThemeBlue": "Blue",
+    "sidebarThemeGreen": "Green",
+    "customColor": "Custom color",
+    "customColorDesc": "Change the site's colors",
+    "filterGrayscale": "Grayscale",
+    "filterLowBrightness": "Low brightness",
+    "filterHighBrightness": "High brightness",
+    "resetChanges": "Reset changes",
     "changeAccount": "My accounts",
     "logOutSystem": "Log out",
     "paginationSize": "Show {n} items",
@@ -343,6 +355,8 @@
     "en": "EN",
     "create": "Create",
     "allSelected": "All selected",
+    "sendToSign": "Send to sign",
+    "rejectByMistake": "Return due to error",
     "themeLight": "Light",
     "themeDark": "Dark",
     "themeSystem": "System",
@@ -586,6 +600,9 @@
     "account": {
       "title": "Account information",
       "warningText": "For account security, regularly update your account details. This helps protect against unauthorized access."
+    },
+    "sidebar": {
+      "title": "Profile sections"
     },
     "tabs": {
       "profileInfo": "Account info",
@@ -882,6 +899,9 @@
     "acceptApplication": "Approve application",
     "comment": "Comment",
     "rejectApplication": "Reject application",
+    "applicationAcceptDesc": "You can leave a comment (optional).",
+    "applicationRejectDesc": "Write the reason for rejection. It will be visible to the employee who submitted the application.",
+    "applicationCommentPlaceholder": "Enter your comment...",
     "pinfl": "PIN"
   },
   "documentPage": {

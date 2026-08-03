@@ -1,51 +1,53 @@
 <script setup>
-  import { LockShield20Filled } from '@vicons/fluent'
+  import { Briefcase16Regular, Dismiss24Regular } from '@vicons/fluent'
+  import { UIModal } from '@/components/index.js'
   import { useAccountStore } from '@/store/modules/index.js'
+  import OrgSwitchIllustration from '@/assets/images/content/organization-switch.png'
+
   const store = useAccountStore()
 </script>
 
 <template>
-  <n-modal v-model:show="store.organizationVisible">
-    <n-card
-      style="width: 600px"
-      :bordered="false"
-      size="huge"
-      role="dialog"
-      aria-modal="true"
-      class="bg-surface-ground!"
-    >
-      <div class="flex justify-center items-center mb-4">
-        <span
-          class="border-2 bg-indigo-200 border-primary shadow rounded-full flex justify-center items-center p-1"
+  <UIModal v-model:visible="store.organizationVisible" :width="640" :persistent="false">
+    <template #header>
+      <div class="flex items-center justify-between px-4 py-2">
+        <h3 class="text-2xl font-bold text-textColor0">{{ $t('content.changeAccount') }}</h3>
+        <div
+          @click="store.organizationVisible = false"
+          class="w-9 h-9 rounded-full bg-surface-ground hover:bg-surface-line flex items-center justify-center cursor-pointer shrink-0 transition-colors"
         >
-          <n-icon size="38" class="text-primary font-bold">
-            <LockShield20Filled />
+          <n-icon size="18" class="text-textColor2">
+            <Dismiss24Regular />
           </n-icon>
-        </span>
+        </div>
       </div>
-      <!--      <div class="py-2">-->
-      <!--        <span class="text-xs text-secondary text-center">{{$t('account.changeRoleConfirm')}}</span>-->
-      <!--      </div>-->
-      <n-radio-group v-model:value="store.activeRole" class="w-full">
-        <template v-for="(item, idx) in store.roleList" :key="idx">
-          <div
-            @click="store.changeAccount(item)"
-            class="w-full border border-primary/30 rounded-sm mb-2 p-2 flex cursor-pointer relative bg-gradient-to-b from-primary/10 to-success/3"
-          >
-            <span style="width: 30px" class="flex justify-center items-center">
-              <n-radio size="large" :value="item.key" class="pointer-events-none" />
-            </span>
-            <span class="flex flex-col pl-1" style="width: calc(100% - 30px)">
-              <span class="text-sm font-semibold text-textColor2">{{ item.name }}</span>
-              <span class="text-xs text-secondary">{{ item.full_name }}</span>
-            </span>
-            <span
-              class="absolute text-xs right-[4px] top-[2px] border border-indigo-300 px-1 rounded-2xl text-primary bg-indigo-200 uppercase shadow"
-              >{{ item.role }}</span
-            >
-          </div>
-        </template>
-      </n-radio-group>
-    </n-card>
-  </n-modal>
+    </template>
+
+    <div class="flex flex-col gap-4">
+      <div
+        v-for="(item, idx) in store.roleList"
+        :key="idx"
+        class="relative overflow-hidden rounded-2xl bg-surface-ground p-5 cursor-pointer transition-colors hover:bg-surface-line/60"
+        @click="store.changeAccount(item)"
+      >
+        <img
+          :src="OrgSwitchIllustration"
+          alt=""
+          class="pointer-events-none select-none absolute right-4 top-1/2 -translate-y-1/2 w-24 h-24 object-contain"
+        />
+        <div class="relative z-10 flex items-center gap-2">
+          <span class="text-lg font-semibold text-textColor0">{{ item.name }}</span>
+          <span class="text-sm font-semibold text-primary bg-primary/10 rounded-full px-3 py-1">
+            {{ item.role }}
+          </span>
+        </div>
+        <div class="relative z-10 flex items-center gap-2 mt-1.5 text-sm text-textColor3">
+          <n-icon size="16" class="shrink-0">
+            <Briefcase16Regular />
+          </n-icon>
+          <span>{{ item.full_name }}</span>
+        </div>
+      </div>
+    </div>
+  </UIModal>
 </template>

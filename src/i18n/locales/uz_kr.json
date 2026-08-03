@@ -150,6 +150,18 @@
     "profile": "Кабинет",
     "asAdmin": "Супер админ",
     "setting": "Созламалар",
+    "soundNotification": "Овозли билдиришнома",
+    "sidebarColor": "Сидебар ранги",
+    "sidebarThemeDefault": "Одатий",
+    "sidebarThemeIndigo": "Индиго",
+    "sidebarThemeBlue": "Блю",
+    "sidebarThemeGreen": "Грин",
+    "customColor": "Махсус ранг",
+    "customColorDesc": "Сайт рангларини ўзгартиринг",
+    "filterGrayscale": "Рангсиз кўриниш",
+    "filterLowBrightness": "Паст ёруғлик",
+    "filterHighBrightness": "Баланд ёруғлик",
+    "resetChanges": "Ўзгаришларни бекор қилиш",
     "changeAccount": "Ҳисобларим",
     "logOutSystem": "Тизмдан чиқиш",
     "paginationSize": "{n} тадан кўрсатиш",
@@ -509,6 +521,9 @@
       "title": "Ҳисоб маълумотлари",
       "warningText": "Ҳисобингиз хавфсизлигини таъминлаш мақсадида аккаунт маълумотларингизни мунтазам равишда янгилаб туришингиз тавсия этилади. Бу чоралар ҳисобингизни рухсатсиз киришлардан ҳимоя қилишга ёрдам беради."
     },
+    "sidebar": {
+      "title": "Профил бўлимлари"
+    },
     "tabs": {
       "profileInfo": "Ҳисоб маълумотлар",
       "notification": "Билдиришномалар",
@@ -794,6 +809,9 @@
     "acceptApplication": "Аризани тасдиқлаш",
     "comment": "Изоҳ",
     "rejectApplication": "Аризани рад қилиш",
+    "applicationAcceptDesc": "Изоҳингизни қолдиришингиз мумкин (ихтиёрий).",
+    "applicationRejectDesc": "Рад этиш сабабини ёзинг. Сабаб аризани юборган ходимга кўринади.",
+    "applicationCommentPlaceholder": "Изоҳингизни киритинг...",
     "pinfl": "ЖШШИР"
   },
   "documentPage": {
