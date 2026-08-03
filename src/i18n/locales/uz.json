@@ -712,7 +712,12 @@
       "countByWorker": "Xodim bo'yicha",
       "age": "Yoshi",
       "quickActions": "Tezkor amallar",
-      "downloadRelative": "Qarindoshlarni yuklash"
+      "downloadRelative": "Qarindoshlarni yuklash",
+      "generateReport": "Hisobot yaratish",
+      "generateReportDesc": "Hisobot yaratish uchun xodimlarni belgilang",
+      "relativesReport": "Qarindoshlar bo'yicha",
+      "excelFile": "Excel fayl",
+      "downloadInfo": "Ma'lumotni yuklash"
     },
     "checkWorker": {
       "title": "Xodim izlash",
@@ -748,7 +753,12 @@
     "exportAction": "Eksport qilish",
     "checkAll": "Barchasini tanlash",
     "addPassport": "Passport ma'lumotlari ham qo'shib yuklansinmi?",
-    "chooseExport": "Maydonlarni tanlash"
+    "passportYes": "Ha yuklansin",
+    "passportNo": "Yo'q faqat ma'lumotlar yuklansin",
+    "chooseExport": "Maydonlarni tanlash",
+    "excelSettings": "Excel jadvalini sozlash",
+    "selectColumns": "Jadval ustunlarini belgilang",
+    "columnOrder": "Jadval ustunlar joylashuvini sozlang"
   },
   "contactPage": {
     "name": "Kontaktlar"

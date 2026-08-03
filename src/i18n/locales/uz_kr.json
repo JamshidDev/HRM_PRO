@@ -612,7 +612,12 @@
       "pension_age": "Пенсия ёшидаги ходимлар",
       "position_type": "Лавозим тури",
       "age": "Ёши",
-      "downloadRelative": "Қариндошларни юклаш"
+      "downloadRelative": "Қариндошларни юклаш",
+      "generateReport": "Ҳисобот яратиш",
+      "generateReportDesc": "Ҳисобот яратиш учун ходимларни белгиланг",
+      "relativesReport": "Қариндошлар бўйича",
+      "excelFile": "Excel файл",
+      "downloadInfo": "Маълумотни юклаш"
     },
     "checkWorker": {
       "title": "Ходим излаш",
@@ -645,7 +650,12 @@
     "exportAction": "Экспорт қилиш",
     "checkAll": "Барчасини танлаш",
     "addPassport": "Паспорт маълумотлари ҳам қўшиб юклансинми?",
-    "chooseExport": "Майдонларни танлаш"
+    "passportYes": "Ҳа юклансин",
+    "passportNo": "Йўқ фақат маълумотлар юклансин",
+    "chooseExport": "Майдонларни танлаш",
+    "excelSettings": "Excel жадвалини созлаш",
+    "selectColumns": "Жадвал устунларини белгиланг",
+    "columnOrder": "Жадвал устунлар жойлашувини созланг"
   },
   "contactPage": {
     "name": "Контактлар"

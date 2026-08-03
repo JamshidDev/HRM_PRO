@@ -6,10 +6,12 @@
     useAccountStore
   } from '@/store/modules/index.js'
   import { UINSelect, UIPageFilter, UISelect } from '@/components/index.js'
-  import { ChevronDown20Regular, ChevronUp20Regular } from '@vicons/fluent'
+  import { ArrowSync16Regular, ChevronDown20Regular, ChevronUp20Regular } from '@vicons/fluent'
   import Utils from '@/utils/Utils.js'
   import { appPermissions, useDebounce } from '@/utils/index.js'
-  import QuickActions from './QuickActions.vue'
+  import ReportPanel from './ReportPanel.vue'
+  import contractIcon from '@/assets/icons/contract.svg?url'
+  import reportIcon from '@/assets/icons/reportIcon.svg?url'
 
   const store = useWorkerStore()
   const accStore = useAccountStore()
@@ -211,9 +213,14 @@
     exportStore.visible = true
   }
 
-  const onExportResume = () => {
+  const openReportPanel = () => {
     exportStore.resetResumePayload()
-    exportStore.isExportingResume = !exportStore.isExportingResume
+    exportStore.isExportingResume = true
+  }
+
+  const closeReportPanel = () => {
+    exportStore.isExportingResume = false
+    exportStore.resetResumePayload()
   }
 
   const onSubmitResumeExport = () => {
@@ -222,6 +229,10 @@
 
   const canWrite = computed(() => accStore.checkAction(appPermissions.hrExport))
   const canZip = computed(() => accStore.checkAction(appPermissions.exportWorkersZip))
+
+  const selectedCount = computed(() =>
+    exportStore.resumePayload.all ? store.totalItems : exportStore.resumePayload.worker_ids.length
+  )
 
   const defaultEv = (v) => {
     store.params.organizations = v
@@ -232,6 +243,16 @@
 </script>
 
 <template>
+  <div class="worker-page-header">
+    <h1 class="worker-page-title">{{ $t('workerPage.name') }}</h1>
+    <n-button type="primary" tertiary @click="store._index()" :loading="store.loading">
+      {{ $t('content.refresh') }}
+      <template #icon>
+        <n-icon><ArrowSync16Regular /></n-icon>
+      </template>
+    </n-button>
+  </div>
+
   <UIPageFilter
     :search-loading="store.loading"
     :filter-count="filterCount"
@@ -240,34 +261,47 @@
     @onClear="clearFilter"
     @show="onShow"
     :show-add-button="false"
-    filter-placement="bottom-start"
+    filter-placement="bottom-end"
     :popover-style="{
       width: '712px',
       maxWidth: 'calc(100vw - 32px)',
       padding: '0',
-      borderRadius: '20px',
-      translate: '150px 12px'
+      borderRadius: '20px'
     }"
   >
     <template #filterAction>
-      <div class="order-2 w-full md:w-auto">
-        <QuickActions
-          :can-write="canWrite"
-          :can-zip="canZip"
-          :loading="store.loading"
-          :reference-active="exportStore.isExportingResume"
-          :selected-count="
-            exportStore.resumePayload.all
-              ? store.totalItems
-              : exportStore.resumePayload.worker_ids.length
-          "
-          @contract="onAdd"
-          @export="onExport"
-          @reference="onExportResume"
-          @download-reference="onSubmitResumeExport"
-          @relatives="store._downloadRelative"
-        />
+      <div class="flex flex-wrap items-center gap-3 w-full md:w-auto">
+        <n-button v-if="canWrite" type="primary" @click="onAdd">
+          <template #icon>
+            <img class="worker-action-icon" :src="contractIcon" alt="" />
+          </template>
+          {{ $t('workerPage.filter.contract') }}
+        </n-button>
+
+        <button
+          type="button"
+          class="worker-report-trigger"
+          :disabled="exportStore.isExportingResume"
+          @click="openReportPanel"
+        >
+          <img :src="reportIcon" alt="" />
+          {{ $t('workerPage.filter.generateReport') }}
+        </button>
       </div>
+    </template>
+
+    <template #fullFilterContent>
+      <ReportPanel
+        v-if="exportStore.isExportingResume"
+        :selected-count="selectedCount"
+        :can-write="canWrite"
+        :can-zip="canZip"
+        :loading="store.loading"
+        @relatives="store._downloadRelative"
+        @export="onExport"
+        @reference="onSubmitResumeExport"
+        @close="closeReportPanel"
+      />
     </template>
 
     <template #filterContent>
@@ -582,6 +616,70 @@
 </template>
 
 <style scoped>
+  .worker-page-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  .worker-page-title {
+    margin: 0;
+    color: var(--textColor0);
+    font-size: 24px;
+    font-weight: 700;
+  }
+
+  .worker-action-icon {
+    width: 16px;
+    height: 16px;
+    filter: brightness(0) invert(1);
+  }
+
+  .worker-report-trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    height: 34px;
+    padding: 0 16px;
+    border: 0;
+    border-radius: 8px;
+    color: #fff;
+    background: linear-gradient(135deg, #6a5cf5, #4b3df0);
+    box-shadow: 0 6px 16px rgba(75, 61, 240, 0.24);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition:
+      opacity 160ms ease,
+      box-shadow 160ms ease;
+  }
+
+  .worker-report-trigger img {
+    width: 16px;
+    height: 16px;
+    filter: brightness(0) invert(1);
+  }
+
+  .worker-report-trigger:hover:not(:disabled) {
+    box-shadow: 0 8px 20px rgba(75, 61, 240, 0.32);
+  }
+
+  .worker-report-trigger:disabled {
+    box-shadow: none;
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  @media (max-width: 767px) {
+    .worker-report-trigger {
+      justify-content: center;
+      width: 100%;
+    }
+  }
+
   .worker-filter-panel label {
     display: block;
     margin-bottom: 6px;
