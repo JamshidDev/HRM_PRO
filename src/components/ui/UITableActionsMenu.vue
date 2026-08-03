@@ -11,18 +11,27 @@ import { MoreVertical24Filled } from '@vicons/fluent'
   const emits = defineEmits(['select'])
 
   const visible = ref(false)
+  // Delete tasdig'i ochilganda tanlangan (key, option) shu yerda saqlanadi —
+  // "Ha" tugmasi @click event yuboradi, shuning uchun original tanlovni
+  // shu yerdan qayta emit qilamiz (aks holda option=undefined -> parent .action crash).
+  const pending = ref(null)
 
   const onSelect = (key, option) => {
     if (key === Utils.ActionTypes.delete) {
+      pending.value = { key, option }
       visible.value = true
     } else {
       emits('select', key, option)
     }
   }
 
-  const onDelete = (key, option) => {
+  const onDelete = () => {
     visible.value = false
-    emits('select', key, option)
+    const selected = pending.value
+    pending.value = null
+    if (selected) {
+      emits('select', selected.key, selected.option)
+    }
   }
 </script>
 

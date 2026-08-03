@@ -42,11 +42,7 @@
 </script>
 
 <template>
-  <div
-    ref="containerRef"
-    class="flex flex-col overflow-y-auto bg-surface-section"
-    style="height: calc(100vh - 60px)"
-  >
+  <div ref="containerRef" class="flex flex-col overflow-y-auto bg-surface-section h-full">
     <div class="flex pt-2 px-1 border-b border-surface-line mb-4 text-[#90A1B9]">
       <div class="w-[24px]">
         <n-icon size="24" class="text-[#90A1B9] cursor-pointer text-wrap">
