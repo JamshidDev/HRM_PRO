@@ -904,7 +904,10 @@
     "applicationAcceptDesc": "Вы можете оставить комментарий (необязательно).",
     "applicationRejectDesc": "Напишите причину отклонения. Причина будет видна сотруднику, отправившему заявление.",
     "applicationCommentPlaceholder": "Введите комментарий...",
-    "pinfl": "ПИНФЛ"
+    "pinfl": "ПИНФЛ",
+    "sealKeyLabel": "печать",
+    "noKeysTitle": "Ключи не найдены",
+    "noKeysDesc": "Проверьте, что USB-токен или ID-карта подключены."
   },
   "documentPage": {
     "name": "Документы",

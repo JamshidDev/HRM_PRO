@@ -136,6 +136,7 @@
     store.loading = true
     store.viewerLoading = false
     const startedAt = Date.now()
+    let shouldLoadPdf = false
     $ApiService.documentService
       ._openDocument({ params: { model, document_id } })
       .then((res) => {
@@ -173,20 +174,24 @@
           store.permissions.canSignature = false
           store.permissions.canEdit = false
         } else {
-          store.loadPdf()
+          shouldLoadPdf = true
         }
       })
       .catch(() => {
         autoClose()
       })
       .finally(() => {
+        const finish = () => {
+          store.loading = false
+          if (shouldLoadPdf) {
+            nextTick(() => store.loadPdf())
+          }
+        }
         const remaining = MIN_LOADING_TIME - (Date.now() - startedAt)
         if (remaining > 0) {
-          setTimeout(() => {
-            store.loading = false
-          }, remaining)
+          setTimeout(finish, remaining)
         } else {
-          store.loading = false
+          finish()
         }
       })
   }

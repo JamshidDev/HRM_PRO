@@ -1,15 +1,56 @@
 <script setup>
   import { useSignatureStore } from '@/store/modules/index.js'
-  import { UsbStick24Filled, CheckmarkCircle16Filled } from '@vicons/fluent'
+  import {
+    UsbStick24Filled,
+    CheckmarkCircle16Filled,
+    ErrorCircle24Filled,
+    ArrowSyncCircle16Filled
+  } from '@vicons/fluent'
   import Utils from '@/utils/Utils.js'
   import { useAppSetting } from '@/utils/index.js'
   const store = useSignatureStore()
+
+  const hasKeys = computed(() => store.usbVisible || store.allKeys.length > 0)
+
+  const onRefreshKeys = async () => {
+    store.loading = true
+    try {
+      await store._checkVersion()
+      store.checkListKey()
+      store.checkCardPluggedIn()
+    } finally {
+      store.loading = false
+    }
+  }
+
+  const selected = ref(null)
 
   // eslint-disable-next-line vue/return-in-computed-property
   const activeCallback = computed(() => {
     if (store.signatureType === store.signatureTypes.auth) return store._auth
     if (store.signatureType === store.signatureTypes.contract) return store._contract
   })
+
+  const canContinue = computed(() => {
+    if (selected.value === 'usb') return store.usbVisible
+    if (typeof selected.value === 'number') return !!store.allKeys[selected.value]?.isValid
+    return false
+  })
+
+  const onContinue = () => {
+    if (selected.value === 'usb') {
+      store._accepted(useAppSetting.signatureUseType.idCard, activeCallback.value)
+    } else if (typeof selected.value === 'number') {
+      store._accepted(selected.value, activeCallback.value)
+    }
+  }
+
+  watch(
+    () => store.visible,
+    (v) => {
+      if (v) selected.value = null
+    }
+  )
 
   onMounted(async () => {
     // window.onload = await store._initialSignature
@@ -19,9 +60,9 @@
 <template>
   <n-modal v-model:show="store.visible">
     <n-card
-      style="width: 700px; --n-border-radius: 20px"
+      style="width: 640px; --n-border-radius: 20px"
       :bordered="false"
-      size="huge"
+      size="medium"
       role="dialog"
       aria-modal="true"
       closable
@@ -33,94 +74,130 @@
           {{ $t('documentPage.signature.keySelectTitle') }}
         </div>
       </template>
-      <p v-if="store.signatureType === store.signatureTypes.contract" class="text-sm text-gray-400 mb-3">
+      <p
+        v-if="store.signatureType === store.signatureTypes.contract && hasKeys"
+        class="text-sm text-gray-400 mb-3"
+      >
         {{ $t('documentPage.signature.keySelectDesc') }}
       </p>
       <n-spin :show="store.loading" class="min-h-[100px]">
-        <div class="flex flex-col w-full max-h-[420px] overflow-y-auto px-1 space-y-2.5">
+        <div
+          v-if="!hasKeys"
+          class="flex flex-col items-center justify-center text-center py-10 mb-4"
+        >
+          <div class="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center mb-3">
+            <n-icon size="22" class="text-primary">
+              <ErrorCircle24Filled />
+            </n-icon>
+          </div>
+          <h3 class="text-base font-semibold text-textColor1 mb-1">
+            {{ $t('signature.noKeysTitle') }}
+          </h3>
+          <p class="text-sm text-gray-400 max-w-[360px] mb-3">
+            {{ $t('signature.noKeysDesc') }}
+          </p>
+          <n-button @click="onRefreshKeys" tertiary size="small">
+            <template #icon>
+              <n-icon size="16">
+                <ArrowSyncCircle16Filled />
+              </n-icon>
+            </template>
+            {{ $t('content.refresh') }}
+          </n-button>
+        </div>
+        <div v-else class="flex flex-col w-full max-h-[420px] overflow-y-auto space-y-2.5 mb-4">
           <div
-            @click="store._accepted(useAppSetting.signatureUseType.idCard, activeCallback)"
-            class="flex justify-center gap-3 items-center bg-surface-ground border border-surface-line rounded-2xl min-h-[64px] transition-colors"
+            v-if="store.usbVisible"
+            @click="selected = 'usb'"
+            class="flex items-center gap-3 border rounded-2xl px-4 py-3 cursor-pointer transition-colors"
             :class="[
-              store.usbVisible
-                ? 'cursor-pointer hover:border-primary hover:bg-primary/5'
-                : 'cursor-not-allowed'
+              selected === 'usb'
+                ? 'border-primary bg-primary/5'
+                : 'border-surface-line hover:border-primary/40'
             ]"
           >
-            <n-icon size="28" :class="[store.usbVisible ? 'text-success' : 'text-textColor3']">
+            <div
+              class="w-4 h-4 rounded-full border-2 flex items-center justify-center shrink-0"
+              :class="[selected === 'usb' ? 'border-primary' : 'border-surface-line']"
+            >
+              <div v-if="selected === 'usb'" class="w-2 h-2 rounded-full bg-primary"></div>
+            </div>
+            <n-icon size="24" class="text-success">
               <UsbStick24Filled />
             </n-icon>
-            <span
-              class="font-semibold uppercase text-lg"
-              :class="[store.usbVisible ? 'text-success' : 'text-textColor3 line-through']"
-            >{{ $t('content.loginByUsb') }}</span>
+            <span class="font-semibold uppercase text-textColor0">
+              {{ $t('content.loginByUsb') }}
+            </span>
           </div>
+
           <template v-for="(key, idx) in store.allKeys" :key="idx">
             <div
-              @click="store._accepted(idx, activeCallback)"
-              :class="[!key.isValid && 'bg-danger/6']"
-              class="grid grid-cols-12 gap-y-3 w-full bg-surface-ground border border-surface-line rounded-2xl px-5 py-4 cursor-pointer transition-all hover:border-primary hover:shadow-sm"
+              @click="key.isValid && (selected = idx)"
+              class="flex items-center justify-between gap-3 border rounded-2xl px-4 py-3 transition-colors"
+              :class="[
+                !key.isValid
+                  ? 'opacity-60 cursor-not-allowed border-surface-line'
+                  : 'cursor-pointer',
+                key.isValid && selected === idx
+                  ? 'border-primary bg-primary/5'
+                  : key.isValid && 'border-surface-line hover:border-primary/40'
+              ]"
             >
-              <div
-                class="col-span-12 font-bold text-base mb-1 text-textColor0 flex items-center gap-3"
+              <div class="flex items-center gap-3 min-w-0">
+                <div
+                  v-if="key.isValid"
+                  class="w-4 h-4 rounded-full border-2 flex items-center justify-center shrink-0"
+                  :class="[selected === idx ? 'border-primary' : 'border-surface-line']"
+                >
+                  <div v-if="selected === idx" class="w-2 h-2 rounded-full bg-primary"></div>
+                </div>
+                <div class="min-w-0">
+                  <div class="font-bold text-textColor0 truncate">
+                    {{ key?.fullName
+                    }}<template v-if="key.key_type === 'signature.legalPerson'">
+                      — {{ $t('signature.sealKeyLabel') }}
+                    </template>
+                  </div>
+                  <div class="text-sm text-textColor3 truncate">
+                    {{
+                      key.key_type === 'signature.legalPerson'
+                        ? $t('signature.inn')
+                        : $t('signature.pinfl')
+                    }}:
+                    {{ key.key_type === 'signature.legalPerson' ? key?.inn : key?.pinfl }}
+                    ·
+                    {{ key.isValid ? $t('signature.validKey') : $t('signature.notValidDate') }}:
+                    {{ Utils.timeWithMonth(key?.validDate) }}
+                  </div>
+                </div>
+              </div>
+              <n-button
+                :type="key.isValid ? 'success' : 'error'"
+                size="tiny"
+                secondary
+                class="shrink-0"
               >
-                {{ key?.fullName }}
-                <n-button v-if="!key.isValid" type="error" size="tiny" secondary>
-                  {{
-                    $t('signature.notValidDate')
-                  }}
-                </n-button>
-                <n-button v-else type="success" size="tiny" secondary>
-                  <template #icon>
-                    <n-icon>
-                      <CheckmarkCircle16Filled />
-                    </n-icon>
-                  </template>
-                  {{ $t('signature.validKey') }}
-                </n-button>
-              </div>
-
-              <div class="col-span-4 font-bold">
-                <span class="text-[11px] font-medium uppercase tracking-wide block text-textColor3 mb-0.5">{{
-                  $t('signature.pinfl')
-                }}</span>
-                <span class="text-sm block font-semibold text-textColor2">{{ key?.pinfl }}</span>
-              </div>
-              <div class="col-span-4 font-bold">
-                <span class="text-[11px] font-medium uppercase tracking-wide block text-textColor3 mb-0.5">{{
-                  $t('signature.inn')
-                }}</span>
-                <span class="text-sm block font-semibold text-textColor2">{{ key?.inn }}</span>
-              </div>
-              <div class="col-span-4 font-bold">
-                <span class="text-[11px] font-medium uppercase tracking-wide block text-textColor3 mb-0.5">{{
-                  $t('signature.keyType')
-                }}</span>
-                <span class="text-primary text-sm block font-semibold">{{
-                  $t(key?.key_type)
-                }}</span>
-              </div>
-              <div class="col-span-4 font-bold">
-                <span class="text-[11px] font-medium uppercase tracking-wide block text-textColor3 mb-0.5">{{
-                  $t('signature.certificate')
-                }}</span>
-                <span class="text-sm block font-semibold text-textColor2">{{
-                  key?.certificate
-                }}</span>
-              </div>
-              <div class="col-span-4 font-bold">
-                <span class="text-[11px] font-medium uppercase tracking-wide block text-textColor3 mb-0.5">{{
-                  $t('signature.validDate')
-                }}</span>
-                <span
-                  :class="[!key?.isValid && '!text-danger']"
-                  class="text-sm block font-semibold text-textColor2"
-                >{{ Utils.timeWithMonth(key?.validDate) }}</span>
-              </div>
+                <template #icon>
+                  <n-icon>
+                    <CheckmarkCircle16Filled v-if="key.isValid" />
+                    <ErrorCircle24Filled v-else />
+                  </n-icon>
+                </template>
+                {{ key.isValid ? $t('signature.validKey') : $t('signature.notValidDate') }}
+              </n-button>
             </div>
           </template>
         </div>
       </n-spin>
+
+      <div class="grid grid-cols-2 gap-3">
+        <n-button secondary @click="store.visible = false">
+          {{ $t('content.cancel') }}
+        </n-button>
+        <n-button type="success" :disabled="!canContinue" @click="onContinue">
+          {{ $t('content.continue') }}
+        </n-button>
+      </div>
     </n-card>
   </n-modal>
 </template>
