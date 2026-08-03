@@ -1,10 +1,11 @@
 <script setup>
-  import { ArrowUpRight16Regular, Copy16Regular, PersonAdd20Regular } from '@vicons/fluent'
+  import { ArrowUpRight16Regular, Copy16Regular } from '@vicons/fluent'
   import { useMessage } from 'naive-ui'
   import i18n from '@/i18n/index.js'
   import SectionHeader from '@/components/worker/ui/shared/SectionHeader.vue'
   import GroupIllustration from '@/assets/images/content/social-group.png'
   import BotIllustration from '@/assets/images/content/social-bot.png'
+  import UserPlusIcon from '@/assets/icons/userPlus.svg'
 
   const { t } = i18n.global
   const message = useMessage()
@@ -44,7 +45,7 @@
 </script>
 
 <template>
-  <SectionHeader :title="$t('profilePage.tabs.social.title')" :icon="PersonAdd20Regular" plain large>
+  <SectionHeader :title="$t('profilePage.tabs.social.title')" :icon="UserPlusIcon" plain large>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
       <div class="relative overflow-hidden rounded-2xl bg-surface-ground p-5 min-h-[190px]">
         <img
