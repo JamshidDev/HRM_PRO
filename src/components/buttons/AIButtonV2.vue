@@ -1,19 +1,23 @@
 <template>
   <div
-    class="ai-button flex items-center gap-1.5 h-11 px-4 rounded-full cursor-pointer relative overflow-hidden"
+    class="ai-button flex items-center justify-center w-12 h-12 rounded-full cursor-pointer relative overflow-hidden"
   >
-    <n-icon class="text-base text-white top-2 relative z-[2]">
-      <Sparkle20Filled />
+    <n-icon size="20" class="text-white relative z-[2]">
+      <component :is="icon" />
     </n-icon>
-    <span class="text-white text-sm font-medium whitespace-nowrap relative top-2 z-[2]">{{
-      $t('aiConversation.aiAssistant')
-    }}</span>
     <span class="bg-overall"></span>
   </div>
 </template>
 
 <script setup>
   import { Sparkle20Filled } from '@vicons/fluent'
+
+  defineProps({
+    icon: {
+      type: [Object, Function],
+      default: () => Sparkle20Filled
+    }
+  })
 </script>
 
 <style scoped>
