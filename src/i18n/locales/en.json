@@ -1076,6 +1076,8 @@
       "continue": "Continue",
       "emptyFilesTitle": "No document attached",
       "emptyFilesDesc": "No file has been attached to this document yet. At least one file must be attached to confirm it.",
+      "loadErrorTitle": "Failed to load document",
+      "loadErrorDesc": "The document could not be loaded. Please try refreshing.",
       "fileOpenError": "Couldn't open the file",
       "fileOpenErrorDesc": "The file format isn't supported or the file failed to load from the server. Try again or download the file.",
       "fileOpenErrorSubtitle": "Couldn't open the file",
