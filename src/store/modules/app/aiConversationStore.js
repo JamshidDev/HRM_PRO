@@ -130,7 +130,7 @@ export const useAIConversationStore = defineStore('AIConversationStore', {
 
     async sendMessage(e) {
       const store = useAccountStore()
-      e.preventDefault()
+      e?.preventDefault()
       if (this.payload.question.trim().length > 0 && !this.loading) {
         const data = {
           ...this.payload

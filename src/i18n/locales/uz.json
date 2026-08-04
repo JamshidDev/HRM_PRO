@@ -238,10 +238,12 @@
     "sidebarThemeGreen": "Green",
     "customColor": "Maxsus rang",
     "customColorDesc": "Sayt ranglarini o'zgartiring",
+    "appearanceMode": "Ko'rinish",
     "filterGrayscale": "Rangsiz ko'rinish",
     "filterLowBrightness": "Past yorug'lik",
     "filterHighBrightness": "Baland yorug'lik",
-    "resetChanges": "O'zgarishlarni bekor qilish",
+    "textSize": "Matn hajmi",
+    "resetChanges": "Standartga qaytarish",
     "changeAccount": "Hisoblarim",
     "logOutSystem": "Tizmdan chiqish",
     "paginationSize": "{n} tadan ko'rsatish",
@@ -2312,6 +2314,17 @@
     "canIHelpYouToday": "Bugun sizga qanday yordam bera olaman?",
     "aiAssistant": "AI Yordamchi",
     "welcomeTo": "Xush kelibsiz, {n}",
+    "greeting": {
+      "morning": "Xayrli tong, {n}",
+      "day": "Xayrli kun, {n}",
+      "evening": "Xayrli kech, {n}"
+    },
+    "suggestions": {
+      "leaveBalance": "Ta'til qancha qoldi?",
+      "lastSalary": "Oxirgi oylik hisobim",
+      "getReference": "Ma'lumotnoma olish",
+      "workedDays": "Bu oy necha kun ishladim?"
+    },
     "disclaimer": {
       "cardOne": "### 🧪 Test rejimi\n\nUshbu sun’iy intellekt yordamchisi hozirda **test rejimida** ishlamoqda.  \nJavoblari hali to‘liq shakllanmagan va _noto‘g‘ri bo‘lishi mumkin_.",
       "cardTwo": "### 📚 Huquqiy hujjatlar yuklanmoqda\n\nBot hozircha faqat **O‘zbekiston Respublikasi Mehnat kodeksi** asosida o‘rganmoqda.  \n_Boshqa qonun hujjatlari hali to‘liq yuklanmagan yoki o‘rganilmagan._",

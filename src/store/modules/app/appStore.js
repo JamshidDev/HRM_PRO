@@ -64,6 +64,7 @@ export const useAppStore = defineStore('appStore', {
     sidebarTheme: useAppSetting.defaultSidebarTheme,
     soundEnabled: true,
     screenFilter: useAppSetting.defaultScreenFilter,
+    fontScale: useAppSetting.defaultFontScale,
     profileSettingsVisible: false,
     skipReset: true,
     wrongPinsLoading: false
@@ -145,8 +146,19 @@ export const useAppStore = defineStore('appStore', {
       this.applyScreenFilter()
     },
 
-    resetAccessibilitySettings() {
+    applyFontScale() {
+      document.documentElement.style.fontSize = `${100 + this.fontScale / 2}%`
+    },
+    setFontScale(value) {
+      this.fontScale = value
+      localStorage.setItem(useAppSetting.fontScaleKey, value)
+      this.applyFontScale()
+    },
+
+    resetProfileSettings() {
       this.setScreenFilter(useAppSetting.defaultScreenFilter)
+      this.setFontScale(useAppSetting.defaultFontScale)
+      this.setSidebarTheme(useAppSetting.defaultSidebarTheme)
     },
 
     openProfileSettings() {
@@ -170,6 +182,11 @@ export const useAppStore = defineStore('appStore', {
       this.screenFilter =
         localStorage.getItem(useAppSetting.screenFilterKey) || useAppSetting.defaultScreenFilter
       this.applyScreenFilter()
+
+      this.fontScale =
+        parseInt(localStorage.getItem(useAppSetting.fontScaleKey), 10) ||
+        useAppSetting.defaultFontScale
+      this.applyFontScale()
 
       prefersDarkMedia.addEventListener('change', () => {
         if (this.themeMode === 'system') {
