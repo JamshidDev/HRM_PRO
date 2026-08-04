@@ -14,6 +14,7 @@
   import JshirIcon from '@/assets/icons/jshirIcon.svg'
   import IdRailWayDetail from '../../ui/IdRailWayDetail.vue'
   import IdForeignDetail from '../../ui/IdForeignDetail.vue'
+  import IdRedCertificate from '../../ui/IdRedCertificate.vue'
 
   const { t } = i18n.global
   const store = useComponentStore()
@@ -23,7 +24,8 @@
   const tabList = computed(() => [
     { id: 1, label: t('workerView.Edocument.pasport'), icon: IdCardIcon },
     { id: 2, label: t('workerView.Edocument.railway_pasport'), icon: IdCardIcon },
-    { id: 3, label: t('workerView.Edocument.foreign_pasport'), icon: IdCardIcon }
+    { id: 3, label: t('workerView.Edocument.foreign_pasport'), icon: IdCardIcon },
+    { id: 4, label: t('workerView.Edocument.position_certificate'), icon: IdCardIcon }
   ])
 
   const worker = computed(() => store.workerPreview?.worker || {})
@@ -107,6 +109,23 @@
       personalNumber: w.pin
     }
   })
+
+  // TODO: hardcoded placeholder until the position-certificate API is wired up.
+  // Swap this for a computed derived from worker.value.position_certificates?.[0].
+  const idRedCertificateData = computed(() => {
+    const w = worker.value
+    return {
+      photoUrl: photoUrl.value,
+      cardNumber: '00123',
+      fullName: [w.last_name, w.first_name, w.middle_name].filter(Boolean).join(' '),
+      postName: "Toshkent temir yo'l inshootlari,\nyo'l mashinalari boshqarmasi, muhandis",
+      issueDate: '2022-05-14',
+      expiryDate: '2027-05-14',
+      extendedDate: '2027-06-06',
+      managerName: 'A. Rashidov',
+      signature: [w.first_name, w.last_name].filter(Boolean).join(' ')
+    }
+  })
 </script>
 
 <template>
@@ -143,6 +162,10 @@
           <h4 v-else class="w-full text-center text-secondary">
             {{ $t('content.no-data') }}
           </h4>
+        </template>
+
+        <template v-else-if="activeId === 4">
+          <IdRedCertificate :data="idRedCertificateData" class="w-full" />
         </template>
       </div>
     </SectionHeader>

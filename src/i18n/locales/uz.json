@@ -1654,7 +1654,7 @@
       "punishment": "Intizomiy jazo",
       "exams": "Imtihonlar",
       "e_documents": "Raqamli-hujjatlar",
-      "turnstile": "Turniket"
+      "turnstile": "Turniket ma’lumotlar"
     },
     "header": {
       "title": "Xodim profili",
@@ -1705,6 +1705,7 @@
       "pasport": "Passport",
       "railway_pasport": "Temiryo‘l guvohnoma",
       "foreign_pasport": "Xorijiy passport",
+      "position_certificate": "Lavozim guvohnomasi",
       "card_number": "Karta raqami",
       "issue_date": "Berilgan sana",
       "expiry_date": "Muddat o'tish sanasi",

@@ -1457,12 +1457,13 @@
       "punishment": "Интизомий жазолари",
       "exams": "Имтиҳонлар",
       "e_documents": "Рақамли-ҳужжатлар",
-      "turnstile": "Турникет"
+      "turnstile": "Турникет маълумотлар"
     },
     "Edocument": {
       "pasport": "Паспорт",
       "railway_pasport": "Темир йўл гувоҳнома",
       "foreign_pasport": "Хорижий паспорт",
+      "position_certificate": "Лавозим гувоҳномаси",
       "card_number": "Карта рақами",
       "issue_date": "Берилган сана",
       "expiry_date": "Муддат ўтиш санаси",
