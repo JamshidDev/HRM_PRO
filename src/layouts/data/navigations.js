@@ -715,6 +715,20 @@ export const navigations = [
         permission: appPermissions.economistPensionPayments
       },
       {
+        label: 'tariffGrid.name', // Tarif setkasi
+        path: Utils.routeAccountantPathMaker(AppPaths.TariffGrid),
+        icon: Grid20Filled,
+        color: 'bg-dark',
+        permission: appPermissions.economist
+      },
+      {
+        label: 'salary1c.name', // Oylik hisobot (1C)
+        path: Utils.routeAccountantPathMaker(AppPaths.Salary1c),
+        icon: Calculator24Regular,
+        color: 'bg-primary',
+        permission: appPermissions.economist
+      },
+      {
         label: 'report.name', // Plan va Fakt
         path: Utils.routeAccountantPathMaker(AppPaths.Report),
         icon: AppFolder20Filled,
