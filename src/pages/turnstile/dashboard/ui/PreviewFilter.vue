@@ -3,8 +3,7 @@
   import { ArrowCircleDown48Regular } from '@vicons/fluent'
   import i18n from '@/i18n/index.js'
   import { useAppSetting } from '@/utils/index.js'
-  import Utils from '@/utils/Utils.js'
-  import { onMounted, getCurrentInstance } from 'vue'
+  import { onMounted } from 'vue'
   import { useDebounce } from '@/utils/index.js'
 
   const { t } = i18n.global
@@ -43,7 +42,7 @@
     debouncedEvent()
   }
 
-  const controlFilterEv = (v) => {
+  const controlFilterEv = () => {
     resetFilterVisible()
     dashboardStore.resetPreviewParams()
     const cardType = dashboardStore.previewParams.type
@@ -51,10 +50,13 @@
     filterVisible.value.date = true
 
     if (dashboardStore.cardTypes.late_come.key === cardType) {
+      /* empty */
     } else if (dashboardStore.cardTypes.not_come.key === cardType && dashboardStore.yesterday) {
+      /* empty */
     } else if (dashboardStore.cardTypes.early_leave.key === cardType && dashboardStore.yesterday) {
-    } else if (dashboardStore.cardTypes.early_leave.key === cardType && dashboardStore.yesterday) {
+      /* empty */
     } else if (dashboardStore.cardTypes.daily_attendance.key === cardType) {
+      /* empty */
     } else if (dashboardStore.cardTypes.devices.key === cardType) {
       dashboardStore.previewParams.date = null
       filterVisible.value.date = false
@@ -102,7 +104,7 @@
 </script>
 
 <template>
-  <div class="w-full grid gap-2 grid-cols-12 mb-2">
+  <div class="w-full grid gap-2 grid-cols-12">
     <div class="col-span-2">
       <label class="mt-3 text-xs text-gray-500">{{ $t('content.search') }}</label>
       <n-input

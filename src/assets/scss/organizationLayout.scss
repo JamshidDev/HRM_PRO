@@ -297,11 +297,19 @@ $mobile_device_screen_size: 900px;
     .main-content {
       overflow-x: hidden;
       overflow-y: auto;
+
+      .ui-page-content {
+        height: 100dvh;
+      }
     }
+
     .main-content-with-tabs {
       overflow-x: hidden;
       overflow-y: auto;
-      height: calc(100vh - 88px);
+
+      .ui-page-content {
+        height: 100%;
+      }
     }
   }
 }

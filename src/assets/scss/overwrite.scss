@@ -22,6 +22,11 @@
   }
 }
 
+// keeps the table's card from blending into the modal's own matching background
+.ui__modal-element .ui-table__wrapper {
+  background: var(--surface-ground);
+}
+
 .hidden-tab-header{
   > .n-tabs-nav--segment-type{
     display: none !important;
@@ -195,25 +200,25 @@ input:-webkit-autofill {
 .ui__worker-table {
   border-spacing:2px 0px;
   border-collapse: separate;
-  thead{
-    tr{
-      th{
-        //@apply bg-[#757a83] text-left font-medium text-white px-2 py-1
-      }
-    }
-  }
-  tbody{
-    tr:nth-child(2n+1){
-      &> td{
-        //@apply bg-[#b6d1ff1c] overflow-hidden border border-[transparent]
-      }
-    }
-    tr:nth-child(2n){
-      &> td{
-        //@apply bg-white overflow-hidden border border-[transparent]
-      }
-    }
-  }
+  // thead{
+  //   tr{
+  //     th{
+  //       @apply bg-[#757a83] text-left font-medium text-white px-2 py-1
+  //     }
+  //   }
+  // }
+  // tbody{
+  //   tr:nth-child(2n+1){
+  //     &> td{
+  //       @apply bg-[#b6d1ff1c] overflow-hidden border border-[transparent]
+  //     }
+  //   }
+  //   tr:nth-child(2n){
+  //     &> td{
+  //       @apply bg-white overflow-hidden border border-[transparent]
+  //     }
+  //   }
+  // }
 
   //@apply border border-[transparent]
 }
@@ -226,11 +231,11 @@ input:-webkit-autofill {
 }
 
 
-.n-calendar-dates{
-  &> .n-calendar-cell:nth-child(7n+1){
-    //@apply bg-gray-50
-  }
-}
+// .n-calendar-dates{
+//   &> .n-calendar-cell:nth-child(7n+1){
+//     @apply bg-gray-50
+//   }
+// }
 
 .bg-gradient-card {
   background-image: linear-gradient(135deg, #e4feff 4%, #ffffff 10%, #daffff 89%);
@@ -422,9 +427,9 @@ input:-webkit-autofill {
   object-fit: contain;
 }
 
-.hidden-drawer-header{
+// .hidden-drawer-header{
 
-}
+// }
 
 //.n-button{
 //

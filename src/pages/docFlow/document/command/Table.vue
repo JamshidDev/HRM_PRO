@@ -1,5 +1,12 @@
 <script setup>
-  import { UIStatus, UITable, UIUser, UIUserGroup } from '@/components/index.js'
+  import {
+    UIStatus,
+    UITable,
+    UITableBadgeCell,
+    UITableNameCell,
+    UIUser,
+    UIUserGroup
+  } from '@/components/index.js'
   import { useAccountStore, useCommandStore, useComponentStore } from '@/store/modules/index.js'
   import {
     CheckmarkCircle32Regular,
@@ -62,8 +69,7 @@
     {
       key: 'workers',
       title: t('content.worker'),
-      minWidth: 160,
-      align: 'center'
+      minWidth: 160
     },
     {
       key: 'organization.name',
@@ -127,22 +133,15 @@
     @change-page="changePage"
   >
     <template #cell-type="{ row }">
-      <span
+      <UITableNameCell
+        :name="row?.type?.name"
+        :created-at="row.created_at"
         @click="onOpenFile(row.id)"
-        class="group hover:!text-primary hover:underline cursor-pointer"
-      >
-        {{ row?.type?.name }}
-        <br />
-        <span class="opacity-65 text-xs group-hover:!text-primary">
-          {{ Utils.timeHHMMWithMonth(row.created_at) }}
-        </span>
-      </span>
+      />
     </template>
 
     <template #cell-command_number="{ row }">
-      <n-button type="primary" class="font-medium" round dashed size="tiny">
-        {{ row?.command_number }}
-      </n-button>
+      <UITableBadgeCell :number="row?.command_number" type="primary" />
     </template>
 
     <template #cell-workers="{ row }">

@@ -1,5 +1,11 @@
 <script setup>
-  import { UIStatus, UITable, UIUser } from '@/components/index.js'
+  import {
+    UIStatus,
+    UITable,
+    UITableBadgeCell,
+    UITableNameCell,
+    UIUser
+  } from '@/components/index.js'
   import i18n from '@/i18n/index.js'
   import { useAccountStore, useApplicationStore } from '@/store/modules/index.js'
   import UIHelper from '@/utils/UIHelper.js'
@@ -129,20 +135,15 @@
     @change-page="changePage"
   >
     <template #cell-type="{ row }">
-      <span
+      <UITableNameCell
+        :name="row?.type?.name"
+        :created-at="row.created_at"
         @click="onOpenFile(row.id)"
-        class="group hover:!text-primary hover:underline cursor-pointer"
-      >
-        {{ row?.type?.name }}
-        <br />
-        <span class="opacity-65 text-xs group-hover:!text-primary">
-          {{ Utils.timeHHMMWithMonth(row.created_at) }}
-        </span>
-      </span>
+      />
     </template>
 
     <template #cell-number="{ row }">
-      <n-button round size="tiny" type="error" dashed>{{ row?.number }}</n-button>
+      <UITableBadgeCell :number="row?.number" type="error" />
     </template>
 
     <template #cell-worker="{ row }">

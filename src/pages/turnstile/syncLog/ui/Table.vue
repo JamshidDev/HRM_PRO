@@ -1,21 +1,16 @@
 <script setup>
-  import {
-    NoDataPicture,
-    UIPagination,
-    UIBadge,
-    UIStatus,
-    UIMenuButton,
-    UIUser
-  } from '@/components/index.js'
-  import { useAccountStore, useSyncLogStore } from '@/store/modules/index.js'
-  import {
-    ErrorCircle24Filled,
-    PersonAvailable20Filled,
-    CellularWarning20Regular,
-    Desktop24Filled
-  } from '@vicons/fluent'
-  import Utils from '@/utils/Utils.js'
+  import { UIBadge, UIStatus, UITable, UIUser } from '@/components/index.js'
   import i18n from '@/i18n/index.js'
+  import { useAccountStore, useSyncLogStore } from '@/store/modules/index.js'
+  import UIHelper from '@/utils/UIHelper.js'
+  import Utils from '@/utils/Utils.js'
+  import {
+    CellularWarning20Regular,
+    Desktop24Filled,
+    ErrorCircle24Filled,
+    Eye16Regular,
+    PersonAvailable20Filled
+  } from '@vicons/fluent'
 
   const { t } = i18n.global
   const store = useSyncLogStore()
@@ -27,21 +22,21 @@
     store._index()
   }
 
-  const onSelect = (v) => {
+  const onView = (row) => {
     if (!accStore.checkAction(accStore.pn.turnstileHikCentralSyncWrite)) return
-    store.elementId = v.data.id
-    if (v.key === Utils.ActionTypes.view) {
-      store._show()
-      store.visible = true
-    } else if (v.key === Utils.ActionTypes.confirm) {
-      onOfflineDevicesEv()
-    }
+    store.elementId = row.id
+    store._show()
+    store.visible = true
   }
 
-  const onOfflineDevicesEv = () => {
+  const onOfflineDevices = (row) => {
+    if (!accStore.checkAction(accStore.pn.turnstileHikCentralSyncWrite)) return
+    store.elementId = row.id
     store._offlineDeviceList()
     store.offlineDeviceVisible = true
   }
+
+  const isActionable = (row) => row.type.name !== 'Foydalanuvchi'
 
   const statusObj = {
     1: {
@@ -57,145 +52,165 @@
       id: 3
     }
   }
+
+  const columns = computed(() => [
+    {
+      key: 'created_at',
+      title: t('syncLog.form.startedTime'),
+      minWidth: 300
+    },
+    {
+      key: 'updated_at',
+      title: t('syncLog.form.finishedTime'),
+      minWidth: 300
+    },
+    {
+      key: 'type',
+      title: t('content.type'),
+      minWidth: 260
+    },
+    {
+      key: 'status',
+      title: t('content.status'),
+      width: 180
+    },
+    {
+      key: 'sync_events_count',
+      title: t('hcServer.form.exported_count'),
+      width: 180
+    },
+    {
+      key: 'error',
+      title: t('content.error'),
+      width: 180
+    }
+  ])
+
+  const actions = computed(() => [
+    {
+      label: t('content.view'),
+      key: Utils.ActionTypes.view,
+      icon: UIHelper.renderIcon(Eye16Regular),
+      action: onView,
+      visible: isActionable
+    },
+    {
+      label: t('syncLog.offlineDevices'),
+      key: Utils.ActionTypes.confirm,
+      icon: UIHelper.renderIcon(CellularWarning20Regular),
+      action: onOfflineDevices,
+      visible: isActionable
+    }
+  ])
 </script>
 
 <template>
-  <n-spin :show="store.loading" style="min-height: 200px">
-    <div class="w-full overflow-x-auto" v-if="store.list.length > 0">
-      <n-table class="mt-4" :single-line="false" size="small">
-        <thead>
-          <tr>
-            <th class="text-center! min-w-[40px] w-[40px]">{{ $t('content.number') }}</th>
-            <th class="min-w-[100px] w-[300px]">{{ $t('syncLog.form.startedTime') }}</th>
-            <th class="min-w-[100px] w-[300px]">{{ $t('syncLog.form.finishedTime') }}</th>
-            <th class="min-w-[100px] w-[300px]">{{ $t('content.type') }}</th>
-            <th class="min-w-[100px]">{{ $t('content.status') }}</th>
-            <th class="min-w-[100px]">{{ $t('hcServer.form.exported_count') }}</th>
-            <th class="min-w-[80px] w-[80px]">{{ $t('content.error') }}</th>
-            <th class="min-w-[40px] w-[40px]"></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(item, idx) in store.list" :key="idx">
-            <td>
-              <span class="text-center block">{{
-                (store.params.page - 1) * store.params.per_page + idx + 1
-              }}</span>
-            </td>
-            <td>
-              <div class="flex flex-col">
-                <div class="leading-[1.2] font-medium">{{ Utils.timeWithMonth(item.created_at) }}</div>
-                <div class="text-secondary">{{ Utils.timeOnlyDate(item.type.id === 2? item.day : null) }}</div>
-              </div>
-            </td>
-            <td>
-              <div class="flex flex-col">
-                <div class="leading-[1.2] font-medium">{{ Utils.timeWithMonth(item.updated_at) }}</div>
-              </div>
-              {{ item?.sync_datetime?.split(' ')?.[1] }}
-</td>
-            <td>
-              <div
-                v-if="item?.type?.id === 1"
-                class="flex items-center gap-x-2 bg-surface-ground/60 rounded-lg px-2 w-[200px] mx-auto"
-              >
-                <div class="w-8 h-8 rounded-full bg-primary/20 border border-primary/40 flex items-center justify-center shrink-0">
-                  <n-icon size="16" class="text-primary">
-                    <Desktop24Filled />
+  <UITable
+    :columns="columns"
+    :actions="actions"
+    :data="store.list"
+    :loading="store.loading"
+    :page="store.params.page"
+    :per-page="store.params.per_page"
+    :total="store.totalItems"
+    storage-key="turnstile-sync-log"
+    @change-page="changePage"
+  >
+    <template #cell-created_at="{ row }">
+      <div class="flex flex-col">
+        <div class="leading-[1.2] font-medium">{{ Utils.timeWithMonth(row.created_at) }}</div>
+        <div class="text-secondary">
+          {{ Utils.timeOnlyDate(row.type.id === 2 ? row.day : null) }}
+        </div>
+      </div>
+    </template>
+
+    <template #cell-updated_at="{ row }">
+      <div class="flex flex-col">
+        <div class="leading-[1.2] font-medium">{{ Utils.timeWithMonth(row.updated_at) }}</div>
+      </div>
+      {{ row?.sync_datetime?.split(' ')?.[1] }}
+    </template>
+
+    <template #cell-type="{ row }">
+      <div
+        v-if="row?.type?.id === 1"
+        class="flex items-center gap-x-2 bg-surface-ground/60 rounded-lg px-2 w-[200px] mx-auto"
+      >
+        <div
+          class="w-8 h-8 rounded-full bg-primary/20 border border-primary/40 flex items-center justify-center shrink-0"
+        >
+          <n-icon size="16" class="text-primary">
+            <Desktop24Filled />
+          </n-icon>
+        </div>
+        <div class="flex flex-col" style="width: calc(100% - 42px)">
+          <span class="text-sm text-textColor2 line-clamp-1 w-full leading-[1.2]">{{
+            $t('syncLog.form.administrator')
+          }}</span>
+          <span class="text-xs text-textColor3 line-clamp-1 w-full">{{
+            $t('syncLog.form.system')
+          }}</span>
+        </div>
+      </div>
+      <template v-else>
+        <UIUser
+          class="mx-auto bg-surface-ground/60 rounded-lg px-2 small-avatar"
+          :data="{
+            photo: row?.user?.worker.photo,
+            firstName: row?.user?.worker.first_name,
+            middleName: row?.user?.worker.middle_name,
+            lastName: row?.user?.worker.last_name,
+            position: row?.user?.worker.id
+          }"
+        />
+      </template>
+    </template>
+
+    <template #cell-status="{ row }">
+      <UIStatus :status="statusObj[row?.status]" />
+    </template>
+
+    <template #cell-sync_events_count="{ row }">
+      <div v-if="row?.sync_events_count > 0">
+        <UIBadge :type="Utils.colorTypes.success" :show-icon="true" :label="row?.sync_events_count">
+          <template #icon>
+            <n-icon size="20" class="text-success">
+              <PersonAvailable20Filled />
+            </n-icon>
+          </template>
+        </UIBadge>
+      </div>
+    </template>
+
+    <template #cell-error="{ row }">
+      <div class="flex">
+        <template v-if="row?.error">
+          <n-popover trigger="click">
+            <template #trigger>
+              <n-button type="error" secondary size="small">
+                <template #icon>
+                  <n-icon size="24" class="text-danger">
+                    <ErrorCircle24Filled />
                   </n-icon>
-                </div>
-                <div class="flex flex-col" style="width: calc(100% - 42px)">
-                  <span class="text-sm text-textColor2 line-clamp-1 w-full leading-[1.2]">{{ $t('syncLog.form.administrator') }}</span>
-                  <span class="text-xs text-textColor3 line-clamp-1 w-full">{{ $t('syncLog.form.system') }}</span>
-                </div>
-              </div>
-              <template v-else>
-                <UIUser
-                  class="mx-auto bg-surface-ground/60 rounded-lg px-2 small-avatar"
-                  :data="{
-                    photo: item?.user?.worker.photo,
-                    firstName: item?.user?.worker.first_name,
-                    middleName: item?.user?.worker.middle_name,
-                    lastName: item?.user?.worker.last_name,
-                    position: item?.user?.worker.id
-                  }"
-                />
-              </template>
-            </td>
-            <td>
-              <UIStatus :status="statusObj[item?.status]" />
-            </td>
-            <td>
-              <div v-if="item?.sync_events_count > 0">
-                <UIBadge
-                  :type="Utils.colorTypes.success"
-                  :show-icon="true"
-                  :label="item?.sync_events_count"
-                >
-                  <template #icon>
-                    <n-icon size="20" class="text-success">
-                      <PersonAvailable20Filled />
-                    </n-icon>
-                  </template>
-                </UIBadge>
-              </div>
-            </td>
-            <td>
-              <div class="flex justify-center">
-                <template v-if="item?.error">
-                  <n-popover trigger="click">
-                    <template #trigger>
-                      <n-button type="error" secondary size="small">
-                        <template #icon>
-                          <n-icon size="24" class="text-danger">
-                            <ErrorCircle24Filled />
-                          </n-icon>
-                        </template>
-                        {{ $t('content.error') }}
-                      </n-button>
-                    </template>
-                    <div class="w-[200px] h-[260px] overflow-y-auto text-danger">
-                      {{ item.error }}
-                    </div>
-                  </n-popover>
                 </template>
-              </div>
-            </td>
-            <td>
-              <UIMenuButton
-                v-if="item.type.name !== 'Foydalanuvchi'"
-                :show-delete="false"
-                :show-view="true"
-                :data="item"
-                @selectEv="onSelect"
-                :extra-options="[
-                  {
-                    label: t('syncLog.offlineDevices'),
-                    key: Utils.ActionTypes.confirm,
-                    icon: CellularWarning20Regular,
-                    visible: true
-                  }
-                ]"
-              />
-            </td>
-          </tr>
-        </tbody>
-      </n-table>
-      <UIPagination
-        :page="store.params.page"
-        :per_page="store.params.per_page"
-        :total="store.totalItems"
-        @change-page="changePage"
-      />
-    </div>
-    <NoDataPicture v-if="store.list.length === 0 && !store.loading" />
-  </n-spin>
+                {{ $t('content.error') }}
+              </n-button>
+            </template>
+            <div class="w-[200px] h-[260px] overflow-y-auto text-danger">
+              {{ row.error }}
+            </div>
+          </n-popover>
+        </template>
+      </div>
+    </template>
+  </UITable>
 </template>
 
 <style scoped>
-.small-avatar :deep(.n-avatar) {
-  width: 32px !important;
-  height: 32px !important;
-  font-size: 14px !important;
-}
+  .small-avatar :deep(.n-avatar) {
+    width: 32px !important;
+    height: 32px !important;
+    font-size: 14px !important;
+  }
 </style>
