@@ -146,12 +146,12 @@
     >
       <template v-for="(item, idx) in files" :key="idx">
         <div
-          class="flex items-center gap-2 p-2 border border-surface-line rounded-md min-w-[100px] max-w-[300px] cursor-pointer bg-white hover:bg-surface-100 relative overflow-hidden ui__upload pr-6"
+          class="flex items-center gap-2 p-2 border border-surface-line rounded-md min-w-[100px] max-w-[300px] cursor-pointer bg-surface-section hover:bg-surface-ground relative overflow-hidden ui__upload pr-6"
         >
-          <n-icon size="18" class="text-surface-400">
+          <n-icon size="18" class="text-textColor3">
             <DocumentLink24Regular />
           </n-icon>
-          <span class="text-xs line-clamp-1">{{ item.name }}</span>
+          <span class="text-xs text-textColor1 line-clamp-1">{{ item.name }}</span>
           <span
             class="inline-block absolute right-[4px] top-[6px] opacity-0 ui__upload-icon transition-all duration-300"
           >

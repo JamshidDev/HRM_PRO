@@ -1,13 +1,16 @@
 <script setup>
   import {
-    Signature20Filled,
     ArrowSyncCircle16Filled,
-    PanelLeftContract20Filled,
-    DocumentEdit24Regular,
+    ArrowLeft20Filled,
     ClipboardCheckmark20Regular,
-    CalendarCancel20Regular
+    CalendarCancel20Regular,
+    Dismiss20Regular
   } from '@vicons/fluent'
   import { UIUser, UILottieReader } from '@/components/index.js'
+  import EditRefreshIcon from '@/assets/icons/editRefreshIcon.svg'
+  import PdfFileIcon from '@/assets/icons/pdfFileIcon.svg'
+  import WordFileIcon from '@/assets/icons/wordFileIcon.svg'
+  import FileContractIcon from '@/assets/icons/fileContractIcon.svg'
   import generateFile from '@/assets/json/generateFile.json'
   import {
     usePdfViewerStore,
@@ -15,9 +18,13 @@
     useApplicationStore,
     useAccountStore
   } from '@/store/modules/index.js'
+  import { useNotify } from '@/composables/useNotify'
+  import i18n from '@/i18n/index.js'
+  const { t } = i18n.global
   import ConfirmationList from './ui/ConfirmationList.vue'
   import LeftContent from './ui/LeftContent.vue'
-  import ChatDrawer from './ui/ChatDrawer.vue'
+  import DrawerSkeleton from './ui/DrawerSkeleton.vue'
+  import ConfirmSignatureModal from './ui/ConfirmSignatureModal.vue'
   import Utils from '../../utils/Utils.js'
   import { useRoute } from 'vue-router'
   import PdfViewer from '@/components/pdfSignature/PdfViewer.vue'
@@ -39,6 +46,31 @@
   const accountStore = useAccountStore()
   const signatureStore = useSignatureStore()
   const applicationStore = useApplicationStore()
+  const notify = useNotify()
+
+  const confirmSignatureVisible = ref(false)
+  const signatureInfoVisible = ref(false)
+  const resendActionsVisible = ref(false)
+
+  const isSigned = computed(() => store.document?.document?.confirmation?.id === 3)
+  const isRejected = computed(() => store.document?.document?.confirmation?.id === 4)
+  const rejectReason = computed(() => {
+    return (
+      store.document?.document?.comment ||
+      store.confirmations?.find((v) => v.status?.id === 4)?.comment ||
+      null
+    )
+  })
+  const hasDocumentFile = computed(() => !!store.pdfUrl)
+
+  const onOpenConfirmSignature = () => {
+    confirmSignatureVisible.value = true
+  }
+
+  const onConfirmSignature = () => {
+    confirmSignatureVisible.value = false
+    onSaveSignature()
+  }
 
   const onSaveSignature = () => {
     signatureStore.confirmationId = store.signatureId
@@ -50,8 +82,9 @@
     )
   }
 
-  const onSuccess = (v) => {
+  const onSuccess = () => {
     signatureStore.visible = false
+    notify.success(t('documentPage.signature.confirmedNotification'))
     emits('signatureEv')
   }
 
@@ -66,7 +99,13 @@
   }
 
   const showSignature = computed(() => {
-    const rejects = ['/hrm/contract', '/hrm/command', '/hrm/ad-contract', '/hrm/application', '/hrm/structure-report']
+    const rejects = [
+      '/hrm/contract',
+      '/hrm/command',
+      '/hrm/ad-contract',
+      '/hrm/application',
+      '/hrm/structure-report'
+    ]
     return !rejects.includes(route.path)
   })
 
@@ -84,14 +123,19 @@
     store.documentVisible = true
   }
 
+  const MIN_LOADING_TIME = 1000
+
   const getDocument = async (document_id, model) => {
     store.document_id = document_id
     store.model = model
     store._resetForm()
+    resendActionsVisible.value = false
 
     store.visible = true
     store.loading = true
     store.viewerLoading = false
+    const startedAt = Date.now()
+    let shouldLoadPdf = false
     $ApiService.documentService
       ._openDocument({ params: { model, document_id } })
       .then((res) => {
@@ -124,19 +168,30 @@
         if ([1, 4].includes(key)) {
           store.permissions.canSignature = false
           autoClose()
-        } else if (key === 2) {
+        } else if (key === 2 || !store.pdfUrl) {
           store.viewerLoading = true
           store.permissions.canSignature = false
           store.permissions.canEdit = false
         } else {
-          store.loadPdf()
+          shouldLoadPdf = true
         }
       })
-      .catch((error) => {
+      .catch(() => {
         autoClose()
       })
       .finally(() => {
-        store.loading = false
+        const finish = () => {
+          store.loading = false
+          if (shouldLoadPdf) {
+            nextTick(() => store.loadPdf())
+          }
+        }
+        const remaining = MIN_LOADING_TIME - (Date.now() - startedAt)
+        if (remaining > 0) {
+          setTimeout(finish, remaining)
+        } else {
+          finish()
+        }
       })
   }
 
@@ -146,9 +201,14 @@
     }, 200)
   }
 
-  const clearInterval = () => {
-    emits('onCancelInterval')
+  const onRefresh = () => {
+    if (!store.document_id) return
+    getDocument(store.document_id, store.model)
   }
+
+  // const clearInterval = () => {
+  //   emits('onCancelInterval')
+  // }
 
   const onWheelEv = async (event) => {
     if (!store.isCtrlPressed) return
@@ -214,215 +274,338 @@
       placement="bottom"
     >
       <n-drawer-content class="h-screen">
-        <n-spin v-model:show="store.loading">
-          <div class="w-full h-screen overflow-hidden flex flex-col relative">
-            <div
-              class="w-full h-[60px] border-b border-surface-line flex items-center justify-between px-4 fixed top-0 left-0 z-20 bg-surface-section"
-            >
-              <div class="flex gap-x-4">
-                <n-button @click="onClose()" type="error" secondary>
-                  {{ $t('content.close') }}
-                  <template #icon>
-                    <n-icon size="24">
-                      <PanelLeftContract20Filled />
-                    </n-icon>
-                  </template>
-                </n-button>
-                <div class="hidden md:inline-block">
-                  <div class="text-gray-600 text-sm uppercase font-medium">
-                    {{ store.document?.document?.file_name }}
-                  </div>
-                  <div class="text-xs text-gray-400">
-                    {{ Utils.timeOnlyDate(store?.document?.document?.created) }}
-                  </div>
-                </div>
+        <div
+          class="w-full h-screen overflow-hidden flex flex-col relative gap-3 p-3 bg-gradient-to-b from-surface-ground to-surface-section"
+        >
+          <div
+            class="w-full h-[60px] shrink-0 rounded-2xl border border-surface-line flex items-center justify-between px-4 bg-surface-section"
+          >
+            <div class="flex items-center gap-x-3">
+              <n-button
+                @click="onClose()"
+                quaternary
+                circle
+                size="large"
+                class="bg-surface-ground!"
+              >
+                <template #icon>
+                  <n-icon size="20">
+                    <ArrowLeft20Filled />
+                  </n-icon>
+                </template>
+              </n-button>
+              <div v-if="store.loading" class="hidden md:flex flex-col gap-1.5">
+                <n-skeleton width="220px" height="16px" :sharp="false" class="rounded-md" />
+                <n-skeleton width="80px" height="11px" :sharp="false" class="rounded-md" />
               </div>
-              <div></div>
-              <div class="flex gap-3">
-                <n-button
-                  v-if="!showSignature && store?.pdfUrl && !store.viewerLoading"
-                  tag="a"
-                  target="_blank"
-                  :href="store.pdfUrl"
-                  download
-                  type="error"
-                  secondary
-                >
-                  <div class="flex items-center gap-1">
-                    <img
-                      class="w-[26px] object-contain"
-                      alt=""
-                      src="@/assets/images/content/pdfLogo.png"
-                    />
-                    <span>{{ $t('content.download') }}</span>
-                  </div>
-                </n-button>
-                <n-button
-                  v-if="!showSignature && store?.docxUrl && !store.viewerLoading"
-                  tag="a"
-                  target="_blank"
-                  :href="store?.docxUrl"
-                  download
-                  type="primary"
-                  secondary
-                >
-                  <div class="flex items-center gap-1">
-                    <img
-                      class="w-[26px] object-cover"
-                      alt=""
-                      src="@/assets/images/content/wordLogo.png"
-                    />
-                    <span>{{ $t('content.download') }}</span>
-                  </div>
-                </n-button>
-                <n-button v-if="store.permissions.canEdit && showEditButton" @click="onEdit" type="info" secondary>
-                  {{ $t('content.edit') }}
-                  <template #icon>
-                    <n-icon size="28">
-                      <DocumentEdit24Regular />
-                    </n-icon>
-                  </template>
-                </n-button>
+              <div v-else class="hidden md:inline-block">
+                <div class="text-lg font-semibold text-textColor1 leading-tight">
+                  {{ store.document?.document?.file_name }}
+                </div>
+                <div class="text-xs text-gray-400">
+                  {{ Utils.timeOnlyDate(store?.document?.document?.created) }}
+                </div>
               </div>
             </div>
-
-            <div class="w-full flex justify-between" style="height: calc(100vh - 0px)">
-              <div
-                class="hidden md:flex flex-col w-[300px] h-full bg-surface-ground border-r border-surface-line px-2 py-4 relative pt-[70px]"
-              >
-                <div
-                  v-if="showConfirmButtons"
-                  class="w-full mb-2 rounded-lg border border-surface-line flex flex-col gap-3 p-1"
-                >
-                  <n-button
-                    :loading="applicationStore.acceptLoading"
-                    @click="openConfirmModal(true)"
-                    class="shadow cursor-pointer"
-                    type="primary"
-                  >
-                    {{ $t('content.sendToSign') }}
-                    <template #icon>
-                      <ClipboardCheckmark20Regular />
-                    </template>
-                  </n-button>
-                  <n-button
-                    :loading="applicationStore.acceptLoading"
-                    @click="openConfirmModal(false)"
-                    class="shadow cursor-pointer"
-                    type="error"
-                  >
-                    {{ $t('content.rejectByMistake') }}
-                    <template #icon>
-                      <CalendarCancel20Regular />
-                    </template>
-                  </n-button>
-                </div>
-                <div class="w-full" style="height: calc(100% - 200px)">
-                  <LeftContent />
-                </div>
-                <!--                Confirm buttons-->
-                <ChatDrawer />
-                <div
-                  v-if="store.permissions?.qrcode"
-                  class="bg-gray-300 rounded-xl border border-gray-400 h-[100px]"
-                ></div>
-              </div>
-
-              <div
-                @wheel="onWheelEv"
-                style="width: calc(100% - 600px)"
-                class="h-full flex pt-[50px] overflow-auto pdf-viewer-box"
-              >
-                <template v-if="!store.viewerLoading">
-                  <PdfViewer ref="pdfViewerRef" />
+            <div></div>
+            <div v-if="store.loading" class="flex gap-3">
+              <n-skeleton width="110px" height="34px" :sharp="false" class="rounded-md" />
+              <n-skeleton width="110px" height="34px" :sharp="false" class="rounded-md" />
+              <n-skeleton width="110px" height="34px" :sharp="false" class="rounded-md" />
+            </div>
+            <div v-else class="flex gap-3">
+              <n-button v-if="store.permissions.canEdit && showEditButton" @click="onEdit" tertiary>
+                {{ $t('content.edit') }}
+                <template #icon>
+                  <n-icon size="16">
+                    <EditRefreshIcon />
+                  </n-icon>
                 </template>
-                <template v-else>
-                  <div class="w-full flex justify-center items-center">
-                    <div>
-                      <UILottieReader
-                        style="height: calc(100vh - 160px)"
-                        :file-url="generateFile"
-                        :auto-run="true"
-                      />
-                      <h2 class="text-2xl text-center text-gray-400 font-medium animate-bounce">
-                        {{ $t('content.preparingDocument') }}
-                      </h2>
-                      <div class="w-full flex justify-center">
-                        <n-button size="medium" round @click="() => emits('onUpdate')">
-                          <template #icon>
-                            <n-icon size="32" class="text-dark">
-                              <ArrowSyncCircle16Filled />
-                            </n-icon>
-                          </template>
-                          {{ $t('documentPage.signature.checkDocument') }}
-                        </n-button>
-                      </div>
-                    </div>
-                  </div>
-                </template>
-              </div>
-
-              <div
-                class="hidden md:flex flex-col w-[300px] h-full bg-surface-ground border-l border-surface-line px-2 py-4 pt-[70px]"
+              </n-button>
+              <n-button
+                v-if="!showSignature && store?.pdfUrl && !store.viewerLoading"
+                tag="a"
+                target="_blank"
+                :href="store.pdfUrl"
+                download
+                type="error"
               >
-                <div class="w-full overflow-auto mb-5" style="height: calc(100% - 130px)">
-                  <h3 class="mb-1 text-gray-400 text-xs font-medium uppercase pl-2">
-                    {{ $t('documentPage.signature.viewer') }}
-                  </h3>
-                  <ConfirmationList />
+                <div class="flex items-center gap-2">
+                  <n-icon size="16">
+                    <PdfFileIcon />
+                  </n-icon>
+                  <span>{{ $t('documentPage.signature.downloadPdf') }}</span>
                 </div>
-
-                <div
-                  v-if="store.permissions?.canSignature && showSignature"
-                  class="w-full bg-gradient-to-b to-95% from-secondary/70 to-surface-ground rounded-xl border border-surface-line flex flex-col p-1 gap-2"
-                >
-                  <div class="bg-surface-section rounded-xl p-1 mb-4 shadow">
-                    <UIUser :short="false" :data="store.signatureMan" />
-                  </div>
-                  <n-button
-                    :loading="signatureStore.loading"
-                    :disabled="!store.permissions?.canSignature"
-                    @click="onSaveSignature"
-                    class="shadow cursor-pointer"
-                    :type="store.permissions?.canSignature ? 'primary' : 'default'"
-                  >
-                    {{ $t('content.signatureDocument') }}
-                    <template #icon>
-                      <Signature20Filled />
-                    </template>
-                  </n-button>
-                  <n-button
-                    @click="openRejectModal"
-                    class="shadow cursor-pointer"
-                    :type="store.permissions?.canSignature ? 'error' : 'default'"
-                  >
-                    {{ $t('content.reject') }}
-                    <template #icon>
-                      <Signature20Filled />
-                    </template>
-                  </n-button>
+              </n-button>
+              <n-button
+                v-if="!showSignature && store?.docxUrl && !store.viewerLoading"
+                tag="a"
+                target="_blank"
+                :href="store?.docxUrl"
+                download
+                type="info"
+              >
+                <div class="flex items-center gap-2">
+                  <n-icon size="16">
+                    <WordFileIcon />
+                  </n-icon>
+                  <span>{{ $t('documentPage.signature.downloadWord') }}</span>
                 </div>
-              </div>
+              </n-button>
             </div>
           </div>
-        </n-spin>
+
+          <DrawerSkeleton v-if="store.loading" />
+          <div v-else class="w-full flex-1 min-h-0 flex gap-3">
+            <div class="hidden md:flex flex-col w-[300px] h-full gap-3 relative">
+              <div class="w-full flex-1 min-h-0">
+                <LeftContent />
+              </div>
+              <div
+                v-if="store.permissions?.qrcode"
+                class="shrink-0 bg-gray-300 rounded-xl border border-gray-400 h-[100px]"
+              ></div>
+            </div>
+
+            <div class="flex-1 min-w-0 h-full flex flex-col">
+              <div class="h-full flex flex-col">
+                <div
+                  v-if="showConfirmButtons"
+                  class="w-full shrink-0 rounded-2xl bg-surface-section px-4 py-3 flex items-center justify-between gap-4 mb-3"
+                >
+                  <div class="min-w-0">
+                    <div class="font-semibold text-textColor1 truncate">
+                      {{ $t('documentPage.signature.confirmDocument') }}
+                    </div>
+                    <div class="text-xs text-gray-400">
+                      {{ Utils.timeOnlyDate(store.document?.document?.created) }}
+                    </div>
+                  </div>
+                  <div class="flex gap-2 shrink-0">
+                    <n-button
+                      type="error"
+                      :loading="applicationStore.modalLoading"
+                      :disabled="applicationStore.acceptLoading || applicationStore.modalLoading"
+                      @click="openConfirmModal(false)"
+                    >
+                      {{ $t('content.rejectByMistake') }}
+                      <template #icon>
+                        <n-icon size="18">
+                          <CalendarCancel20Regular />
+                        </n-icon>
+                      </template>
+                    </n-button>
+                    <n-button
+                      type="primary"
+                      :loading="applicationStore.acceptLoading"
+                      :disabled="applicationStore.modalLoading || applicationStore.acceptLoading"
+                      @click="openConfirmModal(true)"
+                    >
+                      {{ $t('content.sendToSign') }}
+                      <template #icon>
+                        <n-icon size="18">
+                          <ClipboardCheckmark20Regular />
+                        </n-icon>
+                      </template>
+                    </n-button>
+                  </div>
+                </div>
+
+                <div
+                  v-else-if="store.permissions?.canSignature && showSignature"
+                  class="w-full shrink-0 rounded-2xl bg-surface-section px-4 py-3 flex items-center justify-between gap-4 mb-3"
+                >
+                  <div class="min-w-0">
+                    <div class="font-semibold text-textColor1 truncate">
+                      {{ $t('documentPage.signature.confirmDocument') }}
+                    </div>
+                    <div class="text-xs text-gray-400">
+                      {{ Utils.timeOnlyDate(store.document?.document?.created) }}
+                    </div>
+                  </div>
+                  <div class="flex gap-2 shrink-0">
+                    <n-button type="error" ghost @click="openRejectModal">
+                      {{ $t('content.cancel') }}
+                    </n-button>
+                    <n-button type="success" @click="onOpenConfirmSignature">
+                      {{ $t('content.confirm') }}
+                    </n-button>
+                  </div>
+                </div>
+
+                <div
+                  v-else-if="isSigned && showSignature"
+                  class="w-full shrink-0 rounded-2xl bg-surface-section px-4 py-3 flex items-center justify-between gap-4 mb-3"
+                >
+                  <div class="min-w-0">
+                    <div class="font-semibold text-textColor1 truncate">
+                      {{ $t('documentPage.signature.confirmed') }}
+                    </div>
+                    <div class="text-xs text-gray-400 truncate">
+                      {{ Utils.timeOnlyDate(store.document?.document?.created) }} ·
+                      {{ $t('documentPage.signature.confirmedWithSignature') }}
+                      <template v-if="store.signatureMan?.lastName">
+                        · {{ store.signatureMan.lastName }}
+                        {{ store.signatureMan.firstName?.[0] }}.{{
+                          store.signatureMan.middleName?.[0]
+                        }}.
+                      </template>
+                    </div>
+                  </div>
+                  <n-popover
+                    trigger="click"
+                    placement="bottom-end"
+                    v-model:show="signatureInfoVisible"
+                  >
+                    <template #trigger>
+                      <n-button tertiary class="shrink-0">
+                        {{ $t('documentPage.signature.signatureInfo') }}
+                      </n-button>
+                    </template>
+                    <div class="w-[240px]">
+                      <UIUser :short="false" :data="store.signatureMan" />
+                    </div>
+                  </n-popover>
+                </div>
+
+                <div
+                  v-else-if="isRejected && showSignature"
+                  class="w-full shrink-0 rounded-2xl bg-surface-section px-4 py-3 flex items-center justify-between gap-4 mb-3"
+                >
+                  <div class="min-w-0">
+                    <div class="font-semibold text-textColor1 truncate">
+                      {{ $t('documentPage.signature.rejected') }}
+                    </div>
+                    <div class="text-xs text-gray-400">
+                      {{ Utils.timeOnlyDate(store.document?.document?.created) }}
+                      <template v-if="rejectReason">
+                        · {{ $t('documentPage.signature.rejectedReason') }}: {{ rejectReason }}
+                      </template>
+                    </div>
+                  </div>
+                  <n-button
+                    v-if="!resendActionsVisible"
+                    type="success"
+                    class="shrink-0"
+                    @click="resendActionsVisible = true"
+                  >
+                    {{ $t('documentPage.signature.resend') }}
+                  </n-button>
+                  <div v-else class="flex items-center gap-2 shrink-0">
+                    <n-button quaternary circle size="small" @click="resendActionsVisible = false">
+                      <template #icon>
+                        <n-icon size="16">
+                          <Dismiss20Regular />
+                        </n-icon>
+                      </template>
+                    </n-button>
+                    <n-button type="error" ghost @click="openRejectModal">
+                      {{ $t('content.cancel') }}
+                    </n-button>
+                    <n-button type="success" @click="onOpenConfirmSignature">
+                      {{ $t('content.confirm') }}
+                    </n-button>
+                  </div>
+                </div>
+
+                <div @wheel="onWheelEv" class="flex-1 min-h-0 overflow-auto">
+                  <template v-if="store.viewerLoading">
+                    <div class="w-full flex justify-center items-center">
+                      <div>
+                        <UILottieReader
+                          style="height: calc(100vh - 160px)"
+                          :file-url="generateFile"
+                          :auto-run="true"
+                        />
+                        <h2 class="text-2xl text-center text-gray-400 font-medium animate-bounce">
+                          {{ $t('content.preparingDocument') }}
+                        </h2>
+                        <div class="w-full flex justify-center">
+                          <n-button size="medium" round @click="() => emits('onUpdate')">
+                            <template #icon>
+                              <n-icon size="32" class="text-dark">
+                                <ArrowSyncCircle16Filled />
+                              </n-icon>
+                            </template>
+                            {{ $t('documentPage.signature.checkDocument') }}
+                          </n-button>
+                        </div>
+                      </div>
+                    </div>
+                  </template>
+                  <template v-else-if="!hasDocumentFile || store.loadError">
+                    <div
+                      class="w-full h-full flex flex-col items-center justify-center text-center px-8"
+                    >
+                      <div
+                        class="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center mb-4"
+                      >
+                        <n-icon size="26" class="text-primary">
+                          <FileContractIcon />
+                        </n-icon>
+                      </div>
+                      <h3 class="text-lg font-semibold text-textColor1 mb-2">
+                        {{
+                          store.loadError
+                            ? $t('documentPage.signature.loadErrorTitle')
+                            : $t('documentPage.signature.emptyFilesTitle')
+                        }}
+                      </h3>
+                      <p class="text-sm text-gray-400 max-w-[360px] mb-3 text-pretty">
+                        {{
+                          store.loadError
+                            ? $t('documentPage.signature.loadErrorDesc')
+                            : $t('documentPage.signature.emptyFilesDesc')
+                        }}
+                      </p>
+                      <n-button v-if="store.loadError" @click="onRefresh" tertiary size="small">
+                        <template #icon>
+                          <n-icon size="16">
+                            <ArrowSyncCircle16Filled />
+                          </n-icon>
+                        </template>
+                        {{ $t('content.refresh') }}
+                      </n-button>
+                      <span
+                        v-else-if="store.permissions?.canSignature && showSignature"
+                        @click="
+                          () => {
+                            store.workerApplications = []
+                            store.attachFiles = []
+                            store.attachVisible = true
+                          }
+                        "
+                        class="text-primary text-sm font-medium cursor-pointer"
+                      >
+                        + {{ $t('documentPage.signature.attachDocument') }}
+                      </span>
+                    </div>
+                  </template>
+                  <template v-else>
+                    <PdfViewer ref="pdfViewerRef" :container="false" />
+                  </template>
+                </div>
+              </div>
+            </div>
+
+            <div class="hidden md:flex flex-col w-[360px] h-full relative">
+              <ConfirmationList />
+            </div>
+          </div>
+        </div>
       </n-drawer-content>
     </n-drawer>
     <ConformAndRejectModal />
     <DocumentFileModal @onUpdate="emits('onUpdate')" />
+    <ConfirmSignatureModal
+      v-model:visible="confirmSignatureVisible"
+      @onConfirm="onConfirmSignature"
+    />
   </div>
 </template>
 
 <style scoped>
   .vertical-text {
     writing-mode: vertical-rl;
-  }
-  .pdf-viewer-box {
-    width: calc(100% - 600px) !important;
-  }
-  @media only screen and (max-width: 769px) {
-    .pdf-viewer-box {
-      width: 100% !important;
-    }
   }
 </style>

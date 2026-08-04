@@ -61,6 +61,8 @@ const changeOption = (v) => {
     onLogOutEv()
   } else if (v === 'changeAccount') {
     accountStore.openRoleModal()
+  } else if (v === 'setting') {
+    store.openProfileSettings()
   } else if (v === 'asAdmin') {
     const token = sessionStorage.getItem(useAppSetting.temporaryToken)
     if (token) {

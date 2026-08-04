@@ -21,13 +21,15 @@ export const useWorkerStore = defineStore('workerStore', {
     },
     params: {
       page: 1,
-      per_page: 10,
+      per_page: 15,
       search: null,
       organizations: [],
       departments: [],
       birthday: null,
       contract_type: null,
       position_type: null,
+      // Hisoblash kesimi: 'position' (standart) — lavozim bo'yicha; 'worker' — xodim bo'yicha.
+      count_by: 'position',
       ages: [1, 100],
       positions: [],
       sex: null,

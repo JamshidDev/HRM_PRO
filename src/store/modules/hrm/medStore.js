@@ -22,7 +22,7 @@ export const useMedStore = defineStore('medStore', {
     },
     params: {
       page: 1,
-      per_page: 10,
+      per_page: 15,
       search: null,
       organizations: [],
       status: null

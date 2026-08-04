@@ -23,7 +23,7 @@ export const useApplicationStore = defineStore('applicationStore', {
     },
     params: {
       page: 1,
-      per_page: 10,
+      per_page: 15,
       search: null,
       organizations: [],
       created: null
@@ -66,7 +66,8 @@ export const useApplicationStore = defineStore('applicationStore', {
     checkLoading: false,
     applicationData: null,
 
-    acceptLoading: false
+    acceptLoading: false,
+    modalLoading: false
   }),
   actions: {
     _index() {
@@ -109,8 +110,8 @@ export const useApplicationStore = defineStore('applicationStore', {
           this.saveLoading = false
         })
     },
-    _accept(data, id) {
-      this.acceptLoading = true
+    _accept(data, id, loadingKey = 'acceptLoading') {
+      this[loadingKey] = true
       const payload = {
         data: {
           ...data,
@@ -123,7 +124,7 @@ export const useApplicationStore = defineStore('applicationStore', {
         ._accept(payload)
         .then((res) => {})
         .finally(() => {
-          this.acceptLoading = false
+          this[loadingKey] = false
         })
     },
 

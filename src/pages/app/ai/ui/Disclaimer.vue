@@ -1,78 +1,59 @@
 <script setup>
-  import {
-    ArrowUp32Filled,
-    ArrowSyncCheckmark24Filled,
-    BookClock24Filled,
-    Scales32Filled,
-    HatGraduation16Filled
-  } from '@vicons/fluent'
+  import { Sparkle16Filled } from '@vicons/fluent'
+  import { useAccountStore, useAIConversationStore } from '@/store/modules/index.js'
   import i18n from '@/i18n/index.js'
-  import { useAccountStore } from '@/store/modules/index.js'
-  import { marked } from 'marked'
-
-  const store = useAccountStore()
+  import robotImage from '@/assets/images/content/robot-image.svg?url'
 
   const { t } = i18n.global
+  const accountStore = useAccountStore()
+  const store = useAIConversationStore()
 
-  function normalizeMarkdown(md) {
-    return md.replace(/([^\n])(-\s)/g, '$1\n$2')
-  }
+  const greetingKey = computed(() => {
+    const hour = new Date().getHours()
+    if (hour < 12) return 'aiConversation.greeting.morning'
+    if (hour < 18) return 'aiConversation.greeting.day'
+    return 'aiConversation.greeting.evening'
+  })
 
-  const cards = [
-    {
-      id: 1,
-      name: marked.parse(normalizeMarkdown(t('aiConversation.disclaimer.cardOne'))),
-      icon: ArrowSyncCheckmark24Filled
-    },
-    {
-      id: 2,
-      name: marked.parse(t('aiConversation.disclaimer.cardTwo')),
-      icon: BookClock24Filled
-    },
-    {
-      id: 3,
-      name: marked.parse(t('aiConversation.disclaimer.cardThree')),
-      icon: Scales32Filled
-    },
-    {
-      id: 4,
-      name: marked.parse(t('aiConversation.disclaimer.cardFour')),
-      icon: HatGraduation16Filled
-    }
+  const suggestions = [
+    'aiConversation.suggestions.leaveBalance',
+    'aiConversation.suggestions.lastSalary',
+    'aiConversation.suggestions.getReference',
+    'aiConversation.suggestions.workedDays'
   ]
+
+  const sendSuggestion = (key) => {
+    if (store.loading) return
+    store.payload.question = t(key)
+    store.sendMessage()
+  }
 </script>
 
 <template>
-  <div class="w-full grid grid-cols-12 gap-4 mb-10">
-    <div class="col-span-12">
-      <h1
-        class="2xl:text-5xl lg:text-4xl md:text-4xl text-sm font-bold mb-4 bg-linear-to-r from-primary to-danger bg-clip-text text-[transparent]"
-      >
-        {{ $t('aiConversation.welcomeTo', { n: store.fullName }) }}
-      </h1>
-      <p class="text-2xl font-semibold text-[#90A1B9]">
-        {{ $t('aiConversation.canIHelpYouToday') }}
-      </p>
-    </div>
+  <div v-if="store.messages.length === 0" class="w-full mb-10 flex flex-col items-center text-center">
+    <img :src="robotImage" alt="" class="w-20 h-20 mb-4 object-contain select-none" draggable="false" />
 
-    <template v-for="(card, idx) in cards" :key="card.id">
-      <div class="col-span-3 overflow-hidden h-full">
-        <div
-          class="flex flex-col bg-surface-section py-1 px-3 rounded-lg border border-surface-line h-full overflow-hidden"
-        >
-          <div class="text-textColor0" v-html="card?.name"></div>
-          <div class="justify-end items-end flex flex-1 overflow-hidden">
-            <n-button class="bg-gray-100!" circle>
-              <template #icon>
-                <n-icon size="26" class="text-primary">
-                  <component :is="card.icon" />
-                </n-icon>
-              </template>
-            </n-button>
-          </div>
-        </div>
-      </div>
-    </template>
+    <h1 class="text-2xl font-bold text-textColor1 mb-2">
+      {{ $t(greetingKey, { n: accountStore.fullName }) }}
+    </h1>
+    <p class="text-base text-textColor2 mb-8">
+      {{ $t('aiConversation.canIHelpYouToday') }}
+    </p>
+
+    <div class="grid grid-cols-2 gap-3 w-full max-w-[560px]">
+      <button
+        v-for="key in suggestions"
+        :key="key"
+        type="button"
+        @click="sendSuggestion(key)"
+        class="flex items-center gap-2 rounded-xl bg-primary/10 hover:bg-primary/15 text-primary px-4 py-3 text-sm font-medium transition-colors text-left cursor-pointer"
+      >
+        <n-icon size="16" class="shrink-0">
+          <Sparkle16Filled />
+        </n-icon>
+        <span>{{ $t(key) }}</span>
+      </button>
+    </div>
   </div>
 </template>
 

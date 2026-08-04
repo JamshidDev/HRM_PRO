@@ -1,13 +1,24 @@
 <script setup>
+  import { computed } from 'vue'
   import { Airplane20Regular, HatGraduation20Filled } from '@vicons/fluent'
   import { useComponentStore } from '@/store/modules/index.js'
   import SectionHeader from './shared/SectionHeader.vue'
   import UserIcon from '@/assets/icons/userIcon.svg'
   import JshirIcon from '@/assets/icons/jshirIcon.svg'
+  import DownloadIcon from '@/assets/icons/downloadIcon.svg'
   import InfoBox from './shared/InfoBox.vue'
   import Utils from '../../../utils/Utils.js'
 
   const store = useComponentStore()
+
+  const hasPassportFile = computed(() => store.workerPreview?.worker.passports?.some((item) => item.file))
+  const hasForeignPassportFile = computed(() =>
+    store.workerPreview?.worker.foreign_passports?.some((item) => item.file)
+  )
+
+  const onDownload = (file) => {
+    window.open(file, '_blank')
+  }
 </script>
 
 <template>
@@ -54,48 +65,45 @@
         <div
           v-for="(item, idx) in store.workerPreview?.worker.passports"
           :key="idx"
-          class="grid grid-cols-1 md:grid-cols-2 gap-3"
-        >
-          <InfoBox :label="$t('workerView.general.passportJSHSHIR')" :value="store.workerPreview?.worker.pin" />
-          <InfoBox :label="$t('workerView.general.passportNumber')" :value="item.serial_number" />
-          <InfoBox :label="$t('workerView.general.fromDate')" :value="Utils.timeOnlyDate(item.from_date)" />
-          <InfoBox :label="$t('workerView.general.toDate')" :value="Utils.timeOnlyDate(item.to_date)" />
-          <InfoBox
-            :label="$t('workerView.general.citizenship')"
-            :value="store.workerPreview?.worker.country.name"
-          />
-        </div>
-      </div>
-    </SectionHeader>
-
-    <SectionHeader
-      v-if="store.workerPreview?.worker.foreign_passports?.length"
-      :title="$t('workerView.general.foreignPassport')"
-      :icon="Airplane20Regular"
-    >
-      <div class="space-y-3">
-        <div
-          v-for="(item, idx) in store.workerPreview?.worker.foreign_passports"
-          :key="idx"
-          class="grid grid-cols-1 md:grid-cols-2 gap-3"
-        >
-          <InfoBox :label="$t('workerView.general.passportJSHSHIR')" :value="store.workerPreview?.worker.pin" />
-          <InfoBox :label="$t('workerView.general.passportNumber')" :value="item.serial_number" />
-          <InfoBox :label="$t('workerView.general.fromDate')" :value="Utils.timeOnlyDate(item.from_date)" />
-          <InfoBox :label="$t('workerView.general.toDate')" :value="Utils.timeOnlyDate(item.to_date)" />
-          <InfoBox :label="$t('workerView.general.who')" :value="item.given_place" />
-        </div>
-      </div>
-    </SectionHeader>
-
-    <SectionHeader :title="$t('workerView.general.university')" :icon="HatGraduation20Filled">
-      <div v-if="store.workerPreview?.worker.universities.length" class="space-y-3">
-        <div
-          v-for="(item, idx) in store.workerPreview?.worker.universities"
-          :key="idx"
-          class="grid grid-cols-1 md:grid-cols-2 gap-3"
           :class="[idx !== 0 && 'pt-3 border-t border-surface-ground']"
         >
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <InfoBox :label="$t('workerView.general.passportJSHSHIR')" :value="store.workerPreview?.worker.pin" />
+            <InfoBox :label="$t('workerView.general.passportNumber')" :value="item.serial_number" />
+            <InfoBox :label="$t('workerView.general.fromDate')" :value="Utils.timeOnlyDate(item.from_date)" />
+            <InfoBox :label="$t('workerView.general.toDate')" :value="Utils.timeOnlyDate(item.to_date)" />
+            <InfoBox :label="$t('workerView.general.who')" :value="item.address" />
+          </div>
+        </div>
+      </div>
+      <template v-if="hasPassportFile" #footer>
+        <template v-for="(item, idx) in store.workerPreview?.worker.passports" :key="idx">
+          <n-button
+            v-if="item.file"
+            size="small"
+            class="!rounded-full !text-white"
+            type="primary"
+            @click="onDownload(item.file)"
+          >
+            <span class="flex items-center justify-center gap-2">
+              <span>{{ $t('content.download') }}</span>
+              <n-icon size="18">
+                <DownloadIcon />
+              </n-icon>
+            </span>
+          </n-button>
+        </template>
+      </template>
+    </SectionHeader>
+
+    <template v-if="store.workerPreview?.worker.universities.length">
+      <SectionHeader
+        v-for="(item, idx) in store.workerPreview?.worker.universities"
+        :key="idx"
+        :title="$t('workerView.general.university')"
+        :icon="HatGraduation20Filled"
+      >
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
           <InfoBox
             :label="$t('content.name')"
             :value="`${item.university.name} (${item?.university?.education?.name})`"
@@ -107,10 +115,61 @@
           />
           <InfoBox :label="$t('content.organization')" :value="item.university?.type?.name" />
         </div>
+        <template v-if="item.file" #footer>
+          <n-button size="small" class="!rounded-full !text-white" type="primary" @click="onDownload(item.file)">
+            <span class="flex items-center justify-center gap-2">
+              <span>{{ $t('content.download') }}</span>
+              <n-icon size="18">
+                <DownloadIcon />
+              </n-icon>
+            </span>
+          </n-button>
+        </template>
+      </SectionHeader>
+    </template>
+    <SectionHeader v-else :title="$t('workerView.general.university')" :icon="HatGraduation20Filled">
+      <h4 class="text-center text-secondary">
+        {{ $t('content.no-data') }}
+      </h4>
+    </SectionHeader>
+
+    <SectionHeader :title="$t('workerView.general.foreignPassport')" :icon="Airplane20Regular">
+      <div v-if="store.workerPreview?.worker.foreign_passports?.length" class="space-y-3">
+        <div
+          v-for="(item, idx) in store.workerPreview?.worker.foreign_passports"
+          :key="idx"
+          :class="[idx !== 0 && 'pt-3 border-t border-surface-ground']"
+        >
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <InfoBox :label="$t('workerView.general.passportJSHSHIR')" :value="store.workerPreview?.worker.pin" />
+            <InfoBox :label="$t('workerView.general.passportNumber')" :value="item.serial_number" />
+            <InfoBox :label="$t('workerView.general.fromDate')" :value="Utils.timeOnlyDate(item.from_date)" />
+            <InfoBox :label="$t('workerView.general.toDate')" :value="Utils.timeOnlyDate(item.to_date)" />
+            <InfoBox :label="$t('workerView.general.who')" :value="item.given_place" />
+          </div>
+        </div>
       </div>
       <h4 v-else class="text-center text-secondary">
         {{ $t('content.no-data') }}
       </h4>
+      <template v-if="hasForeignPassportFile" #footer>
+        <template v-for="(item, idx) in store.workerPreview?.worker.foreign_passports" :key="idx">
+          <n-button
+            v-if="item.file"
+            size="small"
+            class="!rounded-full !text-white"
+            type="primary"
+            @click="onDownload(item.file)"
+          >
+            <span class="flex items-center justify-center gap-2">
+              <span>{{ $t('content.download') }}</span>
+              <n-icon size="18">
+                <DownloadIcon />
+              </n-icon>
+            </span>
+          </n-button>
+        </template>
+      </template>
     </SectionHeader>
   </div>
 </template>

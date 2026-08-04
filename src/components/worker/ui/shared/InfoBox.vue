@@ -14,7 +14,7 @@
     },
     surface: {
       type: String,
-      default: 'ground' // 'ground' | 'section'
+      default: 'section' // 'ground' | 'section'
     },
     iconVariant: {
       type: String,

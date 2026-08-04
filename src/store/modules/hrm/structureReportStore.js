@@ -11,7 +11,7 @@ export const useStructureReportStore = defineStore('structureReportStore', {
     saveLoading: false,
     params: {
       page: 1,
-      per_page: 10,
+      per_page: 15,
       search: null,
       year: null,
       month: null,

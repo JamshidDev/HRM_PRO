@@ -18,7 +18,7 @@ const initialPayload = () => ({
 
 const initialParams = () => ({
   page: 1,
-  per_page: 10,
+  per_page: 15,
   search: null,
   organizations: [],
   departments: []
@@ -56,7 +56,7 @@ export const useDepartmentPositionStore = defineStore('departmentPositionStore',
       list: [],
       params: {
         page: 1,
-        per_page: 10,
+        per_page: 15,
         search: null
       }
     }

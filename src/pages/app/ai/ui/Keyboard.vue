@@ -1,6 +1,6 @@
 <script setup>
   import { useAIConversationStore } from '@/store/modules/index.js'
-  import { ChatMultiple24Regular } from '@vicons/fluent'
+  import { ChatMultiple24Regular, Send24Filled } from '@vicons/fluent'
 
   const store = useAIConversationStore()
 
@@ -14,7 +14,7 @@
 
 <template>
   <div
-    class="rounded-3xl bg-surface-section relative py-2 px-2 border border-surface-line shadow-keyboard overflow-hidden"
+    class="rounded-3xl bg-surface-section relative py-2 px-2 border border-surface-line shadow-keyboard overflow-hidden flex items-center gap-2"
   >
     <n-input
       @keyup.enter="store.sendMessage"
@@ -28,7 +28,18 @@
       }"
       size="small"
       :loading="store.loading"
+      :placeholder="$t('aiConversation.form.askQuestion')"
     />
+    <button
+      type="button"
+      @click="store.sendMessage()"
+      :disabled="store.loading || !store.payload.question?.trim()"
+      class="w-9 h-9 shrink-0 rounded-full bg-primary hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center cursor-pointer transition-opacity"
+    >
+      <n-icon size="16" class="text-white">
+        <Send24Filled />
+      </n-icon>
+    </button>
     <span
       v-if="store.historyMode && store.today !== store.questionParams.date"
       @click="goChat"

@@ -43,7 +43,7 @@
         <n-avatar
           :size="96"
           round
-          class="relative z-10 cursor-pointer shrink-0"
+          class="main-info-avatar relative z-10 cursor-pointer shrink-0"
           :src="avatarSrc || Utils.noAvailableImage"
           :fallback-src="Utils.noAvailableImage"
           :img-props="{ style: 'object-fit: cover' }"
@@ -91,6 +91,20 @@
   [data-theme='dark'] {
     .main-info-header-bg-image {
       mix-blend-mode: color;
+    }
+  }
+
+  .main-info-avatar {
+    border: 1px solid var(--surface-300);
+    width: 96px !important;
+    height: 96px !important;
+    flex-shrink: 0;
+
+    img {
+      width: 100% !important;
+      height: 100% !important;
+      object-fit: cover !important;
+      object-position: center top !important;
     }
   }
 

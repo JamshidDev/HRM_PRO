@@ -7,7 +7,7 @@ export const useAppSetting = {
   accountUserId: 'account-user-id',
   telegramPopup: 'telegramPopup',
   noAvailableImage: '/no-picture.png',
-  appLogoUrl: '/logo.png',
+  appLogoUrl: '/main-logo.svg',
   datePicketFormat: 'dd.MM.yyyy',
   timePicketFormat: 'dd.MM.yyyy hh:mm',
   signatureUseType: {
@@ -20,6 +20,13 @@ export const useAppSetting = {
   adminSecretKey: 'secretKey',
   temporaryToken: 'temporarySecretKey',
   mustChangeKey: 'must-change-password',
+  soundEnabledKey: 'app-sound-enabled',
+  sidebarThemeKey: 'app-sidebar-theme',
+  defaultSidebarTheme: 'default',
+  screenFilterKey: 'app-screen-filter',
+  defaultScreenFilter: 'none',
+  fontScaleKey: 'app-font-scale',
+  defaultFontScale: 0,
   // Login sahifasi hero panelidagi mavsumiy dekoratsiya.
   // Build vaqtida VITE_SEASON orqali qo'lda belgilanadi (admin tahrirlab, qayta deploy qiladi;
   // sana asosida avtomatik hisoblanmaydi). Ruxsat etilgan qiymatlar: spring | summer | autumn | winter | null.

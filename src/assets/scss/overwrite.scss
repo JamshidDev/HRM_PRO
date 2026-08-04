@@ -1,6 +1,7 @@
 *{
   //font-family:"Poppins", sans-serif !important;
   font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Segoe UI", Roboto, sans-serif !important;
+  scrollbar-color: var(--scrollbar-thumb) var(--surface-ground);
 
   &::-webkit-scrollbar-button {
     display: none;
@@ -29,12 +30,6 @@
 .hidden-form-item{
   .n-form-item-blank{
     display: none !important;
-  }
-}
-
-.image-viewer-container{
-  .vel-img{
-    width: 600px !important;
   }
 }
 
@@ -420,7 +415,11 @@ input:-webkit-autofill {
 }
 
 .image-viewer-container .vel-img {
-  width: unset !important;
+  width: auto !important;
+  height: auto !important;
+  max-width: 90vw !important;
+  max-height: 85vh !important;
+  object-fit: contain;
 }
 
 .hidden-drawer-header{

@@ -37,7 +37,7 @@ export const useWorkerProfileStore = defineStore('workerProfileStore', {
     },
     params: {
       page: 1,
-      per_page: 10,
+      per_page: 15,
       search: null
     },
     tabs: [
@@ -95,7 +95,7 @@ export const useWorkerProfileStore = defineStore('workerProfileStore', {
 
     userRoleParams: {
       page: 1,
-      per_page: 10,
+      per_page: 15,
       search: null,
       organizations: [],
       role: null
@@ -483,6 +483,12 @@ export const useWorkerProfileStore = defineStore('workerProfileStore', {
     },
     _deleteRole(data, id) {
       $ApiService.workerService._deleteRole({ data, id }).then(() => {
+        this._index()
+        this._userRole()
+      })
+    },
+    _setActiveRole(data, id) {
+      $ApiService.workerService._setActiveRole({ data, id }).then(() => {
         this._index()
         this._userRole()
       })

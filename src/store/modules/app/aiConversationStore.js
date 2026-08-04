@@ -31,7 +31,7 @@ export const useAIConversationStore = defineStore('AIConversationStore', {
     questionLoading: false,
     questionParams: {
       page: 1,
-      per_page: 10,
+      per_page: 15,
       date: null
     },
     totalQuestion: 0,
@@ -47,9 +47,23 @@ export const useAIConversationStore = defineStore('AIConversationStore', {
     historyMode: false,
     archiveMessage: [],
     scrollHeight: 0,
-    scrollContainer: null
+    scrollContainer: null,
+
+    visible: false,
+    fullScreen: false
   }),
   actions: {
+    openModal() {
+      this.visible = true
+    },
+    closeModal() {
+      this.visible = false
+      this.fullScreen = false
+    },
+    toggleFullScreen() {
+      this.fullScreen = !this.fullScreen
+    },
+
     async conversation(data) {
       let token = localStorage.getItem(useAppSetting.tokenKey) || null
       const index = this.messages.length
@@ -116,7 +130,7 @@ export const useAIConversationStore = defineStore('AIConversationStore', {
 
     async sendMessage(e) {
       const store = useAccountStore()
-      e.preventDefault()
+      e?.preventDefault()
       if (this.payload.question.trim().length > 0 && !this.loading) {
         const data = {
           ...this.payload

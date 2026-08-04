@@ -44,6 +44,12 @@
   "workerReport": {
     "name": "Worker reports",
     "createButton": "Create report",
+    "stationCodes": {
+      "title": "Departments and station codes"
+    },
+    "positions": {
+      "title": "Positions by organization (unique)"
+    },
     "organizations": "Organizations",
     "accessLevels": "Access levels",
     "from": "Start date",
@@ -140,6 +146,8 @@
     "result": "Result",
     "category": "Category",
     "download": "Download",
+    "page": "p.",
+    "retry": "Retry",
     "attachment": "Attach",
     "no-data": "No data",
     "emptyData": "Not specified",
@@ -181,6 +189,7 @@
     "news": "New",
     "hour": "Hour",
     "group": "Group",
+    "learningCenter": "Learning center",
     "action": "Actions",
     "expiryDate": "Expiry date",
     "updatedAt": "Updated",
@@ -214,6 +223,20 @@
     "profile": "Profile",
     "asAdmin": "Super admin",
     "setting": "Settings",
+    "soundNotification": "Notification sound",
+    "sidebarColor": "Sidebar color",
+    "sidebarThemeDefault": "Default",
+    "sidebarThemeIndigo": "Indigo",
+    "sidebarThemeBlue": "Blue",
+    "sidebarThemeGreen": "Green",
+    "customColor": "Custom color",
+    "customColorDesc": "Change the site's colors",
+    "appearanceMode": "View",
+    "filterGrayscale": "Grayscale",
+    "filterLowBrightness": "Low brightness",
+    "filterHighBrightness": "High brightness",
+    "textSize": "Text size",
+    "resetChanges": "Reset to default",
     "changeAccount": "My accounts",
     "logOutSystem": "Log out",
     "paginationSize": "Show {n} items",
@@ -334,9 +357,13 @@
     "en": "EN",
     "create": "Create",
     "allSelected": "All selected",
+    "sendToSign": "Send to sign",
+    "rejectByMistake": "Return due to error",
     "themeLight": "Light",
     "themeDark": "Dark",
-    "themeSystem": "System"
+    "themeSystem": "System",
+    "oldVersionButton": "Return to old version",
+    "newVersionButton": "Switch to new version"
   },
   "date": {
     "day": "Day",
@@ -409,13 +436,10 @@
   "offerModal": {
     "title": "Public offer",
     "desc": "Please review the terms before using the platform",
-    "item1Title": "1. Public offer",
-    "item1Text": "This public offer sets out the terms of use of the \"HRM PRO\" platform. By signing in, the user is deemed to have fully accepted the terms below.",
-    "item2Title": "2. Data privacy",
-    "item2Text": "Personal data entered by the user is stored in accordance with the law and is not disclosed to third parties. Data is used solely for HR management purposes.",
-    "item3Title": "3. User obligations",
-    "item3Text": "The user must keep their login and password confidential and is fully responsible for all actions performed with them. Unauthorized access to the system is prohibited.",
+    "terms": "Terms of Use",
+    "privacy": "Privacy Policy",
     "downloadLabel": "Download the full document (PDF)",
+    "loadError": "Failed to load the document",
     "accept": "I agree and continue",
     "decline": "Decline"
   },
@@ -503,7 +527,11 @@
     "updateTitle": "Edit role",
     "form": {
       "name": "Role name",
-      "permissions": "Permissions"
+      "permissions": "Permissions",
+      "moduleAccess": "Module access",
+      "type": "Role type",
+      "typeSanctum": "User",
+      "typeIntegration": "Integration"
     }
   },
   "userPage": {
@@ -574,6 +602,9 @@
     "account": {
       "title": "Account information",
       "warningText": "For account security, regularly update your account details. This helps protect against unauthorized access."
+    },
+    "sidebar": {
+      "title": "Profile sections"
     },
     "tabs": {
       "profileInfo": "Account info",
@@ -665,9 +696,17 @@
       "multiple_position": "Employees with multiple contracts",
       "pension_age": "Employees of retirement age",
       "position_type": "Position type",
+      "countBy": "Count by",
+      "countByPosition": "By position",
+      "countByWorker": "By worker",
       "age": "Age",
       "quickActions": "Quick actions",
-      "downloadRelative": "Download relatives"
+      "downloadRelative": "Download relatives",
+      "generateReport": "Generate report",
+      "generateReportDesc": "Select employees to generate a report",
+      "relativesReport": "By relatives",
+      "excelFile": "Excel file",
+      "downloadInfo": "Download info"
     },
     "checkWorker": {
       "title": "Search employee",
@@ -692,7 +731,9 @@
       "position_date": "Position date",
       "birthday": "Date of birth",
       "position": "Position",
-      "organization": "Organization"
+      "organization": "Organization",
+      "salary": "Monthly salary",
+      "workExperience": "Total experience (in months)"
     }
   },
   "exportPage": {
@@ -700,7 +741,12 @@
     "exportAction": "Export",
     "checkAll": "Select all",
     "addPassport": "Include passport data?",
-    "chooseExport": "Select fields"
+    "passportYes": "Yes, include it",
+    "passportNo": "No, data only",
+    "chooseExport": "Select fields",
+    "excelSettings": "Set up Excel table",
+    "selectColumns": "Select table columns",
+    "columnOrder": "Arrange column order"
   },
   "contactPage": {
     "name": "Contacts"
@@ -738,7 +784,9 @@
     },
     "roles": {
       "title": "Roles",
-      "attachRole": "Assign role"
+      "attachRole": "Assign role",
+      "active": "Active",
+      "setActive": "Make active"
     },
     "disability": {
       "title": "Disability information",
@@ -852,10 +900,12 @@
     "undo": "Undo",
     "certificate": "Certificate number",
     "validDate": "Validity",
+    "validKey": "Valid",
     "expiredKey": "Key expired!",
     "legalPerson": "Legal entity",
     "naturalPerson": "Individual",
     "connectionError": "E-signature not installed or misconfigured!",
+    "confirmError": "An error occurred while confirming the document. Please try again shortly.",
     "copyLink": "Copy link",
     "copied": "Link copied",
     "goSignature": "Sign",
@@ -865,7 +915,13 @@
     "acceptApplication": "Approve application",
     "comment": "Comment",
     "rejectApplication": "Reject application",
-    "pinfl": "PIN"
+    "applicationAcceptDesc": "You can leave a comment (optional).",
+    "applicationRejectDesc": "Write the reason for rejection. It will be visible to the employee who submitted the application.",
+    "applicationCommentPlaceholder": "Enter your comment...",
+    "pinfl": "PIN",
+    "sealKeyLabel": "seal key",
+    "noKeysTitle": "No keys found",
+    "noKeysDesc": "Check that your USB token or ID card is connected."
   },
   "documentPage": {
     "name": "Documents",
@@ -1014,6 +1070,36 @@
       "viewer": "Document reviewers",
       "files": "Document files",
       "checkDocument": "Click to check document status",
+      "attachedDocuments": "Attached documents",
+      "attachDocument": "Attach document",
+      "downloadPdf": "Download PDF",
+      "downloadWord": "Download Word",
+      "confirmDocument": "Confirm document",
+      "confirmDocumentDesc": "Confirm document {id}? Once confirmed, the document will be secured with an electronic signature and can no longer be edited.",
+      "confirmed": "Document confirmed",
+      "confirmedWithSignature": "Secured with electronic signature",
+      "confirmedNotification": "The document has been secured with an electronic signature. You can download a PDF copy.",
+      "signatureInfo": "Signature info",
+      "rejected": "Document rejected",
+      "rejectedReason": "Reason",
+      "resend": "Resend",
+      "rejectTitle": "Reject document",
+      "rejectDesc": "Write the reason for rejection. It will be visible to the document author and reviewers.",
+      "rejectReasonLabel": "Rejection reason",
+      "rejectReasonPlaceholder": "E.g.: the amount stated in clause 4 doesn't match the contract, please review.",
+      "rejectReasonRequired": "Enter a rejection reason — at least 10 characters.",
+      "rejectSubmit": "Reject",
+      "link": "Link",
+      "keySelectTitle": "Select e-signature key",
+      "keySelectDesc": "Select a digital signature (ERI) key to sign the document.",
+      "continue": "Continue",
+      "emptyFilesTitle": "No document attached",
+      "emptyFilesDesc": "No file has been attached to this document yet. At least one file must be attached to confirm it.",
+      "loadErrorTitle": "Failed to load document",
+      "loadErrorDesc": "The document could not be loaded. Please try refreshing.",
+      "fileOpenError": "Couldn't open the file",
+      "fileOpenErrorDesc": "The file format isn't supported or the file failed to load from the server. Try again or download the file.",
+      "fileOpenErrorSubtitle": "Couldn't open the file",
       "status": {
         "Process": "In progress"
       }
@@ -1548,7 +1634,8 @@
       "checkKnowledge": "Knowledge test",
       "punishment": "Disciplinary action",
       "e_documents": "E-documents",
-      "exams": "Exams"
+      "exams": "Exams",
+      "turnstile": "Turnstile data"
     },
     "header": {
       "title": "Employee profile",
@@ -1599,6 +1686,7 @@
       "pasport": "Passport",
       "railway_pasport": "Railway ID",
       "foreign_pasport": "Foreign Passport",
+      "position_certificate": "Position Certificate",
       "card_number": "Card Number",
       "issue_date": "Issue Date",
       "expiry_date": "Expiry Date",
@@ -1788,6 +1876,7 @@
     },
     "mainCard": {
       "totalWorker": "Total employees",
+      "fxsh": "Civil-contract employees",
       "man": "Male employees",
       "woman": "Female employees"
     },
@@ -2202,6 +2291,17 @@
     "canIHelpYouToday": "How can I help you today?",
     "aiAssistant": "AI Assistant",
     "welcomeTo": "Welcome, {n}",
+    "greeting": {
+      "morning": "Good morning, {n}",
+      "day": "Good afternoon, {n}",
+      "evening": "Good evening, {n}"
+    },
+    "suggestions": {
+      "leaveBalance": "How much leave do I have left?",
+      "lastSalary": "My last salary calculation",
+      "getReference": "Get a reference letter",
+      "workedDays": "How many days have I worked this month?"
+    },
     "disclaimer": {
       "cardOne": "### 🧪 Test mode\n\nThis AI assistant is currently in **test mode**.  \nAnswers may be incomplete or _incorrect_.",
       "cardTwo": "### 📚 Legal documents loading\n\nBot currently trained only on **Labor Code of Uzbekistan**.  \n_Other laws not fully loaded or trained._",
@@ -3501,6 +3601,37 @@
     "name": "Notifications",
     "create": "Create notification"
   },
+  "mobileStoryPage": {
+    "name": "Story announcements",
+    "createTitle": "New story",
+    "updateTitle": "Edit story",
+    "status": {
+      "draft": "Draft",
+      "published": "Published"
+    },
+    "table": {
+      "status": "Status",
+      "views": "Views"
+    },
+    "form": {
+      "title": "Title",
+      "titleRequired": "Title (uz) is required",
+      "subtitle": "Subtitle",
+      "status": "Status",
+      "sort": "Order",
+      "actionType": "Action type",
+      "actionTypePlaceholder": "e.g. attendance",
+      "publishedAt": "Publish date",
+      "slides": "Slides (image/video)",
+      "addSlide": "Add slide",
+      "editFields": "Edit details",
+      "noSlides": "No slides yet — add using the button above",
+      "detailsButton": "Details"
+    },
+    "deleteConfirm": "Delete this story?",
+    "slideDeleteConfirm": "Delete this slide?",
+    "saved": "Saved"
+  },
   "newsPage": {
     "name": "News",
     "create": "Create News",
@@ -3774,6 +3905,41 @@
       "special": "At least 1 special character ({'@'}!#$%^&*)",
       "match": "Passwords match"
     }
+  },
+  "integrationPerm": {
+    "enums": "References",
+    "dashboard": "Dashboard",
+    "structure": "Structure",
+    "leaders": "Leaders",
+    "departments": "Departments",
+    "departmentsList": "Departments list",
+    "positions": "Positions",
+    "positionsList": "Positions list",
+    "kpi": "KPI",
+    "classifications": "Classifications",
+    "contracts": "Contracts",
+    "workers": "Workers",
+    "workersDashboard": "Workers dashboard",
+    "workersPins": "Workers PINs",
+    "workerPin": "Worker PIN",
+    "workerShow": "Worker details",
+    "workerCheck": "Worker check",
+    "workerEventsMonth": "Worker turnstile (month)",
+    "workerEventsDay": "Worker turnstile (day)",
+    "turnstileEvents": "Turnstile events",
+    "stationWorkers": "Station workers",
+    "stationWorker": "Station worker",
+    "stationResume": "Station resume",
+    "stationStats": "Station stats",
+    "meds": "Medical checks",
+    "workerMeds": "Worker medical checks",
+    "workerSalary": "Worker salary",
+    "workerSalaryMonths": "Worker salary months",
+    "mobileFaceSendEvent": "Mobile face: send event",
+    "mobileFaceCheckWorker": "Mobile face: check worker",
+    "mobileFaceSchedules": "Mobile face: schedules",
+    "otpVerify": "OTP verify",
+    "holidayGreetings": "Holiday greetings"
   }
 }
 

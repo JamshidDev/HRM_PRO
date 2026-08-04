@@ -43,7 +43,7 @@ export const useReportStore = defineStore('reportStore', {
     positionLoading: false,
     positionParams: {
       page: 1,
-      per_page: 10,
+      per_page: 15,
       search: null,
       organization_id: null,
       department_id: null
@@ -54,7 +54,7 @@ export const useReportStore = defineStore('reportStore', {
     workerLoading: false,
     workerParams: {
       page: 1,
-      per_page: 10,
+      per_page: 15,
       search: null,
       organization_id: null,
       department_id: null,

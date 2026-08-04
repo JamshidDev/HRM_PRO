@@ -25,15 +25,15 @@
     store._index()
   }
 
-  const groupAction = {
-    fetch: () => lmsStore.group.list.length || lmsStore._group(),
+  const learningCenterAction = {
+    fetch: () => lmsStore.learningCenter.list.length || lmsStore._learningCenter(),
     onSearch: () => {
-      lmsStore.group.params.page = 1
-      lmsStore._group()
+      lmsStore.learningCenter.params.page = 1
+      lmsStore._learningCenter()
     },
     onScroll: () => {
-      lmsStore.group.params.page++
-      lmsStore._group(true)
+      lmsStore.learningCenter.params.page++
+      lmsStore._learningCenter(true)
     }
   }
 
@@ -75,7 +75,7 @@
 
   const onShow = (v) => {
     if (!v) return
-    groupAction.fetch()
+    learningCenterAction.fetch()
     eduPlanAction.fetch()
     directionAction.fetch()
     spnAction.fetch()
@@ -106,17 +106,19 @@
           :loading="componentStore.enumAdminLoading"
           @update:value="filterEvent"
         />
-        <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{ $t('content.group') }}</label>
+        <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{
+          $t('content.learningCenter')
+        }}</label>
         <SuperSelect
-          v-model:value="store.params.group_id"
-          v-model:search="lmsStore.group.params.search"
-          :options="lmsStore.group.list"
-          :loading="lmsStore.group.loading"
-          :total-count="lmsStore.group.totalItems"
-          :per-page="lmsStore.group.params.per_page"
+          v-model:value="store.params.learning_center_id"
+          v-model:search="lmsStore.learningCenter.params.search"
+          :options="lmsStore.learningCenter.list"
+          :loading="lmsStore.learningCenter.loading"
+          :total-count="lmsStore.learningCenter.totalItems"
+          :per-page="lmsStore.learningCenter.params.per_page"
           :clearable="true"
-          @onScrollEv="groupAction.onScroll"
-          @onSearch="groupAction.onSearch"
+          @onScrollEv="learningCenterAction.onScroll"
+          @onSearch="learningCenterAction.onSearch"
           @update:value="filterEvent()"
         />
         <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{

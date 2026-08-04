@@ -61,6 +61,11 @@ export const useAppStore = defineStore('appStore', {
     ],
     theme: customTheme(),
     themeMode: 'system',
+    sidebarTheme: useAppSetting.defaultSidebarTheme,
+    soundEnabled: true,
+    screenFilter: useAppSetting.defaultScreenFilter,
+    fontScale: useAppSetting.defaultFontScale,
+    profileSettingsVisible: false,
     skipReset: true,
     wrongPinsLoading: false
   }),
@@ -115,6 +120,51 @@ export const useAppStore = defineStore('appStore', {
       this.applyTheme()
     },
 
+    applySidebarTheme() {
+      document.documentElement.setAttribute('data-sidebar-theme', this.sidebarTheme)
+    },
+    setSidebarTheme(theme) {
+      this.sidebarTheme = theme
+      localStorage.setItem(useAppSetting.sidebarThemeKey, theme)
+      this.applySidebarTheme()
+    },
+    setSoundEnabled(value) {
+      this.soundEnabled = value
+      localStorage.setItem(useAppSetting.soundEnabledKey, value ? '1' : '0')
+    },
+
+    applyScreenFilter() {
+      const filterClasses = { grayscale: 'bwMode', 'low-brightness': 'lowMode', 'high-brightness': 'highMode' }
+      const html = document.documentElement
+      html.classList.remove('bwMode', 'lowMode', 'highMode')
+      const cls = filterClasses[this.screenFilter]
+      if (cls) html.classList.add(cls)
+    },
+    setScreenFilter(value) {
+      this.screenFilter = value
+      localStorage.setItem(useAppSetting.screenFilterKey, value)
+      this.applyScreenFilter()
+    },
+
+    applyFontScale() {
+      document.documentElement.style.fontSize = `${100 + this.fontScale / 2}%`
+    },
+    setFontScale(value) {
+      this.fontScale = value
+      localStorage.setItem(useAppSetting.fontScaleKey, value)
+      this.applyFontScale()
+    },
+
+    resetProfileSettings() {
+      this.setScreenFilter(useAppSetting.defaultScreenFilter)
+      this.setFontScale(useAppSetting.defaultFontScale)
+      this.setSidebarTheme(useAppSetting.defaultSidebarTheme)
+    },
+
+    openProfileSettings() {
+      this.profileSettingsVisible = true
+    },
+
     initApp() {
       const savedMode = localStorage.getItem(useAppSetting.themeKey) || 'system'
       i18n.global.locale =
@@ -122,6 +172,21 @@ export const useAppStore = defineStore('appStore', {
 
       this.themeMode = savedMode
       this.applyTheme()
+
+      this.sidebarTheme =
+        localStorage.getItem(useAppSetting.sidebarThemeKey) || useAppSetting.defaultSidebarTheme
+      this.applySidebarTheme()
+
+      this.soundEnabled = localStorage.getItem(useAppSetting.soundEnabledKey) !== '0'
+
+      this.screenFilter =
+        localStorage.getItem(useAppSetting.screenFilterKey) || useAppSetting.defaultScreenFilter
+      this.applyScreenFilter()
+
+      this.fontScale =
+        parseInt(localStorage.getItem(useAppSetting.fontScaleKey), 10) ||
+        useAppSetting.defaultFontScale
+      this.applyFontScale()
 
       prefersDarkMedia.addEventListener('change', () => {
         if (this.themeMode === 'system') {

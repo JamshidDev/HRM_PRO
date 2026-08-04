@@ -12,6 +12,7 @@ import SeasonEffect from './ui/SeasonEffect.vue'
 import OfferModal from '@/components/OfferModal.vue'
 import loginPatternUrl from '@/assets/images/svg/login-pattern.png?url'
 import loginPatternBottomUrl from '@/assets/images/svg/pattern-bottom.png?url'
+import bannerRailwaysDayUrl from '@/assets/images/content/banner-railways-day.png?url'
 
 
 const appStore = useAppStore()
@@ -71,6 +72,11 @@ const onDone = () => {
           class="login-new__fade-in login-new__fade-in-delay-2 text-login-body text-[15px] leading-[1.65] mt-4 max-w-[480px]">
           {{ $t('loginPage.description.text') }}
         </p>
+        <img
+          :src="bannerRailwaysDayUrl"
+          alt=""
+          class="login-new__fade-in login-new__fade-in-delay-2 w-full max-w-[1020px] rounded-2xl mt-6 shadow-md"
+        />
       </div>
 
       <!-- Mobil ilovani yuklab olish — hero pastida (faqat desktop) -->
@@ -187,14 +193,14 @@ const onDone = () => {
   background-repeat: no-repeat;
   background-position: left center;
   background-size: auto 105%;
-  opacity: 0.15;
+  opacity: 1;
   -webkit-mask-image: linear-gradient(to right, #000 45%, transparent 85%);
   mask-image: linear-gradient(to right, #000 45%, transparent 85%);
   transition: opacity 0.25s;
 }
 
 [data-theme='dark'] .login-new__hero-pattern {
-  opacity: 0.15;
+  opacity: 1;
 }
 
 /* Karta pastki qismidagi mandala naqshi — pastga tiqilgan, tepaga qarab so'nadi */
@@ -211,7 +217,7 @@ const onDone = () => {
 }
 
 [data-theme='dark'] .login-new__card-pattern {
-  opacity: 0.4;
+  opacity: 1;
 }
 
 .login-new__card {

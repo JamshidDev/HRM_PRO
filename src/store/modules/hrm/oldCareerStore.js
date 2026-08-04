@@ -23,7 +23,7 @@ export const useOldCareerStore = defineStore('oldCareerStore', {
     },
     params: {
       page: 1,
-      per_page: 10,
+      per_page: 15,
       search: null
     },
     uuid: null,

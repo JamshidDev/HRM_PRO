@@ -17,9 +17,9 @@ export const useLmsCertificateStore = defineStore('lmsCertificateStore', {
     totalItems: 0,
     params: {
       page: 1,
-      per_page: 10,
+      per_page: 15,
       search: null,
-      group_id: null,
+      learning_center_id: null,
       organization_id: [],
       year: null,
       month: null,
@@ -42,6 +42,17 @@ export const useLmsCertificateStore = defineStore('lmsCertificateStore', {
       loading: false
     },
     group: {
+      list: [],
+      loading: false,
+      totalItems: 0,
+      params: {
+        page: 1,
+        per_page: 100,
+        search: null
+      }
+    },
+    // O'quv markaz filtri (guruh filtri o'rniga) — paginatsiyali ro'yxat.
+    learningCenter: {
       list: [],
       loading: false,
       totalItems: 0,
@@ -85,7 +96,7 @@ export const useLmsCertificateStore = defineStore('lmsCertificateStore', {
       list: [],
       params: {
         page: 1,
-        per_page: 10,
+        per_page: 15,
         search: null
       },
       loading: false,
@@ -108,6 +119,25 @@ export const useLmsCertificateStore = defineStore('lmsCertificateStore', {
         })
         .finally(() => {
           this.group.loading = false
+        })
+    },
+    // O'quv markazlar ro'yxati (filtr dropdowni) — /structure/learning-centers.
+    _learningCenter(infinity) {
+      this.learningCenter.loading = true
+      const params = {
+        ...this.learningCenter.params
+      }
+      $ApiService.learningCenterService
+        ._index({ params })
+        .then((res) => {
+          const data = res.data.data.data.map((v) => ({ id: v.id, name: v.name }))
+          this.learningCenter.list = infinity
+            ? [...this.learningCenter.list, ...data]
+            : data
+          this.learningCenter.totalItems = res.data.data.total
+        })
+        .finally(() => {
+          this.learningCenter.loading = false
         })
     },
     _eduPlan(infinity) {

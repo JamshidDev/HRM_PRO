@@ -1,7 +1,7 @@
 <script setup>
   import { navigations } from '../../data/navigations.js'
   import { ChevronDown12Regular, ChevronDoubleLeft16Filled } from '@vicons/fluent'
-  import { useAccountStore } from '@/store/modules/index.js'
+  import { useAccountStore, useAppStore } from '@/store/modules/index.js'
   import i18n from '@/i18n/index.js'
   import { AppPaths, useAppSetting } from '@/utils/index.js'
   import { MiniMenuBadge, MenuItemBadge, UIProfile, DownloadTask } from '@components'
@@ -11,7 +11,19 @@
   const router = useRouter()
 
   const store = useAccountStore()
+  const appStore = useAppStore()
   const emits = defineEmits(['onChange', 'onOpen', 'onClose'])
+
+  const sidebarThemeTooltipColors = {
+    indigo: '#2F2C7F',
+    blue: '#0C4089',
+    green: '#00220E'
+  }
+  const tooltipThemeOverrides = computed(() => {
+    const color = sidebarThemeTooltipColors[appStore.sidebarTheme]
+    if (!color) return undefined
+    return { Tooltip: { color, textColor: '#fff' } }
+  })
 
   const checkPage = (path) => {
     if ([AppPaths.Home, AppPaths.AIConversation, AppPaths.Info].includes(path)) {
@@ -60,21 +72,37 @@
     router.push(item.path)
   }
 
-  const miniMenu = computed(() => {
-    return navigations
+  /**
+   * Menyu ko'rish ruxsati: bare slug YOKI uning '-read' varianti yetarli.
+   * Fine-grained migratsiyadan keyin rollar 'hr-departments-read' oladi, menyu esa
+   * tarixan bare 'hr-departments' tekshirardi — natijada faqat -read'ga ega rol
+   * sahifani ochsa ham menyu yashirilardi. Ikkovini ham qamraymiz.
+   */
+  const canView = (permission) =>
+    store.checkPermission(permission) || store.checkPermission(`${permission}-read`)
+
+  /**
+   * Modul (mini-menyu) ko'rinadi: o'z ruxsati bo'lsa YOKI kamida bitta ko'rinadigan
+   * bola menyusi bo'lsa. Shu bilan faqat child-ruxsatga ega (coarse modul ruxsatisiz)
+   * foydalanuvchi ham modulni ko'rib, ichidagi sahifasiga o'ta oladi.
+   */
+  const moduleVisible = (mod) =>
+    store.isModeDev ||
+    canView(mod.permission) ||
+    (mod.children?.some((c) => canView(c.permission)) ?? false)
+
+  const miniMenu = computed(() =>
+    navigations
+      .filter((v) => moduleVisible(v))
       .map((v) => ({
         index: v.index,
         label: v.label,
         path: v.path,
         icon: v.icon,
         name: v?.name,
-        permission: v.permission,
-        allowed: store.checkPermission(v.permission)
+        permission: v.permission
       }))
-      .filter((v) => {
-        return store.isModeDev || v.allowed
-      })
-  })
+  )
 
   /**
    * When no module is selected yet (e.g. on the home page right after load),
@@ -82,9 +110,7 @@
    * has something to show and the toggle button remains functional.
    */
   const fallbackMenuPath = computed(() => {
-    const nav = navigations.find(
-      (v) => (store.isModeDev || store.checkPermission(v.permission)) && v.children?.length
-    )
+    const nav = navigations.find((v) => moduleVisible(v) && v.children?.length)
     return nav?.path ?? null
   })
 
@@ -104,7 +130,7 @@
       .find((v) => v.path === effectiveMenuPath.value)
       .children.map((v) => ({
         ...v,
-        allowed: store.checkPermission(v.permission)
+        allowed: canView(v.permission)
       }))
       .filter((v) => store.isModeDev || v.allowed)
   })
@@ -171,7 +197,7 @@
 
           <div class="mini-menu-scroll">
             <template v-for="item in miniMenu" :key="item">
-              <n-tooltip trigger="hover" placement="right">
+              <n-tooltip trigger="hover" placement="right" :theme-overrides="tooltipThemeOverrides">
                 <template #trigger>
                   <div
                     :class="[isComboxMenu(item.path) && 'active-mini-content']"
@@ -202,7 +228,10 @@
       >
         <transition name="slide-right" mode="out-in">
           <div v-if="showPanel && panelMenu?.length">
-            <div class="sticky top-0 z-10 bg-surface-section pt-[10px] -mt-[10px]">
+            <div
+              class="sticky top-0 z-10 bg-surface-section pt-[10px] -mt-[10px]"
+              :class="{ 'sidebar-themed-sticky': appStore.sidebarTheme !== 'default' }"
+            >
               <span class="text-sm block text-textColor2 truncate font-semibold pl-4 mb-3">
                 {{ menuName }}
               </span>
@@ -307,6 +336,14 @@
   [data-theme='dark'] {
     .sidebar-card {
       border: 1px solid #2b3d55;
+    }
+  }
+
+  [data-sidebar-theme='indigo'],
+  [data-sidebar-theme='blue'],
+  [data-sidebar-theme='green'] {
+    .sidebar-card {
+      border-color: rgba(255, 255, 255, 0.15);
     }
   }
 </style>

@@ -25,6 +25,8 @@ const getValueOfCssVariable = (variableName) => {
 export const customTheme = () => {
   return {
     common: {
+      baseColor: '#ffffff',
+      opacityDisabled: '0.5',
       primaryColor: getValueOfCssVariable('--primary-color'),
       primaryColorHover: getValueOfCssVariable('--primary-color'),
       primaryColorPressed: getValueOfCssVariable('--primary-color'),
@@ -32,6 +34,18 @@ export const customTheme = () => {
       errorColor: getValueOfCssVariable('--danger-color'),
       errorColorHover: getValueOfCssVariable('--danger-color'),
       errorColorPressed: getValueOfCssVariable('--danger-color'),
+
+      infoColor: getValueOfCssVariable('--info-color'),
+      infoColorHover: getValueOfCssVariable('--info-color'),
+      infoColorPressed: getValueOfCssVariable('--info-color'),
+
+      successColor: getValueOfCssVariable('--success-color'),
+      successColorHover: getValueOfCssVariable('--success-color'),
+      successColorPressed: getValueOfCssVariable('--success-color'),
+
+      warningColor: getValueOfCssVariable('--warning-color'),
+      warningColorHover: getValueOfCssVariable('--warning-color'),
+      warningColorPressed: getValueOfCssVariable('--warning-color'),
 
       textColorBase: getValueOfCssVariable('--textColor0'), //Standart matn rangi
       textColor1: getValueOfCssVariable('--textColor1'), // Birlamchi matn rangi (muhim matnlar)
@@ -74,26 +88,26 @@ export const customTheme = () => {
       tdTextColor: getValueOfCssVariable('--textColor2')
     },
     Pagination: {
-      itemColor: getValueOfCssVariable('--surface-ground'),
-      itemColorHover: getValueOfCssVariable('--surface-ground'),
+      itemColor: getValueOfCssVariable('--table-header'),
+      itemColorHover: getValueOfCssVariable('--table-header'),
       itemColorActive: getValueOfCssVariable('--primary-color'),
       itemColorActiveHover: getValueOfCssVariable('--primary-color'),
-      itemColorDisabled: getValueOfCssVariable('--surface-ground'),
+      itemColorDisabled: getValueOfCssVariable('--table-header'),
       itemTextColorActive: '#ffffff',
       itemTextColorActiveHover: '#ffffff',
       itemBorder: `1px solid ${getValueOfCssVariable('--surface-line')}`,
       itemBorderHover: `1px solid ${getValueOfCssVariable('--surface-line')}`,
       itemBorderDisabled: `1px solid ${getValueOfCssVariable('--surface-line')}`,
-      buttonColor: getValueOfCssVariable('--surface-ground'),
-      buttonColorHover: getValueOfCssVariable('--surface-ground'),
+      buttonColor: getValueOfCssVariable('--table-header'),
+      buttonColorHover: getValueOfCssVariable('--table-header'),
       buttonBorder: `1px solid ${getValueOfCssVariable('--surface-line')}`,
       buttonBorderHover: `1px solid ${getValueOfCssVariable('--surface-line')}`,
       peers: {
         Select: {
           peers: {
             InternalSelection: {
-              color: getValueOfCssVariable('--surface-ground'),
-              colorActive: getValueOfCssVariable('--surface-ground')
+              color: getValueOfCssVariable('--table-header'),
+              colorActive: getValueOfCssVariable('--table-header')
             }
           }
         }
@@ -118,8 +132,41 @@ export const customTheme = () => {
         check: () => h(NIcon, null, { default: () => h(CheckmarkCircle24Regular) })
       }
     },
+    InternalSelection: {
+      border: `1px solid ${getValueOfCssVariable('--surface-line')}`
+    },
+    Input: {
+      border: `1px solid ${getValueOfCssVariable('--surface-line')}`
+    },
     Dropdown: {
       optionTextColorHover: '#2E90FA'
+    },
+    Button: {
+      textColorPrimary: '#ffffff',
+      textColorHoverPrimary: '#ffffff',
+      textColorPressedPrimary: '#ffffff',
+      textColorFocusPrimary: '#ffffff',
+      textColorDisabledPrimary: '#ffffff',
+      textColorInfo: '#ffffff',
+      textColorHoverInfo: '#ffffff',
+      textColorPressedInfo: '#ffffff',
+      textColorFocusInfo: '#ffffff',
+      textColorDisabledInfo: '#ffffff',
+      textColorSuccess: '#ffffff',
+      textColorHoverSuccess: '#ffffff',
+      textColorPressedSuccess: '#ffffff',
+      textColorFocusSuccess: '#ffffff',
+      textColorDisabledSuccess: '#ffffff',
+      textColorWarning: '#ffffff',
+      textColorHoverWarning: '#ffffff',
+      textColorPressedWarning: '#ffffff',
+      textColorFocusWarning: '#ffffff',
+      textColorDisabledWarning: '#ffffff',
+      textColorError: '#ffffff',
+      textColorHoverError: '#ffffff',
+      textColorPressedError: '#ffffff',
+      textColorFocusError: '#ffffff',
+      textColorDisabledError: '#ffffff'
     }
   }
 }

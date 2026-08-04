@@ -1,8 +1,9 @@
 <script setup>
   import { ref, computed } from 'vue'
   import i18n from '@/i18n/index.js'
+  import { useComponentStore } from '@/store/modules/index.js'
 
-  import photo from '@/assets/images/content/profilePhoto.avif'
+  import defaultPhoto from '@/assets/images/content/profilePhoto.avif'
   import IdCardIcon from '@/assets/icons/jshirIcon.svg'
   import DocumentTab from './shared/DocumentTab.vue'
   import IdCard from '../../ui/IdCard.vue'
@@ -13,67 +14,122 @@
   import JshirIcon from '@/assets/icons/jshirIcon.svg'
   import IdRailWayDetail from '../../ui/IdRailWayDetail.vue'
   import IdForeignDetail from '../../ui/IdForeignDetail.vue'
+  import IdRedCertificate from '../../ui/IdRedCertificate.vue'
 
   const { t } = i18n.global
+  const store = useComponentStore()
 
   const activeId = ref(1)
 
   const tabList = computed(() => [
     { id: 1, label: t('workerView.Edocument.pasport'), icon: IdCardIcon },
     { id: 2, label: t('workerView.Edocument.railway_pasport'), icon: IdCardIcon },
-    { id: 3, label: t('workerView.Edocument.foreign_pasport'), icon: IdCardIcon }
+    { id: 3, label: t('workerView.Edocument.foreign_pasport'), icon: IdCardIcon },
+    { id: 4, label: t('workerView.Edocument.position_certificate'), icon: IdCardIcon }
   ])
 
-  const idCardData = {
-    photoUrl: photo,
-    surname: 'ABDUSAMADOV',
-    givenName: 'SHAXZODBEK',
-    patronymic: 'OLIMJON OGLI',
-    nationality: "O'ZBEKISTON",
-    sex: 'M',
-    birthDate: '2006-01-10',
-    issueDate: '2022-02-12',
-    expiryDate: '2032-02-12',
-    cardNumber: 'AD0131718',
-    personalNumber: '50978037640051',
-    birthPlace: 'JIZZAX',
-    issuePlace: 'JIZZAX VILOYATI',
-    birthCountry: "O'ZBEKISTON"
-  }
+  const worker = computed(() => store.workerPreview?.worker || {})
 
-  const idRailWayData = {
-    photoUrl: photo,
-    surname: 'ABDUSAMADOV',
-    givenName: 'SHAXZODBEK',
-    patronymic: 'OLIMJON OGLI',
-    sex: 'M',
-    cardNumber: 'UTA-165876',
-    issueDate: '18.09.2025',
-    expiryDate: '18.09.2025',
-    personalNumber: '65978451212',
-    issuePlace: 'Qo’qon MTU'
-  }
+  const photoUrl = computed(() => {
+    const w = worker.value
+    const photos = w.photos || []
+    return (
+      photos.find((p) => p.current === 1 || p.current === true)?.photo ||
+      photos[0]?.photo ||
+      w.photo ||
+      defaultPhoto
+    )
+  })
 
-  const idForeignData = {
-    photoUrl: photo,
-    surname: 'ABDUSAMADOV',
-    givenName: 'SHAXZODBEK',
-    patronymic: 'OLIMJON OGLI',
-    sex: 'M',
-    cardNumber: 'FA1234567',
-    birthDate: '2006-01-10',
-    birthPlace: 'JIZZAX',
-    issueDate: '2025-09-18',
-    issuePlace: 'JIZZAX IIB',
-    expiryDate: '2030-09-18'
-  }
-  
+  const sex = computed(() => {
+    const s = worker.value.sex
+    if (s === true || s === 1 || s === '1') return 'M'
+    if (s === false || s === 0 || s === '0') return 'F'
+    return undefined
+  })
+
+  const idCardData = computed(() => {
+    const w = worker.value
+    const passport = w.passports?.[0] || {}
+    return {
+      photoUrl: photoUrl.value,
+      surname: w.last_name,
+      givenName: w.first_name,
+      patronymic: w.middle_name,
+      nationality: w.nationality?.name,
+      sex: sex.value,
+      birthDate: w.birthday,
+      issueDate: passport.from_date,
+      expiryDate: passport.to_date,
+      cardNumber: passport.serial_number,
+      personalNumber: w.pin,
+      birthPlace: w.region?.name,
+      issuePlace: passport.address,
+      birthCountry: w.country?.name
+    }
+  })
+
+  const hasCertificate = computed(() => Boolean(worker.value.certificates?.length))
+
+  const idRailWayData = computed(() => {
+    const w = worker.value
+    const certificate = w.certificates?.[0] || {}
+    return {
+      photoUrl: photoUrl.value,
+      surname: w.last_name,
+      givenName: w.first_name,
+      patronymic: w.middle_name,
+      sex: sex.value,
+      birthDate: w.birthday,
+      cardNumber: certificate.number,
+      issueDate: certificate.issue_date,
+      expiryDate: certificate.expiry_date,
+      personalNumber: w.pin,
+      issuePlace: certificate.post_name
+    }
+  })
+
+  const hasForeignPassport = computed(() => Boolean(worker.value.foreign_passports?.length))
+
+  const idForeignData = computed(() => {
+    const w = worker.value
+    const foreignPassport = w.foreign_passports?.[0] || {}
+    return {
+      photoUrl: photoUrl.value,
+      surname: w.last_name,
+      givenName: w.first_name,
+      patronymic: w.middle_name,
+      sex: sex.value,
+      cardNumber: foreignPassport.serial_number,
+      birthDate: w.birthday,
+      birthPlace: w.region?.name,
+      issueDate: foreignPassport.from_date,
+      issuePlace: foreignPassport.given_place,
+      expiryDate: foreignPassport.to_date,
+      personalNumber: w.pin
+    }
+  })
+
+  // TODO: hardcoded placeholder until the position-certificate API is wired up.
+  // Swap this for a computed derived from worker.value.position_certificates?.[0].
+  const idRedCertificateData = computed(() => {
+    const w = worker.value
+    return {
+      photoUrl: photoUrl.value,
+      cardNumber: '00123',
+      fullName: [w.last_name, w.first_name, w.middle_name].filter(Boolean).join(' '),
+      postName: "Toshkent temir yo'l inshootlari,\nyo'l mashinalari boshqarmasi, muhandis",
+      issueDate: '2022-05-14',
+      expiryDate: '2027-05-14',
+      extendedDate: '2027-06-06',
+      managerName: 'A. Rashidov',
+      signature: [w.first_name, w.last_name].filter(Boolean).join(' ')
+    }
+  })
 </script>
 
 <template>
-  <div class="flex flex-col gap-4">
-    <!-- <h2 class="text-xl sm:text-xl font-bold text-textColor0 mb-4">Hujjatlar</h2> -->
-
+  <div v-if="store.workerPreview" class="flex flex-col gap-4">
     <SectionHeader :title="$t('workerView.tabs.e_documents')" :icon="JshirIcon">
       <DocumentTab
         class="mb-6"
@@ -89,13 +145,27 @@
         </template>
 
         <template v-else-if="activeId === 2">
-          <IdRailWay :data="idRailWayData" class="w-[100%] lg:w-[55%]" />
-          <IdRailWayDetail :data="idRailWayData" class="w-[100%] h-[100%] lg:w-[45%]" />
+          <template v-if="hasCertificate">
+            <IdRailWay :data="idRailWayData" class="w-[100%] lg:w-[55%]" />
+            <IdRailWayDetail :data="idRailWayData" class="w-[100%] h-[100%] lg:w-[45%]" />
+          </template>
+          <h4 v-else class="w-full text-center text-secondary">
+            {{ $t('content.no-data') }}
+          </h4>
         </template>
 
         <template v-else-if="activeId === 3">
-          <IdForeign :data="idForeignData" class="w-[100%] lg:w-[55%]" />
-          <IdForeignDetail :data="idForeignData" class="w-[100%] h-[100%] lg:w-[45%]" />
+          <template v-if="hasForeignPassport">
+            <IdForeign :data="idForeignData" class="w-[100%] lg:w-[55%]" />
+            <IdForeignDetail :data="idForeignData" class="w-[100%] h-[100%] lg:w-[45%]" />
+          </template>
+          <h4 v-else class="w-full text-center text-secondary">
+            {{ $t('content.no-data') }}
+          </h4>
+        </template>
+
+        <template v-else-if="activeId === 4">
+          <IdRedCertificate :data="idRedCertificateData" class="w-full" />
         </template>
       </div>
     </SectionHeader>

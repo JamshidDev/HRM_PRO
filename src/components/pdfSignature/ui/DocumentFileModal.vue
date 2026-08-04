@@ -88,13 +88,12 @@
     <template #default>
       <n-form ref="formRef" class="w-full">
         <n-tabs
-          animated
           v-model:value="store.attachActiveTab"
           class="hidden-tab-header"
           type="segment"
         >
           <n-tab-pane :name="store.attachTabs[0].id">
-            <div class="flex flex-col mb-6 gap-4 h-[120px]">
+            <div class="flex flex-col gap-4">
               <div
                 @click="onNext(1)"
                 class="flex border border-surface-line p-2 rounded-lg items-center gap-4 cursor-pointer"
@@ -153,7 +152,6 @@
                   style="width: 100%"
                   @click="store.attachActiveTab = 1"
                   secondary
-                  :loading="store.attachLoading"
                   type="error"
                 >
                   <template #icon>
@@ -169,6 +167,7 @@
                   secondary
                   icon-placement="right"
                   :loading="store.attachLoading"
+                  :disabled="store.attachLoading"
                   type="primary"
                 >
                   <template #icon>

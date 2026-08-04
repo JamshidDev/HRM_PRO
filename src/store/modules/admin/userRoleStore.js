@@ -15,11 +15,14 @@ export const useUserRoleStore = defineStore('userRole', {
     originAllPermissionList: [],
     payload: {
       name: null,
+      // Rol turi: 'sanctum' (foydalanuvchi roli) yoki 'integration' (client roli).
+      // Guard rolning permission olamini belgilaydi (ikkovidan bittasi).
+      guard_name: 'sanctum',
       permissions: []
     },
     params: {
       page: 1,
-      per_page: 10,
+      per_page: 15,
       search: null
     },
     query: null
@@ -75,11 +78,13 @@ export const useUserRoleStore = defineStore('userRole', {
         })
     },
     _getAllPermission() {
+      // Rol guard'iga mos permissionlarni yuklaymiz (sanctum yoki integration).
       $ApiService.userPermissionService
         ._index({
           params: {
             page: 1,
-            per_page: 1000
+            per_page: 1000,
+            guard: this.payload.guard_name || 'sanctum'
           }
         })
         .then((res) => {
@@ -96,6 +101,7 @@ export const useUserRoleStore = defineStore('userRole', {
     resetForm() {
       this.elementId = null
       this.payload.name = null
+      this.payload.guard_name = 'sanctum'
       this.payload.permissions = []
     }
   }

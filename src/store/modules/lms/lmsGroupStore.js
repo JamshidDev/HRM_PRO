@@ -20,7 +20,7 @@ export const useLmsGroupStore = defineStore('lmsGroupStore', {
     },
     params: {
       page: 1,
-      per_page: 10,
+      per_page: 15,
       search: null,
       edu_plan_id: null,
       organizations: []

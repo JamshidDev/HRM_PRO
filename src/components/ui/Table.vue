@@ -25,13 +25,13 @@
     bottomGap: { type: Number, default: 28 }, // gap below the card
     showIndex: { type: Boolean, default: true },
     page: { type: Number, default: 1 },
-    perPage: { type: Number, default: 10 },
+    perPage: { type: Number, default: 15 },
     total: { type: Number, default: null }, // renders the pagination footer when set
     selectable: { type: Boolean, default: false }, // swaps the row-number for a checkbox
     selectedKeys: { type: Array, default: () => [] },
     allSelected: { type: Boolean, default: false },
     actions: { type: Array, default: () => [] }, // "..." menu + right-click options
-    storageKey: { type: String, default: null }, // persists column visibility/order
+    storageKey: { type: String, default: null }, // persists column visibility/order/width
     onLoad: { type: Function, default: null } // async tree children loader: (row) => Promise<void>
   })
 
@@ -57,6 +57,17 @@
   const getCellValue = (row, key) =>
     key.includes?.('.') ? key.split('.').reduce((o, k) => o?.[k], row) : row[key]
 
+  // Persisting on every drag tick would hammer localStorage, so only the last resize
+  // of a column within a short window is written.
+  const resizeTimers = {}
+  const onUnstableColumnResize = (resizedWidth, limitedWidth, column) => {
+    if (!tableColumns) return
+    clearTimeout(resizeTimers[column.key])
+    resizeTimers[column.key] = setTimeout(() => {
+      tableColumns.setColumnWidth(column.key, limitedWidth)
+    }, 300)
+  }
+
   const visibleActions = computed(() => props.actions.filter((a) => a.visible !== false))
   const indexOffset = computed(() => (props.page - 1) * props.perPage)
 
@@ -77,11 +88,11 @@
   const ndtColumns = computed(() => {
     return allCols.value.map((col) => ({
       key: col.key,
-      width: col.width,
-      minWidth: col.minWidth,
+      width: col.width ?? col.minWidth,
+      minWidth: col.minWidth ?? col.width,
       maxWidth: col.maxWidth,
       className: col.className,
-      resizable: col.resizable ?? col.minWidth !== undefined,
+      resizable: col.resizable ?? true,
       ellipsis:
         col.ellipsis ??
         (slots[`cell-${col.key}`]
@@ -210,6 +221,7 @@
         :row-props="rowProps"
         :on-load="onLoad"
         flex-height
+        @unstable-column-resize="onUnstableColumnResize"
       />
 
       <div

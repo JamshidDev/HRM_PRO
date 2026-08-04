@@ -78,6 +78,12 @@
       "title": "Korxona shtatkasi",
       "subtitle": "Tanlangan korxona(lar) shtat jadvali — shtat ID, bo'lim, lavozim ID, lavozim (Excel, fon rejimida)"
     },
+    "stationCodes": {
+      "title": "Bo'limlar va station kodlar"
+    },
+    "positions": {
+      "title": "Korxona kesimida lavozimlar (takrorsiz)"
+    },
     "validation": {
       "organizations": "Kamida bitta korxona tanlang",
       "accessLevels": "Kamida bitta access level tanlang",
@@ -144,6 +150,8 @@
     "result": "Natija",
     "category": "Kategoriya",
     "download": "Yuklash",
+    "page": "bet",
+    "retry": "Qayta urinish",
     "attachment": "Biriktirish",
     "no-data": "Ma'lumot yo'q",
     "emptyData": "Ma'lumot kiritilmagan",
@@ -185,6 +193,7 @@
     "news": "Yangi",
     "hour": "Soat",
     "group": "Guruh",
+    "learningCenter": "O'quv markaz",
     "action": "Amallar",
     "expiryDate": "Muddati",
     "updatedAt": "Yangilangan",
@@ -221,6 +230,20 @@
     "profile": "Kabinet",
     "asAdmin": "Super admin",
     "setting": "Sozlamalar",
+    "soundNotification": "Ovozli bildirishnoma",
+    "sidebarColor": "Sidebar rangi",
+    "sidebarThemeDefault": "Odatiy",
+    "sidebarThemeIndigo": "Indigo",
+    "sidebarThemeBlue": "Blue",
+    "sidebarThemeGreen": "Green",
+    "customColor": "Maxsus rang",
+    "customColorDesc": "Sayt ranglarini o'zgartiring",
+    "appearanceMode": "Ko'rinish",
+    "filterGrayscale": "Rangsiz ko'rinish",
+    "filterLowBrightness": "Past yorug'lik",
+    "filterHighBrightness": "Baland yorug'lik",
+    "textSize": "Matn hajmi",
+    "resetChanges": "Standartga qaytarish",
     "changeAccount": "Hisoblarim",
     "logOutSystem": "Tizmdan chiqish",
     "paginationSize": "{n} tadan ko'rsatish",
@@ -352,7 +375,9 @@
     "rejectByMistake": "Xatolik sababli qaytarish",
     "themeLight": "Yorug'",
     "themeDark": "Qorong'i",
-    "themeSystem": "Tizim"
+    "themeSystem": "Tizim",
+    "oldVersionButton": "Eski talqinga qaytish",
+    "newVersionButton": "Yangi talqinga o'tish"
   },
   "date": {
     "day": "Kun",
@@ -427,13 +452,10 @@
   "offerModal": {
     "title": "Ommaviy oferta",
     "desc": "Platformadan foydalanishdan oldin shartlar bilan tanishing",
-    "item1Title": "1. Ommaviy oferta",
-    "item1Text": "Ushbu ommaviy oferta «HRM PRO» platformasidan foydalanish tartibini belgilaydi. Tizimga kirish orqali foydalanuvchi quyidagi shartlarni to'liq qabul qilgan hisoblanadi.",
-    "item2Title": "2. Ma'lumotlar maxfiyligi",
-    "item2Text": "Foydalanuvchi kiritgan shaxsiy ma'lumotlar qonunchilikka muvofiq saqlanadi va uchinchi shaxslarga oshkor etilmaydi. Ma'lumotlardan faqat kadrlar boshqaruvi maqsadida foydalaniladi.",
-    "item3Title": "3. Foydalanuvchi majburiyatlari",
-    "item3Text": "Login va parolning maxfiyligini saqlash hamda ular orqali amalga oshirilgan barcha harakatlar uchun javobgarlik foydalanuvchi zimmasida bo'ladi. Tizimga ruxsatsiz kirish taqiqlanadi.",
+    "terms": "Foydalanish shartlari",
+    "privacy": "Maxfiylik siyosati",
     "downloadLabel": "To'liq hujjatni yuklab olish (PDF)",
+    "loadError": "Hujjatni yuklab bo'lmadi",
     "accept": "Roziman va davom etaman",
     "decline": "Rad etish"
   },
@@ -521,7 +543,11 @@
     "updateTitle": "Role tahrirlash",
     "form": {
       "name": "Role nomi",
-      "permissions": "Permission"
+      "permissions": "Permission",
+      "moduleAccess": "Modul ruxsati",
+      "type": "Rol turi",
+      "typeSanctum": "Foydalanuvchi",
+      "typeIntegration": "Integration"
     }
   },
   "userPage": {
@@ -592,6 +618,9 @@
     "account": {
       "title": "Hisob ma'lumotlari",
       "warningText": "Hisobingiz xavfsizligini ta'minlash maqsadida akkaunt ma'lumotlaringizni muntazam ravishda yangilab turishingiz tavsiya etiladi. Bu choralar hisobingizni ruxsatsiz kirishlardan himoya qilishga yordam beradi."
+    },
+    "sidebar": {
+      "title": "Profil bo'limlari"
     },
     "tabs": {
       "profileInfo": "Hisob ma'lumotlar",
@@ -683,9 +712,17 @@
       "multiple_position": "Birdan ortiq shartnomaga ega xodimlar",
       "pension_age": "Pensiya yoshidagi xodimlar",
       "position_type": "Lavozim turi",
+      "countBy": "Hisoblash kesimi",
+      "countByPosition": "Lavozim bo'yicha",
+      "countByWorker": "Xodim bo'yicha",
       "age": "Yoshi",
       "quickActions": "Tezkor amallar",
-      "downloadRelative": "Qarindoshlarni yuklash"
+      "downloadRelative": "Qarindoshlarni yuklash",
+      "generateReport": "Hisobot yaratish",
+      "generateReportDesc": "Hisobot yaratish uchun xodimlarni belgilang",
+      "relativesReport": "Qarindoshlar bo'yicha",
+      "excelFile": "Excel fayl",
+      "downloadInfo": "Ma'lumotni yuklash"
     },
     "checkWorker": {
       "title": "Xodim izlash",
@@ -711,7 +748,9 @@
       "position_date": "Lavozim sanasi",
       "birthday": "Tug'ilgan sanasi",
       "position": "Lavozim",
-      "organization": "Korxona"
+      "organization": "Korxona",
+      "salary": "Oylik maosh",
+      "workExperience": "Umumiy staj (oylarda)"
     }
   },
   "exportPage": {
@@ -719,7 +758,12 @@
     "exportAction": "Eksport qilish",
     "checkAll": "Barchasini tanlash",
     "addPassport": "Passport ma'lumotlari ham qo'shib yuklansinmi?",
-    "chooseExport": "Maydonlarni tanlash"
+    "passportYes": "Ha yuklansin",
+    "passportNo": "Yo'q faqat ma'lumotlar yuklansin",
+    "chooseExport": "Maydonlarni tanlash",
+    "excelSettings": "Excel jadvalini sozlash",
+    "selectColumns": "Jadval ustunlarini belgilang",
+    "columnOrder": "Jadval ustunlar joylashuvini sozlang"
   },
   "contactPage": {
     "name": "Kontaktlar"
@@ -757,7 +801,9 @@
     },
     "roles": {
       "title": "Rollar",
-      "attachRole": "Role biriktirish"
+      "attachRole": "Role biriktirish",
+      "active": "Faol",
+      "setActive": "Faol qilish"
     },
     "disability": {
       "title": "Nogironlik ma'lumotlari",
@@ -872,10 +918,12 @@
     "certificate": "Sertifikat raqami",
     "validDate": "Muddati",
     "notValidDate": "Muddati tugagan",
+    "validKey": "Amal qiladi",
     "expiredKey": "Kalit muddati tugagan!",
     "legalPerson": "Yuridik shaxs",
     "naturalPerson": "Jismoniy shaxs",
     "connectionError": "E-imzo o'rnatilmagan yoki to'g'ri sozlanmagan!",
+    "confirmError": "Hujjatni tasdiqlashda xatolik yuz berdi. Birozdan so'ng qayta urinib ko'ring.",
     "copyLink": "Havolani nusxalash",
     "copied": "Havola nusxalandi",
     "goSignature": "Imzolash",
@@ -885,7 +933,13 @@
     "acceptApplication": "Arizani tasdiqlash",
     "comment": "Izoh",
     "rejectApplication": "Arizani rad qilish",
-    "pinfl": "JSHSHIR"
+    "applicationAcceptDesc": "Izohingizni qoldirishingiz mumkin (ixtiyoriy).",
+    "applicationRejectDesc": "Rad etish sababini yozing. Sabab arizani yuborgan xodimga ko'rinadi.",
+    "applicationCommentPlaceholder": "Izohingizni kiriting...",
+    "pinfl": "JSHSHIR",
+    "sealKeyLabel": "muhrli kalit",
+    "noKeysTitle": "Kalitlar topilmadi",
+    "noKeysDesc": "USB token yoki ID karta ulanganini tekshiring."
   },
   "documentPage": {
     "name": "Hujjatlar",
@@ -1034,6 +1088,36 @@
       "viewer": "Hujjat bilan tanishuvchilar",
       "files": "Hujjat fayllari",
       "checkDocument": "Hujjat holatini tekshirish uchun bosing",
+      "attachedDocuments": "Biriktirilgan hujjatlar",
+      "attachDocument": "Hujjat biriktirish",
+      "downloadPdf": "PDF yuklash",
+      "downloadWord": "Word yuklash",
+      "confirmDocument": "Hujjatni tasdiqlash",
+      "confirmDocumentDesc": "{id} raqamli hujjatni tasdiqlaysizmi? Tasdiqlangandan so'ng hujjat elektron imzo bilan mustahkamlanadi va uni tahrirlash imkoni bo'lmaydi.",
+      "confirmed": "Hujjat tasdiqlandi",
+      "confirmedWithSignature": "Elektron imzo bilan mustahkamlangan",
+      "confirmedNotification": "Hujjat elektron imzo bilan mustahkamlandi. PDF nusxasini yuklab olishingiz mumkin.",
+      "signatureInfo": "Imzo ma'lumotlari",
+      "rejected": "Hujjat rad etildi",
+      "rejectedReason": "Sabab",
+      "resend": "Qayta yuborish",
+      "rejectTitle": "Hujjatni rad etish",
+      "rejectDesc": "Rad etish sababini yozing. Sabab hujjat muallifiga va hujjat bilan tanishuvchilarga ko'rinadi.",
+      "rejectReasonLabel": "Rad etish sababi",
+      "rejectReasonPlaceholder": "Masalan: 4-bandda ko'rsatilgan summa shartnomaga mos kelmaydi, qayta ko'rib chiqish so'raladi.",
+      "rejectReasonRequired": "Rad etish sababini kiriting — kamida 10 belgi.",
+      "rejectSubmit": "Rad etish",
+      "link": "Havola",
+      "keySelectTitle": "E-imzo kalitini tanlash",
+      "keySelectDesc": "Hujjatni imzolash uchun ERI (elektron raqamli imzo) kalitini tanlang.",
+      "continue": "Davom etish",
+      "emptyFilesTitle": "Hujjat biriktirilmagan",
+      "emptyFilesDesc": "Bu hujjatga hali fayl biriktirilmagan. Tasdiqlash uchun kamida bitta fayl biriktirilishi kerak.",
+      "loadErrorTitle": "Hujjatni yuklab bo'lmadi",
+      "loadErrorDesc": "Hujjatni yuklashda xatolik yuz berdi. Yangilashga urinib ko'ring.",
+      "fileOpenError": "Faylni ochib bo'lmadi",
+      "fileOpenErrorDesc": "Fayl formati qo'llab-quvvatlanmaydi yoki fayl serverdan yuklanmadi. Qayta urinib ko'ring yoki faylni yuklab oling.",
+      "fileOpenErrorSubtitle": "Faylni ochish imkoni bo'lmadi",
       "status": {
         "Process": "Jarayonda"
       }
@@ -1438,7 +1522,7 @@
     "createTitle": "Sertifikat qo'shish",
     "updateTitle": "Sertifikatni tahrirlash",
     "unlimited": "Muddatsiz",
-    "unlimitedHint": "Bo'sh qoldirilsa \u2014 muddatsiz",
+    "unlimitedHint": "Bo'sh qoldirilsa — muddatsiz",
     "qualificationHint": "Bu sertifikat til darajasini bermaydi",
     "scorePlaceholder": "Sertifikatdagi natija",
     "form": {
@@ -1572,7 +1656,8 @@
       "incentive": "Rag'batlantirish",
       "punishment": "Intizomiy jazo",
       "exams": "Imtihonlar",
-      "e_documents": "Raqamli-hujjatlar"
+      "e_documents": "Raqamli-hujjatlar",
+      "turnstile": "Turniket ma’lumotlar"
     },
     "header": {
       "title": "Xodim profili",
@@ -1623,6 +1708,7 @@
       "pasport": "Passport",
       "railway_pasport": "Temiryo‘l guvohnoma",
       "foreign_pasport": "Xorijiy passport",
+      "position_certificate": "Lavozim guvohnomasi",
       "card_number": "Karta raqami",
       "issue_date": "Berilgan sana",
       "expiry_date": "Muddat o'tish sanasi",
@@ -1812,6 +1898,7 @@
     },
     "mainCard": {
       "totalWorker": "Xodimlar soni",
+      "fxsh": "FXSH xodimlari",
       "man": "Erkaklar soni",
       "woman": "Ayollar soni"
     },
@@ -2230,6 +2317,17 @@
     "canIHelpYouToday": "Bugun sizga qanday yordam bera olaman?",
     "aiAssistant": "AI Yordamchi",
     "welcomeTo": "Xush kelibsiz, {n}",
+    "greeting": {
+      "morning": "Xayrli tong, {n}",
+      "day": "Xayrli kun, {n}",
+      "evening": "Xayrli kech, {n}"
+    },
+    "suggestions": {
+      "leaveBalance": "Ta'til qancha qoldi?",
+      "lastSalary": "Oxirgi oylik hisobim",
+      "getReference": "Ma'lumotnoma olish",
+      "workedDays": "Bu oy necha kun ishladim?"
+    },
     "disclaimer": {
       "cardOne": "### 🧪 Test rejimi\n\nUshbu sun’iy intellekt yordamchisi hozirda **test rejimida** ishlamoqda.  \nJavoblari hali to‘liq shakllanmagan va _noto‘g‘ri bo‘lishi mumkin_.",
       "cardTwo": "### 📚 Huquqiy hujjatlar yuklanmoqda\n\nBot hozircha faqat **O‘zbekiston Respublikasi Mehnat kodeksi** asosida o‘rganmoqda.  \n_Boshqa qonun hujjatlari hali to‘liq yuklanmagan yoki o‘rganilmagan._",
@@ -3595,6 +3693,37 @@
       "mobile": "Mobil ilova orqali xabar yuborilgan xodimlar soni"
     }
   },
+  "mobileStoryPage": {
+    "name": "Story e'lonlari",
+    "createTitle": "Yangi story",
+    "updateTitle": "Story'ni tahrirlash",
+    "status": {
+      "draft": "Qoralama",
+      "published": "Chop etilgan"
+    },
+    "table": {
+      "status": "Holat",
+      "views": "Ko'rilgan"
+    },
+    "form": {
+      "title": "Sarlavha",
+      "titleRequired": "Sarlavha (uz) majburiy",
+      "subtitle": "Tavsif",
+      "status": "Holat",
+      "sort": "Tartib",
+      "actionType": "Action turi",
+      "actionTypePlaceholder": "mas. attendance",
+      "publishedAt": "Chop etish sanasi",
+      "slides": "Slaydlar (rasm/video)",
+      "addSlide": "Slayd qo'shish",
+      "editFields": "Ma'lumotlarni tahrirlash",
+      "noSlides": "Hali slayd yo'q — yuqoridagi tugma orqali qo'shing",
+      "detailsButton": "Batafsil"
+    },
+    "deleteConfirm": "Ushbu story o'chirilsinmi?",
+    "slideDeleteConfirm": "Ushbu slayd o'chirilsinmi?",
+    "saved": "Saqlandi"
+  },
   "newsPage": {
     "name": "Yangiliklar",
     "create": "Yangilik yaratish",
@@ -3869,5 +3998,40 @@
       "special": "Kamida 1 ta maxsus belgi ({'@'}!#$%^&*)",
       "match": "Parollar mos keladi"
     }
+  },
+  "integrationPerm": {
+    "enums": "Ma'lumotnomalar",
+    "dashboard": "Dashboard",
+    "structure": "Tuzilma",
+    "leaders": "Rahbarlar",
+    "departments": "Bo'limlar",
+    "departmentsList": "Bo'limlar ro'yxati",
+    "positions": "Lavozimlar",
+    "positionsList": "Lavozimlar ro'yxati",
+    "kpi": "KPI",
+    "classifications": "Klassifikatorlar",
+    "contracts": "Shartnomalar",
+    "workers": "Xodimlar",
+    "workersDashboard": "Xodimlar dashboard",
+    "workersPins": "Xodimlar PIN'lari",
+    "workerPin": "Xodim PIN",
+    "workerShow": "Xodim ma'lumoti",
+    "workerCheck": "Xodim tekshiruvi",
+    "workerEventsMonth": "Xodim turniket (oy)",
+    "workerEventsDay": "Xodim turniket (kun)",
+    "turnstileEvents": "Turniket eventlari",
+    "stationWorkers": "Stansiya xodimlari",
+    "stationWorker": "Stansiya xodimi",
+    "stationResume": "Stansiya rezyume",
+    "stationStats": "Stansiya statistikasi",
+    "meds": "Tibbiy ko'riklar",
+    "workerMeds": "Xodim tibbiy ko'riklari",
+    "workerSalary": "Xodim maoshi",
+    "workerSalaryMonths": "Xodim maosh oylari",
+    "mobileFaceSendEvent": "Mobil face: event yuborish",
+    "mobileFaceCheckWorker": "Mobil face: xodim tekshirish",
+    "mobileFaceSchedules": "Mobil face: jadvallar",
+    "otpVerify": "OTP tekshirish",
+    "holidayGreetings": "Bayram tabriklari"
   }
 }
