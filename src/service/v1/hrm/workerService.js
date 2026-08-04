@@ -31,6 +31,12 @@ const _resume = async (payload) => {
     { params: payload.params }
   )
 }
+const _t2 = async (payload) => {
+  return await axios.get(`/v1/hr/worker-positions/${payload.id}/t2-download`, {
+    responseType: 'blob',
+    params: payload.params
+  })
+}
 
 const _deleteRole = async (payload) => {
   return await axios.put(`/v1/hr/worker-positions/${payload.id}/edit/detach-role`, payload.data)
@@ -84,6 +90,7 @@ export default {
   _preview,
   _search,
   _resume,
+  _t2,
   _deleteRole,
   _storeRole,
   _setActiveRole,

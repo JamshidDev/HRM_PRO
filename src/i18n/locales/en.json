@@ -282,6 +282,7 @@
     "document": "Document",
     "checking": "Checking...",
     "downloadCV": "Download certificate",
+    "downloadT2": "T-2 certificate",
     "deleteWarning": "Are you sure you want to delete?",
     "sum": "UZS",
     "total": "Total: {n}",

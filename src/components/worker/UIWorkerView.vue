@@ -50,6 +50,10 @@
     store._workerResume(Utils.combineFullName(store.workerPreview?.worker))
   }
 
+  const onDownloadT2 = () => {
+    store._workerT2(`T-2 ${Utils.combineFullName(store.workerPreview?.worker)}`)
+  }
+
   defineExpose({
     openPreview
   })
@@ -71,8 +75,10 @@
               v-model:masked="masked"
               :title="$t('workerView.header.title')"
               :resume-loading="store.resumeLoading"
+              :t2-loading="store.t2Loading"
               @close="store.previewVisible = false"
               @download="onDownload"
+              @download-t2="onDownloadT2"
             />
           </div>
 
