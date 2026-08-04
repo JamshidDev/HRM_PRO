@@ -1630,7 +1630,7 @@
       "punishment": "Disciplinary action",
       "e_documents": "E-documents",
       "exams": "Exams",
-      "turnstile": "Turnstile"
+      "turnstile": "Turnstile data"
     },
     "header": {
       "title": "Employee profile",
@@ -1681,6 +1681,7 @@
       "pasport": "Passport",
       "railway_pasport": "Railway ID",
       "foreign_pasport": "Foreign Passport",
+      "position_certificate": "Position Certificate",
       "card_number": "Card Number",
       "issue_date": "Issue Date",
       "expiry_date": "Expiry Date",
