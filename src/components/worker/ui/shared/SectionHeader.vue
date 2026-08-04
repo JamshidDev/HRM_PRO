@@ -56,7 +56,7 @@
           <span
             class="font-semibold text-primary truncate"
             :class="large ? 'text-lg' : 'text-sm'"
-            >{{ title }}
+            >{{ title }} 
           </span>
           <slot name="title-suffix" />
         </div>
@@ -67,7 +67,7 @@
     </div>
     <div
       :class="[
-        plain ? 'bg-surface-section' : 'bg-surface-ground',
+        plain ? 'bg-surface-section' : 'bg-surface-ground', 
         fullHeight && 'flex-1 overflow-auto',
         tightBody ? 'px-2 py-3' : 'p-4',
         !$slots.footer && 'rounded-b-3xl'
@@ -77,7 +77,7 @@
     </div>
     <div
       v-if="$slots.footer"
-      class="section-header-bar flex items-center justify-end gap-2 rounded-b-3xl border-surface-line px-4 py-2 shrink-0"
+      class="section-header-bar  flex items-center justify-end gap-2 rounded-b-3xl border-surface-line px-4 py-2 shrink-0"
     >
       <slot name="footer" />
     </div>
