@@ -2287,6 +2287,17 @@
     "canIHelpYouToday": "How can I help you today?",
     "aiAssistant": "AI Assistant",
     "welcomeTo": "Welcome, {n}",
+    "greeting": {
+      "morning": "Good morning, {n}",
+      "day": "Good afternoon, {n}",
+      "evening": "Good evening, {n}"
+    },
+    "suggestions": {
+      "leaveBalance": "How much leave do I have left?",
+      "lastSalary": "My last salary calculation",
+      "getReference": "Get a reference letter",
+      "workedDays": "How many days have I worked this month?"
+    },
     "disclaimer": {
       "cardOne": "### 🧪 Test mode\n\nThis AI assistant is currently in **test mode**.  \nAnswers may be incomplete or _incorrect_.",
       "cardTwo": "### 📚 Legal documents loading\n\nBot currently trained only on **Labor Code of Uzbekistan**.  \n_Other laws not fully loaded or trained._",

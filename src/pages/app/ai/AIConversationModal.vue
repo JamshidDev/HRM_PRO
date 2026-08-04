@@ -3,6 +3,7 @@
   import { onKeyStroke } from '@vueuse/core'
   import { useAIConversationStore } from '@/store/modules/index.js'
   import ConversationView from './ui/ConversationView.vue'
+  import aiAssistantIcon from '@/assets/images/content/ai-assistant.svg?url'
 
   const store = useAIConversationStore()
 
@@ -28,7 +29,15 @@
           content-style="flex:1;min-height:0;overflow:hidden;padding:0;display:flex;flex-direction:column;"
         >
           <div class="flex items-center justify-between px-4 py-2 shrink-0 border-b border-surface-line">
-            <h3 class="text-lg font-semibold text-textColor1">{{ $t('aiConversation.aiAssistant') }}</h3>
+            <div class="flex items-center gap-2">
+              <img
+                :src="aiAssistantIcon"
+                alt=""
+                class="w-8 h-8 rounded-full object-cover select-none"
+                draggable="false"
+              />
+              <h3 class="text-lg font-semibold text-textColor1">{{ $t('aiConversation.aiAssistant') }}</h3>
+            </div>
             <div class="flex items-center gap-2">
               <div
                 @click="store.toggleFullScreen()"
@@ -78,16 +87,12 @@
   }
 
   .ai-conversation-panel--full {
-    top: 0;
-    right: 0;
-    bottom: 0;
-    width: 100vw;
-    height: 100vh;
-    border-radius: 0;
-  }
-
-  .ai-conversation-panel--full .ai-conversation-card {
-    border-radius: 0;
+    top: 24px;
+    right: 24px;
+    bottom: 24px;
+    width: min(1400px, 96vw);
+    height: min(920px, calc(100vh - 48px));
+    border-radius: var(--n-border-radius, 12px);
   }
 
   .ai-conversation-fade-enter-active,

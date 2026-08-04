@@ -158,6 +158,7 @@ export const useAppStore = defineStore('appStore', {
     resetProfileSettings() {
       this.setScreenFilter(useAppSetting.defaultScreenFilter)
       this.setFontScale(useAppSetting.defaultFontScale)
+      this.setSidebarTheme(useAppSetting.defaultSidebarTheme)
     },
 
     openProfileSettings() {

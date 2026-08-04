@@ -1,28 +1,54 @@
 <script setup>
-  import {
-    Dismiss24Regular,
-    Broom24Regular,
-    CircleHalfFill24Regular,
-    Circle24Filled
-  } from '@vicons/fluent'
+  import { Dismiss24Regular } from '@vicons/fluent'
   import { useAppStore } from '@/store/modules/index.js'
   import i18n from '@/i18n/index.js'
   import { UIDrawer } from '@components'
+  import ColorlessIcon from '@/assets/icons/colorlessIcon.svg'
+  import HalfBrightnessIcon from '@/assets/icons/halfBrightnessIcon.svg'
+  import FullBrightnessIcon from '@/assets/icons/fullBrightnessIcon.svg'
 
   const { t } = i18n.global
   const store = useAppStore()
 
   const sidebarThemes = [
-    { key: 'default', labelKey: 'content.sidebarThemeDefault', from: '#034f92', to: '#002a53' },
-    { key: 'indigo', labelKey: 'content.sidebarThemeIndigo', from: '#5550E5', to: '#2F2C7F' },
-    { key: 'blue', labelKey: 'content.sidebarThemeBlue', from: '#1570EF', to: '#0C4089' },
-    { key: 'green', labelKey: 'content.sidebarThemeGreen', from: '#008838', to: '#00220E' }
+    {
+      key: 'default',
+      labelKey: 'content.sidebarThemeDefault',
+      from: '#034f92',
+      to: '#002a53',
+      bgFrom: '#6895BE',
+      bgTo: '#667F98'
+    },
+    {
+      key: 'indigo',
+      labelKey: 'content.sidebarThemeIndigo',
+      from: '#5550E5',
+      to: '#2F2C7F',
+      bgFrom: '#9996EF',
+      bgTo: '#8280B2'
+    },
+    {
+      key: 'blue',
+      labelKey: 'content.sidebarThemeBlue',
+      from: '#1570EF',
+      to: '#0C4089',
+      bgFrom: '#73A9F5',
+      bgTo: '#6D8CB8'
+    },
+    {
+      key: 'green',
+      labelKey: 'content.sidebarThemeGreen',
+      from: '#008838',
+      to: '#05602A',
+      bgFrom: '#66B888',
+      bgTo: '#69A07F'
+    }
   ]
 
   const screenFilters = [
-    { key: 'grayscale', labelKey: 'content.filterGrayscale', icon: Broom24Regular },
-    { key: 'low-brightness', labelKey: 'content.filterLowBrightness', icon: CircleHalfFill24Regular },
-    { key: 'high-brightness', labelKey: 'content.filterHighBrightness', icon: Circle24Filled }
+    { key: 'grayscale', labelKey: 'content.filterGrayscale', icon: ColorlessIcon },
+    { key: 'low-brightness', labelKey: 'content.filterLowBrightness', icon: HalfBrightnessIcon },
+    { key: 'high-brightness', labelKey: 'content.filterHighBrightness', icon: FullBrightnessIcon }
   ]
 
   const onClickScreenFilter = (key) => {
@@ -86,19 +112,23 @@
               <div
                 v-for="item in sidebarThemes"
                 :key="item.key"
-                class="flex flex-col items-center gap-2 py-3 rounded-xl bg-surface-ground cursor-pointer"
+                class="flex flex-col items-center gap-2 py-3 rounded-xl cursor-pointer transition-all"
+                :class="store.sidebarTheme !== item.key && 'bg-surface-ground'"
+                :style="
+                  store.sidebarTheme === item.key
+                    ? { background: `linear-gradient(135deg, ${item.bgFrom}, ${item.bgTo})` }
+                    : null
+                "
                 @click="store.setSidebarTheme(item.key)"
               >
                 <div
-                  class="w-12 h-12 rounded-full transition-all"
-                  :class="
-                    store.sidebarTheme === item.key
-                      ? 'ring-2 ring-offset-2 ring-primary'
-                      : 'ring-1 ring-surface-line'
-                  "
+                  class="w-12 h-12 rounded-full"
                   :style="{ background: `linear-gradient(${item.from}, ${item.to})` }"
                 ></div>
-                <span class="text-xs text-textColor3">{{ t(item.labelKey) }}</span>
+                <span
+                  class="text-xs"
+                  :class="store.sidebarTheme === item.key ? 'text-white' : 'text-textColor3'"
+                >{{ t(item.labelKey) }}</span>
               </div>
             </div>
           </div>
@@ -120,9 +150,7 @@
                 "
                 @click="onClickScreenFilter(item.key)"
               >
-                <n-icon size="24">
-                  <component :is="item.icon" />
-                </n-icon>
+                <component :is="item.icon" class="w-6 h-6" />
                 <span class="text-xs font-medium text-center">{{ t(item.labelKey) }}</span>
               </button>
             </div>
