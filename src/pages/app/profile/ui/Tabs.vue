@@ -5,6 +5,7 @@
   import OrgForm from './OrgForm.vue'
   import SocialLink from './SocialLink.vue'
   import PasswordForm from './PasswordForm.vue'
+  import MySalary from './MySalary.vue'
 
   const store = useAccountStore()
 </script>
@@ -46,6 +47,11 @@
           </h2>
           <OrgForm />
         </div>
+      </div>
+    </n-tab-pane>
+    <n-tab-pane name="salary" :tab="$t('salary1c.mySalary')">
+      <div class="w-full border border-surface-line shadow bg-surface-section rounded-xl p-4 form--min-height">
+        <MySalary />
       </div>
     </n-tab-pane>
     <n-tab-pane :name="store.tabs[4]" :tab="$t('profilePage.tabs.social.title')">
