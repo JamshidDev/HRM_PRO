@@ -1,17 +1,18 @@
 <script setup>
-  import {
-    NoDataPicture,
-    UIPagination,
-    UIUser,
-    UIBadge,
-    UIMenuButton,
-    UIStatus
-  } from '@/components/index.js'
-  import { useEventStore, useEventV2Store } from '@/store/modules/index.js'
-  import { ArrowCircleDownRight20Regular, ArrowCircleUpLeft20Regular, CalendarLtr24Regular } from '@vicons/fluent'
-  import Utils from '@/utils/Utils.js'
+  import { UIBadge, UIStatus, UITable, UIUser } from '@/components/index.js'
   import i18n from '@/i18n/index.js'
+  import { useEventStore, useEventV2Store } from '@/store/modules/index.js'
+  import UIHelper from '@/utils/UIHelper.js'
+  import Utils from '@/utils/Utils.js'
+  import {
+    ArrowCircleDownRight20Regular,
+    ArrowCircleUpLeft20Regular,
+    CalendarLtr24Regular,
+    Eye16Regular
+  } from '@vicons/fluent'
+
   const { t } = i18n.global
+
   const store = useEventStore()
   const v2Store = useEventV2Store()
 
@@ -21,15 +22,15 @@
     store._index()
   }
 
-  const onCalendarViewEv = (item) => {
+  const onCalendarViewEv = (row) => {
     v2Store.selectedWorker = {
-      photo: item.worker?.photo,
-      firstName: item.worker?.first_name,
-      middleName: item.worker?.middle_name,
-      lastName: item.worker?.last_name,
-      position: item.worker?.id
+      photo: row.worker?.photo,
+      firstName: row.worker?.first_name,
+      middleName: row.worker?.middle_name,
+      lastName: row.worker?.last_name,
+      position: row.worker?.id
     }
-    v2Store.elementId = item.worker?.id
+    v2Store.elementId = row.worker?.id
     v2Store.calendarList = []
     const date = new Date()
     v2Store.currentTime = date.getTime()
@@ -39,24 +40,16 @@
     v2Store.calendarVisible = true
   }
 
-  const onPreviewEv = (item) => {
+  const onPreviewEv = (row) => {
     v2Store.selectedWorker = {
-      photo: item.worker?.photo,
-      firstName: item.worker?.first_name,
-      middleName: item.worker?.middle_name,
-      lastName: item.worker?.last_name,
-      position: item.worker?.id
+      photo: row.worker?.photo,
+      firstName: row.worker?.first_name,
+      middleName: row.worker?.middle_name,
+      lastName: row.worker?.last_name,
+      position: row.worker?.id
     }
-    const date = item.event_date_and_time?.split(' ')[0]
-    v2Store._fetchPreview(item.worker?.id, date)
-  }
-
-  const onSelectEv = (v) => {
-    if (v.key === Utils.ActionTypes.view) {
-      onPreviewEv(v.data)
-    } else if (v.key === Utils.ActionTypes.finish) {
-      onCalendarViewEv(v.data)
-    }
+    const date = row.event_date_and_time?.split(' ')[0]
+    v2Store._fetchPreview(row.worker?.id, date)
   }
 
   const maskStatus = {
@@ -104,115 +97,119 @@
       id: 9
     }
   }
+
+  const columns = computed(() => [
+    {
+      key: 'worker',
+      title: t('content.worker'),
+      minWidth: 260
+    },
+    {
+      key: 'event_date_and_time',
+      title: t('content.date'),
+      width: 180
+    },
+    {
+      key: 'direction',
+      title: t('hcEvent.form.direction'),
+      width: 120
+    },
+    {
+      key: 'device',
+      title: t('hcEvent.form.device'),
+      minWidth: 260
+    },
+    {
+      key: 'auth_type',
+      title: t('turnStileDashboard.preview.auth_type'),
+      width: 160
+    },
+    {
+      key: 'mask_status',
+      title: t('hcEvent.form.mask_status'),
+      width: 140
+    },
+    {
+      key: 'temperature',
+      title: t('hcEvent.form.temperature'),
+      width: 120
+    }
+  ])
+
+  const actions = computed(() => [
+    {
+      label: t('content.view'),
+      key: Utils.ActionTypes.view,
+      icon: UIHelper.renderIcon(Eye16Regular),
+      action: onPreviewEv
+    },
+    {
+      label: t('hcEvent.byMonth'),
+      key: Utils.ActionTypes.finish,
+      icon: UIHelper.renderIcon(CalendarLtr24Regular),
+      action: onCalendarViewEv
+    }
+  ])
 </script>
 
 <template>
-  <n-spin :show="store.loading" style="min-height: 200px">
-    <div class="w-full overflow-x-auto" v-if="store.list.length > 0">
-      <div class="w-full h-[600px] overflow-y-auto mt-4">
-        <n-table :single-line="false" size="small">
-          <thead>
-            <tr>
-              <th class="text-center! min-w-[40px] w-[40px]">{{ $t('content.number') }}</th>
-              <th class="min-w-[200px]">{{ $t('content.worker') }}</th>
-              <th class="min-w-[130px] w-[180px] !text-center">{{ $t('content.date') }}</th>
-              <th class="min-w-[100px] w-[100px]">{{ $t('hcEvent.form.direction') }}</th>
-              <th class="min-w-[100px] w-[300px]">{{ $t('hcEvent.form.device') }}</th>
-              <th class="min-w-[100px] w-[160px]">{{ $t('hcEvent.form.device') }}</th>
-              <th class="min-w-[100px] w-[120px] !text-center">
-                {{ $t('hcEvent.form.mask_status') }}
-              </th>
-              <th class="min-w-[100px] w-[100px] !text-center">
-                {{ $t('hcEvent.form.temperature') }}
-              </th>
-              <th class="min-w-[40px] w-[40px]"></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(item, idx) in store.list" :key="idx">
-              <td>
-                <span class="text-center block">{{
-                  (store.params.page - 1) * store.params.per_page + idx + 1
-                }}</span>
-              </td>
-              <td>
-                <div>
-                  <UIUser
-                    :hide-tooltip="true"
-                    :short="false"
-                    :data="{
-                      photo: item?.worker?.photo,
-                      firstName: item?.worker?.first_name,
-                      middleName: item?.worker?.middle_name,
-                      lastName: item?.worker?.last_name,
-                      position: item?.worker.id
-                    }"
-                  />
-                </div>
-              </td>
-              <td class="!text-center">
-                <UIBadge :show-icon="false" :label="item?.event_date_and_time" />
-              </td>
-
-              <td class="!text-center">
-                <n-button :type="item.direction ? 'primary' : 'error'" secondary size="tiny">
-                  <span>{{
-                    $t(
-                      item.direction
-                        ? 'turnstile.workDurationPage.enter'
-                        : 'turnstile.workDurationPage.exit'
-                    )
-                  }}</span>
-                  <template #icon>
-                    <n-icon size="17">
-                      <ArrowCircleDownRight20Regular v-if="item.direction" />
-                      <ArrowCircleUpLeft20Regular v-else />
-                    </n-icon>
-                  </template>
-                </n-button>
-              </td>
-              <td>{{ item.device }}</td>
-              <td>
-                <UIStatus :status="eventStatus[item.auth_type]" />
-              </td>
-              <td class="!text-center">
-                <UIStatus :status="maskStatus[item.mask_status] ?? maskStatus.unknown" />
-              </td>
-              <td class="!text-center">
-                <template v-if="[1, 2].includes(item.temperature)">
-                  <UIStatus :status="store.temperatureStatus[item.temperature]" />
-                </template>
-                <template v-else>
-                  <UIStatus :status="store.temperatureStatus[3]" />
-                </template>
-              </td>
-              <td>
-                <UIMenuButton
-                  @selectEv="onSelectEv"
-                  :data="item"
-                  :show-view="true"
-                  :show-edit="false"
-                  :show-delete="false"
-                  :extra-options="[
-                    {
-                      key: Utils.ActionTypes.finish,
-                      label: t('hcEvent.byMonth'),
-                      icon: CalendarLtr24Regular
-                    }
-                  ]"
-                />
-              </td>
-            </tr>
-          </tbody>
-        </n-table>
-      </div>
-      <UIPagination
-        :page="store.params.page"
-        :per_page="store.params.per_page"
-        :total="store.totalItems"
-        @change-page="changePage"
+  <UITable
+    :columns="columns"
+    :actions="actions"
+    :data="store.list"
+    :loading="store.loading"
+    :page="store.params.page"
+    :per-page="store.params.per_page"
+    :total="store.totalItems"
+    storage-key="turnstile-hc-events"
+    @change-page="changePage"
+  >
+    <template #cell-worker="{ row }">
+      <UIUser
+        :short="false"
+        :data="{
+          photo: row?.worker?.photo,
+          firstName: row?.worker?.first_name,
+          middleName: row?.worker?.middle_name,
+          lastName: row?.worker?.last_name,
+          position: row?.worker.id
+        }"
       />
-    </div>
-    <NoDataPicture v-if="store.list.length === 0 && !store.loading" />
-  </n-spin>
+    </template>
+
+    <template #cell-event_date_and_time="{ row }">
+      <UIBadge :show-icon="false" :label="row?.event_date_and_time" />
+    </template>
+
+    <template #cell-direction="{ row }">
+      <n-button :type="row.direction ? 'primary' : 'error'" secondary size="tiny">
+        <span>{{
+          $t(row.direction ? 'turnstile.workDurationPage.enter' : 'turnstile.workDurationPage.exit')
+        }}</span>
+        <template #icon>
+          <n-icon size="17">
+            <ArrowCircleDownRight20Regular v-if="row.direction" />
+            <ArrowCircleUpLeft20Regular v-else />
+          </n-icon>
+        </template>
+      </n-button>
+    </template>
+
+    <template #cell-auth_type="{ row }">
+      <UIStatus :status="eventStatus[row.auth_type]" />
+    </template>
+
+    <template #cell-mask_status="{ row }">
+      <UIStatus :status="maskStatus[row.mask_status] ?? maskStatus.unknown" />
+    </template>
+
+    <template #cell-temperature="{ row }">
+      <template v-if="[1, 2].includes(row.temperature)">
+        <UIStatus :status="store.temperatureStatus[row.temperature]" />
+      </template>
+      <template v-else>
+        <UIStatus :status="store.temperatureStatus[3]" />
+      </template>
+    </template>
+  </UITable>
 </template>

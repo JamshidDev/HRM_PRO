@@ -45,13 +45,11 @@ export const getTableConfig = (cardType) => {
         {
           headerName: 'content.organization',
           key: 'organization_name',
-          width: '200px',
           minWidth: '200px'
         },
         {
           headerName: 'content.department',
           key: 'department_name',
-          width: '200px',
           minWidth: '180px'
         }
       ]
@@ -68,8 +66,8 @@ export const getTableConfig = (cardType) => {
         {
           headerName: 'turnStileDashboard.preview.startTime',
           key: 'start_minute',
-          width: '80px',
-          minWidth: '80px',
+          width: '180px',
+          minWidth: '140px',
           component: 'UIBadge',
           componentProps: {
             showIcon: false,
@@ -79,8 +77,8 @@ export const getTableConfig = (cardType) => {
         {
           headerName: 'turnStileDashboard.preview.endTime',
           key: 'end_minute',
-          width: '80px',
-          minWidth: '80px',
+          width: '160px',
+          minWidth: '140px',
           component: 'UIBadge',
           componentProps: {
             showIcon: false,
@@ -91,13 +89,11 @@ export const getTableConfig = (cardType) => {
         {
           headerName: 'content.organization',
           key: 'organization_name',
-          width: '300px',
           minWidth: '200px'
         },
         {
           headerName: 'content.department',
           key: 'department_name',
-          width: '300px',
           minWidth: '180px'
         }
       ]
@@ -114,13 +110,11 @@ export const getTableConfig = (cardType) => {
         {
           headerName: 'content.organization',
           key: 'organization_name',
-          width: '300px',
           minWidth: '200px'
         },
         {
           headerName: 'content.department',
           key: 'department_name',
-          width: '300px',
           minWidth: '180px'
         }
       ]
@@ -177,13 +171,11 @@ export const getTableConfig = (cardType) => {
         {
           headerName: 'content.organization',
           key: 'organization_name',
-          width: '300px',
           minWidth: '200px'
         },
         {
           headerName: 'content.department',
           key: 'department_name',
-          width: '300px',
           minWidth: '180px'
         }
       ]
@@ -228,13 +220,11 @@ export const getTableConfig = (cardType) => {
         {
           headerName: 'content.organization',
           key: 'organization_name',
-          width: '200px',
           minWidth: '200px'
         },
         {
           headerName: 'content.department',
           key: 'department_name',
-          width: '200px',
           minWidth: '180px'
         }
       ]
@@ -251,13 +241,11 @@ export const getTableConfig = (cardType) => {
         {
           headerName: 'content.organization',
           key: 'organization_name',
-          width: '300px',
           minWidth: '200px'
         },
         {
           headerName: 'content.department',
           key: 'department_name',
-          width: '300px',
           minWidth: '180px'
         }
       ]
@@ -297,13 +285,11 @@ export const getTableConfig = (cardType) => {
         {
           headerName: 'content.organization',
           key: 'organization_name',
-          width: '300px',
           minWidth: '200px'
         },
         {
           headerName: 'content.department',
           key: 'department_name',
-          width: '300px',
           minWidth: '180px'
         }
       ]
@@ -343,13 +329,11 @@ export const getTableConfig = (cardType) => {
         {
           headerName: 'content.organization',
           key: 'organization_name',
-          width: '300px',
           minWidth: '200px'
         },
         {
           headerName: 'content.department',
           key: 'department_name',
-          width: '300px',
           minWidth: '180px'
         }
       ]
@@ -389,13 +373,11 @@ export const getTableConfig = (cardType) => {
         {
           headerName: 'content.organization',
           key: 'organization_name',
-          width: '300px',
           minWidth: '200px'
         },
         {
           headerName: 'content.department',
           key: 'department_name',
-          width: '300px',
           minWidth: '180px'
         }
       ]
@@ -435,13 +417,11 @@ export const getTableConfig = (cardType) => {
         {
           headerName: 'content.organization',
           key: 'organization_name',
-          width: '300px',
           minWidth: '200px'
         },
         {
           headerName: 'content.department',
           key: 'department_name',
-          width: '300px',
           minWidth: '180px'
         }
       ]
@@ -481,13 +461,11 @@ export const getTableConfig = (cardType) => {
         {
           headerName: 'content.organization',
           key: 'organization_name',
-          width: '300px',
           minWidth: '200px'
         },
         {
           headerName: 'content.department',
           key: 'department_name',
-          width: '300px',
           minWidth: '180px'
         }
       ]
@@ -769,7 +747,7 @@ export const getTableConfig = (cardType) => {
           width: '200px',
           minWidth: '120px',
           component: 'UIBadge',
-          componentProps: (value) => {
+          componentProps: () => {
             return {
               showIcon: false,
               type: Utils.colorTypes.info
@@ -864,13 +842,11 @@ export const getTableConfig = (cardType) => {
         {
           headerName: 'content.organization',
           key: 'organization_name',
-          width: '300px',
           minWidth: '200px'
         },
         {
           headerName: 'content.department',
           key: 'department_name',
-          width: '300px',
           minWidth: '180px'
         }
       ]
@@ -887,13 +863,11 @@ export const getTableConfig = (cardType) => {
         {
           headerName: 'content.organization',
           key: 'organization_name',
-          width: '300px',
           minWidth: '200px'
         },
         {
           headerName: 'content.department',
           key: 'department_name',
-          width: '300px',
           minWidth: '180px'
         }
       ]

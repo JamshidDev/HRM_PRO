@@ -108,9 +108,10 @@
 </script>
 
 <template>
-  <div class="flex flex-col relative z-[10]">
+  <div class="h-full flex flex-col gap-4 relative z-[10]">
     <slot name="filter-section"></slot>
-    <n-spin :show="store.workerLoading">
+
+    <n-spin :show="store.workerLoading" class="flex-1 overflow-auto">
       <DragSelectorV2
         :live-selection="false"
         :scroll-zone-left="400"
@@ -192,7 +193,7 @@
                 ]"
                 class="border-r text-center border-l border-b-0 -ml-[1px] border-surface-line w-[60px] min-w-[60px] h-[50px] border text-xs text-secondary p-2 pb-0 flex-shrink-0 cursor-pointer relative"
               >
-                <ScheduleBox :worker="worker" :dayIndex="dayIndex" />
+                <ScheduleBox :worker="worker" :day-index="dayIndex" />
               </div>
             </template>
 
@@ -218,6 +219,7 @@
       :on-clickoutside="handleClickOutside"
       @select="handleSelect"
     />
+
     <UIPagination
       :page="store.workerParams.page"
       :per_page="store.workerParams.per_page"

@@ -19,11 +19,11 @@
 </script>
 
 <template>
-  <div class="page-content">
+  <div class="page-content flex flex-col">
     <AppHeader @on-change="onClick" />
     <div id="layout-header-tab"></div>
 
-    <div :class="mainContentClass" id="mainContent">
+    <div :class="mainContentClass" id="mainContent" class="flex-1 flex flex-col">
       <router-view v-slot="{ Component, route }">
         <transition name="slide-right" mode="out-in">
           <component :is="Component" :key="route.path" />

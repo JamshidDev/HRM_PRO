@@ -1,15 +1,28 @@
 <script setup>
-  import { NoDataPicture, UIMenuButton, UIPagination } from '@/components/index.js'
-  import { useCategoryQuestionStore, useCategoryStore } from '@/store/modules/index.js'
-  import { useRouter } from 'vue-router'
+  import { UITable } from '@/components/index.js'
+  import i18n from '@/i18n/index.js'
+  import {
+    useAccountStore,
+    useCategoryQuestionStore,
+    useCategoryStore
+  } from '@/store/modules/index.js'
   import { AppPaths } from '@/utils/index.js'
+  import UIHelper from '@/utils/UIHelper.js'
   import Utils from '@/utils/Utils.js'
-  import { CloudLink20Regular, Eye16Regular, Cut24Filled } from '@vicons/fluent'
-  import { useAccountStore } from '@/store/modules/index.js'
-  const accStore = useAccountStore()
+  import {
+    CloudLink20Regular,
+    Cut24Filled,
+    Delete20Regular,
+    Edit32Regular,
+    Eye16Regular
+  } from '@vicons/fluent'
+  import { useRouter } from 'vue-router'
+
+  const { t } = i18n.global
 
   const store = useCategoryStore()
   const categoryQuestionStore = useCategoryQuestionStore()
+  const accStore = useAccountStore()
   const router = useRouter()
 
   const changePage = (v) => {
@@ -18,91 +31,95 @@
     store._index()
   }
 
-  const onSelect = (v) => {
-    if (!accStore.checkAction(accStore.pn.examCategoriesRead)) return
-    if (v.key === 'view') {
-      router.push(`${AppPaths.Attestation}${AppPaths.Category}/${v.data.id}${AppPaths.Questions}`)
-    } else if (v.key === 'delete') {
-      if (!accStore.checkAction(accStore.pn.examCategoriesWrite)) return
-      store.elementId = v.data.id
-      store._delete()
-    } else if (v.key === 'edit') {
-      if (!accStore.checkAction(accStore.pn.examCategoriesWrite)) return
-      store.elementId = v.data.id
-      store.payload.name = v.data.name
-      store.visibleType = false
-      store.visible = true
-    } else if (v.key === Utils.ActionTypes.attachment) {
-      categoryQuestionStore.elementId = v.data.id
-      categoryQuestionStore.selectedFile = null
-      categoryQuestionStore.selectedCol = null
-      categoryQuestionStore.excelVisible = true
-    } else if (v.key === Utils.ActionTypes.close) {
-      store.elementId = v.data.id
-      store._clear()
-    }
+  const onEdit = (row) => {
+    if (!accStore.checkAction(accStore.pn.examCategoriesWrite)) return
+    store.elementId = row.id
+    store.payload.name = row.name
+    store.visibleType = false
+    store.visible = true
   }
+
+  const onDelete = (row) => {
+    if (!accStore.checkAction(accStore.pn.examCategoriesWrite)) return
+    store.elementId = row.id
+    store._delete()
+  }
+
+  const onViewQuestions = (row) => {
+    if (!accStore.checkAction(accStore.pn.examCategoriesRead)) return
+    router.push(`${AppPaths.Attestation}${AppPaths.Category}/${row.id}${AppPaths.Questions}`)
+  }
+
+  const onAttachment = (row) => {
+    categoryQuestionStore.elementId = row.id
+    categoryQuestionStore.selectedFile = null
+    categoryQuestionStore.selectedCol = null
+    categoryQuestionStore.excelVisible = true
+  }
+
+  const onClear = (row) => {
+    store.elementId = row.id
+    store._clear()
+  }
+
+  const columns = computed(() => [
+    {
+      key: 'name',
+      title: t('categoryPage.name'),
+      minWidth: 500
+    },
+    {
+      key: 'questions_count',
+      title: t('categoryPage.questionCount'),
+      width: 140,
+      align: 'center'
+    }
+  ])
+
+  const actions = computed(() => [
+    {
+      label: t('content.edit'),
+      key: Utils.ActionTypes.edit,
+      icon: UIHelper.renderIcon(Edit32Regular),
+      action: onEdit
+    },
+    {
+      label: t('content.delete'),
+      key: Utils.ActionTypes.delete,
+      icon: UIHelper.renderIcon(Delete20Regular),
+      action: onDelete
+    },
+    {
+      label: t('questionPage.title'),
+      key: Utils.ActionTypes.view,
+      icon: UIHelper.renderIcon(Eye16Regular),
+      action: onViewQuestions
+    },
+    {
+      label: t('categoryPage.upload'),
+      key: Utils.ActionTypes.attachment,
+      icon: UIHelper.renderIcon(CloudLink20Regular),
+      action: onAttachment
+    },
+    {
+      label: t('content.clear'),
+      key: Utils.ActionTypes.close,
+      icon: UIHelper.renderIcon(Cut24Filled),
+      action: onClear
+    }
+  ])
 </script>
 
 <template>
-  <n-spin :show="store.loading" style="min-height: 200px">
-    <div class="w-full overflow-x-auto" v-if="store.list.length > 0">
-      <n-table class="mt-3 w-full table-fixed" :single-line="false" size="small">
-        <thead>
-          <tr>
-            <th class="text-center! w-[30px] min-w-[30px] grow-0">{{ $t('content.number') }}</th>
-            <th class="text-center! min-w-[500px]">{{ $t('categoryPage.name') }}</th>
-            <th class="text-center! w-[140px] min-w-[120px]">
-              {{ $t('categoryPage.questionCount') }}
-            </th>
-            <th class="max-w-[60px] w-[60px]">{{ $t('content.action') }}</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(item, idx) in store.list" :key="idx">
-            <td class="w-[20px] max-w-[20px]">
-              <span class="text-center text-[12px] text-gray-600 block">{{
-                (store.params.page - 1) * store.params.per_page + idx + 1
-              }}</span>
-            </td>
-            <td>{{ item.name }}</td>
-            <td class="text-center!">{{ item.questions_count }}</td>
-            <td>
-              <UIMenuButton
-                :show-view="false"
-                :show-edit="true"
-                :data="item"
-                :extra-options="[
-                  {
-                    label: $t('questionPage.title'),
-                    key: Utils.ActionTypes.view,
-                    icon: Eye16Regular
-                  },
-                  {
-                    label: $t('categoryPage.upload'),
-                    key: Utils.ActionTypes.attachment,
-                    icon: CloudLink20Regular
-                  },
-                  {
-                    label: $t('content.clear'),
-                    key: Utils.ActionTypes.close,
-                    icon: Cut24Filled
-                  }
-                ]"
-                @select-ev="onSelect"
-              />
-            </td>
-          </tr>
-        </tbody>
-      </n-table>
-      <UIPagination
-        v-if="store.totalItems > store.params.per_page"
-        :page="store.params.page"
-        :per_page="store.params.per_page"
-        :total="store.totalItems"
-        @change-page="changePage"
-      />
-    </div>
-    <NoDataPicture v-if="store.list.length === 0 && !store.loading" />
-  </n-spin>
+  <UITable
+    :columns="columns"
+    :actions="actions"
+    :data="store.list"
+    :loading="store.loading"
+    :page="store.params.page"
+    :per-page="store.params.per_page"
+    :total="store.totalItems"
+    storage-key="attestation-category"
+    @change-page="changePage"
+  />
 </template>
