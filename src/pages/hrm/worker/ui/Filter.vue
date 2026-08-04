@@ -12,6 +12,7 @@
   import ReportPanel from './ReportPanel.vue'
   import contractIcon from '@/assets/icons/contract.svg?url'
   import reportIcon from '@/assets/icons/reportIcon.svg?url'
+  import { onBeforeRouteLeave } from 'vue-router'
 
   const store = useWorkerStore()
   const accStore = useAccountStore()
@@ -222,6 +223,11 @@
     exportStore.isExportingResume = false
     exportStore.resetResumePayload()
   }
+
+  onBeforeRouteLeave((to, from, next) => {
+    closeReportPanel()
+    next()
+  })
 
   const onSubmitResumeExport = () => {
     exportStore.resumeModalVisible = true
