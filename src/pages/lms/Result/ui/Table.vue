@@ -1,9 +1,10 @@
 <script setup>
-  import { NoDataPicture, UIPagination, UIUser } from '@/components/index.js'
-  import { useAccountStore, useLmsLessonStore } from '@/store/modules/index.js'
+  import { UITable, UIUser } from '@/components/index.js'
+  import { useLmsLessonStore } from '@/store/modules/index.js'
+  import i18n from '@/i18n/index.js'
 
+  const { t } = i18n.global
   const store = useLmsLessonStore()
-  const accStore = useAccountStore()
 
   const changePage = (v) => {
     store.resultParams.page = v.page
@@ -17,94 +18,103 @@
     if (percent >= 56) return 'border-warning! text-warning!'
     return 'border-danger! text-danger!'
   }
+
+  const columns = computed(() => [
+    {
+      key: 'worker',
+      title: t('content.worker'),
+      minWidth: 260
+    },
+    {
+      key: 'exam',
+      title: t('content.exam'),
+      width: 400
+    },
+    {
+      key: 'topic.type.name',
+      title: t('content.type'),
+      width: 260
+    },
+    {
+      key: 'eduPlan',
+      title: t('lmsWorkerPage.form.eduPlan'),
+      width: 160
+    },
+    {
+      key: 'date',
+      title: t('content.date'),
+      width: 250
+    },
+    {
+      key: 'result',
+      title: t('content.result'),
+      width: 100,
+      align: 'center'
+    }
+  ])
 </script>
 
 <template>
-  <n-spin :show="store.resultLoading" style="min-height: 200px">
-    <div v-if="store.resultList.length > 0">
-      <div class="w-full overflow-x-auto">
-        <n-table class="mt-5" :single-line="false" size="small">
-          <thead>
-            <tr>
-              <th class="text-center! min-w-[40px] w-[40px]">{{ $t('content.number') }}</th>
-              <th class="min-w-[200px]">{{ $t('content.worker') }}</th>
-              <th class="w-[400px]">{{ $t('content.exam') }}</th>
-              <th class="w-[160px]">{{ $t('content.type') }}</th>
-              <th class="w-[120px]">{{ $t('lmsWorkerPage.form.eduPlan') }}</th>
-              <th class="w-[250px]">{{ $t('content.date') }}</th>
-              <th class="min-w-[40px] w-[40px]">{{ $t('content.result') }}</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(item, idx) in store.resultList" :key="idx">
-              <td>
-                <span class="text-center text-[12px] text-gray-600 block">{{
-                  (store.resultParams.page - 1) * store.resultParams.per_page + idx + 1
-                }}</span>
-              </td>
-              <td>
-                <UIUser
-                  :short="false"
-                  :hide-tooltip="true"
-                  :data="{
-                    photo: item?.worker?.photo,
-                    firstName: item?.worker.first_name,
-                    middleName: item?.worker.middle_name,
-                    lastName: item?.worker.last_name,
-                    position: item?.exam?.name
-                  }"
-                />
-              </td>
-              <td>
-                <div class="leading-[1.2]">{{ item.exam.name }}</div>
-                <div class="leading-[1.2] text-secondary">{{ item.topic.name }}</div>
-              </td>
-              <td>
-                <div class="leading-[1.2]">{{ item.topic?.type?.name }}</div>
-              </td>
-              <td>
-                <div class="text-xs">
-                  {{ $t('categoryPage.questionCount') }}:
-                  <span class="text-sm">{{ item?.exam?.tests_count }}</span>
-                </div>
-                <div class="text-xs">
-                  {{ $t('resultPage.form.chances') }}:
-                  <span class="text-sm">{{ item?.exam?.chances }}</span>
-                </div>
-              </td>
-              <td>
-                <div class="text-xs">
-                  <span class="text-secondary">{{ $t('content.startDate') }}: </span>
-                  {{ item.created }}
-                </div>
-                <div class="text-xs">
-                  <span class="text-secondary">{{ $t('content.endDate') }} :</span> {{ item.ended }}
-                </div>
-              </td>
-              <td>
-                <template v-if="typeof item?.result === 'number'">
-                  <n-tag
-                    :bordered="false"
-                    class="rounded-2xl! w-[32px] h-[32px]! justify-center border-dashed! border! bg-transparent!"
-                    :class="resultClass(item.exam?.tests_count, item.result)"
-                    round
-                  >
-                    {{ item?.result }}
-                  </n-tag>
-                </template>
-              </td>
-            </tr>
-          </tbody>
-        </n-table>
-      </div>
-
-      <UIPagination
-        :page="store.resultParams.page"
-        :per_page="store.resultParams.per_page"
-        :total="store.totalResult"
-        @change-page="changePage"
+  <UITable
+    :columns="columns"
+    :data="store.resultList"
+    :loading="store.resultLoading"
+    :page="store.resultParams.page"
+    :per-page="store.resultParams.per_page"
+    :total="store.totalResult"
+    storage-key="lms-result"
+    @change-page="changePage"
+  >
+    <template #cell-worker="{ row }">
+      <UIUser
+        :short="false"
+        :data="{
+          photo: row?.worker?.photo,
+          firstName: row?.worker.first_name,
+          middleName: row?.worker.middle_name,
+          lastName: row?.worker.last_name,
+          position: row?.exam?.name
+        }"
       />
-    </div>
-    <NoDataPicture v-if="store.resultList.length === 0 && !store.resultLoading" />
-  </n-spin>
+    </template>
+
+    <template #cell-exam="{ row }">
+      <div class="leading-[1.2]">{{ row.exam.name }}</div>
+      <div class="leading-[1.2] text-secondary">{{ row.topic.name }}</div>
+    </template>
+
+    <template #cell-eduPlan="{ row }">
+      <div class="text-xs">
+        {{ $t('categoryPage.questionCount') }}:
+        <span class="text-sm">{{ row?.exam?.tests_count }}</span>
+      </div>
+      <div class="text-xs">
+        {{ $t('resultPage.form.chances') }}:
+        <span class="text-sm">{{ row?.exam?.chances }}</span>
+      </div>
+    </template>
+
+    <template #cell-date="{ row }">
+      <div class="text-xs">
+        <span class="text-secondary">{{ $t('content.startDate') }}: </span>
+        {{ row.created }}
+      </div>
+      <div class="text-xs">
+        <span class="text-secondary">{{ $t('content.endDate') }} :</span> {{ row.ended }}
+      </div>
+    </template>
+
+    <template #cell-result="{ row }">
+      <template v-if="typeof row?.result === 'number'">
+        <n-tag
+          :bordered="false"
+          class="rounded-2xl! w-[32px] h-[32px]! justify-center border-dashed! border! bg-transparent!"
+          :class="resultClass(row.exam?.tests_count, row.result)"
+          round
+        >
+          {{ row?.result }}
+        </n-tag>
+      </template>
+    </template>
+  </UITable>
 </template>
