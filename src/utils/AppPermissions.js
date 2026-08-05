@@ -1,6 +1,12 @@
 export const appPermissions = {
   users: 'users',
   admin: 'admin',
+  // Admin modulidagi ayrim sahifalar uchun ALOHIDA sluglar — ilgari ular
+  // `admin` (module-access) bilan gate qilingan edi, ya'ni bandni ko'rish
+  // uchun butun Admin moduli ochilishi kerak edi (juda qo'pol).
+  mobileUsers: 'mobile-users',
+  integrationClients: 'integration-clients',
+  holidayGreetings: 'holiday-greetings',
   usersWrite: 'users-write',
   usersRead: 'users-read',
 
