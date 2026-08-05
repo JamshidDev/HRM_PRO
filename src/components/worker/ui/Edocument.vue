@@ -81,11 +81,11 @@
       patronymic: w.middle_name,
       sex: sex.value,
       birthDate: w.birthday,
-      cardNumber: certificate.number,
+      cardNumber: certificate.serial,
       issueDate: certificate.issue_date,
       expiryDate: certificate.expiry_date,
       personalNumber: w.pin,
-      issuePlace: certificate.post_name
+      issuePlace: certificate.issued_place
     }
   })
 
