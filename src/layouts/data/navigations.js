@@ -233,7 +233,7 @@ export const navigations = [
         path: Utils.routeHrmPathMaker(AppPaths.VacationSchedule),
         icon: BookDatabase24Regular,
         color: 'bg-info',
-        permission: appPermissions.admin
+        permission: appPermissions.hrVacationSchedule
       },
       {
         label: 'vacancy.name', // Ochiq vakansiyalar
@@ -560,7 +560,7 @@ export const navigations = [
         path: Utils.routeTurnstilePathMaker(AppPaths.TurnstileSchedule),
         icon: DocumentBulletList24Filled,
         color: 'bg-dark',
-        permission: appPermissions.admin
+        permission: appPermissions.turnstileSheets
       },
       {
         label: 'approve.name', // Yuborilgan xodimlar
@@ -631,7 +631,7 @@ export const navigations = [
         path: Utils.routeLmsPathMaker(AppPaths.TeacherLesson),
         icon: ShiftsCheckmark20Regular,
         color: 'bg-info',
-        permission: appPermissions.admin
+        permission: appPermissions.lmsLessons
       },
       {
         label: 'listener.name', // Tinglovchilar
@@ -774,7 +774,7 @@ export const navigations = [
     label: 'navigation.chat', // Chat
     path: AppPaths.Chat,
     icon: ChatMultiple16Filled,
-    permission: appPermissions.admin,
+    permission: appPermissions.chat,
     children: [
       {
         label: 'notificationPage.name', // Bildirishnomalar
@@ -788,21 +788,21 @@ export const navigations = [
         path: Utils.routeChatPathMaker(AppPaths.News),
         icon: News24Regular,
         color: 'bg-dark',
-        permission: appPermissions.admin
+        permission: appPermissions.chat
       },
       {
         label: 'mobileStoryPage.name',
         path: Utils.routePathMaker(AppPaths.MobileStories),
         icon: News24Regular,
         color: 'bg-dark',
-        permission: appPermissions.admin
+        permission: appPermissions.chat
       },
       {
         label: 'newsCategoryPage.name', // Yangilik kategoriyalari
         path: Utils.routeChatPathMaker(AppPaths.NewsCategory),
         icon: Tag16Filled,
         color: 'bg-dark',
-        permission: appPermissions.admin
+        permission: appPermissions.chat
       },
       {
         label: 'congratulation.name', // Telegram xabarlar

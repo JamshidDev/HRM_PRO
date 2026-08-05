@@ -83,6 +83,7 @@ export const appPermissions = {
   hr: 'hr',
   hrDashboard: 'hr-dashboard',
   hrDashboardRead: 'hr-dashboard-read',
+  hrDashboardAudit: 'hr-dashboard-audit',
 
   hrWorkers: 'hr-workers',
   hrWorkersWrite: 'hr-workers-write',

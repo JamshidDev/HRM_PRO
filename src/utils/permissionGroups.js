@@ -8,7 +8,7 @@ export const ACTION_ORDER = ['read', 'write', 'delete']
 // Backend @Permission bilan HAQIQATAN enforce qilinadigan sluglar. write/delete
 // switch faqat shu to'plamda bo'lsa ko'rsatiladi (mutatsiya real API talab qiladi).
 export const ENFORCED = new Set([
-  'activity-logs-read', 'admin', 'authentication-logs-read', 'chat-news-delete', 'cities-delete', 'cities-write',
+  'activity-logs-read', 'admin', 'authentication-logs-read', 'chat', 'chat-news-delete', 'cities-delete', 'cities-write',
   'confirmation-documents-delete', 'confirmation-worker-applications-delete', 'countries-delete', 'countries-write', 'department-location-delete', 'department-location-read',
   'department-location-write', 'deploy-read', 'deploy-write', 'document-view-exam-results', 'economist', 'economist-dashboard-read',
   'economist-pension-payments-delete', 'economist-pension-payments-read', 'economist-pension-payments-write', 'economist-staffing-approve-delete', 'economist-staffing-approve-read', 'economist-staffing-approve-write',
@@ -19,7 +19,7 @@ export const ENFORCED = new Set([
   'holiday-greetings-delete', 'holiday-greetings-read', 'holiday-greetings-write', 'holidays-delete', 'holidays-write', 'hr',
   'hr-business-trip-read', 'hr-check-worker', 'hr-commands-delete', 'hr-commands-read', 'hr-commands-write', 'hr-confirmations-delete',
   'hr-confirmations-read', 'hr-confirmations-write', 'hr-contract-additional-delete', 'hr-contract-additional-read', 'hr-contract-additional-write', 'hr-contracts-delete',
-  'hr-contracts-read', 'hr-contracts-write', 'hr-dashboard', 'hr-dashboard-read', 'hr-departments-delete', 'hr-departments-read',
+  'hr-contracts-read', 'hr-contracts-write', 'hr-dashboard', 'hr-dashboard-audit', 'hr-dashboard-read', 'hr-departments-delete', 'hr-departments-read',
   'hr-departments-write', 'hr-discips-read', 'hr-documents-delete', 'hr-documents-read', 'hr-documents-write', 'hr-edu-plans-read',
   'hr-edu-plans-write', 'hr-incentives-read', 'hr-incentives-write', 'hr-language-certificates-delete', 'hr-language-certificates-read', 'hr-language-certificates-write',
   'hr-leaders-delete', 'hr-leaders-read', 'hr-leaders-write', 'hr-med-delete', 'hr-med-read', 'hr-med-write',
@@ -52,7 +52,7 @@ export const ENFORCED = new Set([
 // ko'rsatadi — DB'da bor-u hech qayerda ishlatilmaydigan (spurious) sluglar yashiriladi.
 export const MEANINGFUL = new Set([
   'activity-logs', 'activity-logs-read', 'admin', 'ai', 'authentication-logs-read', 'chat-news-delete',
-  'chat-notification', 'chat-telegram-messages', 'cities', 'cities-delete', 'cities-read', 'cities-write',
+  'chat', 'chat-notification', 'chat-telegram-messages', 'cities', 'cities-delete', 'cities-read', 'cities-write',
   'confirmation', 'confirmation-commands', 'confirmation-contract-additional', 'confirmation-contracts', 'confirmation-documents-delete', 'confirmation-lms-certificate',
   'confirmation-lms-certificate-read', 'confirmation-staffing-approval', 'confirmation-table', 'confirmation-worker-applications', 'confirmation-worker-applications-delete', 'countries',
   'countries-delete', 'countries-read', 'countries-write', 'department-location', 'department-location-delete', 'department-location-read',
@@ -71,7 +71,7 @@ export const MEANINGFUL = new Set([
   'hr', 'hr-business-trip', 'hr-business-trip-read', 'hr-business-trip-write', 'hr-check-worker', 'hr-commands',
   'hr-commands-blank', 'hr-commands-delete', 'hr-commands-read', 'hr-commands-write', 'hr-confirmations', 'hr-confirmations-delete',
   'hr-confirmations-read', 'hr-confirmations-write', 'hr-contract-additional', 'hr-contract-additional-delete', 'hr-contract-additional-read', 'hr-contract-additional-write',
-  'hr-contracts', 'hr-contracts-delete', 'hr-contracts-read', 'hr-contracts-write', 'hr-dashboard', 'hr-dashboard-read',
+  'hr-contracts', 'hr-contracts-delete', 'hr-contracts-read', 'hr-contracts-write', 'hr-dashboard', 'hr-dashboard-audit', 'hr-dashboard-read',
   'hr-departments', 'hr-departments-delete', 'hr-departments-read', 'hr-departments-write', 'hr-discips', 'hr-discips-read',
   'hr-documents', 'hr-documents-delete', 'hr-documents-read', 'hr-documents-write', 'hr-edu-plans-read', 'hr-edu-plans-write',
   'hr-export', 'hr-incentives', 'hr-incentives-read', 'hr-incentives-write', 'hr-jobs', 'hr-jobs-read',
@@ -123,7 +123,14 @@ export const PERMISSION_GROUPS = [
     label: 'navigation.hrm',
     groups: [
       { prefix: 'hr', label: 'userRole.form.moduleAccess' },
-      { prefix: 'hr-dashboard', label: 'dashboardPage.name' },
+      {
+        prefix: 'hr-dashboard',
+        label: 'dashboardPage.name',
+        actions: [
+          { slug: 'hr-dashboard-read', label: "Ko'rish" },
+          { slug: 'hr-dashboard-audit', label: 'Audit' },
+        ],
+      },
       { prefix: 'hr-workers', label: 'workerPage.name' },
       { prefix: 'hr-departments', label: 'departmentPage.name' },
       { prefix: 'hr-positions', label: 'departmentPositionPage.name' },
@@ -244,7 +251,7 @@ export const PERMISSION_GROUPS = [
     label: 'navigation.chat',
     groups: [
       { prefix: 'instructions', label: 'notificationPage.name' },
-      { prefix: 'admin', label: 'newsPage.name' },
+      { prefix: 'chat', label: 'newsPage.name' },
       { prefix: 'chat-telegram-messages', label: 'congratulation.name' },
     ],
   },
