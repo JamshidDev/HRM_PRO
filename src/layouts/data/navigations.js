@@ -345,7 +345,7 @@ export const navigations = [
         path: Utils.routeDocFlowPathMaker(AppPaths.VacationSchedule),
         icon: BookDatabase24Regular,
         color: 'bg-info',
-        permission: appPermissions.admin
+        permission: appPermissions.hrVacationSchedule
       },
       {
         label: 'lmsCertificate.name', // Sertifikatlar

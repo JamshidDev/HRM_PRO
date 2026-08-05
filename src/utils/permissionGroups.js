@@ -160,12 +160,13 @@ export const PERMISSION_GROUPS = [
     module: 'confirmation',
     label: 'navigation.docFlow',
     groups: [
+      { prefix: 'confirmation', label: 'userRole.form.moduleAccess' },
       { prefix: 'confirmation-contracts', label: 'confirmation.name' },
       { prefix: 'confirmation-commands', label: 'documentPage.tabs.command' },
       { prefix: 'confirmation-contract-additional', label: 'documentPage.tabs.adContract' },
       { prefix: 'confirmation-worker-applications', label: 'applicationPage.name' },
       { prefix: 'confirmation-table', label: 'timesheetPage.name' },
-      { prefix: 'admin', label: 'vacationSchedule.name' },
+      { prefix: 'hr-vacation-schedule', label: 'vacationSchedule.name' },
       { prefix: 'confirmation-lms-certificate', label: 'lmsCertificate.name' },
       { prefix: 'confirmation-staffing-approval', label: 'staffingApproval.name' },
       { prefix: 'confirmation', label: 'confirmationReport.name' },
@@ -200,9 +201,14 @@ export const PERMISSION_GROUPS = [
       { prefix: 'turnstile-sheets', label: 'schedule.name' },
       { prefix: 'turnstile-sheets-workers', label: 'shiftType.name' },
       { prefix: 'turnstile-sheets-groups', label: 'shiftType.groupName' },
-      { prefix: 'admin', label: 'turnstileSchedule.name' },
+      { prefix: 'turnstile-sheets', label: 'turnstileSchedule.name' },
       { prefix: 'turnstile-approve', label: 'approve.name' },
     ],
+  },
+  {
+    module: 'useful',
+    label: 'navigation.general',
+    groups: [{ prefix: 'useful', label: 'userRole.form.moduleAccess' }],
   },
   {
     module: 'lms',
@@ -250,8 +256,8 @@ export const PERMISSION_GROUPS = [
     module: 'admin',
     label: 'navigation.chat',
     groups: [
+      { prefix: 'chat', label: 'userRole.form.moduleAccess' },
       { prefix: 'instructions', label: 'notificationPage.name' },
-      { prefix: 'chat', label: 'newsPage.name' },
       { prefix: 'chat-telegram-messages', label: 'congratulation.name' },
     ],
   },
@@ -281,6 +287,7 @@ export const PERMISSION_GROUPS = [
     module: 'admin',
     label: 'navigation.admin',
     groups: [
+      { prefix: 'admin', label: 'userRole.form.moduleAccess' },
       { prefix: 'users', label: 'userPage.name' },
       { prefix: 'roles', label: 'userRole.name' },
       { prefix: 'permissions', label: 'userPermission.name' },
