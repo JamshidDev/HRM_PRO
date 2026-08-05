@@ -2323,7 +2323,9 @@
       "leaveBalance": "Ta'til qancha qoldi?",
       "lastSalary": "Oxirgi oylik hisobim",
       "getReference": "Ma'lumotnoma olish",
-      "workedDays": "Bu oy necha kun ishladim?"
+      "workedDays": "Bu oy necha kun ishladim?",
+      "workedDaysShort": "Necha kun ishladim?",
+      "workSchedule": "Ish grafigim qanday?"
     },
     "disclaimer": {
       "cardOne": "### 🧪 Test rejimi\n\nUshbu sun’iy intellekt yordamchisi hozirda **test rejimida** ishlamoqda.  \nJavoblari hali to‘liq shakllanmagan va _noto‘g‘ri bo‘lishi mumkin_.",
@@ -2335,7 +2337,13 @@
       "conversation": "Suhbatlar",
       "goChat": "Suhbatga qaytish",
       "feedback": "Fikringiz uchun rahmat!",
-      "askQuestion": "Savolingizni kiriting..."
+      "askQuestion": "Savolingizni kiriting...",
+      "askQuestionOrMic": "Savolingizni yozing yoki mikrofonni bosib gapiring...",
+      "newChat": "Yangi chat",
+      "searchConversations": "Suhbatlarni qidirish",
+      "today": "Bugun",
+      "yesterday": "Kecha",
+      "chatHistory": "Chat tarixi"
     }
   },
   "others": {
