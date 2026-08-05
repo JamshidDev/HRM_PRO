@@ -1,8 +1,8 @@
 <script setup>
   import { Tabs, TabBar } from './ui/index.js'
-  import { useAccountStore, useOthersStore } from '@/store/modules/index.js'
-  import UserImageLogPage from '@/pages/turnstile/userImageLogs/page.vue'
-  import InvalidUserPage from '@/pages/turnstile/invalidUser/page.vue'
+  import { useAccountStore, useAppStore, useOthersStore } from '@/store/modules/index.js'
+  // import UserImageLogPage from '@/pages/turnstile/userImageLogs/page.vue'
+  // import InvalidUserPage from '@/pages/turnstile/invalidUser/page.vue'
   import TelegramUserPage from '@/pages/turnstile/telegramUser/page.vue'
   import HCServerPage from '@/pages/turnstile/hcServer/page.vue'
   import SyncLogPage from '@/pages/turnstile/syncLog/page.vue'
@@ -11,22 +11,16 @@
   import {
     AlertUrgent16Filled,
     ArrowSyncCircle24Filled,
-    CellularData124Filled,
-    ImageMultiple24Filled,
-    PersonProhibited24Filled
+    CellularData124Filled
+    // ImageMultiple24Filled,
+    // PersonProhibited24Filled
   } from '@vicons/fluent'
 
   const store = useOthersStore()
   const accStore = useAccountStore()
+  const appStore = useAppStore()
   const t = i18n.global.t
 
-  const emitTeleportEvent = (content) => {
-    window.dispatchEvent(
-      new CustomEvent('teleport-changed', {
-        detail: { hasContent: content }
-      })
-    )
-  }
   const isMounted = ref(false)
 
   const pages = computed(() => {
@@ -80,16 +74,16 @@
     store.activeTab = pages.value.filter((page) => page.visible)?.[0]?.key || null
     isMounted.value = true
 
-    emitTeleportEvent(true)
+    appStore.hasTeleportedContent = true
   })
 
   onBeforeUnmount(() => {
-    emitTeleportEvent(false)
+    appStore.hasTeleportedContent = false
   })
 </script>
 
 <template>
-  <div>
+  <div class="flex-1 flex flex-col">
     <Teleport v-if="isMounted" to="#layout-header-tab">
       <TabBar v-if="store.pageOptions.length > 0" />
     </Teleport>

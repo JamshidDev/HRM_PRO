@@ -64,7 +64,7 @@
 </script>
 
 <template>
-  <UIPageFilter class="mb-4" :show-search-input="false" :show-add-button="false">
+  <UIPageFilter :show-search-input="false" :show-add-button="false">
     <template #filterSearch>
       <div class="flex gap-2">
         <!--        <div  class="w-[200px]">-->

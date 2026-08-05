@@ -1,10 +1,24 @@
 <script setup>
-  import { NoDataPicture, UIMenuButton, UIPagination, UIStatus } from '@/components/index.js'
+  import { UIStatus, UITable, UITableNameCell } from '@/components/index.js'
+  import i18n from '@/i18n/index.js'
   import { useConfirmationReportStore } from '@/store/modules/index.js'
+  import UIHelper from '@/utils/UIHelper.js'
   import Utils from '@/utils/Utils.js'
+  import { Eye16Regular } from '@vicons/fluent'
+
+  const { t } = i18n.global
 
   const store = useConfirmationReportStore()
+
   const emits = defineEmits(['openOffice'])
+
+  const onOpenFile = (documentId, signatureId) => {
+    emits('openOffice', { documentId, signatureId })
+  }
+
+  const onPreview = (row) => {
+    onOpenFile(row?.report?.id, row.id)
+  }
 
   const changePage = (v) => {
     store.params.page = v.page
@@ -12,71 +26,69 @@
     store._index()
   }
 
-  const onSelect = (v) => {
-    if (v.key === 'view') {
-      emits('openOffice',{documentId:v.data.report?.id, signatureId:v.data.id })
+  const columns = computed(() => [
+    {
+      key: 'report.month',
+      title: t('content.date'),
+      minWidth: 200
+    },
+    {
+      key: 'status',
+      title: t('content.status'),
+      width: 140
+    },
+    {
+      key: 'generate',
+      title: t('content.document'),
+      width: 140
+    },
+    {
+      key: 'report.created_at',
+      title: t('content.createdDate'),
+      width: 140
     }
-  }
+  ])
+
+  const actions = computed(() => [
+    {
+      label: t('content.view'),
+      key: Utils.ActionTypes.view,
+      icon: UIHelper.renderIcon(Eye16Regular),
+      action: onPreview
+    }
+  ])
 </script>
 
 <template>
-  <n-spin :show="store.loading" style="min-height: 200px">
-    <div class="w-full overflow-x-auto" v-if="store.list.length > 0">
-      <n-table class="mt-4" :single-line="false" size="small">
-        <thead>
-          <tr>
-            <th class="text-center! min-w-[40px] w-[40px]">{{ $t('content.number') }}</th>
-            <th class="min-w-[200px]">{{ $t('content.date') }}</th>
-            <th class="min-w-[100px] w-[100px]">{{ $t('content.status') }}</th>
-            <th class="min-w-[100px] w-[100px]">{{ $t('content.document') }}</th>
-            <th class="min-w-[100px] w-[100px]">{{ $t('content.createdDate') }}</th>
-            <th class="min-w-[40px] w-[40px]"></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(item, idx) in store.list" :key="item.id">
-            <td>
-              <span class="text-center text-[12px] text-gray-600 block">
-                {{ (store.params.page - 1) * store.params.per_page + idx + 1 }}
-              </span>
-            </td>
-            <td>
-              <div
-                @click="emits('openOffice', emits('openOffice',{documentId:item.report?.id, signatureId:item.id }))"
-                class="group flex flex-col hover:!text-primary hover:underline cursor-pointer"
-              >
-                <span class="text-sm line-clamp-2 leading-[1.2] font-medium">
-                  {{ Utils.getMonthNameById(item.report?.month) }} {{ item.report?.year }}
-                </span>
-                <span class="text-xs rounded-2xl px-1 text-secondary group-hover:!text-primary">
-                  {{ Utils.timeHHMMWithMonth(item.report?.created_at) }}
-                </span>
-              </div>
-            </td>
-            <td>
-              <UIStatus :status="item?.status" />
-            </td>
-            <td>
-              <UIStatus :status="Utils.documentStatus[item?.generate]" />
-            </td>
-            <td>{{ Utils.timeOnlyDate(item.report?.created_at) }}</td>
-            <td>
-              <UIMenuButton
-                :show-view="true"
-                :data="item"
-                @selectEv="onSelect"
-              />
-            </td>
-          </tr>
-        </tbody>
-      </n-table>
-      <UIPagination
-        :page="store.params.page"
-        :per_page="store.params.per_page"
-        :total="store.totalItems"
-        @change-page="changePage"
+  <UITable
+    :columns="columns"
+    :actions="actions"
+    :data="store.list"
+    :loading="store.loading"
+    :page="store.params.page"
+    :per-page="store.params.per_page"
+    :total="store.totalItems"
+    storage-key="docflow-confirmation-report"
+    @change-page="changePage"
+  >
+    <template #[`cell-report.month`]="{ row }">
+      <UITableNameCell
+        :name="`${Utils.getMonthNameById(row?.report?.month)} ${row?.report?.year}`"
+        :created-at="row?.report?.created_at"
+        @click="onPreview(row)"
       />
-    </div>
-    <NoDataPicture v-if="store.list.length === 0 && !store.loading" />
-  </n-spin>
+    </template>
+
+    <template #cell-status="{ row }">
+      <UIStatus :status="row?.status" />
+    </template>
+
+    <template #cell-generate="{ row }">
+      <UIStatus :status="Utils.documentStatus[row?.generate]" />
+    </template>
+
+    <template #[`cell-report.created_at`]="{ row }">
+      {{ Utils.timeOnlyDate(row?.report?.created_at) }}
+    </template>
+  </UITable>
 </template>

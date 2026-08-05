@@ -12,6 +12,7 @@
   import ReportPanel from './ReportPanel.vue'
   import contractIcon from '@/assets/icons/contract.svg?url'
   import reportIcon from '@/assets/icons/reportIcon.svg?url'
+  import { onBeforeRouteLeave } from 'vue-router'
 
   const store = useWorkerStore()
   const accStore = useAccountStore()
@@ -113,6 +114,7 @@
       store.params.positions.length,
       store.params.sex !== null,
       store.params.nationalities.length,
+      store.params.educations.length,
       store.params.country_id,
       store.params.region_id,
       store.params.city_id,
@@ -133,6 +135,7 @@
     store.params.position_type = null
     store.params.sex = null
     store.params.nationalities = []
+    store.params.educations = []
     store.params.country_id = null
     store.params.region_id = null
     store.params.city_id = null
@@ -222,6 +225,11 @@
     exportStore.isExportingResume = false
     exportStore.resetResumePayload()
   }
+
+  onBeforeRouteLeave((to, from, next) => {
+    closeReportPanel()
+    next()
+  })
 
   const onSubmitResumeExport = () => {
     exportStore.resumeModalVisible = true
@@ -409,20 +417,28 @@
               label-field="name"
               value-field="id"
               :loading="componentStore.enumLoading"
+              :consistent-menu-width="false"
+              :menu-props="{ class: 'worker-contract-type-menu' }"
               @update:value="filterEvent"
             />
           </div>
 
-          <div class="col-span-12 md:col-span-6 worker-filter-check">
-            <n-checkbox @change="filterEvent" v-model:checked="store.params.multiple_position">
-              {{ $t('workerPage.filter.multiple_position') }}
-            </n-checkbox>
+          <div class="col-span-12 md:col-span-6">
+            <label class="invisible">-</label>
+            <div class="worker-filter-check">
+              <n-checkbox @change="filterEvent" v-model:checked="store.params.multiple_position">
+                {{ $t('workerPage.filter.multiple_position') }}
+              </n-checkbox>
+            </div>
           </div>
 
-          <div class="col-span-12 md:col-span-6 worker-filter-check">
-            <n-checkbox @change="filterEvent" v-model:checked="store.params.pension_age">
-              {{ $t('workerPage.filter.pension_age') }}
-            </n-checkbox>
+          <div class="col-span-12 md:col-span-6">
+            <label class="invisible">-</label>
+            <div class="worker-filter-check">
+              <n-checkbox @change="filterEvent" v-model:checked="store.params.pension_age">
+                {{ $t('workerPage.filter.pension_age') }}
+              </n-checkbox>
+            </div>
           </div>
         </div>
 
@@ -722,7 +738,8 @@
   .worker-filter-check {
     display: flex;
     align-items: center;
-    min-height: 44px;
+    box-sizing: border-box;
+    height: 40px;
     padding: 0 14px;
     border: 1px solid var(--surface-line);
     border-radius: 16px;
@@ -739,8 +756,9 @@
 
   .age-mode-group {
     display: flex;
+    box-sizing: border-box;
     width: 100%;
-    height: 40px;
+    height: 36px;
     overflow: hidden;
     border: 3px solid var(--surface-line);
     border-radius: 12px;
@@ -807,5 +825,10 @@
   :global([data-theme='dark'] .age-mode-group .n-radio-button--checked) {
     background: #101828;
     color: #f2f4f7;
+  }
+
+  :global(.worker-contract-type-menu) {
+    width: auto !important;
+    min-width: 320px;
   }
 </style>

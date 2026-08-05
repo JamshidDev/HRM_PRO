@@ -1,8 +1,15 @@
 <script setup>
-  import { NoDataPicture, UIPagination, UIStatus, UIUser } from '@/components/index.js'
-  import { useConfApplicationStore, useComponentStore } from '@/store/modules/index.js'
+  import {
+    UIStatus,
+    UITable,
+    UITableBadgeCell,
+    UITableNameCell,
+    UIUser
+  } from '@/components/index.js'
+  import { useComponentStore, useConfApplicationStore } from '@/store/modules/index.js'
   import Utils from '@/utils/Utils.js'
-  import MenuButton from '@/components/buttons/MenuButton.vue'
+  import UIHelper from '@/utils/UIHelper.js'
+  import { Delete20Regular, Edit32Regular, Eye16Regular } from '@vicons/fluent'
   import i18n from '@/i18n'
 
   const store = useConfApplicationStore()
@@ -51,36 +58,32 @@
     }
   }
 
-  const onEdit = (v) => {
+  const onOpenFile = (documentId, signatureId) => {
+    emits('openOffice', { documentId, signatureId })
+  }
+
+  const onPreview = (row) => {
+    onOpenFile(row?.worker_application?.id, row.id)
+  }
+
+  const onEdit = (row) => {
     store.visibleType = false
-    store.elementId = v.worker_application?.id
+    store.elementId = row.worker_application?.id
     store.visible = true
     store.activeTab = 101
     store.stepNumber = 1
     store._getEdit(editResponse)
   }
 
-  const onOpenFile = (documentId, signatureId) => {
-    emits('openOffice', { documentId, signatureId })
+  const onDelete = (row) => {
+    store.elementId = row?.worker_application?.id
+    store._confDelete()
   }
 
   const changePage = (v) => {
     store.params.page = v.page
     store.params.per_page = v.per_page
     store._index()
-  }
-
-  const onSelectEv = (v) => {
-    if (v.key === Utils.ActionTypes.edit) {
-      onEdit(v.data)
-    } else if (v.key === Utils.ActionTypes.delete) {
-      onDelete(v.data)
-    }
-  }
-
-  const onDelete = (v) => {
-    store.elementId = v?.worker_application?.id
-    store._confDelete()
   }
 
   const checkingStatus = {
@@ -97,74 +100,114 @@
       name: t('content.Rejected')
     }
   }
+
+  const columns = computed(() => [
+    {
+      key: 'worker_application.type.name',
+      title: t('applicationPage.form.type'),
+      minWidth: 200
+    },
+    {
+      key: 'worker_application.number',
+      title: t('applicationPage.form.number'),
+      width: 100,
+      align: 'center'
+    },
+    {
+      key: 'worker_application.worker',
+      title: t('content.worker'),
+      minWidth: 200
+    },
+    {
+      key: 'worker_application.status',
+      title: t('content.checkLabel'),
+      width: 120
+    },
+    {
+      key: 'worker_application.confirmation',
+      title: t('content.status'),
+      width: 120
+    },
+    {
+      key: 'worker_application.generate',
+      title: t('content.document'),
+      width: 120
+    },
+    {
+      key: 'worker_application.created_at',
+      title: t('content.date'),
+      width: 120
+    }
+  ])
+
+  const actions = computed(() => [
+    {
+      label: t('content.view'),
+      key: Utils.ActionTypes.view,
+      icon: UIHelper.renderIcon(Eye16Regular),
+      action: onPreview
+    },
+    {
+      label: t('content.edit'),
+      key: Utils.ActionTypes.edit,
+      icon: UIHelper.renderIcon(Edit32Regular),
+      action: onEdit
+    },
+    {
+      label: t('content.delete'),
+      key: Utils.ActionTypes.delete,
+      icon: UIHelper.renderIcon(Delete20Regular),
+      action: onDelete
+    }
+  ])
 </script>
 
 <template>
-  <n-spin :show="store.loading" style="min-height: 200px">
-    <div class="w-full overflow-x-auto" v-if="store.list.length > 0">
-      <n-table class="mt-4" :single-line="false" size="small">
-        <thead>
-          <tr>
-            <th class="text-center! min-w-[40px] w-[40px]">{{ $t('content.number') }}</th>
-            <th class="min-w-[200px]">{{ $t('applicationPage.form.type') }}</th>
-            <th class="min-w-[60px] w-[60px]">{{ $t('applicationPage.form.number') }}</th>
-            <th class="min-w-[200px] w-[200px]">{{ $t('applicationPage.form.director_id') }}</th>
-            <th class="min-w-[100px] w-[120px]">{{ $t('content.checkLabel') }}</th>
-            <th class="min-w-[100px] w-[120px]">{{ $t('content.status') }}</th>
-            <th class="w-[120px]">{{ $t('content.document') }}</th>
-            <th class="min-w-[100px] w-[100px]">{{ $t('content.date') }}</th>
-            <th class="min-w-[40px] w-[40px]"></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(item, idx) in store.list" :key="idx">
-            <td>
-              <span class="text-center text-[12px] text-gray-600 block">{{
-                (store.params.page - 1) * store.params.per_page + idx + 1
-              }}</span>
-            </td>
-            <td>
-              <span
-                @click="onOpenFile(item?.worker_application?.id, item?.id)"
-                class="hover:text-primary hover:underline cursor-pointer"
-                >{{ item?.worker_application?.type.name }}</span
-              >
-            </td>
-            <td>
-              <div class="flex justify-center">
-                <n-button class="font-medium" round type="primary" size="tiny" dashed>{{
-                  item?.worker_application.number
-                }}</n-button>
-              </div>
-            </td>
-            <td>
-              <UIUser
-                :data="{
-                  photo: item?.worker_application?.worker.photo,
-                  firstName: item?.worker_application?.worker.first_name,
-                  middleName: item?.worker_application?.worker.middle_name,
-                  lastName: item?.worker_application?.worker.last_name,
-                  position: item?.worker_application?.worker?.birthday
-                }"
-              />
-            </td>
-            <td><UIStatus :status="checkingStatus[Number(item?.worker_application.status)]" /></td>
-            <td><UIStatus :status="item?.worker_application.confirmation" /></td>
-            <td><UIStatus :status="Utils.documentStatus[item?.worker_application.generate]" /></td>
-            <td>{{ Utils.timeOnlyDate(item?.worker_application.created_at) }}</td>
-            <td>
-              <MenuButton :data="item" :show-edit="true" @selectEv="onSelectEv" />
-            </td>
-          </tr>
-        </tbody>
-      </n-table>
-      <UIPagination
-        :page="store.params.page"
-        :per_page="store.params.per_page"
-        :total="store.totalItems"
-        @change-page="changePage"
+  <UITable
+    :columns="columns"
+    :actions="actions"
+    :data="store.list"
+    :loading="store.loading"
+    :page="store.params.page"
+    :per-page="store.params.per_page"
+    :total="store.totalItems"
+    storage-key="docflow-confirmation-application"
+    @change-page="changePage"
+  >
+    <template #[`cell-worker_application.type.name`]="{ row }">
+      <UITableNameCell :name="row?.worker_application?.type.name" @click="onPreview(row)" />
+    </template>
+
+    <template #[`cell-worker_application.number`]="{ row }">
+      <UITableBadgeCell :number="row?.worker_application?.number" type="primary" />
+    </template>
+
+    <template #[`cell-worker_application.worker`]="{ row }">
+      <UIUser
+        :data="{
+          photo: row?.worker_application?.worker.photo,
+          firstName: row?.worker_application?.worker.first_name,
+          middleName: row?.worker_application?.worker.middle_name,
+          lastName: row?.worker_application?.worker.last_name,
+          position: row?.worker_application?.worker?.birthday
+        }"
       />
-    </div>
-    <NoDataPicture v-if="store.list.length === 0 && !store.loading" />
-  </n-spin>
+    </template>
+
+    <template #[`cell-worker_application.status`]="{ row }">
+      <UIStatus :status="checkingStatus[Number(row?.worker_application.status)]" />
+    </template>
+
+    <template #[`cell-worker_application.confirmation`]="{ row }">
+      <UIStatus :status="row?.worker_application.confirmation" />
+    </template>
+
+    <template #[`cell-worker_application.generate`]="{ row }">
+      <UIStatus :status="Utils.documentStatus[row?.worker_application.generate]" />
+    </template>
+
+    <template #[`cell-worker_application.created_at`]="{ row }">
+      {{ Utils.timeOnlyDate(row?.worker_application.created_at) }}
+    </template>
+  </UITable>
 </template>

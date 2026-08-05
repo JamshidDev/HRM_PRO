@@ -247,7 +247,7 @@
 
 <style scoped>
 .tab-wrapper {
-  border: 1px solid var(--border-color, #e0e0e6);
+  border: 1px solid var(--surface-line);
   border-radius: 6px;
   padding: 1px;
   height: 34px;

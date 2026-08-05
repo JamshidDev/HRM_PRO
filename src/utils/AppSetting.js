@@ -25,6 +25,8 @@ export const useAppSetting = {
   defaultSidebarTheme: 'default',
   screenFilterKey: 'app-screen-filter',
   defaultScreenFilter: 'none',
+  fontScaleKey: 'app-font-scale',
+  defaultFontScale: 0,
   // Login sahifasi hero panelidagi mavsumiy dekoratsiya.
   // Build vaqtida VITE_SEASON orqali qo'lda belgilanadi (admin tahrirlab, qayta deploy qiladi;
   // sana asosida avtomatik hisoblanmaydi). Ruxsat etilgan qiymatlar: spring | summer | autumn | winter | null.

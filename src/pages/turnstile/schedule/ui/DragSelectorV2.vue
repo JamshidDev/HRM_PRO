@@ -1,5 +1,5 @@
 <script setup>
-  import { ref, reactive, computed, watch, onUnmounted } from 'vue'
+  import { ref, reactive, computed, onUnmounted } from 'vue'
 
   const props = defineProps({
     threshold: {
@@ -241,9 +241,9 @@
       indicators.push('⬇️ Pastga')
     }
 
-    if (indicators.length > 0) {
-    } else {
-    }
+    // if (indicators.length > 0) {
+    // } else {
+    // }
 
     let hasScrolled = false
 
@@ -392,7 +392,7 @@
 
   const clearSelection = () => {
     selectedItems.value = new Set()
-    selectedIds.value = []
+    // selectedIds.value = []
   }
 
   onUnmounted(() => {
@@ -412,7 +412,7 @@
   <div
     ref="containerRef"
     @mousedown="handleMouseDown"
-    class="w-full flex flex-col overflow-x-auto overflow-y-auto h-[calc(100vh-256px)] relative rounded-tl-lg rounded-tr-lg"
+    class="flex flex-col relative overflow-auto rounded-lg"
   >
     <div :style="selectionBoxStyle" class="absolute pointer-events-none z-[100] transition-none" />
     <slot></slot>
