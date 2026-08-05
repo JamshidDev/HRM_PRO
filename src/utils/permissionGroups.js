@@ -304,6 +304,8 @@ export const PERMISSION_GROUPS = [
       { prefix: 'learning-centers', label: 'learningCenterPage.name' },
       { prefix: 'instructions', label: 'instructionPage.name' },
       { prefix: 'mobile-users', label: 'mobileUserPage.name' },
+      { prefix: 'integration-clients', label: 'integrationClients.name' },
+      { prefix: 'holiday-greetings', label: 'holidayGreetingPage.name' },
     ],
   },
   {
