@@ -50,6 +50,10 @@
     store._workerResume(Utils.combineFullName(store.workerPreview?.worker))
   }
 
+  const onDownloadT2 = () => {
+    store._workerT2(`T-2 ${Utils.combineFullName(store.workerPreview?.worker)}`)
+  }
+
   defineExpose({
     openPreview
   })
@@ -71,8 +75,10 @@
               v-model:masked="masked"
               :title="$t('workerView.header.title')"
               :resume-loading="store.resumeLoading"
+              :t2-loading="store.t2Loading"
               @close="store.previewVisible = false"
               @download="onDownload"
+              @download-t2="onDownloadT2"
             />
           </div>
 
@@ -170,6 +176,17 @@
       width: 260px;
       flex-shrink: 0;
       transition: all 0.3s ease-out;
+    }
+  }
+
+  .preview-panel {
+    .section-header {
+      overflow: visible;
+    }
+    .section-header-top {
+      position: sticky;
+      top: 0;
+      z-index: 5;
     }
   }
 

@@ -125,7 +125,8 @@ export const customTheme = () => {
     Tabs: {
       tabColorSegment: getValueOfCssVariable('--surface-section'),
       colorSegment: getValueOfCssVariable('--surface-ground'),
-      tabColor: getValueOfCssVariable('--surface-section')
+      tabColor: getValueOfCssVariable('--surface-section'),
+      tabBorderColor: getValueOfCssVariable('--surface-line')
     },
     Select: {
       icons: {

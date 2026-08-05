@@ -233,7 +233,7 @@ export const navigations = [
         path: Utils.routeHrmPathMaker(AppPaths.VacationSchedule),
         icon: BookDatabase24Regular,
         color: 'bg-info',
-        permission: appPermissions.admin
+        permission: appPermissions.hrVacationSchedule
       },
       {
         label: 'vacancy.name', // Ochiq vakansiyalar
@@ -345,7 +345,7 @@ export const navigations = [
         path: Utils.routeDocFlowPathMaker(AppPaths.VacationSchedule),
         icon: BookDatabase24Regular,
         color: 'bg-info',
-        permission: appPermissions.admin
+        permission: appPermissions.hrVacationSchedule
       },
       {
         label: 'lmsCertificate.name', // Sertifikatlar
@@ -560,7 +560,7 @@ export const navigations = [
         path: Utils.routeTurnstilePathMaker(AppPaths.TurnstileSchedule),
         icon: DocumentBulletList24Filled,
         color: 'bg-dark',
-        permission: appPermissions.admin
+        permission: appPermissions.turnstileSheets
       },
       {
         label: 'approve.name', // Yuborilgan xodimlar
@@ -631,21 +631,21 @@ export const navigations = [
         path: Utils.routeLmsPathMaker(AppPaths.TeacherLesson),
         icon: ShiftsCheckmark20Regular,
         color: 'bg-info',
-        permission: appPermissions.admin
+        permission: appPermissions.lmsLessons
       },
       {
         label: 'listener.name', // Tinglovchilar
         path: Utils.routeLmsPathMaker(AppPaths.Listener),
         icon: ShiftsCheckmark20Regular,
         color: 'bg-dark',
-        permission: appPermissions.admin
+        permission: appPermissions.lms
       },
       {
         label: 'resultPage.name', // Natijalar
         path: Utils.routeLmsPathMaker(AppPaths.Result),
         icon: AppsList24Filled,
         color: 'bg-info',
-        permission: appPermissions.admin
+        permission: appPermissions.lms
       },
       {
         label: 'lmsCertificate.name', // Sertifikatlar
@@ -774,7 +774,7 @@ export const navigations = [
     label: 'navigation.chat', // Chat
     path: AppPaths.Chat,
     icon: ChatMultiple16Filled,
-    permission: appPermissions.admin,
+    permission: appPermissions.chat,
     children: [
       {
         label: 'notificationPage.name', // Bildirishnomalar
@@ -788,21 +788,21 @@ export const navigations = [
         path: Utils.routeChatPathMaker(AppPaths.News),
         icon: News24Regular,
         color: 'bg-dark',
-        permission: appPermissions.admin
+        permission: appPermissions.chat
       },
       {
         label: 'mobileStoryPage.name',
         path: Utils.routePathMaker(AppPaths.MobileStories),
         icon: News24Regular,
         color: 'bg-dark',
-        permission: appPermissions.admin
+        permission: appPermissions.chat
       },
       {
         label: 'newsCategoryPage.name', // Yangilik kategoriyalari
         path: Utils.routeChatPathMaker(AppPaths.NewsCategory),
         icon: Tag16Filled,
         color: 'bg-dark',
-        permission: appPermissions.admin
+        permission: appPermissions.chat
       },
       {
         label: 'congratulation.name', // Telegram xabarlar
@@ -981,7 +981,7 @@ export const navigations = [
         path: Utils.routePathMaker(AppPaths.MobileUsers),
         icon: Folder48Filled,
         color: 'bg-dark',
-        permission: appPermissions.admin
+        permission: appPermissions.mobileUsers
       },
       {
         label: 'vacancyApprovePage.menuName', // Tasdiqlash
@@ -991,18 +991,11 @@ export const navigations = [
         permission: appPermissions.admin
       },
       {
-        label: 'integrationLog.name', // Integratsiya loglari
-        path: Utils.routePathMaker(AppPaths.IntegrationLog),
-        icon: Folder48Filled,
-        color: 'bg-dark',
-        permission: appPermissions.admin
-      },
-      {
         label: 'integrationClients.name', // Integratsiya clientlari
         path: Utils.routePathMaker(AppPaths.IntegrationClients),
         icon: Folder48Filled,
         color: 'bg-dark',
-        permission: appPermissions.admin
+        permission: appPermissions.integrationClients
       },
       {
         label: 'workerReport.name', // Xodim hisobotlari
@@ -1016,7 +1009,7 @@ export const navigations = [
         path: Utils.routePathMaker(AppPaths.HolidayGreeting),
         icon: Folder48Filled,
         color: 'bg-dark',
-        permission: appPermissions.admin
+        permission: appPermissions.holidayGreetings
       }
     ]
   }

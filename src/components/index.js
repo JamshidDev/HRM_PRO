@@ -61,6 +61,7 @@ export { default as UIYearMonth } from './ui/UIYearMonth.vue'
 export { default as UITableNameCell } from './ui/UITableNameCell.vue'
 export { default as UITableBadgeCell } from './ui/UITableBadgeCell.vue'
 export { default as UIDeleteConfirm } from './ui/UIDeleteConfirm.vue'
+export { default as UISortButton } from './ui/UISortButton.vue'
 
 export * from './layoutTab'
 export * from './editor'

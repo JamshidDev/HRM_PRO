@@ -39,7 +39,7 @@
     return Math.floor(totalMinute / 60)
   }
 
-  const selectedDate = ref(null)
+  // const selectedDate = ref(null)
 
   onMounted(() => {
     store.monthsList = getMonthOfRage(store.params.startDate, store.params.endDate)
@@ -70,16 +70,16 @@
 </script>
 
 <template>
-  <div>
-    <n-spin :show="store.dayOfMonthLoading || store.loading">
+  <n-spin :show="store.dayOfMonthLoading || store.loading" class="h-full">
+    <div class="h-full flex flex-col gap-4">
       <MonthTab
         v-if="store.selectedDate"
-        class="mt-4"
         :options="store.monthsList"
         v-model:date="store.selectedDate"
         @update:date="onChange"
       />
-      <div class="w-full overflow-auto relative h-[calc(100vh-290px)] mt-2">
+
+      <div class="w-full flex-1 overflow-auto relative rounded-lg">
         <div class="schedule-header-row flex z-[10] w-fit min-w-full sticky top-0">
           <div
             class="rounded-tl-lg border-r border-t border-l border-b border-surface-line p-2 w-[60px] min-w-[60px] h-[50px] sticky left-0 top-0 z-[20] bg-surface-section flex-shrink-0"
@@ -93,7 +93,11 @@
           </div>
           <template v-for="item in store.dayOfMonth" :key="`header-${item}`">
             <div
-              :class="[[6, 0].includes(item.weekDay) ? 'bg-[#ffe5e2]' : 'bg-[#fff9e2]']"
+              :style="{
+                background: [6, 0].includes(item.weekDay)
+                  ? 'var(--schedule-weekend-bg)'
+                  : 'var(--schedule-weekday-bg)'
+              }"
               class="border-r border-t border-l border-b -ml-[1px] border-surface-line w-[60px] min-w-[60px] h-[50px] text-xs text-secondary flex-shrink-0"
             >
               <div class="text-center p-1 font-bold">{{ item?.day }}</div>
@@ -141,29 +145,29 @@
             </div>
 
             <!-- Day Cells -->
-            <template v-for="(day, dayIndex) in worker.days">
-              <div
-                class="border-r text-center border-l border-b border-t-0 -ml-[1px] border-surface-line w-[60px] min-w-[60px] h-[50px] border text-xs text-secondary p-2 pb-0 flex-shrink-0 cursor-pointer relative"
-              >
-                <template v-if="worker.days?.[dayIndex].isEmpty"></template>
-                <template v-else-if="worker.days?.[dayIndex].isWorkDay">
-                  <div class="leading-[1.2] pt-3">{{ worker.days?.[dayIndex]?.startTime }}</div>
-                  <div class="leading-[1.2]">{{ worker.days?.[dayIndex]?.endTime }}</div>
-                  <div
-                    class="absolute top-[0] left-[0] w-[16px] h-[16px] bg-secondary/80 text-white text-xs rounded"
-                  >
-                    {{ Math.floor(worker.days?.[dayIndex]?.workTime / 60) }}
-                  </div>
-                </template>
-                <template v-else>
-                  <div
-                    class="absolute top-[0] left-[0] w-[16px] h-[16px] bg-success/10 text-white text-xs rounded hover:bg-success/50"
-                  >
-                    D
-                  </div>
-                </template>
-              </div>
-            </template>
+            <div
+              v-for="(day, dayIndex) in worker.days"
+              :key="dayIndex"
+              class="border-r text-center border-l border-b border-t-0 -ml-[1px] border-surface-line w-[60px] min-w-[60px] h-[50px] border text-xs text-secondary p-2 pb-0 flex-shrink-0 cursor-pointer relative"
+            >
+              <template v-if="worker.days?.[dayIndex].isEmpty"></template>
+              <template v-else-if="worker.days?.[dayIndex].isWorkDay">
+                <div class="leading-[1.2] pt-3">{{ worker.days?.[dayIndex]?.startTime }}</div>
+                <div class="leading-[1.2]">{{ worker.days?.[dayIndex]?.endTime }}</div>
+                <div
+                  class="absolute top-[0] left-[0] w-[16px] h-[16px] bg-secondary/80 text-white text-xs rounded"
+                >
+                  {{ Math.floor(worker.days?.[dayIndex]?.workTime / 60) }}
+                </div>
+              </template>
+              <template v-else>
+                <div
+                  class="absolute top-[0] left-[0] w-[16px] h-[16px] bg-success/10 text-white text-xs rounded hover:bg-success/50"
+                >
+                  D
+                </div>
+              </template>
+            </div>
 
             <!-- Total - Sticky Right -->
             <div
@@ -181,6 +185,7 @@
           </div>
         </template>
       </div>
+
       <UIPagination
         :page="store.params.page"
         :per_page="store.params.per_page"
@@ -188,6 +193,6 @@
         @change-page="onChangePage"
         :show-size-picker="false"
       />
-    </n-spin>
-  </div>
+    </div>
+  </n-spin>
 </template>

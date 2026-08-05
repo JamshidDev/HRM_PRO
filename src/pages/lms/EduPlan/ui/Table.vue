@@ -1,61 +1,73 @@
 <script setup>
-  import { NoDataPicture, UIPagination, UIUser, UIMore, UIBadge } from '@/components/index.js'
+  import { UIBadge, UIMore, UITable } from '@/components/index.js'
   import { useAccountStore, useEduPlanStore } from '@/store/modules/index.js'
   import Utils from '@/utils/Utils.js'
-  import MenuButton from '@/components/buttons/MenuButton.vue'
   import { AppPaths } from '@/utils/index.js'
-  import { ChannelAdd24Regular, People28Regular, TextBulletListAdd20Regular } from '@vicons/fluent'
   import UIHelper from '@/utils/UIHelper.js'
+  import {
+    ChannelAdd24Regular,
+    Delete20Regular,
+    Edit32Regular,
+    People28Regular,
+    TextBulletListAdd20Regular
+  } from '@vicons/fluent'
+  import i18n from '@/i18n/index.js'
 
+  const { t } = i18n.global
   const store = useEduPlanStore()
   const accStore = useAccountStore()
   const router = useRouter()
 
-  const onEdit = (v) => {
-    store.elementId = v.id
-    store.payload.subjects = v.subjects.map((i) => i.id)
-    store.payload.specialization_id = v.specialization.id
-    store.payload.hours = v.hours
-    store.payload.start_date = new Date(v.start_date).getTime()
-    store.subjects = v.subjects
-    store.specializations = [v.specialization]
-    store.payload.count_groups = v?.count_groups
-    store.payload.count_workers = v?.count_workers
-    store.payload.learning_center_id = v.learning_center?.id
-    store.payload.type = v.type?.id
-    store.payload.name = v.name
-    store.payload.serial = v.serial || null
-    store.payload.end_date = v.end_date ? new Date(v.end_date).getTime() : null
+  const onEdit = (row) => {
+    if (!accStore.checkAction(accStore.pn.lmsEduPlanWrite)) return
+    store.elementId = row.id
+    store.payload.subjects = row.subjects.map((i) => i.id)
+    store.payload.specialization_id = row.specialization.id
+    store.payload.hours = row.hours
+    store.payload.start_date = new Date(row.start_date).getTime()
+    store.subjects = row.subjects
+    store.specializations = [row.specialization]
+    store.payload.count_groups = row?.count_groups
+    store.payload.count_workers = row?.count_workers
+    store.payload.learning_center_id = row.learning_center?.id
+    store.payload.type = row.type?.id
+    store.payload.name = row.name
+    store.payload.serial = row.serial || null
+    store.payload.end_date = row.end_date ? new Date(row.end_date).getTime() : null
 
     store.visibleType = false
     store.visible = true
   }
 
-  const onDelete = (v) => {
-    store.elementId = v.id
+  const onDelete = (row) => {
+    if (!accStore.checkAction(accStore.pn.lmsEduPlanWrite)) return
+    store.elementId = row.id
     store._delete()
   }
 
-  const onSelectEv = (v) => {
-    store.elementId = v.data.id
+  const onAttachGroup = (row) => {
     if (!accStore.checkAction(accStore.pn.lmsEduPlanWrite)) return
-    if (v.key === Utils.ActionTypes.edit) {
-      onEdit(v.data)
-    } else if (v.key === Utils.ActionTypes.delete) {
-      onDelete(v.data)
-    } else if (v.key === Utils.ActionTypes.attachment) {
-      store.groupVisible = true
-    } else if (v.key === Utils.ActionTypes.finish) {
-      onAttach()
-    } else if (v.key === Utils.ActionTypes.open) {
-      onAttachExam()
-    }
+    store.elementId = row.id
+    store.groupVisible = true
   }
 
-  const onAttach = () => {
+  const onAttach = (row) => {
+    if (!accStore.checkAction(accStore.pn.lmsEduPlanWrite)) return
+    store.elementId = row.id
     store.workerList = []
     store.workerVisible = true
     store._attachedWorkers()
+  }
+
+  const onAttachExam = (row) => {
+    if (!accStore.checkAction(accStore.pn.lmsEduPlanWrite)) return
+    store.elementId = row.id
+    store.examVisible = true
+  }
+
+  const onViewGroup = (row) => {
+    if (!accStore.checkAction(accStore.pn.lmsEduPlanRead)) return
+    router.push(Utils.routeLmsPathMaker(AppPaths.Group) + `/${row.id}`)
   }
 
   const changePage = (v) => {
@@ -64,115 +76,132 @@
     store._index()
   }
 
-  const onViewGroup = (v) => {
-    if (!accStore.checkAction(accStore.pn.lmsEduPlanRead)) return
-    router.push(Utils.routeLmsPathMaker(AppPaths.Group) + `/${v.id}`)
-  }
+  const columns = computed(() => [
+    {
+      key: 'name',
+      title: t('content.name'),
+      minWidth: 200
+    },
+    {
+      key: 'type.name',
+      title: t('content.type'),
+      width: 140
+    },
+    {
+      key: 'learning_center.name',
+      title: t('eduPlanPage.form.learning_center'),
+      minWidth: 120
+    },
+    {
+      key: 'specialization.name',
+      title: t('eduPlanPage.form.specialization'),
+      minWidth: 200
+    },
+    {
+      key: 'hours',
+      title: t('eduPlanPage.form.hours'),
+      width: 100,
+      align: 'center'
+    },
+    {
+      key: 'count_groups',
+      title: t('eduPlanPage.form.groupWorker'),
+      width: 140,
+      align: 'center'
+    },
+    {
+      key: 'workers_count',
+      title: t('eduPlanPage.form.short_count_workers'),
+      width: 100,
+      align: 'center'
+    },
+    {
+      key: 'subjects',
+      title: t('eduPlanPage.form.subjects'),
+      minWidth: 160
+    },
+    {
+      key: 'start_date',
+      title: t('eduPlanPage.form.start_date'),
+      width: 140,
+      align: 'center'
+    }
+  ])
 
-  const onAttachExam = () => {
-    store.examVisible = true
-  }
+  const actions = computed(() => [
+    {
+      label: t('content.edit'),
+      key: Utils.ActionTypes.edit,
+      icon: UIHelper.renderIcon(Edit32Regular),
+      action: onEdit
+    },
+    {
+      label: t('content.delete'),
+      key: Utils.ActionTypes.delete,
+      icon: UIHelper.renderIcon(Delete20Regular),
+      action: onDelete
+    },
+    {
+      label: t('eduPlanPage.attachmentGroup'),
+      key: Utils.ActionTypes.attachment,
+      icon: UIHelper.renderIcon(ChannelAdd24Regular),
+      action: onAttachGroup
+    },
+    {
+      label: t('eduPlanPage.workers'),
+      key: Utils.ActionTypes.finish,
+      icon: UIHelper.renderIcon(People28Regular),
+      action: onAttach
+    },
+    {
+      label: t('content.exam'),
+      key: Utils.ActionTypes.open,
+      icon: UIHelper.renderIcon(TextBulletListAdd20Regular),
+      action: onAttachExam
+    }
+  ])
 </script>
 
 <template>
-  <n-spin :show="store.loading" style="min-height: 200px">
-    <div v-if="store.list.length > 0">
-      <div class="w-full overflow-x-auto">
-        <n-table class="mt-5" :single-line="false" size="small">
-          <thead>
-            <tr>
-              <th class="text-center! min-w-[40px] w-[40px]">{{ $t('content.number') }}</th>
-              <th class="min-w-[200px]">{{ $t('content.name') }}</th>
-              <th class="min-w-[100px]">{{ $t('content.type') }}</th>
-              <th class="min-w-[120px]">{{ $t('eduPlanPage.form.learning_center') }}</th>
-              <th class="min-w-[200px]">{{ $t('eduPlanPage.form.specialization') }}</th>
-              <th class="max-w-[50px] w-[50px]">{{ $t('eduPlanPage.form.hours') }}</th>
-              <th class="w-[100px]">{{ $t('eduPlanPage.form.groupWorker') }}</th>
-              <th class="w-[100px]">{{ $t('eduPlanPage.form.short_count_workers') }}</th>
-              <th class="min-w-[100px] text-center!">{{ $t('eduPlanPage.form.subjects') }}</th>
-              <th class="!text-center max-w-[130px] w-[130px]">
-                {{ $t('eduPlanPage.form.start_date') }}
-              </th>
-              <th class="min-w-[40px] w-[40px]"></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(item, idx) in store.list" :key="idx">
-              <td>
-                <span class="text-center text-[12px] text-gray-600 block">{{
-                  (store.params.page - 1) * store.params.per_page + idx + 1
-                }}</span>
-              </td>
-              <td>{{ item.name }}</td>
-              <td>{{ item?.type?.name }}</td>
-              <td>{{ item.learning_center.name }}</td>
-              <td>{{ item.specialization?.name }}</td>
+  <UITable
+    :columns="columns"
+    :actions="actions"
+    :data="store.list"
+    :loading="store.loading"
+    :page="store.params.page"
+    :per-page="store.params.per_page"
+    :total="store.totalItems"
+    storage-key="lms-edu-plan"
+    @change-page="changePage"
+  >
+    <template #cell-hours="{ row }">
+      <n-button circle size="tiny">
+        {{ row.hours }}
+      </n-button>
+    </template>
 
-              <td class="!text-center">
-                <n-button circle size="tiny">
-                  {{ item.hours }}
-                </n-button>
-              </td>
-              <td class="!text-center">
-                <n-button @click="onViewGroup(item)" round size="tiny">
-                  {{ item.count_groups }} - {{ item.count_workers }}
-                </n-button>
-              </td>
-              <td class="!text-center">
-                <n-button circle size="tiny">
-                  {{ item.workers_count }}
-                </n-button>
-              </td>
-              <td class="text-center!">
-                <UIMore :height="100" :width="200" :data="item.subjects">
-                  <template #content="{ data }">
-                    <p>{{ data.name }}</p>
-                  </template>
-                </UIMore>
-              </td>
-              <td>
-                <UIBadge :show-icon="false" :label="Utils.timeOnlyDate(item.start_date)" />
-              </td>
-              <td>
-                <MenuButton
-                  :data="item"
-                  :show-edit="true"
-                  :loading="item.id === store.elementId && store.deleteLoading"
-                  @selectEv="onSelectEv"
-                  :extra-options="[
-                    {
-                      label: $t('eduPlanPage.attachmentGroup'),
-                      key: Utils.ActionTypes.attachment,
-                      icon: ChannelAdd24Regular,
-                      visible: true
-                    },
-                    {
-                      label: $t('eduPlanPage.workers'),
-                      key: Utils.ActionTypes.finish,
-                      icon: People28Regular,
-                      visible: true
-                    },
-                    {
-                      label: $t('content.exam'),
-                      key: Utils.ActionTypes.open,
-                      icon: TextBulletListAdd20Regular,
-                      visible: true
-                    }
-                  ]"
-                />
-              </td>
-            </tr>
-          </tbody>
-        </n-table>
-      </div>
+    <template #cell-count_groups="{ row }">
+      <n-button @click="onViewGroup(row)" round size="tiny">
+        {{ row.count_groups }} - {{ row.count_workers }}
+      </n-button>
+    </template>
 
-      <UIPagination
-        :page="store.params.page"
-        :per_page="store.params.per_page"
-        :total="store.totalItems"
-        @change-page="changePage"
-      />
-    </div>
-    <NoDataPicture v-if="store.list.length === 0 && !store.loading" />
-  </n-spin>
+    <template #cell-workers_count="{ row }">
+      <n-button circle size="tiny">
+        {{ row.workers_count }}
+      </n-button>
+    </template>
+
+    <template #cell-subjects="{ row }">
+      <UIMore :height="100" :width="200" :data="row.subjects">
+        <template #content="{ data }">
+          <p>{{ data.name }}</p>
+        </template>
+      </UIMore>
+    </template>
+
+    <template #cell-start_date="{ row }">
+      <UIBadge :show-icon="false" :label="Utils.timeOnlyDate(row.start_date)" />
+    </template>
+  </UITable>
 </template>

@@ -3,6 +3,7 @@
     NoDataPicture,
     UIDeleteConfirm,
     UIPagination,
+    UISortButton,
     UITableActionsMenu,
     UITableColumns,
     UITableSelectAll,
@@ -11,13 +12,14 @@
   import { useTableColumnFit, useTableColumns } from '@/composables/index.js'
   import Utils from '@/utils/Utils.js'
   import i18n from '@/i18n/index.js'
+  import { NEllipsis } from 'naive-ui'
 
   const { t } = i18n.global
 
   defineOptions({ inheritAttrs: false })
 
   const props = defineProps({
-    columns: { type: Array, required: true }, // [{ key, title, fullTitle, width, minWidth, maxWidth, className, resizable, ellipsis, align, fixed }]
+    columns: { type: Array, required: true }, // [{ key, title, fullTitle, width, minWidth, maxWidth, className, resizable, ellipsis, align, fixed, sortable }]
     data: { type: Array, default: () => [] },
     rowKey: { type: String, default: 'id' },
     size: { type: String, default: 'small' }, // small | medium | large
@@ -37,7 +39,10 @@
     actions: { type: Array, default: () => [] }, // "..." menu + right-click options; visible can be boolean or (row) => boolean
     storageKey: { type: String, default: null }, // persists column visibility/order/width
     onLoad: { type: Function, default: null }, // async tree children loader: (row) => Promise<void>
-    rowClassName: { type: Function, default: null } // (row, index) => string
+    rowClassName: { type: Function, default: null }, // (row, index) => string
+    sortBy: { type: String, default: null }, // current sort field, paired with a column's { sortable: true }
+    sortOrder: { type: Number, default: 1 }, // 1 | -1
+    deleteWarning: { type: String, default: null } // custom confirm message for the delete action
   })
 
   const emit = defineEmits([
@@ -46,12 +51,17 @@
     'action',
     'toggle-row',
     'toggle-all',
-    'change-page'
+    'change-page',
+    'sort' // (key) — fired when a { sortable: true } column's header is clicked
   ])
 
   const slots = useSlots()
   const instance = getCurrentInstance()
   const empty = computed(() => props.data.length === 0)
+
+  // avoids naive-ui misreading a row's own domain `children` field as tree-row nesting when we never asked for tree mode
+  const isTreeTable = computed(() => Boolean(props.onLoad) || props.columns.some((c) => c.tree))
+  const childrenKey = computed(() => (isTreeTable.value ? 'children' : '__uiTableNoChildren'))
 
   const tableColumns = props.storageKey
     ? useTableColumns(
@@ -152,12 +162,36 @@
     })
   }
 
+  const renderHeaderLabel = (col) =>
+    h(
+      NEllipsis,
+      {
+        class: 'text-sm text-textColor2 w-full leading-[1.2]',
+        tooltip: { style: { maxWidth: '300px' } }
+      },
+      { default: () => col.title }
+    )
+
+  const renderSortableHeader = (col) =>
+    h(
+      UISortButton,
+      {
+        by: col.key,
+        value: props.sortBy,
+        order: props.sortOrder,
+        onClick: () => emit('sort', col.key)
+      },
+      { default: () => renderHeaderLabel(col) }
+    )
+
   const renderHeader = (col) => {
     const slotName = `header-${col.key}`
     if (slots[slotName]) return slots[slotName]({ column: col })
     if (col.key === '__index') return renderIndexHeader()
     if (col.key === '__actions') return renderActionsHeader()
-    return col.title
+    if (col.sortable) return renderSortableHeader(col)
+    if (typeof col.title !== 'string') return col.title
+    return renderHeaderLabel(col)
   }
 
   const renderCell = (col, row, index) => {
@@ -180,6 +214,7 @@
       if (!rowActions.length) return null
       return h(UITableActionsMenu, {
         options: rowActions,
+        deleteWarning: props.deleteWarning,
         onSelect: (key, option) => onActionSelect(key, option, row)
       })
     }
@@ -258,6 +293,7 @@
         :row-props="rowProps"
         :row-class-name="rowClassName"
         :on-load="onLoad"
+        :children-key="childrenKey"
         flex-height
         @unstable-column-resize="onUnstableColumnResize"
       />
@@ -292,7 +328,11 @@
     @select="onSelectContextAction"
   />
 
-  <UIDeleteConfirm v-model:visible="deleteConfirmVisible" @confirm="onConfirmDelete" />
+  <UIDeleteConfirm
+    v-model:visible="deleteConfirmVisible"
+    :warning="deleteWarning"
+    @confirm="onConfirmDelete"
+  />
 </template>
 
 <style scoped>

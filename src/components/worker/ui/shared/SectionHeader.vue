@@ -37,7 +37,7 @@
     :class="[fullHeight && 'h-full flex flex-col']"
   >
     <div
-      class="section-header-bar flex items-center justify-between gap-2 rounded-t-3xl border-surface-line px-4 py-2 shrink-0"
+      class="section-header-bar section-header-top flex items-center justify-between gap-2 rounded-t-3xl border-surface-line px-4 py-2 shrink-0"
     >
       <slot name="header">
         <div class="flex items-center gap-2 min-w-0">
@@ -56,7 +56,7 @@
           <span
             class="font-semibold text-primary truncate"
             :class="large ? 'text-lg' : 'text-sm'"
-            >{{ title }} 
+            >{{ title }}
           </span>
           <slot name="title-suffix" />
         </div>
