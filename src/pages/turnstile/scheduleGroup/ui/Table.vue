@@ -1,14 +1,17 @@
 <script setup>
-  import { NoDataPicture, UIBadge, UIMenuButton, UIPagination } from '@/components/index.js'
-  import { useShiftTypeStore, useScheduleGroupWorkerStore } from '@/store/modules/index.js'
-  import {
-    CalendarLtr24Regular,
-    CheckmarkCircle32Regular,
-    Eye24Filled,
-    Table24Regular
-  } from '@vicons/fluent'
+  import { UIBadge, UITable } from '@/components/index.js'
+  import { useScheduleGroupWorkerStore, useShiftTypeStore } from '@/store/modules/index.js'
+  import i18n from '@/i18n/index.js'
+  import UIHelper from '@/utils/UIHelper.js'
   import Utils from '@/utils/Utils.js'
+  import {
+    CheckmarkCircle32Regular,
+    Delete20Regular,
+    Eye16Regular,
+    OpenFolder24Filled
+  } from '@vicons/fluent'
 
+  const { t } = i18n.global
   const store = useShiftTypeStore()
   const scheduleGroupworkerStore = useScheduleGroupWorkerStore()
 
@@ -18,115 +21,131 @@
     store._group()
   }
 
-  const onViewWorkers = (v) => {
-    scheduleGroupworkerStore.params.group = v.id
-    scheduleGroupworkerStore.params.startDate = v.start_date
-    scheduleGroupworkerStore.params.endDate = v.end_date
+  const onViewWorkers = (row) => {
+    store.elementId = row.id
+    store.groupId = row.id
+    scheduleGroupworkerStore.params.group = row.id
+    scheduleGroupworkerStore.params.startDate = row.start_date
+    scheduleGroupworkerStore.params.endDate = row.end_date
     store.activeTab = 3
   }
 
-  const onSelectEv = (v) => {
-    store.elementId = v.data.id
-    store.groupId = v.data.id
-    if (v.key === Utils.ActionTypes.delete) {
-      store._deleteGroup()
-    } else if (v.key === Utils.ActionTypes.edit) {
-      onEdit(v.data)
-    } else if (v.key === Utils.ActionTypes.view) {
-      onViewWorkers(v.data)
-    } else if (v.key === Utils.ActionTypes.attachment) {
-      onAttachWorker(v.data)
-    }
-  }
-
-  const onEdit = (v) => {
-    store.generatePayload.name = v.name
-    store.generatePayload.start_date = Utils.datePickerFormatter(v.start_date)
-    store.generatePayload.end_date = Utils.datePickerFormatter(v.end_date)
-    store.generatePayload.name = v.name
+  const onEdit = (row) => {
+    store.elementId = row.id
+    store.groupId = row.id
+    store.generatePayload.name = row.name
+    store.generatePayload.start_date = Utils.datePickerFormatter(row.start_date)
+    store.generatePayload.end_date = Utils.datePickerFormatter(row.end_date)
     store.isDailySchedule = false
     store.visibleType = false
     store.visible = true
   }
 
-  const onAttachWorker = (v) => {
-    store.elementId = v.schedule_type?.id
-    store.notScheduleParams.start_date = v.start_date
-    store.notScheduleParams.end_date = v.end_date
+  const onDelete = (row) => {
+    store.elementId = row.id
+    store.groupId = row.id
+    store._deleteGroup()
+  }
+
+  const onAttachWorker = (row) => {
+    store.groupId = row.id
+    store.elementId = row.schedule_type?.id
+    store.notScheduleParams.start_date = row.start_date
+    store.notScheduleParams.end_date = row.end_date
     store.notScheduleParams.page = 1
     store._notScheduleWorker()
     store.selectedWorkers = []
     store.notScheduleVisible = true
   }
+
+  const columns = computed(() => [
+    {
+      key: 'name',
+      title: t('content.name'),
+      minWidth: 260
+    },
+    {
+      key: 'workers_count',
+      title: t('content.worker'),
+      width: 200
+    },
+    {
+      key: 'start_date',
+      title: t('content.from'),
+      width: 160
+    },
+    {
+      key: 'end_date',
+      title: t('content.to'),
+      width: 160
+    }
+  ])
+
+  const actions = computed(() => [
+    {
+      label: t('content.attachment'),
+      key: Utils.ActionTypes.attachment,
+      icon: UIHelper.renderIcon(OpenFolder24Filled),
+      action: onAttachWorker,
+      visible: (row) => row?.schedule_type?.type?.id === 2
+    },
+    {
+      label: t('content.view'),
+      key: Utils.ActionTypes.view,
+      icon: UIHelper.renderIcon(Eye16Regular),
+      action: onViewWorkers
+    },
+    {
+      label: t('content.delete'),
+      key: Utils.ActionTypes.delete,
+      icon: UIHelper.renderIcon(Delete20Regular),
+      action: onDelete
+    },
+    {
+      label: t('content.finish'),
+      key: Utils.ActionTypes.edit,
+      icon: UIHelper.renderIcon(CheckmarkCircle32Regular),
+      action: onEdit
+    }
+  ])
 </script>
 
 <template>
-  <n-spin :show="store.groupLoading" style="min-height: 200px">
-    <div class="w-full overflow-x-auto" v-if="store.groupList.length > 0">
-      <n-table class="mt-3 w-full" :single-line="false" size="small">
-        <thead>
-          <tr>
-            <th class="w-[40px] min-w-[40px]">{{ $t('content.number') }}</th>
-            <th class="min-w-[260px]">{{ $t('content.name') }}</th>
-            <th class="min-w-[150px] w-[200px]">{{ $t('content.worker') }}</th>
-            <th class="min-w-[120px] w-[160px]">{{ $t('content.from') }}</th>
-            <th class="min-w-[120px] w-[160px]">{{ $t('content.to') }}</th>
-            <th class="min-w-[40px] w-[40px]"></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(item, idx) in store.groupList" :key="idx">
-            <td>
-              <span class="text-center text-[12px] text-gray-600 block">{{
-                (store.groupParams.page - 1) * store.groupParams.per_page + idx + 1
-              }}</span>
-            </td>
-            <td @click="onViewWorkers(item)">
-              <div class="hover:text-primary cursor-pointer leading-[1.2] font-medium">
-                {{ item.name }}
-              </div>
-              <div class="hover:text-primary cursor-pointer line-clamp-1 text-xs text-secondary">
-                <n-button class="!h-[16px] !font-medium" size="tiny" type="primary" secondary>{{
-                  item.schedule_type?.type?.name
-                }}</n-button>
-                {{ item.schedule_type?.name }}
-              </div>
-            </td>
-            <td>
-              <UIBadge :show-icon="false" :label="item.workers_count" />
-            </td>
-            <td>
-              <UIBadge :show-icon="false" :label="item.start_date" />
-            </td>
-            <td>
-              <UIBadge :show-icon="false" :label="item.end_date" />
-            </td>
-            <td>
-              <UIMenuButton
-                @selectEv="onSelectEv"
-                :data="item"
-                :show-view="true"
-                :show-attachment="item?.schedule_type?.type?.id === 2"
-                :extra-options="[
-                  {
-                    label: $t('content.finish'),
-                    key: Utils.ActionTypes.edit,
-                    icon: CheckmarkCircle32Regular,
-                    visible: true
-                  }
-                ]"
-              />
-            </td>
-          </tr>
-        </tbody>
-      </n-table>
-      <UIPagination
-        :page="store.groupParams.page"
-        :per_page="store.groupParams.per_page"
-        :total="store.totalGroup"
-        @change-page="changePage"
-      />
-    </div>
-    <NoDataPicture v-if="store.groupList.length === 0 && !store.groupLoading" />
-  </n-spin>
+  <UITable
+    :columns="columns"
+    :actions="actions"
+    :data="store.groupList"
+    :loading="store.groupLoading"
+    :page="store.groupParams.page"
+    :per-page="store.groupParams.per_page"
+    :total="store.totalGroup"
+    storage-key="turnstile-schedule-group"
+    @change-page="changePage"
+  >
+    <template #cell-name="{ row }">
+      <div @click="onViewWorkers(row)" class="cursor-pointer">
+        <div class="hover:text-primary leading-[1.2] font-medium">
+          {{ row.name }}
+        </div>
+        <div class="hover:text-primary line-clamp-1 text-xs text-secondary">
+          <n-button class="!h-[16px] !font-medium" size="tiny" type="primary" secondary>
+            {{ row.schedule_type?.type?.name }}
+          </n-button>
+          {{ row.schedule_type?.name }}
+        </div>
+      </div>
+    </template>
+
+    <template #cell-workers_count="{ row }">
+      <UIBadge :show-icon="false" :label="String(row.workers_count)" />
+    </template>
+
+    <template #cell-start_date="{ row }">
+      <UIBadge :show-icon="false" :label="row.start_date" />
+    </template>
+
+    <template #cell-end_date="{ row }">
+      <UIBadge :show-icon="false" :label="row.end_date" />
+    </template>
+  </UITable>
 </template>

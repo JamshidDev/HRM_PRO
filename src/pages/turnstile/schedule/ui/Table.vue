@@ -111,7 +111,7 @@
   <div class="h-full flex flex-col gap-4 relative z-[10]">
     <slot name="filter-section"></slot>
 
-    <n-spin :show="store.workerLoading" class="flex-1 overflow-auto">
+    <n-spin :show="store.workerLoading" class="flex-1 overflow-auto rounded-lg">
       <DragSelectorV2
         :live-selection="false"
         :scroll-zone-left="400"
@@ -137,7 +137,11 @@
           ></div>
           <template v-for="item in store.dayOfMonth" :key="`header-${item}`">
             <div
-              :class="[[6, 0].includes(item.weekDay) ? 'bg-[#ffe5e2]' : 'bg-[#fff9e2]']"
+              :style="{
+                background: [6, 0].includes(item.weekDay)
+                  ? 'var(--schedule-weekend-bg)'
+                  : 'var(--schedule-weekday-bg)'
+              }"
               class="border-r border-t border-l border-b -ml-[1px] border-surface-line w-[60px] min-w-[60px] h-[50px] text-xs text-secondary flex-shrink-0"
             >
               <div class="text-center p-1 font-bold">{{ item?.day }}</div>
@@ -205,6 +209,7 @@
           </div>
         </div>
       </DragSelectorV2>
+
       <slot name="loading-place"></slot>
     </n-spin>
 

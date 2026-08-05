@@ -83,7 +83,7 @@
     @change-page="changePage"
   >
     <template #cell-workers_count="{ row }">
-      <UIBadge :type="Utils.colorTypes.info" :show-icon="true" :label="row?.workers_count">
+      <UIBadge :type="Utils.colorTypes.info" :show-icon="true" :label="String(row?.workers_count)">
         <template #icon>
           <n-icon size="20" class="text-primary">
             <Person12Filled />
@@ -93,7 +93,7 @@
     </template>
 
     <template #cell-exported_count="{ row }">
-      <UIBadge :type="Utils.colorTypes.success" :show-icon="true" :label="row?.exported_count">
+      <UIBadge :type="Utils.colorTypes.success" :show-icon="true" :label="String(row?.exported_count)">
         <template #icon>
           <n-icon size="20" class="text-success">
             <PersonAvailable20Filled />

@@ -173,7 +173,11 @@
 
     <template #cell-sync_events_count="{ row }">
       <div v-if="row?.sync_events_count > 0">
-        <UIBadge :type="Utils.colorTypes.success" :show-icon="true" :label="row?.sync_events_count">
+        <UIBadge
+          :type="Utils.colorTypes.success"
+          :show-icon="true"
+          :label="String(row?.sync_events_count)"
+        >
           <template #icon>
             <n-icon size="20" class="text-success">
               <PersonAvailable20Filled />

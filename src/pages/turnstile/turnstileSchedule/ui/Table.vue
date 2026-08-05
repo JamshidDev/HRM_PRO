@@ -12,25 +12,25 @@
   const dropdownX = ref(0)
   const dropdownY = ref(0)
 
-  const handleContextMenu = (e, workerIndex, dayIndex) => {
-    e.preventDefault()
-    showDropdown.value = false
+  // const handleContextMenu = (e, workerIndex, dayIndex) => {
+  //   e.preventDefault()
+  //   showDropdown.value = false
 
-    if (store.contextOptions.length === 0) {
-      store.contextOptions = store.defaultOptions
-    }
-    store.workerIndex = workerIndex
-    store.dayIndex = dayIndex
+  //   if (store.contextOptions.length === 0) {
+  //     store.contextOptions = store.defaultOptions
+  //   }
+  //   store.workerIndex = workerIndex
+  //   store.dayIndex = dayIndex
 
-    store.selectedCellSet.clear()
-    store.selectedCellSet.add(`${workerIndex}-${dayIndex}`)
+  //   store.selectedCellSet.clear()
+  //   store.selectedCellSet.add(`${workerIndex}-${dayIndex}`)
 
-    setTimeout(() => {
-      showDropdown.value = true
-      dropdownX.value = e.clientX
-      dropdownY.value = e.clientY
-    })
-  }
+  //   setTimeout(() => {
+  //     showDropdown.value = true
+  //     dropdownX.value = e.clientX
+  //     dropdownY.value = e.clientY
+  //   })
+  // }
 
   const handleSelect = (key) => {
     store.selectedOption = store.contextOptions.find((v) => v.key === key)
@@ -86,21 +86,21 @@
 
   let currentDay = new Date().getDate()
 
-  const handleDragSelect = (v) => {
-    if (!store.isSelectedContext) return
+  // const handleDragSelect = (v) => {
+  //   if (!store.isSelectedContext) return
 
-    let dayOption = store.savedOption || {
-      isWorkDay: false,
-      startTime: null,
-      endTime: null,
-      workTime: 0,
-      empty: false
-    }
-    for (let item of v) {
-      store.workerList[item.workerIndex].isEdit = true
-      store.workerList[item.workerIndex].days[item.dayIndex] = { ...dayOption }
-    }
-  }
+  //   let dayOption = store.savedOption || {
+  //     isWorkDay: false,
+  //     startTime: null,
+  //     endTime: null,
+  //     workTime: 0,
+  //     empty: false
+  //   }
+  //   for (let item of v) {
+  //     store.workerList[item.workerIndex].isEdit = true
+  //     store.workerList[item.workerIndex].days[item.dayIndex] = { ...dayOption }
+  //   }
+  // }
 
   const scrollToCurrentDay = () => {
     if (!scheduleContainer.value) return
@@ -128,13 +128,11 @@
 </script>
 
 <template>
-  <div class="flex flex-col">
+  <div class="h-full flex flex-col gap-4">
     <slot name="filter-section"></slot>
-    <n-spin :show="store.workerLoading">
-      <div
-        ref="scheduleContainer"
-        class="w-full flex flex-col overflow-x-auto overflow-y-auto h-[calc(100vh-256px)] relative rounded-tl-lg rounded-tr-lg"
-      >
+
+    <n-spin :show="store.workerLoading" class="flex-1 overflow-auto rounded-lg">
+      <div ref="scheduleContainer" class="flex flex-col relative overflow-auto rounded-lg">
         <div
           class="no-selectable-item schedule-header-row flex z-[202] w-fit min-w-full sticky top-0"
         >
@@ -150,7 +148,11 @@
           </div>
           <template v-for="item in store.dayOfMonth" :key="`header-${item}`">
             <div
-              :class="[[6, 0].includes(item.weekDay) ? 'bg-[#FAD8D6]' : 'bg-[#ECEFF3]']"
+              :style="{
+                background: [6, 0].includes(item.weekDay)
+                  ? 'var(--schedule-weekend-bg-alt)'
+                  : 'var(--schedule-weekday-bg-alt)'
+              }"
               class="border-r border-t font-bold border-l border-b -ml-[1px] border-surface-line w-[200px] min-w-[200px] h-[50px] text-xs text-secondary flex-shrink-0"
             >
               <div class="text-center p-1 font-bold">{{ item?.day }}</div>
@@ -197,12 +199,13 @@
                 ]"
                 class="border-r text-center border-b-0 -ml-[1px] border-surface-line border-l-[3px] w-[200px] min-w-[200px] h-[50px] border text-xs text-secondary pb-0 flex-shrink-0 cursor-pointer relative"
               >
-                <ScheduleBox :worker="worker" :dayIndex="dayIndex" />
+                <ScheduleBox :worker="worker" :day-index="dayIndex" />
               </div>
             </template>
 
             <div
-              class="no-selectable-item border-r font-bold border-l border-t -ml-[1px] border-surface-line w-[80px] min-w-[80px] h-[50px] sticky right-0 bg-[#ECEFF3] flex-shrink-0 z-[200]"
+              class="no-selectable-item border-r font-bold border-l border-t -ml-[1px] border-surface-line w-[80px] min-w-[80px] h-[50px] sticky right-0 flex-shrink-0 z-[200]"
+            style="background: var(--schedule-weekday-bg-alt)"
             >
               <div class="w-full !h-1/2 border-b border-dashed border-secondary/30 px-2">
                 {{ store.calculateWorkTime(worker.index) }}
@@ -229,6 +232,7 @@
       :on-clickoutside="handleClickOutside"
       @select="handleSelect"
     />
+
     <UIPagination
       :page="store.workerParams.page"
       :per_page="store.workerParams.per_page"
