@@ -30,7 +30,7 @@ export const appRoutes = [
     name: AppPaths.AIConversation.substring(1),
     component: () => import('@/pages/app/ai/AIConversationPage.vue'),
     meta: {
-      layout: AppLayouts.main
+      layout: AppLayouts.empty
     }
   },
   {

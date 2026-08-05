@@ -2298,7 +2298,9 @@
       "leaveBalance": "How much leave do I have left?",
       "lastSalary": "My last salary calculation",
       "getReference": "Get a reference letter",
-      "workedDays": "How many days have I worked this month?"
+      "workedDays": "How many days have I worked this month?",
+      "workedDaysShort": "How many days have I worked?",
+      "workSchedule": "What is my work schedule?"
     },
     "disclaimer": {
       "cardOne": "### 🧪 Test mode\n\nThis AI assistant is currently in **test mode**.  \nAnswers may be incomplete or _incorrect_.",
@@ -2310,7 +2312,13 @@
       "conversation": "Conversations",
       "goChat": "Return to chat",
       "feedback": "Thank you for feedback!",
-      "askQuestion": "Enter your question..."
+      "askQuestion": "Enter your question...",
+      "askQuestionOrMic": "Type your question or hold the mic to speak...",
+      "newChat": "New chat",
+      "searchConversations": "Search conversations",
+      "today": "Today",
+      "yesterday": "Yesterday",
+      "chatHistory": "Chat history"
     }
   },
   "others": {
