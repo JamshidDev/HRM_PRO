@@ -1,20 +1,23 @@
 <script setup>
-  import { CheckmarkCircle24Filled } from '@vicons/fluent'
-  import {
-    NoDataPicture,
-    UIPagination,
-    UIMenuButton,
-    UIUser,
-    UIStatus
-  } from '@/components/index.js'
+  import { UIStatus, UITable, UIUser } from '@/components/index.js'
   import { useTicketStore } from '@/store/modules/index.js'
   import Utils from '@/utils/Utils.js'
+  import UIHelper from '@/utils/UIHelper.js'
+  import {
+    CheckmarkCircle24Filled,
+    CheckmarkCircle32Regular,
+    Delete20Regular,
+    Eye16Regular,
+    OpenFolder24Filled
+  } from '@vicons/fluent'
+  import i18n from '@/i18n/index.js'
 
+  const { t } = i18n.global
   const store = useTicketStore()
   const emits = defineEmits(['openEv'])
 
-  const openDocument = (v) => {
-    emits('openEv', v)
+  const openDocument = (id) => {
+    emits('openEv', id)
   }
 
   const changePage = (v) => {
@@ -23,150 +26,185 @@
     store._index()
   }
 
-  const onSelectEv = (v) => {
-    if (v.key === Utils.ActionTypes.delete) {
-      store.elementId = v.data.id
-      store._delete(v.data)
-    } else if (v.key === Utils.ActionTypes.view) {
-      openDocument(v.data.id)
-    } else if (v.key === Utils.ActionTypes.attachment) {
-      store.selectedWorkers = [v.data]
-      store.resetForm()
-      store.visibleType = true
-      store.visible = true
-    } else if (v.key === Utils.ActionTypes.confirm) {
-      onConfirm(v.data)
-    }
+  const onDelete = (row) => {
+    store.elementId = row.id
+    store._delete(row)
   }
 
-  const onConfirm = (v) => {
+  const onAttach = (row) => {
+    store.selectedWorkers = [row]
+    store.resetForm()
+    store.visibleType = true
+    store.visible = true
+  }
+
+  const onConfirm = (row) => {
     store.resetConfirmForm()
     store.confirmVisible = true
-    store.elementId = v.id
+    store.elementId = row.id
   }
+
+  const columns = computed(() => {
+    const cols = [
+      {
+        key: 'worker',
+        title: t('content.name'),
+        minWidth: 220
+      },
+      {
+        key: 'commission',
+        title: t('ticket.form.ticket'),
+        width: 100,
+        align: 'center'
+      },
+      {
+        key: 'polyclinic.name',
+        title: t('content.organization'),
+        minWidth: 220
+      },
+      {
+        key: 'status',
+        title: t('medInspection.form.status'),
+        width: 120
+      },
+      {
+        key: 'start_date',
+        title: t('medInspection.form.start_date'),
+        width: 120
+      },
+      {
+        key: 'confirmation',
+        title: t('content.status'),
+        width: 120
+      },
+      {
+        key: 'generate',
+        title: t('content.document'),
+        width: 140
+      }
+    ]
+    if (store.enableCheck) {
+      cols.unshift({ key: 'checkbox', title: '', width: 50, align: 'center' })
+    }
+    return cols
+  })
+
+  const actions = computed(() => [
+    {
+      label: t('content.view'),
+      key: Utils.ActionTypes.view,
+      icon: UIHelper.renderIcon(Eye16Regular),
+      action: (row) => openDocument(row.id)
+    },
+    {
+      label: t('content.attachment'),
+      key: Utils.ActionTypes.attachment,
+      icon: UIHelper.renderIcon(OpenFolder24Filled),
+      action: onAttach
+    },
+    {
+      label: t('content.confirm'),
+      key: Utils.ActionTypes.confirm,
+      icon: UIHelper.renderIcon(CheckmarkCircle32Regular),
+      action: onConfirm,
+      visible: (row) => Boolean(row.commission_leader_id)
+    },
+    {
+      label: t('content.clear'),
+      key: Utils.ActionTypes.delete,
+      icon: UIHelper.renderIcon(Delete20Regular),
+      action: onDelete
+    }
+  ])
 </script>
 
 <template>
-  <n-spin :show="store.loading" style="min-height: 200px">
-    <div class="w-full overflow-x-auto" v-if="store.list.length > 0">
-      <n-table class="mt-4" :single-line="false" size="small">
-        <thead>
-          <tr>
-            <th class="text-center! min-w-[40px] w-[40px]">{{ $t('content.number') }}</th>
-            <th v-if="store.enableCheck" class="text-center! min-w-[30px] w-[30px]"></th>
-            <th class="min-w-[200px]">{{ $t('content.name') }}</th>
-            <th class="min-w-[30px] w-[80px]">{{ $t('ticket.form.ticket') }}</th>
-            <th class="min-w-[200px]">{{ $t('content.organization') }}</th>
-            <th class="w-[60px]">{{ $t('medInspection.form.status') }}</th>
-            <th class="w-[60px]">{{ $t('medInspection.form.start_date') }}</th>
-            <th class="w-[80px]">{{ $t('content.status') }}</th>
-            <th class="w-[120px]">{{ $t('content.document') }}</th>
-            <th class="min-w-[40px] w-[40px]"></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(item, idx) in store.list" :key="idx">
-            <td>
-              <span class="text-center block">{{
-                (store.params.page - 1) * store.params.per_page + idx + 1
-              }}</span>
-            </td>
-            <td>
-              <div
-                v-if="item.commission_leader_id === null"
-                class="flex justify-center items-center"
-              >
-                <n-checkbox
-                  @click="store._selectEv(item)"
-                  :checked="store._checkWorker(item.id)"
-                ></n-checkbox>
-              </div>
-            </td>
-            <td>
-              <UIUser
-                :short="false"
-                :data="{
-                  photo: item?.worker.photo,
-                  lastName: item?.worker.last_name,
-                  firstName: item?.worker.first_name,
-                  middleName: item?.worker.middle_name,
-                  position: item?.position
-                }"
-              />
-            </td>
-            <td>
-              <div>
-                <n-popover v-if="item.commission_leader_id" trigger="click" width="400">
-                  <n-spin :show="store.commissionLoading">
-                    <div class="w-full h-[260px] overflow-y-auto">
-                      <template v-for="item in store.commissionList" :key="item">
-                        <div class="mb-2 bg-surface/4 p-1 rounded-lg">
-                          <UIUser
-                            :short="false"
-                            :data="{
-                              photo: item?.worker.photo,
-                              lastName: item?.worker.last_name,
-                              firstName: item?.worker.first_name,
-                              middleName: item?.worker.middle_name,
-                              position: item?.position
-                            }"
-                          />
-                        </div>
-                      </template>
-                    </div>
-                  </n-spin>
+  <UITable
+    :columns="columns"
+    :actions="actions"
+    :data="store.list"
+    :loading="store.loading"
+    :page="store.params.page"
+    :per-page="store.params.per_page"
+    :total="store.totalItems"
+    :delete-warning="$t('ticket.confirm.removeCommission')"
+    storage-key="hospital-ticket"
+    @change-page="changePage"
+  >
+    <template #cell-checkbox="{ row }">
+      <div v-if="row.commission_leader_id === null" class="flex justify-center items-center">
+        <n-checkbox
+          @click="store._selectEv(row)"
+          :checked="store._checkWorker(row.id)"
+        ></n-checkbox>
+      </div>
+    </template>
 
-                  <template #trigger>
-                    <div @click="store._commission(item.id)" class="flex justify-center">
-                      <n-icon size="22" class="text-success mx-auto">
-                        <CheckmarkCircle24Filled />
-                      </n-icon>
-                    </div>
-                  </template>
-                </n-popover>
-              </div>
-            </td>
-            <td>
-              <span
-                @click="openDocument(item.id)"
-                class="hover:underline hover:text-primary cursor-pointer"
-                >{{ item?.polyclinic?.name }}</span
-              >
-            </td>
-            <td>
-              <UIStatus v-if="item?.status?.id" :status="item?.status" />
-              <UIStatus v-else :status="Utils.documentStatus[2]" />
-            </td>
-            <td>
-              {{ Utils.timeOnlyDate(item?.start_date) }}
-            </td>
-            <td>
-              <UIStatus :status="item.confirmation" />
-            </td>
-            <td><UIStatus :status="Utils.documentStatus[item?.generate]" /></td>
-            <td>
-              <UIMenuButton
-                :data="item"
-                :show-view="true"
-                :show-attachment="true"
-                :show-confirm="Boolean(item.commission_leader_id)"
-                :delete-option-text="$t('content.clear')"
-                :delete-warning="$t('ticket.confirm.removeCommission')"
-                @selectEv="onSelectEv"
-              />
-            </td>
-          </tr>
-        </tbody>
-      </n-table>
-      <UIPagination
-        :page="store.params.page"
-        :per_page="store.params.per_page"
-        :total="store.totalItems"
-        @change-page="changePage"
+    <template #cell-worker="{ row }">
+      <UIUser
+        :short="false"
+        :data="{
+          photo: row?.worker.photo,
+          lastName: row?.worker.last_name,
+          firstName: row?.worker.first_name,
+          middleName: row?.worker.middle_name,
+          position: row?.position
+        }"
       />
-    </div>
-    <NoDataPicture v-if="store.list.length === 0 && !store.loading" />
-  </n-spin>
-</template>
+    </template>
 
-<style scoped></style>
+    <template #cell-commission="{ row }">
+      <n-popover v-if="row.commission_leader_id" trigger="click" width="400">
+        <n-spin :show="store.commissionLoading">
+          <div class="w-full h-[260px] overflow-y-auto">
+            <template v-for="member in store.commissionList" :key="member">
+              <div class="mb-2 bg-surface/4 p-1 rounded-lg">
+                <UIUser
+                  :short="false"
+                  :data="{
+                    photo: member?.worker.photo,
+                    lastName: member?.worker.last_name,
+                    firstName: member?.worker.first_name,
+                    middleName: member?.worker.middle_name,
+                    position: member?.position
+                  }"
+                />
+              </div>
+            </template>
+          </div>
+        </n-spin>
+
+        <template #trigger>
+          <div @click="store._commission(row.id)" class="flex justify-center">
+            <n-icon size="22" class="text-success mx-auto">
+              <CheckmarkCircle24Filled />
+            </n-icon>
+          </div>
+        </template>
+      </n-popover>
+    </template>
+
+    <template #[`cell-polyclinic.name`]="{ row }">
+      <span @click="openDocument(row.id)" class="hover:underline hover:text-primary cursor-pointer">
+        {{ row?.polyclinic?.name }}
+      </span>
+    </template>
+
+    <template #cell-status="{ row }">
+      <UIStatus v-if="row?.status?.id" :status="row?.status" />
+      <UIStatus v-else :status="Utils.documentStatus[2]" />
+    </template>
+
+    <template #cell-start_date="{ row }">
+      {{ Utils.timeOnlyDate(row?.start_date) }}
+    </template>
+
+    <template #cell-confirmation="{ row }">
+      <UIStatus :status="row.confirmation" />
+    </template>
+
+    <template #cell-generate="{ row }">
+      <UIStatus :status="Utils.documentStatus[row?.generate]" />
+    </template>
+  </UITable>
+</template>

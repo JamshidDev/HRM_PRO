@@ -1,7 +1,6 @@
 <script setup>
   import { ref, watch, computed } from 'vue'
   import { useSocketStore } from '@stores'
-  import SortBtn from '@pages/accountant/monthReport/ui/SortBtn.vue'
 
   const store = useSocketStore()
   const isRippling = ref(false)

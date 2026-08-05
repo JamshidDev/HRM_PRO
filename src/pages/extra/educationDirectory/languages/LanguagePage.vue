@@ -15,7 +15,7 @@
 </script>
 
 <template>
-  <div>
+  <div class="h-full">
     <Table />
     <UIDrawer
       :visible="store.visible"
