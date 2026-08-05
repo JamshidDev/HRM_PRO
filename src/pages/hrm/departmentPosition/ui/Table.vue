@@ -33,9 +33,13 @@ import { Delete24Regular, Edit32Regular, Eye16Regular } from '@vicons/fluent'
       max_rank: row.max_rank?.id,
       education: row.education?.id,
       rate: row.rate,
-      salary: row.salary.toString(),
-      experience: row.experience.toString()
+      salary: row.salary != null ? String(row.salary) : null,
+      experience: row.experience.toString(),
+      tariff_grid_id: row.tariff_grid_id ?? null,
+      tariff_grid_column: row.tariff_grid_column ?? null
     })
+    // Tanlangan setka ustunlarini oldindan yuklaymiz (oklad/ustun ko'rinishi uchun).
+    if (row.tariff_grid_id) store._loadGridColumns(row.tariff_grid_id)
 
     store.visible = true
   }
@@ -119,6 +123,11 @@ import { Delete24Regular, Edit32Regular, Eye16Regular } from '@vicons/fluent'
       key: 'salary',
       title: t('departmentPositionPage.table.salary'),
       width: 150
+    },
+    {
+      key: 'total_salary',
+      title: t('departmentPositionPage.table.totalSalary'),
+      minWidth: 160
     }
   ])
 
@@ -184,6 +193,21 @@ import { Delete24Regular, Edit32Regular, Eye16Regular } from '@vicons/fluent'
 
     <template #cell-salary="{ row }">
       {{ Utils.formatNumberToMoney(row.salary) }}
+    </template>
+
+    <template #cell-total_salary="{ row }">
+      <div class="flex flex-col">
+        <span :class="Number(row.total_salary) > Number(row.base_salary) ? 'text-primary font-semibold' : ''">
+          {{ Utils.formatNumberToMoney(row.total_salary) }}
+        </span>
+        <span
+          v-if="Number(row.total_salary) > Number(row.base_salary)"
+          class="text-xs text-secondary"
+        >
+          {{ $t('departmentPositionPage.form.baseSalary') }}:
+          {{ Utils.formatNumberToMoney(row.base_salary) }}
+        </span>
+      </div>
     </template>
   </UITable>
 </template>

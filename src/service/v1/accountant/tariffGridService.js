@@ -15,6 +15,14 @@ const _storeVersion = async (payload) => axios.post(`/v1/tariff-grids/${payload.
 const _confirmVersion = async (payload) =>
   axios.post(`/v1/tariff-grids/${payload.id}/versions/${payload.versionId}/confirm`)
 
+// Setka ↔ korxona/bo'lim biriktiruvi (scope).
+const _scope = async (payload) => axios.get(`/v1/tariff-grids/${payload.id}/scope`)
+const _setScope = async (payload) => axios.put(`/v1/tariff-grids/${payload.id}/scope`, payload.data)
+
+// department-position formasi uchun: biriktirilgan setkalar (union+fallback) + asosiy oklad.
+const _forPosition = async (payload) => axios.get(`/v1/tariff-grids/for-position`, { params: payload?.params })
+const _amount = async (payload) => axios.get(`/v1/tariff-grids/${payload.id}/amount`, { params: payload?.params })
+
 export default {
   _index,
   _show,
@@ -26,5 +34,9 @@ export default {
   _versions,
   _version,
   _storeVersion,
-  _confirmVersion
+  _confirmVersion,
+  _scope,
+  _setScope,
+  _forPosition,
+  _amount
 }

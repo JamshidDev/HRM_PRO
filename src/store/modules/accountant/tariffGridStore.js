@@ -168,7 +168,16 @@ export const useTariffGridStore = defineStore('tariffGridStore', {
     createColumns: blankCreateColumns(),
 
     // «Mavjud setkadan nusxa» uchun manba setkalar ro'yxati
-    copySources: []
+    copySources: [],
+
+    // Biriktiruv (scope) modali — setka ↔ korxona/bo'lim (tree + "+qo'shish" builder)
+    scopeVisible: false,
+    scopeGridId: null,
+    scopeGridName: '',
+    scopeSaving: false,
+    scopeForm: { organization_ids: [], department_ids: [] },
+    scopeOrgLabels: {}, // id -> nom (korxona chiplari uchun)
+    scopeDeptLabels: {} // id -> { name, org_name } (bo'lim chiplari uchun)
   }),
 
   getters: {
@@ -452,6 +461,74 @@ export const useTariffGridStore = defineStore('tariffGridStore', {
       this.versionsParams = { page: 1, per_page: 10, year: null }
       this.historyVisible = true
       this._versions(id)
+    },
+
+    // --- Biriktiruv (scope): setka ↔ korxona/bo'lim (tree + "+qo'shish") ---
+    openScope(id, name = '') {
+      this.scopeGridId = id
+      this.scopeGridName = name
+      this.scopeForm = { organization_ids: [], department_ids: [] }
+      this.scopeOrgLabels = {}
+      this.scopeDeptLabels = {}
+      this.scopeVisible = true
+      $ApiService.tariffGridService._scope({ id }).then((res) => {
+        const d = res.data.data || {}
+        this.scopeForm.organization_ids = (d.organizations || []).map((o) => o.id)
+        this.scopeForm.department_ids = (d.departments || []).map((o) => o.id)
+        for (const o of d.organizations || []) this.scopeOrgLabels[o.id] = o.name
+        for (const dep of d.departments || [])
+          this.scopeDeptLabels[dep.id] = { name: dep.name, org_name: dep.org_name || null }
+      })
+    },
+    // Butun korxona birikuvini ro'yxatga qo'shadi (dublsiz).
+    addScopeOrg(org) {
+      if (!org?.id) return
+      if (!this.scopeForm.organization_ids.includes(org.id)) {
+        this.scopeForm.organization_ids.push(org.id)
+        this.scopeOrgLabels[org.id] = org.name
+      }
+    },
+    // Bo'lim birikuvlarini ro'yxatga qo'shadi (org nomi konteksti bilan, dublsiz).
+    addScopeDepts(depts, orgName) {
+      for (const d of depts || []) {
+        if (!d?.id) continue
+        if (!this.scopeForm.department_ids.includes(d.id)) {
+          this.scopeForm.department_ids.push(d.id)
+          this.scopeDeptLabels[d.id] = {
+            name: d.name,
+            org_name: orgName || d.organization?.name || null
+          }
+        }
+      }
+    },
+    removeScopeOrg(id) {
+      this.scopeForm.organization_ids = this.scopeForm.organization_ids.filter((x) => x !== id)
+      delete this.scopeOrgLabels[id]
+    },
+    removeScopeDept(id) {
+      this.scopeForm.department_ids = this.scopeForm.department_ids.filter((x) => x !== id)
+      delete this.scopeDeptLabels[id]
+    },
+    _saveScope() {
+      this.scopeSaving = true
+      $ApiService.tariffGridService
+        ._setScope({
+          id: this.scopeGridId,
+          data: {
+            organization_ids: this.scopeForm.organization_ids,
+            department_ids: this.scopeForm.department_ids
+          }
+        })
+        .then((res) => {
+          $Toast.success(res?.data?.message ?? t('content.success'))
+          this.scopeVisible = false
+        })
+        .catch((e) => {
+          $Toast.error(e?.response?.data?.message ?? t('content.error'))
+        })
+        .finally(() => {
+          this.scopeSaving = false
+        })
     },
 
     // --- Form ochish/yopish ---

@@ -1,11 +1,12 @@
 <script setup>
-  import { History24Regular } from '@vicons/fluent'
+  import { History24Regular, Link24Regular } from '@vicons/fluent'
   import { UIMenuButton, UIModal, UIPageContent, UIPageFilter, UIPagination } from '@/components/index.js'
   import { useAccountStore, useTariffGridStore, useTariffBaseStore } from '@/store/modules/index.js'
   import i18n from '@/i18n/index.js'
   import GridForm from './ui/GridForm.vue'
   import ViewModal from './ui/ViewModal.vue'
   import HistoryModal from './ui/HistoryModal.vue'
+  import ScopeModal from './ui/ScopeModal.vue'
   import BaseForm from './ui/BaseForm.vue'
   import BaseViewModal from './ui/BaseViewModal.vue'
   import Utils from '@/utils/Utils.js'
@@ -17,6 +18,7 @@
 
   const activeTab = ref('grids') // 'grids' | 'bases'
   const extraOptions = computed(() => [
+    { label: t('tariffGrid.action.scope'), key: 'scope', icon: Link24Regular },
     { label: t('tariffGrid.action.history'), key: 'history', icon: History24Regular }
   ])
 
@@ -43,6 +45,7 @@
   const onSelect = (v) => {
     const row = v.data
     if (v.key === Utils.ActionTypes.view) openView(row.id)
+    else if (v.key === 'scope') store.openScope(row.id, row.name)
     else if (v.key === 'history') store.openHistory(row.id, row.name)
     else if (v.key === Utils.ActionTypes.download) store._excel(row.id)
     else if (v.key === Utils.ActionTypes.delete) store._delete(row.id)
@@ -85,6 +88,9 @@
   const historyTitle = computed(
     () => `${store.historyGridName || t('tariffGrid.detailTitle')} — ${t('tariffGrid.action.history')}`
   )
+  const scopeTitle = computed(
+    () => `${store.scopeGridName || t('tariffGrid.detailTitle')} — ${t('tariffGrid.action.scope')}`
+  )
   const baseViewTitle = computed(() => {
     const name = baseStore.detail?.name ?? t('tariffBase.title')
     return baseStore.viewMode === 'history' ? `${name} — ${t('tariffGrid.action.history')}` : name
@@ -102,7 +108,7 @@
 
     <!-- ============ SETKALAR ============ -->
     <template v-if="activeTab === 'grids'">
-      <UIPageFilter :showFilterButton="false" v-model:search="store.params.search" @onSearch="filterEvent" @onAdd="onAdd" />
+      <UIPageFilter :show-filter-button="false" v-model:search="store.params.search" @onSearch="filterEvent" @onAdd="onAdd" />
       <n-spin :show="store.loading">
         <div class="flex flex-col gap-3 mt-4">
           <div v-for="g in store.list" :key="g.id" class="tg-card">
@@ -143,7 +149,7 @@
 
     <!-- ============ BAZA MIQDORLARI ============ -->
     <template v-else>
-      <UIPageFilter :showFilterButton="false" v-model:search="baseStore.params.search" @onSearch="baseFilterEvent" @onAdd="onAdd" />
+      <UIPageFilter :show-filter-button="false" v-model:search="baseStore.params.search" @onSearch="baseFilterEvent" @onAdd="onAdd" />
       <n-spin :show="baseStore.loading">
         <div class="flex flex-col gap-3 mt-4">
           <div v-for="b in baseStore.list" :key="b.id" class="tg-card">
@@ -190,6 +196,10 @@
     <!-- Setka: versiya tarixi (alohida modal — jadval ro'yxat + sahifalash) -->
     <UIModal :width="'92%'" :visible="store.historyVisible" @update:visible="(v) => (store.historyVisible = v)" :title="historyTitle">
       <HistoryModal />
+    </UIModal>
+    <!-- Setka: korxona/bo'limlarga biriktirish -->
+    <UIModal :width="'780px'" :visible="store.scopeVisible" @update:visible="(v) => (store.scopeVisible = v)" :title="scopeTitle">
+      <ScopeModal />
     </UIModal>
 
     <!-- Baza: yaratish / meta tahrir -->
