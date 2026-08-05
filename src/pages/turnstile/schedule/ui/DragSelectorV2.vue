@@ -412,7 +412,7 @@
   <div
     ref="containerRef"
     @mousedown="handleMouseDown"
-    class="flex flex-col relative rounded-tl-lg rounded-tr-lg"
+    class="flex flex-col relative overflow-auto rounded-lg"
   >
     <div :style="selectionBoxStyle" class="absolute pointer-events-none z-[100] transition-none" />
     <slot></slot>

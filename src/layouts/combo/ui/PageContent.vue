@@ -1,20 +1,16 @@
 <script setup>
   import AppHeader from './AppHeader.vue'
+  import { useAppStore } from '@/store/modules/index.js'
+
+  const appStore = useAppStore()
   const emits = defineEmits(['onOpen'])
 
   const onClick = () => {
     emits('onOpen')
   }
-  const hasTeleportedContent = ref(false)
 
   const mainContentClass = computed(() => {
-    return hasTeleportedContent.value ? 'main-content-with-tabs' : 'main-content'
-  })
-
-  onMounted(() => {
-    window.addEventListener('teleport-changed', (e) => {
-      hasTeleportedContent.value = e.detail?.hasContent || false
-    })
+    return appStore.hasTeleportedContent ? 'main-content-with-tabs' : 'main-content'
   })
 </script>
 
