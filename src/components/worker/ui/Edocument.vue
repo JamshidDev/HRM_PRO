@@ -69,11 +69,11 @@
     }
   })
 
-  const hasCertificate = computed(() => Boolean(worker.value.certificates?.length))
+  const hasCertificate = computed(() => Boolean(worker.value.digital_certificate))
 
   const idRailWayData = computed(() => {
     const w = worker.value
-    const certificate = w.certificates?.[0] || {}
+    const certificate = w.digital_certificate || {}
     return {
       photoUrl: photoUrl.value,
       surname: w.last_name,
@@ -110,21 +110,19 @@
     }
   })
 
-  // TODO: hardcoded placeholder until the position-certificate API is wired up.
-  // Swap this for a computed derived from worker.value.position_certificates?.[0].
-  const idRedCertificateData = computed(() => {
+  const hasPositionCertificate = computed(() => Boolean(worker.value.certificates?.length))
+
+  const positionCertificatesData = computed(() => {
     const w = worker.value
-    return {
+    return (w.certificates || []).map((certificate) => ({
       photoUrl: photoUrl.value,
-      cardNumber: '00123',
+      cardNumber: certificate.number,
       fullName: [w.last_name, w.first_name, w.middle_name].filter(Boolean).join(' '),
-      postName: "Toshkent temir yo'l inshootlari,\nyo'l mashinalari boshqarmasi, muhandis",
-      issueDate: '2022-05-14',
-      expiryDate: '2027-05-14',
-      extendedDate: '2027-06-06',
-      managerName: 'A. Rashidov',
-      signature: [w.first_name, w.last_name].filter(Boolean).join(' ')
-    }
+      postName: certificate.post_name,
+      issueDate: certificate.issue_date,
+      expiryDate: certificate.expiry_date,
+      extendedDate: certificate.extended_date
+    }))
   })
 </script>
 
@@ -165,7 +163,17 @@
         </template>
 
         <template v-else-if="activeId === 4">
-          <IdRedCertificate :data="idRedCertificateData" class="w-full" />
+          <div v-if="hasPositionCertificate" class="w-full flex flex-col gap-4">
+            <IdRedCertificate
+              v-for="(certificate, index) in positionCertificatesData"
+              :key="certificate.cardNumber ?? index"
+              :data="certificate"
+              class="w-full"
+            />
+          </div>
+          <h4 v-else class="w-full text-center text-secondary">
+            {{ $t('content.no-data') }}
+          </h4>
         </template>
       </div>
     </SectionHeader>
