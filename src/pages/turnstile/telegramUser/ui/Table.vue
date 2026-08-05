@@ -1,8 +1,10 @@
 <script setup>
-  import { NoDataPicture, UIPagination, UIMenuButton, UIUser, UIBadge } from '@/components/index.js'
-  import { useTelegramUserStore } from '@/store/modules/index.js'
+  import { UIBadge, UITable, UIUser } from '@/components/index.js'
   import i18n from '@/i18n/index.js'
+  import { useTelegramUserStore } from '@/store/modules/index.js'
+  import UIHelper from '@/utils/UIHelper.js'
   import Utils from '@/utils/Utils.js'
+  import { Delete20Regular, Edit32Regular } from '@vicons/fluent'
 
   const { t } = i18n.global
   const store = useTelegramUserStore()
@@ -13,69 +15,77 @@
     store._index()
   }
 
-  const onSelect = (v) => {
-    store.elementId = v.data.id
-    if (v.key === Utils.ActionTypes.edit) {
-      store.payload.user_id = v.data.id
-      store.payload.devices = []
-      store._edit()
-      store.visibleType = false
-      store.visible = true
-    } else if (v.key === Utils.ActionTypes.delete) {
-      store._delete()
-    }
+  const onEdit = (row) => {
+    store.elementId = row.id
+    store.payload.user_id = row.id
+    store.payload.devices = []
+    store._edit()
+    store.visibleType = false
+    store.visible = true
   }
+
+  const onDelete = (row) => {
+    store.elementId = row.id
+    store._delete()
+  }
+
+  const columns = computed(() => [
+    {
+      key: 'worker',
+      title: t('hcServer.form.name'),
+      minWidth: 260
+    },
+    {
+      key: 'devices_count',
+      title: t('hcServer.form.workers_count'),
+      width: 140
+    }
+  ])
+
+  const actions = computed(() => [
+    {
+      label: t('content.edit'),
+      key: Utils.ActionTypes.edit,
+      icon: UIHelper.renderIcon(Edit32Regular),
+      action: onEdit
+    },
+    {
+      label: t('content.delete'),
+      key: Utils.ActionTypes.delete,
+      icon: UIHelper.renderIcon(Delete20Regular),
+      action: onDelete
+    }
+  ])
 </script>
 
 <template>
-  <n-spin :show="store.loading" style="min-height: 200px">
-    <div class="w-full overflow-x-auto" v-if="store.list.length > 0">
-      <n-table class="mt-4" :single-line="false" size="small">
-        <thead>
-          <tr>
-            <th class="text-center! min-w-[40px] w-[40px]">{{ $t('content.number') }}</th>
-            <th class="min-w-[200px]">{{ $t('hcServer.form.name') }}</th>
-            <th class="min-w-[100px] w-[120px]">{{ $t('hcServer.form.workers_count') }}</th>
-            <th class="min-w-[40px] w-[40px]"></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(item, idx) in store.list" :key="idx">
-            <td>
-              <span class="text-center block">{{
-                (store.params.page - 1) * store.params.per_page + idx + 1
-              }}</span>
-            </td>
-            <td>
-              <UIUser
-                v-if="item.worker"
-                :short="false"
-                :hide-tooltip="true"
-                :data="{
-                  photo: item?.worker.photo,
-                  firstName: item?.worker.first_name,
-                  middleName: item?.worker.middle_name,
-                  lastName: item?.worker.last_name,
-                  position: item?.id
-                }"
-              />
-            </td>
-            <td>
-              <UIBadge :label="item.devices_count" :type="Utils.colorTypes.dark" />
-            </td>
-            <td>
-              <UIMenuButton :show-edit="true" :data="item" @selectEv="onSelect" />
-            </td>
-          </tr>
-        </tbody>
-      </n-table>
-      <UIPagination
-        :page="store.params.page"
-        :per_page="store.params.per_page"
-        :total="store.totalItems"
-        @change-page="changePage"
+  <UITable
+    :columns="columns"
+    :actions="actions"
+    :data="store.list"
+    :loading="store.loading"
+    :page="store.params.page"
+    :per-page="store.params.per_page"
+    :total="store.totalItems"
+    storage-key="turnstile-telegram-user"
+    @change-page="changePage"
+  >
+    <template #cell-worker="{ row }">
+      <UIUser
+        v-if="row.worker"
+        :short="false"
+        :data="{
+          photo: row?.worker.photo,
+          firstName: row?.worker.first_name,
+          middleName: row?.worker.middle_name,
+          lastName: row?.worker.last_name,
+          position: row?.id
+        }"
       />
-    </div>
-    <NoDataPicture v-if="store.list.length === 0 && !store.loading" />
-  </n-spin>
+    </template>
+
+    <template #cell-devices_count="{ row }">
+      <UIBadge :label="String(row.devices_count)" :type="Utils.colorTypes.dark" />
+    </template>
+  </UITable>
 </template>

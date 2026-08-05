@@ -1,12 +1,5 @@
 <script setup>
-  import {
-    NoDataPicture,
-    UIPagination,
-    UIUser,
-    UIBadge,
-    UIStatus,
-    UISelect
-  } from '@/components/index.js'
+  import { NoDataPicture, UIPagination, UIUser, UIBadge, UIStatus } from '@/components/index.js'
   import { useComponentStore, useEventStore } from '@/store/modules/index.js'
   import {
     ArrowCircleDownRight20Regular,
@@ -77,10 +70,10 @@
     store._preview()
   }
 
-  const onChangeStructure = (v) => {
-    store.previewParams.organizations = v
-    filterEvent()
-  }
+  // const onChangeStructure = (v) => {
+  //   store.previewParams.organizations = v
+  //   filterEvent()
+  // }
 
   const onStartTimeEv = () => {
     if (store.previewParams.start_time?.length !== 5) return
@@ -296,7 +289,6 @@
                     <td>
                       <div>
                         <UIUser
-                          :hide-tooltip="true"
                           :short="false"
                           :data="{
                             photo: item?.worker?.photo,

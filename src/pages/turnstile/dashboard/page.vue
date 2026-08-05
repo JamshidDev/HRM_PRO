@@ -116,9 +116,9 @@
       <template #header-title>
         <h1 class="text-lg font-medium flex items-center gap-4">
           {{ $t('hcEvent.preview') }}
-          <span class="bg-primary/10 text-primary py-1 px-2 rounded-2xl text-sm"
-            >#{{ $t(typeTitle) }}</span
-          >
+          <span class="bg-primary/10 text-primary py-1 px-2 rounded-2xl text-sm">
+            #{{ $t(typeTitle) }}
+          </span>
         </h1>
       </template>
       <PreviewList />

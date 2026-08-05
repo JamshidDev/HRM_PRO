@@ -67,7 +67,8 @@ export const useAppStore = defineStore('appStore', {
     fontScale: useAppSetting.defaultFontScale,
     profileSettingsVisible: false,
     skipReset: true,
-    wrongPinsLoading: false
+    wrongPinsLoading: false,
+    hasTeleportedContent: false
   }),
 
   actions: {

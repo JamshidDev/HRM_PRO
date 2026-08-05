@@ -173,6 +173,17 @@
     }
   }
 
+  .preview-panel {
+    .section-header {
+      overflow: visible;
+    }
+    .section-header-top {
+      position: sticky;
+      top: 0;
+      z-index: 5;
+    }
+  }
+
   @media only screen and (max-width: 769px) {
     .ui-preview-window {
       .preview-content {
