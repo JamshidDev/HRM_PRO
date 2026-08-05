@@ -1,40 +1,43 @@
 <script setup>
-defineProps({
-  title: {
-    type: String,
-    default: ''
-  },
-  icon: {
-    type: Object,
-    default: null
-  },
-  iconChip: {
-    type: Boolean,
-    default: false
-  },
-  plain: {
-    type: Boolean,
-    default: false
-  },
-  fullHeight: {
-    type: Boolean,
-    default: false
-  },
-  tightBody: {
-    type: Boolean,
-    default: false
-  },
-  large: {
-    type: Boolean,
-    default: false
-  }
-})
+  defineProps({
+    title: {
+      type: String,
+      default: ''
+    },
+    icon: {
+      type: Object,
+      default: null
+    },
+    iconChip: {
+      type: Boolean,
+      default: false
+    },
+    plain: {
+      type: Boolean,
+      default: false
+    },
+    fullHeight: {
+      type: Boolean,
+      default: false
+    },
+    tightBody: {
+      type: Boolean,
+      default: false
+    },
+    large: {
+      type: Boolean,
+      default: false
+    }
+  })
 </script>
 
 <template>
-  <div class="rounded-3xl overflow-hidden section-header p-1" :class="[fullHeight && 'h-full flex flex-col']">
+  <div
+    class="rounded-3xl overflow-hidden section-header p-1"
+    :class="[fullHeight && 'h-full flex flex-col']"
+  >
     <div
-      class="section-header-bar flex items-center justify-between gap-2 rounded-t-3xl border-surface-line px-4 py-2 shrink-0"
+      class="section-header-bar section-header-top flex items-center justify-between gap-2 rounded-t-3xl border-surface-line px-4 py-2 shrink-0"
     >
       <slot name="header">
         <div class="flex items-center gap-2 min-w-0">
@@ -51,9 +54,10 @@ defineProps({
             <component :is="icon" />
           </n-icon>
           <span
-            class="font-semibold text-textColor0 truncate"
+            class="font-semibold text-primary truncate"
             :class="large ? 'text-lg' : 'text-sm'"
-          >{{ title }} </span>
+            >{{ title }}
+          </span>
           <slot name="title-suffix" />
         </div>
         <div class="flex items-center gap-2 shrink-0">
@@ -63,7 +67,7 @@ defineProps({
     </div>
     <div
       :class="[
-        plain ? 'bg-surface-section' : 'bg-surface-ground',
+        plain ? 'bg-surface-section' : 'bg-surface-ground', 
         fullHeight && 'flex-1 overflow-auto',
         tightBody ? 'px-2 py-3' : 'p-4',
         !$slots.footer && 'rounded-b-3xl'
@@ -73,7 +77,7 @@ defineProps({
     </div>
     <div
       v-if="$slots.footer"
-      class="section-header-bar flex items-center justify-end gap-2 rounded-b-3xl border-surface-line px-4 py-2 shrink-0"
+      class="section-header-bar  flex items-center justify-end gap-2 rounded-b-3xl border-surface-line px-4 py-2 shrink-0"
     >
       <slot name="footer" />
     </div>
@@ -81,22 +85,19 @@ defineProps({
 </template>
 
 <style lang="scss" scoped>
-.section-header {
-  background-color: #fff;
-}
-.section-header-bar {
-  background-color: #EFF8FF;
-}
-
-[data-theme='dark'] {
-  .section-header-bar {
-    background-color: var(--table-header);
-  }
   .section-header {
-    background-color: var(--surface-section);
+    background-color: #fff;
+  }
+  .section-header-bar {
+    background-color: #eff8ff;
   }
 
-}
-
-
+  [data-theme='dark'] {
+    .section-header-bar {
+      background-color: var(--table-header);
+    }
+    .section-header {
+      background-color: var(--surface-section);
+    }
+  }
 </style>

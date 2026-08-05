@@ -1,19 +1,22 @@
 <script setup>
-  import { NoDataPicture, UIMenuButton, UIPagination, UIUser } from '@/components/index.js'
-  import { useTurnstileHikCentralWorkerStore } from '@/store/modules/index.js'
+  import { UIBadge, UITable, UIUser } from '@/components/index.js'
+  import i18n from '@/i18n/index.js'
+  import { useAccountStore, useTurnstileHikCentralWorkerStore } from '@/store/modules/index.js'
+  import UIHelper from '@/utils/UIHelper.js'
+  import Utils from '@/utils/Utils.js'
   import {
     AddSquareMultiple20Regular,
     ArrowSync24Filled,
+    Delete20Regular,
+    Edit32Regular,
     ErrorCircle24Filled,
     MoreHorizontal24Regular
   } from '@vicons/fluent'
-  import { useAccountStore } from '@/store/modules/index.js'
-  import Utils from '@/utils/Utils.js'
-  import UIBadge from '@/components/ui/UIBadge.vue'
   import AccessLevelModal from './AccessLevelModal.vue'
 
-  const accStore = useAccountStore()
+  const { t } = i18n.global
 
+  const accStore = useAccountStore()
   const store = useTurnstileHikCentralWorkerStore()
 
   const changePage = (v) => {
@@ -22,21 +25,26 @@
     store._index()
   }
 
-  const onEdit = (v) => {
-    const existPerson = Boolean(v.hcpPerson)
-    const photoId = v?.hcpPerson?.photo?.id
+  const onEdit = (row) => {
+    if (!accStore.checkAction(accStore.pn.turnstileHikCentralWorkersWrite)) return
+    store.elementId = row.id
+    store.resetEditPayload()
+    store.resetForm()
 
-    store.payload.end_time = v?.hcpPerson?.to ? new Date(v.hcpPerson.to).getTime() : null
+    const existPerson = Boolean(row.hcpPerson)
+    const photoId = row?.hcpPerson?.photo?.id
+
+    store.payload.end_time = row?.hcpPerson?.to ? new Date(row.hcpPerson.to).getTime() : null
     store.payload.access_level_ids = []
-    store.editPayload.id = v?.hcpPerson?.id || undefined
-    store.editPayload.worker_id = v?.hcpPerson?.id ? undefined : v.id
+    store.editPayload.id = row?.hcpPerson?.id || undefined
+    store.editPayload.worker_id = row?.hcpPerson?.id ? undefined : row.id
 
-    store.payload.worker_id = v?.id
+    store.payload.worker_id = row?.id
 
     store.editVisible = true
     store._access_levels()
 
-    store._workerAccessLevels(v.id, (data) => {
+    store._workerAccessLevels(row.id, (data) => {
       store.payload.access_level_ids = data.map((level) => level.access_level_id) || []
     })
 
@@ -47,41 +55,31 @@
     })
   }
 
-  const onSelectEv = (v) => {
-    store.elementId = v.data.id
+  const onDelete = (row) => {
     if (!accStore.checkAction(accStore.pn.turnstileHikCentralWorkersWrite)) return
-    if (v.key === 'delete') {
-      onDelete()
-    } else if (v.key === 'edit') {
-      store.resetEditPayload()
-      store.resetForm()
-      onEdit(v.data)
-    }
+    store.elementId = row.id
+    store._delete()
   }
 
-  const checkDeviceExpiry = (date) => {
-    const now = new Date()
-    const expiryDate = new Date(date)
-    if (now > expiryDate) return 'error'
-    const oneMonthLater = new Date(now)
-    oneMonthLater.setMonth(now.getMonth() + 1)
-    if (expiryDate <= oneMonthLater) return 'warning'
-    return 'primary'
-  }
+  // const checkDeviceExpiry = (date) => {
+  //   const now = new Date()
+  //   const expiryDate = new Date(date)
+  //   if (now > expiryDate) return 'error'
+  //   const oneMonthLater = new Date(now)
+  //   oneMonthLater.setMonth(now.getMonth() + 1)
+  //   if (expiryDate <= oneMonthLater) return 'warning'
+  //   return 'primary'
+  // }
 
-  const onSelect = (v) => {
+  const onSelect = (row) => {
     store.accessLevelModalVisible = true
     store.moreAccessLevels = []
-    store._workerAccessLevels(v.id)
-    store.selectedWorker = v
+    store._workerAccessLevels(row.id)
+    store.selectedWorker = row
   }
 
   const onRefreshAccessLevel = async (v) => {
     onRefresh(v)
-  }
-
-  const onDelete = () => {
-    store._delete()
   }
 
   const onRefresh = (v) => {
@@ -96,145 +94,168 @@
     store._getErrors(params)
     store.errorVisible = true
   }
+
+  const columns = computed(() => [
+    {
+      key: 'worker',
+      title: t('content.fullName'),
+      width: 400
+    },
+    {
+      key: 'access_levels',
+      title: t('turnstile.hcWorkersPage.access_levels'),
+      minWidth: 500
+    },
+    {
+      key: 'hcpPerson.to',
+      title: t('content.expiryDate'),
+      width: 140
+    },
+    {
+      key: 'hcpPerson.updated_at',
+      title: t('content.updatedAt'),
+      width: 140
+    },
+    {
+      key: 'errorMessage',
+      title: t('content.error'),
+      width: 100
+    }
+  ])
+
+  const actions = computed(() => [
+    {
+      label: t('content.edit'),
+      key: Utils.ActionTypes.edit,
+      icon: UIHelper.renderIcon(Edit32Regular),
+      action: onEdit
+    },
+    {
+      label: t('content.delete'),
+      key: Utils.ActionTypes.delete,
+      icon: UIHelper.renderIcon(Delete20Regular),
+      action: onDelete
+    }
+  ])
 </script>
 
 <template>
-  <n-spin :show="store.loading" style="min-height: 200px">
-    <div class="w-full overflow-x-auto" v-if="store.list.length > 0">
-      <n-table class="mt-4 w-full" :single-line="false" size="small">
-        <thead>
-          <tr>
-            <th class="w-[46px] min-w-[30px]">{{ $t('content.number') }}</th>
-            <th class="min-w-[260px] w-[400px]">{{ $t('content.fullName') }}</th>
-            <th class="min-w-[300px]">{{ $t('turnstile.hcWorkersPage.access_levels') }}</th>
-            <th class="min-w-[120px] w-[120px]">{{ $t('content.expiryDate') }}</th>
-            <th class="min-w-[120px] w-[120px]">{{ $t('content.updatedAt') }}</th>
-            <th class="min-w-[90px] w-[90px]">{{ $t('content.error') }}</th>
-            <th class="max-w-[40px] w-[40px]"></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(item, idx) in store.list" :key="idx">
-            <td class="w-[20px] max-w-[20px]">
-              <span class="text-center text-[12px] text-gray-600 block">{{
-                (store.params.page - 1) * store.params.per_page + idx + 1
-              }}</span>
-            </td>
-            <td>
-              <UIUser
-                :hide-tooltip="true"
-                :short="false"
-                :data="{
-                  photo: item?.hcpPerson?.photo?.photo || item?.photo,
-                  lastName: item?.last_name,
-                  firstName: item?.first_name,
-                  middleName: item?.middle_name,
-                  position: item.post_name
-                }"
-              >
-                <template #position>
-                  <div class="text-xs line-clamp-1 text-secondary">
-                    <n-button
-                      class="!py-0 !h-[16px] !text-xs !select-all"
-                      secondary
-                      type="primary"
-                      size="tiny"
-                      >{{ item.card }}</n-button
-                    >
-                    {{ item.post_name }}
-                  </div>
-                </template>
-              </UIUser>
-            </td>
-            <td>
-              <div class="flex flex-wrap gap-2" v-if="item.hcpPerson">
-                <template v-for="level in item.hcpPerson.access_levels.slice(0, 3)" :key="level.id">
-                  <n-button class="!px-1" dashed :type="level.type || 'default'">
-                    <div class="flex flex-col px-4 relative group overflow-hidden min-w-[100px]">
-                      <span class="font-semibold"> {{ level.name }}</span>
-                      <span
-                        @click.stop="onRefresh(level)"
-                        class="px-1 bottom-0 absolute w-full h-full text-success flex justify-center items-center gap-2 top-0 right-[-200px] group-hover:right-[4px] transition-all duration-300 z-[999] bg-surface-section"
-                      >
-                        <n-icon size="16">
-                          <ArrowSync24Filled />
-                        </n-icon>
-                        {{ $t('content.refresh') }}
-                      </span>
-                    </div>
+  <UITable
+    :columns="columns"
+    :actions="actions"
+    :data="store.list"
+    :loading="store.loading"
+    :page="store.params.page"
+    :per-page="store.params.per_page"
+    :total="store.totalItems"
+    storage-key="turnstile-hc-workers"
+    @change-page="changePage"
+  >
+    <template #cell-worker="{ row }">
+      <UIUser
+        :short="false"
+        :data="{
+          photo: row?.hcpPerson?.photo?.photo || row?.photo,
+          lastName: row?.last_name,
+          firstName: row?.first_name,
+          middleName: row?.middle_name,
+          position: row.post_name
+        }"
+      >
+        <template #position>
+          <div class="flex gap-1 text-xs text-secondary">
+            <n-button
+              class="!py-0 !h-[16px] !text-xs !select-all"
+              secondary
+              type="primary"
+              size="tiny"
+            >
+              {{ row.card }}
+            </n-button>
 
-                    <template #icon>
-                      <n-icon size="19">
-                        <ErrorCircle24Filled
-                          @click.stop="onShowErrorEv(undefined, level.id)"
-                          v-if="level.type === 'error'"
-                        />
-                        <AddSquareMultiple20Regular v-else />
-                      </n-icon>
-                    </template>
-                  </n-button>
-                </template>
-                <n-button
-                  @click="onSelect(item)"
-                  round
-                  secondary
-                  v-if="item.hcpPerson.access_levels.length > 3"
-                >
-                  <template #icon>
-                    <MoreHorizontal24Regular />
-                  </template>
-                </n-button>
-              </div>
-            </td>
-            <td class="text-center">
-              <UIBadge
-                v-if="item?.hcpPerson?.to"
-                :show-icon="false"
-                :label="Utils.timeOnlyDate(item?.hcpPerson?.to)"
-              />
-            </td>
-            <td class="text-center">
-              {{ Utils.timeOnlyDate(item?.hcpPerson?.updated_at) }}
-            </td>
-            <td class="text-center">
-              <n-button
-                @click="onShowErrorEv(item.id)"
-                v-if="item.errorMessage"
-                type="error"
-                secondary
-                size="small"
+            <n-ellipsis tooltip>
+              {{ row.post_name }}
+            </n-ellipsis>
+          </div>
+        </template>
+      </UIUser>
+    </template>
+
+    <template #cell-access_levels="{ row }">
+      <div class="flex flex-wrap gap-2" v-if="row.hcpPerson">
+        <template v-for="level in row.hcpPerson.access_levels.slice(0, 3)" :key="level.id">
+          <n-button class="!px-1" dashed :type="level.type || 'default'">
+            <div class="flex flex-col px-4 relative group overflow-hidden min-w-[100px]">
+              <span class="font-semibold"> {{ level.name }}</span>
+              <span
+                @click.stop="onRefresh(level)"
+                class="px-1 bottom-0 absolute w-full h-full text-success flex justify-center items-center gap-2 top-0 right-[-200px] group-hover:right-[4px] transition-all duration-300 z-[999] bg-surface-ground"
               >
-                <template #icon>
-                  <n-icon size="24" class="text-danger">
-                    <ErrorCircle24Filled />
-                  </n-icon>
-                </template>
-                {{ $t('content.error') }}
-              </n-button>
-            </td>
-            <td>
-              <UIMenuButton :data="item" :show-edit="true" @select-ev="onSelectEv" />
-              <!--                :loading="store.elementId === item.worker.id && store.deleteLoading"-->
-            </td>
-          </tr>
-        </tbody>
-      </n-table>
-      <UIPagination
-        v-if="store.totalItems > store.params.per_page"
-        :page="store.params.page"
-        :per_page="store.params.per_page"
-        :total="store.totalItems"
-        @change-page="changePage"
+                <n-icon size="16">
+                  <ArrowSync24Filled />
+                </n-icon>
+                {{ $t('content.refresh') }}
+              </span>
+            </div>
+
+            <template #icon>
+              <n-icon size="19">
+                <ErrorCircle24Filled
+                  @click.stop="onShowErrorEv(undefined, level.id)"
+                  v-if="level.type === 'error'"
+                />
+                <AddSquareMultiple20Regular v-else />
+              </n-icon>
+            </template>
+          </n-button>
+        </template>
+        <n-button
+          @click="onSelect(row)"
+          round
+          secondary
+          v-if="row.hcpPerson.access_levels.length > 3"
+        >
+          <template #icon>
+            <MoreHorizontal24Regular />
+          </template>
+        </n-button>
+      </div>
+    </template>
+
+    <template #[`cell-hcpPerson.to`]="{ row }">
+      <UIBadge
+        v-if="row?.hcpPerson?.to"
+        :show-icon="false"
+        :label="Utils.timeOnlyDate(row?.hcpPerson?.to)"
       />
-    </div>
-    <NoDataPicture v-if="store.list.length === 0 && !store.loading" />
+    </template>
 
-    <!-- Access Level Modal -->
-    <AccessLevelModal
-      :visible="store.accessLevelModalVisible"
-      @update:visible="(v) => (store.accessLevelModalVisible = v)"
-      @refresh="onRefreshAccessLevel"
-      :worker-name="`${store.selectedWorker?.first_name} ${store.selectedWorker?.last_name}`"
-    />
-  </n-spin>
+    <template #[`cell-hcpPerson.updated_at`]="{ row }">
+      {{ Utils.timeOnlyDate(row?.hcpPerson?.updated_at) }}
+    </template>
+
+    <template #cell-errorMessage="{ row }">
+      <n-button
+        @click="onShowErrorEv(row.id)"
+        v-if="row.errorMessage"
+        type="error"
+        secondary
+        size="small"
+      >
+        <template #icon>
+          <n-icon size="24" class="text-danger">
+            <ErrorCircle24Filled />
+          </n-icon>
+        </template>
+        {{ $t('content.error') }}
+      </n-button>
+    </template>
+  </UITable>
+
+  <AccessLevelModal
+    :visible="store.accessLevelModalVisible"
+    @update:visible="(v) => (store.accessLevelModalVisible = v)"
+    @refresh="onRefreshAccessLevel"
+    :worker-name="`${store.selectedWorker?.first_name} ${store.selectedWorker?.last_name}`"
+  />
 </template>

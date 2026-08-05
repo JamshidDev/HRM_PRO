@@ -74,7 +74,7 @@
 </script>
 
 <template>
-  <UIPageFilter class="mb-4" :show-search-input="false" :show-add-button="false">
+  <UIPageFilter :show-search-input="false" :show-add-button="false">
     <template #filterSearch>
       <div class="grid grid-cols-12 gap-2">
         <div class="col-span-3">

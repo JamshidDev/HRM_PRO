@@ -39,7 +39,6 @@ export * from './admin/telegramStore.js'
 export * from './admin/learningCenterStore.js'
 export * from './admin/mobileUserStore.js'
 export * from './admin/vacancyApproveStore.js'
-export * from './admin/integrationLogStore.js'
 export * from './admin/integrationClientsStore.js'
 
 export * from './hrm/departmentStore.js'

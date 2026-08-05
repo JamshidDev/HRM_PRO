@@ -412,9 +412,7 @@
                 </div>
 
                 <div
-                  v-else-if="
-                    store.permissions?.canSignature && showSignature && !isSigned && !isRejected
-                  "
+                  v-else-if="store.permissions?.canSignature && showSignature"
                   class="w-full shrink-0 rounded-2xl bg-surface-section px-4 py-3 flex items-center justify-between gap-4 mb-3"
                 >
                   <div class="min-w-0">
@@ -519,13 +517,15 @@
                           :file-url="generateFile"
                           :auto-run="true"
                         />
-                        <h2 class="text-2xl text-center text-gray-400 font-medium animate-bounce">
+                        <h2
+                          class="-mt-28 text-2xl text-center text-gray-400 font-medium animate-bounce"
+                        >
                           {{ $t('content.preparingDocument') }}
                         </h2>
-                        <div class="w-full flex justify-center">
+                        <div class="w-full flex justify-center mt-2">
                           <n-button size="medium" round @click="() => emits('onUpdate')">
                             <template #icon>
-                              <n-icon size="32" class="text-dark">
+                              <n-icon size="32">
                                 <ArrowSyncCircle16Filled />
                               </n-icon>
                             </template>

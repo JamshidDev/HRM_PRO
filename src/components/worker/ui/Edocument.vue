@@ -14,6 +14,7 @@
   import JshirIcon from '@/assets/icons/jshirIcon.svg'
   import IdRailWayDetail from '../../ui/IdRailWayDetail.vue'
   import IdForeignDetail from '../../ui/IdForeignDetail.vue'
+  import IdRedCertificate from '../../ui/IdRedCertificate.vue'
 
   const { t } = i18n.global
   const store = useComponentStore()
@@ -23,7 +24,8 @@
   const tabList = computed(() => [
     { id: 1, label: t('workerView.Edocument.pasport'), icon: IdCardIcon },
     { id: 2, label: t('workerView.Edocument.railway_pasport'), icon: IdCardIcon },
-    { id: 3, label: t('workerView.Edocument.foreign_pasport'), icon: IdCardIcon }
+    { id: 3, label: t('workerView.Edocument.foreign_pasport'), icon: IdCardIcon },
+    { id: 4, label: t('workerView.Edocument.position_certificate'), icon: IdCardIcon }
   ])
 
   const worker = computed(() => store.workerPreview?.worker || {})
@@ -67,11 +69,11 @@
     }
   })
 
-  const hasCertificate = computed(() => Boolean(worker.value.certificates?.length))
+  const hasCertificate = computed(() => Boolean(worker.value.digital_certificate))
 
   const idRailWayData = computed(() => {
     const w = worker.value
-    const certificate = w.certificates?.[0] || {}
+    const certificate = w.digital_certificate || {}
     return {
       photoUrl: photoUrl.value,
       surname: w.last_name,
@@ -107,6 +109,21 @@
       personalNumber: w.pin
     }
   })
+
+  const hasPositionCertificate = computed(() => Boolean(worker.value.certificates?.length))
+
+  const positionCertificatesData = computed(() => {
+    const w = worker.value
+    return (w.certificates || []).map((certificate) => ({
+      photoUrl: photoUrl.value,
+      cardNumber: certificate.number,
+      fullName: [w.last_name, w.first_name, w.middle_name].filter(Boolean).join(' '),
+      postName: certificate.post_name,
+      issueDate: certificate.issue_date,
+      expiryDate: certificate.expiry_date,
+      extendedDate: certificate.extended_date
+    }))
+  })
 </script>
 
 <template>
@@ -140,6 +157,20 @@
             <IdForeign :data="idForeignData" class="w-[100%] lg:w-[55%]" />
             <IdForeignDetail :data="idForeignData" class="w-[100%] h-[100%] lg:w-[45%]" />
           </template>
+          <h4 v-else class="w-full text-center text-secondary">
+            {{ $t('content.no-data') }}
+          </h4>
+        </template>
+
+        <template v-else-if="activeId === 4">
+          <div v-if="hasPositionCertificate" class="w-full flex flex-col gap-4">
+            <IdRedCertificate
+              v-for="(certificate, index) in positionCertificatesData"
+              :key="certificate.cardNumber ?? index"
+              :data="certificate"
+              class="w-full"
+            />
+          </div>
           <h4 v-else class="w-full text-center text-secondary">
             {{ $t('content.no-data') }}
           </h4>

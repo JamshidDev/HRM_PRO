@@ -1,20 +1,23 @@
 <script setup>
-  import {
-    NoDataPicture,
-    UIMenuButton,
-    UIPagination,
-    UIStatus,
-    UIUser
-  } from '@/components/index.js'
+  import { UIStatus, UITable, UIUser } from '@/components/index.js'
+  import i18n from '@/i18n/index.js'
   import { useConfTimesheetStore } from '@/store/modules/index.js'
+  import UIHelper from '@/utils/UIHelper.js'
   import Utils from '@/utils/Utils.js'
+  import { Eye16Regular } from '@vicons/fluent'
+
+  const { t } = i18n.global
 
   const store = useConfTimesheetStore()
 
-  const emits = defineEmits(['openOffice', 'onChangePage'])
+  const emits = defineEmits(['openOffice'])
 
   const onOpenFile = (documentId, signatureId) => {
     emits('openOffice', { documentId, signatureId })
+  }
+
+  const onPreview = (row) => {
+    onOpenFile(row?.timesheet.id, row.id)
   }
 
   const changePage = (v) => {
@@ -23,74 +26,84 @@
     store._index()
   }
 
-  const onSelect = (v) => {
-    if (v.key === 'view') {
-      onOpenFile(v.data?.timesheet.id, v.data.id)
+  const columns = computed(() => [
+    {
+      key: 'timesheet.user',
+      title: t('content.worker'),
+      minWidth: 280
+    },
+    {
+      key: 'timesheet.work_place',
+      title: t('timesheetWorkerPage.work_place'),
+      minWidth: 200
+    },
+    {
+      key: 'timesheet.month',
+      title: t('content.month'),
+      width: 120
+    },
+    {
+      key: 'timesheet.year',
+      title: t('content.year'),
+      width: 120
+    },
+    {
+      key: 'status',
+      title: t('content.status'),
+      width: 140
     }
-  }
+  ])
+
+  const actions = computed(() => [
+    {
+      label: t('content.view'),
+      key: Utils.ActionTypes.view,
+      icon: UIHelper.renderIcon(Eye16Regular),
+      action: onPreview
+    }
+  ])
 </script>
 
 <template>
-  <n-spin :show="store.loading" style="min-height: 200px">
-    <div class="w-full overflow-x-auto" v-if="store.list.length > 0">
-      <n-table class="mt-10" :single-line="false" size="small">
-        <thead>
-          <tr>
-            <th class="text-center! min-w-[40px] w-[40px]">{{ $t('content.number') }}</th>
-            <th class="min-w-[200px] w-[300px]">{{ $t('content.worker') }}</th>
-            <th class="min-w-[120px]">{{ $t('timesheetWorkerPage.work_place') }}</th>
-            <th class="min-w-[100px] w-[100px]">{{ $t('content.month') }}</th>
-            <th class="min-w-[120px] w-[100px]">{{ $t('content.year') }}</th>
-
-            <th class="min-w-[120px] w-[120px]">{{ $t('content.status') }}</th>
-
-            <th class="min-w-[40px] w-[40px]"></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(item, idx) in store.list" :key="idx">
-            <td>
-              <span class="text-center text-[12px] text-gray-600 block">{{
-                (store.params.page - 1) * store.params.per_page + idx + 1
-              }}</span>
-            </td>
-            <td>
-              <UIUser
-                :data="{
-                  photo: item.timesheet.user?.worker.photo,
-                  firstName: item.timesheet.user?.worker.first_name,
-                  middleName: item.timesheet.user?.worker.middle_name,
-                  lastName: item.timesheet.user?.worker.last_name,
-                  position: item.timesheet.user?.position || ' '
-                }"
-              />
-            </td>
-            <td>
-              <div class="font-medium">
-                {{ item?.timesheet?.work_place?.name || item?.timesheet?.department?.name }}
-              </div>
-            </td>
-            <td>
-              <div class="font-medium">{{ Utils.getMonthNameById(item?.timesheet?.month) }}</div>
-            </td>
-            <td>
-              <div class="font-medium">{{ item?.timesheet?.year }}</div>
-            </td>
-
-            <td><UIStatus :status="item?.status" /></td>
-            <td>
-              <UIMenuButton :show-view="true" :data="item" @selectEv="onSelect" />
-            </td>
-          </tr>
-        </tbody>
-      </n-table>
-      <UIPagination
-        :page="store.params.page"
-        :per_page="store.params.per_page"
-        :total="store.totalItems"
-        @change-page="changePage"
+  <UITable
+    :columns="columns"
+    :actions="actions"
+    :data="store.list"
+    :loading="store.loading"
+    :page="store.params.page"
+    :per-page="store.params.per_page"
+    :total="store.totalItems"
+    storage-key="docflow-confirmation-timesheet"
+    @change-page="changePage"
+  >
+    <template #[`cell-timesheet.user`]="{ row }">
+      <UIUser
+        :data="{
+          photo: row?.timesheet.user?.worker.photo,
+          firstName: row?.timesheet.user?.worker.first_name,
+          middleName: row?.timesheet.user?.worker.middle_name,
+          lastName: row?.timesheet.user?.worker.last_name,
+          position: row?.timesheet.user?.position || ' '
+        }"
       />
-    </div>
-    <NoDataPicture v-if="store.list.length === 0 && !store.loading" />
-  </n-spin>
+    </template>
+
+    <template #[`cell-timesheet.work_place`]="{ row }">
+      <div class="font-medium">
+        {{ row?.timesheet?.work_place?.name || row?.timesheet?.department?.name }}
+      </div>
+    </template>
+
+    <template #[`cell-timesheet.month`]="{ row }">
+      <div class="font-medium">{{ Utils.getMonthNameById(row?.timesheet?.month) }}</div>
+    </template>
+
+    <template #[`cell-timesheet.year`]="{ row }">
+      <div class="font-medium">{{ row?.timesheet?.year }}</div>
+    </template>
+
+    <template #cell-status="{ row }">
+      <UIStatus :status="row?.status" />
+    </template>
+  </UITable>
 </template>

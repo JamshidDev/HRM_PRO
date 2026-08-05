@@ -1,14 +1,12 @@
 <script setup>
   import { useAccountStore } from '@/store/modules/app/accountStore.js'
-  import {
-    Password20Regular,
-    DocumentEdit20Regular,
-    Person20Regular,
-    Send20Regular,
-    Alert20Regular
-  } from '@vicons/fluent'
   import SectionHeader from '@/components/worker/ui/shared/SectionHeader.vue'
   import i18n from '@/i18n/index.js'
+  import UserIcon from '@/assets/icons/user.svg'
+  import TelegramIcon from '@/assets/icons/telegram.svg'
+  import RingIcon from '@/assets/icons/ring.svg'
+  import FileEditIcon from '@/assets/icons/fileEdit.svg'
+  import LockIcon from '@/assets/icons/lock.svg'
 
   import OrgForm from './OrgForm.vue'
   import SocialLink from './SocialLink.vue'
@@ -19,9 +17,9 @@
   const store = useAccountStore()
 
   const tabList = computed(() => [
-    { id: store.tabs[0], name: t('profilePage.tabs.profileInfo'), icon: Person20Regular },
-    { id: store.tabs[4], name: t('profilePage.tabs.social.title'), icon: Send20Regular },
-    { id: store.tabs[1], name: t('profilePage.tabs.notification'), icon: Alert20Regular }
+    { id: store.tabs[0], name: t('profilePage.tabs.profileInfo'), icon: UserIcon },
+    { id: store.tabs[4], name: t('profilePage.tabs.social.title'), icon: TelegramIcon },
+    { id: store.tabs[1], name: t('profilePage.tabs.notification'), icon: RingIcon }
   ])
 </script>
 
@@ -61,7 +59,7 @@
             <SectionHeader
               v-if="store.checkPermission(store.pn.hrCommandsBlank)"
               :title="$t('profilePage.org.title')"
-              :icon="DocumentEdit20Regular"
+              :icon="FileEditIcon"
               plain
               large
               class="mb-4"
@@ -75,7 +73,7 @@
                   ? $t('passwordForm.mustChangeTitle')
                   : $t('passwordForm.changeTitle')
               "
-              :icon="Password20Regular"
+              :icon="LockIcon"
               plain
               large
             >

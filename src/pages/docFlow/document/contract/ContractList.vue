@@ -1,5 +1,5 @@
 <script setup>
-  import { UIStatus, UITable, UIUser } from '@/components/index.js'
+  import { UIStatus, UITable, UITableBadgeCell, UITableNameCell, UIUser } from '@/components/index.js'
   import i18n from '@/i18n/index.js'
   import { useAccountStore, useComponentStore, useContractStore } from '@/store/modules/index.js'
   import UIHelper from '@/utils/UIHelper.js'
@@ -133,21 +133,15 @@
     @change-page="changePage"
   >
     <template #cell-type="{ row }">
-      <div
+      <UITableNameCell
+        :name="row?.type?.name"
+        :created-at="row.created_at"
         @click="onPreview(row)"
-        class="group flex flex-col hover:!text-primary hover:underline cursor-pointer"
-      >
-        <span class="text-sm line-clamp-2 leading-[1.2] font-medium">{{ row?.type?.name }}</span>
-        <span class="text-xs rounded-2xl text-secondary group-hover:!text-primary">
-          {{ Utils.timeHHMMWithMonth(row.created_at) }}
-        </span>
-      </div>
+      />
     </template>
 
     <template #cell-number="{ row }">
-      <n-button v-if="row?.number" class="font-medium" type="info" size="tiny" round dashed>
-        {{ row?.number }}
-      </n-button>
+      <UITableBadgeCell :number="row?.number" type="info" />
     </template>
 
     <template #cell-worker="{ row }">

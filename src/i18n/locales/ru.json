@@ -235,10 +235,12 @@
     "sidebarThemeGreen": "Зелёный",
     "customColor": "Особый цвет",
     "customColorDesc": "Измените цвета сайта",
+    "appearanceMode": "Вид",
     "filterGrayscale": "Чёрно-белый вид",
     "filterLowBrightness": "Низкая яркость",
     "filterHighBrightness": "Высокая яркость",
-    "resetChanges": "Сбросить изменения",
+    "textSize": "Размер текста",
+    "resetChanges": "Вернуть по умолчанию",
     "changeAccount": "Мои аккаунты",
     "logOutSystem": "Выйти из системы",
     "paginationSize": "Показать {n}",
@@ -286,6 +288,7 @@
     "document": "Документ",
     "checking": "Проверка...",
     "downloadCV": "Скачать справку",
+    "downloadT2": "Справка T-2",
     "deleteWarning": "Вы действительно хотите удалить?",
     "sum": "сум",
     "total": "Всего: {n}",
@@ -698,7 +701,12 @@
       "countByWorker": "По сотрудникам",
       "age": "Возраст",
       "quickActions": "Быстрые действия",
-      "downloadRelative": "Скачать родственников"
+      "downloadRelative": "Скачать родственников",
+      "generateReport": "Создать отчёт",
+      "generateReportDesc": "Выберите сотрудников для создания отчёта",
+      "relativesReport": "По родственникам",
+      "excelFile": "Excel файл",
+      "downloadInfo": "Скачать данные"
     },
     "checkWorker": {
       "title": "Поиск сотрудника",
@@ -733,7 +741,12 @@
     "exportAction": "Экспорт",
     "checkAll": "Выбрать все",
     "addPassport": "Включить паспортные данные?",
-    "chooseExport": "Выбрать поля"
+    "passportYes": "Да, добавить",
+    "passportNo": "Нет, только данные",
+    "chooseExport": "Выбрать поля",
+    "excelSettings": "Настройка таблицы Excel",
+    "selectColumns": "Выберите столбцы таблицы",
+    "columnOrder": "Настройте порядок столбцов"
   },
   "contactPage": {
     "name": "Контакты"
@@ -1628,7 +1641,7 @@
       "punishment": "Дисциплинарное взыскание",
       "e_documents": "Э-документы",
       "exams": "Экзамены",
-      "turnstile": "Турникет"
+      "turnstile": "Данные турникета"
     },
     "header": {
       "title": "Профиль сотрудника",
@@ -1679,6 +1692,7 @@
       "pasport": "Паспорт",
       "railway_pasport": "Железнодорожное удостоверение",
       "foreign_pasport": "Заграничный паспорт",
+      "position_certificate": "Удостоверение по должности",
       "card_number": "Номер карты",
       "issue_date": "Дата выдачи",
       "expiry_date": "Срок действия",
@@ -2283,6 +2297,17 @@
     "canIHelpYouToday": "Чем могу помочь сегодня?",
     "aiAssistant": "ИИ Помощник",
     "welcomeTo": "Добро пожаловать, {n}",
+    "greeting": {
+      "morning": "Доброе утро, {n}",
+      "day": "Добрый день, {n}",
+      "evening": "Добрый вечер, {n}"
+    },
+    "suggestions": {
+      "leaveBalance": "Сколько дней отпуска у меня осталось?",
+      "lastSalary": "Мой последний расчёт зарплаты",
+      "getReference": "Получить справку",
+      "workedDays": "Сколько дней я отработал в этом месяце?"
+    },
     "disclaimer": {
       "cardOne": "### 🧪 Тестовый режим\n\nЭтот ИИ-помощник работает в **тестовом режиме**.  \nОтветы могут быть неполными или _неверными_.",
       "cardTwo": "### 📚 Загрузка правовых документов\n\nБот обучен только на **Трудовом кодексе Узбекистана**.  \n_Другие законы ещё не полностью загружены или обучены._",

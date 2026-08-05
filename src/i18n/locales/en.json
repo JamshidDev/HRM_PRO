@@ -231,10 +231,12 @@
     "sidebarThemeGreen": "Green",
     "customColor": "Custom color",
     "customColorDesc": "Change the site's colors",
+    "appearanceMode": "View",
     "filterGrayscale": "Grayscale",
     "filterLowBrightness": "Low brightness",
     "filterHighBrightness": "High brightness",
-    "resetChanges": "Reset changes",
+    "textSize": "Text size",
+    "resetChanges": "Reset to default",
     "changeAccount": "My accounts",
     "logOutSystem": "Log out",
     "paginationSize": "Show {n} items",
@@ -282,6 +284,7 @@
     "document": "Document",
     "checking": "Checking...",
     "downloadCV": "Download certificate",
+    "downloadT2": "T-2 certificate",
     "deleteWarning": "Are you sure you want to delete?",
     "sum": "UZS",
     "total": "Total: {n}",
@@ -696,7 +699,12 @@
       "countByWorker": "By worker",
       "age": "Age",
       "quickActions": "Quick actions",
-      "downloadRelative": "Download relatives"
+      "downloadRelative": "Download relatives",
+      "generateReport": "Generate report",
+      "generateReportDesc": "Select employees to generate a report",
+      "relativesReport": "By relatives",
+      "excelFile": "Excel file",
+      "downloadInfo": "Download info"
     },
     "checkWorker": {
       "title": "Search employee",
@@ -731,7 +739,12 @@
     "exportAction": "Export",
     "checkAll": "Select all",
     "addPassport": "Include passport data?",
-    "chooseExport": "Select fields"
+    "passportYes": "Yes, include it",
+    "passportNo": "No, data only",
+    "chooseExport": "Select fields",
+    "excelSettings": "Set up Excel table",
+    "selectColumns": "Select table columns",
+    "columnOrder": "Arrange column order"
   },
   "contactPage": {
     "name": "Contacts"
@@ -1620,7 +1633,7 @@
       "punishment": "Disciplinary action",
       "e_documents": "E-documents",
       "exams": "Exams",
-      "turnstile": "Turnstile"
+      "turnstile": "Turnstile data"
     },
     "header": {
       "title": "Employee profile",
@@ -1671,6 +1684,7 @@
       "pasport": "Passport",
       "railway_pasport": "Railway ID",
       "foreign_pasport": "Foreign Passport",
+      "position_certificate": "Position Certificate",
       "card_number": "Card Number",
       "issue_date": "Issue Date",
       "expiry_date": "Expiry Date",
@@ -2275,6 +2289,17 @@
     "canIHelpYouToday": "How can I help you today?",
     "aiAssistant": "AI Assistant",
     "welcomeTo": "Welcome, {n}",
+    "greeting": {
+      "morning": "Good morning, {n}",
+      "day": "Good afternoon, {n}",
+      "evening": "Good evening, {n}"
+    },
+    "suggestions": {
+      "leaveBalance": "How much leave do I have left?",
+      "lastSalary": "My last salary calculation",
+      "getReference": "Get a reference letter",
+      "workedDays": "How many days have I worked this month?"
+    },
     "disclaimer": {
       "cardOne": "### 🧪 Test mode\n\nThis AI assistant is currently in **test mode**.  \nAnswers may be incomplete or _incorrect_.",
       "cardTwo": "### 📚 Legal documents loading\n\nBot currently trained only on **Labor Code of Uzbekistan**.  \n_Other laws not fully loaded or trained._",

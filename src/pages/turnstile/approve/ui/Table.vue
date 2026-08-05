@@ -1,9 +1,10 @@
 <script setup>
-  import { NoDataPicture, UIMenuButton, UIPagination, UIUser } from '@/components/index.js'
-  import { useApproveStore, useAccountStore } from '@stores'
-  import { Utils } from '@utils'
+  import { UIStatus, UITable, UIUser } from '@components'
   import i18n from '@/i18n'
-  import { UIStatus } from '@components'
+  import { useAccountStore, useApproveStore } from '@stores'
+  import UIHelper from '@/utils/UIHelper.js'
+  import { Utils } from '@utils'
+  import { CheckmarkCircle32Regular, Delete20Regular, Edit32Regular } from '@vicons/fluent'
 
   const accStore = useAccountStore()
   const store = useApproveStore()
@@ -15,12 +16,16 @@
     store._index()
   }
 
-  const onShow = (v) => {
+  const onShow = (row) => {
+    if (!accStore.checkAction(accStore.pn.turnstileDevicesWrite)) return
+    store.elementId = row.id
     store.approve.visible = true
     store._show()
   }
 
-  const onEdit = () => {
+  const onEdit = (row) => {
+    if (!accStore.checkAction(accStore.pn.turnstileDevicesWrite)) return
+    store.elementId = row.id
     store.visible = true
     store.visibleType = false
     store._show((v) => {
@@ -42,19 +47,9 @@
     })
   }
 
-  const onSelectEv = (v) => {
-    store.elementId = v.data.id
+  const onDelete = (row) => {
     if (!accStore.checkAction(accStore.pn.turnstileDevicesWrite)) return
-    if (v.key === 'delete') {
-      onDelete()
-    } else if (v.key === Utils.ActionTypes.confirm) {
-      onShow(v.data)
-    } else if (v.key === Utils.ActionTypes.edit) {
-      onEdit(v.data)
-    }
-  }
-
-  const onDelete = () => {
+    store.elementId = row.id
     store._delete()
   }
 
@@ -83,99 +78,100 @@
       name: t('content.Rejected')
     }
   }
+
+  const columns = computed(() => [
+    {
+      key: 'worker',
+      title: t('content.worker'),
+      minWidth: 300
+    },
+    {
+      key: 'organization',
+      title: t('content.organization'),
+      width: 300
+    },
+    {
+      key: 'title',
+      title: t('content.name'),
+      width: 300
+    },
+    {
+      key: 'description',
+      title: t('content.description'),
+      width: 300
+    },
+    {
+      key: 'approved',
+      title: t('content.status'),
+      width: 140
+    },
+    {
+      key: 'status',
+      title: t('content.status'),
+      width: 140
+    }
+  ])
+
+  const actions = computed(() => [
+    {
+      label: t('content.edit'),
+      key: Utils.ActionTypes.edit,
+      icon: UIHelper.renderIcon(Edit32Regular),
+      action: onEdit,
+      visible: (row) => row.status === 'sended' && row.approved === 1
+    },
+    {
+      label: t('content.confirm'),
+      key: Utils.ActionTypes.confirm,
+      icon: UIHelper.renderIcon(CheckmarkCircle32Regular),
+      action: onShow,
+      visible: (row) => row.status === 'received' && row.approved === 1
+    },
+    {
+      label: t('content.delete'),
+      key: Utils.ActionTypes.delete,
+      icon: UIHelper.renderIcon(Delete20Regular),
+      action: onDelete,
+      visible: (row) => row.status === 'sended' && row.approved !== 2
+    }
+  ])
 </script>
 
 <template>
-  <n-spin :show="store.loading" style="min-height: 200px">
-    <div class="mt-4" v-if="store.totalItems > 0">
-      <n-table size="small" v-if="store.list.length > 0" :bordered="false" :single-line="false">
-        <thead>
-          <tr>
-            <th class="w-[46px] min-w-[30px]">{{ $t('content.number') }}</th>
-            <th class="min-w-[100px]">{{ $t('content.worker') }}</th>
-            <th class="min-w-[100px] w-[300px]">{{ $t('content.organization') }}</th>
-            <th class="min-w-[100px] w-[300px]">{{ $t('content.name') }}</th>
-            <th class="w-[200px]">{{ $t('content.description') }}</th>
-            <th class="w-[120px]">{{ $t('content.status') }}</th>
-            <th class="w-[120px]">{{ $t('content.status') }}</th>
-            <th class="max-w-[40px] w-[40px]"></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(item, index) in store.list" :key="item.id">
-            <td class="text-center!">
-              {{ (store.params.page - 1) * store.params.per_page + index + 1 }}
-            </td>
-            <td>
-              <UIUser
-                :hide-tooltip="true"
-                :short="false"
-                :data="{
-                  photo: item?.user?.worker?.photo,
-                  lastName: item?.user?.worker?.last_name,
-                  firstName: item?.user?.worker?.first_name,
-                  middleName: item?.user?.worker?.middle_name,
-                  position: item?.organization?.name
-                }"
-              />
-            </td>
-            <td>
-              {{
-                item.status === 'received'
-                  ? item?.organization?.name
-                  : item?.receiver_organization?.name
-              }}
-            </td>
-            <td>
-              <n-tooltip trigger="hover">
-                <template #trigger>
-                  <p
-                    class="cursor-pointer text-sm text-textColor2 line-clamp-1 w-full leading-[1.2] truncate"
-                  >
-                    {{ item?.title }}
-                  </p>
-                </template>
-                {{ item?.title }}
-              </n-tooltip>
-            </td>
-
-            <td>
-              <n-tooltip trigger="hover">
-                <template #trigger>
-                  <p
-                    class="cursor-pointer text-sm text-textColor2 line-clamp-1 w-full leading-[1.2] truncate"
-                  >
-                    {{ item?.description }}
-                  </p>
-                </template>
-                {{ item?.description }}
-              </n-tooltip>
-            </td>
-            <td>
-              <UIStatus :status="approveStatus[item.approved]" />
-            </td>
-            <td>
-              <UIStatus :status="actionStatus[item.status]" />
-            </td>
-            <td>
-              <UIMenuButton
-                :show-delete="item.status === 'sended' && item.approved !== 2"
-                :show-edit="item.status === 'sended' && item.approved === 1"
-                :show-confirm="item.status === 'received' && item.approved === 1"
-                :data="item"
-                @select-ev="onSelectEv"
-              />
-            </td>
-          </tr>
-        </tbody>
-      </n-table>
-      <UIPagination
-        :page="store.params.page"
-        :per_page="store.params.per_page"
-        :total="store.totalItems"
-        @change-page="changePage"
+  <UITable
+    :columns="columns"
+    :actions="actions"
+    :data="store.list"
+    :loading="store.loading"
+    :page="store.params.page"
+    :per-page="store.params.per_page"
+    :total="store.totalItems"
+    storage-key="turnstile-approve"
+    @change-page="changePage"
+  >
+    <template #cell-worker="{ row }">
+      <UIUser
+        :short="false"
+        :data="{
+          photo: row?.user?.worker?.photo,
+          lastName: row?.user?.worker?.last_name,
+          firstName: row?.user?.worker?.first_name,
+          middleName: row?.user?.worker?.middle_name,
+          position: row?.organization?.name
+        }"
       />
-    </div>
-    <NoDataPicture v-if="store.list.length === 0 && !store.loading" />
-  </n-spin>
+    </template>
+
+    <template #cell-organization="{ row }">
+      {{ row.status === 'received' ? row?.organization?.name : row?.receiver_organization?.name }}
+    </template>
+
+    <template #cell-approved="{ row }">
+      <UIStatus :status="approveStatus[row.approved]" />
+    </template>
+
+    <template #cell-status="{ row }">
+      <UIStatus :status="actionStatus[row.status]" />
+    </template>
+  </UITable>
 </template>

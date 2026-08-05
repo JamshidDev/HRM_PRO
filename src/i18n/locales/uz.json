@@ -238,10 +238,12 @@
     "sidebarThemeGreen": "Green",
     "customColor": "Maxsus rang",
     "customColorDesc": "Sayt ranglarini o'zgartiring",
+    "appearanceMode": "Ko'rinish",
     "filterGrayscale": "Rangsiz ko'rinish",
     "filterLowBrightness": "Past yorug'lik",
     "filterHighBrightness": "Baland yorug'lik",
-    "resetChanges": "O'zgarishlarni bekor qilish",
+    "textSize": "Matn hajmi",
+    "resetChanges": "Standartga qaytarish",
     "changeAccount": "Hisoblarim",
     "logOutSystem": "Tizmdan chiqish",
     "paginationSize": "{n} tadan ko'rsatish",
@@ -293,6 +295,7 @@
     "document": "Hujjat",
     "checking": "Tekshirilmoqda...",
     "downloadCV": "Ma'lumotnoma yuklash",
+    "downloadT2": "T-2 ma'lumotnoma",
     "deleteWarning": "Haqiqatan ham o'chirmoqchimisiz?",
     "sum": "so'm",
     "total": "Umumiy: {n} ta",
@@ -712,7 +715,12 @@
       "countByWorker": "Xodim bo'yicha",
       "age": "Yoshi",
       "quickActions": "Tezkor amallar",
-      "downloadRelative": "Qarindoshlarni yuklash"
+      "downloadRelative": "Qarindoshlarni yuklash",
+      "generateReport": "Hisobot yaratish",
+      "generateReportDesc": "Hisobot yaratish uchun xodimlarni belgilang",
+      "relativesReport": "Qarindoshlar bo'yicha",
+      "excelFile": "Excel fayl",
+      "downloadInfo": "Ma'lumotni yuklash"
     },
     "checkWorker": {
       "title": "Xodim izlash",
@@ -748,7 +756,12 @@
     "exportAction": "Eksport qilish",
     "checkAll": "Barchasini tanlash",
     "addPassport": "Passport ma'lumotlari ham qo'shib yuklansinmi?",
-    "chooseExport": "Maydonlarni tanlash"
+    "passportYes": "Ha yuklansin",
+    "passportNo": "Yo'q faqat ma'lumotlar yuklansin",
+    "chooseExport": "Maydonlarni tanlash",
+    "excelSettings": "Excel jadvalini sozlash",
+    "selectColumns": "Jadval ustunlarini belgilang",
+    "columnOrder": "Jadval ustunlar joylashuvini sozlang"
   },
   "contactPage": {
     "name": "Kontaktlar"
@@ -1642,7 +1655,7 @@
       "punishment": "Intizomiy jazo",
       "exams": "Imtihonlar",
       "e_documents": "Raqamli-hujjatlar",
-      "turnstile": "Turniket"
+      "turnstile": "Turniket ma’lumotlar"
     },
     "header": {
       "title": "Xodim profili",
@@ -1693,6 +1706,7 @@
       "pasport": "Passport",
       "railway_pasport": "Temiryo‘l guvohnoma",
       "foreign_pasport": "Xorijiy passport",
+      "position_certificate": "Lavozim guvohnomasi",
       "card_number": "Karta raqami",
       "issue_date": "Berilgan sana",
       "expiry_date": "Muddat o'tish sanasi",
@@ -2301,6 +2315,17 @@
     "canIHelpYouToday": "Bugun sizga qanday yordam bera olaman?",
     "aiAssistant": "AI Yordamchi",
     "welcomeTo": "Xush kelibsiz, {n}",
+    "greeting": {
+      "morning": "Xayrli tong, {n}",
+      "day": "Xayrli kun, {n}",
+      "evening": "Xayrli kech, {n}"
+    },
+    "suggestions": {
+      "leaveBalance": "Ta'til qancha qoldi?",
+      "lastSalary": "Oxirgi oylik hisobim",
+      "getReference": "Ma'lumotnoma olish",
+      "workedDays": "Bu oy necha kun ishladim?"
+    },
     "disclaimer": {
       "cardOne": "### 🧪 Test rejimi\n\nUshbu sun’iy intellekt yordamchisi hozirda **test rejimida** ishlamoqda.  \nJavoblari hali to‘liq shakllanmagan va _noto‘g‘ri bo‘lishi mumkin_.",
       "cardTwo": "### 📚 Huquqiy hujjatlar yuklanmoqda\n\nBot hozircha faqat **O‘zbekiston Respublikasi Mehnat kodeksi** asosida o‘rganmoqda.  \n_Boshqa qonun hujjatlari hali to‘liq yuklanmagan yoki o‘rganilmagan._",

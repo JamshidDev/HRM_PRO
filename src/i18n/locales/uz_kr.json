@@ -158,10 +158,12 @@
     "sidebarThemeGreen": "Грин",
     "customColor": "Махсус ранг",
     "customColorDesc": "Сайт рангларини ўзгартиринг",
+    "appearanceMode": "Кўриниш",
     "filterGrayscale": "Рангсиз кўриниш",
     "filterLowBrightness": "Паст ёруғлик",
     "filterHighBrightness": "Баланд ёруғлик",
-    "resetChanges": "Ўзгаришларни бекор қилиш",
+    "textSize": "Матн ҳажми",
+    "resetChanges": "Стандартга қайтариш",
     "changeAccount": "Ҳисобларим",
     "logOutSystem": "Тизмдан чиқиш",
     "paginationSize": "{n} тадан кўрсатиш",
@@ -213,6 +215,7 @@
     "document": "Ҳужжат",
     "checking": "Текширилмоқда...",
     "downloadCV": "Маълумотнома юклаш",
+    "downloadT2": "T-2 маълумотнома",
     "deleteWarning": "Ҳақиқатан ҳам ўчирмоқчимисиз?",
     "sum": "сўм",
     "total": "Умумий: {n} та",
@@ -612,7 +615,12 @@
       "pension_age": "Пенсия ёшидаги ходимлар",
       "position_type": "Лавозим тури",
       "age": "Ёши",
-      "downloadRelative": "Қариндошларни юклаш"
+      "downloadRelative": "Қариндошларни юклаш",
+      "generateReport": "Ҳисобот яратиш",
+      "generateReportDesc": "Ҳисобот яратиш учун ходимларни белгиланг",
+      "relativesReport": "Қариндошлар бўйича",
+      "excelFile": "Excel файл",
+      "downloadInfo": "Маълумотни юклаш"
     },
     "checkWorker": {
       "title": "Ходим излаш",
@@ -645,7 +653,12 @@
     "exportAction": "Экспорт қилиш",
     "checkAll": "Барчасини танлаш",
     "addPassport": "Паспорт маълумотлари ҳам қўшиб юклансинми?",
-    "chooseExport": "Майдонларни танлаш"
+    "passportYes": "Ҳа юклансин",
+    "passportNo": "Йўқ фақат маълумотлар юклансин",
+    "chooseExport": "Майдонларни танлаш",
+    "excelSettings": "Excel жадвалини созлаш",
+    "selectColumns": "Жадвал устунларини белгиланг",
+    "columnOrder": "Жадвал устунлар жойлашувини созланг"
   },
   "contactPage": {
     "name": "Контактлар"
@@ -1445,12 +1458,13 @@
       "punishment": "Интизомий жазолари",
       "exams": "Имтиҳонлар",
       "e_documents": "Рақамли-ҳужжатлар",
-      "turnstile": "Турникет"
+      "turnstile": "Турникет маълумотлар"
     },
     "Edocument": {
       "pasport": "Паспорт",
       "railway_pasport": "Темир йўл гувоҳнома",
       "foreign_pasport": "Хорижий паспорт",
+      "position_certificate": "Лавозим гувоҳномаси",
       "card_number": "Карта рақами",
       "issue_date": "Берилган сана",
       "expiry_date": "Муддат ўтиш санаси",
@@ -2058,6 +2072,17 @@
     "canIHelpYouToday": "Бугун сизга қандай ёрдам бера оламан?",
     "aiAssistant": "АИ Ёрдамчи",
     "welcomeTo": "Хуш келибсиз, {n}",
+    "greeting": {
+      "morning": "Хайрли тонг, {n}",
+      "day": "Хайрли кун, {n}",
+      "evening": "Хайрли кеч, {n}"
+    },
+    "suggestions": {
+      "leaveBalance": "Таътил қанча қолди?",
+      "lastSalary": "Охирги ойлик ҳисобим",
+      "getReference": "Маълумотнома олиш",
+      "workedDays": "Бу ой неча кун ишладим?"
+    },
     "disclaimer": {
       "cardOne": "### 🧪 Тест режими\n\nУшбу сунъий интеллект ёрдамчиси ҳозирда **тест режимида** ишламоқда.  \nЖавоблари ҳали тўлиқ шаклланмаган ва _нотўғри бўлиши мумкин_.",
       "cardTwo": "### 📚 Ҳуқуқий ҳужжатлар юкланмоқда\n\nБот ҳозирча фақат **Ўзбекистон Республикаси Меҳнат кодекси** асосида ўрганмоқда.  \n_Бошқа қонун ҳужжатлари ҳали тўлиқ юкланмаган ёки ўрганилмаган._",

@@ -1,16 +1,20 @@
 <script setup>
   import {
     NoDataPicture,
+    UIDeleteConfirm,
     UIPagination,
     UITableActionsMenu,
     UITableColumns,
     UITableSelectAll,
     UITableSelectRow
   } from '@/components/index.js'
-  import { useTableColumns } from '@/composables/index.js'
+  import { useTableColumnFit, useTableColumns } from '@/composables/index.js'
+  import Utils from '@/utils/Utils.js'
   import i18n from '@/i18n/index.js'
 
   const { t } = i18n.global
+
+  defineOptions({ inheritAttrs: false })
 
   const props = defineProps({
     columns: { type: Array, required: true }, // [{ key, title, fullTitle, width, minWidth, maxWidth, className, resizable, ellipsis, align, fixed }]
@@ -30,9 +34,10 @@
     selectable: { type: Boolean, default: false }, // swaps the row-number for a checkbox
     selectedKeys: { type: Array, default: () => [] },
     allSelected: { type: Boolean, default: false },
-    actions: { type: Array, default: () => [] }, // "..." menu + right-click options
+    actions: { type: Array, default: () => [] }, // "..." menu + right-click options; visible can be boolean or (row) => boolean
     storageKey: { type: String, default: null }, // persists column visibility/order/width
-    onLoad: { type: Function, default: null } // async tree children loader: (row) => Promise<void>
+    onLoad: { type: Function, default: null }, // async tree children loader: (row) => Promise<void>
+    rowClassName: { type: Function, default: null } // (row, index) => string
   })
 
   const emit = defineEmits([
@@ -45,6 +50,7 @@
   ])
 
   const slots = useSlots()
+  const instance = getCurrentInstance()
   const empty = computed(() => props.data.length === 0)
 
   const tableColumns = props.storageKey
@@ -57,18 +63,9 @@
   const getCellValue = (row, key) =>
     key.includes?.('.') ? key.split('.').reduce((o, k) => o?.[k], row) : row[key]
 
-  // Persisting on every drag tick would hammer localStorage, so only the last resize
-  // of a column within a short window is written.
-  const resizeTimers = {}
-  const onUnstableColumnResize = (resizedWidth, limitedWidth, column) => {
-    if (!tableColumns) return
-    clearTimeout(resizeTimers[column.key])
-    resizeTimers[column.key] = setTimeout(() => {
-      tableColumns.setColumnWidth(column.key, limitedWidth)
-    }, 300)
-  }
-
   const visibleActions = computed(() => props.actions.filter((a) => a.visible !== false))
+  const rowActionsFor = (row) =>
+    visibleActions.value.filter((a) => (typeof a.visible === 'function' ? a.visible(row) : true))
   const indexOffset = computed(() => (props.page - 1) * props.perPage)
 
   const allCols = computed(() => {
@@ -82,34 +79,44 @@
     return cols
   })
 
-  const naturalWidth = (col) => col.width || col.minWidth || 100
-  const scrollX = computed(() => allCols.value.reduce((sum, c) => sum + naturalWidth(c), 0))
+  const {
+    wrapperRef: tableWrapperRef,
+    scrollX,
+    getKey,
+    getWidth,
+    onUnstableColumnResize,
+    reset: resetColumnFit
+  } = useTableColumnFit(allCols, {
+    onResize: (key, width) => tableColumns?.setColumnWidth(key, width)
+  })
 
   const ndtColumns = computed(() => {
-    return allCols.value.map((col) => ({
-      key: col.key,
-      width: col.width ?? col.minWidth,
-      minWidth: col.minWidth ?? col.width,
-      maxWidth: col.maxWidth,
-      className: col.className,
-      resizable: col.resizable ?? true,
-      ellipsis:
-        col.ellipsis ??
-        (slots[`cell-${col.key}`]
-          ? false
-          : {
-              tooltip: {
-                style: {
-                  maxWidth: '300px'
+    return allCols.value.map((col) => {
+      return {
+        key: getKey(col),
+        width: getWidth(col),
+        minWidth: col.minWidth ?? col.width,
+        maxWidth: col.maxWidth,
+        className: col.className,
+        resizable: col.resizable ?? true,
+        ellipsis:
+          col.ellipsis ??
+          (slots[`cell-${col.key}`] || col.render
+            ? false
+            : {
+                tooltip: {
+                  style: {
+                    maxWidth: '300px'
+                  }
                 }
-              }
-            }),
-      align: col.align,
-      fixed: col.fixed,
-      tree: col.tree,
-      title: () => renderHeader(col),
-      render: (row, index) => renderCell(col, row, index)
-    }))
+              }),
+        align: col.align,
+        fixed: col.fixed,
+        tree: col.tree,
+        title: () => renderHeader(col),
+        render: (row, index) => renderCell(col, row, index)
+      }
+    })
   })
 
   const rowKeyFn = (row) => row[props.rowKey]
@@ -138,7 +145,10 @@
     return h(UITableColumns, {
       columns: tableColumns.allColumns.value,
       'onUpdate:columns': (v) => tableColumns.setAllColumns(v),
-      onReset: () => tableColumns.reset()
+      onReset: () => {
+        resetColumnFit()
+        tableColumns.reset()
+      }
     })
   }
 
@@ -166,26 +176,34 @@
     }
 
     if (col.key === '__actions') {
-      if (!visibleActions.value.length) return null
+      const rowActions = rowActionsFor(row)
+      if (!rowActions.length) return null
       return h(UITableActionsMenu, {
-        options: visibleActions.value,
+        options: rowActions,
         onSelect: (key, option) => onActionSelect(key, option, row)
       })
     }
+
+    if (col.render) return col.render(row, index)
 
     return getCellValue(row, col.key)
   }
 
   const rowProps = (row, index) => ({
     onClick: () => emit('row-click', row, index),
-    onContextmenu: (e) => onRowContextmenu(e, row, index)
+    onContextmenu: (e) => onRowContextmenu(e, row, index),
+    style: instance.vnode.props?.onRowClick ? 'cursor: pointer' : undefined
   })
 
   const contextMenu = reactive({ show: false, x: 0, y: 0, row: null })
 
+  const contextMenuActions = computed(() =>
+    contextMenu.row ? rowActionsFor(contextMenu.row) : []
+  )
+
   const onRowContextmenu = (e, row, index) => {
     emit('row-contextmenu', e, row, index)
-    if (!visibleActions.value.length) return
+    if (!rowActionsFor(row).length) return
     e.preventDefault()
     contextMenu.row = row
     contextMenu.show = false
@@ -196,9 +214,24 @@
     })
   }
 
+  const pendingDelete = ref(null)
+  const deleteConfirmVisible = ref(false)
+
   const onSelectContextAction = (key, option) => {
     contextMenu.show = false
+    if (key === Utils.ActionTypes.delete) {
+      pendingDelete.value = { key, option, row: contextMenu.row }
+      deleteConfirmVisible.value = true
+      return
+    }
     onActionSelect(key, option, contextMenu.row)
+  }
+
+  const onConfirmDelete = () => {
+    deleteConfirmVisible.value = false
+    const pending = pendingDelete.value
+    pendingDelete.value = null
+    if (pending) onActionSelect(pending.key, pending.option, pending.row)
   }
 </script>
 
@@ -206,7 +239,11 @@
   <n-spin :show="loading" class="h-full">
     <NoDataPicture v-if="empty" />
 
-    <div v-else class="h-full flex flex-col p-1 bg-surface-section rounded-[20px]">
+    <div
+      v-else
+      ref="tableWrapperRef"
+      class="ui-table__wrapper h-full flex flex-col p-1 bg-surface-section rounded-[20px]"
+    >
       <n-data-table
         class="ui-table__table flex-1 min-h-[clamp(200px,calc(100vh-140px),600px)]"
         :columns="ndtColumns"
@@ -219,6 +256,7 @@
         :striped="striped"
         :scroll-x="scrollX"
         :row-props="rowProps"
+        :row-class-name="rowClassName"
         :on-load="onLoad"
         flex-height
         @unstable-column-resize="onUnstableColumnResize"
@@ -242,24 +280,28 @@
   </n-spin>
 
   <n-dropdown
-    v-if="visibleActions.length"
+    v-if="contextMenuActions.length"
     size="small"
     placement="bottom-start"
     trigger="manual"
     :x="contextMenu.x"
     :y="contextMenu.y"
-    :options="visibleActions"
+    :options="contextMenuActions"
     :show="contextMenu.show"
     :on-clickoutside="() => (contextMenu.show = false)"
     @select="onSelectContextAction"
   />
+
+  <UIDeleteConfirm v-model:visible="deleteConfirmVisible" @confirm="onConfirmDelete" />
 </template>
 
 <style scoped>
+  .ui-table__table :deep(.n-data-table-table),
   .ui-table__table :deep(.n-data-table-th:first-child) {
     border-top-left-radius: 16px !important;
   }
 
+  .ui-table__table :deep(.n-data-table-table),
   .ui-table__table :deep(.n-data-table-th:last-child) {
     border-top-right-radius: 16px !important;
   }

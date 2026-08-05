@@ -87,6 +87,8 @@ export const useExportStore = defineStore('exportStore', {
         ._export_workers({ data })
         .then((res) => {
           this.visible = false
+          this.isExportingResume = false
+          this.resetResumePayload()
         })
         .finally(() => {
           this.saveLoading = false
@@ -101,6 +103,7 @@ export const useExportStore = defineStore('exportStore', {
         ._export_resume({ data })
         .then((res) => {
           this.resumeModalVisible = false
+          this.isExportingResume = false
           this.resetResumePayload()
           // router.push(Utils.routeHrmPathMaker(AppPaths.Export))
         })
