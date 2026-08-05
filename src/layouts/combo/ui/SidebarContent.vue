@@ -82,14 +82,13 @@
     store.checkPermission(permission) || store.checkPermission(`${permission}-read`)
 
   /**
-   * Modul (mini-menyu) ko'rinadi: o'z ruxsati bo'lsa YOKI kamida bitta ko'rinadigan
-   * bola menyusi bo'lsa. Shu bilan faqat child-ruxsatga ega (coarse modul ruxsatisiz)
-   * foydalanuvchi ham modulni ko'rib, ichidagi sahifasiga o'ta oladi.
+   * Modul (mini-menyu) FAQAT o'zining module-access ruxsati bo'lsa ko'rinadi.
+   * isModeDev bypass ATAYLAB OLIB TASHLANDI — menyu va moddalar HAR DOIM (localda ham)
+   * permissionga mos ko'rinsin. Avvalgi child-fallback ham yo'q (`instructions` kabi
+   * umumiy permission tufayli hr/hrLeader Admin modulini ko'rib qolardi). Ichki
+   * sahifalar ham o'z permissioni bilan filtrlanadi (children.filter, pastda).
    */
-  const moduleVisible = (mod) =>
-    store.isModeDev ||
-    canView(mod.permission) ||
-    (mod.children?.some((c) => canView(c.permission)) ?? false)
+  const moduleVisible = (mod) => canView(mod.permission)
 
   const miniMenu = computed(() =>
     navigations
@@ -132,7 +131,7 @@
         ...v,
         allowed: canView(v.permission)
       }))
-      .filter((v) => store.isModeDev || v.allowed)
+      .filter((v) => v.allowed)
   })
 
   const menuName = computed(() => {

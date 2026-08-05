@@ -638,14 +638,14 @@ export const navigations = [
         path: Utils.routeLmsPathMaker(AppPaths.Listener),
         icon: ShiftsCheckmark20Regular,
         color: 'bg-dark',
-        permission: appPermissions.admin
+        permission: appPermissions.lms
       },
       {
         label: 'resultPage.name', // Natijalar
         path: Utils.routeLmsPathMaker(AppPaths.Result),
         icon: AppsList24Filled,
         color: 'bg-info',
-        permission: appPermissions.admin
+        permission: appPermissions.lms
       },
       {
         label: 'lmsCertificate.name', // Sertifikatlar
@@ -981,7 +981,7 @@ export const navigations = [
         path: Utils.routePathMaker(AppPaths.MobileUsers),
         icon: Folder48Filled,
         color: 'bg-dark',
-        permission: appPermissions.admin
+        permission: appPermissions.mobileUsers
       },
       {
         label: 'vacancyApprovePage.menuName', // Tasdiqlash
@@ -995,7 +995,7 @@ export const navigations = [
         path: Utils.routePathMaker(AppPaths.IntegrationClients),
         icon: Folder48Filled,
         color: 'bg-dark',
-        permission: appPermissions.admin
+        permission: appPermissions.integrationClients
       },
       {
         label: 'workerReport.name', // Xodim hisobotlari
@@ -1009,7 +1009,7 @@ export const navigations = [
         path: Utils.routePathMaker(AppPaths.HolidayGreeting),
         icon: Folder48Filled,
         color: 'bg-dark',
-        permission: appPermissions.admin
+        permission: appPermissions.holidayGreetings
       }
     ]
   }

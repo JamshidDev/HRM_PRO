@@ -169,7 +169,6 @@ export const PERMISSION_GROUPS = [
       { prefix: 'hr-vacation-schedule', label: 'vacationSchedule.name' },
       { prefix: 'confirmation-lms-certificate', label: 'lmsCertificate.name' },
       { prefix: 'confirmation-staffing-approval', label: 'staffingApproval.name' },
-      { prefix: 'confirmation', label: 'confirmationReport.name' },
     ],
   },
   {
@@ -201,7 +200,6 @@ export const PERMISSION_GROUPS = [
       { prefix: 'turnstile-sheets', label: 'schedule.name' },
       { prefix: 'turnstile-sheets-workers', label: 'shiftType.name' },
       { prefix: 'turnstile-sheets-groups', label: 'shiftType.groupName' },
-      { prefix: 'turnstile-sheets', label: 'turnstileSchedule.name' },
       { prefix: 'turnstile-approve', label: 'approve.name' },
     ],
   },
@@ -221,7 +219,6 @@ export const PERMISSION_GROUPS = [
       { prefix: 'lms-edu-plan', label: 'eduPlanPage.name' },
       { prefix: 'lms-teachers', label: 'teacherPage.name' },
       { prefix: 'lms-lessons', label: 'lessonPage.name' },
-      { prefix: 'admin', label: 'teacherLesson.name' },
       { prefix: 'lms-certificate', label: 'lmsCertificate.name' },
     ],
   },
@@ -253,7 +250,7 @@ export const PERMISSION_GROUPS = [
     ],
   },
   {
-    module: 'admin',
+    module: 'chat',
     label: 'navigation.chat',
     groups: [
       { prefix: 'chat', label: 'userRole.form.moduleAccess' },
@@ -306,7 +303,7 @@ export const PERMISSION_GROUPS = [
       { prefix: 'telegram', label: 'telegramPage.name' },
       { prefix: 'learning-centers', label: 'learningCenterPage.name' },
       { prefix: 'instructions', label: 'instructionPage.name' },
-      { prefix: 'admin', label: 'mobileUserPage.name' },
+      { prefix: 'mobile-users', label: 'mobileUserPage.name' },
     ],
   },
   {
