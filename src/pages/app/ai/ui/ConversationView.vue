@@ -9,6 +9,11 @@
   import aiAssistantIcon from '@/assets/images/content/ai-assistant.svg?url'
   import aiConversationBg from '@/assets/images/svg/AIconBG.svg?raw'
 
+  const aiConversationBgFill = aiConversationBg.replace(
+    '<svg ',
+    '<svg preserveAspectRatio="xMidYMax meet" '
+  )
+
   defineProps({
     showPanel: {
       type: Boolean,
@@ -85,7 +90,7 @@
         v-if="showPanel"
         class="ai-page-bg absolute inset-0 -z-10 pointer-events-none overflow-hidden"
         aria-hidden="true"
-        v-html="aiConversationBg"
+        v-html="aiConversationBgFill"
       ></div>
       <div v-if="showPanel" class="page-header w-full flex justify-center shrink-0">
         <div class="w-full max-w-[1000px] flex items-center justify-between px-5 py-3">
