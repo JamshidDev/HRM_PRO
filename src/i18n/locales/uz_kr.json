@@ -1746,20 +1746,22 @@
     },
     "audit": {
       "tabGeneral": "Умумий dashboard",
-      "tabAudit": "Аудит",
-      "relativesShortage": "Яқин қариндошлари 3 тадан кам",
-      "relativesWithoutJshshir": "Қариндоши ЖШШИРсиз",
-      "nameErrors": "Ф.И.Ш.да хатолик",
-      "jshshirErrors": "ЖШШИРда хатолик",
-      "positionCertificateMissing": "Лавозим гувоҳномаси йўқ",
+      "tabAudit": "Маълумотлар бўйича аудит",
+      "relativesShortage": "Яқин қариндошлар тўлиқ эмас",
+      "relativesWithoutJshshir": "Қариндош ПНФЛ киритилмаган",
+      "nameErrors": "Исм-фамилияда хато белги",
+      "jshshirErrors": "Паспорт ва ПНФЛ мос эмас",
+      "positionCertificateMissing": "Хизмат гувоҳномаси йўқ",
       "fio": "Ф.И.Ш.",
-      "pin": "ЖШШИР",
+      "pin": "ПНФЛ",
       "organization": "Корхона",
       "position": "Лавозим",
       "relativesCount": "Қариндошлари сони",
       "relativesWithoutJshshirCount": "ЖШШИРсиз қариндошлар",
       "reasons": "Хатоликлар",
-      "empty": "Маълумот топилмади"
+      "empty": "Маълумот топилмади",
+      "lastChecked": "Охирги текширув",
+      "worker": "Ходим"
     }
   },
   "applicationPage": {

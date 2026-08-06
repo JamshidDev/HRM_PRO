@@ -5,6 +5,8 @@
   import DetailFilters from './ui/Detail/Filter.vue'
   import Filter from './ui/Filter.vue'
   import AuditTab from './ui/audit/AuditTab.vue'
+  import AuditDetail from './ui/audit/AuditDetail.vue'
+  import AuditDetailFilter from './ui/audit/AuditDetailFilter.vue'
 
   import { cards } from './constants.js'
 
@@ -14,6 +16,7 @@
   onBeforeMount(() => {
     if (!accStore.checkAction(accStore.pn.hrDashboardRead)) return
     store.activeDetail = null
+    store.closeAuditDetail()
     store._dashboard()
   })
 
@@ -25,24 +28,34 @@
     }
     store.activeDetail = detailComponent
   }
+
+  // Tab almashganda ikkala drill-down ham yopiladi va barcha filtrlar tozalanadi.
+  const onTabChange = (tab) => {
+    store.activeDetail = null
+    store.closeAuditDetail()
+    // qidiruv/sana/tur va h.k.
+    store.resetDetailData()
+    // yuqoridagi tashkilot filtri (UISelect `modelV` + `checkedVal` orqali boshqariladi)
+    store.params.organizations = []
+    store.structureCheck = []
+    // Ko'rsatilayotgan ma'lumot tozalangan filtrga mos bo'lishi uchun qayta yuklanadi.
+    // Audit tabida `AuditTab` qayta mount bo'lib `_getAuditCounts()` ni o'zi chaqiradi
+    // (n-tab-pane sukut bo'yicha `display-directive="if"`).
+    if (tab === 'general') store._dashboard()
+  }
 </script>
 
 <template>
   <div>
-    <div class="flex justify-between items-center pl-4 py-3 pr-7">
-      <n-breadcrumb>
-        <n-breadcrumb-item @click="store.activeDetail = null">Dashboard</n-breadcrumb-item>
-        <n-breadcrumb-item v-if="store.activeTab === 'general' && store.activeDetail">
-          {{ $t(store.activeDetail.title) }}
-        </n-breadcrumb-item>
-      </n-breadcrumb>
+    <div class="flex justify-end items-center pl-4 py-3 pr-7">
       <Filter />
     </div>
 
     <n-tabs
       v-model:value="store.activeTab"
+      @update:value="onTabChange"
       type="line"
-      class="px-4"
+      class="px-4 ui-pill-tabs"
       :pane-wrapper-style="{ 'overflow-y': 'auto', 'scrollbar-gutter': 'stable' }"
     >
       <n-tab-pane name="general" :tab="$t('dashboardPage.audit.tabGeneral')" class="!p-0">
@@ -94,9 +107,32 @@
         :tab="$t('dashboardPage.audit.tabAudit')"
         class="!p-0"
       >
-        <UIPageContent class="!pt-0 !px-0 !m-0 max-h-[calc(100vh-132px)] overflow-y-auto">
-          <AuditTab />
-        </UIPageContent>
+        <!-- "Umumiy dashboard" tabidagi bilan bir xil ikki panelli almashtirgich:
+             kartalar gridi <-> to'liq kenglikdagi detal ko'rinishi. -->
+        <n-tabs
+          class="max-h-[calc(100vh-132px)]"
+          :value="store.audit.detail.open ? 1 : 0"
+          animated
+          :tab-style="{ display: 'none' }"
+          :pane-wrapper-style="{ 'overflow-y': 'auto', 'scrollbar-gutter': 'stable' }"
+        >
+          <n-tab-pane :name="0" class="!p-0">
+            <UIPageContent class="!pt-0 !px-0 !m-0">
+              <AuditTab />
+            </UIPageContent>
+          </n-tab-pane>
+          <n-tab-pane :name="1" class="!p-0">
+            <!-- Balandlik aniq belgilanadi (global `.ui-page-content { height: 100dvh }`
+                 ni bosib o'tadi), shunda jadval qolgan joyni egallaydi va uning
+                 pagination footeri pastda mahkam turadi — sahifa scroll qilinmaydi. -->
+            <UIPageContent class="!pt-2 !px-0 !m-0 !h-[calc(100vh-132px)]">
+              <AuditDetailFilter class="shrink-0" />
+              <div class="flex-1 min-h-0">
+                <AuditDetail />
+              </div>
+            </UIPageContent>
+          </n-tab-pane>
+        </n-tabs>
       </n-tab-pane>
     </n-tabs>
   </div>

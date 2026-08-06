@@ -77,12 +77,12 @@ export const useDashboardStore = defineStore('dashboardStore', {
     workerId: null,
     loadingPassport: false,
     typeNames: ['med_type', 'disc_type', 'inc_type', 'contract_type'],
-    // HR audit tab — data-quality counts + per-type preview modal.
+    // HR audit tab — data-quality counts + tur bo'yicha sahifa ichidagi detal ko'rinishi.
     activeTab: 'general',
     audit: {
       counts: null,
       loading: false,
-      modal: {
+      detail: {
         open: false,
         type: null,
         list: [],
@@ -136,36 +136,38 @@ export const useDashboardStore = defineStore('dashboardStore', {
       }
     },
     async _getAuditPreview() {
-      const m = this.audit.modal
-      m.loading = true
+      const d = this.audit.detail
+      d.loading = true
       try {
         const params = this.appendParams({
-          type: m.type,
-          page: m.page,
-          per_page: m.per_page,
+          type: d.type,
+          page: d.page,
+          per_page: d.per_page,
           search: this.params.search
         })
         const res = await $ApiService.dashboardService._auditPreview({ params })
-        m.list = res.data.data.data
-        m.total = res.data.data.total
+        d.list = res.data.data.data
+        d.total = res.data.data.total
       } finally {
-        m.loading = false
+        d.loading = false
       }
     },
-    openAuditModal(type) {
-      this.audit.modal.open = true
-      this.audit.modal.type = type
-      this.audit.modal.page = 1
-      this.audit.modal.list = []
-      this.audit.modal.total = 0
+    openAuditDetail(type) {
+      // Qidiruv har safar toza boshlanadi; tashkilot filtri (params.organizations) saqlanadi.
+      this.params.search = null
+      this.audit.detail.open = true
+      this.audit.detail.type = type
+      this.audit.detail.page = 1
+      this.audit.detail.list = []
+      this.audit.detail.total = 0
       this._getAuditPreview()
     },
-    closeAuditModal() {
-      this.audit.modal.open = false
-      this.audit.modal.type = null
-      this.audit.modal.list = []
-      this.audit.modal.total = 0
-      this.audit.modal.page = 1
+    closeAuditDetail() {
+      this.audit.detail.open = false
+      this.audit.detail.type = null
+      this.audit.detail.list = []
+      this.audit.detail.total = 0
+      this.audit.detail.page = 1
     },
     _responseOneAttach(res) {
       const formatMonth = (date) => {

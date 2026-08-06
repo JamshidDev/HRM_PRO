@@ -167,7 +167,7 @@
 
       <n-form-item :label="$t(`userRole.form.permissions`)" path="permissions">
         <div class="w-full">
-          <n-tabs type="line" animated class="perm-tabs">
+          <n-tabs type="line" animated class="perm-tabs ui-pill-tabs">
             <n-tab-pane
               v-for="mod in visibleModules"
               :key="mod.label"
@@ -240,38 +240,8 @@
 </template>
 
 <style scoped>
-  /* Pill ko'rinishidagi tab bar: kulrang rail ichida oq aktiv "pill" */
-  .perm-tabs :deep(.n-tabs-nav) {
-    background: var(--surface-ground);
-    border-radius: 14px;
-    padding: 4px;
-    /* naive-ui'ning line-type pastki chegarasini o'chiramiz;
-       sliding "bar" esa aktiv pill fonini beradi */
-    --n-tab-border-color: transparent;
-    --n-bar-color: var(--surface-section);
-    --n-tab-padding: 7px 14px;
-    --n-tab-gap: 4px;
-    --n-tab-text-color: var(--textColor0);
-    --n-tab-text-color-hover: var(--textColor0);
-    --n-tab-text-color-active: var(--textColor0);
-    --n-tab-font-weight-active: 600;
-  }
-  .perm-tabs :deep(.n-tabs-tab) {
-    border-radius: 10px;
-    font-size: 13px;
-    white-space: nowrap;
-  }
-  /* Aktiv pill — naive-ui'ning `.n-tabs-bar` elementi (JS uni aktiv tab'ning
-     offsetLeft/offsetWidth'iga qarab joylaydi va left/max-width transition bilan
-     siljitadi). 2px'lik chiziqni to'liq balandlikdagi pillga aylantiramiz. */
-  .perm-tabs :deep(.n-tabs-bar) {
-    top: 0 !important;
-    bottom: 0 !important;
-    height: auto !important;
-    border-radius: 10px !important;
-    box-shadow: 0 1px 2px rgba(16, 24, 40, 0.08);
-  }
-
+  /* Pill tab uslubi umumiy `.ui-pill-tabs` klassida (assets/scss/component.scss).
+     Bu yerda faqat shu sahifaga xos badge uslubi qoladi. */
   .perm-count {
     display: inline-block;
     min-width: 18px;
