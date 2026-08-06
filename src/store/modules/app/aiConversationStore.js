@@ -49,8 +49,7 @@ export const useAIConversationStore = defineStore('AIConversationStore', {
     scrollHeight: 0,
     scrollContainer: null,
 
-    visible: false,
-    fullScreen: false
+    visible: false
   }),
   actions: {
     openModal() {
@@ -58,10 +57,6 @@ export const useAIConversationStore = defineStore('AIConversationStore', {
     },
     closeModal() {
       this.visible = false
-      this.fullScreen = false
-    },
-    toggleFullScreen() {
-      this.fullScreen = !this.fullScreen
     },
 
     async conversation(data) {
@@ -84,6 +79,7 @@ export const useAIConversationStore = defineStore('AIConversationStore', {
         const decoder = new TextDecoder('utf-8')
         let fullText = ''
         let logId = null
+        const time = Utils.timeOnlyHour(new Date())
 
         function normalizeMarkdown(md) {
           return md.replace(/([^\n])(-\s)/g, '$1\n$2')
@@ -112,6 +108,7 @@ export const useAIConversationStore = defineStore('AIConversationStore', {
                 bot: true,
                 text: DOMPurify.sanitize(marked.parse(normalizeMarkdown(fullText))),
                 photo: ' ',
+                time,
                 key: uuidv4()
               }
               this.scrollContainer.scrollTo({
@@ -136,10 +133,10 @@ export const useAIConversationStore = defineStore('AIConversationStore', {
           ...this.payload
         }
         this.messages.push({
-          id: 12,
           bot: false,
           text: this.payload.question,
-          photo: store.userPhoto
+          photo: store.userPhoto,
+          time: Utils.timeOnlyHour(new Date())
         })
         this.payload.question = ''
         await nextTick()
@@ -199,6 +196,7 @@ export const useAIConversationStore = defineStore('AIConversationStore', {
         text: DOMPurify.sanitize(marked.parse(message)),
         photo: isBot ? ' ' : store.userPhoto,
         like: item.like,
+        time: Utils.timeOnlyHour(item.created_at || item.date),
         key: uuidv4()
       }
     },

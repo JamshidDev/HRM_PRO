@@ -11,20 +11,23 @@
   const store = useMonthReportStore()
   const currentIndex = ref(1)
   const photoUrl = computed(() => store.workerPhotoUrl || useAppSetting.noAvailableImage)
-  const carouselRef = ref(null)
 
   const totalItem = computed(() => store.showList.length)
+  const currentItem = computed(() => store.showList[currentIndex.value - 1])
+
+  watch(
+    () => store.showList,
+    () => {
+      currentIndex.value = 1
+    }
+  )
 
   const next = () => {
-    carouselRef.value?.next()
+    if (currentIndex.value < totalItem.value) currentIndex.value++
   }
 
   const prev = () => {
-    carouselRef.value?.prev()
-  }
-
-  const onChangeIndex = (v) => {
-    currentIndex.value = v + 1
+    if (currentIndex.value > 1) currentIndex.value--
   }
 </script>
 
@@ -119,102 +122,94 @@
             </n-table>
           </template>
 
-          <n-carousel
-            ref="carouselRef"
-            :show-dots="false"
-            :show-arrow="false"
-            :space-between="20"
-            @update-current-index="onChangeIndex"
-          >
-            <div v-for="(item, idx) in store.showList" :key="idx" class="carousel-img">
-              <n-table :single-line="false" size="small">
-                <thead>
-                  <tr>
-                    <th colspan="3">
-                      <div class="flex">
-                        <div class="w-[120px] p-2">
-                          <img
-                            class="w-full rounded-lg border border-surface-line"
-                            :src="photoUrl"
-                            @error="Utils.onImgError"
-                            alt="no photo"
-                          />
-                        </div>
-                        <div class="grid grid-cols-12 px-2 pt-2 w-[calc(100%-120px)]">
-                          <div class="col-span-12 font-semibold text-lg mb-2">
-                            {{ item.worker?.full_name }}
-                          </div>
-                          <div class="col-span-12 !text-wrap leading-[1.2]">
-                            <span class="text-primary">{{ $t('content.organization') }}: </span>
-                            {{ item.worker?.organization }}
-                          </div>
-                          <div class="col-span-12">
-                            <span class="text-primary">{{ $t('content.position') }}: </span>
-                            {{ item.worker?.position }}
-                          </div>
-                          <div class="col-span-12">
-                            <span class="text-primary">{{ $t('monthReport.view.main_salary') }}:
-                            </span>
-                            {{ item.worker?.main_salary }}
-                          </div>
-                          <div class="col-span-6">
-                            <span class="text-primary">{{ $t('monthReport.view.work_time') }}:
-                            </span>
-                            {{ item.worker?.work_time }} {{ $t('content.hour') }}
-                          </div>
-                          <div class="col-span-6 flex gap-4 justify-end"></div>
-                        </div>
+          <div v-if="currentItem">
+            <n-table :single-line="false" size="small">
+              <thead>
+                <tr>
+                  <th colspan="3">
+                    <div class="flex">
+                      <div class="w-[120px] p-2">
+                        <img
+                          class="w-full rounded-lg border border-surface-line"
+                          :src="photoUrl"
+                          @error="Utils.onImgError"
+                          alt="no photo"
+                        />
                       </div>
-                    </th>
-                  </tr>
-                </thead>
-              </n-table>
-              <n-table class="mt-4" :single-line="false" size="small">
-                <tbody>
-                  <tr>
-                    <td class="w-[120px] font-semibold py-0!">{{ $t('monthReport.in.code') }}</td>
-                    <td class="font-semibold py-0!">{{ $t('monthReport.in.type') }}</td>
-                    <td class="w-[120px] font-semibold py-0!">{{ $t('monthReport.in.amount') }}</td>
-                  </tr>
-                  <tr v-for="(card, index) in item.in" :key="index">
-                    <td class="w-[120px] font-semibold py-0!">{{ card.code }}</td>
-                    <td class="py-0!">{{ card.type }}</td>
-                    <td class="font-semibold py-0!">{{ card.amount }}</td>
-                  </tr>
-                  <tr>
-                    <td colspan="2" class="py-0!">
-                      <span class="text-primary text-center block font-semibold">{{
-                        $t('monthReport.in.total')
-                      }}</span>
-                    </td>
-                    <td class="font-semibold py-0!">{{ item.in_total }}</td>
-                  </tr>
-                </tbody>
-              </n-table>
-              <n-table class="mt-4 mb-10" :single-line="false" size="small">
-                <tbody>
-                  <tr>
-                    <td class="w-[120px] font-semibold py-0!">{{ $t('monthReport.in.code') }}</td>
-                    <td class="font-semibold py-0!">{{ $t('monthReport.in.type') }}</td>
-                    <td class="w-[120px] font-semibold py-0!">{{ $t('monthReport.in.amount') }}</td>
-                  </tr>
-                  <tr v-for="(out, subIndex) in item.out" :key="subIndex">
-                    <td class="w-[120px] font-semibold py-0!">{{ out.code }}</td>
-                    <td class="py-0!">{{ out.type }}</td>
-                    <td class="font-semibold py-0!">{{ out.amount }}</td>
-                  </tr>
-                  <tr>
-                    <td colspan="2" class="py-0!">
-                      <span class="text-primary text-center block font-semibold">{{
-                        $t('monthReport.in.out_total')
-                      }}</span>
-                    </td>
-                    <td class="font-semibold py-0!">{{ item.out_total }}</td>
-                  </tr>
-                </tbody>
-              </n-table>
-            </div>
-          </n-carousel>
+                      <div class="grid grid-cols-12 px-2 pt-2 w-[calc(100%-120px)]">
+                        <div class="col-span-12 font-semibold text-lg mb-2">
+                          {{ currentItem.worker?.full_name }}
+                        </div>
+                        <div class="col-span-12 !text-wrap leading-[1.2]">
+                          <span class="text-primary">{{ $t('content.organization') }}: </span>
+                          {{ currentItem.worker?.organization }}
+                        </div>
+                        <div class="col-span-12">
+                          <span class="text-primary">{{ $t('content.position') }}: </span>
+                          {{ currentItem.worker?.position }}
+                        </div>
+                        <div class="col-span-12">
+                          <span class="text-primary">{{ $t('monthReport.view.main_salary') }}:
+                          </span>
+                          {{ currentItem.worker?.main_salary }}
+                        </div>
+                        <div class="col-span-6">
+                          <span class="text-primary">{{ $t('monthReport.view.work_time') }}:
+                          </span>
+                          {{ currentItem.worker?.work_time }} {{ $t('content.hour') }}
+                        </div>
+                        <div class="col-span-6 flex gap-4 justify-end"></div>
+                      </div>
+                    </div>
+                  </th>
+                </tr>
+              </thead>
+            </n-table>
+            <n-table class="mt-4" :single-line="false" size="small">
+              <tbody>
+                <tr>
+                  <td class="w-[120px] font-semibold py-0!">{{ $t('monthReport.in.code') }}</td>
+                  <td class="font-semibold py-0!">{{ $t('monthReport.in.type') }}</td>
+                  <td class="w-[120px] font-semibold py-0!">{{ $t('monthReport.in.amount') }}</td>
+                </tr>
+                <tr v-for="(card, index) in currentItem.in" :key="index">
+                  <td class="w-[120px] font-semibold py-0!">{{ card.code }}</td>
+                  <td class="py-0!">{{ card.type }}</td>
+                  <td class="font-semibold py-0!">{{ card.amount }}</td>
+                </tr>
+                <tr>
+                  <td colspan="2" class="py-0!">
+                    <span class="text-primary text-center block font-semibold">{{
+                      $t('monthReport.in.total')
+                    }}</span>
+                  </td>
+                  <td class="font-semibold py-0!">{{ currentItem.in_total }}</td>
+                </tr>
+              </tbody>
+            </n-table>
+            <n-table class="mt-4 mb-10" :single-line="false" size="small">
+              <tbody>
+                <tr>
+                  <td class="w-[120px] font-semibold py-0!">{{ $t('monthReport.in.code') }}</td>
+                  <td class="font-semibold py-0!">{{ $t('monthReport.in.type') }}</td>
+                  <td class="w-[120px] font-semibold py-0!">{{ $t('monthReport.in.amount') }}</td>
+                </tr>
+                <tr v-for="(out, subIndex) in currentItem.out" :key="subIndex">
+                  <td class="w-[120px] font-semibold py-0!">{{ out.code }}</td>
+                  <td class="py-0!">{{ out.type }}</td>
+                  <td class="font-semibold py-0!">{{ out.amount }}</td>
+                </tr>
+                <tr>
+                  <td colspan="2" class="py-0!">
+                    <span class="text-primary text-center block font-semibold">{{
+                      $t('monthReport.in.out_total')
+                    }}</span>
+                  </td>
+                  <td class="font-semibold py-0!">{{ currentItem.out_total }}</td>
+                </tr>
+              </tbody>
+            </n-table>
+          </div>
           <template v-if="store.showList.length === 0 && !store.showLoading">
             <p class="text-center pt-10 text-surface/20 text-lg">{{ $t('content.no-data') }}</p>
           </template>
