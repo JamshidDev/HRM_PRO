@@ -9,6 +9,7 @@
 
   const store = useUserRoleStore()
   const accStore = useAccountStore()
+  const createFormRef = ref(null)
 
   const onSearch = (v) => {
     if (!accStore.checkAction(accStore.pn.rolesRead)) return
@@ -55,21 +56,39 @@
             {{ $t('content.back') }}
           </button>
           <div class="flex items-center justify-between gap-3">
-            <h3 class="text-lg font-semibold text-textColor0">
+            <h3 class="text-lg font-semibold text-textColor0 truncate">
               {{ store.visibleType ? t('userRole.createTitle') : t('userRole.updateTitle') }}
               <span v-if="!store.visibleType && store.payload.name"> — {{ store.payload.name }}</span>
             </h3>
-            <n-input
-              v-model:value="store.query"
-              clearable
-              style="width: 200px; flex: none"
-              :placeholder="$t('content.search')"
-            />
+            <div class="flex items-center gap-2 shrink-0">
+              <n-input
+                v-model:value="store.query"
+                clearable
+                style="width: 200px; flex: none"
+                :placeholder="$t('content.search')"
+              />
+              <n-button
+                @click="store.openVisible(false)"
+                type="error"
+                ghost
+                class="w-[130px]"
+              >
+                {{ $t('content.cancel') }}
+              </n-button>
+              <n-button
+                @click="createFormRef?.submit()"
+                :loading="store.saveLoading"
+                type="primary"
+                class="w-[130px]"
+              >
+                {{ $t('content.save') }}
+              </n-button>
+            </div>
           </div>
         </div>
       </template>
       <template #default>
-        <createFrom />
+        <createFrom ref="createFormRef" />
       </template>
     </UIModal>
   </UIPageContent>

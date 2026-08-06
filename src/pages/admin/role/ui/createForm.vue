@@ -137,6 +137,9 @@
       }
     })
   }
+
+  // Saqlash/Bekor qilish tugmalari modal header'ida (RolePage.vue) turadi.
+  defineExpose({ submit: onSubmit })
 </script>
 
 <template>
@@ -232,15 +235,6 @@
           </n-tabs>
         </div>
       </n-form-item>
-    </div>
-
-    <div class="grid grid-cols-2 gap-2">
-      <n-button @click="store.openVisible(false)" type="error" ghost>
-        {{ $t('content.cancel') }}
-      </n-button>
-      <n-button @click="onSubmit" :loading="store.saveLoading" type="primary">
-        {{ $t('content.save') }}
-      </n-button>
     </div>
   </n-form>
 </template>
