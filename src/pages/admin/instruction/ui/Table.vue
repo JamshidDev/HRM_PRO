@@ -1,24 +1,30 @@
 <script setup>
-  import { NoDataPicture, UIMenuButton, UIPagination } from '@/components/index.js'
+  import { UITable } from '@/components/index.js'
   import { usePageInstructionStore } from '@/store/modules/index.js'
-  import Utils from '@/utils/Utils.js'
   import { useAccountStore } from '@/store/modules/index.js'
-  const accStore = useAccountStore()
+  import Utils from '@/utils/Utils.js'
+  import UIHelper from '@/utils/UIHelper.js'
+  import { Delete20Regular, Edit32Regular } from '@vicons/fluent'
+  import i18n from '@/i18n/index.js'
 
+  const { t } = i18n.global
+  const accStore = useAccountStore()
   const store = usePageInstructionStore()
 
-  const onEdit = (v) => {
-    store.elementId = v.data.id
-    store.payload.text = v.data.text
-    store.payload.title = v.data.title
-    store.payload.photos = v.data.photos.map((v) => ({ photo: v.photo, id: v.id }))
+  const onEdit = (row) => {
+    if (!accStore.checkAction(accStore.pn.instructionsWrite)) return
+    store.elementId = row.id
+    store.payload.text = row.text
+    store.payload.title = row.title
+    store.payload.photos = row.photos.map((v) => ({ photo: v.photo, id: v.id }))
     store.visibleType = false
     store.visible = true
     store.activeSection = 99999
   }
 
-  const onDelete = (v) => {
-    store.elementId = v.id
+  const onDelete = (row) => {
+    if (!accStore.checkAction(accStore.pn.instructionsWrite)) return
+    store.elementId = row.id
     store._delete()
   }
 
@@ -28,52 +34,50 @@
     store._index()
   }
 
-  const onSelectEv = (v) => {
-    if (!accStore.checkAction(accStore.pn.instructionsWrite)) return
-    if (Utils.ActionTypes.edit === v.key) {
-      onEdit(v)
-    } else if (Utils.ActionTypes.delete === v.key) {
-      onDelete(v.data)
+  const columns = computed(() => [
+    {
+      key: 'title',
+      title: t('content.name'),
+      minWidth: 200
+    },
+    {
+      key: 'menu',
+      title: t('instructionPage.form.menu'),
+      width: 200
+    },
+    {
+      key: 'sub_menu',
+      title: t('instructionPage.form.subMenu'),
+      width: 200
     }
-  }
+  ])
+
+  const actions = computed(() => [
+    {
+      label: t('content.edit'),
+      key: Utils.ActionTypes.edit,
+      icon: UIHelper.renderIcon(Edit32Regular),
+      action: onEdit
+    },
+    {
+      label: t('content.delete'),
+      key: Utils.ActionTypes.delete,
+      icon: UIHelper.renderIcon(Delete20Regular),
+      action: onDelete
+    }
+  ])
 </script>
 
 <template>
-  <n-spin :show="store.loading" style="min-height: 200px">
-    <div class="w-full overflow-x-auto" v-if="store.list.length > 0">
-      <n-table class="mt-4" :single-line="false" size="small">
-        <thead>
-          <tr>
-            <th class="text-center! min-w-[40px] w-[40px]">{{ $t('content.number') }}</th>
-            <th class="min-w-[200px]">{{ $t('content.name') }}</th>
-            <th class="min-w-[120px] w-[200px]">{{ $t('instructionPage.form.menu') }}</th>
-            <th class="min-w-[120px] w-[200px]">{{ $t('instructionPage.form.subMenu') }}</th>
-            <th class="min-w-[40px] w-[40px]"></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(item, idx) in store.list" :key="idx">
-            <td>
-              <span class="text-center text-[12px] text-gray-600 block">{{
-                (store.params.page - 1) * store.params.per_page + idx + 1
-              }}</span>
-            </td>
-            <td>{{ item.title }}</td>
-            <td>{{ item.menu }}</td>
-            <td>{{ item.sub_menu }}</td>
-            <td>
-              <UIMenuButton :data="item" :show-edit="true" @selectEv="onSelectEv" />
-            </td>
-          </tr>
-        </tbody>
-      </n-table>
-      <UIPagination
-        :page="store.params.page"
-        :per_page="store.params.per_page"
-        :total="store.totalItems"
-        @change-page="changePage"
-      />
-    </div>
-    <NoDataPicture v-if="store.list.length === 0 && !store.loading" />
-  </n-spin>
+  <UITable
+    :columns="columns"
+    :actions="actions"
+    :data="store.list"
+    :loading="store.loading"
+    :page="store.params.page"
+    :per-page="store.params.per_page"
+    :total="store.totalItems"
+    storage-key="admin-instruction"
+    @change-page="changePage"
+  />
 </template>

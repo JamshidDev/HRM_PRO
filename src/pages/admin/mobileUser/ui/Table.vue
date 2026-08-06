@@ -1,87 +1,103 @@
 <script setup>
-import { NoDataPicture, UIPagination, UIUser, UIBadge, UIMenuButton } from '@/components/index.js'
-import { useMobileUserStore } from '@/store/modules/index.js'
-import Utils from '@/utils/Utils.js'
+  import { UIBadge, UITable, UIUser } from '@/components/index.js'
+  import { useMobileUserStore } from '@/store/modules/index.js'
+  import i18n from '@/i18n/index.js'
+  import Utils from '@/utils/Utils.js'
+  import UIHelper from '@/utils/UIHelper.js'
+  import { Eye16Regular } from '@vicons/fluent'
 
-const store = useMobileUserStore()
+  const { t } = i18n.global
+  const store = useMobileUserStore()
 
-const changePage = (v) => {
-  store.params.page = v.page
-  store.params.per_page = v.per_page
-  store._index()
-}
-
-
-const onSelect = (v) => {
-  if (v.key === Utils.ActionTypes.view) {
-    store._show(v.data.id)
+  const changePage = (v) => {
+    store.params.page = v.page
+    store.params.per_page = v.per_page
+    store._index()
   }
-}
+
+  const onView = (row) => {
+    store._show(row.id)
+  }
+
+  const columns = computed(() => [
+    {
+      key: 'user',
+      title: t('content.user'),
+      minWidth: 250
+    },
+    {
+      key: 'device_model',
+      title: t('mobileUserPage.deviceModel'),
+      minWidth: 150
+    },
+    {
+      key: 'platform',
+      title: t('mobileUserPage.platform'),
+      minWidth: 120
+    },
+    {
+      key: 'face',
+      title: t('mobileUserPage.verificationTime'),
+      minWidth: 150
+    },
+    {
+      key: 'created_at',
+      title: t('content.date'),
+      minWidth: 150
+    }
+  ])
+
+  const actions = computed(() => [
+    {
+      label: t('content.view'),
+      key: Utils.ActionTypes.view,
+      icon: UIHelper.renderIcon(Eye16Regular),
+      action: onView
+    }
+  ])
 </script>
 
 <template>
-  <n-spin :show="store.loading" style="min-height: 200px">
-    <div class="w-full overflow-x-auto" v-if="store.list.length > 0">
-      <n-table class="mt-4" :single-line="false" size="small">
-        <thead>
-          <tr>
-            <th class="text-center! min-w-[40px] w-[40px]">{{ $t('content.number') }}</th>
-            <th class="min-w-[250px]">{{ $t('content.user') }}</th>
-            <th class="min-w-[150px]">{{ $t('mobileUserPage.deviceModel') }}</th>
-            <th class="min-w-[100px] w-[120px]">{{ $t('mobileUserPage.platform') }}</th>
-            <th class="min-w-[150px] w-[150px]">{{ $t('mobileUserPage.verificationTime') }}</th>
-            <th class="min-w-[150px] w-[150px]">{{ $t('content.date') }}</th>
-            <th class="min-w-[60px] w-[60px]">{{ $t('content.action') }}</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(item, idx) in store.list" :key="idx">
-            <td>
-              <span class="text-center text-[12px] text-gray-600 block">
-                {{ (store.params.page - 1) * store.params.per_page + idx + 1 }}
-              </span>
-            </td>
-            <td>
-              <UIUser
-                :data="{
-                  photo: item?.user?.worker?.photo,
-                  lastName: item?.user?.worker?.last_name,
-                  firstName: item?.user?.worker?.first_name,
-                  middleName: item?.user?.worker?.middle_name,
-                  position:item?.user?.phone,
-                }"
-              />
-            </td>
-            <td>
-              <UIBadge :show-icon="false" :type="Utils.colorTypes.info" :label="item?.device_model || '-'" />
-            </td>
-            <td>
-              <UIBadge :show-icon="false" :type="item?.platform==='ios'? Utils.colorTypes.error : Utils.colorTypes.success" :label="item?.platform || '-'" />
-            </td>
-            <td>
-              <div class="text-[13px]">{{ item?.face ? Utils.timeWithMonth(item?.face) : '' }}</div>
-            </td>
-            <td>
-              <div class="text-[13px]">{{ Utils.timeWithMonth(item?.created_at) }}</div>
-            </td>
-            <td>
-              <UIMenuButton
-                :data="item"
-                :show-view="true"
-                :show-delete="false"
-                @selectEv="onSelect"
-              />
-            </td>
-          </tr>
-        </tbody>
-      </n-table>
-      <UIPagination
-        :page="store.params.page"
-        :per_page="store.params.per_page"
-        :total="store.totalItems"
-        @change-page="changePage"
+  <UITable
+    :columns="columns"
+    :actions="actions"
+    :data="store.list"
+    :loading="store.loading"
+    :page="store.params.page"
+    :per-page="store.params.per_page"
+    :total="store.totalItems"
+    @change-page="changePage"
+  >
+    <template #cell-user="{ row }">
+      <UIUser
+        :data="{
+          photo: row?.user?.worker?.photo,
+          lastName: row?.user?.worker?.last_name,
+          firstName: row?.user?.worker?.first_name,
+          middleName: row?.user?.worker?.middle_name,
+          position: row?.user?.phone
+        }"
       />
-    </div>
-    <NoDataPicture v-if="store.list.length === 0 && !store.loading" />
-  </n-spin>
+    </template>
+
+    <template #cell-device_model="{ row }">
+      <UIBadge :show-icon="false" :type="Utils.colorTypes.info" :label="row?.device_model || '-'" />
+    </template>
+
+    <template #cell-platform="{ row }">
+      <UIBadge
+        :show-icon="false"
+        :type="row?.platform === 'ios' ? Utils.colorTypes.error : Utils.colorTypes.success"
+        :label="row?.platform || '-'"
+      />
+    </template>
+
+    <template #cell-face="{ row }">
+      {{ row?.face ? Utils.timeWithMonth(row?.face) : '' }}
+    </template>
+
+    <template #cell-created_at="{ row }">
+      {{ Utils.timeWithMonth(row?.created_at) }}
+    </template>
+  </UITable>
 </template>

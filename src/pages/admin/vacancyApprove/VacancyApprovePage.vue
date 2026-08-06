@@ -26,7 +26,7 @@
 
 <template>
   <UIPageContent>
-    <div class="flex justify-end mb-3 shrink-0">
+    <div class="flex justify-end shrink-0">
       <n-button type="primary" @click="onAdd">
         <template #icon>
           <n-icon><Add16Filled /></n-icon>
