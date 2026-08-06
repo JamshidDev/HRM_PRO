@@ -1,8 +1,11 @@
 <script setup>
   import { CodeCircle20Regular, DismissCircle24Regular } from '@vicons/fluent'
-  import { NoDataPicture, UIPagination, UIUser } from '@/components/index.js'
+  import { UITable, UIUser } from '@/components/index.js'
   import { useActionLogStore } from '@/store/modules/index.js'
   import Utils from '@/utils/Utils.js'
+  import i18n from '@/i18n/index.js'
+
+  const { t } = i18n.global
 
   const descriptionType = (desc) => {
     if (desc === 'created') return 'info'
@@ -22,94 +25,97 @@
   const openCode = (id) => {
     store.activeCol = id
   }
+
+  const columns = computed(() => [
+    {
+      key: 'causer',
+      title: t('actionLog.table.owner'),
+      width: 300
+    },
+    {
+      key: 'description',
+      title: t('actionLog.table.status'),
+      width: 200,
+      align: 'center'
+    },
+    {
+      key: 'properties',
+      title: t('actionLog.table.detail'),
+      minWidth: 200
+    },
+    {
+      key: 'created_at',
+      title: t('content.date'),
+      width: 120,
+      align: 'center'
+    }
+  ])
 </script>
 
 <template>
-  <n-spin :show="store.loading" style="min-height: 200px">
-    <div class="w-full overflow-x-auto" v-if="store.list.length > 0">
-      <n-table class="mt-10" :single-line="false" size="small">
-        <thead>
-          <tr>
-            <th class="text-center! min-w-[40px] w-[40px]">{{ $t('content.number') }}</th>
-            <th class="w-[200px]">{{ $t('actionLog.table.owner') }}</th>
-            <th class="w-[200px] min-w-[200px]">{{ $t('actionLog.table.status') }}</th>
-            <th class="min-w-[200px]">{{ $t('actionLog.table.detail') }}</th>
-            <th class="w-[120px]">{{ $t('content.date') }}</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(item, idx) in store.list" :key="idx">
-            <td>
-              <span class="text-center text-[12px] text-gray-600 block">{{
-                (store.params.page - 1) * store.params.per_page + idx + 1
-              }}</span>
-            </td>
-            <td>
-              <UIUser
-                :data="{
-                  photo: item?.causer?.worker?.photo,
-                  lastName: item?.causer?.worker?.last_name,
-                  firstName: item?.causer?.worker?.first_name,
-                  middleName: item?.causer?.worker?.middle_name,
-                  position: item?.causer?.worker?.role?.name
-                }"
-              />
-            </td>
-            <td>
-              <div class="flex justify-center">
-                <n-tag :type="descriptionType(item.description)" size="small" round>
-                  {{ $t(`actionLog.status.${item.description}`) }}
-                </n-tag>
-              </div>
-            </td>
-            <td>
-              <div class="flex items-center justify-between">
-                <span class="truncate w-full max-w-[400px] pb-1">
-                  {{ store.activeCol === item.id ? ' ' : item?.properties }}
-                </span>
-                <n-icon
-                  v-if="store.activeCol === item.id"
-                  @click="openCode(null)"
-                  size="24"
-                  class="text-danger font-bold cursor-pointer"
-                >
-                  <DismissCircle24Regular />
-                </n-icon>
-                <n-icon
-                  v-else
-                  @click="openCode(item.id)"
-                  size="24"
-                  class="text-primary font-bold cursor-pointer"
-                >
-                  <CodeCircle20Regular />
-                </n-icon>
-              </div>
-
-              <n-collapse-transition
-                class="text-xs bg-dark text-white rounded-xl shadow p-2"
-                :show="store.activeCol === item.id"
-              >
-                <pre>
-                {{ item }}
-              </pre
-                >
-              </n-collapse-transition>
-            </td>
-
-            <td>
-              <div class="w-full text-center">{{ Utils.timeWithMonth(item?.created_at) }}</div>
-            </td>
-          </tr>
-        </tbody>
-      </n-table>
-      <UIPagination
-        :page="store.params.page"
-        :per_page="store.params.per_page"
-        :total="store.totalItems"
-        @change-page="changePage"
+  <UITable
+    :columns="columns"
+    :data="store.list"
+    :loading="store.loading"
+    :page="store.params.page"
+    :per-page="store.params.per_page"
+    :total="store.totalItems"
+    storage-key="admin-action-log"
+    @change-page="changePage"
+  >
+    <template #cell-causer="{ row }">
+      <UIUser
+        :data="{
+          photo: row?.causer?.worker?.photo,
+          lastName: row?.causer?.worker?.last_name,
+          firstName: row?.causer?.worker?.first_name,
+          middleName: row?.causer?.worker?.middle_name,
+          position: row?.causer?.worker?.role?.name
+        }"
       />
-    </div>
-    <NoDataPicture v-if="store.list.length === 0 && !store.loading" />
-  </n-spin>
-</template>
+    </template>
 
+    <template #cell-description="{ row }">
+      <div class="flex justify-center">
+        <n-tag :type="descriptionType(row.description)" size="small" round>
+          {{ $t(`actionLog.status.${row.description}`) }}
+        </n-tag>
+      </div>
+    </template>
+
+    <template #cell-properties="{ row }">
+      <div class="flex items-center justify-between">
+        <span class="truncate w-full max-w-[400px] pb-1">
+          {{ store.activeCol === row.id ? ' ' : row?.properties }}
+        </span>
+        <n-icon
+          v-if="store.activeCol === row.id"
+          @click="openCode(null)"
+          size="24"
+          class="text-danger font-bold cursor-pointer"
+        >
+          <DismissCircle24Regular />
+        </n-icon>
+        <n-icon
+          v-else
+          @click="openCode(row.id)"
+          size="24"
+          class="text-primary font-bold cursor-pointer"
+        >
+          <CodeCircle20Regular />
+        </n-icon>
+      </div>
+
+      <n-collapse-transition
+        class="text-xs bg-dark text-white rounded-xl shadow p-2 max-w-full overflow-x-auto"
+        :show="store.activeCol === row.id"
+      >
+        <pre class="whitespace-pre-wrap break-all">{{ row }}</pre>
+      </n-collapse-transition>
+    </template>
+
+    <template #cell-created_at="{ row }">
+      <div class="w-full text-center">{{ Utils.timeWithMonth(row?.created_at) }}</div>
+    </template>
+  </UITable>
+</template>

@@ -1979,6 +1979,23 @@
         "shortTypeOne": "Reprimand",
         "shortTypeTwo": "Other"
       }
+    },
+    "audit": {
+      "tabGeneral": "General dashboard",
+      "tabAudit": "Audit",
+      "relativesShortage": "Fewer than 3 close relatives",
+      "relativesWithoutJshshir": "Relative without PINFL",
+      "nameErrors": "Name (F.I.O.) error",
+      "jshshirErrors": "PINFL error",
+      "positionCertificateMissing": "No position certificate",
+      "fio": "Full name",
+      "pin": "PINFL",
+      "organization": "Organization",
+      "position": "Position",
+      "relativesCount": "Relatives count",
+      "relativesWithoutJshshirCount": "Relatives without PINFL",
+      "reasons": "Errors",
+      "empty": "No data found"
     }
   },
   "applicationPage": {
