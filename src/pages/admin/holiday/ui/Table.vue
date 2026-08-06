@@ -89,13 +89,13 @@
 <template>
   <n-spin :show="store.loading">
     <n-calendar
-      class="mt-10 w-full min-h-[720px]! h-auto! bg-white"
+      class="w-full min-h-[720px]! h-auto! custom-calendar"
       v-model:value="store.currentDate"
       @panel-change="onChangeMonth"
       @update:value="changeValue"
     >
-      <template #header="{ year, month, date }">
-        <div>{{ year }}, {{ Utils.getMonthNameById(month) }}</div>
+      <template #header="{ year, month }">
+        <div class="text-textColor0">{{ year }} {{ Utils.getMonthNameById(month) }}</div>
       </template>
 
       <template #default="{ year, month, date }">
@@ -128,3 +128,17 @@
     />
   </n-spin>
 </template>
+
+<style lang="scss">
+  .custom-calendar {
+    .n-calendar-dates {
+      background: var(--surface-section) !important;
+    }
+    .n-calendar-cell--disabled {
+      background-color: var(--surface-section) !important;
+      .n-calendar-date__date {
+        opacity: 0.3;
+      }
+    }
+  }
+</style>

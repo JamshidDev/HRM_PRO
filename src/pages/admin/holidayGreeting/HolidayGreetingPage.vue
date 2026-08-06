@@ -27,7 +27,6 @@
 <template>
   <UIPageContent>
     <UIPageFilter
-      :title="$t('holidayGreetingPage.name')"
       v-model:search="store.params.search"
       @on-search="onSearch"
       :search-loading="store.loading"
@@ -39,7 +38,11 @@
       v-model:visible="store.visible"
       width="720"
       height="85vh"
-      :title="store.visibleType ? $t('holidayGreetingPage.createTitle') : $t('holidayGreetingPage.updateTitle')"
+      :title="
+        store.visibleType
+          ? $t('holidayGreetingPage.createTitle')
+          : $t('holidayGreetingPage.updateTitle')
+      "
     >
       <template #default>
         <createForm />
