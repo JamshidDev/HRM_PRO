@@ -14,7 +14,8 @@
   const accStore = useAccountStore()
 
   onBeforeMount(() => {
-    if (!accStore.checkAction(accStore.pn.hrDashboardRead)) return
+    // `canView`: bare `hr-dashboard` yoki `hr-dashboard-read` — ikkalasi ham yaraydi.
+    if (!accStore.canView(accStore.pn.hrDashboard)) return
     store.activeDetail = null
     store.closeAuditDetail()
     store._dashboard()
@@ -69,11 +70,14 @@
           <n-tab-pane :name="0" class="!p-0">
             <UIPageContent class="!pt-0 !px-0 !m-0">
               <n-spin :show="store.loading" class="min-h-[200px]">
+                <!-- Sof `canView`: `checkAction` yon ta'sirli (toast) va bu yerda
+                     har render'da ogohlantirish otilardi. Ko'rish ruxsati yo'q
+                     bo'lsa kartalar butunlay ko'rsatilmaydi. -->
                 <n-grid
                   x-gap="4 m:8 l:12"
                   y-gap="4 m:8 l:12"
                   cols="12"
-                  v-if="accStore.checkAction(accStore.pn.hrDashboardRead) && !store.loading"
+                  v-if="accStore.canView(accStore.pn.hrDashboard) && !store.loading"
                   responsive="screen"
                 >
                   <template v-for="(card, idx) in store.dashboard.mainCard" :key="idx">
@@ -101,8 +105,9 @@
         </n-tabs>
       </n-tab-pane>
 
+      <!-- Audit — alohida ko'rish ruxsati; bo'lmasa tab umuman chizilmaydi. -->
       <n-tab-pane
-        v-if="accStore.checkAction(accStore.pn.hrDashboardAudit)"
+        v-if="accStore.checkPermission(accStore.pn.hrDashboardAudit)"
         name="audit"
         :tab="$t('dashboardPage.audit.tabAudit')"
         class="!p-0"

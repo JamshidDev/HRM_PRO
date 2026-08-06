@@ -74,6 +74,7 @@
 
 <template>
   <UITable
+    permission-prefix="exam-topics"
     :columns="columns"
     :actions="actions"
     :data="store.list"

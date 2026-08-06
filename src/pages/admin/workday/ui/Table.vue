@@ -87,6 +87,7 @@
 
 <template>
   <UITable
+    permission-prefix="work-day"
     :columns="columns"
     :actions="actions"
     :data="store.list"

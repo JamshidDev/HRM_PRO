@@ -51,11 +51,6 @@
     menuPath.value = path
     let index = navigations.findIndex((v) => v.path === path)
     if (navigations[index].children && navigations[index].children.length) {
-      // router.push(
-      //   navigations[index].children.filter(
-      //     (v) => store.isModeDev || store.checkPermission(v.permission)
-      //   )?.[0]?.path
-      // )
       emits('onOpen')
     } else {
       router.push(navigations[index].path)
@@ -73,20 +68,17 @@
   }
 
   /**
-   * Menyu ko'rish ruxsati: bare slug YOKI uning '-read' varianti yetarli.
-   * Fine-grained migratsiyadan keyin rollar 'hr-departments-read' oladi, menyu esa
-   * tarixan bare 'hr-departments' tekshirardi — natijada faqat -read'ga ega rol
-   * sahifani ochsa ham menyu yashirilardi. Ikkovini ham qamraymiz.
+   * Ko'rish qoidasi (bare slug YOKI uning '-read' varianti) endi store'dagi
+   * `canView` getterida — router bilan AYNAN bir xil manba. Ilgari bu mantiq
+   * shu yerda va router/index.js da alohida-alohida yozilgan edi.
    */
-  const canView = (permission) =>
-    store.checkPermission(permission) || store.checkPermission(`${permission}-read`)
+  const canView = (permission) => store.canView(permission)
 
   /**
    * Modul (mini-menyu) FAQAT o'zining module-access ruxsati bo'lsa ko'rinadi.
-   * isModeDev bypass ATAYLAB OLIB TASHLANDI — menyu va moddalar HAR DOIM (localda ham)
-   * permissionga mos ko'rinsin. Avvalgi child-fallback ham yo'q (`instructions` kabi
-   * umumiy permission tufayli hr/hrLeader Admin modulini ko'rib qolardi). Ichki
-   * sahifalar ham o'z permissioni bilan filtrlanadi (children.filter, pastda).
+   * Avvalgi child-fallback yo'q (`instructions` kabi umumiy permission tufayli
+   * hr/hrLeader Admin modulini ko'rib qolardi). Ichki sahifalar ham o'z
+   * permissioni bilan filtrlanadi (children.filter, pastda).
    */
   const moduleVisible = (mod) => canView(mod.permission)
 

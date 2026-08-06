@@ -123,6 +123,7 @@
 
 <template>
   <UITable
+    permission-prefix="hr-public-vacancy"
     :columns="columns"
     :actions="actions"
     :data="store.applicationsList"

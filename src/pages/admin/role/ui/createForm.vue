@@ -6,7 +6,6 @@
   import {
     PERMISSION_GROUPS,
     ACTION_LABELS,
-    ACTION_ORDER,
     MEANINGFUL,
     ENFORCED,
   } from '@/utils/permissionGroups.js'
@@ -14,6 +13,9 @@
   const formRef = ref(null)
   const store = useUserRoleStore()
   const t = i18n.global.t
+
+  // Har modulning modul-kirish guruhi shu label bilan belgilangan.
+  const MODULE_ACCESS_LABEL = 'userRole.form.moduleAccess'
 
   // name -> {id, name}
   const permByName = computed(() => {
@@ -38,42 +40,102 @@
     else if (!val && i !== -1) arr.splice(i, 1)
   }
 
-  // sub-guruh switchlari: read/write/delete bo'lsa ular; bo'lmasa (faqat bazaviy
-  // slug — bu ko'rish/list ruxsati) bitta "Ko'rish" switch.
-  // read/ko'rish: '-read' meaningful bo'lsa u, aks holda base slug (menyu ko'rinishi).
-  // write/delete: FAQAT backend enforce qilsa (real mutatsiya API) — o'lik switch chiqmaydi.
-  const meaningfulReadName = (prefix) => {
-    if (has(`${prefix}-read`) && MEANINGFUL.has(`${prefix}-read`)) return `${prefix}-read`
-    if (has(prefix) && MEANINGFUL.has(prefix)) return prefix
-    return null
-  }
+  // Integration guard uchun MEANINGFUL/ENFORCED filtri QO'LLANMAYDI: bu ro'yxatlar
+  // sanctum (frontend) sluglaridan yig'ilgan, shuning uchun 34 ta integration
+  // guruhidan 33 tasi filtrdan o'tmay, tab amalda bo'sh qolardi. API allaqachon
+  // faqat shu guard'ning sluglarini qaytaradi — `has()` ning o'zi yetarli.
+  const isIntegrationGuard = computed(() => store.payload.guard_name === 'integration')
+  const grantable = (name) =>
+    isIntegrationGuard.value || MEANINGFUL.has(name) || ENFORCED.has(name)
+  const mutable = (name) => (isIntegrationGuard.value ? true : ENFORCED.has(name))
+
+  /**
+   * Bitta "Ko'rish" switch'i ortida turgan BARCHA nomlar.
+   *
+   * Tarixan ko'rish ruxsati ikki xil yozilgan: bare `hr-workers` (menyu ko'rinishi) va
+   * `hr-workers-read`. Ilgari switch faqat BITTASINI boshqarardi — `-read` mavjud bo'lsa
+   * bare slug UI'da umuman ko'rinmasdi (u `mappedNames` ichida bo'lgani uchun "Boshqa"
+   * tabiga ham tushmasdi). Natijada eski rolda qolgan bare slug KO'RINMAS va
+   * O'CHIRIB BO'LMAYDIGAN grantga aylanardi: admin "Ko'rish"ni o'chirsa ham menyu
+   * bandi joyida qolaverardi. Endi switch ikkalasini birga yoqadi/o'chiradi.
+   */
+  const readNames = (prefix) =>
+    [prefix, `${prefix}-read`].filter((n) => has(n) && grantable(n))
+
+  /**
+   * Guruh switchlari. Har switch — `{ key, names: string[], label }`.
+   * write/delete FAQAT backend enforce qilsa chiqadi (o'lik switch bo'lmasin).
+   */
   const groupSwitches = (g) => {
-    // Custom per-option guruh (masalan Foydalanuvchilar): har amal alohida switch
+    // Custom per-option guruh (Dashboard, Foydalanuvchilar): har amal alohida switch.
     if (g.actions) {
-      return g.actions
-        .filter((a) => has(a.slug) && (ENFORCED.has(a.slug) || MEANINGFUL.has(a.slug)))
-        .map((a) => ({ name: a.slug, label: a.labelKey ? t(a.labelKey) : a.label }))
+      const out = []
+      for (const a of g.actions) {
+        if (!has(a.slug) || !grantable(a.slug)) continue
+        const label = a.labelKey ? t(a.labelKey) : a.label
+        // `<prefix>-read` amali bare slugni ham o'ziga oladi (yuqoridagi izohga qarang).
+        const names = a.slug === `${g.prefix}-read` ? readNames(g.prefix) : [a.slug]
+        out.push({ key: a.slug, names, label })
+      }
+      // Guruhda alohida `-read` amali bo'lmasa, lekin bare slug mavjud bo'lsa —
+      // uni yo'qotib qo'ymaslik uchun alohida "Ko'rish" switch'i sifatida chiqaramiz.
+      const covered = new Set(out.flatMap((s) => s.names))
+      if (has(g.prefix) && grantable(g.prefix) && !covered.has(g.prefix)) {
+        out.unshift({ key: g.prefix, names: [g.prefix], label: ACTION_LABELS.read })
+      }
+      return out
     }
+
     const out = []
-    const rn = meaningfulReadName(g.prefix)
-    if (rn) out.push({ name: rn, label: ACTION_LABELS.read })
-    for (const a of ['write', 'delete'])
-      if (has(`${g.prefix}-${a}`) && ENFORCED.has(`${g.prefix}-${a}`))
-        out.push({ name: `${g.prefix}-${a}`, label: ACTION_LABELS[a] })
+    const rn = readNames(g.prefix)
+    if (rn.length) out.push({ key: `${g.prefix}-read`, names: rn, label: ACTION_LABELS.read })
+    for (const a of ['write', 'delete']) {
+      const name = `${g.prefix}-${a}`
+      if (has(name) && mutable(name))
+        out.push({ key: name, names: [name], label: ACTION_LABELS[a] })
+    }
     return out
   }
-  const groupActions = (g) => groupSwitches(g).map((s) => s.name)
-  const groupAllOn = (g) => {
-    const a = groupActions(g)
-    return a.length > 0 && a.every((n) => isOn(n))
-  }
-  const toggleGroup = (g, val) => groupActions(g).forEach((n) => setOn(n, val))
 
-  // modulda biriktirilgan (ON) permissionlar soni — tab badge
+  // Switch yoqilgan hisoblanadi, agar nomlaridan BIRORTASI tanlangan bo'lsa;
+  // o'chirilganda esa BARCHASI olib tashlanadi (grant-all / revoke-all).
+  const switchOn = (sw) => sw.names.some((n) => isOn(n))
+  const setSwitch = (sw, val) => {
+    sw.names.forEach((n) => setOn(n, val))
+    if (val) ensureModuleAccess(sw.names[0])
+  }
+
+  /**
+   * Modul-kirish slug'ini avtomatik yoqadi.
+   *
+   * Router endi `meta.permission`ni ota route'dan meros qildiradi, ya'ni `/hrm/*`
+   * ostidagi hamma narsa modul slug'i (`hr`) bo'lmasa ochilmaydi. Shu sababli
+   * "xodimlarni ko'rishni berdim, lekin foydalanuvchi hech narsa ko'rmayapti"
+   * degan eng ko'p uchraydigan xatoni oldini olamiz.
+   */
+  const ensureModuleAccess = (name) => {
+    const mod = visibleModules.value.find((m) =>
+      m.groups.some((g) => groupSwitches(g).some((sw) => sw.names.includes(name)))
+    )
+    if (!mod) return
+    const moduleSlug = mod.groups.find((g) => g.label === MODULE_ACCESS_LABEL)?.prefix
+    if (!moduleSlug || moduleSlug === name) return
+    if (has(moduleSlug) && !isOn(moduleSlug)) setOn(moduleSlug, true)
+  }
+
+  // DIQQAT: agregatlar SWITCH darajasida sanaladi, nom darajasida emas. Aks holda
+  // `-read` bor, bare yo'q rollarda (ya'ni to'g'ri sozlangan deyarli barcha rollarda)
+  // master switch OFF ko'rinardi va badge ikki barobar shishardi.
+  const groupAllOn = (g) => {
+    const sw = groupSwitches(g)
+    return sw.length > 0 && sw.every(switchOn)
+  }
+  const toggleGroup = (g, val) => groupSwitches(g).forEach((sw) => setSwitch(sw, val))
+
+  // modulda yoqilgan switchlar soni — tab badge
   const moduleCount = (mod) => {
     let c = 0
-    for (const g of mod.groups)
-      for (const n of groupActions(g)) if (isOn(n)) c++
+    for (const g of mod.groups) for (const sw of groupSwitches(g)) if (switchOn(sw)) c++
     return c
   }
 
@@ -97,32 +159,54 @@
     )
   )
 
-  // xaritada YO'Q permissionlar -> "Boshqa" tab
-  const mappedNames = computed(() => {
+  /**
+   * HAQIQATAN chizilgan switch nomlari.
+   *
+   * Ilgari bu yerda `mappedNames` bor edi — u xaritada NAZARIY mavjud har bir nomni
+   * qo'shardi, hatto o'sha switch ekranda chizilmasa ham. Natijada chizilmagan, lekin
+   * "xaritalangan" slug "Boshqa" tabiga ham tushmay, butunlay ko'rinmas bo'lib qolardi.
+   *
+   * Endi faqat chizilgani hisobga olinadi — invariant: BERILGAN HAR BIR RUXSAT
+   * UI'da biror joyda ko'rinishi va o'chirilishi mumkin bo'lsin.
+   */
+  const renderedNames = computed(() => {
     const s = new Set()
-    for (const mod of PERMISSION_GROUPS)
-      for (const g of mod.groups) {
-        s.add(g.prefix) // bare slug (integration-* va boshqa yakka permissionlar)
-        for (const a of ACTION_ORDER) s.add(`${g.prefix}-${a}`)
-        if (g.actions) for (const a of g.actions) s.add(a.slug) // custom per-option
-      }
+    for (const mod of visibleModules.value)
+      for (const g of mod.groups)
+        for (const sw of groupSwitches(g)) for (const n of sw.names) s.add(n)
     return s
   })
 
   // Rol turi (guard) o'zgarganда: mos permission ro'yxatini qayta yuklab,
   // tanlangan permissionlarni tozalaymiz (boshqa guard permissioni yaramaydi).
+  // `query` ham tozalanadi — aks holda eski qidiruv yangi guard tablarini bo'sh
+  // ko'rsatib qo'yadi.
   const onGuardChange = () => {
     store.payload.permissions = []
+    store.query = null
     store._getAllPermission()
   }
+
   const otherPerms = computed(() => {
     const q = (store.query || '').trim().toLowerCase()
     return (store.originAllPermissionList || []).filter(
       (p) =>
-        !mappedNames.value.has(p.name) &&
-        MEANINGFUL.has(p.name) &&
+        !renderedNames.value.has(p.name) &&
+        // TANLANGAN grant hech qachon yashirilmaydi, hatto MEANINGFUL bo'lmasa ham —
+        // aks holda uni o'chirishning iloji qolmaydi.
+        (MEANINGFUL.has(p.name) || selectedSet.value.has(p.id)) &&
         (!q || p.name.toLowerCase().includes(q))
     )
+  })
+
+  /**
+   * `payload.permissions` ichida bor, lekin API ro'yxatida YO'Q ID'lar soni.
+   * Bunday grant hech bir switchda ko'rinmaydi va o'chirib bo'lmaydi, lekin
+   * saqlashda jimgina qolib ketadi — shuning uchun ochiq ogohlantiramiz.
+   */
+  const orphanCount = computed(() => {
+    const known = new Set((store.originAllPermissionList || []).map((p) => p.id))
+    return store.payload.permissions.filter((id) => !known.has(id)).length
   })
   const otherCount = computed(
     () => otherPerms.value.filter((p) => selectedSet.value.has(p.id)).length
@@ -167,6 +251,10 @@
 
       <n-form-item :label="$t(`userRole.form.permissions`)" path="permissions">
         <div class="w-full">
+          <!-- Ro'yxatga tushmagan ("ko'rinmas") grantlar haqida ochiq ogohlantirish -->
+          <n-alert v-if="orphanCount" type="warning" class="mb-3" :bordered="false">
+            {{ $t('userRole.form.orphanWarning', { n: orphanCount }) }}
+          </n-alert>
           <n-tabs type="line" animated class="perm-tabs ui-pill-tabs">
             <n-tab-pane
               v-for="mod in visibleModules"
@@ -197,14 +285,14 @@
                   <div class="flex flex-col gap-2">
                     <div
                       v-for="sw in groupSwitches(g)"
-                      :key="sw.name"
+                      :key="sw.key"
                       class="flex items-center justify-between"
                     >
                       <span class="text-sm text-secondary">{{ sw.label }}</span>
                       <n-switch
                         size="small"
-                        :value="isOn(sw.name)"
-                        @update:value="(v) => setOn(sw.name, v)"
+                        :value="switchOn(sw)"
+                        @update:value="(v) => setSwitch(sw, v)"
                       />
                     </div>
                   </div>

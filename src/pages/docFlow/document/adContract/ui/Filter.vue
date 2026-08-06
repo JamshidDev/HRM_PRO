@@ -56,6 +56,7 @@
 
 <template>
   <UIPageFilter
+    :add-permission="accStore.pn.hrContractAdditionalWrite"
     @onAdd="onAdd"
     @onSearch="onSearchEv"
     v-model:search="store.params.search"

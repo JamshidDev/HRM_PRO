@@ -7,7 +7,12 @@
   const accStore = useAccountStore()
 
   onMounted(() => {
-    if (!accStore.checkAction(accStore.pn.chatNotification)) return
+    // Bildirishnomalar `instructions` slug'i bilan qo'riqlanadi — navigations.js,
+    // rol formasidagi "Bildirishnomalar" guruhi va backend ENFORCED ro'yxati
+    // shunga tayanadi. Bu yerda `chat-notification` tekshirilardi: admin
+    // "Bildirishnomalar"ni bersa menyu chiqar, lekin sahifa bo'sh qolib
+    // "Ruxsat etilmadi" toasti chiqardi.
+    if (!accStore.checkAction(accStore.pn.instructions)) return
     store._index()
   })
 </script>

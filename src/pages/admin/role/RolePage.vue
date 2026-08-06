@@ -37,6 +37,7 @@
 <template>
   <UIPageContent>
     <UIPageFilter
+      :add-permission="accStore.pn.rolesWrite"
       v-model:search="store.params.search"
       @on-search="onSearch"
       :search-loading="store.loading"

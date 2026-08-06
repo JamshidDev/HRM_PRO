@@ -55,6 +55,7 @@
 
 <template>
   <UIPageFilter
+    :add-permission="accStore.pn.hrLeadersWrite"
     v-model:search="store.params.search"
     @onSearch="onSearch"
     @show="beforeShow"

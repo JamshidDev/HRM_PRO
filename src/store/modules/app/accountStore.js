@@ -5,6 +5,29 @@ import { AppPaths, useAppSetting, appPermissions } from '@/utils/index.js'
 import Utils from '@/utils/Utils.js'
 
 const { t } = i18n.global
+
+/**
+ * sessionStorage'dagi ruxsat ro'yxatini XAVFSIZ o'qiydi.
+ *
+ * Nega kerak: ilgari `_index()` `role?.permissions?.map(...)` natijasini to'g'ridan-to'g'ri
+ * yozardi. Rol `null` bo'lsa bu `undefined` bo'lib, `JSON.stringify(undefined)` → `undefined`,
+ * ya'ni storage'ga `"undefined"` SATRI tushardi. Keyingi `JSON.parse("undefined")` esa
+ * exception tashlab, har bir permission tekshiruvini yiqitardi. Bunday "zaharlangan"
+ * qiymat allaqachon tarqalgan build'lardan foydalanuvchilarda qolgan bo'lishi mumkin,
+ * shuning uchun uni shu yerda tozalaymiz.
+ */
+const readStoredPermissions = () => {
+  try {
+    const raw = sessionStorage.getItem(useAppSetting.appPermission)
+    if (!raw) return []
+    const parsed = JSON.parse(raw)
+    return Array.isArray(parsed) ? parsed : []
+  } catch {
+    sessionStorage.removeItem(useAppSetting.appPermission)
+    return []
+  }
+}
+
 export const useAccountStore = defineStore('accountStore', {
   state: () => ({
     account: null,
@@ -26,10 +49,15 @@ export const useAccountStore = defineStore('accountStore', {
     activeRole: null,
     roleLoading: false,
     roleList: [],
-    permissions: [],
+    // Sahifa yangilanganda bir marta hidratsiya qilinadi. Ilgari bu `[]` edi va har bir
+    // `checkPermission` chaqiruvi sessionStorage'ni qayta o'qib parse qilardi.
+    permissions: readStoredPermissions(),
+    // Shu tab hayoti davomida profil (va u bilan ruxsatlar) serverdan olindimi.
+    // Storage'dan hidratsiya buni `true` qilmaydi — har tab ochilishida bir marta
+    // yangilanadi, aks holda admin rolni o'zgartirsa eski ruxsatlar qolib ketardi.
+    permissionsLoaded: false,
     storageUpdate: 1,
     pn: appPermissions,
-    isModeDev: false,
     skipReset: true,
     districtList: [],
     districtLoading: false,
@@ -41,18 +69,35 @@ export const useAccountStore = defineStore('accountStore', {
     changePasswordLoading: false
   }),
   getters: {
-    checkPermission: (state) => (permission) => {
-      const storePermissions = sessionStorage.getItem(useAppSetting.appPermission)
-        ? JSON.parse(sessionStorage.getItem(useAppSetting.appPermission))
-        : []
-      const permissions = state.permissions.length > 0 ? state.permissions : storePermissions
-      return permissions.includes(permission)
-    },
+    /**
+     * Ruxsatlarning keshlangan Set'i. `permissions` o'zgarmaguncha qayta hisoblanmaydi.
+     * Ilgari har tekshiruv sessionStorage.getItem + JSON.parse qilardi — sidebar'ning
+     * bitta render'i ~600 elementli massivni yuzlab marta parse qilishga olib kelardi.
+     */
+    permissionSet: (state) => new Set(state.permissions),
+
+    /** Aniq slug bo'yicha tekshiruv. Yon ta'sirsiz — template'da bemalol ishlatiladi. */
+    checkPermission: (state) => (permission) => state.permissionSet.has(permission),
+
+    /**
+     * KO'RISH ruxsati: bare slug YOKI uning '-read' varianti.
+     *
+     * `navigations.js` tarixan bare slug saqlaydi (`hr-workers`), fine-grained
+     * migratsiyadan keyin esa rollar `hr-workers-read` oladi. Ikkovini ham qamraymiz.
+     * Bu qoida SIDEBAR va ROUTER uchun yagona manba — ilgari u ikki joyda takrorlanardi.
+     */
+    canView: (state) => (prefix) =>
+      state.checkPermission(prefix) || state.checkPermission(`${prefix}-read`),
+
+    /** `canDo('hr-workers', 'write')` — slug'ni qo'lda yig'ish o'rniga. */
+    canDo: (state) => (prefix, action) => state.checkPermission(`${prefix}-${action}`),
+
+    /**
+     * Amalni bajarishdan oldingi qo'riqchi: rad etilsa toast chiqaradi.
+     * DIQQAT: yon ta'sirli — `v-if` / `computed` ichida ISHLATILMASIN, aks holda
+     * har render'da toast chiqadi. Ko'rinish uchun `checkPermission`/`canView` ishlatiladi.
+     */
     checkAction: (state) => (permission) => {
-      if (!state.checkPermission(permission) && state.isModeDev) {
-        $Toast.warning('Devda ligingiz uchun ruxsat berildi!')
-        return true
-      }
       if (!state.checkPermission(permission)) {
         $Toast.warning(t('message.noPermission'))
         return false
@@ -71,6 +116,39 @@ export const useAccountStore = defineStore('accountStore', {
     }
   },
   actions: {
+    /**
+     * Rolni SIMULYATSIYA qilish (faqat dev build'da).
+     *
+     * Ilgari `isModeDev` localhost'da hamma ruxsatni ochib berardi — natijada
+     * permissionlarni lokalda umuman sinab bo'lmasdi. Uning o'rniga endi aniq
+     * ruxsat ro'yxatini majburlash mumkin:
+     *   localStorage.setItem('permOverride', JSON.stringify(['hr','hr-workers-read']))
+     * Tozalash: localStorage.removeItem('permOverride')
+     */
+    applyDevPermissionOverride() {
+      if (!import.meta.env.DEV) return
+      const raw = localStorage.getItem('permOverride')
+      if (!raw) return
+      try {
+        const parsed = JSON.parse(raw)
+        if (Array.isArray(parsed)) this.permissions = parsed
+      } catch {
+        localStorage.removeItem('permOverride')
+      }
+    },
+
+    /**
+     * Chiqishda ruxsatlarni ANIQ tozalaydi.
+     * `skipReset: true` bo'lgani uchun `getActivePinia().reset()` bu store'ni chetlab
+     * o'tadi — ya'ni chiqmasdan boshqa foydalanuvchi kirsa, eski ruxsatlar qolib ketardi.
+     */
+    clearPermissions() {
+      this.permissions = []
+      this.permissionsLoaded = false
+      this.account = null
+      sessionStorage.removeItem(useAppSetting.appPermission)
+    },
+
     _logOut(callback) {
       this.loading = true
       $ApiService.accountService
@@ -153,8 +231,15 @@ export const useAccountStore = defineStore('accountStore', {
         .then((res) => {
           this.payload = { ...res.data.data.worker, password: null }
           this.account = { ...res.data.data }
-          this.permissions = res.data.data.role?.permissions?.map((v) => v.name)
+          // `?? []` MAJBURIY: rol biriktirilmagan foydalanuvchida `role` null bo'lib,
+          // ilgari storage'ga `"undefined"` satri yozilar va keyingi parse yiqilardi.
+          const rolePermissions = res.data.data.role?.permissions
+          this.permissions = Array.isArray(rolePermissions)
+            ? rolePermissions.map((v) => v.name)
+            : []
           sessionStorage.setItem(useAppSetting.appPermission, JSON.stringify(this.permissions))
+          this.applyDevPermissionOverride()
+          this.permissionsLoaded = true
           // must_change endi login javobida EMAS — profil (/user/profile) qaytaradi.
           // true → parol muddati o'tgan → MustChangePasswordModal ochiladi.
           this.mustChangePassword = res.data.data.must_change === true

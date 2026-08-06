@@ -532,7 +532,8 @@
       "moduleAccess": "Module access",
       "type": "Role type",
       "typeSanctum": "User",
-      "typeIntegration": "Integration"
+      "typeIntegration": "Integration",
+      "orphanWarning": "This role has {n} permission(s) not shown in the list (the permission list may not be fully loaded). They will be kept unchanged on save."
     }
   },
   "userPage": {

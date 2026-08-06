@@ -33,7 +33,8 @@
 
   let timer = null
   const filterEvent = () => {
-    if (!accStore.checkAction(accStore.pn.turnstileDashboardRead)) return
+    // page.vue bilan bir xil qoida (bare YOKI '-read').
+    if (!accStore.canView(accStore.pn.turnstileDashboard)) return
     clearTimeout(timer)
     timer = setTimeout(() => {
       dashboardStore._dashboard()

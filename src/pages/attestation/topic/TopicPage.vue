@@ -42,6 +42,7 @@
     <n-tab-pane name="list" style="height: 100%">
       <UIPageContent>
         <UIPageFilter
+          :add-permission="accStore.pn.examTopicsWrite"
           v-model:search="store.params.search"
           :show-filter-button="false"
           @on-add="onAdd"

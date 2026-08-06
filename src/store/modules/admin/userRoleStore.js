@@ -77,23 +77,41 @@ export const useUserRoleStore = defineStore('userRole', {
           this.deleteLoading = false
         })
     },
-    _getAllPermission() {
-      // Rol guard'iga mos permissionlarni yuklaymiz (sanctum yoki integration).
-      $ApiService.userPermissionService
-        ._index({
-          params: {
-            page: 1,
-            per_page: 1000,
-            guard: this.payload.guard_name || 'sanctum'
-          }
-        })
-        .then((res) => {
-          const sorted = res.data.data.data.sort((a, b) =>
-            a.name.toLowerCase().localeCompare(b.name.toLowerCase())
-          )
-          this.allPermissionList = sorted
-          this.originAllPermissionList = sorted
-        })
+    /**
+     * Rol guard'iga mos BARCHA permissionlarni yuklaydi (sanctum yoki integration).
+     *
+     * Sahifalab yuklanadi: ilgari bitta so'rov `per_page: 1000` bilan ketardi va
+     * jadval shu chegaradan oshsa, tanlangan ID'lar ro'yxatga tushmasdi. Bunday
+     * grant rol formasida hech bir switchda ko'rinmas, o'chirib ham bo'lmas,
+     * lekin saqlashda jimgina qolib ketardi.
+     */
+    async _getAllPermission() {
+      const perPage = 500
+      const guard = this.payload.guard_name || 'sanctum'
+      const collected = []
+      let page = 1
+      let total = Infinity
+
+      try {
+        while (collected.length < total) {
+          const res = await $ApiService.userPermissionService._index({
+            params: { page, per_page: perPage, guard }
+          })
+          const chunk = res.data.data.data ?? []
+          collected.push(...chunk)
+          total = res.data.data.total ?? collected.length
+          if (chunk.length === 0) break // himoya: cheksiz sikldan saqlaydi
+          page += 1
+        }
+      } catch {
+        // Xatolikda ham qo'lga kirgani ko'rsatiladi — forma butunlay bo'sh qolmasin.
+      }
+
+      const sorted = collected.sort((a, b) =>
+        a.name.toLowerCase().localeCompare(b.name.toLowerCase())
+      )
+      this.allPermissionList = sorted
+      this.originAllPermissionList = sorted
     },
     openVisible(data) {
       this.visible = data

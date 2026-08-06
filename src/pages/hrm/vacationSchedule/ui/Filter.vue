@@ -59,6 +59,7 @@
 
 <template>
   <UIPageFilter
+    :add-permission="accStore.pn.hrVacationScheduleWrite"
     v-model:search="store.params.search"
     :search-loading="store.loading"
     @onAdd="onAdd"

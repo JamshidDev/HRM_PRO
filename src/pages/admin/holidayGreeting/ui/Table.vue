@@ -16,12 +16,12 @@
   const accStore = useAccountStore()
 
   const onEdit = (item) => {
-    if (!accStore.checkAction(accStore.pn.admin)) return
+    if (!accStore.checkAction(accStore.pn.holidayGreetingsWrite)) return
     store.onEdit(item)
   }
 
   const onDelete = (item) => {
-    if (!accStore.checkAction(accStore.pn.admin)) return
+    if (!accStore.checkAction(accStore.pn.holidayGreetingsDelete)) return
     store.elementId = item.id
     store._delete()
   }
@@ -90,6 +90,7 @@
 
 <template>
   <UITable
+    permission-prefix="holiday-greetings"
     :columns="columns"
     :actions="actions"
     :data="store.list"

@@ -34,7 +34,10 @@
   }
 
   onMounted(() => {
-    if (!accStore.checkAction(accStore.pn.turnstileDashboard)) return
+    // `canView` — bare `turnstile-dashboard` YOKI `-read`. Ilgari bu yerda bare,
+    // ui/Filter.vue da esa `-read` tekshirilardi: faqat `-read` olgan rol sahifani
+    // ochar, lekin kartalar yuklanmasdi.
+    if (!accStore.canView(accStore.pn.turnstileDashboard)) return
     if (!dashboardStore.dashboardParams.date) {
       dashboardStore.dashboardParams.date = new Date().getTime()
     }
