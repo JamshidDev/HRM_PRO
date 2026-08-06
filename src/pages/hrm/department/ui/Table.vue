@@ -31,6 +31,12 @@ import { Delete20Regular, Edit32Regular, Eye16Regular, OpenFolder24Filled } from
 
   const onEdit = (row) => {
     if (!accStore.checkAction(accStore.pn.hrDepartmentsWrite)) return
+    // `parentElement` ni faqat Filter.vue ("Yangi qo'shish") tozalardi. Bir marta
+    // "Biriktirish" bosilgach u store'da qolib ketardi va keyingi HAR QANDAY
+    // tahrirlash oynasida ota-bo'lim bloki yashirinib (createForm.vue
+    // `v-if="!Boolean(store.parentElement)"`), tepada eski bo'lim nomi bannerda
+    // osilib turardi — foydalanuvchi ota-bo'limni na ko'rardi, na o'zgartirardi.
+    store.parentElement = null
     store.elementId = row.id
     componentStore._departments()
     componentStore._regions()
