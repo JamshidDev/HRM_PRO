@@ -1,7 +1,12 @@
 <script setup>
-  import { NoDataPicture, UIMenuButton, UIPagination } from '@/components/index.js'
+  import { UITable } from '@/components/index.js'
   import { useWorkdayStore } from '@/store/modules/index.js'
+  import i18n from '@/i18n/index.js'
+  import Utils from '@/utils/Utils.js'
+  import UIHelper from '@/utils/UIHelper.js'
+  import { Delete20Regular, Edit32Regular } from '@vicons/fluent'
 
+  const { t } = i18n.global
   const store = useWorkdayStore()
 
   const format = (v) => {
@@ -14,20 +19,20 @@
     } else return null
   }
 
-  const onSelectEv = (v) => {
-    if (v.key === 'edit') {
-      store.visibleType = false
-      store.elementId = v.data.id
-      store.payload.schedule_id = v.data.schedule.id
-      store.payload.type = v.data.type.id
-      store.payload.day_of_week = v.data.day_of_week.toString()
-      store.payload.start_time = format(v.data.start_time)
-      store.payload.end_time = format(v.data.end_time)
-      store.visible = true
-    } else if (v.key === 'delete') {
-      store.elementId = v.data.id
-      store._delete()
-    }
+  const onEdit = (row) => {
+    store.visibleType = false
+    store.elementId = row.id
+    store.payload.schedule_id = row.schedule.id
+    store.payload.type = row.type.id
+    store.payload.day_of_week = row.day_of_week.toString()
+    store.payload.start_time = format(row.start_time)
+    store.payload.end_time = format(row.end_time)
+    store.visible = true
+  }
+
+  const onDelete = (row) => {
+    store.elementId = row.id
+    store._delete()
   }
 
   const changePage = (v) => {
@@ -35,56 +40,61 @@
     store.params.per_page = v.per_page
     store._index()
   }
+
+  const columns = computed(() => [
+    {
+      key: 'schedule.name',
+      title: t('workdayPage.form.schedule_id'),
+      minWidth: 200
+    },
+    {
+      key: 'type.name',
+      title: t('workdayPage.form.type'),
+      minWidth: 200
+    },
+    {
+      key: 'day_of_week',
+      title: t('workdayPage.form.day_of_week'),
+      minWidth: 200
+    },
+    {
+      key: 'start_time',
+      title: t('workdayPage.form.start_time'),
+      minWidth: 200
+    },
+    {
+      key: 'end_time',
+      title: t('workdayPage.form.end_time'),
+      minWidth: 200
+    }
+  ])
+
+  const actions = computed(() => [
+    {
+      label: t('content.edit'),
+      key: Utils.ActionTypes.edit,
+      icon: UIHelper.renderIcon(Edit32Regular),
+      action: onEdit
+    },
+    {
+      label: t('content.delete'),
+      key: Utils.ActionTypes.delete,
+      icon: UIHelper.renderIcon(Delete20Regular),
+      action: onDelete
+    }
+  ])
 </script>
 
 <template>
-  <n-spin :show="store.loading" style="min-height: 200px">
-    <div class="w-full overflow-x-auto" v-if="store.list.length > 0">
-      <n-table class="mt-10" :single-line="false" size="small">
-        <thead>
-          <tr>
-            <th class="text-center! min-w-[40px] w-[40px]">{{ $t('content.number') }}</th>
-            <th class="min-w-[200px]">{{ $t('workdayPage.form.schedule_id') }}</th>
-            <th class="min-w-[200px]">{{ $t('workdayPage.form.type') }}</th>
-            <th class="min-w-[200px]">{{ $t('workdayPage.form.day_of_week') }}</th>
-            <th class="min-w-[200px]">{{ $t('workdayPage.form.start_time') }}</th>
-            <th class="min-w-[200px]">{{ $t('workdayPage.form.end_time') }}</th>
-            <th class="min-w-[40px] w-[40px]"></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(item, idx) in store.list" :key="idx">
-            <td>
-              <span class="text-center text-[12px] text-gray-600 block">{{
-                (store.params.page - 1) * store.params.per_page + idx + 1
-              }}</span>
-            </td>
-            <td>{{ item.schedule?.name }}</td>
-            <td>{{ item.type?.name }}</td>
-            <td>{{ item?.day_of_week }}</td>
-            <td>{{ item.start_time }}</td>
-            <td>{{ item.end_time }}</td>
-            <td>
-              <UIMenuButton
-                :data="item"
-                :show-edit="true"
-                :show-delete="true"
-                :loading="item.id === store.elementId && store.deleteLoading"
-                @selectEv="onSelectEv"
-              />
-            </td>
-          </tr>
-        </tbody>
-      </n-table>
-      <UIPagination
-        :page="store.params.page"
-        :per_page="store.params.per_page"
-        :total="store.totalItems"
-        @change-page="changePage"
-      />
-    </div>
-    <NoDataPicture v-if="store.list.length === 0 && !store.loading" />
-  </n-spin>
+  <UITable
+    :columns="columns"
+    :actions="actions"
+    :data="store.list"
+    :loading="store.loading"
+    :page="store.params.page"
+    :per-page="store.params.per_page"
+    :total="store.totalItems"
+    storage-key="admin-workday"
+    @change-page="changePage"
+  />
 </template>
-
-<style scoped></style>

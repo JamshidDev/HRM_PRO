@@ -85,7 +85,7 @@
       ></div>
 
       <div
-        class="flex flex-1 items-center gap-2 rounded-lg border border-surface-line bg-white px-2 py-1.5 my-[2px] transition-all hover:border-primary/50 hover:bg-surface-100"
+        class="flex flex-1 items-center gap-2 rounded-lg border border-surface-line bg-surface-section px-2 py-1.5 my-[2px] transition-all hover:border-primary/50 hover:bg-surface-ground"
       >
         <div class="flex w-8 justify-center">
           <n-button

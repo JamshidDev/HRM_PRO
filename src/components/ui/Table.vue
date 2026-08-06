@@ -36,13 +36,13 @@
     selectable: { type: Boolean, default: false }, // swaps the row-number for a checkbox
     selectedKeys: { type: Array, default: () => [] },
     allSelected: { type: Boolean, default: false },
-    actions: { type: Array, default: () => [] }, // "..." menu + right-click options; visible can be boolean or (row) => boolean
+    actions: { type: Array, default: () => [] }, // "..." menu + right-click options; visible/label/icon can be static or (row) => value
     storageKey: { type: String, default: null }, // persists column visibility/order/width
     onLoad: { type: Function, default: null }, // async tree children loader: (row) => Promise<void>
     rowClassName: { type: Function, default: null }, // (row, index) => string
     sortBy: { type: String, default: null }, // current sort field, paired with a column's { sortable: true }
     sortOrder: { type: Number, default: 1 }, // 1 | -1
-    deleteWarning: { type: String, default: null } // custom confirm message for the delete action
+    deleteWarning: { type: [String, Function], default: null } // custom confirm message for the delete action; static or (row) => string
   })
 
   const emit = defineEmits([
@@ -74,8 +74,23 @@
     key.includes?.('.') ? key.split('.').reduce((o, k) => o?.[k], row) : row[key]
 
   const visibleActions = computed(() => props.actions.filter((a) => a.visible !== false))
+  // row can be undefined before any delete is triggered, since this is evaluated eagerly in the template
+  const resolveDeleteWarning = (row) =>
+    typeof props.deleteWarning === 'function'
+      ? row
+        ? props.deleteWarning(row)
+        : null
+      : props.deleteWarning
+
   const rowActionsFor = (row) =>
-    visibleActions.value.filter((a) => (typeof a.visible === 'function' ? a.visible(row) : true))
+    visibleActions.value
+      .filter((a) => (typeof a.visible === 'function' ? a.visible(row) : true))
+      .map((a) => ({
+        ...a,
+        label: typeof a.label === 'function' ? a.label(row) : a.label,
+        // icon is normally a 0-arg naive-ui render-prop (UIHelper.renderIcon result); only a (row) => ... accessor takes an arg
+        icon: typeof a.icon === 'function' && a.icon.length > 0 ? a.icon(row) : a.icon
+      }))
   const indexOffset = computed(() => (props.page - 1) * props.perPage)
 
   const allCols = computed(() => {
@@ -214,7 +229,7 @@
       if (!rowActions.length) return null
       return h(UITableActionsMenu, {
         options: rowActions,
-        deleteWarning: props.deleteWarning,
+        deleteWarning: resolveDeleteWarning(row),
         onSelect: (key, option) => onActionSelect(key, option, row)
       })
     }
@@ -232,9 +247,7 @@
 
   const contextMenu = reactive({ show: false, x: 0, y: 0, row: null })
 
-  const contextMenuActions = computed(() =>
-    contextMenu.row ? rowActionsFor(contextMenu.row) : []
-  )
+  const contextMenuActions = computed(() => (contextMenu.row ? rowActionsFor(contextMenu.row) : []))
 
   const onRowContextmenu = (e, row, index) => {
     emit('row-contextmenu', e, row, index)
@@ -271,16 +284,18 @@
 </script>
 
 <template>
-  <n-spin :show="loading" class="h-full">
-    <NoDataPicture v-if="empty" />
+  <n-spin :show="loading" class="h-full overflow-auto">
+    <div v-if="empty" class="h-full grid place-items-center">
+      <NoDataPicture />
+    </div>
 
     <div
       v-else
       ref="tableWrapperRef"
-      class="ui-table__wrapper h-full flex flex-col p-1 bg-surface-section rounded-[20px]"
+      class="ui-table__wrapper h-full min-h-[clamp(200px,calc(100vh-100%),600px)] flex flex-col p-1 bg-surface-section rounded-[20px]"
     >
       <n-data-table
-        class="ui-table__table flex-1 min-h-[clamp(200px,calc(100vh-140px),600px)]"
+        class="ui-table__table flex-1"
         :columns="ndtColumns"
         :data="data"
         :size="size"
@@ -330,7 +345,7 @@
 
   <UIDeleteConfirm
     v-model:visible="deleteConfirmVisible"
-    :warning="deleteWarning"
+    :warning="resolveDeleteWarning(pendingDelete?.row)"
     @confirm="onConfirmDelete"
   />
 </template>

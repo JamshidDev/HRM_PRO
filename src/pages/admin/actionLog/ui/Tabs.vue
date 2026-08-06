@@ -18,13 +18,14 @@
     animated
     v-model:value="store.activeTab"
     @update:value="changeTab"
-    class="hidden-tab-header1 mt-4"
+    class="hidden-tab-header1 flex-1 overflow-auto"
+    pane-wrapper-class="flex-1 flex flex-col"
     type="card"
   >
-    <n-tab-pane :name="1" :tab="$t('actionLog.tab.action')">
+    <n-tab-pane :name="1" :tab="$t('actionLog.tab.action')" class="flex-1 overflow-auto">
       <Table />
     </n-tab-pane>
-    <n-tab-pane :name="2" :tab="$t('actionLog.tab.auth')">
+    <n-tab-pane :name="2" :tab="$t('actionLog.tab.auth')" class="flex-1 overflow-auto">
       <AuthTable />
     </n-tab-pane>
   </n-tabs>
