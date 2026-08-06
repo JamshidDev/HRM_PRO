@@ -1,9 +1,13 @@
 <script setup>
+  import dayjs from 'dayjs'
   import { useAIConversationStore } from '@/store/modules/index.js'
-  import { ChatMultiple24Regular, PanelRight28Filled } from '@vicons/fluent'
+  import { Add24Filled, Search24Regular } from '@vicons/fluent'
+  import i18n from '@/i18n/index.js'
 
+  const { t } = i18n.global
   const store = useAIConversationStore()
   const containerRef = ref(null)
+  const search = ref('')
 
   const onSelect = (v) => {
     if (!store.historyMode) {
@@ -15,6 +19,39 @@
     store.questionParams.page = 1
     store.questions()
   }
+
+  const onNewChat = () => {
+    store.historyMode = false
+    store.questionParams.date = store.today
+    store.questionParams.page = 1
+    store.questions()
+  }
+
+  const filteredList = computed(() => {
+    const q = search.value.trim().toLowerCase()
+    if (!q) return store.list
+    return store.list.filter((item) => item.question?.toLowerCase().includes(q))
+  })
+
+  const groupedList = computed(() => {
+    const yesterday = dayjs(store.today).subtract(1, 'day').format('YYYY-MM-DD')
+    const groups = []
+    const map = new Map()
+    filteredList.value.forEach((item) => {
+      const dateKey = item.date
+      let label
+      if (dateKey === store.today) label = t('aiConversation.form.today')
+      else if (dateKey === yesterday) label = t('aiConversation.form.yesterday')
+      else label = dateKey
+
+      if (!map.has(label)) {
+        map.set(label, { label, items: [] })
+        groups.push(map.get(label))
+      }
+      map.get(label).items.push(item)
+    })
+    return groups
+  })
 
   const containerScrollEv = () => {
     const container = containerRef.value
@@ -42,52 +79,65 @@
 </script>
 
 <template>
-  <div ref="containerRef" class="flex flex-col overflow-y-auto bg-surface-section h-full">
-    <div class="flex pt-2 px-1 border-b border-surface-line mb-4 text-[#90A1B9]">
-      <div class="w-[24px]">
-        <n-icon size="24" class="text-[#90A1B9] cursor-pointer text-wrap">
-          <PanelRight28Filled />
+  <div ref="containerRef" class="flex flex-col overflow-y-auto bg-surface-section h-full px-3 py-4">
+    <h2 class="text-lg font-semibold text-textColor0 mb-4 shrink-0 px-1">
+      {{ $t('aiConversation.form.chatHistory') }}
+    </h2>
+
+    <button
+      type="button"
+      @click="onNewChat"
+      class="new-chat-btn flex items-center justify-center gap-2 w-full rounded-xl py-2.5 mb-3 text-white font-medium text-base bg-primary hover:opacity-90 transition-opacity cursor-pointer shrink-0"
+    >
+      <n-icon size="20">
+        <Add24Filled />
+      </n-icon>
+      {{ $t('aiConversation.form.newChat') }}
+    </button>
+
+    <n-input
+      v-model:value="search"
+      :bordered="false"
+      class="search-input mb-4 shrink-0 h-11! text-base!"
+      :placeholder="$t('aiConversation.form.searchConversations')"
+    >
+      <template #prefix>
+        <n-icon size="20" class="text-textColor3">
+          <Search24Regular />
         </n-icon>
-      </div>
-      <div class="text-center font-medium" style="width: calc(100% - 24px)">
-        {{ $t('aiConversation.form.conversation') }}
-      </div>
-    </div>
+      </template>
+    </n-input>
+
     <n-spin :show="store.listLoading">
-      <template v-for="(item, index) in store.list">
+      <template v-for="group in groupedList" :key="group.label">
+        <div class="text-xs font-medium text-textColor3 mb-2 mt-4 first:mt-0 px-1">
+          {{ group.label }}
+        </div>
         <div
+          v-for="(item, index) in group.items"
+          :key="item.id ?? index"
           @click="onSelect(item)"
-          class="flex rounded-lg px-3 py-1 mb-2 bg-gray-50 cursor-pointer bg-linear-to-r from-gray-100 to-blue-100 from-30% mx-[4px] hover-effect-card text-textColor0"
-          style="width: calc(100% - 8px)"
+          class="history-item truncate w-full rounded-lg px-2 py-2 mb-1 cursor-pointer text-sm font-medium text-textColor0"
         >
-          <div class="w-[22px] flex justify-center items-center">
-            <n-icon size="20" class="text-gray-400">
-              <ChatMultiple24Regular />
-            </n-icon>
-          </div>
-          <div style="width: calc(100% - 22px)" class="pl-1">
-            <div class="truncate w-full font-medium leading-[1.2]">{{ item.question }}</div>
-            <div
-              class="truncate w-full text-secondary leading-[1.2] text-xs"
-              v-html="item.answer"
-            ></div>
-            <div class="truncate w-full text-[11px] font-semibold">{{ item.date }}</div>
-          </div>
+          {{ item.question }}
         </div>
       </template>
     </n-spin>
   </div>
 </template>
-<style>
-  .hover-effect-card {
-    cursor: pointer;
-    transform: scale(1);
-    transition: 0.2s ease;
 
-    &:hover {
-      transform: scale(1.04);
-      z-index: 10;
-      box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-    }
+<style scoped>
+  .search-input {
+    --n-color: var(--surface-ground) !important;
+    --n-color-focus: var(--surface-ground) !important;
+    border: 1px solid var(--surface-line);
+    border-radius: 0.75rem;
+  }
+
+  .history-item {
+    transition: background-color 0.15s ease;
+  }
+  .history-item:hover {
+    background: var(--surface-ground);
   }
 </style>

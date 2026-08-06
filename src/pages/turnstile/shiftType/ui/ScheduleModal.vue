@@ -101,7 +101,11 @@
             </div>
             <template v-for="item in store.dayOfMonth" :key="`header-${item}`">
               <div
-                :class="[[6, 0].includes(item.weekDay) ? 'bg-[#ffe5e2]' : 'bg-[#fff9e2]']"
+                :style="{
+                  background: [6, 0].includes(item.weekDay)
+                    ? 'var(--schedule-weekend-bg)'
+                    : 'var(--schedule-weekday-bg)'
+                }"
                 class="border-r border-t border-l border-b -ml-[1px] border-surface-line w-[60px] min-w-[60px] h-[50px] text-xs text-secondary flex-shrink-0"
               >
                 <div class="text-center p-1 font-bold">{{ item?.day }}</div>

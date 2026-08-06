@@ -85,7 +85,7 @@
     </template>
 
     <template #cell-devices_count="{ row }">
-      <UIBadge :label="row.devices_count" :type="Utils.colorTypes.dark" />
+      <UIBadge :label="String(row.devices_count)" :type="Utils.colorTypes.dark" />
     </template>
   </UITable>
 </template>

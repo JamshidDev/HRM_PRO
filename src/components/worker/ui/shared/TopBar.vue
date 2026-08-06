@@ -14,12 +14,16 @@
     resumeLoading: {
       type: Boolean,
       default: false
+    },
+    t2Loading: {
+      type: Boolean,
+      default: false
     }
   })
 
   const masked = defineModel('masked', { type: Boolean, default: true })
 
-  const emits = defineEmits(['close', 'download'])
+  const emits = defineEmits(['close', 'download', 'download-t2'])
 </script>
 
 <template>
@@ -53,6 +57,20 @@
             <Eye24Filled v-else />
           </n-icon>
         </template>
+      </n-button>
+      <n-button
+        size="large"
+        class="!rounded-full !px-3 sm:!px-4"
+        type="tertiary"
+        :loading="t2Loading"
+        @click="emits('download-t2')"
+      >
+        <span class="flex items-center justify-center gap-2">
+          <span class="hidden sm:inline">{{ $t('content.downloadT2') }}</span>
+          <n-icon size="20">
+            <DownloadIcon />
+          </n-icon>
+        </span>
       </n-button>
       <n-button
         size="large"

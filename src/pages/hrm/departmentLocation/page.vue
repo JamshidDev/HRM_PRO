@@ -21,19 +21,28 @@
 </script>
 
 <template>
-  <UIPageContent>
+  <UIPageContent class="h-full flex flex-col">
     <Filter />
     <n-tabs
       type="segment"
       :value="store.activeTab"
       @update:value="onTabChange"
-      class="hidden-tab-header"
+      class="hidden-tab-header flex-1 flex flex-col"
+      pane-wrapper-class="flex-1 flex flex-col"
       animated
     >
-      <n-tab-pane name="departments" :tab="$t('departmentLocationPage.tabs.departments')">
+      <n-tab-pane
+        name="departments"
+        :tab="$t('departmentLocationPage.tabs.departments')"
+        class="!pt-0 flex-1 flex flex-col"
+      >
         <DepartmentTable />
       </n-tab-pane>
-      <n-tab-pane name="locations" :tab="$t('departmentLocationPage.tabs.locations')">
+      <n-tab-pane
+        name="locations"
+        :tab="$t('departmentLocationPage.tabs.locations')"
+        class="!pt-0 flex-1 flex flex-col"
+      >
         <LocationTable />
       </n-tab-pane>
     </n-tabs>
