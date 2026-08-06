@@ -76,7 +76,22 @@ export const useDashboardStore = defineStore('dashboardStore', {
     selectedFile: null,
     workerId: null,
     loadingPassport: false,
-    typeNames: ['med_type', 'disc_type', 'inc_type', 'contract_type']
+    typeNames: ['med_type', 'disc_type', 'inc_type', 'contract_type'],
+    // HR audit tab — data-quality counts + per-type preview modal.
+    activeTab: 'general',
+    audit: {
+      counts: null,
+      loading: false,
+      modal: {
+        open: false,
+        type: null,
+        list: [],
+        total: 0,
+        page: 1,
+        per_page: 15,
+        loading: false
+      }
+    }
   }),
   actions: {
     _updatePassport(data) {
@@ -108,6 +123,49 @@ export const useDashboardStore = defineStore('dashboardStore', {
       this._responseTwoAttach(responseTwo)
       this._responseThreeAttach(responseThree)
       this.loading = false
+    },
+    // Audit tab — data-quality counts (5 cards). Org filter (top Filter) reused.
+    async _getAuditCounts() {
+      this.audit.loading = true
+      try {
+        const params = this.appendParams({})
+        const res = await $ApiService.dashboardService._auditCounts({ params })
+        this.audit.counts = res.data.data
+      } finally {
+        this.audit.loading = false
+      }
+    },
+    async _getAuditPreview() {
+      const m = this.audit.modal
+      m.loading = true
+      try {
+        const params = this.appendParams({
+          type: m.type,
+          page: m.page,
+          per_page: m.per_page,
+          search: this.params.search
+        })
+        const res = await $ApiService.dashboardService._auditPreview({ params })
+        m.list = res.data.data.data
+        m.total = res.data.data.total
+      } finally {
+        m.loading = false
+      }
+    },
+    openAuditModal(type) {
+      this.audit.modal.open = true
+      this.audit.modal.type = type
+      this.audit.modal.page = 1
+      this.audit.modal.list = []
+      this.audit.modal.total = 0
+      this._getAuditPreview()
+    },
+    closeAuditModal() {
+      this.audit.modal.open = false
+      this.audit.modal.type = null
+      this.audit.modal.list = []
+      this.audit.modal.total = 0
+      this.audit.modal.page = 1
     },
     _responseOneAttach(res) {
       const formatMonth = (date) => {

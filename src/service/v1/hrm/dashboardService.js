@@ -56,7 +56,17 @@ const _contractDetail = async (payload) => {
   return await axios.get(`/v1/hr/dashboard/contracts`, { params: payload?.params })
 }
 
+const _auditCounts = async (payload) => {
+  return await axios.get(`/v1/hr/dashboard-audit-personal`, { params: payload?.params })
+}
+
+const _auditPreview = async (payload) => {
+  return await axios.get(`/v1/hr/dashboard-audit-preview`, { params: payload?.params })
+}
+
 export default {
+  _auditCounts,
+  _auditPreview,
   _disciplinaryDetail,
   _incentiveDetail,
   _contractDetail,

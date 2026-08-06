@@ -191,8 +191,28 @@ const router = createRouter({
   routes: newRouter
 })
 
+// 🔒 Ruxsat qo'riqchisi. `attachPermissionToRouter` har route'ga `meta.permission`
+// biriktiradi, lekin ilgari u HECH QAYERDA o'qilmasdi — sidebar'da modul/band
+// yashirin bo'lsa ham, foydalanuvchi URL'ni qo'lda yozib sahifaga kirardi
+// (masalan /admin/user-role). Endi sidebar bilan AYNAN bir xil qoida qo'llanadi.
+//
+// `meta.permission === null` — navigatsiyada bandi yo'q route (detal sahifalar,
+// login va h.k.): bloklamaymiz, aks holda mavjud oqimlar sinadi.
 router.beforeEach((to, from, next) => {
-  next()
+  const permission = to.meta?.permission
+  if (!permission) return next()
+
+  const accountStore = useAccountStore()
+  // SidebarContent.vue `canView` bilan bir xil: `x` yoki `x-read`.
+  const allowed =
+    accountStore.isModeDev ||
+    accountStore.checkPermission(permission) ||
+    accountStore.checkPermission(`${permission}-read`)
+
+  if (allowed) return next()
+  // Cheksiz redirectdan saqlanish: Home o'zi yopiq bo'lsa ham bir marta o'tkazamiz.
+  if (to.path === AppPaths.Home) return next()
+  next(AppPaths.Home)
 })
 
 export default router

@@ -8,6 +8,14 @@
 
   const updateModel = (v) => {
     store.params.organizations = v
+    if (store.activeTab === 'audit') {
+      store._getAuditCounts()
+      if (store.audit.modal.open) {
+        store.audit.modal.page = 1
+        store._getAuditPreview()
+      }
+      return
+    }
     if (store?.activeDetail) {
       store.params.page = 1
       store._index_detail()
@@ -16,6 +24,11 @@
   }
 
   const refresh = () => {
+    if (store.activeTab === 'audit') {
+      store._getAuditCounts()
+      if (store.audit.modal.open) store._getAuditPreview()
+      return
+    }
     if (store?.activeDetail) {
       store._index_detail()
       return

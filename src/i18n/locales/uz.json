@@ -1986,6 +1986,23 @@
         "shortTypeOne": "Hayfsan",
         "shortTypeTwo": "Boshqa"
       }
+    },
+    "audit": {
+      "tabGeneral": "Umumiy dashboard",
+      "tabAudit": "Audit",
+      "relativesShortage": "Yaqin qarindoshlari 3 tadan kam",
+      "relativesWithoutJshshir": "Qarindoshi JSHSHIRsiz",
+      "nameErrors": "F.I.Sh.da xatolik",
+      "jshshirErrors": "JSHSHIRda xatolik",
+      "positionCertificateMissing": "Lavozim guvohnomasi yo'q",
+      "fio": "F.I.Sh.",
+      "pin": "JSHSHIR",
+      "organization": "Korxona",
+      "position": "Lavozim",
+      "relativesCount": "Qarindoshlari soni",
+      "relativesWithoutJshshirCount": "JSHSHIRsiz qarindoshlar",
+      "reasons": "Xatoliklar",
+      "empty": "Ma'lumot topilmadi"
     }
   },
   "applicationPage": {
