@@ -7,6 +7,7 @@
   import Panel from './Panel.vue'
   import SuggestionChips from './SuggestionChips.vue'
   import aiAssistantIcon from '@/assets/images/content/ai-assistant.svg?url'
+  import aiConversationBg from '@/assets/images/svg/AIconBG.svg?raw'
 
   defineProps({
     showPanel: {
@@ -77,9 +78,15 @@
     </div>
 
     <div
-      class="flex flex-col h-full flex-1 min-w-0"
+      class="flex flex-col h-full flex-1 min-w-0 relative isolate"
       :class="showPanel ? 'bg-surface-ground py-6' : 'bg-surface-section'"
     >
+      <div
+        v-if="showPanel"
+        class="ai-page-bg absolute inset-0 -z-10 pointer-events-none overflow-hidden"
+        aria-hidden="true"
+        v-html="aiConversationBg"
+      ></div>
       <div v-if="showPanel" class="page-header w-full flex justify-center shrink-0">
         <div class="w-full max-w-[1000px] flex items-center justify-between px-5 py-3">
           <div class="flex items-center gap-2 min-w-0">
@@ -117,7 +124,7 @@
       <div class="w-full max-w-[1200px] relative flex-1 min-h-0 flex flex-col mx-auto">
         <div
           ref="chatContainer"
-          class="scroll-container w-full relative flex flex-col overflow-y-auto overflow-x-hidden pt-6 overscroll-none flex-1 min-h-0"
+          class="scroll-container w-full max-w-[800px] mx-auto relative flex flex-col overflow-y-auto overflow-x-hidden pt-6 overscroll-none flex-1 min-h-0"
           :class="showPanel ? 'pb-24' : 'pb-28'"
         >
           <Disclaimer :show-panel="showPanel" />
@@ -156,5 +163,20 @@
   }
   .page-header-btn:hover {
     filter: brightness(0.92);
+  }
+
+  .ai-page-bg :deep(svg) {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .ai-page-bg :deep(svg g) {
+    opacity: 0.04;
+    transition: opacity 0.25s ease;
+  }
+
+  [data-theme='dark'] .ai-page-bg :deep(svg g) {
+    opacity: 0.1;
   }
 </style>

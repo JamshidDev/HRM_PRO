@@ -1,10 +1,11 @@
 <script setup>
-  import { useSpecialityStore } from '@/store/modules/index.js'
-  const store = useSpecialityStore()
   import { UIDrawer } from '@/components/index.js'
   import Table from './ui/Table.vue'
   import createForm from './ui/createForm.vue'
+  import { useSpecialityStore } from '@/store/modules/index.js'
   import { useAccountStore } from '@/store/modules/index.js'
+
+  const store = useSpecialityStore()
   const accStore = useAccountStore()
 
   onMounted(() => {
@@ -12,21 +13,20 @@
     store._index()
   })
 </script>
+
 <template>
-  <div>
-    <Table />
-    <UIDrawer
-      :visible="store.visible"
-      @update:visible="(v) => (store.visible = v)"
-      :title="
-        store.visibleType
-          ? $t('othersPage.speciality.createTitle')
-          : $t('othersPage.speciality.updateTitle')
-      "
-    >
-      <template #content>
-        <createForm />
-      </template>
-    </UIDrawer>
-  </div>
+  <Table />
+  <UIDrawer
+    :visible="store.visible"
+    @update:visible="(v) => (store.visible = v)"
+    :title="
+      store.visibleType
+        ? $t('othersPage.speciality.createTitle')
+        : $t('othersPage.speciality.updateTitle')
+    "
+  >
+    <template #content>
+      <createForm />
+    </template>
+  </UIDrawer>
 </template>

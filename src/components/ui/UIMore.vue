@@ -15,7 +15,7 @@
   })
 </script>
 <template>
-  <div class="inline-block">
+  <div class="">
     <slot name="emptyPlaceholder" v-if="!data.length" />
     <n-popover v-if="data.length" :disabled="data.length < 2" trigger="click" :width="width">
       <div
@@ -35,8 +35,9 @@
             type="primary"
             size="tiny"
             circle
-            >+{{ data.length - 1 }}</n-button
           >
+            +{{ data.length - 1 }}
+          </n-button>
         </div>
       </template>
     </n-popover>

@@ -1,37 +1,32 @@
 <script setup>
-  import { NoDataPicture, UIMenuButton, UIBadge, UIPagination } from '@/components/index.js'
-  import { useUserRoleStore } from '@/store/modules/index.js'
-  import { RibbonStar24Filled } from '@vicons/fluent'
+  import { UIBadge, UITable } from '@/components/index.js'
+  import { useAccountStore, useUserRoleStore } from '@/store/modules/index.js'
+  import UIHelper from '@/utils/UIHelper.js'
   import Utils from '@/utils/Utils.js'
-  import { useAccountStore } from '@/store/modules/index.js'
-  const accStore = useAccountStore()
+  import { Delete20Regular, Edit32Regular, RibbonStar24Filled } from '@vicons/fluent'
+  import i18n from '@/i18n/index.js'
 
+  const { t } = i18n.global
+  const accStore = useAccountStore()
   const store = useUserRoleStore()
 
-  const onEdit = (v) => {
+  const onEdit = (row) => {
+    if (!accStore.checkAction(accStore.pn.rolesWrite)) return
     store.visibleType = false
-    store.elementId = v.id
-    store.payload.name = v.name
+    store.elementId = row.id
+    store.payload.name = row.name
     // Rol guard'i — permission olamini belgilaydi; shu guard bo'yicha ro'yxat qayta yuklanadi.
-    store.payload.guard_name = v.guard_name || 'sanctum'
-    store.payload.permissions = v.permissions.map((x) => x.id)
+    store.payload.guard_name = row.guard_name || 'sanctum'
+    store.payload.permissions = row.permissions.map((x) => x.id)
     store.query = null
     store._getAllPermission()
     store.visible = true
   }
 
-  const onDelete = (v) => {
-    store.elementId = v.id
-    store._delete()
-  }
-
-  const onSelect = (v) => {
+  const onDelete = (row) => {
     if (!accStore.checkAction(accStore.pn.rolesWrite)) return
-    if (v.key === Utils.ActionTypes.edit) {
-      onEdit(v.data)
-    } else if (v.key === Utils.ActionTypes.delete) {
-      onDelete(v.data)
-    }
+    store.elementId = row.id
+    store._delete()
   }
 
   const changePage = (v) => {
@@ -39,66 +34,69 @@
     store.params.per_page = v.per_page
     store._index()
   }
+
+  const columns = computed(() => [
+    {
+      key: 'name',
+      title: t('content.name'),
+      minWidth: 200
+    },
+    {
+      key: 'guard_name',
+      title: t('userRole.form.type'),
+      minWidth: 120,
+      width: 140
+    }
+  ])
+
+  const actions = computed(() => [
+    {
+      label: t('content.edit'),
+      key: Utils.ActionTypes.edit,
+      icon: UIHelper.renderIcon(Edit32Regular),
+      action: onEdit
+    },
+    {
+      label: t('content.delete'),
+      key: Utils.ActionTypes.delete,
+      icon: UIHelper.renderIcon(Delete20Regular),
+      action: onDelete
+    }
+  ])
 </script>
 
 <template>
-  <n-spin :show="store.loading" style="min-height: 200px">
-    <div class="w-full overflow-x-auto" v-if="store.list.length > 0">
-      <n-table class="mt-4" :single-line="false" size="small">
-        <thead>
-          <tr>
-            <th class="text-center! min-w-[40px] w-[40px]">{{ $t('content.number') }}</th>
-            <th class="min-w-[200px]">{{ $t('content.name') }}</th>
-            <th class="min-w-[120px] w-[140px]">{{ $t('userRole.form.type') }}</th>
-            <th class="min-w-[40px] w-[40px]"></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(item, idx) in store.list" :key="idx">
-            <td>
-              <span class="text-center text-[12px] text-gray-600 block">{{
-                (store.params.page - 1) * store.params.per_page + idx + 1
-              }}</span>
-            </td>
-            <td>
-              <div class="inline-block">
-                <UIBadge :label="item.name" :type="Utils.colorTypes.dark">
-                  <template #icon>
-                    <n-icon size="20">
-                      <RibbonStar24Filled />
-                    </n-icon>
-                  </template>
-                </UIBadge>
-              </div>
-            </td>
-            <td>
-              <n-tag
-                size="small"
-                round
-                :type="item.guard_name === 'integration' ? 'warning' : 'default'"
-              >
-                {{
-                  item.guard_name === 'integration'
-                    ? $t('userRole.form.typeIntegration')
-                    : $t('userRole.form.typeSanctum')
-                }}
-              </n-tag>
-            </td>
-            <td>
-              <UIMenuButton :data="item" :show-edit="true" @selectEv="onSelect" />
-            </td>
-          </tr>
-        </tbody>
-      </n-table>
-      <UIPagination
-        :page="store.params.page"
-        :per_page="store.params.per_page"
-        :total="store.totalItems"
-        @change-page="changePage"
-      />
-    </div>
-    <NoDataPicture v-if="store.list.length === 0 && !store.loading" />
-  </n-spin>
-</template>
+  <UITable
+    :columns="columns"
+    :actions="actions"
+    :data="store.list"
+    :loading="store.loading"
+    :page="store.params.page"
+    :per-page="store.params.per_page"
+    :total="store.totalItems"
+    storage-key="admin-role"
+    @change-page="changePage"
+  >
+    <template #cell-name="{ row }">
+      <div class="inline-block">
+        <UIBadge :label="row.name" :type="Utils.colorTypes.dark">
+          <template #icon>
+            <n-icon size="20">
+              <RibbonStar24Filled />
+            </n-icon>
+          </template>
+        </UIBadge>
+      </div>
+    </template>
 
-<style scoped></style>
+    <template #cell-guard_name="{ row }">
+      <n-tag size="small" round :type="row.guard_name === 'integration' ? 'warning' : 'default'">
+        {{
+          row.guard_name === 'integration'
+            ? t('userRole.form.typeIntegration')
+            : t('userRole.form.typeSanctum')
+        }}
+      </n-tag>
+    </template>
+  </UITable>
+</template>
