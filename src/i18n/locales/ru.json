@@ -1972,6 +1972,23 @@
         "shortTypeOne": "Выговор",
         "shortTypeTwo": "Другие"
       }
+    },
+    "audit": {
+      "tabGeneral": "Общий дашборд",
+      "tabAudit": "Аудит",
+      "relativesShortage": "Близких родственников меньше 3",
+      "relativesWithoutJshshir": "Родственник без ПИНФЛ",
+      "nameErrors": "Ошибка в Ф.И.О.",
+      "jshshirErrors": "Ошибка в ПИНФЛ",
+      "positionCertificateMissing": "Нет удостоверения должности",
+      "fio": "Ф.И.О.",
+      "pin": "ПИНФЛ",
+      "organization": "Организация",
+      "position": "Должность",
+      "relativesCount": "Кол-во родственников",
+      "relativesWithoutJshshirCount": "Родственники без ПИНФЛ",
+      "reasons": "Ошибки",
+      "empty": "Данные не найдены"
     }
   },
   "applicationPage": {

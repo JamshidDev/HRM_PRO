@@ -4,6 +4,7 @@
   import HeaderCard from '@/pages/hrm/dashboard/ui/HeaderCard.vue'
   import DetailFilters from './ui/Detail/Filter.vue'
   import Filter from './ui/Filter.vue'
+  import AuditTab from './ui/audit/AuditTab.vue'
 
   import { cards } from './constants.js'
 
@@ -31,49 +32,70 @@
     <div class="flex justify-between items-center pl-4 py-3 pr-7">
       <n-breadcrumb>
         <n-breadcrumb-item @click="store.activeDetail = null">Dashboard</n-breadcrumb-item>
-        <n-breadcrumb-item v-if="store.activeDetail">
+        <n-breadcrumb-item v-if="store.activeTab === 'general' && store.activeDetail">
           {{ $t(store.activeDetail.title) }}
         </n-breadcrumb-item>
       </n-breadcrumb>
       <Filter />
     </div>
+
     <n-tabs
-      class="max-h-[calc(100vh-88px)]"
-      :value="store.activeDetail ? 1 : 0"
-      animated
-      :tab-style="{ display: 'none' }"
+      v-model:value="store.activeTab"
+      type="line"
+      class="px-4"
       :pane-wrapper-style="{ 'overflow-y': 'auto', 'scrollbar-gutter': 'stable' }"
     >
-      <n-tab-pane :name="0" class="!p-0">
-        <UIPageContent class="!pt-0 !px-4 !m-0">
-          <n-spin :show="store.loading" class="min-h-[200px]">
-            <n-grid
-              x-gap="4 m:8 l:12"
-              y-gap="4 m:8 l:12"
-              cols="12"
-              v-if="accStore.checkAction(accStore.pn.hrDashboardRead) && !store.loading"
-              responsive="screen"
-            >
-              <template v-for="(card, idx) in store.dashboard.mainCard" :key="idx">
-                <n-grid-item span="12 l:6 xl:3">
-                  <HeaderCard :card="card" />
-                </n-grid-item>
-              </template>
-              <n-grid-item v-for="(item, idx) in cards" :key="idx" :span="item.span">
-                <component
-                  :is="item.component"
-                  v-bind="item.props"
-                  @detail="(key) => onDetailEv(item, key)"
-                />
-              </n-grid-item>
-            </n-grid>
-          </n-spin>
-        </UIPageContent>
+      <n-tab-pane name="general" :tab="$t('dashboardPage.audit.tabGeneral')" class="!p-0">
+        <n-tabs
+          class="max-h-[calc(100vh-132px)]"
+          :value="store.activeDetail ? 1 : 0"
+          animated
+          :tab-style="{ display: 'none' }"
+          :pane-wrapper-style="{ 'overflow-y': 'auto', 'scrollbar-gutter': 'stable' }"
+        >
+          <n-tab-pane :name="0" class="!p-0">
+            <UIPageContent class="!pt-0 !px-0 !m-0">
+              <n-spin :show="store.loading" class="min-h-[200px]">
+                <n-grid
+                  x-gap="4 m:8 l:12"
+                  y-gap="4 m:8 l:12"
+                  cols="12"
+                  v-if="accStore.checkAction(accStore.pn.hrDashboardRead) && !store.loading"
+                  responsive="screen"
+                >
+                  <template v-for="(card, idx) in store.dashboard.mainCard" :key="idx">
+                    <n-grid-item span="12 l:6 xl:3">
+                      <HeaderCard :card="card" />
+                    </n-grid-item>
+                  </template>
+                  <n-grid-item v-for="(item, idx) in cards" :key="idx" :span="item.span">
+                    <component
+                      :is="item.component"
+                      v-bind="item.props"
+                      @detail="(key) => onDetailEv(item, key)"
+                    />
+                  </n-grid-item>
+                </n-grid>
+              </n-spin>
+            </UIPageContent>
+          </n-tab-pane>
+          <n-tab-pane :name="1" class="!p-0">
+            <UIPageContent class="!pt-2 !px-0 !m-0">
+              <DetailFilters />
+              <component v-if="store.activeDetail?.detail" :is="store.activeDetail?.detail" />
+            </UIPageContent>
+          </n-tab-pane>
+        </n-tabs>
       </n-tab-pane>
-      <n-tab-pane :name="1" class="!p-0">
-        <UIPageContent class="!pt-2 !px-4 !m-0">
-          <DetailFilters />
-          <component v-if="store.activeDetail?.detail" :is="store.activeDetail?.detail" />
+
+      <n-tab-pane
+        v-if="accStore.checkAction(accStore.pn.hrDashboardAudit)"
+        name="audit"
+        :tab="$t('dashboardPage.audit.tabAudit')"
+        class="!p-0"
+      >
+        <UIPageContent class="!pt-0 !px-0 !m-0 max-h-[calc(100vh-132px)] overflow-y-auto">
+          <AuditTab />
         </UIPageContent>
       </n-tab-pane>
     </n-tabs>
