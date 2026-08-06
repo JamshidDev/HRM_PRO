@@ -65,7 +65,7 @@
             {{ $t('profilePage.tabs.social.copy') }}
           </div>
         </div>
-        <div class="relative z-10 mt-8">
+        <div class="absolute z-10 left-5 bottom-5">
           <n-button type="primary" size="large" class="!rounded-lg" @click="openLink(props.links[0].url)">
             <span class="flex items-center gap-2">
               {{ $t('profilePage.tabs.social.join') }}
@@ -95,7 +95,7 @@
             {{ $t('profilePage.tabs.social.copy') }}
           </div>
         </div>
-        <div class="relative z-10 mt-8">
+        <div class="absolute z-10 left-5 bottom-5">
           <n-button type="primary" size="large" class="!rounded-lg" @click="openLink(props.links[1].url)">
             <span class="flex items-center gap-2">
               {{ $t('profilePage.tabs.social.join') }}
