@@ -56,7 +56,7 @@
           <span
             class="font-semibold text-primary truncate"
             :class="large ? 'text-lg' : 'text-sm'"
-            >{{ title }} 
+            >{{ title }}
           </span>
           <slot name="title-suffix" />
         </div>

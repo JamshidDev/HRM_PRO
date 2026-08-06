@@ -1,7 +1,12 @@
 <script setup>
-  import { NoDataPicture, UIPagination, UIMenuButton } from '@/components/index.js'
+  import { UITable } from '@/components/index.js'
   import { useNewsCategoryStore } from '@/store/modules/index.js'
+  import UIHelper from '@/utils/UIHelper.js'
+  import Utils from '@/utils/Utils.js'
+  import { Delete20Regular, Edit32Regular } from '@vicons/fluent'
+  import i18n from '@/i18n/index.js'
 
+  const { t } = i18n.global
   const store = useNewsCategoryStore()
 
   const changePage = (v) => {
@@ -10,61 +15,75 @@
     store._index()
   }
 
-  const onSelectEv = (v) => {
-    store.elementId = v.data.id
-    if (v.key === 'edit') {
-      store.payload.name = {
-        uz: v.data.name?.uz ?? '',
-        ru: v.data.name?.ru ?? '',
-        en: v.data.name?.en ?? ''
-      }
-      store.visibleType = false
-      store.visible = true
-    } else if (v.key === 'delete') {
-      store._delete()
+  const onEdit = (row) => {
+    store.elementId = row.id
+    store.payload.name = {
+      uz: row.name?.uz ?? '',
+      ru: row.name?.ru ?? '',
+      en: row.name?.en ?? ''
     }
+    store.visibleType = false
+    store.visible = true
   }
+
+  const onDelete = (row) => {
+    store.elementId = row.id
+    store._delete()
+  }
+
+  const columns = computed(() => [
+    {
+      key: 'name.uz',
+      title: t('newsCategoryPage.langUz')
+    },
+    {
+      key: 'name.ru',
+      title: t('newsCategoryPage.langRu')
+    },
+    {
+      key: 'name.en',
+      title: t('newsCategoryPage.langEn')
+    }
+  ])
+
+  const actions = computed(() => [
+    {
+      label: t('content.edit'),
+      key: Utils.ActionTypes.edit,
+      icon: UIHelper.renderIcon(Edit32Regular),
+      action: onEdit
+    },
+    {
+      label: t('content.delete'),
+      key: Utils.ActionTypes.delete,
+      icon: UIHelper.renderIcon(Delete20Regular),
+      action: onDelete
+    }
+  ])
 </script>
 
 <template>
-  <n-spin :show="store.loading" style="min-height: 200px">
-    <div v-if="store.list.length > 0" class="w-full overflow-x-auto">
-      <n-table class="mt-4" :single-line="false" size="small">
-        <thead>
-          <tr>
-            <th class="text-center! w-[50px]">№</th>
-            <th>{{ $t('newsCategoryPage.langUz') }}</th>
-            <th>{{ $t('newsCategoryPage.langRu') }}</th>
-            <th>{{ $t('newsCategoryPage.langEn') }}</th>
-            <th class="w-[50px]"></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(item, idx) in store.list" :key="item.id">
-            <td class="text-center">
-              {{ (store.params.page - 1) * store.params.per_page + idx + 1 }}
-            </td>
-            <td>{{ item.name?.uz ?? '—' }}</td>
-            <td>{{ item.name?.ru ?? '—' }}</td>
-            <td>{{ item.name?.en ?? '—' }}</td>
-            <td>
-              <UIMenuButton
-                :data="item"
-                :show-edit="true"
-                :show-delete="true"
-                @selectEv="onSelectEv"
-              />
-            </td>
-          </tr>
-        </tbody>
-      </n-table>
-      <UIPagination
-        :page="store.params.page"
-        :per_page="store.params.per_page"
-        :total="store.totalItems"
-        @change-page="changePage"
-      />
-    </div>
-    <NoDataPicture v-if="store.list.length === 0 && !store.loading" />
-  </n-spin>
+  <UITable
+    :columns="columns"
+    :actions="actions"
+    :data="store.list"
+    :loading="store.loading"
+    :page="store.params.page"
+    :per-page="store.params.per_page"
+    :total="store.totalItems"
+    storage-key="chat-news-category"
+    @change-page="changePage"
+  >
+    <template #[`cell-name.uz`]="{ row }">
+      {{ row.name?.uz ?? '—' }}
+    </template>
+
+    <template #[`cell-name.ru`]="{ row }">
+      {{ row.name?.ru ?? '—' }}
+    </template>
+
+    <template #[`cell-name.en`]="{ row }">
+      {{ row.name?.en ?? '—' }}
+    </template>
+  </UITable>
 </template>

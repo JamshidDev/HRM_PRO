@@ -8,6 +8,20 @@
 
   const store = useDepartmentLocationStore()
 
+  const onOpenLocation = (item) => {
+    store.openAttach(item)
+  }
+
+  const onAddLocation = (item) => {
+    store.openLocationModal(item)
+  }
+
+  const changePage = (v) => {
+    store.params.page = v.page
+    store.params.per_page = v.per_page
+    store._index()
+  }
+
   const columns = computed(() => [
     {
       key: 'name',
@@ -31,20 +45,6 @@
       width: 120
     }
   ])
-
-  const onOpenLocation = (item) => {
-    store.openAttach(item)
-  }
-
-  const onAddLocation = (item) => {
-    store.openLocationModal(item)
-  }
-
-  const changePage = (v) => {
-    store.params.page = v.page
-    store.params.per_page = v.per_page
-    store._index()
-  }
 </script>
 
 <template>

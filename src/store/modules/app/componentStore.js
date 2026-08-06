@@ -201,6 +201,7 @@ export const useComponentStore = defineStore('componentStore', {
       organizations: []
     },
     resumeLoading: false,
+    t2Loading: false,
     resumeId: null,
 
     allStructureList: [],
@@ -870,6 +871,21 @@ export const useComponentStore = defineStore('componentStore', {
         })
         .finally(() => {
           this.resumeLoading = false
+        })
+    },
+    _workerT2(fileName) {
+      this.t2Loading = true
+      const id = this.resumeId
+      const lang = localStorage.getItem(useAppSetting.languageKey) || useAppSetting.defaultLanguage
+      const photo = this.workerPreview.worker?.photos.filter((v) => v.current === 1)?.[0]?.id
+      $ApiService.workerService
+        ._t2({ id, params: { lang, photo } })
+        .then((res) => {
+          const type = res.headers['content-type']
+          Utils.blobFileDownload(res.data, type, fileName)
+        })
+        .finally(() => {
+          this.t2Loading = false
         })
     },
     _timesheetDepartment() {

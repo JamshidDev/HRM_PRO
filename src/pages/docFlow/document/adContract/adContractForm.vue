@@ -476,8 +476,17 @@
                 </n-form-item>
               </div>
             </template>
+            <!--
+              Shartnoma bekor qilinadigan sana. 12 = FXSH bekor qilish (eski),
+              13 = mehnat shartnomasini bekor qilish, 14 = FXSH bekor qilish
+              kelishuvi (yangi shablon, 12 ning o'rinbosari).
+              ⚠️ Bu ro'yxatda bo'lmagan tur uchun maydon YASHIRINADI, lekin
+              store.resetForm() contract_to_date ni `now` qilib beradi va
+              Utils.checkRequestBody null-emas qiymatni o'chirmaydi → hujjatga
+              foydalanuvchi ko'rmagan BUGUNGI sana tushib qoladi.
+            -->
             <div
-              v-if="[12, 13].includes(store.payload.type)"
+              v-if="[12, 13, 14].includes(store.payload.type)"
               class="col-span-12 md:col-span-6 lg:col-span-4"
             >
               <n-form-item

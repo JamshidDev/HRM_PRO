@@ -3,7 +3,7 @@
 </script>
 
 <template>
-  <div class="w-full" style="height: calc(100vh - 80px)">
+  <div class="w-screen h-screen flex flex-col">
     <ConversationView />
   </div>
 </template>
