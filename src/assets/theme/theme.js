@@ -122,6 +122,13 @@ export const customTheme = () => {
       color: getValueOfCssVariable('--surface-ground'),
       border: '1px solid' + getValueOfCssVariable('--surface-line')
     },
+    // Dark temada naive-ui switch uchun `primaryColorSuppl`dan foydalanadi (light'da —
+    // `primaryColor`). Biz `primaryColorSuppl`ni override qilmaganimiz uchun dark'da
+    // naive-ui'ning default yashil rangi chiqib qolardi — shuning uchun aniq belgilaymiz.
+    Switch: {
+      railColorActive: getValueOfCssVariable('--primary-color'),
+      loadingColor: getValueOfCssVariable('--primary-color')
+    },
     Tabs: {
       tabColorSegment: getValueOfCssVariable('--surface-section'),
       colorSegment: getValueOfCssVariable('--surface-ground'),

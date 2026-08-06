@@ -103,6 +103,7 @@ export const useUserRoleStore = defineStore('userRole', {
       this.payload.name = null
       this.payload.guard_name = 'sanctum'
       this.payload.permissions = []
+      this.query = null
     }
   }
 })

@@ -13,7 +13,6 @@
 
   const formRef = ref(null)
   const store = useUserRoleStore()
-  const query = ref('')
   const t = i18n.global.t
 
   // name -> {id, name}
@@ -80,7 +79,7 @@
 
   // qidiruv bo'yicha ko'rinadigan sub-guruhlar (label bo'yicha) + mavjud slug bo'lganlar
   const visibleGroups = (mod) => {
-    const q = query.value.trim().toLowerCase()
+    const q = (store.query || '').trim().toLowerCase()
     return mod.groups.filter(
       (g) =>
         groupSwitches(g).length > 0 &&
@@ -117,7 +116,7 @@
     store._getAllPermission()
   }
   const otherPerms = computed(() => {
-    const q = query.value.trim().toLowerCase()
+    const q = (store.query || '').trim().toLowerCase()
     return (store.originAllPermissionList || []).filter(
       (p) =>
         !mappedNames.value.has(p.name) &&
@@ -142,9 +141,13 @@
 
 <template>
   <n-form ref="formRef" :rules="validationRules.userRole" :model="store.payload">
-    <div style="min-height: calc(100vh - 120px)">
+    <div>
       <n-form-item :label="$t(`userRole.form.name`)" path="name">
-        <n-input type="text" v-model:value="store.payload.name" />
+        <n-input
+          type="text"
+          v-model:value="store.payload.name"
+          style="width: 320px; flex: none"
+        />
       </n-form-item>
 
       <!-- Rol turi (guard) — faqat yaratishda tanlanadi, keyin o'zgarmaydi -->
@@ -161,19 +164,6 @@
 
       <n-form-item :label="$t(`userRole.form.permissions`)" path="permissions">
         <div class="w-full">
-          <div class="mb-2 flex items-center gap-2">
-            <n-input
-              clearable
-              class="flex-1"
-              v-model:value="query"
-              type="text"
-              :placeholder="$t('content.search')"
-            />
-            <n-tag type="success" round>
-              Tanlangan: {{ store.payload.permissions.length }}
-            </n-tag>
-          </div>
-
           <n-tabs type="line" animated class="perm-tabs">
             <n-tab-pane
               v-for="mod in visibleModules"
@@ -186,7 +176,7 @@
               </template>
 
               <div
-                class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3 pt-2 h-[calc(100vh-330px)] overflow-y-auto pr-1"
+                class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3 pt-2 pr-1"
               >
                 <div
                   v-for="g in visibleGroups(mod)"
@@ -224,9 +214,7 @@
                 <span>Boshqa</span>
                 <span class="perm-count">{{ otherCount }}</span>
               </template>
-              <div
-                class="h-[calc(100vh-330px)] overflow-y-auto pt-2 pr-1"
-              >
+              <div class="pt-2 pr-1">
                 <n-checkbox-group v-model:value="store.payload.permissions">
                   <div class="grid grid-cols-2 gap-2">
                     <n-checkbox
@@ -258,6 +246,38 @@
 </template>
 
 <style scoped>
+  /* Pill ko'rinishidagi tab bar: kulrang rail ichida oq aktiv "pill" */
+  .perm-tabs :deep(.n-tabs-nav) {
+    background: var(--surface-ground);
+    border-radius: 14px;
+    padding: 4px;
+    /* naive-ui'ning line-type pastki chegarasini o'chiramiz;
+       sliding "bar" esa aktiv pill fonini beradi */
+    --n-tab-border-color: transparent;
+    --n-bar-color: var(--surface-section);
+    --n-tab-padding: 7px 14px;
+    --n-tab-gap: 4px;
+    --n-tab-text-color: var(--textColor0);
+    --n-tab-text-color-hover: var(--textColor0);
+    --n-tab-text-color-active: var(--textColor0);
+    --n-tab-font-weight-active: 600;
+  }
+  .perm-tabs :deep(.n-tabs-tab) {
+    border-radius: 10px;
+    font-size: 13px;
+    white-space: nowrap;
+  }
+  /* Aktiv pill — naive-ui'ning `.n-tabs-bar` elementi (JS uni aktiv tab'ning
+     offsetLeft/offsetWidth'iga qarab joylaydi va left/max-width transition bilan
+     siljitadi). 2px'lik chiziqni to'liq balandlikdagi pillga aylantiramiz. */
+  .perm-tabs :deep(.n-tabs-bar) {
+    top: 0 !important;
+    bottom: 0 !important;
+    height: auto !important;
+    border-radius: 10px !important;
+    box-shadow: 0 1px 2px rgba(16, 24, 40, 0.08);
+  }
+
   .perm-count {
     display: inline-block;
     min-width: 18px;
@@ -267,6 +287,13 @@
     line-height: 18px;
     text-align: center;
     border-radius: 9px;
+    background: var(--surface-line);
+    color: var(--textColor1);
+    transition:
+      background-color 0.2s ease,
+      color 0.2s ease;
+  }
+  .perm-tabs :deep(.n-tabs-tab--active .perm-count) {
     background: var(--primary-color, #2080f0);
     color: #fff;
   }

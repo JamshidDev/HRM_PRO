@@ -15,6 +15,7 @@
     // Rol guard'i — permission olamini belgilaydi; shu guard bo'yicha ro'yxat qayta yuklanadi.
     store.payload.guard_name = v.guard_name || 'sanctum'
     store.payload.permissions = v.permissions.map((x) => x.id)
+    store.query = null
     store._getAllPermission()
     store.visible = true
   }
