@@ -15,6 +15,27 @@
 
   const fmt = (v) => (v === null || v === undefined ? '—' : Number(v).toLocaleString('ru-RU'))
 
+  // Versiya solishtirish (compare) helperlari
+  const fieldLabels = {
+    oklad: 'salary1c.oklad',
+    hours_worked: 'salary1c.hours',
+    position: 'salary1c.position',
+    accrual_total: 'salary1c.accrual',
+    deduction_total: 'salary1c.deduction',
+    net_total: 'salary1c.net'
+  }
+  const fieldLabel = (k) => (fieldLabels[k] ? t(fieldLabels[k]) : k)
+  const isNum = (v) => typeof v === 'number'
+  const signed = (n) => (n > 0 ? '+' : '') + Number(n).toLocaleString('ru-RU')
+  const diffClass = (n) => (n == null || n === 0 ? '' : n > 0 ? 'text-green-600' : 'text-red-500')
+  const cmpStatusType = (s) => (s === 'added' ? 'success' : s === 'removed' ? 'error' : 'warning')
+  const cmpStatusLabel = (s) =>
+    s === 'added' ? t('salary1c.added') : s === 'removed' ? t('salary1c.removed') : t('salary1c.changed')
+  const cmpHasChanges = computed(() => {
+    const d = store.compareData
+    return !!d && (d.fields.length || d.accruals.length || d.deductions.length)
+  })
+
   const pullCodeSet = computed(() => new Set(store.pullCodeIds))
 
   onMounted(() => {
@@ -367,11 +388,21 @@
       :title="$t('salary1c.history')">
       <n-spin :show="store.historyLoading">
         <div v-if="store.historyEmp" class="min-h-[100px]">
-          <p class="font-semibold text-base">{{ store.historyEmp.fio }}</p>
-          <p class="text-xs text-textColor3 mb-3">PINFL {{ store.historyEmp.pinfl }} · {{ store.params.year }}/{{ store.params.month }}</p>
+          <div class="flex items-center justify-between mb-3">
+            <p class="text-xs text-textColor3">PINFL {{ store.historyEmp.pinfl }} · {{ store.params.year }}/{{ store.params.month }}</p>
+            <div class="flex items-center gap-2">
+              <span class="text-xs text-textColor3">{{ $t('salary1c.compareHint') }}</span>
+              <n-button size="small" type="primary" :disabled="store.compareSelection.length !== 2"
+                @click="store._compareHistory()">
+                {{ $t('salary1c.compare') }}
+              </n-button>
+            </div>
+          </div>
+          <p class="font-semibold text-base -mt-1 mb-2">{{ store.historyEmp.fio }}</p>
 
           <n-table :single-line="false" size="small">
             <thead><tr>
+              <th class="w-[40px]"></th>
               <th class="w-[70px]">{{ $t('salary1c.version') }}</th>
               <th class="w-[90px]">{{ $t('salary1c.status') }}</th>
               <th>{{ $t('salary1c.event') }}</th>
@@ -380,6 +411,11 @@
             </tr></thead>
             <tbody>
               <tr v-for="v in store.history" :key="v.id">
+                <td class="text-center!">
+                  <n-checkbox :checked="store.compareSelection.includes(v.id)"
+                    :disabled="store.compareSelection.length >= 2 && !store.compareSelection.includes(v.id)"
+                    @update:checked="store._toggleCompareSelect(v.id)" />
+                </td>
                 <td>v{{ v.version }}</td>
                 <td>
                   <n-tag :type="v.is_current ? 'success' : 'default'" size="tiny" round>
@@ -405,10 +441,102 @@
                 </td>
               </tr>
               <tr v-if="!store.historyLoading && !store.history.length">
-                <td colspan="5" class="text-center! text-textColor3">{{ $t('salary1c.noData') }}</td>
+                <td colspan="6" class="text-center! text-textColor3">{{ $t('salary1c.noData') }}</td>
               </tr>
             </tbody>
           </n-table>
+        </div>
+      </n-spin>
+    </UIModal>
+
+    <!-- Versiya solishtirish (v1 → v2 farqi) -->
+    <UIModal :width="'760px'" :visible="store.compareVisible"
+      @update:visible="(v) => (store.compareVisible = v)" :title="$t('salary1c.compareTitle')">
+      <n-spin :show="store.compareLoading">
+        <div v-if="store.compareData" class="min-h-[100px]">
+          <p class="font-semibold text-base">{{ store.compareData.fio }}</p>
+          <p class="text-xs text-textColor3 mb-3">
+            PINFL {{ store.compareData.pinfl }} ·
+            <span class="font-semibold">v{{ store.compareData.from.version }}</span> →
+            <span class="font-semibold">v{{ store.compareData.to.version }}</span>
+          </p>
+
+          <!-- Skalyar (umumiy) maydonlar -->
+          <template v-if="store.compareData.fields.length">
+            <p class="s1-cmp-sec">{{ $t('salary1c.generalFields') }}</p>
+            <n-table :single-line="false" size="small" class="mb-3">
+              <thead><tr>
+                <th>{{ $t('salary1c.field') }}</th>
+                <th class="text-right!">v{{ store.compareData.from.version }}</th>
+                <th class="text-right!">v{{ store.compareData.to.version }}</th>
+                <th class="text-right! w-[140px]">{{ $t('salary1c.diff') }}</th>
+              </tr></thead>
+              <tbody>
+                <tr v-for="(f, i) in store.compareData.fields" :key="'f' + i">
+                  <td>{{ fieldLabel(f.field) }}</td>
+                  <td class="text-right! tnum">{{ isNum(f.from) ? fmt(f.from) : (f.from || '—') }}</td>
+                  <td class="text-right! tnum">{{ isNum(f.to) ? fmt(f.to) : (f.to || '—') }}</td>
+                  <td class="text-right! tnum font-semibold" :class="diffClass(f.diff)">
+                    {{ f.diff == null ? '—' : signed(f.diff) }}
+                  </td>
+                </tr>
+              </tbody>
+            </n-table>
+          </template>
+
+          <!-- Hisoblangan (accruals) farqi -->
+          <template v-if="store.compareData.accruals.length">
+            <p class="s1-cmp-sec">{{ $t('salary1c.accruals') }}</p>
+            <n-table :single-line="false" size="small" class="mb-3">
+              <thead><tr>
+                <th class="w-[80px]">{{ $t('salary1c.code') }}</th>
+                <th>{{ $t('salary1c.rowName') }}</th>
+                <th class="text-right!">v{{ store.compareData.from.version }}</th>
+                <th class="text-right!">v{{ store.compareData.to.version }}</th>
+                <th class="text-right! w-[130px]">{{ $t('salary1c.diff') }}</th>
+                <th class="w-[100px]">{{ $t('salary1c.status') }}</th>
+              </tr></thead>
+              <tbody>
+                <tr v-for="(a, i) in store.compareData.accruals" :key="'ca' + i">
+                  <td class="tnum">{{ a.paying_code || '—' }}</td>
+                  <td class="text-xs">{{ a.paying_name || '—' }}</td>
+                  <td class="text-right! tnum">{{ fmt(a.from) }}</td>
+                  <td class="text-right! tnum">{{ fmt(a.to) }}</td>
+                  <td class="text-right! tnum font-semibold" :class="diffClass(a.diff)">{{ signed(a.diff) }}</td>
+                  <td><n-tag :type="cmpStatusType(a.status)" size="tiny" round>{{ cmpStatusLabel(a.status) }}</n-tag></td>
+                </tr>
+              </tbody>
+            </n-table>
+          </template>
+
+          <!-- Ushlangan (deductions) farqi -->
+          <template v-if="store.compareData.deductions.length">
+            <p class="s1-cmp-sec">{{ $t('salary1c.deductions') }}</p>
+            <n-table :single-line="false" size="small" class="mb-3">
+              <thead><tr>
+                <th class="w-[80px]">{{ $t('salary1c.code') }}</th>
+                <th>{{ $t('salary1c.rowName') }}</th>
+                <th class="text-right!">v{{ store.compareData.from.version }}</th>
+                <th class="text-right!">v{{ store.compareData.to.version }}</th>
+                <th class="text-right! w-[130px]">{{ $t('salary1c.diff') }}</th>
+                <th class="w-[100px]">{{ $t('salary1c.status') }}</th>
+              </tr></thead>
+              <tbody>
+                <tr v-for="(d, i) in store.compareData.deductions" :key="'cd' + i">
+                  <td class="tnum">{{ d.paying_code || '—' }}</td>
+                  <td class="text-xs">{{ d.paying_name || '—' }}</td>
+                  <td class="text-right! tnum">{{ fmt(d.from) }}</td>
+                  <td class="text-right! tnum">{{ fmt(d.to) }}</td>
+                  <td class="text-right! tnum font-semibold" :class="diffClass(d.diff)">{{ signed(d.diff) }}</td>
+                  <td><n-tag :type="cmpStatusType(d.status)" size="tiny" round>{{ cmpStatusLabel(d.status) }}</n-tag></td>
+                </tr>
+              </tbody>
+            </n-table>
+          </template>
+
+          <div v-if="!cmpHasChanges" class="text-center! text-textColor3 py-4">
+            {{ $t('salary1c.noChanges') }}
+          </div>
         </div>
       </n-spin>
     </UIModal>
@@ -654,4 +782,5 @@
   .s1-pinfo > div { flex: 1; display: flex; flex-direction: column; gap: 2px; padding: 8px 12px; border: 1px solid var(--surface-line, #e5e7eb); border-radius: 10px; }
   .s1-pinfo-lbl { font-size: 11px; color: var(--textColor3, #98a2b3); }
   .s1-pinfo b { font-size: 15px; color: var(--textColor1, #101828); }
+  .s1-cmp-sec { font-size: 13px; font-weight: 600; margin: 6px 0 4px; color: var(--textColor2, #475467); }
 </style>

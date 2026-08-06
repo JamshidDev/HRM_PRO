@@ -41,6 +41,12 @@ export const useSalary1cStore = defineStore('salary1cStore', {
     historyLoading: false,
     historyEmp: null,
 
+    // Versiya solishtirish (compare)
+    compareSelection: [], // tanlangan versiya id'lari (max 2)
+    compareVisible: false,
+    compareLoading: false,
+    compareData: null,
+
     // 1C kodi bor korxona id'lari (daraxtda belgi ko'rsatish uchun)
     pullCodeIds: [],
 
@@ -323,6 +329,8 @@ export const useSalary1cStore = defineStore('salary1cStore', {
       this.historyLoading = true
       this.history = []
       this.historyEmp = row
+      this.compareSelection = []
+      this.compareData = null
       $ApiService.salary1cService
         ._history({
           params: {
@@ -337,6 +345,35 @@ export const useSalary1cStore = defineStore('salary1cStore', {
         })
         .finally(() => {
           this.historyLoading = false
+        })
+    },
+    // Solishtirish uchun versiya tanlash — ko'pi bilan 2 ta (3-chisi eng eskisini siqib chiqaradi).
+    _toggleCompareSelect(id) {
+      const i = this.compareSelection.indexOf(id)
+      if (i >= 0) {
+        this.compareSelection.splice(i, 1)
+      } else {
+        if (this.compareSelection.length >= 2) this.compareSelection.shift()
+        this.compareSelection.push(id)
+      }
+    },
+    // Tanlangan 2 versiyani solishtirish. from = eski (kichik version), to = yangi.
+    _compareHistory() {
+      if (this.compareSelection.length !== 2) return
+      const rows = this.history
+        .filter((v) => this.compareSelection.includes(v.id))
+        .sort((a, b) => a.version - b.version)
+      if (rows.length !== 2) return
+      this.compareVisible = true
+      this.compareLoading = true
+      this.compareData = null
+      $ApiService.salary1cService
+        ._compareHistory({ params: { from_id: rows[0].id, to_id: rows[1].id } })
+        .then((res) => {
+          this.compareData = res.data.data
+        })
+        .finally(() => {
+          this.compareLoading = false
         })
     },
     _orgTotals() {

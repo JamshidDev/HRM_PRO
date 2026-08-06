@@ -7,6 +7,7 @@ const _ingestFixture = async (payload) => axios.post(`/v1/economist/salary-1c/in
 const _index = async (payload) => axios.get(`/v1/economist/salary-1c`, { params: payload?.params })
 const _payslip = async (payload) => axios.get(`/v1/economist/salary-1c/${payload.id}`)
 const _history = async (payload) => axios.get(`/v1/economist/salary-1c/history`, { params: payload?.params })
+const _compareHistory = async (payload) => axios.get(`/v1/economist/salary-1c/history/compare`, { params: payload?.params })
 const _orgTotals = async (payload) => axios.get(`/v1/economist/salary-1c/org-totals`, { params: payload?.params })
 const _pullableOrgs = async () => axios.get(`/v1/economist/salary-1c/pullable-orgs`)
 const _startBatchPull = async (payload) => axios.post(`/v1/economist/salary-1c/pull-batch`, payload.data)
@@ -29,6 +30,7 @@ export default {
   _index,
   _payslip,
   _history,
+  _compareHistory,
   _orgTotals,
   _pullableOrgs,
   _startBatchPull,
