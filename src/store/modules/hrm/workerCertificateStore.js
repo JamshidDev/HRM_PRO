@@ -20,7 +20,12 @@ export const useWorkerCertificateStore = defineStore('workerCertificateStore', {
     loading: false,
     totalItems: 0,
     params: initialParams(),
-    structureCheck: []
+    structureCheck: [],
+    // "Ko'rish" modali — xodimning BARCHA guvohnomalari (ro'yxatda faqat oxirgisi).
+    showVisible: false,
+    showLoading: false,
+    showList: [],
+    showWorker: null
   }),
   actions: {
     _index() {
@@ -38,6 +43,23 @@ export const useWorkerCertificateStore = defineStore('workerCertificateStore', {
         })
         .finally(() => {
           this.loading = false
+        })
+    },
+    // Guvohnoma raqamiga bosilganda — mavjud `worker-position-certificates?uuid=`
+    // endpointi (xodim profilidagi tab ham shuni ishlatadi), yangi endpoint kerak emas.
+    _show(row) {
+      this.showWorker = row
+      this.showList = []
+      this.showVisible = true
+      if (!row?.uuid) return
+      this.showLoading = true
+      $ApiService.workerPositionCertificateService
+        ._index({ params: { uuid: row.uuid } })
+        .then((res) => {
+          this.showList = res.data.data
+        })
+        .finally(() => {
+          this.showLoading = false
         })
     },
     resetFilter() {

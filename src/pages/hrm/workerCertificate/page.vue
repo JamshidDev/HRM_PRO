@@ -1,7 +1,7 @@
 <script setup>
   import { UIPageContent } from '@components'
   import { useWorkerCertificateStore, useAccountStore } from '@stores'
-  import { Table, Filter } from './ui'
+  import { Table, Filter, ShowModal } from './ui'
 
   const store = useWorkerCertificateStore()
   const accStore = useAccountStore()
@@ -16,5 +16,6 @@
   <UIPageContent>
     <Filter />
     <Table />
+    <ShowModal />
   </UIPageContent>
 </template>

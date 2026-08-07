@@ -67,7 +67,14 @@
       <n-tag v-if="!row.certificate" size="small" :bordered="false">
         {{ $t('workerCertificatePage.table.noCertificate') }}
       </n-tag>
-      <span v-else>{{ row.certificate.number }}</span>
+      <!-- Raqamga bosilsa — xodimning BARCHA guvohnomalari modalda. -->
+      <span
+        v-else
+        class="text-primary cursor-pointer hover:underline"
+        @click="store._show(row)"
+      >
+        {{ row.certificate.number }}
+      </span>
     </template>
 
     <template #cell-issue_date="{ row }">
