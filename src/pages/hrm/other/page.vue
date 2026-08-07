@@ -1,13 +1,10 @@
 <script setup>
-  // HRM Other Page
+  import { UIPageTitle } from '@/components/index.js'
 </script>
 
 <template>
   <div class="p-6">
-    <div class="mb-6">
-      <h1 class="text-2xl font-bold text-textColor">{{ $t('hrm.other.title') }}</h1>
-      <p class="text-textColor2 mt-2">{{ $t('hrm.other.description') }}</p>
-    </div>
+    <UIPageTitle :title="$t('hrm.other.title')" :subtitle="$t('hrm.other.description')" />
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       <!-- Content placeholder -->
