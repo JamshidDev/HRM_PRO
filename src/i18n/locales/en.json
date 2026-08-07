@@ -240,6 +240,7 @@
     "changeAccount": "My accounts",
     "logOutSystem": "Log out",
     "paginationSize": "Show {n} items",
+    "perPage": "Per page",
     "confirm": "Confirm",
     "understood": "Understood",
     "month": "Month",

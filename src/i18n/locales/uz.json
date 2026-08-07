@@ -247,6 +247,7 @@
     "changeAccount": "Hisoblarim",
     "logOutSystem": "Tizmdan chiqish",
     "paginationSize": "{n} tadan ko'rsatish",
+    "perPage": "Har bir sahifada",
     "confirm": "Tasdiqlash",
     "understood": "Tushundim",
     "month": "Oy",

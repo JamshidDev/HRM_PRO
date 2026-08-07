@@ -39,6 +39,9 @@
     selectedKeys: { type: Array, default: () => [] },
     allSelected: { type: Boolean, default: false },
     actions: { type: Array, default: () => [] }, // "..." menu + right-click options; visible/label/icon/disabled can be static or (row) => value
+    // Amallar ustuniga sarlavha matni (masalan "Amallar"). Berilsa ustun kengayadi va
+    // sarlavha o'rnida ustun sozlash tugmasi emas, shu matn ko'rinadi.
+    actionsTitle: { type: String, default: null },
     // Ruxsat prefiksi (masalan "hr-workers"): standart edit/delete amallari mos
     // `-write`/`-delete` ruxsati bo'lmasa avtomatik disabled bo'ladi.
     permissionPrefix: { type: String, default: null },
@@ -127,7 +130,12 @@
       cols.unshift({ key: '__index', width: 56, align: 'center', fixed: 'left' })
     }
     if (visibleActions.value.length || tableColumns) {
-      cols.push({ key: '__actions', width: 56, align: 'center', fixed: 'right' })
+      cols.push({
+        key: '__actions',
+        width: props.actionsTitle ? 100 : 56,
+        align: 'center',
+        fixed: 'right'
+      })
     }
     return cols
   })
@@ -194,6 +202,7 @@
   }
 
   const renderActionsHeader = () => {
+    if (props.actionsTitle) return renderHeaderLabel({ title: props.actionsTitle })
     if (!tableColumns) return null
     return h(UITableColumns, {
       columns: tableColumns.allColumns.value,

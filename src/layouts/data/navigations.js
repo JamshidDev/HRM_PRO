@@ -11,9 +11,7 @@ import {
   AppsList24Filled,
   AppTitle24Filled,
   ArrowUpload16Filled,
-  Book20Filled,
   BookDatabase24Regular,
-  BookQuestionMark24Filled,
   BriefcaseMedical20Filled,
   BuildingHome16Filled,
   Calculator24Regular,
@@ -21,7 +19,6 @@ import {
   Certificate24Filled,
   ChannelShare20Filled,
   ChatMultiple16Filled,
-  ClipboardBulletListLtr20Filled,
   ClockToolbox20Filled,
   CommentLightning20Filled,
   ContactCard16Filled,
@@ -37,7 +34,6 @@ import {
   Folder48Filled,
   Grid20Filled,
   GridKanban20Filled,
-  HatGraduation12Filled,
   HatGraduation24Filled,
   ImageMultiple24Filled,
   LockClosed16Filled,
@@ -82,6 +78,10 @@ const {
   qualificationIcon,
   reportIcon,
   reportRefreshIcon,
+  themeAttestationIcon,
+  categoriesIcon,
+  exams2Icon,
+  resultsIcon,
 } = icons
 
 import i18n from '@/i18n/index.js'
@@ -382,28 +382,28 @@ export const navigations = [
       {
         label: 'topicPage.name', // Mavzular
         path: Utils.routeAttestationPathMaker(AppPaths.Topic),
-        icon: Book20Filled,
+        icon: themeAttestationIcon,
         color: 'bg-warning',
         permission: appPermissions.examTopics
       },
       {
         label: 'categoryPage.name', // Kategoriyalar
         path: Utils.routeAttestationPathMaker(AppPaths.Category),
-        icon: BookQuestionMark24Filled,
+        icon: categoriesIcon,
         color: 'bg-info',
         permission: appPermissions.examCategories
       },
       {
         label: t('examPage.name'), // Imtihonlar
         path: Utils.routeAttestationPathMaker(AppPaths.Exam),
-        icon: HatGraduation12Filled,
+        icon: exams2Icon,
         color: 'bg-secondary',
         permission: appPermissions.examExams
       },
       {
         label: t('examPage.result'), // Natijalar
         path: Utils.routeAttestationPathMaker(AppPaths.Result),
-        icon: ClipboardBulletListLtr20Filled,
+        icon: resultsIcon,
         color: 'bg-dark',
         permission: appPermissions.examResults
       }
