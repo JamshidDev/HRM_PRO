@@ -1,17 +1,17 @@
 import { AppPaths } from '@/utils/index.js'
 import Utils from '@/utils/Utils.js'
 import icons from '@assets/icons'
-import HrSidebarIcon from '@assets/icons/sideBarIcons/KadrlarBoshqaruv.svg'
-import DocFlowSidebarIcon from '@assets/icons/sideBarIcons/HujjatAylanishi.svg'
-import AttestationSidebarIcon from '@assets/icons/sideBarIcons/Attestatsiya.svg'
-import TurnstileSidebarIcon from '@assets/icons/sideBarIcons/Turniket.svg'
-import GeneralSidebarIcon from '@assets/icons/sideBarIcons/Umumiy.svg'
-import LmsSidebarIcon from '@assets/icons/sideBarIcons/OquvBoshqaruvi.svg'
-import EconomistSidebarIcon from '@assets/icons/sideBarIcons/Iqtisodchi.svg'
-import HospitalSidebarIcon from '@assets/icons/sideBarIcons/Kasalxona.svg'
-import ChatSidebarIcon from '@assets/icons/sideBarIcons/Chat.svg'
-import ExtraSidebarIcon from "@assets/icons/sideBarIcons/Qo'shimchalar.svg"
-import AdminSidebarIcon from '@assets/icons/sideBarIcons/Admin.svg'
+import HrSidebarIcon from '@assets/icons/KadrlarBoshqaruv.svg'
+import DocFlowSidebarIcon from '@assets/icons/HujjatAylanishi.svg'
+import AttestationSidebarIcon from '@assets/icons/Attestatsiya.svg'
+import TurnstileSidebarIcon from '@assets/icons/TurniketMenu.svg'
+import GeneralSidebarIcon from '@assets/icons/Umumiy.svg'
+import LmsSidebarIcon from '@assets/icons/OquvBoshqaruvi.svg'
+import EconomistSidebarIcon from '@assets/icons/Iqtisodchi.svg'
+import HospitalSidebarIcon from '@assets/icons/Kasalxona.svg'
+import ChatSidebarIcon from '@assets/icons/Chat.svg'
+import ExtraSidebarIcon from "@assets/icons/Qo'shimchalar.svg"
+import AdminSidebarIcon from '@assets/icons/Admin.svg'
 import {
   AppFolder20Filled,
   AppFolder24Filled,
