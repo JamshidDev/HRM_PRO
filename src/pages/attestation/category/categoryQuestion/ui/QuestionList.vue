@@ -1,16 +1,13 @@
 <script setup>
   import { useCategoryQuestionStore } from '@/store/modules'
-  import { NoDataPicture, UIEditorViewer, UIMenuButton, UIPagination } from '@/components/index.js'
-  import { useRoute, useRouter } from 'vue-router'
+  import {
+    NoDataPicture,
+    UIEditorViewer,
+    UIMenuButton,
+    UITablePagination
+  } from '@/components/index.js'
 
   const store = useCategoryQuestionStore()
-
-  const handleLoad = () => {
-    if (store.list.length < store.totalItems && !store.loading) {
-      store.params.page++
-      store._index()
-    }
-  }
 
   const onClickAction = (v) => {
     if (v.key === 'edit') {
@@ -29,42 +26,66 @@
     store.params.per_page = v.per_page
     store._index()
   }
+
+  // Raqamlash sahifadan qat'i nazar uzluksiz: 2-sahifada 16, 17, ...
+  const questionNumber = (idx) =>
+    String((store.params.page - 1) * store.params.per_page + idx + 1).padStart(2, '0')
 </script>
+
 <template>
-  <n-spin :show="store.loading">
-    <div class="h-[calc(100vh-240px)] overflow-auto">
-      <div
-        v-for="(i, idx) in store.list"
-        :key="i"
-        class="border bg-surface-section group mb-3 rounded-lg border-surface-line p-2 shadow-blue-50 drop-shadow-xs relative"
-      >
+  <n-spin :show="store.loading" class="h-full">
+    <div v-if="store.list.length === 0 && !store.loading" class="h-full grid place-items-center">
+      <NoDataPicture class="mt-0!" />
+    </div>
+
+    <div v-else class="h-full flex flex-col p-1 bg-surface-section rounded-[20px]">
+      <div class="grow basis-auto min-h-0 overflow-auto px-4">
         <div
-          class="absolute top-3 right-3 opacity-0 group-hover:opacity-100"
-          :class="{ 'opacity-100': i.id === store.elementId && store.deleteLoading }"
+          v-for="(item, idx) in store.list"
+          :key="item.id"
+          class="py-4 border-b border-surface-line last:border-b-0"
         >
-          <n-spin size="small" v-if="i.id === store.elementId && store.deleteLoading" />
-          <UIMenuButton v-else :data="i" @select-ev="onClickAction" show-edit />
-        </div>
-        <p class="font-medium">{{ (store.params.page - 1) * store.params.per_page + idx + 1 }}</p>
-        <UIEditorViewer :html="i.ques"></UIEditorViewer>
-        <n-divider />
-        <template v-for="(option, idx) in i.options" :key="idx">
-          <div class="flex gap-2 p-2">
-            <n-radio :checked="!!option.is_correct" />
-            <UIEditorViewer :html="option.text" />
+          <div class="flex items-start gap-3">
+            <span
+              class="shrink-0 rounded-lg bg-surface-ground-soft px-2 py-1 text-xs font-semibold text-textColor2"
+            >
+              {{ questionNumber(idx) }}
+            </span>
+            <div class="grow min-w-0 font-semibold">
+              <UIEditorViewer :html="item.ques" />
+            </div>
+            <n-spin v-if="item.id === store.elementId && store.deleteLoading" size="small" />
+            <UIMenuButton
+              v-else
+              class="shrink-0"
+              :data="item"
+              permission-prefix="exam-categories"
+              show-edit
+              @select-ev="onClickAction"
+            />
           </div>
-        </template>
+
+          <div class="mt-3 pl-11 grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-2">
+            <div v-for="(option, optionIdx) in item.options" :key="optionIdx" class="flex gap-2">
+              <!-- faqat ko'rsatish uchun: to'g'ri javob shu yerdan o'zgartirilmaydi -->
+              <n-radio class="pointer-events-none shrink-0" :checked="!!option.is_correct" />
+              <UIEditorViewer
+                :class="{ 'font-semibold': !!option.is_correct }"
+                :html="option.text"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="shrink-0 rounded-b-2xl px-5" style="background: var(--table-header)">
+        <UITablePagination
+          :page="store.params.page"
+          :per-page="store.params.per_page"
+          :total="store.totalItems"
+          @change-page="changePage"
+        />
       </div>
     </div>
-    <UIPagination
-      v-if="store.totalItems > store.params.per_page"
-      :page="store.params.page"
-      :per_page="store.params.per_page"
-      :total="store.totalItems"
-      @change-page="changePage"
-    />
-
-    <NoDataPicture class="mt-0!" v-if="store.list.length === 0 && !store.loading" />
   </n-spin>
 </template>
-<style lang="scss" scoped></style>
