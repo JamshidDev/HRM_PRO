@@ -1708,6 +1708,8 @@
     "addQuestion": "Add question",
     "editQuestion": "Edit question",
     "questionCount": "Number of questions",
+    "categoryName": "Category name",
+    "clearWarning": "All questions in this category will be deleted. Continue?",
     "uploadExcel": "Upload test questions",
     "pressUpload": "Click to upload!",
     "checkingFile": "Checking file...",

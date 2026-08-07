@@ -1730,6 +1730,8 @@
     "addQuestion": "Savol qo'shish",
     "editQuestion": "Savolni tahrirlash",
     "questionCount": "Savollar soni",
+    "categoryName": "Kategoriya nomi",
+    "clearWarning": "Kategoriyadagi barcha savollar o'chiriladi. Davom etasizmi?",
     "uploadExcel": "Test savollarini yuklash",
     "pressUpload": "Yuklash uchun bosing!",
     "checkingFile": "Fayl tekshirilmoqda...",
