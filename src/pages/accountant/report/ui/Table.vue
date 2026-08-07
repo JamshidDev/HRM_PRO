@@ -1,5 +1,5 @@
 <script setup>
-  import { UIStatus } from '@/components/index.js'
+  import { UIStatus, UIPageTitle } from '@/components/index.js'
   import { useUploadReportStore } from '@/store/modules/index.js'
   import Utils from '@/utils/Utils.js'
   import { Info24Regular, ArrowCircleDown12Regular } from '@vicons/fluent'
@@ -35,15 +35,17 @@
 
 <template>
   <n-spin :show="store.cardLoading">
-    <div v-if="store.params?.organization_id" class="flex justify-between items-center mt-2">
-      <span class="font-semibold text-xl"
-        >{{ $t('content.historyUpload') }}
+    <UIPageTitle v-if="store.params?.organization_id" class="mt-2">
+      <template #title>
+        {{ $t('content.historyUpload') }}
         <span class="text-primary" v-if="store.cards[store.selectedIndex]"
           >#{{ store.cards[store.selectedIndex]?.name }}</span
-        ></span
-      >
-      <n-button @click="store._cards()" type="primary">{{ $t('content.refresh') }}</n-button>
-    </div>
+        >
+      </template>
+      <template #actions>
+        <n-button @click="store._cards()" type="primary">{{ $t('content.refresh') }}</n-button>
+      </template>
+    </UIPageTitle>
     <div class="w-full overflow-y-auto h-[calc(100vh-520px)] mt-4">
       <div class="grid grid-cols-2 gap-2">
         <template v-for="item in store.list" :key="item">
