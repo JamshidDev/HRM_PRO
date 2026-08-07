@@ -1,5 +1,5 @@
 <script setup>
-  import { UITable } from '@/components/index.js'
+  import { UITable, UIUser } from '@/components/index.js'
   import i18n from '@/i18n/index.js'
   import { useWorkerCertificateStore } from '@stores'
   import { Utils } from '@utils'
@@ -13,33 +13,24 @@
     store._index()
   }
 
-  const fullName = (row) =>
-    [row.last_name, row.first_name, row.middle_name].filter(Boolean).join(' ')
-
   // Amal qilish muddati — uzaytirilgan sana bo'lsa HAQIQIY muddat o'sha.
   const validUntil = (c) => c?.extended_date || c?.expiry_date || null
 
   const columns = computed(() => [
-    { key: 'worker', title: t('workerCertificatePage.table.worker'), minWidth: 240 },
-    {
-      key: 'organization.name',
-      title: t('workerCertificatePage.table.organization'),
-      minWidth: 240
-    },
-    { key: 'position', title: t('workerCertificatePage.table.position'), minWidth: 240 },
-    { key: 'number', title: t('workerCertificatePage.table.number'), width: 150 },
-    { key: 'issue_date', title: t('workerCertificatePage.table.issueDate'), width: 130 },
-    { key: 'expiry_date', title: t('workerCertificatePage.table.expiryDate'), width: 140 },
+    { key: 'worker', title: t('workerCertificatePage.table.worker'), minWidth: 280 },
+    { key: 'number', title: t('workerCertificatePage.table.number'), minWidth: 170 },
+    { key: 'issue_date', title: t('workerCertificatePage.table.issueDate'), width: 140 },
+    { key: 'expiry_date', title: t('workerCertificatePage.table.expiryDate'), width: 150 },
     {
       key: 'verify',
       title: t('workerCertificatePage.table.verify'),
-      width: 130,
+      width: 140,
       align: 'center'
     },
     {
       key: 'returned',
       title: t('workerCertificatePage.table.returned'),
-      width: 140,
+      width: 150,
       align: 'center'
     }
   ])
@@ -57,15 +48,18 @@
     storage-key="hrm-worker-certificate"
     @change-page="changePage"
   >
+    <!-- Xodimlar sahifasidagi kabi UIUser — avatar + F.I.Sh, ostida JSHSHIR. -->
     <template #cell-worker="{ row }">
-      <div class="flex flex-col">
-        <span>{{ fullName(row) }}</span>
-        <span v-if="row.pin" class="text-xs text-textColor3">{{ row.pin }}</span>
-      </div>
-    </template>
-
-    <template #cell-position="{ row }">
-      {{ row.position || '-' }}
+      <UIUser
+        :short="false"
+        :data="{
+          photo: row?.photo,
+          firstName: row?.first_name,
+          middleName: row?.middle_name,
+          lastName: row?.last_name,
+          position: row?.pin
+        }"
+      />
     </template>
 
     <!-- Guvohnoma yo'q bo'lsa raqam o'rniga aniq belgi — bo'sh katak emas. -->
@@ -86,7 +80,9 @@
 
     <template #cell-verify="{ row }">
       <n-tag
-        v-if="row.certificate" size="small" :bordered="false"
+        v-if="row.certificate"
+        size="small"
+        :bordered="false"
         :type="row.certificate.verify ? 'success' : 'default'"
       >
         {{ row.certificate.verify ? $t('content.yes') : $t('content.no') }}
@@ -96,7 +92,9 @@
 
     <template #cell-returned="{ row }">
       <n-tag
-        v-if="row.certificate" size="small" :bordered="false"
+        v-if="row.certificate"
+        size="small"
+        :bordered="false"
         :type="row.certificate.returned ? 'warning' : 'default'"
       >
         {{ row.certificate.returned ? $t('content.yes') : $t('content.no') }}
