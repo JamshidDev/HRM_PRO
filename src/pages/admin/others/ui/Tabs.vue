@@ -23,11 +23,12 @@
     animated
     v-model:value="store.activeTab"
     @update:value="onChange"
-    class="hidden-tab-header1 mt-10"
+    class="hidden-tab-header1 flex-1 overflow-auto"
+    pane-wrapper-class="flex-1 flex flex-col"
     type="card"
   >
     <template v-for="(item, idx) in store.tabList" :key="idx">
-      <n-tab-pane :name="item.id" :tab="$t(item.name)">
+      <n-tab-pane :name="item.id" :tab="$t(item.name)" class="!pt-4 flex-1 overflow-auto">
         <template v-if="item.id === 1">
           <UniversityPage />
         </template>

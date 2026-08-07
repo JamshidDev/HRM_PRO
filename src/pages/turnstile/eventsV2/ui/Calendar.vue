@@ -45,12 +45,12 @@
   <n-spin :show="store.calendarLoading">
     <n-calendar
       :key="`${store.calendarParams.year}-${store.calendarParams.month}`"
-      class="mt-10 w-full min-h-[700px]! h-auto! custom-calendar"
+      class="w-full min-h-[700px]! h-auto! custom-calendar"
       v-model:value="store.currentTime"
       :default-value="store.currentTime"
       @panel-change="onChangeMonth"
     >
-      <template #header="{ year, month, date }">
+      <template #header="{ year, month }">
         <div class="flex">
           <div class="text-textColor0 w-[100px]">
             {{ year }}
@@ -69,9 +69,9 @@
         >
           <div>
             <template v-if="getItemByDate(year, month, date)?.minute">
-              <n-button circle type="primary" size="large">{{
-                Math.ceil(getItemByDate(year, month, date)?.minute / 60)
-              }}</n-button>
+              <n-button circle type="primary" size="large">
+                {{ Math.ceil(getItemByDate(year, month, date)?.minute / 60) }}
+              </n-button>
             </template>
           </div>
         </div>
@@ -79,3 +79,17 @@
     </n-calendar>
   </n-spin>
 </template>
+
+<style lang="scss">
+  .custom-calendar {
+    .n-calendar-dates {
+      background: var(--surface-section) !important;
+    }
+    .n-calendar-cell--disabled {
+      background-color: var(--surface-section) !important;
+      .n-calendar-date__date {
+        opacity: 0.3;
+      }
+    }
+  }
+</style>

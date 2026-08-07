@@ -7,9 +7,15 @@
 </script>
 
 <template>
-  <n-tabs animated v-model:value="store.activeTab" class="hidden-tab-header1 mt-10" type="card">
+  <n-tabs
+    animated
+    v-model:value="store.activeTab"
+    class="hidden-tab-header1 flex-1 overflow-auto"
+    pane-wrapper-class="flex-1 flex flex-col"
+    type="card"
+  >
     <template v-for="(tab, idx) in store.tabList" :key="idx">
-      <n-tab-pane :name="tab.id" :tab="$t(tab.name)">
+      <n-tab-pane :name="tab.id" :tab="$t(tab.name)" class="!pt-4 flex-1 overflow-auto">
         <template v-if="tab.id === 1">
           <ContractTemplate />
         </template>

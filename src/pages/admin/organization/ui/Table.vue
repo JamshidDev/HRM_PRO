@@ -99,8 +99,10 @@
 </script>
 
 <template>
-  <div class="rounded-xl border border-surface-line bg-surface-section p-4">
-    <div class="mb-3 flex flex-wrap items-center justify-between gap-2">
+  <div
+    class="flex-1 flex flex-col overflow-auto gap-4 rounded-xl border border-surface-line bg-surface-section px-4 pt-4"
+  >
+    <div class="flex flex-wrap items-center justify-between gap-2">
       <div class="flex items-center gap-2">
         <div class="h-2.5 w-2.5 rounded-full bg-primary"></div>
         <span class="text-sm font-medium text-textColor0">{{ $t('organizationPage.name') }}</span>
@@ -123,24 +125,26 @@
       </div>
     </div>
 
-    <n-spin :show="store.loading">
-      <div class="min-h-[260px] rounded-lg border border-surface-line bg-surface-ground p-2">
-        <UITree
-          v-if="store.list.length"
-          :children="store.list"
-          @on-load="onLoad"
-          @on-change="onChange"
-          @on-toggle="onToggle"
-          :element-id="store.indexPath"
-          :action-loading="store.deleteLoading"
-          :action-loading-id="store.elementId"
-          :expanded-keys="expandedKeys"
-        />
-        <n-empty v-else class="py-16" :description="$t('content.no-data')" />
-      </div>
-    </n-spin>
+    <div class="flex-1 flex flex-col overflow-auto">
+      <n-spin :show="store.loading" class="flex-1 overflow-auto">
+        <div
+          class="min-h-[260px] h-full overflow-auto rounded-lg border border-surface-line bg-surface-ground p-2"
+        >
+          <UITree
+            v-if="store.list.length"
+            :children="store.list"
+            @on-load="onLoad"
+            @on-change="onChange"
+            @on-toggle="onToggle"
+            :element-id="store.indexPath"
+            :action-loading="store.deleteLoading"
+            :action-loading-id="store.elementId"
+            :expanded-keys="expandedKeys"
+          />
+          <n-empty v-else class="py-16" :description="$t('content.no-data')" />
+        </div>
+      </n-spin>
 
-    <div class="mt-3">
       <UIPagination
         :page="store.params.page"
         :per_page="store.params.per_page"

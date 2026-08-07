@@ -2,7 +2,6 @@
   import { useListenerStore } from '@/store/modules/index.js'
   import Utils from '@/utils/Utils.js'
   import { PlayCircle28Filled } from '@vicons/fluent'
-  import { useAppSetting } from '@/utils/index.js'
 
   const store = useListenerStore()
 
@@ -37,13 +36,13 @@
     <n-calendar
       v-if="store.params.month"
       :key="`${store.params.year}-${store.params.month}`"
-      class="mt-10 w-full min-h-[900px]! h-auto! custom-calendar"
+      class="w-full min-h-[900px]! h-auto! custom-calendar"
       v-model:value="store.currentTime"
       :default-value="store.currentTime"
       @panel-change="onChangeMonth"
       :is-date-disabled="isDisableDate"
     >
-      <template #header="{ year, month, date }">
+      <template #header="{ year, month }">
         <div class="text-textColor0">{{ year }} {{ Utils.getMonthNameById(month) }}</div>
       </template>
 

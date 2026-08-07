@@ -1,22 +1,58 @@
 <script setup>
   import { useHolidayGreetingStore } from '@/store/modules/index.js'
-  import { UIModal, UIMenuButton } from '@/components/index.js'
+  import { UIModal, UITable } from '@/components/index.js'
   import OverrideForm from './OverrideForm.vue'
   import Utils from '@/utils/Utils.js'
+  import UIHelper from '@/utils/UIHelper.js'
+  import { Delete20Regular, Edit32Regular } from '@vicons/fluent'
+  import i18n from '@/i18n/index.js'
 
+  const { t } = i18n.global
   const store = useHolidayGreetingStore()
 
   const onAdd = () => {
     store.onAddOverride()
   }
 
-  const onSelectEv = (v) => {
-    if (Utils.ActionTypes.edit === v.key) {
-      store.onEditOverride(v.data)
-    } else if (Utils.ActionTypes.delete === v.key) {
-      store._overrideDelete(v.data.id)
-    }
+  const onEdit = (item) => {
+    store.onEditOverride(item)
   }
+
+  const onDelete = (item) => {
+    store._overrideDelete(item.id)
+  }
+
+  const columns = computed(() => [
+    {
+      key: 'client_key',
+      title: t('holidayGreetingPage.overrides.clientKey')
+    },
+    {
+      key: 'text',
+      title: t('holidayGreetingPage.overrides.text')
+    },
+    {
+      key: 'banner_url',
+      title: t('holidayGreetingPage.overrides.banner'),
+      width: 70,
+      align: 'center'
+    }
+  ])
+
+  const actions = computed(() => [
+    {
+      label: t('content.edit'),
+      key: Utils.ActionTypes.edit,
+      icon: UIHelper.renderIcon(Edit32Regular),
+      action: onEdit
+    },
+    {
+      label: t('content.delete'),
+      key: Utils.ActionTypes.delete,
+      icon: UIHelper.renderIcon(Delete20Regular),
+      action: onDelete
+    }
+  ])
 </script>
 
 <template>
@@ -31,43 +67,26 @@
       </n-button>
     </div>
 
-    <n-spin :show="store.detailLoading || store.overrideDeleteLoading">
-      <div v-if="store.overrides.length" class="w-full overflow-x-auto">
-        <n-table size="small" :single-line="false">
-          <thead>
-            <tr>
-              <th>{{ $t('holidayGreetingPage.overrides.clientKey') }}</th>
-              <th>{{ $t('holidayGreetingPage.overrides.text') }}</th>
-              <th class="text-center! w-[70px]">
-                {{ $t('holidayGreetingPage.overrides.banner') }}
-              </th>
-              <th class="w-[50px]"></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="item in store.overrides" :key="item.id">
-              <td>{{ item.client_key }}</td>
-              <td class="line-clamp-2 max-w-[240px]">{{ item.text }}</td>
-              <td class="text-center!">
-                <img
-                  v-if="item.banner_url"
-                  :src="item.banner_url"
-                  @error="Utils.onImgError"
-                  class="w-[32px] h-[32px] object-cover rounded-sm inline-block"
-                />
-                <span v-else>—</span>
-              </td>
-              <td>
-                <UIMenuButton :data="item" show-edit @selectEv="onSelectEv" />
-              </td>
-            </tr>
-          </tbody>
-        </n-table>
-      </div>
-      <p v-else class="text-sm text-textColor3 text-center py-4">
-        {{ $t('holidayGreetingPage.overrides.empty') }}
-      </p>
-    </n-spin>
+    <UITable
+      :columns="columns"
+      :actions="actions"
+      :data="store.overrides"
+      :loading="store.detailLoading || store.overrideDeleteLoading"
+    >
+      <template #cell-text="{ row }">
+        <div class="line-clamp-2 max-w-[240px]">{{ row.text }}</div>
+      </template>
+
+      <template #cell-banner_url="{ row }">
+        <img
+          v-if="row.banner_url"
+          :src="row.banner_url"
+          @error="Utils.onImgError"
+          class="w-[32px] h-[32px] object-cover rounded-sm inline-block"
+        />
+        <span v-else>—</span>
+      </template>
+    </UITable>
 
     <UIModal
       v-model:visible="store.overrideVisible"
