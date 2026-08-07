@@ -122,6 +122,7 @@
 
 <template>
   <UITable
+    permission-prefix="hr-commands"
     :columns="columns"
     :actions="actions"
     :data="store.list"

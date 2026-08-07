@@ -139,6 +139,7 @@
 
 <template>
   <UITable
+    permission-prefix="turnstile-approve"
     :columns="columns"
     :actions="actions"
     :data="store.list"

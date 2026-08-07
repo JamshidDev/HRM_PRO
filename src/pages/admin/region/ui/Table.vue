@@ -73,6 +73,7 @@
 
 <template>
   <UITable
+    permission-prefix="regions"
     :columns="columns"
     :actions="actions"
     :data="store.list"

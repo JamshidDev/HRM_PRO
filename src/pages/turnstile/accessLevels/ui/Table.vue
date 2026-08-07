@@ -64,6 +64,7 @@
 
 <template>
   <UITable
+    permission-prefix="turnstile-access-levels"
     :columns="columns"
     :actions="actions"
     :data="store.list"

@@ -144,6 +144,7 @@
 
 <template>
   <UITable
+    permission-prefix="users"
     :columns="columns"
     :actions="actions"
     :data="store.list"

@@ -19,11 +19,11 @@
   const store = useComponentStore()
 
   const certificateNumber = computed(
-    () => store.workerPreview?.worker?.certificates?.[0]?.number
+    () => store.workerPreview?.worker?.digital_certificate?.serial
   )
 
   const onCopy = () => {
-    $Toast.info(t('message.successDone'))
+    $Toast.success(t('message.successDone'))
   }
 </script>
 

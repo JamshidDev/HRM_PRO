@@ -11,8 +11,10 @@
   const store = usePensionerStore()
   const accStore = useAccountStore()
 
+  // Ilgari bu yerda begona `hrVacationsWrite` tekshirilardi — pensionerlar bo'limi
+  // ta'tillarga aloqasi yo'q. Backend `hr-pensioners-*` oilasini enforce qiladi.
   const onEdit = (row) => {
-    if (!accStore.checkAction(accStore.pn.hrVacationsWrite)) return
+    if (!accStore.checkAction(accStore.pn.hrPensionersWrite)) return
     store.payload.first_name = row.first_name
     store.payload.last_name = row.last_name
     store.payload.middle_name = row.middle_name
@@ -35,7 +37,7 @@
   }
 
   const onDelete = (row) => {
-    if (!accStore.checkAction(accStore.pn.hrVacationsWrite)) return
+    if (!accStore.checkAction(accStore.pn.hrPensionersDelete)) return
     store.elementId = row.id
     store._delete()
   }
@@ -127,6 +129,7 @@
 
 <template>
   <UITable
+    permission-prefix="hr-pensioners"
     :columns="columns"
     :actions="actions"
     :data="store.list"

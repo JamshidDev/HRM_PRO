@@ -8,13 +8,15 @@ const store = useMobileUserStore()
 const accStore = useAccountStore()
 
 const onSearch = (v) => {
-  if (!accStore.checkAction(accStore.pn.admin)) return
+  // Ilgari qo'pol `admin` edi; backend `mobile-users-read` ni enforce qiladi.
+  if (!accStore.canView(accStore.pn.mobileUsers)) return
   store.params.search = v
   store._filterEvent()
 }
 
 onMounted(() => {
-  if (!accStore.checkAction(accStore.pn.admin)) return
+  // Ilgari qo'pol `admin` edi; backend `mobile-users-read` ni enforce qiladi.
+  if (!accStore.canView(accStore.pn.mobileUsers)) return
   store._index()
 })
 </script>

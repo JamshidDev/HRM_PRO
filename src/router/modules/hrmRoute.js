@@ -1,4 +1,4 @@
-import { AppLayouts, AppPaths } from '@/utils/index.js'
+import { AppLayouts, AppPaths, appPermissions } from '@/utils/index.js'
 import Utils from '@/utils/Utils.js'
 
 export const hrmRoutes = [
@@ -24,7 +24,9 @@ export const hrmRoutes = [
     path: Utils.routeHrmPathMaker(`${AppPaths.Worker}${AppPaths.Create}`),
     name: `${AppPaths.Worker.substring(1)}-${AppPaths.Create.substring(1)}`,
     component: () => import('@/pages/hrm/candidate/CandidatePage.vue'),
-    meta: { layout: AppLayouts.main }
+    // Navigatsiyada bandi yo'q — otadan faqat `hr` meros bo'lardi. Yangi xodim
+    // yaratish sahifasi bo'lgani uchun aniq write ruxsati talab qilinadi.
+    meta: { layout: AppLayouts.main, permission: appPermissions.hrWorkersWrite }
   },
   {
     path: Utils.routeHrmPathMaker(AppPaths.Confirmation),
@@ -36,7 +38,8 @@ export const hrmRoutes = [
     path: Utils.routeHrmPathMaker(AppPaths.WorkerProfile),
     name: AppPaths.WorkerProfile.substring(1),
     component: () => import('@/pages/hrm/workerProfile/ProfilePage.vue'),
-    meta: { layout: AppLayouts.main }
+    // Xodim kartochkasi — Xodimlar ro'yxatining detal ko'rinishi.
+    meta: { layout: AppLayouts.main, permission: appPermissions.hrWorkers }
   },
   {
     path: Utils.routeHrmPathMaker(AppPaths.Application),
@@ -96,7 +99,9 @@ export const hrmRoutes = [
     path: Utils.routeHrmPathMaker(AppPaths.Slice),
     name: AppPaths.Slice.substring(1),
     component: () => import('@/pages/hrm/slice/SlicePage.vue'),
-    meta: { layout: AppLayouts.main }
+    // Navigatsiyada bandi izohga olingan, lekin route tirik — sahifaning o'z
+    // tekshiruvi (`hrJobsRead`) bilan bir xil slug'ga bog'lanadi.
+    meta: { layout: AppLayouts.main, permission: appPermissions.hrJobs }
   },
   {
     path: Utils.routeHrmPathMaker(AppPaths.OrganizationLeader),
@@ -106,7 +111,8 @@ export const hrmRoutes = [
   {
     path: Utils.routeHrmPathMaker(AppPaths.Export),
     component: () => import('@/pages/hrm/export/exportPage.vue'),
-    meta: { layout: AppLayouts.main }
+    // Navigatsiyada bandi izohga olingan, lekin route tirik.
+    meta: { layout: AppLayouts.main, permission: appPermissions.hrExport }
   },
   {
     path: Utils.routeHrmPathMaker(AppPaths.BusinessTrip),

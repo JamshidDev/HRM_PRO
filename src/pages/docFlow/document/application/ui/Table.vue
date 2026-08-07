@@ -124,6 +124,7 @@
 
 <template>
   <UITable
+    permission-prefix="hr-worker-applications"
     :columns="columns"
     :actions="actions"
     :data="store.list"

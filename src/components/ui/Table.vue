@@ -13,8 +13,10 @@
   import Utils from '@/utils/Utils.js'
   import i18n from '@/i18n/index.js'
   import { NEllipsis } from 'naive-ui'
+  import { useAccountStore } from '@/store/modules/app/accountStore.js'
 
   const { t } = i18n.global
+  const accStore = useAccountStore()
 
   defineOptions({ inheritAttrs: false })
 
@@ -36,7 +38,10 @@
     selectable: { type: Boolean, default: false }, // swaps the row-number for a checkbox
     selectedKeys: { type: Array, default: () => [] },
     allSelected: { type: Boolean, default: false },
-    actions: { type: Array, default: () => [] }, // "..." menu + right-click options; visible/label/icon can be static or (row) => value
+    actions: { type: Array, default: () => [] }, // "..." menu + right-click options; visible/label/icon/disabled can be static or (row) => value
+    // Ruxsat prefiksi (masalan "hr-workers"): standart edit/delete amallari mos
+    // `-write`/`-delete` ruxsati bo'lmasa avtomatik disabled bo'ladi.
+    permissionPrefix: { type: String, default: null },
     storageKey: { type: String, default: null }, // persists column visibility/order/width
     onLoad: { type: Function, default: null }, // async tree children loader: (row) => Promise<void>
     rowClassName: { type: Function, default: null }, // (row, index) => string
@@ -82,6 +87,23 @@
         : null
       : props.deleteWarning
 
+  /**
+   * `permissionPrefix` berilsa, standart amallar (`Utils.ActionTypes.edit` va
+   * `.delete`) mos ruxsat bo'lmasa avtomatik KULRANG bo'ladi (yashirilmaydi —
+   * foydalanuvchi imkoniyat borligini ko'rib, admindan so'ray olsin).
+   *
+   * Amal obyektida `disabled` aniq berilgan bo'lsa, u avtomatikadan ustun turadi —
+   * nostandart amallarni (`confirm`, `finish`, ...) o'z slug'iga bog'lash uchun.
+   */
+  const autoDisabled = (a) => {
+    if (!props.permissionPrefix) return false
+    if (a.key === Utils.ActionTypes.delete)
+      return !accStore.checkPermission(`${props.permissionPrefix}-delete`)
+    if (a.key === Utils.ActionTypes.edit)
+      return !accStore.checkPermission(`${props.permissionPrefix}-write`)
+    return false
+  }
+
   const rowActionsFor = (row) =>
     visibleActions.value
       .filter((a) => (typeof a.visible === 'function' ? a.visible(row) : true))
@@ -89,7 +111,13 @@
         ...a,
         label: typeof a.label === 'function' ? a.label(row) : a.label,
         // icon is normally a 0-arg naive-ui render-prop (UIHelper.renderIcon result); only a (row) => ... accessor takes an arg
-        icon: typeof a.icon === 'function' && a.icon.length > 0 ? a.icon(row) : a.icon
+        icon: typeof a.icon === 'function' && a.icon.length > 0 ? a.icon(row) : a.icon,
+        disabled:
+          a.disabled !== undefined
+            ? typeof a.disabled === 'function'
+              ? a.disabled(row)
+              : a.disabled
+            : autoDisabled(a)
       }))
   const indexOffset = computed(() => (props.page - 1) * props.perPage)
 

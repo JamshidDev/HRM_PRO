@@ -41,6 +41,7 @@
 
 <template>
   <UIPageFilter
+    :add-permission="accStore.pn.turnstileHikCentralJobWrite"
     v-model:search="store.params.search"
     :search-loading="store.loading"
     @onSearch="filterEvent"

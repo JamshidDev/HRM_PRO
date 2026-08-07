@@ -73,6 +73,7 @@
 
 <template>
   <UITable
+    permission-prefix="cities"
     :columns="columns"
     :actions="actions"
     :data="store.list"

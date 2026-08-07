@@ -68,6 +68,7 @@
 
 <template>
   <UITable
+    permission-prefix="lms-direction"
     :columns="columns"
     :actions="actions"
     :data="store.list"

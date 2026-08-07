@@ -64,6 +64,7 @@
 
 <template>
   <UITable
+    permission-prefix="nationalities"
     :columns="columns"
     :actions="actions"
     :data="store.list"

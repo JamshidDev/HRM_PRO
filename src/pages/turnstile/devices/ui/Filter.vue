@@ -31,7 +31,9 @@
     store._index()
   }
 
-  const isAdmin = accStore.checkPermission(accStore.pn.admin) || false
+  // `computed` bo'lishi SHART: ilgari bu setup paytida bir marta hisoblanardi va
+  // ruxsatlar keyinroq kelsa (yoki rol almashtirilsa) eskirib qolardi.
+  const isAdmin = computed(() => accStore.checkPermission(accStore.pn.admin))
 
   const filterEvent = () => {
     store.params.page = 1
@@ -94,6 +96,7 @@
 
 <template>
   <UIPageFilter
+    :add-permission="accStore.pn.turnstileDevicesWrite"
     v-model:search="store.params.search"
     @onSearch="onSearch"
     :search-loading="store.loading"

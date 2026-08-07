@@ -18,6 +18,7 @@
     // Rol guard'i — permission olamini belgilaydi; shu guard bo'yicha ro'yxat qayta yuklanadi.
     store.payload.guard_name = row.guard_name || 'sanctum'
     store.payload.permissions = row.permissions.map((x) => x.id)
+    store.query = null
     store._getAllPermission()
     store.visible = true
   }
@@ -66,6 +67,7 @@
 
 <template>
   <UITable
+    permission-prefix="roles"
     :columns="columns"
     :actions="actions"
     :data="store.list"

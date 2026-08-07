@@ -27,6 +27,7 @@
 
 <template>
   <UIPageFilter
+    :add-permission="accStore.pn.turnstileApproveWrite"
     v-model:search="store.params.search"
     :search-loading="store.loading"
     @onSearch="onSearch"

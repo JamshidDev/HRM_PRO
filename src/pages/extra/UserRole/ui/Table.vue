@@ -95,8 +95,9 @@
   const phoneErrors = ref({})
   const selectedUserUuid = ref(null)
 
-  // Har option o'z ruxsatiga bog'landi — ruxsat bo'lmasa menyuда ko'rinmaydi
-  // (backend ham mos slug bilan enforce qiladi).
+  // Har option o'z ruxsatiga bog'langan. Ruxsat bo'lmasa band YASHIRILMAYDI, balki
+  // kulrang (disabled) bo'ladi — foydalanuvchi imkoniyat borligini ko'radi va admindan
+  // so'rashi mumkin. Backend ham mos slug bilan enforce qiladi.
   const actions = computed(() =>
     [
       {
@@ -127,7 +128,7 @@
         action: onPhoneNumberClick,
         perm: accStore.pn.hrUsersUpdate
       }
-    ].filter((o) => accStore.checkPermission(o.perm) || accStore.isModeDev)
+    ].map((o) => ({ ...o, disabled: !accStore.checkPermission(o.perm) }))
   )
 
   const onAttachRole = (row) => {

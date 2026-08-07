@@ -14,19 +14,21 @@
     debounceIndexEv()
   }
 
+  // page.vue dagi kabi: bu bo'lim `instructions` oilasi bilan qo'riqlanadi.
   const onSearch = () => {
-    if (!accStore.checkAction(accStore.pn.chatNotification)) return
+    if (!accStore.checkAction(accStore.pn.instructions)) return
     filterEvent()
   }
 
   const onAdd = () => {
-    if (!accStore.checkAction(accStore.pn.chatNotification)) return
+    if (!accStore.checkAction(accStore.pn.instructionsWrite)) return
     store.resetForm()
     store.visible = true
   }
 </script>
 <template>
   <UIPageFilter
+    :add-permission="accStore.pn.instructionsWrite"
     :show-filter-button="false"
     :search-loading="store.loading"
     v-model:search="store.params.search"

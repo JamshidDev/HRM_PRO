@@ -32,6 +32,7 @@
 <template>
   <UIPageContent>
     <UIPageFilter
+      :add-permission="accStore.pn.turnstileTerminalWrite"
       v-model:search="store.params.search"
       @onSearch="onSearch"
       @onAdd="onAdd"
