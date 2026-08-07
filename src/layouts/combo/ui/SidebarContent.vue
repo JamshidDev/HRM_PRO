@@ -62,9 +62,17 @@
     }, 150)
   }
 
+  /**
+   * Mobil kenglik — organizationLayout.scss dagi $mobile_device_screen_size (900px) bilan bir xil.
+   * Bu o'lchamdan pastda sidebar kontentni to'liq qoplab turadi.
+   */
+  const isMobileWidth = () => window.matchMedia('(max-width: 899.5px)').matches
+
   const onChangePath = (item) => {
     if (item?.disable) return
     router.push(item.path)
+    // Mobilda sahifaga o'tgach sidebar yopilsin (desktop holati saqlanmasin)
+    if (isMobileWidth()) emits('onClose', false)
   }
 
   /**
