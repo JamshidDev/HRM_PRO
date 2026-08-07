@@ -300,6 +300,7 @@
   </div>
 
   <UITable
+    permission-prefix="integration-clients"
     :columns="columns"
     :actions="actions"
     :data="store.clients"

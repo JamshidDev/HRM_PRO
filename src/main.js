@@ -37,11 +37,10 @@ app.use(FlyUploadPlugin, {
   storeAction: 'incrementUnReadCount'
 })
 
-// Barcha menyular permission'siz ochiladi — faqat LOCAL mode'da (npm run local).
-// Dev va prod serverlarda menyular permission bo'yicha ishlaydi.
-if (import.meta.env.MODE === 'localhost') {
-  store.isModeDev = true
-}
+// Ilgari bu yerda localhost rejimida BARCHA ruxsatlar ochib qo'yilardi (`isModeDev`).
+// Natijada permissionlarni lokalda sinab ko'rib bo'lmasdi va sidebar (bypass qilmagan)
+// bilan router (bypass qilgan) bir-biriga zid ishlardi. Bypass olib tashlandi —
+// rolni simulyatsiya qilish uchun `accountStore.applyDevPermissionOverride()` ga qarang.
 
 window.$ApiService = ApiService
 

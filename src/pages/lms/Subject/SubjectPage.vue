@@ -31,6 +31,7 @@
 <template>
   <UIPageContent>
     <UIPageFilter
+      :add-permission="accStore.pn.lmsSubjectsWrite"
       v-model:search="store.params.search"
       @on-search="onSearch"
       :search-loading="store.loading"

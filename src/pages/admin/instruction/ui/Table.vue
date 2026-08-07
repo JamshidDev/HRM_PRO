@@ -70,6 +70,7 @@
 
 <template>
   <UITable
+    permission-prefix="instructions"
     :columns="columns"
     :actions="actions"
     :data="store.list"

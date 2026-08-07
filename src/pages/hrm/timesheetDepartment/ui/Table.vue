@@ -64,6 +64,7 @@
   <UIWorkerView ref="previewRef" />
 
   <UITable
+    permission-prefix="hr-table"
     :columns="columns"
     :actions="actions"
     :data="store.list"

@@ -103,6 +103,7 @@
 
 <template>
   <UITable
+    permission-prefix="lms-certificate"
     :columns="columns"
     :actions="actions"
     :data="store.list"

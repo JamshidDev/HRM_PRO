@@ -128,6 +128,7 @@
 
 <template>
   <UIPageFilter
+    :add-permission="accStore.pn.turnstileHikCentralWorkersWrite"
     v-model:search="store.params.search"
     @onSearch="onSearch"
     @show="beforeShow"
