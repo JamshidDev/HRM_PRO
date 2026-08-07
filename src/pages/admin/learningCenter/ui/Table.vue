@@ -87,6 +87,7 @@
 
 <template>
   <UITable
+    permission-prefix="learning-centers"
     :columns="columns"
     :actions="actions"
     :data="store.list"

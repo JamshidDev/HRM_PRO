@@ -78,6 +78,7 @@
 
 <template>
   <UITable
+    permission-prefix="positions"
     :columns="columns"
     :actions="actions"
     :data="store.list"

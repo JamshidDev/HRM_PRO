@@ -1,11 +1,20 @@
 import { AppPaths } from '@/utils/index.js'
 import Utils from '@/utils/Utils.js'
 import icons from '@assets/icons'
+import HrSidebarIcon from '@assets/icons/KadrlarBoshqaruv.svg'
+import DocFlowSidebarIcon from '@assets/icons/HujjatAylanishi.svg'
+import AttestationSidebarIcon from '@assets/icons/Attestatsiya.svg'
+import TurnstileSidebarIcon from '@assets/icons/TurniketMenu.svg'
+import GeneralSidebarIcon from '@assets/icons/Umumiy.svg'
+import LmsSidebarIcon from '@assets/icons/OquvBoshqaruvi.svg'
+import EconomistSidebarIcon from '@assets/icons/Iqtisodchi.svg'
+import HospitalSidebarIcon from '@assets/icons/Kasalxona.svg'
+import ChatSidebarIcon from '@assets/icons/Chat.svg'
+import ExtraSidebarIcon from "@assets/icons/Qo'shimchalar.svg"
+import AdminSidebarIcon from '@assets/icons/Admin.svg'
 import {
-  AccessTime24Filled,
   AppFolder20Filled,
   AppFolder24Filled,
-  AppRecent24Filled,
   AppsAddIn16Regular,
   AppsList20Regular,
   AppsList24Filled,
@@ -15,12 +24,10 @@ import {
   BookDatabase24Regular,
   BookQuestionMark24Filled,
   BriefcaseMedical20Filled,
-  BuildingHome16Filled,
   Calculator24Regular,
   CalendarLtr20Filled,
   Certificate24Filled,
   ChannelShare20Filled,
-  ChatMultiple16Filled,
   ClipboardBulletListLtr20Filled,
   ClockToolbox20Filled,
   CommentLightning20Filled,
@@ -30,7 +37,6 @@ import {
   DocumentBulletList24Filled,
   DocumentCopy24Filled,
   DocumentEdit20Filled,
-  DocumentPerson16Filled,
   DocumentPerson20Filled,
   DocumentRibbon20Filled,
   DocumentRibbon24Filled,
@@ -38,23 +44,17 @@ import {
   Grid20Filled,
   GridKanban20Filled,
   HatGraduation12Filled,
-  HatGraduation24Filled,
   ImageMultiple24Filled,
-  LockClosed16Filled,
   News24Regular,
   Organization12Filled,
   PeopleCheckmark24Filled,
-  PeopleMoney24Filled,
   PeopleToolbox20Filled,
-  Person32Filled,
-  PersonNote24Filled,
   PersonVoice20Filled,
   QrCode24Regular,
   RibbonStar20Filled,
   RibbonStar24Filled,
   ShareScreenPerson20Filled,
   ShiftsCheckmark20Regular,
-  SlideMultipleSearch24Filled,
   Tag16Filled
 } from '@vicons/fluent'
 const {
@@ -93,7 +93,7 @@ export const navigations = [
   {
     label: 'navigation.hrm', // Kadrlar boshqaruvi
     path: AppPaths.Hrm,
-    icon: Person32Filled,
+    icon: HrSidebarIcon,
     permission: appPermissions.hr,
     name: 'hr',
 
@@ -297,7 +297,7 @@ export const navigations = [
   {
     label: 'navigation.docFlow', // Hujjat aylanishi
     path: '/docflow',
-    icon: DocumentPerson16Filled,
+    icon: DocFlowSidebarIcon,
     permission: appPermissions.confirmation,
     name: 'confirmation',
     children: [
@@ -376,7 +376,7 @@ export const navigations = [
   {
     label: 'navigation.attestation', // Attestatsiya
     path: AppPaths.Attestation,
-    icon: PersonNote24Filled,
+    icon: AttestationSidebarIcon,
     permission: appPermissions.exam,
     children: [
       {
@@ -412,7 +412,7 @@ export const navigations = [
   {
     label: 'navigation.turnstile', // Turniket
     path: AppPaths.Turnstile,
-    icon: AccessTime24Filled,
+    icon: TurnstileSidebarIcon,
     permission: appPermissions.turnstile,
     children: [
       {
@@ -574,14 +574,14 @@ export const navigations = [
   {
     label: 'navigation.general', // Umumiy
     path: AppPaths.Info,
-    icon: SlideMultipleSearch24Filled,
+    icon: GeneralSidebarIcon,
     permission: appPermissions.useful,
     children: []
   },
   {
     label: 'navigation.lms', // O'quv boshqaruvi
     path: AppPaths.Lms,
-    icon: HatGraduation24Filled,
+    icon: LmsSidebarIcon,
     permission: appPermissions.lms,
     children: [
       {
@@ -659,7 +659,7 @@ export const navigations = [
   {
     label: 'navigation.economist', // Iqtisodchi
     path: AppPaths.Accountant,
-    icon: PeopleMoney24Filled,
+    icon: EconomistSidebarIcon,
     permission: appPermissions.economist,
     children: [
       {
@@ -751,7 +751,7 @@ export const navigations = [
   {
     label: 'navigation.hospital', // Kasalxona
     path: AppPaths.Hospital,
-    icon: BuildingHome16Filled,
+    icon: HospitalSidebarIcon,
     permission: appPermissions.hospital,
     children: [
       {
@@ -787,7 +787,7 @@ export const navigations = [
   {
     label: 'navigation.chat', // Chat
     path: AppPaths.Chat,
-    icon: ChatMultiple16Filled,
+    icon: ChatSidebarIcon,
     permission: appPermissions.chat,
     children: [
       {
@@ -830,7 +830,7 @@ export const navigations = [
   {
     label: 'navigation.extra', // Qo'shimchalar
     path: AppPaths.Extra,
-    icon: AppRecent24Filled,
+    icon: ExtraSidebarIcon,
     permission: appPermissions.extra,
     children: [
       {
@@ -861,7 +861,7 @@ export const navigations = [
   {
     label: 'navigation.admin', // Admin
     path: AppPaths.Admin,
-    icon: LockClosed16Filled,
+    icon: AdminSidebarIcon,
     permission: appPermissions.admin,
     children: [
       {

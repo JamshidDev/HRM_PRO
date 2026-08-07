@@ -155,6 +155,7 @@ import { Delete24Regular, Edit32Regular, Eye16Regular } from '@vicons/fluent'
 
 <template>
   <UITable
+    permission-prefix="hr-positions"
     :columns="columns"
     :actions="actions"
     :data="store.list"

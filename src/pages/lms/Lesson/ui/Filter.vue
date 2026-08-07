@@ -37,6 +37,7 @@
 
 <template>
   <UIPageFilter
+    :add-permission="accStore.pn.lmsLessonsWrite"
     v-model:search="store.params.search"
     :search-loading="store.loading"
     @onSearch="filterEvent"

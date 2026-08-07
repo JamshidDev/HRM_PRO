@@ -47,6 +47,52 @@
   background: var(--primary-card)
 }
 
+/* Pill ko'rinishidagi tab bar: kulrang rail ichida siljiydigan oq "pill".
+   Aktiv pill sifatida naive-ui'ning `.n-tabs-bar` elementidan foydalanamiz —
+   JS uni aktiv tabning offsetLeft/offsetWidth'iga qarab joylaydi va
+   left/max-width transition bilan siljitadi. */
+.ui-pill-tabs {
+  /* MUHIM: `>` — faqat shu n-tabs'ning o'z nav'i uslublanadi.
+     Descendant selektor bo'lsa uslub ichma-ich joylashgan n-tabs'larga ham
+     oqib ketadi (masalan hrm/dashboard sahifasida) va ularning `.n-tabs-bar`i
+     to'liq balandlikdagi oq blokka aylanib kontentni bosib qoladi. */
+  > .n-tabs-nav {
+    /* Rail konteynerning to'liq enini egallaydi — tablar soni kam bo'lganda ham
+       (dashboard: 2 ta) ko'p bo'lganda ham (role modali: ~10 ta) bir xil ko'rinadi. */
+    background: var(--surface-ground);
+    border-radius: 16px;
+    padding: 5px;
+
+    --n-tab-border-color: transparent;
+    --n-bar-color: var(--surface-section);
+    --n-tab-padding: 9px 18px;
+    --n-tab-gap: 4px;
+    /* Nofaol tab — ochroq kulrang, faol tab — to'q. */
+    --n-tab-text-color: var(--textColor1);
+    --n-tab-text-color-hover: var(--textColor0);
+    --n-tab-text-color-active: var(--textColor0);
+    --n-tab-font-weight-active: 600;
+
+    .n-tabs-tab {
+      border-radius: 12px;
+      font-size: 14px;
+      white-space: nowrap;
+    }
+
+    /* 2px'lik chiziqni to'liq balandlikdagi pillga aylantiramiz.
+       `!important` — naive-ui runtime style'lari bir xil specificity'da. */
+    .n-tabs-bar {
+      top: 0 !important;
+      bottom: 0 !important;
+      height: auto !important;
+      border-radius: 12px !important;
+      box-shadow:
+        0 1px 3px rgba(16, 24, 40, 0.1),
+        0 1px 2px rgba(16, 24, 40, 0.06);
+    }
+  }
+}
+
 .sidebar-panel {
   // background:var(--sidebar-panel) !important;
 }

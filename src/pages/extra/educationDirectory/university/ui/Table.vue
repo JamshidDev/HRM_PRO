@@ -98,6 +98,7 @@
 
 <template>
   <UITable
+    permission-prefix="universities"
     :columns="columns"
     :actions="actions"
     :data="store.list"

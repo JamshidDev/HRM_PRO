@@ -44,6 +44,7 @@
 
 <template>
   <UIPageFilter
+    :add-permission="accStore.pn.hospitalPensionerWrite"
     v-model:search="store.params.search"
     :search-loading="store.loading"
     :show-add-button="false"

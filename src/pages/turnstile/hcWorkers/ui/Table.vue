@@ -141,6 +141,7 @@
 
 <template>
   <UITable
+    permission-prefix="turnstile-hik-central-workers"
     :columns="columns"
     :actions="actions"
     :data="store.list"

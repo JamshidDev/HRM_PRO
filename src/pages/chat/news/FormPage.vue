@@ -4,7 +4,7 @@
   import { useNewsStore } from '@/store/modules/index.js'
   import { AppPaths } from '@/utils/index.js'
   import Utils from '@/utils/Utils.js'
-  import { UIPageContent } from '@/components/index.js'
+  import { UIPageContent, UIPageTitle } from '@/components/index.js'
   import Form from './ui/Form.vue'
 
   const route = useRoute()
@@ -30,14 +30,10 @@
 <template>
   <UIPageContent>
     <n-spin :show="store.loading">
-      <div class="mb-6">
-        <h2 class="text-2xl font-bold text-textColor0 mb-2">
-          {{ isEditing ? $t('newsPage.edit') : $t('newsPage.create') }}
-        </h2>
-        <p class="text-sm text-textColor3">
-          {{ isEditing ? $t('newsPage.editSubtitle') : $t('newsPage.createSubtitle') }}
-        </p>
-      </div>
+      <UIPageTitle
+        :title="isEditing ? $t('newsPage.edit') : $t('newsPage.create')"
+        :subtitle="isEditing ? $t('newsPage.editSubtitle') : $t('newsPage.createSubtitle')"
+      />
       <Form
         @done="
           () => {

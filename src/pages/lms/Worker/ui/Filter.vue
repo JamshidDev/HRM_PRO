@@ -49,6 +49,7 @@
 
 <template>
   <UIPageFilter
+    :add-permission="accStore.pn.lmsWorkerWrite"
     v-model:search="store.params.search"
     :search-loading="store.loading"
     @onSearch="filterEvent"

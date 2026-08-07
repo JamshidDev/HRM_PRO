@@ -72,6 +72,7 @@
 
 <template>
   <UITable
+    permission-prefix="specialities"
     :columns="columns"
     :actions="actions"
     :data="store.list"

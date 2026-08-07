@@ -243,6 +243,7 @@
   <UIWorkerView ref="previewRef" />
 
   <UITable
+    permission-prefix="hr-workers"
     :columns="columns"
     :actions="actions"
     :data="store.list"

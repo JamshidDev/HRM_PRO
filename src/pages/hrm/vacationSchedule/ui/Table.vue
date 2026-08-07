@@ -138,6 +138,7 @@ import {
 
 <template>
   <UITable
+    permission-prefix="hr-vacation-schedule"
     :columns="columns"
     :actions="actions"
     :data="store.list"

@@ -68,6 +68,7 @@
     </div>
 
     <UITable
+      permission-prefix="holiday-greetings"
       :columns="columns"
       :actions="actions"
       :data="store.overrides"

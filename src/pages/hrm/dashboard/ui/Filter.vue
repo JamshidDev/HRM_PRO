@@ -10,8 +10,8 @@
     store.params.organizations = v
     if (store.activeTab === 'audit') {
       store._getAuditCounts()
-      if (store.audit.modal.open) {
-        store.audit.modal.page = 1
+      if (store.audit.detail.open) {
+        store.audit.detail.page = 1
         store._getAuditPreview()
       }
       return
@@ -26,7 +26,7 @@
   const refresh = () => {
     if (store.activeTab === 'audit') {
       store._getAuditCounts()
-      if (store.audit.modal.open) store._getAuditPreview()
+      if (store.audit.detail.open) store._getAuditPreview()
       return
     }
     if (store?.activeDetail) {

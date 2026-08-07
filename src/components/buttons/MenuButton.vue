@@ -14,6 +14,7 @@
   import i18n from '@/i18n/index.js'
   import Utils from '@/utils/Utils.js'
   import UIHelper from '@/utils/UIHelper.js'
+  import { useAccountStore } from '@/store/modules/app/accountStore.js'
   const visible = ref(false)
   const props = defineProps({
     size: {
@@ -65,6 +66,12 @@
       type: String,
       default: null
     },
+    // Ruxsat prefiksi (masalan "hr-workers"): tahrirlash/o'chirish bandlari mos
+    // `-write`/`-delete` ruxsati bo'lmasa avtomatik disabled bo'ladi.
+    permissionPrefix: {
+      type: String,
+      default: null
+    },
     extraOptions: {
       type: Array,
       default: () => []
@@ -76,6 +83,21 @@
   })
 
   const emits = defineEmits(['selectEv'])
+
+  const accStore = useAccountStore()
+
+  /**
+   * `permissionPrefix` berilsa, tahrirlash/o'chirish bandlari mos ruxsat bo'lmasa
+   * KULRANG bo'ladi (yashirilmaydi). UITable dagi bilan bir xil qoida.
+   */
+  const actionDisabled = (key) => {
+    if (!props.permissionPrefix) return false
+    if (key === Utils.ActionTypes.delete)
+      return !accStore.checkPermission(`${props.permissionPrefix}-delete`)
+    if (key === Utils.ActionTypes.edit)
+      return !accStore.checkPermission(`${props.permissionPrefix}-write`)
+    return false
+  }
 
   const options = computed(() => {
     return [
@@ -127,7 +149,9 @@
         icon: UIHelper.renderIcon(Delete20Regular),
         visible: props.showDelete
       }
-    ].filter((v) => v.visible)
+    ]
+      .filter((v) => v.visible)
+      .map((v) => ({ ...v, disabled: actionDisabled(v.key) }))
   })
 
   const onSelect = (v) => {

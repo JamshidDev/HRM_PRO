@@ -532,7 +532,8 @@
       "moduleAccess": "Module access",
       "type": "Role type",
       "typeSanctum": "User",
-      "typeIntegration": "Integration"
+      "typeIntegration": "Integration",
+      "orphanWarning": "This role has {n} permission(s) not shown in the list (the permission list may not be fully loaded). They will be kept unchanged on save."
     }
   },
   "userPage": {
@@ -1982,12 +1983,12 @@
     },
     "audit": {
       "tabGeneral": "General dashboard",
-      "tabAudit": "Audit",
-      "relativesShortage": "Fewer than 3 close relatives",
-      "relativesWithoutJshshir": "Relative without PINFL",
-      "nameErrors": "Name (F.I.O.) error",
-      "jshshirErrors": "PINFL error",
-      "positionCertificateMissing": "No position certificate",
+      "tabAudit": "Data audit",
+      "relativesShortage": "Close relatives incomplete",
+      "relativesWithoutJshshir": "Relative's PINFL not provided",
+      "nameErrors": "Invalid character in name",
+      "jshshirErrors": "Passport and PINFL do not match",
+      "positionCertificateMissing": "No service certificate",
       "fio": "Full name",
       "pin": "PINFL",
       "organization": "Organization",
@@ -1995,7 +1996,9 @@
       "relativesCount": "Relatives count",
       "relativesWithoutJshshirCount": "Relatives without PINFL",
       "reasons": "Errors",
-      "empty": "No data found"
+      "empty": "No data found",
+      "lastChecked": "Last check",
+      "worker": "Employee"
     }
   },
   "applicationPage": {

@@ -154,6 +154,12 @@ export const PERMISSION_GROUPS = [
       { prefix: 'lms-worker', label: 'lmsWorkerPage.name' },
       { prefix: 'hr-report-export', label: 'specialReport.name' },
       { prefix: 'hr-monthly-report', label: 'structureReport.name' },
+      // Backend enforce qiladigan, lekin guruhi bo'lmagani uchun faqat "Boshqa"
+      // ro'yxatida xom slug ko'rinishida turgan sohalar.
+      { prefix: 'hr-pensioners', label: 'pensioner.name' },
+      { prefix: 'hr-polyclinics', label: 'polyclinic.name' },
+      { prefix: 'hr-language-certificates', label: 'languageCertificatePage.title' },
+      { prefix: 'hr-organization-phones', label: 'content.phone' },
     ],
   },
   {
@@ -201,6 +207,16 @@ export const PERMISSION_GROUPS = [
       { prefix: 'turnstile-sheets-workers', label: 'shiftType.name' },
       { prefix: 'turnstile-sheets-groups', label: 'shiftType.groupName' },
       { prefix: 'turnstile-approve', label: 'approve.name' },
+      // Navigatsiyada bandi izohga olingan, lekin route'lari tirik va backend
+      // ularni enforce qiladi — shuning uchun admin ularni bera olishi kerak.
+      { prefix: 'turnstile-building', label: 'turnstile.buildingPage.title' },
+      { prefix: 'turnstile-terminal', label: 'turnstile.terminalPage.title' },
+      { prefix: 'turnstile-organization', label: 'turnstile.organization.title' },
+      { prefix: 'turnstile-workers', label: 'turnstile.terminalUser.title' },
+      { prefix: 'turnstile-work-duration', label: 'turnstile.workDurationPage.name' },
+      { prefix: 'turnstile-hik-central-job', label: 'hcServer.name' },
+      { prefix: 'turnstile-hcp-duration', label: 'hcWorkDuration.name' },
+      { prefix: 'turnstile-hik-central-tg-user', label: 'notification.name' },
     ],
   },
   {
@@ -299,7 +315,11 @@ export const PERMISSION_GROUPS = [
       { prefix: 'activity-logs', label: 'actionLog.name' },
       { prefix: 'document-examples', label: 'documentSetting.name' },
       { prefix: 'holidays', label: 'holidayPage.name' },
-      { prefix: 'universities', label: 'othersPage.name' },
+      // "Boshqalar" sahifasi uch tabdan iborat va har biri o'z slug oilasiga ega —
+      // ilgari faqat `universities` guruhi bor edi, qolgan ikkitasi "Boshqa"da qolardi.
+      { prefix: 'universities', label: 'othersPage.tabs.university' },
+      { prefix: 'specialities', label: 'othersPage.tabs.speciality' },
+      { prefix: 'languages', label: 'othersPage.tabs.language' },
       { prefix: 'telegram', label: 'telegramPage.name' },
       { prefix: 'learning-centers', label: 'learningCenterPage.name' },
       { prefix: 'instructions', label: 'instructionPage.name' },
