@@ -1,6 +1,6 @@
 <script setup>
-  import { onMounted } from 'vue'
-  import { UIDrawer, UIPageContent, UIPageFilter } from '@/components/index.js'
+  import { onMounted, ref } from 'vue'
+  import { UIModal, UIPageContent, UIPageFilter } from '@/components/index.js'
   import Table from './ui/Table.vue'
   import createFrom from './ui/createForm.vue'
   import TopicDetail from './topicDetail/TopicDetailPage.vue'
@@ -8,6 +8,10 @@
 
   const store = useTopicStore()
   const accStore = useAccountStore()
+
+  // Saqlash/Bekor qilish tugmalari modal footer'ida turadi, forma esa faqat validatsiyani
+  // biladi — shuning uchun yuborish `submit()` orqali chaqiriladi.
+  const createFormRef = ref(null)
 
   const onAdd = () => {
     if (!accStore.checkAction(accStore.pn.examTopicsWrite)) return
@@ -47,16 +51,28 @@
           :search-loading="store.loading"
         />
         <Table />
-        <UIDrawer
+        <UIModal
+          v-model:visible="store.visible"
           :title="store.visibleType ? $t('topicPage.createTitle') : $t('topicPage.updateTitle')"
-          :visible="store.visible"
-          :width="600"
-          @update:visible="(v) => (store.visible = v)"
+          width="min(700px, calc(100vw - 32px))"
         >
-          <template #content>
-            <createFrom />
+          <createFrom ref="createFormRef" />
+          <template #footer>
+            <div class="flex justify-end gap-2 px-4 pb-2">
+              <n-button type="error" ghost class="w-[130px]" @click="store.openVisible(false)">
+                {{ $t('content.cancel') }}
+              </n-button>
+              <n-button
+                type="primary"
+                class="w-[130px]"
+                :loading="store.saveLoading"
+                @click="createFormRef?.submit()"
+              >
+                {{ $t('content.save') }}
+              </n-button>
+            </div>
           </template>
-        </UIDrawer>
+        </UIModal>
       </UIPageContent>
     </n-tab-pane>
     <n-tab-pane name="detail" style="height: 100%">
