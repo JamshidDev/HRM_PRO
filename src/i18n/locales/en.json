@@ -3718,5 +3718,19 @@
     "mobileFaceSchedules": "Mobile face: schedules",
     "otpVerify": "OTP verify",
     "holidayGreetings": "Holiday greetings"
+  },
+  "workerCertificatePage": {
+    "name": "Certificates",
+    "table": {
+      "worker": "Employee",
+      "organization": "Organization",
+      "position": "Position",
+      "number": "Certificate number",
+      "issueDate": "Issue date",
+      "expiryDate": "Valid until",
+      "verify": "Verified",
+      "returned": "Returned",
+      "noCertificate": "Not issued"
+    }
   }
 }

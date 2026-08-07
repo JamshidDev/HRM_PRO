@@ -3811,5 +3811,19 @@
     "mobileFaceSchedules": "Mobil face: jadvallar",
     "otpVerify": "OTP tekshirish",
     "holidayGreetings": "Bayram tabriklari"
+  },
+  "workerCertificatePage": {
+    "name": "Guvohnomalar",
+    "table": {
+      "worker": "Xodim",
+      "organization": "Tashkilot",
+      "position": "Lavozim",
+      "number": "Guvohnoma raqami",
+      "issueDate": "Berilgan sana",
+      "expiryDate": "Amal qilish muddati",
+      "verify": "Tasdiqlangan",
+      "returned": "Qaytarib olingan",
+      "noCertificate": "Berilmagan"
+    }
   }
 }

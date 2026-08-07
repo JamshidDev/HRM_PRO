@@ -21,6 +21,12 @@ export const hrmRoutes = [
     meta: { layout: AppLayouts.main }
   },
   {
+    path: Utils.routeHrmPathMaker(AppPaths.WorkerCertificate),
+    name: AppPaths.WorkerCertificate.substring(1),
+    component: () => import('@/pages/hrm/workerCertificate/page.vue'),
+    meta: { layout: AppLayouts.main }
+  },
+  {
     path: Utils.routeHrmPathMaker(`${AppPaths.Worker}${AppPaths.Create}`),
     name: `${AppPaths.Worker.substring(1)}-${AppPaths.Create.substring(1)}`,
     component: () => import('@/pages/hrm/candidate/CandidatePage.vue'),

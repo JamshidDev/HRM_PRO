@@ -3730,5 +3730,19 @@
     "mobileFaceSchedules": "Mobile face: графики",
     "otpVerify": "Проверка OTP",
     "holidayGreetings": "Праздничные поздравления"
+  },
+  "workerCertificatePage": {
+    "name": "Удостоверения",
+    "table": {
+      "worker": "Сотрудник",
+      "organization": "Организация",
+      "position": "Должность",
+      "number": "Номер удостоверения",
+      "issueDate": "Дата выдачи",
+      "expiryDate": "Срок действия",
+      "verify": "Подтверждено",
+      "returned": "Изъято",
+      "noCertificate": "Не выдано"
+    }
   }
 }

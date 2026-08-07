@@ -127,6 +127,13 @@ export const navigations = [
         permission: appPermissions.hrPositions
       },
       {
+        label: 'workerCertificatePage.name', // Guvohnomalar
+        path: Utils.routeHrmPathMaker(AppPaths.WorkerCertificate),
+        icon: usersIcon,
+        color: 'bg-primary',
+        permission: appPermissions.hrWorkers
+      },
+      {
         label: 'confirmation.name', // Shartnomalar
         path: Utils.routeHrmPathMaker(AppPaths.Contract),
         icon: contractIcon,
