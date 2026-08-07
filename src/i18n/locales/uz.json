@@ -1753,6 +1753,8 @@
     "nVariant": "{n} ta variant",
     "variant_count": "Variantlar",
     "exam_duration": "Davomiyligi(min)",
+    "duration": "Davomiyligi",
+    "deadlineTitle": "Tugash vaqti",
     "totalTime": "Berilgan vaqt: {n} daqiqa",
     "nMinute": "{n} min",
     "totalMinute": "{n} daqiqa",

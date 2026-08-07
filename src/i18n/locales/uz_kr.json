@@ -1511,6 +1511,8 @@
     "nVariant": "{n} та вариант",
     "variant_count": "Вариантлар",
     "exam_duration": "Давомийлиги(мин)",
+    "duration": "Давомийлиги",
+    "deadlineTitle": "Тугаш вақти",
     "totalTime": "Берилган вақт: {n} дақиқа",
     "nMinute": "{n} мин",
     "totalMinute": "{n} дақиқа",

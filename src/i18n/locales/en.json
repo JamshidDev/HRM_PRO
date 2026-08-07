@@ -1731,6 +1731,8 @@
     "nVariant": "{n} variants",
     "variant_count": "Variants",
     "exam_duration": "Duration (min)",
+    "duration": "Duration",
+    "deadlineTitle": "Deadline",
     "totalTime": "Given time: {n} minutes",
     "nMinute": "{n} min",
     "totalMinute": "{n} minutes",

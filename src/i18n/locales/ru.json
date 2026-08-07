@@ -1739,6 +1739,8 @@
     "nVariant": "{n} вариантов",
     "variant_count": "Варианты",
     "exam_duration": "Продолжительность (мин)",
+    "duration": "Продолжительность",
+    "deadlineTitle": "Срок окончания",
     "totalTime": "Дано времени: {n} минут",
     "nMinute": "{n} мин",
     "totalMinute": "{n} минут",

@@ -1,7 +1,6 @@
 <script setup>
-  import { onMounted, computed } from 'vue'
+  import { onMounted } from 'vue'
   import { UIDrawer, UIPageContent, UIPageFilter } from '@/components/index.js'
-  import { ArrowLeft24Regular } from '@vicons/fluent'
   import Table from './ui/Table.vue'
   import createFrom from './ui/createForm.vue'
   import TopicDetail from './topicDetail/TopicDetailPage.vue'
@@ -9,8 +8,6 @@
 
   const store = useTopicStore()
   const accStore = useAccountStore()
-
-  const currentTopic = computed(() => store.list.find((t) => t.id === store.elementId))
 
   const onAdd = () => {
     if (!accStore.checkAction(accStore.pn.examTopicsWrite)) return
@@ -63,26 +60,11 @@
       </UIPageContent>
     </n-tab-pane>
     <n-tab-pane name="detail" style="height: 100%">
-      <div class="my-4 mx-1 md:mx-2 rounded-sm md:p-4 p-1 h-[calc(100%-32px)] flex flex-col bg-surface-section">
-        <div class="shrink-0 pb-3 flex items-center gap-3 border-b border-surface-line mb-3">
-          <n-button text @click="store.activeTab = 'list'">
-            <template #icon>
-              <n-icon :component="ArrowLeft24Regular" />
-            </template>
-            {{ $t('content.back') }}
-          </n-button>
-          <n-divider vertical />
-          <div class="flex items-center gap-2 min-w-0">
-            <p class="text-[15px] font-semibold text-textColor0 truncate">{{ currentTopic?.name }}</p>
-            <n-tag v-if="currentTopic?.type" size="small" round type="info">
-              {{ currentTopic.type.name }}
-            </n-tag>
-          </div>
-        </div>
-        <div class="grow min-h-0">
-          <TopicDetail />
-        </div>
-      </div>
+      <!-- ro'yxat paneli bilan bir xil qobiq: sarlavha va tab'lar sahifa fonida, jadval esa
+           o'zining oq kartasida — shunda pagination karta tubiga mixlanadi -->
+      <UIPageContent>
+        <TopicDetail />
+      </UIPageContent>
     </n-tab-pane>
   </n-tabs>
 </template>

@@ -35,8 +35,8 @@
 
     <n-pagination :page="page" :page-count="pageCount" @update:page="onPage" />
 
-    <div class="flex items-center gap-2">
-      <span class="text-sm text-textColor2">{{ t('content.perPage') }}</span>
+    <div class="flex shrink-0 items-center gap-2">
+      <span class="text-sm text-textColor2 whitespace-nowrap">{{ t('content.perPage') }}</span>
       <n-select
         class="w-[76px]"
         size="small"

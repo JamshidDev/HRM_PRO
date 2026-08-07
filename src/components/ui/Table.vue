@@ -321,7 +321,7 @@
 </script>
 
 <template>
-  <n-spin :show="loading" class="h-full overflow-auto">
+  <n-spin :show="loading" class="ui-table__spin h-full overflow-auto">
     <div v-if="empty" class="h-full grid place-items-center">
       <NoDataPicture />
     </div>
@@ -388,6 +388,14 @@
 </template>
 
 <style scoped>
+  /* n-spin o'z kontentini balandligi bo'lmagan div ichiga o'raydi — shu sababli jadval
+     o'ramidagi `h-full` hech qachon hal bo'lmay, `min-height` ustun kelardi va pagination
+     konteyner tubiga emas, qatorlardan keyin osilib qolardi. Ota-element balandligi aniq
+     bo'lmagan sahifalarda `height: 100%` `auto` ga aylanadi, ya'ni ular o'zgarishsiz qoladi. */
+  .ui-table__spin :deep(.n-spin-content) {
+    height: 100%;
+  }
+
   .ui-table__table :deep(.n-data-table-table),
   .ui-table__table :deep(.n-data-table-th:first-child) {
     border-top-left-radius: 16px !important;
