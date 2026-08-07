@@ -66,7 +66,7 @@
         >
           <div class="flex flex-col gap-3 h-full">
             <div class="flex items-center justify-between px-1">
-              <p class="text-base font-light text-textColor2 leading-snug">
+              <p class="text-base font-[14px] text-textColor2 leading-snug">
                 {{ $t(item.title) }}
               </p>
               <div
@@ -79,7 +79,7 @@
               class="flex-1 flex flex-col px-3 bg-surface-ground-soft rounded-2xl overflow-hidden"
             >
               <p
-                class="flex-1 py-2 text-base font-semibold text-textColor2 leading-relaxed line-clamp-auto"
+                class="flex-1 py-2 text-base font-normal text-textColor2 leading-relaxed line-clamp-auto"
               >
                 {{ $t(item.info) }}
               </p>
