@@ -2,6 +2,9 @@
   import { useWorkerCertificateStore, useComponentStore, useAccountStore } from '@stores'
   import { UIPageFilter, UISelect } from '@/components/index.js'
   import { useDebounce } from '@/utils/index.js'
+  import i18n from '@/i18n/index.js'
+
+  const { t } = i18n.global
 
   const accStore = useAccountStore()
   const store = useWorkerCertificateStore()
@@ -30,10 +33,21 @@
     store.params.organizations = v
   }
 
-  const filterCount = computed(() => Number(store.params.organizations.length > 0))
+  // Guvohnoma holati — ko'rinayotgan (oxirgi) guvohnoma bo'yicha.
+  const statusOptions = computed(() => [
+    { id: 'verify', name: t('workerCertificatePage.filter.verify') },
+    { id: 'returned', name: t('workerCertificatePage.filter.returned') }
+  ])
+
+  const filterCount = computed(
+    () =>
+      Number(store.params.organizations.length > 0) +
+      Number(Boolean(store.params.certificate_status))
+  )
 
   const clearFilter = () => {
     store.params.organizations = []
+    store.params.certificate_status = null
     store.structureCheck = []
     filterEvent()
   }
@@ -81,6 +95,19 @@
             @onSubmit="filterEvent"
             v-model:search="componentStore.structureParams.search"
             @onSearch="componentStore._structures"
+          />
+        </div>
+
+        <div class="col-span-12">
+          <label>{{ $t('workerCertificatePage.filter.status') }}</label>
+          <n-select
+            v-model:value="store.params.certificate_status"
+            clearable
+            :options="statusOptions"
+            label-field="name"
+            value-field="id"
+            :placeholder="$t('workerCertificatePage.filter.status')"
+            @update:value="filterEvent"
           />
         </div>
       </div>

@@ -9,7 +9,9 @@ const initialParams = () => ({
   page: 1,
   per_page: 15,
   search: null,
-  organizations: []
+  organizations: [],
+  // 'verify' | 'returned' | null — OXIRGI guvohnoma holati bo'yicha filtr.
+  certificate_status: null
 })
 
 export const useWorkerCertificateStore = defineStore('workerCertificateStore', {
@@ -25,7 +27,8 @@ export const useWorkerCertificateStore = defineStore('workerCertificateStore', {
       this.loading = true
       const params = {
         ...this.params,
-        organizations: this.params.organizations.map((v) => v.id).toString() || undefined
+        organizations: this.params.organizations.map((v) => v.id).toString() || undefined,
+        certificate_status: this.params.certificate_status || undefined
       }
       $ApiService.workerCertificateService
         ._index({ params })

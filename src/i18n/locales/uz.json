@@ -3824,6 +3824,11 @@
       "verify": "Tasdiqlangan",
       "returned": "Qaytarib olingan",
       "noCertificate": "Berilmagan"
+    },
+    "filter": {
+      "status": "Guvohnoma holati",
+      "verify": "Tasdiqlangan",
+      "returned": "Qaytarib olingan"
     }
   }
 }

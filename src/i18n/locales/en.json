@@ -3731,6 +3731,11 @@
       "verify": "Verified",
       "returned": "Returned",
       "noCertificate": "Not issued"
+    },
+    "filter": {
+      "status": "Certificate status",
+      "verify": "Verified",
+      "returned": "Returned"
     }
   }
 }
