@@ -1,7 +1,7 @@
 <script setup>
   import { computed, onMounted, ref } from 'vue'
   import { useTopicExamStore, useTopicFileStore, useTopicStore } from '@/store/modules/index.js'
-  import { UIDrawer } from '@/components/index.js'
+  import { UIModal } from '@/components/index.js'
   import { TopicUtils } from '@/pages/attestation/Utils/index.js'
   import { AddCircle24Regular, ArrowLeft24Regular } from '@vicons/fluent'
   import Tabs from './ui/Tabs.vue'
@@ -17,6 +17,12 @@
   const examStore = useTopicExamStore()
 
   const activeTab = ref(TopicUtils.EXAM)
+
+  // Saqlash/Bekor qilish tugmalari modal footer'ida turadi, formalar esa faqat
+  // validatsiyani biladi va `submit()` ni tashqariga ochadi.
+  const examFormRef = ref(null)
+  const fileFormRef = ref(null)
+  const attachFormRef = ref(null)
 
   const currentTopic = computed(() => store.list.find((t) => t.id === store.elementId))
 
@@ -81,36 +87,83 @@
       <Tabs v-model:active-tab="activeTab" />
     </div>
   </div>
-  <UIDrawer
-    :visible="fileStore.visible"
-    @update:visible="(v) => (fileStore.visible = v)"
+  <UIModal
+    v-model:visible="fileStore.visible"
     :title="fileStore.visibleType ? $t('topicFiles.addFile') : $t('topicFiles.editFile')"
+    width="min(560px, calc(100vw - 32px))"
   >
-    <template #content>
-      <FileForm />
+    <FileForm ref="fileFormRef" />
+    <template #footer>
+      <div class="flex justify-end gap-2 px-4 pb-2">
+        <n-button type="error" ghost class="w-[130px]" @click="fileStore.openVisible(false)">
+          {{ $t('content.cancel') }}
+        </n-button>
+        <n-button
+          type="primary"
+          class="w-[130px]"
+          :loading="fileStore.saveLoading"
+          @click="fileFormRef?.submit()"
+        >
+          {{ $t('content.save') }}
+        </n-button>
+      </div>
     </template>
-  </UIDrawer>
-  <UIDrawer
+  </UIModal>
+
+  <UIModal
+    v-model:visible="examStore.visible"
     :title="
       examStore.visibleType
         ? $t('topicDetailsPage.exams.createTitle')
         : $t('topicDetailsPage.exams.updateTitle')
     "
-    :visible="examStore.visible"
-    @update:visible="(v) => (examStore.visible = v)"
+    width="min(760px, calc(100vw - 32px))"
+    height="min(85vh, 720px)"
   >
-    <template #content>
-      <ExamForm />
+    <ExamForm ref="examFormRef" />
+    <template #footer>
+      <div class="flex justify-end gap-2 px-4 pb-2">
+        <n-button type="error" ghost class="w-[130px]" @click="examStore.openVisible(false)">
+          {{ $t('content.cancel') }}
+        </n-button>
+        <n-button
+          type="primary"
+          class="w-[130px]"
+          :loading="examStore.saveLoading"
+          @click="examFormRef?.submit()"
+        >
+          {{ $t('content.save') }}
+        </n-button>
+      </div>
     </template>
-  </UIDrawer>
-  <UIDrawer
-    :width="700"
+  </UIModal>
+
+  <UIModal
+    v-model:visible="examStore.attachCategoryVisible"
     :title="$t('topicDetailsPage.exams.attachQuestion')"
-    :visible="examStore.attachCategoryVisible"
-    @update:visible="(v) => (examStore.attachCategoryVisible = v)"
+    width="min(900px, calc(100vw - 32px))"
+    height="min(85vh, 640px)"
   >
-    <template #content>
-      <AttachQuestionForm />
+    <AttachQuestionForm ref="attachFormRef" />
+    <template #footer>
+      <div class="flex justify-end gap-2 px-4 pb-2">
+        <n-button
+          type="error"
+          ghost
+          class="w-[130px]"
+          @click="examStore.attachCategoryVisible = false"
+        >
+          {{ $t('content.cancel') }}
+        </n-button>
+        <n-button
+          type="primary"
+          class="w-[130px]"
+          :loading="examStore.saveLoading"
+          @click="attachFormRef?.submit()"
+        >
+          {{ $t('content.save') }}
+        </n-button>
+      </div>
     </template>
-  </UIDrawer>
+  </UIModal>
 </template>
