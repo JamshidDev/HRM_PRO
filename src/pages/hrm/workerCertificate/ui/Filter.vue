@@ -35,6 +35,7 @@
 
   // Guvohnoma holati — ko'rinayotgan (oxirgi) guvohnoma bo'yicha.
   const statusOptions = computed(() => [
+    { id: 'issued', name: t('workerCertificatePage.filter.issued') },
     { id: 'verify', name: t('workerCertificatePage.filter.verify') },
     { id: 'returned', name: t('workerCertificatePage.filter.returned') }
   ])

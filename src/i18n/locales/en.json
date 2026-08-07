@@ -3734,6 +3734,7 @@
     },
     "filter": {
       "status": "Certificate status",
+      "issued": "Issued",
       "verify": "Verified",
       "returned": "Returned"
     }
