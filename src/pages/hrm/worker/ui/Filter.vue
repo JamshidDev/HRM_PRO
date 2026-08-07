@@ -5,7 +5,7 @@
     useExportStore,
     useAccountStore
   } from '@/store/modules/index.js'
-  import { UINSelect, UIPageFilter, UISelect } from '@/components/index.js'
+  import { UINSelect, UIPageFilter, UISelect, UIPageTitle } from '@/components/index.js'
   import { ArrowSync16Regular, ChevronDown20Regular, ChevronUp20Regular } from '@vicons/fluent'
   import Utils from '@/utils/Utils.js'
   import { appPermissions, useDebounce } from '@/utils/index.js'
@@ -251,15 +251,16 @@
 </script>
 
 <template>
-  <div class="worker-page-header">
-    <h1 class="worker-page-title">{{ $t('workerPage.name') }}</h1>
-    <n-button type="primary" tertiary @click="store._index()" :loading="store.loading">
-      {{ $t('content.refresh') }}
-      <template #icon>
-        <n-icon><ArrowSync16Regular /></n-icon>
-      </template>
-    </n-button>
-  </div>
+  <UIPageTitle :title="$t('workerPage.name')">
+    <template #actions>
+      <n-button type="primary" tertiary @click="store._index()" :loading="store.loading">
+        {{ $t('content.refresh') }}
+        <template #icon>
+          <n-icon><ArrowSync16Regular /></n-icon>
+        </template>
+      </n-button>
+    </template>
+  </UIPageTitle>
 
   <UIPageFilter
     :search-loading="store.loading"
@@ -645,21 +646,6 @@
 </template>
 
 <style scoped>
-  .worker-page-header {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    margin-bottom: 16px;
-  }
-
-  .worker-page-title {
-    margin: 0;
-    color: var(--textColor0);
-    font-size: 24px;
-    font-weight: 700;
-  }
 
   .worker-action-icon {
     width: 16px;
