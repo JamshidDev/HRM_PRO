@@ -1,6 +1,6 @@
 <template>
   <div
-    class="ai-button flex items-center justify-center w-12 h-12 rounded-full cursor-pointer relative overflow-hidden"
+    class="ai-button flex items-center justify-center w-16 h-16 cursor-pointer relative"
     :class="{ 'is-close': icon }"
     @pointerdown="spawnRipple"
   >
@@ -18,19 +18,20 @@
         <component :is="icon" />
       </n-icon>
       <span class="bg-overall"></span>
+      <span class="glass-sheen"></span>
+      <span class="glass-rim"></span>
     </template>
     <img v-else :src="AiIcon" alt="AI" class="ai-icon-img" draggable="false" />
 
-    <span class="glass-sheen"></span>
-    <span class="glass-rim"></span>
-
-    <span
-      v-for="r in ripples"
-      :key="r.id"
-      class="liquid-ripple"
-      :style="{ left: r.x + 'px', top: r.y + 'px', width: r.size + 'px', height: r.size + 'px' }"
-      @animationend="removeRipple(r.id)"
-    ></span>
+    <div class="ripple-clip">
+      <span
+        v-for="r in ripples"
+        :key="r.id"
+        class="liquid-ripple"
+        :style="{ left: r.x + 'px', top: r.y + 'px', width: r.size + 'px', height: r.size + 'px' }"
+        @animationend="removeRipple(r.id)"
+      ></span>
+    </div>
   </div>
 </template>
 
@@ -65,17 +66,24 @@
 
 <style scoped>
   .ai-button {
-    border-radius: 999px;
-    transition:
-      transform 0.8s ease,
-      box-shadow 0.8s ease;
+    transition: transform 0.8s ease;
     z-index: 20;
+  }
+
+  /* Clips the click ripple to a circle matching the icon's own silhouette.
+     Without the radius here, the ripple's overlay blend mode gets cut off
+     at this layer's hard square edge - invisible on a light page background,
+     but a visible box in dark mode. */
+  .ripple-clip {
+    position: absolute;
+    inset: 0;
     overflow: hidden;
+    border-radius: 999px;
+    pointer-events: none;
   }
 
   .ai-button:hover {
     transform: scale(1.06);
-    box-shadow: rgb(97 13 232 / 14%) -3px 1px 8px 7px;
   }
 
   .ai-button:active {
@@ -87,8 +95,15 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border-radius: 999px;
     pointer-events: none;
+  }
+
+  /* box-shadow/border follow the element's box, not its silhouette - this
+     artwork isn't a clean circle, so a shape-fitting shadow needs to read
+     the alpha channel instead via drop-shadow. Light mode only: the same
+     dark shadow reads as a hard box against a dark background. */
+  [data-theme='light'] .ai-icon-img {
+    filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.35));
   }
 
   /* Liquid-glass sheen: a soft highlight band that slowly drifts across the
@@ -179,7 +194,15 @@
     }
   }
 
+  /* Only the close (X) state needs the container itself to be a rounded
+     gradient button - the AI icon is already a circular image with its own
+     transparent corners, so the container stays shapeless around it. */
   .ai-button.is-close {
+    border-radius: 999px;
+    overflow: hidden;
+    transition:
+      transform 0.8s ease,
+      box-shadow 0.8s ease;
     background: linear-gradient(
       to right,
       oklch(0.792 0.209 151.711) 0px,
@@ -225,6 +248,7 @@
   }
 
   .ai-button.is-close:hover {
+    box-shadow: rgb(97 13 232 / 14%) -3px 1px 8px 7px;
     background: radial-gradient(
       68.5% 119.738% at 49.1% 100%,
       rgb(175, 120, 245) 0%,
