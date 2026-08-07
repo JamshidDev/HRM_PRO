@@ -6,6 +6,7 @@
   import GridForm from './ui/GridForm.vue'
   import ViewModal from './ui/ViewModal.vue'
   import HistoryModal from './ui/HistoryModal.vue'
+  import CompareModal from './ui/CompareModal.vue'
   import ScopeModal from './ui/ScopeModal.vue'
   import BaseForm from './ui/BaseForm.vue'
   import BaseViewModal from './ui/BaseViewModal.vue'
@@ -196,6 +197,10 @@
     <!-- Setka: versiya tarixi (alohida modal — jadval ro'yxat + sahifalash) -->
     <UIModal :width="'92%'" :visible="store.historyVisible" @update:visible="(v) => (store.historyVisible = v)" :title="historyTitle">
       <HistoryModal />
+    </UIModal>
+
+    <UIModal :width="'860px'" :visible="store.compareVisible" @update:visible="(v) => (store.compareVisible = v)" :title="$t('tariffGrid.cmp.title')">
+      <CompareModal />
     </UIModal>
     <!-- Setka: korxona/bo'limlarga biriktirish -->
     <UIModal :width="'780px'" :visible="store.scopeVisible" @update:visible="(v) => (store.scopeVisible = v)" :title="scopeTitle">

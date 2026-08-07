@@ -2923,6 +2923,7 @@
     "unchanged": "Unchanged",
     "status": "Status",
     "event": "Event",
+    "syncedAt": "Pulled from 1C",
     "current": "Current",
     "archived": "Archived",
     "until": "until",
@@ -2985,6 +2986,20 @@
     "allYears": "All years",
     "pendingHint": "New version saved — confirm it in «History»",
     "default": "Default",
+    "compare": "Compare",
+    "compareHint": "Select 2 versions",
+    "cmp": {
+      "title": "Compare versions",
+      "general": "General fields",
+      "coefficients": "Coefficients",
+      "field": "Field",
+      "diff": "Diff",
+      "column": "Column",
+      "group": "Group",
+      "rank": "Rank",
+      "noChanges": "No changes",
+      "status": { "added": "Added", "removed": "Removed", "changed": "Changed" }
+    },
     "formula": {
       "title": "Edit coefficients with a formula (like Excel)",
       "groups": "Groups",

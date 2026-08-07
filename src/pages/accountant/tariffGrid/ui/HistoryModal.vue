@@ -26,15 +26,23 @@
   <div class="min-h-[240px]">
     <!-- ===== LIST (versiyalar jadvali) ===== -->
     <template v-if="store.historyView === 'list'">
-      <div class="flex items-center gap-2 mb-3">
+      <div class="flex items-center justify-between gap-2 mb-3">
         <n-select size="small" class="w-40" :value="store.versionsParams.year" :options="yearOptions"
           clearable :placeholder="$t('tariffGrid.allYears')" @update:value="store.onVersionsYear" />
+        <div class="flex items-center gap-2">
+          <span class="text-xs text-textColor3">{{ $t('tariffGrid.compareHint') }}</span>
+          <n-button size="small" type="primary" :disabled="store.compareSelection.length !== 2"
+            @click="store._compareVersions()">
+            {{ $t('tariffGrid.compare') }}
+          </n-button>
+        </div>
       </div>
       <n-spin :show="store.versionsLoading" style="min-height: 180px">
         <div class="w-full overflow-x-auto" v-if="store.versions.length">
           <n-table :single-line="false" size="small">
             <thead>
               <tr>
+                <th class="text-center! w-[40px]"></th>
                 <th class="text-center! w-[56px]">{{ $t('salary1c.rowNo') }}</th>
                 <th class="w-[70px]">{{ $t('tariffGrid.table.version') }}</th>
                 <th class="w-[120px]">{{ $t('tariffGrid.statusLabel') }}</th>
@@ -48,6 +56,11 @@
             </thead>
             <tbody>
               <tr v-for="(v, i) in store.versions" :key="v.id">
+                <td class="text-center!">
+                  <n-checkbox :checked="store.compareSelection.includes(v.id)"
+                    :disabled="store.compareSelection.length >= 2 && !store.compareSelection.includes(v.id)"
+                    @update:checked="store._toggleCompareSelect(v.id)" />
+                </td>
                 <td class="text-center! text-textColor3">
                   {{ (store.versionsParams.page - 1) * store.versionsParams.per_page + i + 1 }}
                 </td>

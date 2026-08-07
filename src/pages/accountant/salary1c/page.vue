@@ -405,7 +405,7 @@
               <th class="w-[40px]"></th>
               <th class="w-[70px]">{{ $t('salary1c.version') }}</th>
               <th class="w-[90px]">{{ $t('salary1c.status') }}</th>
-              <th>{{ $t('salary1c.event') }}</th>
+              <th>{{ $t('salary1c.syncedAt') }}</th>
               <th class="text-right! w-[140px]">{{ $t('salary1c.net') }}</th>
               <th class="w-[60px]"></th>
             </tr></thead>
@@ -423,12 +423,7 @@
                   </n-tag>
                 </td>
                 <td class="text-xs">
-                  <template v-if="v.version === 1">
-                    {{ $t('salary1c.added') }}: {{ (v.first_synced_at || '').slice(0, 16) }}
-                  </template>
-                  <template v-else>
-                    {{ $t('salary1c.changed') }}: {{ (v.valid_from || '').slice(0, 16) }}
-                  </template>
+                  <span class="tnum">{{ (v.valid_from || v.first_synced_at || '').slice(0, 16) }}</span>
                   <span v-if="v.valid_to" class="text-textColor3">
                     → {{ $t('salary1c.until') }} {{ (v.valid_to || '').slice(0, 16) }}
                   </span>

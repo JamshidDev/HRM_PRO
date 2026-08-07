@@ -2955,6 +2955,7 @@
     "unchanged": "O'zgarmadi",
     "status": "Holat",
     "event": "Hodisa",
+    "syncedAt": "1C dan olingan",
     "current": "Joriy",
     "archived": "Arxiv",
     "until": "gacha",
@@ -3017,6 +3018,20 @@
     "allYears": "Barcha yillar",
     "pendingHint": "Yangi versiya saqlandi — «Tarix»da tasdiqlang",
     "default": "Asosiy",
+    "compare": "Solishtirish",
+    "compareHint": "2 ta versiyani belgilang",
+    "cmp": {
+      "title": "Versiyalarni solishtirish",
+      "general": "Umumiy maydonlar",
+      "coefficients": "Koeffitsientlar",
+      "field": "Maydon",
+      "diff": "Farq",
+      "column": "Ustun",
+      "group": "Guruh",
+      "rank": "Razryad",
+      "noChanges": "O'zgarish yo'q",
+      "status": { "added": "Qo'shildi", "removed": "O'chirildi", "changed": "O'zgardi" }
+    },
     "formula": {
       "title": "Formula bilan koeffitsient tahriri (Excel kabi)",
       "groups": "Guruhlar",

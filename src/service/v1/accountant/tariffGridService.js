@@ -11,6 +11,8 @@ const _update = async (payload) => axios.put(`/v1/tariff-grids/${payload.id}`, p
 const _delete = async (payload) => axios.delete(`/v1/tariff-grids/${payload.id}`)
 const _versions = async (payload) => axios.get(`/v1/tariff-grids/${payload.id}/versions`, { params: payload?.params })
 const _version = async (payload) => axios.get(`/v1/tariff-grids/${payload.id}/versions/${payload.versionId}`)
+const _compareVersions = async (payload) =>
+  axios.get(`/v1/tariff-grids/${payload.id}/versions/compare`, { params: payload?.params })
 const _storeVersion = async (payload) => axios.post(`/v1/tariff-grids/${payload.id}/versions`, payload.data)
 const _confirmVersion = async (payload) =>
   axios.post(`/v1/tariff-grids/${payload.id}/versions/${payload.versionId}/confirm`)
@@ -33,6 +35,7 @@ export default {
   _delete,
   _versions,
   _version,
+  _compareVersions,
   _storeVersion,
   _confirmVersion,
   _scope,

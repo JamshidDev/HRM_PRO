@@ -148,6 +148,12 @@ export const useTariffGridStore = defineStore('tariffGridStore', {
     versionsTotal: 0,
     versionYears: [],
 
+    // Versiya solishtirish (compare) — 2 ta versiya tanlab farqini ko'rish (salary-1c kabi).
+    compareSelection: [], // tanlangan versiya id'lari (max 2)
+    compareVisible: false,
+    compareLoading: false,
+    compareData: null,
+
     // Yaratish / meta tahrir
     gridVisible: false,
     gridVisibleType: true, // true=create, false=edit-meta
@@ -275,6 +281,39 @@ export const useTariffGridStore = defineStore('tariffGridStore', {
     backToVersionList() {
       this.historyView = 'list'
       this.viewVersion = null
+    },
+    // Solishtirish uchun versiya tanlash — ko'pi bilan 2 ta (3-chisi eng eskisini siqib chiqaradi).
+    _toggleCompareSelect(id) {
+      const i = this.compareSelection.indexOf(id)
+      if (i >= 0) {
+        this.compareSelection.splice(i, 1)
+      } else {
+        if (this.compareSelection.length >= 2) this.compareSelection.shift()
+        this.compareSelection.push(id)
+      }
+    },
+    // Tanlangan 2 versiyani solishtirish. from = eski (kichik version), to = yangi.
+    _compareVersions() {
+      if (this.compareSelection.length !== 2) return
+      const rows = this.versions
+        .filter((v) => this.compareSelection.includes(v.id))
+        .sort((a, b) => a.version - b.version)
+      if (rows.length !== 2) return
+      this.compareVisible = true
+      this.compareLoading = true
+      this.compareData = null
+      $ApiService.tariffGridService
+        ._compareVersions({ id: this.elementId, params: { from_id: rows[0].id, to_id: rows[1].id } })
+        .then((res) => {
+          this.compareData = res.data.data
+        })
+        .catch((e) => {
+          $Toast.error(e?.response?.data?.message ?? t('content.error'))
+          this.compareVisible = false
+        })
+        .finally(() => {
+          this.compareLoading = false
+        })
     },
     // Excel (.xlsx) yuklab olish — loyiha umumiy download funksiyasi (Utils.blobFileDownload).
     _excel(id) {
@@ -459,6 +498,8 @@ export const useTariffGridStore = defineStore('tariffGridStore', {
       this.historyView = 'list'
       this.viewVersion = null
       this.versionsParams = { page: 1, per_page: 10, year: null }
+      this.compareSelection = []
+      this.compareData = null
       this.historyVisible = true
       this._versions(id)
     },
