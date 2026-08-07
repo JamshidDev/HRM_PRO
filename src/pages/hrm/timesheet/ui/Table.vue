@@ -120,6 +120,7 @@
 
 <template>
   <UITable
+    permission-prefix="hr-table-workers"
     :columns="columns"
     :actions="actions"
     :data="store.list"

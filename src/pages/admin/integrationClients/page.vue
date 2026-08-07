@@ -23,7 +23,8 @@
   )
 
   onMounted(() => {
-    if (!accStore.checkAction(accStore.pn.admin)) return
+    // Ilgari qo'pol `admin` edi; backend `integration-clients-*` ni enforce qiladi.
+    if (!accStore.canView(accStore.pn.integrationClients)) return
     const now = new Date()
     store.dashboardParams.date_from = new Date(now.getFullYear(), now.getMonth(), 1).getTime()
     store.dashboardParams.date_to = now.getTime()

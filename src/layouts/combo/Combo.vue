@@ -30,8 +30,12 @@
     open.value = true
   }
 
-  const closeSidebar = () => {
-    saveAppSidebar(false)
+  /**
+   * `persist=false` — mobilda navigatsiyadan keyingi yopilish; desktop uchun
+   * saqlangan sidebar holatini o'zgartirmaydi.
+   */
+  const closeSidebar = (persist = true) => {
+    if (persist) saveAppSidebar(false)
     open.value = false
   }
 

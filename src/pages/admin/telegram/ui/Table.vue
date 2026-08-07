@@ -60,6 +60,7 @@
 
 <template>
   <UITable
+    permission-prefix="telegram"
     :columns="columns"
     :actions="actions"
     :data="store.list"

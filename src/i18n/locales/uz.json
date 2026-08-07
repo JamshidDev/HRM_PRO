@@ -548,7 +548,8 @@
       "moduleAccess": "Modul ruxsati",
       "type": "Rol turi",
       "typeSanctum": "Foydalanuvchi",
-      "typeIntegration": "Integration"
+      "typeIntegration": "Integration",
+      "orphanWarning": "Ushbu rolda ro'yxatda ko'rinmaydigan {n} ta ruxsat bor (ruxsatlar ro'yxati to'liq yuklanmagan bo'lishi mumkin). Ular saqlashda o'zgarishsiz qoladi."
     }
   },
   "userPage": {
@@ -1989,20 +1990,22 @@
     },
     "audit": {
       "tabGeneral": "Umumiy dashboard",
-      "tabAudit": "Audit",
-      "relativesShortage": "Yaqin qarindoshlari 3 tadan kam",
-      "relativesWithoutJshshir": "Qarindoshi JSHSHIRsiz",
-      "nameErrors": "F.I.Sh.da xatolik",
-      "jshshirErrors": "JSHSHIRda xatolik",
-      "positionCertificateMissing": "Lavozim guvohnomasi yo'q",
+      "tabAudit": "Ma'lumotlar bo'yicha audit",
+      "relativesShortage": "Yaqin qarindoshlar to'liq emas",
+      "relativesWithoutJshshir": "Qarindosh PNFL kiritilmagan",
+      "nameErrors": "Ism-familyada xato belgi",
+      "jshshirErrors": "Pasport va PNFL mos emas",
+      "positionCertificateMissing": "Xizmat guvohnomasi yo'q",
       "fio": "F.I.Sh.",
-      "pin": "JSHSHIR",
+      "pin": "PNFL",
       "organization": "Korxona",
       "position": "Lavozim",
       "relativesCount": "Qarindoshlari soni",
       "relativesWithoutJshshirCount": "JSHSHIRsiz qarindoshlar",
       "reasons": "Xatoliklar",
-      "empty": "Ma'lumot topilmadi"
+      "empty": "Ma'lumot topilmadi",
+      "lastChecked": "Oxirgi tekshiruv",
+      "worker": "Xodim"
     }
   },
   "applicationPage": {

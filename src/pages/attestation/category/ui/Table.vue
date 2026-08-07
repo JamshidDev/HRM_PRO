@@ -112,6 +112,7 @@
 
 <template>
   <UITable
+    permission-prefix="exam-categories"
     :columns="columns"
     :actions="actions"
     :data="store.list"

@@ -81,6 +81,7 @@
 
 <template>
   <UITable
+    permission-prefix="economist-staffing-approve"
     :columns="columns"
     :actions="actions"
     :data="store.list"

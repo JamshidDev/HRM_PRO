@@ -65,6 +65,7 @@
 
 <template>
   <UITable
+    permission-prefix="languages"
     :columns="columns"
     :actions="actions"
     :data="store.list"

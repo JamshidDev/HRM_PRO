@@ -164,6 +164,7 @@
 
 <template>
   <UITable
+    permission-prefix="lms-edu-plan"
     :columns="columns"
     :actions="actions"
     :data="store.list"

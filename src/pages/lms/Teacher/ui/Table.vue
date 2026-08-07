@@ -77,6 +77,7 @@
 
 <template>
   <UITable
+    permission-prefix="lms-teachers"
     :columns="columns"
     :actions="actions"
     :data="store.list"

@@ -150,6 +150,7 @@ import { Delete20Regular, Edit32Regular, Eye16Regular, OpenFolder24Filled } from
 
 <template>
   <UITable
+    permission-prefix="hr-departments"
     :columns="columns"
     :actions="actions"
     :data="store.list"

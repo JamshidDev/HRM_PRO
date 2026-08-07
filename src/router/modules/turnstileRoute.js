@@ -1,40 +1,49 @@
-import { AppLayouts, AppPaths } from '@/utils/index.js'
+import { AppLayouts, AppPaths, appPermissions } from '@/utils/index.js'
 import Utils from '@/utils/Utils.js'
 
+// DIQQAT: quyidagi bir necha route'ning navigations.js dagi bandi izohga olingan,
+// lekin route'larning o'zi tirik. Ular `meta.permission`siz qolsa faqat modul
+// darajasida (`turnstile`) yopilardi — shuning uchun har biriga sahifaning o'z
+// tekshiruvi bilan mos aniq slug biriktirilgan.
 export const turnstileRoutes = [
   {
     path: Utils.routeTurnstilePathMaker(AppPaths.Building),
     component: () => import('@turnstile/building/page.vue'),
     meta: {
-      layout: AppLayouts.main
+      layout: AppLayouts.main,
+      permission: appPermissions.turnstileBuilding
     }
   },
   {
     path: Utils.routeTurnstilePathMaker(AppPaths.Terminal),
     component: () => import('@turnstile/terminal/page.vue'),
     meta: {
-      layout: AppLayouts.main
+      layout: AppLayouts.main,
+      permission: appPermissions.turnstileTerminal
     }
   },
   {
     path: Utils.routeTurnstilePathMaker(AppPaths.Organizations),
     component: () => import('@turnstile/organizationTerminal/page.vue'),
     meta: {
-      layout: AppLayouts.main
+      layout: AppLayouts.main,
+      permission: appPermissions.turnstileOrganization
     }
   },
   {
     path: Utils.routeTurnstilePathMaker(AppPaths.User),
     component: () => import('@turnstile/terminalUser/page.vue'),
     meta: {
-      layout: AppLayouts.main
+      layout: AppLayouts.main,
+      permission: appPermissions.turnstileWorkers
     }
   },
   {
     path: Utils.routeTurnstilePathMaker(AppPaths.WorkDuration),
     component: () => import('@turnstile/workDuration/page.vue'),
     meta: {
-      layout: AppLayouts.main
+      layout: AppLayouts.main,
+      permission: appPermissions.turnstileWorkDuration
     }
   },
   {
@@ -62,7 +71,8 @@ export const turnstileRoutes = [
     path: Utils.routeTurnstilePathMaker(AppPaths.HcServer),
     component: () => import('@turnstile/hcServer/page.vue'),
     meta: {
-      layout: AppLayouts.main
+      layout: AppLayouts.main,
+      permission: appPermissions.turnstileHikCentralJob
     }
   },
   {
@@ -76,7 +86,8 @@ export const turnstileRoutes = [
     path: Utils.routeTurnstilePathMaker(AppPaths.HcEventsV2),
     component: () => import('@turnstile/eventsV2/page.vue'),
     meta: {
-      layout: AppLayouts.main
+      layout: AppLayouts.main,
+      permission: appPermissions.turnstileHikCentralEvents
     }
   },
   {
@@ -90,7 +101,8 @@ export const turnstileRoutes = [
     path: Utils.routeTurnstilePathMaker(AppPaths.SyncLog),
     component: () => import('@turnstile/syncLog/page.vue'),
     meta: {
-      layout: AppLayouts.main
+      layout: AppLayouts.main,
+      permission: appPermissions.turnstileHikCentralSync
     }
   },
   {
@@ -104,7 +116,8 @@ export const turnstileRoutes = [
     path: Utils.routeTurnstilePathMaker(AppPaths.HCWorkDuration),
     component: () => import('@turnstile/HKWorkDuration/page.vue'),
     meta: {
-      layout: AppLayouts.main
+      layout: AppLayouts.main,
+      permission: appPermissions.turnstileHcpDuration
     }
   },
   {

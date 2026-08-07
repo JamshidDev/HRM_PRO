@@ -534,7 +534,8 @@
       "moduleAccess": "Доступ к модулю",
       "type": "Тип роли",
       "typeSanctum": "Пользователь",
-      "typeIntegration": "Integration"
+      "typeIntegration": "Integration",
+      "orphanWarning": "У этой роли есть {n} разрешений, которых нет в списке (возможно, список разрешений загружен не полностью). При сохранении они останутся без изменений."
     }
   },
   "userPage": {
@@ -1975,12 +1976,12 @@
     },
     "audit": {
       "tabGeneral": "Общий дашборд",
-      "tabAudit": "Аудит",
-      "relativesShortage": "Близких родственников меньше 3",
-      "relativesWithoutJshshir": "Родственник без ПИНФЛ",
-      "nameErrors": "Ошибка в Ф.И.О.",
-      "jshshirErrors": "Ошибка в ПИНФЛ",
-      "positionCertificateMissing": "Нет удостоверения должности",
+      "tabAudit": "Аудит данных",
+      "relativesShortage": "Близкие родственники указаны не полностью",
+      "relativesWithoutJshshir": "Не указан ПИНФЛ родственника",
+      "nameErrors": "Ошибочный символ в имени/фамилии",
+      "jshshirErrors": "Паспорт и ПИНФЛ не совпадают",
+      "positionCertificateMissing": "Нет служебного удостоверения",
       "fio": "Ф.И.О.",
       "pin": "ПИНФЛ",
       "organization": "Организация",
@@ -1988,7 +1989,9 @@
       "relativesCount": "Кол-во родственников",
       "relativesWithoutJshshirCount": "Родственники без ПИНФЛ",
       "reasons": "Ошибки",
-      "empty": "Данные не найдены"
+      "empty": "Данные не найдены",
+      "lastChecked": "Последняя проверка",
+      "worker": "Сотрудник"
     }
   },
   "applicationPage": {

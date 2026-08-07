@@ -32,6 +32,7 @@
   const filterCount = computed(() => Number(Boolean(store.params.organizations.length)))
 
   const onAdd = () => {
+    if (!accStore.checkAction(accStore.pn.hrPensionersWrite)) return
     store.resetForm()
     store.visibleType = true
     store.visible = true
@@ -40,6 +41,7 @@
 
 <template>
   <UIPageFilter
+    :add-permission="accStore.pn.hrPensionersWrite"
     v-model:search="store.params.search"
     :search-loading="store.loading"
     @onSearch="filterEvent"

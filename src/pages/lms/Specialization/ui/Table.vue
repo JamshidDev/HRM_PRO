@@ -77,6 +77,7 @@
 
 <template>
   <UITable
+    permission-prefix="lms-specialization"
     :columns="columns"
     :actions="actions"
     :data="store.list"

@@ -103,6 +103,7 @@
 
 <template>
   <UITable
+    permission-prefix="hr-documents"
     :columns="columns"
     :actions="actions"
     :data="store.list"

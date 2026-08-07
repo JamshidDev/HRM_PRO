@@ -108,6 +108,7 @@ import { Delete20Regular, Edit32Regular } from '@vicons/fluent'
 
 <template>
   <UITable
+    permission-prefix="hr-vacations"
     :columns="columns"
     :actions="actions"
     :data="store.list"

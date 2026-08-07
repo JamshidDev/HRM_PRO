@@ -37,6 +37,7 @@
 <template>
   <UIPageContent>
     <UIPageFilter
+      :add-permission="accStore.pn.examCategoriesWrite"
       :show-search-input="false"
       v-model:search="store.params.search"
       @onSearch="onSearch"
