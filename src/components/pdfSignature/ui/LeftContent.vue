@@ -76,7 +76,6 @@
 <template>
   <SectionHeader
     full-height
-    plain
     tight-body
     :title="$t('documentPage.signature.attachedDocuments')"
     class="w-full"

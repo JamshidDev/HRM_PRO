@@ -49,7 +49,7 @@
 </script>
 
 <template>
-  <SectionHeader full-height tight-body plain>
+  <SectionHeader full-height tight-body>
     <template #header>
       <div v-if="chatWith" class="flex items-center gap-2 min-w-0">
         <n-button quaternary circle size="small" @click="onCloseChat">
