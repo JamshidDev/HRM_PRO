@@ -30,7 +30,7 @@
     { name: t('workerView.tabs.general'), id: 1, icon: icons.menuIcon },
     { name: t('workerView.tabs.career'), id: 2, icon: icons.positionIcon },
     { name: t('workerView.tabs.relative'), id: 3, icon: icons.usersIcon },
-    { name: t('workerView.tabs.med'), id: 4, icon: icons.medicalExaminationIcon },
+    { name: t('workerView.tabs.med'), id: 4, icon: icons.monitorHeartRate },
     { name: t('workerView.tabs.vacation'), id: 5, icon: icons.calendarIcon },
     { name: t('workerView.tabs.incentive'), id: 6, icon: icons.awardIcon },
     { name: t('workerView.tabs.punishment'), id: 7, icon: icons.punishmentIcon },

@@ -52,6 +52,14 @@
       type: String,
       default: null
     },
+    filterButtonTitle: {
+      type: String,
+      default: null
+    },
+    placeholder: {
+      type: String,
+      default: null
+    },
     /**
      * Qo'shish tugmasi uchun ruxsat slug'i (masalan `accStore.pn.countriesWrite`).
      * Ruxsat bo'lmasa tugma YASHIRILMAYDI, balki kulrang bo'ladi — foydalanuvchi
@@ -136,7 +144,7 @@
           v-if="showSearchInput"
           v-model:value="searchModel"
           type="text"
-          :placeholder="$t('content.search')"
+          :placeholder="placeholder || $t('content.search')"
           :on-keyup="searchEvent"
           
           @paste="searchEvent"
@@ -201,7 +209,7 @@
               <template #icon>
                 <img class="ui-page-filter-icon" :src="filterIcon" alt="" />
               </template>
-              <span>{{ $t('content.filters') }}</span>
+              <span>{{ filterButtonTitle || $t('content.filters') }}</span>
               <span v-if="filterCount > 0" class="ui-page-filter-count">{{ filterCount }}</span>
             </n-button>
           </template>

@@ -45,7 +45,7 @@
 </script>
 
 <template>
-  <SectionHeader :title="$t('profilePage.tabs.social.title')" :icon="UserPlusIcon" plain large>
+  <SectionHeader :title="$t('profilePage.tabs.social.title')" :icon="UserPlusIcon" large>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
       <div class="relative overflow-hidden rounded-2xl bg-surface-ground p-5 min-h-[190px]">
         <img

@@ -169,7 +169,7 @@
 
 <template>
   <div class="flex flex-col gap-4">
-    <SectionHeader :title="$t('workerView.tabs.turnstile')" :icon="TurnstileIcon" plain>
+    <SectionHeader :title="$t('workerView.tabs.turnstile')" :icon="TurnstileIcon">
       <n-tabs animated v-model:value="activeTab" class="hidden-tab-header" type="segment">
         <n-tab-pane :name="1">
           <n-spin :show="calendarLoading">
@@ -202,7 +202,8 @@
                     class="turnstile-calendar__cell"
                     :class="{
                       'turnstile-calendar__cell--empty': !day.inMonth,
-                      'turnstile-calendar__cell--today': day.isToday
+                      'turnstile-calendar__cell--today': day.isToday,
+                      'turnstile-calendar__cell--clickable': day.inMonth && day.item?.minute
                     }"
                     @click="day.inMonth && onViewDetail(day.item)"
                   >
@@ -413,6 +414,10 @@
       &--empty {
         border-color: transparent !important;
         background-color: transparent !important;
+      }
+
+      &--clickable {
+        cursor: pointer;
       }
 
       &--today {
