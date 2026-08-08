@@ -1,8 +1,6 @@
 <script setup>
   import {
-    PeopleTeamToolbox20Filled,
     Organization12Filled,
-    Book20Filled,
     Circle16Filled,
     ChevronRight16Regular,
     ChevronLeft12Regular
@@ -11,6 +9,8 @@
   import TreeTabs from './TreeTabs.vue'
   import CodexCard from './Codex.vue'
   import DocumentArchive from '../../DocumentArchive/DocumentArchive.vue'
+  import briefcase from '@/assets/icons/briefcase.svg'
+  import bookOpen from '@/assets/icons/bookOpen.svg'
 
   const list = [
     {
@@ -21,25 +21,25 @@
     },
     {
       title: 'others.info.positions',
-      icon: PeopleTeamToolbox20Filled,
+      icon: briefcase,
       info: 'others.info.positionsDesc',
       component: DocumentArchive
     },
     {
       title: 'others.info.laborCode',
-      icon: Book20Filled,
+      icon: bookOpen,
       info: 'others.info.laborCodeDesc',
       component: CodexCard
     },
     {
       title: 'others.info.empty',
-      icon: Book20Filled,
+      icon: bookOpen,
       info: 'others.info.emptyDesc',
       disabled: true
     }
   ]
 
-  const tab = ref(0)
+  const tab = defineModel('tab', { default: 0 })
 </script>
 <template>
   <n-tabs
@@ -94,12 +94,12 @@
 
     <template v-for="(item, idx) in list" :key="idx">
       <n-tab-pane class="md:p-2! rounded-md h-full overflow-auto" :name="idx + 1">
-        <n-button class="mb-2!" tertiary circle @click="tab = 0">
+        <n-button v-if="item?.component !== DocumentArchive" class="mb-2!" tertiary circle @click="tab = 0">
           <template #icon>
             <n-icon :component="ChevronLeft12Regular" />
           </template>
         </n-button>
-        <component :is="item?.component" v-if="item?.component" />
+        <component :is="item?.component" v-if="item?.component" @back="tab = 0" />
         <p v-else>{{ idx + 1 }}</p>
       </n-tab-pane>
     </template>
