@@ -7,7 +7,7 @@
   import UIBadge from '@/components/ui/UIBadge.vue'
   import Utils from '../../../utils/Utils.js'
   import i18n from '@/i18n/index.js'
-  import MedicalExaminationIcon from '@/assets/icons/medicalExaminationIcon.svg'
+  import MonitorHeartRateIcon from '@/assets/icons/monitorHeartRate.svg'
 
   const { t } = i18n.global
   const store = useComponentStore()
@@ -33,7 +33,7 @@
 
 <template>
   <div class="flex flex-col gap-4">
-    <SectionHeader :title="$t('medPage.name')" :icon="MedicalExaminationIcon" icon-chip>
+    <SectionHeader :title="$t('medPage.name')" :icon="MonitorHeartRateIcon">
       <template #title-suffix>
         <UIBadge
           v-if="store.workerPreview?.meds?.[0]?.status?.name"

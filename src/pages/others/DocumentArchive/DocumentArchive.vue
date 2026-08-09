@@ -1,16 +1,23 @@
 <script setup>
   import { useDocumentArchiveStore } from '@/store/modules/index.js'
   import Table from './Table.vue'
-  import { useDebounceFn } from '@vueuse/core'
-  import { ArrowSyncCircle16Regular, Filter20Filled } from '@vicons/fluent'
+  import { ArrowSyncCircle16Regular, ArrowLeft20Filled } from '@vicons/fluent'
   import { useAppSetting } from '@/utils/index.js'
+  import { UIPageFilter, UIPageTitle } from '@components'
+
+  const emit = defineEmits(['back'])
 
   const store = useDocumentArchiveStore()
 
-  const searchEvent = useDebounceFn(() => {
+  const onSearch = () => {
     store.params.page = 1
     store._index()
-  }, 300)
+  }
+
+  const onClearFilter = () => {
+    store.params.date = null
+    onSearch()
+  }
 
   const loadMorePage = () => {
     if (store.loading) return
@@ -27,37 +34,48 @@
 <template>
   <div class="overflow-y-auto" style="height: calc(100vh - 150px)">
     <div class="grid grid-cols-12 overflow-y-auto h-auto">
-      <div class="col-span-12 mt-6 flex justify-center sticky top-1 z-30">
-        <div class="w-full max-w-[600px]">
-          <n-input-group>
-            <n-input
-              :loading="store.loading"
-              v-model:value="store.params.search"
-              type="text"
-              :on-keyup="searchEvent"
-            />
-
-            <n-popover trigger="click" scrollable placement="bottom">
-              <template #trigger>
-                <n-button type="primary">
-                  <template #icon>
-                    <Filter20Filled />
+      <div class="col-span-12 sticky top-1 z-30">
+        <div class="flex flex-col gap-2">
+          <n-button
+            secondary
+            strong
+            size="small"
+            class="self-start info-back-button"
+            @click="emit('back')"
+          >
+            <template #icon>
+              <n-icon :component="ArrowLeft20Filled" />
+            </template>
+            Ortga
+          </n-button>
+          <UIPageTitle :title="$t('others.info.positions')">
+            <template #actions>
+              <div class="info-filter-compact">
+                <UIPageFilter
+                  v-model:search="store.params.search"
+                  @on-search="onSearch"
+                  @on-clear="onClearFilter"
+                  :search-loading="store.loading"
+                  :show-add-button="false"
+                  placeholder="Buyruq nomi yoki raqami bo'yicha qidirish"
+                  filter-button-title="Filter"
+                >
+                  <template #filterContent>
+                    <div class="flex flex-col pb-6">
+                      <p class="text-secondary">{{ $t('content.date') }}</p>
+                      <n-date-picker
+                        clearable
+                        class="w-full"
+                        v-model:value="store.params.date"
+                        type="date"
+                        :format="useAppSetting.datePicketFormat"
+                      />
+                    </div>
                   </template>
-                </n-button>
-              </template>
-              <div class="flex flex-col pb-6">
-                <span class="text-sm text-surface-400">{{ $t('content.filterSetting') }}</span>
-                <p class="text-secondary mt-2">{{ $t('content.date') }}</p>
-                <n-date-picker
-                  clearable
-                  class="w-full"
-                  v-model:value="store.params.date"
-                  type="date"
-                  :format="useAppSetting.datePicketFormat"
-                />
+                </UIPageFilter>
               </div>
-            </n-popover>
-          </n-input-group>
+            </template>
+          </UIPageTitle>
         </div>
       </div>
       <div class="col-span-12 mt-6">
@@ -75,11 +93,25 @@
               <ArrowSyncCircle16Regular />
             </n-icon>
           </template>
-          {{ $t('content.more') }}
+          {{ $t('content.more') }} 
         </n-button>
       </div>
     </div>
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+  .info-back-button {
+    --n-height: 40px !important;
+    --n-padding: 8px 16px !important;
+  }
+
+  .info-filter-compact :deep([class*='md:flex-row']) {
+    gap: 8px !important;
+  }
+
+  .info-filter-compact :deep([class*='calc(100%-264px)']) {
+    width: auto !important;
+    flex: 0 0 auto;
+  }
+</style>

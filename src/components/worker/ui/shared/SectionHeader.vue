@@ -8,14 +8,6 @@
       type: Object,
       default: null
     },
-    iconChip: {
-      type: Boolean,
-      default: false
-    },
-    plain: {
-      type: Boolean,
-      default: false
-    },
     fullHeight: {
       type: Boolean,
       default: false
@@ -41,16 +33,7 @@
     >
       <slot name="header">
         <div class="flex items-center gap-2 min-w-0">
-          <span
-            v-if="icon && iconChip"
-            class="rounded-md bg-primary flex items-center justify-center shrink-0"
-            :class="large ? 'w-9 h-9' : 'w-8 h-8'"
-          >
-            <n-icon :size="large ? 20 : 18" class="text-white">
-              <component :is="icon" />
-            </n-icon>
-          </span>
-          <n-icon v-else-if="icon" :size="large ? 24 : 20" class="text-primary shrink-0">
+          <n-icon v-if="icon" :size="large ? 24 : 20" class="text-primary shrink-0">
             <component :is="icon" />
           </n-icon>
           <span
@@ -67,7 +50,7 @@
     </div>
     <div
       :class="[
-        plain ? 'bg-surface-section' : 'bg-surface-ground', 
+        'bg-surface-section',
         fullHeight && 'flex-1 overflow-auto',
         tightBody ? 'px-2 py-3' : 'p-4',
         !$slots.footer && 'rounded-b-3xl'
