@@ -3739,7 +3739,7 @@
       "position": "Должность",
       "number": "Номер удостоверения",
       "issueDate": "Дата выдачи",
-      "expiryDate": "Срок действия",
+      "expiryDate": "Срок",
       "verify": "Подтверждено",
       "returned": "Изъято",
       "noCertificate": "Не выдано"

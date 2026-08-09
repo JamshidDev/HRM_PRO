@@ -3727,7 +3727,7 @@
       "position": "Position",
       "number": "Certificate number",
       "issueDate": "Issue date",
-      "expiryDate": "Valid until",
+      "expiryDate": "Validity",
       "verify": "Verified",
       "returned": "Returned",
       "noCertificate": "Not issued"
