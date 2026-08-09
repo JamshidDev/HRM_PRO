@@ -69,7 +69,7 @@
         v-if="!row.certificate"
         :show-icon="false"
         :label="$t('workerCertificatePage.table.noCertificate')"
-        :type="Utils.colorTypes.dark"
+        :type="Utils.colorTypes.error"
       />
       <span
         v-else
