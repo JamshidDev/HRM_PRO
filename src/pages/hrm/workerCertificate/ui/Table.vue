@@ -38,7 +38,7 @@
 
 <template>
   <UITable
-    permission-prefix="hr-workers"
+    permission-prefix="hr-certificates"
     :columns="columns"
     :data="store.list"
     :loading="store.loading"

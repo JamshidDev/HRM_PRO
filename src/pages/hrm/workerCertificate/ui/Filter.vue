@@ -14,7 +14,7 @@
 
   // Qidiruv — F.I.Sh yoki guvohnoma raqami (backend ikkalasini ham qamraydi).
   const onSearch = () => {
-    if (!accStore.checkAction(accStore.pn.hrWorkersRead)) return
+    if (!accStore.checkAction(accStore.pn.hrCertificatesRead)) return
     store.params.page = 1
     debounceIndexEv()
   }

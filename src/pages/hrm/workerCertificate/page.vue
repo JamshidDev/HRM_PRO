@@ -7,7 +7,7 @@
   const accStore = useAccountStore()
 
   onMounted(() => {
-    if (!accStore.checkAction(accStore.pn.hrWorkersRead)) return
+    if (!accStore.checkAction(accStore.pn.hrCertificatesRead)) return
     store._index()
   })
 </script>

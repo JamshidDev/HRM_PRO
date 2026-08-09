@@ -131,7 +131,7 @@ export const navigations = [
         path: Utils.routeHrmPathMaker(AppPaths.WorkerCertificate),
         icon: usersIcon,
         color: 'bg-primary',
-        permission: appPermissions.hrWorkers
+        permission: appPermissions.hrCertificatesRead
       },
       {
         label: 'confirmation.name', // Shartnomalar
