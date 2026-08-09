@@ -1495,7 +1495,8 @@
       "extendedDate": "Дата продления",
       "verify": "Подтверждено",
       "returned": "Возвращено",
-      "certificateFile": "Файл удостоверения"
+      "certificateFile": "Файл удостоверения",
+      "regenerate": "Сгенерировать заново"
     }
   },
   "languageCertificatePage": {

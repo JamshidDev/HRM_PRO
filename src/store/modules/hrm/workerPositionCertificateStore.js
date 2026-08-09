@@ -10,8 +10,9 @@ export const useWorkerPositionCertificateStore = defineStore('workerPositionCert
     visibleType: true, // true = create, false = edit
     elementId: null,
     payload: {
-      // post_name — faqat ko'rsatish uchun (read-only). Backend create'da joriy
-      // lavozimdan generate qiladi; forma unga TEGMAYDI (yuborilmaydi).
+      // post_name — TAHRIRLANADI. Forma yaratishda joriy lavozimdan generate
+      // qilingan qiymat bilan to'ldiradi, foydalanuvchi o'zgartirib yuborishi
+      // mumkin; backend bo'sh kelsa o'zi generate qiladi.
       post_name: null,
       number: null,
       issue_date: null,

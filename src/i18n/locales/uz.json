@@ -1512,7 +1512,8 @@
       "extendedDate": "Uzaytirilgan sana",
       "verify": "Tasdiqlangan",
       "returned": "Qaytarib olingan",
-      "certificateFile": "Guvohnoma fayli"
+      "certificateFile": "Guvohnoma fayli",
+      "regenerate": "Qayta generatsiya"
     }
   },
   "languageCertificatePage": {

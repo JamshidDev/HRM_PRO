@@ -1487,7 +1487,8 @@
       "extendedDate": "Extended date",
       "verify": "Verified",
       "returned": "Returned",
-      "certificateFile": "Certificate file"
+      "certificateFile": "Certificate file",
+      "regenerate": "Regenerate"
     }
   },
   "languageCertificatePage": {

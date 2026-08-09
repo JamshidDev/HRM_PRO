@@ -1,5 +1,5 @@
 <script setup>
-  import { CloudLink16Regular } from '@vicons/fluent'
+  import { ArrowSync16Regular, CloudLink16Regular } from '@vicons/fluent'
   import {
     useWorkerPositionCertificateStore,
     useWorkerProfileStore
@@ -15,17 +15,30 @@
   const formRef = ref(null)
   const inputFileRef = ref(null)
 
-  // Lavozim (post_name) — read-only card'da ko'rsatiladi, forma YUBORMAYDI.
-  //  · Yaratishda: xodimning JORIY (faol) lavozimidan REACTIVE olinadi
-  //    (`data.positions` backend'da status=ACTIVE bilan filtrlangan, har birida
-  //    `post_name` = korxona + bo'lim + lavozim). Computed bo'lgani uchun har
-  //    xodimga to'g'ri yangilanadi (onMounted stale qilardi).
-  //  · Tahrirda: guvohnomaning muzlagan qiymati (qatordan).
-  const postNamePreview = computed(() =>
-    store.visibleType
-      ? (profileStore.data?.positions?.[0]?.post_name ?? null)
-      : store.payload.post_name
+  // Lavozim (post_name) — TAHRIRLANADIGAN maydon.
+  //  · `generatedPostName` — xodimning JORIY (faol) lavozimidan (`data.positions`
+  //    backend'da status=ACTIVE bilan filtrlangan, `post_name` = korxona + bo'lim +
+  //    lavozim). Computed: profil ma'lumoti kech kelsa ham to'g'ri qiymat chiqadi.
+  //  · Yaratishda input SHU qiymat bilan oldindan to'ldiriladi, foydalanuvchi
+  //    o'zgartirib saqlashi mumkin. Tahrirda guvohnomaning o'z qiymati keladi.
+  //  · "Qayta generate" tugmasi inputni yana joriy lavozim nomiga qaytaradi.
+  const generatedPostName = computed(
+    () => profileStore.data?.positions?.[0]?.post_name ?? ''
   )
+
+  // Faqat YARATISHDA va maydon bo'sh bo'lganda to'ldiramiz — foydalanuvchi
+  // yozganini profil ma'lumoti kech kelib bosib ketmasin.
+  watch(
+    generatedPostName,
+    (v) => {
+      if (store.visibleType && !store.payload.post_name) store.payload.post_name = v
+    },
+    { immediate: true }
+  )
+
+  const onRegeneratePostName = () => {
+    store.payload.post_name = generatedPostName.value
+  }
 
   const requiredField = (type = 'string') => ({
     type,
@@ -34,9 +47,9 @@
     trigger: ['input', 'blur-sm', 'change']
   })
 
-  // post_name backend'da joriy lavozimdan generate qilinadi — forma so'ramaydi.
   // Fayl ixtiyoriy. extended_date ixtiyoriy.
   const rules = computed(() => ({
+    post_name: requiredField(),
     number: requiredField(),
     issue_date: requiredField(),
     expiry_date: requiredField()
@@ -48,13 +61,13 @@
       const p = store.payload
       const formData = new FormData()
       if (store.visibleType) formData.append('uuid', store.uuid)
+      formData.append('post_name', p.post_name)
       formData.append('number', p.number)
       formData.append('issue_date', p.issue_date)
       formData.append('expiry_date', p.expiry_date)
       // Bo'sh maydonlarni yubormaymiz — backend `@IsOptional` kutadi.
       if (p.extended_date) formData.append('extended_date', p.extended_date)
       // verify/returned YUBORILMAYDI — backend default false qo'yadi.
-      // post_name ham yuborilmaydi — backend joriy lavozimdan generate qiladi.
 
       store.saveLoading = true
       if (store.visibleType) {
@@ -78,16 +91,35 @@
 
 <template>
   <div style="height: calc(100vh - 120px)" class="overflow-y-auto">
-    <!-- Lavozim (post_name) — read-only CARD. Yaratishda joriy faol lavozimdan,
-         tahrirda muzlagan qiymatdan. Backend generate qiladi, forma tegmaydi. -->
-    <div class="post-name-card">
-      <div class="post-name-card__label">
-        {{ $t('workerPositionCertificatePage.form.postName') }}
-      </div>
-      <div class="post-name-card__value">{{ postNamePreview || '—' }}</div>
-    </div>
-
     <n-form ref="formRef" :rules="rules" :model="store.payload">
+      <!-- Lavozim (post_name) — generate qilingan qiymat bilan to'ldiriladi,
+           foydalanuvchi tahrirlashi yoki qayta generate qilishi mumkin. -->
+      <n-form-item path="post_name">
+        <template #label>
+          <div class="flex items-center gap-2">
+            <span>{{ $t('workerPositionCertificatePage.form.postName') }}</span>
+            <n-button
+              text
+              type="primary"
+              size="tiny"
+              :disabled="!generatedPostName"
+              @click="onRegeneratePostName"
+            >
+              <template #icon>
+                <ArrowSync16Regular />
+              </template>
+              {{ $t('workerPositionCertificatePage.form.regenerate') }}
+            </n-button>
+          </div>
+        </template>
+        <n-input
+          v-model:value="store.payload.post_name"
+          type="textarea"
+          :autosize="{ minRows: 2, maxRows: 5 }"
+          :placeholder="$t('content.enterField')"
+        />
+      </n-form-item>
+
       <!-- Guvohnoma raqami -->
       <n-form-item :label="$t(`workerPositionCertificatePage.form.number`)" path="number">
         <n-input v-model:value="store.payload.number" :placeholder="$t('content.enterField')" />
@@ -177,26 +209,6 @@
 </template>
 
 <style scoped>
-  /* Lavozim (post_name) read-only card — korxona + bo'lim + lavozim. */
-  .post-name-card {
-    border: 1px solid var(--n-border-color, #e5e7eb);
-    border-radius: 10px;
-    padding: 12px 14px;
-    margin-bottom: 16px;
-    background: var(--n-color-embedded, rgba(0, 0, 0, 0.02));
-  }
-  .post-name-card__label {
-    font-size: 12px;
-    color: #9ca3af;
-    margin-bottom: 4px;
-  }
-  .post-name-card__value {
-    font-size: 14px;
-    font-weight: 500;
-    line-height: 1.4;
-    word-break: break-word;
-  }
-
   .file-name {
     display: block;
     max-width: 100%;

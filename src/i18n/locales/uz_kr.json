@@ -3502,6 +3502,23 @@
       "match": "Пароллар мос келади"
     }
   },
+  "workerPositionCertificatePage": {
+    "title": "Лавозим гувоҳномалари",
+    "no-data": "Гувоҳнома маълумотлари йўқ!",
+    "createTitle": "Гувоҳнома қўшиш",
+    "updateTitle": "Гувоҳномани таҳрирлаш",
+    "form": {
+      "postName": "Лавозим",
+      "number": "Гувоҳнома рақами",
+      "issueDate": "Берилган сана",
+      "expiryDate": "Амал қилиш муддати",
+      "extendedDate": "Узайтирилган сана",
+      "verify": "Тасдиқланган",
+      "returned": "Қайтариб олинган",
+      "certificateFile": "Гувоҳнома файли",
+      "regenerate": "Қайта генерация"
+    }
+  },
   "workerCertificatePage": {
     "name": "Гувоҳномалар",
     "table": {
