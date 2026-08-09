@@ -1,5 +1,5 @@
 <script setup>
-  import { UIModal } from '@/components/index.js'
+  import { UIBadge, UIModal } from '@/components/index.js'
   import { ArrowCircleDown24Regular } from '@vicons/fluent'
   import { useWorkerCertificateStore } from '@stores'
   import { Utils } from '@utils'
@@ -74,20 +74,24 @@
                 <span class="text-sm">{{ Utils.timeOnlyDate(item.expiry_date) }}</span>
               </td>
               <td>
+                <!-- Qiymat yo'q bo'lsa katak BO'SH qoladi (to'ldiruvchi belgi yo'q). -->
                 <span v-if="item.extended_date" class="text-sm">
                   {{ Utils.timeOnlyDate(item.extended_date) }}
                 </span>
-                <span v-else class="text-xs text-gray-400">—</span>
               </td>
-              <td class="text-center">
-                <n-tag :type="item.verify ? 'success' : 'default'" size="small" round>
-                  {{ item.verify ? $t('content.yes') : $t('content.no') }}
-                </n-tag>
+              <td>
+                <UIBadge
+                  class="justify-center"
+                  :label="item.verify ? $t('content.yes') : $t('content.no')"
+                  :type="item.verify ? Utils.colorTypes.success : Utils.colorTypes.dark"
+                />
               </td>
-              <td class="text-center">
-                <n-tag :type="item.returned ? 'warning' : 'default'" size="small" round>
-                  {{ item.returned ? $t('content.yes') : $t('content.no') }}
-                </n-tag>
+              <td>
+                <UIBadge
+                  class="justify-center"
+                  :label="item.returned ? $t('content.yes') : $t('content.no')"
+                  :type="item.returned ? Utils.colorTypes.warning : Utils.colorTypes.dark"
+                />
               </td>
               <td>
                 <n-button v-if="item.file" size="small" @click="onDownload(item)">
@@ -96,7 +100,6 @@
                   </template>
                   {{ $t('content.download') }}
                 </n-button>
-                <span v-else class="text-xs text-gray-400">—</span>
               </td>
             </tr>
           </tbody>

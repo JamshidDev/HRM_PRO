@@ -1,5 +1,5 @@
 <script setup>
-  import { UITable, UIUser } from '@/components/index.js'
+  import { UIBadge, UITable, UIUser } from '@/components/index.js'
   import i18n from '@/i18n/index.js'
   import { useWorkerCertificateStore } from '@stores'
   import { Utils } from '@utils'
@@ -62,12 +62,15 @@
       />
     </template>
 
-    <!-- Guvohnoma yo'q bo'lsa raqam o'rniga aniq belgi — bo'sh katak emas. -->
+    <!-- Guvohnoma yo'q bo'lsa «Berilmagan» tegi; raqamga bosilsa — modalda hammasi.
+         Qolgan ustunlar bunday xodimda BO'SH qoladi (to'ldiruvchi belgi qo'yilmaydi). -->
     <template #cell-number="{ row }">
-      <n-tag v-if="!row.certificate" size="small" :bordered="false">
-        {{ $t('workerCertificatePage.table.noCertificate') }}
-      </n-tag>
-      <!-- Raqamga bosilsa — xodimning BARCHA guvohnomalari modalda. -->
+      <UIBadge
+        v-if="!row.certificate"
+        :show-icon="false"
+        :label="$t('workerCertificatePage.table.noCertificate')"
+        :type="Utils.colorTypes.dark"
+      />
       <span
         v-else
         class="text-primary cursor-pointer hover:underline"
@@ -78,35 +81,29 @@
     </template>
 
     <template #cell-issue_date="{ row }">
-      {{ row.certificate ? Utils.timeOnlyDate(row.certificate.issue_date) : '-' }}
+      {{ row.certificate ? Utils.timeOnlyDate(row.certificate.issue_date) : '' }}
     </template>
 
     <template #cell-expiry_date="{ row }">
-      {{ validUntil(row.certificate) ? Utils.timeOnlyDate(validUntil(row.certificate)) : '-' }}
+      {{ validUntil(row.certificate) ? Utils.timeOnlyDate(validUntil(row.certificate)) : '' }}
     </template>
 
     <template #cell-verify="{ row }">
-      <n-tag
+      <UIBadge
         v-if="row.certificate"
-        size="small"
-        :bordered="false"
-        :type="row.certificate.verify ? 'success' : 'default'"
-      >
-        {{ row.certificate.verify ? $t('content.yes') : $t('content.no') }}
-      </n-tag>
-      <span v-else>-</span>
+        class="justify-center"
+        :label="row.certificate.verify ? $t('content.yes') : $t('content.no')"
+        :type="row.certificate.verify ? Utils.colorTypes.success : Utils.colorTypes.dark"
+      />
     </template>
 
     <template #cell-returned="{ row }">
-      <n-tag
+      <UIBadge
         v-if="row.certificate"
-        size="small"
-        :bordered="false"
-        :type="row.certificate.returned ? 'warning' : 'default'"
-      >
-        {{ row.certificate.returned ? $t('content.yes') : $t('content.no') }}
-      </n-tag>
-      <span v-else>-</span>
+        class="justify-center"
+        :label="row.certificate.returned ? $t('content.yes') : $t('content.no')"
+        :type="row.certificate.returned ? Utils.colorTypes.warning : Utils.colorTypes.dark"
+      />
     </template>
   </UITable>
 </template>
