@@ -1513,7 +1513,8 @@
       "verify": "Tasdiqlangan",
       "returned": "Qaytarib olingan",
       "certificateFile": "Guvohnoma fayli",
-      "regenerate": "Qayta generatsiya"
+      "regenerate": "Lavozimni qayta hisoblash",
+      "postNameHint": "Xodimning joriy lavozimidan avtomatik hosil qilinadi — kerak bo'lsa qo'lda tahrirlang"
     }
   },
   "languageCertificatePage": {

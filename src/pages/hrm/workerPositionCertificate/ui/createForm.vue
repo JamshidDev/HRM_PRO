@@ -69,15 +69,13 @@
       if (p.extended_date) formData.append('extended_date', p.extended_date)
       // verify/returned YUBORILMAYDI — backend default false qo'yadi.
 
+      // Fayl FAQAT yangi tanlangan bo'lsa (`size` bor) yuboriladi. Bo'sh qiymat
+      // yuborilsa backend uni "fayl yo'q" deb tushunib eski yo'lni o'chirardi.
+      if (p.file?.size) formData.append('file', p.file)
+
       store.saveLoading = true
-      if (store.visibleType) {
-        formData.append('file', p.file ?? '')
-        store._create(formData)
-      } else {
-        // Tahrirda faqat YANGI fayl (size bor) yuboriladi; eski yo'l o'zgarmaydi.
-        formData.append('file', p.file?.size ? p.file : '')
-        store._update(formData)
-      }
+      if (store.visibleType) store._create(formData)
+      else store._update(formData)
     })
   }
 
@@ -94,15 +92,29 @@
     <n-form ref="formRef" :rules="rules" :model="store.payload">
       <!-- Lavozim (post_name) — generate qilingan qiymat bilan to'ldiriladi,
            foydalanuvchi tahrirlashi yoki qayta generate qilishi mumkin. -->
-      <n-form-item path="post_name">
-        <template #label>
-          <div class="flex items-center gap-2">
-            <span>{{ $t('workerPositionCertificatePage.form.postName') }}</span>
+      <n-form-item
+        path="post_name"
+        :label="$t('workerPositionCertificatePage.form.postName')"
+      >
+        <div class="w-full">
+          <n-input
+            v-model:value="store.payload.post_name"
+            type="textarea"
+            :autosize="{ minRows: 2, maxRows: 5 }"
+            :placeholder="$t('content.enterField')"
+          />
+          <div class="post-name-help">
+            <span class="post-name-help__text">
+              {{ $t('workerPositionCertificatePage.form.postNameHint') }}
+            </span>
+            <!-- Tugma inputning O'ZI ostida: nimani qayta hisoblashi aniq ko'rinsin.
+                 Qiymat generate qilingandan farq qilmasa — bosishdan ma'no yo'q. -->
             <n-button
-              text
-              type="primary"
+              secondary
+              round
               size="tiny"
-              :disabled="!generatedPostName"
+              type="primary"
+              :disabled="!generatedPostName || store.payload.post_name === generatedPostName"
               @click="onRegeneratePostName"
             >
               <template #icon>
@@ -111,13 +123,7 @@
               {{ $t('workerPositionCertificatePage.form.regenerate') }}
             </n-button>
           </div>
-        </template>
-        <n-input
-          v-model:value="store.payload.post_name"
-          type="textarea"
-          :autosize="{ minRows: 2, maxRows: 5 }"
-          :placeholder="$t('content.enterField')"
-        />
+        </div>
       </n-form-item>
 
       <!-- Guvohnoma raqami -->
@@ -209,6 +215,23 @@
 </template>
 
 <style scoped>
+  /* Lavozim maydoni ostidagi izoh + "qayta hisoblash" tugmasi. */
+  .post-name-help {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-top: 6px;
+  }
+  .post-name-help__text {
+    flex: 1;
+    min-width: 180px;
+    font-size: 12px;
+    line-height: 1.35;
+    color: var(--textColor2, #9ca3af);
+  }
+
   .file-name {
     display: block;
     max-width: 100%;

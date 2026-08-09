@@ -1488,7 +1488,8 @@
       "verify": "Verified",
       "returned": "Returned",
       "certificateFile": "Certificate file",
-      "regenerate": "Regenerate"
+      "regenerate": "Recalculate position",
+      "postNameHint": "Generated automatically from the employee's current position — edit manually if needed"
     }
   },
   "languageCertificatePage": {
