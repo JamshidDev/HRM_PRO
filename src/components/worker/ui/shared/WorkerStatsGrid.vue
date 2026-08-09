@@ -5,7 +5,6 @@
   import CertificateIcon from '@/assets/icons/certificateIcon.svg'
   import JshirIcon from '@/assets/icons/jshirIcon.svg'
   import PhoneIcon from '@/assets/icons/phoneIcon.svg'
-  import WorkerPhoneIcon from '@/assets/icons/workerPhoneIcon.svg'
   import CopyIcon from '@/assets/icons/copyIcon.svg'
 
   defineProps({
@@ -99,7 +98,7 @@
     <div class="min-w-0 lg:flex-1 lg:pl-4">
       <div class="flex items-center gap-1.5 text-textColor3 text-sm mb-1">
         <n-icon size="14">
-          <WorkerPhoneIcon />
+          <PhoneIcon />
         </n-icon>
         {{ $t('workerView.header.workNumber') }}
       </div>

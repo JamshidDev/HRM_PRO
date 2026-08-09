@@ -3375,9 +3375,56 @@
   "turnstileSchedule": {
     "name": "Turnstile schedule"
   },
+  "approve": {
+    "name": "Sent employees",
+    "createTitle": "Send employees",
+    "updateTitle": "Edit",
+    "confirmWorkers": "Admit employees to the turnstile",
+    "form": {
+      "sended": "Sent",
+      "selectedWorker": "Selected",
+      "received": "Arrived"
+    }
+  },
+  "lmsCertificate": {
+    "name": "Certificates",
+    "createTitle": "Add and edit certificate",
+    "updateTitle": "Edit certificate",
+    "form": {
+      "protocol_date": "Protocol date",
+      "cert_to": "Valid until",
+      "cert_from": "Valid from",
+      "start_exam_result": "Entry exam",
+      "end_exam_result": "Exit exam",
+      "enterExam": "Entry/I",
+      "exitExam": "Exit/I"
+    },
+    "warning": {
+      "invalidResult": "Invalid data entered"
+    }
+  },
+  "staffingApproval": {
+    "name": "Staffing",
+    "createTitle": "Send staffing for approval",
+    "form": {
+      "director_id": "Approving employee",
+      "confirmOrganization": "Approving organization",
+      "confirmatory_id": "Head of organization"
+    }
+  },
   "notificationPage": {
     "name": "Notifications",
     "create": "Create notification"
+  },
+  "congratulation": {
+    "name": "Telegram messages",
+    "description": {
+      "birthday": "Number of employees congratulated on their birthday",
+      "vacation": "Number of employees notified about vacation",
+      "med": "Number of employees notified about medical examination",
+      "passport": "Number of employees notified about passport expiry",
+      "mobile": "Number of employees notified via mobile app"
+    }
   },
   "mobileStoryPage": {
     "name": "Story announcements",
