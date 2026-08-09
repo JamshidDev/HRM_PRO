@@ -3737,6 +3737,9 @@
       "issued": "Issued",
       "verify": "Verified",
       "returned": "Returned"
+    },
+    "modal": {
+      "notVerified": "Not verified"
     }
   }
 }

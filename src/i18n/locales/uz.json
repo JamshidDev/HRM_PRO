@@ -3830,6 +3830,9 @@
       "issued": "Berilgan",
       "verify": "Tasdiqlangan",
       "returned": "Qaytarib olingan"
+    },
+    "modal": {
+      "notVerified": "Tasdiqlanmagan"
     }
   }
 }
