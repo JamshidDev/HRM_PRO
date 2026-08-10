@@ -47,6 +47,59 @@
   background: var(--primary-card)
 }
 
+/* Pill ko'rinishidagi tab bar: oq rail ichida siljiydigan "pill".
+   Aktiv pill sifatida naive-ui'ning `.n-tabs-bar` elementidan foydalanamiz —
+   JS uni aktiv tabning offsetLeft/offsetWidth'iga qarab joylaydi va
+   left/max-width transition bilan siljitadi. */
+.ui-pill-tabs {
+  /* MUHIM: `>` — faqat shu n-tabs'ning o'z nav'i uslublanadi.
+     Descendant selektor bo'lsa uslub ichma-ich joylashgan n-tabs'larga ham
+     oqib ketadi (masalan hrm/dashboard sahifasida) va ularning `.n-tabs-bar`i
+     to'liq balandlikdagi oq blokka aylanib kontentni bosib qoladi. */
+  > .n-tabs-nav {
+    /* Rail kontent kengligida — sahifa fonida alohida "kartochka" bo'lib turadi.
+       `max-width` tab'lar ko'p bo'lganda (role modali: ~10 ta) ichki gorizontal
+       scroll ishlashi uchun kerak. */
+    width: fit-content;
+    max-width: 100%;
+    background: var(--surface-section);
+    border: 1px solid var(--surface-line);
+    border-radius: 16px;
+    padding: 5px;
+    /* Rail bilan tab kontenti orasidagi bo'shliq — pane'ning o'z padding'iga
+       tayanmaydi, shunda `!p-0` li panellarda ham bir xil masofa saqlanadi. */
+    margin-bottom: 12px;
+
+    --n-tab-border-color: transparent;
+    --n-bar-color: var(--surface-ground-soft);
+    --n-tab-padding: 9px 18px;
+    --n-tab-gap: 4px;
+    /* Nofaol tab — ochroq kulrang, faol tab — to'q. */
+    --n-tab-text-color: var(--textColor1);
+    --n-tab-text-color-hover: var(--textColor0);
+    --n-tab-text-color-active: var(--textColor0);
+    /* Faol tabda qalinlik o'zgarmasin — aks holda matn kengayib, pill va qo'shni
+       tablar sakrab qoladi. */
+    --n-tab-font-weight-active: var(--n-tab-font-weight);
+
+    .n-tabs-tab {
+      border-radius: 12px;
+      font-size: 14px;
+      white-space: nowrap;
+    }
+
+    /* 2px'lik chiziqni to'liq balandlikdagi pillga aylantiramiz.
+       `!important` — naive-ui runtime style'lari bir xil specificity'da. */
+    .n-tabs-bar {
+      top: 0 !important;
+      bottom: 0 !important;
+      height: auto !important;
+      border-radius: 12px !important;
+      box-shadow: inset 0 0 0 1px var(--surface-line);
+    }
+  }
+}
+
 .sidebar-panel {
   // background:var(--sidebar-panel) !important;
 }

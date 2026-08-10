@@ -96,6 +96,7 @@
 </script>
 <template>
   <UIPageFilter
+    :add-permission="accStore.pn.hrPositionsWrite"
     @show="onShow"
     :search-loading="store.loading"
     :filter-count="filterCount"

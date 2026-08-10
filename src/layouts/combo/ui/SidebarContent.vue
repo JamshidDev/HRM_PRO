@@ -26,7 +26,7 @@
   })
 
   const checkPage = (path) => {
-    if ([AppPaths.Home, AppPaths.AIConversation, AppPaths.Info].includes(path)) {
+    if ([AppPaths.Home, AppPaths.Info].includes(path)) {
       menuPath.value = null
       emits('onClose')
     }
@@ -51,11 +51,6 @@
     menuPath.value = path
     let index = navigations.findIndex((v) => v.path === path)
     if (navigations[index].children && navigations[index].children.length) {
-      // router.push(
-      //   navigations[index].children.filter(
-      //     (v) => store.isModeDev || store.checkPermission(v.permission)
-      //   )?.[0]?.path
-      // )
       emits('onOpen')
     } else {
       router.push(navigations[index].path)
@@ -67,26 +62,31 @@
     }, 150)
   }
 
+  /**
+   * Mobil kenglik — organizationLayout.scss dagi $mobile_device_screen_size (900px) bilan bir xil.
+   * Bu o'lchamdan pastda sidebar kontentni to'liq qoplab turadi.
+   */
+  const isMobileWidth = () => window.matchMedia('(max-width: 899.5px)').matches
+
   const onChangePath = (item) => {
     if (item?.disable) return
     router.push(item.path)
+    // Mobilda sahifaga o'tgach sidebar yopilsin (desktop holati saqlanmasin)
+    if (isMobileWidth()) emits('onClose', false)
   }
 
   /**
-   * Menyu ko'rish ruxsati: bare slug YOKI uning '-read' varianti yetarli.
-   * Fine-grained migratsiyadan keyin rollar 'hr-departments-read' oladi, menyu esa
-   * tarixan bare 'hr-departments' tekshirardi — natijada faqat -read'ga ega rol
-   * sahifani ochsa ham menyu yashirilardi. Ikkovini ham qamraymiz.
+   * Ko'rish qoidasi (bare slug YOKI uning '-read' varianti) endi store'dagi
+   * `canView` getterida — router bilan AYNAN bir xil manba. Ilgari bu mantiq
+   * shu yerda va router/index.js da alohida-alohida yozilgan edi.
    */
-  const canView = (permission) =>
-    store.checkPermission(permission) || store.checkPermission(`${permission}-read`)
+  const canView = (permission) => store.canView(permission)
 
   /**
    * Modul (mini-menyu) FAQAT o'zining module-access ruxsati bo'lsa ko'rinadi.
-   * isModeDev bypass ATAYLAB OLIB TASHLANDI — menyu va moddalar HAR DOIM (localda ham)
-   * permissionga mos ko'rinsin. Avvalgi child-fallback ham yo'q (`instructions` kabi
-   * umumiy permission tufayli hr/hrLeader Admin modulini ko'rib qolardi). Ichki
-   * sahifalar ham o'z permissioni bilan filtrlanadi (children.filter, pastda).
+   * Avvalgi child-fallback yo'q (`instructions` kabi umumiy permission tufayli
+   * hr/hrLeader Admin modulini ko'rib qolardi). Ichki sahifalar ham o'z
+   * permissioni bilan filtrlanadi (children.filter, pastda).
    */
   const moduleVisible = (mod) => canView(mod.permission)
 

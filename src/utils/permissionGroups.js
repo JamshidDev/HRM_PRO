@@ -19,7 +19,7 @@ export const ENFORCED = new Set([
   'holiday-greetings-delete', 'holiday-greetings-read', 'holiday-greetings-write', 'holidays-delete', 'holidays-write', 'hr',
   'hr-business-trip-read', 'hr-check-worker', 'hr-commands-delete', 'hr-commands-read', 'hr-commands-write', 'hr-confirmations-delete',
   'hr-confirmations-read', 'hr-confirmations-write', 'hr-contract-additional-delete', 'hr-contract-additional-read', 'hr-contract-additional-write', 'hr-contracts-delete',
-  'hr-contracts-read', 'hr-contracts-write', 'hr-dashboard', 'hr-dashboard-audit', 'hr-dashboard-read', 'hr-departments-delete', 'hr-departments-read',
+  'hr-certificates-read', 'hr-contracts-read', 'hr-contracts-write', 'hr-dashboard', 'hr-dashboard-audit', 'hr-dashboard-read', 'hr-departments-delete', 'hr-departments-read',
   'hr-departments-write', 'hr-discips-read', 'hr-documents-delete', 'hr-documents-read', 'hr-documents-write', 'hr-edu-plans-read',
   'hr-edu-plans-write', 'hr-incentives-read', 'hr-incentives-write', 'hr-language-certificates-delete', 'hr-language-certificates-read', 'hr-language-certificates-write',
   'hr-leaders-delete', 'hr-leaders-read', 'hr-leaders-write', 'hr-med-delete', 'hr-med-read', 'hr-med-write',
@@ -71,7 +71,7 @@ export const MEANINGFUL = new Set([
   'hr', 'hr-business-trip', 'hr-business-trip-read', 'hr-business-trip-write', 'hr-check-worker', 'hr-commands',
   'hr-commands-blank', 'hr-commands-delete', 'hr-commands-read', 'hr-commands-write', 'hr-confirmations', 'hr-confirmations-delete',
   'hr-confirmations-read', 'hr-confirmations-write', 'hr-contract-additional', 'hr-contract-additional-delete', 'hr-contract-additional-read', 'hr-contract-additional-write',
-  'hr-contracts', 'hr-contracts-delete', 'hr-contracts-read', 'hr-contracts-write', 'hr-dashboard', 'hr-dashboard-audit', 'hr-dashboard-read',
+  'hr-certificates-read', 'hr-contracts', 'hr-contracts-delete', 'hr-contracts-read', 'hr-contracts-write', 'hr-dashboard', 'hr-dashboard-audit', 'hr-dashboard-read',
   'hr-departments', 'hr-departments-delete', 'hr-departments-read', 'hr-departments-write', 'hr-discips', 'hr-discips-read',
   'hr-documents', 'hr-documents-delete', 'hr-documents-read', 'hr-documents-write', 'hr-edu-plans-read', 'hr-edu-plans-write',
   'hr-export', 'hr-incentives', 'hr-incentives-read', 'hr-incentives-write', 'hr-jobs', 'hr-jobs-read',
@@ -132,6 +132,7 @@ export const PERMISSION_GROUPS = [
         ],
       },
       { prefix: 'hr-workers', label: 'workerPage.name' },
+      { prefix: 'hr-certificates', label: 'workerCertificatePage.name' },
       { prefix: 'hr-departments', label: 'departmentPage.name' },
       { prefix: 'hr-positions', label: 'departmentPositionPage.name' },
       { prefix: 'hr-contracts', label: 'confirmation.name' },
@@ -154,6 +155,12 @@ export const PERMISSION_GROUPS = [
       { prefix: 'lms-worker', label: 'lmsWorkerPage.name' },
       { prefix: 'hr-report-export', label: 'specialReport.name' },
       { prefix: 'hr-monthly-report', label: 'structureReport.name' },
+      // Backend enforce qiladigan, lekin guruhi bo'lmagani uchun faqat "Boshqa"
+      // ro'yxatida xom slug ko'rinishida turgan sohalar.
+      { prefix: 'hr-pensioners', label: 'pensioner.name' },
+      { prefix: 'hr-polyclinics', label: 'polyclinic.name' },
+      { prefix: 'hr-language-certificates', label: 'languageCertificatePage.title' },
+      { prefix: 'hr-organization-phones', label: 'content.phone' },
     ],
   },
   {
@@ -201,6 +208,16 @@ export const PERMISSION_GROUPS = [
       { prefix: 'turnstile-sheets-workers', label: 'shiftType.name' },
       { prefix: 'turnstile-sheets-groups', label: 'shiftType.groupName' },
       { prefix: 'turnstile-approve', label: 'approve.name' },
+      // Navigatsiyada bandi izohga olingan, lekin route'lari tirik va backend
+      // ularni enforce qiladi — shuning uchun admin ularni bera olishi kerak.
+      { prefix: 'turnstile-building', label: 'turnstile.buildingPage.title' },
+      { prefix: 'turnstile-terminal', label: 'turnstile.terminalPage.title' },
+      { prefix: 'turnstile-organization', label: 'turnstile.organization.title' },
+      { prefix: 'turnstile-workers', label: 'turnstile.terminalUser.title' },
+      { prefix: 'turnstile-work-duration', label: 'turnstile.workDurationPage.name' },
+      { prefix: 'turnstile-hik-central-job', label: 'hcServer.name' },
+      { prefix: 'turnstile-hcp-duration', label: 'hcWorkDuration.name' },
+      { prefix: 'turnstile-hik-central-tg-user', label: 'notification.name' },
     ],
   },
   {
@@ -299,11 +316,17 @@ export const PERMISSION_GROUPS = [
       { prefix: 'activity-logs', label: 'actionLog.name' },
       { prefix: 'document-examples', label: 'documentSetting.name' },
       { prefix: 'holidays', label: 'holidayPage.name' },
-      { prefix: 'universities', label: 'othersPage.name' },
+      // "Boshqalar" sahifasi uch tabdan iborat va har biri o'z slug oilasiga ega —
+      // ilgari faqat `universities` guruhi bor edi, qolgan ikkitasi "Boshqa"da qolardi.
+      { prefix: 'universities', label: 'othersPage.tabs.university' },
+      { prefix: 'specialities', label: 'othersPage.tabs.speciality' },
+      { prefix: 'languages', label: 'othersPage.tabs.language' },
       { prefix: 'telegram', label: 'telegramPage.name' },
       { prefix: 'learning-centers', label: 'learningCenterPage.name' },
       { prefix: 'instructions', label: 'instructionPage.name' },
       { prefix: 'mobile-users', label: 'mobileUserPage.name' },
+      { prefix: 'integration-clients', label: 'integrationClients.name' },
+      { prefix: 'holiday-greetings', label: 'holidayGreetingPage.name' },
     ],
   },
   {

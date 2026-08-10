@@ -37,11 +37,11 @@
 <template>
   <UIPageContent>
     <UIPageFilter
+      :add-permission="accStore.pn.organizationsWrite"
       :show-filter-button="false"
       v-model:search="store.params.search"
       @on-search="onSearch"
       @on-add="onAdd"
-      class="mb-6"
     />
     <Table />
     <UIDrawer

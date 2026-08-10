@@ -7,19 +7,22 @@
   const store = useHolidayGreetingStore()
   const accStore = useAccountStore()
 
+  // Ilgari butun bo'lim qo'pol `admin` slug'i bilan qo'riqlanardi. Backend
+  // `holiday-greetings-read/-write/-delete` oilasini enforce qiladi va rol
+  // formasida alohida guruh sifatida beriladi.
   const onAdd = () => {
-    if (!accStore.checkAction(accStore.pn.admin)) return
+    if (!accStore.checkAction(accStore.pn.holidayGreetingsWrite)) return
     store.onCreate()
   }
 
   const onSearch = () => {
-    if (!accStore.checkAction(accStore.pn.admin)) return
+    if (!accStore.canView(accStore.pn.holidayGreetings)) return
     store.params.page = 1
     store._index()
   }
 
   onMounted(() => {
-    if (!accStore.checkAction(accStore.pn.admin)) return
+    if (!accStore.canView(accStore.pn.holidayGreetings)) return
     store._index()
   })
 </script>
@@ -27,7 +30,7 @@
 <template>
   <UIPageContent>
     <UIPageFilter
-      :title="$t('holidayGreetingPage.name')"
+      :add-permission="accStore.pn.holidayGreetingsWrite"
       v-model:search="store.params.search"
       @on-search="onSearch"
       :search-loading="store.loading"
@@ -39,7 +42,11 @@
       v-model:visible="store.visible"
       width="720"
       height="85vh"
-      :title="store.visibleType ? $t('holidayGreetingPage.createTitle') : $t('holidayGreetingPage.updateTitle')"
+      :title="
+        store.visibleType
+          ? $t('holidayGreetingPage.createTitle')
+          : $t('holidayGreetingPage.updateTitle')
+      "
     >
       <template #default>
         <createForm />

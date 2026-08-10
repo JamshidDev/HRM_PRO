@@ -6,6 +6,7 @@ import i18n from '@/i18n/index.js'
 import updateLocale from 'dayjs/plugin/updateLocale'
 import dayjs from 'dayjs'
 import { getActivePinia } from 'pinia'
+import { useAccountStore } from '@/store/modules/app/accountStore.js'
 
 dayjs.extend(updateLocale)
 dayjs.updateLocale('uz', {
@@ -104,6 +105,9 @@ export const useAppStore = defineStore('appStore', {
       localStorage.removeItem('telegramPopup')
       localStorage.removeItem('app-token')
       sessionStorage.clear()
+      // accountStore'da `skipReset: true` — quyidagi reset() uni chetlab o'tadi,
+      // shuning uchun ruxsatlar aniq tozalanadi (aks holda keyingi foydalanuvchiga sizadi).
+      useAccountStore().clearPermissions()
       router?.push(AppPaths.Login)
       getActivePinia().reset()
     },

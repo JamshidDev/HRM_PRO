@@ -106,6 +106,7 @@
 
 <template>
   <UITable
+    permission-prefix="turnstile-hik-central-sync"
     :columns="columns"
     :actions="actions"
     :data="store.list"

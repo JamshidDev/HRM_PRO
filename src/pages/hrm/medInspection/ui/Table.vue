@@ -82,6 +82,7 @@ import { Delete20Regular, Eye16Regular } from '@vicons/fluent'
 
 <template>
   <UITable
+    permission-prefix="hr-med"
     :columns="columns"
     :actions="actions"
     :data="store.list"

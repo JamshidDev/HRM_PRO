@@ -21,7 +21,7 @@
 </script>
 
 <template>
-  <div style="height: calc(100vh - 140px)" class="overflow-y-auto overflow-x-hidden mb-[20px]">
+  <div style="min-height: calc(100vh - 140px)" class="mb-[20px]">
     <n-form
       class="px-2"
       ref="formRef"

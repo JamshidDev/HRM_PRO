@@ -1,5 +1,5 @@
 <script setup>
-  import { Person32Regular, DocumentTable16Regular } from '@vicons/fluent'
+  import { Person32Regular, DocumentTable16Regular, ArrowLeft20Filled } from '@vicons/fluent'
   import { useComponentStore, useDashboardStore } from '@/store/modules/index.js'
   import { UIPageFilter, UISelect, UIYearMonth } from '@/components/index.js'
   import isdeepequal from 'fast-deep-equal'
@@ -131,6 +131,15 @@
     :show-add-button="false"
     :show-filter-button="!!store.activeDetail?.filters?.length"
   >
+    <template #filterBefore>
+      <!-- Breadcrumb olib tashlangani uchun kartalar ro'yxatiga qaytishning yagona yo'li. -->
+      <n-button secondary strong @click="store.activeDetail = null">
+        <template #icon>
+          <n-icon :component="ArrowLeft20Filled" />
+        </template>
+        {{ $t('content.back') }}
+      </n-button>
+    </template>
     <template #filterAction>
       <n-button type="success" icon-placement="right">
         <template #icon>

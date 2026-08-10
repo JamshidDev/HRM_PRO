@@ -219,8 +219,11 @@
       </div>
     </template>
     <template #filterAction>
+      <!-- `checkAction` yon ta'sirli (toast chiqaradi) — template'da chaqirilsa
+           har render'da ogohlantirish otilardi. Ko'rinish/holat uchun sof
+           `checkPermission` ishlatiladi; tugma yashirilmay, kulrang bo'ladi. -->
       <n-button
-        v-if="accStore.checkAction(accStore.pn.turnstileHikCentralSyncWrite)"
+        :disabled="!accStore.checkPermission(accStore.pn.turnstileHikCentralSync)"
         :loading="store.jobLoading"
         @click="onSync"
         type="primary"
@@ -231,7 +234,7 @@
         </template>
       </n-button>
       <n-button
-        v-if="accStore.checkAction(accStore.pn.turnstileAbsentWorkersExport)"
+        :disabled="!accStore.checkPermission(accStore.pn.turnstileAbsentWorkersExport)"
         @click="onOpenDownloadModal"
         :loading="storeV2.download.loading"
         type="success"

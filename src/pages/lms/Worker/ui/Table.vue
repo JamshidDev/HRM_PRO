@@ -72,6 +72,7 @@
 
 <template>
   <UITable
+    permission-prefix="lms-worker"
     :columns="columns"
     :actions="actions"
     :data="store.list"

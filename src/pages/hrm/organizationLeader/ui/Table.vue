@@ -70,6 +70,7 @@ import { Mask } from 'maska'
 
 <template>
   <UITable
+    permission-prefix="hr-leaders"
     :columns="columns"
     :actions="actions"
     :data="store.list"

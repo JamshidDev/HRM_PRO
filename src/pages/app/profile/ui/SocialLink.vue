@@ -45,7 +45,7 @@
 </script>
 
 <template>
-  <SectionHeader :title="$t('profilePage.tabs.social.title')" :icon="UserPlusIcon" plain large>
+  <SectionHeader :title="$t('profilePage.tabs.social.title')" :icon="UserPlusIcon" large>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
       <div class="relative overflow-hidden rounded-2xl bg-surface-ground p-5 min-h-[190px]">
         <img
@@ -65,7 +65,7 @@
             {{ $t('profilePage.tabs.social.copy') }}
           </div>
         </div>
-        <div class="relative z-10 mt-8">
+        <div class="absolute z-10 left-5 bottom-5">
           <n-button type="primary" size="large" class="!rounded-lg" @click="openLink(props.links[0].url)">
             <span class="flex items-center gap-2">
               {{ $t('profilePage.tabs.social.join') }}
@@ -95,7 +95,7 @@
             {{ $t('profilePage.tabs.social.copy') }}
           </div>
         </div>
-        <div class="relative z-10 mt-8">
+        <div class="absolute z-10 left-5 bottom-5">
           <n-button type="primary" size="large" class="!rounded-lg" @click="openLink(props.links[1].url)">
             <span class="flex items-center gap-2">
               {{ $t('profilePage.tabs.social.join') }}

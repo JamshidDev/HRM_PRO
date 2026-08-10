@@ -14,6 +14,14 @@ export default [
 
     ...pluginVue.configs['flat/recommended'],
 
+    // scripts/*.mjs — brauzerda emas, Node'da ishlaydigan yordamchi skriptlar.
+    {
+        files: ['**/*.mjs'],
+        languageOptions: {
+            globals: { ...globals.node }
+        }
+    },
+
     {
         files: ['**/*.{js,vue}'],
         languageOptions: {

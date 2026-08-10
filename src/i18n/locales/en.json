@@ -240,6 +240,7 @@
     "changeAccount": "My accounts",
     "logOutSystem": "Log out",
     "paginationSize": "Show {n} items",
+    "perPage": "Per page",
     "confirm": "Confirm",
     "understood": "Understood",
     "month": "Month",
@@ -532,7 +533,8 @@
       "moduleAccess": "Module access",
       "type": "Role type",
       "typeSanctum": "User",
-      "typeIntegration": "Integration"
+      "typeIntegration": "Integration",
+      "orphanWarning": "This role has {n} permission(s) not shown in the list (the permission list may not be fully loaded). They will be kept unchanged on save."
     }
   },
   "userPage": {
@@ -1486,7 +1488,9 @@
       "extendedDate": "Extended date",
       "verify": "Verified",
       "returned": "Returned",
-      "certificateFile": "Certificate file"
+      "certificateFile": "Certificate file",
+      "regenerate": "Recalculate position",
+      "postNameHint": "Generated automatically from the employee's current position — edit manually if needed"
     }
   },
   "languageCertificatePage": {
@@ -1706,6 +1710,8 @@
     "addQuestion": "Add question",
     "editQuestion": "Edit question",
     "questionCount": "Number of questions",
+    "categoryName": "Category name",
+    "clearWarning": "All questions in this category will be deleted. Continue?",
     "uploadExcel": "Upload test questions",
     "pressUpload": "Click to upload!",
     "checkingFile": "Checking file...",
@@ -1729,6 +1735,8 @@
     "nVariant": "{n} variants",
     "variant_count": "Variants",
     "exam_duration": "Duration (min)",
+    "duration": "Duration",
+    "deadlineTitle": "Deadline",
     "totalTime": "Given time: {n} minutes",
     "nMinute": "{n} min",
     "totalMinute": "{n} minutes",
@@ -1964,6 +1972,25 @@
         "shortTypeOne": "Reprimand",
         "shortTypeTwo": "Other"
       }
+    },
+    "audit": {
+      "tabGeneral": "General dashboard",
+      "tabAudit": "Data audit",
+      "relativesShortage": "Close relatives incomplete",
+      "relativesWithoutJshshir": "Relative's PINFL not provided",
+      "nameErrors": "Invalid character in name",
+      "jshshirErrors": "Passport and PINFL do not match",
+      "positionCertificateMissing": "No service certificate",
+      "fio": "Full name",
+      "pin": "PINFL",
+      "organization": "Organization",
+      "position": "Position",
+      "relativesCount": "Relatives count",
+      "relativesWithoutJshshirCount": "Relatives without PINFL",
+      "reasons": "Errors",
+      "empty": "No data found",
+      "lastChecked": "Last check",
+      "worker": "Employee"
     }
   },
   "applicationPage": {
@@ -2298,7 +2325,9 @@
       "leaveBalance": "How much leave do I have left?",
       "lastSalary": "My last salary calculation",
       "getReference": "Get a reference letter",
-      "workedDays": "How many days have I worked this month?"
+      "workedDays": "How many days have I worked this month?",
+      "workedDaysShort": "How many days have I worked?",
+      "workSchedule": "What is my work schedule?"
     },
     "disclaimer": {
       "cardOne": "### 🧪 Test mode\n\nThis AI assistant is currently in **test mode**.  \nAnswers may be incomplete or _incorrect_.",
@@ -2310,7 +2339,13 @@
       "conversation": "Conversations",
       "goChat": "Return to chat",
       "feedback": "Thank you for feedback!",
-      "askQuestion": "Enter your question..."
+      "askQuestion": "Enter your question...",
+      "askQuestionOrMic": "Type your question or hold the mic to speak...",
+      "newChat": "New chat",
+      "searchConversations": "Search conversations",
+      "today": "Today",
+      "yesterday": "Yesterday",
+      "chatHistory": "Chat history"
     }
   },
   "others": {
@@ -3347,9 +3382,56 @@
   "turnstileSchedule": {
     "name": "Turnstile schedule"
   },
+  "approve": {
+    "name": "Sent employees",
+    "createTitle": "Send employees",
+    "updateTitle": "Edit",
+    "confirmWorkers": "Admit employees to the turnstile",
+    "form": {
+      "sended": "Sent",
+      "selectedWorker": "Selected",
+      "received": "Arrived"
+    }
+  },
+  "lmsCertificate": {
+    "name": "Certificates",
+    "createTitle": "Add and edit certificate",
+    "updateTitle": "Edit certificate",
+    "form": {
+      "protocol_date": "Protocol date",
+      "cert_to": "Valid until",
+      "cert_from": "Valid from",
+      "start_exam_result": "Entry exam",
+      "end_exam_result": "Exit exam",
+      "enterExam": "Entry/I",
+      "exitExam": "Exit/I"
+    },
+    "warning": {
+      "invalidResult": "Invalid data entered"
+    }
+  },
+  "staffingApproval": {
+    "name": "Staffing",
+    "createTitle": "Send staffing for approval",
+    "form": {
+      "director_id": "Approving employee",
+      "confirmOrganization": "Approving organization",
+      "confirmatory_id": "Head of organization"
+    }
+  },
   "notificationPage": {
     "name": "Notifications",
     "create": "Create notification"
+  },
+  "congratulation": {
+    "name": "Telegram messages",
+    "description": {
+      "birthday": "Number of employees congratulated on their birthday",
+      "vacation": "Number of employees notified about vacation",
+      "med": "Number of employees notified about medical examination",
+      "passport": "Number of employees notified about passport expiry",
+      "mobile": "Number of employees notified via mobile app"
+    }
   },
   "mobileStoryPage": {
     "name": "Story announcements",
@@ -3690,5 +3772,28 @@
     "mobileFaceSchedules": "Mobile face: schedules",
     "otpVerify": "OTP verify",
     "holidayGreetings": "Holiday greetings"
+  },
+  "workerCertificatePage": {
+    "name": "Certificates",
+    "table": {
+      "worker": "Employee",
+      "organization": "Organization",
+      "position": "Position",
+      "number": "Certificate number",
+      "issueDate": "Issue date",
+      "expiryDate": "Validity",
+      "verify": "Verified",
+      "returned": "Returned",
+      "noCertificate": "Not issued"
+    },
+    "filter": {
+      "status": "Certificate status",
+      "issued": "Issued",
+      "verify": "Verified",
+      "returned": "Returned"
+    },
+    "modal": {
+      "notVerified": "Not verified"
+    }
   }
 }

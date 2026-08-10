@@ -1,5 +1,5 @@
 <script setup>
-  import { UITable, UITableNameCell } from '@/components/index.js'
+  import { UITable, UITableNameCell, UITablePagination } from '@/components/index.js'
   import i18n from '@/i18n/index.js'
   import { useAccountStore, useTopicStore } from '@/store/modules/index.js'
   import UIHelper from '@/utils/UIHelper.js'
@@ -74,14 +74,15 @@
 
 <template>
   <UITable
+    permission-prefix="exam-topics"
     :columns="columns"
     :actions="actions"
+    :actions-title="$t('content.action')"
     :data="store.list"
     :loading="store.loading"
     :page="store.params.page"
     :per-page="store.params.per_page"
     :total="store.totalItems"
-    storage-key="attestation-topic"
     @change-page="changePage"
     @row-click="onRowClick"
   >
@@ -90,7 +91,16 @@
     </template>
 
     <template #[`cell-exams_count`]="{ row }">
-      <n-button size="small" circle>{{ row.exams_count }}</n-button>
+      <span class="text-sm font-semibold text-textColor0">{{ row.exams_count ?? 0 }}</span>
+    </template>
+
+    <template #footer>
+      <UITablePagination
+        :page="store.params.page"
+        :per-page="store.params.per_page"
+        :total="store.totalItems"
+        @change-page="changePage"
+      />
     </template>
   </UITable>
 </template>

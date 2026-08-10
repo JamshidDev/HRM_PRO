@@ -5,7 +5,7 @@
     useExportStore,
     useAccountStore
   } from '@/store/modules/index.js'
-  import { UINSelect, UIPageFilter, UISelect } from '@/components/index.js'
+  import { UINSelect, UIPageFilter, UISelect, UIPageTitle } from '@/components/index.js'
   import { ArrowSync16Regular, ChevronDown20Regular, ChevronUp20Regular } from '@vicons/fluent'
   import Utils from '@/utils/Utils.js'
   import { appPermissions, useDebounce } from '@/utils/index.js'
@@ -251,15 +251,16 @@
 </script>
 
 <template>
-  <div class="worker-page-header">
-    <h1 class="worker-page-title">{{ $t('workerPage.name') }}</h1>
-    <n-button type="primary" tertiary @click="store._index()" :loading="store.loading">
-      {{ $t('content.refresh') }}
-      <template #icon>
-        <n-icon><ArrowSync16Regular /></n-icon>
-      </template>
-    </n-button>
-  </div>
+  <UIPageTitle :title="$t('workerPage.name')">
+    <template #actions>
+      <n-button type="primary" tertiary @click="store._index()" :loading="store.loading">
+        {{ $t('content.refresh') }}
+        <template #icon>
+          <n-icon><ArrowSync16Regular /></n-icon>
+        </template>
+      </n-button>
+    </template>
+  </UIPageTitle>
 
   <UIPageFilter
     :search-loading="store.loading"
@@ -278,7 +279,7 @@
     }"
   >
     <template #filterAction>
-      <div class="flex flex-wrap items-center gap-3 w-full md:w-auto">
+      <div class="worker-action-group flex flex-wrap items-center gap-3 w-full md:w-auto">
         <n-button v-if="canWrite" type="primary" @click="onAdd">
           <template #icon>
             <img class="worker-action-icon" :src="contractIcon" alt="" />
@@ -645,21 +646,6 @@
 </template>
 
 <style scoped>
-  .worker-page-header {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    margin-bottom: 16px;
-  }
-
-  .worker-page-title {
-    margin: 0;
-    color: var(--textColor0);
-    font-size: 24px;
-    font-weight: 700;
-  }
 
   .worker-action-icon {
     width: 16px;
@@ -702,10 +688,27 @@
     cursor: not-allowed;
   }
 
+  /* Mobil: ikkala tugma bitta qatorda teng kenglikda, "Filterlar" esa alohida qatorda */
   @media (max-width: 767px) {
+    .worker-action-group {
+      flex-wrap: nowrap;
+      width: 100%;
+    }
+
+    .worker-action-group > * {
+      flex: 1 1 0;
+      min-width: 0;
+    }
+
     .worker-report-trigger {
       justify-content: center;
       width: 100%;
+    }
+
+    .worker-action-group :deep(.n-button__content) {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
   }
 

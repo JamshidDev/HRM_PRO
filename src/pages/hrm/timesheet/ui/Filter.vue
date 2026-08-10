@@ -44,6 +44,7 @@
 
 <template>
   <UIPageFilter
+    :add-permission="accStore.pn.hrTableWorkersWrite"
     v-model:search="store.params.search"
     @onSearch="onSearch"
     @onAdd="onAdd"

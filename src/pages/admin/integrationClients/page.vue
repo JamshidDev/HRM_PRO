@@ -10,17 +10,21 @@
   const accStore = useAccountStore()
 
   // tabs: [0]=dashboard, [1]=clients, [2]=logs
-  watch(() => store.activeTab, (tab) => {
-    if (tab === store.tabs[1] && store.clients.length === 0) {
-      store._clients()
+  watch(
+    () => store.activeTab,
+    (tab) => {
+      if (tab === store.tabs[1] && store.clients.length === 0) {
+        store._clients()
+      }
+      if (tab === store.tabs[2] && store.list.length === 0) {
+        store._index()
+      }
     }
-    if (tab === store.tabs[2] && store.list.length === 0) {
-      store._index()
-    }
-  })
+  )
 
   onMounted(() => {
-    if (!accStore.checkAction(accStore.pn.admin)) return
+    // Ilgari qo'pol `admin` edi; backend `integration-clients-*` ni enforce qiladi.
+    if (!accStore.canView(accStore.pn.integrationClients)) return
     const now = new Date()
     store.dashboardParams.date_from = new Date(now.getFullYear(), now.getMonth(), 1).getTime()
     store.dashboardParams.date_to = now.getTime()
@@ -32,18 +36,19 @@
   <UIPageContent>
     <Filter />
     <n-tabs
-      v-model:value="store.activeTab"
-      type="segment"
-      class="hidden-tab-header"
       animated
+      v-model:value="store.activeTab"
+      class="hidden-tab-header flex-1 overflow-auto"
+      pane-wrapper-class="flex-1 flex flex-col"
+      type="segment"
     >
-      <n-tab-pane :name="store.tabs[0]" class="!pt-0">
+      <n-tab-pane :name="store.tabs[0]" class="!pt-0 flex-1 overflow-auto flex flex-col gap-4">
         <Dashboard />
       </n-tab-pane>
-      <n-tab-pane :name="store.tabs[1]" class="!pt-0">
+      <n-tab-pane :name="store.tabs[1]" class="!pt-0 flex-1 overflow-auto flex flex-col gap-4">
         <Clients />
       </n-tab-pane>
-      <n-tab-pane :name="store.tabs[2]" class="!pt-0">
+      <n-tab-pane :name="store.tabs[2]" class="!pt-0 flex-1 overflow-auto flex flex-col gap-4">
         <Table />
       </n-tab-pane>
     </n-tabs>

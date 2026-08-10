@@ -3,6 +3,7 @@
   import clearFilterIcon from '@/assets/icons/clear_filter.svg?url'
   import filterIcon from '@/assets/icons/filter.svg?url'
   import searchIcon from '@/assets/icons/search.svg?url'
+  import { useAccountStore } from '@/store/modules/app/accountStore.js'
   const slots = useSlots()
   const props = defineProps({
     title: {
@@ -50,8 +51,30 @@
     addButtonTitle: {
       type: String,
       default: null
+    },
+    filterButtonTitle: {
+      type: String,
+      default: null
+    },
+    placeholder: {
+      type: String,
+      default: null
+    },
+    /**
+     * Qo'shish tugmasi uchun ruxsat slug'i (masalan `accStore.pn.countriesWrite`).
+     * Ruxsat bo'lmasa tugma YASHIRILMAYDI, balki kulrang bo'ladi — foydalanuvchi
+     * imkoniyat borligini ko'rib, admindan so'ray olsin.
+     */
+    addPermission: {
+      type: String,
+      default: null
     }
   })
+
+  const accStore = useAccountStore()
+  const addDisabled = computed(
+    () => !!props.addPermission && !accStore.checkPermission(props.addPermission)
+  )
   const hasFullFilterSlot = !!slots.fullFilterContent
   const searchModel = defineModel('search', { type: String, default: null })
   const searchInputRef = ref(null)
@@ -121,7 +144,7 @@
           v-if="showSearchInput"
           v-model:value="searchModel"
           type="text"
-          :placeholder="$t('content.search')"
+          :placeholder="placeholder || $t('content.search')"
           :on-keyup="searchEvent"
           
           @paste="searchEvent"
@@ -148,6 +171,7 @@
         <n-button
           class="ui-page-action-button w-full! md:w-auto!"
           v-if="showAddButton"
+          :disabled="addDisabled"
           type="primary"
           icon-placement="right"
           @click="addEvent"
@@ -185,7 +209,7 @@
               <template #icon>
                 <img class="ui-page-filter-icon" :src="filterIcon" alt="" />
               </template>
-              <span>{{ $t('content.filters') }}</span>
+              <span>{{ filterButtonTitle || $t('content.filters') }}</span>
               <span v-if="filterCount > 0" class="ui-page-filter-count">{{ filterCount }}</span>
             </n-button>
           </template>

@@ -1,5 +1,5 @@
 <script setup>
-  import { UIDrawer, UIModal, UIPageContent, UIPageFilter } from '@/components/index.js'
+  import { UIModal, UIPageContent, UIPageFilter } from '@/components/index.js'
   import Table from './ui/Table.vue'
   import Form from './ui/Form.vue'
   import UploadExcel from './categoryQuestion/ui/UploadExcel.vue'
@@ -12,6 +12,10 @@
   const store = useCategoryStore()
   const categoryQuestionStore = useCategoryQuestionStore()
   const accStore = useAccountStore()
+
+  // Saqlash/Bekor qilish tugmalari modal footer'ida turadi, forma esa faqat
+  // validatsiyani biladi.
+  const formRef = ref(null)
 
   const onAdd = () => {
     if (!accStore.checkAction(accStore.pn.examCategoriesWrite)) return
@@ -37,29 +41,41 @@
 <template>
   <UIPageContent>
     <UIPageFilter
-      :show-search-input="false"
+      :add-permission="accStore.pn.examCategoriesWrite"
+      :show-filter-button="false"
       v-model:search="store.params.search"
+      :search-loading="store.loading"
       @onSearch="onSearch"
       @onAdd="onAdd"
     />
     <Table />
-    <!--    That is a good category    -->
-    <UIDrawer
-      :width="300"
-      :visible="store.visible"
-      @update:visible="(v) => (store.visible = v)"
+    <UIModal
+      v-model:visible="store.visible"
       :title="
         store.visibleType ? $t('categoryPage.createCategory') : $t('categoryPage.editCategory')
       "
+      width="min(560px, calc(100vw - 32px))"
     >
-      <template #content>
-        <Form />
+      <Form ref="formRef" />
+      <template #footer>
+        <div class="flex justify-end gap-2 px-4 pb-2">
+          <n-button type="error" ghost class="w-[130px]" @click="store.openVisible(false)">
+            {{ $t('content.cancel') }}
+          </n-button>
+          <n-button
+            type="primary"
+            class="w-[130px]"
+            :loading="store.saveLoading"
+            @click="formRef?.submit()"
+          >
+            {{ $t('content.save') }}
+          </n-button>
+        </div>
       </template>
-    </UIDrawer>
+    </UIModal>
     <UIModal
       :width="'90%'"
-      :visible="categoryQuestionStore.excelVisible"
-      @update:visible="(v) => (categoryQuestionStore.excelVisible = v)"
+      v-model:visible="categoryQuestionStore.excelVisible"
       :title="$t('categoryPage.uploadExcel')"
     >
       <UploadExcel />

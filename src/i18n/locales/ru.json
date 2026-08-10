@@ -244,6 +244,7 @@
     "changeAccount": "Мои аккаунты",
     "logOutSystem": "Выйти из системы",
     "paginationSize": "Показать {n}",
+    "perPage": "На странице",
     "confirm": "Подтвердить",
     "understood": "Понятно",
     "month": "Месяц",
@@ -534,7 +535,8 @@
       "moduleAccess": "Доступ к модулю",
       "type": "Тип роли",
       "typeSanctum": "Пользователь",
-      "typeIntegration": "Integration"
+      "typeIntegration": "Integration",
+      "orphanWarning": "У этой роли есть {n} разрешений, которых нет в списке (возможно, список разрешений загружен не полностью). При сохранении они останутся без изменений."
     }
   },
   "userPage": {
@@ -1494,7 +1496,9 @@
       "extendedDate": "Дата продления",
       "verify": "Подтверждено",
       "returned": "Возвращено",
-      "certificateFile": "Файл удостоверения"
+      "certificateFile": "Файл удостоверения",
+      "regenerate": "Пересчитать должность",
+      "postNameHint": "Формируется автоматически из текущей должности сотрудника — при необходимости отредактируйте вручную"
     }
   },
   "languageCertificatePage": {
@@ -1714,6 +1718,8 @@
     "addQuestion": "Добавить вопрос",
     "editQuestion": "Редактировать вопрос",
     "questionCount": "Количество вопросов",
+    "categoryName": "Название категории",
+    "clearWarning": "Все вопросы категории будут удалены. Продолжить?",
     "uploadExcel": "Загрузить тестовые вопросы",
     "pressUpload": "Нажмите для загрузки!",
     "checkingFile": "Проверка файла...",
@@ -1737,6 +1743,8 @@
     "nVariant": "{n} вариантов",
     "variant_count": "Варианты",
     "exam_duration": "Продолжительность (мин)",
+    "duration": "Продолжительность",
+    "deadlineTitle": "Срок окончания",
     "totalTime": "Дано времени: {n} минут",
     "nMinute": "{n} мин",
     "totalMinute": "{n} минут",
@@ -1972,6 +1980,25 @@
         "shortTypeOne": "Выговор",
         "shortTypeTwo": "Другие"
       }
+    },
+    "audit": {
+      "tabGeneral": "Общий дашборд",
+      "tabAudit": "Аудит данных",
+      "relativesShortage": "Близкие родственники указаны не полностью",
+      "relativesWithoutJshshir": "Не указан ПИНФЛ родственника",
+      "nameErrors": "Ошибочный символ в имени/фамилии",
+      "jshshirErrors": "Паспорт и ПИНФЛ не совпадают",
+      "positionCertificateMissing": "Нет служебного удостоверения",
+      "fio": "Ф.И.О.",
+      "pin": "ПИНФЛ",
+      "organization": "Организация",
+      "position": "Должность",
+      "relativesCount": "Кол-во родственников",
+      "relativesWithoutJshshirCount": "Родственники без ПИНФЛ",
+      "reasons": "Ошибки",
+      "empty": "Данные не найдены",
+      "lastChecked": "Последняя проверка",
+      "worker": "Сотрудник"
     }
   },
   "applicationPage": {
@@ -2306,7 +2333,9 @@
       "leaveBalance": "Сколько дней отпуска у меня осталось?",
       "lastSalary": "Мой последний расчёт зарплаты",
       "getReference": "Получить справку",
-      "workedDays": "Сколько дней я отработал в этом месяце?"
+      "workedDays": "Сколько дней я отработал в этом месяце?",
+      "workedDaysShort": "Сколько дней я отработал?",
+      "workSchedule": "Какой у меня график работы?"
     },
     "disclaimer": {
       "cardOne": "### 🧪 Тестовый режим\n\nЭтот ИИ-помощник работает в **тестовом режиме**.  \nОтветы могут быть неполными или _неверными_.",
@@ -2318,7 +2347,13 @@
       "conversation": "Диалоги",
       "goChat": "Вернуться в чат",
       "feedback": "Спасибо за отзыв!",
-      "askQuestion": "Введите ваш вопрос..."
+      "askQuestion": "Введите ваш вопрос...",
+      "askQuestionOrMic": "Введите вопрос или удерживайте микрофон, чтобы говорить...",
+      "newChat": "Новый чат",
+      "searchConversations": "Поиск чатов",
+      "today": "Сегодня",
+      "yesterday": "Вчера",
+      "chatHistory": "История чата"
     }
   },
   "others": {
@@ -3358,9 +3393,56 @@
   "turnstileSchedule": {
     "name": "График турникета"
   },
+  "approve": {
+    "name": "Отправленные сотрудники",
+    "createTitle": "Отправить сотрудников",
+    "updateTitle": "Редактировать",
+    "confirmWorkers": "Допустить сотрудников на турникет",
+    "form": {
+      "sended": "Отправлено",
+      "selectedWorker": "Выбранные",
+      "received": "Прибыли"
+    }
+  },
+  "lmsCertificate": {
+    "name": "Сертификаты",
+    "createTitle": "Добавление и редактирование сертификата",
+    "updateTitle": "Редактирование сертификата",
+    "form": {
+      "protocol_date": "Дата протокола",
+      "cert_to": "До какого числа",
+      "cert_from": "С какого числа",
+      "start_exam_result": "Вступительный экзамен",
+      "end_exam_result": "Выпускной экзамен",
+      "enterExam": "Вход/И",
+      "exitExam": "Выход/И"
+    },
+    "warning": {
+      "invalidResult": "Введены неверные данные"
+    }
+  },
+  "staffingApproval": {
+    "name": "Штаты",
+    "createTitle": "Отправить штаты на согласование",
+    "form": {
+      "director_id": "Утверждающий сотрудник",
+      "confirmOrganization": "Утверждающая организация",
+      "confirmatory_id": "Руководитель организации"
+    }
+  },
   "notificationPage": {
     "name": "Уведомления",
     "create": "Создать уведомление"
+  },
+  "congratulation": {
+    "name": "Telegram-сообщения",
+    "description": {
+      "birthday": "Количество сотрудников, поздравленных с днём рождения",
+      "vacation": "Количество сотрудников, уведомлённых об отпуске",
+      "med": "Количество сотрудников, уведомлённых о медицинском осмотре",
+      "passport": "Количество сотрудников, уведомлённых об истечении срока паспорта",
+      "mobile": "Количество сотрудников, уведомлённых через мобильное приложение"
+    }
   },
   "mobileStoryPage": {
     "name": "Story-объявления",
@@ -3702,5 +3784,28 @@
     "mobileFaceSchedules": "Mobile face: графики",
     "otpVerify": "Проверка OTP",
     "holidayGreetings": "Праздничные поздравления"
+  },
+  "workerCertificatePage": {
+    "name": "Удостоверения",
+    "table": {
+      "worker": "Сотрудник",
+      "organization": "Организация",
+      "position": "Должность",
+      "number": "Номер удостоверения",
+      "issueDate": "Дата выдачи",
+      "expiryDate": "Срок",
+      "verify": "Подтверждено",
+      "returned": "Изъято",
+      "noCertificate": "Не выдано"
+    },
+    "filter": {
+      "status": "Статус удостоверения",
+      "issued": "Выдано",
+      "verify": "Подтверждено",
+      "returned": "Изъято"
+    },
+    "modal": {
+      "notVerified": "Не подтверждено"
+    }
   }
 }

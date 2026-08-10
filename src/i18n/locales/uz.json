@@ -247,6 +247,7 @@
     "changeAccount": "Hisoblarim",
     "logOutSystem": "Tizmdan chiqish",
     "paginationSize": "{n} tadan ko'rsatish",
+    "perPage": "Har bir sahifada",
     "confirm": "Tasdiqlash",
     "understood": "Tushundim",
     "month": "Oy",
@@ -548,7 +549,8 @@
       "moduleAccess": "Modul ruxsati",
       "type": "Rol turi",
       "typeSanctum": "Foydalanuvchi",
-      "typeIntegration": "Integration"
+      "typeIntegration": "Integration",
+      "orphanWarning": "Ushbu rolda ro'yxatda ko'rinmaydigan {n} ta ruxsat bor (ruxsatlar ro'yxati to'liq yuklanmagan bo'lishi mumkin). Ular saqlashda o'zgarishsiz qoladi."
     }
   },
   "userPage": {
@@ -1511,7 +1513,9 @@
       "extendedDate": "Uzaytirilgan sana",
       "verify": "Tasdiqlangan",
       "returned": "Qaytarib olingan",
-      "certificateFile": "Guvohnoma fayli"
+      "certificateFile": "Guvohnoma fayli",
+      "regenerate": "Lavozimni qayta hisoblash",
+      "postNameHint": "Xodimning joriy lavozimidan avtomatik hosil qilinadi — kerak bo'lsa qo'lda tahrirlang"
     }
   },
   "languageCertificatePage": {
@@ -1728,6 +1732,8 @@
     "addQuestion": "Savol qo'shish",
     "editQuestion": "Savolni tahrirlash",
     "questionCount": "Savollar soni",
+    "categoryName": "Kategoriya nomi",
+    "clearWarning": "Kategoriyadagi barcha savollar o'chiriladi. Davom etasizmi?",
     "uploadExcel": "Test savollarini yuklash",
     "pressUpload": "Yuklash uchun bosing!",
     "checkingFile": "Fayl tekshirilmoqda...",
@@ -1751,6 +1757,8 @@
     "nVariant": "{n} ta variant",
     "variant_count": "Variantlar",
     "exam_duration": "Davomiyligi(min)",
+    "duration": "Davomiyligi",
+    "deadlineTitle": "Tugash vaqti",
     "totalTime": "Berilgan vaqt: {n} daqiqa",
     "nMinute": "{n} min",
     "totalMinute": "{n} daqiqa",
@@ -1986,6 +1994,25 @@
         "shortTypeOne": "Hayfsan",
         "shortTypeTwo": "Boshqa"
       }
+    },
+    "audit": {
+      "tabGeneral": "Umumiy dashboard",
+      "tabAudit": "Ma'lumotlar bo'yicha audit",
+      "relativesShortage": "Yaqin qarindoshlar to'liq emas",
+      "relativesWithoutJshshir": "Qarindosh PNFL kiritilmagan",
+      "nameErrors": "Ism-familyada xato belgi",
+      "jshshirErrors": "Pasport va PNFL mos emas",
+      "positionCertificateMissing": "Xizmat guvohnomasi yo'q",
+      "fio": "F.I.Sh.",
+      "pin": "PNFL",
+      "organization": "Korxona",
+      "position": "Lavozim",
+      "relativesCount": "Qarindoshlari soni",
+      "relativesWithoutJshshirCount": "JSHSHIRsiz qarindoshlar",
+      "reasons": "Xatoliklar",
+      "empty": "Ma'lumot topilmadi",
+      "lastChecked": "Oxirgi tekshiruv",
+      "worker": "Xodim"
     }
   },
   "applicationPage": {
@@ -2324,7 +2351,9 @@
       "leaveBalance": "Ta'til qancha qoldi?",
       "lastSalary": "Oxirgi oylik hisobim",
       "getReference": "Ma'lumotnoma olish",
-      "workedDays": "Bu oy necha kun ishladim?"
+      "workedDays": "Bu oy necha kun ishladim?",
+      "workedDaysShort": "Necha kun ishladim?",
+      "workSchedule": "Ish grafigim qanday?"
     },
     "disclaimer": {
       "cardOne": "### 🧪 Test rejimi\n\nUshbu sun’iy intellekt yordamchisi hozirda **test rejimida** ishlamoqda.  \nJavoblari hali to‘liq shakllanmagan va _noto‘g‘ri bo‘lishi mumkin_.",
@@ -2336,7 +2365,13 @@
       "conversation": "Suhbatlar",
       "goChat": "Suhbatga qaytish",
       "feedback": "Fikringiz uchun rahmat!",
-      "askQuestion": "Savolingizni kiriting..."
+      "askQuestion": "Savolingizni kiriting...",
+      "askQuestionOrMic": "Savolingizni yozing yoki mikrofonni bosib gapiring...",
+      "newChat": "Yangi chat",
+      "searchConversations": "Suhbatlarni qidirish",
+      "today": "Bugun",
+      "yesterday": "Kecha",
+      "chatHistory": "Chat tarixi"
     }
   },
   "others": {
@@ -3783,5 +3818,28 @@
     "mobileFaceSchedules": "Mobil face: jadvallar",
     "otpVerify": "OTP tekshirish",
     "holidayGreetings": "Bayram tabriklari"
+  },
+  "workerCertificatePage": {
+    "name": "Guvohnomalar",
+    "table": {
+      "worker": "Xodim",
+      "organization": "Tashkilot",
+      "position": "Lavozim",
+      "number": "Guvohnoma raqami",
+      "issueDate": "Berilgan sana",
+      "expiryDate": "Muddat",
+      "verify": "Tasdiqlangan",
+      "returned": "Qaytarib olingan",
+      "noCertificate": "Berilmagan"
+    },
+    "filter": {
+      "status": "Guvohnoma holati",
+      "issued": "Berilgan",
+      "verify": "Tasdiqlangan",
+      "returned": "Qaytarib olingan"
+    },
+    "modal": {
+      "notVerified": "Tasdiqlanmagan"
+    }
   }
 }

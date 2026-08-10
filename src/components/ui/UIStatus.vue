@@ -89,7 +89,7 @@
 </script>
 
 <template>
-  <div class="flex items-center">
+  <div class="inline-flex items-center">
     <n-button
       :type="type"
       :size="size"

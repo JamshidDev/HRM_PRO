@@ -141,6 +141,7 @@
 
 <template>
   <UITable
+    permission-prefix="hr-contract-additional"
     :columns="columns"
     :actions="actions"
     :data="store.list"

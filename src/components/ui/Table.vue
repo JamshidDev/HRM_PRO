@@ -3,6 +3,7 @@
     NoDataPicture,
     UIDeleteConfirm,
     UIPagination,
+    UISortButton,
     UITableActionsMenu,
     UITableColumns,
     UITableSelectAll,
@@ -11,13 +12,16 @@
   import { useTableColumnFit, useTableColumns } from '@/composables/index.js'
   import Utils from '@/utils/Utils.js'
   import i18n from '@/i18n/index.js'
+  import { NEllipsis } from 'naive-ui'
+  import { useAccountStore } from '@/store/modules/app/accountStore.js'
 
   const { t } = i18n.global
+  const accStore = useAccountStore()
 
   defineOptions({ inheritAttrs: false })
 
   const props = defineProps({
-    columns: { type: Array, required: true }, // [{ key, title, fullTitle, width, minWidth, maxWidth, className, resizable, ellipsis, align, fixed }]
+    columns: { type: Array, required: true }, // [{ key, title, fullTitle, width, minWidth, maxWidth, className, resizable, ellipsis, align, fixed, sortable }]
     data: { type: Array, default: () => [] },
     rowKey: { type: String, default: 'id' },
     size: { type: String, default: 'small' }, // small | medium | large
@@ -34,10 +38,19 @@
     selectable: { type: Boolean, default: false }, // swaps the row-number for a checkbox
     selectedKeys: { type: Array, default: () => [] },
     allSelected: { type: Boolean, default: false },
-    actions: { type: Array, default: () => [] }, // "..." menu + right-click options; visible can be boolean or (row) => boolean
+    actions: { type: Array, default: () => [] }, // "..." menu + right-click options; visible/label/icon/disabled can be static or (row) => value
+    // Amallar ustuniga sarlavha matni (masalan "Amallar"). Berilsa ustun kengayadi va
+    // sarlavha o'rnida ustun sozlash tugmasi emas, shu matn ko'rinadi.
+    actionsTitle: { type: String, default: null },
+    // Ruxsat prefiksi (masalan "hr-workers"): standart edit/delete amallari mos
+    // `-write`/`-delete` ruxsati bo'lmasa avtomatik disabled bo'ladi.
+    permissionPrefix: { type: String, default: null },
     storageKey: { type: String, default: null }, // persists column visibility/order/width
     onLoad: { type: Function, default: null }, // async tree children loader: (row) => Promise<void>
-    rowClassName: { type: Function, default: null } // (row, index) => string
+    rowClassName: { type: Function, default: null }, // (row, index) => string
+    sortBy: { type: String, default: null }, // current sort field, paired with a column's { sortable: true }
+    sortOrder: { type: Number, default: 1 }, // 1 | -1
+    deleteWarning: { type: [String, Function], default: null } // custom confirm message for the delete action; static or (row) => string
   })
 
   const emit = defineEmits([
@@ -46,12 +59,17 @@
     'action',
     'toggle-row',
     'toggle-all',
-    'change-page'
+    'change-page',
+    'sort' // (key) — fired when a { sortable: true } column's header is clicked
   ])
 
   const slots = useSlots()
   const instance = getCurrentInstance()
   const empty = computed(() => props.data.length === 0)
+
+  // avoids naive-ui misreading a row's own domain `children` field as tree-row nesting when we never asked for tree mode
+  const isTreeTable = computed(() => Boolean(props.onLoad) || props.columns.some((c) => c.tree))
+  const childrenKey = computed(() => (isTreeTable.value ? 'children' : '__uiTableNoChildren'))
 
   const tableColumns = props.storageKey
     ? useTableColumns(
@@ -64,8 +82,46 @@
     key.includes?.('.') ? key.split('.').reduce((o, k) => o?.[k], row) : row[key]
 
   const visibleActions = computed(() => props.actions.filter((a) => a.visible !== false))
+  // row can be undefined before any delete is triggered, since this is evaluated eagerly in the template
+  const resolveDeleteWarning = (row) =>
+    typeof props.deleteWarning === 'function'
+      ? row
+        ? props.deleteWarning(row)
+        : null
+      : props.deleteWarning
+
+  /**
+   * `permissionPrefix` berilsa, standart amallar (`Utils.ActionTypes.edit` va
+   * `.delete`) mos ruxsat bo'lmasa avtomatik KULRANG bo'ladi (yashirilmaydi —
+   * foydalanuvchi imkoniyat borligini ko'rib, admindan so'ray olsin).
+   *
+   * Amal obyektida `disabled` aniq berilgan bo'lsa, u avtomatikadan ustun turadi —
+   * nostandart amallarni (`confirm`, `finish`, ...) o'z slug'iga bog'lash uchun.
+   */
+  const autoDisabled = (a) => {
+    if (!props.permissionPrefix) return false
+    if (a.key === Utils.ActionTypes.delete)
+      return !accStore.checkPermission(`${props.permissionPrefix}-delete`)
+    if (a.key === Utils.ActionTypes.edit)
+      return !accStore.checkPermission(`${props.permissionPrefix}-write`)
+    return false
+  }
+
   const rowActionsFor = (row) =>
-    visibleActions.value.filter((a) => (typeof a.visible === 'function' ? a.visible(row) : true))
+    visibleActions.value
+      .filter((a) => (typeof a.visible === 'function' ? a.visible(row) : true))
+      .map((a) => ({
+        ...a,
+        label: typeof a.label === 'function' ? a.label(row) : a.label,
+        // icon is normally a 0-arg naive-ui render-prop (UIHelper.renderIcon result); only a (row) => ... accessor takes an arg
+        icon: typeof a.icon === 'function' && a.icon.length > 0 ? a.icon(row) : a.icon,
+        disabled:
+          a.disabled !== undefined
+            ? typeof a.disabled === 'function'
+              ? a.disabled(row)
+              : a.disabled
+            : autoDisabled(a)
+      }))
   const indexOffset = computed(() => (props.page - 1) * props.perPage)
 
   const allCols = computed(() => {
@@ -74,7 +130,12 @@
       cols.unshift({ key: '__index', width: 56, align: 'center', fixed: 'left' })
     }
     if (visibleActions.value.length || tableColumns) {
-      cols.push({ key: '__actions', width: 56, align: 'center', fixed: 'right' })
+      cols.push({
+        key: '__actions',
+        width: props.actionsTitle ? 100 : 56,
+        align: 'center',
+        fixed: 'right'
+      })
     }
     return cols
   })
@@ -141,6 +202,7 @@
   }
 
   const renderActionsHeader = () => {
+    if (props.actionsTitle) return renderHeaderLabel({ title: props.actionsTitle })
     if (!tableColumns) return null
     return h(UITableColumns, {
       columns: tableColumns.allColumns.value,
@@ -152,12 +214,36 @@
     })
   }
 
+  const renderHeaderLabel = (col) =>
+    h(
+      NEllipsis,
+      {
+        class: 'text-sm text-textColor2 w-full leading-[1.2]',
+        tooltip: { style: { maxWidth: '300px' } }
+      },
+      { default: () => col.title }
+    )
+
+  const renderSortableHeader = (col) =>
+    h(
+      UISortButton,
+      {
+        by: col.key,
+        value: props.sortBy,
+        order: props.sortOrder,
+        onClick: () => emit('sort', col.key)
+      },
+      { default: () => renderHeaderLabel(col) }
+    )
+
   const renderHeader = (col) => {
     const slotName = `header-${col.key}`
     if (slots[slotName]) return slots[slotName]({ column: col })
     if (col.key === '__index') return renderIndexHeader()
     if (col.key === '__actions') return renderActionsHeader()
-    return col.title
+    if (col.sortable) return renderSortableHeader(col)
+    if (typeof col.title !== 'string') return col.title
+    return renderHeaderLabel(col)
   }
 
   const renderCell = (col, row, index) => {
@@ -180,6 +266,7 @@
       if (!rowActions.length) return null
       return h(UITableActionsMenu, {
         options: rowActions,
+        deleteWarning: resolveDeleteWarning(row),
         onSelect: (key, option) => onActionSelect(key, option, row)
       })
     }
@@ -197,9 +284,7 @@
 
   const contextMenu = reactive({ show: false, x: 0, y: 0, row: null })
 
-  const contextMenuActions = computed(() =>
-    contextMenu.row ? rowActionsFor(contextMenu.row) : []
-  )
+  const contextMenuActions = computed(() => (contextMenu.row ? rowActionsFor(contextMenu.row) : []))
 
   const onRowContextmenu = (e, row, index) => {
     emit('row-contextmenu', e, row, index)
@@ -236,16 +321,18 @@
 </script>
 
 <template>
-  <n-spin :show="loading" class="h-full">
-    <NoDataPicture v-if="empty" />
+  <n-spin :show="loading" class="ui-table__spin h-full overflow-auto">
+    <div v-if="empty" class="h-full grid place-items-center">
+      <NoDataPicture />
+    </div>
 
     <div
       v-else
       ref="tableWrapperRef"
-      class="ui-table__wrapper h-full flex flex-col p-1 bg-surface-section rounded-[20px]"
+      class="ui-table__wrapper h-full min-h-[clamp(200px,calc(100vh-100%),600px)] flex flex-col p-1 bg-surface-section rounded-[20px]"
     >
       <n-data-table
-        class="ui-table__table flex-1 min-h-[clamp(200px,calc(100vh-140px),600px)]"
+        class="ui-table__table flex-1"
         :columns="ndtColumns"
         :data="data"
         :size="size"
@@ -258,6 +345,7 @@
         :row-props="rowProps"
         :row-class-name="rowClassName"
         :on-load="onLoad"
+        :children-key="childrenKey"
         flex-height
         @unstable-column-resize="onUnstableColumnResize"
       />
@@ -292,10 +380,22 @@
     @select="onSelectContextAction"
   />
 
-  <UIDeleteConfirm v-model:visible="deleteConfirmVisible" @confirm="onConfirmDelete" />
+  <UIDeleteConfirm
+    v-model:visible="deleteConfirmVisible"
+    :warning="resolveDeleteWarning(pendingDelete?.row)"
+    @confirm="onConfirmDelete"
+  />
 </template>
 
 <style scoped>
+  /* n-spin o'z kontentini balandligi bo'lmagan div ichiga o'raydi — shu sababli jadval
+     o'ramidagi `h-full` hech qachon hal bo'lmay, `min-height` ustun kelardi va pagination
+     konteyner tubiga emas, qatorlardan keyin osilib qolardi. Ota-element balandligi aniq
+     bo'lmagan sahifalarda `height: 100%` `auto` ga aylanadi, ya'ni ular o'zgarishsiz qoladi. */
+  .ui-table__spin :deep(.n-spin-content) {
+    height: 100%;
+  }
+
   .ui-table__table :deep(.n-data-table-table),
   .ui-table__table :deep(.n-data-table-th:first-child) {
     border-top-left-radius: 16px !important;

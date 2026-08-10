@@ -99,6 +99,7 @@ export const useCategoryQuestionStore = defineStore('categoryQuestionStore', {
       $ApiService.categoryQuestionService
         ._create({ data, category_id: this.category_id })
         .then((res) => {
+          this.visible = false
           this.resetForm()
           this.resetData()
           this._index()

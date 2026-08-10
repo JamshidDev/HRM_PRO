@@ -76,7 +76,22 @@ export const useDashboardStore = defineStore('dashboardStore', {
     selectedFile: null,
     workerId: null,
     loadingPassport: false,
-    typeNames: ['med_type', 'disc_type', 'inc_type', 'contract_type']
+    typeNames: ['med_type', 'disc_type', 'inc_type', 'contract_type'],
+    // HR audit tab — data-quality counts + tur bo'yicha sahifa ichidagi detal ko'rinishi.
+    activeTab: 'general',
+    audit: {
+      counts: null,
+      loading: false,
+      detail: {
+        open: false,
+        type: null,
+        list: [],
+        total: 0,
+        page: 1,
+        per_page: 15,
+        loading: false
+      }
+    }
   }),
   actions: {
     _updatePassport(data) {
@@ -108,6 +123,51 @@ export const useDashboardStore = defineStore('dashboardStore', {
       this._responseTwoAttach(responseTwo)
       this._responseThreeAttach(responseThree)
       this.loading = false
+    },
+    // Audit tab — data-quality counts (5 cards). Org filter (top Filter) reused.
+    async _getAuditCounts() {
+      this.audit.loading = true
+      try {
+        const params = this.appendParams({})
+        const res = await $ApiService.dashboardService._auditCounts({ params })
+        this.audit.counts = res.data.data
+      } finally {
+        this.audit.loading = false
+      }
+    },
+    async _getAuditPreview() {
+      const d = this.audit.detail
+      d.loading = true
+      try {
+        const params = this.appendParams({
+          type: d.type,
+          page: d.page,
+          per_page: d.per_page,
+          search: this.params.search
+        })
+        const res = await $ApiService.dashboardService._auditPreview({ params })
+        d.list = res.data.data.data
+        d.total = res.data.data.total
+      } finally {
+        d.loading = false
+      }
+    },
+    openAuditDetail(type) {
+      // Qidiruv har safar toza boshlanadi; tashkilot filtri (params.organizations) saqlanadi.
+      this.params.search = null
+      this.audit.detail.open = true
+      this.audit.detail.type = type
+      this.audit.detail.page = 1
+      this.audit.detail.list = []
+      this.audit.detail.total = 0
+      this._getAuditPreview()
+    },
+    closeAuditDetail() {
+      this.audit.detail.open = false
+      this.audit.detail.type = null
+      this.audit.detail.list = []
+      this.audit.detail.total = 0
+      this.audit.detail.page = 1
     },
     _responseOneAttach(res) {
       const formatMonth = (date) => {

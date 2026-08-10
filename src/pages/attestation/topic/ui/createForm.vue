@@ -27,48 +27,54 @@
       componentStore._structures()
     }
   })
+
+  // Saqlash tugmasi modal footer'ida (TopicPage.vue) turadi.
+  defineExpose({ submit: onSubmit })
 </script>
 
 <template>
   <n-spin :show="store.showLoading">
-    <n-form ref="formRef" :rules="validationRules.topicPage" :model="store.payload">
-      <div style="min-height: calc(100vh - 120px)">
-        <n-form-item :label="$t(`content.name`)" path="name">
-          <n-input type="text" v-model:value="store.payload.name" />
-        </n-form-item>
-        <n-form-item :label="$t(`content.type`)" path="type">
-          <n-select
-            v-model:value="store.payload.type"
-            filterable
-            :options="componentStore.topicTypes"
-            label-field="name"
-            value-field="id"
-            :loading="componentStore.enumExamLoading"
-          />
-        </n-form-item>
-        <n-form-item :label="$t(`content.workplace`)" path="organizations">
-          <UISelect
-            :options="componentStore.structureList"
-            :modelV="store.payload.organizations"
-            @defaultValue="(v) => (store.payload.organizations = v)"
-            @updateModel="(v) => (store.payload.organizations = v)"
-            v-model:search="componentStore.structureParams.search"
-            @onSearch="componentStore._structures"
-            :checkedVal="store.structureCheck"
-            @updateCheck="(v) => (store.structureCheck = v)"
-            :loading="componentStore.structureLoading"
-          />
-        </n-form-item>
-      </div>
-
-      <div class="grid grid-cols-2 gap-2">
-        <n-button @click="store.openVisible(false)" type="error" ghost>
-          {{ $t('content.cancel') }}
-        </n-button>
-        <n-button @click="onSubmit" :loading="store.saveLoading" type="primary">
-          {{ $t('content.save') }}
-        </n-button>
-      </div>
+    <n-form
+      ref="formRef"
+      :rules="validationRules.topicPage"
+      :model="store.payload"
+      class="grid grid-cols-12 gap-x-4"
+    >
+      <n-form-item class="col-span-12 md:col-span-6" :label="$t(`content.name`)" path="name">
+        <n-input
+          type="text"
+          v-model:value="store.payload.name"
+          :placeholder="$t('content.enterField')"
+        />
+      </n-form-item>
+      <n-form-item class="col-span-12 md:col-span-6" :label="$t(`content.type`)" path="type">
+        <n-select
+          v-model:value="store.payload.type"
+          filterable
+          :options="componentStore.topicTypes"
+          label-field="name"
+          value-field="id"
+          :placeholder="$t('content.choose')"
+          :loading="componentStore.enumExamLoading"
+        />
+      </n-form-item>
+      <n-form-item
+        class="col-span-12 md:col-span-6"
+        :label="$t(`content.workplace`)"
+        path="organizations"
+      >
+        <UISelect
+          :options="componentStore.structureList"
+          :modelV="store.payload.organizations"
+          @defaultValue="(v) => (store.payload.organizations = v)"
+          @updateModel="(v) => (store.payload.organizations = v)"
+          v-model:search="componentStore.structureParams.search"
+          @onSearch="componentStore._structures"
+          :checkedVal="store.structureCheck"
+          @updateCheck="(v) => (store.structureCheck = v)"
+          :loading="componentStore.structureLoading"
+        />
+      </n-form-item>
     </n-form>
   </n-spin>
 </template>

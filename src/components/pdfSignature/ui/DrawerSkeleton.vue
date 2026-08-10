@@ -5,7 +5,7 @@
 <template>
   <div class="w-full flex-1 min-h-0 flex gap-3">
     <div class="hidden md:flex flex-col w-[300px] h-full">
-      <SectionHeader full-height plain tight-body :title="$t('documentPage.signature.attachedDocuments')">
+      <SectionHeader full-height tight-body :title="$t('documentPage.signature.attachedDocuments')">
         <div class="flex flex-col">
           <div v-for="i in 2" :key="i" class="flex items-center gap-2 p-2">
             <n-skeleton width="32px" height="32px" :sharp="false" class="rounded-md shrink-0" />
@@ -36,7 +36,7 @@
     </div>
 
     <div class="hidden md:flex flex-col w-[360px] h-full">
-      <SectionHeader full-height plain tight-body :title="$t('documentPage.signature.viewer')">
+      <SectionHeader full-height tight-body :title="$t('documentPage.signature.viewer')">
         <div class="flex flex-col gap-2">
           <div
             v-for="i in 5"

@@ -167,6 +167,7 @@
     "changeAccount": "Ҳисобларим",
     "logOutSystem": "Тизмдан чиқиш",
     "paginationSize": "{n} тадан кўрсатиш",
+    "perPage": "Ҳар бир саҳифада",
     "confirm": "Тасдиқлаш",
     "understood": "Тушундим",
     "month": "Ой",
@@ -452,7 +453,8 @@
     "updateTitle": "Роль таҳрирлаш",
     "form": {
       "name": "Роль номи",
-      "permissions": "Пермиссион"
+      "permissions": "Пермиссион",
+      "orphanWarning": "Ушбу ролда рўйхатда кўринмайдиган {n} та рухсат бор (рухсатлар рўйхати тўлиқ юкланмаган бўлиши мумкин). Улар сақлашда ўзгаришсиз қолади."
     }
   },
   "userPage": {
@@ -1486,6 +1488,8 @@
     "addQuestion": "Савол қўшиш",
     "editQuestion": "Саволни таҳрирлаш",
     "questionCount": "Саволлар сони",
+    "categoryName": "Категория номи",
+    "clearWarning": "Категориядаги барча саволлар ўчирилади. Давом этасизми?",
     "uploadExcel": "Тест саволларини юклаш",
     "pressUpload": "Юклаш учун босинг!",
     "checkingFile": "Файл текширилмоқда...",
@@ -1509,6 +1513,8 @@
     "nVariant": "{n} та вариант",
     "variant_count": "Вариантлар",
     "exam_duration": "Давомийлиги(мин)",
+    "duration": "Давомийлиги",
+    "deadlineTitle": "Тугаш вақти",
     "totalTime": "Берилган вақт: {n} дақиқа",
     "nMinute": "{n} мин",
     "totalMinute": "{n} дақиқа",
@@ -1743,6 +1749,25 @@
         "shortTypeOne": "Ҳайфсан",
         "shortTypeTwo": "Бошқа"
       }
+    },
+    "audit": {
+      "tabGeneral": "Умумий dashboard",
+      "tabAudit": "Маълумотлар бўйича аудит",
+      "relativesShortage": "Яқин қариндошлар тўлиқ эмас",
+      "relativesWithoutJshshir": "Қариндош ПНФЛ киритилмаган",
+      "nameErrors": "Исм-фамилияда хато белги",
+      "jshshirErrors": "Паспорт ва ПНФЛ мос эмас",
+      "positionCertificateMissing": "Хизмат гувоҳномаси йўқ",
+      "fio": "Ф.И.Ш.",
+      "pin": "ПНФЛ",
+      "organization": "Корхона",
+      "position": "Лавозим",
+      "relativesCount": "Қариндошлари сони",
+      "relativesWithoutJshshirCount": "ЖШШИРсиз қариндошлар",
+      "reasons": "Хатоликлар",
+      "empty": "Маълумот топилмади",
+      "lastChecked": "Охирги текширув",
+      "worker": "Ходим"
     }
   },
   "applicationPage": {
@@ -2081,7 +2106,9 @@
       "leaveBalance": "Таътил қанча қолди?",
       "lastSalary": "Охирги ойлик ҳисобим",
       "getReference": "Маълумотнома олиш",
-      "workedDays": "Бу ой неча кун ишладим?"
+      "workedDays": "Бу ой неча кун ишладим?",
+      "workedDaysShort": "Неча кун ишладим?",
+      "workSchedule": "Иш графигим қандай?"
     },
     "disclaimer": {
       "cardOne": "### 🧪 Тест режими\n\nУшбу сунъий интеллект ёрдамчиси ҳозирда **тест режимида** ишламоқда.  \nЖавоблари ҳали тўлиқ шаклланмаган ва _нотўғри бўлиши мумкин_.",
@@ -2093,7 +2120,13 @@
       "conversation": "Суҳбатлар",
       "goChat": "Суҳбатга қайтиш",
       "feedback": "Фикрингиз учун раҳмат!",
-      "askQuestion": "Саволингизни киритинг..."
+      "askQuestion": "Саволингизни киритинг...",
+      "askQuestionOrMic": "Саволингизни ёзинг ёки микрофонни босиб гапиринг...",
+      "newChat": "Янги чат",
+      "searchConversations": "Суҳбатларни қидириш",
+      "today": "Бугун",
+      "yesterday": "Кеча",
+      "chatHistory": "Чат тарихи"
     }
   },
   "others": {
@@ -3472,6 +3505,47 @@
       "number": "Камида 1 та рақам (0-9)",
       "special": "Камида 1 та махсус белги ({'@'}!#$%^&*)",
       "match": "Пароллар мос келади"
+    }
+  },
+  "workerPositionCertificatePage": {
+    "title": "Лавозим гувоҳномалари",
+    "no-data": "Гувоҳнома маълумотлари йўқ!",
+    "createTitle": "Гувоҳнома қўшиш",
+    "updateTitle": "Гувоҳномани таҳрирлаш",
+    "form": {
+      "postName": "Лавозим",
+      "number": "Гувоҳнома рақами",
+      "issueDate": "Берилган сана",
+      "expiryDate": "Амал қилиш муддати",
+      "extendedDate": "Узайтирилган сана",
+      "verify": "Тасдиқланган",
+      "returned": "Қайтариб олинган",
+      "certificateFile": "Гувоҳнома файли",
+      "regenerate": "Лавозимни қайта ҳисоблаш",
+      "postNameHint": "Ходимнинг жорий лавозимидан автоматик ҳосил қилинади — керак бўлса қўлда таҳрирланг"
+    }
+  },
+  "workerCertificatePage": {
+    "name": "Гувоҳномалар",
+    "table": {
+      "worker": "Ходим",
+      "organization": "Ташкилот",
+      "position": "Лавозим",
+      "number": "Гувоҳнома рақами",
+      "issueDate": "Берилган сана",
+      "expiryDate": "Муддат",
+      "verify": "Тасдиқланган",
+      "returned": "Қайтариб олинган",
+      "noCertificate": "Берилмаган"
+    },
+    "filter": {
+      "status": "Гувоҳнома ҳолати",
+      "issued": "Берилган",
+      "verify": "Тасдиқланган",
+      "returned": "Қайтариб олинган"
+    },
+    "modal": {
+      "notVerified": "Тасдиқланмаган"
     }
   }
 }

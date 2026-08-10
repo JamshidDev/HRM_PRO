@@ -1,7 +1,6 @@
 <script setup>
-  import { onMounted, computed } from 'vue'
-  import { UIDrawer, UIPageContent, UIPageFilter } from '@/components/index.js'
-  import { ArrowLeft24Regular } from '@vicons/fluent'
+  import { onMounted, ref } from 'vue'
+  import { UIModal, UIPageContent, UIPageFilter } from '@/components/index.js'
   import Table from './ui/Table.vue'
   import createFrom from './ui/createForm.vue'
   import TopicDetail from './topicDetail/TopicDetailPage.vue'
@@ -10,7 +9,9 @@
   const store = useTopicStore()
   const accStore = useAccountStore()
 
-  const currentTopic = computed(() => store.list.find((t) => t.id === store.elementId))
+  // Saqlash/Bekor qilish tugmalari modal footer'ida turadi, forma esa faqat validatsiyani
+  // biladi — shuning uchun yuborish `submit()` orqali chaqiriladi.
+  const createFormRef = ref(null)
 
   const onAdd = () => {
     if (!accStore.checkAction(accStore.pn.examTopicsWrite)) return
@@ -42,6 +43,7 @@
     <n-tab-pane name="list" style="height: 100%">
       <UIPageContent>
         <UIPageFilter
+          :add-permission="accStore.pn.examTopicsWrite"
           v-model:search="store.params.search"
           :show-filter-button="false"
           @on-add="onAdd"
@@ -49,39 +51,36 @@
           :search-loading="store.loading"
         />
         <Table />
-        <UIDrawer
+        <UIModal
+          v-model:visible="store.visible"
           :title="store.visibleType ? $t('topicPage.createTitle') : $t('topicPage.updateTitle')"
-          :visible="store.visible"
-          :width="600"
-          @update:visible="(v) => (store.visible = v)"
+          width="min(700px, calc(100vw - 32px))"
         >
-          <template #content>
-            <createFrom />
+          <createFrom ref="createFormRef" />
+          <template #footer>
+            <div class="flex justify-end gap-2 px-4 pb-2">
+              <n-button type="error" ghost class="w-[130px]" @click="store.openVisible(false)">
+                {{ $t('content.cancel') }}
+              </n-button>
+              <n-button
+                type="primary"
+                class="w-[130px]"
+                :loading="store.saveLoading"
+                @click="createFormRef?.submit()"
+              >
+                {{ $t('content.save') }}
+              </n-button>
+            </div>
           </template>
-        </UIDrawer>
+        </UIModal>
       </UIPageContent>
     </n-tab-pane>
     <n-tab-pane name="detail" style="height: 100%">
-      <div class="my-4 mx-1 md:mx-2 rounded-sm md:p-4 p-1 h-[calc(100%-32px)] flex flex-col bg-surface-section">
-        <div class="shrink-0 pb-3 flex items-center gap-3 border-b border-surface-line mb-3">
-          <n-button text @click="store.activeTab = 'list'">
-            <template #icon>
-              <n-icon :component="ArrowLeft24Regular" />
-            </template>
-            {{ $t('content.back') }}
-          </n-button>
-          <n-divider vertical />
-          <div class="flex items-center gap-2 min-w-0">
-            <p class="text-[15px] font-semibold text-textColor0 truncate">{{ currentTopic?.name }}</p>
-            <n-tag v-if="currentTopic?.type" size="small" round type="info">
-              {{ currentTopic.type.name }}
-            </n-tag>
-          </div>
-        </div>
-        <div class="grow min-h-0">
-          <TopicDetail />
-        </div>
-      </div>
+      <!-- ro'yxat paneli bilan bir xil qobiq: sarlavha va tab'lar sahifa fonida, jadval esa
+           o'zining oq kartasida — shunda pagination karta tubiga mixlanadi -->
+      <UIPageContent>
+        <TopicDetail />
+      </UIPageContent>
     </n-tab-pane>
   </n-tabs>
 </template>

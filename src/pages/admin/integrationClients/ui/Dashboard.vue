@@ -15,8 +15,7 @@
   <DashboardSkeleton v-if="store.dashboardLoading" />
 
   <!-- Content -->
-  <div v-else class="grid grid-cols-12 gap-4 mt-4">
-
+  <div v-else class="grid grid-cols-12 gap-4">
     <!-- ── Stat cards ─────────────────────────────────────────────────────── -->
     <StatCards />
 
@@ -31,6 +30,5 @@
 
     <!-- ── Top Endpoints ───────────────────────────────────────────────────── -->
     <TopEndpointsCard />
-
   </div>
 </template>
