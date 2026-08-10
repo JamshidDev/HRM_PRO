@@ -57,12 +57,35 @@ export const useKpiStore = defineStore('kpiStore', {
           const d = res.data.data
           this.showOnboarded = d.onboarded
           this.showData = d.kpi
-          // Standart tanlov — KPI tizimi qaytargan joriy davr.
-          this.selectedPeriod = d.kpi?.score?.periodName ?? null
+          this.selectedPeriod = this.pickInitialPeriod(d.kpi)
         })
         .finally(() => {
           this.showLoading = false
         })
+    },
+    /**
+     * Modal qaysi chorakni ochadi.
+     *
+     * KPI tizimi `score.periodName` da JORIY davrni beradi, lekin u ko'pincha hali
+     * to'ldirilmagan bo'ladi (`actual`/`%` = null, status `initial`) — o'shanda modal
+     * bo'sh ochilib, "ishlamayapti"day ko'rinardi. Shu bois: joriy davrda qiymat
+     * bo'lsa — o'sha, aks holda qiymati bor OXIRGI davr; umuman bo'lmasa — joriy.
+     */
+    pickInitialPeriod(kpi) {
+      const current = kpi?.score?.periodName ?? null
+      const indicators = kpi?.indicators ?? []
+      const filled = new Set()
+      for (const ind of indicators) {
+        for (const d of ind.indicatorData ?? []) {
+          const name = d?.indicatorGroup?.periodName
+          if (name && d?.userIndicatorDataValue?.actual != null) filled.add(name)
+        }
+      }
+      if (!filled.size || (current && filled.has(current))) return current
+      // "1-2026" ko'rinishidagi nomlar — davr raqami bo'yicha eng kattasi.
+      return [...filled].sort(
+        (a, b) => Number(a.split('-')[0]) - Number(b.split('-')[0])
+      ).pop()
     },
     resetFilter() {
       this.params = initialParams()
