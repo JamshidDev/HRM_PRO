@@ -2,7 +2,7 @@
   import { reactive, ref, nextTick, watch } from 'vue'
   import { useLoginNewStore } from '@/store/modules/index.js'
   import { useAppSetting } from '@/utils/index.js'
-  import { Document24Regular } from '@vicons/fluent'
+  import PublicOffer from '@/assets/icons/PublicOffer.svg'
   import * as pdfjsLib from 'pdfjs-dist'
   pdfjsLib.GlobalWorkerOptions.workerSrc = 'pdfjs-dist/build/pdf.worker.min.js'
 
@@ -119,14 +119,14 @@
     :auto-focus="false"
     :trap-focus="false"
   >
-    <div class="offer-modal-card bg-surface-section rounded-2xl shadow-2xl overflow-hidden flex flex-col">
+    <div class="offer-modal-card bg-surface-section rounded-3xl shadow-2xl overflow-hidden flex flex-col">
       <!-- Header: ikonka + sarlavha + subtitle -->
-      <div class="px-6 py-5 bg-surface-ground flex items-start gap-3.5 border-b border-surface-line">
-        <div class="offer-modal-icon shrink-0 w-11 h-11 rounded-full bg-primary/10 flex items-center justify-center">
-          <n-icon :size="22" :component="Document24Regular" class="text-primary" />
+      <div class="px-4 py-2 bg-surface-ground flex items-center gap-3 border-b border-surface-line">
+        <div class="offer-modal-icon shrink-0 w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+          <PublicOffer class="w-6 h-6 text-primary" />
         </div>
         <div class="min-w-0">
-          <h2 class="text-base font-semibold text-textColor0">
+          <h2 class="text-2xl font-bold text-textColor0">
             {{ $t('offerModal.title') }}
           </h2>
           <p class="text-sm text-textColor3 mt-0.5">
@@ -136,17 +136,17 @@
       </div>
 
       <!-- Hujjatlar (PDF) — scroll-gate shu konteynerda ishlaydi -->
-      <div ref="bodyRef" class="offer-modal-body flex-1 min-h-0 overflow-y-auto px-6 py-5">
+      <div ref="bodyRef" class="offer-modal-body offer-modal-gradient-bg flex-1 min-h-0 overflow-y-auto  ">
         <section v-for="(d, i) in docs" :key="d.key" :class="{ 'mt-8 pt-6 border-t border-surface-line': i > 0 }">
-          <h2 class="text-base font-bold text-textColor0 mb-3">
+          <!-- <h2 class="text-base font-bold text-textColor0 mb-3">
             {{ $t(d.labelKey) }}
-          </h2>
+          </h2> -->
           <div v-if="docState[d.key].loadError" class="text-sm text-textColor3 text-center py-10">
             {{ $t('offerModal.loadError') }}
           </div>
-          <div v-else class="flex flex-col items-center gap-4">
+          <div v-else class="flex flex-col items-center gap-2">
             <div v-for="idx in docState[d.key].totalPages" :key="idx">
-              <canvas class="border border-surface-line" :id="`pdfCanvas-${d.key}-${idx}`"></canvas>
+              <canvas class="border border-surface-line " :id="`pdfCanvas-${d.key}-${idx}`"></canvas>
             </div>
             <div v-if="docState[d.key].loading" class="flex items-center justify-center py-10 w-full">
               <n-spin size="small" />
@@ -156,20 +156,23 @@
       </div>
 
       <!-- Footer -->
-      <div class="px-6 py-4 border-t border-surface-line flex items-center gap-3">
-        <n-button class="offer-modal-decline flex-1" round @click="store._declineOffer()">
+      <div class="offer-modal-gradient-bg px-6 py-4 border-surface-line flex items-center gap-3">
+        <button
+          type="button"
+          class="offer-modal-btn offer-modal-btn--decline"
+          @click="store._declineOffer()"
+        >
           {{ $t('offerModal.decline') }}
-        </n-button>
-        <n-button
-          type="primary"
-          round
-          class="flex-1"
-          :disabled="!hasReadToEnd"
-          :loading="store.offerLoading"
+        </button>
+        <button
+          type="button"
+          class="offer-modal-btn offer-modal-btn--accept"
+          :disabled="!hasReadToEnd || store.offerLoading"
           @click="store._acceptOfferAndContinue()"
         >
+          <span v-if="store.offerLoading" class="offer-modal-btn__spinner"></span>
           {{ $t('offerModal.accept') }}
-        </n-button>
+        </button>
       </div>
     </div>
   </n-modal>
@@ -178,13 +181,81 @@
 <style scoped>
   .offer-modal-card {
     width: 94vw;
-    max-width: 780px;
+    max-width: 750px;
     height: 92vh;
-    max-height: 92vh;
+    max-height: 64vh;
   }
 
-  .offer-modal-decline {
-    color: var(--error-color, #d03050) !important;
-    border-color: var(--error-color, #d03050) !important;
+  /* Figma'dagi gradient — kontent (PDF) qismi va footer paneli foni, tugmalarning
+     o'zi emas */
+  .offer-modal-gradient-bg {
+    background: linear-gradient(180deg, #f9fafb 0%, #f5faff 50%, #eff8ff 100%);
+  }
+
+  /* Bitta baza klass + har biri uchun variant — naive-ui n-button ichki
+     stillari bilan kurashmasdan, keyinchalik osongina dizayn qilish uchun */
+  .offer-modal-btn {
+    flex: 1 1 0%;
+    height: 40px;
+    border-radius: 10px;
+    border: 1px solid transparent;
+    font-size: 14px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    cursor: pointer;
+    user-select: none;
+    transition:
+      background-color 0.15s ease,
+      border-color 0.15s ease,
+      color 0.15s ease,
+      filter 0.15s ease,
+      transform 0.05s ease;
+  }
+
+  .offer-modal-btn:active {
+    transform: scale(0.97);
+  }
+
+  .offer-modal-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .offer-modal-btn--decline {
+    background-color: transparent;
+    color: var(--error-color, #d03050);
+    border-color: var(--error-color, #d03050);
+  }
+
+  .offer-modal-btn--decline:hover {
+    background-color: color-mix(in srgb, var(--error-color, #d03050) 10%, transparent);
+  }
+
+  .offer-modal-btn--accept {
+    background-color: var(--primary-color, #0177d7);
+    color: #ffffff;
+    border-color: var(--primary-color, #0177d7);
+  }
+
+  .offer-modal-btn--accept:hover:not(:disabled) {
+    filter: brightness(1.05);
+  }
+
+  .offer-modal-btn__spinner {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    border-top-color: #ffffff;
+    animation: offer-modal-btn-spin 0.6s linear infinite;
+  }
+
+  @keyframes offer-modal-btn-spin {
+    to {
+      transform: rotate(360deg);
+    }
   }
 </style>

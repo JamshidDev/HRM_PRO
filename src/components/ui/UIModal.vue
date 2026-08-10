@@ -69,7 +69,7 @@
               >
                 <h3 class="text-xl font-bold text-textColor0 truncate">
                   <slot name="header-title">
-                    {{ title }}
+                    {{ title }} 
                   </slot>
                 </h3>
                 <div

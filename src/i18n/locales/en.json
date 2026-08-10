@@ -2246,6 +2246,8 @@
     "workers": "Employees",
     "form": {
       "hours": "Hours",
+      "serial": "Certificate serial",
+      "end_date": "Training end date",
       "start_date": "Start date",
       "specialization": "Specialization",
       "subjects": "Subjects",

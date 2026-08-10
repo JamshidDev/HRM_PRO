@@ -1,5 +1,5 @@
 <script setup>
-  import { UIDrawer, UIModal, UIPageContent, UIPageFilter } from '@/components/index.js'
+  import { UIModal, UIPageContent } from '@/components/index.js'
   import Table from './ui/Table.vue'
   import Filter from './ui/Filter.vue'
   import workerList from './ui/workerList.vue'
@@ -7,6 +7,10 @@
   import { useAccountStore, useEduPlanStore } from '@/store/modules/index.js'
   import createFrom from './ui/createForm.vue'
   import groupForm from '../Group/ui/createForm.vue'
+  import i18n from '@/i18n/index.js'
+
+  const { t } = i18n.global
+  const createFormRef = ref(null)
   const store = useEduPlanStore()
   const accStore = useAccountStore()
 
@@ -30,15 +34,30 @@
   <UIPageContent>
     <Filter />
     <Table />
-    <UIDrawer
-      :visible="store.visible"
-      @update:visible="(v) => (store.visible = v)"
-      :title="store.visibleType ? $t('eduPlanPage.createTitle') : $t('eduPlanPage.updateTitle')"
+    <UIModal
+      v-model:visible="store.visible"
+      :title="store.visibleType ? t('eduPlanPage.createTitle') : t('eduPlanPage.updateTitle')"
+      width="min(900px, calc(100vw - 32px))"
+      height="min(85vh, 640px)"
     >
-      <template #content>
-        <createFrom />
+      <createFrom ref="createFormRef" />
+
+      <template #footer>
+        <div class="flex justify-end gap-2 px-4 pb-2">
+          <n-button type="error" ghost class="w-[130px]" @click="store.openVisible(false)">
+            {{ t('content.cancel') }}
+          </n-button>
+          <n-button
+            type="primary"
+            class="w-[130px]"
+            :loading="store.saveLoading"
+            @click="createFormRef?.submit()"
+          >
+            {{ t('content.save') }}
+          </n-button>
+        </div>
       </template>
-    </UIDrawer>
+    </UIModal>
     <UIModal
       :visible="store.groupVisible"
       @update:visible="(v) => (store.groupVisible = v)"
