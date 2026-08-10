@@ -1,12 +1,16 @@
 <script setup>
-  import { Eye24Filled, EyeOff20Filled, List20Filled } from '@vicons/fluent'
+  import { h, computed } from 'vue'
+  import { NIcon } from 'naive-ui'
+  import { Eye24Filled, EyeOff20Filled, List20Filled, ChevronDown20Filled } from '@vicons/fluent'
   import { useComponentStore } from '@/store/modules/index.js'
+  import i18n from '@/i18n/index.js'
   import DownloadIcon from '@/assets/icons/downloadIcon.svg'
   import CloseIcon from '@/assets/icons/closeIcon.svg'
 
+  const { t } = i18n.global
   const store = useComponentStore()
 
-  defineProps({
+  const props = defineProps({
     title: {
       type: String,
       default: ''
@@ -24,6 +28,19 @@
   const masked = defineModel('masked', { type: Boolean, default: true })
 
   const emits = defineEmits(['close', 'download', 'download-t2'])
+
+  const renderDownloadIcon = () => h(NIcon, null, { default: () => h(DownloadIcon) })
+
+  const downloadOptions = computed(() => [
+    { label: t('content.downloadCV'), key: 'cv', icon: renderDownloadIcon },
+    { label: t('content.downloadT2'), key: 't2', icon: renderDownloadIcon }
+  ])
+
+  const downloading = computed(() => props.resumeLoading || props.t2Loading)
+
+  const onDownloadSelect = (key) => {
+    emits(key === 't2' ? 'download-t2' : 'download')
+  }
 </script>
 
 <template>
@@ -58,34 +75,28 @@
           </n-icon>
         </template>
       </n-button>
-      <n-button
-        size="large"
-        class="!rounded-full !px-3 sm:!px-4"
-        type="tertiary"
-        :loading="t2Loading"
-        @click="emits('download-t2')"
+      <n-dropdown
+        trigger="click"
+        :options="downloadOptions"
+        @select="onDownloadSelect"
       >
-        <span class="flex items-center justify-center gap-2">
-          <span class="hidden sm:inline">{{ $t('content.downloadT2') }}</span>
-          <n-icon size="20">
-            <DownloadIcon />
-          </n-icon>
-        </span>
-      </n-button>
-      <n-button
-        size="large"
-        class="!rounded-full !px-3 sm:!px-4 !text-white"
-        type="primary"
-        :loading="resumeLoading"
-        @click="emits('download')"
-      >
-        <span class="flex items-center justify-center gap-2">
-          <span class="hidden sm:inline">{{ $t('content.downloadCV') }}</span>
-          <n-icon size="20">
-            <DownloadIcon />
-          </n-icon>
-        </span>
-      </n-button>
+        <n-button
+          size="large"
+          class="!rounded-full !px-3 sm:!px-4 !text-white"
+          type="primary"
+          :loading="downloading"
+        >
+          <span class="flex items-center justify-center gap-2">
+            <n-icon size="20">
+              <DownloadIcon />
+            </n-icon>
+            <span class="hidden sm:inline">{{ $t('content.download') }}</span>
+            <n-icon size="16">
+              <ChevronDown20Filled />
+            </n-icon>
+          </span>
+        </n-button>
+      </n-dropdown>
       <n-button
         size="large"
         class="!w-10 !h-10 !p-0 !rounded-full !bg-surface-section !border !border-surface-line !text-textColor0"

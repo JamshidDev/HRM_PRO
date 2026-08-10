@@ -64,15 +64,16 @@
     max-width: 100%;
     background: var(--surface-section);
     border: 1px solid var(--surface-line);
-    border-radius: 16px;
-    padding: 5px;
+    border-radius: 14px;
+    padding: 4px;
     /* Rail bilan tab kontenti orasidagi bo'shliq — pane'ning o'z padding'iga
        tayanmaydi, shunda `!p-0` li panellarda ham bir xil masofa saqlanadi. */
     margin-bottom: 12px;
 
     --n-tab-border-color: transparent;
     --n-bar-color: var(--surface-ground-soft);
-    --n-tab-padding: 9px 18px;
+    /* Balandligi yonidagi tugma/select bilan bir xil bo'lishi uchun past padding. */
+    --n-tab-padding: 6px 16px;
     --n-tab-gap: 4px;
     /* Nofaol tab — ochroq kulrang, faol tab — to'q. */
     --n-tab-text-color: var(--textColor1);
@@ -83,7 +84,7 @@
     --n-tab-font-weight-active: var(--n-tab-font-weight);
 
     .n-tabs-tab {
-      border-radius: 12px;
+      border-radius: 10px;
       font-size: 14px;
       white-space: nowrap;
     }
@@ -94,8 +95,22 @@
       top: 0 !important;
       bottom: 0 !important;
       height: auto !important;
-      border-radius: 12px !important;
+      border-radius: 10px !important;
       box-shadow: inset 0 0 0 1px var(--surface-line);
+    }
+  }
+
+  /* Rail yonidagi element bilan bir qatorda turgan variant (masalan HR dashboard'da
+     filtr bilan yonma-yon).
+     `width` MUHIM: naive-ui `.n-tabs` root'iga `width: 100%` beradi, shu sababli u
+     flex qatorda butun satrni egallab, yonidagi elementni pastga tushirib yuboradi.
+     Bu variant panelsiz (`n-tab`) ishlatilgani uchun kenglikni kontentga tenglash xavfsiz. */
+  &.ui-pill-tabs--inline {
+    width: fit-content;
+    max-width: 100%;
+
+    > .n-tabs-nav {
+      margin-bottom: 0;
     }
   }
 }

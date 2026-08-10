@@ -1646,7 +1646,8 @@
       "managementStaff": "Management staff",
       "avgRating": "Average rating",
       "ratingBasedOn": "based on {count} reviews",
-      "serviceCertificate": "Service certificate",
+      "positionCertificateId": "Position certificate",
+      "employeeId": "Employee ID",
       "workNumber": "Work number"
     },
     "sidebar": {
@@ -1660,11 +1661,9 @@
       "validityPeriod": "Validity period",
       "started": "Started",
       "ends": "Ends",
-      "progressSuffix": "elapsed",
-      "lastCheckDate": "Last check-up date",
-      "conclusion": "Medical conclusion",
-      "fitForWork": "Fit for work",
-      "monthsLeft": "≈{count} months left"
+      "ended": "Ended",
+      "durationYears": "{count} yr",
+      "durationMonths": "{count} mo"
     },
     "vacation": {
       "start": "Vacation start",
@@ -1976,11 +1975,11 @@
     "audit": {
       "tabGeneral": "General dashboard",
       "tabAudit": "Data audit",
-      "relativesShortage": "Close relatives incomplete",
-      "relativesWithoutJshshir": "Relative's PINFL not provided",
-      "nameErrors": "Invalid character in name",
-      "jshshirErrors": "Passport and PINFL do not match",
-      "positionCertificateMissing": "No service certificate",
+      "relativesShortage": "Relatives incomplete",
+      "relativesWithoutJshshir": "No relative's PINFL",
+      "nameErrors": "Name/surname error",
+      "jshshirErrors": "Passport–PINFL mismatch",
+      "positionCertificateMissing": "No certificate",
       "fio": "Full name",
       "pin": "PINFL",
       "organization": "Organization",
