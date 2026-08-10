@@ -1,11 +1,13 @@
 <script setup>
-  import { UIBadge, UITable, UIUser, UIUserGroup } from '@/components/index.js'
+  import { UIBadge, UIStatus, UITable, UIUser, UIUserGroup } from '@/components/index.js'
   import i18n from '@/i18n/index.js'
-  import { useTaskStore } from '@/store/modules/index.js'
+  import { useAccountStore, useTaskStore } from '@/store/modules/index.js'
   import Utils from '@/utils/Utils.js'
+  import { taskStatusObj } from './statusHelper.js'
 
   const { t } = i18n.global
   const store = useTaskStore()
+  const accStore = useAccountStore()
 
   const changePage = (v) => {
     store.params.page = v.page
@@ -17,24 +19,52 @@
     { key: 'title', title: t('task.table.title'), minWidth: 200 },
     { key: 'creator', title: t('task.table.creator'), minWidth: 200 },
     { key: 'assignees', title: t('task.table.assignees'), minWidth: 160 },
-    { key: 'status', title: t('task.table.status'), minWidth: 200 },
+    { key: 'status', title: t('task.table.status'), minWidth: 220 },
     { key: 'deadline', title: t('task.table.deadline'), width: 130 },
     { key: 'created_at', title: t('content.date'), width: 130 }
   ])
 
-  // status_summary -> ko'rsatiladigan badge'lar (0 bo'lganlar tashlanadi).
-  const statusMeta = computed(() => [
-    { key: 'created', label: t('task.status.created'), type: Utils.colorTypes.secondary },
-    { key: 'in_progress', label: t('task.status.in_progress'), type: Utils.colorTypes.info },
-    { key: 'done', label: t('task.status.done'), type: Utils.colorTypes.success },
-    { key: 'blocked', label: t('task.status.blocked'), type: Utils.colorTypes.error }
-  ])
+  const canWrite = computed(() => accStore.checkPermission(accStore.pn.hrTasksWrite))
+  const canDelete = computed(() => accStore.checkPermission(accStore.pn.hrTasksDelete))
 
-  const statusBadges = (summary) => {
-    if (!summary) return []
-    return statusMeta.value
-      .filter((m) => summary[m.key] > 0)
-      .map((m) => ({ ...m, count: summary[m.key] }))
+  // Ko'rish — hammaga; Tahrirlash/O'chirish — faqat ruxsat bo'lsa (yo'q bo'lsa umuman
+  // chiqmaydi), va faqat yaratuvchiga (is_owner) faol.
+  const actions = computed(() => {
+    const arr = [
+      {
+        key: Utils.ActionTypes.view,
+        label: t('content.view'),
+        action: (row) => store._show(row.id)
+      }
+    ]
+    if (canWrite.value) {
+      arr.push({
+        key: Utils.ActionTypes.edit,
+        label: t('content.edit'),
+        disabled: (row) => !row.is_owner,
+        action: (row) => store._edit(row)
+      })
+    }
+    if (canDelete.value) {
+      arr.push({
+        key: Utils.ActionTypes.delete,
+        label: t('content.delete'),
+        disabled: (row) => !row.is_owner,
+        action: (row) => store._delete(row.id)
+      })
+    }
+    return arr
+  })
+
+  // status_summary -> mavjud (0 dan katta) status kodlari (yaratgan uchun umumiy ko'rinish).
+  const summaryCodes = (summary) => {
+    const map = [
+      [1, 'created'],
+      [2, 'in_progress'],
+      [3, 'done'],
+      [4, 'blocked']
+    ]
+    return map.filter(([, k]) => (summary?.[k] ?? 0) > 0).map(([code]) => code)
   }
 
   const assigneeGroup = (row) =>
@@ -49,17 +79,21 @@
     :page="store.params.page"
     :per-page="store.params.per_page"
     :total="store.totalItems"
+    :actions="actions"
+    :delete-warning="t('task.deleteWarning')"
     storage-key="hrm-task"
     @change-page="changePage"
   >
     <template #cell-creator="{ row }">
-      <UIUser :short="false" :data="{ photo: row?.creator?.photo }">
-        <template #name>
-          <n-ellipsis class="w-full text-sm text-textColor2 leading-[1.2]">
-            {{ row?.creator?.full_name || '—' }}
-          </n-ellipsis>
-        </template>
-      </UIUser>
+      <UIUser
+        :short="true"
+        :data="{
+          photo: row?.creator?.photo,
+          lastName: row?.creator?.last_name,
+          firstName: row?.creator?.first_name,
+          middleName: row?.creator?.middle_name
+        }"
+      />
     </template>
 
     <template #cell-assignees="{ row }">
@@ -67,16 +101,17 @@
     </template>
 
     <template #cell-status="{ row }">
-      <div class="flex flex-wrap gap-1">
-        <UIBadge
-          v-for="b in statusBadges(row.status_summary)"
-          :key="b.key"
-          :show-icon="false"
-          :type="b.type"
-          :label="`${b.label}: ${b.count}`"
+      <!-- Ijrochi bo'lsam — o'z statusim; yaratganim bo'lsa — ijrochilar holati (summary) -->
+      <UIStatus v-if="row.my_status" :status="taskStatusObj(row.my_status)" pill />
+      <div v-else-if="summaryCodes(row.status_summary).length" class="flex flex-wrap gap-1">
+        <UIStatus
+          v-for="code in summaryCodes(row.status_summary)"
+          :key="code"
+          :status="taskStatusObj(code)"
+          pill
         />
-        <span v-if="statusBadges(row.status_summary).length === 0">—</span>
       </div>
+      <span v-else>—</span>
     </template>
 
     <template #cell-deadline="{ row }">
