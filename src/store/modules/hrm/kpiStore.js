@@ -50,8 +50,9 @@ export const useKpiStore = defineStore('kpiStore', {
       this.selectedPeriod = null
       this.showVisible = true
       this.showLoading = true
+      // 🔑 KPI tizimi lavozim id'sini kutadi (`eUserId` = worker_positions.id).
       $ApiService.kpiService
-        ._employee({ id: row.worker_id })
+        ._employee({ id: row.worker_position_id })
         .then((res) => {
           const d = res.data.data
           this.showOnboarded = d.onboarded
