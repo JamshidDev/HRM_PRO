@@ -83,7 +83,6 @@ export const useDashboardStore = defineStore('dashboardStore', {
       counts: null,
       loading: false,
       detail: {
-        open: false,
         type: null,
         list: [],
         total: 0,
@@ -152,18 +151,17 @@ export const useDashboardStore = defineStore('dashboardStore', {
         d.loading = false
       }
     },
-    openAuditDetail(type) {
+    // Audit tab qatorida tur almashganda chaqiriladi.
+    selectAuditType(type) {
       // Qidiruv har safar toza boshlanadi; tashkilot filtri (params.organizations) saqlanadi.
       this.params.search = null
-      this.audit.detail.open = true
       this.audit.detail.type = type
       this.audit.detail.page = 1
       this.audit.detail.list = []
       this.audit.detail.total = 0
       this._getAuditPreview()
     },
-    closeAuditDetail() {
-      this.audit.detail.open = false
+    resetAuditDetail() {
       this.audit.detail.type = null
       this.audit.detail.list = []
       this.audit.detail.total = 0

@@ -17,7 +17,7 @@
     // `canView`: bare `hr-dashboard` yoki `hr-dashboard-read` — ikkalasi ham yaraydi.
     if (!accStore.canView(accStore.pn.hrDashboard)) return
     store.activeDetail = null
-    store.closeAuditDetail()
+    store.resetAuditDetail()
     store._dashboard()
   })
 
@@ -33,7 +33,7 @@
   // Tab almashganda ikkala drill-down ham yopiladi va barcha filtrlar tozalanadi.
   const onTabChange = (tab) => {
     store.activeDetail = null
-    store.closeAuditDetail()
+    store.resetAuditDetail()
     // qidiruv/sana/tur va h.k.
     store.resetDetailData()
     // yuqoridagi tashkilot filtri (UISelect `modelV` + `checkedVal` orqali boshqariladi)
@@ -112,32 +112,18 @@
         :tab="$t('dashboardPage.audit.tabAudit')"
         class="!p-0"
       >
-        <!-- "Umumiy dashboard" tabidagi bilan bir xil ikki panelli almashtirgich:
-             kartalar gridi <-> to'liq kenglikdagi detal ko'rinishi. -->
-        <n-tabs
-          class="max-h-[calc(100vh-132px)]"
-          :value="store.audit.detail.open ? 1 : 0"
-          animated
-          :tab-style="{ display: 'none' }"
-          :pane-wrapper-style="{ 'overflow-y': 'auto', 'scrollbar-gutter': 'stable' }"
-        >
-          <n-tab-pane :name="0" class="!p-0">
-            <UIPageContent class="!pt-0 !px-0 !m-0">
-              <AuditTab />
-            </UIPageContent>
-          </n-tab-pane>
-          <n-tab-pane :name="1" class="!p-0">
-            <!-- Balandlik aniq belgilanadi (global `.ui-page-content { height: 100dvh }`
-                 ni bosib o'tadi), shunda jadval qolgan joyni egallaydi va uning
-                 pagination footeri pastda mahkam turadi — sahifa scroll qilinmaydi. -->
-            <UIPageContent class="!pt-2 !px-0 !m-0 !h-[calc(100vh-132px)]">
-              <AuditDetailFilter class="shrink-0" />
-              <div class="flex-1 min-h-0">
-                <AuditDetail />
-              </div>
-            </UIPageContent>
-          </n-tab-pane>
-        </n-tabs>
+        <!-- Balandlik aniq belgilanadi (global `.ui-page-content { height: 100dvh }`
+             ni bosib o'tadi), shunda jadval qolgan joyni egallaydi va uning
+             pagination footeri pastda mahkam turadi — sahifa scroll qilinmaydi. -->
+        <UIPageContent class="!pt-0 !px-0 !m-0 !h-[calc(100vh-132px)]">
+          <div class="flex items-start justify-between gap-3 flex-wrap shrink-0">
+            <AuditTab />
+            <AuditDetailFilter />
+          </div>
+          <div class="flex-1 min-h-0">
+            <AuditDetail />
+          </div>
+        </UIPageContent>
       </n-tab-pane>
     </n-tabs>
   </div>

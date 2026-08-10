@@ -1,15 +1,6 @@
-import {
-  Certificate24Regular,
-  ContactCard24Regular,
-  PeopleTeam24Regular,
-  PersonNote24Regular,
-  PersonQuestionMark24Regular
-} from '@vicons/fluent'
-
-// HR dashboard "Audit" tab — data-quality kartalari.
+// HR dashboard "Audit" tab — data-quality ko'rsatkichlari (tab qatori).
 // type — backend `dashboard-audit-preview?type=` bilan bir xil (1..5).
 // countKey — `dashboard-audit-personal` javobidagi son maydoni.
-// icon / color — MOCK: dizayn bo'yicha vaqtinchalik tanlangan, keyin almashtiriladi.
 export const AuditType = {
   RELATIVES_SHORTAGE: 1,
   RELATIVES_WITHOUT_JSHSHIR: 2,
@@ -18,54 +9,31 @@ export const AuditType = {
   POSITION_CERTIFICATE_MISSING: 5
 }
 
-// Tartib dizayndagi kartalar ketma-ketligiga mos.
+// Tartib dizayndagi tablar ketma-ketligiga mos; birinchisi sukut bo'yicha tanlanadi.
 export const auditCards = [
   {
     type: AuditType.JSHSHIR_ERRORS,
     title: 'dashboardPage.audit.jshshirErrors',
-    countKey: 'jshshir_errors',
-    icon: ContactCard24Regular,
-    color: 'danger'
+    countKey: 'jshshir_errors'
   },
   {
     type: AuditType.NAME_ERRORS,
     title: 'dashboardPage.audit.nameErrors',
-    countKey: 'name_errors',
-    icon: PersonNote24Regular,
-    color: 'danger'
+    countKey: 'name_errors'
   },
   {
     type: AuditType.RELATIVES_SHORTAGE,
     title: 'dashboardPage.audit.relativesShortage',
-    countKey: 'relatives_shortage',
-    icon: PeopleTeam24Regular,
-    color: 'warning'
+    countKey: 'relatives_shortage'
   },
   {
     type: AuditType.RELATIVES_WITHOUT_JSHSHIR,
     title: 'dashboardPage.audit.relativesWithoutJshshir',
-    countKey: 'relatives_without_jshshir',
-    icon: PersonQuestionMark24Regular,
-    color: 'warning'
+    countKey: 'relatives_without_jshshir'
   },
   {
     type: AuditType.POSITION_CERTIFICATE_MISSING,
     title: 'dashboardPage.audit.positionCertificateMissing',
-    countKey: 'position_certificate_missing',
-    icon: Certificate24Regular,
-    color: 'warning'
+    countKey: 'position_certificate_missing'
   }
 ]
-
-// TODO(backend): quyidagi qiymatlar `/v1/hr/dashboard-audit-personal` javobida yo'q.
-// Endpoint kengaytirilganda shu obyekt o'chirilib, ma'lumot store'dan o'qiladi.
-// UIUserGroup `{ photo, fullName }` shaklini kutadi; photo=null bo'lganda
-// useAppSetting.noAvailableImage ('/no-picture.png') fallback rasmi chiqadi.
-export const auditCardMock = {
-  avatars: [
-    { photo: null, fullName: '—' },
-    { photo: null, fullName: '—' },
-    { photo: null, fullName: '—' }
-  ],
-  avatarsMore: 12
-}
