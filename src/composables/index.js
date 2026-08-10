@@ -1,4 +1,5 @@
 export * from './useAppInit.js'
 export * from './useLocaleProvider.js'
+export * from './useQrCode.js'
 export * from './useTableColumnFit.js'
 export * from './useTableColumns.js'

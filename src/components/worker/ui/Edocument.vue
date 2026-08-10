@@ -121,7 +121,8 @@
       postName: certificate.post_name,
       issueDate: certificate.issue_date,
       expiryDate: certificate.expiry_date,
-      extendedDate: certificate.extended_date
+      extendedDate: certificate.extended_date,
+      managerName: certificate.director?.name
     }))
   })
 </script>
