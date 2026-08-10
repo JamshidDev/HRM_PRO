@@ -2460,6 +2460,26 @@
       "giftType": "Дата"
     }
   },
+  "task": {
+    "name": "Задачи",
+    "view": {
+      "created": "Мной выданные",
+      "assigned": "Назначенные мне"
+    },
+    "table": {
+      "title": "Название задачи",
+      "creator": "Постановщик",
+      "assignees": "Исполнители",
+      "status": "Статус",
+      "deadline": "Срок"
+    },
+    "status": {
+      "created": "Создано",
+      "in_progress": "В процессе",
+      "done": "Выполнено",
+      "blocked": "Заблокировано"
+    }
+  },
   "report": {
     "name": "План и Факт",
     "addDepartment": "Добавить подразделение",

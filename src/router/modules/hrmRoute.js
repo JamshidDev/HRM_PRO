@@ -146,6 +146,11 @@ export const hrmRoutes = [
     meta: { layout: AppLayouts.main }
   },
   {
+    path: Utils.routeHrmPathMaker(AppPaths.Task),
+    component: () => import('@/pages/hrm/task/TaskPage.vue'),
+    meta: { layout: AppLayouts.main }
+  },
+  {
     path: Utils.routeHrmPathMaker(AppPaths.Report),
     component: () => import('@/pages/hrm/report/ReportPage.vue'),
     meta: { layout: AppLayouts.main }

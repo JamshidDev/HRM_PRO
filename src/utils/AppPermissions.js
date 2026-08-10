@@ -281,6 +281,11 @@ export const appPermissions = {
   hrIncentivesWrite: 'hr-incentives-write',
   hrIncentivesRead: 'hr-incentives-read',
 
+  hrTasks: 'hr-tasks',
+  hrTasksRead: 'hr-tasks-read',
+  hrTasksWrite: 'hr-tasks-write',
+  hrTasksDelete: 'hr-tasks-delete',
+
   hrPunishment: 'hr-discips',
   hrPunishmentWrite: 'hr-discips-write',
   hrPunishmentRead: 'hr-discips-read',

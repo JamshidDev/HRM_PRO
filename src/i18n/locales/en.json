@@ -2452,6 +2452,26 @@
       "giftType": "Date"
     }
   },
+  "task": {
+    "name": "Tasks",
+    "view": {
+      "created": "Created by me",
+      "assigned": "Assigned to me"
+    },
+    "table": {
+      "title": "Task title",
+      "creator": "Creator",
+      "assignees": "Assignees",
+      "status": "Status",
+      "deadline": "Deadline"
+    },
+    "status": {
+      "created": "Created",
+      "in_progress": "In progress",
+      "done": "Done",
+      "blocked": "Blocked"
+    }
+  },
   "report": {
     "name": "Plan vs Actual",
     "addDepartment": "Add department",

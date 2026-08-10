@@ -74,6 +74,7 @@ import exportService from '@/service/v1/hrm/exportService.js'
 import documentArchiveService from '@/service/v1/hrm/documentArchiveService.js'
 import businessTrip from '@/service/v1/hrm/businessTrip.js'
 import incentiveService from '@/service/v1/hrm/incentiveService.js'
+import taskService from '@/service/v1/hrm/taskService.js'
 import punishmentService from '@/service/v1/hrm/punishmentService.js'
 import medInspectionService from '@/service/v1/hrm/medInspectionService.js'
 import polyclinicService from '@/service/v1/hrm/polyclinicService.js'
@@ -249,6 +250,7 @@ export default {
   vacationScheduleService,
   businessTrip,
   incentiveService,
+  taskService,
   turnstileTerminalService,
   turnstileBuildingService,
   turnstileOrganizationService,

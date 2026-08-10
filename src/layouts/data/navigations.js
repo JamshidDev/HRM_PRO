@@ -15,6 +15,7 @@ import AdminSidebarIcon from '@assets/icons/Admin.svg'
 import {
   AppFolder20Filled,
   AppFolder24Filled,
+  ClipboardTaskListLtr24Filled,
   AppsAddIn16Regular,
   AppsList20Regular,
   AppsList24Filled,
@@ -263,6 +264,13 @@ export const navigations = [
         icon: RibbonStar24Filled,
         color: 'bg-success',
         permission: appPermissions.hrIncentives
+      },
+      {
+        label: 'task.name', // Topshiriqlar
+        path: Utils.routeHrmPathMaker(AppPaths.Task),
+        icon: ClipboardTaskListLtr24Filled,
+        color: 'bg-primary',
+        permission: appPermissions.hrTasks
       },
       {
         label: 'report.name', // Plan va Fakt

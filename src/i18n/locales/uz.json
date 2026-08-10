@@ -2478,6 +2478,26 @@
       "giftType": "Sana"
     }
   },
+  "task": {
+    "name": "Topshiriqlar",
+    "view": {
+      "created": "Men berganlar",
+      "assigned": "Menga biriktirilganlar"
+    },
+    "table": {
+      "title": "Topshiriq nomi",
+      "creator": "Beruvchi",
+      "assignees": "Bajaruvchilar",
+      "status": "Holati",
+      "deadline": "Muddat"
+    },
+    "status": {
+      "created": "Yaratildi",
+      "in_progress": "Jarayonda",
+      "done": "Bajarildi",
+      "blocked": "Bloklangan"
+    }
+  },
   "report": {
     "name": "Plan va Fakt",
     "addDepartment": "Bo'linma qo'shish",

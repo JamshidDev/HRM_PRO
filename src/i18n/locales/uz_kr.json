@@ -2233,6 +2233,26 @@
       "giftType": "Сана"
     }
   },
+  "task": {
+    "name": "Топшириқлар",
+    "view": {
+      "created": "Мен берганлар",
+      "assigned": "Менга бириктирилганлар"
+    },
+    "table": {
+      "title": "Топшириқ номи",
+      "creator": "Берувчи",
+      "assignees": "Бажарувчилар",
+      "status": "Ҳолати",
+      "deadline": "Муддат"
+    },
+    "status": {
+      "created": "Яратилди",
+      "in_progress": "Жараёнда",
+      "done": "Бажарилди",
+      "blocked": "Блокланган"
+    }
+  },
   "report": {
     "name": "План ва Факт",
     "addDepartment": "Бўлинма қўшиш",

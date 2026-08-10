@@ -100,6 +100,7 @@ export const AppPaths = {
   Teacher: '/teacher',
   Punishment: '/punishment',
   Incentive: '/incentive',
+  Task: '/task',
   Report: '/report',
   Approval: '/approval',
   SpecialReport: '/spectial-report',
