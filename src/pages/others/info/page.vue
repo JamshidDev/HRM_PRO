@@ -4,11 +4,12 @@
   import { UIDrawer, UIPageTitle } from '@components'
   import OrgDetail from './ui/OrgDetail.vue'
   const store = useUsefulStore()
+  const tab = ref(0)
 </script>
 <template>
-  <div class="h-full p-4">
-    <UIPageTitle :title="$t('navigation.general')" />
-    <InfoCardGrid />
+  <div class="h-full p-4 flex flex-col">
+    <UIPageTitle v-if="tab === 0" :title="$t('navigation.general')" />
+    <InfoCardGrid v-model:tab="tab" class="flex-1 min-h-0" />
     <UIDrawer
       :width="550"
       :visible="store.visible"

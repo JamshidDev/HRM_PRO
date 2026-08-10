@@ -1496,7 +1496,9 @@
       "extendedDate": "Дата продления",
       "verify": "Подтверждено",
       "returned": "Возвращено",
-      "certificateFile": "Файл удостоверения"
+      "certificateFile": "Файл удостоверения",
+      "regenerate": "Пересчитать должность",
+      "postNameHint": "Формируется автоматически из текущей должности сотрудника — при необходимости отредактируйте вручную"
     }
   },
   "languageCertificatePage": {
@@ -3391,9 +3393,56 @@
   "turnstileSchedule": {
     "name": "График турникета"
   },
+  "approve": {
+    "name": "Отправленные сотрудники",
+    "createTitle": "Отправить сотрудников",
+    "updateTitle": "Редактировать",
+    "confirmWorkers": "Допустить сотрудников на турникет",
+    "form": {
+      "sended": "Отправлено",
+      "selectedWorker": "Выбранные",
+      "received": "Прибыли"
+    }
+  },
+  "lmsCertificate": {
+    "name": "Сертификаты",
+    "createTitle": "Добавление и редактирование сертификата",
+    "updateTitle": "Редактирование сертификата",
+    "form": {
+      "protocol_date": "Дата протокола",
+      "cert_to": "До какого числа",
+      "cert_from": "С какого числа",
+      "start_exam_result": "Вступительный экзамен",
+      "end_exam_result": "Выпускной экзамен",
+      "enterExam": "Вход/И",
+      "exitExam": "Выход/И"
+    },
+    "warning": {
+      "invalidResult": "Введены неверные данные"
+    }
+  },
+  "staffingApproval": {
+    "name": "Штаты",
+    "createTitle": "Отправить штаты на согласование",
+    "form": {
+      "director_id": "Утверждающий сотрудник",
+      "confirmOrganization": "Утверждающая организация",
+      "confirmatory_id": "Руководитель организации"
+    }
+  },
   "notificationPage": {
     "name": "Уведомления",
     "create": "Создать уведомление"
+  },
+  "congratulation": {
+    "name": "Telegram-сообщения",
+    "description": {
+      "birthday": "Количество сотрудников, поздравленных с днём рождения",
+      "vacation": "Количество сотрудников, уведомлённых об отпуске",
+      "med": "Количество сотрудников, уведомлённых о медицинском осмотре",
+      "passport": "Количество сотрудников, уведомлённых об истечении срока паспорта",
+      "mobile": "Количество сотрудников, уведомлённых через мобильное приложение"
+    }
   },
   "mobileStoryPage": {
     "name": "Story-объявления",
@@ -3735,5 +3784,28 @@
     "mobileFaceSchedules": "Mobile face: графики",
     "otpVerify": "Проверка OTP",
     "holidayGreetings": "Праздничные поздравления"
+  },
+  "workerCertificatePage": {
+    "name": "Удостоверения",
+    "table": {
+      "worker": "Сотрудник",
+      "organization": "Организация",
+      "position": "Должность",
+      "number": "Номер удостоверения",
+      "issueDate": "Дата выдачи",
+      "expiryDate": "Срок",
+      "verify": "Подтверждено",
+      "returned": "Изъято",
+      "noCertificate": "Не выдано"
+    },
+    "filter": {
+      "status": "Статус удостоверения",
+      "issued": "Выдано",
+      "verify": "Подтверждено",
+      "returned": "Изъято"
+    },
+    "modal": {
+      "notVerified": "Не подтверждено"
+    }
   }
 }

@@ -665,21 +665,19 @@ export const useComponentStore = defineStore('componentStore', {
         })
     },
     _departmentPosition(id = undefined) {
-      const params = {
-        page: 1,
-        per_page: 1000,
-        department_id: id
-      }
+      const params = { department_id: id }
       this.departmentPositionLoading = true
-      $ApiService.departmentPositionService
-        ._index({ params })
+      // Permissionsiz filter endpoint (get-department-positions) — forma dropdowni
+      // uchun; gated `department-positions` (hr-report) o'rniga (Worker permissionsiz
+      // ishlata olsin). Filter FLAT shakl qaytaradi: { id, position:{id,name} } —
+      // rate/worker_rate/department YO'Q (dropdown'da vakansiya ko'rsatilmaydi).
+      // Javob pagination'siz massiv: res.data.data (gated'dagi .data.data.data emas).
+      $ApiService.componentService
+        ._allPosition({ params })
         .then((res) => {
-          this.departmentPositionList = res.data.data.data.map((v) => ({
+          this.departmentPositionList = (res.data.data || []).map((v) => ({
             ...v,
             name: v.position?.name,
-            position: v.department?.name,
-            subPosition: `${t('report.form.contingent')} - ${v.rate}; ${t('report.form.worker')} - ${v.worker_rate}`,
-            color: Number(v.rate) > Number(v.worker_rate) ? 'text-success' : 'text-danger',
             id: v.id
           }))
         })

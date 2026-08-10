@@ -1513,7 +1513,9 @@
       "extendedDate": "Uzaytirilgan sana",
       "verify": "Tasdiqlangan",
       "returned": "Qaytarib olingan",
-      "certificateFile": "Guvohnoma fayli"
+      "certificateFile": "Guvohnoma fayli",
+      "regenerate": "Lavozimni qayta hisoblash",
+      "postNameHint": "Xodimning joriy lavozimidan avtomatik hosil qilinadi — kerak bo'lsa qo'lda tahrirlang"
     }
   },
   "languageCertificatePage": {
@@ -3816,5 +3818,28 @@
     "mobileFaceSchedules": "Mobil face: jadvallar",
     "otpVerify": "OTP tekshirish",
     "holidayGreetings": "Bayram tabriklari"
+  },
+  "workerCertificatePage": {
+    "name": "Guvohnomalar",
+    "table": {
+      "worker": "Xodim",
+      "organization": "Tashkilot",
+      "position": "Lavozim",
+      "number": "Guvohnoma raqami",
+      "issueDate": "Berilgan sana",
+      "expiryDate": "Muddat",
+      "verify": "Tasdiqlangan",
+      "returned": "Qaytarib olingan",
+      "noCertificate": "Berilmagan"
+    },
+    "filter": {
+      "status": "Guvohnoma holati",
+      "issued": "Berilgan",
+      "verify": "Tasdiqlangan",
+      "returned": "Qaytarib olingan"
+    },
+    "modal": {
+      "notVerified": "Tasdiqlanmagan"
+    }
   }
 }
