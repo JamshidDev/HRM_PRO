@@ -5,7 +5,7 @@
     useExportStore,
     useAccountStore
   } from '@/store/modules/index.js'
-  import { UINSelect, UIPageFilter, UISelect, UIPageTitle } from '@/components/index.js'
+  import { UINSelect, UIPageFilter, UISelect } from '@/components/index.js'
   import { ArrowSync16Regular, ChevronDown20Regular, ChevronUp20Regular } from '@vicons/fluent'
   import Utils from '@/utils/Utils.js'
   import { appPermissions, useDebounce } from '@/utils/index.js'
@@ -251,17 +251,6 @@
 </script>
 
 <template>
-  <UIPageTitle :title="$t('workerPage.name')">
-    <template #actions>
-      <n-button type="primary" tertiary @click="store._index()" :loading="store.loading">
-        {{ $t('content.refresh') }}
-        <template #icon>
-          <n-icon><ArrowSync16Regular /></n-icon>
-        </template>
-      </n-button>
-    </template>
-  </UIPageTitle>
-
   <UIPageFilter
     :search-loading="store.loading"
     :filter-count="filterCount"
@@ -280,6 +269,13 @@
   >
     <template #filterAction>
       <div class="worker-action-group flex flex-wrap items-center gap-3 w-full md:w-auto">
+        <n-button type="primary" tertiary @click="store._index()" :loading="store.loading">
+          {{ $t('content.refresh') }}
+          <template #icon>
+            <n-icon><ArrowSync16Regular /></n-icon>
+          </template>
+        </n-button>
+
         <n-button v-if="canWrite" type="primary" @click="onAdd">
           <template #icon>
             <img class="worker-action-icon" :src="contractIcon" alt="" />

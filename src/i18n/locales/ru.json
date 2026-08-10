@@ -1654,7 +1654,8 @@
       "managementStaff": "Руководящий состав",
       "avgRating": "Средний рейтинг",
       "ratingBasedOn": "на основе {count} оценок",
-      "serviceCertificate": "Служебное удостоверение",
+      "positionCertificateId": "Должностное удостоверение",
+      "employeeId": "ID сотрудника",
       "workNumber": "Рабочий номер"
     },
     "sidebar": {
@@ -1668,11 +1669,9 @@
       "validityPeriod": "Срок действия",
       "started": "Начало",
       "ends": "Окончание",
-      "progressSuffix": "пройдено",
-      "lastCheckDate": "Дата последнего осмотра",
-      "conclusion": "Медицинское заключение",
-      "fitForWork": "Пригоден к работе",
-      "monthsLeft": "≈{count} мес. осталось"
+      "ended": "Завершён",
+      "durationYears": "{count} г.",
+      "durationMonths": "{count} мес."
     },
     "vacation": {
       "start": "Начало отпуска",
@@ -1984,11 +1983,11 @@
     "audit": {
       "tabGeneral": "Общий дашборд",
       "tabAudit": "Аудит данных",
-      "relativesShortage": "Близкие родственники указаны не полностью",
-      "relativesWithoutJshshir": "Не указан ПИНФЛ родственника",
-      "nameErrors": "Ошибочный символ в имени/фамилии",
-      "jshshirErrors": "Паспорт и ПИНФЛ не совпадают",
-      "positionCertificateMissing": "Нет служебного удостоверения",
+      "relativesShortage": "Родственники неполные",
+      "relativesWithoutJshshir": "Нет ПИНФЛ родственника",
+      "nameErrors": "Ошибка в имени/фамилии",
+      "jshshirErrors": "Паспорт–ПИНФЛ не совпадают",
+      "positionCertificateMissing": "Нет удостоверения",
       "fio": "Ф.И.О.",
       "pin": "ПИНФЛ",
       "organization": "Организация",

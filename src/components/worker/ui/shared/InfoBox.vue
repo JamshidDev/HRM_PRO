@@ -1,5 +1,5 @@
 <script setup>
-  defineProps({
+  const props = defineProps({
     label: {
       type: String,
       default: ''
@@ -14,7 +14,7 @@
     },
     surface: {
       type: String,
-      default: 'ground' // 'ground' | 'section'
+      default: 'ground' // 'ground' | 'section' | 'transparent'
     },
     iconVariant: {
       type: String,
@@ -25,14 +25,27 @@
       default: 'default' // 'default' | 'large'
     }
   })
+
+  const surfaceClass = computed(() => {
+    if (props.surface === 'section') return 'bg-surface-section'
+    if (props.surface === 'transparent') return ''
+    return 'info-box-ground'
+  })
+
+  // Shaffof variant o'zi turgan kartaning padding'iga tekislanadi
+  const paddingClass = computed(() => {
+    if (props.surface === 'transparent') return 'px-0'
+    return props.size === 'large' ? 'px-5' : 'px-4'
+  })
 </script>
 
 <template>
   <div
     class="flex flex-col min-w-0"
     :class="[
-      surface === 'section' ? 'bg-surface-section' : 'info-box-ground',
-      size === 'large' ? 'gap-2 rounded-[20px] px-5 py-3' : 'gap-1 rounded-3xl px-4 py-3'
+      surfaceClass,
+      paddingClass,
+      size === 'large' ? 'gap-2 rounded-[20px] py-3' : 'gap-1 rounded-3xl py-3'
     ]"
   >
     <div class="flex items-center gap-2">

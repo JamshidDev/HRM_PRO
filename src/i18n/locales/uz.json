@@ -1668,7 +1668,8 @@
       "managementStaff": "Boshqaruv xodimlari",
       "avgRating": "O'rtacha reyting",
       "ratingBasedOn": "{count} ta baholash asosida",
-      "serviceCertificate": "Xizmat guvohnomasi",
+      "positionCertificateId": "Lavozim guvohnomasi",
+      "employeeId": "Xodim ID",
       "workNumber": "Ishchi raqami"
     },
     "sidebar": {
@@ -1682,11 +1683,9 @@
       "validityPeriod": "Amal qilish muddati",
       "started": "Boshlangan",
       "ends": "Tugaydi",
-      "progressSuffix": "o'tdi",
-      "lastCheckDate": "Oxirgi ko'rik sanasi",
-      "conclusion": "Tibbiy xulosa",
-      "fitForWork": "Mehnatga layoqatli",
-      "monthsLeft": "≈{count} oy qoldi"
+      "ended": "Tugagan",
+      "durationYears": "{count} yil",
+      "durationMonths": "{count} oy"
     },
     "vacation": {
       "start": "Ta'tilga chiqish",
@@ -1998,11 +1997,11 @@
     "audit": {
       "tabGeneral": "Umumiy dashboard",
       "tabAudit": "Ma'lumotlar bo'yicha audit",
-      "relativesShortage": "Yaqin qarindoshlar to'liq emas",
-      "relativesWithoutJshshir": "Qarindosh PNFL kiritilmagan",
-      "nameErrors": "Ism-familyada xato belgi",
-      "jshshirErrors": "Pasport va PNFL mos emas",
-      "positionCertificateMissing": "Xizmat guvohnomasi yo'q",
+      "relativesShortage": "Qarindoshlar to'liqsiz",
+      "relativesWithoutJshshir": "Qarindosh PNFL yo'q",
+      "nameErrors": "Ism-familiya xatosi",
+      "jshshirErrors": "Pasport–PNFL nomuvofiq",
+      "positionCertificateMissing": "Guvohnoma yo'q",
       "fio": "F.I.Sh.",
       "pin": "PNFL",
       "organization": "Korxona",
