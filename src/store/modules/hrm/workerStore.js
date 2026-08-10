@@ -119,14 +119,21 @@ export const useWorkerStore = defineStore('workerStore', {
           this.filterPositionLoading = false
         })
     },
-    _downloadRelative() {
+    // `workerIds` — jadvalda checkbox bilan tanlangan qatorlar (`worker_positions.id`).
+    // Bo'sh bo'lsa filtrlangan ro'yxatning HAMMASI yuklanadi (boshqa eksportlar bilan
+    // bir xil qoida). Eksport fonda navbatga qo'yiladi — foydalanuvchi shu sahifada
+    // qoladi (ilgari majburan «Eksportlar» sahifasiga o'tkazardi).
+    _downloadRelative(workerIds = []) {
       this.loading = true
-      let params = this._params()
-      // Eksport fonda navbatga qo'yiladi — foydalanuvchi shu sahifada qoladi
-      // (ilgari majburan «Eksportlar» sahifasiga o'tkazib yuborardi, filtri va
-      // tanlovi yo'qolardi). Muvaffaqiyat xabarini interceptor ko'rsatadi.
+      const ids = Array.isArray(workerIds) ? workerIds : []
+      const data = {
+        query: {
+          ...this._params(),
+          ...(ids.length > 0 ? { worker_ids: ids } : {})
+        }
+      }
       $ApiService.workerService
-        ._downloadRelative({ params })
+        ._downloadRelative({ data })
         .finally(() => {
           this.loading = false
         })

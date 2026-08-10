@@ -231,6 +231,11 @@
     next()
   })
 
+  // Qarindoshlar eksporti — tanlangan qatorlar bo'lsa faqat o'shalar.
+  const onRelativesExport = () => {
+    store._downloadRelative(exportStore.resumePayload.worker_ids)
+  }
+
   const onSubmitResumeExport = () => {
     exportStore.resumeModalVisible = true
   }
@@ -312,7 +317,7 @@
         :can-write="canWrite"
         :can-zip="canZip"
         :loading="store.loading"
-        @relatives="store._downloadRelative"
+        @relatives="onRelativesExport"
         @export="onExport"
         @reference="onSubmitResumeExport"
         @close="closeReportPanel"
