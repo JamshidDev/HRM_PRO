@@ -1,8 +1,5 @@
 import { defineStore } from 'pinia'
 import i18n from '@/i18n/index.js'
-import Utils from '@/utils/Utils.js'
-import { AppPaths } from '@/utils/index.js'
-import router from '@/router/index.js'
 const { t } = i18n.global
 export const useWorkerStore = defineStore('workerStore', {
   state: () => ({
@@ -125,11 +122,11 @@ export const useWorkerStore = defineStore('workerStore', {
     _downloadRelative() {
       this.loading = true
       let params = this._params()
+      // Eksport fonda navbatga qo'yiladi — foydalanuvchi shu sahifada qoladi
+      // (ilgari majburan «Eksportlar» sahifasiga o'tkazib yuborardi, filtri va
+      // tanlovi yo'qolardi). Muvaffaqiyat xabarini interceptor ko'rsatadi.
       $ApiService.workerService
         ._downloadRelative({ params })
-        .then(() => {
-          router.push(Utils.routeHrmPathMaker(AppPaths.Export))
-        })
         .finally(() => {
           this.loading = false
         })
