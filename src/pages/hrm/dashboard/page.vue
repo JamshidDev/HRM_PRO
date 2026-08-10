@@ -13,6 +13,9 @@
   const store = useDashboardStore()
   const accStore = useAccountStore()
 
+  const canViewAudit = computed(() => accStore.checkPermission(accStore.pn.hrDashboardAudit))
+  const isAudit = computed(() => store.activeTab === 'audit' && canViewAudit.value)
+
   onBeforeMount(() => {
     // `canView`: bare `hr-dashboard` yoki `hr-dashboard-read` — ikkalasi ham yaraydi.
     if (!accStore.canView(accStore.pn.hrDashboard)) return
@@ -41,25 +44,36 @@
     store.structureCheck = []
     // Ko'rsatilayotgan ma'lumot tozalangan filtrga mos bo'lishi uchun qayta yuklanadi.
     // Audit tabida `AuditTab` qayta mount bo'lib `_getAuditCounts()` ni o'zi chaqiradi
-    // (n-tab-pane sukut bo'yicha `display-directive="if"`).
+    // (kontent `v-if` bilan almashadi, ya'ni har safar yangidan mount bo'ladi).
     if (tab === 'general') store._dashboard()
   }
 </script>
 
 <template>
   <div>
-    <div class="flex justify-end items-center pl-4 py-3 pr-7">
-      <Filter />
+    <!-- Tab qatori va filtr bitta satrda: `n-tab` (panelsiz) ishlatilgani uchun
+         kontent tablardan tashqarida, to'liq kenglikda chiziladi. -->
+    <div class="flex items-center justify-between gap-3 flex-wrap pl-4 pr-7 py-3">
+      <n-tabs
+        v-model:value="store.activeTab"
+        @update:value="onTabChange"
+        type="line"
+        class="ui-pill-tabs ui-pill-tabs--inline"
+      >
+        <n-tab name="general">{{ $t('dashboardPage.audit.tabGeneral') }}</n-tab>
+        <!-- Audit — alohida ko'rish ruxsati; bo'lmasa tab umuman chizilmaydi. -->
+        <n-tab v-if="canViewAudit" name="audit">{{ $t('dashboardPage.audit.tabAudit') }}</n-tab>
+      </n-tabs>
+
+      <!-- Barcha boshqaruvlar shu qatorda: audit qidiruvi faqat audit tabida chiqadi. -->
+      <div class="flex items-center gap-3 flex-wrap">
+        <AuditDetailFilter v-if="isAudit" />
+        <Filter />
+      </div>
     </div>
 
-    <n-tabs
-      v-model:value="store.activeTab"
-      @update:value="onTabChange"
-      type="line"
-      class="px-4 ui-pill-tabs"
-      :pane-wrapper-style="{ 'overflow-y': 'auto', 'scrollbar-gutter': 'stable' }"
-    >
-      <n-tab-pane name="general" :tab="$t('dashboardPage.audit.tabGeneral')" class="!p-0">
+    <div class="px-4" style="overflow-y: auto; scrollbar-gutter: stable">
+      <template v-if="store.activeTab === 'general'">
         <n-tabs
           class="max-h-[calc(100vh-132px)]"
           :value="store.activeDetail ? 1 : 0"
@@ -103,29 +117,20 @@
             </UIPageContent>
           </n-tab-pane>
         </n-tabs>
-      </n-tab-pane>
+      </template>
 
-      <!-- Audit — alohida ko'rish ruxsati; bo'lmasa tab umuman chizilmaydi. -->
-      <n-tab-pane
-        v-if="accStore.checkPermission(accStore.pn.hrDashboardAudit)"
-        name="audit"
-        :tab="$t('dashboardPage.audit.tabAudit')"
-        class="!p-0"
-      >
+      <template v-else-if="store.activeTab === 'audit' && canViewAudit">
         <!-- Balandlik aniq belgilanadi (global `.ui-page-content { height: 100dvh }`
              ni bosib o'tadi), shunda jadval qolgan joyni egallaydi va uning
              pagination footeri pastda mahkam turadi — sahifa scroll qilinmaydi. -->
         <UIPageContent class="!pt-0 !px-0 !m-0 !h-[calc(100vh-132px)]">
-          <div class="flex items-start justify-between gap-3 flex-wrap shrink-0">
-            <AuditTab />
-            <AuditDetailFilter />
-          </div>
+          <AuditTab class="shrink-0" />
           <div class="flex-1 min-h-0">
             <AuditDetail />
           </div>
         </UIPageContent>
-      </n-tab-pane>
-    </n-tabs>
+      </template>
+    </div>
   </div>
 </template>
 

@@ -25,7 +25,11 @@
   <!-- Pill uslubi `.ui-pill-tabs` da (assets/scss/component.scss); siljiydigan pill
        `type="line"` dagi `.n-tabs-bar` bo'lgani uchun tur o'zgartirilmaydi.
        `n-tab` (panelsiz) — jadval shu komponentdan tashqarida bir marta chiziladi. -->
-  <n-tabs v-model:value="activeType" type="line" class="audit-tabs ui-pill-tabs">
+  <n-tabs
+    v-model:value="activeType"
+    type="line"
+    class="audit-tabs ui-pill-tabs ui-pill-tabs--inline"
+  >
     <n-tab v-for="card in auditCards" :key="card.type" :name="card.type">
       <span>{{ $t(card.title) }}</span>
       <span class="audit-count">{{ countOf(card) }}</span>
