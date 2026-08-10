@@ -2454,14 +2454,24 @@
   },
   "task": {
     "name": "Tasks",
+    "createTitle": "Assign task",
+    "updateTitle": "Edit task",
+    "detailTitle": "Task details",
+    "info": "Info",
+    "deleteWarning": "Confirm deleting the task?",
+    "myStatus": "My status",
+    "statusComment": "Comment on the status change (optional)",
+    "comments": "Comments",
+    "addComment": "Write a comment...",
+    "history": "Status history",
     "view": {
       "created": "Created by me",
       "assigned": "Assigned to me"
     },
     "table": {
       "title": "Task title",
-      "creator": "Creator",
-      "assignees": "Assignees",
+      "creator": "Responsible employee",
+      "assignees": "Executors",
       "status": "Status",
       "deadline": "Deadline"
     },
@@ -3740,6 +3750,17 @@
     "mobileFaceSchedules": "Mobile face: schedules",
     "otpVerify": "OTP verify",
     "holidayGreetings": "Holiday greetings"
+  },
+  "kpiPage": {
+    "name": "KPI indicators",
+    "table": {
+      "worker": "Employee",
+      "department": "Department",
+      "position": "Position",
+      "organization": "Organization",
+      "pin": "PINFL"
+    },
+    "showPending": "Indicators come from an external system — data will appear once the integration is connected."
   },
   "workerCertificatePage": {
     "name": "Certificates",

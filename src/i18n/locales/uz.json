@@ -2480,14 +2480,24 @@
   },
   "task": {
     "name": "Topshiriqlar",
+    "createTitle": "Topshiriq berish",
+    "updateTitle": "Topshiriqni tahrirlash",
+    "detailTitle": "Topshiriq ma'lumoti",
+    "info": "Ma'lumot",
+    "deleteWarning": "Topshiriqni o'chirishni tasdiqlaysizmi?",
+    "myStatus": "Mening holatim",
+    "statusComment": "Holat o'zgarishiga izoh (ixtiyoriy)",
+    "comments": "Izohlar",
+    "addComment": "Izoh yozish...",
+    "history": "Holat tarixi",
     "view": {
       "created": "Men berganlar",
       "assigned": "Menga biriktirilganlar"
     },
     "table": {
       "title": "Topshiriq nomi",
-      "creator": "Beruvchi",
-      "assignees": "Bajaruvchilar",
+      "creator": "Mas'ul xodim",
+      "assignees": "Ijrochilar",
       "status": "Holati",
       "deadline": "Muddat"
     },
@@ -3833,6 +3843,17 @@
     "mobileFaceSchedules": "Mobil face: jadvallar",
     "otpVerify": "OTP tekshirish",
     "holidayGreetings": "Bayram tabriklari"
+  },
+  "kpiPage": {
+    "name": "KPI ko'rsatgichlar",
+    "table": {
+      "worker": "Xodim",
+      "department": "Bo'lim",
+      "position": "Lavozim",
+      "organization": "Korxona",
+      "pin": "JSHSHIR"
+    },
+    "showPending": "Ko'rsatkichlar tashqi tizimdan olinadi — integratsiya ulanmaguncha ma'lumot ko'rsatilmaydi."
   },
   "workerCertificatePage": {
     "name": "Guvohnomalar",

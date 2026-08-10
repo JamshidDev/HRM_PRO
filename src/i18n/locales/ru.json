@@ -2462,13 +2462,23 @@
   },
   "task": {
     "name": "Задачи",
+    "createTitle": "Выдать задачу",
+    "updateTitle": "Редактировать задачу",
+    "detailTitle": "Информация о задаче",
+    "info": "Информация",
+    "deleteWarning": "Подтвердить удаление задачи?",
+    "myStatus": "Мой статус",
+    "statusComment": "Комментарий к изменению статуса (необязательно)",
+    "comments": "Комментарии",
+    "addComment": "Написать комментарий...",
+    "history": "История статусов",
     "view": {
       "created": "Мной выданные",
       "assigned": "Назначенные мне"
     },
     "table": {
       "title": "Название задачи",
-      "creator": "Постановщик",
+      "creator": "Ответственный сотрудник",
       "assignees": "Исполнители",
       "status": "Статус",
       "deadline": "Срок"
@@ -3752,6 +3762,17 @@
     "mobileFaceSchedules": "Mobile face: графики",
     "otpVerify": "Проверка OTP",
     "holidayGreetings": "Праздничные поздравления"
+  },
+  "kpiPage": {
+    "name": "Показатели KPI",
+    "table": {
+      "worker": "Сотрудник",
+      "department": "Отдел",
+      "position": "Должность",
+      "organization": "Организация",
+      "pin": "ПИНФЛ"
+    },
+    "showPending": "Показатели поступают из внешней системы — данные появятся после подключения интеграции."
   },
   "workerCertificatePage": {
     "name": "Удостоверения",

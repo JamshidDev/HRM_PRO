@@ -103,6 +103,10 @@ export const appPermissions = {
   // Guvohnomalar ro'yxati sahifasi — xodimlar ruxsatidan AJRALGAN.
   hrCertificatesRead: 'hr-certificates-read',
 
+  // KPI ko'rsatgichlar sahifasi (HR moduli).
+  hrKpi: 'hr-kpi',
+  hrKpiRead: 'hr-kpi-read',
+
   hrDepartments: 'hr-departments',
   hrDepartmentsWrite: 'hr-departments-write',
   hrDepartmentsRead: 'hr-departments-read',

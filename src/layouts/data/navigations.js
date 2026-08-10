@@ -135,6 +135,13 @@ export const navigations = [
         permission: appPermissions.hrCertificatesRead
       },
       {
+        label: 'kpiPage.name', // KPI ko'rsatgichlar
+        path: Utils.routeHrmPathMaker(AppPaths.Kpi),
+        icon: reportIcon,
+        color: 'bg-warning',
+        permission: appPermissions.hrKpi
+      },
+      {
         label: 'confirmation.name', // Shartnomalar
         path: Utils.routeHrmPathMaker(AppPaths.Contract),
         icon: contractIcon,
