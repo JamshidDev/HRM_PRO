@@ -62,24 +62,28 @@
         <div class="flex flex-col p-2" :class="[height && 'h-full']">
           <div class="w-full shrink-0">
             <slot name="header">
-              <div class="flex items-center justify-between px-4 py-2">
-                <h3 class="text-lg font-semibold text-textColor1">
+              <!-- `-mx-2 -mt-2` tashqi `p-2` ni bekor qiladi, shunda ajratuvchi chiziq
+                   kartaning butun kengligi bo'ylab cho'ziladi. -->
+              <div
+                class="flex items-center justify-between gap-3 -mx-2 -mt-2 px-6 py-4 border-b border-surface-line"
+              >
+                <h3 class="text-xl font-bold text-textColor0 truncate">
                   <slot name="header-title">
                     {{ title }}
                   </slot>
                 </h3>
                 <div
                   @click="onClickClose"
-                  class="w-8 h-8 rounded-full bg-surface-ground hover:bg-surface-line flex items-center justify-center cursor-pointer shrink-0 transition-colors"
+                  class="w-9 h-9 rounded-full bg-surface-ground hover:bg-surface-line flex items-center justify-center cursor-pointer shrink-0 transition-colors"
                 >
-                  <n-icon size="16" class="text-textColor2">
+                  <n-icon size="18" class="text-textColor1">
                     <Dismiss24Regular />
                   </n-icon>
                 </div>
               </div>
             </slot>
           </div>
-          <div class="px-4 pb-4" :class="[height && 'flex-1 min-h-0 overflow-y-auto']">
+          <div class="px-4 pt-4 pb-4" :class="[height && 'flex-1 min-h-0 overflow-y-auto']">
             <slot name="default"> </slot>
           </div>
           <div class="shrink-0" v-if="$slots.footer">

@@ -60,6 +60,7 @@ export const useTopicFileStore = defineStore('topicFileStore', {
       $ApiService.topicFilesService
         ._update({ data: formData, id: this.topicId, file_id: this.elementId })
         .then((res) => {
+          this.visible = false
           this._index()
           this.resetForm()
         })

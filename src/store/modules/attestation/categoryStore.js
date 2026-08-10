@@ -20,8 +20,7 @@ export const useCategoryStore = defineStore('categoryStore', {
       page: 1,
       per_page: 15,
       search: null
-    },
-    uploadVisible: false
+    }
   }),
   actions: {
     _clear() {
@@ -31,7 +30,11 @@ export const useCategoryStore = defineStore('categoryStore', {
         .then((res) => {
           this._index()
         })
-        .finally(() => {})
+        .finally(() => {
+          // `_index()` faqat muvaffaqiyatda ishga tushadi — xatoda spinner
+          // shu yerda o'chmasa, jadval abadiy yuklanish holatida qolardi.
+          this.loading = false
+        })
     },
     _index() {
       this.loading = true
@@ -90,6 +93,7 @@ export const useCategoryStore = defineStore('categoryStore', {
       this.visible = data
     },
     resetForm() {
+      this.elementId = null
       this.payload.name = null
     }
   }

@@ -107,6 +107,9 @@ export const useTopicStore = defineStore('topicStore', {
       this.payload.name = null
       this.payload.type = null
       this.payload.organizations = []
+      // aks holda tahrirlashdan keyin ochilgan formada oldingi mavzuning
+      // tashkilot daraxtidagi belgilari qolib ketadi
+      this.structureCheck = []
     }
   }
 })
