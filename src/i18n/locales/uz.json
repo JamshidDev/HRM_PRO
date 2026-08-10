@@ -1668,7 +1668,8 @@
       "managementStaff": "Boshqaruv xodimlari",
       "avgRating": "O'rtacha reyting",
       "ratingBasedOn": "{count} ta baholash asosida",
-      "serviceCertificate": "Xizmat guvohnomasi",
+      "positionCertificateId": "Lavozim guvohnomasi",
+      "employeeId": "Xodim ID",
       "workNumber": "Ishchi raqami"
     },
     "sidebar": {

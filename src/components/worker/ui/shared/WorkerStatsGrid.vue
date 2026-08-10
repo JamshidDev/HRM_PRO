@@ -21,6 +21,11 @@
     () => store.workerPreview?.worker?.digital_certificate?.serial
   )
 
+  // Lavozim guvohnomalarining eng oxirgisi — amaldagi guvohnoma raqami
+  const positionCertificateId = computed(
+    () => store.workerPreview?.worker?.certificates?.at(-1)?.number
+  )
+
   const onCopy = () => {
     $Toast.success(t('message.successDone'))
   }
@@ -33,7 +38,27 @@
         <n-icon size="14">
           <CertificateIcon />
         </n-icon>
-        {{ $t('workerView.header.serviceCertificate') }}
+        {{ $t('workerView.header.positionCertificateId') }}
+      </div>
+      <div class="font-semibold flex items-center gap-1 flex-wrap">
+        <span class="break-words">{{ positionCertificateId }}</span>
+        <n-icon
+          v-if="positionCertificateId"
+          size="16"
+          class="cursor-pointer text-primary shrink-0"
+          @click="Utils.copyToClipboard(positionCertificateId, onCopy)"
+        >
+          <CopyIcon />
+        </n-icon>
+      </div>
+    </div>
+
+    <div class="min-w-0 lg:flex-1 lg:px-4">
+      <div class="flex items-center gap-1.5 text-textColor3 text-sm mb-1">
+        <n-icon size="14">
+          <CertificateIcon />
+        </n-icon>
+        {{ $t('workerView.header.employeeId') }}
       </div>
       <div class="font-semibold flex items-center gap-1 flex-wrap">
         <span class="break-words">{{ certificateNumber }}</span>

@@ -55,10 +55,5 @@
         :has-more="auditCardMock.avatarsMore"
       />
     </div>
-
-    <div class="flex items-center justify-between gap-2 pt-3 border-t border-surface-line">
-      <span class="text-xs text-textColor3">{{ $t('dashboardPage.audit.lastChecked') }}:</span>
-      <span class="text-xs font-semibold text-textColor0">{{ auditCardMock.lastCheckedAt }}</span>
-    </div>
   </div>
 </template>

@@ -1646,7 +1646,8 @@
       "managementStaff": "Management staff",
       "avgRating": "Average rating",
       "ratingBasedOn": "based on {count} reviews",
-      "serviceCertificate": "Service certificate",
+      "positionCertificateId": "Position certificate",
+      "employeeId": "Employee ID",
       "workNumber": "Work number"
     },
     "sidebar": {

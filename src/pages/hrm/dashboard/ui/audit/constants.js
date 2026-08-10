@@ -62,7 +62,6 @@ export const auditCards = [
 // UIUserGroup `{ photo, fullName }` shaklini kutadi; photo=null bo'lganda
 // useAppSetting.noAvailableImage ('/no-picture.png') fallback rasmi chiqadi.
 export const auditCardMock = {
-  lastCheckedAt: '24.06.2026',
   avatars: [
     { photo: null, fullName: '—' },
     { photo: null, fullName: '—' },

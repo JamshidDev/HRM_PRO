@@ -1654,7 +1654,8 @@
       "managementStaff": "Руководящий состав",
       "avgRating": "Средний рейтинг",
       "ratingBasedOn": "на основе {count} оценок",
-      "serviceCertificate": "Служебное удостоверение",
+      "positionCertificateId": "Должностное удостоверение",
+      "employeeId": "ID сотрудника",
       "workNumber": "Рабочий номер"
     },
     "sidebar": {
