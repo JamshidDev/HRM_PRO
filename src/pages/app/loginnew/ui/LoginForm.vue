@@ -200,9 +200,11 @@
         </n-button>
 
         <template v-if="appStore.appConfig.signatureLogin">
-          <n-divider class="my-2! lg:my-3!" title-placement="center">{{
-            $t('content.or')
-          }}</n-divider>
+          <n-divider class="my-2! lg:my-3!" title-placement="center">
+            {{
+              $t('content.or')
+            }}
+          </n-divider>
 
           <n-button
             @click="onSignatureLogin"
