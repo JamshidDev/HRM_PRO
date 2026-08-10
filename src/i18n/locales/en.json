@@ -1487,7 +1487,9 @@
       "extendedDate": "Extended date",
       "verify": "Verified",
       "returned": "Returned",
-      "certificateFile": "Certificate file"
+      "certificateFile": "Certificate file",
+      "regenerate": "Recalculate position",
+      "postNameHint": "Generated automatically from the employee's current position — edit manually if needed"
     }
   },
   "languageCertificatePage": {
@@ -3765,5 +3767,28 @@
     "mobileFaceSchedules": "Mobile face: schedules",
     "otpVerify": "OTP verify",
     "holidayGreetings": "Holiday greetings"
+  },
+  "workerCertificatePage": {
+    "name": "Certificates",
+    "table": {
+      "worker": "Employee",
+      "organization": "Organization",
+      "position": "Position",
+      "number": "Certificate number",
+      "issueDate": "Issue date",
+      "expiryDate": "Validity",
+      "verify": "Verified",
+      "returned": "Returned",
+      "noCertificate": "Not issued"
+    },
+    "filter": {
+      "status": "Certificate status",
+      "issued": "Issued",
+      "verify": "Verified",
+      "returned": "Returned"
+    },
+    "modal": {
+      "notVerified": "Not verified"
+    }
   }
 }

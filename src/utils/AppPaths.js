@@ -43,6 +43,7 @@ export const AppPaths = {
   TimeSheet: '/timesheet',
   TimesheetDepartment: '/timesheet-department',
   DepartmentPosition: '/department-position',
+  WorkerCertificate: '/worker-certificate',
   Create: '/create',
   Edit: '/edit',
   Document: '/document',

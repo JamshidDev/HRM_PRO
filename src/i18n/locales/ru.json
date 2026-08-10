@@ -1495,7 +1495,9 @@
       "extendedDate": "Дата продления",
       "verify": "Подтверждено",
       "returned": "Возвращено",
-      "certificateFile": "Файл удостоверения"
+      "certificateFile": "Файл удостоверения",
+      "regenerate": "Пересчитать должность",
+      "postNameHint": "Формируется автоматически из текущей должности сотрудника — при необходимости отредактируйте вручную"
     }
   },
   "languageCertificatePage": {
@@ -3777,5 +3779,28 @@
     "mobileFaceSchedules": "Mobile face: графики",
     "otpVerify": "Проверка OTP",
     "holidayGreetings": "Праздничные поздравления"
+  },
+  "workerCertificatePage": {
+    "name": "Удостоверения",
+    "table": {
+      "worker": "Сотрудник",
+      "organization": "Организация",
+      "position": "Должность",
+      "number": "Номер удостоверения",
+      "issueDate": "Дата выдачи",
+      "expiryDate": "Срок",
+      "verify": "Подтверждено",
+      "returned": "Изъято",
+      "noCertificate": "Не выдано"
+    },
+    "filter": {
+      "status": "Статус удостоверения",
+      "issued": "Выдано",
+      "verify": "Подтверждено",
+      "returned": "Изъято"
+    },
+    "modal": {
+      "notVerified": "Не подтверждено"
+    }
   }
 }
