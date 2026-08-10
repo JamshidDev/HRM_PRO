@@ -1669,11 +1669,9 @@
       "validityPeriod": "Срок действия",
       "started": "Начало",
       "ends": "Окончание",
-      "progressSuffix": "пройдено",
-      "lastCheckDate": "Дата последнего осмотра",
-      "conclusion": "Медицинское заключение",
-      "fitForWork": "Пригоден к работе",
-      "monthsLeft": "≈{count} мес. осталось"
+      "ended": "Завершён",
+      "durationYears": "{count} г.",
+      "durationMonths": "{count} мес."
     },
     "vacation": {
       "start": "Начало отпуска",

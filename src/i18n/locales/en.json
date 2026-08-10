@@ -1661,11 +1661,9 @@
       "validityPeriod": "Validity period",
       "started": "Started",
       "ends": "Ends",
-      "progressSuffix": "elapsed",
-      "lastCheckDate": "Last check-up date",
-      "conclusion": "Medical conclusion",
-      "fitForWork": "Fit for work",
-      "monthsLeft": "≈{count} months left"
+      "ended": "Ended",
+      "durationYears": "{count} yr",
+      "durationMonths": "{count} mo"
     },
     "vacation": {
       "start": "Vacation start",

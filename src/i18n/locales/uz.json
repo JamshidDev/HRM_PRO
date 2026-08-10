@@ -1683,11 +1683,9 @@
       "validityPeriod": "Amal qilish muddati",
       "started": "Boshlangan",
       "ends": "Tugaydi",
-      "progressSuffix": "o'tdi",
-      "lastCheckDate": "Oxirgi ko'rik sanasi",
-      "conclusion": "Tibbiy xulosa",
-      "fitForWork": "Mehnatga layoqatli",
-      "monthsLeft": "≈{count} oy qoldi"
+      "ended": "Tugagan",
+      "durationYears": "{count} yil",
+      "durationMonths": "{count} oy"
     },
     "vacation": {
       "start": "Ta'tilga chiqish",

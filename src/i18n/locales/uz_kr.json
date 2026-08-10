@@ -1462,6 +1462,15 @@
       "e_documents": "Рақамли-ҳужжатлар",
       "turnstile": "Турникет маълумотлар"
     },
+    "med": {
+      "currentStatus": "Жорий саломатлик ҳолати",
+      "validityPeriod": "Амал қилиш муддати",
+      "started": "Бошланган",
+      "ends": "Тугайди",
+      "ended": "Тугаган",
+      "durationYears": "{count} йил",
+      "durationMonths": "{count} ой"
+    },
     "Edocument": {
       "pasport": "Паспорт",
       "railway_pasport": "Темир йўл гувоҳнома",
