@@ -1471,6 +1471,18 @@
       "durationYears": "{count} йил",
       "durationMonths": "{count} ой"
     },
+    "vacation": {
+      "start": "Таътилга чиқиш",
+      "end": "Таътилдан қайтиш",
+      "duration": "Давомийлиги",
+      "type": "Таътил тури",
+      "daysLabel": "кун",
+      "calendarLabel": "Таътил кунлари",
+      "completed": "Якунланган",
+      "planned": "Режалаштирилган",
+      "upcomingTitle": "Навбатдаги меҳнат таътили — {year}-йил",
+      "viewCalendar": "Календардан кўриш"
+    },
     "Edocument": {
       "pasport": "Паспорт",
       "railway_pasport": "Темир йўл гувоҳнома",
