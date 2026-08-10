@@ -7,6 +7,15 @@ const _index = async (payload) => {
   return await axios.get(`/v1/hr/kpi/workers`, { params: payload.params })
 }
 
+// Bitta xodimning KPI ma'lumoti. Backend tashqi KPI tizimiga (kpi.das-uty.uz)
+// server-to-server chiqadi — kalitlar brauzerga TUSHMAYDI.
+const _employee = async (payload) => {
+  return await axios.get(`/v1/hr/kpi/workers/${payload.id}`, {
+    params: payload?.params
+  })
+}
+
 export default {
-  _index
+  _index,
+  _employee
 }

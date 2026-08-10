@@ -22,7 +22,12 @@ export const useKpiStore = defineStore('kpiStore', {
     showVisible: false,
     showLoading: false,
     showWorker: null,
-    showData: null
+    // KPI tizimidan kelgan `data` (employee/score/indicators) yoki null.
+    showData: null,
+    // Xodim KPI tizimiga ulanganmi — `false` bo'lsa bu XATO emas, "ma'lumot yo'q".
+    showOnboarded: true,
+    // Jadval qaysi davr bo'yicha chizilyapti (masalan "3-2026").
+    selectedPeriod: null
   }),
   actions: {
     _index() {
@@ -37,12 +42,26 @@ export const useKpiStore = defineStore('kpiStore', {
           this.loading = false
         })
     },
-    // Xodim qatoridagi "ko'rish". Hozircha faqat modalni ochadi — ma'lumot manbai
-    // (tashqi tizim API'si) ulangach shu yerda so'rov yuboriladi.
+    // Xodim qatoridagi "ko'rish" — KPI ma'lumotini yuklaydi.
     _show(row) {
       this.showWorker = row
       this.showData = null
+      this.showOnboarded = true
+      this.selectedPeriod = null
       this.showVisible = true
+      this.showLoading = true
+      $ApiService.kpiService
+        ._employee({ id: row.worker_id })
+        .then((res) => {
+          const d = res.data.data
+          this.showOnboarded = d.onboarded
+          this.showData = d.kpi
+          // Standart tanlov — KPI tizimi qaytargan joriy davr.
+          this.selectedPeriod = d.kpi?.score?.periodName ?? null
+        })
+        .finally(() => {
+          this.showLoading = false
+        })
     },
     resetFilter() {
       this.params = initialParams()

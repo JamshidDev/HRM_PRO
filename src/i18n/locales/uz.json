@@ -3853,6 +3853,22 @@
       "organization": "Korxona",
       "pin": "JSHSHIR"
     },
+    "show": {
+      "positionDate": "Tayinlangan sana",
+      "age": "Yoshi",
+      "rankGlobal": "Umumiy o'rni",
+      "rankOrg": "Korxonadagi o'rni",
+      "place": "-o'rin",
+      "quarter": "-chorak",
+      "indicatorName": "Ko'rsatkich nomi",
+      "unit": "O'lchov birligi",
+      "plan": "Reja",
+      "actual": "Amalda",
+      "percent": "%",
+      "approvers": "Tasdiqlovchilar",
+      "notOnboarded": "Bu xodim KPI tizimiga ulanmagan — ko'rsatkichlar mavjud emas.",
+      "noIndicators": "Tanlangan davr uchun ko'rsatkichlar yo'q."
+    },
     "showPending": "Ko'rsatkichlar tashqi tizimdan olinadi — integratsiya ulanmaguncha ma'lumot ko'rsatilmaydi."
   },
   "workerCertificatePage": {
