@@ -1,7 +1,5 @@
 import { defineStore } from 'pinia'
-import router from '@/router/index.js'
-import { AppPaths, compressImageFile, generateUUIDKey, MAX_UPLOAD_SIZE } from '@/utils/index.js'
-import Utils from '@/utils/Utils.js'
+import { compressImageFile, generateUUIDKey, MAX_UPLOAD_SIZE } from '@/utils/index.js'
 import i18n from '@/i18n/index.js'
 
 const { t } = i18n.global
@@ -36,7 +34,9 @@ export const useMobileStoryStore = defineStore('mobileStory', {
     totalItems: 0,
     params: { page: 1, per_page: 10, search: null },
 
-    // ── detail/form sahifa ──
+    // ── form modal ──
+    visible: false,
+    visibleType: true, // true = yaratish, false = tahrirlash
     detailLoading: false,
     saveLoading: false,
     payload: emptyPayload(),
@@ -81,17 +81,25 @@ export const useMobileStoryStore = defineStore('mobileStory', {
         })
     },
 
-    // Detail sahifadan o'chirish (ro'yxatni yangilamaydi — sahifa orqaga qaytadi).
-    _deleteStory(id) {
-      this.deleteLoading = true
-      return $ApiService.mobileStoryService
-        ._delete({ id })
-        .finally(() => {
-          this.deleteLoading = false
-        })
+    // ── FORM MODAL (create + edit) ──
+    openVisible(data) {
+      this.visible = data
+      if (!data) this.resetForm()
     },
 
-    // ── FORM (create + edit) ──
+    _openCreate() {
+      this.resetForm()
+      this.visibleType = true
+      this.visible = true
+    },
+
+    _openEdit(id) {
+      this.resetForm()
+      this.visibleType = false
+      this.visible = true
+      this._show(id)
+    },
+
     resetForm() {
       this.elementId = null
       this.payload = emptyPayload()
@@ -172,19 +180,19 @@ export const useMobileStoryStore = defineStore('mobileStory', {
       }
     },
 
-    // Yangi story yaratiladi → lokal to'plangan slaydlar ketma-ket yuklanadi → detail sahifaga o'tadi.
+    // Yangi story yaratiladi → lokal to'plangan slaydlar ketma-ket yuklanadi → modal yopiladi.
     async _create() {
       this.saveLoading = true
       try {
         const res = await $ApiService.mobileStoryService._create({ data: this._buildData() })
-        const id = res.data.data.id
-        this.elementId = id
+        this.elementId = res.data.data.id
 
         const pending = [...this.pendingSlides]
         this._clearPendingSlides()
         for (const slide of pending) await this._addSlide(slide.file)
 
-        router.replace(Utils.routeChatPathMaker(`${AppPaths.MobileStories}/${id}`))
+        this.openVisible(false)
+        this._index()
       } finally {
         this.saveLoading = false
       }
@@ -195,6 +203,10 @@ export const useMobileStoryStore = defineStore('mobileStory', {
       this.saveLoading = true
       return $ApiService.mobileStoryService
         ._update({ id: this.elementId, data: this._buildData() })
+        .then(() => {
+          this.openVisible(false)
+          this._index()
+        })
         .finally(() => {
           this.saveLoading = false
         })

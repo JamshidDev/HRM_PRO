@@ -1,8 +1,6 @@
 <script setup>
-  import { useRouter } from 'vue-router'
   import { UITable, UITableNameCell } from '@/components/index.js'
   import { useMobileStoryStore } from '@/store/modules/index.js'
-  import { AppPaths } from '@/utils/index.js'
   import UIHelper from '@/utils/UIHelper.js'
   import Utils from '@/utils/Utils.js'
   import {
@@ -15,7 +13,6 @@
 
   const { t } = i18n.global
   const store = useMobileStoryStore()
-  const router = useRouter()
 
   // Sarlavha tili — "Nomi" ustuni header'idagi select; default interfeys tili.
   const lang = ref(i18n.global.locale)
@@ -28,7 +25,7 @@
   const rowTitle = (row) => row?.title?.[lang.value] || row?.title?.uz
 
   const openStory = (id) => {
-    router.push(Utils.routeChatPathMaker(`${AppPaths.MobileStories}/${id}`))
+    store._openEdit(id)
   }
 
   const onEdit = (row) => {
