@@ -134,8 +134,8 @@
   }
 
   .ym-panel {
-    width: 220px;
-    padding: 4px 0;
+    width: 240px;
+    padding: 8px 10px;
     user-select: none;
   }
 
@@ -143,7 +143,8 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 6px;
+    margin-bottom: 8px;
+    padding: 0 2px;
   }
 
   .ym-panel__year {

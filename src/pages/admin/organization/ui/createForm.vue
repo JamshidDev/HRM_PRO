@@ -104,6 +104,20 @@
       <n-form-item :label="$t(`organizationPage.form.code`)" path="code">
         <n-input type="text" v-model:value="store.payload.code" />
       </n-form-item>
+      <n-form-item :label="$t(`organizationPage.form.ones_org_code`)" path="ones_org_code">
+        <n-input class="skip-format" type="text" v-model:value="store.payload.ones_org_code"
+          :placeholder="$t('salary1c.orgCodePh')" />
+      </n-form-item>
+      <div class="grid grid-cols-2 gap-2">
+        <n-form-item :label="$t(`organizationPage.form.inn`)" path="inn">
+          <n-input-number class="w-full" :show-button="false" v-model:value="store.payload.inn"
+            :min="0" :precision="0" clearable />
+        </n-form-item>
+        <n-form-item :label="$t(`organizationPage.form.gateway_id`)" path="gateway_id">
+          <n-input-number class="w-full" :show-button="false" v-model:value="store.payload.gateway_id"
+            :min="0" :precision="0" clearable />
+        </n-form-item>
+      </div>
       <n-form-item path="code">
         <n-checkbox
           :label="$t(`organizationPage.form.group`)"
