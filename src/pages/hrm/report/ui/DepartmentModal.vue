@@ -5,6 +5,7 @@
 
   const store = useReport2Store()
   const dpStore = useDepartmentStore()
+  const formRef = ref(null)
 
   const onSuccessEv = () => {
     store.department.visible = false
@@ -18,10 +19,27 @@
     v-model:visible="store.department.visible"
     :title="$t(dpStore.visibleType ? 'departmentPage.createTitle' : 'departmentPage.updateTitle')"
   >
-    <DepartmentFrom
-      :callback="onSuccessEv"
-      @onCancelEv="store.department.visible = false"
-      :height-full="false"
-    />
+    <DepartmentFrom ref="formRef" :callback="onSuccessEv" />
+
+    <template #footer>
+      <div class="flex justify-end gap-2 px-4 pb-2">
+        <n-button
+          type="error"
+          ghost
+          class="w-[130px]"
+          @click="store.department.visible = false"
+        >
+          {{ $t('content.cancel') }}
+        </n-button>
+        <n-button
+          type="primary"
+          class="w-[130px]"
+          :loading="dpStore.saveLoading"
+          @click="formRef?.submit()"
+        >
+          {{ $t('content.save') }}
+        </n-button>
+      </div>
+    </template>
   </UIModal>
 </template>

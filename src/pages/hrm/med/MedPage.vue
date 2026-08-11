@@ -1,6 +1,5 @@
-2
 <script setup>
-  import { UIDrawer, UIOfficeApp, UIPageContent } from '@/components/index.js'
+  import { UIModal, UIOfficeApp, UIPageContent } from '@/components/index.js'
   import { useAccountStore, useComponentStore, useMedStore } from '@/store/modules/index.js'
   import Utils from '@/utils/Utils.js'
   import MedInspectionPage from '../medInspection/page.vue'
@@ -14,6 +13,7 @@
   const componentStore = useComponentStore()
   const accStore = useAccountStore()
   const officeAppRef = ref(null)
+  const createFormRef = ref(null)
 
   const openOffice = (id) => {
     officeAppRef.value.openPdf(id, Utils.documentModels.med)
@@ -46,15 +46,30 @@
       </template>
     </IndicatorBoxes>
     <UIOfficeApp ref="officeAppRef" />
-    <UIDrawer
-      :visible="store.visible"
-      @update:visible="(v) => (store.visible = v)"
+    <UIModal
+      v-model:visible="store.visible"
       :title="store.visibleType ? $t('medPage.createTitle') : $t('medPage.updateTitle')"
+      width="min(700px, calc(100vw - 32px))"
+      height="min(85vh, 800px)"
     >
-      <template #content>
-        <createForm />
+      <createForm ref="createFormRef" />
+
+      <template #footer>
+        <div class="flex justify-end gap-2 px-4 pb-2">
+          <n-button type="error" ghost class="w-[130px]" @click="store.openVisible(false)">
+            {{ $t('content.cancel') }}
+          </n-button>
+          <n-button
+            type="primary"
+            class="w-[130px]"
+            :loading="store.saveLoading"
+            @click="createFormRef?.submit()"
+          >
+            {{ $t('content.save') }}
+          </n-button>
+        </div>
       </template>
-    </UIDrawer>
+    </UIModal>
   </UIPageContent>
 </template>
 

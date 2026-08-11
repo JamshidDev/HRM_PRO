@@ -52,5 +52,13 @@ export const chatRoutes = [
     meta: {
       layout: AppLayouts.main
     }
+  },
+  {
+    path: Utils.routeChatPathMaker(AppPaths.MobileStories),
+    name: AppPaths.MobileStories.substring(1),
+    component: () => import('@pages/admin/mobileStory/MobileStoryPage.vue'),
+    meta: {
+      layout: AppLayouts.main
+    }
   }
 ]

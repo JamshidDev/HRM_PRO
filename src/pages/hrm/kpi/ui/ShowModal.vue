@@ -1,5 +1,6 @@
 <script setup>
   import { UIModal } from '@/components/index.js'
+  import KpiPending from './KpiPending.vue'
   import { useKpiStore } from '@stores'
   import { Utils } from '@utils'
   import i18n from '@/i18n/index.js'
@@ -111,10 +112,12 @@
     :persistent="false"
   >
     <n-spin :show="store.showLoading" class="h-full">
-      <!-- KPI tizimida yo'q xodim — bu XATO emas, shunchaki ma'lumot yo'q. -->
-      <div v-if="!store.showLoading && !store.showOnboarded" class="kpi-empty">
-        {{ $t('kpiPage.show.notOnboarded') }}
-      </div>
+      <!-- Ma'lumot yo'q — xato emas, KUTISH holati (animatsiyali). -->
+      <KpiPending
+        v-if="!store.showLoading && !store.showOnboarded"
+        :title="$t('kpiPage.show.calculating')"
+        :description="$t('kpiPage.show.calculatingDesc')"
+      />
 
       <div v-else-if="store.showData" class="kpi-detail">
         <!-- Profil + umumiy ball (gauge) -->
@@ -245,7 +248,11 @@
               </tr>
             </tbody>
           </n-table>
-          <div v-else class="kpi-empty">{{ $t('kpiPage.show.noIndicators') }}</div>
+          <KpiPending
+            v-else
+            :title="$t('kpiPage.show.calculating')"
+            :description="$t('kpiPage.show.noIndicators')"
+          />
         </div>
       </div>
     </n-spin>
