@@ -13,7 +13,16 @@
   })
 
   const employee = computed(() => store.showData?.employee ?? null)
-  const score = computed(() => store.showData?.score ?? null)
+
+  // 2026-08-10 hotfix: `score` (obyekt) → `scores` (massiv, har davrga bitta).
+  // Ball va o'rinlar TANLANGAN chorakka bog'liq — tab almashtirilsa gauge ham
+  // o'zgaradi (ilgari bitta "joriy" davr bo'lib, u doim bo'sh chiqardi).
+  const score = computed(
+    () =>
+      (store.showData?.scores ?? []).find(
+        (s) => s?.periodName === store.selectedPeriod
+      ) ?? null
+  )
 
   // KPI tizimi nomlarni ko'p tilda beradi (`uz`, `ru`, `en`, `kril`).
   // ⚠️ i18n `legacy: true` — `i18n.global.locale` ODDIY SATR (ref emas), shu bois
@@ -29,6 +38,9 @@
   // Bitta chaqiruvda yilning BARCHA davrlari keladi — tablar shu ro'yxatdan.
   const periods = computed(() => {
     const set = new Set()
+    for (const s of store.showData?.scores ?? []) {
+      if (s?.periodName) set.add(s.periodName)
+    }
     for (const ind of store.showData?.indicators ?? []) {
       for (const d of ind.indicatorData ?? []) {
         if (d?.indicatorGroup?.periodName) set.add(d.indicatorGroup.periodName)
@@ -52,10 +64,15 @@
         weight: d?.weight ?? null,
         actual: v?.actual ?? null,
         percentage: v?.percentage ?? null,
-        approvers: (ind.reviewers ?? [])
-          .map((r) => [r.reviewer?.lastName, r.reviewer?.firstName].filter(Boolean).join(' '))
-          .filter(Boolean)
-          .join(', ')
+        // KPI jamoasi tavsiyasi (hotfix §2): ustunda ASOSIY matn — tasdiqlovchining
+        // TASHKILOTI; shaxsiy F.I.Sh esa hover'dagi tooltipda (ikkilamchi ma'lumot).
+        reviewers: (ind.reviewers ?? []).map((r) => ({
+          id: r.reviewer?.id,
+          org: r.reviewer?.orgName || '',
+          name: [r.reviewer?.lastName, r.reviewer?.firstName, r.reviewer?.middleName]
+            .filter(Boolean)
+            .join(' ')
+        }))
       }
     })
   )
@@ -207,7 +224,24 @@
                   </div>
                   <span v-else class="kpi-muted">—</span>
                 </td>
-                <td>{{ row.approvers || '—' }}</td>
+                <td>
+                  <template v-if="row.reviewers.length">
+                    <span
+                      v-for="(r, i) in row.reviewers"
+                      :key="r.id ?? i"
+                      class="kpi-reviewer"
+                    >
+                      <n-tooltip trigger="hover" :disabled="!r.name">
+                        <template #trigger>
+                          <span class="kpi-reviewer__org">{{ r.org || '—' }}</span>
+                        </template>
+                        {{ r.name }}
+                      </n-tooltip>
+                      <template v-if="i < row.reviewers.length - 1">, </template>
+                    </span>
+                  </template>
+                  <span v-else class="kpi-muted">—</span>
+                </td>
               </tr>
             </tbody>
           </n-table>
@@ -340,6 +374,12 @@
   }
   .kpi-muted {
     color: var(--textColor2);
+  }
+
+  /* Tasdiqlovchi — tashkilot nomi ko'rinadi, F.I.Sh hover'da (KPI tavsiyasi). */
+  .kpi-reviewer__org {
+    border-bottom: 1px dashed var(--surface-line, #d1d5db);
+    cursor: help;
   }
 
   .kpi-empty {

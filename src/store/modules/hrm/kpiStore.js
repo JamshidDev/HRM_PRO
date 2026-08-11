@@ -66,26 +66,22 @@ export const useKpiStore = defineStore('kpiStore', {
     /**
      * Modal qaysi chorakni ochadi.
      *
-     * KPI tizimi `score.periodName` da JORIY davrni beradi, lekin u ko'pincha hali
-     * to'ldirilmagan bo'ladi (`actual`/`%` = null, status `initial`) — o'shanda modal
-     * bo'sh ochilib, "ishlamayapti"day ko'rinardi. Shu bois: joriy davrda qiymat
-     * bo'lsa — o'sha, aks holda qiymati bor OXIRGI davr; umuman bo'lmasa — joriy.
+     * 2026-08-10 hotfix'idan keyin KPI `score` (bitta obyekt) o'rniga `scores`
+     * (massiv) qaytaradi — har davr uchun bitta yozuv. "Joriy" davr tushunchasi
+     * yo'q. Tavsiya etilgan qoida: `rankGlobal` NULL bo'lmagan OXIRGI davr —
+     * ya'ni eng so'nggi HAQIQIY natija (joriy, hali to'ldirilmagan chorak emas).
+     * Baholangan davr umuman bo'lmasa — birinchi davrga tushamiz.
      */
     pickInitialPeriod(kpi) {
-      const current = kpi?.score?.periodName ?? null
-      const indicators = kpi?.indicators ?? []
-      const filled = new Set()
-      for (const ind of indicators) {
-        for (const d of ind.indicatorData ?? []) {
-          const name = d?.indicatorGroup?.periodName
-          if (name && d?.userIndicatorDataValue?.actual != null) filled.add(name)
-        }
-      }
-      if (!filled.size || (current && filled.has(current))) return current
-      // "1-2026" ko'rinishidagi nomlar — davr raqami bo'yicha eng kattasi.
-      return [...filled].sort(
-        (a, b) => Number(a.split('-')[0]) - Number(b.split('-')[0])
-      ).pop()
+      const scores = kpi?.scores ?? []
+      const byPeriod = (a, b) => Number(a.split('-')[0]) - Number(b.split('-')[0])
+      const scored = scores
+        .filter((s) => s?.rankGlobal != null)
+        .map((s) => s.periodName)
+        .sort(byPeriod)
+      if (scored.length) return scored[scored.length - 1]
+      const all = scores.map((s) => s?.periodName).filter(Boolean).sort(byPeriod)
+      return all[0] ?? null
     },
     resetFilter() {
       this.params = initialParams()
