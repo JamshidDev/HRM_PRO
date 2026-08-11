@@ -32,9 +32,11 @@
   }
 
   const triggerUpload = () => fileInput.value?.click()
-  const onPickFiles = (e) => {
-    Array.from(e.target.files ?? []).forEach((f) => store._addSlide(f))
+  // Ketma-ket — siqish async, parallel yuborilsa sort takrorlanadi.
+  const onPickFiles = async (e) => {
+    const files = Array.from(e.target.files ?? [])
     e.target.value = ''
+    for (const f of files) await store._addSlide(f)
   }
 
   const triggerReplace = (slideId) => {

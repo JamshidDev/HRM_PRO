@@ -1,7 +1,10 @@
 import { defineStore } from 'pinia'
 import router from '@/router/index.js'
-import { AppPaths } from '@/utils/index.js'
+import { AppPaths, compressImageFile, MAX_UPLOAD_SIZE } from '@/utils/index.js'
 import Utils from '@/utils/Utils.js'
+import i18n from '@/i18n/index.js'
+
+const { t } = i18n.global
 
 const makeLang = () => ({ uz: null, ru: null, en: null })
 
@@ -155,42 +158,56 @@ export const useMobileStoryStore = defineStore('mobileStory', {
         })
     },
 
+    // Rasm siqiladi (video tegilmaydi); limitdan katta bo'lsa null — yuborilmaydi.
+    async _prepareSlideFile(file) {
+      const prepared = await compressImageFile(file)
+      if (prepared.size > MAX_UPLOAD_SIZE) {
+        window.$Toast?.error(t('mobileStoryPage.form.fileTooLarge'))
+        return null
+      }
+      return prepared
+    },
+
     // Slayd qo'shish — darhol yuklanadi, natija (preview URL bilan) ro'yxatga qo'shiladi.
-    _addSlide(file) {
+    async _addSlide(file) {
       this.slideUploading = true
-      const fd = new FormData()
-      fd.append('file', file)
-      fd.append('media_type', (file.type ?? '').startsWith('video/') ? 'video' : 'image')
-      fd.append('sort', this.slides.length + 1)
-      return $ApiService.mobileStoryService
-        ._createSlide({ id: this.elementId, data: fd })
-        .then((res) => {
-          const s = res.data.data
-          this.slides.push({ id: s.id, media_type: s.media_type, url: s.url, sort: s.sort })
-        })
-        .finally(() => {
-          this.slideUploading = false
-        })
+      try {
+        const mediaType = (file.type ?? '').startsWith('video/') ? 'video' : 'image'
+        const prepared = await this._prepareSlideFile(file)
+        if (!prepared) return
+
+        const fd = new FormData()
+        fd.append('file', prepared)
+        fd.append('media_type', mediaType)
+        fd.append('sort', this.slides.length + 1)
+        const res = await $ApiService.mobileStoryService._createSlide({ id: this.elementId, data: fd })
+        const s = res.data.data
+        this.slides.push({ id: s.id, media_type: s.media_type, url: s.url, sort: s.sort })
+      } finally {
+        this.slideUploading = false
+      }
     },
 
     // Slayd media'sini almashtirish — darhol; ro'yxatdagi slaydni yangilaydi (id saqlanadi).
-    _replaceSlide(slideId, file) {
+    async _replaceSlide(slideId, file) {
       this.slideUploading = true
-      const fd = new FormData()
-      fd.append('file', file)
-      fd.append('media_type', (file.type ?? '').startsWith('video/') ? 'video' : 'image')
-      return $ApiService.mobileStoryService
-        ._replaceSlide({ slideId, data: fd })
-        .then((res) => {
-          const s = res.data.data
-          const idx = this.slides.findIndex((x) => x.id === slideId)
-          if (idx !== -1) {
-            this.slides[idx] = { id: s.id, media_type: s.media_type, url: s.url, sort: s.sort }
-          }
-        })
-        .finally(() => {
-          this.slideUploading = false
-        })
+      try {
+        const mediaType = (file.type ?? '').startsWith('video/') ? 'video' : 'image'
+        const prepared = await this._prepareSlideFile(file)
+        if (!prepared) return
+
+        const fd = new FormData()
+        fd.append('file', prepared)
+        fd.append('media_type', mediaType)
+        const res = await $ApiService.mobileStoryService._replaceSlide({ slideId, data: fd })
+        const s = res.data.data
+        const idx = this.slides.findIndex((x) => x.id === slideId)
+        if (idx !== -1) {
+          this.slides[idx] = { id: s.id, media_type: s.media_type, url: s.url, sort: s.sort }
+        }
+      } finally {
+        this.slideUploading = false
+      }
     },
 
     // Slayd o'chirish — darhol.

@@ -3489,7 +3489,8 @@
       "addSlide": "Add slide",
       "editFields": "Edit details",
       "noSlides": "No slides yet — add using the button above",
-      "detailsButton": "Details"
+      "detailsButton": "Details",
+      "fileTooLarge": "File is too large — maximum 4 MB"
     },
     "deleteConfirm": "Delete this story?",
     "slideDeleteConfirm": "Delete this slide?",

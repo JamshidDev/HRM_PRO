@@ -3500,7 +3500,8 @@
       "addSlide": "Добавить слайд",
       "editFields": "Редактировать данные",
       "noSlides": "Слайдов пока нет — добавьте кнопкой выше",
-      "detailsButton": "Подробнее"
+      "detailsButton": "Подробнее",
+      "fileTooLarge": "Файл слишком большой — максимум 4 МБ"
     },
     "deleteConfirm": "Удалить эту story?",
     "slideDeleteConfirm": "Удалить этот слайд?",
