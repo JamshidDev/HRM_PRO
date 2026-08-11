@@ -1,21 +1,51 @@
 <script setup>
-  import { useTopicExamStore, useTopicStore } from '@/store/modules/index.js'
-  import { UIMenuButton, UIPagination, NoDataPicture } from '@/components/index.js'
+  import { UIBadge, UITable, UITablePagination } from '@/components/index.js'
+  import i18n from '@/i18n/index.js'
+  import { useAccountStore, useTopicExamStore, useTopicStore } from '@/store/modules/index.js'
+  import UIHelper from '@/utils/UIHelper.js'
   import Utils from '@/utils/Utils.js'
-  import {
-    BookQuestionMark20Filled,
-    Clock24Regular,
-    Copy24Regular,
-    People24Regular,
-    CalendarLtr24Regular,
-    Checkmark16Regular,
-    Dismiss16Regular
-  } from '@vicons/fluent'
-  import { useAccountStore } from '@/store/modules/index.js'
-  const accStore = useAccountStore()
+  import { BookQuestionMark20Filled, Delete20Regular, Edit32Regular } from '@vicons/fluent'
+
+  const { t } = i18n.global
 
   const store = useTopicExamStore()
   const topicStore = useTopicStore()
+  const accStore = useAccountStore()
+
+  // Har bir amal store'ga topic va imtihon id'sini yozishi kerak — bitta joyda saqlaymiz.
+  const selectExam = (row) => {
+    store.topicId = topicStore.elementId
+    store.elementId = row.id
+  }
+
+  const onEdit = (row) => {
+    if (!accStore.checkAction(accStore.pn.examExamsWrite)) return
+    selectExam(row)
+    store._show()
+    store.visibleType = false
+    store.visible = true
+  }
+
+  const onDelete = (row) => {
+    if (!accStore.checkAction(accStore.pn.examExamsWrite)) return
+    selectExam(row)
+    store._delete()
+  }
+
+  const onAttachQuestion = (row) => {
+    if (!accStore.checkAction(accStore.pn.examExamsWrite)) return
+    selectExam(row)
+    store.attachCategoryVisible = true
+    store.attachCategoryVisibleType = true
+    store._get_attached_categories()
+  }
+
+  const onToggleActive = (row) => {
+    if (!accStore.checkAction(accStore.pn.examExamsWrite)) return
+    selectExam(row)
+    store.payload = { active: !row.active }
+    store._update()
+  }
 
   const changePage = (v) => {
     store.topicId = topicStore.elementId
@@ -24,122 +54,122 @@
     store._index()
   }
 
-  const onSelect = (v) => {
-    if (!accStore.checkAction(accStore.pn.examExamsWrite)) return
-    store.topicId = topicStore.elementId
-    store.elementId = v.data.id
-    if (v.key === 'delete') {
-      store._delete()
-    } else if (v.key === 'edit') {
-      store._show()
-      store.visibleType = false
-      store.visible = true
-    } else if (v.key === 'attach_question') {
-      store.attachCategoryVisible = true
-      store.attachCategoryVisibleType = true
-      store._get_attached_categories()
+  const columns = computed(() => [
+    {
+      key: 'created',
+      title: t('content.date'),
+      width: 120
+    },
+    {
+      key: 'name',
+      title: t('content.name'),
+      minWidth: 220
+    },
+    {
+      key: 'tests_count',
+      title: t('examPage.question_count'),
+      width: 110,
+      align: 'center'
+    },
+    {
+      key: 'variant',
+      title: t('examPage.variant_count'),
+      width: 110,
+      align: 'center'
+    },
+    {
+      key: 'minute',
+      title: t('examPage.duration'),
+      width: 130,
+      align: 'center'
+    },
+    {
+      key: 'whom.name',
+      title: t('examPage.toWhom'),
+      minWidth: 200
+    },
+    {
+      key: 'deadline',
+      title: t('examPage.deadlineTitle'),
+      width: 130
+    },
+    {
+      key: 'active',
+      title: t('content.status'),
+      width: 130,
+      align: 'center'
     }
-  }
+  ])
 
-  const updateStatus = (exam) => {
-    store.topicId = topicStore.elementId
-    store.elementId = exam.id
-    store.payload = { active: !exam.active }
-    store._update()
-  }
+  const actions = computed(() => [
+    {
+      label: t('content.edit'),
+      key: Utils.ActionTypes.edit,
+      icon: UIHelper.renderIcon(Edit32Regular),
+      action: onEdit
+    },
+    {
+      label: t('content.delete'),
+      key: Utils.ActionTypes.delete,
+      icon: UIHelper.renderIcon(Delete20Regular),
+      action: onDelete
+    },
+    {
+      label: t('topicDetailsPage.questions.name'),
+      key: Utils.ActionTypes.attachment,
+      icon: UIHelper.renderIcon(BookQuestionMark20Filled),
+      action: onAttachQuestion
+    }
+  ])
 </script>
 
 <template>
-  <n-spin :show="store.loading" class="h-full">
-  <div class="h-full flex flex-col">
-    <div class="w-full grow basis-auto overflow-auto">
-      <NoDataPicture v-if="store.list.length === 0 && !store.loading" />
-      <n-grid v-else cols="1 500:2" class="p-1" x-gap="16" y-gap="16">
-        <n-gi v-for="(item, idx) in store.list" :key="idx" span="1">
-          <div
-            class="rounded-xl border border-surface-line overflow-hidden"
-            :class="item.active ? 'border-l-4 border-l-primary' : 'border-l-4 border-l-surface-line'"
-          >
-            <!-- Header -->
-            <div class="px-4 pt-3 pb-2 flex items-start justify-between gap-2">
-              <p class="font-semibold text-[14px] text-textColor0 leading-snug line-clamp-2">
-                {{ item.name }}
-              </p>
-              <n-tag
-                size="small"
-                round
-                :type="item.active ? 'success' : 'default'"
-                class="shrink-0 mt-[2px]"
-              >
-                <template #icon>
-                  <n-icon :component="item.active ? Checkmark16Regular : Dismiss16Regular" />
-                </template>
-                {{ item.active ? $t('content.active') : $t('content.noActive') }}
-              </n-tag>
-            </div>
+  <UITable
+    permission-prefix="exam-exams"
+    :columns="columns"
+    :actions="actions"
+    :actions-title="$t('content.action')"
+    :data="store.list"
+    :loading="store.loading"
+    :page="store.params.page"
+    :per-page="store.params.per_page"
+    :total="store.totalItems"
+    @change-page="changePage"
+  >
+    <template #cell-created="{ row }">
+      {{ Utils.timeOnlyDate(row.created) }}
+    </template>
 
-            <!-- Stats -->
-            <div class="grid grid-cols-2 gap-x-4 gap-y-1 px-4 pb-2">
-              <div class="flex items-center gap-1.5 text-[13px] text-textColor2">
-                <n-icon size="14" class="text-primary shrink-0"><BookQuestionMark20Filled /></n-icon>
-                <span class="truncate">{{ $t('examPage.question_count') }}: <b>{{ item.tests_count }}</b></span>
-              </div>
-              <div class="flex items-center gap-1.5 text-[13px] text-textColor2">
-                <n-icon size="14" class="text-warning shrink-0"><Clock24Regular /></n-icon>
-                <span class="truncate">{{ $t('examPage.exam_duration') }}: <b>{{ item.minute }}</b></span>
-              </div>
-              <div class="flex items-center gap-1.5 text-[13px] text-textColor2">
-                <n-icon size="14" class="text-info shrink-0"><Copy24Regular /></n-icon>
-                <span class="truncate">{{ $t('examPage.variant_count') }}: <b>{{ item.variant }}</b></span>
-              </div>
-              <div class="flex items-center gap-1.5 text-[13px] text-textColor2">
-                <n-icon size="14" class="text-success shrink-0"><People24Regular /></n-icon>
-                <span class="truncate">{{ $t('examPage.toWhom') }}: <b>{{ item.whom?.name }}</b></span>
-              </div>
-            </div>
+    <template #cell-minute="{ row }">
+      {{ $t('examPage.nMinute', { n: row.minute }) }}
+    </template>
 
-            <!-- Deadline -->
-            <div class="px-4 pb-2 flex items-center gap-1.5 text-[12px] text-textColor2">
-              <n-icon size="13" class="text-danger shrink-0"><CalendarLtr24Regular /></n-icon>
-              <span>{{ $t('examPage.deadline', { n: Utils.timeWithMonth(item.deadline) }) }}</span>
-            </div>
+    <template #cell-deadline="{ row }">
+      {{ Utils.timeOnlyDate(row.deadline) }}
+    </template>
 
-            <!-- Footer -->
-            <div class="px-4 py-2 border-t border-surface-line flex items-center justify-between bg-surface-ground/30">
-              <n-switch
-                :loading="store.loading && store.elementId === item.id"
-                :value="!!item.active"
-                size="small"
-                @click="updateStatus(item)"
-              />
-              <UIMenuButton
-                :data="item"
-                :extra-options="[
-                  {
-                    label: $t('topicDetailsPage.questions.name'),
-                    key: 'attach_question',
-                    icon: BookQuestionMark20Filled,
-                    visible: true
-                  }
-                ]"
-                :show-delete="true"
-                :show-edit="true"
-                size="tiny"
-                @select-ev="onSelect"
-              />
-            </div>
-          </div>
-        </n-gi>
-      </n-grid>
-    </div>
-    <div class="shrink-0">
-      <UIPagination
+    <template #cell-active="{ row }">
+      <button
+        type="button"
+        class="inline-flex cursor-pointer border-0 bg-transparent p-0"
+        :title="$t('topicDetailsPage.exams.isActive')"
+        @click.stop="onToggleActive(row)"
+      >
+        <UIBadge
+          :label="row.active ? $t('content.active') : $t('content.noActive')"
+          :type="row.active ? Utils.colorTypes.success : Utils.colorTypes.secondary"
+          :show-icon="false"
+        />
+      </button>
+    </template>
+
+    <template #footer>
+      <UITablePagination
         :page="store.params.page"
-        :per_page="store.params.per_page"
+        :per-page="store.params.per_page"
         :total="store.totalItems"
         @change-page="changePage"
       />
-    </div>
-  </div>
-  </n-spin>
+    </template>
+  </UITable>
 </template>

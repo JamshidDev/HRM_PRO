@@ -217,11 +217,7 @@
     width: calc(100% - 2px);
     top: 1px;
     left: 1px;
-    background: radial-gradient(
-      68.5% 119.738% at 49.1% 100%,
-      rgb(175, 120, 245) 0%,
-      rgb(116, 56, 255) 100%
-    );
+    background: radial-gradient(68.5% 119.738% at 49.1% 100%, #8fe0a4 0%, #175cd3 100%);
     opacity: 0;
     transition: opacity 0.8s ease;
     border-radius: 999px;
@@ -248,20 +244,12 @@
   }
 
   .ai-button.is-close:hover {
-    box-shadow: rgb(97 13 232 / 14%) -3px 1px 8px 7px;
-    background: radial-gradient(
-      68.5% 119.738% at 49.1% 100%,
-      rgb(175, 120, 245) 0%,
-      rgb(116, 56, 255) 100%
-    );
+    box-shadow: rgb(23 92 211 / 14%) -3px 1px 8px 7px;
+    background: radial-gradient(68.5% 119.738% at 49.1% 100%, #8fe0a4 0%, #175cd3 100%);
   }
 
   .ai-button.is-close:hover .bg-overall {
-    background: radial-gradient(
-      68.5% 119.738% at 49.1% 100%,
-      rgb(175, 120, 245) 0%,
-      rgb(116, 56, 255) 100%
-    );
+    background: radial-gradient(68.5% 119.738% at 49.1% 100%, #8fe0a4 0%, #175cd3 100%);
   }
 
   .ai-button.is-close::after {

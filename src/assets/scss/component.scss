@@ -47,7 +47,7 @@
   background: var(--primary-card)
 }
 
-/* Pill ko'rinishidagi tab bar: kulrang rail ichida siljiydigan oq "pill".
+/* Pill ko'rinishidagi tab bar: oq rail ichida siljiydigan "pill".
    Aktiv pill sifatida naive-ui'ning `.n-tabs-bar` elementidan foydalanamiz —
    JS uni aktiv tabning offsetLeft/offsetWidth'iga qarab joylaydi va
    left/max-width transition bilan siljitadi. */
@@ -57,24 +57,36 @@
      oqib ketadi (masalan hrm/dashboard sahifasida) va ularning `.n-tabs-bar`i
      to'liq balandlikdagi oq blokka aylanib kontentni bosib qoladi. */
   > .n-tabs-nav {
-    /* Rail konteynerning to'liq enini egallaydi — tablar soni kam bo'lganda ham
-       (dashboard: 2 ta) ko'p bo'lganda ham (role modali: ~10 ta) bir xil ko'rinadi. */
+    /* Rail kontent kengligida — sahifa fonida alohida "kartochka" bo'lib turadi.
+       `max-width` tab'lar ko'p bo'lganda (role modali: ~10 ta) ichki gorizontal
+       scroll ishlashi uchun kerak. */
+    width: fit-content;
+    max-width: 100%;
+    /* Rail — kulrang (sahifa foni bilan bir xil), faol pill esa oq bo'lib "ko'tarilib"
+       turadi. Dark mavzuda ham shu munosabat saqlanadi: rail to'q, pill ochroq. */
     background: var(--surface-ground);
-    border-radius: 16px;
-    padding: 5px;
+    border: 1px solid var(--surface-line);
+    border-radius: 12px;
+    padding: 3px;
+    /* Rail bilan tab kontenti orasidagi bo'shliq — pane'ning o'z padding'iga
+       tayanmaydi, shunda `!p-0` li panellarda ham bir xil masofa saqlanadi. */
+    margin-bottom: 12px;
 
     --n-tab-border-color: transparent;
     --n-bar-color: var(--surface-section);
-    --n-tab-padding: 9px 18px;
-    --n-tab-gap: 4px;
+    /* Balandligi yonidagi tugma/select (34px) bilan bir xil bo'lishi uchun past padding. */
+    --n-tab-padding: 3px 14px;
+    --n-tab-gap: 3px;
     /* Nofaol tab — ochroq kulrang, faol tab — to'q. */
     --n-tab-text-color: var(--textColor1);
     --n-tab-text-color-hover: var(--textColor0);
     --n-tab-text-color-active: var(--textColor0);
-    --n-tab-font-weight-active: 600;
+    /* Faol tabda qalinlik o'zgarmasin — aks holda matn kengayib, pill va qo'shni
+       tablar sakrab qoladi. */
+    --n-tab-font-weight-active: var(--n-tab-font-weight);
 
     .n-tabs-tab {
-      border-radius: 12px;
+      border-radius: 9px;
       font-size: 14px;
       white-space: nowrap;
     }
@@ -85,10 +97,25 @@
       top: 0 !important;
       bottom: 0 !important;
       height: auto !important;
-      border-radius: 12px !important;
+      border-radius: 9px !important;
+      /* Yumshoq soya — oq pill kulrang rail ustida ko'tarilib turgandek ko'rinadi. */
       box-shadow:
-        0 1px 3px rgba(16, 24, 40, 0.1),
-        0 1px 2px rgba(16, 24, 40, 0.06);
+        0 1px 2px rgb(16 24 40 / 8%),
+        inset 0 0 0 1px var(--surface-line);
+    }
+  }
+
+  /* Rail yonidagi element bilan bir qatorda turgan variant (masalan HR dashboard'da
+     filtr bilan yonma-yon).
+     `width` MUHIM: naive-ui `.n-tabs` root'iga `width: 100%` beradi, shu sababli u
+     flex qatorda butun satrni egallab, yonidagi elementni pastga tushirib yuboradi.
+     Bu variant panelsiz (`n-tab`) ishlatilgani uchun kenglikni kontentga tenglash xavfsiz. */
+  &.ui-pill-tabs--inline {
+    width: fit-content;
+    max-width: 100%;
+
+    > .n-tabs-nav {
+      margin-bottom: 0;
     }
   }
 }

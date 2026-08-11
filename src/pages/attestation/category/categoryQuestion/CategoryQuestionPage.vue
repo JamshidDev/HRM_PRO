@@ -2,12 +2,12 @@
   import QuestionList from './ui/QuestionList.vue'
   import { useRoute, useRouter } from 'vue-router'
   import { useCategoryQuestionStore } from '@/store/modules'
-  import { UIPageContent, UIPageFilter } from '@/components/index.js'
+  import { UIModal, UIPageContent } from '@/components/index.js'
   import { AppPaths } from '@/utils/index.js'
-  import { UIModal } from '@/components/index.js'
   import QuestionForm from './ui/QuestionForm.vue'
   import { useAccountStore } from '@/store/modules/index.js'
-  import { ArrowLeft16Filled } from '@vicons/fluent'
+  import { AddCircle24Regular, ArrowLeft24Regular } from '@vicons/fluent'
+
   const accStore = useAccountStore()
 
   const route = useRoute()
@@ -21,13 +21,6 @@
     store._index()
   })
 
-  const onSearch = () => {
-    if (!accStore.checkAction(accStore.pn.examCategoriesRead)) return
-    store.resetData()
-    store.params.page = 1
-    store._index()
-  }
-
   const onAdd = () => {
     if (!accStore.checkAction(accStore.pn.examCategoriesWrite)) return
     store.visibleType = true
@@ -38,34 +31,40 @@
     router.push(`${AppPaths.Attestation}${AppPaths.Category}`)
   }
 </script>
+
 <template>
-  <UIPageContent>
-    <UIPageFilter
-      :add-permission="accStore.pn.examCategoriesWrite"
-      v-model:search="store.params.search"
-      @onSearch="onSearch"
-      :show-filter-button="false"
-      @on-add="onAdd"
-      :show-search-input="false"
-    >
-      <template #filterAction>
-        <n-button secondary type="error" @click="goBack">
-          {{ $t('content.back') }}
+  <UIPageContent class="h-full">
+    <div class="shrink-0 flex flex-col gap-3">
+      <div>
+        <n-button size="small" class="rounded-lg!" @click="goBack">
           <template #icon>
-            <ArrowLeft16Filled />
+            <n-icon :component="ArrowLeft24Regular" />
           </template>
+          {{ $t('content.back') }}
         </n-button>
-      </template>
-      <template #filterSearch>
-        <div class="flex flex-col">
-          <p class="font-semibold inline-block text-textColor2">{{ $t('questionPage.title') }}</p>
-          <span class="text-xs text-primary">{{
-            $t('content.total', { n: store.totalItems })
-          }}</span>
-        </div>
-      </template>
-    </UIPageFilter>
-    <QuestionList class="mt-3" />
+      </div>
+
+      <div class="flex flex-wrap items-center justify-between gap-3">
+        <p class="text-lg font-semibold text-textColor0">{{ $t('questionPage.title') }}</p>
+        <n-button
+          type="primary"
+          class="rounded-lg!"
+          icon-placement="left"
+          :disabled="!accStore.checkPermission(accStore.pn.examCategoriesWrite)"
+          @click="onAdd"
+        >
+          <template #icon>
+            <n-icon :component="AddCircle24Regular" />
+          </template>
+          {{ $t('content.add') }}
+        </n-button>
+      </div>
+    </div>
+
+    <div class="grow basis-auto min-h-0">
+      <QuestionList />
+    </div>
+
     <UIModal
       :width="1300"
       :title="store.visibleType ? $t('categoryPage.addQuestion') : $t('categoryPage.editQuestion')"

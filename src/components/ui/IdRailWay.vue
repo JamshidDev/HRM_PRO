@@ -1,11 +1,15 @@
 <script setup>
   import { ref, computed } from 'vue'
+  import { useQrCode } from '@/composables/index.js'
   import frontSide from '@/assets/images/content/IdRailwayFront.png'
   import backSide from '@/assets/images/content/IdRailwayBack.png'
 
   const props = defineProps({
     data: { type: Object, required: true }
   })
+
+  // Hozircha QR joriy sahifaga olib boradi, keyinchalik tekshirish havolasiga almashtiriladi
+  const { qrDataUrl } = useQrCode(() => props.data.qrValue)
 
   const isFlipped = ref(false)
   const isAnimating = ref(false)
@@ -124,7 +128,13 @@
         <div
           class="absolute left-[4.2%] top-[34.2%] w-[20.3%] h-[32.1%] bg-white rounded-[2px] flex items-center justify-center text-[6px] text-gray-400"
         >
-          QR
+          <img
+            v-if="qrDataUrl"
+            :src="qrDataUrl"
+            alt="QR"
+            class="w-full h-full object-contain p-[4%]"
+          />
+          <template v-else>QR</template>
         </div>
 
         <!-- Shaxsiy raqami / Личный номер -->

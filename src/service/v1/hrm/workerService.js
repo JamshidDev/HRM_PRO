@@ -53,8 +53,11 @@ const _setActiveRole = async (payload) => {
   )
 }
 
+// Filtrlar va tanlangan qatorlar BODY da (`{ query: {...} }`) — boshqa eksportlar
+// bilan bir xil shakl. Ilgari query string'da ketardi va massiv (`worker_ids`)
+// uzatib bo'lmasdi.
 const _downloadRelative = async (payload) => {
-  return await axios.post(`/v1/hr/export/relatives`, {}, { params: payload.params })
+  return await axios.post(`/v1/hr/export/relatives`, payload.data)
 }
 
 const _userRole = async (payload) => {

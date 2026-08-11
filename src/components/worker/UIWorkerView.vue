@@ -30,7 +30,7 @@
     { name: t('workerView.tabs.general'), id: 1, icon: icons.menuIcon },
     { name: t('workerView.tabs.career'), id: 2, icon: icons.positionIcon },
     { name: t('workerView.tabs.relative'), id: 3, icon: icons.usersIcon },
-    { name: t('workerView.tabs.med'), id: 4, icon: icons.medicalExaminationIcon },
+    { name: t('workerView.tabs.med'), id: 4, icon: icons.monitorHeartRate },
     { name: t('workerView.tabs.vacation'), id: 5, icon: icons.calendarIcon },
     { name: t('workerView.tabs.incentive'), id: 6, icon: icons.awardIcon },
     { name: t('workerView.tabs.punishment'), id: 7, icon: icons.punishmentIcon },
@@ -89,7 +89,7 @@
               class="preview-menu self-start max-h-full bg-surface-section rounded-3xl p-1 z-10 overflow-y-auto"
             >
               <div
-                class="sidebar-title-box bg-primary/10 text-primary text-md font-semibold rounded-t-3xl px-1 text-center py-2 mb-2"
+                class="sidebar-title-box text-primary text-md font-semibold rounded-t-3xl px-1 text-center py-2 mb-2"
               >
                 {{ $t('workerView.sidebar.title') }}
               </div>
@@ -166,6 +166,15 @@
 
   .preview-content {
     background: var(--surface-ground);
+  }
+
+  // SectionHeader.vue dagi .section-header-bar bilan bir xil fon
+  .sidebar-title-box {
+    background-color: #eff8ff;
+  }
+
+  [data-theme='dark'] .sidebar-title-box {
+    background-color: var(--table-header);
   }
 
   .ui-preview-window {

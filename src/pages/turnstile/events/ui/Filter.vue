@@ -223,7 +223,7 @@
            har render'da ogohlantirish otilardi. Ko'rinish/holat uchun sof
            `checkPermission` ishlatiladi; tugma yashirilmay, kulrang bo'ladi. -->
       <n-button
-        :disabled="!accStore.checkPermission(accStore.pn.turnstileHikCentralSyncWrite)"
+        :disabled="!accStore.checkPermission(accStore.pn.turnstileHikCentralSync)"
         :loading="store.jobLoading"
         @click="onSync"
         type="primary"

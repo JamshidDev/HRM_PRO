@@ -7,14 +7,14 @@
   const componentStore = useComponentStore()
 
   const onAdd = () => {
-    if (!accStore.checkAction(accStore.pn.hrTableWorkersWrite)) return
+    if (!accStore.checkAction(accStore.pn.hrTableWrite)) return
     store.visibleType = true
     store.resetForm()
     store.visible = true
   }
 
   const onSearch = () => {
-    if (!accStore.checkAction(accStore.pn.hrTableWorkersRead)) return
+    if (!accStore.checkAction(accStore.pn.hrTableRead)) return
     store.params.page = 1
     store._index()
   }
@@ -44,7 +44,7 @@
 
 <template>
   <UIPageFilter
-    :add-permission="accStore.pn.hrTableWorkersWrite"
+    :add-permission="accStore.pn.hrTableWrite"
     v-model:search="store.params.search"
     @onSearch="onSearch"
     @onAdd="onAdd"

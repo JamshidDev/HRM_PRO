@@ -48,6 +48,20 @@
     emits('onCancelEv')
   }
 
+  // Tahrirlanayotgan bo'limning O'ZI ota-bo'lim ro'yxatida ko'rinmasin.
+  // `componentStore.departmentList` `GET /hr/get-departments` dan to'ladi va
+  // hech qanday chetlashtirish qilmaydi — prod bug (org 66, dep 849): dropdown'da
+  // bo'lim nomi ("Axborot-hisoblash markazi") ostida tashkilot nomi ("Axborot
+  // hisoblash markazi") chiqadi, ikkalasi deyarli bir xil ko'rinadi va foydalanuvchi
+  // o'sha bo'limning o'zini tanlab qo'ygan → `parent_id = id` yozilib, bo'lim
+  // ro'yxatdan ham, daraxtdan ham yo'qolgan.
+  //
+  // Avlodlar bu yerda chetlashtirilmaydi — frontendda daraxt ma'lumoti yo'q;
+  // uni backend `assertParentAllowed` rad etadi.
+  const parentOptions = computed(() =>
+    (componentStore.departmentList ?? []).filter((v) => v && v.id !== store.elementId)
+  )
+
   const onSubmit = () => {
     formRef.value?.validate((error) => {
       if (!error) {
@@ -136,7 +150,7 @@
             <!--                :loading="store.levelLoading"-->
             <!--            />-->
             <SuperSelect
-              :options="componentStore.departmentList"
+              :options="parentOptions"
               v-model:value="store.payload.parent_id"
               v-model:search="componentStore.depParams.search"
               @onSearch="componentStore._onSearchDepartment"

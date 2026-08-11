@@ -62,7 +62,6 @@
               v-if="store.checkPermission(store.pn.hrCommandsBlank)"
               :title="$t('profilePage.org.title')"
               :icon="FileEditIcon"
-              plain
               large
               class="mb-4"
             >
@@ -76,7 +75,6 @@
                   : $t('passwordForm.changeTitle')
               "
               :icon="LockIcon"
-              plain
               large
             >
               <template v-if="store.mustChangePassword" #title-suffix>
