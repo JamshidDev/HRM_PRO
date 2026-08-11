@@ -3870,6 +3870,8 @@
       "actual": "Amalda",
       "percent": "%",
       "approvers": "Tasdiqlovchilar",
+      "calculating": "KPI ma'lumotlari hisoblanmoqda",
+      "calculatingDesc": "Bu xodim uchun ko'rsatkichlar hali yakunlanmagan. Davr yopilib, natijalar tasdiqlangach ular shu yerda avtomatik paydo bo'ladi.",
       "notOnboarded": "Bu xodim KPI tizimiga ulanmagan — ko'rsatkichlar mavjud emas.",
       "noIndicators": "Tanlangan davr uchun ko'rsatkichlar yo'q."
     },
