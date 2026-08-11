@@ -20,11 +20,21 @@ const _pullableOrgs = async () => axios.get(`/v1/economist/salary-1c/pullable-or
 const _startBatchPull = async (payload) => axios.post(`/v1/economist/salary-1c/pull-batch`, payload.data)
 const _activeBatchJob = async () => axios.get(`/v1/economist/salary-1c/pull-batch/active`)
 const _batchJob = async (jobId) => axios.get(`/v1/economist/salary-1c/pull-batch/${jobId}`)
+const _cancelBatch = async (jobId) =>
+  axios.post(`/v1/economist/salary-1c/pull-batch/${jobId}/cancel`)
 const _pullHistory = async (payload) => axios.get(`/v1/economist/salary-1c/pull-history`, { params: payload?.params })
 const _pullHistoryExport = async (payload) =>
   axios.get(`/v1/economist/salary-1c/pull-history/export`, { params: payload?.params, responseType: 'blob' })
 const _getOrgCode = async (payload) => axios.get(`/v1/economist/salary-1c/org-code`, { params: payload?.params })
 const _setOrgCode = async (payload) => axios.put(`/v1/economist/salary-1c/org-code`, payload.data)
+
+// Oylik step-up ("oylik paroli") — ikki bosqichli auth.
+const _salaryAccessStatus = async () => axios.get(`/v1/economist/salary-access/status`)
+const _salaryAccessSetPassword = async (payload) =>
+  axios.post(`/v1/economist/salary-access/set-password`, payload.data, { silentError: true })
+const _salaryAccessUnlock = async (payload) =>
+  axios.post(`/v1/economist/salary-access/unlock`, payload.data, { silentError: true })
+const _salaryAccessLock = async () => axios.post(`/v1/economist/salary-access/lock`)
 
 // Xodim self-view
 const _mySalary = async (payload) => axios.get(`/v1/me/salary`, { params: payload?.params })
@@ -47,10 +57,15 @@ export default {
   _startBatchPull,
   _activeBatchJob,
   _batchJob,
+  _cancelBatch,
   _pullHistory,
   _pullHistoryExport,
   _getOrgCode,
   _setOrgCode,
+  _salaryAccessStatus,
+  _salaryAccessSetPassword,
+  _salaryAccessUnlock,
+  _salaryAccessLock,
   _mySalary,
   _myMonths,
   _myHistory
