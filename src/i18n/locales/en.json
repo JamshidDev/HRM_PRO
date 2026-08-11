@@ -229,6 +229,7 @@
     "sidebarThemeIndigo": "Indigo",
     "sidebarThemeBlue": "Blue",
     "sidebarThemeGreen": "Green",
+    "sidebarThemeMint": "Mint",
     "customColor": "Custom color",
     "customColorDesc": "Change the site's colors",
     "appearanceMode": "View",

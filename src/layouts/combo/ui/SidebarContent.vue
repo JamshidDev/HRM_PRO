@@ -17,7 +17,9 @@
   const sidebarThemeTooltipColors = {
     indigo: '#2F2C7F',
     blue: '#0C4089',
-    green: '#00220E'
+    green: '#00220E',
+    // Mint temada tooltip qora rail yonida chiqadi — shuning uchun to'q fon + oq matn
+    mint: '#1F1F1F'
   }
   const tooltipThemeOverrides = computed(() => {
     const color = sidebarThemeTooltipColors[appStore.sidebarTheme]
@@ -343,6 +345,13 @@
   [data-sidebar-theme='green'] {
     .sidebar-card {
       border-color: rgba(255, 255, 255, 0.15);
+    }
+  }
+
+  /* Mint — och panelli tema: oq border ko'rinmaydi, to'q shaffof kerak */
+  [data-sidebar-theme='mint'] {
+    .sidebar-card {
+      border-color: rgba(16, 24, 40, 0.08);
     }
   }
 </style>
