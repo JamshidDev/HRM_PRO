@@ -12,7 +12,7 @@ import SeasonEffect from './ui/SeasonEffect.vue'
 import OfferModal from '@/components/OfferModal.vue'
 import loginPatternUrl from '@/assets/images/svg/login-pattern.png?url'
 import loginPatternBottomUrl from '@/assets/images/svg/pattern-bottom.png?url'
-import bannerRailwaysDayUrl from '@/assets/images/content/banner-railways-day.png?url'
+import banner from '@/assets/images/content/banner.png?url'
 
 
 const appStore = useAppStore()
@@ -77,7 +77,7 @@ const onDone = () => {
           {{ $t('loginPage.description.text') }}
         </p>
         <img
-          :src="bannerRailwaysDayUrl"
+          :src="banner"
           alt=""
           class="login-new__fade-in login-new__fade-in-delay-2 w-full max-w-[1020px] rounded-2xl mt-6 shadow-md"
         />
