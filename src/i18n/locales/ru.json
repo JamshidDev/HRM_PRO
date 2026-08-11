@@ -244,6 +244,7 @@
     "changeAccount": "Мои аккаунты",
     "logOutSystem": "Выйти из системы",
     "paginationSize": "Показать {n}",
+    "perPage": "На странице",
     "confirm": "Подтвердить",
     "understood": "Понятно",
     "month": "Месяц",
@@ -1653,7 +1654,8 @@
       "managementStaff": "Руководящий состав",
       "avgRating": "Средний рейтинг",
       "ratingBasedOn": "на основе {count} оценок",
-      "serviceCertificate": "Служебное удостоверение",
+      "positionCertificateId": "Должностное удостоверение",
+      "employeeId": "ID сотрудника",
       "workNumber": "Рабочий номер"
     },
     "sidebar": {
@@ -1667,11 +1669,9 @@
       "validityPeriod": "Срок действия",
       "started": "Начало",
       "ends": "Окончание",
-      "progressSuffix": "пройдено",
-      "lastCheckDate": "Дата последнего осмотра",
-      "conclusion": "Медицинское заключение",
-      "fitForWork": "Пригоден к работе",
-      "monthsLeft": "≈{count} мес. осталось"
+      "ended": "Завершён",
+      "durationYears": "{count} г.",
+      "durationMonths": "{count} мес."
     },
     "vacation": {
       "start": "Начало отпуска",
@@ -1717,6 +1717,8 @@
     "addQuestion": "Добавить вопрос",
     "editQuestion": "Редактировать вопрос",
     "questionCount": "Количество вопросов",
+    "categoryName": "Название категории",
+    "clearWarning": "Все вопросы категории будут удалены. Продолжить?",
     "uploadExcel": "Загрузить тестовые вопросы",
     "pressUpload": "Нажмите для загрузки!",
     "checkingFile": "Проверка файла...",
@@ -1740,6 +1742,8 @@
     "nVariant": "{n} вариантов",
     "variant_count": "Варианты",
     "exam_duration": "Продолжительность (мин)",
+    "duration": "Продолжительность",
+    "deadlineTitle": "Срок окончания",
     "totalTime": "Дано времени: {n} минут",
     "nMinute": "{n} мин",
     "totalMinute": "{n} минут",
@@ -1979,11 +1983,11 @@
     "audit": {
       "tabGeneral": "Общий дашборд",
       "tabAudit": "Аудит данных",
-      "relativesShortage": "Близкие родственники указаны не полностью",
-      "relativesWithoutJshshir": "Не указан ПИНФЛ родственника",
-      "nameErrors": "Ошибочный символ в имени/фамилии",
-      "jshshirErrors": "Паспорт и ПИНФЛ не совпадают",
-      "positionCertificateMissing": "Нет служебного удостоверения",
+      "relativesShortage": "Родственники неполные",
+      "relativesWithoutJshshir": "Нет ПИНФЛ родственника",
+      "nameErrors": "Ошибка в имени/фамилии",
+      "jshshirErrors": "Паспорт–ПИНФЛ не совпадают",
+      "positionCertificateMissing": "Нет удостоверения",
       "fio": "Ф.И.О.",
       "pin": "ПИНФЛ",
       "organization": "Организация",
@@ -2250,6 +2254,8 @@
     "workers": "Сотрудники",
     "form": {
       "hours": "Часы",
+      "serial": "Серия сертификата",
+      "end_date": "Дата окончания обучения",
       "start_date": "Дата начала",
       "specialization": "Специализация",
       "subjects": "Предметы",
@@ -3418,9 +3424,56 @@
   "turnstileSchedule": {
     "name": "График турникета"
   },
+  "approve": {
+    "name": "Отправленные сотрудники",
+    "createTitle": "Отправить сотрудников",
+    "updateTitle": "Редактировать",
+    "confirmWorkers": "Допустить сотрудников на турникет",
+    "form": {
+      "sended": "Отправлено",
+      "selectedWorker": "Выбранные",
+      "received": "Прибыли"
+    }
+  },
+  "lmsCertificate": {
+    "name": "Сертификаты",
+    "createTitle": "Добавление и редактирование сертификата",
+    "updateTitle": "Редактирование сертификата",
+    "form": {
+      "protocol_date": "Дата протокола",
+      "cert_to": "До какого числа",
+      "cert_from": "С какого числа",
+      "start_exam_result": "Вступительный экзамен",
+      "end_exam_result": "Выпускной экзамен",
+      "enterExam": "Вход/И",
+      "exitExam": "Выход/И"
+    },
+    "warning": {
+      "invalidResult": "Введены неверные данные"
+    }
+  },
+  "staffingApproval": {
+    "name": "Штаты",
+    "createTitle": "Отправить штаты на согласование",
+    "form": {
+      "director_id": "Утверждающий сотрудник",
+      "confirmOrganization": "Утверждающая организация",
+      "confirmatory_id": "Руководитель организации"
+    }
+  },
   "notificationPage": {
     "name": "Уведомления",
     "create": "Создать уведомление"
+  },
+  "congratulation": {
+    "name": "Telegram-сообщения",
+    "description": {
+      "birthday": "Количество сотрудников, поздравленных с днём рождения",
+      "vacation": "Количество сотрудников, уведомлённых об отпуске",
+      "med": "Количество сотрудников, уведомлённых о медицинском осмотре",
+      "passport": "Количество сотрудников, уведомлённых об истечении срока паспорта",
+      "mobile": "Количество сотрудников, уведомлённых через мобильное приложение"
+    }
   },
   "mobileStoryPage": {
     "name": "Story-объявления",

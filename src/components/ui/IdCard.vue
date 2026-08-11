@@ -1,11 +1,15 @@
 <script setup>
   import { ref, computed } from 'vue'
+  import { useQrCode } from '@/composables/index.js'
   import frontSide from '@/assets/images/content/IdFrontSide.webp'
   import backSide from '@/assets/images/content/IdBackSide.jpg'
 
   const props = defineProps({
     data: { type: Object, required: true }
   })
+
+  // Hozircha QR joriy sahifaga olib boradi, keyinchalik tekshirish havolasiga almashtiriladi
+  const { qrDataUrl } = useQrCode(() => props.data.qrValue)
 
   const isFlipped = ref(false)
   const isAnimating = ref(false)
@@ -116,7 +120,13 @@
         <div
           class="absolute left-[6.1%] top-[27.9%] w-[18%] h-[27.7%] bg-white rounded-[2px] flex items-center justify-center text-[6px] text-gray-400"
         >
-          QR
+          <img
+            v-if="qrDataUrl"
+            :src="qrDataUrl"
+            alt="QR"
+            class="w-full h-full object-contain p-[4%]"
+          />
+          <template v-else>QR</template>
         </div>
 
         <span

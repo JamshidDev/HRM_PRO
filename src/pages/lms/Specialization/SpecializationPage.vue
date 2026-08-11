@@ -1,15 +1,16 @@
 <script setup>
-  import { UIDrawer, UIPageContent, UIPageFilter } from '@/components/index.js'
+  import { UIPageContent, UIPageFilter, UIModal } from '@/components/index.js'
   import Table from './ui/Table.vue'
   import { useAccountStore, useSpecializationStore } from '@/store/modules/index.js'
   import createFrom from './ui/createForm.vue'
   import i18n from '@/i18n/index.js'
 
   const { t } = i18n.global
+  const createFormRef = ref(null)
   const store = useSpecializationStore()
   const accStore = useAccountStore()
 
-  const onSearch = (v) => {
+  const onSearch = () => {
     if (!accStore.checkAction(accStore.pn.lmsSpecializationRead)) return
     store.params.page = 1
     store._index()
@@ -39,19 +40,33 @@
       :show-filter-button="false"
     />
     <Table />
-    <UIDrawer
-      :visible="store.visible"
-      @update:visible="(v) => (store.visible = v)"
+    <UIModal
+      v-model:visible="store.visible"
       :title="
         store.visibleType
           ? t('specializationPage.createTitle')
           : t('specializationPage.updateTitle')
       "
+      width="min(700px, calc(100vw - 32px))"
     >
-      <template #content>
-        <createFrom />
+      <createFrom ref="createFormRef" />
+
+      <template #footer>
+        <div class="flex justify-end gap-2 px-4 pb-2">
+          <n-button type="error" ghost class="w-[130px]" @click="store.openVisible(false)">
+            {{ t('content.cancel') }}
+          </n-button>
+          <n-button
+            type="primary"
+            class="w-[130px]"
+            :loading="store.saveLoading"
+            @click="createFormRef?.submit()"
+          >
+            {{ t('content.save') }}
+          </n-button>
+        </div>
       </template>
-    </UIDrawer>
+    </UIModal>
   </UIPageContent>
 </template>
 

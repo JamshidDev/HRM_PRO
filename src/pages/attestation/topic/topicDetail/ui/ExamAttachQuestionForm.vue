@@ -1,7 +1,6 @@
 <script setup>
   import validationRules from '@/utils/validationRules.js'
   import { useComponentStore, useTopicExamStore } from '@/store/modules/index.js'
-  import { useRoute } from 'vue-router'
   import { NButton, NFormItem, NInputNumber, NTooltip } from 'naive-ui'
   import i18n from '@/i18n/index.js'
 
@@ -10,7 +9,6 @@
   const formRef = ref(null)
   const store = useTopicExamStore()
   const componentStore = useComponentStore()
-  const route = useRoute()
 
   const onSubmit = () => {
     formRef.value?.validate((error) => {
@@ -92,8 +90,9 @@
     )
   }
 
+  // `topicId` va `elementId` ni oynani ochuvchi qo'yadi (ExamsTable.onAttachQuestion) —
+  // marshrutdan o'qib bo'lmaydi, chunki /attestation/topic da `:id` parametri yo'q.
   onMounted(() => {
-    store.topicId = route.params.id
     componentStore._examCategory()
   })
 
@@ -122,32 +121,25 @@
     })
     store.categoryPayload.categories = payload
   }
+
+  // Saqlash tugmasi modal footer'ida (TopicDetailPage.vue) turadi.
+  defineExpose({ submit: onSubmit })
 </script>
 
 <template>
   <n-spin :show="componentStore.examCategoryLoading || store.categoryLoading">
     <n-form ref="formRef" :model="store.categoryPayload" :rules="validationRules.common">
-      <div style="min-height: calc(100vh - 120px)">
-        <n-form-item>
-          <n-transfer
-            v-model:value="store.categoryPayload.category_ids"
-            :options="transferOptions"
-            :render-source-label="renderSourceTransferLabel"
-            :render-target-label="renderTargetTransferLabel"
-            source-filterable
-            @update:value="updateCategoryIds"
-          >
-          </n-transfer>
-        </n-form-item>
-      </div>
-      <div class="grid grid-cols-2 gap-2">
-        <n-button ghost type="error" @click="store.openVisible(false)">
-          {{ $t('content.cancel') }}
-        </n-button>
-        <n-button :loading="store.saveLoading" type="primary" @click="onSubmit">
-          {{ $t('content.save') }}
-        </n-button>
-      </div>
+      <n-form-item>
+        <n-transfer
+          v-model:value="store.categoryPayload.category_ids"
+          :options="transferOptions"
+          :render-source-label="renderSourceTransferLabel"
+          :render-target-label="renderTargetTransferLabel"
+          source-filterable
+          @update:value="updateCategoryIds"
+        >
+        </n-transfer>
+      </n-form-item>
     </n-form>
   </n-spin>
 </template>

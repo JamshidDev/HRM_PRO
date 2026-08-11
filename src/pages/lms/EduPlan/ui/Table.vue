@@ -183,7 +183,7 @@
 
     <template #cell-count_groups="{ row }">
       <n-button @click="onViewGroup(row)" round size="tiny">
-        {{ row.count_groups }} - {{ row.count_workers }}
+        {{ row.count_groups }} - {{ row.count_workers }} 
       </n-button>
     </template>
 

@@ -3,9 +3,9 @@
   import Utils from '@/utils/Utils.js'
   import i18n from '@/i18n/index.js'
   import CertificateIcon from '@/assets/icons/certificateIcon.svg'
+  import PositionCertificateIcon from '@/assets/icons/certificats.svg'
   import JshirIcon from '@/assets/icons/jshirIcon.svg'
   import PhoneIcon from '@/assets/icons/phoneIcon.svg'
-  import WorkerPhoneIcon from '@/assets/icons/workerPhoneIcon.svg'
   import CopyIcon from '@/assets/icons/copyIcon.svg'
 
   defineProps({
@@ -22,6 +22,11 @@
     () => store.workerPreview?.worker?.digital_certificate?.serial
   )
 
+  // Lavozim guvohnomalarining eng oxirgisi — amaldagi guvohnoma raqami
+  const positionCertificateId = computed(
+    () => store.workerPreview?.worker?.certificates?.at(-1)?.number
+  )
+
   const onCopy = () => {
     $Toast.success(t('message.successDone'))
   }
@@ -32,9 +37,29 @@
     <div class="min-w-0 lg:flex-1 lg:pr-4">
       <div class="flex items-center gap-1.5 text-textColor3 text-sm mb-1">
         <n-icon size="14">
+          <PositionCertificateIcon />
+        </n-icon>
+        {{ $t('workerView.header.positionCertificateId') }}
+      </div>
+      <div class="font-semibold flex items-center gap-1 flex-wrap">
+        <span class="break-words">{{ positionCertificateId }}</span>
+        <n-icon
+          v-if="positionCertificateId"
+          size="16"
+          class="cursor-pointer text-primary shrink-0"
+          @click="Utils.copyToClipboard(positionCertificateId, onCopy)"
+        >
+          <CopyIcon />
+        </n-icon>
+      </div>
+    </div>
+
+    <div class="min-w-0 lg:flex-1 lg:px-4">
+      <div class="flex items-center gap-1.5 text-textColor3 text-sm mb-1">
+        <n-icon size="14">
           <CertificateIcon />
         </n-icon>
-        {{ $t('workerView.header.serviceCertificate') }}
+        {{ $t('workerView.header.employeeId') }}
       </div>
       <div class="font-semibold flex items-center gap-1 flex-wrap">
         <span class="break-words">{{ certificateNumber }}</span>
@@ -99,7 +124,7 @@
     <div class="min-w-0 lg:flex-1 lg:pl-4">
       <div class="flex items-center gap-1.5 text-textColor3 text-sm mb-1">
         <n-icon size="14">
-          <WorkerPhoneIcon />
+          <PhoneIcon />
         </n-icon>
         {{ $t('workerView.header.workNumber') }}
       </div>

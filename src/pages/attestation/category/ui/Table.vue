@@ -1,5 +1,5 @@
 <script setup>
-  import { UITable } from '@/components/index.js'
+  import { UIDeleteConfirm, UITable, UITablePagination } from '@/components/index.js'
   import i18n from '@/i18n/index.js'
   import {
     useAccountStore,
@@ -10,11 +10,11 @@
   import UIHelper from '@/utils/UIHelper.js'
   import Utils from '@/utils/Utils.js'
   import {
+    BookQuestionMark20Filled,
     CloudLink20Regular,
     Cut24Filled,
     Delete20Regular,
-    Edit32Regular,
-    Eye16Regular
+    Edit32Regular
   } from '@vicons/fluent'
   import { useRouter } from 'vue-router'
 
@@ -51,21 +51,32 @@
   }
 
   const onAttachment = (row) => {
+    if (!accStore.checkAction(accStore.pn.examCategoriesWrite)) return
     categoryQuestionStore.elementId = row.id
     categoryQuestionStore.selectedFile = null
     categoryQuestionStore.selectedCol = null
     categoryQuestionStore.excelVisible = true
   }
 
+  // Tozalash kategoriyadagi BARCHA savollarni o'chiradi, shuning uchun tasdiq so'raladi.
+  // `UITable` faqat `delete` kalitiga avtomatik tasdiq beradi.
+  const clearConfirmVisible = ref(false)
+
   const onClear = (row) => {
+    if (!accStore.checkAction(accStore.pn.examCategoriesWrite)) return
     store.elementId = row.id
+    clearConfirmVisible.value = true
+  }
+
+  const onConfirmClear = () => {
+    clearConfirmVisible.value = false
     store._clear()
   }
 
   const columns = computed(() => [
     {
       key: 'name',
-      title: t('categoryPage.name'),
+      title: t('categoryPage.categoryName'),
       minWidth: 500
     },
     {
@@ -92,7 +103,7 @@
     {
       label: t('questionPage.title'),
       key: Utils.ActionTypes.view,
-      icon: UIHelper.renderIcon(Eye16Regular),
+      icon: UIHelper.renderIcon(BookQuestionMark20Filled),
       action: onViewQuestions
     },
     {
@@ -115,12 +126,31 @@
     permission-prefix="exam-categories"
     :columns="columns"
     :actions="actions"
+    :actions-title="$t('content.action')"
     :data="store.list"
     :loading="store.loading"
     :page="store.params.page"
     :per-page="store.params.per_page"
     :total="store.totalItems"
-    storage-key="attestation-category"
     @change-page="changePage"
+  >
+    <template #[`cell-questions_count`]="{ row }">
+      <span class="text-sm font-semibold text-textColor0">{{ row.questions_count ?? 0 }}</span>
+    </template>
+
+    <template #footer>
+      <UITablePagination
+        :page="store.params.page"
+        :per-page="store.params.per_page"
+        :total="store.totalItems"
+        @change-page="changePage"
+      />
+    </template>
+  </UITable>
+
+  <UIDeleteConfirm
+    v-model:visible="clearConfirmVisible"
+    :warning="$t('categoryPage.clearWarning')"
+    @confirm="onConfirmClear"
   />
 </template>
