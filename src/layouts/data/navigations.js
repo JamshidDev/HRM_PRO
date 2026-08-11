@@ -72,6 +72,7 @@ import ExtraDepartmentLocationIcon from '@assets/icons/DepartmentLocation.svg'
 import AdminFolderIcon from '@assets/icons/adminFolder.svg'
 import {
   BookDatabase24Regular,
+  Calculator24Regular,
   ClipboardTaskListLtr24Filled,
   Grid20Filled,
   RibbonStar24Filled
