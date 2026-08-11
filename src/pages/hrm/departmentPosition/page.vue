@@ -1,7 +1,7 @@
 <script setup>
-  import { UIDrawer, UIPageContent } from '@components'
+  import { UIDrawer, UIModal, UIPageContent } from '@components'
   import { useDepartmentPositionStore, useAccountStore } from '@stores'
-  import { createFrom, Table, Filter, Preview } from './ui'
+  import { createFrom, Table, Filter, Preview, SalaryHistoryModal } from './ui'
 
   const store = useDepartmentPositionStore()
   const accStore = useAccountStore()
@@ -31,5 +31,13 @@
       </template>
     </UIDrawer>
     <Preview />
+    <UIModal
+      :width="'860px'"
+      :visible="store.salaryHistory.visible"
+      @update:visible="(v) => (store.salaryHistory.visible = v)"
+      :title="$t('departmentPositionPage.salaryHistory.title')"
+    >
+      <SalaryHistoryModal />
+    </UIModal>
   </UIPageContent>
 </template>

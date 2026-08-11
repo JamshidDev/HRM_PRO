@@ -4,7 +4,7 @@ import i18n from '@/i18n/index.js'
 import UIHelper from '@/utils/UIHelper.js'
 import { useAccountStore, useComponentStore, useDepartmentPositionStore } from '@stores'
 import { Utils } from '@utils'
-import { Delete24Regular, Edit32Regular, Eye16Regular } from '@vicons/fluent'
+import { Delete24Regular, Edit32Regular, Eye16Regular, History16Regular } from '@vicons/fluent'
 
   const { t } = i18n.global
 
@@ -33,9 +33,13 @@ import { Delete24Regular, Edit32Regular, Eye16Regular } from '@vicons/fluent'
       max_rank: row.max_rank?.id,
       education: row.education?.id,
       rate: row.rate,
-      salary: row.salary.toString(),
-      experience: row.experience.toString()
+      salary: row.salary != null ? String(row.salary) : null,
+      experience: row.experience.toString(),
+      tariff_grid_id: row.tariff_grid_id ?? null,
+      tariff_grid_column: row.tariff_grid_column ?? null
     })
+    // Tanlangan setka ustunlarini oldindan yuklaymiz (oklad/ustun ko'rinishi uchun).
+    if (row.tariff_grid_id) store._loadGridColumns(row.tariff_grid_id)
 
     store.visible = true
   }
@@ -119,8 +123,18 @@ import { Delete24Regular, Edit32Regular, Eye16Regular } from '@vicons/fluent'
       key: 'salary',
       title: t('departmentPositionPage.table.salary'),
       width: 150
+    },
+    {
+      key: 'total_salary',
+      title: t('departmentPositionPage.table.totalSalary'),
+      minWidth: 160
     }
   ])
+
+  const onSalaryHistory = (row) => {
+    if (!accStore.checkAction(accStore.pn.hrPositionsRead)) return
+    store.openSalaryHistory(row.id)
+  }
 
   const actions = computed(() => [
     {
@@ -128,6 +142,12 @@ import { Delete24Regular, Edit32Regular, Eye16Regular } from '@vicons/fluent'
       key: Utils.ActionTypes.view,
       icon: UIHelper.renderIcon(Eye16Regular),
       action: onPreview
+    },
+    {
+      label: t('departmentPositionPage.salaryHistory.title'),
+      key: 'salary-history',
+      icon: UIHelper.renderIcon(History16Regular),
+      action: onSalaryHistory
     },
     {
       label: t('content.edit'),
@@ -185,6 +205,21 @@ import { Delete24Regular, Edit32Regular, Eye16Regular } from '@vicons/fluent'
 
     <template #cell-salary="{ row }">
       {{ Utils.formatNumberToMoney(row.salary) }}
+    </template>
+
+    <template #cell-total_salary="{ row }">
+      <div class="flex flex-col">
+        <span :class="Number(row.total_salary) > Number(row.base_salary) ? 'text-primary font-semibold' : ''">
+          {{ Utils.formatNumberToMoney(row.total_salary) }}
+        </span>
+        <span
+          v-if="Number(row.total_salary) > Number(row.base_salary)"
+          class="text-xs text-secondary"
+        >
+          {{ $t('departmentPositionPage.form.baseSalary') }}:
+          {{ Utils.formatNumberToMoney(row.base_salary) }}
+        </span>
+      </div>
     </template>
   </UITable>
 </template>

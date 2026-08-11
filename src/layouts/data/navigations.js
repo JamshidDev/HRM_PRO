@@ -72,6 +72,7 @@ import ExtraDepartmentLocationIcon from '@assets/icons/DepartmentLocation.svg'
 import AdminFolderIcon from '@assets/icons/adminFolder.svg'
 import {
   BookDatabase24Regular,
+  Calculator24Regular,
   ClipboardTaskListLtr24Filled,
   Grid20Filled,
   RibbonStar24Filled
@@ -758,6 +759,20 @@ export const navigations = [
         icon: EconomistPensionPaymentIcon,
         color: 'bg-success',
         permission: appPermissions.economistPensionPayments
+      },
+      {
+        label: 'tariffGrid.name', // Tarif setkasi
+        path: Utils.routeAccountantPathMaker(AppPaths.TariffGrid),
+        icon: Grid20Filled,
+        color: 'bg-dark',
+        permission: appPermissions.economist
+      },
+      {
+        label: 'salary1c.name', // Oylik hisobot (1C)
+        path: Utils.routeAccountantPathMaker(AppPaths.Salary1c),
+        icon: Calculator24Regular,
+        color: 'bg-primary',
+        permission: appPermissions.economist
       },
       {
         label: 'report.name', // Plan va Fakt

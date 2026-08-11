@@ -24,7 +24,10 @@ export const useOrganizationStore = defineStore('organizationStore', {
       lat: null,
       long: null,
       group: false,
-      code: null
+      code: null,
+      ones_org_code: null,
+      inn: null,
+      gateway_id: null
     },
     headerLang: 'uz',
     params: {
@@ -105,6 +108,9 @@ export const useOrganizationStore = defineStore('organizationStore', {
           this.payload.city_id = organization?.city?.id || null
           this.payload.group = Boolean(organization.group)
           this.payload.code = organization.code
+          this.payload.ones_org_code = organization.ones_org_code ?? null
+          this.payload.inn = organization.inn ?? null
+          this.payload.gateway_id = organization.gateway_id ?? null
           this.visible = true
         }
       })
@@ -182,6 +188,9 @@ export const useOrganizationStore = defineStore('organizationStore', {
       this.payload.long = null
       this.payload.city_id = null
       this.payload.code = null
+      this.payload.ones_org_code = null
+      this.payload.inn = null
+      this.payload.gateway_id = null
       this.payload.group = null
     },
     nestedElement(node, indexPath, newNode) {
