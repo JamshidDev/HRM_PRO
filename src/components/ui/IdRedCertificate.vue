@@ -194,7 +194,7 @@
         <!-- Korxona rahbari (F.I.O) -->
         <span
           v-if="data.managerName"
-          class="handwritten absolute left-[66.6%] top-[45.5%] w-[29.4%] text-center cert-text truncate"
+          class="handwritten absolute left-[66.6%] top-[44.4%] w-[29.4%] text-center cert-text truncate"
           >{{ managerShortName }}</span
         >
 

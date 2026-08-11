@@ -20,7 +20,7 @@
   ]
 
   const openStory = (id) => {
-    router.push(Utils.routePathMaker(`${AppPaths.MobileStories}/${id}`))
+    router.push(Utils.routeChatPathMaker(`${AppPaths.MobileStories}/${id}`))
   }
 
   const onEdit = (row) => {
