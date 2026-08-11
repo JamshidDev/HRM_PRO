@@ -205,11 +205,11 @@
                   >
                     <MiniMenuBadge :category="item?.name ?? undefined" />
                     <n-icon>
-                      <component :is="item.icon" /> 
+                      <component :is="item.icon" />
                     </n-icon>
                   </div>
                 </template>
-                {{ $t(item.label) }} 
+                {{ $t(item.label) }}
               </n-tooltip>
             </template>
           </div>
@@ -218,7 +218,7 @@
           <DownloadTask />
           <!-- <PageInstruction /> -->
           <!-- <NotificationsWidget /> -->
-          <UIProfile /> 
+          <UIProfile />
         </div>
       </div>
       <div
@@ -246,7 +246,7 @@
                     <div class="item-title">
                       <span>{{ $t(item.label) }}</span>
                       <n-icon size="18">
-                        <ChevronDown12Regular /> 
+                        <ChevronDown12Regular />
                       </n-icon>
                     </div>
                   </div>
@@ -274,13 +274,13 @@
                   ]"
                 >
                   <MenuItemBadge :category="currentCategory" :field="item?.name" />
-                  <div class="item-icon rounded-[10px] ml-[-2px]">
+                  <div class="item-icon rounded-[10px]">
                     <n-icon size="20">
-                      <component :is="item.icon" /> 
+                      <component :is="item.icon" />
                     </n-icon>
                   </div>
                   <div class="item-title truncate pl-2">
-                    <span>{{ $t(item.label) }}</span>
+                    <span>{{ $t(item.label) }} </span>
                   </div>
                 </div>
               </template>

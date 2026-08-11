@@ -72,6 +72,7 @@ import ExtraDepartmentLocationIcon from '@assets/icons/DepartmentLocation.svg'
 import AdminFolderIcon from '@assets/icons/adminFolder.svg'
 import {
   BookDatabase24Regular,
+  ClipboardTaskListLtr24Filled,
   Grid20Filled,
   RibbonStar24Filled
 } from '@vicons/fluent'
@@ -149,6 +150,13 @@ export const navigations = [
         icon: usersIcon,
         color: 'bg-primary',
         permission: appPermissions.hrCertificatesRead
+      },
+      {
+        label: 'kpiPage.name', // KPI ko'rsatgichlar
+        path: Utils.routeHrmPathMaker(AppPaths.Kpi),
+        icon: reportIcon,
+        color: 'bg-warning',
+        permission: appPermissions.hrKpi
       },
       {
         label: 'confirmation.name', // Shartnomalar
@@ -280,6 +288,13 @@ export const navigations = [
         icon: RibbonStar24Filled,
         color: 'bg-success',
         permission: appPermissions.hrIncentives
+      },
+      {
+        label: 'task.name', // Topshiriqlar
+        path: Utils.routeHrmPathMaker(AppPaths.Task),
+        icon: ClipboardTaskListLtr24Filled,
+        color: 'bg-primary',
+        permission: appPermissions.hrTasks
       },
       {
         label: 'report.name', // Plan va Fakt

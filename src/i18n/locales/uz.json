@@ -1668,7 +1668,8 @@
       "managementStaff": "Boshqaruv xodimlari",
       "avgRating": "O'rtacha reyting",
       "ratingBasedOn": "{count} ta baholash asosida",
-      "serviceCertificate": "Xizmat guvohnomasi",
+      "positionCertificateId": "Lavozim guvohnomasi",
+      "employeeId": "Xodim ID",
       "workNumber": "Ishchi raqami"
     },
     "sidebar": {
@@ -1682,11 +1683,9 @@
       "validityPeriod": "Amal qilish muddati",
       "started": "Boshlangan",
       "ends": "Tugaydi",
-      "progressSuffix": "o'tdi",
-      "lastCheckDate": "Oxirgi ko'rik sanasi",
-      "conclusion": "Tibbiy xulosa",
-      "fitForWork": "Mehnatga layoqatli",
-      "monthsLeft": "≈{count} oy qoldi"
+      "ended": "Tugagan",
+      "durationYears": "{count} yil",
+      "durationMonths": "{count} oy"
     },
     "vacation": {
       "start": "Ta'tilga chiqish",
@@ -1998,11 +1997,11 @@
     "audit": {
       "tabGeneral": "Umumiy dashboard",
       "tabAudit": "Ma'lumotlar bo'yicha audit",
-      "relativesShortage": "Yaqin qarindoshlar to'liq emas",
-      "relativesWithoutJshshir": "Qarindosh PNFL kiritilmagan",
-      "nameErrors": "Ism-familyada xato belgi",
-      "jshshirErrors": "Pasport va PNFL mos emas",
-      "positionCertificateMissing": "Xizmat guvohnomasi yo'q",
+      "relativesShortage": "Qarindoshlar to'liqsiz",
+      "relativesWithoutJshshir": "Qarindosh PNFL yo'q",
+      "nameErrors": "Ism-familiya xatosi",
+      "jshshirErrors": "Pasport–PNFL nomuvofiq",
+      "positionCertificateMissing": "Guvohnoma yo'q",
       "fio": "F.I.Sh.",
       "pin": "PNFL",
       "organization": "Korxona",
@@ -2481,6 +2480,36 @@
       "who": "Kim tomonidan",
       "reason": "Sabab",
       "giftType": "Sana"
+    }
+  },
+  "task": {
+    "name": "Topshiriqlar",
+    "createTitle": "Topshiriq berish",
+    "updateTitle": "Topshiriqni tahrirlash",
+    "detailTitle": "Topshiriq ma'lumoti",
+    "info": "Ma'lumot",
+    "deleteWarning": "Topshiriqni o'chirishni tasdiqlaysizmi?",
+    "myStatus": "Mening holatim",
+    "statusComment": "Holat o'zgarishiga izoh (ixtiyoriy)",
+    "comments": "Izohlar",
+    "addComment": "Izoh yozish...",
+    "history": "Holat tarixi",
+    "view": {
+      "created": "Men berganlar",
+      "assigned": "Menga biriktirilganlar"
+    },
+    "table": {
+      "title": "Topshiriq nomi",
+      "creator": "Mas'ul xodim",
+      "assignees": "Ijrochilar",
+      "status": "Holati",
+      "deadline": "Muddat"
+    },
+    "status": {
+      "created": "Yaratildi",
+      "in_progress": "Jarayonda",
+      "done": "Bajarildi",
+      "blocked": "Bloklangan"
     }
   },
   "report": {
@@ -3818,6 +3847,33 @@
     "mobileFaceSchedules": "Mobil face: jadvallar",
     "otpVerify": "OTP tekshirish",
     "holidayGreetings": "Bayram tabriklari"
+  },
+  "kpiPage": {
+    "name": "KPI ko'rsatgichlar",
+    "table": {
+      "worker": "Xodim",
+      "department": "Bo'lim",
+      "position": "Lavozim",
+      "organization": "Korxona",
+      "pin": "JSHSHIR"
+    },
+    "show": {
+      "positionDate": "Tayinlangan sana",
+      "age": "Yoshi",
+      "rankGlobal": "Umumiy o'rni",
+      "rankOrg": "Korxonadagi o'rni",
+      "place": "-o'rin",
+      "quarter": "-chorak",
+      "indicatorName": "Ko'rsatkich nomi",
+      "unit": "O'lchov birligi",
+      "plan": "Reja",
+      "actual": "Amalda",
+      "percent": "%",
+      "approvers": "Tasdiqlovchilar",
+      "notOnboarded": "Bu xodim KPI tizimiga ulanmagan — ko'rsatkichlar mavjud emas.",
+      "noIndicators": "Tanlangan davr uchun ko'rsatkichlar yo'q."
+    },
+    "showPending": "Ko'rsatkichlar tashqi tizimdan olinadi — integratsiya ulanmaguncha ma'lumot ko'rsatilmaydi."
   },
   "workerCertificatePage": {
     "name": "Guvohnomalar",

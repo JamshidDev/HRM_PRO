@@ -79,9 +79,16 @@ export const useExportStore = defineStore('exportStore', {
     },
     _export_workers(params) {
       this.saveLoading = true
+      // Jadvalda checkbox bilan tanlangan qatorlar ham yuboriladi: ilgari faqat
+      // filtrlar ketardi va tanlov e'tiborsiz qolib, faylga hamma tushardi.
+      // "Hammasi" belgilangan bo'lsa (`all`) ro'yxat bo'sh — filtr o'zi yetarli.
+      const selected = this.resumePayload.worker_ids
       let data = {
         columns: this.payload.columns.map((i) => i.column),
-        query: params
+        query: {
+          ...params,
+          ...(selected.length > 0 ? { worker_ids: selected } : {})
+        }
       }
       $ApiService.exportService
         ._export_workers({ data })

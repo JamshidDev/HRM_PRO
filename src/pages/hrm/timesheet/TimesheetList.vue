@@ -19,7 +19,7 @@
   const accStore = useAccountStore()
 
   onMounted(() => {
-    if (!accStore.checkAction(accStore.pn.hrTableWorkersRead)) return
+    if (!accStore.checkAction(accStore.pn.hrTableRead)) return
     store.params.page = 1
     store.params.search = null
     store._index()

@@ -1462,6 +1462,27 @@
       "e_documents": "Рақамли-ҳужжатлар",
       "turnstile": "Турникет маълумотлар"
     },
+    "med": {
+      "currentStatus": "Жорий саломатлик ҳолати",
+      "validityPeriod": "Амал қилиш муддати",
+      "started": "Бошланган",
+      "ends": "Тугайди",
+      "ended": "Тугаган",
+      "durationYears": "{count} йил",
+      "durationMonths": "{count} ой"
+    },
+    "vacation": {
+      "start": "Таътилга чиқиш",
+      "end": "Таътилдан қайтиш",
+      "duration": "Давомийлиги",
+      "type": "Таътил тури",
+      "daysLabel": "кун",
+      "calendarLabel": "Таътил кунлари",
+      "completed": "Якунланган",
+      "planned": "Режалаштирилган",
+      "upcomingTitle": "Навбатдаги меҳнат таътили — {year}-йил",
+      "viewCalendar": "Календардан кўриш"
+    },
     "Edocument": {
       "pasport": "Паспорт",
       "railway_pasport": "Темир йўл гувоҳнома",
@@ -1753,11 +1774,11 @@
     "audit": {
       "tabGeneral": "Умумий dashboard",
       "tabAudit": "Маълумотлар бўйича аудит",
-      "relativesShortage": "Яқин қариндошлар тўлиқ эмас",
-      "relativesWithoutJshshir": "Қариндош ПНФЛ киритилмаган",
-      "nameErrors": "Исм-фамилияда хато белги",
-      "jshshirErrors": "Паспорт ва ПНФЛ мос эмас",
-      "positionCertificateMissing": "Хизмат гувоҳномаси йўқ",
+      "relativesShortage": "Қариндошлар тўлиқсиз",
+      "relativesWithoutJshshir": "Қариндош ПНФЛ йўқ",
+      "nameErrors": "Исм-фамилия хатоси",
+      "jshshirErrors": "Паспорт–ПНФЛ номувофиқ",
+      "positionCertificateMissing": "Гувоҳнома йўқ",
       "fio": "Ф.И.Ш.",
       "pin": "ПНФЛ",
       "organization": "Корхона",
@@ -2236,6 +2257,36 @@
       "who": "Ким томонидан",
       "reason": "Сабаб",
       "giftType": "Сана"
+    }
+  },
+  "task": {
+    "name": "Топшириқлар",
+    "createTitle": "Топшириқ бериш",
+    "updateTitle": "Топшириқни таҳрирлаш",
+    "detailTitle": "Топшириқ маълумоти",
+    "info": "Маълумот",
+    "deleteWarning": "Топшириқни ўчиришни тасдиқлайсизми?",
+    "myStatus": "Менинг ҳолатим",
+    "statusComment": "Ҳолат ўзгаришига изоҳ (ихтиёрий)",
+    "comments": "Изоҳлар",
+    "addComment": "Изоҳ ёзиш...",
+    "history": "Ҳолат тарихи",
+    "view": {
+      "created": "Мен берганлар",
+      "assigned": "Менга бириктирилганлар"
+    },
+    "table": {
+      "title": "Топшириқ номи",
+      "creator": "Масъул ходим",
+      "assignees": "Ижрочилар",
+      "status": "Ҳолати",
+      "deadline": "Муддат"
+    },
+    "status": {
+      "created": "Яратилди",
+      "in_progress": "Жараёнда",
+      "done": "Бажарилди",
+      "blocked": "Блокланган"
     }
   },
   "report": {
@@ -3524,6 +3575,33 @@
       "regenerate": "Лавозимни қайта ҳисоблаш",
       "postNameHint": "Ходимнинг жорий лавозимидан автоматик ҳосил қилинади — керак бўлса қўлда таҳрирланг"
     }
+  },
+  "kpiPage": {
+    "name": "KPI кўрсатгичлар",
+    "table": {
+      "worker": "Ходим",
+      "department": "Бўлим",
+      "position": "Лавозим",
+      "organization": "Корхона",
+      "pin": "ЖШШИР"
+    },
+    "show": {
+      "positionDate": "Тайинланган сана",
+      "age": "Ёши",
+      "rankGlobal": "Умумий ўрни",
+      "rankOrg": "Корхонадаги ўрни",
+      "place": "-ўрин",
+      "quarter": "-чорак",
+      "indicatorName": "Кўрсатгич номи",
+      "unit": "Ўлчов бирлиги",
+      "plan": "Режа",
+      "actual": "Амалда",
+      "percent": "%",
+      "approvers": "Тасдиқловчилар",
+      "notOnboarded": "Бу ходим KPI тизимига уланмаган — кўрсатгичлар мавжуд эмас.",
+      "noIndicators": "Танланган давр учун кўрсатгичлар йўқ."
+    },
+    "showPending": "Кўрсатгичлар ташқи тизимдан олинади — интеграция уланмагунча маълумот кўрсатилмайди."
   },
   "workerCertificatePage": {
     "name": "Гувоҳномалар",

@@ -66,6 +66,10 @@
   const slots = useSlots()
   const instance = getCurrentInstance()
   const empty = computed(() => props.data.length === 0)
+  // Birinchi yuklanishda (ma'lumot hali yo'q) "Ma'lumot topilmadi" o'rniga skeleton
+  // ko'rsatiladi — aks holda so'rov ketayotganda bo'sh holat chaqnab o'tadi.
+  const showSkeleton = computed(() => props.loading && empty.value)
+  const skeletonRows = computed(() => Math.min(props.perPage, 8))
 
   // avoids naive-ui misreading a row's own domain `children` field as tree-row nesting when we never asked for tree mode
   const isTreeTable = computed(() => Boolean(props.onLoad) || props.columns.some((c) => c.tree))
@@ -139,6 +143,11 @@
     }
     return cols
   })
+
+  // Skeleton ustunlari haqiqiy ustun kengliklarini takrorlaydi, shunda yuklanish
+  // tugagach jadval "sakramaydi". Kengligi yo'q ustunlar qolgan joyni teng bo'lishadi.
+  const skeletonColStyle = (col) =>
+    col.width ? { flex: `0 0 ${col.width}px` } : { flex: '1 1 0', minWidth: 0 }
 
   const {
     wrapperRef: tableWrapperRef,
@@ -321,8 +330,45 @@
 </script>
 
 <template>
-  <n-spin :show="loading" class="ui-table__spin h-full overflow-auto">
-    <div v-if="empty" class="h-full grid place-items-center">
+  <!-- Skeleton chizilayotganda spinner qo'shilmaydi (ikki xil yuklanish belgisi
+       bo'lib ketmasligi uchun); mavjud ma'lumot ustidan qayta so'rov ketsa esa
+       avvalgidek spinner ko'rinadi. -->
+  <n-spin :show="loading && !empty" class="ui-table__spin h-full overflow-auto">
+    <div
+      v-if="showSkeleton"
+      class="ui-table__wrapper h-full min-h-[clamp(200px,calc(100vh-100%),600px)] flex flex-col p-1 bg-surface-section rounded-[20px]"
+    >
+      <div class="flex-1 overflow-hidden rounded-t-2xl">
+        <div
+          class="flex items-center gap-4 px-4 h-[42px] rounded-t-2xl"
+          style="background: var(--table-header)"
+        >
+          <div v-for="col in allCols" :key="`sh-${col.key}`" :style="skeletonColStyle(col)">
+            <n-skeleton height="12px" width="60%" round />
+          </div>
+        </div>
+
+        <div
+          v-for="row in skeletonRows"
+          :key="`sr-${row}`"
+          class="flex items-center gap-4 px-4 h-[48px] border-b border-surface-line"
+        >
+          <div v-for="col in allCols" :key="`sc-${row}-${col.key}`" :style="skeletonColStyle(col)">
+            <n-skeleton height="14px" round />
+          </div>
+        </div>
+      </div>
+
+      <div
+        v-if="total !== null || slots.footer"
+        class="rounded-b-2xl px-5 h-[52px] flex items-center justify-end"
+        style="background: var(--table-header)"
+      >
+        <n-skeleton height="16px" width="200px" round />
+      </div>
+    </div>
+
+    <div v-else-if="empty" class="h-full grid place-items-center">
       <NoDataPicture />
     </div>
 

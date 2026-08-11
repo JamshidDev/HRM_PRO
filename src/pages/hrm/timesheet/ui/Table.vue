@@ -32,7 +32,7 @@
   }
 
   const onEdit = (row) => {
-    if (!accStore.checkAction(accStore.pn.hrTableWorkersWrite)) return
+    if (!accStore.checkAction(accStore.pn.hrTableWrite)) return
     store.elementId = row.id
     store.payload.department_id = row.department?.id
     store.payload.work_place_id = row.work_place?.id
@@ -46,14 +46,14 @@
   }
 
   const onVerifier = (row) => {
-    if (!accStore.checkAction(accStore.pn.hrTableWorkersWrite)) return
+    if (!accStore.checkAction(accStore.pn.hrTableWrite)) return
     timesheetConfirmStore.elementId = row.id
     timesheetConfirmStore.visible = true
   }
 
   const onFinish = (row) => {
     if (row.status) return
-    if (!accStore.checkAction(accStore.pn.hrTableWorkersWrite)) return
+    if (!accStore.checkAction(accStore.pn.hrTableWrite)) return
     store.warningVisible = true
     store.elementId = row.id
   }

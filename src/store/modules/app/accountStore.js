@@ -241,7 +241,9 @@ export const useAccountStore = defineStore('accountStore', {
           this.applyDevPermissionOverride()
           this.permissionsLoaded = true
           // must_change endi login javobida EMAS — profil (/user/profile) qaytaradi.
-          // true → parol muddati o'tgan → MustChangePasswordModal ochiladi.
+          // true → parol muddati o'tgan. Ilgari bu MAJBURIY modal ochardi (login'dan
+          // keyin yopib bo'lmasdi) — modal OLIB TASHLANDI; bayroq faqat profil
+          // sahifasidagi "Parol" tabini belgilash uchun qoladi (`profile/ui/Tabs.vue`).
           this.mustChangePassword = res.data.data.must_change === true
           if (this.mustChangePassword) {
             localStorage.setItem(useAppSetting.mustChangeKey, '1')

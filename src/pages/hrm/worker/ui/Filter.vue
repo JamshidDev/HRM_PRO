@@ -5,7 +5,7 @@
     useExportStore,
     useAccountStore
   } from '@/store/modules/index.js'
-  import { UINSelect, UIPageFilter, UISelect, UIPageTitle } from '@/components/index.js'
+  import { UINSelect, UIPageFilter, UISelect } from '@/components/index.js'
   import { ArrowSync16Regular, ChevronDown20Regular, ChevronUp20Regular } from '@vicons/fluent'
   import Utils from '@/utils/Utils.js'
   import { appPermissions, useDebounce } from '@/utils/index.js'
@@ -231,6 +231,11 @@
     next()
   })
 
+  // Qarindoshlar eksporti — tanlangan qatorlar bo'lsa faqat o'shalar.
+  const onRelativesExport = () => {
+    store._downloadRelative(exportStore.resumePayload.worker_ids)
+  }
+
   const onSubmitResumeExport = () => {
     exportStore.resumeModalVisible = true
   }
@@ -238,8 +243,14 @@
   const canWrite = computed(() => accStore.checkAction(appPermissions.hrExport))
   const canZip = computed(() => accStore.checkAction(appPermissions.exportWorkersZip))
 
-  const selectedCount = computed(() =>
-    exportStore.resumePayload.all ? store.totalItems : exportStore.resumePayload.worker_ids.length
+  // Nechta xodim yuklanishini ko'rsatadi (tanlangan soni EMAS):
+  //  · qator(lar) belgilangan bo'lsa — o'shalar soni,
+  //  · hech narsa belgilanmasa (yoki "barchasini tanlash") — FILTRLANGAN ro'yxat
+  //    to'liq yuklanadi, demak jadval totali.
+  // Ilgari bu 0 bo'lib qolar va "Ma'lumotni yuklash" tugmasi o'chib turardi —
+  // filtrlab yuklash uchun avval majburan "barchasini tanlash" kerak edi.
+  const selectedCount = computed(
+    () => exportStore.resumePayload.worker_ids.length || store.totalItems
   )
 
   const defaultEv = (v) => {
@@ -251,17 +262,6 @@
 </script>
 
 <template>
-  <UIPageTitle :title="$t('workerPage.name')">
-    <template #actions>
-      <n-button type="primary" tertiary @click="store._index()" :loading="store.loading">
-        {{ $t('content.refresh') }}
-        <template #icon>
-          <n-icon><ArrowSync16Regular /></n-icon>
-        </template>
-      </n-button>
-    </template>
-  </UIPageTitle>
-
   <UIPageFilter
     :search-loading="store.loading"
     :filter-count="filterCount"
@@ -280,6 +280,13 @@
   >
     <template #filterAction>
       <div class="worker-action-group flex flex-wrap items-center gap-3 w-full md:w-auto">
+        <n-button type="primary" tertiary @click="store._index()" :loading="store.loading">
+          {{ $t('content.refresh') }}
+          <template #icon>
+            <n-icon><ArrowSync16Regular /></n-icon>
+          </template>
+        </n-button>
+
         <n-button v-if="canWrite" type="primary" @click="onAdd">
           <template #icon>
             <img class="worker-action-icon" :src="contractIcon" alt="" />
@@ -306,7 +313,7 @@
         :can-write="canWrite"
         :can-zip="canZip"
         :loading="store.loading"
-        @relatives="store._downloadRelative"
+        @relatives="onRelativesExport"
         @export="onExport"
         @reference="onSubmitResumeExport"
         @close="closeReportPanel"

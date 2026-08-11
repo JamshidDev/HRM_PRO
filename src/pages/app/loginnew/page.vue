@@ -12,7 +12,7 @@ import SeasonEffect from './ui/SeasonEffect.vue'
 import OfferModal from '@/components/OfferModal.vue'
 import loginPatternUrl from '@/assets/images/svg/login-pattern.png?url'
 import loginPatternBottomUrl from '@/assets/images/svg/pattern-bottom.png?url'
-import bannerRailwaysDayUrl from '@/assets/images/content/banner-railways-day.png?url'
+import banner from '@/assets/images/content/banner.png?url'
 
 
 const appStore = useAppStore()
@@ -58,22 +58,26 @@ const onDone = () => {
   <div class="login-new min-h-screen w-full flex items-stretch text-login-ink bg-login-page gap-4 lg:gap-8">
     <!-- Left brand / hero panel -->
     <div class="login-new__hero relative hidden lg:flex flex-col overflow-hidden p-12 xl:px-14">
-      <div class="login-new__hero-pattern absolute inset-0 pointer-events-none"
-        :style="{ '--login-hero-pattern': `url(${loginPatternUrl})` }" aria-hidden="true"></div>
+      <div
+        class="login-new__hero-pattern absolute inset-0 pointer-events-none"
+        :style="{ '--login-hero-pattern': `url(${loginPatternUrl})` }" aria-hidden="true"
+      ></div>
       <SeasonEffect :season="useAppSetting.loginSeason" />
 
       <div class="relative z-10 flex-1 flex flex-col items-center justify-center text-center max-w-[560px] mx-auto">
         <img src="/logo-new.png" alt=" " class="h-20 w-auto mb-6 login-new__fade-in animation-logo" />
         <h1
-          class="login-new__shiny-text login-new__fade-in login-new__fade-in-delay-1 font-grotesk text-4xl xl:text-[46px] font-bold text-login-ink leading-[1.15]">
+          class="login-new__shiny-text login-new__fade-in login-new__fade-in-delay-1 font-grotesk text-4xl xl:text-[46px] font-bold text-login-ink leading-[1.15]"
+        >
           {{ $t('loginPage.description.subtitle') }}
         </h1>
         <p
-          class="login-new__fade-in login-new__fade-in-delay-2 text-login-body text-[15px] leading-[1.65] mt-4 max-w-[480px]">
+          class="login-new__fade-in login-new__fade-in-delay-2 text-login-body text-[15px] leading-[1.65] mt-4 max-w-[480px]"
+        >
           {{ $t('loginPage.description.text') }}
         </p>
         <img
-          :src="bannerRailwaysDayUrl"
+          :src="banner"
           alt=""
           class="login-new__fade-in login-new__fade-in-delay-2 w-full max-w-[1020px] rounded-2xl mt-6 shadow-md"
         />
@@ -93,9 +97,12 @@ const onDone = () => {
     <!-- Right form panel -->
     <div class="login-new__form-side relative flex-1 flex items-center justify-center px-4 py-6">
       <div
-        class="login-new__card relative w-full max-w-[520px] flex flex-col items-center px-6 sm:px-9 pt-20 lg:pt-7 pb-9 overflow-hidden">
-        <div class="login-new__card-pattern absolute inset-0 pointer-events-none"
-          :style="{ '--login-hero-pattern': `url(${loginPatternBottomUrl})` }" aria-hidden="true"></div>
+        class="login-new__card relative w-full max-w-[520px] flex flex-col items-center px-6 sm:px-9 pt-20 lg:pt-7 pb-9 overflow-hidden"
+      >
+        <div
+          class="login-new__card-pattern absolute inset-0 pointer-events-none"
+          :style="{ '--login-hero-pattern': `url(${loginPatternBottomUrl})` }" aria-hidden="true"
+        ></div>
 
         <!-- Mobile logo — lang-select bilan bir qatorda (faqat mobile) -->
         <div class="absolute top-6 left-6 z-20 flex lg:hidden items-center gap-3">

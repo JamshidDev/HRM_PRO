@@ -54,6 +54,7 @@ import languageService from '@/service/v1/hrm/languageService.js'
 import languageCertificateService from '@/service/v1/hrm/languageCertificateService.js'
 import workerPositionCertificateService from '@/service/v1/hrm/workerPositionCertificateService.js'
 import workerCertificateService from '@/service/v1/hrm/workerCertificateService.js'
+import kpiService from '@/service/v1/hrm/kpiService.js'
 import relativeService from '@/service/v1/hrm/relativeService.js'
 import workerDisabilityService from '@/service/v1/hrm/workerDisabilityService.js'
 import universityService from '@/service/v1/hrm/universityService.js'
@@ -74,6 +75,7 @@ import exportService from '@/service/v1/hrm/exportService.js'
 import documentArchiveService from '@/service/v1/hrm/documentArchiveService.js'
 import businessTrip from '@/service/v1/hrm/businessTrip.js'
 import incentiveService from '@/service/v1/hrm/incentiveService.js'
+import taskService from '@/service/v1/hrm/taskService.js'
 import punishmentService from '@/service/v1/hrm/punishmentService.js'
 import medInspectionService from '@/service/v1/hrm/medInspectionService.js'
 import polyclinicService from '@/service/v1/hrm/polyclinicService.js'
@@ -194,6 +196,7 @@ export default {
   languageCertificateService,
   workerPositionCertificateService,
   workerCertificateService,
+  kpiService,
   confirmationService,
   docSettingService,
   serviceOrgService,
@@ -249,6 +252,7 @@ export default {
   vacationScheduleService,
   businessTrip,
   incentiveService,
+  taskService,
   turnstileTerminalService,
   turnstileBuildingService,
   turnstileOrganizationService,

@@ -2,7 +2,6 @@
   import validationRules from '@/utils/validationRules.js'
   import { useEduPlanStore, useComponentStore } from '@/store/modules/index.js'
   import { useAppSetting } from '@/utils/index.js'
-  import { SuperSelect } from '@components'
 
   const formRef = ref(null)
   const store = useEduPlanStore()
@@ -38,15 +37,12 @@
       componentStore._lmsEnum()
     }
   })
+
+  defineExpose({ submit: onSubmit })
 </script>
 
 <template>
-  <n-form
-    class="h-[calc(100vh-120px)]"
-    ref="formRef"
-    :rules="validationRules.common"
-    :model="store.payload"
-  >
+  <n-form ref="formRef" :rules="validationRules.common" :model="store.payload">
     <div class="grid grid-cols-12 gap-x-4">
       <n-form-item
         class="col-span-12"
@@ -189,12 +185,4 @@
       </n-form-item>
     </div>
   </n-form>
-  <div class="grid grid-cols-2 gap-2">
-    <n-button @click="store.openVisible(false)" type="error" ghost>
-      {{ $t('content.cancel') }}
-    </n-button>
-    <n-button @click="onSubmit" :loading="store.saveLoading" type="primary">
-      {{ $t('content.save') }}
-    </n-button>
-  </div>
 </template>

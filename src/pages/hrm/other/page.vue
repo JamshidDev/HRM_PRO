@@ -1,11 +1,5 @@
-<script setup>
-  import { UIPageTitle } from '@/components/index.js'
-</script>
-
 <template>
   <div class="p-6">
-    <UIPageTitle :title="$t('hrm.other.title')" :subtitle="$t('hrm.other.description')" />
-
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       <!-- Content placeholder -->
       <div class="bg-surface-section p-6 rounded-lg border border-surface-line">
