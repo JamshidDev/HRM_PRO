@@ -1,26 +1,31 @@
 <script setup>
-  import { useRouter } from 'vue-router'
-  import { UITable } from '@/components/index.js'
+  import { UITable, UITableNameCell } from '@/components/index.js'
   import { useMobileStoryStore } from '@/store/modules/index.js'
-  import { AppPaths } from '@/utils/index.js'
   import UIHelper from '@/utils/UIHelper.js'
   import Utils from '@/utils/Utils.js'
-  import { Delete20Regular, Edit32Regular } from '@vicons/fluent'
+  import {
+    CheckmarkCircle16Filled,
+    Delete20Regular,
+    Edit32Regular,
+    Folder16Filled
+  } from '@vicons/fluent'
   import i18n from '@/i18n/index.js'
 
   const { t } = i18n.global
   const store = useMobileStoryStore()
-  const router = useRouter()
 
-  const headerLang = ref('uz')
-  const headerOption = [
-    { name: t('content.nameUz'), id: 'uz' },
-    { name: t('content.nameRu'), id: 'ru' },
-    { name: t('content.nameEn'), id: 'en' }
+  // Sarlavha tili — "Nomi" ustuni header'idagi select; default interfeys tili.
+  const lang = ref(i18n.global.locale)
+  const langOptions = [
+    { id: 'uz', name: t('content.uz') },
+    { id: 'ru', name: t('content.ru') },
+    { id: 'en', name: t('content.en') }
   ]
 
+  const rowTitle = (row) => row?.title?.[lang.value] || row?.title?.uz
+
   const openStory = (id) => {
-    router.push(Utils.routeChatPathMaker(`${AppPaths.MobileStories}/${id}`))
+    store._openEdit(id)
   }
 
   const onEdit = (row) => {
@@ -40,23 +45,23 @@
   const columns = computed(() => [
     {
       key: 'title',
-      title: '',
-      minWidth: 220
+      title: t('content.name'),
+      minWidth: 260
     },
     {
       key: 'status',
-      title: t('mobileStoryPage.table.status'),
-      minWidth: 140
+      title: t('content.status'),
+      width: 190
     },
     {
       key: 'published_at',
       title: t('mobileStoryPage.form.publishedAt'),
-      minWidth: 160
+      width: 200
     },
     {
       key: 'views_count',
       title: t('mobileStoryPage.table.views'),
-      minWidth: 100,
+      width: 140
     }
   ])
 
@@ -85,31 +90,38 @@
     :page="store.params.page"
     :per-page="store.params.per_page"
     :total="store.totalItems"
+    :delete-warning="t('mobileStoryPage.deleteConfirm')"
     storage-key="admin-mobile-story"
     @change-page="changePage"
   >
     <template #header-title>
-      <n-select
-        v-model:value="headerLang"
-        :options="headerOption"
-        value-field="id"
-        label-field="name"
-      />
+      <div class="flex items-center gap-2">
+        <span class="text-sm text-textColor2 leading-[1.2]">{{ $t('content.name') }}</span>
+        <n-select
+          v-model:value="lang"
+          class="ui-lang-select w-[68px]!"
+          size="tiny"
+          :options="langOptions"
+          value-field="id"
+          label-field="name"
+        />
+      </div>
     </template>
 
     <template #cell-title="{ row }">
-      <span class="cursor-pointer text-primary hover:underline" @click="openStory(row.id)">
-        {{ row?.title?.[headerLang] ?? row?.title?.uz }}
-      </span>
+      <UITableNameCell :name="rowTitle(row)" @click="openStory(row.id)" />
     </template>
 
     <template #cell-status="{ row }">
-      <n-tag :type="row.status === 2 ? 'success' : 'default'" size="small" round>
-        {{
-          row.status === 2
-            ? $t('mobileStoryPage.status.published')
-            : $t('mobileStoryPage.status.draft')
-        }}
+      <n-tag round :bordered="false" size="small" :type="row.status === 2 ? 'success' : 'default'">
+        <span class="inline-flex items-center gap-1.5 font-medium">
+          <n-icon :size="14" :component="row.status === 2 ? CheckmarkCircle16Filled : Folder16Filled" />
+          {{
+            row.status === 2
+              ? $t('mobileStoryPage.status.published')
+              : $t('mobileStoryPage.status.draft')
+          }}
+        </span>
       </n-tag>
     </template>
 
@@ -122,3 +134,12 @@
     </template>
   </UITable>
 </template>
+
+<style scoped>
+  /* Header qatori 42px — select uni cho'zib yubormasligi uchun ixcham. */
+  .ui-lang-select {
+    --n-height: 24px !important;
+    --n-border-radius: 6px !important;
+    --n-font-size: 12px !important;
+  }
+</style>

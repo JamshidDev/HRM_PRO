@@ -3920,7 +3920,12 @@
       "addSlide": "Slayd qo'shish",
       "editFields": "Ma'lumotlarni tahrirlash",
       "noSlides": "Hali slayd yo'q — yuqoridagi tugma orqali qo'shing",
-      "detailsButton": "Batafsil"
+      "detailsButton": "Batafsil",
+      "fileTooLarge": "Fayl hajmi juda katta — maksimal 4 MB",
+      "preview": "Ko'rinishi",
+      "replaceSlide": "Almashtirish",
+      "slidesPanel": "Slaydlar",
+      "addSlideHint": "Rasm yoki video qo'shish"
     },
     "deleteConfirm": "Ushbu story o'chirilsinmi?",
     "slideDeleteConfirm": "Ushbu slayd o'chirilsinmi?",
