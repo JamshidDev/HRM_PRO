@@ -599,7 +599,9 @@ export const navigations = [
         path: Utils.routeTurnstilePathMaker(AppPaths.TurnstileSchedule),
         icon: TurnstileScheduleIcon,
         color: 'bg-dark',
-        permission: appPermissions.turnstileSheets
+        // Ilgari «Navbatchilik grafigi» bilan BITTA slugda edi (`turnstile-sheets`) —
+        // birini berib ikkinchisini yopib bo'lmasdi. Endi o'z slugi.
+        permission: appPermissions.turnstileSchedule
       },
       {
         label: 'approve.name', // Yuborilgan xodimlar

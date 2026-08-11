@@ -274,6 +274,9 @@ export const appPermissions = {
   turnstileHikCentralUserImageLogs: 'turnstile-hc-user-image-logs',
   turnstileHikCentralInvalidUser: 'turnstile-hc-invalid-user',
   turnstileDevices: 'turnstile-devices',
+  // Qurilmalar sahifasidagi ikki yuklash tugmasi — alohida boshqariladi.
+  turnstileDevicesExport: 'turnstile-devices-export',
+  turnstileDevicesStatExport: 'turnstile-devices-stat-export',
   turnstileDevicesRead: 'turnstile-devices-read',
   turnstileDevicesWrite: 'turnstile-devices-write',
   turnstileOthers: 'turnstile-others',
@@ -308,6 +311,11 @@ export const appPermissions = {
   turnstileSheetsWrite: 'turnstile-sheets-write',
   turnstileSheetsRead: 'turnstile-sheets-read',
   turnstileSheets: 'turnstile-sheets',
+  // «Navbatchilik grafigi» dagi «Tabel yuklash» — tahrirlashdan ajratilgan.
+  turnstileSheetsTimesheetExport: 'turnstile-sheets-timesheet-export',
+  // «Turniket grafiki» — alohida sahifa (ilgari `turnstile-sheets` bilan bir edi).
+  turnstileSchedule: 'turnstile-schedule',
+  turnstileScheduleRead: 'turnstile-schedule-read',
   turnstileSheetsWorkersWrite: 'turnstile-sheets-workers-write',
   turnstileSheetsWorkersRead: 'turnstile-sheets-workers-read',
   turnstileSheetsWorkers: 'turnstile-sheets-workers',

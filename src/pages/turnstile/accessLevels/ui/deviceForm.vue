@@ -1,11 +1,12 @@
 <script setup>
-  import { useTurnstileHikCentralStore } from '@/store/modules/index.js'
+  import { useAccountStore, useTurnstileHikCentralStore } from '@/store/modules/index.js'
   import { ArrowSync24Filled, ArrowCircleDown12Regular, Search48Filled } from '@vicons/fluent'
   const store = useTurnstileHikCentralStore()
+  const accStore = useAccountStore()
 
   const onSearchEv = () => {
     let query = store.searchModel?.toString()?.trim()?.toLowerCase()
-    if (!Boolean(query)) {
+    if (!query) {
       store.onlineDeviceList = store.originList
     } else {
       store.onlineDeviceList = store.originList.filter((v) =>
@@ -33,7 +34,12 @@
           </n-input>
         </div>
         <div class="col-span-12 md:col-span-6 flex justify-end gap-2">
-          <n-button type="success" @click="store._downloadDevices()" :loading="store.downloading">
+          <n-button
+            v-if="accStore.checkPermission(accStore.pn.turnstileDevicesExport)"
+            type="success"
+            @click="store._downloadDevices()"
+            :loading="store.downloading"
+          >
             {{ $t('content.download') }}
             <template #icon>
               <ArrowCircleDown12Regular />
@@ -71,8 +77,7 @@
                     class="relative inline-flex size-3 rounded-full"
                   ></span>
                 </span>
-                {{ item.name }}</span
-              >
+                {{ item.name }}</span>
             </div>
           </template>
           <template v-if="store.onlineDeviceList.length === 0">
