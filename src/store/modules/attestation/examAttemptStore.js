@@ -31,7 +31,13 @@ export const useExamAttemptStore = defineStore('examAttemptStore', {
     activeTab: 1,
     videosList: [],
     videoLoading: false,
-    isCamera: false
+    isCamera: false,
+    // "Urinish tahlili" modali sarlavhasi uchun (TopicCardList.vue -> viewExam() da to'ldiriladi)
+    viewMeta: {
+      examName: null,
+      attemptNumber: null,
+      attemptDate: null
+    }
   }),
   actions: {
     _downloadResult(params) {
