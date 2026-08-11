@@ -46,11 +46,15 @@
       componentStore._enums()
     }
   })
+
+  // Tugmalar modal `#footer` da turadi (DocumentArchivePage.vue) — saqlashni
+  // tashqaridan chaqirish uchun yagona yo'l.
+  defineExpose({ submit: onSubmit })
 </script>
 
 <template>
   <n-form ref="formRef" :rules="validationRules.documentArchive" :model="store.payload">
-    <div style="min-height: calc(100vh - 120px)">
+    <div>
       <n-form-item :label="$t(`documentArchive.form.file`)" path="fakeFile">
         <n-input v-show="false" v-model:value="store.payload.fakeFile" type="text" />
         <UIUpload
@@ -95,15 +99,6 @@
           :format="useAppSetting.datePicketFormat"
         />
       </n-form-item>
-    </div>
-
-    <div class="grid grid-cols-2 gap-2">
-      <n-button @click="store.openVisible(false)" type="error" ghost>
-        {{ $t('content.cancel') }}
-      </n-button>
-      <n-button @click="onSubmit" :loading="store.saveLoading" type="primary">
-        {{ $t('content.save') }}
-      </n-button>
     </div>
   </n-form>
 </template>
