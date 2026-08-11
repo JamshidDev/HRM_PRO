@@ -166,6 +166,7 @@
     <template #filterAction>
       <div class="col-span-12 md:col-span-6 flex justify-end gap-2">
         <n-button
+          v-if="accStore.checkPermission(accStore.pn.turnstileDevicesStatExport)"
           class="h-[32px]!"
           type="success"
           @click="store._downloadReport()"
@@ -177,6 +178,7 @@
           </template>
         </n-button>
         <n-button
+          v-if="accStore.checkPermission(accStore.pn.turnstileDevicesExport)"
           class="h-[32px]!"
           type="success"
           @click="store._downloadDevices()"

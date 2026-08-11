@@ -47,7 +47,9 @@
         icon: markRaw(ArrowSyncCircle24Filled),
         component: markRaw(SyncLogPage),
         key: store.tabs[3],
-        visible: accStore.checkPermission(accStore.pn.turnstileHikCentralEvents),
+        // Ilgari `turnstile-hik-central-events` (BOSHQA feature — «Hodisalar»
+        // sahifasi) bilan ko'rsatilardi; endi o'z slugi.
+        visible: accStore.checkPermission(accStore.pn.turnstileHikCentralSync),
         color: 'primary'
       },
       {
