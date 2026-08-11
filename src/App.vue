@@ -6,6 +6,7 @@
   import { UIMainLoading } from '@/components/index.js'
   import SignatureInstance from '@/pages/app/e-imzo/SignatureInstance.vue'
   import AIConversationModal from '@/pages/app/ai/AIConversationModal.vue'
+  import SalaryUnlockModal from '@/pages/accountant/salary1c/ui/SalaryUnlockModal.vue'
   import { naiveBreakpoints } from '@/assets/theme/theme.js'
   import { useLocaleProvider, useAppInit } from '@/composables/index.js'
   import { useAppStore } from '@/store/modules/index.js'
@@ -29,6 +30,7 @@
           <MediaViewer />
           <SignatureInstance />
           <AIConversationModal />
+          <SalaryUnlockModal />
         </n-dialog-provider>
       </n-message-provider>
     </n-notification-provider>

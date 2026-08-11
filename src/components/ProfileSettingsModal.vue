@@ -12,8 +12,24 @@
 
   const sidebarThemes = [
     {
-      key: 'default',
+      // Standart tema (`useAppSetting.defaultSidebarTheme`) — shuning uchun ro'yxatda birinchi
+      // va "Odatiy" deb nomlanadi. Yagona OCH tema, shuning uchun `darkLabel`: tanlangan
+      // plitkaning foni och bo'lgani uchun label matni oq emas, to'q bo'lishi kerak.
+      // Swatch aylanasi rail'ning qorasi emas, temani ajratib turadigan panel gradienti.
+      key: 'mint',
       labelKey: 'content.sidebarThemeDefault',
+      from: '#C9F5E7',
+      to: '#DFDDFB',
+      bgFrom: '#C9F5E7',
+      bgTo: '#DFDDFB',
+      darkLabel: true
+    },
+    {
+      // Ilgarigi "Odatiy" ko'rinish — SCSS bloki yo'q, organizationLayout.scss'dagi bazaviy
+      // uslub (shu sababli kalit hamon 'default'; SidebarContent.vue'dagi
+      // `sidebarTheme !== 'default'` sharti ham shunga tayanadi).
+      key: 'default',
+      labelKey: 'content.sidebarThemeNavy',
       from: '#034f92',
       to: '#002a53',
       bgFrom: '#6895BE',
@@ -127,7 +143,13 @@
                 ></div>
                 <span
                   class="text-xs"
-                  :class="store.sidebarTheme === item.key ? 'text-white' : 'text-textColor3'"
+                  :class="
+                    store.sidebarTheme === item.key
+                      ? item.darkLabel
+                        ? 'text-textColor0'
+                        : 'text-white'
+                      : 'text-textColor3'
+                  "
                 >{{ t(item.labelKey) }}</span>
               </div>
             </div>

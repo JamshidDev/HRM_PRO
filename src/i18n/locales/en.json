@@ -229,6 +229,7 @@
     "sidebarThemeIndigo": "Indigo",
     "sidebarThemeBlue": "Blue",
     "sidebarThemeGreen": "Green",
+    "sidebarThemeNavy": "Navy",
     "customColor": "Custom color",
     "customColorDesc": "Change the site's colors",
     "appearanceMode": "View",
@@ -2965,7 +2966,7 @@
       "hasDiff": "Has differences",
       "match": "Matches",
       "hint": "Select one organization and period above, then click Reconcile — the official 1C total (AccruedByType) is compared with our computation by ved",
-      "selectOneOrg": "Select one organization to reconcile"
+      "selectOneOrg": "Select at least one organization to reconcile"
     },
     "veds": {
       "tab": "By ved (type)",
@@ -3043,6 +3044,9 @@
     "pullBg": "Running in background — you can close this window, it will continue",
     "pullPending": "Pending",
     "pullRunning": "Running…",
+    "pullCancel": "Cancel",
+    "pullCancelled": "Cancelled",
+    "pullCancelledMsg": "Pull cancelled",
     "errors": "Errors",
     "errorMsg": "Error message",
     "errDate": "Date",
@@ -4119,6 +4123,25 @@
       "copyAll": "Copy all",
       "copyHint": "Hidden on screen — pasted as plaintext when you use \"Copy all\"."
     }
+  },
+  "salaryAccess": {
+    "title": "Salary section — password",
+    "setTitle": "Set salary password",
+    "description": "This section is confidential. Enter the salary password to continue.",
+    "setDescription": "First time: confirm with your login password and set a salary password.",
+    "loginPassword": "Your login password",
+    "newPassword": "New salary password",
+    "confirmPassword": "Repeat salary password",
+    "password": "Salary password",
+    "passwordPlaceholder": "Enter salary password",
+    "submit": "Unlock",
+    "setSubmit": "Set and unlock",
+    "changeBtn": "Change salary password",
+    "changeTitle": "Change salary password",
+    "changeDescription": "Confirm your current salary password and set a new one.",
+    "oldPassword": "Current salary password",
+    "changeSubmit": "Change",
+    "cancelled": "Cancelled"
   },
   "changePassword": {
     "title": "Update Password",

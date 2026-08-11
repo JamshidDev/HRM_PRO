@@ -236,6 +236,7 @@
     "sidebarThemeIndigo": "Indigo",
     "sidebarThemeBlue": "Blue",
     "sidebarThemeGreen": "Green",
+    "sidebarThemeNavy": "Navy",
     "customColor": "Maxsus rang",
     "customColorDesc": "Sayt ranglarini o'zgartiring",
     "appearanceMode": "Ko'rinish",
@@ -2995,7 +2996,7 @@
       "hasDiff": "Farq bor",
       "match": "Mos",
       "hint": "Yuqoridan bitta korxona va davrni tanlab «Solishtirish»ni bosing — 1C rasmiy jami (AccruedByType) bizning hisob bilan ved kesimida solishtiriladi",
-      "selectOneOrg": "Solishtirish uchun bitta korxona tanlang"
+      "selectOneOrg": "Solishtirish uchun kamida bitta korxona tanlang"
     },
     "veds": {
       "tab": "Ved kesimida",
@@ -3073,6 +3074,9 @@
     "pullBg": "Fonda ishlamoqda — modalni yopsangiz ham davom etadi",
     "pullPending": "Kutmoqda",
     "pullRunning": "Jarayonda…",
+    "pullCancel": "Bekor qilish",
+    "pullCancelled": "Bekor qilindi",
+    "pullCancelledMsg": "Tortish bekor qilindi",
     "errors": "Xatoliklar",
     "errorMsg": "Xatolik xabari",
     "errDate": "Sana",
@@ -4163,6 +4167,25 @@
       "copyAll": "Hammasini nusxalash",
       "copyHint": "Ekranda yashirin — \"Hammasini nusxalash\"da ochiq holatda keladi."
     }
+  },
+  "salaryAccess": {
+    "title": "Oylik bo'limi — parol",
+    "setTitle": "Oylik parolini o'rnatish",
+    "description": "Bu bo'lim maxfiy. Davom etish uchun oylik parolini kiriting.",
+    "setDescription": "Birinchi marta: login parolingiz bilan tasdiqlab, oylik parolini o'rnating.",
+    "loginPassword": "Login parolingiz",
+    "newPassword": "Yangi oylik paroli",
+    "confirmPassword": "Oylik parolini takrorlang",
+    "password": "Oylik paroli",
+    "passwordPlaceholder": "Oylik parolini kiriting",
+    "submit": "Ochish",
+    "setSubmit": "O'rnatish va ochish",
+    "changeBtn": "Oylik parolini o'zgartirish",
+    "changeTitle": "Oylik parolini o'zgartirish",
+    "changeDescription": "Amaldagi oylik parolingizni tasdiqlab, yangi parol o'rnating.",
+    "oldPassword": "Amaldagi oylik paroli",
+    "changeSubmit": "O'zgartirish",
+    "cancelled": "Bekor qilindi"
   },
   "changePassword": {
     "title": "Parolni yangilash",
