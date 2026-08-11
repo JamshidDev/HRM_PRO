@@ -10,7 +10,13 @@
     loading: { type: Boolean, default: false },
     modelV: { type: Array, default: [] },
     checkedVal: { type: Array, default: [] },
-    options: { type: Array, default: [] }
+    options: { type: Array, default: [] },
+    // Popover 400px, ya'ni tor trigger ostida `bottom` (markazlashgan) holatda
+    // har ikki tomondan chiqib ketadi va modal/viewport chegarasida kesiladi.
+    // Shunday joylarda `bottom-start` berilsa, popover trigger'ning chap
+    // qirrasidan boshlanib o'ngga cho'ziladi. Default o'zgarmaydi — 99 ta
+    // sahifadagi mavjud ko'rinish saqlanadi.
+    placement: { type: String, default: 'bottom' }
   })
 
   const searchModel = defineModel('search', { type: String, default: null })
@@ -171,7 +177,7 @@
 
 <template>
   <n-popover
-    placement="bottom"
+    :placement="placement"
     trigger="click"
     class="h-[400px] md:max-w-auto py-0! px-0! max-w-(--top-activator-width) md:max-w-none! md:w-[400px]"
   >

@@ -10,19 +10,10 @@
   const store = useDepartmentPositionStore()
   const componentStore = useComponentStore()
 
-  const emits = defineEmits(['onCancelEv'])
-  const onCancelEv = () => {
-    emits('onCancelEv')
-  }
-
   const props = defineProps({
     callback: {
       type: Function,
       default: null
-    },
-    heightFull: {
-      type: Boolean,
-      default: true
     }
   })
 
@@ -72,24 +63,37 @@
 
   const showStructureField = computed(() => !Boolean(props.callback))
 
+  // Tashkilot/Bo'lim/Lavozim bitta qatorda turadi. Tashkilot maydoni yashirilganda
+  // (callback bilan chaqirilganda) qolgan ikkitasi qatorni to'liq egallaydi —
+  // aks holda o'ng tomonda bo'sh 4 ustun qolib ketardi.
+  const headFieldSpan = computed(() =>
+    showStructureField.value ? 'md:col-span-4' : 'md:col-span-6'
+  )
+
   onMounted(() => {
     store.depParams.search = null
     if (store.visibleType) {
       departmentState.value.list = []
     }
   })
+
+  // Tugmalar modal `#footer` da turadi (page.vue) — saqlashni tashqaridan
+  // chaqirish uchun yagona yo'l.
+  defineExpose({ submit: onSubmit })
 </script>
 
 <template>
   <n-form ref="formRef" :rules="validationRules.common" :model="store.payload">
-    <div :class="[heightFull ? 'h-[calc(100vh-120px)]' : '']">
+    <div>
       <div class="grid grid-cols-12 gap-x-4 overflow-x-hidden">
         <n-form-item
           v-if="showStructureField"
           class="col-span-12"
+          :class="headFieldSpan"
           :label="$t(`content.organization`)"
         >
           <UISelect
+            placement="bottom-start"
             :options="componentStore.structureList"
             :modelV="store.payload.organization_id"
             @updateModel="onChangeStructure"
@@ -104,6 +108,7 @@
         </n-form-item>
         <n-form-item
           class="col-span-12"
+          :class="headFieldSpan"
           :label="$t(`departmentPositionPage.form.department_id`)"
           path="department_id"
           :rule-path="validationRules.rulesNames.requiredNumberField"
@@ -119,21 +124,25 @@
             @updateShow="updateShowEv"
           />
         </n-form-item>
-        <label class="col-span-12 text-secondary mb-2"
-          >{{ $t(`departmentPositionPage.form.position_id`) }}
-          <span class="n-form-item-label__asterisk text-danger">&nbsp;*</span>
-          <template v-if="store.payload.position_id"
-            >(<span class="select-all cursor-pointer">{{ store.payload.position_id }}</span
-            >)</template
-          >
-        </label>
         <n-form-item
           class="col-span-12"
-          :show-label="false"
+          :class="headFieldSpan"
           :label="$t(`departmentPositionPage.form.position_id`)"
           path="position_id"
           :rule-path="validationRules.rulesNames.requiredNumberField"
         >
+          <!-- Label alohida grid bandi emas, `#label` slot ichida — aks holda u
+               butun qatorni egallab, uchta select bir qatorga sig'may qolardi.
+               Tanlangan lavozim id'si qavs ichida ko'rinishi saqlanadi. -->
+          <template #label>
+            {{ $t(`departmentPositionPage.form.position_id`) }}
+            <span class="n-form-item-label__asterisk text-danger">&nbsp;*</span>
+            <template v-if="store.payload.position_id"
+              >(<span class="select-all cursor-pointer">{{ store.payload.position_id }}</span
+              >)</template
+            >
+          </template>
+
           <div class="flex gap-2 w-full items-center">
             <n-select
               class="w-[calc(100% - 60px)]"
@@ -263,15 +272,6 @@
           />
         </n-form-item>
       </div>
-    </div>
-
-    <div class="grid grid-cols-2 gap-2">
-      <n-button @click="onCancelEv" type="error" ghost>
-        {{ $t('content.cancel') }}
-      </n-button>
-      <n-button @click="onSubmit" :loading="store.saveLoading" type="primary">
-        {{ $t('content.save') }}
-      </n-button>
     </div>
   </n-form>
 </template>

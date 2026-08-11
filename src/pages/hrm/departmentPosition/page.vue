@@ -1,10 +1,11 @@
 <script setup>
-  import { UIDrawer, UIPageContent } from '@components'
+  import { UIModal, UIPageContent } from '@components'
   import { useDepartmentPositionStore, useAccountStore } from '@stores'
   import { createFrom, Table, Filter, Preview } from './ui'
 
   const store = useDepartmentPositionStore()
   const accStore = useAccountStore()
+  const createFormRef = ref(null)
 
   onMounted(() => {
     if (!accStore.checkAction(accStore.pn.hrPositionsRead)) return
@@ -16,20 +17,34 @@
   <UIPageContent>
     <Filter />
     <Table />
-    <UIDrawer
-      :width="800"
-      :visible="store.visible"
-      @update:visible="(v) => (store.visible = v)"
+    <UIModal
+      v-model:visible="store.visible"
       :title="
         store.visibleType
           ? $t('departmentPositionPage.createTitle')
           : $t('departmentPositionPage.updateTitle')
       "
+      width="min(1000px, calc(100vw - 32px))"
+      height="min(85vh, 720px)"
     >
-      <template #content>
-        <createFrom @onCancelEv="store.visible = false" />
+      <createFrom ref="createFormRef" />
+
+      <template #footer>
+        <div class="flex justify-end gap-2 px-4 pb-2">
+          <n-button type="error" ghost class="w-[130px]" @click="store.openVisible(false)">
+            {{ $t('content.cancel') }}
+          </n-button>
+          <n-button
+            type="primary"
+            class="w-[130px]"
+            :loading="store.saveLoading"
+            @click="createFormRef?.submit()"
+          >
+            {{ $t('content.save') }}
+          </n-button>
+        </div>
       </template>
-    </UIDrawer>
+    </UIModal>
     <Preview />
   </UIPageContent>
 </template>
