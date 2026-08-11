@@ -16,7 +16,7 @@
   }
 
   const onAdd = () => {
-    router.push(Utils.routePathMaker(`${AppPaths.MobileStories}/create`))
+    router.push(Utils.routeChatPathMaker(`${AppPaths.MobileStories}/create`))
   }
 
   onMounted(() => {

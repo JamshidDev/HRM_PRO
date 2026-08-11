@@ -831,7 +831,7 @@ export const navigations = [
       },
       {
         label: 'mobileStoryPage.name',
-        path: Utils.routePathMaker(AppPaths.MobileStories),
+        path: Utils.routeChatPathMaker(AppPaths.MobileStories),
         icon: ChatMobileStoryIcon,
         color: 'bg-dark',
         permission: appPermissions.chat

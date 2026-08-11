@@ -138,7 +138,7 @@ export const useMobileStoryStore = defineStore('mobileStory', {
         .then((res) => {
           const id = res.data.data.id
           this.elementId = id
-          router.replace(Utils.routePathMaker(`${AppPaths.MobileStories}/${id}`))
+          router.replace(Utils.routeChatPathMaker(`${AppPaths.MobileStories}/${id}`))
         })
         .finally(() => {
           this.saveLoading = false
