@@ -10,8 +10,12 @@
     loading: { type: Boolean, default: false },
     modelV: { type: Array, default: [] },
     checkedVal: { type: Array, default: [] },
-    options: { type: Array, default: [] }
+    options: { type: Array, default: [] },
+    // true bo'lsa katta (trigger) input ham qidiruv sifatida yoziladi.
+    searchableInput: { type: Boolean, default: false }
   })
+
+  const inputFocused = ref(false)
 
   const searchModel = defineModel('search', { type: String, default: null })
   const emits = defineEmits(['onSearch', 'onSubmit', 'updateModel', 'updateCheck', 'defaultValue'])
@@ -151,6 +155,25 @@
 
   const inputVal = computed(() => props.modelV.map((a) => a.name).toString())
 
+  // searchableInput: fokusda qidiruv matnini, aks holda tanlangan nomlarni ko'rsatadi.
+  const triggerValue = computed(() => {
+    if (props.searchableInput && inputFocused.value) return searchModel.value ?? ''
+    return inputVal.value?.toString()
+  })
+
+  const onTriggerInput = (v) => {
+    if (!props.searchableInput) return
+    searchModel.value = v
+    searchEvent()
+  }
+
+  const onTriggerBlur = () => {
+    // Popover ichidagi klik ishlab ulgurishi uchun kichik kechikish.
+    setTimeout(() => {
+      inputFocused.value = false
+    }, 150)
+  }
+
   const isExistDefaultVal = computed(() => instance.vnode.props?.onDefaultValue)
 
   const callDefaultValue = () => {
@@ -178,11 +201,15 @@
     <template #trigger>
       <n-badge class="w-full block" :value="modelV.length" type="info" :offset="[-10, -4]">
         <n-input
-          :placeholder="$t('content.choose')"
+          :placeholder="searchableInput ? $t('content.search') : $t('content.choose')"
           :loading="loading"
           class="ui__structure-input w-full"
           type="text"
-          :value="inputVal?.toString()"
+          :readonly="!searchableInput"
+          :value="triggerValue"
+          @update:value="onTriggerInput"
+          @focus="inputFocused = true"
+          @blur="onTriggerBlur"
         />
       </n-badge>
     </template>
@@ -199,7 +226,11 @@
           :multiple="multiple"
           @onSelect="onSelect"
           @onSelectAll="onSelectAll"
-        />
+        >
+          <template v-if="$slots.label" #label="{ data }">
+            <slot name="label" :data="data" />
+          </template>
+        </TreeOrg>
       </n-spin>
     </div>
     <div class="w-full h-[40px] flex items-center px-1">

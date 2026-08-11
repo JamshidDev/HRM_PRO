@@ -59,6 +59,20 @@ export const accountantRoutes = [
     }
   },
   {
+    path: Utils.routeAccountantPathMaker(AppPaths.TariffGrid),
+    component: () => import('@/pages/accountant/tariffGrid/page.vue'),
+    meta: {
+      layout: AppLayouts.main
+    }
+  },
+  {
+    path: Utils.routeAccountantPathMaker(AppPaths.Salary1c),
+    component: () => import('@/pages/accountant/salary1c/page.vue'),
+    meta: {
+      layout: AppLayouts.main
+    }
+  },
+  {
     path: Utils.routeAccountantPathMaker(AppPaths.Report),
     component: () => import('@/pages/hrm/report/ReportPage.vue'),
     meta: {
