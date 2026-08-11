@@ -1,5 +1,9 @@
 <script setup>
-  import { useComponentStore, useScheduleTableStore } from '@/store/modules/index.js'
+  import {
+    useAccountStore,
+    useComponentStore,
+    useScheduleTableStore
+  } from '@/store/modules/index.js'
   import Utils from '@/utils/Utils.js'
   import i18n from '@/i18n/index.js'
   import { UINSelect, UISelect, UIPageFilter } from '@/components/index.js'
@@ -7,6 +11,7 @@
 
   const store = useScheduleTableStore()
   const componentStore = useComponentStore()
+  const accStore = useAccountStore()
 
   const t = i18n.global.t
   const filterEvent = () => {
@@ -138,7 +143,12 @@
         </template>
         {{ $t('content.save') }}
       </n-button>
-      <n-button class="h-[32px]!" @click="openPanel" type="success">
+      <n-button
+        v-if="accStore.checkPermission(accStore.pn.turnstileSheetsTimesheetExport)"
+        class="h-[32px]!"
+        @click="openPanel"
+        type="success"
+      >
         {{ $t('schedule.form.exportSchedule') }}
       </n-button>
     </template>

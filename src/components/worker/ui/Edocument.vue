@@ -6,8 +6,8 @@
   import defaultPhoto from '@/assets/images/content/profilePhoto.avif'
   import IdCardIcon from '@/assets/icons/jshirIcon.svg'
   import DocumentTab from './shared/DocumentTab.vue'
-  import IdCard from '../../ui/IdCard.vue'
-  import IdForeign from '../../ui/IdForeign.vue'
+  // import IdCard from '../../ui/IdCard.vue'
+  // import IdForeign from '../../ui/IdForeign.vue'
   import IdRailWay from '../../ui/IdRailWay.vue'
   import IdCardDetail from '../../ui/IdCardDetail.vue'
   import SectionHeader from './shared/SectionHeader.vue'
@@ -139,7 +139,14 @@
 
       <div class="w-full flex flex-col lg:flex-row gap-3 sm:gap-4 items-start justify-center">
         <template v-if="activeId === 1">
-          <IdCard :data="idCardData" class="w-[100%] lg:w-[55%]" />
+          <!-- <IdCard :data="idCardData" class="w-[100%] lg:w-[55%]" /> -->
+          <div
+            class="w-[100%] lg:w-[55%] aspect-[1014/638] rounded-2xl border border-dashed border-gray-300 bg-gray-50 flex items-center justify-center"
+          >
+            <span class="text-secondary text-sm sm:text-base">
+              {{ $t('content.developmentProcess') }}
+            </span>
+          </div>
           <IdCardDetail :data="idCardData" class="w-[100%] h-[100%] lg:w-[45%]" />
         </template>
 
@@ -155,7 +162,14 @@
 
         <template v-else-if="activeId === 3">
           <template v-if="hasForeignPassport">
-            <IdForeign :data="idForeignData" class="w-[100%] lg:w-[55%]" />
+            <!-- <IdForeign :data="idForeignData" class="w-[100%] lg:w-[55%]" /> -->
+            <div
+              class="w-[100%] lg:w-[55%] aspect-[1014/638] rounded-2xl border border-dashed border-gray-300 bg-gray-50 flex items-center justify-center"
+            >
+              <span class="text-secondary text-sm sm:text-base">
+                {{ $t('content.developmentProcess') }}
+              </span>
+            </div>
             <IdForeignDetail :data="idForeignData" class="w-[100%] h-[100%] lg:w-[45%]" />
           </template>
           <h4 v-else class="w-full text-center text-secondary">
