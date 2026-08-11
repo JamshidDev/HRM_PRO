@@ -3,7 +3,6 @@
   import PageContent from './ui/PageContent.vue'
   import HelperLayout from './ui/HelperLayout.vue'
   import ReactionScreen from '@/pages/app/home/ui/ReactionScreen.vue'
-  import MustChangePasswordModal from '@/components/MustChangePasswordModal.vue'
   import OldVersionButton from '@/components/buttons/OldVersionButton.vue'
   import AIFloatingButton from '@/components/buttons/AIFloatingButton.vue'
   import { useAccountStore } from '@/store/modules/index.js'
@@ -51,7 +50,6 @@
     <PageContent @on-open="openSidebar" />
     <HelperLayout />
     <ReactionScreen />
-    <MustChangePasswordModal />
     <AIFloatingButton />
   </div>
 </template>

@@ -231,6 +231,11 @@
     next()
   })
 
+  // Qarindoshlar eksporti — tanlangan qatorlar bo'lsa faqat o'shalar.
+  const onRelativesExport = () => {
+    store._downloadRelative(exportStore.resumePayload.worker_ids)
+  }
+
   const onSubmitResumeExport = () => {
     exportStore.resumeModalVisible = true
   }
@@ -238,8 +243,14 @@
   const canWrite = computed(() => accStore.checkAction(appPermissions.hrExport))
   const canZip = computed(() => accStore.checkAction(appPermissions.exportWorkersZip))
 
-  const selectedCount = computed(() =>
-    exportStore.resumePayload.all ? store.totalItems : exportStore.resumePayload.worker_ids.length
+  // Nechta xodim yuklanishini ko'rsatadi (tanlangan soni EMAS):
+  //  · qator(lar) belgilangan bo'lsa — o'shalar soni,
+  //  · hech narsa belgilanmasa (yoki "barchasini tanlash") — FILTRLANGAN ro'yxat
+  //    to'liq yuklanadi, demak jadval totali.
+  // Ilgari bu 0 bo'lib qolar va "Ma'lumotni yuklash" tugmasi o'chib turardi —
+  // filtrlab yuklash uchun avval majburan "barchasini tanlash" kerak edi.
+  const selectedCount = computed(
+    () => exportStore.resumePayload.worker_ids.length || store.totalItems
   )
 
   const defaultEv = (v) => {
@@ -302,7 +313,7 @@
         :can-write="canWrite"
         :can-zip="canZip"
         :loading="store.loading"
-        @relatives="store._downloadRelative"
+        @relatives="onRelativesExport"
         @export="onExport"
         @reference="onSubmitResumeExport"
         @close="closeReportPanel"

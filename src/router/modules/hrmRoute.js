@@ -21,6 +21,12 @@ export const hrmRoutes = [
     meta: { layout: AppLayouts.main }
   },
   {
+    path: Utils.routeHrmPathMaker(AppPaths.Kpi),
+    name: AppPaths.Kpi.substring(1),
+    component: () => import('@/pages/hrm/kpi/page.vue'),
+    meta: { layout: AppLayouts.main }
+  },
+  {
     path: Utils.routeHrmPathMaker(AppPaths.WorkerCertificate),
     name: AppPaths.WorkerCertificate.substring(1),
     component: () => import('@/pages/hrm/workerCertificate/page.vue'),
@@ -143,6 +149,11 @@ export const hrmRoutes = [
   {
     path: Utils.routeHrmPathMaker(AppPaths.Incentive),
     component: () => import('@/pages/hrm/incentive/IncentivePage.vue'),
+    meta: { layout: AppLayouts.main }
+  },
+  {
+    path: Utils.routeHrmPathMaker(AppPaths.Task),
+    component: () => import('@/pages/hrm/task/TaskPage.vue'),
     meta: { layout: AppLayouts.main }
   },
   {

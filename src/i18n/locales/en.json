@@ -2458,6 +2458,36 @@
       "giftType": "Date"
     }
   },
+  "task": {
+    "name": "Tasks",
+    "createTitle": "Assign task",
+    "updateTitle": "Edit task",
+    "detailTitle": "Task details",
+    "info": "Info",
+    "deleteWarning": "Confirm deleting the task?",
+    "myStatus": "My status",
+    "statusComment": "Comment on the status change (optional)",
+    "comments": "Comments",
+    "addComment": "Write a comment...",
+    "history": "Status history",
+    "view": {
+      "created": "Created by me",
+      "assigned": "Assigned to me"
+    },
+    "table": {
+      "title": "Task title",
+      "creator": "Responsible employee",
+      "assignees": "Executors",
+      "status": "Status",
+      "deadline": "Deadline"
+    },
+    "status": {
+      "created": "Created",
+      "in_progress": "In progress",
+      "done": "Done",
+      "blocked": "Blocked"
+    }
+  },
   "report": {
     "name": "Plan vs Actual",
     "addDepartment": "Add department",
@@ -3773,6 +3803,33 @@
     "mobileFaceSchedules": "Mobile face: schedules",
     "otpVerify": "OTP verify",
     "holidayGreetings": "Holiday greetings"
+  },
+  "kpiPage": {
+    "name": "KPI indicators",
+    "table": {
+      "worker": "Employee",
+      "department": "Department",
+      "position": "Position",
+      "organization": "Organization",
+      "pin": "PINFL"
+    },
+    "show": {
+      "positionDate": "Assigned on",
+      "age": "Age",
+      "rankGlobal": "Overall rank",
+      "rankOrg": "Rank in organization",
+      "place": "",
+      "quarter": " quarter",
+      "indicatorName": "Indicator",
+      "unit": "Unit",
+      "plan": "Plan",
+      "actual": "Actual",
+      "percent": "%",
+      "approvers": "Approvers",
+      "notOnboarded": "This employee is not onboarded into the KPI system — no indicators.",
+      "noIndicators": "No indicators for the selected period."
+    },
+    "showPending": "Indicators come from an external system — data will appear once the integration is connected."
   },
   "workerCertificatePage": {
     "name": "Certificates",

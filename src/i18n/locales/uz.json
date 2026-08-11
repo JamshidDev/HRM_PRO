@@ -2482,6 +2482,36 @@
       "giftType": "Sana"
     }
   },
+  "task": {
+    "name": "Topshiriqlar",
+    "createTitle": "Topshiriq berish",
+    "updateTitle": "Topshiriqni tahrirlash",
+    "detailTitle": "Topshiriq ma'lumoti",
+    "info": "Ma'lumot",
+    "deleteWarning": "Topshiriqni o'chirishni tasdiqlaysizmi?",
+    "myStatus": "Mening holatim",
+    "statusComment": "Holat o'zgarishiga izoh (ixtiyoriy)",
+    "comments": "Izohlar",
+    "addComment": "Izoh yozish...",
+    "history": "Holat tarixi",
+    "view": {
+      "created": "Men berganlar",
+      "assigned": "Menga biriktirilganlar"
+    },
+    "table": {
+      "title": "Topshiriq nomi",
+      "creator": "Mas'ul xodim",
+      "assignees": "Ijrochilar",
+      "status": "Holati",
+      "deadline": "Muddat"
+    },
+    "status": {
+      "created": "Yaratildi",
+      "in_progress": "Jarayonda",
+      "done": "Bajarildi",
+      "blocked": "Bloklangan"
+    }
+  },
   "report": {
     "name": "Plan va Fakt",
     "addDepartment": "Bo'linma qo'shish",
@@ -3817,6 +3847,33 @@
     "mobileFaceSchedules": "Mobil face: jadvallar",
     "otpVerify": "OTP tekshirish",
     "holidayGreetings": "Bayram tabriklari"
+  },
+  "kpiPage": {
+    "name": "KPI ko'rsatgichlar",
+    "table": {
+      "worker": "Xodim",
+      "department": "Bo'lim",
+      "position": "Lavozim",
+      "organization": "Korxona",
+      "pin": "JSHSHIR"
+    },
+    "show": {
+      "positionDate": "Tayinlangan sana",
+      "age": "Yoshi",
+      "rankGlobal": "Umumiy o'rni",
+      "rankOrg": "Korxonadagi o'rni",
+      "place": "-o'rin",
+      "quarter": "-chorak",
+      "indicatorName": "Ko'rsatkich nomi",
+      "unit": "O'lchov birligi",
+      "plan": "Reja",
+      "actual": "Amalda",
+      "percent": "%",
+      "approvers": "Tasdiqlovchilar",
+      "notOnboarded": "Bu xodim KPI tizimiga ulanmagan — ko'rsatkichlar mavjud emas.",
+      "noIndicators": "Tanlangan davr uchun ko'rsatkichlar yo'q."
+    },
+    "showPending": "Ko'rsatkichlar tashqi tizimdan olinadi — integratsiya ulanmaguncha ma'lumot ko'rsatilmaydi."
   },
   "workerCertificatePage": {
     "name": "Guvohnomalar",

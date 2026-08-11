@@ -1,8 +1,5 @@
 import { defineStore } from 'pinia'
 import i18n from '@/i18n/index.js'
-import Utils from '@/utils/Utils.js'
-import { AppPaths } from '@/utils/index.js'
-import router from '@/router/index.js'
 const { t } = i18n.global
 export const useWorkerStore = defineStore('workerStore', {
   state: () => ({
@@ -122,14 +119,21 @@ export const useWorkerStore = defineStore('workerStore', {
           this.filterPositionLoading = false
         })
     },
-    _downloadRelative() {
+    // `workerIds` — jadvalda checkbox bilan tanlangan qatorlar (`worker_positions.id`).
+    // Bo'sh bo'lsa filtrlangan ro'yxatning HAMMASI yuklanadi (boshqa eksportlar bilan
+    // bir xil qoida). Eksport fonda navbatga qo'yiladi — foydalanuvchi shu sahifada
+    // qoladi (ilgari majburan «Eksportlar» sahifasiga o'tkazardi).
+    _downloadRelative(workerIds = []) {
       this.loading = true
-      let params = this._params()
+      const ids = Array.isArray(workerIds) ? workerIds : []
+      const data = {
+        query: {
+          ...this._params(),
+          ...(ids.length > 0 ? { worker_ids: ids } : {})
+        }
+      }
       $ApiService.workerService
-        ._downloadRelative({ params })
-        .then(() => {
-          router.push(Utils.routeHrmPathMaker(AppPaths.Export))
-        })
+        ._downloadRelative({ data })
         .finally(() => {
           this.loading = false
         })
