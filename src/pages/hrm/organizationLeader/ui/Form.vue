@@ -50,16 +50,15 @@
       componentStore._structures()
     }
   })
+
+  // Tugmalar modal `#footer` da turadi (organizationLeaderPage.vue) — saqlashni
+  // tashqaridan chaqirish uchun yagona yo'l.
+  defineExpose({ submit: onSubmit })
 </script>
 
 <template>
-  <n-form
-    ref="formRef"
-    :model="store.payload"
-    :rules="validationRules.common"
-    class="h-full flex flex-col"
-  >
-    <div style="min-height: calc(100vh - 120px)">
+  <n-form ref="formRef" :model="store.payload" :rules="validationRules.common">
+    <div>
       <n-form-item
         v-if="store.visibleType"
         :label="$t(`content.organization`)"
@@ -132,15 +131,6 @@
           </template>
         </div>
       </n-form-item>
-    </div>
-
-    <div class="grid grid-cols-2 gap-2">
-      <n-button @click="store.openVisible(false)" type="error" ghost>
-        {{ $t('content.cancel') }}
-      </n-button>
-      <n-button @click="onSubmit" :loading="store.saveLoading" type="primary">
-        {{ $t('content.save') }}
-      </n-button>
     </div>
   </n-form>
 </template>
